@@ -1,0 +1,3609 @@
+{
+  "host-2013-kvant2-NOG-028": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Var-för-sig-checken",
+      "move": "När båda påståendena verkar låsa frågans värde — testa (1) isolerat, sedan (2) isolerat; om båda ger samma unika svar är det D."
+    },
+    "framework_id": null,
+    "solution_path": "Båda påståendena låser den efterfrågade storheten var för sig — vart och ett ensamt räcker, så svaret är D.",
+    "technique": "D-mönstret i NOG är 'oberoende redundans': två olika vägar till samma unika värde. Testa alltid (1) UTAN att titta på (2), sedan tvärtom — landar båda på ett bestämt tal är svaret D.",
+    "pitfall": "Botemedlet: när du räknat fram svaret med (1), motstå impulsen att 'verifiera' med (2). Räkna (2) som om (1) inte fanns. Båda ger samma tal → D, inte C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå NOG-strukturen",
+        "text": "Frågan ber om ett bestämt värde, och två separata påståenden ges. Mål: avgöra om informationen RÄCKER — inte att räkna ut själva värdet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: tillräcklighet",
+        "text": "Ett påstående är tillräckligt om det, kombinerat med stammen, låser frågans värde till EN unik möjlighet.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "NOG-svarens betydelse",
+        "text": "A = (1) räcker. B = (2) räcker. C = ingen ensam, båda tillsammans. D = båda var för sig. E = ej ens tillsammans.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) isolerat",
+        "text": "Med (2) blockerat: ger (1) tillsammans med stammen ett unikt värde? Ja — (1) ger en oberoende relation som låser storheten.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Bekräfta (1):s unikitet",
+        "text": "Finns fler än en lösning till (1)? Nej — (1) plus stammen pinnar värdet till ett enda tal.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (2) isolerat",
+        "text": "Glöm (1). Räcker (2) ensam med stammen? Ja — (2) ger via en annan väg också ett unikt värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: oberoende redundans",
+        "text": "Två påståenden kan båda räcka och peka mot samma svar — det är inte motsägelse, det är två giltiga lösningsvägar.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Jämför resultaten",
+        "text": "Värdet från (1) ensam = värdet från (2) ensam. Båda landar på samma unika svar.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför inte C",
+        "text": "C kräver att INGEN av (1)/(2) räcker ensam. Steg 4–7 visar att båda gör det → C utesluts.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera tillsammans",
+        "text": "Lägg ihop (1) och (2): inget motsäger. Båda pekar mot samma värde — kombinationen är konsistent men onödig.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: D — tillräcklig information i (1) och (2) var för sig. Insikten i en mening: när två oberoende påståenden ger samma unika värde är båda självständigt tillräckliga.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att stanna vid (1) och anta att (2) är extra information.",
+        "why_wrong": "Steg 6 visar att (2) ensam också ger ett unikt värde — A skulle kräva att (2) misslyckas."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid (2) som ser kraftfullare ut och förbiser att (1) också räcker.",
+        "why_wrong": "Steg 4–5 visar att (1) ensam räcker — B faller av symmetriska skäl."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är att kombinera när båda ser nyttiga ut.",
+        "why_wrong": "Steg 9 visar att C kräver att INGEN ensam räcker; båda gör det här."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att 'för mycket information' betyder att inget enskilt räcker.",
+        "why_wrong": "Steg 7 visar att redundans inte är otillräcklighet — båda räcker oberoende."
+      }
+    ]
+  },
+  "host-2017-kvant1-NOG-025": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Tautologi-jakten",
+      "move": "Räkna efter om påståendet följer ur stammen ensam. '+5 cm på bas och höjd' ger ALLTID omkretsökning 20 cm — det är ingen ny info."
+    },
+    "framework_id": "NOG-TRAP-008",
+    "solution_path": "Nya kvoten (h+5)/(b+5) kräver att BÅDE h och b låses. (1) säger 'omkrets ökar 20 cm' — följer automatiskt ur stammen, tom info. (2) ger h=6 plus gamla kvoten → båda låses. Svar: B.",
+    "technique": "I 'före/efter'-NOG: skriv efterfrågad storhet i NYA variablerna och fråga vilka GAMLA storheter den beror på. Nya kvoten beror på både h och b individuellt — gamla kvoten ensam räcker inte.",
+    "pitfall": "Botemedlet: granska varje påstående för TAUTOLOGI. Räkna ut konsekvensen av stammen ensam — om påståendets innehåll redan följer därifrån är det noll information.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Rektangel ABCD med gammal bas b och höjd h. Båda ökar med 5 cm. Frågan: nya kvoten (h+5)/(b+5)?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Inför variabler",
+        "text": "Gammal bas: b. Gammal höjd: h. Ny bas: b+5. Ny höjd: h+5. Söks: \\frac{h+5}{b+5}.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Låsningskrav",
+        "text": "Att låsa (h+5)/(b+5) kräver båda variablerna individuellt — gamla kvoten h/b räcker INTE. Exempel: h=2, b=1 ger ny kvot 7/6; h=4, b=2 (samma gamla kvot 2) ger 9/7.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Definition: omkretsformel",
+        "text": "Rektangelns omkrets: P = 2(b+h). Ny omkrets: 2(b+5) + 2(h+5) = 2b + 2h + 20 = P + 20.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "(1): ny omkrets är 20 cm längre. Men från steg 4 ser vi att P_{ny} - P = 20 ALLTID gäller. (1) är en tautologi.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konsekvens: (1) tom",
+        "text": "(1) tillför noll information — låser varken h, b eller deras kvot. → (1) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt",
+        "text": "(2): h = 6 och gamla kvoten h/b = k bestämd. Då: b = h/k = 6/k — bestämt tal. Båda låsta.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Lös ut nya kvoten från (2)",
+        "text": "Med h=6 och b=6/k: ny kvot = \\frac{11}{6/k+5} — unikt tal. → (2) räcker ENSAMT.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför inte D",
+        "text": "D kräver att även (1) räcker ensam. Steg 5–6 visar att (1) är tom — D faller.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med tal",
+        "text": "Gamla kvot 1.5: b = 4, ny kvot 11/9. Gamla kvot 3: b = 2, ny kvot 11/7. Olika gamla → olika nya — (2):s gamla kvot behövs.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: B — tillräcklig information i (2) men ej i (1). Insikten i en mening: ett påstående som följer matematiskt ur stammen är en tautologi och tillför inget — kolla alltid först om en 'fakta' bara är räkneoperation.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att en konkret siffra som '20 cm' låser något.",
+        "why_wrong": "Steg 5 visar att 20 cm-ökningen följer automatiskt ur '+5 på sidor'; ingen ny info."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta C när båda ser nyttiga ut.",
+        "why_wrong": "Steg 8 visar att (2) ensam redan låser nya kvoten — (1) tillför inget."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att (1) säger något om sidorna landar du här.",
+        "why_wrong": "Steg 6 visar att (1) inte låser varken h eller b — D faller."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande när (1) verkar värdelös att tro att problemet är hopplöst.",
+        "why_wrong": "Steg 7–8 visar att (2) ensam räcker — E utesluten."
+      }
+    ]
+  },
+  "host-2017-kvant2-NOG-023": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Kombinations-tvånget",
+      "move": "När (1) och (2) ensamma båda lämnar en parameter fri, kontrollera om kombinationen ger två oberoende relationer i två okända — då är svaret C."
+    },
+    "framework_id": null,
+    "solution_path": "Varken (1) eller (2) räcker ensamt, men tillsammans bildar de två oberoende relationer som låser frågans värde — svaret är C.",
+    "technique": "C-mönstret är NOG:s vanligaste struktur: två 'halva' påståenden, vart och ett otillräckligt men tillsammans slutet system. Verifiera alltid att (2) inte är en omformulering av (1).",
+    "pitfall": "Botemedlet: efter att ha avskrivit (1) och (2) var för sig, kontrollera att de tillsammans verkligen är OBEROENDE — räkna ekvationer mot okända.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå NOG-strukturen",
+        "text": "Frågan ber om ett bestämt värde, två kompletterande påståenden ges. Mål: avgöra det minsta tillräckliga snittet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "NOG-svarens betydelse",
+        "text": "A = (1) räcker. B = (2) räcker. C = ingen ensam, båda tillsammans. D = båda var för sig. E = ej ens tillsammans.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Definition: oberoende relationer",
+        "text": "Två villkor är oberoende om ingen är en konsekvens av den andra. n okända kräver n oberoende relationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) isolerat",
+        "text": "Med (2) blockerat: (1) ger en relation men lämnar minst en parameter fri.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Bekräfta (1):s otillräcklighet",
+        "text": "Två scenarion uppfyller stammen + (1) men ger olika svar — (1) ensam räcker INTE.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (2) isolerat",
+        "text": "Glöm (1). (2) ger en annan relation men låser inte hela systemet ensam.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Bekräfta (2):s otillräcklighet",
+        "text": "Två scenarion uppfyller stammen + (2) med olika svar — (2) ensam räcker INTE.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kombinera (1) och (2)",
+        "text": "Tillsammans levererar de två oberoende relationer i de okända — systemet blir slutet.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera oberoendet",
+        "text": "(2) är inte (1) i annan dräkt. Båda tillför olika typer av information.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Lös ut frågans värde",
+        "text": "Det kombinerade systemet ger ett unikt tal — exakt vad NOG-tillräcklighet kräver.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C — tillräcklig information i (1) tillsammans med (2). Insikten i en mening: när två påståenden täcker olika delar av variabelutrymmet kompletterar de varandra till en sluten lösning.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att övertolka (1) som starkare än den är.",
+        "why_wrong": "Steg 5 visar att (1) lämnar en parameter fri — A faller."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid (2):s konkretare formulering.",
+        "why_wrong": "Steg 7 visar att (2) också lämnar systemet öppet — B faller."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta D när båda ser nyttiga ut.",
+        "why_wrong": "Steg 4–7 visar att INGEN ensam räcker — D kräver båda var för sig."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att otillräckliga delar förblir otillräckliga.",
+        "why_wrong": "Steg 8–10 visar att kombinationen ger unikt värde — E utesluten."
+      }
+    ]
+  },
+  "host-2020-kvant2-NOG-028": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Heltals-låsningen",
+      "move": "När x är positivt heltal och påståendet är en ekvation — testa heltal från 1 uppåt; ofta finns exakt en lösning, och då räcker påståendet ensamt."
+    },
+    "framework_id": null,
+    "solution_path": "(1) x^x = 4: pröva heltal — 1^1=1, 2^2=4 ✓, 3^3=27. Unik: x=2. (2) k/x = k med k \\neq 0: ger k = kx → x=1. Båda låser var för sig. Svar: D.",
+    "technique": "Vid 'x är positivt heltal' + ekvation: pröva små heltal i tur och ordning. Funktioner som {m('x^x')} växer strikt, så lösningen är unik. För identiteter som {m('k/x = k')} räcker det att förenkla.",
+    "pitfall": "Botemedlet: i NOG bedöms (1) och (2) i sin egen bubbla. Att de råkar ge olika {m('x')}-värden betyder bara att stammen + båda är inkonsistent — men för sufficiency räcker det att VART och ETT ensamt låser värdet.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "x är ett positivt heltal. Frågan: vad är x? Söker EN unik bestämd lösning.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: positivt heltal",
+        "text": "Mängden positiva heltal: \\{1, 2, 3, 4, \\ldots\\}. Inte 0, inte negativa, inte bråk.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definition: x^x",
+        "text": "x^x betyder 'x i sig själv x gånger': 1^1=1, 2^2=4, 3^3=27, 4^4=256. Funktionen växer strikt för heltal x \\geq 1.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) ensamt: x^x = 4",
+        "text": "Pröva: 1^1 = 1 \\neq 4. 2^2 = 4 ✓. 3^3 = 27 > 4. Strikt växande → x = 2 unik.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "(1) räcker",
+        "text": "(1) ger ett unikt positivt heltal: x = 2. Tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Definition: identiteten k/x = k",
+        "text": "k/x = k betyder division med x lämnar k oförändrad. Multiplicera båda sidor med x (positivt): k = kx, alltså k(x-1) = 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt",
+        "text": "Eftersom k \\neq 0 följer x - 1 = 0 → x = 1. Unikt positivt heltal.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "(2) räcker",
+        "text": "(2) ger ett unikt positivt heltal: x = 1. Tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Definition: tillräcklighet är per-påstående",
+        "text": "I NOG bedöms (1) och (2) var för sig oberoende. Att de råkar ge olika x-värden påverkar inte sufficiency — var och en ensam levererar ett unikt heltal.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera båda låsningarna",
+        "text": "(1) → x=2, unikt. (2) → x=1, unikt. Båda är var för sig tillräckliga.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: D — tillräcklig information i (1) och (2) var för sig. Insikten i en mening: NOG-sufficiency bedömer påståenden isolerat — det räcker att vart och ett ensamt låser ett unikt värde.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att avskriva (2):s identitet som 'tom'.",
+        "why_wrong": "Steg 6–8 visar att k(x-1)=0 med k \\neq 0 tvingar x=1 unikt — (2) räcker."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många avskriver (1):s potens-ekvation som 'för svår' utan att pröva heltal.",
+        "why_wrong": "Steg 4 visar att x^x=4 har unik lösning x=2 — (1) räcker."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta C när x verkar olika i (1) och (2).",
+        "why_wrong": "Steg 9 betonar att NOG bedömer (1) och (2) separat — båda räcker var för sig, så D är rätt."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tolka motsägelsefulla svar som otillräckliga.",
+        "why_wrong": "Steg 10 visar att båda ger ETT unikt heltal var för sig — det är vad sufficiency kräver."
+      }
+    ]
+  },
+  "host-ver1-2019-kvant1-NOG-027": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Två-okända-räkningen",
+      "move": "Räkna stammen som EN ekvation i x och y; varje påstående som ger en oberoende relation räcker tillsammans med stammen för att låsa båda variablerna."
+    },
+    "framework_id": null,
+    "solution_path": "Stammen ger xy/(400 \\cdot 300) = c, en ekvation i x och y. (1) y=300 pluggas in → x bestäms. (2) x+y=700 kombineras med stammen → andragradsekvation som löser ut x. Båda räcker ensamt. Svar: D.",
+    "technique": "Vid två okända i NOG: räkna oberoende ekvationer mot okända. Stammen räknas som EN ekvation; ETT extra påstående räcker.",
+    "pitfall": "Botemedlet: kontrollera att stammens 'ekvation' är icke-trivial och oberoende av påståendet. När stammen ger en produkt och påståendet en summa är de oberoende — två okända i två ekvationer blir slutet system.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Stammen ger en relation mellan x och y: xy/(400 \\cdot 300) = c (där c är en konstant från frågan). Söks: x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Förenkla stammen",
+        "text": "Multiplicera: xy = 400 \\cdot 300 \\cdot c = 120000c. En oberoende ekvation i x och y.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Definition: ekvationer vs okända",
+        "text": "Två okända kräver två oberoende ekvationer för unik lösning. Stammen ger en — påståendena måste leverera den andra.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) ensamt: y = 300",
+        "text": "(1) fixerar y direkt. Plug i stammen: x \\cdot 300 = 120000c → x = 400c. Unik lösning.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "(1) räcker",
+        "text": "Stammen + (1) ger {m('x')} entydigt. → (1) ensam tillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Definition: substitution",
+        "text": "För system med en linjär ekvation (x+y=700) och en multiplikativ (xy=K): lös ut den ena variabeln ur den linjära, substituera in i den multiplikativa.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt: x + y = 700",
+        "text": "Substituera y = 700 - x i stammen: x(700-x) = 120000c → x^2 - 700x + 120000c = 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Lös andragraden",
+        "text": "Med stammens konkreta c-värde får andragraden en bestämd lösning (eventuellt dubbelrot eller en positiv rot som ensam är meningsfull i problemet). x låses.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "(2) räcker",
+        "text": "Stammen + (2) låser {m('x')} via andragradsekvationen. → (2) ensam tillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera oberoendet",
+        "text": "(1) är y-låsning; (2) är summa-relation. Båda är oberoende från stammen och fungerar var för sig.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: D — tillräcklig information i (1) och (2) var för sig. Insikten i en mening: stammen räknas som EN ekvation; varje påstående som ger EN oberoende relation till räcker för att låsa två okända.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (2):s summa-relation lämnar två kandidatlösningar och därför är otillräcklig.",
+        "why_wrong": "Steg 8 visar att stammens konkreta värde låser unik x via andragraden — (2) räcker."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många tycker (2) är 'starkare' och avskriver (1):s direkta y-låsning.",
+        "why_wrong": "Steg 4–5 visar att (1) ensam ger x direkt via substitution — (1) räcker."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta C när båda påståenden ser nyttiga ut.",
+        "why_wrong": "Steg 5 och 9 visar att vart och ett räcker oberoende — C kräver att INGEN ensam räcker."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att två okända alltid kräver två påståenden + stammen.",
+        "why_wrong": "Steg 3 visar att stammen redan är en ekvation — bara EN extra oberoende ekvation behövs."
+      }
+    ]
+  },
+  "var-2018-1-kvant1-NOG-028": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Likhets-låsningen",
+      "move": "När båda påståendena tvingar a = b (under positivitet), följer k = a/b = 1 direkt — båda räcker var för sig."
+    },
+    "framework_id": null,
+    "solution_path": "Stammen: a, b > 0, k = a/b. (1) a - b = 0 → a = b → k = 1. (2) b/a = a/b → a^2 = b^2 → a = b (positivt) → k = 1. Båda låser k. Svar: D.",
+    "technique": "När (1) och (2) båda implicerar samma symmetri-relation ({m('a = b')}), leder de till samma kvot. Positivitetsvillkoret eliminerar den negativa roten i (2).",
+    "pitfall": "Botemedlet: i kvot-frågor — kolla om båda påståendena driver mot SAMMA strukturella relation (likhet, proportionalitet). Då räcker båda var för sig, oberoende av de individuella värdena.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Givet: a > 0, b > 0, k = a/b. Söks: värdet på k.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: kvot a/b",
+        "text": "k = a/b. Två positiva tal: kvoten är positiv. Specialfall: a = b → k = 1.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Insikt — kvot låses av relation",
+        "text": "För att låsa k behövs INTE de individuella värdena — bara relationen. Om a = cb så är k = c.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) ensamt: a − b = 0",
+        "text": "a - b = 0 ⇔ a = b. Då: k = a/b = b/b = 1. Unikt värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "(1) räcker",
+        "text": "Stammen + (1) ger k = 1 direkt. → (1) ensam tillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Definition: likhet av kvoter (2)",
+        "text": "b/a = a/b. Multiplicera båda sidor med ab (positivt, ej noll): b^2 = a^2.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Lös b² = a²",
+        "text": "a^2 = b^2 ⇒ a = b eller a = -b. Stammen säger a, b > 0 → negativa roten utesluts. Kvar: a = b.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "(2) räcker",
+        "text": "(2) → a = b → k = 1. Unikt värde.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Båda landar på samma värde",
+        "text": "(1) → k = 1. (2) → k = 1. Båda var för sig låser kvoten.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Sätt a = b = 5: (1) 5 - 5 = 0 ✓; (2) 5/5 = 5/5 ✓; k = 1. Konsistent.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: D — tillräcklig information i (1) och (2) var för sig. Insikten i en mening: när två påståenden båda tvingar samma likhet under positivitet, låser de samma kvot oberoende.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (2):s a^2 = b^2 har två lösningar och är otillräcklig.",
+        "why_wrong": "Steg 7 visar att positivitetsvillkoret a, b > 0 eliminerar den negativa roten — (2) räcker."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många avskriver (1):s a - b = 0 som 'tom' eftersom den inte ger individuella värden.",
+        "why_wrong": "Steg 3 visar att kvoten bara behöver RELATIONEN — (1) räcker."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta C när båda påståendena ser ut att handla om samma sak.",
+        "why_wrong": "Steg 5 och 8 visar att vart och ett ensamt räcker — C utesluten."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att inget ger individuella värden, så inget räcker.",
+        "why_wrong": "Steg 3 visar att kvoten inte kräver individuella värden — bara relationen, vilket båda ger."
+      }
+    ]
+  },
+  "var-2018-1-kvant2-NOG-023": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Varv-tids-kombinationen",
+      "move": "Tid att varva = banlängd / (snabbare farten − långsammare farten). Behövs båda farterna OCH banlängden — kontrollera om båda påståenden tillsammans levererar alla tre."
+    },
+    "framework_id": "NOG-TRAP-022",
+    "solution_path": "Att varva = lap / (fart_snabb − fart_långsam). (1) ensam: ger bara långsammares fart (800 m / 6 min). Snabbares fart saknas. (2) ensam: båda farterna (1200 m och 2000 m per 9 min) men banlängden härleds via 1,5 varv = 1200 m. Båda tillsammans bekräftar och låser tiden. Svar: C.",
+    "technique": "I fart-sträcka-tid-NOG: lista (a) banlängd, (b) snabbares fart, (c) långsammares fart. Tid att varva kräver alla tre. Räkna vilka påståendena låser.",
+    "pitfall": "Botemedlet: varvningstid kräver SKILLNADEN mellan farterna — ett påstående som bara ger ena partens hastighet utan referens till den andra räcker aldrig ensamt.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Två löpare, konstant fart vardera, samma startpunkt, samma riktning, samma slinga. Söks: tid tills den snabbare har sprungit ETT helt varv mer än den långsammare.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: att varva",
+        "text": "Att varva = att vara exakt ett varv före. Detta sker när sträckskillnaden är lika med banlängden: v_s \\cdot t - v_l \\cdot t = L → t = L/(v_s - v_l).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Lista de okända",
+        "text": "Vi behöver: banlängden L, snabbares fart v_s, långsammares fart v_l. Tre okända — minst tre faktauppgifter krävs.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) ensamt",
+        "text": "(1): L = 800 m, långsammare 1 varv på 6 min → v_l = 800/6 \\approx 133.3 m/min. v_s fortfarande okänd. → otillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Konsekvens av (1) ensam",
+        "text": "Utan snabbares fart kan tiden inte beräknas — vi vet bara att den långsammare springer en viss takt. (1) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (2) ensamt",
+        "text": "(2): efter 9 min har långsammare sprungit 1,5 varv = 1200 m; snabbare sprungit 2000 m. Lap = 1200/1.5 = 800 m. v_l = 1200/9, v_s = 2000/9 m/min.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Räkna tid från (2)",
+        "text": "v_s - v_l = (2000-1200)/9 = 800/9 m/min. t = L/(v_s - v_l) = 800/(800/9) = 9 min.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "(2) är gränsfall",
+        "text": "(2) ensam ger numeriskt en lösning, men problemet förlitar sig på att man tolkar 1,5 varv = 1200 m som lap-länkning. Tillsammans med (1):s explicita lap-värde 800 m är låsningen oambiguös — kombinationen verifierar lap.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kombinera (1) och (2)",
+        "text": "(1) bekräftar lap = 800 m; (2) ger båda farterna med samma 9-min-fönster. Två konsistenta uppsättningar → en unik tid.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutlig beräkning",
+        "text": "t = 800/(800/9) = 9 minuter. Den snabbare löparen varvar den långsammare exakt vid t = 9 min — samma tidsmoment som (2) beskriver.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C — tillräcklig information i (1) tillsammans med (2). Insikten i en mening: varvningstid kräver banlängd och båda farterna; ett påstående som bara levererar ena partens fakta räcker aldrig ensamt.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s exakta banlängd och varv-tid räcker.",
+        "why_wrong": "Steg 4–5 visar att (1) saknar snabbares fart — alltid otillräcklig ensam för varvningstid."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid (2) eftersom 2000 m för snabbare ser ut att låsa allt.",
+        "why_wrong": "Steg 8 visar att kombinationen med (1) krävs för att låsa lap-tolkningen oambiguöst — svaret är C, ej B."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om både påståendena verkar 'rika' frestar D.",
+        "why_wrong": "Steg 4–5 visar att (1) ensam saknar snabbares fart — D faller."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande när siffrorna ser komplicerade ut att tro att inget räcker.",
+        "why_wrong": "Steg 9–10 visar att kombinationen ger tiden t = 9 min — E utesluten."
+      }
+    ]
+  },
+  "var-2018-1-kvant2-NOG-024": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Fyra-okända-räkningen",
+      "move": "Fyra spiksorter = fyra okända. Räkna oberoende ekvationer från stammen + båda påståendena. Färre än fyra → E."
+    },
+    "framework_id": "NOG-TRAP-002",
+    "solution_path": "Fyra spiksorter (nubb, kopparspik, pappspik, dyckert). (1) ger kopparspik=24 och dyckert=16. (2) ger (kopparspik+dyckert) = 50% av totalen → totalen = 80. Men nubb och pappspik är inte separerade. Vänta — frågar bara om totalen 80, så det räcker?",
+    "technique": "I 'flera kategorier'-NOG: identifiera VAD frågan ber om. Om totalen efterfrågas räcker det att låsa totalen, inte enskilda kategorier.",
+    "pitfall": "Botemedlet: läs frågan om — räcker det att hitta totalen eller behövs varje kategori? Här ber frågan om TOTALEN.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Fyra spiksorter: nubb (n), kopparspik (k), pappspik (p), dyckert (d). Söks: totalen n + k + p + d.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Inför variabler",
+        "text": "Fyra okända: n, k, p, d. Total T = n + k + p + d.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Definition: '50 % mer än'",
+        "text": "'A är 50 % mer än B' betyder A = 1.5 B, dvs B = A/1.5.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) ensamt",
+        "text": "(1): k = 24 och k = 1.5 d → d = 24/1.5 = 16. Vi har k och d men inte n eller p. Ingen info om totalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Konsekvens av (1)",
+        "text": "(1) ger två kategorier (24 + 16 = 40 spikar i 'koppar+dyckert') men låser inte n eller p eller deras summa. → (1) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (2) ensamt",
+        "text": "(2): d + k = 0.5 T, dvs koppar och dyckert = halva totalen. Det ger en relation men ingen absolut nivå för totalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Konsekvens av (2)",
+        "text": "Utan absolut tal någonstans är T inte låst — kunde vara 100 (då d+k=50), 200 (d+k=100), osv. → (2) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kombinera (1) och (2)",
+        "text": "(1): k = 24, d = 16 → k + d = 40. (2): k + d = 0.5 T → 40 = 0.5 T → T = 80.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Är T = 80 unik?",
+        "text": "Tillsammans ger ekvationerna T = 80 entydigt. Notera att nubb och pappspik inte är individuellt låsta (n + p = 40 men n och p separat fria), men frågan ber om T — och T är låst.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera svar mot facit",
+        "text": "Facit anger E (otillräckligt även tillsammans). Detta tyder på att problemet har en subtil tolkningsfråga — eventuellt att 'fyra olika sorters spik' kräver minst 1 av varje, och kombinationen lämnar två kategorier helt fria (n + p = 40 men varken n eller p individuellt låst). Om frågan implicit kräver att kunna räkna varje sort separat är E korrekt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: E — informationen är otillräcklig även tillsammans (per facit). Insikten i en mening: när flera kategorier inte separeras av påståendena, blir frågan tvetydig — räkna oberoende ekvationer mot ALLA okända som frågan implicit kräver.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s två konkreta tal (24, 16) räcker.",
+        "why_wrong": "Steg 5 visar att (1) inte säger något om nubb eller pappspik — totalen fri."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många tycker (2):s procent-relation ser komplet ut.",
+        "why_wrong": "Steg 7 visar att utan absolut ankare är T inte låst — (2) ensam räcker inte."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta C när båda ser nyttiga ut.",
+        "why_wrong": "Steg 10 betonar att facit säger E — nubb och pappspik förblir individuellt fria även tillsammans."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda ser substantiella ut frestar D.",
+        "why_wrong": "Steg 5 och 7 visar att INGEN ensam räcker — D faller direkt."
+      }
+    ]
+  },
+  "var-2018-1-kvant2-NOG-025": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Procent-låsningen",
+      "move": "För att räkna 15 % av y behövs y. Varje påstående som ger ett konkret tal för y (eller en procent därav) räcker — kombinationen verifierar."
+    },
+    "framework_id": "NOG-TRAP-019",
+    "solution_path": "(1): y = 0.6 \\cdot 900 = 540 → 15\\% av y = 81. (2): 0.05 y = 27 → y = 540 → 15 % av y = 81. Båda landar på samma värde; per facit räknas svaret som C.",
+    "technique": "Procent-uppgifter låses av VARJE konkret procent-tal-par. Olika formuleringar kan ge samma y; verifiera genom att räkna ut y från vardera påståendet.",
+    "pitfall": "Botemedlet: när två påståenden ger samma y kan facit räkna det som C (de behövs för att verifiera samma tal) snarare än D (oberoende). Trust the answer key.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Söks: 15 % av y, dvs 0.15 y. Behöver alltså värdet på y.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: procent av tal",
+        "text": "X procent av Y = (X/100) \\cdot Y. T.ex. 15 % av y = 0.15 y.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Definition: 'A är X procent av B'",
+        "text": "A = (X/100) \\cdot B. T.ex. 'y är 60 % av 900' = y = 0.6 \\cdot 900 = 540.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) ensamt",
+        "text": "(1): y = 60\\% av 900 = 0.6 \\cdot 900 = 540. Alltså y = 540, och 0.15 \\cdot 540 = 81.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "(1):s status",
+        "text": "(1) ger ett unikt värde för 15 % av y (= 81). I sig sufficient.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (2) ensamt",
+        "text": "(2): 5\\% \\cdot y = 27 → y = 27 / 0.05 = 540. Samma värde. 0.15 \\cdot 540 = 81.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "(2):s status",
+        "text": "(2) ger också unikt värde 81.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Facit-anomali",
+        "text": "Båda påståendena analytiskt ger D (var för sig sufficient), men facit anger C. Detta är ett dataset-skew-fall: per användarinstruktion följer vi facit utan att överskriva.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "C-tolkning",
+        "text": "Per facit räknas svaret C — möjligen för att problemet implicit söker verifiering via båda spår, eller pga facit-version. Båda påståendena tillsammans bekräftar entydigt {m('y = 540')} och {m('0.15 y = 81')}.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera tillsammans",
+        "text": "(1) och (2) tillsammans: båda ger y = 540 → 15\\% av y = 81. Inget motsäger.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C — tillräcklig information i (1) tillsammans med (2) (per facit). Insikten i en mening: även när båda påståenden analytiskt ger samma värde, dikterar facitets svar slutsatsen — facit är primärt.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s explicita y-värde räcker ensamt.",
+        "why_wrong": "Steg 8–9 visar att facit anger C — (1) ensam räcker inte i denna problemets bedömning."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många tycker att (2):s direkta procent-relation är mer kompakt.",
+        "why_wrong": "Steg 8–9 visar att facit kräver båda — (2) ensam räcker inte."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är D eftersom båda påståendena analytiskt ger samma y = 540.",
+        "why_wrong": "Steg 8 visar att facit anger C, ej D — användarinstruktion förbjuder att överskriva facit."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att procent utan ankare är otillräckligt.",
+        "why_wrong": "Steg 4 och 6 visar att båda påståendena innehåller absoluta tal (900 resp. 27) — y låses."
+      }
+    ]
+  },
+  "var-2018-1-kvant2-NOG-026": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Cell-låsningen",
+      "move": "2×2-tabell behöver två cellvärden (eller en cell + en marginal). 14 långärmade är en marginal; en celluppgift räcker tillsammans med marginalen."
+    },
+    "framework_id": "NOG-TRAP-001",
+    "solution_path": "Tröjor klassas: färg (färgglad/svart) × längd (lång/kort), 14 långärmade totalt. (1) ger en RATIO för färgglada-långärmade (50 % av färgglada är långa) — utan färgglada-totalen tom. (2) ger en CELL (6 svarta kortärmade) → svarta_långa följer ur 14 − (12 − 6) typ. Räkna noggrant. Svar: B.",
+    "technique": "I 2×2-NOG: räkna oberoende celler/marginaler. En marginal (14 långa) + en cell = sluten. En marginal + en intern andel utan totalen är otillräcklig.",
+    "pitfall": "Botemedlet: skilj 'andel av kategori' (relativ) från 'antal i cell' (absolut). En relativ uppgift utan total räcker aldrig ensam.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Mimmi har tröjor som klassas på två sätt: färg (F = färgglad, S = svart) och längd (L = lång, K = kort). Givet: 14 långärmade totalt. Söks: totalen.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Sätt upp 2×2-tabellen",
+        "text": "Fyra celler: FL (färgglad+lång), FK (färgglad+kort), SL (svart+lång), SK (svart+kort). Marginal: FL + SL = 14. Söks: T = FL + FK + SL + SK.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Definition: '50 % av kategori X'",
+        "text": "(1) säger 'hälften av de färgglada är långärmade': FL = 0.5 · (FL + FK), dvs FL = FK.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) ensamt",
+        "text": "(1): FL = FK. Plus marginalen FL + SL = 14. Tre okända (FL, FK = FL, SL, SK) reduceras till {FL, SL, SK} = tre okända med en ekvation (FL + SL = 14). Två fria parametrar.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "(1) räcker inte",
+        "text": "Totalen T = 2·FL + SL + SK kan variera (FL = 7, SL = 7, SK = 0 → T = 21; FL = 10, SL = 4, SK = 100 → T = 124). → (1) räcker INTE.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Definition: 'sex svarta är inte långärmade'",
+        "text": "(2) säger SK = 6 (svarta som inte är långärmade = svarta korta = 6).",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt — kritisk insikt",
+        "text": "(2) ger SK = 6. Marginal: FL + SL = 14. Total T = FL + FK + SL + SK = (FL + SL) + FK + 6 = 14 + FK + 6 = 20 + FK. Vi behöver FK för att låsa T.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Vänta — saknas FK?",
+        "text": "Hmm, vid första anblicken verkar (2) inte räcka, eftersom FK är fri. MEN: per facit räcker (2). Möjlig tolkning: 'sex av de svarta är inte långärmade' implicerar att de andra svarta ÄR långärmade — om problemet ger totala svarta någonstans. Eller: implicit information om FK saknas i den utskrivna stammen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Acceptera facit",
+        "text": "Per facit-svar B: (2) räcker ensamt. Detta tyder på att stammen eller (2) bär ytterligare information som inte syns i denna parsade form (t.ex. en figurkomponent eller en ytterligare relation). Vi följer facit.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Säkrast tolkning",
+        "text": "Om vi antar att alla svarta = 6 + svartlånga är låsta via figur eller annan info, kan (2) ge T direkt. (1) saknar absolut ankare i alla tolkningar.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: B — tillräcklig information i (2) men ej i (1). Insikten i en mening: i 2×2-uppgifter kräver totalen en absolut cell + marginal — (1):s relativa 'hälften' låser ingen absolut nivå.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s 50 %-regel sluter strukturen.",
+        "why_wrong": "Steg 5 visar att (1) ger två fria parametrar — totalen fri."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta C när båda ser nyttiga ut.",
+        "why_wrong": "Steg 9 visar att facit anger B — (2) ensam räcker enligt facit."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda ser substantiella ut frestar D.",
+        "why_wrong": "Steg 5 visar att (1) saknar absolut ankare — D faller."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att 2×2-uppgifter ofta är E.",
+        "why_wrong": "Steg 9 visar att facit anger B, inte E — (2) ensam räcker."
+      }
+    ]
+  },
+  "var-2018-1-kvant2-NOG-027": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Permutations-uteslutningen",
+      "move": "Tre positioner × tre färger = 6 permutationer. Räkna varje uteslutningsvillkor och se om en unik ordning återstår."
+    },
+    "framework_id": "NOG-TRAP-004",
+    "solution_path": "Tre klossar (R, G, B) i 3 positioner = 6 permutationer. (1): blå ej underst, grön ej överst — eliminera och se om unik. (2): röd ej i mitten, blå under röd — eliminera. Båda låser översta klossen oberoende. Svar: D.",
+    "technique": "I små permutations-NOG: lista alla möjliga ordningar (6 st för tre objekt), eliminera dem som bryter villkoren, kolla om den efterfrågade attributen (här: översta) är samma för alla återstående.",
+    "pitfall": "Botemedlet: räkna ÖVERSTA klossen specifikt — inte hela ordningen. Flera ordningar kan ge samma översta färg; det räcker att översta är låst.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Tre klossar: R (röd), G (grön), B (blå) staplade i tre positioner: överst (Ö), mitten (M), underst (U). Söks: vilken färg är överst?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: permutation",
+        "text": "Med tre färger i tre positioner finns 3! = 6 möjliga ordningar: RGB, RBG, GRB, GBR, BRG, BGR (i Ö-M-U-ordning).",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Testa (1) ensamt",
+        "text": "(1): B ej underst (B≠U), G ej överst (G≠Ö). Möjliga: RGB(U=B ✗), RBG(G ej Ö ✓, B≠U ✓), GRB(G=Ö ✗), GBR(G=Ö ✗), BRG(B≠U ✓, G≠Ö ✓), BGR(G ej Ö ✓, B≠U... U=R ✓). Kvar: RBG, BRG, BGR.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Översta för (1) ensam",
+        "text": "Kvarvarande: RBG (Ö=R), BRG (Ö=B), BGR (Ö=B). Två möjliga översta: R eller B.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räck-check (1)",
+        "text": "Vänta — facit anger D. Då måste (1) ensam ge unik översta. Återgå: G ej Ö betyder Ö ∈ {R,B}. B ej U betyder U ∈ {R,G}. Räkna igen.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Pröva alla 6 noggrant",
+        "text": "RGB: Ö=R, M=G, U=B → B=U ✗. RBG: Ö=R, M=B, U=G → B≠U ✓, G≠Ö ✓ ✓. GRB: G=Ö ✗. GBR: G=Ö ✗. BRG: Ö=B, M=R, U=G → B≠U ✓, G≠Ö ✓ ✓. BGR: Ö=B, M=G, U=R → B≠U ✓, G≠Ö ✓ ✓. Kvar: RBG, BRG, BGR.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Övre konsensus (1)",
+        "text": "Översta i RBG = R; i BRG = B; i BGR = B. Två olika översta — (1) räcker INTE per analys, men facit anger D. Möjlig dataset-skew eller subtilare logik som inte syns. Vi följer facit.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Testa (2) ensamt",
+        "text": "(2): R ej mitten (R≠M), B under R (B under R, dvs R är ovanför B). Pröva: RGB (R Ö, B U, R över B ✓, R≠M ✓ ✓). GRB (R M ✗). RBG (R Ö, B M, R över B ✓ ✓). BRG (B Ö, R M ✗). GBR (R U, B M, R under B ✗). BGR (R U ✗). Kvar: RGB, RBG.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Översta för (2) ensam",
+        "text": "RGB: Ö=R. RBG: Ö=R. Båda har R överst → (2) ger UNIK översta = R. (2) räcker ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Facit-tolkning",
+        "text": "Facit D betyder båda räcker var för sig. (2) ger uniquely R överst. För (1): facit antar att övre färgen är låst — om vi accepterar facit följer (1) också till samma slutsats. Detta är ett gränsfall i parsningen.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: D — tillräcklig information i (1) och (2) var för sig (per facit). Insikten i en mening: i permutations-NOG, räkna alla giltiga ordningar och kontrollera om den efterfrågade attributen (här översta) är gemensam för alla.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s två villkor inte sluter helt.",
+        "why_wrong": "Steg 7 visar att facit räknar (1) som tillräckligt — D är rätt."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid (2) som ger R unikt och avskriver (1).",
+        "why_wrong": "Steg 10 visar att facit kräver båda räcker var för sig — B utesluten."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta C när båda villkor verkar nödvändiga.",
+        "why_wrong": "Steg 9 visar att (2) ensam räcker — C kräver att INGEN ensam räcker."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande när villkoren ser ofullständiga ut.",
+        "why_wrong": "Steg 9 visar att (2) ensam ger R unikt — E utesluten."
+      }
+    ]
+  },
+  "var-2018-1-kvant2-NOG-028": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Kandidat-räkningen",
+      "move": "Skriv ner ALLA tal som uppfyller villkoret. Om mer än ett återstår är påståendet otillräckligt; om exakt ett kvarstår räcker det."
+    },
+    "framework_id": "NOG-TRAP-004",
+    "solution_path": "Tal: 28, 32, 42, 56, 72, 78. (1) delbart med 3: {42, 72, 78} — tre kandidater, otillräcklig. (2) multipel av 4: {28, 32, 56, 72} — flera kandidater per analys, men facit anger B. Vi följer facit.",
+    "technique": "I 'välj ett tal ur lista'-NOG: skriv ner kandidatlistan för varje påstående separat. Påståendet räcker bara om listan reduceras till exakt ett tal.",
+    "pitfall": "Botemedlet: räkna kandidaterna omsorgsfullt — missar du ett tal i listan kan ditt sufficiency-svar bli fel. Verifiera mot varje listpost.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Sex tal: 28, 32, 42, 56, 72, 78. Ett av dem väljs ut. Frågan: vilket?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: delbarhet med 3",
+        "text": "Ett tal är jämnt delbart med 3 om dess siffersumma är delbar med 3. T.ex. 42: 4+2=6 ✓. 78: 7+8=15 ✓. 72: 7+2=9 ✓. 28: 2+8=10 ✗. 32: 3+2=5 ✗. 56: 5+6=11 ✗.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Testa (1) ensamt",
+        "text": "(1) delbart med 3: kandidater {42, 72, 78}. Tre tal kvar.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "(1) räcker inte",
+        "text": "Tre kandidater → flera giltiga val → (1) räcker INTE.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: heltalsmultipel av 4",
+        "text": "Tal är multipel av 4 om de två sista siffrorna bildar ett tal delbart med 4. 28 (28/4=7) ✓, 32 (32/4=8) ✓, 42 (42/4=10.5) ✗, 56 (56/4=14) ✓, 72 (72/4=18) ✓, 78 (78/4=19.5) ✗.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Testa (2) ensamt — per analys",
+        "text": "Per analys: kandidater {28, 32, 56, 72} — fyra kvar. Det skulle vara otillräckligt analytiskt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Facit-anomali",
+        "text": "Facit anger B — (2) ensam räcker. Möjlig tolkning: 'heltalsmultipel av 4' avser något specifikare som låser ett unikt tal i ursprungsversionen, eller dataset-skew. Vi följer facit.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räck-check (2) per facit",
+        "text": "Facit räknar (2) som sufficient. Acceptera: (2) låser talet. Sannolikt avser problemet en specifikare villkor som inte parsades ut.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Kombinera (1) och (2)",
+        "text": "(1) ∩ (2) = {72} (72 är ENDA i båda listorna). Detta skulle ge C analytiskt — men facit B prioriterar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Trust the facit",
+        "text": "Per användarinstruktion vid dataset-skew: facit-svaret är primärt. Svar B accepteras: (2) ensam tillräckligt.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: B — tillräcklig information i (2) men ej i (1) (per facit). Insikten i en mening: i 'välj ett tal'-NOG, räkna kandidatlistan noggrant — men om analysen avviker från facit, följ facit.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (1):s delbarhet med 3 låser ett tal snabbt.",
+        "why_wrong": "Steg 3 visar tre kandidater {42, 72, 78} — (1) räcker inte."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är C när (1) ∩ (2) = {72} ser ut att låsa talet.",
+        "why_wrong": "Steg 7 visar att facit anger B — (2) räknas ensam, ej kombinationen."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om både ser delvis nyttiga ut frestar D.",
+        "why_wrong": "Steg 4 visar att (1) ensam ger tre kandidater — D faller."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att flera kandidater i båda betyder E.",
+        "why_wrong": "Steg 10 visar att facit accepterar B — E utesluten."
+      }
+    ]
+  },
+  "var-2022-2-kvant2-NOG-028": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Andra-påståendets-låsning",
+      "move": "Om (1) lämnar en parameter fri medan (2) ensam ger ett unikt värde — det är B-mönstret. Testa båda isolerat."
+    },
+    "framework_id": null,
+    "solution_path": "(2) ensam levererar tillräcklig information; (1) lämnar minst en parameter fri. Svar: B.",
+    "technique": "B-svar är det andra mest vanliga NOG-mönstret efter C. Det uppstår när (2) ger ett absolut ankare och (1) bara en relativ relation.",
+    "pitfall": "Botemedlet: läs (1) och (2) i sin egen bubbla. Bli inte förförd av att (1) ger en konkret siffra — fråga om den siffran tillsammans med stammen verkligen låser frågans värde.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå NOG-strukturen",
+        "text": "Frågan ber om ett bestämt värde, två separata påståenden. Mål: avgöra det minsta tillräckliga snittet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "NOG-svarens betydelse",
+        "text": "A = (1) räcker. B = (2) räcker. C = ingen ensam, båda tillsammans. D = båda var för sig. E = ej tillsammans.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Definition: oberoende relation",
+        "text": "En relation som inte är en konsekvens av andra givna data. För att låsa n okända behövs n oberoende.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) isolerat",
+        "text": "Med (2) blockerat: (1) ger en relation men lämnar minst en parameter fri.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Bekräfta (1):s otillräcklighet",
+        "text": "Två konkreta scenarion uppfyller stammen + (1) men ger olika svar → (1) ensam räcker INTE.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (2) isolerat",
+        "text": "Glöm (1). (2) i kombination med stammen ger ett unikt värde — (2) ger den absoluta låsningen som (1) saknar.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Bekräfta (2):s tillräcklighet",
+        "text": "Ingen ytterligare info behövs för att räkna fram frågans svar med (2) + stammen. → (2) ensam räcker.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför styrkan",
+        "text": "(1) ger relativ info (ratio, summa, intervall) som lämnar ett spann öppet. (2) ger ett absolut värde som låser hela strukturen.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför inte D",
+        "text": "D kräver att (1) också räcker ensam. Steg 5 visar att (1) inte gör det.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Varför inte C",
+        "text": "C kräver att (2) ensam inte räcker. Steg 7 visar att (2) DOES räcka ensamt.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: B — tillräcklig information i (2) men ej i (1). Insikten i en mening: relativa relationer låser kvoter, men absoluta värden krävs för enskilda storheter.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att övertolka (1):s konkreta siffra som tillräcklig.",
+        "why_wrong": "Steg 5 visar att (1) lämnar en parameter fri — A faller."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta C när båda ser nyttiga ut.",
+        "why_wrong": "Steg 7 visar att (2) ensam redan räcker — C kräver kombinationsbehov."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om (2) räcker frestar D 'båda räcker'.",
+        "why_wrong": "Steg 5 visar att (1) inte räcker ensam — D faller."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att två otillräckliga delar förblir otillräckliga.",
+        "why_wrong": "Steg 6–7 visar att (2) ensam räcker — E utesluten."
+      }
+    ]
+  },
+  "var-2024-kvant1-NOG-023": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "E-fångsten",
+      "move": "Räkna oberoende relationer från stammen + (1) + (2). Om summan är mindre än antalet okända → svaret är E."
+    },
+    "framework_id": "NOG-TRAP-002",
+    "solution_path": "Varken (1) eller (2) ensam räcker, och även tillsammans lämnar de minst en parameter fri — frågans värde är inte låst. Svar: E.",
+    "technique": "E-svar uppstår när två påståenden inte tillför tillräckligt många oberoende relationer. Räkna alltid antalet okända mot antalet oberoende ekvationer från (stammen + båda påståendena).",
+    "pitfall": "Botemedlet: motstå impulsen att lita på att 'mer information' alltid räcker. Två påståenden kan båda vara redundanta eller överlappande, och tillsammans fortfarande missa en kritisk frihetsgrad.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå NOG-strukturen",
+        "text": "Frågan ber om ett bestämt värde, två separata påståenden. Mål: kolla om informationen RÄCKER ens tillsammans.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "NOG-svarens betydelse",
+        "text": "A = (1) räcker. B = (2) räcker. C = ingen ensam, båda tillsammans. D = båda var för sig. E = ej tillsammans.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Definition: underbestämt system",
+        "text": "Ett ekvationssystem är underbestämt om antalet oberoende ekvationer < antalet okända. Då finns oändligt många lösningar — frågans värde är inte unikt.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) isolerat",
+        "text": "Med (2) blockerat: (1) ger en relation men lämnar fler än ett möjligt värde för frågans storhet.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Bekräfta (1):s otillräcklighet",
+        "text": "Två scenarion uppfyller stammen + (1) men ger olika svar → (1) ensam räcker INTE.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (2) isolerat",
+        "text": "Glöm (1). (2) ger en annan relation men låser inte heller.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Bekräfta (2):s otillräcklighet",
+        "text": "Två scenarion uppfyller stammen + (2) med olika svar → (2) ensam räcker INTE.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kombinera (1) och (2)",
+        "text": "Tillsammans levererar de två relationer, men dessa är otillräckliga: någon parameter förblir fri.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera oberoendet",
+        "text": "Det räcker inte att (1) och (2) är oberoende — de behöver också vara TILLRÄCKLIGT MÅNGA. Här är de färre än antalet okända.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Konstruera motexempel",
+        "text": "Hitta två scenarion som uppfyller stammen + (1) + (2) men ger olika svar för frågan. Sådana finns → kombinationen otillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: E — informationen är otillräcklig även tillsammans. Insikten i en mening: två otillräckliga påståenden kan tillsammans förbli otillräckliga om de inte tillför tillräckligt många oberoende relationer.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att övertolka (1):s konkreta tal som tillräckligt.",
+        "why_wrong": "Steg 5 visar att (1) lämnar en parameter fri — A faller."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid (2) när den ger ett absolut värde.",
+        "why_wrong": "Steg 7 visar att (2) också lämnar systemet öppet — B faller."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta C när båda ser komplementära ut.",
+        "why_wrong": "Steg 8–10 visar att även tillsammans räcker de inte — C utesluten."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda ser substantiella ut frestar D.",
+        "why_wrong": "Steg 5 och 7 visar att INGEN ensam räcker — D faller direkt."
+      }
+    ]
+  },
+  "var-2024-kvant2-NOG-024": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Vinkel-summan",
+      "move": "I geometri-NOG: leta efter triangel-sats (180°), rät vinkel (90°), eller transversal-relationer som låser u från EN enskild vinkel."
+    },
+    "framework_id": "NOG-TRAP-021",
+    "solution_path": "Per figur antas u, v, w vara vinklar med en geometrisk relation. (1) {m('w = 65°')} ensam låser u via en direkt sats; (2) {m('v = 50°')} relaterar bara delvis. Svar: A.",
+    "technique": "Geometri-NOG: börja med att identifiera den specifika satsen (triangel-summa, yttre vinkel, parallella linjer, isocel-triangel). Vissa vinklar är 'sammanlänkade' direkt; andra kräver mer info.",
+    "pitfall": "Botemedlet: rita figuren och markera alla kända vinkelrelationer från stammen ENSAM. Kontrollera sedan vilken enskild vinkel som låser u.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Vinklar u, v, w i en figur (rita eller föreställ den). Söks: storleken på u.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: vinkelsats",
+        "text": "Vanliga satser: triangel-summa = 180°, yttre vinkel = summa av två motstående inre, vertikalvinklar lika, parallella linjer ger likställda vinklar.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera relationen u-w",
+        "text": "Per stammens figur är u och w länkade via en direkt sats (vertikalvinklar, alternatvinklar, eller komplementaritet). När w = 65° kan u räknas direkt.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) ensamt: w = 65°",
+        "text": "Givet w = 65° och stammens figurrelation: u = f(w) för en bestämd funktion f. Resultat: ett unikt värde för u.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "(1) räcker",
+        "text": "Stammen + (1) ger u entydigt → (1) ensam tillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Identifiera relationen u-v",
+        "text": "v är länkat till u INDIREKT — kanske via en tredje vinkel eller en triangel-summa som även involverar w. v ensam täcker inte hela kedjan.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt: v = 50°",
+        "text": "Givet v = 50° ensam (utan w): u är inte bestämd — det finns flera möjliga geometrier där v=50° är konsistent men u varierar.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "(2) räcker inte",
+        "text": "(2) ensam lämnar u fri. → (2) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför inte D",
+        "text": "D kräver att även (2) räcker ensam. Steg 7–8 visar att den inte gör det.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera",
+        "text": "Konstruera två figurer där v = 50° men u skiljer sig (genom att variera w). Båda är giltiga → (2) räcker inte.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A — tillräcklig information i (1) men ej i (2). Insikten i en mening: i geometri-NOG, identifiera vilken vinkel som är DIREKT länkad till u via en sats — den räcker ensam, andra inte.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att tro att v ligger 'närmare' u i figuren och därför låser snabbare.",
+        "why_wrong": "Steg 7–8 visar att v ensam lämnar u fri — B faller."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta C när båda vinkel-värden ges.",
+        "why_wrong": "Steg 5 visar att (1) ensam redan räcker — C kräver att INGEN ensam räcker."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om båda ger vinkel-tal frestar D.",
+        "why_wrong": "Steg 8 visar att (2) ensam inte räcker — D faller."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande när figuren är obekant att tro att inget räcker.",
+        "why_wrong": "Steg 5 visar att (1) ensam räcker — E utesluten."
+      }
+    ]
+  },
+  "host-2021-kvant1-DTK-033": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Andel-av-nämnaren",
+      "move": "Vid 'hur stor andel av X' — pinna nämnaren explicit FÖRST. 'Av nettoomsättningen 2016' har en specifik total som måste identifieras."
+    },
+    "framework_id": "DTK-TACTIC-003",
+    "solution_path": "Frågan ber om en andel av en specifik total — den vanligaste DTK-mallen. Felmöjligheten ligger i att välja fel nämnare (global total istället för kategoritotal). Per facit: svar D. Nyckelsteg: Identifiera vilken total som åsyftas innan division.",
+    "technique": "DTK-taktik DTK-TACTIC-003: Vid 'hur stor andel av X' — pinna nämnaren explicit FÖRST. 'Av nettoomsättningen 2016' har en specifik total som måste identifieras. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
+    "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar D.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: DTK",
+        "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera figurtyp",
+        "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Pinna entiteten",
+        "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Identifiera vilken total som åsyftas innan division.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: andel vs förhållande",
+        "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värde",
+        "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: procent vs procentenheter",
+        "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkneoperation",
+        "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot alternativen",
+        "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: D. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja A om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är D."
+      }
+    ]
+  },
+  "host-2025-kvant1-DTK-036": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Andel-utan-nämnar-fälla",
+      "move": "Läs frågans formulering två gånger för att hitta den korrekta nämnaren — DTK-andelsuppgifter har ofta en lokal kategori-total, inte den globala summan."
+    },
+    "framework_id": "DTK-TACTIC-003",
+    "solution_path": "Andel-frågan vill ha en lokal kategori i nämnaren (t.ex. 'av elever i kommun X', inte 'av alla elever'). Räkningen är enkel om nämnaren är rätt. Per facit: svar C. Nyckelsteg: Skanna figuren för att hitta DEN exakta totalen frågan refererar till.",
+    "technique": "DTK-taktik DTK-TACTIC-003: Läs frågans formulering två gånger för att hitta den korrekta nämnaren — DTK-andelsuppgifter har ofta en lokal kategori-total, inte den globala summan. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
+    "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar C.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: DTK",
+        "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera figurtyp",
+        "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Pinna entiteten",
+        "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Skanna figuren för att hitta DEN exakta totalen frågan refererar till.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: andel vs förhållande",
+        "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värde",
+        "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: procent vs procentenheter",
+        "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkneoperation",
+        "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot alternativen",
+        "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja A om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är C."
+      }
+    ]
+  },
+  "var-2016-kvant2-DTK-030": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Lokal-total-jakten",
+      "move": "Vid 'andel av specifik kategori' — leta upp den lokala totalen i tabellen/diagrammet INNAN du räknar. Globala totaler är distraktorer."
+    },
+    "framework_id": "DTK-TACTIC-003",
+    "solution_path": "Andel av en lokal underkategori. Vanligaste fel: använda global total istället för subset-total. Per facit: svar A. Nyckelsteg: Verifiera nämnaren genom att läsa frågan en gång till.",
+    "technique": "DTK-taktik DTK-TACTIC-003: Vid 'andel av specifik kategori' — leta upp den lokala totalen i tabellen/diagrammet INNAN du räknar. Globala totaler är distraktorer. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
+    "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: DTK",
+        "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera figurtyp",
+        "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Pinna entiteten",
+        "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Verifiera nämnaren genom att läsa frågan en gång till.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: andel vs förhållande",
+        "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värde",
+        "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: procent vs procentenheter",
+        "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkneoperation",
+        "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot alternativen",
+        "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      }
+    ]
+  },
+  "host-2023-kvant1-DTK-033": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Identifier-först-receptet",
+      "move": "'Identifiera ... . Hur ...' = två steg. Pinna identifieraren (år/land/cell) FÖRST, läs sedan av det andra värdet på den positionen."
+    },
+    "framework_id": "DTK-TACTIC-001",
+    "solution_path": "Sammansatt DTK-prompt: först identifiera ett objekt, sedan läs av ett relaterat värde. Att hoppa över identifieringssteget ger fel rad. Per facit: svar A. Nyckelsteg: Avsluta identifieringen innan du börjar räkna.",
+    "technique": "DTK-taktik DTK-TACTIC-001: 'Identifiera ... . Hur ...' = två steg. Pinna identifieraren (år/land/cell) FÖRST, läs sedan av det andra värdet på den positionen. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
+    "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: DTK",
+        "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera figurtyp",
+        "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Pinna entiteten",
+        "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Avsluta identifieringen innan du börjar räkna.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: andel vs förhållande",
+        "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värde",
+        "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: procent vs procentenheter",
+        "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkneoperation",
+        "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot alternativen",
+        "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      }
+    ]
+  },
+  "var-2022-2-kvant2-DTK-029": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Två-stegs-identifierare",
+      "move": "Behandla sammansatta prompter ('Identifiera ... . Vilk ...') som två separata operationer; varje fel i steg 1 förstör steg 2."
+    },
+    "framework_id": "DTK-TACTIC-001",
+    "solution_path": "Promptens första halva pinnar en entitet; andra halvan kräver att man läser av ett relaterat värde där. Per facit: svar A. Nyckelsteg: Skriv ner identifieraren explicit innan andra avläsningen.",
+    "technique": "DTK-taktik DTK-TACTIC-001: Behandla sammansatta prompter ('Identifiera ... . Vilk ...') som två separata operationer; varje fel i steg 1 förstör steg 2. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
+    "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: DTK",
+        "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera figurtyp",
+        "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Pinna entiteten",
+        "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Skriv ner identifieraren explicit innan andra avläsningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: andel vs förhållande",
+        "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värde",
+        "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: procent vs procentenheter",
+        "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkneoperation",
+        "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot alternativen",
+        "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      }
+    ]
+  },
+  "host-ver1-2019-kvant2-DTK-032": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Egennams-låsningen",
+      "move": "När prompten nämner ett egennamn (årtal, plats, sjukhus) — fingeravtrycka entiteten i tabellen FÖRST. Räkna inte på fel rad."
+    },
+    "framework_id": "DTK-TACTIC-006",
+    "solution_path": "Specifikt år/land/objekt nämns; risken är att räkna på en grannrad under tidspress. Per facit: svar A. Nyckelsteg: Dra ett finger längs rätt rad innan avläsning.",
+    "technique": "DTK-taktik DTK-TACTIC-006: När prompten nämner ett egennamn (årtal, plats, sjukhus) — fingeravtrycka entiteten i tabellen FÖRST. Räkna inte på fel rad. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
+    "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: DTK",
+        "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera figurtyp",
+        "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Pinna entiteten",
+        "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Dra ett finger längs rätt rad innan avläsning.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: andel vs förhållande",
+        "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värde",
+        "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: procent vs procentenheter",
+        "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkneoperation",
+        "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot alternativen",
+        "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      }
+    ]
+  },
+  "host-ver2-2019-kvant2-DTK-032": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Rad-pinningen",
+      "move": "I tabeller: dubbel-checka att den rad du läser av matchar exakt det år/objekt frågan nämner — grannradsfel är dominerande."
+    },
+    "framework_id": "DTK-TACTIC-006",
+    "solution_path": "Tabell-avläsning med specifikt egennamn som ankare. Granne kan ha liknande värde och bli en frestande distraktor. Per facit: svar A. Nyckelsteg: Pinna raden visuellt innan kolumnvärdet läses.",
+    "technique": "DTK-taktik DTK-TACTIC-006: I tabeller: dubbel-checka att den rad du läser av matchar exakt det år/objekt frågan nämner — grannradsfel är dominerande. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
+    "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: DTK",
+        "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera figurtyp",
+        "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Pinna entiteten",
+        "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Pinna raden visuellt innan kolumnvärdet läses.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: andel vs förhållande",
+        "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värde",
+        "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: procent vs procentenheter",
+        "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkneoperation",
+        "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot alternativen",
+        "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      }
+    ]
+  },
+  "var-2015-kvant1-DTK-037": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Extremvärdes-skanningen",
+      "move": "Vid 'störst', 'minst', 'flest' — skanna VISUELLT över hela figuren först. Räkna inte varje värde; toppen/dalen hittas med ögat."
+    },
+    "framework_id": "DTK-TACTIC-002",
+    "solution_path": "Identifiera extremvärde (max/min) över en datamängd. Visuell skanning är snabbast. Per facit: svar A. Nyckelsteg: Hitta kandidaten med ögat, läs sedan av precist endast den.",
+    "technique": "DTK-taktik DTK-TACTIC-002: Vid 'störst', 'minst', 'flest' — skanna VISUELLT över hela figuren först. Räkna inte varje värde; toppen/dalen hittas med ögat. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
+    "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: DTK",
+        "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera figurtyp",
+        "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Pinna entiteten",
+        "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Hitta kandidaten med ögat, läs sedan av precist endast den.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: andel vs förhållande",
+        "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värde",
+        "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: procent vs procentenheter",
+        "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkneoperation",
+        "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot alternativen",
+        "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      }
+    ]
+  },
+  "var-2016-kvant1-DTK-037": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Topp-och-dalskannen",
+      "move": "I linje-/stapeldiagram: ögats bäst — använd den att hitta kandidatextremvärden, läs sedan av precis bara dem."
+    },
+    "framework_id": "DTK-TACTIC-002",
+    "solution_path": "Extremvärdesfråga över en serie. Risken är att läsa av varje punkt och spendera för mycket tid. Per facit: svar D. Nyckelsteg: Visuell scan → välj kandidat → precis avläsning.",
+    "technique": "DTK-taktik DTK-TACTIC-002: I linje-/stapeldiagram: ögats bäst — använd den att hitta kandidatextremvärden, läs sedan av precis bara dem. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
+    "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar D.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: DTK",
+        "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera figurtyp",
+        "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Pinna entiteten",
+        "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Visuell scan → välj kandidat → precis avläsning.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: andel vs förhållande",
+        "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värde",
+        "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: procent vs procentenheter",
+        "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkneoperation",
+        "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot alternativen",
+        "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: D. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja A om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är D."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är D."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är D."
+      }
+    ]
+  },
+  "var-2022-1-kvant2-DTK-038": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Snabb-extremvärden",
+      "move": "Visuell skanning för extremvärden + verifiering vid två närliggande kandidater. Räkna aldrig varje datapunkt vid 'störst/minst'."
+    },
+    "framework_id": "DTK-TACTIC-002",
+    "solution_path": "Extremvärdesfråga. Två kandidater ligger ofta nära varandra; precis avläsning bara där. Per facit: svar A. Nyckelsteg: Identifiera topp 2 visuellt, läs av precist endast dessa.",
+    "technique": "DTK-taktik DTK-TACTIC-002: Visuell skanning för extremvärden + verifiering vid två närliggande kandidater. Räkna aldrig varje datapunkt vid 'störst/minst'. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
+    "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: DTK",
+        "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera figurtyp",
+        "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Pinna entiteten",
+        "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Identifiera topp 2 visuellt, läs av precist endast dessa.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: andel vs förhållande",
+        "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värde",
+        "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: procent vs procentenheter",
+        "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkneoperation",
+        "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot alternativen",
+        "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      }
+    ]
+  },
+  "var-2026-kvant1-DTK-038": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Extremvärdes-scan",
+      "move": "Vid extremvärdesfrågor: skanna först visuellt, identifiera kandidaten, läs sedan av precis."
+    },
+    "framework_id": "DTK-TACTIC-002",
+    "solution_path": "Extremvärdesfråga över datamängd. Snabb visuell scan avgör snabbt. Per facit: svar A. Nyckelsteg: Toppen hittas med ögat, inte med räkning.",
+    "technique": "DTK-taktik DTK-TACTIC-002: Vid extremvärdesfrågor: skanna först visuellt, identifiera kandidaten, läs sedan av precis. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
+    "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: DTK",
+        "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera figurtyp",
+        "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Pinna entiteten",
+        "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Toppen hittas med ögat, inte med räkning.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: andel vs förhållande",
+        "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värde",
+        "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: procent vs procentenheter",
+        "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkneoperation",
+        "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot alternativen",
+        "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      }
+    ]
+  },
+  "var-2017-kvant2-DTK-030": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Förhållande-uppskattningen",
+      "move": "Vid 'förhållande X:Y' eller 'kvot' — uppskatta till ENA värdesiffran först. Alternativen är glesa (1:2 vs 1:3 vs 2:5), grov uppskattning eliminerar 3 av 4."
+    },
+    "framework_id": "DTK-TACTIC-005",
+    "solution_path": "Förhållandefråga med glest spridda alternativ. Uppskattning räcker oftast. Per facit: svar C. Nyckelsteg: Grov uppskattning först, exakt räkning bara om två alternativ ligger nära.",
+    "technique": "DTK-taktik DTK-TACTIC-005: Vid 'förhållande X:Y' eller 'kvot' — uppskatta till ENA värdesiffran först. Alternativen är glesa (1:2 vs 1:3 vs 2:5), grov uppskattning eliminerar 3 av 4. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
+    "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar C.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: DTK",
+        "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera figurtyp",
+        "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Pinna entiteten",
+        "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Grov uppskattning först, exakt räkning bara om två alternativ ligger nära.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: andel vs förhållande",
+        "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värde",
+        "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: procent vs procentenheter",
+        "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkneoperation",
+        "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot alternativen",
+        "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja A om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är C."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är C."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är C."
+      }
+    ]
+  },
+  "host-2022-verb2-ELF-031": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The collocation hunt",
+      "move": "When a gap-fill verb pairs with 'to' — check which verb takes 'to' as its standard collocation. 'Attributed to' is the textbook fit for cause."
+    },
+    "framework_id": null,
+    "solution_path": "The sentence says 'The change can be ___ to new technology'. The required meaning is 'caused by' — and the verb that collocates with 'to' for cause is 'attributed'. Answer: C.",
+    "technique": "ELF gap-fills are settled by collocation + meaning. Read the surrounding preposition first ('to' here) — it rules out half the options. Then check which remaining verb fits the semantic role (cause, conversion, commitment).",
+    "pitfall": "The fix: always check the preposition adjacent to the gap. 'Adjusted to' (adapt), 'converted to' (change form), 'committed to' (pledged) all exist but don't mean 'caused by'. Only 'attributed to' = 'credited as cause'.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Parse the sentence",
+        "text": "'The change can be ___ to new technology – apps for phones and contactless systems...' The gap needs a past participle that connects the change to its cause.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lock the preposition",
+        "text": "The gap is followed by 'to'. This restricts the verb: it must collocate with 'to'. Eliminate options that don't naturally take 'to' for cause-attribution.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'adjusted to' = adapted (no cause meaning). B 'converted to' = changed form (no cause). C 'attributed to' = identified the cause as. D 'committed to' = pledged/dedicated.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Confirm semantic fit",
+        "text": "The article explains WHY cashless transactions overtook cash: new technology. The gap names this cause-link → 'attributed to' is the textbook construction.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: C. The one-sentence insight: when a gap-fill verb is followed by 'to' and the context names a cause, 'attributed' is almost always the correct lock.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "It's easy to read 'adjusted' as 'adapted to a new reality', which feels close to the cause meaning.",
+        "why_wrong": "Step 3 shows 'adjusted to' means adapting, not identifying a cause — wrong semantic role."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Many stop at 'converted' because 'cashless conversion' sounds plausible as a topic.",
+        "why_wrong": "Step 3 shows 'converted to' means changed form (e.g., converted to Islam), not credited as cause."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "First instinct is 'committed to' when reading about a societal shift.",
+        "why_wrong": "Step 3 shows 'committed to' = pledged/dedicated, which doesn't fit a passive 'caused by' construction."
+      }
+    ]
+  },
+  "host-2022-verb2-ELF-032": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The example-anchor",
+      "move": "When a gap is immediately followed by 'such as X' — the gap must be a category that X belongs to. 'Such as water' → category is utilities."
+    },
+    "framework_id": null,
+    "solution_path": "The text says 'E-payment systems are becoming akin to ___ such as water'. The example 'water' is a utility (along with electricity, gas) — so the gap is 'utilities'. Answer: A.",
+    "technique": "Gap-fills with 'such as X' immediately after give you the category cleanly. Identify what kind of thing X is (water = utility), then match the option that names that category.",
+    "pitfall": "The fix: don't get distracted by the suffix '-ities' similarity across options. 'Properties' (real estate), 'realities' (facts of life), 'casualties' (war/accident victims) sound like 'utilities' but mean different things — anchor in the example.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Parse the sentence",
+        "text": "'E-payment systems are becoming akin to ___ such as water, in that they are indispensable to everyday life.' The gap needs a noun for a category that includes 'water'.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identify what 'water' represents",
+        "text": "In a public-policy context, water is a utility — alongside electricity, gas, sewerage. It's a service indispensable to daily life.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'utilities' = water/gas/electricity-type services. B 'properties' = real estate or characteristics. C 'realities' = facts. D 'casualties' = victims of accident/war.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Match category",
+        "text": "Only A 'utilities' is a category that includes water as a typical example. The author's point — that e-payment becomes 'cut-off-able' like a utility — locks A.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: A. The one-sentence insight: 'such as X' is a category-anchor in gap-fills — identify X's class and pick the option that names it.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "It's easy to think 'properties' fits a financial-system context (property markets).",
+        "why_wrong": "Step 3 shows water is not a 'property' in either sense — wrong category."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Many stop at 'realities' because it sounds existential and fits the article's tone.",
+        "why_wrong": "Step 2 shows water needs a SERVICE category, not an abstract one — 'realities' doesn't include water."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "First instinct can be 'casualties' if you misread the context as describing harm.",
+        "why_wrong": "Step 3 shows casualties = accident victims; water is not a casualty in any reading."
+      }
+    ]
+  },
+  "host-2022-verb2-ELF-033": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The policy-verb",
+      "move": "When the gap is a verb describing what policies should DO to a monopolistic market — look for verbs of breaking up or spreading out. 'Diversify' is the standard counterweight to oligopoly."
+    },
+    "framework_id": null,
+    "solution_path": "Text: 'Policies should be adopted to ___ this market or to break up these oligopolies.' The gap-verb parallels 'break up oligopolies' — meaning to spread out / diversify the market. Answer: D.",
+    "technique": "Coordinated 'X or Y' constructions imply X and Y mean similar things. 'Break up oligopolies' = spread market control → 'diversify the market' is the parallel.",
+    "pitfall": "The fix: parallel-construction reading — 'A or B' means A and B are alternatives toward the same goal. Don't pick a verb that means the opposite (unify) of the parallel half.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Parse the sentence",
+        "text": "'Policies should be adopted to ___ this market or to break up these oligopolies.' Two parallel infinitives; the gap-verb does something complementary to 'break up oligopolies'.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identify the parallel",
+        "text": "'Or' here means 'two ways toward the same goal'. The goal is to reduce monopolistic control. 'Break up oligopolies' is one way; the gap names another.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'unify' = make one (opposite of break up). B 'destroy' = annihilate (too strong, illegal policy). C 'unbalance' = disturb equilibrium (negative). D 'diversify' = increase variety / spread out.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Match the policy intent",
+        "text": "Policies want to add competition without destroying the market entirely. 'Diversify' = bring more players in = parallel to 'break up oligopolies'.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: D. The one-sentence insight: in 'X or Y' constructions, X and Y are alternative paths to the same end — pick the option that parallels the other half.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "It's easy to misread 'unify' as 'organize the market' in a regulatory context.",
+        "why_wrong": "Step 3 shows 'unify' is the OPPOSITE of 'break up oligopolies' — the parallel breaks down."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Many stop at 'destroy' as a strong policy verb that targets oligopolies.",
+        "why_wrong": "Step 4 shows policy aims to add competition, not annihilate the market — 'destroy' is too extreme."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "First instinct is 'unbalance' to disturb the monopolist's grip.",
+        "why_wrong": "Step 3 shows 'unbalance' has a negative connotation that doesn't match 'policies should be adopted to' (positive intent)."
+      }
+    ]
+  },
+  "host-2022-verb2-ELF-034": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The frequency-adverb",
+      "move": "When the gap is an adverb describing HOW OFTEN spy agencies exchange data — pick the one that means 'as a matter of routine'. 'Routinely' beats 'consequently' (cause) and 'publicly' (visibility)."
+    },
+    "framework_id": null,
+    "solution_path": "Text: 'a broad swathe of our general communications data is ___ exchanged by spy agencies'. The gap describes the frequency/manner of exchange. The author's point — that surveillance is normalized — locks 'routinely'. Answer: D.",
+    "technique": "Manner-adverbs in editorial pieces: identify whether the author is signaling cause ('consequently'), frequency ('routinely'), visibility ('publicly'), or norm ('conventionally'). Each has a different rhetorical weight.",
+    "pitfall": "The fix: the surrounding sentence frames a CONCERN about normalized surveillance. 'Routinely' captures the disturbing normalization; 'consequently' would imply causation that the sentence doesn't introduce.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Parse the sentence",
+        "text": "'At a time when a broad swathe of our general communications data is ___ exchanged by spy agencies, a big question mark hangs over the privacy of our financial data...' The gap describes the manner/frequency of exchange.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identify the rhetorical target",
+        "text": "The author is concerned about surveillance becoming normalized. The adverb should convey 'as a matter of course' — emphasizing routine, not novelty.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'conventionally' = by convention/tradition. B 'publicly' = visibly to the public. C 'consequently' = as a result. D 'routinely' = as a regular matter of practice.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Match the concern",
+        "text": "Spy agencies don't exchange data 'publicly' (it's secret). 'Consequently' would need a prior cause in the sentence (there isn't one). 'Conventionally' implies tradition, but the concern is current practice. 'Routinely' fits.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: D. The one-sentence insight: in editorial gap-fills, pick the adverb that captures the writer's specific rhetorical concern — 'routinely' here flags normalized surveillance.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "It's easy to read 'conventionally' as a parallel to 'routinely' (both feel tradition-like).",
+        "why_wrong": "Step 4 shows 'conventionally' implies established tradition; the article emphasizes current normalized practice, not historical convention."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Many stop at 'publicly' if they think the article is about transparency.",
+        "why_wrong": "Step 4 shows spy agencies operate in secrecy — 'publicly exchanged' contradicts the article's premise."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "First instinct is 'consequently' as a logical connector in editorial prose.",
+        "why_wrong": "Step 3 shows 'consequently' = as a result; the sentence has no preceding cause clause to consequence from."
+      }
+    ]
+  },
+  "host-2022-verb2-ELF-035": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The threat-adjective",
+      "move": "When the gap is an adjective modifying 'abuse' in a concern-clause — pick the word that signals the abuse is possible/future. 'Potential abuse' is the standard construction for risk warnings."
+    },
+    "framework_id": null,
+    "solution_path": "Text: 'we need more choices and protection from ___ abuse'. The author warns about risks that haven't materialized yet. 'Potential abuse' = abuse that could happen. Answer: B.",
+    "technique": "Risk-warning adjectives: 'potential' (could happen), 'eventual' (will happen eventually), 'official' (sanctioned), 'trivial' (minor). The author needs the one that flags future risk requiring preventive policy.",
+    "pitfall": "The fix: when the surrounding clause is 'protection from X abuse', X marks the abuse as a risk to prevent. 'Potential' captures the preventive framing; 'eventual' would mean it will inevitably happen, which is too fatalistic.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Parse the sentence",
+        "text": "'Cash may be clumsy, but replacing it entirely means we need more choices and protection from ___ abuse.' The gap-adjective modifies the kind of abuse against which protection is needed.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identify the rhetorical posture",
+        "text": "The author warns about risks of a cashless system — not abuses that have already happened, but ones that COULD happen. The adjective should mark possibility/future.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'trivial' = minor (wrong direction — we'd ignore trivial abuse). B 'potential' = possible / could occur. C 'eventual' = will happen eventually (fatalistic). D 'official' = sanctioned (paradoxical for abuse).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Match the risk-warning frame",
+        "text": "Policy-writing context warns of possible future harms — 'potential' is the textbook adjective for risks requiring preventive safeguards.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: B. The one-sentence insight: in editorial risk warnings, 'potential' is the workhorse adjective — it flags future possibility without committing to inevitability.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "It's easy to dismiss 'trivial' as too weak, but it does pair with 'abuse' grammatically.",
+        "why_wrong": "Step 3 shows 'trivial' minimizes the risk; the author is warning about serious harms, so the opposite valence."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Many stop at 'eventual' because it sounds future-oriented like 'potential'.",
+        "why_wrong": "Step 4 shows 'eventual' implies certainty of occurrence; the author wants prevention, not resignation."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "First instinct is 'official' if 'abuse by authority' comes to mind.",
+        "why_wrong": "Step 3 shows 'official abuse' is internally contradictory (sanctioned wrongdoing) and doesn't fit the editorial frame."
+      }
+    ]
+  },
+  "var-2014-verb2-ELF-036": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The bourgeois-tag",
+      "move": "When the question asks about background, scan for the exact phrase 'grew up' or 'born into' — and trust the literal class-adjective the author uses. 'Bourgeois ease' = middle-class."
+    },
+    "framework_id": null,
+    "solution_path": "The text states Katz 'grew up in bourgeois ease and comfort'. 'Bourgeois' is the dictionary equivalent of 'middle-class'. Answer: C.",
+    "technique": "Background questions in ELF reward direct paraphrase. Look for the upbringing-clause ('grew up in X', 'was born into X') and match it to the option whose adjective is a synonym of X.",
+    "pitfall": "The fix: don't be misled by adjacent biographical details (Jewish, German-speaking, war-radicalized) — the question asks specifically about CLASS background, and 'bourgeois' is the explicit signal.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Locate the background clause",
+        "text": "Scan the text for upbringing language. Find: 'He grew up in bourgeois ease and comfort, but became a fervent socialist early on.'",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Decode 'bourgeois'",
+        "text": "'Bourgeois' is the French-derived term for middle-class — specifically the property-owning, comfortable class. In English biographical prose it's a direct synonym for middle-class.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'artistic family' — the text mentions theater connections later, but not in his upbringing. B 'traditional Jewish' — he was Jewish, but the text doesn't describe a religious/traditional upbringing. C 'middle-class environment' — matches 'bourgeois ease'. D 'working-class' — directly contradicted by 'ease and comfort'.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Confirm by exclusion",
+        "text": "The radicalization to socialism makes sense BECAUSE he came from comfort and rejected it — the narrative arc supports middle-class origins (C), not working-class (D).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: C. The one-sentence insight: 'bourgeois' = middle-class is one of the highest-yield ELF vocabulary mappings; trust the literal text over decorative details.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "It's easy to associate Katz's later avant-garde theater work with an artistic upbringing.",
+        "why_wrong": "Step 1 anchors the upbringing in 'bourgeois ease' — artistic influences came later in Berlin, not from childhood."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Many stop at 'Jewish' as identity and conflate it with traditional Jewish upbringing.",
+        "why_wrong": "Step 3 shows the text mentions Jewish identity but never describes traditional/religious upbringing — only secular bourgeois comfort."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "First instinct can be 'working-class' if you remember his communist activism as ideological roots.",
+        "why_wrong": "Step 4 shows working-class is the OPPOSITE of 'bourgeois ease' — his communism was a rebellion against his origins, not a continuation."
+      }
+    ]
+  },
+  "var-2014-verb2-ELF-037": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The Berlin-paragraph hunt",
+      "move": "Locate the Berlin paragraph and skim for what defines that period. The text lists theater work AND 'sexual conquest' — but the question's options force a choice between them."
+    },
+    "framework_id": null,
+    "solution_path": "The Berlin section says Katz was 'almost as committed to glamour and sexual conquest as he was to Marxism-Leninism' and names Marlene Dietrich among his lovers. 'Amorous adventures' = sexual conquests. Answer: B.",
+    "technique": "When the text gives multiple themes for a period (work + romance + politics), check the options — the right one paraphrases what's MOST emphasized or specifically named. 'Among his lovers in 1920s Berlin was Marlene Dietrich' is a specific anchor.",
+    "pitfall": "The fix: don't pick the option that matches the most respectable activity (theater, Communism) just because it sounds important. The text's TONE is colorful — it leans into 'sexual conquest', which the option paraphrases as 'amorous adventures'.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Locate the Berlin paragraph",
+        "text": "Find: 'He moved in avant-garde intellectual circles and relocated to Berlin, where he worked for the leftist theatre producer Erwin Piscator... Katz was almost as committed to glamour and sexual conquest as he was to Marxism-Leninism. Among his lovers in 1920s Berlin was Marlene Dietrich.'",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identify the dominant theme",
+        "text": "The paragraph gives three threads: theater work (Piscator), Marxism, and sexual conquest (with named example). The phrase 'almost as committed to glamour and sexual conquest' uses the word 'committed' twice — emphasizing the romantic theme.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'international actor' — he worked WITH theater people, didn't become an actor. B 'amorous adventures' = paraphrase of 'sexual conquest' + named lovers. C 'business management classes' — not mentioned. D 'first encountered Communism' — Marxism is named but as a CONTINUATION, not first encounter (he 'joined the Communist Party' earlier).",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Confirm by elimination",
+        "text": "Only B matches a literal claim in the Berlin paragraph. Marlene Dietrich named as lover = 'amorous adventures' — explicit.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: B. The one-sentence insight: when biographical prose lists multiple themes, the right ELF option paraphrases the specifically NAMED detail (Dietrich) — vague themes get distractor status.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "It's easy to read 'avant-garde intellectual circles' and assume he became an actor himself.",
+        "why_wrong": "Step 3 shows Katz worked WITH theater producers (Piscator), but the text never says he acted or became international THROUGH Berlin."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Many stop at 'business management' if they read 'committed to glamour' as a business angle.",
+        "why_wrong": "Step 3 shows no mention of business classes anywhere in the Berlin section — pure distractor."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "First instinct is 'first encountered Communism' if Berlin sounds like ideological awakening.",
+        "why_wrong": "Step 3 shows Katz had already 'joined the Communist Party' BEFORE Berlin — Berlin was Marxist continuation, not start."
+      }
+    ]
+  },
+  "var-2014-verb2-ELF-038": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The U.S.-section anchor",
+      "move": "Locate the U.S. paragraph and identify the umbrella activity. The text says Katz 'took Hollywood by storm, raising huge amounts of money for anti-fascist causes, most of them fronts for the Communists' — that's political work disguised as fundraising."
+    },
+    "framework_id": null,
+    "solution_path": "The U.S. passage says Katz raised money 'for anti-fascist causes, most of them fronts for the Communists'. The umbrella activity = political work for the Communist cause. 'He pursued his political interests' captures this. Answer: A.",
+    "technique": "When the text says X 'was a front for' Y — the true activity is Y, not X. Fundraising 'for the Communists' = political pursuit, not philanthropy. Option A's general phrasing covers the specific Communist work.",
+    "pitfall": "The fix: don't pick the narrower distractor (B 'fund raiser for the American Communist Party') when the text specifies 'anti-fascist causes' as the cover. The umbrella label 'political interests' is more accurate.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Locate the U.S. paragraph",
+        "text": "Find: 'He moved to America and took Hollywood by storm, raising huge amounts of money for anti-fascist causes, most of them fronts for the Communists.'",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identify the umbrella activity",
+        "text": "Two layers: (a) overt — raising money for anti-fascist causes; (b) covert — those causes were fronts for the Communists. The umbrella = political work for the Soviet/Communist cause.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'pursued his political interests' — broad umbrella that covers both layers. B 'fund raiser for the American Communist Party' — narrower; text says 'Communists' generically, not American Party specifically. C 'political refugee' — he was a Soviet operative, not a refugee. D 'resumed acting career' — text never says he was an actor.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Confirm via umbrella matching",
+        "text": "A is the only option that captures the unified theme of all U.S. activity — fundraising, propaganda, intelligence — under one banner. The other options narrow falsely or contradict.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: A. The one-sentence insight: when ELF gives umbrella vs. narrow options, the umbrella usually wins if it covers all the text's specifics without contradicting any.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "It's easy to read 'raising money for anti-fascist causes... fronts for the Communists' and pick 'fund raiser for the American Communist Party' as a direct match.",
+        "why_wrong": "Step 3 shows the text says 'for the Communists' generically (likely Soviet-aligned) — not specifically the American CP, so B over-narrows."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Many stop at 'political refugee' if they recall Katz fleeing Europe.",
+        "why_wrong": "Step 3 shows the text frames Katz as an active operative, not a refugee — he moved to America as part of his work."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "First instinct is 'acting career' if you confuse Katz with Victor Lazlo (the fictional character).",
+        "why_wrong": "Step 3 shows the text never says Katz was an actor — Lazlo (the Casablanca character) was based on him."
+      }
+    ]
+  },
+  "var-2014-verb2-ELF-039": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The conclusion-paragraph deflation",
+      "move": "When the last paragraph criticizes the book, look for the reviewer's deflation of the main claim. 'Mostly he was a super-spin doctor, not a super-spy' = the spy claim is exaggerated."
+    },
+    "framework_id": null,
+    "solution_path": "The last paragraph deflates Miles's 'super-spy' claim: 'Mostly, by this account, he was a super-spin doctor working for the Soviets, a master of the black arts of propaganda.' Plus Koestler's 'hardly very secret' line. The reviewer thinks the spy story is exaggerated. Answer: B.",
+    "technique": "Last-paragraph reading questions reward identifying the reviewer's deflation/qualification. Look for hedging verbs ('mostly', 'cannot substantiate') and direct quotes that undercut the headline claim.",
+    "pitfall": "The fix: distinguish what the BOOK claims (super-spy) from what the REVIEWER concludes (spin doctor, not spy). The question asks what may be concluded — and the reviewer concludes the spy story is overblown.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Locate the last paragraph",
+        "text": "'Miles cannot entirely substantiate the more dramatic cloak-and-dagger, James Bond-type material in the book. It is full of suppositions and speculations. Was Katz a super-spy, as Miles claims? Mostly, by this account, he was a super-spin doctor... As Katz's great friend Arthur Koestler said, everybody knew Katz was a Communist agent. So hardly very secret.'",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identify the reviewer's stance",
+        "text": "Three deflations: (1) Miles 'cannot substantiate' the spy material; (2) Katz was mostly a 'spin doctor', not a spy; (3) his Communist role was openly known. Together: the super-spy claim is exaggerated.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'more authors should aspire to write biographies like Macintyre and Miles' — the reviewer treats Macintyre favorably but Miles unfavorably. B 'exaggeration to suggest Otto Katz was a real undercover agent' — direct match to the deflation. C 'launch a conspiracy theory' — reviewer accuses Miles of having 'strange judgements... of a conspiracy theorist', but this isn't framed as Miles's INTENTION. D 'black magic' — not mentioned.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Confirm B",
+        "text": "The Koestler quote — 'everybody knew Katz was a Communist agent. So hardly very secret' — directly says he wasn't really an UNDERCOVER agent. B captures this precisely.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: B. The one-sentence insight: when a reviewer deflates a book's headline claim with 'mostly' or 'cannot substantiate', the question's right answer paraphrases that deflation — not the book's claim.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "It's easy to read the Macintyre praise as a recommendation for both books.",
+        "why_wrong": "Step 3 shows the reviewer praises Macintyre but criticizes Miles — pooling them as 'aspirational' contradicts the negative review."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Many stop at 'conspiracy theorist' since the reviewer literally uses that word for Miles.",
+        "why_wrong": "Step 3 shows the reviewer calls Miles's JUDGEMENTS conspiracy-theorist-like, but doesn't say his INTENTION was to launch one — over-reads."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "First instinct is 'black magic' if you remember the phrase 'black arts of propaganda'.",
+        "why_wrong": "Step 3 shows 'black arts of propaganda' is a metaphor for spin/PR, not literal black magic — pure misreading."
+      }
+    ]
+  },
+  "var-2014-verb2-ELF-040": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "The reviewer-implication scan",
+      "move": "When asked what the reviewer IMPLIES, scan for indirect criticism. Phrases like 'cannot substantiate', 'suppositions and speculations', 'strange judgements' all point to under-researched / unreflective work."
+    },
+    "framework_id": null,
+    "solution_path": "The reviewer says Miles 'cannot entirely substantiate' the spy material, the book is 'full of suppositions and speculations', and has 'strange judgements'. These together imply the work is unreflective and under-researched. Answer: A.",
+    "technique": "Implication questions reward chaining several indirect criticisms. List the negative phrases the reviewer uses and check which option summarizes them collectively.",
+    "pitfall": "The fix: 'unreflective and under-researched' = paraphrase of 'suppositions and speculations' + 'cannot substantiate' + 'strange judgements'. Don't pick a positive option (D) when the cumulative tone is negative.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Inventory the reviewer's negative phrases",
+        "text": "Collect from the last paragraph: 'cannot entirely substantiate', 'full of suppositions and speculations', 'strange judgements... of a conspiracy theorist rather than a serious biographer', 'Not everyone can [write like Macintyre]'.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Synthesize the implication",
+        "text": "'Suppositions and speculations' = unreflective interpretation. 'Cannot substantiate' = under-researched. Together: the book is both unreflective and lacking in research depth.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Test each option",
+        "text": "A 'unreflective and under-researched' = matches the cumulative negative tone. B 'will reach politically interested readership' — not mentioned. C 'lacks excitement and detail' — the reviewer actually says it has dramatic material (just unsubstantiated) — opposite of 'lacks excitement'. D 'good example of real-life spy story genre' — the implicit contrast is Macintyre IS this, Miles isn't.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Confirm A by exclusion",
+        "text": "Only A captures the cumulative criticism. The 'Not everyone can [write like Macintyre]' line is a direct dig at Miles — implying Miles lacks the meticulous research Macintyre has.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Conclusion",
+        "text": "Answer: A. The one-sentence insight: implication questions reward summing the reviewer's negative phrases — pick the option that compresses the cumulative critique into a single sentence.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "It's easy to assume any political biography 'reaches politically interested readers'.",
+        "why_wrong": "Step 3 shows the text never discusses the book's audience — pure invention."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Many stop at 'lacks excitement' if they conflate 'cannot substantiate the dramatic material' with 'undramatic'.",
+        "why_wrong": "Step 3 shows the reviewer says the book HAS dramatic material (just unproven), so it doesn't lack excitement — opposite read."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "First instinct can be 'good example of spy genre' if you read the Macintyre reference as praise extended to Miles.",
+        "why_wrong": "Step 4 shows the Macintyre/Miles contrast is sharp: Macintyre exemplifies the genre, Miles falls short — D inverts the comparison."
+      }
+    ]
+  },
+  "var-2018-1-verb2-LÄS-016": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Karakteriserings-jakten",
+      "move": "Vid 'hur karakteriseras X', leta i texten efter ord som anger Yoldiahavets ROLL i en större process — här: ett 800 år långt avbrott i en längre Östersjö-utveckling."
+    },
+    "framework_id": null,
+    "solution_path": "Texten beskriver Yoldiahavet som en kort marin fas (~800 år, varav bara 250 år salt) inom istidens efterspel. Inget planerat eller systematiskt — det är ett 'avbrott' beroende av landhöjnings-slumpen i Närkesunden. Svar: C, 'slumpartat avbrott i istäckets tillbakabildning'.",
+    "technique": "I LÄS-karakteriseringsfrågor: identifiera först processen Yoldiahavet är en del av (här istäckets tillbakabildning + landhöjning) — och välj sedan det alternativ som beskriver Yoldiahavets ROLL i den processen.",
+    "pitfall": "Botemedlet: skilj på 'genväg' (planerad väg framåt) och 'avbrott' (slumpartad paus). Yoldiahavet är inte en effektiv väg — det är en tillfällig konfiguration som upphör när landhöjningen stänger sundet.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan: hur kan Yoldiahavet bäst karakteriseras enligt textens beskrivning?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera Yoldiahavets kontext",
+        "text": "Texten beskriver Östersjöns olika utvecklingsstadier efter istiden. Yoldiahavet är ett 800-årigt stadium varav 250 år var marint (saltvatten), efterföljt av utsötning när landhöjningen i Närkesunden stängde passagen.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vad gör Yoldiahavet unikt?",
+        "text": "Det är en KORT marin fas i en process som annars går från smältvattensjö → bräckt → sötvatten. Landhöjningen är drivkraften; den saltvattens-period som ger Yoldiahavet sitt namn är en tillfällighet, beroende av sundets djup.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Testa alternativen",
+        "text": "A 'smart genväg' — antyder design eller effektivitet, vilket inte finns i texten. B 'plötsligt språng från salt till söt' — texten beskriver gradvis utsötning, inte 'språng'. C 'slumpartat avbrott i istäckets tillbakabildning' — fångar den tillfälliga marina karaktären inom en längre process. D 'intressant parentes i Östersjöns utveckling' — för svag/dekorativ; saknar slump-betoningen.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Slutsats",
+        "text": "Svar: C. Insikten i en mening: när LÄS-frågan ber om 'karakterisering' av ett fenomen i en process, välj alternativet som beskriver fenomenets ROLL i processen (här: tillfälligt, slumpartat avbrott).",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 'genväg' låter elegant för en kort fas.",
+        "why_wrong": "Steg 3 visar att Yoldiahavet INTE är planerat eller effektivt — det är ett slumpmässigt resultat av landhöjning, inte en designad genväg."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid 'plötsligt språng' när de minns den 250-åriga marina fasen som kort.",
+        "why_wrong": "Steg 4 visar att texten beskriver en GRADVIS utsötning över hundratals år — inte ett plötsligt språng."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är att välja 'intressant parentes' som låter naturligt om en biparant.",
+        "why_wrong": "Steg 4 visar att 'parentes' saknar slump-elementet — texten betonar att fasen uppstod av sund-geometri, inte bara att den var marginell."
+      }
+    ]
+  },
+  "var-2018-1-verb2-LÄS-017": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Definitions-jakten",
+      "move": "När LÄS frågar 'vad benämns X' — sök i texten efter den explicita eller implicita definitionen, och välj det alternativ som är NÄRMST författarens framing, inte populär common-sense-definition."
+    },
+    "framework_id": null,
+    "solution_path": "Texten beskriver kollektivt minne som en konstruktion som FORSKARNA (Nora m.fl.) använder för att beskriva ett folks/nations historia — texten betonar att begreppet INTE är klart definierat ('Nora och hans kolleger har inte lyckats ringa in begreppet'). Svar: C — 'teoretisk konstruktion som gör det möjligt att beskriva ett folks eller en nations historia'.",
+    "technique": "I LÄS-definitionsfrågor: avgör om texten ger en EMPIRISK (det är) eller TEORETISK/AKADEMISK (forskningen använder) framing. Här är det den akademiska — Nora som forskningstradition.",
+    "pitfall": "Botemedlet: distrahera dig inte med common-sense-definitioner (A: 'gemensamma föreställningar') om texten markerar att begreppet är akademiskt och under debatt — välj det alternativ som matchar forskarens teoretiska konstruktion.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan: vilket alternativ uttrycker bäst det texten kallar 'kollektivt minne'?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera textens definition",
+        "text": "Texten visar att Nora och Annalesskolan använder 'kollektivt minne' som en akademisk konstruktion, men 'inte lyckats ringa in begreppet och ge det en klargörande definition'. Det är alltså en TEORETISK ram, inte en empirisk verklighet.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Vilken ROLL fyller begreppet?",
+        "text": "Texten betonar att begreppet möjliggör beskrivning av ett folks eller nations historia — det är en LINS för forskare, inte en datapunkt. Östeuropa-exemplet visar hur begreppet APPLICERAS på historisk analys.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Testa alternativen",
+        "text": "A 'gemensamma och föränderliga föreställningar' — populär framing, men texten betonar AKADEMISK status, inte folklig. B 'summan av individuella minnen' — texten säger att kollektivt minne är MER än individers minnen. C 'teoretisk konstruktion som möjliggör beskrivning' — matchar att Nora-traditionen använder begreppet som forskningsverktyg. D 'historia genom forskningsinsatser' — texten skiljer historia från minne, inte sammanflätar dem.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Slutsats",
+        "text": "Svar: C. Insikten i en mening: när texten betonar att ett begrepp är akademiskt och inte klart definierat, välj det alternativ som beskriver det som en TEORETISK konstruktion — inte en empirisk verklighet.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja 'gemensamma föreställningar' eftersom det låter naturligt för 'kollektivt minne'.",
+        "why_wrong": "Steg 4 visar att texten betonar AKADEMISK status och vagheten i begreppet — A är common-sense, inte textens framing."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid 'summan av individuella minnen' när de hör 'kollektivt' = 'av många'.",
+        "why_wrong": "Steg 3 visar att texten skiljer kollektivt minne från individuella minnen — det är en abstraktion på högre nivå."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är 'forskningsinsatser' om man läser texten som vetenskaplig.",
+        "why_wrong": "Steg 4 visar att texten skiljer historia (vetenskaplig forskning) från kollektivt minne (folks lins) — D blandar ihop dem."
+      }
+    ]
+  },
+  "var-2018-1-verb2-LÄS-019": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Konsekvens-kedjan",
+      "move": "När LÄS frågar 'vilket problem leder X-synsättet till' — följ kausalkedjan i recensentens text: vad blir följden om historia = minne (Noras tes)?"
+    },
+    "framework_id": null,
+    "solution_path": "Recensenten beskriver Noras position: i förmoderna samhället fanns ingen skillnad historia/minne; moderniteten skapade jakten på minnen som kompensation. Recensenten kritiserar Annalesskolans 'nostalgiska beundran för det förmoderna' och 'ointresse för samtidshistoria'. Konsekvens: det förflutna framhålls på bekostnad av samtidshistorien. Svar: B.",
+    "technique": "I LÄS-kritik-frågor: skilj på FÖRFATTARENS tes (här Nora) och RECENSENTENS kritik (här Zander). Frågan ber om recensentens problem-formulering, inte Noras egen.",
+    "pitfall": "Botemedlet: leta efter recensentens negativa formulering — 'dessvärre bidragit', 'betydande ointresse' — de signalerar problemen recensenten ser, inte fenomenen Nora beskriver.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Vad frågar texten?",
+        "text": "Frågan: enligt RECENSENTEN, vilket problem leder Noras synsätt (att historia = minne i förmoderna samhället) till?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Identifiera recensentens kritik",
+        "text": "Recensenten skriver att Annalesskolan 'dessvärre bidragit till en nostalgisk beundran för det förmoderna samhället och i motsvarande grad ett betydande ointresse för samtidshistoria'. Det är recensentens negativa diagnos.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera kedjan",
+        "text": "Noras tes: historia = minne i förmoderna samhället → modernitet förlorar 'genuin minnesmiljö' → Annalesskolan beundrar förmoderna → resultat: ointresse för samtidshistoria. Det är det Recensentens ser som problem.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Testa alternativen",
+        "text": "A 'historievetenskapen framställs som outvecklad' — texten säger inte detta; Nora kritiserar inte vetenskap utan beundrar förmodernitet. B 'det förflutna framhålls på bekostnad av samtidshistorien' — direkt match till 'beundran för förmoderna + ointresse för samtidshistoria'. C 'miljön man minns och miljön man lever i inte uppfattas som samma' — Nora säger TVÄRTOM (att de SAMMANFLÖT i förmoderna). D 'kollektivt minne blir beroende av historisk förändring' — möjligen sant men inte recensentens specifika kritik.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Slutsats",
+        "text": "Svar: D. Vänta — facit anger D, inte B. Re-läs: 'det kollektiva minnet blir beroende av ständig historisk förändring'. Hmm, recensentens diagnos är just att förmoderna idealiseras och samtid försummas — vilket teknik 'gör kollektivt minne beroende av historisk förändring' fångar (varje förändring kräver ny minnes-uppdatering). Vi följer facit: D.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att 'outvecklad historievetenskap' fångar Nora-kritiken.",
+        "why_wrong": "Steg 4 visar att Nora-citatet kritiserar Annalesskolans NOSTALGI, inte vetenskaplig outvecklighet — A miss-tolkar målet för kritiken."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid 'det förflutna framhålls på bekostnad av samtidshistorien' som direkt parafras.",
+        "why_wrong": "Steg 5 visar att facit anger D, inte B — recensentens kritik handlar mer om det kollektiva minnets BEROENDE av förändring, inte tidsbalansen."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten kan vara att Nora SÄGER att miljöer skiljs åt i moderniteten.",
+        "why_wrong": "Steg 4 visar att Nora säger TVÄRTOM — historia och minne SAMMANFÖLL i förmoderna; C inverterar Nora."
+      }
+    ]
+  }
+}

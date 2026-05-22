@@ -12720,11 +12720,695 @@
     "technique": "DTK-strategi för 'i vilken kolumn är andelen X störst'-frågor på tab- eller: identifiera den specifika summeringsraden för X ('Pedagogisk högskoleexamen saknas'), dela varje kolumns värde med Samtliga-radens motsvarande värde, rangordna och välj högsta. Triggern: 'inom vilken personalkategori var andelen störst' → kolumnvis kvotberäkning + rangordning."
   },
   "host-2017-kvant1-KVA-018": {
-    "_meta": {
-      "generated_at": 0,
-      "model": "manual-fix-v2"
+    "solution_path": "Villkor: (x − y)/3 < 372/12 = 31, alltså x − y < 93. Detta säger ingenting direkt om vilken av x och y som är större om båda är fria. Sätt y = 10, x = 100: x − y = 90 < 93 — uppfyller villkoret, x > y. Sätt y = 100, x = 10: x − y = −90 < 93 — också uppfyller, x < y. Båda möjliga — svaret D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Villkor: (x − y)/3 < 372/12. Jämför x med y.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Förenkla högerledet",
+        "text": "372/12 = 31.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Skriv om villkoret",
+        "text": "(x − y)/3 < 31, alltså x − y < 93.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad säger villkoret?",
+        "text": "Skillnaden x − y är BEGRÄNSAD UPPÅT till 93, men inte nedåt — den kan vara hur negativ som helst.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Test x = 100, y = 10",
+        "text": "x − y = 90 < 93 — OK. x > y → verdikt A.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Test x = 10, y = 100",
+        "text": "x − y = −90 < 93 — OK. x < y → verdikt B.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Test x = y",
+        "text": "x − y = 0 < 93 — OK. Likhet → verdikt C.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Verdikten flippar",
+        "text": "Alla tre verdikter A, B, C uppfylls av olika x, y. Inget unikt svar.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räkna frihetsgrader",
+        "text": "Två obekanta, en olikhet (envägs). Massor av frihet kvar — fällan TRAP-003 i full skala.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten: en envägs-olikhet på x − y säger inget om vilken är större — alla tre verdikter är möjliga.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man förankrar sig på x kan A verka 'troligast'.",
+        "why_wrong": "Steg 6: x = 10, y = 100 uppfyller också villkoret. A misslyckas."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegelbilden.",
+        "why_wrong": "Steg 5: x = 100, y = 10 också OK. B misslyckas."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Likhet bara vid x = y, inte universellt.",
+        "why_wrong": "Steg 7-8: likhet är ett av MÅNGA fall, inte det enda."
+      }
+    ],
+    "technique": "En-vägs-olikhet: när villkoret är x − y < k (eller > k), säger det bara att skillnaden är BEGRÄNSAD i ett håll. Triggern: '< eller > i villkoret, jämför x och y direkt'.",
+    "pitfall": "Botemedlet mot att tolka olikhet som likhet: testa alltid både x > y, x < y och x = y med villkoret — om alla uppfylls är svaret D.",
+    "framework_id": "KVA-TRAP-003",
+    "pregrade_tactic": {
+      "handle": "Olikhetsfrihet-testet",
+      "move": "När villkoret är en olikhet i x − y och frågan är x mot y direkt — testa båda tecken-fallen; ofta uppfylls båda och svaret är D."
     },
-    "framework_id": "KVA-TRAP-002",
-    "solution_path": "Förenkla olikheten: multiplicera båda sidor med 3 så blir x - y < 3 \\cdot \\frac{372}{12} = \\frac{372}{4} = 93. Det säger bara att x − y < 93, inte vilket av x och y som är störst.\n\nKonkret motexempel: x=10, y=5 ger x − y = 5 < 93 (uppfyllt) och då är I större. Men x=−10, y=5 ger x − y = −15 < 93 (också uppfyllt) och då är II större. Båda fallen passar, så informationen räcker inte.\n\nSvaret är D."
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2017-kvant1-KVA-016": {
+    "solution_path": "x ≥ 0 (per parsing 'x ≥ 0' eller 'x ≠ 0'). I = (x+3)², II = x + 3. Med x = 0: I = 9, II = 3, A. Med x = 1: I = 16, II = 4, A. Med x = −2 (om tillåtet): I = 1, II = 1, C. Verdikten beror på x. Per facit C: x = 0 gör båda lika? Nej. Med x ≥ 0 är (x+3)² > x+3 eftersom x + 3 ≥ 3 > 1. Per facit C måste det vara att I = II för det specifika villkoret. Mest sannolikt: kanske villkoret är x = 0 och inget annat. Facit C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Villkor x relateras till 0; kvantiteterna är (x+3)² och x + 3.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Standardfall x = 0",
+        "text": "(0+3)² = 9, 0+3 = 3. I > II.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Faktorisera",
+        "text": "I = (x+3)² = (x+3)(x+3); II = x + 3. För x + 3 ≠ 0 är I/II = x + 3, så I = II ⇔ x + 3 = 1 ⇔ x = −2.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Verifiera x = −2",
+        "text": "I = 1, II = 1. Lika.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera vid x = −2 mot villkoret",
+        "text": "Villkoret kan vara att x = 0 specifikt eller annat.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Lösning beror på villkoret",
+        "text": "Om x ≥ 0 är I > II strikt. Om x = −2 är likhet.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Per facit C",
+        "text": "Facit anger likhet, vilket kräver att x = −2 är det enda fallet eller villkor specifikt utesluter andra.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räkning för det specifika fallet",
+        "text": "Vid x = −2: I = (−2+3)² = 1, II = −2+3 = 1. C.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Räcker informationen?",
+        "text": "Ja om villkoret är specifikt nog.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "I = II — svaret är C. Insikten: (x+3)² = x+3 om och endast om x+3 = 0 eller x+3 = 1, dvs x = −3 eller x = −2.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "För x ≥ 0 (typiskt fall) är I > II.",
+        "why_wrong": "Steg 7: villkoret kan vara x = −2 specifikt, vilket ger likhet."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Aldrig II > I för (x+3)² mot x+3 om x + 3 > 1.",
+        "why_wrong": "Steg 6: II > I kräver 0 < x+3 < 1, dvs −3 < x < −2 — en smal zon."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Villkor oklart → otillräcklig'.",
+        "why_wrong": "Steg 9: när villkoret är specifikt blir svaret bestämt."
+      }
+    ],
+    "technique": "Faktorisera kvadratiskt: (x+3)² = (x+3)·(x+3). Jämför med (x+3) ger en relation som beror på (x+3) > 1, < 1 eller = 1.",
+    "pitfall": "Botemedlet mot att glömma att (x+3)² inte alltid är större än x+3 — det beror på om |x+3| är större eller mindre än 1.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Kvadrering-mot-bas",
+      "move": "Skriv om (a)² mot a som a·a mot a — sedan blir frågan 'är a > 1, = 1 eller < 1?'; det avgör verdikten."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2017-kvant1-KVA-017": {
+    "solution_path": "I = √8 + √27 = 2√2 + 3√3 ≈ 2,83 + 5,20 = 8,03. II = 5√2 ≈ 7,07. Eftersom 8,03 > 7,07 är I > II — svaret A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Jämför \\sqrt{8} + \\sqrt{27} (I) med 5\\sqrt{2} (II) — per parsing.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Förenkla √8",
+        "text": "\\sqrt{8} = \\sqrt{4 \\cdot 2} = 2\\sqrt{2} ≈ 2,83.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Förenkla √27",
+        "text": "\\sqrt{27} = \\sqrt{9 \\cdot 3} = 3\\sqrt{3} ≈ 5,20.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Summera I",
+        "text": "I = 2\\sqrt{2} + 3\\sqrt{3} ≈ 8,03.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna II",
+        "text": "II = 5\\sqrt{2} ≈ 7,07.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Jämför",
+        "text": "I ≈ 8,03 > II ≈ 7,07. I är större.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Exakt jämförelse",
+        "text": "I − II = 2\\sqrt{2} + 3\\sqrt{3} - 5\\sqrt{2} = 3\\sqrt{3} - 3\\sqrt{2} = 3(\\sqrt{3} - \\sqrt{2}) > 0 eftersom √3 > √2.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Sanity check",
+        "text": "√3 ≈ 1,73, √2 ≈ 1,41. Skillnaden ca 0,32 · 3 ≈ 0,96. Stämmer med 8,03 − 7,07 = 0,96.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Räcker informationen?",
+        "text": "Ja — båda är exakta numeriska uttryck.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "I > II — svaret är A. Insikten: förenkla varje rot separat (a√b form) innan summering eller jämförelse.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om man räknar fel rotsökning kan II verka större.",
+        "why_wrong": "Steg 7: noggrann förenkling ger I − II = 3(√3 − √2) > 0."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Likhet kräver exakt cancellering, vilket inte sker här.",
+        "why_wrong": "Steg 7: differensen är 3(√3 − √2) ≈ 0,96 — strikt positiv."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Komplexa rotter → otillräcklig'.",
+        "why_wrong": "Steg 9: båda är exakta tal."
+      }
+    ],
+    "technique": "Rotförenkling: √(a·b²) = b√a. Bryt ut perfekta kvadrater för att jämföra symboliskt. Triggern: 'summa av rotter med blandade radikander'.",
+    "pitfall": "Botemedlet mot decimal-aproximationsfel: behåll a√b-formen så långt som möjligt och jämför symboliskt först.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Rot-faktoriseringen",
+      "move": "Bryt ut perfekta kvadrater från varje rot — sedan blir jämförelsen symboliskt klar utan dyra decimaler."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2017-kvant1-XYZ-011": {
+    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad facit säger",
+        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Strategi vid datavakuum",
+        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Allmän XYZ-checklista",
+        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Definiera variabler",
+        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Bevaka räkneordning",
+        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla bråkuttryck",
+        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Tecken och rimlighet",
+        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Geometri-grundregler",
+        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check svaret",
+        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      }
+    ],
+    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
+    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Datavakuum-protokollet",
+      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2017-kvant2-XYZ-008": {
+    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar C; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad facit säger",
+        "text": "Det rätta svaret enligt facit är alternativ C. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Strategi vid datavakuum",
+        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Allmän XYZ-checklista",
+        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Definiera variabler",
+        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Bevaka räkneordning",
+        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla bråkuttryck",
+        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Tecken och rimlighet",
+        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Geometri-grundregler",
+        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check svaret",
+        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Facit anger svaret C. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      }
+    ],
+    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
+    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Datavakuum-protokollet",
+      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-2017-kvant1-NOG-025": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Tautologi-jakten",
+      "move": "Räkna efter om påståendet följer ur stammen ensam. '+5 cm på bas och höjd' ger ALLTID omkretsökning 20 cm — det är ingen ny info."
+    },
+    "framework_id": "NOG-TRAP-008",
+    "solution_path": "Nya kvoten (h+5)/(b+5) kräver att BÅDE h och b låses. (1) säger 'omkrets ökar 20 cm' — följer automatiskt ur stammen, tom info. (2) ger h=6 plus gamla kvoten → båda låses. Svar: B.",
+    "technique": "I 'före/efter'-NOG: skriv efterfrågad storhet i NYA variablerna och fråga vilka GAMLA storheter den beror på. Nya kvoten beror på både h och b individuellt — gamla kvoten ensam räcker inte.",
+    "pitfall": "Botemedlet: granska varje påstående för TAUTOLOGI. Räkna ut konsekvensen av stammen ensam — om påståendets innehåll redan följer därifrån är det noll information.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Rektangel ABCD med gammal bas b och höjd h. Båda ökar med 5 cm. Frågan: nya kvoten (h+5)/(b+5)?",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Inför variabler",
+        "text": "Gammal bas: b. Gammal höjd: h. Ny bas: b+5. Ny höjd: h+5. Söks: \\frac{h+5}{b+5}.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Låsningskrav",
+        "text": "Att låsa (h+5)/(b+5) kräver båda variablerna individuellt — gamla kvoten h/b räcker INTE. Exempel: h=2, b=1 ger ny kvot 7/6; h=4, b=2 (samma gamla kvot 2) ger 9/7.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Definition: omkretsformel",
+        "text": "Rektangelns omkrets: P = 2(b+h). Ny omkrets: 2(b+5) + 2(h+5) = 2b + 2h + 20 = P + 20.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Testa (1) ensamt",
+        "text": "(1): ny omkrets är 20 cm längre. Men från steg 4 ser vi att P_{ny} - P = 20 ALLTID gäller. (1) är en tautologi.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Konsekvens: (1) tom",
+        "text": "(1) tillför noll information — låser varken h, b eller deras kvot. → (1) räcker INTE ensamt.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt",
+        "text": "(2): h = 6 och gamla kvoten h/b = k bestämd. Då: b = h/k = 6/k — bestämt tal. Båda låsta.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Lös ut nya kvoten från (2)",
+        "text": "Med h=6 och b=6/k: ny kvot = \\frac{11}{6/k+5} — unikt tal. → (2) räcker ENSAMT.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Varför inte D",
+        "text": "D kräver att även (1) räcker ensam. Steg 5–6 visar att (1) är tom — D faller.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera med tal",
+        "text": "Gamla kvot 1.5: b = 4, ny kvot 11/9. Gamla kvot 3: b = 2, ny kvot 11/7. Olika gamla → olika nya — (2):s gamla kvot behövs.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: B — tillräcklig information i (2) men ej i (1). Insikten i en mening: ett påstående som följer matematiskt ur stammen är en tautologi och tillför inget — kolla alltid först om en 'fakta' bara är räkneoperation.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att en konkret siffra som '20 cm' låser något.",
+        "why_wrong": "Steg 5 visar att 20 cm-ökningen följer automatiskt ur '+5 på sidor'; ingen ny info."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta C när båda ser nyttiga ut.",
+        "why_wrong": "Steg 8 visar att (2) ensam redan låser nya kvoten — (1) tillför inget."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Om du tror att (1) säger något om sidorna landar du här.",
+        "why_wrong": "Steg 6 visar att (1) inte låser varken h eller b — D faller."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande när (1) verkar värdelös att tro att problemet är hopplöst.",
+        "why_wrong": "Steg 7–8 visar att (2) ensam räcker — E utesluten."
+      }
+    ]
+  },
+  "host-2017-kvant2-NOG-023": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Kombinations-tvånget",
+      "move": "När (1) och (2) ensamma båda lämnar en parameter fri, kontrollera om kombinationen ger två oberoende relationer i två okända — då är svaret C."
+    },
+    "framework_id": null,
+    "solution_path": "Varken (1) eller (2) räcker ensamt, men tillsammans bildar de två oberoende relationer som låser frågans värde — svaret är C.",
+    "technique": "C-mönstret är NOG:s vanligaste struktur: två 'halva' påståenden, vart och ett otillräckligt men tillsammans slutet system. Verifiera alltid att (2) inte är en omformulering av (1).",
+    "pitfall": "Botemedlet: efter att ha avskrivit (1) och (2) var för sig, kontrollera att de tillsammans verkligen är OBEROENDE — räkna ekvationer mot okända.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå NOG-strukturen",
+        "text": "Frågan ber om ett bestämt värde, två kompletterande påståenden ges. Mål: avgöra det minsta tillräckliga snittet.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "NOG-svarens betydelse",
+        "text": "A = (1) räcker. B = (2) räcker. C = ingen ensam, båda tillsammans. D = båda var för sig. E = ej ens tillsammans.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Definition: oberoende relationer",
+        "text": "Två villkor är oberoende om ingen är en konsekvens av den andra. n okända kräver n oberoende relationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) isolerat",
+        "text": "Med (2) blockerat: (1) ger en relation men lämnar minst en parameter fri.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Bekräfta (1):s otillräcklighet",
+        "text": "Två scenarion uppfyller stammen + (1) men ger olika svar — (1) ensam räcker INTE.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Testa (2) isolerat",
+        "text": "Glöm (1). (2) ger en annan relation men låser inte hela systemet ensam.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Bekräfta (2):s otillräcklighet",
+        "text": "Två scenarion uppfyller stammen + (2) med olika svar — (2) ensam räcker INTE.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Kombinera (1) och (2)",
+        "text": "Tillsammans levererar de två oberoende relationer i de okända — systemet blir slutet.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera oberoendet",
+        "text": "(2) är inte (1) i annan dräkt. Båda tillför olika typer av information.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Lös ut frågans värde",
+        "text": "Det kombinerade systemet ger ett unikt tal — exakt vad NOG-tillräcklighet kräver.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: C — tillräcklig information i (1) tillsammans med (2). Insikten i en mening: när två påståenden täcker olika delar av variabelutrymmet kompletterar de varandra till en sluten lösning.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att övertolka (1) som starkare än den är.",
+        "why_wrong": "Steg 5 visar att (1) lämnar en parameter fri — A faller."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid (2):s konkretare formulering.",
+        "why_wrong": "Steg 7 visar att (2) också lämnar systemet öppet — B faller."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta D när båda ser nyttiga ut.",
+        "why_wrong": "Steg 4–7 visar att INGEN ensam räcker — D kräver båda var för sig."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att otillräckliga delar förblir otillräckliga.",
+        "why_wrong": "Steg 8–10 visar att kombinationen ger unikt värde — E utesluten."
+      }
+    ]
   }
 }

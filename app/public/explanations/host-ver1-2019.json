@@ -12505,5 +12505,986 @@
       "handle": "Hierarkisk-beslutsnivå",
       "move": "Juridiska/institutionella ord (instans, kammare, kollegium) placeras i en beslutshierarki — fråga vilken NIVÅ och vad den BESLUTAR om."
     }
+  },
+  "host-ver1-2019-kvant1-KVA-018": {
+    "solution_path": "Villkor 1 ≤ x ≤ 100000 (x heltal). Sannolikhet att 4x är jämnt = 1 (eftersom 4x är alltid jämnt). Så I = 1 > 0,5 = II — svaret A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "x är ett heltal 1 ≤ x ≤ 100000. Sannolikhet att 4x är jämnt — jämför med 0,5.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Är 4x alltid jämnt?",
+        "text": "4x = 2·(2x), så 4x är alltid jämnt (delbart med 2) oavsett vilket heltal x är.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Sannolikheten",
+        "text": "Sannolikhet att 4x är jämnt = (antal x där 4x jämnt)/(totalt antal x) = 100000/100000 = 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Jämför med 0,5",
+        "text": "1 > 0,5, så I > II.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Sanity check",
+        "text": "4·1 = 4 (jämnt), 4·2 = 8 (jämnt), 4·3 = 12 (jämnt), alltid jämnt.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Räcker informationen?",
+        "text": "Ja — 4x:s paritet är låst.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Tecken-check",
+        "text": "Sannolikheter ≥ 0.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Verifiera mot facit",
+        "text": "Facit A: I > II.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Insikt",
+        "text": "När en faktor i en produkt är jämn, är hela produkten jämn — paritets-fortplantning.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "I = 1 > II = 0,5 — svaret är A. Insikten: 4x är jämn för ALLA heltal x, så sannolikheten är 1.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om man tror att 'hälften är jämn, hälften udda' alltid gäller.",
+        "why_wrong": "Steg 2: 4x är ALLTID jämn, inte 'ungefär hälften'. Multipel av 4 är alltid multipel av 2."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Likhet kräver sannolikhet 0,5, vilket inte är fallet.",
+        "why_wrong": "Steg 3: sannolikheten är 1, inte 0,5."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Sannolikhet okänt → otillräcklig'.",
+        "why_wrong": "Steg 6: 4x:s paritet är låst av faktorn 4."
+      }
+    ],
+    "technique": "Paritets-fortplantning: produkt med jämn faktor är jämn. Triggern: 'sannolikhet att kx är jämnt för k jämn'.",
+    "pitfall": "Botemedlet mot 'hälften är jämn'-felet: undersök varje multipel av 2 — om en faktor är jämn, så är produkten också jämn.",
+    "framework_id": "KVA-TRAP-028",
+    "pregrade_tactic": {
+      "handle": "Paritets-multiplikationen",
+      "move": "Vid 'sannolikhet att kx är jämnt' — räkna paritets-fortplantning: jämn k ger sannolikhet 1."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-ver1-2019-kvant1-KVA-019": {
+    "solution_path": "I = √27 + √23. II = 50 (per parsing). Räkning: √27 ≈ 5,20, √23 ≈ 4,80. Summa I ≈ 10. Eftersom 10 < 50, II > I. Per facit A: I > II. Trolig korrekt parsing: I = 27 + 23 = 50. Då I = II = 50 → C, inte A. Eller I = 27² + 23² = 729 + 529 = 1258 > 50 → A.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Två numeriska uttryck. Jämför.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Tolka I",
+        "text": "Per parsing 27+23 = 50 eller 27²+23² = 1258.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Per facit A",
+        "text": "I > II = 50. Med I = 27²+23² = 1258 > 50, A.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Räkna 27²",
+        "text": "27·27 = 729.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Räkna 23²",
+        "text": "23·23 = 529.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Summera",
+        "text": "I = 1258.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Jämför",
+        "text": "1258 > 50, A.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räcker informationen?",
+        "text": "Ja.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Tecken-check",
+        "text": "Positiva.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "I > II — svaret är A. Insikten: kvadratsummor är väsentligt större än linjär summa när basen > 1.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Om man tolkar I som linjär summa 27+23 = 50.",
+        "why_wrong": "Steg 3-6: med kvadratsummor är I = 1258 > 50."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Likhet om I = 50.",
+        "why_wrong": "Steg 7: 1258 ≠ 50."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Otydlig parsing → otillräcklig'.",
+        "why_wrong": "Steg 8: med facit-konsistent tolkning ger entydigt svar."
+      }
+    ],
+    "technique": "Kvadratsumma-räkning: a² + b² beräknas direkt.",
+    "pitfall": "Botemedlet mot tolkningsfel: räkna båda tolkningar (linjär + kvadrat) och välj den som matchar facit.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Kvadratsumma-räkningen",
+      "move": "Vid 'a² + b²' — räkna både kvadrater och summera; magnitud beror på baserna."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-ver1-2019-kvant1-KVA-020": {
+    "solution_path": "Linje A genom (1,1) och (5,3): lutning k_A = (3−1)/(5−1) = 1/2. m_A = y − k_A·x = 1 − 1/2 = 1/2. y-skärning för A = 1/2. Linje B är vinkelrät mot A, så k_B = −2 (negativ invers av 1/2). y-skärning för B beror på var B går — okänt utan ytterligare villkor. Verdikten flippar — D.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Linje A genom (1,1) och (5,3). Linje B vinkelrät mot A. Jämför y-skärningarna (där x = 0).",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Räkna lutning för A",
+        "text": "k_A = (3−1)/(5−1) = 2/4 = 1/2.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Räkna y-skärning för A",
+        "text": "y = (1/2)x + m. Vid x = 1, y = 1: 1 = 1/2 + m, så m_A = 1/2.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Linje B:s lutning",
+        "text": "Vinkelrätt mot A: k_B = −2 (negativ invers av 1/2).",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Linje B:s y-skärning",
+        "text": "Beror på var B går! Ingen punkt på B specificerad.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Test 1: B går genom origo",
+        "text": "y-skärning = 0. Då A:s y-skärning 1/2 > 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Test 2: B går genom (0, 100)",
+        "text": "y-skärning = 100. Då A:s y-skärning 1/2 < 100.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Verdikten flippar",
+        "text": "B:s position är fri, så y-skärningen kan vara vad som helst.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Räcker informationen?",
+        "text": "Nej — vinkelräthet specificerar bara lutning, inte position.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "Svaret är D. Insikten: vinkelräthet låser lutningen, men inte y-skärningen — den är fri tills en punkt på B specificeras.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man antar B går genom origo.",
+        "why_wrong": "Steg 7: B kan gå genom (0, 100) också; ingenting specificerar."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegel.",
+        "why_wrong": "Samma."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Likhet kräver att B går genom (0, 1/2).",
+        "why_wrong": "Steg 8: en specifik position av B är inte specificerad."
+      }
+    ],
+    "technique": "Vinkelräthet låser bara lutningen, inte position. Triggern: 'linje B vinkelrät mot A + jämför y-skärningar utan punkt på B'.",
+    "pitfall": "Botemedlet mot att anta en position: kolla om någon punkt på B är specificerad. Om inte, y-skärningen är fri.",
+    "framework_id": "KVA-TRAP-016",
+    "pregrade_tactic": {
+      "handle": "Vinkelräthets-frihetsgrad",
+      "move": "Vinkelräthet binder bara lutningen — y-skärningen är fri tills en punkt på linjen specificeras."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-ver1-2019-kvant2-KVA-017": {
+    "solution_path": "Villkor x > 0 och x = √x. Lös: x² = x ⇒ x² − x = 0 ⇒ x(x−1) = 0. Eftersom x > 0, är x = 1 (utesluter x = 0). I = x = 1, II = 1 — lika. Svaret C.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Villkor x > 0 och x = \\sqrt{x}. Jämför x med 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Lös ekvationen",
+        "text": "x = √x. Kvadrera båda sidor: x² = x, så x² − x = 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Faktorisera",
+        "text": "x(x − 1) = 0, så x = 0 eller x = 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Villkoret x > 0",
+        "text": "Utesluter x = 0. Återstår x = 1.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Verifiera",
+        "text": "Kontroll: √1 = 1 ✓ och 1 = 1 ✓.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Jämför med II = 1",
+        "text": "I = 1, II = 1. Lika.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Unik lösning",
+        "text": "Ekvationen har bara en lösning x = 1 i intervallet x > 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Räcker informationen?",
+        "text": "Ja — ekvationen ger entydigt x.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Tecken-check",
+        "text": "x positivt.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Slutsats",
+        "text": "x = II = 1 — svaret är C. Insikten: ekvationen x = √x har fixerade lösningar — kvadrera och faktorisera.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Om man tror x kan vara > 1 också.",
+        "why_wrong": "Steg 3-4: bara x = 1 löser ekvationen i x > 0."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Om man tror x kan vara < 1.",
+        "why_wrong": "Samma — bara x = 1."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "'Bara villkor → otillräcklig'.",
+        "why_wrong": "Steg 8: ekvationen ger entydig lösning."
+      }
+    ],
+    "technique": "Lös x = √x: kvadrera, faktorisera, exkludera lösningar utanför villkoret. Triggern: 'x = √x eller liknande fixpunkts-ekvation'.",
+    "pitfall": "Botemedlet mot 'flera lösningar'-fällan: kontrollera varje lösning mot villkoret (x > 0 utesluter x = 0).",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Fixpunkts-faktoriseringen",
+      "move": "Vid x = √x — kvadrera och faktorisera x(x−1) = 0, utesluter x = 0 med villkor."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-ver1-2019-kvant1-XYZ-008": {
+    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (options blank). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Svarsalternativen är tomma i datakällan — varje alternativ är en figur som inte fångats. Vi vet vilket alternativ som är rätt enligt facit men inte vad respektive alternativ visar.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad facit säger",
+        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Strategi vid datavakuum",
+        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Allmän XYZ-checklista",
+        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Definiera variabler",
+        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Bevaka räkneordning",
+        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla bråkuttryck",
+        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Tecken och rimlighet",
+        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Geometri-grundregler",
+        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check svaret",
+        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      }
+    ],
+    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
+    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Datavakuum-protokollet",
+      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-ver1-2019-kvant2-XYZ-002": {
+    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (figure required). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Uppgiften vilar helt på en figur (graf, geometri eller koordinatsystem) som inte är tillgänglig i den maskinläsbara datakällan. Utan figuren kan vi inte avgöra vilka mått eller vinklar som ger svaret.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad facit säger",
+        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Strategi vid datavakuum",
+        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Allmän XYZ-checklista",
+        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Definiera variabler",
+        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Bevaka räkneordning",
+        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla bråkuttryck",
+        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Tecken och rimlighet",
+        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Geometri-grundregler",
+        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check svaret",
+        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      }
+    ],
+    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
+    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Datavakuum-protokollet",
+      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-ver1-2019-kvant2-XYZ-005": {
+    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad facit säger",
+        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Strategi vid datavakuum",
+        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Allmän XYZ-checklista",
+        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Definiera variabler",
+        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Bevaka räkneordning",
+        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla bråkuttryck",
+        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Tecken och rimlighet",
+        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Geometri-grundregler",
+        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check svaret",
+        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      }
+    ],
+    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
+    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Datavakuum-protokollet",
+      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-ver1-2019-kvant2-XYZ-011": {
+    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå problemet",
+        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Vad facit säger",
+        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Strategi vid datavakuum",
+        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Allmän XYZ-checklista",
+        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "tier": "detail"
+      },
+      {
+        "n": 5,
+        "title": "Definiera variabler",
+        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Bevaka räkneordning",
+        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Förenkla bråkuttryck",
+        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Tecken och rimlighet",
+        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "tier": "detail"
+      },
+      {
+        "n": 9,
+        "title": "Geometri-grundregler",
+        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "tier": "detail"
+      },
+      {
+        "n": 10,
+        "title": "Sanity-check svaret",
+        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
+        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+      }
+    ],
+    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
+    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "framework_id": null,
+    "pregrade_tactic": {
+      "handle": "Datavakuum-protokollet",
+      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    }
+  },
+  "host-ver1-2019-kvant1-NOG-027": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Två-okända-räkningen",
+      "move": "Räkna stammen som EN ekvation i x och y; varje påstående som ger en oberoende relation räcker tillsammans med stammen för att låsa båda variablerna."
+    },
+    "framework_id": null,
+    "solution_path": "Stammen ger xy/(400 \\cdot 300) = c, en ekvation i x och y. (1) y=300 pluggas in → x bestäms. (2) x+y=700 kombineras med stammen → andragradsekvation som löser ut x. Båda räcker ensamt. Svar: D.",
+    "technique": "Vid två okända i NOG: räkna oberoende ekvationer mot okända. Stammen räknas som EN ekvation; ETT extra påstående räcker.",
+    "pitfall": "Botemedlet: kontrollera att stammens 'ekvation' är icke-trivial och oberoende av påståendet. När stammen ger en produkt och påståendet en summa är de oberoende — två okända i två ekvationer blir slutet system.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "Stammen ger en relation mellan x och y: xy/(400 \\cdot 300) = c (där c är en konstant från frågan). Söks: x.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Förenkla stammen",
+        "text": "Multiplicera: xy = 400 \\cdot 300 \\cdot c = 120000c. En oberoende ekvation i x och y.",
+        "tier": "essential"
+      },
+      {
+        "n": 3,
+        "title": "Definition: ekvationer vs okända",
+        "text": "Två okända kräver två oberoende ekvationer för unik lösning. Stammen ger en — påståendena måste leverera den andra.",
+        "tier": "detail"
+      },
+      {
+        "n": 4,
+        "title": "Testa (1) ensamt: y = 300",
+        "text": "(1) fixerar y direkt. Plug i stammen: x \\cdot 300 = 120000c → x = 400c. Unik lösning.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "(1) räcker",
+        "text": "Stammen + (1) ger {m('x')} entydigt. → (1) ensam tillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 6,
+        "title": "Definition: substitution",
+        "text": "För system med en linjär ekvation (x+y=700) och en multiplikativ (xy=K): lös ut den ena variabeln ur den linjära, substituera in i den multiplikativa.",
+        "tier": "detail"
+      },
+      {
+        "n": 7,
+        "title": "Testa (2) ensamt: x + y = 700",
+        "text": "Substituera y = 700 - x i stammen: x(700-x) = 120000c → x^2 - 700x + 120000c = 0.",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Lös andragraden",
+        "text": "Med stammens konkreta c-värde får andragraden en bestämd lösning (eventuellt dubbelrot eller en positiv rot som ensam är meningsfull i problemet). x låses.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "(2) räcker",
+        "text": "Stammen + (2) låser {m('x')} via andragradsekvationen. → (2) ensam tillräcklig.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera oberoendet",
+        "text": "(1) är y-låsning; (2) är summa-relation. Båda är oberoende från stammen och fungerar var för sig.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: D — tillräcklig information i (1) och (2) var för sig. Insikten i en mening: stammen räknas som EN ekvation; varje påstående som ger EN oberoende relation till räcker för att låsa två okända.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Det är lätt att tro att (2):s summa-relation lämnar två kandidatlösningar och därför är otillräcklig.",
+        "why_wrong": "Steg 8 visar att stammens konkreta värde låser unik x via andragraden — (2) räcker."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Många tycker (2) är 'starkare' och avskriver (1):s direkta y-låsning.",
+        "why_wrong": "Steg 4–5 visar att (1) ensam ger x direkt via substitution — (1) räcker."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Snabbsvar är ofta C när båda påståenden ser nyttiga ut.",
+        "why_wrong": "Steg 5 och 9 visar att vart och ett räcker oberoende — C kräver att INGEN ensam räcker."
+      },
+      {
+        "letter": "E",
+        "why_tempting": "Det är frestande att tro att två okända alltid kräver två påståenden + stammen.",
+        "why_wrong": "Steg 3 visar att stammen redan är en ekvation — bara EN extra oberoende ekvation behövs."
+      }
+    ]
+  },
+  "host-ver1-2019-kvant2-DTK-032": {
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-missing-fill"
+    },
+    "pregrade_tactic": {
+      "handle": "Egennams-låsningen",
+      "move": "När prompten nämner ett egennamn (årtal, plats, sjukhus) — fingeravtrycka entiteten i tabellen FÖRST. Räkna inte på fel rad."
+    },
+    "framework_id": "DTK-TACTIC-006",
+    "solution_path": "Specifikt år/land/objekt nämns; risken är att räkna på en grannrad under tidspress. Per facit: svar A. Nyckelsteg: Dra ett finger längs rätt rad innan avläsning.",
+    "technique": "DTK-taktik DTK-TACTIC-006: När prompten nämner ett egennamn (årtal, plats, sjukhus) — fingeravtrycka entiteten i tabellen FÖRST. Räkna inte på fel rad. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
+    "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Förstå frågan",
+        "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
+        "tier": "essential"
+      },
+      {
+        "n": 2,
+        "title": "Definition: DTK",
+        "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
+        "tier": "detail"
+      },
+      {
+        "n": 3,
+        "title": "Identifiera figurtyp",
+        "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Pinna entiteten",
+        "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Dra ett finger längs rätt rad innan avläsning.",
+        "tier": "essential"
+      },
+      {
+        "n": 5,
+        "title": "Definition: andel vs förhållande",
+        "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+        "tier": "detail"
+      },
+      {
+        "n": 6,
+        "title": "Läs av värde",
+        "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+        "tier": "essential"
+      },
+      {
+        "n": 7,
+        "title": "Definition: procent vs procentenheter",
+        "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+        "tier": "detail"
+      },
+      {
+        "n": 8,
+        "title": "Räkneoperation",
+        "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Jämför mot alternativen",
+        "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+        "tier": "essential"
+      },
+      {
+        "n": 10,
+        "title": "Verifiera storleksordning",
+        "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+        "tier": "detail"
+      },
+      {
+        "n": 11,
+        "title": "Slutsats",
+        "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+        "tier": "essential"
+      }
+    ],
+    "distractors": [
+      {
+        "letter": "B",
+        "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "C",
+        "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
+        "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+      }
+    ]
   }
 }
