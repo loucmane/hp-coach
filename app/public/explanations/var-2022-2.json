@@ -528,7 +528,7 @@
         "why_wrong": "Steg 6 visar att r förkortas bort — den absoluta storleken spelar ingen roll, bara förhållandet. Information räcker helt och hållet."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-029",
     "pitfall": "En vanlig fälla är att förväxla \"förhållande\" med \"sannolikhet\" — att tro 1:5 betyder 1/5. Botemedlet: räkna ALLTID totalen explicit (gynnsamma + ogynnsamma) innan du sätter upp bråket.",
     "solution_path": "Antalet svarta är 5 gånger antalet röda, så för r röda finns 5r svarta, totalt 6r kulor. Sannolikheten för röd = r/(6r) = 1/6. Och 1/6 < 1/5 (eftersom större nämnare ger mindre bråk). Svaret är B.",
     "steps": [
@@ -845,7 +845,7 @@
         "why_wrong": "Steg 4–8 visar att båda påståendena ger fullt definierad numerisk lösning. E gäller bara när påståendena är motsägelsefulla eller saknar information helt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-008",
     "pitfall": "En vanlig fälla är att räkna varje påstående som \"en bit information\" i stället för att räkna alla ekvationer de implicerar. Botemedlet: efter att du läst ett påstående, skriv ut ALLA ekvationer det ger — \"10 vita, hälften så många röda\" är två separata ekvationer.",
     "solution_path": "Båda påståendena ger numeriskt: (1) 10 vita, 5 röda → diff = 5. (2) 5 röda, 10 vita → diff = 5. Varje påstående ensamt räcker. Svaret är D.",
     "steps": [
@@ -962,7 +962,7 @@
         "why_wrong": "Steg 3–6 visar att med rätt elimineringsmetod ger logiska villkor en unik slutsats. Frånvaron av tider är inte ett problem — relativ ordning räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-014",
     "pitfall": "En vanlig fälla är att tolka \"Fanny rymmer inte först\" som om det räcker att Fanny inte är först — utan att hitta vem som DÅ är först. Botemedlet: kombinera ALLTID alla delvillkor i påståendet och se vad det IMPLICERAR om den efterfrågade positionen.",
     "solution_path": "Båda påståendena låser Polly som först. (1) säger Fanny ej först + Betty efter Polly → endast Polly kan vara först. (2) ger total ordning P < B < F. Vardera räcker — svaret är D.",
     "steps": [
@@ -1079,7 +1079,7 @@
         "why_wrong": "Steg 8–10 visar att de två tillsammans ger en unik sluttid. C, inte E."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-022",
     "pitfall": "En vanlig fälla är att tolka en \"checkpoint-tid\" (typ \"vid 18.10 är 2/3 klar\") som om den ENSAM ger sluttiden — man behöver en starttid eller annan referens för att räkna ut duration. Botemedlet: skriv ALLTID ut starttiden och slutsekvensen som två separata ekvationer.",
     "solution_path": "Vi söker sluttiden. (1) ger starttid (17.00) men inte antal skjortor. (2) ger att 2/3 är klart 18.10 men inte starttid. Tillsammans: 70 min är 2/3 av totala tiden → total = 105 min → klar 18.45. Svaret är C.",
     "steps": [
@@ -1196,7 +1196,7 @@
         "why_wrong": "JA/NEJ-frågan handlar om medelvärdet, inte enskilda x eller y. Steg 5 visar att (1) ger x+y = 98 exakt — fullt tillräcklig information för frågan."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-006",
     "pitfall": "En vanlig fälla är att tolka \"x + y > 50\" som direkt svar på \"är medel < 50?\" utan att räkna. Botemedlet: testa ALLTID minst två konkreta värden — ett som ger JA och ett som ger NEJ — om båda finns inom påståendets villkor är det otillräckligt.",
     "solution_path": "(1) ger (3x+3y)/2 = 147 → (x+y)/2 = 49 < 50. Tydligt JA. (2) ger bara x+y > 50, vilket bara säger medel > 25 — kan vara <50 eller >50. Otillräckligt. Endast (1) räcker — svaret är A.",
     "steps": [
@@ -1313,7 +1313,7 @@
         "why_wrong": "Steg 8–9 visar att med båda påståenden får vi en unik andel. E gäller bara när informationen är intern motsägelsefull eller helt saknas — inte här."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-001",
     "pitfall": "En vanlig fälla är att blanda ihop marginal (P(kryss)) och cell (P(röd ∧ kryss)) — de SER lika ut språkligt men matematiskt är de olika storheter. Botemedlet: rita ALLTID upp 2×2-tabellen med fyra celler och två marginaler innan du räknar.",
     "solution_path": "Vi söker P(röd ∧ kryss). (1) ger P(grön ∧ kryss) = 20%. (2) ger P(stjärna) = 40%, dvs P(kryss) = 60%. P(kryss) = P(röd ∧ kryss) + P(grön ∧ kryss) → P(röd ∧ kryss) = 60 − 20 = 40%. Behövs båda — svaret är C.",
     "steps": [
@@ -1642,7 +1642,7 @@
         "why_wrong": "Steg 3 fastslår räkneordningen: bara den FÖRSTA produkten ska tas — sedan är det subtraktion och addition. Du multiplicerar inte med {MO}\\frac{{4}}{{9}}{MC} på slutet, du adderar det."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-006",
     "pitfall": "En vanlig fälla är att hoppa över räkneordningen och bara ta termerna i läsordning från vänster till höger. Botemedlet: stryk ALLTID under multiplikationsdelarna först och räkna ut dem som ETT enskilt tal innan du sätter ihop hela uttrycket.",
     "solution_path": "Räkna multiplikationen först: \\frac{4}{9}\\cdot\\frac{1}{3}=\\frac{4}{27}. Sedan \\frac{4}{27} - \\frac{1}{3} + \\frac{4}{9} med gemensam nämnare 27 ger \\frac{4-9+12}{27}=\\frac{7}{27}. Svaret är B.",
     "steps": [
@@ -1848,7 +1848,7 @@
         "why_wrong": "Bråkens medelvärde fungerar inte så. \\frac{1}{4}=0,25, men det verkliga medelvärdet är ≈ 0,267 (steg 10). Genvägen ger fel värde."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-016",
     "pitfall": "En vanlig fälla är att tro att medelvärde fungerar på \"varje del\" av bråket separat (medelvärde av täljarna, medelvärde av nämnarna). Botemedlet: medelvärde är ALLTID (a+b)/2 av hela bråken som tal — inte av deras byggdelar.",
     "solution_path": "Medelvärdet av två tal är summan delad med 2. \\frac{1}{3}+\\frac{1}{5}=\\frac{5+3}{15}=\\frac{8}{15}, delat med 2 ger \\frac{8}{30}=\\frac{4}{15}. Svaret är D.",
     "steps": [
@@ -1948,7 +1948,7 @@
         "why_wrong": "Steg 6 fastslår att kvadratens sida s uppfyller s^{2} = arean, inte att s = arean själv. \\frac{9x}{16} är (3x/4)² och har inget direkt med kvadratens sida att göra."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-032",
     "pitfall": "En vanlig fälla är att tro att kvadratens sida kommer från att räkna ut arean direkt — men arean och sidan har olika sort (cm² vs cm). Botemedlet: skriv ALLTID s² på ena sidan och arean på andra, och dra roten — det säkrar att enheten blir rätt.",
     "solution_path": "Rektangelns area är x\\cdot\\frac{3x}{4}=\\frac{3x^{2}}{4}. Kvadratens sida = roten ur arean: \\sqrt{\\frac{3x^{2}}{4}}=\\frac{x\\sqrt{3}}{2}. Svaret är C.",
     "steps": [
@@ -2160,7 +2160,7 @@
         "why_wrong": "Steg 7 visar att bråket FÖRKORTAS bort. Resultatet är inget bråk längre — det är bara x. Att fastna i \"det började som bråk → det måste sluta som bråk\" är fel intuition."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-018",
     "pitfall": "En vanlig fälla är att tro att man kan \"dela termvis\" hur som helst, t.ex. att läsa (x² − 3x)/x som x² − 3 eller x − 3x. Botemedlet: skriv ut faktoriseringen som mellansteg — då blir det omöjligt att råka stryka fel del.",
     "solution_path": "Förkorta täljaren: \\frac{x^{2}-3x}{x}=\\frac{x(x-3)}{x}=x-3. Lägg till 3: (x-3)+3 = x. Svaret är C.",
     "steps": [
@@ -2454,7 +2454,7 @@
         "why_wrong": "Båda kvantiteter är fullt definierade rationella tal — räkningen ger ett exakt svar (−1/20). Information räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-023",
     "pitfall": "En vanlig fälla är att tro att 5/20 är \"litet\" för att 5 < 20 utan att se att det = 1/4 = 0,25, vilket är större än 1/5 = 0,2. Botemedlet: förkorta ALLTID bråk innan jämförelse, eller omvandla till decimaler — då blir storleksordningen synlig.",
     "solution_path": "Skriv om \\frac{1}{5}=\\frac{4}{20}. Då blir I = \\frac{4}{20}-\\frac{5}{20}=-\\frac{1}{20}. Negativ — alltså mindre än 0. II > I, svaret är B.",
     "steps": [
@@ -2548,7 +2548,7 @@
         "why_wrong": "Steg 6 visar att för a ≥ 4 är medianen 4, INTE 3. C kräver alltid lika, vilket inte gäller."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-021",
     "pitfall": "En vanlig fälla är att räkna med ETT värde på a (oftast mellanstorleken) och anta att svaret gäller för alla. Botemedlet: testa ALLTID minst två extrema värden (mycket litet och mycket stort) och se om medianen byter värde.",
     "solution_path": "Median av fem tal är mitten-talet efter sortering. Beroende på a (positivt heltal) blir medianen 3 eller 4. Olika värden möjliga → information otillräcklig. Svaret är D.",
     "steps": [
@@ -2854,7 +2854,7 @@
         "why_wrong": "Vi behöver inte veta de absoluta värdena på x och y — bara ORDNINGEN. Steg 8 visar att skillnaden x − y = 1/10 är låst, oberoende av exakta värden."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-023",
     "pitfall": "En vanlig fälla är att tro att den som har LITEN konstant tillagd är själv liten. Tvärtom: i en likhet måste den som adderas till en LITEN konstant själv vara STOR för att kompensera. Botemedlet: skriv om till x = y + (något) och avgör utifrån tecknet på \"något\".",
     "solution_path": "Lös ut x: x=y+\\frac{3}{5}-\\frac{1}{2}=y+\\frac{1}{10}. Eftersom 1/10 > 0 är x > y. Svaret är A.",
     "steps": [
@@ -3142,7 +3142,7 @@
         "why_wrong": "Båda 21 och 30 är konkreta tal med entydiga primtalsfaktoriseringar (steg 3 och 5). Information räcker mer än väl."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "En vanlig fälla är att tro att talet självt är en \"faktor\" — t.ex. \"30 = 30, så summan är 30\". Men primtalsfaktor betyder PRIMTAL — 30 är inte primtal. Botemedlet: kontrollera ALLTID att varje hittad faktor är ett primtal innan du adderar.",
     "solution_path": "21 = 3·7, summa 10. 30 = 2·3·5, summa 10. Båda 10 — svaret är C.",
     "steps": [
@@ -3358,7 +3358,7 @@
         "why_wrong": "Steg 8–9 visar att kombinationen ger en unik lösning N = 30. Sannolikhet och räkningar är mycket kompatibla — sannolikheten omsätter räkningen till en formel."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-003",
     "pitfall": "En vanlig fälla är att tolka \"sannolikheten 5/15\" som \"5 röda av 15 totalt\" — bråket är förkortat. Botemedlet: förkorta ALLTID sannolikheten till enklaste form (1/3) och behandla det som ett rent förhållande, inte en räkning.",
     "solution_path": "(1) ger sannolikheten för röd som 1/3 men inget totalantal. (2) ger antalet svarta (20) men inget om röda. Tillsammans: svarta är 2/3 av total → 20 = (2/3)·N → N = 30. Svaret är C.",
     "steps": [
@@ -3475,7 +3475,7 @@
         "why_wrong": "Steg 4 och 6 ger exakta multipler: bara 56 i båda fallen. E gäller bara när varken ensam eller tillsammans räcker — inte här."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-017",
     "pitfall": "En vanlig fälla är att tro att \"ett delbarhetsvillkor\" automatiskt är otillräckligt i ett konkret intervall. Botemedlet: lista ALLTID multiplarna explicit — om bara EN ligger i intervallet räcker villkoret.",
     "solution_path": "Heltalen 51–59 är möjliga. Delbara med 7: bara 56 (7·8 = 56). Delbara med 8: bara 56 (8·7 = 56). Varje påstående ensamt ger x = 56. Svaret är D.",
     "steps": [
@@ -3592,7 +3592,7 @@
         "why_wrong": "Steg 6 visar att (1) ger ett unikt N = 160 — fullt tillräckligt. E är fel."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-024",
     "pitfall": "En vanlig fälla är att tro att ett enskilt antal av en smak (som choklad = 80) räcker — men om inget kopplar det till totalen, är resten obegränsad. Botemedlet: räkna ALLTID hur många OBEKANTA varje påstående lämnar — om antalet ekvationer (med kända tal) räknat mot obekanta är < antalet obekanta, är det otillräckligt.",
     "solution_path": "(1) säger 1/8 är vanilj, alltså 7/8 är choklad + jordgubb = 140. Då är N = 140 · 8/7 = 160. Unikt. (2) ger bara 80 choklad, inget om resten. Bara (1) räcker — svaret är A.",
     "steps": [
@@ -3709,7 +3709,7 @@
         "why_wrong": "Steg 9 visar att kombinationen ger ett entydigt JA. Faktorisering + kedja är en standardteknik som låter informationen samverka."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-016",
     "pitfall": "En vanlig fälla är att tolka xy > xz som om man kan dela båda sidor med x — men det går bara om man VET x:s tecken (dela med negativt vänder olikheten). Botemedlet: BRYT UT x i stället för att dela — då bevarar du olikheten och tecknet på x blir explicit.",
     "solution_path": "(1) x < y < z säger inget om x:s tecken ensamt. (2) xy > xz → x(y−z) > 0, men y−z kan ha vilket tecken som helst → x också. Tillsammans: (1) ger y < z, så y − z < 0; med x(y−z) > 0 måste x < 0 (negativt · negativt = positivt). Behövs båda — svaret är C.",
     "steps": [
@@ -3821,7 +3821,7 @@
         "why_wrong": "Steg 5 och 7 visar att talet ska bli 5,61 OCH exponenten ska bli 8. Att kombinera fel räkning på båda håll ger ett dubbelt fel svar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-031",
     "pitfall": "En vanlig fälla är att MULTIPLICERA exponenterna istället för att ADDERA dem. Botemedlet: säg högt \"multipliceras potenser — adderas exponenter; upphöjs potenser — multipliceras exponenter\". Två olika regler för två olika operationer.",
     "solution_path": "Multiplicera talen var för sig: 1,7·3,3 = 5,61. Multiplicera tiopotenserna: 10^{5}\\cdot 10^{3}=10^{8}. Svaret är 5,61\\cdot 10^{8} = B.",
     "steps": [
@@ -3915,7 +3915,7 @@
         "why_wrong": "Det finns ingen multiplikation av medelvärdena i problemet. Steg 7 ger ett unikt x = −3 från substitution, inte multiplikation."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-048",
     "pitfall": "En vanlig fälla är att glömma multiplicera med 2 och behandla \"medelvärdet är 3\" som \"summan är 3\". Botemedlet: skriv ALLTID ut medelvärdesformel som (a+b)/2 = M innan du förenklar; det förhindrar att hoppa över multiplikationen.",
     "solution_path": "Från medelvärdet av x och y: x + y = 6. Från medelvärdet av y och 1: y + 1 = 10, så y = 9. Då blir x = 6 − 9 = −3. Svaret är B.",
     "steps": [
@@ -4209,7 +4209,7 @@
         "why_wrong": "Samma som B — steg 7 ger LIKHET. Det finns ingen riktning i jämförelsen mellan x och y; de är lika."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-024",
     "pitfall": "En vanlig fälla är att tappa bort dubbel-minus-regeln — antingen behandla −(−x) som −x eller lämna det otolkat. Botemedlet: byt EXPLICIT ut \"−(−a)\" mot \"+a\" som ett första steg, innan du gör något annat.",
     "solution_path": "Förenkla höger sida: 2-(-x)y=2+xy. Ekvationen blir x^{2}+2=2+xy, dvs x^{2}=xy. Dela båda sidor med x (x ≠ 0): x = y. Svaret är C.",
     "steps": [
@@ -4669,7 +4669,7 @@
     ],
     "technique": "Sammansatt omkrets: räta sträckor + cirkelbågar separat. Två kvartcirklar med samma radie = halvcirkel. Trigger: figur av kvadrater + cirkeldelar.",
     "pitfall": "Botemedlet: spåra ytterkanten med fingret runt hela objektet INNAN du börjar räkna — det förhindrar att du tar med interna kanter eller hoppar över en del av ytterkanten.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-041",
     "pregrade_tactic": {
       "handle": "Yttre-kant-genomgången",
       "move": "Följ ytterkanten varv runt: räkna räta sträckor, addera cirkelbågar separat. Två kvartcirklar = en halvcirkel med omkrets πr."

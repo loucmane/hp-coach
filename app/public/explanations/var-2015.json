@@ -216,7 +216,7 @@
         "why_wrong": "Steg 10: areorna av AED och EBC beror visserligen på a, MEN deras summa beror inte — den är alltid (1/2)·b·h. Och ECD beror inte på a alls."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Det är frestande att 'gissa likhet' utan att räkna. Botemedlet: visa likheten algebraiskt med parametern (a), och se den 'a-beroende' ter- men försvinna — det är bevisstegen som ger trygghet, inte intuitionen.",
     "pregrade_tactic": {
       "handle": "Parametrisera-och-jämför",
@@ -422,7 +422,7 @@
         "why_wrong": "Steg 9: totalen i lådan spelar ingen roll. 'Bara A' och 'bara B' beror endast på |A|, |B| och |A∩B|, alla givna."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": null,
     "pregrade_tactic": {
       "handle": "Venn-subtraktionen",
@@ -610,7 +610,7 @@
         "why_wrong": "Steg 7: x > 0 räcker. Förhållandet 13x/9 vs x avgörs av att 13/9 > 1 — gäller för ALLA positiva x."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-010",
     "pitfall": null,
     "solution_path": "Medelvärdet av x, 3x, x/3 = (x + 3x + x/3)/3 = (3x/3 + 9x/3 + x/3)/3 = (13x/3)/3 = 13x/9. Eftersom x > 0 är 13x/9 > x (eftersom 13/9 > 1). Svaret är B.",
     "steps": [
@@ -932,7 +932,7 @@
         "why_wrong": "Steg 4 och 9: båda påståendena ger n = 15 — konsistent och entydigt. Informationen räcker mer än väl."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-008",
     "pitfall": null,
     "solution_path": "(1) 'hälften plus en halv plus sju kvar' ger en ekvation i antalet jordgubbar n, lösbar direkt: n = 15. (2) Tidsstegen ger äthastigheten (6/30 s = 0,2/s) och totaltiden (75 s) → 0,2 · 75 = 15. Båda räcker var för sig. Svaret är D.",
     "steps": [
@@ -1043,7 +1043,7 @@
         "why_wrong": "Steg 7: cyklistens sträcka (7 km) är SAMMA strandpromenad som Carolas. Tiden i (2) är Carolas tid på samma sträcka. Kombineringen är legitim."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-022",
     "pitfall": null,
     "solution_path": "(1) ger sträckan: cyklist 30 km/h · 14 min = 7 km. (2) ger Carolas tid: 18:47 − 18:12 = 35 min. (1) ensam saknar tid, (2) ensam saknar sträcka. Tillsammans: 7 km / (35/60) h = 12 km/h. Svaret är C.",
     "steps": [
@@ -1343,7 +1343,7 @@
     ],
     "technique": "Primfaktor-lyftet: för primtal p gäller p|x² ⇔ p|x. Detta gäller INTE för sammansatta tal (4|x² betyder bara 2|x, inte 4|x). När målfaktorn är produkt av primtal kan delbarhet i x² lyftas till x.",
     "pitfall": "Det är frestande att tro att x² är 'mer information' än x och att kvadrater döljer faktorer. Botemedlet: primfaktorisera målfaktorn (15 = 3·5) och kolla varje primtal separat med p|x² ⇔ p|x.",
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-016",
     "pregrade_tactic": {
       "handle": "Primtals-lyftet",
       "move": "Vid delbarhets-NOG med kvadrater eller potenser: primfaktorisera målet och tillämpa p|x^n ⇔ p|x (för primtal p, n ≥ 1) — sedan blir påståendet ett villkor på x direkt."
@@ -1382,7 +1382,7 @@
         "why_wrong": "Steg 5 och 9: båda påståendena ger entydigt f_m = 4 via en hanterbar ekvationskedja. Informationen räcker mer än väl."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-001",
     "pitfall": null,
     "solution_path": "(1) ger antal pojkar (12) och antal med moped (10), och antal pojkar med moped (6) — så flickor med moped = 10 − 6 = 4. Räcker ensam. (2) ger flickor utan moped − pojkar utan moped = 2 och flickor utan moped − flickor med moped = 4 — lös systemet → flickor med moped = 4. Räcker ensam. Svaret är D.",
     "steps": [
@@ -1782,7 +1782,7 @@
         "why_wrong": "Steg 5–7: det vi multiplicerar med 4 är ANTALET VITA (40), inte totalen (50). 4·50 = 200 är fel ankare."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-023",
     "pitfall": null,
     "solution_path": "Av 50 kulor i förhållandet 4:1 är 40 vita och 10 svarta. För att nå förhållandet 1:4 (vita:svarta) ska de svarta vara 4 gånger så många som de vita: 4 · 40 = 160. Lägg till 160 − 10 = 150 svarta. Svaret är B.",
     "steps": [
@@ -2358,7 +2358,7 @@
         "why_wrong": "Steg 5–8: π är hela sektorn (sektor = tårtbit med två radier som sidor). Segmentet är sektor MINUS triangel, alltså π − 2 — inte π självt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-041",
     "pitfall": "Det är frestande att direkt räkna 'cirkel minus något' istället för 'sektor minus triangel'. Botemedlet: zooma in på den del av figuren som är skuggad — i ett klassiskt 90°-segment är det bara en kvart av cirkeln som spelar roll, inte hela.",
     "solution_path": "Cirkelns area är \\pi r^{2} = 4\\pi cm². Ett 90°-sektorområde är en fjärdedel: π cm². Det skuggade segmentet är sektorn minus den räta triangel som chordan klipper bort: π − (1/2)·2·2 = π − 2 cm². Svaret är D.",
     "steps": [
@@ -3360,7 +3360,7 @@
     ],
     "technique": "För sifferpussel: skriv tvåsiffrigt tal som 10Q + P och tolka villkoret som diofantisk ekvation. Begränsa kandidater via ensiffriga skäl, pröva alla, kontrollera entalssiffran.",
     "pitfall": "Botemedlet mot att förväxla siffrornas position: skriv R = 10Q + P explicit (Q i tiotal, P i ental) innan du substituerar.",
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-036",
     "pregrade_tactic": {
       "handle": "Sifferpussel-enumeringen",
       "move": "När en kvadrat ska skrivas som tvåsiffrigt tal med fixerade siffror: pröva alla 4 ≤ P ≤ 9 och se vilka som matchar entalssiffran."
@@ -3471,7 +3471,7 @@
     ],
     "technique": "Medelvärden kan partitioneras: om en mängd delas i k disjunkta delmängder med kända del-medelvärden kan totala medelvärdet räknas som viktat snitt: total = Σ(n_i · medel_i), medel = total / Σ n_i.",
     "pitfall": "Det är frestande att försöka räkna medelvärdet av medelvärdena (utan vikt). Botemedlet: alltid räkna i summa-arena — multiplicera varje del-medel med dess antal, summera, dela med totalantalet.",
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-015",
     "pregrade_tactic": {
       "handle": "Del-summa-pusslet",
       "move": "Vid medelvärdes-NOG med delgrupper: skriv ut varje del-summa (medel × antal), kolla om delgrupperna tillsammans täcker hela mängden disjunkt — om ja, addera till totalen."
@@ -3927,7 +3927,7 @@
     ],
     "technique": "I tre-komponent-blandningar med känd total: total − (summan av två andra) = den tredje. Du behöver bara DEN komplementära summan, inte fördelningen.",
     "pitfall": "Det är frestande att tro att alla tre komponenter måste isoleras. Botemedlet: skriv ner total och fråga 'vilken komplementär summa skulle direkt ge mitt mål?'.",
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-015",
     "pregrade_tactic": {
       "handle": "Komplement-räknaren",
       "move": "Vid 'A+B+C=total, hitta C'-NOG: leta efter ett villkor som ger A+B (de andra två summerade) — då följer C = total − (A+B) entydigt."
@@ -4038,7 +4038,7 @@
     ],
     "technique": "Heltalslösningar till linjära diofantiska ekvationer är typiskt glesa. Lista först alla möjliga par; en enda ojämlikhet eller paritets-villkor kan räcka för att låsa unikheten.",
     "pitfall": "Det är frestande att räkna 'två obekanta = två ekvationer behövs'. Botemedlet: vid heltalslösningar, lista först — du upptäcker ofta att en ojämlikhet räcker.",
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-005",
     "pregrade_tactic": {
       "handle": "Heltalslistan",
       "move": "Vid mynt-/sedel-NOG: lista alla heltalslösningar till värde-ekvationen först — då blir det uppenbart om en ojämlikhet räcker för unikhet."
@@ -4472,7 +4472,7 @@
         "why_wrong": "Steg 8: −4/5 = −0,8, fortfarande inte korrekt. Att en av termerna innehåller 4/5 betyder inte att svaret är ±4/5."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-016",
     "pitfall": null,
     "solution_path": "6 · 4/5 = 24/5. 2 · 8/3 = 16/3. Gemensam nämnare 15: 24/5 = 72/15 och 16/3 = 80/15. Skillnad: 72/15 − 80/15 = −8/15. Svaret är D.",
     "steps": [
@@ -4661,7 +4661,7 @@
       "generated_at": "2026-05-22",
       "recipe": "variant-c-regen-wave"
     },
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-032",
     "solution_path": "Tolka uttrycket som \\sqrt{8 \\cdot 20 - 4} (baserat på facit D = 12). Räkna under roten: 8 \\cdot 20 = 160, 160 - 4 = 156. \\sqrt{156} ligger mellan \\sqrt{144} = 12 och \\sqrt{169} = 13 — närmare 12. Svaret är 12.",
     "technique": "Approximativ rotutdragning: räkna värdet under roten exakt, sedan jämför mot närmaste perfekta kvadrater. n^2 \\le V < (n+1)^2 ger n \\le \\sqrt{V} < n+1.",
     "pitfall": "Botemedlet mot rot-fällan: räkna ALLTID värdet under roten klart innan du försöker dra ut. 8 \\cdot 20 - 4 = 156, inte 8·(20−4) = 128 — paranteser och räkneordning gäller.",
@@ -5038,7 +5038,7 @@
     ],
     "technique": "Linje med okänd lutning: substituera den givna punkten för att lösa k först, sedan är linjen helt definierad och nya x-värden ger y direkt.",
     "pitfall": "Det kluriga är att man kan vilja räkna direkt med x = -3 utan att först bestämma k. Botemedlet: skriv om uppgiften som två faser — fas 1 hittar k, fas 2 räknar nytt y.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-004",
     "pregrade_tactic": {
       "handle": "Lutningsjakten",
       "move": "När linjens ekvation har en okänd k och en punkt på linjen är given: stoppa in punkten, lös k, och först då räkna med nya x-värden."

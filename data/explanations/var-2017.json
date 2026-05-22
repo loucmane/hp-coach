@@ -116,7 +116,7 @@
         "why_wrong": "Skillnaden I − II är 2 oavsett x — den beror inte på x:s värde. Steg 9 låser fast det."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Det luriga med (x+1)^{2} + (x-1)^{2} är att glömma korstermerna. Botemedlet: skriv ut BÅDA kvadreringarna explicit med kvadreringsregeln, se hur +2x och −2x tar ut varandra, och stå kvar med ren x²+konstant-form.",
     "solution_path": "Multiplicera ut Kvantitet II: (x+1)^{2} + (x-1)^{2} = 2x^{2} + 2. Kvantitet I är 2x^{2} + 4. Skillnaden I − II = 2 > 0 för alla x. Svaret är A.",
     "steps": [
@@ -422,7 +422,7 @@
         "why_wrong": "Vi vet att x − y = 1,5 oavsett y. Det räcker för att bestämma jämförelsen entydigt (steg 7)."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-009",
     "pitfall": null,
     "solution_path": "Lös villkoret 2x − y − 3 = y för x: 2x = 2y + 3, alltså x = y + \\frac{3}{2}. x är alltid 1,5 enheter större än y. Svaret är A.",
     "steps": [
@@ -816,7 +816,7 @@
         "why_wrong": "Båda ekvationerna är fullt definierade och har unika lösningar (steg 3 och 7). Ingen information saknas."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Det luriga är att ekvation I sätter 1 + x i täljaren medan ekvation II sätter y + 1 i NÄMNAREN — olika roller, lätt att blanda ihop. Botemedlet: gångra bort nämnaren först i båda fallen — det normaliserar for- men så du kan jämföra äpplen med äpplen.",
     "solution_path": "Lös I: \\frac{1+x}{0{,}1} = -1 → 1 + x = −0,1 → x = −1,1. Lös II: \\frac{0{,}1 - 0{,}2}{y + 1} = 1 → −0,1 = y + 1 → y = −1,1. Båda blir −1,1 — alltså lika. Svaret är C.",
     "steps": [
@@ -1038,7 +1038,7 @@
         "why_wrong": "Två oberoende linjära ekvationer (P₃ = 135 och P₃ + P₄ = 310) räcker för att lösa två obekanta. Steg 10 visar lösningen."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-020",
     "pitfall": null,
     "solution_path": "Med priser sorterade som 110 < a < b < c < 180 är topp två = c + 180. (1) säger b = 135 (median), inget om c. (2) säger b + c + 180 = 490, alltså b + c = 310 — men inte vad c är ensamt. Tillsammans ger b = 135 och c = 175, så topp två = 175 + 180 = 355. Svaret är C.",
     "steps": [
@@ -1155,7 +1155,7 @@
         "why_wrong": "Båda påståenden gör det möjligt att räkna ut K exakt — steg 5 och 7. Information saknas inte."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-008",
     "pitfall": "Det luriga är att läsa '12 för säker kantarell' som 'det finns 12 kantar- eller' istället för 'det finns 11 champinjoner'. Botemedlet: tänk alltid på VÄRSTA FALLET som styr garantin — det maximala antalet motsorten plus en.",
     "solution_path": "(1) 'Minst 12 för säker kantarell' = det finns precis 11 champinjoner (annars hade 11 räckt) → K = 19. Unikt. (2) 'Minst 20 för säker champinjon' = det finns precis 19 kantar- eller → K = 19. Unikt. Båda räcker. Svaret är D.",
     "steps": [
@@ -1389,7 +1389,7 @@
         "why_wrong": "(1) är direkt informativ: total − tröjor = skjortor, alltså 20. Steg 4 räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-025",
     "pitfall": "Det luriga är att (2) känns konkretare med två siffror (12 och 6) men är otillräcklig eftersom den lämnar Jonas' fördelning öppen. Botemedlet: när du jämför påståenden, fråga inte 'vilket innehåller fler siffror?' utan 'vilket SVAR PÅ FRÅGAN är entydigt?'.",
     "solution_path": "Markus tvättar ALLA plagg, så 'skjortor Markus tvättat' = total antal skjortor. (1) ger total 36, totalt 16 tröjor → 20 skjortor. Unikt. (2) säger bara hur många skjortor Markus ÄGER, inte hur många Jonas äger → otillräckligt. Bara (1) räcker. Svaret är A.",
     "steps": [
@@ -1506,7 +1506,7 @@
         "why_wrong": "Varken (1) eller (2) räcker själv (steg 5 och 8). Båda lämnar flera möjligheter."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-005",
     "pitfall": "Det luriga är att frestelsen är att räkna SCENARIER (typ 'tre med 4 sist + en med 9 sist') istället för att testa VARJE permutation. Botemedlet: gör en tabell med alla 6 permutationer och bocka av kolumn för kolumn — då missar du ingen.",
     "solution_path": "(1) tillåter två tal: 934 och 394. (2) tillåter tre tal: 394, 934, 349. Snittet är fortfarande {934, 394} — två möjligheter, inte unikt. Svaret är E.",
     "steps": [
@@ -2160,7 +2160,7 @@
     ],
     "technique": "Decimalrot: skriv om till bråk (0{,}25 = \\frac{1}{4}), använd rot-av-bråk-regeln, kvadrera kontroll för verifiering.",
     "pitfall": "Det kluriga är att decimaler är ovana att rota — frestelsen är att gissa eller halvera. Botemedlet: gör om till bråk eller flytta decimalkommat parvis (\\sqrt{0{,}25} = \\sqrt{25/100} = 5/10).",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-032",
     "pregrade_tactic": {
       "handle": "Decimal-roten",
       "move": "Vid kvadratrot av decimal: skriv om till bråk eller använd \\sqrt{0{,}ab} = \\frac{\\sqrt{ab}}{10} — 0{,}25 \\to \\sqrt{25}/10 = 0{,}5."
@@ -2194,7 +2194,7 @@
         "why_wrong": "Båda effekterna är symmetriska — samma faktor a gångrar både m och k. Steg 5 visar att det är samma multiplikation, så båda krymper."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-051",
     "pitfall": "Det luriga är att räkna effekten bara på en parameter (typ 'k blir mindre, men vad händer med m?'). Botemedlet: distribuera a explicit över parentesen — a·(kx + m) = akx + am — då blir det omedelbart klart att BÅDA parametrarna gångras med samma a.",
     "solution_path": "Att gångra hela uttrycket kx + m med a (där 0 < a < 1) ger nya koefficienter ak och am. Båda blir närmare noll, så skärningen med y-axeln rör sig mot origo och lutningen blir mindre brant. Svaret är A.",
     "steps": [
@@ -2600,7 +2600,7 @@
         "why_wrong": "Mängden är fullt specificerad och vi kan testa varje element direkt. Steg 4–7 räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-028",
     "pitfall": "Det luriga är att man kan tro att 'ett mindre tal är lättare delbart' — det är fel. Det är ANTALET OLIKA PRIMFAKTORER som styr antalet delare. Botemedlet: räkna alltid primfaktorerna explicit (39 = 3 · 13, två primfaktorer), inte talets storlek.",
     "solution_path": "6 är delbart med 3 (men inte med 5, 7, 11, 13) → P(I) = 1/5. 39 = 3 · 13 är delbart med 3 och 13 (inte med 5, 7, 11) → P(II) = 2/5. II = 2/5 > 1/5 = I. Svaret är B.",
     "steps": [
@@ -2700,7 +2700,7 @@
         "why_wrong": "Båda kvantiteterna är jämna grader / kvadrater av x — tecknet försvinner. Steg 8 och 9 visar att x = 2 och x = −2 ger samma resultat."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Det luriga är att (x + x)(x + x) SER UT som addition, men är produkten av två summor — som efter förenkling blir 4x². Botemedlet: förenkla parentesernas innehåll INNAN du multiplicerar — gör (x+x) → 2x, då blir det tydligt att uttrycket är (2x)² = 4x².",
     "solution_path": "Kvantitet I: x^{4} = (x^{2})^{2} = 4^{2} = 16. Kvantitet II: (x+x)(x+x) = (2x)(2x) = 4x^{2} = 4 \\cdot 4 = 16. Båda är 16. Svaret är C.",
     "steps": [
@@ -2800,7 +2800,7 @@
         "why_wrong": "Bråkräkning är exakt — det finns alltid en gemensam nämnare. Steg 4 hittar MGM = 15."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-023",
     "pitfall": "Det luriga är att se 1/3 + 1/15 och tro att svaret är något 'sammansatt' i stil med 4/15 eller 1/9. Botemedlet: räkna alltid mekaniskt — gångra båda upp till MGM, lägg ihop, förkorta. Då dyker den 'enkla' for- men 2/5 upp automatiskt.",
     "solution_path": "Kvantitet I: \\frac{1}{5} + \\frac{1}{5} = \\frac{2}{5}. Kvantitet II: \\frac{1}{3} + \\frac{1}{15} = \\frac{5}{15} + \\frac{1}{15} = \\frac{6}{15} = \\frac{2}{5}. Båda är 2/5 — lika. Svaret är C.",
     "steps": [
@@ -3106,7 +3106,7 @@
         "why_wrong": "Mittersta fallet är bara ETT av tre möjliga. Steg 6 visar att alla tre möjligheter är öppna."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-036",
     "pitfall": "Det luriga är att hoppa över ett fall — typ att glömma att x också kan vara 0. Botemedlet: enumerera SYSTEMATISKT: 'om x = 0, om y = 0, om z = 0' — då missar du inget.",
     "solution_path": "Eftersom x · y · z = 0 måste minst ett av talen vara 0. Tre möjliga konsekutiva trippelter har en nolla: (−2, −1, 0), (−1, 0, 1), (0, 1, 2). z är då 0, 1 eller 2 — kan vara mindre, lika eller större än 1. Svaret är D.",
     "steps": [
@@ -3533,7 +3533,7 @@
         "why_wrong": "Två oberoende villkor på TRE OBEKANTA är otillräckligt I ALLMÄNHET, men eftersom (1) reducerar systemet till EN obekant (k), räcker (2) för att låsa den. Steg 7 räknar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-024",
     "pitfall": "Det luriga är att underskatta förhållandets styrka — det reducerar tre obekanta till EN, vilket öppnar för att en enda extra ekvation räcker. Botemedlet: när du ser ett förhållande, skriv om variablerna med en gemensam parameter k — då blir nästa steg uppenbart.",
     "solution_path": "(1) ger x:y:z = 3:5:7, alltså x = 3k, y = 5k, z = 7k — men k är okänt. (2) ger z − x = 28, en ekvation med två obekanta. Tillsammans: 7k − 3k = 4k = 28 → k = 7. Summan = 15k = 105. Svaret är C.",
     "steps": [
@@ -3650,7 +3650,7 @@
         "why_wrong": "Snittet av (1)'s och (2)'s kandidater är exakt ETT element (D-T-B-G). Tillsammans räcker (steg 9)."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-005",
     "pitfall": "Det luriga med pussel-NOG är att slumpa in en konfiguration som passar BÅDA påståenden och tro att den är unik — utan att tömma alla. Botemedlet: för varje påstående, enumerera ALLA kandidater (med liten brute-force) — sedan snitta.",
     "solution_path": "(1) ger två möjliga ordningar: D-T-B-G eller G-T-B-D. (2) utesluter den andra (där T och G är grannar). Tillsammans återstår bara D-T-B-G — och längst till vänster sitter domherren. Svaret är C.",
     "steps": [
@@ -4566,7 +4566,7 @@
         "why_wrong": "Frågan är f(1) − f(0), inte f(1) ensamt. Steg 6 räknar 10 − 2 = 8."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-034",
     "pitfall": "Det klassiska felet är a^{0} = 0. Botemedlet: minns regeln explicit — för varje icke-noll a är a^{0} = 1, vilket är konsekvent med exponent-divisionsregeln (steg 5).",
     "solution_path": "Sätt in värdena: f(1) = 2 \\cdot 5^{1} = 10 och f(0) = 2 \\cdot 5^{0} = 2 \\cdot 1 = 2. f(1) − f(0) = 10 − 2 = 8. Svaret är B.",
     "steps": [
@@ -4726,7 +4726,7 @@
     ],
     "technique": "Bråk-subtraktion: faktorisera båda nämnarna, hitta MGN av de numeriska faktorerna, förläng varje bråk till gemensam nämnare, subtrahera täljarna.",
     "pitfall": "Det kluriga är att 2 och 6 har MGN 6, inte 4 (som vore summan halverad) — frestelsen är att räkna fel MGN. Botemedlet: gör en sanity-check med x = 1 numeriskt för att fånga både tecken och nämnare.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-016",
     "pregrade_tactic": {
       "handle": "MGN-disciplinen",
       "move": "Vid bråk-subtraktion: faktorisera båda nämnare, ta MGN av de numeriska delarna och behåll (x + 1) (eller motsvarande) som gemensam — addera/subtrahera täljarna sist."

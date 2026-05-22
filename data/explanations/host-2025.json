@@ -592,7 +592,7 @@
         "why_wrong": "Steg 6–7 visar att TECKEN ensamt avgör jämförelsen (positiv mot negativ). Storlekarna spelar ingen roll här."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-013",
     "pitfall": "Att försöka räkna ut storlek istället för bara tecken. Botemedlet: för en strikt tecken-jämförelse räcker det att veta att I är positiv och II negativ — då är slutsatsen omedelbar utan ett enda räknat värde.",
     "pregrade_tactic": {
       "handle": "Teckenparitetstestet",
@@ -686,7 +686,7 @@
         "why_wrong": "Steg 4–5: primfaktorisering är unik, så trippeln är entydigt {2, 3, 7}. Ingen tvetydighet — informationen räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-036",
     "pitfall": "Att blanda ihop median med medelvärde, eller att tro att 'primtal' inkluderar 1. Botemedlet: definiera definitionerna högt för dig själv ('median = mittentalet', '1 är inte ett primtal') innan du börjar räkna.",
     "pregrade_tactic": {
       "handle": "Primfaktoriseringen",
@@ -785,7 +785,7 @@
         "why_wrong": "D kräver att VARDERA påståendet ensamt ger unikt svar. Steg 5 och steg 7 visar att inget av dem gör det. D är reserverat för fall där (1) ensamt ger ett tal OCH (2) ensamt ger samma (eller annat) tal."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-001",
     "pitfall": "Den klassiska NOG-tabell-fällan: att tro att kolumnsummor och en kolumnuppdelning räcker när målet är en radsumma. Botemedlet: skriv ut tabellen, ringa in den efterfrågade summan, och kolla att informationen rör BÅDA rutorna i den summan — inte bara den ena.",
     "pregrade_tactic": {
       "handle": "Tvåvägstabellen",
@@ -1106,7 +1106,7 @@
         "why_wrong": "Steg 7 och 10 visar att varken (1) eller (2) ensamt räcker. D kräver att VAR OCH EN ensamt ger unikt svar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-004",
     "pitfall": "'Minst en av X och Y' låter starkt men är ett svagt villkor (uppfyllt av X ensam, Y ensam, eller båda). Botemedlet: skriv alltid ut alla tillåtna konfigurationer för 'minst en'-villkor och se om någondera variabel är fri i något scenario.",
     "pregrade_tactic": {
       "handle": "Fallkonstruktionen",
@@ -1223,7 +1223,7 @@
         "why_wrong": "Steg 7 visar att (2) entydigt fastställer Göran som sekreterare. E gäller bara när varken (1), (2) eller båda räcker — här gör (2) det."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-014",
     "pitfall": "'Varken X eller Y väljs till Z' missuppfattas ofta som svag information. Botemedlet: i ett 3-personers-system betyder 'varken X eller Y på Z' att den TREDJE personen får Z (enda kvar) — vilket är en STARK låsning.",
     "pregrade_tactic": {
       "handle": "Permutationslåsen",
@@ -1764,7 +1764,7 @@
         "why_wrong": "Steg 4 låser f(3) = 13 (inkluderar +1), och steg 8 gör att 2·13 − 1 = 25, inte 24. Båda ändarna måste med."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-007",
     "pitfall": "Det luriga är att glömma att f redan är 'gjort' när du sätter in i g — du ska INTE räkna 4·3 + 1 igen inne i g. Botemedlet: skriv ner f(3) = 13 som ett mellansteg på papper och behandla 13 som en vanlig konstant när du sätter in i g.",
     "pregrade_tactic": {
       "handle": "Sammansatta-funktionsräkningen",
@@ -1958,7 +1958,7 @@
         "why_wrong": "xoch y-skärningar har inget med varandra att göra storleksmässigt — de styrs av k. Steg 12 verifierar: med k = −4 är basen 1, inte 4."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-051",
     "pitfall": "Den klassiska fällan är att glömma absolutbeloppet och hamna med ett negativt 'basvärde' i area-formeln. Botemedlet: tänk på basen som en LÄNGD (alltid positiv); ta absolutbeloppet av talet, oavsett tecken på koordinaten.",
     "pregrade_tactic": {
       "handle": "Linjens-triangel",
@@ -2070,7 +2070,7 @@
         "why_wrong": "Det här uttrycket saknar gemensam nämnare för båda termerna — det är inte samma form som facit D. Steg 8–9 visar att korrekt skrivsätt har b^{2} + a i täljaren OCH ab i nämnaren tillsammans."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-016",
     "pitfall": "Den största fällan är att förlänga nämnaren korrekt men glömma att också förlänga täljaren med samma faktor. Botemedlet: när du gångrar nämnaren med X, gångra ALLTID täljaren med samma X i samma räknemoment.",
     "pregrade_tactic": {
       "handle": "Bråkadditions-spåret",
@@ -2458,7 +2458,7 @@
         "why_wrong": "Villkoret 0 < a < 1 räcker — slutsatsen 1/a > a gäller för HELA intervallet. Steg 4–6 verifierar tre olika a, alla med samma utfall."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-034",
     "pitfall": "Att inte testa flera värden i intervallet och stanna vid ett enda. Botemedlet: testa minst tre värden (litet, mellanstort, nära 1) — om alla ger samma utfall är resultatet generellt.",
     "pregrade_tactic": {
       "handle": "Inversflippen",
@@ -2546,7 +2546,7 @@
         "why_wrong": "Båda uttrycken är fullständigt definierade tal. Steg 4 och 6 räknar ut dem exakt — informationen räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-023",
     "pitfall": "Att försöka jämföra de fyra ursprungliga bråken termvis (typ '5/4 är större än 4/3', '4/5 är mindre än 3/4') utan att räkna ut hela skillnaden. Botemedlet: räkna ALLTID ut varje kvantitet till ett enda slutbråk innan du jämför.",
     "pregrade_tactic": {
       "handle": "Bråkskillnads-jämförelsen",
@@ -2640,7 +2640,7 @@
         "why_wrong": "Steg 4 visar att jämförelsen gäller för ALLA giltiga x, y i intervallet — informationen räcker, även om de specifika värdena inte är låsta."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-034",
     "pitfall": "Att tillämpa intuitionen från heltalsräkning där multiplikation gör större. Botemedlet: minns att tal mellan 0 och 1 fungerar 'krymper' multiplikationsvis — kom ihåg den enkla testen: 0,5 · 10 = 5, alltså mindre än 10.",
     "pregrade_tactic": {
       "handle": "Krympmultiplikationen",
@@ -2722,7 +2722,7 @@
         "why_wrong": "Steg 4 visar att z = 6 KONSTANT, oberoende av x. Likhet I = II inträffar bara för x = 6, inte alltid."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-009",
     "pitfall": "Att inte göra färdigt substitueringen och tro att 'z är en variabel beroende av x'. Botemedlet: räkna ALLTID ut z helt och se om uttrycket innehåller x kvar — om inte är z konstant.",
     "pregrade_tactic": {
       "handle": "Substitutionsstrategin",
@@ -3004,7 +3004,7 @@
         "why_wrong": "Uttrycket är fullständigt definierat. Steg 3 räknar ut alla faktorer som konkreta tal — informationen räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Att fastna i att räkna ut varje produkt mekaniskt utan att se mönstret — ger samma svar men tar tio gånger så lång tid. Botemedlet: skriv om varje faktor som ett bråk OCH leta efter par där täljaren av ena är nämnaren av andra.",
     "pregrade_tactic": {
       "handle": "Invers-parstricket",
@@ -3220,7 +3220,7 @@
         "why_wrong": "Steg 4 och 8 ger båda N = 20. E gäller bara när varken (1), (2) eller båda räcker — här gör båda det."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-008",
     "pitfall": "Klassisk procent-fälla: tro att 'växte med 25%' betyder att slutvärdet är 25% av startvärdet (det är slutvärdet som är 125% av startvärdet, dvs 5/4 av det). Botemedlet: rita en pil från start → slut och skriv ut '×1,25' ovanpå, så ser du procenten som en faktor inte ett tal.",
     "pregrade_tactic": {
       "handle": "Procent-direktekvationen",
@@ -3331,7 +3331,7 @@
         "why_wrong": "Steg 9: man behöver inte konkreta gradtal — det räcker att veta att v = w. Parallellitetskriteriet är symboliskt, inte numeriskt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-007",
     "pitfall": "Konkreta tal i geometri-villkor (180°, 90°, 360°) får dig att tro att informationen är specifik — men det är ofta tautologier. Botemedlet: fråga 'gäller detta påstående i ALLA möjliga konfigurationer?'. Om ja → ingen information.",
     "pregrade_tactic": {
       "handle": "Tautologivakten",
@@ -3553,7 +3553,7 @@
         "why_wrong": "Steg 8-10: tillsammans har vi 14 (katt-totalt) + BK=10 + V=6B + totalsumma=45 — fyra ekvationer, fyra obekanta (BK, B, BH, V). Systemet löses entydigt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-018",
     "pitfall": "Relativa villkor (typ '1/6 av varken') är frestande att klassa som starka — men de behöver ett konkret ankarvärde för att bli löstbara. Botemedlet: räkna alltid antalet OBEROENDE absoluta värden i påståendena; kvoter ensamma är värdelösa.",
     "pregrade_tactic": {
       "handle": "Venn-fyrarutan",
@@ -3664,7 +3664,7 @@
         "why_wrong": "Steg 4 och 6: vart och ett ensamt ger olika svar för olika test-värden. D kräver entydighet i båda fallen."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-016",
     "pitfall": "Att glömma att negativa tal flippar ordningar: 'dubbelt så mycket' (x = -2y) kan göra x mycket större ELLER mycket mindre än y, beroende på tecken. Botemedlet: när minustecknet finns med, testa minst ett positivt och ett negativt fall.",
     "pregrade_tactic": {
       "handle": "Tecken-testet",
@@ -3964,7 +3964,7 @@
         "why_wrong": "Steg 10 visar korsmultiplikationens regel: 3x = 8, vilket sedan ska delas med 3. Att lämna ekvationen vid 3x = 8 och skriva x = 24 hoppar över det sista räknesteget."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-017",
     "pitfall": "Den vanligaste fällan är att 'flippa fel bråk' — alltså invertera vänsterledet istället för att räkna fram x rakt. Botemedlet: skriv ut räknesteget med multiplikationen explicit, så ser du när bråket transformeras.",
     "pregrade_tactic": {
       "handle": "Bråk-isoleringen",
@@ -4141,7 +4141,7 @@
     ],
     "technique": "x²-rutinen: isolera x², dra kvadratroten med ±, matcha mot alternativen. Triggern är 'lös för x där x² förekommer i ekvationen'.",
     "pitfall": "Botemedlet mot 'glömde roten': skriv x = ±√k i marginalen så fort du har x² = k. Sedan välj rätt tecken utifrån alternativen.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-009",
     "pregrade_tactic": {
       "handle": "Kvadratrots-receptet",
       "move": "Isolera x² = k, ta båda kvadratrötterna (±√k), matcha mot alternativ — verifiera genom insättning."
