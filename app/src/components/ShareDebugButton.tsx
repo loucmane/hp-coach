@@ -139,16 +139,39 @@ function getActiveQuestion(): {
   const promptEl = document.querySelector('[data-testid="drill-prompt"]')
   if (!promptEl) return null
   const visiblePrompt = (promptEl.textContent || '').trim()
-  // Find by matching prompt textContent — the bank stores the raw
-  // (pre-KaTeX-render) prompt; the DOM has the rendered version, so
-  // we match by suffix-stripping the rendered LaTeX. Cheap: just
-  // compare on the first 30 chars of the visible text against the
-  // raw prompt's first 30 (skipping U+E000 sentinel chars).
-  const head = visiblePrompt.slice(0, 30)
-  const hit = bank.find((q) => {
-    const raw = (q.prompt || '').replace(/[]/g, '')
-    return raw.startsWith(head.slice(0, 20))
-  })
+  // Match the visible (KaTeX-rendered) prompt against the raw bank
+  // prompts. Earlier versions used a fixed 20-char prefix, which
+  // collided when multiple questions started with the same opener —
+  // e.g. "a och b är positiva tal..." (host-2020-XYZ-006) and
+  // "a och b är positiva heltal..." (var-2018-1-KVA-017) share the
+  // first 20 chars, so the WRONG qid bubbled up to share output.
+  // Instead: walk all banked questions and pick the one whose raw
+  // prompt shares the LONGEST common prefix with the visible text,
+  // requiring ≥40 chars to count as a match.
+  function lcpLength(a: string, b: string): number {
+    const n = Math.min(a.length, b.length)
+    let i = 0
+    while (i < n && a.charCodeAt(i) === b.charCodeAt(i)) i++
+    return i
+  }
+  let hit:
+    | {
+        qid?: string
+        prompt?: string
+        answer?: string
+        options?: { letter: string; text: string }[]
+      }
+    | undefined
+  let bestLen = 0
+  for (const q of bank) {
+    const raw = (q.prompt || '').replace(/[\u{E000}\u{E001}]/gu, '')
+    const len = lcpLength(raw, visiblePrompt)
+    if (len > bestLen) {
+      bestLen = len
+      hit = q
+    }
+  }
+  if (bestLen < 40) hit = undefined
   if (!hit) return null
   return {
     qid: hit.qid ?? null,
@@ -157,7 +180,6 @@ function getActiveQuestion(): {
     options: hit.options ?? [],
   }
 }
-
 function buildSnapshot(): string {
   const now = new Date().toISOString()
   const url = window.location.href
