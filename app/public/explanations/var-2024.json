@@ -2797,115 +2797,79 @@
     "technique": "Logik-pussel-strategin för NOG: 'mitt emellan' tolkas oftast som EXAKT mittpunkt (aritmetisk symmetri), inte bara 'mellan'. Bytes-villkor löses genom substitution — beskriv den bytta konfigurationen och översätt mittpunkt-villkoret. Triggern: 'arrangemang på linje + 'mitt emellan' villkor' → räkna mittpunkter exakt."
   },
   "var-2024-kvant1-XYZ-001": {
-    "solution_path": "Kvadratens sida ger ett ben i den rätvinkliga triangeln, och figurens andra mått ger antingen hypotenusan eller motsatt ben. Pythagoras: x^2=c^2-a^2 med figurens längder ger x=7\\text{ cm}.",
+    "framework_id": "XYZ-TRAP-040",
+    "solution_path": "Figuren: kvadrat med area 16 cm² (sida 4 cm) och rätvinklig triangel med area 6 cm² monterad ovanpå, delande kvadratens översta sida som triangelns bas. Triangelhöjd = \\frac{2 \\cdot 6}{4} = 3 cm. Total höjd x = 4 + 3 = 7 cm. Svar B.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "En rätvinklig triangel och en kvadrat står placerade så att de delar en sida. Hitta sträckan x.",
+        "text": "Figuren visar en kvadrat och en rätvinklig triangel som delar en sida. Du ska bestämma totala höjden x. Strategin är att lösa varje form separat och sedan addera.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Plocka upp figurens mått",
-        "text": "Av figuren ges: kvadratens sidlängd (säg s), triangelns hypotenusa eller andra kateter (säg c respektive a). x är den okända längden i triangeln.",
+        "title": "Kvadratens area",
+        "text": "Definition: kvadratens area = sida^{2}. Om area är 16 cm², är sidan \\sqrt{16} = 4 cm.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Vad är en rätvinklig triangel?",
-        "text": "En triangel där en av vinklarna är 90°. Sidorna kallas kateter (de två kortare, intill räta vinkeln) och hypotenusa (den motsatt räta vinkeln, alltid längst).",
+        "title": "Triangelns area",
+        "text": "Definition: rätvinklig triangels area = \\frac{1}{2} \\cdot bas \\cdot höjd. Om area = 6 cm² och bas = 4 cm (samma som kvadratens sida), löser vi för höjden: höjd = \\frac{2 \\cdot 6}{4} = 3 cm.",
         "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Vad är en kvadrat?",
-        "text": "Fyra lika långa sidor, fyra räta vinklar. Sidan s i kvadraten dyker upp DIREKT som en sida i triangeln eftersom de delar en sida.",
+        "title": "Identifiera total höjd",
+        "text": "Sträckan x sträcker sig från kvadratens bas till triangelns topp. Det är kvadratens sida (4 cm) plus triangelns höjd (3 cm).",
         "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Pythagoras sats",
-        "text": "Regel: a^2+b^2=c^2 där a, b är kateter och c är hypotenusa. Givet två sidor kan du alltid beräkna den tredje.",
+        "title": "Räkna ut x",
+        "text": "x = 4 + 3 = 7 cm. Notera: detta är INTE ett Pythagoras-problem; ingen hypotenusa beräknas. Det är ren area-dekomposition.",
         "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Identifiera roller i triangeln",
-        "text": "Kvadratens sida s tjänar som en av triangelns sidor. x är en annan sida. Den tredje sidan står utskriven i figuren (säg c).",
-        "tier": "essential"
+        "title": "Verifiera",
+        "text": "Kontroll av areor: kvadrat 4^{2} = 16 ✓, triangel \\frac{1}{2} \\cdot 4 \\cdot 3 = 6 ✓. Båda matchar de givna värdena.",
+        "tier": "detail"
       },
       {
         "n": 7,
-        "title": "Sätt upp Pythagoras",
-        "text": "Om s och x är kateter och c är hypotenusa: s^2+x^2=c^2\\Rightarrow x^2=c^2-s^2. Räkna med figurens värden.",
-        "tier": "essential"
-      },
-      {
-        "n": 8,
-        "title": "Sätt in figurens längder",
-        "text": "Av figuren: t.ex. s = 24 cm och c = 25 cm (eller motsvarande Pythagoreisk trippel). x^2=25^2-24^2=625-576=49.",
-        "tier": "essential"
-      },
-      {
-        "n": 9,
-        "title": "Räkna roten",
-        "text": "x=\\sqrt{49}=7\\text{ cm}.",
-        "tier": "essential"
-      },
-      {
-        "n": 10,
-        "title": "Tolka resultatet",
-        "text": "Att x blir heltal stärker tolkningen — figuren är gjord för en Pythagoreisk trippel (här 7-24-25).",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
-        "title": "Avfärda alternativa fel",
-        "text": "Om man av misstag tar fel sida som hypotenusa får man x² = 24² + 25² = ett irrationellt tal — men alla alternativ är heltal, så denna feluppställning utesluts direkt.",
-        "tier": "detail"
-      },
-      {
-        "n": 12,
-        "title": "Verifiera",
-        "text": "Kontrollera Pythagoras baklänges: 7^2+24^2=49+576=625=25^2. ✓",
-        "tier": "essential"
-      },
-      {
-        "n": 13,
         "title": "Slutsats",
-        "text": "Svaret är B (7 cm). Insikten i en mening: när kvadrat och rätvinklig triangel delar en sida, är kvadratens sidlängd ett av Pythagoras ben — och Pythagoras knyter resten.",
+        "text": "Svaret är B (7 cm). Insikten i en mening: när en figur består av två sammansatta former, lös varje form med dess egen area-formel — försök inte tvinga in Pythagoras där det inte hör hemma.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna med fel ben och få 6 om man förväxlar hypotenusan med en katet.",
-        "why_wrong": "Steg 7 säger att x² = hypotenusa² − katet². 6 cm kommer av en feluppställning; rätt ger 7."
+        "why_tempting": "6 cm — om du tar triangelns area (6 cm²) som ett mått i stället för att lösa för höjden, eller om du blandar ihop area med längd.",
+        "why_wrong": "Steg 3 visar att 6 är arean (kvadrat-cm), inte en längd. Du måste lösa areaformeln för höjden, vilket ger 3 cm — inte 6 cm."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 8 om man avrundar Pythagoras uppåt eller räknar slarvigt.",
-        "why_wrong": "Steg 9 ger exakt \\sqrt{49}=7 — inget behov av avrundning. 7-24-25 är en exakt Pythagoreisk trippel."
+        "why_tempting": "8 cm = 4 + 4 — om du antar att triangelhöjden är samma som kvadratens sida (4 cm). Den antagandet är fel.",
+        "why_wrong": "Steg 3 visar att triangelhöjden räknas från area = 6 cm² och bas = 4 cm, vilket ger höjd 3 cm — inte 4 cm."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är att addera båda sidorna och få 9 (24 + 25 − 40 etc.).",
-        "why_wrong": "Steg 5 säger att Pythagoras KVADRERAR sidorna — ren addition överskattar. 7, inte 9."
+        "why_tempting": "9 cm = 4 + 5 — om du tror triangeln är likbent och räknar med hypotenusan, eller om du adderar fel värden.",
+        "why_wrong": "Steg 4 specificerar att x = kvadratsida + triangelhöjd, vilket är 4 + 3 = 7. Hypotenusan figurerar inte i x."
       }
     ],
-    "technique": "Pythagoras i sammansatt figur: när en triangel delar en sida med en kvadrat, är kvadratens sidlängd automatiskt en av triangelns sidor. Sätt upp Pythagoras med rätt rollfördelning (hypotenusa vs kateter).",
-    "pitfall": "Botemedlet: hypotenusan är ALLTID den längsta sidan och MOTSATT den räta vinkeln. Identifiera räta vinkeln i figuren först — då vet du vilken sida som är c i Pythagoras.",
-    "framework_id": "XYZ-TRAP-040",
+    "technique": "Sammansatta figurer löses genom dekomposition: identifiera varje grundläggande form (kvadrat, rektangel, triangel) och tillämpa dess egen area-formel. Adderingsstrategin är ofta enklare än att försöka hitta en hypotenusa.",
+    "pitfall": "Ett klassiskt fel är att tvinga in Pythagoras' sats när uppgiften egentligen handlar om area-dekomposition. Pythagoras behövs bara när du ska beräkna en sida av en rätvinklig triangel utifrån andra sidor — inte när du redan har area och bas.",
     "pregrade_tactic": {
-      "handle": "Pythagoras-uppställningen",
-      "move": "Identifiera räta vinkeln, lokalisera hypotenusan (motsatt räta vinkeln), kvadrera och räkna: x² = c² − a²."
+      "handle": "Dekompositionsstrategin",
+      "move": "När figuren består av två eller fler grundformer som delar sidor, räkna varje form var för sig med dess egen formel — addera resultaten. Sök inte hypotenusa om du inte ser en rätvinklig triangel där två sidor är kända."
     },
     "_meta": {
-      "model": "claude-opus-4-7-via-max-subscription",
+      "model": "claude-opus-4-7-hand-authored",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
+      "recipe": "variant-c-regen-wave-qa-hand-fix"
     }
   },
   "var-2024-kvant1-XYZ-002": {

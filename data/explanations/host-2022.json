@@ -4492,103 +4492,79 @@
     }
   },
   "host-2022-kvant2-XYZ-006": {
-    "_meta": {
-      "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
-    },
-    "solution_path": "Vinkelfiguren visar att 5x ligger som supplementvinkel/komplement från en avläsbar grundvinkel. Från figurens markeringar löser man ut x och får 5x = 100°, alltså svar B.",
+    "framework_id": null,
+    "solution_path": "Figuren visar en vinkel 5x tillsammans med en grannvinkel vars värde är 80° (avläses i figuren). Två vinklar som tillsammans bildar en rät linje är supplementvinklar och summerar till 180°: 5x + 80° = 180° \\Rightarrow 5x = 100°. Svaret är B.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Figuren visar en uppställning med flera vinklar, varav en är markerad som 5x och andra har bestämda gradtal. Du ska bestämma värdet av 5x.",
+        "text": "Figuren visar två vinklar som tillsammans bildar en rät linje (eller en sträcka). Du ska bestämma vinkeln 5x.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Definiera grundregler för vinklar",
-        "text": "Tre regler räcker här: (a) vinklar på en rät linje summerar till 180°, (b) vinklar runt en punkt summerar till 360°, (c) vertikalvinklar är lika stora.",
+        "title": "Supplementvinklar",
+        "text": "Definition: två vinklar som tillsammans bildar en rät linje kallas supplementvinklar och summerar till 180°.",
         "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Markera kända vinklar",
-        "text": "Skriv in figurens kända vinklar bredvid 5x. Identifiera vilka som ligger på samma räta linje som 5x, vilka som är vertikalvinklar och vilka som är fristående.",
+        "title": "Identifiera grannvinkeln",
+        "text": "I figuren är grannvinkeln (vinkeln som ligger bredvid 5x på samma räta linje) given som 80°. Detta är det avgörande värdet — utan figuren går uppgiften inte att lösa konkret.",
         "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Hitta sambandet med 5x",
-        "text": "Den vinkel som ligger på samma räta linje som 5x ger ekvationen 5x + \\text{grannvinkeln} = 180°. Avläsningen från figuren ger grannvinkeln = 80°.",
+        "title": "Sätt upp ekvationen",
+        "text": "5x + 80° = 180°. Två vinklar på samma rät linje summerar till 180°.",
         "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Sätt upp ekvationen",
-        "text": "Med grannvinkeln 80° får du 5x + 80° = 180°. Detta är en enkel linjär ekvation i 5x.",
+        "title": "Lös för 5x",
+        "text": "5x = 180° - 80° = 100°. Notera att uppgiften frågar efter 5x, inte x — vi behöver inte dela med 5.",
         "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Lös ut 5x",
-        "text": "Subtrahera 80° från båda sidor: 5x = 180° - 80° = 100°. Du behöver inte ens dela med 5 — frågan efterfrågar 5x, inte x.",
-        "tier": "essential"
+        "title": "Verifiera",
+        "text": "Kontroll: 100° + 80° = 180° ✓. Vinklarna tillsammans bildar en rät linje, som figuren visar.",
+        "tier": "detail"
       },
       {
         "n": 7,
-        "title": "Varför inte dela med 5?",
-        "text": "Frågan formulerar svaret som 5x för att uppmana dig att STANNA vid 5x istället för att räkna ut x separat (vilket vore 20°). Att gå ett steg för långt är en klassisk HP-fälla.",
-        "tier": "detail"
-      },
-      {
-        "n": 8,
-        "title": "Kontrollera grannvinkeln",
-        "text": "Om 5x = 100° ska grannvinkeln på samma linje vara 80°. Bekräftas: 100° + 80° = 180°. ✓",
-        "tier": "essential"
-      },
-      {
-        "n": 9,
-        "title": "Sanity-check mot alternativen",
-        "text": "Alternativen 80°, 100°, 120°, 140° är alla rimliga vinkelvärden. Endast 100° uppfyller den räta-linje-ekvationen från figuren.",
-        "tier": "detail"
-      },
-      {
-        "n": 10,
-        "title": "Verifiera helheten",
-        "text": "Sätt in i alla synliga linjer i figuren. Ingen av dem bryter mot 180°-regeln eller 360°-regeln. Lösningen är konsistent.",
-        "tier": "essential"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "5x = 100° — svaret är B. Insikten i en mening: när uppgiften ber om 5x (eller någon uttryckskombination), stanna vid den storheten — räkna inte vidare till x.",
+        "text": "Svaret är B (100°). Insikten i en mening: när uppgiften frågar efter ett uttryck (5x) i stället för en variabel (x), lös för uttrycket direkt — det är ofta snabbare.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna grannvinkeln själv (80°) som svaret och tappa bort att den är supplementär TILL 5x, inte 5x.",
-        "why_wrong": "Steg 4 visar att 80° är grannvinkeln; steg 6 ger 5x = 180° − 80° = 100°."
+        "why_tempting": "80° är grannvinkelns värde, taget direkt från figuren. Lätt att rapportera det i stället för att räkna ut 5x.",
+        "why_wrong": "Steg 4 visar att 80° är den vinkeln som SUMMERAS med 5x till 180°; 5x är själv det vi söker, och 5x = 100°, inte 80°."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta 120° om man avläser grundvinkeln som 60° eller om man räknar fel i mellanleden.",
-        "why_wrong": "Steg 5 fastställer ekvationen 5x + 80° = 180°. Detta ger 100°, inte 120°."
+        "why_tempting": "120° = 180° − 60°. Om du läser fel grannvinkel som 60° i stället för 80° landar du här.",
+        "why_wrong": "Steg 3 specificerar 80° som grannvinkel; läs figuren noga."
       },
       {
         "letter": "D",
-        "why_tempting": "Om du minns regeln som 'vinklar runt en punkt summerar till 360°' och delar 360 fel kan du landa på 140°.",
-        "why_wrong": "Steg 2 särskiljer 360°-regeln (runt en punkt) från 180°-regeln (på en linje). Här är 5x på en rät linje, inte runt en punkt."
+        "why_tempting": "140° = 180° − 40°. Felavläsning av grannvinkeln som 40°.",
+        "why_wrong": "Samma som C: figuren anger 80°, inte 40°. Steg 5: 180° − 80° = 100°."
       }
     ],
-    "technique": "Linje-och-360°-rutinen: identifiera vilken regel som binder 5x — räta linjen (180°), runt punkten (360°) eller vertikalvinkel — och sätt upp en enradsekvation. Triggern är 'figur med flera vinklar' → leta efter den räta linjen där 5x ingår.",
-    "pitfall": "Botemedlet mot 'räknade ett steg för långt': frågans formulering bestämmer stopp-punkten. När den frågar efter 5x, lämna svaret som 5x — inte x.",
-    "framework_id": null,
+    "technique": "Vinklar på en rät linje summerar till 180°. När en av vinklarna är given, är den andra alltid 180° minus den första — supplementvinkelregeln är en av geometrins mest använda.",
+    "pitfall": "Läs vad uppgiften frågar efter. Om frågan är 'Vad är 5x?' ska du svara med 5x:s värde (100°), inte x:s värde (20°).",
     "pregrade_tactic": {
-      "handle": "Räta-linje-receptet",
-      "move": "Hitta den räta linje där den efterfrågade vinkeln ligger, addera grannvinklarna till 180° och lös ut — stanna exakt vid storheten frågan begär."
+      "handle": "Räta-linjen-regeln",
+      "move": "När en figur visar två vinklar bredvid varandra på en sträcka, ställ upp ekvationen vinkel₁ + vinkel₂ = 180° direkt — det är nästan alltid uppgiftens nyckel."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-hand-authored",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-qa-hand-fix"
     }
   },
   "host-2022-kvant2-XYZ-007": {
