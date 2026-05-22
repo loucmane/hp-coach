@@ -1978,103 +1978,103 @@
     }
   },
   "var-2017-kvant1-XYZ-007": {
-    "solution_path": "Uttrycket är (2x - 2y)(x + 3y) - (x^{2} + 3y^{2}) (parsat ur OCR-prompten). Utveckla: 2x^{2} + 6xy - 2xy - 6y^{2} - x^{2} - 3y^{2} = x^{2} + 4xy - 9y^{2} — men facit-mönstret matchar -x^{2} - 3y^{2} + 2x - 4y (svar B), vilket betyder uttrycket är (2x - x^{2}) + (-3y^{2}) + (3xy - 3xy) - 4y. Distribuera, samla termer, mellantermerna tar ut varandra. Svar B.",
+    "framework_id": "XYZ-TRAP-003",
+    "solution_path": "Uttrycket 2(x-2y) - x(x+3y) + 3y(x-y) förenklas genom att utveckla varje parentes separat och samla termer av samma typ. -3xy och +3xy tar ut varandra, vilket lämnar -x^{2} - 3y^{2} + 2x - 4y.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Ett algebraiskt uttryck med termer i x och y ska förenklas. Facit är alternativ B: -x^{2} - 3y^{2} + 2x - 4y. Vi visar hur termerna kombineras dit.",
+        "text": "Du ska förenkla uttrycket 2(x-2y) - x(x+3y) + 3y(x-y). Strategin är: utveckla varje parentes, samla termer.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Notation: variabler",
-        "text": "Variabler x och y är oberoende. Vi behandlar varje term-typ separat: x^{2}, y^{2}, xy (blandad), x, y, konstant.",
+        "title": "Distributiv lag",
+        "text": "Distributiv lag: a(b+c) = ab + ac. Varje term inne i parentesen multipliceras med faktorn utanför.",
         "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Distributiva lagen",
-        "text": "Definition: a(b + c) = ab + ac. Tillämpas på alla parenteser i uttrycket — varje term inuti multipliceras med faktorn utanför.",
-        "tier": "detail"
+        "title": "Utveckla första parentesen",
+        "text": "2(x - 2y) = 2 \\cdot x + 2 \\cdot (-2y) = 2x - 4y.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Utveckla varje parentes",
-        "text": "Ett uttryck typ (2x)(1 - 2y) ger 2x - 4xy. Liknande för andra parenteser — viktigast: håll koll på tecken-byten när minustecken är inblandade.",
+        "title": "Utveckla andra parentesen",
+        "text": "-x(x + 3y) = -x \\cdot x + (-x) \\cdot 3y = -x^{2} - 3xy. Minustecknet följer med in i parentesen.",
         "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Samla x²-termer",
-        "text": "Av uttrycket finns -x^{2} (en gång, med koefficient -1). Inga andra x^{2}-termer kvar efter utveckling.",
+        "title": "Utveckla tredje parentesen",
+        "text": "3y(x - y) = 3y \\cdot x + 3y \\cdot (-y) = 3xy - 3y^{2}.",
         "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Samla y²-termer",
-        "text": "Tre kopior av -y^{2} eller motsvarande utvecklas till -3y^{2}. Detta är koefficient-summan på y^{2}-termen.",
+        "title": "Skriv ut alla termer",
+        "text": "Summera: (2x - 4y) + (-x^{2} - 3xy) + (3xy - 3y^{2}). Sex termer totalt; vi sorterar nu efter typ.",
         "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Samla xy-termer",
-        "text": "Här är trickläget: +3xy - 3xy = 0. Två termer med blandad produkt tar ut varandra. Detta är NYCKELN till varför alternativ B saknar xy.",
+        "title": "Kombinera xy-termerna",
+        "text": "-3xy + 3xy = 0 — de tar ut varandra. Detta är uppgiftens nyckelförenkling: korstermen försvinner.",
         "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Samla x-termer",
-        "text": "+2x kvar (linjär i x utan kvadrat).",
+        "title": "Samla återstående termer",
+        "text": "Kvar: -x^{2} - 3y^{2} + 2x - 4y. Andragradstermerna (-x^{2} och -3y^{2}) först, sedan förstagradstermerna (+2x och -4y).",
         "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Samla y-termer",
-        "text": "-4y kvar (linjär i y med negativt tecken).",
-        "tier": "essential"
+        "title": "Kontrollräkning",
+        "text": "Testa med x=1, y=1: original = 2(1-2) - 1(1+3) + 3(1-1) = -2 - 4 + 0 = -6. Vårt svar: -1 - 3 + 2 - 4 = -6. ✓",
+        "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Verifiera mot alternativ",
-        "text": "Sammanfattning: -x^{2} - 3y^{2} + 0 \\cdot xy + 2x - 4y = -x^{2} - 3y^{2} + 2x - 4y — matchar alternativ B exakt.",
+        "title": "Verifiera",
+        "text": "Jämför med svarsalternativen — endast B = -x^{2} - 3y^{2} + 2x - 4y matchar.",
         "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Svaret är B: -x^{2} - 3y^{2} + 2x - 4y. Insikten i en mening: vid polynomutveckling, samla termer efter typ — och var särskilt vaksam när blandade termer (xy) tar ut varandra till noll.",
+        "text": "Svaret är B. Insikten i en mening: vid expansion av blandade parentesuttryck, leta efter korstermer (xy) som ofta tar ut varandra — det är uppgiftens designade förenkling.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tappa både y^{2}-termen och y-termen och få -x^{2} + 3xy + 2x — som om xy-termerna inte tog ut varandra.",
-        "why_wrong": "Som steg 7 visar tar +3xy och -3xy ut varandra till exakt 0. -3y^{2}-termen får inte heller glömmas (steg 6)."
+        "why_tempting": "Om du missar att -3xy + 3xy = 0 och samtidigt tappar bort en av kvadrattermerna kan du landa på -x^{2} + 3xy + 2x.",
+        "why_wrong": "Steg 7 visar att xy-termerna tar ut varandra; det finns ingen kvar i facit. Och steg 8 visar att -3y^{2} OCH -4y båda är kvar."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att INTE inse att xy-termerna kancelleras och behålla +6xy i svaret.",
-        "why_wrong": "Steg 7 är central: +3xy - 3xy = 0. Att behålla +6xy betyder att man missat den negativa termen helt."
+        "why_tempting": "Den vanligaste fällan: glömma minustecknet i -x(x+3y) så att -3xy blir +3xy. Då adderas det till +3xy från sista parentesen → +6xy.",
+        "why_wrong": "Steg 4 visar uttryckligen att minustecknet följer med in i parentesen, så -x(x+3y) = -x^{2} - 3xy, inte -x^{2} + 3xy."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid +4y istället för -4y om de tappar minustecknet på en distributiv multiplikation.",
-        "why_wrong": "Steg 9 visar att den slutliga y-termen är NEGATIV: -4y. Tecknet kommer från en negativ produkt i utvecklingen."
+        "why_tempting": "Samma fel som C plus ett extra teckenfel i 3y(x-y): om du skriver 3y \\cdot (-y) = +3y^{2} i stället för -3y^{2}, samt -(-4y) = +4y i tredje termen.",
+        "why_wrong": "Steg 5 visar 3y \\cdot (-y) = -3y^{2}; och steg 3 visar 2 \\cdot (-2y) = -4y, inte +4y."
       }
     ],
-    "technique": "Polynomutveckling: distribuera alla parenteser med distributiva lagen, samla termer per typ (x^{2}, y^{2}, xy, x, y, konstant), notera när blandade termer kancelleras.",
-    "pitfall": "Det kluriga är att xy-termerna ser ut att vara stora delar av utvecklingen men slutar på 0. Botemedlet: skriv en lista med en rad per termtyp och fyll på allteftersom — då syns kancelleringen tydligt.",
-    "framework_id": "XYZ-TRAP-003",
+    "technique": "Distributiv lag tillämpas på varje parentes separat. När tre eller fler parenteser expanderar är nyckeln att hålla ordning på teckenflöden och leta efter korstermer som tar ut varandra.",
+    "pitfall": "Ett tappat minustecken framför en parentes ger ett fel som propagerar genom hela uträkningen. Skriv ut -x(x+3y) som +(-x) \\cdot (x+3y) först om du är osäker.",
     "pregrade_tactic": {
-      "handle": "Termtypsboken",
-      "move": "Vid polynomutveckling med flera variabler: gör en kolumn per term-typ (x^{2}, y^{2}, xy, x, y) och fyll i koefficienterna allteftersom — då upptäcker du när termerna tar ut varandra."
+      "handle": "Korstermskryssaren",
+      "move": "När tre parenteser ska expanderas och två av dem innehåller xy-blandning, leta först efter de termer som tar ut varandra (-3xy + 3xy = 0) — förenklingen är ofta hela uppgiftens poäng."
     },
     "_meta": {
-      "model": "claude-opus-4-7-via-max-subscription",
+      "model": "claude-opus-4-7-hand-authored",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
+      "recipe": "variant-c-regen-wave-qa-hand-fix"
     }
   },
   "var-2017-kvant1-XYZ-008": {

@@ -3164,103 +3164,85 @@
     }
   },
   "var-2013-kvant1-XYZ-010": {
-    "_meta": {
-      "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
-    },
     "framework_id": null,
-    "solution_path": "Frågan är ofullständigt parsad men kärnan är: bestäm n så att x^n / y = 0 (eller motsvarande) givet att x ≠ 0 och n jämnt delbart med 2. För att ett bråk ska vara 0 måste täljaren vara 0 — men x ≠ 0, så villkoret måste tolkas som ett egenskaps-uttryck. Standardlösningen ger n = 1.",
-    "technique": "Variabel-uttryck under villkor: identifiera vad som tvingar variabeln till ett specifikt värde, och eliminera de fall där villkoret skulle bryta. Här triangulerar man via x:s och y:s tillåtna värden.",
-    "pitfall": "Botemedlet mot 'parsnings-frågor': när uppgiftens text är skadad, fokusera på vad ALTERNATIVENS struktur säger om svarets karaktär (här en liten heltalspotens) och vad villkoren ‘x ≠ 0’ och ‘n jämn delbart med 2’ utesluter.",
+    "solution_path": "Villkoret x - y = 0 betyder x = y (och x ≠ 0 så även y ≠ 0). Då blir \\frac{x^{n}}{y^{n}} = \\left(\\frac{x}{y}\\right)^{n} = 1^{n} = 1 för alla heltal n. Villkoret att n är delbart med 2 är ett vilseledande tillägg.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Uppgiften ger villkor på x och y: x \\ne 0, och x - y = 0 (alltså x = y). Plus ett villkor på n: 'jämnt delbart med 2' (n är ett jämnt heltal). Vi söker n så att en viss potens-relation håller.",
+        "text": "Du har \\frac{x^{n}}{y^{n}} med två villkor: x - y = 0 och n är ett heltal delbart med 2. Vad är uttryckets värde?",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Tolka villkoret x = y",
-        "text": "Om x - y = 0 så är x och y samma tal. Då är x^n / y = x^n / x = x^{n-1} (för x ≠ 0).",
-        "tier": "detail"
+        "title": "Översätt villkoret",
+        "text": "x - y = 0 är ekvivalent med x = y. Eftersom x ≠ 0 (givet) följer också y ≠ 0 — annars vore nämnaren noll och uttrycket odefinierat.",
+        "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Tolka 'jämnt delbart med 2'",
-        "text": "Detta betyder n är en heltalsmultipel av 2: n = 0, ±2, ±4, …. Plus eventuellt att resultatet är ett heltal. På HP betyder denna formulering oftast 'n är jämnt heltal'.",
+        "title": "Potens-kvot-lagen",
+        "text": "\\frac{a^{n}}{b^{n}} = \\left(\\frac{a}{b}\\right)^{n}: när två potenser med samma exponent delas kan vi i stället upphöja deras kvot.",
         "tier": "detail"
       },
       {
         "n": 4,
-        "title": "Definiera tillåtna alternativ",
-        "text": "Alternativen är n ∈ {−1, 0, 1, 2}. Kontrollera vilka som passar 'jämn'-villkoret: 0 och 2 är jämna; −1 och 1 är udda.",
+        "title": "Sätt in x = y",
+        "text": "\\frac{x^{n}}{y^{n}} = \\left(\\frac{x}{y}\\right)^{n} = \\left(\\frac{y}{y}\\right)^{n} = 1^{n}.",
         "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Korsfacit-tolkning",
-        "text": "Facit pekar på C (n = 1). Detta innebär att tolkningen 'jämnt delbart med 2' i facit-läsningen är icke-standard — kan betyda 'n är ett heltal' eller hänvisa till en annan relation i den oskadda originalfrågan.",
-        "tier": "detail"
+        "title": "Ettans potenser",
+        "text": "1^{n} = 1 för alla heltal n (positiva, negativa, jämna, udda). Ett upphöjt till vad som helst är fortfarande ett.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Testa n = 1 i sluträkningen",
-        "text": "Med n = 1: x^1 / y = x / x = 1 (eftersom x = y). Det är ett konkret, igenkännbart heltalsvärde — typisk facit-form för en XYZ-uppgift.",
+        "title": "Vad gör villkoret om n?",
+        "text": "Att n är jämnt delbart med 2 spelar ingen roll här — 1^{n} = 1 oavsett. Villkoret är en distraktor som inte påverkar svaret.",
         "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Testa n = 0",
-        "text": "Med n = 0: x^0 / y = 1/y = 1/x. Inte ett konstant tal (beror på x), så kan inte vara svaret om frågan ber om ett bestämt värde.",
+        "title": "Verifiera med konkreta tal",
+        "text": "Sätt x = y = 3, n = 4: \\frac{3^{4}}{3^{4}} = \\frac{81}{81} = 1. Sätt x = y = 5, n = 2: \\frac{5^{2}}{5^{2}} = \\frac{25}{25} = 1. ✓",
         "tier": "detail"
       },
       {
         "n": 8,
-        "title": "Testa n = 2",
-        "text": "Med n = 2: x^2 / y = x^2 / x = x. Också beroende av x, alltså inte ett konstant tal.",
-        "tier": "detail"
-      },
-      {
-        "n": 9,
-        "title": "Testa n = −1",
-        "text": "Med n = −1: x^{-1} / y = 1/(xy) = 1/x^2. Inte konstant.",
-        "tier": "detail"
-      },
-      {
-        "n": 10,
-        "title": "Verifiera valet n = 1",
-        "text": "Endast n = 1 ger ett konstant resultat (1), oberoende av x:s konkreta värde. Det är det enda valet som passar en HP-uppgift där svaret är en bestämd siffra.",
-        "tier": "essential"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Svar: C, n = 1. Insikten i en mening: när frågan ger villkoret x = y förenklas potens-kvoten till x^{n-1}, och n = 1 är det unika val som gör resultatet konstant (= 1).",
+        "text": "Svaret är C: 1. Insikten i en mening: när villkor ger x = y, blir varje symmetriskt uttryck i x och y trivialt — och extra villkor kan vara distraktorer.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna n = −1 om man tolkar 'jämnt delbart' som 'symmetriskt' och tar negativ exponent.",
-        "why_wrong": "Steg 9 visar att n = −1 ger ett resultat 1/x^2 som beror på x — inte ett konstant tal. HP-frågor av denna typ kräver ett bestämt värde."
+        "why_tempting": "−1 om du tror att jämn potens ger (-1)^{n} eller blandar ihop med teckenfrågor.",
+        "why_wrong": "Steg 4 visar att kvoten är 1^{n}, inte (-1)^{n}. Det finns inget minustecken i uppgiften."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 0 om man tolkar 'jämn' som 0 (jämnaste talet) eller minns att x^0 = 1.",
-        "why_wrong": "Steg 7 visar att n = 0 ger 1/y = 1/x — beror på x, inte konstant. Och även om x^0 = 1 så delas det med y, vilket återinför x-beroendet."
+        "why_tempting": "Noll om du missuppfattar villkoret som x = 0 (i stället för x = y).",
+        "why_wrong": "Steg 2 visar att uppgiften uttryckligen säger x ≠ 0; villkoret är x = y, inte x = 0."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid n = 2 eftersom det är det enklaste jämna heltalet > 0.",
-        "why_wrong": "Steg 8 visar att n = 2 ger x^2/y = x — beror på x. Inte ett konstant tal, så uppfyller inte HP-svarets karaktär."
+        "why_tempting": "2 om du blandar ihop 1^{n} med 1 + 1 eller tänker att exponenten 2 (från 'delbart med 2') ger svaret.",
+        "why_wrong": "Steg 5 visar att 1^{n} = 1 för alla n; exponentens värde påverkar inte svaret när basen är 1."
       }
     ],
+    "technique": "Identifiera symmetri i villkoren först. När villkoret ger x = y (eller mer generellt: en relation som gör en kvot trivial), försvinner ofta hela uppgiftens komplexitet.",
+    "pitfall": "Inte alla villkor i en uppgift är relevanta. Att n är delbart med 2 är en klassisk distraktor här — det skapar förväntan om att paritet ska spela roll, men gör det inte.",
     "pregrade_tactic": {
-      "handle": "Konstant-resultats-jakten",
-      "move": "När villkoret ger en relation mellan variablerna (här x = y) — testa varje n och välj den där alla variabler försvinner ur slututtrycket."
+      "handle": "Symmetrigreppet",
+      "move": "När ett villkor ger x = y (eller motsvarande), sätt in det direkt i kvoten innan du tänker på exponenter — det kollapsar uttrycket på en rad."
+    },
+    "_meta": {
+      "model": "claude-opus-4-7-hand-authored",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave-qa-hand-fix"
     }
   },
   "var-2013-kvant1-XYZ-012": {
