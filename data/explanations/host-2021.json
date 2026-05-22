@@ -22,7 +22,7 @@
         "why_wrong": "Steg 7 visar att bara summan y+z behövs, och den är given. Informationen räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-010",
     "pitfall": null,
     "solution_path": "Medel = (summa)/3, så x + y + z = 36. Med y + z = 30 blir x = 6. Kvantitet I = 6, II = 9, alltså II > I. Svaret är B.",
     "steps": [
@@ -104,7 +104,7 @@
         "why_wrong": "Båda är exakta tal, ingen okänd inblandad. Förkortning eller decimalomvandling löser jämförelsen entydigt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-023",
     "pitfall": null,
     "solution_path": "Skriv om båda: 1 + \\frac{1}{4} = \\frac{5}{4} och \\frac{10}{8} = \\frac{5}{4}. Identiska. Svaret är C.",
     "steps": [
@@ -180,7 +180,7 @@
         "why_wrong": "Fall A och B i steg 4–5 visar olika svar. Inga inneboende skäl för likhet."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-005",
     "pitfall": "Det är frestande att tro att teckenvillkor (x > 0, w < 0 osv) räcker för att jämföra kvadrat-summor. Botemedlet: kom ihåg att kvadrater är samma oavsett tecken — magnituden bestämmer, och magnituder är inte givna.",
     "solution_path": "x > 0, y < 0, z > 0, w < 0. I = x^{2} + y^{2} och II = z^{2} + w^{2} är båda positiva summor, men magnituderna är okända. Olika talval ger I > II eller I < II. Svaret är D.",
     "steps": [
@@ -987,7 +987,7 @@
         "why_wrong": "Exakta tal behövs inte — kvalitativa olikheter (längre/kortare väg, mer/mindre tid) räcker för att avgöra vem är fortast. Steg 7–8 visar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-022",
     "pitfall": "Det är frestande att tro att den som anländer först är snabbast — det stämmer bara om de springer SAMMA sträcka. Botemedlet: när sträckorna kan skilja sig, kräver hastighetsjämförelsen båda tid- och avståndsdata.",
     "solution_path": "Hastighet = avstånd / tid. (1) ger bara tiden, (2) ger bara avståndet. Tillsammans: Berit har längre väg men kortare tid — alltså högre hastighet. Berit är fortast. Svaret är C.",
     "steps": [
@@ -1086,7 +1086,7 @@
         "why_wrong": "Frågan vill bara ha S, inte alla tre. Steg 5–6 löser S unikt från (2) ensamt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-003",
     "pitfall": "Det är frestande att tycka att (1) också räcker eftersom det innehåller talet 100 och en relation. Botemedlet: räkna antalet obekanta — (1) blandar S och G i samma ekvation, så det krävs ytterligare information för att separera dem.",
     "solution_path": "(1) ger 100 = (S + G)/3 → S + G = 300, en ekvation med två obekanta — otillräckligt. (2) ger 100 = S/2 → S = 200 direkt. Bara (2) räcker. Svaret är B.",
     "steps": [
@@ -1384,7 +1384,7 @@
         "why_wrong": "1/3 är en av termerna i summan, inte resten. Steg 7 visar att x är skillnaden mellan 1 och summan av de två givna bråken."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-016",
     "pitfall": "Adderar du täljare och nämnare var för sig (1/2 + 1/3 = 2/5) får du fel svar. Botemedlet: tvinga dig själv att skriva om båda bråken med samma nämnare innan du adderar — det går bara att addera täljare när nämnarna är identiska.",
     "solution_path": "Lägg ihop \\frac{1}{2} och \\frac{1}{3} till \\frac{5}{6}, dra det från 1, och du får x = \\frac{1}{6}. Svaret är A.",
     "steps": [
@@ -1832,7 +1832,7 @@
     ],
     "technique": "Linjer som skär i samma punkt: n linjer ger 2n vinklar som tillsammans bildar 360°. Vid symmetri är varje sektor 360°/(2n); halv-sektor (bisektor) ger 360°/(4n).",
     "pitfall": "Vanligaste fällan är att räkna fel antal sektorer eller att tro x är hela sektorn när det är halva. Botemedlet: räkna BÅDE antalet linjer (n) och hur många sektor-bitar x täcker innan du sätter in i 360°/(antal).",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-039",
     "pregrade_tactic": {
       "handle": "Sektorräkningen",
       "move": "Räkna antalet sektorer (2n för n linjer), dela 360° med det — och kontrollera om x täcker hela eller halva sektorn."
@@ -1866,7 +1866,7 @@
         "why_wrong": "Steg 9 utvecklar C till −10x − 15xy. Andra ter- men stämmer av en slump men första ter- men är −10x istället för 6x."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-001",
     "pitfall": "Den vanliga fällan är att glömma teckenbytet när man multiplicerar in negativa tal eller minustecken framför parentes. Botemedlet: skriv ut varje multiplikation explicit (a · b = c), och håll noga reda på tecknen — varje minustecken är en separat 'gångra med −1'.",
     "solution_path": "Multiplicera ut: 3x(2 − 5y) = 6x − 15xy. Jämför med alternativen: −(15y − 6)x = −15xy + 6x = 6x − 15xy, samma uttryck. Svaret är D.",
     "steps": [
@@ -2220,7 +2220,7 @@
     ],
     "technique": "Rektangel av lika kvadrater: total area / antal kvadrater = en kvadrats area; √(en kvadrats area) = sida; AB = antal kvadrater i raden × sida.",
     "pitfall": "Vanligaste fällan är att förväxla area med sida eller att räkna √(total area) som om hela rektangeln var en kvadrat. Botemedlet: skriv ALLTID 'en kvadrats area' OCH 'en kvadrats sida' explicit som två olika tal innan du sätter ihop AB.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-041",
     "pregrade_tactic": {
       "handle": "Kvadratdelningen",
       "move": "Total area dividerat med antal kvadrater ger EN kvadrats area; dra roten för sidan; multiplicera med antalet kvadrater i AB-raden."
@@ -2530,7 +2530,7 @@
         "why_wrong": "Steg 4 visar att uttrycken är identiska. Faktiska värden behövs inte — algebraisk substitution räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": null,
     "solution_path": "Från \\frac{x}{y} = 5 följer x = 5y. Då är 20 % av x = 0,20 · 5y = y. Båda kvantiteterna är y — lika. Svaret är C.",
     "steps": [
@@ -2694,7 +2694,7 @@
         "why_wrong": "Steg 4–6 visar att paret är entydigt bestämt av villkoret y² − x² = 9 + 'på varandra följande'."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Det luriga är att inte se att 'på varandra följande heltal' implicerar y − x = 1. Botemedlet: stryk under villkoret och översätt till en algebraisk relation INNAN du börjar räkna.",
     "solution_path": "Faktorisera: y^{2} - x^{2} = (y-x)(y+x). Eftersom x och y är på varandra följande, y − x = 1, så y + x = 9. Då y = 5. II = 6 > 5 = I, svaret är B.",
     "steps": [
@@ -2864,7 +2864,7 @@
         "why_wrong": "Steg 5–6 visar konkret motexempel där nya medianen är 1, inte 25."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-021",
     "pitfall": "Det är frestande att tro att 'median = 25, tar bort största → median fortfarande 25'. Botemedlet: median av jämnt antal är medelvärdet av två centrala värden — om de är 25 och 25 fungerar antagandet, men om de är 1 och 49 ändras allt vid borttagning.",
     "solution_path": "Med 10 tal är medianen = (x₅ + x₆)/2 = 25 (sorterade). Tar man bort det största blir nya medianen x₅, som kan vara allt från 1 (om x₆ = 49) till 25 (om x₅ = x₆ = 25). Olika möjliga svar. Svaret är D.",
     "steps": [
@@ -2951,7 +2951,7 @@
         "why_wrong": "Frågan är inte 'lös x, y, z, w' utan 'räkna medelvärdet' — det räcker med totalsumman. Steg 6–7 löser entydigt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-015",
     "pitfall": "Det är frestande att tro att (1) eller (2) räcker eftersom de var och en innehåller 'medelvärde'-information. Botemedlet: räkna antalet TAL i varje delsumma — (1) täcker 2 av 4, (2) också 2 av 4. Tillsammans täcks alla 4.",
     "solution_path": "(1) ger x + z = 166, (2) ger y + w = 182. Var för sig täcker det bara halva summan. Tillsammans: x + y + z + w = 348, medel = 87. Svaret är C.",
     "steps": [
@@ -3044,7 +3044,7 @@
         "why_wrong": "Steg 3 ger entydig ordning från (1). Bara om båda misslyckades skulle E gälla."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-014",
     "pitfall": "Det är frestande att tro att (2) räcker eftersom 'längst ifrån varandra' känns konkret. Botemedlet: i en stapel om tre är 'längst ifrån' alltid topp och botten — det säger inget om VILKET som är vilket.",
     "solution_path": "(1) ger ordningen: vit < röd < svart (från botten). Översta = svart, unikt. (2) säger att vit och svart är ytterst, men inte vilken är överst. Svar A.",
     "steps": [
@@ -3236,7 +3236,7 @@
         "why_wrong": "Steg 4–5: (2) ger entydig kedja. Inte alls oavgörbart."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-012",
     "pitfall": "Det är frestande att tro att (1) också räcker eftersom det innehåller flera jämförelser. Botemedlet: räkna om alla bollar förekommer i kedjan. Om en boll bara förekommer som 'mindre än någon annan' utan koppling till de andra, saknas information.",
     "solution_path": "(1) ger gul > svart och gul > vit och röd > vit — röd är inte jämförbar med gul. Otillräckligt. (2) ger vit < svart < gul < röd — röd är bäst. Tillräckligt ensamt. Svar B.",
     "steps": [
@@ -3586,7 +3586,7 @@
         "why_wrong": "Det är inte hur bråk adderas. Steg 2–5 visar varför gemensam nämnare är obligatorisk."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-016",
     "pitfall": "Att addera täljare och nämnare separat (1+3+1)/(8+4+2) = 5/14 är ett klassiskt fel. Botemedlet: en bråk-summa kräver att ALLA nämnare blir samma innan addition.",
     "solution_path": "Skriv om alla med nämnare 8: \\frac{1}{8} + \\frac{6}{8} + \\frac{4}{8} = \\frac{11}{8}. Svaret är C.",
     "steps": [
@@ -3774,7 +3774,7 @@
         "why_wrong": "Steg 4: lutningen är (förändring i y) / (förändring i x) = −6/8, inte 8/(−6). Rätt riktning är y över x."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-051",
     "pitfall": "Det luriga är att räkna k med fel tecken. Botemedlet: tänk att om f(8) är NEGATIV och 8 är positiv, så måste k vara negativ — lutningen är 'negativ/nedåt'.",
     "solution_path": "En linje genom origo har for- men f(x) = kx. Sätt in: f(8) = 8k = −6, alltså k = −6/8 = -\\frac{3}{4}. Funktionen är f(x) = -\\frac{3}{4}x. Svaret är D.",
     "steps": [
@@ -4108,7 +4108,7 @@
         "why_wrong": "Steg 2: medelvärde KRÄVER division med antalet. 60 + x är summan, inte medelvärdet."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-048",
     "pitfall": null,
     "solution_path": "Medelvärdet = (14 + 11 + 13 + 22 + x)/5 = (60 + x)/5 = 12 + \\frac{x}{5}. Svaret är D.",
     "steps": [
@@ -4190,7 +4190,7 @@
         "why_wrong": "Bara 2/3 inverteras (eftersom det är koefficienten för x). 4/7 stannar som det är. Steg 3–4 visar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-017",
     "pitfall": "Det luriga är att förväxla bråket och dess invers. Botemedlet: 2/3 · x = 4/7 → x = (4/7) ÷ (2/3) = (4/7) · (3/2). Skriv ut divisionen som multiplikation med inversen.",
     "solution_path": "Ekvationen säger \\frac{2}{3} \\cdot x = \\frac{4}{7}. Lös ut x genom att gångra båda sidor med inversen av 2/3, dvs 3/2: x = \\frac{3}{2} \\cdot \\frac{4}{7}. Svaret är C.",
     "steps": [

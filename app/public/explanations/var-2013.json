@@ -1222,7 +1222,7 @@
         "why_wrong": "All information ges som exakta heltal och uttrycket är fullständigt definierat. Steg 2–4 visar att det går att räkna utan räknare. D används bara när någon variabel/villkor saknas."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Den vanligaste fällan är att räkna varje term för sig (15·36 och 15·64) utan att se utbrytningsmöjligheten — då gör man dubbelt så många multiplikationer i onödan. Botemedlet: skanna ALLTID uttrycket efter gemensamma faktorer innan du börjar räkna.",
     "solution_path": "Bryt ut 15: 15·36 + 15·64 = 15·(36 + 64) = 15·100 = 1 500. Kvantitet II är 1 501, alltså 1 större. Svaret är B.",
     "steps": [
@@ -1522,7 +1522,7 @@
         "why_wrong": "8x + 4 = 10 är en linjär ekvation med EN unik lösning för x (steg 4). Kvantitet II innehåller inte ens x — det är ren aritmetik. Informationen är fullständig."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Den vanligaste fällan är att lösa ut x först och räkna mödosamt — vilket öppnar för räknemiss. Botemedlet: titta först efter ALGEBRAISK GENVÄG (utbrytning, halvering, identifikation av kvadreringsformel) innan du sätter pennan på papper.",
     "solution_path": "Halvera båda sidor av 8x + 4 = 10: 4x + 2 = 5 (Kvantitet I). Kvantitet II: 8 − 10/4 = 8 − 2,5 = 5,5. 5 < 5,5, alltså II > I. Svaret är B.",
     "steps": [
@@ -1610,7 +1610,7 @@
         "why_wrong": "Vi behöver inte VETA avstånden för att JÄMFÖRA dem — vi behöver bara visa att uttrycken är lika. Steg 6 visar det algebraiskt utan att lösa ut a eller b."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Den vanligaste fällan är att låta sig avskräckas av villkoret a < b och tro att det MÅSTE påverka svaret. Botemedlet: skriv ut uttrycken algebraiskt först — om de är identiska före några substitutioner, är de lika oberoende av villkor.",
     "solution_path": "Avstånd från origo till (a, b) = \\sqrt{a^2 + b^2}; från origo till (b, a) = \\sqrt{b^2 + a^2}. Båda samma sak. Svaret är C.",
     "steps": [
@@ -2207,7 +2207,7 @@
         "why_wrong": "Båda påstående ger fullständig information — steg 2 och 8 räknar ut barncyklar = 42 från vart och ett ensamt. E är fel."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-008",
     "pitfall": "Den vanligaste fällan är att stanna efter att ha sett att (1) räcker och inte testa (2) ordentligt. Botemedlet: ALLTID testa båda påståenden ensamt INNAN man tittar på dem tillsammans — annars missar du D-möjligheten.",
     "solution_path": "(1) ger 210 totalt, 4/7·210 = 120 herrcyklar, 48 damcyklar → barncyklar = 210 − 120 − 48 = 42. (2) ger 120 herr, 48 dam, 20% barncyklar → totalt = (120+48)/(0,8) = 210, barncyklar = 0,2·210 = 42. Båda räcker var för sig. Svaret är D.",
     "steps": [
@@ -2312,7 +2312,7 @@
         "why_wrong": "Steg 7–8 visar att (2) räcker fullt ut för att låsa alla. E gäller bara när all info tillsammans är otillräcklig."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-014",
     "pitfall": "Den vanligaste fällan är att tro att 'minst-2-per-våning' låser allt — men det räcker inte om en person fortfarande kan välja mellan två våningar och båda uppfyller minimum-villkoret. Botemedlet: testa explicit om HUR MÅNGA SCENARIOS som är förenliga med varje påstående ensamt.",
     "solution_path": "Vi vet redan att Isabella bor på övre och att Olga inte bor med Katja eller Fatima → Olga måste bo på övre med Isabella, Katja och Fatima på undre. Återstår Anna. (1) säger 'minst 2 per våning' — Anna kan vara antingen våning. Inte unikt. (2) säger Anna ≠ Isabella och Anna ≠ Katja-våning → omöjligt eftersom Isabella är övre och Katja är undre. Vänta — det skiljer Anna från BÅDA. Låt mig tänka om. Anna ≠ Isabella (övre) ger Anna nedre. Och Anna ≠ Katja (nedre) ger Anna övre. Motsägelse — om man INTE redan har låst Olga. (2) tvingar oss att ompröva! Det ger faktiskt unikt entydigt resultat. Svaret är B.",
     "steps": [
@@ -2516,7 +2516,7 @@
         "why_wrong": "Steg 6 visar att kombinationen av (1) och (2) löser systemet utan att man explicit behöver ett 'startvärde' — procent + absolut ger två ekvationer för två obekanta."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-019",
     "pitfall": "Den vanligaste fällan är att tro att procent ensamt eller absolut tillväxt ensamt räcker. Botemedlet: räkna alltid om problemet kräver ett ABSOLUT VÄRDE (en tjocklek i cm) eller bara en relation — det första kräver båda typer av information.",
     "solution_path": "Sök istjockleken lördag. (1) ger 25% ökning på en vecka, men inte ursprunglig tjocklek. (2) ger 1 cm/vecka i absolut tillväxt — inte heller startvärde. Tillsammans: 25% av x = 1 cm → x = 4 cm för förra veckan, så lördagens tjocklek = 5 cm. Räcker. Svaret är C.",
     "steps": [
@@ -2792,7 +2792,7 @@
         "why_wrong": "Supplementvinkel betyder 180° − vinkeln, inte 90° + vinkeln. 150° är fel räknesätt; rätt är 180° − 60° = 120° (steg 8)."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-035",
     "pitfall": null,
     "solution_path": "I en parallelltrapets ABCD med AB ∥ CD är vinklarna A och D supplementvinklar (summa 180°). Figuren ger A = 60°, så D = 180° − 60° = 120°. Svaret är B.",
     "steps": [
@@ -3080,7 +3080,7 @@
         "why_wrong": "Två fel på samma gång. Steg 8 och steg 9 visar att båda räkneoperationer ska vara subtraktion (för minustecknet framför parentesen) — inte addition."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-024",
     "pitfall": "Den vanligaste fällan är att vända tecknet på den FÖRSTA ter- men i andra parentesen men glömma den ANDRA. Botemedlet: skriv ut alla led explicit (6x² − 2x − 3x² + 2x) innan du börjar samla — då syns alla fyra tecken tydligt och inget glöms.",
     "solution_path": "Multiplicera ut båda parenteserna: (3x − 1)·2x = 6x^{2} - 2x och x(3x − 2) = 3x^{2} - 2x. Skillnaden är 6x^{2} - 2x - 3x^{2} + 2x = 3x^{2}. Svaret är A.",
     "steps": [
@@ -3164,7 +3164,7 @@
     }
   },
   "var-2013-kvant1-XYZ-010": {
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-026",
     "solution_path": "Villkoret x - y = 0 betyder x = y (och x ≠ 0 så även y ≠ 0). Då blir \\frac{x^{n}}{y^{n}} = \\left(\\frac{x}{y}\\right)^{n} = 1^{n} = 1 för alla heltal n. Villkoret att n är delbart med 2 är ett vilseledande tillägg.",
     "steps": [
       {
@@ -4756,7 +4756,7 @@
         "why_wrong": "Steg 6–7 visar att Kvantitet I och II är samma uttryck för ALLA reella a, b — det krävs inga specifika värden för att jämföra. D är inkorrekt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Den vanligaste fällan är att tro att 'olika form = olika värde' och välja A, B eller D. Botemedlet: utveckla ALLTID båda uttryck till expanderad form (alla parenteser utvecklade, termer ordnade) innan du drar slutsatsen.",
     "solution_path": "Konjugatregeln: a^2 − b^2 = (a + b)(a − b) ALLTID. Kvantitet I = Kvantitet II identiskt, oavsett a < b. Svaret är C.",
     "steps": [
@@ -5032,7 +5032,7 @@
         "why_wrong": "Steg 9 visar att f(a) − f(a + 1) är KONSTANT (= −3) för alla a — eftersom funktionen är linjär. a-värdet spelar ingen roll."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Den vanligaste fällan är att räkna f(a) − f(a + 1) som om det vore f(a + 1) − f(a) och få fel tecken. Botemedlet: skriv ut båda f-värdena tydligt INNAN du subtraherar, och var noga med ordningen i minustecknet.",
     "solution_path": "f(a) − f(a + 1) = (3a + 1) − (3(a+1) + 1) = (3a + 1) − (3a + 4) = −3. Kvantitet I = −3, Kvantitet II = 3. II > I. Svaret är B.",
     "steps": [
@@ -5132,7 +5132,7 @@
         "why_wrong": "Steg 8 visar att variabeltermerna är IDENTISKA (2x + 2,5y + z) i båda kvantiteter — de tar ut varandra. Skillnaden beror enbart på konstanterna (steg 7), som ger ett konkret 6,5."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-010",
     "pitfall": "Den vanligaste fällan är att överge uppgiften som 'för komplicerad med okända variabler'. Botemedlet: alltid förenkla VARJE kvantitet till sin enklaste form innan du ger upp — variabeltermerna brukar dyka ut.",
     "solution_path": "Räkna båda medelvärdena. I = ((3x + 4y + z + 38) + (x + y + z + 94))/2 = (4x + 5y + 2z + 132)/2 = 2x + 2,5y + z + 66. II = ((4x + 2z + 94) + (5y + 51))/2 = (4x + 5y + 2z + 145)/2 = 2x + 2,5y + z + 72,5. Skillnad: II − I = 72,5 − 66 = 6,5 > 0. II > I. Svaret är B.",
     "steps": [
@@ -5320,7 +5320,7 @@
         "why_wrong": "Steg 5 visar att RIKTNINGEN av jämförelsen (a < b) är bestämd av tecknet på c — utan att veta exakta värden. Vi behöver bara veta att c < 0 för att veta att a < b."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-014",
     "pitfall": "Den vanligaste fällan är att tro att '+c' alltid gör resultatet större. Botemedlet: läs alltid TECKNET på c först — addera negativt = subtrahera. Visualisera på tallinjen: addera ett negativt tal flyttar dig åt vänster.",
     "solution_path": "Ur a = b + c med c < 0: c är negativt, alltså är a = b + (negativ) = b minus något positivt. Så a < b. Kvantitet II > Kvantitet I. Svaret är B.",
     "steps": [
@@ -5419,7 +5419,7 @@
         "why_wrong": "Båda påståenden ger entydiga svar (steg 4, 6). E gäller bara när all info tillsammans inte räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-008",
     "pitfall": "Den vanligaste fällan är att tro att 'andel' och 'förhållande' är fundamentalt olika typer av information. Botemedlet: minns att de är två sätt att uttrycka SAMMA underliggande fördelning — och båda räcker om något absolut värde (här vattendjupet) är givet.",
     "solution_path": "Vattendjup = 480 cm. Sök total brunndjup. (1): 1/9 av djupet ovan vatten → 8/9 är vatten = 480 → totalt = 480·9/8 = 540 cm. (2): vatten:ovan = 8:1 → 8 delar = 480, 1 del = 60, totalt 9 delar = 540 cm. Båda räcker var för sig. Svaret är D.",
     "steps": [
@@ -5512,7 +5512,7 @@
         "why_wrong": "Steg 5–6 visar att (2) räcker fullt ut. E är fel."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-003",
     "pitfall": "Den vanligaste fällan är att läsa '1/6 av päronen' som konkret information men glömma att antalet päron också är okänt. Botemedlet: räkna ALLTID antalet obekanta i påståendet och jämför med antalet ekvationer.",
     "solution_path": "Totalt 200 frukter. (1) ger andelar för päron och äpplen var för sig, men antalet päron och äpplen är okänt → otillräckligt. (2) ger 15% av 200 = 30 ruttna direkt. Räcker. Svaret är B.",
     "steps": [
@@ -6090,7 +6090,7 @@
         "why_wrong": "Summan av ALLA tre talen är 3 · 947 = 2 841, inte 1 896. Och summan av MINSTA + STÖRSTA är 2 · 947 = 1 894 — inte 1 896 (steg 9)."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-046",
     "pitfall": "Den vanligaste fällan är att försöka räkna ut talen explicit istället för att utnyttja symmetrin. Botemedlet: när tal är jämnt utspridda kring en mittpunkt, sätt mitten = medelvärdet och hoppa över talet-för-tal-räknandet.",
     "solution_path": "För tre på varandra följande heltal är medelvärdet det mittersta talet. Mitten är 947, så det minsta är 946 och det största 948. Summa = 946 + 948 = 1 894. Svaret är C.",
     "steps": [

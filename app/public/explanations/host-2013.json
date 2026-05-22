@@ -194,7 +194,7 @@
     ],
     "technique": "När ett villkor är en algebraisk produktlikhet med fyra variabler och frågan jämför en korsparning, försök inte härleda — testa två konkreta talvärden där den enda kopplingen är villkoret. Triggern är: \"villkor binder två par, fråga om annat par\".",
     "pitfall": "Botemedlet mot \"likhet i ett ställe ⇒ likhet överallt\": skriv ned exakt vilket par villkoret binder ihop. Här binder det (x,y) med (z,w) — men inte (x,w) med (y,z).",
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-011",
     "pregrade_tactic": {
       "handle": "Två-extremer-testet",
       "move": "När villkoret är en produktlikhet men frågan jämför ett annat par av variablerna, konstruera två talval (en spegling) — om båda riktningar kan uppstå är svaret D."
@@ -829,7 +829,7 @@
     ],
     "technique": "I NOG-frågor om summor med fraktion + relation: en utsaga ger ofta ett absolutvärde för en delgrupp och den andra en relation mellan delgrupper. Var för sig saknar de antingen ett tal eller en koppling — kombinerat låser de hela summan.",
     "pitfall": "En hypotetisk formulering (\"om en kliver av\") är fortfarande bara en relation mellan två okända. Botemedlet: skriv ner som en ekvation k = 4(m-1) och räkna obekanta före du gissar.",
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-024",
     "pregrade_tactic": {
       "handle": "Absolut-plus-relation-receptet",
       "move": "När en utsaga ger ett absoluttal för en grupp och den andra en relation, prova ALLTID att kombinera dem innan du svarar D eller E."
@@ -940,7 +940,7 @@
     ],
     "technique": "Två fraktioner som täcker olika delgrupper + ett absolutvärde för den tredje delgruppen ger en linjär ekvation i totalen. Det är NOG-standardreceptet för \"hur stor är hela mängden\"-frågor.",
     "pitfall": "Att se två fakta i samma utsaga (\"fem får OCH 1/8 grisar\") känns som tillräckligt. Botemedlet: räkna delgrupper kontra ekvationer — har du en koppling per delgrupp?",
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-003",
     "pregrade_tactic": {
       "handle": "Tre-delar-totalen-receptet",
       "move": "Vid summa-frågor med tre delgrupper: kräv en koppling (fraktion eller tal) för varje delgrupp innan du säger \"tillräckligt\"."
@@ -1385,7 +1385,7 @@
     ],
     "technique": "I positions-NOG med en fixerad mittposition: en utsaga som ger DIREKT FÄRG på en produkt + en GRANN-relation till mitten tvingar mittens färg, vilket låser den tredje via uteslutning.",
     "pitfall": "En negation (\"tröjor är inte vita\") lämnar oftast två möjligheter kvar — den räcker bara om två andra färger redan är fördelade. Botemedlet: räkna kvarvarande möjligheter efter varje uteslutning.",
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-014",
     "pregrade_tactic": {
       "handle": "Mittposition-tvånget",
       "move": "När mittpositionen är fast: leta efter utsagan som ger en direkt färg + grann-relation — den tvingar mittens färg och låser allt."
@@ -1685,7 +1685,7 @@
     ],
     "technique": "Procentekvation a %·x = b %·y: omvandla till heltal genom att multiplicera med 100, lös ut kvoten y/x = a/b.",
     "pitfall": "Botemedlet mot 'större procent = större tal': procenten är AV olika tal, så jämför absoluta produkter, inte procentsatser ensamt.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-020",
     "pregrade_tactic": {
       "handle": "Procent-omvändningen",
       "move": "När a % av x = b % av y, lös ut y = (a/b)·x — talen är omvänt proportionella mot procentsatserna."
@@ -1785,7 +1785,7 @@
     ],
     "technique": "Skuggad area mellan båge och korda i kvadrat: sektor − triangel, där radien är kvadratens sida och triangeln är rätvinklig vid medelpunkten.",
     "pitfall": "Botemedlet mot fel cirkelandel: läs alltid 'en fjärdedel'/'halv' explicit innan formeln väljs — bråket framför πr² är ofta felkällan.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-041",
     "pregrade_tactic": {
       "handle": "Månskärms-formeln",
       "move": "När området ligger mellan en cirkelbåge och en korda i en kvadrat: räkna sektorn (¼πr²) minus triangeln (½·sida·sida)."
@@ -2091,7 +2091,7 @@
     ],
     "technique": "Medelvärde av två tal: addera (med korrekt tecken via gemensam nämnare), dela med 2 = multiplicera nämnaren med 2.",
     "pitfall": "Botemedlet mot 'glömma dela med 2': skriv ut formeln \\frac{a+b}{2} explicit varje gång — då ser du delningen.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-016",
     "pregrade_tactic": {
       "handle": "Medelvärdes-bråk-receptet",
       "move": "Gör gemensam nämnare, addera täljarna med rätt tecken, dubbla nämnaren — då har du medelvärdet."
@@ -2330,7 +2330,7 @@
         "why_wrong": "Det behövs inte. När båda kvantiteterna förenklas till exakt samma uttryck (a - a^{2}, se steg 12) gäller likheten för ALLA värden av a — positiva, negativa, noll. D är reserverat för fall där villkoret tillåter flera olika utfall (I > II för vissa värden, I < II för andra). Här är I = II ALLTID."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Två uttryck som SER olika ut innan förenkling kan vara algebraiskt identiska. KVA väljer ofta att skriva I och II i olika form (utvecklat vs. parentes) för att fresta studenter att gissa A eller B utifrån for- men istället för att räkna. Botemedlet: när for- men är 'misstänkt olik' — utveckla ALLT till samma form (alla parenteser borta, alla termer i ordning) innan du drar slutsatsen.",
     "solution_path": "Villkoret b = a + 1 låter oss byta ut b överallt. När båda kvantiteterna substitueras och förenklas blir resultatet a - a^{2} i båda — algebraiskt identiska. Svaret är C.",
     "steps": [
@@ -2827,7 +2827,7 @@
     ],
     "technique": "I räkne-NOG med flera kategorier och en \"dubblerad\" uppgift: enumerera alla möjliga modeller efter att båda utsagor är pålagda. Om fler än en modell ger olika svar på den sökta storheten är informationen otillräcklig.",
     "pitfall": "Det är lätt att fastna i halvläst information (\"tre färger\" känns låst) och missa de fall där herrarnas tre färger råkar dubbla mer än en damfärg. Botemedlet: lista alla kombinationer mekaniskt.",
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-004",
     "pregrade_tactic": {
       "handle": "Enumerationen",
       "move": "När frågan handlar om \"exakt en dubblerad\" och flera kategorier finns: lista ALLA modeller som uppfyller utsagorna — räcker bara om alla ger samma svar."
@@ -2938,7 +2938,7 @@
     ],
     "technique": "Procentökning + före-värde ger efter-värde; efter-värde delat med medel ger antal. NOG-receptet: 25 %-ökning är en multiplikator (1,25), inte ett tillägg på antal.",
     "pitfall": "Att tolka \"25 % ökning\" som att antalet skulpturer ökade 25 % — det är VÄRDET som ökade 25 %. Botemedlet: läs ut subjektet noga (\"totala VÄRDET ökade\").",
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-019",
     "pregrade_tactic": {
       "handle": "Värde-via-medel-receptet",
       "move": "När en procentförändring gäller VÄRDE och en utsaga ger medel-efter: kombinera till antal-efter = värde-efter / medel."
@@ -3160,7 +3160,7 @@
     ],
     "technique": "I NOG med flera relaterade storheter: en homogen relation (alla termer skalar med samma faktor) saknar absolutvärde. En linjär ekvation med en konkret konstant (33 m) ger däremot en kalibreringspunkt.",
     "pitfall": "Att tro att en symmetrisk medelutsaga (\"andra är tredjedel av de övriga\") är låsande. Botemedlet: kolla om utsagan är homogen — om alla värden kan dubblas och utsagan fortfarande stämmer, saknas absolutvärdet.",
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-010",
     "pregrade_tactic": {
       "handle": "Kalibreringspunkten",
       "move": "Sök utsagan med ett konkret antal meter, kronor eller år — den är ofta den enda låsande, även när en mer komplex \"symmetrisk\" utsaga finns."

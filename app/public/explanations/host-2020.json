@@ -410,7 +410,7 @@
         "why_wrong": "Steg 8 visar att likhet inträffar BARA i specialfallet y = (x+z)/2. Alla andra y-värden ger olikhet åt något håll."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-021",
     "pitfall": "Det luriga är att skenbar symmetri lurar — (x+z)/2 ser ut att 'representera' alla tre, men gör det bara i symmetrifallet. Botemedlet: testa ALDRIG bara ETT exempel i KVA — testa minst två som ligger på var sin ände av tillåtet intervall.",
     "solution_path": "Differensen I − II = (x + z − 2y)/6. Med x = 0, y = 1, z = 10 blir den (10 − 2)/6 > 0, men med x = 0, y = 9, z = 10 blir den (10 − 18)/6 < 0. Tecknet är inte låst — informationen är otillräcklig, svaret är D.",
     "steps": [
@@ -1176,7 +1176,7 @@
         "why_wrong": "Steg 6–7 och 9 visar att vartdera ensamt har båda riktningar. D kräver att vartdera ENSAMT ger entydigt svar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-017",
     "pitfall": "Det luriga är att 'större delarefaktor' (60 vs 30) inte betyder 'större tal' — det betyder bara strängare form. Botemedlet: räkna ALLTID både den minsta tillåtna multipeln OCH en stor multipel av motparten innan du drar slutsats om ordning.",
     "solution_path": "(1) ger n ∈ {30, 90, 150, ...} och m ∈ {60, 120, 180, ...}; kan ge båda riktningar (t.ex. n=30, m=60 ger m>n; n=150, m=60 ger n>m). Otillräckligt. (2) säger inget om ordning. Tillsammans: m är multipel av 60·13=780, n är multipel av 30·13=390 (med udda multiplikator). Med m=780, n=390 är m>n; med m=780, n=1170 är n>m. Otillräckligt även tillsammans. Svaret är E.",
     "steps": [
@@ -1294,7 +1294,7 @@
         "why_wrong": "Steg 5 visar att 12x/2 förenklas till 6x — bråket försvinner. Det finns inget legitimt sätt att få \\frac{132}{7} ur den här ekvationen."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-007",
     "pitfall": null,
     "solution_path": "Sätt in y = 12x i högerledet: 5x + 66 = \\frac{12x}{2} = 6x. Då blir 66 = 6x − 5x = x, så x = 66. Svaret är C.",
     "steps": [
@@ -1488,7 +1488,7 @@
         "why_wrong": "Steg 4 visar att 3/3 = 1, inte ett bråk som ska adderas till en hel etta. 1 + 1 = 2, inte 4/3."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-007",
     "pitfall": null,
     "solution_path": "f(1/3) betyder 'sätt in 1/3 där x står': 3·(1/3) + 1 = 1 + 1 = 2 = \\frac{6}{3}. Svaret är D.",
     "steps": [
@@ -1648,7 +1648,7 @@
     ],
     "technique": "Bråkaddition med samma nämnare: addera täljarna direkt, behåll nämnaren, förenkla. Leta efter motsatta termer som tar ut varandra.",
     "pitfall": "Vanligaste fällan är att försöka göra något komplicerat när bråken redan har gemensam nämnare. Botemedlet: börja ALLTID med 'samma nämnare? — slå ihop täljarna' innan du försöker faktorisera eller skala.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-024",
     "pregrade_tactic": {
       "handle": "Bråksammanslagningen",
       "move": "Samma nämnare? Slå ihop täljarna direkt och leta efter termer som tar ut varandra — då kollapsar uttrycket ofta till en konstant."
@@ -1876,7 +1876,7 @@
         "why_wrong": "Steg 8 ger x = 2y/7. 6x/(7y) har fel storheter på fel platser och saknar ekvationsgrund."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-015",
     "pitfall": null,
     "solution_path": "Medelvärdet av x och 6x är (x + 6x)/2 = 7x/2. Sätt = y: 7x/2 = y → x = \\frac{2y}{7}. Svaret är B.",
     "steps": [
@@ -2252,7 +2252,7 @@
         "why_wrong": "Steg 6 visar att x KVITTAS UT när vi jämför y och z. Inget okänt återstår i förhållandet."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-011",
     "pitfall": null,
     "solution_path": "(x/100)·y = 73 ger y = 7300/x. (x/100)·z = 37 ger z = 3700/x. Eftersom x är positivt och samma i båda är y större än z (dubbelt så stort plus lite). Svaret är A.",
     "steps": [
@@ -2346,7 +2346,7 @@
         "why_wrong": "Steg 6 visar att likheten gäller för ALLA värden på sidorna. Inga obekanta att låsa."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": null,
     "solution_path": "Omkretsen är summan av de tre sidlängderna. Att dela summan på 3 är exakt definitionen av medelvärdet. Kvantiteterna är identiska. Svaret är C.",
     "steps": [
@@ -2440,7 +2440,7 @@
         "why_wrong": "Steg 9 visar att likhet INTRÄFFAR (när 2L = E), men bara i ett specifikt fall. Det gäller inte alltid."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-002",
     "pitfall": null,
     "solution_path": "Översätt: A = 2(E + L) = 2E + 2L. Jämför mot 3E: skillnaden är 2L − E. Den är fri — till exempel L = 1, E = 1 ger 2−1 = 1 (I > II); L = 1, E = 3 ger 2−3 = −1 (II > I). Information saknas — svaret är D.",
     "steps": [
@@ -2634,7 +2634,7 @@
         "why_wrong": "Steg 4 visar att FÖRHÅLLANDET A₁/A₂ är låst av procentvillkoren — absoluta värden behövs inte för en KVA-jämförelse."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-011",
     "pitfall": null,
     "solution_path": "Överlappet är samma area sett från båda sidor: 0,25·A₁ = 0,20·A₂. Det ger A₁/A₂ = 4/5 < 1, så A₂ > A₁ — svaret är B.",
     "steps": [
@@ -2822,7 +2822,7 @@
         "why_wrong": "Steg 5–6 visar att TECKNET på I (positivt) och värdet på II (noll) är låsta av villkoren — exakta värden behövs inte."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Det luriga är att x² + y² ser identiskt ut innan man läser till ter- men 2xy. Botemedlet: leta ALLTID efter konjugatregelns 2ab-term när du har x² och y² i båda kvantiteterna — skillnaden är ofta just den ter- men.",
     "solution_path": "II är konjugatfor- men (x + y)² = x² + 2xy + y². Eftersom x + y = 0 är II = 0. I = x² + y² > 0 (båda termer är positiva när x, y ≠ 0). Alltså I > II — svaret är A.",
     "steps": [
@@ -2916,7 +2916,7 @@
         "why_wrong": "Steg 7 visar att likhet inträffar bara i specialfallet k = 0. För andra k är f(a) ≠ f(−a) eftersom uttrycken har olika tecken."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-016",
     "pitfall": null,
     "solution_path": "Linje genom origo: f(x) = kx för någon konstant k. f(a) = ka, f(−a) = −ka. Tecknet beror på k: positiv k ger I > II, negativ k ger II > I, k = 0 ger likhet. Information saknas — svaret är D.",
     "steps": [
@@ -3088,7 +3088,7 @@
     ],
     "technique": "Medelvärde gånger antal = totalsumma. Trigger: \"medelvärdet är X, hitta summan eller en okänd term\". Sätt upp ekvationen och lös ut det som efterfrågas.",
     "pitfall": "Botemedlet mot \"medel = okänd summa\": medelvärdet och summan är OLIKA storheter — det ena är det andra dividerat med antalet. Multiplicera tillbaka.",
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-010",
     "pregrade_tactic": {
       "handle": "Medel-summa-bryggan",
       "move": "Vid medelvärde med okända termer, multiplicera medelvärdet med antalet för totalsumman och lös sedan ut det okända — jämför direkt mot II."
@@ -3127,7 +3127,7 @@
         "why_wrong": "Steg 9 visar att två villkor + ett absolut tal (M = 20) räcker — relationen B = 7H kopplas till H = 5 via det absoluta talet."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-024",
     "pitfall": null,
     "solution_path": "Mage = 20 kg är givet. (1) ger Ben = 7·Huvud, men saknar Huvud i kg. (2) ger Huvud = 20/4 = 5 kg, men saknar Ben. Tillsammans: Huvud = 5, Ben = 7·5 = 35, Mage = 20 → totalt 60 kg. Räcker bara tillsammans — svaret är C.",
     "steps": [
@@ -3232,7 +3232,7 @@
         "why_wrong": "Steg 9 visar att A1 (känd) + A1+B1 (känd) ger B1, och A2+B1 (känd) ger A2, och B2 är direkt känd. Fyra ekvationer från två påståenden räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-015",
     "pitfall": null,
     "solution_path": "Cellerna är A1, A2, B1, B2. (1) ger A1+B1 = 30 och B2 = 23 — A2 saknas. (2) ger A2+B1 = 36 och A1 = 13 — B2 saknas. Tillsammans: A1 = 13 → B1 = 17 → A2 = 19, plus B2 = 23 ger totalsumma 72. Räcker bara tillsammans — svaret är C.",
     "steps": [
@@ -3454,7 +3454,7 @@
         "why_wrong": "Steg 5–7 låser TOPPEN entydigt under (1), även om de andra positionerna kan variera internt mellan R och V."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-014",
     "pitfall": "Det luriga är att (1) tillåter två R-V-konfigurationer men ANDÅ entydigt fastställer toppen — eftersom blå < grå tvingar grå till toppen oavsett resterande layout. Botemedlet: räkna alltid ut FRÅGAN (vad är toppen?) i varje fall, inte hela konfigurationen.",
     "solution_path": "Röd och vit är intill varandra (givet). (1) flyttar dem från toppen, så de ockuperar position 1–2 eller 2–3; resten (blå, grå) är högre, och blå < grå i höjd tvingar grå till toppen. (2) tillåter två toppar (grå eller blå beroende på vart blå hamnar). Bara (1) räcker — svaret är A.",
     "steps": [
@@ -3677,7 +3677,7 @@
         "why_wrong": "Steg 4 visar att 2·(−3x) ger −6x, vilket tar ut +6x. D missar denna utjämning."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-001",
     "pitfall": null,
     "solution_path": "Multiplicera ut båda parenteserna: 3(2x+5) = 6x + 15 och 2(7−3x) = 14 − 6x. Addera: 6x − 6x + 15 + 14 = 29. Svaret är A.",
     "steps": [
@@ -3865,7 +3865,7 @@
         "why_wrong": "Steg 1 visar att BASEN halveras (0,5x), inte fördubblas. Att hyperaktivt fördubbla allt ger fel svar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-020",
     "pitfall": null,
     "solution_path": "(a%)·x = y. Då blir (2a%)·(0,5x) = (a%·x)·(2·0,5) = y·1 = y. Faktorerna 2 och 0,5 tar ut varandra. Svaret är B.",
     "steps": [
@@ -3959,7 +3959,7 @@
         "why_wrong": "Steg 7 visar att DIVISIONEN i medelvärdesräkningen kan bryta heltalstatusen. Heltalsoperationer som +, − och · bevarar heltal; ÷ gör det inte."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-049",
     "pitfall": null,
     "solution_path": "Medianen av en sorterad lista med 5 heltal är det tredje talet, vilket självklart är ett heltal. Alternativ A, B och C har enkla motexempel; D är logiskt nödvändigt. Svaret är D.",
     "steps": [
@@ -4325,7 +4325,7 @@
     ],
     "technique": "Jämförelse av tiopotens-produkter: använd 10^a · 10^b = 10^(a+b). Det med STÖRSTA exponentsumman är största värdet — räkna inget annat.",
     "pitfall": "Vanligaste fällan är att försöka räkna fram decimaltal när bara jämförelse behövs. Botemedlet: skriv exponentsummorna i kolumn — den största vinner — punkt.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-026",
     "pregrade_tactic": {
       "handle": "Exponentsumman",
       "move": "Räkna a+b för varje alternativ och välj det med största värdet — bara exponentsumman, ingen mantissa, inga decimaltal."
@@ -12365,7 +12365,7 @@
       "generated_at": 0,
       "model": "manual-fix-v2"
     },
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "solution_path": "Kvantitet I är \\frac{1/6}{6/1} = \\frac{1}{6} \\cdot \\frac{1}{6} = \\frac{1}{36} ≈ 0,028.\n\nKvantitet II är \\frac{6/1}{1/6} = 6 \\cdot 6 = 36.\n\nKvantitet II är mycket större (36 mot 1/36). Svaret är B."
   }
 }

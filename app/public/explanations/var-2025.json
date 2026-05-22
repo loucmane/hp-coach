@@ -308,7 +308,7 @@
         "why_wrong": "Steg 1 fastslår att båda villkoren tillsammans låser både x och y entydigt. Två ekvationer + två obekanta = exakt en lösning; informationen är komplett."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pitfall": "Minustecken vid bråk-substitution är klassisk slarvfälla. Botemedlet: skriv ut varje substitutions-rad med tecknet inom parentes: (-1/3) - y = 1/3, INTE -1/3 - y = 1/3 från huvudet.",
     "solution_path": "Från x = -1/3 och x - y = 1/3 får vi y = x - 1/3 = -1/3 - 1/3 = -2/3. Kvantitet II: 2x = 2 · (-1/3) = -2/3. Båda lika. Svaret är C.",
     "steps": [
@@ -502,7 +502,7 @@
         "why_wrong": "Steg 5 visar att skillnaden x - y = 1 är KONSTANT oavsett y. Det räcker för en entydig KVA-jämförelse; informationen är full."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-036",
     "pitfall": "Glöm aldrig villkoret rest < y. Det utesluter vissa y-värden men ändrar sällan KVA-jämförelsen. Botemedlet: kolla ALLTID att resten är mindre än nämnaren — annars är uppgiften inkonsekvent.",
     "solution_path": "Heltalsdivision x / y med kvot 1 och rest 1 betyder x = 1 · y + 1 = y + 1. Alltså är x alltid exakt 1 större än y. Svaret är A.",
     "steps": [
@@ -607,7 +607,7 @@
         "why_wrong": "Steg 5 och 7 löser problemet två gånger om — informationen är riklig, inte otillräcklig."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-014",
     "pitfall": null,
     "solution_path": "Bägge påståendena låser positionen av Herroch Damcykeln tillräckligt för att avgöra vem som står längst till höger. (1) ger Barn-Herr-Dam; (2) ger samma ordning. Var för sig räcker. Svaret är D.",
     "steps": [
@@ -946,7 +946,7 @@
         "why_wrong": "Steg 9–10 visar att positivt-heltal-villkoret reducerar de två kvadratrötterna till en. Informationen räcker."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-024",
     "pitfall": "Kvadratiska ekvationer har två rötter; villkoret 'positiva heltal' filtrerar bort den negativa. Botemedlet: efter att ha löst y² = N, kolla alltid mot heltal-/positivitets-villkoren INNAN du dömer (2) som otillräcklig.",
     "solution_path": "Båda påståendena kombinerade med x/y = 5 ger en unik lösning x = 20, y = 4. (1): x + y = 24 → y = 4. (2): xy = 80 → y² = 16 → y = 4 (positivt heltal). Var för sig räcker. Svaret är D.",
     "steps": [
@@ -1556,7 +1556,7 @@
         "why_wrong": "Steg 11 visar att produkten av två heltal är ett heltal. Ett blandbråk som 266 6/25 kan inte vara produkten av två hela åldrar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-002",
     "pitfall": null,
     "solution_path": "Översätt till två ekvationer: x = y + 7 (Arne 7 år äldre) och x + y = 33 (tillsammans 33 år). Lös: x = 20, y = 13. Produkten xy = 20 · 13 = 260. Svaret är C.",
     "steps": [
@@ -1768,7 +1768,7 @@
         "why_wrong": "Steg 9 visar att uttrycket ger -a^{2} + a^{3}, vilket är lika med a bara för specifika a-värden — inte 'med säkerhet'."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-007",
     "pitfall": null,
     "solution_path": "Vi söker f så att f(a) = a är garanterat. Testa varje alternativ med x = a: bara B ger f(a) = 2a − a = a oavsett vilket a det är. Svaret är B.",
     "steps": [
@@ -1853,7 +1853,7 @@
       "generated_at": "2026-05-22",
       "recipe": "variant-c-regen-wave"
     },
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-031",
     "solution_path": "Dela koefficienterna och tiopotenserna var för sig: \\frac{2{,}1}{3} = 0{,}7 och \\frac{10^{6}}{10^{4}} = 10^{6-4} = 10^{2}. Multiplicera ihop: 0,7 · 100 = 70.",
     "technique": "Division av tal i grundpotensform: separera tal och tiopotens; subtrahera exponenter (regeln 10^a/10^b = 10^{a−b}); multiplicera resultaten.",
     "pitfall": "Botemedlet mot 'addera-exponenter': vid DIVISION subtraheras exponenter (a − b), inte adderas. Och ett 0,7 · 10² ska skrivas i 'vanlig' form innan du jämför med svarsalternativen.",
@@ -2295,7 +2295,7 @@
       "generated_at": "2026-05-22",
       "recipe": "variant-c-regen-wave"
     },
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-041",
     "solution_path": "Tre cirklar med radie 1 har total area 3 \\cdot \\pi \\cdot 1^{2} = 3\\pi. Sektorerna som ligger inuti triangeln motsvarar triangelns inre vinklar, som tillsammans summerar till 180°. Sektor-area inuti triangeln = \\frac{180°}{360°} \\cdot \\pi = \\frac{\\pi}{2}. Skuggad area utanför triangeln = 3\\pi - \\frac{\\pi}{2} = \\frac{5\\pi}{2} = 2{,}5\\pi cm².",
     "technique": "Triangel-med-cirklar-i-hörnen: utnyttja att de tre sektorerna inuti triangeln tillsammans utgör en HALV cirkel (180° av 360°), oavsett triangelns form. Skuggad area = total cirkelarea − halv cirkel.",
     "pitfall": "Botemedlet mot 'antag-likbent': vinkelsumman 180° gäller VARJE triangel, inte bara likbenta eller rätvinkliga. Form-information saknar betydelse för den här beräkningen.",
@@ -2484,7 +2484,7 @@
     ],
     "technique": "Förkortning av gemensamma faktorer i täljare och nämnare är första steget i alla bråkjämförelser. Vid mismatching tal: leta efter samma talvärde efter förenkling.",
     "pitfall": "Botemedlet mot att fokusera på hela täljarens storlek: titta på bråket som helhet, identifiera vad som tar bort sig, och jämför resterna.",
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-024",
     "pregrade_tactic": {
       "handle": "Förkortningsreceptet",
       "move": "När två bråk med x ska jämföras: förkorta gemensamma faktorer i båda — om resterna är samma uttryck är svaret C."
@@ -2696,7 +2696,7 @@
     ],
     "technique": "För sifferpussel med multiplicerande villkor: skriv ut alla siffror som funktion av en, pålägg gränsen siffra ≤ 9, och enumerera. KVA blir D när flera giltiga val ger blandade ordningar.",
     "pitfall": "Botemedlet mot att stanna vid en „kul”-lösning: lista alla giltiga (a, b, c)-tripler explicit innan du jämför.",
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-036",
     "pregrade_tactic": {
       "handle": "Sifferenumeringen",
       "move": "I sifferpussel: skriv alla siffror i termer av en, kräv 0-9-gränsen, lista heltal som klarar — om en kvantitet får flera värden på båda sidor om jämförelsetalet är svaret D."
@@ -3976,7 +3976,7 @@
         "why_wrong": "Steg 5 låser x = 4, inte 1/2. Att räkna 7 och 9 utan -4 ger fel storleksordning."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-002",
     "pitfall": null,
     "solution_path": "Sätt f(x) = -9: -4x + 7 = -9 → -4x = -16 → x = 4. Svaret är D.",
     "steps": [
@@ -4264,7 +4264,7 @@
         "why_wrong": "Steg 6 — den sista +3 i f(x) = 2x + 3 finns kvar och måste adderas. 4x + 6 + 3 = 4x + 9."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-007",
     "pitfall": null,
     "solution_path": "Stoppa in 2x + 3 i f-receptet: f(2x+3) = 2(2x+3) + 3 = 4x + 6 + 3 = 4x + 9. Svaret är D.",
     "steps": [
@@ -4558,7 +4558,7 @@
         "why_wrong": "Steg 10 visar att y = 150, inte x. Att förväxla y med x ger fel svar."
       }
     ],
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-002",
     "pitfall": null,
     "solution_path": "Substituera y = x + 200 i x + y = 100: 2x + 200 = 100 → 2x = -100 → x = -50. Svaret är B.",
     "steps": [
