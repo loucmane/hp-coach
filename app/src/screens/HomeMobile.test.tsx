@@ -204,7 +204,7 @@ describe('HomeMobile — top traps', () => {
     expect(card).toHaveTextContent('2 ggr')
   })
 
-  it('falls back to section-lektion text when headline is null', () => {
+  it('falls back to "Öva detta mönster" copy when headline is null', () => {
     render(
       <HomeMobile
         forceLayout="phone"
@@ -212,10 +212,10 @@ describe('HomeMobile — top traps', () => {
         topTraps={[{ framework_id: 'XYZ-TRAP-040', section: 'XYZ', count: 3, headline: null }]}
       />,
     )
-    expect(screen.getByTestId('home-top-traps')).toHaveTextContent('Läs XYZ-lektionen')
+    expect(screen.getByTestId('home-top-traps')).toHaveTextContent('Öva detta mönster')
   })
 
-  it('row link points to the framework-deep-link URL', () => {
+  it('row link points to the framework-drill deep-link', () => {
     render(
       <HomeMobile
         forceLayout="phone"
@@ -224,7 +224,7 @@ describe('HomeMobile — top traps', () => {
       />,
     )
     const link = screen.getByTestId('top-trap-link') as HTMLAnchorElement
-    expect(link.getAttribute('href')).toBe('/lektion?section=NOG#NOG-TRAP-007')
+    expect(link.getAttribute('href')).toBe('/drill?framework=NOG-TRAP-007')
   })
 })
 

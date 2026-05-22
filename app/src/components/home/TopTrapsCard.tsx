@@ -68,7 +68,15 @@ function TrapRow({ trap }: { trap: TopTrap }) {
   // Plain anchor (not TanStack <Link>) — keeps the test render simple
   // (no router context needed) and the surface is a one-tap target, so
   // we don't need router-level prefetch behaviour.
-  const href = `/lektion?section=${trap.section}#${trap.framework_id}`
+  //
+  // Target is `/drill?framework=ID` rather than the lesson page —
+  // action-first per ADHD-PI: the user has already missed this trap
+  // 2+ times, so they don't need to re-read it; they need fresh
+  // exposure to the same pattern. The drill route's `?framework=`
+  // deep-link (B1.1) plays the framework entry's authored
+  // example_questions. The lesson is still one tap away via the
+  // framework chip inside the drill flow.
+  const href = `/drill?framework=${trap.framework_id}`
   return (
     <a
       href={href}
@@ -118,7 +126,7 @@ function TrapRow({ trap }: { trap: TopTrap }) {
           marginTop: 2,
         }}
       >
-        {trap.headline ?? `Läs ${trap.section}-lektionen →`}
+        {trap.headline ?? 'Öva detta mönster →'}
       </div>
     </a>
   )
