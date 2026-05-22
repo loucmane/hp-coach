@@ -21,6 +21,7 @@ import { Page } from '@/components/Page'
 import { Mono } from '@/components/primitives'
 import { useViewport } from '@/hooks/useViewport'
 import { formatSwedishHeader } from '@/lib/dates'
+import { type DiagnosticMemory, formatTimeSince } from '@/lib/diagnosticMemory'
 import type { DailyPlan } from '@/lib/scheduler'
 import { formatScore, type ProjectedTotal } from '@/lib/scoring'
 import type { CoachKey } from '@/lib/voice'
@@ -37,6 +38,11 @@ type HomeMobileProps = {
    *  above the plan card. Null/undefined hides the line (cold-start,
    *  loading). Route owns the data wire so HomeMobile stays pure. */
   projected?: ProjectedTotal | null
+  /** Optional "last diagnostic" event. When set, renders a one-line
+   *  kicker under the date header — `DIAGNOSTIK · 2 d sedan · baseline
+   *  0.62 · rebaseline →`. Closes B4: the diagnostic seeds the score
+   *  model, but without this line the user has no way to feel it. */
+  diagnosticMemory?: DiagnosticMemory | null
   /** Called when a plan item is tapped. Receives the item's href so
    *  the route can dispatch SPA navigation. */
   onPlanItemNavigate?: (href: string) => void
@@ -61,6 +67,7 @@ export function HomeMobile({
   allComplete = false,
   onRegenerate = NOOP,
   projected = null,
+  diagnosticMemory = null,
   onPlanItemNavigate,
   coach: coachProp,
   showStreak,
@@ -144,6 +151,36 @@ export function HomeMobile({
               >
                 {days} dagar kvar · {sitting.label.toLowerCase()}
               </div>
+              {diagnosticMemory && (
+                <a
+                  href="/diagnostik"
+                  data-testid="home-diagnostic-memory"
+                  style={{
+                    display: 'inline-flex',
+                    gap: 6,
+                    alignItems: 'baseline',
+                    marginTop: 6,
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 11,
+                    letterSpacing: 'var(--font-mono-track)',
+                    textTransform: 'uppercase',
+                    color: 'var(--ink-2)',
+                    fontVariantNumeric: 'tabular-nums',
+                    textDecoration: 'none',
+                  }}
+                >
+                  <span>Diagnostik</span>
+                  <span style={{ color: 'var(--muted)' }}>·</span>
+                  <span>{formatTimeSince(diagnosticMemory.lastAt, today)}</span>
+                  {diagnosticMemory.baselineScore != null && (
+                    <>
+                      <span style={{ color: 'var(--muted)' }}>·</span>
+                      <span>baseline {formatScore(diagnosticMemory.baselineScore)}</span>
+                    </>
+                  )}
+                  <span style={{ color: 'var(--accent)', marginLeft: 4 }}>rebaseline →</span>
+                </a>
+              )}
             </div>
             {renderStreak && <StreakBadge value={streakValue} />}
           </header>
