@@ -82,6 +82,51 @@ describe('HomeMobile — plan rendering', () => {
   })
 })
 
+describe('HomeMobile — score line', () => {
+  it('hides the score line when projected is null (cold-start / loading)', () => {
+    render(<HomeMobile forceLayout="phone" plan={makePlan()} projected={null} />)
+    expect(screen.queryByTestId('home-score-line')).not.toBeInTheDocument()
+  })
+
+  it('hides the score line when both halves are null', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        projected={{ total: null, verbal: null, quant: null }}
+      />,
+    )
+    expect(screen.queryByTestId('home-score-line')).not.toBeInTheDocument()
+  })
+
+  it('renders just-nu / verbal / kvant when any half has signal', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        projected={{ total: 0.65, verbal: 0.81, quant: 0.49 }}
+      />,
+    )
+    const line = screen.getByTestId('home-score-line')
+    expect(line).toHaveTextContent(/just nu · 0\.65 \/ 2\.0/i)
+    expect(line).toHaveTextContent(/verbal 0\.81/i)
+    expect(line).toHaveTextContent(/kvant 0\.49/i)
+  })
+
+  it('renders em-dash for missing halves but still shows the line', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        projected={{ total: null, verbal: 0.81, quant: null }}
+      />,
+    )
+    const line = screen.getByTestId('home-score-line')
+    expect(line).toHaveTextContent('verbal 0.81')
+    expect(line).toHaveTextContent('kvant —')
+  })
+})
+
 describe('HomeMobile — greeting', () => {
   it('renders the time-of-day greeting', () => {
     // 09:00 local → "God morgon."
