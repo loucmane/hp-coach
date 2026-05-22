@@ -138,6 +138,25 @@ function getActiveQuestion(): {
   if (!bank) return null
   const promptEl = document.querySelector('[data-testid="drill-prompt"]')
   if (!promptEl) return null
+
+  // Prefer the URL's `?qid=X` when present — session routes
+  // (/drill, /repetition, /diagnostik) replaceState the qid on every
+  // advance, so the URL is canonical. The prompt-textContent
+  // matching below stays as a fallback for surfaces that haven't
+  // adopted the URL pattern yet.
+  const urlQid = new URLSearchParams(window.location.search).get('qid')
+  if (urlQid) {
+    const direct = bank.find((q) => q.qid === urlQid)
+    if (direct) {
+      return {
+        qid: direct.qid ?? null,
+        prompt: direct.prompt ?? null,
+        answer: direct.answer ?? null,
+        options: direct.options ?? [],
+      }
+    }
+  }
+
   const visiblePrompt = (promptEl.textContent || '').trim()
   // Find by matching prompt textContent — the bank stores the raw
   // (pre-KaTeX-render) prompt; the DOM has the rendered version, so

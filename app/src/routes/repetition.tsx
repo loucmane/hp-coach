@@ -10,14 +10,25 @@
 // upsert just bumps errorCount), but once we add SRS spacing the
 // counter will drive the next-review-at calculation.
 
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { useMemo } from 'react'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { useCallback, useMemo } from 'react'
 
 import { useDueMistakes, useRecordMistake, useResolveMistake } from '@/api/hooks/useMistakes'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { pickReplayQuestions, REPETITION_SESSION_SIZE } from '@/lib/replay'
 
+type RepetitionSearch = { qid?: string }
+
+function validateSearch(input: Record<string, unknown>): RepetitionSearch {
+  const qid = input.qid
+  if (typeof qid === 'string' && qid.length > 0 && qid.length < 80) {
+    return { qid }
+  }
+  return {}
+}
+
 export const Route = createFileRoute('/repetition')({
+  validateSearch,
   component: RepetitionScreen,
 })
 
@@ -25,6 +36,23 @@ function RepetitionScreen() {
   const due = useDueMistakes()
   const recordMistake = useRecordMistake()
   const resolveMistake = useResolveMistake()
+  const navigate = useNavigate()
+  const { qid: urlQid } = Route.useSearch()
+
+  // URL-as-state for the active qid. `replace: true` keeps history
+  // clean — a 10-question replay shouldn't add 10 back-button stops.
+  // Bare `/repetition` (no qid) is the canonical start; we set the
+  // qid only after the player resolves a plan.
+  const setUrlQid = useCallback(
+    (next: string | null) => {
+      navigate({
+        to: '/repetition',
+        search: next ? { qid: next } : {},
+        replace: true,
+      })
+    },
+    [navigate],
+  )
 
   // Build the qid → mistakeId map once per query result so onCorrect
   // can find the mistake row to resolve in O(1) without re-running
@@ -57,6 +85,7 @@ function RepetitionScreen() {
       sessionKind="adaptive_review"
       sections="ORD"
       activeTab="drill"
+      urlSyncedQid={{ qid: urlQid ?? null, setQid: setUrlQid }}
       pickQuestions={async () => {
         const dueRows = due.data ?? []
         const items = await pickReplayQuestions(dueRows, REPETITION_SESSION_SIZE)

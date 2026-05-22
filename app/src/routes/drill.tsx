@@ -6,8 +6,8 @@
 // The state machine, lifecycle, and UI live in <SessionPlayer>; this
 // file is just config.
 
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useDueMistakes, useRecordMistake } from '@/api/hooks/useMistakes'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
@@ -86,6 +86,25 @@ export const Route = createFileRoute('/drill')({
 function DrillScreen() {
   const { section: sectionFromUrl, qid, framework } = Route.useSearch()
   const section: DrillSection = sectionFromUrl ?? 'ORD'
+  const navigate = useNavigate()
+
+  // URL-synced active qid. Preserves any other params (section,
+  // framework) — drill carries multiple optional facets. replace:true
+  // keeps the back button useful (one tap to leave the session
+  // instead of stepping back through 10 individual questions).
+  const setUrlQid = useCallback(
+    (next: string | null) => {
+      navigate({
+        to: '/drill',
+        search: (prev: DrillSearch) => ({
+          ...prev,
+          qid: next ?? undefined,
+        }),
+        replace: true,
+      })
+    },
+    [navigate],
+  )
 
   const recordMistake = useRecordMistake()
   const due = useDueMistakes()
@@ -155,6 +174,7 @@ function DrillScreen() {
       idleMeta={idleMeta}
       emptyCopy={emptyCopy}
       idleExtra={!qid && !framework && dueCount > 0 ? <RepetitionHint count={dueCount} /> : null}
+      urlSyncedQid={{ qid: qid ?? null, setQid: setUrlQid }}
       onWrong={(q) => {
         // Fire-and-forget: a failed mistake-write doesn't block the UX.
         recordMistake.mutate({ questionId: q.qid })

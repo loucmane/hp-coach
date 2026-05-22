@@ -11,24 +11,50 @@
 // `DiagnosticReport` ("Vad vi tror nu") instead of the generic
 // DrillResult — see #140.
 
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useCallback } from 'react'
 import { useRecordMistake } from '@/api/hooks/useMistakes'
 import { DiagnosticReport } from '@/components/diagnostic/DiagnosticReport'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { DIAGNOSTIC_LENGTH, pickDiagnosticQuestions } from '@/lib/diagnostic'
 
+type DiagnostikSearch = { qid?: string }
+
+function validateSearch(input: Record<string, unknown>): DiagnostikSearch {
+  const qid = input.qid
+  if (typeof qid === 'string' && qid.length > 0 && qid.length < 80) {
+    return { qid }
+  }
+  return {}
+}
+
 export const Route = createFileRoute('/diagnostik')({
+  validateSearch,
   component: DiagnostikScreen,
 })
 
 function DiagnostikScreen() {
   const recordMistake = useRecordMistake()
+  const navigate = useNavigate()
+  const { qid: urlQid } = Route.useSearch()
+
+  const setUrlQid = useCallback(
+    (next: string | null) => {
+      navigate({
+        to: '/diagnostik',
+        search: next ? { qid: next } : {},
+        replace: true,
+      })
+    },
+    [navigate],
+  )
 
   return (
     <SessionPlayer
       sessionKind="mock_diagnostic"
       sections="diagnostic"
       activeTab="drill"
+      urlSyncedQid={{ qid: urlQid ?? null, setQid: setUrlQid }}
       pickQuestions={pickDiagnosticQuestions}
       idleEyebrow="Diagnos"
       idleHeadline="Var står du?"
