@@ -60,8 +60,13 @@ export type PlanItem = {
  *  - v3: KVA/MEK/DTK/LÄS/ELF framework copy translated to Swedish in
  *    #51. Lesson-item headlines capture the framework headword at
  *    plan-generation time, so plans cached before #51 still display
- *    English lesson titles. */
-export const PLAN_SCHEMA_VERSION = 3
+ *    English lesson titles.
+ *  - v4: repetition session-size sanity (#74). Headline shape
+ *    changed from `Repetition · 50 missar` to `Repetition · 10 av
+ *    50 missar` when the backlog overflows the per-session cap;
+ *    estimatedMinutes recalibrated to ~0.75 min/rep. Plans cached
+ *    before #74 still show the misleading raw count. */
+export const PLAN_SCHEMA_VERSION = 4
 
 export type DailyPlan = {
   /** Schema version — see `PLAN_SCHEMA_VERSION`. Older plans are
