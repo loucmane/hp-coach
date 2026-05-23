@@ -1,0 +1,127 @@
+{
+  "host-2016-kvant2-XYZ-002": {
+    "corpus_patch": {
+      "prompt": "Vilken av punkterna ligger på linjen L?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "(–6, –2)"
+        },
+        {
+          "letter": "B",
+          "text": "(–2, 6)"
+        },
+        {
+          "letter": "C",
+          "text": "(3, 2)"
+        },
+        {
+          "letter": "D",
+          "text": "(2, 3)"
+        }
+      ],
+      "answer": "A",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Avläs två tydliga punkter på linjen L i diagrammet: y-skärningen vid (0, 1) och x-skärningen vid (–2, 0). Lutningen blir då k = (1–0)/(0–(–2)) = 1/2 och m = 1, så L: y = x/2 + 1. Pröva varje alternativ. För A: y = –6/2 + 1 = –3 + 1 = –2 — stämmer. Övriga alternativ ger fel y-värde. Svar A.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "En rät linje L är ritad i ett koordinatsystem. Du ska välja vilken av fyra punkter (–6, –2), (–2, 6), (3, 2), (2, 3) som ligger PÅ linjen. Strategin: hämta linjens ekvation ur diagrammet, sätt sedan in varje punkt och kolla vilken som uppfyller den.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Avläs y-skärningen",
+          "text": "Titta var linjen korsar y-axeln. Den korsar tydligt vid y = 1, en ruta ovanför origo. Det betyder att m-värdet (konstanttermen) i y = kx + m är m = 1.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Avläs x-skärningen",
+          "text": "Titta var samma linje korsar x-axeln. Det sker vid x = –2 (två rutor till vänster om origo). Punkten (–2, 0) ligger alltså på linjen.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Räkna ut lutningen",
+          "text": "Lutningen mellan två punkter (x₁, y₁) och (x₂, y₂) ges av k = \\frac{y_2 - y_1}{x_2 - x_1}. Använd (–2, 0) och (0, 1): k = \\frac{1 - 0}{0 - (-2)} = \\frac{1}{2}.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Skriv linjens ekvation",
+          "text": "Med k = 1/2 och m = 1 blir linjens ekvation L:\\; y = \\tfrac{x}{2} + 1. Det är denna ekvation varje kandidatpunkt måste uppfylla.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Testa alternativ A: (–6, –2)",
+          "text": "Sätt in x = –6 i ekvationen: y = \\tfrac{-6}{2} + 1 = -3 + 1 = -2. Det stämmer exakt med y-koordinaten i punkten. A ligger på linjen.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Testa alternativ B: (–2, 6)",
+          "text": "Sätt in x = –2: y = \\tfrac{-2}{2} + 1 = -1 + 1 = 0. Punktens y-värde är 6, inte 0. B ligger inte på linjen — observera att (–2, 0) däremot gör det (det är x-skärningen).",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Testa alternativ C: (3, 2)",
+          "text": "Sätt in x = 3: y = \\tfrac{3}{2} + 1 = 1{,}5 + 1 = 2{,}5. Punkten har y = 2, inte 2,5. C ligger nära men inte på linjen.",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Testa alternativ D: (2, 3)",
+          "text": "Sätt in x = 2: y = \\tfrac{2}{2} + 1 = 1 + 1 = 2. Punkten har y = 3, inte 2. D ligger inte på linjen.",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Verifiera",
+          "text": "Endast A klarade testet. Dubbelkolla genom att rita in (–6, –2) i diagrammet: gå sex rutor vänster, två rutor ner — den punkten ligger på den utritade linjen, snäppt på 'L'-etiketten i nedre vänstra hörnet. Stämmer.",
+          "tier": "essential"
+        },
+        {
+          "n": 11,
+          "title": "Slutsats",
+          "text": "Svaret är A: (–6, –2). Insikten i en mening: hämta först linjens ekvation från två avläsbara skärningspunkter, pröva sedan koordinaterna i y = kx + m — punkten som uppfyller ekvationen ligger på linjen, inga gissningar från ögonmått.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "B",
+          "why_tempting": "Det är frestande att se (–2, 6) som 'någon punkt i andra kvadranten' utan att märka att x-värdet –2 är just x-skärningen — då måste y vara 0, inte 6.",
+          "why_wrong": "Insatt i y = \\tfrac{x}{2} + 1 ger x = –2 att y = 0. Punkten (–2, 6) ligger sex rutor rakt ovanför x-skärningen, alltså långt över linjen."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Vid (3, 2) ser punkten nästan ut att tangera linjen i högra delen av diagrammet — ögonmåttet ljuger eftersom linjen passerar mycket nära.",
+          "why_wrong": "Steg 8 ger y = \\tfrac{3}{2} + 1 = 2{,}5, inte 2. En halv enhet skiljer (3, 2) från linjen — nära är inte på."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "Den som råkar kasta om koordinaternas roller i C får (2, 3) och tänker att 'svaret växlar 3:an och 2:an' — eller tror att lutningen är 1 och m = 1, alltså y = x + 1, vilket skulle ge (2, 3).",
+          "why_wrong": "Lutningen är 1/2, inte 1 — det syns på att linjen tar två rutor i x-led per en ruta i y-led. Med rätt lutning ger x = 2 värdet y = 2, inte 3."
+        }
+      ],
+      "technique": "Linje-i-diagram-frågor löser man inte med ögonmått utan med ekvation. Avläs två snäpp-på-rutnät-skärningar (gärna y- och x-axelns), räkna ut k via k = \\frac{\\Delta y}{\\Delta x}, läs av m direkt från y-skärningen, och sätt sedan in varje alternativs koordinater i y = kx + m. Alternativet vars y-koordinat matchar är svaret.",
+      "pitfall": "Att gissa från ögonmått när två kandidater ligger nära linjen — här lurar (3, 2) eftersom y = 2,5 ser ut som 2 på en grov ritning. Botemedlet: räkna alltid in alla alternativ i ekvationen, även när ett verkar uppenbart.",
+      "framework_id": "XYZ-TRAP-004",
+      "pregrade_tactic": {
+        "handle": "Tvåpunkts-ekvationen",
+        "move": "Avläs y-skärningen som m och en x-skärning för k, skriv ut y = kx + m, sätt sedan in varje alternativs koordinater och välj den som balanserar ekvationen exakt."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

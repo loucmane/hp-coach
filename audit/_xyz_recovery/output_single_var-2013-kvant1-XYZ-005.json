@@ -1,0 +1,139 @@
+{
+  "var-2013-kvant1-XYZ-005": {
+    "corpus_patch": {
+      "prompt": "Vid beräkning av (\\frac{4}{5} - \\frac{3}{4}) + (\\frac{2}{3} + \\frac{1}{2}) erhålls ett bråk av positiva heltal. Vilken är den minsta nämnare som bråket kan ha?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "6"
+        },
+        {
+          "letter": "B",
+          "text": "20"
+        },
+        {
+          "letter": "C",
+          "text": "60"
+        },
+        {
+          "letter": "D",
+          "text": "72"
+        }
+      ],
+      "answer": "C",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Räkna ut varje parentes för sig (MGN 20 respektive 6), addera dem med gemensam nämnare MGN(20,6) = 60, och kontrollera att slutbråket \\frac{73}{60} inte kan förkortas (73 är primt). Minsta möjliga nämnare är därmed 60 — svar C.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Du ska beräkna uttrycket (\\frac{4}{5} - \\frac{3}{4}) + (\\frac{2}{3} + \\frac{1}{2}) och sedan ange den MINSTA möjliga nämnaren som det resulterande bråket kan ha. 'Minsta nämnare' betyder att bråket ska skrivas i helt förkortad form — täljare och nämnare har inga gemensamma faktorer.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Strategi",
+          "text": "Beräkna varje parentes separat först (två bråkadditioner med olika nämnare), summera dem sedan, och förkorta slutligen så långt det går. Det är förkortningen i slutet som avgör om svaret blir 60 eller något annat.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Första parentesen — gemensam nämnare",
+          "text": "För \\frac{4}{5} - \\frac{3}{4} är nämnarna 5 och 4. Minsta gemensamma nämnare (MGN) är 5 \\cdot 4 = 20 eftersom 5 och 4 saknar gemensamma faktorer.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Räkna ut första parentesen",
+          "text": "Skriv om båda bråken med nämnaren 20: \\frac{4}{5} = \\frac{16}{20} och \\frac{3}{4} = \\frac{15}{20}. Subtraktionen ger \\frac{16}{20} - \\frac{15}{20} = \\frac{1}{20}.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Andra parentesen — gemensam nämnare",
+          "text": "För \\frac{2}{3} + \\frac{1}{2} är nämnarna 3 och 2. MGN är 3 \\cdot 2 = 6.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Räkna ut andra parentesen",
+          "text": "Skriv om båda bråken med nämnaren 6: \\frac{2}{3} = \\frac{4}{6} och \\frac{1}{2} = \\frac{3}{6}. Additionen ger \\frac{4}{6} + \\frac{3}{6} = \\frac{7}{6}.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Lägg ihop parenteserna — välj gemensam nämnare",
+          "text": "Nu ska \\frac{1}{20} + \\frac{7}{6} adderas. Nämnarna är 20 och 6. För att hitta MGN(20, 6): faktorisera. 20 = 2^2 \\cdot 5 och 6 = 2 \\cdot 3. MGN tar varje primtal i sin högsta potens: 2^2 \\cdot 3 \\cdot 5 = 60.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Skriv om båda bråken med nämnaren 60",
+          "text": "\\frac{1}{20} = \\frac{3}{60} (förläng med 3) och \\frac{7}{6} = \\frac{70}{60} (förläng med 10).",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Addera täljarna",
+          "text": "Nämnaren är gemensam, så bara täljarna adderas: \\frac{3}{60} + \\frac{70}{60} = \\frac{73}{60}.",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Förkorta — kan 73/60 förenklas?",
+          "text": "Detta är nyckelsteget. För att förkorta måste täljare och nämnare ha en gemensam faktor. 73 är ett primtal (det är inte delbart med 2, 3, 5 eller 7, och \\sqrt{73} < 9 så det räcker att kontrollera dessa). Eftersom 73 är primt och 60 = 2^2 \\cdot 3 \\cdot 5 inte innehåller faktorn 73, är \\gcd(73, 60) = 1.",
+          "tier": "essential"
+        },
+        {
+          "n": 11,
+          "title": "Slutsats om förkortning",
+          "text": "\\frac{73}{60} är redan helt förkortat. Nämnaren förblir 60, och 60 är den minsta möjliga nämnaren.",
+          "tier": "essential"
+        },
+        {
+          "n": 12,
+          "title": "Verifiera",
+          "text": "Numerisk kontroll: \\frac{4}{5} = 0{,}8, \\frac{3}{4} = 0{,}75, differens 0{,}05. \\frac{2}{3} \\approx 0{,}6667, \\frac{1}{2} = 0{,}5, summa 1{,}1667. Totalt 0{,}05 + 1{,}1667 = 1{,}2167. Och \\frac{73}{60} = 1{,}21\\overline{6}. Stämmer.",
+          "tier": "essential"
+        },
+        {
+          "n": 13,
+          "title": "Slutsats",
+          "text": "Svaret är C: 60. Insikten i en mening: 'minsta nämnare' kräver alltid att slutbråket faktiskt förkortas — annars riskerar man att rapportera den gemensamma nämnaren man råkade välja istället för den minsta möjliga.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Studenten kanske avläser 'minsta' och söker bland alternativen efter det minsta talet, eller hittar MGN(2, 3) = 6 för andra parentesen och stannar där utan att lägga ihop med första.",
+          "why_wrong": "Som steg 7 visar måste den GEMENSAMMA nämnaren för båda parenteserna räknas ut — MGN(20, 6) = 60, inte 6. Och steg 10 bekräftar att resultatet \\frac{73}{60} inte kan förkortas ned till nämnare 6."
+        },
+        {
+          "letter": "B",
+          "why_tempting": "MGN för den första parentesen ensam är 20. Den som räknar ut första parentesen, ser nämnaren 20, och tappar fokus innan andra parentesen läggs till — fastnar i svar B.",
+          "why_wrong": "Andra parentesen \\frac{7}{6} har nämnare 6, och 6 går inte upp jämnt i 20. Slutsumman kräver MGN(20, 6) = 60 enligt steg 7."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "72 kan dyka upp om man försöker multiplicera alla fyra ursprungsnämnare på något kreativt sätt, eller om man räknar 4 \\cdot 3 \\cdot 2 \\cdot 3 = 72 (med felaktig faktor 3 istället för 5) eller tar 8 \\cdot 9 = 72. Det 'känns' som en stor nämnare som passar ett komplicerat uttryck.",
+          "why_wrong": "Korrekt MGN av de fyra ursprungsnämnarna (2, 3, 4, 5) är 2^2 \\cdot 3 \\cdot 5 = 60, inte 72. 72 innehåller faktorn 2^3 och 3^2 som ingen av nämnarna kräver."
+        }
+      ],
+      "technique": "Sekventiell bråkaddition: räkna ut varje delparentes med sin egen MGN först, lägg sedan ihop delresultaten med MGN av de NYA nämnarna. Avsluta alltid med att kontrollera om slutbråket kan förkortas — det är där 'minsta nämnare' avgörs.",
+      "pitfall": "Att stanna vid den gemensamma nämnare man råkade välja under räkningen utan att kontrollera om slutbråket faktiskt förkortas. Här är \\gcd(73, 60) = 1, så 60 förblir minsta nämnare — men hade täljaren varit 75 hade \\frac{75}{60} = \\frac{5}{4} och svaret blivit 4 istället.",
+      "framework_id": "XYZ-TRAP-016",
+      "pregrade_tactic": {
+        "handle": "Förkortningskontrollen",
+        "move": "Efter sista bråkadditionen: faktorisera täljare och nämnare och kontrollera om någon faktor är gemensam — annars är den nämnare du har den minsta möjliga."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

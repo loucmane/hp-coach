@@ -13002,103 +13002,103 @@
     }
   },
   "host-2017-kvant1-XYZ-011": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Känn igen konjugatformen (A+B)(A-B) = A^2 - B^2 med A = \\tfrac{x}{4} och B = \\tfrac{1}{2}. Räkna A^2 = \\tfrac{x^2}{16} och B^2 = \\tfrac{1}{4}, bryt sedan ut \\tfrac{1}{4} för att matcha alternativens form. Resultatet blir \\tfrac{1}{4}\\left(\\tfrac{x^2}{4} - 1\\right) — svar D.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Du ska förenkla produkten \\left(\\tfrac{x}{4} + \\tfrac{1}{2}\\right)\\left(\\tfrac{x}{4} - \\tfrac{1}{2}\\right) och välja det alternativ som matchar. Alla svarsalternativ har formen \\tfrac{1}{4}(\\dots), så slutsvaret ska skrivas med \\tfrac{1}{4} utbrutet.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Se konjugatmönstret",
+        "text": "De två parenteserna har samma två termer — \\tfrac{x}{4} och \\tfrac{1}{2} — men med motsatta tecken mellan dem. Det är exakt konjugatformen (A+B)(A-B), där A = \\tfrac{x}{4} och B = \\tfrac{1}{2}.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Konjugatregeln",
+        "text": "För konjugatpar gäller (A+B)(A-B) = A^2 - B^2. Korstermerna +AB och -AB tar ut varandra; bara kvadraterna överlever, med tecknet minus mellan dem.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Kvadrera A",
+        "text": "A^2 = \\left(\\tfrac{x}{4}\\right)^2. Kvadrera bråk = kvadrera täljaren och kvadrera nämnaren: \\left(\\tfrac{x}{4}\\right)^2 = \\tfrac{x^2}{16}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Kvadrera B",
+        "text": "B^2 = \\left(\\tfrac{1}{2}\\right)^2 = \\tfrac{1}{4}. Tecknet på B spelar ingen roll vid kvadrering — kvadraten är alltid positiv.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Sätt ihop differensen",
+        "text": "Produkten är A^2 - B^2 = \\tfrac{x^2}{16} - \\tfrac{1}{4}. Detta är ett komplett, korrekt uttryck — men det matchar inte direkt något alternativ, för alla alternativ har 1/4 utbrutet.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Bryt ut 1/4",
+        "text": "För att matcha alternativens form, bryt ut \\tfrac{1}{4} ur \\tfrac{x^2}{16} - \\tfrac{1}{4}. Notera att \\tfrac{x^2}{16} = \\tfrac{1}{4} \\cdot \\tfrac{x^2}{4} och \\tfrac{1}{4} = \\tfrac{1}{4} \\cdot 1.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Skriv om i utbrutet form",
+        "text": "\\tfrac{x^2}{16} - \\tfrac{1}{4} = \\tfrac{1}{4}\\left(\\tfrac{x^2}{4} - 1\\right). Detta är nu i samma form som alternativen.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Matcha mot alternativen",
+        "text": "Alternativ D är \\tfrac{1}{4}\\left(\\tfrac{x^2}{4} - 1\\right) — exakt vårt uttryck. A har plus istället för minus, B har x² istället för x²/4, C har en extra x-term som inte ska finnas där.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera med testvärde",
+        "text": "Sätt x = 4: ursprungsuttrycket blir (1 + \\tfrac{1}{2})(1 - \\tfrac{1}{2}) = \\tfrac{3}{2} \\cdot \\tfrac{1}{2} = \\tfrac{3}{4}. D ger \\tfrac{1}{4}(\\tfrac{16}{4} - 1) = \\tfrac{1}{4}(4 - 1) = \\tfrac{3}{4}. Stämmer.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är D: \\tfrac{1}{4}\\left(\\tfrac{x^2}{4} - 1\\right). Insikten i en mening: konjugatform ger differens av kvadrater — korstermerna tar ut varandra och tecknet mellan kvadraterna är alltid minus.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Plus-tecknet inne i alternativet matchar plus-tecknet i den första parentesen, och studenten missar att konjugatregeln ALLTID ger minus mellan kvadraterna.",
+        "why_wrong": "Konjugatregeln (A+B)(A-B) = A^2 - B^2 har minus mellan kvadraterna, inte plus. Att svara A betyder att man tänker A^2 + B^2, vilket motsvarar (A+B)^2 - 2AB eller ren felräkning — inte konjugatproduktens resultat."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Den som ser strukturen (\\tfrac{x}{4} + \\tfrac{1}{2})(\\tfrac{x}{4} - \\tfrac{1}{2}) och försöker faktorisera ut \\tfrac{1}{4} från varje parentes missuppfattar enkelt \\tfrac{x}{4} som om kvadraten ger x^2 snarare än \\tfrac{x^2}{16}.",
+        "why_wrong": "B ger \\tfrac{1}{4}(x^2 - 4) = \\tfrac{x^2}{4} - 1, vilket är 16 gånger för stort jämfört med rätt svar \\tfrac{x^2}{16} - \\tfrac{1}{4}. Felet är att man behandlar \\left(\\tfrac{x}{4}\\right)^2 som \\tfrac{x^2}{4} istället för \\tfrac{x^2}{16} — kvadreringen av nämnaren glöms bort."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Vid full FOIL utan att känna igen konjugatformen får studenten fyra termer och kan tappa bort att korstermerna ska ta ut varandra — då dyker en x-term upp i slutsvaret.",
+        "why_wrong": "C innehåller en -x-term, men korstermerna +\\tfrac{x}{4} \\cdot (-\\tfrac{1}{2}) och +\\tfrac{1}{2} \\cdot \\tfrac{x}{4} är exakt lika stora med motsatt tecken och tar ut varandra. Inget x av första graden ska finnas i resultatet."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Konjugatregeln (A+B)(A-B) = A^2 - B^2: identifiera när två parenteser har samma två termer med motsatta tecken, kvadrera varje term separat, sätt minus emellan. Bryt ut den gemensamma nämnaren för att matcha alternativens form.",
+    "pitfall": "Att kvadrera \\tfrac{x}{4} som \\tfrac{x^2}{4} istället för \\tfrac{x^2}{16} — både täljaren och nämnaren ska kvadreras.",
+    "framework_id": "XYZ-TRAP-012",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "konjugatigenkänningen",
+      "move": "Innan du FOIL:ar, kolla om parenteserna är (A+B)(A-B) — då hoppar du direkt till A^2 - B^2 och slipper korstermerna."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "generated_at": "2026-05-23",
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2017-kvant2-XYZ-008": {

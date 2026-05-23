@@ -1,0 +1,45 @@
+{
+  "host-ver2-2019-kvant2-XYZ-011": {
+    "corpus_patch": {
+      "prompt": "Vad är \\dfrac{\\tfrac{1}{2}+3}{4+\\tfrac{1}{5}}?",
+      "options": [
+        {"letter": "A", "text": "\\dfrac{3}{5}"},
+        {"letter": "B", "text": "\\dfrac{2}{3}"},
+        {"letter": "C", "text": "\\dfrac{4}{5}"},
+        {"letter": "D", "text": "\\dfrac{5}{6}"}
+      ],
+      "answer": "D",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Räkna ut täljaren och nämnaren var för sig som enkla bråk, sedan dividera genom att multiplicera med inversen av nämnar-bråket och förkorta.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Uttrycket är ett sammansatt bråk: täljaren är \\tfrac{1}{2}+3 och nämnaren är 4+\\tfrac{1}{5}. Vi söker värdet av hela kvoten.", "tier": "essential"},
+        {"n": 2, "title": "Identifiera strukturen", "text": "Ett bråk-i-bråk löses i tre faser: (i) förenkla täljaren till ett enda bråk, (ii) förenkla nämnaren till ett enda bråk, (iii) dividera bråk med bråk.", "tier": "essential"},
+        {"n": 3, "title": "Förenkla täljaren", "text": "Skriv 3 med nämnare 2: 3=\\tfrac{6}{2}. Då blir täljaren \\tfrac{1}{2}+\\tfrac{6}{2}=\\tfrac{7}{2}.", "tier": "essential"},
+        {"n": 4, "title": "Förenkla nämnaren", "text": "Skriv 4 med nämnare 5: 4=\\tfrac{20}{5}. Då blir nämnaren \\tfrac{20}{5}+\\tfrac{1}{5}=\\tfrac{21}{5}.", "tier": "essential"},
+        {"n": 5, "title": "Skriv om som division", "text": "Hela uttrycket är nu \\dfrac{7/2}{21/5}=\\tfrac{7}{2}\\div\\tfrac{21}{5}.", "tier": "essential"},
+        {"n": 6, "title": "Invertera nämnar-bråket", "text": "Division med ett bråk är multiplikation med dess invers: \\tfrac{7}{2}\\div\\tfrac{21}{5}=\\tfrac{7}{2}\\cdot\\tfrac{5}{21}.", "tier": "essential"},
+        {"n": 7, "title": "Förkorta före multiplikation", "text": "Lägg märke till att 21=3\\cdot 7. Då kan 7 i täljaren förkortas mot 21 i nämnaren: \\tfrac{7}{2}\\cdot\\tfrac{5}{21}=\\tfrac{1}{2}\\cdot\\tfrac{5}{3}.", "tier": "essential"},
+        {"n": 8, "title": "Multiplicera", "text": "Multiplicera täljare med täljare och nämnare med nämnare: \\tfrac{1}{2}\\cdot\\tfrac{5}{3}=\\tfrac{5}{6}.", "tier": "essential"},
+        {"n": 9, "title": "Sanity-check med decimaler", "text": "Täljaren \\tfrac{7}{2}=3{,}5, nämnaren \\tfrac{21}{5}=4{,}2, kvoten 3{,}5/4{,}2\\approx 0{,}833. Och \\tfrac{5}{6}\\approx 0{,}833 — det stämmer.", "tier": "supporting"},
+        {"n": 10, "title": "Verifiera", "text": "Kontrollera bråkalgebran: \\dfrac{7/2}{21/5}=\\dfrac{7\\cdot 5}{2\\cdot 21}=\\dfrac{35}{42}=\\dfrac{5}{6}. Bägge vägar ger samma svar.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är D, \\tfrac{5}{6}. Insikten i en mening: sammansatt bråk löses genom att först städa täljare och nämnare till varsitt enkelt bråk, sedan invertera och multiplicera.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Lockar den som adderar bråk fel — tar \\tfrac{1}{2}+3 som något smått och gissar ett litet bråk i resultatet.", "why_wrong": "\\tfrac{3}{5}=0{,}6 är klart mindre än det riktiga värdet \\approx 0{,}833. Felet kommer från att blanda ihop täljarens och nämnarens siffror utan att räkna ut bråken."},
+        {"letter": "B", "why_tempting": "Slarvkalkyl: \\tfrac{1}{2}+3\\approx 3{,}5 och 4+\\tfrac{1}{5}\\approx 5 ger en kvot kring 0{,}7, vilket lurar ögat att välja \\tfrac{2}{3}\\approx 0{,}67.", "why_wrong": "Avrundning av nämnaren från 4{,}2 upp till 5 är för grov; det exakta värdet är \\tfrac{5}{6}\\approx 0{,}833, inte \\tfrac{2}{3}."},
+        {"letter": "C", "why_tempting": "Frestar den som hoppar över invertering och bara delar siffrorna parvis — då sitter ett \\tfrac{4}{5} kvar från nämnaren och ser ut som svaret.", "why_wrong": "\\tfrac{4}{5}=0{,}8 ligger nära men inte exakt; korrekt division ger \\tfrac{35}{42}=\\tfrac{5}{6}, inte \\tfrac{4}{5}. Symptom på att nämnar-bråket inte inverterats fullt ut."}
+      ],
+      "technique": "Sammansatt bråk: förenkla täljare och nämnare till varsitt enkelt bråk, sedan dividera genom att multiplicera med inversen och förkorta gemensamma faktorer innan slutmultiplikation.",
+      "pitfall": "Att försöka räkna 'rakt fram' utan att först städa täljare och nämnare var för sig — då blir det lätt att man delar enskilda siffror istället för hela bråken, eller glömmer att invertera nämnar-bråket.",
+      "framework_id": "XYZ-TRAP-017",
+      "pregrade_tactic": {"handle": "Städningen", "move": "Räkna ut täljare och nämnare till varsitt enkelt bråk INNAN du dividerar — sedan multiplicera med inversen."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

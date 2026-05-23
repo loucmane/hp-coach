@@ -1,0 +1,127 @@
+{
+  "host-2017-kvant1-XYZ-011": {
+    "corpus_patch": {
+      "prompt": "Vad är \\left(\\dfrac{x}{4} + \\dfrac{1}{2}\\right)\\left(\\dfrac{x}{4} - \\dfrac{1}{2}\\right)?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "\\dfrac{1}{4}\\left(\\dfrac{x^2}{4} + 1\\right)"
+        },
+        {
+          "letter": "B",
+          "text": "\\dfrac{1}{4}\\left(x^2 - 4\\right)"
+        },
+        {
+          "letter": "C",
+          "text": "\\dfrac{1}{4}\\left(\\dfrac{x^2}{4} - x + 1\\right)"
+        },
+        {
+          "letter": "D",
+          "text": "\\dfrac{1}{4}\\left(\\dfrac{x^2}{4} - 1\\right)"
+        }
+      ],
+      "answer": "D",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Känn igen konjugatformen (A+B)(A-B) = A^2 - B^2 med A = \\tfrac{x}{4} och B = \\tfrac{1}{2}. Räkna A^2 = \\tfrac{x^2}{16} och B^2 = \\tfrac{1}{4}, bryt sedan ut \\tfrac{1}{4} för att matcha alternativens form. Resultatet blir \\tfrac{1}{4}\\left(\\tfrac{x^2}{4} - 1\\right) — svar D.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Du ska förenkla produkten \\left(\\tfrac{x}{4} + \\tfrac{1}{2}\\right)\\left(\\tfrac{x}{4} - \\tfrac{1}{2}\\right) och välja det alternativ som matchar. Alla svarsalternativ har formen \\tfrac{1}{4}(\\dots), så slutsvaret ska skrivas med \\tfrac{1}{4} utbrutet.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Se konjugatmönstret",
+          "text": "De två parenteserna har samma två termer — \\tfrac{x}{4} och \\tfrac{1}{2} — men med motsatta tecken mellan dem. Det är exakt konjugatformen (A+B)(A-B), där A = \\tfrac{x}{4} och B = \\tfrac{1}{2}.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Konjugatregeln",
+          "text": "För konjugatpar gäller (A+B)(A-B) = A^2 - B^2. Korstermerna +AB och -AB tar ut varandra; bara kvadraterna överlever, med tecknet minus mellan dem.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Kvadrera A",
+          "text": "A^2 = \\left(\\tfrac{x}{4}\\right)^2. Kvadrera bråk = kvadrera täljaren och kvadrera nämnaren: \\left(\\tfrac{x}{4}\\right)^2 = \\tfrac{x^2}{16}.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Kvadrera B",
+          "text": "B^2 = \\left(\\tfrac{1}{2}\\right)^2 = \\tfrac{1}{4}. Tecknet på B spelar ingen roll vid kvadrering — kvadraten är alltid positiv.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Sätt ihop differensen",
+          "text": "Produkten är A^2 - B^2 = \\tfrac{x^2}{16} - \\tfrac{1}{4}. Detta är ett komplett, korrekt uttryck — men det matchar inte direkt något alternativ, för alla alternativ har 1/4 utbrutet.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Bryt ut 1/4",
+          "text": "För att matcha alternativens form, bryt ut \\tfrac{1}{4} ur \\tfrac{x^2}{16} - \\tfrac{1}{4}. Notera att \\tfrac{x^2}{16} = \\tfrac{1}{4} \\cdot \\tfrac{x^2}{4} och \\tfrac{1}{4} = \\tfrac{1}{4} \\cdot 1.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Skriv om i utbrutet form",
+          "text": "\\tfrac{x^2}{16} - \\tfrac{1}{4} = \\tfrac{1}{4}\\left(\\tfrac{x^2}{4} - 1\\right). Detta är nu i samma form som alternativen.",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Matcha mot alternativen",
+          "text": "Alternativ D är \\tfrac{1}{4}\\left(\\tfrac{x^2}{4} - 1\\right) — exakt vårt uttryck. A har plus istället för minus, B har x² istället för x²/4, C har en extra x-term som inte ska finnas där.",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Verifiera med testvärde",
+          "text": "Sätt x = 4: ursprungsuttrycket blir (1 + \\tfrac{1}{2})(1 - \\tfrac{1}{2}) = \\tfrac{3}{2} \\cdot \\tfrac{1}{2} = \\tfrac{3}{4}. D ger \\tfrac{1}{4}(\\tfrac{16}{4} - 1) = \\tfrac{1}{4}(4 - 1) = \\tfrac{3}{4}. Stämmer.",
+          "tier": "essential"
+        },
+        {
+          "n": 11,
+          "title": "Slutsats",
+          "text": "Svaret är D: \\tfrac{1}{4}\\left(\\tfrac{x^2}{4} - 1\\right). Insikten i en mening: konjugatform ger differens av kvadrater — korstermerna tar ut varandra och tecknet mellan kvadraterna är alltid minus.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Plus-tecknet inne i alternativet matchar plus-tecknet i den första parentesen, och studenten missar att konjugatregeln ALLTID ger minus mellan kvadraterna.",
+          "why_wrong": "Konjugatregeln (A+B)(A-B) = A^2 - B^2 har minus mellan kvadraterna, inte plus. Att svara A betyder att man tänker A^2 + B^2, vilket motsvarar (A+B)^2 - 2AB eller ren felräkning — inte konjugatproduktens resultat."
+        },
+        {
+          "letter": "B",
+          "why_tempting": "Den som ser strukturen (\\tfrac{x}{4} + \\tfrac{1}{2})(\\tfrac{x}{4} - \\tfrac{1}{2}) och försöker faktorisera ut \\tfrac{1}{4} från varje parentes missuppfattar enkelt \\tfrac{x}{4} som om kvadraten ger x^2 snarare än \\tfrac{x^2}{16}.",
+          "why_wrong": "B ger \\tfrac{1}{4}(x^2 - 4) = \\tfrac{x^2}{4} - 1, vilket är 16 gånger för stort jämfört med rätt svar \\tfrac{x^2}{16} - \\tfrac{1}{4}. Felet är att man behandlar \\left(\\tfrac{x}{4}\\right)^2 som \\tfrac{x^2}{4} istället för \\tfrac{x^2}{16} — kvadreringen av nämnaren glöms bort."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Vid full FOIL utan att känna igen konjugatformen får studenten fyra termer och kan tappa bort att korstermerna ska ta ut varandra — då dyker en x-term upp i slutsvaret.",
+          "why_wrong": "C innehåller en -x-term, men korstermerna +\\tfrac{x}{4} \\cdot (-\\tfrac{1}{2}) och +\\tfrac{1}{2} \\cdot \\tfrac{x}{4} är exakt lika stora med motsatt tecken och tar ut varandra. Inget x av första graden ska finnas i resultatet."
+        }
+      ],
+      "technique": "Konjugatregeln (A+B)(A-B) = A^2 - B^2: identifiera när två parenteser har samma två termer med motsatta tecken, kvadrera varje term separat, sätt minus emellan. Bryt ut den gemensamma nämnaren för att matcha alternativens form.",
+      "pitfall": "Att kvadrera \\tfrac{x}{4} som \\tfrac{x^2}{4} istället för \\tfrac{x^2}{16} — både täljaren och nämnaren ska kvadreras.",
+      "framework_id": "XYZ-TRAP-012",
+      "pregrade_tactic": {
+        "handle": "konjugatigenkänningen",
+        "move": "Innan du FOIL:ar, kolla om parenteserna är (A+B)(A-B) — då hoppar du direkt till A^2 - B^2 och slipper korstermerna."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}
