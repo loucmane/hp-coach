@@ -13056,30 +13056,30 @@
     }
   },
   "host-2016-kvant2-XYZ-008": {
-    "solution_path": "Slå först ihop 1/x + 1/y till en gemensam nämnare och få (y+x)/xy. Då blir uttrycket (x-y)\\cdot(x+y)/xy, och täljaren är konjugatregeln (x-y)(x+y) = x^{2}-y^{2}. Svaret är därför (x^{2}-y^{2})/xy — alternativ C.",
+    "solution_path": "Slå först ihop \\tfrac{1}{x}+\\tfrac{1}{y} till gemensam nämnare och få \\dfrac{x+y}{xy}. Då blir uttrycket (x-y)\\cdot\\dfrac{x+y}{xy}, och täljaren följer konjugatregeln: (x-y)(x+y)=x^{2}-y^{2}. Svaret är därför \\dfrac{x^{2}-y^{2}}{xy} — alternativ C.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Uttrycket (x-y)\\left(\\dfrac{1}{x}+\\dfrac{1}{y}\\right) är en produkt av en differens och en summa av två bråk. Målet är att förenkla till en av de fyra standardformerna i svarsalternativen.",
+        "text": "Uttrycket (x-y)\\left(\\dfrac{1}{x}+\\dfrac{1}{y}\\right) är en produkt av en differens och en summa av två invers-bråk. Målet är att förenkla till en av de fyra standardformerna i svarsalternativen.",
         "tier": "essential"
       },
       {
         "n": 2,
         "title": "Identifiera kärnoperationen",
-        "text": "Det första som måste hända är bråkadditionen 1/x + 1/y. Den kan inte adderas täljare-för-täljare; vi måste hitta en gemensam nämnare innan något kan distribueras.",
+        "text": "Det första som måste hända är bråkadditionen \\tfrac{1}{x}+\\tfrac{1}{y}. Den kan inte adderas täljare-för-täljare; vi måste hitta en gemensam nämnare innan något kan distribueras.",
         "tier": "essential"
       },
       {
         "n": 3,
         "title": "Skriv om med gemensam nämnare",
-        "text": "Gemensam nämnare för 1/x och 1/y är xy. Då blir 1/x = y/(xy) och 1/y = x/(xy).",
+        "text": "Gemensam nämnare för \\tfrac{1}{x} och \\tfrac{1}{y} är xy. Då blir \\tfrac{1}{x}=\\tfrac{y}{xy} och \\tfrac{1}{y}=\\tfrac{x}{xy}.",
         "tier": "essential"
       },
       {
         "n": 4,
         "title": "Summera bråken",
-        "text": "Med samma nämnare adderas täljarna: 1/x + 1/y = y/(xy) + x/(xy) = (x+y)/(xy).",
+        "text": "Med samma nämnare adderas täljarna: \\tfrac{1}{x}+\\tfrac{1}{y}=\\tfrac{y}{xy}+\\tfrac{x}{xy}=\\dfrac{x+y}{xy}.",
         "tier": "essential"
       },
       {
@@ -13103,19 +13103,19 @@
       {
         "n": 8,
         "title": "Sanity-check med siffror",
-        "text": "Pröva x = 3, y = 2: originalet ger (3-2)(1/3+1/2) = 1\\cdot 5/6 = 5/6. Alternativ C ger (9-4)/(3\\cdot 2) = 5/6 — matchar.",
+        "text": "Pröva x=3,\\ y=2: originalet ger (3-2)\\left(\\tfrac{1}{3}+\\tfrac{1}{2}\\right)=1\\cdot\\tfrac{5}{6}=\\tfrac{5}{6}. Alternativ C ger \\tfrac{9-4}{3\\cdot 2}=\\tfrac{5}{6} — matchar.",
         "tier": "essential"
       },
       {
         "n": 9,
         "title": "Eliminera distraktorerna numeriskt",
-        "text": "Samma test: A ger (3-2)/6 = 1/6 (fel), B ger (3-2)/(3+2) = 1/5 (fel), D ger 3/2 - 2/3 + 2 = 17/6 (fel). Bara C ger 5/6.",
+        "text": "Samma test: A ger \\tfrac{3-2}{6}=\\tfrac{1}{6} (fel), B ger \\tfrac{3-2}{3+2}=\\tfrac{1}{5} (fel), D ger \\tfrac{3}{2}-\\tfrac{2}{3}+2=\\tfrac{17}{6} (fel). Bara C ger \\tfrac{5}{6}.",
         "tier": "optional"
       },
       {
         "n": 10,
-        "title": "Verifiera",
-        "text": "Algebraiskt: distribuera direkt istället: (x-y)\\cdot 1/x + (x-y)\\cdot 1/y = (x-y)/x + (x-y)/y. Gemensam nämnare ger [y(x-y) + x(x-y)]/(xy) = (x-y)(x+y)/(xy) = (x^{2}-y^{2})/(xy). Samma svar — C bekräftat.",
+        "title": "Verifiera algebraiskt",
+        "text": "Distribuera direkt istället: (x-y)\\cdot\\tfrac{1}{x}+(x-y)\\cdot\\tfrac{1}{y}=\\tfrac{x-y}{x}+\\tfrac{x-y}{y}. Gemensam nämnare ger \\tfrac{y(x-y)+x(x-y)}{xy}=\\tfrac{(x-y)(x+y)}{xy}=\\dfrac{x^{2}-y^{2}}{xy}. Samma svar — C bekräftat.",
         "tier": "essential"
       },
       {
@@ -13128,26 +13128,26 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Ser ut som direktaddition av nämnarna: 1/x + 1/y läses slarvigt som 1/(xy), och då blir produkten (x-y)\\cdot 1/(xy) = (x-y)/xy.",
-        "why_wrong": "Bråkaddition kräver gemensam nämnare; 1/x + 1/y = (x+y)/(xy), inte 1/(xy). Täljaren ska vara x^{2}-y^{2}, inte x-y."
+        "why_tempting": "Ser ut som direktaddition av nämnarna: \\tfrac{1}{x}+\\tfrac{1}{y} läses slarvigt som \\tfrac{1}{xy}, och då blir produkten (x-y)\\cdot\\tfrac{1}{xy}=\\tfrac{x-y}{xy}.",
+        "why_wrong": "Bråkaddition kräver gemensam nämnare; \\tfrac{1}{x}+\\tfrac{1}{y}=\\tfrac{x+y}{xy}, inte \\tfrac{1}{xy}. Täljaren ska vara x^{2}-y^{2}, inte x-y."
       },
       {
         "letter": "B",
-        "why_tempting": "Lockar den som tror att 1/x + 1/y = 1/(x+y) (samma trap som A men med summerad nämnare istället för multiplicerad). Då blir produkten (x-y)/(x+y).",
-        "why_wrong": "1/x + 1/y är inte 1/(x+y) — den korrekta formen är (x+y)/(xy). Sanity-checken x=3, y=2 ger B = 1/5, men originalet ger 5/6."
+        "why_tempting": "Lockar den som tror att \\tfrac{1}{x}+\\tfrac{1}{y}=\\tfrac{1}{x+y} (samma typ av missuppfattning som A, fast med summerad nämnare istället för multiplicerad). Då blir produkten \\tfrac{x-y}{x+y}.",
+        "why_wrong": "\\tfrac{1}{x}+\\tfrac{1}{y} är inte \\tfrac{1}{x+y} — den korrekta formen är \\tfrac{x+y}{xy}. Sanity-checken x=3,\\ y=2 ger B=\\tfrac{1}{5}, men originalet ger \\tfrac{5}{6}."
       },
       {
         "letter": "D",
-        "why_tempting": "Bjuder den som distribuerar utan att slå ihop bråken först: (x-y)(1/x+1/y) = 1 + x/y - y/x - 1. Studenten missar att de två ettorna tar ut varandra och skriver istället att de adderas till 2.",
-        "why_wrong": "x\\cdot 1/x = 1 och y\\cdot 1/y = 1, men teckenstrukturen är +1 ... -1 (eftersom y föregås av minus), så de kancellerar. Korrekt resultat efter distribution: x/y - y/x — ingen +2."
+        "why_tempting": "Bjuder den som distribuerar utan att slå ihop bråken först: (x-y)\\left(\\tfrac{1}{x}+\\tfrac{1}{y}\\right)=1+\\tfrac{x}{y}-\\tfrac{y}{x}-1. Studenten missar att de två ettorna tar ut varandra och skriver istället att de adderas till +2.",
+        "why_wrong": "x\\cdot\\tfrac{1}{x}=1 och y\\cdot\\tfrac{1}{y}=1, men teckenstrukturen är +1 ... -1 (eftersom y föregås av minus i den yttre faktorn), så de kancellerar. Korrekt resultat efter distribution: \\tfrac{x}{y}-\\tfrac{y}{x} — ingen +2."
       }
     ],
-    "technique": "När en differens (a-b) multipliceras med en summa av invers-bråk (1/a + 1/b): slå alltid ihop bråken till gemensam nämnare FÖRST, så att konjugatregeln kan ta över täljaren i ett enda steg.",
-    "pitfall": "Att distribuera (x-y) in i (1/x + 1/y) innan bråkadditionen är gjord fungerar matematiskt men leder till 1 + x/y - y/x - 1 där det är lätt att glömma att ettorna kancellerar — distraktor D är byggd för precis det misstaget.",
+    "technique": "När en differens (a-b) multipliceras med en summa av invers-bråk \\left(\\tfrac{1}{a}+\\tfrac{1}{b}\\right): slå alltid ihop bråken till gemensam nämnare FÖRST, så att konjugatregeln kan ta över täljaren i ett enda steg.",
+    "pitfall": "Att distribuera (x-y) in i \\left(\\tfrac{1}{x}+\\tfrac{1}{y}\\right) innan bråkadditionen är gjord fungerar matematiskt men leder till 1+\\tfrac{x}{y}-\\tfrac{y}{x}-1, där det är lätt att glömma att ettorna kancellerar — distraktor D är byggd för precis det misstaget.",
     "framework_id": "XYZ-TRAP-016",
     "pregrade_tactic": {
       "handle": "Gemensam-nämnaren",
-      "move": "När du ser 1/x + 1/y inuti en parentes, skriv om till (x+y)/(xy) INNAN du multiplicerar — då dyker konjugatregeln upp gratis."
+      "move": "När du ser \\tfrac{1}{x}+\\tfrac{1}{y} inuti en parentes, skriv om till \\tfrac{x+y}{xy} INNAN du multiplicerar — då dyker konjugatregeln upp gratis."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
