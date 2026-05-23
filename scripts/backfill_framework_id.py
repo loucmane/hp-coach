@@ -30,11 +30,20 @@ FRAMEWORKS_DIR = REPO_ROOT / "frameworks"
 EXPLANATIONS_DIR = REPO_ROOT / "data" / "explanations"
 APP_PUBLIC_DIR = REPO_ROOT / "app" / "public" / "explanations"
 
-# Which trap-catalog frameworks are rich enough that the framework_id
-# link will land on a card with worked_example + tldr + recognition_cue.
-# All three quant trap catalogs (KVA + NOG + XYZ) carry the rich schema
-# as of XYZ retrofit (task #137).
-RICH_TRAP_FRAMEWORKS = ["kva_traps", "nog_traps", "xyz_traps"]
+# Frameworks we backfill from. Quant trap catalogs adopted the rich
+# tldr/recognition_cue schema in #137; the verbal section taxonomies
+# use section-specific fields (rule / question_type / tactic) that
+# useTopTraps.headlineFor() reads via fallback. Both groups carry
+# `example_questions` so the backfill works the same way.
+RICH_TRAP_FRAMEWORKS = [
+    "kva_traps",
+    "nog_traps",
+    "xyz_traps",
+    "mek_protocol",
+    "las_taxonomy",
+    "elf_taxonomy",
+    "dtk_tactics",
+]
 
 
 def build_qid_to_framework_id() -> dict[str, str]:

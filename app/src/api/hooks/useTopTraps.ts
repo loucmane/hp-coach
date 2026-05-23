@@ -41,9 +41,58 @@ const FRAMEWORK_FILES: Record<string, string> = {
   KVA: '/frameworks/kva_traps.json',
   NOG: '/frameworks/nog_traps.json',
   XYZ: '/frameworks/xyz_traps.json',
+  MEK: '/frameworks/mek_protocol.json',
+  DTK: '/frameworks/dtk_tactics.json',
+  LÄS: '/frameworks/las_taxonomy.json',
+  ELF: '/frameworks/elf_taxonomy.json',
 }
 
 const frameworkHeadlines = new Map<string, Promise<Record<string, string>>>()
+
+/** Each verbal / DTK taxonomy file uses section-specific field names
+ *  instead of the generic `tldr` the quant trap catalogs adopted.
+ *  Map each one to a single line that fits the TopTrapsCard's
+ *  italic-headline slot. */
+type FrameworkEntry = {
+  id: string
+  // KVA/NOG/XYZ
+  tldr?: string
+  pattern_description?: string
+  // MEK
+  constraint_type?: string
+  rule?: string
+  // LÄS / ELF
+  question_type?: string
+  attack_protocol?: string[]
+  // DTK
+  tactic?: string
+  when_to_apply?: string
+}
+
+function headlineFor(e: FrameworkEntry): string {
+  // Quant — fall back to original fields first.
+  if (e.tldr) return e.tldr
+  if (e.pattern_description) return e.pattern_description
+  // MEK — "Lexikal kollokation — vissa verb kräver ett specifikt objekt …"
+  if (e.constraint_type && e.rule) {
+    return `${e.constraint_type} — ${firstSentence(e.rule)}`
+  }
+  if (e.rule) return firstSentence(e.rule)
+  // LÄS / ELF — "Direkt detalj — notera triggerfrasen 'enligt texten' …"
+  if (e.question_type && e.attack_protocol?.[0]) {
+    return `${e.question_type} — ${firstSentence(e.attack_protocol[0])}`
+  }
+  if (e.question_type) return e.question_type
+  // DTK — the `tactic` field is already a complete sentence.
+  if (e.tactic) return firstSentence(e.tactic)
+  return ''
+}
+
+/** Trim to the first sentence to keep the headline single-line. */
+function firstSentence(s: string): string {
+  const idx = s.indexOf('. ')
+  return idx === -1 ? s : s.slice(0, idx + 1).trim()
+}
 
 async function loadFrameworkHeadlines(section: string): Promise<Record<string, string>> {
   const url = FRAMEWORK_FILES[section]
@@ -51,17 +100,11 @@ async function loadFrameworkHeadlines(section: string): Promise<Record<string, s
   let p = frameworkHeadlines.get(url)
   if (!p) {
     p = fetch(url)
-      .then((r) =>
-        r.ok
-          ? (r.json() as Promise<{
-              entries: Array<{ id: string; tldr?: string; pattern_description?: string }>
-            }>)
-          : null,
-      )
+      .then((r) => (r.ok ? (r.json() as Promise<{ entries: FrameworkEntry[] }>) : null))
       .then((data) => {
         const map: Record<string, string> = {}
         for (const e of data?.entries ?? []) {
-          map[e.id] = e.tldr ?? e.pattern_description ?? ''
+          map[e.id] = headlineFor(e)
         }
         return map
       })
@@ -72,9 +115,23 @@ async function loadFrameworkHeadlines(section: string): Promise<Record<string, s
 }
 
 function sectionFromFrameworkId(id: string): Section | null {
+  // Framework_id prefixes don't always match the section code 1:1.
+  // The LÄS taxonomy uses `LAS-TYPE-NNN` (ASCII) because the Swedish
+  // letters were dropped during authoring; map back here.
   const prefix = id.split('-', 1)[0]
-  if (prefix === 'KVA' || prefix === 'NOG' || prefix === 'XYZ') return prefix
-  return null
+  switch (prefix) {
+    case 'KVA':
+    case 'NOG':
+    case 'XYZ':
+    case 'MEK':
+    case 'DTK':
+    case 'ELF':
+      return prefix
+    case 'LAS':
+      return 'LÄS'
+    default:
+      return null
+  }
 }
 
 type UseTopTrapsOptions = {
