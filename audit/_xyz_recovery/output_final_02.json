@@ -1,0 +1,47 @@
+{
+  "host-2016-kvant2-XYZ-011": {
+    "corpus_patch": {
+      "prompt": "y ≠ 0. Medelvärdet av de fyra talen 1, 2x, 5 och 2 är y/2. Vad är x?",
+      "options": [
+        {"letter": "A", "text": "y/4 − 4"},
+        {"letter": "B", "text": "y/2 − 4"},
+        {"letter": "C", "text": "y − 4"},
+        {"letter": "D", "text": "2y − 4"}
+      ],
+      "answer": "C",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Skriv medelvärdesdefinitionen som en ekvation, förenkla täljaren, isolera x i två rena steg och läs av uttrycket i y.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du får fyra tal — 1, 2x, 5 och 2 — och vet att deras medelvärde är y/2. Uppgiften: uttryck x i y. Villkoret y ≠ 0 är bara där så att ekvationen inte degenererar.", "tier": "essential"},
+        {"n": 2, "title": "Definitionen av medelvärde", "text": "Medelvärdet av n tal = summan delat på n. Här är n = 4, så medelvärdet = (1 + 2x + 5 + 2) / 4.", "tier": "detail"},
+        {"n": 3, "title": "Ställ upp ekvationen", "text": "Sätt definitionen lika med det givna medelvärdet: (1 + 2x + 5 + 2) / 4 = y/2.", "tier": "essential"},
+        {"n": 4, "title": "Förenkla täljaren", "text": "Slå ihop konstanterna: 1 + 5 + 2 = 8. Täljaren blir 8 + 2x, så ekvationen reduceras till (8 + 2x) / 4 = y/2.", "tier": "essential"},
+        {"n": 5, "title": "Bryt ut faktor 2 i täljaren", "text": "8 + 2x = 2·(4 + x). Då blir vänsterledet 2·(4 + x)/4 = (4 + x)/2. Ekvationen är nu (4 + x)/2 = y/2.", "tier": "detail"},
+        {"n": 6, "title": "Multiplicera båda leden med 2", "text": "Att multiplicera båda sidorna med samma tal bevarar likheten — det är grundregeln för ekvationslösning. 2·(4 + x)/2 = 2·(y/2) ger 4 + x = y.", "tier": "essential"},
+        {"n": 7, "title": "Isolera x", "text": "Subtrahera 4 från båda leden — exakt samma operation på båda sidorna, så likheten bevaras: x = y − 4.", "tier": "essential"},
+        {"n": 8, "title": "Matcha mot svarsalternativen", "text": "Uttrycket y − 4 står oförändrat i alternativ C. Inga ytterligare omformningar behövs.", "tier": "essential"},
+        {"n": 9, "title": "Verifiera", "text": "Sätt in x = y − 4 i ursprungssumman: 1 + 2(y − 4) + 5 + 2 = 8 + 2y − 8 = 2y. Medelvärdet = 2y/4 = y/2 — precis vad uppgiften gav.", "tier": "essential"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är C: x = y − 4. Insikten i en mening: när medelvärdet är givet, skriv 'summa / antal = medelvärde' som en ekvation och behandla x som vilken obekant som helst.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att dela hela täljaren med 4 utan att först bryta ut faktor 2 — då lockar y/4 fram istället för y/2 i mellanledet.", "why_wrong": "Steg 5–6 visar att 2·(4 + x)/4 förenklas till (4 + x)/2, inte (4 + x)/4. Endast täljaren har en gemensam faktor 2 — den korsar inte hela divisionen med 4."},
+        {"letter": "B", "why_tempting": "Första instinkten är att låta y/2 stå kvar oförändrat och bara flytta över 4 på andra sidan, som om x redan var isolerat: x = y/2 − 4.", "why_wrong": "Som steg 6 visar måste du multiplicera båda leden med 2 för att bli av med nämnaren — 2·(y/2) = y, inte y/2. Det glömda steget halverar svaret."},
+        {"letter": "D", "why_tempting": "Snabbsvar är ofta att korsmultiplicera fel håll och få 2y i stället för y, som om 4 + x = 2y vore ekvationen.", "why_wrong": "Steg 6 visar att vänsterledet (4 + x)/2 och högerledet y/2 har samma nämnare — då måste täljarna vara lika: 4 + x = y, inte 2y."}
+      ],
+      "technique": "Vid medelvärdesfrågor: skriv definitionen 'summa / antal = medelvärde' som en explicit ekvation, slå ihop konstanter i täljaren och behandla sedan ekvationen som vilken linjär ekvation som helst. Triggern är ordet 'medelvärde' eller 'genomsnitt' tillsammans med en blandning av tal och okända.",
+      "pitfall": "Att försöka 'lösa medelvärdet i huvudet' utan att skriva /4 explicit — då glöms multiplikationen med 2 i steg 6 och svaret blir halverat (alternativ B).",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Medelvärdesekvationen",
+        "move": "Skriv 'summan delat på antalet = det givna medelvärdet', förenkla täljaren först, multiplicera bort nämnaren — sedan är x bara en linjär ekvation bort."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

@@ -12968,203 +12968,209 @@
     }
   },
   "var-2014-kvant1-XYZ-002": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (figure required). Facit anger svar C; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "I en 2×2 ruta med rad-, kolumn- och diagonalsummor alla lika tvingas alla fyra cellerna att vara lika. Sätt upp ekvationer rad mot diagonal och kolumn mot diagonal — då löser de varandra och avslöjar att x = y = z = 13.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Uppgiften vilar helt på en figur (graf, geometri eller koordinatsystem) som inte är tillgänglig i den maskinläsbara datakällan. Utan figuren kan vi inte avgöra vilka mått eller vinklar som ger svaret.",
+        "text": "Figuren är en 2×2-tabell: övre raden (x, 13), nedre raden (y, z). Vi får veta att alla rad-, kolumn- och diagonalsummor är lika. Vi söker x + y + z.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ C. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
+        "title": "Namnge den gemensamma summan",
+        "text": "Kalla den gemensamma summan för S. Det finns två rader, två kolumner och två diagonaler — totalt sex summor som alla ska vara S.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Skriv ner alla sex summor",
+        "text": "Rader: x + 13 = S, y + z = S. Kolumner: x + y = S, 13 + z = S. Diagonaler: x + z = S, 13 + y = S.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Jämför rad 1 med kolumn 1",
+        "text": "x + 13 = S och x + y = S, alltså x + 13 = x + y. Dra bort x från båda sidor — det ger y = 13.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Jämför rad 1 med kolumn 2",
+        "text": "x + 13 = S och 13 + z = S, alltså x + 13 = 13 + z. Dra bort 13 — det ger x = z.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Använd diagonalen",
+        "text": "Från diagonalen 13 + y = S och y = 13 (steg 4) blir 13 + 13 = S, alltså S = 26.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Lös för x",
+        "text": "x + 13 = S = 26 ger x = 26 − 13 = 13. Och eftersom x = z (steg 5) följer z = 13.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Verifiera rad 2",
+        "text": "y + z = 13 + 13 = 26 = S. Stämmer.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Verifiera båda diagonalerna",
+        "text": "x + z = 13 + 13 = 26 = S. 13 + y = 13 + 13 = 26 = S. Stämmer.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Summera x + y + z",
+        "text": "x + y + z = 13 + 13 + 13 = 39.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret C. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är C (39). Insikten i en mening: i en 2×2 magic-square med RAD = KOLUMN = DIAGONAL tvingas alla fyra rutorna att ha samma värde — så summan av tre okända är 3 gånger det enda kända talet.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är frestande att se 13 som svaret om man tror att 'summan av x, y och z' menar EN av dem (kanske x ensam), eller om man hoppas att de tre okända ska summera till samma värde som det kända.",
+        "why_wrong": "Steg 10 ger 3·13 = 39, inte 13. A motsvarar endast ett av talen, inte deras summa."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att stanna vid S = 26 (steg 6) och kalla det svaret — speciellt om man tolkar 'summa' som radsumman istället för 'summan av x + y + z'.",
+        "why_wrong": "26 är den gemensamma rad/kolumn/diagonal-summan S, inte summan av just de tre okända. Steg 10 visar att x + y + z = 39."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om du misstänker att summan ska vara 4·13 = 52 (alla fyra rutor) glömmer du att frågan bara gäller TRE okända (x, y, z), inte alla fyra cellerna.",
+        "why_wrong": "Steg 10 räknar bara tre rutor. Inkluderar man också den fjärde cellen (13) blir det 52, men det är inte vad frågan ber om."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "Vid magic-square: skriv ALLA summor och bilda parvisa likheter mellan rad och kolumn som delar en cell — subtraktion isolerar relationer mellan de okända ett steg i taget. Sex ekvationer på fyra okända är överbestämt och tvingar fram en unik lösning.",
+    "pitfall": "Att förväxla 'rad-/kolumnsumman S' med 'summan av de okända'. Botemedlet: läs sista meningen i prompten igen och cirkla in exakt vad som efterfrågas.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Magic-square-kollapsen",
+      "move": "I 2×2 med rad = kolumn = diagonal: gör skillnaden mellan rad och kolumn som delar en cell — det avslöjar omedelbart att de andra två cellerna är lika och alla rutor i slutändan blir samma tal."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "generated_at": "2026-05-23",
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2014-kvant1-XYZ-003": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "y = 3x − 7 är en linjär funktion som är strikt växande. Mata in ändpunkterna 1 och 5 för x för att hitta randvärdena på y, och var noga med olikhetstypen — strikt vid x = 1 ger strikt vid y = −4, alltså är −4 inte med.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "text": "x rör sig i intervallet 1 < x ≤ 5 (öppet vid 1, slutet vid 5). y bestäms av formeln y = 3x − 7. Vi söker det enda alternativ som y aldrig kan anta.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
+        "title": "Vad är värdemängd?",
+        "text": "Värdemängden för y är mängden av alla y-värden som funktionen kan ge när x går igenom sitt definitionsområde. Med en linjär växande funktion är det helt enkelt intervallet mellan y-värdena vid ändpunkterna.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "title": "Funktionens lutning",
+        "text": "y = 3x − 7 har lutning 3 > 0. Funktionen är alltså strikt växande: större x ger större y. Det betyder att y antar sitt minsta värde vid det minsta tillåtna x och sitt största vid det största.",
         "tier": "detail"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Beräkna y vid x = 1",
+        "text": "y = 3·1 − 7 = 3 − 7 = −4. Men x = 1 är INTE tillåtet (olikheten är strikt: 1 < x). Så y kommer nära −4 men når aldrig dit.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Beräkna y vid x = 5",
+        "text": "y = 3·5 − 7 = 15 − 7 = 8. Och x = 5 ÄR tillåtet (≤), så y = 8 ingår i värdemängden.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Skriv värdemängden",
+        "text": "Eftersom y växer strikt blir värdemängden y ∈ (−4, 8]: öppen vid −4, sluten vid 8. Allt strax över −4 upp till och med 8 är med.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Pröva A = −4",
+        "text": "−4 är randvärdet vid x = 1 men 1 är utesluten. Inget tillåtet x ger y = −4. A är alltså inte i värdemängden.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Pröva B = 2",
+        "text": "Lös 3x − 7 = 2 → 3x = 9 → x = 3. Eftersom 1 < 3 ≤ 5 är x = 3 tillåtet. B ingår.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Pröva C = 6",
+        "text": "Lös 3x − 7 = 6 → 3x = 13 → x = 13/3 ≈ 4,33. Eftersom 1 < 4,33 ≤ 5 är x tillåtet. C ingår.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "title": "Pröva D = 8",
+        "text": "Lös 3x − 7 = 8 → 3x = 15 → x = 5. Eftersom x = 5 är tillåtet (≤) ingår D.",
         "tier": "detail"
       },
       {
         "n": 11,
+        "title": "Verifiera",
+        "text": "Endast A faller utanför (−4, 8]. B, C, D faller alla inom (steg 8–10). Olikhetstypen vid x = 1 var det enda som skiljde −4 från att vara med.",
+        "tier": "detail"
+      },
+      {
+        "n": 12,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är A (−4). Insikten i en mening: vid värdemängd för en strikt växande linjär funktion — mata in ändpunkterna och ÄRV olikhetstypen från x-intervallet till y-intervallet (strikt blir strikt, sluten blir sluten).",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att gissa på 2 om man räknar slarvigt på y vid x = 3 och får y = 2 men sedan tvekar på om x = 3 ligger i intervallet.",
+        "why_wrong": "Steg 8 visar att x = 3 ligger gott och väl mellan 1 och 5, så y = 2 är genuint med i värdemängden."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om du minns regeln som 'sätt in heltal' kan x = 13/3 verka misstänkt eftersom det inte är ett heltal — frestande att utesluta C.",
+        "why_wrong": "Definitionsområdet 1 < x ≤ 5 tillåter alla reella x i intervallet, inte bara heltal. Steg 9 ger x ≈ 4,33 vilket är tillåtet."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att 8 är randvärdet och tror att randvärden alltid är uteslutna, oavsett om olikheten är strikt eller inte.",
+        "why_wrong": "Steg 5 visar att olikheten vid x = 5 är ≤ (sluten), så y = 8 är inkluderat. Endast den öppna änden vid x = 1 utesluter sitt y-värde, vilket steg 4 fångar."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "För värdemängd av en linjär funktion på ett intervall: bestäm tecknet på lutningen (växande/avtagande), beräkna y i ändpunkterna, och kopiera olikhetstecknen från x-intervallet till y-intervallet. Pröva sedan varje alternativ mot det resulterande intervallet.",
+    "pitfall": "Att glömma att olikhetstecknen ÄRVS — och därför uppfatta att −4 finns med eftersom 'det är ett värde funktionen kommer nära'. Botemedlet: skriv värdemängden som ett explicit intervall med rätt parentestyp innan du jämför med alternativen.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Ändpunkts-trickets",
+      "move": "Mata in x:s två ändar i formeln, kopiera olikhetstecknen rakt över till y och pröva alternativen mot intervallet — randvärdet på den strikta sidan är aldrig med."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "generated_at": "2026-05-23",
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2014-kvant1-XYZ-012": {
