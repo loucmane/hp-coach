@@ -1,0 +1,127 @@
+{
+  "var-2022-1-kvant2-XYZ-002": {
+    "corpus_patch": {
+      "prompt": "Vad är x + y?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "110°"
+        },
+        {
+          "letter": "B",
+          "text": "120°"
+        },
+        {
+          "letter": "C",
+          "text": "130°"
+        },
+        {
+          "letter": "D",
+          "text": "140°"
+        }
+      ],
+      "answer": "C",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Figuren visar en rätvinklig triangel (rät vinkel i nedre vänstra hörnet) där en cevian dras från det högra hörnet till en punkt P på den vänstra kateten. Vinkeln x ligger i triangelns topp och vinkeln y ligger vid P i den nedre deltriangeln. Använd vinkelsumman 180° i varje triangel: x = 180° − 90° − (20°+10°) = 60° och y = 180° − 90° − 20° = 70°, så x + y = 130°.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Du ser en rätvinklig triangel (rät vinkel markerad i nedre vänstra hörnet) där en linje dras från det högra hörnet upp till en punkt P på den vänstra (lodräta) kateten. Vid det högra hörnet är 20° vinkeln mellan undersidan och cevianen, och 10° vinkeln mellan cevianen och hypotenusan upp till toppen. Du ska hitta x + y, där x ligger i toppvinkeln och y ligger vid P i den nedre deltriangeln.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Namnge hörnen",
+          "text": "Kalla det nedre vänstra hörnet B (rät vinkel = 90°), toppen T (där x sitter), högra hörnet R, och cevianens skärningspunkt med vänstra kateten P (där y sitter). De tre relevanta trianglarna är: stora triangeln TBR, övre deltriangeln TPR, och nedre deltriangeln PBR.",
+          "tier": "detail"
+        },
+        {
+          "n": 3,
+          "title": "Verktyget: vinkelsumman = 180°",
+          "text": "Grundregel: vinklarna i en triangel summerar alltid till 180°. Det betyder att om du känner två vinklar i en triangel kan du läsa av den tredje som 180° minus deras summa. Det är hela maskineriet du behöver här.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Hela vinkeln vid R",
+          "text": "Vid R är 20° vinkeln mellan basen BR och cevianen RP, och 10° vinkeln mellan cevianen RP och hypotenusan RT. Eftersom dessa två vinklar ligger sida vid sida (inte överlappar) blir hela vinkeln vid R i stora triangeln TBR 20° + 10° = 30°.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Räkna ut x i stora triangeln",
+          "text": "I triangeln TBR är vinkeln vid B = 90°, vinkeln vid R = 30° (från steg 4), och vinkeln vid T är x. Vinkelsumman ger x = 180° - 90° - 30° = 60°.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Identifiera den nedre deltriangeln",
+          "text": "Cevianen RP delar stora triangeln i två. Den nedre delen är triangeln PBR med hörn P (på vänstra kateten), B (rät vinkel), R (högra hörnet). Sidorna är PB (del av vänstra kateten), BR (basen) och RP (cevianen).",
+          "tier": "detail"
+        },
+        {
+          "n": 7,
+          "title": "Räkna ut y i nedre deltriangeln",
+          "text": "I triangeln PBR är vinkeln vid B fortfarande 90° (den rätvinkliga delas inte av cevianen — den ligger helt i den nedre delen), vinkeln vid R är 20° (cevianen ligger där, så bara den nedre 20°-biten räknas), och vinkeln vid P är y. Vinkelsumman ger y = 180° - 90° - 20° = 70°.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Summera",
+          "text": "Frågan vill ha x + y, inte var och en för sig. Lägg ihop: x + y = 60° + 70° = 130°.",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Sanity-check via yttervinkelregeln",
+          "text": "Yttervinkeln vid P (på andra sidan om kateten) är yttre = 90° + 20° = 110° enligt yttervinkelregeln (yttervinkel = summan av de två icke-angränsande inre vinklarna). Den inre y vid P ska då vara 180° - 110° = 70°. ✓ Stämmer med steg 7.",
+          "tier": "detail"
+        },
+        {
+          "n": 10,
+          "title": "Verifiera",
+          "text": "Övre deltriangeln TPR har vinkel vid T = 60° (steg 5), vinkel vid R = 10° (den övre biten), och vinkel vid P som måste vara 180° - 60° - 10° = 110°. Den vinkeln vid P i övre deltriangeln plus y (i nedre) ska bli 180° eftersom de står på samma räta linje (vänstra kateten): 110° + 70° = 180°. ✓",
+          "tier": "detail"
+        },
+        {
+          "n": 11,
+          "title": "Slutsats",
+          "text": "x + y = 130°, vilket är alternativ C. Insikten i en mening: en cevian splittrar en triangel i två deltrianglar och varje deltriangel följer vinkelsumman 180° för sig — räkna varje del separat och summera till sist.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Det är lätt att tro att man ska räkna y med yttervinkelregeln (90° + 20° = 110°) och stanna där, eller att glömma att frågan vill ha x + y, inte bara en av dem.",
+          "why_wrong": "110° är yttervinkeln vid P, inte den inre y som figuren markerar (steg 7 och steg 9). 110° är heller inte x + y — frågan kräver att båda räknas och summeras (steg 8)."
+        },
+        {
+          "letter": "B",
+          "why_tempting": "Första instinkten är att räkna x via vinkelsumman och stanna vid x (60°) plus den synliga 60°-vinkel man tror sig se vid P — eller räkna 90° + 30° = 120° som om y vore yttervinkel mot hela vinkeln 30° vid R.",
+          "why_wrong": "Vinkeln vid R i den nedre deltriangeln PBR är BARA 20°, inte 30° — den övre 10°-biten ligger i den övre deltriangeln (steg 7). Att blanda in hela 30° i nedre delen är just felet."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "Om du minns regeln som 'lägg ihop allt synligt' kan du frestas att summera 90° + 20° + 10° + 20° eller liknande, eller använda 180° − 40° = 140°.",
+          "why_wrong": "Ingen enskild triangel har vinkelsumma 360° eller 220° — varje deltriangel summerar till exakt 180° (steg 3). Den korrekta uppdelningen i steg 5 och 7 ger 60° + 70° = 130°, inte 140°."
+        }
+      ],
+      "technique": "Närhelst en figur visar en triangel där en cevian dras in från ett hörn: behandla varje deltriangel som sin egen 180°-budget. Identifiera vilka delvinklar (av de markerade) som ligger i vilken deltriangel — i synnerhet hur den givna vinkeln vid ceviansens hörn splittras mellan deltrianglarna. Använd sedan vinkelsumman separat i varje deltriangel.",
+      "pitfall": "Det vanliga felet är att räkna y mot HELA vinkeln vid R (20° + 10° = 30°) som om hela vinkeln tillhörde nedre deltriangeln. Botemedlet: spåra ceviansens läge — den övre 10°-vinkeln ligger ovanför cevianen och därmed i övre deltriangeln, så bara 20° ingår i nedre deltriangelns budget.",
+      "framework_id": "XYZ-TRAP-035",
+      "pregrade_tactic": {
+        "handle": "Deltriangel-budgeten",
+        "move": "När en cevian delar en triangel — räkna 180° separat i varje deltriangel och håll noga reda på vilken bit av hörnvinkeln som hamnar i vilken del."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

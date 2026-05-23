@@ -12625,103 +12625,103 @@
     }
   },
   "host-2021-kvant2-XYZ-007": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (options blank). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Läs av f och g från grafen, addera punktvis till h = f + g, och matcha den resulterande räta linjens lutning och y-skärning mot alternativen.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Svarsalternativen är tomma i datakällan — varje alternativ är en figur som inte fångats. Vi vet vilket alternativ som är rätt enligt facit men inte vad respektive alternativ visar.",
+        "text": "Två grafer ges: y = f(x) (horisontell) och y = g(x) (lutande rät linje). Den efterfrågade h(x) = f(x) + g(x) är summan punkt för punkt. Uppgiften är att identifiera grafen för h bland fyra räta linjer.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Läs av f(x) från grafen",
+        "text": "y = f(x) är horisontell, vilket betyder att f är konstant. Linjen ligger en enhet under x-axeln, så f(x) = -1 för alla x.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Läs av g(x) från grafen",
+        "text": "y = g(x) är en rät linje som stiger med konstant takt. Den passerar genom origo (0,\\,0) och genom (1,\\,1), så lutningen är 1 och y-skärningen är 0. Alltså g(x) = x.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Sätt upp h(x) algebraiskt",
+        "text": "Eftersom h(x) = f(x) + g(x) gäller h(x) = -1 + x = x - 1. Det är en rät linje.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Bestäm lutningen för h",
+        "text": "Att addera en konstant (f = -1) till g ändrar inte lutningen. Lutningen för h är samma som för g, alltså k_h = 1.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Bestäm y-skärningen för h",
+        "text": "Sätt x = 0: h(0) = 0 - 1 = -1. Grafen till h skär y-axeln vid -1 — en enhet under origo.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Hitta en kontrollpunkt till",
+        "text": "Sätt x = 1: h(1) = 1 - 1 = 0. Grafen passerar alltså genom (1,\\,0), dvs. skär x-axeln vid x = 1.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Visualisera resultatet",
+        "text": "Sökt graf: rät linje med lutning 1, y-skärning -1, x-skärning 1. Geometriskt: parallell med g men förskjuten en enhet nedåt — exakt vad addition av f = -1 betyder grafiskt.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Matcha mot alternativen",
+        "text": "A är horisontell (lutning 0) — fel. B har positiv y-skärning — fel. C har mindre lutning än g och skär y-axeln nära origo — fel. D visar en linje med lutning 1, y-skärning vid -1 och x-skärning vid 1 — träff.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Test x = 2: h(2) = 2 - 1 = 1. Punkten (2,\\,1) ska ligga på den valda grafen. På D:s linje ger x = 2 just y = 1 (två steg höger från (0,\\,-1) ger ett steg upp gånger 2, dvs. -1 + 2 = 1). Stämmer.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svar: D. Insikten i en mening: när man adderar en konstant funktion till en linjär funktion bevaras lutningen och y-skärningen flyttas med konstantens värde.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Den som missuppfattar h = f + g som något konstant — kanske blandar ihop med f ensamt — kan tro att h också är horisontell.",
+        "why_wrong": "Endast om g vore konstant skulle h vara horisontell. Här bidrar g med en lutning på 1, så h kan inte vara konstant."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Eleven ser att h ska ha samma lutning som g (rätt) men placerar y-skärningen positivt — som om f vore +1 i stället för -1.",
+        "why_wrong": "f-linjen ligger under x-axeln, alltså är f = -1. Att addera -1 till g sänker grafen, inte höjer den; y-skärningen ska bli -1, inte +1."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Den som försöker 'medelvärdesbilda' graferna i stället för att addera dem hamnar i en linje med mindre lutning än g och y-skärning nära noll.",
+        "why_wrong": "Addition bevarar g:s lutning fullt ut — den ska inte halveras. Lutningen för h ska vara 1, inte ungefär 0{,}5."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "Vid h(x) = f(x) + g(x) med en konstant f och en linjär g: lutningen ärvs oförändrad från g och y-skärningen flyttas med exakt f-värdet. Läs av båda värdena direkt från grafen och addera; rita inte om hela funktionen.",
+    "pitfall": "Att glömma tecknet på den konstanta funktionen — f-linjen under x-axeln betyder negativ konstant, vilket SÄNKER grafen, inte höjer den.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Förskjutningen",
+      "move": "Identifiera konstanten f som vertikal förskjutning av g, behåll g:s lutning och flytta y-skärningen med f:s värde."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "generated_at": "2026-05-23",
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2021-kvant1-DTK-033": {

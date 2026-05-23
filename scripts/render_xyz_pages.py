@@ -84,8 +84,18 @@ WEAK_144 = [
 
 
 def question_page_index(pdf, question_number: int) -> int | None:
-    """Find the 0-indexed page where 'N. ' begins a question."""
-    pattern = re.compile(rf"\b{question_number}\.\s")
+    """Find the 0-indexed page where 'N.' begins a question.
+
+    The HP exam PDFs have several layouts for the question number:
+      - "5. Fyrhörningen…"  (number, dot, space, text)
+      - "5."                 (number alone on line; text on next line)
+      - "12 ."                (rare — number, space, dot)
+
+    After `.strip()`, the trailing whitespace is gone, so a plain
+    `\\b5\\.\\s` regex misses the "5." case. Allow trailing space OR
+    end-of-line; also allow a space between the digit and the dot.
+    """
+    pattern = re.compile(rf"^{question_number}\s?\.(?:\s|$)")
     for i, page in enumerate(pdf.pages):
         text = page.extract_text() or ""
         for line in text.split("\n"):

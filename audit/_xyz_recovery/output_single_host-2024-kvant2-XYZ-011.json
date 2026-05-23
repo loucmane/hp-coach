@@ -1,0 +1,127 @@
+{
+  "host-2024-kvant2-XYZ-011": {
+    "corpus_patch": {
+      "prompt": "Figuren visar en sammansatt figur som best\u00e5r av tv\u00e5 r\u00e4tvinkliga trianglar som delar en gemensam sida. Den \u00f6vre triangeln \u00e4r likbent och r\u00e4tvinklig: b\u00e5da kateterna har l\u00e4ngden x och den r\u00e4ta vinkeln ligger vid toppen. Den nedre triangeln \u00e4r r\u00e4tvinklig med en vertikal katet av l\u00e4ngd x, en horisontell katet som \u00e4r den \u00f6vre triangelns hypotenusa, och hypotenusa av l\u00e4ngd \u221a3 (alla m\u00e5tt i cm). Vilket v\u00e4rde har x?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "1"
+        },
+        {
+          "letter": "B",
+          "text": "\ue000\ue000\ue000\\dfrac{2}{\\sqrt{3}}\ue001\ue001\ue001"
+        },
+        {
+          "letter": "C",
+          "text": "\ue000\ue000\ue000\\sqrt{\\dfrac{3}{2}}\ue001\ue001\ue001"
+        },
+        {
+          "letter": "D",
+          "text": "\ue000\ue000\ue000\\sqrt{2}\ue001\ue001\ue001"
+        }
+      ],
+      "answer": "A",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Identifiera den \u00f6vre triangelns hypotenusa via Pythagoras p\u00e5 de tv\u00e5 lika kateterna \ue000x\ue001; den hypotenusan \u00e4r samtidigt den nedre triangelns horisontella katet. Till\u00e4mpa Pythagoras p\u00e5 den nedre triangeln med katetar \ue000x\ue001 och \ue000x\\sqrt{2}\ue001 och hypotenusan \ue000\\sqrt{3}\ue001 \u2014 det ger \ue0003x^{2} = 3\ue001, allts\u00e5 \ue000x = 1\ue001.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "F\u00f6rst\u00e5 problemet",
+          "text": "Figuren \u00e4r en sammansatt figur av tv\u00e5 r\u00e4tvinkliga trianglar som delar en sida. \u00d6vre triangeln har tv\u00e5 lika kateter \ue000x\ue001 med r\u00e4t vinkel mellan dem. Nedre triangeln har vertikal katet \ue000x\ue001 och hypotenusa \ue000\\sqrt{3}\ue001; dess horisontella katet \u00e4r samma str\u00e4cka som \u00f6vre triangelns hypotenusa. Allt i cm.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Dekomponera figuren",
+          "text": "L\u00e5t inte den sammansatta formen lura dig \u2014 separera den i sina tv\u00e5 grundtrianglar. \u00d6vre triangeln \u00e4r en likbent r\u00e4tvinklig triangel; nedre triangeln \u00e4r en allm\u00e4n r\u00e4tvinklig triangel. Den gemensamma sidan kopplar ihop dem.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Pythagoras p\u00e5 \u00f6vre triangeln",
+          "text": "\u00d6vre triangelns hypotenusa \ue000h\ue001 uppfyller \ue000h^{2} = x^{2} + x^{2} = 2x^{2}\ue001, allts\u00e5 \ue000h = x\\sqrt{2}\ue001.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Identifiera den gemensamma sidan",
+          "text": "Den horisontella sidan i nedre triangeln \u00e4r samma str\u00e4cka som \u00f6vre triangelns hypotenusa. Allts\u00e5 har nedre triangeln katetar \ue000x\ue001 och \ue000x\\sqrt{2}\ue001.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Verifiera att den nedre triangeln \u00e4r r\u00e4tvinklig",
+          "text": "Den lilla rutan i figurens v\u00e4nstra h\u00f6rn markerar en r\u00e4t vinkel mellan den vertikala kateten \ue000x\ue001 och den horisontella gemensamma sidan. Pythagoras g\u00e4ller allts\u00e5 i nedre triangeln med hypotenusan \ue000\\sqrt{3}\ue001.",
+          "tier": "supporting"
+        },
+        {
+          "n": 6,
+          "title": "St\u00e4ll upp Pythagoras p\u00e5 nedre triangeln",
+          "text": "Med katetar \ue000x\ue001 och \ue000x\\sqrt{2}\ue001 samt hypotenusa \ue000\\sqrt{3}\ue001 g\u00e4ller \ue000x^{2} + (x\\sqrt{2})^{2} = (\\sqrt{3})^{2}\ue001.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Kvadrera termerna",
+          "text": "\ue000(x\\sqrt{2})^{2} = x^{2}\\cdot 2 = 2x^{2}\ue001 och \ue000(\\sqrt{3})^{2} = 3\ue001. Ekvationen blir \ue000x^{2} + 2x^{2} = 3\ue001.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "F\u00f6renkla",
+          "text": "Sl\u00e5 ihop x-termerna: \ue0003x^{2} = 3\ue001.",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "L\u00f6s ut x",
+          "text": "Dela b\u00e5da led med 3: \ue000x^{2} = 1\ue001. Eftersom \ue000x\ue001 \u00e4r en l\u00e4ngd \u00e4r endast den positiva roten relevant: \ue000x = 1\ue001 cm.",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Verifiera",
+          "text": "Med \ue000x = 1\ue001 blir \u00f6vre triangelns hypotenusa \ue000\\sqrt{2}\ue001. Nedre triangelns katetar \u00e4r d\u00e5 \ue0001\ue001 och \ue000\\sqrt{2}\ue001 \u2014 Pythagoras ger \ue0001^{2} + (\\sqrt{2})^{2} = 1 + 2 = 3 = (\\sqrt{3})^{2}\ue001. St\u00e4mmer.",
+          "tier": "essential"
+        },
+        {
+          "n": 11,
+          "title": "Slutsats",
+          "text": "Svar A \u2014 \ue000x = 1\ue001. Insikten i en mening: dekomponera den sammansatta figuren, ber\u00e4kna den gemensamma sidan med Pythagoras p\u00e5 ena triangeln, och anv\u00e4nd den i Pythagoras p\u00e5 den andra.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "B",
+          "why_tempting": "Ser ut som ett naturligt svar om man stannar vid den \u00f6vre triangeln och f\u00f6rs\u00f6ker l\u00f6sa \ue000x\\sqrt{2} = \\sqrt{3}\ue001 fast i fel led \u2014 man f\u00e5r \ue000x = \\sqrt{3}/\\sqrt{2}\ue001 och, efter manipulation av rotuttrycket, n\u00e5r man \ue0002/\\sqrt{3}\ue001.",
+          "why_wrong": "Hypotenusan \ue000\\sqrt{3}\ue001 tillh\u00f6r den NEDRE triangeln, inte den \u00f6vre. Att s\u00e4tta \ue000x\\sqrt{2} = \\sqrt{3}\ue001 ignorerar den vertikala kateten \ue000x\ue001 i den nedre triangeln helt \u2014 b\u00e5da kateterna m\u00e5ste med i Pythagoras."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Kommer fr\u00e5n att f\u00f6rs\u00f6ka st\u00e4lla upp Pythagoras p\u00e5 den nedre triangeln men anv\u00e4nda \ue000h\ue001 fr\u00e5n \u00f6vre triangeln som hypotenusa i st\u00e4llet \u2014 felaktig ekvation \ue000x^{2} + (\\sqrt{3})^{2} = (x\\sqrt{2})^{2}\ue001 hamnar efter manipulation p\u00e5 \ue000\\sqrt{3/2}\ue001.",
+          "why_wrong": "Hypotenusan i nedre triangeln \u00e4r \ue000\\sqrt{3}\ue001 (markerad p\u00e5 den sneda sidan), inte den gemensamma sidan \ue000x\\sqrt{2}\ue001. Att kvadrera fel sida byter om kateter och hypotenusa och bryter Pythagoras."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "Frestande om man bara ser tv\u00e5 r\u00e4tvinkliga trianglar och antar att \ue000x = \\sqrt{2}\ue001 \u00e4r det \u00bbsymmetriska\u00ab svaret eftersom \ue000\\sqrt{2}\ue001 dyker upp som hypotenusafaktor i en likbent r\u00e4tvinklig triangel.",
+          "why_wrong": "Substituera och pr\u00f6va: med \ue000x = \\sqrt{2}\ue001 blir nedre triangelns katetar \ue000\\sqrt{2}\ue001 och \ue000\\sqrt{2}\\cdot\\sqrt{2} = 2\ue001, allts\u00e5 hypotenusa \ue000\\sqrt{2 + 4} = \\sqrt{6} \\neq \\sqrt{3}\ue001. Bryter den givna hypotenusan."
+        }
+      ],
+      "technique": "Sammansatt figur \u2192 dekomponera i grundformer \u2192 kedja Pythagoras: ber\u00e4kna den delade sidan i ena triangeln f\u00f6rst, anv\u00e4nd den som k\u00e4nd l\u00e4ngd i den andra.",
+      "pitfall": "Att f\u00f6rs\u00f6ka anv\u00e4nda Pythagoras p\u00e5 hela den sammansatta figuren p\u00e5 en g\u00e5ng, eller att blanda ihop vilken sida \u00e4r hypotenusa i vilken triangel.",
+      "framework_id": "XYZ-TRAP-041",
+      "pregrade_tactic": {
+        "handle": "Dekomponeringen",
+        "move": "Rita om den sammansatta figuren som tv\u00e5 separata trianglar och m\u00e4rk ut den delade sidan innan du \u00f6verhuvudtaget skriver upp en ekvation."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

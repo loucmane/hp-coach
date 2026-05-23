@@ -1,0 +1,139 @@
+{
+  "host-2025-kvant2-XYZ-008": {
+    "corpus_patch": {
+      "prompt": "Figuren visar två räta linjer i ett koordinatsystem: y = f(x) lutar uppåt mot höger och y = g(x) lutar nedåt mot höger. Vilket svarsalternativ visar grafen till funktionen h, där h(x) = f(x) + g(x)?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "En rät linje som lutar svagt nedåt mot höger och skär y-axeln vid ungefär y = 1 (skär x-axeln vid ett positivt x)."
+        },
+        {
+          "letter": "B",
+          "text": "En rät linje som lutar brant uppåt mot höger och passerar genom origo."
+        },
+        {
+          "letter": "C",
+          "text": "En rät linje som lutar svagt uppåt mot höger och passerar genom origo."
+        },
+        {
+          "letter": "D",
+          "text": "En rät linje som lutar brant nedåt mot höger och skär y-axeln vid ungefär y = 1."
+        }
+      ],
+      "answer": "D",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Addera de två linjerna punktvis: lutningarna och y-skärningarna adderas. Avgör tecken på sluttningen och y-skärningen — sedan räcker det att hitta det alternativ som matchar båda.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Vi har två linjära funktioner f och g utritade i samma koordinatsystem och ska identifiera grafen till deras summa h(x) = f(x) + g(x). Eftersom båda är räta linjer kommer också h att vara en rät linje — bara lutningen och y-skärningen behöver bestämmas.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Skriv linjerna på k-m-form",
+          "text": "En rät linje har formen y = kx + m där k är lutningen och m är y-skärningen. Vi skriver f(x) = k_f x + m_f och g(x) = k_g x + m_g och avläser tecknen ur figuren.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Avläs f",
+          "text": "Linjen y = f(x) går från nedre vänster upp mot övre höger och passerar i stort sett genom origo. Alltså är k_f > 0 (positiv lutning) och m_f \\approx 0 (skär y-axeln nära noll).",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Avläs g",
+          "text": "Linjen y = g(x) går från övre vänster ned mot nedre höger med en brantare lutning än f. Den skär y-axeln på en svagt positiv nivå. Alltså är k_g < 0 med |k_g| > |k_f|, och m_g > 0 (litet positivt tal, storleksordning 1).",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Nyckelregel: addera punktvis",
+          "text": "När man adderar två linjära funktioner adderas koefficienterna term för term: h(x) = (k_f + k_g)x + (m_f + m_g). Sluttningen för h är alltså summan av sluttningarna, och y-skärningen för h är summan av y-skärningarna.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Bestäm tecknet på h:s lutning",
+          "text": "Lutningen för h är k_h = k_f + k_g. Eftersom k_f > 0, k_g < 0 och |k_g| > |k_f| vinner det negativa bidraget. Alltså är k_h < 0 — grafen för h lutar nedåt mot höger.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Bestäm tecknet på h:s y-skärning",
+          "text": "Y-skärningen för h är m_h = m_f + m_g. Med m_f \\approx 0 och m_g > 0 blir m_h > 0 — h skär y-axeln över x-axeln, ungefär där g gör det.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Konkret prov med tänkbara värden",
+          "text": "Anta för känsla att f(x) = 2x och g(x) = -3x + 1 (matchar tecken och relativa lutningar i figuren). Då är h(x) = 2x + (-3x + 1) = -x + 1 — en linje med lutning -1 och y-skärning 1.",
+          "tier": "supportive"
+        },
+        {
+          "n": 9,
+          "title": "Kontrollpunkt vid x = 0",
+          "text": "Vid x = 0 är h(0) = f(0) + g(0). Ur figuren är f(0) \\approx 0 och g(0) är ett litet positivt tal (omkring 1). Alltså är h(0) litet och positivt — h:s graf startar på y-axeln nära y = 1.",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Kontrollpunkt vid positivt x",
+          "text": "Vid ett positivt x där f och g lätt avläses kan man pröva: ta exempelvis x = 1. Då växer f med en enhet medan g sjunker med flera — summan sjunker, alltså går h nedåt. Grafen lutar nedåt mot höger.",
+          "tier": "essential"
+        },
+        {
+          "n": 11,
+          "title": "Matcha mot alternativen",
+          "text": "Vi söker en rät linje med negativ lutning och positiv y-skärning (kring y = 1). A har också negativ lutning men en mycket svagare sluttning. D visar en brantare nedåtgående linje med y-skärning ungefär 1 — det matchar storleken på |k_g| - |k_f|.",
+          "tier": "essential"
+        },
+        {
+          "n": 12,
+          "title": "Verifiera",
+          "text": "Sammanfattning av två oberoende krav: (i) lutningen för h ska vara negativ och relativt brant eftersom |k_g| är märkbart större än |k_f|; (ii) y-skärningen ska vara positiv. Bara alternativ D uppfyller båda kraven samtidigt.",
+          "tier": "essential"
+        },
+        {
+          "n": 13,
+          "title": "Slutsats",
+          "text": "Svar D — grafen till h(x) = f(x) + g(x) lutar nedåt mot höger och skär y-axeln strax över origo. Insikten i en mening: när två linjer adderas adderas lutningar och y-skärningar var för sig, så tecken och storleksrelation räcker oftast för att välja rätt graf utan att beräkna något exakt.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Plockar man rätt tecken på lutningen (negativt) men underskattar hur mycket större |k_g| är än |k_f|, så förefaller en svagt nedåtlutande linje vara svaret.",
+          "why_wrong": "Storleken på h:s lutning är |k_g| - |k_f|, inte ett litet residualbelopp — figuren visar att g är märkbart brantare än f, så h ärver en kraftig negativ lutning, inte en flack."
+        },
+        {
+          "letter": "B",
+          "why_tempting": "Tankefel där man bara adderar absolutbeloppen av lutningarna och glömmer att g har motsatt tecken — resultatet känns brant och positivt.",
+          "why_wrong": "Lutningarna har olika tecken, så de delar inte ut sina absolutbelopp på samma sätt. När man adderar med rätt tecken vinner den negativa lutningen och h kan inte luta uppåt."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Lockar den som ser att h \"någonstans i mitten\" mellan f och g borde bli ett milt kompromisslutande genomsnitt och väljer den lugnaste positivt lutande linjen.",
+          "why_wrong": "Summan av två funktioner är inte ett medelvärde — f(x) + g(x) är något helt annat än \\tfrac{1}{2}(f(x) + g(x)). Lutningarna adderas rakt av, och den negativa dominerar."
+        }
+      ],
+      "technique": "Addera räta linjer via deras k och m: lutningarna adderas, y-skärningarna adderas. Avläs tecken och relativ storlek från figuren — exakta värden behövs sällan, det räcker att bestämma teckenmönstret för k_h och m_h.",
+      "pitfall": "Att försöka avgöra h grafiskt genom \"medelvärdesintuition\" istället för att addera komponenterna — summan av två linjer är inte deras medellinje, och den brantare lutningen vinner.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Teckenadditionen",
+        "move": "Avläs tecknen på k_f, k_g, m_f, m_g ur figuren, addera dem var för sig och välj det alternativ vars lutning och y-skärning matchar de två summorna."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

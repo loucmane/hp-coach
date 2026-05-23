@@ -1,0 +1,127 @@
+{
+  "host-2021-kvant2-XYZ-007": {
+    "corpus_patch": {
+      "prompt": "Diagrammet visar graferna till två funktioner: y = f(x) är en horisontell linje och y = g(x) är en rät linje med positiv lutning. Definiera h(x) = f(x) + g(x). Vilket svarsalternativ visar grafen till funktionen h, där y = h(x)?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "En horisontell linje (konstant funktion) på positiv y-nivå."
+        },
+        {
+          "letter": "B",
+          "text": "En rät linje med positiv lutning och positivt y-skärningsvärde."
+        },
+        {
+          "letter": "C",
+          "text": "En rät linje med mindre positiv lutning än g, skärande y-axeln nära origo."
+        },
+        {
+          "letter": "D",
+          "text": "En rät linje med samma lutning som g men förskjuten nedåt — y-skärning under x-axeln."
+        }
+      ],
+      "answer": "D",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Läs av f och g från grafen, addera punktvis till h = f + g, och matcha den resulterande räta linjens lutning och y-skärning mot alternativen.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Två grafer ges: y = f(x) (horisontell) och y = g(x) (lutande rät linje). Den efterfrågade h(x) = f(x) + g(x) är summan punkt för punkt. Uppgiften är att identifiera grafen för h bland fyra räta linjer.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Läs av f(x) från grafen",
+          "text": "y = f(x) är horisontell, vilket betyder att f är konstant. Linjen ligger en enhet under x-axeln, så f(x) = -1 för alla x.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Läs av g(x) från grafen",
+          "text": "y = g(x) är en rät linje som stiger med konstant takt. Den passerar genom origo (0,\\,0) och genom (1,\\,1), så lutningen är 1 och y-skärningen är 0. Alltså g(x) = x.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Sätt upp h(x) algebraiskt",
+          "text": "Eftersom h(x) = f(x) + g(x) gäller h(x) = -1 + x = x - 1. Det är en rät linje.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Bestäm lutningen för h",
+          "text": "Att addera en konstant (f = -1) till g ändrar inte lutningen. Lutningen för h är samma som för g, alltså k_h = 1.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Bestäm y-skärningen för h",
+          "text": "Sätt x = 0: h(0) = 0 - 1 = -1. Grafen till h skär y-axeln vid -1 — en enhet under origo.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Hitta en kontrollpunkt till",
+          "text": "Sätt x = 1: h(1) = 1 - 1 = 0. Grafen passerar alltså genom (1,\\,0), dvs. skär x-axeln vid x = 1.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Visualisera resultatet",
+          "text": "Sökt graf: rät linje med lutning 1, y-skärning -1, x-skärning 1. Geometriskt: parallell med g men förskjuten en enhet nedåt — exakt vad addition av f = -1 betyder grafiskt.",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Matcha mot alternativen",
+          "text": "A är horisontell (lutning 0) — fel. B har positiv y-skärning — fel. C har mindre lutning än g och skär y-axeln nära origo — fel. D visar en linje med lutning 1, y-skärning vid -1 och x-skärning vid 1 — träff.",
+          "tier": "essential"
+        },
+        {
+          "n": 10,
+          "title": "Verifiera",
+          "text": "Test x = 2: h(2) = 2 - 1 = 1. Punkten (2,\\,1) ska ligga på den valda grafen. På D:s linje ger x = 2 just y = 1 (två steg höger från (0,\\,-1) ger ett steg upp gånger 2, dvs. -1 + 2 = 1). Stämmer.",
+          "tier": "essential"
+        },
+        {
+          "n": 11,
+          "title": "Slutsats",
+          "text": "Svar: D. Insikten i en mening: när man adderar en konstant funktion till en linjär funktion bevaras lutningen och y-skärningen flyttas med konstantens värde.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Den som missuppfattar h = f + g som något konstant — kanske blandar ihop med f ensamt — kan tro att h också är horisontell.",
+          "why_wrong": "Endast om g vore konstant skulle h vara horisontell. Här bidrar g med en lutning på 1, så h kan inte vara konstant."
+        },
+        {
+          "letter": "B",
+          "why_tempting": "Eleven ser att h ska ha samma lutning som g (rätt) men placerar y-skärningen positivt — som om f vore +1 i stället för -1.",
+          "why_wrong": "f-linjen ligger under x-axeln, alltså är f = -1. Att addera -1 till g sänker grafen, inte höjer den; y-skärningen ska bli -1, inte +1."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Den som försöker 'medelvärdesbilda' graferna i stället för att addera dem hamnar i en linje med mindre lutning än g och y-skärning nära noll.",
+          "why_wrong": "Addition bevarar g:s lutning fullt ut — den ska inte halveras. Lutningen för h ska vara 1, inte ungefär 0{,}5."
+        }
+      ],
+      "technique": "Vid h(x) = f(x) + g(x) med en konstant f och en linjär g: lutningen ärvs oförändrad från g och y-skärningen flyttas med exakt f-värdet. Läs av båda värdena direkt från grafen och addera; rita inte om hela funktionen.",
+      "pitfall": "Att glömma tecknet på den konstanta funktionen — f-linjen under x-axeln betyder negativ konstant, vilket SÄNKER grafen, inte höjer den.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Förskjutningen",
+        "move": "Identifiera konstanten f som vertikal förskjutning av g, behåll g:s lutning och flytta y-skärningen med f:s värde."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

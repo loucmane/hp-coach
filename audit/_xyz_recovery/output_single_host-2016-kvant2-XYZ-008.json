@@ -1,121 +1,121 @@
 {
   "host-2016-kvant2-XYZ-008": {
     "corpus_patch": {
-      "prompt": "Vilket svarsalternativ motsvarar uttrycket (x-y)\\left(\\dfrac{1}{x}+\\dfrac{1}{y}\\right)?",
+      "prompt": "Vilket svarsalternativ motsvarar uttrycket \ue000(x-y)\\left(\\dfrac{1}{x}+\\dfrac{1}{y}\\right)\ue001?",
       "options": [
         {
           "letter": "A",
-          "text": "\\dfrac{x-y}{xy}"
+          "text": "\ue000\\dfrac{x-y}{xy}\ue001"
         },
         {
           "letter": "B",
-          "text": "\\dfrac{x-y}{x+y}"
+          "text": "\ue000\\dfrac{x-y}{x+y}\ue001"
         },
         {
           "letter": "C",
-          "text": "\\dfrac{x^{2}-y^{2}}{xy}"
+          "text": "\ue000\\dfrac{x^{2}-y^{2}}{xy}\ue001"
         },
         {
           "letter": "D",
-          "text": "\\dfrac{x}{y}-\\dfrac{y}{x}+2"
+          "text": "\ue000\\dfrac{x}{y}-\\dfrac{y}{x}+2\ue001"
         }
       ],
       "answer": "C",
       "has_figure": false
     },
     "explanation": {
-      "solution_path": "Slå först ihop \\tfrac{1}{x}+\\tfrac{1}{y} till gemensam nämnare och få \\dfrac{x+y}{xy}. Då blir uttrycket (x-y)\\cdot\\dfrac{x+y}{xy}, och täljaren följer konjugatregeln: (x-y)(x+y)=x^{2}-y^{2}. Svaret är därför \\dfrac{x^{2}-y^{2}}{xy} — alternativ C.",
+      "solution_path": "Sl\u00e5 f\u00f6rst ihop \ue000\\tfrac{1}{x}+\\tfrac{1}{y}\ue001 till gemensam n\u00e4mnare och f\u00e5 \ue000\\dfrac{x+y}{xy}\ue001. D\u00e5 blir uttrycket \ue000(x-y)\\cdot\\dfrac{x+y}{xy}\ue001, och t\u00e4ljaren f\u00f6ljer konjugatregeln: \ue000(x-y)(x+y)=x^{2}-y^{2}\ue001. Svaret \u00e4r d\u00e4rf\u00f6r \ue000\\dfrac{x^{2}-y^{2}}{xy}\ue001 \u2014 alternativ C.",
       "steps": [
         {
           "n": 1,
-          "title": "Förstå problemet",
-          "text": "Uttrycket (x-y)\\left(\\dfrac{1}{x}+\\dfrac{1}{y}\\right) är en produkt av en differens och en summa av två invers-bråk. Målet är att förenkla till en av de fyra standardformerna i svarsalternativen.",
+          "title": "F\u00f6rst\u00e5 problemet",
+          "text": "Uttrycket \ue000(x-y)\\left(\\dfrac{1}{x}+\\dfrac{1}{y}\\right)\ue001 \u00e4r en produkt av en differens och en summa av tv\u00e5 invers-br\u00e5k. M\u00e5let \u00e4r att f\u00f6renkla till en av de fyra standardformerna i svarsalternativen.",
           "tier": "essential"
         },
         {
           "n": 2,
-          "title": "Identifiera kärnoperationen",
-          "text": "Det första som måste hända är bråkadditionen \\tfrac{1}{x}+\\tfrac{1}{y}. Den kan inte adderas täljare-för-täljare; vi måste hitta en gemensam nämnare innan något kan distribueras.",
+          "title": "Identifiera k\u00e4rnoperationen",
+          "text": "Det f\u00f6rsta som m\u00e5ste h\u00e4nda \u00e4r br\u00e5kadditionen \ue000\\tfrac{1}{x}+\\tfrac{1}{y}\ue001. Den kan inte adderas t\u00e4ljare-f\u00f6r-t\u00e4ljare; vi m\u00e5ste hitta en gemensam n\u00e4mnare innan n\u00e5got kan distribueras.",
           "tier": "essential"
         },
         {
           "n": 3,
-          "title": "Skriv om med gemensam nämnare",
-          "text": "Gemensam nämnare för \\tfrac{1}{x} och \\tfrac{1}{y} är xy. Då blir \\tfrac{1}{x}=\\tfrac{y}{xy} och \\tfrac{1}{y}=\\tfrac{x}{xy}.",
+          "title": "Skriv om med gemensam n\u00e4mnare",
+          "text": "Gemensam n\u00e4mnare f\u00f6r \ue000\\tfrac{1}{x}\ue001 och \ue000\\tfrac{1}{y}\ue001 \u00e4r \ue000xy\ue001. D\u00e5 blir \ue000\\tfrac{1}{x}=\\tfrac{y}{xy}\ue001 och \ue000\\tfrac{1}{y}=\\tfrac{x}{xy}\ue001.",
           "tier": "essential"
         },
         {
           "n": 4,
-          "title": "Summera bråken",
-          "text": "Med samma nämnare adderas täljarna: \\tfrac{1}{x}+\\tfrac{1}{y}=\\tfrac{y}{xy}+\\tfrac{x}{xy}=\\dfrac{x+y}{xy}.",
+          "title": "Summera br\u00e5ken",
+          "text": "Med samma n\u00e4mnare adderas t\u00e4ljarna: \ue000\\tfrac{1}{x}+\\tfrac{1}{y}=\\tfrac{y}{xy}+\\tfrac{x}{xy}=\\dfrac{x+y}{xy}\ue001.",
           "tier": "essential"
         },
         {
           "n": 5,
-          "title": "Sätt in i produkten",
-          "text": "Originaluttrycket blir nu (x-y)\\cdot\\dfrac{x+y}{xy}. Multiplikationen sker enbart i täljaren: \\dfrac{(x-y)(x+y)}{xy}.",
+          "title": "S\u00e4tt in i produkten",
+          "text": "Originaluttrycket blir nu \ue000(x-y)\\cdot\\dfrac{x+y}{xy}\ue001. Multiplikationen sker enbart i t\u00e4ljaren: \ue000\\dfrac{(x-y)(x+y)}{xy}\ue001.",
           "tier": "essential"
         },
         {
           "n": 6,
-          "title": "Känn igen konjugatregeln",
-          "text": "Täljaren (x-y)(x+y) är konjugatregeln rättfram: den ger x^{2}-y^{2}. Inget mellansteg behövs.",
+          "title": "K\u00e4nn igen konjugatregeln",
+          "text": "T\u00e4ljaren \ue000(x-y)(x+y)\ue001 \u00e4r konjugatregeln r\u00e4ttfram: den ger \ue000x^{2}-y^{2}\ue001. Inget mellansteg beh\u00f6vs.",
           "tier": "essential"
         },
         {
           "n": 7,
-          "title": "Sätt ihop slututtrycket",
-          "text": "Sätter vi in expansionen får vi \\dfrac{x^{2}-y^{2}}{xy}. Det matchar alternativ C exakt.",
+          "title": "S\u00e4tt ihop slututtrycket",
+          "text": "S\u00e4tter vi in expansionen f\u00e5r vi \ue000\\dfrac{x^{2}-y^{2}}{xy}\ue001. Det matchar alternativ C exakt.",
           "tier": "essential"
         },
         {
           "n": 8,
           "title": "Sanity-check med siffror",
-          "text": "Pröva x=3,\\ y=2: originalet ger (3-2)\\left(\\tfrac{1}{3}+\\tfrac{1}{2}\\right)=1\\cdot\\tfrac{5}{6}=\\tfrac{5}{6}. Alternativ C ger \\tfrac{9-4}{3\\cdot 2}=\\tfrac{5}{6} — matchar.",
+          "text": "Pr\u00f6va \ue000x=3,\\ y=2\ue001: originalet ger \ue000(3-2)\\left(\\tfrac{1}{3}+\\tfrac{1}{2}\\right)=1\\cdot\\tfrac{5}{6}=\\tfrac{5}{6}\ue001. Alternativ C ger \ue000\\tfrac{9-4}{3\\cdot 2}=\\tfrac{5}{6}\ue001 \u2014 matchar.",
           "tier": "essential"
         },
         {
           "n": 9,
           "title": "Eliminera distraktorerna numeriskt",
-          "text": "Samma test: A ger \\tfrac{3-2}{6}=\\tfrac{1}{6} (fel), B ger \\tfrac{3-2}{3+2}=\\tfrac{1}{5} (fel), D ger \\tfrac{3}{2}-\\tfrac{2}{3}+2=\\tfrac{17}{6} (fel). Bara C ger \\tfrac{5}{6}.",
+          "text": "Samma test: A ger \ue000\\tfrac{3-2}{6}=\\tfrac{1}{6}\ue001 (fel), B ger \ue000\\tfrac{3-2}{3+2}=\\tfrac{1}{5}\ue001 (fel), D ger \ue000\\tfrac{3}{2}-\\tfrac{2}{3}+2=\\tfrac{17}{6}\ue001 (fel). Bara C ger \ue000\\tfrac{5}{6}\ue001.",
           "tier": "optional"
         },
         {
           "n": 10,
           "title": "Verifiera algebraiskt",
-          "text": "Distribuera direkt istället: (x-y)\\cdot\\tfrac{1}{x}+(x-y)\\cdot\\tfrac{1}{y}=\\tfrac{x-y}{x}+\\tfrac{x-y}{y}. Gemensam nämnare ger \\tfrac{y(x-y)+x(x-y)}{xy}=\\tfrac{(x-y)(x+y)}{xy}=\\dfrac{x^{2}-y^{2}}{xy}. Samma svar — C bekräftat.",
+          "text": "Distribuera direkt ist\u00e4llet: \ue000(x-y)\\cdot\\tfrac{1}{x}+(x-y)\\cdot\\tfrac{1}{y}=\\tfrac{x-y}{x}+\\tfrac{x-y}{y}\ue001. Gemensam n\u00e4mnare ger \ue000\\tfrac{y(x-y)+x(x-y)}{xy}=\\tfrac{(x-y)(x+y)}{xy}=\\dfrac{x^{2}-y^{2}}{xy}\ue001. Samma svar \u2014 C bekr\u00e4ftat.",
           "tier": "essential"
         },
         {
           "n": 11,
           "title": "Slutsats",
-          "text": "Svaret är C: \\dfrac{x^{2}-y^{2}}{xy}. Insikten i en mening: när en differens möter en summa av invers-bråk, gör först bråkadditionen och låt konjugatregeln stänga räkningen.",
+          "text": "Svaret \u00e4r C: \ue000\\dfrac{x^{2}-y^{2}}{xy}\ue001. Insikten i en mening: n\u00e4r en differens m\u00f6ter en summa av invers-br\u00e5k, g\u00f6r f\u00f6rst br\u00e5kadditionen och l\u00e5t konjugatregeln st\u00e4nga r\u00e4kningen.",
           "tier": "essential"
         }
       ],
       "distractors": [
         {
           "letter": "A",
-          "why_tempting": "Ser ut som direktaddition av nämnarna: \\tfrac{1}{x}+\\tfrac{1}{y} läses slarvigt som \\tfrac{1}{xy}, och då blir produkten (x-y)\\cdot\\tfrac{1}{xy}=\\tfrac{x-y}{xy}.",
-          "why_wrong": "Bråkaddition kräver gemensam nämnare; \\tfrac{1}{x}+\\tfrac{1}{y}=\\tfrac{x+y}{xy}, inte \\tfrac{1}{xy}. Täljaren ska vara x^{2}-y^{2}, inte x-y."
+          "why_tempting": "Ser ut som direktaddition av n\u00e4mnarna: \ue000\\tfrac{1}{x}+\\tfrac{1}{y}\ue001 l\u00e4ses slarvigt som \ue000\\tfrac{1}{xy}\ue001, och d\u00e5 blir produkten \ue000(x-y)\\cdot\\tfrac{1}{xy}=\\tfrac{x-y}{xy}\ue001.",
+          "why_wrong": "Br\u00e5kaddition kr\u00e4ver gemensam n\u00e4mnare; \ue000\\tfrac{1}{x}+\\tfrac{1}{y}=\\tfrac{x+y}{xy}\ue001, inte \ue000\\tfrac{1}{xy}\ue001. T\u00e4ljaren ska vara \ue000x^{2}-y^{2}\ue001, inte \ue000x-y\ue001."
         },
         {
           "letter": "B",
-          "why_tempting": "Lockar den som tror att \\tfrac{1}{x}+\\tfrac{1}{y}=\\tfrac{1}{x+y} (samma typ av missuppfattning som A, fast med summerad nämnare istället för multiplicerad). Då blir produkten \\tfrac{x-y}{x+y}.",
-          "why_wrong": "\\tfrac{1}{x}+\\tfrac{1}{y} är inte \\tfrac{1}{x+y} — den korrekta formen är \\tfrac{x+y}{xy}. Sanity-checken x=3,\\ y=2 ger B=\\tfrac{1}{5}, men originalet ger \\tfrac{5}{6}."
+          "why_tempting": "Lockar den som tror att \ue000\\tfrac{1}{x}+\\tfrac{1}{y}=\\tfrac{1}{x+y}\ue001 (samma typ av missuppfattning som A, fast med summerad n\u00e4mnare ist\u00e4llet f\u00f6r multiplicerad). D\u00e5 blir produkten \ue000\\tfrac{x-y}{x+y}\ue001.",
+          "why_wrong": "\ue000\\tfrac{1}{x}+\\tfrac{1}{y}\ue001 \u00e4r inte \ue000\\tfrac{1}{x+y}\ue001 \u2014 den korrekta formen \u00e4r \ue000\\tfrac{x+y}{xy}\ue001. Sanity-checken \ue000x=3,\\ y=2\ue001 ger \ue000B=\\tfrac{1}{5}\ue001, men originalet ger \ue000\\tfrac{5}{6}\ue001."
         },
         {
           "letter": "D",
-          "why_tempting": "Bjuder den som distribuerar utan att slå ihop bråken först: (x-y)\\left(\\tfrac{1}{x}+\\tfrac{1}{y}\\right)=1+\\tfrac{x}{y}-\\tfrac{y}{x}-1. Studenten missar att de två ettorna tar ut varandra och skriver istället att de adderas till +2.",
-          "why_wrong": "x\\cdot\\tfrac{1}{x}=1 och y\\cdot\\tfrac{1}{y}=1, men teckenstrukturen är +1 ... -1 (eftersom y föregås av minus i den yttre faktorn), så de kancellerar. Korrekt resultat efter distribution: \\tfrac{x}{y}-\\tfrac{y}{x} — ingen +2."
+          "why_tempting": "Bjuder den som distribuerar utan att sl\u00e5 ihop br\u00e5ken f\u00f6rst: \ue000(x-y)\\left(\\tfrac{1}{x}+\\tfrac{1}{y}\\right)=1+\\tfrac{x}{y}-\\tfrac{y}{x}-1\ue001. Studenten missar att de tv\u00e5 ettorna tar ut varandra och skriver ist\u00e4llet att de adderas till \ue000+2\ue001.",
+          "why_wrong": "\ue000x\\cdot\\tfrac{1}{x}=1\ue001 och \ue000y\\cdot\\tfrac{1}{y}=1\ue001, men teckenstrukturen \u00e4r +1 ... -1 (eftersom y f\u00f6reg\u00e5s av minus i den yttre faktorn), s\u00e5 de kancellerar. Korrekt resultat efter distribution: \ue000\\tfrac{x}{y}-\\tfrac{y}{x}\ue001 \u2014 ingen \ue000+2\ue001."
         }
       ],
-      "technique": "När en differens (a-b) multipliceras med en summa av invers-bråk \\left(\\tfrac{1}{a}+\\tfrac{1}{b}\\right): slå alltid ihop bråken till gemensam nämnare FÖRST, så att konjugatregeln kan ta över täljaren i ett enda steg.",
-      "pitfall": "Att distribuera (x-y) in i \\left(\\tfrac{1}{x}+\\tfrac{1}{y}\\right) innan bråkadditionen är gjord fungerar matematiskt men leder till 1+\\tfrac{x}{y}-\\tfrac{y}{x}-1, där det är lätt att glömma att ettorna kancellerar — distraktor D är byggd för precis det misstaget.",
+      "technique": "N\u00e4r en differens \ue000(a-b)\ue001 multipliceras med en summa av invers-br\u00e5k \ue000\\left(\\tfrac{1}{a}+\\tfrac{1}{b}\\right)\ue001: sl\u00e5 alltid ihop br\u00e5ken till gemensam n\u00e4mnare F\u00d6RST, s\u00e5 att konjugatregeln kan ta \u00f6ver t\u00e4ljaren i ett enda steg.",
+      "pitfall": "Att distribuera \ue000(x-y)\ue001 in i \ue000\\left(\\tfrac{1}{x}+\\tfrac{1}{y}\\right)\ue001 innan br\u00e5kadditionen \u00e4r gjord fungerar matematiskt men leder till \ue0001+\\tfrac{x}{y}-\\tfrac{y}{x}-1\ue001, d\u00e4r det \u00e4r l\u00e4tt att gl\u00f6mma att ettorna kancellerar \u2014 distraktor D \u00e4r byggd f\u00f6r precis det misstaget.",
       "framework_id": "XYZ-TRAP-016",
       "pregrade_tactic": {
-        "handle": "Gemensam-nämnaren",
-        "move": "När du ser \\tfrac{1}{x}+\\tfrac{1}{y} inuti en parentes, skriv om till \\tfrac{x+y}{xy} INNAN du multiplicerar — då dyker konjugatregeln upp gratis."
+        "handle": "Gemensam-n\u00e4mnaren",
+        "move": "N\u00e4r du ser \ue000\\tfrac{1}{x}+\\tfrac{1}{y}\ue001 inuti en parentes, skriv om till \ue000\\tfrac{x+y}{xy}\ue001 INNAN du multiplicerar \u2014 d\u00e5 dyker konjugatregeln upp gratis."
       },
       "_meta": {
         "model": "claude-opus-4-7-via-max-subscription",

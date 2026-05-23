@@ -13288,103 +13288,103 @@
     }
   },
   "host-2024-kvant2-XYZ-011": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (figure required). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Identifiera den övre triangelns hypotenusa via Pythagoras på de två lika kateterna x; den hypotenusan är samtidigt den nedre triangelns horisontella katet. Tillämpa Pythagoras på den nedre triangeln med katetar x och x\\sqrt{2} och hypotenusan \\sqrt{3} — det ger 3x^{2} = 3, alltså x = 1.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Uppgiften vilar helt på en figur (graf, geometri eller koordinatsystem) som inte är tillgänglig i den maskinläsbara datakällan. Utan figuren kan vi inte avgöra vilka mått eller vinklar som ger svaret.",
+        "text": "Figuren är en sammansatt figur av två rätvinkliga trianglar som delar en sida. Övre triangeln har två lika kateter x med rät vinkel mellan dem. Nedre triangeln har vertikal katet x och hypotenusa \\sqrt{3}; dess horisontella katet är samma sträcka som övre triangelns hypotenusa. Allt i cm.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Dekomponera figuren",
+        "text": "Låt inte den sammansatta formen lura dig — separera den i sina två grundtrianglar. Övre triangeln är en likbent rätvinklig triangel; nedre triangeln är en allmän rätvinklig triangel. Den gemensamma sidan kopplar ihop dem.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Pythagoras på övre triangeln",
+        "text": "Övre triangelns hypotenusa h uppfyller h^{2} = x^{2} + x^{2} = 2x^{2}, alltså h = x\\sqrt{2}.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Identifiera den gemensamma sidan",
+        "text": "Den horisontella sidan i nedre triangeln är samma sträcka som övre triangelns hypotenusa. Alltså har nedre triangeln katetar x och x\\sqrt{2}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Verifiera att den nedre triangeln är rätvinklig",
+        "text": "Den lilla rutan i figurens vänstra hörn markerar en rät vinkel mellan den vertikala kateten x och den horisontella gemensamma sidan. Pythagoras gäller alltså i nedre triangeln med hypotenusan \\sqrt{3}.",
+        "tier": "supporting"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Ställ upp Pythagoras på nedre triangeln",
+        "text": "Med katetar x och x\\sqrt{2} samt hypotenusa \\sqrt{3} gäller x^{2} + (x\\sqrt{2})^{2} = (\\sqrt{3})^{2}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Kvadrera termerna",
+        "text": "(x\\sqrt{2})^{2} = x^{2}\\cdot 2 = 2x^{2} och (\\sqrt{3})^{2} = 3. Ekvationen blir x^{2} + 2x^{2} = 3.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Förenkla",
+        "text": "Slå ihop x-termerna: 3x^{2} = 3.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Lös ut x",
+        "text": "Dela båda led med 3: x^{2} = 1. Eftersom x är en längd är endast den positiva roten relevant: x = 1 cm.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Med x = 1 blir övre triangelns hypotenusa \\sqrt{2}. Nedre triangelns katetar är då 1 och \\sqrt{2} — Pythagoras ger 1^{2} + (\\sqrt{2})^{2} = 1 + 2 = 3 = (\\sqrt{3})^{2}. Stämmer.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svar A — x = 1. Insikten i en mening: dekomponera den sammansatta figuren, beräkna den gemensamma sidan med Pythagoras på ena triangeln, och använd den i Pythagoras på den andra.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Ser ut som ett naturligt svar om man stannar vid den övre triangeln och försöker lösa x\\sqrt{2} = \\sqrt{3} fast i fel led — man får x = \\sqrt{3}/\\sqrt{2} och, efter manipulation av rotuttrycket, når man 2/\\sqrt{3}.",
+        "why_wrong": "Hypotenusan \\sqrt{3} tillhör den NEDRE triangeln, inte den övre. Att sätta x\\sqrt{2} = \\sqrt{3} ignorerar den vertikala kateten x i den nedre triangeln helt — båda kateterna måste med i Pythagoras."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Kommer från att försöka ställa upp Pythagoras på den nedre triangeln men använda h från övre triangeln som hypotenusa i stället — felaktig ekvation x^{2} + (\\sqrt{3})^{2} = (x\\sqrt{2})^{2} hamnar efter manipulation på \\sqrt{3/2}.",
+        "why_wrong": "Hypotenusan i nedre triangeln är \\sqrt{3} (markerad på den sneda sidan), inte den gemensamma sidan x\\sqrt{2}. Att kvadrera fel sida byter om kateter och hypotenusa och bryter Pythagoras."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Frestande om man bara ser två rätvinkliga trianglar och antar att x = \\sqrt{2} är det »symmetriska« svaret eftersom \\sqrt{2} dyker upp som hypotenusafaktor i en likbent rätvinklig triangel.",
+        "why_wrong": "Substituera och pröva: med x = \\sqrt{2} blir nedre triangelns katetar \\sqrt{2} och \\sqrt{2}\\cdot\\sqrt{2} = 2, alltså hypotenusa \\sqrt{2 + 4} = \\sqrt{6} \\neq \\sqrt{3}. Bryter den givna hypotenusan."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "Sammansatt figur → dekomponera i grundformer → kedja Pythagoras: beräkna den delade sidan i ena triangeln först, använd den som känd längd i den andra.",
+    "pitfall": "Att försöka använda Pythagoras på hela den sammansatta figuren på en gång, eller att blanda ihop vilken sida är hypotenusa i vilken triangel.",
+    "framework_id": "XYZ-TRAP-041",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Dekomponeringen",
+      "move": "Rita om den sammansatta figuren som två separata trianglar och märk ut den delade sidan innan du överhuvudtaget skriver upp en ekvation."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "generated_at": "2026-05-23",
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   }
 }

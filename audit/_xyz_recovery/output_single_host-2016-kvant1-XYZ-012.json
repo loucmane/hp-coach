@@ -1,0 +1,127 @@
+{
+  "host-2016-kvant1-XYZ-012": {
+    "corpus_patch": {
+      "prompt": "y(x) = ax^{2} - \\tfrac{3}{2}\n\nVad är konstanten a?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "\\tfrac{1}{3}"
+        },
+        {
+          "letter": "B",
+          "text": "\\tfrac{3}{8}"
+        },
+        {
+          "letter": "C",
+          "text": "\\tfrac{1}{2}"
+        },
+        {
+          "letter": "D",
+          "text": "\\tfrac{3}{2}"
+        }
+      ],
+      "answer": "B",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Avläs ett nollställe från grafen, sätt in i ekvationen och lös ut a.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Vi får funktionen y(x) = ax^{2} - \\tfrac{3}{2} tillsammans med en graf. Uppgiften är att avgöra vilket värde konstanten a måste ha för att kurvan ska se ut som i bilden.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Identifiera kurvtypen",
+          "text": "Uttrycket är en andragradsfunktion eftersom x förekommer i andra potens. Grafen är därför en parabel som öppnar uppåt när a > 0.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Hitta vertex",
+          "text": "Det finns ingen x-term, så symmetriaxeln är x = 0 och vertex ligger på y-axeln vid y(0) = -\\tfrac{3}{2}. Kurvans lägsta punkt är alltså (0,\\,-\\tfrac{3}{2}) — vilket stämmer med figuren där bottnen ligger strax under y = -1.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Välj avläsbar punkt",
+          "text": "Den säkraste informationen ur figuren är var parabeln skär x-axeln. Nollställena ligger symmetriskt kring x = 0 och tycks ligga vid x = \\pm 2 (två skalsteg från origo, där varje steg är 1).",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Sätt upp villkoret",
+          "text": "Att x = 2 är ett nollställe betyder y(2) = 0. Sätt in i uttrycket: a \\cdot 2^{2} - \\tfrac{3}{2} = 0.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Förenkla",
+          "text": "Eftersom 2^{2} = 4 blir ekvationen 4a - \\tfrac{3}{2} = 0.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Lös ut konstanten",
+          "text": "Flytta över: 4a = \\tfrac{3}{2}. Dividera båda led med 4: a = \\tfrac{3}{2 \\cdot 4} = \\tfrac{3}{8}.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Kontrollera tecknet",
+          "text": "Vi fick a = \\tfrac{3}{8} > 0, vilket stämmer med att parabeln öppnar uppåt i figuren.",
+          "tier": "essential"
+        },
+        {
+          "n": 9,
+          "title": "Kontrollera andra nollstället",
+          "text": "Symmetriskt borde också x = -2 ge y = 0: \\tfrac{3}{8} \\cdot (-2)^{2} - \\tfrac{3}{2} = \\tfrac{3}{8} \\cdot 4 - \\tfrac{3}{2} = \\tfrac{3}{2} - \\tfrac{3}{2} = 0. Stämmer.",
+          "tier": "supportive"
+        },
+        {
+          "n": 10,
+          "title": "Verifiera",
+          "text": "Pröva ytterligare en punkt: vid x = 1 ger formeln y(1) = \\tfrac{3}{8} - \\tfrac{3}{2} = \\tfrac{3}{8} - \\tfrac{12}{8} = -\\tfrac{9}{8}, ungefär -1{,}1. Figuren visar att kurvan vid x = 1 ligger strax över bottenpunkten — exakt vad vi räknat fram.",
+          "tier": "essential"
+        },
+        {
+          "n": 11,
+          "title": "Slutsats",
+          "text": "Konstanten är a = \\tfrac{3}{8}, vilket är svar B. Insikten i en mening: ett avläst nollställe från grafen räcker för att låsa parabelns ledande koefficient.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Ser ut som ett rimligt litet bråk om man försöker matcha en flack parabel.",
+          "why_wrong": "Med a = \\tfrac{1}{3} hade nollställena legat vid x^{2} = \\tfrac{3/2}{1/3} = \\tfrac{9}{2}, alltså x \\approx \\pm 2{,}12 — inte heltalen \\pm 2 som figuren visar."
+        },
+        {
+          "letter": "C",
+          "why_tempting": "Lockar den som tror att koefficienten ska matcha konstanttermens nämnare och plockar a = \\tfrac{1}{2} ur \\tfrac{3}{2}.",
+          "why_wrong": "Med a = \\tfrac{1}{2} fås nollställen vid x^{2} = 3, dvs x \\approx \\pm 1{,}73. Det är innanför x = \\pm 2 där figuren faktiskt skär axeln."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "Den som plockar talet \\tfrac{3}{2} direkt från konstanttermen utan att räkna fastnar här.",
+          "why_wrong": "Med a = \\tfrac{3}{2} hade parabeln varit mycket smalare med nollställen vid x = \\pm 1, men figuren visar tydligt att skärningarna ligger vid x = \\pm 2."
+        }
+      ],
+      "technique": "När en parabelgraf och dess formel ges men en koefficient saknas — avläs ett nollställe (eller annan punkt med heltalskoordinater) från figuren, sätt in i uttrycket och lös ut koefficienten algebraiskt.",
+      "pitfall": "Att avläsa vertexens y-värde istället för ett nollställe ger ingen information om a — vertex bestäms helt av konstanttermen -\\tfrac{3}{2}.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Nollstället",
+        "move": "Avläs där parabeln skär x-axeln, sätt y = 0 i formeln och lös ut den okända koefficienten."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

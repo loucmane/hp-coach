@@ -12856,103 +12856,103 @@
     }
   },
   "host-2016-kvant1-XYZ-012": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Avläs ett nollställe från grafen, sätt in i ekvationen och lös ut a.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "text": "Vi får funktionen y(x) = ax^{2} - \\tfrac{3}{2} tillsammans med en graf. Uppgiften är att avgöra vilket värde konstanten a måste ha för att kurvan ska se ut som i bilden.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Identifiera kurvtypen",
+        "text": "Uttrycket är en andragradsfunktion eftersom x förekommer i andra potens. Grafen är därför en parabel som öppnar uppåt när a > 0.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Hitta vertex",
+        "text": "Det finns ingen x-term, så symmetriaxeln är x = 0 och vertex ligger på y-axeln vid y(0) = -\\tfrac{3}{2}. Kurvans lägsta punkt är alltså (0,\\,-\\tfrac{3}{2}) — vilket stämmer med figuren där bottnen ligger strax under y = -1.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Välj avläsbar punkt",
+        "text": "Den säkraste informationen ur figuren är var parabeln skär x-axeln. Nollställena ligger symmetriskt kring x = 0 och tycks ligga vid x = \\pm 2 (två skalsteg från origo, där varje steg är 1).",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Sätt upp villkoret",
+        "text": "Att x = 2 är ett nollställe betyder y(2) = 0. Sätt in i uttrycket: a \\cdot 2^{2} - \\tfrac{3}{2} = 0.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Förenkla",
+        "text": "Eftersom 2^{2} = 4 blir ekvationen 4a - \\tfrac{3}{2} = 0.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Lös ut konstanten",
+        "text": "Flytta över: 4a = \\tfrac{3}{2}. Dividera båda led med 4: a = \\tfrac{3}{2 \\cdot 4} = \\tfrac{3}{8}.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Kontrollera tecknet",
+        "text": "Vi fick a = \\tfrac{3}{8} > 0, vilket stämmer med att parabeln öppnar uppåt i figuren.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Kontrollera andra nollstället",
+        "text": "Symmetriskt borde också x = -2 ge y = 0: \\tfrac{3}{8} \\cdot (-2)^{2} - \\tfrac{3}{2} = \\tfrac{3}{8} \\cdot 4 - \\tfrac{3}{2} = \\tfrac{3}{2} - \\tfrac{3}{2} = 0. Stämmer.",
+        "tier": "supportive"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera",
+        "text": "Pröva ytterligare en punkt: vid x = 1 ger formeln y(1) = \\tfrac{3}{8} - \\tfrac{3}{2} = \\tfrac{3}{8} - \\tfrac{12}{8} = -\\tfrac{9}{8}, ungefär -1{,}1. Figuren visar att kurvan vid x = 1 ligger strax över bottenpunkten — exakt vad vi räknat fram.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Konstanten är a = \\tfrac{3}{8}, vilket är svar B. Insikten i en mening: ett avläst nollställe från grafen räcker för att låsa parabelns ledande koefficient.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Ser ut som ett rimligt litet bråk om man försöker matcha en flack parabel.",
+        "why_wrong": "Med a = \\tfrac{1}{3} hade nollställena legat vid x^{2} = \\tfrac{3/2}{1/3} = \\tfrac{9}{2}, alltså x \\approx \\pm 2{,}12 — inte heltalen \\pm 2 som figuren visar."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Lockar den som tror att koefficienten ska matcha konstanttermens nämnare och plockar a = \\tfrac{1}{2} ur \\tfrac{3}{2}.",
+        "why_wrong": "Med a = \\tfrac{1}{2} fås nollställen vid x^{2} = 3, dvs x \\approx \\pm 1{,}73. Det är innanför x = \\pm 2 där figuren faktiskt skär axeln."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Den som plockar talet \\tfrac{3}{2} direkt från konstanttermen utan att räkna fastnar här.",
+        "why_wrong": "Med a = \\tfrac{3}{2} hade parabeln varit mycket smalare med nollställen vid x = \\pm 1, men figuren visar tydligt att skärningarna ligger vid x = \\pm 2."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "När en parabelgraf och dess formel ges men en koefficient saknas — avläs ett nollställe (eller annan punkt med heltalskoordinater) från figuren, sätt in i uttrycket och lös ut koefficienten algebraiskt.",
+    "pitfall": "Att avläsa vertexens y-värde istället för ett nollställe ger ingen information om a — vertex bestäms helt av konstanttermen -\\tfrac{3}{2}.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Nollstället",
+      "move": "Avläs där parabeln skär x-axeln, sätt y = 0 i formeln och lös ut den okända koefficienten."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "generated_at": "2026-05-23",
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "host-2016-kvant2-XYZ-002": {

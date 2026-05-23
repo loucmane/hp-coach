@@ -1,0 +1,127 @@
+{
+  "host-2025-kvant1-XYZ-005": {
+    "corpus_patch": {
+      "prompt": "Fyrhörningen ABCD är en rektangel med sidorna 4 cm (AB) och 2 cm (BC). På den övre sidan DC är ett 1 cm långt segment markerat. Det skuggade området är fyrhörningen med hörn i A, B och de två ändpunkterna av det markerade 1 cm-segmentet på DC (en trapets med parallella sidor 4 cm och 1 cm och höjd 2 cm). Hur stor är arean av det skuggade området?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "4\\ \\mathrm{cm}^{2}"
+        },
+        {
+          "letter": "B",
+          "text": "4{,}5\\ \\mathrm{cm}^{2}"
+        },
+        {
+          "letter": "C",
+          "text": "5\\ \\mathrm{cm}^{2}"
+        },
+        {
+          "letter": "D",
+          "text": "5{,}5\\ \\mathrm{cm}^{2}"
+        }
+      ],
+      "answer": "C",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Det skuggade området är en trapets med parallella sidor 4 cm (rektangelns botten AB) och 1 cm (det markerade segmentet på DC), samt höjd lika med rektangelns höjd 2 cm. Använd trapetsformeln: A=\\dfrac{a+b}{2}\\cdot h=\\dfrac{4+1}{2}\\cdot 2=5 cm^{2}. Svaret är C.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Förstå problemet",
+          "text": "Rektangeln ABCD har bredden AB=4 cm och höjden BC=2 cm. På den övre sidan DC är ett 1 cm långt segment markerat. Det skuggade området är fyrhörningen vars hörn är A, B och segmentets två ändpunkter på DC. Vi ska räkna ut dess area.",
+          "tier": "essential"
+        },
+        {
+          "n": 2,
+          "title": "Identifiera figurtypen",
+          "text": "De två sidor som ligger på rektangelns botten respektive topp är parallella (rektangelns motstående sidor är parallella). Därför är det skuggade området en trapets, med parallella sidor AB=4 cm och topp-segmentet =1 cm.",
+          "tier": "essential"
+        },
+        {
+          "n": 3,
+          "title": "Hitta höjden",
+          "text": "Höjden i en trapets är det vinkelräta avståndet mellan de två parallella sidorna. Det är exakt rektangelns höjd, det vill säga h=BC=2 cm.",
+          "tier": "essential"
+        },
+        {
+          "n": 4,
+          "title": "Skriv ned trapetsformeln",
+          "text": "Trapetsarean ges av A=\\dfrac{a+b}{2}\\cdot h, där a och b är de parallella sidornas längder och h är höjden.",
+          "tier": "essential"
+        },
+        {
+          "n": 5,
+          "title": "Sätt in värdena",
+          "text": "Med a=4, b=1 och h=2 får vi A=\\dfrac{4+1}{2}\\cdot 2.",
+          "tier": "essential"
+        },
+        {
+          "n": 6,
+          "title": "Förenkla täljaren",
+          "text": "4+1=5, så uttrycket blir A=\\dfrac{5}{2}\\cdot 2.",
+          "tier": "essential"
+        },
+        {
+          "n": 7,
+          "title": "Förkorta mot höjden",
+          "text": "Tvåan i nämnaren tar ut tvåan i höjden: \\dfrac{5}{2}\\cdot 2=5.",
+          "tier": "essential"
+        },
+        {
+          "n": 8,
+          "title": "Sanity-check via dekomposition",
+          "text": "Dela trapetsen i en rektangel (1\\times 2=2 cm^{2}) i mitten och två kongruenta randtrianglar längs sidorna. De båda randtrianglarna har sammanlagd bas 4-1=3 cm och höjd 2 cm, så deras sammanlagda area är \\dfrac{3\\cdot 2}{2}=3 cm^{2}. Totalt 2+3=5 cm^{2} — stämmer.",
+          "tier": "support"
+        },
+        {
+          "n": 9,
+          "title": "Sanity-check via rektangel minus tomma hörn",
+          "text": "Rektangelns totala area är 4\\cdot 2=8 cm^{2}. De två tomma hörnen är trianglar som tillsammans har bas 3 cm (vad som blir kvar av översta kanten när man dragit bort 1 cm-segmentet) och höjd 2 cm: \\dfrac{3\\cdot 2}{2}=3 cm^{2}. Då är skuggad area 8-3=5 cm^{2}.",
+          "tier": "support"
+        },
+        {
+          "n": 10,
+          "title": "Verifiera",
+          "text": "Trapetsformel, dekomposition i triangel + rektangel, och rektangel-minus-tomma-hörn ger alla samma värde 5 cm^{2}. Värdet är dessutom mindre än rektangelns totala area 8 cm^{2} men större än halva (4 cm^{2}) — vilket matchar att det skuggade området täcker betydligt mer än hälften av rektangeln. Rimligt.",
+          "tier": "essential"
+        },
+        {
+          "n": 11,
+          "title": "Slutsats",
+          "text": "Arean av det skuggade området är 5 cm^{2}, vilket är alternativ C. Insikten i en mening: ett skuggat fält mellan en rektangels parallella över- och underkant är en trapets — räkna det som \\dfrac{a+b}{2}\\cdot h, inte som någon specialfigur.",
+          "tier": "essential"
+        }
+      ],
+      "distractors": [
+        {
+          "letter": "A",
+          "why_tempting": "Studenten ser tvåan i höjden och fyran i bottenbredden och multiplicerar dem direkt: 4\\cdot 2/2=4, som om figuren vore en triangel med bas 4 och höjd 2.",
+          "why_wrong": "Figuren är inte en triangel utan en trapets — toppen har också en längd (1 cm) som måste räknas med. Trianglar har en enda spets uppe; här finns ett helt 1 cm-segment där."
+        },
+        {
+          "letter": "B",
+          "why_tempting": "Räknaren applicerar trapetsformeln men slarvar med slutsteget: får 4+1=5 och delar med 2 till \\tfrac{5}{2}=2{,}5, men adderar sedan höjden 2 istället för att multiplicera, och hamnar nära 2{,}5+2=4{,}5.",
+          "why_wrong": "Den korrekta formeln är \\dfrac{a+b}{2}\\cdot h — multiplikation med höjden, inte addition. Sätt in värdena: \\dfrac{4+1}{2}\\cdot 2=5, inte 4{,}5."
+        },
+        {
+          "letter": "D",
+          "why_tempting": "Räknaren tar rektangelns totala area och drar bort bara en av de tomma hörn-trianglarna: 8-\\dfrac{3\\cdot 2}{2}\\cdot \\tfrac{1}{2}\\approx 5{,}5.",
+          "why_wrong": "Det finns två tomma hörn-trianglar (en på vänster sida av segmentet, en på höger). Deras sammanlagda bas är 4-1=3 cm och sammanlagda area \\dfrac{3\\cdot 2}{2}=3 cm^{2}, så skuggat område = 8-3=5 cm^{2}."
+        }
+      ],
+      "technique": "När en region inuti en rektangel begränsas av rektangelns över- och underkant är området nästan alltid en trapets. Två rena vägar att räkna: (1) trapetsformeln \\dfrac{a+b}{2}\\cdot h direkt, eller (2) rektangelns totala area minus de tomma hörnens trianglar. Båda ska ge samma svar — använd den ena som check på den andra.",
+      "pitfall": "Den vanligaste fällan är att tolka figuren som en triangel (om man bara ser den smala toppen) och multiplicera \\dfrac{4\\cdot 2}{2}=4. Räkna alltid antalet hörn först: fyra hörn = trapets/fyrhörning, inte triangel.",
+      "framework_id": "XYZ-TRAP-041",
+      "pregrade_tactic": {
+        "handle": "Trapets-greppet",
+        "move": "Räkna hörnen i det skuggade området — fyra hörn med två parallella sidor betyder trapets; sätt in \\dfrac{a+b}{2}\\cdot h direkt."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}
