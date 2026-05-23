@@ -12908,203 +12908,203 @@
     }
   },
   "var-2013-kvant1-XYZ-011": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar B; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Med 40 datapunkter ligger medianen mellan position 20 och 21 i den sorterade listan. Bygg en kumulativ summa över poängtabellen och läs av vilka värden som ligger på de två mittenplatserna — sedan är medianen medelvärdet av dem.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "text": "40 personer har vardera fått ett heltal mellan 0 och 6 poäng. Tabellen säger hur många personer som hamnade på varje poängvärde, och vi ska hitta det mittersta värdet när alla 40 resultat ställs upp i ordning.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ B. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
-      },
-      {
-        "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "title": "Vad är median?",
+        "text": "Medianen är det mittersta talet i en sorterad lista. Om antalet datapunkter är jämnt finns det inget enskilt mittental — då tas medianen som medelvärdet av de två mittersta värdena.",
         "tier": "detail"
       },
       {
+        "n": 3,
+        "title": "Vilka platser ska vi titta på?",
+        "text": "Med n=40 är de två mittersta platserna nr 40/2 = 20 och nr 20+1 = 21. Medianen blir alltså (värdet på plats 20 + värdet på plats 21) / 2.",
+        "tier": "essential"
+      },
+      {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
+        "title": "Sortera mentalt med kumulativ summa",
+        "text": "Eftersom listan redan är sorterad i tabellen (0 poäng först, sedan 1, sedan 2, ...) räcker det att räkna ihop antalen tills vi når plats 20 och 21. Detta kallas kumulativ frekvens.",
         "tier": "detail"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Räkna in 0-poängarna",
+        "text": "5 personer fick 0 poäng. Det fyller platserna 1 till 5. Efter denna grupp har 5 personer placerats.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Räkna in 1-poängarna",
+        "text": "12 personer fick 1 poäng. De fyller platserna 6 till 17 (5+12 = 17). Efter denna grupp är vi uppe i 17 personer.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Räkna in 2-poängarna",
+        "text": "3 personer fick 2 poäng. De fyller platserna 18, 19 och 20 (17+3 = 20). Plats 20 har alltså värdet 2.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Räkna in 3-poängarna",
+        "text": "10 personer fick 3 poäng. De fyller platserna 21 till 30. Plats 21 har alltså värdet 3.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
-        "tier": "detail"
+        "title": "Beräkna medianen",
+        "text": "Median = (värdet på plats 20 + värdet på plats 21) / 2 = (2 + 3) / 2 = 2,5.",
+        "tier": "essential"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "title": "Verifiera",
+        "text": "Kontrollera totalsumman: 5+12+3+10+4+4+2 = 40 — alla räknade. Och 20 + 21 är genuint de två mittersta för 40 datapunkter. Plats 20 hamnar precis i slutet av 2-gruppen, plats 21 precis i början av 3-gruppen, så hoppet över heltalsvärdet ger den halva poängen.",
         "tier": "detail"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret B. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är B (2,5). Insikten i en mening: vid frekvenstabell och jämnt n — bygg kumulativ summa tills du passerar n/2 och n/2+1, och medianen är medelvärdet av de två värdena där.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att stanna vid plats 20, läsa av värdet 2 och kalla det median — utan att inse att 40 är jämnt och kräver två avläsningar.",
+        "why_wrong": "Som steg 3 visar måste medianen för jämnt n tas som medelvärdet av plats 20 OCH 21. Plats 21 är 3 (steg 8), inte 2."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid plats 21 och läser av värdet 3, kanske för att 3-gruppen är den största enskilda gruppen i tabellen och känns som ett naturligt 'centrum'.",
+        "why_wrong": "Steg 7 visar att plats 20 har värdet 2 (slutet av 2-gruppen). Medianen blir därför (2+3)/2 = 2,5, inte 3."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret B. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är att räkna fel om man försöker peka ut typvärdet eller medelvärdet och blandar ihop dem; 4 kan dyka upp om man räknar gruppstorlekarna i fel ordning.",
+        "why_wrong": "Steg 9 ger 2,5 direkt ur den kumulativa frekvensen. 4 hör hemma som poängvärde men aldrig som plats 20/21."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "Vid frekvenstabell över ett diskret poängvärde: bygg kumulativ summa kolumn för kolumn tills du passerar n/2. Vid jämnt n behöver du två avläsningar (plats n/2 och n/2+1). Detta är snabbare än att skriva ut hela listan.",
+    "pitfall": "Att tolka medianen som typvärdet (största stapeln) eller som medelvärdet. Botemedlet: håll fast vid definitionen — sorterad lista, mittersta platsen / medelvärdet av de två mittersta.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Kumulativ-trappan",
+      "move": "Skriv summorna 5, 17, 20, 30 ovanför tabellen och leta vilka rader som täcker plats n/2 och n/2+1 — medianen är medelvärdet av dessa två poängvärden."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "generated_at": "2026-05-23",
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2013-kvant2-XYZ-006": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (answer only). Facit anger svar A; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "För varje bråk: räkna ut avståndet till 1, dvs |bråk − 1|. Lägg märke till att |a/b − 1| = |a − b|/b, vilket gör att bråken kan jämföras utan att gå via decimaltal. Det minsta avståndet vinner.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Frågan finns med rätt svar i facit men prompten själv är inte tillgänglig i datakällan — vi har bara svarsbokstaven kvar. Hela uppgiftstexten saknas, så vi kan inte återge uträkningen exakt utan att gissa.",
+        "text": "Vi har fyra bråk: 4/5, 5/4, 7/9 och 9/7. Frågan är vilket som ligger närmast talet 1 på tallinjen — alltså vilket avstånd |bråk − 1| är minst.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ A. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
+        "title": "Vad betyder 'närmast 1'?",
+        "text": "Avståndet mellan två tal x och y på tallinjen är |x − y|. Här blir det |bråk − 1|, oavsett om bråket ligger över eller under 1. Båda riktningarna räknas lika.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Förenkla avståndsformeln",
+        "text": "För ett bråk a/b gäller a/b − 1 = a/b − b/b = (a − b)/b. Avståndet blir alltså |a − b|/b — täljarens skillnad delat med nämnaren.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Avstånd för A = 4/5",
+        "text": "Här är a = 4 och b = 5, så |4 − 5|/5 = 1/5 = 0,20.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Avstånd för B = 5/4",
+        "text": "Här är a = 5 och b = 4, så |5 − 4|/4 = 1/4 = 0,25.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Avstånd för C = 7/9",
+        "text": "Här är a = 7 och b = 9, så |7 − 9|/9 = 2/9 ≈ 0,222.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Avstånd för D = 9/7",
+        "text": "Här är a = 9 och b = 7, så |9 − 7|/7 = 2/7 ≈ 0,286.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Sortera avstånden",
+        "text": "Ställ upp dem: 1/5 = 0,200; 2/9 ≈ 0,222; 1/4 = 0,250; 2/7 ≈ 0,286. Det minsta är 1/5, dvs alternativ A.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Sanity-check par A mot C",
+        "text": "Den knepiga jämförelsen är A (1/5) mot C (2/9), eftersom båda bråken (4/5 och 7/9) ligger under 1. Korsmultiplicera: 1·9 = 9 mot 2·5 = 10. 9 < 10 alltså 1/5 < 2/9 — A är närmare.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
+        "title": "Verifiera med decimaler",
+        "text": "4/5 = 0,80 ger avstånd 0,20. 7/9 ≈ 0,778 ger avstånd ≈ 0,222. 5/4 = 1,25 ger 0,25. 9/7 ≈ 1,286 ger ≈ 0,286. Bekräftar A.",
         "tier": "detail"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret A. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är A (4/5). Insikten i en mening: vid frågan 'närmast 1' — skriv om varje bråk a/b som a/b − 1 = (a − b)/b, och jämför sedan de fyra avstånden direkt.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Det är lätt att välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är frestande att luras av att 5/4 och 4/5 'speglar' varandra, och om man räknar |5 − 4| = 1 och stannar där, ser 5/4 lika nära ut som 4/5.",
+        "why_wrong": "Steg 3 visar att nämnaren spelar roll: 1/5 < 1/4. Det är därför 4/5 är närmare 1 än 5/4, även om täljardifferensen är densamma."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att 7/9 ligger nära 1 eftersom täljaren bara skiljer 2 från nämnaren och bråket ser 'pyttenära' ut. 2/9 verkar mindre än 1/4 vid första anblicken.",
+        "why_wrong": "Steg 9 visar med korsmultiplikation att 1/5 < 2/9 — A är närmare än C. Att nämnaren är större kompenserar inte för att täljarskillnaden är dubbelt så stor (2 mot 1)."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret A. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Första instinkten är att jämföra 9/7 (≈1,29) som ett 'rent' bråk och underskatta hur långt 0,29 ifrån 1 det egentligen ligger.",
+        "why_wrong": "Steg 7 ger avstånd 2/7 ≈ 0,286, vilket är största av de fyra (steg 8). D är längst bort från 1, inte närmast."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "Vid 'närmast x'-frågor: skriv avståndet som ett bråk |a − b|/b (när x = 1). Då slipper du decimaltal — du jämför fyra enkla bråk istället. Använd korsmultiplikation som tiebreaker.",
+    "pitfall": "Att jämföra bråken direkt mot 1 utan att tänka på AVSTÅND — eller att läsa täljarskillnaden i isolation utan nämnaren. Botemedlet: skriv (a − b)/b explicit för varje alternativ.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Avståndsbråket",
+      "move": "Skriv om a/b − 1 till (a − b)/b för varje alternativ och jämför de fyra bråken med korsmultiplikation — minsta värdet vinner."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "generated_at": "2026-05-23",
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2013-kvant2-XYZ-010": {

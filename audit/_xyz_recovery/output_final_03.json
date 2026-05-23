@@ -1,0 +1,233 @@
+{
+  "var-2013-kvant1-XYZ-011": {
+    "corpus_patch": {
+      "prompt": "40 personer deltar i ett prov med 6 frågor. Tabellen visar fördelningen: antal poäng 0, 1, 2, 3, 4, 5, 6 fås av 5, 12, 3, 10, 4, 4, 2 personer respektive. Vad är medianpoängen?",
+      "options": [
+        {"letter": "A", "text": "2"},
+        {"letter": "B", "text": "2,5"},
+        {"letter": "C", "text": "3"},
+        {"letter": "D", "text": "4"}
+      ],
+      "answer": "B",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Med 40 datapunkter ligger medianen mellan position 20 och 21 i den sorterade listan. Bygg en kumulativ summa över poängtabellen och läs av vilka värden som ligger på de två mittenplatserna — sedan är medianen medelvärdet av dem.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "40 personer har vardera fått ett heltal mellan 0 och 6 poäng. Tabellen säger hur många personer som hamnade på varje poängvärde, och vi ska hitta det mittersta värdet när alla 40 resultat ställs upp i ordning.", "tier": "essential"},
+        {"n": 2, "title": "Vad är median?", "text": "Medianen är det mittersta talet i en sorterad lista. Om antalet datapunkter är jämnt finns det inget enskilt mittental — då tas medianen som medelvärdet av de två mittersta värdena.", "tier": "detail"},
+        {"n": 3, "title": "Vilka platser ska vi titta på?", "text": "Med n=40 är de två mittersta platserna nr 40/2 = 20 och nr 20+1 = 21. Medianen blir alltså (värdet på plats 20 + värdet på plats 21) / 2.", "tier": "essential"},
+        {"n": 4, "title": "Sortera mentalt med kumulativ summa", "text": "Eftersom listan redan är sorterad i tabellen (0 poäng först, sedan 1, sedan 2, ...) räcker det att räkna ihop antalen tills vi når plats 20 och 21. Detta kallas kumulativ frekvens.", "tier": "detail"},
+        {"n": 5, "title": "Räkna in 0-poängarna", "text": "5 personer fick 0 poäng. Det fyller platserna 1 till 5. Efter denna grupp har 5 personer placerats.", "tier": "essential"},
+        {"n": 6, "title": "Räkna in 1-poängarna", "text": "12 personer fick 1 poäng. De fyller platserna 6 till 17 (5+12 = 17). Efter denna grupp är vi uppe i 17 personer.", "tier": "essential"},
+        {"n": 7, "title": "Räkna in 2-poängarna", "text": "3 personer fick 2 poäng. De fyller platserna 18, 19 och 20 (17+3 = 20). Plats 20 har alltså värdet 2.", "tier": "essential"},
+        {"n": 8, "title": "Räkna in 3-poängarna", "text": "10 personer fick 3 poäng. De fyller platserna 21 till 30. Plats 21 har alltså värdet 3.", "tier": "essential"},
+        {"n": 9, "title": "Beräkna medianen", "text": "Median = (värdet på plats 20 + värdet på plats 21) / 2 = (2 + 3) / 2 = 2,5.", "tier": "essential"},
+        {"n": 10, "title": "Verifiera", "text": "Kontrollera totalsumman: 5+12+3+10+4+4+2 = 40 — alla räknade. Och 20 + 21 är genuint de två mittersta för 40 datapunkter. Plats 20 hamnar precis i slutet av 2-gruppen, plats 21 precis i början av 3-gruppen, så hoppet över heltalsvärdet ger den halva poängen.", "tier": "detail"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är B (2,5). Insikten i en mening: vid frekvenstabell och jämnt n — bygg kumulativ summa tills du passerar n/2 och n/2+1, och medianen är medelvärdet av de två värdena där.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att stanna vid plats 20, läsa av värdet 2 och kalla det median — utan att inse att 40 är jämnt och kräver två avläsningar.", "why_wrong": "Som steg 3 visar måste medianen för jämnt n tas som medelvärdet av plats 20 OCH 21. Plats 21 är 3 (steg 8), inte 2."},
+        {"letter": "C", "why_tempting": "Många stannar vid plats 21 och läser av värdet 3, kanske för att 3-gruppen är den största enskilda gruppen i tabellen och känns som ett naturligt 'centrum'.", "why_wrong": "Steg 7 visar att plats 20 har värdet 2 (slutet av 2-gruppen). Medianen blir därför (2+3)/2 = 2,5, inte 3."},
+        {"letter": "D", "why_tempting": "Första instinkten är att räkna fel om man försöker peka ut typvärdet eller medelvärdet och blandar ihop dem; 4 kan dyka upp om man räknar gruppstorlekarna i fel ordning.", "why_wrong": "Steg 9 ger 2,5 direkt ur den kumulativa frekvensen. 4 hör hemma som poängvärde men aldrig som plats 20/21."}
+      ],
+      "technique": "Vid frekvenstabell över ett diskret poängvärde: bygg kumulativ summa kolumn för kolumn tills du passerar n/2. Vid jämnt n behöver du två avläsningar (plats n/2 och n/2+1). Detta är snabbare än att skriva ut hela listan.",
+      "pitfall": "Att tolka medianen som typvärdet (största stapeln) eller som medelvärdet. Botemedlet: håll fast vid definitionen — sorterad lista, mittersta platsen / medelvärdet av de två mittersta.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Kumulativ-trappan",
+        "move": "Skriv summorna 5, 17, 20, 30 ovanför tabellen och leta vilka rader som täcker plats n/2 och n/2+1 — medianen är medelvärdet av dessa två poängvärden."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2013-kvant2-XYZ-006": {
+    "corpus_patch": {
+      "prompt": "Vilket av följande tal ligger närmast 1?",
+      "options": [
+        {"letter": "A", "text": "4/5"},
+        {"letter": "B", "text": "5/4"},
+        {"letter": "C", "text": "7/9"},
+        {"letter": "D", "text": "9/7"}
+      ],
+      "answer": "A",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "För varje bråk: räkna ut avståndet till 1, dvs |bråk − 1|. Lägg märke till att |a/b − 1| = |a − b|/b, vilket gör att bråken kan jämföras utan att gå via decimaltal. Det minsta avståndet vinner.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Vi har fyra bråk: 4/5, 5/4, 7/9 och 9/7. Frågan är vilket som ligger närmast talet 1 på tallinjen — alltså vilket avstånd |bråk − 1| är minst.", "tier": "essential"},
+        {"n": 2, "title": "Vad betyder 'närmast 1'?", "text": "Avståndet mellan två tal x och y på tallinjen är |x − y|. Här blir det |bråk − 1|, oavsett om bråket ligger över eller under 1. Båda riktningarna räknas lika.", "tier": "detail"},
+        {"n": 3, "title": "Förenkla avståndsformeln", "text": "För ett bråk a/b gäller a/b − 1 = a/b − b/b = (a − b)/b. Avståndet blir alltså |a − b|/b — täljarens skillnad delat med nämnaren.", "tier": "essential"},
+        {"n": 4, "title": "Avstånd för A = 4/5", "text": "Här är a = 4 och b = 5, så |4 − 5|/5 = 1/5 = 0,20.", "tier": "essential"},
+        {"n": 5, "title": "Avstånd för B = 5/4", "text": "Här är a = 5 och b = 4, så |5 − 4|/4 = 1/4 = 0,25.", "tier": "essential"},
+        {"n": 6, "title": "Avstånd för C = 7/9", "text": "Här är a = 7 och b = 9, så |7 − 9|/9 = 2/9 ≈ 0,222.", "tier": "essential"},
+        {"n": 7, "title": "Avstånd för D = 9/7", "text": "Här är a = 9 och b = 7, så |9 − 7|/7 = 2/7 ≈ 0,286.", "tier": "essential"},
+        {"n": 8, "title": "Sortera avstånden", "text": "Ställ upp dem: 1/5 = 0,200; 2/9 ≈ 0,222; 1/4 = 0,250; 2/7 ≈ 0,286. Det minsta är 1/5, dvs alternativ A.", "tier": "essential"},
+        {"n": 9, "title": "Sanity-check par A mot C", "text": "Den knepiga jämförelsen är A (1/5) mot C (2/9), eftersom båda bråken (4/5 och 7/9) ligger under 1. Korsmultiplicera: 1·9 = 9 mot 2·5 = 10. 9 < 10 alltså 1/5 < 2/9 — A är närmare.", "tier": "detail"},
+        {"n": 10, "title": "Verifiera med decimaler", "text": "4/5 = 0,80 ger avstånd 0,20. 7/9 ≈ 0,778 ger avstånd ≈ 0,222. 5/4 = 1,25 ger 0,25. 9/7 ≈ 1,286 ger ≈ 0,286. Bekräftar A.", "tier": "detail"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är A (4/5). Insikten i en mening: vid frågan 'närmast 1' — skriv om varje bråk a/b som a/b − 1 = (a − b)/b, och jämför sedan de fyra avstånden direkt.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "Det är frestande att luras av att 5/4 och 4/5 'speglar' varandra, och om man räknar |5 − 4| = 1 och stannar där, ser 5/4 lika nära ut som 4/5.", "why_wrong": "Steg 3 visar att nämnaren spelar roll: 1/5 < 1/4. Det är därför 4/5 är närmare 1 än 5/4, även om täljardifferensen är densamma."},
+        {"letter": "C", "why_tempting": "Många stannar vid att 7/9 ligger nära 1 eftersom täljaren bara skiljer 2 från nämnaren och bråket ser 'pyttenära' ut. 2/9 verkar mindre än 1/4 vid första anblicken.", "why_wrong": "Steg 9 visar med korsmultiplikation att 1/5 < 2/9 — A är närmare än C. Att nämnaren är större kompenserar inte för att täljarskillnaden är dubbelt så stor (2 mot 1)."},
+        {"letter": "D", "why_tempting": "Första instinkten är att jämföra 9/7 (≈1,29) som ett 'rent' bråk och underskatta hur långt 0,29 ifrån 1 det egentligen ligger.", "why_wrong": "Steg 7 ger avstånd 2/7 ≈ 0,286, vilket är största av de fyra (steg 8). D är längst bort från 1, inte närmast."}
+      ],
+      "technique": "Vid 'närmast x'-frågor: skriv avståndet som ett bråk |a − b|/b (när x = 1). Då slipper du decimaltal — du jämför fyra enkla bråk istället. Använd korsmultiplikation som tiebreaker.",
+      "pitfall": "Att jämföra bråken direkt mot 1 utan att tänka på AVSTÅND — eller att läsa täljarskillnaden i isolation utan nämnaren. Botemedlet: skriv (a − b)/b explicit för varje alternativ.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Avståndsbråket",
+        "move": "Skriv om a/b − 1 till (a − b)/b för varje alternativ och jämför de fyra bråken med korsmultiplikation — minsta värdet vinner."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2014-kvant1-XYZ-002": {
+    "corpus_patch": {
+      "prompt": "I figuren har x, y och z värden så att summan av varje rad är lika stor som summan av varje kolumn respektive varje diagonal. Vad är summan av x, y och z? Figuren visar en 2×2-ruta där övre raden är (x, 13) och nedre raden är (y, z).",
+      "options": [
+        {"letter": "A", "text": "13"},
+        {"letter": "B", "text": "26"},
+        {"letter": "C", "text": "39"},
+        {"letter": "D", "text": "52"}
+      ],
+      "answer": "C",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "I en 2×2 ruta med rad-, kolumn- och diagonalsummor alla lika tvingas alla fyra cellerna att vara lika. Sätt upp ekvationer rad mot diagonal och kolumn mot diagonal — då löser de varandra och avslöjar att x = y = z = 13.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Figuren är en 2×2-tabell: övre raden (x, 13), nedre raden (y, z). Vi får veta att alla rad-, kolumn- och diagonalsummor är lika. Vi söker x + y + z.", "tier": "essential"},
+        {"n": 2, "title": "Namnge den gemensamma summan", "text": "Kalla den gemensamma summan för S. Det finns två rader, två kolumner och två diagonaler — totalt sex summor som alla ska vara S.", "tier": "detail"},
+        {"n": 3, "title": "Skriv ner alla sex summor", "text": "Rader: x + 13 = S, y + z = S. Kolumner: x + y = S, 13 + z = S. Diagonaler: x + z = S, 13 + y = S.", "tier": "essential"},
+        {"n": 4, "title": "Jämför rad 1 med kolumn 1", "text": "x + 13 = S och x + y = S, alltså x + 13 = x + y. Dra bort x från båda sidor — det ger y = 13.", "tier": "essential"},
+        {"n": 5, "title": "Jämför rad 1 med kolumn 2", "text": "x + 13 = S och 13 + z = S, alltså x + 13 = 13 + z. Dra bort 13 — det ger x = z.", "tier": "essential"},
+        {"n": 6, "title": "Använd diagonalen", "text": "Från diagonalen 13 + y = S och y = 13 (steg 4) blir 13 + 13 = S, alltså S = 26.", "tier": "essential"},
+        {"n": 7, "title": "Lös för x", "text": "x + 13 = S = 26 ger x = 26 − 13 = 13. Och eftersom x = z (steg 5) följer z = 13.", "tier": "essential"},
+        {"n": 8, "title": "Verifiera rad 2", "text": "y + z = 13 + 13 = 26 = S. Stämmer.", "tier": "detail"},
+        {"n": 9, "title": "Verifiera båda diagonalerna", "text": "x + z = 13 + 13 = 26 = S. 13 + y = 13 + 13 = 26 = S. Stämmer.", "tier": "detail"},
+        {"n": 10, "title": "Summera x + y + z", "text": "x + y + z = 13 + 13 + 13 = 39.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är C (39). Insikten i en mening: i en 2×2 magic-square med RAD = KOLUMN = DIAGONAL tvingas alla fyra rutorna att ha samma värde — så summan av tre okända är 3 gånger det enda kända talet.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är frestande att se 13 som svaret om man tror att 'summan av x, y och z' menar EN av dem (kanske x ensam), eller om man hoppas att de tre okända ska summera till samma värde som det kända.", "why_wrong": "Steg 10 ger 3·13 = 39, inte 13. A motsvarar endast ett av talen, inte deras summa."},
+        {"letter": "B", "why_tempting": "Det är lätt att stanna vid S = 26 (steg 6) och kalla det svaret — speciellt om man tolkar 'summa' som radsumman istället för 'summan av x + y + z'.", "why_wrong": "26 är den gemensamma rad/kolumn/diagonal-summan S, inte summan av just de tre okända. Steg 10 visar att x + y + z = 39."},
+        {"letter": "D", "why_tempting": "Om du misstänker att summan ska vara 4·13 = 52 (alla fyra rutor) glömmer du att frågan bara gäller TRE okända (x, y, z), inte alla fyra cellerna.", "why_wrong": "Steg 10 räknar bara tre rutor. Inkluderar man också den fjärde cellen (13) blir det 52, men det är inte vad frågan ber om."}
+      ],
+      "technique": "Vid magic-square: skriv ALLA summor och bilda parvisa likheter mellan rad och kolumn som delar en cell — subtraktion isolerar relationer mellan de okända ett steg i taget. Sex ekvationer på fyra okända är överbestämt och tvingar fram en unik lösning.",
+      "pitfall": "Att förväxla 'rad-/kolumnsumman S' med 'summan av de okända'. Botemedlet: läs sista meningen i prompten igen och cirkla in exakt vad som efterfrågas.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Magic-square-kollapsen",
+        "move": "I 2×2 med rad = kolumn = diagonal: gör skillnaden mellan rad och kolumn som delar en cell — det avslöjar omedelbart att de andra två cellerna är lika och alla rutor i slutändan blir samma tal."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2014-kvant1-XYZ-003": {
+    "corpus_patch": {
+      "prompt": "1 < x ≤ 5 och y = 3x − 7. Vilket av följande tal ingår inte i värdemängden för y?",
+      "options": [
+        {"letter": "A", "text": "−4"},
+        {"letter": "B", "text": "2"},
+        {"letter": "C", "text": "6"},
+        {"letter": "D", "text": "8"}
+      ],
+      "answer": "A",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "y = 3x − 7 är en linjär funktion som är strikt växande. Mata in ändpunkterna 1 och 5 för x för att hitta randvärdena på y, och var noga med olikhetstypen — strikt vid x = 1 ger strikt vid y = −4, alltså är −4 inte med.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "x rör sig i intervallet 1 < x ≤ 5 (öppet vid 1, slutet vid 5). y bestäms av formeln y = 3x − 7. Vi söker det enda alternativ som y aldrig kan anta.", "tier": "essential"},
+        {"n": 2, "title": "Vad är värdemängd?", "text": "Värdemängden för y är mängden av alla y-värden som funktionen kan ge när x går igenom sitt definitionsområde. Med en linjär växande funktion är det helt enkelt intervallet mellan y-värdena vid ändpunkterna.", "tier": "detail"},
+        {"n": 3, "title": "Funktionens lutning", "text": "y = 3x − 7 har lutning 3 > 0. Funktionen är alltså strikt växande: större x ger större y. Det betyder att y antar sitt minsta värde vid det minsta tillåtna x och sitt största vid det största.", "tier": "detail"},
+        {"n": 4, "title": "Beräkna y vid x = 1", "text": "y = 3·1 − 7 = 3 − 7 = −4. Men x = 1 är INTE tillåtet (olikheten är strikt: 1 < x). Så y kommer nära −4 men når aldrig dit.", "tier": "essential"},
+        {"n": 5, "title": "Beräkna y vid x = 5", "text": "y = 3·5 − 7 = 15 − 7 = 8. Och x = 5 ÄR tillåtet (≤), så y = 8 ingår i värdemängden.", "tier": "essential"},
+        {"n": 6, "title": "Skriv värdemängden", "text": "Eftersom y växer strikt blir värdemängden y ∈ (−4, 8]: öppen vid −4, sluten vid 8. Allt strax över −4 upp till och med 8 är med.", "tier": "essential"},
+        {"n": 7, "title": "Pröva A = −4", "text": "−4 är randvärdet vid x = 1 men 1 är utesluten. Inget tillåtet x ger y = −4. A är alltså inte i värdemängden.", "tier": "essential"},
+        {"n": 8, "title": "Pröva B = 2", "text": "Lös 3x − 7 = 2 → 3x = 9 → x = 3. Eftersom 1 < 3 ≤ 5 är x = 3 tillåtet. B ingår.", "tier": "detail"},
+        {"n": 9, "title": "Pröva C = 6", "text": "Lös 3x − 7 = 6 → 3x = 13 → x = 13/3 ≈ 4,33. Eftersom 1 < 4,33 ≤ 5 är x tillåtet. C ingår.", "tier": "detail"},
+        {"n": 10, "title": "Pröva D = 8", "text": "Lös 3x − 7 = 8 → 3x = 15 → x = 5. Eftersom x = 5 är tillåtet (≤) ingår D.", "tier": "detail"},
+        {"n": 11, "title": "Verifiera", "text": "Endast A faller utanför (−4, 8]. B, C, D faller alla inom (steg 8–10). Olikhetstypen vid x = 1 var det enda som skiljde −4 från att vara med.", "tier": "detail"},
+        {"n": 12, "title": "Slutsats", "text": "Svaret är A (−4). Insikten i en mening: vid värdemängd för en strikt växande linjär funktion — mata in ändpunkterna och ÄRV olikhetstypen från x-intervallet till y-intervallet (strikt blir strikt, sluten blir sluten).", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "Det är lätt att gissa på 2 om man räknar slarvigt på y vid x = 3 och får y = 2 men sedan tvekar på om x = 3 ligger i intervallet.", "why_wrong": "Steg 8 visar att x = 3 ligger gott och väl mellan 1 och 5, så y = 2 är genuint med i värdemängden."},
+        {"letter": "C", "why_tempting": "Om du minns regeln som 'sätt in heltal' kan x = 13/3 verka misstänkt eftersom det inte är ett heltal — frestande att utesluta C.", "why_wrong": "Definitionsområdet 1 < x ≤ 5 tillåter alla reella x i intervallet, inte bara heltal. Steg 9 ger x ≈ 4,33 vilket är tillåtet."},
+        {"letter": "D", "why_tempting": "Många stannar vid att 8 är randvärdet och tror att randvärden alltid är uteslutna, oavsett om olikheten är strikt eller inte.", "why_wrong": "Steg 5 visar att olikheten vid x = 5 är ≤ (sluten), så y = 8 är inkluderat. Endast den öppna änden vid x = 1 utesluter sitt y-värde, vilket steg 4 fångar."}
+      ],
+      "technique": "För värdemängd av en linjär funktion på ett intervall: bestäm tecknet på lutningen (växande/avtagande), beräkna y i ändpunkterna, och kopiera olikhetstecknen från x-intervallet till y-intervallet. Pröva sedan varje alternativ mot det resulterande intervallet.",
+      "pitfall": "Att glömma att olikhetstecknen ÄRVS — och därför uppfatta att −4 finns med eftersom 'det är ett värde funktionen kommer nära'. Botemedlet: skriv värdemängden som ett explicit intervall med rätt parentestyp innan du jämför med alternativen.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Ändpunkts-trickets",
+        "move": "Mata in x:s två ändar i formeln, kopiera olikhetstecknen rakt över till y och pröva alternativen mot intervallet — randvärdet på den strikta sidan är aldrig med."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2016-kvant2-XYZ-003": {
+    "corpus_patch": {
+      "prompt": "Vilket svarsalternativ visar grafen till funktionen y = −x + C, där C är ett negativt tal? De fyra alternativen visar fyra raka linjer i ett xy-koordinatsystem.",
+      "options": [
+        {"letter": "A", "text": "Rät linje med negativ lutning som skär y-axeln OVANFÖR origo (positiv y-skärning)."},
+        {"letter": "B", "text": "Rät linje med positiv lutning som skär y-axeln OVANFÖR origo (positiv y-skärning)."},
+        {"letter": "C", "text": "Rät linje med negativ lutning som skär y-axeln UNDER origo (negativ y-skärning)."},
+        {"letter": "D", "text": "Rät linje med positiv lutning som skär y-axeln UNDER origo (negativ y-skärning)."}
+      ],
+      "answer": "C",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Identifiera de två kriterierna ur formeln y = −x + C: lutningen är k = −1 (negativ, linjen lutar nedåt) och y-skärningen är m = C, som är negativ. Endast den graf som har BÅDA dessa egenskaper är rätt.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Vi får funktionen y = −x + C där C är ett negativt tal. Bland fyra grafer ska vi välja den som motsvarar denna räta linje.", "tier": "essential"},
+        {"n": 2, "title": "k-form: lutning och y-skärning", "text": "En rät linje y = kx + m har lutning k (hur brant) och y-skärning m (där linjen korsar y-axeln). Hela linjen är bestämd av dessa två tal.", "tier": "detail"},
+        {"n": 3, "title": "Läs av lutningen", "text": "I y = −x + C är koefficienten framför x talet −1. Lutningen är alltså k = −1. Negativ lutning innebär att linjen GÅR NEDÅT från vänster till höger.", "tier": "essential"},
+        {"n": 4, "title": "Läs av y-skärningen", "text": "Konstanttermen är C, så y-skärningen är m = C. Eftersom C < 0 ligger skärningspunkten med y-axeln NEDANFÖR origo (under x-axeln).", "tier": "essential"},
+        {"n": 5, "title": "Kriterium 1: negativ lutning", "text": "Linjen ska luta nedåt. Det utesluter B och D (båda har positiv lutning, går uppåt från vänster till höger).", "tier": "essential"},
+        {"n": 6, "title": "Kriterium 2: negativ y-skärning", "text": "Linjen ska korsa y-axeln under origo. A har negativ lutning men y-skärningen ligger ovanför origo — utesluts. C har negativ lutning OCH y-skärning under origo.", "tier": "essential"},
+        {"n": 7, "title": "Verifiera med en testpunkt", "text": "Sätt t.ex. C = −2. Då blir y = −x − 2. Vid x = 0 blir y = −2 (under origo, stämmer). Vid x = 1 blir y = −3 (lägre — linjen lutar nedåt, stämmer).", "tier": "detail"},
+        {"n": 8, "title": "Dubbelkolla x-skärning", "text": "Sätt y = 0 i y = −x + C → x = C. Eftersom C < 0 hamnar x-skärningen TILL VÄNSTER om origo. I graf C ligger x-skärningen på negativa x-axeln — stämmer.", "tier": "detail"},
+        {"n": 9, "title": "Utesluta A en gång till", "text": "A har också negativ lutning, men dess y-skärning ligger på positiva y-axeln. Det skulle kräva C > 0, vilket är uteslutet i frågan.", "tier": "detail"},
+        {"n": 10, "title": "Verifiera", "text": "C är den enda graf som uppfyller båda kriterierna: lutning < 0 och y-skärning < 0. Alla andra alternativ bryter mot minst ett av kraven.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är C. Insikten i en mening: vid 'välj rätt graf' till y = kx + m — läs av k:s tecken (lutning) och m:s tecken (y-skärning) ur formeln och matcha mot grafen; varje tecken ger ett kriterium som halverar alternativen.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är frestande att fastna vid den negativa lutningen och kalla det klart — A lutar nedåt precis som C, men man missar att läsa av VAR linjen skär y-axeln.", "why_wrong": "Steg 4 säger att C < 0 tvingar y-skärningen under origo. A skär ovanför origo, så A motsvarar y = −x + C med C > 0 — fel teckenval."},
+        {"letter": "B", "why_tempting": "Snabbsvar är ofta att tolka minustecknet i −x + C som att det neutraliseras av plustecknet framför C, och då gissa på en linje som går uppåt med positiv y-skärning.", "why_wrong": "Steg 5 utesluter B: lutningen ska vara −1 (linjen GÅR NEDÅT). B har positiv lutning och passar inte ens första kriteriet."},
+        {"letter": "D", "why_tempting": "Om du minns regeln som 'C negativ ⇒ linjen ligger under x-axeln' kan D verka attraktiv — den korsar y-axeln under origo precis som C.", "why_wrong": "Steg 5 utesluter D på lutningen: y = −x + C har lutning −1 och linjen ska luta nedåt, men D lutar uppåt. D motsvarar y = x + C med C < 0, inte y = −x + C."}
+      ],
+      "technique": "Vid 'matcha formel till graf' för en rät linje: bryt ner y = kx + m i två oberoende tecken-frågor. k > 0 eller k < 0? m > 0 eller m < 0? Varje tecken halverar alternativen, så efter två avläsningar är endast ett kvar.",
+      "pitfall": "Att stanna vid första kriteriet (lutningen) och inte också verifiera y-skärningen — eller tvärtom. Botemedlet: alltid två separata avläsningar, en för k:s tecken och en för m:s tecken.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Tecken-halveringen",
+        "move": "Bestäm tecknet på lutningen k och tecknet på y-skärningen m direkt ur formeln, kasta ut de två alternativ som bryter mot k-tecknet, kasta sedan ut det av de två återstående som bryter mot m-tecknet."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

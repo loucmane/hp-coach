@@ -1,0 +1,139 @@
+{
+  "host-2015-kvant1-XYZ-009": {
+    "corpus_patch": {
+      "prompt": "f(x) = 2x\ng(x) = x²\nVad är f(3/2) - g(3/2)?",
+      "options": [
+        {"letter": "A", "text": "-3/2"},
+        {"letter": "B", "text": "0"},
+        {"letter": "C", "text": "3/4"},
+        {"letter": "D", "text": "3/2"}
+      ],
+      "answer": "C",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Sätt in 3/2 i båda funktionerna en i taget: f(3/2) = 2·(3/2) = 3, g(3/2) = (3/2)² = 9/4. Differensen 3 - 9/4 = 3/4, alltså svar C.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Två funktioner är definierade: f(x) = 2x och g(x) = x². Du ska beräkna f(3/2) minus g(3/2) — alltså värdet av f vid x = 3/2 minus värdet av g vid samma x.", "tier": "essential"},
+        {"n": 2, "title": "Vad betyder f(a)?", "text": "Notationen f(a) betyder 'sätt in a på varje x i funktionsuttrycket'. Det är inte multiplikation mellan f och a — det är substitution. Samma sak för g(a).", "tier": "detail"},
+        {"n": 3, "title": "Beräkna f(3/2)", "text": "f(x) = 2x, så f(3/2) = 2·(3/2). Multiplikation av ett heltal med ett bråk: 2·(3/2) = (2·3)/2 = 6/2 = 3.", "tier": "essential"},
+        {"n": 4, "title": "Vad betyder kvadrering?", "text": "(3/2)² betyder (3/2)·(3/2). Kvadrera ett bråk = kvadrera täljaren och kvadrera nämnaren separat: (a/b)² = a²/b².", "tier": "detail"},
+        {"n": 5, "title": "Beräkna g(3/2)", "text": "g(x) = x², så g(3/2) = (3/2)² = 3²/2² = 9/4.", "tier": "essential"},
+        {"n": 6, "title": "Sätt upp differensen", "text": "Frågan är f(3/2) - g(3/2) = 3 - 9/4. Du har ett heltal och ett bråk som ska subtraheras.", "tier": "essential"},
+        {"n": 7, "title": "Gemensam nämnare", "text": "För att subtrahera 3 och 9/4 måste de skrivas med samma nämnare. Skriv 3 som ett bråk med nämnare 4: 3 = 12/4.", "tier": "essential"},
+        {"n": 8, "title": "Utför subtraktionen", "text": "12/4 - 9/4 = (12 - 9)/4 = 3/4. När nämnarna är lika subtraherar du bara täljarna.", "tier": "essential"},
+        {"n": 9, "title": "Verifiera", "text": "Kontrollräkna: f(3/2) = 3, g(3/2) = 9/4 = 2,25. 3 - 2,25 = 0,75 = 3/4. Stämmer.", "tier": "essential"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är C: 3/4. Insikten i en mening: funktionsnotation f(a) betyder substitution — räkna ut varje funktionsvärde separat och kombinera sedan.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att vända på subtraktionen och räkna g(3/2) - f(3/2) = 9/4 - 3 = -3/4, men frågan ger -3/2 vilket också är en lockande felräkning där man missar gemensam nämnare.", "why_wrong": "Som steg 6 visar är ordningen f minus g, inte g minus f. Och som steg 7 visar måste du ha gemensam nämnare innan du subtraherar."},
+        {"letter": "B", "why_tempting": "Många stannar vid att 'om f och g är 'nästan lika' så blir differensen 0'. Eller man räknar 2x - x² = x(2-x) och tror att vid x = 3/2 hamnar man på noll.", "why_wrong": "Steg 3 och steg 5 ger konkreta värden: 3 och 9/4. Differensen är inte noll utan exakt 3/4."},
+        {"letter": "D", "why_tempting": "Första instinkten är att stanna vid f(3/2) = 3 och svara med 3/2 utan att subtrahera g-värdet alls — eller att räkna 3 - 9/4 = 3/2 genom att glömma gemensam nämnare och bara subtrahera täljarna fel.", "why_wrong": "Steg 7-8 visar att 3 - 9/4 = 12/4 - 9/4 = 3/4, inte 3/2. Att hoppa över gemensam nämnare är klassisk bråk-subtraktionsfälla."}
+      ],
+      "technique": "Funktionsvärde-substitution: när uppgiften ger f(x) = uttryck och frågar f(a), skriv om uttrycket med a på varje plats där x stod. Behandla f(a) och g(a) som två separata räknetal innan du kombinerar dem.",
+      "pitfall": "Att försöka räkna f(3/2) - g(3/2) som 'f - g vid 3/2' = (2x - x²) vid x = 3/2 är tekniskt korrekt men ger fler tillfällen att tappa tecken eller exponent. Två separata substitutioner är säkrare.",
+      "framework_id": "XYZ-TRAP-007",
+      "pregrade_tactic": {
+        "handle": "Substitutionsdisciplinen",
+        "move": "När uppgiften frågar f(a) - g(a) — räkna varje funktionsvärde först, fullständigt och separat, sedan subtrahera med gemensam nämnare."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2015-kvant1-XYZ-011": {
+    "corpus_patch": {
+      "prompt": "Vilket svarsförslag motsvarar 6/√2 ?",
+      "options": [
+        {"letter": "A", "text": "√3"},
+        {"letter": "B", "text": "√6"},
+        {"letter": "C", "text": "2√3"},
+        {"letter": "D", "text": "3√2"}
+      ],
+      "answer": "D",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Förläng 6/√2 med √2 i både täljare och nämnare för att rationalisera nämnaren: (6·√2)/(√2·√2) = 6√2/2 = 3√2. Svar D.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du har uttrycket 6/√2 och ska skriva det på samma form som något av svarsalternativen, som alla är av formen 'heltal gånger rot' eller 'ren rot'. Det handlar om att rationalisera nämnaren.", "tier": "essential"},
+        {"n": 2, "title": "Vad betyder rationalisera nämnaren?", "text": "Ett bråk anses 'städat' när nämnaren inte innehåller en rot. Att rationalisera = göra om uttrycket så att nämnaren bara har heltal/rationella tal, utan att ändra värdet.", "tier": "detail"},
+        {"n": 3, "title": "Triket: multiplicera med en form av 1", "text": "Vi multiplicerar både täljare och nämnare med √2. Eftersom √2/√2 = 1 ändras inte värdet — men nämnaren blir nu (√2)·(√2) = 2, alltså ett heltal.", "tier": "essential"},
+        {"n": 4, "title": "Vad är (√a)·(√a)?", "text": "Per definition är √a det icke-negativa talet vars kvadrat blir a. Alltså (√a)·(√a) = a. Här ger (√2)·(√2) = 2.", "tier": "detail"},
+        {"n": 5, "title": "Beräkna ny nämnare", "text": "Den nya nämnaren blir (√2)·(√2) = 2.", "tier": "essential"},
+        {"n": 6, "title": "Beräkna ny täljare", "text": "Den nya täljaren blir 6·√2. Du multiplicerar bara in faktorn — roten 'står' bredvid 6 utan att bli något annat.", "tier": "essential"},
+        {"n": 7, "title": "Sätt ihop bråket", "text": "Uttrycket är nu (6·√2)/2.", "tier": "essential"},
+        {"n": 8, "title": "Förkorta 6/2", "text": "Faktor framför roten kan förkortas med nämnaren: 6/2 = 3. Roten √2 påverkas inte.", "tier": "essential"},
+        {"n": 9, "title": "Resultat", "text": "Uttrycket är 3√2.", "tier": "essential"},
+        {"n": 10, "title": "Verifiera numeriskt", "text": "√2 ≈ 1,414. Då är 6/√2 ≈ 6/1,414 ≈ 4,243. Och 3√2 ≈ 3·1,414 ≈ 4,243. Lika.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är D: 3√2. Insikten i en mening: för att städa bort en rot ur nämnaren — multiplicera med samma rot uppe och nere; det är en form av talet 1.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är frestande att räkna 6/√2 som √(6/2) = √3 — alltså att 'dra ner' både täljare och nämnare under en gemensam rot.", "why_wrong": "Steg 10 visar att 6/√2 ≈ 4,24, medan √3 ≈ 1,73. Regeln √a/√b = √(a/b) gäller bara när TÄLJAREN också är en ren rot — här är täljaren 6, inte √6."},
+        {"letter": "B", "why_tempting": "Om du minns regeln som √a · √b = √(ab) kan du försöka tillämpa den 'baklänges' och tro att 6/√2 = √(36/2) = √18, vilket inte är ett alternativ, eller helt enkelt kombinera till √6.", "why_wrong": "Som steg 6-7 visar är 6 ett heltal, inte en kvadratrot. Du kan inte slå ihop 6 med √2 till √6 utan att förlora en faktor — 6 ≠ √6."},
+        {"letter": "C", "why_tempting": "Många stannar vid 'rationalisera nämnaren' men slarvar med förkortningen i steg 8 och får 2√3 istället för 3√2 — siffrorna är lätta att förväxla.", "why_wrong": "Steg 8 visar tydligt: 6 delat med 2 är 3, inte 2; och roten är √2, inte √3. 2√3 ≈ 3,46, vilket inte matchar 4,24 från steg 10."}
+      ],
+      "technique": "Rationalisering: när nämnaren är √n, förläng bråket med √n. Då blir nämnaren n (heltal) och täljaren får roten i sig. Standardstäd för rotbråk.",
+      "pitfall": "Att försöka kombinera 6/√2 till en enda rot (√3, √6) eller att glömma att 6 är ett heltal, inte en rot — det leder till svar A eller B. Håll heltalsfaktorerna separata från rotfaktorerna.",
+      "framework_id": "XYZ-TRAP-032",
+      "pregrade_tactic": {
+        "handle": "Rationaliseringen",
+        "move": "När nämnaren är en enkel rot √n — förläng bråket med √n i både täljare och nämnare; nämnaren blir n och uttrycket städas."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "host-2016-kvant1-XYZ-011": {
+    "corpus_patch": {
+      "prompt": "Vad är (2√2)² ?",
+      "options": [
+        {"letter": "A", "text": "2"},
+        {"letter": "B", "text": "4"},
+        {"letter": "C", "text": "8"},
+        {"letter": "D", "text": "16"}
+      ],
+      "answer": "C",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Använd potens-av-produkt-regeln: (2√2)² = 2²·(√2)² = 4·2 = 8. Svar C.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du ska beräkna (2√2)². Uttrycket inom parentesen är en produkt: faktorn 2 gånger √2. Hela produkten ska kvadreras.", "tier": "essential"},
+        {"n": 2, "title": "Vad betyder kvadrering?", "text": "(uttryck)² betyder uttrycket gånger sig själv: A² = A·A. Här blir det (2√2)·(2√2).", "tier": "detail"},
+        {"n": 3, "title": "Regeln för potens av produkt", "text": "När en produkt ska upphöjas till en exponent gäller (a·b)ⁿ = aⁿ·bⁿ. Båda faktorerna i produkten upphöjs separat — INTE bara den ena.", "tier": "essential"},
+        {"n": 4, "title": "Tillämpa regeln", "text": "(2·√2)² = 2² · (√2)². Faktor 2 kvadreras för sig, och faktor √2 kvadreras för sig.", "tier": "essential"},
+        {"n": 5, "title": "Beräkna 2²", "text": "2² = 2·2 = 4.", "tier": "essential"},
+        {"n": 6, "title": "Vad är (√a)²?", "text": "Per definition är √a det icke-negativa talet vars kvadrat är a. Alltså (√a)² = a. Roten 'upphäver' kvadreringen.", "tier": "detail"},
+        {"n": 7, "title": "Beräkna (√2)²", "text": "(√2)² = 2.", "tier": "essential"},
+        {"n": 8, "title": "Multiplicera ihop", "text": "Resultatet är 4 · 2 = 8.", "tier": "essential"},
+        {"n": 9, "title": "Verifiera numeriskt", "text": "√2 ≈ 1,414. Då är 2√2 ≈ 2,828. Och 2,828² ≈ 7,999 ≈ 8. Stämmer.", "tier": "essential"},
+        {"n": 10, "title": "Sanity check distraktorerna", "text": "Hade vi bara kvadrerat √2-delen hade vi fått 2·2 = 4 (svar B). Hade vi bara kvadrerat 2-delen hade vi fått 4·√2 ≈ 5,66 (inte med). Hade vi missförstått att kvadrera HELA 2√2 som 'multiplicera ihop' utan exponent hade vi fått 16 (svar D).", "tier": "detail"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är C: 8. Insikten i en mening: (a·b)² kräver att BÅDA faktorerna kvadreras — inte bara en av dem.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är frestande att 'plocka ut' bara talet under roten och svara 2 — som om uttrycket var √(2²)·... och man bara såg den enkla roten.", "why_wrong": "Steg 4-8 visar att hela produkten 2·√2 kvadreras, inte bara roten. Resultatet 8 är fyra gånger större än 2."},
+        {"letter": "B", "why_tempting": "Om du minns regeln som '(√a)² = a' och stannar där — då blir (√2)² = 2 men du glömmer att faktorn 2 utanför roten också ska kvadreras.", "why_wrong": "Som steg 3 visar gäller potens-av-produkt: BÅDA faktorerna får exponenten. Glömmer du 2² får du bara halva svaret. Steg 5 ger 2² = 4, som sedan multipliceras med 2 i steg 8."},
+        {"letter": "D", "why_tempting": "Första instinkten är att räkna (2·√2)² genom att kvadrera HELA produkten som en bokstav: (2A)² där A = √2 — och då tro att man får 4A² = 4·2 — men felaktigt få det som 16 om man räknar 2·√2 ≈ 2,8 och tar 2,8² fel som 16.", "why_wrong": "Steg 9 räknar numeriskt: 2,828² ≈ 8, inte 16. 16 vore svaret om uttrycket var (2·2)² = 4² = 16 — men då skulle √2 saknas."}
+      ],
+      "technique": "Potens av produkt: (a·b)ⁿ = aⁿ·bⁿ. När parentesen innehåller faktorer (talet 2 OCH roten √2), så får var och en sin egen exponent. Sedan multipliceras delresultaten.",
+      "pitfall": "Att bara kvadrera ena faktorn — antingen 'roten försvinner och blir 2' eller 'tvåan kvadreras och roten ligger kvar'. Båda fallen ger fel svar. Skriv ut (a·b)² = a²·b² explicit som mental checklista.",
+      "framework_id": "XYZ-TRAP-030",
+      "pregrade_tactic": {
+        "handle": "Potens-av-produkt-regeln",
+        "move": "När parentesen är en produkt och hela parentesen är upphöjd — fördela exponenten över VARJE faktor, inte bara en."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

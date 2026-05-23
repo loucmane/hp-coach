@@ -1,0 +1,212 @@
+{
+  "var-2022-2-kvant1-XYZ-008": {
+    "corpus_patch": {
+      "prompt": "xy^2 = 18 och xy = 3. Vad är x?",
+      "options": [
+        {"letter": "A", "text": "\\frac{1}{2}"},
+        {"letter": "B", "text": "\\frac{3}{2}"},
+        {"letter": "C", "text": "2"},
+        {"letter": "D", "text": "\\sqrt{6}"}
+      ],
+      "answer": "A",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Dela ekvation (1) med ekvation (2) för att eliminera x och få y, substituera sedan tillbaka i xy = 3 för att lösa ut x.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Två ekvationer i två obekanta: xy^2 = 18 och xy = 3. Vi söker bara x — y är hjälpvariabel.", "tier": "essential"},
+        {"n": 2, "title": "Leta efter struktur", "text": "Notera att xy^2 = (xy) \\cdot y. Den vänstra ekvationen är alltså den andra multiplicerad med ett extra y.", "tier": "essential"},
+        {"n": 3, "title": "Dividera ekvation 1 med ekvation 2", "text": "Dela båda leden: \\frac{xy^2}{xy} = \\frac{18}{3}. Detta är giltigt eftersom xy = 3 \\neq 0.", "tier": "essential"},
+        {"n": 4, "title": "Förenkla vänsterledet", "text": "I täljaren har vi x \\cdot y \\cdot y och i nämnaren x \\cdot y — gemensamma faktorer x och en y förkortas och kvar blir y.", "tier": "essential"},
+        {"n": 5, "title": "Läs av y", "text": "Ekvationen reduceras till y = 6.", "tier": "essential"},
+        {"n": 6, "title": "Substituera tillbaka", "text": "Sätt y = 6 i xy = 3: x \\cdot 6 = 3.", "tier": "essential"},
+        {"n": 7, "title": "Lös ut x", "text": "Dela båda led med 6: x = \\frac{3}{6} = \\frac{1}{2}.", "tier": "essential"},
+        {"n": 8, "title": "Tolka svaret", "text": "Värdet x = \\tfrac{1}{2} matchar alternativ A exakt.", "tier": "essential"},
+        {"n": 9, "title": "Verifiera", "text": "Kontroll: xy = \\tfrac{1}{2} \\cdot 6 = 3 och xy^2 = \\tfrac{1}{2} \\cdot 36 = 18. Båda ekvationerna stämmer.", "tier": "essential"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är A, x = \\tfrac{1}{2}. Insikten i en mening: när två ekvationer skiljer sig med en enda extra faktor — dividera och faktorn faller ut ren.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "Hopfösning av siffrorna i systemet — 3/2 ser ut som ett 'rimligt mellanvärde' av 18 och 3.", "why_wrong": "Inget steg ger \\tfrac{3}{2}; en kontroll mot xy = 3 skulle kräva y = 2, men då blir xy^2 = \\tfrac{3}{2} \\cdot 4 = 6 \\neq 18."},
+        {"letter": "C", "why_tempting": "Studenten tar xy^2 / xy = y = 6 men förväxlar sedan x och y och stoppar in x = 6 fel — eller försöker dela 18 med 9 och hamnar på 2.", "why_wrong": "Med x = 2 i xy = 3 fås y = \\tfrac{3}{2}, men då blir xy^2 = 2 \\cdot \\tfrac{9}{4} = \\tfrac{9}{2} \\neq 18."},
+        {"letter": "D", "why_tempting": "Lockande som rotuttryck — student kanske tänker att x^2 = 6 eller drar roten ur 18/3 = 6.", "why_wrong": "Ingen ekvation i systemet leder till x = \\sqrt{6}. Med x = \\sqrt{6} blir y = 3/\\sqrt{6} och xy^2 = \\sqrt{6} \\cdot 9/6 = \\tfrac{3\\sqrt{6}}{2} \\neq 18."}
+      ],
+      "technique": "Dividera ekvationssystem som skiljer sig med en faktor — xy^2/xy = y isolerar den extra variabeln direkt utan att lösa ut något först.",
+      "pitfall": "Frestelsen att försöka lösa systemet med substitution från xy = 3 (x = 3/y in i ekvation 1) fungerar också men ger (3/y) \\cdot y^2 = 18 \\Rightarrow 3y = 18 — samma svar men ett extra steg.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "Faktor-divisionen", "move": "När två ekvationer skiljer sig med en enda extra variabel — dividera dem direkt så faller faktorn ut."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2022-2-kvant1-XYZ-012": {
+    "corpus_patch": {
+      "prompt": "Det tar 11 sekunder för Oscar att springa y meter. Hur många sekunder tar det för honom att springa x meter med samma medelhastighet?",
+      "options": [
+        {"letter": "A", "text": "\\frac{x}{11y}"},
+        {"letter": "B", "text": "\\frac{y}{11x}"},
+        {"letter": "C", "text": "\\frac{11x}{y}"},
+        {"letter": "D", "text": "\\frac{11y}{x}"}
+      ],
+      "answer": "C",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Beräkna Oscars hastighet i meter per sekund från given relation, lös sedan ut tiden för x meter via t = sträcka / hastighet.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Vi vet att Oscar springer y meter på 11 sekunder. Frågan är: hur lång tid tar x meter vid samma hastighet?", "tier": "essential"},
+        {"n": 2, "title": "Identifiera relationen", "text": "Konstant medelhastighet betyder att förhållandet sträcka/tid är konstant. Detta är en ren proportionalitet mellan sträcka och tid.", "tier": "essential"},
+        {"n": 3, "title": "Räkna ut hastigheten", "text": "Hastighet v = \\frac{\\text{sträcka}}{\\text{tid}} = \\frac{y}{11} meter per sekund.", "tier": "essential"},
+        {"n": 4, "title": "Sätt upp ekvationen för x meter", "text": "Tiden t som krävs ges av t = \\frac{\\text{sträcka}}{v} = \\frac{x}{v}.", "tier": "essential"},
+        {"n": 5, "title": "Substituera in v", "text": "t = \\frac{x}{\\,y/11\\,} = x \\cdot \\frac{11}{y}.", "tier": "essential"},
+        {"n": 6, "title": "Förenkla", "text": "t = \\frac{11x}{y} sekunder.", "tier": "essential"},
+        {"n": 7, "title": "Dimensionskontroll", "text": "Täljaren har enhet sekunder \\cdot meter och nämnaren meter — meter kortas och kvar blir sekunder. Enheten stämmer.", "tier": "essential"},
+        {"n": 8, "title": "Sanitetskontroll med konkreta tal", "text": "Sätt y = 11 (då springer han 11 m på 11 s, dvs 1 m/s). För x = 22 m bör det ta 22 s. Formeln: 11 \\cdot 22 / 11 = 22 ✓.", "tier": "essential"},
+        {"n": 9, "title": "Verifiera mot alternativen", "text": "Endast alternativ C ger \\frac{11x}{y}.", "tier": "essential"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är C, t = \\frac{11x}{y} sekunder. Insikten i en mening: vid konstant hastighet skalar tiden linjärt med sträckan — ta tidsenheten per längdenhet och multiplicera.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Ser ut som 'sträcka delat med tid·distans' — studenten kombinerar siffrorna utan att tänka på vad som är hastighet.", "why_wrong": "Med x = y blir tiden \\tfrac{1}{11}, men då borde tiden vara just 11 s eftersom Oscar springer samma sträcka. Formeln misslyckas med sanitetstestet."},
+        {"letter": "B", "why_tempting": "Studenten vänder uppochner på proportionen — tar 11/y istället för y/11 som hastighet.", "why_wrong": "Med y = 11, x = 22 ger formeln \\tfrac{11}{11 \\cdot 22} = \\tfrac{1}{22} sekunder, en bråkdel av en sekund för 22 meter. Orimligt."},
+        {"letter": "D", "why_tempting": "Korsmultiplikation gjord åt fel håll — studenten skriver proportionen y/11 = x/t och löser ut t felaktigt.", "why_wrong": "Med y = 11, x = 22 ger formeln \\tfrac{11 \\cdot 11}{22} = 5{,}5 sekunder — Oscar skulle alltså springa dubbel sträcka på halva tiden, vilket motsäger 'samma medelhastighet'."}
+      ],
+      "technique": "Proportionalitet med konstant hastighet: räkna ut v = sträcka/tid en gång, applicera sedan t = sträcka/v för den nya sträckan. Två steg, ingen korsmultiplikation behövs.",
+      "pitfall": "Att hoppa direkt på korsmultiplikation utan att först fundera över vilken kvot som är konstant. Här är hastigheten y/11 konstant, inte y eller 11 ensamma.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "Enhetsraten", "move": "Räkna ut storheten per enhet (m/s) först, multiplicera sedan med antalet enheter du vill ha."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2022-2-kvant2-XYZ-004": {
+    "corpus_patch": {
+      "prompt": "f(x) = \\frac{x}{2} - 1. Vilket svarsalternativ visar grafen till f?",
+      "options": [
+        {"letter": "A", "text": "graf: rät linje med negativ lutning, y-skärning kring +1"},
+        {"letter": "B", "text": "graf: rät linje med negativ lutning, y-skärning kring +1, korsar x-axeln strax efter 1"},
+        {"letter": "C", "text": "graf: rät linje med positiv (svag) lutning, y-skärning vid -1, korsar x-axeln vid x = 2"},
+        {"letter": "D", "text": "graf: rät linje med positiv (brant) lutning, y-skärning vid -1"}
+      ],
+      "answer": "C",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Identifiera lutning och y-skärningspunkt från räta linjens form y = kx + m, beräkna sedan nollstället för att kunna välja rätt graf bland fyra linjer.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "f(x) = \\frac{x}{2} - 1 är en rät linje. Vi ska välja den graf av A-D som matchar denna ekvation.", "tier": "essential"},
+        {"n": 2, "title": "Skriv på k-form", "text": "Omskrivning: f(x) = \\tfrac{1}{2}x + (-1). Här är k = \\tfrac{1}{2} och m = -1.", "tier": "essential"},
+        {"n": 3, "title": "Lutningens tecken", "text": "Eftersom k = \\tfrac{1}{2} > 0 lutar grafen uppåt åt höger. Graferna A och B har negativ lutning — de elimineras.", "tier": "essential"},
+        {"n": 4, "title": "Lutningens storlek", "text": "k = \\tfrac{1}{2} är ett mildt positivt värde — för varje steg åt höger går linjen ett halvt steg upp. C visar en sådan svag lutning; D är märkbart brantare (k > 1).", "tier": "essential"},
+        {"n": 5, "title": "y-skärningspunkt", "text": "m = -1 betyder att linjen skär y-axeln vid (0, -1) — under x-axeln.", "tier": "essential"},
+        {"n": 6, "title": "Räkna ut nollstället", "text": "Sätt f(x) = 0: \\tfrac{x}{2} - 1 = 0 \\Rightarrow x = 2. Linjen ska korsa x-axeln vid (2, 0).", "tier": "essential"},
+        {"n": 7, "title": "Identifiera graf C", "text": "I C går linjen genom (0, -1) på y-axeln, har svag positiv lutning och korsar x-axeln i närheten av x = 2 — exakt matchning.", "tier": "essential"},
+        {"n": 8, "title": "Eliminera D mer formellt", "text": "I D skär linjen y-axeln nära -1 men är klart brantare; en lutning på \\tfrac{1}{2} ger inte den vinkeln, snarare k ≈ 2 eller mer.", "tier": "essential"},
+        {"n": 9, "title": "Verifiera med en extra punkt", "text": "f(4) = \\tfrac{4}{2} - 1 = 1. Punkten (4, 1) ligger på C:s linje (om vi förlänger den), inte på D:s.", "tier": "essential"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är C. Insikten i en mening: läs av k för riktning OCH brantnad, m för y-skärning, och nollstället för x-skärning — tre kontrollpunkter räcker för att unikt välja graf.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Studenten ser bråket \\tfrac{x}{2} men misstolkar minustecknet och tror lutningen är negativ.", "why_wrong": "Lutningen k = \\tfrac{1}{2} är positiv — minustecknet sitter på konstanten, inte på koefficienten framför x."},
+        {"letter": "B", "why_tempting": "Liknar A men y-skärningen ser ut att vara nära +1, vilket en student kanske tolkar som 'm = 1' om de läser ekvationen som x/2 + 1 i farten.", "why_wrong": "Både lutningens tecken och m-värdet är fel: linjen ska gå uppåt och skära y-axeln vid -1, inte nedåt och skära vid +1."},
+        {"letter": "D", "why_tempting": "Studenten ser positivt k och m = -1 men misstolkar lutningens STORLEK — räknar k = 2 istället för k = \\tfrac{1}{2} eftersom 2:an i nämnaren tolkas som koefficient.", "why_wrong": "Att förväxla \\tfrac{x}{2} med 2x dubblar lutningen åt fel håll. D motsvarar f(x) = 2x - 1, inte den givna funktionen."}
+      ],
+      "technique": "Tre kontrollpunkter för räta linjer: (1) tecknet på k (uppåt/nedåt), (2) storleken på k (brant/mild), (3) skärningspunkter med båda axlarna. Två linjer kan ha samma m men olika k — testa båda.",
+      "pitfall": "Att läsa \\tfrac{x}{2} som '2x'-mässigt brant istället för '½x'-mässigt milt — det är just denna förväxling D fångar.",
+      "framework_id": null,
+      "pregrade_tactic": {"handle": "Tre-punkts-läsningen", "move": "För räta linjer i grafval: kolla k:s tecken, k:s storlek och m — tre snabba avläsningar räcker."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2023-kvant1-XYZ-007": {
+    "corpus_patch": {
+      "prompt": "Ett lekland har ett bollhav med 21 000 enfärgade bollar i två olika färger: gul och röd. På tre gula bollar går det sju röda bollar. Hur många gula bollar finns det i bollhavet?",
+      "options": [
+        {"letter": "A", "text": "6 300"},
+        {"letter": "B", "text": "7 000"},
+        {"letter": "C", "text": "7 300"},
+        {"letter": "D", "text": "9 000"}
+      ],
+      "answer": "A",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Tolka förhållandet 3:7 som tio lika delar av totalen, beräkna sedan tre tiondelar av 21 000 för att få antalet gula bollar.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Totalt 21 000 bollar i två färger. Förhållandet gula:röda = 3:7. Vi söker antalet gula.", "tier": "essential"},
+        {"n": 2, "title": "Tolka förhållandet", "text": "Förhållandet 3:7 betyder att om vi delar bollarna i lika stora delar går 3 sådana delar på gula och 7 på röda — totalt 10 delar.", "tier": "essential"},
+        {"n": 3, "title": "Sätt upp ekvationen", "text": "Låt en 'del' = d bollar. Då gäller 3d + 7d = 21\\,000, dvs 10d = 21\\,000.", "tier": "essential"},
+        {"n": 4, "title": "Lös ut d", "text": "Dela båda led med 10: d = 2\\,100. Varje 'del' i förhållandet motsvarar 2 100 bollar.", "tier": "essential"},
+        {"n": 5, "title": "Räkna ut antalet gula", "text": "Gula bollar = 3d = 3 \\cdot 2\\,100 = 6\\,300.", "tier": "essential"},
+        {"n": 6, "title": "Alternativ beräkningsväg", "text": "Direkt som andel: gula utgör \\tfrac{3}{10} av totalen, dvs \\tfrac{3}{10} \\cdot 21\\,000 = 6\\,300. Samma svar.", "tier": "essential"},
+        {"n": 7, "title": "Tolka svaret", "text": "Värdet 6 300 matchar alternativ A.", "tier": "essential"},
+        {"n": 8, "title": "Sanitetskontroll", "text": "Eftersom gula är minoriteten (3 av 10) ska antalet vara mindre än hälften av 21 000 = 10 500. 6 300 < 10 500 ✓.", "tier": "essential"},
+        {"n": 9, "title": "Verifiera", "text": "Röda = 7 \\cdot 2\\,100 = 14\\,700. Summa: 6\\,300 + 14\\,700 = 21\\,000 ✓. Förhållande: 6\\,300 : 14\\,700 = 3 : 7 ✓.", "tier": "essential"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är A, 6 300 gula bollar. Insikten i en mening: ett förhållande a:b över en fast summa är inte 'a stycken och b stycken' — det är a/(a+b) och b/(a+b) av totalen.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "Studenten delar 21 000 med 3 (antalet gula i förhållandet) och får 7 000 — tolkar förhållandet som 'en gul per 7 000 bollar'.", "why_wrong": "Att dela med 3 ger storleken på en SJUNDEDEL av rödbollarna inte gula. 7 000 motsvarar förhållandet 1:2 istället för 3:7."},
+        {"letter": "C", "why_tempting": "Studenten räknar 21 000 / 3 + ungefärligt 'lite mer' eller tar mittenvärdet av 7 000 och 7 600 — siffror som låter rimliga utan att räkna.", "why_wrong": "7 300 motsvarar inte något renaste delningsförhållande av 21 000. Förhållandet 3:7 ger inte detta värde i något steg."},
+        {"letter": "D", "why_tempting": "Studenten delar 21 000 i tre lika delar och tar en del — tolkar 'tre gula bollar' som 'en tredjedel'.", "why_wrong": "Att ta en tredjedel ignorerar 7-an i förhållandet helt. En tredjedel skulle gälla vid förhållandet 1:2, inte 3:7."}
+      ],
+      "technique": "Förhållande-över-fast-summa: addera alla delar i förhållandet till en totalsumma av delar, dela den faktiska totalen med det, och multiplicera med den del du söker.",
+      "pitfall": "Att läsa '3:7' som '3 av 7' istället för '3 av 10'. Förhållandet anger relationen mellan grupperna, inte mellan en grupp och totalen.",
+      "framework_id": "XYZ-TRAP-036",
+      "pregrade_tactic": {"handle": "Tiondelsregeln", "move": "Vid förhållande a:b — addera till a+b först, dela totalen med summan, multiplicera med den önskade delen."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2023-kvant2-XYZ-007": {
+    "corpus_patch": {
+      "prompt": "Vilket svarsalternativ ligger närmast värdet av x? (Figur: rätvinklig triangel med kateterna 7 cm och 11 cm; hypotenusan är märkt x.)",
+      "options": [
+        {"letter": "A", "text": "13"},
+        {"letter": "B", "text": "14"},
+        {"letter": "C", "text": "17"},
+        {"letter": "D", "text": "18"}
+      ],
+      "answer": "A",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Identifiera triangeln som rätvinklig med 7 och 11 som kateter och x som hypotenusa, tillämpa Pythagoras sats och jämför roten ur summan med svarsalternativen.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Figuren visar en rätvinklig triangel. Två sidor är 7 cm (vertikal kateter) och 11 cm (horisontell kateter). Den tredje sidan x är hypotenusan.", "tier": "essential"},
+        {"n": 2, "title": "Identifiera rät vinkel", "text": "Rätvinkligheten är markerad i hörnet där 7-sidan möter 11-sidan. Det betyder att den motstående sidan (x) är hypotenusan.", "tier": "essential"},
+        {"n": 3, "title": "Tillämpa Pythagoras", "text": "Pythagoras sats: hypotenusan i kvadrat = summan av kateternas kvadrater. Alltså x^2 = 7^2 + 11^2.", "tier": "essential"},
+        {"n": 4, "title": "Kvadrera kateterna", "text": "7^2 = 49 och 11^2 = 121.", "tier": "essential"},
+        {"n": 5, "title": "Summera", "text": "x^2 = 49 + 121 = 170.", "tier": "essential"},
+        {"n": 6, "title": "Uppskatta roten", "text": "Sök det heltal vars kvadrat ligger närmast 170. 13^2 = 169 — bara 1 från 170. 14^2 = 196 — 26 ifrån.", "tier": "essential"},
+        {"n": 7, "title": "Räkna ut x mer exakt", "text": "x = \\sqrt{170} \\approx 13{,}04, eftersom 13{,}04^2 \\approx 170{,}04.", "tier": "essential"},
+        {"n": 8, "title": "Välj närmaste alternativ", "text": "Bland 13, 14, 17, 18 ligger 13 absolut närmast 13,04 (skillnad 0,04). Nästa kandidat 14 är 0,96 från x.", "tier": "essential"},
+        {"n": 9, "title": "Verifiera", "text": "Kontroll: 13^2 + skillnaden 1 = 170 = x^2, så x = \\sqrt{170} \\approx 13,04 ✓. Svaret A är konsistent.", "tier": "essential"},
+        {"n": 10, "title": "Slutsats", "text": "Svaret är A, x \\approx 13 cm. Insikten i en mening: när hypotenusans kvadrat ligger precis över en perfekt kvadrat — det perfekta heltalet ligger närmast.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "Studenten räknar 7 + 11 = 18 eller använder en grovuppskattning typ '7^2 + 11^2 \\approx 200' och tar \\sqrt{200} \\approx 14.", "why_wrong": "Närmaste heltal till \\sqrt{170} är 13 inte 14. \\sqrt{196} = 14, men 196 är 26 enheter över 170."},
+        {"letter": "C", "why_tempting": "Skillnaden 11 - 7 = 4 plus 13 ger 17, eller felräkning av kvadraterna 7^2 = 14 och 11^2 = 22 ger summa 36, men inte exakt 17 heller.", "why_wrong": "Inget steg i Pythagoras ger 17. \\sqrt{170} ligger någonstans mellan 13 och 14, långt ifrån 17 (vars kvadrat är 289)."},
+        {"letter": "D", "why_tempting": "Att rakt addera kateterna: 7 + 11 = 18 — studenten glömmer att det är kvadrerna som adderas, inte sidorna.", "why_wrong": "Pythagoras säger att hypotenusan ALLTID är kortare än summan av kateterna (triangelolikheten). Att summera direkt överskattar systematiskt — 18 > 13,04 med stor marginal."}
+      ],
+      "technique": "Pythagoras för hypotenusan: kvadrera båda kateterna, addera, dra roten. För 'närmast'-frågor — leta efter perfekt kvadrat strax under summan, det heltalet är vanligtvis svaret.",
+      "pitfall": "Att addera kateterna direkt (7 + 11 = 18) istället för kvadraterna är den vanligaste Pythagoras-missen — den ger alltid ett för stort värde.",
+      "framework_id": "XYZ-TRAP-040",
+      "pregrade_tactic": {"handle": "Pythagoras-kvadraterna", "move": "Kateter i kvadrat först, summera, dra roten — aldrig kateter rakt adderade."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

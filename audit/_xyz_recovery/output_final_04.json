@@ -1,0 +1,236 @@
+{
+  "var-2016-kvant2-XYZ-005": {
+    "corpus_patch": {
+      "prompt": "Hur stor andel av arean av fyrhörningen ABCD är skuggad? Figuren visar fyrhörningen ABCD där diagonalen AC delar den i två rätvinkliga trianglar (måtten i cm): den övre triangeln ACD är skuggad och har rät vinkel vid D med AD = 2 och DC = \\sqrt{21}; den undre triangeln ABC har rät vinkel vid B med AB = 4 och BC = 3.",
+      "options": [
+        {"letter": "A", "text": "\\dfrac{5}{11}"},
+        {"letter": "B", "text": "\\dfrac{1}{2}"},
+        {"letter": "C", "text": "\\dfrac{\\sqrt{21}}{6+\\sqrt{21}}"},
+        {"letter": "D", "text": "\\dfrac{6}{6+\\sqrt{21}}"}
+      ],
+      "answer": "C",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Diagonalen AC delar fyrhörningen i två rätvinkliga trianglar; räkna ut varje triangels area med formeln \\tfrac{1}{2}\\cdot\\text{katet}\\cdot\\text{katet} och dela skuggade arean med totala arean.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du har en fyrhörning ABCD med en diagonal AC som delar den i två trianglar. Den övre triangeln ACD är skuggad; den undre triangeln ABC är vit. Frågan vill ha kvoten skuggad area genom total area.", "tier": "essential"},
+        {"n": 2, "title": "Läs av figuren", "text": "Vid D står en rät vinkel: sidorna AD = 2 och DC = \\sqrt{21} möts vinkelrätt. Vid B står också en rät vinkel: sidorna AB = 4 och BC = 3 möts vinkelrätt.", "tier": "essential"},
+        {"n": 3, "title": "Areaformeln för en rätvinklig triangel", "text": "En rätvinklig triangel har två sidor (kateterna) som möts i 90°. Arean är A = \\tfrac{1}{2}\\cdot\\text{katet}_1\\cdot\\text{katet}_2 — halva produkten av kateterna. Du behöver inte hypotenusan.", "tier": "detail"},
+        {"n": 4, "title": "Skuggade triangeln ACD", "text": "Kateterna i den skuggade triangeln är AD = 2 och DC = \\sqrt{21}. Arean blir A_{ACD} = \\tfrac{1}{2}\\cdot 2\\cdot \\sqrt{21} = \\sqrt{21} cm².", "tier": "essential"},
+        {"n": 5, "title": "Vita triangeln ABC", "text": "Kateterna i den vita triangeln är AB = 4 och BC = 3. Arean blir A_{ABC} = \\tfrac{1}{2}\\cdot 4\\cdot 3 = 6 cm².", "tier": "essential"},
+        {"n": 6, "title": "Total area av fyrhörningen", "text": "Eftersom diagonalen AC delar fyrhörningen i exakt dessa två trianglar är totala arean summan av deras areor: A_{ABCD} = 6 + \\sqrt{21} cm².", "tier": "essential"},
+        {"n": 7, "title": "Ställ upp kvoten", "text": "Andelen som är skuggad är skuggad area dividerat med total area: \\dfrac{A_{ACD}}{A_{ABCD}} = \\dfrac{\\sqrt{21}}{6+\\sqrt{21}}.", "tier": "essential"},
+        {"n": 8, "title": "Kan uttrycket förenklas?", "text": "Du kan inte stryka \\sqrt{21} mot \\sqrt{21} i nämnaren — den ligger i en addition, inte i en faktor. Bråk förkortas bara med gemensamma faktorer, inte med gemensamma termer.", "tier": "detail"},
+        {"n": 9, "title": "Storlekskontroll", "text": "Skattar du \\sqrt{21}\\approx 4{,}58 blir kvoten ungefär \\tfrac{4{,}58}{10{,}58}\\approx 0{,}43 — strax under halva fyrhörningen, vilket stämmer visuellt: skuggade triangeln är något mindre än den vita.", "tier": "detail"},
+        {"n": 10, "title": "Verifiera mot alternativen", "text": "Endast alternativ C har formen \\sqrt{21} i täljaren och (6+\\sqrt{21}) i nämnaren. Alternativ D är spegelvänt (vita triangelns andel), B antar att trianglarna är lika stora, och A blandar siffrorna 5 och 11 utan grund.", "tier": "detail"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är C: \\dfrac{\\sqrt{21}}{6+\\sqrt{21}}. Insikten i en mening: en diagonal i en fyrhörning delar den alltid i två trianglar, så total area = summan, och andel = del-area / summa.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att fastna på siffrorna i figuren (2, 3, 4, 5, 6, 11) och konstruera ett bråk av två som ser symboliskt prydligt ut.", "why_wrong": "Som steg 4-6 visar är de relevanta storheterna \\sqrt{21} och 6, inte 5 och 11. \\tfrac{5}{11} har ingen koppling till någon area i figuren."},
+        {"letter": "B", "why_tempting": "Första instinkten är att en diagonal halverar fyrhörningen, vilket skulle ge \\tfrac{1}{2}.", "why_wrong": "Steg 4 och 5 visar att de två trianglarna har olika area (\\sqrt{21}\\approx 4{,}58 mot 6). Diagonalen halverar bara när trianglarna har samma area, vilket inte gäller här."},
+        {"letter": "D", "why_tempting": "Många stannar vid att se uttrycket  6+\\sqrt{21} i nämnaren och plockar den ”snyggare” täljaren 6.", "why_wrong": "Steg 4 visar att den skuggade triangelns area är \\sqrt{21}, inte 6. Alternativ D är arean av den vita (ej skuggade) delen genom totalen — frågan vill ha det skuggade."}
+      ],
+      "technique": "När en sammansatt figur kommer med en diagonal eller skiljelinje, bryt direkt ner i grundformer och summera. Två rätvinkliga trianglar med utritade kateter är gratis-areor via \\tfrac{1}{2}ab — räkna varje del separat, summera till totalen, dela för andel.",
+      "pitfall": "Frestelsen att förkorta \\sqrt{21} i täljare mot \\sqrt{21} i nämnaren när nämnaren är en summa. Botemedlet: stryk endast faktorer, aldrig termer i ett additionsled.",
+      "framework_id": "XYZ-TRAP-041",
+      "pregrade_tactic": {
+        "handle": "Diagonal-uppdelningen",
+        "move": "När en fyrhörning har en utritad diagonal, beräkna varje triangel för sig med \\tfrac{1}{2}\\cdot\\text{katet}\\cdot\\text{katet} och låt totalen vara summan."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2016-kvant2-XYZ-008": {
+    "corpus_patch": {
+      "prompt": "Vad är 1 - \\dfrac{1}{2} - \\dfrac{1}{4} - \\dfrac{1}{8} - \\dfrac{1}{16}?",
+      "options": [
+        {"letter": "A", "text": "\\dfrac{1}{32}"},
+        {"letter": "B", "text": "\\dfrac{1}{30}"},
+        {"letter": "C", "text": "\\dfrac{1}{16}"},
+        {"letter": "D", "text": "\\dfrac{1}{8}"}
+      ],
+      "answer": "C",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Skriv om alla termer med gemensamma nämnaren 16 och subtrahera täljarna i ordning — uttrycket teleskoperar nedåt till en enda sextondel.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du ska räkna ut värdet av 1 minus fyra bråk, vars nämnare är potenser av 2 (2, 4, 8, 16). Alla termer subtraheras från 1.", "tier": "essential"},
+        {"n": 2, "title": "Hitta gemensam nämnare", "text": "Bråkaddition och bråksubtraktion kräver gemensam nämnare. Nämnarna 1, 2, 4, 8, 16 är alla delare av 16, så minsta gemensamma nämnaren är 16.", "tier": "essential"},
+        {"n": 3, "title": "Varför 16 räcker", "text": "Att hitta gemensam nämnare betyder att skriva varje bråk så att botten blir samma tal — då kan du jämföra och addera täljarna direkt. Eftersom 16 = 16\\cdot 1 = 8\\cdot 2 = 4\\cdot 4 = 2\\cdot 8, är 16 delbar med alla nämnare som dyker upp.", "tier": "detail"},
+        {"n": 4, "title": "Skriv om 1 som sextondelar", "text": "Varje heltal kan skrivas som en bråk genom att sätta det över 1. Här: 1 = \\dfrac{16}{16} eftersom 16 sextondelar är en hel.", "tier": "essential"},
+        {"n": 5, "title": "Skriv om \\dfrac{1}{2}", "text": "Förlänga med samma faktor uppe och nere ändrar inte värdet. Multiplicera täljare och nämnare med 8: \\dfrac{1}{2} = \\dfrac{1\\cdot 8}{2\\cdot 8} = \\dfrac{8}{16}.", "tier": "essential"},
+        {"n": 6, "title": "Skriv om \\dfrac{1}{4}", "text": "Förlänga med 4: \\dfrac{1}{4} = \\dfrac{1\\cdot 4}{4\\cdot 4} = \\dfrac{4}{16}.", "tier": "essential"},
+        {"n": 7, "title": "Skriv om \\dfrac{1}{8}", "text": "Förlänga med 2: \\dfrac{1}{8} = \\dfrac{1\\cdot 2}{8\\cdot 2} = \\dfrac{2}{16}.", "tier": "essential"},
+        {"n": 8, "title": "\\dfrac{1}{16} står redan rätt", "text": "Den sista termen \\dfrac{1}{16} har redan nämnaren 16 — ingen förlängning behövs.", "tier": "detail"},
+        {"n": 9, "title": "Subtrahera täljarna", "text": "När alla termer har samma nämnare kan du arbeta med täljarna: \\dfrac{16}{16} - \\dfrac{8}{16} - \\dfrac{4}{16} - \\dfrac{2}{16} - \\dfrac{1}{16} = \\dfrac{16 - 8 - 4 - 2 - 1}{16}.", "tier": "essential"},
+        {"n": 10, "title": "Räkna i täljaren", "text": "16 - 8 = 8; 8 - 4 = 4; 4 - 2 = 2; 2 - 1 = 1. Täljaren blir 1.", "tier": "essential"},
+        {"n": 11, "title": "Slutligt bråk", "text": "Resultatet är \\dfrac{1}{16}.", "tier": "essential"},
+        {"n": 12, "title": "Verifiera med decimaler", "text": "Snabbkoll: 1 - 0{,}5 = 0{,}5; - 0{,}25 = 0{,}25; - 0{,}125 = 0{,}125; - 0{,}0625 = 0{,}0625 = \\dfrac{1}{16}. Stämmer.", "tier": "detail"},
+        {"n": 13, "title": "Slutsats", "text": "Svaret är C: \\dfrac{1}{16}. Insikten i en mening: när nämnarna är potenser av 2 (eller någon annan kedja av delare), välj den största som gemensam nämnare och subtrahera täljarna i ordning.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att bara multiplicera nämnarna i tron att det blir gemensam nämnare: 2\\cdot 4\\cdot 8 = 64 eller 2\\cdot 16 = 32, vilket lockar fram \\dfrac{1}{32}.", "why_wrong": "Som steg 2-3 visar är minsta gemensamma nämnaren 16, inte 32. \\dfrac{1}{32} är hälften så stort som rätt svar."},
+        {"letter": "B", "why_tempting": "Om du minns regeln som ”addera nämnarna” blir 2+4+8+16 = 30 och du landar i \\dfrac{1}{30}.", "why_wrong": "Steg 2 visar att bråk får gemensam nämnare genom att förlänga, inte genom att addera nämnarna. \\dfrac{1}{30} har ingen meningsfull härledning från frågan."},
+        {"letter": "D", "why_tempting": "Många stannar vid den näst sista termen och räknar 1 - \\tfrac{1}{2} - \\tfrac{1}{4} - \\tfrac{1}{8} = \\tfrac{1}{8} och glömmer den sista termen \\tfrac{1}{16}.", "why_wrong": "Steg 9-10 räknar med alla fyra subtraktioner. När du även subtraherar \\dfrac{1}{16} = \\dfrac{2}{32} ... nej, kortare: 8/16 - 4/16 - 2/16 - 1/16 ger 1/16, inte 2/16 = 1/8."}
+      ],
+      "technique": "När alla nämnare är potenser av samma bas, förlänga till den största nämnaren och räkna täljarna heltalsmässigt. Mönstret 1 - \\tfrac{1}{2} - \\tfrac{1}{4} - \\tfrac{1}{8} - \\ldots ger alltid bara den sist nämnda termens täljare över den största nämnaren, eftersom 1 - \\tfrac{1}{2}=\\tfrac{1}{2}, och varje följande subtraktion halverar.",
+      "pitfall": "Att addera nämnarna istället för att förlänga till en gemensam nämnare. Botemedlet: gemensam nämnare = en nämnare som är delbar med alla, inte summan av dem.",
+      "framework_id": "XYZ-TRAP-016",
+      "pregrade_tactic": {
+        "handle": "Sextondelsräkningen",
+        "move": "När bråken har nämnare 2, 4, 8, 16, skriv om allt med 16 i botten och räkna bara med täljarna."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2016-kvant2-XYZ-009": {
+    "corpus_patch": {
+      "prompt": "En blå knapp och två gröna knappar läggs slumpmässigt ut på en rad. Vad är sannolikheten att den första och den sista knappen är grön?",
+      "options": [
+        {"letter": "A", "text": "\\dfrac{1}{6}"},
+        {"letter": "B", "text": "\\dfrac{2}{6}"},
+        {"letter": "C", "text": "\\dfrac{3}{6}"},
+        {"letter": "D", "text": "\\dfrac{4}{6}"}
+      ],
+      "answer": "B",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Att första och sista är grön är ekvivalent med att blåa knappen hamnar i mitten — räkna gynnsamma utfall över totala utfall, eller direkt P(blå på plats 2) = 1/3.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du har tre knappar — en blå (B) och två gröna (G, G) — som placeras slumpmässigt i tre positioner: plats 1, plats 2, plats 3. Du vill veta sannolikheten att position 1 är grön OCH position 3 är grön.", "tier": "essential"},
+        {"n": 2, "title": "Översätt händelsen", "text": "Det finns bara en blå knapp. Om både första och sista platsen är grön, så måste den blå knappen ligga på plats 2 (mitten). Händelsen ”första och sista är grön” är alltså samma som händelsen ”blå knappen ligger i mitten”.", "tier": "essential"},
+        {"n": 3, "title": "Definition av sannolikhet", "text": "Sannolikheten för en händelse är antal gynnsamma utfall delat med totalt antal utfall, P = \\dfrac{\\text{gynnsamma}}{\\text{totala}}, så länge varje utfall är lika sannolikt.", "tier": "detail"},
+        {"n": 4, "title": "Lista alla utfall", "text": "Beteckna de två gröna som G_1 och G_2 (för att hålla isär dem). Permutationerna av (B, G_1, G_2) i tre positioner är 3! = 6 stycken: BG_1G_2, BG_2G_1, G_1BG_2, G_2BG_1, G_1G_2B, G_2G_1B.", "tier": "essential"},
+        {"n": 5, "title": "Vad är ett ”utfall” här?", "text": "Att räkna permutationer betyder att räkna alla möjliga ordningar — totalt 3 fakultet = 3\\cdot 2\\cdot 1 = 6. Varje ordning är lika sannolik eftersom placeringen är slumpmässig.", "tier": "detail"},
+        {"n": 6, "title": "Markera gynnsamma utfall", "text": "Gå igenom listan och behåll de där position 1 OCH position 3 är gröna (alltså B i mitten): G_1BG_2 och G_2BG_1. Det är 2 av 6 utfall.", "tier": "essential"},
+        {"n": 7, "title": "Räkna ut sannolikheten", "text": "P(första och sista grön) = \\dfrac{2}{6}. Du kan förkorta till \\tfrac{1}{3}, men alternativen behåller formen \\tfrac{n}{6}.", "tier": "essential"},
+        {"n": 8, "title": "Alternativ härledning", "text": "Du kan också tänka: sannolikheten att blåa hamnar på plats 2 är \\tfrac{1}{3} (en av tre lika sannolika positioner). \\tfrac{1}{3} = \\tfrac{2}{6} — samma svar.", "tier": "detail"},
+        {"n": 9, "title": "Sanity-check med komplementet", "text": "Övriga utfall: blå på plats 1 (P=\\tfrac{1}{3}) eller på plats 3 (P=\\tfrac{1}{3}). Total: \\tfrac{1}{3}+\\tfrac{1}{3}+\\tfrac{1}{3} = 1. Stämmer.", "tier": "detail"},
+        {"n": 10, "title": "Verifiera mot alternativen", "text": "B är \\tfrac{2}{6} — matchar steg 7.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är B: \\dfrac{2}{6}. Insikten i en mening: när en händelse är ekvivalent med en enklare position-händelse, byt fråga och räkna sannolikheten där positionen avgör allt."
+        , "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Snabbsvar är ofta att tänka ”\\tfrac{2}{3}\\cdot\\tfrac{1}{2} = \\tfrac{1}{3}” men sedan slarvförenkla eller börja från fel basbråk och landa i \\tfrac{1}{6}.", "why_wrong": "Som steg 6 visar finns 2 gynnsamma utfall av 6. \\tfrac{1}{6} skulle motsvara att bara EN specifik permutation är gynnsam — men det finns två (G_1BG_2 och G_2BG_1)."},
+        {"letter": "C", "why_tempting": "Det är frestande att tänka ”50/50 — antingen är blå i mitten eller inte” och svara \\tfrac{3}{6}.", "why_wrong": "Steg 5 och 8 visar att blåa har tre möjliga positioner, inte två. Sannolikheten för en specifik position är \\tfrac{1}{3}, inte \\tfrac{1}{2}."},
+        {"letter": "D", "why_tempting": "Om du minns regeln som ”P = antal gröna / totala knappar” blir det \\tfrac{2}{3} = \\tfrac{4}{6}.", "why_wrong": "Steg 1-2 visar att frågan handlar om en ordning av tre knappar — inte om att dra en knapp. \\tfrac{2}{3} svarar på en helt annan fråga (sannolikheten att en slumpvis vald knapp är grön)."}
+      ],
+      "technique": "Översätt sammansatta händelser till en enda position-händelse när antalet av en sort är ett. Här: ”båda ändarna gröna” = ”blå i mitten”. Då räcker det att räkna 1 av 3 positioner istället för att räkna betingade sannolikheter i två steg.",
+      "pitfall": "Att räkna 2/3 (andel gröna knappar) istället för 2/6 (gynnsamma ordningar / totala ordningar). Botemedlet: skriv ut sannolikheten som \\dfrac{\\text{gynnsamma utfall}}{\\text{totala utfall}} explicit innan du sätter in siffror.",
+      "framework_id": null,
+      "pregrade_tactic": {
+        "handle": "Position-översättningen",
+        "move": "När ett unikt föremål bland flera identiska ska placeras, översätt händelsen till en fråga om var det unika föremålet hamnar."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2017-kvant1-XYZ-001": {
+    "corpus_patch": {
+      "prompt": "Vad är \\dfrac{5{,}1\\cdot 10^{8}}{1{,}7\\cdot 10^{4}}?",
+      "options": [
+        {"letter": "A", "text": "3\\cdot 10^{2}"},
+        {"letter": "B", "text": "3\\cdot 10^{3}"},
+        {"letter": "C", "text": "3\\cdot 10^{4}"},
+        {"letter": "D", "text": "3\\cdot 10^{12}"}
+      ],
+      "answer": "C",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Dela mantissorna (5,1 / 1,7 = 3) och subtrahera exponenterna (8 - 4 = 4) — resultatet är 3·10⁴.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du ska dividera två tal skrivna i grundpotensform (vetenskaplig form). Täljaren är 5{,}1\\cdot 10^{8} och nämnaren är 1{,}7\\cdot 10^{4}. Resultatet ska väljas bland fyra alternativ som alla har formen 3\\cdot 10^{\\,?}.", "tier": "essential"},
+        {"n": 2, "title": "Vad grundpotensform är", "text": "Ett tal i grundpotensform är skrivet som a\\cdot 10^{n}, där a är ett tal mellan 1 och 10 (mantissan) och n är ett heltal (exponenten). Det är ett kompakt sätt att skriva mycket stora eller mycket små tal.", "tier": "detail"},
+        {"n": 3, "title": "Separera bitarna", "text": "När du dividerar produkter får varje faktor sin egen division: \\dfrac{5{,}1\\cdot 10^{8}}{1{,}7\\cdot 10^{4}} = \\dfrac{5{,}1}{1{,}7}\\cdot \\dfrac{10^{8}}{10^{4}}.", "tier": "essential"},
+        {"n": 4, "title": "Räkna ut mantissan", "text": "Dividera mantissorna: \\dfrac{5{,}1}{1{,}7}. Notera att 1{,}7\\cdot 3 = 5{,}1, alltså \\dfrac{5{,}1}{1{,}7} = 3.", "tier": "essential"},
+        {"n": 5, "title": "Potenslag för division", "text": "Vid division av två potenser med samma bas subtraheras exponenterna: \\dfrac{10^{a}}{10^{b}} = 10^{a-b}. Det är spegeln av multiplikation, där exponenterna adderas.", "tier": "detail"},
+        {"n": 6, "title": "Räkna ut exponenten", "text": "Tillämpa lagen: \\dfrac{10^{8}}{10^{4}} = 10^{8-4} = 10^{4}.", "tier": "essential"},
+        {"n": 7, "title": "Sätt ihop delarna", "text": "Multiplicera mantissan med tiopotensen: 3\\cdot 10^{4}.", "tier": "essential"},
+        {"n": 8, "title": "Är formen normaliserad?", "text": "Mantissan 3 ligger mellan 1 och 10, så svaret är redan i grundpotensform — inget mer behöver justeras.", "tier": "detail"},
+        {"n": 9, "title": "Sanity-check i decimaler", "text": "5{,}1\\cdot 10^{8} = 510\\,000\\,000 och 1{,}7\\cdot 10^{4} = 17\\,000. \\dfrac{510\\,000\\,000}{17\\,000} = \\dfrac{510\\,000}{17} = 30\\,000 = 3\\cdot 10^{4}. Stämmer.", "tier": "detail"},
+        {"n": 10, "title": "Verifiera mot alternativen", "text": "Endast alternativ C är 3\\cdot 10^{4}. De andra har samma mantissa men felaktig exponent.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är C: 3\\cdot 10^{4}. Insikten i en mening: vid division av grundpotensformer arbetar mantissan och tiopotensen separat — dela mantissorna, subtrahera exponenterna.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Det är lätt att kasta om subtraktionen och räkna 4 - 8 = -4, för att sedan ”vända tecknet” mentalt och landa i 10^{2} via något halvfärdigt mellansteg.", "why_wrong": "Steg 6 visar att exponenten är 8 - 4 = 4, inte 2. 3\\cdot 10^{2} = 300 är fyra storleksordningar för litet jämfört med kontrollen i steg 9."},
+        {"letter": "B", "why_tempting": "Många stannar vid att räkna 8 - 4 = 4 men sedan ”tappa” en exponent när de skriver om svaret, eller skriver 10^{3} av slarv.", "why_wrong": "Steg 6 ger entydigt 10^{4}. 3\\cdot 10^{3} = 3\\,000 är tio gånger för litet jämfört med kontrollvärdet 30\\,000 i steg 9."},
+        {"letter": "D", "why_tempting": "Om du minns regeln som ”vid division adderas exponenterna” får du 8 + 4 = 12 och svarar 3\\cdot 10^{12}.", "why_wrong": "Steg 5 visar att exponenter SUBTRAHERAS vid division av potenser med samma bas — addition gäller vid multiplikation. Den förväxlingen är klassisk."}
+      ],
+      "technique": "För grundpotensform med samma bas: dela mantissor som vanliga tal, hantera tiopotensen med exponentlagen \\dfrac{10^{a}}{10^{b}} = 10^{a-b}. Triggern är två tal skrivna a\\cdot 10^{n} / b\\cdot 10^{m}.",
+      "pitfall": "Att förväxla exponentregeln för multiplikation (addera) med den för division (subtrahera). Botemedlet: säg högt vad operationen är innan du rör vid exponenten — ”division ger minus”.",
+      "framework_id": "XYZ-TRAP-026",
+      "pregrade_tactic": {
+        "handle": "Grundpotensdelningen",
+        "move": "Vid \\dfrac{a\\cdot 10^{n}}{b\\cdot 10^{m}}, räkna \\dfrac{a}{b} för sig och 10^{n-m} för sig — sätt sedan ihop."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  },
+  "var-2022-2-kvant1-XYZ-005": {
+    "corpus_patch": {
+      "prompt": "I vilket av följande intervall ligger x om x = \\sqrt{\\sqrt{4}}?",
+      "options": [
+        {"letter": "A", "text": "1{,}2 < x \\leq 1{,}6"},
+        {"letter": "B", "text": "1{,}6 < x \\leq 2{,}0"},
+        {"letter": "C", "text": "2{,}0 < x \\leq 4{,}0"},
+        {"letter": "D", "text": "4{,}0 < x \\leq 6{,}0"}
+      ],
+      "answer": "A",
+      "has_figure": false
+    },
+    "explanation": {
+      "solution_path": "Förenkla inifrån och ut: \\sqrt{4} = 2, så x = \\sqrt{2} \\approx 1{,}41 — som ligger i intervallet 1,2 < x ≤ 1,6.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Du ska räkna ut värdet av x = \\sqrt{\\sqrt{4}} (kvadratroten ur kvadratroten ur 4) och avgöra i vilket av fyra intervall det ligger.", "tier": "essential"},
+        {"n": 2, "title": "Vad en kvadratrot är", "text": "\\sqrt{a} är det icke-negativa tal som upphöjt till 2 ger a. Till exempel: \\sqrt{9} = 3 eftersom 3^{2} = 9, och \\sqrt{4} = 2 eftersom 2^{2} = 4.", "tier": "detail"},
+        {"n": 3, "title": "Arbeta inifrån och ut", "text": "I sammansatta uttryck räknar du innersta operationen först — som med parenteser. Här är innersta operationen \\sqrt{4}.", "tier": "essential"},
+        {"n": 4, "title": "Räkna ut innersta roten", "text": "\\sqrt{4} = 2, eftersom 2^{2} = 4.", "tier": "essential"},
+        {"n": 5, "title": "Sätt tillbaka", "text": "Uttrycket blir nu x = \\sqrt{2}.", "tier": "essential"},
+        {"n": 6, "title": "Skatta \\sqrt{2}", "text": "\\sqrt{2} är inte ett heltal — det är ett irrationellt tal som ligger mellan \\sqrt{1} = 1 och \\sqrt{4} = 2. Det vanliga närmevärdet är \\sqrt{2}\\approx 1{,}414.", "tier": "essential"},
+        {"n": 7, "title": "Bekräfta närmevärdet", "text": "Kontrollera: 1{,}4^{2} = 1{,}96 och 1{,}5^{2} = 2{,}25. Eftersom 2 ligger mellan dessa, ligger \\sqrt{2} mellan 1{,}4 och 1{,}5 — närmare 1{,}4. Mer exakt: 1{,}41^{2} = 1{,}9881, så \\sqrt{2}\\approx 1{,}41.", "tier": "detail"},
+        {"n": 8, "title": "Matcha mot intervallen", "text": "Intervall A är 1{,}2 < x \\leq 1{,}6. 1{,}41 ligger inom detta intervall (eftersom 1{,}2 < 1{,}41 < 1{,}6). Intervall B börjar vid 1{,}6, så 1{,}41 är för litet för B.", "tier": "essential"},
+        {"n": 9, "title": "Kontrollera intervallgränser", "text": "Notera att A har sträng olikhet vid 1{,}2 (öppen) och svag olikhet vid 1{,}6 (sluten). \\sqrt{2}\\approx 1{,}41 är klart inom det öppna intervallet.", "tier": "detail"},
+        {"n": 10, "title": "Uteslut C och D", "text": "C kräver x > 2{,}0 och D kräver x > 4{,}0. Eftersom \\sqrt{2} < 2 kan varken C eller D stämma — de är reserverade för fall som x = \\sqrt{4} respektive x = 4 + lite.", "tier": "detail"},
+        {"n": 11, "title": "Verifiera tolkningen", "text": "Tolkar man uttrycket som \\sqrt[4]{4} (fjärderoten ur 4) blir det också \\sqrt{2}, eftersom \\sqrt{\\sqrt{a}} = \\sqrt[4]{a}. Båda läsningarna ger samma svar.", "tier": "detail"},
+        {"n": 12, "title": "Slutsats", "text": "Svaret är A: 1{,}2 < x \\leq 1{,}6. Insikten i en mening: kapslade rötter förenklas inifrån och ut, och \\sqrt{2}\\approx 1{,}41 är ett närmevärde värt att memorera.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "B", "why_tempting": "Första instinkten är att \\sqrt{2} ligger ”strax under 2” och att 1{,}6 < x \\leq 2{,}0 är intervallet närmast 2.", "why_wrong": "Som steg 7 visar är \\sqrt{2}\\approx 1{,}41, vilket är mindre än 1{,}6. \\sqrt{2} ligger närmare 1{,}4 än 2 eftersom kvadratrotsfunktionen krymper tal som är större än 1."},
+        {"letter": "C", "why_tempting": "Det är frestande att stanna vid första roten och svara x = \\sqrt{4} = 2, vilket landar precis i C:s nedre kant — eller egentligen utanför, eftersom 2{,}0 < x kräver strikt större än 2.", "why_wrong": "Steg 3-5 visar att uttrycket har TVÅ rotsymboler, så x = \\sqrt{2}, inte \\sqrt{4}. Den som glömmer den yttre roten räknar bara halva uttrycket."},
+        {"letter": "D", "why_tempting": "Om du missförstår och kvadrerar istället för att ta roten ur (alltså räknar 4^{2} = 16 eller liknande) hamnar du långt över 4.", "why_wrong": "Steg 2 påminner om att roten ur ett tal större än 1 alltid är mindre än talet självt. \\sqrt{\\sqrt{4}} är alltså mindre än \\sqrt{4} = 2, inte större än 4."}
+      ],
+      "technique": "Vid kapslade rötter, räkna inifrån och ut. \\sqrt{\\sqrt{a}} = a^{1/4} (fjärderoten) — och för a = 4 är det \\sqrt{2}. Memorera närmevärden för små irrationella tal: \\sqrt{2}\\approx 1{,}41, \\sqrt{3}\\approx 1{,}73, \\sqrt{5}\\approx 2{,}24.",
+      "pitfall": "Att stanna vid första rotsymbolen och rapportera \\sqrt{4} = 2 som slutsvar — eller att, omvänt, missa att roten ur ett tal mellan 1 och 4 ligger mellan 1 och 2. Botemedlet: räkna ALLA operationer innan du jämför mot intervallen.",
+      "framework_id": "XYZ-TRAP-032",
+      "pregrade_tactic": {
+        "handle": "Inifrån-och-ut-räkningen",
+        "move": "Vid kapslade rötter eller parenteser, lös den innersta operationen först och skriv om uttrycket innan du tittar på alternativen."
+      },
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}

@@ -12947,103 +12947,103 @@
     }
   },
   "var-2017-kvant1-XYZ-001": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar C; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Dela mantissorna (5,1 / 1,7 = 3) och subtrahera exponenterna (8 - 4 = 4) — resultatet är 3·10⁴.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Du ska dividera två tal skrivna i grundpotensform (vetenskaplig form). Täljaren är 5{,}1\\cdot 10^{8} och nämnaren är 1{,}7\\cdot 10^{4}. Resultatet ska väljas bland fyra alternativ som alla har formen 3\\cdot 10^{\\,?}.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ C. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
-        "tier": "essential"
+        "title": "Vad grundpotensform är",
+        "text": "Ett tal i grundpotensform är skrivet som a\\cdot 10^{n}, där a är ett tal mellan 1 och 10 (mantissan) och n är ett heltal (exponenten). Det är ett kompakt sätt att skriva mycket stora eller mycket små tal.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Separera bitarna",
+        "text": "När du dividerar produkter får varje faktor sin egen division: \\dfrac{5{,}1\\cdot 10^{8}}{1{,}7\\cdot 10^{4}} = \\dfrac{5{,}1}{1{,}7}\\cdot \\dfrac{10^{8}}{10^{4}}.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Räkna ut mantissan",
+        "text": "Dividera mantissorna: \\dfrac{5{,}1}{1{,}7}. Notera att 1{,}7\\cdot 3 = 5{,}1, alltså \\dfrac{5{,}1}{1{,}7} = 3.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
+        "title": "Potenslag för division",
+        "text": "Vid division av två potenser med samma bas subtraheras exponenterna: \\dfrac{10^{a}}{10^{b}} = 10^{a-b}. Det är spegeln av multiplikation, där exponenterna adderas.",
         "tier": "detail"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Räkna ut exponenten",
+        "text": "Tillämpa lagen: \\dfrac{10^{8}}{10^{4}} = 10^{8-4} = 10^{4}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Sätt ihop delarna",
+        "text": "Multiplicera mantissan med tiopotensen: 3\\cdot 10^{4}.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Är formen normaliserad?",
+        "text": "Mantissan 3 ligger mellan 1 och 10, så svaret är redan i grundpotensform — inget mer behöver justeras.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Sanity-check i decimaler",
+        "text": "5{,}1\\cdot 10^{8} = 510\\,000\\,000 och 1{,}7\\cdot 10^{4} = 17\\,000. \\dfrac{510\\,000\\,000}{17\\,000} = \\dfrac{510\\,000}{17} = 30\\,000 = 3\\cdot 10^{4}. Stämmer.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
+        "title": "Verifiera mot alternativen",
+        "text": "Endast alternativ C är 3\\cdot 10^{4}. De andra har samma mantissa men felaktig exponent.",
+        "tier": "essential"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret C. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "Svaret är C: 3\\cdot 10^{4}. Insikten i en mening: vid division av grundpotensformer arbetar mantissan och tiopotensen separat — dela mantissorna, subtrahera exponenterna.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att kasta om subtraktionen och räkna 4 - 8 = -4, för att sedan ”vända tecknet” mentalt och landa i 10^{2} via något halvfärdigt mellansteg.",
+        "why_wrong": "Steg 6 visar att exponenten är 8 - 4 = 4, inte 2. 3\\cdot 10^{2} = 300 är fyra storleksordningar för litet jämfört med kontrollen i steg 9."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Många stannar vid att räkna 8 - 4 = 4 men sedan ”tappa” en exponent när de skriver om svaret, eller skriver 10^{3} av slarv.",
+        "why_wrong": "Steg 6 ger entydigt 10^{4}. 3\\cdot 10^{3} = 3\\,000 är tio gånger för litet jämfört med kontrollvärdet 30\\,000 i steg 9."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Om du minns regeln som ”vid division adderas exponenterna” får du 8 + 4 = 12 och svarar 3\\cdot 10^{12}.",
+        "why_wrong": "Steg 5 visar att exponenter SUBTRAHERAS vid division av potenser med samma bas — addition gäller vid multiplikation. Den förväxlingen är klassisk."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
-    "framework_id": null,
+    "technique": "För grundpotensform med samma bas: dela mantissor som vanliga tal, hantera tiopotensen med exponentlagen \\dfrac{10^{a}}{10^{b}} = 10^{a-b}. Triggern är två tal skrivna a\\cdot 10^{n} / b\\cdot 10^{m}.",
+    "pitfall": "Att förväxla exponentregeln för multiplikation (addera) med den för division (subtrahera). Botemedlet: säg högt vad operationen är innan du rör vid exponenten — ”division ger minus”.",
+    "framework_id": "XYZ-TRAP-026",
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Grundpotensdelningen",
+      "move": "Vid \\dfrac{a\\cdot 10^{n}}{b\\cdot 10^{m}}, räkna \\dfrac{a}{b} för sig och 10^{n-m} för sig — sätt sedan ihop."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "generated_at": "2026-05-23",
+      "recipe": "variant-c-regen-wave-pdf-recovery"
     }
   },
   "var-2017-kvant1-XYZ-003": {

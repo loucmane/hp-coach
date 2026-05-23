@@ -1,0 +1,45 @@
+{
+  "var-2024-kvant1-XYZ-003": {
+    "corpus_patch": {
+      "prompt": "f(x) = \\frac{x}{2} - 1. Vilket svarsalternativ visar grafen till funktionen f?",
+      "options": [
+        {"letter": "A", "text": "Linje med negativ lutning som passerar genom (0, 1) och lutar nedåt åt höger."},
+        {"letter": "B", "text": "Linje med brant negativ lutning som passerar genom (0, 1)."},
+        {"letter": "C", "text": "Linje med brant positiv lutning som passerar genom (0, 0)."},
+        {"letter": "D", "text": "Linje med svag positiv lutning som passerar genom (0, −1) och skär x-axeln vid x = 2."}
+      ],
+      "answer": "D",
+      "has_figure": true
+    },
+    "explanation": {
+      "solution_path": "Läs av lutning och y-skärning ur formeln f(x) = \\frac{x}{2} - 1 och matcha mot bilderna. Lutningen k = \\tfrac{1}{2} är positiv och svag; konstanten m = -1 ger y-skärning vid (0, -1). Bara alternativ D uppfyller båda villkoren samtidigt.",
+      "steps": [
+        {"n": 1, "title": "Förstå problemet", "text": "Vi har en linjär funktion f(x) = \\frac{x}{2} - 1 och fyra grafer. Uppgiften är att välja den graf som faktiskt visar f.", "tier": "essential"},
+        {"n": 2, "title": "Identifiera formen", "text": "Skriv om till standardformen y = kx + m så att lutning och y-skärning syns direkt: y = \\tfrac{1}{2}x + (-1).", "tier": "essential"},
+        {"n": 3, "title": "Läs lutningen", "text": "Koefficienten framför x är k = \\tfrac{1}{2}. Lutningen är positiv, så linjen går uppåt åt höger.", "tier": "essential"},
+        {"n": 4, "title": "Läs y-skärningen", "text": "Konstanten är m = -1, så linjen skär y-axeln i punkten (0, -1) — alltså ett steg under origo.", "tier": "essential"},
+        {"n": 5, "title": "Räkna en kontrollpunkt", "text": "Sätt x = 2: f(2) = \\tfrac{2}{2} - 1 = 0. Linjen passerar alltså genom (2, 0) — skär x-axeln två steg höger om origo.", "tier": "essential"},
+        {"n": 6, "title": "Eliminera negativa lutningar", "text": "A och B har båda linjer som lutar nedåt åt höger (negativ lutning). Eftersom k = +\\tfrac{1}{2} > 0 är båda fel.", "tier": "essential"},
+        {"n": 7, "title": "Jämför kvarvarande positiva lutningar", "text": "C och D har båda positiv lutning. C ser brant ut (lutning kring 2 eller 3) och passerar genom origo; D är flack och passerar genom (0, -1).", "tier": "essential"},
+        {"n": 8, "title": "Använd y-skärningen för att välja", "text": "Vår funktion kräver m = -1, vilket är D. Det enda alternativet som korsar y-axeln vid -1 är D.", "tier": "essential"},
+        {"n": 9, "title": "Bekräfta med lutningen", "text": "I D höjer linjen sig ungefär en ruta för varje två rutor åt höger — det är precis \\tfrac{\\Delta y}{\\Delta x} = \\tfrac{1}{2}. Lutningen stämmer.", "tier": "essential"},
+        {"n": 10, "title": "Verifiera", "text": "Kontrollera båda förankringspunkterna i D: (0, -1) och (2, 0). Båda ligger på linjen i bild D, och båda satisfierar y = \\tfrac{x}{2} - 1.", "tier": "essential"},
+        {"n": 11, "title": "Slutsats", "text": "Svaret är D. Insikten i en mening: två tal räcker — lutningen säger riktning, m säger var linjen sitter på y-axeln.", "tier": "essential"}
+      ],
+      "distractors": [
+        {"letter": "A", "why_tempting": "Studenten ser -1 i formeln och tolkar minustecknet som 'linjen lutar nedåt' istället för att se det som y-skärningen.", "why_wrong": "A har negativ lutning (k < 0), men k = +\\tfrac{1}{2} är positiv. Dessutom skär A y-axeln vid +1, inte -1."},
+        {"letter": "B", "why_tempting": "Den negativa lutningen i B känns extra 'negativ' för en student som ser både \\tfrac{x}{2} och -1 som negativa bidrag.", "why_wrong": "B har brant negativ lutning och y-skärning vid +1. Båda är fel: vår linje stiger med \\tfrac{1}{2} per steg och korsar y-axeln vid -1."},
+        {"letter": "C", "why_tempting": "Positiv lutning stämmer, så studenten som bara kollar lutningens tecken klickar på C utan att läsa y-skärningen.", "why_wrong": "C har lutning kring 2 eller 3 (för brant) och passerar genom origo. Vår funktion har lutning \\tfrac{1}{2} (mycket flackare) och y-skärning vid -1, inte 0."}
+      ],
+      "technique": "Linjär graf-matchning: läs av k och m direkt ur y = kx + m, eliminera först på tecken/riktning av lutningen, sedan på y-skärningen.",
+      "pitfall": "Att tolka -1 i formeln som 'linjen lutar nedåt'. Minustecknet sitter på konstanten m, inte på lutningskoefficienten — det flyttar bara linjen nedåt, det vänder den inte.",
+      "framework_id": "XYZ-TRAP-051",
+      "pregrade_tactic": {"handle": "Tvåtalsavläsningen", "move": "Läs k och m direkt ur kx + m och sortera bilderna på lutningens tecken först, y-skärningen sedan."},
+      "_meta": {
+        "model": "claude-opus-4-7-via-max-subscription",
+        "generated_at": "2026-05-23",
+        "recipe": "variant-c-regen-wave-pdf-recovery"
+      }
+    }
+  }
+}
