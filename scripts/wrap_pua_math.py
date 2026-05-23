@@ -18,8 +18,9 @@ import re
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-E0 = ""
-E1 = ""
+# Literal PUA chars get stripped by the Write tool — use escape form.
+E0 = ""
+E1 = ""
 
 # qids from final_05 that need wrapping (others already had PUA markers).
 FINAL_05_QIDS = {
@@ -31,15 +32,18 @@ FINAL_05_QIDS = {
 }
 
 # LaTeX patterns we wrap. Order matters: longer / more-specific first.
+# Caret patterns drop the leading \b because Swedish multi-letter products
+# like "xy^2" don't have a word-boundary inside "xy" — `\b` would skip them.
+# We match a contiguous run of letters + caret + exponent instead.
 PATTERNS = [
     re.compile(r"\\(?:d?frac|tfrac)\{[^{}]+\}\{[^{}]+\}"),  # \frac{a}{b}
     re.compile(r"\\sqrt\{[^{}]+\}"),                          # \sqrt{n}
-    re.compile(r"\\sqrt\b"),                                   # \sqrt (no arg)
+    re.compile(r"\\sqrt\b"),
     re.compile(r"\\mathrm\{[^{}]+\}(?:\^\{[^{}]+\})?"),       # \mathrm{cm}^{2}
     re.compile(r"\\(?:cdot|pi|alpha|beta|gamma|theta|sigma|le|ge|ne|approx|leq|geq|neq|times|div|sin|cos|tan)\b"),
-    re.compile(r"\b[a-zA-Z]\^\{[^{}]+\}"),                    # x^{N}
-    re.compile(r"\b[a-zA-Z]\^-?\d+\b"),                       # x^2, x^-2
-    re.compile(r"\b[a-zA-Z]_\{[^{}]+\}"),                     # x_{N}
+    re.compile(r"[a-zA-Z]+\^\{[^{}]+\}"),                    # xy^{N}
+    re.compile(r"[a-zA-Z]+\^-?\d+"),                          # xy^2, x^-2
+    re.compile(r"[a-zA-Z]_\{[^{}]+\}"),                       # x_{N}
 ]
 
 
