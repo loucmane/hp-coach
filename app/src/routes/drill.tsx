@@ -10,6 +10,7 @@ import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react'
 
 import { useDueMistakes, useRecordMistake } from '@/api/hooks/useMistakes'
+import { useActiveSession } from '@/api/hooks/useSessions'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { entryHeadword, loadFramework } from '@/data/frameworks'
 import { findQuestion, loadBank, type Section } from '@/data/questions'
@@ -110,6 +111,18 @@ function DrillScreen() {
   const due = useDueMistakes()
   const dueCount = due.data?.length ?? 0
 
+  // `?qid=` is direct-link mode ONLY when no active session for this
+  // section exists. Once SessionPlayer starts a drill, it writes `qid`
+  // to the URL via setUrlQid (so refresh resumes at the right question)
+  // — if we keyed direct-link mode purely on `qid` presence, the route
+  // would flip into single-question landing the moment the first
+  // question loads, stranding the user. Active-session check
+  // distinguishes "deep-link from outside" (no session yet) from
+  // "session in progress" (don't flip).
+  const activeSession = useActiveSession()
+  const directLinkQid =
+    qid && (!activeSession.data || activeSession.data.sections !== section) ? qid : null
+
   // Resolve the framework entry's display name (e.g. "för-" for
   // ORD-ROOT-001) so the idle screen shows what the user is about to
   // practice instead of the bare ID. Same loadFramework call the picker
@@ -134,30 +147,35 @@ function DrillScreen() {
   const copy = SECTION_COPY[section]
 
   // Three picker modes:
-  //   - `?qid=` → load one specific question (variant-comparison / debug)
+  //   - direct-link (`?qid=` AND no active section session) → load one
+  //     specific question (variant-comparison / debug)
   //   - `?framework=` → load a framework entry's example_questions
   //   - default → random N-question section drill
-  const pickQuestions = qid
-    ? () => loadBank().then((b) => [findQuestion(b, qid)])
+  const pickQuestions = directLinkQid
+    ? () => loadBank().then((b) => [findQuestion(b, directLinkQid)])
     : framework
       ? () => pickFrameworkQuestions(section as Section, framework)
       : () => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)
 
   const frameworkDisplay = frameworkHeadword ?? framework
-  const idleEyebrow = qid ? 'Direktlänk' : framework ? 'Mönsterövning' : 'Övning'
-  const idleHeadline = qid ? qid : framework ? (frameworkDisplay ?? framework) : copy.headline
-  const idleSubcopy = qid
+  const idleEyebrow = directLinkQid ? 'Direktlänk' : framework ? 'Mönsterövning' : 'Övning'
+  const idleHeadline = directLinkQid
+    ? directLinkQid
+    : framework
+      ? (frameworkDisplay ?? framework)
+      : copy.headline
+  const idleSubcopy = directLinkQid
     ? 'En specifik fråga via ?qid= — för granskning eller debug.'
     : framework
       ? `Exempelfrågor från lektionen som illustrerar detta mönster.`
       : copy.subcopy
-  const idleMeta = qid
+  const idleMeta = directLinkQid
     ? '1 fråga · ingen sessionsgrad'
     : framework
       ? 'Exempelfrågor · 1 poäng per rätt'
       : `~ ${SECTION_DURATIONS[section]} minuter · 1 poäng per rätt`
-  const emptyCopy = qid
-    ? `Hittade inte frågan ${qid}.`
+  const emptyCopy = directLinkQid
+    ? `Hittade inte frågan ${directLinkQid}.`
     : framework
       ? `Inga exempelfrågor hittades för ${frameworkDisplay ?? framework}.`
       : `Inga ${section}-frågor klara att öva på just nu.`
@@ -173,7 +191,9 @@ function DrillScreen() {
       idleSubcopy={idleSubcopy}
       idleMeta={idleMeta}
       emptyCopy={emptyCopy}
-      idleExtra={!qid && !framework && dueCount > 0 ? <RepetitionHint count={dueCount} /> : null}
+      idleExtra={
+        !directLinkQid && !framework && dueCount > 0 ? <RepetitionHint count={dueCount} /> : null
+      }
       urlSyncedQid={{ qid: qid ?? null, setQid: setUrlQid }}
       onWrong={(q) => {
         // Fire-and-forget: a failed mistake-write doesn't block the UX.
