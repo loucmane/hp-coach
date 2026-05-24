@@ -110,22 +110,25 @@ function PickerBody() {
       }}
     >
       <header className="reveal" style={{ animationDelay: '0ms' }}>
-        <Link
-          to="/"
-          style={{
-            display: 'inline-block',
-            marginBottom: 10,
-            fontFamily: 'var(--font-mono)',
-            fontSize: 11,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'var(--muted)',
-            textDecoration: 'none',
-          }}
-        >
-          ← Hem
-        </Link>
-        <Mono>LEKTION</Mono>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 10 }}>
+          <Link
+            to="/"
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 11,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+              textDecoration: 'none',
+            }}
+          >
+            ← Hem
+          </Link>
+          <span aria-hidden style={{ color: 'var(--hairline)' }}>
+            ·
+          </span>
+          <Mono>LEKTION</Mono>
+        </div>
         <h1
           style={{
             fontFamily: 'var(--font-display)',
