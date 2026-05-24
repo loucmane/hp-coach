@@ -238,6 +238,13 @@ function RunningHeadBand({ runningHead, isPhone }: { runningHead: string; isPhon
         justifyContent: 'space-between',
         alignItems: 'baseline',
         gap: 'clamp(20px, 3vw, 48px)',
+        // Wrap when the row gets tight — running head + 5 nav links
+        // + the EditionStrip collide around 1300px on studio-width
+        // tabs, with the strip visually bleeding into Feedback/Framsteg.
+        // Wrapping lets EditionStrip drop to its own line; the header
+        // grows ~28px taller at that breakpoint instead of overlapping.
+        flexWrap: 'wrap',
+        rowGap: 8,
       }}
     >
       <div
@@ -246,6 +253,10 @@ function RunningHeadBand({ runningHead, isPhone }: { runningHead: string; isPhon
           alignItems: 'baseline',
           gap: 'clamp(20px, 3vw, 40px)',
           minWidth: 0,
+          // Let the left group claim the whole row when EditionStrip
+          // has wrapped underneath — keeps the brand+nav anchored left
+          // instead of compressing into the corner.
+          flex: '1 1 auto',
         }}
       >
         <span
