@@ -116,22 +116,25 @@ export function LessonReader({ section }: { section: Section }) {
       }}
     >
       <header className="reveal" style={{ animationDelay: '0ms' }}>
-        <Link
-          to="/lektion"
-          style={{
-            display: 'inline-block',
-            marginBottom: 10,
-            fontFamily: 'var(--font-mono)',
-            fontSize: 11,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'var(--muted)',
-            textDecoration: 'none',
-          }}
-        >
-          ← alla sektioner
-        </Link>
-        <Mono>LEKTION</Mono>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 10 }}>
+          <Link
+            to="/lektion"
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 11,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+              textDecoration: 'none',
+            }}
+          >
+            ← alla sektioner
+          </Link>
+          <span aria-hidden style={{ color: 'var(--hairline)' }}>
+            ·
+          </span>
+          <Mono>LEKTION</Mono>
+        </div>
         <h1
           style={{
             fontFamily: 'var(--font-display)',

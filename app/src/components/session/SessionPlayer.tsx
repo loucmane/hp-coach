@@ -361,13 +361,16 @@ export function SessionPlayer(props: SessionPlayerProps) {
     // unchromed canvas. The section pulled from props.sections (or a
     // sensible fallback) lets the running head identify what the user
     // is about to drill.
-    const sectionLabel = (props.sections || props.activeTab).toString().toUpperCase()
+    const { headLabel: sectionLabel, statusMode } = chromeLabelsFor(
+      props.sessionKind,
+      props.sections,
+    )
     return (
       <MobileFrame tabs={false}>
         <Page
           runningHead={['HP · Coach', sectionLabel]}
           status={{
-            mode: 'Övning',
+            mode: statusMode,
             context: 'redo',
             hints: ['esc hem', '⌘k palett'],
           }}
@@ -396,7 +399,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
         </MobileFrame>
       )
     }
-    const sectionLabel = (props.sections || props.activeTab).toString().toUpperCase()
+    const { headLabel: sectionLabel } = chromeLabelsFor(props.sessionKind, props.sections)
     return (
       <MobileFrame tabs={false}>
         <Page
@@ -549,13 +552,14 @@ export function SessionPlayer(props: SessionPlayerProps) {
     </div>
   )
 
+  const { statusMode: activeStatusMode } = chromeLabelsFor(props.sessionKind, props.sections)
   return (
     <MobileFrame tabs={false}>
       <Page
         runningHead={['HP · Coach', q.section]}
         folio={{ current: index + 1, total: plan.length }}
         status={{
-          mode: 'Övning',
+          mode: activeStatusMode,
           context: `${q.section.toLowerCase()} · fråga ${index + 1}`,
           progress: (index + 1) / plan.length,
           hints: ['⌘k palett'],
@@ -841,4 +845,35 @@ const kbdStyle: CSSProperties = {
   border: '1px solid var(--hairline)',
   borderRadius: 4,
   color: 'var(--ink)',
+}
+
+// Derive the running-head and status-line labels from the session
+// kind. Pre-fix, `runningHead` was always `[brand, sections.toUpperCase()]`
+// — which produced `DIAGNOSTIC` (English) on /diagnostik (sections
+// was the placeholder string "diagnostic") and `ORD` on /repetition
+// (sections="ORD" was hardcoded). Status mode was the literal
+// "Övning" regardless of kind, so the footer said `-- ÖVNING --` on
+// /repetition and /diagnostik too. Both are dogfood-pass findings
+// B3/B4/B5 in audit/_dogfood_2026-05-24.md.
+function chromeLabelsFor(
+  kind: SessionKind,
+  sections: string | undefined,
+): { headLabel: string; statusMode: string } {
+  switch (kind) {
+    case 'mock_diagnostic':
+      return { headLabel: 'DIAGNOSTIK', statusMode: 'Diagnostik' }
+    case 'adaptive_review':
+      return { headLabel: 'REPETITION', statusMode: 'Repetition' }
+    case 'mock':
+      return { headLabel: 'MOCK', statusMode: 'Mock' }
+    case 'lesson':
+      return { headLabel: 'LEKTION', statusMode: 'Lektion' }
+    case 'drill':
+    default: {
+      // Drill carries a concrete section ("KVA", "NOG", …); fall back
+      // to "ÖVNING" for the rare case `sections` is undefined.
+      const label = (sections || 'Övning').toString().toUpperCase()
+      return { headLabel: label, statusMode: 'Övning' }
+    }
+  }
 }
