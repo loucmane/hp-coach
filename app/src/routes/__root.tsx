@@ -54,8 +54,14 @@ function RootShell() {
           <AuthRouter />
         </ClerkLoaded>
       </Frame>
-      <ShareDebugButton />
-      <TweaksLauncher />
+      {/* Dev-only floating affordances — kept out of the production
+       *  bundle entirely (Vite's `import.meta.env.DEV` is replaced at
+       *  build time with a literal `true`/`false`, so the dead branch
+       *  tree-shakes away). Without this gate the "share" and
+       *  "tweaks · dev" pills ride along on every user-facing screen,
+       *  which reads as workshop debris (dogfood B9). */}
+      {import.meta.env.DEV && <ShareDebugButton />}
+      {import.meta.env.DEV && <TweaksLauncher />}
       <CommandPalette />
     </>
   )

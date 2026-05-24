@@ -125,13 +125,23 @@ const COMMANDS: Command[] = [
     keywords: ['tema', 'palette', 'font', 'tweaks', 'theme'],
     action: ({ navigate }) => navigate({ to: '/avancerat' }),
   },
-  {
-    id: 'dev',
-    label: 'Dev panel',
-    hint: '/dev',
-    keywords: ['dev', 'debug', 'panel', 'tweaks'],
-    action: ({ navigate }) => navigate({ to: '/dev' }),
-  },
+  // Dev panel — only surfaced when running `pnpm dev`. Vite replaces
+  // `import.meta.env.DEV` with a literal at build time, so the entry
+  // gets tree-shaken from production bundles entirely. Without this
+  // gate, `Cmd+K → Dev panel /DEV` was reachable on every user-facing
+  // screen (dogfood B10).
+  ...(import.meta.env.DEV
+    ? [
+        {
+          id: 'dev',
+          label: 'Dev panel',
+          hint: '/dev',
+          keywords: ['dev', 'debug', 'panel', 'tweaks'],
+          action: ({ navigate }: { navigate: ReturnType<typeof useNavigate> }) =>
+            navigate({ to: '/dev' }),
+        } as Command,
+      ]
+    : []),
 ]
 
 export function CommandPalette() {
