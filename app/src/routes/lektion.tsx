@@ -13,14 +13,16 @@
 // swaps the content source.
 
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
+import { useStats } from '@/api/hooks/useStats'
 import { LessonReader } from '@/components/lesson/LessonReader'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Mono } from '@/components/primitives'
 import { wiredSections } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
+import { computeSectionScore, formatScore, rankWeakness } from '@/lib/scoring'
 
 type Search = { section?: Section }
 
@@ -98,6 +100,45 @@ function PickerShell() {
 function PickerBody() {
   const navigate = useNavigate()
   const wired = new Set(wiredSections())
+  const stats = useStats()
+
+  // Weakness ranking — sections the user is weakest at percolate to
+  // the top of the picker so "what should I study?" answers itself.
+  // The shared rankWeakness() helper excludes low-confidence sections
+  // (fewer than 10 attempts) unless every section is low-confidence,
+  // so we don't recommend studying noise. Anything not in the ranked
+  // pool falls through to its original SECTION_KEYS order — keeps
+  // wired-but-unattempted sections discoverable and never-attempted
+  // sections together at the bottom.
+  const orderedSections = useMemo<readonly Section[]>(() => {
+    if (!stats.data) return SECTION_KEYS
+    const scores = SECTION_KEYS.map((s) => computeSectionScore(s, stats.data.bySection[s]))
+    const ranked = rankWeakness(scores).map((s) => s.section)
+    const rankedSet = new Set(ranked)
+    const remainder = SECTION_KEYS.filter((s) => !rankedSet.has(s))
+    return [...ranked, ...remainder]
+  }, [stats.data])
+
+  // Per-section score map for the mono "0.42" tail badge. Re-derived
+  // here rather than threaded through orderedSections so the score
+  // lookup stays explicit at render time.
+  const scoreBySection = useMemo<Partial<Record<Section, number | null>>>(() => {
+    if (!stats.data) return {}
+    const out: Partial<Record<Section, number | null>> = {}
+    for (const s of SECTION_KEYS) {
+      out[s] = computeSectionScore(s, stats.data.bySection[s]).score
+    }
+    return out
+  }, [stats.data])
+
+  // Index 0 in the ordered list gets the SVAGAST badge — but only when
+  // the ranking actually reflects signal (otherwise the badge is a lie
+  // about a cold-start ordering).
+  const hasRankSignal = stats.data
+    ? rankWeakness(SECTION_KEYS.map((s) => computeSectionScore(s, stats.data.bySection[s])))
+        .length > 0
+    : false
+
   return (
     <div
       style={{
@@ -165,8 +206,10 @@ function PickerBody() {
           animationDelay: '120ms',
         }}
       >
-        {SECTION_KEYS.map((sec) => {
+        {orderedSections.map((sec, i) => {
           const isWired = wired.has(sec)
+          const isWeakest = i === 0 && hasRankSignal && isWired
+          const score = scoreBySection[sec]
           return (
             <li key={sec} style={{ borderTop: '1px solid var(--hairline)' }}>
               <button
@@ -221,9 +264,23 @@ function PickerBody() {
                       letterSpacing: '0.14em',
                       textTransform: 'uppercase',
                       color: 'var(--muted)',
+                      display: 'inline-flex',
+                      alignItems: 'baseline',
+                      gap: 8,
+                      fontVariantNumeric: 'tabular-nums',
                     }}
                   >
-                    {isWired ? 'läs →' : 'kommer snart'}
+                    {isWeakest && (
+                      <span data-testid="lektion-svagast" style={{ color: 'var(--accent)' }}>
+                        svagast
+                      </span>
+                    )}
+                    {score != null && (
+                      <span data-testid={`lektion-score-${sec}`} style={{ color: 'var(--ink-2)' }}>
+                        {formatScore(score)}
+                      </span>
+                    )}
+                    <span>{isWired ? 'läs →' : 'kommer snart'}</span>
                   </span>
                 </div>
               </button>
