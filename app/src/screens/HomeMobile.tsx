@@ -78,8 +78,6 @@ type HomeMobileProps = {
   forceLayout?: 'phone' | 'reader' | 'studio'
 }
 
-const NOOP = () => {}
-
 export function HomeMobile({
   plan = null,
   allComplete = false,
@@ -145,7 +143,13 @@ export function HomeMobile({
         <div
           style={{
             flex: isPhone ? undefined : 1,
-            height: isPhone ? '100%' : undefined,
+            // Phone: minHeight (not height) so when content runs
+            // taller than the artboard — three traps + four plan
+            // items — the wrapper can grow past 100% and let
+            // MobileFrame's overflow-y: auto scroll the last item
+            // into reach. height: 100% capped the inner box and
+            // clipped the final card under the floating tab bar.
+            minHeight: isPhone ? '100%' : undefined,
             display: 'flex',
             flexDirection: 'column',
             color: 'var(--ink)',
