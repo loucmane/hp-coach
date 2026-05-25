@@ -7,8 +7,10 @@
 // "Öva igen" CTA.
 
 import { MathText } from '@/components/MathText'
-import { Btn, Eyebrow, Hairline, Mono } from '@/components/primitives'
+import { Btn, CoachLine, Eyebrow, Hairline, Mono } from '@/components/primitives'
 import type { AnswerLetter, Question } from '@/data/questions'
+import { VOICE } from '@/lib/voice'
+import { useCoachStore } from '@/stores/coachStore'
 
 export type DrillSummary = {
   questions: Question[]
@@ -26,6 +28,7 @@ export function DrillResult({ summary, onReplay, onHome }: Props) {
   const total = questions.length
   const correct = picks.reduce<number>((n, p, i) => (p === questions[i].answer ? n + 1 : n), 0)
   const pct = total === 0 ? 0 : Math.round((correct / total) * 100)
+  const coach = useCoachStore((s) => s.coach)
   const misses = questions
     .map((q, i) => ({ q, picked: picks[i] }))
     .filter(({ q, picked }) => picked !== q.answer)
@@ -83,17 +86,14 @@ export function DrillResult({ summary, onReplay, onHome }: Props) {
       </div>
 
       {misses.length === 0 ? (
-        <div
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 22,
-            lineHeight: 1.3,
-            color: 'var(--ink)',
-            letterSpacing: '-0.01em',
-          }}
-        >
-          Inga missar. Snyggt jobbat.
-        </div>
+        <CoachLine coach={coach} as="title">
+          {/* Strip the placeholder "Imorgon: …" tail from VOICE.sessionEnd
+              — those are authoring sketches for a future scheduler that
+              names tomorrow's plan. For now the first sentence is what
+              ships; the rest of the session-close ritual (named misses,
+              tomorrow's prescription) is Tier 2/3 work. */}
+          {VOICE[coach].sessionEnd.split(/\.\s+/)[0] + '.'}
+        </CoachLine>
       ) : (
         <>
           <Eyebrow>Att öva på</Eyebrow>

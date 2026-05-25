@@ -27,8 +27,11 @@ import { useEffect, useState } from 'react'
 import { type FeedbackEntry, getFeedback, submitFeedback } from '@/api/feedback'
 import { resolveSteps, StepList } from '@/components/drill/PedagogyPanel'
 import { MathText } from '@/components/MathText'
+import { CoachLine } from '@/components/primitives'
 import { type Explanation, loadExplanation } from '@/data/explanations'
 import { SECTION_KEYS, type Section } from '@/data/questions'
+import { VOICE } from '@/lib/voice'
+import { useCoachStore } from '@/stores/coachStore'
 
 type Props = {
   qid: string
@@ -96,7 +99,7 @@ export function ExplanationPanel({ qid, correct }: Props) {
       <Header correct={correct} expanded={expanded} onToggle={() => setExpanded((v) => !v)} />
       {expanded &&
         (state.kind === 'ready' ? (
-          <Body explanation={state.explanation} qid={qid} />
+          <Body explanation={state.explanation} qid={qid} correct={correct} />
         ) : (
           // idle (initial mount, useEffect hasn't fired yet) and loading
           // both render the skeleton; missing/error returned null earlier.
@@ -121,7 +124,10 @@ function Header({
   // calm cue about what the panel is about to say. Green-ish on a
   // right answer ("verify your reasoning"), warm on a wrong answer
   // ("here's what to learn").
-  const eyebrow = correct ? 'Bra jobbat — så här tänkte HP-Coach' : 'Så här löses uppgiften'
+  // Eyebrow stays editorial chrome ("category label"); the warm coach
+  // voice — VOICE[coach].feedbackRight/Wrong — renders in the Body
+  // panel below where there's room for the line + byline.
+  const eyebrow = correct ? 'Post-mortem' : 'Så här löses uppgiften'
   return (
     <button
       type="button"
@@ -152,7 +158,21 @@ function Header({
 
 // ── Body ──────────────────────────────────────────────────────────
 
-function Body({ explanation, qid }: { explanation: Explanation; qid: string }) {
+function Body({
+  explanation,
+  qid,
+  correct,
+}: {
+  explanation: Explanation
+  qid: string
+  correct: boolean
+}) {
+  const coach = useCoachStore((s) => s.coach)
+  // Same coach-voice deployment as desktop PedagogyPanel: VOICE[coach]
+  // .feedbackRight/Wrong renders as a coach-attributed beat directly
+  // under the toggle header, before the strategi block. Mobile gets
+  // the same personality as desktop now.
+  const voiceLine = correct ? VOICE[coach].feedbackRight : VOICE[coach].feedbackWrong
   // A.6V.5 — Phone bifurcation: when the explanation carries structured
   // `steps[]` (Phase A.6 corpus), render the same numbered-card
   // composition as desktop's PedagogyPanel. When it doesn't (legacy
@@ -165,6 +185,9 @@ function Body({ explanation, qid }: { explanation: Explanation; qid: string }) {
   const hasSteps = (explanation.steps?.length ?? 0) > 0
   return (
     <div style={{ padding: '14px 16px 16px' }}>
+      <CoachLine coach={coach} as="small" style={{ marginBottom: 14 }}>
+        {voiceLine}
+      </CoachLine>
       {explanation.pregrade_tactic && (
         <Strategi
           handle={explanation.pregrade_tactic.handle}

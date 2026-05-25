@@ -86,9 +86,12 @@ export function HomeMobile({
 }: HomeMobileProps = {}) {
   const renderStreak = showStreak ?? (streakDays !== undefined && streakDays > 0)
   const streakValue = streakDays ?? 0
-  // Coach voice isn't read in the prescriptive layout — the plan
-  // items carry the prescription, not a voice line — but the prop is
-  // kept for compatibility with existing call sites.
+  // Coach voice now lands on the drill funnel (PedagogyPanel,
+  // DrillResult). Home keeps the prescriptive DailyPlanCard as the
+  // primary surface — rendering VOICE[coach].homeLine here would
+  // duplicate the plan card's eyebrow. The prop + store read stays
+  // warm for the next-phase home voice deployment (visitMemory
+  // kicker, skip-day nudge — see synthesis Tier 2).
   const storeCoach = useCoachStore((s) => s.coach)
   void (coachProp ?? storeCoach)
 
