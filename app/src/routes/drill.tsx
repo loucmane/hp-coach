@@ -13,7 +13,7 @@ import { useDueMistakes, useRecordMistake } from '@/api/hooks/useMistakes'
 import { useActiveSession } from '@/api/hooks/useSessions'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { entryHeadword, loadFramework } from '@/data/frameworks'
-import { findQuestion, loadBank, type Section } from '@/data/questions'
+import { findQuestion, inferSectionFromQid, loadBank, type Section } from '@/data/questions'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions } from '@/lib/drill'
 import { REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
@@ -86,7 +86,14 @@ export const Route = createFileRoute('/drill')({
 
 function DrillScreen() {
   const { section: sectionFromUrl, qid, framework } = Route.useSearch()
-  const section: DrillSection = sectionFromUrl ?? 'ORD'
+  // When a deep link arrives with `?qid=…` but no `?section=…` — e.g. the
+  // lesson example-question rows that just send the qid — read the section
+  // off the qid itself instead of falling through to the ORD default. The
+  // default used to make the chrome render ORD even for a LÄS qid, and (worse)
+  // it tripped the active-session guard below: if the user happened to have
+  // an ORD session in progress, directLinkQid zeroed out and they landed on
+  // the generic ORD drill instead of the question they tapped.
+  const section: DrillSection = sectionFromUrl ?? (qid ? inferSectionFromQid(qid) : null) ?? 'ORD'
   const navigate = useNavigate()
 
   // URL-synced active qid. Preserves any other params (section,

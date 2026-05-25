@@ -147,3 +147,19 @@ export function findQuestion(bank: readonly Question[], qid: string): Question {
   if (!q) throw new Error(`Question not found: ${qid}`)
   return q
 }
+
+/**
+ * Read the section out of a qid by structure, without hitting the bank.
+ * Qids follow `{exam}-…-{SECTION}-{nnn}`, where {SECTION} is always one of
+ * SECTION_KEYS verbatim. We just look for the first hyphen-segment that
+ * matches a known section code — robust to qid format variants like
+ * `var-2026-verb1-ORD-001` and `host-ver1-2019-verb1-ORD-001`. Returns
+ * null when the qid is malformed or hand-typed garbage, so callers can
+ * fall back instead of throwing.
+ */
+export function inferSectionFromQid(qid: string): Section | null {
+  for (const part of qid.split('-')) {
+    if ((SECTION_KEYS as readonly string[]).includes(part)) return part as Section
+  }
+  return null
+}
