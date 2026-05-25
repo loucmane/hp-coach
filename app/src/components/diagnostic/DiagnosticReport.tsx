@@ -139,6 +139,8 @@ export function DiagnosticReport({ summary, onReplay, onHome }: Props) {
 
       {cluster && <ClusterCallout cluster={cluster} />}
 
+      <PlanenBlock weakest={weakest} cluster={cluster} />
+
       <Footer weakest={weakest} cluster={cluster} onReplay={onReplay} onHome={onHome} />
     </div>
   )
@@ -216,6 +218,109 @@ function ClusterCallout({ cluster }: { cluster: TrapCluster }) {
           </>
         )}
       </p>
+    </section>
+  )
+}
+
+// ── Planen ─────────────────────────────────────────────────────────
+//
+// Tier 2 #5. Pre-existing report told the user where they're weak +
+// what trap they keep falling for, then handed them ONE button. The
+// shape of the next few days wasn't visible — just a single click.
+// Planen makes the sequence explicit: read → drill → repetition. The
+// existing primary CTA stays below as the entry point to step 1.
+
+function PlanenBlock({
+  weakest,
+  cluster,
+}: {
+  weakest: SectionStat | null
+  cluster: TrapCluster | null
+}) {
+  const steps: { kicker: string; body: string }[] = []
+
+  // Step 1 — read the most-leveraged framework entry. Cluster wins
+  // when present (specific trap > section average), weakest section
+  // otherwise.
+  if (cluster) {
+    steps.push({
+      kicker: 'Steg 1',
+      body: `Läs lektionen för ${cluster.framework_id} — det är mönstret du tappar oftast.`,
+    })
+  } else if (weakest) {
+    steps.push({
+      kicker: 'Steg 1',
+      body: `Läs ${weakest.section}-lektionen — där tappade du flest poäng på diagnosen.`,
+    })
+  }
+
+  // Step 2 — drill the same section. Only worth showing when we
+  // have a section to point at.
+  if (weakest) {
+    steps.push({
+      kicker: 'Steg 2',
+      body: `Drilla ${weakest.section} — tio frågor, fokus på det du just läste.`,
+    })
+  }
+
+  // Step 3 — repetition. Always relevant: the diagnostic itself just
+  // seeded the mistake queue, so the user has fresh things to repeat.
+  steps.push({
+    kicker: 'Steg 3',
+    body: 'Repetera dina missar i morgon — de äldsta först.',
+  })
+
+  // Skip the whole block when we have nothing to anchor it to (no
+  // weakest section + no cluster = only step 3 would render, which
+  // is just "do repetition tomorrow" — not a plan).
+  if (steps.length < 2) return null
+
+  return (
+    <section data-testid="diagnostic-planen" style={{ marginTop: 'clamp(28px, 4vw, 48px)' }}>
+      <Eyebrow>Planen</Eyebrow>
+      <ol
+        style={{
+          listStyle: 'none',
+          margin: '12px 0 0 0',
+          padding: 0,
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {steps.map((s) => (
+          <li
+            key={s.kicker}
+            style={{
+              paddingBlock: 'clamp(12px, 1vw + 6px, 18px)',
+              borderTop: '1px solid var(--hairline)',
+            }}
+          >
+            <div
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 11,
+                letterSpacing: 'var(--font-mono-track)',
+                textTransform: 'uppercase',
+                color: 'var(--muted)',
+                marginBottom: 4,
+              }}
+            >
+              {s.kicker}
+            </div>
+            <p
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(16px, 0.6vw + 14px, 18px)',
+                lineHeight: 1.45,
+                color: 'var(--ink)',
+                margin: 0,
+              }}
+            >
+              {s.body}
+            </p>
+          </li>
+        ))}
+      </ol>
     </section>
   )
 }
