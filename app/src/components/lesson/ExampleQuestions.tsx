@@ -3,10 +3,11 @@
 // and LexiconCard (ORD).
 //
 // Each entry's framework JSON carries an `example_questions: string[]`
-// of qids that exemplify the pattern/rule/tactic. Rather than show
-// bare ids, we resolve each qid against the question bank, render its
-// prompt with KaTeX via MathText, and surface the correct answer
-// letter as a SVAR badge. Tap to deep-link into the drill.
+// of qids that exemplify the pattern/rule/tactic. We resolve each qid
+// against the question bank and render its prompt with KaTeX via
+// MathText. Tap to deep-link into /drill?qid=…, which is the place
+// that grades and reveals the answer with the full explanation — the
+// lesson page itself never spoils the answer letter.
 
 import { Link } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
@@ -71,15 +72,7 @@ export function ExampleQuestions({ qids }: { qids: string[] }) {
                   paddingTop: 10,
                 }}
               >
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'baseline',
-                    gap: 12,
-                    marginBottom: 4,
-                  }}
-                >
+                <div style={{ marginBottom: 4 }}>
                   <span
                     style={{
                       fontFamily: 'var(--font-mono)',
@@ -92,18 +85,6 @@ export function ExampleQuestions({ qids }: { qids: string[] }) {
                   >
                     {qid}
                   </span>
-                  {q && (
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 10.5,
-                        letterSpacing: '0.14em',
-                        color: 'var(--ink-2)',
-                      }}
-                    >
-                      SVAR {q.answer}
-                    </span>
-                  )}
                 </div>
                 <p
                   style={{
