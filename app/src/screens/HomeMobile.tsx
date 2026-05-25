@@ -22,7 +22,7 @@ import { MobileFrame, type TabKey } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Mono } from '@/components/primitives'
 import { useViewport } from '@/hooks/useViewport'
-import { formatSwedishHeader } from '@/lib/dates'
+import { examPhase, formatSwedishHeader } from '@/lib/dates'
 import { type DiagnosticMemory, formatTimeSince } from '@/lib/diagnosticMemory'
 import type { DailyPlan } from '@/lib/scheduler'
 import { formatScore, type ProjectedTotal } from '@/lib/scoring'
@@ -170,6 +170,27 @@ export function HomeMobile({
               >
                 {days} dagar kvar · {sitting.label.toLowerCase()}
               </div>
+              {/* Urgency tier: names the *phase* the user is in, not
+               *  just the number. Turns the day count from wallpaper
+               *  into a clock — same band of phases that Strava
+               *  training-plan and Apple Fitness use to frame
+               *  long-arc goals. Render only for future dates; past
+               *  dates suppress (the dogfood user's exam has already
+               *  happened or sitting hasn't been picked). */}
+              {days >= 0 && (
+                <div
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 11,
+                    letterSpacing: 'var(--font-mono-track)',
+                    color: 'var(--muted)',
+                    marginTop: 2,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {examPhase(days).label}
+                </div>
+              )}
               {diagnosticMemory && (
                 <a
                   href="/diagnostik"

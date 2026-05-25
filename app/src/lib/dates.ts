@@ -57,3 +57,38 @@ export function daysUntil(target: Date, from: Date = new Date()): number {
   const ms = b - a
   return Math.round(ms / 86_400_000)
 }
+
+// ── Exam-date urgency tiers ──────────────────────────────────────
+//
+// Maps `daysUntil(examDate)` to a Swedish label that names the
+// PHASE the user is in, not just the number. Surfacing the tier
+// under the bare day count turns wallpaper into a clock:
+//
+//   "154 dagar kvar · höstprov 26"     ← just a number, decorative
+//   "långt kvar · bygg vana"            ← named phase, actionable
+//
+// Phase bands chosen from the synthesis recommendation, tuned to the
+// HP prep calendar: most students start preparing 3-6 months out, so
+// the long-vana window dominates; the last 30 days are the high-
+// urgency tactical phase; the last week is exam itself.
+//
+//    > 180  →  long-vana    ("långt kvar · bygg vana")
+//   60–180  →  pressure     ("i schemat · trycket bygger")
+//   30–60   →  tactic       ("60-dagarsfönstret · taktik nu")
+//    7–30   →  sprint       ("slutspurt · repetera kända fällor")
+//    ≤ 7    →  exam-week    ("examensvecka · sov och repetera")
+//    < 0    →  past         ("provet är skrivet")
+//
+// Returned object is `{ key, label }` so callers can both render the
+// label AND switch behavior on the key (the scheduler will eventually
+// route different prescriptions per phase).
+export type ExamPhase = 'long-vana' | 'pressure' | 'tactic' | 'sprint' | 'exam-week' | 'past'
+
+export function examPhase(days: number): { key: ExamPhase; label: string } {
+  if (days < 0) return { key: 'past', label: 'provet är skrivet' }
+  if (days <= 7) return { key: 'exam-week', label: 'examensvecka · sov och repetera' }
+  if (days <= 30) return { key: 'sprint', label: 'slutspurt · repetera kända fällor' }
+  if (days <= 60) return { key: 'tactic', label: '60-dagarsfönstret · taktik nu' }
+  if (days <= 180) return { key: 'pressure', label: 'i schemat · trycket bygger' }
+  return { key: 'long-vana', label: 'långt kvar · bygg vana' }
+}
