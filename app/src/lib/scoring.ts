@@ -176,6 +176,33 @@ export function formatScore(score: number | null): string {
   return score == null ? '—' : score.toFixed(2)
 }
 
+/** Half-width of a 95% Wald confidence interval on the score, scaled to
+ *  the 0-2 grade range. The number to read as "± this much".
+ *
+ *  Math: score = 2 × fraction; SE(fraction) = sqrt(p(1-p)/n); 95% CI
+ *  half-width on fraction = 1.96 × SE; scaled to score, multiply by 2.
+ *
+ *  Returns null when:
+ *    - score is null (no attempts)
+ *    - attempts < 2 (a 1-attempt sample has no defined Wald interval)
+ *
+ *  Wald collapses to 0 at p=0 or p=1; that's mathematically true but
+ *  reads as misleading certainty ("0.00 ±0.00 from 3 attempts"). We
+ *  floor p to [0.05, 0.95] so the displayed band still acknowledges
+ *  uncertainty even on perfect or zero streaks until the sample grows. */
+export function scoreBand(score: number | null, attempts: number): number | null {
+  if (score == null || attempts < 2) return null
+  const rawP = score / 2
+  const p = Math.max(0.05, Math.min(0.95, rawP))
+  const se = Math.sqrt((p * (1 - p)) / attempts)
+  return 1.96 * 2 * se
+}
+
+/** Format the band as `±0.31`. Returns the em-dash when band is null. */
+export function formatBand(band: number | null): string {
+  return band == null ? '—' : `±${band.toFixed(2)}`
+}
+
 export function formatTrend(trend: number | null): string {
   if (trend == null) return '—'
   const arrow = trend > 0.05 ? '↗' : trend < -0.05 ? '↘' : '→'
