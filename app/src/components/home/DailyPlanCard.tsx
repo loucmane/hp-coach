@@ -66,9 +66,10 @@ export function DailyPlanCard({ plan, allComplete, onRegenerate, onNavigate }: D
           type="button"
           data-testid="daily-plan-regenerate"
           onClick={onRegenerate}
+          className="hpc-byt-plan"
           style={regenButtonStyle}
         >
-          Generera om
+          Byt plan →
         </button>
       </div>
 
@@ -239,7 +240,7 @@ function CompletePanel({ plan, onRegenerate }: { plan: DailyPlan; onRegenerate: 
           data-testid="daily-plan-regenerate-complete"
           style={inlineLinkStyle}
         >
-          generera ny plan
+          byt plan
         </button>
         .
       </p>
@@ -259,10 +260,16 @@ function kickerFor(item: PlanItem): string {
   }
 }
 
+// "Byt plan" — secondary chip CTA. Bordered + padded so it reads as a
+// button at the same typographic register as the eyebrow next to it
+// (mono 11px uppercase), without dominating the row. Was a plain
+// borderless text label before; the dogfood user couldn't tell it
+// was clickable. Hover state lives in index.css under .hpc-byt-plan.
 const regenButtonStyle: React.CSSProperties = {
   background: 'transparent',
-  border: 'none',
-  padding: 0,
+  border: '1px solid var(--hairline)',
+  borderRadius: 4,
+  padding: '4px 10px',
   fontFamily: 'var(--font-mono)',
   fontSize: 11,
   letterSpacing: 'var(--font-mono-track)',
