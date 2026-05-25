@@ -868,10 +868,10 @@ function chromeLabelsFor(
       return { headLabel: 'MOCK', statusMode: 'Mock' }
     case 'lesson':
       return { headLabel: 'LEKTION', statusMode: 'Lektion' }
-    case 'drill':
     default: {
-      // Drill carries a concrete section ("KVA", "NOG", …); fall back
-      // to "ÖVNING" for the rare case `sections` is undefined.
+      // 'drill' (the default case) carries a concrete section
+      // ("KVA", "NOG", …) in `sections`; fall back to "ÖVNING" for
+      // the rare case `sections` is undefined.
       const label = (sections || 'Övning').toString().toUpperCase()
       return { headLabel: label, statusMode: 'Övning' }
     }

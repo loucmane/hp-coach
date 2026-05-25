@@ -54,14 +54,13 @@ function RootShell() {
           <AuthRouter />
         </ClerkLoaded>
       </Frame>
-      {/* Dev-only floating affordances — kept out of the production
-       *  bundle entirely (Vite's `import.meta.env.DEV` is replaced at
-       *  build time with a literal `true`/`false`, so the dead branch
-       *  tree-shakes away). Without this gate the "share" and
-       *  "tweaks · dev" pills ride along on every user-facing screen,
-       *  which reads as workshop debris (dogfood B9). */}
-      {import.meta.env.DEV && <ShareDebugButton />}
-      {import.meta.env.DEV && <TweaksLauncher />}
+      {/* Both components self-gate via `isDevSurface()` — visible when
+       *  `import.meta.env.DEV` OR `?dev=1` is in the URL OR the
+       *  sessionStorage flag is set. Hidden in pure production
+       *  preview otherwise. No outer gate here (an earlier attempt to
+       *  add one broke the e2e `?dev=1` flow). */}
+      <ShareDebugButton />
+      <TweaksLauncher />
       <CommandPalette />
     </>
   )
