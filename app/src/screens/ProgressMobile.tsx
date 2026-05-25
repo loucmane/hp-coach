@@ -25,12 +25,14 @@ import { SECTION_KEYS, type Section } from '@/data/questions'
 import {
   computeProjected,
   computeSectionScore,
+  formatBand,
   formatScore,
   formatSwedishDateShort,
   formatTrend,
   isoWeek,
   rankWeakness,
   type SectionScore,
+  scoreBand,
 } from '@/lib/scoring'
 
 type ProgressMobileProps = {
@@ -327,14 +329,46 @@ function SectionRow({ s, isFirst }: { s: SectionScore; isFirst: boolean }) {
       </span>
       <span
         style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(20px, 1.4vw + 11px, 26px)',
-          color: 'var(--ink)',
-          fontVariantNumeric: 'tabular-nums',
-          letterSpacing: '-0.01em',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+          gap: 2,
         }}
       >
-        {formatScore(s.score)}
+        <span
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(20px, 1.4vw + 11px, 26px)',
+            color: 'var(--ink)',
+            fontVariantNumeric: 'tabular-nums',
+            letterSpacing: '-0.01em',
+            lineHeight: 1,
+          }}
+        >
+          {formatScore(s.score)}
+        </span>
+        {/* ±band — 95% Wald CI half-width on the 0-2 grade scale, paired
+         *  with the sample size. n=5 reads with visibly wider band than
+         *  n=80. Hidden when there's no signal (band null) or fewer than
+         *  2 attempts where the interval is undefined. */}
+        {(() => {
+          const band = scoreBand(s.score, s.attempts90d)
+          if (band == null) return null
+          return (
+            <span
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 10.5,
+                letterSpacing: '0.06em',
+                color: 'var(--muted)',
+                fontVariantNumeric: 'tabular-nums',
+              }}
+              data-testid={`progress-band-${s.section}`}
+            >
+              {formatBand(band)} · n={s.attempts90d}
+            </span>
+          )
+        })()}
       </span>
     </Link>
   )
