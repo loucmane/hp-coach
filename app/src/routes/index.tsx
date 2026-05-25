@@ -26,7 +26,7 @@ export const Route = createFileRoute('/')({
 function HomeRoute() {
   const navigate = useNavigate()
   const stats = useStats()
-  const { plan, allComplete, regenerate } = useDailyPlan()
+  const { plan, allComplete } = useDailyPlan()
   // First name powers the personalized greeting on HomeMobile.
   // `user?.firstName` is the canonical Clerk field; falls back to
   // the name half of `fullName` if firstName isn't set on the
@@ -98,7 +98,6 @@ function HomeRoute() {
     <HomeMobile
       plan={plan}
       allComplete={allComplete}
-      onRegenerate={regenerate}
       projected={projected}
       diagnosticMemory={diagnosticMemory}
       daysAway={daysAwaySnapshot}
