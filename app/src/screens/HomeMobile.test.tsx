@@ -4,11 +4,10 @@
 //   - Plan provided → DailyPlanCard rendered with the items
 //   - allComplete → "Klart för idag" panel
 //   - Streak badge logic preserved (chrome, not part of the plan flow)
-//   - markComplete + regenerate callbacks fire from the card
+//   - No regenerate affordance (the daily plan is authoritative)
 
 import { render, screen, within } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { type DailyPlan, PLAN_SCHEMA_VERSION } from '@/lib/scheduler'
 import { HomeMobile } from './HomeMobile'
