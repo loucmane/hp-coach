@@ -37,6 +37,7 @@
 import { Link, useLocation } from '@tanstack/react-router'
 import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from 'react'
 
+import { BrandMark } from '@/components/BrandMark'
 import { EditionStrip } from '@/components/EditionStrip'
 import { useViewport } from '@/hooks/useViewport'
 
@@ -113,7 +114,14 @@ export function Page({ runningHead, folio, status, children, style }: Props) {
   // as Phase A.5/A.7 left it.
   if (viewport === 'phone') return <>{children}</>
 
-  const headText = Array.isArray(runningHead) ? runningHead.join(' · ') : runningHead
+  // Strip the "HP · Coach" prefix every caller passes — we render the
+  // brand via the BrandMark component now, with the ⌜ corner-bracket
+  // signature. Whatever remains (the page-name token, e.g. "Hem" /
+  // "Lektion · KVA") becomes the inline section label rendered to the
+  // right of the wordmark. Was: `HP · COACH · HEM` text; now:
+  // `⌜ HP-Coach · HEM`.
+  const rawText = Array.isArray(runningHead) ? runningHead.join(' · ') : runningHead
+  const headText = rawText.replace(/^HP\s*·\s*Coach\s*·?\s*/i, '').trim()
 
   return (
     <div
@@ -268,24 +276,34 @@ function RunningHeadBand({ runningHead, isPhone }: { runningHead: string; isPhon
           flex: '1 1 auto',
         }}
       >
-        <span
-          data-testid="running-head"
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontWeight: 500,
-            fontSize: isPhone ? 12 : 13,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: 'var(--ink)',
-            // Subtle pre-content baseline gap so the hairline rule
-            // beneath the band reads as the page band's bottom edge,
-            // not as a hugging line under the text.
-            paddingBottom: isPhone ? 8 : 14,
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {runningHead}
-        </span>
+        {/* Editorial brand wordmark: `⌜ HP-Coach` in display type with
+         *  the corner-bracket signature. Replaces the previous text
+         *  prefix `HP · COACH ·` that ran ahead of each page name —
+         *  the brand now reads as a designed mark on every signed-in
+         *  surface, mirroring what AuthLayout shows on the sign-in /
+         *  sign-up screens. Surfaces dogfood-finding "BrandMark hidden
+         *  post-login" (synthesis Tier 1 #3). */}
+        <BrandMark style={{ paddingBottom: isPhone ? 8 : 14 }} />
+        {runningHead && (
+          <span
+            data-testid="running-head"
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontWeight: 500,
+              fontSize: isPhone ? 12 : 13,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: 'var(--ink-2)',
+              // Subtle pre-content baseline gap so the hairline rule
+              // beneath the band reads as the page band's bottom edge,
+              // not as a hugging line under the text.
+              paddingBottom: isPhone ? 8 : 14,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            · {runningHead}
+          </span>
+        )}
         {/* Editorial inline nav — visible signposts to top-level routes.
          *  Phase B nav addition. Phone keeps its bottom tab bar; desktop
          *  gets the magazine masthead pattern instead. */}
