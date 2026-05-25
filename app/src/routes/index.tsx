@@ -16,6 +16,7 @@ import { useDailyPlan } from '@/hooks/useDailyPlan'
 import { type DiagnosticMemory, loadDiagnosticMemory } from '@/lib/diagnosticMemory'
 import { TAB_ROUTE } from '@/lib/nav'
 import { computeProjected, computeSectionScore } from '@/lib/scoring'
+import { daysSinceVisit, loadPreviousVisit, markVisit } from '@/lib/visitMemory'
 import { HomeMobile } from '@/screens/HomeMobile'
 
 export const Route = createFileRoute('/')({
@@ -66,6 +67,18 @@ function HomeRoute() {
     return () => window.removeEventListener('focus', refresh)
   }, [])
 
+  // Visit memory — gap between previous Home visit and now. Captured
+  // ONCE on mount: read the previous timestamp BEFORE writing the
+  // current one, so the gap reflects "how long it had been before I
+  // opened the app this time", not "0 days because I just touched
+  // localStorage". Computed in days (rounded down) — same-day re-
+  // visits return 0 and the kicker stays hidden.
+  const [daysAwaySnapshot] = useState<number | null>(() => {
+    const previous = loadPreviousVisit()
+    markVisit()
+    return daysSinceVisit(previous)
+  })
+
   // The scheduler emits hrefs as raw URL strings (e.g.
   // `/lektion?section=KVA`). TanStack's `navigate({ to })` treats `to`
   // as the route key, not a URL — it doesn't parse `?query` out of the
@@ -88,6 +101,7 @@ function HomeRoute() {
       onRegenerate={regenerate}
       projected={projected}
       diagnosticMemory={diagnosticMemory}
+      daysAway={daysAwaySnapshot}
       topTraps={topTraps}
       onPlanItemNavigate={navigateHref}
       streakDays={streakDays}

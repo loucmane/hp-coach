@@ -45,6 +45,12 @@ type HomeMobileProps = {
    *  0.62 · rebaseline →`. Closes B4: the diagnostic seeds the score
    *  model, but without this line the user has no way to feel it. */
   diagnosticMemory?: DiagnosticMemory | null
+  /** Days since the user's previous Home visit, measured at mount on
+   *  the route side via visitMemory.ts. When ≥ 2 the header renders a
+   *  mono "tillbaka · X dagar sedan" kicker so the app acknowledges
+   *  the gap. 0 / 1 / null keep the kicker hidden — same-day re-
+   *  visits would be noise. */
+  daysAway?: number | null
   /** Top recurring trap patterns from the active mistake queue.
    *  Rendered between the score line and the plan card. Empty array
    *  hides the section — silent on signal-less days. */
@@ -80,6 +86,7 @@ export function HomeMobile({
   onRegenerate = NOOP,
   projected = null,
   diagnosticMemory = null,
+  daysAway = null,
   topTraps = [],
   onPlanItemNavigate,
   coach: coachProp,
@@ -189,6 +196,22 @@ export function HomeMobile({
                   }}
                 >
                   {examPhase(days).label}
+                </div>
+              )}
+              {daysAway != null && daysAway >= 2 && (
+                <div
+                  data-testid="home-visit-memory"
+                  style={{
+                    marginTop: 6,
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 11,
+                    letterSpacing: 'var(--font-mono-track)',
+                    textTransform: 'uppercase',
+                    color: 'var(--ink-2)',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}
+                >
+                  Tillbaka <span style={{ color: 'var(--muted)' }}>·</span> {daysAway} dagar sedan
                 </div>
               )}
               {diagnosticMemory && (
