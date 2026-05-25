@@ -31,9 +31,11 @@ import { useEffect, useState } from 'react'
 
 import { type FeedbackEntry, getFeedback, submitFeedback } from '@/api/feedback'
 import { MathText } from '@/components/MathText'
-import { Eyebrow, L1Chip, Mono } from '@/components/primitives'
+import { CoachLine, Eyebrow, L1Chip, Mono } from '@/components/primitives'
 import { type Explanation, type ExplanationStep, loadExplanation } from '@/data/explanations'
 import { SECTION_KEYS, type Section } from '@/data/questions'
+import { VOICE } from '@/lib/voice'
+import { useCoachStore } from '@/stores/coachStore'
 
 type Props = {
   qid: string
@@ -258,11 +260,21 @@ function PostGradeBody({
   qid: string
   correct: boolean
 }) {
-  const eyebrow = correct ? 'Bra jobbat — så här tänkte HP-Coach' : 'Så här löses uppgiften'
+  const coach = useCoachStore((s) => s.coach)
+  // Coach voice attribution sits between the eyebrow (category label)
+  // and the apparatus (steps + distractors). The eyebrow stays
+  // editorial chrome; the coach line is the personality. VOICE[coach]
+  // is what makes this read as "Märta said this" instead of "the app
+  // emitted a string."
+  const voiceLine = correct ? VOICE[coach].feedbackRight : VOICE[coach].feedbackWrong
+  const eyebrow = correct ? 'Post-mortem' : 'Så här löses uppgiften'
   const steps = resolveSteps(explanation)
   return (
     <>
       <Eyebrow style={{ color: correct ? 'var(--ok)' : 'var(--ink-2)' }}>{eyebrow}</Eyebrow>
+      <CoachLine coach={coach} as="small" style={{ marginTop: 8, marginBottom: 12 }}>
+        {voiceLine}
+      </CoachLine>
       {explanation.framework_id && <FrameworkChip frameworkId={explanation.framework_id} />}
       {explanation.pregrade_tactic && (
         <StrategiBlock

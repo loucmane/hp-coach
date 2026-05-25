@@ -135,8 +135,13 @@ test('Page shell renders at desktop, BottomTabs at phone', async ({ page }) => {
   await page.goto('/')
   await expect(page.getByTestId('home-greeting')).toBeVisible({ timeout: 10_000 })
   // Editorial running-head band + status line are the Page shell's contract.
+  // Brand now ships via the <BrandMark> component (`brand-mark` testid)
+  // with the ⌜ corner-bracket signature; `running-head` carries only
+  // the section label ("· Hem"). Previously both lived in the
+  // `running-head` testid as text.
   await expect(page.getByTestId('page-shell')).toBeVisible()
-  await expect(page.getByTestId('running-head')).toContainText(/HP\s*·\s*Coach/i)
+  await expect(page.getByTestId('brand-mark')).toContainText(/HP-Coach/i)
+  await expect(page.getByTestId('running-head')).toContainText(/Hem/i)
   await expect(page.getByTestId('status-line')).toBeVisible()
 
   // Phone — no Page chrome (Page is a passthrough at phone). Phone tabs

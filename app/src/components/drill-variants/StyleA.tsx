@@ -51,6 +51,9 @@ import { EditionStrip } from '@/components/EditionStrip'
 import { MathText } from '@/components/MathText'
 import { NavLinks } from '@/components/Page'
 import { PreGradeFill } from '@/components/pre-grade/PreGradeFill'
+import { CoachLine } from '@/components/primitives'
+import { VOICE } from '@/lib/voice'
+import { useCoachStore } from '@/stores/coachStore'
 import type { VariantData } from './DrillVariantShell'
 import { useExplanation } from './useExplanation'
 import { useProgressiveReveal } from './useProgressiveReveal'
@@ -72,6 +75,16 @@ export function StyleA({
   const explanation = explanationProp ?? fetched
   const steps = explanation ? resolveSteps(explanation) : []
   const reveal = useProgressiveReveal(steps)
+  const coach = useCoachStore((s) => s.coach)
+  // Coach-attributed feedback line. Renders at the top of the
+  // post-grade body (above the step walk-through). Same shape as
+  // PedagogyPanel + ExplanationPanel deployment — voice is now
+  // visible on every active drill path.
+  const voiceLine = graded
+    ? correct
+      ? VOICE[coach].feedbackRight
+      : VOICE[coach].feedbackWrong
+    : null
   // LÄS / ELF have multi-paragraph passages that need a book-width
   // reading column. Toggles the grid template + canvas max-width
   // below so the passage column expands and pedagogy compresses.
@@ -548,6 +561,15 @@ export function StyleA({
             // walk-through with the canonical Nästa fråga button at the
             // end.
             <>
+              {voiceLine && (
+                <CoachLine
+                  coach={coach}
+                  as="small"
+                  style={{ marginBottom: 'clamp(20px, 2.5vh, 28px)' }}
+                >
+                  {voiceLine}
+                </CoachLine>
+              )}
               {steps.map((step, i) => {
                 const isDetail = (step.tier ?? 'essential') === 'detail'
                 const isCollapsed = reveal.isCollapsedDetail(step)

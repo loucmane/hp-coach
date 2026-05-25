@@ -17,6 +17,7 @@
 // eyebrow / hero headline / three picker rows / single CTA. No
 // modal, no animation; one long page the user scrolls if needed.
 
+import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
 import { Btn, Eyebrow } from '@/components/primitives'
@@ -36,6 +37,8 @@ function WelcomeRoute() {
   const setPalette = useUiStore((s) => s.setPalette)
   const setEdition = useUiStore((s) => s.setEdition)
   const activeEdition = useActiveEdition()
+  const { user } = useUser()
+  const firstName = user?.firstName ?? user?.fullName?.split(' ')[0] ?? null
 
   const onContinue = () => {
     try {
@@ -83,7 +86,7 @@ function WelcomeRoute() {
               margin: 0,
             }}
           >
-            Gör den till din.
+            {firstName ? `${firstName}, gör den till din.` : 'Gör den till din.'}
           </h1>
           <p
             style={{

@@ -83,6 +83,17 @@ export function TrapCard({
           />
           {/* text set via CSS ::before so it flips on [open] without JS */}
         </div>
+        {/* Headword: the `tldr` field IS the coach-voiced one-line
+         *  lesson ("Kvadratlikhet låser inte tecknet — x² = y² öppnar
+         *  både x = y och x = −y."), authored as the principle the
+         *  student should walk away with. `pattern_description` is
+         *  the clinical observation ("Student ser x² = y² och drar
+         *  slutsatsen x = y..."), which belongs as supporting body
+         *  text, not the headword. Swapping makes the scrollable list
+         *  read like a book of one-line lessons instead of a catalog
+         *  of error codes (synthesis Tier 1 #5). Fallback chain:
+         *  tldr → pattern_description for any entry that doesn't
+         *  have a tldr yet. */}
         <h3
           style={{
             fontFamily: 'var(--font-display)',
@@ -93,12 +104,29 @@ export function TrapCard({
             margin: 0,
           }}
         >
-          <MathText>{entry.pattern_description}</MathText>
+          <MathText>{entry.tldr || entry.pattern_description}</MathText>
         </h3>
       </summary>
 
       <div style={{ marginTop: 20 }}>
-        {entry.tldr && <TldrLead text={entry.tldr} />}
+        {/* Pattern description — what the student typically does —
+         *  is now the opening body paragraph. When tldr is missing
+         *  (the headword fell back to pattern_description), skip the
+         *  duplicate by checking `entry.tldr`. */}
+        {entry.tldr && entry.pattern_description && (
+          <p
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(15px, 0.6vw + 13px, 17px)',
+              lineHeight: 1.55,
+              color: 'var(--ink-2)',
+              marginTop: 0,
+              marginBottom: 18,
+            }}
+          >
+            <MathText>{entry.pattern_description}</MathText>
+          </p>
+        )}
 
         <p
           style={{
@@ -106,7 +134,7 @@ export function TrapCard({
             fontSize: 'clamp(15px, 0.6vw + 13px, 17px)',
             lineHeight: 1.55,
             color: 'var(--ink-2)',
-            marginTop: entry.tldr ? 18 : 0,
+            marginTop: 0,
             marginBottom: 0,
           }}
         >
@@ -198,25 +226,6 @@ export function TrapCard({
         </div>
       </div>
     </details>
-  )
-}
-
-function TldrLead({ text }: { text: string }) {
-  return (
-    <p
-      style={{
-        fontFamily: 'var(--font-display)',
-        fontStyle: 'italic',
-        fontSize: 'clamp(17px, 0.8vw + 14px, 20px)',
-        lineHeight: 1.4,
-        color: 'var(--ink)',
-        margin: 0,
-        paddingLeft: 'clamp(16px, 1vw + 10px, 24px)',
-        borderLeft: '2px solid var(--ink)',
-      }}
-    >
-      <MathText>{text}</MathText>
-    </p>
   )
 }
 

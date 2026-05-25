@@ -5,6 +5,7 @@
 // Streak comes from `useStats()` directly so the badge can render
 // independently of the plan readiness.
 
+import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -25,6 +26,13 @@ function HomeRoute() {
   const navigate = useNavigate()
   const stats = useStats()
   const { plan, allComplete, regenerate } = useDailyPlan()
+  // First name powers the personalized greeting on HomeMobile.
+  // `user?.firstName` is the canonical Clerk field; falls back to
+  // the name half of `fullName` if firstName isn't set on the
+  // account. Null while Clerk is still loading — HomeMobile renders
+  // the anonymous "God morgon." in that window.
+  const { user } = useUser()
+  const firstName = user?.firstName ?? user?.fullName?.split(' ')[0] ?? null
 
   const streakDays = stats.data?.streakDays
   const topTraps = useTopTraps()
@@ -83,6 +91,7 @@ function HomeRoute() {
       topTraps={topTraps}
       onPlanItemNavigate={navigateHref}
       streakDays={streakDays}
+      firstName={firstName}
       onAvancerat={() => navigate({ to: '/avancerat' })}
       onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
     />

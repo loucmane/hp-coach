@@ -22,7 +22,7 @@ import { MobileFrame, type TabKey } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Mono } from '@/components/primitives'
 import { useViewport } from '@/hooks/useViewport'
-import { formatSwedishHeader } from '@/lib/dates'
+import { examPhase, formatSwedishHeader } from '@/lib/dates'
 import { type DiagnosticMemory, formatTimeSince } from '@/lib/diagnosticMemory'
 import type { DailyPlan } from '@/lib/scheduler'
 import { formatScore, type ProjectedTotal } from '@/lib/scoring'
@@ -60,6 +60,12 @@ type HomeMobileProps = {
   streakDays?: number
   /** Override "now" so screenshots / tests render a stable date. */
   now?: Date
+  /** Clerk user's first name. When present, the greeting becomes
+   *  "God morgon, Loucmane." instead of the anonymous "God morgon.".
+   *  The route reads it from `useUser()` and passes it through; null
+   *  / missing leaves the bare greeting (cold-start, e2e, signed-out
+   *  preview). */
+  firstName?: string | null
   onTabChange?: (id: TabKey) => void
   onAvancerat?: () => void
   /** Test-only override for viewport detection. */
@@ -77,6 +83,7 @@ export function HomeMobile({
   topTraps = [],
   onPlanItemNavigate,
   coach: coachProp,
+  firstName,
   showStreak,
   streakDays,
   now,
@@ -86,9 +93,12 @@ export function HomeMobile({
 }: HomeMobileProps = {}) {
   const renderStreak = showStreak ?? (streakDays !== undefined && streakDays > 0)
   const streakValue = streakDays ?? 0
-  // Coach voice isn't read in the prescriptive layout — the plan
-  // items carry the prescription, not a voice line — but the prop is
-  // kept for compatibility with existing call sites.
+  // Coach voice now lands on the drill funnel (PedagogyPanel,
+  // DrillResult). Home keeps the prescriptive DailyPlanCard as the
+  // primary surface — rendering VOICE[coach].homeLine here would
+  // duplicate the plan card's eyebrow. The prop + store read stays
+  // warm for the next-phase home voice deployment (visitMemory
+  // kicker, skip-day nudge — see synthesis Tier 2).
   const storeCoach = useCoachStore((s) => s.coach)
   void (coachProp ?? storeCoach)
 
@@ -160,6 +170,27 @@ export function HomeMobile({
               >
                 {days} dagar kvar · {sitting.label.toLowerCase()}
               </div>
+              {/* Urgency tier: names the *phase* the user is in, not
+               *  just the number. Turns the day count from wallpaper
+               *  into a clock — same band of phases that Strava
+               *  training-plan and Apple Fitness use to frame
+               *  long-arc goals. Render only for future dates; past
+               *  dates suppress (the dogfood user's exam has already
+               *  happened or sitting hasn't been picked). */}
+              {days >= 0 && (
+                <div
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 11,
+                    letterSpacing: 'var(--font-mono-track)',
+                    color: 'var(--muted)',
+                    marginTop: 2,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {examPhase(days).label}
+                </div>
+              )}
               {diagnosticMemory && (
                 <a
                   href="/diagnostik"
@@ -219,7 +250,7 @@ export function HomeMobile({
                 animationDelay: '60ms',
               }}
             >
-              {greetingHeadline}.
+              {firstName ? `${greetingHeadline}, ${firstName}.` : `${greetingHeadline}.`}
             </h1>
 
             {hasAnySignal && projected && (
