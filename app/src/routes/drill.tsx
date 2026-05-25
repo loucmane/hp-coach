@@ -165,19 +165,29 @@ function DrillScreen() {
       : () => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)
 
   const frameworkDisplay = frameworkHeadword ?? framework
-  const idleEyebrow = directLinkQid ? 'Direktlänk' : framework ? 'Mönsterövning' : 'Övning'
+  // Direct-link idle was first written for variant-comparison / debug
+  // (the qid as a giant display headline + "för granskning eller debug"
+  // subcopy). It now also lands legitimate lesson taps, so the chrome
+  // has to read like an editorial "you're about to attempt this question"
+  // surface — section in the eyebrow, a calm headline, the qid moved
+  // down to the meta line where it belongs as detail, not headline.
+  const idleEyebrow = directLinkQid
+    ? `Direktlänk · ${section}`
+    : framework
+      ? 'Mönsterövning'
+      : 'Övning'
   const idleHeadline = directLinkQid
-    ? directLinkQid
+    ? 'En specifik fråga'
     : framework
       ? (frameworkDisplay ?? framework)
       : copy.headline
   const idleSubcopy = directLinkQid
-    ? 'En specifik fråga via ?qid= — för granskning eller debug.'
+    ? 'Tryck Starta för att försöka. Du får direktrespons med förklaring efter ditt svar.'
     : framework
       ? `Exempelfrågor från lektionen som illustrerar detta mönster.`
       : copy.subcopy
   const idleMeta = directLinkQid
-    ? '1 fråga · ingen sessionsgrad'
+    ? `${directLinkQid} · 1 poäng om rätt`
     : framework
       ? 'Exempelfrågor · 1 poäng per rätt'
       : `~ ${SECTION_DURATIONS[section]} minuter · 1 poäng per rätt`
