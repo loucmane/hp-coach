@@ -60,6 +60,12 @@ type HomeMobileProps = {
   streakDays?: number
   /** Override "now" so screenshots / tests render a stable date. */
   now?: Date
+  /** Clerk user's first name. When present, the greeting becomes
+   *  "God morgon, Loucmane." instead of the anonymous "God morgon.".
+   *  The route reads it from `useUser()` and passes it through; null
+   *  / missing leaves the bare greeting (cold-start, e2e, signed-out
+   *  preview). */
+  firstName?: string | null
   onTabChange?: (id: TabKey) => void
   onAvancerat?: () => void
   /** Test-only override for viewport detection. */
@@ -77,6 +83,7 @@ export function HomeMobile({
   topTraps = [],
   onPlanItemNavigate,
   coach: coachProp,
+  firstName,
   showStreak,
   streakDays,
   now,
@@ -222,7 +229,7 @@ export function HomeMobile({
                 animationDelay: '60ms',
               }}
             >
-              {greetingHeadline}.
+              {firstName ? `${greetingHeadline}, ${firstName}.` : `${greetingHeadline}.`}
             </h1>
 
             {hasAnySignal && projected && (
