@@ -13,6 +13,7 @@
 import { useNavigate } from '@tanstack/react-router'
 import { type KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { isDevSurface } from '@/lib/devSurface'
 import { Mono } from './primitives'
 
 type Command = {
@@ -134,6 +135,13 @@ const COMMANDS: Command[] = [
   },
 ]
 
+// IDs that surface only when isDevSurface() returns true — same gate
+// TweaksLauncher and ShareDebugButton use, so all three dev-only
+// affordances appear/disappear together (dogfood B10). Without this
+// the palette showed "Dev panel /DEV" on every production session
+// even though the floating launcher already correctly hid itself.
+const DEV_ONLY_COMMAND_IDS = new Set(['dev'])
+
 export function CommandPalette() {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
@@ -166,14 +174,23 @@ export function CommandPalette() {
     }
   }, [open])
 
+  // Hide dev-only commands ("Dev panel") in pure production sessions.
+  // `isDevSurface()` reads runtime state (URL + sessionStorage), so we
+  // pin it via the `open` boolean — re-read every time the palette
+  // opens. That catches a `?dev=1` opt-in that happened mid-session
+  // (sessionStorage now has the flag) without forcing a remount.
+  // Memo depends on `query` for search + on `dev` for the flag, both
+  // tracked as values rather than via direct call-in-deps.
+  const dev = open && isDevSurface()
   const filtered = useMemo(() => {
+    const visible = dev ? COMMANDS : COMMANDS.filter((cmd) => !DEV_ONLY_COMMAND_IDS.has(cmd.id))
     const q = query.trim().toLowerCase()
-    if (!q) return COMMANDS
-    return COMMANDS.filter((cmd) => {
+    if (!q) return visible
+    return visible.filter((cmd) => {
       const haystack = [cmd.label, cmd.hint ?? '', ...(cmd.keywords ?? [])].join(' ').toLowerCase()
       return haystack.includes(q)
     })
-  }, [query])
+  }, [query, dev])
 
   // Keep the highlight inside [0, filtered.length).
   useEffect(() => {

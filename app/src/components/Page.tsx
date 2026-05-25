@@ -134,6 +134,15 @@ export function Page({ runningHead, folio, status, children, style }: Props) {
           minHeight: 0,
           display: 'flex',
           flexDirection: 'column',
+          // Reserve ~48px at the bottom so the sticky StatusLine
+          // doesn't visually overlap the last row of content as the
+          // user scrolls down. The footer is sticky-bottom and lives
+          // in the same flex column as page-content, so without this
+          // padding it floats over (frosted but still occluding) the
+          // last list row — visible on /progress where the SEKTIONER
+          // table ran into the floating `-- FRAMSTEG --` bar
+          // (dogfood B8).
+          paddingBottom: 48,
         }}
       >
         {children}

@@ -12,27 +12,7 @@
 
 import { Link, useRouterState } from '@tanstack/react-router'
 
-// In a production preview, the launcher should still be reachable for a
-// session if you opened the app with `?dev=1`. Once you do, it sticks via
-// sessionStorage so navigation away doesn't strip it (TanStack navigate
-// drops query params by default).
-const DEV_SESSION_KEY = 'hpc-dev-mode'
-
-function isDevSurface() {
-  if (import.meta.env.DEV) return true
-  if (typeof window === 'undefined') return false
-  if (new URLSearchParams(window.location.search).has('dev')) {
-    try {
-      sessionStorage.setItem(DEV_SESSION_KEY, '1')
-    } catch (_) {}
-    return true
-  }
-  try {
-    return sessionStorage.getItem(DEV_SESSION_KEY) === '1'
-  } catch (_) {
-    return false
-  }
-}
+import { isDevSurface } from '@/lib/devSurface'
 
 export function TweaksLauncher() {
   const here = useRouterState({ select: (s) => s.location.pathname })

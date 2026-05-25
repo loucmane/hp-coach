@@ -20,28 +20,9 @@
 import { useRouterState } from '@tanstack/react-router'
 import { useState } from 'react'
 
+import { isDevSurface } from '@/lib/devSurface'
 import { useCoachStore } from '@/stores/coachStore'
 import { useUiStore } from '@/stores/uiStore'
-
-// Same dev-surface gate as TweaksLauncher — keeps the two affordances
-// in lockstep (if you can see one, you can see the other).
-const DEV_SESSION_KEY = 'hpc-dev-mode'
-
-function isDevSurface() {
-  if (import.meta.env.DEV) return true
-  if (typeof window === 'undefined') return false
-  if (new URLSearchParams(window.location.search).has('dev')) {
-    try {
-      sessionStorage.setItem(DEV_SESSION_KEY, '1')
-    } catch (_) {}
-    return true
-  }
-  try {
-    return sessionStorage.getItem(DEV_SESSION_KEY) === '1'
-  } catch (_) {
-    return false
-  }
-}
 
 // Elements we track for font/style audit. Each is a data-testid that
 // renders content the user might point at as "looks wrong." Order
