@@ -35,7 +35,6 @@ type HomeMobileProps = {
   plan?: DailyPlan | null
   /** True iff every plan item is complete. Drives the "Klart för idag" state. */
   allComplete?: boolean
-  onRegenerate?: () => void
   /** Optional per-half + total projection rendered as a mono kicker
    *  above the plan card. Null/undefined hides the line (cold-start,
    *  loading). Route owns the data wire so HomeMobile stays pure. */
@@ -77,7 +76,6 @@ const NOOP = () => {}
 export function HomeMobile({
   plan = null,
   allComplete = false,
-  onRegenerate = NOOP,
   projected = null,
   diagnosticMemory = null,
   topTraps = [],
@@ -285,7 +283,6 @@ export function HomeMobile({
               <DailyPlanCard
                 plan={plan}
                 allComplete={allComplete}
-                onRegenerate={onRegenerate}
                 onNavigate={onPlanItemNavigate}
               />
             ) : (
