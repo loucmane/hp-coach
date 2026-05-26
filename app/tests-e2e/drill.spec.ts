@@ -101,9 +101,14 @@ test('Drill ORD — 10 questions, all correct, end-to-end', async ({ page }, tes
     await nextBtn.click({ force: true })
   }
 
-  // Result screen should show 10/10 — every pick was the correct letter.
+  // Result screen should show the `Klart.` payoff. The composition
+  // changed (no more bare "10" score testid) — the Detaljer card's
+  // first row carries the correct/total figure now. Assert both the
+  // headline and the Detaljer row text so we catch regressions in
+  // either band.
   await expect(page.getByTestId('drill-result')).toBeVisible({ timeout: 10_000 })
-  await expect(page.getByTestId('drill-score')).toHaveText('10')
+  await expect(page.getByTestId('drill-result-headline')).toHaveText('Klart.')
+  await expect(page.getByTestId('drill-result-detaljer')).toContainText('10/10')
 })
 
 test('Cmd+K palette — open via keyboard, navigate to drill', async ({ page }) => {
