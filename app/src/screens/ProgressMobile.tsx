@@ -20,6 +20,7 @@ import { Link } from '@tanstack/react-router'
 
 import type { Stats } from '@/api/hooks/useStats'
 import { Eyebrow, Hairline, Mono } from '@/components/primitives'
+import { ConsistencyHeat } from '@/components/progress/ConsistencyHeat'
 import { TrendChart } from '@/components/progress/TrendChart'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import {
@@ -82,6 +83,10 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
       </div>
 
       <Hairline style={{ marginTop: 36, marginBottom: 24 }} />
+
+      <ConsistencyHeat days={stats?.attemptsDaily} />
+
+      <Hairline style={{ marginTop: 32, marginBottom: 24 }} />
 
       <WeeklyMasthead stats={stats} />
 

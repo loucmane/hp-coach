@@ -35,6 +35,25 @@ export type Stats = {
   bySection: Record<Section, SectionStats>
   /** 12-week rolling buckets, oldest first. Drives the trend chart. */
   weekly: WeeklyBucket[]
+  /** Per-day attempt counts for the last 84 days, oldest first. Drives
+   *  the consistency heatmap on /progress. Each entry's `n` is the
+   *  total attempts that day; `verbal` and `quant` split it along the
+   *  exam's two-halves axis. Pre-seeded with `n: 0` entries for gap
+   *  days so the heatmap never has missing cells. Optional during the
+   *  worker rollout window — components fall back to an empty grid
+   *  when missing. */
+  attemptsDaily?: AttemptsDailyBucket[]
+}
+
+export type AttemptsDailyBucket = {
+  /** UTC YYYY-MM-DD. */
+  date: string
+  /** Total attempts that day. */
+  n: number
+  /** Attempts in ORD / LÄS / MEK / ELF. */
+  verbal: number
+  /** Attempts in XYZ / KVA / NOG / DTK. */
+  quant: number
 }
 
 export function useStats() {
