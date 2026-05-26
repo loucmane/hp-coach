@@ -14,6 +14,7 @@ import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as RepetitionRouteImport } from './routes/repetition'
 import { Route as ProgressRouteImport } from './routes/progress'
+import { Route as LoopBakeoffRouteImport } from './routes/loop-bakeoff'
 import { Route as LektionRouteImport } from './routes/lektion'
 import { Route as ExplanationBakeOffRouteImport } from './routes/explanation-bake-off'
 import { Route as DtkBrowserRouteImport } from './routes/dtk-browser'
@@ -52,6 +53,11 @@ const RepetitionRoute = RepetitionRouteImport.update({
 const ProgressRoute = ProgressRouteImport.update({
   id: '/progress',
   path: '/progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoopBakeoffRoute = LoopBakeoffRouteImport.update({
+  id: '/loop-bakeoff',
+  path: '/loop-bakeoff',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LektionRoute = LektionRouteImport.update({
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/lektion': typeof LektionRoute
+  '/loop-bakeoff': typeof LoopBakeoffRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
@@ -161,6 +168,7 @@ export interface FileRoutesByTo {
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/lektion': typeof LektionRoute
+  '/loop-bakeoff': typeof LoopBakeoffRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
@@ -183,6 +191,7 @@ export interface FileRoutesById {
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/lektion': typeof LektionRoute
+  '/loop-bakeoff': typeof LoopBakeoffRoute
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
@@ -206,6 +215,7 @@ export interface FileRouteTypes {
     | '/dtk-browser'
     | '/explanation-bake-off'
     | '/lektion'
+    | '/loop-bakeoff'
     | '/progress'
     | '/repetition'
     | '/sign-in'
@@ -227,6 +237,7 @@ export interface FileRouteTypes {
     | '/dtk-browser'
     | '/explanation-bake-off'
     | '/lektion'
+    | '/loop-bakeoff'
     | '/progress'
     | '/repetition'
     | '/sign-in'
@@ -248,6 +259,7 @@ export interface FileRouteTypes {
     | '/dtk-browser'
     | '/explanation-bake-off'
     | '/lektion'
+    | '/loop-bakeoff'
     | '/progress'
     | '/repetition'
     | '/sign-in'
@@ -270,6 +282,7 @@ export interface RootRouteChildren {
   DtkBrowserRoute: typeof DtkBrowserRoute
   ExplanationBakeOffRoute: typeof ExplanationBakeOffRoute
   LektionRoute: typeof LektionRoute
+  LoopBakeoffRoute: typeof LoopBakeoffRoute
   ProgressRoute: typeof ProgressRoute
   RepetitionRoute: typeof RepetitionRoute
   SignInRoute: typeof SignInRoute
@@ -312,6 +325,13 @@ declare module '@tanstack/react-router' {
       path: '/progress'
       fullPath: '/progress'
       preLoaderRoute: typeof ProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/loop-bakeoff': {
+      id: '/loop-bakeoff'
+      path: '/loop-bakeoff'
+      fullPath: '/loop-bakeoff'
+      preLoaderRoute: typeof LoopBakeoffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lektion': {
@@ -430,6 +450,7 @@ const rootRouteChildren: RootRouteChildren = {
   DtkBrowserRoute: DtkBrowserRoute,
   ExplanationBakeOffRoute: ExplanationBakeOffRoute,
   LektionRoute: LektionRoute,
+  LoopBakeoffRoute: LoopBakeoffRoute,
   ProgressRoute: ProgressRoute,
   RepetitionRoute: RepetitionRoute,
   SignInRoute: SignInRoute,
