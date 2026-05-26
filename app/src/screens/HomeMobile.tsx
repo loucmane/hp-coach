@@ -17,6 +17,7 @@
 
 import type { TopTrap } from '@/api/hooks/useTopTraps'
 import { DailyPlanCard } from '@/components/home/DailyPlanCard'
+import { ProgressSigil } from '@/components/home/ProgressSigil'
 import { TopTrapsCard } from '@/components/home/TopTrapsCard'
 import { MobileFrame, type TabKey } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
@@ -25,7 +26,7 @@ import { useViewport } from '@/hooks/useViewport'
 import { examPhase, formatSwedishHeader } from '@/lib/dates'
 import { type DiagnosticMemory, formatTimeSince } from '@/lib/diagnosticMemory'
 import type { DailyPlan } from '@/lib/scheduler'
-import { formatScore, type ProjectedTotal } from '@/lib/scoring'
+import { formatScore, formatSwedishDateShort, type ProjectedTotal } from '@/lib/scoring'
 import type { CoachKey } from '@/lib/voice'
 import { useCoachStore } from '@/stores/coachStore'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
@@ -247,6 +248,20 @@ export function HomeMobile({
             </div>
             {renderStreak && <StreakBadge value={streakValue} />}
           </header>
+
+          {/* Progress Sigil — focal "today's progress" element. Sits
+           *  between the header band and the greeting as a typographic
+           *  underline that fills as plan items complete. The single
+           *  iconic loop element per the loop-bakeoff winner pick.
+           *  Aligned with the header band's horizontal padding so the
+           *  rule reads as part of the same chrome. */}
+          <div
+            style={{
+              padding: `0 var(--pad-lg)`,
+            }}
+          >
+            <ProgressSigil plan={plan} todayLabel={formatSwedishDateShort(today)} />
+          </div>
 
           <div
             style={{
