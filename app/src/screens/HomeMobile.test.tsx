@@ -6,7 +6,7 @@
 //   - Streak badge logic preserved (chrome, not part of the plan flow)
 //   - markComplete + regenerate callbacks fire from the card
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -64,9 +64,14 @@ describe('HomeMobile — plan rendering', () => {
   it('renders the DailyPlanCard with each plan item when a plan is provided', () => {
     render(<HomeMobile forceLayout="phone" plan={makePlan()} />)
     expect(screen.getByTestId('daily-plan-card')).toBeInTheDocument()
-    expect(screen.getByText('Repetition · 3 missar')).toBeInTheDocument()
-    expect(screen.getByText('NOG-lektion')).toBeInTheDocument()
-    expect(screen.getByText('KVA-drill · 10 frågor')).toBeInTheDocument()
+    // The ProgressSigil's zero-state marginalia also renders the first
+    // pending item's headline ("Börja med: Repetition · 3 missar"), so
+    // scope the plan-row assertion to the DailyPlanCard instead of a
+    // bare getByText — otherwise "Repetition · 3 missar" matches twice.
+    const planCard = screen.getByTestId('daily-plan-card')
+    expect(within(planCard).getByText('Repetition · 3 missar')).toBeInTheDocument()
+    expect(within(planCard).getByText('NOG-lektion')).toBeInTheDocument()
+    expect(within(planCard).getByText('KVA-drill · 10 frågor')).toBeInTheDocument()
   })
 
   it('shows the total estimated minutes in the eyebrow with the "uppskattat" qualifier', () => {
