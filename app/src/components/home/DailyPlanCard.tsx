@@ -27,16 +27,15 @@ import type { DailyPlan, PlanItem } from '@/lib/scheduler'
 type DailyPlanCardProps = {
   plan: DailyPlan
   allComplete: boolean
-  onRegenerate: () => void
   /** Called when a plan item's row is tapped. Receives the item's
    *  href so the route can pick a navigation strategy. Defaults to
    *  the anchor's native behaviour when omitted (full-page nav). */
   onNavigate?: (href: string) => void
 }
 
-export function DailyPlanCard({ plan, allComplete, onRegenerate, onNavigate }: DailyPlanCardProps) {
+export function DailyPlanCard({ plan, allComplete, onNavigate }: DailyPlanCardProps) {
   if (allComplete) {
-    return <CompletePanel plan={plan} onRegenerate={onRegenerate} />
+    return <CompletePanel plan={plan} />
   }
 
   return (
@@ -62,15 +61,6 @@ export function DailyPlanCard({ plan, allComplete, onRegenerate, onNavigate }: D
          *  drill/lesson use SECTION_DURATIONS); not a measured commitment.
          *  Setting expectation up front (audit rec). */}
         <Eyebrow>{`Idag · ~${plan.estimatedMinutes} min · uppskattat`}</Eyebrow>
-        <button
-          type="button"
-          data-testid="daily-plan-regenerate"
-          onClick={onRegenerate}
-          className="hpc-byt-plan"
-          style={regenButtonStyle}
-        >
-          Byt plan →
-        </button>
       </div>
 
       <Hairline style={{ background: 'var(--ink)', height: 1, width: 48 }} />
@@ -188,7 +178,7 @@ function PlanRow({ item, onNavigate }: { item: PlanItem; onNavigate?: (href: str
   )
 }
 
-function CompletePanel({ plan, onRegenerate }: { plan: DailyPlan; onRegenerate: () => void }) {
+function CompletePanel({ plan }: { plan: DailyPlan }) {
   const totalMinutes = plan.items.reduce((sum, i) => sum + i.estimatedMinutes, 0)
   return (
     <section
@@ -233,16 +223,7 @@ function CompletePanel({ plan, onRegenerate }: { plan: DailyPlan; onRegenerate: 
           margin: 0,
         }}
       >
-        Vill du ha mer? Plocka en sektion eller{' '}
-        <button
-          type="button"
-          onClick={onRegenerate}
-          data-testid="daily-plan-regenerate-complete"
-          style={inlineLinkStyle}
-        >
-          byt plan
-        </button>
-        .
+        Vill du ha mer? Plocka en sektion eller vila — du har gjort dagens.
       </p>
     </section>
   )
@@ -258,34 +239,4 @@ function kickerFor(item: PlanItem): string {
     case 'drill':
       return `Drill${sectionPart}`
   }
-}
-
-// "Byt plan" — secondary chip CTA. Bordered + padded so it reads as a
-// button at the same typographic register as the eyebrow next to it
-// (mono 11px uppercase), without dominating the row. Was a plain
-// borderless text label before; the dogfood user couldn't tell it
-// was clickable. Hover state lives in index.css under .hpc-byt-plan.
-const regenButtonStyle: React.CSSProperties = {
-  background: 'transparent',
-  border: '1px solid var(--hairline)',
-  borderRadius: 4,
-  padding: '4px 10px',
-  fontFamily: 'var(--font-mono)',
-  fontSize: 11,
-  letterSpacing: 'var(--font-mono-track)',
-  textTransform: 'uppercase',
-  color: 'var(--ink-2)',
-  cursor: 'pointer',
-}
-
-const inlineLinkStyle: React.CSSProperties = {
-  background: 'transparent',
-  border: 'none',
-  padding: 0,
-  fontFamily: 'inherit',
-  fontSize: 'inherit',
-  color: 'var(--ink)',
-  textDecoration: 'underline',
-  textUnderlineOffset: 3,
-  cursor: 'pointer',
 }

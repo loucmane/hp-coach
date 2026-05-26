@@ -262,7 +262,14 @@ export function MobileFrame({
         style={{
           flex: 1,
           position: 'relative',
-          overflow: isPhone ? 'hidden' : 'visible',
+          // Phone: vertical scroll so content taller than the artboard
+          // (Home with 3 traps + a 4-item plan; Lektion with all 25
+          // entries; Drill miss-list with 10+ rows) reaches its end
+          // instead of clipping under the floating tab bar. The
+          // children pad their own bottom by var(--frame-tabbar) so
+          // the last row clears the BottomTabs strip.
+          overflowY: isPhone ? 'auto' : 'visible',
+          overflowX: isPhone ? 'hidden' : 'visible',
           ...(isPhone ? {} : { display: 'flex', flexDirection: 'column' }),
         }}
       >

@@ -36,7 +36,6 @@ type HomeMobileProps = {
   plan?: DailyPlan | null
   /** True iff every plan item is complete. Drives the "Klart för idag" state. */
   allComplete?: boolean
-  onRegenerate?: () => void
   /** Optional per-half + total projection rendered as a mono kicker
    *  above the plan card. Null/undefined hides the line (cold-start,
    *  loading). Route owns the data wire so HomeMobile stays pure. */
@@ -79,12 +78,9 @@ type HomeMobileProps = {
   forceLayout?: 'phone' | 'reader' | 'studio'
 }
 
-const NOOP = () => {}
-
 export function HomeMobile({
   plan = null,
   allComplete = false,
-  onRegenerate = NOOP,
   projected = null,
   diagnosticMemory = null,
   daysAway = null,
@@ -147,7 +143,13 @@ export function HomeMobile({
         <div
           style={{
             flex: isPhone ? undefined : 1,
-            height: isPhone ? '100%' : undefined,
+            // Phone: minHeight (not height) so when content runs
+            // taller than the artboard — three traps + four plan
+            // items — the wrapper can grow past 100% and let
+            // MobileFrame's overflow-y: auto scroll the last item
+            // into reach. height: 100% capped the inner box and
+            // clipped the final card under the floating tab bar.
+            minHeight: isPhone ? '100%' : undefined,
             display: 'flex',
             flexDirection: 'column',
             color: 'var(--ink)',
@@ -323,7 +325,6 @@ export function HomeMobile({
               <DailyPlanCard
                 plan={plan}
                 allComplete={allComplete}
-                onRegenerate={onRegenerate}
                 onNavigate={onPlanItemNavigate}
               />
             ) : (

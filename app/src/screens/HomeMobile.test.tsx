@@ -4,11 +4,10 @@
 //   - Plan provided → DailyPlanCard rendered with the items
 //   - allComplete → "Klart för idag" panel
 //   - Streak badge logic preserved (chrome, not part of the plan flow)
-//   - markComplete + regenerate callbacks fire from the card
+//   - No regenerate affordance (the daily plan is authoritative)
 
 import { render, screen, within } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { type DailyPlan, PLAN_SCHEMA_VERSION } from '@/lib/scheduler'
 import { HomeMobile } from './HomeMobile'
@@ -356,19 +355,16 @@ describe('HomeMobile — callbacks', () => {
     expect(screen.queryByTestId('daily-plan-mark-drill-KVA-2026-05-18')).not.toBeInTheDocument()
   })
 
-  it('fires onRegenerate when the "Generera om" link is tapped', async () => {
-    const onRegenerate = vi.fn()
-    render(<HomeMobile forceLayout="phone" plan={makePlan()} onRegenerate={onRegenerate} />)
-    await userEvent.click(screen.getByTestId('daily-plan-regenerate'))
-    expect(onRegenerate).toHaveBeenCalledTimes(1)
+  // "Byt plan" / "Generera om" CTA removed — the plan is authoritative.
+  // The useDailyPlan hook still exports a `regenerate` function for tests
+  // and potential future use, but no user-facing button surfaces it.
+  it('does not render a regenerate affordance', () => {
+    render(<HomeMobile forceLayout="phone" plan={makePlan()} />)
+    expect(screen.queryByTestId('daily-plan-regenerate')).not.toBeInTheDocument()
   })
 
-  it('fires onRegenerate from the complete-panel link too', async () => {
-    const onRegenerate = vi.fn()
-    render(
-      <HomeMobile forceLayout="phone" plan={makePlan()} allComplete onRegenerate={onRegenerate} />,
-    )
-    await userEvent.click(screen.getByTestId('daily-plan-regenerate-complete'))
-    expect(onRegenerate).toHaveBeenCalledTimes(1)
+  it('does not render a regenerate affordance in the complete state', () => {
+    render(<HomeMobile forceLayout="phone" plan={makePlan()} allComplete />)
+    expect(screen.queryByTestId('daily-plan-regenerate-complete')).not.toBeInTheDocument()
   })
 })
