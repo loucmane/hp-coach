@@ -17,7 +17,7 @@ import { getDb } from '../db/client'
 import { attempts, mistakes, sessions, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
 import { extractSection, type Section, SECTIONS } from '../lib/section'
-import { currentStreak } from '../lib/stats'
+import { currentStreak, formatDayUTC } from '../lib/stats'
 import type { Env, Vars } from '../types'
 
 const PrefsPatch = z
@@ -269,6 +269,39 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       if (a.correct) weekly[idx].correct += 1
     }
 
+    // Daily attempt counts for the /progress consistency heatmap.
+    // 84 days back (12 weeks × 7), keyed by UTC YYYY-MM-DD. Each entry
+    // splits the count along the verbal/quant exam axis so the
+    // heatmap can render two stacked strips — the HP-specific move
+    // that flattens to one ramp would otherwise.
+    const DAY_MS = 24 * 60 * 60_000
+    const DAYS = 84
+    const VERBAL = new Set<Section>(['ORD', 'LÄS', 'MEK', 'ELF'])
+    type DailyBucket = { date: string; n: number; verbal: number; quant: number }
+    const dailyByDate = new Map<string, DailyBucket>()
+    // Pre-seed all 84 days so gap days surface as `n: 0` instead of
+    // missing entries — the heatmap needs every cell rendered.
+    for (let i = DAYS - 1; i >= 0; i--) {
+      const d = new Date(now.getTime() - i * DAY_MS)
+      const ymd = formatDayUTC(d)
+      dailyByDate.set(ymd, { date: ymd, n: 0, verbal: 0, quant: 0 })
+    }
+    for (const a of recentAttempts) {
+      const ts = a.createdAt instanceof Date ? a.createdAt.getTime() : 0
+      const daysAgo = Math.floor((now.getTime() - ts) / DAY_MS)
+      if (daysAgo < 0 || daysAgo >= DAYS) continue
+      const section = extractSection(a.questionId)
+      if (!section) continue
+      const d = new Date(ts)
+      const ymd = formatDayUTC(d)
+      const bucket = dailyByDate.get(ymd)
+      if (!bucket) continue
+      bucket.n += 1
+      if (VERBAL.has(section)) bucket.verbal += 1
+      else bucket.quant += 1
+    }
+    const attemptsDaily: DailyBucket[] = Array.from(dailyByDate.values())
+
     return c.json({
       stats: {
         attempts: {
@@ -289,6 +322,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         streakDays,
         bySection,
         weekly,
+        attemptsDaily,
       },
     })
   })
