@@ -34,8 +34,10 @@ import { useEffect, useMemo, useRef } from 'react'
 
 import { useStats } from '@/api/hooks/useStats'
 import { Btn, CoachLine, Eyebrow, Hairline, Mono } from '@/components/primitives'
+import { Display } from '@/components/Typography'
 import type { AnswerLetter, Question, Section } from '@/data/questions'
 import { useDailyPlan } from '@/hooks/useDailyPlan'
+import { TRANSITION } from '@/lib/motion'
 import { computeSectionScore } from '@/lib/scoring'
 import { useTrapCluster } from '@/lib/trapCluster'
 import { VOICE } from '@/lib/voice'
@@ -108,23 +110,21 @@ export function DrillResult({ summary, onReplay, onHome }: Props) {
         margin: '0 auto',
       }}
     >
-      <motion.h1
-        data-testid="drill-result-headline"
+      {/* Display 1 from the Typography system — the same role used on
+       *  Home for `God morgon, …`, Lektion masthead for the section
+       *  letters, /progress hero for the projected score. One scale,
+       *  five surfaces. Motion is the chrome state-change duration
+       *  from `@/lib/motion`. */}
+      <motion.div
         initial={reduced ? false : { opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontWeight: 500,
-          letterSpacing: '-0.02em',
-          lineHeight: 1.05,
-          fontSize: 'clamp(48px, 4vw + 24px, 72px)',
-          margin: '6px 0 0',
-          color: 'var(--ink)',
-        }}
+        transition={TRANSITION.chrome}
+        style={{ margin: '6px 0 0' }}
       >
-        Klart.
-      </motion.h1>
+        <Display level={1} as="h1" id="drill-result-headline">
+          <span data-testid="drill-result-headline">Klart.</span>
+        </Display>
+      </motion.div>
 
       {cluster?.headline && (
         <Eyebrow style={{ marginTop: 18, color: 'var(--accent)' }}>

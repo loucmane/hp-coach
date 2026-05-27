@@ -40,6 +40,8 @@ import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from 
 import { BrandMark } from '@/components/BrandMark'
 import { EditionStrip } from '@/components/EditionStrip'
 import { useViewport } from '@/hooks/useViewport'
+import { buildFolioString } from '@/lib/folio'
+import { useSitting } from '@/stores/examStore'
 
 // Apple-style "headroom" pattern — hide the running-head nav on
 // scroll-down (reader wants the page), reveal on scroll-up (reader
@@ -107,6 +109,7 @@ type Props = {
 
 export function Page({ runningHead, folio, status, children, style }: Props) {
   const viewport = useViewport()
+
   // Phone keeps its iOS-artboard chrome (status bar + BottomTabs from
   // MobileFrame). Adding EDITION's running head + status line on top
   // would be three competing bars at the same screen edges. Pragmatic
@@ -114,14 +117,41 @@ export function Page({ runningHead, folio, status, children, style }: Props) {
   // as Phase A.5/A.7 left it.
   if (viewport === 'phone') return <>{children}</>
 
+  // Desktop chrome lives in its own component so the router + sitting
+  // hooks only mount when we actually need them. Test renders pin
+  // innerWidth to phone width → early return above → the router-
+  // requiring hooks never run, so screen tests don't need a router
+  // provider.
+  return (
+    <PageDesktop runningHead={runningHead} folio={folio} status={status} style={style}>
+      {children}
+    </PageDesktop>
+  )
+}
+
+function PageDesktop({ runningHead, folio, status, children, style }: Props) {
+  // Folio numbering — Week 2 of the elevation plan. When the route
+  // matches a registered spread, the running head reads `EDITION III
+  // · SPREAD 04 · LEKTION` followed by any sub-section label from
+  // the runningHead prop. When the route isn't in the registry
+  // (dev / bake-off / auth surfaces) we fall through to the legacy
+  // BrandMark + page-name composition.
+  const location = useLocation()
+  const sitting = useSitting()
+
   // Strip the "HP · Coach" prefix every caller passes — we render the
   // brand via the BrandMark component now, with the ⌜ corner-bracket
   // signature. Whatever remains (the page-name token, e.g. "Hem" /
   // "Lektion · KVA") becomes the inline section label rendered to the
-  // right of the wordmark. Was: `HP · COACH · HEM` text; now:
-  // `⌜ HP-Coach · HEM`.
+  // right of the wordmark.
   const rawText = Array.isArray(runningHead) ? runningHead.join(' · ') : runningHead
-  const headText = rawText.replace(/^HP\s*·\s*Coach\s*·?\s*/i, '').trim()
+  const legacyHeadText = rawText.replace(/^HP\s*·\s*Coach\s*·?\s*/i, '').trim()
+
+  const folioString = buildFolioString(location.pathname, sitting.id)
+  // Pull the section suffix off the legacy text by stripping the
+  // spread label that's already in the folio. E.g. legacy text
+  // `Lektion · KVA` with folio label `LEKTION` → suffix `KVA`.
+  const headText = folioString ? extractSectionSuffix(legacyHeadText, folioString) : legacyHeadText
 
   return (
     <div
@@ -134,7 +164,7 @@ export function Page({ runningHead, folio, status, children, style }: Props) {
         ...style,
       }}
     >
-      <RunningHeadBand runningHead={headText} isPhone={false} />
+      <RunningHeadBand runningHead={headText} folio={folioString} isPhone={false} />
       <div
         data-testid="page-content"
         style={{
@@ -213,7 +243,19 @@ export function NavLinks() {
   )
 }
 
-function RunningHeadBand({ runningHead, isPhone }: { runningHead: string; isPhone: boolean }) {
+function RunningHeadBand({
+  runningHead,
+  folio,
+  isPhone,
+}: {
+  runningHead: string
+  /** When the route resolves to a registered spread, the folio string
+   *  `EDITION III · SPREAD 04 · LEKTION` renders between the BrandMark
+   *  and the optional section suffix in `runningHead`. Null on dev
+   *  and bake-off surfaces. */
+  folio: string | null
+  isPhone: boolean
+}) {
   const hidden = useHeadroom(isPhone)
   return (
     <header
@@ -284,7 +326,7 @@ function RunningHeadBand({ runningHead, isPhone }: { runningHead: string; isPhon
          *  sign-up screens. Surfaces dogfood-finding "BrandMark hidden
          *  post-login" (synthesis Tier 1 #3). */}
         <BrandMark style={{ paddingBottom: isPhone ? 8 : 14 }} />
-        {runningHead && (
+        {(folio || runningHead) && (
           <span
             data-testid="running-head"
             style={{
@@ -301,7 +343,15 @@ function RunningHeadBand({ runningHead, isPhone }: { runningHead: string; isPhon
               whiteSpace: 'nowrap',
             }}
           >
-            · {runningHead}
+            ·{' '}
+            {folio ? (
+              <>
+                <span style={{ color: 'var(--ink)' }}>{folio}</span>
+                {runningHead && <span style={{ color: 'var(--ink-2)' }}> · {runningHead}</span>}
+              </>
+            ) : (
+              runningHead
+            )}
           </span>
         )}
         {/* Editorial inline nav — visible signposts to top-level routes.
@@ -456,4 +506,15 @@ function ProgressGlyph({ value }: { value: number }) {
       {cells.join('')}
     </span>
   )
+}
+
+// Strip the leading page label from a legacy `runningHead` string so
+// the folio numbering can carry the label and the suffix flows after.
+// E.g. legacy `"Lektion · KVA"` with folio label embedded in the
+// folioString → returns `"KVA"`. Single-segment strings (`"Hem"`)
+// return empty — the spread label already names them.
+function extractSectionSuffix(legacy: string, _folio: string): string {
+  const idx = legacy.indexOf('·')
+  if (idx < 0) return ''
+  return legacy.slice(idx + 1).trim()
 }
