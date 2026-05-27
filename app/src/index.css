@@ -96,6 +96,53 @@
   --type-pull-quote: clamp(56px, 4.5vw + 24px, 112px);
   --type-headword: clamp(48px, 4vw + 16px, 96px);
 
+  /* ── Elevation type system ──────────────────────────────────────────
+   * Named display + body + chrome roles that the Typography primitive
+   * set reads from. The single source of truth across every surface;
+   * before this, each component reinvented its own clamp() expression
+   * locally and the product drifted. Roles are sized so they form a
+   * legible musical scale at studio: Display 1 (Klart.) > Display 2
+   * (section masthead) > Display 3 (score readout) > Display 4
+   * (section letter). Body editorial is the reading instrument. */
+  --type-display-1: clamp(48px, 4vw + 24px, 72px);
+  --type-display-2: clamp(32px, 2vw + 16px, 44px);
+  --type-display-3: clamp(24px, 1.5vw + 14px, 32px);
+  --type-display-4: 20px;
+  --type-body-editorial: 17px;
+  --type-body-editorial-leading: 1.55;
+  --type-marginalia: 13px;
+  --type-folio: 11px;
+  --type-eyebrow: 10.5px;
+
+  /* ── Motion identity ────────────────────────────────────────────────
+   * Three named curves and four named durations that every transition
+   * in the product reads from. Before this, durations were scattered
+   * (120 / 150 / 220 / 280 / 320 / 520 / 1100ms) and easing was reset
+   * in-line per component — the product moved like five products. Now
+   * "snap" is the press confirmation, "chrome" is every state-change
+   * tween, "payoff" is the rare reading-pace moment (score-delta,
+   * Sigil close, page-turn). Reading curve is symmetric ease-out; the
+   * spring overshoots on rebound; the exit eases hard into stillness.
+   *
+   *   --ease-reading   — standard tween (in/out)
+   *   --ease-spring    — overshoot on rebound (press, ring-close)
+   *   --ease-exit      — fade/leave (page-turn exit)
+   *
+   *   --dur-snap   80ms   — press confirmation, single-key feedback
+   *   --dur-chrome 220ms  — chrome state changes, hover articulation
+   *   --dur-reveal 360ms  — fade-and-rise on mount (.reveal lives here)
+   *   --dur-payoff 1100ms — reading-pace beats (score tween, Sigil fill)
+   *
+   * Under prefers-reduced-motion, every duration collapses to 0s so
+   * consumers don't need their own guards. */
+  --ease-reading: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
+  --dur-snap: 80ms;
+  --dur-chrome: 220ms;
+  --dur-reveal: 360ms;
+  --dur-payoff: 1100ms;
+
   /* Frame chrome sizes (Phase A / A.5 — Frame component reads these) */
   --frame-tabbar: 88px; /* bottom-tab reserved on phone; 0 on reader/studio */
   --frame-max-w: 640px; /* narrow focus column max-width (rarely used after A.5) */
@@ -310,6 +357,15 @@ body::before {
   }
   .hpc-breathe {
     animation: none;
+  }
+
+  /* Motion identity — collapse every named duration to 0 so consumers
+   * that read `var(--dur-*)` instantly still without their own guards. */
+  :root {
+    --dur-snap: 0s;
+    --dur-chrome: 0s;
+    --dur-reveal: 0s;
+    --dur-payoff: 0s;
   }
 }
 

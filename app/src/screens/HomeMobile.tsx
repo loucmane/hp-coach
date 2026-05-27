@@ -22,6 +22,7 @@ import { TopTrapsCard } from '@/components/home/TopTrapsCard'
 import { MobileFrame, type TabKey } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Mono } from '@/components/primitives'
+import { Display } from '@/components/Typography'
 import { useViewport } from '@/hooks/useViewport'
 import { examPhase, formatSwedishHeader } from '@/lib/dates'
 import { type DiagnosticMemory, formatTimeSince } from '@/lib/diagnosticMemory'
@@ -276,22 +277,17 @@ export function HomeMobile({
               gap: 'clamp(24px, 3vh, 40px)',
             }}
           >
-            <h1
+            <Display
+              level={1}
+              as="h1"
               className="reveal"
-              data-testid="home-greeting"
-              style={{
-                margin: 0,
-                fontFamily: 'var(--font-display)',
-                fontWeight: 500,
-                fontSize: 'clamp(28px, 3vw + 18px, 48px)',
-                lineHeight: 1.05,
-                letterSpacing: '-0.02em',
-                color: 'var(--ink)',
-                animationDelay: '60ms',
-              }}
+              style={{ animationDelay: '60ms' }}
+              id="home-greeting"
             >
-              {firstName ? `${greetingHeadline}, ${firstName}.` : `${greetingHeadline}.`}
-            </h1>
+              <span data-testid="home-greeting">
+                {firstName ? `${greetingHeadline}, ${firstName}.` : `${greetingHeadline}.`}
+              </span>
+            </Display>
 
             {hasAnySignal && projected && (
               <div
