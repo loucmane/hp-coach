@@ -17,6 +17,7 @@ import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as LoopBakeoffRouteImport } from './routes/loop-bakeoff'
 import { Route as LektionRouteImport } from './routes/lektion'
 import { Route as ExplanationBakeOffRouteImport } from './routes/explanation-bake-off'
+import { Route as ElevationBakeoffRouteImport } from './routes/elevation-bakeoff'
 import { Route as DtkBrowserRouteImport } from './routes/dtk-browser'
 import { Route as DrillStyleCRouteImport } from './routes/drill-style-c'
 import { Route as DrillStyleBRouteImport } from './routes/drill-style-b'
@@ -68,6 +69,11 @@ const LektionRoute = LektionRouteImport.update({
 const ExplanationBakeOffRoute = ExplanationBakeOffRouteImport.update({
   id: '/explanation-bake-off',
   path: '/explanation-bake-off',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ElevationBakeoffRoute = ElevationBakeoffRouteImport.update({
+  id: '/elevation-bakeoff',
+  path: '/elevation-bakeoff',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DtkBrowserRoute = DtkBrowserRouteImport.update({
@@ -144,6 +150,7 @@ export interface FileRoutesByFullPath {
   '/drill-style-b': typeof DrillStyleBRoute
   '/drill-style-c': typeof DrillStyleCRoute
   '/dtk-browser': typeof DtkBrowserRoute
+  '/elevation-bakeoff': typeof ElevationBakeoffRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/lektion': typeof LektionRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
@@ -166,6 +173,7 @@ export interface FileRoutesByTo {
   '/drill-style-b': typeof DrillStyleBRoute
   '/drill-style-c': typeof DrillStyleCRoute
   '/dtk-browser': typeof DtkBrowserRoute
+  '/elevation-bakeoff': typeof ElevationBakeoffRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/lektion': typeof LektionRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
@@ -189,6 +197,7 @@ export interface FileRoutesById {
   '/drill-style-b': typeof DrillStyleBRoute
   '/drill-style-c': typeof DrillStyleCRoute
   '/dtk-browser': typeof DtkBrowserRoute
+  '/elevation-bakeoff': typeof ElevationBakeoffRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/lektion': typeof LektionRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
@@ -213,6 +222,7 @@ export interface FileRouteTypes {
     | '/drill-style-b'
     | '/drill-style-c'
     | '/dtk-browser'
+    | '/elevation-bakeoff'
     | '/explanation-bake-off'
     | '/lektion'
     | '/loop-bakeoff'
@@ -235,6 +245,7 @@ export interface FileRouteTypes {
     | '/drill-style-b'
     | '/drill-style-c'
     | '/dtk-browser'
+    | '/elevation-bakeoff'
     | '/explanation-bake-off'
     | '/lektion'
     | '/loop-bakeoff'
@@ -257,6 +268,7 @@ export interface FileRouteTypes {
     | '/drill-style-b'
     | '/drill-style-c'
     | '/dtk-browser'
+    | '/elevation-bakeoff'
     | '/explanation-bake-off'
     | '/lektion'
     | '/loop-bakeoff'
@@ -280,6 +292,7 @@ export interface RootRouteChildren {
   DrillStyleBRoute: typeof DrillStyleBRoute
   DrillStyleCRoute: typeof DrillStyleCRoute
   DtkBrowserRoute: typeof DtkBrowserRoute
+  ElevationBakeoffRoute: typeof ElevationBakeoffRoute
   ExplanationBakeOffRoute: typeof ExplanationBakeOffRoute
   LektionRoute: typeof LektionRoute
   LoopBakeoffRoute: typeof LoopBakeoffRoute
@@ -346,6 +359,13 @@ declare module '@tanstack/react-router' {
       path: '/explanation-bake-off'
       fullPath: '/explanation-bake-off'
       preLoaderRoute: typeof ExplanationBakeOffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/elevation-bakeoff': {
+      id: '/elevation-bakeoff'
+      path: '/elevation-bakeoff'
+      fullPath: '/elevation-bakeoff'
+      preLoaderRoute: typeof ElevationBakeoffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dtk-browser': {
@@ -448,6 +468,7 @@ const rootRouteChildren: RootRouteChildren = {
   DrillStyleBRoute: DrillStyleBRoute,
   DrillStyleCRoute: DrillStyleCRoute,
   DtkBrowserRoute: DtkBrowserRoute,
+  ElevationBakeoffRoute: ElevationBakeoffRoute,
   ExplanationBakeOffRoute: ExplanationBakeOffRoute,
   LektionRoute: LektionRoute,
   LoopBakeoffRoute: LoopBakeoffRoute,
