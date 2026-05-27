@@ -278,7 +278,7 @@ export function HomeMobile({
             }}
           >
             <Display
-              level={1}
+              level={2}
               as="h1"
               className="reveal"
               style={{ animationDelay: '60ms' }}

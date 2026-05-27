@@ -13,6 +13,7 @@
 
 import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut } from '@clerk/clerk-react'
 import { createRootRoute, Outlet, useLocation, useNavigate } from '@tanstack/react-router'
+import { AnimatePresence, motion } from 'motion/react'
 import { useEffect } from 'react'
 
 import { useHydratePrefs } from '@/api/useSyncedPrefs'
@@ -21,6 +22,7 @@ import { Frame } from '@/components/Frame'
 import { Mono } from '@/components/primitives'
 import { ShareDebugButton } from '@/components/ShareDebugButton'
 import { TweaksLauncher } from '@/components/TweaksLauncher'
+import { EASE, prefersReducedMotion } from '@/lib/motion'
 import { isWelcomed } from '@/lib/welcome'
 import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
 
@@ -106,7 +108,45 @@ function SignedInTree() {
       navigate({ to: '/welcome' })
     }
   }, [navigate, location.pathname])
-  return <Outlet />
+  return <FolioTurn pathname={location.pathname} />
+}
+
+// Folio Turn — Week 2 of the elevation plan.
+//
+// Every route change reads like a page turn in the edition: the
+// outgoing spread rolls 0.5° right with a small x-slide + 8% opacity
+// loss; the arriving spread mirrors it. Total duration is 320ms on
+// `EASE.reading`, which is short enough that nobody waits for it but
+// long enough to register the turn.
+//
+// `prefers-reduced-motion` collapses the motion to a straight
+// crossfade with no rotation or translation — the page still changes,
+// but the reader's vestibular system isn't asked to participate.
+function FolioTurn({ pathname }: { pathname: string }) {
+  const reduced = prefersReducedMotion()
+  const out = reduced ? { opacity: 0 } : { opacity: 0.92, x: 12, rotateZ: 0.5 }
+  const arrive = reduced
+    ? { opacity: 0, x: 0, rotateZ: 0 }
+    : { opacity: 0.92, x: -12, rotateZ: -0.5 }
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={pathname}
+        initial={arrive}
+        animate={{ opacity: 1, x: 0, rotateZ: 0 }}
+        exit={out}
+        transition={{ duration: 0.32, ease: EASE.reading }}
+        style={{
+          // origin near the spine keeps the turn anchored on the
+          // left edge of the spread — the same place the eye lives
+          // when reading a printed page.
+          transformOrigin: '0% 50%',
+        }}
+      >
+        <Outlet />
+      </motion.div>
+    </AnimatePresence>
+  )
 }
 
 // Tiny redirect helper — client-side, not Clerk's <RedirectToSignIn />, so
