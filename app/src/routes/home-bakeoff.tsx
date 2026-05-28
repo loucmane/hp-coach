@@ -22,6 +22,10 @@ import { HomeVariantB } from '@/components/devbake/HomeVariantB'
 import { HomeVariantC } from '@/components/devbake/HomeVariantC'
 import { HomeVariantD } from '@/components/devbake/HomeVariantD'
 import { HomeVariantE } from '@/components/devbake/HomeVariantE'
+import { HomeVariantF1 } from '@/components/devbake/HomeVariantF1'
+import { HomeVariantF2 } from '@/components/devbake/HomeVariantF2'
+import { HomeVariantF3 } from '@/components/devbake/HomeVariantF3'
+import { HomeVariantF4 } from '@/components/devbake/HomeVariantF4'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Btn, Eyebrow, Hairline, Mono } from '@/components/primitives'
 import { isDevSurface } from '@/lib/devSurface'
@@ -131,6 +135,63 @@ function HomeBakeoff() {
             </VariantCard>
           </div>
         </section>
+
+        <Hairline />
+
+        <section style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <Eyebrow>Runda 2 · Vad gör vi med den tomma högerhalvan?</Eyebrow>
+            <h2
+              style={{
+                margin: 0,
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(22px, 1.4vw + 14px, 30px)',
+                lineHeight: 1.15,
+                letterSpacing: '-0.015em',
+                color: 'var(--ink)',
+              }}
+            >
+              Right-real-estate bake-off.
+            </h2>
+            <p
+              style={{
+                margin: '4px 0 0',
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(14px, 0.4vw + 13px, 16px)',
+                lineHeight: 1.5,
+                color: 'var(--ink-2)',
+                maxWidth: '70ch',
+              }}
+            >
+              Design, UX och UI-leads kom tillbaka delade. Designen säger fyll med ett editorial
+              uppslag. UX:en säger luft — och en resumera-rad när det finns en pausad session. UI:en
+              säger att antingen funkar systematiskt. F1 = luft + resumera (UX-pick). F2 =
+              facing-page-fälla (design-pick). F3 = centrerad komposition (UI-safe). F4 = syntesen —
+              F2 villkorat på trap-tryck, F1 annars.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 'clamp(40px, 4vw, 64px)',
+            }}
+          >
+            <VariantCard label="Luft + resumera (UX-pick)" recipeKey="F1">
+              <HomeVariantF1 />
+            </VariantCard>
+            <VariantCard label="Facing-page-fälla (design-pick)" recipeKey="F2">
+              <HomeVariantF2 />
+            </VariantCard>
+            <VariantCard label="Centrerad komposition (UI-safe)" recipeKey="F3">
+              <HomeVariantF3 />
+            </VariantCard>
+            <VariantCard label="Syntes — F2 villkorat på trap-tryck, F1 annars" recipeKey="F4">
+              <HomeVariantF4 />
+            </VariantCard>
+          </div>
+        </section>
       </div>
     </MobileFrame>
   )
@@ -166,7 +227,7 @@ function VariantCard({
   children,
 }: {
   label: string
-  recipeKey: 'A' | 'B' | 'C' | 'D' | 'E'
+  recipeKey: 'A' | 'B' | 'C' | 'D' | 'E' | 'F1' | 'F2' | 'F3' | 'F4'
   children: React.ReactNode
 }) {
   return (

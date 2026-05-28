@@ -34,7 +34,7 @@
 // same kind is still hanging open from another tab/device.
 
 import { useNavigate } from '@tanstack/react-router'
-import { type CSSProperties, type ReactNode, useCallback, useEffect, useState } from 'react'
+import { type CSSProperties, type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 
 import { useSubmitAttempt } from '@/api/hooks/useAttempts'
 import {
@@ -50,9 +50,10 @@ import { DispatchedVariant } from '@/components/drill-variants/DispatchedVariant
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
-import type { AnswerLetter, Question } from '@/data/questions'
+import type { AnswerLetter, Question, Section } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
 import { TAB_ROUTE } from '@/lib/nav'
+import { usePausedSessionStore } from '@/stores/pausedSessionStore'
 
 type Phase = 'idle' | 'answering' | 'graded' | 'done'
 
@@ -143,6 +144,19 @@ export type SessionPlayerProps = {
     qid: string | null
     setQid: (qid: string | null) => void
   }
+  /** When set, SessionPlayer persists the in-progress session to the
+   *  paused-session store on unmount-while-answering, and clears it
+   *  on finish. Drives the Home resumption panel — clicking
+   *  "Fortsätt här" routes back to /drill?qid=X or
+   *  /repetition?qid=X. Omit for /diagnostik (one-shot baseline; no
+   *  pause semantics) and any other surface that shouldn't surface
+   *  on Home as a resume target. */
+  pauseKind?: 'drill' | 'repetition'
+  /** Optional Section attached to the persisted pause snapshot so
+   *  the Home panel renders "ORD-övning · pausad" instead of just
+   *  "Övning · pausad". Pass when the session was started against a
+   *  single section; omit for mixed-section drills / repetition. */
+  pauseSection?: Section
 }
 
 export function SessionPlayer(props: SessionPlayerProps) {
@@ -289,6 +303,85 @@ export function SessionPlayer(props: SessionPlayerProps) {
   }, [begin, props.urlSyncedQid])
 
   const onHome = useCallback(() => navigate({ to: '/' }), [navigate])
+
+  // Pause persistence — when the consumer opts in via `pauseKind`,
+  // we keep the most recent in-progress snapshot pushed to the
+  // paused-session store so the Home resumption panel can offer
+  // "Fortsätt här". A ref captures the current snapshot so the
+  // unmount cleanup can read the latest values without re-binding.
+  const pauseSnapshotRef = useRef<{
+    phase: Phase
+    index: number
+    total: number
+    qid: string | null
+    section: Section | null
+  }>({
+    phase,
+    index,
+    total: plan.length,
+    qid: props.urlSyncedQid?.qid ?? null,
+    section: props.pauseSection ?? null,
+  })
+  pauseSnapshotRef.current = {
+    phase,
+    index,
+    total: plan.length,
+    qid: props.urlSyncedQid?.qid ?? null,
+    section: props.pauseSection ?? null,
+  }
+  const pauseKind = props.pauseKind
+  const setPausedDrill = usePausedSessionStore((s) => s.setDrill)
+  const setPausedRepetition = usePausedSessionStore((s) => s.setRepetition)
+  const clearPausedDrill = usePausedSessionStore((s) => s.clearDrill)
+  const clearPausedRepetition = usePausedSessionStore((s) => s.clearRepetition)
+
+  // Clear the pause slot the moment the user reaches `done`. Replay
+  // path goes through `done -> idle` which doesn't need a separate
+  // clear (the slot stays cleared until next pause).
+  useEffect(() => {
+    if (!pauseKind) return
+    if (phase !== 'done') return
+    if (pauseKind === 'drill') clearPausedDrill()
+    else clearPausedRepetition()
+  }, [pauseKind, phase, clearPausedDrill, clearPausedRepetition])
+
+  // Persist on unmount when the user was mid-answer with an active
+  // qid. Page-visibility + beforeunload also fire when the user
+  // closes the tab or backgrounds the app, so the snapshot survives
+  // hard exits, not just SPA navigations.
+  useEffect(() => {
+    if (!pauseKind) return
+    const persistIfMidSession = () => {
+      const snap = pauseSnapshotRef.current
+      if (snap.phase !== 'answering') return
+      if (!snap.qid) return
+      const payload = {
+        qid: snap.qid,
+        questionIndex: snap.index + 1,
+        totalQuestions: snap.total,
+        pausedAt: Date.now(),
+      }
+      if (pauseKind === 'drill') {
+        setPausedDrill({
+          kind: 'drill',
+          section: snap.section ?? undefined,
+          ...payload,
+        })
+      } else {
+        setPausedRepetition({ kind: 'repetition', ...payload })
+      }
+    }
+    const onVis = () => {
+      if (document.visibilityState === 'hidden') persistIfMidSession()
+    }
+    window.addEventListener('beforeunload', persistIfMidSession)
+    document.addEventListener('visibilitychange', onVis)
+    return () => {
+      window.removeEventListener('beforeunload', persistIfMidSession)
+      document.removeEventListener('visibilitychange', onVis)
+      persistIfMidSession()
+    }
+  }, [pauseKind, setPausedDrill, setPausedRepetition])
 
   // Phase A.8 — keyboard handlers (EDITION's "stolen ideas" from
   // ATLAS + TERMINAL):
