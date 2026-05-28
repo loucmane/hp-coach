@@ -440,6 +440,39 @@ export function SessionPlayer(props: SessionPlayerProps) {
   }, [phase, onPick, onNext])
 
   if (phase === 'idle') {
+    // Auto-start resume path — when the URL has a qid we're either
+    // resuming from the Home panel or following a share-debug link.
+    // In both cases, rendering the full "Starta övning" masthead for
+    // a frame before begin() flips to answering shows the user a
+    // dead-end screen they don't want to look at. Substitute a thin
+    // loading line so the transition is silent.
+    const autoStarting = !!props.urlSyncedQid?.qid && !emptyAttempted
+    if (autoStarting) {
+      return (
+        <MobileFrame tabs activeTab={props.activeTab} forceLayout={undefined}>
+          <Page
+            runningHead={['HP · Coach', 'Övning']}
+            status={{ mode: 'Övning', context: 'laddar', hints: ['esc tillbaka'] }}
+          >
+            <div
+              style={{
+                flex: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: 'var(--font-mono)',
+                fontSize: 12,
+                color: 'var(--muted)',
+                letterSpacing: 'var(--font-mono-track)',
+                textTransform: 'uppercase',
+              }}
+            >
+              Laddar …
+            </div>
+          </Page>
+        </MobileFrame>
+      )
+    }
     const stale =
       activeSession.data && activeSession.data.kind === props.sessionKind
         ? activeSession.data
