@@ -17,6 +17,7 @@
 
 import type { TopTrap } from '@/api/hooks/useTopTraps'
 import { DailyPlanCard } from '@/components/home/DailyPlanCard'
+import { ResumptionPanel } from '@/components/home/ResumptionPanel'
 import { TopTrapsCard } from '@/components/home/TopTrapsCard'
 import { MobileFrame, type TabKey } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
@@ -176,93 +177,110 @@ export function HomeMobile({
             </Mono>
           </header>
 
+          {/* Studio gets a 58/42 grid; the right column holds the
+           *  ResumptionPanel when there's a paused session, air
+           *  otherwise. Phone keeps a single flex column — the right
+           *  rail composition doesn't survive narrow viewports. */}
           <div
             style={{
               flex: 1,
               padding: isPhone
                 ? 'clamp(28px, 4vh, 56px) var(--pad-lg) 0'
                 : 'clamp(48px, 6vh, 96px) clamp(48px, 5vw, 88px) 0',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 'clamp(24px, 3vh, 40px)',
+              display: isPhone ? 'flex' : 'grid',
+              flexDirection: isPhone ? 'column' : undefined,
+              gridTemplateColumns: isPhone ? undefined : '58fr 42fr',
+              columnGap: isPhone ? undefined : 'clamp(48px, 5vw, 88px)',
+              rowGap: isPhone ? undefined : 0,
+              gap: isPhone ? 'clamp(24px, 3vh, 40px)' : undefined,
             }}
           >
-            <Display
-              level={2}
-              as="h1"
-              className="reveal"
-              style={{ animationDelay: '60ms', maxWidth: '24ch', lineHeight: 1.02 }}
-              id="home-greeting"
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 'clamp(24px, 3vh, 40px)',
+              }}
             >
-              <span data-testid="home-greeting">
-                {firstName ? (
-                  <>
-                    {greetingHeadline},
-                    <br />
-                    {firstName}.
-                  </>
-                ) : (
-                  `${greetingHeadline}.`
-                )}
-              </span>
-            </Display>
-
-            {hasAnySignal && projected && (
-              <div
-                data-testid="home-score-line"
-                style={{
-                  marginTop: 'clamp(-12px, -1vh, -4px)',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 12,
-                  letterSpacing: 'var(--font-mono-track)',
-                  color: 'var(--ink-2)',
-                  fontVariantNumeric: 'tabular-nums',
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: 'clamp(8px, 1vw, 14px)',
-                  alignItems: 'baseline',
-                }}
+              <Display
+                level={2}
+                as="h1"
+                className="reveal"
+                style={{ animationDelay: '60ms', maxWidth: '24ch', lineHeight: 1.02 }}
+                id="home-greeting"
               >
-                <span style={{ color: 'var(--ink)' }}>{formatScore(projected.total)}</span>
-                <span style={{ color: 'var(--muted)' }}>/ 2.0</span>
-                <span style={{ color: 'var(--muted)' }}>·</span>
-                <span>
-                  verbal{' '}
-                  <span style={{ color: 'var(--ink)' }}>{formatScore(projected.verbal)}</span>
+                <span data-testid="home-greeting">
+                  {firstName ? (
+                    <>
+                      {greetingHeadline},
+                      <br />
+                      {firstName}.
+                    </>
+                  ) : (
+                    `${greetingHeadline}.`
+                  )}
                 </span>
-                <span style={{ color: 'var(--muted)' }}>·</span>
-                <span>
-                  kvant <span style={{ color: 'var(--ink)' }}>{formatScore(projected.quant)}</span>
-                </span>
-              </div>
-            )}
+              </Display>
 
-            {plan ? (
-              <DailyPlanCard
-                plan={plan}
-                allComplete={allComplete}
-                onNavigate={onPlanItemNavigate}
-              />
-            ) : (
-              <PlanSkeleton />
-            )}
-
-            {topTraps.length > 0 && (
-              <>
-                {/* 240px ink-2 hairline — quiet divider above the
-                 *  demoted trap strip. Traps are diagnostic, not
-                 *  prescriptive; they belong below the focal plan. */}
+              {hasAnySignal && projected && (
                 <div
+                  data-testid="home-score-line"
                   style={{
-                    width: 240,
-                    height: 1,
-                    background: 'var(--ink-2)',
-                    opacity: 0.5,
+                    marginTop: 'clamp(-12px, -1vh, -4px)',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 12,
+                    letterSpacing: 'var(--font-mono-track)',
+                    color: 'var(--ink-2)',
+                    fontVariantNumeric: 'tabular-nums',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 'clamp(8px, 1vw, 14px)',
+                    alignItems: 'baseline',
                   }}
+                >
+                  <span style={{ color: 'var(--ink)' }}>{formatScore(projected.total)}</span>
+                  <span style={{ color: 'var(--muted)' }}>/ 2.0</span>
+                  <span style={{ color: 'var(--muted)' }}>·</span>
+                  <span>
+                    verbal{' '}
+                    <span style={{ color: 'var(--ink)' }}>{formatScore(projected.verbal)}</span>
+                  </span>
+                  <span style={{ color: 'var(--muted)' }}>·</span>
+                  <span>
+                    kvant{' '}
+                    <span style={{ color: 'var(--ink)' }}>{formatScore(projected.quant)}</span>
+                  </span>
+                </div>
+              )}
+
+              {plan ? (
+                <DailyPlanCard
+                  plan={plan}
+                  allComplete={allComplete}
+                  onNavigate={onPlanItemNavigate}
                 />
-                <TopTrapsCard traps={topTraps} />
-              </>
-            )}
+              ) : (
+                <PlanSkeleton />
+              )}
+
+              {topTraps.length > 0 && (
+                <>
+                  {/* 240px ink-2 hairline — quiet divider above the
+                   *  demoted trap strip. Traps are diagnostic, not
+                   *  prescriptive; they belong below the focal plan. */}
+                  <div
+                    style={{
+                      width: 240,
+                      height: 1,
+                      background: 'var(--ink-2)',
+                      opacity: 0.5,
+                    }}
+                  />
+                  <TopTrapsCard traps={topTraps} />
+                </>
+              )}
+            </div>
+            {!isPhone && <ResumptionPanel now={today} />}
           </div>
         </div>
       </Page>

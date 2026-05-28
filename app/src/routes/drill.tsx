@@ -195,6 +195,8 @@ function DrillScreen() {
         !directLinkQid && !framework && dueCount > 0 ? <RepetitionHint count={dueCount} /> : null
       }
       urlSyncedQid={{ qid: qid ?? null, setQid: setUrlQid }}
+      pauseKind="drill"
+      pauseSection={section}
       onWrong={(q) => {
         // Fire-and-forget: a failed mistake-write doesn't block the UX.
         recordMistake.mutate({ questionId: q.qid })
