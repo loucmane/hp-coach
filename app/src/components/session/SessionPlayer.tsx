@@ -304,6 +304,22 @@ export function SessionPlayer(props: SessionPlayerProps) {
 
   const onHome = useCallback(() => navigate({ to: '/' }), [navigate])
 
+  // Auto-start when the URL carries a qid on initial mount. The Home
+  // resumption panel routes to `/drill?qid=X` — landing on the
+  // "Starta övning" idle page at that point would be a dead end (the
+  // user already committed to resuming via the explicit CTA on Home).
+  // begin() itself seeks to the URL qid once questions are picked.
+  // Guarded by phase === 'idle' so this only fires for the first
+  // mount and not after subsequent replays.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: only fire once at mount, not on every begin recreation
+  useEffect(() => {
+    if (phase !== 'idle') return
+    if (starting) return
+    if (!props.urlSyncedQid?.qid) return
+    void begin()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // Pause persistence — when the consumer opts in via `pauseKind`,
   // we keep the most recent in-progress snapshot pushed to the
   // paused-session store so the Home resumption panel can offer
