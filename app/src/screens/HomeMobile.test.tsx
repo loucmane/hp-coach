@@ -105,7 +105,10 @@ describe('HomeMobile — score line', () => {
     expect(screen.queryByTestId('home-score-line')).not.toBeInTheDocument()
   })
 
-  it('renders just-nu / verbal / kvant when any half has signal', () => {
+  it('renders the score numeric + verbal + kvant when any half has signal', () => {
+    // Home-bakeoff B pick: "just nu ·" prefix dropped, numeric in
+    // --ink, denominator + labels in --ink-2 / --muted. The line still
+    // surfaces all three values, just with cleaner type roles.
     render(
       <HomeMobile
         forceLayout="phone"
@@ -114,9 +117,12 @@ describe('HomeMobile — score line', () => {
       />,
     )
     const line = screen.getByTestId('home-score-line')
-    expect(line).toHaveTextContent(/just nu · 0\.65 \/ 2\.0/i)
+    expect(line).toHaveTextContent(/0\.65/)
+    expect(line).toHaveTextContent(/\/ 2\.0/)
     expect(line).toHaveTextContent(/verbal 0\.81/i)
     expect(line).toHaveTextContent(/kvant 0\.49/i)
+    // "just nu" prefix is intentionally gone.
+    expect(line).not.toHaveTextContent(/just nu/i)
   })
 
   it('renders em-dash for missing halves but still shows the line', () => {
@@ -133,45 +139,11 @@ describe('HomeMobile — score line', () => {
   })
 })
 
-describe('HomeMobile — diagnostic memory', () => {
-  it('hides the memory line when no diagnostic has run', () => {
-    render(<HomeMobile forceLayout="phone" plan={makePlan()} diagnosticMemory={null} />)
-    expect(screen.queryByTestId('home-diagnostic-memory')).not.toBeInTheDocument()
-  })
-
-  it('renders memory line with elapsed time + baseline when present', () => {
-    const now = new Date(2026, 4, 22, 12)
-    // 2 days ago
-    const lastAt = now.getTime() - 2 * 24 * 60 * 60 * 1000
-    render(
-      <HomeMobile
-        forceLayout="phone"
-        plan={makePlan()}
-        now={now}
-        diagnosticMemory={{ version: 1, lastAt, baselineScore: 0.62 }}
-      />,
-    )
-    const line = screen.getByTestId('home-diagnostic-memory')
-    expect(line).toHaveTextContent('Diagnostik')
-    expect(line).toHaveTextContent('2 dagar sedan')
-    expect(line).toHaveTextContent('baseline 0.62')
-    expect(line).toHaveTextContent('rebaseline')
-  })
-
-  it('omits baseline when score is null but still shows the line', () => {
-    render(
-      <HomeMobile
-        forceLayout="phone"
-        plan={makePlan()}
-        diagnosticMemory={{ version: 1, lastAt: Date.now(), baselineScore: null }}
-      />,
-    )
-    const line = screen.getByTestId('home-diagnostic-memory')
-    expect(line).toHaveTextContent('Diagnostik')
-    // "baseline 0.62" should be absent — only the "rebaseline →" CTA remains.
-    expect(line).not.toHaveTextContent(/baseline \d/)
-  })
-})
+// Diagnostic-memory in-Home block removed by home-bakeoff B pick —
+// the affordance now lives on /diagnostik itself. Tests pinning the
+// in-Home memory line are deleted; the prop is still accepted by the
+// HomeMobile signature for caller compatibility but the render is a
+// no-op until the affordance returns somewhere.
 
 describe('HomeMobile — top traps', () => {
   it('hides the traps card when no traps qualify', () => {
@@ -323,27 +295,15 @@ describe('HomeMobile — greeting', () => {
   })
 })
 
-describe('HomeMobile — streak badge (chrome, unchanged)', () => {
-  it('hides the streak badge by default and when streakDays is 0', () => {
-    const { rerender } = render(<HomeMobile forceLayout="phone" />)
-    expect(screen.queryByTestId('home-streak')).not.toBeInTheDocument()
-    rerender(<HomeMobile forceLayout="phone" streakDays={0} />)
-    expect(screen.queryByTestId('home-streak')).not.toBeInTheDocument()
-  })
-
-  it('auto-shows the badge with the real day count', () => {
+describe('HomeMobile — streak (chrome surface)', () => {
+  // In-Home StreakBadge was removed by the home-bakeoff B pick; the
+  // streak now surfaces only via MobileFrame's chrome (iOS-style
+  // status bar). HomeMobile still threads `streakDays` through to
+  // MobileFrame, so the prop wiring is preserved but the in-Home pill
+  // tests are gone — they belonged to a deleted DOM node.
+  it('does not render an inline streak pill on Home itself', () => {
     render(<HomeMobile forceLayout="phone" streakDays={12} />)
-    expect(screen.getByTestId('home-streak')).toHaveTextContent('12 dagar')
-  })
-
-  it('uses singular form for a 1-day streak', () => {
-    render(<HomeMobile forceLayout="phone" streakDays={1} />)
-    expect(screen.getByTestId('home-streak')).toHaveTextContent('1 dag')
-  })
-
-  it('respects an explicit showStreak override (force-show at 0)', () => {
-    render(<HomeMobile forceLayout="phone" showStreak streakDays={0} />)
-    expect(screen.getByTestId('home-streak')).toHaveTextContent('0 dagar')
+    expect(screen.queryByTestId('home-streak')).not.toBeInTheDocument()
   })
 })
 

@@ -25,12 +25,15 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
 import { HeatStripA } from '@/components/devbake/HeatStripA'
 import { HeatStripB } from '@/components/devbake/HeatStripB'
+import { HeatStripC } from '@/components/devbake/HeatStripC'
 import { HomeSigilA } from '@/components/devbake/HomeSigilA'
 import { HomeSigilB } from '@/components/devbake/HomeSigilB'
 import { HomeSigilC } from '@/components/devbake/HomeSigilC'
+import { HomeSigilD } from '@/components/devbake/HomeSigilD'
 import { PayoffVariantA } from '@/components/devbake/PayoffVariantA'
 import { PayoffVariantB } from '@/components/devbake/PayoffVariantB'
 import { PayoffVariantC } from '@/components/devbake/PayoffVariantC'
+import { PayoffVariantD } from '@/components/devbake/PayoffVariantD'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Btn, Eyebrow, Hairline, Mono } from '@/components/primitives'
 import { useViewport } from '@/hooks/useViewport'
@@ -105,6 +108,14 @@ function LoopBakeoff() {
               recipe: 'B + poängdelta-animering + imorgon-rad',
               node: <PayoffVariantC />,
             },
+            {
+              key: 'D',
+              label: 'Direktörens C, raffinerat',
+              recipe:
+                'C + FÄLLA-eyebrow · Hairline-divider · 1100ms delta-tween · reduced-motion · pass-slut som folio · Esc-affordance',
+              node: <PayoffVariantD />,
+              director: true,
+            },
           ]}
         />
 
@@ -133,6 +144,14 @@ function LoopBakeoff() {
               recipe: 'tunt vågrätt streck · fylls L→R · ingen "stäng"-effekt',
               node: <HomeSigilC />,
             },
+            {
+              key: 'D',
+              label: 'Direktörens streck, raffinerat',
+              recipe:
+                'C med 1px-regel · italic marginalia · zero-state-prompt · 520ms reading-pace · `klart`-flourish absorberat från B',
+              node: <HomeSigilD />,
+              director: true,
+            },
           ]}
         />
 
@@ -154,6 +173,14 @@ function LoopBakeoff() {
               label: '12-veckors heatmap',
               recipe: '12×7 grid · fyra intensitetsnivåer · single-color',
               node: <HeatStripB />,
+            },
+            {
+              key: 'C',
+              label: 'Direktörens B, raffinerat',
+              recipe:
+                'B med accent-ramp via color-mix · verbal/kvant-staplad · månadseyebrows · "längsta serie"-summering · hover/focus-outline',
+              node: <HeatStripC />,
+              director: true,
             },
           ]}
         />
@@ -205,10 +232,13 @@ function Header({ onClose }: { onClose: () => void }) {
 // ── Category section ─────────────────────────────────────────────────
 
 type CategoryVariant = {
-  key: 'A' | 'B' | 'C'
+  key: 'A' | 'B' | 'C' | 'D'
   label: string
   recipe: string
   node: React.ReactNode
+  /** Optional accent — surfaces "this column is the design-director's
+   *  refined read" so it stands out from the original A/B/C trio. */
+  director?: boolean
 }
 
 function Category({
@@ -271,10 +301,24 @@ function Category({
 
 function VariantCard({ variant }: { variant: CategoryVariant }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 10,
+        // Director column gets a subtle paper-grain treatment: an
+        // ink-2 hairline along the top edge and a slight padding-top
+        // bump, so the "this is the refined read" column stands out
+        // from the original A/B/C trio without shouting.
+        paddingTop: variant.director ? 14 : 0,
+        borderTop: variant.director ? '2px solid var(--ink)' : undefined,
+      }}
+    >
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-        <Mono style={{ color: 'var(--accent)' }}>
-          Variant {variant.key} · {variant.label}
+        <Mono style={{ color: variant.director ? 'var(--ink)' : 'var(--accent)' }}>
+          {variant.director
+            ? `→ Variant ${variant.key} · ${variant.label}`
+            : `Variant ${variant.key} · ${variant.label}`}
         </Mono>
       </div>
       <div
