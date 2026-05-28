@@ -157,7 +157,12 @@ function formatHeadline(p: PausedSession): string {
 
 function formatMarginalia(p: PausedSession): string {
   if (p.kind === 'lesson') {
-    return `vid steg ${p.step} av ${p.totalSteps}`
+    // Lessons are a reading surface, not a sequential session — the
+    // framework_id ("XYZ-TRAP-016") is what the user recognises as
+    // "what I was reading," not an entry index. Fall back to the
+    // generic step/total when there's no anchor.
+    if (p.frameworkId) return `vid ${p.frameworkId}`
+    return `pågående lektion`
   }
   return `vid fråga ${p.questionIndex} av ${p.totalQuestions}`
 }

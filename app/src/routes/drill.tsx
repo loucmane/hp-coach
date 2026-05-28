@@ -17,6 +17,7 @@ import { findQuestion, loadBank, type Section } from '@/data/questions'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions } from '@/lib/drill'
 import { REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
+import { usePausedSessionStore } from '@/stores/pausedSessionStore'
 
 const DRILL_SECTIONS = ['ORD', 'LÄS', 'MEK', 'ELF', 'XYZ', 'KVA', 'NOG', 'DTK'] as const
 type DrillSection = (typeof DRILL_SECTIONS)[number]
@@ -146,16 +147,36 @@ function DrillScreen() {
 
   const copy = SECTION_COPY[section]
 
-  // Three picker modes:
+  // Resume mode — when the URL qid matches the persisted paused-drill
+  // snapshot AND the snapshot includes the exact plan we were playing,
+  // replay that plan instead of re-rolling random questions. Lifts the
+  // "fell back to question 0 of a fresh batch" failure case for
+  // section-random drills; the user lands on the exact paused question.
+  // Snapshots without `plan` (e.g. older localStorage entries) fall
+  // through to the regular picker modes below.
+  const pausedDrill = usePausedSessionStore((s) => s.drill)
+  const matchesResume =
+    !!qid &&
+    !!pausedDrill?.plan &&
+    pausedDrill.qid === qid &&
+    pausedDrill.plan.includes(qid) &&
+    (pausedDrill.section ?? null) === (section ?? null)
+  const resumePlan = matchesResume ? pausedDrill?.plan : null
+
+  // Four picker modes:
+  //   - resume (paused snapshot matches URL qid) → replay the exact
+  //     persisted plan so seek-to-URL-qid lands on the paused question
   //   - direct-link (`?qid=` AND no active section session) → load one
   //     specific question (variant-comparison / debug)
   //   - `?framework=` → load a framework entry's example_questions
   //   - default → random N-question section drill
-  const pickQuestions = directLinkQid
-    ? () => loadBank().then((b) => [findQuestion(b, directLinkQid)])
-    : framework
-      ? () => pickFrameworkQuestions(section as Section, framework)
-      : () => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)
+  const pickQuestions = resumePlan
+    ? () => loadBank().then((b) => resumePlan.map((q) => findQuestion(b, q)))
+    : directLinkQid
+      ? () => loadBank().then((b) => [findQuestion(b, directLinkQid)])
+      : framework
+        ? () => pickFrameworkQuestions(section as Section, framework)
+        : () => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)
 
   const frameworkDisplay = frameworkHeadword ?? framework
   const idleEyebrow = directLinkQid ? 'Direktlänk' : framework ? 'Mönsterövning' : 'Övning'
