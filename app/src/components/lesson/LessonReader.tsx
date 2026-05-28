@@ -9,12 +9,13 @@
 // the artefact is a reading surface, not a dashboard.
 
 import { Link } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Mono } from '@/components/primitives'
 import { type Framework, loadFramework } from '@/data/frameworks'
 import type { Section } from '@/data/questions'
 import { useLessonReads } from '@/hooks/useLessonReads'
+import { usePausedSessionStore } from '@/stores/pausedSessionStore'
 
 import { LexiconCard } from './LexiconCard'
 import { ProtocolCard } from './ProtocolCard'
@@ -101,6 +102,65 @@ export function LessonReader({ section }: { section: Section }) {
       el.scrollIntoView({ block: 'start', behavior: 'smooth' })
     })
   }, [framework])
+
+  // Lesson pause persistence — tracks which framework entry the user
+  // was reading via the URL hash, so the Home resumption panel can
+  // route them back with "Fortsätt här →". Lessons aren't a session
+  // like drill/repetition; they're a reading surface, so the "pause"
+  // semantic is "you were reading entry X." Clears on mount when
+  // arriving at a hash that matches the stored pause (the user
+  // followed the resume → no need to keep remembering).
+  const frameworkRef = useRef<Framework | null>(null)
+  frameworkRef.current = framework
+  const setPausedLesson = usePausedSessionStore((s) => s.setLesson)
+  const clearPausedLesson = usePausedSessionStore((s) => s.clearLesson)
+  const pausedLesson = usePausedSessionStore((s) => s.lesson)
+
+  // Clear the lesson pause when the user arrives at the matching
+  // resume target. They followed the breadcrumb; remembering it
+  // further would re-surface the same line on next morning.
+  useEffect(() => {
+    if (!framework) return
+    const hash = window.location.hash.slice(1)
+    if (!hash) return
+    if (pausedLesson && pausedLesson.section === section && pausedLesson.frameworkId === hash) {
+      clearPausedLesson()
+    }
+  }, [framework, section, pausedLesson, clearPausedLesson])
+
+  // Persist on unmount when the URL hash points at a valid entry.
+  // beforeunload + visibilitychange handle tab close / background;
+  // the cleanup handles SPA navigation. If the user leaves on the
+  // bare /lektion/<section> (no hash), nothing persists — they
+  // weren't reading anything specific.
+  useEffect(() => {
+    const persistIfReading = () => {
+      const fw = frameworkRef.current
+      if (!fw) return
+      const hash = window.location.hash.slice(1)
+      if (!hash) return
+      const idx = fw.entries.findIndex((e) => e.id === hash)
+      if (idx < 0) return
+      setPausedLesson({
+        kind: 'lesson',
+        section,
+        frameworkId: hash,
+        step: idx + 1,
+        totalSteps: fw.entries.length,
+        pausedAt: Date.now(),
+      })
+    }
+    const onVis = () => {
+      if (document.visibilityState === 'hidden') persistIfReading()
+    }
+    window.addEventListener('beforeunload', persistIfReading)
+    document.addEventListener('visibilitychange', onVis)
+    return () => {
+      window.removeEventListener('beforeunload', persistIfReading)
+      document.removeEventListener('visibilitychange', onVis)
+      persistIfReading()
+    }
+  }, [section, setPausedLesson])
 
   const title = SECTION_TITLE[section] ?? { headline: section, subline: '' }
 

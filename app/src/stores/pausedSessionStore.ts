@@ -55,6 +55,14 @@ export type PausedDrill = {
   questionIndex: number
   /** Total questions in the session. */
   totalQuestions: number
+  /** Ordered qids that made up the paused session. Persisted so the
+   *  resume path can replay the exact same plan instead of having
+   *  the route pick a fresh random batch and hoping the paused qid
+   *  is still in it (the random-pick case fell back to question 0
+   *  before this was tracked). When the snapshot exists, the route
+   *  hands these qids to SessionPlayer as the plan; SessionPlayer's
+   *  existing URL-qid seek then lands on the exact paused question. */
+  plan?: string[]
   pausedAt: number
 }
 
@@ -64,6 +72,9 @@ export type PausedRepetition = {
   qid: string
   questionIndex: number
   totalQuestions: number
+  /** Ordered qids that made up the paused session — same role as
+   *  PausedDrill.plan above. */
+  plan?: string[]
   pausedAt: number
 }
 
