@@ -17,17 +17,16 @@
 
 import type { TopTrap } from '@/api/hooks/useTopTraps'
 import { DailyPlanCard } from '@/components/home/DailyPlanCard'
-import { ProgressSigil } from '@/components/home/ProgressSigil'
 import { TopTrapsCard } from '@/components/home/TopTrapsCard'
 import { MobileFrame, type TabKey } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Mono } from '@/components/primitives'
 import { Display } from '@/components/Typography'
 import { useViewport } from '@/hooks/useViewport'
-import { examPhase, formatSwedishHeader } from '@/lib/dates'
-import { type DiagnosticMemory, formatTimeSince } from '@/lib/diagnosticMemory'
+import { formatSwedishHeader } from '@/lib/dates'
+import type { DiagnosticMemory } from '@/lib/diagnosticMemory'
 import type { DailyPlan } from '@/lib/scheduler'
-import { formatScore, formatSwedishDateShort, type ProjectedTotal } from '@/lib/scoring'
+import { formatScore, type ProjectedTotal } from '@/lib/scoring'
 import type { CoachKey } from '@/lib/voice'
 import { useCoachStore } from '@/stores/coachStore'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
@@ -83,8 +82,8 @@ export function HomeMobile({
   plan = null,
   allComplete = false,
   projected = null,
-  diagnosticMemory = null,
-  daysAway = null,
+  diagnosticMemory: _diagnosticMemory = null,
+  daysAway: _daysAway = null,
   topTraps = [],
   onPlanItemNavigate,
   coach: coachProp,
@@ -157,114 +156,25 @@ export function HomeMobile({
             paddingBottom: isPhone ? 'var(--frame-tabbar)' : 0,
           }}
         >
+          {/* Header band — one mono kicker. The eight-line metadata
+           *  stack (examPhase, daysAway, diagnosticMemory, streak
+           *  pill, ProgressSigil) was deleted in the home-bakeoff B
+           *  pick: the morning compass needs ONE clear next action,
+           *  not seven competing status lines. The daysAway /
+           *  diagnostic-memory affordances move to /diagnostik;
+           *  streak surfaces are deferred. */}
           <header
             className="reveal"
             data-testid="home-header"
             style={{
               padding: 'clamp(16px, 1.2vw + 12px, 28px) var(--pad-lg) 0',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
               animationDelay: '0ms',
             }}
           >
-            <div>
-              <Mono>{formatSwedishHeader(today)}</Mono>
-              <div
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 12,
-                  color: 'var(--muted)',
-                  marginTop: 4,
-                  fontVariantNumeric: 'tabular-nums',
-                }}
-              >
-                {days} dagar kvar · {sitting.label.toLowerCase()}
-              </div>
-              {/* Urgency tier: names the *phase* the user is in, not
-               *  just the number. Turns the day count from wallpaper
-               *  into a clock — same band of phases that Strava
-               *  training-plan and Apple Fitness use to frame
-               *  long-arc goals. Render only for future dates; past
-               *  dates suppress (the dogfood user's exam has already
-               *  happened or sitting hasn't been picked). */}
-              {days >= 0 && (
-                <div
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 11,
-                    letterSpacing: 'var(--font-mono-track)',
-                    color: 'var(--muted)',
-                    marginTop: 2,
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {examPhase(days).label}
-                </div>
-              )}
-              {daysAway != null && daysAway >= 2 && (
-                <div
-                  data-testid="home-visit-memory"
-                  style={{
-                    marginTop: 6,
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 11,
-                    letterSpacing: 'var(--font-mono-track)',
-                    textTransform: 'uppercase',
-                    color: 'var(--ink-2)',
-                    fontVariantNumeric: 'tabular-nums',
-                  }}
-                >
-                  Tillbaka <span style={{ color: 'var(--muted)' }}>·</span> {daysAway} dagar sedan
-                </div>
-              )}
-              {diagnosticMemory && (
-                <a
-                  href="/diagnostik"
-                  data-testid="home-diagnostic-memory"
-                  style={{
-                    display: 'inline-flex',
-                    gap: 6,
-                    alignItems: 'baseline',
-                    marginTop: 6,
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 11,
-                    letterSpacing: 'var(--font-mono-track)',
-                    textTransform: 'uppercase',
-                    color: 'var(--ink-2)',
-                    fontVariantNumeric: 'tabular-nums',
-                    textDecoration: 'none',
-                  }}
-                >
-                  <span>Diagnostik</span>
-                  <span style={{ color: 'var(--muted)' }}>·</span>
-                  <span>{formatTimeSince(diagnosticMemory.lastAt, today)}</span>
-                  {diagnosticMemory.baselineScore != null && (
-                    <>
-                      <span style={{ color: 'var(--muted)' }}>·</span>
-                      <span>baseline {formatScore(diagnosticMemory.baselineScore)}</span>
-                    </>
-                  )}
-                  <span style={{ color: 'var(--accent)', marginLeft: 4 }}>rebaseline →</span>
-                </a>
-              )}
-            </div>
-            {renderStreak && <StreakBadge value={streakValue} />}
+            <Mono>
+              {formatSwedishHeader(today)} · {days} dagar · {sitting.label.toLowerCase()}
+            </Mono>
           </header>
-
-          {/* Progress Sigil — focal "today's progress" element. Sits
-           *  between the header band and the greeting as a typographic
-           *  underline that fills as plan items complete. The single
-           *  iconic loop element per the loop-bakeoff winner pick.
-           *  Aligned with the header band's horizontal padding so the
-           *  rule reads as part of the same chrome. */}
-          <div
-            style={{
-              padding: `0 var(--pad-lg)`,
-            }}
-          >
-            <ProgressSigil plan={plan} todayLabel={formatSwedishDateShort(today)} />
-          </div>
 
           <div
             style={{
@@ -281,11 +191,19 @@ export function HomeMobile({
               level={2}
               as="h1"
               className="reveal"
-              style={{ animationDelay: '60ms' }}
+              style={{ animationDelay: '60ms', maxWidth: '24ch', lineHeight: 1.02 }}
               id="home-greeting"
             >
               <span data-testid="home-greeting">
-                {firstName ? `${greetingHeadline}, ${firstName}.` : `${greetingHeadline}.`}
+                {firstName ? (
+                  <>
+                    {greetingHeadline},
+                    <br />
+                    {firstName}.
+                  </>
+                ) : (
+                  `${greetingHeadline}.`
+                )}
               </span>
             </Display>
 
@@ -305,17 +223,19 @@ export function HomeMobile({
                   alignItems: 'baseline',
                 }}
               >
-                <span style={{ color: 'var(--ink)' }}>
-                  just nu · {formatScore(projected.total)} / 2.0
+                <span style={{ color: 'var(--ink)' }}>{formatScore(projected.total)}</span>
+                <span style={{ color: 'var(--muted)' }}>/ 2.0</span>
+                <span style={{ color: 'var(--muted)' }}>·</span>
+                <span>
+                  verbal{' '}
+                  <span style={{ color: 'var(--ink)' }}>{formatScore(projected.verbal)}</span>
                 </span>
                 <span style={{ color: 'var(--muted)' }}>·</span>
-                <span>verbal {formatScore(projected.verbal)}</span>
-                <span style={{ color: 'var(--muted)' }}>·</span>
-                <span>kvant {formatScore(projected.quant)}</span>
+                <span>
+                  kvant <span style={{ color: 'var(--ink)' }}>{formatScore(projected.quant)}</span>
+                </span>
               </div>
             )}
-
-            {topTraps.length > 0 && <TopTrapsCard traps={topTraps} />}
 
             {plan ? (
               <DailyPlanCard
@@ -326,29 +246,27 @@ export function HomeMobile({
             ) : (
               <PlanSkeleton />
             )}
+
+            {topTraps.length > 0 && (
+              <>
+                {/* 240px ink-2 hairline — quiet divider above the
+                 *  demoted trap strip. Traps are diagnostic, not
+                 *  prescriptive; they belong below the focal plan. */}
+                <div
+                  style={{
+                    width: 240,
+                    height: 1,
+                    background: 'var(--ink-2)',
+                    opacity: 0.5,
+                  }}
+                />
+                <TopTrapsCard traps={topTraps} />
+              </>
+            )}
           </div>
         </div>
       </Page>
     </MobileFrame>
-  )
-}
-
-function StreakBadge({ value }: { value: number }) {
-  return (
-    <div
-      data-testid="home-streak"
-      style={{
-        padding: '4px 8px',
-        border: '1px solid var(--hairline)',
-        borderRadius: 6,
-        fontFamily: 'var(--font-mono)',
-        fontSize: 11,
-        color: 'var(--ink-2)',
-        fontVariantNumeric: 'tabular-nums',
-      }}
-    >
-      {value} {value === 1 ? 'dag' : 'dagar'}
-    </div>
   )
 }
 

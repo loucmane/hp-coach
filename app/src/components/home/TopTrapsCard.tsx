@@ -17,7 +17,7 @@
 // the post-diagnostic moment AND the every-morning return.
 
 import type { TopTrap } from '@/api/hooks/useTopTraps'
-import { Eyebrow, Hairline } from '@/components/primitives'
+import { Eyebrow } from '@/components/primitives'
 import type { TrapTrend } from '@/lib/trapHistory'
 
 type TopTrapsCardProps = {
@@ -28,21 +28,15 @@ export function TopTrapsCard({ traps }: TopTrapsCardProps) {
   if (traps.length === 0) return null
 
   return (
-    <section
-      data-testid="home-top-traps"
-      className="reveal"
-      style={{
-        animationDelay: '120ms',
-        paddingLeft: 'clamp(14px, 1vw + 8px, 22px)',
-        borderLeft: '2px solid var(--ink)',
-      }}
-    >
+    <section data-testid="home-top-traps" className="reveal" style={{ animationDelay: '120ms' }}>
       <Eyebrow>Återkommande fällor</Eyebrow>
       <ul
         style={{
           listStyle: 'none',
           padding: 0,
-          margin: '10px 0 0 0',
+          margin: '14px 0 0 0',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         {traps.map((trap, i) => (
@@ -50,29 +44,27 @@ export function TopTrapsCard({ traps }: TopTrapsCardProps) {
             key={trap.framework_id}
             data-testid={`top-trap-row-${i}`}
             style={{
-              marginTop: i === 0 ? 0 : 14,
-              paddingTop: i === 0 ? 0 : 14,
-              borderTop: i === 0 ? 'none' : '1px solid var(--hairline)',
+              borderTop: i === 0 ? '1px solid var(--hairline)' : 'none',
+              borderBottom: '1px solid var(--hairline)',
             }}
           >
             <TrapRow trap={trap} />
           </li>
         ))}
       </ul>
-      <Hairline style={{ marginTop: 18, marginBottom: 0 }} />
     </section>
   )
 }
 
 function TrapRow({ trap }: { trap: TopTrap }) {
-  // Plain anchor (not TanStack <Link>) — keeps the test render simple
-  // (no router context needed) and the surface is a one-tap target, so
-  // we don't need router-level prefetch behaviour.
+  // Demoted from the original italic+heavy-left-rule treatment to a
+  // quiet `120px · 1fr · 56px` ruled row — the strip is diagnostic
+  // (here are the patterns you keep falling into), not prescriptive.
+  // It sits below the focal plan card via Home's composition and
+  // shouldn't compete with it for first-read.
   //
   // Target is `/drill?framework=ID` rather than the lesson page —
-  // action-first per ADHD-PI: the user has already missed this trap
-  // 2+ times, so they don't need to re-read it; they need fresh
-  // exposure to the same pattern.
+  // action-first per ADHD-PI: user has already missed this 2+ times.
   const href = `/drill?framework=${trap.framework_id}`
   return (
     <a
@@ -80,55 +72,54 @@ function TrapRow({ trap }: { trap: TopTrap }) {
       data-testid="top-trap-link"
       style={{
         display: 'grid',
-        gridTemplateColumns: 'minmax(0, 1fr) auto',
-        gap: '4px clamp(10px, 1vw + 6px, 18px)',
+        gridTemplateColumns: '120px 1fr 56px',
+        gap: 16,
         alignItems: 'baseline',
+        padding: '12px 0',
         textDecoration: 'none',
         color: 'inherit',
       }}
     >
       <div
         style={{
-          gridColumn: '1 / 2',
+          fontFamily: 'var(--font-mono)',
+          fontSize: 11,
+          letterSpacing: 'var(--font-mono-track)',
+          textTransform: 'uppercase',
+          color: 'var(--muted)',
+        }}
+      >
+        {trap.framework_id}
+      </div>
+      <span
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 14,
+          lineHeight: 1.4,
+          color: 'var(--ink-2)',
+        }}
+      >
+        {trap.headline ?? 'Öva detta mönster →'}
+      </span>
+      <span
+        style={{
           fontFamily: 'var(--font-mono)',
           fontSize: 11,
           letterSpacing: 'var(--font-mono-track)',
           textTransform: 'uppercase',
           color: 'var(--ink-2)',
-        }}
-      >
-        {trap.framework_id}
-      </div>
-      <div
-        style={{
-          gridColumn: '2 / 3',
-          gridRow: '1 / 3',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-end',
-          gap: 3,
-          fontFamily: 'var(--font-mono)',
-          fontSize: 12,
+          textAlign: 'right',
           fontVariantNumeric: 'tabular-nums',
+          display: 'inline-flex',
+          gap: 6,
+          justifyContent: 'flex-end',
+          alignItems: 'baseline',
           whiteSpace: 'nowrap',
         }}
       >
-        <span style={{ color: 'var(--ink)' }}>{trap.count} ggr</span>
+        <span>{trap.count} ggr</span>
         <TrendChip trend={trap.trend} />
-      </div>
-      <div
-        style={{
-          gridColumn: '1 / 2',
-          fontFamily: 'var(--font-display)',
-          fontStyle: trap.headline ? 'italic' : 'normal',
-          fontSize: 'clamp(15px, 0.4vw + 13px, 17px)',
-          lineHeight: 1.35,
-          color: trap.headline ? 'var(--ink)' : 'var(--ink-2)',
-          marginTop: 2,
-        }}
-      >
-        {trap.headline ?? 'Öva detta mönster →'}
-      </div>
+      </span>
     </a>
   )
 }
