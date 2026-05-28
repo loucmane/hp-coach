@@ -315,12 +315,14 @@ export function SessionPlayer(props: SessionPlayerProps) {
     total: number
     qid: string | null
     section: Section | null
+    planQids: string[]
   }>({
     phase,
     index,
     total: plan.length,
     qid: props.urlSyncedQid?.qid ?? null,
     section: props.pauseSection ?? null,
+    planQids: plan.map((q) => q.qid),
   })
   pauseSnapshotRef.current = {
     phase,
@@ -328,6 +330,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
     total: plan.length,
     qid: props.urlSyncedQid?.qid ?? null,
     section: props.pauseSection ?? null,
+    planQids: plan.map((q) => q.qid),
   }
   const pauseKind = props.pauseKind
   const setPausedDrill = usePausedSessionStore((s) => s.setDrill)
@@ -359,6 +362,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
         qid: snap.qid,
         questionIndex: snap.index + 1,
         totalQuestions: snap.total,
+        plan: snap.planQids.length > 0 ? snap.planQids : undefined,
         pausedAt: Date.now(),
       }
       if (pauseKind === 'drill') {

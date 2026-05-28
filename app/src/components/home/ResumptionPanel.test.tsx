@@ -34,12 +34,13 @@ describe('ResumptionPanel', () => {
     expect(container).toBeEmptyDOMElement()
   })
 
-  it('renders a paused lesson with step indicator', () => {
+  it('renders a paused lesson with the framework-entry anchor', () => {
     const now = new Date(2026, 4, 28, 9)
     const pausedAt = new Date(2026, 4, 27, 19, 42).getTime()
     usePausedSessionStore.getState().setLesson({
       kind: 'lesson',
       section: 'XYZ',
+      frameworkId: 'XYZ-TRAP-016',
       step: 3,
       totalSteps: 7,
       pausedAt,
@@ -47,9 +48,22 @@ describe('ResumptionPanel', () => {
     render(<ResumptionPanel now={now} />)
     expect(screen.getByTestId('home-resumption-eyebrow')).toHaveTextContent(/igår · 19:42/i)
     expect(screen.getByTestId('home-resumption-headline')).toHaveTextContent('XYZ-lektion · pausad')
-    expect(screen.getByTestId('home-resumption-marginalia')).toHaveTextContent('vid steg 3 av 7')
+    expect(screen.getByTestId('home-resumption-marginalia')).toHaveTextContent('vid XYZ-TRAP-016')
     const link = screen.getByTestId('home-resumption-link') as HTMLAnchorElement
-    expect(link.getAttribute('href')).toBe('/lektion/XYZ?step=3')
+    expect(link.getAttribute('href')).toBe('/lektion/XYZ#XYZ-TRAP-016?step=3')
+  })
+
+  it('falls back to "pågående lektion" when the lesson has no entry anchor', () => {
+    const now = new Date(2026, 4, 28, 9)
+    usePausedSessionStore.getState().setLesson({
+      kind: 'lesson',
+      section: 'NOG',
+      step: 1,
+      totalSteps: 5,
+      pausedAt: new Date(2026, 4, 27, 10).getTime(),
+    })
+    render(<ResumptionPanel now={now} />)
+    expect(screen.getByTestId('home-resumption-marginalia')).toHaveTextContent('pågående lektion')
   })
 
   it('renders a paused drill with question indicator and qid-resume href', () => {
