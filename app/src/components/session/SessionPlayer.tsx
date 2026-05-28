@@ -353,7 +353,12 @@ export function SessionPlayer(props: SessionPlayerProps) {
     if (!pauseKind) return
     const persistIfMidSession = () => {
       const snap = pauseSnapshotRef.current
-      if (snap.phase !== 'answering') return
+      // Both 'answering' (mid-pick) and 'graded' (looking at the
+      // explanation after a pick) are pause-able. Skipping 'graded'
+      // meant the user could answer Q3, read the explanation, leave,
+      // and the snapshot never got persisted — the most common pause
+      // shape in real morning use.
+      if (snap.phase !== 'answering' && snap.phase !== 'graded') return
       if (!snap.qid) return
       const payload = {
         qid: snap.qid,
