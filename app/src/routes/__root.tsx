@@ -11,14 +11,14 @@
 // screen; signed-out users see <SignIn /> (except on the /sign-in
 // and /sign-up routes themselves, which are public).
 
-import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut } from '@clerk/clerk-react'
+import { SignedIn, SignedOut, useAuth } from '@clerk/clerk-react'
 import { createRootRoute, Outlet, useLocation, useNavigate } from '@tanstack/react-router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useHydratePrefs } from '@/api/useSyncedPrefs'
 import { CommandPalette } from '@/components/CommandPalette'
 import { Frame } from '@/components/Frame'
-import { Mono } from '@/components/primitives'
+import { Btn, Mono } from '@/components/primitives'
 import { ShareDebugButton } from '@/components/ShareDebugButton'
 import { TweaksLauncher } from '@/components/TweaksLauncher'
 import { isWelcomed } from '@/lib/welcome'
@@ -47,12 +47,7 @@ function RootShell() {
   return (
     <>
       <Frame>
-        <ClerkLoading>
-          <SplashLoading />
-        </ClerkLoading>
-        <ClerkLoaded>
-          <AuthRouter />
-        </ClerkLoaded>
+        <ClerkGate />
       </Frame>
       {/* Both components self-gate via `isDevSurface()` — visible when
        *  `import.meta.env.DEV` OR `?dev=1` is in the URL OR the
@@ -63,6 +58,65 @@ function RootShell() {
       <TweaksLauncher />
       <CommandPalette />
     </>
+  )
+}
+
+// Clerk gate with a load-failure fallback.
+//
+// We used to render <ClerkLoading>splash</> + <ClerkLoaded>app</> — but
+// when Clerk's JS fails to load (network blip, CDN hiccup, Clerk outage:
+// `failed_to_load_clerk_js_timeout`), Clerk leaves BOTH states empty, so
+// the user was stranded on a permanent blank with no way to recover.
+// Drive the gate off `useAuth().isLoaded` instead, and after a timeout
+// show a recoverable error instead of an indefinite splash.
+const CLERK_LOAD_TIMEOUT_MS = 15_000
+
+function ClerkGate() {
+  const { isLoaded } = useAuth()
+  const [timedOut, setTimedOut] = useState(false)
+  useEffect(() => {
+    if (isLoaded) return
+    const t = setTimeout(() => setTimedOut(true), CLERK_LOAD_TIMEOUT_MS)
+    return () => clearTimeout(t)
+  }, [isLoaded])
+
+  if (isLoaded) return <AuthRouter />
+  if (timedOut) return <ClerkLoadFailed />
+  return <SplashLoading />
+}
+
+function ClerkLoadFailed() {
+  return (
+    <div
+      style={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 20,
+        padding: 'clamp(24px, 6vw, 64px)',
+        background: 'var(--bg)',
+        textAlign: 'center',
+      }}
+    >
+      <Mono>kunde inte ladda</Mono>
+      <p
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(18px, 1vw + 15px, 22px)',
+          lineHeight: 1.45,
+          color: 'var(--ink-2)',
+          maxWidth: '34ch',
+          margin: 0,
+        }}
+      >
+        Inloggningen kunde inte starta — det beror oftast på en tillfällig anslutning. Försök igen.
+      </p>
+      <Btn onClick={() => window.location.reload()} data-testid="clerk-reload">
+        Ladda om →
+      </Btn>
+    </div>
   )
 }
 
