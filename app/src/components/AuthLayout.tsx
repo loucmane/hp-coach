@@ -256,7 +256,18 @@ function DesktopBody({
           gap: 18,
         }}
       >
-        <div style={{ width: '100%', maxWidth: 440 }}>
+        {/* Sage left-rail — one structural rule down the form block (a
+         *  margin rule, not a card). The single accent that anchors the
+         *  now-card-less form; desktop only (phone stays flush). Pairs with
+         *  the flush-form treatment in clerkAppearance.ts. */}
+        <div
+          style={{
+            width: '100%',
+            maxWidth: 444,
+            borderLeft: '4px solid var(--accent)',
+            paddingLeft: 'clamp(20px, 2vw, 32px)',
+          }}
+        >
           <CardSection cardLabel={cardLabel}>{children}</CardSection>
           {crossLink && (
             <div
