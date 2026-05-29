@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as SignUpRouteImport } from './routes/sign-up'
+import { Route as SignInBakeoffRouteImport } from './routes/sign-in-bakeoff'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as RepetitionRouteImport } from './routes/repetition'
 import { Route as ProgressRouteImport } from './routes/progress'
@@ -40,6 +41,11 @@ const WelcomeRoute = WelcomeRouteImport.update({
 const SignUpRoute = SignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignInBakeoffRoute = SignInBakeoffRouteImport.update({
+  id: '/sign-in-bakeoff',
+  path: '/sign-in-bakeoff',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignInRoute = SignInRouteImport.update({
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
+  '/sign-in-bakeoff': typeof SignInBakeoffRoute
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
 }
@@ -188,6 +195,7 @@ export interface FileRoutesByTo {
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
+  '/sign-in-bakeoff': typeof SignInBakeoffRoute
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
 }
@@ -213,6 +221,7 @@ export interface FileRoutesById {
   '/progress': typeof ProgressRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
+  '/sign-in-bakeoff': typeof SignInBakeoffRoute
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
 }
@@ -239,6 +248,7 @@ export interface FileRouteTypes {
     | '/progress'
     | '/repetition'
     | '/sign-in'
+    | '/sign-in-bakeoff'
     | '/sign-up'
     | '/welcome'
   fileRoutesByTo: FileRoutesByTo
@@ -263,6 +273,7 @@ export interface FileRouteTypes {
     | '/progress'
     | '/repetition'
     | '/sign-in'
+    | '/sign-in-bakeoff'
     | '/sign-up'
     | '/welcome'
   id:
@@ -287,6 +298,7 @@ export interface FileRouteTypes {
     | '/progress'
     | '/repetition'
     | '/sign-in'
+    | '/sign-in-bakeoff'
     | '/sign-up'
     | '/welcome'
   fileRoutesById: FileRoutesById
@@ -312,6 +324,7 @@ export interface RootRouteChildren {
   ProgressRoute: typeof ProgressRoute
   RepetitionRoute: typeof RepetitionRoute
   SignInRoute: typeof SignInRoute
+  SignInBakeoffRoute: typeof SignInBakeoffRoute
   SignUpRoute: typeof SignUpRoute
   WelcomeRoute: typeof WelcomeRoute
 }
@@ -330,6 +343,13 @@ declare module '@tanstack/react-router' {
       path: '/sign-up'
       fullPath: '/sign-up'
       preLoaderRoute: typeof SignUpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-in-bakeoff': {
+      id: '/sign-in-bakeoff'
+      path: '/sign-in-bakeoff'
+      fullPath: '/sign-in-bakeoff'
+      preLoaderRoute: typeof SignInBakeoffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sign-in': {
@@ -496,6 +516,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProgressRoute: ProgressRoute,
   RepetitionRoute: RepetitionRoute,
   SignInRoute: SignInRoute,
+  SignInBakeoffRoute: SignInBakeoffRoute,
   SignUpRoute: SignUpRoute,
   WelcomeRoute: WelcomeRoute,
 }
