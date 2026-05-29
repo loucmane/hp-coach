@@ -7,10 +7,19 @@
 //   - No regenerate affordance (the daily plan is authoritative)
 
 import { render, screen, within } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import { type DailyPlan, PLAN_SCHEMA_VERSION } from '@/lib/scheduler'
 import { HomeMobile } from './HomeMobile'
+
+// HomeMobile is prop-driven in these tests (no QueryClient / Clerk
+// providers). The resumption surfaces read server state via this hook,
+// so stub it to "nothing resumable" — resumption rendering is covered by
+// the cross-device Playwright drive, not here.
+vi.mock('@/components/home/useResumptionCandidate', () => ({
+  useResumptionCandidate: () => null,
+  pickCandidate: () => null,
+}))
 
 function makePlan(overrides: Partial<DailyPlan> = {}): DailyPlan {
   return {

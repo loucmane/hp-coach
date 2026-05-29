@@ -17,6 +17,7 @@
 
 import type { TopTrap } from '@/api/hooks/useTopTraps'
 import { DailyPlanCard } from '@/components/home/DailyPlanCard'
+import { PhoneResumptionLine } from '@/components/home/PhoneResumptionLine'
 import { ResumptionPanel } from '@/components/home/ResumptionPanel'
 import { TopTrapsCard } from '@/components/home/TopTrapsCard'
 import { MobileFrame, type TabKey } from '@/components/MobileFrame'
@@ -252,6 +253,13 @@ export function HomeMobile({
                   </span>
                 </div>
               )}
+
+              {/* Phone resumption line (bake-off variant C). Sits between
+               *  the greeting and the daily plan — warm and tappable, but
+               *  subordinate to today's prescription. Studio gets the
+               *  right-column ResumptionPanel instead (below). Renders
+               *  nothing when there's nothing to resume. */}
+              {isPhone && <PhoneResumptionLine now={today} />}
 
               {plan ? (
                 <DailyPlanCard

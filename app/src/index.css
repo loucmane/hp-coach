@@ -497,6 +497,29 @@ body::before {
   outline: none;
 }
 
+/* ── Phone resumption line — tap feedback ──────────────────────────── */
+/* The phone "Fortsätt" line (PhoneResumptionLine) is a ~40px tap target
+ * in the Home flow. A whisper of Sage on press confirms the tap without
+ * turning the line into a button — restrained, editorial. The negative
+ * inline margin lets the tint bleed to the column gutter while the text
+ * stays flush-left with the greeting + plan above and below it. */
+.hpc-resume-line {
+  margin-inline: -10px;
+  padding: 8px 10px;
+  border-radius: calc(var(--radius) * 0.5);
+  transition: background-color 140ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hpc-resume-line:active,
+.hpc-resume-line:focus-visible {
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
+  outline: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hpc-resume-line {
+    transition: none;
+  }
+}
+
 /* ── Lesson trap card — kill default disclosure triangle ────────────── */
 /* Native <details>/<summary> ships a triangle marker we don't want next
  * to our "läs mer +" mono affordance. Hide in both engines, and swap
