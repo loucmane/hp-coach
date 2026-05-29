@@ -17,7 +17,6 @@ import { useDueMistakes, useRecordMistake, useResolveMistake } from '@/api/hooks
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { findQuestion, loadBank } from '@/data/questions'
 import { pickReplayQuestions, REPETITION_SESSION_SIZE } from '@/lib/replay'
-import { usePausedSessionStore } from '@/stores/pausedSessionStore'
 
 type RepetitionSearch = { qid?: string }
 
@@ -40,7 +39,6 @@ function RepetitionScreen() {
   const resolveMistake = useResolveMistake()
   const navigate = useNavigate()
   const { qid: urlQid } = Route.useSearch()
-  const pausedRepetition = usePausedSessionStore((s) => s.repetition)
 
   // URL-as-state for the active qid. `replace: true` keeps history
   // clean — a 10-question replay shouldn't add 10 back-button stops.
@@ -89,21 +87,11 @@ function RepetitionScreen() {
       sections="ORD"
       activeTab="drill"
       urlSyncedQid={{ qid: urlQid ?? null, setQid: setUrlQid }}
-      pauseKind="repetition"
+      resolvePlan={(qids) => loadBank().then((b) => qids.map((q) => findQuestion(b, q)))}
       pickQuestions={async () => {
-        // Resume mode — replay the persisted plan when the URL qid
-        // matches the paused-repetition snapshot's stored plan. Same
-        // pattern as drill.tsx: lifts the queue-shuffled-since-pause
-        // failure case so the user lands on the exact paused question.
-        if (
-          urlQid &&
-          pausedRepetition?.plan &&
-          pausedRepetition.qid === urlQid &&
-          pausedRepetition.plan.includes(urlQid)
-        ) {
-          const bank = await loadBank()
-          return pausedRepetition.plan.map((q) => findQuestion(bank, q))
-        }
+        // Cross-device resume is handled by SessionPlayer adopting the
+        // active server session + its stored plan (resolvePlan above).
+        // Here we only build a fresh replay batch from the due queue.
         const dueRows = due.data ?? []
         const items = await pickReplayQuestions(dueRows, REPETITION_SESSION_SIZE)
         return items.map((r) => r.question)

@@ -29,9 +29,10 @@
 //   next   → PATCH /api/sessions/:id { position, currentQuestionId }
 //   end    → PATCH /api/sessions/:id { end: true }
 //
-// Stale-session handling: useActiveSession is consulted on the idle
-// screen so we surface "Avsluta tidigare övning" if a session of the
-// same kind is still hanging open from another tab/device.
+// Cross-device resume: useActiveSessionOfKind is consulted so that
+// starting (or auto-resuming via a ?qid=) ADOPTS an existing active
+// session of this kind — replaying its stored plan and seeking to its
+// saved position — instead of starting fresh. Seamless, no warning.
 
 import { useNavigate } from '@tanstack/react-router'
 import { type CSSProperties, type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
@@ -39,7 +40,8 @@ import { type CSSProperties, type ReactNode, useCallback, useEffect, useRef, use
 import { useSubmitAttempt } from '@/api/hooks/useAttempts'
 import {
   type SessionKind,
-  useActiveSession,
+  useActiveSessionOfKind,
+  useSessionAttempts,
   useStartSession,
   useUpdateSession,
 } from '@/api/hooks/useSessions'
@@ -50,10 +52,10 @@ import { DispatchedVariant } from '@/components/drill-variants/DispatchedVariant
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
-import type { AnswerLetter, Question, Section } from '@/data/questions'
+import type { AnswerLetter, Question } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
+import { currentDevice } from '@/lib/device'
 import { TAB_ROUTE } from '@/lib/nav'
-import { usePausedSessionStore } from '@/stores/pausedSessionStore'
 
 type Phase = 'idle' | 'answering' | 'graded' | 'done'
 
@@ -144,24 +146,18 @@ export type SessionPlayerProps = {
     qid: string | null
     setQid: (qid: string | null) => void
   }
-  /** When set, SessionPlayer persists the in-progress session to the
-   *  paused-session store on unmount-while-answering, and clears it
-   *  on finish. Drives the Home resumption panel — clicking
-   *  "Fortsätt här" routes back to /drill?qid=X or
-   *  /repetition?qid=X. Omit for /diagnostik (one-shot baseline; no
-   *  pause semantics) and any other surface that shouldn't surface
-   *  on Home as a resume target. */
-  pauseKind?: 'drill' | 'repetition'
-  /** Optional Section attached to the persisted pause snapshot so
-   *  the Home panel renders "ORD-övning · pausad" instead of just
-   *  "Övning · pausad". Pass when the session was started against a
-   *  single section; omit for mixed-section drills / repetition. */
-  pauseSection?: Section
+  /** Resolve a stored plan (ordered qids from the server session) back
+   *  into Question objects, for cross-device adopt-on-resume. When an
+   *  active session of this kind exists, SessionPlayer replays its plan
+   *  via this instead of calling pickQuestions (which would re-roll a
+   *  fresh batch). Omit for surfaces that never resume (e.g. /diagnostik);
+   *  without it, an active session falls through to a fresh pick. */
+  resolvePlan?: (qids: string[]) => Promise<Question[]>
 }
 
 export function SessionPlayer(props: SessionPlayerProps) {
   const navigate = useNavigate()
-  const activeSession = useActiveSession()
+  const activeOfKind = useActiveSessionOfKind(props.sessionKind)
   const startSession = useStartSession()
   const updateSession = useUpdateSession()
   const submitAttempt = useSubmitAttempt()
@@ -181,6 +177,9 @@ export function SessionPlayer(props: SessionPlayerProps) {
   const [questionStartedAt, setQuestionStartedAt] = useState(0)
   const [sessionId, setSessionId] = useState<number | null>(null)
   const [emptyAttempted, setEmptyAttempted] = useState(false)
+  // Set to the adopted session id when a resume replays an existing
+  // server session, so its prior attempts can hydrate picks[] (below).
+  const [adoptedSessionId, setAdoptedSessionId] = useState<number | null>(null)
   // Tracks the full "user clicked Start" → "first question rendered"
   // window. startSession.isPending alone misses the pickQuestions phase,
   // which can include the very first dataset fetch (~6 MB) on a cold
@@ -191,6 +190,46 @@ export function SessionPlayer(props: SessionPlayerProps) {
     if (starting) return
     setStarting(true)
     try {
+      // Adopt path — an active session of this kind already exists (the
+      // user paused it, here or on another device). Replay its stored
+      // plan and seek to its saved position, reusing the same row, rather
+      // than POSTing a duplicate + re-rolling a fresh batch. This is what
+      // makes "Fortsätt här" land on the exact paused question on ANY
+      // device. Needs resolvePlan to turn the stored qids back into
+      // Question objects; without it (or without a stored plan) we fall
+      // through to a fresh start.
+      const existing = activeOfKind.data
+      if (existing && existing.plan && existing.plan.length > 0 && props.resolvePlan) {
+        const questions = await props.resolvePlan(existing.plan)
+        if (questions.length === 0) {
+          setEmptyAttempted(true)
+          return
+        }
+        setSessionId(existing.id)
+        setPlan(questions)
+        setPicks(new Array(questions.length).fill(null))
+        // Prefer the URL qid (deep-link), else the server cursor, else
+        // the saved position. Clamp into range so a shifted plan can't
+        // strand us past the end.
+        const seekQid = props.urlSyncedQid?.qid ?? existing.currentQuestionId ?? null
+        const seekIdx = seekQid ? questions.findIndex((q) => q.qid === seekQid) : -1
+        const startIdx =
+          seekIdx >= 0 ? seekIdx : Math.min(Math.max(existing.position, 0), questions.length - 1)
+        setIndex(startIdx)
+        setPhase('answering')
+        setQuestionStartedAt(Date.now())
+        setAdoptedSessionId(existing.id)
+        const activeQid = questions[startIdx]?.qid ?? null
+        props.urlSyncedQid?.setQid(activeQid)
+        updateSession.mutate({
+          id: existing.id,
+          patch: { position: startIdx, currentQuestionId: activeQid, device: currentDevice() },
+        })
+        return
+      }
+
+      // Fresh start — pick a new plan and create the session, storing the
+      // ordered plan + device so a later resume (here or elsewhere) is exact.
       const picked = await props.pickQuestions()
       if (picked.length === 0) {
         setEmptyAttempted(true)
@@ -199,6 +238,8 @@ export function SessionPlayer(props: SessionPlayerProps) {
       const session = await startSession.mutateAsync({
         kind: props.sessionKind,
         sections: props.sections,
+        plan: picked.map((q) => q.qid),
+        device: currentDevice(),
       })
       setSessionId(session.id)
       setPlan(picked)
@@ -227,7 +268,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
     } finally {
       setStarting(false)
     }
-  }, [starting, props, startSession, updateSession])
+  }, [starting, props, startSession, updateSession, activeOfKind.data])
 
   const onPick = useCallback(
     (letter: AnswerLetter) => {
@@ -304,88 +345,34 @@ export function SessionPlayer(props: SessionPlayerProps) {
 
   const onHome = useCallback(() => navigate({ to: '/' }), [navigate])
 
-  // Pause persistence — when the consumer opts in via `pauseKind`,
-  // we keep the most recent in-progress snapshot pushed to the
-  // paused-session store so the Home resumption panel can offer
-  // "Fortsätt här". A ref captures the current snapshot so the
-  // unmount cleanup can read the latest values without re-binding.
-  const pauseSnapshotRef = useRef<{
-    phase: Phase
-    index: number
-    total: number
-    qid: string | null
-    section: Section | null
-    planQids: string[]
-  }>({
-    phase,
-    index,
-    total: plan.length,
-    qid: props.urlSyncedQid?.qid ?? null,
-    section: props.pauseSection ?? null,
-    planQids: plan.map((q) => q.qid),
-  })
-  pauseSnapshotRef.current = {
-    phase,
-    index,
-    total: plan.length,
-    qid: props.urlSyncedQid?.qid ?? null,
-    section: props.pauseSection ?? null,
-    planQids: plan.map((q) => q.qid),
-  }
-  const pauseKind = props.pauseKind
-  const setPausedDrill = usePausedSessionStore((s) => s.setDrill)
-  const setPausedRepetition = usePausedSessionStore((s) => s.setRepetition)
-  const clearPausedDrill = usePausedSessionStore((s) => s.clearDrill)
-  const clearPausedRepetition = usePausedSessionStore((s) => s.clearRepetition)
+  // Pause persistence is now the server session itself: begin() creates
+  // (or adopts) the row, and onNext PATCHes position/currentQuestionId on
+  // every advance — so leaving mid-question already leaves the row at the
+  // right spot. The Home resumption panel reads that row (cross-device);
+  // no localStorage snapshot needed.
 
-  // Clear the pause slot the moment the user reaches `done`. Replay
-  // path goes through `done -> idle` which doesn't need a separate
-  // clear (the slot stays cleared until next pause).
+  // Summary hydration on adopt. When a resumed drill replays an existing
+  // session, the questions answered BEFORE the pause live as server
+  // attempts, not in local picks[] — so the "Klart." payoff would
+  // undercount (e.g. 8/10 when the user actually did 10/10). Pull those
+  // attempts once and backfill picks[] at their plan positions.
+  const adoptedAttempts = useSessionAttempts(adoptedSessionId)
+  const hydratedRef = useRef(false)
   useEffect(() => {
-    if (!pauseKind) return
-    if (phase !== 'done') return
-    if (pauseKind === 'drill') clearPausedDrill()
-    else clearPausedRepetition()
-  }, [pauseKind, phase, clearPausedDrill, clearPausedRepetition])
-
-  // Persist on unmount when the user was mid-answer with an active
-  // qid. Page-visibility + beforeunload also fire when the user
-  // closes the tab or backgrounds the app, so the snapshot survives
-  // hard exits, not just SPA navigations.
-  useEffect(() => {
-    if (!pauseKind) return
-    const persistIfMidSession = () => {
-      const snap = pauseSnapshotRef.current
-      if (snap.phase !== 'answering') return
-      if (!snap.qid) return
-      const payload = {
-        qid: snap.qid,
-        questionIndex: snap.index + 1,
-        totalQuestions: snap.total,
-        plan: snap.planQids.length > 0 ? snap.planQids : undefined,
-        pausedAt: Date.now(),
+    if (hydratedRef.current) return
+    if (adoptedSessionId === null) return
+    const rows = adoptedAttempts.data
+    if (!rows || plan.length === 0) return
+    hydratedRef.current = true
+    setPicks((prev) => {
+      const next = [...prev]
+      for (const a of rows) {
+        const i = plan.findIndex((q) => q.qid === a.questionId)
+        if (i >= 0 && a.selectedAnswer) next[i] = a.selectedAnswer as AnswerLetter
       }
-      if (pauseKind === 'drill') {
-        setPausedDrill({
-          kind: 'drill',
-          section: snap.section ?? undefined,
-          ...payload,
-        })
-      } else {
-        setPausedRepetition({ kind: 'repetition', ...payload })
-      }
-    }
-    const onVis = () => {
-      if (document.visibilityState === 'hidden') persistIfMidSession()
-    }
-    window.addEventListener('beforeunload', persistIfMidSession)
-    document.addEventListener('visibilitychange', onVis)
-    return () => {
-      window.removeEventListener('beforeunload', persistIfMidSession)
-      document.removeEventListener('visibilitychange', onVis)
-      persistIfMidSession()
-    }
-  }, [pauseKind, setPausedDrill, setPausedRepetition])
+      return next
+    })
+  }, [adoptedSessionId, adoptedAttempts.data, plan])
 
   // Phase A.8 — keyboard handlers (EDITION's "stolen ideas" from
   // ATLAS + TERMINAL):
@@ -490,21 +477,19 @@ export function SessionPlayer(props: SessionPlayerProps) {
       )
     }
 
-    const stale =
-      activeSession.data && activeSession.data.kind === props.sessionKind
-        ? activeSession.data
-        : null
+    // No stale-session warning: an active session of this kind is simply
+    // adopted on Start (seamless resume), not flagged as a foreign
+    // "unfinished pass". The idle CTA continues it; a fresh pick only
+    // happens when there's nothing active.
     const isPhone = viewport === 'phone'
+    const resuming = !!activeOfKind.data
     const idleBody = (
       <IdleBody
         {...props}
         isPhone={isPhone}
         starting={starting || startSession.isPending}
         onStart={begin}
-        stale={stale}
-        onEndStale={() => {
-          if (stale) updateSession.mutate({ id: stale.id, patch: { end: true } })
-        }}
+        resuming={resuming}
         emptyAttempted={emptyAttempted}
       />
     )
@@ -739,8 +724,8 @@ export function SessionPlayer(props: SessionPlayerProps) {
 type IdleBodyProps = SessionPlayerProps & {
   starting: boolean
   onStart: () => void
-  stale: { id: number; kind: string; position: number } | null
-  onEndStale: () => void
+  /** An active session of this kind exists — the CTA continues it. */
+  resuming: boolean
   emptyAttempted: boolean
   /** Phase A.8.2 — phone keeps the tight artboard composition; desktop
    *  uses the chapter-opening composition (hero headline, marginalia
@@ -757,8 +742,7 @@ function IdleBody({
   emptyCopy,
   starting,
   onStart,
-  stale,
-  onEndStale,
+  resuming,
   emptyAttempted,
   disableStart,
   disableStartLabel,
@@ -932,32 +916,6 @@ function IdleBody({
         </div>
       )}
 
-      {stale && (
-        <div
-          data-testid="drill-stale-warning"
-          style={{
-            marginTop: 24,
-            padding: '12px 14px',
-            background: 'var(--panel-2)',
-            border: '1px solid var(--hairline)',
-            borderRadius: 'calc(var(--radius) * 0.5)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 8,
-            maxWidth: isPhone ? undefined : 520,
-          }}
-        >
-          <Mono>Tidigare övning</Mono>
-          <div style={{ fontSize: 13, color: 'var(--ink-2)' }}>
-            Ett oavslutat pass från en annan flik eller enhet ligger kvar (vid fråga{' '}
-            {stale.position + 1}).
-          </div>
-          <Btn size="sm" variant="secondary" onClick={onEndStale}>
-            Avsluta tidigare
-          </Btn>
-        </div>
-      )}
-
       {/* Pushes the CTA to the bottom of the page. With flex:1 on the
        *  outer container above, the spacer now actually grows. */}
       <div style={{ flex: 1, minHeight: isPhone ? 0 : 48 }} />
@@ -991,7 +949,9 @@ function IdleBody({
             ? 'Startar…'
             : disableStart
               ? (disableStartLabel ?? 'Inget att starta')
-              : 'Starta övning →'}
+              : resuming
+                ? 'Fortsätt övning →'
+                : 'Starta övning →'}
         </Btn>
       </div>
     </div>
