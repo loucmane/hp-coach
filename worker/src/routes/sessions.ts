@@ -98,27 +98,35 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
 
-    // Friendly path for the single-active-per-kind invariant: retire any
-    // prior open session of this kind before inserting. The unique index
-    // would otherwise reject the insert.
-    await db
-      .update(sessions)
-      .set({ endedAt: new Date() })
-      .where(
-        and(eq(sessions.userId, userId), eq(sessions.kind, body.kind), isNull(sessions.endedAt)),
-      )
-
-    const [row] = await db
-      .insert(sessions)
-      .values({
-        userId,
-        kind: body.kind,
-        sections: body.sections ?? null,
-        position: 0,
-        plan: body.plan ?? null,
-        device: body.device ?? null,
-      })
-      .returning()
+    // Single-active-per-kind: retire any prior open session of this kind,
+    // then insert the new one — ATOMICALLY. D1's batch() runs the pair as
+    // one transaction, so two near-simultaneous POSTs from a user's two
+    // devices can't interleave between the "end prior" and the insert.
+    // Without the batch, device A's insert could land an active row in the
+    // gap between device B's update and B's insert, and B's insert would
+    // then trip the (user, kind) partial unique index with a UNIQUE
+    // violation (500). Concurrent batches serialize on D1's primary, so
+    // each device's end-prior+insert is isolated and the invariant holds.
+    const [, inserted] = await db.batch([
+      db
+        .update(sessions)
+        .set({ endedAt: new Date() })
+        .where(
+          and(eq(sessions.userId, userId), eq(sessions.kind, body.kind), isNull(sessions.endedAt)),
+        ),
+      db
+        .insert(sessions)
+        .values({
+          userId,
+          kind: body.kind,
+          sections: body.sections ?? null,
+          position: 0,
+          plan: body.plan ?? null,
+          device: body.device ?? null,
+        })
+        .returning(),
+    ])
+    const row = inserted[0]
     return c.json({ session: row }, 201)
   })
 
