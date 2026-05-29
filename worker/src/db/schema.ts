@@ -10,7 +10,7 @@
 // the first time a signed-in user hits any authenticated route.
 
 import { sql } from 'drizzle-orm'
-import { integer, real, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core'
+import { index, integer, real, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core'
 
 // Device provenance for resumption surfaces — "pausad på telefon" reads
 // as a warm memory anchor for a single phone↔laptop user. Nullable on
@@ -80,6 +80,9 @@ export const sessions = sqliteTable(
     activeByKind: uniqueIndex('idx_sessions_user_kind_active')
       .on(t.userId, t.kind)
       .where(sql`${t.endedAt} is null`),
+    // Non-partial (user, kind) index for the all-kinds counts (drills
+    // total / this-week) that the partial active-only index can't serve.
+    byUserKind: index('idx_sessions_user_kind').on(t.userId, t.kind),
   }),
 )
 
@@ -110,43 +113,64 @@ export const lessonProgress = sqliteTable(
 )
 
 // ── attempts — one row per question answered ──────────────────────────
-export const attempts = sqliteTable('attempts', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  userId: integer('user_id')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  sessionId: integer('session_id')
-    .notNull()
-    .references(() => sessions.id, { onDelete: 'cascade' }),
-  questionId: text('question_id').notNull(),
-  selectedAnswer: text('selected_answer'),
-  correct: integer('correct', { mode: 'boolean' }),
-  timeTakenMs: integer('time_taken_ms'),
-  createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
-})
+export const attempts = sqliteTable(
+  'attempts',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    sessionId: integer('session_id')
+      .notNull()
+      .references(() => sessions.id, { onDelete: 'cascade' }),
+    questionId: text('question_id').notNull(),
+    selectedAnswer: text('selected_answer'),
+    correct: integer('correct', { mode: 'boolean' }),
+    timeTakenMs: integer('time_taken_ms'),
+    createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+  },
+  (t) => ({
+    // Every stats read filters by user and (usually) a created_at window
+    // — counts, the 7d accuracy, the rolling-90d section breakdown, the
+    // distinct-day streak. Without this they're full table scans that grow
+    // with every answered question, across every user.
+    byUserCreated: index('idx_attempts_user_created').on(t.userId, t.createdAt),
+    // GET /sessions/:id/attempts + the attempt-ownership check on insert.
+    bySession: index('idx_attempts_session').on(t.sessionId),
+  }),
+)
 
 // ── mistakes — keyed by question_id, tagged with Layer 1 IDs ──────────
-export const mistakes = sqliteTable('mistakes', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  userId: integer('user_id')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  questionId: text('question_id').notNull(),
-  // JSON array of Layer 1 IDs (e.g. ["KVA-NEG-001"]).
-  layer1Ids: text('layer1_ids', { mode: 'json' }).$type<string[]>(),
-  // Diagnostic mistakes are gated until section onboarding completes.
-  status: text('status').default('active'), // 'active' | 'diagnostic-pending-review' | 'mock-pending-review'
-  errorCount7d: integer('error_count_7d').default(1),
-  lastErrorAt: integer('last_error_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
-  nextReviewAt: integer('next_review_at', { mode: 'timestamp' }),
-  // SM-2-lite ladder position. 0 means "never reviewed since being
-  // logged" (also applies to legacy rows from before this branch) —
-  // treated as due-now in the queue. After a wrong answer this resets
-  // to RELEARN_MINUTES (10). After each correct it doubles up the
-  // ladder, capped at MAX_INTERVAL_MINUTES (30 days). One more correct
-  // at the cap flips status='resolved' (graduation). See lib/srs.ts.
-  intervalMinutes: integer('interval_minutes').notNull().default(0),
-})
+export const mistakes = sqliteTable(
+  'mistakes',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    questionId: text('question_id').notNull(),
+    // JSON array of Layer 1 IDs (e.g. ["KVA-NEG-001"]).
+    layer1Ids: text('layer1_ids', { mode: 'json' }).$type<string[]>(),
+    // Diagnostic mistakes are gated until section onboarding completes.
+    status: text('status').default('active'), // 'active' | 'diagnostic-pending-review' | 'mock-pending-review'
+    errorCount7d: integer('error_count_7d').default(1),
+    lastErrorAt: integer('last_error_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+    nextReviewAt: integer('next_review_at', { mode: 'timestamp' }),
+    // SM-2-lite ladder position. 0 means "never reviewed since being
+    // logged" (also applies to legacy rows from before this branch) —
+    // treated as due-now in the queue. After a wrong answer this resets
+    // to RELEARN_MINUTES (10). After each correct it doubles up the
+    // ladder, capped at MAX_INTERVAL_MINUTES (30 days). One more correct
+    // at the cap flips status='resolved' (graduation). See lib/srs.ts.
+    intervalMinutes: integer('interval_minutes').notNull().default(0),
+  },
+  (t) => ({
+    // The due-queue read filters by user + status and orders by review
+    // time; the per-wrong-answer upsert looks the row up by (user, qid).
+    byUserStatus: index('idx_mistakes_user_status').on(t.userId, t.status),
+    byUserQuestion: index('idx_mistakes_user_question').on(t.userId, t.questionId),
+  }),
+)
 
 // ── srs_state — per ORD root / formula / trap pattern ─────────────────
 export const srsState = sqliteTable('srs_state', {
