@@ -50,7 +50,9 @@ describe('ResumptionPanel', () => {
     expect(screen.getByTestId('home-resumption-headline')).toHaveTextContent('XYZ-lektion · pausad')
     expect(screen.getByTestId('home-resumption-marginalia')).toHaveTextContent('vid XYZ-TRAP-016')
     const link = screen.getByTestId('home-resumption-link') as HTMLAnchorElement
-    expect(link.getAttribute('href')).toBe('/lektion/XYZ#XYZ-TRAP-016?step=3')
+    // section is a search param (not a path segment) and the anchor is
+    // a real hash after the query — `/lektion/XYZ…` 404s.
+    expect(link.getAttribute('href')).toBe('/lektion?section=XYZ#XYZ-TRAP-016')
   })
 
   it('falls back to "pågående lektion" when the lesson has no entry anchor', () => {

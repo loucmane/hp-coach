@@ -169,8 +169,15 @@ function formatMarginalia(p: PausedSession): string {
 
 function resumeHref(p: PausedSession): string {
   if (p.kind === 'lesson') {
+    // The lektion route reads `section` as a SEARCH param, not a path
+    // segment — `/lektion?section=XYZ`, not `/lektion/XYZ` (the latter
+    // 404s). The framework anchor is a real URL hash and must come
+    // AFTER the query string. This mirrors how the rest of the app
+    // links into lessons (scheduler.ts, PedagogyPanel, ExplanationPanel
+    // all use `{ to: '/lektion', search: { section }, hash: id }`). The
+    // old `?step=` was dead — the route never read it — so it's dropped.
     const anchor = p.frameworkId ? `#${p.frameworkId}` : ''
-    return `/lektion/${p.section}${anchor}?step=${p.step}`
+    return `/lektion?section=${p.section}${anchor}`
   }
   if (p.kind === 'drill') {
     return `/drill?qid=${encodeURIComponent(p.qid)}`

@@ -422,7 +422,74 @@ export function SessionPlayer(props: SessionPlayerProps) {
     return () => window.removeEventListener('keydown', onKey)
   }, [phase, onPick, onNext])
 
+  // Auto-resume. When the route mounts already carrying a `?qid=` —
+  // the user tapped "Fortsätt här" on Home, or refreshed mid-session —
+  // start the session immediately. begin()'s seek-to-URL-qid then lands
+  // on the exact question they paused on. Without this the player sat on
+  // the idle masthead (and its "an unfinished pass from another tab or
+  // device is here" stale warning, which is misleading when it's the
+  // very session you just paused on THIS device) and forced a second
+  // click. Fires once per mount; if begin() finds the qid missing it
+  // sets emptyAttempted, which drops us back to the normal idle state.
+  const autoResumeQid = props.urlSyncedQid?.qid ?? null
+  const didAutoResumeRef = useRef(false)
+  useEffect(() => {
+    if (didAutoResumeRef.current) return
+    if (phase !== 'idle') return
+    if (!autoResumeQid) return
+    if (emptyAttempted) return
+    didAutoResumeRef.current = true
+    void begin()
+  }, [phase, autoResumeQid, emptyAttempted, begin])
+
   if (phase === 'idle') {
+    // Auto-resume in flight: the URL has a qid and we haven't found it
+    // missing yet. Render a thin loading line rather than the idle
+    // masthead + stale warning, so resuming reads as a continuation,
+    // not a fresh start that flickers the chapter opening first.
+    if (autoResumeQid && !emptyAttempted) {
+      const { headLabel, statusMode } = chromeLabelsFor(props.sessionKind, props.sections)
+      const loading = (
+        <div
+          data-testid="drill-resuming"
+          style={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 12,
+            letterSpacing: 'var(--font-mono-track)',
+            textTransform: 'uppercase',
+            color: 'var(--muted)',
+          }}
+        >
+          Laddar …
+        </div>
+      )
+      if (viewport === 'phone') {
+        return (
+          <MobileFrame
+            tabs
+            activeTab={props.activeTab}
+            onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
+          >
+            {loading}
+          </MobileFrame>
+        )
+      }
+      return (
+        <MobileFrame tabs={false}>
+          <Page
+            runningHead={['HP · Coach', headLabel]}
+            status={{ mode: statusMode, context: 'redo', hints: ['esc hem', '⌘k palett'] }}
+          >
+            {loading}
+          </Page>
+        </MobileFrame>
+      )
+    }
+
     const stale =
       activeSession.data && activeSession.data.kind === props.sessionKind
         ? activeSession.data

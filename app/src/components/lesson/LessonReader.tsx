@@ -112,6 +112,42 @@ export function LessonReader({ section }: { section: Section }) {
   // followed the resume → no need to keep remembering).
   const frameworkRef = useRef<Framework | null>(null)
   frameworkRef.current = framework
+
+  // Track the entry the reader is actually looking at. Expanding a
+  // <details> does NOT change the URL on its own, and the `toggle` event
+  // doesn't bubble — so we listen in the capture phase, remember the
+  // last-opened entry in a ref, and mirror it into the URL hash for
+  // deep-link / refresh stability. Persistence reads this ref rather
+  // than the live hash: SPA navigation (clicking a nav link) clears the
+  // hash *before* this component unmounts, so a hash-based read at
+  // cleanup time always saw an empty hash and never persisted. The ref
+  // survives that teardown. Setting `el.open = true` programmatically
+  // (the deep-link effect above) also fires `toggle`, so arriving via an
+  // anchor seeds the ref too.
+  const lastReadEntryRef = useRef<string | null>(null)
+  useEffect(() => {
+    // Document-level capture listener — `toggle` doesn't bubble, and one
+    // listener serves every section the reader renders over its lifetime.
+    // A ref id left over from a previous section is harmless: persistence
+    // looks the id up in the *current* framework, so a mismatch just
+    // findIndex's to -1 and skips, no stale write.
+    const onToggle = (e: Event) => {
+      const el = e.target as HTMLElement | null
+      if (!el || el.tagName !== 'DETAILS' || !el.id) return
+      if ((el as HTMLDetailsElement).open) {
+        lastReadEntryRef.current = el.id
+        try {
+          window.history.replaceState(null, '', `#${el.id}`)
+        } catch {
+          /* replaceState can throw in rare sandboxed contexts; the ref
+             still carries the value for persistence. */
+        }
+      }
+    }
+    document.addEventListener('toggle', onToggle, true)
+    return () => document.removeEventListener('toggle', onToggle, true)
+  }, [])
+
   const setPausedLesson = usePausedSessionStore((s) => s.setLesson)
   const clearPausedLesson = usePausedSessionStore((s) => s.clearLesson)
   const pausedLesson = usePausedSessionStore((s) => s.lesson)
@@ -137,14 +173,16 @@ export function LessonReader({ section }: { section: Section }) {
     const persistIfReading = () => {
       const fw = frameworkRef.current
       if (!fw) return
-      const hash = window.location.hash.slice(1)
-      if (!hash) return
-      const idx = fw.entries.findIndex((e) => e.id === hash)
+      // Prefer the tracked open-entry ref; fall back to the live hash
+      // for the deep-link-arrival-then-immediate-close edge.
+      const entryId = lastReadEntryRef.current ?? window.location.hash.slice(1)
+      if (!entryId) return
+      const idx = fw.entries.findIndex((e) => e.id === entryId)
       if (idx < 0) return
       setPausedLesson({
         kind: 'lesson',
         section,
-        frameworkId: hash,
+        frameworkId: entryId,
         step: idx + 1,
         totalSteps: fw.entries.length,
         pausedAt: Date.now(),
