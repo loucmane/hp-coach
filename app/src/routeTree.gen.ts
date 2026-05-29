@@ -16,6 +16,7 @@ import { Route as RepetitionRouteImport } from './routes/repetition'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as LoopBakeoffRouteImport } from './routes/loop-bakeoff'
 import { Route as LektionRouteImport } from './routes/lektion'
+import { Route as HomePhoneResumeBakeoffRouteImport } from './routes/home-phone-resume-bakeoff'
 import { Route as HomeBakeoffRouteImport } from './routes/home-bakeoff'
 import { Route as ExplanationBakeOffRouteImport } from './routes/explanation-bake-off'
 import { Route as DtkBrowserRouteImport } from './routes/dtk-browser'
@@ -64,6 +65,11 @@ const LoopBakeoffRoute = LoopBakeoffRouteImport.update({
 const LektionRoute = LektionRouteImport.update({
   id: '/lektion',
   path: '/lektion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomePhoneResumeBakeoffRoute = HomePhoneResumeBakeoffRouteImport.update({
+  id: '/home-phone-resume-bakeoff',
+  path: '/home-phone-resume-bakeoff',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HomeBakeoffRoute = HomeBakeoffRouteImport.update({
@@ -152,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
+  '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/lektion': typeof LektionRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
   '/progress': typeof ProgressRoute
@@ -175,6 +182,7 @@ export interface FileRoutesByTo {
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
+  '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/lektion': typeof LektionRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
   '/progress': typeof ProgressRoute
@@ -199,6 +207,7 @@ export interface FileRoutesById {
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
+  '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/lektion': typeof LektionRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
   '/progress': typeof ProgressRoute
@@ -224,6 +233,7 @@ export interface FileRouteTypes {
     | '/dtk-browser'
     | '/explanation-bake-off'
     | '/home-bakeoff'
+    | '/home-phone-resume-bakeoff'
     | '/lektion'
     | '/loop-bakeoff'
     | '/progress'
@@ -247,6 +257,7 @@ export interface FileRouteTypes {
     | '/dtk-browser'
     | '/explanation-bake-off'
     | '/home-bakeoff'
+    | '/home-phone-resume-bakeoff'
     | '/lektion'
     | '/loop-bakeoff'
     | '/progress'
@@ -270,6 +281,7 @@ export interface FileRouteTypes {
     | '/dtk-browser'
     | '/explanation-bake-off'
     | '/home-bakeoff'
+    | '/home-phone-resume-bakeoff'
     | '/lektion'
     | '/loop-bakeoff'
     | '/progress'
@@ -294,6 +306,7 @@ export interface RootRouteChildren {
   DtkBrowserRoute: typeof DtkBrowserRoute
   ExplanationBakeOffRoute: typeof ExplanationBakeOffRoute
   HomeBakeoffRoute: typeof HomeBakeoffRoute
+  HomePhoneResumeBakeoffRoute: typeof HomePhoneResumeBakeoffRoute
   LektionRoute: typeof LektionRoute
   LoopBakeoffRoute: typeof LoopBakeoffRoute
   ProgressRoute: typeof ProgressRoute
@@ -352,6 +365,13 @@ declare module '@tanstack/react-router' {
       path: '/lektion'
       fullPath: '/lektion'
       preLoaderRoute: typeof LektionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home-phone-resume-bakeoff': {
+      id: '/home-phone-resume-bakeoff'
+      path: '/home-phone-resume-bakeoff'
+      fullPath: '/home-phone-resume-bakeoff'
+      preLoaderRoute: typeof HomePhoneResumeBakeoffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/home-bakeoff': {
@@ -470,6 +490,7 @@ const rootRouteChildren: RootRouteChildren = {
   DtkBrowserRoute: DtkBrowserRoute,
   ExplanationBakeOffRoute: ExplanationBakeOffRoute,
   HomeBakeoffRoute: HomeBakeoffRoute,
+  HomePhoneResumeBakeoffRoute: HomePhoneResumeBakeoffRoute,
   LektionRoute: LektionRoute,
   LoopBakeoffRoute: LoopBakeoffRoute,
   ProgressRoute: ProgressRoute,
