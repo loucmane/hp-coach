@@ -1,42 +1,50 @@
-// ResumptionPanel — Home's right column at studio width.
+// Home resumption panel — "Fortsätt här →".
 //
-// Renders a single editorial block when there's a paused session
-// across any of the three surfaces (lesson / drill / repetition).
-// Returns null when nothing is paused — the right column is air by
-// default. State of the art is to *use* this space only when it's
-// functionally earned.
+// Reads SERVER state now (active sessions + the lesson bookmark), so a
+// session paused on one device surfaces on another. Renders the single
+// freshest resumable thing across kinds, within the EDITION vocabulary:
+// mono eyebrow (relative time + device provenance) → display headline
+// (kind · section) → marginalia (progress) → Sage-accent CTA.
 //
-// Composition (matches the F1 bake-off pick):
-//   1. Mono eyebrow with the relative time ("Igår · 19:42" or
-//      "X dagar sedan" or same-day "Idag · 02:14")
-//   2. Serif body line naming the paused thing ("XYZ-lektion · pausad")
-//   3. Italic marginalia step indicator ("vid steg 3 av 7")
-//   4. Sage-accent "Fortsätt här →" CTA — the single moment of
-//      --accent on the page
-//
-// The activation-energy win: every paused-yesterday morning becomes
-// a one-tap continuation instead of a re-locate / re-orient task.
+// Cross-device freshness rides on the underlying queries' refetch-on-focus
+// + 30s interval; same-device feels instant via the mutations' cache
+// write-through. When nothing is resumable, the panel renders nothing
+// (the right column is intentional air).
 
 import { Link } from '@tanstack/react-router'
-import type { PausedSession } from '@/stores/pausedSessionStore'
-import { useMostRecentPausedSession } from '@/stores/pausedSessionStore'
+import { useLessonProgress } from '@/api/hooks/useLessonProgress'
+import { useActiveSessions } from '@/api/hooks/useSessions'
+import { type DeviceKind, deviceLabel } from '@/lib/device'
 
-type ResumptionPanelProps = {
-  /** Override "now" for tests. */
-  now?: Date
+// Sessions older than this read as "för gammal" — demoted, never hidden
+// (an ADHD-PI user may still mean to come back), and the resume route
+// degrades gracefully if the stored qids no longer resolve.
+const STALE_DAYS = 7
+
+type Candidate = {
+  /** ms epoch of last engagement — drives freshness + which one wins. */
+  freshAt: number
+  device: DeviceKind | null
+  headline: string
+  marginalia: string
+  href: string
 }
 
-export function ResumptionPanel({ now }: ResumptionPanelProps) {
-  const paused = useMostRecentPausedSession()
-  if (!paused) return null
-  return <ResumptionBlock paused={paused} now={now ?? new Date()} />
-}
+export function ResumptionPanel({ now }: { now: Date }) {
+  const sessions = useActiveSessions()
+  const lesson = useLessonProgress()
 
-function ResumptionBlock({ paused, now }: { paused: PausedSession; now: Date }) {
-  const eyebrow = formatRelative(paused.pausedAt, now)
-  const headline = formatHeadline(paused)
-  const marginalia = formatMarginalia(paused)
-  const href = resumeHref(paused)
+  const candidate = pickCandidate(sessions.data ?? [], lesson.data ?? null)
+  if (!candidate) return null
+
+  const ageDays = (now.getTime() - candidate.freshAt) / (1000 * 60 * 60 * 24)
+  const stale = ageDays > STALE_DAYS
+  const dimColor = stale ? 'var(--muted-2, var(--muted))' : 'var(--muted)'
+
+  const dev = deviceLabel(candidate.device)
+  const eyebrow = [formatRelative(candidate.freshAt, now), dev, stale ? 'för gammal' : null]
+    .filter(Boolean)
+    .join(' · ')
 
   return (
     <aside
@@ -48,94 +56,149 @@ function ResumptionBlock({ paused, now }: { paused: PausedSession; now: Date }) 
       }}
     >
       <div
+        data-testid="home-resumption-eyebrow"
         style={{
           fontFamily: 'var(--font-mono)',
           fontSize: 11,
-          letterSpacing: '0.14em',
+          letterSpacing: 'var(--font-mono-track, 0.08em)',
           textTransform: 'uppercase',
-          color: 'var(--muted)',
+          color: dimColor,
           fontVariantNumeric: 'tabular-nums',
         }}
-        data-testid="home-resumption-eyebrow"
       >
         {eyebrow}
       </div>
-
-      <div style={{ height: 12 }} />
-
       <div
+        aria-hidden
+        style={{ height: 1, background: 'var(--hairline)', margin: '14px 0 18px' }}
+      />
+      <h2
+        data-testid="home-resumption-headline"
         style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 18,
-          lineHeight: 1.35,
-          color: 'var(--ink)',
+          fontSize: 'clamp(20px, 1vw + 16px, 26px)',
+          lineHeight: 1.15,
+          letterSpacing: '-0.01em',
+          color: stale ? 'var(--ink-2)' : 'var(--ink)',
+          margin: 0,
         }}
-        data-testid="home-resumption-headline"
       >
-        {headline}
-      </div>
-
-      <div style={{ height: 6 }} />
-
+        {candidate.headline}
+      </h2>
       <div
+        data-testid="home-resumption-marginalia"
         style={{
           fontFamily: 'var(--font-display)',
           fontStyle: 'italic',
-          fontSize: 13,
-          color: 'var(--ink-2)',
+          fontSize: 14,
+          color: stale ? 'var(--muted-2, var(--muted))' : 'var(--ink-2)',
+          margin: '8px 0 0 0',
         }}
-        data-testid="home-resumption-marginalia"
       >
-        {marginalia}
+        {candidate.marginalia}
       </div>
-
-      <div style={{ height: 18 }} />
-
       <Link
-        to={href}
+        to={candidate.href}
         data-testid="home-resumption-link"
         style={{
-          display: 'inline-flex',
-          alignItems: 'baseline',
-          gap: 8,
-          fontFamily: 'var(--font-display)',
-          fontSize: 16,
+          marginTop: 22,
+          fontFamily: 'var(--font-mono)',
+          fontSize: 12,
+          letterSpacing: 'var(--font-mono-track, 0.08em)',
+          textTransform: 'uppercase',
           color: 'var(--accent)',
           textDecoration: 'none',
-          width: 'fit-content',
         }}
       >
-        Fortsätt här
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13 }}>→</span>
+        Fortsätt här →
       </Link>
     </aside>
   )
 }
 
+// ── Candidate assembly ─────────────────────────────────────────────
+
+type SessionRow = ReturnType<typeof useActiveSessions>['data']
+type LessonRow = ReturnType<typeof useLessonProgress>['data']
+
+/**
+ * Fold active sessions + the lesson bookmark into resumable candidates
+ * and return the freshest, or null. Exported for unit testing the
+ * selection + formatting without the network.
+ */
+export function pickCandidate(
+  sessions: NonNullable<SessionRow>,
+  lesson: LessonRow,
+): Candidate | null {
+  const out: Candidate[] = []
+
+  for (const s of sessions) {
+    if (s.kind !== 'drill' && s.kind !== 'adaptive_review') continue
+    const total = s.plan?.length ?? 0
+    const qid = s.currentQuestionId ?? s.plan?.[0] ?? null
+    if (!qid || total === 0) continue
+    const freshAt = toMs(s.startedAt)
+    const progress = `vid fråga ${Math.min(s.position + 1, total)} av ${total}`
+    if (s.kind === 'drill') {
+      const section = (s.sections ?? '').toUpperCase()
+      out.push({
+        freshAt,
+        device: s.device,
+        headline: section ? `${section}-övning · pausad` : 'Övning · pausad',
+        marginalia: progress,
+        href: section
+          ? `/drill?section=${section}&qid=${encodeURIComponent(qid)}`
+          : `/drill?qid=${encodeURIComponent(qid)}`,
+      })
+    } else {
+      out.push({
+        freshAt,
+        device: s.device,
+        headline: 'Repetition · pausad',
+        marginalia: progress,
+        href: `/repetition?qid=${encodeURIComponent(qid)}`,
+      })
+    }
+  }
+
+  if (lesson) {
+    const section = lesson.section.toUpperCase()
+    const anchor = lesson.frameworkId ? `#${lesson.frameworkId}` : ''
+    out.push({
+      freshAt: toMs(lesson.updatedAt),
+      device: lesson.device,
+      headline: `${section}-lektion · pausad`,
+      marginalia: lesson.frameworkId ? `vid ${lesson.frameworkId}` : 'pågående lektion',
+      href: `/lektion?section=${section}${anchor}`,
+    })
+  }
+
+  if (out.length === 0) return null
+  return out.reduce((best, c) => (c.freshAt > best.freshAt ? c : best))
+}
+
+function toMs(ts: string | number | null | undefined): number {
+  if (ts == null) return 0
+  const n = typeof ts === 'number' ? ts : Date.parse(ts)
+  return Number.isFinite(n) ? n : 0
+}
+
 // ── Formatters ─────────────────────────────────────────────────────
 
-function formatRelative(pausedAt: number, now: Date): string {
-  const pausedDate = new Date(pausedAt)
+function formatRelative(at: number, now: Date): string {
+  const d = new Date(at)
   const sameDay =
-    pausedDate.getFullYear() === now.getFullYear() &&
-    pausedDate.getMonth() === now.getMonth() &&
-    pausedDate.getDate() === now.getDate()
-  if (sameDay) {
-    return `Idag · ${formatTime(pausedDate)}`
-  }
+    d.getFullYear() === now.getFullYear() &&
+    d.getMonth() === now.getMonth() &&
+    d.getDate() === now.getDate()
+  if (sameDay) return `Idag · ${formatTime(d)}`
   const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
   const wasYesterday =
-    pausedDate.getFullYear() === yesterday.getFullYear() &&
-    pausedDate.getMonth() === yesterday.getMonth() &&
-    pausedDate.getDate() === yesterday.getDate()
-  if (wasYesterday) {
-    return `Igår · ${formatTime(pausedDate)}`
-  }
-  // Older — render `X dagar sedan` rounded to whole days.
-  const days = Math.max(
-    1,
-    Math.round((now.getTime() - pausedDate.getTime()) / (1000 * 60 * 60 * 24)),
-  )
+    d.getFullYear() === yesterday.getFullYear() &&
+    d.getMonth() === yesterday.getMonth() &&
+    d.getDate() === yesterday.getDate()
+  if (wasYesterday) return `Igår · ${formatTime(d)}`
+  const days = Math.max(1, Math.round((now.getTime() - at) / (1000 * 60 * 60 * 24)))
   return `${days} dagar sedan`
 }
 
@@ -143,44 +206,4 @@ function formatTime(d: Date): string {
   const hh = String(d.getHours()).padStart(2, '0')
   const mm = String(d.getMinutes()).padStart(2, '0')
   return `${hh}:${mm}`
-}
-
-function formatHeadline(p: PausedSession): string {
-  if (p.kind === 'lesson') {
-    return `${p.section}-lektion · pausad`
-  }
-  if (p.kind === 'drill') {
-    return p.section ? `${p.section}-övning · pausad` : 'Övning · pausad'
-  }
-  return 'Repetition · pausad'
-}
-
-function formatMarginalia(p: PausedSession): string {
-  if (p.kind === 'lesson') {
-    // Lessons are a reading surface, not a sequential session — the
-    // framework_id ("XYZ-TRAP-016") is what the user recognises as
-    // "what I was reading," not an entry index. Fall back to the
-    // generic step/total when there's no anchor.
-    if (p.frameworkId) return `vid ${p.frameworkId}`
-    return `pågående lektion`
-  }
-  return `vid fråga ${p.questionIndex} av ${p.totalQuestions}`
-}
-
-function resumeHref(p: PausedSession): string {
-  if (p.kind === 'lesson') {
-    // The lektion route reads `section` as a SEARCH param, not a path
-    // segment — `/lektion?section=XYZ`, not `/lektion/XYZ` (the latter
-    // 404s). The framework anchor is a real URL hash and must come
-    // AFTER the query string. This mirrors how the rest of the app
-    // links into lessons (scheduler.ts, PedagogyPanel, ExplanationPanel
-    // all use `{ to: '/lektion', search: { section }, hash: id }`). The
-    // old `?step=` was dead — the route never read it — so it's dropped.
-    const anchor = p.frameworkId ? `#${p.frameworkId}` : ''
-    return `/lektion?section=${p.section}${anchor}`
-  }
-  if (p.kind === 'drill') {
-    return `/drill?qid=${encodeURIComponent(p.qid)}`
-  }
-  return `/repetition?qid=${encodeURIComponent(p.qid)}`
 }

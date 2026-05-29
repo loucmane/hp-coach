@@ -10,12 +10,12 @@
 
 import { Link } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
-
+import { usePutLessonProgress } from '@/api/hooks/useLessonProgress'
 import { Mono } from '@/components/primitives'
 import { type Framework, loadFramework } from '@/data/frameworks'
 import type { Section } from '@/data/questions'
 import { useLessonReads } from '@/hooks/useLessonReads'
-import { usePausedSessionStore } from '@/stores/pausedSessionStore'
+import { currentDevice } from '@/lib/device'
 
 import { LexiconCard } from './LexiconCard'
 import { ProtocolCard } from './ProtocolCard'
@@ -103,102 +103,44 @@ export function LessonReader({ section }: { section: Section }) {
     })
   }, [framework])
 
-  // Lesson pause persistence — tracks which framework entry the user
-  // was reading via the URL hash, so the Home resumption panel can
-  // route them back with "Fortsätt här →". Lessons aren't a session
-  // like drill/repetition; they're a reading surface, so the "pause"
-  // semantic is "you were reading entry X." Clears on mount when
-  // arriving at a hash that matches the stored pause (the user
-  // followed the resume → no need to keep remembering).
-  const frameworkRef = useRef<Framework | null>(null)
-  frameworkRef.current = framework
-
-  // Track the entry the reader is actually looking at. Expanding a
-  // <details> does NOT change the URL on its own, and the `toggle` event
-  // doesn't bubble — so we listen in the capture phase, remember the
-  // last-opened entry in a ref, and mirror it into the URL hash for
-  // deep-link / refresh stability. Persistence reads this ref rather
-  // than the live hash: SPA navigation (clicking a nav link) clears the
-  // hash *before* this component unmounts, so a hash-based read at
-  // cleanup time always saw an empty hash and never persisted. The ref
-  // survives that teardown. Setting `el.open = true` programmatically
-  // (the deep-link effect above) also fires `toggle`, so arriving via an
-  // anchor seeds the ref too.
-  const lastReadEntryRef = useRef<string | null>(null)
+  // Lesson reading bookmark — as the reader opens framework entries, we
+  // upsert a per-section bookmark on the server so the Home resumption
+  // panel can offer "fortsätt läsa" on ANY device. Lessons aren't a
+  // session (read-only, no attempts, no end); the bookmark is just "you
+  // were reading entry X."
+  //
+  // Capture-phase listener: <details> toggling doesn't change the URL and
+  // `toggle` doesn't bubble. On open we mirror the entry into the URL hash
+  // (deep-link / refresh stability) and PUT the bookmark, debounced so
+  // skimming doesn't spam writes. Programmatic opens (the deep-link effect
+  // above) fire `toggle` too, so arriving via an anchor also bookmarks.
+  const putProgress = usePutLessonProgress()
+  const putMutate = putProgress.mutate
+  const putRef = useRef(putMutate)
+  putRef.current = putMutate
   useEffect(() => {
-    // Document-level capture listener — `toggle` doesn't bubble, and one
-    // listener serves every section the reader renders over its lifetime.
-    // A ref id left over from a previous section is harmless: persistence
-    // looks the id up in the *current* framework, so a mismatch just
-    // findIndex's to -1 and skips, no stale write.
+    let timer: ReturnType<typeof setTimeout> | undefined
     const onToggle = (e: Event) => {
       const el = e.target as HTMLElement | null
       if (!el || el.tagName !== 'DETAILS' || !el.id) return
-      if ((el as HTMLDetailsElement).open) {
-        lastReadEntryRef.current = el.id
-        try {
-          window.history.replaceState(null, '', `#${el.id}`)
-        } catch {
-          /* replaceState can throw in rare sandboxed contexts; the ref
-             still carries the value for persistence. */
-        }
+      if (!(el as HTMLDetailsElement).open) return
+      const id = el.id
+      try {
+        window.history.replaceState(null, '', `#${id}`)
+      } catch {
+        /* sandboxed contexts; the bookmark write below still runs */
       }
+      if (timer) clearTimeout(timer)
+      timer = setTimeout(() => {
+        putRef.current({ section, frameworkId: id, device: currentDevice() })
+      }, 400)
     }
     document.addEventListener('toggle', onToggle, true)
-    return () => document.removeEventListener('toggle', onToggle, true)
-  }, [])
-
-  const setPausedLesson = usePausedSessionStore((s) => s.setLesson)
-  const clearPausedLesson = usePausedSessionStore((s) => s.clearLesson)
-  const pausedLesson = usePausedSessionStore((s) => s.lesson)
-
-  // Clear the lesson pause when the user arrives at the matching
-  // resume target. They followed the breadcrumb; remembering it
-  // further would re-surface the same line on next morning.
-  useEffect(() => {
-    if (!framework) return
-    const hash = window.location.hash.slice(1)
-    if (!hash) return
-    if (pausedLesson && pausedLesson.section === section && pausedLesson.frameworkId === hash) {
-      clearPausedLesson()
-    }
-  }, [framework, section, pausedLesson, clearPausedLesson])
-
-  // Persist on unmount when the URL hash points at a valid entry.
-  // beforeunload + visibilitychange handle tab close / background;
-  // the cleanup handles SPA navigation. If the user leaves on the
-  // bare /lektion/<section> (no hash), nothing persists — they
-  // weren't reading anything specific.
-  useEffect(() => {
-    const persistIfReading = () => {
-      const fw = frameworkRef.current
-      if (!fw) return
-      // Prefer the tracked open-entry ref; fall back to the live hash
-      // for the deep-link-arrival-then-immediate-close edge.
-      const entryId = lastReadEntryRef.current ?? window.location.hash.slice(1)
-      if (!entryId) return
-      const idx = fw.entries.findIndex((e) => e.id === entryId)
-      if (idx < 0) return
-      setPausedLesson({
-        kind: 'lesson',
-        section,
-        frameworkId: entryId,
-        step: idx + 1,
-        totalSteps: fw.entries.length,
-        pausedAt: Date.now(),
-      })
-    }
-    const onVis = () => {
-      if (document.visibilityState === 'hidden') persistIfReading()
-    }
-    window.addEventListener('beforeunload', persistIfReading)
-    document.addEventListener('visibilitychange', onVis)
     return () => {
-      window.removeEventListener('beforeunload', persistIfReading)
-      document.removeEventListener('visibilitychange', onVis)
-      persistIfReading()
+      document.removeEventListener('toggle', onToggle, true)
+      if (timer) clearTimeout(timer)
     }
-  }, [section, setPausedLesson])
+  }, [section])
 
   const title = SECTION_TITLE[section] ?? { headline: section, subline: '' }
 

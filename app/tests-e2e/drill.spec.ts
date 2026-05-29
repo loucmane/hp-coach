@@ -12,7 +12,7 @@
 //   - POST /api/attempts (one row per question)
 //   - PATCH /api/sessions/:id (per-question position bumps + final end:true)
 
-import { expect, test } from './fixtures'
+import { clearMistakes, expect, test } from './fixtures'
 
 test('Drill ORD — 10 questions, all correct, end-to-end', async ({ page }, testInfo) => {
   // Mobile (iPhone 13 emulation) flakes here: drill-start sometimes
@@ -21,27 +21,15 @@ test('Drill ORD — 10 questions, all correct, end-to-end', async ({ page }, tes
   // Same pattern as mistakes.spec.ts. Chromium passes consistently and
   // validates the full product flow.
   test.skip(testInfo.project.name === 'mobile', 'mobile-emulation Clerk-refresh flake')
+  // Deterministic clean slate: clear deletes any active session from a
+  // previous run, so Start begins a fresh drill rather than ADOPTING a
+  // leftover one (single-active-per-kind resume — there's no stale-session
+  // warning to dismiss anymore).
+  await clearMistakes(page)
   await page.goto('/drill')
 
   const idle = page.getByTestId('drill-idle')
   await expect(idle).toBeVisible({ timeout: 10_000 })
-
-  // Clean any stale active drill from a previous run. The earlier
-  // version checked `isVisible()` with no timeout — on slower CI
-  // runners the stale-warning hadn't always finished rendering by
-  // the time the probe fired, so the cleanup was silently skipped,
-  // drill-start no-op'd against an active session, and drill-next
-  // never appeared (test timed out at 10s on Q1). Give the idle
-  // surface up to 2s to settle into one of its two terminal states
-  // before deciding which path to take.
-  const stale = page.getByTestId('drill-stale-warning')
-  await stale
-    .waitFor({ state: 'visible', timeout: 2_000 })
-    .catch(() => null)
-  if (await stale.isVisible().catch(() => false)) {
-    await page.getByRole('button', { name: 'Avsluta tidigare' }).click()
-    await expect(stale).toBeHidden({ timeout: 5_000 })
-  }
 
   // Wait for the question bank to be loaded before pressing Start. The
   // drill `begin()` handler awaits loadBank() (one /data/_index.json

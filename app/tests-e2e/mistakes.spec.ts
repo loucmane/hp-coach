@@ -115,10 +115,9 @@ test('Mistakes loop — answer wrong → replay queue → resolve', async ({ pag
   //     just-seeded row so /due immediately returns it
   // The endpoint refuses to run when ENVIRONMENT === 'production', so
   // the staging worker is the only place this hits real data. Must run
-  // BEFORE page.goto('/drill') — otherwise the SPA's react-query cache
-  // for /api/sessions/active still holds the row we just deleted, the
-  // stale-warning re-renders against ghost state, and the "Avsluta
-  // tidigare" cleanup spins because there's nothing to delete.
+  // BEFORE page.goto('/drill') — clear also deletes any active session,
+  // so Start begins a fresh drill rather than ADOPTING a leftover one
+  // (single-active-per-kind resume; no stale-session warning anymore).
   await clearMistakes(page)
   // ── Phase 1: drill, intentionally miss Q1 ──────────────────────────────
   await page.goto('/drill')
@@ -126,10 +125,6 @@ test('Mistakes loop — answer wrong → replay queue → resolve', async ({ pag
   const idle = page.getByTestId('drill-idle')
   await expect(idle).toBeVisible({ timeout: 10_000 })
 
-  if (await page.getByTestId('drill-stale-warning').isVisible().catch(() => false)) {
-    await page.getByRole('button', { name: 'Avsluta tidigare' }).click()
-    await expect(page.getByTestId('drill-stale-warning')).toBeHidden({ timeout: 5_000 })
-  }
   await startSessionAndAwaitQ1(page)
 
   // Q1 — pick a deliberately wrong letter to seed a mistake.
