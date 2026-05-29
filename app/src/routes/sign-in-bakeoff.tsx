@@ -160,6 +160,31 @@ function SignInBakeoff() {
           <CrossLink />
         </Split>
       </Variant>
+
+      <Variant
+        label="E · Ruled + Sage left-rail (specialist)"
+        note="B's flush form, but a 4px Sage rule runs down the left edge of the form stack — structural emphasis (a margin rule), not a box — and the CTA is Sage-filled so the goal reads. The single accent does the anchoring a card used to."
+      >
+        <Split pullquote={<PullQuote />}>
+          <div
+            style={{
+              borderLeft: '4px solid var(--accent)',
+              paddingLeft: 'clamp(20px, 2vw, 32px)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 18,
+              maxWidth: 360,
+            }}
+          >
+            <CardLabel />
+            <FlushSocial />
+            <Divider />
+            <RuledField />
+            <SagePrimaryButton />
+          </div>
+          <CrossLink />
+        </Split>
+      </Variant>
     </div>
   )
 }
@@ -425,6 +450,28 @@ function PrimaryButton() {
         padding: '13px 18px',
         background: 'var(--ink)',
         color: 'var(--bg)',
+        borderRadius: 'calc(var(--radius) * 0.5)',
+        textAlign: 'center',
+        fontFamily: MONO,
+        fontSize: 12,
+        letterSpacing: TRACK,
+        textTransform: 'uppercase',
+      }}
+    >
+      Fortsätt →
+    </div>
+  )
+}
+
+// Sage-filled CTA — variant E (the form's goal, in the single accent).
+function SagePrimaryButton() {
+  return (
+    <div
+      style={{
+        marginTop: 4,
+        padding: '13px 18px',
+        background: SAGE,
+        color: 'var(--accent-ink, #fff)',
         borderRadius: 'calc(var(--radius) * 0.5)',
         textAlign: 'center',
         fontFamily: MONO,
