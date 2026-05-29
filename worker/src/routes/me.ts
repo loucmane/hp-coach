@@ -16,7 +16,7 @@ import { z } from 'zod'
 import { getDb } from '../db/client'
 import { attempts, mistakes, sessions, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
-import { extractSection, type Section, SECTIONS } from '../lib/section'
+import { extractSection, SECTIONS, type Section } from '../lib/section'
 import { currentStreak, formatDayUTC } from '../lib/stats'
 import type { Env, Vars } from '../types'
 
@@ -73,11 +73,20 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     todayStart.setUTCHours(0, 0, 0, 0)
     const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60_000)
 
-    // Attempts: total, today, this-week, plus correct-count for accuracy.
-    const [attemptsTotalRow] = await db
-      .select({ c: count() })
-      .from(attempts)
-      .where(eq(attempts.userId, userId))
+    // Lifetime totals come from the O(1) counters on the user row, not a
+    // count(*) over attempts/sessions — so they stay correct (and cheap)
+    // after the retention cron prunes old rows. See lib/retention.ts.
+    const [counters] = await db
+      .select({ attemptsTotal: users.attemptsTotal, drillsTotal: users.drillsTotal })
+      .from(users)
+      .where(eq(users.id, userId))
+      .limit(1)
+    const attemptsTotal = counters?.attemptsTotal ?? 0
+    const drillsTotal = counters?.drillsTotal ?? 0
+
+    // Attempts: today, this-week, plus correct-count for accuracy (windowed
+    // reads — these stay on the attempts table, served by the (user,
+    // created_at) index, within the retention window).
     const [attemptsTodayRow] = await db
       .select({ c: count() })
       .from(attempts)
@@ -95,12 +104,8 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       .from(attempts)
       .where(and(eq(attempts.userId, userId), gte(attempts.createdAt, weekStart)))
 
-    // Drills: total + this-week. Filter by kind='drill' so adaptive_review
-    // sessions don't inflate the "drills done" number.
-    const [drillsTotalRow] = await db
-      .select({ c: count() })
-      .from(sessions)
-      .where(and(eq(sessions.userId, userId), eq(sessions.kind, 'drill')))
+    // Drills: this-week (windowed). The all-time total is the counter
+    // above (drillsTotal), so this no longer scans every drill row.
     const [drillsWeekRow] = await db
       .select({ c: count() })
       .from(sessions)
@@ -218,16 +223,19 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       }
     }
 
-    const bySection: Record<Section, {
-      attempts7d: number
-      correct7d: number
-      attempts7to14d: number
-      correct7to14d: number
-      attempts90d: number
-      correct90d: number
-      avgTimeMs: number | null
-      lastAttemptedAt: number | null
-    }> = Object.fromEntries(
+    const bySection: Record<
+      Section,
+      {
+        attempts7d: number
+        correct7d: number
+        attempts7to14d: number
+        correct7to14d: number
+        attempts90d: number
+        correct90d: number
+        avgTimeMs: number | null
+        lastAttemptedAt: number | null
+      }
+    > = Object.fromEntries(
       SECTIONS.map((s) => {
         const agg = bySectionAgg[s]
         return [
@@ -305,12 +313,12 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     return c.json({
       stats: {
         attempts: {
-          total: attemptsTotalRow?.c ?? 0,
+          total: attemptsTotal,
           today: attemptsTodayRow?.c ?? 0,
           thisWeek: attemptsWeekRow?.c ?? 0,
         },
         drills: {
-          total: drillsTotalRow?.c ?? 0,
+          total: drillsTotal,
           thisWeek: drillsWeekRow?.c ?? 0,
         },
         mistakes: {

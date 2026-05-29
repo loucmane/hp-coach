@@ -18,12 +18,12 @@
 // surfaces as 404, not 403, by design.
 
 import { zValidator } from '@hono/zod-validator'
-import { and, asc, desc, eq, isNull } from 'drizzle-orm'
+import { and, asc, desc, eq, isNull, sql } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { getDb } from '../db/client'
-import { attempts, DEVICE_KINDS, sessions } from '../db/schema'
+import { attempts, DEVICE_KINDS, sessions, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
 import type { Env, Vars } from '../types'
 
@@ -107,6 +107,19 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     // then trip the (user, kind) partial unique index with a UNIQUE
     // violation (500). Concurrent batches serialize on D1's primary, so
     // each device's end-prior+insert is isolated and the invariant holds.
+    // Bump the lifetime drill counter in the same transaction when this is
+    // a drill start (only kind='drill' feeds the "pass" total), so the
+    // count survives session-row retention. Spread in conditionally; the
+    // insert stays at index 1 either way.
+    const drillBump =
+      body.kind === 'drill'
+        ? [
+            db
+              .update(users)
+              .set({ drillsTotal: sql`${users.drillsTotal} + 1` })
+              .where(eq(users.id, userId)),
+          ]
+        : []
     const [, inserted] = await db.batch([
       db
         .update(sessions)
@@ -125,6 +138,7 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
           device: body.device ?? null,
         })
         .returning(),
+      ...drillBump,
     ])
     const row = inserted[0]
     return c.json({ session: row }, 201)
