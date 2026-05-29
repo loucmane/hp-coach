@@ -9,7 +9,14 @@
 // `users.clerk_user_id` is the link to Clerk's user table; populated lazily
 // the first time a signed-in user hits any authenticated route.
 
-import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { sql } from 'drizzle-orm'
+import { integer, real, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core'
+
+// Device provenance for resumption surfaces — "pausad på telefon" reads
+// as a warm memory anchor for a single phone↔laptop user. Nullable on
+// every row (legacy rows + server-side writes have no device).
+export const DEVICE_KINDS = ['phone', 'tablet', 'desktop'] as const
+export type DeviceKind = (typeof DEVICE_KINDS)[number]
 
 // ── users — one row per Clerk user (single local profile per device) ───
 export const users = sqliteTable('users', {
@@ -38,22 +45,69 @@ export const users = sqliteTable('users', {
 // a device swap during exercise resumes at the exact step. `currentQuestionId`
 // is the precise pointer inside that step (optional — null for lessons,
 // set during drill/mock).
-export const sessions = sqliteTable('sessions', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  userId: integer('user_id')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  startedAt: integer('started_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
-  endedAt: integer('ended_at', { mode: 'timestamp' }),
-  // 'drill' | 'mock' | 'mock_diagnostic' | 'lesson' | 'adaptive_review'
-  kind: text('kind').notNull(),
-  // Sections involved (CSV: 'ord,kva') — full normalization can come later.
-  sections: text('sections'),
-  // Resume pointer — index into the session's plan / item list (0-based).
-  position: integer('position').notNull().default(0),
-  // Resume pointer at finer grain — current question id within the step.
-  currentQuestionId: text('current_question_id'),
-})
+//
+// Cross-device resume (task: xdevice): `plan` stores the ordered qids so
+// device B replays the EXACT same sequence rather than re-rolling a fresh
+// random batch. The partial unique index enforces ≤1 active (endedAt
+// IS NULL) session per (user, kind) — the race-proof guard behind
+// seamless adopt-resume; POST also ends the prior same-kind active row.
+export const sessions = sqliteTable(
+  'sessions',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    startedAt: integer('started_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+    endedAt: integer('ended_at', { mode: 'timestamp' }),
+    // 'drill' | 'mock' | 'mock_diagnostic' | 'lesson' | 'adaptive_review'
+    kind: text('kind').notNull(),
+    // Sections involved (CSV: 'ord,kva') — full normalization can come later.
+    sections: text('sections'),
+    // Resume pointer — index into the session's plan / item list (0-based).
+    position: integer('position').notNull().default(0),
+    // Resume pointer at finer grain — current question id within the step.
+    currentQuestionId: text('current_question_id'),
+    // Ordered qids that make up this session's plan. Null for kinds that
+    // don't have a fixed plan. JSON-encoded string[].
+    plan: text('plan', { mode: 'json' }).$type<string[]>(),
+    // Which device this session was last touched on (resumption provenance).
+    device: text('device', { enum: DEVICE_KINDS }),
+  },
+  (t) => ({
+    // ≤1 active session per (user, kind). Partial index — only rows with
+    // endedAt IS NULL participate, so finished sessions never collide.
+    activeByKind: uniqueIndex('idx_sessions_user_kind_active')
+      .on(t.userId, t.kind)
+      .where(sql`${t.endedAt} is null`),
+  }),
+)
+
+// ── lesson_progress — a per-section reading bookmark ──────────────────
+//
+// NOT a session: lessons are a read-only reference surface with no
+// attempts and no natural "end", so modelling them as sessions left
+// zombie active rows. This is a bookmark — one row per (user, section),
+// upserted in place as the reader opens entries. `frameworkId` is the
+// entry anchor the user last opened (e.g. 'XYZ-TRAP-016'); null means
+// "in the lesson, no specific entry". Drives the Home resumption panel's
+// "fortsätt läsa" offer cross-device.
+export const lessonProgress = sqliteTable(
+  'lesson_progress',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    section: text('section').notNull(),
+    frameworkId: text('framework_id'),
+    device: text('device', { enum: DEVICE_KINDS }),
+    updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+  },
+  (t) => ({
+    userSection: uniqueIndex('idx_lesson_progress_user_section').on(t.userId, t.section),
+  }),
+)
 
 // ── attempts — one row per question answered ──────────────────────────
 export const attempts = sqliteTable('attempts', {
@@ -143,3 +197,5 @@ export type Session = typeof sessions.$inferSelect
 export type NewSession = typeof sessions.$inferInsert
 export type Attempt = typeof attempts.$inferSelect
 export type Mistake = typeof mistakes.$inferSelect
+export type LessonProgress = typeof lessonProgress.$inferSelect
+export type NewLessonProgress = typeof lessonProgress.$inferInsert

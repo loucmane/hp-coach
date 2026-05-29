@@ -24,6 +24,7 @@ import { rateLimit } from './middleware/rateLimit'
 import { attemptsRoute } from './routes/attempts'
 import { devLoginRoute } from './routes/devLogin'
 import { healthRoute } from './routes/health'
+import { lessonProgressRoute } from './routes/lessonProgress'
 import { meRoute } from './routes/me'
 import { mistakesRoute } from './routes/mistakes'
 import { sessionsRoute } from './routes/sessions'
@@ -76,6 +77,7 @@ const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .use('*', rateLimit)
   .route('/me', meRoute)
   .route('/sessions', sessionsRoute)
+  .route('/lesson-progress', lessonProgressRoute)
   .route('/attempts', attemptsRoute)
   .route('/mistakes', mistakesRoute)
   .route('/test-reset', testResetRoute)
