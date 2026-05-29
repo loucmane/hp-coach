@@ -27,9 +27,18 @@ id = "d849e18f563d4029a64fd7149bba3da7"
 [vars]
 ENVIRONMENT = "dev"
 
+# Daily retention prune (04:00 UTC) — bounds the append-only attempts/
+# sessions tables. Cron triggers don't inherit into named envs, so
+# staging/production each declare their own below.
+[triggers]
+crons = ["0 4 * * *"]
+
 # ── Staging ───────────────────────────────────────────────────────────
 [env.staging]
 name = "hpc-api-staging"
+
+[env.staging.triggers]
+crons = ["0 4 * * *"]
 
 [env.staging.vars]
 ENVIRONMENT = "staging"
@@ -47,6 +56,9 @@ id = "d849e18f563d4029a64fd7149bba3da7"
 # ── Production ────────────────────────────────────────────────────────
 [env.production]
 name = "hpc-api"
+
+[env.production.triggers]
+crons = ["0 4 * * *"]
 
 [env.production.vars]
 ENVIRONMENT = "production"

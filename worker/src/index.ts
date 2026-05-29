@@ -19,6 +19,8 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 
+import { getDb } from './db/client'
+import { runRetention } from './lib/retention'
 import { requireAuth } from './middleware/auth'
 import { rateLimit } from './middleware/rateLimit'
 import { attemptsRoute } from './routes/attempts'
@@ -98,5 +100,16 @@ const routes = app
   .route('/api/dev/login', devLoginRoute)
   .route('/api', authed)
 
-export default routes
+// Daily Cron Trigger (see [triggers] in wrangler.toml) — prune
+// attempts/sessions past the retention window so the append-only tables
+// stay bounded as the user base grows. Lifetime totals live on the user
+// counters, so this never changes a displayed number.
+const scheduled: ExportedHandlerScheduledHandler<Env> = async (_event, env) => {
+  const { cutoff } = await runRetention(getDb(env.DB))
+  console.log(`[retention] pruned rows older than ${cutoff.toISOString()}`)
+}
+
+// The worker now exports BOTH a fetch and a scheduled handler. AppType is
+// still the Hono app type the SPA client infers from — unchanged.
+export default { fetch: routes.fetch, scheduled }
 export type AppType = typeof routes

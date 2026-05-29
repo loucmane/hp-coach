@@ -35,6 +35,13 @@ export const users = sqliteTable('users', {
   }).default('literary'),
   density: text('density', { enum: ['compact', 'regular', 'comfy'] }).default('regular'),
   showStreak: integer('show_streak', { mode: 'boolean' }).default(false),
+  // Lifetime activity counters, incremented on each write. They let the
+  // all-time stats ("X frågor totalt", "Y pass") be O(1) reads instead of
+  // count(*) scans, AND — crucially — they decouple the lifetime totals
+  // from the raw attempts/sessions rows, so the retention cron can prune
+  // old rows without changing what the user sees. See lib/retention.ts.
+  attemptsTotal: integer('attempts_total').notNull().default(0),
+  drillsTotal: integer('drills_total').notNull().default(0),
   createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
 })
 

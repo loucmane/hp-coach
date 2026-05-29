@@ -12,12 +12,12 @@
 // hooks in here.
 
 import { zValidator } from '@hono/zod-validator'
-import { and, eq } from 'drizzle-orm'
+import { and, eq, sql } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { getDb } from '../db/client'
-import { attempts, sessions } from '../db/schema'
+import { attempts, sessions, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
 import type { Env, Vars } from '../types'
 
@@ -54,16 +54,25 @@ export const attemptsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       return c.json({ error: { code: 'not_found', message: 'Session not found' } }, 404)
     }
 
-    const [row] = await db
-      .insert(attempts)
-      .values({
-        userId,
-        sessionId: body.sessionId,
-        questionId: body.questionId,
-        selectedAnswer: body.selectedAnswer,
-        correct: body.correct,
-        timeTakenMs: body.timeTakenMs ?? null,
-      })
-      .returning()
-    return c.json({ attempt: row }, 201)
+    // Insert the attempt AND bump the user's lifetime counter atomically
+    // (one D1 transaction), so the all-time total stays correct even after
+    // the retention cron prunes old attempts rows.
+    const [inserted] = await db.batch([
+      db
+        .insert(attempts)
+        .values({
+          userId,
+          sessionId: body.sessionId,
+          questionId: body.questionId,
+          selectedAnswer: body.selectedAnswer,
+          correct: body.correct,
+          timeTakenMs: body.timeTakenMs ?? null,
+        })
+        .returning(),
+      db
+        .update(users)
+        .set({ attemptsTotal: sql`${users.attemptsTotal} + 1` })
+        .where(eq(users.id, userId)),
+    ])
+    return c.json({ attempt: inserted[0] }, 201)
   })

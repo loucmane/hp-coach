@@ -25,7 +25,7 @@ import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { getDb } from '../db/client'
-import { mistakes, sessions } from '../db/schema'
+import { mistakes, sessions, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
 import type { Env, Vars } from '../types'
 
@@ -61,6 +61,10 @@ export const testResetRoute = new Hono<{ Bindings: Env; Variables: Vars }>().pos
         .delete(mistakes)
         .where(eq(mistakes.userId, userId))
         .returning({ id: mistakes.id })
+      // Zero the lifetime counters too — they're maintained incrementally,
+      // so a row wipe must reset them or they'd drift from the (now empty)
+      // tables and make stats non-deterministic for tests.
+      await db.update(users).set({ attemptsTotal: 0, drillsTotal: 0 }).where(eq(users.id, userId))
       return c.json({
         ok: true as const,
         action,
