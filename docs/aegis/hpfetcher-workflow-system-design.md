@@ -1,6 +1,20 @@
+> ⚠️ **SUPERSEDED — kept as historical input.** This draft was written under a
+> **wrong optimization frame** (a solo ADHD-PI *human* using HP-Coach). That frame
+> imported a human cost function (flow, frustration-avoidance) that does not apply
+> to an autonomous agent, and it assumed a CI boundary Aegis does not own — leading
+> to several inverted conclusions ("enforce only at CI", "fail open universally",
+> "`current-work.json` ~90% deletable", "plans/sessions only pay off with a 2nd
+> *human* contributor"). It also contained factual misreads (e.g. `work_context` is
+> computed inline, not a stored mirror).
+>
+> **The authoritative model is now [`agent-runtime-first-workflow-design.md`](./agent-runtime-first-workflow-design.md).**
+> This file is retained only as evidence of the wrong frame and the correction.
+
+---
+
 # Workflow System Design — drift-resistant task tracking
 
-**Status:** discussion draft · **Audience:** dev review
+**Status:** SUPERSEDED discussion draft · **Audience:** dev review
 **Purpose:** decide what to build for our task/status-tracking workflow, using the
 *aegis* framework (in `~/codex`) as a studied reference — what it gets right, where
 it's soft, and the principles we'd build into our own system.
