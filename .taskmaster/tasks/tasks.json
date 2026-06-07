@@ -162,9 +162,7 @@
             "id": 1,
             "title": "Install SQLocal, Drizzle ORM, and dev tools",
             "description": "Install the required runtime and dev dependencies for SQLocal, Drizzle ORM, and migration tooling.",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [],
             "details": "Run `npm install sqlocal drizzle-orm` for runtime dependencies and `npm install -D drizzle-kit @libsql/client` for dev dependencies. Verify that all packages are listed in package.json.",
             "status": "pending",
             "testStrategy": "Check package.json for correct versions; ensure no install errors in CI or local dev.",
@@ -309,9 +307,7 @@
             "id": 1,
             "title": "Install runtime dependencies (Zustand, TanStack Query, KaTeX, UI libs)",
             "description": "Install the core runtime libraries for state management, data fetching, math rendering, and UI components.",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [],
             "details": "Run: npm i zustand@5 @tanstack/react-query@5 react-katex@3 katex@0.18 lucide-react@0.441 recharts@2.12 motion@11. Verify no peer dependency warnings and that packages appear in package.json.",
             "status": "pending",
             "testStrategy": "Check package.json and node_modules; run npm ls to confirm versions and absence of peer dep warnings.",
@@ -383,7 +379,7 @@
           "57",
           "58"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -444,7 +440,8 @@
             "testStrategy": "Navigation triggers on form submit; View Transitions animate smoothly; Fallback works in unsupported browsers; Data available on next screen",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.211Z"
       },
       {
         "id": "7",
@@ -456,7 +453,7 @@
         "dependencies": [
           "6"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -517,7 +514,8 @@
             "testStrategy": "Attempts save correctly to DB; All questions/answers/timer data included; No feedback returned to frontend",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.218Z"
       },
       {
         "id": "8",
@@ -529,7 +527,7 @@
         "dependencies": [
           "7"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -558,8 +556,7 @@
             "title": "Add image display functionality for DTK section",
             "description": "Enable loading and displaying DTK images extracted by Task 32 within MockExam question rendering.",
             "dependencies": [
-              1,
-              32
+              1
             ],
             "details": "Create ImageQuestion component; Load images from /data/images/{exam}/{section}_{qid}.png; Add lazy loading and error handling; Support zoom/pinch gestures for mobile; Integrate with question data structure indicating DTK type.",
             "status": "pending",
@@ -592,7 +589,8 @@
             "testStrategy": "Passes Chrome DevTools mobile emulation; Touch interactions work (swipe, pinch); Layout stable on iPhone/Android; Matches Övningsmock half-mock spec",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.223Z"
       },
       {
         "id": "9",
@@ -605,7 +603,7 @@
           "3",
           "8"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -669,7 +667,8 @@
             "testStrategy": "Flag persists correctly; button navigates to Home; full screen flow from mock data.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.228Z"
       },
       {
         "id": "10",
@@ -681,7 +680,7 @@
         "dependencies": [
           "9"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -742,7 +741,8 @@
             "testStrategy": "Link navigates correctly; Single CTA validation (no other buttons); Full screen passes responsive and accessibility checks; Matches NF6.1.1 frictionless criteria.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.233Z"
       },
       {
         "id": "11",
@@ -754,7 +754,7 @@
         "dependencies": [
           "10"
         ],
-        "status": "pending",
+        "status": "deferred",
         "subtasks": [
           {
             "id": 1,
@@ -815,7 +815,8 @@
             "testStrategy": "DB flag updates correctly; modal does not reappear; error handling prevents infinite loops.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:11:04.494Z"
       },
       {
         "id": "12",
@@ -827,7 +828,7 @@
         "dependencies": [
           "11"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -889,7 +890,8 @@
             "testStrategy": "Full lesson flow completes; Navigation between cards works; Seen status affects repeat behavior; Mobile layout passes on all devices.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.238Z"
       },
       {
         "id": "13",
@@ -902,7 +904,7 @@
           "5",
           "12"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -962,7 +964,8 @@
             "testStrategy": "Formulas load contextually; timer counts accurately and updates store; responsive layout.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.243Z"
       },
       {
         "id": "14",
@@ -974,7 +977,7 @@
         "dependencies": [
           "13"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -1036,7 +1039,8 @@
             "testStrategy": "Auto-advances after 3s; Button advances immediately; DB attempt logged correctly",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.248Z"
       },
       {
         "id": "15",
@@ -1048,7 +1052,7 @@
         "dependencies": [
           "14"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -1111,7 +1115,8 @@
             "testStrategy": "No streak/shame elements present; Stats accurate per Task 15 test strategy; Plan generates correctly; No console errors",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.252Z"
       },
       {
         "id": "16",
@@ -1196,7 +1201,7 @@
         "dependencies": [
           "16"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -1256,7 +1261,8 @@
             "testStrategy": "Progress bars reflect accurate percentages; Colors apply correctly; Responsive stacking on mobile",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.257Z"
       },
       {
         "id": "18",
@@ -1343,7 +1349,7 @@
           "2",
           "18"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -1407,7 +1413,8 @@
             "testStrategy": "Cmd+K opens anywhere; actions execute correctly (e.g., navigation works); all search domains return and action usable results.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.262Z"
       },
       {
         "id": "20",
@@ -1494,7 +1501,7 @@
           "3",
           "20"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -1555,7 +1562,8 @@
             "testStrategy": "Plan updates when SRS data changes; Regenerates on mastery level updates; No infinite re-render loops",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.266Z"
       },
       {
         "id": "22",
@@ -1567,7 +1575,7 @@
         "dependencies": [
           "21"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -1627,7 +1635,8 @@
             "testStrategy": "Secondary cards show lower frequency first; Proper mixing ratio in due cards; Separate interval tracking by card_type",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.273Z"
       },
       {
         "id": "23",
@@ -1639,7 +1648,7 @@
         "dependencies": [
           "22"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -1699,7 +1708,8 @@
             "testStrategy": "Comprehensive unit and integration tests covering edge cases and performance.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.277Z"
       },
       {
         "id": "24",
@@ -1712,7 +1722,7 @@
           "57",
           "23"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -1770,7 +1780,8 @@
             "testStrategy": "All tables queryable post-migration; Schema matches schema.ts; Migrations idempotent",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.281Z"
       },
       {
         "id": "25",
@@ -1782,7 +1793,7 @@
         "dependencies": [
           "21"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -1845,7 +1856,8 @@
             "testStrategy": "Complete coverage of F5.5 requirements; All algorithms have pseudocode; Ready for Task 26 implementation.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.285Z"
       },
       {
         "id": "26",
@@ -2303,7 +2315,7 @@
         "dependencies": [
           "31"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -2364,7 +2376,8 @@
             "testStrategy": "Full extraction pipeline runs without crashes on var-2026 DTK; All expected images/PNGs generated and readable; Coverage report shows 100% success.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.289Z"
       },
       {
         "id": "33",
@@ -2376,7 +2389,7 @@
         "dependencies": [
           "32"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -2438,7 +2451,8 @@
             "testStrategy": "Full pipeline run on all 324 questions; verify ≥90% render successfully in KaTeX; manual spot-checks align with auto-approval.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.293Z"
       },
       {
         "id": "34",
@@ -2521,7 +2535,7 @@
         "dependencies": [
           "34"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -2583,7 +2597,8 @@
             "testStrategy": "JSON parses without errors; covers key sufficiency judgment errors per test strategy; ≥15 distinct traps cataloged.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.296Z"
       },
       {
         "id": "36",
@@ -2595,7 +2610,7 @@
         "dependencies": [
           "33"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -2656,7 +2671,8 @@
             "testStrategy": "Second run skips all (no output changes); hp_question_bank.json stable with 27 exams and 2160 questions.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.300Z"
       },
       {
         "id": "37",
@@ -2668,7 +2684,7 @@
         "dependencies": [
           "36"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -2730,7 +2746,8 @@
             "testStrategy": "Mock framework change → detect → regenerate ORD section → confirm new version with updated hash and same Layer 1 refs",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.303Z"
       },
       {
         "id": "38",
@@ -2742,7 +2759,7 @@
         "dependencies": [
           "36"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -2802,7 +2819,8 @@
             "testStrategy": "Run end-to-end pipeline; confirm tags appear in hp_question_bank.json and metrics are logged as expected.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.307Z"
       },
       {
         "id": "39",
@@ -2814,7 +2832,7 @@
         "dependencies": [
           "36"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -2874,7 +2892,8 @@
             "testStrategy": "JSON parses correctly; Coverage metric >=84%; Frequency distribution plots correctly; File ready for downstream use",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.310Z"
       },
       {
         "id": "40",
@@ -2887,7 +2906,7 @@
           "37",
           "39"
         ],
-        "status": "pending",
+        "status": "deferred",
         "subtasks": [
           {
             "id": 1,
@@ -2947,7 +2966,8 @@
             "testStrategy": "80%+ verified_match on test set; synthetic questions pass manual validity check; conflicts correctly isolated",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:52.808Z"
       },
       {
         "id": "41",
@@ -3175,7 +3195,7 @@
         "dependencies": [
           "36"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -3240,7 +3260,8 @@
             "testStrategy": "Taxonomy covers all LÄS question patterns; each type ≥5 corpus examples; JSON parses correctly",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.316Z"
       },
       {
         "id": "45",
@@ -3253,7 +3274,7 @@
           "36",
           "44"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -3313,7 +3334,8 @@
             "testStrategy": "Ensure taxonomy covers all ELF question patterns in corpus and explicitly notes data completeness risk.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.320Z"
       },
       {
         "id": "46",
@@ -3327,7 +3349,7 @@
           "35",
           "39"
         ],
-        "status": "pending",
+        "status": "deferred",
         "subtasks": [
           {
             "id": 1,
@@ -3389,7 +3411,8 @@
             "testStrategy": "Test that new lessons get the correct version; simulate a framework update and verify that existing lessons are correctly flagged as affected.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:52.816Z"
       },
       {
         "id": "47",
@@ -3402,7 +3425,7 @@
           "46",
           "41"
         ],
-        "status": "pending",
+        "status": "deferred",
         "subtasks": [
           {
             "id": 1,
@@ -3462,7 +3485,8 @@
             "testStrategy": "Confirm translation accuracy and graph interpretation; overall ≥80% pass rate; full set review",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:52.821Z"
       },
       {
         "id": "48",
@@ -3478,7 +3502,7 @@
           "44",
           "45"
         ],
-        "status": "pending",
+        "status": "deferred",
         "subtasks": [
           {
             "id": 1,
@@ -3535,7 +3559,8 @@
             "testStrategy": "Overall teach-back gate ≥80%; full structural approval; verify dependencies 46,35,42,44,45 integration.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:52.826Z"
       },
       {
         "id": "49",
@@ -3551,7 +3576,7 @@
           "42",
           "43"
         ],
-        "status": "done",
+        "status": "deferred",
         "subtasks": [
           {
             "id": 1,
@@ -3612,7 +3637,7 @@
             "parentId": "undefined"
           }
         ],
-        "updatedAt": "2026-05-09T10:44:18.407Z"
+        "updatedAt": "2026-06-06T14:00:52.831Z"
       },
       {
         "id": "50",
@@ -3626,7 +3651,7 @@
           "44",
           "45"
         ],
-        "status": "done",
+        "status": "deferred",
         "subtasks": [
           {
             "id": 1,
@@ -3687,7 +3712,7 @@
             "parentId": "undefined"
           }
         ],
-        "updatedAt": "2026-05-09T10:44:19.454Z"
+        "updatedAt": "2026-06-06T14:00:52.837Z"
       },
       {
         "id": "51",
@@ -3699,7 +3724,7 @@
         "dependencies": [
           "37"
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -3759,7 +3784,8 @@
             "testStrategy": "Overall ≥90% approval; canary metrics met; full pipeline validation in dogfood; no critical fallback dependencies",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-06T14:00:19.323Z"
       },
       {
         "id": "52",
@@ -4024,13 +4050,143 @@
         ],
         "status": "deferred",
         "subtasks": []
+      },
+      {
+        "id": "62",
+        "title": "Backfill: DTK figure pipeline and facit-anchored explanations",
+        "description": "Already-shipped historical backfill. DTK figure rasterization of 216 figure pages, 636 of 648 prompt extraction, drill wiring, Option-C facit-anchored explanations. Shipped via PRs 35-38. Record-only.",
+        "details": "",
+        "testStrategy": "",
+        "status": "done",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": [],
+        "updatedAt": "2026-06-06T14:04:59.669Z"
+      },
+      {
+        "id": "63",
+        "title": "Backfill: Corpus quality and Swedish-lint audit pipeline",
+        "description": "Already-shipped historical backfill. Multi-phase Swedish-quality lint and audit Passes 1 to 5: typo sweeps, register polish, hyphenation recovery. Record-only.",
+        "details": "",
+        "testStrategy": "",
+        "status": "done",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": [],
+        "updatedAt": "2026-06-06T14:04:59.676Z"
+      },
+      {
+        "id": "64",
+        "title": "Backfill: EDITION design system and responsive shell",
+        "description": "Already-shipped historical backfill. Responsive phone to reader to studio shell, Study Desk, Editorial Studio, EditionStrip picker, drill layouts. Record-only.",
+        "details": "",
+        "testStrategy": "",
+        "status": "done",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": [],
+        "updatedAt": "2026-06-06T14:04:59.681Z"
+      },
+      {
+        "id": "65",
+        "title": "Backfill: Cross-device resumption and xdevice sync hardening",
+        "description": "Already-shipped historical backfill. Worker plus D1 foundation, server-driven cross-device resume, atomic session POST race hardening, hot-path indexes, retention cron. Record-only.",
+        "details": "",
+        "testStrategy": "",
+        "status": "done",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": [],
+        "updatedAt": "2026-06-06T14:04:59.686Z"
+      },
+      {
+        "id": "66",
+        "title": "Backfill: Student trajectory simulation harness",
+        "description": "Already-shipped historical backfill. Multi-round student-trajectory simulation from MVP 30-round to v3 198-round, Phase G orchestration, persona evaluation. Record-only.",
+        "details": "",
+        "testStrategy": "",
+        "status": "done",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": [],
+        "updatedAt": "2026-06-06T14:04:59.690Z"
+      },
+      {
+        "id": "67",
+        "title": "Backfill: Auto-merge GitHub workflow and STATUS ledger",
+        "description": "Already-shipped historical backfill. CI auto-merge squash plus delete on green when labeled, plus STATUS.md working ledger. Record-only.",
+        "details": "",
+        "testStrategy": "",
+        "status": "done",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": [],
+        "updatedAt": "2026-06-06T14:04:59.695Z"
+      },
+      {
+        "id": "68",
+        "title": "Backfill: Trap-aware daily plan and trap trend surfaces",
+        "description": "Already-shipped historical backfill. Trap-aware daily plan plus trap trend chips on Home and Progress. Tagging mechanics owned by task 38. Record-only.",
+        "details": "",
+        "testStrategy": "",
+        "status": "done",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": [],
+        "updatedAt": "2026-06-06T14:04:59.700Z"
+      },
+      {
+        "id": "69",
+        "title": "Backfill: Clerk load-failure recovery and sign-in composition",
+        "description": "Already-shipped historical backfill. Recover-instead-of-blank on Clerk load failure plus sign-in composition. Record-only.",
+        "details": "",
+        "testStrategy": "",
+        "status": "done",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": [],
+        "updatedAt": "2026-06-06T14:04:59.705Z"
+      },
+      {
+        "id": "70",
+        "title": "Backfill: Score model, projection, and weakness ranking",
+        "description": "Already-shipped historical backfill. Per-section grades, score projection, weakness ranking underpinning diagnostic and daily plan. Record-only.",
+        "details": "",
+        "testStrategy": "",
+        "status": "done",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": [],
+        "updatedAt": "2026-06-06T14:04:59.709Z"
+      },
+      {
+        "id": "71",
+        "title": "Fix stale parser docstring",
+        "description": "Real follow-up. parse_section.py docstring still claims LAS, ELF, XYZ, KVA, NOG, DTK out of scope, contradicting shipped reality. Update the docstring.",
+        "details": "",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "subtasks": []
+      },
+      {
+        "id": "72",
+        "title": "Reconcile Layer-4 synthetic-generator scope sections 5.15 and 5.16",
+        "description": "Real follow-up. Tasks 40 and 46 to 50 deferred; PRD sections 5.15 and 5.16 still describe a synthetic generator plus lesson teach-back pipeline not built. Reconcile PRD and CLAUDE.md scope versus framework-as-lesson reality.",
+        "details": "",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "subtasks": []
       }
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2026-05-12T15:46:56.974Z",
-      "taskCount": 61,
-      "completedCount": 18,
+      "lastModified": "2026-06-06T14:11:04.494Z",
+      "taskCount": 72,
+      "completedCount": 51,
       "tags": [
         "master"
       ]
