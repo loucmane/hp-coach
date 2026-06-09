@@ -4180,12 +4180,90 @@
         "dependencies": [],
         "priority": "low",
         "subtasks": []
+      },
+      {
+        "id": "73",
+        "title": "P0: Repair poisoned resume plus graceful drill fallback",
+        "description": "Home resume links to /drill?section=ORD&qid=q1, but q1 is stale or missing. Desktop click effectively no-ops and mobile hangs forever on LADDAR. Detect stale active sessions, clear or ignore invalid qids, and render 'Övningen är inte längre tillgänglig — starta en ny' instead of crashing.",
+        "details": "",
+        "testStrategy": "",
+        "status": "in-progress",
+        "dependencies": [],
+        "priority": "high",
+        "subtasks": [],
+        "updatedAt": "2026-06-09T14:14:11.899Z"
+      },
+      {
+        "id": "74",
+        "title": "P1: Make findQuestion non-throwing with recoverable missing-qid states",
+        "description": "findQuestion currently throws when qid is missing, taking down drill flows. Missing qid should degrade to a recoverable empty/error state across drill, diagnostik, and repetition. Defense-in-depth behind the P0 resume repair (task A).",
+        "details": "",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "high",
+        "subtasks": []
+      },
+      {
+        "id": "75",
+        "title": "P1: Clerk Swedish localization",
+        "description": "The sign-in screen shows English Clerk labels such as 'Email address', 'Password', 'Continue', and 'Show password' inside an otherwise Swedish UI. Configure Clerk localization to Swedish and verify sign-in still works.",
+        "details": "",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "high",
+        "subtasks": []
+      },
+      {
+        "id": "76",
+        "title": "P2: Gate dev affordances and fix mobile bottom-nav occlusion",
+        "description": "Debug/share/tweaks controls and palette or edition switchers appear in product chrome. On mobile they overlap the bottom navigation. Hide or dev-gate non-user controls, or relocate intentional user controls, and verify the bottom nav is unobstructed.",
+        "details": "",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": "77",
+        "title": "P2: Investigate duplicate XYZ options for var-2024-kvant2-XYZ-010",
+        "description": "Question var-2024-kvant2-XYZ-010 rendered options b and d identically as b = a/2. Determine whether this is a corpus defect or math rendering collapse, then fix the underlying cause.",
+        "details": "",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": "78",
+        "title": "P3: Home low-data composition polish",
+        "description": "When activity data is sparse, Home shows a large empty band between the resume line and footer. Tighten or fill the low-data dashboard state so it reads finished rather than unfinished.",
+        "details": "",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "subtasks": []
+      },
+      {
+        "id": "79",
+        "title": "P3: Copy and lint sweep for Starta/Fortsätt plus textDecoration warning",
+        "description": "Use 'Starta' vs 'Fortsätt' based on whether there is actually a resumable session. Also resolve the React dev warning about mixing shorthand and non-shorthand textDecoration during answer rendering.",
+        "details": "",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "subtasks": []
       }
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2026-06-06T14:11:04.494Z",
-      "taskCount": 72,
+      "lastModified": "2026-06-09T14:14:11.899Z",
+      "taskCount": 79,
       "completedCount": 51,
       "tags": [
         "master"

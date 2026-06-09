@@ -147,3 +147,13 @@ export function findQuestion(bank: readonly Question[], qid: string): Question {
   if (!q) throw new Error(`Question not found: ${qid}`)
   return q
 }
+
+/** Non-throwing lookup — returns undefined when the qid is absent.
+ *  Use this for plan/cursor resolution where the qid comes from
+ *  persisted state (server session plan, deep-link, saved cursor) that
+ *  can drift out of sync with the corpus (regen, seed/test rows like
+ *  `q1`). A stale qid must degrade to a recoverable empty state, never
+ *  throw into render. See resolvePlan in drill.tsx / repetition.tsx. */
+export function findQuestionSafe(bank: readonly Question[], qid: string): Question | undefined {
+  return bank.find((x) => x.qid === qid)
+}
