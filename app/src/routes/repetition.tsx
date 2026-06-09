@@ -15,7 +15,7 @@ import { useCallback, useMemo } from 'react'
 
 import { useDueMistakes, useRecordMistake, useResolveMistake } from '@/api/hooks/useMistakes'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
-import { findQuestion, loadBank } from '@/data/questions'
+import { findQuestionSafe, loadBank, type Question } from '@/data/questions'
 import { pickReplayQuestions, REPETITION_SESSION_SIZE } from '@/lib/replay'
 
 type RepetitionSearch = { qid?: string }
@@ -87,7 +87,14 @@ function RepetitionScreen() {
       sections="ORD"
       activeTab="drill"
       urlSyncedQid={{ qid: urlQid ?? null, setQid: setUrlQid }}
-      resolvePlan={(qids) => loadBank().then((b) => qids.map((q) => findQuestion(b, q)))}
+      resolvePlan={(qids) =>
+        loadBank().then((b) =>
+          // Resolve safely — a stale qid in the stored plan must not crash
+          // the resume; SessionPlayer treats an empty resolve as a
+          // recoverable "session no longer available" state.
+          qids.map((q) => findQuestionSafe(b, q)).filter((q): q is Question => q !== undefined),
+        )
+      }
       pickQuestions={async () => {
         // Cross-device resume is handled by SessionPlayer adopting the
         // active server session + its stored plan (resolvePlan above).

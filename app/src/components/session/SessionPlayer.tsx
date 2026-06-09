@@ -177,6 +177,11 @@ export function SessionPlayer(props: SessionPlayerProps) {
   const [questionStartedAt, setQuestionStartedAt] = useState(0)
   const [sessionId, setSessionId] = useState<number | null>(null)
   const [emptyAttempted, setEmptyAttempted] = useState(false)
+  // Set when an adopted server session's stored plan no longer resolves
+  // to any live question (corpus drift / stale seed rows like `q1`). Drives
+  // the recoverable "session no longer available" copy and forces the next
+  // Start to take a fresh pick instead of re-adopting the dead session.
+  const [staleResume, setStaleResume] = useState(false)
   // Set to the adopted session id when a resume replays an existing
   // server session, so its prior attempts can hydrate picks[] (below).
   const [adoptedSessionId, setAdoptedSessionId] = useState<number | null>(null)
@@ -198,10 +203,34 @@ export function SessionPlayer(props: SessionPlayerProps) {
       // device. Needs resolvePlan to turn the stored qids back into
       // Question objects; without it (or without a stored plan) we fall
       // through to a fresh start.
+      // Skip the adopt path once we've already found this session's plan
+      // unresolvable (staleResume) — Start should take a fresh pick rather
+      // than re-adopting the dead row.
       const existing = activeOfKind.data
-      if (existing && existing.plan && existing.plan.length > 0 && props.resolvePlan) {
+      if (
+        !staleResume &&
+        existing &&
+        existing.plan &&
+        existing.plan.length > 0 &&
+        props.resolvePlan
+      ) {
         const questions = await props.resolvePlan(existing.plan)
         if (questions.length === 0) {
+          // The stored plan no longer resolves to any live question
+          // (corpus drift / stale seed rows like `q1`). End the dangling
+          // session so it stops resurfacing as a "Fortsätt här" target,
+          // then fall to a recoverable state instead of hanging forever on
+          // "Laddar …". Ending drops it from the active-sessions cache
+          // (useUpdateSession), so the next render offers a fresh start.
+          if (existing.id != null) {
+            updateSession.mutate({ id: existing.id, patch: { end: true } })
+          }
+          // Drop the stale qid from the URL. Without this the route stays
+          // in `?qid=` direct-link mode (1 specific question), so the
+          // recovery CTA's fresh pick would keep resolving the dead qid to
+          // [] and never start a real section drill.
+          props.urlSyncedQid?.setQid(null)
+          setStaleResume(true)
           setEmptyAttempted(true)
           return
         }
@@ -235,6 +264,9 @@ export function SessionPlayer(props: SessionPlayerProps) {
         setEmptyAttempted(true)
         return
       }
+      // Fresh batch resolved — clear any prior stale-resume flag so the
+      // recovery copy doesn't linger into the new session.
+      setStaleResume(false)
       const session = await startSession.mutateAsync({
         kind: props.sessionKind,
         sections: props.sections,
@@ -268,7 +300,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
     } finally {
       setStarting(false)
     }
-  }, [starting, props, startSession, updateSession, activeOfKind.data])
+  }, [starting, props, startSession, updateSession, activeOfKind.data, staleResume])
 
   const onPick = useCallback(
     (letter: AnswerLetter) => {
@@ -491,6 +523,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
         onStart={begin}
         resuming={resuming}
         emptyAttempted={emptyAttempted}
+        staleResume={staleResume}
       />
     )
     if (isPhone) {
@@ -727,6 +760,9 @@ type IdleBodyProps = SessionPlayerProps & {
   /** An active session of this kind exists — the CTA continues it. */
   resuming: boolean
   emptyAttempted: boolean
+  /** The adopted session's stored plan no longer resolves — show the
+   *  recovery copy and force a fresh-start CTA instead of "Fortsätt". */
+  staleResume: boolean
   /** Phase A.8.2 — phone keeps the tight artboard composition; desktop
    *  uses the chapter-opening composition (hero headline, marginalia
    *  keyboard hints, bottom-right CTA). */
@@ -744,11 +780,18 @@ function IdleBody({
   onStart,
   resuming,
   emptyAttempted,
+  staleResume,
   disableStart,
   disableStartLabel,
   idleSecondaryCta,
   isPhone,
 }: IdleBodyProps) {
+  // When the resumed session's plan is gone, override the section's
+  // generic empty copy with an explicit recovery line, and treat the
+  // primary CTA as a fresh start (not "Fortsätt").
+  const shownEmptyCopy = staleResume
+    ? 'Övningen är inte längre tillgänglig — starta en ny.'
+    : emptyCopy
   return (
     <div
       data-testid="drill-idle"
@@ -898,7 +941,7 @@ function IdleBody({
         )}
       </div>
 
-      {(emptyAttempted || disableStart) && emptyCopy && (
+      {(emptyAttempted || disableStart) && shownEmptyCopy && (
         <div
           data-testid="drill-empty"
           style={{
@@ -912,7 +955,7 @@ function IdleBody({
             maxWidth: isPhone ? undefined : 520,
           }}
         >
-          {emptyCopy}
+          {shownEmptyCopy}
         </div>
       )}
 
@@ -949,7 +992,7 @@ function IdleBody({
             ? 'Startar…'
             : disableStart
               ? (disableStartLabel ?? 'Inget att starta')
-              : resuming
+              : resuming && !staleResume
                 ? 'Fortsätt övning →'
                 : 'Starta övning →'}
         </Btn>

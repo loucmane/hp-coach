@@ -13,7 +13,7 @@ import { useDueMistakes, useRecordMistake } from '@/api/hooks/useMistakes'
 import { useActiveSession } from '@/api/hooks/useSessions'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { entryHeadword, loadFramework } from '@/data/frameworks'
-import { findQuestion, loadBank, type Section } from '@/data/questions'
+import { findQuestionSafe, loadBank, type Question, type Section } from '@/data/questions'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions } from '@/lib/drill'
 import { REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
@@ -153,15 +153,27 @@ function DrillScreen() {
   //   - `?framework=` → a framework entry's example_questions
   //   - default → random N-question section drill
   const pickQuestions = directLinkQid
-    ? () => loadBank().then((b) => [findQuestion(b, directLinkQid)])
+    ? () =>
+        loadBank().then((b) => {
+          // Deep-linked qid may be stale (corpus regen / seed rows like
+          // `q1`). Resolve safely → [] drops to the recoverable empty
+          // state ("Hittade inte frågan …") instead of throwing.
+          const q = findQuestionSafe(b, directLinkQid)
+          return q ? [q] : []
+        })
     : framework
       ? () => pickFrameworkQuestions(section as Section, framework)
       : () => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)
 
   // Turn a stored plan (server session qids) back into Questions so
   // SessionPlayer can replay the exact paused session on any device.
+  // Resolve safely and drop qids that no longer exist — a fully stale
+  // plan resolves to [], which SessionPlayer treats as a recoverable
+  // "session no longer available" state rather than crashing.
   const resolvePlan = (qids: string[]) =>
-    loadBank().then((b) => qids.map((q) => findQuestion(b, q)))
+    loadBank().then((b) =>
+      qids.map((q) => findQuestionSafe(b, q)).filter((q): q is Question => q !== undefined),
+    )
 
   const frameworkDisplay = frameworkHeadword ?? framework
   const idleEyebrow = directLinkQid ? 'Direktlänk' : framework ? 'Mönsterövning' : 'Övning'
