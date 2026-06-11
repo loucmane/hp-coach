@@ -13,7 +13,7 @@ import { useDueMistakes, useRecordMistake } from '@/api/hooks/useMistakes'
 import { useActiveSession } from '@/api/hooks/useSessions'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { entryHeadword, loadFramework } from '@/data/frameworks'
-import { findQuestionSafe, loadBank, type Question, type Section } from '@/data/questions'
+import { findQuestion, loadBank, type Question, type Section } from '@/data/questions'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions } from '@/lib/drill'
 import { REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
@@ -158,7 +158,7 @@ function DrillScreen() {
           // Deep-linked qid may be stale (corpus regen / seed rows like
           // `q1`). Resolve safely → [] drops to the recoverable empty
           // state ("Hittade inte frågan …") instead of throwing.
-          const q = findQuestionSafe(b, directLinkQid)
+          const q = findQuestion(b, directLinkQid)
           return q ? [q] : []
         })
     : framework
@@ -172,7 +172,7 @@ function DrillScreen() {
   // "session no longer available" state rather than crashing.
   const resolvePlan = (qids: string[]) =>
     loadBank().then((b) =>
-      qids.map((q) => findQuestionSafe(b, q)).filter((q): q is Question => q !== undefined),
+      qids.map((q) => findQuestion(b, q)).filter((q): q is Question => q !== undefined),
     )
 
   const frameworkDisplay = frameworkHeadword ?? framework

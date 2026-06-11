@@ -141,19 +141,12 @@ export function questionsInSection(bank: readonly Question[], section: Section):
   return bank.filter((q) => q.section === section && q.parsing_status === 'complete' && q.options)
 }
 
-/** Look up a question by qid; throws if not found (caller bugs are noisy). */
-export function findQuestion(bank: readonly Question[], qid: string): Question {
-  const q = bank.find((x) => x.qid === qid)
-  if (!q) throw new Error(`Question not found: ${qid}`)
-  return q
-}
-
-/** Non-throwing lookup — returns undefined when the qid is absent.
- *  Use this for plan/cursor resolution where the qid comes from
- *  persisted state (server session plan, deep-link, saved cursor) that
- *  can drift out of sync with the corpus (regen, seed/test rows like
- *  `q1`). A stale qid must degrade to a recoverable empty state, never
- *  throw into render. See resolvePlan in drill.tsx / repetition.tsx. */
-export function findQuestionSafe(bank: readonly Question[], qid: string): Question | undefined {
+/** Look up a question by qid — returns undefined when the qid is
+ *  absent, never throws. Qids routinely come from persisted state
+ *  (server session plan, deep-link, saved cursor) that can drift out
+ *  of sync with the corpus (regen, seed/test rows like `q1`). A stale
+ *  qid must degrade to a recoverable empty state, never throw into
+ *  render. See resolvePlan in drill.tsx / repetition.tsx. */
+export function findQuestion(bank: readonly Question[], qid: string): Question | undefined {
   return bank.find((x) => x.qid === qid)
 }
