@@ -15,7 +15,7 @@ import { useCallback, useMemo } from 'react'
 
 import { useDueMistakes, useRecordMistake, useResolveMistake } from '@/api/hooks/useMistakes'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
-import { findQuestionSafe, loadBank, type Question } from '@/data/questions'
+import { findQuestion, loadBank, type Question } from '@/data/questions'
 import { pickReplayQuestions, REPETITION_SESSION_SIZE } from '@/lib/replay'
 
 type RepetitionSearch = { qid?: string }
@@ -92,7 +92,7 @@ function RepetitionScreen() {
           // Resolve safely — a stale qid in the stored plan must not crash
           // the resume; SessionPlayer treats an empty resolve as a
           // recoverable "session no longer available" state.
-          qids.map((q) => findQuestionSafe(b, q)).filter((q): q is Question => q !== undefined),
+          qids.map((q) => findQuestion(b, q)).filter((q): q is Question => q !== undefined),
         )
       }
       pickQuestions={async () => {

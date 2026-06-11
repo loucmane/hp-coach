@@ -80,10 +80,8 @@ export function DrillVariantShell({ qid = DEFAULT_QID, children }: Props) {
     )
   }
 
-  let question: Question
-  try {
-    question = findQuestion(bank, qid)
-  } catch {
+  const question = findQuestion(bank, qid)
+  if (!question) {
     return (
       <div style={{ padding: 32, color: 'var(--bad)', fontFamily: 'var(--font-mono)' }}>
         Frågan {qid} hittades inte i banken.
