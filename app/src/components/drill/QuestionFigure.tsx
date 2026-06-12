@@ -13,7 +13,8 @@
 // from the parser metadata. This eliminates layout-shift while the
 // fetch is in flight — the option list below the figure stays put.
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 import type { QuestionFigureMeta } from '@/data/questions'
 
@@ -248,27 +249,127 @@ function RasterFigure({ figure }: Props) {
   )
 }
 
+const MAX_ZOOM = 6
+// zoom 1 == the whole page fitted on screen; you only ever zoom IN from
+// there, so don't allow shrinking much below the fit.
+const MIN_ZOOM = 1
+const clampZoom = (z: number) => Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, z))
+
 function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
-  // Three controls available in the modal:
-  //   - actual: 1:1 pixel size vs fit-to-viewport. DTK landscape
-  //     renders are ~1700px wide — actual-pixel mode is essential for
-  //     reading small chart labels.
-  //   - rotation: 0/90/180/270 in degrees. Landscape DTK pages are
-  //     more comfortable to read with the phone held landscape OR
-  //     with the image rotated to portrait orientation; the rotate
-  //     button gives the user control.
-  //   - r-shortcut: keyboard accelerator for rotation (desktop).
-  const [actual, setActual] = useState(false)
+  // A document-style viewer: the figure opens at fit-WIDTH (filling the
+  // viewport horizontally), so a tall scanned page overflows vertically
+  // and is immediately scrollable + draggable — no dead "fits perfectly,
+  // nothing to do" state. Mouse wheel / trackpad scroll the page
+  // natively, drag pans, pinch + the ± buttons zoom, rotate uprights a
+  // sideways chart, and "Anpassa" snaps to the whole page on screen.
+  // `zoom` is a multiplier on the fit-width base size.
+  const [zoom, setZoom] = useState(1)
   const [rotation, setRotation] = useState(0)
-  const rotate = () => setRotation((r) => (r + 90) % 360)
+  const [nat, setNat] = useState<{ w: number; h: number } | null>(null)
+  const [cont, setCont] = useState<{ w: number; h: number }>({ w: 0, h: 0 })
+  const [grabbing, setGrabbing] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const drag = useRef({ active: false, moved: false, x: 0, y: 0, sl: 0, st: 0 })
+  const touch = useRef<Map<number, { x: number; y: number }>>(new Map())
+  const pinchPrev = useRef(0)
+  const rotated = rotation === 90 || rotation === 270
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = scrollRef.current
+      if (el) setCont({ w: el.clientWidth, h: el.clientHeight })
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [])
+
+  // Geometry. effAspect is the VISIBLE box aspect (w/h) after rotation.
+  // At zoom 1 the figure is CONTAINED — the whole page fits on screen at
+  // a comfortable size (like a PDF viewer opening a page). Zoom in to
+  // read detail; the page then overflows and is scrollable/draggable.
+  const aspect = nat ? nat.w / nat.h : 1
+  const effAspect = rotated ? 1 / aspect : aspect
+  const containVisW = Math.min(cont.w, cont.h * effAspect)
+  const visW = containVisW * zoom
+  const visH = effAspect > 0 ? visW / effAspect : visW
+  const boxW = visW
+  const boxH = visH
+  // The <img>'s own pre-rotation size, so a 90/270° rotation lands it at
+  // exactly visW × visH.
+  const imgW = rotated ? visH : visW
+  const imgH = rotated ? visW : visH
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    const el = scrollRef.current
+    if (!el) return
+    if (e.pointerType === 'touch') touch.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+    if (touch.current.size === 2) {
+      const [a, b] = [...touch.current.values()]
+      pinchPrev.current = Math.hypot(a.x - b.x, a.y - b.y)
+    }
+    drag.current = {
+      active: true,
+      moved: false,
+      x: e.clientX,
+      y: e.clientY,
+      sl: el.scrollLeft,
+      st: el.scrollTop,
+    }
+    try {
+      el.setPointerCapture(e.pointerId)
+    } catch {
+      // capture unavailable — pan still works via bubbled move events.
+    }
+    setGrabbing(true)
+  }
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    const el = scrollRef.current
+    if (!el) return
+    if (e.pointerType === 'touch' && touch.current.has(e.pointerId)) {
+      touch.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (touch.current.size === 2) {
+        const [a, b] = [...touch.current.values()]
+        const dist = Math.hypot(a.x - b.x, a.y - b.y)
+        const prev = pinchPrev.current || dist
+        pinchPrev.current = dist
+        drag.current.moved = true
+        setZoom((z) => clampZoom(z * (dist / prev)))
+        return
+      }
+    }
+    if (!drag.current.active) return
+    const dx = e.clientX - drag.current.x
+    const dy = e.clientY - drag.current.y
+    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) drag.current.moved = true
+    el.scrollLeft = drag.current.sl - dx
+    el.scrollTop = drag.current.st - dy
+  }
+
+  const endPointer = (e: React.PointerEvent) => {
+    touch.current.delete(e.pointerId)
+    if (touch.current.size < 2) pinchPrev.current = 0
+    drag.current.active = false
+    setGrabbing(false)
+  }
+
+  // Ctrl/⌘ + wheel zooms; a plain wheel falls through to native scroll.
+  const onWheel = (e: React.WheelEvent) => {
+    if (!(e.ctrlKey || e.metaKey)) return
+    e.preventDefault()
+    const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12
+    setZoom((z) => clampZoom(z * factor))
+  }
+
+  const rotate = () => {
+    setRotation((r) => (r + 90) % 360)
+    setZoom(1)
+  }
 
   useEffect(() => {
-    // Capture phase + stopImmediatePropagation: SessionPlayer also
-    // listens for Escape on window (to end the session and jump to
-    // the "öva igen" idle screen). Without this, Escape from the
-    // modal closed the modal AND ejected the user from the drill.
-    // Capture lets us intercept first; stopImmediatePropagation halts
-    // sibling listeners on the same target before they fire.
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault()
@@ -277,15 +378,27 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
       } else if (e.key === 'r' || e.key === 'R') {
         e.preventDefault()
         setRotation((r) => (r + 90) % 360)
+        setZoom(1)
+      } else if (e.key === '+' || e.key === '=') {
+        e.preventDefault()
+        setZoom((z) => clampZoom(z * 1.25))
+      } else if (e.key === '-') {
+        e.preventDefault()
+        setZoom((z) => clampZoom(z / 1.25))
       }
     }
     window.addEventListener('keydown', onKey, true)
-    return () => window.removeEventListener('keydown', onKey, true)
+    return () => {
+      window.removeEventListener('keydown', onKey, true)
+      document.body.style.overflow = prevOverflow
+    }
   }, [onClose])
 
-  const rotated = rotation === 90 || rotation === 270
-
-  return (
+  // Portal to <body>: the modal renders inside whichever variant mounted
+  // the figure, so without this the variant's scoped `.xxx-fig img` rules
+  // bleed onto the modal image, and a transformed ancestor would capture
+  // its position:fixed. The portal escapes both.
+  return createPortal(
     <div
       onClick={onClose}
       onKeyDown={(e) => {
@@ -296,75 +409,74 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
       aria-label="Förstorad figur"
       tabIndex={-1}
       style={{
-        // Backdrop fills the viewport but does NOT scroll. The scroll
-        // lives on the inner image-area box so the toolbar (absolute
-        // child of the backdrop) stays pinned to the bottom edge even
-        // when the user pans a 1:1 landscape figure.
         position: 'fixed',
         inset: 0,
-        background: 'color-mix(in oklch, var(--bg) 92%, transparent)',
-        backdropFilter: 'blur(8px)',
+        background: 'color-mix(in oklch, var(--bg) 96%, transparent)',
+        backdropFilter: 'blur(10px)',
         zIndex: 100,
-        cursor: 'zoom-out',
       }}
     >
       <div
+        ref={scrollRef}
+        onWheel={onWheel}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endPointer}
+        onPointerCancel={endPointer}
+        onClickCapture={(e) => {
+          // A click that ended a drag/pinch shouldn't close the modal.
+          if (drag.current.moved) {
+            e.stopPropagation()
+            drag.current.moved = false
+          }
+        }}
         style={{
           position: 'absolute',
-          // Reserve 80px at the bottom for the toolbar — keeps the
-          // controls always visible above the image scroll area.
-          // Clicks in the padding still bubble to the backdrop (closes
-          // the modal), matching the "click outside to dismiss" gesture
-          // users already know.
-          inset: '0 0 80px 0',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          inset: '0 0 76px 0',
           overflow: 'auto',
+          display: 'flex',
           padding: 24,
+          touchAction: 'none',
+          cursor: grabbing ? 'grabbing' : 'grab',
         }}
       >
-        <img
-          src={`/${src}`}
-          alt="Figur, förstorad"
-          onClick={(e) => {
-            e.stopPropagation()
-            setActual((v) => !v)
+        {/* Box sized to the (possibly rotated) figure; margin:auto centres
+            it when it fits and keeps the origin reachable when it overflows. */}
+        <div
+          style={{
+            width: boxW || '100%',
+            height: boxH || 'auto',
+            margin: 'auto',
+            position: 'relative',
           }}
-          onKeyDown={(e) => e.stopPropagation()}
-          style={
-            actual
-              ? {
-                  width: 'auto',
-                  height: 'auto',
-                  maxWidth: 'none',
-                  maxHeight: 'none',
-                  background: 'var(--panel)',
-                  border: '1px solid var(--hairline)',
-                  borderRadius: 'var(--radius)',
-                  padding: 12,
-                  cursor: 'zoom-out',
-                  transform: `rotate(${rotation}deg)`,
-                  transition: 'transform 220ms ease',
-                }
-              : {
-                  // Fit inside the scroll-area box. When rotated 90/270
-                  // the bounding box swaps so clamp by the orthogonal
-                  // viewport axis instead.
-                  maxWidth: rotated ? 'min(94vh, 1400px)' : 'min(96vw, 1400px)',
-                  maxHeight: rotated ? '94vw' : '94vh',
-                  width: 'auto',
-                  height: 'auto',
-                  background: 'var(--panel)',
-                  border: '1px solid var(--hairline)',
-                  borderRadius: 'var(--radius)',
-                  padding: 12,
-                  cursor: 'zoom-in',
-                  transform: `rotate(${rotation}deg)`,
-                  transition: 'transform 220ms ease',
-                }
-          }
-        />
+        >
+          <img
+            src={`/${src}`}
+            alt="Figur, förstorad"
+            draggable={false}
+            onLoad={(e) => {
+              const im = e.currentTarget
+              setNat({ w: im.naturalWidth, h: im.naturalHeight })
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: imgW || 'auto',
+              height: imgH || 'auto',
+              maxWidth: nat ? 'none' : '94vw',
+              // No card chrome — just a soft shadow so the (usually white)
+              // page reads as a floating document against the frosted
+              // backdrop, without a heavy bordered/rounded frame.
+              boxShadow: '0 14px 44px -16px rgba(0, 0, 0, 0.45)',
+              transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+              transformOrigin: 'center center',
+              opacity: nat ? 1 : 0,
+            }}
+          />
+        </div>
       </div>
       <div
         onClick={(e) => e.stopPropagation()}
@@ -372,66 +484,103 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
         role="toolbar"
         aria-label="Figurkontroller"
         style={{
-          // Absolute inside the backdrop — pinned at the bottom and
-          // OUTSIDE the scroll container above, so panning the image
-          // doesn't scroll the toolbar away. Avoids `position: fixed`
-          // (gets trapped by transformed ancestors elsewhere in the
-          // page chrome).
           position: 'absolute',
-          bottom: 24,
+          bottom: 22,
           left: '50%',
           transform: 'translateX(-50%)',
           display: 'flex',
           alignItems: 'center',
-          gap: 12,
-          padding: '6px 8px 6px 14px',
+          gap: 4,
+          padding: 5,
           background: 'color-mix(in oklch, var(--bg) 96%, transparent)',
           border: '1px solid var(--hairline)',
           borderRadius: 999,
           boxShadow: '0 8px 24px -12px rgba(0, 0, 0, 0.18)',
           zIndex: 1,
-          cursor: 'default',
         }}
       >
+        <button
+          type="button"
+          onClick={() => setZoom((z) => clampZoom(z / 1.25))}
+          aria-label="Zooma ut"
+          title="Zooma ut (−)"
+          disabled={zoom <= MIN_ZOOM}
+          style={{ ...figCtrlBtn, opacity: zoom <= MIN_ZOOM ? 0.4 : 1 }}
+        >
+          −
+        </button>
         <span
-          aria-hidden="true"
+          aria-live="polite"
           style={{
+            minWidth: 46,
+            textAlign: 'center',
             fontFamily: 'var(--font-mono)',
-            fontSize: 10,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
+            fontSize: 11,
+            letterSpacing: '0.04em',
             color: 'var(--ink-2)',
-            pointerEvents: 'none',
+            fontVariantNumeric: 'tabular-nums',
           }}
         >
-          {actual ? 'tryck = anpassa' : 'tryck = zooma in'} · esc stäng
+          {Math.round(zoom * 100)}%
         </span>
+        <button
+          type="button"
+          onClick={() => setZoom((z) => clampZoom(z * 1.25))}
+          aria-label="Zooma in"
+          title="Zooma in (+)"
+          disabled={zoom >= MAX_ZOOM}
+          style={{ ...figCtrlBtn, opacity: zoom >= MAX_ZOOM ? 0.4 : 1 }}
+        >
+          +
+        </button>
+        <span style={{ width: 1, height: 20, background: 'var(--hairline)', margin: '0 4px' }} />
         <button
           type="button"
           onClick={rotate}
           aria-label="Rotera figur 90 grader"
           title="Rotera (R)"
+          style={figCtrlBtn}
+        >
+          ↻
+        </button>
+        <button
+          type="button"
+          onClick={() => setZoom(1)}
+          aria-label="Anpassa till skärm"
+          title="Anpassa hela sidan till skärmen"
+          disabled={zoom === 1 && rotation === 0}
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            padding: '6px 10px',
-            background: 'var(--panel)',
-            border: '1px solid var(--hairline)',
-            borderRadius: 999,
+            ...figCtrlBtn,
+            width: 'auto',
+            padding: '0 12px',
             fontFamily: 'var(--font-mono)',
             fontSize: 10,
-            letterSpacing: '0.14em',
+            letterSpacing: '0.12em',
             textTransform: 'uppercase',
-            color: 'var(--ink)',
-            cursor: 'pointer',
+            opacity: zoom === 1 && rotation === 0 ? 0.4 : 1,
           }}
         >
-          ↻ rotera
+          Hela sidan
         </button>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
+}
+
+const figCtrlBtn: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 34,
+  height: 34,
+  background: 'var(--panel)',
+  border: '1px solid var(--hairline)',
+  borderRadius: 999,
+  fontSize: 16,
+  lineHeight: 1,
+  color: 'var(--ink)',
+  cursor: 'pointer',
 }
 
 // Inject `width="100%" height="100%"` on the root <svg> so it scales

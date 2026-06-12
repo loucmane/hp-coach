@@ -44,9 +44,10 @@ const PALETTE_ACCENTS: Record<PaletteKey, string> = {
   sage: 'oklch(0.52 0.13 195)' /* muted green-cyan (matches tokens.ts) */,
   ink: 'oklch(0.36 0.13 265)' /* near-black indigo */,
   rose: 'oklch(0.58 0.14 15)' /* rose pink */,
+  spalt: 'oklch(0.49 0.21 265)' /* L12 cobalt */,
 }
 
-const PALETTE_ORDER: PaletteKey[] = ['sand', 'sage', 'ink', 'rose']
+const PALETTE_ORDER: PaletteKey[] = ['sand', 'sage', 'ink', 'rose', 'spalt']
 const EDITION_ORDER: EditionKey[] = ['editorial', 'workbook', 'cockpit']
 
 // Mono cap height ≈ 0.6em per glyph + 0.4em side bleed. Mirrors the
