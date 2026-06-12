@@ -15,6 +15,7 @@ import { Route as SignInBakeoffRouteImport } from './routes/sign-in-bakeoff'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as RepetitionRouteImport } from './routes/repetition'
 import { Route as RedesignLabRouteImport } from './routes/redesign-lab'
+import { Route as RedesignL12RouteImport } from './routes/redesign-l12'
 import { Route as RedesignBakeoffRouteImport } from './routes/redesign-bakeoff'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as LoopBakeoffRouteImport } from './routes/loop-bakeoff'
@@ -63,6 +64,11 @@ const RepetitionRoute = RepetitionRouteImport.update({
 const RedesignLabRoute = RedesignLabRouteImport.update({
   id: '/redesign-lab',
   path: '/redesign-lab',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedesignL12Route = RedesignL12RouteImport.update({
+  id: '/redesign-l12',
+  path: '/redesign-l12',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RedesignBakeoffRoute = RedesignBakeoffRouteImport.update({
@@ -181,6 +187,7 @@ export interface FileRoutesByFullPath {
   '/loop-bakeoff': typeof LoopBakeoffRoute
   '/progress': typeof ProgressRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
+  '/redesign-l12': typeof RedesignL12Route
   '/redesign-lab': typeof RedesignLabRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
@@ -208,6 +215,7 @@ export interface FileRoutesByTo {
   '/loop-bakeoff': typeof LoopBakeoffRoute
   '/progress': typeof ProgressRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
+  '/redesign-l12': typeof RedesignL12Route
   '/redesign-lab': typeof RedesignLabRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
@@ -236,6 +244,7 @@ export interface FileRoutesById {
   '/loop-bakeoff': typeof LoopBakeoffRoute
   '/progress': typeof ProgressRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
+  '/redesign-l12': typeof RedesignL12Route
   '/redesign-lab': typeof RedesignLabRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
@@ -265,6 +274,7 @@ export interface FileRouteTypes {
     | '/loop-bakeoff'
     | '/progress'
     | '/redesign-bakeoff'
+    | '/redesign-l12'
     | '/redesign-lab'
     | '/repetition'
     | '/sign-in'
@@ -292,6 +302,7 @@ export interface FileRouteTypes {
     | '/loop-bakeoff'
     | '/progress'
     | '/redesign-bakeoff'
+    | '/redesign-l12'
     | '/redesign-lab'
     | '/repetition'
     | '/sign-in'
@@ -319,6 +330,7 @@ export interface FileRouteTypes {
     | '/loop-bakeoff'
     | '/progress'
     | '/redesign-bakeoff'
+    | '/redesign-l12'
     | '/redesign-lab'
     | '/repetition'
     | '/sign-in'
@@ -347,6 +359,7 @@ export interface RootRouteChildren {
   LoopBakeoffRoute: typeof LoopBakeoffRoute
   ProgressRoute: typeof ProgressRoute
   RedesignBakeoffRoute: typeof RedesignBakeoffRoute
+  RedesignL12Route: typeof RedesignL12Route
   RedesignLabRoute: typeof RedesignLabRoute
   RepetitionRoute: typeof RepetitionRoute
   SignInRoute: typeof SignInRoute
@@ -397,6 +410,13 @@ declare module '@tanstack/react-router' {
       path: '/redesign-lab'
       fullPath: '/redesign-lab'
       preLoaderRoute: typeof RedesignLabRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redesign-l12': {
+      id: '/redesign-l12'
+      path: '/redesign-l12'
+      fullPath: '/redesign-l12'
+      preLoaderRoute: typeof RedesignL12RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/redesign-bakeoff': {
@@ -555,6 +575,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoopBakeoffRoute: LoopBakeoffRoute,
   ProgressRoute: ProgressRoute,
   RedesignBakeoffRoute: RedesignBakeoffRoute,
+  RedesignL12Route: RedesignL12Route,
   RedesignLabRoute: RedesignLabRoute,
   RepetitionRoute: RepetitionRoute,
   SignInRoute: SignInRoute,

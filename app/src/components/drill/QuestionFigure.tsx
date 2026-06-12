@@ -322,7 +322,13 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
   }
 
   const onPointerDown = (e: React.PointerEvent) => {
-    areaRef.current?.setPointerCapture(e.pointerId)
+    // A mouse only ever has one pointer, so drop any stale entry from a
+    // missed pointerup — otherwise a leftover would make size === 2 and
+    // a plain mouse drag would be misread as a pinch.
+    if (e.pointerType === 'mouse') pointers.current.clear()
+    // Register the pointer FIRST — setPointerCapture can throw for an
+    // already-released pointer, and if it ran first the catch would skip
+    // registration and kill panning entirely.
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
     gesture.current.moved = false
     gesture.current.lastX = e.clientX
@@ -330,6 +336,12 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
     if (pointers.current.size === 2) {
       const [a, b] = [...pointers.current.values()]
       gesture.current.pinch = Math.hypot(a.x - b.x, a.y - b.y)
+    }
+    try {
+      areaRef.current?.setPointerCapture(e.pointerId)
+    } catch {
+      // capture unavailable (e.g. synthetic pointer) — pan still works
+      // via the document-level move events.
     }
     setInteracting(true)
   }
