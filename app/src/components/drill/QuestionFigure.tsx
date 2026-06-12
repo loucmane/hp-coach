@@ -467,9 +467,10 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
               width: imgW || 'auto',
               height: imgH || 'auto',
               maxWidth: nat ? 'none' : '94vw',
-              background: 'var(--panel)',
-              border: '1px solid var(--hairline)',
-              borderRadius: 'var(--radius)',
+              // No card chrome — just a soft shadow so the (usually white)
+              // page reads as a floating document against the frosted
+              // backdrop, without a heavy bordered/rounded frame.
+              boxShadow: '0 14px 44px -16px rgba(0, 0, 0, 0.45)',
               transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
               transformOrigin: 'center center',
               opacity: nat ? 1 : 0,
