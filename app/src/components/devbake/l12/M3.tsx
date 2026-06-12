@@ -630,9 +630,20 @@ const CSS = `
 
 .m3-fig {
   margin: 0;
-  padding: 14px;
-  background: var(--accent-soft);
-  border: 1px solid var(--hairline);
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+/* Strip the inner tap-to-zoom card frame so the figure reads as the
+   page itself, not a bordered plate inside a plate. The production
+   QuestionFigure sets these as INLINE styles, so !important is needed
+   to override them from here. */
+.m3-fig [data-testid='question-figure'] {
+  border: none !important;
+  border-radius: 0 !important;
+  background: none !important;
+  padding: 0 !important;
 }
 
 .m3-fig img {
