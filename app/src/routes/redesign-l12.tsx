@@ -28,6 +28,7 @@ import { M4 } from '@/components/devbake/l12/M4'
 import { M5 } from '@/components/devbake/l12/M5'
 import { M6 } from '@/components/devbake/l12/M6'
 import type { RedesignScreen } from '@/components/devbake/redesign/fixtures'
+import type { DrillKey } from '@/components/devbake/redesign/fixturesSections'
 import { isDevSurface } from '@/lib/devSurface'
 import type { PaletteKey } from '@/lib/tokens'
 import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
@@ -39,6 +40,17 @@ export const Route = createFileRoute('/redesign-l12')({
 type MKey = '1' | '2' | '3' | '4' | '5' | '6'
 const VARIANTS: MKey[] = ['1', '2', '3', '4', '5', '6']
 const PALETTES: PaletteKey[] = ['spalt', 'sand', 'sage', 'ink', 'rose']
+// Round 6.5 — section stress test: real LÄS/XYZ/NOG/DTK questions, wired
+// into the two front-runners (M2, M3). Other variants always render ORD.
+const DRILLS: DrillKey[] = ['ord', 'las', 'xyz', 'nog', 'dtk']
+const DRILL_LABELS: Record<DrillKey, string> = {
+  ord: 'ORD',
+  las: 'LÄS',
+  xyz: 'XYZ',
+  nog: 'NOG',
+  dtk: 'DTK',
+}
+const SECTION_AWARE: MKey[] = ['2', '3']
 
 const VARIANT_LABELS: Record<MKey, string> = {
   '1': 'Trogen',
@@ -49,11 +61,16 @@ const VARIANT_LABELS: Record<MKey, string> = {
   '6': 'Söndagsbilagan',
 }
 
-function initialFromSearch(): { variant: MKey; screen: RedesignScreen } {
+function initialFromSearch(): { variant: MKey; screen: RedesignScreen; drill: DrillKey } {
   const params = new URLSearchParams(window.location.search)
   const v = params.get('v') ?? '1'
   const s = params.get('s') === 'home' ? 'home' : 'drill'
-  return { variant: VARIANTS.includes(v as MKey) ? (v as MKey) : '1', screen: s }
+  const q = (params.get('q') ?? 'ord') as DrillKey
+  return {
+    variant: VARIANTS.includes(v as MKey) ? (v as MKey) : '1',
+    screen: s,
+    drill: DRILLS.includes(q) ? q : 'ord',
+  }
 }
 
 function RedesignL12() {
@@ -76,17 +93,17 @@ function RedesignL12() {
     )
   }
 
-  const { variant, screen } = state
+  const { variant, screen, drill } = state
   // Remount on any switch so each variant replays its entrance
   // choreography — the motion IS part of what is being judged.
-  const key = `${variant}-${screen}-${palette}-${mode}`
+  const key = `${variant}-${screen}-${palette}-${mode}-${drill}`
 
   return (
     <div style={{ minHeight: '100dvh', position: 'relative' }}>
       <div key={key}>
         {variant === '1' && <M1 screen={screen} />}
-        {variant === '2' && <M2 screen={screen} />}
-        {variant === '3' && <M3 screen={screen} />}
+        {variant === '2' && <M2 screen={screen} drill={drill} />}
+        {variant === '3' && <M3 screen={screen} drill={drill} />}
         {variant === '4' && <M4 screen={screen} />}
         {variant === '5' && <M5 screen={screen} />}
         {variant === '6' && <M6 screen={screen} />}
@@ -133,6 +150,21 @@ function RedesignL12() {
             {s === 'home' ? 'Hem' : 'Övning'}
           </button>
         ))}
+        {SECTION_AWARE.includes(variant) && screen === 'drill' && (
+          <>
+            <span style={{ opacity: 0.3 }}>·</span>
+            {DRILLS.map((q) => (
+              <button
+                key={q}
+                type="button"
+                onClick={() => setState((st) => ({ ...st, drill: q }))}
+                style={switcherChip(drill === q)}
+              >
+                {DRILL_LABELS[q]}
+              </button>
+            ))}
+          </>
+        )}
         <span style={{ opacity: 0.3 }}>·</span>
         {PALETTES.map((p) => (
           <button

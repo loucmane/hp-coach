@@ -4,8 +4,10 @@
 // drill re-set on one left-aligned axis, the verdict entering as quiet ink at
 // the picked option row, and everything rebound to the product tokens.
 
-import { type ReactElement, useEffect, useState } from 'react'
+import { type ReactElement, type ReactNode, useEffect, useState } from 'react'
+import { MathText } from '@/components/MathText'
 import { EXPLANATION, HOME, QUESTION, type RedesignScreen } from '../redesign/fixtures'
+import { type DrillKey, SECTION_DRILLS } from '../redesign/fixturesSections'
 
 const KEYS = 'abcde'
 
@@ -587,6 +589,141 @@ const CSS = `
   color: var(--muted);
 }
 
+/* ---------- section drills (non-ORD canvases) ---------- */
+
+/* The giant specimen headword is ORD-only; for the other sections the
+   question prompt itself is the headline — serif, moderate display size,
+   on the same flush-left axis. */
+
+.m2-prompt {
+  padding: 20px 0 6px;
+  animation: m2-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) 80ms both;
+}
+
+.m2-prompt-text {
+  font-family: var(--font-display);
+  font-weight: var(--font-display-w);
+  letter-spacing: var(--font-display-track);
+  font-size: clamp(26px, 3.4vw, 32px);
+  line-height: 1.25;
+}
+
+.m2-prompt-text::after {
+  content: '';
+  display: block;
+  width: 44px;
+  height: 3px;
+  background: var(--accent);
+  margin-top: 12px;
+  transform-origin: left center;
+  animation: m2-grow 480ms cubic-bezier(0.22, 1, 0.36, 1) 260ms both;
+}
+
+/* LÄS — the passage as a typeset article excerpt, not a gray info box */
+
+.m2-passage {
+  margin-top: 26px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--hairline);
+  animation: m2-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) 60ms both;
+}
+
+.m2-passage-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.m2-passage-title::after {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 2px;
+  background: var(--accent);
+  margin-top: 8px;
+}
+
+.m2-passage-body {
+  margin-top: 12px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* NOG — the (1)/(2) statement apparatus on the axis */
+
+.m2-statements {
+  margin-top: 22px;
+  display: grid;
+  gap: 12px;
+  animation: m2-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both;
+}
+
+.m2-statement {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 12px;
+}
+
+.m2-statement-n {
+  font-family: var(--font-mono);
+  letter-spacing: var(--font-mono-track);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  padding-top: 4px;
+}
+
+.m2-statement-text {
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.m2-coda {
+  margin-top: 22px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--ink-2);
+  animation: m2-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) 160ms both;
+}
+
+.m2-coda + .m2-options {
+  margin-top: 10px;
+}
+
+/* DTK — the figure as a quiet plate before the prompt */
+
+.m2-figure {
+  margin: 24px 0 0;
+  padding: 16px;
+  background: var(--panel);
+  border: 1px solid var(--hairline);
+  display: flex;
+  justify-content: center;
+  animation: m2-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) 60ms both;
+}
+
+.m2-figure img {
+  display: block;
+  max-width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+}
+
+/* missing pedagogy (DTK) — one quiet line, never an alarm */
+
+.m2-noexpl {
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--muted);
+  animation: m2-settle 280ms ease-out 120ms both;
+}
+
 /* ---------- motion ---------- */
 
 @keyframes m2-rise {
@@ -734,6 +871,71 @@ function Home(): ReactElement {
   )
 }
 
+// Shared pedagogy renderer — book-page solution, numbered steps, distractor
+// autopsies. The ORD path routes text through as-is; the section paths route
+// every potentially-mathy string through MathText. Same DOM either way.
+
+type PedagogyExplanation = {
+  solution: string
+  steps: ReadonlyArray<{ n: number; title: string; text: string }>
+  distractors: ReadonlyArray<{
+    letter: string
+    text: string
+    whyTempting: string
+    whyWrong: string
+  }>
+}
+
+function Pedagogy({
+  explanation,
+  renderText,
+  onReset,
+}: {
+  explanation: PedagogyExplanation
+  renderText: (text: string) => ReactNode
+  onReset: () => void
+}): ReactElement {
+  return (
+    <div className="m2-pedagogy">
+      <p className="m2-solution">{renderText(explanation.solution)}</p>
+
+      {explanation.steps.map((step, i) => (
+        <div key={step.n} className="m2-step" style={{ animationDelay: `${220 + i * 100}ms` }}>
+          <span className="m2-step-n">{step.n}.</span>
+          <div>
+            <h3 className="m2-step-title">{renderText(step.title)}</h3>
+            <p className="m2-step-text">{renderText(step.text)}</p>
+          </div>
+        </div>
+      ))}
+
+      <div className="m2-section-head" style={{ marginTop: 26 }}>
+        <h2 className="m2-section-title">Varför de andra lockar</h2>
+      </div>
+      {explanation.distractors.map((d, i) => (
+        <div
+          key={d.letter}
+          className="m2-distractor"
+          style={{ animationDelay: `${340 + i * 100}ms` }}
+        >
+          <p className="m2-distractor-head">
+            {d.letter.toLowerCase()}) <s>{renderText(d.text)}</s>
+          </p>
+          <p className="m2-distractor-label">Varför det lockar</p>
+          <p className="m2-distractor-body">{renderText(d.whyTempting)}</p>
+          <p className="m2-distractor-label">Varför det är fel</p>
+          <p className="m2-distractor-body">{renderText(d.whyWrong)}</p>
+        </div>
+      ))}
+
+      <button type="button" className="m2-reset m2-next" onClick={onReset}>
+        Nästa fråga
+      </button>
+      <p className="m2-hint">eller tryck Enter &mdash; i din egen takt</p>
+    </div>
+  )
+}
+
 function Drill(): ReactElement {
   const [picked, setPicked] = useState<string | null>(null)
   const graded = picked !== null
@@ -819,53 +1021,176 @@ function Drill(): ReactElement {
       {!graded && <p className="m2-hint">Tryck a&ndash;e för att svara</p>}
 
       {graded && (
+        <Pedagogy
+          explanation={EXPLANATION}
+          renderText={(text) => text}
+          onReset={() => setPicked(null)}
+        />
+      )}
+    </div>
+  )
+}
+
+function SectionDrill({ drill }: { drill: Exclude<DrillKey, 'ord'> }): ReactElement {
+  const { question, explanation } = SECTION_DRILLS[drill]
+  const [picked, setPicked] = useState<string | null>(null)
+  const graded = picked !== null
+  const correct = picked === question.answer
+  const correctOption = question.options.find((opt) => opt.letter === question.answer)
+  const lastKey = KEYS[question.options.length - 1]
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      const key = e.key.toLowerCase()
+      if (picked === null) {
+        const idx = KEYS.indexOf(key)
+        if (idx >= 0 && idx < question.options.length) {
+          setPicked(question.options[idx].letter)
+        }
+      } else if (e.key === 'Enter') {
+        setPicked(null)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [picked, question])
+
+  // Every potentially-mathy string goes through MathText uniformly; plain
+  // text passes through it unchanged.
+  const math = (text: string): ReactNode => <MathText>{text}</MathText>
+
+  return (
+    <div className="m2-col">
+      <Masthead />
+
+      <p className="m2-eyebrow">
+        <em>{question.section}</em> &middot; {question.sectionLabel} &middot; Fråga{' '}
+        {question.number} av {question.total}
+      </p>
+
+      {question.context !== null && (
+        <section className="m2-passage">
+          {question.contextTitle !== null && (
+            <h2 className="m2-passage-title">{question.contextTitle}</h2>
+          )}
+          {question.context.split('\n\n').map((para, i) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: static fixture paragraphs, no reordering
+            <p key={i} className="m2-passage-body">
+              {para}
+            </p>
+          ))}
+        </section>
+      )}
+
+      {question.figureSrc !== null && (
+        <figure className="m2-figure">
+          <img src={question.figureSrc} alt="Diagramunderlag till frågan" />
+        </figure>
+      )}
+
+      <div className="m2-prompt">
+        <h1 className="m2-prompt-text">{math(question.prompt)}</h1>
+        {question.lede !== null && <p className="m2-lede">{question.lede}</p>}
+      </div>
+
+      {question.statements !== null && (
+        <div className="m2-statements">
+          {question.statements.map((st) => (
+            <div key={st.n} className="m2-statement">
+              <span className="m2-statement-n">({st.n})</span>
+              <span className="m2-statement-text">{math(st.text)}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {explanation !== null && (
+        <aside className="m2-tactic">
+          <p className="m2-tactic-handle">Taktik &middot; {explanation.pregradeTactic.handle}</p>
+          <p className="m2-tactic-move">{math(explanation.pregradeTactic.move)}</p>
+        </aside>
+      )}
+
+      {question.coda !== null && <p className="m2-coda">{question.coda}</p>}
+
+      <div className="m2-options">
+        {question.options.map((opt, i) => {
+          const isCorrect = opt.letter === question.answer
+          const isPicked = opt.letter === picked
+          let cls = 'm2-reset m2-option'
+          if (graded) {
+            if (isCorrect) cls += ' m2-option--correct'
+            else if (isPicked) cls += ' m2-option--wrong'
+            else cls += ' m2-option--dim'
+          }
+          return (
+            <div key={opt.letter}>
+              <button
+                type="button"
+                className={cls}
+                disabled={graded}
+                onClick={() => setPicked(opt.letter)}
+                style={{ animationDelay: graded ? '0ms' : `${180 + i * 50}ms` }}
+              >
+                <span className="m2-key">{opt.letter.toLowerCase()}</span>
+                <span className="m2-option-text">{math(opt.text)}</span>
+              </button>
+              {graded && isPicked && (
+                <div className="m2-verdict">
+                  <span
+                    className={`m2-verdict-word ${correct ? 'm2-verdict-word--ratt' : 'm2-verdict-word--fel'}`}
+                  >
+                    {correct ? 'Rätt.' : 'Fel.'}
+                  </span>
+                  <span className="m2-verdict-sub">
+                    {correct ? (
+                      'Snyggt — taktiken höll hela vägen.'
+                    ) : (
+                      <>
+                        Rätt svar är {question.answer.toLowerCase()}){' '}
+                        {correctOption !== undefined && math(correctOption.text)}.
+                        {explanation !== null && ' Häng med i varför.'}
+                      </>
+                    )}
+                  </span>
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      {!graded && <p className="m2-hint">Tryck a&ndash;{lastKey} för att svara</p>}
+
+      {graded && explanation !== null && (
+        <Pedagogy explanation={explanation} renderText={math} onReset={() => setPicked(null)} />
+      )}
+
+      {graded && explanation === null && (
         <div className="m2-pedagogy">
-          <p className="m2-solution">{EXPLANATION.solution}</p>
-
-          {EXPLANATION.steps.map((step, i) => (
-            <div key={step.n} className="m2-step" style={{ animationDelay: `${220 + i * 100}ms` }}>
-              <span className="m2-step-n">{step.n}.</span>
-              <div>
-                <h3 className="m2-step-title">{step.title}</h3>
-                <p className="m2-step-text">{step.text}</p>
-              </div>
-            </div>
-          ))}
-
-          <div className="m2-section-head" style={{ marginTop: 26 }}>
-            <h2 className="m2-section-title">Varför de andra lockar</h2>
-          </div>
-          {EXPLANATION.distractors.map((d, i) => (
-            <div
-              key={d.letter}
-              className="m2-distractor"
-              style={{ animationDelay: `${340 + i * 100}ms` }}
-            >
-              <p className="m2-distractor-head">
-                {d.letter.toLowerCase()}) <s>{d.text}</s>
-              </p>
-              <p className="m2-distractor-label">Varför det lockar</p>
-              <p className="m2-distractor-body">{d.whyTempting}</p>
-              <p className="m2-distractor-label">Varför det är fel</p>
-              <p className="m2-distractor-body">{d.whyWrong}</p>
-            </div>
-          ))}
-
+          <p className="m2-noexpl">Förklaring saknas ännu för den här frågan.</p>
           <button type="button" className="m2-reset m2-next" onClick={() => setPicked(null)}>
             Nästa fråga
           </button>
-          <p className="m2-hint">eller tryck Enter — i din egen takt</p>
+          <p className="m2-hint">eller tryck Enter &mdash; i din egen takt</p>
         </div>
       )}
     </div>
   )
 }
 
-export function M2({ screen }: { screen: RedesignScreen }): ReactElement {
+export function M2({
+  screen,
+  drill = 'ord',
+}: {
+  screen: RedesignScreen
+  drill?: DrillKey
+}): ReactElement {
   return (
     <div className="m2-root">
       <style>{CSS}</style>
-      {screen === 'home' ? <Home /> : <Drill />}
+      {screen === 'home' ? <Home /> : drill === 'ord' ? <Drill /> : <SectionDrill drill={drill} />}
     </div>
   )
 }

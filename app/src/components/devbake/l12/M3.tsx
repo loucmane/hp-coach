@@ -5,10 +5,19 @@
 // rules, serif step numerals, ~75ch book-page measure, the localized "1,4",
 // and the italic accent "Rätt." verdict entering with a calm draw, left-
 // aligned where the pick landed. A typeset book page on a drafting frame.
-// Token-only color and fonts. Imports only react + ../redesign/fixtures.
+// Token-only color and fonts. Imports react + ../redesign/fixtures(.Sections)
+// + @/components/MathText (for the U+E000/U+E001-fenced quant math).
+//
+// Round 6.5: besides the ORD baseline (untouched), the drill prop selects a
+// LÄS / NOG / XYZ / DTK fixture from SECTION_DRILLS. Each section-specific
+// content block is seated on the margin rail with its own mono label:
+// TEXTEN (LÄS passage), UPPGIFTEN/PÅSTÅENDEN (NOG apparatus), UNDERLAGET
+// (DTK figure), then FRÅGAN / VÄLJ SVAR / UTFALL shared across sections.
 
 import { type ReactElement, type ReactNode, useEffect, useState } from 'react'
+import { MathText } from '@/components/MathText'
 import { EXPLANATION, HOME, QUESTION, type RedesignScreen } from '../redesign/fixtures'
+import { type DrillKey, SECTION_DRILLS } from '../redesign/fixturesSections'
 
 const KEY_TO_LETTER: Record<string, string> = {
   a: 'A',
@@ -17,6 +26,8 @@ const KEY_TO_LETTER: Record<string, string> = {
   d: 'D',
   e: 'E',
 }
+
+const LETTER_KEYS = ['a', 'b', 'c', 'd', 'e'] as const
 
 const CSS = `
 .m3-reset {
@@ -544,6 +555,115 @@ const CSS = `
   gap: 16px;
 }
 
+/* ----- section drills: passage, apparatus, figure, prompt ----- */
+
+.m3-passage-h {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 1.3;
+  color: var(--ink);
+  margin: 0 0 14px;
+}
+
+.m3-passage p {
+  font-family: var(--font-display);
+  font-size: 16.5px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--ink-2);
+  margin: 0 0 14px;
+  max-width: 70ch;
+}
+
+.m3-passage p:last-child { margin-bottom: 0; }
+
+.m3-q {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(22px, 3vw, 27px);
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0;
+  max-width: 60ch;
+  animation: m3-settle 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.m3-stmt {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 14px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--hairline-2);
+}
+
+.m3-stmt:last-child { border-bottom: 0; }
+
+.m3-stmt-n {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+  padding-top: 4px;
+}
+
+.m3-stmt-t {
+  font-family: var(--font-display);
+  font-size: 17.5px;
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0;
+  max-width: 65ch;
+}
+
+.m3-coda {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin: 0 0 10px;
+  max-width: 65ch;
+}
+
+.m3-fig {
+  margin: 0;
+  padding: 14px;
+  background: var(--accent-soft);
+  border: 1px solid var(--hairline);
+}
+
+.m3-fig img {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+}
+
+.m3-opts.is-prose .m3-opt { align-items: start; }
+
+.m3-opts.is-prose .m3-opt-t {
+  font-size: 16px;
+  line-height: 1.55;
+  max-width: 65ch;
+}
+
+.m3-opts.is-prose .m3-opt-k { padding-top: 17px; }
+
+.m3-step-t.is-pre { white-space: pre-line; }
+
+.m3-missing {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 22px 0 0;
+  max-width: 60ch;
+  animation: m3-in-y 320ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both;
+}
+
 /* ----- motion: calm draws only — no stamps, no blur ----- */
 
 @keyframes m3-in-y {
@@ -859,11 +979,255 @@ function DrillScreen(): ReactElement {
   )
 }
 
-export function M3({ screen }: { screen: RedesignScreen }): ReactElement {
+function SectionDrillScreen({ drill }: { drill: Exclude<DrillKey, 'ord'> }): ReactElement {
+  const { question, explanation } = SECTION_DRILLS[drill]
+  const [picked, setPicked] = useState<string | null>(null)
+  const graded = picked !== null
+  const wasCorrect = picked === question.answer
+  const correctOption = question.options.find((o) => o.letter === question.answer)
+  const lastKey = LETTER_KEYS[question.options.length - 1] ?? 'e'
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      if (!graded) {
+        const idx = (LETTER_KEYS as readonly string[]).indexOf(e.key.toLowerCase())
+        const option = idx >= 0 ? question.options[idx] : undefined
+        if (option) {
+          e.preventDefault()
+          setPicked(option.letter)
+        }
+      } else if (e.key === 'Enter') {
+        e.preventDefault()
+        setPicked(null)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [graded, question.options])
+
+  return (
+    <div className="m3-frame">
+      <section className="m3-section">
+        <div className="m3-row">
+          <div className="m3-meta">
+            <strong>{question.section}</strong>
+            {question.number} / {question.total}
+          </div>
+          <div className="m3-spine" />
+          <div className="m3-content">
+            <div className="m3-eyebrow">
+              {question.sectionLabel.toUpperCase()} · FRÅGA {question.number} AV {question.total}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {question.contextTitle !== null && question.context !== null ? (
+        <Section meta={<>Texten</>} delay={80}>
+          <div className="m3-passage">
+            <h2 className="m3-passage-h">{question.contextTitle}</h2>
+            {question.context.split('\n\n').map((para) => (
+              <p key={para.slice(0, 48)}>{para}</p>
+            ))}
+          </div>
+        </Section>
+      ) : null}
+
+      {question.figureSrc !== null ? (
+        <Section meta={<>Underlaget</>} delay={80}>
+          <figure className="m3-fig">
+            <img
+              src={question.figureSrc}
+              alt={`Underlag till fråga ${question.number}: ${question.sectionLabel.toLowerCase()}`}
+            />
+          </figure>
+        </Section>
+      ) : null}
+
+      <Section meta={<>{drill === 'nog' ? 'Uppgiften' : 'Frågan'}</>} delay={160}>
+        <p className="m3-q">
+          <MathText>{question.prompt}</MathText>
+        </p>
+        {!graded && explanation ? (
+          <aside className="m3-tactic">
+            <p className="m3-tactic-h">Taktik · {explanation.pregradeTactic.handle}</p>
+            <p className="m3-tactic-t">{explanation.pregradeTactic.move}</p>
+          </aside>
+        ) : null}
+      </Section>
+
+      {question.statements !== null ? (
+        <Section meta={<>Påståenden</>} delay={220}>
+          <div>
+            {question.statements.map((s) => (
+              <div className="m3-stmt" key={s.n}>
+                <span className="m3-stmt-n">({s.n})</span>
+                <p className="m3-stmt-t">{s.text}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+      ) : null}
+
+      <Section meta={<>Välj svar</>} delay={280}>
+        {question.coda !== null ? <p className="m3-coda">{question.coda}</p> : null}
+        <div className={`m3-opts${drill === 'las' ? ' is-prose' : ''}`}>
+          {question.options.map((o) => {
+            const isPick = picked === o.letter
+            const isAnswer = o.letter === question.answer
+            let cls = 'm3-reset m3-opt'
+            if (graded) {
+              if (isAnswer) cls += ' is-ok'
+              else if (isPick) cls += ' is-bad'
+              else cls += ' is-dim'
+            }
+            return (
+              <button
+                key={o.letter}
+                type="button"
+                className={cls}
+                disabled={graded}
+                onClick={() => setPicked(o.letter)}
+              >
+                <span className="m3-ind" />
+                <span className="m3-opt-k">{o.letter.toLowerCase()}</span>
+                <span className="m3-opt-t">
+                  <MathText>{o.text}</MathText>
+                </span>
+                <span className="m3-opt-v">
+                  {graded && isAnswer ? 'Rätt svar' : graded && isPick ? 'Ditt svar' : ''}
+                </span>
+              </button>
+            )
+          })}
+        </div>
+        {!graded ? (
+          <div className="m3-keys">Tangenter a–{lastKey} väljer · klick fungerar också</div>
+        ) : null}
+      </Section>
+
+      {graded ? (
+        <div className="m3-ped">
+          <Section meta={<>Utfall</>} delay={0}>
+            <div className="m3-verdict">
+              <span className={`m3-verdict-word${wasCorrect ? ' is-ok' : ''}`}>
+                {wasCorrect ? 'Rätt.' : 'Fel.'}
+              </span>
+              <p className="m3-verdict-sub">
+                {wasCorrect ? (
+                  'Snyggt — rätt tänkt hela vägen.'
+                ) : (
+                  <>
+                    Rätt svar är {question.answer.toLowerCase()}){' '}
+                    <MathText>{correctOption?.text}</MathText>.{' '}
+                    {explanation ? 'Häng med i varför.' : ''}
+                  </>
+                )}
+              </p>
+            </div>
+            {explanation ? (
+              <p className="m3-solution">
+                <MathText>{explanation.solution}</MathText>
+              </p>
+            ) : (
+              <p className="m3-missing">Förklaring saknas ännu för den här frågan.</p>
+            )}
+          </Section>
+
+          {explanation ? (
+            <>
+              <Section
+                meta={<>{explanation.steps.length} steg</>}
+                title="Så löser du den"
+                delay={140}
+              >
+                <div>
+                  {explanation.steps.map((s, i) => (
+                    <div
+                      className="m3-step"
+                      key={s.n}
+                      style={{ animationDelay: `${220 + i * 80}ms` }}
+                    >
+                      <span className="m3-step-n">{s.n}.</span>
+                      <div>
+                        <h3 className="m3-step-h">
+                          <MathText>{s.title}</MathText>
+                          <span className="m3-step-tier">
+                            {s.tier === 'essential' ? 'kärna' : 'detalj'}
+                          </span>
+                        </h3>
+                        <p className="m3-step-t is-pre">
+                          <MathText>{s.text}</MathText>
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Section>
+
+              <Section
+                meta={<>{explanation.distractors.length} fällor</>}
+                title="Varför de andra lockar"
+                delay={280}
+              >
+                <div>
+                  {explanation.distractors.map((d, i) => (
+                    <div
+                      className="m3-dis"
+                      key={d.letter}
+                      style={{ animationDelay: `${360 + i * 80}ms` }}
+                    >
+                      <p className="m3-dis-h">
+                        <span className="m3-dis-k">{d.letter.toLowerCase()})</span>
+                        <s>
+                          <MathText>{d.text}</MathText>
+                        </s>
+                      </p>
+                      <p className="m3-dis-l">Varför det lockar</p>
+                      <p className="m3-dis-p">
+                        <MathText>{d.whyTempting}</MathText>
+                      </p>
+                      <p className="m3-dis-l">Varför det är fel</p>
+                      <p className="m3-dis-p">
+                        <MathText>{d.whyWrong}</MathText>
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </Section>
+            </>
+          ) : null}
+
+          <div className="m3-next-row">
+            <button type="button" className="m3-reset m3-cta" onClick={() => setPicked(null)}>
+              Nästa fråga
+            </button>
+            <span className="m3-keys">Enter går vidare</span>
+          </div>
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+export function M3({
+  screen,
+  drill = 'ord',
+}: {
+  screen: RedesignScreen
+  drill?: DrillKey
+}): ReactElement {
   return (
     <div className="m3-root">
       <style>{CSS}</style>
-      {screen === 'home' ? <HomeScreen /> : <DrillScreen />}
+      {screen === 'home' ? (
+        <HomeScreen />
+      ) : drill === 'ord' ? (
+        <DrillScreen />
+      ) : (
+        <SectionDrillScreen drill={drill} />
+      )}
     </div>
   )
 }
