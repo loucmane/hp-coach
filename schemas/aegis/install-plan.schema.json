@@ -1,0 +1,465 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex.local/schemas/aegis/install-plan.schema.json",
+  "title": "Aegis Install Plan",
+  "description": "Aegis install-plan contract for dry-run/apply semantics, agent selection, file operations, expected manifest state, and verification requirements.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "plan_id",
+    "generated_at",
+    "target_root",
+    "profile",
+    "mode",
+    "apply_confirmed",
+    "agent_selection",
+    "operations",
+    "expected_manifest",
+    "verification_requirements",
+    "reports",
+    "summary"
+  ],
+  "properties": {
+    "schema_version": {
+      "$ref": "#/$defs/semver"
+    },
+    "plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "target_root": {
+      "$ref": "#/$defs/repo_path"
+    },
+    "profile": {
+      "$ref": "#/$defs/profile_name"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "dry_run",
+        "apply"
+      ]
+    },
+    "apply_confirmed": {
+      "type": "boolean"
+    },
+    "agent_selection": {
+      "$ref": "#/$defs/agent_selection"
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/operation"
+      },
+      "uniqueItems": true
+    },
+    "expected_manifest": {
+      "$ref": "#/$defs/expected_manifest"
+    },
+    "verification_requirements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/verification_requirement"
+      },
+      "uniqueItems": true
+    },
+    "reports": {
+      "$ref": "#/$defs/reports"
+    },
+    "summary": {
+      "$ref": "#/$defs/summary"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "apply"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "apply_confirmed": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "dry_run"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "apply_confirmed": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "agent_selection": {
+            "properties": {
+              "source": {
+                "const": "non_interactive"
+              }
+            },
+            "required": [
+              "source"
+            ]
+          }
+        },
+        "required": [
+          "agent_selection"
+        ]
+      },
+      "then": {
+        "properties": {
+          "agent_selection": {
+            "properties": {
+              "explicit_flags_required": {
+                "const": true
+              }
+            },
+            "required": [
+              "explicit_flags_required"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "semver": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+([-.+][0-9A-Za-z.-]+)?$"
+    },
+    "profile_name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "agent_selector": {
+      "type": "string",
+      "enum": [
+        "claude",
+        "codex",
+        "gemini",
+        "multi",
+        "none"
+      ]
+    },
+    "agent_name": {
+      "type": "string",
+      "enum": [
+        "claude",
+        "codex",
+        "gemini"
+      ]
+    },
+    "agent_selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "primary_agent",
+        "enabled_agents",
+        "explicit_flags_required"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": [
+            "interactive",
+            "non_interactive",
+            "config"
+          ]
+        },
+        "primary_agent": {
+          "$ref": "#/$defs/agent_selector"
+        },
+        "enabled_agents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/agent_name"
+          },
+          "uniqueItems": true
+        },
+        "explicit_flags_required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action",
+        "path",
+        "classification",
+        "safe_to_apply",
+        "managed",
+        "reason"
+      ],
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "create",
+            "modify",
+            "skip",
+            "conflict",
+            "manual-review",
+            "verify"
+          ]
+        },
+        "path": {
+          "$ref": "#/$defs/repo_path"
+        },
+        "classification": {
+          "type": "string",
+          "enum": [
+            "create",
+            "modify",
+            "skip",
+            "conflict",
+            "manual-review"
+          ]
+        },
+        "safe_to_apply": {
+          "type": "boolean"
+        },
+        "managed": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "expected_manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "profile",
+        "primary_agent",
+        "agents",
+        "gates"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "const": ".aegis/foundation-manifest.json"
+        },
+        "profile": {
+          "$ref": "#/$defs/profile_name"
+        },
+        "primary_agent": {
+          "$ref": "#/$defs/agent_selector"
+        },
+        "agents": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/agent_name"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "enabled",
+              "gate_ids"
+            ],
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              },
+              "gate_ids": {
+                "$ref": "#/$defs/string_list"
+              }
+            }
+          }
+        },
+        "gates": {
+          "$ref": "#/$defs/string_list"
+        }
+      }
+    },
+    "verification_requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gate_id",
+        "required",
+        "enforcement",
+        "failure_mode"
+      ],
+      "properties": {
+        "gate_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "enforcement": {
+          "type": "string",
+          "enum": [
+            "mechanical",
+            "verification",
+            "policy"
+          ]
+        },
+        "failure_mode": {
+          "type": "string",
+          "enum": [
+            "fail",
+            "warn",
+            "unsupported"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "required": {
+                "const": true
+              }
+            },
+            "required": [
+              "required"
+            ]
+          },
+          "then": {
+            "properties": {
+              "failure_mode": {
+                "const": "fail"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "enforcement": {
+                "const": "policy"
+              }
+            },
+            "required": [
+              "enforcement"
+            ]
+          },
+          "then": {
+            "properties": {
+              "required": {
+                "const": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    "reports": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan_json",
+        "install_json",
+        "verification_json",
+        "markdown"
+      ],
+      "properties": {
+        "plan_json": {
+          "$ref": "#/$defs/nullable_repo_path"
+        },
+        "install_json": {
+          "$ref": "#/$defs/nullable_repo_path"
+        },
+        "verification_json": {
+          "$ref": "#/$defs/nullable_repo_path"
+        },
+        "markdown": {
+          "$ref": "#/$defs/nullable_repo_path"
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "creates",
+        "modifies",
+        "skips",
+        "conflicts",
+        "manual_reviews"
+      ],
+      "properties": {
+        "creates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "modifies": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "skips": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "conflicts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "manual_reviews": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "repo_path": {
+      "type": "string",
+      "minLength": 1,
+      "not": {
+        "pattern": "^/"
+      }
+    },
+    "nullable_repo_path": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/repo_path"
+        }
+      ]
+    },
+    "string_list": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  }
+}

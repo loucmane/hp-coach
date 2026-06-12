@@ -1,0 +1,671 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex.local/schemas/aegis/foundation-manifest.schema.json",
+  "title": "Aegis Foundation Manifest",
+  "description": "Installed Aegis Foundation manifest contract for agent selection, adapter gates, managed files, access policy, and verification state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "foundation_name",
+    "foundation_version",
+    "installer_version",
+    "installed_at",
+    "profile",
+    "primary_agent",
+    "entrypoints",
+    "interfaces",
+    "access_policy",
+    "agents",
+    "capabilities",
+    "gates",
+    "managed_files",
+    "customized_files",
+    "verification"
+  ],
+  "properties": {
+    "schema_version": {
+      "$ref": "#/$defs/semver"
+    },
+    "foundation_name": {
+      "const": "Aegis Foundation"
+    },
+    "foundation_version": {
+      "$ref": "#/$defs/semver"
+    },
+    "installer_version": {
+      "$ref": "#/$defs/semver"
+    },
+    "installed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "profile": {
+      "$ref": "#/$defs/profile_name"
+    },
+    "primary_agent": {
+      "$ref": "#/$defs/agent_selector"
+    },
+    "entrypoints": {
+      "$ref": "#/$defs/entrypoints"
+    },
+    "interfaces": {
+      "$ref": "#/$defs/interfaces"
+    },
+    "runtime": {
+      "$ref": "#/$defs/runtime"
+    },
+    "access_policy": {
+      "$ref": "#/$defs/access_policy"
+    },
+    "agents": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "#/$defs/agent_name"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/agent_adapter"
+      }
+    },
+    "capabilities": {
+      "$ref": "#/$defs/capabilities"
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/gate"
+      },
+      "uniqueItems": true
+    },
+    "managed_files": {
+      "$ref": "#/$defs/file_records"
+    },
+    "customized_files": {
+      "$ref": "#/$defs/file_records"
+    },
+    "verification": {
+      "$ref": "#/$defs/verification_state"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "agents": {
+            "properties": {
+              "claude": {
+                "properties": {
+                  "enabled": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "enabled"
+                ]
+              }
+            },
+            "required": [
+              "claude"
+            ]
+          }
+        },
+        "required": [
+          "agents"
+        ]
+      },
+      "then": {
+        "properties": {
+          "entrypoints": {
+            "required": [
+              "claude"
+            ]
+          },
+          "gates": {
+            "allOf": [
+              {
+                "contains": {
+                  "properties": {
+                    "id": {
+                      "const": "claude.readiness"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              },
+              {
+                "contains": {
+                  "properties": {
+                    "id": {
+                      "const": "claude.pretooluse"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              },
+              {
+                "contains": {
+                  "properties": {
+                    "id": {
+                      "const": "claude.bash_command"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              },
+              {
+                "contains": {
+                  "properties": {
+                    "id": {
+                      "const": "claude.protected_path"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "semver": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+([-.+][0-9A-Za-z.-]+)?$"
+    },
+    "profile_name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "agent_name": {
+      "type": "string",
+      "enum": [
+        "claude",
+        "codex",
+        "gemini"
+      ]
+    },
+    "agent_selector": {
+      "type": "string",
+      "enum": [
+        "claude",
+        "codex",
+        "gemini",
+        "multi",
+        "none"
+      ]
+    },
+    "entrypoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "shared",
+        "contract"
+      ],
+      "properties": {
+        "shared": {
+          "$ref": "#/$defs/repo_path"
+        },
+        "contract": {
+          "$ref": "#/$defs/repo_path"
+        },
+        "codex": {
+          "$ref": "#/$defs/nullable_repo_path"
+        },
+        "claude": {
+          "$ref": "#/$defs/nullable_repo_path"
+        },
+        "gemini": {
+          "$ref": "#/$defs/nullable_repo_path"
+        }
+      }
+    },
+    "interfaces": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cli",
+        "mcp"
+      ],
+      "properties": {
+        "cli": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "command"
+          ],
+          "properties": {
+            "command": {
+              "type": "string",
+              "const": "aegis"
+            }
+          }
+        },
+        "mcp": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "namespace",
+            "available"
+          ],
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "const": "aegis"
+            },
+            "available": {
+              "type": "boolean"
+            },
+            "endpoint": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "source_root",
+        "source_dirty",
+        "source_dirty_paths",
+        "pointer",
+        "updated_at",
+        "update_command",
+        "reinstall_required_for"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "const": "source-root"
+        },
+        "source_root": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_commit": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "source_dirty": {
+          "type": "boolean"
+        },
+        "source_dirty_paths": {
+          "$ref": "#/$defs/string_list"
+        },
+        "pointer": {
+          "type": "string",
+          "const": ".aegis/runtime.env"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "update_command": {
+          "type": "string",
+          "const": "aegis runtime update"
+        },
+        "reinstall_required_for": {
+          "$ref": "#/$defs/string_list"
+        }
+      }
+    },
+    "access_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "read_interface",
+        "write_interface",
+        "direct_aegis_writes"
+      ],
+      "properties": {
+        "read_interface": {
+          "type": "string",
+          "const": "direct_read_or_aegis_cli"
+        },
+        "write_interface": {
+          "type": "string",
+          "const": "aegis_cli_or_mcp"
+        },
+        "direct_aegis_writes": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "agent_adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "available",
+        "entrypoint",
+        "managed_files",
+        "gate_ids"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "available": {
+          "type": "boolean"
+        },
+        "entrypoint": {
+          "$ref": "#/$defs/nullable_repo_path"
+        },
+        "managed_files": {
+          "$ref": "#/$defs/string_list"
+        },
+        "gate_ids": {
+          "$ref": "#/$defs/string_list"
+        }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskmaster",
+        "work_tracking",
+        "ci",
+        "mcp_contract"
+      ],
+      "properties": {
+        "taskmaster": {
+          "type": "boolean"
+        },
+        "work_tracking": {
+          "type": "boolean"
+        },
+        "ci": {
+          "type": "boolean"
+        },
+        "mcp_contract": {
+          "type": "boolean"
+        }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "required",
+        "enforcement",
+        "scope",
+        "verification"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "enforcement": {
+          "type": "string",
+          "enum": [
+            "mechanical",
+            "verification",
+            "policy"
+          ]
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "shared",
+            "adapter"
+          ]
+        },
+        "adapter": {
+          "$ref": "#/$defs/agent_name"
+        },
+        "path": {
+          "$ref": "#/$defs/repo_path"
+        },
+        "command": {
+          "type": "string",
+          "minLength": 1
+        },
+        "settings_path": {
+          "$ref": "#/$defs/repo_path"
+        },
+        "hook_event": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hook_matcher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unsupported_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verification": {
+          "$ref": "#/$defs/gate_verification"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "path"
+          ]
+        },
+        {
+          "required": [
+            "command"
+          ]
+        },
+        {
+          "required": [
+            "settings_path"
+          ]
+        },
+        {
+          "required": [
+            "unsupported_reason"
+          ]
+        }
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "enforcement": {
+                "const": "policy"
+              }
+            },
+            "required": [
+              "enforcement"
+            ]
+          },
+          "then": {
+            "required": [
+              "unsupported_reason"
+            ],
+            "properties": {
+              "required": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "required": {
+                "const": true
+              }
+            },
+            "required": [
+              "required"
+            ]
+          },
+          "then": {
+            "properties": {
+              "verification": {
+                "properties": {
+                  "failure_mode": {
+                    "const": "fail"
+                  }
+                },
+                "required": [
+                  "failure_mode"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "gate_verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "failure_mode"
+      ],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "exists",
+            "executable",
+            "command",
+            "settings_hook",
+            "manual"
+          ]
+        },
+        "failure_mode": {
+          "type": "string",
+          "enum": [
+            "fail",
+            "warn",
+            "unsupported"
+          ]
+        },
+        "expected": {
+          "type": [
+            "string",
+            "boolean",
+            "null"
+          ]
+        }
+      }
+    },
+    "verification_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "last_verified_at",
+        "reports"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "never",
+            "passed",
+            "failed",
+            "warning"
+          ]
+        },
+        "last_verified_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "reports": {
+          "$ref": "#/$defs/string_list"
+        }
+      }
+    },
+    "file_records": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/file_record"
+      },
+      "uniqueItems": true
+    },
+    "file_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "kind"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repo_path"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "managed",
+            "customized",
+            "generated",
+            "adapter",
+            "runtime",
+            "report",
+            "config"
+          ]
+        },
+        "checksum": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      }
+    },
+    "repo_path": {
+      "type": "string",
+      "minLength": 1,
+      "not": {
+        "pattern": "^/"
+      }
+    },
+    "nullable_repo_path": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/repo_path"
+        }
+      ]
+    },
+    "string_list": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  }
+}

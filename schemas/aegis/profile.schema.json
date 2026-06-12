@@ -1,0 +1,261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex.local/schemas/aegis/profile.schema.json",
+  "title": "Aegis Project Profile",
+  "description": "Aegis profile contract for repository shape, default agent selection, adapter requirements, conditional gates, and verification expectations.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "name",
+    "description",
+    "default_primary_agent",
+    "supported_agents",
+    "agent_selection_required",
+    "paths",
+    "adapter_requirements",
+    "conditional_gates",
+    "verification"
+  ],
+  "properties": {
+    "schema_version": {
+      "$ref": "#/$defs/semver"
+    },
+    "name": {
+      "$ref": "#/$defs/profile_name"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "default_primary_agent": {
+      "$ref": "#/$defs/agent_selector"
+    },
+    "supported_agents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/agent_name"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "agent_selection_required": {
+      "type": "boolean"
+    },
+    "paths": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest",
+        "reports",
+        "state",
+        "local_cli"
+      ],
+      "properties": {
+        "manifest": {
+          "type": "string",
+          "const": ".aegis/foundation-manifest.json"
+        },
+        "reports": {
+          "$ref": "#/$defs/repo_path"
+        },
+        "state": {
+          "$ref": "#/$defs/repo_path"
+        },
+        "local_cli": {
+          "type": "string",
+          "const": ".aegis/bin/aegis"
+        }
+      }
+    },
+    "adapter_requirements": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/agent_name"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/adapter_requirement"
+      }
+    },
+    "conditional_gates": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^agents\\.(claude|codex|gemini)\\.enabled$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/string_list"
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_commands",
+        "optional_smoke_tests"
+      ],
+      "properties": {
+        "required_commands": {
+          "$ref": "#/$defs/string_list"
+        },
+        "optional_smoke_tests": {
+          "$ref": "#/$defs/string_list"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "name": {
+            "const": "generic"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "then": {
+        "properties": {
+          "default_primary_agent": {
+            "const": "claude"
+          },
+          "agent_selection_required": {
+            "const": true
+          },
+          "paths": {
+            "properties": {
+              "manifest": {
+                "const": ".aegis/foundation-manifest.json"
+              }
+            }
+          },
+          "conditional_gates": {
+            "required": [
+              "agents.claude.enabled"
+            ],
+            "properties": {
+              "agents.claude.enabled": {
+                "allOf": [
+                  {
+                    "contains": {
+                      "const": "claude.readiness"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "claude.pretooluse"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "claude.bash_command"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "claude.protected_path"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "semver": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+([-.+][0-9A-Za-z.-]+)?$"
+    },
+    "profile_name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "agent_name": {
+      "type": "string",
+      "enum": [
+        "claude",
+        "codex",
+        "gemini"
+      ]
+    },
+    "agent_selector": {
+      "type": "string",
+      "enum": [
+        "claude",
+        "codex",
+        "gemini",
+        "multi",
+        "none"
+      ]
+    },
+    "adapter_requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entrypoint",
+        "required_files",
+        "required_hook_registrations"
+      ],
+      "properties": {
+        "entrypoint": {
+          "$ref": "#/$defs/repo_path"
+        },
+        "required_files": {
+          "$ref": "#/$defs/string_list"
+        },
+        "required_hook_registrations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/hook_registration"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "hook_registration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "settings_path",
+        "event",
+        "command"
+      ],
+      "properties": {
+        "settings_path": {
+          "$ref": "#/$defs/repo_path"
+        },
+        "event": {
+          "type": "string",
+          "minLength": 1
+        },
+        "matcher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "command": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "repo_path": {
+      "type": "string",
+      "minLength": 1,
+      "not": {
+        "pattern": "^/"
+      }
+    },
+    "string_list": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  }
+}
