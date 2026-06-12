@@ -433,7 +433,10 @@ const CSS = `
   animation: m3-verdict-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.m3-verdict-word.is-ok { color: var(--accent); }
+/* Grading is STATE, so the verdict carries semantic colour (green/red),
+   set as editorial ink — cobalt stays reserved for structure. */
+.m3-verdict-word.is-ok { color: var(--ok); }
+.m3-verdict-word.is-bad { color: var(--bad); }
 
 .m3-verdict-sub {
   margin-top: 10px;
@@ -927,7 +930,7 @@ function DrillScreen(): ReactElement {
         <div className="m3-ped">
           <Section meta={<>Utfall</>} delay={0}>
             <div className="m3-verdict">
-              <span className={`m3-verdict-word${wasCorrect ? ' is-ok' : ''}`}>
+              <span className={`m3-verdict-word ${wasCorrect ? 'is-ok' : 'is-bad'}`}>
                 {wasCorrect ? 'Rätt.' : 'Fel.'}
               </span>
               <p className="m3-verdict-sub">
@@ -1120,7 +1123,7 @@ function SectionDrillScreen({ drill }: { drill: Exclude<DrillKey, 'ord'> }): Rea
         <div className="m3-ped">
           <Section meta={<>Utfall</>} delay={0}>
             <div className="m3-verdict">
-              <span className={`m3-verdict-word${wasCorrect ? ' is-ok' : ''}`}>
+              <span className={`m3-verdict-word ${wasCorrect ? 'is-ok' : 'is-bad'}`}>
                 {wasCorrect ? 'Rätt.' : 'Fel.'}
               </span>
               <p className="m3-verdict-sub">
