@@ -539,3 +539,103 @@ details[open] > summary .trap-card-toggle::before {
 .trap-card-toggle {
   white-space: nowrap;
 }
+
+/* ════════════════════════════════════════════════════════════════════════
+ * Boksidan (M3) drill chassis — task 81
+ *
+ * F·Axis's hairline margin-rail carrying L12's editorial typesetting, ported
+ * from the redesign bake-off (.m3-* → .hpc-m3-*) onto live tokens. The rail
+ * label is STRUCTURE → cobalt --accent mono; grading state lives in the
+ * option rows + verdict (added with the DrillQuestion port). All values are
+ * token-bound so they follow the live palette + dark switchers.
+ * ════════════════════════════════════════════════════════════════════════ */
+
+/* the chassis: margin rail | vertical hairline | content column */
+.hpc-m3-row {
+  display: grid;
+  grid-template-columns: 128px 1px 1fr;
+  column-gap: 28px;
+}
+.hpc-m3-spine {
+  background: var(--hairline);
+  align-self: stretch;
+}
+.hpc-m3-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-align: right;
+  padding-top: 5px;
+  font-variant-numeric: tabular-nums;
+  animation: hpc-m3-in-x 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hpc-m3-meta strong {
+  display: block;
+  color: var(--ink-2);
+  font-weight: 500;
+}
+.hpc-m3-content {
+  min-width: 0;
+  animation: hpc-m3-in-y 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 60ms;
+}
+.hpc-m3-section {
+  margin-top: 64px;
+}
+.hpc-m3-section:first-child {
+  margin-top: 0;
+}
+.hpc-m3-rule {
+  height: 1px;
+  background: var(--hairline);
+  border: 0;
+  margin: 0 0 20px;
+  transform-origin: left center;
+  animation: hpc-m3-draw 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* narrow the rail before it would crowd the content column */
+@media (max-width: 900px) {
+  .hpc-m3-row {
+    grid-template-columns: 96px 1px 1fr;
+    column-gap: 20px;
+  }
+}
+
+@keyframes hpc-m3-in-x {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes hpc-m3-in-y {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes hpc-m3-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hpc-m3-meta,
+  .hpc-m3-content,
+  .hpc-m3-rule {
+    animation: none;
+  }
+}
