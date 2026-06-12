@@ -16,10 +16,10 @@ import {
   type PaletteKey,
 } from './tokens'
 
-const PALETTE_KEYS: PaletteKey[] = ['sand', 'sage', 'ink', 'rose']
+const PALETTE_KEYS: PaletteKey[] = ['sand', 'sage', 'ink', 'rose', 'spalt']
 
 describe('design tokens', () => {
-  it('palettes expose all four families', () => {
+  it('palettes expose all five families', () => {
     expect(PALETTE_KEYS).toEqual(Object.keys(PALETTES))
   })
 

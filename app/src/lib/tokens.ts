@@ -13,7 +13,7 @@
 
 export type ThemeMode = 'light' | 'dark'
 
-export type PaletteKey = 'sand' | 'sage' | 'ink' | 'rose'
+export type PaletteKey = 'sand' | 'sage' | 'ink' | 'rose' | 'spalt'
 export type FontKey = 'literary' | 'geometric' | 'editorial' | 'hyperlegible'
 export type Density = 'compact' | 'regular' | 'comfy'
 
@@ -252,6 +252,53 @@ export const PALETTES: Record<PaletteKey, Palette> = {
       accent: 'oklch(0.72 0.13 15)',
       accentInk: 'oklch(0.17 0.012 20)',
       accentSoft: 'oklch(0.32 0.06 15)',
+      ok: 'oklch(0.72 0.11 145)',
+      warn: 'oklch(0.78 0.12 70)',
+      bad: 'oklch(0.70 0.14 25)',
+      okSoft: 'oklch(0.28 0.04 145)',
+      badSoft: 'oklch(0.30 0.06 25)',
+    },
+  },
+  // Spalt — L12 "Dagens spalt" colorway promoted to a first-class palette
+  // (2026 redesign round 6.5): the ivory page + single cobalt accent the
+  // owner picked as favorite. Light values are oklch translations of the
+  // lab original (#faf6ec ivory / #161412 ink / #d8d0bd hair / #2546d4
+  // cobalt); dark is a night-ink page with the cobalt brightened to lamp
+  // strength.
+  spalt: {
+    label: 'Spalt',
+    light: {
+      bg: 'oklch(0.972 0.016 95)',
+      panel: 'oklch(0.992 0.008 95)',
+      panel2: 'oklch(0.955 0.018 95)',
+      ink: 'oklch(0.185 0.008 80)',
+      ink2: 'oklch(0.30 0.012 85)',
+      muted: 'oklch(0.46 0.018 90)',
+      muted2: 'oklch(0.65 0.016 92)',
+      hairline: 'oklch(0.86 0.022 95)',
+      hairline2: 'oklch(0.91 0.018 95)',
+      accent: 'oklch(0.49 0.21 265)',
+      accentInk: 'oklch(0.992 0.008 95)',
+      accentSoft: 'oklch(0.94 0.025 270)',
+      ok: 'oklch(0.55 0.10 145)',
+      warn: 'oklch(0.65 0.13 70)',
+      bad: 'oklch(0.55 0.16 25)',
+      okSoft: 'oklch(0.93 0.04 145)',
+      badSoft: 'oklch(0.93 0.05 25)',
+    },
+    dark: {
+      bg: 'oklch(0.17 0.015 270)',
+      panel: 'oklch(0.21 0.017 270)',
+      panel2: 'oklch(0.245 0.019 270)',
+      ink: 'oklch(0.96 0.006 95)',
+      ink2: 'oklch(0.82 0.010 95)',
+      muted: 'oklch(0.62 0.015 270)',
+      muted2: 'oklch(0.48 0.015 270)',
+      hairline: 'oklch(0.30 0.020 270)',
+      hairline2: 'oklch(0.26 0.020 270)',
+      accent: 'oklch(0.66 0.17 265)',
+      accentInk: 'oklch(0.17 0.015 270)',
+      accentSoft: 'oklch(0.30 0.09 265)',
       ok: 'oklch(0.72 0.11 145)',
       warn: 'oklch(0.78 0.12 70)',
       bad: 'oklch(0.70 0.14 25)',

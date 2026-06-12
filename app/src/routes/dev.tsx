@@ -28,7 +28,7 @@ export const Route = createFileRoute('/dev')({
 })
 
 const COACHES: CoachKey[] = ['kompis', 'professor', 'taktiker']
-const PALETTE_KEYS: PaletteKey[] = ['sand', 'sage', 'ink', 'rose']
+const PALETTE_KEYS: PaletteKey[] = ['sand', 'sage', 'ink', 'rose', 'spalt']
 const FONT_KEYS: FontKey[] = ['literary', 'geometric', 'editorial', 'hyperlegible']
 const DENSITY_KEYS: Density[] = ['compact', 'regular', 'comfy']
 

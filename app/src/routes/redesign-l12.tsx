@@ -38,7 +38,7 @@ export const Route = createFileRoute('/redesign-l12')({
 
 type MKey = '1' | '2' | '3' | '4' | '5' | '6'
 const VARIANTS: MKey[] = ['1', '2', '3', '4', '5', '6']
-const PALETTES: PaletteKey[] = ['sand', 'sage', 'ink', 'rose']
+const PALETTES: PaletteKey[] = ['spalt', 'sand', 'sage', 'ink', 'rose']
 
 const VARIANT_LABELS: Record<MKey, string> = {
   '1': 'Trogen',
