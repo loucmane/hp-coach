@@ -260,7 +260,55 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
   //   - r-shortcut: keyboard accelerator for rotation (desktop).
   const [actual, setActual] = useState(false)
   const [rotation, setRotation] = useState(0)
+  const [grabbing, setGrabbing] = useState(false)
   const rotate = () => setRotation((r) => (r + 90) % 360)
+
+  // Drag-to-pan for the zoomed (actual-pixel) view. DTK renders are
+  // ~2400px wide — at 1:1 the viewport shows only a slice, so the user
+  // needs to grab and drag to read across. Pointer events cover mouse
+  // + touch + pen uniformly; the scroll position is driven directly so
+  // it works regardless of native scrollbar affordances.
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const drag = useRef({ active: false, moved: false, x: 0, y: 0, sl: 0, st: 0 })
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    const el = scrollRef.current
+    if (!el) return
+    // Nothing to pan if the content already fits.
+    if (el.scrollWidth <= el.clientWidth && el.scrollHeight <= el.clientHeight) return
+    drag.current = {
+      active: true,
+      moved: false,
+      x: e.clientX,
+      y: e.clientY,
+      sl: el.scrollLeft,
+      st: el.scrollTop,
+    }
+    el.setPointerCapture(e.pointerId)
+    setGrabbing(true)
+  }
+  const onPointerMove = (e: React.PointerEvent) => {
+    const el = scrollRef.current
+    const d = drag.current
+    if (!el || !d.active) return
+    const dx = e.clientX - d.x
+    const dy = e.clientY - d.y
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) d.moved = true
+    el.scrollLeft = d.sl - dx
+    el.scrollTop = d.st - dy
+  }
+  const endPan = (e: React.PointerEvent) => {
+    const el = scrollRef.current
+    if (el && drag.current.active) {
+      try {
+        el.releasePointerCapture(e.pointerId)
+      } catch {
+        // pointer already released — ignore
+      }
+    }
+    drag.current.active = false
+    setGrabbing(false)
+  }
 
   useEffect(() => {
     // Capture phase + stopImmediatePropagation: SessionPlayer also
@@ -309,6 +357,20 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
       }}
     >
       <div
+        ref={scrollRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endPan}
+        onPointerCancel={endPan}
+        onClickCapture={(e) => {
+          // Swallow the click that terminates a pan drag (capture phase
+          // fires before the image's own onClick) so it neither toggles
+          // zoom nor bubbles to the backdrop and closes the modal.
+          if (drag.current.moved) {
+            e.stopPropagation()
+            drag.current.moved = false
+          }
+        }}
         style={{
           position: 'absolute',
           // Reserve 80px at the bottom for the toolbar — keeps the
@@ -318,10 +380,13 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
           // users already know.
           inset: '0 0 80px 0',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
           overflow: 'auto',
           padding: 24,
+          // grab affordance only when zoomed (and thus pannable).
+          cursor: actual ? (grabbing ? 'grabbing' : 'grab') : 'default',
+          // Pointer-driven panning owns the gesture; disable native
+          // touch scroll so a drag doesn't fight the browser.
+          touchAction: 'none',
         }}
       >
         <img
@@ -332,9 +397,15 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
             setActual((v) => !v)
           }}
           onKeyDown={(e) => e.stopPropagation()}
+          draggable={false}
           style={
             actual
               ? {
+                  // margin:auto (not flex centering) so the image stays
+                  // centered when smaller than the box BUT remains
+                  // scrollable from the origin when larger — flex
+                  // justify/align-center clips the overflowed start.
+                  margin: 'auto',
                   width: 'auto',
                   height: 'auto',
                   maxWidth: 'none',
@@ -343,7 +414,7 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
                   border: '1px solid var(--hairline)',
                   borderRadius: 'var(--radius)',
                   padding: 12,
-                  cursor: 'zoom-out',
+                  cursor: 'inherit',
                   transform: `rotate(${rotation}deg)`,
                   transition: 'transform 220ms ease',
                 }
@@ -351,6 +422,7 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
                   // Fit inside the scroll-area box. When rotated 90/270
                   // the bounding box swaps so clamp by the orthogonal
                   // viewport axis instead.
+                  margin: 'auto',
                   maxWidth: rotated ? 'min(94vh, 1400px)' : 'min(96vw, 1400px)',
                   maxHeight: rotated ? '94vw' : '94vh',
                   width: 'auto',
@@ -404,7 +476,7 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
             pointerEvents: 'none',
           }}
         >
-          {actual ? 'tryck = anpassa' : 'tryck = zooma in'} · esc stäng
+          {actual ? 'dra för att panorera · tryck = anpassa' : 'tryck = zooma in'} · esc stäng
         </span>
         <button
           type="button"
