@@ -649,7 +649,7 @@ const CSS = `
 .m3-fig img {
   display: block;
   width: 100%;
-  max-height: 420px;
+  height: 100%;
   object-fit: contain;
 }
 
