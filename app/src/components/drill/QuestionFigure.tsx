@@ -248,75 +248,137 @@ function RasterFigure({ figure }: Props) {
   )
 }
 
-function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
-  // Three controls available in the modal:
-  //   - actual: 1:1 pixel size vs fit-to-viewport. DTK landscape
-  //     renders are ~1700px wide — actual-pixel mode is essential for
-  //     reading small chart labels.
-  //   - rotation: 0/90/180/270 in degrees. Landscape DTK pages are
-  //     more comfortable to read with the phone held landscape OR
-  //     with the image rotated to portrait orientation; the rotate
-  //     button gives the user control.
-  //   - r-shortcut: keyboard accelerator for rotation (desktop).
-  const [actual, setActual] = useState(false)
-  const [rotation, setRotation] = useState(0)
-  const [grabbing, setGrabbing] = useState(false)
-  const rotate = () => setRotation((r) => (r + 90) % 360)
+// Min/max zoom. scale === 1 means fit-to-viewport (the whole figure
+// visible); MAX is enough to read the smallest chart labels on a ~2400px
+// DTK render without going lossy-huge.
+const MIN_SCALE = 1
+const MAX_SCALE = 6
 
-  // Drag-to-pan for the zoomed (actual-pixel) view. DTK renders are
-  // ~2400px wide — at 1:1 the viewport shows only a slice, so the user
-  // needs to grab and drag to read across. Pointer events cover mouse
-  // + touch + pen uniformly; the scroll position is driven directly so
-  // it works regardless of native scrollbar affordances.
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const drag = useRef({ active: false, moved: false, x: 0, y: 0, sl: 0, st: 0 })
+function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
+  // A continuous zoom/pan viewer — not a binary fit↔1:1 toggle. Opens
+  // fit-to-screen (whole figure visible, as large as the viewport
+  // allows); scroll wheel / pinch / the ± buttons zoom smoothly,
+  // anchored on the cursor (or pinch midpoint); drag pans once zoomed;
+  // double-click toggles fit ↔ 2.5×. Rotation (button + R) uprights the
+  // sideways-scanned DTK pages. Transform-based, so there's no scroll
+  // container and no flex-overflow clipping.
+  const [view, setView] = useState({ scale: 1, tx: 0, ty: 0 })
+  const [rotation, setRotation] = useState(0)
+  const [interacting, setInteracting] = useState(false)
+  const areaRef = useRef<HTMLDivElement>(null)
+  const imgRef = useRef<HTMLImageElement>(null)
+  const pointers = useRef<Map<number, { x: number; y: number }>>(new Map())
+  const gesture = useRef({ moved: false, lastX: 0, lastY: 0, pinch: 0 })
+
+  const rotated = rotation === 90 || rotation === 270
+  const reset = () => setView({ scale: 1, tx: 0, ty: 0 })
+  const rotate = () => {
+    setRotation((r) => (r + 90) % 360)
+    reset()
+  }
+
+  // Cursor position relative to the image-area centre (the transform
+  // origin), so zoom anchoring and the translate model share a frame.
+  const centreRel = (clientX: number, clientY: number) => {
+    const r = areaRef.current?.getBoundingClientRect()
+    if (!r) return { ax: 0, ay: 0 }
+    return { ax: clientX - (r.left + r.width / 2), ay: clientY - (r.top + r.height / 2) }
+  }
+
+  // Keep the figure from being dragged fully out of view: cap the
+  // translation to the overflow half-extent on each axis.
+  const clampPan = (v: { scale: number; tx: number; ty: number }) => {
+    const area = areaRef.current
+    const img = imgRef.current
+    if (!area || !img) return v
+    const bw = (rotated ? img.offsetHeight : img.offsetWidth) * v.scale
+    const bh = (rotated ? img.offsetWidth : img.offsetHeight) * v.scale
+    const maxX = Math.max(0, (bw - area.clientWidth) / 2)
+    const maxY = Math.max(0, (bh - area.clientHeight) / 2)
+    return {
+      scale: v.scale,
+      tx: Math.max(-maxX, Math.min(maxX, v.tx)),
+      ty: Math.max(-maxY, Math.min(maxY, v.ty)),
+    }
+  }
+
+  // Zoom to `target`, holding the area-relative point (ax, ay) fixed.
+  const zoomAround = (
+    v: { scale: number; tx: number; ty: number },
+    target: number,
+    ax: number,
+    ay: number,
+  ) => {
+    const s = Math.max(MIN_SCALE, Math.min(MAX_SCALE, target))
+    if (s === 1) return { scale: 1, tx: 0, ty: 0 }
+    const k = s / v.scale
+    return clampPan({ scale: s, tx: ax - k * (ax - v.tx), ty: ay - k * (ay - v.ty) })
+  }
+
+  const onWheel = (e: React.WheelEvent) => {
+    const { ax, ay } = centreRel(e.clientX, e.clientY)
+    const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15
+    setView((v) => zoomAround(v, v.scale * factor, ax, ay))
+  }
 
   const onPointerDown = (e: React.PointerEvent) => {
-    const el = scrollRef.current
-    if (!el) return
-    // Nothing to pan if the content already fits.
-    if (el.scrollWidth <= el.clientWidth && el.scrollHeight <= el.clientHeight) return
-    drag.current = {
-      active: true,
-      moved: false,
-      x: e.clientX,
-      y: e.clientY,
-      sl: el.scrollLeft,
-      st: el.scrollTop,
+    areaRef.current?.setPointerCapture(e.pointerId)
+    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+    gesture.current.moved = false
+    gesture.current.lastX = e.clientX
+    gesture.current.lastY = e.clientY
+    if (pointers.current.size === 2) {
+      const [a, b] = [...pointers.current.values()]
+      gesture.current.pinch = Math.hypot(a.x - b.x, a.y - b.y)
     }
-    el.setPointerCapture(e.pointerId)
-    setGrabbing(true)
-  }
-  const onPointerMove = (e: React.PointerEvent) => {
-    const el = scrollRef.current
-    const d = drag.current
-    if (!el || !d.active) return
-    const dx = e.clientX - d.x
-    const dy = e.clientY - d.y
-    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) d.moved = true
-    el.scrollLeft = d.sl - dx
-    el.scrollTop = d.st - dy
-  }
-  const endPan = (e: React.PointerEvent) => {
-    const el = scrollRef.current
-    if (el && drag.current.active) {
-      try {
-        el.releasePointerCapture(e.pointerId)
-      } catch {
-        // pointer already released — ignore
-      }
-    }
-    drag.current.active = false
-    setGrabbing(false)
+    setInteracting(true)
   }
 
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!pointers.current.has(e.pointerId)) return
+    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+    if (pointers.current.size === 2) {
+      // Pinch-zoom around the two-finger midpoint.
+      const [a, b] = [...pointers.current.values()]
+      const dist = Math.hypot(a.x - b.x, a.y - b.y)
+      const prev = gesture.current.pinch || dist
+      gesture.current.pinch = dist
+      gesture.current.moved = true
+      const { ax, ay } = centreRel((a.x + b.x) / 2, (a.y + b.y) / 2)
+      setView((v) => zoomAround(v, v.scale * (dist / prev), ax, ay))
+      return
+    }
+
+    // Single-pointer drag pans (only when zoomed in).
+    const dx = e.clientX - gesture.current.lastX
+    const dy = e.clientY - gesture.current.lastY
+    gesture.current.lastX = e.clientX
+    gesture.current.lastY = e.clientY
+    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) gesture.current.moved = true
+    setView((v) => (v.scale === 1 ? v : clampPan({ scale: v.scale, tx: v.tx + dx, ty: v.ty + dy })))
+  }
+
+  const endPointer = (e: React.PointerEvent) => {
+    pointers.current.delete(e.pointerId)
+    if (pointers.current.size < 2) gesture.current.pinch = 0
+    if (pointers.current.size === 0) setInteracting(false)
+  }
+
+  const onDoubleClick = (e: React.MouseEvent) => {
+    const { ax, ay } = centreRel(e.clientX, e.clientY)
+    setView((v) => (v.scale > 1 ? { scale: 1, tx: 0, ty: 0 } : zoomAround(v, 2.5, ax, ay)))
+  }
+
+  const stepZoom = (factor: number) => setView((v) => zoomAround(v, v.scale * factor, 0, 0))
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: zoomAround/centreRel read refs only — stable across renders.
   useEffect(() => {
-    // Capture phase + stopImmediatePropagation: SessionPlayer also
-    // listens for Escape on window (to end the session and jump to
-    // the "öva igen" idle screen). Without this, Escape from the
-    // modal closed the modal AND ejected the user from the drill.
-    // Capture lets us intercept first; stopImmediatePropagation halts
-    // sibling listeners on the same target before they fire.
+    // Lock background scroll while the viewer is open, and intercept
+    // Escape/R in the capture phase so SessionPlayer's window-level
+    // Escape (which ends the drill) doesn't also fire.
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault()
@@ -325,13 +387,23 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
       } else if (e.key === 'r' || e.key === 'R') {
         e.preventDefault()
         setRotation((r) => (r + 90) % 360)
+        setView({ scale: 1, tx: 0, ty: 0 })
+      } else if (e.key === '+' || e.key === '=') {
+        e.preventDefault()
+        setView((v) => zoomAround(v, v.scale * 1.25, 0, 0))
+      } else if (e.key === '-') {
+        e.preventDefault()
+        setView((v) => zoomAround(v, v.scale / 1.25, 0, 0))
       }
     }
     window.addEventListener('keydown', onKey, true)
-    return () => window.removeEventListener('keydown', onKey, true)
+    return () => {
+      window.removeEventListener('keydown', onKey, true)
+      document.body.style.overflow = prevOverflow
+    }
   }, [onClose])
 
-  const rotated = rotation === 90 || rotation === 270
+  const zoomed = view.scale > 1
 
   return (
     <div
@@ -344,98 +416,65 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
       aria-label="Förstorad figur"
       tabIndex={-1}
       style={{
-        // Backdrop fills the viewport but does NOT scroll. The scroll
-        // lives on the inner image-area box so the toolbar (absolute
-        // child of the backdrop) stays pinned to the bottom edge even
-        // when the user pans a 1:1 landscape figure.
         position: 'fixed',
         inset: 0,
-        background: 'color-mix(in oklch, var(--bg) 92%, transparent)',
-        backdropFilter: 'blur(8px)',
+        background: 'color-mix(in oklch, var(--bg) 96%, transparent)',
+        backdropFilter: 'blur(10px)',
         zIndex: 100,
-        cursor: 'zoom-out',
       }}
     >
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: pointer-driven image canvas; keyboard zoom is handled by the global +/-/R/Esc keys and the toolbar buttons */}
       <div
-        ref={scrollRef}
+        ref={areaRef}
+        onWheel={onWheel}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
-        onPointerUp={endPan}
-        onPointerCancel={endPan}
+        onPointerUp={endPointer}
+        onPointerCancel={endPointer}
+        onDoubleClick={onDoubleClick}
         onClickCapture={(e) => {
-          // Swallow the click that terminates a pan drag (capture phase
-          // fires before the image's own onClick) so it neither toggles
-          // zoom nor bubbles to the backdrop and closes the modal.
-          if (drag.current.moved) {
+          // A click that ended a pan/pinch shouldn't close the modal.
+          if (gesture.current.moved) {
             e.stopPropagation()
-            drag.current.moved = false
+            gesture.current.moved = false
           }
         }}
         style={{
           position: 'absolute',
-          // Reserve 80px at the bottom for the toolbar — keeps the
-          // controls always visible above the image scroll area.
-          // Clicks in the padding still bubble to the backdrop (closes
-          // the modal), matching the "click outside to dismiss" gesture
-          // users already know.
-          inset: '0 0 80px 0',
+          inset: '0 0 76px 0',
           display: 'flex',
-          overflow: 'auto',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
           padding: 24,
-          // grab affordance only when zoomed (and thus pannable).
-          cursor: actual ? (grabbing ? 'grabbing' : 'grab') : 'default',
-          // Pointer-driven panning owns the gesture; disable native
-          // touch scroll so a drag doesn't fight the browser.
           touchAction: 'none',
+          cursor: zoomed ? (interacting ? 'grabbing' : 'grab') : 'zoom-in',
         }}
       >
         <img
+          ref={imgRef}
           src={`/${src}`}
           alt="Figur, förstorad"
-          onClick={(e) => {
-            e.stopPropagation()
-            setActual((v) => !v)
-          }}
-          onKeyDown={(e) => e.stopPropagation()}
           draggable={false}
-          style={
-            actual
-              ? {
-                  // margin:auto (not flex centering) so the image stays
-                  // centered when smaller than the box BUT remains
-                  // scrollable from the origin when larger — flex
-                  // justify/align-center clips the overflowed start.
-                  margin: 'auto',
-                  width: 'auto',
-                  height: 'auto',
-                  maxWidth: 'none',
-                  maxHeight: 'none',
-                  background: 'var(--panel)',
-                  border: '1px solid var(--hairline)',
-                  borderRadius: 'var(--radius)',
-                  padding: 12,
-                  cursor: 'inherit',
-                  transform: `rotate(${rotation}deg)`,
-                  transition: 'transform 220ms ease',
-                }
-              : {
-                  // Fit inside the scroll-area box. When rotated 90/270
-                  // the bounding box swaps so clamp by the orthogonal
-                  // viewport axis instead.
-                  margin: 'auto',
-                  maxWidth: rotated ? 'min(94vh, 1400px)' : 'min(96vw, 1400px)',
-                  maxHeight: rotated ? '94vw' : '94vh',
-                  width: 'auto',
-                  height: 'auto',
-                  background: 'var(--panel)',
-                  border: '1px solid var(--hairline)',
-                  borderRadius: 'var(--radius)',
-                  padding: 12,
-                  cursor: 'zoom-in',
-                  transform: `rotate(${rotation}deg)`,
-                  transition: 'transform 220ms ease',
-                }
-          }
+          onClick={(e) => e.stopPropagation()}
+          onKeyDown={(e) => e.stopPropagation()}
+          style={{
+            // scale 1 = fit the area as large as it allows. When rotated
+            // 90/270 the bounding box swaps, so clamp by the orthogonal
+            // viewport axis.
+            maxWidth: rotated ? '88vh' : '94vw',
+            maxHeight: rotated ? '94vw' : '88vh',
+            width: 'auto',
+            height: 'auto',
+            background: 'var(--panel)',
+            border: '1px solid var(--hairline)',
+            borderRadius: 'var(--radius)',
+            padding: 12,
+            transform: `translate(${view.tx}px, ${view.ty}px) scale(${view.scale}) rotate(${rotation}deg)`,
+            transformOrigin: 'center center',
+            transition: interacting ? 'none' : 'transform 160ms cubic-bezier(0.22, 1, 0.36, 1)',
+            willChange: 'transform',
+          }}
         />
       </div>
       <div
@@ -444,66 +483,102 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
         role="toolbar"
         aria-label="Figurkontroller"
         style={{
-          // Absolute inside the backdrop — pinned at the bottom and
-          // OUTSIDE the scroll container above, so panning the image
-          // doesn't scroll the toolbar away. Avoids `position: fixed`
-          // (gets trapped by transformed ancestors elsewhere in the
-          // page chrome).
           position: 'absolute',
-          bottom: 24,
+          bottom: 22,
           left: '50%',
           transform: 'translateX(-50%)',
           display: 'flex',
           alignItems: 'center',
-          gap: 12,
-          padding: '6px 8px 6px 14px',
+          gap: 4,
+          padding: 5,
           background: 'color-mix(in oklch, var(--bg) 96%, transparent)',
           border: '1px solid var(--hairline)',
           borderRadius: 999,
           boxShadow: '0 8px 24px -12px rgba(0, 0, 0, 0.18)',
           zIndex: 1,
-          cursor: 'default',
         }}
       >
+        <button
+          type="button"
+          onClick={() => stepZoom(1 / 1.25)}
+          aria-label="Zooma ut"
+          title="Zooma ut (−)"
+          disabled={view.scale <= MIN_SCALE}
+          style={{ ...figCtrlBtn, opacity: view.scale <= MIN_SCALE ? 0.4 : 1 }}
+        >
+          −
+        </button>
         <span
-          aria-hidden="true"
+          aria-live="polite"
           style={{
+            minWidth: 46,
+            textAlign: 'center',
             fontFamily: 'var(--font-mono)',
-            fontSize: 10,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
+            fontSize: 11,
+            letterSpacing: '0.04em',
             color: 'var(--ink-2)',
-            pointerEvents: 'none',
+            fontVariantNumeric: 'tabular-nums',
           }}
         >
-          {actual ? 'dra för att panorera · tryck = anpassa' : 'tryck = zooma in'} · esc stäng
+          {Math.round(view.scale * 100)}%
         </span>
+        <button
+          type="button"
+          onClick={() => stepZoom(1.25)}
+          aria-label="Zooma in"
+          title="Zooma in (+)"
+          disabled={view.scale >= MAX_SCALE}
+          style={{ ...figCtrlBtn, opacity: view.scale >= MAX_SCALE ? 0.4 : 1 }}
+        >
+          +
+        </button>
+        <span style={{ width: 1, height: 20, background: 'var(--hairline)', margin: '0 4px' }} />
         <button
           type="button"
           onClick={rotate}
           aria-label="Rotera figur 90 grader"
           title="Rotera (R)"
+          style={figCtrlBtn}
+        >
+          ↻
+        </button>
+        <button
+          type="button"
+          onClick={reset}
+          aria-label="Återställ"
+          title="Anpassa till skärm"
+          disabled={!zoomed && rotation === 0}
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            padding: '6px 10px',
-            background: 'var(--panel)',
-            border: '1px solid var(--hairline)',
-            borderRadius: 999,
+            ...figCtrlBtn,
+            width: 'auto',
+            padding: '0 12px',
             fontFamily: 'var(--font-mono)',
             fontSize: 10,
-            letterSpacing: '0.14em',
+            letterSpacing: '0.12em',
             textTransform: 'uppercase',
-            color: 'var(--ink)',
-            cursor: 'pointer',
+            opacity: !zoomed && rotation === 0 ? 0.4 : 1,
           }}
         >
-          ↻ rotera
+          Anpassa
         </button>
       </div>
     </div>
   )
+}
+
+const figCtrlBtn: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 34,
+  height: 34,
+  background: 'var(--panel)',
+  border: '1px solid var(--hairline)',
+  borderRadius: 999,
+  fontSize: 16,
+  lineHeight: 1,
+  color: 'var(--ink)',
+  cursor: 'pointer',
 }
 
 // Inject `width="100%" height="100%"` on the root <svg> so it scales
