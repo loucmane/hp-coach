@@ -604,6 +604,27 @@ details[open] > summary .trap-card-toggle::before {
   }
 }
 
+/* Phone: the margin rail can't survive as a left column at ~390px, so the
+ * chassis linearises — the mono label stacks above the content as a
+ * left-aligned eyebrow, the spine drops, the hairline rule carries the
+ * structure. Same Boksidan type + verdict, reflowed for one column. */
+@media (max-width: 600px) {
+  .hpc-m3-row {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+  }
+  .hpc-m3-spine {
+    display: none;
+  }
+  .hpc-m3-meta {
+    text-align: left;
+    padding-top: 0;
+  }
+  .hpc-m3-section {
+    margin-top: 44px;
+  }
+}
+
 @keyframes hpc-m3-in-x {
   from {
     opacity: 0;
@@ -632,10 +653,225 @@ details[open] > summary .trap-card-toggle::before {
     transform: scaleX(1);
   }
 }
+/* prompt / headword */
+.hpc-m3-display {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink);
+  font-size: clamp(44px, 6vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 6px 0 0;
+  animation: hpc-m3-settle 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hpc-m3-q {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(22px, 3vw, 27px);
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0;
+  max-width: 60ch;
+  animation: hpc-m3-settle 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* passage (LÄS / ELF) */
+.hpc-m3-passage p {
+  font-family: var(--font-display);
+  font-size: 16.5px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--ink-2);
+  margin: 0 0 14px;
+  max-width: 70ch;
+  white-space: pre-wrap;
+}
+.hpc-m3-passage p:last-child {
+  margin-bottom: 0;
+}
+
+/* NOG apparatus: (1)/(2) statements + coda */
+.hpc-m3-stmt {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 14px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--hairline-2);
+}
+.hpc-m3-stmt:first-child {
+  border-top: 1px solid var(--hairline);
+}
+.hpc-m3-stmt:last-child {
+  border-bottom: 0;
+}
+.hpc-m3-stmt-n {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+  padding-top: 4px;
+}
+.hpc-m3-stmt-t {
+  font-family: var(--font-display);
+  font-size: 17.5px;
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0;
+  max-width: 65ch;
+}
+.hpc-m3-coda {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin: 0 0 12px;
+  max-width: 65ch;
+}
+
+/* option rows — grading STATE lives here: is-ok green / is-bad red */
+.hpc-m3-opts {
+  margin-top: 8px;
+  border-top: 1px solid var(--hairline);
+}
+.hpc-m3-opt {
+  display: grid;
+  grid-template-columns: 3px 36px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--hairline-2);
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+.hpc-m3-opt:disabled {
+  cursor: default;
+}
+.hpc-m3-opt:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.hpc-m3-ind {
+  width: 3px;
+  align-self: stretch;
+  background: transparent;
+  transform: scaleY(0);
+  transition:
+    transform 160ms ease,
+    background 160ms ease;
+}
+.hpc-m3-opt:hover:not(:disabled) .hpc-m3-ind {
+  background: var(--accent);
+  transform: scaleY(1);
+}
+.hpc-m3-opt.is-picked .hpc-m3-ind {
+  background: var(--ink);
+  transform: scaleY(1);
+}
+.hpc-m3-opt-k {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted-2);
+  padding: 15px 0;
+  text-transform: lowercase;
+  font-variant-numeric: tabular-nums;
+}
+.hpc-m3-opt-t {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 450;
+  padding: 15px 0;
+  min-width: 0;
+}
+.hpc-m3-opt-v {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding-right: 14px;
+  color: var(--muted-2);
+  white-space: nowrap;
+}
+.hpc-m3-opt.is-ok {
+  background: var(--ok-soft);
+}
+.hpc-m3-opt.is-ok .hpc-m3-ind {
+  background: var(--ok);
+  transform: scaleY(1);
+}
+.hpc-m3-opt.is-ok .hpc-m3-opt-t,
+.hpc-m3-opt.is-ok .hpc-m3-opt-k,
+.hpc-m3-opt.is-ok .hpc-m3-opt-v {
+  color: var(--ok);
+}
+.hpc-m3-opt.is-bad {
+  background: var(--bad-soft);
+}
+.hpc-m3-opt.is-bad .hpc-m3-ind {
+  background: var(--bad);
+  transform: scaleY(1);
+}
+.hpc-m3-opt.is-bad .hpc-m3-opt-t,
+.hpc-m3-opt.is-bad .hpc-m3-opt-k,
+.hpc-m3-opt.is-bad .hpc-m3-opt-v {
+  color: var(--bad);
+}
+.hpc-m3-opt.is-bad .hpc-m3-opt-t {
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+.hpc-m3-opt.is-dim .hpc-m3-opt-t,
+.hpc-m3-opt.is-dim .hpc-m3-opt-k {
+  color: var(--muted-2);
+}
+.hpc-m3-opts.is-prose .hpc-m3-opt {
+  align-items: start;
+}
+
+/* figure — strip the inner tap-to-zoom card frame so it reads as the page */
+.hpc-m3-fig {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+}
+.hpc-m3-fig [data-testid='question-figure'] {
+  border: none !important;
+  border-radius: 0 !important;
+  background: none !important;
+  padding: 0 !important;
+}
+.hpc-m3-fig img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@keyframes hpc-m3-settle {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .hpc-m3-meta,
   .hpc-m3-content,
-  .hpc-m3-rule {
+  .hpc-m3-rule,
+  .hpc-m3-display,
+  .hpc-m3-q {
     animation: none;
   }
 }
