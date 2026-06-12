@@ -15,6 +15,7 @@
 // (DTK figure), then FRÅGAN / VÄLJ SVAR / UTFALL shared across sections.
 
 import { type ReactElement, type ReactNode, useEffect, useState } from 'react'
+import { QuestionFigure } from '@/components/drill/QuestionFigure'
 import { MathText } from '@/components/MathText'
 import { EXPLANATION, HOME, QUESTION, type RedesignScreen } from '../redesign/fixtures'
 import { type DrillKey, SECTION_DRILLS } from '../redesign/fixturesSections'
@@ -1034,13 +1035,10 @@ function SectionDrillScreen({ drill }: { drill: Exclude<DrillKey, 'ord'> }): Rea
         </Section>
       ) : null}
 
-      {question.figureSrc !== null ? (
+      {question.figureMeta !== null ? (
         <Section meta={<>Underlaget</>} delay={80}>
           <figure className="m3-fig">
-            <img
-              src={question.figureSrc}
-              alt={`Underlag till fråga ${question.number}: ${question.sectionLabel.toLowerCase()}`}
-            />
+            <QuestionFigure figure={question.figureMeta} />
           </figure>
         </Section>
       ) : null}

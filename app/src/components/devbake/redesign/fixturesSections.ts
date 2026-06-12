@@ -42,6 +42,10 @@ export type SectionQuestion = {
   statements: { n: number; text: string }[] | null
   coda: string | null
   figureSrc: string | null
+  // Raster-figure metadata for the production QuestionFigure component
+  // (inline rotate + tap-to-zoom modal). src has NO leading slash —
+  // QuestionFigure prepends one. aspect_ratio is width / height.
+  figureMeta: { src: string; aspect_ratio: number; kind: 'raster' } | null
   lede: string | null
 }
 export type DrillFixture = { question: SectionQuestion; explanation: SectionExplanation | null }
@@ -80,6 +84,7 @@ export const SECTION_DRILLS: Record<Exclude<DrillKey, 'ord'>, DrillFixture> = {
       statements: null,
       coda: null,
       figureSrc: null,
+      figureMeta: null,
       lede: null,
     },
     explanation: {
@@ -200,6 +205,7 @@ export const SECTION_DRILLS: Record<Exclude<DrillKey, 'ord'>, DrillFixture> = {
       ],
       coda: 'Tillräcklig information för lösningen erhålls',
       figureSrc: null,
+      figureMeta: null,
       lede: null,
     },
     explanation: {
@@ -350,6 +356,7 @@ export const SECTION_DRILLS: Record<Exclude<DrillKey, 'ord'>, DrillFixture> = {
       statements: null,
       coda: null,
       figureSrc: null,
+      figureMeta: null,
       lede: null,
     },
     explanation: {
@@ -488,6 +495,11 @@ export const SECTION_DRILLS: Record<Exclude<DrillKey, 'ord'>, DrillFixture> = {
       statements: null,
       coda: null,
       figureSrc: '/figures/dtk/var-2026-kvant1-p16.jpg',
+      figureMeta: {
+        src: 'figures/dtk/var-2026-kvant1-p16.jpg',
+        aspect_ratio: 2384 / 3370,
+        kind: 'raster',
+      },
       lede: null,
     },
     explanation: null,

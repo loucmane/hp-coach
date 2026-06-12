@@ -5,6 +5,7 @@
 // the picked option row, and everything rebound to the product tokens.
 
 import { type ReactElement, type ReactNode, useEffect, useState } from 'react'
+import { QuestionFigure } from '@/components/drill/QuestionFigure'
 import { MathText } from '@/components/MathText'
 import { EXPLANATION, HOME, QUESTION, type RedesignScreen } from '../redesign/fixtures'
 import { type DrillKey, SECTION_DRILLS } from '../redesign/fixturesSections'
@@ -1083,9 +1084,9 @@ function SectionDrill({ drill }: { drill: Exclude<DrillKey, 'ord'> }): ReactElem
         </section>
       )}
 
-      {question.figureSrc !== null && (
+      {question.figureMeta !== null && (
         <figure className="m2-figure">
-          <img src={question.figureSrc} alt="Diagramunderlag till frågan" />
+          <QuestionFigure figure={question.figureMeta} />
         </figure>
       )}
 
