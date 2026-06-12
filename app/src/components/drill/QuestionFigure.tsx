@@ -249,8 +249,10 @@ function RasterFigure({ figure }: Props) {
   )
 }
 
-const MAX_ZOOM = 5
-const MIN_ZOOM = 0.25
+const MAX_ZOOM = 6
+// zoom 1 == the whole page fitted on screen; you only ever zoom IN from
+// there, so don't allow shrinking much below the fit.
+const MIN_ZOOM = 1
 const clampZoom = (z: number) => Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, z))
 
 function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
@@ -283,15 +285,13 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
   }, [])
 
   // Geometry. effAspect is the VISIBLE box aspect (w/h) after rotation.
-  // At zoom 1 the figure is sized to COVER the viewport — it fills both
-  // axes and overflows on its long one — so a landscape OR portrait scan
-  // always opens large and immediately scrollable/draggable, never a
-  // dead "fits perfectly" state with dead margins. `Hela sidan` zooms
-  // out to contain the whole page on screen.
+  // At zoom 1 the figure is CONTAINED — the whole page fits on screen at
+  // a comfortable size (like a PDF viewer opening a page). Zoom in to
+  // read detail; the page then overflows and is scrollable/draggable.
   const aspect = nat ? nat.w / nat.h : 1
   const effAspect = rotated ? 1 / aspect : aspect
-  const coverVisW = Math.max(cont.w, cont.h * effAspect)
-  const visW = coverVisW * zoom
+  const containVisW = Math.min(cont.w, cont.h * effAspect)
+  const visW = containVisW * zoom
   const visH = effAspect > 0 ? visW / effAspect : visW
   const boxW = visW
   const boxH = visH
@@ -299,9 +299,6 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
   // exactly visW × visH.
   const imgW = rotated ? visH : visW
   const imgH = rotated ? visW : visH
-
-  const containVisW = Math.min(cont.w, cont.h * effAspect)
-  const fitPageZoom = coverVisW > 0 ? containVisW / coverVisW : 1
 
   const onPointerDown = (e: React.PointerEvent) => {
     const el = scrollRef.current
@@ -437,6 +434,7 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
           position: 'absolute',
           inset: '0 0 76px 0',
           overflow: 'auto',
+          display: 'flex',
           padding: 24,
           touchAction: 'none',
           cursor: grabbing ? 'grabbing' : 'grab',
@@ -546,9 +544,10 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
         </button>
         <button
           type="button"
-          onClick={() => setZoom(fitPageZoom)}
+          onClick={() => setZoom(1)}
           aria-label="Anpassa till skärm"
           title="Anpassa hela sidan till skärmen"
+          disabled={zoom === 1 && rotation === 0}
           style={{
             ...figCtrlBtn,
             width: 'auto',
@@ -557,6 +556,7 @@ function RasterModal({ src, onClose }: { src: string; onClose: () => void }) {
             fontSize: 10,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
+            opacity: zoom === 1 && rotation === 0 ? 0.4 : 1,
           }}
         >
           Hela sidan
