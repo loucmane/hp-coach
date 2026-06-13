@@ -21,13 +21,13 @@
 
 import { useEffect, useRef } from 'react'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
-import { ExplanationPanel } from '@/components/drill/ExplanationPanel'
 import { KvaPrompt } from '@/components/drill/KvaPrompt'
+import { PedagogyPanel } from '@/components/drill/PedagogyPanel'
 import { QuestionFigure } from '@/components/drill/QuestionFigure'
 import { MathText } from '@/components/MathText'
 import type { AnswerLetter, Option, Question } from '@/data/questions'
 import { parseNogPrompt } from '@/lib/nogPrompt'
-import { RAIL_CHOOSE, RAIL_STATEMENTS, railMeta } from '@/lib/sectionRailLabel'
+import { RAIL_CHOOSE, RAIL_OUTCOME, RAIL_STATEMENTS, railMeta } from '@/lib/sectionRailLabel'
 
 type Props = {
   question: Question
@@ -189,7 +189,9 @@ export function DrillQuestion({
       </DrillRailSection>
 
       {renderExplanation && graded && picked != null && (
-        <ExplanationPanel qid={question.qid} correct={picked === question.answer} />
+        <DrillRailSection meta={RAIL_OUTCOME} delay={nextDelay()}>
+          <PedagogyPanel qid={question.qid} graded correct={picked === question.answer} flush />
+        </DrillRailSection>
       )}
     </div>
   )
