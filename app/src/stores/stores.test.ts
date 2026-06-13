@@ -54,7 +54,8 @@ describe('useExamStore + useDaysRemaining', () => {
 describe('useUiStore', () => {
   it('defaults match the prototype canvas defaults', () => {
     const s = useUiStore.getState()
-    expect(s.palette).toBe('sand')
+    // Boksidan (2026): default palette is Spalt (L12 ivory + cobalt).
+    expect(s.palette).toBe('spalt')
     expect(s.mode).toBe('light')
     // Phase A.6V Edition Strip — defaults now come from the
     // Editorial edition bundle: literary font, comfy density, StyleA

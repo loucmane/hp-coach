@@ -275,6 +275,7 @@ const PALETTE_ACCENTS: Record<PaletteKey, string> = {
   sage: 'oklch(0.52 0.13 195)',
   ink: 'oklch(0.36 0.13 265)',
   rose: 'oklch(0.58 0.14 15)',
+  spalt: 'oklch(0.49 0.21 265)',
 }
 
 function PaletteOption({

@@ -4259,12 +4259,128 @@
         "dependencies": [],
         "priority": "low",
         "subtasks": []
+      },
+      {
+        "id": "80",
+        "title": "[Boksidan] Branch + design-system conventions",
+        "description": "Open the production branch off main and codify the chosen redesign as system conventions.",
+        "details": "Branch off main. Promote Spalt (L12 ivory/cobalt; tokens.ts on redesign-bakeoff-2026) to default palette. Two standing rules: (1) cobalt --accent is STRUCTURE only (mono margin labels, step numerals, tactic block, framework links); (2) grading is STATE - green --ok 'Ratt.' / red --bad 'Fel.' verdict as italic serif ink + --ok/--bad rows. Cherry-pick the Spalt palette + QuestionFigure rework from redesign-bakeoff-2026. Reference: /redesign-l12?dev=1&v=3.",
+        "testStrategy": "",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": [],
+        "updatedAt": "2026-06-12"
+      },
+      {
+        "id": "81",
+        "title": "[Boksidan] Drill - port M3 margin-rail layout to DrillQuestion / StudyDesk on tokens",
+        "description": "Rebuild the live drill in the Boksidan layout: hairline margin rail with mono labels, hairline option rows, single left axis.",
+        "details": "Translate M3.tsx CSS into the token-driven component layer (DrillQuestion + StudyDesk) reading live corpus data. Rail labels per section: TEXTEN (LAS), UPPGIFTEN/PASTAENDEN (NOG), UNDERLAGET (DTK), FRAGAN/VALJ SVAR/UTFALL shared. Keys a-e clamped to option count; click + Enter reset; Esc to parent. Holds across phone/reader/studio.",
+        "testStrategy": "",
+        "priority": "high",
+        "dependencies": [
+          "80"
+        ],
+        "status": "in-progress",
+        "subtasks": [],
+        "updatedAt": "2026-06-12T22:32:26.583Z"
+      },
+      {
+        "id": "82",
+        "title": "[Boksidan] Grading + verdict - semantic colour, calm draw, a11y",
+        "description": "Wire the graded state: green/red verdict + rows, cobalt for structure, calm left-aligned draw at the picked row.",
+        "details": "Verdict uses --ok/--bad italic serif ink; correct answer from question.answer; wrong subline names the real correct option. Calm draw (no scale/blur stamp); no auto-advance. Contrast verified light+dark across palettes; aria-live verdict.",
+        "testStrategy": "",
+        "priority": "high",
+        "dependencies": [
+          "81"
+        ],
+        "status": "pending",
+        "subtasks": [],
+        "updatedAt": "2026-06-12"
+      },
+      {
+        "id": "83",
+        "title": "[Boksidan] PedagogyPanel - book-page typesetting",
+        "description": "Re-skin PedagogyPanel: serif lede between rules, serif step numerals, ~75ch measure, distractor pairs.",
+        "details": "Bold serif solution lede between a 1px ink rule and a hairline; serif step numerals; ~75ch measure for steps + distractor analyses; localized decimals (1,4); MathText for quant; keep graceful 'Forklaring saknas annu' state (e.g. DTK).",
+        "testStrategy": "",
+        "priority": "high",
+        "dependencies": [
+          "81"
+        ],
+        "status": "pending",
+        "subtasks": [],
+        "updatedAt": "2026-06-12"
+      },
+      {
+        "id": "84",
+        "title": "[Boksidan] Wide-mode StudyDesk split at >=1200px",
+        "description": "At wide viewports pin question + rail left while graded pedagogy scrolls right.",
+        "details": "Use existing StudyDesk two-column orchestration: question/options/rail stay visible; PedagogyPanel scrolls right after grading; rail is the left structural column. Verify the 1200px seam and that the figure modal still portals out.",
+        "testStrategy": "",
+        "priority": "medium",
+        "dependencies": [
+          "81",
+          "83"
+        ],
+        "status": "pending",
+        "subtasks": [],
+        "updatedAt": "2026-06-12"
+      },
+      {
+        "id": "85",
+        "title": "[Boksidan] Home / section-picker / repetition / diagnostik surfaces",
+        "description": "Apply Boksidan composition + Spalt to the non-drill surfaces.",
+        "details": "Home (greeting, score, resume-first CTA above fold, daily plan, traps), section picker, repetition, diagnostik. Reuse margin-rail/mono-label idiom + serif display where it fits.",
+        "testStrategy": "",
+        "priority": "medium",
+        "dependencies": [
+          "80"
+        ],
+        "status": "pending",
+        "subtasks": [],
+        "updatedAt": "2026-06-12"
+      },
+      {
+        "id": "86",
+        "title": "[Boksidan] Auth screens to Boksidan composition",
+        "description": "Re-skin sign-in / sign-up to the Boksidan editorial composition under Spalt.",
+        "details": "Editorial register on auth (wide canvas + brand panel already exist). Token-bound, palette+dark aware. Clerk components themed to match.",
+        "testStrategy": "",
+        "priority": "low",
+        "dependencies": [
+          "80"
+        ],
+        "status": "pending",
+        "subtasks": [],
+        "updatedAt": "2026-06-12"
+      },
+      {
+        "id": "87",
+        "title": "[Boksidan] Verify - responsive + palette/dark sweep, visual QA, ship",
+        "description": "Full verification and ship: Playwright across viewports + palettes/dark, visual QA, tests green.",
+        "details": "Extend 3-viewport Playwright for Boksidan; sweep 5 palettes x light/dark on drill + home; visual-verify every surface; vitest + typecheck + biome; merge via auto-merge label on green CI.",
+        "testStrategy": "",
+        "priority": "medium",
+        "dependencies": [
+          "81",
+          "82",
+          "83",
+          "84",
+          "85",
+          "86"
+        ],
+        "status": "pending",
+        "subtasks": [],
+        "updatedAt": "2026-06-12"
       }
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2026-06-12T11:05:19.973Z",
-      "taskCount": 79,
+      "lastModified": "2026-06-12T22:32:26.588Z",
+      "taskCount": 87,
       "completedCount": 53,
       "tags": [
         "master"

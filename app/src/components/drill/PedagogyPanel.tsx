@@ -45,6 +45,11 @@ type Props = {
   /** Whether the user got it right. Drives subtle colour cues on
    *  the eyebrow / framing copy. */
   correct: boolean
+  /** Desktop renders the panel as right-margin marginalia (a leading
+   *  hairline + left inset). On phone it flows full-width below the
+   *  options inside the rail chassis, so pass `flush` to drop the
+   *  border + inset and align it to the question column. */
+  flush?: boolean
 }
 
 type LoadState =
@@ -54,7 +59,7 @@ type LoadState =
   | { kind: 'missing' }
   | { kind: 'error'; message: string }
 
-export function PedagogyPanel({ qid, graded, correct }: Props) {
+export function PedagogyPanel({ qid, graded, correct, flush = false }: Props) {
   const [state, setState] = useState<LoadState>({ kind: 'idle' })
 
   useEffect(() => {
@@ -91,10 +96,12 @@ export function PedagogyPanel({ qid, graded, correct }: Props) {
         // Phase A.8 EDITION: drop the card chrome (border + radius
         // + background) — pedagogy panel becomes marginalia,
         // articulated by a single 1px hairline on its leading edge.
-        // No box; just a column of text in the right margin.
-        borderLeft: '1px solid var(--hairline)',
-        paddingLeft: 'clamp(20px, 1.5vw + 12px, 36px)',
-        paddingTop: 'clamp(28px, 4vh, 56px)',
+        // No box; just a column of text in the right margin. On phone
+        // (`flush`) it flows full-width below the options instead, so
+        // the leading hairline + inset are dropped.
+        borderLeft: flush ? undefined : '1px solid var(--hairline)',
+        paddingLeft: flush ? 0 : 'clamp(20px, 1.5vw + 12px, 36px)',
+        paddingTop: flush ? 'clamp(20px, 3vh, 32px)' : 'clamp(28px, 4vh, 56px)',
         paddingRight: 0,
         paddingBottom: 0,
         display: 'flex',
@@ -271,8 +278,13 @@ function PostGradeBody({
   const steps = resolveSteps(explanation)
   return (
     <>
-      <Eyebrow style={{ color: correct ? 'var(--ok)' : 'var(--ink-2)' }}>{eyebrow}</Eyebrow>
-      <CoachLine coach={coach} as="small" style={{ marginTop: 8, marginBottom: 12 }}>
+      {/* Boksidan verdict — the graded moment, semantic green/red ink. */}
+      <div className="hpc-m3-verdict">
+        <span className={`hpc-m3-verdict-word ${correct ? 'is-ok' : 'is-bad'}`}>
+          {correct ? 'Rätt.' : 'Fel.'}
+        </span>
+      </div>
+      <CoachLine coach={coach} as="small" style={{ marginTop: 10, marginBottom: 16 }}>
         {voiceLine}
       </CoachLine>
       {explanation.framework_id && <FrameworkChip frameworkId={explanation.framework_id} />}
@@ -282,6 +294,7 @@ function PostGradeBody({
           move={explanation.pregrade_tactic.move}
         />
       )}
+      <Eyebrow style={{ marginTop: 24, marginBottom: 4 }}>{eyebrow}</Eyebrow>
       <StepList steps={steps} />
       {explanation.distractors.length > 0 && (
         <DistractorBlock distractors={explanation.distractors} />
