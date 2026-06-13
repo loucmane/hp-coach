@@ -122,8 +122,11 @@ export function DrillQuestion({
       }}
     >
       {hasContext && (
-        <DrillRailSection meta={meta.contextLabel} delay={nextDelay()} testid="drill-context">
-          <div className="hpc-m3-passage">
+        <DrillRailSection meta={meta.contextLabel} delay={nextDelay()}>
+          {/* data-testid on the passage content, not the rail section — the
+           *  section also contains the mono rail label, which would pollute
+           *  textContent that e2e reads. */}
+          <div className="hpc-m3-passage" data-testid="drill-context">
             {question.context?.split(/\n{2,}/).map((para, i) => (
               // biome-ignore lint/suspicious/noArrayIndexKey: passage paragraphs are static text
               <p key={i}>{para}</p>
@@ -140,17 +143,21 @@ export function DrillQuestion({
         </DrillRailSection>
       )}
 
-      <DrillRailSection meta={promptMeta} delay={nextDelay()} testid="drill-prompt">
+      {/* data-testid on the prompt CONTENT, not the rail section: the section
+       *  wraps the mono rail label (e.g. "ORD synonymer") too, and e2e reads
+       *  drill-prompt's textContent to resolve the answer — it must be just
+       *  the headword/stem. */}
+      <DrillRailSection meta={promptMeta} delay={nextDelay()}>
         {question.section === 'KVA' && question.prompt ? (
-          <div className="hpc-m3-q">
+          <div className="hpc-m3-q" data-testid="drill-prompt">
             <KvaPrompt prompt={question.prompt} />
           </div>
         ) : promptIsShort ? (
-          <h1 className="hpc-m3-display">
+          <h1 className="hpc-m3-display" data-testid="drill-prompt">
             <MathText>{promptStem}</MathText>
           </h1>
         ) : (
-          <p className="hpc-m3-q">
+          <p className="hpc-m3-q" data-testid="drill-prompt">
             <MathText>{promptStem}</MathText>
           </p>
         )}
