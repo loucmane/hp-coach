@@ -271,8 +271,13 @@ function PostGradeBody({
   const steps = resolveSteps(explanation)
   return (
     <>
-      <Eyebrow style={{ color: correct ? 'var(--ok)' : 'var(--ink-2)' }}>{eyebrow}</Eyebrow>
-      <CoachLine coach={coach} as="small" style={{ marginTop: 8, marginBottom: 12 }}>
+      {/* Boksidan verdict — the graded moment, semantic green/red ink. */}
+      <div className="hpc-m3-verdict">
+        <span className={`hpc-m3-verdict-word ${correct ? 'is-ok' : 'is-bad'}`}>
+          {correct ? 'Rätt.' : 'Fel.'}
+        </span>
+      </div>
+      <CoachLine coach={coach} as="small" style={{ marginTop: 10, marginBottom: 16 }}>
         {voiceLine}
       </CoachLine>
       {explanation.framework_id && <FrameworkChip frameworkId={explanation.framework_id} />}
@@ -282,6 +287,7 @@ function PostGradeBody({
           move={explanation.pregrade_tactic.move}
         />
       )}
+      <Eyebrow style={{ marginTop: 24, marginBottom: 4 }}>{eyebrow}</Eyebrow>
       <StepList steps={steps} />
       {explanation.distractors.length > 0 && (
         <DistractorBlock distractors={explanation.distractors} />

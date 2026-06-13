@@ -48,6 +48,7 @@ import {
 import { DrillProgress } from '@/components/drill/DrillProgress'
 import { DrillQuestion } from '@/components/drill/DrillQuestion'
 import { DrillResult } from '@/components/drill/DrillResult'
+import { BoksidanDesk } from '@/components/drill-variants/BoksidanDesk'
 import { DispatchedVariant } from '@/components/drill-variants/DispatchedVariant'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
@@ -621,7 +622,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
   if (useStudyDesk) {
     return (
       <MobileFrame tabs={false}>
-        <DispatchedVariant
+        <BoksidanDesk
           {...variantPropsFor({
             question: q,
             picked,

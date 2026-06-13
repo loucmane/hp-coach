@@ -856,10 +856,44 @@ details[open] > summary .trap-card-toggle::before {
   object-fit: contain;
 }
 
+/* verdict — L12's italic word, drawn calmly, set left. Grading is STATE,
+ * so it carries semantic colour (green/red) as editorial ink; cobalt
+ * stays reserved for structure. */
+.hpc-m3-verdict {
+  padding: 4px 0 0;
+}
+.hpc-m3-verdict-word {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(34px, 5vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  display: inline-block;
+  animation: hpc-m3-verdict-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hpc-m3-verdict-word.is-ok {
+  color: var(--ok);
+}
+.hpc-m3-verdict-word.is-bad {
+  color: var(--bad);
+}
+
 @keyframes hpc-m3-settle {
   from {
     opacity: 0;
     transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes hpc-m3-verdict-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -871,7 +905,8 @@ details[open] > summary .trap-card-toggle::before {
   .hpc-m3-content,
   .hpc-m3-rule,
   .hpc-m3-display,
-  .hpc-m3-q {
+  .hpc-m3-q,
+  .hpc-m3-verdict-word {
     animation: none;
   }
 }

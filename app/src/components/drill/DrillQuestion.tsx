@@ -42,6 +42,12 @@ type Props = {
    *  ExplanationPanel and avoid double-rendering. Defaults to true
    *  for backward compat with phone-mode callers. */
   renderExplanation?: boolean
+  /** Phone fills a bounded flex container and owns its own scroll
+   *  (`height:100%; overflow:auto`). On desktop the question sits in
+   *  StudyDesk's sticky column, which already provides the scroll — so
+   *  pass `fill={false}` to let the content flow at natural height
+   *  instead of creating a nested scroll that clips the options. */
+  fill?: boolean
 }
 
 export function DrillQuestion({
@@ -50,6 +56,7 @@ export function DrillQuestion({
   graded,
   onPick,
   renderExplanation = true,
+  fill = true,
 }: Props) {
   // Scroll back to the top whenever a new question loads. Without this
   // a long LÄS passage on Q1 leaves the inner overflow-y region
@@ -108,8 +115,8 @@ export function DrillQuestion({
     <div
       ref={scrollerRef}
       style={{
-        height: '100%',
-        overflowY: 'auto',
+        height: fill ? '100%' : undefined,
+        overflowY: fill ? 'auto' : undefined,
         padding: '4px var(--pad-lg) 8px',
         containerType: 'inline-size',
       }}

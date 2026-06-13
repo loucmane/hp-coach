@@ -63,11 +63,13 @@ export function StudyDesk({ question, picked, graded, onPick }: Props) {
         containerType: 'inline-size',
       }}
     >
-      {hasPassage ? (
-        <PassageLayout question={question} picked={picked} graded={graded} onPick={onPick} />
-      ) : (
-        <StandardLayout question={question} picked={picked} graded={graded} onPick={onPick} />
-      )}
+      {/* Boksidan (task 81): one 2-column shell for every section. The
+       *  question column is the rail chassis (DrillQuestion) — it renders
+       *  any passage as its own TEXTEN rail section, so there is no
+       *  separate bordered passage card any more (the old 3-column
+       *  PassageLayout). The pedagogy column flows past as marginalia.
+       *  The wide passage split is task 84. */}
+      <StandardLayout question={question} picked={picked} graded={graded} onPick={onPick} />
     </div>
   )
 }
@@ -121,21 +123,11 @@ function StandardLayout({ question, picked, graded, onPick }: Props) {
           // would be as tall as the pedagogy column and have nothing
           // to "stick" within.
           alignSelf: 'start',
-          // Cap so a tall question (long LÄS prompt) scrolls inside
-          // its own column rather than extending past viewport.
-          // Budget = running head (72-104) + status line (40) +
-          // sticky CTA (80) + breath = ~210-240px.
-          maxHeight: 'calc(100dvh - 240px)',
-          overflowY: 'auto',
-          // Hide the scrollbar in the column itself — the column is
-          // a sticky panel, not a scroll surface. If the question
-          // overflows, the user can still wheel-scroll inside it;
-          // we just don't show track chrome that competes with the
-          // page body's scrollbar. (Firefox via inline; Chromium
-          // via the .hpc-scrollbar-ghost class on the element.)
-          scrollbarWidth: 'none',
+          // No height cap / overflow here: the rail chassis question
+          // flows at natural height (fill={false} below) and the page
+          // body owns the scroll. Capping + overflow would create a
+          // nested scroll that clips the options below the fold.
         }}
-        className="hpc-scrollbar-ghost"
       >
         <DrillQuestion
           question={question}
@@ -143,93 +135,7 @@ function StandardLayout({ question, picked, graded, onPick }: Props) {
           graded={graded}
           onPick={onPick}
           renderExplanation={false}
-        />
-      </div>
-      <div style={{ minWidth: 0 }}>
-        <PedagogyPanel qid={question.qid} graded={graded} correct={picked === question.answer} />
-      </div>
-    </div>
-  )
-}
-
-// ── Passage layout (LÄS/ELF/DTK) ────────────────────────────────────
-//
-// Three-column at ≥1280px container: passage | question | pedagogy.
-// Same body-scroll-with-sticky-columns pattern as StandardLayout,
-// scaled to three tracks. Both passage AND question pin to viewport;
-// pedagogy column flows past. The passage gets visual chrome (border
-// + panel bg) because its content is a re-reading reference, not
-// inline prose — the floating-bordered panel reads as a "document
-// you're consulting" while pedagogy slides past as the main column.
-
-function PassageLayout({ question, picked, graded, onPick }: Props) {
-  // Sticky top matches the running-head's bottom edge so context
-  // columns pin immediately at scroll-start (no scroll-up gap).
-  // Max-height budgets running head + status line + sticky CTA.
-  const stickyTop = 'clamp(72px, 9vh, 104px)'
-  const stickyMaxH = 'calc(100dvh - 240px)'
-  return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr)',
-        gap: 'clamp(20px, 2vw, 40px)',
-        // Bottom clearance for status line (~40px sticky) + floating
-        // CTA (~50px) + sticky offset (60-84px) + breath. The CTA is
-        // a frosted-glass control so mid-scroll pedagogy intentionally
-        // blurs through behind it; padding only matters at max-scroll
-        // when sticky releases and CTA lands in natural flow.
-        padding: 'clamp(16px, 1.5vw + 12px, 36px) clamp(16px, 2vw, 40px) clamp(140px, 16vh, 180px)',
-        // NO overflow set — body scroll + sticky descendants.
-      }}
-    >
-      <aside
-        data-testid="passage-column"
-        style={{
-          minWidth: 0,
-          position: 'sticky',
-          top: stickyTop,
-          alignSelf: 'start',
-          maxHeight: stickyMaxH,
-          overflowY: 'auto',
-          padding: '16px 18px',
-          background: 'var(--panel-2)',
-          border: '1px solid var(--hairline)',
-          borderRadius: 'calc(var(--radius) * 0.5)',
-          fontFamily: 'var(--font-body, var(--font-display))',
-          fontSize: 'clamp(14px, 0.8125rem + 0.3vw, 16px)',
-          lineHeight: 1.6,
-          color: 'var(--ink)',
-          whiteSpace: 'pre-wrap',
-          scrollbarWidth: 'thin',
-        }}
-      >
-        {question.context}
-      </aside>
-      <div
-        className="hpc-scrollbar-ghost"
-        style={{
-          minWidth: 0,
-          position: 'sticky',
-          top: stickyTop,
-          alignSelf: 'start',
-          maxHeight: stickyMaxH,
-          overflowY: 'auto',
-          scrollbarWidth: 'none',
-        }}
-      >
-        {/* DrillQuestion still renders the passage internally as a
-         *  fallback (it doesn't know we're hiding it). We hide its
-         *  passage via a small CSS override targeting the testid. */}
-        <style>{`
-          [data-testid='drill-context'] { display: none; }
-        `}</style>
-        <DrillQuestion
-          question={question}
-          picked={picked}
-          graded={graded}
-          onPick={onPick}
-          renderExplanation={false}
+          fill={false}
         />
       </div>
       <div style={{ minWidth: 0 }}>
