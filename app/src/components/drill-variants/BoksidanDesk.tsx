@@ -42,7 +42,13 @@ export function BoksidanDesk({ question, picked, graded, onPick, onReset }: Vari
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'baseline',
+          // Wrap rather than collide: in the reader-narrow band (~768–1300px)
+          // the identity+nav and the EditionStrip together exceed the width,
+          // so the strip drops to a second line instead of overlapping the
+          // nav. Single line again once it fits (≳1300px).
+          flexWrap: 'wrap',
           gap: 16,
+          rowGap: 10,
           fontFamily: 'var(--font-mono)',
           fontSize: 11,
           letterSpacing: '0.16em',
