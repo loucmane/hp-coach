@@ -281,6 +281,9 @@ function PlanenBlock({
         }}
       >
         {steps.map((s) => (
+          // Boksidan rail row: the "Steg N" ordinal is the cobalt mono rail
+          // label in the margin; the instruction flows in the content column
+          // past a hairline spine. Linearises on phone via `.hpc-m3-*`.
           <li
             key={s.kicker}
             style={{
@@ -288,29 +291,22 @@ function PlanenBlock({
               borderTop: '1px solid var(--hairline)',
             }}
           >
-            <div
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 11,
-                letterSpacing: 'var(--font-mono-track)',
-                textTransform: 'uppercase',
-                color: 'var(--muted)',
-                marginBottom: 4,
-              }}
-            >
-              {s.kicker}
+            <div className="hpc-m3-row">
+              <div className="hpc-m3-meta">{s.kicker}</div>
+              <div className="hpc-m3-spine" aria-hidden />
+              <p
+                className="hpc-m3-content"
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(16px, 0.6vw + 14px, 18px)',
+                  lineHeight: 1.45,
+                  color: 'var(--ink)',
+                  margin: 0,
+                }}
+              >
+                {s.body}
+              </p>
             </div>
-            <p
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(16px, 0.6vw + 14px, 18px)',
-                lineHeight: 1.45,
-                color: 'var(--ink)',
-                margin: 0,
-              }}
-            >
-              {s.body}
-            </p>
           </li>
         ))}
       </ol>
