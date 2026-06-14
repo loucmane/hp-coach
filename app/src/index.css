@@ -880,6 +880,23 @@ details[open] > summary .trap-card-toggle::before {
   color: var(--bad);
 }
 
+/* solution lede (task 83) — the book-page restatement of the answer, bold
+ * serif set between a 1px ink rule and a hairline, the concise summary that
+ * leads into the step walkthrough. */
+.hpc-m3-solution {
+  margin: 4px 0;
+  padding: 16px 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--hairline);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(17px, 0.9rem + 0.4vw, 19px);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  max-width: 75ch;
+}
+
 @keyframes hpc-m3-settle {
   from {
     opacity: 0;

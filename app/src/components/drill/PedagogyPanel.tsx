@@ -276,17 +276,35 @@ function PostGradeBody({
   const voiceLine = correct ? VOICE[coach].feedbackRight : VOICE[coach].feedbackWrong
   const eyebrow = correct ? 'Post-mortem' : 'Så här löses uppgiften'
   const steps = resolveSteps(explanation)
+  // solution_path is the concise summary when structured steps[] exist; show
+  // it as the book-page lede (bold serif between rules). When steps[] is
+  // absent, solution_path IS the steps (resolveSteps split it) — no lede.
+  const hasStructuredSteps = (explanation.steps?.length ?? 0) > 0
   return (
     <>
-      {/* Boksidan verdict — the graded moment, semantic green/red ink. */}
-      <div className="hpc-m3-verdict">
-        <span className={`hpc-m3-verdict-word ${correct ? 'is-ok' : 'is-bad'}`}>
+      {/* Boksidan verdict — the graded moment, semantic green/red ink.
+       *  role=status + aria-live announce the outcome to screen readers
+       *  the moment the panel flips from waiting to post-grade; the
+       *  aria-label spells out the terse "Rätt." / "Fel." ink word. */}
+      <div
+        className="hpc-m3-verdict"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        aria-label={correct ? 'Rätt svar' : 'Fel svar'}
+      >
+        <span aria-hidden className={`hpc-m3-verdict-word ${correct ? 'is-ok' : 'is-bad'}`}>
           {correct ? 'Rätt.' : 'Fel.'}
         </span>
       </div>
       <CoachLine coach={coach} as="small" style={{ marginTop: 10, marginBottom: 16 }}>
         {voiceLine}
       </CoachLine>
+      {hasStructuredSteps && explanation.solution_path && (
+        <p className="hpc-m3-solution">
+          <MathText>{explanation.solution_path}</MathText>
+        </p>
+      )}
       {explanation.framework_id && <FrameworkChip frameworkId={explanation.framework_id} />}
       {explanation.pregrade_tactic && (
         <StrategiBlock
@@ -484,14 +502,16 @@ export function StepCard({ step }: { step: ExplanationStep }) {
       data-testid={`pedagogy-step-${step.n}`}
       style={{
         // A.8.1 — drop the card chrome on individual steps (matches
-        // the EDITION rule). Each step is articulated by a hairline
-        // rule on the leading edge + a hanging mono step number,
-        // like a footnote in a typeset book.
+        // the EDITION rule). Each step is articulated by a hanging
+        // serif step numeral (Boksidan, task 83 — book-page numerals,
+        // structure so in cobalt --accent), like a footnote in a
+        // typeset book.
         position: 'relative',
-        paddingLeft: 38,
+        paddingLeft: 42,
         display: 'flex',
         flexDirection: 'column',
         gap: 8,
+        maxWidth: '75ch',
       }}
     >
       <span
@@ -499,12 +519,12 @@ export function StepCard({ step }: { step: ExplanationStep }) {
         style={{
           position: 'absolute',
           left: 0,
-          top: 4,
-          fontFamily: 'var(--font-mono)',
-          fontSize: 12,
-          letterSpacing: 'var(--font-mono-track)',
+          top: -1,
+          fontFamily: 'var(--font-display)',
+          fontSize: 21,
           color: 'var(--accent)',
           fontWeight: 600,
+          letterSpacing: '-0.01em',
           fontVariantNumeric: 'tabular-nums',
         }}
       >
@@ -545,7 +565,7 @@ export function StepCard({ step }: { step: ExplanationStep }) {
 
 function DistractorBlock({ distractors }: { distractors: Explanation['distractors'] }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 14, maxWidth: '75ch' }}>
       <Mono>Varför inte de andra</Mono>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {distractors.map((d) => (
