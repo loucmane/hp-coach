@@ -256,15 +256,17 @@ function DesktopBody({
           gap: 18,
         }}
       >
-        {/* Sage left-rail — one structural rule down the form block (a
-         *  margin rule, not a card). The single accent that anchors the
-         *  now-card-less form; desktop only (phone stays flush). Pairs with
-         *  the flush-form treatment in clerkAppearance.ts. */}
+        {/* Boksidan margin-rail — a single hairline spine down the form
+         *  block (not the old 4px accent slab). The cobalt accent is now
+         *  spent on the rail LABEL inside CardSection, keeping accent =
+         *  structure; the spine stays a restrained hairline, same as the
+         *  drill chassis. Desktop only (phone stays flush). Pairs with the
+         *  flush-form treatment in clerkAppearance.ts. */}
         <div
           style={{
             width: '100%',
             maxWidth: 444,
-            borderLeft: '4px solid var(--accent)',
+            borderLeft: '1px solid var(--hairline)',
             paddingLeft: 'clamp(20px, 2vw, 32px)',
           }}
         >
@@ -354,28 +356,23 @@ function PullQuote({
 function CardSection({ children, cardLabel }: { children: ReactNode; cardLabel: string }) {
   return (
     <div>
+      {/* Rail label in the Boksidan register — cobalt mono, uppercase,
+       *  same as the drill/Home/Diagnostik margin labels. Sits above the
+       *  form on phone (eyebrow) and atop the hairline-spined block on
+       *  desktop. Replaces the old serif small-caps + ink underline. */}
       <div
         style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 13,
+          fontFamily: 'var(--font-mono)',
+          fontSize: 11,
           fontWeight: 500,
-          letterSpacing: '0.14em',
+          letterSpacing: '0.08em',
           textTransform: 'uppercase',
-          color: 'var(--ink)',
-          marginBottom: 14,
+          color: 'var(--accent)',
+          marginBottom: 22,
         }}
       >
         {cardLabel}
       </div>
-      <div
-        aria-hidden
-        style={{
-          width: 32,
-          height: 1,
-          background: 'var(--ink)',
-          marginBottom: 22,
-        }}
-      />
       <div>{children}</div>
     </div>
   )
