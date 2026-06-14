@@ -21,7 +21,7 @@
 // title → body → footer affordance) so the visual rhythm is
 // consistent with /lektion and the drill idle screen.
 
-import { Eyebrow, Hairline, Mono } from '@/components/primitives'
+import { Eyebrow, Hairline } from '@/components/primitives'
 import type { DailyPlan, PlanItem } from '@/lib/scheduler'
 
 type DailyPlanCardProps = {
@@ -99,80 +99,53 @@ function PlanRow({ item, onNavigate }: { item: PlanItem; onNavigate?: (href: str
         opacity: item.completed ? 0.5 : 1,
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16 }}>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 10,
-              marginBottom: 8,
-            }}
-          >
-            <Eyebrow>{kicker}</Eyebrow>
-            {item.completed && (
-              <span
-                aria-hidden
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 11,
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: 'var(--muted)',
-                }}
-              >
-                · klar ✓
-              </span>
-            )}
-          </div>
-          <a
-            href={item.href}
-            onClick={handleNavigate}
-            data-testid={`daily-plan-link-${item.id}`}
-            style={{
-              textDecoration: 'none',
-              color: 'var(--ink)',
-              display: 'block',
-            }}
-          >
-            <h3
-              style={{
-                margin: 0,
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(18px, 1vw + 13px, 22px)',
-                lineHeight: 1.3,
-                letterSpacing: '-0.01em',
-                textDecoration: item.completed ? 'line-through' : 'none',
-                textDecorationThickness: 1,
-              }}
-            >
-              {item.headline}
-            </h3>
-            <p
-              style={{
-                margin: '6px 0 0',
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(14px, 0.4vw + 12px, 15px)',
-                lineHeight: 1.5,
-                color: 'var(--ink-2)',
-              }}
-            >
-              {item.rationale}
-            </p>
-          </a>
+      {/* Boksidan rail row: the kicker + time hint live in the cobalt mono
+       *  margin rail (time is the ink-2 sub-line — metadata, not accent);
+       *  the tappable headline + rationale flow in the content column. The
+       *  chassis linearises on phone (rail stacks above as an eyebrow). */}
+      <div className="hpc-m3-row">
+        <div className="hpc-m3-meta">
+          {kicker}
+          {item.completed && ' · klar ✓'}
+          <strong>{`~${item.estimatedMinutes} min`}</strong>
         </div>
-        <div
+        <div className="hpc-m3-spine" aria-hidden />
+        <a
+          href={item.href}
+          onClick={handleNavigate}
+          data-testid={`daily-plan-link-${item.id}`}
+          className="hpc-m3-content"
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-end',
-            gap: 6,
-            paddingTop: 26, // align with the headline baseline
-            minWidth: 64,
+            textDecoration: 'none',
+            color: 'var(--ink)',
+            display: 'block',
           }}
         >
-          <Mono>{`~${item.estimatedMinutes} min`}</Mono>
-        </div>
+          <h3
+            style={{
+              margin: 0,
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(18px, 1vw + 13px, 22px)',
+              lineHeight: 1.3,
+              letterSpacing: '-0.01em',
+              textDecoration: item.completed ? 'line-through' : 'none',
+              textDecorationThickness: 1,
+            }}
+          >
+            {item.headline}
+          </h3>
+          <p
+            style={{
+              margin: '6px 0 0',
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(14px, 0.4vw + 12px, 15px)',
+              lineHeight: 1.5,
+              color: 'var(--ink-2)',
+            }}
+          >
+            {item.rationale}
+          </p>
+        </a>
       </div>
     </li>
   )
