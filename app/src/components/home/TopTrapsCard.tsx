@@ -67,31 +67,32 @@ function TrapRow({ trap }: { trap: TopTrap }) {
   // action-first per ADHD-PI: user has already missed this 2+ times.
   const href = `/drill?framework=${trap.framework_id}`
   return (
+    // Boksidan rail row: trap id (cobalt mono) over its miss-count + trend
+    // in the ink-2 sub-line — the diagnostic metadata sits in the margin;
+    // the trap's plain-language headline carries the content column. The
+    // whole row is the tap target. Linearises on phone via `.hpc-m3-*`.
     <a
       href={href}
       data-testid="top-trap-link"
+      className="hpc-m3-row"
       style={{
-        display: 'grid',
-        gridTemplateColumns: '120px 1fr 56px',
-        gap: 16,
-        alignItems: 'baseline',
         padding: '12px 0',
         textDecoration: 'none',
         color: 'inherit',
+        alignItems: 'baseline',
       }}
     >
-      <div
-        style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: 11,
-          letterSpacing: 'var(--font-mono-track)',
-          textTransform: 'uppercase',
-          color: 'var(--muted)',
-        }}
-      >
+      <div className="hpc-m3-meta">
         {trap.framework_id}
+        {/* Block sub-line; inherits the rail's text-align (right on the
+         *  desktop margin, left when the rail linearises on phone). */}
+        <strong style={{ fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', marginTop: 4 }}>
+          {trap.count} ggr <TrendChip trend={trap.trend} />
+        </strong>
       </div>
+      <div className="hpc-m3-spine" aria-hidden />
       <span
+        className="hpc-m3-content"
         style={{
           fontFamily: 'var(--font-display)',
           fontSize: 14,
@@ -100,25 +101,6 @@ function TrapRow({ trap }: { trap: TopTrap }) {
         }}
       >
         {trap.headline ?? 'Öva detta mönster →'}
-      </span>
-      <span
-        style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: 11,
-          letterSpacing: 'var(--font-mono-track)',
-          textTransform: 'uppercase',
-          color: 'var(--ink-2)',
-          textAlign: 'right',
-          fontVariantNumeric: 'tabular-nums',
-          display: 'inline-flex',
-          gap: 6,
-          justifyContent: 'flex-end',
-          alignItems: 'baseline',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        <span>{trap.count} ggr</span>
-        <TrendChip trend={trap.trend} />
       </span>
     </a>
   )
