@@ -29,9 +29,13 @@ const API_BASE_URL = process.env.VITE_API_BASE_URL ?? 'http://localhost:8787'
 // `Clerk.session.getToken()` can briefly return null while the JWT is
 // rotating. We poll for up to 15s for both — the in-flight signal we
 // trust is "got a non-null token back".
-async function testReset(page: Page, action: 'clear' | 'expire-all'): Promise<void> {
+async function testReset(
+  page: Page,
+  action: 'clear' | 'expire-all' | 'seed',
+  questionId?: string,
+): Promise<void> {
   const result = await page.evaluate(
-    async ({ baseUrl, action }) => {
+    async ({ baseUrl, action, questionId }) => {
       type ClerkLike = {
         loaded?: boolean
         session?: { getToken: () => Promise<string | null> } | null
@@ -52,12 +56,12 @@ async function testReset(page: Page, action: 'clear' | 'expire-all'): Promise<vo
       const res = await fetch(`${baseUrl}/api/test-reset`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ action }),
+        body: JSON.stringify(questionId ? { action, questionId } : { action }),
       })
       const body = await res.text()
       return { ok: res.ok, status: res.status, body }
     },
-    { baseUrl: API_BASE_URL, action },
+    { baseUrl: API_BASE_URL, action, questionId },
   )
   if (!result.ok) {
     throw new Error(`/api/test-reset ${action} failed: ${result.status} ${result.body}`)
@@ -70,6 +74,57 @@ export async function clearMistakes(page: Page): Promise<void> {
 
 export async function expireAllMistakes(page: Page): Promise<void> {
   await testReset(page, 'expire-all')
+}
+
+/**
+ * Log a single active, immediately-due mistake for `questionId` without
+ * drilling a session through the UI. Lets the replay loop establish its
+ * precondition deterministically — `questionId` must be a real question in
+ * the SPA's bank so the replay queue can render it.
+ */
+export async function seedMistake(page: Page, questionId: string): Promise<void> {
+  await testReset(page, 'seed', questionId)
+}
+
+/**
+ * Record a mistake through the REAL endpoint /drill's onWrong calls
+ * (POST /api/mistakes), rather than /test-reset. Exercises the actual
+ * record → SRS contract from a test without driving the Clerk-sensitive
+ * /drill session-start. The recorded row lands at nextReviewAt = now+10min
+ * (first relearn rung), so callers expire-all before reading /due.
+ */
+export async function recordMistakeViaApi(page: Page, questionId: string): Promise<void> {
+  const result = await page.evaluate(
+    async ({ baseUrl, questionId }) => {
+      type ClerkLike = {
+        loaded?: boolean
+        session?: { getToken: () => Promise<string | null> } | null
+      }
+      const getWindowClerk = (): ClerkLike | undefined =>
+        (window as unknown as { Clerk?: ClerkLike }).Clerk
+      const deadline = Date.now() + 15_000
+      let token: string | null = null
+      while (Date.now() < deadline) {
+        const clerk = getWindowClerk()
+        if (clerk?.loaded && clerk.session) {
+          token = (await clerk.session.getToken()) ?? null
+          if (token) break
+        }
+        await new Promise((r) => setTimeout(r, 100))
+      }
+      if (!token) return { ok: false as const, status: 0, body: 'no Clerk token after 15s' }
+      const res = await fetch(`${baseUrl}/api/mistakes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ questionId }),
+      })
+      return { ok: res.ok, status: res.status, body: await res.text() }
+    },
+    { baseUrl: API_BASE_URL, questionId },
+  )
+  if (!result.ok) {
+    throw new Error(`POST /api/mistakes failed: ${result.status} ${result.body}`)
+  }
 }
 
 export const test = base.extend({

@@ -14,7 +14,19 @@
 //   /repetition → SessionPlayer w/ kind='adaptive_review'
 //   onCorrect in replay → PATCH /api/mistakes/:id { resolve: true }
 
-import { clearMistakes, expect, expireAllMistakes, test } from './fixtures'
+import {
+  clearMistakes,
+  expect,
+  expireAllMistakes,
+  recordMistakeViaApi,
+  seedMistake,
+  test,
+} from './fixtures'
+
+// A stable ORD entry that exists in the SPA's question bank ("eftertrakta").
+// Used to seed the replay loop's precondition deterministically instead of
+// drilling a whole session to miss one question.
+const SEED_QID = 'var-2026-verb1-ORD-003'
 
 // Walk over to /dev and end every active session for this user. Used
 // before AND after each test in this file because the test leaves an
@@ -86,104 +98,89 @@ async function startSessionAndAwaitQ1(page: import('@playwright/test').Page) {
   // retries (3× exp backoff, up to ~5s total) usually clear it well
   // inside this window.
   await expect(page.getByTestId('drill-start')).toBeEnabled({ timeout: 25_000 })
-  await page.getByTestId('drill-start').click()
-  // POST /api/sessions sometimes triggers a Clerk session refresh, which
-  // flips ClerkLoading on briefly. We wait for the splash to clear
-  // again, then for drill-prompt.
-  await awaitAppReady(page)
-  await expect(page.getByTestId('drill-prompt')).toBeVisible({ timeout: 15_000 })
+  // The POST /api/sessions that drill-start fires can coincide with a Clerk
+  // JWT rotation, which briefly remounts the tree (ClerkLoading splash) and
+  // can SWALLOW the click — the historic flake here. Retry: re-await
+  // app-ready and, if the idle screen is still showing (start button
+  // visible = our click was dropped), click again. Once the question
+  // prompt renders we're in. A successful click unmounts the idle screen,
+  // so `start.isVisible()` is false on the next pass and we just confirm
+  // the prompt.
+  const start = page.getByTestId('drill-start')
+  const prompt = page.getByTestId('drill-prompt')
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if (await start.isVisible().catch(() => false)) {
+      await start.click()
+    }
+    await awaitAppReady(page)
+    if (await prompt.isVisible().catch(() => false)) return
+    await expect(prompt)
+      .toBeVisible({ timeout: 8_000 })
+      .then(() => true)
+      .catch(() => false)
+    if (await prompt.isVisible().catch(() => false)) return
+  }
+  // Out of retries — assert once more so the failure surfaces the real state.
+  await expect(prompt).toBeVisible({ timeout: 8_000 })
 }
 
-test('Mistakes loop — answer wrong → replay queue → resolve', async ({ page }, testInfo) => {
-  // Mobile (iPhone 13 emulation) flakes here when running after the
-  // chromium project: the click on drill-start sometimes lands during
-  // a Clerk session refresh and the resulting state transition is
-  // dropped — the button stays on "Starta övning". Chromium passes
-  // consistently and validates the full product flow, so we accept
-  // chromium-only coverage for this test until we tighten the
-  // Clerk re-auth window. Run the mobile variant manually with
-  // `pnpm exec playwright test mistakes --project=mobile` (it passes
-  // in isolation; the suite-wide order is the trigger).
-  test.skip(testInfo.project.name === 'mobile', 'mobile-emulation Clerk-refresh flake under full suite')
-  // Start from a known-empty mistakes queue. The drill flow used to fail
-  // in CI because the seeded mistake from Phase 1 gets nextReviewAt=now+10min
-  // (SRS first-rung relearn) and /api/mistakes/due returns empty until
-  // that interval elapses. We solve both halves below:
-  //   - clearMistakes here so the suite is deterministic regardless of
-  //     leftover state from prior runs
-  //   - expireAllMistakes between Phase 1 and Phase 2 to backdate the
-  //     just-seeded row so /due immediately returns it
-  // The endpoint refuses to run when ENVIRONMENT === 'production', so
-  // the staging worker is the only place this hits real data. Must run
-  // BEFORE page.goto('/drill') — clear also deletes any active session,
-  // so Start begins a fresh drill rather than ADOPTING a leftover one
-  // (single-active-per-kind resume; no stale-session warning anymore).
+// Mobile (iPhone 13 emulation) historically flaked: the click on
+// drill-start could land during a Clerk session refresh and the state
+// transition got dropped — the button stayed on "Starta övning". The
+// hardened startSessionAndAwaitQ1 now retries the swallowed click, but we
+// keep chromium-only coverage until that's confirmed stable across many
+// mobile runs. Run mobile manually: `pnpm exec playwright test mistakes
+// --project=mobile`.
+const skipMobile = (testInfo: import('@playwright/test').TestInfo) =>
+  test.skip(
+    testInfo.project.name === 'mobile',
+    'mobile-emulation Clerk-refresh flake under full suite',
+  )
+
+// ── Record path: a recorded mistake surfaces in the replay queue ───────
+// Covers POST /api/mistakes (the endpoint /drill's onWrong calls) → GET
+// /api/mistakes/due → the /repetition queue. We record through the real
+// API rather than drilling a wrong answer in the UI: the /drill
+// session-start is Clerk-JWT-rotation-sensitive under full-suite load (the
+// historic flake), and the value here is the record→due contract, not the
+// option-click wiring (which drill.spec already exercises). Deterministic
+// and reliable — no drill, no session-start.
+test('Mistakes — a recorded mistake surfaces in the replay queue', async ({ page }, testInfo) => {
+  skipMobile(testInfo)
   await clearMistakes(page)
-  // ── Phase 1: drill, intentionally miss Q1 ──────────────────────────────
-  await page.goto('/drill')
-  await awaitAppReady(page)
-  const idle = page.getByTestId('drill-idle')
-  await expect(idle).toBeVisible({ timeout: 10_000 })
-
-  await startSessionAndAwaitQ1(page)
-
-  // Q1 — pick a deliberately wrong letter to seed a mistake.
-  // No pre-click toBeDisabled assertion: in studyDesk view (chromium
-  // @ 1280px) StyleA only renders drill-next post-grade — the
-  // pre-grade body is <PreGradeFill> with no advance affordance.
-  // The toBeEnabled check after the option click is the meaningful
-  // assertion that the advance control becomes available.
-  const nextBtn = page.getByTestId('drill-next')
-  const { correct: q1Correct } = await readPromptCorrectLetter(page)
-  const wrongLetter = q1Correct === 'A' ? 'B' : 'A'
-  await page.getByTestId(`option-${wrongLetter}`).click()
-  await expect(nextBtn).toBeEnabled({ timeout: 5_000 })
-  // `.hpc-breathe` CTA — reducedMotion in playwright.config makes it
-  // stable, but pass `force: true` as belts-and-braces for the long
-  // suite where occasional retries hit a late-paint frame.
-  await nextBtn.click({ force: true })
-
-  // Q2..Q10 — answer correctly to finish quickly. Same note as above:
-  // in studyDesk view drill-next isn't in the DOM until the option
-  // click flips the phase to graded, so the only meaningful gate is
-  // toBeEnabled after the click.
-  for (let i = 0; i < 9; i++) {
-    const { correct } = await readPromptCorrectLetter(page)
-    await page.getByTestId(`option-${correct}`).click()
-    await expect(nextBtn).toBeEnabled({ timeout: 5_000 })
-    // `.hpc-breathe` CTA — reducedMotion in playwright.config makes it
-  // stable, but pass `force: true` as belts-and-braces for the long
-  // suite where occasional retries hit a late-paint frame.
-  await nextBtn.click({ force: true })
-  }
-
-  // Result screen — score should be 9 (we missed exactly one).
-  await expect(page.getByTestId('drill-result')).toBeVisible({ timeout: 10_000 })
-
-  // ── Phase 2: replay the seeded mistake, answer correctly ───────────────
-  // Backdate every active mistake's nextReviewAt so the row we just
-  // seeded on Q1 surfaces in /api/mistakes/due immediately, instead of
-  // waiting out the 10-minute first-rung relearn interval. Without this
-  // the /repetition idle state has an empty queue and drill-start stays
-  // disabled forever.
+  await recordMistakeViaApi(page, SEED_QID)
+  // The record lands at nextReviewAt = now+10min (first relearn rung), so
+  // backdate it to make it due, then confirm it surfaces: /repetition's
+  // Start enables only when /api/mistakes/due returns ≥1.
   await expireAllMistakes(page)
-  // Skip the mid-test reload of /drill (which flakes on Clerk re-init).
-  // Navigate straight to /repetition; the queue must contain ≥1 mistake
-  // we just recorded on the wrong answer above.
+  await page.goto('/repetition')
+  await awaitAppReady(page)
+  await expect(page.getByTestId('drill-idle')).toBeVisible({ timeout: 5_000 })
+  await expect(page.getByTestId('drill-start')).toBeEnabled({ timeout: 25_000 })
+})
+
+// ── Replay path: a due mistake can be replayed and resolved ────────────
+// Covers useDueMistakes → replay SessionPlayer → onCorrect → PATCH
+// /api/mistakes/:id { resolve: true }. The precondition (one due mistake)
+// is SEEDED deterministically via /api/test-reset rather than drilled
+// through the UI — that drill-to-seed was the slow, Clerk-refresh-sensitive
+// half of the old combined test.
+test('Mistakes — a seeded mistake replays and resolves', async ({ page }, testInfo) => {
+  skipMobile(testInfo)
+  await clearMistakes(page)
+  await seedMistake(page, SEED_QID)
   await page.goto('/repetition')
   await awaitAppReady(page)
   await expect(page.getByTestId('drill-idle')).toBeVisible({ timeout: 5_000 })
   await startSessionAndAwaitQ1(page)
 
-  const { correct: replayCorrect } = await readPromptCorrectLetter(page)
-  await page.getByTestId(`option-${replayCorrect}`).click()
-  await expect(nextBtn).toBeEnabled({ timeout: 5_000 })
-  // `.hpc-breathe` CTA — reducedMotion in playwright.config makes it
-  // stable, but pass `force: true` as belts-and-braces for the long
-  // suite where occasional retries hit a late-paint frame.
-  await nextBtn.click({ force: true })
-  // Whether this was the only mistake or just one of many, the test has
-  // proven that the resolve mutation fired (the replay session would
-  // never have started if the queue was empty).
+  // The queue holds exactly the seeded mistake, so Q1 of the replay is it.
+  // Answer correctly → resolve mutation fires. The replay session would
+  // never have started if /due had been empty, so reaching a graded
+  // question proves the seed → queue → replay chain end-to-end.
+  const { correct } = await readPromptCorrectLetter(page)
+  await page.getByTestId(`option-${correct}`).click()
+  await expect(page.getByTestId('drill-next')).toBeEnabled({ timeout: 5_000 })
+  await page.getByTestId('drill-next').click({ force: true })
 })
 
