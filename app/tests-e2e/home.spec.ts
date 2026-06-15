@@ -20,12 +20,20 @@ import { expect, test } from '@playwright/test'
 import { expect as authedExpect, test as authedTest } from './fixtures'
 
 // ── Unauthenticated ────────────────────────────────────────────────────
-test('unauthenticated visit to / redirects to /sign-in', async ({ page }) => {
-  await page.goto('/')
-  await expect(page).toHaveURL(/\/sign-in$/, { timeout: 10_000 })
-  // The Clerk default header "Sign in to hp-coach" is suppressed via
-  // clerkAppearance. Our AuthLayout shows "Logga in" as the card label.
-  await expect(page.getByText(/logga in/i).first()).toBeVisible()
+// The chromium/mobile projects apply the signed-in storageState by default
+// (auth.setup.ts). The unauth test needs the opposite. `test.use` is
+// scope-wide, so it MUST live inside its own describe block — at file level
+// it would deauthenticate every other test here too.
+test.describe('unauthenticated', () => {
+  test.use({ storageState: { cookies: [], origins: [] } })
+
+  test('visit to / redirects to /sign-in', async ({ page }) => {
+    await page.goto('/')
+    await expect(page).toHaveURL(/\/sign-in$/, { timeout: 10_000 })
+    // The Clerk default header "Sign in to hp-coach" is suppressed via
+    // clerkAppearance. Our AuthLayout shows "Logga in" as the card label.
+    await expect(page.getByText(/logga in/i).first()).toBeVisible()
+  })
 })
 
 // ── Signed-in ──────────────────────────────────────────────────────────

@@ -14,7 +14,7 @@
 // If the user doesn't exist yet, Clerk's signUp helper creates them
 // transparently as part of the same call.
 
-import { clerk, setupClerkTestingToken } from '@clerk/testing/playwright'
+import { setupClerkTestingToken } from '@clerk/testing/playwright'
 import { type Page, test as base, expect } from '@playwright/test'
 
 const API_BASE_URL = process.env.VITE_API_BASE_URL ?? 'http://localhost:8787'
@@ -128,12 +128,14 @@ export async function recordMistakeViaApi(page: Page, questionId: string): Promi
 }
 
 export const test = base.extend({
-  // Override the default `page` fixture: every test starts already signed in.
+  // Override the default `page` fixture: every test starts already signed
+  // in via the saved storageState (auth.setup.ts + the `setup` project
+  // dependency in playwright.config.ts), so there's NO per-test sign-in —
+  // that churn was rate-limiting Clerk's dev FAPI under the full suite.
   page: async ({ page }, use) => {
-    const email = process.env.E2E_TEST_EMAIL
-    if (!email) {
-      throw new Error('Missing E2E_TEST_EMAIL — set it in app/.env.local')
-    }
+    // The testing token is a per-context route interception (not carried by
+    // storageState), so it's still injected here — but it reads the env
+    // token cached by clerkSetup, so no per-test network call.
     await setupClerkTestingToken({ page })
     // Pre-seed the `/welcome` gate's bypass flag so __root.tsx's
     // first-time-visit redirect doesn't trap e2e tests on /welcome.
@@ -146,16 +148,6 @@ export const test = base.extend({
         localStorage.setItem('hpc-welcomed', '1')
       } catch {}
     })
-    await page.goto('/')
-    await clerk.signIn({
-      page,
-      signInParams: {
-        strategy: 'email_code',
-        identifier: email,
-      },
-    })
-    // After sign-in, Clerk redirects via the configured fallback URL ('/').
-    // Wait for that hop to settle before yielding the page to the test.
     await page.goto('/')
     await use(page)
   },

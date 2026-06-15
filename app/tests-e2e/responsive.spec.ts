@@ -176,14 +176,16 @@ test('Daily Home renders the prescriptive plan card at studio', async ({ page })
 
 test('Auth brand pane visible at studio, hidden at phone', async ({ page: rawPage }) => {
   // This test deliberately uses an unauthenticated page — the brand
-  // pane is part of the sign-in route. fixtures.ts overrides `page`
-  // with an auto-signed-in instance AND the same browser context
-  // carries the Clerk session cookies. A fresh tab on that context
-  // would also be signed in (redirects /sign-in → /), so open a
-  // *separate* context without auth cookies.
+  // pane is part of the sign-in route, and the project default applies the
+  // signed-in storageState (auth.setup.ts). Open a *separate* context with
+  // an explicit empty storageState so it carries no Clerk session and
+  // /sign-in actually renders (instead of redirecting to /).
   const browser = rawPage.context().browser()
   if (!browser) throw new Error('Browser not available — required for fresh context')
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
+  const ctx = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    storageState: { cookies: [], origins: [] },
+  })
   const page = await ctx.newPage()
 
   await page.goto('/sign-in')
