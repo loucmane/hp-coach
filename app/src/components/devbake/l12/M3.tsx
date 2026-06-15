@@ -30,7 +30,7 @@ const KEY_TO_LETTER: Record<string, string> = {
 
 const LETTER_KEYS = ['a', 'b', 'c', 'd', 'e'] as const
 
-const CSS = `
+export const CSS = `
 .m3-reset {
   margin: 0;
   padding: 0;

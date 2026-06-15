@@ -14,6 +14,7 @@ import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as SignInBakeoffRouteImport } from './routes/sign-in-bakeoff'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as RepetitionRouteImport } from './routes/repetition'
+import { Route as RedesignLayoutBakeoffRouteImport } from './routes/redesign-layout-bakeoff'
 import { Route as RedesignLabRouteImport } from './routes/redesign-lab'
 import { Route as RedesignL12RouteImport } from './routes/redesign-l12'
 import { Route as RedesignBakeoffRouteImport } from './routes/redesign-bakeoff'
@@ -59,6 +60,11 @@ const SignInRoute = SignInRouteImport.update({
 const RepetitionRoute = RepetitionRouteImport.update({
   id: '/repetition',
   path: '/repetition',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedesignLayoutBakeoffRoute = RedesignLayoutBakeoffRouteImport.update({
+  id: '/redesign-layout-bakeoff',
+  path: '/redesign-layout-bakeoff',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RedesignLabRoute = RedesignLabRouteImport.update({
@@ -189,6 +195,7 @@ export interface FileRoutesByFullPath {
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
   '/redesign-lab': typeof RedesignLabRoute
+  '/redesign-layout-bakeoff': typeof RedesignLayoutBakeoffRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
@@ -217,6 +224,7 @@ export interface FileRoutesByTo {
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
   '/redesign-lab': typeof RedesignLabRoute
+  '/redesign-layout-bakeoff': typeof RedesignLayoutBakeoffRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
@@ -246,6 +254,7 @@ export interface FileRoutesById {
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
   '/redesign-lab': typeof RedesignLabRoute
+  '/redesign-layout-bakeoff': typeof RedesignLayoutBakeoffRoute
   '/repetition': typeof RepetitionRoute
   '/sign-in': typeof SignInRoute
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
@@ -276,6 +285,7 @@ export interface FileRouteTypes {
     | '/redesign-bakeoff'
     | '/redesign-l12'
     | '/redesign-lab'
+    | '/redesign-layout-bakeoff'
     | '/repetition'
     | '/sign-in'
     | '/sign-in-bakeoff'
@@ -304,6 +314,7 @@ export interface FileRouteTypes {
     | '/redesign-bakeoff'
     | '/redesign-l12'
     | '/redesign-lab'
+    | '/redesign-layout-bakeoff'
     | '/repetition'
     | '/sign-in'
     | '/sign-in-bakeoff'
@@ -332,6 +343,7 @@ export interface FileRouteTypes {
     | '/redesign-bakeoff'
     | '/redesign-l12'
     | '/redesign-lab'
+    | '/redesign-layout-bakeoff'
     | '/repetition'
     | '/sign-in'
     | '/sign-in-bakeoff'
@@ -361,6 +373,7 @@ export interface RootRouteChildren {
   RedesignBakeoffRoute: typeof RedesignBakeoffRoute
   RedesignL12Route: typeof RedesignL12Route
   RedesignLabRoute: typeof RedesignLabRoute
+  RedesignLayoutBakeoffRoute: typeof RedesignLayoutBakeoffRoute
   RepetitionRoute: typeof RepetitionRoute
   SignInRoute: typeof SignInRoute
   SignInBakeoffRoute: typeof SignInBakeoffRoute
@@ -403,6 +416,13 @@ declare module '@tanstack/react-router' {
       path: '/repetition'
       fullPath: '/repetition'
       preLoaderRoute: typeof RepetitionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redesign-layout-bakeoff': {
+      id: '/redesign-layout-bakeoff'
+      path: '/redesign-layout-bakeoff'
+      fullPath: '/redesign-layout-bakeoff'
+      preLoaderRoute: typeof RedesignLayoutBakeoffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/redesign-lab': {
@@ -577,6 +597,7 @@ const rootRouteChildren: RootRouteChildren = {
   RedesignBakeoffRoute: RedesignBakeoffRoute,
   RedesignL12Route: RedesignL12Route,
   RedesignLabRoute: RedesignLabRoute,
+  RedesignLayoutBakeoffRoute: RedesignLayoutBakeoffRoute,
   RepetitionRoute: RepetitionRoute,
   SignInRoute: SignInRoute,
   SignInBakeoffRoute: SignInBakeoffRoute,
