@@ -1,12 +1,15 @@
 import { defineConfig, devices } from '@playwright/test'
+import { STORAGE_STATE } from './tests-e2e/storage-state'
 
 // Playwright is the E2E layer. Vitest covers component logic; Playwright
 // covers real-browser flows (router transitions, Clerk-authenticated pages,
 // keyboard shortcuts like Cmd+K).
 //
-// `globalSetup` boots @clerk/testing once per run so signed-in fixtures
-// can hit Clerk's Frontend API with a pre-issued testing token. Webserver
-// command builds + previews so we exercise the production bundle.
+// `globalSetup` boots @clerk/testing once per run (clerkSetup + test-user
+// creation). The `setup` project then signs in ONCE and saves storageState;
+// the chromium/mobile projects depend on it and reuse that state, so no test
+// signs in itself — this is what keeps Clerk's dev FAPI from rate-limiting
+// under the full suite. Webserver builds + previews the production bundle.
 export default defineConfig({
   testDir: './tests-e2e',
   timeout: 30_000,
@@ -34,11 +37,23 @@ export default defineConfig({
     reducedMotion: 'reduce',
   },
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    // Runs first (chromium/mobile depend on it): signs in once and writes
+    // STORAGE_STATE. See tests-e2e/auth.setup.ts.
+    { name: 'setup', testMatch: /auth\.setup\.ts/ },
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'], storageState: STORAGE_STATE },
+      dependencies: ['setup'],
+    },
     // iPhone 13 emulation runs through the chromium engine — same browser, mobile viewport.
     {
       name: 'mobile',
-      use: { ...devices['iPhone 13'], defaultBrowserType: 'chromium' },
+      use: {
+        ...devices['iPhone 13'],
+        defaultBrowserType: 'chromium',
+        storageState: STORAGE_STATE,
+      },
+      dependencies: ['setup'],
     },
   ],
   // Two web servers boot in parallel: the SPA's production preview and
