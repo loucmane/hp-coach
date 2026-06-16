@@ -10,13 +10,14 @@
 // ships) and applies the variants as scoped CSS overrides + a chrome wrapper —
 // no markup is duplicated. Dev-only; deleted once the three calls are made.
 
-import { type ReactElement, type ReactNode, useState } from 'react'
+import { type ReactElement, type ReactNode, useEffect, useState } from 'react'
 import { M3 } from '@/components/devbake/l12/M3'
 import type { DrillKey } from '@/components/devbake/redesign/fixturesSections'
 
 type Col = 'single' | 'split'
 type PhoneRail = 'rail' | 'linear'
 type Chrome = 'bare' | 'shell'
+type NextStyle = 'float' | 'flow'
 
 const SECTIONS: { key: DrillKey; label: string }[] = [
   { key: 'ord', label: 'ORD' },
@@ -60,7 +61,60 @@ const OVERRIDES = `
 .bk-phone[data-phonerail="linear"] .m3-row { grid-template-columns: 1fr; row-gap: 8px; }
 .bk-phone[data-phonerail="linear"] .m3-spine { display: none; }
 .bk-phone[data-phonerail="linear"] .m3-meta { text-align: left; padding-top: 0; }
+
+/* Floating-next demo: hide M3's static bottom button so the floating CTA is
+   the only advance affordance. */
+body[data-next="float"] .m3-next-row { display: none; }
 `
+
+// A viewport-pinned "Nästa fråga" — the proposed always-reachable advance
+// affordance, so you don't scroll past the explanation. Bottom-centre (clears
+// the dev share/tweaks pills bottom-right). Clicking it dispatches Enter,
+// which M3's own keyboard handler treats as "advance" (resets to un-graded).
+function FloatingNext(): ReactElement {
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        left: 0,
+        right: 0,
+        bottom: 'clamp(20px, 4vh, 40px)',
+        display: 'flex',
+        justifyContent: 'center',
+        pointerEvents: 'none',
+        zIndex: 20,
+      }}
+    >
+      <button
+        type="button"
+        onClick={() => {
+          window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+        }}
+        style={{
+          all: 'unset',
+          pointerEvents: 'auto',
+          cursor: 'pointer',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 10,
+          padding: '14px 26px',
+          borderRadius: 'var(--radius)',
+          fontFamily: 'var(--font-display)',
+          fontSize: 16,
+          fontWeight: 500,
+          color: 'var(--bg)',
+          background: 'color-mix(in oklch, var(--ink) 92%, transparent)',
+          backdropFilter: 'saturate(150%) blur(16px)',
+          WebkitBackdropFilter: 'saturate(150%) blur(16px)',
+          boxShadow: '0 18px 40px -16px rgba(0,0,0,0.32)',
+        }}
+      >
+        Nästa fråga
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, opacity: 0.7 }}>↵</span>
+      </button>
+    </div>
+  )
+}
 
 function ChromeBar({ section }: { section: string }): ReactElement {
   const mono = {
@@ -167,7 +221,16 @@ export function LayoutBakeoff(): ReactElement {
   const [col, setCol] = useState<Col>('single')
   const [phoneRail, setPhoneRail] = useState<PhoneRail>('rail')
   const [chrome, setChrome] = useState<Chrome>('bare')
+  const [nextStyle, setNextStyle] = useState<NextStyle>('float')
   const sectionLabel = SECTIONS.find((s) => s.key === section)?.label ?? 'ORD'
+
+  // Drive the CSS that hides M3's static bottom button when floating.
+  useEffect(() => {
+    document.body.setAttribute('data-next', nextStyle)
+    return () => {
+      document.body.removeAttribute('data-next')
+    }
+  }, [nextStyle])
 
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--bg)', color: 'var(--ink)' }}>
@@ -231,10 +294,21 @@ export function LayoutBakeoff(): ReactElement {
           ]}
           onChange={setChrome}
         />
+        <Toggle
+          label="Nästa"
+          value={nextStyle}
+          options={[
+            { v: 'float', l: 'Flytande' },
+            { v: 'flow', l: 'I flödet (M3)' },
+          ]}
+          onChange={setNextStyle}
+        />
         <span style={{ fontSize: 12, color: 'var(--muted)' }}>
           klicka ett alternativ för rättat läge
         </span>
       </div>
+
+      {nextStyle === 'float' && <FloatingNext />}
 
       <div style={{ padding: '0 clamp(20px, 4vw, 48px) 80px' }}>
         {/* Desktop stage — col + chrome */}
