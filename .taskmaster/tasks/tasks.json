@@ -4262,20 +4262,20 @@
       },
       {
         "id": "80",
-        "title": "[Boksidan] Branch + design-system conventions",
-        "description": "Open the production branch off main and codify the chosen redesign as system conventions.",
+        "title": "[SUPERSEDED] [Boksidan] Branch + design-system conventions",
+        "description": "[Superseded 2026-06-18 by #88 M3 faithful rebuild — this graft SHIPPED but is being REVERSED; the StudyDesk/2-col code it left is what M0/M1 tear out. Detail in docs/m3-faithful-rebuild-spec.md.] Open the production branch off main and codify the chosen redesign as system conventions.",
         "details": "Branch off main. Promote Spalt (L12 ivory/cobalt; tokens.ts on redesign-bakeoff-2026) to default palette. Two standing rules: (1) cobalt --accent is STRUCTURE only (mono margin labels, step numerals, tactic block, framework links); (2) grading is STATE - green --ok 'Ratt.' / red --bad 'Fel.' verdict as italic serif ink + --ok/--bad rows. Cherry-pick the Spalt palette + QuestionFigure rework from redesign-bakeoff-2026. Reference: /redesign-l12?dev=1&v=3.",
         "testStrategy": "",
         "priority": "high",
         "dependencies": [],
         "status": "done",
         "subtasks": [],
-        "updatedAt": "2026-06-14T11:22:00.105Z"
+        "updatedAt": "2026-06-18T12:00:00.000Z"
       },
       {
         "id": "81",
-        "title": "[Boksidan] Drill - port M3 margin-rail layout to DrillQuestion / StudyDesk on tokens",
-        "description": "Rebuild the live drill in the Boksidan layout: hairline margin rail with mono labels, hairline option rows, single left axis.",
+        "title": "[SUPERSEDED] [Boksidan] Drill - port M3 margin-rail layout to DrillQuestion / StudyDesk on tokens",
+        "description": "[Superseded 2026-06-18 by #88 M3 faithful rebuild — this graft SHIPPED but is being REVERSED; the StudyDesk/2-col code it left is what M0/M1 tear out. Detail in docs/m3-faithful-rebuild-spec.md.] Rebuild the live drill in the Boksidan layout: hairline margin rail with mono labels, hairline option rows, single left axis.",
         "details": "Translate M3.tsx CSS into the token-driven component layer (DrillQuestion + StudyDesk) reading live corpus data. Rail labels per section: TEXTEN (LAS), UPPGIFTEN/PASTAENDEN (NOG), UNDERLAGET (DTK), FRAGAN/VALJ SVAR/UTFALL shared. Keys a-e clamped to option count; click + Enter reset; Esc to parent. Holds across phone/reader/studio.",
         "testStrategy": "",
         "priority": "high",
@@ -4284,12 +4284,12 @@
         ],
         "status": "done",
         "subtasks": [],
-        "updatedAt": "2026-06-14T11:22:00.142Z"
+        "updatedAt": "2026-06-18T12:00:00.000Z"
       },
       {
         "id": "82",
-        "title": "[Boksidan] Grading + verdict - semantic colour, calm draw, a11y",
-        "description": "Wire the graded state: green/red verdict + rows, cobalt for structure, calm left-aligned draw at the picked row.",
+        "title": "[SUPERSEDED] [Boksidan] Grading + verdict - semantic colour, calm draw, a11y",
+        "description": "[Superseded 2026-06-18 by #88 M3 faithful rebuild — this graft SHIPPED but is being REVERSED; the StudyDesk/2-col code it left is what M0/M1 tear out. Detail in docs/m3-faithful-rebuild-spec.md.] Wire the graded state: green/red verdict + rows, cobalt for structure, calm left-aligned draw at the picked row.",
         "details": "Verdict uses --ok/--bad italic serif ink; correct answer from question.answer; wrong subline names the real correct option. Calm draw (no scale/blur stamp); no auto-advance. Contrast verified light+dark across palettes; aria-live verdict.",
         "testStrategy": "",
         "priority": "high",
@@ -4298,12 +4298,12 @@
         ],
         "status": "done",
         "subtasks": [],
-        "updatedAt": "2026-06-14T11:36:06.150Z"
+        "updatedAt": "2026-06-18T12:00:00.000Z"
       },
       {
         "id": "83",
-        "title": "[Boksidan] PedagogyPanel - book-page typesetting",
-        "description": "Re-skin PedagogyPanel: serif lede between rules, serif step numerals, ~75ch measure, distractor pairs.",
+        "title": "[SUPERSEDED] [Boksidan] PedagogyPanel - book-page typesetting",
+        "description": "[Superseded 2026-06-18 by #88 M3 faithful rebuild — this graft SHIPPED but is being REVERSED; the StudyDesk/2-col code it left is what M0/M1 tear out. Detail in docs/m3-faithful-rebuild-spec.md.] Re-skin PedagogyPanel: serif lede between rules, serif step numerals, ~75ch measure, distractor pairs.",
         "details": "Bold serif solution lede between a 1px ink rule and a hairline; serif step numerals; ~75ch measure for steps + distractor analyses; localized decimals (1,4); MathText for quant; keep graceful 'Forklaring saknas annu' state (e.g. DTK).",
         "testStrategy": "",
         "priority": "high",
@@ -4312,12 +4312,12 @@
         ],
         "status": "done",
         "subtasks": [],
-        "updatedAt": "2026-06-14T11:36:06.162Z"
+        "updatedAt": "2026-06-18T12:00:00.000Z"
       },
       {
         "id": "84",
-        "title": "[Boksidan] Wide-mode StudyDesk split at >=1200px",
-        "description": "At wide viewports pin question + rail left while graded pedagogy scrolls right.",
+        "title": "[SUPERSEDED] [Boksidan] Wide-mode StudyDesk split at >=1200px",
+        "description": "[Superseded 2026-06-18 by #88 M3 faithful rebuild — this graft SHIPPED but is being REVERSED; the StudyDesk/2-col code it left is what M0/M1 tear out. Detail in docs/m3-faithful-rebuild-spec.md.] At wide viewports pin question + rail left while graded pedagogy scrolls right.",
         "details": "Use existing StudyDesk two-column orchestration: question/options/rail stay visible; PedagogyPanel scrolls right after grading; rail is the left structural column. Verify the 1200px seam and that the figure modal still portals out.",
         "testStrategy": "",
         "priority": "medium",
@@ -4327,40 +4327,40 @@
         ],
         "status": "done",
         "subtasks": [],
-        "updatedAt": "2026-06-14T11:22:00.159Z"
+        "updatedAt": "2026-06-18T12:00:00.000Z"
       },
       {
         "id": "85",
-        "title": "[Boksidan] Home / section-picker / repetition / diagnostik surfaces",
-        "description": "Apply Boksidan composition + Spalt to the non-drill surfaces.",
+        "title": "[CANCELLED] [Boksidan] Home / section-picker / repetition / diagnostik surfaces",
+        "description": "[Superseded 2026-06-18 by #88 M3 faithful rebuild; pending graft, never shipped. See docs/m3-faithful-rebuild-spec.md.] Apply Boksidan composition + Spalt to the non-drill surfaces.",
         "details": "Home (greeting, score, resume-first CTA above fold, daily plan, traps), section picker, repetition, diagnostik. Reuse margin-rail/mono-label idiom + serif display where it fits.",
         "testStrategy": "",
         "priority": "medium",
         "dependencies": [
           "80"
         ],
-        "status": "pending",
+        "status": "cancelled",
         "subtasks": [],
-        "updatedAt": "2026-06-12"
+        "updatedAt": "2026-06-18T12:00:00.000Z"
       },
       {
         "id": "86",
-        "title": "[Boksidan] Auth screens to Boksidan composition",
-        "description": "Re-skin sign-in / sign-up to the Boksidan editorial composition under Spalt.",
+        "title": "[CANCELLED] [Boksidan] Auth screens to Boksidan composition",
+        "description": "[Superseded 2026-06-18 by #88 M3 faithful rebuild; pending graft, never shipped. See docs/m3-faithful-rebuild-spec.md.] Re-skin sign-in / sign-up to the Boksidan editorial composition under Spalt.",
         "details": "Editorial register on auth (wide canvas + brand panel already exist). Token-bound, palette+dark aware. Clerk components themed to match.",
         "testStrategy": "",
         "priority": "low",
         "dependencies": [
           "80"
         ],
-        "status": "pending",
+        "status": "cancelled",
         "subtasks": [],
-        "updatedAt": "2026-06-12"
+        "updatedAt": "2026-06-18T12:00:00.000Z"
       },
       {
         "id": "87",
-        "title": "[Boksidan] Verify - responsive + palette/dark sweep, visual QA, ship",
-        "description": "Full verification and ship: Playwright across viewports + palettes/dark, visual QA, tests green.",
+        "title": "[CANCELLED] [Boksidan] Verify - responsive + palette/dark sweep, visual QA, ship",
+        "description": "[Superseded 2026-06-18 by #88 M3 faithful rebuild; pending graft, never shipped. See docs/m3-faithful-rebuild-spec.md.] Full verification and ship: Playwright across viewports + palettes/dark, visual QA, tests green.",
         "details": "Extend 3-viewport Playwright for Boksidan; sweep 5 palettes x light/dark on drill + home; visual-verify every surface; vitest + typecheck + biome; merge via auto-merge label on green CI.",
         "testStrategy": "",
         "priority": "medium",
@@ -4372,9 +4372,146 @@
           "85",
           "86"
         ],
-        "status": "pending",
+        "status": "cancelled",
         "subtasks": [],
-        "updatedAt": "2026-06-12"
+        "updatedAt": "2026-06-18T12:00:00.000Z"
+      },
+      {
+        "id": "88",
+        "title": "M3 Faithful Rebuild (Boksidan, take 2)",
+        "description": "Faithfully rebuild the live product to the M3 'Boksidan' design, reversing the #80-87 graft ('looks nothing like what we agreed on'). Detail lives in docs/m3-faithful-rebuild-spec.md + harness tracker #152-161 — do NOT inline element tables here.",
+        "details": "Supersedes #80-87. SINGLE detail-owner = docs/m3-faithful-rebuild-spec.md (git-tracked: exhaustive per-element spec, locked decisions, red-team + site-sweep corrections). The 10 subtasks are thin pointers (doc section + harness id). Harness #152-161 is the live driver; mirror subtask status here at each Aegis closeout. Vetted by a design panel + red-team + site-vs-plan sweep + this reconcile panel.",
+        "testStrategy": "Per-unit anti-drift gate (M3 ref cited; live+M3 diff @1440 & @402 light+dark; testids + pnpm test + e2e green; owner approves, no auto-merge). Terminal: M6 (#158) cross-surface fidelity grid.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "M0 — Foundation (CSS chassis + class map + mechanical gate)",
+            "description": "POINTER ONLY. Full grounded spec → docs/m3-faithful-rebuild-spec.md §M0; live working tracker → harness #152. Do NOT inline element tables / px values / decisions here — the doc is the single detail-owner.",
+            "dependencies": [],
+            "details": "Mirror this subtask's status from harness #152 at each Aegis closeout. The harness tracker is the day-to-day driver; this is a thin authority pointer so `task-master next` can surface the live rebuild.",
+            "status": "pending",
+            "testStrategy": "Per-unit: live+M3 side-by-side diff at 1440 & 402, light & dark, owner-approved (doc anti-drift gate). M6 (#158) is the terminal sweep.",
+            "parentId": "88"
+          },
+          {
+            "id": 2,
+            "title": "MC — Shared minimal-mast chrome component",
+            "description": "POINTER ONLY. Full grounded spec → docs/m3-faithful-rebuild-spec.md 'MC (#159)'; live working tracker → harness #159. Do NOT inline element tables / px values / decisions here — the doc is the single detail-owner.",
+            "dependencies": [
+              1
+            ],
+            "details": "Mirror this subtask's status from harness #159 at each Aegis closeout. The harness tracker is the day-to-day driver; this is a thin authority pointer so `task-master next` can surface the live rebuild.",
+            "status": "pending",
+            "testStrategy": "Per-unit: live+M3 side-by-side diff at 1440 & 402, light & dark, owner-approved (doc anti-drift gate). M6 (#158) is the terminal sweep.",
+            "parentId": "88"
+          },
+          {
+            "id": 3,
+            "title": "M1 — Drill pre-answer (single-col reversal, eyebrow, tactic)",
+            "description": "POINTER ONLY. Full grounded spec → docs/m3-faithful-rebuild-spec.md §M1; live working tracker → harness #153. Do NOT inline element tables / px values / decisions here — the doc is the single detail-owner.",
+            "dependencies": [
+              2
+            ],
+            "details": "Mirror this subtask's status from harness #153 at each Aegis closeout. The harness tracker is the day-to-day driver; this is a thin authority pointer so `task-master next` can surface the live rebuild.",
+            "status": "pending",
+            "testStrategy": "Per-unit: live+M3 side-by-side diff at 1440 & 402, light & dark, owner-approved (doc anti-drift gate). M6 (#158) is the terminal sweep.",
+            "parentId": "88"
+          },
+          {
+            "id": 4,
+            "title": "M2 — Drill graded / pedagogy rewrite (struck distractor text)",
+            "description": "POINTER ONLY. Full grounded spec → docs/m3-faithful-rebuild-spec.md §M2; live working tracker → harness #154. Do NOT inline element tables / px values / decisions here — the doc is the single detail-owner.",
+            "dependencies": [
+              3
+            ],
+            "details": "Mirror this subtask's status from harness #154 at each Aegis closeout. The harness tracker is the day-to-day driver; this is a thin authority pointer so `task-master next` can surface the live rebuild.",
+            "status": "pending",
+            "testStrategy": "Per-unit: live+M3 side-by-side diff at 1440 & 402, light & dark, owner-approved (doc anti-drift gate). M6 (#158) is the terminal sweep.",
+            "parentId": "88"
+          },
+          {
+            "id": 5,
+            "title": "M3H — Home rebuild (stats row, numbered plan, honest delta)",
+            "description": "POINTER ONLY. Full grounded spec → docs/m3-faithful-rebuild-spec.md §M3H; live working tracker → harness #155. Do NOT inline element tables / px values / decisions here — the doc is the single detail-owner.",
+            "dependencies": [
+              2
+            ],
+            "details": "Mirror this subtask's status from harness #155 at each Aegis closeout. The harness tracker is the day-to-day driver; this is a thin authority pointer so `task-master next` can surface the live rebuild.",
+            "status": "pending",
+            "testStrategy": "Per-unit: live+M3 side-by-side diff at 1440 & 402, light & dark, owner-approved (doc anti-drift gate). M6 (#158) is the terminal sweep.",
+            "parentId": "88"
+          },
+          {
+            "id": 6,
+            "title": "M4 — Section apparatus (LÄS/NOG/XYZ/DTK/KVA/MEK/ELF)",
+            "description": "POINTER ONLY. Full grounded spec → docs/m3-faithful-rebuild-spec.md §M4; live working tracker → harness #156. Do NOT inline element tables / px values / decisions here — the doc is the single detail-owner.",
+            "dependencies": [
+              1,
+              3,
+              4
+            ],
+            "details": "Mirror this subtask's status from harness #156 at each Aegis closeout. The harness tracker is the day-to-day driver; this is a thin authority pointer so `task-master next` can surface the live rebuild.",
+            "status": "pending",
+            "testStrategy": "Per-unit: live+M3 side-by-side diff at 1440 & 402, light & dark, owner-approved (doc anti-drift gate). M6 (#158) is the terminal sweep.",
+            "parentId": "88"
+          },
+          {
+            "id": 7,
+            "title": "M5 — Carry-over (diagnostik/auth/repetition/lektion/progress)",
+            "description": "POINTER ONLY. Full grounded spec → docs/m3-faithful-rebuild-spec.md §M5; live working tracker → harness #157. Do NOT inline element tables / px values / decisions here — the doc is the single detail-owner.",
+            "dependencies": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "details": "Mirror this subtask's status from harness #157 at each Aegis closeout. The harness tracker is the day-to-day driver; this is a thin authority pointer so `task-master next` can surface the live rebuild.",
+            "status": "pending",
+            "testStrategy": "Per-unit: live+M3 side-by-side diff at 1440 & 402, light & dark, owner-approved (doc anti-drift gate). M6 (#158) is the terminal sweep.",
+            "parentId": "88"
+          },
+          {
+            "id": 8,
+            "title": "M6 — Cross-surface fidelity sweep (terminal)",
+            "description": "POINTER ONLY. Full grounded spec → docs/m3-faithful-rebuild-spec.md §M6; live working tracker → harness #158. Do NOT inline element tables / px values / decisions here — the doc is the single detail-owner.",
+            "dependencies": [
+              6,
+              7,
+              10
+            ],
+            "details": "Mirror this subtask's status from harness #158 at each Aegis closeout. The harness tracker is the day-to-day driver; this is a thin authority pointer so `task-master next` can surface the live rebuild.",
+            "status": "pending",
+            "testStrategy": "Per-unit: live+M3 side-by-side diff at 1440 & 402, light & dark, owner-approved (doc anti-drift gate). M6 (#158) is the terminal sweep.",
+            "parentId": "88"
+          },
+          {
+            "id": 9,
+            "title": "M-settings — Real Settings surface (retires /avancerat)",
+            "description": "POINTER ONLY. Full grounded spec → docs/m3-faithful-rebuild-spec.md 'Site-vs-plan sweep corrections'; live working tracker → harness #160. Do NOT inline element tables / px values / decisions here — the doc is the single detail-owner.",
+            "dependencies": [],
+            "details": "Mirror this subtask's status from harness #160 at each Aegis closeout. The harness tracker is the day-to-day driver; this is a thin authority pointer so `task-master next` can surface the live rebuild.",
+            "status": "pending",
+            "testStrategy": "Per-unit: live+M3 side-by-side diff at 1440 & 402, light & dark, owner-approved (doc anti-drift gate). M6 (#158) is the terminal sweep.",
+            "parentId": "88"
+          },
+          {
+            "id": 10,
+            "title": "DrillResult — Rebuild the 'Klart.' end-of-session screen",
+            "description": "POINTER ONLY. Full grounded spec → docs/m3-faithful-rebuild-spec.md 'DrillResult (#161)'; live working tracker → harness #161. Do NOT inline element tables / px values / decisions here — the doc is the single detail-owner.",
+            "dependencies": [
+              2,
+              4
+            ],
+            "details": "Mirror this subtask's status from harness #161 at each Aegis closeout. The harness tracker is the day-to-day driver; this is a thin authority pointer so `task-master next` can surface the live rebuild.",
+            "status": "pending",
+            "testStrategy": "Per-unit: live+M3 side-by-side diff at 1440 & 402, light & dark, owner-approved (doc anti-drift gate). M6 (#158) is the terminal sweep.",
+            "parentId": "88"
+          }
+        ],
+        "updatedAt": "2026-06-18T12:00:00.000Z"
       }
     ],
     "metadata": {
