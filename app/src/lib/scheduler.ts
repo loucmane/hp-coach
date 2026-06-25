@@ -432,7 +432,9 @@ function masteryMaintenanceItem(date: string): PlanItem {
     headline: 'Blandad övning · alla sektioner',
     rationale: 'Du är ifatt — sikta mot 2.0 med blandad övning.',
     estimatedMinutes: 10,
-    href: '/drill',
+    // `?mixed=1` plays a genuinely interleaved drill across all 8 sections.
+    // Bare `/drill` defaults to ORD-only, which would betray "alla sektioner".
+    href: '/drill?mixed=1',
     completed: false,
   }
 }

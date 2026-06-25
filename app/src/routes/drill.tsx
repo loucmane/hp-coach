@@ -14,14 +14,14 @@ import { useActiveSession } from '@/api/hooks/useSessions'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { entryHeadword, loadFramework } from '@/data/frameworks'
 import { findQuestion, loadBank, type Question, type Section } from '@/data/questions'
-import { DEFAULT_DRILL_LENGTH, pickDrillQuestions } from '@/lib/drill'
+import { DEFAULT_DRILL_LENGTH, pickDrillQuestions, pickMixedDrillQuestions } from '@/lib/drill'
 import { REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
 
 const DRILL_SECTIONS = ['ORD', 'LÄS', 'MEK', 'ELF', 'XYZ', 'KVA', 'NOG', 'DTK'] as const
 type DrillSection = (typeof DRILL_SECTIONS)[number]
 
-type DrillSearch = { section?: DrillSection; qid?: string; framework?: string }
+type DrillSearch = { section?: DrillSection; qid?: string; framework?: string; mixed?: true }
 
 function validateSearch(input: Record<string, unknown>): DrillSearch {
   const out: DrillSearch = {}
@@ -43,6 +43,11 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
   const framework = input.framework
   if (typeof framework === 'string' && framework.length > 0 && framework.length < 60) {
     out.framework = framework
+  }
+  // `?mixed=1` — genuinely interleaved drill across all 8 sections, the
+  // daily plan's "Blandad övning · alla sektioner" mastery-maintenance item.
+  if (input.mixed === '1' || input.mixed === true) {
+    out.mixed = true
   }
   return out
 }
@@ -85,7 +90,7 @@ export const Route = createFileRoute('/drill')({
 })
 
 function DrillScreen() {
-  const { section: sectionFromUrl, qid, framework } = Route.useSearch()
+  const { section: sectionFromUrl, qid, framework, mixed } = Route.useSearch()
   const section: DrillSection = sectionFromUrl ?? 'ORD'
   const navigate = useNavigate()
 
@@ -144,7 +149,9 @@ function DrillScreen() {
     }
   }, [framework, section])
 
-  const copy = SECTION_COPY[section]
+  const copy = mixed
+    ? { headline: 'Blandad övning', subcopy: '10 frågor blandat från alla åtta delprov.' }
+    : SECTION_COPY[section]
 
   // Three picker modes (cross-device resume is handled by SessionPlayer
   // adopting the active server session + its stored plan via resolvePlan
@@ -163,7 +170,9 @@ function DrillScreen() {
         })
     : framework
       ? () => pickFrameworkQuestions(section as Section, framework)
-      : () => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)
+      : mixed
+        ? () => pickMixedDrillQuestions(DEFAULT_DRILL_LENGTH)
+        : () => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)
 
   // Turn a stored plan (server session qids) back into Questions so
   // SessionPlayer can replay the exact paused session on any device.

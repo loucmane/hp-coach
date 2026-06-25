@@ -8,7 +8,13 @@
 // call (see data/questions.ts). After the first load it's cached at
 // module scope, so subsequent picks resolve in microseconds.
 
-import { loadBank, type Question, questionsInSection, type Section } from '@/data/questions'
+import {
+  loadBank,
+  type Question,
+  questionsInSection,
+  SECTION_KEYS,
+  type Section,
+} from '@/data/questions'
 
 export const DEFAULT_DRILL_LENGTH = 10
 
@@ -36,6 +42,47 @@ export async function pickDrillQuestions(
     ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
   return shuffled.slice(0, Math.min(count, shuffled.length))
+}
+
+/**
+ * Pick `count` questions INTERLEAVED across all 8 sections — the genuine
+ * "Blandad övning · alla sektioner" mastery-maintenance drill. Draws
+ * round-robin (one section at a time, in rotation) from per-section shuffled
+ * pools, so a 10-question set is spread across sections rather than clustered
+ * in one. Replaces the old bug where the mastery item's bare `/drill` fell
+ * through to an ORD-only section drill. Only fully-parsed (playable) questions
+ * are eligible, via `questionsInSection`.
+ */
+export async function pickMixedDrillQuestions(
+  count: number = DEFAULT_DRILL_LENGTH,
+  rng: () => number = Math.random,
+): Promise<Question[]> {
+  const bank = await loadBank()
+  // One shuffled pool per section (already filtered to playable questions).
+  const pools = SECTION_KEYS.map((section) => {
+    const pool = questionsInSection(bank, section)
+    const shuffled = [...pool]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1))
+      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+    return shuffled
+  })
+  // Round-robin across sections until we have `count` or every pool is dry.
+  const out: Question[] = []
+  let drewThisRound = true
+  while (out.length < count && drewThisRound) {
+    drewThisRound = false
+    for (const pool of pools) {
+      if (out.length >= count) break
+      const q = pool.pop()
+      if (q) {
+        out.push(q)
+        drewThisRound = true
+      }
+    }
+  }
+  return out
 }
 
 /** Tiny seeded LCG — only used by tests; production goes through Math.random. */
