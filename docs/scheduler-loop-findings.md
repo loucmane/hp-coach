@@ -118,3 +118,99 @@ by SF1 for near-zero cost.
 5. **#26 — adaptive engine** — only after the data writers exist; not now. Cheapest
    honest first step if ever queued: wire the `framework_progress`/`mastery` writers
    (one bounded PR) so future adaptivity has non-empty tables to read.
+
+---
+
+## Execution-vetted (2026-06-25) — corrected fix designs + TDD build order
+
+A 4-lens execution pass (one agent *ran* the fixes) returned **GO-WITH-CHANGES**.
+It caught that the originally-proposed F1 signal is **wrong and would re-create the
+bug**. Build to the corrected designs below, not the first-draft ones above.
+
+### F1 — REPLACE the signal: report-don't-derive (do NOT use attempt-count growth)
+The proposed "complete the mastery drill when total `attempts7d` grows ≥5 vs a
+snapshot" is unsound, verified by execution:
+- **Window-slide:** `attempts7d` is a server-side *rolling* 7-day window
+  (`worker/src/routes/me.ts:217`); the global total can *drop* overnight as old
+  attempts age out — the probe observed total `30→21` (−9) **after the user did 6
+  fresh questions today**, so the ≥5 gate is unreachable on the active-streak day it
+  must fire.
+- **Cross-contamination:** "grew ≥5 anywhere" completes the `section=null` mastery
+  item when the user does a *different* item's 5-question section drill → fakes
+  `allComplete`.
+- **Wrong for cold-start:** the cold-start item is also `section=null` but
+  `href=/diagnostik` — a distinct flow; the shared signal marks it "done" from
+  unrelated drill attempts.
+
+**Corrected design — wire the already-built-but-dead `markItemComplete`.**
+`SessionPlayer` owns a clean done-transition (`SessionPlayer.tsx:332-342`,
+`setPhase('done')` + `updateSession end:true`), and `markItemComplete` (scheduler.ts:484-500)
+is written **and unit-tested** but called nowhere. Wire the session done-event to call
+it for the plan item that session satisfies. **Load-bearing caveat:** `deriveCompletion`
+recomputes from signals every render and treats persisted `completed` as a cache that
+flips back to false — so `isItemComplete` must *also* honor a separate reported-done
+flag (a `hpc-plan-item-done-<id>` localStorage key, mirroring `markLessonRead`) or the
+wire is a no-op. This one mechanism collapses **3 of the 4 completion bugs** (section=null
+dead-end, 60s drill lag, <5-question dead-end) into one correct path. **No
+`PLAN_SCHEMA_VERSION` bump** (the flag lives outside the plan blob).
+
+### F2 — sound, with 4 guards
+Reuse `pickTrapForSection(topTraps, ranked[0].section)` (resolves by section, verified)
+with a `drillItem` fallback. Guards: (1) place it **after** the long-break + cold-start
+early returns and **before** the Rule 3 `ranked[1]` block (so the 3-item cap drops the
+lower-value `ranked[1]` drill, not the weakest trap drill); (2) gate on
+`!weakestLessonEmitted` — a boolean set **only inside the `hint !== null` lesson push**
+(scheduler.ts:189-191), NOT on `!needsLesson` (the `hint===null` all-read case is exactly
+where F2 must fire); (3) gate on `needsDrill(weakest)` so a 1.9 weakest isn't drilled;
+(4) thread a rank/role flag so `drillRationale` stops labeling the weakest "näst svagast"
+(scheduler.ts:376) — this becomes a *correctness* bug once F2 ships.
+
+### New bug found: the mixed-drill routing lie
+The mastery item href is bare `/drill` (scheduler.ts:411) but `/drill` defaults
+`section ?? 'ORD'` (drill.tsx:89) — so **"Blandad övning · alla sektioner" actually plays
+an ORD-only drill.** Fix in SF1: either make bare `/drill` genuinely random-across-sections,
+or give the mastery item `section = least-recently-attempted` (from
+`SectionScore.daysSinceLastAttempt`) + `href=/drill?section=X` — the latter also gives it a
+real per-section completion path and powers SF2's rotation.
+
+### SF2 corrections
+- **Lesson-href hash is dead on arrival:** `navigateHref` splits only on `?`, so
+  `/lektion?section=NOG#NOG-TRAP-001` yields `section="NOG#NOG-TRAP-001"`. **Recommended:**
+  drop the hash; complete the lesson item when **any** entry of the section's framework is
+  read (no router change; also dodges the first-unread-entry drift).
+- **`markItemComplete`: WIRE it, don't delete** — it's the keystone of F1.
+- **Day-boundary:** recompute `today` on `focus`/`visibilitychange`, NOT a midnight
+  `setInterval` (a naive `now`-in-deps reintroduces the documented infinite render loop,
+  useDailyPlan.ts:92-103); suppress regeneration while a session is active.
+- **Mastery monotony:** the `needsDrill` freshness/trend gate is pure + safe (empty-plan
+  fear unfounded — mastery fallback backstops). The *rotation* half depends on the
+  mastery-section decision above; settle that in SF1 first.
+- **stats-invalidate** on session-**end** only (not per-question → avoids ~10×/session
+  refetch storm).
+
+### PR split — THREE PRs (not two)
+- **PR A = SF1 (#162/#89):** F2 (pure scheduler) first, then F1 (the report-don't-derive
+  wire + reported-done flag + mixed-drill routing fix).
+- **PR B = SF2a (pure):** rankWeakness tie-break, drillRationale label+precision,
+  needsDrill freshness gate. scheduler.ts/scoring.ts + tests only, near-zero blast.
+- **PR C = SF2b (hook/cache):** stats-invalidate, lesson-completion fix, day-boundary.
+  Higher blast (hook/router/query-cache); land last.
+
+### Test impact
+Baseline 85 tests green. New test seam: **export `deriveCompletion`/`isItemComplete`** +
+create `useDailyPlan.test.ts` (no hooks test exists today). Existing tests that flip:
+`scheduler.test.ts:188-198` ("skips lesson when hint null" — now also gets a drill);
+`:158` only if the hash-href design is kept (avoid it). `:308-311` ("mastery section
+`toBeNull`") flips only if mastery gets a real section (decide first). Keep
+`markItemComplete` describe (`:515-531`). No schema bump under the recommended designs.
+
+### Owner decisions (recommendations adopted unless you object)
+1. **Completion model → report-don't-derive** (unanimous; the count heuristic is
+   empirically proven not to close the blocker). **Recommended + adopted.**
+2. **Mastery item section → least-recently-attempted** (fixes the routing lie, gives a
+   real completion path, powers rotation) vs keep `section=null`. **Recommended:
+   least-recently-attempted.**
+3. **Lesson completion → section-read** (no router change). **Recommended.**
+4. Day-boundary via focus/visibilitychange, regen suppressed mid-session (or defer the
+   overnight-tab case for the single dogfood user). **Recommended: implement.**
+5. stats-invalidate on session-end. **Recommended.**
