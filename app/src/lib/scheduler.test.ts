@@ -12,11 +12,13 @@ import {
   type DailyPlan,
   generateDailyPlan,
   isAllMastered,
+  loadDoneItems,
   loadLessonReads,
   loadPlan,
   localDateString,
   markItemComplete,
   markLessonRead,
+  markPlanItemDone,
   PLAN_SCHEMA_VERSION,
   type SchedulerSignals,
   savePlan,
@@ -552,6 +554,22 @@ function fakeStorage(): Storage {
     },
   }
 }
+
+describe("plan-item done flags (report-don't-derive)", () => {
+  it('round-trips a reported-done item id', () => {
+    const storage = fakeStorage()
+    expect(loadDoneItems(storage).has(`drill-${TODAY}`)).toBe(false)
+    markPlanItemDone(`drill-${TODAY}`, storage)
+    expect(loadDoneItems(storage).has(`drill-${TODAY}`)).toBe(true)
+  })
+
+  it('__resetSchedulerStorage clears done flags too', () => {
+    const storage = fakeStorage()
+    markPlanItemDone(`drill-${TODAY}`, storage)
+    __resetSchedulerStorage(storage)
+    expect(loadDoneItems(storage).size).toBe(0)
+  })
+})
 
 describe('savePlan + loadPlan round-trip', () => {
   it('writes and reads back the same plan', () => {

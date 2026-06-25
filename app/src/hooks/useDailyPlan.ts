@@ -40,6 +40,7 @@ import {
   type DailyPlan,
   type FrameworkHint,
   generateDailyPlan,
+  loadDoneItems,
   loadLessonReads,
   loadPlan,
   localDateString,
@@ -106,13 +107,29 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
 
     const cached = loadPlan(today)
     if (cached) {
-      setPlan(deriveCompletion(cached, due.data.length, loadLessonReads(), stats.data.bySection))
+      setPlan(
+        deriveCompletion(
+          cached,
+          due.data.length,
+          loadLessonReads(),
+          stats.data.bySection,
+          loadDoneItems(),
+        ),
+      )
       return
     }
 
     const fresh = buildPlan(now, stats.data.bySection, due.data.length, hints, topTraps)
     savePlan(fresh)
-    setPlan(deriveCompletion(fresh, due.data.length, loadLessonReads(), stats.data.bySection))
+    setPlan(
+      deriveCompletion(
+        fresh,
+        due.data.length,
+        loadLessonReads(),
+        stats.data.bySection,
+        loadDoneItems(),
+      ),
+    )
   }, [stats.data, due.data, hints, today, topTraps])
 
   // Re-run derivation when due count or stats change mid-session
@@ -121,7 +138,13 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
   // Home to be picked up — that's fine for v1.
   useEffect(() => {
     if (!plan || due.data === undefined || !stats.data) return
-    const next = deriveCompletion(plan, due.data.length, loadLessonReads(), stats.data.bySection)
+    const next = deriveCompletion(
+      plan,
+      due.data.length,
+      loadLessonReads(),
+      stats.data.bySection,
+      loadDoneItems(),
+    )
     if (next !== plan) {
       savePlan(next)
       setPlan(next)
@@ -132,7 +155,15 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
     if (!stats.data || due.data === undefined || hints === null) return
     const fresh = buildPlan(now, stats.data.bySection, due.data.length, hints, topTraps)
     savePlan(fresh)
-    setPlan(deriveCompletion(fresh, due.data.length, loadLessonReads(), stats.data.bySection))
+    setPlan(
+      deriveCompletion(
+        fresh,
+        due.data.length,
+        loadLessonReads(),
+        stats.data.bySection,
+        loadDoneItems(),
+      ),
+    )
   }, [stats.data, due.data, hints, now, topTraps])
 
   const allComplete = !!plan && plan.items.length > 0 && plan.items.every((i) => i.completed)
@@ -205,15 +236,16 @@ async function resolveFrameworkHints(): Promise<FrameworkHints> {
  *  from a now-removed manual button) flips back to false the next
  *  time signals say it isn't done. Returns a new plan when any item
  *  flipped (React equality), or the same reference when nothing did. */
-function deriveCompletion(
+export function deriveCompletion(
   plan: DailyPlan,
   dueCount: number,
   lessonReads: Set<string>,
   bySection: BySection,
+  doneItems: Set<string>,
 ): DailyPlan {
   let changed = false
   const items: PlanItem[] = plan.items.map((item) => {
-    const derived = isItemComplete(item, plan, dueCount, lessonReads, bySection)
+    const derived = isItemComplete(item, plan, dueCount, lessonReads, bySection, doneItems)
     if (derived === item.completed) return item
     changed = true
     return { ...item, completed: derived }
@@ -225,13 +257,19 @@ function deriveCompletion(
   return { ...plan, items, estimatedMinutes }
 }
 
-function isItemComplete(
+export function isItemComplete(
   item: PlanItem,
   plan: DailyPlan,
   dueCount: number,
   lessonReads: Set<string>,
   bySection: BySection,
+  doneItems: Set<string>,
 ): boolean {
+  // Reported completion wins over derived: a session that reached its "done"
+  // phase flagged this item (markPlanItemDone), and that survives the
+  // every-render recompute. This is the only completion path for section=null
+  // items (mastery, cold-start), which have no per-section attempts signal.
+  if (doneItems.has(item.id)) return true
   if (item.kind === 'repetition') return dueCount === 0
   if (item.kind === 'lesson') {
     // No framework hint resolved → can't auto-complete (rare edge case

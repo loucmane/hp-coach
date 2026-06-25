@@ -463,6 +463,7 @@ export function isAllMastered(scores: SectionScore[]): boolean {
 
 const PLAN_PREFIX = 'hpc-daily-plan-'
 const LESSON_READ_PREFIX = 'hpc-lesson-read-'
+const ITEM_DONE_PREFIX = 'hpc-plan-item-done-'
 const PLAN_RETENTION_DAYS = 30
 
 /** Read today's plan from localStorage, or null when missing / corrupt. */
@@ -548,13 +549,39 @@ export function markLessonRead(entryId: string, storage: Storage = localStorage)
   storage.setItem(`${LESSON_READ_PREFIX}${entryId}`, '1')
 }
 
+/** Set of plan-item ids the session that satisfies them has REPORTED as
+ *  done. Completion is reported, not derived: a session reaching its
+ *  "done" phase flags the plan item here, and `isItemComplete` honors the
+ *  flag so it survives `deriveCompletion`'s every-render recompute. This is
+ *  what lets section=null items (mastery, cold-start) — which have no
+ *  per-section attempts signal — ever reach `allComplete`. Item ids embed
+ *  the date (e.g. `drill-NOG-2026-05-18`), so flags age out naturally with
+ *  the plans they belong to. */
+export function loadDoneItems(storage: Storage = localStorage): Set<string> {
+  const out = new Set<string>()
+  for (let i = 0; i < storage.length; i++) {
+    const key = storage.key(i)
+    if (!key?.startsWith(ITEM_DONE_PREFIX)) continue
+    out.add(key.slice(ITEM_DONE_PREFIX.length))
+  }
+  return out
+}
+
+export function markPlanItemDone(itemId: string, storage: Storage = localStorage): void {
+  storage.setItem(`${ITEM_DONE_PREFIX}${itemId}`, '1')
+}
+
 /** Test-only: wipe both plan and lesson-read keys. */
 export function __resetSchedulerStorage(storage: Storage = localStorage): void {
   const toDelete: string[] = []
   for (let i = 0; i < storage.length; i++) {
     const key = storage.key(i)
     if (!key) continue
-    if (key.startsWith(PLAN_PREFIX) || key.startsWith(LESSON_READ_PREFIX)) {
+    if (
+      key.startsWith(PLAN_PREFIX) ||
+      key.startsWith(LESSON_READ_PREFIX) ||
+      key.startsWith(ITEM_DONE_PREFIX)
+    ) {
       toDelete.push(key)
     }
   }
