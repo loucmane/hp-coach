@@ -40,7 +40,6 @@ import {
   type DailyPlan,
   type FrameworkHint,
   generateDailyPlan,
-  loadDoneItems,
   loadLessonReads,
   loadPlan,
   localDateString,
@@ -113,13 +112,20 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
           due.data.length,
           loadLessonReads(),
           stats.data.bySection,
-          loadDoneItems(),
+          stats.data.attempts.total,
         ),
       )
       return
     }
 
-    const fresh = buildPlan(now, stats.data.bySection, due.data.length, hints, topTraps)
+    const fresh = buildPlan(
+      now,
+      stats.data.bySection,
+      due.data.length,
+      hints,
+      topTraps,
+      stats.data.attempts.total,
+    )
     savePlan(fresh)
     setPlan(
       deriveCompletion(
@@ -127,7 +133,7 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
         due.data.length,
         loadLessonReads(),
         stats.data.bySection,
-        loadDoneItems(),
+        stats.data.attempts.total,
       ),
     )
   }, [stats.data, due.data, hints, today, topTraps])
@@ -143,7 +149,7 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
       due.data.length,
       loadLessonReads(),
       stats.data.bySection,
-      loadDoneItems(),
+      stats.data.attempts.total,
     )
     if (next !== plan) {
       savePlan(next)
@@ -153,7 +159,14 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
 
   const regenerate = useCallback(() => {
     if (!stats.data || due.data === undefined || hints === null) return
-    const fresh = buildPlan(now, stats.data.bySection, due.data.length, hints, topTraps)
+    const fresh = buildPlan(
+      now,
+      stats.data.bySection,
+      due.data.length,
+      hints,
+      topTraps,
+      stats.data.attempts.total,
+    )
     savePlan(fresh)
     setPlan(
       deriveCompletion(
@@ -161,7 +174,7 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
         due.data.length,
         loadLessonReads(),
         stats.data.bySection,
-        loadDoneItems(),
+        stats.data.attempts.total,
       ),
     )
   }, [stats.data, due.data, hints, now, topTraps])
@@ -186,6 +199,7 @@ function buildPlan(
   dueCount: number,
   hints: FrameworkHints,
   topTraps: TopTrap[],
+  totalAttempts: number,
 ): DailyPlan {
   const sectionScores: SectionScore[] = SECTION_KEYS.map((s) =>
     computeSectionScore(s, bySection[s], now),
@@ -203,7 +217,9 @@ function buildPlan(
   for (const s of SECTION_KEYS) {
     attemptsSnapshot[s] = bySection[s].attempts7d
   }
-  return { ...base, attemptsSnapshot }
+  // And the lifetime total snapshot so section=null items (mastery,
+  // cold-start) complete cross-device when the server total grows.
+  return { ...base, attemptsSnapshot, totalAttemptsSnapshot: totalAttempts }
 }
 
 /** Resolve the first-unread framework entry for every wired section.
@@ -241,11 +257,11 @@ export function deriveCompletion(
   dueCount: number,
   lessonReads: Set<string>,
   bySection: BySection,
-  doneItems: Set<string>,
+  totalAttempts: number,
 ): DailyPlan {
   let changed = false
   const items: PlanItem[] = plan.items.map((item) => {
-    const derived = isItemComplete(item, plan, dueCount, lessonReads, bySection, doneItems)
+    const derived = isItemComplete(item, plan, dueCount, lessonReads, bySection, totalAttempts)
     if (derived === item.completed) return item
     changed = true
     return { ...item, completed: derived }
@@ -263,13 +279,8 @@ export function isItemComplete(
   dueCount: number,
   lessonReads: Set<string>,
   bySection: BySection,
-  doneItems: Set<string>,
+  totalAttempts: number,
 ): boolean {
-  // Reported completion wins over derived: a session that reached its "done"
-  // phase flagged this item (markPlanItemDone), and that survives the
-  // every-render recompute. This is the only completion path for section=null
-  // items (mastery, cold-start), which have no per-section attempts signal.
-  if (doneItems.has(item.id)) return true
   if (item.kind === 'repetition') return dueCount === 0
   if (item.kind === 'lesson') {
     // No framework hint resolved → can't auto-complete (rare edge case
@@ -281,7 +292,14 @@ export function isItemComplete(
     const current = bySection[item.section].attempts7d
     return current - baseline >= DRILL_COMPLETE_THRESHOLD
   }
-  // Cross-section mastery / warmup drills — no per-section signal, so
-  // they stay actionable until tomorrow's plan generates fresh.
+  // Section=null drills (mastery-mixed, cold-start) have no per-section
+  // signal. Complete from the server lifetime counter `attempts.total`
+  // (monotonic, identical on every device) snapshotted at generation — so
+  // an all-mastered plan can reach `allComplete`, cross-device. Loose by
+  // design (any practice counts), which is fine: these items are always the
+  // sole/fallback item, so there's nothing to mis-attribute against.
+  if (item.kind === 'drill' && plan.totalAttemptsSnapshot != null) {
+    return totalAttempts - plan.totalAttemptsSnapshot >= DRILL_COMPLETE_THRESHOLD
+  }
   return false
 }
