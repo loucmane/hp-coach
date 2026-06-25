@@ -14,6 +14,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import type { DeviceKind } from '../../lib/device'
 import { useApiClient } from '../useApiClient'
+import { STATS_KEY } from './useStats'
 
 const ACTIVE_SESSIONS_KEY = ['sessions', 'active'] as const
 
@@ -132,6 +133,14 @@ export function useUpdateSession() {
         if (vars.patch.end) return arr.filter((s) => s.id !== vars.id)
         return arr.map((s) => (s.id === session.id ? session : s))
       })
+      // On session END, refresh the aggregate stats so the daily-plan card's
+      // drill/mastery completion flips immediately instead of waiting for the
+      // 60s stats poll. Only on end — invalidating per mid-session patch (qid
+      // sync) would refetch ~10x per session. attempts.total / attempts7d are
+      // what the plan's completion derives from.
+      if (vars.patch.end) {
+        qc.invalidateQueries({ queryKey: STATS_KEY })
+      }
     },
   })
 }
