@@ -1267,7 +1267,7 @@
       {
         "id": "18",
         "title": "Implement Screen 11 - Mock exam modes",
-        "description": "Övningsmock (half, mobile) and Fullständigt prov (4h, desktop) with real conditions",
+        "description": "[2026-06-25 probe: RECOMMENDED next feature after the SF1/SF2 scheduler closers. Deps #8/#17 both done; runs on the live question bank; its errors feed the mistake queue the live scheduler already consumes (Rule 1); the PRD MVP criterion 'score increase across two consecutive mock exams' is unmeasurable without it. NEEDS A DESIGN PASS FIRST (format/timing/scoring) — no design doc exists. See docs/scheduler-loop-findings.md.] Övningsmock (half, mobile) and Fullständigt prov (4h, desktop) with real conditions",
         "details": "Extend MockExam: detect screen size for mode selection; 160min halves; Post-analysis with Layer 1 mapping; Feed errors to mistake queue",
         "testStrategy": "Both modes available; Real conditions enforced; Analysis generates correctly",
         "priority": "high",
@@ -1336,7 +1336,8 @@
             "testStrategy": "Errors correctly added to queue; no duplicates; metadata including tags preserved; queue updates in real-time.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-25T12:00:00.000Z"
       },
       {
         "id": "19",
@@ -1862,7 +1863,7 @@
       {
         "id": "26",
         "title": "Implement full Curriculum scheduler from design doc",
-        "description": "Production scheduler with cluster state machine and all prioritization rules",
+        "description": "[2026-06-25 probe — DATA-BLOCKED, do NOT pick up as a scheduler task. The v1 scheduler (docs/curriculum-scheduler.md) this nominally 'follows' is already SHIPPED + live. #26's richer engine has ZERO live data: framework_progress/mastery/srs_state tables are write-dead (no writers in worker/src); the corpus has NO difficulty field; no prerequisite graph (framework_prereqs.json) exists; trapCluster.ts is a counting heuristic not a state machine. It is a 5-PR data-instrumentation PLATFORM, not a feature, and refines a loop that already works. Its good intent is captured by SF1 (#89). If ever queued: wire the framework_progress/mastery WRITERS first. See docs/scheduler-loop-findings.md.] Production scheduler with cluster state machine and all prioritization rules",
         "details": "Read framework_progress.status to drive selection; Prerequisite graph (ORD before LÄS etc.); Cold-start by difficulty ascending; Block mode for practicing, interleave retaining",
         "testStrategy": "Follows design doc exactly; Handles all edge cases (no data, all mastered, etc.)",
         "priority": "high",
@@ -1933,7 +1934,8 @@
             "testStrategy": "Mode switching works; Block exhausts single cluster; Interleave maintains spacing; Handles mode transitions mid-session.",
             "parentId": "undefined"
           }
-        ]
+        ],
+        "updatedAt": "2026-06-25T12:00:00.000Z"
       },
       {
         "id": "27",
@@ -4512,6 +4514,32 @@
           }
         ],
         "updatedAt": "2026-06-18T12:00:00.000Z"
+      },
+      {
+        "id": "89",
+        "title": "SF1 — Daily-loop closer: section=null completion + weakest-section drill",
+        "description": "Two empirically-confirmed BLOCKERS in the LIVE daily-study loop (found by running generateDailyPlan over ~14 dogfood states). Detail + evidence in docs/scheduler-loop-findings.md; live tracker harness #162.",
+        "details": "FIX 1: section=null items (mastery scheduler.ts:403-414, cold-start :416-430) can never complete — isItemComplete returns false for section==null (useDailyPlan.ts:241-248) so the 'Klart for idag/Perfect game' CompletePanel is dead UI for the all-mastered target user. Give them a real completion signal (mastery drill completes when total attempts7d across all sections grows >=5 vs a global snapshot). FIX 2 (the 'dead zone', found by 4/5 lenses): Rule 3 only inspects ranked[1] (scheduler.ts:199-207); the WEAKEST section at 1.40-1.79 gets zero targeted work and its known traps are ignored. Let ranked[0] receive its own trap-specific drill when no lesson is emitted. One small PR.",
+        "testStrategy": "Unit tests for each fix via the existing scheduler.test.ts harness; pnpm test green; verify on Home that the daily plan closes / the weakest section is drilled.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": [],
+        "updatedAt": "2026-06-25T12:00:00.000Z"
+      },
+      {
+        "id": "90",
+        "title": "SF2 — Scheduler trust/consistency quick-wins batch",
+        "description": "Small correctness/trust fixes to the live daily-plan loop, found empirically. One PR. Detail + evidence in docs/scheduler-loop-findings.md; live tracker harness #163.",
+        "details": "Batch: (1) drill-completion latency — add onSuccess stats-invalidate to useSubmitAttempt (useAttempts.ts:22-34); (2) deterministic tie-break in rankWeakness (scoring.ts:152-155, flips on input order); (3) lesson deep-link — emit /lektion?section=X#<entry-id> (scheduler.ts:282 vs useDailyPlan.ts:236-239); (4) day-boundary re-eval (useDailyPlan.ts:66,74,116); (5) drillRationale 'nast svagast' mislabel + toFixed(1) rounding (scheduler.ts:375-377); (6) mastery-endgame monotony — gate needsDrill on trend/freshness + rotate mastery-maintenance (scheduler.ts:222-227,403); (7) delete/wire dead markItemComplete (scheduler.ts:484-500). Depends on #89.",
+        "testStrategy": "Unit tests for each fix via the existing scheduler.test.ts harness; pnpm test green; verify on Home that the daily plan closes / the weakest section is drilled.",
+        "priority": "medium",
+        "dependencies": [
+          "89"
+        ],
+        "status": "pending",
+        "subtasks": [],
+        "updatedAt": "2026-06-25T12:00:00.000Z"
       }
     ],
     "metadata": {
