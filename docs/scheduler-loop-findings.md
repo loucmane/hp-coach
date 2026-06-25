@@ -214,3 +214,61 @@ create `useDailyPlan.test.ts` (no hooks test exists today). Existing tests that 
 4. Day-boundary via focus/visibilitychange, regen suppressed mid-session (or defer the
    overnight-tab case for the single dogfood user). **Recommended: implement.**
 5. stats-invalidate on session-end. **Recommended.**
+
+---
+
+## Cross-device rework (2026-06-25) — SUPERSEDES the F1 done-flag design above
+
+A 5-lens cross-device panel found the committed F1 done-flag core is BOTH (a) device-local —
+wrong for a hard multi-device product (CLAUDE.md) — AND (b) never wired in production
+(`markPlanItemDone` has no caller, so section=null items don't complete on ANY device today).
+**Replace the localStorage done-flag with a server-derived signal.** Decision (owner-approved):
+
+### The signal: `users.attemptsTotal` (lifetime, monotonic, cross-device, zero backend change)
+`attempts.total` (stats payload, `useStats.ts:26`; `me.ts` `attemptsTotal`) is bumped +1 in the
+same D1 write as every attempt (`attempts.ts:74`). It NEVER decrements — so it dodges both the
+`attempts7d` rolling-window slide AND the `attemptsToday` UTC-vs-local-midnight mismatch
+(`me.ts:72-73` gates `today` on UTC; the plan is local-date keyed — so `attemptsToday` was the
+wrong signal). Cross-device because both devices read the same server counter.
+
+### SF1 (reworked) — server-derived, simpler:
+- **DELETE the device-local done-flag core**: `markPlanItemDone`, `loadDoneItems`,
+  `ITEM_DONE_PREFIX`, the purge addition, and the `doneItems` param + branch in `isItemComplete`
+  + its 4 call sites. Never wired → nothing regresses. (Reverses part of commit 43e9e05.)
+- **section=null completion via `attempts.total` snapshot-diff**: snapshot `attempts.total` into
+  the plan at gen (a `__total` key beside `attemptsSnapshot`); `isItemComplete` section=null
+  branch returns `currentTotal − baseline >= 5`. No SessionPlayer wire, no sessionStorage, no
+  new table/endpoint/migration.
+- **Mixed-drill routing fix**: mastery item gets `section = least-recently-attempted`
+  (from `daysSinceLastAttempt`) + `href=/drill?section=X` (bare `/drill` plays ORD-only). Turns
+  it into a normal section drill on the existing per-section path; shrinks section=null to
+  cold-start only (`href=/diagnostik`, self-heals next local-day; the total-diff is a safety net).
+- **Pull in the stats-invalidation** (was SF2): `useSubmitAttempt` `onSuccess` invalidates the
+  stats query (`useAttempts.ts` has none today; `useStats` polls 60s) — without it completion
+  lags up to 60s and reads as broken, masking whether SF1 even works during verification.
+- **F2 stays as-is** (committed 610a2e7).
+
+### Lessons: OUT of SF1 (deferred). `lessonProgress` is a per-(user,section) BOOKMARK of the
+last-opened entry (`schema.ts:105-120`), NOT a per-entry read set — it can't represent "which
+entries are read". Cross-device lesson completion needs a NEW `lesson_reads(user_id, entry_id)`
+table + endpoint + migration (clone the lessonProgress scaffolding) + `useLessonReads` rewire,
+localStorage as a write-through cache. No zero-completion bug today (works single-device). → new
+deferred task.
+
+### Accepted residue (state plainly in the PR — do NOT call SF1 "fully cross-device"):
+the completion BASELINE (`attemptsSnapshot` / `__total`) lives in the per-device localStorage
+plan blob, so SF1 is cross-device on the SIGNAL but not the BASELINE — a mastery item completed
+on phone can briefly still show actionable on desktop. Acceptable for a solo two-device user; the
+design doc deferred the server `daily_plans` table until divergence is real friction. → deferred.
+
+### Deferred backlog (with triggers):
+- **Section-drill monotonic counter** (SF2): replace the `attempts7d`-delta drill gate with a
+  per-section same-day monotonic counter (add `if ts>=todayStart: agg.attemptsToday++` to the
+  `me.ts` loop, thread through `SectionStats`). Trigger: window-slide flips a finished drill back
+  to incomplete intraday.
+- **Lessons cross-device**: the `lesson_reads` table/endpoint/migration above. Trigger: a finished
+  lesson re-recommended on the other device; likely folds in with Taskmaster #26 framework writers.
+- **Plan baseline → server `daily_plans` table**: kills the per-device-baseline residue. Trigger:
+  the design doc's bar — observed phone/desktop plan divergence. Relates to deferred #60 (Dexie
+  queue) / #61 (Durable-Object sync). Subsumes any `plan_completions` table — don't build that
+  separately.

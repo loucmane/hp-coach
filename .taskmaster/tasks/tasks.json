@@ -4518,19 +4518,19 @@
       {
         "id": "89",
         "title": "SF1 — Daily-loop closer: section=null completion + weakest-section drill",
-        "description": "Two empirically-confirmed BLOCKERS in the LIVE daily-study loop (found by running generateDailyPlan over ~14 dogfood states). Detail + evidence in docs/scheduler-loop-findings.md; live tracker harness #162.",
+        "description": "[2026-06-25 CROSS-DEVICE REWORK: completion is now SERVER-DERIVED via attempts.total (lifetime monotonic, zero backend change), NOT the localStorage done-flag (deleted — was device-local + never wired). Also: mixed-drill routing fix + stats-invalidation pulled in. Lessons/baseline deferred to #91/#92. See docs/scheduler-loop-findings.md 'Cross-device rework'.] Two empirically-confirmed BLOCKERS in the LIVE daily-study loop (found by running generateDailyPlan over ~14 dogfood states). Detail + evidence in docs/scheduler-loop-findings.md; live tracker harness #162.",
         "details": "FIX 1: section=null items (mastery scheduler.ts:403-414, cold-start :416-430) can never complete — isItemComplete returns false for section==null (useDailyPlan.ts:241-248) so the 'Klart for idag/Perfect game' CompletePanel is dead UI for the all-mastered target user. Give them a real completion signal (mastery drill completes when total attempts7d across all sections grows >=5 vs a global snapshot). FIX 2 (the 'dead zone', found by 4/5 lenses): Rule 3 only inspects ranked[1] (scheduler.ts:199-207); the WEAKEST section at 1.40-1.79 gets zero targeted work and its known traps are ignored. Let ranked[0] receive its own trap-specific drill when no lesson is emitted. One small PR.",
         "testStrategy": "Unit tests for each fix via the existing scheduler.test.ts harness; pnpm test green; verify on Home that the daily plan closes / the weakest section is drilled.",
         "priority": "high",
         "dependencies": [],
         "status": "pending",
         "subtasks": [],
-        "updatedAt": "2026-06-25T12:00:00.000Z"
+        "updatedAt": "2026-06-25T18:00:00.000Z"
       },
       {
         "id": "90",
         "title": "SF2 — Scheduler trust/consistency quick-wins batch",
-        "description": "Small correctness/trust fixes to the live daily-plan loop, found empirically. One PR. Detail + evidence in docs/scheduler-loop-findings.md; live tracker harness #163.",
+        "description": "[2026-06-25: the stats-invalidation moved INTO SF1 (#89). SF2b GAINS the section-drill monotonic-counter cross-device hardening (replace the attempts7d rolling-window drill gate). See docs/scheduler-loop-findings.md 'Cross-device rework'.] Small correctness/trust fixes to the live daily-plan loop, found empirically. One PR. Detail + evidence in docs/scheduler-loop-findings.md; live tracker harness #163.",
         "details": "Batch: (1) drill-completion latency — add onSuccess stats-invalidate to useSubmitAttempt (useAttempts.ts:22-34); (2) deterministic tie-break in rankWeakness (scoring.ts:152-155, flips on input order); (3) lesson deep-link — emit /lektion?section=X#<entry-id> (scheduler.ts:282 vs useDailyPlan.ts:236-239); (4) day-boundary re-eval (useDailyPlan.ts:66,74,116); (5) drillRationale 'nast svagast' mislabel + toFixed(1) rounding (scheduler.ts:375-377); (6) mastery-endgame monotony — gate needsDrill on trend/freshness + rotate mastery-maintenance (scheduler.ts:222-227,403); (7) delete/wire dead markItemComplete (scheduler.ts:484-500). Depends on #89.",
         "testStrategy": "Unit tests for each fix via the existing scheduler.test.ts harness; pnpm test green; verify on Home that the daily plan closes / the weakest section is drilled.",
         "priority": "medium",
@@ -4539,7 +4539,31 @@
         ],
         "status": "pending",
         "subtasks": [],
-        "updatedAt": "2026-06-25T12:00:00.000Z"
+        "updatedAt": "2026-06-25T18:00:00.000Z"
+      },
+      {
+        "id": "91",
+        "title": "Lessons cross-device — lesson_reads table + endpoint (deferred)",
+        "description": "DEFERRED (cross-device panel 2026-06-25). Lesson-read completion is device-local localStorage; lessonProgress is a per-section bookmark, NOT a per-entry read set. Detail in docs/scheduler-loop-findings.md; harness #164.",
+        "details": "New lesson_reads(user_id, entry_id, read_at) D1 table + GET/PUT/DELETE (clone lessonProgress scaffolding) + migration; useLessonReads writes server with localStorage as write-through cache; feed the server set into the lesson completion branch + resolveFrameworkHints. Trigger: a finished lesson re-recommended on the other device. Likely folds in with #26 framework writers.",
+        "testStrategy": "Cross-device: complete on device A, verify reflected on device B (server-derived). Migration reviewed in PR, applied to staging first.",
+        "priority": "low",
+        "dependencies": [],
+        "status": "deferred",
+        "subtasks": [],
+        "updatedAt": "2026-06-25T18:00:00.000Z"
+      },
+      {
+        "id": "92",
+        "title": "Daily-plan baseline to server — kill per-device-baseline residue (deferred)",
+        "description": "DEFERRED (cross-device panel 2026-06-25). SF1 makes completion cross-device on the SIGNAL (attempts.total) but the BASELINE (attemptsSnapshot) stays in the per-device localStorage plan. Detail in docs/scheduler-loop-findings.md; harness #165.",
+        "details": "Promote the plan baseline to the server: cheapest = write the snapshot server-side at gen; full = a D1 daily_plans(user_id,date,plan) table (curriculum-scheduler.md:200-211 deferred option). Subsumes any plan_completions table. Trigger: observed phone/desktop plan divergence. Relates to deferred #60 (Dexie queue) / #61 (Durable-Object sync).",
+        "testStrategy": "Cross-device: complete on device A, verify reflected on device B (server-derived). Migration reviewed in PR, applied to staging first.",
+        "priority": "low",
+        "dependencies": [],
+        "status": "deferred",
+        "subtasks": [],
+        "updatedAt": "2026-06-25T18:00:00.000Z"
       }
     ],
     "metadata": {
