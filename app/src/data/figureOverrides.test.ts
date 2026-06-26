@@ -16,8 +16,8 @@ beforeAll(async () => {
 })
 
 describe('figure override sets', () => {
-  it('suppresses 32 leaked/junk/empty figures whose prompt is self-contained', () => {
-    expect(SUPPRESSED_FIGURES.size).toBe(32)
+  it('suppresses 34 leaked/junk/empty figures whose prompt is self-contained', () => {
+    expect(SUPPRESSED_FIGURES.size).toBe(34)
     expect(SUPPRESSED_FIGURES.has('var-2026-kvant2-XYZ-002')).toBe(true) // the "Steg 1-4" fragment
     expect(SUPPRESSED_FIGURES.has('var-2016-kvant1-XYZ-004')).toBe(true) // rectangle leaked onto 1002^3
   })

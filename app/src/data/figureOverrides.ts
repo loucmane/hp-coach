@@ -56,6 +56,11 @@ export const SUPPRESSED_FIGURES: ReadonlySet<string> = new Set([
   'var-2023-kvant1-KVA-016',
   'var-2024-kvant1-XYZ-008',
   'var-2026-kvant2-XYZ-002',
+  // Tranche 1.1: figure-less before, but the glyph-aspect fix tips them past
+  // MIN_FIGURE_ITEMS and emits a junk inline-math fragment — suppress so a
+  // future full re-extract can't serve garbage.
+  'var-2024-kvant1-XYZ-003',
+  'var-2018-1-kvant2-XYZ-008',
 ])
 
 /** Load-bearing figure is broken AND recoverable from the source PDF — drop
