@@ -59,24 +59,23 @@ export const SUPPRESSED_FIGURES: ReadonlySet<string> = new Set([
 ])
 
 /** Load-bearing figure is broken AND recoverable from the source PDF — drop
- *  from drilling until re-extracted. Subset of EXCLUDED_QUESTIONS. */
+ *  from drilling until re-extracted. Subset of EXCLUDED_QUESTIONS.
+ *  Tranche 1 (2026-06-26) recovered host-2018-KVA-017, var-2016-XYZ-008,
+ *  var-2019-KVA-019, var-2025-XYZ-012 via the parse_figures.py role-fill fix —
+ *  removed below. These 4 remain (multi-object X-clip, Tranche 2). */
 export const REEXTRACT_QUESTIONS: ReadonlySet<string> = new Set([
   'host-2013-kvant1-KVA-017',
-  'host-2018-kvant1-KVA-017',
-  'var-2016-kvant1-XYZ-008',
   'var-2018-1-kvant1-XYZ-011',
   'var-2018-1-kvant2-KVA-018',
-  'var-2019-kvant2-KVA-019',
   'var-2022-1-kvant1-KVA-013',
-  'var-2025-kvant1-XYZ-012',
 ])
 
 /** Drop from the drillable pool — load-bearing figure is empty/garbled.
- *  The 4 "drop" cases + the 8 recoverable REEXTRACT_QUESTIONS. */
+ *  Tranche 1 recovered host-2014 (raster fallback) + var-2024-KVA-014
+ *  (hexagon role-fill) — both removed. host-2025 needs a multi-figure data
+ *  model; var-2024-XYZ-006 is verify-then-promote. Plus the 4 REEXTRACT. */
 export const EXCLUDED_QUESTIONS: ReadonlySet<string> = new Set([
-  'host-2014-kvant1-XYZ-006', // scatter "best fit line" — no points (unrecoverable)
-  'host-2025-kvant2-XYZ-008', // graph of f+g — melted black blob
-  'var-2024-kvant1-XYZ-006', // angle x — only a stray ray + "12"
-  'var-2024-kvant2-KVA-014', // shaded vs unshaded hexagon — no shading
+  'host-2025-kvant2-XYZ-008', // graph of f+g — graph-choice, needs multi-figure model
+  'var-2024-kvant1-XYZ-006', // angle x — localized bbox under-cover (verify-then-promote)
   ...REEXTRACT_QUESTIONS,
 ])
