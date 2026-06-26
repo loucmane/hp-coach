@@ -84,5 +84,10 @@ export const REEXTRACT_QUESTIONS: ReadonlySet<string> = new Set([
 export const EXCLUDED_QUESTIONS: ReadonlySet<string> = new Set([
   'host-2025-kvant2-XYZ-008', // graph of f+g — graph-choice, needs multi-figure model
   'var-2024-kvant1-XYZ-006', // angle x — localized bbox under-cover (verify-then-promote)
+  // Two-circle area-ratio figures served as black-blob circles + spurious
+  // white squares — not PDF-faithful; the role-fill drops the black circles
+  // entirely on re-extract, so they need a large-black-fill-circle handler.
+  'host-ver1-2019-kvant1-XYZ-009',
+  'host-ver2-2019-kvant1-XYZ-009',
   ...REEXTRACT_QUESTIONS,
 ])

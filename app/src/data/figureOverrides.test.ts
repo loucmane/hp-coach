@@ -22,10 +22,10 @@ describe('figure override sets', () => {
     expect(SUPPRESSED_FIGURES.has('var-2016-kvant1-XYZ-004')).toBe(true) // rectangle leaked onto 1002^3
   })
 
-  it('excludes 6 load-bearing-but-broken questions from drilling', () => {
-    // 12 → 8 (Tranche 1 kept 4) → 6 (Tranche 1.1 fixed + re-shipped var-2016 +
-    // var-2025 after the parser truncation/stroke fixes, PDF-cross-checked).
-    expect(EXCLUDED_QUESTIONS.size).toBe(6)
+  it('excludes 8 load-bearing-but-broken questions from drilling', () => {
+    // 12 → 8 → 6 (Tranche 1.1) → 8 (+ the 2 host-ver1/ver2-2019-XYZ-009
+    // black-blob-circle figures, not PDF-faithful, excluded in cleanup).
+    expect(EXCLUDED_QUESTIONS.size).toBe(8)
     expect(EXCLUDED_QUESTIONS.has('host-2025-kvant2-XYZ-008')).toBe(true) // still excluded (multi-figure model)
     expect(EXCLUDED_QUESTIONS.has('var-2016-kvant1-XYZ-008')).toBe(false) // recovered: full 'Antal' labels
     expect(EXCLUDED_QUESTIONS.has('var-2025-kvant1-XYZ-012')).toBe(false) // recovered: triangle stroke restored
