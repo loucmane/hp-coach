@@ -22,15 +22,13 @@ describe('figure override sets', () => {
     expect(SUPPRESSED_FIGURES.has('var-2016-kvant1-XYZ-004')).toBe(true) // rectangle leaked onto 1002^3
   })
 
-  it('excludes 8 load-bearing-but-broken questions from drilling', () => {
-    // Was 12; Tranche 1 re-extracted 6, PDF cross-check kept 4 (→ 8 remain
-    // excluded: 6 here recovered, but var-2016 + var-2025 failed cross-check
-    // and stayed out).
-    expect(EXCLUDED_QUESTIONS.size).toBe(8)
+  it('excludes 6 load-bearing-but-broken questions from drilling', () => {
+    // 12 → 8 (Tranche 1 kept 4) → 6 (Tranche 1.1 fixed + re-shipped var-2016 +
+    // var-2025 after the parser truncation/stroke fixes, PDF-cross-checked).
+    expect(EXCLUDED_QUESTIONS.size).toBe(6)
     expect(EXCLUDED_QUESTIONS.has('host-2025-kvant2-XYZ-008')).toBe(true) // still excluded (multi-figure model)
-    expect(EXCLUDED_QUESTIONS.has('host-2014-kvant1-XYZ-006')).toBe(false) // recovered via raster fallback
-    expect(EXCLUDED_QUESTIONS.has('var-2016-kvant1-XYZ-008')).toBe(true) // re-excluded: truncated axis titles
-    expect(EXCLUDED_QUESTIONS.has('var-2025-kvant1-XYZ-012')).toBe(true) // re-excluded: invisible triangle
+    expect(EXCLUDED_QUESTIONS.has('var-2016-kvant1-XYZ-008')).toBe(false) // recovered: full 'Antal' labels
+    expect(EXCLUDED_QUESTIONS.has('var-2025-kvant1-XYZ-012')).toBe(false) // recovered: triangle stroke restored
   })
 
   it('the two sets are disjoint', () => {
@@ -76,22 +74,19 @@ describe('Tranche 1 recovered figures are back in circulation', () => {
     expect(questionsInSection(bank, 'XYZ').map((x) => x.qid)).toContain('host-2014-kvant1-XYZ-006')
   })
 
-  it('the 4 PDF-cross-checked recoveries are drillable; the 2 defective stay out', () => {
+  it('all 6 PDF-cross-checked recoveries are drillable', () => {
     const drillable = new Set([
       ...questionsInSection(bank, 'XYZ').map((q) => q.qid),
       ...questionsInSection(bank, 'KVA').map((q) => q.qid),
     ])
-    // Faithful to the PDF → back in circulation.
     for (const qid of [
       'var-2024-kvant2-KVA-014',
       'host-2018-kvant1-KVA-017',
       'var-2019-kvant2-KVA-019',
+      'var-2016-kvant1-XYZ-008', // Tranche 1.1: labels fixed
+      'var-2025-kvant1-XYZ-012', // Tranche 1.1: triangle stroke restored
     ]) {
       expect(drillable.has(qid), `${qid} should be drillable`).toBe(true)
-    }
-    // Failed the PDF cross-check → re-excluded.
-    for (const qid of ['var-2016-kvant1-XYZ-008', 'var-2025-kvant1-XYZ-012']) {
-      expect(drillable.has(qid), `${qid} should NOT be drillable`).toBe(false)
     }
   })
 })

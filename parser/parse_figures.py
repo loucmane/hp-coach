@@ -79,6 +79,18 @@ MIN_RASTER_IMAGE_AREA = 5000.0
 # - both apply only to FILLED rects; unfilled rect borders pass through
 GLYPH_FRAGMENT_MIN_AREA = 4.0
 GLYPH_FRAGMENT_MAX_DIM = 15.0
+# Aspect-ratio escape hatch (Fix 2). A character blob is roughly
+# character-shaped (its width and height are comparable). A thin BAR
+# — a letter stem drawn as a single filled rectangle, e.g. the 'l' in
+# the axis titles "Antal personer"/"Antal timmar" (var-2016 XYZ-008),
+# rendered as a 0.89×6.82 pt sliver — is linear, not blob-shaped. The
+# original filter dropped those slivers, truncating "Antal" to "Anta"
+# in BOTH axis titles. A rect this elongated cannot be a digit glyph,
+# so we exempt anything whose long side is at least this many times its
+# short side. The legitimate noise the filter targets (gridline tick
+# stubs ~2.5×1.7 pt, aspect ~1.5) sits far below this cut, so the blob
+# suppression is unaffected.
+GLYPH_FRAGMENT_MIN_ASPECT = 4.0
 
 # Y-distance between items that signals "different physical region of
 # the page" — e.g. fraction bars in a prompt vs the actual figure
@@ -337,7 +349,16 @@ def _is_glyph_fragment_rect(item: tuple) -> bool:
     area = w * h
     if area <= GLYPH_FRAGMENT_MIN_AREA:
         return False  # tiny dot-marker territory; spare it
-    return max(w, h) < GLYPH_FRAGMENT_MAX_DIM
+    if max(w, h) >= GLYPH_FRAGMENT_MAX_DIM:
+        return False  # a real line stroke / figure edge
+    # Fix 2: a thin elongated bar is a stroke (a letter stem like 'l', a
+    # short axis stub), never a character blob. Exempt it so axis-title
+    # words keep all their glyphs (e.g. "Antal" no longer truncates to
+    # "Anta"). The blob noise this filter targets is roughly square.
+    mn = min(w, h)
+    if mn > 0 and max(w, h) / mn >= GLYPH_FRAGMENT_MIN_ASPECT:
+        return False
+    return True
 
 
 def _item_bbox(op: str, item: tuple) -> fitz.Rect | None:
@@ -405,6 +426,16 @@ def _flatten_items(
         fill = "currentColor" if is_filled else "none"
         even_odd = d.get("even_odd")
         draw_type = d.get("type")
+        # Whether the SOURCE drawing painted a stroke in addition to (or
+        # instead of) its fill (Fix 1). PyMuPDF marks this as type 's'
+        # (stroke-only) or 'fs' (fill+stroke) AND carries a non-None
+        # stroke `color`. A filled drawing that ALSO strokes its outline
+        # (e.g. var-2025 XYZ-012's triangle: white knockout fill + black
+        # 1.2pt edge stroke) must keep that outline — collapsing it to a
+        # pure knockout erases the very triangle the prompt depends on.
+        # We only treat a fill as "also stroked" when the source actually
+        # had a stroke colour, so a plain 'f' shade/knockout is unchanged.
+        stroked = draw_type in ("s", "fs") and d.get("color") is not None
         # Most HP exam strokes are 0.5–1.0 pt; clamp to [1.0, 1.6] for
         # consistent visibility on retina/mobile screens. The previous
         # 0.6pt floor read as hairline and disappeared into the panel
@@ -440,6 +471,7 @@ def _flatten_items(
                     "fill_rgb": tuple(fill_rgb) if fill_rgb else None,
                     "even_odd": even_odd,
                     "draw_type": draw_type,
+                    "stroked": stroked,
                     "draw_index": draw_index,
                     "paint_index": paint_index,
                     "stroke_width": stroke_width,
@@ -752,6 +784,13 @@ def _build_svg(
             continue
         fr = ' fill-rule="evenodd"' if even_odd else ""
         sw = items[0]["stroke_width"]
+        # Fix 1: a filled path the SOURCE also stroked must keep its
+        # outline regardless of role. The role governs only the FILL; the
+        # source stroke is a separate, independently-meaningful mark (the
+        # triangle edge in var-2025 XYZ-012 is a white knockout fill AND a
+        # black 1.2pt stroke — drop the stroke and the triangle the prompt
+        # references vanishes). General, not a var-2025 special case.
+        stroked = bool(items[0].get("stroked"))
         if role == "shade":
             # Theme-relative wash PLUS the shape's own outline. Opacity
             # tracks the printed grey level (1 - luminance) so a light tint
@@ -769,9 +808,18 @@ def _build_svg(
                 f'stroke-linejoin="round"'
             )
         elif role == "knockout":
-            # No stroke: a black border around the carved-out interior
-            # would reintroduce the very lines the knockout erases.
-            style = 'fill="var(--panel)" stroke="none"'
+            if stroked:
+                # The source carved out the interior (white fill) AND drew
+                # the shape's outline (a real stroke). Erase to the panel
+                # AND keep the currentColor edge so the outline survives.
+                style = (
+                    f'fill="var(--panel)" stroke="currentColor" '
+                    f'stroke-width="{sw}" stroke-linejoin="round"'
+                )
+            else:
+                # Pure knockout: a stroke around the carved-out interior
+                # would reintroduce the very lines the knockout erases.
+                style = 'fill="var(--panel)" stroke="none"'
         else:  # ink: opaque, keep a hairline stroke so thin shapes survive
             style = (
                 f'fill="currentColor" stroke="currentColor" '

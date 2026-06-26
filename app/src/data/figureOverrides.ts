@@ -60,19 +60,16 @@ export const SUPPRESSED_FIGURES: ReadonlySet<string> = new Set([
 
 /** Load-bearing figure is broken AND recoverable from the source PDF — drop
  *  from drilling until re-extracted. Subset of EXCLUDED_QUESTIONS.
- *  Tranche 1 (2026-06-26) re-extracted 6; a per-figure PDF cross-check kept 4
- *  (host-2018-KVA-017, var-2019-KVA-019 + the two EXCLUDED promotions
- *  host-2014/var-2024). The 2 below FAILED the cross-check and are back here:
- *  var-2016-XYZ-008 (both axis titles truncated 'Antal'→'Anta', baked into the
- *  glyph outlines) and var-2025-XYZ-012 (the centre-connecting triangle emits
- *  fill='var(--panel)' stroke='none' → invisible; fix = add stroke). */
+ *  Tranche 1.1 (2026-06-26) fixed + re-shipped var-2016-XYZ-008 (glyph-fragment
+ *  filter was dropping thin glyphs like 'l' → aspect-ratio exemption) and
+ *  var-2025-XYZ-012 (filled+stroked knockout dropped its stroke → now
+ *  preserved); both PDF-cross-checked faithful. These 4 remain (multi-object
+ *  X-clip, Tranche 2). */
 export const REEXTRACT_QUESTIONS: ReadonlySet<string> = new Set([
   'host-2013-kvant1-KVA-017',
-  'var-2016-kvant1-XYZ-008', // Tranche 1: axis titles truncated 'Antal'→'Anta'
   'var-2018-1-kvant1-XYZ-011',
   'var-2018-1-kvant2-KVA-018',
   'var-2022-1-kvant1-KVA-013',
-  'var-2025-kvant1-XYZ-012', // Tranche 1: connecting triangle has stroke='none' (invisible)
 ])
 
 /** Drop from the drillable pool — load-bearing figure is empty/garbled.
