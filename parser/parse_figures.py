@@ -100,6 +100,41 @@ GLYPH_FRAGMENT_MIN_ASPECT = 4.0
 # threshold for `_largest_y_cluster`.
 MIN_CLUSTER_GAP = 60.0
 
+# ── Disjoint-cluster X-widen (Option B) ────────────────────────────────────
+# The figure bbox's right edge (question_bbox.x1) is derived from the
+# question's TEXT-LINE extents in parse_quant.py (max line x1 + 20pt slack),
+# never from get_drawings(). On a multi-object figure where a SECOND drawing
+# (a 2nd graph / parallelogram / triangle carrying the comparison the
+# question is about) sits side-by-side to the RIGHT of the first, that 2nd
+# object lands past the text cap — and the per-item CENTER test in
+# `_flatten_items` then discards every primitive whose center-x exceeds the
+# cap, silently dropping the whole 2nd object.
+#
+# This pass runs UPSTREAM of `_flatten_items` (called from parse_quant's
+# pass 2, before extract_figure_svg) and, ONLY when a coherent disjoint
+# drawing cluster genuinely sits past the cap, returns a widened x1 so the
+# 2nd object survives the center test. Single-object figures (no real
+# content past the cap) are returned verbatim — their text-derived bbox is
+# provably untouched, so they keep zero exposure to the neighbour/adjacent-
+# column bleed the tight cap was originally built to suppress.
+#
+# Page-relative crop clamp: the widened edge is hard-clamped to
+# [WIDEN_CLAMP_MARGIN, page_w − WIDEN_CLAMP_MARGIN]. NEVER a literal 565 —
+# page widths vary across exam families (578.9 / 595.x / 606.1 / 612.3 /
+# 637), so a literal would clip wide pages and over-extend narrow ones. The
+# clamp's job is to exclude the page-corner crop-mark / registration band
+# (which sits at x ≈ page_w − 10..0) while admitting the real 2nd object
+# (whose right edge tops out ~120pt inside the clamp on this corpus).
+WIDEN_CLAMP_MARGIN = 30.0
+
+# Minimum number of drawing primitives whose center sits PAST the original
+# text cap for the disjoint cluster to count as a real 2nd object rather
+# than stray decoration. A genuine 2nd graph/figure contributes dozens of
+# strokes; a stray crop tick or fraction-bar sliver contributes 1–4. This
+# is the bimodal-density floor: we promote the cap only when the projection
+# past it is dense, not when a lone primitive pokes through.
+WIDEN_CANDIDATE_MIN_ITEMS = 6
+
 # ── Role-aware fill classification (Change 1) ──────────────────────────────
 # HP geometric figures are layered with the painter's model: a shaded
 # region is drawn as a solid fill, then the unshaded interior is painted
@@ -535,6 +570,122 @@ def _largest_y_cluster(flat: list[dict]) -> list[dict]:
     if len(clusters) == 1:
         return clusters[0]
     return max(clusters, key=len)
+
+
+def widen_bbox_for_disjoint_cluster(
+    page: fitz.Page, question_bbox: fitz.Rect
+) -> fitz.Rect:
+    """Surgical X-widen (Option B). Return `question_bbox` with a widened
+    right edge IFF a coherent disjoint drawing cluster genuinely sits past
+    the text-derived cap `question_bbox.x1`; otherwise return it unchanged.
+
+    Runs UPSTREAM of `_flatten_items`' per-item center clip (which would
+    otherwise drop the 2nd object), keyed on the SAME axis the clip uses
+    (item center-y inside the band, item center-x vs the cap).
+
+    Algorithm
+    ---------
+    1. Collect every drawing primitive whose center-y overlaps the figure's
+       Y-band `[y0, y1]` — INCLUDING items past the text cap (which
+       `_flatten_items` would discard). We track each item's (center-x, x0,
+       x1).
+    2. Cluster along X by bbox-EDGE gap — a direct transplant of
+       `_largest_y_cluster`'s gap algorithm (sort by `x0`,
+       gap = `x0 − running cluster max_x1`, split at MIN_CLUSTER_GAP). Edge
+       gap (not midpoint) so a wide bridging axis-arrow whose left edge
+       precedes the cap keeps the projection continuous instead of
+       spuriously splitting.
+    3. Anchor = the cluster holding the most WITHIN-cap items (the figure
+       body). If no cluster has within-cap content, bail (nothing to widen).
+    4. **JOIN, never winner-take-all.** Walk rightward from the anchor and
+       absorb each adjacent cluster whose inter-gap ≤ MIN_CLUSTER_GAP AND
+       whose every item center stays inside the page-relative clamp
+       `[margin, page_w − margin]`. Stop at the first cluster that violates
+       either. Deliberately NOT `max(clusters, key=len)`: the real 2nd
+       object is often the SMALLER cluster (e.g. XYZ-011 splits [57, 23, 23]
+       and the 2nd parallelogram is one of the small ones) — a max-pick
+       would keep the body and drop the very object we need.
+    5. Bimodal-density gate: only widen when the joined cluster carries
+       ≥ WIDEN_CANDIDATE_MIN_ITEMS items whose center is past the cap. This
+       is the "real content past the cap", not a literal empty vertical
+       gutter — 3 of the 4 intended targets have a bridging axis-arrow so
+       there is NO empty strip to detect.
+    6. Widened `x1 = max(joined item.x1)`, hard-clamped to the page-relative
+       crop band and never narrower than the original cap.
+
+    The clamp excludes the page-corner crop-mark / registration band
+    (center-x ≈ page_w − 10) because those decoration clusters either sit
+    >60pt past the joined edge (never absorbed) or have centers outside the
+    clamp (rejected in the JOIN). Verified zero decoration leakage across
+    the corpus fires.
+    """
+    page_w = page.rect.width
+    clamp_lo = WIDEN_CLAMP_MARGIN
+    clamp_hi = page_w - WIDEN_CLAMP_MARGIN
+    cap = question_bbox.x1
+    # Degenerate page: clamp band collapsed — leave the bbox alone.
+    if clamp_hi <= clamp_lo:
+        return question_bbox
+
+    # 1. Band items: (center-x, x0, x1) for every primitive overlapping the
+    #    Y-band on its center-y (same axis as the _flatten_items clip).
+    band: list[tuple[float, float, float]] = []
+    for d in page.get_drawings():
+        for item in d["items"]:
+            ib = _item_bbox(item[0], item)
+            if ib is None:
+                continue
+            cy = (ib.y0 + ib.y1) / 2
+            if question_bbox.y0 <= cy <= question_bbox.y1:
+                band.append(((ib.x0 + ib.x1) / 2, ib.x0, ib.x1))
+    if not band:
+        return question_bbox
+
+    # 2. X-cluster by bbox-edge gap, sorted by x0.
+    band.sort(key=lambda b: b[1])
+    clusters: list[list[tuple[float, float, float]]] = [[band[0]]]
+    cluster_max_x1 = band[0][2]
+    for b in band[1:]:
+        if b[1] - cluster_max_x1 > MIN_CLUSTER_GAP:
+            clusters.append([b])
+            cluster_max_x1 = b[2]
+        else:
+            clusters[-1].append(b)
+            cluster_max_x1 = max(cluster_max_x1, b[2])
+
+    # 3. Anchor = cluster with the most within-cap, within-clamp items.
+    def within_cap_count(c: list[tuple[float, float, float]]) -> int:
+        return sum(
+            1 for cx, _, _ in c if cx <= cap and clamp_lo <= cx <= clamp_hi
+        )
+
+    anchor_idx = max(range(len(clusters)), key=lambda i: within_cap_count(clusters[i]))
+    if within_cap_count(clusters[anchor_idx]) == 0:
+        return question_bbox
+
+    # 4. JOIN rightward from the anchor (coherent-adjacent-cluster join).
+    joined = list(clusters[anchor_idx])
+    joined_max_x1 = max(x1 for _, _, x1 in clusters[anchor_idx])
+    for j in range(anchor_idx + 1, len(clusters)):
+        c = clusters[j]
+        gap = min(x0 for _, x0, _ in c) - joined_max_x1
+        if gap > MIN_CLUSTER_GAP:
+            break
+        if any(not (clamp_lo <= cx <= clamp_hi) for cx, _, _ in c):
+            break
+        joined.extend(c)
+        joined_max_x1 = max(joined_max_x1, max(x1 for _, _, x1 in c))
+
+    # 5. Bimodal-density gate: enough real content past the cap?
+    past_cap = sum(1 for cx, _, _ in joined if cx > cap)
+    if past_cap < WIDEN_CANDIDATE_MIN_ITEMS:
+        return question_bbox
+
+    # 6. Widened, clamped x1.
+    new_x1 = min(max(joined_max_x1, cap), clamp_hi)
+    if new_x1 <= cap:
+        return question_bbox
+    return fitz.Rect(question_bbox.x0, question_bbox.y0, new_x1, question_bbox.y1)
 
 
 def _text_spans_in(page: fitz.Page, bbox: fitz.Rect) -> list[dict]:

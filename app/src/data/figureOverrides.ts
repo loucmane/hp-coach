@@ -65,17 +65,11 @@ export const SUPPRESSED_FIGURES: ReadonlySet<string> = new Set([
 
 /** Load-bearing figure is broken AND recoverable from the source PDF — drop
  *  from drilling until re-extracted. Subset of EXCLUDED_QUESTIONS.
- *  Tranche 1.1 (2026-06-26) fixed + re-shipped var-2016-XYZ-008 (glyph-fragment
- *  filter was dropping thin glyphs like 'l' → aspect-ratio exemption) and
- *  var-2025-XYZ-012 (filled+stroked knockout dropped its stroke → now
- *  preserved); both PDF-cross-checked faithful. These 4 remain (multi-object
- *  X-clip, Tranche 2). */
-export const REEXTRACT_QUESTIONS: ReadonlySet<string> = new Set([
-  'host-2013-kvant1-KVA-017',
-  'var-2018-1-kvant1-XYZ-011',
-  'var-2018-1-kvant2-KVA-018',
-  'var-2022-1-kvant1-KVA-013',
-])
+ *  CLEARED 2026-06-28 by Tranche 2 (Option B surgical bbox X-widen): the 4
+ *  multi-object figures (host-2013-KVA-017, var-2018-1-XYZ-011/KVA-018,
+ *  var-2022-1-KVA-013) all recovered their clipped 2nd object + PDF-cross-
+ *  checked faithful (0 bleed). */
+export const REEXTRACT_QUESTIONS: ReadonlySet<string> = new Set([])
 
 /** Drop from the drillable pool — load-bearing figure is empty/garbled.
  *  Tranche 1 recovered host-2014 (raster fallback) + var-2024-KVA-014
@@ -83,7 +77,8 @@ export const REEXTRACT_QUESTIONS: ReadonlySet<string> = new Set([
  *  model; var-2024-XYZ-006 is verify-then-promote. Plus the 4 REEXTRACT. */
 export const EXCLUDED_QUESTIONS: ReadonlySet<string> = new Set([
   'host-2025-kvant2-XYZ-008', // graph of f+g — graph-choice, needs multi-figure model
-  'var-2024-kvant1-XYZ-006', // angle x — localized bbox under-cover (verify-then-promote)
+  // (var-2024-kvant1-XYZ-006 recovered by Tranche 2 Option-B X-widen — its
+  //  clipped 65°/C-vertex right edge is back, PDF-cross-checked faithful.)
   // Two-circle area-ratio figures served as black-blob circles + spurious
   // white squares — not PDF-faithful; the role-fill drops the black circles
   // entirely on re-extract, so they need a large-black-fill-circle handler.

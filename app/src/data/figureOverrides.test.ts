@@ -22,13 +22,14 @@ describe('figure override sets', () => {
     expect(SUPPRESSED_FIGURES.has('var-2016-kvant1-XYZ-004')).toBe(true) // rectangle leaked onto 1002^3
   })
 
-  it('excludes 8 load-bearing-but-broken questions from drilling', () => {
-    // 12 → 8 → 6 (Tranche 1.1) → 8 (+ the 2 host-ver1/ver2-2019-XYZ-009
-    // black-blob-circle figures, not PDF-faithful, excluded in cleanup).
-    expect(EXCLUDED_QUESTIONS.size).toBe(8)
+  it('excludes 3 load-bearing-but-broken questions from drilling', () => {
+    // 12 → 8 → 6 → 8 → 3: Tranche 2 (Option-B X-widen) recovered the 4
+    // REEXTRACT multi-object figures + var-2024-XYZ-006, all PDF-cross-checked.
+    // Only host-2025 (multi-figure model) + the 2 black-blob circles remain.
+    expect(EXCLUDED_QUESTIONS.size).toBe(3)
     expect(EXCLUDED_QUESTIONS.has('host-2025-kvant2-XYZ-008')).toBe(true) // still excluded (multi-figure model)
-    expect(EXCLUDED_QUESTIONS.has('var-2016-kvant1-XYZ-008')).toBe(false) // recovered: full 'Antal' labels
-    expect(EXCLUDED_QUESTIONS.has('var-2025-kvant1-XYZ-012')).toBe(false) // recovered: triangle stroke restored
+    expect(EXCLUDED_QUESTIONS.has('var-2022-1-kvant1-KVA-013')).toBe(false) // recovered: triangle un-clipped
+    expect(EXCLUDED_QUESTIONS.has('var-2024-kvant1-XYZ-006')).toBe(false) // recovered: 65°/C right edge un-clipped
   })
 
   it('the two sets are disjoint', () => {
@@ -57,13 +58,17 @@ describe('loadBank strips suppressed figures', () => {
 describe('questionsInSection drops still-excluded questions', () => {
   it('removes still-excluded XYZ questions from the drillable pool', () => {
     const xyz = questionsInSection(bank, 'XYZ').map((q) => q.qid)
-    expect(xyz).not.toContain('host-2025-kvant2-XYZ-008')
-    expect(xyz).not.toContain('var-2024-kvant1-XYZ-006')
+    expect(xyz).not.toContain('host-2025-kvant2-XYZ-008') // multi-figure model
+    expect(xyz).not.toContain('host-ver1-2019-kvant1-XYZ-009') // black-blob circles
   })
 
-  it('removes a still-excluded KVA question (Tranche 2 reextract)', () => {
+  it('Tranche-2 X-widen recoveries are back in the drillable pool', () => {
     const kva = questionsInSection(bank, 'KVA').map((q) => q.qid)
-    expect(kva).not.toContain('var-2022-1-kvant1-KVA-013')
+    const xyz = questionsInSection(bank, 'XYZ').map((q) => q.qid)
+    expect(kva).toContain('host-2013-kvant1-KVA-017') // 2nd coord grid recovered
+    expect(kva).toContain('var-2022-1-kvant1-KVA-013') // triangle recovered
+    expect(xyz).toContain('var-2018-1-kvant1-XYZ-011') // 2nd parallelogram recovered
+    expect(xyz).toContain('var-2024-kvant1-XYZ-006') // 65°/C right edge recovered
   })
 })
 
