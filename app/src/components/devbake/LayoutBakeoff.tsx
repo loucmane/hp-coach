@@ -13,10 +13,11 @@
 import { type ReactElement, type ReactNode, useEffect, useState } from 'react'
 import { M3 } from '@/components/devbake/l12/M3'
 import type { DrillKey } from '@/components/devbake/redesign/fixturesSections'
+import { useUiStore } from '@/stores/uiStore'
 
 type Col = 'single' | 'split'
 type PhoneRail = 'rail' | 'linear'
-type Chrome = 'bare' | 'shell'
+type Chrome = 'bare' | 'minimal' | 'shell'
 type NextStyle = 'float' | 'flow'
 
 const SECTIONS: { key: DrillKey; label: string }[] = [
@@ -147,6 +148,77 @@ function ChromeBar({ section }: { section: string }): ReactElement {
   )
 }
 
+// Option C — the "minimal masthead": one quiet hairline band carrying ONLY
+// what M3's in-page rail can't say itself — brand + navigation + a whisper of
+// the picker. Deliberately restrained vs ChromeBar: a designed wordmark instead
+// of the `HP · COACH · {section}` mono prefix, NO section echo (the rail owns
+// "ORD · 3/10"), NO exam-tag flourish, NO bottom status line. The reading page
+// below is byte-identical to "bare".
+function MinimalMasthead(): ReactElement {
+  const nav = (label: string, active = false) => (
+    <span
+      key={label}
+      style={{
+        fontFamily: 'var(--font-mono)',
+        fontSize: 11,
+        letterSpacing: '0.12em',
+        textTransform: 'uppercase',
+        color: active ? 'var(--ink)' : 'var(--muted)',
+      }}
+    >
+      {label}
+    </span>
+  )
+  return (
+    <header
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'baseline',
+        padding: '14px clamp(24px, 5vw, 64px) 11px',
+        borderBottom: '1px solid var(--hairline)',
+        gap: 24,
+        flexWrap: 'wrap',
+      }}
+    >
+      {/* Brand as a designed mark (display italic + corner bracket), not a
+          mono prefix that runs ahead of the page name. */}
+      <span
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontStyle: 'italic',
+          fontWeight: 600,
+          fontSize: 17,
+          color: 'var(--ink)',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        <span style={{ color: 'var(--muted-2)', fontStyle: 'normal', marginRight: 5 }}>⌜</span>
+        HP-Coach
+      </span>
+      {/* Nav + a quiet picker stand-in, right-aligned. No section, no folio. */}
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 22, flexWrap: 'wrap' }}>
+        {nav('Hem')}
+        {nav('Övning', true)}
+        {nav('Lektion')}
+        {nav('Framsteg')}
+        <span style={{ color: 'var(--hairline)' }}>·</span>
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: 'var(--muted-2)',
+          }}
+        >
+          ljus ◐ · spalt
+        </span>
+      </div>
+    </header>
+  )
+}
+
 function Toggle<T extends string>({
   label,
   value,
@@ -222,7 +294,13 @@ export function LayoutBakeoff(): ReactElement {
   const [phoneRail, setPhoneRail] = useState<PhoneRail>('rail')
   const [chrome, setChrome] = useState<Chrome>('bare')
   const [nextStyle, setNextStyle] = useState<NextStyle>('float')
+  // Mode lives in the shared theme store (the route wrapper applies it on
+  // change), so the bake-off can flip ljus/mörk without leaving the page.
+  const mode = useUiStore((s) => s.mode)
+  const setMode = useUiStore((s) => s.setMode)
   const sectionLabel = SECTIONS.find((s) => s.key === section)?.label ?? 'ORD'
+  const chromeWord =
+    chrome === 'shell' ? 'löpande huvud' : chrome === 'minimal' ? 'minimal mast' : 'bar sida'
 
   // Drive the CSS that hides M3's static bottom button when floating.
   useEffect(() => {
@@ -290,6 +368,7 @@ export function LayoutBakeoff(): ReactElement {
           value={chrome}
           options={[
             { v: 'bare', l: 'Bar sida (M3)' },
+            { v: 'minimal', l: 'Minimal mast' },
             { v: 'shell', l: 'Löpande huvud' },
           ]}
           onChange={setChrome}
@@ -303,6 +382,15 @@ export function LayoutBakeoff(): ReactElement {
           ]}
           onChange={setNextStyle}
         />
+        <Toggle
+          label="Läge"
+          value={mode}
+          options={[
+            { v: 'light', l: 'Ljus' },
+            { v: 'dark', l: 'Mörk' },
+          ]}
+          onChange={(v) => setMode(v)}
+        />
         <span style={{ fontSize: 12, color: 'var(--muted)' }}>
           klicka ett alternativ för rättat läge
         </span>
@@ -312,10 +400,9 @@ export function LayoutBakeoff(): ReactElement {
 
       <div style={{ padding: '0 clamp(20px, 4vw, 48px) 80px' }}>
         {/* Desktop stage — col + chrome */}
-        <Stage
-          title={`Desktop · ${col === 'split' ? '2 kolumner' : '1 kolumn'} · ${chrome === 'shell' ? 'löpande huvud' : 'bar sida'}`}
-        >
+        <Stage title={`Desktop · ${col === 'split' ? '2 kolumner' : '1 kolumn'} · ${chromeWord}`}>
           <div className="bk-stage" data-col={col}>
+            {chrome === 'minimal' && <MinimalMasthead />}
             {chrome === 'shell' && <ChromeBar section={sectionLabel} />}
             <M3 key={`d-${section}`} screen="drill" drill={section} />
           </div>
@@ -323,9 +410,10 @@ export function LayoutBakeoff(): ReactElement {
 
         {/* Phone stage — rail behaviour */}
         <Stage
-          title={`Telefon (402px) · ${phoneRail === 'rail' ? 'räls behålls (M3)' : 'linjäriserad'}`}
+          title={`Telefon (402px) · ${phoneRail === 'rail' ? 'räls behålls (M3)' : 'linjäriserad'} · ${chromeWord}`}
         >
           <div className="bk-phone" data-phonerail={phoneRail}>
+            {chrome === 'minimal' && <MinimalMasthead />}
             {chrome === 'shell' && <ChromeBar section={sectionLabel} />}
             <M3 key={`p-${section}`} screen="drill" drill={section} />
           </div>

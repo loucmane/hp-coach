@@ -39,7 +39,7 @@ from collections.abc import Iterable
 
 import fitz  # PyMuPDF
 
-from parser.parse_figures import extract_figure_svg
+from parser.parse_figures import extract_figure_svg, widen_bbox_for_disjoint_cluster
 
 # ── Section configuration ──────────────────────────────────────────────────
 
@@ -1331,6 +1331,14 @@ def _parse_section(section: str, pages: Iterable[fitz.Page]) -> list[dict]:
         page = pages_by_no.get(page_no)
         figure = None
         if page is not None:
+            # Surgical X-widen (Option B): the figure bbox's right edge is
+            # text-derived, so a side-by-side 2nd object (the comparison the
+            # question is about) lands past the cap and the per-item center
+            # clip in extract_figure_svg would drop it. Widen the cap ONLY
+            # when a coherent disjoint drawing cluster genuinely sits past
+            # it; single-object figures pass through with their text-derived
+            # bbox untouched. Must run BEFORE extract_figure_svg's clip.
+            bbox = widen_bbox_for_disjoint_cluster(page, bbox)
             figure = extract_figure_svg(page, bbox)
         q["figure"] = figure
         out.append(q)

@@ -155,13 +155,26 @@ def parse_provpass(exam_id: str, pdf_path: Path, provpass: str) -> list[dict]:
                 if fig:
                     FIG_ROOT.mkdir(parents=True, exist_ok=True)
                     qid_str = rec["qid"]
-                    (FIG_ROOT / f"{qid_str}.svg").write_text(
-                        fig["svg"], encoding="utf-8"
-                    )
-                    rec["figure"] = {
-                        "src": f"figures/{qid_str}.svg",
-                        "aspect_ratio": fig["aspect_ratio"],
-                    }
+                    if fig.get("kind") == "raster":
+                        # Image-backed figure (Change 4): write the cropped
+                        # PNG and record it as a raster so QuestionFigure
+                        # uses the <img> branch (like DTK figures).
+                        (FIG_ROOT / f"{qid_str}.png").write_bytes(
+                            fig["png_bytes"]
+                        )
+                        rec["figure"] = {
+                            "src": f"figures/{qid_str}.png",
+                            "aspect_ratio": fig["aspect_ratio"],
+                            "kind": "raster",
+                        }
+                    else:
+                        (FIG_ROOT / f"{qid_str}.svg").write_text(
+                            fig["svg"], encoding="utf-8"
+                        )
+                        rec["figure"] = {
+                            "src": f"figures/{qid_str}.svg",
+                            "aspect_ratio": fig["aspect_ratio"],
+                        }
 
     doc.close()
     return [records[n] for n in sorted(records)]

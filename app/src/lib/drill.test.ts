@@ -10,7 +10,7 @@ import { beforeAll, describe, expect, it } from 'vitest'
 
 import { loadBank, type Question, questionsInSection } from '@/data/questions'
 
-import { pickDrillQuestions, seededRng } from './drill'
+import { pickDrillQuestions, pickMixedDrillQuestions, seededRng } from './drill'
 
 // Hot-load the bank once per file. After this every test (and every
 // pickDrillQuestions call inside it) hits the cached Promise.
@@ -55,5 +55,35 @@ describe('pickDrillQuestions', () => {
     const a = (await pickDrillQuestions('ORD', 10, seededRng(1))).map((q) => q.qid)
     const b = (await pickDrillQuestions('ORD', 10, seededRng(99))).map((q) => q.qid)
     expect(a).not.toEqual(b)
+  })
+})
+
+describe('pickMixedDrillQuestions', () => {
+  it('returns the requested count drawn across multiple sections (interleaved)', async () => {
+    const picked = await pickMixedDrillQuestions(10, seededRng(5))
+    expect(picked).toHaveLength(10)
+    const sections = new Set(picked.map((q) => q.section))
+    // Genuinely mixed — not the old bug where bare /drill played ORD-only.
+    expect(sections.size).toBeGreaterThanOrEqual(3)
+  })
+
+  it('returns no duplicates', async () => {
+    const picked = await pickMixedDrillQuestions(10, seededRng(8))
+    const ids = picked.map((q) => q.qid)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('only picks fully-parsed, playable questions', async () => {
+    const picked = await pickMixedDrillQuestions(10, seededRng(2))
+    for (const q of picked) {
+      expect(q.parsing_status).toBe('complete')
+      expect(q.options).not.toBeNull()
+    }
+  })
+
+  it('is deterministic for a fixed seed', async () => {
+    const a = (await pickMixedDrillQuestions(10, seededRng(42))).map((q) => q.qid)
+    const b = (await pickMixedDrillQuestions(10, seededRng(42))).map((q) => q.qid)
+    expect(a).toEqual(b)
   })
 })

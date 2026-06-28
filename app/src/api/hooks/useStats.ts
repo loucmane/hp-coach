@@ -13,7 +13,7 @@ import type { SectionStats } from '@/lib/scoring'
 
 import { useApiClient } from '../useApiClient'
 
-const STATS_KEY = ['me', 'stats'] as const
+export const STATS_KEY = ['me', 'stats'] as const
 
 export type WeeklyBucket = {
   /** Unix-ms timestamp of the bucket's start. */

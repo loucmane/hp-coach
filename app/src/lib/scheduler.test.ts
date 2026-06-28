@@ -193,8 +193,11 @@ describe('generateDailyPlan — rule 2 (weakest needs a lesson)', () => {
       }),
     )
     expect(plan.items.find((i) => i.kind === 'lesson')).toBeUndefined()
-    // But the KVA drill should still appear from rule 3.
-    expect(plan.items.find((i) => i.kind === 'drill')).toBeDefined()
+    // With the lesson skipped, the weakest (NOG) now gets its own drill (F2),
+    // and the second-weakest (KVA) still gets one from rule 3.
+    const drillSections = plan.items.filter((i) => i.kind === 'drill').map((i) => i.section)
+    expect(drillSections).toContain('NOG')
+    expect(drillSections).toContain('KVA')
   })
 
   it('skips lesson when weakest is strong AND recent (rule 2 gate fails)', () => {
@@ -290,6 +293,107 @@ describe('generateDailyPlan — rule 3 (next-weakest needs a drill)', () => {
     const drill = plan.items.find((i) => i.kind === 'drill')
     expect(drill?.href).toBe('/drill?section=KVA')
     expect(drill?.framework).toBeUndefined()
+  })
+})
+
+describe('generateDailyPlan — rule 3b (weakest section gets its own drill — F2)', () => {
+  it('drills the weakest section (trap-specific) when its lesson is skipped because all entries are read', () => {
+    // NOG is weakest and would get a lesson, but every entry is read (hint
+    // null) so the lesson is skipped. Before F2 the weakest fell through and
+    // got nothing; now it gets its own trap-specific drill.
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [
+          score('NOG', { score: 1.1 }),
+          score('KVA', { score: 1.9, daysSinceLastAttempt: 3 }), // rule-3 slot stays empty
+        ],
+        firstUnreadEntry: { NOG: null },
+        topTraps: [
+          { framework_id: 'NOG-TRAP-007', section: 'NOG', count: 8, headline: 'Kvotjakten' },
+        ],
+      }),
+    )
+    expect(plan.items.find((i) => i.kind === 'lesson')).toBeUndefined()
+    const drill = plan.items.find((i) => i.kind === 'drill')
+    expect(drill?.section).toBe('NOG')
+    expect(drill?.framework).toBe('NOG-TRAP-007')
+  })
+
+  it('drills the weakest section generically in the dead zone (1.4-1.8, recent) when no trap matches', () => {
+    // NOG at 1.5 recent: no lesson (>=1.4 and recent) and Rule 3 never looks
+    // at the weakest — before F2 this produced a mastery fallback. Now the
+    // marginal section gets a real drill.
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [
+          score('NOG', { score: 1.5, daysSinceLastAttempt: 2 }),
+          score('KVA', { score: 1.9, daysSinceLastAttempt: 3 }), // rule-3 slot stays empty
+        ],
+      }),
+    )
+    const drill = plan.items.find((i) => i.kind === 'drill')
+    expect(drill?.section).toBe('NOG')
+    expect(drill?.href).toBe('/drill?section=NOG')
+  })
+
+  it('does NOT also drill the weakest section when it already gets a lesson (no double-prescribe)', () => {
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [
+          score('NOG', { score: 1.1 }),
+          score('KVA', { score: 1.9, daysSinceLastAttempt: 3 }), // rule-3 slot stays empty
+        ],
+        firstUnreadEntry: { NOG: { id: 'NOG-TRAP-001', headword: '2×2-tabellen' } },
+        topTraps: [
+          { framework_id: 'NOG-TRAP-007', section: 'NOG', count: 8, headline: 'Kvotjakten' },
+        ],
+      }),
+    )
+    expect(plan.items.find((i) => i.kind === 'lesson')?.section).toBe('NOG')
+    // Weakest is already covered by the lesson — it must not also get a drill.
+    expect(plan.items.find((i) => i.kind === 'drill')).toBeUndefined()
+  })
+
+  it('does not drill the weakest when it is strong (needsDrill gate)', () => {
+    // All-mastered: weakest is 1.9, must fall through to mastery, not get a drill.
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [
+          score('NOG', { score: 1.9, daysSinceLastAttempt: 2 }),
+          score('KVA', { score: 1.95, daysSinceLastAttempt: 3 }),
+        ],
+      }),
+    )
+    expect(plan.items.find((i) => i.kind === 'drill')?.section).toBeNull() // only the mastery mixed drill
+  })
+
+  it('labels the weakest-section drill as "Svagast", not "Näst svagast"', () => {
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [
+          score('NOG', { score: 1.5, daysSinceLastAttempt: 2 }), // weakest, dead-zone generic drill
+          score('KVA', { score: 1.9, daysSinceLastAttempt: 3 }),
+        ],
+      }),
+    )
+    const drill = plan.items.find((i) => i.kind === 'drill')
+    expect(drill?.section).toBe('NOG')
+    expect(drill?.rationale).not.toContain('Näst svagast')
+    expect(drill?.rationale).toContain('Svagast')
+  })
+
+  it('still labels the second-weakest drill as "Näst svagast"', () => {
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [
+          score('NOG', { score: 1.1 }), // weakest → lesson (hint undefined → generic lesson)
+          score('KVA', { score: 1.5 }), // second-weakest → generic drill
+        ],
+      }),
+    )
+    const drill = plan.items.find((i) => i.kind === 'drill')
+    expect(drill?.section).toBe('KVA')
+    expect(drill?.rationale).toContain('Näst svagast')
   })
 })
 

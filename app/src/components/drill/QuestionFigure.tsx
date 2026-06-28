@@ -609,7 +609,17 @@ function FigureModal({ svg, onClose }: { svg: string | null; onClose: () => void
     return () => window.removeEventListener('keydown', onKey, true)
   }, [onClose])
 
-  return (
+  // Portal to <body>: FigureModal otherwise renders inline inside the
+  // figure's React subtree, which on the desktop StudyDesk sits under
+  // `.hpc-m3-content`. That element keeps a residual transform forever
+  // (its entrance animation uses animation-fill-mode:both, so the final
+  // `transform: translateY(0)` — a non-`none` matrix — stays applied),
+  // and a transformed ancestor becomes the containing block for our
+  // `position:fixed` backdrop. Without the portal, `inset:0`/`90vw`
+  // resolve against the ~300px content column instead of the viewport,
+  // so the "zoom" modal renders SMALLER than the inline figure. Same
+  // hazard RasterModal documents and dodges with createPortal.
+  return createPortal(
     <div
       onClick={onClose}
       onKeyDown={(e) => {
@@ -635,8 +645,14 @@ function FigureModal({ svg, onClose }: { svg: string | null; onClose: () => void
       {svg && (
         <div
           style={{
-            width: 'min(90vw, 720px)',
-            maxHeight: '85vh',
+            // Fill the viewport like a real lightbox: the figure should
+            // ALWAYS be clearly larger than the inline preview (capped at
+            // 240px tall / aspect*240 wide). A hard 720px width cap loses
+            // to wide-aspect figures whose inline natural width exceeds
+            // ~664px, so cap by viewport instead. preserveAspectRatio on
+            // the inner SVG keeps it proportional within this box.
+            width: 'min(94vw, 1600px)',
+            height: 'min(90vh, 1100px)',
             background: 'var(--panel)',
             border: '1px solid var(--hairline)',
             borderRadius: 'var(--radius)',
@@ -650,6 +666,7 @@ function FigureModal({ svg, onClose }: { svg: string | null; onClose: () => void
           dangerouslySetInnerHTML={{ __html: wrapForFit(svg) }}
         />
       )}
-    </div>
+    </div>,
+    document.body,
   )
 }

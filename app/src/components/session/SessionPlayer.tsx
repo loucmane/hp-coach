@@ -57,6 +57,7 @@ import type { AnswerLetter, Question } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
 import { currentDevice } from '@/lib/device'
 import { TAB_ROUTE } from '@/lib/nav'
+import { canAdoptActiveSession } from './canAdoptSession'
 
 type Phase = 'idle' | 'answering' | 'graded' | 'done'
 
@@ -207,14 +208,12 @@ export function SessionPlayer(props: SessionPlayerProps) {
       // Skip the adopt path once we've already found this session's plan
       // unresolvable (staleResume) — Start should take a fresh pick rather
       // than re-adopting the dead row.
+      // Adopt only a session whose SECTION matches what the user asked for —
+      // canAdoptActiveSession guards against resuming a stale drill in another
+      // section (the "click XYZ, get a leftover ORD question" bug). resolvePlan
+      // is the surface-capability check (diagnostik omits it to skip resume).
       const existing = activeOfKind.data
-      if (
-        !staleResume &&
-        existing &&
-        existing.plan &&
-        existing.plan.length > 0 &&
-        props.resolvePlan
-      ) {
+      if (canAdoptActiveSession(existing, props.sections, staleResume) && props.resolvePlan) {
         const questions = await props.resolvePlan(existing.plan)
         if (questions.length === 0) {
           // The stored plan no longer resolves to any live question

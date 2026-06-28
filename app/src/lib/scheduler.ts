@@ -71,7 +71,7 @@ export type PlanItem = {
  *    trap (`/drill?framework=NOG-TRAP-007`, headline names the
  *    trap, rationale cites recent miss count). Plans cached before
  *    this still prescribe generic section drills. */
-export const PLAN_SCHEMA_VERSION = 5
+export const PLAN_SCHEMA_VERSION = 6
 
 export type DailyPlan = {
   /** Schema version — see `PLAN_SCHEMA_VERSION`. Older plans are
@@ -90,6 +90,14 @@ export type DailyPlan = {
    *  caller (e.g. `useDailyPlan`) attaches it after generation
    *  to keep the pure function free of UI concerns. */
   attemptsSnapshot?: Partial<Record<Section, number>>
+  /** Lifetime `attempts.total` (server, monotonic) snapshot taken when the
+   *  plan was generated. Drives completion for section=null items (mastery,
+   *  cold-start) which have no per-section signal: the item flips to
+   *  `completed` once the current server total has grown by enough to mean
+   *  the user did ~half a session of practice. Cross-device because both
+   *  devices read the same server counter. Caller-attached, like
+   *  `attemptsSnapshot`. */
+  totalAttemptsSnapshot?: number
 }
 
 /** Hint passed in for a section's framework first-entry. Lets the
@@ -181,6 +189,7 @@ export function generateDailyPlan(signals: SchedulerSignals): DailyPlan {
 
   // Rule 2 — weakest section needs a lesson.
   const weakest = ranked[0]
+  let weakestLessonEmitted = false
   if (weakest && items.length < MAX_ITEMS && needsLesson(weakest)) {
     const hint = firstUnreadEntry?.[weakest.section]
     // `null` hint means the user has already read every entry in
@@ -188,7 +197,21 @@ export function generateDailyPlan(signals: SchedulerSignals): DailyPlan {
     // `undefined` means no hint resolved → emit a generic lesson item.
     if (hint !== null) {
       items.push(lessonItem(weakest, hint, date))
+      weakestLessonEmitted = true
     }
+  }
+
+  // Rule 2b — the weakest section gets its OWN (trap-specific) drill when it
+  // did NOT get a lesson. Before this, Rule 3 only ever drilled the
+  // second-weakest, so the weakest section in the 1.4–1.8 dead zone — or one
+  // whose lesson was skipped because every entry is read — received no
+  // targeted work at all (it fell through to the mastery fallback). Gated on
+  // `!weakestLessonEmitted` so the weakest is never double-prescribed a
+  // lesson AND a drill, and placed before Rule 3 so the 3-item cap drops the
+  // lower-value second-weakest drill rather than the weakest's.
+  if (weakest && !weakestLessonEmitted && items.length < MAX_ITEMS && needsDrill(weakest)) {
+    const trap = pickTrapForSection(signals.topTraps, weakest.section)
+    items.push(trap ? trapDrillItem(trap, weakest, date) : drillItem(weakest, date, true))
   }
 
   // Rule 3 — next-weakest section needs a drill. When a top-trap
@@ -306,13 +329,13 @@ function lessonRationale(score: SectionScore): string {
   return 'Värt att börja med lektionen.'
 }
 
-function drillItem(score: SectionScore, date: string): PlanItem {
+function drillItem(score: SectionScore, date: string, weakest = false): PlanItem {
   return {
     id: `drill-${score.section}-${date}`,
     kind: 'drill',
     section: score.section,
     headline: `${score.section}-drill · 10 frågor`,
-    rationale: drillRationale(score),
+    rationale: drillRationale(score, weakest),
     estimatedMinutes: SECTION_DURATIONS[score.section],
     href: `/drill?section=${score.section}`,
     completed: false,
@@ -368,12 +391,13 @@ function pickTrapForSection(
   return null
 }
 
-function drillRationale(score: SectionScore): string {
+function drillRationale(score: SectionScore, weakest = false): string {
   if (score.trend != null && score.trend < DRILL_TREND_THRESHOLD) {
     return `${score.section}-resultat har trendat nedåt senaste veckan.`
   }
   if (score.score != null && score.score < DRILL_SCORE_THRESHOLD) {
-    return `Näst svagast — ${score.score.toFixed(1)}, övning skärper formen.`
+    const rank = weakest ? 'Svagast' : 'Näst svagast'
+    return `${rank} — ${score.score.toFixed(1)}, övning skärper formen.`
   }
   if (score.daysSinceLastAttempt > DRILL_STALE_DAYS) {
     const days = Number.isFinite(score.daysSinceLastAttempt)
@@ -408,7 +432,9 @@ function masteryMaintenanceItem(date: string): PlanItem {
     headline: 'Blandad övning · alla sektioner',
     rationale: 'Du är ifatt — sikta mot 2.0 med blandad övning.',
     estimatedMinutes: 10,
-    href: '/drill',
+    // `?mixed=1` plays a genuinely interleaved drill across all 8 sections.
+    // Bare `/drill` defaults to ORD-only, which would betray "alla sektioner".
+    href: '/drill?mixed=1',
     completed: false,
   }
 }

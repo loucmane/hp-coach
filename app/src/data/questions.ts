@@ -17,6 +17,8 @@
 // shape MUST stay in lock-step with the parser's emit; we cast at
 // fetch time so the rest of the SPA gets real types instead of `any`.
 
+import { EXCLUDED_QUESTIONS, SUPPRESSED_FIGURES } from './figureOverrides'
+
 export const PROVPASS_KEYS = ['verb1', 'verb2', 'kvant1', 'kvant2'] as const
 export type Provpass = (typeof PROVPASS_KEYS)[number]
 
@@ -118,6 +120,9 @@ export function loadBank(): Promise<readonly Question[]> {
             kind: 'raster',
           }
         }
+        // Figure-audit override: hide a broken/leaked figure (the prompt is
+        // self-contained). See data/figureOverrides.ts + docs/figure-audit.md.
+        if (SUPPRESSED_FIGURES.has(q.qid)) q.figure = null
         out.push(q)
       }
     }
@@ -138,7 +143,15 @@ export function __resetBankCache() {
 
 /** Filter helper — returns only fully-parsed questions in a section. */
 export function questionsInSection(bank: readonly Question[], section: Section): Question[] {
-  return bank.filter((q) => q.section === section && q.parsing_status === 'complete' && q.options)
+  return bank.filter(
+    (q) =>
+      q.section === section &&
+      q.parsing_status === 'complete' &&
+      q.options &&
+      // Figure-audit override: drop questions whose load-bearing figure is
+      // broken (data/figureOverrides.ts + docs/figure-audit.md).
+      !EXCLUDED_QUESTIONS.has(q.qid),
+  )
 }
 
 /** Look up a question by qid — returns undefined when the qid is
