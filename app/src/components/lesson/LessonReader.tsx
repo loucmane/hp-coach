@@ -19,6 +19,7 @@ import { currentDevice } from '@/lib/device'
 
 import { LexiconCard } from './LexiconCard'
 import { ProtocolCard } from './ProtocolCard'
+import { SectionPracticeCTA } from './SectionPracticeCTA'
 import { TrapCard } from './TrapCard'
 
 const SECTION_TITLE: Record<string, { headline: string; subline: string }> = {
@@ -214,6 +215,7 @@ export function LessonReader({ section }: { section: Section }) {
             {framework.entries.length} mönster · ~{estimateReadMinutes(framework)} min läsning
           </div>
         )}
+        {framework && <SectionPracticeCTA section={section} />}
       </header>
 
       <div
