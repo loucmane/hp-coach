@@ -151,6 +151,13 @@ export function LessonReader({ section }: { section: Section }) {
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
+        // M3 "Boksidan" single-column, centered. A rail-less reading surface
+        // centers at its CONTENT measure, not M3's 880px rail+content canvas:
+        // the trap cards are 68ch, so the column is 68ch + symmetric gutters
+        // → the content fills the centered column instead of hugging its left.
+        width: '100%',
+        maxWidth: 'calc(68ch + 2 * clamp(20px, 4vw + 12px, 56px))',
+        marginInline: 'auto',
         paddingInline: 'clamp(20px, 4vw + 12px, 56px)',
         paddingTop: 'clamp(32px, 4vw + 16px, 64px)',
         paddingBottom: 'clamp(48px, 6vw, 96px)',
