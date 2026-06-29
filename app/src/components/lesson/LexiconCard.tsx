@@ -13,6 +13,7 @@ import type { LexiconEntry } from '@/data/frameworks'
 
 import { ExampleQuestions } from './ExampleQuestions'
 import { MarkAsReadPill } from './MarkAsReadPill'
+import { PracticeLink } from './PracticeLink'
 
 export function LexiconCard({
   entry,
@@ -88,6 +89,11 @@ export function LexiconCard({
         >
           {entry.meaning}
         </p>
+        <PracticeLink
+          section={'ORD' as const}
+          frameworkId={entry.id}
+          label="Öva ord med denna rot"
+        />
       </summary>
 
       <div style={{ marginTop: 20 }}>
