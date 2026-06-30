@@ -15,6 +15,7 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useEffect, useMemo } from 'react'
 
+import { useDueMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
 import { LessonReader } from '@/components/lesson/LessonReader'
 import { MobileFrame } from '@/components/MobileFrame'
@@ -101,6 +102,7 @@ function PickerBody() {
   const navigate = useNavigate()
   const wired = new Set(wiredSections())
   const stats = useStats()
+  const dueCount = useDueMistakes().data?.length ?? 0
 
   // Weakness ranking — sections the user is weakest at percolate to
   // the top of the picker so "what should I study?" answers itself.
@@ -288,8 +290,53 @@ function PickerBody() {
           )
         })}
       </ul>
+
+      {/* "Öva direkt" — practice without reading first: mixed interleaving
+       *  (the daily-plan mastery item) + spaced repetition of your misses,
+       *  kept subordinate to the read-first section list above (learning-
+       *  modes design Phase 1). */}
+      <div
+        className="reveal"
+        style={{ marginTop: 'clamp(30px, 3vw + 10px, 48px)', animationDelay: '200ms' }}
+      >
+        <Mono>Eller öva direkt</Mono>
+        <Link to="/drill" search={{ mixed: true }} data-testid="lektion-mixed" style={shortcutRow}>
+          <span style={shortcutLabel}>Blandad övning · alla åtta delprov</span>
+          <span style={shortcutMeta}>10 frågor →</span>
+        </Link>
+        {dueCount > 0 && (
+          <Link to="/repetition" data-testid="lektion-repetition" style={shortcutRow}>
+            <span style={shortcutLabel}>Repetera dina missar</span>
+            <span style={shortcutMeta}>{dueCount} st →</span>
+          </Link>
+        )}
+      </div>
     </div>
   )
+}
+
+const shortcutRow: React.CSSProperties = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  gap: 16,
+  paddingBlock: 14,
+  borderTop: '1px solid var(--hairline)',
+  textDecoration: 'none',
+}
+const shortcutLabel: React.CSSProperties = {
+  fontFamily: 'var(--font-display)',
+  fontSize: 'clamp(16px, 0.6vw + 13px, 19px)',
+  color: 'var(--ink)',
+}
+const shortcutMeta: React.CSSProperties = {
+  fontFamily: 'var(--font-mono)',
+  fontSize: 11,
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'var(--muted)',
+  whiteSpace: 'nowrap',
+  fontVariantNumeric: 'tabular-nums',
 }
 
 // ── Reader ─────────────────────────────────────────────────────────
