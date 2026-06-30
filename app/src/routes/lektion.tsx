@@ -147,6 +147,12 @@ function PickerBody() {
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
+        // Centered single-column to match the section reader (LessonReader)
+        // — same content measure (68ch + symmetric gutters) so the picker
+        // and the reader share one centred column.
+        width: '100%',
+        maxWidth: 'calc(68ch + 2 * clamp(20px, 4vw + 12px, 56px))',
+        marginInline: 'auto',
         paddingInline: 'clamp(20px, 4vw + 12px, 56px)',
         paddingTop: 'clamp(32px, 4vw + 16px, 64px)',
         paddingBottom: 'clamp(48px, 6vw, 96px)',
