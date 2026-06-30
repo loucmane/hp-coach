@@ -26,6 +26,7 @@ import type { Section } from '@/data/questions'
 
 import { ExampleQuestions } from './ExampleQuestions'
 import { MarkAsReadPill } from './MarkAsReadPill'
+import { PracticeLink } from './PracticeLink'
 
 type AnyProtocolEntry = TacticEntry | ConstraintEntry | ProtocolEntryType
 
@@ -52,6 +53,15 @@ function getKickerLabel(entry: AnyProtocolEntry): string {
   return entry.id.replace('-TYPE-', ' · TYP ')
 }
 
+// The deep-link plays THIS entry's example_questions (framework=entry.id),
+// not the whole section — so the verb is per-entry, matching the kicker.
+// (Was the mislabeled "Öva denna sektion →".)
+function getPracticeLabel(entry: AnyProtocolEntry): string {
+  if (isTactic(entry)) return 'Öva denna taktik'
+  if (isConstraint(entry)) return 'Öva denna regel'
+  return 'Öva denna frågetyp'
+}
+
 export function ProtocolCard({
   entry,
   section,
@@ -65,6 +75,7 @@ export function ProtocolCard({
 }) {
   const headword = getHeadword(entry)
   const kicker = `${getKickerLabel(entry)}${read ? ' · LÄST' : ''}`
+  const practiceLabel = getPracticeLabel(entry)
 
   return (
     <details
@@ -116,6 +127,7 @@ export function ProtocolCard({
         >
           <MathText>{headword}</MathText>
         </h3>
+        <PracticeLink section={section} frameworkId={entry.id} label={practiceLabel} />
       </summary>
 
       <div style={{ marginTop: 20 }}>
@@ -209,7 +221,7 @@ export function ProtocolCard({
               paddingBottom: 2,
             }}
           >
-            Öva denna sektion →
+            {practiceLabel} →
           </Link>
           {onToggleRead && <MarkAsReadPill read={read} onToggle={onToggleRead} />}
         </div>

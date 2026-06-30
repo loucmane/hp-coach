@@ -539,6 +539,12 @@ details[open] > summary .trap-card-toggle::before {
 .trap-card-toggle {
   white-space: nowrap;
 }
+/* Surfaced practice link (PracticeLink) lives in <summary> so it shows while
+ * the lesson card is collapsed; when the card is open the expanded body's own
+ * end-of-read öva takes over, so hide the summary copy to avoid two öva links. */
+details[open] > summary .hpc-lesson-practice {
+  display: none;
+}
 
 /* ════════════════════════════════════════════════════════════════════════
  * Boksidan (M3) drill chassis — task 81

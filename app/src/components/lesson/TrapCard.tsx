@@ -30,6 +30,7 @@ import type { Section } from '@/data/questions'
 
 import { ExampleQuestions } from './ExampleQuestions'
 import { MarkAsReadPill } from './MarkAsReadPill'
+import { PracticeLink } from './PracticeLink'
 
 export function TrapCard({
   entry,
@@ -106,6 +107,7 @@ export function TrapCard({
         >
           <MathText>{entry.tldr || entry.pattern_description}</MathText>
         </h3>
+        <PracticeLink section={section} frameworkId={entry.id} label="Öva detta mönster" />
       </summary>
 
       <div style={{ marginTop: 20 }}>
