@@ -6919,101 +6919,96 @@
     "_meta": {
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
-      "recipe": "variant-c-ultra-granular"
+      "recipe": "variant-c-ultra-granular",
+      "regenerated": "2026-07-02-delimiter-repair"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Om man förenklar fel och tror produkten blir 1/7 — kanske om man räknar 1/2 + 2/5 = 3/7 eller liknande.",
-        "why_wrong": "1/2 + 2/5 = 9/10, inte 3/7. Steg 3 räknar exakt."
+        "why_tempting": "Om du adderar bråken 'rakt av' — täljare med täljare och nämnare med nämnare — blir \\frac{1}{2}+\\frac{2}{5} felaktigt \\frac{3}{7}, och \\frac{1}{7} ligger då nära till hands.",
+        "why_wrong": "Bråk adderas via gemensam nämnare: \\frac{1}{2}+\\frac{2}{5} = \\frac{9}{10}, inte \\frac{3}{7}. Steg 3 räknar exakt."
       },
       {
         "letter": "B",
-        "why_tempting": "1/10 är det andra absolutbeloppet — om man bara läser ena faktorn kan B locka.",
-        "why_wrong": "Vi multiplicerar BÅDA faktorerna, inte väljer en. Steg 8."
+        "why_tempting": "\\frac{1}{10} är värdet av den ANDRA parentesen (\\frac{1}{2}-\\frac{2}{5}) — läser du bara ena faktorn kan B locka.",
+        "why_wrong": "Uttrycket är en PRODUKT av två parenteser, inte en ensam parentes. Steg 8: \\frac{9}{10}\\cdot\\frac{1}{10} = \\frac{9}{100}."
       },
       {
         "letter": "C",
-        "why_tempting": "Om man räknar (1/2)² − (2/5)² = 1/4 − 4/25 felaktigt som 3/100 eller liknande, kan C locka.",
-        "why_wrong": "1/4 − 4/25 = 25/100 − 16/100 = 9/100 (steg 9). Inte 3/100."
+        "why_tempting": "Om du använder konjugatregeln men slarvar med kvadraterna — t.ex. räknar \\frac{1}{4}-\\frac{4}{25} fel — kan du landa på \\frac{3}{100}.",
+        "why_wrong": "\\frac{1}{4}-\\frac{4}{25} = \\frac{25}{100}-\\frac{16}{100} = \\frac{9}{100} (steg 9). Inte \\frac{3}{100}."
       }
     ],
     "framework_id": "XYZ-TRAP-012",
-    "pitfall": null,
+    "pitfall": "Botemedlet mot addera-rakt-av: bråk kan inte adderas eller subtraheras förrän de har SAMMA nämnare. Bygg om till gemensam nämnare först — sedan är det bara täljarna som räknas.",
     "pregrade_tactic": {
       "handle": "Konjugatregeln",
       "move": "Ser du (a+b)(a−b)? Räkna a²−b² direkt istället för att utveckla — samma värde fast snabbare."
     },
-    "solution_path": "|1/2 + 2/5| · |1/2 − 2/5| = (9/10) · (1/10) = 9/100. Svaret är D.",
+    "solution_path": "Räkna parenteserna var för sig med gemensam nämnare 10: \\frac{1}{2}+\\frac{2}{5} = \\frac{9}{10} och \\frac{1}{2}-\\frac{2}{5} = \\frac{1}{10}. Produkten: \\frac{9}{10}\\cdot\\frac{1}{10} = \\frac{9}{100}. Svaret är D.",
     "steps": [
       {
         "n": 1,
-        "text": "Vi ska räkna |\\frac{1}{2} + \\frac{2}{5}| \\cdot |\\frac{1}{2} - \\frac{2}{5}| — produkten av två absolutbelopp.",
-        "tier": "essential",
-        "title": "Förstå problemet"
+        "title": "Förstå problemet",
+        "text": "Du ska räkna ut \\left(\\frac{1}{2}+\\frac{2}{5}\\right)\\left(\\frac{1}{2}-\\frac{2}{5}\\right) — en produkt av två parenteser med samma två bråk, fast med plus i den ena och minus i den andra.",
+        "tier": "essential"
       },
       {
         "n": 2,
-        "text": "|a| betyder 'a:s storlek utan tecken'. |5| = 5, |−5| = 5, |0| = 0. För positiva tal och positiva summor påverkar absolutbeloppet inte värdet.",
-        "tier": "detail",
-        "title": "Vad är absolutbelopp?"
+        "title": "Vad är gemensam nämnare?",
+        "text": "Bråk kan adderas eller subtraheras bara om nämnarna är samma. Minsta gemensamma multipeln av 2 och 5 är 10 — förläng båda bråken dit.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "text": "Gemensam nämnare 10. \\frac{1}{2}=\\frac{5}{10}, \\frac{2}{5}=\\frac{4}{10}. Summa: \\frac{5}{10}+\\frac{4}{10}=\\frac{9}{10}.",
-        "tier": "essential",
-        "title": "Räkna första summan: 1/2 + 2/5"
+        "title": "Räkna första parentesen: 1/2 + 2/5",
+        "text": "\\frac{1}{2} = \\frac{5}{10} och \\frac{2}{5} = \\frac{4}{10}. Summa: \\frac{5}{10}+\\frac{4}{10} = \\frac{9}{10}.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "text": "Bråk-addition kräver att nämnarna är samma. Den minsta gemensamma multipeln av 2 och 5 är 10. Förläng varje bråk så att nämnaren blir 10.",
-        "tier": "detail",
-        "title": "Vad är gemensam nämnare?"
+        "title": "Räkna andra parentesen: 1/2 − 2/5",
+        "text": "Samma omskrivning: \\frac{5}{10}-\\frac{4}{10} = \\frac{1}{10}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "text": "|9/10| = 9/10 (positivt tal — absolutbeloppet är samma som talet självt).",
-        "tier": "essential",
-        "title": "Räkna första absolutbeloppet"
+        "title": "Multiplicera bråk",
+        "text": "Regel: \\frac{a}{b}\\cdot\\frac{c}{d} = \\frac{a\\cdot c}{b\\cdot d} — täljare gånger täljare, nämnare gånger nämnare. Ingen gemensam nämnare behövs vid multiplikation.",
+        "tier": "detail"
       },
       {
         "n": 6,
-        "text": "Samma nämnare: \\frac{5}{10}-\\frac{4}{10}=\\frac{1}{10}.",
-        "tier": "essential",
-        "title": "Räkna andra differensen: 1/2 − 2/5"
+        "title": "Räkna produkten",
+        "text": "\\frac{9}{10}\\cdot\\frac{1}{10} = \\frac{9\\cdot 1}{10\\cdot 10} = \\frac{9}{100}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "text": "|1/10| = 1/10 (positivt).",
-        "tier": "essential",
-        "title": "Räkna andra absolutbeloppet"
+        "title": "Insikt: konjugatregeln",
+        "text": "Uttrycket har formen (a+b)(a-b) = a^2-b^2 med a = \\frac{1}{2}, b = \\frac{2}{5}. Då: a^2 = \\frac{1}{4}, b^2 = \\frac{4}{25}, och \\frac{1}{4}-\\frac{4}{25} = \\frac{25}{100}-\\frac{16}{100} = \\frac{9}{100}. Samma svar — snabbare väg.",
+        "tier": "detail"
       },
       {
         "n": 8,
-        "text": "\\frac{9}{10} \\cdot \\frac{1}{10}=\\frac{9 \\cdot 1}{10 \\cdot 10}=\\frac{9}{100}.",
-        "tier": "essential",
-        "title": "Multiplicera"
+        "title": "Kan 9/100 förkortas?",
+        "text": "9 = 3^2 och 100 = 2^2\\cdot 5^2 — inga gemensamma faktorer. \\frac{9}{100} är redan i enklaste form.",
+        "tier": "detail"
       },
       {
         "n": 9,
-        "text": "Detta är ett klassiskt fall av (a+b)(a-b)=a^{2}-b^{2}. Här a = 1/2, b = 2/5: a^{2}=\\frac{1}{4} och b^{2}=\\frac{4}{25}. Skillnad: \\frac{1}{4}-\\frac{4}{25}=\\frac{25}{100}-\\frac{16}{100}=\\frac{9}{100}. Samma svar.",
-        "tier": "detail",
-        "title": "Insikt: konjugatregeln"
+        "title": "Verifiera med decimaler",
+        "text": "0{,}5+0{,}4 = 0{,}9 och 0{,}5-0{,}4 = 0{,}1. Produkt: 0{,}9\\cdot 0{,}1 = 0{,}09 = \\frac{9}{100}. ✓",
+        "tier": "detail"
       },
       {
         "n": 10,
-        "text": "0,5 + 0,4 = 0,9. 0,5 − 0,4 = 0,1. 0,9 · 0,1 = 0,09 = 9/100. ✓",
-        "tier": "detail",
-        "title": "Verifiera med decimaler"
-      },
-      {
-        "n": 11,
-        "text": "Produkten är 9/100. Svaret är D. Insikten i en mening: (a+b)(a-b)=a^{2}-b^{2} är en genväg när du ser samma två termer med ombytta tecken.",
-        "tier": "essential",
-        "title": "Slutsats"
+        "title": "Slutsats",
+        "text": "Produkten är \\frac{9}{100}. Svaret är D. Insikten i en mening: (a+b)(a-b) = a^2-b^2 är en genväg när du ser samma två termer med ombytta tecken — men vanlig parentes-för-parentes-räkning fungerar precis lika bra.",
+        "tier": "essential"
       }
     ],
-    "technique": "Konjugatregeln: (a+b)(a-b)=a^{2}-b^{2}. När du ser '(någon + något) · (samma något − samma annat)', räkna ut a² − b² istället. Triggern: matchande termpar med olika tecken."
+    "technique": "Konjugatregeln: (a+b)(a-b) = a^2-b^2. När du ser samma termpar med plus i ena parentesen och minus i den andra, räkna a²−b² direkt. Triggern: matchande termpar med olika tecken."
   },
   "var-2023-kvant2-XYZ-006": {
     "_meta": {

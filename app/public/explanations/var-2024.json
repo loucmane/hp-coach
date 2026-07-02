@@ -1508,102 +1508,97 @@
   "var-2024-kvant1-KVA-016": {
     "pregrade_tactic": {
       "handle": "Motexempelstrategin",
-      "move": "När en variabel är fri inom sitt villkor — testa flera värden (positiva, negativa, nära noll) och se om svaret skiftar."
+      "move": "När variablerna bara är bundna av olikheter — testa flera tillåtna kombinationer (lika stora, ena mycket större) och se om jämförelsen skiftar."
     },
     "_meta": {
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
-      "recipe": "variant-c-ultra-granular"
+      "recipe": "variant-c-ultra-granular",
+      "regenerated": "2026-07-02-delimiter-repair"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att 'b negativ + a något' alltid ger en kvot kring 1, och anta att I > II eftersom man kanske testat a = -2 först.",
-        "why_wrong": "Steg 5 ger motexempel där I är mindre. När EN testning ger I > II och en annan ger I < II, är svaret D — inte A."
+        "why_tempting": "Testar du först a = -2, b = -1 får du \\frac{a}{b} = 2 > 1 och kan tro att kvoten alltid hamnar över 1.",
+        "why_wrong": "Steg 6 ger motexemplet a = -1, b = -2: kvoten blir \\frac{1}{2} < 1. Ett test räcker aldrig i KVA — utfallet beror på vilken av |a| och |b| som är störst."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 'b negativ → kvoten negativ → mindre än 1' och man landar på B utan att testa negativa a.",
-        "why_wrong": "Steg 6 visar att om a också är negativ (a = -2), så blir kvoten POSITIV och faktiskt > 1. Negativ b räcker inte för att binda kvotens tecken."
+        "why_tempting": "'b är negativt, alltså blir kvoten negativ och mindre än 1' — man glömmer att a OCKSÅ är negativt.",
+        "why_wrong": "Steg 3: negativt delat med negativt är POSITIVT. Och steg 5 visar att kvoten kan bli 2, alltså större än 1 — B håller inte generellt."
       },
       {
         "letter": "C",
-        "why_tempting": "Om du fastnar vid specialfallet a = -1 (där kvoten = 1) och inte ser att det villkoret är UNDANTAGET, kan du landa på likhet.",
-        "why_wrong": "Steg 10 visar att a = -1 är EXPLICIT förbjudet (a ≠ -1), så likhet kan inte uppnås under villkoren. Och även om det vore tillåtet skulle bara ett enskilt val ge likhet."
+        "why_tempting": "Väljer du de 'enklaste' värdena a = -1, b = -1 blir \\frac{a}{b} = 1 — exakt likhet, och det känns som facit.",
+        "why_wrong": "Steg 5 och 6 visar att andra tillåtna val ger kvoter både över och under 1. Likheten gäller bara när a = b — inget i villkoren tvingar fram det."
       }
     ],
-    "framework_id": "KVA-TRAP-005",
-    "pitfall": null,
-    "solution_path": "Med b < 0 men a fritt (utom a ≠ -1), kan \\frac{a}{b} bli vad som helst. Exempel: a = 1 ger \\frac{1}{-1} = -1 < 1. a = -2 ger \\frac{-2}{-1} = 2 > 1. Otillräckligt. Svaret är D.",
+    "framework_id": null,
+    "pitfall": "Botemedlet mot ett-test-fällan: olikhetsvillkor som a ≤ -1 och b < 0 låser bara TECKNEN, inte storlekarna. Testa minst tre kombinationer — |a| = |b|, |a| > |b| och |a| < |b| — innan du dömer.",
+    "solution_path": "Med a ≤ -1 och b < 0 är båda negativa, så \\frac{a}{b} > 0. Men storleken är fri: a = -1, b = -1 ger \\frac{a}{b} = 1 (likhet); a = -2, b = -1 ger 2 > 1; a = -1, b = -2 ger \\frac{1}{2} < 1. Tre olika utfall — informationen är otillräcklig. Svaret är D.",
     "steps": [
       {
         "n": 1,
-        "text": "a är ett godtyckligt tal med villkoret a ≠ -1. b är negativt (b < 0). Vi jämför \\frac{a}{b} med 1.",
-        "tier": "essential",
-        "title": "Förstå problemet"
+        "title": "Förstå problemet",
+        "text": "Villkoren är a ≤ -1 och b < 0. Kvantitet I är \\frac{a}{b}, Kvantitet II är 1. Du ska avgöra vilken som är störst — eller om det inte går.",
+        "tier": "essential"
       },
       {
         "n": 2,
-        "text": "a kan vara positivt, negativt eller noll — bara inte exakt -1. b är ALLTID negativt (b < 0). Det är allt vi vet.",
-        "tier": "detail",
-        "title": "Vad betyder villkoren?"
+        "title": "Vad säger villkoren?",
+        "text": "a är högst -1, alltså negativt (och minst en enhet under noll). b är negativt men i övrigt helt fritt — det kan vara -0{,}001 eller -1000. Inga storlekar är låsta, bara tecken och en gräns för a.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "text": "När villkoren är luddiga (många a-värden tillåtna), prova flera scenarier och se om svaret förändras. Om det gör det är svaret D (otillräcklig info).",
-        "tier": "essential",
-        "title": "Strategin: testa konkreta värden"
+        "title": "Tecknet på kvoten",
+        "text": "Negativt delat med negativt är positivt. Så \\frac{a}{b} > 0 alltid — kvoten tävlar alltså på samma planhalva som talet 1. Frågan är om den hamnar över, under eller på 1.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "text": "Positivt delat med positivt = positivt. Negativt delat med negativt = positivt. Olika tecken = negativt. Detta avgör om \\frac{a}{b} är > 0 eller < 0.",
-        "tier": "detail",
-        "title": "Vad är division av två tal med samma tecken?"
+        "title": "Strategin: testa konkreta värden",
+        "text": "När villkoren lämnar storlekarna fria: välj flera tillåtna kombinationer och se om jämförelsen skiftar. Skiftar den är svaret D.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "text": "\\frac{1}{-1} = -1. Är -1 > 1? Nej. Är -1 = 1? Nej. Här är Kvantitet II större.",
-        "tier": "essential",
-        "title": "Test 1: a = 1, b = -1"
+        "title": "Test 1 och 2: lika stora, sedan a störst",
+        "text": "a = -1, b = -1 (båda tillåtna): \\frac{-1}{-1} = 1 — likhet med II. a = -2, b = -1: \\frac{-2}{-1} = 2 — större än II.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "text": "\\frac{-2}{-1} = 2 (negativ/negativ = positiv). Är 2 > 1? Ja. Här är Kvantitet I större.",
-        "tier": "essential",
-        "title": "Test 2: a = -2, b = -1"
+        "title": "Test 3: b störst i belopp",
+        "text": "a = -1, b = -2: \\frac{-1}{-2} = \\frac{1}{2} — mindre än II. Nu har vi sett likhet, större OCH mindre.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "text": "\\frac{0}{-1} = 0. Är 0 > 1? Nej. Är 0 = 1? Nej. II är större igen.",
-        "tier": "detail",
-        "title": "Test 3: a = 0, b = -1"
+        "title": "Varför skiftar utfallet?",
+        "text": "\\frac{a}{b} = \\frac{|a|}{|b|} när båda är negativa. Kvoten är större än 1 precis när |a| > |b|, lika med 1 när |a| = |b|, mindre än 1 när |a| < |b| — och villkoren tillåter alla tre lägena.",
+        "tier": "detail"
       },
       {
         "n": 8,
-        "text": "\\frac{-1/2}{-1} = 1/2. II är större (1/2 < 1).",
-        "tier": "detail",
-        "title": "Test 4: a = -1/2, b = -1"
+        "title": "KVA-regeln för otillräcklig information",
+        "text": "Hittar du två tillåtna val som ger OLIKA jämförelseutfall är svaret D. Här har vi till och med tre: 1, 2 och \\frac{1}{2} mot talet 1.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "text": "I test 5, 7, 8 är Kvantitet II > Kvantitet I. I test 6 är Kvantitet I > Kvantitet II. Det går att få BÅDA utfall genom att välja olika a — alltså är informationen otillräcklig.",
-        "tier": "essential",
-        "title": "Vad har vi sett?"
+        "title": "Verifiera att testvärdena är tillåtna",
+        "text": "a = -1 och a = -2 uppfyller a ≤ -1 ✓. b = -1 och b = -2 uppfyller b < 0 ✓. Alla tre testen ligger inom villkoren.",
+        "tier": "detail"
       },
       {
         "n": 10,
-        "text": "Specialfallet a = -1 (med b = -1) skulle ge \\frac{-1}{-1} = 1 (likhet). Frågan undantar det — kanske för att utesluta C. Men oavsett räcker villkoren inte: vi kan göra Kvantitet I antingen större eller mindre än II.",
-        "tier": "detail",
-        "title": "Insikt om villkoret a ≠ -1"
-      },
-      {
-        "n": 11,
-        "text": "Två motexempel räcker för att fastslå otillräcklig information: Test 1 ger II > I, Test 2 ger I > II. Svaret är D. Insikten i en mening: när a är fritt och b bara har tecken-restriktion, kan kvoten bli vad som helst — alltid testa både stora positiva och stora negativa a.",
-        "tier": "essential",
-        "title": "Slutsats"
+        "title": "Slutsats",
+        "text": "Kvoten \\frac{a}{b} kan vara större än, lika med eller mindre än 1 — svaret är D. Insikten i en mening: två minus ger plus i kvoten, men villkor på TECKEN säger ingenting om STORLEK — testa |a| = |b|, |a| > |b| och |a| < |b|.",
+        "tier": "essential"
       }
     ],
-    "technique": "Motexempel-strategin för KVA: när villkoren lämnar en variabel fri (eller bara har tecken-restriktion), välj 2-3 konkreta värden som varierar tecken och storlek. Om du hittar två val som ger motsatta jämförelser, är svaret D. Triggern: 'fri variabel + olikhet med 1' → testa positiv, negativ, och nära-noll."
+    "technique": "Motexempel-strategin för KVA: när villkoren bara ger tecken och gränser (a ≤ -1, b < 0), välj konkreta värden som varierar RELATIV storlek — lika belopp, täljaren störst, nämnaren störst. Två olika utfall räcker för D."
   },
   "var-2024-kvant1-KVA-017": {
     "pregrade_tactic": {

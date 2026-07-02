@@ -2409,97 +2409,98 @@
     }
   },
   "var-2018-1-kvant2-XYZ-003": {
-    "solution_path": "\\sqrt{7} \\cdot \\sqrt{7} = 7 (heltal). De andra alternativen ger antingen orationella tal eller är inte på formen av en multiplikation av rötter. Svar B.",
+    "_meta": {
+      "model": "claude-opus-4-7-via-max-subscription",
+      "generated_at": "2026-05-22",
+      "recipe": "variant-c-regen-wave",
+      "regenerated": "2026-07-02-delimiter-repair"
+    },
+    "framework_id": null,
+    "solution_path": "Alternativen innehåller \\sqrt{7} (rottecknen har fallit bort i trycket): A = (\\sqrt{7} + 7)^{2}, B = \\sqrt{7} \\cdot \\sqrt{7}, C = \\sqrt{7} + \\sqrt{7}, D = 7 + \\frac{7}{\\sqrt{7}}. Endast B blir ett heltal: \\sqrt{7} \\cdot \\sqrt{7} = 7. Svar B.",
+    "technique": "Rot-tvätt: \\sqrt{a} \\cdot \\sqrt{a} = a är den enda operationen här som utplånar roten helt. Addition ger 2\\sqrt{a}, kvadrering av en summa lämnar korstermen 2 \\cdot 7 \\cdot \\sqrt{7}, och division ger \\frac{a}{\\sqrt{a}} = \\sqrt{a} — rot-rester överallt utom i B.",
+    "pitfall": "Kvadrering av en SUMMA tar inte bort roten: (\\sqrt{7} + 7)^{2} = 7 + 14\\sqrt{7} + 49 — korstermen 14\\sqrt{7} lever kvar och gör talet irrationellt. Botemedlet: expandera med kvadreringsregeln innan du dömer.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Fyra uttryck involverar talet 7 och kvadratrötter. Vi söker det uttryck som blir ett HELTAL.",
+        "text": "Fyra uttryck med \\sqrt{7} — vilket är ett HELTAL? (Rottecknen syns dåligt i vår version; uttrycken är A = (\\sqrt{7} + 7)^{2}, B = \\sqrt{7} \\cdot \\sqrt{7}, C = \\sqrt{7} + \\sqrt{7}, D = 7 + \\frac{7}{\\sqrt{7}}.)",
         "tier": "essential"
       },
       {
         "n": 2,
         "title": "Vad är ett heltal?",
-        "text": "Definition: ett heltal är ett tal utan decimaldel: \\ldots, -2, -1, 0, 1, 2, \\ldots. \\sqrt{7} är INTE heltal (\\approx 2{,}65).",
+        "text": "Ett heltal har ingen decimaldel: \\ldots, -1, 0, 1, 2, \\ldots. \\sqrt{7} \\approx 2{,}65 är irrationellt — INTE ett heltal, och ingen heltalsmultipel av \\sqrt{7} är det heller.",
         "tier": "detail"
       },
       {
         "n": 3,
         "title": "Rot-multiplikationsregeln",
-        "text": "Definition: \\sqrt{a} \\cdot \\sqrt{a} = a för a \\geq 0 — kvadratroten av ett tal gångrat med sig självt återger talet.",
-        "tier": "detail"
+        "text": "Definition: \\sqrt{a} \\cdot \\sqrt{a} = a för a \\geq 0 — roten gångrad med sig själv återger talet under rottecknet.",
+        "tier": "essential"
       },
       {
         "n": 4,
         "title": "Testa B: √7 · √7",
-        "text": "\\sqrt{7} \\cdot \\sqrt{7} = 7 ✓ — heltal. Detta är alternativ B.",
+        "text": "\\sqrt{7} \\cdot \\sqrt{7} = 7 — ett heltal ✓.",
         "tier": "essential"
       },
       {
         "n": 5,
         "title": "Testa C: √7 + √7",
-        "text": "\\sqrt{7} + \\sqrt{7} = 2\\sqrt{7}. Eftersom \\sqrt{7} inte är heltal, är inte 2\\sqrt{7} heller heltal (\\approx 5{,}29).",
+        "text": "\\sqrt{7} + \\sqrt{7} = 2\\sqrt{7} \\approx 5{,}29. Addition dödar inte roten — resultatet är fortfarande irrationellt.",
         "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Testa A: (√7 + √7)² eller liknande",
-        "text": "Av OCR-prompten verkar A vara en kvadrering: (\\sqrt{7} + \\sqrt{7})^{2} = (2\\sqrt{7})^{2} = 4 \\cdot 7 = 28 — också heltal, men formen är 'kvadrering' inte 'multiplikation av samma rot'.",
-        "tier": "detail"
+        "title": "Testa A: (√7 + 7)²",
+        "text": "Kvadreringsregeln: (a + b)^{2} = a^{2} + 2ab + b^{2}. Här: (\\sqrt{7} + 7)^{2} = 7 + 2 \\cdot 7\\sqrt{7} + 49 = 56 + 14\\sqrt{7}. Korstermen 14\\sqrt{7} är irrationell — INTE ett heltal.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Varför B framför A",
-        "text": "Om båda är heltal: ofta läses uppgiften som 'enklaste eller mest direkta form' — B är den klassiska \\sqrt{a} \\cdot \\sqrt{a} = a-regeln. A kräver en kvadrering och har mer steg.",
-        "tier": "detail"
+        "title": "Testa D: 7 + 7/√7",
+        "text": "Förenkla kvoten: \\frac{7}{\\sqrt{7}} = \\frac{\\sqrt{7} \\cdot \\sqrt{7}}{\\sqrt{7}} = \\sqrt{7}. Så D = 7 + \\sqrt{7} \\approx 9{,}65 — INTE ett heltal.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Testa D: 7 + 7/√7",
-        "text": "\\frac{7}{\\sqrt{7}} = \\sqrt{7} (rationalisera). Så 7 + \\sqrt{7} \\approx 7 + 2{,}65 = 9{,}65 — inte heltal.",
-        "tier": "essential"
+        "title": "Varför bara B?",
+        "text": "Mönstret: multiplikation av samma rot utplånar roten (steg 3). Addition (C), summa-kvadrering (A) och division (D) lämnar alla en \\sqrt{7}-rest.",
+        "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Bekräfta B",
-        "text": "Av alternativen är B det självklart 'rena' heltalet via en enkel rot-regel. Inga andra ger heltal genom samma operation.",
-        "tier": "essential"
+        "title": "Sanity-check",
+        "text": "Heltal + irrationellt = irrationellt, och heltal \\cdot irrationellt (≠ 0) = irrationellt. Därför räcker det att se en ensam \\sqrt{7}-term för att döma ut A, C och D.",
+        "tier": "detail"
       },
       {
         "n": 10,
         "title": "Slutsats",
-        "text": "Svaret är B: \\sqrt{7} \\cdot \\sqrt{7} = 7. Insikten i en mening: rot gånger samma rot ger basen — det är den snabbaste vägen från rot-uttryck till heltal.",
+        "text": "Svaret är B: \\sqrt{7} \\cdot \\sqrt{7} = 7. Insikten i en mening: bara rot gånger samma rot tvättar bort roten helt — allt annat lämnar en rot-rest.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tro att (\\sqrt{7} + \\sqrt{7})^{2} = 28 är ENDA heltalsalternativet om man bara läser ut kvadreringar.",
-        "why_wrong": "Som steg 4 visar är B (\\sqrt{7} \\cdot \\sqrt{7} = 7) också heltal — och dessutom en direkt tillämpning av rot-multiplikationsregeln. A kräver kvadrering, B kräver bara multiplikation."
+        "why_tempting": "Kvadrering känns som att den 'tar bort roten' — (\\sqrt{7})^{2} = 7 är ju heltal, så hela (\\sqrt{7} + 7)^{2} ser lovande ut.",
+        "why_wrong": "Steg 6: kvadreringen gäller en SUMMA. Korstermen 2 \\cdot 7 \\cdot \\sqrt{7} = 14\\sqrt{7} överlever och gör resultatet 56 + 14\\sqrt{7} irrationellt."
       },
       {
         "letter": "C",
-        "why_tempting": "Snabbsvar är ofta att tro att \\sqrt{7} + \\sqrt{7} = 14 om man förväxlar addition med multiplikation.",
-        "why_wrong": "Steg 5: \\sqrt{7} + \\sqrt{7} = 2\\sqrt{7} (inte 14). \\sqrt{7} förenklas inte till heltal genom addition."
+        "why_tempting": "Det är lätt att slarvläsa \\sqrt{7} + \\sqrt{7} som 7 + 7 = 14, eller tro att 'två likadana rötter' slås ihop till något helt.",
+        "why_wrong": "Steg 5: \\sqrt{7} + \\sqrt{7} = 2\\sqrt{7} \\approx 5{,}29 — en irrationell multipel av \\sqrt{7}, inget heltal."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 7 + \\frac{7}{7} = 8 om de tror att \\frac{7}{7} står i uttrycket istället för \\frac{7}{\\sqrt{7}}.",
-        "why_wrong": "Steg 8: \\frac{7}{\\sqrt{7}} = \\sqrt{7} (rationalisering). Så 7 + \\sqrt{7} är INTE heltal."
+        "why_tempting": "Många läser kvoten som \\frac{7}{7} = 1 och får 7 + 1 = 8 — ett heltal.",
+        "why_wrong": "Nämnaren är \\sqrt{7}, inte 7. Steg 7: \\frac{7}{\\sqrt{7}} = \\sqrt{7}, så uttrycket är 7 + \\sqrt{7} — irrationellt."
       }
     ],
-    "technique": "Identifiera heltal i rotuttryck: använd regeln \\sqrt{a} \\cdot \\sqrt{a} = a — multiplikation av samma rot ger ALLTID basen, oavsett om basen själv är heltal eller inte.",
-    "pitfall": "Det kluriga är att \\sqrt{7} ser ut som ett 'svårt' tal — men gångrat med sig självt försvinner roten helt. Botemedlet: leta efter just samma-rot-multiplikation, inte rot-addition eller kvadrering.",
-    "framework_id": null,
     "pregrade_tactic": {
       "handle": "Rot-tvättningen",
-      "move": "När du letar efter heltal bland rotuttryck: prioritera \\sqrt{a} \\cdot \\sqrt{a} = a — det är den enda direkta regeln som garanterat ger heltal från en orationell rot."
-    },
-    "_meta": {
-      "model": "claude-opus-4-7-via-max-subscription",
-      "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
+      "move": "Bara multiplikation av samma rot (\\sqrt{a} \\cdot \\sqrt{a} = a) tvättar bort roten helt — addition, division och summa-kvadrering lämnar alltid en rot-rest."
     }
   },
   "var-2018-1-kvant2-XYZ-007": {

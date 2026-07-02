@@ -6173,13 +6173,14 @@
     "_meta": {
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
-      "recipe": "variant-c-ultra-granular"
+      "recipe": "variant-c-ultra-granular",
+      "regenerated": "2026-07-02-delimiter-repair"
     },
     "distractors": [
       {
         "letter": "B",
         "why_tempting": "Det är frestande att tro att 'delbart med 3' är 'enklare' och därför mer informativt.",
-        "why_wrong": "Enklare regler ger FLER kandidater — alltså mindre exakt information. Steg 6–7 visar att (2) ger två möjliga n."
+        "why_wrong": "Enklare regler ger FLER kandidater — alltså mindre exakt information. Steg 6–7 visar att (2) ger tre möjliga n."
       },
       {
         "letter": "C",
@@ -6189,21 +6190,25 @@
       {
         "letter": "D",
         "why_tempting": "Många väljer D när båda påståendena ser strukturmässigt liknande ut.",
-        "why_wrong": "D kräver att BÅDA räcker ensamma. (2) ger två kandidater (steg 7) — räcker inte ensamt."
+        "why_wrong": "D kräver att BÅDA räcker ensamma. (2) ger tre kandidater (steg 7) — räcker inte ensamt."
       },
       {
         "letter": "E",
         "why_tempting": "Första instinkten är ibland 'inga konkreta värden för n givna'.",
-        "why_wrong": "Intervallet 1 < n < 9 + delbarhet med 9 ger unikt n = 7. Konkreta värden behövs inte; villkoren räcker. Se steg 4."
+        "why_wrong": "Intervallet 1 ≤ n ≤ 9 + delbarhet med 9 ger unikt n = 7. Konkreta värden behövs inte; villkoren räcker. Se steg 4."
       }
     ],
     "framework_id": "NOG-TRAP-005",
-    "pitfall": "Glömma intervallet (1 < n < 9) och inkludera n = 1 eller n = 10. Botemedlet: lista först alla tillåtna n innan du applicerar delbarhetstestet.",
-    "solution_path": "n är positivt heltal med 1 < n < 9, så n ∈ {2,3,4,5,6,7,8}. (1) 29 + n delbart med 9 → 29 + n ∈ {36, ...} → n = 7. Unikt. (2) 29 + n delbart med 3 → 29 + n ∈ {30, 33, 36} → n ∈ {1, 4, 7}; inom 2-8 blir det {4, 7}. Inte unikt. Svaret är A.",
+    "pitfall": "Läsa intervallet slarvigt och tappa ändpunkterna: villkoret är 1 ≤ n ≤ 9, så n = 1 och n = 9 är tillåtna. Botemedlet: lista först ALLA tillåtna n innan du applicerar delbarhetstestet.",
+    "pregrade_tactic": {
+      "handle": "Delbarhet-i-intervall",
+      "move": "Kombinera intervallbegränsning med delbarhetsvillkor — multiplar av en stor delare i ett snävt intervall är få och oftast unika."
+    },
+    "solution_path": "n är positivt heltal med 1 ≤ n ≤ 9, så n ∈ {1, 2, ..., 9} och 29 + n ligger mellan 30 och 38. (1) 29 + n delbart med 9 → enda multipeln av 9 i 30–38 är 36 → n = 7. Unikt. (2) 29 + n delbart med 3 → 30, 33 eller 36 → n ∈ {1, 4, 7}. Inte unikt. Svaret är A.",
     "steps": [
       {
         "n": 1,
-        "text": "n är ett positivt heltal med 1 < n < 9 (alltså n ∈ {2, 3, 4, 5, 6, 7, 8}). Du ska bestämma n. Två påståenden om vad 29 + n är delbart med ger information.",
+        "text": "n är ett positivt heltal med 1 ≤ n ≤ 9 (alltså n ∈ {1, 2, 3, 4, 5, 6, 7, 8, 9}). Du ska bestämma n. Två påståenden om vad 29 + n är delbart med ger information.",
         "tier": "essential",
         "title": "Förstå problemet"
       },
@@ -6215,7 +6220,7 @@
       },
       {
         "n": 3,
-        "text": "29 + n måste vara en multipel av 9. Eftersom n är mellan 2 och 8, ligger 29 + n mellan 31 och 37. Multiplar av 9 i detta intervall: 36 (= 9·4). Andra: 27 (för litet), 45 (för stort). Endast 36.",
+        "text": "29 + n måste vara en multipel av 9. Eftersom n är mellan 1 och 9, ligger 29 + n mellan 30 och 38. Multiplar av 9 i detta intervall: 36 (= 9·4). Andra: 27 (för litet), 45 (för stort). Endast 36.",
         "tier": "essential",
         "title": "Analysera (1): 29 + n delbart med 9"
       },
@@ -6233,19 +6238,19 @@
       },
       {
         "n": 6,
-        "text": "29 + n måste vara en multipel av 3. Multiplar av 3 i intervallet 31–37: 33 (= 3·11), 36 (= 3·12). Två kandidater.",
+        "text": "29 + n måste vara en multipel av 3. Multiplar av 3 i intervallet 30–38: 30 (= 3·10), 33 (= 3·11), 36 (= 3·12). Tre kandidater.",
         "tier": "essential",
         "title": "Analysera (2): 29 + n delbart med 3"
       },
       {
         "n": 7,
-        "text": "Om 29 + n = 33 → n = 4. Om 29 + n = 36 → n = 7. Två möjliga värden för n.",
+        "text": "Om 29 + n = 30 → n = 1. Om 29 + n = 33 → n = 4. Om 29 + n = 36 → n = 7. Tre möjliga värden för n.",
         "tier": "essential",
         "title": "Lös ut n från (2)"
       },
       {
         "n": 8,
-        "text": "NEJ — n kan vara 4 eller 7. Inte unikt. Otillräckligt.",
+        "text": "NEJ — n kan vara 1, 4 eller 7. Inte unikt. Otillräckligt.",
         "tier": "essential",
         "title": "(2) ensamt — tillräckligt?"
       },
@@ -6257,7 +6262,7 @@
       },
       {
         "n": 10,
-        "text": "(1) ger n = 7. (2) ger n = 4 eller 7. Skärningen: n = 7. Konsistent. Men vi visste redan från (1) ensamt att n = 7 — (2) tillför inget nytt.",
+        "text": "(1) ger n = 7. (2) ger n = 1, 4 eller 7. Skärningen: n = 7. Konsistent. Men vi visste redan från (1) ensamt att n = 7 — (2) tillför inget nytt.",
         "tier": "detail",
         "title": "Sanity-check med (1) och (2) kombinerat"
       },
@@ -6274,11 +6279,7 @@
         "title": "Slutsats"
       }
     ],
-    "technique": "Delbarhets-och-intervall-strategin: kombinera intervallbegränsning för n med delbarhetsvillkor på 29 + n. Multiplar av X inom ett snävt intervall är få; en striktare delare ger oftare ett unikt svar. Triggern: 'n i litet intervall + linjär uttryck delbar med X' → räkna multipler av X i intervallet.",
-    "pregrade_tactic": {
-      "handle": "Delbarhet-i-intervall",
-      "move": "Kombinera intervallbegränsning med delbarhetsvillkor — multiplar av en stor delare i ett snävt intervall är få och oftast unika."
-    }
+    "technique": "Delbarhets-och-intervall-strategin: kombinera intervallbegränsning för n med delbarhetsvillkor på 29 + n. Multiplar av X inom ett snävt intervall är få; en striktare delare ger oftare ett unikt svar. Triggern: 'n i litet intervall + linjärt uttryck delbart med X' → räkna multipler av X i intervallet."
   },
   "host-ver1-2019-kvant2-XYZ-001": {
     "_meta": {

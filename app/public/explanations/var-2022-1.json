@@ -6182,94 +6182,94 @@
     }
   },
   "var-2022-1-kvant2-XYZ-006": {
-    "solution_path": "Pröva varje alternativ: ett uttryck är heltal om alla rotutdragningar 'tar ut' varandra eller om kvadratrötter kvadreras. Alternativ D innehåller ett kvadrerat rotuttryck, så irrationaliteten försvinner och resultatet blir ett heltal — t.ex. (\\sqrt{51}+\\sqrt{51})^2=4\\cdot 51=204 eller (\\sqrt{51})^2+51=102, beroende på exakt formulering.",
+    "solution_path": "\\sqrt{51} är irrationellt (51 är ingen jämn kvadrat), så A = 51\\sqrt{51}, B = \\sqrt{51}(\\sqrt{51}+51) = 51+51\\sqrt{51} och C = \\sqrt{51}+\\sqrt{51} = 2\\sqrt{51} förblir irrationella. I D kvadreras rotuttrycket: (\\sqrt{51}+\\sqrt{51})^2 = (2\\sqrt{51})^2 = 4\\cdot 51 = 204 — ett heltal. Svaret är D.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Du har fyra uttryck, alla innehållande √51. Frågan: vilket av dem är ett heltal?",
+        "text": "Fyra uttryck, alla byggda kring \\sqrt{51} A = 51\\sqrt{51}, B = \\sqrt{51}(\\sqrt{51}+51), C = \\sqrt{51}+\\sqrt{51}, D = (\\sqrt{51}+\\sqrt{51})^2. Exakt ett av dem är ett heltal.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad betyder kvadratrot?",
-        "text": "Definition: \\sqrt{n} är det icke-negativa tal som kvadrerat ger n. Om n inte är en perfekt kvadrat (1, 4, 9, 16, 25 …) är \\sqrt{n} irrationell.",
+        "title": "Är √51 ett heltal?",
+        "text": "51 ligger mellan 7^2 = 49 och 8^2 = 64, så \\sqrt{51} \\approx 7{,}14 — irrationellt. Ett uttryck där \\sqrt{51} står kvar okvadrerad kan därför aldrig bli ett heltal.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Är √51 ett heltal?",
-        "text": "51 ligger mellan 7^2=49 och 8^2=64, så \\sqrt{51}\\approx 7{,}14 — irrationell. Allt uttryck som lämnar √51 ensamt blir alltså irrationellt.",
+        "title": "Strategi: hur försvinner roten?",
+        "text": "Roten elimineras bara när den kvadreras eller multipliceras med sig själv: (\\sqrt{51})^2 = \\sqrt{51}\\cdot\\sqrt{51} = 51. Leta efter alternativet där VARJE rot paras ihop så.",
         "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Strategi: hur 'försvinner' rotutdragningen?",
-        "text": "Två sätt: 1) Kvadrera ((\\sqrt{n})^2=n). 2) Multiplicera roten med sig själv (\\sqrt{n}\\cdot\\sqrt{n}=n). I båda fallen blir resultatet heltalet n.",
+        "title": "Granska A",
+        "text": "A = 51\\sqrt{51} — heltalet 51 gånger ett irrationellt tal. Produkten är irrationell (≈ 364{,}2). Inte heltal.",
         "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Avfärda alternativ med blottad rot",
-        "text": "Om ett alternativ innehåller \\sqrt{51}+\\sqrt{51}=2\\sqrt{51} utan kvadrering, blir summan 2\\cdot 7{,}14\\approx 14{,}28 — irrationellt, alltså inte heltal.",
+        "title": "Granska B",
+        "text": "Multiplicera in: \\sqrt{51}(\\sqrt{51}+51) = \\sqrt{51}\\cdot\\sqrt{51} + 51\\sqrt{51} = 51 + 51\\sqrt{51}. Första termen blev heltal, men den andra lämnar \\sqrt{51} kvar — summan är irrationell.",
         "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Avfärda alternativ med rot inuti rot",
-        "text": "\\sqrt{51+51}=\\sqrt{102} är inte heltal heller — 102 är inte perfekt kvadrat (10^2=100, 11^2=121).",
+        "title": "Granska C",
+        "text": "\\sqrt{51}+\\sqrt{51} = 2\\sqrt{51} \\approx 14{,}28. Att addera roten med sig själv dödar den inte — bara multiplikation eller kvadrering gör det. Inte heltal.",
         "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Identifiera alternativet som kvadrerar",
-        "text": "Alternativ D är konstruerat så att rotuttrycket kvadreras eller multipliceras med sig självt — det ENDA sätt att få heltal i denna uppställning.",
+        "title": "Granska D — förenkla parentesen",
+        "text": "Inuti parentesen: \\sqrt{51}+\\sqrt{51} = 2\\sqrt{51}. Alltså D = (2\\sqrt{51})^2.",
         "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Räkna ut D",
-        "text": "Om D = (\\sqrt{51}+\\sqrt{51})^2: använd kvadreringsregeln (a+b)^2=a^2+2ab+b^2. Med a=b=\\sqrt{51}: 51+2\\cdot 51+51=4\\cdot 51=204. Heltal.",
+        "title": "Kvadrera",
+        "text": "Regel: (ab)^2 = a^2b^2. Här: (2\\sqrt{51})^2 = 2^2\\cdot(\\sqrt{51})^2 = 4\\cdot 51 = 204. Roten är borta — kvar är heltalet 204.",
         "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Tolkning",
-        "text": "Alternativ D blir alltså 204 (eller motsvarande heltal beroende på exakt form). De övriga alternativen innehåller blottade rötter och förblir irrationella.",
+        "title": "Alternativ väg för D",
+        "text": "Kvadreringsregeln (a+b)^2 = a^2+2ab+b^2 med a = b = \\sqrt{51} ger 51 + 2\\cdot 51 + 51 = 204. Samma svar — bra kontroll.",
         "tier": "detail"
       },
       {
         "n": 10,
         "title": "Verifiera",
-        "text": "Snabbtest: (\\sqrt{51}+\\sqrt{51})^2=(2\\sqrt{51})^2=4\\cdot 51=204. Heltal ✓.",
-        "tier": "essential"
+        "text": "Decimalkoll: 2\\sqrt{51} \\approx 14{,}28 och 14{,}28^2 \\approx 204{,}0. ✓",
+        "tier": "detail"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Svaret är D. Insikten i en mening: rotuttryck blir heltal endast när rötterna kvadreras eller multipliceras med sig själva — leta efter den symmetrin i alternativen.",
+        "text": "Svaret är D (204). Insikten i en mening: en rot försvinner bara genom kvadrering eller multiplikation med sig själv — addition (C) eller multiplikation med ett heltal (A) lämnar irrationaliteten kvar.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att tolka √51·√51 = 51 och tycka det är ett heltal — och formellt blir det det.",
-        "why_wrong": "Steg 7 säger att rätt alternativ är det med kvadrering; om A är skrivet annorlunda (t.ex. som 51·51 = 2601) ger det fortfarande heltal men inte det form som matchar facit D."
+        "why_tempting": "51\\sqrt{51} ser 'färdigräknat' ut — två 51:or bredvid varandra kan läsas slarvigt som \\sqrt{51}\\cdot\\sqrt{51} = 51.",
+        "why_wrong": "Steg 4: det står 51\\cdot\\sqrt{51}, inte \\sqrt{51}\\cdot\\sqrt{51}. Heltal gånger irrationellt tal är irrationellt."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta uttrycket med 51√(51+51) — ser ut som det 'städar upp' rötterna.",
-        "why_wrong": "Steg 6 visar att \\sqrt{102} är irrationell — 102 är inte en perfekt kvadrat."
+        "why_tempting": "\\sqrt{51}\\cdot\\sqrt{51} = 51 inne i distributionen ger en heltalsdel, och det känns som att uttrycket 'städas upp' till ett heltal.",
+        "why_wrong": "Steg 5: distributionen ger 51 + 51\\sqrt{51} — den andra termen behåller roten, så summan är irrationell."
       },
       {
         "letter": "C",
-        "why_tempting": "Många stannar vid √51 + √51 = 2√51 eftersom det 'ser snyggt ut'.",
-        "why_wrong": "Steg 5 visar att 2\\sqrt{51}\\approx 14{,}28 — irrationellt, inte heltal."
+        "why_tempting": "\\sqrt{51}+\\sqrt{51} = 2\\sqrt{51} ser enkelt och 'jämnt' ut — dubbelt av något känns som ett rent tal.",
+        "why_wrong": "Steg 6: 2\\sqrt{51} \\approx 14{,}28. Addition eliminerar inte roten — bara kvadrering gör det."
       }
     ],
-    "technique": "Rot-i-uttryck-strategin: ett uttryck med √n är heltal endast när alla rötter kvadreras eller paras med sig själva via multiplikation. Trigger: 'Vilket alternativ är ett heltal?' med rotuttryck.",
-    "pitfall": "Botemedlet: räkna inte uttrycken numeriskt direkt — leta först efter ALGEBRAISK symmetri som eliminerar roten (kvadrering, √n·√n). Då slipper du räkna decimaltal.",
+    "technique": "Rot-eliminerings-jakten: ett uttryck med \\sqrt{n} (n ej jämn kvadrat) är heltal endast om varje rot kvadreras eller multipliceras med sig själv. Skanna alternativen efter den strukturen i stället för att räkna decimaler.",
+    "pitfall": "Botemedlet: blanda inte ihop 51\\sqrt{51} (heltal · rot — irrationellt) med \\sqrt{51}\\cdot\\sqrt{51} (rot · rot = 51 — heltal). Läs noga VAD som multipliceras med vad innan du dömer.",
     "framework_id": null,
     "pregrade_tactic": {
       "handle": "Rot-eliminations-jakten",
@@ -6278,7 +6278,8 @@
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
+      "recipe": "variant-c-regen-wave",
+      "regenerated": "2026-07-02-delimiter-repair"
     }
   },
   "var-2022-1-kvant2-XYZ-007": {
@@ -12392,97 +12393,98 @@
     }
   },
   "var-2022-1-kvant1-KVA-017": {
-    "solution_path": "I = (cm)³/16 vs II = πr² eller liknande. Per parsing osäker. Per facit A: I > II.",
+    "solution_path": "Förenkla båda kvantiteterna: I = \\left(\\frac{2}{\\sqrt{3}}\\right)^2 = \\frac{4}{3} och II = \\sqrt{\\frac{16}{\\pi^2}} = \\frac{4}{\\pi}. Samma täljare 4 — jämför nämnarna: 3 < \\pi, så \\frac{4}{3} > \\frac{4}{\\pi}. I är större — svaret är A.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Två komplexa uttryck.",
+        "text": "Kvantitet I är \\left(\\frac{2}{\\sqrt{3}}\\right)^2 och Kvantitet II är \\sqrt{\\frac{16}{\\pi^2}}. Båda är rena tal utan variabler — du ska förenkla och jämföra.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Tolka I",
-        "text": "Beror på parsing.",
-        "tier": "essential"
+        "title": "Regel: kvadrat av ett bråk",
+        "text": "\\left(\\frac{a}{b}\\right)^2 = \\frac{a^2}{b^2} — täljare och nämnare kvadreras var för sig.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Tolka II",
-        "text": "Beror på parsing.",
+        "title": "Förenkla Kvantitet I",
+        "text": "\\left(\\frac{2}{\\sqrt{3}}\\right)^2 = \\frac{2^2}{(\\sqrt{3})^2} = \\frac{4}{3}. Kvadraten 'äter upp' roten: (\\sqrt{3})^2 = 3 per definition.",
         "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Räkna båda",
-        "text": "Specifika värden.",
-        "tier": "essential"
+        "title": "Regel: rot av ett bråk",
+        "text": "\\sqrt{\\frac{a}{b}} = \\frac{\\sqrt{a}}{\\sqrt{b}} (för positiva a, b) — roten dras ur täljare och nämnare var för sig.",
+        "tier": "detail"
       },
       {
         "n": 5,
-        "title": "Per facit A",
-        "text": "I > II.",
+        "title": "Förenkla Kvantitet II",
+        "text": "\\sqrt{\\frac{16}{\\pi^2}} = \\frac{\\sqrt{16}}{\\sqrt{\\pi^2}} = \\frac{4}{\\pi}. Både 16 och \\pi^2 är jämna kvadrater, så roten försvinner helt.",
         "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Räcker informationen?",
-        "text": "Ja.",
-        "tier": "detail"
+        "title": "Nu är jämförelsen enkel",
+        "text": "I = \\frac{4}{3} och II = \\frac{4}{\\pi}. Samma täljare (4) — då avgör nämnarna: det bråk som har MINDRE nämnare är STÖRRE.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Tecken-check",
-        "text": "Båda positiva.",
-        "tier": "detail"
+        "title": "Jämför nämnarna",
+        "text": "\\pi \\approx 3{,}14 > 3. Kvantitet II har den större nämnaren, alltså det mindre värdet: \\frac{4}{3} > \\frac{4}{\\pi}.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Sanity check",
-        "text": "A bekräftad.",
+        "title": "Sanity-check med decimaler",
+        "text": "\\frac{4}{3} \\approx 1{,}333 och \\frac{4}{\\pi} \\approx \\frac{4}{3{,}14} \\approx 1{,}273. Mycket riktigt: I > II.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Verifiering",
-        "text": "Räkna båda explicit.",
+        "title": "Räcker informationen?",
+        "text": "Ja — båda uttrycken är konstanter (inga variabler), så jämförelsen är entydig. D är uteslutet.",
         "tier": "detail"
       },
       {
         "n": 10,
         "title": "Slutsats",
-        "text": "I > II — svaret är A.",
+        "text": "I = \\frac{4}{3} > \\frac{4}{\\pi} = II — svaret är A. Insikten i en mening: förenkla rot- och kvadratuttryck till vanliga bråk först; har bråken samma täljare avgör nämnarna direkt.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "B",
-        "why_tempting": "Felaktig tolkning.",
-        "why_wrong": "Steg 5: facit A."
+        "why_tempting": "Om du glömmer att dra roten ur nämnaren och läser II som \\frac{16}{\\pi^2} \\approx 1{,}62 ser II större ut än \\frac{4}{3}.",
+        "why_wrong": "Steg 5 visar att roten tas ur BÅDE täljare och nämnare: \\sqrt{16/\\pi^2} = 4/\\pi \\approx 1{,}27 — mindre än 4/3."
       },
       {
         "letter": "C",
-        "why_tempting": "Likhet utesluten.",
-        "why_wrong": "Steg 5: strikt A."
+        "why_tempting": "Med tumregeln \\pi \\approx 3 blir båda \\frac{4}{3} — och likhet känns snyggt.",
+        "why_wrong": "\\pi är inte 3 utan 3{,}14159\\ldots — strikt större än 3. Steg 7: nämnarna är olika, alltså är värdena olika."
       },
       {
         "letter": "D",
-        "why_tempting": "'Otydligt → otillräcklig'.",
-        "why_wrong": "Steg 6: räcker."
+        "why_tempting": "\\pi känns 'oexakt', och rot-plus-kvadrat-kombinationen kan kännas som att information saknas.",
+        "why_wrong": "\\pi är en bestämd konstant, inte en variabel. Steg 9: båda kvantiteterna har entydiga värden, så jämförelsen går alltid att göra."
       }
     ],
-    "technique": "Räkna båda uttryck explicit.",
-    "pitfall": "Botemedlet: testa flera tolkningar.",
+    "technique": "Förenkla-först-strategin: kvadrera bort rötter ((\\sqrt{a})^2 = a) och dra rötter ur jämna kvadrater (\\sqrt{a^2} = a) tills båda kvantiteterna är vanliga bråk. Samma täljare → jämför nämnarna.",
+    "pitfall": "Botemedlet mot halv-förenkling: när du drar roten ur ett bråk, dra den ur BÅDA våningarna — \\sqrt{16/\\pi^2} är 4/\\pi, inte 16/\\pi eller 4/\\pi^2. Skriv ut mellansteget \\frac{\\sqrt{16}}{\\sqrt{\\pi^2}} så slinker inget förbi.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Tolkningsvalidering",
-      "move": "Vid otydlig parser — välj facit-konsistent tolkning."
+      "handle": "Samma-täljare-knepet",
+      "move": "Förenkla båda kvantiteterna till bråk. Har de samma täljare är det bråk med mindre nämnare störst — ingen decimalräkning behövs."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-missing-fill",
+      "regenerated": "2026-07-02-delimiter-repair"
     }
   },
   "var-2022-1-kvant1-KVA-018": {

@@ -2985,101 +2985,102 @@
     "_meta": {
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
-      "recipe": "variant-c-ultra-granular"
+      "recipe": "variant-c-ultra-granular",
+      "regenerated": "2026-07-02-delimiter-repair"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Att tro att 'positiva tillägg' (+1/2, +1/4) gör produkten större än 1 utan att kompenseras av '− tilläggen'.",
-        "why_wrong": "Steg 6 visar exakt att paren (\\frac{3}{2} \\cdot \\frac{2}{3} och \\frac{5}{4} \\cdot \\frac{4}{5}) tar ut varandra exakt. Inget överskott eller underskott."
+        "why_tempting": "Att tro att plus-faktorerna (+\\frac{1}{2}, +\\frac{1}{4}) väger tyngre än minus-faktorerna och drar produkten över 1.",
+        "why_wrong": "Steg 6 visar att paren \\frac{3}{2} \\cdot \\frac{2}{3} och \\frac{5}{4} \\cdot \\frac{4}{5} tar ut varandra EXAKT. Inget överskott blir kvar."
       },
       {
         "letter": "B",
-        "why_tempting": "Att tro att '− tilläggen' (−1/3, −1/5) drar produkten under 1.",
-        "why_wrong": "Steg 7: parens-mönstret (\\frac{a}{b} \\cdot \\frac{b}{a} = 1) garanterar exakt 1, inte mindre."
+        "why_tempting": "Att tro att minus-faktorerna (−\\frac{1}{3}, −\\frac{1}{5}) drar produkten under 1.",
+        "why_wrong": "Steg 7: inversparen \\frac{a}{b} \\cdot \\frac{b}{a} = 1 garanterar exakt 1, varken mer eller mindre."
       },
       {
         "letter": "D",
-        "why_tempting": "Snabbreflex är att 'fyra bråk + absolutbelopp = komplicerat → info saknas'.",
-        "why_wrong": "Uttrycket är fullständigt definierat. Steg 3 räknar ut alla faktorer som konkreta tal — informationen räcker."
+        "why_tempting": "Snabbreflex är att 'fyra bråkfaktorer = komplicerat → informationen räcker inte'.",
+        "why_wrong": "Uttrycket innehåller inga variabler — alla fyra faktorer är konkreta tal. Steg 3 räknar ut dem; informationen räcker."
       }
     ],
     "framework_id": "KVA-TRAP-024",
-    "pitfall": "Att fastna i att räkna ut varje produkt mekaniskt utan att se mönstret — ger samma svar men tar tio gånger så lång tid. Botemedlet: skriv om varje faktor som ett bråk OCH leta efter par där täljaren av ena är nämnaren av andra.",
+    "pitfall": "Att räkna ut hela produkten mekaniskt med gemensamma nämnare utan att se mönstret — det ger samma svar men tar tio gånger så lång tid. Botemedlet: skriv om varje parentes som ETT bråk och leta efter par där täljaren i det ena är nämnaren i det andra.",
     "pregrade_tactic": {
       "handle": "Invers-parstricket",
-      "move": "I långa bråkprodukter, leta efter par (a/b)·(b/a) som tar ut till 1; för (1±1/n)-mönster söker du teleskoperingen direkt."
+      "move": "I långa bråkprodukter, leta efter par (a/b)·(b/a) som tar ut varandra till 1; för (1 ± 1/n)-mönster ser du paren direkt när varje parentes skrivits som ett bråk."
     },
-    "solution_path": "Uttrycket är |1 + \\frac{1}{2}| \\cdot |1 - \\frac{1}{3}| \\cdot |1 + \\frac{1}{4}| \\cdot |1 - \\frac{1}{5}| = \\frac{3}{2} \\cdot \\frac{2}{3} \\cdot \\frac{5}{4} \\cdot \\frac{4}{5} = 1. Kvantitet I = Kvantitet II = 1. Svaret är C.",
+    "solution_path": "Kvantitet I = (1 + \\frac{1}{2})(1 - \\frac{1}{3})(1 + \\frac{1}{4})(1 - \\frac{1}{5}) = \\frac{3}{2} \\cdot \\frac{2}{3} \\cdot \\frac{5}{4} \\cdot \\frac{4}{5} = 1 \\cdot 1 = 1. Kvantitet II = 1. I = II — svaret är C.",
     "steps": [
       {
         "n": 1,
-        "text": "Kvantitet I är produkten |1 + \\frac{1}{2}| \\cdot |1 - \\frac{1}{3}| \\cdot |1 + \\frac{1}{4}| \\cdot |1 - \\frac{1}{5}|. (I prompten visas absolutvärdesstreck som 'b' och 'l' — typografisk parsning av | tecknet.) Kvantitet II = 1. Jämför.",
+        "text": "Kvantitet I är produkten (1 + \\frac{1}{2})(1 - \\frac{1}{3})(1 + \\frac{1}{4})(1 - \\frac{1}{5}). Kvantitet II = 1. Du ska avgöra vilken som är störst.",
         "tier": "essential",
         "title": "Förstå problemet"
       },
       {
         "n": 2,
-        "text": "|a| är talets storlek utan tecken: |3| = 3, |-3| = 3. Eftersom alla termer här är positiva (1 + positivt bråk eller 1 − bråk < 1 är fortfarande positivt om bråket < 1) är absolutbeloppet samma som talet.",
+        "text": "En lång produkt av parenteser blir hanterbar först när varje parentes är ETT tal. Skriv därför om varje faktor som ett enda bråk innan du multiplicerar.",
         "tier": "detail",
-        "title": "Vad betyder absolutbelopp"
+        "title": "Strategin: en parentes = ett bråk"
       },
       {
         "n": 3,
-        "text": "1 + \\frac{1}{2} = \\frac{3}{2}. 1 - \\frac{1}{3} = \\frac{2}{3}. 1 + \\frac{1}{4} = \\frac{5}{4}. 1 - \\frac{1}{5} = \\frac{4}{5}.",
+        "text": "1 + \\frac{1}{2} = \\frac{3}{2}. 1 - \\frac{1}{3} = \\frac{2}{3}. 1 + \\frac{1}{4} = \\frac{5}{4}. 1 - \\frac{1}{5} = \\frac{4}{5}.",
         "tier": "essential",
         "title": "Räkna varje faktor"
       },
       {
         "n": 4,
-        "text": "Skriv 1 som \\frac{2}{2} (samma värde, gemensam nämnare med 1/2). Då blir \\frac{2}{2} + \\frac{1}{2} = \\frac{3}{2}.",
+        "text": "Skriv 1 som \\frac{2}{2} (samma värde, gemensam nämnare med \\frac{1}{2}). Då blir \\frac{2}{2} + \\frac{1}{2} = \\frac{3}{2}. Samma metod ger de tre övriga.",
         "tier": "detail",
         "title": "Hur man räknar 1 + 1/2"
       },
       {
         "n": 5,
-        "text": "\\frac{3}{2} \\cdot \\frac{2}{3} \\cdot \\frac{5}{4} \\cdot \\frac{4}{5}. Gruppera: \\left(\\frac{3}{2} \\cdot \\frac{2}{3}\\right) \\cdot \\left(\\frac{5}{4} \\cdot \\frac{4}{5}\\right).",
+        "text": "\\frac{3}{2} \\cdot \\frac{2}{3} \\cdot \\frac{5}{4} \\cdot \\frac{4}{5}. Gruppera: \\left(\\frac{3}{2} \\cdot \\frac{2}{3}\\right) \\cdot \\left(\\frac{5}{4} \\cdot \\frac{4}{5}\\right).",
         "tier": "essential",
         "title": "Multiplicera ihop"
       },
       {
         "n": 6,
-        "text": "\\frac{3}{2} \\cdot \\frac{2}{3} = \\frac{6}{6} = 1. \\frac{5}{4} \\cdot \\frac{4}{5} = \\frac{20}{20} = 1. Båda paren ger 1.",
+        "text": "\\frac{3}{2} \\cdot \\frac{2}{3} = \\frac{6}{6} = 1. \\frac{5}{4} \\cdot \\frac{4}{5} = \\frac{20}{20} = 1. Båda paren ger exakt 1.",
         "tier": "essential",
         "title": "Räkna varje par"
       },
       {
         "n": 7,
-        "text": "När du gångrar ett bråk med sin INVERS (talet upp-och-ner) blir produkten alltid 1: \\frac{a}{b} \\cdot \\frac{b}{a} = \\frac{ab}{ab} = 1. Det är en grundläggande egenskap som dyker upp ofta.",
+        "text": "När du gångrar ett bråk med sin INVERS (talet upp-och-ner) blir produkten alltid 1: \\frac{a}{b} \\cdot \\frac{b}{a} = \\frac{ab}{ab} = 1. Det är exakt vad som händer i båda paren här.",
         "tier": "detail",
-        "title": "Mönster: bråk gångrat med sin invers"
+        "title": "Varför paren tar ut varandra"
       },
       {
         "n": 8,
-        "text": "1 · 1 = 1. Kvantitet I = 1.",
-        "tier": "essential",
-        "title": "Slå ihop produkten"
+        "text": "Mönstret är inte en slump: (1 + \\frac{1}{n})(1 - \\frac{1}{n+1}) = \\frac{n+1}{n} \\cdot \\frac{n}{n+1} = 1. Med n = 2 ger det första paret, med n = 4 det andra.",
+        "tier": "detail",
+        "title": "Det allmänna mönstret"
       },
       {
         "n": 9,
-        "text": "Kvantitet I = 1, Kvantitet II = 1. De är LIKA.",
+        "text": "Kvantitet I = 1 \\cdot 1 = 1. Kvantitet II = 1. De är LIKA.",
         "tier": "essential",
         "title": "Jämför med Kvantitet II"
       },
       {
         "n": 10,
-        "text": "Produkten såg ut som '+, −, +, −' med bråk 1/2, 1/3, 1/4, 1/5. När man tittar närmare: 1 + \\frac{1}{2} och 1 - \\frac{1}{3} är inversa par via teleskopering? Inte exakt; men \\frac{3}{2} \\cdot \\frac{2}{3} = 1 är ändå korrekt eftersom (1 + 1/n) · (1 − 1/(n+1)) = (\\frac{n+1}{n})(\\frac{n}{n+1}) = 1.",
+        "text": "Snabbkoll med decimaler: 1{,}5 \\cdot 0{,}667 \\approx 1{,}0 och 1{,}25 \\cdot 0{,}8 = 1{,}0. Produkten är 1. ✓",
         "tier": "detail",
-        "title": "Verifiera mönstret"
+        "title": "Verifiera numeriskt"
       },
       {
         "n": 11,
-        "text": "Kvantitet I = Kvantitet II = 1 — svaret är C. Insikten i en mening: bråk som (1 ± 1/n) bildar inversa par enligt mönstret \\frac{n+1}{n} \\cdot \\frac{n}{n+1} = 1; långa produkter kollapsar då till 1.",
+        "text": "Kvantitet I = Kvantitet II = 1 — svaret är C. Insikten i en mening: faktorer på formen (1 ± 1/k) blir enkla bråk som bildar inverspar \\frac{n+1}{n} \\cdot \\frac{n}{n+1} = 1; långa produkter kollapsar då till 1.",
         "tier": "essential",
         "title": "Slutsats"
       }
     ],
-    "technique": "Invers-parens-strategin: leta efter par {MO}\\frac{{a}}{{b}} \\cdot \\frac{{b}}{{a}}{MC} i en bråkprodukt; varje sådant par tar ut till 1. För uttryck (1 + 1/n)(1 − 1/(n+1)) gäller mönstret. Triggern: lång produkt av (1 ± 1/k) — leta efter teleskopering eller inverspar."
+    "technique": "Invers-par-strategin: skriv varje parentes som ett enda bråk och leta efter par \\frac{a}{b} \\cdot \\frac{b}{a} i produkten; varje sådant par tar ut till 1. Triggern: lång produkt av (1 ± 1/k)-faktorer — leta efter inverspar eller teleskopering."
   },
   "host-2025-kvant2-NOG-023": {
     "_meta": {

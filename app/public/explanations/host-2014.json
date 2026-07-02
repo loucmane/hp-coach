@@ -12700,97 +12700,104 @@
     }
   },
   "host-2014-kvant2-KVA-021": {
-    "solution_path": "I = 10^(0,4·−0,16) = 10^(−0,064) [tolkning kan variera; figuren visar specifik form]. Förmodligen är uttrycket 10^(e·0,16) eller liknande, beroende på exakt parsing. Facit C betyder I = II = 3, så uttrycket reducerar till 3 algebraiskt — svaret C.",
+    "solution_path": "Räkna inifrån och ut: \\sqrt{0{,}16} = 0{,}4 (eftersom 0{,}4^2 = 0{,}16). Bråket blir \\frac{0{,}4}{0{,}4} = 1. Innanför yttre roten: 10 - 1 = 9. Kvantitet I = \\sqrt{9} = 3. Kvantitet II = 3. I = II — svaret är C.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Två uttryck där I är en potens av 10 (eller liknande) och II = 3. Du ska avgöra om de är lika.",
+        "text": "Kvantitet I är ett nästlat uttryck: \\sqrt{10 - \\frac{0{,}4}{\\sqrt{0{,}16}}}. Kvantitet II är talet 3. Båda är konkreta tal — du ska räkna ut I och jämföra.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Identifiera strukturen",
-        "text": "I innehåller 10 upphöjt till ett uttryck; ofta är detta utformat så att exponenten gör 10^? = 3 exakt.",
-        "tier": "detail"
+        "title": "Strategi: inifrån och ut",
+        "text": "Vid nästlade rötter och bråk: börja med det INNERSTA uttrycket och arbeta dig utåt, lager för lager. Här är det innersta \\sqrt{0{,}16}.",
+        "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Bryt ner exponenten",
-        "text": "Om exponenten är lg 3 ≈ 0,477 så är 10^0,477 ≈ 3. Eller om exponenten är något som ger 3 efter logaritm-trick.",
-        "tier": "detail"
+        "title": "Vad är √0,16?",
+        "text": "Sök talet som i kvadrat ger 0{,}16. Testa 0{,}4: 0{,}4 \\cdot 0{,}4 = 0{,}16. Alltså \\sqrt{0{,}16} = 0{,}4.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Använd logaritm-egenskaper",
-        "text": "10^(lg a) = a för alla a > 0. Om exponenten i I är lg 3 så är I = 3.",
+        "title": "Decimalrot-koll",
+        "text": "Observera att \\sqrt{0{,}16} = 0{,}4 är STÖRRE än 0{,}16 — roten ur ett tal mellan 0 och 1 är alltid större än talet självt. Kvadrera alltid tillbaka som kontroll.",
         "tier": "detail"
       },
       {
         "n": 5,
-        "title": "Jämför med II = 3",
-        "text": "Om uttrycket reducerar till 3 är I = II.",
+        "title": "Räkna bråket",
+        "text": "\\frac{0{,}4}{\\sqrt{0{,}16}} = \\frac{0{,}4}{0{,}4} = 1. Täljare och nämnare är lika, så bråket är exakt 1.",
         "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Verifiera algebraiskt",
-        "text": "Stega genom exponent-förenklingen — varje steg bör bevara värdet 3.",
-        "tier": "detail"
-      },
-      {
-        "n": 7,
-        "title": "Sanity check",
-        "text": "II = 3 är konkret. Om I efter förenkling är 3 har vi C.",
-        "tier": "detail"
-      },
-      {
-        "n": 8,
-        "title": "Tecken-check",
-        "text": "Båda kvantiteter positiva.",
-        "tier": "detail"
-      },
-      {
-        "n": 9,
-        "title": "Räcker informationen?",
-        "text": "Ja — båda är konkreta tal.",
+        "title": "Innanför yttre roten",
+        "text": "10 - 1 = 9. Hela uttrycket under den yttre roten är alltså 9.",
         "tier": "essential"
       },
       {
+        "n": 7,
+        "title": "Yttre roten",
+        "text": "Kvantitet I = \\sqrt{9} = 3 (eftersom 3^2 = 9 och rotsymbolen betecknar den positiva roten).",
+        "tier": "essential"
+      },
+      {
+        "n": 8,
+        "title": "Jämför",
+        "text": "Kvantitet I = 3 och Kvantitet II = 3. De är exakt lika.",
+        "tier": "essential"
+      },
+      {
+        "n": 9,
+        "title": "Verifiera kedjan",
+        "text": "Baklänges: 3^2 = 9; 9 = 10 - 1; 1 = 0{,}4/0{,}4; 0{,}4 = \\sqrt{0{,}16}. Varje länk håller.",
+        "tier": "detail"
+      },
+      {
         "n": 10,
+        "title": "Räcker informationen?",
+        "text": "Ja — båda kvantiteter är konkreta tal utan variabler, så jämförelsen är entydig.",
+        "tier": "essential"
+      },
+      {
+        "n": 11,
         "title": "Slutsats",
-        "text": "I = II = 3 (per facit) — svaret är C. Insikten: 10^(lg a) = a är en standard logaritm-identitet som kan dölja sig i 'fula' uttryck.",
+        "text": "I = II = 3 — svaret är C. Insikten i en mening: ett skräckinjagande nästlat uttryck kollapsar ofta till ett enkelt heltal om du räknar inifrån och ut, ett lager i taget.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Om man räknar exponenten utan logaritm-igenkänning kan I se 'större' ut.",
-        "why_wrong": "Steg 4: logaritm-identiteten 10^(lg a) = a förenklar I direkt till 3."
+        "why_tempting": "Om du glömmer den YTTRE roten stannar du på 10 - 1 = 9, vilket är större än 3 — då lockar A.",
+        "why_wrong": "Steg 7 visar att hela uttrycket 10 - 1 = 9 ligger under en rot: \\sqrt{9} = 3, inte 9. I är exakt 3."
       },
       {
         "letter": "B",
-        "why_tempting": "Om man tror exponenten ger något under 1 lockar B.",
-        "why_wrong": "Steg 5: noggrann förenkling ger I = 3 = II, inte under 3."
+        "why_tempting": "Räknar du \\sqrt{0{,}16} fel som 0{,}04 blir bråket 0{,}4/0{,}04 = 10, och 10 - 10 = 0 ger I = 0 < 3.",
+        "why_wrong": "Steg 3: 0{,}4^2 = 0{,}16, så \\sqrt{0{,}16} = 0{,}4 — inte 0{,}04 (ty 0{,}04^2 = 0{,}0016). Bråket är 1, inte 10."
       },
       {
         "letter": "D",
-        "why_tempting": "'Logaritm-uttryck → otillräcklig'.",
-        "why_wrong": "Steg 9: båda kvantiteter är konkreta tal med entydiga värden."
+        "why_tempting": "Nästlade rötter ser 'obestämbara' ut och frestar till 'informationen är otillräcklig'.",
+        "why_wrong": "Steg 10: uttrycket innehåller inga variabler alls — bara konkreta tal. Allt går att räkna ut exakt."
       }
     ],
-    "technique": "Logaritm-identitet 10^(lg a) = a för att förenkla exponentiella uttryck. Triggern: '10 upphöjt till något som innehåller lg eller log'.",
-    "pitfall": "Botemedlet mot exponent-skräck: leta efter lg/log i exponenten — om den 'matchar' 10:ans bas blir uttrycket triviellt.",
+    "technique": "Inifrån-och-ut-receptet för nästlade uttryck: räkna det innersta först (\\sqrt{0{,}16}), sätt in, och arbeta utåt lager för lager. Triggern: rot i rot eller bråk under rot.",
+    "pitfall": "Den klassiska fällan är decimalrötter: \\sqrt{0{,}16} är 0{,}4, inte 0{,}04. Botemedlet: kvadrera ditt svar tillbaka — 0{,}4 \\cdot 0{,}4 = 0{,}16 stämmer, 0{,}04 \\cdot 0{,}04 = 0{,}0016 gör det inte.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Logaritm-identiteten",
-      "move": "Sök efter 10^(lg a) eller liknande — om bas och logaritm matchar reduceras hela uttrycket till argumentet a direkt."
+      "handle": "Inifrån-och-ut",
+      "move": "Vid nästlade rötter: räkna innersta uttrycket först och kvadrera tillbaka varje rot som kontroll — skräckuttryck kollapsar ofta till heltal."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-missing-fill",
+      "regenerated": "2026-07-02-delimiter-repair"
     }
   },
   "host-2014-kvant2-KVA-022": {

@@ -2763,106 +2763,101 @@
     "_meta": {
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
-      "recipe": "variant-c-ultra-granular"
+      "recipe": "variant-c-ultra-granular",
+      "regenerated": "2026-07-02-delimiter-repair"
     },
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är frestande att tro att \"multiplikation med k\" alltid \"krymper\" eller \"växer\" på ett bestämt sätt.",
-        "why_wrong": "Det beror på vilken k. För k > 1 växer det; för 0 < k < 1 krymper det; för k < 0 vänder tecknet. Steg 6–7 ger motexempel åt båda håll."
+        "why_tempting": "Det är frestande att tänka \"k ≤ 0 gör x·k negativt eller noll, så x måste vara större\".",
+        "why_wrong": "Det stämmer bara om x > 0. Inget villkor ges för x — steg 7 visar att x = −1, k = −1 ger x·k = 1 > x = −1."
       },
       {
         "letter": "B",
-        "why_tempting": "Spegelbilden av A — \"x·k är alltid större eftersom man lägger till en faktor\".",
-        "why_wrong": "Inte sant. För 0 < k < 1 är x·k MINDRE än x när x > 0. Steg 7 ger motexempel."
+        "why_tempting": "Spegelbilden — \"negativt k vänder tecknet, så x·k hamnar över x\".",
+        "why_wrong": "Bara när x är negativ. För x = 1 och k = 0 är x·k = 0 < x = 1 (steg 6). Relationen beror på x:s tecken."
       },
       {
         "letter": "C",
-        "why_tempting": "Många tror att likhet är trivial om k = 1 — men det villkoret är inte garanterat.",
-        "why_wrong": "k ≠ 0 utesluter bara noll. k = 1 är möjlig men inte ENDA möjligheten. Steg 5 visar att likhet kan inträffa (x = 0), men andra utfall är också möjliga."
+        "why_tempting": "x = 0 ger 0 = 0, och k = 0 ger också x·k = 0 — likhet känns nåbar.",
+        "why_wrong": "Likhet är MÖJLIG men inte tvingande. Steg 6–7 ger fall där I > II respektive II > I. När alla tre utfall kan inträffa är svaret D."
       }
     ],
     "framework_id": "KVA-TRAP-005",
-    "pitfall": "Vanligt fel är att tycka att \"k ≠ 0\" är ett \"stort\" villkor som låser något. Men k kan fortfarande vara 1, 2, 0,5, −3, π — vilket som helst utom noll. Botemedlet: testa minst ETT bråk-värde (k = 0,5) och ETT negativt värde (k = −1) innan du svarar.",
-    "solution_path": "k ≠ 0 men kan vara positiv eller negativ, större eller mindre än 1. x är fritt — kan vara 0, positiv, eller negativ. Vid x = 0 är båda 0 (lika). Vid x = 1, k = 2 är I = 1 < II = 2. Vid x = 1, k = 1/2 är I = 1 > II = 0,5. Alla tre utfall möjliga — svaret är D.",
+    "pitfall": "Vanligt fel är att tro att villkoret k ≤ 0 låser jämförelsen. Men villkoret binder bara k — x är helt fri och kan vara positiv, negativ eller noll, och x:s tecken avgör åt vilket håll multiplikationen med ett negativt k slår. Botemedlet: testa ETT positivt x, ETT negativt x och x = 0 innan du svarar.",
+    "solution_path": "k ≤ 0, men x är helt fri. Test 1: x = 0 ger I = II = 0 (likhet). Test 2: x = 1, k = 0 ger I = 1 > II = 0. Test 3: x = −1, k = −1 ger I = −1 < II = 1. Alla tre relationer möjliga — svaret är D.",
     "steps": [
       {
         "n": 1,
-        "text": "Vi vet bara att k ≠ 0. x är helt fritt. Vi jämför x (Kvantitet I) mot x·k (Kvantitet II).",
+        "text": "Vi vet att k ≤ 0 — alltså att k är negativ eller noll. Inget sägs om x. Vi jämför x (Kvantitet I) mot x·k (Kvantitet II).",
         "tier": "essential",
         "title": "Förstå problemet"
       },
       {
         "n": 2,
-        "text": "k är skild från noll, men annars helt fri. Den kan vara positiv eller negativ, större eller mindre än 1, ett heltal eller ett bråk.",
+        "text": "k är noll eller negativ: k kan vara 0, −1, −0,5, −100 — men inte positiv.",
         "tier": "essential",
         "title": "Vad sägs om k?"
       },
       {
         "n": 3,
-        "text": "Inget villkor givs alls för x. Den kan vara vad som helst — inklusive 0.",
+        "text": "Inget villkor ges alls för x. Den kan vara positiv, negativ eller 0.",
         "tier": "essential",
         "title": "Vad sägs om x?"
       },
       {
         "n": 4,
-        "text": "I KVA med flera fria variabler, sök motexempel som ger A, B och C — om alla tre relationer kan uppstå är svaret D.",
+        "text": "I KVA med en fri variabel: sök motexempel som ger likhet, I störst och II störst. Om alla tre relationer kan uppstå är svaret D.",
         "tier": "essential",
         "title": "Strategi: testvärden i båda riktningar"
       },
       {
         "n": 5,
-        "text": "x = 0, k = 2. Kvantitet I = 0. Kvantitet II = 0·2 = 0. Likhet.",
+        "text": "x = 0 (k vilken som helst ≤ 0). Kvantitet I = 0. Kvantitet II = 0·k = 0. Likhet.",
         "tier": "essential",
         "title": "Test 1: x = 0"
       },
       {
         "n": 6,
-        "text": "Kvantitet I = 1. Kvantitet II = 1·2 = 2. I < II.",
+        "text": "Kvantitet I = 1. Kvantitet II = 1·0 = 0. I > II. (k = 0 är tillåtet eftersom villkoret är ≤, inte <.)",
         "tier": "essential",
-        "title": "Test 2: x = 1, k = 2"
+        "title": "Test 2: x = 1, k = 0"
       },
       {
         "n": 7,
-        "text": "Kvantitet I = 1. Kvantitet II = 1·(1/2) = 0,5. I > II.",
+        "text": "Kvantitet I = −1. Kvantitet II = (−1)·(−1) = 1. II > I — negativt gånger negativt blir positivt.",
         "tier": "essential",
-        "title": "Test 3: x = 1, k = 1/2"
+        "title": "Test 3: x = −1, k = −1"
       },
       {
         "n": 8,
-        "text": "Test 1: I = II (likhet). Test 2: I < II. Test 3: I > II. Alla tre relationer möjliga.",
+        "text": "Test 1: I = II. Test 2: I > II. Test 3: II > I. Alla tre relationer är möjliga under villkoret.",
         "tier": "essential",
         "title": "Tre olika utfall"
       },
       {
         "n": 9,
-        "text": "När alla tre relationer (>, <, =) kan vara sanna under villkoren, är jämförelsen ej entydig. Information saknas.",
+        "text": "När >, < och = alla kan vara sanna är jämförelsen inte entydig — informationen räcker inte.",
         "tier": "essential",
         "title": "Vad innebär det?"
       },
       {
         "n": 10,
-        "text": "Med k = 1/2 (positivt, mellan 0 och 1) krymper multiplikationen x — så x·k < x när x > 0. Stämmer.",
+        "text": "Notera att även x = 1, k = −2 ger II = −2 < I = 1, medan x = −1, k = −2 ger II = 2 > I = −1. Det är x:s tecken som vänder utfallet, inte k:s storlek.",
         "tier": "detail",
-        "title": "Verifiera Test 3 särskilt"
+        "title": "Varför slår det åt olika håll?"
       },
       {
         "n": 11,
-        "text": "Multiplikation med k = 2 fördubblar; med k = 0,5 halverar; med k = −1 vänder tecknet. Beroende på k:s värde kan x·k vara större, mindre eller lika med x.",
-        "tier": "detail",
-        "title": "Konkret intuition"
-      },
-      {
-        "n": 12,
-        "text": "Alla tre utfall möjliga — information otillräcklig. Svaret är D. Insikten i en mening: när två variabler är fria (bara k ≠ 0 angivet), kan multiplikationen x·k landa i vilket förhållande som helst mot x.",
+        "text": "Alla tre relationer möjliga — svaret är D. Insikten i en mening: ett villkor på k säger ingenting om x; en fri variabel med okänt tecken gör multiplikationsjämförelser obestämda.",
         "tier": "essential",
         "title": "Slutsats"
       }
     ],
-    "technique": "Fri-variabel-strategin för KVA: när minst en variabel är fri (bara generiskt villkor som k ≠ 0), sök tre olika scenarier som ger I > II, I < II respektive I = II. Triggern är \"k ≠ 0\" eller liknande löst villkor — det signalerar oftast otillräcklig information.",
+    "technique": "Fri-variabel-strategin för KVA: när en variabel saknar villkor (här x), testa positivt värde, negativt värde och noll. Får du olika relationer i olika test är svaret D. Triggern: villkor på bara EN av variablerna i produkten.",
     "pregrade_tactic": {
       "handle": "Fri-variabel-testet",
-      "move": "När bara ett svagt villkor ges (typ k ≠ 0), leta efter tre scenarier som ger I större, I mindre och I lika — då fattas information."
+      "move": "Villkoret k ≤ 0 binder bara k — testa x positivt, negativt och noll; ger testerna olika relationer fattas information."
     }
   },
   "host-2015-kvant2-KVA-017": {
