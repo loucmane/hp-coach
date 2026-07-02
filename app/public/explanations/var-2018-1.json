@@ -11607,7 +11607,7 @@
     ],
     "technique": "Två rätvinkliga trianglar som delar en sida: använd Pythagoras två gånger i kedja. Avgör först om den delade sidan är hypotenusa eller katet i respektive triangel — det dikteras av var den räta vinkeln sitter.",
     "pitfall": "Att stoppa efter första Pythagoras med diagonalens längd istället för att fortsätta till x. Eller att missa var den räta vinkeln sitter och anta fel hypotenusa.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-040",
     "pregrade_tactic": {
       "handle": "delade-sidan",
       "move": "När två rätvinkliga trianglar delar en sida: titta efter var de räta vinklarna sitter — den sidan motstående den räta vinkeln är hypotenusa, övriga är kateter. Kör Pythagoras i den triangel där alla utom delade sidan är kända."
@@ -11707,7 +11707,7 @@
     ],
     "technique": "Bråksubtraktion: bygg gemensam nämnare först, subtrahera sedan täljarna. För 2 och 5 (primtal) är MGN = 10. Decimalkonversion (a/10 = 0,a) är snabb sista steget.",
     "pitfall": "Att försöka subtrahera täljare och nämnare var för sig — det fungerar bara för bråk med samma nämnare.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-016",
     "pregrade_tactic": {
       "handle": "gemensamma-nämnaren",
       "move": "Bygg MGN först (multiplicera nämnarna när de saknar gemensam faktor), skala upp bägge täljarna, subtrahera täljarna — håll nämnaren orörd."
@@ -11807,7 +11807,7 @@
     ],
     "technique": "Vid medelvärdesproblem: konvertera 'medelvärde = X' till 'summa = X·antal' direkt. Sedan blir den okända termen totalsumman minus de kända.",
     "pitfall": "Att försöka 'läsa av' a från medelvärdet (de behöver inte vara lika). Eller att slarva med att summera de kända talen.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-048",
     "pregrade_tactic": {
       "handle": "totalsumman",
       "move": "Förvandla 'medelvärde = X' till 'summa = X·n' så fort du ser problemet — då blir det en enkel subtraktion för den okända termen."
@@ -11907,7 +11907,7 @@
     ],
     "technique": "För drake/romb (vinkelräta diagonaler): Area = d_1·d_2/2. Lägg ihop båda delarna av den uppdelade diagonalen innan formeln tillämpas.",
     "pitfall": "Att glömma att vertikala diagonalen är summan av 30 och 70 (många missar och använder bara 70 eller bara 30). Och att glömma /2-faktorn.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-041",
     "pregrade_tactic": {
       "handle": "diagonalarean",
       "move": "När diagonalerna i en drake/romb står vinkelrätt mot varandra: räkna ut bägge totala längder, multiplicera och halvera — inget mer behövs."
@@ -12101,7 +12101,7 @@
     ],
     "technique": "Linjär-ekvationens axelskärningar hittas genom två substitutioner: y = 0 ger x-skärningen, x = 0 ger y-skärningen. Konstanttermen m är alltid y-skärningen direkt.",
     "pitfall": "Glöm aldrig minustecknet när du löser 5x + 10 = 0 — x blir negativt eftersom konstantermen flyttas över med ombytt tecken.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-002",
     "pregrade_tactic": {
       "handle": "Axelskärningsreceptet",
       "move": "Sätt y = 0 för x-skärningen och x = 0 för y-skärningen — två substitutioner och du har båda koordinaterna utan extra knep."
@@ -12289,7 +12289,7 @@
     ],
     "technique": "När en variabel uppträder i både täljare och nämnare av ett bråk: splittra bråket termvis via fördelningslagen för division. Många 'krångliga' uttryck kollapsar då till en enkel produkt eller summa.",
     "pitfall": "Slarva inte med +1/−1 som tar ut varandra — skriv ut hela uttrycket innan du droppar termer, så missar du inga konstanter.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-018",
     "pregrade_tactic": {
       "handle": "Bråk-splittringen",
       "move": "När en variabel står i både täljare och nämnare: dela täljaren term för term med nämnaren — strukturen avslöjar sig själv."
@@ -12404,7 +12404,7 @@
       "handle": "Likhets-låsningen",
       "move": "När båda påståendena tvingar a = b (under positivitet), följer k = a/b = 1 direkt — båda räcker var för sig."
     },
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-015",
     "solution_path": "Stammen: a, b > 0, k = a/b. (1) a - b = 0 → a = b → k = 1. (2) b/a = a/b → a^2 = b^2 → a = b (positivt) → k = 1. Båda låser k. Svar: D.",
     "technique": "När (1) och (2) båda implicerar samma symmetri-relation ({m('a = b')}), leder de till samma kvot. Positivitetsvillkoret eliminerar den negativa roten i (2).",
     "pitfall": "Botemedlet: i kvot-frågor — kolla om båda påståendena driver mot SAMMA strukturella relation (likhet, proportionalitet). Då räcker båda var för sig, oberoende av de individuella värdena.",

@@ -120,7 +120,7 @@
         "why_wrong": "Steg 5 och 6 visar att x och z kan vara olika tal. Symmetriska villkor garanterar inte likhet."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-003",
     "pitfall": null,
     "solution_path": "Villkoren x > y och y < z säger båda att y är minst — men säger ingenting om hur x och z förhåller sig till varandra. Testa: y=0, x=5, z=10 → x < z; y=0, x=10, z=5 → x > z. Båda är giltiga. Information saknas — svaret är D.",
     "steps": [
@@ -2905,7 +2905,7 @@
     ],
     "technique": "Parameter-otillräcklighet i KVA: när en ekvation innehåller en obeskriven konstant (b, k, a, ...) som påverkar lösningen, är variabeln inte entydigt bestämd. Triggern: en bokstav som inte är x dyker upp utan att ha definierats — då går det inte att räkna ut x utan att veta vad parametern är.",
     "pitfall": "Botemedlet mot fast-värde-fällan: stoppa aldrig in ett 'snällt' värde på en parameter och dra generella slutsatser. Testa minst två olika värden — om svaret ändras mellan dem, är informationen otillräcklig (D).",
-    "framework_id": null
+    "framework_id": "KVA-TRAP-005"
   },
   "var-2025-kvant2-KVA-022": {
     "_meta": {
@@ -12560,7 +12560,7 @@
     ],
     "technique": "Tvåvariabel-bråk-jämförelse: testa olika tecken och magnituder.",
     "pitfall": "Botemedlet: räkna I − II och se vilka tecken som ger vilken verdikt.",
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-005",
     "pregrade_tactic": {
       "handle": "Tvåvariabel-frihetsgrad",
       "move": "Vid bråk med två okända — testa flera kombinationer; ofta D."
