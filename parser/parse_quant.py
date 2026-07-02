@@ -161,6 +161,37 @@ _MMABINARY_GLYPH_MAP = {"$": "·"}
 _MMANEGATE_FONT_TOKEN = "mmanegate"
 _MMANEGATE_GLYPH_MAP = {"!": "≠"}
 
+# MMaVariableA is Mathematica's stretchy-delimiter font: parentheses
+# drawn at 8 increasing vertical extents, stored at consecutive glyph
+# slots. The text layer reports the raw slot byte, so an opening paren
+# comes through as one of `^_\`abcde` and the matching closing paren
+# as the same slot +10 (`hijklmno`). Empirically verified (task #168,
+# 2026-07-02) by rendering every distinct (font, char) sample across
+# all 27 exams' kvant PDFs at 300 dpi: every one of the 8 low chars
+# draws `(` and every high char draws `)`, in both Regular and Bold.
+# Without this map, `3^(x−1) = 18` reads as `3^x-1h = 18` — and the
+# fake `b`/`h`/`l` letters masquerade as legitimate variables.
+# NOTE: keyed strictly on the MMaVariableA font name — `b`/`h`/`l`
+# in Gill/body fonts are real variables and must never be touched.
+_MMAVARIABLEA_FONT_TOKEN = "mmavariablea"
+_MMAVARIABLEA_GLYPH_MAP = {
+    **{ch: "(" for ch in "^_`abcde"},
+    **{ch: ")" for ch in "hijklmno"},
+}
+
+# MMaRelation holds relational operators. Verified from pixels
+# (same census): `#` draws `≤` (e.g. `0 ≤ x ≤ 3`) and `$` draws `≥`
+# (e.g. `x ≥ 2`), in both Regular and Bold.
+_MMARELATION_FONT_TOKEN = "mmarelation"
+_MMARELATION_GLYPH_MAP = {"#": "≤", "$": "≥"}
+
+# MMaEtc holds miscellaneous symbols. Verified from pixels (same
+# census): `c` draws the degree sign (`a ≠ 90°`), `Z` draws a white
+# diamond and `[` a black diamond — the "custom operation" symbols
+# used in define-an-operator questions.
+_MMAETC_FONT_TOKEN = "mmaetc"
+_MMAETC_GLYPH_MAP = {"c": "°", "Z": "◇", "[": "◆"}
+
 
 def _remap_glyphs(text: str, font: str) -> str:
     """Return `text` with math-font codepoints replaced by their
@@ -175,6 +206,12 @@ def _remap_glyphs(text: str, font: str) -> str:
         return "".join(_MMABINARY_GLYPH_MAP.get(ch, ch) for ch in text)
     if _MMANEGATE_FONT_TOKEN in font_lower:
         return "".join(_MMANEGATE_GLYPH_MAP.get(ch, ch) for ch in text)
+    if _MMAVARIABLEA_FONT_TOKEN in font_lower:
+        return "".join(_MMAVARIABLEA_GLYPH_MAP.get(ch, ch) for ch in text)
+    if _MMARELATION_FONT_TOKEN in font_lower:
+        return "".join(_MMARELATION_GLYPH_MAP.get(ch, ch) for ch in text)
+    if _MMAETC_FONT_TOKEN in font_lower:
+        return "".join(_MMAETC_GLYPH_MAP.get(ch, ch) for ch in text)
     return text
 
 
