@@ -183,6 +183,21 @@ describe('generateDailyPlan — rule 2 (weakest needs a lesson)', () => {
     const lesson = plan.items.find((i) => i.kind === 'lesson')
     expect(lesson?.headline).toBe('NOG-lektion · 2×2-tabellen')
     expect(lesson?.framework).toBe('NOG-TRAP-001')
+    // The item names a SPECIFIC trap — the href must land ON that trap
+    // (the reader opens + scrolls #hash anchors, LessonReader deep-link),
+    // not drop the user at the top of a 25-entry catalog.
+    expect(lesson?.href).toBe('/lektion?section=NOG#NOG-TRAP-001')
+  })
+
+  it('speaks Swedish in the weak-lesson rationale (not "Svagast section")', () => {
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [score('NOG', { score: 1.1, daysSinceLastAttempt: 2 })],
+      }),
+    )
+    const lesson = plan.items.find((i) => i.kind === 'lesson')
+    expect(lesson?.rationale).toContain('Svagaste sektionen')
+    expect(lesson?.rationale).not.toContain('Svagast section')
   })
 
   it('skips the lesson item when the framework hint is null (all read)', () => {
