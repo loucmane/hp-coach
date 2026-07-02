@@ -145,6 +145,26 @@ function PlanRow({ item, onNavigate }: { item: PlanItem; onNavigate?: (href: str
           >
             {item.rationale}
           </p>
+          {/* Tap affordance — the plan rows read as static text without a
+           *  verb (dogfood #170): the resume card says "FORTSÄTT HÄR →"
+           *  while these say nothing. Quiet mono verb per kind, hidden on
+           *  completed rows. Sibling of the headline so HomeMobile's
+           *  single-text-node headline assertions stay intact. */}
+          {!item.completed && (
+            <span
+              style={{
+                display: 'inline-block',
+                marginTop: 8,
+                fontFamily: 'var(--font-mono)',
+                fontSize: 11,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'var(--accent)',
+              }}
+            >
+              {verbFor(item)} →
+            </span>
+          )}
         </a>
       </div>
     </li>
@@ -211,5 +231,17 @@ function kickerFor(item: PlanItem): string {
       return `Lektion${sectionPart}`
     case 'drill':
       return `Drill${sectionPart}`
+  }
+}
+
+/** The row's tap verb — same quiet-mono idiom as the picker's "läs →". */
+function verbFor(item: PlanItem): string {
+  switch (item.kind) {
+    case 'repetition':
+      return 'repetera'
+    case 'lesson':
+      return 'läs'
+    case 'drill':
+      return 'öva'
   }
 }

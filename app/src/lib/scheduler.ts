@@ -302,7 +302,12 @@ function lessonItem(score: SectionScore, hint: FrameworkHint | undefined, date: 
     headline,
     rationale: lessonRationale(score),
     estimatedMinutes: 5,
-    href: `/lektion?section=${score.section}`,
+    // When the item names a specific trap, land ON it — LessonReader
+    // opens + scrolls #hash anchors (the R1 deep-link). A bare section
+    // href would drop the user at the top of a 25–55-entry catalog.
+    href: hint?.id
+      ? `/lektion?section=${score.section}#${hint.id}`
+      : `/lektion?section=${score.section}`,
     completed: false,
   }
 }
@@ -318,7 +323,7 @@ function truncateHeadword(s: string, max: number): string {
 
 function lessonRationale(score: SectionScore): string {
   if (score.score != null && score.score < LESSON_SCORE_THRESHOLD) {
-    return `Svagast section — ${score.score.toFixed(1)}, börja med lektionen.`
+    return `Svagaste sektionen — ${score.score.toFixed(1)}, börja med lektionen.`
   }
   if (score.daysSinceLastAttempt > LESSON_STALE_DAYS) {
     const days = Number.isFinite(score.daysSinceLastAttempt)
