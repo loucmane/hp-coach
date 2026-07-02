@@ -12871,7 +12871,7 @@
     ],
     "technique": "Lös x = √x: kvadrera, faktorisera, exkludera lösningar utanför villkoret. Triggern: 'x = √x eller liknande fixpunkts-ekvation'.",
     "pitfall": "Botemedlet mot 'flera lösningar'-fällan: kontrollera varje lösning mot villkoret (x > 0 utesluter x = 0).",
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-032",
     "pregrade_tactic": {
       "handle": "Fixpunkts-faktoriseringen",
       "move": "Vid x = √x — kvadrera och faktorisera x(x−1) = 0, utesluter x = 0 med villkor."
@@ -12971,7 +12971,7 @@
     ],
     "technique": "Räta linjer y = kx + m läses grafiskt med två observationer: är linjen uppåt eller nedåt (tecken på k), och var skär den y-axeln (tecken på m). Produkter och summor av dessa avgörs av tecknen FÖRST — exakta värden behövs sällan.",
     "pitfall": "Att fokusera på lutningens BRANTHET istället för dess TECKEN är vanligt, särskilt under tidspress. Botemedlet: ringa in tecknet på k och m som första markering på varje delgraph, INNAN du börjar jämföra storlekar.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-051",
     "pregrade_tactic": {
       "handle": "Tecken-först-läsningen",
       "move": "När frågan efterfrågar maximal produkt eller summa av k och m: läs av TECKNEN på varje graf först, eliminera de som ger noll eller negativt — sedan jämför storleken bland resterande."
@@ -13071,7 +13071,7 @@
     ],
     "technique": "Linjeavläsning gör du i två steg: (1) y-skärningen m läses direkt vid x = 0, (2) lutningens TECKEN avgörs av om linjen växer eller avtar, och STORLEKEN beräknas med Δy/Δx mellan två tydliga punkter. Med fyra alternativ av formen y = ±kx ± m kan du alltid eliminera halva via m först.",
     "pitfall": "Att läsa av lutningen genom att 'titta hur brant det ser ut' utan att beräkna Δy/Δx leder till tecken- eller storleksfel. Botemedlet: peka på två tydliga rutpunkter linjen passerar och räkna explicit (y₂ − y₁) / (x₂ − x₁).",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-051",
     "pregrade_tactic": {
       "handle": "Linje-receptet",
       "move": "Läs alltid y-skärningen m FÖRST (vid x = 0), eliminera halva alternativen, läs sedan lutningens tecken via 'växer eller avtar y'."
@@ -13271,7 +13271,7 @@
     ],
     "technique": "Stapelbråk med additioner/subtraktioner i täljare och nämnare löses i tre lag: (1) gemensam nämnare i ÖVRE våningen, (2) gemensam nämnare i UNDRE våningen, (3) division som multiplikation med invers. Förkortningar dyker upp i sista steget — leta efter gemensamma primfaktorer.",
     "pitfall": "Att försöka 'läsa av kvoten ungefärligt' utan att gå via gemensam nämnare leder ofta till fel storleksordning. Botemedlet: skriv UT båda våningarna som rena bråk INNAN du delar.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-017",
     "pregrade_tactic": {
       "handle": "Två-vånings-reduktionen",
       "move": "Förenkla över- och underbråket var för sig till enkla a/b-former — multiplicera sedan med inverterad nämnare och förkorta primfaktorer."
@@ -13292,7 +13292,7 @@
       "handle": "Två-okända-räkningen",
       "move": "Räkna stammen som EN ekvation i x och y; varje påstående som ger en oberoende relation räcker tillsammans med stammen för att låsa båda variablerna."
     },
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-024",
     "solution_path": "Stammen ger xy/(400 \\cdot 300) = c, en ekvation i x och y. (1) y=300 pluggas in → x bestäms. (2) x+y=700 kombineras med stammen → andragradsekvation som löser ut x. Båda räcker ensamt. Svar: D.",
     "technique": "Vid två okända i NOG: räkna oberoende ekvationer mot okända. Stammen räknas som EN ekvation; ETT extra påstående räcker.",
     "pitfall": "Botemedlet: kontrollera att stammens 'ekvation' är icke-trivial och oberoende av påståendet. När stammen ger en produkt och påståendet en summa är de oberoende — två okända i två ekvationer blir slutet system.",

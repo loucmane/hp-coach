@@ -2102,7 +2102,7 @@
         "why_wrong": "Steg 7–8 visar att (2) ger ett konkret, räknebart svar (24 min). E gäller bara när allt är otillräckligt, vilket inte är fallet här."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-022",
     "pitfall": "Den vanligaste fällan är att tro att man kan räkna ut synkroniseringstid från förhållanden ensamt. Botemedlet: räkna alltid om problemet kräver KONKRET TID (absolut) eller bara ANTAL VARV (relativt) — det första kräver konkreta hastigheter.",
     "solution_path": "Vi söker tiden tills tre vandrare passerar samma startpunkt samtidigt. (1) ger bara relationer mellan hastigheter — inte konkreta värden. (2) ger faktiska hastigheter och låter oss räkna ut varvtiden för varje, sedan minsta gemensamma multipel. Svaret är B.",
     "steps": [
@@ -2417,7 +2417,7 @@
         "why_wrong": "Steg 6 visar tydligt att (1) ger ett konkret svar — sannolikheten 1 − 1/π. E är fel."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-007",
     "pitfall": "Den vanligaste fällan är att tro att Thales sats (rätvinklig triangel i cirkel) ger triangelns area. Botemedlet: minns att rätvinkliga trianglar i en cirkel kan ha vilken som helst area mellan 0 och r^2 (max-arean uppnås av likbent rätvinklig).",
     "solution_path": "(1) ger bordets area = π·400 = 400π och dukens area = 400. Sannolikheten för utanför = (400π − 400) / (400π) = 1 − 1/π. (2) ger triangelns hypotenusa = diameter, men det räcker inte att bestämma triangelns area (utan kateterna). Svaret är A.",
     "steps": [
@@ -5226,7 +5226,7 @@
         "why_wrong": "Steg 7 visar att x + z = 120° BARA i det specialfall där y = 60°. Det är inte universellt."
       }
     ],
-    "framework_id": null,
+    "framework_id": "KVA-TRAP-009",
     "pitfall": "Den vanligaste fällan är att tro att 'x > y > z' låser värdet av varje vinkel mer än det faktiskt gör. Botemedlet: testa alltid två extrema fall (y nära x, och y nära z) för att se om jämförelsen är robust.",
     "solution_path": "I en triangel är vinkelsumman 180°. Med x > y > z gäller x + z = 180 − y. Eftersom y kan variera (x > y > z och y > 0), kan x + z vara större eller mindre än 120°. Otillräckligt. Svaret är D.",
     "steps": [
@@ -5797,7 +5797,7 @@
         "why_wrong": "Två oberoende ekvationer med två obekanta har EN unik lösning (det är en algebrasats). Steg 7 löser systemet — informationen räcker tillsammans."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-002",
     "pitfall": "Den vanligaste fällan är att tro att 'fattas 40 kr' eller '60 kr över' är konkret nog ensamt. Botemedlet: ALLTID identifiera variablerna först — n och P — och räkna ekvationer mot obekanta INNAN du bestämmer om informationen räcker.",
     "solution_path": "Sätt antalet vänner = n, presentens pris = P. (1) ger 140n + 40 = P (fattas 40, så summan är 40 mindre än P). (2) ger 160n − 60 = P (60 över, alltså summan är 60 mer än P). Tillsammans: 140n + 40 = 160n − 60 → 100 = 20n → n = 5 → P = 740. Räcker bara tillsammans. Svaret är C.",
     "steps": [
@@ -5896,7 +5896,7 @@
         "why_wrong": "Steg 6 visar att tillsammans bildar (1) och (2) tre oberoende ekvationer i tre obekanta — vilket är exakt nog för en unik lösning."
       }
     ],
-    "framework_id": null,
+    "framework_id": "NOG-TRAP-002",
     "pitfall": "Den vanligaste fällan är att tro att (2) ger TVÅ helt oberoende ekvationer och därför ensamt täcker problemet. Botemedlet: räkna antalet obekanta först — här tre stycken — och se att två ekvationer aldrig räcker för tre obekanta.",
     "solution_path": "Sätt M = morötter, R = rädisor, Pa = palsternackor. (1) ger R = M + Pa. (2) ger Pa = 2M och R − 100 = M. Tillsammans: från (2): R = M + 100. Sätt in i (1): M + 100 = M + 2M = 3M → 100 = 2M → M = 50, R = 150. Räcker bara tillsammans. Svaret är C.",
     "steps": [
@@ -12996,7 +12996,7 @@
     ],
     "technique": "Vid frekvenstabell över ett diskret poängvärde: bygg kumulativ summa kolumn för kolumn tills du passerar n/2. Vid jämnt n behöver du två avläsningar (plats n/2 och n/2+1). Detta är snabbare än att skriva ut hela listan.",
     "pitfall": "Att tolka medianen som typvärdet (största stapeln) eller som medelvärdet. Botemedlet: håll fast vid definitionen — sorterad lista, mittersta platsen / medelvärdet av de två mittersta.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-049",
     "pregrade_tactic": {
       "handle": "Kumulativ-trappan",
       "move": "Skriv summorna 5, 17, 20, 30 ovanför tabellen och leta vilka rader som täcker plats n/2 och n/2+1 — medianen är medelvärdet av dessa två poängvärden."
@@ -13096,7 +13096,7 @@
     ],
     "technique": "Vid 'närmast x'-frågor: skriv avståndet som ett bråk |a − b|/b (när x = 1). Då slipper du decimaltal — du jämför fyra enkla bråk istället. Använd korsmultiplikation som tiebreaker.",
     "pitfall": "Att jämföra bråken direkt mot 1 utan att tänka på AVSTÅND — eller att läsa täljarskillnaden i isolation utan nämnaren. Botemedlet: skriv (a − b)/b explicit för varje alternativ.",
-    "framework_id": null,
+    "framework_id": "XYZ-TRAP-019",
     "pregrade_tactic": {
       "handle": "Avståndsbråket",
       "move": "Skriv om a/b − 1 till (a − b)/b för varje alternativ och jämför de fyra bråken med korsmultiplikation — minsta värdet vinner."
