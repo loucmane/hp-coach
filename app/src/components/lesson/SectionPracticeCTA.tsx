@@ -12,8 +12,8 @@
 //      recurring ≥2: this is an *active* "I want to drill my weak spots"
 //      entry the user chose, so a single recent miss is a valid target —
 //      where the passive every-morning home surface needs ≥2 to avoid
-//      noise. The link drills the worst (highest-miss) trap; "N st" tells
-//      the user how many weak patterns sit behind it in this section.
+//      noise. The link (/drill?section=X&weak=1) drills questions from ALL
+//      N weak patterns in the section; "N st" shows how many there are.
 //
 // Sits under the "N mönster · ~M min läsning" meta line, above the trap
 // list — the deliberate "I want to drill, not read" entry that the
@@ -49,7 +49,7 @@ export function SectionPracticeCTA({ section }: { section: Section }) {
       {weakest && (
         <Link
           to="/drill"
-          search={{ section, framework: weakest.framework_id }}
+          search={{ section, weak: true }}
           data-testid="section-practice-weak"
           style={ghost}
         >

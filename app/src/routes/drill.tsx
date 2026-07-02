@@ -7,10 +7,11 @@
 // file is just config.
 
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useDueMistakes, useRecordMistake } from '@/api/hooks/useMistakes'
 import { useActiveSession } from '@/api/hooks/useSessions'
+import { useTopTraps } from '@/api/hooks/useTopTraps'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { entryHeadword, loadFramework } from '@/data/frameworks'
 import { findQuestion, loadBank, type Question, type Section } from '@/data/questions'
@@ -21,7 +22,13 @@ import { SECTION_DURATIONS } from '@/lib/sectionDurations'
 const DRILL_SECTIONS = ['ORD', 'LÄS', 'MEK', 'ELF', 'XYZ', 'KVA', 'NOG', 'DTK'] as const
 type DrillSection = (typeof DRILL_SECTIONS)[number]
 
-type DrillSearch = { section?: DrillSection; qid?: string; framework?: string; mixed?: true }
+type DrillSearch = {
+  section?: DrillSection
+  qid?: string
+  framework?: string
+  mixed?: true
+  weak?: true
+}
 
 function validateSearch(input: Record<string, unknown>): DrillSearch {
   const out: DrillSearch = {}
@@ -48,6 +55,12 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
   // daily plan's "Blandad övning · alla sektioner" mastery-maintenance item.
   if (input.mixed === '1' || input.mixed === true) {
     out.mixed = true
+  }
+  // `?weak=1` — drills questions from the user's weakest traps in `section`
+  // (read off the live mistake queue). Drives "Öva svagaste fällorna" on the
+  // lektion section-CTA. Multi-trap, unlike single-trap `?framework=`.
+  if (input.weak === '1' || input.weak === true) {
+    out.weak = true
   }
   return out
 }
@@ -90,9 +103,18 @@ export const Route = createFileRoute('/drill')({
 })
 
 function DrillScreen() {
-  const { section: sectionFromUrl, qid, framework, mixed } = Route.useSearch()
+  const { section: sectionFromUrl, qid, framework, mixed, weak } = Route.useSearch()
   const section: DrillSection = sectionFromUrl ?? 'ORD'
   const navigate = useNavigate()
+
+  // `?weak=1` — the user's weakest traps in this section, off the live
+  // mistake queue (same source as Home's "Återkommande fällor"). We gather
+  // ALL their example questions, not just the worst trap's.
+  const weakTraps = useTopTraps({ limit: 8, minCount: 1 })
+  const weakFrameworkIds = useMemo(
+    () => weakTraps.filter((t) => t.section === section).map((t) => t.framework_id),
+    [weakTraps, section],
+  )
 
   // URL-synced active qid. Preserves any other params (section,
   // framework) — drill carries multiple optional facets. replace:true
@@ -170,9 +192,11 @@ function DrillScreen() {
         })
     : framework
       ? () => pickFrameworkQuestions(section as Section, framework)
-      : mixed
-        ? () => pickMixedDrillQuestions(DEFAULT_DRILL_LENGTH)
-        : () => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)
+      : weak
+        ? () => pickWeakTrapsQuestions(section as Section, weakFrameworkIds)
+        : mixed
+          ? () => pickMixedDrillQuestions(DEFAULT_DRILL_LENGTH)
+          : () => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)
 
   // Turn a stored plan (server session qids) back into Questions so
   // SessionPlayer can replay the exact paused session on any device.
@@ -185,27 +209,41 @@ function DrillScreen() {
     )
 
   const frameworkDisplay = frameworkHeadword ?? framework
-  const idleEyebrow = directLinkQid ? 'Direktlänk' : framework ? 'Mönsterövning' : 'Övning'
+  const idleEyebrow = directLinkQid
+    ? 'Direktlänk'
+    : framework
+      ? 'Mönsterövning'
+      : weak
+        ? 'Svagaste fällorna'
+        : 'Övning'
   const idleHeadline = directLinkQid
     ? directLinkQid
     : framework
       ? (frameworkDisplay ?? framework)
-      : copy.headline
+      : weak
+        ? `Svagaste fällorna · ${section}`
+        : copy.headline
   const idleSubcopy = directLinkQid
     ? 'En specifik fråga via ?qid= — för granskning eller debug.'
     : framework
       ? `Exempelfrågor från lektionen som illustrerar detta mönster.`
-      : copy.subcopy
+      : weak
+        ? `Frågor från de mönster du oftast faller för i ${section}.`
+        : copy.subcopy
   const idleMeta = directLinkQid
     ? '1 fråga · ingen sessionsgrad'
     : framework
       ? 'Exempelfrågor · 1 poäng per rätt'
-      : `~ ${SECTION_DURATIONS[section]} minuter · 1 poäng per rätt`
+      : weak
+        ? `${weakFrameworkIds.length} mönster · 1 poäng per rätt`
+        : `~ ${SECTION_DURATIONS[section]} minuter · 1 poäng per rätt`
   const emptyCopy = directLinkQid
     ? `Hittade inte frågan ${directLinkQid}.`
     : framework
       ? `Inga exempelfrågor hittades för ${frameworkDisplay ?? framework}.`
-      : `Inga ${section}-frågor klara att öva på just nu.`
+      : weak
+        ? `Inga svaga mönster i ${section} än — öva sektionen så hittar vi dem.`
+        : `Inga ${section}-frågor klara att öva på just nu.`
 
   return (
     <SessionPlayer
@@ -248,6 +286,29 @@ async function pickFrameworkQuestions(section: Section, frameworkId: string) {
     if (q && q.parsing_status === 'complete' && q.options) out.push(q)
   }
   return out
+}
+
+/** Multi-trap "Öva svagaste fällorna": gather drillable questions from ALL
+ *  the user's weakest traps in a section (their example_questions), deduped,
+ *  capped at the session size. Empty frameworkIds (no weak data) → []. */
+async function pickWeakTrapsQuestions(section: Section, frameworkIds: string[]) {
+  if (frameworkIds.length === 0) return []
+  const [framework, bank] = await Promise.all([loadFramework(section), loadBank()])
+  if (!framework) return []
+  const byId = new Map(framework.entries.map((e) => [e.id, e]))
+  const out: Question[] = []
+  const seen = new Set<string>()
+  for (const fid of frameworkIds) {
+    for (const qid of byId.get(fid)?.example_questions ?? []) {
+      if (seen.has(qid)) continue
+      const q = bank.find((x) => x.qid === qid)
+      if (q && q.parsing_status === 'complete' && q.options) {
+        out.push(q)
+        seen.add(qid)
+      }
+    }
+  }
+  return out.slice(0, DEFAULT_DRILL_LENGTH)
 }
 
 function RepetitionHint({ count }: { count: number }) {
