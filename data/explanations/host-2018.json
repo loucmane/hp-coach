@@ -12564,97 +12564,98 @@
     }
   },
   "host-2018-kvant1-KVA-016": {
-    "solution_path": "Villkor: 3^(x−1) = 18 och 6^(y−x) = 18. Logaritmera båda: x − 1 = log₃ 18 ≈ 2,63, så x ≈ 3,63. y − x = log₆ 18 ≈ 1,61, så y ≈ 5,24. Eftersom y > x är II > I — svaret B.",
+    "solution_path": "Två linjära ekvationer: 3(x-1) = 18 ger x - 1 = 6, alltså x = 7. 6(y-x) = 18 ger y - x = 3, alltså y = x + 3 = 10. Eftersom y = 10 > x = 7 är II > I — svaret är B.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Villkor: 3^{x-1} = 18 och 6^{y-x} = 18. Jämför x och y.",
+        "text": "Villkor: 3(x-1) = 18 och 6(y-x) = 18. Kvantitet I är x, Kvantitet II är y. Båda ekvationerna är linjära — inga exponenter, bara multiplikation med parenteser.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Logaritmera första ekvationen",
-        "text": "Ta log₃ av båda sidor: x − 1 = log₃ 18. Så x = 1 + log₃ 18.",
+        "title": "Lös första ekvationen",
+        "text": "3(x-1) = 18. Dividera båda sidor med 3: x - 1 = 6.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Räkna log₃ 18",
-        "text": "log₃ 18 = log 18 / log 3 ≈ 1,255 / 0,477 ≈ 2,63. Så x ≈ 3,63.",
+        "title": "Isolera x",
+        "text": "Addera 1 till båda sidor: x = 7.",
         "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Logaritmera andra ekvationen",
-        "text": "y − x = log₆ 18. Så y = x + log₆ 18.",
+        "title": "Lös andra ekvationen",
+        "text": "6(y-x) = 18. Dividera båda sidor med 6: y - x = 3.",
         "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Räkna log₆ 18",
-        "text": "log₆ 18 = log 18 / log 6 ≈ 1,255 / 0,778 ≈ 1,61.",
+        "title": "Genvägen: differensen räcker",
+        "text": "y - x = 3 säger direkt att y ligger 3 steg ÖVER x — oavsett vad x är. Redan här vet du att y > x, alltså II > I.",
         "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Räkna y",
-        "text": "y ≈ 3,63 + 1,61 ≈ 5,24.",
+        "title": "Räkna ändå ut y",
+        "text": "y = x + 3 = 7 + 3 = 10.",
         "tier": "essential"
       },
       {
         "n": 7,
         "title": "Jämför",
-        "text": "y ≈ 5,24 > x ≈ 3,63. Så II > I.",
+        "text": "Kvantitet I = x = 7. Kvantitet II = y = 10. 10 > 7, så II > I.",
         "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Algebraisk verifiering",
-        "text": "y = 1 + log₃ 18 + log₆ 18 > 1 + log₃ 18 = x, eftersom log₆ 18 > 0 (18 > 6).",
+        "title": "Verifiera i originalekvationerna",
+        "text": "3(7-1) = 3 \\cdot 6 = 18 ✓ och 6(10-7) = 6 \\cdot 3 = 18 ✓. Båda stämmer.",
         "tier": "detail"
       },
       {
         "n": 9,
         "title": "Räcker informationen?",
-        "text": "Ja — båda ekvationer ger entydiga värden via logaritmer.",
+        "text": "Ja — två linjära ekvationer ger entydiga värden på x och y (systemet är dessutom triangulärt: första ger x, andra ger y).",
         "tier": "essential"
       },
       {
         "n": 10,
         "title": "Slutsats",
-        "text": "y > x — svaret är B. Insikten: när två obekanta ges via exponentialekvationer — logaritmera båda och jämför.",
+        "text": "y = 10 > x = 7 — svaret är B. Insikten i en mening: dividera bort koefficienten framför parentesen först, och notera att y - x = 3 > 0 ensam avgör jämförelsen utan att y behöver räknas ut.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Om man inte logaritmerar utan gissar magnituder kan x verka större.",
-        "why_wrong": "Steg 8: y = x + log₆ 18, där log₆ 18 > 0, så y > x strikt."
+        "why_tempting": "Tecknslarv i andra ekvationen — läser man den som 6(x-y) = 18 får man x - y = 3 och x verkar ligga över y.",
+        "why_wrong": "Parentesen är (y-x), inte (x-y). Steg 4–5: y - x = 3 > 0, så det är y som ligger över x."
       },
       {
         "letter": "C",
-        "why_tempting": "Likhet kräver log₆ 18 = 0, vilket kräver 18 = 1 — falskt.",
-        "why_wrong": "Steg 8: log₆ 18 ≈ 1,61, klart positivt."
+        "why_tempting": "Båda ekvationerna har samma högerled 18 — det kan kännas som att x och y därför 'balanserar' till samma värde.",
+        "why_wrong": "Samma högerled betyder inte samma lösning: koefficienterna 3 och 6 och parentesinnehållen skiljer sig. Steg 3 och 6 ger x = 7 och y = 10 — olika tal."
       },
       {
         "letter": "D",
-        "why_tempting": "'Två obekanta → otillräcklig'.",
-        "why_wrong": "Steg 9: två ekvationer i två obekanta ger unik lösning via logaritmer."
+        "why_tempting": "Två obekanta i två ekvationer kan trigga reflexen 'systemet kanske inte räcker'.",
+        "why_wrong": "Steg 9: första ekvationen bestämmer x ensam, andra bestämmer sedan y. Entydig lösning — och redan y - x = 3 > 0 räcker för att avgöra relationen."
       }
     ],
-    "technique": "Logaritmera exponentialekvationer: a^x = b ⇒ x = log_a b. Triggern: 'a^x = konstant, lös för x'.",
-    "pitfall": "Botemedlet mot exponent-skräck: tillämpa logaritmen direkt; bytet av bas är aritmetik.",
+    "technique": "Dividera-bort-koefficienten-receptet: vid a(uttryck) = tal, dividera med a FÖRST så parentesen friläggs — sedan är ekvationen trivial. I KVA: leta efter differensen y - x direkt; dess tecken avgör jämförelsen utan fullständig lösning.",
+    "pitfall": "Fällan är att börja multiplicera in 3:an och 6:an i parenteserna — det fungerar men bjuder in slarvfel. Botemedlet: dividera bort koefficienten först (18/3 = 6, 18/6 = 3), så blir båda ekvationerna ensiffrigt enkla.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Logaritm-isoleringen",
-      "move": "Vid a^x = b — logaritmera båda sidor; x = log_a b = log b / log a."
+      "handle": "Differens-genvägen",
+      "move": "Lös inte hela systemet i onödan — 6(y-x) = 18 ger y - x = 3 > 0 direkt, och tecknet på differensen avgör KVA-jämförelsen."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-missing-fill",
+      "regenerated": "2026-07-02-delimiter-repair"
     }
   },
   "host-2018-kvant1-KVA-017": {

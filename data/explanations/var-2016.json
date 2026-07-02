@@ -1969,101 +1969,102 @@
     "_meta": {
       "generated_at": "2026-05-14",
       "model": "claude-opus-4-7",
-      "recipe": "variant-c-ultra-granular"
+      "recipe": "variant-c-ultra-granular",
+      "regenerated": "2026-07-02-delimiter-repair"
     },
-    "distractors": [
-      {
-        "letter": "A",
-        "why_tempting": "Om man tolkar I som x^{1} = x (där 'y²' misstolkas som '1') och II som x^{y^{2}}, kan I se mindre ut än II för stora y, och man kan landa på fel håll.",
-        "why_wrong": "Den parsade kvantiteten är x^{y^{2}}, inte x. Potensregeln (steg 4) visar att båda är samma uttryck."
-      },
-      {
-        "letter": "B",
-        "why_tempting": "Spegel av A — om man tror II 'växer snabbare' än I, väljer man B.",
-        "why_wrong": "Båda är identiska efter potensregeln (steg 5). Storleken är samma för alla tillåtna x och y. Test i steg 6–8 bekräftar."
-      },
-      {
-        "letter": "D",
-        "why_tempting": "Snabbsvar är ofta 'y är okänt → kan inte avgöra'.",
-        "why_wrong": "Värdet på y påverkar inte JÄMFÖRELSEN — båda kvantiteterna blir samma exponent y². Vi behöver inte veta y för att veta att I = II."
-      }
-    ],
     "framework_id": "KVA-TRAP-024",
     "pitfall": null,
-    "pregrade_tactic": {
-      "handle": "Potensregel-igenkänningen",
-      "move": "När du ser (x^a)^b — multiplicera exponenterna till x^{ab} direkt, så blir kapslade potenser ofta synligt lika."
-    },
-    "solution_path": "Potensregeln: (x^{y})^{y} = x^{y \\cdot y} = x^{y^{2}}. Båda kvantiteterna är alltså x^{y^{2}} — de är identiska. Svaret är C.",
+    "solution_path": "Kvantitet I är x och Kvantitet II är (x^{y})^{1/y}. Potensregeln ger (x^{y})^{1/y} = x^{y \\cdot \\frac{1}{y}} = x^{1} = x. Båda kvantiteterna är alltså exakt x — de är lika. Svaret är C.",
+    "technique": "Potensregeln (a^{m})^{n} = a^{m \\cdot n} med inversa exponenter: y och \\frac{1}{y} multipliceras till 1, så hela potenstornet kollapsar till basen. Villkoret y \\neq 0 finns där just för att \\frac{1}{y} ska vara definierat.",
     "steps": [
       {
         "n": 1,
-        "text": "Givet x > 0 och y ≠ 0. Kvantitet I: x^{y^{2}}. Kvantitet II: (x^{y})^{y}. Vilken är större?",
-        "tier": "essential",
-        "title": "Förstå problemet"
+        "title": "Förstå problemet",
+        "text": "Givet x > 0 och y ≠ 0. Kvantitet I: x. Kvantitet II: (x^{y})^{1/y}. (I trycket har exponenten fallit bort — Kvantitet II är x upphöjt till y, alltihop upphöjt till 1/y.) Vilken är störst?",
+        "tier": "essential"
       },
       {
         "n": 2,
-        "text": "x är ett positivt reellt tal. Det betyder att alla potenser av x är väldefinierade och positiva, oavsett vilken exponent.",
-        "tier": "detail",
-        "title": "Vad betyder x>0 här?"
+        "title": "Vad betyder x > 0?",
+        "text": "x är ett positivt reellt tal. Då är x^{y} väldefinierat och positivt för alla exponenter y, och även (x^{y})^{1/y} är väldefinierat.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "text": "y^{2} = y \\cdot y. För y = 3 blir y² = 9; för y = −2 blir y² = 4. Eftersom y² är en kvadrat är y² alltid positiv eller noll (här strikt positiv eftersom y ≠ 0).",
-        "tier": "detail",
-        "title": "Vad betyder y² ?"
+        "title": "Varför villkoret y ≠ 0?",
+        "text": "Exponenten i II är \\frac{1}{y} — division med y. Villkoret y ≠ 0 finns där för att \\frac{1}{y} ska vara definierat. Att uppgiften kräver y ≠ 0 är en stark ledtråd om att y står i en nämnare.",
+        "tier": "detail"
       },
       {
         "n": 4,
-        "text": "Potensregeln: (a^{m})^{n} = a^{m \\cdot n}. Tillämpa med a = x, m = y, n = y: (x^{y})^{y} = x^{y \\cdot y} = x^{y^{2}}.",
-        "tier": "essential",
-        "title": "Tillämpa potensregeln på II"
+        "title": "Potensregeln: potens av potens",
+        "text": "(a^{m})^{n} = a^{m \\cdot n} — exponenterna multipliceras.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "text": "Kvantitet I = x^{y^{2}}. Kvantitet II = x^{y^{2}} efter potensregeln. Båda är samma uttryck.",
-        "tier": "essential",
-        "title": "Jämför uttrycken"
+        "title": "Tillämpa potensregeln på II",
+        "text": "(x^{y})^{1/y} = x^{y \\cdot \\frac{1}{y}} = x^{1}. Exponenterna y och \\frac{1}{y} är varandras inverser — produkten är exakt 1.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "text": "x = 2, y = 3. I = 2^{9} = 512. II = (2^{3})^{3} = 8^{3} = 512. Lika.",
-        "tier": "detail",
-        "title": "Verifiera med konkreta tal — fall 1"
+        "title": "Vad är x¹?",
+        "text": "x^{1} = x. Ett tal upphöjt till 1 är talet självt.",
+        "tier": "detail"
       },
       {
         "n": 7,
-        "text": "x = 2, y = −3. y² = 9 fortfarande. I = 2^{9} = 512. II = (2^{-3})^{-3} = (1/8)^{-3} = 8^{3} = 512. Lika.",
-        "tier": "detail",
-        "title": "Verifiera med negativt y"
+        "title": "Jämför kvantiteterna",
+        "text": "Kvantitet I = x. Kvantitet II = x. De är identiska — för ALLA tillåtna x och y.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "text": "x = 1/2, y = 2. y² = 4. I = (1/2)^{4} = 1/16. II = ((1/2)^{2})^{2} = (1/4)^{2} = 1/16. Lika.",
-        "tier": "detail",
-        "title": "Verifiera med bråktal x"
+        "title": "Verifiera med konkreta tal — fall 1",
+        "text": "x = 2, y = 3. II = (2^{3})^{1/3} = 8^{1/3} = \\sqrt[3]{8} = 2 = I. Lika.",
+        "tier": "detail"
       },
       {
         "n": 9,
-        "text": "För x = 1 är alla potenser 1: I = II = 1. Likhet håller även där.",
-        "tier": "detail",
-        "title": "Vad om x = 1?"
+        "title": "Verifiera med negativt y",
+        "text": "x = 2, y = -2. II = (2^{-2})^{-1/2} = \\left(\\frac{1}{4}\\right)^{-1/2} = 4^{1/2} = 2 = I. Lika även med negativ exponent.",
+        "tier": "detail"
       },
       {
         "n": 10,
-        "text": "Nej — potensregeln gäller oavsett y:s tecken så länge x > 0. y² är alltid ≥ 0 och resulterande uttryck är väldefinierat.",
-        "tier": "detail",
-        "title": "Spelar tecknet på y roll?"
+        "title": "Verifiera med bråktal x",
+        "text": "x = \\frac{1}{2}, y = 2. II = \\left(\\frac{1}{4}\\right)^{1/2} = \\frac{1}{2} = I. Lika.",
+        "tier": "detail"
       },
       {
         "n": 11,
-        "text": "Båda kvantiteterna är x^{y^{2}} för alla tillåtna x och y. Svaret är C (lika). Insikten i en mening: potensregeln (a^m)^n = a^{mn} gör (x^y)^y = x^{y²} — exakt samma som kvantitet I.",
-        "tier": "essential",
-        "title": "Slutsats"
+        "title": "Slutsats",
+        "text": "Kvantitet I och II är samma tal x för alla tillåtna x och y. Svaret är C. Insikten i en mening: när exponenterna är varandras inverser multipliceras de till 1 — potenstornet kollapsar till basen.",
+        "tier": "essential"
       }
     ],
-    "technique": "Potensregel-igenkänningen: när du ser (x^a)^b, skriv om till x^{ab} omedelbart. Då blir många uttryck synligt lika. Triggern: 'kapslade exponenter' → multiplicera exponenterna direkt."
+    "distractors": [
+      {
+        "letter": "A",
+        "why_tempting": "Kvantitet I ser 'ren' ut (bara x) medan II ser ut som en inveckling som borde ändra värdet — man kan gissa att den enkla kvantiteten är större.",
+        "why_wrong": "Steg 5: exponenterna y och \\frac{1}{y} tar ut varandra exakt. II är inte 'nästan x' utan PRECIS x."
+      },
+      {
+        "letter": "B",
+        "why_tempting": "Spegel av A — potenser känns som att de 'förstorar', så II ser större ut, särskilt om man tänker på stora y.",
+        "why_wrong": "Värdet på y spelar ingen roll: y \\cdot \\frac{1}{y} = 1 oavsett. II = x^{1} = x = I (steg 5–7)."
+      },
+      {
+        "letter": "D",
+        "why_tempting": "Snabbsvar är ofta 'x och y är okända → informationen räcker inte'.",
+        "why_wrong": "Jämförelsen beror varken på x eller y: potensregeln gör II identisk med I för ALLA x > 0, y ≠ 0 (steg 7–10). Villkoren garanterar bara att uttrycken är definierade."
+      }
+    ],
+    "pregrade_tactic": {
+      "handle": "Invers-exponenten",
+      "move": "När exponenterna är varandras inverser (y och 1/y) — multiplicera dem: produkten 1 betyder att hela potenstornet kollapsar till basen."
+    }
   },
   "var-2016-kvant1-NOG-023": {
     "_meta": {

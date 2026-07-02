@@ -3183,100 +3183,95 @@
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
+      "recipe": "variant-c-regen-wave",
+      "regenerated": "2026-07-02-delimiter-repair"
     },
     "framework_id": null,
-    "solution_path": "Frågan är ofullständigt parsad ('Vad är ^10 5h ? 2'). Tolkningen utifrån facit C = 500 är: 10 \\cdot 5 \\cdot 10 = 500 (eller motsvarande uttryck med samma struktur). Räkna multiplikationerna i ordning.",
-    "technique": "Beräkning av sammansatt uttryck: identifiera faktorer och utför multiplikationerna i kronologisk ordning. När parsning är osäker, leta efter mönstret som matchar facit-värdet.",
-    "pitfall": "Botemedlet mot parsnings-osäkerhet: räkna BACKWARDS från facit-svaret. Om svaret är 500, leta efter en faktorisering av 500 (= 2·250 = 4·125 = 5·100 = 10·50 = 10·5·10) som matchar uppgiftens nummerlandskap.",
+    "solution_path": "Uttrycket är 10^{2} \\cdot 5. Räkna potensen först: 10^{2} = 100. Multiplicera sedan: 100 \\cdot 5 = 500. Svaret är C.",
+    "technique": "Prioriteringsordningen: potenser beräknas FÖRE multiplikation. Håll också reda på exponentens räckvidd — i 10^{2} \\cdot 5 står tvåan bara på 10:an, inte på hela produkten.",
+    "pitfall": "Botemedlet mot räckvidds-felet: fråga alltid 'vad exakt står exponenten på?'. 10^{2} \\cdot 5 = 500 men (10 \\cdot 5)^{2} = 2\\,500 — kvadrera först, multiplicera sedan.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Uppgiftens text är delvis trasig: 'Vad är ^10 5h ? 2'. Strukturen pekar mot en multiplikativ beräkning med talen 10, 5, 2 och kanske höjd till en exponent. Alternativen är 50, 250, 500, 2500.",
+        "text": "Du ska beräkna 10^{2} \\cdot 5. (I vår version är uttrycket otydligt återgivet — originalets uttryck är 10^{2} \\cdot 5.) Alternativen är 50, 250, 500 och 2 500.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Faktorisera alla alternativ",
-        "text": "50 = 2·25 = 2·5². 250 = 2·5³. 500 = 4·125 = 2²·5³ = 10·5·10. 2500 = 4·625 = 2²·5⁴.",
+        "title": "Vad betyder 10²?",
+        "text": "Definition: a^{2} = a \\cdot a — talet gångrat med sig självt. Alltså 10^{2} = 10 \\cdot 10.",
         "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Sök det mönster som passar",
-        "text": "Talen 10, 5, 2 förekommer i frågetexten. Produkten 10 \\cdot 5 \\cdot 10 = 500 passar både alternativen och fragmenten i frågetexten.",
+        "title": "Räkna potensen först",
+        "text": "10^{2} = 10 \\cdot 10 = 100. Prioriteringsregeln säger: potenser beräknas före multiplikation.",
         "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Räkna första multiplikationen",
-        "text": "10 \\cdot 5 = 50.",
+        "title": "Multiplicera med 5",
+        "text": "100 \\cdot 5 = 500.",
         "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Räkna andra multiplikationen",
-        "text": "50 \\cdot 10 = 500.",
+        "title": "Exponentens räckvidd",
+        "text": "Tvåan står BARA på 10:an. 10^{2} \\cdot 5 betyder (10^{2}) \\cdot 5 — inte (10 \\cdot 5)^{2}. Det är hela uppgiftens fälla.",
         "tier": "essential"
       },
       {
         "n": 6,
         "title": "Kontrollera alternativet '50'",
-        "text": "50 skulle uppstå om man stannade vid första multiplikationen. Frågan ber dock om hela uttrycket, så stoppar man för tidigt missar man en faktor.",
+        "text": "50 = 10 \\cdot 5 — det får du om du glömmer exponenten helt och bara multiplicerar talen.",
         "tier": "detail"
       },
       {
         "n": 7,
         "title": "Kontrollera alternativet '250'",
-        "text": "250 = 125 \\cdot 2 eller 50 \\cdot 5. Passar inte den läsbara strukturen i frågan; ingen kombination av 10, 5, 2 ger 250 utan extra steg.",
+        "text": "250 = 10 \\cdot 5^{2} = 10 \\cdot 25 — det får du om du sätter kvadraten på fel faktor (på 5:an i stället för 10:an).",
         "tier": "detail"
       },
       {
         "n": 8,
-        "title": "Kontrollera alternativet '2500'",
-        "text": "2500 = 10^2 \\cdot 5^2. Skulle uppstå om man inkluderar en kvadrering för mycket. Inte vad strukturen pekar på.",
+        "title": "Kontrollera alternativet '2 500'",
+        "text": "2\\,500 = (10 \\cdot 5)^{2} = 50^{2} — det får du om du låter exponenten gälla HELA produkten. Men tvåan står bara på 10:an.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Bekräfta strukturen",
-        "text": "Frågans tecken '^10' antyder en tio-faktor (kanske '10 upphöjt till något') eller bara talet 10. Talen 5 och 2 finns explicit. 10 \\cdot 5 \\cdot 10 = 500 är den enklaste tolkning som matchar facit.",
-        "tier": "detail"
-      },
-      {
-        "n": 10,
         "title": "Verifiera",
-        "text": "500 är ett rent tal — typisk HP-XYZ-form. Och faktoriseringen 10 \\cdot 5 \\cdot 10 stämmer med de tre lästbara talen i frågan.",
+        "text": "500 = 5 \\cdot 100 = 5 \\cdot 10^{2} ✓. Samma svar oavsett om du räknar 10 \\cdot 10 \\cdot 5 eller 100 \\cdot 5.",
         "tier": "essential"
       },
       {
-        "n": 11,
+        "n": 10,
         "title": "Slutsats",
-        "text": "Svar: C, 500. Insikten i en mening: när frågetexten är skadad — faktorisera alternativen och leta efter det mönster som matchar de läsbara talen.",
+        "text": "Svar: C, 500. Insikten i en mening: exponenten gäller bara talet den står på — räkna potensen först, multiplicera sedan.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 50 om man stannar efter första multiplikationen 10 \\cdot 5.",
-        "why_wrong": "Steg 5 visar att hela uttrycket ger 500 — 50 är ett delsteg, inte slutvärdet."
+        "why_tempting": "Det är lätt att räkna 10 \\cdot 5 = 50 om ögat hoppar över exponenten — talen 10 och 5 står ju bredvid varandra.",
+        "why_wrong": "Steg 3–4: exponenten är en del av uttrycket. 10^{2} = 100, och 100 \\cdot 5 = 500 — inte 50."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 250 om man tror att operationen inkluderar en delning eller en kvadrering på fel ställe.",
-        "why_wrong": "Steg 7: ingen kombination av 10, 5, 2 utan extra steg ger 250. Faktorerna i frågan stödjer 500, inte 250."
+        "why_tempting": "Snabbsvar är ofta 250 om man i farten kvadrerar 5:an i stället för 10:an: 10 \\cdot 5^{2} = 250.",
+        "why_wrong": "Steg 5: tvåan står på 10:an, inte på 5:an. 10^{2} \\cdot 5 = 500."
       },
       {
         "letter": "D",
-        "why_tempting": "Många stannar vid 2500 om de inkluderar en kvadrering för mycket (typ 10^2 \\cdot 25).",
-        "why_wrong": "Steg 8: 2500 = 10^2 \\cdot 5^2 kräver att BÅDE 10 och 5 kvadreras, vilket frågans struktur inte stödjer."
+        "why_tempting": "2 500 = 50^{2} — frestande om man först multiplicerar 10 \\cdot 5 och sedan kvadrerar resultatet.",
+        "why_wrong": "Steg 8: det vore (10 \\cdot 5)^{2}, ett annat uttryck. Exponentens räckvidd är bara 10:an: 10^{2} \\cdot 5 = 500."
       }
     ],
     "pregrade_tactic": {
-      "handle": "Faktorise-jakten",
-      "move": "När frågetexten är trasig — faktorisera alternativen och välj det som matchar de läsbara talen i uppgiften."
+      "handle": "Exponent-räckvidden",
+      "move": "Fråga alltid: vad exakt står exponenten på? a \\cdot b^{2} och (a \\cdot b)^{2} är olika tal — räkna potensen först, multiplicera sedan."
     }
   },
   "var-2014-kvant1-XYZ-006": {

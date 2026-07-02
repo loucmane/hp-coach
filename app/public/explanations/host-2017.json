@@ -13002,103 +13002,98 @@
     }
   },
   "host-2017-kvant1-XYZ-011": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar D; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Konjugatregeln: (a+b)(a-b) = a^2 - b^2 med a = \\frac{x}{4}, b = \\frac{1}{2}. Det ger \\left(\\frac{x}{4}\\right)^2 - \\left(\\frac{1}{2}\\right)^2 = \\frac{x^2}{16} - \\frac{1}{4}. Bryt ut \\frac{1}{4}: \\frac{1}{4}\\left(\\frac{x^2}{4} - 1\\right). Svaret är D.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Du ska multiplicera ihop \\left(\\frac{x}{4} + \\frac{1}{2}\\right)\\left(\\frac{x}{4} - \\frac{1}{2}\\right) och hitta matchande alternativ. Parenteserna har samma termer med olika tecken — det är ett konjugat.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ D. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Konjugatregeln",
+        "text": "(a+b)(a-b) = a^2 - b^2. Korstermerna -ab och +ab tar ut varandra, så bara kvadraterna blir kvar — med MINUS emellan.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
-        "tier": "detail"
+        "title": "Identifiera a och b",
+        "text": "Här är a = \\frac{x}{4} och b = \\frac{1}{2}. Mönstret (a+b)(a-b) matchar exakt.",
+        "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Kvadrera a",
+        "text": "\\left(\\frac{x}{4}\\right)^2 = \\frac{x^2}{16} — BÅDE täljare och nämnare kvadreras: x blir x^2 och 4 blir 16.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Kvadrera b",
+        "text": "\\left(\\frac{1}{2}\\right)^2 = \\frac{1}{4}.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Sätt ihop",
+        "text": "Uttrycket är \\frac{x^2}{16} - \\frac{1}{4}.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Matcha mot alternativens form",
+        "text": "Alla alternativ har formen \\frac{1}{4}(\\ldots) — bryt därför ut \\frac{1}{4}: \\frac{x^2}{16} = \\frac{1}{4} \\cdot \\frac{x^2}{4} och \\frac{1}{4} = \\frac{1}{4} \\cdot 1.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
-        "tier": "detail"
+        "title": "Utbruten form",
+        "text": "\\frac{x^2}{16} - \\frac{1}{4} = \\frac{1}{4}\\left(\\frac{x^2}{4} - 1\\right) — exakt alternativ D.",
+        "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Testvärde",
+        "text": "Sätt x = 4. Originalet: (1 + 0{,}5)(1 - 0{,}5) = 1{,}5 \\cdot 0{,}5 = 0{,}75. Alternativ D: \\frac{1}{4}\\left(\\frac{16}{4} - 1\\right) = \\frac{1}{4} \\cdot 3 = 0{,}75. Stämmer. (B ger \\frac{1}{4}(16-4) = 3 — fel.)",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret D. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "\\left(\\frac{x}{4} + \\frac{1}{2}\\right)\\left(\\frac{x}{4} - \\frac{1}{2}\\right) = \\frac{1}{4}\\left(\\frac{x^2}{4} - 1\\right). Svaret är D. Insikten i en mening: samma termer med motsatt tecken = konjugat — kvadrera båda och sätt minus emellan, korstermerna sköter sig själva.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Plustecknet i första parentesen kan smitta av sig så att man skriver a^2 + b^2 i stället för a^2 - b^2.",
+        "why_wrong": "Konjugatregeln ger alltid MINUS: korstermerna +ab och -ab tar ut varandra och kvar står a^2 - b^2 (steg 2). Testvärdet x = 4 ger 0{,}75, men A ger \\frac{1}{4}(4+1) = 1{,}25."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Kvadrerar man \\frac{x}{4} slarvigt till \\frac{x^2}{4} (glömmer att även 4:an kvadreras) hamnar man efter utbrytning på \\frac{1}{4}(x^2 - 4).",
+        "why_wrong": "Steg 4: \\left(\\frac{x}{4}\\right)^2 = \\frac{x^2}{16}, inte \\frac{x^2}{4}. Med x = 4 ger B värdet 3 medan originalet är 0{,}75."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är välja C om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret D. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Termen -x mitt i ser ut som en korsterm — frestande om man tror att man kvadrerar en differens, alltså \\left(\\frac{x}{4} - \\frac{1}{2}\\right)^2.",
+        "why_wrong": "Detta är inte en kvadrering av EN parentes utan ett konjugat av TVÅ olika — korstermerna tar ut varandra (steg 2), så ingen x-term överlever."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "Konjugat-igenkänning: när två parenteser har SAMMA termer men motsatt tecken emellan, hoppa över distribueringen — svaret är första termen i kvadrat minus andra termen i kvadrat. Triggern: (a+b)(a-b)-mönstret, även med bråk som termer.",
+    "pitfall": "Den vanligaste fällan är att kvadrera ett bråk halvvägs: \\left(\\frac{x}{4}\\right)^2 = \\frac{x^2}{16} — även nämnaren kvadreras. Botemedlet: skriv kvadraten som \\frac{x}{4} \\cdot \\frac{x}{4} och multiplicera täljare för sig, nämnare för sig.",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Konjugat-igenkänningen",
+      "move": "Samma termer, motsatt tecken → a^2 - b^2 direkt; kvadrera bråken helt (täljare OCH nämnare) och bryt ut \\frac{1}{4} för att matcha alternativen."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-missing-fill",
+      "regenerated": "2026-07-02-delimiter-repair"
     }
   },
   "host-2017-kvant2-XYZ-008": {

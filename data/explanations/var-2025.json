@@ -2811,100 +2811,101 @@
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave"
+      "recipe": "variant-c-regen-wave",
+      "regenerated": "2026-07-02-delimiter-repair"
     },
     "pregrade_tactic": {
       "handle": "Identitetsfällan",
       "move": "Lös ekvationen normalt — om alla x-termer och konstanter försvinner samtidigt är ekvationen sann för ALLA x, och x är då obestämt: svaret är D."
     },
-    "solution_path": "Ekvationen 2x+1 = 2bx + 1/2 (med b avläst som 1, dvs uttrycket 2bx tolkas som 2x och högerledet förenklas till 2x+1) blir 2x+1 = 2x+1, sant för alla x. När x kan vara vad som helst går det inte att jämföra med -1/2 entydigt. Svaret är D.",
+    "solution_path": "Multiplicera ut högerledet: 2\\left(x+\\frac{1}{2}\\right) = 2x+1 — exakt samma som vänsterledet. Ekvationen är en IDENTITET, sann för alla x. Då kan x vara både större än, lika med och mindre än -\\frac{1}{2}. Svaret är D.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Vi har ekvationen 2x+1 = 2bx + 1/2 där b ska avläsas så att båda leden blir ekvivalenta. Tolkningen är att högerledet 2bx + 1/2 förenklas till 2x+1 (alltså b=1, och 1/2 är en koefficient på högerledet som balanseras av strukturen — se följande steg). Kvantitet I är x; Kvantitet II är -1/2. Vi ska se vilken som är störst.",
+        "text": "Ekvationen är 2x+1 = 2\\left(x+\\frac{1}{2}\\right). Kvantitet I är x, Kvantitet II är -\\frac{1}{2}. Det ser ut som att du ska lösa ut x och jämföra — men se vad som händer.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Skriv om vänsterledet i bråkform",
-        "text": "2x+1 kan skrivas som 2(x + \\frac{1}{2}) genom att bryta ut 2:an. Det är samma uttryck — bara på distribuerad form: 2 · x + 2 · \\frac{1}{2} = 2x + 1. ✓",
-        "tier": "detail"
-      },
-      {
-        "n": 3,
-        "title": "Tolka uttrycket — varför ger det 2x+1 = 2x+1?",
-        "text": "Med b = 1 blir högerledet 2 · 1 · x + 1/2 = 2x + 1/2, vilket dock skiljer sig från vänsterledet (1 ≠ 1/2). HP-uppgiften är skriven med ett medvetet tvetydigt uttryck — det centrala är att om det FINNS ett b som gör det till identitet, så är x fri; om inte finns det en specifik rot. Vi går vidare och löser allmänt.",
-        "tier": "detail"
-      },
-      {
-        "n": 4,
-        "title": "Lös allmänt: samla x på en sida",
-        "text": "Från 2x + 1 = 2bx + 1/2: dra 2bx från båda sidor → 2x - 2bx + 1 = 1/2. Dra 1/2 från båda sidor → 2x - 2bx + 1/2 = 0. Bryt ut x: x(2 - 2b) = -1/2.",
+        "title": "Multiplicera ut parentesen",
+        "text": "Distributiva lagen: 2\\left(x+\\frac{1}{2}\\right) = 2\\cdot x + 2\\cdot\\frac{1}{2} = 2x+1.",
         "tier": "essential"
       },
       {
+        "n": 3,
+        "title": "Jämför leden",
+        "text": "Ekvationen lyder nu 2x+1 = 2x+1. Vänsterled och högerled är IDENTISKA uttryck.",
+        "tier": "essential"
+      },
+      {
+        "n": 4,
+        "title": "Vad är en identitet?",
+        "text": "En ekvation vars led är samma uttryck är sann för VARJE värde på x — den kallas identitet. Den låser ingenting; att 'lösa' den ger 0 = 0, inte ett x-värde.",
+        "tier": "detail"
+      },
+      {
         "n": 5,
-        "title": "Två fall: är (2 - 2b) noll eller inte?",
-        "text": "Om 2 - 2b ≠ 0: dividera båda sidor → x = \\frac{-1/2}{2-2b} = \\frac{-1}{4(1-b)}. Specifik rot, beroende på b. Om 2 - 2b = 0 (alltså b = 1): vänsterledet blir 0 oavsett x, högerledet är -1/2 ≠ 0 → ingen lösning, ELLER om även konstanterna matchar: identitet → alla x.",
+        "title": "Se det algebraiskt",
+        "text": "Dra 2x från båda sidor: 1 = 1. Både x-termerna och konstanterna försvann samtidigt — det är signaturen för en identitet (hade konstanterna skiljt sig hade ekvationen i stället saknat lösning).",
         "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Vad betyder otillräcklig information här?",
-        "text": "Eftersom b inte är specifierat i frågan, kan x vara olika tal beroende på b. För b = 0 blir x = -1/4 (ej lika med -1/2 och inte < -1/2 heller direkt). För b nära 1 blir x mycket stort i absolutbelopp. Olika b → olika x → ingen entydig jämförelse mot -1/2.",
+        "title": "Vad betyder det för Kvantitet I?",
+        "text": "x kan vara vilket tal som helst: -100, -\\frac{1}{2} 0, 7\\ldots Villkoret i uppgiften utesluter inget värde.",
         "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Testa konkreta värden",
-        "text": "b = 0: x = -1/4 → I = -0,25, II = -0,5 → I > II (svaret skulle vara A). b = 2: x = \\frac{-1}{4(1-2)} = \\frac{-1}{-4} = \\frac{1}{4} → I = 0,25, II = -0,5 → I > II igen. b = 1/2: x = \\frac{-1}{4 \\cdot 1/2} = -\\frac{1}{2} → I = II (svaret C). Tre olika utfall → ingen entydig relation.",
+        "title": "Testa jämförelsen åt alla håll",
+        "text": "x = 0: I = 0 > -\\frac{1}{2} (A-utfall). x = -1: I = -1 < -\\frac{1}{2} (B-utfall). x = -\\frac{1}{2}: I = II (C-utfall). Alla tre utfallen är möjliga.",
         "tier": "essential"
       },
       {
         "n": 8,
         "title": "KVA-regeln för otillräcklig information",
-        "text": "I KVA väljer man D när relationen mellan I och II inte är entydig — när svaret kan bli A, B eller C beroende på okända värden. Steg 7 visar exakt det: vissa val av b ger I > II, andra ger I = II.",
+        "text": "Så fort två tillåtna värden ger olika jämförelseutfall är svaret D. Här ger tre olika x tre olika utfall — informationen räcker inte.",
         "tier": "essential"
       },
       {
         "n": 9,
-        "title": "Varför är b okänt avgörande?",
-        "text": "Frågans struktur innehåller en parameter (b) som inte är fixerad. Utan att veta b kan man inte räkna ut x. I HP brukar parametrar utan villkor signalera 'otillräcklig information' om de påverkar svaret.",
+        "title": "Varför ser uppgiften ut så här?",
+        "text": "Konstruktörens fälla: -\\frac{1}{2} i Kvantitet II speglar \\frac{1}{2}:an i parentesen, så det KÄNNS som att ekvationen borde ge x = -\\frac{1}{2}. Men en identitet pekar inte ut något särskilt x.",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Verifiera resonemanget",
-        "text": "Försök att kringgå genom att anta b är 'snäll' (b=1) — då kollapsar ekvationen till motsägelse eller identitet beroende på exakt tolkning av högerledet. Antingen inga x funkar eller alla x funkar. Båda fallen → ingen entydig jämförelse → D står sig.",
+        "title": "Verifiera",
+        "text": "Sätt in valfritt x, t.ex. x = 3: VL = 2\\cdot 3+1 = 7, HL = 2\\left(3+\\frac{1}{2}\\right) = 2\\cdot\\frac{7}{2} = 7. Stämmer för 3 — och för alla andra x. ✓",
         "tier": "detail"
       },
       {
         "n": 11,
         "title": "Slutsats",
-        "text": "Eftersom parametern b inte är specifierad kan x:s värde inte fastställas entydigt, och alltså inte heller dess relation till -1/2. Svaret är D. Insikten i en mening: när en ekvation innehåller en okänd parameter UTAN villkor, kan inte variabeln pinnas ned — och i KVA betyder det alltid D.",
+        "text": "Ekvationen är en identitet, x är obestämt, och jämförelsen med -\\frac{1}{2} kan sluta hur som helst — svaret är D. Insikten i en mening: när båda leden visar sig vara samma uttryck låser ekvationen ingenting — och ett olåst x betyder alltid D i KVA.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja ett 'naturligt' värde på b (t.ex. b = 0 eller b = 2) och få x > -1/2, och därifrån dra slutsatsen att I alltid är större än II.",
-        "why_wrong": "Steg 7 visar att b = 1/2 ger x = -1/2 exakt (alltså I = II, inte I > II). Och andra b-värden kan ge x < -1/2 också. Eftersom inte alla b ger I > II, är A osant generellt."
+        "why_tempting": "Man testar ett bekvämt x (t.ex. x = 0), ser att det uppfyller ekvationen och att 0 > -\\frac{1}{2}, och stannar där.",
+        "why_wrong": "Steg 7 visar att även x = -1 uppfyller ekvationen, och då är I < II. Ett enda test räcker inte när ekvationen inte låser x."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid intuitionen 'ekvation ger ett enda x och det måste vara mindre än -1/2 i den här typen av uppgifter'.",
-        "why_wrong": "Steg 7 ger konkreta motexempel: b = 0 ger x = -1/4 > -1/2 (alltså I > II, inte I < II). Relationen är inte konsekvent åt det hållet heller."
+        "why_tempting": "Minustecknet i Kvantitet II lockar till tanken 'x i den här typen av uppgift brukar vara litet/negativt, alltså under -\\frac{1}{2}'.",
+        "why_wrong": "Steg 6: x är helt fritt. x = 0 uppfyller ekvationen och ligger ÖVER -\\frac{1}{2} — B håller inte generellt."
       },
       {
         "letter": "C",
-        "why_tempting": "Första instinkten är att skriva om ekvationen, märka att den 'ser ut att' vara en identitet med rätt b, och dra slutsatsen att x måste vara -1/2 specifikt — det är ju värdet som syns på högerledet.",
-        "why_wrong": "Steg 5 och 6 visar att x = -1/2 bara gäller för EN specifik b (b = 1/2). För andra b-värden får man andra x. Eftersom b inte är fixerad är x inte heller fixerad till -1/2."
+        "why_tempting": "Bråket \\frac{1}{2} syns både i ekvationen och i Kvantitet II, så x = -\\frac{1}{2} känns som den 'avsedda' lösningen.",
+        "why_wrong": "Steg 3–5: ekvationen är en identitet — den pekar inte ut x = -\\frac{1}{2} mer än något annat tal. Likhet är ETT möjligt utfall, inte det enda."
       }
     ],
-    "technique": "Parameter-otillräcklighet i KVA: när en ekvation innehåller en obeskriven konstant (b, k, a, ...) som påverkar lösningen, är variabeln inte entydigt bestämd. Triggern: en bokstav som inte är x dyker upp utan att ha definierats — då går det inte att räkna ut x utan att veta vad parametern är.",
-    "pitfall": "Botemedlet mot fast-värde-fällan: stoppa aldrig in ett 'snällt' värde på en parameter och dra generella slutsatser. Testa minst två olika värden — om svaret ändras mellan dem, är informationen otillräcklig (D).",
+    "technique": "Identitets-detektorn: multiplicera ut och förenkla båda leden FÖRST. Blir leden identiska är ekvationen en identitet — variabeln är obestämd, och i KVA betyder obestämd variabel mot ett fast tal alltid D.",
+    "pitfall": "Botemedlet mot pseudo-lösningen: att ett tal 'syns' i både ekvationen och Kvantitet II betyder inte att x måste anta det värdet. Förenkla klart — försvinner alla x-termer OCH konstanter samtidigt har du en identitet, inte en lösning.",
     "framework_id": null
   },
   "var-2025-kvant2-KVA-022": {
@@ -13042,97 +13043,98 @@
     }
   },
   "var-2025-kvant2-KVA-021": {
-    "solution_path": "Operationen xZy = x/y. (1Z2)Z3 = (1/2)Z3 = (1/2)/3 = 1/6. Jämför med 1/3 = 2/6. Eftersom 1/6 < 2/6, är I < II — verdikt B. Per facit B: bekräftat.",
+    "solution_path": "Operationen är definierad som x◇y = \\frac{x}{y}. Räkna inifrån: 1◇2 = \\frac{1}{2}, sedan \\left(\\frac{1}{2}\\right)◇3 = \\frac{1/2}{3} = \\frac{1}{6}. Jämför med II = \\frac{1}{3} = \\frac{2}{6}: eftersom \\frac{1}{6} < \\frac{2}{6} är II större. Svaret är B.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "y ≠ 0, xZy = x/y. Räkna (1Z2)Z3, jämför med 1/3.",
+        "text": "En egen räkneoperation definieras: x◇y = \\frac{x}{y} (med y ≠ 0). Kvantitet I är (1◇2)◇3 och Kvantitet II är \\frac{1}{3}. Du ska räkna ut I och jämföra.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Räkna 1Z2",
-        "text": "1Z2 = 1/2.",
-        "tier": "essential"
+        "title": "Vad betyder en definierad operation?",
+        "text": "Symbolen ◇ är bara ett nytt namn för ett recept: 'talet till vänster delat med talet till höger'. Varje gång du ser a◇b, byt ut det mot \\frac{a}{b}.",
+        "tier": "detail"
       },
       {
         "n": 3,
-        "title": "Räkna (1/2)Z3",
-        "text": "(1/2)/3 = 1/6.",
+        "title": "Räkna parentesen först: 1◇2",
+        "text": "Enligt definitionen: 1◇2 = \\frac{1}{2}. Parentesen säger att detta ska räknas FÖRE den yttre operationen.",
         "tier": "essential"
       },
       {
         "n": 4,
-        "title": "Jämför med II = 1/3",
-        "text": "1/6 vs 1/3 = 2/6. Eftersom 1/6 < 2/6, I < II.",
+        "title": "Räkna den yttre operationen",
+        "text": "(1◇2)◇3 = \\frac{1}{2}◇3 = \\frac{1/2}{3}. Vänstertalet är nu \\frac{1}{2}, högertalet 3.",
         "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Per facit B",
-        "text": "II > I bekräftat.",
+        "title": "Förenkla dubbelbråket",
+        "text": "Att dela med 3 är samma sak som att multiplicera med \\frac{1}{3} \\frac{1/2}{3} = \\frac{1}{2}\\cdot\\frac{1}{3} = \\frac{1}{6}.",
         "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Räcker informationen?",
-        "text": "Ja — operationen Z är väldefinierad.",
-        "tier": "detail"
+        "title": "Jämför I och II",
+        "text": "I = \\frac{1}{6} och II = \\frac{1}{3}. Gemensam nämnare 6: \\frac{1}{3} = \\frac{2}{6}. Eftersom \\frac{1}{6} < \\frac{2}{6} är Kvantitet II större.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Tecken-check",
-        "text": "Båda positiva.",
+        "title": "Ordningen spelar roll",
+        "text": "Observera att ◇ (som division) INTE är associativ: 1◇(2◇3) = 1◇\\frac{2}{3} = \\frac{3}{2} — ett helt annat värde än \\frac{1}{6}. Parenteserna i uppgiften är alltså inte dekoration.",
         "tier": "detail"
       },
       {
         "n": 8,
-        "title": "Verifiera",
-        "text": "1/6 = 1/6.",
+        "title": "Räcker informationen?",
+        "text": "Ja — inga variabler är inblandade, definitionen av ◇ är entydig och parenteserna pekar ut räkneordningen. D är uteslutet.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Insikt",
-        "text": "Anpassad operation Z = division.",
+        "title": "Verifiera med decimaler",
+        "text": "\\frac{1}{6} \\approx 0{,}167 och \\frac{1}{3} \\approx 0{,}333. II är klart större. ✓",
         "tier": "detail"
       },
       {
         "n": 10,
         "title": "Slutsats",
-        "text": "I = 1/6 < II = 1/3 — svaret är B. Insikten: kundliga operationer som Z = division — räkna stega för stega innan jämförelse.",
+        "text": "I = \\frac{1}{6} < \\frac{1}{3} = II — svaret är B. Insikten i en mening: en definierad operation är bara ett recept — ersätt symbolen med definitionen och räkna parentesen först, för division är inte associativ.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Felräkning av operationen.",
-        "why_wrong": "Steg 3: (1/2)/3 = 1/6 exakt."
+        "why_tempting": "Räknar du parenteserna i fel ordning — 1◇(2◇3) = \\frac{1}{2/3} = \\frac{3}{2} — blir I större än \\frac{1}{3} och A ser rätt ut.",
+        "why_wrong": "Parentesen står runt 1◇2, inte 2◇3. Steg 3–5: (1◇2)◇3 = \\frac{1}{6}, och \\frac{1}{6} < \\frac{1}{3}."
       },
       {
         "letter": "C",
-        "why_tempting": "Likhet kräver 1/6 = 1/3.",
-        "why_wrong": "Steg 4: olika."
+        "why_tempting": "Slarvläser du I som 1◇3 = \\frac{1}{3} (hoppar över mellansteget) blir kvantiteterna lika.",
+        "why_wrong": "Steg 4–5: den yttre operationen tar \\frac{1}{2} som vänstertal, inte 1. Resultatet är \\frac{1}{6}, inte \\frac{1}{3}."
       },
       {
         "letter": "D",
-        "why_tempting": "'Anpassad operation → otillräcklig'.",
-        "why_wrong": "Steg 6: definitionen räcker."
+        "why_tempting": "En påhittad symbol som ◇ kan kännas underbestämd — 'vem vet vad den egentligen gör?'.",
+        "why_wrong": "Steg 8: definitionen x◇y = \\frac{x}{y} ges i uppgiften och är entydig. Allt går att räkna ut exakt — informationen räcker."
       }
     ],
-    "technique": "Anpassade operationer: läs definitionen noga, applicera stega.",
-    "pitfall": "Botemedlet mot förvirring: räkna operationen i steg, inte allt på en gång.",
+    "technique": "Definierad-operation-receptet: ersätt den nya symbolen med dess definition, ett steg i taget, och respektera parenteserna — operationer byggda på division eller subtraktion är inte associativa.",
+    "pitfall": "Botemedlet mot ordningsslarv: skriv ut varje ◇-steg som ett bråk innan du går vidare. (1◇2)◇3 och 1◇(2◇3) ger OLIKA svar — parentesen bestämmer vilket tal som hamnar i täljaren.",
     "framework_id": null,
     "pregrade_tactic": {
       "handle": "Anpassad-operation",
-      "move": "Vid kundlig operation xZy = ... — applicera definitionen steg för steg."
+      "move": "Vid egendefinierad operation x◇y = … — byt symbolen mot definitionen och räkna parentesen först; division är inte associativ."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-missing-fill",
+      "regenerated": "2026-07-02-delimiter-repair"
     }
   },
   "var-2025-kvant1-XYZ-005": {

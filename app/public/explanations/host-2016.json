@@ -13056,103 +13056,98 @@
     }
   },
   "host-2016-kvant2-XYZ-008": {
-    "solution_path": "Datakällan saknar tillräcklig information för att återge full uträkning (prompt corrupted). Facit anger svar C; under övning, markera och gå vidare — på provet kostar det bara ett ifyllt alternativ.",
+    "solution_path": "Addera bråken med gemensam nämnare: \\frac{1}{x} + \\frac{1}{y} = \\frac{y + x}{xy}. Multiplicera: (x-y) \\cdot \\frac{x+y}{xy} = \\frac{(x-y)(x+y)}{xy} = \\frac{x^2 - y^2}{xy} (konjugatregeln). Svaret är C.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Den här uppgiften är XYZ — den prövar din algebra-, aritmetik- eller geometriintuition. Promptens text är så förvrängd i parsern att den ursprungliga ekvationen inte kan rekonstrueras säkert. Vi vill inte hitta på siffror som inte finns i datakällan.",
+        "text": "Du ska skriva om uttrycket (x-y)\\left(\\frac{1}{x} + \\frac{1}{y}\\right) så att det matchar ett av alternativen. Det är ren algebra: addera bråken, multiplicera ihop, förenkla.",
         "tier": "essential"
       },
       {
         "n": 2,
-        "title": "Vad facit säger",
-        "text": "Det rätta svaret enligt facit är alternativ C. Vi tar med det som datapunkt utan att kunna visa den fullständiga uträkningen här.",
+        "title": "Addera bråken först",
+        "text": "\\frac{1}{x} + \\frac{1}{y} kräver gemensam nämnare. Den minsta gemensamma nämnaren är xy: \\frac{1}{x} = \\frac{y}{xy} och \\frac{1}{y} = \\frac{x}{xy}.",
         "tier": "essential"
       },
       {
         "n": 3,
-        "title": "Strategi vid datavakuum",
-        "text": "När prompten saknas, hoppa över uppgiften under övning och markera den som 'parser-blockerad'. Den drar ner tempot utan att lära dig något nytt — och på provet är det bättre att slippa förvirring kring otydlig text.",
+        "title": "Varför gemensam nämnare?",
+        "text": "Bråk kan bara adderas när de mäter i samma \"enhet\" — samma nämnare. Att förlänga \\frac{1}{x} med y ändrar inte värdet, bara formen.",
         "tier": "detail"
       },
       {
         "n": 4,
-        "title": "Allmän XYZ-checklista",
-        "text": "Identifiera först vad uppgiften frågar efter: ett värde på x, ett uttryck, en omkrets, en area, eller en graf? Skriv sedan ner det viktigaste sambandet med variabler innan du sätter in tal.",
-        "tier": "detail"
+        "title": "Summan av bråken",
+        "text": "\\frac{y}{xy} + \\frac{x}{xy} = \\frac{y + x}{xy} = \\frac{x + y}{xy}.",
+        "tier": "essential"
       },
       {
         "n": 5,
-        "title": "Definiera variabler",
-        "text": "Inför egna bokstäver för okända storheter och teckna villkoren som ekvationer. Hela XYZ-sektionen handlar om att översätta text till algebra och tillbaka.",
-        "tier": "detail"
+        "title": "Multiplicera ihop",
+        "text": "(x-y) \\cdot \\frac{x+y}{xy} = \\frac{(x-y)(x+y)}{xy}.",
+        "tier": "essential"
       },
       {
         "n": 6,
-        "title": "Bevaka räkneordning",
-        "text": "När du räknar XYZ: multiplikation och division före addition och subtraktion, parenteser först. Distribuera tecken över hela parentesen — ett enda glömt minustecken förändrar svaret.",
-        "tier": "detail"
+        "title": "Konjugatregeln",
+        "text": "(a-b)(a+b) = a^2 - b^2 — korstermerna tar ut varandra. Här: (x-y)(x+y) = x^2 - y^2.",
+        "tier": "essential"
       },
       {
         "n": 7,
-        "title": "Förenkla bråkuttryck",
-        "text": "Vid bråk: gemensam nämnare innan addition/subtraktion. För a/b = c/d ger korsmultiplikation ad = bc — säkrare än att försöka 'flytta bråk'.",
-        "tier": "detail"
+        "title": "Sätt ihop",
+        "text": "Uttrycket blir \\frac{x^2 - y^2}{xy} — exakt alternativ C.",
+        "tier": "essential"
       },
       {
         "n": 8,
-        "title": "Tecken och rimlighet",
-        "text": "Vid olikheter, byt riktning om du multiplicerar/dividerar med ett negativt tal. Vid svar med flera lösningar (t.ex. kvadratrot), ha med båda tecknen.",
+        "title": "Alternativ väg: distribuera direkt",
+        "text": "(x-y)\\left(\\frac{1}{x} + \\frac{1}{y}\\right) = \\frac{x}{x} + \\frac{x}{y} - \\frac{y}{x} - \\frac{y}{y} = 1 + \\frac{x}{y} - \\frac{y}{x} - 1 = \\frac{x}{y} - \\frac{y}{x}. Med gemensam nämnare: \\frac{x^2 - y^2}{xy} — samma svar.",
         "tier": "detail"
       },
       {
         "n": 9,
-        "title": "Geometri-grundregler",
-        "text": "Triangelns vinkelsumma är 180°, rektangelarea är a\\cdot b, cirkelarea är \\pi r^2. Vid sammansatta figurer: dekomponera i grundformer innan du adderar.",
+        "title": "Testvärden",
+        "text": "Sätt x = 2, y = 1. Originalet: (2-1)\\left(\\frac{1}{2} + 1\\right) = 1{,}5. Alternativ C: \\frac{4-1}{2} = 1{,}5. Stämmer. (D ger 2 - 0{,}5 + 2 = 3{,}5 — fel.)",
         "tier": "detail"
       },
       {
         "n": 10,
-        "title": "Sanity-check svaret",
-        "text": "Sätt in ditt x i originalvillkoret och kontrollera. För geometri: ligger värdet i rimligt storleksintervall? Felaktiga svar avslöjar sig oftast via en storleksjämförelse.",
-        "tier": "detail"
-      },
-      {
-        "n": 11,
         "title": "Slutsats",
-        "text": "Facit anger svaret C. Insikten i en mening: när datan inte räcker för att visa lösningen ska du flytta vidare snabbt — på provet är det enda priset en ogiven gissning, och du tappar ingenting på att hoppa.",
+        "text": "(x-y)\\left(\\frac{1}{x} + \\frac{1}{y}\\right) = \\frac{x^2 - y^2}{xy}. Svaret är C. Insikten i en mening: addera bråken FÖRST till ett enda bråk — då blir multiplikationen ett rent konjugat.",
         "tier": "essential"
       }
     ],
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att välja A om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Det är lätt att slarva ihop \\frac{1}{x} + \\frac{1}{y} till \\frac{1}{xy} — då blir produkten \\frac{x-y}{xy}.",
+        "why_wrong": "Steg 4 visar att \\frac{1}{x} + \\frac{1}{y} = \\frac{x+y}{xy}, inte \\frac{1}{xy}. Täljaren x + y försvinner inte — den blir konjugatets andra halva."
       },
       {
         "letter": "B",
-        "why_tempting": "Många stannar vid välja B om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Att tro att \\frac{1}{x} + \\frac{1}{y} = \\frac{1}{x+y} ger (x-y) \\cdot \\frac{1}{x+y} = \\frac{x-y}{x+y}.",
+        "why_wrong": "Bråk adderas inte genom att addera nämnarna. Testa x = y = 2: \\frac{1}{2} + \\frac{1}{2} = 1, men \\frac{1}{2+2} = 0{,}25 — inte samma sak."
       },
       {
         "letter": "D",
-        "why_tempting": "Första instinkten är välja D om man läser uppgiften flyktigt eller blandar ihop räkneordningen — utan tillgång till promptens exakta siffror kan vi inte säga vilken specifik felräkning som leder dit.",
-        "why_wrong": "Som steg 2 visar är facit-svaret C. Utan komplett uppgiftstext kan vi inte trasera varje misstag — men hoppa hellre vidare än att gissa när data saknas (steg 3)."
+        "why_tempting": "Distribuerar man termvis och slarvar med tecknen kan \\frac{x}{x} = 1 och -\\frac{y}{y} = -1 bli +1 och +1, vilket ger \\frac{x}{y} - \\frac{y}{x} + 2.",
+        "why_wrong": "Steg 8 visar att de hela termerna är +1 och −1 — de tar ut varandra. Resultatet \\frac{x}{y} - \\frac{y}{x} + 2 hade krävt (x+y)\\left(\\frac{1}{x} + \\frac{1}{y}\\right), med plus i första parentesen."
       }
     ],
-    "technique": "Datavakuum-protokollet: när promptens text eller figur saknas, ge inte hela uträkningen utan flytta vidare. Generella XYZ-rutiner — variabel-ansats, räkneordning, distribuera tecken, sanity-check — räcker på 95% av de fall där datan ÄR komplett.",
-    "pitfall": "Botemedlet mot att fastna på korrupt data: skilj mellan 'jag förstår inte texten' och 'jag förstår inte matematiken'. Det första är ett parsingsfel — låt det inte blockera resten av tempot.",
+    "technique": "Bråksumma-till-konjugat-receptet: addera bråken till ETT bråk med gemensam nämnare innan du multiplicerar — då syns mönstret (x-y)(x+y) = x^2 - y^2 direkt. Triggern: en parentes med differens gånger en parentes med bråksumma.",
+    "pitfall": "Den klassiska fällan är att addera bråk fel: \\frac{1}{x} + \\frac{1}{y} är VARKEN \\frac{1}{xy} eller \\frac{1}{x+y} — det är \\frac{x+y}{xy}. Botemedlet: förläng alltid till gemensam nämnare, eller testa med konkreta tal (\\frac{1}{2} + \\frac{1}{2} = 1, inte \\frac{1}{4}).",
     "framework_id": null,
     "pregrade_tactic": {
-      "handle": "Datavakuum-protokollet",
-      "move": "När prompten eller figuren är så förvrängd att du gissar siffror, hoppa vidare och markera frågan — på provet är priset en ogiven gissning, ingenting mer."
+      "handle": "Bråksumma-till-konjugat",
+      "move": "Addera \\frac{1}{x} + \\frac{1}{y} till \\frac{x+y}{xy} först — då blir (x-y)(x+y) ett konjugat och svaret \\frac{x^2-y^2}{xy} faller ut direkt."
     },
     "_meta": {
       "model": "claude-opus-4-7-via-max-subscription",
       "generated_at": "2026-05-22",
-      "recipe": "variant-c-regen-wave-missing-fill"
+      "recipe": "variant-c-regen-wave-missing-fill",
+      "regenerated": "2026-07-02-delimiter-repair"
     }
   },
   "host-2016-kvant2-XYZ-011": {
