@@ -551,9 +551,12 @@ details[open] > summary .hpc-lesson-practice {
  *
  * F·Axis's hairline margin-rail carrying L12's editorial typesetting, ported
  * from the redesign bake-off (.m3-* → .hpc-m3-*) onto live tokens. The rail
- * label is STRUCTURE → cobalt --accent mono; grading state lives in the
- * option rows + verdict (added with the DrillQuestion port). All values are
- * token-bound so they follow the live palette + dark switchers.
+ * label is muted mono (M3.tsx L80): accent is RESERVED for ordinals, the
+ * tactic handle, dis-labels, the CTA, focus outlines and the option hover
+ * indicator — nothing else (M0 reconciliation; the earlier "rail label is
+ * STRUCTURE → cobalt" note was drift from the reference). Grading state
+ * lives in the option rows + verdict. All values are token-bound so they
+ * follow the live palette + dark switchers.
  * ════════════════════════════════════════════════════════════════════════ */
 
 /* the chassis: margin rail | vertical hairline | content column */
@@ -571,7 +574,7 @@ details[open] > summary .hpc-lesson-practice {
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--muted); /* M3.tsx L80 */
   text-align: right;
   padding-top: 5px;
   font-variant-numeric: tabular-nums;
@@ -608,6 +611,10 @@ details[open] > summary .hpc-lesson-practice {
     grid-template-columns: 96px 1px 1fr;
     column-gap: 20px;
   }
+  /* M3.tsx L721 */
+  .hpc-m3-frame {
+    padding: 40px 18px 72px;
+  }
 }
 
 /* Phone: the margin rail can't survive as a left column at ~390px, so the
@@ -631,14 +638,15 @@ details[open] > summary .hpc-lesson-practice {
   }
 }
 
+/* M3.tsx L689-692 */
 @keyframes hpc-m3-in-x {
   from {
     opacity: 0;
-    transform: translateX(-8px);
+    transform: translateX(-10px);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: none;
   }
 }
 @keyframes hpc-m3-in-y {
@@ -668,7 +676,7 @@ details[open] > summary .hpc-lesson-practice {
   font-size: clamp(44px, 6vw, 64px);
   line-height: 1.05;
   letter-spacing: -0.01em;
-  margin: 6px 0 0;
+  margin: 10px 0 0; /* M3.tsx L144 */
   animation: hpc-m3-settle 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .hpc-m3-q {
@@ -733,7 +741,7 @@ details[open] > summary .hpc-lesson-practice {
   font-size: 16px;
   line-height: 1.5;
   color: var(--ink-2);
-  margin: 0 0 12px;
+  margin: 0 0 10px; /* M3.tsx L629 */
   max-width: 65ch;
 }
 
@@ -901,38 +909,435 @@ details[open] > summary .hpc-lesson-practice {
   letter-spacing: -0.01em;
   color: var(--ink);
   max-width: 75ch;
+  animation: hpc-m3-in-y 320ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both; /* M3.tsx L462 */
 }
 
+/* M3.tsx L699-702 — a typographic settle (letter-spacing draws in),
+ * not a vertical rise; the earlier translateY(6px) was drift. */
 @keyframes hpc-m3-settle {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    letter-spacing: 0.01em;
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    letter-spacing: -0.01em;
   }
 }
+/* M3.tsx L704-707 — a calm horizontal draw from the left, where the
+ * pick landed; the earlier translateY(8px) rise was drift. */
 @keyframes hpc-m3-verdict-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateX(-8px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
+/* M3.tsx L709-717 — wildcard coverage: EVERYTHING (animations, delays,
+ * AND transitions like .hpc-m3-opt/.hpc-m3-ind) collapses under reduced
+ * motion. M3 scopes to .m3-root; the live app has no equivalent root
+ * wrapper, so we scope globally — a strict superset that also covers the
+ * .reveal entrances and any future animated class without re-listing.
+ * Near-zero durations (not `none`) so transitionend/animationend still
+ * fire for any logic listening to them. */
 @media (prefers-reduced-motion: reduce) {
-  .hpc-m3-meta,
-  .hpc-m3-content,
-  .hpc-m3-rule,
-  .hpc-m3-display,
-  .hpc-m3-q,
-  .hpc-m3-verdict-word {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════════════
+ * M0 gap fill — classes ported verbatim from the M3 "Boksidan" reference
+ * (app/src/components/devbake/l12/M3.tsx). Values are byte-exact copies;
+ * only the .m3- → .hpc-m3- prefix (and keyframe names) are renamed. Each
+ * rule cites its M3.tsx source line. Consumers arrive in M1/M2/M3H/M4 —
+ * these are intentionally inert until then. (.m3-root is NOT ported: the
+ * live Frame/body own bg/font. .m3-next-row ported only as the fallback
+ * for the locked floating-next decision.)
+ * ════════════════════════════════════════════════════════════════════════ */
+
+/* ── chassis / frame — the locked desktop layout as a class (M1 wires it) ── */
+/* M3.tsx L34 */
+.hpc-m3-reset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  appearance: none;
+  cursor: pointer;
+}
+/* M3.tsx L56 */
+.hpc-m3-frame {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+
+/* ── structural type ── */
+/* M3.tsx L111 */
+.hpc-m3-h {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin: 0 0 6px;
+}
+/* M3.tsx L120 */
+.hpc-m3-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+/* M3.tsx L127 */
+.hpc-m3-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── home screen — stats / resume / cta / plan / tag / traps (consumed by M3H) ── */
+/* M3.tsx L150 */
+.hpc-m3-stats {
+  display: flex;
+  gap: 48px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hairline);
+}
+/* M3.tsx L158 */
+.hpc-m3-stat-n {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 30px;
+  line-height: 1.1;
+  color: var(--ink);
+}
+/* M3.tsx L166 */
+.hpc-m3-stat-l {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+/* M3.tsx L172 */
+.hpc-m3-stat-d {
+  font-size: 12px;
+  color: var(--ok);
+  margin-top: 2px;
+}
+/* M3.tsx L178 */
+.hpc-m3-resume {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--accent-soft);
+  padding: 16px 20px;
+  margin-top: 4px;
+}
+/* M3.tsx L188 */
+.hpc-m3-resume-t {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+}
+/* M3.tsx L194 */
+.hpc-m3-resume-s {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+  font-variant-numeric: tabular-nums;
+}
+/* M3.tsx L202 */
+.hpc-m3-cta {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-ink);
+  background: var(--accent);
+  padding: 10px 20px;
+  white-space: nowrap;
+  transition: opacity 160ms ease;
+}
+/* M3.tsx L215 */
+.hpc-m3-cta:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+/* M3.tsx L220 */
+.hpc-m3-plan-item {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  gap: 16px;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--hairline-2);
+}
+/* M3.tsx L231 */
+.hpc-m3-plan-n {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.2;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+/* M3.tsx L240 */
+.hpc-m3-plan-t {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1.35;
+  color: var(--ink);
+}
+/* M3.tsx L248 */
+.hpc-m3-plan-r {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 3px;
+  max-width: 56ch;
+}
+/* M3.tsx L255 */
+.hpc-m3-plan-min {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+/* M3.tsx L263 */
+.hpc-m3-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  border: 1px solid var(--hairline);
+  padding: 1px 6px;
+  margin-right: 8px;
+  vertical-align: 2px;
+}
+/* M3.tsx L274 */
+.hpc-m3-trap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--hairline-2);
+}
+/* M3.tsx L285 */
+.hpc-m3-trap-t {
+  font-size: 14.5px;
+  color: var(--ink);
+}
+/* M3.tsx L290 */
+.hpc-m3-trap-n {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ── tactic aside (consumed by M1) ── */
+/* M3.tsx L300 */
+.hpc-m3-tactic {
+  margin-top: 24px;
+  padding: 14px 18px;
+  border-left: 1px solid var(--hairline);
+}
+/* M3.tsx L306 */
+.hpc-m3-tactic-h {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+/* M3.tsx L314 */
+.hpc-m3-tactic-t {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin-top: 4px;
+  max-width: 60ch;
+}
+
+/* ── keys hint (consumed by M1) ── */
+/* M3.tsx L406 */
+.hpc-m3-keys {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted-2);
+  margin-top: 14px;
+  letter-spacing: 0.06em;
+}
+
+/* ── pedagogy — verdict-sub / steps / distractors (consumed by M2) ── */
+/* M3.tsx L416 */
+.hpc-m3-ped {
+  animation: hpc-m3-in-y 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+/* M3.tsx L441 */
+.hpc-m3-verdict-sub {
+  margin-top: 10px;
+  font-size: 15px;
+  color: var(--ink-2);
+  max-width: 60ch;
+  animation: hpc-m3-in-y 320ms cubic-bezier(0.22, 1, 0.36, 1) 140ms both;
+}
+/* M3.tsx L465 */
+.hpc-m3-step {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--hairline-2);
+  animation: hpc-m3-in-y 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+/* M3.tsx L476 */
+.hpc-m3-step-n {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 1.2;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+/* M3.tsx L485 */
+.hpc-m3-step-h {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--ink);
+  margin: 0;
+}
+/* M3.tsx L494 */
+.hpc-m3-step-tier {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin-left: 10px;
+  vertical-align: 3px;
+}
+/* M3.tsx L505 */
+.hpc-m3-step-t {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink-2);
+  margin: 6px 0 0;
+  max-width: 75ch;
+}
+/* M3.tsx L513 */
+.hpc-m3-dis {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hairline-2);
+  animation: hpc-m3-in-y 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+/* M3.tsx L521 */
+.hpc-m3-dis-h {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--ink);
+}
+/* M3.tsx L528 */
+.hpc-m3-dis-h .hpc-m3-dis-k {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--muted-2);
+  margin-right: 8px;
+}
+/* M3.tsx L538 */
+.hpc-m3-dis-l {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 8px 0 2px;
+}
+/* M3.tsx L547 */
+.hpc-m3-dis-p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin: 0;
+  max-width: 75ch;
+}
+/* M3.tsx L555 */
+.hpc-m3-next-row {
+  margin-top: 36px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ── section-drill extras (consumed by M4) ── */
+/* M3.tsx L564 */
+.hpc-m3-passage-h {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 1.3;
+  color: var(--ink);
+  margin: 0 0 14px;
+}
+/* M3.tsx L661 */
+.hpc-m3-opts.is-prose .hpc-m3-opt-t {
+  font-size: 16px;
+  line-height: 1.55;
+  max-width: 65ch;
+}
+/* M3.tsx L671 */
+.hpc-m3-missing {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 22px 0 0;
+  max-width: 60ch;
+  animation: hpc-m3-in-y 320ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both;
+}
+
+/* ── one-line state rules (same provenance) ── */
+/* M3.tsx L213 */
+.hpc-m3-cta:hover { opacity: 0.88; }
+/* M3.tsx L229 */
+.hpc-m3-plan-item:last-child { border-bottom: 0; }
+/* M3.tsx L283 */
+.hpc-m3-trap:last-child { border-bottom: 0; }
+/* M3.tsx L474 */
+.hpc-m3-step:last-child { border-bottom: 0; }
+/* M3.tsx L519 */
+.hpc-m3-dis:last-child { border-bottom: 0; }
+/* M3.tsx L536 */
+.hpc-m3-dis-h s { text-decoration-thickness: 1.5px; }
+/* M3.tsx L667 */
+.hpc-m3-opts.is-prose .hpc-m3-opt-k { padding-top: 17px; }
+/* M3.tsx L669 */
+.hpc-m3-step-t.is-pre { white-space: pre-line; }
 
 /* ── StudyDesk wide-mode seam — task 84 ─────────────────────────────────
  * Below the 1200px container seam the drill is ONE column: the question
