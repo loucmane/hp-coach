@@ -29,7 +29,7 @@ import { MathText } from '@/components/MathText'
 import { pickTactic } from '@/components/pre-grade/pregrade-tactics'
 import type { AnswerLetter, Option, Question } from '@/data/questions'
 import { parseNogPrompt } from '@/lib/nogPrompt'
-import { RAIL_CHOOSE, RAIL_STATEMENTS, railMeta, sectionLongLabel } from '@/lib/sectionRailLabel'
+import { RAIL_STATEMENTS, railMeta, sectionLongLabel } from '@/lib/sectionRailLabel'
 
 type Props = {
   question: Question
@@ -185,10 +185,21 @@ export function DrillQuestion({
            *  section also contains the mono rail label, which would pollute
            *  textContent that e2e reads. */}
           <div className="hpc-m3-passage" data-testid="drill-context">
-            {question.context?.split(/\n{2,}/).map((para, i) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: passage paragraphs are static text
-              <p key={i}>{para}</p>
-            ))}
+            {question.context?.split(/\n{2,}/).map((para, i) => {
+              // M4 (M3.tsx L1044): 880/1080 corpus passages open with a
+              // real title line — short first paragraph with no terminal
+              // sentence punctuation. Derive it into the M3 passage
+              // heading; anything else stays a body paragraph.
+              const isTitle = i === 0 && para.length <= 90 && !/[.!?]$/.test(para.trim())
+              return isTitle ? (
+                <h2 key={para.slice(0, 48)} className="hpc-m3-passage-h">
+                  {para}
+                </h2>
+              ) : (
+                // biome-ignore lint/suspicious/noArrayIndexKey: passage paragraphs are static text
+                <p key={i}>{para}</p>
+              )
+            })}
           </div>
         </DrillRailSection>
       )}
@@ -240,7 +251,7 @@ export function DrillQuestion({
         </DrillRailSection>
       )}
 
-      <DrillRailSection meta={RAIL_CHOOSE} delay={nextDelay()}>
+      <DrillRailSection meta={meta.chooseLabel} delay={nextDelay()}>
         {nog?.tail && <p className="hpc-m3-coda">{nog.tail}</p>}
         <div className={meta.optionsProse ? 'hpc-m3-opts is-prose' : 'hpc-m3-opts'}>
           {question.options.map((opt) => (

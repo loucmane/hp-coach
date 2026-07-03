@@ -332,7 +332,9 @@ export function StepList({
                 <span className="hpc-m3-step-tier">{tierLabel(step.tier)}</span>
               </h3>
             ) : null}
-            <p className="hpc-m3-step-t">
+            {/* is-pre (M3.tsx L1172): corpus step text can carry real
+             *  newlines (NOG statement walk-throughs) — render them. */}
+            <p className="hpc-m3-step-t is-pre">
               <MathText>{step.text}</MathText>
             </p>
           </div>

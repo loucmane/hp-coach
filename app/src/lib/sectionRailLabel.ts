@@ -19,6 +19,9 @@ export type SectionRailMeta = {
   hasStatements: boolean
   /** Whether option rows use the wider prose treatment (long verbal answers). */
   optionsProse: boolean
+  /** Rail label for the options row. M4: ORD picks a synonym, so its
+   *  rail says so (M3.tsx L895); every other section keeps 'Välj svar'. */
+  chooseLabel: string
 }
 
 // Shared labels for the answer + outcome rows (same across every section).
@@ -31,23 +34,61 @@ const ORD_META: SectionRailMeta = {
   contextLabel: null,
   hasStatements: false,
   optionsProse: false,
+  chooseLabel: 'Välj synonym',
 }
 
 export const SECTION_RAIL: Record<Section, SectionRailMeta> = {
   ORD: ORD_META,
-  MEK: { promptLabel: 'Frågan', contextLabel: null, hasStatements: false, optionsProse: false },
+  MEK: {
+    promptLabel: 'Frågan',
+    contextLabel: null,
+    hasStatements: false,
+    optionsProse: false,
+    chooseLabel: RAIL_CHOOSE,
+  },
   // LÄS / ELF read a passage; ELF passages stay English by exam design but the
   // rail label is the Swedish UI chrome, so 'Texten' is correct for both.
-  LÄS: { promptLabel: 'Frågan', contextLabel: 'Texten', hasStatements: false, optionsProse: true },
-  ELF: { promptLabel: 'Frågan', contextLabel: 'Texten', hasStatements: false, optionsProse: true },
-  XYZ: { promptLabel: 'Frågan', contextLabel: null, hasStatements: false, optionsProse: false },
-  KVA: { promptLabel: 'Frågan', contextLabel: null, hasStatements: false, optionsProse: false },
-  NOG: { promptLabel: 'Uppgiften', contextLabel: null, hasStatements: true, optionsProse: false },
+  LÄS: {
+    promptLabel: 'Frågan',
+    contextLabel: 'Texten',
+    hasStatements: false,
+    optionsProse: true,
+    chooseLabel: RAIL_CHOOSE,
+  },
+  ELF: {
+    promptLabel: 'Frågan',
+    contextLabel: 'Texten',
+    hasStatements: false,
+    optionsProse: true,
+    chooseLabel: RAIL_CHOOSE,
+  },
+  XYZ: {
+    promptLabel: 'Frågan',
+    contextLabel: null,
+    hasStatements: false,
+    optionsProse: false,
+    chooseLabel: RAIL_CHOOSE,
+  },
+  KVA: {
+    promptLabel: 'Frågan',
+    contextLabel: null,
+    hasStatements: false,
+    optionsProse: false,
+    chooseLabel: RAIL_CHOOSE,
+  },
+  NOG: {
+    promptLabel: 'Uppgiften',
+    contextLabel: null,
+    hasStatements: true,
+    optionsProse: false,
+    chooseLabel: RAIL_CHOOSE,
+  },
   DTK: {
     promptLabel: 'Frågan',
     contextLabel: 'Underlaget',
     hasStatements: false,
     optionsProse: false,
+    chooseLabel: RAIL_CHOOSE,
   },
 }
 

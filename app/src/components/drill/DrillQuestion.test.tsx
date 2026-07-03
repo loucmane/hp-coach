@@ -78,6 +78,12 @@ describe('DrillQuestion pre-answer apparatus', () => {
     expect(screen.queryByText(/^Taktik · /)).not.toBeInTheDocument()
   })
 
+  it("labels the ORD options rail 'Välj synonym' (M4; other sections keep 'Välj svar')", () => {
+    render(<DrillQuestion question={ORD_QUESTION} picked={null} graded={false} onPick={() => {}} />)
+    expect(screen.getByText('Välj synonym')).toBeInTheDocument()
+    expect(screen.queryByText('Välj svar')).not.toBeInTheDocument()
+  })
+
   it('shows the dynamic keys hint pre-grade and hides it once graded', () => {
     const { rerender } = render(
       <DrillQuestion question={ORD_QUESTION} picked={null} graded={false} onPick={() => {}} />,
