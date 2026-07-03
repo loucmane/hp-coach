@@ -134,15 +134,15 @@ test('Page shell renders at desktop, BottomTabs at phone', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/')
   await expect(page.getByTestId('home-greeting')).toBeVisible({ timeout: 10_000 })
-  // Editorial running-head band + status line are the Page shell's contract.
-  // Brand now ships via the <BrandMark> component (`brand-mark` testid)
-  // with the ⌜ corner-bracket signature; `running-head` carries only
-  // the section label ("· Hem"). Previously both lived in the
-  // `running-head` testid as text.
+  // MC: the minimal mast is the Page shell's whole chrome contract —
+  // brand mark + 4 nav links + picker corner in ONE hairline band
+  // (`running-head` testid). The EDITION status line, folio and section
+  // echo are demolished.
   await expect(page.getByTestId('page-shell')).toBeVisible()
   await expect(page.getByTestId('brand-mark')).toContainText(/HP-Coach/i)
-  await expect(page.getByTestId('running-head')).toContainText(/Hem/i)
-  await expect(page.getByTestId('status-line')).toBeVisible()
+  await expect(page.getByTestId('running-head')).toBeVisible()
+  await expect(page.getByTestId('page-nav').getByRole('link', { name: 'Hem' })).toBeVisible()
+  await expect(page.getByTestId('status-line')).toHaveCount(0)
 
   // Phone — no Page chrome (Page is a passthrough at phone). Phone tabs
   // visible.
