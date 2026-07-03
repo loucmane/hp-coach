@@ -830,15 +830,16 @@ function IdleBody({
             style={{
               marginTop: isPhone ? 18 : 22,
               fontFamily: 'var(--font-display)',
-              // Phase A.8.2: hero scale at desktop so the section name
-              // ("KVA", "ORD", "Repetition") becomes the chapter title.
-              // Phone keeps the compact 32→44px range.
-              fontSize: isPhone
-                ? 'clamp(32px, 3vw + 22px, 44px)'
-                : 'clamp(56px, 5vw + 16px, 112px)',
-              lineHeight: 1.02,
+              // M5: the idle hero speaks in M3's italic display voice
+              // (M3.tsx L136-146 — same register as the home greeting
+              // and the ORD headword). Chapter-title scale kept from
+              // A.8.2 but capped at 88px — the 112px upright hero read
+              // as a different product from the M3 pages around it.
+              fontStyle: 'italic',
+              fontSize: isPhone ? 'clamp(32px, 3vw + 22px, 44px)' : 'clamp(48px, 5vw + 16px, 88px)',
+              lineHeight: 1.05,
               color: 'var(--ink)',
-              letterSpacing: '-0.03em',
+              letterSpacing: '-0.01em',
               fontWeight: 400,
             }}
           >
@@ -943,18 +944,16 @@ function IdleBody({
         )}
       </div>
 
+      {/* M5: the empty note was the last card-chrome box on the idle
+       *  screens (bg + border + radius — banned since A.8). It reads
+       *  as M3's quiet italic missing-line now. */}
       {(emptyAttempted || disableStart) && shownEmptyCopy && (
         <div
           data-testid="drill-empty"
+          className="hpc-m3-missing"
           style={{
             marginTop: 24,
-            padding: '12px 14px',
-            background: 'var(--panel-2)',
-            border: '1px solid var(--hairline)',
-            borderRadius: 'calc(var(--radius) * 0.5)',
-            fontSize: 14,
-            color: 'var(--ink-2)',
-            maxWidth: isPhone ? undefined : 520,
+            maxWidth: isPhone ? undefined : '52ch',
           }}
         >
           {shownEmptyCopy}

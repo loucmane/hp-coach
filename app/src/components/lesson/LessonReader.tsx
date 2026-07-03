@@ -186,9 +186,13 @@ export function LessonReader({ section }: { section: Section }) {
         <h1
           style={{
             fontFamily: 'var(--font-display)',
+            // M5: the lektion chapter title speaks in M3's italic
+            // display voice — same register as the drill headword and
+            // the home greeting (M3.tsx L136-146).
+            fontStyle: 'italic',
             fontSize: 'clamp(48px, 6vw + 16px, 88px)',
-            lineHeight: 1.0,
-            letterSpacing: '-0.03em',
+            lineHeight: 1.05,
+            letterSpacing: '-0.01em',
             color: 'var(--ink)',
             margin: '12px 0 0 0',
           }}
