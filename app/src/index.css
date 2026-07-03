@@ -898,13 +898,15 @@ details[open] > summary .hpc-lesson-practice {
  * serif set between a 1px ink rule and a hairline, the concise summary that
  * leads into the step walkthrough. */
 .hpc-m3-solution {
-  margin: 4px 0;
-  padding: 16px 0;
+  /* M3.tsx L451-463 — the M6 sweep caught the clamp downscale +
+   * 16px padding drifting from the spec's fixed values. */
+  margin: 22px 0 0;
+  padding: 18px 0;
   border-top: 1px solid var(--ink);
   border-bottom: 1px solid var(--hairline);
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(17px, 0.9rem + 0.4vw, 19px);
+  font-size: 19px;
   line-height: 1.5;
   letter-spacing: -0.01em;
   color: var(--ink);
@@ -1075,12 +1077,31 @@ details[open] > summary .hpc-lesson-practice {
   transition: opacity 160ms ease;
 }
 
-/* M3.tsx L56 — the printed-page frame (home + any M3 page that isn't
- * inside StudyDesk's drill variant). Fluid side padding for phone. */
+/* M3.tsx L46-52 — the chassis base type for M3 pages that render
+ * outside the frames (the phone drill path renders DrillQuestion bare). */
+.hpc-m3-page {
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* M3.tsx L56-60 — the printed-page frame (home + any M3 page that isn't
+ * inside StudyDesk's drill variant). Base type per M3.tsx L46-52. */
 .hpc-m3-frame {
   max-width: 880px;
   margin: 0 auto;
-  padding: clamp(28px, 4vh, 56px) clamp(16px, 3vw, 24px) clamp(48px, 8vh, 96px);
+  padding: 56px 24px 96px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* M3.tsx L719-721 — the frame + rail tighten on narrow pages. */
+@media (max-width: 900px) {
+  .hpc-m3-frame {
+    padding: 40px 18px 72px;
+  }
+  .hpc-studydesk {
+    padding: 40px 18px clamp(140px, 16vh, 180px);
+  }
 }
 /* M3.tsx L215 */
 .hpc-m3-cta:focus-visible {
@@ -1360,5 +1381,13 @@ details[open] > summary .hpc-lesson-practice {
 .hpc-studydesk {
   max-width: 880px;
   margin: 0 auto;
-  padding: clamp(28px, 4vh, 56px) 24px clamp(140px, 16vh, 180px);
+  /* M3.tsx L59 (56px 24px 96px) — bottom deviates upward to clear the
+   * floating "Nästa fråga" control. */
+  padding: 56px 24px clamp(140px, 16vh, 180px);
+  /* M3.tsx L46-52 — the chassis base type. The app body is 16px/1.5;
+   * M3's page reads at 15px/1.55, and every em-derived size inside
+   * (option rows, headings, sub-lines) keys off this. Found by the M6
+   * measurement sweep as a systematic ~1px drift across elements. */
+  font-size: 15px;
+  line-height: 1.55;
 }
