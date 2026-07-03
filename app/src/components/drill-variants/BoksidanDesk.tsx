@@ -13,8 +13,7 @@
 // (a–e to pick, Enter to advance, Esc to parent) lives in SessionPlayer
 // and drives onPick / onReset here unchanged.
 
-import { EditionStrip } from '@/components/EditionStrip'
-import { NavLinks } from '@/components/Page'
+import { MinimalMast } from '@/components/Page'
 import { StudyDesk } from '@/components/StudyDesk'
 import type { VariantData } from './DrillVariantShell'
 
@@ -37,46 +36,9 @@ export function BoksidanDesk({
         flexDirection: 'column',
       }}
     >
-      {/* Running head — solid bg, a single hairline does the separating
-       *  work. Mono register, same as the rail labels below. */}
-      <header
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 10,
-          background: 'var(--bg)',
-          borderBottom: '1px solid var(--hairline)',
-          padding: 'clamp(20px, 2vh, 32px) clamp(48px, 6vw, 96px) 12px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'baseline',
-          // Wrap rather than collide: in the reader-narrow band (~768–1300px)
-          // the identity+nav and the EditionStrip together exceed the width,
-          // so the strip drops to a second line instead of overlapping the
-          // nav. Single line again once it fits (≳1300px).
-          flexWrap: 'wrap',
-          gap: 16,
-          rowGap: 10,
-          fontFamily: 'var(--font-mono)',
-          fontSize: 11,
-          letterSpacing: '0.16em',
-          textTransform: 'uppercase',
-          color: 'var(--ink)',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'baseline',
-            gap: 'clamp(20px, 3vw, 40px)',
-            minWidth: 0,
-          }}
-        >
-          <span>HP · COACH · {question.section}</span>
-          <NavLinks />
-        </div>
-        <EditionStrip />
-      </header>
+      {/* MC: the ONE shared minimal mast — no section echo (the drill
+       *  rail owns "ORD · 1/10"), no EditionStrip, no second chrome fork. */}
+      <MinimalMast />
 
       {/* Centered editorial canvas. StudyDesk owns the 2-column grid +
        *  its own padding; we just cap + center it like a printed page. */}
