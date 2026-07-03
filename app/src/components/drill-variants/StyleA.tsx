@@ -44,12 +44,43 @@ function parseNogPrompt(prompt: string): {
   return { question, statement1, statement2, tail }
 }
 
+// Legacy dev-route variant: Page's NavLinks died with the B+ NavRail
+// migration; a minimal local copy keeps this off-path surface rendering.
+import { Link } from '@tanstack/react-router'
 import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { resolveSteps } from '@/components/drill/PedagogyPanel'
 import { QuestionFigure } from '@/components/drill/QuestionFigure'
 import { EditionStrip } from '@/components/EditionStrip'
 import { MathText } from '@/components/MathText'
-import { NavLinks } from '@/components/Page'
+
+function NavLinks() {
+  return (
+    <nav
+      style={{
+        display: 'flex',
+        gap: 18,
+        fontFamily: 'var(--font-mono)',
+        fontSize: 11,
+        letterSpacing: '0.12em',
+        textTransform: 'uppercase',
+      }}
+    >
+      {(
+        [
+          ['/', 'Hem'],
+          ['/drill', 'Övning'],
+          ['/lektion', 'Lektion'],
+          ['/progress', 'Framsteg'],
+        ] as const
+      ).map(([to, label]) => (
+        <Link key={to} to={to} className="hpc-nav-link">
+          {label}
+        </Link>
+      ))}
+    </nav>
+  )
+}
+
 import { PreGradeFill } from '@/components/pre-grade/PreGradeFill'
 import { CoachLine } from '@/components/primitives'
 import { VOICE } from '@/lib/voice'
