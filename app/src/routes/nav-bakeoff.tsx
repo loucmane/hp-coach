@@ -19,7 +19,7 @@
 // Dev-gated. The winner replaces/extends MinimalMast (Page.tsx).
 
 import { createFileRoute } from '@tanstack/react-router'
-import type { CSSProperties, ReactNode } from 'react'
+import { type CSSProperties, type ReactNode, useEffect, useState } from 'react'
 import { isDevSurface } from '@/lib/devSurface'
 
 export const Route = createFileRoute('/nav-bakeoff')({
@@ -65,6 +65,10 @@ function NavBakeoff() {
           tre 2026-behandlingar · samma sida under varje
         </span>
       </header>
+
+      <Stage title="B+ · OPTIMAL RÄLS — kompass, inte länklista · klicka « eller tryck ⌘B för att fälla ihop">
+        <ChromeBPlus />
+      </Stage>
 
       <Stage title="A · Mast, amplifierad — samma band, riktiga signifiers + primär-CTA">
         <ChromeA />
@@ -371,6 +375,257 @@ function PageSnippet({ railless = false }: { railless?: boolean }) {
           </div>
         </div>
       </section>
+    </div>
+  )
+}
+
+// ── B+ · The optimal rail — interactive prototype ──────────────────
+//
+// What separates a link list from a Linear-class rail:
+//   compass  the resume card + today\'s plan progress live IN the rail
+//   signal   live counts on the links (due reps, week delta)
+//   ground   the exam countdown pinned at the bottom
+//   collapse chevron + ⌘B → thin spine with a peek handle; in the real
+//            build the state persists via prefs and drills auto-collapse
+
+function ChromeBPlus() {
+  const [open, setOpen] = useState(true)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'b') {
+        e.preventDefault()
+        setOpen((v) => !v)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: open ? '224px 1fr' : '44px 1fr',
+        transition: 'grid-template-columns 240ms cubic-bezier(0.22, 1, 0.36, 1)',
+        minHeight: 560,
+      }}
+    >
+      <aside
+        style={{
+          borderRight: '1px solid var(--hairline)',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          minHeight: '100%',
+        }}
+      >
+        {open ? (
+          <>
+            {/* brand + collapse */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'baseline',
+                padding: '20px 18px 22px',
+              }}
+            >
+              <Brand />
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Fäll ihop menyn (⌘B)"
+                title="Fäll ihop (⌘B)"
+                style={{ ...railWord, fontSize: 13 }}
+              >
+                «
+              </button>
+            </div>
+
+            {/* nav with live signal */}
+            <nav style={{ display: 'flex', flexDirection: 'column' }}>
+              {(
+                [
+                  ['Hem', null],
+                  ['Övning', '3 att repetera'],
+                  ['Lektion', null],
+                  ['Framsteg', '+0,1 denna vecka'],
+                ] as const
+              ).map(([label, signal]) => {
+                const active = label === ACTIVE
+                return (
+                  <span
+                    key={label}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'baseline',
+                      gap: 10,
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 12,
+                      letterSpacing: '0.12em',
+                      textTransform: 'uppercase',
+                      color: active ? 'var(--accent)' : 'var(--ink-2)',
+                      fontWeight: active ? 600 : 400,
+                      padding: '11px 18px',
+                      borderLeft: active ? '2px solid var(--accent)' : '2px solid transparent',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {label}
+                    {signal && (
+                      <span
+                        style={{
+                          fontSize: 10,
+                          letterSpacing: '0.04em',
+                          textTransform: 'none',
+                          color: 'var(--muted-2)',
+                          fontVariantNumeric: 'tabular-nums',
+                        }}
+                      >
+                        {signal}
+                      </span>
+                    )}
+                  </span>
+                )
+              })}
+            </nav>
+
+            {/* the compass: resume + plan progress */}
+            <div style={{ padding: '18px 18px 0' }}>
+              <div
+                style={{
+                  background: 'var(--accent-soft)',
+                  padding: '12px 14px',
+                  cursor: 'pointer',
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 10,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    color: 'var(--muted)',
+                  }}
+                >
+                  Påbörjad
+                </div>
+                <div
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: 'var(--ink)',
+                    margin: '5px 0 2px',
+                  }}
+                >
+                  Övning · KVA
+                </div>
+                <div
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 11,
+                    color: 'var(--muted)',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}
+                >
+                  fråga 4 av 10 · fortsätt →
+                </div>
+              </div>
+              <div
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 11,
+                  color: 'var(--muted)',
+                  padding: '12px 2px 0',
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
+                dagens plan · 1 av 3 klar
+              </div>
+            </div>
+
+            <div style={{ flex: 1 }} />
+
+            {/* grounding + tools */}
+            <div
+              style={{
+                padding: '14px 18px 16px',
+                borderTop: '1px solid var(--hairline-2)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 10,
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 11,
+                  letterSpacing: '0.06em',
+                  color: 'var(--ink-2)',
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
+                Höstprov 26 · 114 dagar
+              </span>
+              <span style={{ display: 'flex', gap: 14 }}>
+                <span style={railWord}>ljus ◐</span>
+                <span style={railWord}>mer →</span>
+              </span>
+            </div>
+          </>
+        ) : (
+          /* collapsed spine: peek handle + vertical glyphs */
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            aria-label="Visa menyn (⌘B)"
+            title="Visa menyn (⌘B)"
+            style={{
+              all: 'unset',
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 14,
+              padding: '20px 0',
+              height: '100%',
+              boxSizing: 'border-box',
+            }}
+          >
+            <span style={{ color: 'var(--muted-2)', fontSize: 13 }}>»</span>
+            <span
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontStyle: 'italic',
+                fontWeight: 600,
+                fontSize: 14,
+                color: 'var(--muted)',
+                writingMode: 'vertical-rl',
+                letterSpacing: '0.04em',
+              }}
+            >
+              HP-Coach
+            </span>
+            <span style={{ flex: 1 }} />
+            <span
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 10,
+                color: 'var(--muted-2)',
+                writingMode: 'vertical-rl',
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
+              114 d
+            </span>
+          </button>
+        )}
+      </aside>
+      <div>
+        <PageSnippet railless />
+      </div>
     </div>
   )
 }
