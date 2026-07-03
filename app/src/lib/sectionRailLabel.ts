@@ -55,3 +55,23 @@ export const SECTION_RAIL: Record<Section, SectionRailMeta> = {
 export function railMeta(section: Section): SectionRailMeta {
   return SECTION_RAIL[section] ?? ORD_META
 }
+
+// Official full section names (UHR's delprov names) for the M3 eyebrow —
+// "ORDFÖRSTÅELSE · FRÅGA 3 AV 10". Stored title-case; the eyebrow renders
+// uppercase via CSS. ELF keeps its Swedish delprov name: the eyebrow is UI
+// chrome, not exam content.
+const SECTION_LONG_LABEL: Record<Section, string> = {
+  ORD: 'Ordförståelse',
+  LÄS: 'Svensk läsförståelse',
+  MEK: 'Meningskomplettering',
+  ELF: 'Engelsk läsförståelse',
+  XYZ: 'Matematisk problemlösning',
+  KVA: 'Kvantitativa jämförelser',
+  NOG: 'Kvantitativa resonemang',
+  DTK: 'Diagram, tabeller och kartor',
+}
+
+/** Full delprov name for the eyebrow, falling back to the raw code. */
+export function sectionLongLabel(section: Section): string {
+  return SECTION_LONG_LABEL[section] ?? section
+}

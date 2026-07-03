@@ -45,7 +45,6 @@ import {
   useStartSession,
   useUpdateSession,
 } from '@/api/hooks/useSessions'
-import { DrillProgress } from '@/components/drill/DrillProgress'
 import { DrillQuestion } from '@/components/drill/DrillQuestion'
 import { DrillResult } from '@/components/drill/DrillResult'
 import { BoksidanDesk } from '@/components/drill-variants/BoksidanDesk'
@@ -653,13 +652,9 @@ export function SessionPlayer(props: SessionPlayerProps) {
         paddingBottom: useStudyDesk ? 0 : 22,
       }}
     >
-      {/* Phone-only: DrillProgress sits as the top chrome since
-       *  Page is a no-op at phone. At desktop the status line at the
-       *  bottom shows section + progress, so we let DrillQuestion
-       *  bring its own section-eyebrow tight to the headword. */}
-      {!useStudyDesk && (
-        <DrillProgress current={index + 1} total={plan.length} section={q.section} />
-      )}
+      {/* M1: the M3 eyebrow inside DrillQuestion (position/total below)
+       *  carries section + progress on phone — DrillProgress's separate
+       *  top-chrome strip is retired (MD decision: bare chrome). */}
       <div style={{ flex: 1, minHeight: 0, marginTop: useStudyDesk ? 0 : 12 }}>
         {useStudyDesk ? (
           <DispatchedVariant
@@ -675,7 +670,14 @@ export function SessionPlayer(props: SessionPlayerProps) {
             })}
           />
         ) : (
-          <DrillQuestion question={q} picked={picked} graded={phase === 'graded'} onPick={onPick} />
+          <DrillQuestion
+            question={q}
+            picked={picked}
+            graded={phase === 'graded'}
+            onPick={onPick}
+            position={index + 1}
+            total={plan.length}
+          />
         )}
       </div>
       <div
