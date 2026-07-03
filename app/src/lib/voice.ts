@@ -25,7 +25,12 @@ export const VOICE: Record<CoachKey, CoachVoice> = {
     },
     sectionOnboard:
       'Nu kör vi KVA — kvantitativa jämförelser. Lite knepigt format, men du kommer in i det.',
-    feedbackWrong: 'Du gick på en klassisk. Vi tar den igen senare.',
+    // Dogfood 2026-07-03: was "Du gick på en klassisk" — asserted a known
+    // trap on EVERY miss, including questions with no cataloged trap,
+    // which reads as nonsense. Honest version; the repetition promise
+    // stays (misses really do re-queue). The M2 pedagogy rewrite replaces
+    // this coach voice with M3's verdict-sub entirely.
+    feedbackWrong: 'Fel den här gången — kolla lösningen nedan. Vi tar den igen senare.',
     feedbackRight: 'Snyggt. Vidare.',
     sessionEnd: 'Bra jobbat idag. Imorgon: ORD-repetition och lite ELF.',
     adaptive: 'Den här har dykt upp tre gånger den senaste veckan — vi tar fem minuter på den nu.',
