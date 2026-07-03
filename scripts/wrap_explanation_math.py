@@ -41,7 +41,11 @@ E1 = ""
 # Anchor patterns that mark a token as "math-bearing".
 #   - \cmd            e.g. \frac, \cdot, \sqrt, \pi, \mathrm
 #   - ^{...}, _{...}  superscript / subscript
-LATEX_ANCHOR = re.compile(r"\\[a-zA-Z]+|\^\{[^}]+\}|_\{[^}]+\}")
+#   - ^n, ^2, ^(      brace-less superscript (agent-authored text like
+#                     `4^n` / `4^1 = 4` — dogfood find 2026-07-03; KaTeX
+#                     renders single-char exponents fine). Carets don't
+#                     occur in Swedish prose, so the bare form is safe.
+LATEX_ANCHOR = re.compile(r"\\[a-zA-Z]+|\^\{[^}]+\}|_\{[^}]+\}|\^[A-Za-z0-9(]")
 
 # Math operators that connect operands within a single math zone.
 # Unicode `·` is the Swedish/HP convention for multiplication.
@@ -62,7 +66,7 @@ OPERAND_RE = re.compile(
     r"|[a-zA-Z]"                   # single variable: x, a, n
     r"|\([^)]*\)"                  # (a+b), (50-3)
     r")"
-    r"(?:\^\{[^}]+\}|_\{[^}]+\})?"
+    r"(?:\^(?:\{[^}]+\}|[A-Za-z0-9]+)|_(?:\{[^}]+\}|[A-Za-z0-9]+))?"
     r"$"
 )
 
@@ -126,9 +130,14 @@ def strip_trailing_punct(token: str) -> tuple[str, str]:
     OUTSIDE the PUA wrap so the wrap doesn't end mid-sentence.
     """
     m = re.match(r"^(.*?)([.,;:?!]+)$", token)
-    if not m:
-        return token, ""
-    return m.group(1), m.group(2)
+    core, trail = (m.group(1), m.group(2)) if m else (token, "")
+    # A trailing UNBALANCED `)` belongs to the surrounding prose
+    # parenthetical, not the math (`… för 2^n)` in `(typ … för 2^n)`).
+    # Balanced parens (`f(x)`, `(50-3)`) stay inside the wrap.
+    while core.endswith(")") and core.count(")") > core.count("("):
+        core = core[:-1]
+        trail = ")" + trail
+    return core, trail
 
 
 def strip_leading_punct(token: str) -> tuple[str, str]:
@@ -352,8 +361,10 @@ def patch_explanation(data: dict) -> int:
                 continue
             total += patch_field(d, "why_tempting")
             total += patch_field(d, "why_wrong")
-        # Pitfall / technique / insight (single-string fields)
-        for key in ("pitfall", "technique", "insight"):
+        # Single-string fields. solution_path / pregrade_tactic were
+        # missing from the original sweep — dogfood 2026-07-03 found
+        # bare `4^n` rendering literally in a served solution_path.
+        for key in ("pitfall", "technique", "insight", "solution_path", "pregrade_tactic"):
             total += patch_field(entry, key)
     return total
 

@@ -3108,7 +3108,7 @@
     ],
     "framework_id": "XYZ-TRAP-041",
     "pitfall": null,
-    "solution_path": "Trianglens area = \\frac{1}{2}\\cdot x\\cdot x = \\frac{x^{2}}{2} = 0{,}5x^{2} (likbent rätvinklig triangel med basen x och höjden x). Den inskrivna cirkelns area = \\pi y^{2}. Skuggat = trianglens area − cirkelns area = 0{,}5x^{2} - \\pi y^{2}. Svaret är A.",
+    "solution_path": "Trianglens area = \\frac{1}{2}\\cdot x\\cdot x = \\frac{x^{2}}{2} = 0{,}5x^{2} (likbent rätvinklig triangel med basen x och höjden x). Den inskrivna cirkelns area = \\pi y^{2}. Skuggat = trianglens area − cirkelns area = 0{,}5x^{2} - \\pi y^{2}. Svaret är A.",
     "steps": [
       {
         "n": 1,
@@ -3187,62 +3187,62 @@
       "regenerated": "2026-07-02-delimiter-repair"
     },
     "framework_id": null,
-    "solution_path": "Uttrycket är 10^{2} \\cdot 5. Räkna potensen först: 10^{2} = 100. Multiplicera sedan: 100 \\cdot 5 = 500. Svaret är C.",
-    "technique": "Prioriteringsordningen: potenser beräknas FÖRE multiplikation. Håll också reda på exponentens räckvidd — i 10^{2} \\cdot 5 står tvåan bara på 10:an, inte på hela produkten.",
-    "pitfall": "Botemedlet mot räckvidds-felet: fråga alltid 'vad exakt står exponenten på?'. 10^{2} \\cdot 5 = 500 men (10 \\cdot 5)^{2} = 2\\,500 — kvadrera först, multiplicera sedan.",
+    "solution_path": "Uttrycket är 10^{2} \\cdot 5. Räkna potensen först: 10^{2} = 100. Multiplicera sedan: 100 \\cdot 5 = 500. Svaret är C.",
+    "technique": "Prioriteringsordningen: potenser beräknas FÖRE multiplikation. Håll också reda på exponentens räckvidd — i 10^{2} \\cdot 5 står tvåan bara på 10:an, inte på hela produkten.",
+    "pitfall": "Botemedlet mot räckvidds-felet: fråga alltid 'vad exakt står exponenten på?'. 10^{2} \\cdot 5 = 500 men (10 \\cdot 5)^{2} = 2\\,500 — kvadrera först, multiplicera sedan.",
     "steps": [
       {
         "n": 1,
         "title": "Förstå problemet",
-        "text": "Du ska beräkna 10^{2} \\cdot 5. (I vår version är uttrycket otydligt återgivet — originalets uttryck är 10^{2} \\cdot 5.) Alternativen är 50, 250, 500 och 2 500.",
+        "text": "Du ska beräkna 10^{2} \\cdot 5. (I vår version är uttrycket otydligt återgivet — originalets uttryck är 10^{2} \\cdot 5.) Alternativen är 50, 250, 500 och 2 500.",
         "tier": "essential"
       },
       {
         "n": 2,
         "title": "Vad betyder 10²?",
-        "text": "Definition: a^{2} = a \\cdot a — talet gångrat med sig självt. Alltså 10^{2} = 10 \\cdot 10.",
+        "text": "Definition: a^{2} = a \\cdot a — talet gångrat med sig självt. Alltså 10^{2} = 10 \\cdot 10.",
         "tier": "detail"
       },
       {
         "n": 3,
         "title": "Räkna potensen först",
-        "text": "10^{2} = 10 \\cdot 10 = 100. Prioriteringsregeln säger: potenser beräknas före multiplikation.",
+        "text": "10^{2} = 10 \\cdot 10 = 100. Prioriteringsregeln säger: potenser beräknas före multiplikation.",
         "tier": "essential"
       },
       {
         "n": 4,
         "title": "Multiplicera med 5",
-        "text": "100 \\cdot 5 = 500.",
+        "text": "100 \\cdot 5 = 500.",
         "tier": "essential"
       },
       {
         "n": 5,
         "title": "Exponentens räckvidd",
-        "text": "Tvåan står BARA på 10:an. 10^{2} \\cdot 5 betyder (10^{2}) \\cdot 5 — inte (10 \\cdot 5)^{2}. Det är hela uppgiftens fälla.",
+        "text": "Tvåan står BARA på 10:an. 10^{2} \\cdot 5 betyder (10^{2}) \\cdot 5 — inte (10 \\cdot 5)^{2}. Det är hela uppgiftens fälla.",
         "tier": "essential"
       },
       {
         "n": 6,
         "title": "Kontrollera alternativet '50'",
-        "text": "50 = 10 \\cdot 5 — det får du om du glömmer exponenten helt och bara multiplicerar talen.",
+        "text": "50 = 10 \\cdot 5 — det får du om du glömmer exponenten helt och bara multiplicerar talen.",
         "tier": "detail"
       },
       {
         "n": 7,
         "title": "Kontrollera alternativet '250'",
-        "text": "250 = 10 \\cdot 5^{2} = 10 \\cdot 25 — det får du om du sätter kvadraten på fel faktor (på 5:an i stället för 10:an).",
+        "text": "250 = 10 \\cdot 5^{2} = 10 \\cdot 25 — det får du om du sätter kvadraten på fel faktor (på 5:an i stället för 10:an).",
         "tier": "detail"
       },
       {
         "n": 8,
         "title": "Kontrollera alternativet '2 500'",
-        "text": "2\\,500 = (10 \\cdot 5)^{2} = 50^{2} — det får du om du låter exponenten gälla HELA produkten. Men tvåan står bara på 10:an.",
+        "text": "2\\,500 = (10 \\cdot 5)^{2} = 50^{2} — det får du om du låter exponenten gälla HELA produkten. Men tvåan står bara på 10:an.",
         "tier": "detail"
       },
       {
         "n": 9,
         "title": "Verifiera",
-        "text": "500 = 5 \\cdot 100 = 5 \\cdot 10^{2} ✓. Samma svar oavsett om du räknar 10 \\cdot 10 \\cdot 5 eller 100 \\cdot 5.",
+        "text": "500 = 5 \\cdot 100 = 5 \\cdot 10^{2} ✓. Samma svar oavsett om du räknar 10 \\cdot 10 \\cdot 5 eller 100 \\cdot 5.",
         "tier": "essential"
       },
       {
@@ -3255,18 +3255,18 @@
     "distractors": [
       {
         "letter": "A",
-        "why_tempting": "Det är lätt att räkna 10 \\cdot 5 = 50 om ögat hoppar över exponenten — talen 10 och 5 står ju bredvid varandra.",
-        "why_wrong": "Steg 3–4: exponenten är en del av uttrycket. 10^{2} = 100, och 100 \\cdot 5 = 500 — inte 50."
+        "why_tempting": "Det är lätt att räkna 10 \\cdot 5 = 50 om ögat hoppar över exponenten — talen 10 och 5 står ju bredvid varandra.",
+        "why_wrong": "Steg 3–4: exponenten är en del av uttrycket. 10^{2} = 100, och 100 \\cdot 5 = 500 — inte 50."
       },
       {
         "letter": "B",
-        "why_tempting": "Snabbsvar är ofta 250 om man i farten kvadrerar 5:an i stället för 10:an: 10 \\cdot 5^{2} = 250.",
-        "why_wrong": "Steg 5: tvåan står på 10:an, inte på 5:an. 10^{2} \\cdot 5 = 500."
+        "why_tempting": "Snabbsvar är ofta 250 om man i farten kvadrerar 5:an i stället för 10:an: 10 \\cdot 5^{2} = 250.",
+        "why_wrong": "Steg 5: tvåan står på 10:an, inte på 5:an. 10^{2} \\cdot 5 = 500."
       },
       {
         "letter": "D",
-        "why_tempting": "2 500 = 50^{2} — frestande om man först multiplicerar 10 \\cdot 5 och sedan kvadrerar resultatet.",
-        "why_wrong": "Steg 8: det vore (10 \\cdot 5)^{2}, ett annat uttryck. Exponentens räckvidd är bara 10:an: 10^{2} \\cdot 5 = 500."
+        "why_tempting": "2 500 = 50^{2} — frestande om man först multiplicerar 10 \\cdot 5 och sedan kvadrerar resultatet.",
+        "why_wrong": "Steg 8: det vore (10 \\cdot 5)^{2}, ett annat uttryck. Exponentens räckvidd är bara 10:an: 10^{2} \\cdot 5 = 500."
       }
     ],
     "pregrade_tactic": {
@@ -5299,7 +5299,7 @@
     ],
     "framework_id": null,
     "pitfall": "Att blanda ihop area och sida. Botemedlet: skriv ALLTID ner area-formeln (πr² eller s²) FÖRST, lös sedan ut den geometriska sidan; jämför aldrig area-tal direkt mot sid-tal.",
-    "solution_path": "Cirkelns area är πr² = 9π → r² = 9 → r = 3. Kvadratens sida är \\sqrt{3} ≈ 1,73. 3 > 1,73 — svaret är A.",
+    "solution_path": "Cirkelns area är πr² = 9π → r² = 9 → r = 3. Kvadratens sida är \\sqrt{3} ≈ 1,73. 3 > 1,73 — svaret är A.",
     "steps": [
       {
         "n": 1,
@@ -5393,7 +5393,7 @@
     ],
     "framework_id": "KVA-TRAP-019",
     "pitfall": null,
-    "solution_path": "Eftersom x > y > 0 är (y − x) negativt och x positivt, så Kvantitet I = \\frac{y-x}{x} < 0. Däremot är (x − y) positivt och y positivt, så Kvantitet II = \\frac{x-y}{y} > 0. Ett positivt tal är alltid större än ett negativt — svaret är B.",
+    "solution_path": "Eftersom x > y > 0 är (y − x) negativt och x positivt, så Kvantitet I = \\frac{y-x}{x} < 0. Däremot är (x − y) positivt och y positivt, så Kvantitet II = \\frac{x-y}{y} > 0. Ett positivt tal är alltid större än ett negativt — svaret är B.",
     "steps": [
       {
         "n": 1,
@@ -5493,7 +5493,7 @@
     ],
     "framework_id": null,
     "pitfall": null,
-    "solution_path": "Kvadrering ger alltid ett icke-negativt tal: x^{2}\\ge 0 för alla reella x. Alltså y ≥ 0 > −1. Kvantitet I är alltid större — svaret är A.",
+    "solution_path": "Kvadrering ger alltid ett icke-negativt tal: x^{2}\\ge 0 för alla reella x. Alltså y ≥ 0 > −1. Kvantitet I är alltid större — svaret är A.",
     "steps": [
       {
         "n": 1,
@@ -6913,7 +6913,7 @@
     ],
     "framework_id": "XYZ-TRAP-001",
     "pitfall": "Att slå ihop termer som SER ut lika men har olika exponenter. Botemedlet: räkna VARJE bokstavs exponent när du letar liknande termer. {MO}a^{{2}}b{MC} och {MO}ab^{{2}}{MC} är inte liknande.",
-    "solution_path": "Differens betyder första uttrycket minus det andra: (3a^{2}b + 2a^{2}b^{2}) - (a^{2}b^{2} - ab^{2}) = 3a^{2}b + 2a^{2}b^{2} - a^{2}b^{2} + ab^{2} = 3a^{2}b + a^{2}b^{2} + ab^{2}. Svaret är D.",
+    "solution_path": "Differens betyder första uttrycket minus det andra: = 3a^{2}b + 2a^{2}b^{2} - a^{2}b^{2} + ab^{2} = 3a^{2}b + a^{2}b^{2} + ab^{2}. Svaret är D.",
     "steps": [
       {
         "n": 1,
