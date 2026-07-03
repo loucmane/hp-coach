@@ -166,10 +166,18 @@ export function DrillQuestion({
   return (
     <div
       ref={scrollerRef}
+      // hpc-m3-page: the M3 base type (15px/1.55). On desktop the
+      // .hpc-studydesk frame already sets it; the PHONE path renders
+      // this component bare, and without the base every em-derived
+      // size inside drifts +1px (M6 sweep finding).
+      className="hpc-m3-page"
       style={{
         height: fill ? '100%' : undefined,
         overflowY: fill ? 'auto' : undefined,
-        padding: '4px var(--pad-lg) 8px',
+        // fill=false means StudyDesk's 880px frame owns the horizontal
+        // gutters (M3.tsx L59) — doubling them here squeezed the content
+        // column to ~567px vs the reference's 647px (M6 sweep finding).
+        padding: fill ? '4px var(--pad-lg) 8px' : '4px 0 8px',
         containerType: 'inline-size',
       }}
     >
