@@ -119,6 +119,11 @@ function MCompare() {
   )
 }
 
+// Phone panes render at a true 390px layout width but are scaled up so
+// they read comfortably on a desktop monitor (unscaled 390 CSS px is
+// squint-small at arm's length).
+const PHONE_SCALE = 1.35
+
 function Pane({ title, src, width }: { title: string; src: string; width?: number }) {
   return (
     <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
@@ -133,18 +138,37 @@ function Pane({ title, src, width }: { title: string; src: string; width?: numbe
       >
         {title} · <code style={{ textTransform: 'none' }}>{src}</code>
       </div>
-      <div style={{ flex: 1, minHeight: 0, display: 'flex', justifyContent: 'center' }}>
-        <iframe
-          title={title}
-          src={src}
-          style={{
-            border: 'none',
-            height: '100%',
-            width: width ?? '100%',
-            maxWidth: '100%',
-            boxShadow: width ? '0 0 0 1px var(--hairline)' : undefined,
-          }}
-        />
+      <div
+        style={{
+          flex: 1,
+          minHeight: 0,
+          display: 'flex',
+          justifyContent: 'center',
+          overflow: 'hidden',
+        }}
+      >
+        {width ? (
+          <div style={{ width: width * PHONE_SCALE, maxWidth: '100%' }}>
+            <iframe
+              title={title}
+              src={src}
+              style={{
+                border: 'none',
+                width,
+                height: `${100 / PHONE_SCALE}%`,
+                transform: `scale(${PHONE_SCALE})`,
+                transformOrigin: 'top left',
+                boxShadow: '0 0 0 1px var(--hairline)',
+              }}
+            />
+          </div>
+        ) : (
+          <iframe
+            title={title}
+            src={src}
+            style={{ border: 'none', height: '100%', width: '100%' }}
+          />
+        )}
       </div>
     </div>
   )
