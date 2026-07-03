@@ -1339,42 +1339,16 @@ details[open] > summary .hpc-lesson-practice {
 /* M3.tsx L669 */
 .hpc-m3-step-t.is-pre { white-space: pre-line; }
 
-/* ── StudyDesk wide-mode seam — task 84 ─────────────────────────────────
- * Below the 1200px container seam the drill is ONE column: the question
- * rail chassis, then the pedagogy stacked beneath it. The 2-col split would
- * crush both at reader-narrow widths (~768–1199px). At/above 1200px it
- * splits — the question + rail pin sticky on the left while the graded
- * pedagogy scrolls past on the right (the "marginalia + body text" pattern).
- * The seam reads on the StudyDesk container (containerType: inline-size),
- * not the viewport, so it tracks the real canvas width. No `overflow` on
- * these — the page body owns scroll so sticky pins to the viewport. */
+/* ── StudyDesk — M3 Boksidan single column (M2; M3.tsx L56-60) ──────────
+ * The desktop drill is ONE reading column on the printed-page frame:
+ * 880px max, centered, generous top/bottom margins. The old 1200px 2-col
+ * seam (sticky question + pedagogy marginalia) was demolished when M2's
+ * distractor reprint landed — the graded pedagogy re-prints the struck
+ * option text, so it no longer needs the options in view beside it.
+ * Bottom padding clears the floating "Nästa fråga" control. The page
+ * body owns scroll — no `overflow` here. */
 .hpc-studydesk {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(20px, 2vw, 40px);
-  padding: clamp(16px, 1.5vw + 12px, 36px) clamp(16px, 2vw, 40px) clamp(140px, 16vh, 180px);
-}
-.hpc-studydesk-q,
-.hpc-studydesk-ped {
-  min-width: 0;
-}
-@container (min-width: 1200px) {
-  .hpc-studydesk {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.25fr);
-  }
-  /* Sticky question column — pins at the running-head's bottom edge so it
-   * holds while the pedagogy flows past. Only in 2-col mode: in single
-   * column a sticky question would awkwardly pin over its own pedagogy. */
-  .hpc-studydesk-q {
-    position: sticky;
-    top: clamp(72px, 9vh, 104px);
-    align-self: start;
-  }
-  /* Marginalia rule on the pedagogy column (the panel itself renders flush
-   * so single-column stays clean full-width; the rule lives here, 2-col
-   * only). */
-  .hpc-studydesk-ped {
-    border-left: 1px solid var(--hairline);
-    padding-left: clamp(20px, 1.5vw + 12px, 36px);
-  }
+  max-width: 880px;
+  margin: 0 auto;
+  padding: clamp(28px, 4vh, 56px) 24px clamp(140px, 16vh, 180px);
 }

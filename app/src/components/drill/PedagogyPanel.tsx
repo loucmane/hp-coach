@@ -1,66 +1,59 @@
-// PedagogyPanel — Phase A.5 Study Desk explanation renderer.
+// PedagogyPanel — the graded pedagogy, M3 "Boksidan" (M2 of plan
+// hashed-twirling-zephyr; spec devbake/l12/M3.tsx L1122-1220).
 //
-// Replaces the wrapping role of ExplanationPanel at reader/studio
-// widths. ExplanationPanel stays for phone-mode (collapsed/expanded
-// accordion); PedagogyPanel renders the same data in an always-
-// expanded, step-numbered layout that fits a side column.
+// Renders as a continuation of the drill's margin-rail chassis — three
+// rail sections that follow the options:
 //
-// Two states:
+//   UTFALL      verdict word (Rätt./Fel.) + verdict-sub stating the
+//               correct answer + the bold-serif solution lede
+//   N STEG      "Så löser du den" — numbered steps, serif ordinal in
+//               cobalt, kärna/detalj tier badge, staggered entrance
+//   N FÄLLOR    "Varför de andra lockar" — each distractor re-prints
+//               the struck option text (the single-column page scrolls
+//               the options away; the reprint keeps the pedagogy
+//               self-contained), then whyTempting / whyWrong
 //
-//   - Waiting (pre-answer): a quiet placeholder card. Shows a peek
-//     at the technique tag if present — gives the student a faint
-//     "what kind of move does this question reward" hint without
-//     spoiling the answer.
+// Live-only apparatus kept from the EDITION panel: the Layer-1
+// framework deep-link and the QA bar (quiet tail of the last section).
+// The coach-voice line is REPLACED by the verdict-sub; the Strategi and
+// Teknik/Fällan blocks folded into the pre-grade tactic aside (M1).
 //
-//   - Post-grade: the full Study Desk reveal. Step cards take priority
-//     above the fold; distractors render expanded (the desktop width
-//     can afford it); pitfall + technique sit in their familiar chips.
-//
-// Step rendering strategy:
-//   1. If `explanation.steps[]` is present → render as numbered cards.
-//   2. Else, split `explanation.solution_path` on paragraph boundaries
-//      (`\n\n`) or "Step N" / "1." prefixes as a best-effort heuristic.
-//   3. Worst case: render the entire `solution_path` as one card.
-//
-// Phase A.6 fills in real `steps[]` arrays from the generator; the
-// heuristic-split fallback ships earlier so the UI works without
-// waiting for corpus regen.
+// Pre-grade the panel renders NOTHING — M3 has no waiting pedagogy.
 
 import { useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
 import { type FeedbackEntry, getFeedback, submitFeedback } from '@/api/feedback'
+import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MathText } from '@/components/MathText'
-import { CoachLine, Eyebrow, L1Chip, Mono } from '@/components/primitives'
+import { L1Chip, Mono } from '@/components/primitives'
 import { type Explanation, type ExplanationStep, loadExplanation } from '@/data/explanations'
-import { SECTION_KEYS, type Section } from '@/data/questions'
-import { VOICE } from '@/lib/voice'
-import { useCoachStore } from '@/stores/coachStore'
+import { type AnswerLetter, type Option, SECTION_KEYS, type Section } from '@/data/questions'
+import { RAIL_OUTCOME } from '@/lib/sectionRailLabel'
 
 type Props = {
   qid: string
-  /** Whether the user has been graded yet. Drives the waiting vs.
-   *  post-grade state. */
+  /** Whether the user has been graded yet. Pre-grade renders nothing. */
   graded: boolean
-  /** Whether the user got it right. Drives subtle colour cues on
-   *  the eyebrow / framing copy. */
+  /** Whether the user got it right. Drives the verdict word + sub. */
   correct: boolean
-  /** Desktop renders the panel as right-margin marginalia (a leading
-   *  hairline + left inset). On phone it flows full-width below the
-   *  options inside the rail chassis, so pass `flush` to drop the
-   *  border + inset and align it to the question column. */
-  flush?: boolean
+  /** Correct answer letter — the verdict-sub states it on a wrong pick
+   *  (M3.tsx L1134). Optional so legacy mounts keep compiling; the sub
+   *  degrades to the explanation hand-off line without it. */
+  answer?: AnswerLetter
+  /** Question options — the distractor rows re-print the struck option
+   *  text and the verdict-sub quotes the correct one. */
+  options?: Option[] | null
 }
 
 type LoadState =
-  | { kind: 'idle' }
   | { kind: 'loading' }
   | { kind: 'ready'; explanation: Explanation }
   | { kind: 'missing' }
   | { kind: 'error'; message: string }
 
-export function PedagogyPanel({ qid, graded, correct, flush = false }: Props) {
-  const [state, setState] = useState<LoadState>({ kind: 'idle' })
+export function PedagogyPanel({ qid, graded, correct, answer, options }: Props) {
+  const [state, setState] = useState<LoadState>({ kind: 'loading' })
 
   useEffect(() => {
     let alive = true
@@ -80,6 +73,10 @@ export function PedagogyPanel({ qid, graded, correct, flush = false }: Props) {
     }
   }, [qid])
 
+  // M3 has no pre-grade pedagogy — the tactic aside (M1) covers the
+  // "before you answer" moment inside the question itself.
+  if (!graded) return null
+
   if (state.kind === 'error') {
     // Transport error (5xx etc.) — log silently and render nothing
     // rather than a half-broken card. Drill stays usable.
@@ -87,57 +84,101 @@ export function PedagogyPanel({ qid, graded, correct, flush = false }: Props) {
     return null
   }
 
+  const explanation = state.kind === 'ready' ? state.explanation : null
+  const steps = explanation ? resolveSteps(explanation) : []
+  const distractors = explanation?.distractors ?? []
+  const hasStructuredSteps = (explanation?.steps?.length ?? 0) > 0
+  const correctText = answer ? options?.find((o) => o.letter === answer)?.text : undefined
+
+  // Framework deep-link + QA bar — quiet tail of the LAST section.
+  const tail = explanation ? (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 28 }}>
+      {explanation.framework_id && <FrameworkChip frameworkId={explanation.framework_id} />}
+      <QABar qid={qid} explanation={explanation} />
+    </div>
+  ) : null
+
   return (
-    <aside
+    <div
+      className="hpc-m3-ped"
       data-testid="pedagogy-panel"
-      data-state={graded ? 'post-grade' : 'waiting'}
+      data-state="post-grade"
       data-correct={correct}
-      style={{
-        // Phase A.8 EDITION: drop the card chrome (border + radius
-        // + background) — pedagogy panel becomes marginalia,
-        // articulated by a single 1px hairline on its leading edge.
-        // No box; just a column of text in the right margin. On phone
-        // (`flush`) it flows full-width below the options instead, so
-        // the leading hairline + inset are dropped.
-        borderLeft: flush ? undefined : '1px solid var(--hairline)',
-        paddingLeft: flush ? 0 : 'clamp(20px, 1.5vw + 12px, 36px)',
-        paddingTop: flush ? 'clamp(20px, 3vh, 32px)' : 'clamp(28px, 4vh, 56px)',
-        paddingRight: 0,
-        paddingBottom: 0,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 16,
-        containerType: 'inline-size',
-      }}
     >
-      {graded ? (
-        state.kind === 'ready' ? (
-          <PostGradeBody explanation={state.explanation} qid={qid} correct={correct} />
-        ) : state.kind === 'missing' ? (
-          <MissingExplanation qid={qid} correct={correct} />
-        ) : (
-          <SkeletonBody />
-        )
-      ) : state.kind === 'ready' ? (
-        <WaitingBody explanation={state.explanation} />
-      ) : (
-        <WaitingPlaceholder />
+      <DrillRailSection meta={RAIL_OUTCOME} delay={0}>
+        {/* role=status + aria-live announce the outcome to screen readers
+         *  the moment grading lands; aria-label spells out the terse ink
+         *  word. */}
+        <div
+          className="hpc-m3-verdict"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          aria-label={correct ? 'Rätt svar' : 'Fel svar'}
+        >
+          <span aria-hidden className={`hpc-m3-verdict-word ${correct ? 'is-ok' : 'is-bad'}`}>
+            {correct ? 'Rätt.' : 'Fel.'}
+          </span>
+          <p className="hpc-m3-verdict-sub">
+            {correct ? (
+              'Snyggt — rätt tänkt hela vägen.'
+            ) : (
+              <>
+                {answer && correctText ? (
+                  <>
+                    Rätt svar är {answer.toLowerCase()}) <MathText>{correctText}</MathText>.{' '}
+                  </>
+                ) : null}
+                {explanation ? 'Häng med i varför.' : ''}
+              </>
+            )}
+          </p>
+        </div>
+        {state.kind === 'loading' && <p className="hpc-m3-missing">Tänker igenom uppgiften…</p>}
+        {state.kind === 'missing' && <MissingExplanation qid={qid} />}
+        {explanation && hasStructuredSteps && explanation.solution_path && (
+          <p className="hpc-m3-solution">
+            <MathText>{explanation.solution_path}</MathText>
+          </p>
+        )}
+        {explanation && steps.length === 0 && distractors.length === 0 && tail}
+      </DrillRailSection>
+
+      {steps.length > 0 && (
+        <DrillRailSection meta={`${steps.length} steg`} delay={140}>
+          <h2 className="hpc-m3-h">Så löser du den</h2>
+          <StepList steps={steps} />
+          {distractors.length === 0 && tail}
+        </DrillRailSection>
       )}
-    </aside>
+
+      {distractors.length > 0 && (
+        <DrillRailSection meta={`${distractors.length} fällor`} delay={280}>
+          <h2 className="hpc-m3-h">Varför de andra lockar</h2>
+          <div>
+            {distractors.map((d, i) => (
+              <DistractorRow
+                key={d.letter}
+                distractor={d}
+                optionText={options?.find((o) => o.letter === d.letter)?.text}
+                delay={360 + i * 80}
+              />
+            ))}
+          </div>
+          {tail}
+        </DrillRailSection>
+      )}
+    </div>
   )
 }
 
 // ── Missing-explanation state ──────────────────────────────────────
 //
-// Phase A.8.1: when Layer 2 hasn't been backfilled for this qid we
-// used to render nothing — the pedagogy column went silently empty,
-// leaving the user with no idea why they got the answer wrong. Show
-// a graceful placeholder card instead, with a flag-this CTA that
-// writes a 'rejected' feedback entry so we can prioritize the next
-// regen wave. The post-A.6 corpus regen will close the gap; this
-// placeholder makes the gap visible and actionable until then.
+// When Layer 2 hasn't been backfilled the M3 missing line renders in
+// the Utfall section, with the flag-this CTA (writes a 'rejected'
+// feedback entry so the next regen wave can prioritize by demand).
 
-function MissingExplanation({ qid, correct }: { qid: string; correct: boolean }) {
+function MissingExplanation({ qid }: { qid: string }) {
   const [flagged, setFlagged] = useState<boolean>(() => getFeedback(qid)?.status === 'rejected')
   const flag = () => {
     submitFeedback({
@@ -150,30 +191,14 @@ function MissingExplanation({ qid, correct }: { qid: string; correct: boolean })
     setFlagged(true)
   }
   return (
-    <>
-      <Eyebrow style={{ color: correct ? 'var(--ok)' : 'var(--muted)' }}>
-        {correct ? 'Bra jobbat' : 'Förklaring saknas'}
-      </Eyebrow>
-      <p
-        style={{
-          margin: 0,
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(15px, 0.9rem + 0.3vw, 18px)',
-          lineHeight: 1.55,
-          color: 'var(--ink-2)',
-          maxWidth: '34ch',
-        }}
-      >
-        Den här frågan har inte fått en pedagogisk genomgång än. Vi prioriterar backfill efter hur
-        ofta varje fråga flaggas — markera den så hamnar den högre i kön.
-      </p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'flex-start' }}>
+      <p className="hpc-m3-missing">Förklaring saknas ännu för den här frågan.</p>
       <button
         type="button"
         onClick={flag}
         disabled={flagged}
         data-testid="pedagogy-flag-missing"
         style={{
-          alignSelf: 'flex-start',
           background: 'transparent',
           border: '1px solid var(--hairline)',
           padding: '8px 12px',
@@ -188,140 +213,7 @@ function MissingExplanation({ qid, correct }: { qid: string; correct: boolean })
       >
         {flagged ? '✓ Markerad — tack' : 'Markera som saknad'}
       </button>
-    </>
-  )
-}
-
-// ── Waiting state ──────────────────────────────────────────────────
-
-function WaitingBody({ explanation }: { explanation: Explanation }) {
-  return (
-    <>
-      <Eyebrow style={{ color: 'var(--muted)' }}>Innan svaret</Eyebrow>
-      <p
-        style={{
-          margin: 0,
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(15px, 0.9rem + 0.3vw, 18px)',
-          lineHeight: 1.5,
-          color: 'var(--ink-2)',
-        }}
-      >
-        Välj ett alternativ — förklaringen visas här när du svarat.
-      </p>
-      {explanation.framework_id && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Mono>Ramverk</Mono>
-          <L1Chip id={explanation.framework_id} />
-        </div>
-      )}
-      {explanation.technique && (
-        <div>
-          <Mono style={{ marginBottom: 4, display: 'inline-block' }}>Teknik</Mono>
-          <div
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 14,
-              lineHeight: 1.45,
-              color: 'var(--ink-2)',
-              opacity: 0.55,
-              fontStyle: 'italic',
-            }}
-          >
-            (visas efter svar)
-          </div>
-        </div>
-      )}
-    </>
-  )
-}
-
-function WaitingPlaceholder() {
-  // Loading state for the waiting panel — same shape so the column
-  // doesn't reflow when the explanation resolves.
-  return (
-    <>
-      <Eyebrow style={{ color: 'var(--muted)' }}>Innan svaret</Eyebrow>
-      <p
-        style={{
-          margin: 0,
-          fontFamily: 'var(--font-display)',
-          fontSize: 16,
-          color: 'var(--muted)',
-        }}
-      >
-        Välj ett alternativ.
-      </p>
-    </>
-  )
-}
-
-// ── Post-grade body ────────────────────────────────────────────────
-
-function PostGradeBody({
-  explanation,
-  qid,
-  correct,
-}: {
-  explanation: Explanation
-  qid: string
-  correct: boolean
-}) {
-  const coach = useCoachStore((s) => s.coach)
-  // Coach voice attribution sits between the eyebrow (category label)
-  // and the apparatus (steps + distractors). The eyebrow stays
-  // editorial chrome; the coach line is the personality. VOICE[coach]
-  // is what makes this read as "Märta said this" instead of "the app
-  // emitted a string."
-  const voiceLine = correct ? VOICE[coach].feedbackRight : VOICE[coach].feedbackWrong
-  const eyebrow = correct ? 'Post-mortem' : 'Så här löses uppgiften'
-  const steps = resolveSteps(explanation)
-  // solution_path is the concise summary when structured steps[] exist; show
-  // it as the book-page lede (bold serif between rules). When steps[] is
-  // absent, solution_path IS the steps (resolveSteps split it) — no lede.
-  const hasStructuredSteps = (explanation.steps?.length ?? 0) > 0
-  return (
-    <>
-      {/* Boksidan verdict — the graded moment, semantic green/red ink.
-       *  role=status + aria-live announce the outcome to screen readers
-       *  the moment the panel flips from waiting to post-grade; the
-       *  aria-label spells out the terse "Rätt." / "Fel." ink word. */}
-      <div
-        className="hpc-m3-verdict"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        aria-label={correct ? 'Rätt svar' : 'Fel svar'}
-      >
-        <span aria-hidden className={`hpc-m3-verdict-word ${correct ? 'is-ok' : 'is-bad'}`}>
-          {correct ? 'Rätt.' : 'Fel.'}
-        </span>
-      </div>
-      <CoachLine coach={coach} as="small" style={{ marginTop: 10, marginBottom: 16 }}>
-        {voiceLine}
-      </CoachLine>
-      {hasStructuredSteps && explanation.solution_path && (
-        <p className="hpc-m3-solution">
-          <MathText>{explanation.solution_path}</MathText>
-        </p>
-      )}
-      {explanation.framework_id && <FrameworkChip frameworkId={explanation.framework_id} />}
-      {explanation.pregrade_tactic && (
-        <StrategiBlock
-          handle={explanation.pregrade_tactic.handle}
-          move={explanation.pregrade_tactic.move}
-        />
-      )}
-      <Eyebrow style={{ marginTop: 24, marginBottom: 4 }}>{eyebrow}</Eyebrow>
-      <StepList steps={steps} />
-      {explanation.distractors.length > 0 && (
-        <DistractorBlock distractors={explanation.distractors} />
-      )}
-      {(explanation.technique || explanation.pitfall) && (
-        <MetaBlock technique={explanation.technique} pitfall={explanation.pitfall} />
-      )}
-      <QABar qid={qid} explanation={explanation} />
-    </>
+    </div>
   )
 }
 
@@ -333,9 +225,9 @@ function sectionFromFrameworkId(id: string): Section | null {
   return null
 }
 
-/** Closes the Layer-1 ↔ Layer-2 loop on desktop: clicking the chip
- *  navigates to /lektion?section=SEC#FRAMEWORK_ID, where the reader
- *  opens the matching trap card and scrolls it into view. */
+/** Closes the Layer-1 ↔ Layer-2 loop: clicking the chip navigates to
+ *  /lektion?section=SEC#FRAMEWORK_ID, where the reader opens the
+ *  matching trap card and scrolls it into view. */
 function FrameworkChip({ frameworkId }: { frameworkId: string }) {
   const navigate = useNavigate()
   const section = sectionFromFrameworkId(frameworkId)
@@ -354,52 +246,13 @@ function FrameworkChip({ frameworkId }: { frameworkId: string }) {
   )
 }
 
-// ── Strategi block (post-grade) ────────────────────────────────────
-
-/** Surfaces the pre-grade named strategy on the post-grade view so the
- *  handle ("Linjärekvationsreceptet") and move ("Subtrahera den
- *  mindre x-termen…") get a second reading after the student grades —
- *  the moment they're most likely to internalize the handle. */
-function StrategiBlock({ handle, move }: { handle: string; move: string }) {
-  return (
-    <div style={{ maxWidth: '52ch' }}>
-      <Mono>Strategi</Mono>
-      <h3
-        style={{
-          margin: '8px 0 8px',
-          fontFamily: 'var(--font-display)',
-          fontSize: 20,
-          letterSpacing: '-0.012em',
-          lineHeight: 1.3,
-          fontWeight: 500,
-          color: 'var(--ink)',
-        }}
-      >
-        {handle}
-      </h3>
-      <p
-        style={{
-          margin: 0,
-          fontFamily: 'var(--font-display)',
-          fontSize: 16,
-          lineHeight: 1.55,
-          color: 'var(--ink-2)',
-        }}
-      >
-        {move}
-      </p>
-    </div>
-  )
-}
-
 // ── Step rendering ─────────────────────────────────────────────────
 
 /** Reconcile the structured-steps path (A.6+) with the prose-only path
  *  (pre-A.6). Returns an array of ExplanationStep ready for rendering.
  *
  *  Exported so the phone ExplanationPanel can render the same
- *  step-card composition as desktop (Phase A.6V.5 — phone bifurcation
- *  fix). */
+ *  step composition as desktop. */
 export function resolveSteps(explanation: Explanation): ExplanationStep[] {
   if (explanation.steps && explanation.steps.length > 0) {
     return explanation.steps
@@ -441,238 +294,87 @@ function splitProseIntoSteps(prose: string): ExplanationStep[] {
   return [{ n: 1, text: prose }]
 }
 
-/** Render an ordered list of explanation steps as the canonical
- *  numbered-card composition used in Study Desk's PedagogyPanel.
+/** Corpus tiers beyond the canonical pair (deep/verification/support…)
+ *  read as elaboration — badge them detalj. Absent tier = kärna (the
+ *  pre-A.6V default). */
+function tierLabel(tier: ExplanationStep['tier']): string {
+  return tier == null || tier === 'essential' ? 'kärna' : 'detalj'
+}
+
+/** M3 step rows (M3.tsx L1158-1177): serif cobalt ordinal, title with
+ *  tier badge, body. Staggered entrance from `baseDelay`.
  *
- *  Exported so the phone ExplanationPanel can reuse the same look,
- *  rather than maintaining a parallel renderer (Phase A.6V.5).
- *  Single-step explanations render as a plain prose block instead of
- *  a numbered card — the card framing is overkill when there's
- *  only one. */
-export function StepList({ steps }: { steps: ExplanationStep[] }) {
+ *  Exported so the phone ExplanationPanel renders the same composition. */
+export function StepList({
+  steps,
+  baseDelay = 220,
+}: {
+  steps: ExplanationStep[]
+  baseDelay?: number
+}) {
   if (steps.length === 0) return null
-  if (steps.length === 1) {
-    // Single step — render as a plain prose block, not a numbered
-    // card. The card framing is overkill when there's only one.
-    return (
-      <div
-        data-testid="pedagogy-solution"
-        style={{
-          fontFamily: 'var(--font-ui)',
-          fontSize: 'clamp(15px, 0.9rem + 0.3vw, 17px)',
-          lineHeight: 1.6,
-          color: 'var(--ink)',
-        }}
-      >
-        <MathText>{steps[0].text}</MathText>
-      </div>
-    )
-  }
   return (
-    <ol
-      data-testid="pedagogy-steps"
-      style={{
-        margin: 0,
-        padding: 0,
-        listStyle: 'none',
-        display: 'flex',
-        flexDirection: 'column',
-        // A.8.1 — generous step-to-step gap so each step reads as its
-        // own moment in the worked example, not as a list item.
-        // A.6V.5 — softened via clamp() so phone widths (where steps
-        // stack inside the expanded ExplanationPanel accordion) get
-        // tighter vertical rhythm; the same component renders happily
-        // at studio width too.
-        gap: 'clamp(14px, 2.5vw, 20px)',
-      }}
-    >
-      {steps.map((step) => (
-        <StepCard key={step.n} step={step} />
+    <ol data-testid="pedagogy-steps" style={{ margin: 0, padding: 0, listStyle: 'none' }}>
+      {steps.map((step, i) => (
+        <li
+          key={step.n}
+          className="hpc-m3-step"
+          data-testid={`pedagogy-step-${step.n}`}
+          style={{ animationDelay: `${baseDelay + i * 80}ms` }}
+        >
+          <span className="hpc-m3-step-n" aria-hidden>
+            {step.n}.
+          </span>
+          <div>
+            {step.title ? (
+              <h3 className="hpc-m3-step-h">
+                <MathText>{step.title}</MathText>
+                <span className="hpc-m3-step-tier">{tierLabel(step.tier)}</span>
+              </h3>
+            ) : null}
+            <p className="hpc-m3-step-t">
+              <MathText>{step.text}</MathText>
+            </p>
+          </div>
+        </li>
       ))}
     </ol>
   )
 }
 
-/** Single numbered step card. Exported alongside StepList so callers
- *  (currently just ExplanationPanel on phone) can compose ad-hoc step
- *  layouts without a parallel implementation. */
-export function StepCard({ step }: { step: ExplanationStep }) {
+// ── Distractor rows ────────────────────────────────────────────────
+
+function DistractorRow({
+  distractor,
+  optionText,
+  delay,
+}: {
+  distractor: Explanation['distractors'][number]
+  optionText?: string
+  delay: number
+}) {
   return (
-    <li
-      data-testid={`pedagogy-step-${step.n}`}
-      style={{
-        // A.8.1 — drop the card chrome on individual steps (matches
-        // the EDITION rule). Each step is articulated by a hanging
-        // serif step numeral (Boksidan, task 83 — book-page numerals,
-        // structure so in cobalt --accent), like a footnote in a
-        // typeset book.
-        position: 'relative',
-        paddingLeft: 42,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 8,
-        maxWidth: '75ch',
-      }}
+    <div
+      className="hpc-m3-dis"
+      data-testid={`pedagogy-distractor-${distractor.letter}`}
+      style={{ animationDelay: `${delay}ms` }}
     >
-      <span
-        aria-hidden
-        style={{
-          position: 'absolute',
-          left: 0,
-          top: -1,
-          fontFamily: 'var(--font-display)',
-          fontSize: 21,
-          color: 'var(--accent)',
-          fontWeight: 600,
-          letterSpacing: '-0.01em',
-          fontVariantNumeric: 'tabular-nums',
-        }}
-      >
-        {String(step.n).padStart(2, '0')}
-      </span>
-      {step.title && (
-        <div
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(16px, 0.9rem + 0.3vw, 19px)',
-            fontWeight: 500,
-            color: 'var(--ink)',
-            letterSpacing: '-0.01em',
-            lineHeight: 1.3,
-          }}
-        >
-          {step.title}
-        </div>
-      )}
-      <div
-        style={{
-          // A.8.1 — sans body for step text (matches options),
-          // generous leading for pedagogical readability.
-          fontFamily: 'var(--font-ui)',
-          fontSize: 'clamp(14px, 0.875rem + 0.2vw, 16px)',
-          lineHeight: 1.65,
-          color: 'var(--ink-2)',
-          letterSpacing: 'var(--font-ui-track)',
-        }}
-      >
-        <MathText>{step.text}</MathText>
-      </div>
-    </li>
-  )
-}
-
-// ── Distractor block ───────────────────────────────────────────────
-
-function DistractorBlock({ distractors }: { distractors: Explanation['distractors'] }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 14, maxWidth: '75ch' }}>
-      <Mono>Varför inte de andra</Mono>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        {distractors.map((d) => (
-          // A.8.1 — drop card chrome (border + radius + bg). Each
-          // distractor is a typographic block: letter prefix in
-          // mono, two short lines underneath (lockar/men fel).
-          <div
-            key={d.letter}
-            data-testid={`pedagogy-distractor-${d.letter}`}
-            style={{
-              position: 'relative',
-              paddingLeft: 28,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 4,
-            }}
-          >
-            <span
-              aria-hidden
-              style={{
-                position: 'absolute',
-                left: 0,
-                top: 2,
-                fontFamily: 'var(--font-mono)',
-                fontSize: 11,
-                letterSpacing: 'var(--font-mono-track)',
-                color: 'var(--muted)',
-                fontWeight: 600,
-                textTransform: 'lowercase',
-              }}
-            >
-              {d.letter.toLowerCase()}.
-            </span>
-            <div
-              style={{
-                fontFamily: 'var(--font-ui)',
-                fontSize: 13,
-                lineHeight: 1.5,
-                color: 'var(--ink-2)',
-              }}
-            >
-              <span style={{ color: 'var(--muted)' }}>Lockar för att </span>
-              <MathText>{d.why_tempting}</MathText>
-            </div>
-            <div
-              style={{
-                fontFamily: 'var(--font-ui)',
-                fontSize: 13,
-                lineHeight: 1.5,
-                color: 'var(--ink)',
-              }}
-            >
-              <span style={{ color: 'var(--muted)' }}>Men fel för att </span>
-              <MathText>{d.why_wrong}</MathText>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-// ── Meta block (technique + pitfall) ───────────────────────────────
-
-function MetaBlock({ technique, pitfall }: { technique: string; pitfall: string | null }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      {technique && (
-        <div
-          data-testid="pedagogy-technique"
-          style={{
-            display: 'flex',
-            gap: 10,
-            padding: '10px 12px',
-            background: 'var(--accent-soft)',
-            border: '1px solid var(--hairline)',
-            borderRadius: 'calc(var(--radius) * 0.4)',
-            fontSize: 13,
-            lineHeight: 1.45,
-          }}
-        >
-          <Mono style={{ color: 'var(--accent)', flexShrink: 0, marginTop: 2 }}>Teknik</Mono>
-          <span style={{ color: 'var(--ink)' }}>
-            <MathText>{technique}</MathText>
-          </span>
-        </div>
-      )}
-      {pitfall && (
-        <div
-          data-testid="pedagogy-pitfall"
-          style={{
-            display: 'flex',
-            gap: 10,
-            padding: '10px 12px',
-            background: 'var(--bad-soft)',
-            border: '1px solid var(--hairline)',
-            borderRadius: 'calc(var(--radius) * 0.4)',
-            fontSize: 13,
-            lineHeight: 1.45,
-          }}
-        >
-          <Mono style={{ color: 'var(--bad)', flexShrink: 0, marginTop: 2 }}>Fällan här</Mono>
-          <span style={{ color: 'var(--ink)' }}>
-            <MathText>{pitfall}</MathText>
-          </span>
-        </div>
-      )}
+      <p className="hpc-m3-dis-h">
+        <span className="hpc-m3-dis-k">{distractor.letter.toLowerCase()})</span>
+        {optionText ? (
+          <s>
+            <MathText>{optionText}</MathText>
+          </s>
+        ) : null}
+      </p>
+      <p className="hpc-m3-dis-l">Varför det lockar</p>
+      <p className="hpc-m3-dis-p">
+        <MathText>{distractor.why_tempting}</MathText>
+      </p>
+      <p className="hpc-m3-dis-l">Varför det är fel</p>
+      <p className="hpc-m3-dis-p">
+        <MathText>{distractor.why_wrong}</MathText>
+      </p>
     </div>
   )
 }
@@ -761,19 +463,6 @@ function QAButton({
     >
       {children}
     </button>
-  )
-}
-
-// ── Skeleton ───────────────────────────────────────────────────────
-
-function SkeletonBody() {
-  return (
-    <>
-      <Eyebrow style={{ color: 'var(--muted)' }}>Förklaringen</Eyebrow>
-      <p style={{ margin: 0, color: 'var(--muted)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>
-        Tänker igenom uppgiften…
-      </p>
-    </>
   )
 }
 
