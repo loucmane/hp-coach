@@ -31,7 +31,6 @@ import type { CSSProperties, ReactNode } from 'react'
 
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { useViewport } from '@/hooks/useViewport'
-import { PALETTES, type PaletteKey } from '@/lib/tokens'
 import { useUiStore } from '@/stores/uiStore'
 
 type StatusLineProps = {
@@ -175,21 +174,16 @@ export function NavLinks() {
   )
 }
 
-// ── Picker corner (interim — migrates to Settings, task #160) ──────
+// ── Picker corner ──────────────────────────────────────────────────
 //
-// `ljus ◐ · spalt` in muted-2 mono (mock L206-214), but LIVE controls:
-// the mode word toggles light/dark and the palette word cycles the
-// palettes. Both go through useSyncedPrefs so they persist cross-device
-// (the EditionStrip's raw-store toggle never did — M6 finding, #174).
-
-const PALETTE_ORDER = Object.keys(PALETTES) as PaletteKey[]
+// `ljus ◐ · mer` in muted-2 mono (mock L206-214 shape). The mode word
+// stays as the one quick toggle (through useSyncedPrefs — persists
+// cross-device, M6 finding #174); everything else lives on /mer, the
+// M-settings hub (#160) — the owner-ratified home for the ⌘K long tail.
 
 function PickerCorner() {
   const mode = useUiStore((s) => s.mode)
-  const palette = useUiStore((s) => s.palette)
   const synced = useSyncedPrefs()
-
-  const nextPalette = PALETTE_ORDER[(PALETTE_ORDER.indexOf(palette) + 1) % PALETTE_ORDER.length]
 
   const word: CSSProperties = {
     all: 'unset',
@@ -214,14 +208,9 @@ function PickerCorner() {
       <span aria-hidden style={{ color: 'var(--hairline)', fontSize: 11 }}>
         ·
       </span>
-      <button
-        type="button"
-        onClick={() => synced.setPalette(nextPalette)}
-        aria-label={`Byt palett (nu: ${palette})`}
-        style={word}
-      >
-        {palette}
-      </button>
+      <Link to="/mer" data-testid="mast-mer" style={{ ...word, textDecoration: 'none' }}>
+        mer
+      </Link>
     </span>
   )
 }

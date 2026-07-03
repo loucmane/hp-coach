@@ -117,3 +117,22 @@ authedTest('floating launcher links to /dev and Cmd+K opens the palette', async 
   await page.keyboard.press('Control+K')
   await authedExpect(page.getByTestId('cmdk')).toBeHidden({ timeout: 3_000 })
 })
+
+authedTest('mast "mer" opens the settings hub with tools + synced pickers', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile', 'the mast renders at desktop only')
+  await page.goto('/')
+  await authedExpect(page.getByTestId('mast-mer')).toBeVisible({ timeout: 10_000 })
+  await page.getByTestId('mast-mer').click()
+  await authedExpect(page).toHaveURL(/\/mer$/)
+  // Verktyg rows — the previously ⌘K-only desktop destinations.
+  await authedExpect(page.getByTestId('mer-tool-diagnostik')).toBeVisible()
+  await authedExpect(page.getByTestId('mer-tool-avancerat')).toBeVisible()
+  await authedExpect(page.getByTestId('mer-tool-coach')).toBeVisible()
+  // Settings words present (palette + mode + coach).
+  await authedExpect(page.getByRole('button', { name: 'Palett: sage (aktiv)' })).toBeVisible()
+  // Scoped to the page body — the mast's quick toggle shares the label.
+  await authedExpect(
+    page.getByTestId('page-content').getByRole('button', { name: 'Växla till mörkt läge' }),
+  ).toBeVisible()
+  await authedExpect(page.getByRole('button', { name: /Kompis —/ })).toBeVisible()
+})
