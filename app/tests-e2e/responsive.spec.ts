@@ -164,14 +164,14 @@ test('Daily Home renders the prescriptive plan card at studio', async ({ page })
   const skeleton = page.getByTestId('daily-plan-skeleton')
   await expect(card.or(skeleton)).toBeVisible({ timeout: 10_000 })
 
-  // The compact greeting h1 clamps to 28–48px at studio — far smaller
-  // than the old hero masthead (which was 100+px). The plan items below
-  // are the typographic event now, not the greeting.
+  // M3H: the greeting is the M3 italic display — clamp(44px, 6vw, 64px)
+  // (M3.tsx L141), so 64px at studio width. Still far smaller than the
+  // pre-B3.2 hero masthead (100+px).
   const h1 = page.locator('h1').first()
   await expect(h1).toBeVisible()
   const fontSize = await h1.evaluate((el) => parseFloat(getComputedStyle(el).fontSize))
   expect(fontSize).toBeGreaterThanOrEqual(28)
-  expect(fontSize).toBeLessThanOrEqual(56)
+  expect(fontSize).toBeLessThanOrEqual(64)
 })
 
 test('Auth brand pane visible at studio, hidden at phone', async ({ page: rawPage }) => {

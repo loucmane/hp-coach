@@ -1,27 +1,17 @@
-// DailyPlanCard — the editorial daily-plan rendering for Home.
+// DailyPlanCard — "Dagens plan" as M3 numbered rows (M3H; spec
+// devbake/l12/M3.tsx L805-829).
 //
-// Replaces the "Fortsätt övning" hero with a prescriptive list. Each
-// item is one tap: kicker (kind + section if any), headline, rationale
-// in muted body, time hint on the right. Completion is derived from
-// signals only (due-count, lessonReads, attempts-snapshot growth) —
-// there is no manual "mark complete" affordance because the plan
-// should reflect what you actually did, not what you tell it you did.
+// A rail section whose margin carries "Idag / ~N min · uppskattat"
+// (heuristic total, not a measured commitment) and whose content is
+// the numbered plan: cobalt serif ordinal, section tag, headline,
+// rationale, trailing minutes. Each row is one tap (the whole body is
+// the link); completion is derived from signals only — no manual
+// "mark complete", no regenerate affordance. Completed rows dim and
+// strike, a live-only extension of the M3 mock.
 //
-// When every item is complete, the card flips to the "Klart för idag"
-// state with a "generera ny plan" affordance.
-//
-// Visual contract:
-//   - Eyebrow:  "IDAG · 32 MIN"  (mono, ink-2) + GENERERA OM
-//   - Items:    one row each; hairline rule between items
-//   - Row header: kind kicker (mono) + "· klar ✓" when completed
-//   - Row body:   headline (display) + rationale (display, ink-2)
-//   - Trailing:   time hint (mono)
-//
-// Composition deliberately mirrors the bake-off pattern (eyebrow →
-// title → body → footer affordance) so the visual rhythm is
-// consistent with /lektion and the drill idle screen.
+// When every item is complete, the section flips to "Klart för idag".
 
-import { Eyebrow, Hairline } from '@/components/primitives'
+import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import type { DailyPlan, PlanItem } from '@/lib/scheduler'
 
 type DailyPlanCardProps = {
@@ -39,50 +29,36 @@ export function DailyPlanCard({ plan, allComplete, onNavigate }: DailyPlanCardPr
   }
 
   return (
-    <section
-      data-testid="daily-plan-card"
-      className="reveal"
-      style={{
-        animationDelay: '120ms',
-        maxWidth: '68ch',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'baseline',
-          justifyContent: 'space-between',
-          gap: 16,
-          marginBottom: 20,
-        }}
+    <section data-testid="daily-plan-card">
+      <DrillRailSection
+        meta={
+          <>
+            <strong>Idag</strong>
+            {`~${plan.estimatedMinutes} min · uppskattat`}
+          </>
+        }
+        delay={220}
       >
-        {/* "~N min" + "uppskattat" qualifier — the total is generated
-         *  from per-item heuristics (repetition uses MINUTES_PER_REP,
-         *  drill/lesson use SECTION_DURATIONS); not a measured commitment.
-         *  Setting expectation up front (audit rec). */}
-        <Eyebrow>{`Idag · ~${plan.estimatedMinutes} min · uppskattat`}</Eyebrow>
-      </div>
-
-      <Hairline style={{ background: 'var(--ink)', height: 1, width: 48 }} />
-
-      <ol
-        style={{
-          listStyle: 'none',
-          margin: 0,
-          padding: 0,
-          marginTop: 8,
-        }}
-      >
-        {plan.items.map((item) => (
-          <PlanRow key={item.id} item={item} onNavigate={onNavigate} />
-        ))}
-      </ol>
+        <h2 className="hpc-m3-h">Dagens plan</h2>
+        <ol style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+          {plan.items.map((item, i) => (
+            <PlanRow key={item.id} item={item} ordinal={i + 1} onNavigate={onNavigate} />
+          ))}
+        </ol>
+      </DrillRailSection>
     </section>
   )
 }
 
-function PlanRow({ item, onNavigate }: { item: PlanItem; onNavigate?: (href: string) => void }) {
-  const kicker = kickerFor(item)
+function PlanRow({
+  item,
+  ordinal,
+  onNavigate,
+}: {
+  item: PlanItem
+  ordinal: number
+  onNavigate?: (href: string) => void
+}) {
   const handleNavigate = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (onNavigate) {
       e.preventDefault()
@@ -91,82 +67,49 @@ function PlanRow({ item, onNavigate }: { item: PlanItem; onNavigate?: (href: str
   }
   return (
     <li
+      className="hpc-m3-plan-item"
       data-testid={`daily-plan-item-${item.id}`}
       data-completed={item.completed ? 'true' : 'false'}
-      style={{
-        paddingBlock: 'clamp(16px, 1.4vw + 8px, 24px)',
-        borderTop: '1px solid var(--hairline)',
-        opacity: item.completed ? 0.5 : 1,
-      }}
+      style={{ opacity: item.completed ? 0.5 : 1 }}
     >
-      {/* Boksidan rail row: the kicker + time hint live in the cobalt mono
-       *  margin rail (time is the ink-2 sub-line — metadata, not accent);
-       *  the tappable headline + rationale flow in the content column. The
-       *  chassis linearises on phone (rail stacks above as an eyebrow). */}
-      <div className="hpc-m3-row">
-        <div className="hpc-m3-meta">
-          {kicker}
-          {item.completed && ' · klar ✓'}
-          <strong>{`~${item.estimatedMinutes} min`}</strong>
-        </div>
-        <div className="hpc-m3-spine" aria-hidden />
-        <a
-          href={item.href}
-          onClick={handleNavigate}
-          data-testid={`daily-plan-link-${item.id}`}
-          className="hpc-m3-content"
-          style={{
-            textDecoration: 'none',
-            color: 'var(--ink)',
-            display: 'block',
-          }}
+      <span className="hpc-m3-plan-n" aria-hidden>
+        {ordinal}.
+      </span>
+      <a
+        href={item.href}
+        onClick={handleNavigate}
+        data-testid={`daily-plan-link-${item.id}`}
+        style={{ textDecoration: 'none', color: 'inherit', display: 'block', minWidth: 0 }}
+      >
+        <div
+          className="hpc-m3-plan-t"
+          style={{ textDecoration: item.completed ? 'line-through' : undefined }}
         >
-          <h3
+          {item.section ? <span className="hpc-m3-tag">{item.section}</span> : null}
+          {item.headline}
+          {item.completed && ' · klar ✓'}
+        </div>
+        <div className="hpc-m3-plan-r">{item.rationale}</div>
+        {/* Tap affordance (dogfood #170) — quiet mono verb per kind so
+         *  the rows read as actions, not static text. Live-only
+         *  extension of the M3 row. */}
+        {!item.completed && (
+          <span
             style={{
-              margin: 0,
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(18px, 1vw + 13px, 22px)',
-              lineHeight: 1.3,
-              letterSpacing: '-0.01em',
-              textDecoration: item.completed ? 'line-through' : 'none',
-              textDecorationThickness: 1,
+              display: 'inline-block',
+              marginTop: 6,
+              fontFamily: 'var(--font-mono)',
+              fontSize: 11,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              color: 'var(--accent)',
             }}
           >
-            {item.headline}
-          </h3>
-          <p
-            style={{
-              margin: '6px 0 0',
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(14px, 0.4vw + 12px, 15px)',
-              lineHeight: 1.5,
-              color: 'var(--ink-2)',
-            }}
-          >
-            {item.rationale}
-          </p>
-          {/* Tap affordance — the plan rows read as static text without a
-           *  verb (dogfood #170): the resume card says "FORTSÄTT HÄR →"
-           *  while these say nothing. Quiet mono verb per kind, hidden on
-           *  completed rows. Sibling of the headline so HomeMobile's
-           *  single-text-node headline assertions stay intact. */}
-          {!item.completed && (
-            <span
-              style={{
-                display: 'inline-block',
-                marginTop: 8,
-                fontFamily: 'var(--font-mono)',
-                fontSize: 11,
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                color: 'var(--accent)',
-              }}
-            >
-              {verbFor(item)} →
-            </span>
-          )}
-        </a>
-      </div>
+            {verbFor(item)} →
+          </span>
+        )}
+      </a>
+      <span className="hpc-m3-plan-min">~{item.estimatedMinutes} min</span>
     </li>
   )
 }
@@ -174,64 +117,45 @@ function PlanRow({ item, onNavigate }: { item: PlanItem; onNavigate?: (href: str
 function CompletePanel({ plan }: { plan: DailyPlan }) {
   const totalMinutes = plan.items.reduce((sum, i) => sum + i.estimatedMinutes, 0)
   return (
-    <section
-      data-testid="daily-plan-complete"
-      className="reveal"
-      style={{ animationDelay: '120ms', maxWidth: '60ch' }}
-    >
-      <Eyebrow>Klart för idag</Eyebrow>
-      <h2
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(32px, 2.4vw + 18px, 56px)',
-          lineHeight: 1.05,
-          letterSpacing: '-0.02em',
-          margin: '12px 0 16px',
-          color: 'var(--ink)',
-        }}
+    <section data-testid="daily-plan-complete">
+      <DrillRailSection
+        meta={
+          <>
+            <strong>Idag</strong>
+            klart
+          </>
+        }
+        delay={220}
       >
-        Perfect game.
-      </h2>
-      <p
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(15px, 0.6vw + 13px, 17px)',
-          lineHeight: 1.55,
-          color: 'var(--ink-2)',
-          margin: 0,
-        }}
-      >
-        {plan.items.length} {plan.items.length === 1 ? 'punkt avklarad' : 'punkter avklarade'} · ~
-        {totalMinutes} min.
-      </p>
-      <Hairline
-        style={{ background: 'var(--hairline)', height: 1, marginTop: 28, marginBottom: 24 }}
-      />
-      <p
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 14,
-          lineHeight: 1.5,
-          color: 'var(--ink-2)',
-          margin: 0,
-        }}
-      >
-        Vill du ha mer? Plocka en sektion eller vila — du har gjort dagens.
-      </p>
+        <h2 className="hpc-m3-h">Klart för idag</h2>
+        <h3
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontStyle: 'italic',
+            fontWeight: 400,
+            fontSize: 'clamp(32px, 4vw, 48px)',
+            lineHeight: 1.05,
+            letterSpacing: '-0.01em',
+            margin: '4px 0 14px',
+            color: 'var(--ink)',
+          }}
+        >
+          Perfect game.
+        </h3>
+        <p
+          style={{
+            fontSize: 15,
+            lineHeight: 1.6,
+            color: 'var(--ink-2)',
+            margin: 0,
+          }}
+        >
+          {plan.items.length} {plan.items.length === 1 ? 'punkt avklarad' : 'punkter avklarade'} · ~
+          {totalMinutes} min. Vill du ha mer? Plocka en sektion eller vila — du har gjort dagens.
+        </p>
+      </DrillRailSection>
     </section>
   )
-}
-
-function kickerFor(item: PlanItem): string {
-  const sectionPart = item.section ? ` · ${item.section}` : ''
-  switch (item.kind) {
-    case 'repetition':
-      return `Repetition${sectionPart}`
-    case 'lesson':
-      return `Lektion${sectionPart}`
-    case 'drill':
-      return `Drill${sectionPart}`
-  }
 }
 
 /** The row's tap verb — same quiet-mono idiom as the picker's "läs →". */

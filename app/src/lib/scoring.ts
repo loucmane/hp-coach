@@ -176,6 +176,50 @@ export function formatScore(score: number | null): string {
   return score == null ? '—' : score.toFixed(2)
 }
 
+/** M3H home stats — Swedish display form `1,4`. One decimal: the home
+ *  prognosis is a coarse morning compass; /progress keeps the
+ *  2-decimal dot form via `formatScore`. */
+export function formatScoreSv(score: number | null): string {
+  return score == null ? '—' : score.toFixed(1).replace('.', ',')
+}
+
+/** Honest week-over-week projected delta for the home stats row (M3H).
+ *
+ *  Pools ONLY sections where BOTH weeks clear `minAttempts`, so the
+ *  comparison is like-with-like — a section drilled heavily this week
+ *  but untouched last week can't manufacture a swing. Returns null
+ *  (render blank) when no section qualifies; a fake delta is worse
+ *  than none. Computed from the raw week windows, not SectionScore
+ *  (whose `score` is the 90d blend). */
+export function computeProjectedDelta(
+  bySection: Partial<Record<Section, SectionStats>>,
+  minAttempts = 5,
+): number | null {
+  let a7 = 0
+  let c7 = 0
+  let a14 = 0
+  let c14 = 0
+  for (const section of [...VERBAL_SECTIONS, ...QUANT_SECTIONS]) {
+    const st = bySection[section]
+    if (!st) continue
+    if (st.attempts7d >= minAttempts && st.attempts7to14d >= minAttempts) {
+      a7 += st.attempts7d
+      c7 += st.correct7d
+      a14 += st.attempts7to14d
+      c14 += st.correct7to14d
+    }
+  }
+  if (a7 === 0 || a14 === 0) return null
+  return scoreFromFraction(c7 / a7) - scoreFromFraction(c14 / a14)
+}
+
+/** `+0,1` / `−0,2` / `±0,0` — the stats-row delta, Swedish comma. */
+export function formatDeltaSv(delta: number): string {
+  const rounded = Math.round(delta * 10) / 10
+  const sign = rounded > 0 ? '+' : rounded < 0 ? '−' : '±'
+  return `${sign}${Math.abs(rounded).toFixed(1).replace('.', ',')}`
+}
+
 /** Half-width of a 95% Wald confidence interval on the score, scaled to
  *  the 0-2 grade range. The number to read as "± this much".
  *

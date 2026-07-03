@@ -247,3 +247,63 @@ function mkScoreWith(overrides: {
     attempts90d: overrides.attempts90d ?? 50,
   }
 }
+
+// ── M3H home stats (Swedish display + honest week delta) ───────────
+
+import { computeProjectedDelta, formatDeltaSv, formatScoreSv } from './scoring'
+
+function weekStats(over: Partial<SectionStats>): SectionStats {
+  return {
+    attempts7d: 0,
+    correct7d: 0,
+    attempts7to14d: 0,
+    correct7to14d: 0,
+    attempts90d: 0,
+    correct90d: 0,
+    avgTimeMs: null,
+    lastAttemptedAt: null,
+    ...over,
+  }
+}
+
+describe('formatScoreSv', () => {
+  it('renders one decimal with a Swedish comma', () => {
+    expect(formatScoreSv(1.42)).toBe('1,4')
+    expect(formatScoreSv(2)).toBe('2,0')
+  })
+  it('em-dashes null', () => {
+    expect(formatScoreSv(null)).toBe('—')
+  })
+})
+
+describe('computeProjectedDelta', () => {
+  it('pools sections where BOTH weeks clear the attempt floor', () => {
+    const delta = computeProjectedDelta({
+      ORD: weekStats({ attempts7d: 10, correct7d: 8, attempts7to14d: 10, correct7to14d: 6 }),
+    })
+    // this week 1.6, last week 1.2 → +0.4
+    expect(delta).toBeCloseTo(0.4)
+  })
+  it('returns null when a week is under the floor (no honest comparison)', () => {
+    expect(
+      computeProjectedDelta({
+        ORD: weekStats({ attempts7d: 10, correct7d: 8, attempts7to14d: 2, correct7to14d: 1 }),
+      }),
+    ).toBeNull()
+  })
+  it('excludes sections that only qualify in one week', () => {
+    const delta = computeProjectedDelta({
+      ORD: weekStats({ attempts7d: 10, correct7d: 8, attempts7to14d: 10, correct7to14d: 8 }),
+      KVA: weekStats({ attempts7d: 20, correct7d: 0, attempts7to14d: 0, correct7to14d: 0 }),
+    })
+    // KVA (this-week only) must not drag the delta — ORD alone is flat.
+    expect(delta).toBeCloseTo(0)
+  })
+})
+
+describe('formatDeltaSv', () => {
+  it('signs and comma-formats', () => {
+    expect(formatDeltaSv(0.12)).toBe('+0,1')
+    expect(formatDeltaSv(-0.2)).toBe('−0,2')
+  })
+})
