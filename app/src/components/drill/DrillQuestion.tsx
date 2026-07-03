@@ -29,13 +29,7 @@ import { MathText } from '@/components/MathText'
 import { pickTactic } from '@/components/pre-grade/pregrade-tactics'
 import type { AnswerLetter, Option, Question } from '@/data/questions'
 import { parseNogPrompt } from '@/lib/nogPrompt'
-import {
-  RAIL_CHOOSE,
-  RAIL_OUTCOME,
-  RAIL_STATEMENTS,
-  railMeta,
-  sectionLongLabel,
-} from '@/lib/sectionRailLabel'
+import { RAIL_CHOOSE, RAIL_STATEMENTS, railMeta, sectionLongLabel } from '@/lib/sectionRailLabel'
 
 type Props = {
   question: Question
@@ -264,10 +258,16 @@ export function DrillQuestion({
         )}
       </DrillRailSection>
 
+      {/* M2: the panel renders its own rail sections (UTFALL / N STEG /
+       *  N FÄLLOR) so the pedagogy continues the page's chassis. */}
       {renderExplanation && graded && picked != null && (
-        <DrillRailSection meta={RAIL_OUTCOME} delay={nextDelay()}>
-          <PedagogyPanel qid={question.qid} graded correct={picked === question.answer} flush />
-        </DrillRailSection>
+        <PedagogyPanel
+          qid={question.qid}
+          graded
+          correct={picked === question.answer}
+          answer={question.answer}
+          options={question.options}
+        />
       )}
     </div>
   )
