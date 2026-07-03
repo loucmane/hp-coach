@@ -18,7 +18,15 @@ import { NavLinks } from '@/components/Page'
 import { StudyDesk } from '@/components/StudyDesk'
 import type { VariantData } from './DrillVariantShell'
 
-export function BoksidanDesk({ question, picked, graded, onPick, onReset }: VariantData) {
+export function BoksidanDesk({
+  question,
+  picked,
+  graded,
+  onPick,
+  onReset,
+  position,
+  total,
+}: VariantData) {
   return (
     <div
       style={{
@@ -73,7 +81,14 @@ export function BoksidanDesk({ question, picked, graded, onPick, onReset }: Vari
       {/* Centered editorial canvas. StudyDesk owns the 2-column grid +
        *  its own padding; we just cap + center it like a printed page. */}
       <main style={{ flex: 1, width: '100%', maxWidth: 1320, margin: '0 auto' }}>
-        <StudyDesk question={question} picked={picked} graded={graded} onPick={onPick} />
+        <StudyDesk
+          question={question}
+          picked={picked}
+          graded={graded}
+          onPick={onPick}
+          position={position}
+          total={total}
+        />
       </main>
 
       {/* Sticky "Nästa fråga" — appears once graded. A frosted-glass

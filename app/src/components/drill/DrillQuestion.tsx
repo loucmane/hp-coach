@@ -24,10 +24,18 @@ import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { PedagogyPanel } from '@/components/drill/PedagogyPanel'
 import { QuestionFigure } from '@/components/drill/QuestionFigure'
+import { useExplanation } from '@/components/drill-variants/useExplanation'
 import { MathText } from '@/components/MathText'
+import { pickTactic } from '@/components/pre-grade/pregrade-tactics'
 import type { AnswerLetter, Option, Question } from '@/data/questions'
 import { parseNogPrompt } from '@/lib/nogPrompt'
-import { RAIL_CHOOSE, RAIL_OUTCOME, RAIL_STATEMENTS, railMeta } from '@/lib/sectionRailLabel'
+import {
+  RAIL_CHOOSE,
+  RAIL_OUTCOME,
+  RAIL_STATEMENTS,
+  railMeta,
+  sectionLongLabel,
+} from '@/lib/sectionRailLabel'
 
 type Props = {
   question: Question
@@ -48,6 +56,12 @@ type Props = {
    *  pass `fill={false}` to let the content flow at natural height
    *  instead of creating a nested scroll that clips the options. */
   fill?: boolean
+  /** M1 (M3.tsx L881/L1034) — 1-indexed position in the session plan.
+   *  When both position and total are present the M3 eyebrow renders
+   *  ("ORDFÖRSTÅELSE · FRÅGA 3 AV 10"); when either is missing (legacy
+   *  mounts without a session) the eyebrow is omitted entirely. */
+  position?: number
+  total?: number
 }
 
 export function DrillQuestion({
@@ -57,6 +71,8 @@ export function DrillQuestion({
   onPick,
   renderExplanation = true,
   fill = true,
+  position,
+  total,
 }: Props) {
   // Scroll back to the top whenever a new question loads. Without this
   // a long LÄS passage on Q1 leaves the inner overflow-y region
@@ -68,6 +84,12 @@ export function DrillQuestion({
   useEffect(() => {
     if (scrollerRef.current) scrollerRef.current.scrollTop = 0
   }, [question.qid])
+
+  // M1 tactic aside (M3.tsx L886/L1065) — the pre-grade named-strategy hint.
+  // Corpus pregrade_tactic when the explanation carries one, else the
+  // section-default hash-rotation catalog (same fallback as PreGradeFill).
+  // The loader is cached per exam, so this shares PedagogyPanel's fetch.
+  const explanation = useExplanation(question.qid)
 
   if (!question.options || question.parsing_status !== 'complete') {
     return (
@@ -102,7 +124,43 @@ export function DrillQuestion({
     return d
   }
 
-  const promptMeta = promptIsShort ? (
+  // M1 eyebrow (M3.tsx L881/L1034) — only when the caller threads the
+  // session plan position through; legacy mounts render no eyebrow.
+  const hasEyebrow = position != null && total != null
+  // Short-prompt pages (the ORD specimen) fold the eyebrow into the prompt
+  // section so the headword sits directly under it in one content column
+  // (M3.tsx L873-893); multi-part pages give the eyebrow its own first rail
+  // row (M3.tsx L1026-1039) so 'Texten'/'Frågan' labels stay on their rows.
+  const mergeEyebrow = hasEyebrow && promptIsShort && !hasContext && !question.figure
+  const eyebrowMeta = (
+    <>
+      <strong>{question.section}</strong>
+      {position} / {total}
+    </>
+  )
+  const eyebrowLine = (
+    <div className="hpc-m3-eyebrow" data-testid="drill-eyebrow">
+      {sectionLongLabel(question.section).toUpperCase()} · FRÅGA {position} AV {total}
+    </div>
+  )
+
+  const tactic = graded
+    ? null
+    : (explanation?.pregrade_tactic ?? pickTactic(question.qid, question.section))
+  const tacticAside = tactic ? (
+    <aside className="hpc-m3-tactic">
+      <p className="hpc-m3-tactic-h">Taktik · {tactic.handle}</p>
+      <p className="hpc-m3-tactic-t">
+        <MathText>{tactic.move}</MathText>
+      </p>
+    </aside>
+  ) : null
+
+  const lastKey = question.options[question.options.length - 1]?.letter.toLowerCase()
+
+  const promptMeta = mergeEyebrow ? (
+    eyebrowMeta
+  ) : promptIsShort ? (
     <>
       <strong>{question.section}</strong>
       {question.section === 'ORD' ? 'synonymer' : null}
@@ -121,6 +179,12 @@ export function DrillQuestion({
         containerType: 'inline-size',
       }}
     >
+      {hasEyebrow && !mergeEyebrow && (
+        <DrillRailSection meta={eyebrowMeta} delay={nextDelay()}>
+          {eyebrowLine}
+        </DrillRailSection>
+      )}
+
       {hasContext && (
         <DrillRailSection meta={meta.contextLabel} delay={nextDelay()}>
           {/* data-testid on the passage content, not the rail section — the
@@ -148,6 +212,7 @@ export function DrillQuestion({
        *  drill-prompt's textContent to resolve the answer — it must be just
        *  the headword/stem. */}
       <DrillRailSection meta={promptMeta} delay={nextDelay()}>
+        {mergeEyebrow && eyebrowLine}
         {question.section === 'KVA' && question.prompt ? (
           <div className="hpc-m3-q" data-testid="drill-prompt">
             <KvaPrompt prompt={question.prompt} />
@@ -161,6 +226,7 @@ export function DrillQuestion({
             <MathText>{promptStem}</MathText>
           </p>
         )}
+        {tacticAside}
       </DrillRailSection>
 
       {nog && (
@@ -193,6 +259,9 @@ export function DrillQuestion({
             />
           ))}
         </div>
+        {!graded && lastKey && (
+          <div className="hpc-m3-keys">Tangenter a–{lastKey} väljer · klick fungerar också</div>
+        )}
       </DrillRailSection>
 
       {renderExplanation && graded && picked != null && (

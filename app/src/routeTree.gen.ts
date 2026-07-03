@@ -19,6 +19,7 @@ import { Route as RedesignLabRouteImport } from './routes/redesign-lab'
 import { Route as RedesignL12RouteImport } from './routes/redesign-l12'
 import { Route as RedesignBakeoffRouteImport } from './routes/redesign-bakeoff'
 import { Route as ProgressRouteImport } from './routes/progress'
+import { Route as MCompareRouteImport } from './routes/m-compare'
 import { Route as LoopBakeoffRouteImport } from './routes/loop-bakeoff'
 import { Route as LektionPracticeBakeoffRouteImport } from './routes/lektion-practice-bakeoff'
 import { Route as LektionRouteImport } from './routes/lektion'
@@ -86,6 +87,11 @@ const RedesignBakeoffRoute = RedesignBakeoffRouteImport.update({
 const ProgressRoute = ProgressRouteImport.update({
   id: '/progress',
   path: '/progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MCompareRoute = MCompareRouteImport.update({
+  id: '/m-compare',
+  path: '/m-compare',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoopBakeoffRoute = LoopBakeoffRouteImport.update({
@@ -198,6 +204,7 @@ export interface FileRoutesByFullPath {
   '/lektion': typeof LektionRoute
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
+  '/m-compare': typeof MCompareRoute
   '/progress': typeof ProgressRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
@@ -228,6 +235,7 @@ export interface FileRoutesByTo {
   '/lektion': typeof LektionRoute
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
+  '/m-compare': typeof MCompareRoute
   '/progress': typeof ProgressRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
@@ -259,6 +267,7 @@ export interface FileRoutesById {
   '/lektion': typeof LektionRoute
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
+  '/m-compare': typeof MCompareRoute
   '/progress': typeof ProgressRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
@@ -291,6 +300,7 @@ export interface FileRouteTypes {
     | '/lektion'
     | '/lektion-practice-bakeoff'
     | '/loop-bakeoff'
+    | '/m-compare'
     | '/progress'
     | '/redesign-bakeoff'
     | '/redesign-l12'
@@ -321,6 +331,7 @@ export interface FileRouteTypes {
     | '/lektion'
     | '/lektion-practice-bakeoff'
     | '/loop-bakeoff'
+    | '/m-compare'
     | '/progress'
     | '/redesign-bakeoff'
     | '/redesign-l12'
@@ -351,6 +362,7 @@ export interface FileRouteTypes {
     | '/lektion'
     | '/lektion-practice-bakeoff'
     | '/loop-bakeoff'
+    | '/m-compare'
     | '/progress'
     | '/redesign-bakeoff'
     | '/redesign-l12'
@@ -382,6 +394,7 @@ export interface RootRouteChildren {
   LektionRoute: typeof LektionRoute
   LektionPracticeBakeoffRoute: typeof LektionPracticeBakeoffRoute
   LoopBakeoffRoute: typeof LoopBakeoffRoute
+  MCompareRoute: typeof MCompareRoute
   ProgressRoute: typeof ProgressRoute
   RedesignBakeoffRoute: typeof RedesignBakeoffRoute
   RedesignL12Route: typeof RedesignL12Route
@@ -464,6 +477,13 @@ declare module '@tanstack/react-router' {
       path: '/progress'
       fullPath: '/progress'
       preLoaderRoute: typeof ProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/m-compare': {
+      id: '/m-compare'
+      path: '/m-compare'
+      fullPath: '/m-compare'
+      preLoaderRoute: typeof MCompareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/loop-bakeoff': {
@@ -614,6 +634,7 @@ const rootRouteChildren: RootRouteChildren = {
   LektionRoute: LektionRoute,
   LektionPracticeBakeoffRoute: LektionPracticeBakeoffRoute,
   LoopBakeoffRoute: LoopBakeoffRoute,
+  MCompareRoute: MCompareRoute,
   ProgressRoute: ProgressRoute,
   RedesignBakeoffRoute: RedesignBakeoffRoute,
   RedesignL12Route: RedesignL12Route,

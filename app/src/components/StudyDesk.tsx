@@ -30,9 +30,13 @@ type Props = {
   picked: AnswerLetter | null
   graded: boolean
   onPick: (letter: AnswerLetter) => void
+  /** M1 — 1-indexed plan position for the M3 eyebrow; both present or
+   *  both absent (the eyebrow is omitted without them). */
+  position?: number
+  total?: number
 }
 
-export function StudyDesk({ question, picked, graded, onPick }: Props) {
+export function StudyDesk({ question, picked, graded, onPick, position, total }: Props) {
   const hasPassage = !!question.context
   return (
     <div
@@ -54,6 +58,8 @@ export function StudyDesk({ question, picked, graded, onPick }: Props) {
             onPick={onPick}
             renderExplanation={false}
             fill={false}
+            position={position}
+            total={total}
           />
         </div>
         <div className="hpc-studydesk-ped">
