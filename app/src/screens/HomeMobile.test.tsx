@@ -82,11 +82,12 @@ describe('HomeMobile — plan rendering', () => {
     expect(within(planCard).getByText('KVA-drill · 10 frågor')).toBeInTheDocument()
   })
 
-  it('shows the total estimated minutes in the eyebrow with the "uppskattat" qualifier', () => {
+  it('shows the total estimated minutes in the plan rail with the "uppskattat" qualifier', () => {
     render(<HomeMobile forceLayout="phone" plan={makePlan()} />)
-    // "~N min · uppskattat" — the qualifier sets expectation that the
-    // total is heuristic, not a measured commitment.
-    expect(screen.getByText(/idag · ~18 min · uppskattat/i)).toBeInTheDocument()
+    // M3H: the plan section's margin rail carries "Idag" + "~N min ·
+    // uppskattat" — the qualifier sets expectation that the total is
+    // heuristic, not a measured commitment.
+    expect(screen.getByText(/~18 min · uppskattat/i)).toBeInTheDocument()
   })
 
   it('renders the "Klart för idag" complete panel when allComplete is true', () => {
@@ -97,13 +98,18 @@ describe('HomeMobile — plan rendering', () => {
   })
 })
 
-describe('HomeMobile — score line', () => {
-  it('hides the score line when projected is null (cold-start / loading)', () => {
+describe('HomeMobile — stats row (M3H)', () => {
+  // The old mono score line is replaced by M3's stats row: a big
+  // Swedish-comma prognosis ("1,4 / prognos av 2,0"), the honest
+  // week-over-week delta when it exists, streak, and today's minutes.
+  // `home-score-line` now identifies the prognosis stat; the null-gate
+  // is preserved (no signal → no faked number).
+  it('hides the prognosis stat when projected is null (cold-start / loading)', () => {
     render(<HomeMobile forceLayout="phone" plan={makePlan()} projected={null} />)
     expect(screen.queryByTestId('home-score-line')).not.toBeInTheDocument()
   })
 
-  it('hides the score line when both halves are null', () => {
+  it('hides the prognosis stat when both halves are null', () => {
     render(
       <HomeMobile
         forceLayout="phone"
@@ -114,10 +120,7 @@ describe('HomeMobile — score line', () => {
     expect(screen.queryByTestId('home-score-line')).not.toBeInTheDocument()
   })
 
-  it('renders the score numeric + verbal + kvant when any half has signal', () => {
-    // Home-bakeoff B pick: "just nu ·" prefix dropped, numeric in
-    // --ink, denominator + labels in --ink-2 / --muted. The line still
-    // surfaces all three values, just with cleaner type roles.
+  it('renders the Swedish-comma prognosis when there is signal', () => {
     render(
       <HomeMobile
         forceLayout="phone"
@@ -125,26 +128,43 @@ describe('HomeMobile — score line', () => {
         projected={{ total: 0.65, verbal: 0.81, quant: 0.49 }}
       />,
     )
-    const line = screen.getByTestId('home-score-line')
-    expect(line).toHaveTextContent(/0\.65/)
-    expect(line).toHaveTextContent(/\/ 2\.0/)
-    expect(line).toHaveTextContent(/verbal 0\.81/i)
-    expect(line).toHaveTextContent(/kvant 0\.49/i)
-    // "just nu" prefix is intentionally gone.
-    expect(line).not.toHaveTextContent(/just nu/i)
+    const stat = screen.getByTestId('home-score-line')
+    expect(stat).toHaveTextContent('0,7')
+    expect(stat).toHaveTextContent(/prognos av 2,0/i)
   })
 
-  it('renders em-dash for missing halves but still shows the line', () => {
+  it('renders the honest week delta only when provided, labeled sedan förra veckan', () => {
+    const { rerender } = render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        projected={{ total: 0.65, verbal: 0.81, quant: 0.49 }}
+        projectedDelta={0.12}
+      />,
+    )
+    expect(screen.getByText(/\+0,1 sedan förra veckan/)).toBeInTheDocument()
+    rerender(
+      <HomeMobile
+        forceLayout="phone"
+        plan={makePlan()}
+        projected={{ total: 0.65, verbal: 0.81, quant: 0.49 }}
+        projectedDelta={null}
+      />,
+    )
+    expect(screen.queryByText(/sedan förra veckan/)).not.toBeInTheDocument()
+  })
+
+  it('renders streak and minutes stats alongside', () => {
     render(
       <HomeMobile
         forceLayout="phone"
         plan={makePlan()}
-        projected={{ total: null, verbal: 0.81, quant: null }}
+        projected={{ total: 0.65, verbal: 0.81, quant: 0.49 }}
+        streakDays={12}
       />,
     )
-    const line = screen.getByTestId('home-score-line')
-    expect(line).toHaveTextContent('verbal 0.81')
-    expect(line).toHaveTextContent('kvant —')
+    expect(screen.getByText('dagar i rad')).toBeInTheDocument()
+    expect(screen.getByText('min idag')).toBeInTheDocument()
   })
 })
 

@@ -1061,7 +1061,8 @@ details[open] > summary .hpc-lesson-practice {
   margin-top: 3px;
   font-variant-numeric: tabular-nums;
 }
-/* M3.tsx L202 */
+/* M3.tsx L202 (text-decoration: none added — the CTA renders as a
+ * router <Link> on the home resume band, not only as a <button>) */
 .hpc-m3-cta {
   font-family: var(--font-ui);
   font-size: 13px;
@@ -1070,7 +1071,16 @@ details[open] > summary .hpc-lesson-practice {
   background: var(--accent);
   padding: 10px 20px;
   white-space: nowrap;
+  text-decoration: none;
   transition: opacity 160ms ease;
+}
+
+/* M3.tsx L56 — the printed-page frame (home + any M3 page that isn't
+ * inside StudyDesk's drill variant). Fluid side padding for phone. */
+.hpc-m3-frame {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: clamp(28px, 4vh, 56px) clamp(16px, 3vw, 24px) clamp(48px, 8vh, 96px);
 }
 /* M3.tsx L215 */
 .hpc-m3-cta:focus-visible {

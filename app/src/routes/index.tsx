@@ -15,7 +15,7 @@ import { SECTION_KEYS } from '@/data/questions'
 import { useDailyPlan } from '@/hooks/useDailyPlan'
 import { type DiagnosticMemory, loadDiagnosticMemory } from '@/lib/diagnosticMemory'
 import { TAB_ROUTE } from '@/lib/nav'
-import { computeProjected, computeSectionScore } from '@/lib/scoring'
+import { computeProjected, computeProjectedDelta, computeSectionScore } from '@/lib/scoring'
 import { daysSinceVisit, loadPreviousVisit, markVisit } from '@/lib/visitMemory'
 import { HomeMobile } from '@/screens/HomeMobile'
 
@@ -51,6 +51,13 @@ function HomeRoute() {
     )
     return computeProjected(sectionScores)
   }, [stats.data])
+
+  // Honest week-over-week delta for the stats row — null (blank) when
+  // the two weeks aren't comparable. See computeProjectedDelta.
+  const projectedDelta = useMemo(
+    () => (stats.data ? computeProjectedDelta(stats.data.bySection) : null),
+    [stats.data],
+  )
 
   // Diagnostic memory — read once on mount so the localStorage hit
   // doesn't run on every render. Lives client-side per
@@ -99,6 +106,7 @@ function HomeRoute() {
       plan={plan}
       allComplete={allComplete}
       projected={projected}
+      projectedDelta={projectedDelta}
       diagnosticMemory={diagnosticMemory}
       daysAway={daysAwaySnapshot}
       topTraps={topTraps}
