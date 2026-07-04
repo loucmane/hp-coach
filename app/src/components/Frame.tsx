@@ -47,51 +47,54 @@ type FrameProps = {
 
 export function Frame({ children }: FrameProps) {
   const viewport = useViewport()
-
-  if (viewport === 'phone') {
-    // Phone is the canonical artboard. CSS class .hpc-frame-phone sets
-    // `height: 100vh; height: 100dvh;` so iOS Safari's collapsing URL
-    // bar doesn't pull content up (modern browsers use dvh; older
-    // browsers fall back to vh).
-    return <div className="hpc-frame hpc-frame-phone">{children}</div>
-  }
-
+  const isPhone = viewport === 'phone'
   const isStudio = viewport === 'studio'
-  const maxWidth = isStudio ? 'var(--canvas-max-w)' : 'var(--canvas-max-w-reader)'
 
-  // Phase A.7 fix — height stacking is now flat. Frame outer is a
-  // flex column with min-height: 100dvh; the canvas inside grows to
-  // fill the remaining space below the (MobileFrame-rendered)
-  // DesktopNav. No more min-height + padding sum overflowing the
-  // viewport. Canvas keeps the card chrome at reader; studio strips
-  // it entirely so the wide page feels open, not stuck in an
-  // oversized card.
+  // ONE tree shape for every viewport. The phone and desktop branches
+  // used to return different element depths, so crossing the 768px
+  // breakpoint remounted the entire route subtree — component state
+  // (an in-progress session, the Klart. result) died on window resize
+  // (dogfood find 2026-07-04). The inner canvas div is `display:
+  // contents` at phone, so it is layout-transparent there while
+  // keeping the tree shape identical.
+  //
+  // Phone: .hpc-frame-phone sets `height: 100vh; height: 100dvh` so
+  // iOS Safari's collapsing URL bar doesn't pull content up.
+  // Desktop (Phase A.7): flat height stacking — outer flex column at
+  // min-height 100dvh, the canvas grows to fill.
   return (
     <div
-      className={`hpc-frame ${isStudio ? 'hpc-frame-studio' : 'hpc-frame-reader'}`}
-      style={{
-        minHeight: '100dvh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        background: 'var(--panel-2)',
-      }}
+      className={`hpc-frame ${
+        isPhone ? 'hpc-frame-phone' : isStudio ? 'hpc-frame-studio' : 'hpc-frame-reader'
+      }`}
+      style={
+        isPhone
+          ? undefined
+          : {
+              minHeight: '100dvh',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'stretch',
+              background: 'var(--panel-2)',
+            }
+      }
     >
       <div
-        className="hpc-frame-canvas"
-        style={{
-          width: '100%',
-          maxWidth,
-          margin: '0 auto',
-          background: 'var(--bg)',
-          borderRadius: 0,
-          border: isStudio ? 'none' : 'none',
-          boxShadow: 'none',
-          position: 'relative',
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-        }}
+        className={isPhone ? undefined : 'hpc-frame-canvas'}
+        style={
+          isPhone
+            ? { display: 'contents' }
+            : {
+                width: '100%',
+                maxWidth: isStudio ? 'var(--canvas-max-w)' : 'var(--canvas-max-w-reader)',
+                margin: '0 auto',
+                background: 'var(--bg)',
+                position: 'relative',
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+              }
+        }
       >
         {children}
       </div>
