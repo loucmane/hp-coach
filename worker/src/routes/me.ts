@@ -26,7 +26,7 @@ const PrefsPatch = z
     dailyMinutes: z.number().int().min(5).max(240).optional(),
     targetSittingId: z.string().min(1).max(40).nullable().optional(),
     coach: z.enum(['kompis', 'professor', 'taktiker']).optional(),
-    palette: z.enum(['sand', 'sage', 'ink', 'rose']).optional(),
+    palette: z.enum(['sand', 'sage', 'ink', 'rose', 'spalt']).optional(),
     mode: z.enum(['light', 'dark']).optional(),
     font: z.enum(['literary', 'geometric', 'editorial', 'hyperlegible']).optional(),
     density: z.enum(['compact', 'regular', 'comfy']).optional(),

@@ -28,7 +28,7 @@ export const users = sqliteTable('users', {
   targetSittingId: text('target_sitting_id'), // 'host-2026' etc.
   // Coach + theme prefs (mirror Zustand stores; DB is the source of truth)
   coach: text('coach', { enum: ['kompis', 'professor', 'taktiker'] }).default('taktiker'),
-  palette: text('palette', { enum: ['sand', 'sage', 'ink', 'rose'] }).default('sand'),
+  palette: text('palette', { enum: ['sand', 'sage', 'ink', 'rose', 'spalt'] }).default('sand'),
   mode: text('mode', { enum: ['light', 'dark'] }).default('light'),
   font: text('font', {
     enum: ['literary', 'geometric', 'editorial', 'hyperlegible'],
