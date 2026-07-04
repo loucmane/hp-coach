@@ -53,9 +53,12 @@ type Props = {
    *  empty placeholder while stats are loading or the worker hasn't
    *  rolled out the field yet. */
   days: readonly AttemptsDailyBucket[] | null | undefined
+  /** Render without the Eyebrow/legend header row — for hosts that
+   *  already provide the section title (the M3 margin rail). */
+  bare?: boolean
 }
 
-export function ConsistencyHeat({ days }: Props) {
+export function ConsistencyHeat({ days, bare }: Props) {
   // Use only the last TOTAL_DAYS entries; if we get more from a
   // future schema bump, trim from the head (oldest entries dropped).
   const safeDays =
@@ -74,10 +77,12 @@ export function ConsistencyHeat({ days }: Props) {
         gap: 14,
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-        <Eyebrow>Närvaro · senaste 12 veckorna</Eyebrow>
-        <Legend />
-      </div>
+      {!bare && (
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+          <Eyebrow>Närvaro · senaste 12 veckorna</Eyebrow>
+          <Legend />
+        </div>
+      )}
 
       {safeDays ? <MonthLabels days={safeDays} /> : null}
 
@@ -164,7 +169,6 @@ function HalfGrid({
           // as a smell but here every cell IS its position.
           return (
             <span
-              // biome-ignore lint/suspicious/noArrayIndexKey: position-as-key intentional
               key={`empty-${col}-${row}-${half}`}
               style={{
                 background: 'var(--hairline-2)',

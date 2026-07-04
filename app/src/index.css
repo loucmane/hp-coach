@@ -1391,3 +1391,18 @@ details[open] > summary .hpc-lesson-practice {
   font-size: 15px;
   line-height: 1.55;
 }
+
+/* /progress — Närvaro toggle. The compact strip breathes toward the
+ * cursor so the expand affordance is felt before it's read; the full
+ * grid replaces it in place on click (NarvaroBlock). */
+.hpc-heat-toggle {
+  transition: transform 0.25s ease;
+  transform-origin: left top;
+}
+.hpc-heat-toggle[aria-expanded='false']:hover {
+  transform: scale(1.04);
+}
+.hpc-heat-toggle:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 4px;
+}
