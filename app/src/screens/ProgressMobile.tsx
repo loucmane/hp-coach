@@ -1,602 +1,661 @@
-// /progress — Framsteg, redesigned for the Phase B2 score model.
+// /progress — Framsteg, rebuilt to the M3 "Rapporten" composition the
+// owner picked from /progress-bakeoff (2026-07-04), with two grafts:
 //
-// The deliberate-practice composition:
-//   1. PROJECTED TOTAL — the hero number. "1.62 / 2.00" reads as a
-//      grade card cover, not a dashboard chip.
-//   2. HALVES — verbal · quant, two quiet subscores under the hero.
-//   3. PER-SECTION TABLE — every section as a row: letters · score ·
-//      trend · confidence · last-touched. The user scans this to find
-//      where to deliberately practice next.
-//   4. FOKUS — the top 1-3 sections ranked by weakness. Concrete
-//      drill-this-next recommendations. Skipped when no signal.
-//   5. AKTIVITET — existing streak, drills, mistakes stats preserved
-//      lower in the page (they're real, just not the hero anymore).
+//   FRAMSTEG   hero prognosis (1,41 av 2,0) + Variant B's written
+//              paragraph instead of a stat row — the week narrated:
+//              delta, volume, accuracy, streak, halves comparison and
+//              which sections carry the gap to 1,8. Every clause is
+//              data-gated so a sparse week degrades to shorter prose,
+//              never to fabricated numbers.
+//   12 V       prognosis sparkline against the 1,8 goal line, from
+//              the rolling weekly buckets.
+//   SEKTIONER  every section as a flat ledger row (home-trap idiom):
+//              tag · score · ±band · trend arrow · attempts + trust.
+//              Rows link to the section lesson.
+//   NÄRVARO    compact 12-week heat strip that EXPANDS on interaction
+//              (owner request) into the full ConsistencyHeat — month
+//              labels, verbal/quant split, per-day tooltips.
+//   FOKUS      top-3 weakness ranking as numbered plan items with
+//              drill / lesson actions.
+//   REPETITION quiet mono ledger line: queue + lifetime volume.
 //
-// All values come from /api/me/stats. The bySection block is the new
-// data; lib/scoring.ts turns it into the grades / trends / weakness
-// ranking rendered here.
+// All numbers derive from /api/me/stats via lib/scoring.ts. Swedish
+// comma-decimals throughout (formatScoreSv precedent from M3H).
 
 import { Link } from '@tanstack/react-router'
+import { type ReactNode, useMemo, useState } from 'react'
 
-import type { Stats } from '@/api/hooks/useStats'
-import { Eyebrow, Hairline, Mono } from '@/components/primitives'
+import type { Stats, WeeklyBucket } from '@/api/hooks/useStats'
+import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { ConsistencyHeat } from '@/components/progress/ConsistencyHeat'
-import { TrendChart } from '@/components/progress/TrendChart'
 import { SECTION_KEYS, type Section } from '@/data/questions'
+import { useViewport } from '@/hooks/useViewport'
 import {
   computeProjected,
+  computeProjectedDelta,
   computeSectionScore,
-  formatBand,
-  formatScore,
-  formatSwedishDateShort,
-  formatTrend,
-  isoWeek,
+  formatDeltaSv,
   rankWeakness,
   type SectionScore,
   scoreBand,
+  weeklyScore,
 } from '@/lib/scoring'
+import { useDaysRemaining, useSitting } from '@/stores/examStore'
 
 type ProgressMobileProps = {
   stats?: Stats
   loading?: boolean
 }
 
+/** `1,41` — two-decimal Swedish comma form. /progress is the page
+ *  where precision matters (the home compass rounds to one). */
+function fmtSv(score: number | null): string {
+  return score == null ? '—' : score.toFixed(2).replace('.', ',')
+}
+
+const CONF_SV = { low: 'låg', medium: 'medel', high: 'hög' } as const
+
 export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
-  // Derived state — only meaningful when stats has landed.
-  const scores: SectionScore[] = stats?.bySection
-    ? SECTION_KEYS.map((section) => computeSectionScore(section, stats.bySection[section]))
-    : []
+  const viewport = useViewport()
+  const days = useDaysRemaining()
+  const sitting = useSitting()
+
+  const scores: SectionScore[] = useMemo(
+    () =>
+      stats?.bySection
+        ? SECTION_KEYS.map((section) => computeSectionScore(section, stats.bySection[section]))
+        : [],
+    [stats],
+  )
   const projected = stats ? computeProjected(scores) : null
+  const delta = stats ? computeProjectedDelta(stats.bySection) : null
   const weak = stats ? rankWeakness(scores).slice(0, 3) : []
 
-  const hasWeekly = (stats?.weekly?.length ?? 0) > 0
   return (
     <div
-      style={{
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: 'clamp(28px, 2vw + 20px, 56px) clamp(20px, 4vw, 56px) var(--frame-tabbar)',
-        overflowY: 'auto',
-        color: 'var(--ink)',
-      }}
+      className="hpc-m3-page"
+      style={{ height: '100%', overflowY: 'auto', width: '100%', color: 'var(--ink)' }}
     >
-      <Mono>FRAMSTEG</Mono>
-
-      {/* Hero band — projected total LEFT, verbal/quant halves on the
-       *  right at reader/studio. At phone the halves stack underneath. */}
       <div
-        style={{
-          marginTop: 18,
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1fr)',
-          gap: 32,
-        }}
-        className="hpc-progress-hero-grid"
+        className="hpc-m3-frame"
+        style={{ paddingBottom: viewport === 'phone' ? 'var(--frame-tabbar)' : 120 }}
       >
-        <ProjectedHero projected={projected?.total ?? null} loading={loading} />
-        <Halves
-          verbal={projected?.verbal ?? null}
-          quant={projected?.quant ?? null}
-          loading={loading}
-        />
+        {/* ── Framsteg — hero + the written week ─────────────────── */}
+        <DrillRailSection
+          meta={
+            <>
+              <strong>Framsteg</strong>
+              {days} dagar · {sitting.label.toLowerCase()}
+            </>
+          }
+          delay={0}
+        >
+          <h1 className="hpc-m3-display" style={{ marginTop: 0 }}>
+            <span data-testid="progress-projected">
+              {loading ? '—' : fmtSv(projected?.total ?? null)}
+            </span>
+            <span style={{ fontSize: '0.45em', color: 'var(--muted)' }}> av 2,0</span>
+          </h1>
+          <PrognosParagraph stats={stats} projected={projected} delta={delta} scores={scores} />
+        </DrillRailSection>
+
+        {/* ── Prognos över tid — sparkline vs the goal ────────────── */}
+        {stats && countScoredWeeks(stats.weekly) >= 2 && (
+          <DrillRailSection
+            meta={
+              <>
+                <strong>{stats.weekly.length} v</strong>mot 1,8
+              </>
+            }
+            delay={60}
+          >
+            <h2 className="hpc-m3-h">Prognos över tid</h2>
+            <Sparkline weekly={stats.weekly} />
+          </DrillRailSection>
+        )}
+
+        {/* ── Sektioner — the ledger ──────────────────────────────── */}
+        <DrillRailSection meta="Sektioner" delay={120}>
+          <h2 className="hpc-m3-h">Var poängen finns</h2>
+          {loading ? (
+            <MonoNote>laddar…</MonoNote>
+          ) : scores.length === 0 ? (
+            <MonoNote>inga övningar än</MonoNote>
+          ) : (
+            <div>
+              {scores.map((s) => (
+                <SectionRow key={s.section} s={s} />
+              ))}
+            </div>
+          )}
+        </DrillRailSection>
+
+        {/* ── Närvaro — compact strip, expands on interaction ─────── */}
+        <DrillRailSection meta="Närvaro" delay={180}>
+          <h2 className="hpc-m3-h">Senaste 12 veckorna</h2>
+          <NarvaroBlock stats={stats} />
+        </DrillRailSection>
+
+        {/* ── Fokus — drill this next ─────────────────────────────── */}
+        {weak.length > 0 && (
+          <DrillRailSection meta="Fokus" delay={240}>
+            <div>
+              {weak.map((s, i) => (
+                <FokusItem key={s.section} s={s} index={i} />
+              ))}
+            </div>
+          </DrillRailSection>
+        )}
+
+        {/* ── Repetition + lifetime ledger ────────────────────────── */}
+        <DrillRailSection meta="Repetition" delay={300}>
+          <MonoNote>
+            {stats == null ? (
+              '—'
+            ) : (
+              <>
+                {stats.mistakes.due} att repetera nu · {stats.mistakes.active} aktiva i kön ·{' '}
+                {stats.mistakes.resolved} utlärda
+              </>
+            )}
+          </MonoNote>
+          {stats != null && (
+            <MonoNote style={{ marginTop: 6 }}>
+              {stats.attempts.total} frågor totalt · {stats.attempts.today} idag ·{' '}
+              {stats.drills.thisWeek} pass denna vecka
+            </MonoNote>
+          )}
+        </DrillRailSection>
       </div>
+    </div>
+  )
+}
 
-      <Hairline style={{ marginTop: 36, marginBottom: 24 }} />
+// ── The written week (Variant B graft) ─────────────────────────────
+//
+// Composes the hero paragraph from live data, clause by clause. Every
+// clause has a presence condition; the sentence contracts gracefully
+// instead of printing null-shaped filler.
 
-      <ConsistencyHeat days={stats?.attemptsDaily} />
+function PrognosParagraph({
+  stats,
+  projected,
+  delta,
+  scores,
+}: {
+  stats: Stats | undefined
+  projected: { verbal: number | null; quant: number | null; total: number | null } | null
+  delta: number | null
+  scores: SectionScore[]
+}) {
+  if (!stats) return null
 
-      <Hairline style={{ marginTop: 32, marginBottom: 24 }} />
+  if (projected?.total == null) {
+    return (
+      <Paragraph>Ingen prognos än — svara på några frågor så börjar den här sidan leva.</Paragraph>
+    )
+  }
 
-      <WeeklyMasthead stats={stats} />
+  // Sentence 1 — the week: delta + volume + accuracy + streak.
+  const week = stats.attempts.thisWeek
+  const acc = stats.accuracy7d
+  const streak = stats.streakDays
+  const deltaRounded = delta == null ? null : Math.round(delta * 10) / 10
+  const lead =
+    deltaRounded == null
+      ? 'Den här veckan'
+      : deltaRounded > 0
+        ? 'Prognosen steg '
+        : deltaRounded < 0
+          ? 'Prognosen föll '
+          : 'Prognosen låg still den här veckan'
+  const tailBits: string[] = []
+  if (week > 0) {
+    tailBits.push(
+      acc == null
+        ? `${week} frågor`
+        : `${week} frågor med ${Math.round(acc * 100)} % träffsäkerhet`,
+    )
+  }
+  if (streak > 1) tailBits.push(`${streak}:e dagen i rad`)
+  const tail = tailBits.join(', ')
 
-      {/* Two-column band: trend chart (wide) + section table (narrow)
-       *  at studio width. Stacks vertically at reader/phone so the SVG
-       *  can use full canvas width when there's less space. */}
-      <div
-        style={{
-          marginTop: 24,
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1fr)',
-          gap: 'clamp(24px, 3vw, 40px)',
-        }}
-        className="hpc-progress-data-grid"
-      >
-        <div>{hasWeekly && stats && <TrendChart weekly={stats.weekly} />}</div>
-        <div>
-          <Eyebrow>Sektioner</Eyebrow>
-          <SectionTable scores={scores} loading={loading} />
-        </div>
-      </div>
-
-      {weak.length > 0 && (
+  // Sentence 2 — the halves. Only when both exist.
+  const { verbal, quant } = projected
+  let halves: ReactNode = null
+  if (verbal != null && quant != null) {
+    const diff = quant - verbal
+    halves =
+      Math.abs(diff) >= 0.03 ? (
         <>
-          <Hairline style={{ marginTop: 36, marginBottom: 24 }} />
-          <Eyebrow>Fokus — drilla detta härnäst</Eyebrow>
-          <FokusList weak={weak} />
+          {diff > 0 ? 'Kvant' : 'Verbal'} (<Strong>{fmtSv(diff > 0 ? quant : verbal)}</Strong>) drar
+          ifrån {diff > 0 ? 'verbal' : 'kvant'} (<Strong>{fmtSv(diff > 0 ? verbal : quant)}</Strong>
+          )
+        </>
+      ) : (
+        <>
+          Verbal (<Strong>{fmtSv(verbal)}</Strong>) och kvant (<Strong>{fmtSv(quant)}</Strong>)
+          följs åt
+        </>
+      )
+  }
+
+  // Sentence 3 — who carries the gap to 1,8. The two lowest scored
+  // sections with real attempts; skipped once the goal is reached.
+  const scored = scores
+    .filter((s) => s.score != null && s.attempts90d > 0)
+    .sort((a, b) => (a.score ?? 2) - (b.score ?? 2))
+  const gap =
+    projected.total < 1.8 && scored.length >= 2 ? (
+      <>
+        ; gapet upp till målet 1,8 bärs framför allt av{' '}
+        <Strong>
+          {scored[0].section} {fmtSv(scored[0].score)}
+        </Strong>{' '}
+        och{' '}
+        <Strong>
+          {scored[1].section} {fmtSv(scored[1].score)}
+        </Strong>
+      </>
+    ) : null
+
+  return (
+    <Paragraph data-testid="progress-prose">
+      {lead}
+      {deltaRounded != null && deltaRounded !== 0 && <Strong>{formatDeltaSv(deltaRounded)}</Strong>}
+      {deltaRounded != null && deltaRounded !== 0 && ' den här veckan'}
+      {tail && (deltaRounded == null ? ': ' : ' — ')}
+      {tail}.{' '}
+      {halves != null && (
+        <>
+          {halves}
+          {gap}.
         </>
       )}
-
-      <Hairline style={{ marginTop: 36, marginBottom: 24 }} />
-
-      <Eyebrow>Aktivitet</Eyebrow>
-      <StatList
-        rows={[
-          { label: 'besvarade idag', value: stats?.attempts.today },
-          { label: 'denna vecka', value: stats?.attempts.thisWeek },
-          { label: 'totalt', value: stats?.attempts.total },
-          { label: 'övningar denna vecka', value: stats?.drills.thisWeek },
-          { label: 'streak', value: stats == null ? null : `${stats.streakDays} d` },
-          {
-            label: 'rätt senaste veckan',
-            value: stats?.accuracy7d == null ? null : `${Math.round(stats.accuracy7d * 100)} %`,
-          },
-        ]}
-        loading={loading}
-      />
-
-      <Hairline style={{ marginTop: 24, marginBottom: 24 }} />
-
-      <Eyebrow>Repetition</Eyebrow>
-      <StatList
-        rows={[
-          { label: 'att repetera nu', value: stats?.mistakes.due },
-          { label: 'aktiva i kön', value: stats?.mistakes.active },
-          { label: 'utlärda', value: stats?.mistakes.resolved },
-        ]}
-        loading={loading}
-      />
-    </div>
+    </Paragraph>
   )
 }
 
-// ── Projected hero ────────────────────────────────────────────────
-
-function ProjectedHero({ projected, loading }: { projected: number | null; loading?: boolean }) {
-  return (
-    <div
-      style={{
-        marginTop: 18,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        gap: 6,
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'baseline',
-          gap: 12,
-          fontFamily: 'var(--font-display)',
-          letterSpacing: '-0.02em',
-        }}
-      >
-        <span
-          data-testid="progress-projected"
-          style={{
-            fontSize: 'clamp(64px, 12vw, 112px)',
-            lineHeight: 1,
-            color: 'var(--ink)',
-            fontVariantNumeric: 'tabular-nums',
-          }}
-        >
-          {loading ? '—' : formatScore(projected)}
-        </span>
-        <span
-          style={{
-            fontSize: 'clamp(20px, 2vw + 8px, 28px)',
-            color: 'var(--muted)',
-            fontVariantNumeric: 'tabular-nums',
-          }}
-        >
-          / 2.00
-        </span>
-      </div>
-      <Mono>Projicerat resultat</Mono>
-    </div>
-  )
-}
-
-function Halves({
-  verbal,
-  quant,
-  loading,
-}: {
-  verbal: number | null
-  quant: number | null
-  loading?: boolean
-}) {
-  return (
-    <div
-      style={{
-        marginTop: 28,
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        columnGap: 36,
-        maxWidth: 360,
-      }}
-    >
-      <HalfCell label="Verbal" value={loading ? null : verbal} />
-      <HalfCell label="Kvant" value={loading ? null : quant} />
-    </div>
-  )
-}
-
-function HalfCell({ label, value }: { label: string; value: number | null }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-      <Mono>{label}</Mono>
-      <span
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(28px, 3vw + 12px, 44px)',
-          lineHeight: 1,
-          letterSpacing: '-0.015em',
-          color: 'var(--ink)',
-          fontVariantNumeric: 'tabular-nums',
-        }}
-      >
-        {formatScore(value)}
-      </span>
-    </div>
-  )
-}
-
-// ── Per-section table ─────────────────────────────────────────────
-
-function SectionTable({ scores, loading }: { scores: SectionScore[]; loading?: boolean }) {
-  if (loading) return <EmptyText>Laddar…</EmptyText>
-  if (scores.length === 0) return <EmptyText>Inga övningar än.</EmptyText>
-  return (
-    <div style={{ marginTop: 14 }}>
-      {scores.map((s, i) => (
-        <SectionRow key={s.section} s={s} isFirst={i === 0} />
-      ))}
-    </div>
-  )
-}
-
-function SectionRow({ s, isFirst }: { s: SectionScore; isFirst: boolean }) {
-  const hasAttempts = s.attempts90d > 0
-  const trendColor =
-    s.trend == null
-      ? 'var(--muted)'
-      : s.trend > 0.05
-        ? 'var(--ink)'
-        : s.trend < -0.05
-          ? 'var(--accent)'
-          : 'var(--muted)'
-  const stale = hasAttempts && s.daysSinceLastAttempt >= 14
-  return (
-    <Link
-      to="/lektion"
-      search={{ section: s.section }}
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '52px minmax(60px, 1fr) auto auto',
-        columnGap: 16,
-        alignItems: 'baseline',
-        paddingBlock: 14,
-        borderTop: isFirst ? 'none' : '1px solid var(--hairline)',
-        textDecoration: 'none',
-        color: 'inherit',
-        opacity: hasAttempts ? 1 : 0.55,
-      }}
-      aria-label={`Sektion ${s.section}, score ${formatScore(s.score)}`}
-    >
-      <span
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(22px, 1.5vw + 12px, 30px)',
-          lineHeight: 1,
-          letterSpacing: '-0.015em',
-          color: 'var(--ink)',
-        }}
-      >
-        {s.section}
-      </span>
-      <span
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 14,
-          color: 'var(--ink-2)',
-          lineHeight: 1.4,
-        }}
-      >
-        {hasAttempts ? (
-          <>
-            <span style={{ color: 'var(--muted)' }}>{s.attempts90d} försök</span>
-            {stale && (
-              <span style={{ color: 'var(--accent)' }}>
-                {' · '}
-                {s.daysSinceLastAttempt} dagar sedan
-              </span>
-            )}
-            {s.confidence === 'low' && hasAttempts && (
-              <span style={{ color: 'var(--muted)' }}> · liten provstorlek</span>
-            )}
-          </>
-        ) : (
-          <span style={{ color: 'var(--muted)' }}>Inget än</span>
-        )}
-      </span>
-      <span
-        style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: 12,
-          letterSpacing: '0.06em',
-          color: trendColor,
-          fontVariantNumeric: 'tabular-nums',
-        }}
-      >
-        {formatTrend(s.trend)}
-      </span>
-      <span
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-end',
-          gap: 2,
-        }}
-      >
-        <span
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(20px, 1.4vw + 11px, 26px)',
-            color: 'var(--ink)',
-            fontVariantNumeric: 'tabular-nums',
-            letterSpacing: '-0.01em',
-            lineHeight: 1,
-          }}
-        >
-          {formatScore(s.score)}
-        </span>
-        {/* ±band — 95% Wald CI half-width on the 0-2 grade scale, paired
-         *  with the sample size. n=5 reads with visibly wider band than
-         *  n=80. Hidden when there's no signal (band null) or fewer than
-         *  2 attempts where the interval is undefined. */}
-        {(() => {
-          const band = scoreBand(s.score, s.attempts90d)
-          if (band == null) return null
-          return (
-            <span
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 10.5,
-                letterSpacing: '0.06em',
-                color: 'var(--muted)',
-                fontVariantNumeric: 'tabular-nums',
-              }}
-              data-testid={`progress-band-${s.section}`}
-            >
-              {formatBand(band)} · n={s.attempts90d}
-            </span>
-          )
-        })()}
-      </span>
-    </Link>
-  )
-}
-
-// ── Fokus list ────────────────────────────────────────────────────
-
-function FokusList({ weak }: { weak: SectionScore[] }) {
-  return (
-    <ol style={{ listStyle: 'none', padding: 0, marginTop: 14 }}>
-      {weak.map((s, idx) => (
-        <li
-          key={s.section}
-          style={{
-            display: 'flex',
-            alignItems: 'baseline',
-            gap: 16,
-            paddingBlock: 12,
-            borderTop: idx === 0 ? 'none' : '1px solid var(--hairline)',
-          }}
-        >
-          <span
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 11,
-              letterSpacing: '0.14em',
-              color: 'var(--muted)',
-              minWidth: 24,
-              fontVariantNumeric: 'tabular-nums',
-            }}
-          >
-            {String(idx + 1).padStart(2, '0')}
-          </span>
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <span
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(16px, 1vw + 12px, 19px)',
-                color: 'var(--ink)',
-                lineHeight: 1.4,
-              }}
-            >
-              {reasonFor(s)}
-            </span>
-            <div style={{ display: 'flex', gap: 16, fontSize: 12, color: 'var(--muted)' }}>
-              <Link to="/drill" search={drillSearchFor(s.section)} style={drillActionStyle}>
-                Öva {s.section} →
-              </Link>
-              <Link
-                to="/lektion"
-                search={{ section: s.section }}
-                style={{ ...drillActionStyle, color: 'var(--muted)' }}
-              >
-                Läs lektion
-              </Link>
-            </div>
-          </div>
-        </li>
-      ))}
-    </ol>
-  )
-}
-
-const drillActionStyle = {
-  fontFamily: 'var(--font-mono)' as const,
-  fontSize: 11,
-  letterSpacing: '0.14em',
-  textTransform: 'uppercase' as const,
-  color: 'var(--ink)',
-  textDecoration: 'none' as const,
-  borderBottom: '1px solid var(--hairline)',
-  paddingBottom: 2,
-}
-
-// DTK is not yet drillable (image pipeline pending). Other sections
-// fall through to /drill?section=X directly.
-function drillSearchFor(section: Section): { section?: Exclude<Section, 'DTK'> } {
-  return section === 'DTK' ? {} : { section: section as Exclude<Section, 'DTK'> }
-}
-
-function reasonFor(s: SectionScore): string {
-  const score = formatScore(s.score)
-  if (s.trend != null && s.trend < -0.1) {
-    return `${s.section} — ${score}, sjunker denna vecka (${formatTrend(s.trend)})`
-  }
-  if (s.daysSinceLastAttempt >= 14 && s.score != null) {
-    return `${s.section} — ${score}, inte rörd på ${s.daysSinceLastAttempt} dagar`
-  }
-  return `${s.section} — ${score}, lägsta sektionen just nu`
-}
-
-// ── Bottom stat groups (existing) ─────────────────────────────────
-
-type Row = { label: string; value: number | string | null | undefined }
-
-function StatList({ rows, loading }: { rows: Row[]; loading?: boolean }) {
-  return (
-    <div
-      style={{
-        marginTop: 14,
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-        columnGap: 24,
-        rowGap: 10,
-      }}
-    >
-      {rows.map((r) => (
-        <div
-          key={r.label}
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'baseline',
-            fontFamily: 'var(--font-display)',
-            fontSize: 16,
-            color: 'var(--ink-2)',
-          }}
-        >
-          <span>{r.label}</span>
-          <span style={{ color: 'var(--ink)', fontVariantNumeric: 'tabular-nums' }}>
-            {loading || r.value == null ? '—' : r.value}
-          </span>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-// ── Weekly masthead — "Vecka N · DD mån – DD mån" + summary chips ─
-
-function WeeklyMasthead({ stats }: { stats: Stats | undefined }) {
-  const today = new Date()
-  const weekNum = isoWeek(today)
-  // Sunday of this week → Saturday next. Anchor to today; the original
-  // design used Monday–Sunday and we follow Sweden's calendar
-  // convention. JS Date.getDay() returns 0 = Sunday, so we step back
-  // (dayOfWeek === 0 ? 6 : dayOfWeek - 1) days to land on the prior
-  // Monday.
-  const dayOfWeek = today.getDay()
-  const stepBack = dayOfWeek === 0 ? 6 : dayOfWeek - 1
-  const monday = new Date(today)
-  monday.setDate(today.getDate() - stepBack)
-  const sunday = new Date(monday)
-  sunday.setDate(monday.getDate() + 6)
-  const range = `${formatSwedishDateShort(monday)} – ${formatSwedishDateShort(sunday)}`
-  return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        gap: 16,
-        flexWrap: 'wrap',
-      }}
-    >
-      <div>
-        <Mono>Veckorapport</Mono>
-        <h2
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(24px, 1.6vw + 14px, 32px)',
-            lineHeight: 1.1,
-            letterSpacing: '-0.015em',
-            color: 'var(--ink)',
-            margin: '8px 0 0 0',
-          }}
-        >
-          Vecka {weekNum} · {range}
-        </h2>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          gap: 20,
-          flexWrap: 'wrap',
-          fontVariantNumeric: 'tabular-nums',
-        }}
-      >
-        <SummaryChip
-          label="Frågor"
-          value={stats?.attempts.thisWeek != null ? String(stats.attempts.thisWeek) : '—'}
-        />
-        <SummaryChip
-          label="Träffsäkerhet"
-          value={stats?.accuracy7d == null ? '—' : `${Math.round(stats.accuracy7d * 100)}%`}
-        />
-        <SummaryChip label="Streak" value={stats == null ? '—' : `${stats.streakDays} d`} />
-      </div>
-    </div>
-  )
-}
-
-function SummaryChip({ label, value }: { label: string; value: string }) {
-  return (
-    <div style={{ textAlign: 'right' }}>
-      <Mono>{label}</Mono>
-      <div
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontWeight: 500,
-          fontSize: 'clamp(18px, 1vw + 12px, 22px)',
-          fontVariantNumeric: 'tabular-nums',
-          color: 'var(--ink)',
-          marginTop: 2,
-        }}
-      >
-        {value}
-      </div>
-    </div>
-  )
-}
-
-function EmptyText({ children }: { children: React.ReactNode }) {
+function Paragraph({ children, ...rest }: { children: ReactNode; 'data-testid'?: string }) {
   return (
     <p
+      {...rest}
       style={{
-        marginTop: 12,
         fontFamily: 'var(--font-display)',
-        fontSize: 16,
-        color: 'var(--muted)',
+        fontSize: 17,
+        lineHeight: 1.6,
+        color: 'var(--ink-2)',
+        maxWidth: '58ch',
+        margin: '10px 0 0',
       }}
     >
       {children}
     </p>
   )
+}
+
+function Strong({ children }: { children: ReactNode }) {
+  return <strong style={{ color: 'var(--ink)', fontWeight: 600 }}>{children}</strong>
+}
+
+// ── Sparkline — weekly prognosis vs the 1,8 goal ───────────────────
+
+const GOAL = 1.8
+
+function countScoredWeeks(weekly: WeeklyBucket[]): number {
+  return weekly.reduce((n, b) => (weeklyScore(b) == null ? n : n + 1), 0)
+}
+
+function Sparkline({ weekly }: { weekly: WeeklyBucket[] }) {
+  // Inset plot area: gridline labels live left of PL, the end-value
+  // label right of PR — nothing can clip against the viewBox edge.
+  const W = 560
+  const H = 104
+  const PL = 30
+  const PR = 44
+  const PT = 8
+  const PB = 8
+  const pts = weekly.map(weeklyScore)
+  const real = pts.filter((v): v is number => v != null)
+  const min = Math.min(1.0, ...real) - 0.1
+  const max = 2.05
+  const x = (i: number) =>
+    weekly.length > 1 ? PL + (i / (weekly.length - 1)) * (W - PL - PR) : W / 2
+  const y = (v: number) => H - PB - ((v - min) / (max - min)) * (H - PT - PB)
+
+  // One series. Weeks with data connect solid; a week without practice
+  // is bridged with a muted dashed segment (the honest "hole" in the
+  // earlier cut read as a second line — owner feedback 2026-07-04).
+  let solid = ''
+  let pen = false
+  const bridges: string[] = []
+  let prevReal = -1
+  pts.forEach((v, i) => {
+    if (v == null) {
+      pen = false
+      return
+    }
+    solid += `${pen ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)} `
+    if (!pen && prevReal >= 0) {
+      const pv = pts[prevReal]
+      if (pv != null) {
+        bridges.push(
+          `M${x(prevReal).toFixed(1)},${y(pv).toFixed(1)} L${x(i).toFixed(1)},${y(v).toFixed(1)}`,
+        )
+      }
+    }
+    pen = true
+    prevReal = i
+  })
+  const lastIdx = pts.reduce<number>((acc, v, i) => (v == null ? acc : i), -1)
+  const last = lastIdx >= 0 ? pts[lastIdx] : null
+
+  // Scale anchors — where between 0,0 and 2,0 the curve sits.
+  const ticks = [1.0, 1.5, 2.0].filter((t) => t > min && t <= max)
+  const hasGap = pts.some((v, i) => v == null && i > 0 && i < pts.length - 1)
+
+  const monoText = {
+    fontSize: '9.5',
+    fill: 'var(--muted-2)',
+    fontFamily: 'var(--font-mono)',
+  } as const
+
+  return (
+    <div>
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        style={{ width: '100%', maxWidth: W, display: 'block' }}
+        role="img"
+        aria-label={`Prognos per vecka mot målet 1,8${last != null ? `, senaste ${fmtSv(last)}` : ''}`}
+      >
+        {ticks.map((t) => (
+          <g key={t}>
+            <line x1={PL} y1={y(t)} x2={W - PR} y2={y(t)} stroke="var(--hairline-2)" />
+            <text {...monoText} x={PL - 6} y={y(t) + 3} textAnchor="end">
+              {t.toFixed(1).replace('.', ',')}
+            </text>
+          </g>
+        ))}
+        <line
+          x1={PL}
+          y1={y(GOAL)}
+          x2={W - PR}
+          y2={y(GOAL)}
+          stroke="var(--hairline)"
+          strokeDasharray="4 4"
+        />
+        {bridges.map((d) => (
+          <path
+            key={d}
+            d={d}
+            fill="none"
+            stroke="var(--muted-2)"
+            strokeWidth={1.25}
+            strokeDasharray="2 4"
+          />
+        ))}
+        <path d={solid.trim()} fill="none" stroke="var(--accent)" strokeWidth={1.75} />
+        {last != null && <circle cx={x(lastIdx)} cy={y(last)} r={3} fill="var(--accent)" />}
+        {/* Labels paint last with a page-colored halo so no line can
+         *  run through the glyphs. */}
+        {last != null && (
+          <text
+            x={x(lastIdx) + 8}
+            y={y(last) + 3.5}
+            fontSize="11"
+            fontWeight={600}
+            fill="var(--accent)"
+            fontFamily="var(--font-mono)"
+            stroke="var(--bg)"
+            strokeWidth={4}
+            paintOrder="stroke"
+          >
+            {fmtSv(last)}
+          </text>
+        )}
+        <text
+          {...monoText}
+          x={W - PR - 4}
+          y={y(GOAL) - 6}
+          textAnchor="end"
+          fontSize="10"
+          stroke="var(--bg)"
+          strokeWidth={4}
+          paintOrder="stroke"
+        >
+          mål 1,8
+        </text>
+      </svg>
+      <p style={{ ...mono11, margin: '8px 0 0' }}>
+        poäng per vecka, senaste {weekly.length} veckorna
+        {hasGap && ' · streckat = vecka utan övning'}
+      </p>
+    </div>
+  )
+}
+
+// ── Section ledger row ─────────────────────────────────────────────
+
+function SectionRow({ s }: { s: SectionScore }) {
+  const hasAttempts = s.attempts90d > 0
+  const band = scoreBand(s.score, s.attempts90d)
+  const arrow = s.trend == null ? '' : s.trend > 0.05 ? '↗' : s.trend < -0.05 ? '↘' : '→'
+  const stale = hasAttempts && s.daysSinceLastAttempt >= 14
+  return (
+    <Link
+      to="/lektion"
+      search={{ section: s.section }}
+      className="hpc-m3-trap"
+      data-testid={`progress-section-${s.section}`}
+      aria-label={`Sektion ${s.section}, poäng ${fmtSv(s.score)}`}
+      style={{ textDecoration: 'none', color: 'inherit', opacity: hasAttempts ? 1 : 0.55 }}
+    >
+      <span className="hpc-m3-trap-t">
+        <span className="hpc-m3-tag">{s.section}</span>
+        <span style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 500 }}>
+          {fmtSv(s.score)}
+        </span>
+        {band != null && (
+          <span style={{ ...mono11, marginLeft: 8 }} data-testid={`progress-band-${s.section}`}>
+            ±{band.toFixed(2).replace('.', ',')}
+          </span>
+        )}
+        {arrow && (
+          <span
+            style={{
+              marginLeft: 10,
+              color: arrow === '↘' ? 'var(--bad)' : 'var(--ink-2)',
+              fontSize: 13,
+            }}
+          >
+            {arrow}
+          </span>
+        )}
+      </span>
+      <span className="hpc-m3-trap-n">
+        {hasAttempts ? (
+          <>
+            {s.attempts90d} försök · {CONF_SV[s.confidence]}
+            {stale && (
+              <span style={{ color: 'var(--accent)' }}> · {s.daysSinceLastAttempt} d sedan</span>
+            )}
+          </>
+        ) : (
+          'inget än'
+        )}
+      </span>
+    </Link>
+  )
+}
+
+// ── Närvaro — compact strip that grows on interaction ──────────────
+//
+// Idle: a 12×7 single-intensity strip, streak line beneath. Click (or
+// Enter) swells it into the full ConsistencyHeat — month labels,
+// verbal/quant split, per-day tooltips — rendered `bare` because the
+// rail already owns the title. The owner asked for exactly this
+// gesture: "the Närvaro part gets larger when you interact with it."
+
+const WEEKS = 12
+const DAYS = WEEKS * 7
+
+function NarvaroBlock({ stats }: { stats: Stats | undefined }) {
+  const [open, setOpen] = useState(false)
+  const days = stats?.attemptsDaily
+  if (!days || days.length === 0) return <MonoNote>väntar på data</MonoNote>
+
+  const window = days.slice(-DAYS)
+  const padded = [
+    ...Array.from({ length: Math.max(0, DAYS - window.length) }, () => 0),
+    ...window.map((d) => d.n),
+  ]
+  const longest = longestStreak(padded)
+  const current = stats?.streakDays ?? 0
+
+  // The expanded grid renders OUTSIDE the toggle — ConsistencyHeat's
+  // day cells are buttons themselves, and nesting them inside the
+  // toggle button would be invalid HTML (and every tooltip hover a
+  // collapse hazard). It also carries its own streak summary, so the
+  // compact line only renders alongside the compact strip.
+  return (
+    <div>
+      {open && <ConsistencyHeat days={window} bare />}
+      <button
+        type="button"
+        className="hpc-heat-toggle"
+        aria-expanded={open}
+        data-testid="progress-heat-toggle"
+        onClick={() => setOpen(!open)}
+        style={{
+          all: 'unset',
+          cursor: 'pointer',
+          display: 'block',
+          width: '100%',
+          boxSizing: 'border-box',
+        }}
+      >
+        {!open && (
+          <div style={{ display: 'flex', gap: 3 }} aria-hidden>
+            {Array.from({ length: WEEKS }, (_, w) => (
+              <div
+                key={`w${String(w)}`}
+                style={{ display: 'flex', flexDirection: 'column', gap: 3 }}
+              >
+                {Array.from({ length: 7 }, (_, d) => (
+                  <span
+                    key={`w${String(w)}d${String(d)}`}
+                    style={{
+                      width: 9,
+                      height: 9,
+                      borderRadius: 1,
+                      background: RAMP[bucket(padded[w * 7 + d])],
+                      display: 'block',
+                    }}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+        <span style={{ ...mono11, display: 'inline-block', marginTop: 10, color: 'var(--accent)' }}>
+          {open ? '▴ visa mindre' : '▾ visa detalj'}
+        </span>
+      </button>
+      {!open && (
+        <p style={{ ...mono11, marginTop: 6 }}>
+          aktuell serie: {current} {current === 1 ? 'dag' : 'dagar'}
+          {longest > current ? ` (rekord ${longest})` : current > 0 ? ' (rekord)' : ''}
+        </p>
+      )}
+    </div>
+  )
+}
+
+const RAMP = [
+  'var(--hairline-2)',
+  'color-mix(in oklch, var(--accent) 22%, var(--bg))',
+  'color-mix(in oklch, var(--accent) 55%, var(--bg))',
+  'var(--accent)',
+]
+
+function bucket(n: number): number {
+  if (n <= 0) return 0
+  if (n < 5) return 1
+  if (n < 12) return 2
+  return 3
+}
+
+function longestStreak(counts: number[]): number {
+  let longest = 0
+  let run = 0
+  for (const n of counts) {
+    run = n > 0 ? run + 1 : 0
+    if (run > longest) longest = run
+  }
+  return longest
+}
+
+// ── Fokus items ────────────────────────────────────────────────────
+
+function FokusItem({ s, index }: { s: SectionScore; index: number }) {
+  const headline =
+    s.trend != null && s.trend < -0.1
+      ? `${fmtSv(s.score)} och på väg ner`
+      : s.daysSinceLastAttempt >= 14 && s.score != null
+        ? `${fmtSv(s.score)} · inte rörd på ${s.daysSinceLastAttempt} dagar`
+        : `Lägsta sektionen just nu · ${fmtSv(s.score)}`
+  return (
+    <div className="hpc-m3-plan-item">
+      <span className="hpc-m3-plan-n">{index + 1}.</span>
+      <div>
+        <div className="hpc-m3-plan-t">
+          <span className="hpc-m3-tag">{s.section}</span>
+          {headline}
+        </div>
+        <div className="hpc-m3-plan-r">
+          {s.attempts90d} försök — signalen är {CONF_SV[s.confidence]}.
+        </div>
+        <span style={{ display: 'flex', gap: 18, marginTop: 6 }}>
+          <Link to="/drill" search={drillSearchFor(s.section)} style={actionWord}>
+            öva {s.section} →
+          </Link>
+          <Link
+            to="/lektion"
+            search={{ section: s.section }}
+            style={{ ...actionWord, color: 'var(--muted-2)' }}
+          >
+            läs lektion
+          </Link>
+        </span>
+      </div>
+    </div>
+  )
+}
+
+// DTK is not yet drillable (image pipeline pending) — send it to the
+// generic drill idle instead of a broken section param.
+function drillSearchFor(section: Section): { section?: Exclude<Section, 'DTK'> } {
+  return section === 'DTK' ? {} : { section: section as Exclude<Section, 'DTK'> }
+}
+
+const actionWord = {
+  fontFamily: 'var(--font-mono)' as const,
+  fontSize: 11,
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase' as const,
+  color: 'var(--accent)',
+  textDecoration: 'none' as const,
+}
+
+// ── Shared bits ────────────────────────────────────────────────────
+
+const mono11 = {
+  fontFamily: 'var(--font-mono)' as const,
+  fontSize: 11,
+  color: 'var(--muted)',
+  fontVariantNumeric: 'tabular-nums' as const,
+}
+
+function MonoNote({ children, style }: { children: ReactNode; style?: React.CSSProperties }) {
+  return <p style={{ ...mono11, margin: 0, ...style }}>{children}</p>
 }
