@@ -312,7 +312,9 @@ function Sparkline({ weekly }: { weekly: WeeklyBucket[] }) {
   const pts = weekly.map(weeklyScore)
   const real = pts.filter((v): v is number => v != null)
   const min = Math.min(0.9, ...real) - 0.05
-  const max = 2.0
+  // Headroom above 2,0 so the goal-line label at 1,8 never rides the
+  // top edge of the viewBox.
+  const max = 2.15
   const x = (i: number) => (weekly.length > 1 ? (i / (weekly.length - 1)) * W : W / 2)
   const y = (v: number) => H - ((v - min) / (max - min)) * H
 
@@ -346,18 +348,24 @@ function Sparkline({ weekly }: { weekly: WeeklyBucket[] }) {
         stroke="var(--hairline)"
         strokeDasharray="4 4"
       />
+      <path d={path.trim()} fill="none" stroke="var(--accent)" strokeWidth={1.75} />
+      {last != null && <circle cx={x(lastIdx)} cy={y(last)} r={3} fill="var(--accent)" />}
+      {/* Label last (topmost paint order) with a page-colored halo so
+       *  neither the dashed goal line nor a curve approaching 1,8 can
+       *  run through the glyphs. */}
       <text
         x={W - 4}
-        y={y(GOAL) - 5}
+        y={y(GOAL) - 6}
         textAnchor="end"
         fontSize="10"
         fill="var(--muted-2)"
         fontFamily="var(--font-mono)"
+        stroke="var(--bg)"
+        strokeWidth={4}
+        paintOrder="stroke"
       >
         mål 1,8
       </text>
-      <path d={path.trim()} fill="none" stroke="var(--accent)" strokeWidth={1.75} />
-      {last != null && <circle cx={x(lastIdx)} cy={y(last)} r={3} fill="var(--accent)" />}
     </svg>
   )
 }

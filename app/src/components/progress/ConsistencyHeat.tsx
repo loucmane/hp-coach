@@ -84,18 +84,37 @@ export function ConsistencyHeat({ days, bare }: Props) {
         </div>
       )}
 
-      {safeDays ? <MonthLabels days={safeDays} /> : null}
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      {/* Each half wears its own name — "Verbal ↑ · Kvant ↓" in the
+       *  footer read as a cipher (owner feedback 2026-07-04). The label
+       *  column sits left of the grids; the month row is offset into
+       *  the grid column so calendar time still lines up. */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'auto minmax(0, 1fr)',
+          columnGap: 12,
+          rowGap: 6,
+          alignItems: 'center',
+        }}
+      >
+        {safeDays ? (
+          <>
+            <span />
+            <MonthLabels days={safeDays} />
+          </>
+        ) : null}
+        <HalfLabel>Verbal</HalfLabel>
         <HalfGrid days={safeDays} half="verbal" rows={HALF_ROWS} />
+        <span />
         <div style={{ height: 1, background: 'var(--hairline)', margin: '2px 0' }} />
+        <HalfLabel>Kvant</HalfLabel>
         <HalfGrid days={safeDays} half="quant" rows={HALF_ROWS} />
       </div>
 
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           fontFamily: 'var(--font-mono)',
           fontSize: 10.5,
           letterSpacing: '0.06em',
@@ -103,10 +122,29 @@ export function ConsistencyHeat({ days, bare }: Props) {
           color: 'var(--muted)',
         }}
       >
-        <span>Verbal ↑ · Kvant ↓</span>
         <span>{safeDays ? signalSummary(safeDays) : 'väntar på data'}</span>
       </div>
     </section>
+  )
+}
+
+function HalfLabel({ children }: { children: string }) {
+  return (
+    <span
+      style={{
+        fontFamily: 'var(--font-mono)',
+        fontSize: 10.5,
+        letterSpacing: '0.08em',
+        textTransform: 'uppercase',
+        color: 'var(--muted)',
+        writingMode: 'vertical-rl',
+        transform: 'rotate(180deg)',
+        textAlign: 'center',
+        justifySelf: 'center',
+      }}
+    >
+      {children}
+    </span>
   )
 }
 
