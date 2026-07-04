@@ -307,66 +307,130 @@ function countScoredWeeks(weekly: WeeklyBucket[]): number {
 }
 
 function Sparkline({ weekly }: { weekly: WeeklyBucket[] }) {
+  // Inset plot area: gridline labels live left of PL, the end-value
+  // label right of PR — nothing can clip against the viewBox edge.
   const W = 560
-  const H = 84
+  const H = 104
+  const PL = 30
+  const PR = 44
+  const PT = 8
+  const PB = 8
   const pts = weekly.map(weeklyScore)
   const real = pts.filter((v): v is number => v != null)
-  const min = Math.min(0.9, ...real) - 0.05
-  // Headroom above 2,0 so the goal-line label at 1,8 never rides the
-  // top edge of the viewBox.
-  const max = 2.15
-  const x = (i: number) => (weekly.length > 1 ? (i / (weekly.length - 1)) * W : W / 2)
-  const y = (v: number) => H - ((v - min) / (max - min)) * H
+  const min = Math.min(1.0, ...real) - 0.1
+  const max = 2.05
+  const x = (i: number) =>
+    weekly.length > 1 ? PL + (i / (weekly.length - 1)) * (W - PL - PR) : W / 2
+  const y = (v: number) => H - PB - ((v - min) / (max - min)) * (H - PT - PB)
 
-  // Empty weeks break the polyline (a flat line through a week of
-  // silence would be a lie) — restart with M after each gap.
-  let path = ''
+  // One series. Weeks with data connect solid; a week without practice
+  // is bridged with a muted dashed segment (the honest "hole" in the
+  // earlier cut read as a second line — owner feedback 2026-07-04).
+  let solid = ''
   let pen = false
+  const bridges: string[] = []
+  let prevReal = -1
   pts.forEach((v, i) => {
     if (v == null) {
       pen = false
       return
     }
-    path += `${pen ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)} `
+    solid += `${pen ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)} `
+    if (!pen && prevReal >= 0) {
+      const pv = pts[prevReal]
+      if (pv != null) {
+        bridges.push(
+          `M${x(prevReal).toFixed(1)},${y(pv).toFixed(1)} L${x(i).toFixed(1)},${y(v).toFixed(1)}`,
+        )
+      }
+    }
     pen = true
+    prevReal = i
   })
   const lastIdx = pts.reduce<number>((acc, v, i) => (v == null ? acc : i), -1)
   const last = lastIdx >= 0 ? pts[lastIdx] : null
 
+  // Scale anchors — where between 0,0 and 2,0 the curve sits.
+  const ticks = [1.0, 1.5, 2.0].filter((t) => t > min && t <= max)
+  const hasGap = pts.some((v, i) => v == null && i > 0 && i < pts.length - 1)
+
+  const monoText = {
+    fontSize: '9.5',
+    fill: 'var(--muted-2)',
+    fontFamily: 'var(--font-mono)',
+  } as const
+
   return (
-    <svg
-      viewBox={`0 0 ${W} ${H}`}
-      style={{ width: '100%', maxWidth: W, display: 'block' }}
-      role="img"
-      aria-label="Prognos per vecka mot målet 1,8"
-    >
-      <line
-        x1={0}
-        y1={y(GOAL)}
-        x2={W}
-        y2={y(GOAL)}
-        stroke="var(--hairline)"
-        strokeDasharray="4 4"
-      />
-      <path d={path.trim()} fill="none" stroke="var(--accent)" strokeWidth={1.75} />
-      {last != null && <circle cx={x(lastIdx)} cy={y(last)} r={3} fill="var(--accent)" />}
-      {/* Label last (topmost paint order) with a page-colored halo so
-       *  neither the dashed goal line nor a curve approaching 1,8 can
-       *  run through the glyphs. */}
-      <text
-        x={W - 4}
-        y={y(GOAL) - 6}
-        textAnchor="end"
-        fontSize="10"
-        fill="var(--muted-2)"
-        fontFamily="var(--font-mono)"
-        stroke="var(--bg)"
-        strokeWidth={4}
-        paintOrder="stroke"
+    <div>
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        style={{ width: '100%', maxWidth: W, display: 'block' }}
+        role="img"
+        aria-label={`Prognos per vecka mot målet 1,8${last != null ? `, senaste ${fmtSv(last)}` : ''}`}
       >
-        mål 1,8
-      </text>
-    </svg>
+        {ticks.map((t) => (
+          <g key={t}>
+            <line x1={PL} y1={y(t)} x2={W - PR} y2={y(t)} stroke="var(--hairline-2)" />
+            <text {...monoText} x={PL - 6} y={y(t) + 3} textAnchor="end">
+              {t.toFixed(1).replace('.', ',')}
+            </text>
+          </g>
+        ))}
+        <line
+          x1={PL}
+          y1={y(GOAL)}
+          x2={W - PR}
+          y2={y(GOAL)}
+          stroke="var(--hairline)"
+          strokeDasharray="4 4"
+        />
+        {bridges.map((d) => (
+          <path
+            key={d}
+            d={d}
+            fill="none"
+            stroke="var(--muted-2)"
+            strokeWidth={1.25}
+            strokeDasharray="2 4"
+          />
+        ))}
+        <path d={solid.trim()} fill="none" stroke="var(--accent)" strokeWidth={1.75} />
+        {last != null && <circle cx={x(lastIdx)} cy={y(last)} r={3} fill="var(--accent)" />}
+        {/* Labels paint last with a page-colored halo so no line can
+         *  run through the glyphs. */}
+        {last != null && (
+          <text
+            x={x(lastIdx) + 8}
+            y={y(last) + 3.5}
+            fontSize="11"
+            fontWeight={600}
+            fill="var(--accent)"
+            fontFamily="var(--font-mono)"
+            stroke="var(--bg)"
+            strokeWidth={4}
+            paintOrder="stroke"
+          >
+            {fmtSv(last)}
+          </text>
+        )}
+        <text
+          {...monoText}
+          x={W - PR - 4}
+          y={y(GOAL) - 6}
+          textAnchor="end"
+          fontSize="10"
+          stroke="var(--bg)"
+          strokeWidth={4}
+          paintOrder="stroke"
+        >
+          mål 1,8
+        </text>
+      </svg>
+      <p style={{ ...mono11, margin: '8px 0 0' }}>
+        poäng per vecka, senaste {weekly.length} veckorna
+        {hasGap && ' · streckat = vecka utan övning'}
+      </p>
+    </div>
   )
 }
 
