@@ -96,7 +96,7 @@ test('Drill ORD — 10 questions, all correct, end-to-end', async ({ page }, tes
   // either band.
   await expect(page.getByTestId('drill-result')).toBeVisible({ timeout: 10_000 })
   await expect(page.getByTestId('drill-result-headline')).toHaveText('Klart.')
-  await expect(page.getByTestId('drill-result-detaljer')).toContainText('10/10')
+  await expect(page.getByTestId('drill-result-detaljer')).toContainText('10 av 10')
 })
 
 test('Cmd+K palette — open via keyboard, navigate to drill', async ({ page }) => {

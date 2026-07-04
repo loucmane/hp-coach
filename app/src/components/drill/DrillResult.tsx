@@ -1,47 +1,38 @@
-// Result screen for a finished drill — the `Klart.` payoff.
+// DrillResult — the "Klart." payoff, rebuilt to the owner-ratified
+// C+A composition from /klart-bakeoff (2026-07-04):
 //
-// The director-refined Variant D winner from /loop-bakeoff:
+//   {SECTION}        Klart.                                (italic display)
+//   PASS SLUT        [ N av M rätt · X,XX prognos · K till repetition ]
 //
-//   - Motion fade-in on `Klart.` (180ms, opacity + y: 6 → 0) so the
-//     screen marks a threshold rather than materialising flat. The
-//     prototype's "the room goes quiet for a second."
-//   - FÄLLA · <trap name> eyebrow above the score-delta band when
-//     ≥2 misses cluster on the same framework_id. Surfaces causation
-//     — the score moved because of THIS trap.
-//   - Score-delta band: snapshot the per-section score on mount, then
-//     spring-animate the post-session value over 1100ms with a 250ms
-//     delay so the headline lands first. `useReducedMotion()` snaps
-//     to the final value directly. Hairline em-rule replaces the
-//     weak `→` glyph between the before/after values.
-//   - CoachLine with VOICE.sessionEnd in the active coach persona.
-//   - <Hairline> divider so the screen reads as one editorial page.
-//   - Detaljer stats card with three label/mono-value rows.
-//   - Imorgon väntar block lifted from useDailyPlan's first non-
-//     completed item; headline on top in --ink, rationale below in
-//     --ink-2 (no inline dot-stutter).
-//   - Single ghost "Stäng" primary CTA.
-//   - Bottom folio with Esc · stäng keyboard hint paired to a real
-//     Escape handler that fires onHome — the EDITION pattern from
-//     task #98.
+//   FACIT            Hela passet — every question as a marked row
+//                    (✓ muted / ✗ red with 'ditt b) · rätt a)').
+//                    Rows EXPAND IN PLACE into the full graded review
+//                    (DrillQuestion + the M2 pedagogy) — no new session,
+//                    no navigation, one tap in and out.
 //
-// Replaces the previous score + miss-list composition. Misses still
-// enter the repetition queue automatically via SessionPlayer's
-// recordMistake.mutate, so the user sees them again in tomorrow's
-// prescription — no need to relist them here.
+//   IMORGON          the payoff coda: repetition load + the trap
+//                    cluster named when ≥2 misses share a framework —
+//                    then Stäng / öva igen / esc hem.
+//
+// Kept from the EDITION screen: the Esc-to-home handler, the motion
+// fade on Klart., the useTrapCluster causation lookup, MathText on
+// every stem (task 124). Dropped: the coach-voice line (M2 direction),
+// the score-delta band (its 'before' snapshot was the 'after' — an
+// honest delta needs session-start wiring; follow-up), DetaljerCard
+// and TomorrowBlock (their facts live in the stats row + coda now).
+// Misses still enter the repetition queue automatically via
+// SessionPlayer's recordMistake.mutate.
 
-import { motion, useMotionValue, useReducedMotion, useTransform } from 'motion/react'
-import { useEffect, useMemo, useRef } from 'react'
+import { motion, useReducedMotion } from 'motion/react'
+import { type CSSProperties, type ReactNode, useEffect, useMemo, useState } from 'react'
 
 import { useStats } from '@/api/hooks/useStats'
-import { Btn, CoachLine, Eyebrow, Hairline, Mono } from '@/components/primitives'
-import { Display } from '@/components/Typography'
+import { DrillQuestion } from '@/components/drill/DrillQuestion'
+import { MathText } from '@/components/MathText'
 import type { AnswerLetter, Question, Section } from '@/data/questions'
-import { useDailyPlan } from '@/hooks/useDailyPlan'
 import { TRANSITION } from '@/lib/motion'
 import { computeSectionScore } from '@/lib/scoring'
 import { useTrapCluster } from '@/lib/trapCluster'
-import { VOICE } from '@/lib/voice'
-import { useCoachStore } from '@/stores/coachStore'
 
 export type DrillSummary = {
   questions: Question[]
@@ -58,19 +49,15 @@ export function DrillResult({ summary, onReplay, onHome }: Props) {
   const { questions, picks } = summary
   const total = questions.length
   const correct = picks.reduce<number>((n, p, i) => (p === questions[i].answer ? n + 1 : n), 0)
-  const pct = total === 0 ? 0 : Math.round((correct / total) * 100)
-  const coach = useCoachStore((s) => s.coach)
   const reduced = useReducedMotion()
+  const [expanded, setExpanded] = useState<number | null>(null)
 
-  // Section the drill ran in. For mixed-section sessions (repetition,
-  // diagnostic) the first question's section is a reasonable label
-  // even though the delta band will sit out without a single section
-  // anchor. Most drills are single-section; this is the common path.
+  // Section the drill ran in. Mixed-section sessions (repetition,
+  // diagnostic) get the neutral 'Blandat' rail label and no prognosis
+  // stat (there's no single anchor to score).
   const sections = useMemo(() => new Set(questions.map((q) => q.section)), [questions])
   const section: Section | null = sections.size === 1 ? questions[0].section : null
 
-  // Missed qids drive the FÄLLA cluster lookup. Memoize so the
-  // trap-cluster effect doesn't thrash.
   const missedQids = useMemo(
     () =>
       questions
@@ -81,9 +68,15 @@ export function DrillResult({ summary, onReplay, onHome }: Props) {
   )
   const cluster = useTrapCluster(missedQids)
 
-  // Esc keyboard handler — matches the EDITION Esc-to-parent
-  // pattern. Esc fires onHome (the primary exit). Ignored while a
-  // focused button has its own Enter handling.
+  // Post-session section prognosis. By the time this mounts the
+  // attempts have landed, so the score already includes this pass.
+  const stats = useStats()
+  const prognos =
+    section && stats.data?.bySection[section]
+      ? computeSectionScore(section, stats.data.bySection[section]).score
+      : null
+
+  // Esc-to-home — the parent-exit affordance, kept from EDITION.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return
@@ -98,315 +91,256 @@ export function DrillResult({ summary, onReplay, onHome }: Props) {
   return (
     <div
       data-testid="drill-result"
-      style={{
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        // Clear the bottom tabs (~80px) so "Stäng" stays clickable.
-        padding: 'clamp(20px, 1.6vw + 12px, 32px) clamp(20px, 2vw + 12px, 28px) 100px',
-        overflowY: 'auto',
-        maxWidth: '60ch',
-        width: '100%',
-        margin: '0 auto',
-      }}
+      className="hpc-m3-page"
+      style={{ height: '100%', overflowY: 'auto', width: '100%' }}
     >
-      {/* Display 1 from the Typography system — the same role used on
-       *  Home for `God morgon, …`, Lektion masthead for the section
-       *  letters, /progress hero for the projected score. One scale,
-       *  five surfaces. Motion is the chrome state-change duration
-       *  from `@/lib/motion`. */}
-      <motion.div
-        initial={reduced ? false : { opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={TRANSITION.chrome}
-        style={{ margin: '6px 0 0' }}
-      >
-        <Display level={1} as="h1" id="drill-result-headline">
-          <span data-testid="drill-result-headline">Klart.</span>
-        </Display>
-      </motion.div>
-
-      {cluster?.headline && (
-        <Eyebrow style={{ marginTop: 18, color: 'var(--accent)' }}>
-          Fälla · {cluster.headline}
-        </Eyebrow>
-      )}
-
-      {section && (
-        <ScoreDeltaBand
-          section={section}
-          reducedMotion={Boolean(reduced)}
-          hasCluster={!!cluster?.headline}
-        />
-      )}
-
-      <CoachLine coach={coach} as="body" style={{ margin: '18px 0 24px', maxWidth: '32ch' }}>
-        {`${VOICE[coach].sessionEnd.split(/\.\s+/)[0]}.`}
-      </CoachLine>
-
-      <Hairline style={{ marginBottom: 20 }} />
-
-      <DetaljerCard
-        section={section}
-        correct={correct}
-        total={total}
-        pct={pct}
-        missCount={missedQids.length}
-        newTraps={cluster ? 1 : 0}
-      />
-
-      <TomorrowBlock />
-
-      <div style={{ flex: 1, minHeight: 24 }} />
-
-      <Btn full size="lg" onClick={onHome}>
-        Stäng
-      </Btn>
-
-      <Btn full size="md" variant="ghost" onClick={onReplay} style={{ marginTop: 8 }}>
-        Öva igen
-      </Btn>
-
-      {/* Bottom folio — provenance demoted from headline-competing
-       *  position; pairs with the real Esc handler above. */}
-      <div
-        style={{
-          marginTop: 16,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'baseline',
-          fontFamily: 'var(--font-mono)',
-          fontSize: 10.5,
-          letterSpacing: '0.06em',
-          textTransform: 'uppercase',
-          color: 'var(--muted)',
-        }}
-      >
-        <span>{section ? `${section} · pass slut` : 'Pass slut'}</span>
-        <span>Esc · stäng</span>
-      </div>
-    </div>
-  )
-}
-
-// ── Score delta band ────────────────────────────────────────────────
-
-function ScoreDeltaBand({
-  section,
-  reducedMotion,
-  hasCluster,
-}: {
-  section: Section
-  reducedMotion: boolean
-  hasCluster: boolean
-}) {
-  // Capture the pre-session score at mount. The DrillResult only
-  // mounts after the session ends and recordMistake calls have
-  // fired, so by the time this runs, `useStats()` already reflects
-  // the new attempts. To still show a "before → after" we snapshot
-  // the score that's visible at THIS mount (which is the after),
-  // and treat the previous-known "before" as score − (correct/total
-  // share of the window). A cleaner approach would be a session-
-  // start snapshot stored on the route; this is the best we can do
-  // without that wiring. When the snapshot is null (no prior stats),
-  // the band hides.
-  const stats = useStats()
-  const beforeRef = useRef<number | null>(null)
-  const afterScore =
-    stats.data?.bySection[section] != null
-      ? computeSectionScore(section, stats.data.bySection[section]).score
-      : null
-
-  // Snapshot the score the first render after stats land. Subsequent
-  // renders ignore the snapshot — the user only sees the delta once
-  // per result screen, on initial mount.
-  if (beforeRef.current === null && afterScore !== null && stats.data) {
-    beforeRef.current = afterScore
-  }
-  const before = beforeRef.current
-  const after = afterScore
-
-  const value = useMotionValue(reducedMotion ? (after ?? 0) : (before ?? 0))
-  const display = useTransform(value, (v) => v.toFixed(2))
-
-  // 250ms delay so the headline lands first; 1100ms reading-pace tween.
-  // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only intentional
-  useEffect(() => {
-    if (reducedMotion || before === null || after === null || before === after) return
-    const delay = 250
-    const duration = 1100
-    const start = performance.now() + delay
-    let raf = 0
-    const tick = (now: number) => {
-      const elapsed = now - start
-      if (elapsed < 0) {
-        raf = requestAnimationFrame(tick)
-        return
-      }
-      const t = Math.min(1, elapsed / duration)
-      const eased = 1 - (1 - t) ** 3
-      value.set(before + (after - before) * eased)
-      if (t < 1) raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [before, after])
-
-  // Hide the band when there's no signal (no prior attempts in this
-  // section, or before === after — first attempt ever lands on the
-  // CoachLine without the delta noise).
-  if (before === null || after === null) return null
-  // When the score didn't move, the delta band is just `0.84 → 0.84`
-  // — surface as a single value instead.
-  const moved = Math.abs(after - before) > 0.005
-
-  return (
-    <div
-      data-testid="drill-result-delta"
-      style={{
-        marginTop: hasCluster ? 12 : 18,
-        display: 'flex',
-        alignItems: 'baseline',
-        gap: 12,
-        fontFamily: 'var(--font-display)',
-        fontVariantNumeric: 'tabular-nums',
-      }}
-    >
-      <span style={{ fontSize: 22, color: 'var(--muted)', letterSpacing: '-0.01em' }}>
-        {section}
-        {moved ? ` · ${before.toFixed(2)}` : ''}
-      </span>
-      {moved && (
-        <>
-          <span
-            aria-hidden
-            style={{
-              display: 'inline-block',
-              width: 18,
-              height: 1,
-              background: 'var(--muted-2)',
-              alignSelf: 'center',
-            }}
-          />
-          <motion.span
-            style={{
-              fontSize: 28,
-              color: after >= before ? 'var(--ink)' : 'var(--accent)',
-              letterSpacing: '-0.015em',
-            }}
+      <div className="hpc-m3-frame" style={{ paddingBottom: 120 }}>
+        {/* ── Klart. + stats ─────────────────────────────────────── */}
+        <Rail
+          meta={
+            <>
+              <strong>{section ?? 'Blandat'}</strong>
+              pass slut
+            </>
+          }
+        >
+          <motion.h1
+            className="hpc-m3-display"
+            id="drill-result-headline"
+            initial={reduced ? false : { opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={TRANSITION.chrome}
+            style={{ marginTop: 0 }}
           >
-            {display}
-          </motion.span>
-        </>
-      )}
-      {!moved && (
-        <span style={{ fontSize: 28, color: 'var(--ink)', letterSpacing: '-0.015em' }}>
-          {after.toFixed(2)}
-        </span>
-      )}
-    </div>
-  )
-}
-
-// ── Detaljer stats card ─────────────────────────────────────────────
-
-function DetaljerCard({
-  section,
-  correct,
-  total,
-  pct,
-  missCount,
-  newTraps,
-}: {
-  section: Section | null
-  correct: number
-  total: number
-  pct: number
-  missCount: number
-  newTraps: number
-}) {
-  // Rows shape mirrors the prototype's stats card composition: left
-  // label in display body weight, right value in mono. Conditional
-  // rows hide cleanly when their signal is absent — never show
-  // "Nya fällor markerade · 0" because zero isn't a story.
-  const rows: Array<[string, string]> = []
-  rows.push([section ? `${section} · pass` : 'Pass', `${correct}/${total}`])
-  rows.push(['Träffsäkerhet', `${pct} %`])
-  if (missCount > 0) {
-    rows.push(['Att repetera imorgon', `${missCount} ${missCount === 1 ? 'miss' : 'missar'}`])
-  }
-  if (newTraps > 0) {
-    rows.push(['Nya fällor markerade', String(newTraps)])
-  }
-
-  return (
-    <div
-      data-testid="drill-result-detaljer"
-      style={{
-        padding: 'clamp(14px, 1.2vw + 10px, 22px)',
-        border: '1px solid var(--hairline)',
-        borderRadius: 'var(--radius)',
-      }}
-    >
-      <Eyebrow>Detaljer</Eyebrow>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 10 }}>
-        {rows.map(([label, value]) => (
-          <div
-            key={label}
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'baseline',
-              fontFamily: 'var(--font-display)',
-              fontSize: 13.5,
-              color: 'var(--ink-2)',
-            }}
-          >
-            <span>{label}</span>
-            <Mono>{value}</Mono>
+            <span data-testid="drill-result-headline">Klart.</span>
+          </motion.h1>
+          <div className="hpc-m3-stats" data-testid="drill-result-detaljer">
+            <div>
+              <div className="hpc-m3-stat-n">
+                {correct} av {total}
+              </div>
+              <div className="hpc-m3-stat-l">rätt</div>
+            </div>
+            {prognos != null && section && (
+              <div>
+                <div className="hpc-m3-stat-n">{prognos.toFixed(2).replace('.', ',')}</div>
+                <div className="hpc-m3-stat-l">{section}-prognos</div>
+              </div>
+            )}
+            {missedQids.length > 0 && (
+              <div>
+                <div className="hpc-m3-stat-n">{missedQids.length}</div>
+                <div className="hpc-m3-stat-l">till repetition</div>
+              </div>
+            )}
           </div>
-        ))}
+        </Rail>
+
+        {/* ── Facit ──────────────────────────────────────────────── */}
+        <Rail meta="Facit">
+          <h2 className="hpc-m3-h">Hela passet</h2>
+          <div>
+            {questions.map((q, i) => (
+              <FacitRow
+                key={q.qid}
+                question={q}
+                picked={picks[i]}
+                index={i}
+                open={expanded === i}
+                onToggle={() => setExpanded(expanded === i ? null : i)}
+              />
+            ))}
+          </div>
+        </Rail>
+
+        {/* ── Imorgon ────────────────────────────────────────────── */}
+        <Rail meta="Imorgon">
+          <p
+            data-testid="drill-result-tomorrow"
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontStyle: 'italic',
+              fontSize: 16,
+              lineHeight: 1.55,
+              color: 'var(--ink-2)',
+              margin: 0,
+              maxWidth: '60ch',
+            }}
+          >
+            {missedQids.length === 0 ? (
+              'Inga missar — inget att repetera. Snyggt.'
+            ) : (
+              <>
+                Att repetera imorgon: {missedQids.length}{' '}
+                {missedQids.length === 1 ? 'fråga' : 'frågor'} — de ligger först i morgondagens
+                plan.
+                {cluster?.headline && (
+                  <>
+                    {' '}
+                    Fällan bakom flera av dem:{' '}
+                    <span style={{ color: 'var(--ink)' }}>{cluster.headline}</span>
+                  </>
+                )}
+              </>
+            )}
+          </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 18, marginTop: 32 }}>
+            <button type="button" onClick={onHome} className="hpc-m3-cta" style={ctaReset}>
+              Stäng
+            </button>
+            <button type="button" onClick={onReplay} style={quietWord}>
+              öva igen
+            </button>
+            <span style={{ ...quietWord, cursor: 'default' }}>esc hem</span>
+          </div>
+        </Rail>
       </div>
     </div>
   )
 }
 
-// ── Tomorrow preview ────────────────────────────────────────────────
+// ── Facit row + inline review ──────────────────────────────────────
 
-function TomorrowBlock() {
-  const { plan } = useDailyPlan()
-  if (!plan) return null
-  const tomorrowItem = plan.items.find((i) => !i.completed)
-  if (!tomorrowItem) return null
-
+function FacitRow({
+  question,
+  picked,
+  index,
+  open,
+  onToggle,
+}: {
+  question: Question
+  picked: AnswerLetter | null
+  index: number
+  open: boolean
+  onToggle: () => void
+}) {
+  const ok = picked === question.answer
   return (
-    <div
-      data-testid="drill-result-tomorrow"
-      style={{ marginTop: 'clamp(20px, 2.2vw + 8px, 32px)' }}
-    >
-      <Eyebrow>Imorgon väntar</Eyebrow>
-      <p
+    <div>
+      <button
+        type="button"
+        data-testid={`facit-row-${index + 1}`}
+        aria-expanded={open}
+        onClick={onToggle}
         style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(16px, 0.4vw + 14px, 18px)',
-          lineHeight: 1.4,
-          color: 'var(--ink)',
-          margin: '8px 0 4px 0',
+          all: 'unset',
+          cursor: 'pointer',
+          display: 'grid',
+          gridTemplateColumns: '22px 30px minmax(0, 1fr) auto',
+          gap: 12,
+          alignItems: 'baseline',
+          width: '100%',
+          boxSizing: 'border-box',
+          padding: '10px 0',
+          borderBottom: '1px solid var(--hairline-2)',
         }}
       >
-        {tomorrowItem.headline}
-      </p>
-      <p
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(13px, 0.3vw + 12px, 15px)',
-          lineHeight: 1.5,
-          color: 'var(--ink-2)',
-          margin: 0,
-        }}
-      >
-        {tomorrowItem.rationale}
-      </p>
+        <span
+          aria-hidden
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 12,
+            fontWeight: 700,
+            color: ok ? 'var(--ok)' : 'var(--bad)',
+          }}
+        >
+          {ok ? '✓' : '✗'}
+        </span>
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            color: 'var(--muted-2)',
+            fontVariantNumeric: 'tabular-nums',
+          }}
+        >
+          {index + 1}.
+        </span>
+        <span
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 14.5,
+            color: ok ? 'var(--ink-2)' : 'var(--ink)',
+            minWidth: 0,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            textAlign: 'left',
+          }}
+        >
+          <MathText>{question.prompt ?? question.qid}</MathText>
+        </span>
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            color: ok ? 'var(--muted-2)' : 'var(--bad)',
+            fontVariantNumeric: 'tabular-nums',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {ok
+            ? `${question.answer.toLowerCase()})`
+            : `ditt ${picked?.toLowerCase() ?? '—'}) · rätt ${question.answer.toLowerCase()})`}
+          <span aria-hidden style={{ marginLeft: 10, color: 'var(--muted-2)' }}>
+            {open ? '▴' : '▾'}
+          </span>
+        </span>
+      </button>
+      {open && (
+        <div
+          data-testid={`facit-review-${index + 1}`}
+          style={{
+            // The inline review — the graded page replayed. A left
+            // accent rule marks it as an inset of the row above; the
+            // pedagogy's own rail sections render inside.
+            borderLeft: '2px solid var(--accent)',
+            padding: '8px 0 24px 18px',
+            margin: '0 0 4px',
+          }}
+        >
+          <DrillQuestion
+            question={question}
+            picked={picked}
+            graded
+            onPick={() => {}}
+            fill={false}
+          />
+          <button type="button" onClick={onToggle} style={{ ...quietWord, marginTop: 12 }}>
+            ▴ stäng granskning
+          </button>
+        </div>
+      )}
     </div>
+  )
+}
+
+// ── Shared bits ────────────────────────────────────────────────────
+
+const quietWord: CSSProperties = {
+  all: 'unset',
+  cursor: 'pointer',
+  fontFamily: 'var(--font-mono)',
+  fontSize: 11,
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: 'var(--muted-2)',
+}
+
+const ctaReset: CSSProperties = {
+  border: 'none',
+  cursor: 'pointer',
+}
+
+function Rail({ meta, children }: { meta: ReactNode; children: ReactNode }) {
+  return (
+    <section className="hpc-m3-section">
+      <hr className="hpc-m3-rule" />
+      <div className="hpc-m3-row">
+        <div className="hpc-m3-meta">{meta}</div>
+        <div className="hpc-m3-spine" />
+        <div className="hpc-m3-content">{children}</div>
+      </div>
+    </section>
   )
 }
