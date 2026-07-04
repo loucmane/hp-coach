@@ -95,3 +95,59 @@ describe('DrillQuestion pre-answer apparatus', () => {
     ).not.toBeInTheDocument()
   })
 })
+
+// ── ELF cloze gaps ──────────────────────────────────────────────────
+//
+// The real exam draws each gap as a blank line with the question
+// number in it; the PDF text layer only kept the bare number, which
+// camouflages among the passage's real numbers. The renderer restores
+// the affordance: gap numbers become marked blanks (the CURRENT
+// question's gap emphasized) and the empty cloze prompt becomes the
+// 'Lucka N' headword.
+
+const ELF_CLOZE: Question = {
+  qid: 'host-ver2-2019-verb2-ELF-034',
+  exam_id: 'host-ver2-2019',
+  provpass: 'verb2',
+  section: 'ELF',
+  number: 34,
+  prompt: '',
+  options: [
+    { letter: 'A', text: 'attention' },
+    { letter: 'B', text: 'dependence' },
+    { letter: 'C', text: 'relation' },
+    { letter: 'D', text: 'income' },
+  ],
+  answer: 'D',
+  context:
+    'In the following text there are gaps which indicate that something has been left out.\n\n' +
+    'Marrying Women\n\n' +
+    'Fully 78% of American women, combined with these 33 preferences, ' +
+    'were vying for their 34 . For every hundred aged 25–34, there were 139 in 1960.',
+  parsing_status: 'complete',
+}
+
+describe('DrillQuestion — ELF cloze gaps', () => {
+  it('renders gap numbers as marked blanks, the current one emphasized', () => {
+    render(<DrillQuestion question={ELF_CLOZE} picked={null} graded={false} onPick={() => {}} />)
+    const gaps = screen.getAllByTestId(/^cloze-gap-/)
+    expect(gaps.map((g) => g.getAttribute('data-testid'))).toEqual(['cloze-gap-33', 'cloze-gap-34'])
+    expect(screen.getByTestId('cloze-gap-34')).toHaveAttribute('data-active', 'true')
+    expect(screen.getByTestId('cloze-gap-33')).toHaveAttribute('data-active', 'false')
+  })
+
+  it('does NOT mark content numbers (percent, ranges, years, out-of-band)', () => {
+    render(<DrillQuestion question={ELF_CLOZE} picked={null} graded={false} onPick={() => {}} />)
+    const text = screen.getByTestId('drill-context').textContent ?? ''
+    // 78%, 25–34, 139, 1960 all survive as plain text
+    expect(text).toContain('78%')
+    expect(text).toContain('25–34')
+    expect(text).toContain('139')
+    expect(text).toContain('1960')
+  })
+
+  it("gives the empty cloze prompt the 'Lucka N' headword", () => {
+    render(<DrillQuestion question={ELF_CLOZE} picked={null} graded={false} onPick={() => {}} />)
+    expect(screen.getByTestId('drill-prompt')).toHaveTextContent('Lucka 34')
+  })
+})

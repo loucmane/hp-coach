@@ -19,7 +19,7 @@
 // same composition holds across phone/reader/studio. See index.css `.hpc-m3-*`
 // and docs/design-system-conventions.md.
 
-import { useEffect, useRef } from 'react'
+import { type ReactNode, useEffect, useRef } from 'react'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { PedagogyPanel } from '@/components/drill/PedagogyPanel'
@@ -102,13 +102,26 @@ export function DrillQuestion({
 
   const meta = railMeta(question.section)
   const hasContext = !!question.context && meta.contextLabel !== null
+  // ELF cloze passages: the real exam draws each gap as a blank line
+  // with the question number in it — the PDF text layer only kept the
+  // bare number, which camouflages among the passage's real numbers
+  // (78%, 139, 1960…). Detect the cloze instruction and restore the
+  // affordance render-side (see renderClozeText / the Lucka headword).
+  const isCloze = question.section === 'ELF' && /gaps which indicate/i.test(question.context ?? '')
+  const clozeGaps = isCloze
+    ? findGapChain(question.context ?? '', question.number)
+    : new Set<number>()
   // ORD-style single-word headwords get the large italic display setting;
   // sentence prompts get the tighter `.hpc-m3-q` scale.
   const promptIsShort = !question.prompt || question.prompt.length <= 18
   // NOG: split the flat prompt into stem + (1)/(2) statements + coda. Falls
   // back to rendering the raw prompt when the markers aren't present.
   const nog = meta.hasStatements && question.prompt ? parseNogPrompt(question.prompt) : null
-  const promptStem = nog ? nog.question : question.prompt
+  // Cloze questions have NO stem — the gap IS the question. Give the
+  // empty prompt the 'Lucka N' headword so the page says which gap
+  // you're solving.
+  const promptStem =
+    nog?.question ?? (isCloze && !question.prompt ? `Lucka ${question.number}` : question.prompt)
 
   // Running entrance stagger so the page reads top-to-bottom.
   let delay = 0
@@ -205,7 +218,7 @@ export function DrillQuestion({
                 </h2>
               ) : (
                 // biome-ignore lint/suspicious/noArrayIndexKey: passage paragraphs are static text
-                <p key={i}>{para}</p>
+                <p key={i}>{isCloze ? renderClozeText(para, question.number, clozeGaps) : para}</p>
               )
             })}
           </div>
@@ -354,4 +367,84 @@ function OptionRow({
       <span className="hpc-m3-opt-v">{verdict}</span>
     </button>
   )
+}
+
+// ── ELF cloze gaps ──────────────────────────────────────────────────
+//
+// Restore the printed exam's gap affordance. A gap in the text layer
+// is a bare standalone 2-digit number (the question number) — but the
+// passage also contains REAL numbers, so a candidate only counts as a
+// gap when:
+//   - it is exactly 2 digits, not adjacent to another digit, a dash
+//     (25–34 ranges) or a percent sign (78%)
+//   - it falls within the passage's question band (±6 of the current
+//     question — ELF cloze groups are 4–6 contiguous questions)
+// The current question's gap is emphasized (accent); sibling gaps are
+// quiet blanks, so the passage still reads as one text.
+
+// Two corpus shapes: a bare number ('these 31 preferences') and a
+// number glued to extracted underscores ('31_____ incapacity' — some
+// PDFs' gap lines survived as literal underscores). The underscores
+// are consumed into the match and replaced by the styled gap.
+const CLOZE_GAP_RE = /(?<![\w–-])_{0,14}(\d{2})_{0,14}(?![\w–\-%])/g
+
+/** Real gaps form an ASCENDING CONSECUTIVE run across the whole
+ *  passage (31, 32, 33, …) — a content number like an age ("Around
+ *  the age of 40") breaks the chain and is rejected even when it
+ *  falls inside the band. Returns the set of accepted gap numbers. */
+function findGapChain(context: string, currentNumber: number): Set<number> {
+  const cands: number[] = []
+  for (const m of context.matchAll(CLOZE_GAP_RE)) {
+    const n = Number(m[1])
+    if (Math.abs(n - currentNumber) <= 6) cands.push(n)
+  }
+  let best: number[] = []
+  for (let i = 0; i < cands.length; i++) {
+    const chain = [cands[i]]
+    for (let j = i + 1; j < cands.length; j++) {
+      if (cands[j] === chain[chain.length - 1] + 1) chain.push(cands[j])
+    }
+    if (chain.includes(currentNumber) && chain.length > best.length) best = chain
+  }
+  // A passage that lost some gap glyphs can leave the current number
+  // outside any chain — fall back to marking just the in-band numbers
+  // so SOMETHING is visible rather than nothing.
+  return new Set(best.length > 0 ? best : cands)
+}
+
+function renderClozeText(text: string, currentNumber: number, gapSet: Set<number>): ReactNode[] {
+  const out: ReactNode[] = []
+  let last = 0
+  for (const m of text.matchAll(CLOZE_GAP_RE)) {
+    const n = Number(m[1])
+    if (!gapSet.has(n)) continue
+    const idx = m.index ?? 0
+    if (idx > last) out.push(text.slice(last, idx))
+    const active = n === currentNumber
+    out.push(
+      <span
+        key={`${n}-${idx}`}
+        data-testid={`cloze-gap-${n}`}
+        data-active={active ? 'true' : 'false'}
+        style={{
+          display: 'inline-block',
+          padding: '0 14px 1px',
+          margin: '0 2px',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.8em',
+          fontVariantNumeric: 'tabular-nums',
+          color: active ? 'var(--accent)' : 'var(--muted)',
+          fontWeight: active ? 700 : 400,
+          background: active ? 'var(--accent-soft)' : 'transparent',
+          borderBottom: `2px solid ${active ? 'var(--accent)' : 'var(--muted-2)'}`,
+          lineHeight: 1.2,
+        }}
+      >
+        {n}
+      </span>,
+    )
+    last = idx + m[0].length
+  }
+  if (last < text.length) out.push(text.slice(last))
+  return out
 }
