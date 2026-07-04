@@ -324,16 +324,28 @@ function VariantC() {
       <Rail
         meta={
           <>
-            <strong>KVA</strong>7 / 10 · 9 min
+            <strong>KVA</strong>pass slut
           </>
         }
       >
         <h1 className="hpc-m3-display" style={{ marginTop: 0 }}>
           Klart.
         </h1>
-        <p className="hpc-m3-verdict-sub" style={{ marginTop: 8 }}>
-          KVA-prognos 1,42 → <strong>1,47</strong>. Tre missar går till repetition.
-        </p>
+        <div className="hpc-m3-stats">
+          <div>
+            <div className="hpc-m3-stat-n">7 av 10</div>
+            <div className="hpc-m3-stat-l">rätt</div>
+          </div>
+          <div>
+            <div className="hpc-m3-stat-n">1,47</div>
+            <div className="hpc-m3-stat-l">KVA-prognos</div>
+            <div className="hpc-m3-stat-d">+0,05 detta pass</div>
+          </div>
+          <div>
+            <div className="hpc-m3-stat-n">9</div>
+            <div className="hpc-m3-stat-l">min</div>
+          </div>
+        </div>
       </Rail>
 
       <Rail meta={<>Facit</>} title="Hela passet">
