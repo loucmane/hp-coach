@@ -19,7 +19,7 @@ export type UserPrefsPatch = {
   dailyMinutes?: number
   targetSittingId?: string | null
   coach?: 'kompis' | 'professor' | 'taktiker'
-  palette?: 'sand' | 'sage' | 'ink' | 'rose'
+  palette?: 'sand' | 'sage' | 'ink' | 'rose' | 'spalt'
   mode?: 'light' | 'dark'
   font?: 'literary' | 'geometric' | 'editorial' | 'hyperlegible'
   density?: 'compact' | 'regular' | 'comfy'
