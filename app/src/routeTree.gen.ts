@@ -25,6 +25,7 @@ import { Route as MCompareRouteImport } from './routes/m-compare'
 import { Route as LoopBakeoffRouteImport } from './routes/loop-bakeoff'
 import { Route as LektionPracticeBakeoffRouteImport } from './routes/lektion-practice-bakeoff'
 import { Route as LektionRouteImport } from './routes/lektion'
+import { Route as KlartBakeoffRouteImport } from './routes/klart-bakeoff'
 import { Route as HomePhoneResumeBakeoffRouteImport } from './routes/home-phone-resume-bakeoff'
 import { Route as HomeBakeoffRouteImport } from './routes/home-bakeoff'
 import { Route as ExplanationBakeOffRouteImport } from './routes/explanation-bake-off'
@@ -121,6 +122,11 @@ const LektionRoute = LektionRouteImport.update({
   path: '/lektion',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KlartBakeoffRoute = KlartBakeoffRouteImport.update({
+  id: '/klart-bakeoff',
+  path: '/klart-bakeoff',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HomePhoneResumeBakeoffRoute = HomePhoneResumeBakeoffRouteImport.update({
   id: '/home-phone-resume-bakeoff',
   path: '/home-phone-resume-bakeoff',
@@ -213,6 +219,7 @@ export interface FileRoutesByFullPath {
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
+  '/klart-bakeoff': typeof KlartBakeoffRoute
   '/lektion': typeof LektionRoute
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
@@ -246,6 +253,7 @@ export interface FileRoutesByTo {
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
+  '/klart-bakeoff': typeof KlartBakeoffRoute
   '/lektion': typeof LektionRoute
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
@@ -280,6 +288,7 @@ export interface FileRoutesById {
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
+  '/klart-bakeoff': typeof KlartBakeoffRoute
   '/lektion': typeof LektionRoute
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
@@ -315,6 +324,7 @@ export interface FileRouteTypes {
     | '/explanation-bake-off'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
+    | '/klart-bakeoff'
     | '/lektion'
     | '/lektion-practice-bakeoff'
     | '/loop-bakeoff'
@@ -348,6 +358,7 @@ export interface FileRouteTypes {
     | '/explanation-bake-off'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
+    | '/klart-bakeoff'
     | '/lektion'
     | '/lektion-practice-bakeoff'
     | '/loop-bakeoff'
@@ -381,6 +392,7 @@ export interface FileRouteTypes {
     | '/explanation-bake-off'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
+    | '/klart-bakeoff'
     | '/lektion'
     | '/lektion-practice-bakeoff'
     | '/loop-bakeoff'
@@ -415,6 +427,7 @@ export interface RootRouteChildren {
   ExplanationBakeOffRoute: typeof ExplanationBakeOffRoute
   HomeBakeoffRoute: typeof HomeBakeoffRoute
   HomePhoneResumeBakeoffRoute: typeof HomePhoneResumeBakeoffRoute
+  KlartBakeoffRoute: typeof KlartBakeoffRoute
   LektionRoute: typeof LektionRoute
   LektionPracticeBakeoffRoute: typeof LektionPracticeBakeoffRoute
   LoopBakeoffRoute: typeof LoopBakeoffRoute
@@ -547,6 +560,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LektionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/klart-bakeoff': {
+      id: '/klart-bakeoff'
+      path: '/klart-bakeoff'
+      fullPath: '/klart-bakeoff'
+      preLoaderRoute: typeof KlartBakeoffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/home-phone-resume-bakeoff': {
       id: '/home-phone-resume-bakeoff'
       path: '/home-phone-resume-bakeoff'
@@ -671,6 +691,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExplanationBakeOffRoute: ExplanationBakeOffRoute,
   HomeBakeoffRoute: HomeBakeoffRoute,
   HomePhoneResumeBakeoffRoute: HomePhoneResumeBakeoffRoute,
+  KlartBakeoffRoute: KlartBakeoffRoute,
   LektionRoute: LektionRoute,
   LektionPracticeBakeoffRoute: LektionPracticeBakeoffRoute,
   LoopBakeoffRoute: LoopBakeoffRoute,
