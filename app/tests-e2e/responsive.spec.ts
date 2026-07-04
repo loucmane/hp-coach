@@ -134,14 +134,15 @@ test('Page shell renders at desktop, BottomTabs at phone', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/')
   await expect(page.getByTestId('home-greeting')).toBeVisible({ timeout: 10_000 })
-  // MC: the minimal mast is the Page shell's whole chrome contract —
-  // brand mark + 4 nav links + picker corner in ONE hairline band
-  // (`running-head` testid). The EDITION status line, folio and section
-  // echo are demolished.
+  // B+: the NavRail is the Page shell's whole chrome contract — brand
+  // mark + 4 nav links + the compass in ONE persistent left rail
+  // (`nav-rail` testid, collapsible via ⌘B). The EDITION running head,
+  // status line, folio and section echo are all demolished.
   await expect(page.getByTestId('page-shell')).toBeVisible()
+  await expect(page.getByTestId('nav-rail')).toBeVisible()
   await expect(page.getByTestId('brand-mark')).toContainText(/HP-Coach/i)
-  await expect(page.getByTestId('running-head')).toBeVisible()
   await expect(page.getByTestId('page-nav').getByRole('link', { name: 'Hem' })).toBeVisible()
+  await expect(page.getByTestId('running-head')).toHaveCount(0)
   await expect(page.getByTestId('status-line')).toHaveCount(0)
 
   // Phone — no Page chrome (Page is a passthrough at phone). Phone tabs

@@ -19,6 +19,8 @@ import { Route as RedesignLabRouteImport } from './routes/redesign-lab'
 import { Route as RedesignL12RouteImport } from './routes/redesign-l12'
 import { Route as RedesignBakeoffRouteImport } from './routes/redesign-bakeoff'
 import { Route as ProgressRouteImport } from './routes/progress'
+import { Route as NavBakeoffRouteImport } from './routes/nav-bakeoff'
+import { Route as MerRouteImport } from './routes/mer'
 import { Route as MCompareRouteImport } from './routes/m-compare'
 import { Route as LoopBakeoffRouteImport } from './routes/loop-bakeoff'
 import { Route as LektionPracticeBakeoffRouteImport } from './routes/lektion-practice-bakeoff'
@@ -87,6 +89,16 @@ const RedesignBakeoffRoute = RedesignBakeoffRouteImport.update({
 const ProgressRoute = ProgressRouteImport.update({
   id: '/progress',
   path: '/progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NavBakeoffRoute = NavBakeoffRouteImport.update({
+  id: '/nav-bakeoff',
+  path: '/nav-bakeoff',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MerRoute = MerRouteImport.update({
+  id: '/mer',
+  path: '/mer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MCompareRoute = MCompareRouteImport.update({
@@ -205,6 +217,8 @@ export interface FileRoutesByFullPath {
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
   '/m-compare': typeof MCompareRoute
+  '/mer': typeof MerRoute
+  '/nav-bakeoff': typeof NavBakeoffRoute
   '/progress': typeof ProgressRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
@@ -236,6 +250,8 @@ export interface FileRoutesByTo {
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
   '/m-compare': typeof MCompareRoute
+  '/mer': typeof MerRoute
+  '/nav-bakeoff': typeof NavBakeoffRoute
   '/progress': typeof ProgressRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
@@ -268,6 +284,8 @@ export interface FileRoutesById {
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
   '/m-compare': typeof MCompareRoute
+  '/mer': typeof MerRoute
+  '/nav-bakeoff': typeof NavBakeoffRoute
   '/progress': typeof ProgressRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
@@ -301,6 +319,8 @@ export interface FileRouteTypes {
     | '/lektion-practice-bakeoff'
     | '/loop-bakeoff'
     | '/m-compare'
+    | '/mer'
+    | '/nav-bakeoff'
     | '/progress'
     | '/redesign-bakeoff'
     | '/redesign-l12'
@@ -332,6 +352,8 @@ export interface FileRouteTypes {
     | '/lektion-practice-bakeoff'
     | '/loop-bakeoff'
     | '/m-compare'
+    | '/mer'
+    | '/nav-bakeoff'
     | '/progress'
     | '/redesign-bakeoff'
     | '/redesign-l12'
@@ -363,6 +385,8 @@ export interface FileRouteTypes {
     | '/lektion-practice-bakeoff'
     | '/loop-bakeoff'
     | '/m-compare'
+    | '/mer'
+    | '/nav-bakeoff'
     | '/progress'
     | '/redesign-bakeoff'
     | '/redesign-l12'
@@ -395,6 +419,8 @@ export interface RootRouteChildren {
   LektionPracticeBakeoffRoute: typeof LektionPracticeBakeoffRoute
   LoopBakeoffRoute: typeof LoopBakeoffRoute
   MCompareRoute: typeof MCompareRoute
+  MerRoute: typeof MerRoute
+  NavBakeoffRoute: typeof NavBakeoffRoute
   ProgressRoute: typeof ProgressRoute
   RedesignBakeoffRoute: typeof RedesignBakeoffRoute
   RedesignL12Route: typeof RedesignL12Route
@@ -477,6 +503,20 @@ declare module '@tanstack/react-router' {
       path: '/progress'
       fullPath: '/progress'
       preLoaderRoute: typeof ProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nav-bakeoff': {
+      id: '/nav-bakeoff'
+      path: '/nav-bakeoff'
+      fullPath: '/nav-bakeoff'
+      preLoaderRoute: typeof NavBakeoffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mer': {
+      id: '/mer'
+      path: '/mer'
+      fullPath: '/mer'
+      preLoaderRoute: typeof MerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/m-compare': {
@@ -635,6 +675,8 @@ const rootRouteChildren: RootRouteChildren = {
   LektionPracticeBakeoffRoute: LektionPracticeBakeoffRoute,
   LoopBakeoffRoute: LoopBakeoffRoute,
   MCompareRoute: MCompareRoute,
+  MerRoute: MerRoute,
+  NavBakeoffRoute: NavBakeoffRoute,
   ProgressRoute: ProgressRoute,
   RedesignBakeoffRoute: RedesignBakeoffRoute,
   RedesignL12Route: RedesignL12Route,
