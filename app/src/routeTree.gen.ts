@@ -18,6 +18,7 @@ import { Route as RedesignLayoutBakeoffRouteImport } from './routes/redesign-lay
 import { Route as RedesignLabRouteImport } from './routes/redesign-lab'
 import { Route as RedesignL12RouteImport } from './routes/redesign-l12'
 import { Route as RedesignBakeoffRouteImport } from './routes/redesign-bakeoff'
+import { Route as ProgressBakeoffRouteImport } from './routes/progress-bakeoff'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as NavBakeoffRouteImport } from './routes/nav-bakeoff'
 import { Route as MerRouteImport } from './routes/mer'
@@ -85,6 +86,11 @@ const RedesignL12Route = RedesignL12RouteImport.update({
 const RedesignBakeoffRoute = RedesignBakeoffRouteImport.update({
   id: '/redesign-bakeoff',
   path: '/redesign-bakeoff',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgressBakeoffRoute = ProgressBakeoffRouteImport.update({
+  id: '/progress-bakeoff',
+  path: '/progress-bakeoff',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProgressRoute = ProgressRouteImport.update({
@@ -227,6 +233,7 @@ export interface FileRoutesByFullPath {
   '/mer': typeof MerRoute
   '/nav-bakeoff': typeof NavBakeoffRoute
   '/progress': typeof ProgressRoute
+  '/progress-bakeoff': typeof ProgressBakeoffRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
   '/redesign-lab': typeof RedesignLabRoute
@@ -261,6 +268,7 @@ export interface FileRoutesByTo {
   '/mer': typeof MerRoute
   '/nav-bakeoff': typeof NavBakeoffRoute
   '/progress': typeof ProgressRoute
+  '/progress-bakeoff': typeof ProgressBakeoffRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
   '/redesign-lab': typeof RedesignLabRoute
@@ -296,6 +304,7 @@ export interface FileRoutesById {
   '/mer': typeof MerRoute
   '/nav-bakeoff': typeof NavBakeoffRoute
   '/progress': typeof ProgressRoute
+  '/progress-bakeoff': typeof ProgressBakeoffRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
   '/redesign-lab': typeof RedesignLabRoute
@@ -332,6 +341,7 @@ export interface FileRouteTypes {
     | '/mer'
     | '/nav-bakeoff'
     | '/progress'
+    | '/progress-bakeoff'
     | '/redesign-bakeoff'
     | '/redesign-l12'
     | '/redesign-lab'
@@ -366,6 +376,7 @@ export interface FileRouteTypes {
     | '/mer'
     | '/nav-bakeoff'
     | '/progress'
+    | '/progress-bakeoff'
     | '/redesign-bakeoff'
     | '/redesign-l12'
     | '/redesign-lab'
@@ -400,6 +411,7 @@ export interface FileRouteTypes {
     | '/mer'
     | '/nav-bakeoff'
     | '/progress'
+    | '/progress-bakeoff'
     | '/redesign-bakeoff'
     | '/redesign-l12'
     | '/redesign-lab'
@@ -435,6 +447,7 @@ export interface RootRouteChildren {
   MerRoute: typeof MerRoute
   NavBakeoffRoute: typeof NavBakeoffRoute
   ProgressRoute: typeof ProgressRoute
+  ProgressBakeoffRoute: typeof ProgressBakeoffRoute
   RedesignBakeoffRoute: typeof RedesignBakeoffRoute
   RedesignL12Route: typeof RedesignL12Route
   RedesignLabRoute: typeof RedesignLabRoute
@@ -509,6 +522,13 @@ declare module '@tanstack/react-router' {
       path: '/redesign-bakeoff'
       fullPath: '/redesign-bakeoff'
       preLoaderRoute: typeof RedesignBakeoffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/progress-bakeoff': {
+      id: '/progress-bakeoff'
+      path: '/progress-bakeoff'
+      fullPath: '/progress-bakeoff'
+      preLoaderRoute: typeof ProgressBakeoffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/progress': {
@@ -699,6 +719,7 @@ const rootRouteChildren: RootRouteChildren = {
   MerRoute: MerRoute,
   NavBakeoffRoute: NavBakeoffRoute,
   ProgressRoute: ProgressRoute,
+  ProgressBakeoffRoute: ProgressBakeoffRoute,
   RedesignBakeoffRoute: RedesignBakeoffRoute,
   RedesignL12Route: RedesignL12Route,
   RedesignLabRoute: RedesignLabRoute,
