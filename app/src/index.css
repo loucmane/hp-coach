@@ -1406,3 +1406,38 @@ details[open] > summary .hpc-lesson-practice {
   outline: 1px solid var(--accent);
   outline-offset: 4px;
 }
+
+/* DTK block-grouping cue — a quiet accent chip under the shared figure
+ * telling you where you are in the block ("Fråga 2 av 4 · samma sida").
+ * The figure itself persists across block-mates; this narrates the cluster. */
+.hpc-dtk-block-cue {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 9px 12px;
+  background: var(--accent-soft);
+  border-radius: calc(var(--radius) * 0.5);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+}
+.hpc-dtk-block-dots {
+  display: inline-flex;
+  gap: 5px;
+}
+.hpc-dtk-block-dots > span {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--hairline);
+}
+.hpc-dtk-block-dots > span[data-on='true'] {
+  background: var(--accent);
+}
+.hpc-dtk-block-dots > span[data-active='true'] {
+  background: var(--accent);
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}

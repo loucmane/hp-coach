@@ -35,6 +35,12 @@ export async function pickDrillQuestions(
   const bank = await loadBank()
   const pool = questionsInSection(bank, section)
   if (pool.length === 0) return []
+  // DTK is drilled as BLOCKS: a figure page + its ~3-4 questions form one
+  // unit (block = shared figure.src). Keep block-mates whole + consecutive
+  // so you orient to a dense page ONCE, not 4× scattered — the real exam
+  // rhythm, and the executive tax the ADHD-PI dogfooder handles worst.
+  // (Panel decision 2026-07-05.) Every other section stays per-question.
+  if (section === 'DTK') return pickDtkBlocks(pool, count, rng)
   // Fisher–Yates over a copy, then slice.
   const shuffled = [...pool]
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -42,6 +48,42 @@ export async function pickDrillQuestions(
     ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
   return shuffled.slice(0, Math.min(count, shuffled.length))
+}
+
+/**
+ * DTK block picker. Groups the pool by shared figure page, shuffles the
+ * BLOCKS (not the questions), and appends whole blocks until the session
+ * reaches `count`. Within a block, questions keep their natural number
+ * order (1→4 against the page). A block is atomic — sessions land at
+ * 8-13 questions for a target of 10, which is fine (whole clusters beat
+ * an exact count for DTK). A question with no shared page (shouldn't
+ * happen post-figure-pipeline) becomes its own singleton block, so the
+ * function degrades to a plain shuffle rather than crashing.
+ */
+export function pickDtkBlocks(
+  pool: readonly Question[],
+  count: number,
+  rng: () => number,
+): Question[] {
+  const groups = new Map<string, Question[]>()
+  for (const q of pool) {
+    const key = q.figure?.src ?? q.qid
+    const g = groups.get(key)
+    if (g) g.push(q)
+    else groups.set(key, [q])
+  }
+  const blocks = [...groups.values()].map((b) => [...b].sort((a, z) => a.number - z.number))
+  // Fisher–Yates over the blocks.
+  for (let i = blocks.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1))
+    ;[blocks[i], blocks[j]] = [blocks[j], blocks[i]]
+  }
+  const out: Question[] = []
+  for (const block of blocks) {
+    if (out.length >= count) break
+    out.push(...block)
+  }
+  return out
 }
 
 /**

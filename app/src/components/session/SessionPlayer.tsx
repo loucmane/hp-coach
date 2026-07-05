@@ -60,6 +60,29 @@ import { TAB_ROUTE } from '@/lib/nav'
 import { canAdoptActiveSession } from './canAdoptSession'
 import { reconstructSummary } from './reconstructSummary'
 
+/**
+ * The current DTK question's place in its figure block. The block picker
+ * (lib/drill.ts) keeps a page's questions consecutive, so the block is the
+ * contiguous run of neighbours sharing `figure.src`. Returns {n,m} (1-indexed
+ * position, block size) for DTK questions in a multi-question block; null for
+ * non-DTK, figure-less, or singleton questions. Drives the "Fråga N av M ·
+ * samma sida" cue in DrillQuestion.
+ */
+export function dtkBlockPosition(
+  plan: readonly Question[],
+  index: number,
+): { n: number; m: number } | null {
+  const cur = plan[index]
+  const page = cur?.section === 'DTK' ? cur.figure?.src : undefined
+  if (!page) return null
+  let start = index
+  while (start > 0 && plan[start - 1]?.figure?.src === page) start--
+  let end = index
+  while (end < plan.length - 1 && plan[end + 1]?.figure?.src === page) end++
+  const m = end - start + 1
+  return m > 1 ? { n: index - start + 1, m } : null
+}
+
 type Phase = 'idle' | 'answering' | 'graded' | 'done'
 
 /** Build the props payload that DispatchedVariant expects. Centralised
@@ -662,6 +685,9 @@ export function SessionPlayer(props: SessionPlayerProps) {
 
   const q = plan[index]
   const picked = picks[index]
+  // DTK block position — the picker keeps a figure page's questions
+  // consecutive, so the block is the run of neighbours sharing figure.src.
+  const blockPosition = dtkBlockPosition(plan, index)
   // Phone keeps the single-column DrillQuestion (mobile-tested
   // prototype baseline). Reader/studio dispatch to the
   // user-selected drill layout via <DispatchedVariant /> below.
@@ -740,6 +766,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
             onPick={onPick}
             position={index + 1}
             total={plan.length}
+            blockPosition={blockPosition}
           />
         )}
       </div>
