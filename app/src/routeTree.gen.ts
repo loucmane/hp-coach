@@ -33,6 +33,7 @@ import { Route as HistorikPlacementBakeoffRouteImport } from './routes/historik-
 import { Route as HistorikRouteImport } from './routes/historik'
 import { Route as ExplanationBakeOffRouteImport } from './routes/explanation-bake-off'
 import { Route as DtkBrowserRouteImport } from './routes/dtk-browser'
+import { Route as DtkBlockBakeoffRouteImport } from './routes/dtk-block-bakeoff'
 import { Route as DrillStyleCRouteImport } from './routes/drill-style-c'
 import { Route as DrillStyleBRouteImport } from './routes/drill-style-b'
 import { Route as DrillStyleARouteImport } from './routes/drill-style-a'
@@ -166,6 +167,11 @@ const DtkBrowserRoute = DtkBrowserRouteImport.update({
   path: '/dtk-browser',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DtkBlockBakeoffRoute = DtkBlockBakeoffRouteImport.update({
+  id: '/dtk-block-bakeoff',
+  path: '/dtk-block-bakeoff',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DrillStyleCRoute = DrillStyleCRouteImport.update({
   id: '/drill-style-c',
   path: '/drill-style-c',
@@ -234,6 +240,7 @@ export interface FileRoutesByFullPath {
   '/drill-style-a': typeof DrillStyleARoute
   '/drill-style-b': typeof DrillStyleBRoute
   '/drill-style-c': typeof DrillStyleCRoute
+  '/dtk-block-bakeoff': typeof DtkBlockBakeoffRoute
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/historik': typeof HistorikRoute
@@ -271,6 +278,7 @@ export interface FileRoutesByTo {
   '/drill-style-a': typeof DrillStyleARoute
   '/drill-style-b': typeof DrillStyleBRoute
   '/drill-style-c': typeof DrillStyleCRoute
+  '/dtk-block-bakeoff': typeof DtkBlockBakeoffRoute
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/historik': typeof HistorikRoute
@@ -309,6 +317,7 @@ export interface FileRoutesById {
   '/drill-style-a': typeof DrillStyleARoute
   '/drill-style-b': typeof DrillStyleBRoute
   '/drill-style-c': typeof DrillStyleCRoute
+  '/dtk-block-bakeoff': typeof DtkBlockBakeoffRoute
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/historik': typeof HistorikRoute
@@ -348,6 +357,7 @@ export interface FileRouteTypes {
     | '/drill-style-a'
     | '/drill-style-b'
     | '/drill-style-c'
+    | '/dtk-block-bakeoff'
     | '/dtk-browser'
     | '/explanation-bake-off'
     | '/historik'
@@ -385,6 +395,7 @@ export interface FileRouteTypes {
     | '/drill-style-a'
     | '/drill-style-b'
     | '/drill-style-c'
+    | '/dtk-block-bakeoff'
     | '/dtk-browser'
     | '/explanation-bake-off'
     | '/historik'
@@ -422,6 +433,7 @@ export interface FileRouteTypes {
     | '/drill-style-a'
     | '/drill-style-b'
     | '/drill-style-c'
+    | '/dtk-block-bakeoff'
     | '/dtk-browser'
     | '/explanation-bake-off'
     | '/historik'
@@ -460,6 +472,7 @@ export interface RootRouteChildren {
   DrillStyleARoute: typeof DrillStyleARoute
   DrillStyleBRoute: typeof DrillStyleBRoute
   DrillStyleCRoute: typeof DrillStyleCRoute
+  DtkBlockBakeoffRoute: typeof DtkBlockBakeoffRoute
   DtkBrowserRoute: typeof DtkBrowserRoute
   ExplanationBakeOffRoute: typeof ExplanationBakeOffRoute
   HistorikRoute: typeof HistorikRoute
@@ -656,6 +669,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DtkBrowserRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dtk-block-bakeoff': {
+      id: '/dtk-block-bakeoff'
+      path: '/dtk-block-bakeoff'
+      fullPath: '/dtk-block-bakeoff'
+      preLoaderRoute: typeof DtkBlockBakeoffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/drill-style-c': {
       id: '/drill-style-c'
       path: '/drill-style-c'
@@ -748,6 +768,7 @@ const rootRouteChildren: RootRouteChildren = {
   DrillStyleARoute: DrillStyleARoute,
   DrillStyleBRoute: DrillStyleBRoute,
   DrillStyleCRoute: DrillStyleCRoute,
+  DtkBlockBakeoffRoute: DtkBlockBakeoffRoute,
   DtkBrowserRoute: DtkBrowserRoute,
   ExplanationBakeOffRoute: ExplanationBakeOffRoute,
   HistorikRoute: HistorikRoute,
