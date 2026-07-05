@@ -632,10 +632,10 @@ function FokusItem({ s, index }: { s: SectionScore; index: number }) {
   )
 }
 
-// DTK is not yet drillable (image pipeline pending) — send it to the
-// generic drill idle instead of a broken section param.
-function drillSearchFor(section: Section): { section?: Exclude<Section, 'DTK'> } {
-  return section === 'DTK' ? {} : { section: section as Exclude<Section, 'DTK'> }
+// Every section — incl. DTK, whose raster figure pipeline shipped — is
+// drillable, so the Fokus link routes straight to that section's drill.
+function drillSearchFor(section: Section): { section: Section } {
+  return { section }
 }
 
 const actionWord = {
