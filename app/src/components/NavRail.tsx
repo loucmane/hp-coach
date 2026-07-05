@@ -310,6 +310,13 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
         </span>
         <span style={{ display: 'flex', gap: 14, alignItems: 'baseline' }}>
           <ModeWord />
+          <Link
+            to="/historik"
+            data-testid="mast-historik"
+            style={{ ...footWord, textDecoration: 'none' }}
+          >
+            historik
+          </Link>
           <Link to="/mer" data-testid="mast-mer" style={{ ...footWord, textDecoration: 'none' }}>
             mer →
           </Link>

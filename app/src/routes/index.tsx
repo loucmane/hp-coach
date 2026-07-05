@@ -8,7 +8,7 @@
 import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react'
-
+import { useSessionHistory } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
 import { useTopTraps } from '@/api/hooks/useTopTraps'
 import { SECTION_KEYS } from '@/data/questions'
@@ -37,6 +37,7 @@ function HomeRoute() {
 
   const streakDays = stats.data?.streakDays
   const topTraps = useTopTraps()
+  const recentPasses = useSessionHistory()
 
   // Projected total + verbal/quant halves for the Home score line.
   // Pure derivation from stats.data; route owns the computation so
@@ -110,6 +111,7 @@ function HomeRoute() {
       diagnosticMemory={diagnosticMemory}
       daysAway={daysAwaySnapshot}
       topTraps={topTraps}
+      recentPasses={recentPasses.data ?? []}
       onPlanItemNavigate={navigateHref}
       streakDays={streakDays}
       firstName={firstName}
