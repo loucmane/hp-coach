@@ -18,14 +18,21 @@ import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { findQuestion, loadBank, type Question } from '@/data/questions'
 import { pickReplayQuestions, REPETITION_SESSION_SIZE } from '@/lib/replay'
 
-type RepetitionSearch = { qid?: string }
+type RepetitionSearch = { qid?: string; done?: number }
 
 function validateSearch(input: Record<string, unknown>): RepetitionSearch {
+  const out: RepetitionSearch = {}
   const qid = input.qid
   if (typeof qid === 'string' && qid.length > 0 && qid.length < 80) {
-    return { qid }
+    out.qid = qid
   }
-  return {}
+  // `?done=<sessionId>` — show the completed pass's Klart (refresh-proof /
+  // history permalink). Coerce string|number → positive int.
+  const done = Number(input.done)
+  if (Number.isInteger(done) && done > 0) {
+    out.done = done
+  }
+  return out
 }
 
 export const Route = createFileRoute('/repetition')({
@@ -38,12 +45,13 @@ function RepetitionScreen() {
   const recordMistake = useRecordMistake()
   const resolveMistake = useResolveMistake()
   const navigate = useNavigate()
-  const { qid: urlQid } = Route.useSearch()
+  const { qid: urlQid, done: doneSessionId } = Route.useSearch()
 
   // URL-as-state for the active qid. `replace: true` keeps history
   // clean — a 10-question replay shouldn't add 10 back-button stops.
   // Bare `/repetition` (no qid) is the canonical start; we set the
-  // qid only after the player resolves a plan.
+  // qid only after the player resolves a plan. Setting qid resets the
+  // whole search, which also drops any `?done` from a prior pass.
   const setUrlQid = useCallback(
     (next: string | null) => {
       navigate({
@@ -51,6 +59,15 @@ function RepetitionScreen() {
         search: next ? { qid: next } : {},
         replace: true,
       })
+    },
+    [navigate],
+  )
+
+  // On completion, stamp `?done=<sessionId>` so a refresh reconstructs
+  // the Klart. instead of cold-starting a new repetition pass.
+  const onComplete = useCallback(
+    (sessionId: number) => {
+      navigate({ to: '/repetition', search: { done: sessionId }, replace: true })
     },
     [navigate],
   )
@@ -87,6 +104,8 @@ function RepetitionScreen() {
       sections="ORD"
       activeTab="drill"
       urlSyncedQid={{ qid: urlQid ?? null, setQid: setUrlQid }}
+      completedSessionId={doneSessionId ?? null}
+      onComplete={onComplete}
       resolvePlan={(qids) =>
         loadBank().then((b) =>
           // Resolve safely — a stale qid in the stored plan must not crash

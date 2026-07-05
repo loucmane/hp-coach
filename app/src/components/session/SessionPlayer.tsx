@@ -34,6 +34,7 @@
 // session of this kind — replaying its stored plan and seeking to its
 // saved position — instead of starting fresh. Seamless, no warning.
 
+import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { type CSSProperties, type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 
@@ -52,11 +53,12 @@ import { DispatchedVariant } from '@/components/drill-variants/DispatchedVariant
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
-import type { AnswerLetter, Question } from '@/data/questions'
+import { type AnswerLetter, loadBank, type Question } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
 import { currentDevice } from '@/lib/device'
 import { TAB_ROUTE } from '@/lib/nav'
 import { canAdoptActiveSession } from './canAdoptSession'
+import { reconstructSummary } from './reconstructSummary'
 
 type Phase = 'idle' | 'answering' | 'graded' | 'done'
 
@@ -154,6 +156,16 @@ export type SessionPlayerProps = {
    *  fresh batch). Omit for surfaces that never resume (e.g. /diagnostik);
    *  without it, an active session falls through to a fresh pick. */
   resolvePlan?: (qids: string[]) => Promise<Question[]>
+  /** Show a COMPLETED pass's Klart, reconstructed from its persisted
+   *  attempts, instead of the live drill. Set from the route's `?done=<id>`
+   *  search param so the payoff survives a refresh (the done phase is
+   *  otherwise in-memory only) and so the history view can permalink any
+   *  past pass. Ignored once a live session is in flight this mount. */
+  completedSessionId?: number | null
+  /** Called at the moment a live pass finishes, with its session id, so
+   *  the route can stamp `?done=<id>` into the URL (refresh-proof Klart).
+   *  When omitted, completion just clears the qid as before. */
+  onComplete?: (sessionId: number) => void
 }
 
 export function SessionPlayer(props: SessionPlayerProps) {
@@ -183,6 +195,9 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // "öva igen" → begin() would otherwise re-adopt the corpse. Guards the
   // adopt path in begin(). A ref so recording an end doesn't re-render.
   const endedSessionIds = useRef<Set<number>>(new Set())
+  // True once a live pass has begun this mount — gates the completed-pass
+  // reconstruction so it only fires on a genuine cold mount with `?done`.
+  const beganRef = useRef(false)
   // Set when an adopted server session's stored plan no longer resolves
   // to any live question (corpus drift / stale seed rows like `q1`). Drives
   // the recoverable "session no longer available" copy and forces the next
@@ -200,6 +215,10 @@ export function SessionPlayer(props: SessionPlayerProps) {
   const begin = useCallback(async () => {
     if (starting) return
     setStarting(true)
+    // A live pass has begun this mount → the completed-pass reconstruction
+    // must never fire (e.g. after 'öva igen', while `?done` is still in the
+    // URL for the tick before it clears).
+    beganRef.current = true
     try {
       // Adopt path — an active session of this kind already exists (the
       // user paused it, here or on another device). Replay its stored
@@ -343,11 +362,14 @@ export function SessionPlayer(props: SessionPlayerProps) {
       if (sessionId !== null) {
         endedSessionIds.current.add(sessionId)
         updateSession.mutate({ id: sessionId, patch: { end: true } })
+        // Stamp `?done=<id>` so a refresh reconstructs this Klart instead
+        // of cold-starting a new drill. onComplete owns the URL (it drops
+        // qid); without it, fall back to the old clear-qid behaviour.
+        if (props.onComplete) props.onComplete(sessionId)
+        else props.urlSyncedQid?.setQid(null)
+      } else {
+        props.urlSyncedQid?.setQid(null)
       }
-      // Clear the URL qid on done so refresh doesn't return to a stale
-      // question; the route lands on the done screen as long as session
-      // state holds, then the user can replay or leave.
-      props.urlSyncedQid?.setQid(null)
       setPhase('done')
       return
     }
@@ -369,7 +391,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
         },
       })
     }
-  }, [index, plan, sessionId, updateSession, props.urlSyncedQid])
+  }, [index, plan, sessionId, updateSession, props.urlSyncedQid, props.onComplete])
 
   const onReplay = useCallback(() => {
     setPhase('idle')
@@ -415,6 +437,36 @@ export function SessionPlayer(props: SessionPlayerProps) {
       return next
     })
   }, [adoptedSessionId, adoptedAttempts.data, plan])
+
+  // Completed-pass reconstruction. When the route mounts carrying
+  // `?done=<id>` and no live session has started this mount, rebuild the
+  // Klart. summary from that session's persisted attempts and jump
+  // straight to the done screen — so a refresh (or a history permalink)
+  // shows the payoff instead of cold-starting a new drill. Fires once;
+  // guarded on phase==='idle' so it never clobbers a live pass.
+  const reconstructId = props.completedSessionId ?? null
+  const reconstructAttempts = useSessionAttempts(reconstructId)
+  const bankQuery = useQuery({
+    queryKey: ['question-bank'] as const,
+    queryFn: loadBank,
+    staleTime: Number.POSITIVE_INFINITY,
+  })
+  const reconstructedRef = useRef(false)
+  useEffect(() => {
+    if (reconstructedRef.current || beganRef.current) return
+    if (reconstructId === null || phase !== 'idle') return
+    const rows = reconstructAttempts.data
+    const bank = bankQuery.data
+    if (!rows || !bank) return
+    const summary = reconstructSummary(rows, bank)
+    if (summary.questions.length === 0) return
+    reconstructedRef.current = true
+    setSessionId(reconstructId)
+    setPlan(summary.questions)
+    setPicks(summary.picks)
+    setIndex(summary.questions.length - 1)
+    setPhase('done')
+  }, [reconstructId, phase, reconstructAttempts.data, bankQuery.data])
 
   // Phase A.8 — keyboard handlers (EDITION's "stolen ideas" from
   // ATLAS + TERMINAL):
