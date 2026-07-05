@@ -76,6 +76,17 @@ export function DrillResult({ summary, onReplay, onHome }: Props) {
       ? computeSectionScore(section, stats.data.bySection[section]).score
       : null
 
+  // This pass's own score on the 0–2 grade scale (correct fraction ×2).
+  // A single session barely moves the 90d prognosis, so a before/after
+  // delta would read ±0,00 — instead we surface how THIS pass compared
+  // to the running average, which is the honest, motivating signal:
+  // "1,60 this pass vs your 1,47 usual". Delta is pass − prognos, shown
+  // only for single-section passes where the average exists and the
+  // gap rounds to something visible.
+  const passScore = total > 0 ? Math.min(2, (correct / total) * 2) : null
+  const passDelta = passScore != null && prognos != null ? passScore - prognos : null
+  const passDeltaShown = passDelta != null && Math.abs(passDelta) >= 0.005
+
   // Esc-to-home — the parent-exit affordance, kept from EDITION.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -121,6 +132,18 @@ export function DrillResult({ summary, onReplay, onHome }: Props) {
               </div>
               <div className="hpc-m3-stat-l">rätt</div>
             </div>
+            {passScore != null && section && (
+              <div data-testid="drill-result-pass">
+                <div className="hpc-m3-stat-n">{passScore.toFixed(2).replace('.', ',')}</div>
+                <div className="hpc-m3-stat-l">detta pass</div>
+                {passDeltaShown && passDelta != null && (
+                  <div className="hpc-m3-stat-d">
+                    {passDelta >= 0 ? '+' : '−'}
+                    {Math.abs(passDelta).toFixed(2).replace('.', ',')} mot snittet
+                  </div>
+                )}
+              </div>
+            )}
             {prognos != null && section && (
               <div>
                 <div className="hpc-m3-stat-n">{prognos.toFixed(2).replace('.', ',')}</div>
