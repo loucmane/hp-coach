@@ -29,6 +29,7 @@ import { Route as LektionRouteImport } from './routes/lektion'
 import { Route as KlartBakeoffRouteImport } from './routes/klart-bakeoff'
 import { Route as HomePhoneResumeBakeoffRouteImport } from './routes/home-phone-resume-bakeoff'
 import { Route as HomeBakeoffRouteImport } from './routes/home-bakeoff'
+import { Route as HistorikRouteImport } from './routes/historik'
 import { Route as ExplanationBakeOffRouteImport } from './routes/explanation-bake-off'
 import { Route as DtkBrowserRouteImport } from './routes/dtk-browser'
 import { Route as DrillStyleCRouteImport } from './routes/drill-style-c'
@@ -143,6 +144,11 @@ const HomeBakeoffRoute = HomeBakeoffRouteImport.update({
   path: '/home-bakeoff',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HistorikRoute = HistorikRouteImport.update({
+  id: '/historik',
+  path: '/historik',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExplanationBakeOffRoute = ExplanationBakeOffRouteImport.update({
   id: '/explanation-bake-off',
   path: '/explanation-bake-off',
@@ -223,6 +229,7 @@ export interface FileRoutesByFullPath {
   '/drill-style-c': typeof DrillStyleCRoute
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
+  '/historik': typeof HistorikRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
@@ -258,6 +265,7 @@ export interface FileRoutesByTo {
   '/drill-style-c': typeof DrillStyleCRoute
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
+  '/historik': typeof HistorikRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
@@ -294,6 +302,7 @@ export interface FileRoutesById {
   '/drill-style-c': typeof DrillStyleCRoute
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
+  '/historik': typeof HistorikRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
@@ -331,6 +340,7 @@ export interface FileRouteTypes {
     | '/drill-style-c'
     | '/dtk-browser'
     | '/explanation-bake-off'
+    | '/historik'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
     | '/klart-bakeoff'
@@ -366,6 +376,7 @@ export interface FileRouteTypes {
     | '/drill-style-c'
     | '/dtk-browser'
     | '/explanation-bake-off'
+    | '/historik'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
     | '/klart-bakeoff'
@@ -401,6 +412,7 @@ export interface FileRouteTypes {
     | '/drill-style-c'
     | '/dtk-browser'
     | '/explanation-bake-off'
+    | '/historik'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
     | '/klart-bakeoff'
@@ -437,6 +449,7 @@ export interface RootRouteChildren {
   DrillStyleCRoute: typeof DrillStyleCRoute
   DtkBrowserRoute: typeof DtkBrowserRoute
   ExplanationBakeOffRoute: typeof ExplanationBakeOffRoute
+  HistorikRoute: typeof HistorikRoute
   HomeBakeoffRoute: typeof HomeBakeoffRoute
   HomePhoneResumeBakeoffRoute: typeof HomePhoneResumeBakeoffRoute
   KlartBakeoffRoute: typeof KlartBakeoffRoute
@@ -601,6 +614,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomeBakeoffRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/historik': {
+      id: '/historik'
+      path: '/historik'
+      fullPath: '/historik'
+      preLoaderRoute: typeof HistorikRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/explanation-bake-off': {
       id: '/explanation-bake-off'
       path: '/explanation-bake-off'
@@ -709,6 +729,7 @@ const rootRouteChildren: RootRouteChildren = {
   DrillStyleCRoute: DrillStyleCRoute,
   DtkBrowserRoute: DtkBrowserRoute,
   ExplanationBakeOffRoute: ExplanationBakeOffRoute,
+  HistorikRoute: HistorikRoute,
   HomeBakeoffRoute: HomeBakeoffRoute,
   HomePhoneResumeBakeoffRoute: HomePhoneResumeBakeoffRoute,
   KlartBakeoffRoute: KlartBakeoffRoute,

@@ -17,8 +17,39 @@ import { useApiClient } from '../useApiClient'
 import { STATS_KEY } from './useStats'
 
 const ACTIVE_SESSIONS_KEY = ['sessions', 'active'] as const
+const SESSION_HISTORY_KEY = ['sessions', 'history'] as const
 
 export type SessionKind = 'drill' | 'mock' | 'mock_diagnostic' | 'lesson' | 'adaptive_review'
+
+/** One completed pass in the drill-history list. */
+export type SessionHistoryRow = {
+  id: number
+  kind: SessionKind
+  sections: string | null
+  endedAt: string | null
+  total: number
+  correct: number
+}
+
+/**
+ * Completed passes, newest first (≤50), each with its total/correct tally.
+ * Powers the /historik journal; each row permalinks to `?done=<id>` to
+ * reopen that pass's Klart. Refetch-on-focus keeps it fresh after a drill.
+ */
+export function useSessionHistory() {
+  const api = useApiClient()
+  return useQuery({
+    queryKey: SESSION_HISTORY_KEY,
+    queryFn: async (): Promise<SessionHistoryRow[]> => {
+      const res = await api.api.sessions.history.$get()
+      if (!res.ok) {
+        throw new Error(`GET /api/sessions/history failed: ${res.status}`)
+      }
+      const body = await res.json()
+      return body.sessions as SessionHistoryRow[]
+    },
+  })
+}
 
 // Explicit row shape for cache manipulation. Mirrors the worker `sessions`
 // row, but with timestamps typed as the strings they serialize to over
