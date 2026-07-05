@@ -29,6 +29,7 @@ import { Route as LektionRouteImport } from './routes/lektion'
 import { Route as KlartBakeoffRouteImport } from './routes/klart-bakeoff'
 import { Route as HomePhoneResumeBakeoffRouteImport } from './routes/home-phone-resume-bakeoff'
 import { Route as HomeBakeoffRouteImport } from './routes/home-bakeoff'
+import { Route as HistorikPlacementBakeoffRouteImport } from './routes/historik-placement-bakeoff'
 import { Route as HistorikRouteImport } from './routes/historik'
 import { Route as ExplanationBakeOffRouteImport } from './routes/explanation-bake-off'
 import { Route as DtkBrowserRouteImport } from './routes/dtk-browser'
@@ -144,6 +145,12 @@ const HomeBakeoffRoute = HomeBakeoffRouteImport.update({
   path: '/home-bakeoff',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HistorikPlacementBakeoffRoute =
+  HistorikPlacementBakeoffRouteImport.update({
+    id: '/historik-placement-bakeoff',
+    path: '/historik-placement-bakeoff',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const HistorikRoute = HistorikRouteImport.update({
   id: '/historik',
   path: '/historik',
@@ -230,6 +237,7 @@ export interface FileRoutesByFullPath {
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/historik': typeof HistorikRoute
+  '/historik-placement-bakeoff': typeof HistorikPlacementBakeoffRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
@@ -266,6 +274,7 @@ export interface FileRoutesByTo {
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/historik': typeof HistorikRoute
+  '/historik-placement-bakeoff': typeof HistorikPlacementBakeoffRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
@@ -303,6 +312,7 @@ export interface FileRoutesById {
   '/dtk-browser': typeof DtkBrowserRoute
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/historik': typeof HistorikRoute
+  '/historik-placement-bakeoff': typeof HistorikPlacementBakeoffRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
@@ -341,6 +351,7 @@ export interface FileRouteTypes {
     | '/dtk-browser'
     | '/explanation-bake-off'
     | '/historik'
+    | '/historik-placement-bakeoff'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
     | '/klart-bakeoff'
@@ -377,6 +388,7 @@ export interface FileRouteTypes {
     | '/dtk-browser'
     | '/explanation-bake-off'
     | '/historik'
+    | '/historik-placement-bakeoff'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
     | '/klart-bakeoff'
@@ -413,6 +425,7 @@ export interface FileRouteTypes {
     | '/dtk-browser'
     | '/explanation-bake-off'
     | '/historik'
+    | '/historik-placement-bakeoff'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
     | '/klart-bakeoff'
@@ -450,6 +463,7 @@ export interface RootRouteChildren {
   DtkBrowserRoute: typeof DtkBrowserRoute
   ExplanationBakeOffRoute: typeof ExplanationBakeOffRoute
   HistorikRoute: typeof HistorikRoute
+  HistorikPlacementBakeoffRoute: typeof HistorikPlacementBakeoffRoute
   HomeBakeoffRoute: typeof HomeBakeoffRoute
   HomePhoneResumeBakeoffRoute: typeof HomePhoneResumeBakeoffRoute
   KlartBakeoffRoute: typeof KlartBakeoffRoute
@@ -614,6 +628,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomeBakeoffRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/historik-placement-bakeoff': {
+      id: '/historik-placement-bakeoff'
+      path: '/historik-placement-bakeoff'
+      fullPath: '/historik-placement-bakeoff'
+      preLoaderRoute: typeof HistorikPlacementBakeoffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/historik': {
       id: '/historik'
       path: '/historik'
@@ -730,6 +751,7 @@ const rootRouteChildren: RootRouteChildren = {
   DtkBrowserRoute: DtkBrowserRoute,
   ExplanationBakeOffRoute: ExplanationBakeOffRoute,
   HistorikRoute: HistorikRoute,
+  HistorikPlacementBakeoffRoute: HistorikPlacementBakeoffRoute,
   HomeBakeoffRoute: HomeBakeoffRoute,
   HomePhoneResumeBakeoffRoute: HomePhoneResumeBakeoffRoute,
   KlartBakeoffRoute: KlartBakeoffRoute,
