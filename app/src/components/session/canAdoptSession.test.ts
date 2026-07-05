@@ -38,6 +38,16 @@ describe('canAdoptActiveSession', () => {
     expect(canAdoptActiveSession(session({ sections: 'XYZ' }), 'XYZ', true)).toBe(false)
   })
 
+  it('does NOT re-adopt a session this instance just ended (rapid re-drill race)', () => {
+    // "öva igen" calls begin() synchronously; the end:true PATCH's cache
+    // eviction hasn't landed, so activeOfKind.data still holds the finished
+    // session. Without the locallyEnded guard it would resume the corpse at
+    // its last answered question instead of picking a fresh batch.
+    const finished = session({ sections: 'XYZ' })
+    expect(canAdoptActiveSession(finished, 'XYZ', false, false)).toBe(true) // baseline: adoptable
+    expect(canAdoptActiveSession(finished, 'XYZ', false, true)).toBe(false) // ended → fresh pick
+  })
+
   it('does not adopt when there is no active session', () => {
     expect(canAdoptActiveSession(null, 'XYZ', false)).toBe(false)
     expect(canAdoptActiveSession(undefined, 'XYZ', false)).toBe(false)
