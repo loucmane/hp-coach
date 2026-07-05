@@ -18,9 +18,11 @@
 // is prescriptive and completion stays signal-derived — no manual
 // "mark complete", no regenerate affordance.
 
+import type { SessionHistoryRow } from '@/api/hooks/useSessions'
 import type { TopTrap } from '@/api/hooks/useTopTraps'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { DailyPlanCard } from '@/components/home/DailyPlanCard'
+import { RecentPassesCard } from '@/components/home/RecentPassesCard'
 import { ResumptionPanel } from '@/components/home/ResumptionPanel'
 import { TopTrapsCard } from '@/components/home/TopTrapsCard'
 import { MobileFrame, type TabKey } from '@/components/MobileFrame'
@@ -55,6 +57,9 @@ type HomeMobileProps = {
   /** Top recurring trap patterns from the active mistake queue.
    *  Empty array hides the section — silent on signal-less days. */
   topTraps?: TopTrap[]
+  /** Recent completed passes for the "Senaste passen" glance. Empty
+   *  array hides the section (first-day user sees no empty shell). */
+  recentPasses?: SessionHistoryRow[]
   /** Called when a plan item is tapped. Receives the item's href so
    *  the route can dispatch SPA navigation. */
   onPlanItemNavigate?: (href: string) => void
@@ -83,6 +88,7 @@ export function HomeMobile({
   diagnosticMemory: _diagnosticMemory = null,
   daysAway: _daysAway = null,
   topTraps = [],
+  recentPasses = [],
   onPlanItemNavigate,
   coach: coachProp,
   firstName,
@@ -192,6 +198,10 @@ export function HomeMobile({
           )}
 
           {topTraps.length > 0 && <TopTrapsCard traps={topTraps} />}
+
+          {/* Reflection, last — a glance at recent completed passes, below
+           *  the plan/traps so it never competes with the next action. */}
+          <RecentPassesCard passes={recentPasses} />
         </div>
       </Page>
     </MobileFrame>
