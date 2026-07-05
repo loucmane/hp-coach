@@ -18,7 +18,7 @@
 // surfaces as 404, not 403, by design.
 
 import { zValidator } from '@hono/zod-validator'
-import { and, asc, desc, eq, isNull, sql } from 'drizzle-orm'
+import { and, asc, desc, eq, isNotNull, isNull, sql } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
@@ -65,6 +65,36 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       .where(and(eq(sessions.userId, userId), isNull(sessions.endedAt)))
       .orderBy(desc(sessions.startedAt))
     return c.json({ sessions: rows, session: rows[0] ?? null })
+  })
+
+  // GET /api/sessions/history — completed passes, newest first, with a
+  // per-pass tally (total answered + correct) so the drill-history view can
+  // render "KVA · 7/10 · 3 juli" rows that permalink to ?done=<id>. Empty
+  // ended sessions (0 attempts — abandoned before the first answer) are
+  // dropped; they aren't a "pass" worth listing. Capped at 50 recent.
+  .get('/history', async (c) => {
+    const db = getDb(c.env.DB)
+    const userId = await ensureUserRow(db, c.var.userId)
+    const rows = await db
+      .select({
+        id: sessions.id,
+        kind: sessions.kind,
+        sections: sessions.sections,
+        endedAt: sessions.endedAt,
+        total: sql<number>`count(${attempts.id})`,
+        correct: sql<number>`coalesce(sum(case when ${attempts.correct} = 1 then 1 else 0 end), 0)`,
+      })
+      .from(sessions)
+      .leftJoin(attempts, eq(attempts.sessionId, sessions.id))
+      .where(and(eq(sessions.userId, userId), isNotNull(sessions.endedAt)))
+      .groupBy(sessions.id)
+      .orderBy(desc(sessions.endedAt))
+      .limit(50)
+    return c.json({
+      sessions: rows
+        .filter((r) => Number(r.total) > 0)
+        .map((r) => ({ ...r, total: Number(r.total), correct: Number(r.correct) })),
+    })
   })
 
   // GET /api/sessions/:id/attempts — the answered questions for a session,

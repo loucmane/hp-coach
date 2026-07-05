@@ -34,6 +34,11 @@ const COACH_KEYS: CoachKey[] = ['kompis', 'professor', 'taktiker']
 
 const TOOLS = [
   {
+    to: '/historik',
+    headline: 'Tidigare pass',
+    rationale: 'Öppna ett avslutat pass igen — hela facit och vad du fastnade på.',
+  },
+  {
     to: '/diagnostik',
     headline: 'Diagnostik',
     rationale: 'Mät om var du står — 10 frågor över alla sektioner, ny baslinje.',
