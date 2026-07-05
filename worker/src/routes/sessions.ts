@@ -67,11 +67,19 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     return c.json({ sessions: rows, session: rows[0] ?? null })
   })
 
-  // GET /api/sessions/history — completed passes, newest first, with a
-  // per-pass tally (total answered + correct) so the drill-history view can
-  // render "KVA · 7/10 · 3 juli" rows that permalink to ?done=<id>. Empty
-  // ended sessions (0 attempts — abandoned before the first answer) are
-  // dropped; they aren't a "pass" worth listing. Capped at 50 recent.
+  // GET /api/sessions/history — COMPLETED passes, newest first, with a
+  // per-pass tally (answered + correct) so the drill-history view can render
+  // "KVA · 7/10 · 3 juli" rows that permalink to ?done=<id>.
+  //
+  // "Completed" = the user answered the whole stored plan (answered >=
+  // plan length). This is the load-bearing filter: a session is ended on
+  // BOTH real completion AND abandonment (starting a new drill retires the
+  // prior active one, stamping endedAt). Without it, history fills with
+  // "0/1 · 1/2" abandoned stubs — the owner's early sessions. Sessions with
+  // no stored plan (pre-plan-storage rows) can't be judged complete, so
+  // they're dropped too. Repetition passes are legitimately < 10 (bounded by
+  // the due-mistake count), so we compare to the plan, not a fixed 10.
+  // Capped at 50 recent.
   .get('/history', async (c) => {
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
@@ -81,6 +89,7 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         kind: sessions.kind,
         sections: sessions.sections,
         endedAt: sessions.endedAt,
+        planLen: sql<number | null>`json_array_length(${sessions.plan})`,
         total: sql<number>`count(${attempts.id})`,
         correct: sql<number>`coalesce(sum(case when ${attempts.correct} = 1 then 1 else 0 end), 0)`,
       })
@@ -89,11 +98,20 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       .where(and(eq(sessions.userId, userId), isNotNull(sessions.endedAt)))
       .groupBy(sessions.id)
       .orderBy(desc(sessions.endedAt))
-      .limit(50)
+      .limit(200)
     return c.json({
       sessions: rows
-        .filter((r) => Number(r.total) > 0)
-        .map((r) => ({ ...r, total: Number(r.total), correct: Number(r.correct) })),
+        .filter((r) => {
+          const total = Number(r.total)
+          const planLen = r.planLen == null ? null : Number(r.planLen)
+          return planLen != null && planLen > 0 && total >= planLen
+        })
+        .slice(0, 50)
+        .map(({ planLen: _planLen, ...r }) => ({
+          ...r,
+          total: Number(r.total),
+          correct: Number(r.correct),
+        })),
     })
   })
 
