@@ -28,6 +28,7 @@ type DrillSearch = {
   framework?: string
   mixed?: true
   weak?: true
+  done?: number
 }
 
 function validateSearch(input: Record<string, unknown>): DrillSearch {
@@ -61,6 +62,12 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
   // lektion section-CTA. Multi-trap, unlike single-trap `?framework=`.
   if (input.weak === '1' || input.weak === true) {
     out.weak = true
+  }
+  // `?done=<sessionId>` — show a completed pass's Klart, reconstructed from
+  // its attempts (refresh-proof + history permalink).
+  const done = Number(input.done)
+  if (Number.isInteger(done) && done > 0) {
+    out.done = done
   }
   return out
 }
@@ -103,7 +110,7 @@ export const Route = createFileRoute('/drill')({
 })
 
 function DrillScreen() {
-  const { section: sectionFromUrl, qid, framework, mixed, weak } = Route.useSearch()
+  const { section: sectionFromUrl, qid, framework, mixed, weak, done } = Route.useSearch()
   const section: DrillSection = sectionFromUrl ?? 'ORD'
   const navigate = useNavigate()
 
@@ -127,7 +134,23 @@ function DrillScreen() {
         search: (prev: DrillSearch) => ({
           ...prev,
           qid: next ?? undefined,
+          // Any qid change means a live drill — a stale `?done` from a
+          // prior pass must not linger (or re-trigger reconstruction).
+          done: undefined,
         }),
+        replace: true,
+      })
+    },
+    [navigate],
+  )
+
+  // On completion, stamp `?done=<sessionId>` (keeping the section so
+  // "öva igen" re-picks the same one) so a refresh reconstructs the Klart.
+  const onComplete = useCallback(
+    (sessionId: number) => {
+      navigate({
+        to: '/drill',
+        search: (prev: DrillSearch) => ({ section: prev.section, done: sessionId }),
         replace: true,
       })
     },
@@ -260,6 +283,8 @@ function DrillScreen() {
         !directLinkQid && !framework && dueCount > 0 ? <RepetitionHint count={dueCount} /> : null
       }
       urlSyncedQid={{ qid: qid ?? null, setQid: setUrlQid }}
+      completedSessionId={done ?? null}
+      onComplete={onComplete}
       resolvePlan={resolvePlan}
       onWrong={(q) => {
         // Fire-and-forget: a failed mistake-write doesn't block the UX.
