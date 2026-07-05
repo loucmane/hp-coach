@@ -16,18 +16,26 @@ beforeAll(async () => {
 })
 
 describe('figure override sets', () => {
-  it('suppresses 34 leaked/junk/empty figures whose prompt is self-contained', () => {
-    expect(SUPPRESSED_FIGURES.size).toBe(34)
+  it('suppresses 33 leaked/junk/empty figures whose prompt is self-contained', () => {
+    expect(SUPPRESSED_FIGURES.size).toBe(33)
     expect(SUPPRESSED_FIGURES.has('var-2026-kvant2-XYZ-002')).toBe(true) // the "Steg 1-4" fragment
     expect(SUPPRESSED_FIGURES.has('var-2016-kvant1-XYZ-004')).toBe(true) // rectangle leaked onto 1002^3
+    // XYZ-003 stays suppressed (drillable): its options were rewritten as text
+    // descriptions of each candidate line, so it's answerable figure-less.
+    expect(SUPPRESSED_FIGURES.has('var-2024-kvant1-XYZ-003')).toBe(true)
+    // XYZ-008 moved OUT to EXCLUDED (2026-07-05): blank graph-choice options.
+    expect(SUPPRESSED_FIGURES.has('var-2018-1-kvant2-XYZ-008')).toBe(false)
   })
 
-  it('excludes 3 load-bearing-but-broken questions from drilling', () => {
-    // 12 → 8 → 6 → 8 → 3: Tranche 2 (Option-B X-widen) recovered the 4
-    // REEXTRACT multi-object figures + var-2024-XYZ-006, all PDF-cross-checked.
-    // Only host-2025 (multi-figure model) + the 2 black-blob circles remain.
-    expect(EXCLUDED_QUESTIONS.size).toBe(3)
+  it('excludes 4 load-bearing-but-broken questions from drilling', () => {
+    // 12 → 8 → 6 → 8 → 3 → 4: Tranche 2 (Option-B X-widen) recovered the 4
+    // REEXTRACT multi-object figures + var-2024-XYZ-006, all PDF-cross-checked
+    // (host-2025 multi-figure + 2 black-blob circles remained). 2026-07-05:
+    // +var-2018-1-XYZ-008, a graph-choice whose 4 options parsed BLANK and
+    // whose figure is prompt-text junk — unanswerable, unrecoverable.
+    expect(EXCLUDED_QUESTIONS.size).toBe(4)
     expect(EXCLUDED_QUESTIONS.has('host-2025-kvant2-XYZ-008')).toBe(true) // still excluded (multi-figure model)
+    expect(EXCLUDED_QUESTIONS.has('var-2018-1-kvant2-XYZ-008')).toBe(true) // blank graph-choice options
     expect(EXCLUDED_QUESTIONS.has('var-2022-1-kvant1-KVA-013')).toBe(false) // recovered: triangle un-clipped
     expect(EXCLUDED_QUESTIONS.has('var-2024-kvant1-XYZ-006')).toBe(false) // recovered: 65°/C right edge un-clipped
   })
@@ -60,6 +68,7 @@ describe('questionsInSection drops still-excluded questions', () => {
     const xyz = questionsInSection(bank, 'XYZ').map((q) => q.qid)
     expect(xyz).not.toContain('host-2025-kvant2-XYZ-008') // multi-figure model
     expect(xyz).not.toContain('host-ver1-2019-kvant1-XYZ-009') // black-blob circles
+    expect(xyz).not.toContain('var-2018-1-kvant2-XYZ-008') // blank graph-choice options
   })
 
   it('Tranche-2 X-widen recoveries are back in the drillable pool', () => {

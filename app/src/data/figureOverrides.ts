@@ -56,11 +56,13 @@ export const SUPPRESSED_FIGURES: ReadonlySet<string> = new Set([
   'var-2023-kvant1-KVA-016',
   'var-2024-kvant1-XYZ-008',
   'var-2026-kvant2-XYZ-002',
-  // Tranche 1.1: figure-less before, but the glyph-aspect fix tips them past
+  // Tranche 1.1: figure-less before, but the glyph-aspect fix tips it past
   // MIN_FIGURE_ITEMS and emits a junk inline-math fragment — suppress so a
-  // future full re-extract can't serve garbage.
+  // future full re-extract can't serve garbage. XYZ-003's options were
+  // rewritten as text descriptions of each candidate line, so it stays
+  // answerable with the junk figure hidden. (var-2018-1-XYZ-008 was here too
+  // but is a graph-choice with BLANK options → moved to EXCLUDED, 2026-07-05.)
   'var-2024-kvant1-XYZ-003',
-  'var-2018-1-kvant2-XYZ-008',
 ])
 
 /** Load-bearing figure is broken AND recoverable from the source PDF — drop
@@ -77,6 +79,12 @@ export const REEXTRACT_QUESTIONS: ReadonlySet<string> = new Set([])
  *  model; var-2024-XYZ-006 is verify-then-promote. Plus the 4 REEXTRACT. */
 export const EXCLUDED_QUESTIONS: ReadonlySet<string> = new Set([
   'host-2025-kvant2-XYZ-008', // graph of f+g — graph-choice, needs multi-figure model
+  // "Vilken av graferna nedan representerar f(x)=x/2+2?" — graph-choice whose
+  // 4 answer options are the graphs, but they parsed BLANK (A/B/C empty,
+  // D="xyz") and the extracted figure is just prompt-text junk. Unanswerable
+  // and unrecoverable without the source graphs; drop it. (Its sibling
+  // var-2024-XYZ-003 survives because its options were rewritten as text.)
+  'var-2018-1-kvant2-XYZ-008',
   // (var-2024-kvant1-XYZ-006 recovered by Tranche 2 Option-B X-widen — its
   //  clipped 65°/C-vertex right edge is back, PDF-cross-checked faithful.)
   // Two-circle area-ratio figures served as black-blob circles + spurious
