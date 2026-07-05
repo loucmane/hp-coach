@@ -60,3 +60,21 @@ sessions/
 plans/
 .taskmaster/state.json
 audit/m3-fidelity/
+
+# Throwaway render/debug scripts + bake-off screenshots (session scratch,
+# never meant to be committed). Root-anchored PNGs so data/ + app/public
+# assets stay tracked. Already-tracked files are unaffected by these.
+/*.png
+render*.mjs
+render_*.mjs
+dbg*.mjs
+t2x-*.mjs
+app/render*.mjs
+app/render_*.mjs
+app/dbg*.mjs
+app/t2x-*.mjs
+app/public/figure-check.html
+app/public/figure-verify.html
+
+# Playwright MCP capture artifacts
+.playwright-mcp/
