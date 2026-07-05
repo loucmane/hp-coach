@@ -56,6 +56,11 @@ type Props = {
    *  mounts without a session) the eyebrow is omitted entirely. */
   position?: number
   total?: number
+  /** DTK block-grouping cue: the current question's place in its figure
+   *  block ("Fråga 2 av 4 · samma sida"). Null/absent for non-block
+   *  questions. The figure itself stays put across block-mates (the drill
+   *  doesn't re-key DrillQuestion), so this just narrates that. */
+  blockPosition?: { n: number; m: number } | null
 }
 
 export function DrillQuestion({
@@ -67,6 +72,7 @@ export function DrillQuestion({
   fill = true,
   position,
   total,
+  blockPosition,
 }: Props) {
   // Scroll back to the top whenever a new question loads. Without this
   // a long LÄS passage on Q1 leaves the inner overflow-y region
@@ -239,6 +245,21 @@ export function DrillQuestion({
           <figure className="hpc-m3-fig">
             <QuestionFigure figure={question.figure} />
           </figure>
+          {blockPosition && blockPosition.m > 1 && (
+            <div className="hpc-dtk-block-cue" data-testid="dtk-block-cue">
+              <span className="hpc-dtk-block-dots" aria-hidden>
+                {Array.from({ length: blockPosition.m }, (_, i) => (
+                  <span
+                    // biome-ignore lint/suspicious/noArrayIndexKey: fixed positional dots
+                    key={i}
+                    data-on={i < blockPosition.n ? 'true' : 'false'}
+                    data-active={i === blockPosition.n - 1 ? 'true' : 'false'}
+                  />
+                ))}
+              </span>
+              Fråga {blockPosition.n} av {blockPosition.m} · samma sida
+            </div>
+          )}
         </DrillRailSection>
       )}
 

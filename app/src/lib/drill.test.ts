@@ -40,8 +40,8 @@ describe('pickDrillQuestions', () => {
   })
 
   it('returns ≤ pool size when the pool is short', async () => {
-    // DTK is currently answer-only (parser MVP), so the pool is empty.
     const picked = await pickDrillQuestions('DTK', 10, seededRng(1))
+    expect(picked.length).toBeGreaterThan(0)
     expect(picked.length).toBeLessThanOrEqual(questionsInSection(bank, 'DTK').length)
   })
 
@@ -55,6 +55,65 @@ describe('pickDrillQuestions', () => {
     const a = (await pickDrillQuestions('ORD', 10, seededRng(1))).map((q) => q.qid)
     const b = (await pickDrillQuestions('ORD', 10, seededRng(99))).map((q) => q.qid)
     expect(a).not.toEqual(b)
+  })
+})
+
+describe('pickDrillQuestions — DTK block-grouping', () => {
+  // DTK is drilled as BLOCKS: one figure page + its ~3-4 questions worked as
+  // a unit (block membership = shared figure.src). The picker keeps a block's
+  // questions CONSECUTIVE and WHOLE so you orient to a dense page once, not
+  // 4× scattered — mirroring the real exam. (Panel decision 2026-07-05.)
+
+  const pageOf = (q: Question) => q.figure?.src ?? q.qid
+
+  it('keeps block-mates (same figure page) consecutive — never interleaved', async () => {
+    const picked = await pickDrillQuestions('DTK', 10, seededRng(5))
+    expect(picked.length).toBeGreaterThan(0)
+    // Walk the sequence: once we leave a page we must never return to it.
+    const closed = new Set<string>()
+    let prev: string | null = null
+    for (const q of picked) {
+      const page = pageOf(q)
+      if (page !== prev) {
+        expect(closed.has(page)).toBe(false) // returning = interleaved
+        if (prev !== null) closed.add(prev)
+        prev = page
+      }
+    }
+  })
+
+  it('picks WHOLE blocks — every page in the result contributes all its pool questions', async () => {
+    const picked = await pickDrillQuestions('DTK', 10, seededRng(11))
+    const pool = questionsInSection(bank, 'DTK')
+    const poolByPage = new Map<string, number>()
+    for (const q of pool) poolByPage.set(pageOf(q), (poolByPage.get(pageOf(q)) ?? 0) + 1)
+    const resByPage = new Map<string, number>()
+    for (const q of picked) resByPage.set(pageOf(q), (resByPage.get(pageOf(q)) ?? 0) + 1)
+    for (const [page, n] of resByPage) {
+      expect(n).toBe(poolByPage.get(page)) // whole block, no partials
+    }
+  })
+
+  it('orders questions within a block by number (natural cluster order)', async () => {
+    const picked = await pickDrillQuestions('DTK', 12, seededRng(3))
+    for (let i = 1; i < picked.length; i++) {
+      if (pageOf(picked[i]) === pageOf(picked[i - 1])) {
+        expect(picked[i].number).toBeGreaterThan(picked[i - 1].number)
+      }
+    }
+  })
+
+  it('is deterministic for a fixed seed', async () => {
+    const a = (await pickDrillQuestions('DTK', 10, seededRng(42))).map((q) => q.qid)
+    const b = (await pickDrillQuestions('DTK', 10, seededRng(42))).map((q) => q.qid)
+    expect(a).toEqual(b)
+  })
+
+  it('does NOT block-group the other sections (they stay individually shuffled)', async () => {
+    // ORD has no shared figures, so this is really a guard that the DTK branch
+    // is section-scoped — ORD still returns exactly `count`.
+    const picked = await pickDrillQuestions('ORD', 10, seededRng(9))
+    expect(picked).toHaveLength(10)
   })
 })
 

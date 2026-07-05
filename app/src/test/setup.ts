@@ -59,7 +59,11 @@ const PUBLIC_DIR = path.resolve(HERE, '..', '..', 'public')
 const realFetch = globalThis.fetch
 globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
   const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url
-  if (url.startsWith('/data/')) {
+  // Serve /data/* AND /figures/* (the DTK figure index loadBank reads to
+  // patch DTK questions with their raster page metadata) from disk, so the
+  // bank tests see real figure.src / block structure instead of a silent
+  // empty index (which would make DTK block-grouping tests pass vacuously).
+  if (url.startsWith('/data/') || url.startsWith('/figures/')) {
     try {
       const body = readFileSync(path.join(PUBLIC_DIR, url), 'utf-8')
       return new Response(body, {
