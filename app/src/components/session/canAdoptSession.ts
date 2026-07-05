@@ -21,13 +21,23 @@ import type { ActiveSession } from '@/api/hooks/useSessions'
  * `resolvePlan` capability is intentionally NOT checked here — that is a
  * surface concern the caller combines in (diagnostik omits it to opt out of
  * resume entirely).
+ *
+ * `locallyEnded` closes the rapid-replay race: `onNext` ends a finished
+ * session with a NON-awaited PATCH, and its active-sessions cache eviction
+ * only lands on the response. But "öva igen" calls `begin()` synchronously,
+ * so `activeOfKind.data` still holds the just-ended session — without this
+ * guard `begin` re-adopts the corpse (seeking to its last, already-answered
+ * question) instead of picking a fresh batch. The caller passes true when it
+ * has already sent `end:true` for this session id.
  */
 export function canAdoptActiveSession(
   existing: ActiveSession | null | undefined,
   requestedSections: string | undefined,
   staleResume: boolean,
+  locallyEnded = false,
 ): existing is ActiveSession & { plan: string[] } {
   if (staleResume) return false
+  if (locallyEnded) return false
   if (!existing?.plan || existing.plan.length === 0) return false
   return existing.sections === requestedSections
 }

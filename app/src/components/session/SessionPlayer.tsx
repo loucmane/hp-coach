@@ -178,6 +178,11 @@ export function SessionPlayer(props: SessionPlayerProps) {
   const [questionStartedAt, setQuestionStartedAt] = useState(0)
   const [sessionId, setSessionId] = useState<number | null>(null)
   const [emptyAttempted, setEmptyAttempted] = useState(false)
+  // Session ids this instance has already ended (`end:true`). The active-
+  // sessions cache eviction is async (mutation onSuccess), so a synchronous
+  // "öva igen" → begin() would otherwise re-adopt the corpse. Guards the
+  // adopt path in begin(). A ref so recording an end doesn't re-render.
+  const endedSessionIds = useRef<Set<number>>(new Set())
   // Set when an adopted server session's stored plan no longer resolves
   // to any live question (corpus drift / stale seed rows like `q1`). Drives
   // the recoverable "session no longer available" copy and forces the next
@@ -212,7 +217,11 @@ export function SessionPlayer(props: SessionPlayerProps) {
       // section (the "click XYZ, get a leftover ORD question" bug). resolvePlan
       // is the surface-capability check (diagnostik omits it to skip resume).
       const existing = activeOfKind.data
-      if (canAdoptActiveSession(existing, props.sections, staleResume) && props.resolvePlan) {
+      const locallyEnded = existing?.id != null && endedSessionIds.current.has(existing.id)
+      if (
+        canAdoptActiveSession(existing, props.sections, staleResume, locallyEnded) &&
+        props.resolvePlan
+      ) {
         const questions = await props.resolvePlan(existing.plan)
         if (questions.length === 0) {
           // The stored plan no longer resolves to any live question
@@ -222,6 +231,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
           // "Laddar …". Ending drops it from the active-sessions cache
           // (useUpdateSession), so the next render offers a fresh start.
           if (existing.id != null) {
+            endedSessionIds.current.add(existing.id)
             updateSession.mutate({ id: existing.id, patch: { end: true } })
           }
           // Drop the stale qid from the URL. Without this the route stays
@@ -331,6 +341,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
     const last = index === plan.length - 1
     if (last) {
       if (sessionId !== null) {
+        endedSessionIds.current.add(sessionId)
         updateSession.mutate({ id: sessionId, patch: { end: true } })
       }
       // Clear the URL qid on done so refresh doesn't return to a stale
