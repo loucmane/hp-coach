@@ -150,4 +150,40 @@ describe('DrillQuestion — ELF cloze gaps', () => {
     render(<DrillQuestion question={ELF_CLOZE} picked={null} graded={false} onPick={() => {}} />)
     expect(screen.getByTestId('drill-prompt')).toHaveTextContent('Lucka 34')
   })
+
+  // Regression: 5 cloze passages (e.g. host-2020-verb2-ELF-032) don't
+  // carry the "gaps which indicate" instruction line, so the old probe
+  // left their gaps as bare numbers. Detection now keys on the reliable
+  // signal — an ELF item with no stem prompt is a cloze — so these
+  // render their gaps too.
+  const ELF_CLOZE_NO_INSTRUCTION: Question = {
+    ...ELF_CLOZE,
+    qid: 'host-2020-verb2-ELF-032',
+    number: 32,
+    answer: 'C',
+    context:
+      'Two Drinks a Day?\n\n' +
+      'However, any more than that 31 the risk of the most deadly strokes. ' +
+      'The study adds to the 32 around the health benefits of light drinking, ' +
+      'resulting from a blockage in the blood 33 to the brain.',
+  }
+
+  it('renders gaps for a cloze WITHOUT the instruction line', () => {
+    render(
+      <DrillQuestion
+        question={ELF_CLOZE_NO_INSTRUCTION}
+        picked={null}
+        graded={false}
+        onPick={() => {}}
+      />,
+    )
+    const gaps = screen.getAllByTestId(/^cloze-gap-/)
+    expect(gaps.map((g) => g.getAttribute('data-testid'))).toEqual([
+      'cloze-gap-31',
+      'cloze-gap-32',
+      'cloze-gap-33',
+    ])
+    expect(screen.getByTestId('cloze-gap-32')).toHaveAttribute('data-active', 'true')
+    expect(screen.getByTestId('drill-prompt')).toHaveTextContent('Lucka 32')
+  })
 })

@@ -105,9 +105,18 @@ export function DrillQuestion({
   // ELF cloze passages: the real exam draws each gap as a blank line
   // with the question number in it — the PDF text layer only kept the
   // bare number, which camouflages among the passage's real numbers
-  // (78%, 139, 1960…). Detect the cloze instruction and restore the
-  // affordance render-side (see renderClozeText / the Lucka headword).
-  const isCloze = question.section === 'ELF' && /gaps which indicate/i.test(question.context ?? '')
+  // (78%, 139, 1960…). Restore the affordance render-side (see
+  // renderClozeText / the Lucka headword).
+  //
+  // Detection: an ELF item with NO stem prompt IS a cloze fill-in (the
+  // gap is the question) — reading-comprehension items always carry a
+  // prompt. Corpus check across all 27 exams: 135 empty-prompt ELF
+  // items (all cloze), 0 prompted items with a gap chain — so this is
+  // exact with zero false positives. The earlier probe keyed on the
+  // literal "gaps which indicate" instruction, which 5 cloze passages
+  // (e.g. host-2020-verb2-ELF-032) don't carry, so their gaps rendered
+  // as bare numbers.
+  const isCloze = question.section === 'ELF' && !(question.prompt ?? '').trim()
   const clozeGaps = isCloze
     ? findGapChain(question.context ?? '', question.number)
     : new Set<number>()
