@@ -27,9 +27,21 @@ type Props = {
    *  both absent (the eyebrow is omitted without them). */
   position?: number
   total?: number
+  /** DTK block position — forwarded to DrillQuestion so the desktop
+   *  figure shows the "Fråga N av M · samma sida" cue, matching phone.
+   *  Null/absent for non-DTK or singleton-page questions. */
+  blockPosition?: { n: number; m: number } | null
 }
 
-export function StudyDesk({ question, picked, graded, onPick, position, total }: Props) {
+export function StudyDesk({
+  question,
+  picked,
+  graded,
+  onPick,
+  position,
+  total,
+  blockPosition,
+}: Props) {
   return (
     <div data-testid="study-desk" style={{ containerType: 'inline-size' }}>
       <div className="hpc-studydesk">
@@ -41,6 +53,7 @@ export function StudyDesk({ question, picked, graded, onPick, position, total }:
           fill={false}
           position={position}
           total={total}
+          blockPosition={blockPosition}
         />
       </div>
     </div>
