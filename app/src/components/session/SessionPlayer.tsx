@@ -102,6 +102,10 @@ function variantPropsFor(args: {
    *  routes that mount the variant without a session keep compiling. */
   position?: number
   total?: number
+  /** DTK block position — forwarded through BoksidanDesk → StudyDesk →
+   *  DrillQuestion so the desktop figure carries the "samma sida" cue,
+   *  matching the phone path. Null off the DTK block path. */
+  blockPosition?: { n: number; m: number } | null
 }) {
   return {
     question: args.question,
@@ -113,6 +117,7 @@ function variantPropsFor(args: {
     onReset: args.onAdvance,
     position: args.position,
     total: args.total,
+    blockPosition: args.blockPosition,
   }
 }
 
@@ -719,6 +724,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
             onAdvance: onNext,
             position: index + 1,
             total: plan.length,
+            blockPosition,
           })}
         />
       </MobileFrame>

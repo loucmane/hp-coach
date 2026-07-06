@@ -34,6 +34,11 @@ export type VariantData = {
   /** Total questions in the current plan. Same nullability as
    *  position — both present or both absent. */
   total?: number
+  /** DTK block position — 1-indexed slot within a figure page's run of
+   *  questions plus the run length. Threaded to DrillQuestion (via the
+   *  desktop StudyDesk) for the "Fråga N av M · samma sida" cue. Null for
+   *  non-DTK / singleton-page questions and for non-block variants. */
+  blockPosition?: { n: number; m: number } | null
 }
 
 type Props = {

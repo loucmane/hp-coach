@@ -25,6 +25,7 @@ export function BoksidanDesk({
   onReset,
   position,
   total,
+  blockPosition,
 }: VariantData) {
   return (
     <div
@@ -49,6 +50,7 @@ export function BoksidanDesk({
             onPick={onPick}
             position={position}
             total={total}
+            blockPosition={blockPosition}
           />
         </main>
 
