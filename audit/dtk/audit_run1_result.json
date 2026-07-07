@@ -1,0 +1,949 @@
+{
+ "meta": {
+  "pagesRequested": 216,
+  "pagesAudited": 70,
+  "questions": 210,
+  "missedPages": []
+ },
+ "sightDist": {
+  "with": 18,
+  "without": 12,
+  "mixed": 40,
+  "unknown": 0
+ },
+ "counts": {
+  "high": 8,
+  "med": 81,
+  "low": 17,
+  "likelyWrong": 0
+ },
+ "defects": {
+  "high": [
+   {
+    "qid": "host-2014-kvant2-DTK-034",
+    "page": "host-2014-kvant2-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "high",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Explanation invents 85+ as '1999 cirka 150, 2008 cirka 230 (kraftigt ökat)' and '85+-gruppen är den enda med STIGANDE trend'. The figure shows 85+ 1999 ≈ 205 and 2008 ≈ 158 — a DECREASE (85+ peaks 2002 ~301 then falls). It also states 25-44 = '220 vs 130, diff 90' (actual ≈204 vs ≈177, diff ≈27). Step 9 concedes 'STÖRSTA är 25–44 med 90 … men facit fastslår 85+' — its own numbers point to option B and it only reaches D by deferring to the facit. The real diffs are 0-4≈32, 25-44≈27, 75-84≈40, 85+≈47, so D is genuinely correct, but the fabricated values would steer a solver to the wrong option B."
+   },
+   {
+    "qid": "host-2017-kvant1-DTK-037",
+    "page": "host-2017-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "high",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "The explanation identifies the two evenest-gender groups as 'personliga tjänster' and 'post/tele', with step 7 'Post/tele-bubblan ligger i den högra delen av BLANDADE-zonen, ungefär vid x = 10–20 %' and step 5 dismissing samhällsvetare ('kring 60/40 men inte exakt på 50/50'). Figure measurements: the two bubbles actually closest to the 50/50 line (row 1336) are personliga tjänster (center 19 px below, x~74%) and samhällsvetare/humanister (center 13 px ABOVE the line, x~20%). post/tele sits at x~65% (row 1474, 138 px below the line) — left-of-centre, NOT the far right, and NOT among the evenest. So the real pair is personliga tjänster + samhällsvetare (74-20 ~= 54 ~= 55 pp), and C/55 is coincidentally right; but the explanation invents post/tele's far-right position and rules out the truly correct bubble. A solver trusting the identification while reading post/tele's real x would compute ~9 pp and be steered toward option A."
+   },
+   {
+    "qid": "host-2017-kvant1-DTK-038",
+    "page": "host-2017-kvant1-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "high",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 6 / distractor A claim: '1991: luftstrupestapeln ligger nära 25 000 (klart > 15 000 ✓) ... Alla fyra åren uppfyller villkor 2.' Figure: the bottom-chart light (luftstrupe) bars are ~13,300 (1991), ~15,700 (1992), ~17,600 (1993), ~20,000 (1994) — NOT ~25,000 (that height is the 'buk och bäcken' hatched bar). So 1991 is BELOW 15,000 and condition 2 is precisely what disqualifies 1991, contrary to the explanation. Distractor A also claims 1991 fails condition 3 ('skillnaden ... kanske 100–300'), but gallsten 1990≈11,800 → 1991≈11,800 vs 1990≈11,100 gives ~+700 (>500), so c3 actually PASSES for 1991. Conversely for 1993 (distractor C / step 8) it claims gallsten changed '≈ 500–1 000 (troligen ✓)' and that Sår<8000; figure shows gallsten 1992≈13,900 → 1993≈14,000 (change ~100, c3 FAILS — the real disqualifier) while Sår 1993≈8,100 is at/above 8,000. The discriminating conditions for the distractors are inverted, which could steer a solver to C."
+   },
+   {
+    "qid": "host-2017-kvant1-DTK-040",
+    "page": "host-2017-kvant1-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "high",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 4 readings contradict the figure. 'Smärtor i luftstrupe: 1987 ≈ 30 000, 2003 ≈ 20 000 (minskning)' — figure shows luftstrupe (light bottom bars) rising from ~12,800 (1987) to ~28,200 (2003), an INCREASE of ~15,400; the ~30,000 bar is 'buk och bäcken' (hatched), which barely changes (~29,800→~28,300). 'Ljumskbråck: 1987 ≈ 12 000, 2003 ≈ 15 000, |diff| ≈ 3 000 (ökning)' — figure shows Ljumskbråck (top-chart hatched) collapsing from ~16,100 to ~5,200, a DECREASE of ~10,900 (the true runner-up, grossly understated and wrong direction). 'Gallstenssjukdom: 1987 ≈ 9 000, 2003 ≈ 15 000, |diff| ≈ 6 000' — actually 11,900→15,200 (~3,300). Answer C stays correct, but understating the winner to ~10,000 and the runner-up B to +3,000 could steer a figure-checking solver to B."
+   },
+   {
+    "qid": "host-2017-kvant2-DTK-031",
+    "page": "host-2017-kvant2-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "high",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 2 states 'Nitrat-kväve (○, övre skala 0-500) och Total-kväve (●, undre skala 0-100)' and step 10 'Lås legenden: ● går mot UNDRE x-axeln (0-100)'. The legend is the reverse: '(övre skala)' is under Total-kväve (●), so the filled circle reads on the 0-500 scale. Following the explanation's instruction to read Total-kväve (●) on the 0-100 scale at 20 m yields ~50 μg/l — matching the WRONG options A/C — whereas the correct 0-500 reading gives ~250 μg/l (option D). Step 6 is additionally garbled: 'ligger ● ungefär vid x = 60 på den 0-100-skalan, vilket på 0-500-axeln motsvarar 300 μg/l... vi har att lita på facit: ... cirka 250 μg/l' — self-contradictory and betrays no coherent reading of the dual scale. Facit D is nonetheless correct."
+   },
+   {
+    "qid": "host-2017-kvant2-DTK-040",
+    "page": "host-2017-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "high",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 8 claims for Studie- och yrkesvägledare: 'Pedagogisk högskoleexamen saknas = 130. Kvot = 130 / 776 ≈ 17 procent.' The figure's 'Pedagogisk högskoleexamen saknas' row shows 482 for that column (130 belongs to the 'Annan behörighet' row). The true share is 482/776 ≈ 62 %, which IS the largest (Modersmål 53 %, Övrig 47 %, Grundsk 4-9 24 %), so facit D is correct and derivable. The misread makes D look like the LOWEST (17 %); the explanation then fabricates a rationale ('tabellens saknas-rad ska tolkas mot en annan referensbas … facit är auktoritativt') to cover the error. A solver following its arithmetic would reject D and pick B — actively steered to the wrong option."
+   },
+   {
+    "qid": "host-2018-kvant2-DTK-036",
+    "page": "host-2018-kvant2-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "high",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 6: 'I Svensk bakgrund-clustret, back-most stapeln (Förgymnasial). Det printade talet är 26 %.' False. Svensk + förgymnasial is the tall BACK bar = 47; 26 is the gymnasial (middle) bar. Correct computation is |47 − 31| = 16 = facit C. Because it misreads 47 as 26, the explanation gets '|26 − 31| = 5 procentenheter. Närmaste svarsalternativ är A (10)' (step 8), then flails through contradictory reinterpretations in steps 8–10 ('Detta tyder på att en av staplarna jag läst som 26 eller 31 egentligen är en annan stapel') and finally punts to 'trust the facit'. Its orientation logic (förgym = back-most) is actually right, which makes this a pure value-misread — the derivation is broken and would steer a solver toward A. Facit C is correct."
+   },
+   {
+    "qid": "host-2021-kvant1-DTK-033",
+    "page": "host-2021-kvant1-p18.jpg",
+    "defectType": "garbled-prompt",
+    "severity": "high",
+    "answerVerdict": "unsure",
+    "evidence": "prompt is null and options is null — the question is entirely missing, so the facit answer D cannot be verified from the figure. Worse, the explanation is generic boilerplate whose technique references an unrelated figure: 'Av nettoomsättningen 2016 har en specifik total...' — company net revenue, which has nothing to do with this household-waste flow diagram. No grounding in the actual figure at all."
+   }
+  ],
+  "med": [
+   {
+    "qid": "host-2013-kvant1-DTK-029",
+    "page": "host-2013-kvant1-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Distractor A claims 'Tillstånd/anmälan-rutan (vit i legenden enligt det första diagrammets nyckel)'. The legend actually shows Tillstånd/anmälan as a LIGHT-GRAY filled box; the WHITE box is Kompletterande uppgift — which is the correct answer C. The color is mis-assigned. (Answer C itself is consistent with the figure: white segment ~5% of 2003 decisions and ~10% of 2003 amount.)"
+   },
+   {
+    "qid": "host-2013-kvant1-DTK-031",
+    "page": "host-2013-kvant1-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 5 claims the pie shows 'fyra tillsynsmyndigheter ... plus en liten ej etiketterad sektor (Naturvårdsverket implicit)'. The figure has only THREE labeled sectors — Kommun 85 %, Länsstyrelse 9 %, Övriga centrala myndigheter 6 % — summing to exactly 100 %. No fourth/unlabeled sector exists; the step even contradicts itself by then stating the three labeled sectors sum to the whole. Answer C (1 276 × 0.85 = 1 085) is correct."
+   },
+   {
+    "qid": "host-2013-kvant1-DTK-032",
+    "page": "host-2013-kvant1-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Steps 5-8 claim the media denominator: 'det är ungefär 887 (de exakta talen kan delas: Kvinnor 570, Män 317, vilket summerar till 887)'. Those are the BILD row (887 tot, 570 K, 317 M). The media row in the figure is 913 total (Kvinnor 326, Män 587), pedagogisk 356. Correct calc is 356/913 = 39% -> 40%, so answer B still holds, but the cited row values are the wrong row."
+   },
+   {
+    "qid": "host-2013-kvant1-DTK-033",
+    "page": "host-2013-kvant1-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 9 / distractor D: 'Musik (1 846/4 240 ≈ 44 % kvinnor)'. 1846/4240 is the IDROTT OCH HÄLSA row; grundskolan Musik is 1301/2520 ≈ 52%. Also step 5 'Bild (52 % kvinnor)' — actual bild is 1096/1494 ≈ 73%; step 4 'svenska/SO år 4–9 6 288/9 622 ≈ 65 %' — actual 3098/5360 ≈ 58%; 'svenska som andraspråk 937/1229 ≈ 76 %' — actual 1132/1229 ≈ 92%. The two answer-critical rows (Matematik/NO 4-9 3738/7609=49%, Textilslöjd 3219/3245=99%) are read correctly, so answer A is right."
+   },
+   {
+    "qid": "host-2013-kvant1-DTK-034",
+    "page": "host-2013-kvant1-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 5 for the winning option: 'naturbruksämnen totalt ≈ 765, handels-/kontorsämnen ≈ 577; 765 − 577 = 188'. Figure values are naturbruks 884 and handels 696 (884−696=188 — difference right only by coincidence). Step 7 claims 'processtekniska ≈ 127 ... 127 − 74 = 53' but processtekniska inkl. is 27, so |74−27|=47 — statement C's number 47 is actually exact and C fails on DIRECTION (drift has more), which the explanation missed. Step 8 says 'verkstads ≈ 583, diff 208' but verkstads inkl. is 593, giving 218 (D's magnitude is exact; it fails only on direction). Answer B is nonetheless correct (only B is a true statement)."
+   },
+   {
+    "qid": "host-2013-kvant1-DTK-035",
+    "page": "host-2013-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Answer B (5) is correct: I count VI below 1 m in exactly 5 profiles (Ásláks-tunga ~2.1m, Stöng ~1.5m, Sölmundarholt ~2.0m, Skarfanestorfa ~1.4m, Gamla Næfurholt ~1.65m; Karlsstaðir's VI sits exactly ON the 1 m line, not deeper). But the method is built on a false figure claim: solution_path says 'Identifiera asklager VI i Teckenförklaringens lista (varje romersk siffra har en tilldelad position)' and the pitfall says 'peka med fingret på VI i Teckenförklaringen FÖRST, lås in dess mönster'. The Teckenförklaring (legend) contains ONLY pattern types (Mörk aska, Ljus pimsten, Intermediär aska, etc.) — NO Roman numerals; I–XVI are labels on the profile columns, and VI is drawn with different patterns in different profiles. Step 5 also garbles nearly every profile name: 'Skaltofell' (=Skallakot), 'Korjisstaðir' (=Karlsstaðir), 'Sveljastaðir' (=Skeljastaðir), 'Sting' (=Stöng), 'Bolagsstaðir' (=Bolagsárhöfði), 'Salumannarnur' (=Sölmundarholt), 'Naturshof' (=Gamla Næfurholt)."
+   },
+   {
+    "qid": "host-2013-kvant1-DTK-036",
+    "page": "host-2013-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Answer B (V) is correct: V is the only candidate that is ~50cm (shallow side) in Hagi and ~0.88m (deeper than 80cm) in Skarfanestorfa. But step 10 makes a false claim: 'Asklager V motsvarar Hekla 1300'. The left-margin dating labels on the Skallakot profile show Hekla 1300 aligned with layer VI (at ~0.5m), and Hekla 1693 aligned with V — so V is NOT Hekla 1300; VI is. Minor: step 6 overstates ('V ... markeringen klart ovanför 0,5 m') when V in Hagi sits essentially AT the 50 cm line, not clearly above it."
+   },
+   {
+    "qid": "host-2013-kvant1-DTK-037",
+    "page": "host-2013-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Answer C (1.9 m) is correct (true spread ~2.0–2.1 m, closest option is C): deepest VII = Ásláks-tunga ~2.6–2.7m, shallowest VII = Skallakot ~0.6m. But the explanation fabricates both extremes and the wrong profiles: solution_path says deepest VII is 'cirka 2,0 m djup, troligen Skaltofell' — Skallakot is where VII is SHALLOWEST (~0.6m), not deepest. Step 7 says shallowest VII is 'cirka 0,1 m djup ... Bolagsstaðir' — no profile has VII near 0.1m (Bolagsárhöfði's VII is ~1.3m, mid-depth; the true shallowest is Skallakot ~0.6m). Step 8/distractor D compute '2,0 − 0,1 = 1,9 m' from these invented depths; the right option is reached with wrong numbers and wrong profile identifications."
+   },
+   {
+    "qid": "host-2013-kvant1-DTK-040",
+    "page": "host-2013-kvant1-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Distractor C states '1947 Q3 är nära den högsta toppen på kött/fläsk-kurvan — cirka 75 g/dag' and step 4 frames ~75 g/dag as 'en topp ... mot slutet av 1947'. The figure shows the kött/fläsk curve's actual maximum is a ~84 g/dag spike around 1943/44; the end-1947 value (~72–75) is only a secondary local high, not the curve's highest peak. The read value (75) and answer D remain correct, but the 'highest peak' visual claim is false."
+   },
+   {
+    "qid": "host-2013-kvant2-DTK-032",
+    "page": "host-2013-kvant2-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Explanation step 6 / solution_path: 'Summa Kvinnor ... cirka 234 794' (also 'cirka 234 800', 'totalt 233 500'). The figure's 1900 row 20-24 shows Summa Kvinnor = 210 048, not ~234 800 (234 823 is actually the Ogifta Kvinnor value from the 15-19 row). The numerator (Gifta Kvinnor 40 838) is correct. True ratio 40 838/210 048 = 19.4%, still closest to 1/5, so answer B is unaffected."
+   },
+   {
+    "qid": "host-2013-kvant2-DTK-034",
+    "page": "host-2013-kvant2-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "unsure",
+    "evidence": "Steps 2-4 and pitfall claim the 1950 table combines widows/divorced ('1950-tabellen har kolumnen Ank./änkl./frånsk. (Män, Kvinnor)... frånskilda är en delmängd') and that 1950 divorced must be estimated at '~1%' with fabricated cells 'cirka 18 200 (4 305 Män + 13 911 Kvinnor)'. The figure's 1950 table actually has a SEPARATE 'Frånskilda' column: row 45-49 = 4 795 män + 6 981 kvinnor = 11 776 of Total 488 506 = 2.4%, directly readable (only the 1900 table combines the categories). 1998 data is off this page so the exact 14 pp cannot be fully confirmed, but A is plausible given 1950 ≈ 2.4%."
+   },
+   {
+    "qid": "host-2013-kvant2-DTK-036",
+    "page": "host-2013-kvant2-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Solution_path/step 7 claim 'Den senaste årtalsetiketten är 1922 (BRÄNNERI). Brännhusets materialetikett är BRÄDER.' No BRÄNNERI/brännhus exists on the map — the 1922 building is labelled MOTORHUS (with '1922 BRÄDER'). Step 6/distractor C disprove option C by inventing that 'BOSTADSHUSET kan vara från sent 1700-tal'; the main house carries only 'TIMMER' with NO year on the figure. The actual disproof of C is the 'SVIN/HÖNS/ANKOR 1913 TIMMER' building — a 20th-century timber building — which the explanation never mentions. Step 4 also mislocates the veg plots as 'nordöstra till östra' when the compass (NORR lower-left, SÖDER upper-right) puts them toward SÖDER. Facit D is nonetheless correct: 1922 is the latest date and it is BRÄDER."
+   },
+   {
+    "qid": "host-2013-kvant2-DTK-038",
+    "page": "host-2013-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 5 states 'Övriga-stapeln (Män) ligger på cirka 8 % och Övriga (Kvinnor) på cirka 5 %'. In the visible 'År 2000' chart the white Kvinnor bar for Övriga is clearly LONGER than the black Män bar (~8–9% vs ~7%), so Kvinnor is nowhere near 5% and is NOT smaller than Män — the ordering is reversed. (Note also: the 'År 2002' chart cited in steps 7/10 is not present in this figure image, which only shows 2000 and 2001.) The misread does not flip the answer: from the visible years alone 2001>2000, which eliminates A, B and D and confirms C."
+   },
+   {
+    "qid": "host-2014-kvant1-DTK-029",
+    "page": "host-2014-kvant1-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "solution_path and step 3 list the Hela-Riket total harvest as '48 600, 54 300, 45 200, 31 500, 37 400, 41 300' and distractors A/B repeat '2004 = 54 300 ton'. The figure clearly shows the 2004 Totalskörd as 54 800 ton, not 54 300. Recomputing with the correct value (2003->2004 +12.8%, 2004->2005 -17.5%, 2005->2006 -30.3%, 2006->2007 +18.7%) leaves answer C as the largest change, so the answer stands, but the stated 2004 value is a legible-value misread."
+   },
+   {
+    "qid": "host-2014-kvant1-DTK-033",
+    "page": "host-2014-kvant1-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Distractor D claims: 'man måste begränsa sig till den GRÅ-ZONEN som är märkt som kambrisk sandsten'. The figure shows the Cambrian-sandstone strip along the Kalmar mainland coast rendered as a WHITE field with sparse black dots (legend: Kambrium 'sandsten' = white + solid dots). The GRAY fill on the map is urberg (Prekambrium bedrock), NOT the Cambrian sandstone. The color descriptor is fabricated/reversed. The answer itself (110 km) is correct: scale bar 108 px = 20 km, and the strip measures ~590–606 px = ~109–112 km."
+   },
+   {
+    "qid": "host-2014-kvant1-DTK-035",
+    "page": "host-2014-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Steps 3/5/8 and distractor A repeatedly call Tyskland's swatch 'VÅGRÄT-STRECKAT (horisontellt linjerat)' / 'vågrätt-streckade ruta'. The figure's Tyskland legend swatch and its bar segments are DIAGONAL hatching (opposite slope to Danmark's forward-slash hatch); NO segment in the whole chart uses horizontal lines. Step 3 even contrasts it against 'snedstreckat' as if Tyskland were not diagonal, which is backwards. The answer D still holds: measured Tyskland 1994 ≈555/2126≈26%≈1/4 and 2003 ≈390/3904≈10%≈1/10, so the mislabel does not flip the stated answer."
+   },
+   {
+    "qid": "host-2014-kvant1-DTK-038",
+    "page": "host-2014-kvant1-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Steps 2-3 describe Professorer as an open/lighter circle: 'Professorer (◦)' and 'Professorer är markerade med en LIGHTER BULLET / circular markör ... båda är cirklar men en är fylld och en är ljusare/öppen.' The figure legend shows NO open circle: Professorer is a tiny FILLED dot and Annan forskande is a small FILLED SQUARE. The 'two circles, one filled one open' distinction is invented. The answer B (15%) is nevertheless correct — professorer ≈2300 of a ≈16000 total ≈14%→15% — and the positional cue ('näst-lägsta, mellan Annan forskande och Forskarassistenter') is accurate, so the fabricated marker does not steer to a wrong option."
+   },
+   {
+    "qid": "host-2014-kvant1-DTK-040",
+    "page": "host-2014-kvant1-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Two false figure claims (answer D still correct). (1) Marker: step 2 again calls Professorer 'Professorer ◦ (lighter bullet/open circle)' — the figure shows a tiny filled dot, no open circle. (2) Value misread: step 5 states 'Professorer (◦): vid 2000 cirka 3 200, vid 2001 cirka 3 400. Absolut +200' (≈6.3%). The professorer line (tiny-dot series) actually rises steeply from ≈2900 (2000) to ≈3400 (2001), i.e. ≈+500/≈17%; 3200 is the Annan forskande value, so professorer and annan forskande were conflated. Step 3 also puts Lektorer at 'cirka 5 700' in 2000, but the diamond line dips to ≈5350 there. None of this changes the result: Gäst- och timlärare's ≈200→350 jump (~60–75%) is by far the largest, so answer D holds."
+   },
+   {
+    "qid": "host-2014-kvant2-DTK-029",
+    "page": "host-2014-kvant2-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 3 says the Internet line 'startar cirka 1996–1997' and Step 4 says it 'passerar från cirka 10 % (1996) till cirka 33 % (1998)'; Step 7 repeats '1995–1996 var siffran kring 10 %'. The figure shows the Internet line's first (leftmost) data point at 1998 at ~33% — there is NO Internet point at 1996 (the curve does not exist before 1998), so the 10%-in-1996 value is fabricated. The anchor value used (33% at 1998) is correct, so answer A (6.3M×0.33≈2.08M≈2.1M) still holds."
+   },
+   {
+    "qid": "host-2014-kvant2-DTK-030",
+    "page": "host-2014-kvant2-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 5's Dator year-by-year table ('1994 ≈ 30 %, 1995 ≈ 38 %, 1996 ≈ 45 %, 1997 ≈ 50 %, 1998 ≈ 63 %') and the solution_path claim that 1997→1998 jumps 'från cirka 50 % till cirka 63 %' are wrong. Measured from the figure the Dator dashed line is 1994≈25, 1995≈30, 1996≈35, 1997≈44, 1998≈57, 1999≈67 — off by 5–13 pp; the 1997→1998 jump is 44→57, not 50→63. The magnitude (~13 pp) and answer B are nonetheless correct, and 1997→1998 is genuinely the steepest single-year step."
+   },
+   {
+    "qid": "host-2014-kvant2-DTK-031",
+    "page": "host-2014-kvant2-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Solution claims women 15-24 in 2005 'är cirka 230' and women 25-44 in 2005 'cirka 90'. The figure shows the 2005 (7th) bar of women 15-24 topping ABOVE the 250 gridline (~258), and women 25-44 2005 sitting clearly ABOVE the 100 gridline (~119), while only 2006-2008 fall to ~100. Both stated values are understated by ~28-30; the difference (~140) and answer B survive, but the specific gridline-relative claims (esp. '90', which puts the bar below the 100 line when it is above it) are false."
+   },
+   {
+    "qid": "host-2014-kvant2-DTK-032",
+    "page": "host-2014-kvant2-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 7 and distractor D state 'vid 2006 ligger män 5–14 cirka 150 — under tröskeln 200' and 'trenden för pojkar 5–14 går nedåt över perioden'. The men 5-14 series actually runs ~185-244 across the decade (peak 2007), with 2006 ≈ 205 — above 200, not 150 — and the trend is roughly flat/slightly up. 2006 is really eliminated by the women 45-64 < 100 condition (2006 ≈ 94), not by the men value. Answer B (2003) is correct (2003: men 5-14 ≈ 218 > 200 and women 45-64 ≈ 105 > 100, the only option passing both)."
+   },
+   {
+    "qid": "host-2014-kvant2-DTK-033",
+    "page": "host-2014-kvant2-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 5/6 assign wrong peak years to 4 of 8 groups: '5–14 topp 2002', '15–24 topp 2002', '75–84 topp 2007', '85+ topp 2007 eller 2008', and lists the five 2002-peak groups as {5-14,15-24,25-44,45-64,65-74}. The figure shows 5-14 peaks 2007 (~244), 15-24 peaks 2004 (~417), while 75-84 (~233) and 85+ (~301) BOTH peak in 2002. The true five 2002-peak groups are {25-44,45-64,65-74,75-84,85+}. Correct count (5 → B) but the wrong set of groups."
+   },
+   {
+    "qid": "host-2014-kvant2-DTK-035",
+    "page": "host-2014-kvant2-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 6 claims the winter route 'är cirka 5 mil från centrum, vid 5-mils ringen' and step 5 says the summer route 'sträcker sig cirka 8 mil ... mellan 5- och 10-mils ringarna, närmare 10.' The figure shows the opposite absolute positions: the winter NK marker (top, ~Jan) sits at ~8 mil — well beyond the 5-mil ring, roughly midway between the 5- and 10-mil rings — and the summer NK marker (straight down, ~Jul) sits at ~10-11 mil (at/just past the 10-mil ring). Both stated distances are ~3 mil too low. Step 3 also invents caption text ('kemitransport, smör, ren och ackja'); the figure actually reads 'Leverans av varor till Luleå med ren och ackja' and 'Hemtransport av böndernas varor (tjära, bräder) med båt till Luleå' — no 'kemitransport' or 'smör'. The difference (~3 mil) and direction (summer longer) are nonetheless correct, so facit A (3 mil längre) still holds."
+   },
+   {
+    "qid": "host-2014-kvant2-DTK-039",
+    "page": "host-2014-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "unsure",
+    "evidence": "Step 5 claims: 'rec-1 × litteratur (1969): cirka 130 artiklar. rec-1 × konst (1969): cirka 50 artiklar. rec-1 × musik (1969): cirka 62 artiklar. Summa: 130 + 50 + 62 = 242.' The figure's right-hand table is a PERCENTAGE table (caption: 'procentuellt fördelat på genrer ... och ämnesområden'), and the rec-1 cells actually read percentages (litteratur ~12,6; konst ~3; musik ~6,5), NOT article counts of 130/50/62. To reach an absolute count you must multiply the summed percentage by n (the per-year 'antal som utgör 100 procent'), which the explanation never does — the 130/50/62 values are fabricated to back-fit the facit total 242. Note the answer letter B is still plausible (options C=373 and D=562 both exceed the whole rec-1 row of ~335 articles, so they are impossible), so the false claim does not change the final option."
+   },
+   {
+    "qid": "host-2015-kvant1-DTK-034",
+    "page": "host-2015-kvant1-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Facit B (Norrtälje) is correct — it is the only option with 0<y<25 AND x<−1000 (figure: ~(−1110, +12), just left of the −1000 tick). But the explanation fabricates the left-cluster x-coordinates, inflating them ~2×. Step 7 claims 'Nynäshamns prick ligger ungefär vid (−2 200, +50)... X-villkoret uppfylls (−2200 < −1000 ✓)'; the figure shows Nynäshamn at ~(−975, +28), just RIGHT of the −1000 tick, so its index decrease is actually LESS than 1000 and it FAILS the x-condition (the stated 'satisfies' is false). Step 8 claims 'Österåkers prick ligger ungefär vid (−2 300, 0)... y är nära 0 eller svagt negativ — inte en tydlig ÖKNING'; the figure shows Österåker clearly increased (~+19%) and sits at x~−875 (right of −1000), so the real disqualifier is the x-condition, not a missing increase — the 'no increase' claim is false. Ekerö is claimed at −2300 (actually ~−1380, between the −1000 and −2000 ticks) and Norrtälje at −1700 / 'närmare −1500 till −1700' (actually ~−1100, just past the −1000 tick). These are checkable visual falsehoods; they do not change the answer (all roads still eliminate to B)."
+   },
+   {
+    "qid": "host-2015-kvant1-DTK-039",
+    "page": "host-2015-kvant1-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Explanation claims 'Vid 1788 ligger Total-linjen mellan 1500 och 1600 kRdr' (step 8), 'Total ≈ 1600 kRdr (>1200 ✓ entydigt)' (solution_path) and 'troligen vid 1600' (step 10). The figure shows Total at 1788 is a TROUGH between the 1787 peak (~1500) and the 1789 peak (~1350), measured at ~1280 kRdr — only marginally above the 1200 threshold, not 1600. Consequently the claimed 'med marginal / entydigt' is false: the true margins are ~80 kRdr (total>1200) and ~10 kRdr (livsmedel~630 < half~640). Answer D is still the correct/facit option (both conditions barely hold, and C fails since Total 1778 ~1150 < 1200), so the wrong value does not flip the answer."
+   },
+   {
+    "qid": "host-2015-kvant1-DTK-040",
+    "page": "host-2015-kvant1-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Explanation claims 'Vid 1795 ligger Total-linjen mellan 1000 och 1100 kRdr — ungefaer 1050' (step 6) and computes a +10.5%% INCREASE from 950 (1755) to 1050 (1795). The figure shows Total(1795) ≈ 850 kRdr, clearly BELOW the 1000 gridline (the printed labels 1793 and 1797 both sit below the 1000 line, and Total stays in the 850-950 band across 1793-1797). Total(1755) ≈ 1050-1100 > Total(1795), i.e. a ~15-20%% DECREASE, not an increase. Answer A (15 procent) remains correct because the magnitude is ~15-20%%, nearest 15 vs the next option 30."
+   },
+   {
+    "qid": "host-2015-kvant2-DTK-035",
+    "page": "host-2015-kvant2-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Explanation (solution_path + step 6) claims \"Mikael: kurvan är PÅ sin topp 1970 ≈ 4 200-4 300\". The figure clearly shows Mikael's sharp peak (~4200) is at ~1964, and by 1970 the thick-black Mikael curve has fallen to ~2350 (measured at x=1970, topmost dark pixel = value ~2350). It also understates Johan (\"≈ 600-700\") — the grey dashed Johan curve is ~1750 at 1970 — and understates Lars (\"≈ 800\") which is ~1400, while overstating Karl (\"900-1000\") which is ~636. These misreadings roughly cancel (true sum ≈ 6200 vs its stated 6750), so the final answer C (6500) is still correct, but the per-curve visual claims are false."
+   },
+   {
+    "qid": "host-2015-kvant2-DTK-039",
+    "page": "host-2015-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Explanation (solution_path + steps 5,6,9) claims mullblandad sand is a 'PRICKMÖNSTER' (dot pattern) and that the fill at +7m N, -100 cm 'visas ett PRICKMÖNSTER'; step 5 also lists BOTH 'Mullblandad sand: prickmönster' and 'Sjösand: prickmönster med mindre prickar'. The legend actually renders mullblandad sand as sparse slanted short dashes; the dotted/stippled (prick) pattern is Sjösand. At +7m N, -100 cm the figure indeed shows the slanted-dash mullblandad sand, so answer B stays correct, but the described marking style is wrong (mullblandad sand misread as dots and conflated with sjösand)."
+   },
+   {
+    "qid": "host-2016-kvant1-DTK-032",
+    "page": "host-2016-kvant1-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Steps 4 and 5 enumerate the KVINNOR slutenvårdsandel column and list utförsåkning as '11' (step 5: '...18 (ridsport), 11 (utförsåkning), 4 (innebandy)...'). The figure's KVINNOR column shows 8 for Utförsåkning; 11 is the MÄN value. The max (18, ridsport) and min (2, löpning) are unaffected, so 18/2=9 and answer B still holds — but the enumerated cell value is a genuine misread of a legible cell."
+   },
+   {
+    "qid": "host-2016-kvant1-DTK-036",
+    "page": "host-2016-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 2 states 'FÄRGFÖRDELNING = andel kärnkraft (mörkgrå) vs övriga energikällor (ljusgrå)' and the solution_path/Step 6 call Italien 'HELT LJUSGRÅ (ingen mörk kärnkrafts-sektor)'. The figure's legend and data show the OPPOSITE: nuclear = LIGHT gray, övriga = DARK gray (Frankrike 77,5% nuclear is a mostly-LIGHT circle; Storbritannien 23,2% is mostly-DARK). Italien (0% nuclear) is therefore a solid DARK-gray circle, not light gray. The shading key is inverted throughout. Answer B (Italien) is still correct because the >100 TWh circle + absence of a printed % label uniquely identify Italien regardless of shade."
+   },
+   {
+    "qid": "host-2016-kvant1-DTK-038",
+    "page": "host-2016-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 2 asserts 'länder med kärnkraft har en MÖRKGRÅ sektor ... Länder utan kärnkraft har en helt LJUSGRÅ cirkel.' This is inverted: in the figure, 0%-nuclear countries (Italien, Grekland, Danmark, Portugal, Irland, Österrike, Luxemburg) are solid DARK circles, while nuclear appears as the LIGHT sector (confirmed by Frankrike 77,5% being a mostly-light circle). The count of 7 (answer C) is still correct because it is derived from the presence/absence of a printed % label, which is independent of the mis-stated shading."
+   },
+   {
+    "qid": "host-2016-kvant2-DTK-030",
+    "page": "host-2016-kvant2-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 3 lists the legend as '2) Sammanboende utan barn (mörkgrå), 3) Ensamstående med barn (ljusgrå)', and steps 5/10 repeatedly call the dominant women's bars 'ljusgrå (ensamstående med barn)'. The figure legend actually uses solid LIGHT GRAY for 'sammanboende utan barn' and a HORIZONTAL-STRIPE pattern for 'ensamstående med barn' — there is no dark-gray/light-gray gradient and the striped pattern is never mentioned. The category-level conclusions (women: ensamstående med barn; men: ensamstående med barn utanför hushållet) and answer D are nonetheless correct."
+   },
+   {
+    "qid": "host-2016-kvant2-DTK-031",
+    "page": "host-2016-kvant2-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 6 states for women's 'Röker dagligen': 'ensamstående med barn (ljusgrå) ~35 % (högsta), ensamstående utan barn (vitt) ~6 %'. In the figure the WHITE bar (ensamstående utan barn) is the TALLEST at ~35%, and the striped 'ensamstående med barn' is ~33% — so the white bar is grossly misread as 6% and 'ensamstående med barn' wrongly called both light-gray and the single highest. The target black bar (sammanboende med barn ~17%) is read correctly, so 17% × 500 000 = 85 000 and answer A is right."
+   },
+   {
+    "qid": "host-2016-kvant2-DTK-032",
+    "page": "host-2016-kvant2-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "solution_path: 'Samhällsvetenskapsprogrammet (SP) med 27 887 sökande. Totalt antal sökande 2003 (Totalt-raden) = 131 949.' The figure shows SP's Sökande 2003 = 22 955 (not 27 887), and the Totalt SÖKANDE 2003 = 119 286 — 131 949 is the Totalt INTAGNA for 2003 (wrong cell). Step 4's entire 'Sökande 2003' list is fabricated (e.g. SP 27 887, SM 22 053, NV 14 148; figure shows SP 22 955, SM 13 337, NV 13 713) and step 5 says SM is 2nd largest at 22 053 when SM=13 337 and 2nd is NV=13 713. The correct calc 22 955/119 286 = 0.19 still rounds to 1/5, so answer B is unaffected."
+   },
+   {
+    "qid": "host-2016-kvant2-DTK-034",
+    "page": "host-2016-kvant2-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "steps 5-7: 'intagna-totalt ungefär 12 000 ... köns-procent intagna ... män 53 % / kvinnor 47 %' then step 7 openly guesses: '6 360 − 5 640 = 720. Hmm ... Justera: om intagna-totalt är cirka 15 000 och fördelningen 56/44 ... ≈ 1 850'. The figure's FR (fristående skolor) Intagna 2006 = 23 128 with Kvinnor 46 % / Män 54 %; correct diff = 23 128 × 0.08 = 1 850. The total and percentages are both invented/guessed, though the stated answer C happens to be right."
+   },
+   {
+    "qid": "host-2016-kvant2-DTK-035",
+    "page": "host-2016-kvant2-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 6 / solution_path: 'Vid 1986: industri ≈ 5 500, jordbruk ≈ 9 700 (toppen)' and step 3: 'Industri (heldragen): ... svacka ner till cirka 5 500 ton vid 1986' + 'Jordbruk (lång-streckad): ... TOPP nära 9 700 vid 1986'. The figure shows the reverse: the SOLID Industri line peaks at ~9 700 at 1986, while the long-dashed Jordbruk line peaks at only ~5 700 at 1986. The two upper lines are swapped. Because the answer is the vertical SUM (~9 700 + ~5 700 + ~600 ≈ 16 000), answer C is still correct."
+   },
+   {
+    "qid": "host-2016-kvant2-DTK-036",
+    "page": "host-2016-kvant2-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 9: 'JORDBRUKS-linjens skuts från cirka 3 500 ton vid 1987 till cirka 6 000 ton vid 1988 — alltså +2 500 ton för bara den linjen' (echoed in step 4/7: 'jordbruk ≈ 6 000' at 1988). The long-dashed Jordbruk line actually stays ~2 500–3 000 across 1987–88; the real rise is the SOLID Industri line from ~5 700 (1987) to ~7 500 (1988). Lines are swapped, but the total delta still makes 1987–88 the largest, so answer A holds."
+   },
+   {
+    "qid": "host-2016-kvant2-DTK-037",
+    "page": "host-2016-kvant2-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 4 / distractor A: 'Vid 1987 är industri-linjen cirka 7 500 ton — alltså ÖVER 6 000. Villkor 1 faller.' The figure shows Industri (solid) at 1987 ≈ 5 700 ton — UNDER 6 000, so condition 1 is actually SATISFIED there; 1987 is really eliminated by condition 2 (hektardoser ≈ 3.3 M < 4 M). Also step 8: '2008 i nedre: hektardoser cirka 2 miljoner' is false — 2008 Doser ≈ 5.1 M (above 4); 2008 is eliminated by condition 1 (industri ≈ 8 000). Final answer C (1999) is still correct."
+   },
+   {
+    "qid": "host-2016-kvant2-DTK-039",
+    "page": "host-2016-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "unsure",
+    "evidence": "Explanation states the enclosure is a stone wall drawn as a 'svart-vit hatchad linje' — solution_path: 'omsluten av en stenmur (svart-vit hatchad linje)' and step 6: \"Legenden anger 'STENMUR' som en distinkt linje (svart-vit hatchad)\". The figure's legend actually renders STENMUR as a solid heavy black line (▬▬▬). The black-white hatched/ticked patterns in the legend belong to TERRASSKANT and STENSATT KANT, not STENMUR — a fabricated glyph description. (The kolningsgrop='o' open-circle claim is correct; the facit B=380 m is plausible but cannot be measured precisely from the raster.)"
+   },
+   {
+    "qid": "host-2016-kvant2-DTK-040",
+    "page": "host-2016-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "unsure",
+    "evidence": "Step 2 claims 'Gränsstenarna markeras med ett distinkt \\'o\\'-mönster med horisontell linje' and solution_path calls it 'legend-symbol o med text GRÄNSSTEN'. The legend actually shows GRÄNSSTEN as a single filled black dot (•) with no horizontal line; the open 'o' circle is KOLNINGSGROP and the dot-with-horizontal-line pattern is GRINDSTOLPAR. The target symbol is misdescribed. (Bas≈300 m, höjd≈300 m → 45 000 m² is hedged and back-solved from the facit; the three stones cannot be pinpointed precisely enough to independently confirm A, but no answer error is evident.)"
+   },
+   {
+    "qid": "host-2017-kvant1-DTK-031",
+    "page": "host-2017-kvant1-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "solution_path and step 4 state the SÖDERTÄLJE Totalt as 'SÖDERTÄLJE 34 095', but the table prints SÖDERTÄLJE Totalt = 33 999 (31 454+2 113+0+379+35+18+0 = 33 999). Step 5 also lists 'DANDERYD (14 230)' while the table prints 14 231. These are misread/miscopied legible values; they do not change the ranking (SÖDERTÄLJE is still 4th) nor the summed Bensin answer (which uses the correct Bensin figures), so facit B (385 284) stands, but 34 095 is a false claim about a value clearly legible in the figure."
+   },
+   {
+    "qid": "host-2017-kvant1-DTK-036",
+    "page": "host-2017-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 3 / distractor A / step 11 claim: 'administratörer/företagsledare-bubblan SYNLIGT STÖRRE än bank/ekonomi-tjänstemän-bubblan' and 'Administratörer/företagsledare är en av de större bubblorna i hela chartet ... Bank/ekonomi-tjänstemän är medelstor.' The figure shows the OPPOSITE: measured at 1:1, the bank/ekonomi circle (~235 px diameter) is visibly larger than the administratörer circle (~205 px). The size comparison is reversed. The correct answer C (handlare/inköpare ~180 px = lärare ~182 px) is confirmed and A is still correctly rejected, so the error does not change the answer."
+   },
+   {
+    "qid": "host-2017-kvant2-DTK-029",
+    "page": "host-2017-kvant2-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Solution_path/steps 7-8 claim: 'nitrat-kväve-kurvan (○ symbol, övre skala 0-500)... från cirka 400+ μg/l vid ytan' and 'Nitrat-kväve (μg/l, övre skala)'. The legend puts '(övre skala)' under Total-kväve (●), so the filled circle uses the 0-500 scale and Nitrat-kväve (○) uses the 0-100 lower scale — surface nitrat in Trännöfjärden reads ~95 μg/l, not 400+. The scale is swapped. Step 10 also claims 'Total-kväve (●)... visar ÖKNING med djupet i Trännöfjärden' but the filled circles actually drift slightly LEFT (~490→~450), i.e. a slight decrease. Neither error changes the direction-based answer, so D still holds."
+   },
+   {
+    "qid": "host-2017-kvant2-DTK-032",
+    "page": "host-2017-kvant2-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Facit C is correct: I count exactly 5 distinct natur-/nationalpark blobs (Sweden 3-tree blob; two small 1-tree blobs; two 3-tree blobs near the Finland/Kola border), all north of the polcirkeln. But the explanation fabricates several figure claims. Distractor D: 'kärnavfallssymbolerna är synliga på den ryska sidan... där flera anläggningar markeras' and step 8 'Kärnavfallssymbolen finns klustrade på Kolahalvön' — the map shows exactly ONE kärnavfall (radiation-trefoil) symbol on the entire map, not a cluster. Step 4 mis-describes the legend glyphs ('▲ Metallindustri, △ Massa..., ⚒ Gruva') when the actual symbols are a solid black factory, an outline factory, and a mine-cart. Step 10 invents 'Metallindustri på Kolahalvön (Norilsk-grannar)' — Norilsk is not on this Barents map. The wrong-answer options are wrong regardless, so the answer letter is unaffected."
+   },
+   {
+    "qid": "host-2017-kvant2-DTK-033",
+    "page": "host-2017-kvant2-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Facit A is correct: Bodø's anchor is the smallest size (=<1000 ton) AND solid black. But the explanation invents the reading mechanism. Steps 6/7/11 and distractor B claim import-vs-export is read from ARROW DIRECTION: 'Legenden visar två pilvarianter... riktningarna på pilen är spegelvända' and 'en pil som pekar IN MOT hamnen representerar import; en pil som pekar UT visar export'. The legend actually encodes direction by FILL — a solid BLACK anchor = 'Import > export', an OUTLINE (white) anchor = 'Export > import'; both anchors have identical arrows. The stated arrow-direction/'spegelvända pilar' mechanism does not exist in the figure. Conclusion (A) is nonetheless correct because Bodø's anchor is small and solid black (= import > export)."
+   },
+   {
+    "qid": "host-2017-kvant2-DTK-035",
+    "page": "host-2017-kvant2-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 6 lists women's top activities as 'Bokläsning (cirka 85 %)... Skönlitteratur (cirka 80 %), Veckotidning och Tidskrift (cirka 75-80 %)'. The figure shows the women's Tidskrift bar (white+hatched) ending at only ~59%, not 75-80%. Separately, solution_path, step 5 and distractor A all state men's Tidskrift is 'cirka 80 % kombinerat', but the men's Tidskrift bar ends at ~70% (right at the 70-gridline). Both are real over-reads. They do NOT flip the answer: men's longest bar is still Tidskrift (~70% vs Bokläsning ~69%) and women's longest is still Bokläsning (~87%), so facit C is correct."
+   },
+   {
+    "qid": "host-2017-kvant2-DTK-038",
+    "page": "host-2017-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 10 sanity-check claims 'Lärarexamen musik / Samtliga: 2 994' and 'cirka 53 % av alla med examen'. The figure shows the music row Samtliga = 1 355 (därav kvinnor 768); 2 994 is actually the 'därav kvinnor' value of the separate 'Lärarexamen fr.o.m. 2005' row. Correct share would be 2 804 / (1 355+2 270) ≈ 77 %, not 53 %. The main solution (prakt/est column: 1 087−607=480, 1 717−830=887, sum 1 367 = B) is read correctly, so answer B is unaffected."
+   },
+   {
+    "qid": "host-2017-kvant2-DTK-039",
+    "page": "host-2017-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 8's row-scan of Ämneslärarexamen misstates several legible cells: 'Låg-/mellanst 217' (figure = 203), 'Special 154' (figure = 176), 'Lärare prakt/est 98' (figure = 204), 'Modersmål 13' (figure = 98). The decisive values are read correctly — Grundskollärare 4-9 = 6 430 (row max) and Skolledare = 687 (>500) — so answer D is confirmed and unchanged; the misread values are incidental."
+   },
+   {
+    "qid": "host-2018-kvant1-DTK-029",
+    "page": "host-2018-kvant1-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Final total (5/A) is correct — I independently count 5 decreases: 1984, 1992, 1993, 2004, 2010. But the explanation misreads the individual bars. Step 6 claims '1980 (ca 120 000) → 1981 (något LÄGRE, ca 115 000) = MINSKNING'; the figure shows the opposite — 1980≈115k, 1981≈127k, so 1981 is an INCREASE, not a decrease. The solution_path's list 'typiskt 1981, 1984, 1992, 1993 (eller 2004) och 2010' wrongly includes the non-existent 1981 dip and demotes the REAL 2004 dip to a hedged 'eller 2004 / gränsfall'. Step 8's '2004 → 2005 lätt nedgång' is also false — 2005 (≈558k) is higher than 2004 (≈545k). The count nets to 5 by luck (one false decrease swapped for one demoted real one), so the answer letter is unaffected."
+   },
+   {
+    "qid": "host-2018-kvant1-DTK-032",
+    "page": "host-2018-kvant1-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 4 mis-describes the BERGGRUNDEN legend swatches: 'Ortocerkalk yngre (kryssade mönster)' and 'Tessinisandsten och -skiffer (vertikala streck)'. The figure shows Ortocerkalk (yngre) as SOLID horizontal lines (moderate spacing) — there is no crosshatch/'kryssat' pattern anywhere on the map — and Tessinisandsten as a SPARSE DOTTED/stippled swatch, not vertical lines. (Chasmopskalk is horizontal DASHED lines; its gloss 'tunna horisontella streck' is loose.) The answer A (yngre north / äldre south) is itself consistent with the map — north-of-Borgholm is dominated by the solid-line yngre band, south by the denser äldre band — so the invented patterns do not flip the answer."
+   },
+   {
+    "qid": "host-2018-kvant1-DTK-033",
+    "page": "host-2018-kvant1-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 2 mis-describes the JORDARTERNA legend: 'Sand och grus (vit/lite-mönster)'. In the figure Sand och grus is a DENSE DOTTED/stippled swatch; the WHITE/empty swatch is Morän — which the same explanation correctly calls white in step 8 ('Morän ... ofta vit'), so it internally contradicts itself. The solving still lands on D correctly: east of Mörbylånga the big central Hällmark (alvar) hatching reaches a stippled Sand-och-grus strip at the east coast, so answer D holds."
+   },
+   {
+    "qid": "host-2018-kvant1-DTK-036",
+    "page": "host-2018-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 5 and distractor A state for 16-24: 'I någon annans hem Totalt = 620 000. Ratio = 1 087 500 ÷ 620 000 ≈ 1,75.' The figure shows 16-24 'I någon annans hem' = 661 000; 620 000 is that group's 'I skolan' value (a row confusion). Correct ratio is 1 087 500 / 661 000 ≈ 1,65. (Step 3 also gives total 'annans hem' as 2 050 000 vs figure's 2 050 900.) The error does not change the answer — C (35-44, ratio ≈ 2,91) is still nearest to 3, so the facit C holds."
+   },
+   {
+    "qid": "host-2018-kvant1-DTK-038",
+    "page": "host-2018-kvant1-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 6 / distractor A claim: '1991: Boklån-linjen ligger ungefär 72 miljoner — strax ÖVER 70. Villkor 1 inte uppfyllt.' The figure shows the diamond (Boklån totalt) line sitting in its early-90s trough at ~66 million at 1991 — clearly UNDER 70. So 1991 actually passes condition 1 and is eliminated only by the AV-condition, not condition 1. Additionally step 7 undercounts the AV curve (claims 1990 ≈ 2500 tusental when the figure shows ~3900, near the 4000 gridline). Answer C (1994) still holds regardless."
+   },
+   {
+    "qid": "host-2018-kvant1-DTK-040",
+    "page": "host-2018-kvant1-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Solution path / step 6 claim: 'Boklån totalt (diamanter) vid 2000 ligger ungefär 75 miljoner (precis under 80-gridlinjen).' The figure shows the diamond line at 2000 is ~70 million (near the 70 gridline); its entire mid-90s recovery peak only reaches ~73-74 and the line never approaches 80 in the 2000s. Value and spatial claim are inflated. Answer B (fyra av tio) still holds since 30/70 ≈ 30/75 ≈ 0.4."
+   },
+   {
+    "qid": "host-2018-kvant2-DTK-037",
+    "page": "host-2018-kvant2-p20.jpg",
+    "defectType": "garbled-prompt",
+    "severity": "med",
+    "answerVerdict": "unsure",
+    "evidence": "Option D text is contaminated with figure-axis/legend bleed: 'Två av tre 100 90 80 70 60 50 40 30 20 10 0 Svensk bakgrund Utländsk bakgrund, född i Sverige Invandrad efter skolstart Invandrad före skolstart Eftergymnasial Gymnasial Förgymnasial'. The appended '100 90 80…0' scale doesn't even match the chart's 0–80 y-axis — it is OCR bleed. The real answer 'Två av tre' is legible. The figure value the explanation relies on (Invandrad efter + eftergym = front bar = 42%) is read correctly. answerVerdict unsure: from the figure, behöriga ≥ 58% (so A=33% and B=40% are impossible), but distinguishing D (≈67%) from C (60%) is not resolvable from a 'saknade betyg' chart alone — it needs external behörighet data; the explanation itself concedes it cannot derive 67% (step 7: arithmetic gives 86% 'för högt jämfört med facit … En noggrannare modell ger ca 67 %'). Facit D is not contradicted by the figure."
+   },
+   {
+    "qid": "host-2018-kvant2-DTK-038",
+    "page": "host-2018-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 5 (distractor B): 'Nordafrika ≈ 25 % av pajen. 0,25 × 5 795 ≈ 1 450'. The Afrika-EXPORT pie actually shows the Nordafrika slice spanning ~12 to ~5 o'clock (~150°, ~42% of the pie, ~2 400 milj kr) — clearly larger than a quarter and roughly equal to the Centrala slice, not 25%. The misestimate does not change the answer: D (När- och Mellanöstern ≈ 25% × 19 626 ≈ 4 906) is correct, and B is ruled out under either reading."
+   },
+   {
+    "qid": "host-2018-kvant2-DTK-040",
+    "page": "host-2018-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "solution_path + steps 7/8/10 claim 'Centrala, östra och södra Afrika-import ≈ 15–20 % av 839 ≈ 130' and step 10 'Centrala/östra/södra Afrika-slicen är mindre än Nordafrika-slicen i import-pajen'. The Afrika-IMPORT pie shows the opposite: Centrala/östra/södra Afrika is the DOMINANT slice (~72%, ~600 milj kr), far larger than Nordafrika (~25%), with Västafrika a tiny sliver. The model inverted the pie and back-solved the slice from the facit (step 8: 'kanske 15-20 %, inte 60-70 %'). Answer D still holds under a correct reading (Central/Syd-Amerika ~33% × 8 316 ≈ 2 700 minus ~600 ≈ 2 100 → nearest option D 1 950), so the false claim does not change the answer."
+   },
+   {
+    "qid": "host-2020-kvant1-DTK-032",
+    "page": "host-2020-kvant1-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Explanation states 'Bukspottskörtel: 2001 ≈ 9, 2009 ≈ 20 → +122 %' and 'Hjärta: 2001 ≈ 25, 2009 ≈ 50 → +100 %'. The figure shows Bukspottskörtel 2001 = 10 (verified: 2001 column sums 305+10+2+102+25+20+1+1 = 466 = Totalt), giving +100% not +122%; and Hjärta 2009 = 55 (verified: 2009 column sums to 671 = Totalt, and Lungor 2009 = 50), giving +120% not +100%. Correct ranking is Lungor +150% > Hjärta +120% > Bukspottskörtel +100% > Lever +43%. The 2nd/3rd places swap, but the winner Lungor (answer D) is unchanged, so the facit answer still holds."
+   },
+   {
+    "qid": "host-2020-kvant1-DTK-034",
+    "page": "host-2020-kvant1-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 6 and distractor C state 'Tarm 2005: 0, Tarm 2004: 2. Villkor 2: 0 > 2 FAIL.' The figure shows Tarm 2005 = 1, not 0 (verified: 2005 column sums 391+7+2+135+30+37+0+1 = 603 = Totalt(2005); Tarm 2006 = 0). C still fails condition 2 either way (1 > 2 is false), so answer B (2011) is unchanged, but the stated cell value is a genuine misread of a legible cell."
+   },
+   {
+    "qid": "host-2020-kvant1-DTK-035",
+    "page": "host-2020-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Facit A=2 is correct: the upper-left quadrant (pop>avg line y~0.0025 AND income<avg line x~0.033) contains exactly 2 points, but they are two UNLABELED squares at ~(0.032,0.005) and ~(0.033,0.006). The explanation identifies the 2 as Strömstad and Halmstad, both fabricated: step 6 claims 'Strömstad ligger tydligt till vänster och högt upp (y ≈ 0,005 ... x ≈ 0,032)' — in the figure Strömstad is at the FAR RIGHT on the horizontal average line (income ≈ 0.042, pop ≈ 0.0025), not upper-left. Step 7 claims Halmstad is 'precis till vänster om lodrätt (x < 0,033)' — Halmstad's square is at income ≈ 0.0345, clearly RIGHT of the vertical line (upper-right quadrant). Answer letter unaffected."
+   },
+   {
+    "qid": "host-2020-kvant1-DTK-036",
+    "page": "host-2020-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Facit C=0.0270 is correct (max pop Stockholm ≈ +0.0085 minus min pop ≈ −0.0185 ≈ 0.027), and the explanation's numeric range is right. But the region attribution is fabricated: solution_path/step 3 says 'Strömstad ligger högst, runt 0,008–0,009' — Strömstad is actually right on the population-average line at ≈ 0.0025 (mid-chart); the true highest point is Stockholm (≈ 0.0085). Step 4 says 'Den lägsta pricken är Filipstad ... −0,018 till −0,019' — Filipstad is at ≈ −0.014 and is NOT the lowest; the lowest is an unlabeled square at ≈ −0.0185. Answer unaffected."
+   },
+   {
+    "qid": "host-2020-kvant1-DTK-037",
+    "page": "host-2020-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Facit C=45% is plausible: the lower-left ellipse is clearly the largest of the three groups and the explanation correctly identifies it as the lowest-growth-in-both group. But step 3 mis-describes group 2: 'Grupp 2 (övre-höger): en mindre ellips runt Tranås, Avesta, Vilhelmina, Dorotea — hög inkomst'. The small middle ellipse lies BELOW the population-average line (not 'övre/upper'), and Vilhelmina (≈0.035,−0.013) and Dorotea (≈0.041,−0.014) are low-population points in/near the large lower-left ellipse, not the small middle ellipse. The size estimate 'Grupp 2 cirka 20–22 prickar' also contradicts calling it 'en mindre ellips'. Does not change the answer."
+   },
+   {
+    "qid": "host-2020-kvant2-DTK-029",
+    "page": "host-2020-kvant2-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 3 claims: 'Chile = streckad linje som stiger mot ≈ 300+ vid slutet.' In the figure the 'Chile' leader line points to the dash-dot curve, which runs roughly FLAT at ~180-190 through 1977-1979 (it never approaches 300). The only curve that rises to ~320 by 1979 is Indien (the long-dash line), which the same step also — correctly — describes. So the explanation invents a second rising-to-300 curve and mislabels Chile's actual behaviour. It does NOT change the answer: Chile is not an option, and A Indien is correctly identified (highest in 1975, and 1979 ~320 > 1977 ~280). Minor value slips elsewhere (Sydkorea 1977 stated ~200 vs actual ~250; Thailand 1977 stated ~200 vs actual ~130) do not affect the conclusion."
+   },
+   {
+    "qid": "host-2020-kvant2-DTK-033",
+    "page": "host-2020-kvant2-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Wrong/contradictory colors for the BOTTOM chart. solution_path: 'staplas Luft (svart, nederst), Vatten (vit), Avfall (mörkgrå), Övrigt (ljusgrå)' — that is the MIDDLE chart's scheme. Step 3 then says 'Luft (vit ...), Vatten (ljusgrå), Avfall (mörkgrå), Övrigt (ljusgrå)'. The figure's bottom chart actually shows Luft = white, Vatten = DARK gray, Avfall = LIGHTER/medium gray, Övrigt = HATCHED (horizontal lines) — so Luft is not black, Vatten is not white/light gray, and Övrigt is not solid light gray. Answer C (2007) is still correct because the stacking order Luft<Vatten<Avfall<Övrigt (bottom→top: ~730<1530<1990<2270) is read correctly from position; only the color labels are false."
+   },
+   {
+    "qid": "host-2020-kvant2-DTK-040",
+    "page": "host-2020-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "unsure",
+    "evidence": "The pie chart ('cirkeldiagrammet nedan') is NOT in this figure — page 22 shows only the five data tables; the pie is on the following page. Yet the explanation narrates its sectors as observed: 'en stor Reg/lok-sektor (≈ 3/5 av cirkeln)', 'Fria teater-sektorn är märkbart större än 6 %', 'Cirkeldiagrammet visar en stor Reg/lok-sektor' — all back-derived from the facit, not seen. Several 2003 table values are also misread: besök Fria teater stated 832 220 (figure 632 220), besök Övriga 113 997 (figure 121 141; 113 997 is the 2001 value), besök total ≈3 766 339 (figure Totalt 3 535 112), årsverken Övriga 67 (figure 62), årsverken Fria dans 68 (figure 61). The derived percentages (årsverken 26/61/2/10/2, intäkter ~30/60/2/6/1) and the answer C still hold, but C vs D cannot be independently confirmed from this raster because the pie is absent."
+   },
+   {
+    "qid": "host-2021-kvant1-DTK-029",
+    "page": "host-2021-kvant1-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 5 states 'Kvinnor: 56, 53, 53, 50, 49, 47, 45, 42. Män: 44, 47, 47, 50, 51, 53, 55, 58 (2007 → 2014)' and steps 7-8 + distractor C give 'Män = 47 %' for 2009 and 2012. The figure shows the rows SWAPPED for the early years: Kvinnor = 44, 47, 47, 50, 49, 47, 45, 42 and Män = 56, 53, 53, 50, 51, 53, 55, 58, so Män 2009/2012 = 53 % (not 47 %) and Män 2007 = 56 % (>55, not 44 %). The answer D (2014) is still correct because 2014 is the unique year meeting both BF>40000 and Män>55, so the swapped labels do not flip the option here."
+   },
+   {
+    "qid": "host-2021-kvant1-DTK-031",
+    "page": "host-2021-kvant1-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 4 claims the Kvinnor row is 'den FALLANDE serien (56, 53, 53, 50, 49, 47, 45, 42 från 2007 till 2014)', implying women were the 56% majority in 2007. The figure's Kvinnor row is 44, 47, 47, 50, 49, 47, 45, 42 (starts at 44%, the minority); the 56/53/53/50 start belongs to Män. The 2013 value used for the multiplication (45%) is stated correctly, so the answer B (22 136) still holds."
+   },
+   {
+    "qid": "host-2021-kvant1-DTK-037",
+    "page": "host-2021-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "The main path is correct (Yrkesskolor Flickor 1966 = 1001 dagar -> 2 år 9 mån -> D). But the distractor/pitfall rationales misread the bottom Vård-block cells. Step 9 & distractor A claim '1966 Flickor Skolhem = 611 dagar' — the figure shows Skolhem Flickor 1966 = 947; 611 is the Skolhem POJKAR 1966 value. Step 10 claims 'Flickor 1968 Yrkesskolan (885 dagar)' and 'Flickor 1967 Yrkesskolan (947 dagar)' — figure shows Yrkesskolor Flickor 1968 = 1079 and 1967 = 1043; 885 is Skolhem Flickor 1968 and 947 is Skolhem Flickor 1966. Multiple false cell citations; correct answer D is unaffected."
+   },
+   {
+    "qid": "host-2021-kvant2-DTK-029",
+    "page": "host-2021-kvant2-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 3 states false grade percentages for the Matematik row: 'F = 8,1 %, E = 18,6 %, D = 18,9 %, C = 10,6 %, B = 8,4 %, A = 1,3 %... vänta — låt mig läsa igen.' The figure's Matematik row actually reads F=8,1, E=34,1, D=18,6, C=18,9, B=10,6, A=8,4, Underlag saknas=1,3 — i.e. the explanation shifted D/C/B/A/Underlag one column left and dropped the true E=34,1 entirely. These are legible cells misread. The answer is unaffected because the two operative cells (F=8,1 and Underlag saknas=1,3) are read correctly in step 4, so 8,1+1,3=9,4% × 96 430 = 9 064 ≈ 9 000 = C is still right. Also leaks an unfinished self-correction ('vänta — låt mig läsa igen') into the final explanation."
+   },
+   {
+    "qid": "host-2021-kvant2-DTK-034",
+    "page": "host-2021-kvant2-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "unsure",
+    "evidence": "Solution invents Munkholmen as an elongated island: 'Munkholmen ser ut som en avlång ö, ungefär 700 m lång och 250 m bred' and step 5 lists sides 'västra långsidan ca 600 m ... östra långsidan ca 700 m', summing to 1900 m to back-fit facit C. The figure shows Munkholmen ('Ön (Insula) eller Munkholmen') as a compact, roughly rounded landmass about 350-400 m across in each direction against the 0-500 m scale bar, not a thin 700 x 250 m NW-SE rectangle. The four side lengths are fabricated. Answer C is the official facit and is plausible with a jagged coastline; I cannot distinguish 1.6 vs 1.9 km from the raster."
+   },
+   {
+    "qid": "host-2021-kvant2-DTK-035",
+    "page": "host-2021-kvant2-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Distractor C: 'S:a Ursulas kapell (J i kartans nyckel) ligger på en plats nära Munkholmen - det är i söder relativt Helgeandshuset (E)' and why_wrong: 'S:a Ursulas kapell ligger söder om sjö-strängen'. On the map J (S:a Ursulas kapell) is plotted at the far NORTH of the map by Kakuberget/Papegojvretarna, well north of Helgeandshuset (E), not south near Munkholmen. Distractor A also claims the first leg between västra/södra kvarteren 'leder söderut/sydväst, inte norrut', but E lies south of both quarters so that leg heads north. These are wrong spatial claims; the route still lands at S:t Olofs kapell (I, NE) so answer D is unaffected."
+   },
+   {
+    "qid": "host-2021-kvant2-DTK-037",
+    "page": "host-2021-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 5 states: 'Några län sticker ut med mycket långa staplar — exempelvis kring Värmland eller Norrbotten, där den grå stapeln spänner från cirka 85 000 i botten till cirka 400 000 i toppen.' In the bottom chart the tallest gray bar (~85k to ~390k) is Västerbotten (2nd from right); Värmland's and Norrbotten's bars top out around ~255k, nowhere near 400k. The numeric span (~315k) and answer C are correct, but the county attribution is fabricated."
+   },
+   {
+    "qid": "host-2022-kvant2-DTK-029",
+    "page": "host-2022-kvant2-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "solution_path/step 5 claim: 'Lasvarden: 1999 ≈ 40 %, 2000 ≈ 60 %, 2001 ≈ 70 %.' The figure's Internet line (thin dash-dot) actually reads ~30% (1999), ~51% (2000, a clear kink just above the 50% gridline), ~54% (2001) — the explanation is systematically ~10 pp too high. Worse, step 4 states the steepest jump is '1999 → 2000 eller 2000 → 2001, med ca 20 procentenheter per ar', but 2000→2001 is nearly flat (~3 pp) in the figure, not a 20-pp jump. The correct 20-pp answer (C) still holds because the real steepest segment is 1999→2000 (~30→51 = ~21 pp), so the answer is unaffected."
+   },
+   {
+    "qid": "host-2022-kvant2-DTK-038",
+    "page": "host-2022-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Distractor B states Kultur/rekreation/sport is 'en av de stora områdena (vilket den är med ~50 000-nivå)', and the solution_path/steps repeatedly claim it 'är ett HUVUDOMRÅDE (ej uppdelat i delkategorier)'. The figure shows Kultur/rekreation/sport as the label INSIDE the Övriga tjänster pie (total 14 776), i.e. it IS a delkategori worth ≤14 776, nowhere near 50 000. The four printed area-totals (57 032 + 44 583 + 74 587 + 14 776 = 190 978) leave no room for a separate Kultur/rekreation/sport value. The correct reason B/C/D fail is that Kultur/rekreation/sport (~14 776) is far too small for top-3, not that it 'isn't a delkategori'. Answer A (Utemåltider ~28.5k, Boende ~28.5k, Övrig handel ~30k) is still correct."
+   },
+   {
+    "qid": "host-2022-kvant2-DTK-040",
+    "page": "host-2022-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 9 sanity-check invents a chart feature: 'Pajen för utländska besökare visar fyra huvudkategorier: Boende och restaurang (57 032...), Varuhandel (74 587...), Transport (44 583...), Kultur/rekreation/sport, Övriga tjänster (14 776).' The figure has NO per-resenärkategori pie — the four pies are shared konsumtionsområden (Boende och restaurang, Transport, Varuhandel, Övriga tjänster). It also lists Kultur/rekreation/sport and Övriga tjänster as separate huvudkategorier (five items, mislabelled 'fyra'). The core calculation 15 710 / 62 293 ≈ 0.252 ≈ 1/4 is correct and unaffected, so answer A holds."
+   },
+   {
+    "qid": "host-2023-kvant1-DTK-029",
+    "page": "host-2023-kvant1-p16.jpg",
+    "defectType": "other",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 4 states '07/08 ... I FAMILJEGRUPPER är det den sjätte stapeln (03/04, 04/05, 05/06, 06/07, 07/08 — räkna). I DÖDA LODJUR är det den sjunde stapeln.' Both bar positions are wrong: FAMILJEGRUPPER starts at 03/04 so 07/08 is the 5th bar (the parenthetical list itself ends at 07/08 as the 5th item, contradicting 'sjätte'); DÖDA LODJUR starts at 02/03 so 07/08 is the 6th bar, not the 7th. A solver naively counting to the 'sixth/seventh' bar would land on 08/09 instead. The answer B (1:13) is still correct because the working uses the right values (~200 family groups → 1200; ~90-100 dead → ~1:13)."
+   },
+   {
+    "qid": "host-2023-kvant1-DTK-030",
+    "page": "host-2023-kvant1-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 7 says 'Du kan också mäta licensjakt (svart, översta) ungefär 50 och skyddsjakt (ljusgrå) ungefär 115 och summera till samma 165.' This is reversed/fabricated. In the figure the 08/09 bar's black Licensjakt (top) is the dominant segment at ~150, while the light Skyddsjakt is a thin band of only ~10. So licensjakt≈150 and skyddsjakt≈10, not 50 and 115. Distractor A's rationale ('bara licensjakt = 55 %') is likewise inconsistent — licensjakt alone is ≈71%. The final answer C (75%) is unaffected because jakt = total(~215) − övrig(~52) ≈ 163 → 76% still holds."
+   },
+   {
+    "qid": "host-2023-kvant1-DTK-033",
+    "page": "host-2023-kvant1-p18.jpg",
+    "defectType": "garbled-prompt",
+    "severity": "med",
+    "answerVerdict": "unsure",
+    "evidence": "prompt is null and options is null. The explanation is entirely generic DTK-TACTIC-001 boilerplate ('DTK-uppgift som kraver avlasning ur figur ... Per facit: svar A') with no figure-specific values, no actual computation, and no reference to any row/cell of the table. The item is unanswerable and unusable as delivered."
+   },
+   {
+    "qid": "host-2023-kvant1-DTK-036",
+    "page": "host-2023-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "med",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 11 claims: 'de är två av kartans tre största värden (Norrbotten 10,6 och Jämtland 16,5; Västernorrland 13,8 är trean men inte i frågan).' The figure shows the three largest county values are Jämtland 16,5, Västernorrland 13,8 and Västerbotten 13,1. Norrbotten 10,6 is only 4th (Västerbotten 13,1 > Norrbotten 10,6), so it is NOT among the top three, and Västernorrland is 2nd, not 'trean' (3rd). The core computation (10,6 + 16,5 = 27,1; 27,1/80,3 ≈ 1/3) is correct, so the answer A stands; the false claim is in a detail/reflection step and does not steer the answer."
+   }
+  ],
+  "low": [
+   {
+    "qid": "host-2013-kvant2-DTK-035",
+    "page": "host-2013-kvant2-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 8 and distractor D state Visthusboden is 'etiketterad 1908 STOLPVIRKE' / '1908 STOLPVIRKE på kartan'. The label on the figure clearly reads '1906 STOLPVIRKE' (verified by zoom), not 1908. The material claim (STOLPVIRKE, not timber) is correct, so answer A (Drängstugan, labelled '1845 TIMMER', roughly square ~40 m²) is still right and confirmed from the figure; only the year digit is fabricated."
+   },
+   {
+    "qid": "host-2013-kvant2-DTK-037",
+    "page": "host-2013-kvant2-p20.jpg",
+    "defectType": "other",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Prompt is complete, coherent Swedish and answerable; by scale (40 m bar) the loop measures ~80–100 m, so facit A (100 m) is the best fit. The explanation is self-contradictory and non-committal: step 2 calls the bostadshus 'en stor byggnad i kartans mittsektion' while distractor B calls it 'en LITEN byggnad'; step 4 is titled 'Identifiera de fem rutt-segmenten' but its text lists 'sex etapper'; and the segment sums differ between solution_path (10+30+20+20+10+10) and step 11 (10+30+20+15+25). No committed measurement against the figure — muddled but not answer-changing."
+   },
+   {
+    "qid": "host-2013-kvant2-DTK-040",
+    "page": "host-2013-kvant2-p22.jpg",
+    "defectType": "garbled-prompt",
+    "severity": "low",
+    "answerVerdict": "unsure",
+    "evidence": "Option D reads 'text: 19 gånger så många År 2002' — the chart title 'År 2002' is spuriously appended to the option text (a parsing artifact). Additionally, this question is entirely about the 'År 2002' chart, which is NOT present in this figure image (only 'År 2000' and 'År 2001' appear), so the explanation's specific 2002 readings (cirkulationsorganen 45%, matsmältningsorganen 3.5%) cannot be verified from this figure — though the ~13x ratio is plausible given the analogous 2000/2001 bars (~46% vs ~3.5%). Answer left unsure because the target chart is off-page."
+   },
+   {
+    "qid": "host-2014-kvant1-DTK-036",
+    "page": "host-2014-kvant1-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "solution_path and step 5 assert the four smallest named countries in 2003 are 'Norge, Holland, Frankrike och Japan' with 'Frankrike ≈ 300 tusental m³'. Figure: Frankrike 2003 is a thin solid-black sliver (~60–80 thousand m³, like its ~50 in 1994), far below 300; and Japan (~463) is visibly LARGER than Tyskland (~390), so the actual four smallest named are Frankrike, Norge, Tyskland and Holland (not Japan). The sum is still ≈1.2 million m³, so answer D is correct despite the wrong country set and inflated Frankrike value."
+   },
+   {
+    "qid": "host-2014-kvant2-DTK-036",
+    "page": "host-2014-kvant2-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 5 / distractor B assert the Jokkmokk rectangle is 'synligt KORT — ... synligt kortast bland marknadsbesöken' and that '7 dagar motsvarar typiskt Gällivares marknadsbesök.' In the figure the J and G black squares sit side by side in the FEBRUARI segment and are essentially the SAME size (if anything both are larger/bolder than the thin ÖK/NK/R town markers), so J is not 'visibly shortest' and there is no visible basis for G≈7 days vs J≈4. Step 4 also says 'J-pilen utgå från L ... i norr-nordväst riktning', but the J marker is in the upper-RIGHT (February) segment, not NNW. The answer A (4 days) is still plausible — both squares subtend only ~3-4 days of the month arc — so this is a low-impact fabricated comparison, not a wrong answer."
+   },
+   {
+    "qid": "host-2015-kvant1-DTK-037",
+    "page": "host-2015-kvant1-p20.jpg",
+    "defectType": "other",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Distractor A: '1 462 miljoner DDD ... om man bara summerar de KVINNOR-värden för fyra grupper'; Distractor B: on 1 866, 'om man bara räknar männens TOTALT (2 001)' and 'inte uppenbart vilken kombination som ger exakt 1 866'. From the figure these are swapped: women-only top-4 (C594+B526+N403+D343) = 1866, and men-only top-4 (C614+B371+N240+D237) = 1462. So 1462 is the MEN sum (not women), and 1866 is exactly the women top-4 the text says it cannot identify. The correct answer C (3328) is unaffected."
+   },
+   {
+    "qid": "host-2016-kvant1-DTK-030",
+    "page": "host-2016-kvant1-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Distractor A states 'Renault som sjunde bland kvinnor, nionde bland män'. The men's bar chart shows Renault as the 10th (last) named brand before Övriga (order: ... Mercedes-Benz 8th, BMW 9th, Renault 10th), not 9th. Off-by-one ordinal slip in flavor text; the substantive claim (Renault appears in both top-10 lists) and the answer D (Nissan och Peugeot) are correct. All main list orderings in steps 3-4 match the figure exactly."
+   },
+   {
+    "qid": "host-2016-kvant1-DTK-033",
+    "page": "host-2016-kvant1-p18.jpg",
+    "defectType": "other",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Distractor A is garbled: 'delar antal vårddygn (48 000) med ANTAL SKADADE för mäns + kvinnors summa (43 000 + 26 800 ≈ 70 000)'. Men's skadade for Gå och promenera is 17 200 in the figure, not 43 000; and 48 000/70 000≈0,69, which does not yield 0,9. The correct 17 200 is used properly elsewhere in the same explanation, so this is a fabricated/garbled distractor rationale; answer B (1,1) is unaffected."
+   },
+   {
+    "qid": "host-2016-kvant2-DTK-029",
+    "page": "host-2016-kvant2-p16.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "solution_path/step 4 call sammanboende utan barn 'andra stapeln av fyra'. In the men's middle chart each group has FIVE bars (the 5th is the dotted 'ensamstående med barn utanför hushållet'), not four. The bar itself is correctly identified as the 2nd (gray) bar, and the ratio (sömnbesvär vs ständigt trött) reads ~24/6 in the figure = 4, so answer C holds — the explanation's 20/5 read is a touch low but harmless."
+   },
+   {
+    "qid": "host-2016-kvant2-DTK-033",
+    "page": "host-2016-kvant2-p18.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "step 6: '2005 (C): 142 984 − 128 089 ≈ 14 895. 2006 (D): 150 845 − 136 547 ≈ 14 298' and step 5: '2004: 139 016 − 124 393 ≈ 14 623'. Figure Totalt row shows 2005 Sökande = 128 069 (not 128 089), 2006 Sökande = 136 347 (not 136 547), 2004 Intagna = 139 036 (not 139 016). Small misreads of legible values; the key number (2002 = 15 611, the max) is exact and answer A is correct."
+   },
+   {
+    "qid": "host-2018-kvant2-DTK-035",
+    "page": "host-2018-kvant2-p20.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 4 enumerates 'Invandrad före: 172, 193, 220.' The figure's back (eftergymnasial) bar for Invandrad före skolstart clearly reads 226, not 220 (pattern of the four eftergym bars is 235/227/226/190). This is a peripheral, non-option bar — the four option values used for the answer (A=165, B=199, C=172, D=190) are all read correctly and B (199) is the correct max, so the answer is unaffected. Technically-false legible value only."
+   },
+   {
+    "qid": "host-2020-kvant2-DTK-038",
+    "page": "host-2020-kvant2-p22.jpg",
+    "defectType": "other",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Answer A is right (only 1998 has all five Intäkter rows rising vs prior year; B fails on Fria teater 186 550->160 033, C on Nationella/Övriga, D on Fria teater/Fria dans). But step 5 states the 1999->2000 Övriga check as 'Övriga: 32 575 -> 34 014' — those are the 1998/1999 values; the figure shows Övriga 1999=34 014, 2000=45 009. solution_path/step 4 give Reg/lok 1998 as '1 574 458' where the figure reads 1 574 438. Steps 6-7 eliminate C/D with vague guesses ('typiskt', 'oftast ... kan visa nedgång') instead of the actual figures. None change the correct answer A."
+   },
+   {
+    "qid": "host-2021-kvant1-DTK-034",
+    "page": "host-2021-kvant1-p18.jpg",
+    "defectType": "garbled-prompt",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Answer A (1/2) is correct: total waste = 4 173 000 + 1 003 000 = 5 176 000 ton; Energiåtervinning = 2 574 000 ton; 2 574 000 / 5 176 000 ≈ 0.497 ≈ 1/2. The explanation is fully grounded and matches the figure. However option D's text is garbled with OCR bleed: '4/5 Materialåtervinning Omhändertagande av hushållens farliga avfall B C D' — the intended value is simply 4/5, and the trailing label/letters are noise scraped from the figure. Cosmetic data garble; does not affect answerability or the correct answer."
+   },
+   {
+    "qid": "host-2021-kvant2-DTK-039",
+    "page": "host-2021-kvant2-p22.jpg",
+    "defectType": "hallucinated-figure-claim",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 4 says the highest bar 'når cirka 50 % ... (möjligen i Jämtland eller Norrbotten där länssnitten redan är höga).' In the middle chart the tallest gray-bar top (~51%) is Västra Götaland (Skåne ~48%); Norrbotten's bar only reaches ~33% and its dot ~26% is not high. The 50% reading and answer C (20 pe) are correct; the location guess is false but hedged and non-load-bearing."
+   },
+   {
+    "qid": "host-2022-kvant2-DTK-032",
+    "page": "host-2022-kvant2-p18.jpg",
+    "defectType": "other",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Step 3 leaks chain-of-thought scaffolding: 'Gotlands listas pa rad 8 (efter Stockholms, Uppsala, Sodermanlands, Ostergotlands, Jonkopings, Kronobergs, Kalmar) — wait, let me reread.' This self-correcting reasoning fragment shouldn't appear in a final student-facing explanation. The values it lands on are correct: figure shows Gotlands Summa = 71 485 and Kronobergs Summa = 18 305 (ratio 3.91 ≈ 4:1 = D), and Kronobergs is row 6 / Gotlands row 8 as stated. Muddled text, not a false figure claim."
+   },
+   {
+    "qid": "host-2023-kvant1-DTK-034",
+    "page": "host-2023-kvant1-p18.jpg",
+    "defectType": "garbled-prompt",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Option D text is 'D: 810 Kvinnor Man' (rendered '810 Kvinnor Man') — stray 'Kvinnor Man' tokens appended, a parser artifact. The numeric value 810 is intact and D is wrong regardless, so it does not change answerability; the explanation itself even flags it as 'sannolikt en parser-artefakt'. The core answer B (2353 K - 1753 M = 600) and all figure claims are correct against the table."
+   },
+   {
+    "qid": "host-2024-kvant1-DTK-032",
+    "page": "host-2024-kvant1-p18.jpg",
+    "defectType": "other",
+    "severity": "low",
+    "answerVerdict": "confirmed-correct",
+    "evidence": "Distractor A states Allmän is 'tydligt 7-åringsdominerad' (clearly 7-year-old dominated). The figure shows Allmän has 9 421 six-year-olds vs only 82 seven-year-olds (of 9 723), i.e. it is 6-year-old dominated (~97%). The claim even contradicts its own next words ('av 9 723 elever är 9 421 sex år'). Self-corrected by the correct adjacent numbers and does not change the correct answer (D)."
+   }
+  ]
+ },
+ "likelyWrong": [],
+ "perPageSight": {
+  "host-2013-kvant1-p16.jpg": "without",
+  "host-2013-kvant1-p18.jpg": "mixed",
+  "host-2013-kvant1-p20.jpg": "without",
+  "host-2013-kvant1-p22.jpg": "mixed",
+  "host-2013-kvant2-p16.jpg": "with",
+  "host-2013-kvant2-p18.jpg": "mixed",
+  "host-2013-kvant2-p20.jpg": "mixed",
+  "host-2013-kvant2-p22.jpg": "mixed",
+  "host-2014-kvant1-p16.jpg": "mixed",
+  "host-2014-kvant1-p18.jpg": "mixed",
+  "host-2014-kvant1-p20.jpg": "mixed",
+  "host-2014-kvant1-p22.jpg": "mixed",
+  "host-2014-kvant2-p16.jpg": "without",
+  "host-2014-kvant2-p18.jpg": "without",
+  "host-2014-kvant2-p20.jpg": "mixed",
+  "host-2014-kvant2-p22.jpg": "without",
+  "host-2015-kvant1-p16.jpg": "with",
+  "host-2015-kvant1-p18.jpg": "mixed",
+  "host-2015-kvant1-p20.jpg": "with",
+  "host-2015-kvant1-p22.jpg": "mixed",
+  "host-2015-kvant2-p16.jpg": "with",
+  "host-2015-kvant2-p18.jpg": "with",
+  "host-2015-kvant2-p20.jpg": "mixed",
+  "host-2015-kvant2-p22.jpg": "mixed",
+  "host-2016-kvant1-p16.jpg": "with",
+  "host-2016-kvant1-p18.jpg": "mixed",
+  "host-2016-kvant1-p20.jpg": "without",
+  "host-2016-kvant1-p22.jpg": "with",
+  "host-2016-kvant2-p16.jpg": "without",
+  "host-2016-kvant2-p18.jpg": "mixed",
+  "host-2016-kvant2-p20.jpg": "mixed",
+  "host-2016-kvant2-p22.jpg": "without",
+  "host-2017-kvant1-p16.jpg": "with",
+  "host-2017-kvant1-p20.jpg": "mixed",
+  "host-2017-kvant1-p22.jpg": "mixed",
+  "host-2017-kvant2-p16.jpg": "mixed",
+  "host-2017-kvant2-p18.jpg": "without",
+  "host-2017-kvant2-p20.jpg": "mixed",
+  "host-2017-kvant2-p22.jpg": "mixed",
+  "host-2018-kvant1-p16.jpg": "mixed",
+  "host-2018-kvant1-p18.jpg": "mixed",
+  "host-2018-kvant1-p20.jpg": "mixed",
+  "host-2018-kvant1-p22.jpg": "mixed",
+  "host-2018-kvant2-p16.jpg": "with",
+  "host-2018-kvant2-p18.jpg": "with",
+  "host-2018-kvant2-p20.jpg": "mixed",
+  "host-2018-kvant2-p22.jpg": "without",
+  "host-2020-kvant1-p16.jpg": "with",
+  "host-2020-kvant1-p18.jpg": "mixed",
+  "host-2020-kvant1-p20.jpg": "without",
+  "host-2020-kvant2-p16.jpg": "mixed",
+  "host-2020-kvant2-p18.jpg": "mixed",
+  "host-2020-kvant2-p22.jpg": "mixed",
+  "host-2021-kvant1-p16.jpg": "mixed",
+  "host-2021-kvant1-p18.jpg": "mixed",
+  "host-2021-kvant1-p20.jpg": "mixed",
+  "host-2021-kvant1-p22.jpg": "with",
+  "host-2021-kvant2-p16.jpg": "mixed",
+  "host-2021-kvant2-p20.jpg": "without",
+  "host-2021-kvant2-p22.jpg": "mixed",
+  "host-2022-kvant1-p16.jpg": "with",
+  "host-2022-kvant1-p18.jpg": "with",
+  "host-2022-kvant2-p16.jpg": "mixed",
+  "host-2022-kvant2-p18.jpg": "with",
+  "host-2022-kvant2-p22.jpg": "mixed",
+  "host-2023-kvant1-p16.jpg": "mixed",
+  "host-2023-kvant1-p18.jpg": "mixed",
+  "host-2023-kvant1-p20.jpg": "with",
+  "host-2023-kvant2-p16.jpg": "with",
+  "host-2024-kvant1-p18.jpg": "with"
+ }
+}
