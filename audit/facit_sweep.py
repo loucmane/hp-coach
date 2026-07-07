@@ -31,6 +31,17 @@ OUT = ROOT / "audit" / "dtk" / "facit_sweep_result.json"
 
 CLEAN_MIN = 0.93  # ≥ ~37/40 on the best column
 
+# Passes whose facit column is an IMAGE OVERLAY (text layer stale): their
+# true keys were vision-read from the overlay crops (2× reads + 12/12
+# figure-audit confirmation) and repaired by audit/repair_var2018_keys.mjs.
+# The guard validates stored keys against these pinned values instead.
+PINNED_KEYS = {
+    ("var-2018-1", "kvant2"): "B B A B D C C D B C D A D A A B B B A C "
+                              "B C B C D E B C C D A C B C D A B C C B".split(),
+    ("var-2018-1", "verb2"): "B C C C B D C E E A B D C A D D A C B D "
+                             "B D C B D A C C B A A C C B D B C B D D".split(),
+}
+
 
 def detect_overlays(pdf_path):
     """Image XObjects big enough to cover an answer column. ROOT CAUSE of
@@ -190,6 +201,19 @@ def main():
             for c in cols
         ], "passes": {}}
         for pass_name, key in sorted(stored.get(exam, {}).items()):
+            pinned = PINNED_KEYS.get((exam, pass_name))
+            if pinned:
+                hits = sum(1 for q, a in key.items() if pinned[q - 1] == a)
+                verdict = "REPAIRED-OK" if hits == len(key) else "PINNED-MISMATCH"
+                exam_report["passes"][pass_name] = {
+                    "best": {"provpass": "pinned", "hits": hits, "n": len(key)},
+                    "verdict": verdict,
+                }
+                mark = "" if verdict == "REPAIRED-OK" else "  ← FLAG"
+                print(f"{exam:22s} {pass_name:7s} pinned {hits}/{len(key)}  {verdict}{mark}")
+                if verdict != "REPAIRED-OK":
+                    flagged.append((exam, pass_name, verdict))
+                continue
             want_kind = "kvant" if pass_name.startswith("kvant") else "verb"
             best = None
             for c in cols:
