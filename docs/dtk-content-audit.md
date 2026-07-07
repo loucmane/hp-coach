@@ -1,8 +1,9 @@
 # DTK content quality audit (vision-grounded)
 
-**Date:** 2026-07-06 · **Status:** in progress — **80 of 216** figure pages
-audited (240 of 648 questions, **37 %**). Remaining 136 pages queued for
-resume; progress is gated by ~5-hourly usage windows (~10–26 pages each).
+**Date:** 2026-07-07 · **Status:** **COMPLETE** — 215 of 216 figure pages
+audited (645 of 648 questions, 99.5 %). The one missing page
+(`host-2021-kvant2-p20`) failed on a transient API server error; re-runnable
+via the standard resume. Final data: `audit/dtk/audit_final_result.json`.
 
 ## Why this audit
 
@@ -124,3 +125,47 @@ but are not urgent.
   (find-only; verify phase removed after it proved redundant + costly).
 - Resume: `Workflow({scriptPath, resumeFromRunId: 'wf_4f304ca2-63d', args})`
   — 70 completed pages replay from cache; the 146 remaining run live.
+
+
+## CRITICAL FINDING (full-scale run): var-2018-1 answer-key corruption
+
+The complete audit flagged 13 "likely-wrong answers" — 12 of them are the
+ENTIRE DTK section of `var-2018-1-kvant2`. Manual verification against the
+in-repo facit (`data/pdfs/var-2018-1/facit.pdf`, **"Facit – Version 4"** for
+HP 2018-04-14) closed the case:
+
+| pass (booklet) | true facit column | stored key matches |
+|---|---|---|
+| kvant1 (Provpass 1) | pp1 "Kvantitativ del pc" | **40/40 ✓ clean** |
+| verb1 (Provpass 2) | pp2 "Verbal del bt" | **40/40 ✓ clean** |
+| **kvant2 (Provpass 4)** | pp4 "Kvantitativ del pd" | **0/40 — wholesale wrong** |
+| **verb2 (Provpass 5)** | pp5 "Verbal del ha" | **17/40 — wrong** |
+
+The audit's figure-derived DTK answers match the pp4 column **12/12**, which
+independently confirms pp4 is the true key for kvant2. So the facit parser
+assigned correct keys to the FIRST pass of each type and garbage (source
+unknown — matches no column of this facit) to the SECOND. **80 questions in
+var-2018-1 carry a wrong answer key** (kvant2 + verb2), which also means:
+
+- every recorded attempt on those qids was graded against the wrong key;
+- all 80 explanations were generated to justify the wrong letters (the
+  audit's "trust the facit" flailing in that pass is this bug surfacing);
+- the 13th likely-wrong (`host-2018-kvant2-DTK-036`) remains a false
+  positive (manually verified: facit C correct).
+
+**Remediation (owner decision per the no-silent-override rule):**
+1. Replace `var-2018-1-kvant2` answers with the pp4 column and
+   `var-2018-1-verb2` with the pp5 column (from the in-repo facit v4).
+2. Regenerate/flag the 80 affected explanations (currently justify wrong letters).
+3. Re-grade or invalidate past attempts on those qids.
+4. **Sweep all 27 exams** for the same second-pass parser bug — the DTK audit
+   only proves the other 26 exams' *kvant2 DTK* keys are figure-consistent;
+   verbal passes were never checked.
+
+## Final headline (645 questions)
+
+sight: with=56 / without=61 / mixed=98 (26 % with-sight) · defects:
+high=79, med=299, low=48 · wrong answers: 0 outside the var-2018-1 key
+corruption. High-severity count includes the 8 already fixed (cached
+audit results predate the fixes) and scales exactly as the sample
+predicted: the corpus-wide fabrication rate holds at ~50 % of questions.
