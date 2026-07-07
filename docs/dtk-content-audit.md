@@ -79,9 +79,9 @@ fabricated figure-reading would lead a solver who *checks the figure* to the
 | `host-2017-kvant1-DTK-040` | p22 | Step 4 readings contradict the figure: luftstrupe called *decrease* (actually +15 400), ljumskbråck +3 000 (actually −10 900). | **✅ fixed** |
 | `host-2017-kvant2-DTK-031` | p16 | Reverses the dual-axis legend: instructs reading Total-kväve (●) on the 0–100 scale (→ ~50, wrong) when ● is the 0–500 scale (→ ~250, option D). | **✅ fixed** |
 | `host-2017-kvant2-DTK-040` | p22 | Misreads the "Pedagogisk högskoleexamen saknas" row as 130 (it's 482) → 17 % (lowest) when the true 62 % is the **highest**. | **✅ fixed** |
-| `host-2022-kvant1-DTK-035` | p20 | Småland ironworks map: misidentifies the westernmost pappersbruk (names circle/triangle towns; the real one, Skeen ◇, is never named) and mislabels Glasbruk's symbol. Answer C right by luck. | deferred (dense symbol map — separate careful pass) |
-| `host-2022-kvant1-DTK-036` | p20 | Claims the 90-km-south endpoint is Midingsbråte (a glasbruk ◇dome ~148 km away); the real endpoint is Kårestad (pappersbruk ◇). A solver reading Midingsbråte's real symbol answers C (wrong). | deferred (dense symbol map — separate careful pass) |
-| `host-2022-kvant1-DTK-037` | p20 | Fabricates the entire glasbruk inventory (lists 9 towns that are triangles/circles); the only glasbruk are 3 far-south domes. Mislabels Glasbruk symbol. | deferred (dense symbol map — separate careful pass) |
+| `host-2022-kvant1-DTK-035` | p20 | Småland ironworks map: misidentifies the westernmost pappersbruk (names circle/triangle towns; the real one, Skeen ◇, is never named) and mislabels Glasbruk's symbol. Answer C right by luck. | **✅ fixed** |
+| `host-2022-kvant1-DTK-036` | p20 | Claims the 90-km-south endpoint is Midingsbråte (a glasbruk ◇dome ~148 km away); the real endpoint is Kårestad (pappersbruk ◇). A solver reading Midingsbråte's real symbol answers C (wrong). | **✅ fixed** |
+| `host-2022-kvant1-DTK-037` | p20 | Fabricates the entire glasbruk inventory (lists 9 towns that are triangles/circles); the only glasbruk are 3 far-south domes. Mislabels Glasbruk symbol. | **✅ fixed** |
 | `host-2023-kvant1-DTK-039` | p22 | Understates the 30–34 line ("1990 ~12–13 %, 2004 ~25 %"); figure shows ~15 % → ~30 %. A solver tracing the real line to 24–26 % lands at ~1998 = wrong answer A (not D=14 yr). | **✅ fixed** |
 
 **Non-user-facing:** `host-2021-kvant1-DTK-033` (flagged high) is
