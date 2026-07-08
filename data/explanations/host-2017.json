@@ -10389,109 +10389,109 @@
  },
  "host-2017-kvant1-DTK-031": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "379 684 är frestande om du råkar välja TÄBY (26 978 totalt) i stället för HUDDINGE (32 731) — Täbys totalt och Huddinges totalt skiljer sig bara med några tusen, och Täbys bensintal (25 673) är lägre än Huddinges (31 229), så summan blir cirka 5 000 lägre.",
-    "why_wrong": "Som steg 4 strängt rangordnar: top-5 efter Totalt-kolumnen är STOCKHOLM (285 807), SOLNA (45 718), NACKA (37 569), SÖDERTÄLJE (34 095), HUDDINGE (32 731). Täby (26 978) hamnar utanför top-5. Facit fastslår 385 284 — vilket är just bensin-summan med Huddinge inkluderat, inte Täby."
+    "why_tempting": "379 684 är exakt vad du får om fel femte kommun slinker in: byter du ut HUDDINGE mot NORRTÄLJE blir bensinsumman 250 536 + 38 158 + 33 907 + 31 454 + 25 629 = 379 684. Norrtälje (Totalt 27 959) är största kommunen i tabellens nedre del och lätt att haffa om du skummar Totalt-kolumnen slarvigt.",
+    "why_wrong": "HUDDINGE har Totalt 32 731 — klart mer än Norrtäljes 27 959 — så femte platsen är Huddinges. Med Huddinges bensintal 31 229 blir summan 385 284 = B."
    },
    {
     "letter": "C",
-    "why_tempting": "419 426 är frestande om du av misstag inkluderar en till kommun (sex i stället för fem), exempelvis lägger till Botkyrka eller Södertälje en gång till efter att redan ha räknat med båda.",
-    "why_wrong": "Frågan säger TYDLIGT 'de fem kommuner' — antalsräkning är fem, inte sex. Som steg 4 listar är de fem: STOCKHOLM, SOLNA, NACKA, SÖDERTÄLJE, HUDDINGE. Facit fastslår 385 284. Om du landar på 419 426 har du sannolikt addit en kommun extra eller använt fel kolumn (kanske Bensin + Diesel = 419 426 för fyra kommuner, vilket också är ett klassiskt slarvfel)."
+    "why_tempting": "419 426 ligger lagom mellan den rätta bensinsumman (385 284) och Totalt-summan (435 824) — precis där man hamnar om man blandar kolumner, till exempel läser några av de fem raderna från Totalt-kolumnen i stället för Bensin-kolumnen, eller får med en extra kommun i additionen.",
+    "why_wrong": "En strikt tvåstegsräkning ger ett exakt tal: top-5 efter Totalt är STOCKHOLM, SOLNA, NACKA, SÖDERTÄLJE, HUDDINGE, och deras bensintal summerar till exakt 385 284. Hamnar du på 419 426 har du blandat in värden som inte hör till Bensin-kolumnen för just dessa fem rader."
    },
    {
     "letter": "D",
-    "why_tempting": "435 824 är frestande om du blandar ihop 'flest bilar' med 'flest bensinbilar' och rangordnar fel — eller om du läser Stockholms läns SUMMA-rad (700 457 bensin) och drar bort några tal i huvudet utan struktur.",
-    "why_wrong": "Som steg 3 betonar är 'flest bilar' = rangordna efter Totalt-kolumnen, inte efter Bensin-kolumnen. När du gör det rätt blir top-5 entydig (STOCKHOLM, SOLNA, NACKA, SÖDERTÄLJE, HUDDINGE) och bensin-summan blir 385 284. Facit fastslår B — D är ett tecken på att du inkluderat något extra eller använt fel sorteringskolumn."
+    "why_tempting": "435 824 är exakt summan av de fem Totalt-värdena: 285 807 + 45 718 + 37 569 + 33 999 + 32 731 = 435 824. Det är den naturliga miss man gör om man stannar i samma kolumn man just rangordnade efter.",
+    "why_wrong": "Frågan frågar efter BENSINBILAR, inte alla bilar. Rangordningen görs i Totalt-kolumnen, men summeringen ska ske i Bensin-kolumnen: 250 536 + 38 158 + 33 907 + 31 454 + 31 229 = 385 284 = B."
    }
   ],
   "framework_id": "DTK-TACTIC-002",
-  "pitfall": "Den klassiska DTK-fällan här är att rangordna kommunerna efter FEL kolumn — antingen efter Bensin (eftersom det är vad du till slut summerar) eller efter en feltolkad 'flest bilar' = 'flest av någon kategori'. Botemedlet: rangordna alltid efter den kolumn frågan specificerar ('flest bilar' = Totalt-kolumnen) och summera sedan över den kolumn frågan EFTERFRÅGAR (Bensin) — två steg, två olika kolumner.",
+  "pitfall": "Den klassiska DTK-fällan här är att stanna i FEL kolumn i något av de två momenten: antingen rangordna efter Bensin (för att det är vad du till slut summerar) eller summera Totalt (för att det är där du just rangordnade — det ger exakt distraktor D, 435 824). Botemedlet: rangordna alltid efter den kolumn frågan specificerar ('flest bilar' = Totalt-kolumnen) och summera sedan över den kolumn frågan EFTERFRÅGAR (Bensin) — två steg, två olika kolumner.",
   "pregrade_tactic": {
    "handle": "Rangordna-sedan-summera",
-   "move": "Plocka först de fem rader med högst Totalt-värde. Sedan, med dessa fem rader markerade, addera deras Bensin-kolumnvärden. Två kolumner, två moment."
+   "move": "Plocka först de fem rader med högst Totalt-värde (Stockholm 285 807, Solna 45 718, Nacka 37 569, Södertälje 33 999, Huddinge 32 731). Sedan, med dessa fem rader markerade, addera deras Bensin-kolumnvärden. Två kolumner, två moment."
   },
-  "solution_path": "Facit fastslår B (385 284). Sortera kommunerna efter Totalt-kolumnen: STOCKHOLM 285 807, SOLNA 45 718, NACKA 37 569, SÖDERTÄLJE 34 095, HUDDINGE 32 731 (de fem största). För dessa fem, läs av Bensin-kolumnen: 250 536, 38 158, 33 907, 31 454, 31 229. Summan blir 250 536 + 38 158 + 33 907 + 31 454 + 31 229 = 385 284.",
+  "solution_path": "Rangordna kommunerna efter Totalt-kolumnen: STOCKHOLM 285 807, SOLNA 45 718, NACKA 37 569, SÖDERTÄLJE 33 999, HUDDINGE 32 731 är de fem största — närmast därefter kommer NORRTÄLJE 27 959, klart under Huddinge. För dessa fem, läs av Bensin-kolumnen: 250 536, 38 158, 33 907, 31 454, 31 229. Summan blir 250 536 + 38 158 + 33 907 + 31 454 + 31 229 = 385 284 = alternativ B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: hur stor är den totala mängden bensinbilar i de fem kommuner som hade FLEST BILAR (alltså högst Totalt-värde)? Svarsalternativen är fyra sex-siffriga tal kring 380 000–440 000. Facit fastslår B = 385 284. Strategin är 'rangordna efter Totalt, summera över Bensin'.",
+    "text": "Frågan: hur många bensinbilar fanns det sammanlagt i de fem kommuner som hade FLEST BILAR (alltså högst Totalt-värde)? Svarsalternativen är fyra sexsiffriga tal kring 380 000–440 000. Strategin är 'rangordna efter Totalt, summera över Bensin' — två kolumner, två moment.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i tabellen",
-    "text": "Tabellen 'Personbilar och drivmedel' har kommuner i raderna och drivmedel + Totalt i kolumnerna. Alla värden är printade. Notera att Totalt-kolumnen är längst till höger — det är där du läser av rangordningen för 'flest bilar'.",
+    "text": "Tabellen 'Personbilar och drivmedel' har kommuner i raderna och drivmedel (Bensin, Diesel, El, Etanolhybrid/E85, Övriga hybrider, Naturgas/Biogas, Övriga) plus Totalt i kolumnerna. Alla värden är printade. Totalt-kolumnen står längst till höger — det är där du läser av rangordningen för 'flest bilar'.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Vad betyder 'flest bilar'?",
-    "text": "'Flest bilar' i en kommun = högst värde i Totalt-kolumnen för just den kommunraden. Det betyder INTE 'flest bensinbilar' (alltså högst i Bensin-kolumnen) — Totalt-kolumnen inkluderar alla drivmedel summerade. Sortera radens efter Totalt-värde, inte Bensin-värde.",
+    "text": "'Flest bilar' i en kommun = högst värde i Totalt-kolumnen för just den kommunraden. Det betyder INTE 'flest bensinbilar' (högst i Bensin-kolumnen) — Totalt-kolumnen är alla drivmedel summerade. Rangordna raderna efter Totalt-värdet, inte Bensin-värdet.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Skanna Totalt-kolumnen efter de fem högsta värdena",
-    "text": "Gå genom Totalt-kolumnen och identifiera de fem största talen. STOCKHOLM utmärker sig med 285 807 (mycket större än alla andra). Sedan följer SOLNA 45 718, NACKA 37 569, SÖDERTÄLJE 34 095, HUDDINGE 32 731. På sjätte plats kommer JÄRFÄLLA 24 305 eller LIDINGÖ 16 853 — alla klart mindre än Huddinges 32 731. Top-5 är därmed entydig.",
+    "text": "Gå genom Totalt-kolumnen och plocka de fem största talen. STOCKHOLM utmärker sig med 285 807 (mycket större än alla andra). Sedan följer SOLNA 45 718, NACKA 37 569, SÖDERTÄLJE 33 999 och HUDDINGE 32 731. Närmast utanför top-5 kommer NORRTÄLJE 27 959, TÄBY 26 978 och HANINGE 26 857 — alla klart under Huddinges 32 731. Top-5 är därmed entydig.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Sanity-check rangordningen",
-    "text": "TÄBY (26 978), HANINGE (26 857), DANDERYD (14 230), VALLENTUNA (12 514) — alla har Totalt-värden klart under HUDDINGE (32 731). Jämför också med BOTKYRKA (25 385) och UPPLANDS VÄSBY (15 607). Den femte platsen tillhör entydigt HUDDINGE.",
+    "text": "Kolla att ingen rad smugit sig förbi: NORRTÄLJE (27 959), TÄBY (26 978), HANINGE (26 857), BOTKYRKA (25 385), JÄRFÄLLA (24 305), SOLLENTUNA (24 172), LIDINGÖ (16 853), DANDERYD (14 231), VALLENTUNA (12 514) — alla har Totalt-värden under HUDDINGE (32 731). Den femte platsen tillhör entydigt HUDDINGE.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Plocka Bensin-värdena för de fem topp-kommunerna",
-    "text": "Nu med top-5 kommun-listan i hand (STOCKHOLM, SOLNA, NACKA, SÖDERTÄLJE, HUDDINGE) går du tillbaka till Bensin-kolumnen och plockar ut just dessa fem rader. Bensin-värdena är: STOCKHOLM 250 536, SOLNA 38 158, NACKA 33 907, SÖDERTÄLJE 31 454, HUDDINGE 31 229.",
+    "text": "Med top-5-listan i hand (STOCKHOLM, SOLNA, NACKA, SÖDERTÄLJE, HUDDINGE) går du tillbaka till Bensin-kolumnen och plockar ut just dessa fem rader. Bensin-värdena är: STOCKHOLM 250 536, SOLNA 38 158, NACKA 33 907, SÖDERTÄLJE 31 454, HUDDINGE 31 229.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Addera de fem bensin-värdena",
-    "text": "Lägg ihop: 250 536 + 38 158 = 288 694. Lägg till 33 907: 288 694 + 33 907 = 322 601. Lägg till 31 454: 322 601 + 31 454 = 354 055. Lägg till 31 229: 354 055 + 31 229 = 385 284.",
+    "text": "Lägg ihop stegvis: 250 536 + 38 158 = 288 694. Lägg till 33 907: 288 694 + 33 907 = 322 601. Lägg till 31 454: 322 601 + 31 454 = 354 055. Lägg till 31 229: 354 055 + 31 229 = 385 284.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Granska summan mot svarsalternativen",
-    "text": "Summan 385 284 matchar exakt alternativ B (385 284). Inga avrundningsfel — vi har räknat med fullständiga printade tal och alternativet är skrivet precis till sista siffran.",
+    "text": "Summan 385 284 matchar exakt alternativ B (385 284). Inga avrundningsfel — vi har räknat med fullständiga printade tal och alternativet är skrivet ned till sista siffran.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Vanlig felkälla: rangordna efter Bensin i stället för Totalt",
-    "text": "Om du rangordnade kommunerna efter Bensin-kolumnen i stället för Totalt skulle top-5 också börja med STOCKHOLM (250 536), SOLNA (38 158), NACKA (33 907), SÖDERTÄLJE (31 454), HUDDINGE (31 229) — i detta speciella exempel sammanfaller listan. Men på en annan tabell skulle ordningen kunna skilja sig, och då blir det fel. Lär dig metoden: rangordna efter den kolumn FRÅGAN PEKAR UT.",
+    "text": "Om du rangordnade efter Bensin-kolumnen i stället för Totalt skulle top-5 råka bli samma fem kommuner: STOCKHOLM (250 536), SOLNA (38 158), NACKA (33 907), SÖDERTÄLJE (31 454), HUDDINGE (31 229) — i just den här tabellen sammanfaller listorna. Men på en annan tabell kan ordningen skilja sig, och då blir det fel. Lär dig metoden: rangordna efter den kolumn FRÅGAN PEKAR UT.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Vanlig felkälla: inkludera fel sjätte kommun",
-    "text": "Om du av misstag inkluderar TÄBY (Bensin 25 673) i stället för HUDDINGE skulle summan bli 250 536 + 38 158 + 33 907 + 31 454 + 25 673 = 379 728 — ungefär alternativ A. Det är därför rangordningen via Totalt-kolumnen i steg 4 är avgörande.",
+    "title": "Vanlig felkälla: fel femte kommun eller fel summeringskolumn",
+    "text": "Tar du NORRTÄLJE (Bensin 25 629) i stället för HUDDINGE blir summan 250 536 + 38 158 + 33 907 + 31 454 + 25 629 = 379 684 — exakt alternativ A. Summerar du Totalt-kolumnen i stället för Bensin blir det 285 807 + 45 718 + 37 569 + 33 999 + 32 731 = 435 824 — exakt alternativ D. Båda fällorna är alltså inbyggda i alternativen; rangordningen i steg 4 och kolumnbytet i steg 6 är avgörande.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Sanity-check via Stockholms läns totala bensin",
-    "text": "Stockholms läns summa-rad i Bensin-kolumnen är 700 457. Vår top-5-summa (385 284) är ungefär 55 % av detta. Det är rimligt — STOCKHOLM ensam står för 250 536 (= cirka 36 % av länets bensin), så STOCKHOLM + fyra till stora kommuner som ger ytterligare ~134 000 bensinbilar landar naturligt kring 55 % av länets totala.",
+    "text": "Länets summa-rad i Bensin-kolumnen är 700 457. Vår top-5-summa (385 284) är ungefär 55 % av detta. Rimligt: STOCKHOLM ensam står för 250 536 (cirka 36 % av länets bensinbilar), och fyra stora kommuner till lägger på ytterligare cirka 134 000 — då landar man naturligt kring 55 %.",
     "tier": "detail"
    },
    {
     "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är B (385 284). Insikten i en mening: 'rangordna efter en kolumn, summera över en annan' är ett tvåstegs-recept — slarva inte ihop dem genom att rangordna efter samma kolumn du sedan summerar över, om frågan inte ber dig göra det.",
+    "title": "Insikten i en mening",
+    "text": "Svaret är B (385 284). Insikten i en mening: 'rangordna efter en kolumn, summera över en annan' är ett tvåstegs-recept — lås först top-5 via Totalt-kolumnen, byt sedan medvetet till Bensin-kolumnen och addera exakt de printade talen.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'sammanlagd mängd i top-N rader'-frågor: (1) identifiera vilken kolumn som definierar rangordningen ('flest bilar' → Totalt-kolumnen), (2) markera de N rader med högst värde i den kolumnen, (3) summera de markerade radernas värden i den kolumn frågan EFTERFRÅGAR. Triggern: 'sammanlagd X i topp-N efter Y' → rangordna-sedan-summera, två separata kolumner, två separata moment."
+  "technique": "DTK-strategi för 'sammanlagd mängd i top-N rader'-frågor: (1) identifiera vilken kolumn som definierar rangordningen ('flest bilar' → Totalt-kolumnen), (2) markera de N rader med högst värde i den kolumnen, (3) summera de markerade radernas värden i den kolumn frågan EFTERFRÅGAR (Bensin). Triggern: 'sammanlagd X i topp-N efter Y' → rangordna-sedan-summera, två separata kolumner, två separata moment."
  },
  "host-2017-kvant1-DTK-032": {
   "_meta": {
@@ -10601,215 +10601,209 @@
  },
  "host-2017-kvant1-DTK-033": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "1920 är frestande om man tittar på Övrig spannmål-linjen som ligger högt 1920 (cirka 1 250 tusental ha — uppfyller > 1 000) och om man godtar 'nästan 1 500' på Foderväxter-linjen som tillräckligt. Den som inte är noggrann med trösklarna kan tro att 1920 stämmer.",
-    "why_wrong": "Som steg 5 visar ligger Foderväxter-linjen i 1920 på cirka 1 100–1 200 tusental ha — alltså UNDER 1 500. Det första villkoret är inte uppfyllt. Dessutom är Vete och Råg ganska nära varandra i 1920 (Råg ≈ 425, Vete ≈ 175, så Råg är HÖGRE) — det tredje villkoret är också omvänt. Facit fastslår C (1940)."
+    "why_tempting": "1920 lockar om man bara tittar på de två stora kurvorna: Övrig spannmål ligger högt (cirka 1 200 — klart över 1 000) och Foderväxter pendlar alldeles kring 1 500-linjen, så med generöst ögonmått kan båda trösklarna se uppfyllda ut.",
+    "why_wrong": "Villkor 3 är omvänt vid 1920: Råg ligger på cirka 380 och Vete nere på cirka 150 — Råg är alltså klart STÖRRE än Vete, inte tvärtom. Dessutom är Foderväxter bara på gränsen (cirka 1 450–1 500), inte klart över. Rätt år är C (1940), där alla tre villkor håller."
    },
    {
     "letter": "B",
-    "why_tempting": "1930 är frestande för att alla tre linjer befinner sig i 'rimliga' nivåer just där, och om man inte mäter exakt kan villkoren se ut att stämma — Foderväxter är på uppåtgående trend, Övrig spannmål fortfarande hög.",
-    "why_wrong": "I 1930 ligger Foderväxter-linjen runt 1 400 tusental ha — UNDER 1 500-tröskeln. Räcker inte. Vete och Råg har just korsat varandra (de ligger nära) men skillnaden är inte stadigt över 100 tusental ha. Som steg 7 betonar är 1940 det första året där ALLA tre villkor håller samtidigt — facit fastslår C."
+    "why_tempting": "1930 klarar faktiskt två av tre villkor: Foderväxter ligger på cirka 1 600 (över 1 500) och Övrig spannmål kring 1 100 (över 1 000). Den som prickar av de två tröskelvillkoren och slarvar med Vete/Råg-jämförelsen fastnar här.",
+    "why_wrong": "Vete och Råg har precis korsat varandra runt 1927–1930 och ligger nästan ihop (båda kring 250) — skillnaden Vete − Råg är långt under 100 tusental ha. Villkor 3 fallerar, och det är just det villkoret som skiljer 1930 från 1940."
    },
    {
     "letter": "D",
-    "why_tempting": "1950 är frestande för att Foderväxter-linjen då är som högst (cirka 1 750 tusental ha — klart över 1 500), så ena villkoret är supertydligt uppfyllt. Men ett uppfyllt villkor räcker inte.",
-    "why_wrong": "I 1950 har Övrig spannmål-linjen fallit till cirka 800–900 tusental ha — UNDER 1 000-tröskeln. Andra villkoret är inte uppfyllt. Som steg 6 understryker måste ALLA TRE villkor stämma samtidigt — och 1950 missar på Övrig spannmål. Facit fastslår C (1940), inte D."
+    "why_tempting": "1950 är frestande för att Foderväxter då är nära sin topp (cirka 1 800 — klart över 1 500) och Vete − Råg-skillnaden är som störst (cirka 330 mot 130, alltså cirka 200). Två villkor är övertydligt uppfyllda.",
+    "why_wrong": "Övrig spannmål har vid 1950 fallit till cirka 900–950 tusental ha — UNDER 1 000-tröskeln. Villkor 2 fallerar, och i en AND-fråga räcker ett missat villkor. Kurvan korsar 1 000-linjen mellan 1940 och 1950, så 1940 hinner precis klara sig men inte 1950."
    }
   ],
   "framework_id": null,
-  "pitfall": "Den klassiska DTK-fällan i 'vilket år matchar dessa villkor'-frågor är att stanna när FÖRSTA villkoret uppfylls och anta att hela alternativet är rätt. Eller att bara kontrollera 'rätt riktning' (linjen är hög, linjen är låg) utan att mäta mot den specifika tröskeln (1 500, 1 000, 100). Botemedlet: skriv ner alla tre villkor som en checklista och kryssa av dem ETT FÖR ETT mot varje kandidatår.",
+  "pitfall": "Den klassiska DTK-fällan i 'vilket år matchar dessa villkor'-frågor är att hitta EN uteslutningsgrund och sedan återanvända den på alla alternativ — här fälls 1920 och 1930 av Vete/Råg-villkoret men 1950 av Övrig spannmål-villkoret. En annan fälla är att nöja sig med 'rätt riktning' (kurvan är hög/låg) utan att mäta mot den exakta tröskeln (1 500, 1 000, 100) på gridlinjerna. Botemedlet: skriv ner alla tre villkor som en checklista och kryssa av dem ETT FÖR ETT mot varje kandidatår.",
   "pregrade_tactic": {
    "handle": "Tre-villkors-checklista",
-   "move": "Lista villkoren: (1) Foderväxter > 1 500, (2) Övrig spannmål > 1 000, (3) Vete − Råg > 100. Pricka av dem mot varje årtal A–D mot det övre linjediagrammets gridlinjer på 250-tick-skalan."
+   "move": "Lista villkoren: (1) Foderväxter > 1 500, (2) Övrig spannmål > 1 000, (3) Vete − Råg > 100. Pricka av dem mot varje årtal A–D mot det övre linjediagrammets gridlinjer (var 250:e enhet) och eliminera så fort ett villkor missar."
   },
-  "solution_path": "Facit fastslår C (1940). I det övre linjediagrammet (1865–1955) har x-axeln årtal och y-axeln 'Tusental ha' med tick-värden vid 0, 250, 500, 750, 1000, 1250, 1500, 1750, 2000. För år 1940 ligger Foderväxter-linjen på cirka 1 700 (> 1 500 ✓), Övrig spannmål-linjen på cirka 1 050–1 100 (> 1 000 ✓), Vete-linjen på cirka 400 och Råg-linjen på cirka 300 (skillnad cirka 100 ✓). Alla tre villkor är uppfyllda just i 1940 — inget annat årtalsalternativ klarar samtliga.",
+  "solution_path": "I det övre linjediagrammet ('Åkerarealens användning i Sverige 1865–1955', y-axel 'Tusental ha' med gridlinjer var 250:e enhet) checkas tre villkor mot varje kandidatår: (1) Foderväxter > 1 500, (2) Övrig spannmål > 1 000, (3) Vete − Råg > 100. 1920: Råg (≈ 380) ligger klart ÖVER Vete (≈ 150) — villkor 3 omvänt, ute. 1930: Foderväxter ≈ 1 600 (villkor 1 OK), men Vete och Råg har precis korsat varandra och ligger nästan ihop — skillnaden är långt under 100, villkor 3 fallerar. 1950: Vete ≈ 330 mot Råg ≈ 130 (villkor 3 OK) men Övrig spannmål har fallit till ≈ 900–950 — UNDER 1 000, villkor 2 fallerar. 1940: Foderväxter ≈ 1 700 (> 1 500 ✓), Övrig spannmål ≈ 1 050 (> 1 000 ✓), Vete ≈ 330 mot Råg ≈ 200 (skillnad ≈ 130 > 100 ✓). Endast 1940 klarar alla tre villkor — svaret är C.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilket år uppfyller alla tre påståendena? (1) Foderväxter > 1 500 000 ha, (2) Övrig spannmål > 1 000 000 ha, (3) Vete − Råg > 100 000 ha. Svarsalternativen är 1920, 1930, 1940, 1950. Facit fastslår C (1940). Strategin: kontrollera alla tre villkor mot varje årtal.",
+    "text": "Frågan söker det år som uppfyller alla tre påståendena samtidigt: (1) Foderväxter > 1 500 000 ha, (2) Övrig spannmål > 1 000 000 ha, (3) Vete minst 100 000 ha större än Råg. Svarsalternativen är 1920, 1930, 1940, 1950. Strategin: gör villkoren till en checklista och pricka av dem mot varje årtal.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i det övre linjediagrammet",
-    "text": "Det ÖVRE diagrammet på sidan heter 'Den svenska åkerarealens användning 1865–1955'. Y-axeln är 'Tusental ha' med printade tick-värden vid 0, 250, 500, 750, 1000, 1250, 1500, 1750, 2000. Sex linjer representerar olika grödor: Foderväxter (uppåtstigande, högst), Övrig spannmål (störst på 1900-talet, sedan fallande), Råg, Vete, Potatis, Rotfrukter. Notera: 'tusental ha' betyder att y-värdet 1 000 = 1 000 000 ha = 1 miljon hektar.",
+    "text": "Det ÖVRE diagrammet visar 'Åkerarealens användning i Sverige 1865–1955'. Y-axeln är 'Tusental ha' med gridlinjer vid 0, 250, 500, 750, 1000, 1250, 1500, 1750, 2000. Sex kurvor med etiketter direkt i diagrammet: Foderväxter (stiger brant, högst efter ca 1905), Övrig spannmål (hög länge, faller efter ca 1925), Råg, Vete, Potatis och Rotfrukter (de tre sistnämnda lägst). Notera: 'tusental ha' betyder att y-värdet 1 000 = 1 000 000 hektar.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Översätt frågans tröskelvärden till axeln",
-    "text": "Villkor 1: Foderväxter > 1 500 000 ha = över y-värdet 1 500. Villkor 2: Övrig spannmål > 1 000 000 ha = över y-värdet 1 000. Villkor 3: Vete-linjen ligger MER ÄN 100 (tusental ha) över Råg-linjen.",
+    "text": "Villkor 1: Foderväxter över y-värdet 1 500 (en gridlinje). Villkor 2: Övrig spannmål över y-värdet 1 000 (en gridlinje). Villkor 3: Vete-kurvan ligger MER ÄN 100 tusental ha (knappt en halv gridruta) över Råg-kurvan.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Identifiera de fyra kandidatåren på x-axeln",
-    "text": "X-axeln visar tick-värden vid 1870, 1880, 1890, 1900, 1910, 1920, 1930, 1940, 1950. Markera mentalt fingret på 1920, 1930, 1940 och 1950 — det är dessa fyra vertikala linjer vi ska checka villkoren mot.",
+    "text": "X-axeln har årtalsmarkeringar vid 1870, 1880, ..., 1950. Lägg mentalt fingret på de vertikala linjerna vid 1920, 1930, 1940 och 1950 — det är där vi checkar villkoren.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Checka 1920 (A)",
-    "text": "Vid 1920: Foderväxter-linjen är på uppåtstigande trend men ligger fortfarande nära 1 100–1 200 tusental ha — UNDER 1 500. Villkor 1 misslyckas. Du kan redan utesluta 1920. (Som extra: Råg ligger högre än Vete vid 1920 — villkor 3 omvänt också.) Inte A.",
+    "text": "Vid 1920 ligger Råg på cirka 380 och Vete nere på cirka 150 — Råg är alltså klart STÖRRE än Vete. Villkor 3 kräver det omvända (Vete minst 100 över Råg), så det fallerar direkt. Foderväxter pendlar dessutom precis kring 1 500-linjen här (cirka 1 450–1 500), så villkor 1 är i bästa fall på gränsen — men Vete/Råg-omkastningen räcker ensam för att utesluta A.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Checka 1930 (B)",
-    "text": "Vid 1930: Foderväxter-linjen ligger nära 1 400 tusental ha — fortfarande UNDER 1 500. Villkor 1 misslyckas (knappt, men frågan kräver STRIKT > 1 500). Vete och Råg har korsat varandra någonstans runt 1925–30 men ligger fortfarande nära. Inte B.",
+    "text": "Vid 1930 ligger Foderväxter på cirka 1 600 — ÖVER 1 500, så villkor 1 är faktiskt uppfyllt. Övrig spannmål ligger kring 1 100 — villkor 2 OK. Men Vete och Råg har precis korsat varandra runt 1927–1930 och ligger nästan ihop (båda kring 250) — skillnaden är långt under 100 tusental ha. Villkor 3 fallerar. Inte B.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Checka 1940 (C)",
-    "text": "Vid 1940: Foderväxter-linjen ligger på cirka 1 700 tusental ha — ÖVER 1 500 ✓. Övrig spannmål-linjen ligger på cirka 1 050–1 100 — knappt ÖVER 1 000 ✓. Vete-linjen ligger på cirka 400 och Råg-linjen på cirka 300 — skillnad cirka 100 (knappt över). Alla tre villkor klaras precis. Detta är facits 1940.",
+    "text": "Vid 1940: Foderväxter ligger på cirka 1 700 — ÖVER 1 500 ✓. Övrig spannmål ligger på cirka 1 050 — ÖVER 1 000 ✓. Vete ligger på cirka 330 och Råg har fallit till cirka 200 — skillnaden är cirka 130, alltså ÖVER 100 ✓. Alla tre villkor är uppfyllda samtidigt. 1940 är svaret.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Checka 1950 (D) — för att utesluta",
-    "text": "Vid 1950: Foderväxter-linjen är på toppen, runt 1 750 — klart över 1 500 ✓. Vete cirka 400, Råg fallit till cirka 100, skillnad ≈ 300 — klart över 100 ✓. MEN Övrig spannmål-linjen har fallit till cirka 800–900 tusental ha — UNDER 1 000. Villkor 2 misslyckas. Inte D.",
+    "text": "Vid 1950 är Foderväxter uppe kring 1 800 (toppen ca 1 840 nås strax före 1950) — villkor 1 klart ✓. Vete cirka 330 mot Råg cirka 130 — skillnad cirka 200, villkor 3 ✓. MEN Övrig spannmål har fallit till cirka 900–950 — UNDER 1 000. Villkor 2 fallerar. Inte D.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Vad betyder 'avses' i frågan?",
-    "text": "Frågan formulerar villkoren som tre påståenden om en åkerarealsanvändning, och söker det år där alla tre stämmer samtidigt. Det är ett klassiskt 'lås upp året med en uppsättning ledtrådar'-pussel. Bara en av A/B/C/D ska göra alla tre villkor sanna — och facit fastslår C.",
+    "text": "Frågan formulerar tre påståenden om åkerarealens användning och söker det år där alla tre stämmer samtidigt — ett 'lås upp året med en uppsättning ledtrådar'-pussel. Exakt ett av alternativen A–D gör alla tre villkor sanna, och genomgången ovan visar att det är 1940.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Sanity-check Övrig spannmål-villkoret",
-    "text": "Övrig spannmål-linjen toppar runt 1900 (där den ligger på cirka 1 250) och faller stadigt till cirka 800 vid 1955. Den korsar y = 1 000 någonstans omkring 1945. Det betyder att i 1940 ligger den knappt över 1 000, och i 1950 har den redan fallit under. Just denna trend gör 1940 till det enda årtal bland alternativen som klarar villkor 2.",
+    "text": "Övrig spannmål-kurvan ligger på en platå kring 1 200–1 250 från cirka 1905 till mitten av 1920-talet och faller sedan stadigt. Vid 1930 är den kvar kring 1 100, vid 1940 knappt över 1 000, och vid 1950 nere kring 900–950. Den korsar alltså 1 000-linjen mellan 1940 och 1950 — det är just denna nedgång som gör att 1940 klarar villkor 2 men inte 1950.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Sanity-check Vete-Råg-skillnaden",
-    "text": "Vete och Råg korsar varandra någonstans 1925–1930. Efter korsningen STIGER Vete och FALLER Råg, så skillnaden Vete − Råg växer med tiden. Vid 1940 är skillnaden precis tillräcklig (cirka 100). Vid 1950 är den klart större (cirka 300). Båda 1940 och 1950 uppfyller villkor 3, så det är inte detta villkor som avgör — det är Foderväxter (villkor 1) och Övrig spannmål (villkor 2) tillsammans som låser facit till 1940.",
+    "text": "Vete och Råg korsar varandra runt 1927–1930. Efter korsningen stiger Vete och faller Råg, så skillnaden Vete − Råg växer med tiden: nära noll vid 1930, cirka 130 vid 1940 och cirka 200 vid 1950. Det är alltså villkor 3 som fäller både 1920 (omvänt) och 1930 (för liten skillnad), medan det är Övrig spannmål (villkor 2) som fäller 1950 — tillsammans låser villkoren svaret till 1940.",
     "tier": "detail"
    },
    {
     "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är C (1940). Insikten i en mening: i AND-frågor med tre samtidiga villkor räcker det med ETT misslyckat villkor för att utesluta ett år — men du behöver kolla alla tre villkor för det år som överlever, för att inte luras av en stark match på två av tre.",
+    "title": "Slutsats",
+    "text": "Svaret är C (1940). Insikten i en mening: i AND-frågor med flera samtidiga villkor räcker ETT missat villkor för att utesluta ett år — men olika år kan fällas av OLIKA villkor (här: 1920 och 1930 av Vete/Råg, 1950 av Övrig spannmål), så du måste checka alla tre för varje kandidat i stället för att återanvända samma uteslutningsgrund.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'vilket år matchar villkor X, Y, Z?'-frågor på linjediagram: omvandla varje villkor till en y-axeltröskel eller en kurvjämförelse, gå genom årtalsalternativen i tur och ordning, och elimera så snart ett villkor missar. Triggern: 'vilket år/kategori uppfyller följande påståenden' → trevillkors-checklista med skarp tröskel-läsning mot gridlinjerna."
+  "technique": "DTK-strategi för 'vilket år matchar villkor X, Y, Z?'-frågor på linjediagram: omvandla varje villkor till en y-axeltröskel eller en kurvjämförelse, gå igenom årtalsalternativen i tur och ordning, och eliminera så snart ett villkor missar. Triggern: 'vilket år uppfyller följande påståenden' → trevillkors-checklista med skarp tröskelläsning mot gridlinjerna."
  },
  "host-2017-kvant1-DTK-034": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Vete-segmentet 50 000 hektar mindre känns trovärdigt — Vete är en liten andel i skogs- och dalbygderna både 1919 och 1951, och ögat kan lätt rapportera 'lite mindre' utan att kvantifiera. 50 000 är en mild förändring som inte sticker ut.",
-    "why_wrong": "Som steg 6 visar är Vete-segmentet i skogs- och dalbygdernas 1919-stapel mycket smalt — kanske 50–100 tusental ha — och i 1951-staplen är det fortfarande smalt, eventuellt en aning STÖRRE inte mindre. Riktningen i påstående A stämmer inte säkert. Facit fastslår B (Råg − 100 000 hektar) som det entydigt korrekta påståendet."
+    "why_tempting": "Vete-segmentet är litet i skogs- och dalbygderna, och '50 000 hektar mindre' är den mildaste förändringen bland alternativen — ögat rapporterar gärna 'lite mindre' om ett smalt segment utan att faktiskt mäta det.",
+    "why_wrong": "Det helsvarta Vete-segmentet är bara några tiotal tusental ha brett i BÅDA staplarna och är snarast oförändrat eller aningen bredare 1951 — inte 50 000 ha smalare. Råg-segmentet (horisontella streck) däremot krymper med ca 100 tusental ha: B."
    },
    {
     "letter": "C",
-    "why_tempting": "Övrig spannmål +100 000 hektar är frestande för att Övrig spannmål är en stor kategori i hela diagrammet. Det är lätt att ha en magkänsla av 'lite mer än förr' utan att mäta.",
-    "why_wrong": "I skogs- och dalbygdernas 1919-stapel är Övrig spannmål-segmentet redan brett. I 1951-stapeln är det INTE påtagligt bredare, snarare ungefär lika brett eller smalare. Som steg 7 detaljerar håller varken riktningen eller storleken — Övrig spannmål ökar INTE med 100 000 ha. Facit fastslår B."
+    "why_tempting": "Övrig spannmål är ett av de bredaste segmenten i stapeln, och det är lätt att ha en magkänsla av 'mer spannmål än förr' utan att jämföra bredderna mot tick-värdena.",
+    "why_wrong": "Det diagonalstreckade Övrig spannmål-segmentet är ungefär lika brett eller något SMALARE 1951 än 1919 — figuren visar ingen ökning alls, än mindre +100 000 ha. Fel riktning. Den gröda som ändras med 100 tusental ha är Råg, som MINSKAR: B."
    },
    {
     "letter": "D",
-    "why_tempting": "Foderväxter −125 000 hektar lockar för att det MÅSTE vara minskning i skogs-och-dalbygder — annat skulle ju strida mot hela landets trend, va? Det är en heuristisk gissning, inte en avläsning.",
-    "why_wrong": "Tvärtemot heuristiken har Foderväxter ÖKAT över hela perioden 1919→1951, både nationellt (övre linjediagrammet) och i skogs- och dalbygderna specifikt. Det visuella beviset i staplarna är att foderväxts-segmentet är BREDARE i 1951 än i 1919. Påstående D har fel riktning. Facit fastslår B."
+    "why_tempting": "'Allt gammalt jordbruk krympte väl på 1900-talet' — en heuristisk gissning som gör en minskning för Foderväxter trovärdig, särskilt om man inte lokaliserar segmentet i figuren.",
+    "why_wrong": "Foderväxts-segmentet (grovt kryssmönster) är tydligt BREDARE i 1951-stapeln än i 1919-stapeln, och det övre linjediagrammet visar samma stigande rikstrend (ca 1 450 → ca 1 700 tusental ha). Foderväxter ÖKADE — D har fel riktning."
    }
   ],
   "framework_id": "DTK-TACTIC-005",
-  "pitfall": "Den klassiska DTK-fällan här är att jämföra hela staplarna i stället för enskilda segment, eller att gissa riktning från ett 'allmänt intryck' av 1900-talets jordbruksutveckling. Botemedlet: för varje påstående A–D, peka separat på det namngivna segmentet i 1919-stapeln och i 1951-stapeln, jämför segmentbredden mot x-axelns tick-värden (0, 250, 500, …), och först sedan bedöm riktning + storlek.",
+  "pitfall": "Den klassiska DTK-fällan här är dubbel: dels att jämföra hela staplarna i stället för enskilda segment, dels att para ihop fel mönster med fel gröda (Vete är det HELSVARTA segmentet och Råg det HORISONTELLT streckade — blandar du ihop mönstren läser du fel segment). Botemedlet: lås varje grödas mönster i legenden först, peka sedan ut exakt det segmentet i 1919- och 1951-stapeln och jämför bredden mot tick-värdena 0, 250, 500, … innan du bedömer riktning och storlek.",
   "pregrade_tactic": {
-   "handle": "Segment-i-segment-jämförelse",
-   "move": "För varje påstående A–D: hitta det namngivna segmentet (Vete/Råg/Övrig spannmål/Foderväxter) i skogs- och dalbygdernas 1919-stapel och 1951-stapel, jämför segmentbredden mot tick-värdena 0, 250, 500, 750 osv, och granska om både riktning och storlek matchar påståendet."
+   "handle": "Segment-för-segment mot legenden",
+   "move": "För varje påstående A–D: slå upp grödans mönster i legenden (Vete = helsvart, Råg = horisontella streck, Övrig spannmål = diagonalt, Foderväxter = grovt kryss), hitta det segmentet i skogs- och dalbygdernas 1919- och 1951-stapel, mät bredden mot tick-värdena 0, 250, 500 … och kontrollera att BÅDE riktning och storlek matchar påståendet."
   },
-  "solution_path": "Facit fastslår B: 'Råg upptog 100 000 hektar mindre åkerjord.' I det undre stapeldiagrammet är skogs- och dalbygdernas 1919-stapel och 1951-stapel den ANDRA tripletten. Råg-segmentet är tydligt urskiljbart från legenden (vertikalstrimmig). I 1919-stapeln tar Råg-segmentet upp cirka 200–250 tusental ha; i 1951-stapeln har det krympt till cirka 100–150 tusental ha. Skillnaden är cirka 100 tusental ha = 100 000 hektar mindre — vilket exakt matchar påstående B.",
+  "solution_path": "I det undre stapeldiagrammet är Södra och mellersta Sveriges skogs- och dalbygder den MELLERSTA tripletten av staplar (1919 överst, 1932 i mitten, 1951 underst). Enligt legenden är Råg segmentet med HORISONTELLA streck, direkt efter det helsvarta Vete-segmentet längst till vänster. I 1919-stapeln slutar Råg-segmentet vid ungefär 150 tusental ha; i 1951-stapeln är det hopkrympt till bara cirka 40–50 tusental ha. Differensen är alltså ungefär 100 tusental ha = 100 000 hektar mindre — exakt vad påstående B säger. Kontroll av de övriga: Vete (svart) är litet i båda åren och minskar inte med 50 000 ha (A fel), Övrig spannmål (diagonalstreckat) krymper snarast något och ökar definitivt inte med 100 000 ha (C fel riktning), och Foderväxter (grovt kryssmönster) blir BREDARE 1951 än 1919, så D har fel riktning. Svaret är B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilket av påståendena A–D beskriver bäst förändringen i skogs- och dalbygdernas åkeranvändning från 1919 till 1951? Varje påstående namnger EN gröda, EN riktning (mer/mindre) och EN storlek (50 000 / 100 000 / 100 000 / 125 000 hektar). Facit fastslår B (Råg upptog 100 000 hektar MINDRE åkerjord).",
+    "text": "Frågan: vilket av påståendena A–D beskriver bäst förändringen i skogs- och dalbygdernas åkeranvändning från 1919 till 1951? Varje påstående namnger EN gröda, EN riktning (mer/mindre) och EN storlek (50 000 / 100 000 / 100 000 / 125 000 hektar). Alla tre delar måste stämma med diagrammet.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i det undre stapeldiagrammet",
-    "text": "Det undre diagrammet heter 'Åkerarealens användning i olika regioner i Sverige 1919, 1932 och 1951'. Tre regioner i tur och ordning uppifrån: (1) Södra och mellersta Sveriges slättbygder, (2) Södra och mellersta Sveriges skogs- och dalbygder, (3) Norra Sverige. Inom varje region finns tre staplar: 1919, 1932, 1951. X-axeln har printade tick-värden 0, 250, 500, …, 2 250 tusental ha. Varje stapel är staplad i grödesegment enligt legenden.",
+    "text": "Det undre diagrammet heter 'Åkerarealens användning i olika regioner i Sverige 1919, 1932 och 1951'. Tre regioner uppifrån och ned: (1) Södra och mellersta Sveriges slättbygder, (2) Södra och mellersta Sveriges skogs- och dalbygder, (3) Norra Sverige. Varje region har tre liggande staplar: 1919, 1932, 1951. X-axeln har tick-värden 0, 250, 500, …, 2 250 tusental ha, och varje stapel är uppdelad i grödesegment enligt legenden längst ned.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Hitta rätt region — skogs- och dalbygder",
-    "text": "Skogsoch dalbygderna är den MELLERSTA tripletten (3 staplar). Inom denna triplet är 1919-stapeln den ÖVERSTA, 1932-staplen den mittersta, och 1951-stapeln den NEDERSTA. Frågan jämför 1919-stapeln med 1951-stapeln — alltså den översta och den nedersta i tripletten.",
+    "text": "Skogs- och dalbygderna är den MELLERSTA tripletten. Inom tripletten är 1919-stapeln den översta och 1951-stapeln den nedersta (årtalen står tryckta till vänster om varje stapel). Frågan jämför alltså triplettens översta stapel med dess nedersta.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Läs legenden för att hitta rätt segmentmönster",
-    "text": "Legenden listar åtta kategorier: Vete (horisontellt streckad svart), Råg (vertikalstrimmig), Övrig spannmål (mörkare mönster), Potatis, Rotfrukter, Foderväxter (rutnät), Övriga växtslag, Träda m.m. Lås in mönstret för Råg i legenden innan du går till staplarna.",
+    "title": "Läs legenden — lås Rågs mönster",
+    "text": "Legenden längst ned listar åtta kategorier från vänster till höger: Vete (helsvart), Råg (horisontella streck), Övrig spannmål (diagonala streck), Potatis (tätt kryssmönster), Rotfrukter (prickigt), Foderväxter (grovt kryssmönster), Övriga växtslag (diagonala streck åt andra hållet), Träda m.m. (vitt). Segmenten ligger i samma ordning i varje stapel: svart Vete längst till vänster, sedan Råg med horisontella streck. Lås in Rågs mönster INNAN du går till staplarna.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Total åkerareal i skogs- och dalbygder 1919 vs 1951",
-    "text": "Totalstapeln 1919 sträcker sig till cirka 1 100 tusental ha. Totalstapeln 1951 sträcker sig till cirka 1 050–1 100 tusental ha. Totalen har alltså inte förändrats nämnvärt — det är de INRE segmenten som har omfördelats. Den observationen gör det viktigt att fokusera på vart enskilt segment.",
+    "title": "Total åkerareal 1919 vs 1951",
+    "text": "Skogs- och dalbygdernas totalstapel 1919 når ungefär 1 150–1 200 tusental ha, 1951-stapeln ungefär 1 050–1 100. Totalen har alltså bara minskat måttligt — det är de INRE segmenten som omfördelats. Därför måste varje påstående testas segment för segment, inte mot helhetsintrycket.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Granska A: Vete",
-    "text": "Vete-segmentet är smalt i båda staplarna — det handlar om en stripe på 50–100 tusental ha i vardera. Vid noggrann visuell jämförelse är 1951-Vete-segmentet snarast SAMMA eller LITE BREDARE än 1919-Vete-segmentet, inte 50 000 ha mindre. Riktningen i A är inte robust. Inte A.",
+    "text": "Vete är det helsvarta segmentet längst till vänster. I skogs- och dalbygderna är det mycket smalt både 1919 och 1951 — bara några tiotal tusental ha vardera — och det är snarast oförändrat eller marginellt bredare 1951. En minskning med 50 000 ha syns inte i figuren. Inte A.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Granska B: Råg",
-    "text": "Råg-segmentet i 1919-stapeln (skogs- och dalbygder) sträcker sig över ungefär 200–250 tusental ha. I 1951-stapeln har det tydligt krympt — segmentet ser ut att vara ungefär 100–150 tusental ha. Skillnaden ≈ 100 tusental ha = 100 000 hektar mindre. Riktning (minskning) ✓, storlek (100 000) ✓. Detta är facits B.",
+    "text": "Råg-segmentet (horisontella streck) i 1919-stapeln sträcker sig från det smala svarta Vete-segmentet ut till ungefär 150 tusental ha. I 1951-stapeln är samma segment hopkrympt till bara cirka 40–50 tusental ha. Differensen är ungefär 100 tusental ha = 100 000 hektar mindre. Riktning (minskning) stämmer och storlek (100 000) stämmer. B håller.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Granska C: Övrig spannmål",
-    "text": "Övrig spannmål är ett brett segment i 1919-stapeln. I 1951-stapeln är det inte ÖKAT med 100 000 ha — snarare ungefär oförändrat eller en aning smalare. Påståendet C kräver +100 000 ha — det stämmer inte med visuell projicering mot tick-värdena. Inte C.",
+    "text": "Övrig spannmål (diagonala streck) är det bredaste segmentet i vänsterhalvan av stapeln, i storleksordningen 400–450 tusental ha 1919. I 1951-stapeln är det ungefär lika brett eller något SMALARE — inte 100 000 ha bredare. C kräver en ökning som figuren inte visar. Inte C.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Granska D: Foderväxter",
-    "text": "Foderväxts-segmentet ÖKAR från 1919 till 1951 (konsistent med det övre linjediagrammets stigande Foderväxter-trend). Påståendet D säger att Foderväxter MINSKADE med 125 000 ha — fel RIKTNING. Inte D.",
+    "text": "Foderväxter (grovt kryssmönster) är det stora segmentet i stapelns högra halva. Jämför 1919 och 1951: segmentet är tydligt BREDARE 1951 (grovt 550–600 tusental ha) än 1919 (grovt 400–450). Foderväxter har alltså ÖKAT, medan D påstår en minskning med 125 000 ha — fel riktning. Inte D.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Sanity-check mot övre linjediagrammet",
-    "text": "Det övre rikslinjediagrammet bekräftar samma trender hela landet 1919→1951: Foderväxter STIGER (från ~1 100 till ~1 800), Råg FALLER (från ~450 till ~150), Övrig spannmål faller lång- samt, Vete växer marginellt. Skogsoch dalbygdernas mönster speglar dessa nationella trender — så Råg-minskningen i B är konsistent och Foderväxter-minskningen i D är inkonsistent.",
+    "text": "Rikslinjediagrammet överst bekräftar trenderna 1919→1951 för hela landet: Foderväxter STIGER (från ca 1 450 mot ca 1 700 tusental ha), Råg FALLER brant (från ca 400 till ca 150), Övrig spannmål sjunker långsamt och Vete ökar. Skogs- och dalbygdernas staplar speglar samma mönster — Råg-minskningen i B är konsistent, Foderväxt-minskningen i D är inkonsistent.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Beräkning av Råg-skillnaden i absoluta tal",
-    "text": "Skogsoch dalbygder 1919: Råg ≈ 200–250 tusental ha. 1951: Råg ≈ 100–150 tusental ha. Differens ≈ 100 tusental ha = 100 000 hektar. Vid 250-tick-skala är en visuell osäkerhet på ±50 tusental ha rimlig — men 100-talet är tydligt påvisbart som rätt storleksordning.",
-    "tier": "detail"
-   },
-   {
-    "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är B ('Råg upptog 100 000 hektar mindre åkerjord'). Insikten i en mening: i förändringsfrågor på staplade diagram, kolla varje påståendes namngivna SEGMENT separat — både riktning och storlek måste hålla — istället för att gissa från helhetsintryck eller heuristisk historiekunskap.",
+    "title": "Slutsats",
+    "text": "Råg i skogs- och dalbygderna: ca 150 tusental ha 1919 → ca 40–50 tusental ha 1951, en minskning på ungefär 100 tusental ha = 100 000 hektar. Svaret är B. Insikten i en mening: i förändringsfrågor på staplade diagram testar du varje påståendes namngivna SEGMENT separat mot legendens mönster och tick-värdena — både riktning och storlek måste hålla, helhetsintryck och historie-magkänsla räcker inte.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'beskriv förändringen mellan år X och år Y'-frågor på staplade diagram: för varje påstående isolera (a) den namngivna kategorin via legenden, (b) den specifika regionens två relevanta år, mät segmentbredden i båda och beräkna differensen mot tick-värdena. Triggern: 'beskriv bäst förändringen' → A/B/C/D var och en testas mot sitt namngivna segment, riktning ✓ + storlek ✓."
+  "technique": "DTK-strategi för \"beskriv förändringen mellan år X och år Y\" på staplade liggande stapeldiagram: för varje påstående, isolera (a) den namngivna grödan via legendens mönster, (b) rätt regions två årsstaplar, mät segmentets bredd mot x-axelns tick-värden i båda åren och beräkna differensen. Triggern: \"beskriver bäst hur … förändrats\" → testa A/B/C/D var för sig, både riktning OCH storlek måste stämma."
  },
  "host-2017-kvant1-DTK-035": {
   "_meta": {
@@ -10919,109 +10913,109 @@
  },
  "host-2017-kvant1-DTK-036": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Administratörer/företagsledare och bank/ekonomi-tjänstemän är båda 'skrivbordsyrken' (mellanskikts- och ledande-) — det är intuitivt att två 'liknande' grupper har lika många arbetande, så det är frestande att svara A utan att granska bubblornas relativa areor.",
-    "why_wrong": "Bubblan för administratörer/företagsledare är synligt STÖRRE än bank/ekonomi-tjänstemän-bubblan på chartet. Som steg 5 påminner är det BUBBELSTORLEK, inte yrkeskategori-likhet, som avgör likhet i antal arbetande. Facit fastslår C — handlare/inköpare och lärare har klart mer jämnstora bubblor."
+    "why_tempting": "Administratörer/företagsledare och bank/ekonomitjänstemän är båda 'kontorsyrken', och deras cirklar är dessutom av liknande medelstorlek — detta är det näst jämnaste paret i diagrammet, så en snabb blick kan döma dem som lika.",
+    "why_wrong": "Vid noggrann parjämförelse är bank/ekonomitjänstemän-cirkeln den STÖRRE av de två — administratörer/företagsledare-cirkeln är märkbart mindre. Handlare/inköpare och lärare (C) är ett ännu jämnare par, och frågan kräver det par som faktiskt är lika."
    },
    {
     "letter": "B",
-    "why_tempting": "Byggarbetare och förrådsarbetare är båda i kvadranten MANLIGA ARBETARYRKEN och båda är ofta tänkta som 'arbetargrupper med liknande storlek'. Det lockar att svara B på stereotypisk basis.",
-    "why_wrong": "Byggarbetare-bubblan på chartet är PÅTAGLIGT STÖRRE än förrådsarbetare-bubblan — bygg är en av de större bubblorna i sin kvadrant, medan förrådsarbetare är en av de mindre. Som steg 6 betonar gäller VISUELL ytemätning, inte sektorlikhet. Facit fastslår C."
+    "why_tempting": "Byggarbetare och förrådsarbetare är båda klassiska manuella arbetaryrken uppe till vänster i diagrammet — det lockar att para ihop dem på stereotypisk 'samma sorts jobb'-basis utan att mäta cirklarna.",
+    "why_wrong": "Bygg-arb-cirkeln är en av diagrammets STÖRRE bubblor medan förrådsarb-cirkeln är en av de MINDRE — storleksskillnaden är påtaglig vid direkt jämförelse. Yrkeslikhet säger inget om antal arbetande."
    },
    {
     "letter": "D",
-    "why_tempting": "Köksbiträden och städare är båda i den nedre vänstra kvadranten (KVINNLIGA BITRÄDESYRKEN) och kan visuellt ge intryck av att vara ungefär lika stora — speciellt om man tittar snabbt. Båda är dessutom 'traditionellt kvinnodominerade serviceyrken'.",
-    "why_wrong": "Vid noggrann visuell jämförelse är städare-bubblan synligt STÖRRE än köksbiträden-bubblan. Som steg 7 visar är handlare/inköpare och lärare betydligt jämnstora — bubblorna ser nästan identiska ut i area. Facit fastslår C, inte D."
+    "why_tempting": "Köksbiträden och städare ligger båda nere till vänster i KVINNLIGA BITRÄDESYRKEN, delvis överlappande — vid en snabb blick kan de smälta ihop till 'två likadana serviceyrken'.",
+    "why_wrong": "Städare-cirkeln är KLART större än den lilla köksbiträden-cirkeln — skillnaden syns direkt när man jämför dem sida vid sida. Handlare/inköpare och lärare (C) är däremot i princip identiska i diameter."
    }
   ],
   "framework_id": null,
-  "pitfall": "Den klassiska fällan i bubbeldiagrams 'lika storlek'-frågor är att gruppera efter SOCIALT/SEMANTISKT lika yrken ('båda är arbetaryrken') i stället för att VISUELLT MÄTA bubbel-AREORNA mot varandra. Botemedlet: bortse helt från kvadrantetikett, fokus på själva cirklarna. Lägg dem mentalt bredvid varandra och granska om de har samma diameter.",
+  "pitfall": "Den klassiska fällan i bubbeldiagrams 'lika storlek'-frågor är att gruppera efter SOCIALT/SEMANTISKT lika yrken ('båda är arbetaryrken', 'båda är kontorsyrken') i stället för att VISUELLT jämföra cirkel-AREORNA. Botemedlet: bortse helt från kvadrantetikett och yrkestyp, fokusera på själva cirklarna — lägg dem mentalt bredvid varandra och granska om de har samma diameter.",
   "pregrade_tactic": {
-   "handle": "Bubbel-area-pardvis-jämförelse",
-   "move": "För varje svarsalternativ A–D, hitta de två namngivna bubblorna på chartet och jämför deras diameter (eller area) visuellt. Alternativet där bubblorna ser MEST identiska ut i storlek är rätt — facit fastslår C."
+   "handle": "Bubbel-area-parvis-jämförelse",
+   "move": "För varje svarsalternativ A–D: hitta de två namngivna cirklarna i diagrammet och jämför deras diameter visuellt, som om du lade dem sida vid sida. Sålla bort par med synlig storleksskillnad; alternativet där cirklarna ser mest identiska ut är svaret."
   },
-  "solution_path": "Facit fastslår C (Handlare, inköpare respektive lärare). I bubbeldiagrammet 'Fysiskt slit- samt arbete 1986/87' representerar bubbelytan antalet arbetande i respektive yrkesgrupp. Handlare/inköpare-bubblan sitter i LEDANDE SKRIVBORDSYRKEN-kvadranten; lärare-bubblan sitter i MELLANSKIKT SKRIVBORDSYRKEN-kvadranten. Trots olika kvadranter har de SYNLIGT samma storlek — det är denna visuella ekvivalens som svaret bygger på.",
+  "solution_path": "Textnoten under diagrammet 'Fysiskt slitsamt arbete 1986/87' säger att cirkelns AREA är proportionell mot antalet arbetande i yrkesgruppen — 'lika många arbetande' betyder alltså 'lika stora cirklar'. Jämför paren: B faller direkt (bygg-arb är en av diagrammets större bubblor, förrådsarb en av de mindre), D faller (städare-cirkeln är klart större än köksbiträden), och i A är bank/ekonomitjänstemän-cirkeln något större än administratörer/företagsledare-cirkeln. Kvar är C: handlare/inköpare (i LEDANDE SKRIVBORDSYRKEN, kring 25–30 % på slitsamt-axeln) och lärare (i MELLANSKIKT SKRIVBORDSYRKEN, kring 33 %) har i princip identisk diameter — det jämnaste paret av de fyra. Svaret är C.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilket av A–D anger TVÅ yrkesgrupper som hade lika många arbetande? Svarsalternativen parar ihop yrkesgrupper på olika sätt. Facit fastslår C (Handlare/inköpare respektive lärare). Strategin: jämför bubblornas YTOR parvis enligt diagramförklaringen.",
+    "text": "Frågan: vilket av A–D anger TVÅ yrkesgrupper som bestod av lika många arbetande? Varje alternativ parar ihop två yrkesgrupper. Strategin: jämför bubblornas AREOR parvis — det par vars cirklar är mest lika i storlek är svaret.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Vad betyder 'bubblans yta' i diagrammet?",
-    "text": "Diagrammet har en TEXTNOTERING i förklarande prosa under chartet: 'Cirkelns area är proportionell mot antalet arbetande inom yrkesgruppen 1986/87'. Det betyder att TVÅ JÄMNSTORA BUBBLOR = TVÅ YRKESGRUPPER MED UNGEFÄR LIKA MÅNGA ARBETANDE. Det är ren visuell ytemätning som svaret bygger på, inte position på axlarna.",
+    "title": "Vad betyder bubblans storlek?",
+    "text": "Textnoten under diagrammet säger: 'Cirkelns area är proportionell mot antalet arbetande inom yrkesgruppen 1986/87'. Alltså: TVÅ JÄMNSTORA CIRKLAR = TVÅ YRKESGRUPPER MED UNGEFÄR LIKA MÅNGA ARBETANDE. Det är ren visuell ytjämförelse frågan bygger på — inte position på axlarna.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Granska A: administratörer/företagsledare vs bank/ekonomi-tjänstemän",
-    "text": "Administratörer/företagsledare-bubblan sitter i LEDANDE SKRIVBORDSYRKEN (höger om x = 60, ovanför 50/50-linjen). Bank/ekonomi-tjänstemän-bubblan sitter i MELLANSKIKT SKRIVBORDSYRKEN (höger om x = 50, under 50/50-linjen). Vid visuell jämförelse är administratörer/företagsledare-bubblan SYNLIGT STÖRRE än bank/ekonomi-tjänstemän-bubblan. Inte A.",
-    "tier": "essential"
+    "title": "Orientera dig i diagrammet",
+    "text": "X-axeln (andel som anser arbetet fysiskt slitsamt) löper OMVÄNT: ca 90 % längst till vänster, 0 % längst till höger. Y-axeln är könsfördelning (80/20 högt upp, 20/80 långt ner). Fyra zoner är etiketterade: MANLIGA ARBETARYRKEN (uppe vänster), LEDANDE SKRIVBORDSYRKEN (uppe höger), KVINNLIGA BITRÄDESYRKEN (nere vänster), MELLANSKIKT SKRIVBORDSYRKEN (nere höger). Positionen hjälper dig bara att HITTA bubblorna — storleken avgör svaret.",
+    "tier": "detail"
    },
    {
     "n": 4,
-    "title": "Granska B: byggarbetare vs förrådsarbetare",
-    "text": "Byggarbetare-bubblan sitter i MANLIGA ARBETARYRKEN (toppvänster), högt slit- samt-värde, kraftigt mansdominerat. Förrådsarbetare-bubblan sitter också i MANLIGA ARBETARYRKEN-zonen men lägre på slit- samt-axeln. Byggarbetare-bubblan är synligt STÖRRE än förrådsarbetare-bubblan vid visuell parjämförelse. Inte B.",
+    "title": "Granska A: administratörer/företagsledare vs bank/ekonomitjänstemän",
+    "text": "Administratörer/företagsledare-cirkeln ligger längst till höger (kring 10 % på slitsamt-axeln), mellan 80/20 och 50/50 — i LEDANDE SKRIVBORDSYRKEN. Bank/ekonomitjänstemän ligger kring 55 %, under 50/50, i MELLANSKIKT SKRIVBORDSYRKEN. Vid parjämförelse är bank/ekonomi-cirkeln den STÖRRE av de två — skillnaden är liten men synlig. Ett nära par, men inte det jämnaste. Notera och jämför vidare.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Granska C: handlare/inköpare vs lärare",
-    "text": "Handlare/inköpare-bubblan sitter i LEDANDE SKRIVBORDSYRKEN (kring x = 60–70 %, ovanför 50/50). Lärare-bubblan sitter i MELLANSKIKT SKRIVBORDSYRKEN (kring x = 35–40 %, under 50/50). Vid visuell parjämförelse är dessa två bubblor MÄRKBART JÄMNSTORA — i princip identisk diameter. Detta är facits C.",
+    "title": "Granska B: byggarbetare vs förrådsarbetare",
+    "text": "Bygg-arb-cirkeln ligger högst uppe till vänster (MANLIGA ARBETARYRKEN) och är en av diagrammets STÖRRE bubblor. Förrådsarb-cirkeln, en bit nedanför vid etiketten BLANDADE UNDERORDNADE YRKEN, är en av de MINDRE. Storleksskillnaden är påtaglig. Inte B.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Granska D: köksbiträden vs städare",
-    "text": "Köksbiträden-bubblan och städare-bubblan sitter båda i KVINNLIGA BITRÄDESYRKEN (bottenvänster). Vid noggrann parjämförelse är städare-bubblan en aning STÖRRE än köksbiträden-bubblan. De är nära varandra storleksmässigt — men inte SÅ jämnstora som handlare/inköpare och lärare. Inte D.",
+    "title": "Granska C: handlare/inköpare vs lärare",
+    "text": "Handlare/inköpare-cirkeln sitter uppe till höger (LEDANDE SKRIVBORDSYRKEN), kring 25–30 % på slitsamt-axeln, strax under 80/20-nivån. Lärare-cirkeln sitter nere till höger (MELLANSKIKT SKRIVBORDSYRKEN), kring 33 %, mellan 50/50 och 20/80. Vid parjämförelse har de i princip IDENTISK diameter — lägger du dem mentalt sida vid sida syns ingen tydlig skillnad. Starkaste kandidaten hittills.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Konsolidera: vilka två är mest lika i storlek?",
-    "text": "Av alternativen A–D är paret med MEST IDENTISK bubbelyta entydigt C: handlare/inköpare och lärare. De två andra paren i alternativen visar märkbar storleksskillnad (A: tydlig, B: tydlig, D: liten men synlig). Visuell parjämförelse är det enda verktyget vi har — och chartet ger oss en tydlig vinnare.",
+    "title": "Granska D: köksbiträden vs städare",
+    "text": "Båda ligger nere till vänster i KVINNLIGA BITRÄDESYRKEN, delvis överlappande. Men städare-cirkeln är KLART större än den lilla köksbiträden-cirkeln — skillnaden syns direkt. Inte D.",
     "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Vad betyder 'lika många arbetande' i absoluta tal?",
-    "text": "Diagrammet ger oss ingen absolut talsiffra — bara bubbelytor. Men eftersom area-proportionalitet gäller, betyder två lika stora bubblor två yrkesgrupper med ungefär samma antal arbetande, exempelvis båda kring 100 000 eller båda kring 150 000 i absoluta tal. Det exakta antalet behöver vi inte veta — bara att de är JÄMSTORA inom bra precision.",
-    "tier": "detail"
+    "title": "Konsolidera: vilket par är jämnast?",
+    "text": "Rangordna paren efter hur lika cirklarna är: B och D visar tydliga skillnader (bygg ≫ förråd; städare > köksbiträden). A är närmare, men bank/ekonomi-cirkeln är synligt större än administratörer-cirkeln. C — handlare/inköpare och lärare — är det enda paret där cirklarna ser likvärdiga ut. Svaret är C.",
+    "tier": "essential"
    },
    {
     "n": 9,
-    "title": "Felställningskontroll: använder vi rätt visuell egenskap?",
-    "text": "Bubbelns YTA (area) — inte dess RADIE eller DIAMETER — är proportionell mot antalet. Det är en subtil distinktion: om bubbla X har dubbla DIAMETERN som bubbla Y, har den FYRA gånger ytan. Men i denna fråga handlar det inte om förhållanden, bara om identitet — så distinktionen är inte avgörande, men värd att hålla i minnet för andra frågor.",
+    "title": "Vad betyder 'lika många arbetande' i absoluta tal?",
+    "text": "Diagrammet ger inga absoluta siffror — bara areor. Men eftersom arean är proportionell mot antalet räcker det att cirklarna är jämnstora för att grupperna ska ha ungefär lika många arbetande. Det exakta antalet behöver vi aldrig veta.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Vanlig fälla: 'samma kvadrant' = 'samma storlek'",
-    "text": "Två bubblor i samma kvadrant (t.ex. båda i MANLIGA ARBETARYRKEN) är INTE automatiskt lika stora. Position avgör könsfördelning och slit- samt-andel; storlek avgör absolut antal. Tre helt olika dimensioner. Frågan handlar enbart om STORLEK — bortse helt från position och kvadrant.",
+    "title": "Area, inte diameter",
+    "text": "Cirkelns AREA — inte radien eller diametern — är proportionell mot antalet. En cirkel med dubbel diameter har FYRA gånger så många arbetande. I den här frågan jämför vi dock bara om två cirklar är LIKA, och lika diameter betyder lika area — så distinktionen fäller inget här, men håll den i minnet för frågor om förhållanden.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Vanlig fälla: stora bubblor i samma område",
-    "text": "Administratörer/företagsledare är en av de större bubblorna i hela chartet — synligt stor. Bank/ekonomi-tjänstemän är medelstor. Det är en VANLIG matchning att para ihop dem (alternativ A) eftersom de båda är 'kontorsyrken med många arbetande', men visuell ytemätning visar att de inte är jämnstora.",
+    "title": "Vanlig fälla: 'samma kvadrant' = 'samma storlek'",
+    "text": "Två bubblor i samma zon (t.ex. båda i KVINNLIGA BITRÄDESYRKEN) är INTE automatiskt lika stora. Position anger könsfördelning och slitsamt-andel; storlek anger antal arbetande — helt olika dimensioner. Notera att rätt svar C parar ihop bubblor från OLIKA zoner: likhet i antal struntar i kvadrantetiketten.",
     "tier": "detail"
    },
    {
     "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är C (Handlare/inköpare respektive lärare). Insikten i en mening: i bubbeldiagrams 'lika många'-frågor bedömer du visuell BUBBELYTA, inte kvadrantetikett — ta varje par i alternativen och lägg mentalt bubblorna sida vid sida för att se vilket par som är mest identiskt i storlek.",
+    "title": "Insikten i en mening",
+    "text": "Svaret är C (handlare/inköpare respektive lärare). Insikten i en mening: i bubbeldiagrams 'lika många'-frågor bedömer du CIRKELAREA, inte yrkeslikhet eller kvadrant — ta varje par i alternativen, lägg cirklarna mentalt sida vid sida, och välj paret som är mest identiskt i storlek.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'samma antal'-frågor i bubbeldiagram: omvandla 'lika många' till 'lika stora bubblor', granska varje pars bubblor visuellt (om möjligt sida vid sida i tanken), välj alternativet med MEST IDENTISK bubbelyta. Triggern: 'två yrkesgrupper med lika många arbetande' → parvis bubbel-area-mätning, ignorera position och kvadrant."
+  "technique": "DTK-strategi för 'samma antal'-frågor i bubbeldiagram: omvandla 'lika många arbetande' till 'lika stora cirklar', granska varje pars bubblor visuellt (lägg dem mentalt sida vid sida), och välj alternativet med MEST identisk cirkelarea. Triggern: 'två yrkesgrupper som bestod av lika många arbetande' → parvis bubbel-area-jämförelse, ignorera position och kvadrantetikett."
  },
  "host-2017-kvant1-DTK-037": {
   "_meta": {
@@ -11419,109 +11413,109 @@
  },
  "host-2017-kvant2-DTK-029": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Salthalten (+ symbol) följer ofta intuitionen att den ökar med djupet (saltvatten är tyngre). Det är frestande att tro att den minskar i en fjärd och ökar i en djupare vattenförekomst.",
-    "why_wrong": "Som steg 5 visar förändras salthalten mycket lite i Trännöfjärden (stabil kring 5–7 ‰ från ytan till botten) och endast måttligt i Sandsänkan. Den uppvisar inte den motsatta trenden mellan de två områdena som frågan kräver. Facit fastslår D — nitrat-kväve har den korrekta motsatta beteendet."
+    "why_tempting": "Salthalten (+) följer intuitionen att saltvatten är tyngre och ökar med djupet — det är lätt att gissa att den beter sig olika i en grund fjärd och en djup sänka.",
+    "why_wrong": "I figuren är +-kurvan i stort sett lodrät i BÅDA områdena: kring 5–6 ‰ i Trännöfjärden och 6–7 ‰ i Sandsänkan, med på sin höjd en svag ökning mot botten. Den minskar inte i Trännöfjärden, så villkoret 'minskade i den ena' faller redan där."
    },
    {
     "letter": "B",
-    "why_tempting": "Halten fosfat-fosfor (△ symbol) varierar något med djupet och man kan tro att den minskar i den ena och ökar i den andra eftersom det är en näringssalts-parameter.",
-    "why_wrong": "Fosfat-fosfor visar samma riktning (lätt ökning med djupet) i båda områdena, inte motsatta trender. Som steg 6 detaljerar är fosfat-fosfor-kurvan ungefär monotont ökande nedåt i båda chartens — den uppfyller inte 'minskar i den ena, ökar i den andra'-villkoret. Facit fastslår D."
+    "why_tempting": "Fosfat-fosfor (△) är en näringsparameter som varierar med djupet, och vid en hastig blick kan de två områdenas kurvor se olika ut eftersom Sandsänkans är brantare.",
+    "why_wrong": "Riktningen är densamma i båda: △ ökar med djupet både i Trännöfjärden (ett par μg/l vid ytan → ca 15–17 vid 10–20 m) och i Sandsänkan (ca 9 → ca 37 vid 40 m). Samma riktning ≠ motsatt riktning."
    },
    {
     "letter": "C",
-    "why_tempting": "Total fosforhalt (▲ symbol) är en sammanslagen näringsparameter och varierar i båda områdena — det kan se ut som om det går olika håll i de två chartens om man bara hastigt jämför.",
-    "why_wrong": "Total-fosfor uppvisar liknande beteende i båda områdena (typiskt ökning mot botten, men mild). Som steg 6 visar är skillnaden inte motsatt — båda områdena visar samma riktning. Facit fastslår D — nitrat-kväve är det enda parametern med entydigt motsatta trender."
+    "why_tempting": "Total-fosfor (▲) är en sammanslagen parameter som varierar i båda områdena — jämför man slarvigt kan de två chartsen se ut att gå åt olika håll.",
+    "why_wrong": "▲-kurvan stiger (svagt i Trännöfjärden, tydligt i Sandsänkan från ca 19 till ca 41 μg/l) — alltså samma riktning i båda områdena, inte motsatt. Endast nitrat-kväve (○) byter riktning mellan områdena."
    }
   ],
   "framework_id": null,
-  "pitfall": "Den klassiska DTK-fällan här är att jämföra fel kurvor (förvisst mellan temperatur, salthalt, fosfat, total-fosfor, nitrat-kväve, total-kväve — sex separata kurvor) eller att inte uppmärksamma att frågan kräver MOTSATT riktning i de två områdena. Botemedlet: gå genom alla sex parametrar systematiskt, kolla riktningen separat i Trännöfjärden och Sandsänkan, och välj den ENDA parametern där riktningarna är motsatta.",
+  "pitfall": "Den klassiska DTK-fällan här är dubbel: dels att jämföra fel kurvor (sex parametrar fördelade på tre chart per område), dels att i högra charten läsa fel av de två x-skalorna — '(övre skala)' i legenden gäller TOTAL-kväve (●, 0–500), medan nitrat-kväve (○) läses mot den undre skalan (0–100). Botemedlet: gå genom alla parametrar systematiskt, lås först vilken kurva som hör till vilken skala, och kolla riktningen separat i Trännöfjärden och Sandsänkan — välj den ENDA parametern där riktningarna är motsatta.",
   "pregrade_tactic": {
    "handle": "Sex-kurvors-riktningskontroll",
-   "move": "För var och en av legendens sex parametrar, titta på Trännöfjärden-chartens kurva (minskar eller ökar nedåt?) och Sandsänkan-chartens kurva (minskar eller ökar nedåt?). Välj den parameter där det är motsatt riktning."
+   "move": "För var och en av legendens sex parametrar: titta på Trännöfjärden-chartens kurva (minskar eller ökar nedåt?) och Sandsänkan-chartens kurva (minskar eller ökar nedåt?). Välj den parameter där riktningarna är motsatta — exakta värden behövs inte."
   },
-  "solution_path": "Facit fastslår D (Halten nitrat-kväve). I diagrammet ovan TRÄNNÖFJÄRDEN visar nitrat-kväve-kurvan (○ symbol, övre skala 0-500) en MINSKNING med ökat djup — från cirka 400+ μg/l vid ytan till lägre värden ner mot 20 m. I diagrammet SANDSÄNKAN visar samma nitrat-kvävekurva en ÖKNING med djupet — från lägre värden vid ytan till högre nedåt. Detta motsatta beteende skiljer nitrat-kväve från alla andra parametrar.",
+  "solution_path": "I diagrammet TRÄNNÖFJÄRDEN (högra charten) visar nitrat-kvävekurvan (○, läses mot den UNDRE skalan 0–100) en MINSKNING med ökat djup: cirka 98 μg/l vid ytan, ner mot cirka 40 μg/l vid 10 m och cirka 20 μg/l vid 20 m. I SANDSÄNKAN visar samma ○-kurva en ÖKNING med djupet: från nästan 0 μg/l vid ytan till cirka 15 μg/l vid 20 m och cirka 35 μg/l vid 40 m. Ingen annan parameter byter riktning mellan områdena: salthalten (+) är i stort sett konstant i båda, fosfat-fosfor (△) och total-fosfor (▲) ökar med djupet i båda, och total-kväve (●, övre skalan 0–500) minskar svagt i Trännöfjärden men är i stort sett konstant i Sandsänkan. Svaret är D (Halten nitrat-kväve).",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilken parameter MINSKADE med djupet i Trännöfjärden men ÖKADE med djupet i Sandsänkan? Svarsalternativen är fyra olika ämnen (salthalt, fosfat-fosfor, total fosforhalt, nitrat-kväve). Facit fastslår D (Halten nitrat-kväve). Strategin: gå genom alternativen och kolla riktningen i båda områdenas chart.",
+    "text": "Frågan: vilken parameter MINSKADE med djupet i Trännöfjärden men ÖKADE med djupet i Sandsänkan? Svarsalternativen är fyra olika ämnen (salthalt, fosfat-fosfor, total fosforhalt, nitrat-kväve). Strategin: gå genom alternativen och kolla riktningen i båda områdenas chart — det räcker med riktningar, exakta värden behövs inte.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i diagramuppställningen",
-    "text": "Sidan heter 'Vattenmiljön i Östergötlands skärgård'. Det finns TVÅ områden (TRÄNNÖFJÄRDEN på övre raden, SANDSÄNKAN på undre). Inom varje område finns TRE chart, alla med y-axel = djup i meter (vänster axel). TRÄNNÖFJÄRDEN går till 20 m djup; SANDSÄNKAN går till 40 m djup. Varje chart har olika x-axelparametrar enligt legenden längst ner.",
+    "text": "Sidan heter 'Vattenmiljön i Östergötlands skärgård'. Det finns TVÅ områden (TRÄNNÖFJÄRDEN överst, SANDSÄNKAN under). Inom varje område finns TRE chart, alla med y-axel = djup i meter. TRÄNNÖFJÄRDEN går till 20 m djup; SANDSÄNKAN går till 40 m. Varje chart har två kurvor enligt legenden längst ner.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Läs legenden",
-    "text": "Legenden har sex symboler: ▽ temperatur (°C), △ Fosfat-fosfor (μg/l), ○ Nitrat-kväve (μg/l, övre skala), + salthalt (‰), ▲ Total-fosfor (μg/l), ● Total-kväve (μg/l). Tre chart per område × två parametrar per chart = sex parametrar. Notera att nitrat-kväve och total-kväve delar samma chart men har olika skalor (övre/undre).",
+    "text": "Legenden har sex symboler: ▽ temperatur (°C) och + salthalt (‰) i vänstra charten; △ Fosfat-fosfor (μg/l) och ▲ Total-fosfor (μg/l) i mittencharten; ○ Nitrat-kväve (μg/l) och ● Total-kväve (μg/l, övre skala) i högra charten. Notera att den högra charten har TVÅ x-skalor: en övre (0–500) och en undre (0–100). Anteckningen '(övre skala)' står vid TOTAL-kväve — alltså läses ● mot 0–500 och ○ (nitrat-kväve) mot den undre 0–100.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Identifiera rätt chart för varje alternativ",
-    "text": "Alternativ A (salthalt, + symbol) finns i CHART 1 (vänster). Alternativ B (fosfat-fosfor, △) i CHART 2 (mitten). Alternativ C (total-fosforhalt, ▲) i CHART 2 (mitten). Alternativ D (nitrat-kväve, ○) i CHART 3 (höger).",
+    "text": "Alternativ A (salthalt, +) finns i CHART 1 (vänster). Alternativ B (fosfat-fosfor, △) och C (total-fosfor, ▲) finns båda i CHART 2 (mitten). Alternativ D (nitrat-kväve, ○) finns i CHART 3 (höger).",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Checka A: salthalt i båda områdena",
-    "text": "TRÄNNÖFJÄRDEN chart 1 (+ symboler): salthalten startar nära 5 ‰ vid ytan, ligger stabilt nedåt mot 20 m. Mycket liten variation. SANDSÄNKAN chart 1: salthalten startar nära 5 ‰ vid ytan, stiger marginellt mot 7 ‰ vid botten. Inte 'minskar i Trännöfjärden' — den är ungefär konstant. Inte A.",
+    "text": "TRÄNNÖFJÄRDEN chart 1 (+): salthalten ligger kring 5–6 ‰ från ytan ner till 20 m — i stort sett konstant, snarast en liten ökning. SANDSÄNKAN chart 1: kring 6–7 ‰ hela vägen ner till 40 m, med marginell ökning mot botten. Salthalten MINSKAR alltså inte i Trännöfjärden — inte A.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Checka B och C: fosfor i båda områdena",
-    "text": "TRÄNNÖFJÄRDEN chart 2 (△ och ▲): båda fosforparametrar visar uppgång med djupet (mot botten). SANDSÄNKAN chart 2: samma — båda fosforparametrar ökar med djupet. Riktningen är samma i båda områdena — inte motsatt. Inte B, inte C.",
+    "text": "TRÄNNÖFJÄRDEN chart 2: fosfat-fosfor (△) går från ett par μg/l vid ytan till cirka 15–17 μg/l vid 10–20 m — ökar med djupet; total-fosfor (▲) ligger kring 24–28 μg/l och stiger svagt. SANDSÄNKAN chart 2: båda fosforkurvorna stiger tydligt mot botten (△ från ca 9 till ca 37, ▲ från ca 19 till ca 41 vid 40 m). Riktningen är alltså SAMMA (ökande) i båda områdena — inte motsatt. Inte B, inte C.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Checka D: nitrat-kväve i båda områdena",
-    "text": "TRÄNNÖFJÄRDEN chart 3 (○ symboler, övre skala 0-500): nitrat-kvävekurvan börjar HÖGT vid ytan (cirka 400-500 μg/l) och MINSKAR till lägre värden nedåt. SANDSÄNKAN chart 3 (○ symboler): nitrat-kvävekurvan börjar LÅGT vid ytan och ÖKAR med djupet. Detta är PRECIS det motsatta mönster frågan letar efter. Facits D.",
+    "text": "TRÄNNÖFJÄRDEN chart 3 (○, undre skalan 0–100): kurvan börjar HÖGT vid ytan (cirka 98 μg/l), faller till cirka 40 μg/l vid 10 m och cirka 20 μg/l vid 20 m — den MINSKAR med djupet. SANDSÄNKAN chart 3 (○): kurvan börjar nära 0 μg/l vid ytan och stiger till cirka 15 μg/l vid 20 m och cirka 35 μg/l vid 40 m — den ÖKAR med djupet. Det är exakt det motsatta mönster frågan efterfrågar: D.",
     "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Vad betyder 'övre skala' i chart 3?",
-    "text": "Legenden specificerar 'Nitrat-kväve (μg/l, övre skala)' — det betyder att nitrat-kväves x-värden läses mot den ÖVRE printade x-axelmarkeringen (0, 100, 200, 300, 400, 500), medan total-kväves x-värden läses mot UNDRE x-axeln (0, 20, 40, 60, 80, 100). Två kurvor i samma chart med olika skalor.",
+    "title": "Vad betyder '(övre skala)' i chart 3?",
+    "text": "Chart 3 har två x-skalor: 0–500 överst och 0–100 underst. Legendens '(övre skala)' står vid TOTAL-kväve (●) — det är alltså ● som läses mot 0–500, medan nitrat-kväve (○) läses mot den undre 0–100. Blandar du ihop dem får du fel storleksordning på värdena — men riktningsavgörandet påverkas inte, eftersom en kurva som lutar åt vänster nedåt gör det oavsett skala.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Varför motsatt beteende?",
-    "text": "I Trännöfjärden är ytvattnet rikt på nitrat-kväve (kanske från ytavrinning eller flod-tillförsel) men förbrukas av plankton ner mot botten. I Sandsänkan kan situationen vara omvänd — nitrat byggs upp i djupare lager genom remineralisering medan ytan är näringsfattig. Frågan testar inte kemin direkt, men det är ett rimligt narrativ för varför parametern beter sig olika.",
+    "text": "Mätningen gjordes i augusti 1985. I Trännöfjärden är ytvattnet rikt på nitrat (t.ex. tillförsel från land) medan halterna sjunker nedåt; i Sandsänkan är ytan näringsfattig (nitratet förbrukat av växtplankton under sommaren) medan nitrat ansamlas i djupare, mörkare lager genom nedbrytning. Frågan testar inte kemin, men det är ett rimligt narrativ för mönstret.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Sanity-check via total-kväve",
-    "text": "Total-kväve (● symbol) i chart 3 visar ÖKNING med djupet i Trännöfjärden och liknande beteende i Sandsänkan — alltså inte motsatt riktning. Det är därför svaret är specifikt 'nitrat-kväve' och inte 'total-kväve' eller 'kväve allmänt'. Den exakta parametern är avgörande.",
+    "text": "Total-kväve (●, övre skalan) MINSKAR svagt med djupet i Trännöfjärden (från cirka 500 μg/l nära ytan till drygt 400 μg/l vid 20 m) och är i stort sett KONSTANT kring 270–280 μg/l i Sandsänkan. Det uppfyller alltså inte 'minskar i den ena, ökar i den andra' — därför är svaret specifikt nitrat-kväve, inte 'kväve allmänt'. Den exakta parametern är avgörande.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Vanlig fälla: använd fel skala",
-    "text": "Om du läser nitrat-kväves värden mot UNDRE skala (0-100) i stället för ÖVRE (0-500) får du fel storleksordning. Detta påverkar inte riktningsavgörandet (en kurva som lutar nedåt lutar fortfarande nedåt oavsett skala), men gör mätningarna numeriskt fel. Granska alltid skalvalet.",
+    "title": "Vanlig fälla: fel skala i chart 3",
+    "text": "Läser du nitrat-kväve mot den ÖVRE skalan (0–500) i stället för den undre (0–100) tror du att ytvärdet i Trännöfjärden är runt 490 μg/l i stället för runt 98. Det gör mätningarna numeriskt fel — men eftersom denna fråga bara handlar om riktning klarar du dig ändå. Vanan att alltid kolla vilken kurva som hör till vilken skala räddar dig på frågor där värdena faktiskt behövs.",
     "tier": "detail"
    },
    {
     "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är D (Halten nitrat-kväve). Insikten i en mening: i 'motsatt riktning i två områden'-frågor på flerkurvsdiagram, kontrollera riktningen separat för varje parameter — sex parametrar, sex separata observationer, en match.",
+    "title": "Slutsats",
+    "text": "Svaret är D (Halten nitrat-kväve): ○-kurvan faller med djupet i Trännöfjärden (ca 98 → ca 20 μg/l) och stiger med djupet i Sandsänkan (nära 0 → ca 35 μg/l). Insikten i en mening: i 'motsatt riktning i två områden'-frågor på flerkurvsdiagram, kontrollera riktningen separat för varje parameter — sex parametrar, sex separata observationer, en match.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'motsatt riktning i två områden'-frågor på flerkurvsdiagram: gå systematiskt genom legendens parametrar, för varje parameter avläs riktningen (ökar/minskar med djupet) i båda områdena, välj den parameter där riktningarna är motsatta. Triggern: 'minskade i X men ökade i Y' → parvis riktningskontroll, en parameter i taget."
+  "technique": "DTK-strategi för 'motsatt riktning i två områden'-frågor på flerkurvsdiagram: gå systematiskt genom legendens parametrar, avläs för varje parameter riktningen (ökar/minskar med djupet) i båda områdena, och välj den parameter där riktningarna är motsatta. Triggern: 'minskade i X men ökade i Y' → parvis riktningskontroll, en parameter i taget."
  },
  "host-2017-kvant2-DTK-030": {
   "_meta": {
@@ -11739,215 +11733,215 @@
  },
  "host-2017-kvant2-DTK-032": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Påståendet att det fanns sju massaoch pappersindustrier söder om polcirkeln är frestande för att massaoch pappersindustrin ÄR koncentrerad till norra Sveriges/Finlands skogsbygder söder om polcirkeln (Luleå, Piteå, Skellefteå, Umeå-trakten m.fl.). Antalet sju är dock specifikt och kan se rätt ut vid snabb räkning.",
-    "why_wrong": "Vid en noggrann inventering av massa-och-papperssymbolerna (▲) söder om polcirkellinjen ger inventeringen INTE exakt sju. Detalj-räkningen ger ett annat antal, vilket gör påståendet osant. Facit fastslår C som det enda alternativ där talet i påståendet exakt stämmer med kartan."
+    "why_tempting": "Fabriksklustret runt Bottenviken söder om polcirkeln innehåller exakt sju fabrikssymboler — räknar du ALLA fabriker där, utan att skilja på fyllnaden, landar du precis på sju och A ser bekräftat ut.",
+    "why_wrong": "Legenden skiljer fabrikerna på fyllnad: bara de KONTURRITADE är massa- och pappersindustri. Av klustrets sju fabriker är fem konturritade och två helsvarta (metallindustri). Fem massa/pappersindustrier söder om polcirkeln, inte sju."
    },
    {
     "letter": "B",
-    "why_tempting": "Sex gruvor söder om polcirkeln låter rimligt — på övre kartan ses flera gruvsymboler kring de svenska och finska bergsområdena (Gällivare-Kirunatrakten är dock norr om polcirkeln, men kring Skellefteå och Boliden m.fl. finns gruvor söder).",
-    "why_wrong": "Polcirkeln är en specifik latitud (66°33'N). Kring och söder om polcirkeln finns gruvsymboler, men en exakt räkning ger inte 6. Kirunaområdets och Gällivareområdets gruvor ligger NORR om polcirkeln, vilket lockar till felräkning. Facit fastslår C — det är alternativ C som har den korrekt räkningen."
+    "why_tempting": "Gruvsymbolerna trängs kring malmfälten nära polcirkellinjen, och räknar du slarvigt med dem som ligger på eller strax ovanför linjen (Kiruna/Gällivare-trakten) sväller den södra räkningen snabbt mot sex.",
+    "why_wrong": "Tydligt söder om linjen finns bara tre gruvsymboler (två i svenska inlandet, en i Bottenviksklustret); en fjärde sitter mitt på linjen vid Vita havet. Tre, max fyra — aldrig sex. De stora gruvstråken ligger norr om polcirkeln."
    },
    {
     "letter": "D",
-    "why_tempting": "Tre lager för kärnavfall norr om polcirkeln är frestande eftersom kärnavfallssymbolerna är synliga på den ryska sidan av kartan, kring Kolahalvön där flera anläggningar markeras.",
-    "why_wrong": "Vid noggrann räkning är antalet kärnavfallslager norr om polcirkeln inte exakt 3 — det är ett annat antal. Symbolerna kan vara klustrade i en region och ögat överräknar eller underräknar lätt. Facit fastslår C som det enda alternativ där talet 'fem' matchar exakt rätt symboltyp norr om polcirkeln."
+    "why_tempting": "Kolahalvön är kartans kärntekniska hotspot, och den NEDRE kartan har en likadan radioaktivitetssymbol (kärnkraftverk, vid Kirovsk) — blandar du kartorna eller minns Kola som \"fullt av kärnavfall\" känns tre rimligt.",
+    "why_wrong": "På den övre kartan, som frågan gäller, finns radioaktivitetssymbolen för lager för kärnavfall på exakt ETT ställe: Kolahalvöns norra kust. Ett lager norr om polcirkeln, inte tre."
    }
   ],
   "framework_id": null,
-  "pitfall": "Den klassiska DTK-fällan på kartfrågor med flera symboltyper + en geografisk linje är att (a) blanda symbolerna i legenden (missa skillnaden mellan kärnavfallslager och natur- eller nationalpark), (b) räkna symbolerna utan att kontrollera att de ligger på RÄTT sida av polcirkellinjen. Botemedlet: lås in EN symboltyp i taget via legenden, dra polcirkeln visuellt på kartan, räkna systematiskt.",
+  "pitfall": "Den klassiska DTK-fällan på symbolkartor med en gränslinje är dubbel: (a) att missa att legenden skiljer två symboler enbart på FYLLNAD — helsvart fabrik är metallindustri, konturritad är massa/pappers — så att båda räknas som en typ, och (b) att räkna symboler på fel sida av polcirkeln eller ta med gränsfall som ligger på själva linjen. Botemedlet: lås en symboltyp i taget via legenden (inklusive fyllnadsdetaljen), dra linjen med fingret, räkna systematiskt sida för sida.",
   "pregrade_tactic": {
-   "handle": "Symboltyp-och-polcirkel-inventering",
-   "move": "För varje påstående A–D: identifiera rätt symbol i legenden, identifiera polcirkellinjen på kartan (märkt 'Pol-cirkeln'), räkna symboler på korrekt sida (norr/söder enligt påståendet). Det alternativ där talet exakt stämmer är rätt."
+   "handle": "Symbol-och-sida-inventeringen",
+   "move": "Läs legenden FÖRST och notera att fyllnaden skiljer metall (svart fabrik) från massa/pappers (konturfabrik). Dra polcirkellinjen med fingret. Ta sedan A–D i tur och ordning: rätt symbol, rätt sida, räkna. Det alternativ vars tal stämmer exakt är svaret."
   },
-  "solution_path": "Facit fastslår C: 'Det fanns fem natur- eller nationalparker norr om polcirkeln.' I den övre kartan av Barentsområdet är polcirkellinjen utritad och tydligt etiketterad 'Pol-cirkeln'. Symbolen för natur- eller nationalpark (markerad med specifikt mönster enligt legenden) räknas över på den NORRA sidan av polcirkellinjen — räkningen ger exakt fem symboler. Inga övriga alternativ har en korrekt räkning vid noggrann inventering.",
+  "solution_path": "Frågan gäller den ÖVRE kartan (\"Industrier, lager för kärnavfall, natur- eller nationalparker samt svavelutsläpp…\"). Polcirkeln är den heldragna linjen märkt \"Pol-cirkeln\" som löper genom norra Sverige och Finland mot Vita havet. Symbolen för natur- eller nationalpark är en sköld med granar. Räkna dem: en vid norsk-finska gränsen längst i norr, en större i norra Finland, en mindre strax söder om den (fortfarande norr om linjen), en i norra Sverige och en vid finsk-ryska gränsen nära 1,0-isolinjen — exakt fem, och samtliga ligger NORR om polcirkeln. C stämmer. Kontrollräkning av de andra: massa- och pappersfabrikerna (konturritade fabriker) söder om linjen är fem, inte sju (A); gruvsymbolerna söder om linjen är tre, inte sex (B); lager för kärnavfall (radioaktivitetssymbolen) finns bara på ETT ställe, på Kolahalvön norr om linjen, inte tre (D).",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilket av A–D är ett korrekt påstående om Barentsområdet enligt kartan? Varje alternativ specificerar en symbol och ett antal samt en sida av polcirkeln. Facit fastslår C (fem natur- eller nationalparker norr om polcirkeln). Strategin: kontrollera varje påstående genom symbol-inventering på rätt sida av polcirkellinjen.",
+    "text": "Vilket av A–D är ett korrekt påstående om kartan? Varje alternativ är en räkningsbar utsaga: en symboltyp + ett antal + en sida av polcirkeln. Strategin: lås symbolen i legenden, lås sidan via polcirkellinjen, räkna — det påstående vars tal stämmer exakt är rätt.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Orientera dig i kartorna",
-    "text": "Sidan har TVÅ kartor. ÖVRE kartan visar 'Industrier, lager för kärnavfall, natur- eller nationalparker samt svavelutsläpp i delar av Barentsområdet i början av 1990-talet'. UNDRE kartan visar 'Industriarbetskraft, varumängder, dominerande industrier med mera'. Frågans symboler (Massa-och-papper, Gruva, Natur-/nationalpark, Lager för kärnavfall) finns alla på ÖVRE kartan.",
+    "title": "Rätt karta",
+    "text": "Sidan har TVÅ kartor. Den ÖVRE visar industrier, lager för kärnavfall, natur- eller nationalparker samt svavelutsläpp — det är den frågan gäller. Den NEDRE visar industriarbetskraft, hamnar och järnvägar. Varning: nedre kartan har en likadan radioaktivitetssymbol som betyder KÄRNKRAFTVERK, inte kärnavfallslager — blanda inte in den.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Identifiera polcirkellinjen",
-    "text": "Polcirkeln (latitud cirka 66°33'N) är en horisontell linje över kartan, märkt 'Pol-cirkeln' med tydlig pil. Allt SÖDER om denna linje (under linjen i kartans bild) är 'söder om polcirkeln'; allt NORR är 'norr om polcirkeln'. Notera att Pol-cirkeln korsar genom Norra Sverige, Norra Finland och Norra Ryssland.",
+    "title": "Hitta polcirkellinjen",
+    "text": "Polcirkeln är en heldragen linje märkt \"Pol-cirkeln\" i kartans vänsterkant. Den löper snett genom norra Sverige och norra Finland och når ryska kusten vid Vita havet. Allt ovanför linjen är \"norr om polcirkeln\", allt under är \"söder om\".",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Läs legenden för rätt symboler",
-    "text": "Legenden visar: ▲ Metallindustri, △ Massaoch pappersindustri, ⚒ Gruva, ⚗ Kemisk industri, ☢ Lager för kärnavfall, ☘ Natureller nationalpark (eller liknande mönster). Notera distinkta symboler för var och en — speciellt skillnaden mellan ☢ kärnavfall och ☘ park.",
+    "title": "Läs legenden — fyllnaden är nyckeln",
+    "text": "Legenden visar två fabrikspiktogram som bara skiljer sig i FYLLNAD: helsvart fabrik = Metallindustri, konturritad (vit) fabrik = Massa- och pappersindustri. Därtill: malmvagn = Gruva, kolv = Kemisk industri, radioaktivitetssymbol = Lager för kärnavfall, sköld med granar = Natur- eller nationalpark.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Granska A: sju massa-/pappersindustrier söder om polcirkeln",
-    "text": "Massa-och-papperssymbolen (△) är koncentrerad till skogsbygder. Söder om polcirkeln finns dessa symboler vid svenska/finska Bottenvikskusten (Luleå, Piteå, Skellefteå, Umeå, Kemi etc.). En försiktig räkning ger något annat än exakt 7. Inte A.",
+    "title": "Granska A: sju massa- och pappersindustrier söder om polcirkeln?",
+    "text": "Söder om linjen sitter fabrikssymbolerna samlade i en båge runt Bottenviken. Räkna dem: klustret innehåller SJU fabrikssymboler totalt — men bara FEM är konturritade (massa/pappers); två är helsvarta (metallindustri). Fem är inte sju. A faller.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Granska B: sex gruvor söder om polcirkeln",
-    "text": "Gruvsymboler (⚒) finns kring Sveriges malmfält och Finlands bergsområden. Många gruvor (Kiruna, Gällivare) ligger NORR om polcirkeln. Räkning av gruvor SÖDER om polcirkeln ger ett annat antal än 6. Inte B.",
+    "title": "Granska B: sex gruvor söder om polcirkeln?",
+    "text": "Gruvsymboler (malmvagnar) söder om linjen: två i svenska inlandet strax under linjen och en i Bottenviksklustret — tre stycken (en fjärde sitter mitt PÅ linjen vid Vita havet). Tre eller fyra är inte sex; de stora gruvstråken kring Kiruna/Gällivare och på Kolahalvön ligger NORR om linjen. B faller.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Granska C: fem natur-/nationalparker norr om polcirkeln",
-    "text": "Naturpark-symbolen (☘ eller annan särpräglad mönstring) räknas norr om polcirkeln. Vid noggrann skanning av området norr om polcirkellinjen (Lapland-Norge-Finland-Ryssland) hittas exakt 5 sådana symboler. Detta matchar påståendet C. Facits svar.",
+    "title": "Granska D: tre lager för kärnavfall norr om polcirkeln?",
+    "text": "Radioaktivitetssymbolen för kärnavfallslager förekommer på exakt ETT ställe på övre kartan: vid Kolahalvöns norra kust, norr om linjen. Ett är inte tre. D faller.",
     "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Granska D: tre kärnavfallslager norr om polcirkeln",
-    "text": "Kärnavfallssymbolen (☢) finns klustrade på Kolahalvön i ryska delen av kartan. Räkning av antalet symboler norr om polcirkeln ger ett annat antal än 3. Inte D.",
+    "title": "Granska C: fem natur- eller nationalparker norr om polcirkeln?",
+    "text": "Sköldsymbolen med granar: en vid norsk-finska gränsen längst i norr, en större i norra Finland, en mindre strax söder om den, en i norra Sverige och en vid finsk-ryska gränsen nära 1,0-isolinjen. Det ger exakt FEM, och alla ligger tydligt ovanför (norr om) polcirkellinjen. C stämmer — rätt svar.",
     "tier": "essential"
    },
    {
     "n": 9,
-    "title": "Vad betyder 'redovisade delarna av Barentsområdet'?",
-    "text": "Kartans tillrutade område — Norra Norge, Norra Sverige, Norra Finland och Kolahalvön i Ryssland — är de delar av Barentsområdet som visas. Frågan begränsar sig till SYMBOLER PÅ KARTAN, inte verkliga antal i naturen. Facit gäller endast vad som är markerat på den specifika kartan.",
+    "title": "Vad betyder \"de redovisade delarna\"?",
+    "text": "Kartan visar bara delar av Barentsområdet (norra Norge, Sverige, Finland och Kolahalvön). Frågan gäller enbart symbolerna PÅ kartan — inte hur många parker eller gruvor som finns i verkligheten.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Felkälla: blanda kärnavfall med metallindustri",
-    "text": "Metallindustri (▲) på Kolahalvön (Norilsk-grannar) ligger nära kärnavfallslagren och kan visuellt blandas ihop. Om du räknar metallindustri-symboler som kärnavfall hamnar du på ett annat tal. Lås in EXAKT mönster via legenden innan räkningen.",
+    "title": "Felkälla: fyllnaden skiljer fabrikerna",
+    "text": "Metall- och massa/pappersfabrikerna har SAMMA piktogram — bara svart respektive vit fyllnad skiljer dem. På Kolahalvön ritas dessutom symboler i kontur mot den svarta svavelutsläppsytan, vilket lätt lurar ögat. Lås fyllnadsregeln i legenden INNAN du räknar, annars räknar du båda typerna som en (och får t.ex. sju i Bottenviksklustret).",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Felkälla: räkna fel sida av polcirkeln",
-    "text": "Polcirkeln går horisontellt mitt på kartan — om du räknar med en symbol som ligger PÅ själva linjen eller strax söder om den får du fel räkning för 'norr om'. Mätare bara symboler tydligt OVANFÖR (norr om) linjen.",
+    "title": "Felkälla: symboler på själva linjen",
+    "text": "Gruvsymbolen vid Vita havet sitter mitt på polcirkellinjen. Sådana gränsfall kan aldrig bära ett svar — räkna bara symboler som tydligt ligger på rätt sida, och notera att inget alternativ blir rätt ens om gränsfallet räknas med.",
     "tier": "detail"
    },
    {
     "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är C (fem natur- eller nationalparker norr om polcirkeln). Insikten i en mening: kartrelaterade A/B/C/D-frågor är en ren räkningsövning — lås en symboltyp i legenden, dra den geografiska gränsen (polcirkeln), räkna systematiskt på rätt sida.",
+    "title": "Slutsats",
+    "text": "Svaret är C: fem natur- eller nationalparker norr om polcirkeln. Insikten i en mening: kartfrågor med \"vilket påstående stämmer\" är ren inventering — lås EN symboltyp i legenden (inklusive fyllnadsdetaljer), dra gränslinjen med fingret och räkna på rätt sida, alternativ för alternativ.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'vilket påstående stämmer'-frågor på kartor med symboler och geografiska gränser: behandla varje alternativ som en räknebar utsaga (symbol + antal + region), gå igenom dem i tur och ordning, lås symbolen via legenden, lås regionen via en specifik gränslinje (här polcirkeln), räkna. Triggern: 'vilket svarsförslag är korrekt' + karta + olika symboler → systematisk symbol-och-region-inventering."
+  "technique": "DTK-strategi för \"vilket påstående stämmer\"-frågor på symbolkartor med en geografisk gränslinje: behandla varje alternativ som en räkningsbar utsaga (symboltyp + antal + sida om linjen), lås symbolen i legenden — här skiljer FYLLNADEN metallindustri (helsvart fabrik) från massa- och pappersindustri (konturritad fabrik) — dra gränslinjen (polcirkeln) med fingret och räkna en symboltyp i taget på rätt sida. Triggern: \"vilket svarsförslag är korrekt\" + karta + flera symboltyper → systematisk symbol-och-sida-inventering."
  },
  "host-2017-kvant2-DTK-033": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Påståendet '< 1 000 ton, export > import' är frestande om man läser den lilla ankarsymbolen rätt (lite varumängd) men feltolkar import/export-pilens RIKTNING — exportpil pekar UTÅT från Bodø.",
-    "why_wrong": "Som steg 5 visar är pilens riktning vid Bodøs ankarsymbol IMPORT > EXPORT, inte tvärtom. Pilformen i legenden för 'Import > Export' kontra 'Export > Import' har distinkt utseende. Facit fastslår A — varumängden < 1 000 ton OCH importen > exporten. Riktningsfelet i B är klassikern."
+    "why_tempting": "'< 1 000 ton, export > import' lockar om man läser storleken rätt (litet ankare) men vänder på fyllnadskoden — det känns intuitivt att ett svartmålat ankare betyder 'skickar ut mycket'.",
+    "why_wrong": "Legenden säger tvärtom: ett FYLLT (svart) ankare betyder 'Import > export' och ett IHÅLIGT betyder 'Export > import'. Bodøs ankare är fyllt, alltså import > export — B har handelsbalansen bakvänd."
    },
    {
     "letter": "C",
-    "why_tempting": "1 000–2 000 ton + import > export skulle vara rätt om Bodø-ankaret hade mellanstor symbol enligt legendsorteringen. Det är frestande att överskatta hamnstorleken för en regional knutpunkt som Bodø.",
-    "why_wrong": "Bodøs ankarsymbol är synligt MINDRE än både 1 000-2 000-ton-storleken (mellansymbol) och > 3 000-ton-storleken (största). Den matchar legendens minsta storlek (< 1 000 ton). Som steg 4 betonar är symbolens visuella storlek nyckeln — Bodø är liten. Facit fastslår A."
+    "why_tempting": "1 000–2 000 ton + import > export skulle stämma om Bodøs ankare hade mellanstorleken. Det är lätt att överskatta storleken på en regional knutpunkt som Bodø, särskilt om man inte jämför mot legendens tre storlekar sida vid sida.",
+    "why_wrong": "Bodøs ankare matchar legendens MINSTA storlek (< 1 000 ton) — det är tydligt mindre än både mellanstorleken och jättesymbolen vid t.ex. Narvik. Rätt fyllnad men fel storlekskategori."
    },
    {
     "letter": "D",
-    "why_tempting": "1 000–2 000 ton + export > import lockar om man både överskattar symbolens storlek OCH läser pilens riktning fel. Det är en dubbel felmatchning.",
-    "why_wrong": "Båda kriterier är felmatchade jämfört med kartan: Bodø har en LITEN ankarsymbol (< 1 000 ton, inte 1 000-2 000) och pilens riktning visar IMPORT > EXPORT (inte tvärtom). Facit fastslår A, som har båda kriterier korrekta."
+    "why_tempting": "1 000–2 000 ton + export > import lockar bara om man gör dubbelfel: överskattar ankarstorleken OCH vänder på fyllnadskoden. Den som skummar kartan utan legenden kan landa här.",
+    "why_wrong": "Båda kriterierna är fel mot kartan: Bodøs ankare är den MINSTA storleken (< 1 000 ton, inte 1 000–2 000) och det är FYLLT (import > export, inte tvärtom)."
    }
   ],
   "framework_id": null,
-  "pitfall": "Den klassiska DTK-fällan i kartfrågor med två-egenskaps-symboler (storlek + riktning) är att antingen (a) bara läsa en av egenskaperna (storleken men inte riktningen, eller tvärtom) eller (b) tolka riktningen bakvänt (export-pil ser ut som import-pil och vice versa). Botemedlet: läs båda egenskaper separat mot legenden — först storleken (vilken av tre kategorier matchar?), sedan pilriktningen (import > export eller export > import?).",
+  "pitfall": "Den klassiska DTK-fällan i kartfrågor med två-egenskaps-symboler (här storlek + fyllnad) är att antingen (a) bara läsa en av egenskaperna eller (b) tolka fyllnadskoden bakvänt (tro att svart ankare = export fast legenden säger import > export). Botemedlet: läs båda egenskaperna separat mot legenden — först storleken (vilken av tre kategorier matchar?), sedan fyllnaden (fyllt = import > export, ihåligt = export > import).",
   "pregrade_tactic": {
-   "handle": "Storlek-och-riktning-på-ankarsymbol",
-   "move": "Hitta Bodø på undre kartan (norsk västkust, söder om Lofoten). Granska ankarsymbolen: först dess STORLEK (jämför mot legendens tre kategorier > 3 000, 1 000-2 000, < 1 000 ton), sedan dess RIKTNING (pil-typ matchar 'Import > Export' eller 'Export > Import' i legenden)."
+   "handle": "Storlek-och-fyllnad-på-ankarsymbol",
+   "move": "Hitta Bodø på undre kartan (norska västkusten vid polcirkeln, sydväst om Narvik). Granska ankarsymbolen: först dess STORLEK (jämför mot legendens tre kategorier > 3 000, 1 000–2 000, < 1 000 ton), sedan dess FYLLNAD (fyllt svart ankare = 'Import > export', ihåligt = 'Export > import')."
   },
-  "solution_path": "Facit fastslår A (Varumängden var mindre än 1 000 ton OCH importen var större än exporten). På undre kartan är Bodø lokaliserat på norra Norges västkust. Ankarsymbolen vid Bodø har den minsta storleken (matchar legendens '< 1 000 ton'). Pilens riktning matchar legendens 'Import > Export'-symbol. Båda kriterier sammanfaller med påstående A.",
+  "solution_path": "På den undre kartan ('Industriarbetskraft, varumängder, dominerande industrier ...') markeras hamnar med ankarsymboler. Legenden 'Varumängd i ton per hamn' kodar TVÅ egenskaper: storleken (> 3 000 / 1 000–2 000 / < 1 000 ton) och fyllnaden — ett FYLLT (svart) ankare betyder 'Import > export', ett IHÅLIGT (konturritat) ankare betyder 'Export > import'. Bodøs ankare, strax väster om ortnamnet vid polcirkeln, är dels den MINSTA storleken (< 1 000 ton), dels HELT FYLLT (import > export). Båda kriterierna pekar på A.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilket av A–D stämmer för varumängden i Bodø hamn? Varje alternativ kombinerar två kriterier: (i) varumängd (< 1 000 / 1 000-2 000 ton) och (ii) import vs export (import > export / export > import). Facit fastslår A (< 1 000 + import > export). Strategin: läs båda kriterier från Bodøs ankarsymbol.",
+    "text": "Frågan: vilket av A–D stämmer för varumängden i Bodø hamn? Varje alternativ kombinerar två kriterier: (i) varumängd (< 1 000 eller 1 000–2 000 ton) och (ii) handelsbalans (import > export eller export > import). Strategin: läs båda kriterierna från Bodøs ankarsymbol mot legenden.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig på undre kartan",
-    "text": "Den UNDRE kartan visar 'Industriarbetskraft, varumängder, dominerande industrier med mera' i Barentsområdet. Hamnar är markerade med ANKARsymboler i tre olika storlekar enligt legenden. Pilens riktning på ankarsymbolen anger import-/exportförhållande.",
+    "text": "Sidan har TVÅ kartor. Den ÖVRE handlar om svavelutsläpp och industrier — fel karta. Den UNDRE visar 'Industriarbetskraft, varumängder, dominerande industrier med mera', och där markeras hamnar med ANKARsymboler. Det är legenden 'Varumängd i ton per hamn' under den undre kartan som gäller.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Hitta Bodø på kartan",
-    "text": "Bodø ligger på Norges västkust, ungefär i höjd med polcirkeln, söder om Narvik och Tromsø. På kartan är platsen tydligt etiketterad 'Bodø'. Vid ortnamnet finns en ankarsymbol — det är denna vi mäter.",
+    "text": "Bodø ligger på Norges västkust, ungefär i höjd med polcirkeln, sydväst om Narvik. Ortnamnet 'Bodø' står tydligt utskrivet, och strax väster om det (vid den vita cirkeln som markerar dominerande industri) sitter en liten ankarsymbol — det är den vi ska läsa av.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Läs legenden för ankarstorlekar",
-    "text": "Legenden under undre kartan visar tre ankarstorlekar: STÖRSTA = '> 3 000 ton', MELLAN = '1 000-2 000 ton', MINSTA = '< 1 000 ton'. Mest noga: utseendet på de tre ankarna i legenden — diametern är synligt olika.",
+    "text": "Legenden visar tre ankarstorlekar: STÖRSTA = '> 3 000 ton', MELLAN = '1 000 – 2 000 ton', MINSTA = '< 1 000 ton'. Varje storlek visas i två varianter (ihålig och fylld) — storleken kodar alltså MÄNGDEN, oavsett fyllnad.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Granska Bodøs ankarstorlek",
-    "text": "Bodøs ankarsymbol är SYNLIGT LITEN på kartan — den matchar legendens MINSTA storlek (< 1 000 ton). Den är inte i samma kategori som de stora ankarna vid t.ex. Murmansk eller Luleå. Detta utesluter C och D (båda 1 000-2 000 ton).",
+    "text": "Bodøs ankare är SYNLIGT LITET — det matchar legendens minsta storlek (< 1 000 ton). Jämför direkt med grannen Narvik strax nordost: Narviks ankare är flera gånger större (> 3 000 ton). Detta eliminerar C och D, som båda kräver 1 000–2 000 ton.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Läs legenden för import/export-pilar",
-    "text": "Legenden visar två pilvarianter på ankaret: en med 'Import > export' (pil indikerar mer in än ut) och en med 'Export > import' (pil indikerar mer ut än in). Symbolerna är distinkta — riktningarna på pilen är spegelvända.",
+    "title": "Läs legenden för fyllnad = handelsbalans",
+    "text": "Legendens högra del visar hur handelsbalansen kodas: ett FYLLT (helsvart) ankare = 'Import > export', ett IHÅLIGT (endast kontur) ankare = 'Export > import'. Det finns inga pilar eller riktningar — det är enbart fyllnaden som avgör.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Granska Bodøs pilriktning",
-    "text": "Vid Bodø är pilens utseende på ankarsymbolen den variant som matchar 'Import > Export' enligt legenden. Det är konsistent med att Bodø är en regional norsk hamn där varor kommer IN (för regional distribution) mer än ut (eftersom regionen exporterar färre tunga varor). Detta utesluter B och D (båda export > import).",
+    "title": "Granska Bodøs fyllnad",
+    "text": "Bodøs lilla ankare är HELT FYLLT (svart). Enligt legenden betyder fyllt ankare 'Import > export' — mer varor kommer in till hamnen än som skickas ut. Detta eliminerar B och D, som båda kräver export > import.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Konsolidera båda kriterierna",
-    "text": "Bodø: storlek < 1 000 ton (eliminerar C och D) + import > export (eliminerar B och D). Återstår A: < 1 000 ton + import > export. Detta är facit.",
+    "text": "Bodø: minsta ankarstorleken → < 1 000 ton (eliminerar C och D). Fyllt ankare → import > export (eliminerar B och D). Enda alternativet som uppfyller båda är A: varumängden var mindre än 1 000 ton och importen var större än exporten.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Vad betyder 'varumängd som hanterades'?",
-    "text": "Varumängden = totalmängd varor som passerat genom hamnen (in + ut), uttryckt i ton per år. Det är en kapacitets-/aktivitetsmått, inte exportvärde. Den lilla varumängden vid Bodø (< 1 000 ton) reflekterar att hamnen är liten i jämförelse med Narvik (malmexport) eller Murmansk (rysk strategisk hamn).",
+    "text": "Varumängden = den totala mängd varor som passerade genom hamnen (in plus ut), i ton. Det är ett aktivitetsmått, inte ett värde i kronor. Att Bodø ligger under 1 000 ton speglar att hamnen är liten jämfört med t.ex. Narvik eller Luleå på samma karta.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Sanity-check via andra norska hamnar",
-    "text": "Granska Narvik på samma karta — där är ankarsymbolen MYCKET STÖRRE än i Bodø, vilket återspeglar Narviks roll som malmexporthamn (LKAB). Detta är en visuell referenspunkt: Bodøs lilla ankar är entydigt mindre än Narviks stora.",
+    "title": "Sanity-check via Narvik",
+    "text": "Narviks ankare är både STORT (> 3 000 ton) och IHÅLIGT (export > import) — logiskt för en malmexporthamn (LKAB skeppar ut järnmalm). Bodø är dess motsats på kartan: litet och fyllt. Att de två grannhamnarna skiljer sig i BÅDA egenskaperna bekräftar att du läser legendkoderna rätt.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Vanlig fälla: pilriktningens tolkning",
-    "text": "Pilarna på ankarsymbolerna kan vara svårtolkade — speciellt om man tror att en pil 'IN MOT' ankarets nav representerar export. Det är tvärtom: en pil som pekar IN MOT hamnen (mot ankaret) representerar import; en pil som pekar UT visar export. Lås legendens definition innan du tolkar en specifik symbol.",
+    "title": "Vanlig fälla: fyllnadens tolkning",
+    "text": "Det är lätt att gissa tvärtom — att svart/fyllt skulle betyda 'skickar ut mycket' (export). Gissa aldrig: lås legendens definition först. Här står det svart på vitt: fyllt ankare = Import > export, ihåligt ankare = Export > import. En sekund i legenden räddar dig från B.",
     "tier": "detail"
    },
    {
     "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är A (varumängden var mindre än 1 000 ton OCH importen var större än exporten). Insikten i en mening: i kartsymbolfrågor med två kriterier per symbol, separera dem — först storleken (kvantitet), sedan riktningen (handelsbalans) — och båda måste matcha för att alternativet ska vara korrekt.",
+    "title": "Slutsats",
+    "text": "Svaret är A: varumängden var mindre än 1 000 ton och importen var större än exporten. Insikten i en mening: i kartsymbolfrågor där en symbol bär två egenskaper — här storlek (mängd) och fyllnad (handelsbalans) — läs dem separat mot legenden, och kräv att BÅDA matchar innan du väljer alternativ.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för kartsymboler med två egenskaper (storlek + riktning): läs varje egenskap separat mot legenden, eliminera alternativ som missar någondera, välj det enda kvarvarande. Triggern: 'vilket svarsförslag stämmer för X hamn' + ankarsymbol → tvådimensionell symbolavläsning, både storlek och riktning."
+  "technique": "DTK-strategi för kartsymboler med två egenskaper (storlek + fyllnad): läs varje egenskap separat mot legenden, eliminera alternativ som missar någondera, välj det enda kvarvarande. Triggern: 'vilket svarsförslag stämmer för X hamn' + ankarsymbol → tvådimensionell symbolavläsning, både symbolstorlek och om ankaret är fyllt eller ihåligt."
  },
  "host-2017-kvant2-DTK-034": {
   "_meta": {
@@ -12057,109 +12051,109 @@
  },
  "host-2017-kvant2-DTK-035": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Bokläsning respektive Bokläsning är frestande om man bara tittar på vilken aktivitet som har den LÄNGSTA stapeln överlag — Bokläsning HAR en mycket lång stapel för kvinnor (störst på chartet) och en hyfsat stor för män också. Det är naturligt att gissa att den dominerar för båda.",
-    "why_wrong": "Som steg 5 visar är Bokläsning HÖGST för KVINNOR (kombinerat cirka 85 %) — så andra delen av påståendet (kvinnor) stämmer. Men för MÄN är Bokläsning kombinerat cirka 68 %, vilket är LÄGRE än Tidskrift (cirka 80 %). Den FÖRSTA delen av påståendet är fel. Facit fastslår C — Tidskrift för män, Bokläsning för kvinnor."
+    "why_tempting": "Bokläsning respektive Bokläsning lockar om man utgår från diagrammets överlägset längsta stapel — kvinnornas Bokläsning (cirka 87 %) — och antar att samma aktivitet dominerar även hos männen, där Bokläsning också är mycket hög.",
+    "why_wrong": "Kvinnodelen stämmer, men hos männen slutar Tidskrifts kombinerade stapel vid cirka 72 % — strax LÄNGRE än Bokläsnings cirka 70 %. Första ledet är alltså fel; rätt par är Tidskrift/Bokläsning = C."
    },
    {
     "letter": "B",
-    "why_tempting": "Bokläsning respektive Skönlitteratur lockar om man läser kvinnornas andra-högsta aktivitet (Skönlitteratur kombinerat cirka 80 %) som om den vore högst. Och tar Bokläsning för män trots att det inte är högst där.",
-    "why_wrong": "Skönlitteratur kombinerat hos kvinnor är cirka 80 % (vit + snedhatchad), vilket är LÄGRE än Bokläsning (cirka 85 %). Och Bokläsning för män är LÄGRE än Tidskrift. Båda delarna av påståendet är feloptimerade. Facit fastslår C."
+    "why_tempting": "Bokläsning respektive Skönlitteratur lockar om man dels tar männens näst längsta som längst, dels förväxlar kvinnornas två läskategorier — Skönlitteratur ser nästan lika lång ut som Bokläsning.",
+    "why_wrong": "Båda leden är fel: männens längsta är Tidskrift (cirka 72 % > Bokläsning cirka 70 %), och kvinnornas Skönlitteratur (cirka 83 %) slutar en bit före Bokläsning (cirka 87 %). Rätt par är C."
    },
    {
     "letter": "D",
-    "why_tempting": "Tidskrift respektive Skönlitteratur lockar om man får rätt på männens högsta (Tidskrift) men gissar fel kvinnors högsta — Skönlitteratur kombinerat hos kvinnor är hög men inte högst.",
-    "why_wrong": "Som steg 6 visar är Bokläsning HÖGSTE bland kvinnornas aktiviteter (cirka 85 % kombinerat) — högre än Skönlitteratur (cirka 80 %). Påståendets andra del är fel. Facit fastslår C — kvinnornas dominerande aktivitet är Bokläsning, inte Skönlitteratur."
+    "why_tempting": "Tidskrift respektive Skönlitteratur lockar om man prickar männens rätt (Tidskrift) men tar kvinnornas näst längsta — Skönlitteraturs snedstreckade stapel når hela cirka 83 % och ser nästan längst ut.",
+    "why_wrong": "Kvinnornas Bokläsning-stapel slutar vid cirka 87 %, tydligt bortom Skönlitteraturs cirka 83 %. Andra ledet är fel — kvinnornas dominerande aktivitet är Bokläsning, så C gäller."
    }
   ],
   "framework_id": "DTK-TACTIC-002",
-  "pitfall": "Den klassiska DTK-fällan i 'störst andel som ägnade sig åt'-frågor är att (a) inte SUMMERA båda frekvenskategorier ('en gång eller mer' = >5 ggr + 1-5 ggr), (b) basera valet på enstaka starka stapel (t.ex. >5 ggr-svart) i stället för totalsumman. Botemedlet: tänk 'kombinerad stapellängd' — alltså slutet av prickiga/snedhatchade stapeln för varje aktivitet, eftersom den representerar den totala 'minst en gång'-andelen.",
+  "pitfall": "Den klassiska DTK-fällan i 'störst andel som ägnade sig åt en gång eller mer'-frågor är att (a) inte SUMMERA båda frekvenskategorierna (>5 ggr + 1–5 ggr), eller (b) basera valet på en enda iögonfallande delstapel i stället för totalsumman. Botemedlet: läs den kombinerade stapellängden — punkten där den yttre (prickade/snedstreckade) delen slutar — för varje aktivitet och kön, och döm tajta dueller (som männens Tidskrift cirka 72 % mot Bokläsning cirka 70 %) mot närmaste gridlinje.",
   "pregrade_tactic": {
    "handle": "Kombinerad-stapelläsning-per-kön",
-   "move": "För män: jämför längden på prickade stapelns SLUTPUNKT (= >5 ggr + 1-5 ggr) för alla aktiviteter. Den längsta är 'störst andel som ägnade sig åt en gång eller mer'. För kvinnor: samma på snedhatchade stapelns slutpunkt."
+   "move": "För män: jämför var den PRICKADE delens slutpunkt (= >5 ggr + 1–5 ggr sammanlagt) ligger för alla aktiviteter — den längsta är svaret för män (Tidskrift, cirka 72 %). För kvinnor: samma med den SNEDSTRECKADE delens slutpunkt (Bokläsning, cirka 87 %). Matcha paret mot alternativen."
   },
-  "solution_path": "Facit fastslår C (Tidskrift respektive Bokläsning). 'En gång eller mer' = både >5 ggr OCH 1-5 ggr inkluderas — alltså totalsumman av båda frekvensstaplarna. För män är Tidskrift den aktivitet där prickade stapeln (1-5 ggr) sträcker sig längst tillsammans med svart (>5 ggr) — sammanlagt cirka 80 % av männen. För kvinnor är Bokläsning den aktivitet där snedhatchade och vita staplar sträcker sig längst tillsammans — cirka 85 % av kvinnorna.",
+  "solution_path": "'En gång eller mer' = >5 ggr OCH 1–5 ggr tillsammans — alltså den kombinerade stapellängden, dvs. var den yttre (prickade/snedstreckade) delen slutar. För MÄN (svart + prickad, övre stapeln per aktivitet) når Tidskrift längst: svart till cirka 33 % och prickad vidare till cirka 72 % — strax över Bokläsning (cirka 70 %). För KVINNOR (vit + snedstreckad, nedre stapeln) når Bokläsning längst: vit till cirka 48 % och snedstreckad vidare till cirka 87 % — över Skönlitteratur (cirka 83 %) och Veckotidning (cirka 80 %). Paret Tidskrift (män) / Bokläsning (kvinnor) är exakt alternativ C.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilken aktivitet är vanligast bland (i) män och (ii) kvinnor om man räknar de som ägnar sig åt aktiviteten EN GÅNG ELLER MER per år? Svarsalternativen är parvis (man-aktivitet / kvinno-aktivitet). Facit fastslår C (Tidskrift för män, Bokläsning för kvinnor).",
+    "text": "Frågan: vilken aktivitet är vanligast bland (i) män och (ii) kvinnor om man räknar alla som ägnade sig åt aktiviteten EN GÅNG ELLER MER under året? Alternativen är parvisa: först männens aktivitet, sedan kvinnornas.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Vad betyder 'en gång eller mer'?",
-    "text": "Chartet har två frekvenskategorier: >5 ggr och 1-5 ggr. 'En gång eller mer' = båda dessa summerade. Du letar alltså efter den aktivitet där SUMMAN av >5-ggr-stapeln och 1-5-ggr-stapeln är störst för respektive kön — eller ekvivalent, den aktivitet där den 'yttre' stapeln (1-5 ggr) når längst, eftersom den staplas på toppen av >5-ggr.",
+    "text": "Diagrammet har två frekvenskategorier: >5 ggr och 1–5 ggr. 'En gång eller mer' = båda summerade. Eftersom 1–5-ggr-delen är staplad direkt efter >5-ggr-delen räcker det att se var den YTTRE delen (prickad för män, snedstreckad för kvinnor) slutar — den punkten är totalandelen.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Orientera dig i chartet",
-    "text": "Chartet 'Kulturaktiviteter' har 16 aktivitetsrader (Musik, Sjunga, Måla, Skriva, Gudstjänst, Studiecirkel, Annat museum, Konstmuseum, Konsert, Teater, Bio, Bibliotek, Veckotidning, Tidskrift, Skönlitteratur, Bokläsning). Varje rad har 4 staplar (Män >5 ggr svart, Män 1-5 ggr prickad, Kvinnor >5 ggr vit, Kvinnor 1-5 ggr snedhatchad). X-axel 0-100 %.",
+    "title": "Orientera dig i diagrammet",
+    "text": "Diagrammet 'Kulturaktiviteter' har 16 aktivitetsrader (Musik högst upp ner till Bokläsning längst ned). Varje aktivitet har TVÅ staplade liggande staplar: den övre är männens (svart = >5 ggr, prickad = 1–5 ggr), den undre är kvinnornas (vit = >5 ggr, snedstreckad = 1–5 ggr). X-axeln går 0–100 procent.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Strategi: leta efter de längsta kombinerade staplarna",
-    "text": "Snabbskanna chartet visuellt. För män: vilken aktivitets svart+prickade kombination når längst åt höger? För kvinnor: vilken aktivitets vit+snedhatchade kombination når längst? Aktiviteten med längst kombinerad stapel är 'störst andel som ägnade sig åt en gång eller mer'.",
+    "text": "Snabbskanna nedifrån — läsaktiviteterna längst ned dominerar. För män: vilken svart+prickad kombination når längst åt höger? För kvinnor: vilken vit+snedstreckad kombination når längst? En avläsning per kön, sedan matcha paret mot alternativen.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Granska männens kandidater",
-    "text": "Männens längsta kombinerade staplar är: Tidskrift (cirka 80 % kombinerat — svart cirka 35 %, prickad cirka 45 %), Bokläsning (cirka 68 % kombinerat — svart cirka 25 %, prickad cirka 43 %), Veckotidning (cirka 60 % kombinerat). Tidskrift är längst — alltså störst andel män ägnade sig åt Tidskrift en gång eller mer.",
+    "text": "Männens längsta kombinerade staplar: Tidskrift cirka 72 % (svart till cirka 33 %, prickad vidare till cirka 72 %), Bokläsning cirka 70 % (svart cirka 29 %, prickad till cirka 70 %), Bio cirka 60 %, Skönlitteratur cirka 60 %. Tidskrift och Bokläsning ligger nära varandra, men Tidskrift-stapeln slutar en bit längre åt höger — störst andel män valde alltså Tidskrift.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Granska kvinnornas kandidater",
-    "text": "Kvinnornas längsta kombinerade staplar är: Bokläsning (cirka 85 % kombinerat — vit cirka 45 %, snedhatchad cirka 40 %), Skönlitteratur (cirka 80 % kombinerat), Veckotidning och Tidskrift (cirka 75-80 %). Bokläsning är längst — alltså störst andel kvinnor ägnade sig åt Bokläsning en gång eller mer.",
+    "text": "Kvinnornas längsta kombinerade staplar: Bokläsning cirka 87 % (vit till cirka 48 %, snedstreckad vidare till cirka 87 %), Skönlitteratur cirka 83 %, Veckotidning cirka 80 %. Notera att Tidskrift bland kvinnor bara når cirka 60 % — klart lägre än läskategorierna. Bokläsning är längst — störst andel kvinnor valde Bokläsning.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Konsolidera båda könen",
-    "text": "Män: Tidskrift (cirka 80 %). Kvinnor: Bokläsning (cirka 85 %). Detta matchar exakt alternativ C: 'Tidskrift respektive Bokläsning'. Inget annat alternativ har rätt par.",
+    "text": "Män: Tidskrift (cirka 72 %). Kvinnor: Bokläsning (cirka 87 %). Det matchar exakt alternativ C: 'Tidskrift respektive Bokläsning'. Inget annat alternativ har rätt par.",
     "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Vad är skillnaden mellan Tidskrift och Skönlitteratur?",
-    "text": "Tidskrift är en typ av periodisk publikation (Allt om Mat, Vi, Filter, Allers etc.) — ofta korta, ämnesspecifika texter. Skönlitteratur är romaner och berättande prosa. De är olika kulturkategorier — chartet skiljer dem som separata rader. Att de har olika könsfördelningar (Skönlitteratur är mer kvinnodominerat, Tidskrift mer könsmässigt balanserat eller mansgynnat) är ett kulturmönster chartet visar.",
+    "title": "Den tajta duellen hos männen",
+    "text": "Männens Tidskrift (cirka 72 %) mot Bokläsning (cirka 70 %) är frågans egentliga svårighet — skillnaden är bara ett par procentenheter. Jämför slutpunkterna mot gridlinjerna: Tidskrifts prickade del passerar 70-strecket tydligt, Bokläsnings slutar vid det. När två staplar är nära, döm efter var de slutar relativt närmaste gridlinje, inte efter helhetsintryck.",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Bokläsning vs Skönlitteratur — finns det överlapp?",
-    "text": "'Bokläsning' i chartets terminologi är en bredare kategori (alla typer av böcker, kanske inklusive faktaoch kursböcker). 'Skönlitteratur' är specifikt romaner. Eftersom Skönlitteratur är en delmängd av Bokläsning förväntar vi oss att Bokläsning är HÖGRE eller LIKA — vilket konsistent med kvinnornas 85 % > 80 %.",
+    "title": "Bokläsning vs Skönlitteratur — varför är Bokläsning högre?",
+    "text": "'Bokläsning' är den bredare kategorin (alla slags böcker), 'Skönlitteratur' specifikt romaner och berättande prosa. Eftersom skönlitteraturläsare i praktiken ingår bland bokläsare är det rimligt att Bokläsning ligger högst — vilket stämmer hos kvinnorna: cirka 87 % mot cirka 83 %.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Vanlig fälla: läs bara >5-ggr-stapeln",
-    "text": "Om du bara tittar på den svarta stapeln (>5 ggr) för män kan du missa att Tidskrift är dominerande — flera andra aktiviteter har också höga >5-ggr-staplar. Men det är KOMBINATIONEN (>5 + 1-5) som avgör frågan, och i Tidskrift sträcker sig den prickade 1-5-ggr-stapeln till totalt cirka 80 % — högst bland männen.",
+    "title": "Vanlig fälla: läs bara >5-ggr-delen",
+    "text": "Tittar du bara på den svarta delen (>5 ggr) hos männen ser Tidskrift (cirka 33 %) visserligen störst ut även där, men logiken är fel — frågan kräver SUMMAN. Hos kvinnorna hade samma misstag lett fel: vita delen är störst för Bokläsning (cirka 48 %) men Veckotidnings snedstreckade del är mycket lång, så bara totalsumman avgör säkert.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Vanlig fälla: könsförväxling",
-    "text": "Om du av misstag läser kvinnornas staplar för 'män' eller tvärtom, hamnar du på fel par. Chartet visar tydligt två par staplar per aktivitet — svart/prickad är män, vit/snedhatchad är kvinnor. Lås in vilken färg/mönster som tillhör vilken könsgrupp innan du börjar mäta.",
+    "text": "Läser du kvinnornas stapel som männens (eller tvärtom) hamnar du på fel par — t.ex. är Tidskrift hög för män men bara cirka 60 % för kvinnor. Lås mönstren först: svart/prickad = män (övre stapeln), vit/snedstreckad = kvinnor (undre stapeln), enligt legenden uppe till höger.",
     "tier": "detail"
    },
    {
     "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är C (Tidskrift respektive Bokläsning). Insikten i en mening: i 'störst andel som ägnade sig åt'-frågor med två frekvenskategorier, mät den KOMBINERADE stapellängden — slutet av den yttre stapeln per kön — och välj den aktivitet som når längst.",
+    "title": "Slutsats",
+    "text": "Svaret är C (Tidskrift respektive Bokläsning). Insikten i en mening: i 'störst andel som ägnade sig åt … en gång eller mer'-frågor, mät den KOMBINERADE stapellängden — var den yttre frekvensdelen slutar — separat per kön, och matcha paret mot alternativen.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'störst andel som ägnade sig åt'-frågor på frekvenssegregerade stapeldiagram: omvandla 'en gång eller mer' till 'kombinerad stapellängd över alla frekvenskategorier > 0', skanna alla aktiviteter visuellt för längsta kombinerade stapel per kön, jämför med alternativen. Triggern: 'störst andel som gjorde X någon gång' → kombinera frekvenskategorier, en gång per kön."
+  "technique": "DTK-strategi för 'störst andel som ägnade sig åt'-frågor på frekvenssegregerade stapeldiagram: omvandla 'en gång eller mer' till 'kombinerad stapellängd över båda frekvenskategorierna', skanna alla aktiviteter för längsta kombinerade stapel per kön, jämför paret med alternativen. Triggern: 'störst andel som gjorde X en gång eller mer' → summera frekvenskategorierna, en avläsning per kön."
  },
  "host-2017-kvant2-DTK-036": {
   "_meta": {
@@ -12375,93 +12369,93 @@
  },
  "host-2017-kvant2-DTK-038": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
     "why_tempting": "887 är frestande om man bara räknar männen med EN av de två examina (idrott och hälsa: 1 717 totalt − 830 kvinnor = 887 män) och missar att frågan säger 'musik ELLER idrott och hälsa' — alltså båda ska summeras.",
-    "why_wrong": "Som steg 7 visar måste du SUMMERA männen från båda examina. Musik-männen är 480 och idrott-och-hälsa-männen är 887. Tillsammans blir det 480 + 887 = 1 367. Facit fastslår B — 887 är bara halva summan."
+    "why_wrong": "Som steg 7 visar måste du SUMMERA männen från båda examina. Musik-männen är 480 och idrott-och-hälsa-männen är 887. Tillsammans blir det 480 + 887 = 1 367 = B — 887 är bara halva summan."
    },
    {
     "letter": "C",
-    "why_tempting": "1 437 är frestande om man råkar räkna fel på en av subtraktionerna (t.ex. tar 1 087 − 600 = 487 i stället för 1 087 − 607 = 480) och adderar några tiotal felaktigt. Det ligger nära facits 1 367 men inte exakt.",
-    "why_wrong": "De exakta talen i tabellen är musik totalt 1 087, kvinnor 607 (män 480), idrott totalt 1 717, kvinnor 830 (män 887). Summan 480 + 887 = exakt 1 367, inte 1 437. Som steg 6 detaljerar är ett räknefel troligt om man slarvar. Facit fastslår B."
+    "why_tempting": "1 437 är frestande om man råkar räkna fel på en av subtraktionerna (t.ex. tar 1 087 − 530 = 557 i stället för 1 087 − 607 = 480). Det ligger nära det rätta 1 367 men inte exakt.",
+    "why_wrong": "De exakta talen i tabellen är musik totalt 1 087, kvinnor 607 (män 480), idrott totalt 1 717, kvinnor 830 (män 887). Summan 480 + 887 = exakt 1 367, inte 1 437. Läs de printade cellvärdena noggrant — ett slarvfel på tiotalen ger just den här sortens nästan-rätt-tal."
    },
    {
     "letter": "D",
-    "why_tempting": "2 804 är frestande om man inte tar bort kvinnorna alls — istället summerar TOTALERNA för båda examina (1 087 + 1 717 = 2 804). Det är 'rätt summa men fel kön'.",
-    "why_wrong": "Frågan handlar SPECIFIKT om män. Du måste subtrahera 'därav kvinnor' från totalen för varje examen, sedan summera. Som steg 4 understryker: total inkluderar både kön — komplementet är män. 2 804 inkluderar kvinnor, så D är fel."
+    "why_tempting": "2 804 är frestande om man inte tar bort kvinnorna alls — i stället summerar TOTALERNA för båda examina (1 087 + 1 717 = 2 804). Det är 'rätt summa men fel kön'.",
+    "why_wrong": "Frågan handlar SPECIFIKT om män. Du måste subtrahera 'därav kvinnor' från totalen för varje examen, sedan summera. Som steg 4 understryker: totalen inkluderar båda könen — komplementet är män. 2 804 inkluderar kvinnorna, så D är fel."
    }
   ],
   "framework_id": null,
-  "pitfall": "Den klassiska DTK-fällan i tabellfrågor om 'antal män' när tabellen visar totalt + 'därav kvinnor' är att antingen (a) använda totalen rätt av men glömma att subtrahera kvinnorna, eller (b) räkna bara ett av två villkor när frågan säger 'X ELLER Y'. Botemedlet: för varje villkor (musik resp. idrott), räkna män = totalt − kvinnor, SEDAN summera båda mansförteckningarna.",
+  "pitfall": "Den klassiska DTK-fällan i tabellfrågor om 'antal män' när tabellen visar totalt + 'därav kvinnor' är att antingen (a) använda totalen rakt av men glömma att subtrahera kvinnorna, eller (b) räkna bara ett av två villkor när frågan säger 'X ELLER Y'. Botemedlet: för varje villkor (musik resp. idrott), räkna män = totalt − kvinnor, SEDAN summera båda mans-talen.",
   "pregrade_tactic": {
    "handle": "Två-villkor-tvåstegs-subtraktion",
-   "move": "(1) För musik-examen: läs total + därav-kvinnor i Lärare prakt/est-kolumnen, subtrahera = män. (2) För idrott-examen: samma. (3) Addera de två mans-totalerna."
+   "move": "(1) För musik-examen: läs total + därav-kvinnor i kolumnen Lärare praktiskt/estetiskt ämne, subtrahera = män. (2) För idrott-examen: samma. (3) Addera de två mans-talen."
   },
-  "solution_path": "Facit fastslår B (1 367). I tabellen 'Personal i pedagogisk verksamhet' avläses kolumnen 'Lärare praktiskt/estetiskt ämne' i två rader: 'Lärarexamen, musik' (totalt 1 087, därav kvinnor 607 → män 1 087 − 607 = 480) och 'Lärarexamen, idrott och hälsa' (totalt 1 717, därav kvinnor 830 → män 1 717 − 830 = 887). Summa män = 480 + 887 = 1 367.",
+  "solution_path": "I tabellen 'Personal i pedagogisk verksamhet' avläses kolumnen 'Lärare praktiskt/estetiskt ämne' i två rader: 'Lärarexamen, musik' (totalt 1 087, därav kvinnor 607 → män 1 087 − 607 = 480) och 'Lärarexamen, idrott och hälsa' (totalt 1 717, därav kvinnor 830 → män 1 717 − 830 = 887). Summa män = 480 + 887 = 1 367 = alternativ B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: hur många MÄN med lärarexamen i (musik) ELLER (idrott och hälsa) arbetade som lärare i praktiskt/estetiskt ämne? Svarsalternativen är 887, 1 367, 1 437, 2 804. Facit fastslår B (1 367). Strategin: räkna män per examen, summera.",
+    "text": "Frågan: hur många MÄN med lärarexamen i (musik) ELLER (idrott och hälsa) arbetade som lärare i praktiskt/estetiskt ämne? Svarsalternativen är 887, 1 367, 1 437, 2 804. Strategin: räkna män per examen (totalt minus kvinnor), summera sedan de två mans-talen.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i tabellen",
-    "text": "Tabellen 'Personal i pedagogisk verksamhet' har en rad per pedagogisk högskoleexamen (Förskollärarexamen, Fritidspedagogexamen, …, Lärarexamen musik, Lärarexamen idrott och hälsa, …), och varje examen följs av en 'därav kvinnor'-subrad som visar antalet kvinnor med just den examen. Kolumnerna är personalkategorier (Låg-/mellanstadielärare, Grundskollärare 1-7, Grundskollärare 4-9, …, Lärare prakt/est ämne, …, Skolledare, Studie/yrkesvägledare, Samtliga). Alla värden är PRINTADE.",
+    "text": "Tabellen 'Personal i pedagogisk verksamhet' har en rad per pedagogisk högskoleexamen (Förskollärarexamen, Fritidspedagogexamen, …, Lärarexamen musik, Lärarexamen idrott och hälsa, …), och varje examen följs av en 'därav kvinnor'-subrad som visar antalet kvinnor med just den examen. Kolumnerna är personalkategorier (Låg-/mellanstadielärare, Grundskollärare 1–7, Grundskollärare 4–9, …, Lärare praktiskt/estetiskt ämne, …, Skolledare, Studie- och yrkesvägledare, Samtliga). Alla värden är PRINTADE.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Hitta rätt kolumn",
-    "text": "Frågan handlar om personalkategorin 'Lärare praktiskt/estetiskt ämne'. Skanna kolumnrubrikerna och lås in den kolumnen. Notera att det är en av de mellan-positionerade kolumnerna, mellan 'Speciallärare/specialpedagoger' och 'Modersmålslärare'.",
+    "text": "Frågan handlar om personalkategorin 'Lärare praktiskt/estetiskt ämne'. Skanna kolumnrubrikerna och lås in den kolumnen. Den ligger i mitten av tabellen, mellan 'Speciallärare/specialpedagoger' och 'Modersmålslärare'.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Hitta rätt rader",
-    "text": "Två rader (med 'därav kvinnor'-subrader under varje): 'Lärarexamen, musik' och 'Lärarexamen, idrott och hälsa'. Dessa är två separata huvudradsblock i den vertikala listan. Lokalisera båda före du läser värden.",
+    "text": "Två rader (med 'därav kvinnor'-subrader under varje): 'Lärarexamen, musik' och 'Lärarexamen, idrott och hälsa'. Dessa är två separata huvudradsblock i den vertikala listan. Lokalisera båda innan du läser värden.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Läs av musik-examens värden",
-    "text": "Lärarexamen musik / Lärare prakt-est ämne: totalt 1 087, därav kvinnor 607. Män med musik-examen i denna roll = 1 087 − 607 = 480.",
+    "text": "Lärarexamen musik / Lärare praktiskt-estetiskt ämne: totalt 1 087, därav kvinnor 607. Män med musik-examen i denna roll = 1 087 − 607 = 480.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Läs av idrott-och-hälsa-examens värden",
-    "text": "Lärarexamen idrott och hälsa / Lärare prakt-est ämne: totalt 1 717, därav kvinnor 830. Män med idrott-och-hälsa-examen i denna roll = 1 717 − 830 = 887.",
+    "text": "Lärarexamen idrott och hälsa / Lärare praktiskt-estetiskt ämne: totalt 1 717, därav kvinnor 830. Män med idrott-och-hälsa-examen i denna roll = 1 717 − 830 = 887.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Summera män från båda examina",
-    "text": "Totala antalet män med någondera av de två examina som arbetar som lärare i prakt/est ämne = 480 (musik) + 887 (idrott och hälsa) = 1 367. Detta matchar exakt alternativ B.",
+    "text": "Totala antalet män med någondera av de två examina som arbetar som lärare i praktiskt/estetiskt ämne = 480 (musik) + 887 (idrott och hälsa) = 1 367. Detta matchar exakt alternativ B.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Vad betyder 'eller' i frågans formulering?",
-    "text": "'Lärarexamen i musik ELLER i idrott och hälsa' = personer som har endera av de två examina (inklusiv-eller, alltså 'A eller B eller båda'). I praktiken har de allra flesta bara EN av examina, så summan blir nästan exakt antal med examen-A + antal med examen-B utan dubbelräkning. Eventuell dubbelräkning skulle vara försumbar.",
+    "text": "'Lärarexamen i musik ELLER i idrott och hälsa' = personer som har endera av de två examina. Tabellen redovisar varje examen som en egen rad, så summan av de två radernas mans-tal är precis det frågan ber om — du adderar två separata radvärden, ingen dubbelräkning uppstår i tabellens redovisning.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Vad betyder 'därav kvinnor' i tabellraderna?",
-    "text": "Varje examen har en huvudrad (TOTALA antalet med examen) och en sub-rad 'därav kvinnor' (antalet KVINNOR med examen — en delmängd av totalen). Män = totalt − därav kvinnor. Det är en standardkonvention i svensk statistik — två rader per kategori, där sub-raden specifierar en delmängd.",
+    "text": "Varje examen har en huvudrad (TOTALA antalet med examen) och en subrad 'därav kvinnor' (antalet KVINNOR med examen — en delmängd av totalen). Män = totalt − därav kvinnor. Det är en standardkonvention i svensk statistik — två rader per kategori, där subraden specificerar en delmängd.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Sanity-check via 'Samtliga'-kolumnen",
-    "text": "Lärarexamen musik / Samtliga: 2 994. Lärarexamen idrott och hälsa / Samtliga: 2 270. Summa: 5 264 total med någondera examen. Antal i prakt/est-roll: 1 087 + 1 717 = 2 804. Det är cirka 53 % av alla med examen — rimligt att en majoritet är i sin specialitetsroll. Konsistent.",
+    "text": "Lärarexamen musik / Samtliga: 1 355, därav kvinnor 768 → män totalt 587. Lärarexamen idrott och hälsa / Samtliga: 2 270, därav kvinnor 1 131 → män totalt 1 139. Våra avlästa mans-tal i prakt/est-rollen (480 respektive 887) är mindre än respektive rads mans-total (587 respektive 1 139) — som de måste vara, eftersom prakt/est-lärarna är en delmängd av alla med examen. Konsistent.",
     "tier": "detail"
    },
    {
@@ -12472,118 +12466,118 @@
    },
    {
     "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är B (1 367). Insikten i en mening: i tabellfrågor om 'antal MÄN' när tabellen ger 'totalt + därav kvinnor', subtrahera kvinnorna från totalen för VARJE rad och summera män-totalerna — två subtraktioner, en addition.",
+    "title": "Slutsats",
+    "text": "Svaret är B (1 367). Insikten i en mening: i tabellfrågor om 'antal MÄN' när tabellen ger 'totalt + därav kvinnor', subtrahera kvinnorna från totalen för VARJE rad och summera män-talen — två subtraktioner, en addition.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'antal X som matchar villkor A ELLER B'-frågor i tab- eller med 'totalt + därav-delmängd'-struktur: för varje villkor (rad), läs totalen och därav-kvinnor (eller motsvarande), beräkna komplementet (män), summera komplementen över alla villkor. Triggern: 'antal män med examen X eller Y' → tvåradssubtraktion + summering, två steg per rad."
+  "technique": "DTK-strategi för 'antal X som matchar villkor A ELLER B'-frågor i tabeller med 'totalt + därav-delmängd'-struktur: för varje villkor (rad), läs totalen och därav-kvinnor (eller motsvarande), beräkna komplementet (män), summera komplementen över alla villkor. Triggern: 'antal män med examen X eller Y' → tvåradssubtraktion + summering, två steg per rad."
  },
  "host-2017-kvant2-DTK-039": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Låg-/mellanstadielärarexamen är en mycket VANLIG examen (Samtliga 20 663) och har många skolledare (1 350 — definitivt > 500 ✓). Det är frestande att gissa att det är A, eftersom första villkoret tydligt uppfylls.",
-    "why_wrong": "Som steg 6 visar är största kategorin för Låg-/mellanstadielärarexamen 'Låg-/mellanstadielärare' (14 604 av totalen 20 663 ≈ 71 %), INTE 'Grundskollärare 4-9' (960). Det andra villkoret misslyckas. Facit fastslår D — Ämneslärarexamen är den enda där största andelen är grundskollärare 4-9."
+    "why_tempting": "Låg-/mellanstadielärarexamen är en mycket VANLIG examen (Samtliga 20 663) och har flest skolledare av alla alternativ (1 350 — definitivt > 500 ✓). Det är frestande att stanna vid A, eftersom första villkoret uppfylls så tydligt.",
+    "why_wrong": "Största kategorin för Låg-/mellanstadielärarexamen är 'Låg-/mellanstadielärare' (14 604 av totalen 20 663 ≈ 71 %), INTE 'Grundskollärare 4–9' (960). Det andra villkoret misslyckas. Bara Ämneslärarexamen (D) har grundskollärare 4–9 som största kategori OCH skolledare över 500."
    },
    {
     "letter": "B",
-    "why_tempting": "Grundskollärarexamen 1-7 är en grundskolexamen och har relativt få skolledare (342 — UNDER 500). Det är frestande som svar om man av misstag tror att skolledar-villkoret är 'mer än 300' i stället för '> 500'.",
-    "why_wrong": "Skolledar-talet för Grundskollärarexamen 1-7 är 342, vilket är UNDER 500. Villkor 1 misslyckas. Facit fastslår D — där skolledarvärdet 687 är klart > 500. Inte B."
+    "why_tempting": "Grundskollärarexamen 1–7 är en grundskolexamen med ett skolledar-tal (342) som ser 'stort nog' ut om man slarvläser tröskeln — frestande om man av misstag tror att villkoret är 'mer än 300' i stället för '> 500'.",
+    "why_wrong": "Skolledar-talet för Grundskollärarexamen 1–7 är 342, vilket är UNDER 500. Villkor 1 misslyckas. För D är skolledarvärdet 687 — klart > 500. Inte B."
    },
    {
     "letter": "C",
-    "why_tempting": "Grundskollärarexamen 4-9 låter perfekt eftersom NAMNET innehåller 'grundskollärare 4-9' — samma uttryck som villkor 2 nämner. Det är en LEXIKAL koppling som lockar utan att kolla siffrorna.",
-    "why_wrong": "Skolledar-talet för Grundskollärarexamen 4-9 är 218, vilket är UNDER 500. Villkor 1 misslyckas. Som steg 4 betonar: det är inte examen-namnet som matchar, det är att den största andelen INNEHAVARE arbetar i den personalkategorin. För Ämneslärarexamen är 6 430 av 8 221 (cirka 78 %) i Grundskollärare 4-9-roll — överlägset största andelen. Facit fastslår D."
+    "why_tempting": "Grundskollärarexamen 4–9 låter perfekt eftersom NAMNET innehåller 'grundskollärare 4–9' — samma uttryck som villkor 2 nämner. Det är en LEXIKAL koppling som lockar utan att kolla siffrorna.",
+    "why_wrong": "Skolledar-talet för Grundskollärarexamen 4–9 är 218, vilket är UNDER 500. Villkor 1 misslyckas. Det är inte examen-namnet som ska matcha — det är siffrorna. För Ämneslärarexamen arbetar 6 430 av 8 221 (cirka 78 %) som Grundskollärare 4–9 — överlägset största andelen — och skolledarvärdet 687 klarar tröskeln. Därför D."
    }
   ],
   "framework_id": "DTK-TACTIC-002",
   "pitfall": "Den klassiska DTK-fällan i denna typ av tabellfråga med två villkor är att (a) bara checka det första villkoret och stanna när det stämmer, eller (b) bli lurad av lexikal likhet mellan radnamn (examen) och kolumnnamn (personalkategori). Botemedlet: kolla BÅDA villkoren systematiskt för varje alternativ — först skolledar-talet (en avläsning från Skolledare-kolumnen) och sedan 'största andelen' (kräver att jämföra alla kolumnvärden i den raden och hitta den största).",
   "pregrade_tactic": {
    "handle": "Tvåvillkors-radgenomgång",
-   "move": "För varje examen i alternativen A–D: (1) Läs Skolledare-kolumnen, kontrollera > 500. (2) Skanna alla personalkategori-kolumner i raden, hitta den största. Båda villkor måste hålla för att alternativet ska vara rätt."
+   "move": "För varje examen i alternativen A–D: (1) Läs Skolledare-kolumnen, kontrollera > 500. (2) Skanna alla personalkategori-kolumner i raden, hitta den största. Båda villkoren måste hålla för att alternativet ska vara rätt."
   },
-  "solution_path": "Facit fastslår D (Ämneslärarexamen). I tabellen visas för Ämneslärarexamen: Skolledare-kolumn = 687 (klart > 500 ✓). I samma rad har Grundskollärare 4-9-kolumnen värdet 6 430 av Samtliga 8 221 — det är cirka 78 % av alla med ämneslärarexamen, överlägset största andelen. Inget annat alternativ uppfyller båda villkor.",
+  "solution_path": "Tabellen har examina som rader och personalkategorier som kolumner. Villkor 1: Skolledare-kolumnen > 500. Villkor 2: största värdet i radens fördelning ska ligga i kolumnen Grundskollärare 4–9. A (Låg-/mellanstadielärarexamen): Skolledare 1 350 ✓ men största kategorin är Låg-/mellanstadielärare 14 604 — villkor 2 faller. B (Grundskollärarexamen 1–7): Skolledare 342 < 500 — faller direkt. C (Grundskollärarexamen 4–9): Skolledare 218 < 500 — faller direkt. D (Ämneslärarexamen): Skolledare 687 ✓ och Grundskollärare 4–9 = 6 430 av Samtliga 8 221 (≈ 78 %) är radens överlägset största kategori ✓. Endast D uppfyller båda villkoren.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan söker den examen där (1) fler än 500 skolledare har den examen, och (2) den största andelen av de med examen jobbar som Grundskollärare 4-9. Svarsalternativen är fyra examina. Facit fastslår D (Ämneslärarexamen).",
+    "text": "Frågan söker den examen där (1) fler än 500 skolledare har den examen, och (2) den största andelen av de med examen jobbar som Grundskollärare 4–9. Svarsalternativen är fyra examina — vi checkar båda villkoren för varje.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i tabellen",
-    "text": "Tabellen har examina som rader och personalkategorier som kolumner. Bland kolumnerna finns 'Skolledare' (en specifik personalkategori) och 'Samtliga' (totalsumman per rad). 'Grundskollärare 4-9' är en av personalkategori-kolumnerna mellan 'Grundskollärare 1-7' och 'Speciallärare/specialpedagoger'.",
+    "text": "Tabellen har examina som rader och personalkategorier som kolumner. Bland kolumnerna finns 'Skolledare' (en specifik personalkategori) och 'Samtliga' (totalsumman per rad). 'Grundskollärare 4–9' är en av personalkategori-kolumnerna, mellan 'Grundskollärare 1–7' och 'Speciallärare/specialpedagoger'. Läs huvudraden för varje examen, inte 'därav kvinnor'-raden under.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Översätt villkor 1 till en avläsning",
-    "text": "Villkor 1: 'Fler än 500 skolledare hade denna examen' = värdet i Skolledare-kolumnen på radens huvudrad > 500. Detta är en enkel jämförelse mot en tröskel.",
+    "text": "Villkor 1: 'Fler än 500 skolledare hade denna examen' = värdet i Skolledare-kolumnen på examens huvudrad > 500. Detta är en enkel jämförelse mot en tröskel.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Översätt villkor 2 till en avläsning",
-    "text": "Villkor 2: 'Den största andelen arbetade som Grundskollärare 4-9'. Det betyder att i den radens fördelning över personalkategori-kolumner, är talet i Grundskollärare 4-9-kolumnen STÖRRE än alla andra kolumners värden i samma rad (utom Samtliga, som är totalen och alltid störst). Du måste skanna alla personalkategori-värden i raden och bekräfta att Grundskollärare 4-9 är toppvärdet.",
+    "text": "Villkor 2: 'Den största andelen arbetade som Grundskollärare 4–9'. Det betyder att i den radens fördelning över personalkategori-kolumner är talet i Grundskollärare 4–9-kolumnen STÖRRE än alla andra kolumners värden i samma rad (utom Samtliga, som är totalen och alltid störst). Du måste skanna alla personalkategori-värden i raden och bekräfta att Grundskollärare 4–9 är toppvärdet.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Checka A: Låg-/mellanstadielärarexamen",
-    "text": "Skolledar-värde: 1 350 (> 500 ✓). Personalkategori-fördelning för denna rad: Låg-/mellanstadielärare 14 604 — överlägset största. Grundskollärare 4-9 = 960. Den största kategorin är INTE Grundskollärare 4-9. Villkor 2 misslyckas. Inte A.",
+    "text": "Skolledar-värde: 1 350 (> 500 ✓). Personalkategori-fördelning för denna rad: Låg-/mellanstadielärare 14 604 — överlägset störst. Grundskollärare 4–9 = 960. Den största kategorin är INTE Grundskollärare 4–9. Villkor 2 misslyckas. Inte A.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Checka B: Grundskollärarexamen 1-7",
+    "title": "Checka B: Grundskollärarexamen 1–7",
     "text": "Skolledar-värde: 342 (< 500 — villkor 1 misslyckas). Inte B.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Checka C: Grundskollärarexamen 4-9",
-    "text": "Skolledar-värde: 218 (< 500 — villkor 1 misslyckas). Inte C. Notera att kategori-namnet 'Grundskollärare 4-9' är samma både för examen och personalkategori — det är just denna lexikala koppling som gör C frestande, men skolledar-villkoret stryker det.",
+    "title": "Checka C: Grundskollärarexamen 4–9",
+    "text": "Skolledar-värde: 218 (< 500 — villkor 1 misslyckas). Inte C. Notera att kategori-namnet 'Grundskollärare 4–9' är samma både för examen och personalkategori — det är just denna lexikala koppling som gör C frestande, men skolledar-villkoret stryker det.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Checka D: Ämneslärarexamen",
-    "text": "Skolledar-värde: 687 (> 500 ✓). Personalkategori-fördelning för Ämneslärarexamen-raden: skanna kolumnerna och hitta största värdet. Låg-/mellanst 217, Grundsk 1-7 217, Grundsk 4-9 6 430 (!), Special 154, Lärare prakt/est 98, Modersmål 13, Övrig 159, Skolledare 687, Studie 47. Den största är entydigt Grundskollärare 4-9 = 6 430. Villkor 2 uppfyllt. Båda villkor stämmer — facits D.",
+    "text": "Skolledar-värde: 687 (> 500 ✓). Skanna hela Ämneslärarexamen-raden: Låg-/mellanstadielärare 203, Grundskollärare 1–7 217, Grundskollärare 4–9 6 430 (!), Speciallärare/specialpedagoger 176, Lärare praktiskt/estetiskt ämne 204, Modersmålslärare 98, Övrig pedagogisk personal 159, Skolledare 687, Studie- och yrkesvägledare 47. Den största är entydigt Grundskollärare 4–9 = 6 430. Villkor 2 uppfyllt. Båda villkoren stämmer — svaret är D.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Vad betyder 'den största andelen'?",
-    "text": "Andelen = värdet i en kolumn / Samtliga-värdet på raden. För Ämneslärarexamen är Grundskollärare 4-9 / Samtliga = 6 430 / 8 221 ≈ 78 %. Eftersom alla andra kolumner i raden är klart mindre, är detta den största andelen. Notera att vi kan jämföra direkt på de absoluta värdena (snarare än andelarna) eftersom alla delar samma nämnare (Samtliga).",
+    "text": "Andelen = värdet i en kolumn / Samtliga-värdet på raden. För Ämneslärarexamen är Grundskollärare 4–9 / Samtliga = 6 430 / 8 221 ≈ 78 %. Eftersom alla andra kolumner i raden är klart mindre, är detta den största andelen. Notera att vi kan jämföra direkt på de absoluta värdena (snarare än andelarna) eftersom alla delar samma nämnare (Samtliga).",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Sanity-check via storleksordning",
-    "text": "Ämneslärare har ofta läst ett djupt kärnämne (matematik, svenska, historia, samhälle) och tjänstgör därför oftast i högstadiet/grundskolans senare år — Grundskollärare 4-9 motsvarar dessa årskurser. Att 78 % är där är därför både statistiskt och pedagogiskt rimligt.",
+    "title": "Sanity-check via rimlighet",
+    "text": "Ämneslärare har ofta läst ett djupt kärnämne (matematik, svenska, historia, samhälle) och tjänstgör därför oftast i grundskolans senare år — Grundskollärare 4–9 motsvarar dessa årskurser. Att ≈ 78 % är där är därför både statistiskt och pedagogiskt rimligt.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Vanlig fälla: namn-likhet (C)",
-    "text": "Grundskollärarexamen 4-9 (alternativ C) har samma namn som personalkategorin Grundskollärare 4-9 — så det är intuitivt att gissa att en stor andel jobbar i 'sin' kategori. Men chartet visar att Grundskollärarexamen 4-9 har 7 155 i Grundskollärare 4-9-rollen av totalt 9 707 (cirka 74 % — också hög, men skolledar-talet på 218 är under tröskeln 500). Det är just denna 'matchande namn'-fälla som distraktor C bygger på.",
+    "text": "Grundskollärarexamen 4–9 (alternativ C) har samma namn som personalkategorin Grundskollärare 4–9 — så det är intuitivt att gissa att en stor andel jobbar i 'sin' kategori. Tabellen visar mycket riktigt att Grundskollärarexamen 4–9 har 7 155 i Grundskollärare 4–9-rollen av totalt 9 707 (cirka 74 % — också högt), men skolledar-talet 218 är under tröskeln 500, så villkor 1 fäller alternativet. Det är just denna 'matchande namn'-fälla som distraktor C bygger på.",
     "tier": "detail"
    },
    {
     "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är D (Ämneslärarexamen). Insikten i en mening: i tabellfrågor med två villkor, kolla båda systematiskt — eliminera så snart ett villkor missar (snabbeliminering på Skolledare < 500 sparar tid på fördelnings-skanningen).",
+    "title": "Slutsats",
+    "text": "Svaret är D (Ämneslärarexamen): 687 skolledare (> 500) och 6 430 av 8 221 i Grundskollärare 4–9 — radens största kategori. Insikten i en mening: i tabellfrågor med två villkor, kolla båda systematiskt — eliminera så snart ett villkor missar (snabbeliminering på Skolledare < 500 sparar tid på fördelnings-skanningen).",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'vilken rad uppfyller villkor X och Y'-frågor på tab- eller: omvandla varje villkor till en avläsning eller en jämförelse (Y kan kräva att rangordna värden inom raden), kolla båda för varje alternativ, eliminera så snart ett villkor misslyckas. Triggern: 'vilken examen avses + två kriterier' → två-villkors-radgenomgång."
+  "technique": "DTK-strategi för 'vilken rad uppfyller villkor X och Y'-frågor i tabeller: omvandla varje villkor till en avläsning eller en jämförelse (Y kan kräva att rangordna värden inom raden), kolla båda för varje alternativ, eliminera så snart ett villkor misslyckas. Triggern: 'vilken examen avses + två kriterier' → två-villkors-radgenomgång."
  },
  "host-2017-kvant2-DTK-040": {
   "_meta": {

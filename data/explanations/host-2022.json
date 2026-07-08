@@ -10187,215 +10187,203 @@
  },
  "host-2022-kvant1-DTK-030": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": "DTK-TACTIC-002",
   "pregrade_tactic": {
-   "handle": "Skillnad-per-ar-sex-subtraktioner",
-   "move": "For varje av de sex aren: las av Alkoholhaltiga och Alkoholfria drycker i tabellen och subtrahera. Storsta differensen ger ena svaret, minsta differensen ger det andra."
+   "handle": "Skillnad-per-år-sex-subtraktioner",
+   "move": "För varje av de sex åren: läs av Alkoholhaltiga och Alkoholfria drycker i tabellen och subtrahera. Största differensen ger ena svaret, minsta differensen ger det andra."
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "2000 respektive 2005 ar frestande om du bara tittar pa varagruppens forsta och sista av tva 'lugnare' ar och tror att 2005 ar minimum (Alkoholhaltiga 2 873, Alkoholfria 1 598, differens 1 275).",
-    "why_wrong": "Som steg 4-9 visar ar 1 275 (2005) inte minimum — 2006 har en mindre differens, 1 242. Storsta ar 2003 (1 502), inte 2000 (1 353). Facit fastslar D (2003 respektive 2006); alternativ A traffar bara halften av paret rätt och har dessutom fel storsta-ar."
+    "why_tempting": "2000 respektive 2005 lockar om du bara räknar ett par 'kandidatår': 2000 ser stort ut (2 782 − 1 429 = 1 353) och 2005 ser litet ut eftersom Alkoholhaltiga dippar nära Alkoholfria (2 873 − 1 598 = 1 275).",
+    "why_wrong": "Båda halvorna faller vid full räkning: 2003 har större differens än 2000 (1 502 > 1 353) och 2006 har mindre differens än 2005 (1 242 < 1 275). Rätt par är 2003/2006 = D."
    },
    {
     "letter": "B",
-    "why_tempting": "2000 ar latt att fela som 'storsta differens' om du ser att Alkoholhaltiga drycker 2000 (2 782) ar relativt hogt och Alkoholfria 2000 (1 429) ar lagt — 2 782 - 1 429 = 1 353. Och 2006 som minimum ar faktiskt RATT.",
-    "why_wrong": "Differensen 2000 (1 353) ar mindre an 2003 (1 502). Facit fastslar D (2003 resp 2006). Alternativ B traffar minimum-aret (2006) ratt men fel maximum-ar."
+    "why_tempting": "2006 som minimum är faktiskt RÄTT, och 2000 känns som ett rimligt maximum eftersom Alkoholfria drycker då låg lägst i hela tabellen (1 429).",
+    "why_wrong": "Att Alkoholfria är lägst 2000 räcker inte — Alkoholhaltiga är också relativt lågt då. Differensen 2000 (1 353) är mindre än 2003 (3 095 − 1 593 = 1 502). Fel maximum-år; rätt svar D."
    },
    {
     "letter": "C",
-    "why_tempting": "2003 som maximum-ar ar RATT. Det ar mojligt att tro att 2005 ar minimum, eftersom Alkoholhaltiga drycker 2005 (2 873) ar nara Alkoholfria 2005 (1 598) i percentage-mening — men det avgorande ar skillnaden i KRONOR.",
-    "why_wrong": "Som steg 8 visar: differensen 2005 ar 1 275 kr, men 2006 har en mindre differens, 1 242 kr. Facit fastslar D (2003 resp 2006). Alternativ C traffar maximum-aret ratt men fel minimum-ar."
+    "why_tempting": "2003 som maximum är RÄTT, och 2005 ser ut som minimum eftersom Alkoholhaltiga drycker dippar där (2 873) samtidigt som skillnaden 1 275 är den minsta bland de fyra första åren du hinner räkna.",
+    "why_wrong": "2006 slår 2005: 2 953 − 1 711 = 1 242 < 1 275. Minimum avgörs av att Alkoholfria stigit kraftigt till 1 711, inte av att Alkoholhaltiga är lägst. Fel minimum-år; rätt svar D."
    }
   ],
-  "solution_path": "Facit fastslar D (2003 respektive 2006). Las av Alkoholhaltiga drycker och Alkoholfria drycker i tabellen for varje ar och rakna ut differensen i kronor per capita: 2000: 2 782 - 1 429 = 1 353; 2003: 3 095 - 1 593 = 1 502; 2004: 2 844 - 1 539 = 1 305; 2005: 2 873 - 1 598 = 1 275; 2006: 2 953 - 1 711 = 1 242; 2007: 3 082 - 1 802 = 1 280. Storsta differensen: 2003 (1 502 kr). Minsta differensen: 2006 (1 242 kr). Det matchar facit.",
+  "solution_path": "Läs av raderna Alkoholhaltiga drycker och Alkoholfria drycker i tabellen för varje år och räkna ut differensen i kronor per capita: 2000: 2 782 − 1 429 = 1 353; 2003: 3 095 − 1 593 = 1 502; 2004: 2 844 − 1 539 = 1 305; 2005: 2 873 − 1 598 = 1 275; 2006: 2 953 − 1 711 = 1 242; 2007: 3 082 − 1 803 = 1 279. Största differensen: 2003 (1 502 kr). Minsta differensen: 2006 (1 242 kr). Det ger paret 2003 respektive 2006 = alternativ D.",
   "steps": [
    {
     "n": 1,
-    "title": "Forsta fragan",
-    "text": "Fragan: vilket ar var skillnaden i forsaljningsvarde mellan varugrupperna Alkoholfria drycker och Alkoholhaltiga drycker som STORST respektive som MINST, raknat i kronor per capita? Svarsformatet: ett par av artal (storst-ar; minst-ar). Facit fastslar D (2003 resp 2006). Din uppgift ar att rakna SKILLNADEN i kr for varje ar och rangordna.",
-    "tier": "essential"
+    "title": "Förstå frågan",
+    "tier": "essential",
+    "text": "Frågan: vilket år var skillnaden i försäljningsvärde mellan varugrupperna Alkoholfria drycker och Alkoholhaltiga drycker som STÖRST respektive som MINST, räknat i kronor per capita? Svarsformatet är ett par av årtal (störst-år; minst-år). Din uppgift: räkna SKILLNADEN i kronor för varje av tabellens sex år och rangordna."
    },
    {
     "n": 2,
-    "title": "Identifiera de tva radarna",
-    "text": "I tabellen pa sidan 16 finns tva huvudgrupper med fetstil: 'Alkoholfria drycker' (over Kaffe/te/choklad och Mineralvatten/lask) och 'Alkoholhaltiga drycker' (over Spritdrycker, Vin, Ol). Det ar dessa tva summarader vi laser pa, INTE underposterna.",
-    "tier": "essential"
+    "title": "Identifiera de två raderna",
+    "tier": "essential",
+    "text": "I tabellen finns två gruppsummor på samma indragsnivå som Livsmedel: 'Alkoholfria drycker' (med underposterna Kaffe, te och chokladdryck samt Mineralvatten, läskedrycker, frukt- och grönsaksjuicer) och 'Alkoholhaltiga drycker' (med underposterna Spritdrycker, Vin inklusive cider och Öl). Det är dessa två summarader du läser på, INTE underposterna."
    },
    {
     "n": 3,
-    "title": "Las av rad 'Alkoholhaltiga drycker' for alla ar",
-    "text": "Per kolumn: 2000 = 2 782; 2003 = 3 095; 2004 = 2 844; 2005 = 2 873; 2006 = 2 953; 2007 = 3 082. Alla siffror ar printade — ingen visuell uppskattning behovs.",
-    "tier": "essential"
+    "title": "Läs av raden Alkoholhaltiga drycker för alla år",
+    "tier": "essential",
+    "text": "Per kolumn: 2000 = 2 782; 2003 = 3 095; 2004 = 2 844; 2005 = 2 873; 2006 = 2 953; 2007 = 3 082. Alla värden är printade — ingen visuell uppskattning behövs."
    },
    {
     "n": 4,
-    "title": "Las av rad 'Alkoholfria drycker' for alla ar",
-    "text": "Per kolumn: 2000 = 1 429; 2003 = 1 593; 2004 = 1 539; 2005 = 1 598; 2006 = 1 711; 2007 = 1 802. Notera att Alkoholfria stiger jamnt over perioden medan Alkoholhaltiga ar mer ojamn.",
-    "tier": "essential"
+    "title": "Läs av raden Alkoholfria drycker för alla år",
+    "tier": "essential",
+    "text": "Per kolumn: 2000 = 1 429; 2003 = 1 593; 2004 = 1 539; 2005 = 1 598; 2006 = 1 711; 2007 = 1 803. Notera att Alkoholfria stiger nästan varje år medan Alkoholhaltiga rör sig mer ojämnt — det är just samspelet mellan raderna som avgör var gapet är störst och minst."
    },
    {
     "n": 5,
-    "title": "Berakna differens for 2000",
-    "text": "2 782 - 1 429 = 1 353 kr. Forsta delskillnaden.",
-    "tier": "essential"
+    "title": "Beräkna differens för 2000 och 2003",
+    "tier": "essential",
+    "text": "2000: 2 782 − 1 429 = 1 353 kr. 2003: 3 095 − 1 593 = 1 502 kr. 2003 är den största hittills — Alkoholhaltiga toppar relativt medan Alkoholfria ännu inte hunnit ikapp."
    },
    {
     "n": 6,
-    "title": "Berakna differens for 2003",
-    "text": "3 095 - 1 593 = 1 502 kr. Det ar den storsta hittills.",
-    "tier": "essential"
+    "title": "Beräkna differens för 2004 och 2005",
+    "tier": "essential",
+    "text": "2004: 2 844 − 1 539 = 1 305 kr. 2005: 2 873 − 1 598 = 1 275 kr. Båda mindre än 2000 och 2003 — gapet krymper."
    },
    {
     "n": 7,
-    "title": "Berakna differens for 2004",
-    "text": "2 844 - 1 539 = 1 305 kr. Mindre an bade 2000 och 2003.",
-    "tier": "essential"
+    "title": "Beräkna differens för 2006",
+    "tier": "essential",
+    "text": "2 953 − 1 711 = 1 242 kr. Den minsta hittills. Alkoholfria drycker har stigit till 1 711 medan Alkoholhaltiga inte hängt med lika snabbt — det är därför gapet krymper just här."
    },
    {
     "n": 8,
-    "title": "Berakna differens for 2005",
-    "text": "2 873 - 1 598 = 1 275 kr. Mindre an alla tre tidigare ar.",
-    "tier": "essential"
+    "title": "Beräkna differens för 2007",
+    "tier": "essential",
+    "text": "3 082 − 1 803 = 1 279 kr. Högre än 2006 (gapet vidgas igen), men fortfarande mindre än 2000, 2003 och 2004. 2007 kan alltså varken vara max eller min."
    },
    {
     "n": 9,
-    "title": "Berakna differens for 2006",
-    "text": "2 953 - 1 711 = 1 242 kr. Det ar den minsta hittills. Notera att Alkoholfria drycker stigit till 1 711 medan Alkoholhaltiga inte hangt med lika snabbt — det ar darfor gapet krymper just har.",
-    "tier": "essential"
+    "title": "Rangordna de sex differenserna",
+    "tier": "essential",
+    "text": "Störst till minst: 2003 (1 502) > 2000 (1 353) > 2004 (1 305) > 2007 (1 279) > 2005 (1 275) > 2006 (1 242). Störst: 2003. Minst: 2006. Notera hur nära 2005 (1 275) och 2007 (1 279) ligger 2006 (1 242) — utan att räkna alla sex är minimum-året lätt att missa."
    },
    {
     "n": 10,
-    "title": "Berakna differens for 2007",
-    "text": "3 082 - 1 802 = 1 280 kr. Hogre an 2006 (gapet vidgas igen), men fortfarande mindre an alla forsta fyra aren.",
-    "tier": "essential"
+    "title": "Korsa mot svarsalternativen",
+    "tier": "essential",
+    "text": "A: 2000/2005 — fel på BÅDE störst och minst. B: 2000/2006 — fel störst, rätt minst. C: 2003/2005 — rätt störst, fel minst. D: 2003/2006 — båda rätt. Svaret är D."
    },
    {
     "n": 11,
-    "title": "Rangordna de sex differenserna",
-    "text": "Storre till mindre: 2003 (1 502) > 2000 (1 353) > 2004 (1 305) > 2007 (1 280) > 2005 (1 275) > 2006 (1 242). Storst: 2003. Minst: 2006.",
-    "tier": "essential"
-   },
-   {
-    "n": 12,
-    "title": "Korsa mot svarsalternativen",
-    "text": "A: 2000 / 2005 — fel pa BADE storst och minst. B: 2000 / 2006 — fel storst, ratt minst. C: 2003 / 2005 — ratt storst, fel minst. D: 2003 / 2006 — bada ratt. Facit fastslar D.",
-    "tier": "essential"
-   },
-   {
-    "n": 13,
-    "title": "Slutsats med facit-bekraftelse",
-    "text": "Facit bekraftar: svaret ar D (2003 respektive 2006). Insikten i en mening: nar fragan ber om bade storst OCH minst i samma ar-storlek-rang, gor SEX berakningar (en per ar) och rangordna — gissning fran tva snabba kandidater missar lätt det riktiga minimum-aret.",
-    "tier": "essential"
+    "title": "Slutsats",
+    "tier": "essential",
+    "text": "Svaret är D (2003 respektive 2006). Insikten i en mening: när frågan ber om både störst OCH minst gör du samtliga sex subtraktioner och rangordnar — gissning från två snabba kandidater missar lätt det riktiga minimum-året, som avgörs av att raderna rör sig MOT varandra, inte av att någon av dem är lägst."
    }
   ],
-  "technique": "DTK-strategi for 'storst respektive minst differens'-fragor mot en tabell: rakna ut samtliga delskillnader (en per redovisad period), rangordna dem och plocka extremvärdena. Triggern: 'storst respektive minst'-formulering med tva svarsplatser → exhaustiv subtraktion, inte gissning. Tabellfragor belonar systematik framfor klyfttänkande.",
-  "pitfall": "Den klassiska fallan ar att stanna efter tva eller tre berakningar och anta att de extrema arena ar de uppenbara — t.ex. att 2005 maste vara minimum aret eftersom Alkoholhaltiga drycker dippade dar. Botemedlet: rakna SAMTLIGA differenser och rangordna; minimum-aret i denna typ av tabell ar nastan alltid det ar dar de tva radarna ROR sig mot varandra, inte det ar dar de bada ar lagst."
+  "technique": "DTK-strategi för \"störst respektive minst differens\"-frågor mot en tabell: räkna ut samtliga delskillnader (en per redovisad kolumn), rangordna dem och plocka extremvärdena. Triggern: \"störst respektive minst\"-formulering med två svarsplatser → uttömmande subtraktion, inte gissning. Tabellfrågor belönar systematik framför ögonmått.",
+  "pitfall": "Den klassiska fällan är att stanna efter två eller tre beräkningar och anta att de extrema åren är de uppenbara — t.ex. att 2005 måste vara minimum-året eftersom Alkoholhaltiga drycker dippade där. Botemedlet: räkna SAMTLIGA sex differenser och rangordna; minimum-året i denna typ av tabell är nästan alltid det år där de två raderna RÖR sig mot varandra (här 2006, när Alkoholfria stigit till 1 711), inte det år där någon av dem är lägst."
  },
  "host-2022-kvant1-DTK-031": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": "DTK-TACTIC-006",
   "pregrade_tactic": {
-   "handle": "Halften-av-totalen-summera-kandidater",
-   "move": "Halften av 21 221 ar ca 10 600 kr. Las av cirkeldiagrammets eller tabellens 2007-andelar och summera varje svarsalternativs varugrupper — det alternativ som ligger narmast 10 600 (eller ca 50 %) vinner."
+   "handle": "Hälften-av-totalen-summera-kandidater",
+   "move": "Hälften av 21 221 är ca 10 600 kr. Läs av cirkeldiagrammets eller tabellens 2007-andelar och summera varje svarsalternativs varugrupper — det alternativ som ligger närmast 10 600 (eller ca 50 %) vinner."
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Brod, kott, mjolk/ost/agg ar tre 'stora' varugrupper i cirkeldiagrammet (13 + 15 + 13 = 41 %), och 41 % kanns 'nara halften' i en muntlig bedomning.",
-    "why_wrong": "41 % ar inte 'narmare halften' an 46 %. Som steg 7 visar: 2 685 + 3 262 + 2 829 = 8 776 kr (≈ 41,4 %). Facit fastslar D (≈ 46 %). Skillnaden ar smal men avgorande — 46 ar narmare 50 an 41 ar."
+    "why_tempting": "Bröd, kött och mjölk/ost/ägg är tre \"stora\" varugrupper i cirkeldiagrammet (13 + 15 + 13 = 41 %), och 41 % känns \"nära hälften\" i en snabb bedömning.",
+    "why_wrong": "41 % är inte \"närmare hälften\" än 46 %. I kronor: 2 685 + 3 262 + 2 829 = 8 776 kr ≈ 41,4 %, medan D:s summa 9 753 kr ≈ 46,0 %. Skillnaden är smal men avgörande — 46 ligger närmare 50 än 41 gör."
    },
    {
     "letter": "B",
-    "why_tempting": "Brod (13 %), mjolk/ost/agg (13 %), frukt (6 %), gronsaker (9 %) summerar till 41 % — ocksa 'narmare halften'-kandidat och flera varugrupper.",
-    "why_wrong": "Samma fall som A: 41 % ar inte sa nara halften som D:s 46 %. I kronor: 2 685 + 2 829 + 1 379 + 1 870 = 8 763 kr (≈ 41,3 %). Facit fastslar D — vars summa 9 753 kr ligger markbart narmare 10 610 kr (halften)."
+    "why_tempting": "Bröd (13 %), mjölk/ost/ägg (13 %), frukt (6 %) och grönsaker (9 %) summerar till 41 % — också en \"närmare hälften\"-kandidat med flera varugrupper.",
+    "why_wrong": "Samma fall som A: 41 % är inte så nära hälften som D:s 46 %. I kronor: 2 685 + 2 829 + 1 379 + 1 870 = 8 763 kr ≈ 41,3 %, medan D:s 9 753 kr ligger markant närmare 10 610 kr (hälften)."
    },
    {
     "letter": "C",
-    "why_tempting": "Fem varugrupper kanns 'manga och darfor stor andel'. Kott (15 %) + fisk (5 %) + oljor (2 %) + frukt (6 %) + gronsaker (9 %) = 37 %.",
-    "why_wrong": "37 % ligger lagre an alternativ D:s 46 % — och langre fran halften. Som steg 7 visar: 3 262 + 1 076 + 450 + 1 379 + 1 870 = 8 037 kr. Facit fastslar D. Att rakna manga sma poster fyller inte upp till halften om en av dem (oljor 2 %) ar markbart sma."
+    "why_tempting": "Fem varugrupper känns \"många och därför stor andel\". Kött (15 %) + fisk (5 %) + oljor (2 %) + frukt (6 %) + grönsaker (9 %) = 37 %.",
+    "why_wrong": "37 % ligger lägst av de fyra alternativen — och längst från hälften. I kronor: 3 262 + 1 076 + 450 + 1 379 + 1 870 = 8 037 kr ≈ 37,9 % mot D:s 46,0 %. Att räkna många små poster fyller inte upp till hälften när flera av dem (oljor 2 %, fisk 5 %) är små."
    }
   ],
-  "solution_path": "Facit fastslar D (Kott - frukt - gronsaker - sotsaker - lask, juice etc.). Halften av Livsmedel och drycker 2007 (21 221 kr) ar ca 10 610 kr (50 %). Summera kr-beloppen for alternativets fem varugrupper 2007: Kott 3 262 + Frukt 1 379 + Gronsaker 1 870 + Sotsaker (Socker, sylt, honung, choklad och konfektyr) 1 989 + Lask, juice etc (Mineralvatten, laskedrycker, frukt- och gronsaksjuicer) 1 253 = 9 753 kr ≈ 45,9 %. Det ar markbart narmare halften an A (41,4 %), B (41,3 %) eller C (37,9 %).",
+  "solution_path": "Hälften av Livsmedel och drycker 2007 (21 221 kr) är ca 10 610 kr, dvs. 50 %. Summera kronbeloppen för alternativ D:s fem varugrupper 2007: Kött 3 262 + Frukt 1 379 + Grönsaker 1 870 + Sötsaker (Socker, sylt, honung, choklad och konfektyr) 1 989 + Läsk, juice etc. (Mineralvatten, läskedrycker, frukt- och grönsaksjuicer) 1 253 = 9 753 kr ≈ 46,0 %. Det är markant närmare hälften än A (8 776 kr ≈ 41,4 %), B (8 763 kr ≈ 41,3 %) eller C (8 037 kr ≈ 37,9 %). Svaret är D.",
   "steps": [
    {
     "n": 1,
-    "title": "Forsta fragan",
-    "text": "Fragan: vilket svarsforslag anger varugrupper som TILLSAMMANS utgjorde narmare halften av forsaljningsvardet av livsmedel och drycker 2007? Svarsformatet: ett alternativ vars summerade andel ligger narmast 50 %. Facit fastslar D. Din uppgift: rakna ut total-andelen for varje alternativ och plocka det som ligger narmast halften.",
+    "title": "Förstå frågan",
+    "text": "Frågan: vilket svarsförslag anger varugrupper som TILLSAMMANS utgjorde närmare hälften av försäljningsvärdet av livsmedel och drycker 2007? Svarsformatet: ett alternativ vars summerade andel ligger närmast 50 %. Din uppgift: räkna ut totalandelen för varje alternativ och plocka det som ligger närmast hälften.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Faststall malet (halften av totalen)",
-    "text": "Toppraden i tabellen ger Livsmedel och drycker 2007 = 21 221 kr. Halften ar ca 10 610 kr eller exakt 50 %. Var malzon: alternativ som hamnar nara 50 %, inte runt 40 %.",
+    "title": "Fastställ målet (hälften av totalen)",
+    "text": "Toppraden i tabellen ger Livsmedel och drycker 2007 = 21 221 kr. Hälften är ca 10 610 kr, eller exakt 50 %. Vår målzon: alternativ som hamnar nära 50 %, inte runt 40 %.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Las cirkeldiagrammet for snabb overslag",
-    "text": "Cirkeldiagrammet pa samma sida ger procentandelar 2007: Brod och spannmal 13 %, Kott 15 %, Fisk 5 %, Mjolk/ost/agg 13 %, Oljor och fetter 2 %, Frukt 6 %, Gronsaker 9 %, Sotsaker 9 %, Ovriga livsmedel 4 %, Kaffe/te/chokladdryck 3 %, Lask/juice etc. 6 %, Alkoholhaltiga drycker 15 %. Procentvardena ar PRINTADE pa diagrammet — anvand dem direkt.",
+    "title": "Läs cirkeldiagrammet för snabbt överslag",
+    "text": "Cirkeldiagrammet på samma sida ger procentandelar 2007: Bröd och spannmål 13 %, Kött 15 %, Fisk 5 %, Mjölk/ost/ägg 13 %, Oljor och fetter 2 %, Frukt 6 %, Grönsaker 9 %, Sötsaker 9 %, Övriga livsmedel 4 %, Kaffe/te och chokladdryck 3 %, Läsk/juice etc. 6 %, Alkoholhaltiga drycker 15 %. Procentvärdena är PRINTADE vid diagrammet — använd dem direkt.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Summera alternativ A",
-    "text": "A = Brod och spannmal (13 %) + Kott (15 %) + Mjolk, ost och agg (13 %) = 41 %. I kronor: 2 685 + 3 262 + 2 829 = 8 776 kr. Avstand till 50 %: 9 procentenheter under.",
+    "text": "A = Bröd och spannmål (13 %) + Kött (15 %) + Mjölk, ost och ägg (13 %) = 41 %. I kronor: 2 685 + 3 262 + 2 829 = 8 776 kr. Avstånd till 50 %: 9 procentenheter under.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Summera alternativ B",
-    "text": "B = Brod och spannmal (13 %) + Mjolk, ost och agg (13 %) + Frukt (6 %) + Gronsaker (9 %) = 41 %. I kronor: 2 685 + 2 829 + 1 379 + 1 870 = 8 763 kr. Avstand till 50 %: ocksa 9 procentenheter under.",
+    "text": "B = Bröd och spannmål (13 %) + Mjölk, ost och ägg (13 %) + Frukt (6 %) + Grönsaker (9 %) = 41 %. I kronor: 2 685 + 2 829 + 1 379 + 1 870 = 8 763 kr. Avstånd till 50 %: också 9 procentenheter under.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Summera alternativ C",
-    "text": "C = Kott (15 %) + Fisk (5 %) + Oljor och fetter (2 %) + Frukt (6 %) + Gronsaker (9 %) = 37 %. I kronor: 3 262 + 1 076 + 450 + 1 379 + 1 870 = 8 037 kr. Avstand till 50 %: 13 procentenheter under — sämst av de fyra.",
+    "text": "C = Kött (15 %) + Fisk (5 %) + Oljor och fetter (2 %) + Frukt (6 %) + Grönsaker (9 %) = 37 %. I kronor: 3 262 + 1 076 + 450 + 1 379 + 1 870 = 8 037 kr. Avstånd till 50 %: 13 procentenheter under — sämst av de fyra.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Summera alternativ D",
-    "text": "D = Kott (15 %) + Frukt (6 %) + Gronsaker (9 %) + Sotsaker (9 %) + Lask/juice etc. (6 %) = 45 %. I kronor: 3 262 + 1 379 + 1 870 + 1 989 + 1 253 = 9 753 kr ≈ 45,9 %. Avstand till 50 %: bara 4-5 procentenheter under — klart narmast halften.",
+    "text": "D = Kött (15 %) + Frukt (6 %) + Grönsaker (9 %) + Sötsaker (9 %) + Läsk/juice etc. (6 %) = 45 %. I kronor: 3 262 + 1 379 + 1 870 + 1 989 + 1 253 = 9 753 kr ≈ 46,0 %. Avstånd till 50 %: bara 4–5 procentenheter under — klart närmast hälften.",
     "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Vad betyder 'narmare halften'?",
-    "text": "'Narmare halften' = narmast 50 % av totalen. Inte 'exakt halften' (det skulle vara 10 610,5 kr). HP belonar det alternativ som ligger med MINST avstand till malet. Avstanden ar: A 9 pp, B 9 pp, C 13 pp, D 4-5 pp. D vinner entydigt.",
+    "title": "Vad betyder \"närmare hälften\"?",
+    "text": "\"Närmare hälften\" = närmast 50 % av totalen. Inte \"exakt hälften\" (det skulle vara 10 610,5 kr). HP belönar det alternativ som ligger med MINST avstånd till målet. Avstånden är: A 9 pp, B 9 pp, C 13 pp, D 4–5 pp. D vinner entydigt.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Korsa mot kronor-tabellen",
-    "text": "Konsistenskontroll: i kronor ar D = 9 753 av 21 221 totalt → 9 753 / 21 221 = 0,4596 = 46,0 %. Cirkeldiagrammets summa 45 % var avrundad — den faktiska procentsatsen ar 46 %, sa D ar ocksa narmast halften enligt tabelldata.",
+    "text": "Konsistenskontroll: i kronor är D = 9 753 av 21 221 totalt → 9 753 / 21 221 = 0,4596 ≈ 46,0 %. Cirkeldiagrammets summa 45 % var avrundad — den faktiska andelen är 46 %, så D är också närmast hälften enligt tabelldata.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Sanity-check med cirkeldiagrammet visuellt",
-    "text": "Visuellt pa cirkeldiagrammet: Kott (15 %) ar en av de storsta tartbitarna, och tillsammans med Frukt (6 %), Gronsaker (9 %), Sotsaker (9 %), Lask/juice (6 %) bildar de just under halva cirkeln. Det alternativet syns formligen 'spanna over halva tartan' nar du laser hogerifran (kott vid 'kl 3'-positionen) ner till lask/juice.",
+    "title": "Varning: du kan inte se svaret som en halvcirkel",
+    "text": "Frestas inte att avgöra frågan på ögonmått i cirkeldiagrammet: D:s varugrupper ligger INTE intill varandra i cirkeln. Mellan Kött och Frukt ligger Fisk (5 %), Mjölk/ost/ägg (13 %) och Oljor och fetter (2 %), och mellan Sötsaker och Läsk/juice ligger Övriga livsmedel (4 %) och Kaffe/te (3 %). D:s bitar är alltså utspridda och bildar ingen sammanhängande halva — du MÅSTE addera de printade procenttalen. Snabb motkontroll: allt som INTE ingår i D (13 + 5 + 13 + 2 + 4 + 3 + 15 = 55 %) är strax över hälften, så D:s bitar är strax under hälften.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekraftelse",
-    "text": "Facit bekraftar: svaret ar D. Insikten i en mening: vid 'narmare halften'-fragor — anvand cirkeldiagrammets printade procent och summera varje alternativ; vinnaren ar det alternativ vars summa ligger MINST antal procentenheter ifran 50 %.",
+    "title": "Slutsats",
+    "text": "Svaret är D. Insikten i en mening: vid \"närmare hälften\"-frågor — använd cirkeldiagrammets printade procent och summera varje alternativ; vinnaren är det alternativ vars summa ligger MINST antal procentenheter ifrån 50 %.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi for 'tillsammans utgor andel X'-fragor mot kombinerad tabell + cirkeldiagram: summera de printade procentandelarna for varje svarsalternativ och jamfor mot malvardet (har: halften = 50 %). Det alternativ vars summa ligger narmast malet ar svaret. Triggern: 'tillsammans utgjorde narmare X' → addera procentandelarna i HUVUDET, inte i kronor — det gar snabbare och avstand till 50 % ar latt att se.",
-  "pitfall": "Den klassiska fallan ar att tro att 'narmare halften' = 'flest varugrupper i alternativet'. Alternativ C har fem varugrupper men summerar till bara 37 % eftersom flera av dem (oljor 2 %, fisk 5 %) ar smà. Botemedlet: rakna procentandelarna, inte antalet varugrupper — och kom ihag att avstand till 50 % avgor, inte numeriskt antal poster."
+  "technique": "DTK-strategi för \"tillsammans utgör andel X\"-frågor mot kombinerad tabell + cirkeldiagram: summera de printade procentandelarna för varje svarsalternativ och jämför mot målvärdet (här: hälften = 50 %). Det alternativ vars summa ligger närmast målet är svaret. Triggern: \"tillsammans utgjorde närmare X\" → addera procentandelarna i HUVUDET, inte i kronor — det går snabbare och avstånd till 50 % är lätt att se.",
+  "pitfall": "Den klassiska fällan är att tro att \"närmare hälften\" = \"flest varugrupper i alternativet\". Alternativ C har fem varugrupper men summerar till bara 37 % eftersom flera av dem (oljor 2 %, fisk 5 %) är små. Botemedlet: räkna procentandelarna, inte antalet varugrupper — och kom ihåg att avståndet till 50 % avgör, inte antalet poster."
  },
  "host-2022-kvant1-DTK-032": {
   "_meta": {
@@ -10951,103 +10939,103 @@
  },
  "host-2022-kvant1-DTK-038": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": "DTK-TACTIC-002",
   "pregrade_tactic": {
-   "handle": "Min-max-pa-undre-diagrammet-2002",
-   "move": "I diagrammet for MAN (nedre): leta hogsta och lagsta linje vid 2002, las av dem mot y-axeln, subtrahera."
+   "handle": "Min-max-på-undre-diagrammet-2002",
+   "move": "I diagrammet för MÄN (nedre): leta högsta och lägsta linje vid 2002, läs av dem mot y-axeln, subtrahera."
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "13 dagar ar resultatet om du underskattar maxlinjen (Arbete utan krav pa sarskild yrkesutbildning) eller overskattar minlinjen (Militart arbete) — slarvfel i av lasning.",
-    "why_wrong": "Maxlinjen for män 2002 nar markbart hogre an 13 dagar i toppen. Som steg 4-5 visar: max ar ca 19 dagar, min ar ca 4 dagar, skillnad = 15. Facit fastslar 15 dagar (alternativ B), inte 13."
+    "why_tempting": "13 dagar blir resultatet om du underskattar maxlinjen (läser 'Arbete utan krav' som ~17–18) eller överskattar minlinjen (läser Militärt arbete som ~5–6) — rena avläsningsslarv i ett tätt diagram.",
+    "why_wrong": "Maxlinjen startar tydligt närmare 20-ticket än 15-ticket: ca 19. Minlinjen ligger under mitten mellan 0 och 5: ca 4. 19 − 4 = 15, inte 13."
    },
    {
     "letter": "C",
-    "why_tempting": "17 dagar ar en mellangissning — om du har grovt fel pa ettar av yttre linjerna. Det ar nara nog att kanna 'mojligt' men inte exakt.",
-    "why_wrong": "Skillnaden mellan storsta och minsta yrkesgrupp ar 15 (steg 5-6), inte 17. Facit fastslar B. Som steg 4 betonar: las MAXIMUM (hogsta startpunkten vid 2002) och MINIMUM (lagsta startpunkten vid 2002) mot tick-axeln, sen subtrahera."
+    "why_tempting": "17 dagar är en mellangissning — nära nog för att kännas 'möjlig' om du bara ögonmåttat avståndet mellan översta och nedersta linjen utan att läsa mot tick-värdena.",
+    "why_wrong": "Läst mot axeln är max ca 19 och min ca 4, alltså skillnad 15. För att få 17 måste minlinjen ligga på ca 2, men Militärt arbete-linjen startar klart över 5-tickets halva, på ca 4."
    },
    {
     "letter": "D",
-    "why_tempting": "19 dagar ar nara MAXIMUM-vardet (Arbete utan krav...) ensamt, inte skillnaden. Om du tolkar fragan som 'storsta vardet hos den mest sjukskrivna' hamnar du har.",
-    "why_wrong": "Fragan ber om SKILLNADEN, inte den storsta gruppens varde. Max alone ar ca 19 dagar (steg 4), men min ar ca 4, sa skillnaden ar 19 - 4 = 15. Facit fastslar B. Las fragans 'skillnaden mellan storst och minst' — det ar diferens, inte maxvarde."
+    "why_tempting": "19 dagar är MAXVÄRDET ensamt ('Arbete utan krav på särskild yrkesutbildning' 2002). Tolkar du frågan som 'hur många dagar hade den mest sjukskrivna gruppen?' hamnar du exakt här.",
+    "why_wrong": "Frågan ber om SKILLNADEN mellan störst och minst, inte den största gruppens värde. Max är ca 19 men min (Militärt arbete) är ca 4, så skillnaden är 19 − 4 = 15."
    }
   ],
-  "solution_path": "Facit fastslar 15 dagar (alternativ B). I nedre diagrammet (Man) vid x = 2002: leta hogsta linje — det ar 'Arbete utan krav pa sarskild yrkesutbildning' som startar pa ca 19 dagar. Leta lagsta linje — 'Militart arbete' som startar pa ca 4 dagar. Skillnaden: 19 - 4 = 15 dagar. Det matchar facit.",
+  "solution_path": "I det NEDRE diagrammet (Män) vid x = 2002: den högsta linjen är den tjocka heldragna grå 'Arbete utan krav på särskild yrkesutbildning', som startar på ca 19 dagar. Den lägsta linjen är den grå streckade 'Militärt arbete', som startar på ca 4 dagar. Skillnaden: 19 − 4 = 15 dagar = alternativ B.",
   "steps": [
    {
     "n": 1,
-    "title": "Forsta fragan",
-    "text": "Fragan: hur stor var skillnaden 2002 mellan yrkesgruppen med STORST respektive MINST antal ersatta sjukskrivningsdagar per anstalld MAN? Svarsformatet ar dagar. Facit fastslar 15 dagar (alternativ B). Strategin: las hogsta och lagsta linje for man 2002, subtrahera.",
-    "tier": "essential"
+    "title": "Förstå frågan",
+    "tier": "essential",
+    "text": "Frågan: hur stor var skillnaden 2002 mellan yrkesgruppen med STÖRST respektive MINST antal ersatta sjukskrivningsdagar per anställd MAN? Svarsformatet är dagar. Strategin: läs av högsta och lägsta linje för män vid 2002 och subtrahera."
    },
    {
     "n": 2,
-    "title": "Orientera dig pa sidan",
-    "text": "Sidan 22 har TVA linjediagram med samma legend till hoger: ovre diagrammet 'Kvinnor', nedre diagrammet 'Man'. Vi behover bara DET NEDRE (Man). Y-axeln gar 0-35, x-axeln 2002-2010, varje linje representerar en yrkesgrupp.",
-    "tier": "essential"
+    "title": "Orientera dig på sidan",
+    "tier": "essential",
+    "text": "Sidan har TVÅ linjediagram med en gemensam legend till höger: övre diagrammet 'Kvinnor', nedre diagrammet 'Män'. Vi behöver bara DET NEDRE (Män). Y-axeln (Antal) går 0–35 med tick var femte enhet, x-axeln 2002–2010, och varje linje är en yrkesgrupp."
    },
    {
     "n": 3,
-    "title": "Las legenden",
-    "text": "Legenden till hoger om diagram- men listar 11 yrkesgrupper (Arbete utan krav pa sarskild yrkesutbildning, Processoch maskinoperatorsarbete, Hantverksarbete inom byggverksamhet och tillverkning, Arbete inom jordbruk/skog/fiske, Service-/omsorgs-/forsaljningsarbete, Kontorsoch kundservicearbete, Arbete som kraver kortare hogskoleutbildning, Arbete som kraver teoretisk specialkompetens, Ledningsarbete, Militart arbete, Samtliga yrken). Varje yrkesgrupp ar ritad med en distinkt linjestil — heldragen, streckad, prickad, prickstreckad, etc.",
-    "tier": "essential"
+    "title": "Läs legenden",
+    "tier": "essential",
+    "text": "Legenden listar 11 serier: Arbete utan krav på särskild yrkesutbildning (tjock heldragen grå), Process- och maskinoperatörsarbete/transportarbete (grå streckad med långa streck), Hantverksarbete inom byggverksamhet och tillverkning (prickstreckad), Arbete inom jordbruk/trädgård/skogsbruk/fiske (tunn heldragen grå), Service-/omsorgs-/försäljningsarbete (prickad), Kontors- och kundservicearbete (svart långstreckad), Arbete som kräver kortare högskoleutbildning (fin grå kortstreckad), Arbete som kräver teoretisk specialkompetens (svart kortstreckad), Ledningsarbete (tunn heldragen svart), Militärt arbete (grå streckad med medellånga streck) samt Samtliga yrken (tjock heldragen svart)."
    },
    {
     "n": 4,
-    "title": "Hitta hogsta linje for man 2002",
-    "text": "I nedre diagrammet vid x = 2002: skanna alla linjernas startpunkter pa vanster kant. Hogsta startpunkten ar 'Arbete utan krav pa sarskild yrkesutbildning' — den startar tydligt over 15-tick'en och nar uppat mot ca 19 dagar. Las av: 19 dagar.",
-    "tier": "essential"
+    "title": "Hitta högsta linjen för män 2002",
+    "tier": "essential",
+    "text": "I nedre diagrammet vid x = 2002: skanna alla linjers startpunkter längs vänsterkanten. Högst ligger den tjocka heldragna grå linjen — 'Arbete utan krav på särskild yrkesutbildning'. Den startar tydligt över 15-ticket, strax under 20: läs av ca 19 dagar."
    },
    {
     "n": 5,
-    "title": "Hitta lagsta linje for man 2002",
-    "text": "I nedre diagrammet vid x = 2002: lagsta startpunkten ar 'Militart arbete' (prickstreckad fin linje, langt nere i diagrammet). Den startar pa ca 4 dagar (mellan tick 0 och tick 5, narmast 5). Las av: 4 dagar.",
-    "tier": "essential"
+    "title": "Hitta lägsta linjen för män 2002",
+    "tier": "essential",
+    "text": "Lägst i nedre diagrammet ligger den grå streckade linjen — 'Militärt arbete' — helt för sig själv långt under alla andra. Vid 2002 startar den mellan 0- och 5-ticket, närmare 5: läs av ca 4 dagar."
    },
    {
     "n": 6,
-    "title": "Berakna skillnaden",
-    "text": "Skillnad = hogsta - lagsta = 19 - 4 = 15 dagar. Det matchar facits svar.",
-    "tier": "essential"
+    "title": "Beräkna skillnaden",
+    "tier": "essential",
+    "text": "Skillnad = högsta − lägsta = 19 − 4 = 15 dagar."
    },
    {
     "n": 7,
-    "title": "Vad ar 'ersatta sjukskrivningsdagar per anstalld'?",
-    "text": "'Ersatta sjukskrivningsdagar' = dagar dar arbetstagaren fatt sjukpenning fran Forsakringskassan. 'Per anstalld' = medelvardet over alla anstallda i den yrkesgruppen, oberoende av om de blev sjuka eller inte. En kombination av sjukfrekvens och langd.",
-    "tier": "detail"
+    "title": "Vad är 'ersatta sjukskrivningsdagar per anställd'?",
+    "tier": "detail",
+    "text": "'Ersatta sjukskrivningsdagar' = dagar där arbetstagaren fått sjukpenning från Försäkringskassan. 'Per anställd' = genomsnittet över alla anställda i yrkesgruppen, oavsett om de blev sjuka eller inte — en kombination av sjukfrekvens och sjukskrivningslängd."
    },
    {
     "n": 8,
     "title": "Korsa mot svarsalternativen",
-    "text": "Alternativen ar 13, 15, 17, 19. Var berakning 15 matchar entydigt B. Notera att alternativ D (19) ar precis maxvardet — en klassisk distraktor som forvaxlar 'skillnad' med 'max'.",
-    "tier": "essential"
+    "tier": "essential",
+    "text": "Alternativen är 13, 15, 17, 19. Vår beräkning 15 matchar entydigt B. Notera att alternativ D (19) är precis maxvärdet ensamt — en klassisk distraktor som förväxlar 'skillnad' med 'max'. Även om avläsningarna vore en halv dag fel åt varsitt håll landar differensen närmare 15 än 13 eller 17."
    },
    {
     "n": 9,
-    "title": "Sanity-check mot kvinno-diagrammet",
-    "text": "I OVRE diagrammet (Kvinnor) 2002 ar maxlinjen (Arbete utan krav) ca 29 dagar och minlinjen (Militart arbete) ca 14 dagar — skillnad 15 dagar. Att Kvinnor och Man har samma SKILLNAD (15) trots olika absolutniva er en aha-detalj och styrker att man-svaret 15 ar rimligt.",
-    "tier": "detail"
+    "title": "Läs rätt panel — kvinnodiagrammet ser annorlunda ut",
+    "tier": "detail",
+    "text": "Kontrollera att du är i MÄN-panelen. I det ÖVRE diagrammet (Kvinnor) 2002 är toppen den grå streckade Process- och maskinoperatörslinjen på ca 30, och den lägsta synliga linjen är den tunna heldragna Ledningsarbete-linjen på ca 15–16 — någon militärt arbete-linje syns inte alls i kvinnopanelen. Nivåerna skiljer sig alltså rejält mellan panelerna, så att läsa i fel diagram ger helt fel tal."
    },
    {
     "n": 10,
     "title": "Sanity-check linjestilarna",
-    "text": "'Arbete utan krav pa sarskild yrkesutbildning' ar i legenden den FORSTA linjen (heldragen, mediel-fet). 'Militart arbete' ar nast nedersta linjen i legenden (fin, prickstreckad). Att dessa tva ar extrema 2002 ar konsistent over alla aren — heldragen 'utan krav' ligger genomgaende hogst, militart genomgaende lagst.",
-    "tier": "detail"
+    "tier": "detail",
+    "text": "'Arbete utan krav på särskild yrkesutbildning' är legendens FÖRSTA post (tjock heldragen grå) och ligger i mansdiagrammet högst alla år 2002–2010. 'Militärt arbete' är legendens näst nedersta post (grå streckad) och ligger genomgående lägst, klart separerad från klungan ovanför. Att just dessa två är extrempunkterna 2002 är alltså konsistent med hela tidsserien."
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekraftelse",
-    "text": "Facit bekraftar: svaret ar B (15 dagar). Insikten i en mening: vid 'skillnad mellan max och min'-fragor i ett linjediagram med MANGA linjer — sok hogsta och lagsta START-punkter for det aktuella aret pa diagrammets vanstra kant och las mot tick-axeln, sen subtrahera.",
-    "tier": "essential"
+    "title": "Slutsats",
+    "tier": "essential",
+    "text": "Svaret är B (15 dagar). Insikten i en mening: vid 'skillnad mellan max och min'-frågor i ett linjediagram med MÅNGA linjer — sök högsta och lägsta linje vid det aktuella året längs diagrammets vänsterkant, läs av mot tick-axeln och subtrahera."
    }
   ],
-  "technique": "DTK-strategi for skillnad-mellan-yttersta-linjer-pa-linjediagram: identifiera hogsta och lagsta linjen vid det specifika x-vardet (aret), las bada mot y-axelns printade tick-varden, subtrahera. Triggern: 'skillnaden mellan storst och minst yrkesgrupp/serie aret X' → tva av lasningar + en subtraktion.",
-  "pitfall": "Den klassiska fallan ar att forvaxla 'max-vardet' med 'skillnaden' (svarade D, 19, i stallet for B, 15). Botemedlet: las fragan ord for ord — 'skillnaden mellan storst och minst' ar EN siffra (differens), inte EN av tva siffror (max). Berakna max - min och korsa mot alternativen."
+  "technique": "DTK-strategi för skillnad-mellan-yttersta-linjer på linjediagram: identifiera högsta och lägsta linjen vid det specifika x-värdet (året), läs båda mot y-axelns printade tick-värden, subtrahera. Triggern: 'skillnaden mellan största och minsta yrkesgrupp/serie året X' → två avläsningar + en subtraktion.",
+  "pitfall": "Den klassiska fällan är att förväxla maxvärdet med skillnaden (svara D, 19, i stället för B, 15). Botemedlet: läs frågan ord för ord — 'skillnaden mellan störst och minst' är EN siffra (en differens), inte en av de två avläsningarna. Beräkna max − min och korsa först därefter mot alternativen."
  },
  "host-2022-kvant1-DTK-039": {
   "_meta": {
@@ -11251,103 +11239,103 @@
  },
  "host-2022-kvant2-DTK-029": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": "DTK-TACTIC-002",
   "pregrade_tactic": {
-   "handle": "Brantaste-arsspranget-procentenheter",
-   "move": "Folj Internet-linjen i ovre diagrammet ar for ar, hitta det BRANTASTE sprangget mellan tva angransande ar och las skillnaden i procentenheter mot y-axeln."
+   "handle": "Brantaste-årssprånget-procentenheter",
+   "move": "Följ Internet-linjen (tunn punkt-streckad) i det ÖVRE diagrammet år för år, hitta det brantaste språnget mellan två angränsande år och läs skillnaden i procentenheter mot y-axeln."
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "10 procentenheter ar ett normal-stort steg pa Internet-linjen mellan flesta ar. Det ar latt att tro att de typiska arssprangen ar maximum — men kurvan har en mycket brantare period nara 2000.",
-    "why_wrong": "Den BRANTASTE delen av Internet-kurvan ar runt sekelskiftet 1999-2001 dar andelen rusade fran ca 30 % till ca 60 % pa nagra ar. Det enskilda STORSTA arsspranget ar ca 20 procentenheter (steg 5-6), inte 10. Facit fastslar C (20 procentenheter)."
+    "why_tempting": "10 procentenheter är ett normalstort årssteg på Internet-linjen under stora delar av perioden (t.ex. 2002 → 2003 är ca 9 pp). Skummar du kurvan utan att zooma in på den branta fasen kring sekelskiftet fastnar du lätt på ett 'typiskt' steg.",
+    "why_wrong": "Kurvans brantaste segment är 1999 → 2000, där andelen hoppar från ca 30 % till ca 51 % — omkring 20 procentenheter, dubbelt så mycket som ett typiskt steg. Svaret är C."
    },
    {
     "letter": "B",
-    "why_tempting": "15 procentenheter ar mellan 10 och 20 — en kompromiss-gissning om du ar osaker pa exakt brantaste avlasningen.",
-    "why_wrong": "Storsta arsspranget pa Internet-kurvan ar markant brantare an 15 procentenheter — det rusar uppat med ca 20 enheter pa ett ar (t.ex. 1999 → 2000 eller 2000 → 2001). Facit fastslar C, inte B."
+    "why_tempting": "15 procentenheter är exakt det NÄST största språnget: 1998 → 1999 går från ca 15 % till ca 30 %. Fäster ögonen på fel del av den branta fasen — ett år för tidigt — blir 15 ditt svar.",
+    "why_wrong": "Året efter är ännu brantare: 1999 → 2000 ger ca 30 → 51 %, alltså ca 20 procentenheter. 15 pp är silvermedaljen, inte maximum. Svaret är C."
    },
    {
     "letter": "D",
-    "why_tempting": "25 procentenheter skulle vara ett extremt sprang, men kurvan SER brant ut, och det ar latt att overskatta hur stort ett enskilt sprang kan vara.",
-    "why_wrong": "Kurvans brantaste steg ar ca 20 procentenheter, inte 25. Att overstärka avlasningen leder till D. Facit fastslar C. Som steg 5 betonar: las VÄRDET vid forsta och andra aret av sprangget mot y-axelns tick (0, 10, 20, ..., 100) och subtrahera — pa det brantaste paret blir det 20, inte 25."
+    "why_tempting": "Kurvan SER dramatiskt brant ut kring 2000, och det är lätt att överskatta språnget på ögonmått — eller att av misstag räkna över två år (1998 → 2000 ≈ 15 → 51 vore drygt 35 pp och lockar mot det största alternativet).",
+    "why_wrong": "Frågan gäller TVÅ PÅ VARANDRA FÖLJANDE år. Läst mot y-axelns tick är 1999 ≈ 30 % och 2000 ≈ 51 % — skillnaden är ca 20 procentenheter, inte 25. Svaret är C."
    }
   ],
-  "solution_path": "Facit fastslar 20 procentenheter (alternativ C). I ovre diagrammet pa sidan 16 (med fem linjer for Dator/Internet/Bredband/Smart mobil/Surfplatta): folj Internet-linjen (streckad linje, andra i legenden). Den startar lagt pa sent 1990-tal och rusar starkt uppat runt 1999-2001. Det brantaste arsspranget gar fran ca 40 % (1999) till ca 60 % (2000), dvs +20 procentenheter pa ett ar — eller motsvarande sprang i en annan ars-overgang. Det matchar facit.",
+  "solution_path": "I det övre linjediagrammet (fem linjer: Dator, Internet, Bredband, Smart mobil, Surfplatta, åren 1995–2017): följ Internet-linjen, som enligt legenden är den tunna punkt-streckade. Den startar nära 0 % 1995, når ca 15 % 1998 och ca 30 % 1999 — och rusar sedan till ca 51 % år 2000. Därefter planar den ut kring 51–56 % under 2000–2002. Det brantaste årssprånget är alltså 1999 → 2000: 51 − 30 ≈ 20 procentenheter. Inget annat par av angränsande år kommer i närheten (1998 → 1999 är näst störst med ca 15 pp). Svaret är C (20 procentenheter).",
   "steps": [
    {
     "n": 1,
-    "title": "Forsta fragan",
-    "text": "Fragan: studera hur andelen som hade tillgang till internet i hemmet forandrades; hur stor var den STORSTA forandringen mellan TVA pa varandra foljande ar? Svarsformatet ar procentenheter. Facit fastslar 20 procentenheter (alternativ C). Strategin: hitta brantaste arsspranget pa Internet-linjen, las skillnaden mot y-axeln.",
+    "title": "Förstå frågan",
+    "text": "Frågan: hur förändrades andelen med tillgång till internet i hemmet, och hur stor var den STÖRSTA förändringen mellan TVÅ på varandra följande år? Svaret ska anges i procentenheter. Strategin: hitta det brantaste årssprånget på Internet-linjen och läs skillnaden mot y-axeln.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Orientera dig pa sidan",
-    "text": "Sidan 16 har TVA diagram: ett ovre linjediagram med fem linjer (Dator, Internet, Bredband, Smart mobil, Surfplatta) over aren 1995-2017 — och ett nedre stapeldiagram for daglig internetanvandning per aldersgrupp 2013-2017. Vi behover bara det OVRE.",
+    "title": "Orientera dig på sidan",
+    "text": "Sidan har TVÅ diagram: ett övre linjediagram med fem linjer (Dator, Internet, Bredband, Smart mobil, Surfplatta) över åren 1995–2017, och ett nedre stapeldiagram över barns dagliga internetanvändning per åldersgrupp 2013–2017. Vi behöver bara det ÖVRE.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Vilken linje?",
-    "text": "Internet-linjen ar enligt legenden ritad med PRICK-STRECK eller streckad linje. Den startar runt 1996 nara y = 5 %, stiger snabbt under sent 1990-tal, planar ut runt 90 % i mitten av 2000-talet. Det ar denna kurva vi laser.",
+    "text": "Internet är enligt legenden den TUNNA PUNKT-STRECKADE linjen (andra posten i legenden). Den startar nära 0 % år 1995, stiger under sent 1990-tal och planar så småningom ut över 90 % mot slutet av perioden. Blanda inte ihop den med Dator (tjock heldragen) eller Bredband (heldragen grå).",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Identifiera det brantaste segmentet",
-    "text": "Internet-linjens absolut brantaste lutning ligger nagonstans mellan 1998 och 2001. Visuellt: kurvan gar fran ca 20 % (1998) till ca 40 % (1999) till ca 60 % (2000) till ca 70 % (2001). Det storsta arsspranget verkar vara 1999 → 2000 eller 2000 → 2001, med ca 20 procentenheter per ar.",
+    "text": "Internet-linjens brantaste lutning ligger vid sekelskiftet. Läs mot y-axelns rutnät: ca 15 % (1998), ca 30 % (1999), ca 51 % (2000). Direkt efter, 2000 → 2001, är kurvan nästan PLATT (ca 51 → 53 %). Kandidaten för störst språng är alltså 1999 → 2000.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Las exakt det brantaste paret",
-    "text": "Projicera Internet-linjens hojd mot y-axelns tick-varden (0, 10, 20, 30, ..., 100) for de tre kandidat-aren: 1999, 2000, 2001. Lasvarden: 1999 ≈ 40 %, 2000 ≈ 60 %, 2001 ≈ 70 %. Storsta arssprang: 1999-2000 = 60 - 40 = 20 procentenheter. Konsistent med facit.",
+    "title": "Läs det brantaste paret exakt",
+    "text": "Projicera Internet-linjens höjd mot y-axelns tick-värden (0, 10, 20, ..., 100) för de två åren: 1999 ≈ 30 % och 2000 ≈ 51 %. Skillnaden: 51 − 30 ≈ 20 procentenheter. Det är det största enskilda årssprånget i hela serien.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Vad ar 'procentenheter'?",
-    "text": "Procentenheter (pp) = ABSOLUT skillnad mellan tva procent-varden. T.ex. 60 % - 40 % = 20 procentenheter. Det ska INTE forvaxlas med procentuell forandring, som vore (60-40)/40 = 50 %. Fragan ber om procentENHETER, alltsa enkel subtraktion av procentvarden.",
+    "title": "Vad är 'procentenheter'?",
+    "text": "Procentenheter (pp) = den ABSOLUTA skillnaden mellan två procentvärden. T.ex. 51 % − 30 % ≈ 20 procentenheter. Det ska INTE förväxlas med procentuell förändring, som vore (51−30)/30 ≈ 70 %. Frågan ber om procentENHETER, alltså enkel subtraktion av procentvärden.",
     "tier": "detail"
    },
    {
     "n": 7,
-    "title": "Sanity-check ovriga arssprang",
-    "text": "Kontroll: 1996-1997 ≈ 5 → 15 = 10 pp. 1997-1998 ≈ 15 → 20 = 5 pp. 1998-1999 ≈ 20 → 40 = 20 pp (samma som 1999-2000). 2001-2002 ≈ 70 → 75 = 5 pp. Storsta arsspranget ar konsistent 20 pp, vilket dyker upp tva ganger i den brantaste perioden. Inget steg ar storre.",
+    "title": "Sanity-check övriga årssprång",
+    "text": "Kontroll av grannarna: 1997 → 1998 ≈ 10 → 15 = 5 pp. 1998 → 1999 ≈ 15 → 30 = 15 pp (näst störst). 2000 → 2001 ≈ 51 → 53 = ca 2 pp (nästan platt). 2002 → 2003 ≈ 56 → 65 = ca 9 pp. Inget par slår 1999 → 2000 med sina ca 20 pp.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Korsa mot svarsalternativen",
-    "text": "Alternativen ar 10, 15, 20, 25 pp. Var berakning 20 pp matchar entydigt C. Skillnaden mellan alternativen ar 5 pp, sa avlasningsfel pa +/- 2 pp pa de tva aren andrar inte svaret.",
+    "text": "Alternativen är 10, 15, 20 och 25 pp. Vår avläsning ca 20 pp matchar entydigt C. Alternativen ligger 5 pp isär, så ett avläsningsfel på ± 2 pp på de två åren ändrar inte valet.",
     "tier": "essential"
    },
    {
     "n": 9,
-    "title": "Sanity-check mot historisk kontext",
-    "text": "Internet i Sverige sprang till 'massfas' under 1999-2001 — bredbandsutbyggnad, billiga modem, och e-handelsboom. Att den brantaste arsforandringen i Internet-tillgang sker just dar ar konsistent med historisk fakta. Diagrammet representerar manga svenskars upplevelse av att 'fa internet hemma' just under denna period.",
+    "title": "Rimlighetskoll mot historisk kontext",
+    "text": "Internet i Sverige gick in i sin massfas just kring 1999–2000: billiga modem, hemma-PC-reformen och dotcom-vågen. Att det största enskilda språnget i hemtillgång ligger exakt vid 1999 → 2000 är alltså helt rimligt.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Sanity-check: kunde nagot annat ar vara brantare?",
-    "text": "Sent i kurvan (2010-talet) ar Internet-linjen redan over 90 % och kan inte sprang lika mycket. Tidigt i kurvan (1996-1998) ar de absoluta vardena ÄNNU smà och inkrementen typiskt 5-10 pp. Maxsprångget ligger pekfast i 1999-2001-fönstret.",
+    "title": "Kunde något senare år vara brantare?",
+    "text": "Sent i kurvan (2010-talet) ligger Internet-linjen redan över 85–90 % och kan inte hoppa 20 pp — taket är 100 %. Tidigt (1995–1998) är stegen typiskt 5–15 pp. Maxsprånget kan bara ligga i den branta fasen kring sekelskiftet, och där sticker 1999 → 2000 ut.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekraftelse",
-    "text": "Facit bekraftar: svaret ar C (20 procentenheter). Insikten i en mening: vid 'storsta forandringen mellan tva pa varandra foljande ar'-fragor pa linjediagram — fokusera ögonen pa kurvans BRANTASTE segment, las y-vardena i de tva angransande aren mot tick-axeln, subtrahera, ta procentenheter (inte procentuell forandring).",
+    "title": "Slutsats",
+    "text": "Svaret är C (20 procentenheter). Insikten i en mening: vid 'största förändringen mellan två på varandra följande år' på linjediagram — hitta kurvans BRANTASTE segment visuellt, läs de två årsvärdena mot y-axelns tick, subtrahera, och svara i procentenheter (inte procentuell förändring).",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi for storsta-arsforandring-i-procentenheter pa linjediagram: hitta kurvans BRANTASTE segment visuellt, las de tva ars-vardena mot y-axelns printade tick-varden, subtrahera. Procentenheter = absolutskillnad mellan tva procent, inte procentuell forandring relativt basen. Triggern: 'storsta forandring i procentenheter mellan angransande ar' → brantast-jakt + en subtraktion.",
-  "pitfall": "Den klassiska fallan ar att forvaxla 'procentenheter' med 'procent' — t.ex. rakna 50 % (20 pp / 40 pp basen = 50 %) i stallet for 20 pp. Botemedlet: 'procentenheter' = absolut skillnad mellan procentvarden (subtraktion direkt). Anvand bara division nar fragan ber om 'procentuell forandring' eller 'X procent hogre'."
+  "technique": "DTK-strategi för största-årsförändring-i-procentenheter på linjediagram: identifiera rätt linje via legenden, hitta kurvans BRANTASTE segment visuellt, läs de två angränsande årens värden mot y-axelns printade tick-värden, subtrahera. Procentenheter = absolut skillnad mellan två procenttal, inte procentuell förändring relativt basen. Triggern: 'största förändring i procentenheter mellan angränsande år' → brantast-jakt + en subtraktion.",
+  "pitfall": "Den klassiska fällan är att förväxla 'procentenheter' med 'procent' — t.ex. räkna (51−30)/30 ≈ 70 % i stället för 51 − 30 ≈ 20 pp. Botemedlet: 'procentenheter' = absolut skillnad mellan procentvärden, ren subtraktion. En andra fälla här: att läsa fel linje (Dator, den tjocka heldragna, ligger högre hela vägen) eller att jämföra år som inte är angränsande. Lås linjen via legenden (Internet = tunn punkt-streckad) och håll dig till par av grannår."
  },
  "host-2022-kvant2-DTK-030": {
   "_meta": {
@@ -11551,103 +11539,103 @@
  },
  "host-2022-kvant2-DTK-032": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": "DTK-TACTIC-005",
   "pregrade_tactic": {
-   "handle": "Forhallande-via-summa-fran-tabell",
-   "move": "Las summa far i Gotlands lan och i Kronobergs lan i tabellen, berakna kvoten, jamfor med alternativens forhållanden."
+   "handle": "Förhållande-via-summa-från-tabell",
+   "move": "Läs Summa får för Gotlands län (71 485) och Kronobergs län (18 305) i tabellens Län-block, beräkna kvoten (≈ 3,9) och matcha mot alternativens förhållanden — närmast 4:1."
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "2:1 ar latt om du underskattar Gotlands totalsumma eller overskattar Kronobergs — t.ex. om du anvander baggar-och-tackor-kolumnen istallet for summa-kolumnen.",
-    "why_wrong": "Som steg 4 visar: Summa far Gotlands lan = 71 485, Kronobergs lan = 18 305. Kvot 71 485 / 18 305 = 3,9. Det ar narmast 4:1, inte 2:1. Facit fastslar D."
+    "why_tempting": "2:1 lockar om du blandar ihop kolumner — tar du t.ex. Gotlands baggar-och-tackor (33 897) mot Kronobergs summa (18 305) blir kvoten ca 1,9 ≈ 2.",
+    "why_wrong": "Båda talen måste komma från SUMMA-kolumnen: 71 485 / 18 305 ≈ 3,9, inte 2. Rätt är 4:1 (D)."
    },
    {
     "letter": "B",
-    "why_tempting": "3:1 ar nara 71 485 / 18 305 = 3,9 — det ar EN avrundning nedat. Frestande om man avrundar grovt utan att kontrollera mot alternativen.",
-    "why_wrong": "Kvoten 3,9 ar markant narmare 4 an 3. Standardkonvention: avrunda till narmaste heltal, och 3,9 → 4. Facit fastslar D (4:1), inte B (3:1)."
+    "why_tempting": "3:1 är nära den faktiska kvoten 3,9 — frestande om man trunkerar \"3,9 → 3\" i stället för att avrunda, eller räknar för grovt (70/20 = 3,5 och rundar ned).",
+    "why_wrong": "3,9 ligger 0,1 från 4 men 0,9 från 3. Kontroll: 18 305 · 4 = 73 220 ≈ 71 485, medan 18 305 · 3 = 54 915 är långt under. Närmast är 4:1 (D)."
    },
    {
     "letter": "C",
-    "why_tempting": "3:2 = 1,5 — vagrar nara den faktiska kvoten 3,9. Det skulle krava att Gotland har bara 50 % mer far an Kronoberg, vilket ar fel.",
-    "why_wrong": "Gotland har nastan FYRA ganger sa manga far som Kronoberg, inte 1,5 ganger. 3:2 (= 1,5) representerar en helt annan storleksordning. Facit fastslar D."
+    "why_tempting": "3:2 = 1,5 känns möjligt om man bara ögnar tabellen och tänker \"Gotland har lite fler får än Kronoberg\" utan att räkna.",
+    "why_wrong": "Gotland har nästan FYRA gånger så många får som Kronoberg (71 485 mot 18 305), inte 1,5 gånger. 3:2 är en helt annan storleksordning än kvoten 3,9."
    }
   ],
-  "solution_path": "Facit fastslar 4:1 (alternativ D). I tabellen pa sidan 18: Gotlands lan summa far = 71 485; Kronobergs lan summa far = 18 305. Kvot: 71 485 / 18 305 ≈ 3,9 ≈ 4. Saledes forhallandet ar narmast 4:1.",
+  "solution_path": "I tabellen \"Det svenska fårbeståndet\" (sidan 18), kolumnen Summa får i Län-blocket: Gotlands län = 71 485 och Kronobergs län = 18 305. Kvoten 71 485 / 18 305 ≈ 3,9, vilket är markant närmare 4 än 3 (kontroll: 18 305 · 4 = 73 220, bara drygt 1 700 över 71 485). Förhållandet är alltså närmast 4:1 = alternativ D.",
   "steps": [
    {
     "n": 1,
-    "title": "Forsta fragan",
-    "text": "Fragan: vilket var forhallandet mellan antalet far i Gotlands lan och antalet far i Kronobergs lan? Svarsformatet ar ett forhallande (X:Y). Facit fastslar 4:1 (alternativ D). Strategin: las summorna fran tabellen, dividera.",
+    "title": "Förstå frågan",
+    "text": "Frågan: vilket var förhållandet mellan antalet får i Gotlands län och antalet får i Kronobergs län? Svarsformatet är ett förhållande (X:Y). Strategin: läs de två summorna ur tabellen och dividera.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i tabellen",
-    "text": "Tabellen 'Det svenska farbestandet' pa sidan 18 har TRE kolumner: 'Baggar och tackor, fodda 2013 eller tidigare' (vuxna far), 'Lamm', och 'Summa far'. Raderna ar organiserade i tva block: 'Lan' (21 lan listade) och 'Produktionsomrade' (10 omraden listade). Vi behover SUMMA-kolumnen for de tva specifika lanen.",
+    "text": "Tabellen \"Det svenska fårbeståndet\" på sidan 18 har TRE talkolumner: \"Baggar och tackor, födda 2013 eller tidigare\" (vuxna får), \"Lamm\" och \"Summa får\". Raderna är organiserade i två block: \"Län\" (21 län listade) och \"Produktionsområde\" (8 områden listade), plus slutraden \"Hela riket\". Vi behöver SUMMA-kolumnen för de två länen i Län-blocket.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Hitta Gotlands och Kronobergs i Lan-blocket",
-    "text": "I 'Lan'-blocket: Gotlands listas pa rad 8 (efter Stockholms, Uppsala, Sodermanlands, Ostergotlands, Jonkopings, Kronobergs, Kalmar) — wait, let me reread. Ordningen ar: Stockholms, Uppsala, Sodermanlands, Ostergotlands, Jonkopings, Kronobergs, Kalmar, Gotlands, Blekinge, Skane, Hallands, ... Sa Kronobergs ar rad 6 och Gotlands ar rad 8.",
+    "title": "Hitta Gotlands och Kronobergs i Län-blocket",
+    "text": "Län-blockets ordning börjar: Stockholms, Uppsala, Södermanlands, Östergötlands, Jönköpings, Kronobergs, Kalmar, Gotlands, Blekinge, Skåne, … Kronobergs är alltså rad 6 och Gotlands rad 8 — de står nära varandra, i början av blocket.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Las summorna",
-    "text": "Summa far Gotlands lan = 71 485 (printade siffran i tredje kolumnen). Summa far Kronobergs lan = 18 305 (printade siffran). Anvand dessa exakt — inga av lasningar fran visuella varden behovs.",
+    "title": "Läs summorna",
+    "text": "Summa får för Gotlands län = 71 485 (tredje talkolumnen). Summa får för Kronobergs län = 18 305. Använd dessa printade tal exakt — inget ögonmått behövs i en ren tabell.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Berakna kvoten",
-    "text": "71 485 / 18 305 = ? Forenkling: 18 305 · 4 = 73 220; det ar lite hogre an 71 485. 71 485 / 18 305 ≈ 3,9. Inte exakt 4, men markant narmare 4 an 3.",
+    "title": "Beräkna kvoten",
+    "text": "71 485 / 18 305 = ? Snabbtest: 18 305 · 4 = 73 220, vilket är bara ca 1 700 mer än 71 485. Kvoten är alltså strax under 4: 71 485 / 18 305 ≈ 3,9.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Vad menas med 'forhållande'?",
-    "text": "Forhallande X:Y betyder att den ena storheten ar X/Y ganger sa stor som den andra. 4:1 = den ena ar fyra ganger sa stor; 3:2 = en och en halv ganger sa stor. HP-frågor med forhallande forvantar dig att avrunda till det narmaste enkla forhållandet bland alternativen.",
+    "title": "Vad menas med \"förhållande\"?",
+    "text": "Förhållandet X:Y betyder att den ena storheten är X/Y gånger så stor som den andra. 4:1 = fyra gånger så stor; 3:2 = en och en halv gånger så stor. HP-frågor om förhållande förväntar att du väljer det alternativ vars kvot ligger närmast din beräknade kvot.",
     "tier": "detail"
    },
    {
     "n": 7,
-    "title": "Korsa mot svarsalternativen",
-    "text": "Alternativen: A 2:1 (kvot 2), B 3:1 (kvot 3), C 3:2 (kvot 1,5), D 4:1 (kvot 4). Var kvot 3,9 ar narmare 4 an 3 — narmast D. Skillnaden mellan D (4) och B (3) ar 1 helhet; var kvot 3,9 ar 0,9 fran D men 0,9 fran B... egentligen exakt mittemellan? Nej: 3,9 ar 0,1 fran 4 och 0,9 fran 3. Klart D.",
+    "title": "Matcha mot svarsalternativen",
+    "text": "Alternativens kvoter: A 2:1 → 2, B 3:1 → 3, C 3:2 → 1,5, D 4:1 → 4. Vår kvot 3,9 ligger 0,1 från 4 men hela 0,9 från 3 — klart närmast D.",
     "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Sanity-check med avrundningen",
-    "text": "Om vi avrundar Gotland till 72 000 och Kronoberg till 18 000, blir kvoten 72/18 = 4 exakt. Vart svar 4:1 (D) ar precis det avrundade forhållandet — vilket bekraftar facits svar.",
+    "title": "Sanity-check med avrundning",
+    "text": "Avrunda Gotland till 72 000 och Kronoberg till 18 000: 72/18 = 4 exakt. Det avrundade förhållandet landar direkt på 4:1 — samma slutsats som den exakta kvoten.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Sanity-check mot kontext",
-    "text": "Gotland ar Sveriges 'far-on' med stora betesomraden och en lang fartradition. Att Gotland har fyra ganger sa manga far som Kronoberg (ett relativt litet sodersmalandskt lan) ar konsistent med Sveriges geografi. Det kvalitativa monstret 'Gotland >>> Kronoberg' bekräftar inte värdet exakt, men det visar att kvoten ska vara hög, inte nara 1.",
+    "text": "Gotland är Sveriges \"fårö\" med stora betesområden och lång fårtradition, medan Kronoberg är ett relativt litet smålandslän. Att Gotland har ungefär fyra gånger så många får är geografiskt rimligt — kvoten ska vara hög, inte nära 1.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Avstamning mot tabellens helbild",
-    "text": "Hela rikets summa far ar 588 757. Gotlands 71 485 ar ca 12 % av riket. Kronobergs 18 305 ar ca 3 % av riket. 12 / 3 = 4 — samma forhallande, framstrokat. Konsistent.",
+    "title": "Avstämning mot tabellens helbild",
+    "text": "Hela rikets summa får är 588 757. Gotlands 71 485 är ca 12 % av riket; Kronobergs 18 305 är ca 3 %. 12/3 = 4 — samma förhållande via en helt annan väg. Konsistent.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekraftelse",
-    "text": "Facit bekraftar: svaret ar D (4:1). Insikten i en mening: vid forhallande-fragor mot tabelldata — anvand SUMMA-kolumnen, dela de tva exakta talen, avrunda till narmaste enkla forhållande bland alternativen.",
+    "title": "Slutsats",
+    "text": "Svaret är D (4:1). Insikten i en mening: vid förhållande-frågor mot tabelldata — läs SUMMA-kolumnens två exakta tal, dela det större med det mindre, och välj alternativet vars kvot ligger närmast (3,9 → 4:1).",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi for forhallande-fragor mot tabell: hitta tva exakta varden i ratt kolumn, dela det storre med det mindre, avrunda till narmaste alternativ-forhållande. Triggern: 'forhållandet mellan X och Y' → kvot fran printade tabellvarden + matchning mot alternativ.",
-  "pitfall": "Den klassiska fallan ar att lasa fel kolumn (baggar-och-tackor i stallet for summa) eller att avrunda for grovt (3,9 → 3 i stallet for 4). Botemedlet: las ALLTID summa-kolumnen for totalfår, och avrunda kvoten till narmaste heltal — 3,9 ar markant narmare 4 an 3."
+  "technique": "DTK-strategi för förhållande-frågor mot tabell: hitta de två exakta värdena i rätt kolumn, dela det större med det mindre, avrunda till närmaste förhållande bland alternativen. Triggern: \"förhållandet mellan X och Y\" → kvot från printade tabellvärden + matchning mot alternativen.",
+  "pitfall": "Den klassiska fällan är att läsa fel kolumn (baggar-och-tackor i stället för summa får) eller att avrunda kvoten fel (3,9 → 3 i stället för 4). Botemedlet: ta ALLTID båda talen från summa-kolumnen, och avrunda kvoten till närmaste alternativkvot — 3,9 är markant närmare 4 än 3."
  },
  "host-2022-kvant2-DTK-033": {
   "_meta": {
@@ -11851,103 +11839,103 @@
  },
  "host-2022-kvant2-DTK-035": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": "DTK-TACTIC-001",
   "pregrade_tactic": {
-   "handle": "Skatte-villkor-ar-darefter-storsta-extra",
-   "move": "Hitta det ar dar bade Kostgard OCH Skjutsfardspengar narvarande men Manadspengar saknas; sok darefter den stapel/ruta i samma ar som ar storst bland extra ordinarie skatter."
+   "handle": "Tre-villkor-år-sedan-största",
+   "move": "Kartlägg Kostgärds, Skjutsfärdspengars och Månadspengars årsspann längs tidsaxeln; hitta året där de två första överlappar utan den tredje (ca 1609–1611); jämför sedan blocktjocklekarna i det året och välj det största extra ordinarie blocket."
   },
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Hjalppengar ar en typisk extra ordinarie skatt och dominerar i de tidigaste aren (1601-1604). Frestande om man gar tillbaka till tidiga aren med hjalppengar och inte filtrerar pa villkoren.",
-    "why_wrong": "Som steg 4 visar: aret som uppfyller alla tre villkor (Kostgard JA, Skjutsfardspengar JA, Manadspengar NEJ) ar nagonstans i mittenperioden — och dar ar Hjonelagspengar den storsta extra ordinarie skatten. Hjalppengar ar storst i andra ar (sarskilt 1602). Facit fastslar A."
+    "why_tempting": "Hjälppgr. ligger i diagrammet precis i det filtrerade fönstret (ca 1610–1611), och namnet påminner om Hjälpskatter — det stora blocket allra först i perioden (1600–1601). Blandar man ihop de två, eller fastnar på att Hjälppgr. faktiskt finns i rätt år, känns B rimligt.",
+    "why_wrong": "Hjälppgr.-blocken runt 1610–1611 är smala remsor, bland de minsta i hela fönstret — långt ifrån störst. Det stora tidiga blocket heter Hjälpskatter och ligger 1600–1601, år som faller på villkoren (varken Skjutsfärdspengar-överlapp eller rätt Kostgärd-period). Hjonelagspengar är klart störst i det filtrerade fönstret."
    },
    {
     "letter": "C",
-    "why_tempting": "Jamtlandspengar dyker upp i mitten av perioden och kan kanna 'sannolik' om man inte exakt minns vilket ar villkoren uppfylls. Tre-villkor-fragor lockar till gissning.",
-    "why_wrong": "Jamtlandspengar (vid Kostgard-Ar) ar inte den storsta extra ordinarie skatten. Facit fastslar A (Hjonelagspengar). Att flera kategorier dyker upp samtidigt belonar inte den storsta — bara den allra hogsta stapeln raknas."
+    "why_tempting": "Jämtlandsgärd/Jämtlandspengar dyker upp exakt i det filtrerade fönstret (ca 1610–1611), så den som hittat rätt år men slarvar med storleksjämförelsen kan lätt fastna här — kategorin är ju \"ny\" det året och drar blicken.",
+    "why_wrong": "Jämtlandsposterna är tunna block staplade ovanpå Kostgärd — visuellt mycket mindre än Hjonelagspengar-blocket som dominerar samma år. Att en skatt är ny säger inget om dess storlek; jämför blockens tjocklek i daler."
    },
    {
     "letter": "D",
-    "why_tempting": "Kostgard ar EN av de tre villkoren — frestande att gissa Kostgard som storst bara for att den ar 'central' i fragan.",
-    "why_wrong": "Kostgard ar en av de tre VILLKOREN, inte ett extra ordinarie skatte-svar. Diagrammet visar de extra ordinarie skatterna SEPARAT fran Kostgard och Skjutsfardspengar och Manadspengar (som är ordinarie eller villkorande). Facit fastslar A (Hjonelagspengar) bland de EXTRA ordinarie."
+    "why_tempting": "Kostgärd står mitt i frågeformuleringen och är ett stort block i flera perioder (särskilt 1601–1603) — frestande att svara det \"centrala\" namnet utan att jämföra storlekar i rätt år.",
+    "why_wrong": "Kostgärd är ett av VILLKOREN som pekar ut året, inte automatiskt svaret. I det filtrerade fönstret ca 1609–1611 är Kostgärd-blocket tydligt mindre än Hjonelagspengar-blocket — frågan avgörs av blockens tjocklek det året, inte av vilket namn frågan nämner."
    }
   ],
-  "solution_path": "Facit fastslar Hjonelagspengar (alternativ A). I diagrammet 'Skattepalagor i Vasterbotten 1600-1619' pa sidan 20: identifiera aret dar bade Kostgard och Skjutsfardspengar var narvarande men Manadspengar saknades. Pa det aret ar Hjonelagspengar (en av de extra ordinarie krigsskatterna ovanfor den ordinarie linjen) markant storst — den dominerar dt arets extra ordinarie tackning. Det matchar facit.",
+  "solution_path": "Diagrammet \"Skattepålagor i Västerbotten 1600–1619\" staplar de extra ordinarie krigsskatterna som märkta block ovanpå den årliga räntan (ordinarie skatter), med daler på värdeaxeln och åren 1600–1619 på tidsaxeln. Månadspengar betalades ca 1604–1607; Skjutsfärdspengar ca 1604–1606 och igen ca 1608–1611; Kostgärd 1601–1603, 1605–1606 och igen ca 1609–1611. Enda fönstret där Kostgärd OCH Skjutsfärdspengar finns men Månadspengar saknas är alltså ca 1609–1611 (perioden 1605–1606 faller bort eftersom Månadspengar då fortfarande betalades). I det fönstret är Hjonelagspengar det klart största extra ordinarie blocket — betydligt större än Kostgärd, Jämtlandsgärd/-pengar, Hjälppgr. och Kolagärd som ligger i samma år. Svaret är A (Hjonelagspengar).",
   "steps": [
    {
     "n": 1,
-    "title": "Forsta fragan",
-    "text": "Fragan: identifiera det ar da Vasterbotten betalade BADE kostgard OCH skjutsfardspengar men INTE manadspengar; vilken var den storsta extra ordinarie krigsskatten det aret? Svarsformatet ar en skattekategori. Facit fastslar A (Hjonelagspengar). Strategin: filtrera fram aret via tre villkor, las storsta extra ordinarie pa det aret.",
+    "title": "Förstå frågan",
+    "text": "Två moment: (1) identifiera det år då Västerbotten betalade BÅDE kostgärd OCH skjutsfärdspengar men INTE månadspengar; (2) läs av vilken extra ordinarie krigsskatt som var störst just det året. Svaret är en skattekategori, inte ett årtal.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i diagrammet",
-    "text": "Diagrammet 'Skattepalagor i Vasterbotten 1600-1619' (sidan 20) ar ett kombinerat diagram med rektangulära block markerade per ar 1600-1619, dar bredden representerar varaktigheten och hojden ar daler. Diagrammet ar uppdelat i tva delar: den NEDRE halften ('Arliga ranta med kyrkotionden och fiskeskatter (Ordinarie skatter)') och den OVRE halften ('Krigsskatterna, de extra ordinarie, ovanfor arliga rantan').",
+    "text": "Diagrammet \"Skattepålagor i Västerbotten 1600–1619\" (sidan 20) visar daler på värdeaxeln (0–24 000) och åren 1600–1619 på tidsaxeln. Den nedre bandet är \"Årliga räntan med kyrkotionden och fiskeskatter (Ordinarie skatter)\". Ovanpå den staplas krigsskatterna — de extra ordinarie — som märkta block: blockets utsträckning längs tidsaxeln visar vilka år skatten togs ut, och blockets tjocklek visar beloppet i daler.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Identifiera de tre villkoren",
-    "text": "Villkor 1: Kostgard betalades (rutan 'Kostgard' i extra ordinarie sektionen ar narvarande). Villkor 2: Skjutsfardspengar betalades (rutan 'Skjutsfardspengar' narvarande). Villkor 3: Manadspengar betalades INTE (ingen 'Manadspengar'-ruta det aret).",
+    "title": "Skriv ner de tre villkoren",
+    "text": "Villkor 1: ett Kostgärd-block täcker året. Villkor 2: ett Skjutsfärdspengar-block täcker året. Villkor 3: INGET Månadspengar-block täcker året. Alla tre måste gälla samtidigt — skriv ner dem innan du börjar skanna.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Skanna aren efter de tre villkoren",
-    "text": "Genom diagrammet: kontrollera ar for ar om en kombinaiton matchar. Manadspengar ar markant i ar 1604-1606 (utesluter dem). Skjutsfardspengar dyker upp i specifika perioder. Kostgard dominerar perioden 1607-1610. Det ar dar mitten-perioden runt 1608-1609 — dar Kostgard OCH Skjutsfardspengar bada finns, men Manadspengar har upphort.",
+    "title": "Kartlägg de tre nyckelskatterna över tid",
+    "text": "Läs av varje blocks utsträckning: Månadspengar betalades ca 1604–1607. Skjutsfärdspengar förekommer i två omgångar: ca 1604–1606 och ca 1608–1611. Kostgärd förekommer 1601–1603, 1605–1606 och igen ca 1609–1611.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Las storsta extra ordinarie pa det aret",
-    "text": "I det aret som matchar villkoren: den storsta rutan i den OVRE halften av diagrammet ar 'Hjonelagspengar' — den ar markant hogre och bredare an de andra extra ordinarie skatterna det aret.",
+    "title": "Filtrera fram året",
+    "text": "Perioden 1605–1606 har Kostgärd + Skjutsfärdspengar men faller på villkor 3: Månadspengar betalades då fortfarande. Efter 1607 är Månadspengar borta, och ca 1609–1611 överlappar Kostgärd och Skjutsfärdspengar igen. Det filtrerade fönstret är alltså ca 1609–1611 — runt 1610 ligger dessutom alla fyra svarsalternativens skatter i diagrammet samtidigt.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Vad menas med 'extra ordinarie' kontra 'ordinarie'?",
-    "text": "Ordinarie skatter = aterkommande arliga skatter (kyrkotionde, fiskeskatter, etc.) som stat alltid uppbar. Extra ordinarie skatter = krigsskatter och tilltaktiga palagor som bestamdes av riksdag for specifika syften (krig, missvaxt, etc.). Diagrammet placerar dessa OVAN den 'Arliga ranta'-linjen och visar att de varierade kraftigt mellan ar.",
-    "tier": "detail"
+    "title": "Läs av största extra ordinarie det året",
+    "text": "I fönstret runt 1610 staplas bl.a. Kostgärd, Hjonelagspengar, Jämtlandsgärd/Jämtlandspengar, Hjälppgr., Kolagärd och Skjutsfärdspengar. Hjonelagspengar är det klart största blocket — det spänner brett och tjockt medan Jämtlandsposterna, Hjälppgr. och Kolagärd är smala remsor och Kostgärd-blocket är tydligt mindre. Svar: A.",
+    "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Vilka extra ordinarie kategorier finns?",
-    "text": "Diagrammet listar bl.a. Hjonelagspengar (storre), Hjalppengar (Hjalppgr), Jamtlandspengar (Jamtl.), Kostgard, Skjutsfardspengar, Manadspengar, Skuldfordringspengar, Olivpengar, Tredjedelen, Hojepengar, Predikoval, Klockepenning, etc. Olika namn pa olika typer av extra skatter under 1600-talet.",
+    "title": "Ordinarie kontra extra ordinarie",
+    "text": "Ordinarie skatter = den återkommande årliga räntan med kyrkotionden och fiskeskatter, det nedre bandet i diagrammet. Extra ordinarie = krigsskatterna som lades ovanpå årliga räntan och varierade kraftigt från år till år. Frågan gäller uttryckligen de extra ordinarie, alltså blocken OVANFÖR det ordinarie bandet.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Korsa mot svarsalternativen",
-    "text": "A: Hjonelagspengar. B: Hjalppengar. C: Jamtlandspengar. D: Kostgard. Pa det filtrerade aret ar Hjonelagspengar den storsta extra ordinarie — vilket facit ocksa fastslar. Kostgard ar en av VILLKOREN och kan inte vara svaret pa 'storsta extra ordinarie det aret' utan att vara den storsta — men diagrammet visar att hjonelagsspengar ar storre an kostgarden i det filtrerade aret.",
-    "tier": "essential"
-   },
-   {
-    "n": 9,
-    "title": "Sanity-check tre-villkors-filtret",
-    "text": "Manadspengar varade bara nagra ar i borjan av 1600-talet. Kostgard dominerade lange. Skjutsfardspengar dyker upp i specifika perioder. Skarningspunkten dar Kostgard JA + Skjutsfardspengar JA + Manadspengar NEJ ar smal — som regel runt ett enskilt ar eller en tva-arsperiod. Diagrammet ar konstruerat sa att precis en sadan period ger ett unikt svar.",
+    "title": "Vilka extra ordinarie kategorier finns?",
+    "text": "Diagrammets block heter bl.a. Hjälpskatter, Kostgärd, Endalershjälp, Skjutsfärdspengar, Månadspengar, Örespengar, Brudskatt, Kröningsgärd, Soldathjälp, Hjonelagspengar, Kolagärd, Hjälppgr., Jämtlandsgärd/Jämtlandspengar, Tredalershjälp, Skeppsgärd, Fyradalershjälp, Marsgärd, Älvsborgs lösen, Lantågsgärd, Hjälpsmör, Bröllopsgärd, Höstgärd och Diverse smågärder — olika namn på 1600-talets tillfälliga pålagor. Du behöver inte kunna dem; du behöver bara hitta rätt etiketter i rätt år.",
     "tier": "detail"
    },
    {
+    "n": 9,
+    "title": "Korsa mot svarsalternativen",
+    "text": "A Hjonelagspengar: det största blocket i det filtrerade fönstret — rätt. B Hjälppgr.: finns runt 1610–1611 men bara som en smal remsa. C Jämtlandspengar: finns ca 1610–1611 men litet. D Kostgärd: är ett av VILLKOREN och dess block är dessutom mindre än Hjonelagspengar det året.",
+    "tier": "essential"
+   },
+   {
     "n": 10,
-    "title": "Sanity-check Hjonelagspengar-staplen",
-    "text": "I det filtrerade aret ar Hjonelagspengar-staplen synligt langre och hogre an alla andra extra ordinarie skatter — den dominerar visuellt. Det ar konsistent med att 'storsta extra ordinarie krigsskatt det aret' har ett tydligt svar.",
+    "title": "Sanity-check filtret",
+    "text": "Månadspengar upphör efter ca 1607, så alla år med Skjutsfärdspengars andra omgång (ca 1608–1611) klarar villkor 3 automatiskt; det som avgör är var Kostgärd återkommer (ca 1609–1611). Skärningen är smal och pekar entydigt på samma svar oavsett vilket år i fönstret du väljer — Hjonelagspengar dominerar hela perioden.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekraftelse",
-    "text": "Facit bekraftar: svaret ar A (Hjonelagspengar). Insikten i en mening: vid tre-villkors-fragor pa kombinerade tidsdiagram — anvand alla tre villkoren simultant for att filtrera till ETT specifikt ar, sen las storsta posten pa det aret enligt fragans kategori (extra ordinarie / ordinarie / etc.).",
+    "title": "Insikten i en mening",
+    "text": "Svaret är A (Hjonelagspengar). I en mening: vid flervillkorsfrågor på tidsdiagram — kartlägg först varje villkorsskatts utsträckning längs tidsaxeln, skär ihop dem till ett enda fönster, och läs först därefter av största posten där.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi for filtreraande tids-diagram med flera kategorier: anvand alla angivna villkor for att filtrera ner till ETT specifikt ar/period, las sedan storsta/minsta varde pa det filtrerade aret enligt fragans kategori. Triggern: 'identifiera aret X villkor Y och Z' → tre-villkors-filtrering + en av lasning pa det aret.",
-  "pitfall": "Den klassiska fallan ar att glomma ETT villkor (t.ex. att Manadspengar INTE skulle betalas) och hamna pa fel ar. Botemedlet: skriv ner alla tre villkoren bredvid diagrammet, kontrollera vart ar mot ALLA tre villkor innan du valjer; vart ar matchar bara en delmangd om du missar ett villkor."
+  "technique": "DTK-strategi för filtrerande tidsdiagram med många kategorier: använd alla angivna villkor samtidigt för att filtrera ner till ETT specifikt år (eller en smal period), och läs sedan av största/minsta posten det året enligt frågans kategori. Triggern: \"identifiera det år då X och Y men inte Z\" → tre-villkors-filtrering följt av en enda avläsning.",
+  "pitfall": "Klassiska fällan är att tappa ETT av de tre villkoren — oftast det negativa (att Månadspengar INTE fick betalas) — och landa i 1605–1606, där Kostgärd och Skjutsfärdspengar också överlappar men Månadspengar fortfarande betalades. Botemedlet: skriv ner alla tre villkoren, kartlägg varje skatts årsspann längs tidsaxeln, och godkänn ett år först när alla tre är avbockade."
  },
  "host-2022-kvant2-DTK-036": {
   "_meta": {
@@ -12051,103 +12039,103 @@
  },
  "host-2022-kvant2-DTK-037": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": null,
   "pregrade_tactic": {
-   "handle": "Rakna-ar-dar-extra-over-ordinarie",
-   "move": "For varje av de 20 aren (1600-1619): jamfor sumohojden ovan arliga-ranta-linjen mot hojden under den. Räkna antalet ar dar extra > ordinarie."
+   "handle": "Dubbla-baslinjen-per-år",
+   "move": "Läs av ordinarie-linjens nivå (obs: den stiger ca 6 100 → 7 300 daler vid 1607). Dubbla nivån till en tröskel. Skanna alla 20 årens stapeltoppar och räkna åren där toppen ligger ÖVER tröskeln — det är åren där extra > ordinarie."
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "9 ar ar en mindre stor andel av 20 ar (45 %) — frestande om man tror att extra ordinarie skatter dominerade bara mindre an halften av aren.",
-    "why_wrong": "Som steg 4 visar: extra ordinarie ar STORRE an ordinarie under perioden 1600-1619 i 11 av aren — narmare halften plus nagra. Facit fastslar B (11), inte A (9)."
+    "why_tempting": "9 får du om du bara räknar de flagranta åren och stryker gränsfallen 1609 och 1619, vars toppar (ca 14 900 respektive 15 100) bara nätt och jämnt klarar dubbla ordinarie-nivån (ca 14 600–14 700).",
+    "why_wrong": "Båda gränsfallen klarar tröskeln — topparna ligger några hundra daler ÖVER dubbla ordinarie-linjen, så de ska räknas in. 9 + 2 = 11 = B."
    },
    {
     "letter": "C",
-    "why_tempting": "13 ar (65 %) ar nara facits 11 men nagra ar for mycket. Frestande om man inkluderar nagra grans-fall som faktiskt har lika stor extra som ordinarie (inte storre).",
-    "why_wrong": "Facit fastslar 11, inte 13. Var rakning maste vara strikt 'extra > ordinarie' (storre an, inte lika med eller storre). Aren da extra och ordinarie ar lika stor raknas inte. Facit fastslar B."
+    "why_tempting": "13 får du om du räknar in 1608 och 1612, vars staplar ser rejäla ut på ögonmått (Soldathjälp respektive Tredalershjälp och Skeppsgärd tornar upp sig över linjen) — eller om du missar att ordinarie-nivån stiger till ca 7 300 från 1607 och fortsätter jämföra mot den gamla, lägre nivån.",
+    "why_wrong": "Hög stapel räcker inte — toppen måste över DUBBLA ordinarie-nivån. 1608 toppar ca 12 500 och 1612 ca 11 500, båda tydligt under tröskeln ca 14 600. De är nej-år, och räkningen stannar på 11."
    },
    {
     "letter": "D",
-    "why_tempting": "15 ar (75 %) skulle innebara att extra ordinarie dominerade i de flesta aren — kanns kvalitativt rimligt om man overskattar extra-totalens magnitud over hela perioden.",
-    "why_wrong": "Med 20 ar i perioden 1600-1619, ar 15 av dem 'extra > ordinarie' EN ÖVERSKATTNING. Tidiga ar (1600-1602) har dominant Hjalppengar (extra), och seina ar har stora Hojepengar (extra) — men det finns ocksa ar med smà eller noll extra ordinarie. Facit fastslar 11."
+    "why_tempting": "15 känns rimligt om du räknar åren där extra ordinarie skatter över huvud taget dominerar bilden — nästan varje år har en hög trave krigsskatter staplad ovanpå räntan, så \"de flesta åren\" lockar.",
+    "why_wrong": "Att det FINNS extra skatter är inte villkoret — de ska tillsammans överstiga ordinarie. Hela 1600–1605 plus 1607, 1608 och 1612 (nio år) toppar under dubbla ordinarie-nivån, så bara 11 år kvalificerar."
    }
   ],
-  "solution_path": "Facit fastslar 11 ar (alternativ B). I diagrammet 'Skattepalagor i Vasterbotten 1600-1619' pa sidan 20: for varje av de 20 aren (1600-1619), jamfor hojden av extra ordinarie skatter (ovan arliga ranta-linjen) mot hojden av ordinarie skatter (under linjen). Rakna antalet ar dar extra > ordinarie: 11 ar. Det matchar facit.",
+  "solution_path": "I diagrammet \"Skattepålagor i Västerbotten 1600–1619\" ligger de ordinarie skatterna (\"Årliga räntan med kyrkotionden och fiskeskatter\") som en bottenregion, och alla extra ordinarie krigsskatter är staplade ovanpå den. Extra > ordinarie gäller exakt när stapelns totala topp når högre än DUBBLA ordinarie-nivån. Ordinarie-nivån ligger på cirka 6 000–6 200 daler 1600–1606 och stiger till cirka 7 300 daler från 1607 — trösklarna blir alltså cirka 12 200 respektive 14 600 daler. Skanna årens toppar mot tröskeln: 1600–1605 (toppar 9 500–11 300) och 1607 (ca 9 900), 1608 (ca 12 500) samt 1612 (ca 11 500) klarar den inte — nio nej-år. Resten gör det: 1606 (ca 15 000), 1609 (ca 14 900, knappt), 1610 (ca 15 800), 1611 (ca 15 900) och hela sviten 1613–1619 (från ca 15 100 upp till nästan 24 000 år 1613 med Älvsborgs lösen). Det ger 11 ja-år av 20 — alternativ B.",
   "steps": [
    {
     "n": 1,
-    "title": "Forsta fragan",
-    "text": "Fragan: for hur manga av de redovisade aren (1600-1619, totalt 20) galler att de extra ordinarie krigsskatterna TILLSAMMANS utgjorde ett STORRE belopp an de ordinarie skatterna? Svarsformatet ar ett antal ar. Facit fastslar 11 (alternativ B).",
+    "title": "Förstå frågan",
+    "text": "För hur många av de 20 redovisade åren (1600–1619) utgjorde de extra ordinarie krigsskatterna TILLSAMMANS ett större belopp än de ordinarie skatterna? Svaret är ett antal år — en jämförelse per år, en kumulativ räkning.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Identifiera arliga ranta-linjen",
-    "text": "I diagrammet finns en TYDLIG horisontell linje markerad 'Arliga ranta med kyrkotionden och fiskeskatter (Ordinarie skatter)'. Allt UNDER denna linje ar ordinarie skatter (relativt konstant over alla ar). Allt OVAN linjen ar extra ordinarie (varierar starkt).",
+    "title": "Hitta gränslinjen i diagrammet",
+    "text": "Bottenregionen är märkt \"Årliga räntan med kyrkotionden och fiskeskatter (Ordinarie skatter)\". Bildtexten säger att krigsskatterna är \"lagda ovanpå årliga räntan\" — allt UNDER gränslinjen är alltså ordinarie, allt OVANFÖR är extra ordinarie (Kostgärd, Hjälpskatter, Månadspengar, Älvsborgs lösen med flera).",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Vad ska vi jamfora?",
-    "text": "For varje ar: total HOJD av extra ordinarie (allt ovan linjen) MOT total HOJD av ordinarie (allt under linjen). Om extra totalen ar STORRE an ordinarie totalen → ar raknas in. Lika stora raknas inte.",
+    "title": "Läs av ordinarie-nivån — den är inte konstant",
+    "text": "Gränslinjen ligger på cirka 6 000–6 200 daler åren 1600–1606, men stiger till cirka 7 300 daler från 1607 och ligger kvar där perioden ut. Missa inte trappsteget — det flyttar jämförelsen för alla senare år.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Skanna ar for ar",
-    "text": "Gar genom 1600, 1601, ..., 1619. I tidiga ar (1601-1603) ar Hjalppengar massivt → extra > ordinarie. I 1604-1606 ar extra mindre (kanske mindre an ordinarie). I 1607-1610 ar Kostgard och andra moderata. I 1611-1619 dominerar Hjonelagspengar/Hojepengar (extra hoga). Cirka 11 ar uppfyller villkoret.",
+    "title": "Dubblingsknepet",
+    "text": "I stället för att mäta två höjder per år: extra > ordinarie gäller exakt när stapelns TOPP ligger högre än DUBBLA ordinarie-nivån. Tröskeln blir alltså cirka 12 200 daler för 1600–1606 och cirka 14 600 daler för 1607–1619. Nu räcker det att skanna topparna.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Detaljerad rakning",
-    "text": "Forenklad rakning: 1600 (ja, Hojepengar), 1601 (ja, Hjalppengar+), 1602 (ja, Hjalppengar dominerar), 1603 (ja), 1604 (ja, Manadspengar+andra), 1605 (ja), 1606 (kanske inte — Manadspengar minskat), 1607-1608 (ja, Kostgard+andra), 1609 (gransfall), 1610 (ja), 1611 (ja, Jamtl+Kostgard+ovr), 1612 (ja, Hojepengar)... Totalt summerar till 11 ar dar extra dominerar.",
+    "title": "Skanna 1600–1606",
+    "text": "Topparna: 1600 ca 10 900 (Kostgärd + Hjälpskatter), 1601 ca 11 300, 1602 ca 9 500, 1603 ca 9 600 (Endalershjälp), 1604 och 1605 ca 10 300 (Månadspengar + Skjutsfärdspengar) — alla under 12 200, alltså NEJ. 1606 skjuter i höjden till ca 15 000 (Örespengar, Brudskatt, Kröningsgärd och Kostgärd staplade ovanpå Månadspengar) — JA. Delsumma: 1 ja-år.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Vad menas med 'utgjorde ett storre belopp'?",
-    "text": "'Tillsammans utgjorde ett storre belopp' = totala summan av extra ordinarie skatter for det aret ar STORRE an totala summan av ordinarie. Det ar EN jamforelse per ar — strikt storre, inte lika med eller mindre.",
-    "tier": "detail"
+    "title": "Skanna 1607–1612",
+    "text": "Tröskeln är nu ca 14 600 (dubbla 7 300). 1607 toppar ca 9 900 — nej. 1608 ca 12 500 (Soldathjälp) — nej, klart under 14 600. 1609 ca 14 900 — JA, knappt över. 1610 ca 15 800 och 1611 ca 15 900 (Hjonelagspengar, Kostgärd, Jämtlandsgärder) — JA och JA. 1612 ca 11 500 (Tredalershjälp, Skeppsgärd) — nej. Delsumma: 3 ja-år till.",
+    "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Korsa mot svarsalternativen",
-    "text": "Alternativen: 9, 11, 13, 15 ar. Facit fastslar 11 — vart rakning matchar. Skillnaden mellan alternativen ar 2 ar, sa vart svar kan inte vara fel pa en faktor sex eller mer. 11 ar entydigt central — mellan A (9) och C (13).",
+    "title": "Skanna 1613–1619",
+    "text": "1613 är periodens extremår: Älvsborgs lösen plus Marsgärd med mera når nästan 24 000 — självklart JA. 1614 ca 18 300, 1615 ca 18 700, 1616 ca 15 400, 1617 ca 22 300 (Höstgärd ovanpå Älvsborgs lösen), 1618 ca 16 600, 1619 ca 15 100 — samtliga över 14 600. Sju JA i rad.",
     "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Sanity-check mot kvalitativ kontext",
-    "text": "Stormaktstiden var en period av kontinuerliga krig (Sigismunds tronfoljakris, Lubeckska kriget, ryska kriget, polska kriget, 30-arigia kriget). Sverige overbeskattade befolkningen for att finansiera dessa krig — och tabellen visar precis det monstret: extra ordinarie skatter dominerade UNDER MER AN HALFTEN av perioden. 11 av 20 ar = 55 %, vilket ar historiskt konsistent.",
-    "tier": "detail"
+    "title": "Räkna ihop",
+    "text": "Ja-åren: 1606, 1609, 1610, 1611 samt 1613–1619. Det är 1 + 3 + 7 = 11 år. Nej-åren är nio: 1600–1605, 1607, 1608 och 1612. 11 + 9 = 20 — hela perioden är täckt. Svar: B (11).",
+    "tier": "essential"
    },
    {
     "n": 9,
-    "title": "Sanity-check med ordinarie-niva",
-    "text": "Ordinarie-summan (under arliga-ranta-linjen) ar relativt konstant runt 2 200-2 500 daler per ar. Det ar baslinje. Extra ordinarie maste totalt overstiga den hojden — vilket inträffar i ar med dominanta enskild skatt eller flera ovanpa varandra. 11 sadana ar ar konsistent.",
+    "title": "Gränsfallen som avgör mellan alternativen",
+    "text": "De enda åren där det är jämnt är 1609 (toppen ca 14 900 mot tröskeln ca 14 600) och 1619 (ca 15 100 mot ca 14 700) — båda klarar sig över med några hundra daler. 1608 (ca 12 500) och 1612 (ca 11 500) ligger däremot tydligt under. Räknar du bort de två gränsfallen hamnar du på 9 (A); räknar du in 1608 och 1612 hamnar du på 13 (C).",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Sanity-check gransfall",
-    "text": "Aren 1606 och 1609 ar gransfall i var rakning. Om bagge raknas in skulle vi fa 13 (C), om bagge ut skulle vi fa 9 (A). Facit pa 11 indikerar att den korrekta tolkningen ar att exakt EN av de tva gransfallen raknas in.",
+    "title": "Strikt \"större belopp\"",
+    "text": "Frågan kräver att extra är STÖRRE än ordinarie — likhetsfall skulle inte räknas. Här ställer det inte till problem: inget av de 20 åren toppar exakt på dubbla ordinarie-linjen, så räkningen 11 påverkas inte av tolkningen.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekraftelse",
-    "text": "Facit bekraftar: svaret ar B (11 ar). Insikten i en mening: vid 'for hur manga ar gallde X > Y'-fragor pa tidsdiagram med tva sektioner — ga genom varje ar systematiskt, jamfor de tva totalerna, rakna antalet ar dar villkoret HÅLLER strikt.",
+    "title": "Slutsats",
+    "text": "Svaret är B (11 år). Insikten i en mening: när ett staplat tidsdiagram frågar \"för hur många år var delen ovanför linjen större än delen under\" — läs av baslinjen (och dess trappsteg!), dubbla den, och räkna åren där stapelns topp klarar tröskeln.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi for raknande-villkors-fragor pa tidsdiagram: gar genom varje ar i perioden, jamfor de tva relevanta sektionerna mot varandra (extra ordinarie vs ordinarie), rakna antalet ar dar villkoret hailler. Triggern: 'for hur manga ar X' → en-jamforelse-per-ar + en kumulativ rakning.",
-  "pitfall": "Den klassiska fallan ar att rakna ar dar X >= Y i stallet for X > Y (alltsa inkludera gransfall). Botemedlet: las fragan ord for ord — 'storre belopp' = strikt storre an, inte lika med eller storre an. Lika-fall ska EXKLUDERAS."
+  "technique": "DTK-strategi för räknande villkorsfrågor på staplade tidsdiagram: gör om jämförelsen \"del ovanför linjen mot del under linjen\" till ett enda topptest — extra > ordinarie precis när stapelns topp ligger högre än dubbla ordinarie-nivån. Läs av ordinarie-nivån (den kan ändras under perioden!), dubbla den, och skanna årens toppar mot tröskeln. Triggern: \"för hur många år gällde X > Y\" → en jämförelse per år + en kumulativ räkning.",
+  "pitfall": "Klassiska fällan här är att jämföra på ögonmått mot fel referens: en hög trave krigsskatter ser dominant ut, men villkoret är att extra-delen ska överstiga HELA ordinarie-delen — alltså att stapelns topp når över dubbla gränslinjen. Botemedlet: läs av ordinarie-nivån per år (den stiger från ca 6 100 till ca 7 300 daler vid 1607), dubbla den, och testa topparna mot den tröskeln i stället för att gissa proportioner."
  },
  "host-2022-kvant2-DTK-038": {
   "_meta": {
@@ -12351,103 +12339,103 @@
  },
  "host-2022-kvant2-DTK-040": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": "DTK-TACTIC-003",
   "pregrade_tactic": {
-   "handle": "Andel-via-given-tal-och-totalvarde",
-   "move": "Anvand fragans 15 710 milj kr (utemaltider av utländska besökare) som taljare, utländska besökarens totalvarde (62 293) som namnare, dela och uttryck som brak."
+   "handle": "Andel-via-given-täljare-och-boxtotal",
+   "move": "Ta frågans 15 710 milj kr (utländska besökares utemåltider) som täljare. Läs nämnaren ur boxen Utländska besökare = 62 293. Dela och matcha mot bråken: 15,7/62,3 ≈ 0,25 → 1/4."
   },
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "1/3 ≈ 33 % — frestande om du tror att utemaltider ar en av tre lika stora delar av utländska besökarens budget (avrunda overdrivet).",
-    "why_wrong": "Som steg 4 visar: 15 710 / 62 293 ≈ 0,252 ≈ 25 %, vilket ar 1/4, inte 1/3. Facit fastslar A (1/4)."
+    "why_tempting": "1/3 ≈ 33 % lockar om du slarvar med överslaget — 15,7 av 62,3 kan kännas som \"en dryg tredjedel\" om du rundar 62 till 50 i huvudet.",
+    "why_wrong": "Testet 3 · 15 710 = 47 130 når inte upp till 62 293, så 1/3 är för stort. Kvoten 15 710 / 62 293 ≈ 0,252 = 25 %, dvs 1/4 (A)."
    },
    {
     "letter": "C",
-    "why_tempting": "2/5 = 40 % — for stor andel. Frestande om man overskattar utemaltider-vardet eller blandar ihop utländska med totalt turism.",
-    "why_wrong": "15 710 / 62 293 ≈ 25 %, inte 40 %. Om man dela med 15 710 med en annan kategori storlek hamnar man fel. Facit fastslar A (1/4 = 25 %)."
+    "why_tempting": "2/5 = 40 % blir plausibelt om du råkar ta fel nämnare — t.ex. blandar in ett mindre pajvärde eller överskattar hur stor del restaurangbesöken utgör.",
+    "why_wrong": "Med rätt nämnare (boxen Utländska besökare 62 293) är kvoten 25 %, inte 40 %. 2/5 av 62 293 vore ca 24 900 — långt över de 15 710 som frågan anger."
    },
    {
     "letter": "D",
-    "why_tempting": "1/2 = 50 % skulle innebara att utemaltider ar halften av utländska besökarens spenderng — for stor andel.",
-    "why_wrong": "Utemaltider 15 710 ar ca 1/4 av utländska 62 293, inte 1/2. Skulle 1/2 stamma vore utemaltider-summan ca 31 000, inte 15 710. Facit fastslar A (1/4)."
+    "why_tempting": "1/2 lockar bara vid ren gissning eller om man förväxlar med pajen Boende och restaurang, där Utemåltider-slicen ser ut som ungefär halva cirkeln.",
+    "why_wrong": "Den pajen visar hela turismens 57 032, inte utländska besökares budget. Hälften av 62 293 vore ca 31 150 — dubbelt så mycket som de 15 710 frågan ger. Kvoten är 25 % = 1/4 (A)."
    }
   ],
-  "solution_path": "Facit fastslar 1/4 (alternativ A). Givet: utländska besökare spenderade 15 710 miljoner kr pa utemaltider 2005, och totala utländska besökare-spenderingen var 62 293 miljoner kr (printad pa sidan 22). Andelen: 15 710 / 62 293 ≈ 0,252 ≈ 1/4 (25 %).",
+  "solution_path": "Figuren visar tre resenärskategorier som boxar — Svenska affärsresenärer 41 075, Svenska fritidsresenärer 87 610 och Utländska besökare 62 293 — som tillsammans ger TURISM 190 978. Frågan ger täljaren i texten: utländska besökare spenderade 15 710 miljoner kr på utemåltider 2005. Nämnaren är utländska besökarnas totala turismrelaterade konsumtion, dvs boxvärdet 62 293. Andelen: 15 710 / 62 293 ≈ 0,252 ≈ 25 %. Rimlighetskoll: 62 293 · 1/4 = 15 573, bara 137 under 15 710 — kvoten ligger alltså mycket nära exakt 1/4. Alternativ A.",
   "steps": [
    {
     "n": 1,
-    "title": "Forsta fragan",
-    "text": "Fragan: utländska besökare spenderade 15 710 miljoner kronor pa utemaltider 2005; hur stor ANDEL av de utländska besökarnas turismrelaterade konsumtion avsåg utemaltider? Svarsformatet ar ett brak. Facit fastslar A (1/4). Strategin: utemaltider / total utländsk konsumtion.",
+    "title": "Förstå frågan",
+    "text": "Utländska besökare spenderade 15 710 miljoner kronor på utemåltider 2005. Frågan: hur stor ANDEL av de utländska besökarnas turismrelaterade konsumtion var det? Andel = del/helhet, och svaret ska uttryckas som ett bråk. Strategin: utemåltider (given siffra) delat med utländska besökarnas totalsumma (läses ur figuren).",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Identifiera namnaren",
-    "text": "I diagrammet pa sidan 22: utländska besökare-boxen visar printat varde 62 293 (miljoner kr). Det ar totalsumman for utländska besökarens turismrelaterade konsumtion 2005. Det ar var namnare.",
+    "title": "Orientera dig i figuren",
+    "text": "Figuren har två nivåer. Överst: tre boxar för resenärskategorier — Svenska affärsresenärer 41 075, Svenska fritidsresenärer 87 610, Utländska besökare 62 293 — som tillsammans bildar stapeln TURISM 190 978. Under den: fyra cirkeldiagram som delar upp TOTALEN per konsumtionsområde (Boende och restaurang 57 032, Transport 44 583, Varuhandel 74 587, Övriga tjänster 14 776). Observera: pajerna gäller hela turismen, inte en enskild besökarkategori.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Anvand taljaren fran fragans text",
-    "text": "Fragan ger explicit: utländska besökare spenderade 15 710 miljoner kr pa utemaltider 2005. Det ar var taljare. Den siffran ar INTE i diagrammet — fragan tillhandahaller det.",
+    "title": "Identifiera nämnaren",
+    "text": "\"De utländska besökarnas turismrelaterade konsumtion\" = boxvärdet Utländska besökare 62 293 miljoner kr. Det är vår nämnare — läs det direkt ur boxen, inte ur någon paj.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Beräkna kvoten",
-    "text": "15 710 / 62 293 = ? Snabbt overslag: 15 710 / 62 293 ≈ 15,7 / 62,3 ≈ 0,252. Exakt: 62 293 · 0,25 = 15 573,25; 15 710 ar nara — kvoten ar 0,252, dvs 25,2 %.",
+    "title": "Ta täljaren ur frågetexten",
+    "text": "Siffran 15 710 (utländska besökares utemåltider) står INTE i figuren — pajen Boende och restaurang visar bara att utemåltider är en del av totalens 57 032, utan siffra per besökarkategori. Frågan tillhandahåller därför värdet själv. Täljare: 15 710.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Vad menas med 'andel'?",
-    "text": "Andel = del / helhet. Uttryckt som brak: 1/4 betyder 25 %. Bland alternativen: 1/4 = 25 %, 1/3 ≈ 33 %, 2/5 = 40 %, 1/2 = 50 %. Var kvot 25,2 % matchar 1/4 entydigt.",
-    "tier": "detail"
+    "title": "Beräkna kvoten",
+    "text": "15 710 / 62 293 ≈ 15,7 / 62,3 ≈ 0,252. Kontroll baklänges: 62 293 · 0,25 = 15 573,25 — vårt täljarvärde 15 710 ligger bara 137 över (mindre än 1 % avvikelse). Kvoten är alltså 25,2 %, mycket nära exakt en fjärdedel.",
+    "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Korsa mot svarsalternativen",
-    "text": "A: 1/4 (25 %) — var kvot 25,2 % matchar med <1 procentenhets fel. B: 1/3 (33 %) — for stor. C: 2/5 (40 %) — for stor. D: 1/2 (50 %) — for stor. Facit fastslar A.",
+    "title": "Matcha mot bråken",
+    "text": "A: 1/4 = 25 % — matchar 25,2 % med marginal under en procentenhet. B: 1/3 ≈ 33 % — för stort. C: 2/5 = 40 % — för stort. D: 1/2 = 50 % — för stort. Bara A är förenligt med kvoten. Svar: A.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Sanity-check med procent",
-    "text": "62 293 · 0,25 = 15 573,25. Vart taljarvarde 15 710 ar bara 137 storre (mindre an 1 % avvikelse). Det innebar att andelen ar mycket nara EXAKT 1/4 — vilket gor A till entydigt korrekt svar.",
+    "title": "Snabbt överslag utan division",
+    "text": "Ett fyrfaldigt test går fortare än lång division: 4 · 15 710 = 62 840 ≈ 62 293. Fyra utemåltidsposter fyller nästan exakt hela utländska totalen — alltså är andelen ≈ 1/4. Testet 3 · 15 710 = 47 130 (för litet mot 62 293) utesluter 1/3 direkt.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Sanity-check varfor utemaltider ar ca 25 %",
-    "text": "Utländska besökare som reser till Sverige ata pa restaurang dagligen — utemaltider ar typiskt 20-30 % av en utländsk turists totalbudget (resten gar till boende, transport, varuhandel, kultur). Att utemaltider ar ca 25 % stammer mot typisk turismkonsumtionsstruktur.",
+    "title": "Fel nämnare 1: hela turismen",
+    "text": "Delar du i stället med totala turismen 190 978 blir kvoten 15 710 / 190 978 ≈ 0,082 ≈ 8 % — inget alternativ ens i närheten. Det bekräftar att nämnaren måste vara utländska besökarnas egen box (62 293), inte TURISM-stapeln.",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Sanity-check med printade huvudkategorier",
-    "text": "Pajen for utländska besökare visar fyra huvudkategorier: Boende och restaurang (57 032 / total 190 978), Varuhandel (74 587 / total), Transport (44 583 / total), Kultur/rekreation/sport, Övriga tjanster (14 776). Inom utländska delen av Boende och restaurang ar utemaltider 15 710. 15 710 / 62 293 = 1/4 ar konsistent.",
+    "title": "Fel nämnare 2: pajvärdet 57 032",
+    "text": "En annan lockande felläsning: pajen Boende och restaurang (57 032) innehåller ju slicen Utemåltider. Men 57 032 är hela turismens boende + restaurang, alla besökarkategorier ihop — inte utländska besökares totalkonsumtion. 15 710 / 57 032 ≈ 0,28 ligger dessutom mellan 1/4 och 1/3 och ger inget rent bråk; frågans formulering pekar entydigt på boxen 62 293.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Sanity-check med totalt turism",
-    "text": "Om vi av misstag delar 15 710 med totalt turism 190 978 (inte bara utländska besökare) blir kvoten 15 710 / 190 978 ≈ 0,082, dvs ca 8 % — inget av alternativen. Det visar varfor namnaren MASTE vara utländska besökare-totalsumman (62 293), inte allt turism (190 978).",
+    "title": "Rimlighetskoll",
+    "text": "Är 25 % rimligt? Utländska besökares övriga budget går till boende, transport, varuhandel och övriga tjänster — att restaurangmåltider tar ungefär en fjärdedel av en utlandsturists konsumtion är en trovärdig struktur, och siffrorna 15 710 mot 62 293 bär hela beviset.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekraftelse",
-    "text": "Facit bekraftar: svaret ar A (1/4). Insikten i en mening: vid andelsfragor med given delpost — anvand fragans angivna varde som taljare och kategorins totalvarde (fran diagrammet) som namnare, dela och konvertera till brak.",
+    "title": "Slutsats",
+    "text": "Svaret är A (1/4). Insikten i en mening: vid andelsfrågor där frågetexten ger delposten — hämta bara nämnaren ur figuren, och välj den nämnare som frågans formulering pekar på (här besökarkategorins box 62 293, inte totalen 190 978 eller ett pajvärde).",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi for andelsfragor med given numerisk delpost: ta den givna siffran som taljare, las relevant kategori-totalvarde fran diagrammet som namnare, dela, konvertera till brak och matcha mot alternativen. Triggern: 'utgjorde en andel av' med given specifika siffra → division med korrekt totalvarde.",
-  "pitfall": "Den klassiska fallan ar att anvanda fel namnare — t.ex. totalt turism (190 978) i stallet for utländska besökarens totalsumma (62 293), vilket ger ett mycket lagre brak. Botemedlet: las fragans formulering noga — 'utländska besökarnas turismrelaterade konsumtion' = den specifika subtotalen 62 293, INTE allt turism."
+  "technique": "DTK-strategi för andelsfrågor med given numerisk delpost: ta frågans siffra som täljare, hämta ENBART nämnaren ur figuren — den kategori-total som frågans formulering pekar på — dela, och matcha mot bråkalternativen med ett multiplikationstest (4 · täljaren ≈ nämnaren ⇒ 1/4). Triggern: \\\"hur stor andel av X:s konsumtion\\\" med given siffra → division med X:s totalvärde.",
+  "pitfall": "Klassiska fällan är fel nämnare: figuren erbjuder tre kandidater — totala turismen 190 978, pajvärdet Boende och restaurang 57 032 och boxen Utländska besökare 62 293. Frågan säger uttryckligen \\\"de utländska besökarnas turismrelaterade konsumtion\\\", vilket är boxvärdet 62 293. Botemedlet: läs frågans formulering ordagrant och para den mot rätt nivå i figuren (resenärsboxarna, inte konsumtionspajerna) innan du dividerar."
  },
  "host-2022-kvant1-KVA-020": {
   "solution_path": "Per parsing I = (7^2)/7^(−2) = 7^(2−(−2)) = 7^4 = 2401. II = 3^(−2) = 1/9 ≈ 0,11. Stor olikhet. Facit C måste vara att I = II = något specifikt. Trolig tolkning: I och II förenklar båda till samma värde via potens-regler.",

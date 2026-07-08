@@ -9553,109 +9553,103 @@
  },
  "host-2014-kvant1-DTK-029": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "2003→2004 är en synlig ÖKNING (48 600 → 54 300 ton) och känns dramatisk eftersom man instinktivt jämför absoluta tal — +5 700 ton låter mycket.",
-    "why_wrong": "Som steg 5 visar är den relativa förändringen bara cirka +12 %, vilket är minst av de fyra. Facit fastslår C (2005→2006) där förändringen är cirka −30 % — markant större procentuellt. Frågan handlar om PROCENTUELL förändring, inte absoluta ton."
+    "why_tempting": "2003→2004 är en synlig ÖKNING (48 600 → 54 800 ton) och känns dramatisk om man instinktivt jämför absoluta tal — +6 200 ton låter mycket.",
+    "why_wrong": "Den relativa förändringen är bara 6 200/48 600 ≈ +12,8 %, minst av de fyra övergångarna. 2005→2006 ger −13 700/45 200 ≈ −30 % — mer än dubbelt så stort. Frågan gäller PROCENTUELL förändring, inte absoluta ton."
    },
    {
     "letter": "B",
-    "why_tempting": "2004→2005 är den första TYDLIGA minskningen (54 300 → 45 200 ton) och fångar ögat eftersom totalskörden vänder ner kraftigt här. Många stannar vid det första negativa steget.",
-    "why_wrong": "Steg 6 räknar ut: minskningen är cirka −17 %, vilket är mindre än 2005→2006:s cirka −30 %. Facit fastslår C — minskningen NÄSTA år är ännu kraftigare procentuellt, eftersom basen (45 200) är mindre och raset (till 31 500) är djupare."
+    "why_tempting": "2004→2005 är den första TYDLIGA minskningen (54 800 → 45 200 ton) och fångar ögat eftersom totalskörden vänder ner här. Många stannar vid det första negativa steget.",
+    "why_wrong": "Räkna: −9 600/54 800 ≈ −17,5 %, klart mindre än 2005→2006:s ≈ −30 %. Minskningen NÄSTA år är kraftigare procentuellt — basen (45 200) är lägre och raset (till 31 500) är djupare i ton."
    },
    {
     "letter": "D",
-    "why_tempting": "2006→2007 är en ÖKNING (31 500 → 37 400 ton) och kan kännas lika dramatisk som raset året innan — man tänker 'det studsar upp lika mycket som det föll'.",
-    "why_wrong": "Som steg 7 visar är ökningen cirka +19 %, vilket är näst störst men inte störst. Facit fastslår C (2005→2006) på cirka −30 % — basen där är högre och fallet är absolut sett större. Procentuell jämförelse: |−30| > |+19|."
+    "why_tempting": "2006→2007 är en ÖKNING (31 500 → 37 400 ton) från en låg bas och kan kännas lika dramatisk som raset året innan — man tänker 'det studsar upp lika mycket som det föll'.",
+    "why_wrong": "Ökningen är 5 900/31 500 ≈ +18,7 % — näst störst men inte störst. 2005→2006 ger −13 700/45 200 ≈ −30 %: både den absoluta förändringen är större (13 700 mot 5 900 ton) och kvoten. |−30| > |+19|."
    }
   ],
   "framework_id": "DTK-TACTIC-002",
-  "pitfall": "Den klassiska fällan är att jämföra ABSOLUTA tonskillnader istället för PROCENTUELLA förändringar. Botemedlet: räkna alltid (nytt − gammalt) / gammalt × 100 för varje övergång — då blir det matematiskt entydigt vilken som är störst, oavsett vilken bas som är högst.",
+  "pitfall": "Den klassiska fällan är att jämföra ABSOLUTA tonskillnader istället för PROCENTUELLA förändringar. Botemedlet: räkna alltid (nytt − gammalt)/gammalt × 100 för varje övergång — då blir det matematiskt entydigt vilken som är störst, oavsett vilken bas som är högst. Extra snubbeltråd här: 'Hela Riket'-raderna listas i fallande årsordning (2008 överst), så para ihop rätt år innan du subtraherar.",
   "pregrade_tactic": {
    "handle": "Procent-räkna-alla-fyra",
-   "move": "Skriv ned totalskörden för alla fem år, räkna (nytt − gammalt)/gammalt i procent för varje övergång och plocka det största absolutbeloppet — riktning spelar ingen roll, bara storlek."
+   "move": "Skriv ned totalskörden för åren 2003–2007 (obs: tabellen listar åren i fallande ordning), räkna (nytt − gammalt)/gammalt i procent för varje övergång och plocka det största absolutbeloppet — riktning spelar ingen roll, bara storlek."
   },
-  "solution_path": "Facit fastslår C (2005→2006). I tabellraden 'Hela Riket' läser du av totalskörden ton för 2003–2008: 48 600, 54 300, 45 200, 31 500, 37 400, 41 300. Räkna (nytt − gammalt)/gammalt × 100 för varje övergång: 2003→2004 ≈ +12 %, 2004→2005 ≈ −17 %, 2005→2006 ≈ −30 %, 2006→2007 ≈ +19 %. Det största absolutbeloppet är −30 % — alltså 2005→2006.",
+  "solution_path": "I tabellsektionen 'Hela Riket' (åren listas uppifrån och ned: 2008, 2007, 2006, 2005, 2004, 2003) läser du av kolumnen 'Total skörd, ton': 2003 = 48 600, 2004 = 54 800, 2005 = 45 200, 2006 = 31 500, 2007 = 37 400. Räkna (nytt − gammalt)/gammalt × 100 för varje övergång: 2003→2004 = 6 200/48 600 ≈ +12,8 %, 2004→2005 = −9 600/54 800 ≈ −17,5 %, 2005→2006 = −13 700/45 200 ≈ −30,3 %, 2006→2007 = 5 900/31 500 ≈ +18,7 %. Det största absolutbeloppet är |−30,3 %| — alltså 2005→2006, alternativ C.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: när skedde den STÖRSTA PROCENTUELLA förändringen av totalskörden i hela riket? Svarsalternativen är fyra årsövergångar (2003→2004, 2004→2005, 2005→2006, 2006→2007). Facit fastslår C (2005→2006). Notera: 'procentuell' — storleken av förändringen i procent, inte i ton. Riktning (ökning eller minskning) spelar ingen roll, bara absolutbeloppet.",
+    "text": "Frågan: när skedde den STÖRSTA PROCENTUELLA förändringen av totalskörden i hela riket? Alternativen är fyra årsövergångar (2003→2004, 2004→2005, 2005→2006, 2006→2007). Notera ordet 'procentuell' — det är förändringens storlek i procent som räknas, inte i ton. Riktning (ökning eller minskning) spelar ingen roll, bara absolutbeloppet.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i tabellen",
-    "text": "Tabellen 'Ekologisk odling av vårkorn' har fyra kolumner: Antal undersökta företag, Hektarskörd kg/ha, Odlingsareal hektar, Totalskörd ton. Frågan handlar enbart om kolumnen 'Totalskörd ton'. Sektionen 'Hela Riket' längst ner listar värden för åren 2003–2008. Det är de raderna du behöver.",
+    "text": "Tabellen 'Ekologisk odling av vårkorn' har fyra sifferkolumner: Antal undersökta företag, Hektarskörd kg/ha, Odlingsareal hektar och Total skörd ton. Frågan gäller enbart kolumnen 'Total skörd, ton'. Sektionen 'Hela Riket' längst ner listar åren i FALLANDE ordning — 2008 överst, sedan 2007, 2006, 2005, 2004 och 2003 nederst. Läs alltså nedifrån och upp för kronologisk ordning.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Skriv ned alla sex år",
-    "text": "Från 'Hela Riket'-sektionen: 2003=48 600 ton, 2004=54 300 ton, 2005=45 200 ton, 2006=31 500 ton, 2007=37 400 ton, 2008=41 300 ton. Skriv ner dem i en kolumn så att övergångarna blir lätta att para ihop. De fyra alternativen täcker 2003→2004, 2004→2005, 2005→2006 och 2006→2007.",
+    "title": "Skriv ned alla värden",
+    "text": "Från 'Hela Riket'-sektionen, kolumnen Total skörd: 2003 = 48 600 ton, 2004 = 54 800 ton, 2005 = 45 200 ton, 2006 = 31 500 ton, 2007 = 37 400 ton (2008 = 41 300 ton behövs inte — inget alternativ täcker 2007→2008). Skriv dem i kronologisk kolumn så att övergångarna blir lätta att para ihop.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Vad betyder 'procentuell förändring'?",
-    "text": "Procentuell förändring = (nytt värde − gammalt värde) / gammalt värde × 100. Tecknet talar om riktning (+ för ökning, − för minskning). Eftersom frågan söker STÖRSTA förändringen jämför du absolutbelopp — alltså |procentuell förändring|. En +20 %-ökning och en −20 %-minskning är lika 'stora' i den här frågan.",
+    "text": "Procentuell förändring = (nytt värde − gammalt värde) / gammalt värde × 100. Tecknet anger riktning (+ ökning, − minskning). Eftersom frågan söker den STÖRSTA förändringen jämför du absolutbelopp: en +20 %-ökning och en −20 %-minskning är lika 'stora' här.",
     "tier": "detail"
    },
    {
     "n": 5,
     "title": "Räkna 2003→2004",
-    "text": "(54 300 − 48 600) / 48 600 × 100 = 5 700 / 48 600 × 100 ≈ 11,7 %. Det är en ökning på cirka 12 procent. Liten absolut förändring i förhållande till en hög bas.",
+    "text": "(54 800 − 48 600) / 48 600 × 100 = 6 200 / 48 600 × 100 ≈ +12,8 %. En ökning på knappt 13 procent — liten förändring i förhållande till en hög bas.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Räkna 2004→2005",
-    "text": "(45 200 − 54 300) / 54 300 × 100 = −9 100 / 54 300 × 100 ≈ −16,8 %. Minskning på cirka 17 procent. Större än 2003→2004 men ännu inte den största.",
+    "text": "(45 200 − 54 800) / 54 800 × 100 = −9 600 / 54 800 × 100 ≈ −17,5 %. Minskning på cirka 17–18 procent. Större än 2003→2004 men fortfarande inte störst.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Räkna 2005→2006",
-    "text": "(31 500 − 45 200) / 45 200 × 100 = −13 700 / 45 200 × 100 ≈ −30,3 %. Minskning på cirka 30 procent. Det är klart störst absolutbelopp av alla fyra övergångar — basen 45 200 är lägre än 2004, och fallet ned till 31 500 är ändå större i absoluta tal. Detta är facits svar (alternativ C).",
+    "text": "(31 500 − 45 200) / 45 200 × 100 = −13 700 / 45 200 × 100 ≈ −30,3 %. Minskning på cirka 30 procent — klart störst absolutbelopp hittills: fallet på 13 700 ton delas dessutom på en lägre bas (45 200) än året innan. Detta motsvarar alternativ C.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Räkna 2006→2007",
-    "text": "(37 400 − 31 500) / 31 500 × 100 = 5 900 / 31 500 × 100 ≈ +18,7 %. Ökning på cirka 19 procent. Större än A och B men mindre än C:s |−30 %|.",
+    "text": "(37 400 − 31 500) / 31 500 × 100 = 5 900 / 31 500 × 100 ≈ +18,7 %. Ökning på cirka 19 procent — näst störst, men mindre än |−30,3 %|.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Rangordna absolutbeloppen",
-    "text": "Från störst till minst i absolutbelopp: |−30 %| (2005→2006) > |+19 %| (2006→2007) > |−17 %| (2004→2005) > |+12 %| (2003→2004). Den största procentuella förändringen — oavsett riktning — är alltså 2005→2006.",
+    "text": "Från störst till minst: |−30,3 %| (2005→2006) > |+18,7 %| (2006→2007) > |−17,5 %| (2004→2005) > |+12,8 %| (2003→2004). Den största procentuella förändringen — oavsett riktning — är alltså 2005→2006.",
     "tier": "essential"
    },
    {
     "n": 10,
-    "title": "Sanity-check: liten bas + stort hopp = stor procent",
-    "text": "Det är logiskt att 2005→2006 vinner: basen 45 200 är inte den högsta, men minskningen till 31 500 är absolut sett 13 700 ton, vilket är näst störst i absoluta tal av övergångarna OCH delas av en relativt lägre bas. Kombinationen 'mindre nämnare + stort hopp' ger den största kvoten. Lärdom: vid procentuell förändring spelar både absolut förändring och utgångsvärde roll — räkna båda istället för att lita på ögat.",
+    "title": "Sanity-check: stort hopp + mindre bas = stor procent",
+    "text": "Det är logiskt att 2005→2006 vinner dubbelt upp: fallet på 13 700 ton är den STÖRSTA absoluta förändringen av alla fyra övergångar (jämför 6 200, 9 600 och 5 900), OCH det delas på en bas (45 200) som är lägre än 2004 års. Störst täljare kombinerat med relativt liten nämnare ger den största kvoten. Lärdom: vid procentuell förändring spelar både den absoluta förändringen och utgångsvärdet roll — räkna, lita inte på ögat.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Plocka närmaste svarsalternativ",
-    "text": "Av de fyra alternativen matchar bara C (2005→2006) den största procentuella förändringen. Facit fastslår C.",
-    "tier": "essential"
-   },
-   {
-    "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är C (2005→2006, cirka −30 %). Insikten i en mening: vid 'största procentuella förändring'-frågor — räkna ALLA alternativ med formeln (nytt − gammalt)/gammalt och jämför absolutbelopp, lita aldrig på vilken absolut skillnad som ser 'störst' ut.",
+    "title": "Slutsats",
+    "text": "Svaret är C (2005→2006, cirka −30 %). Insikten i en mening: vid 'största procentuella förändring'-frågor — räkna ALLA övergångar med formeln (nytt − gammalt)/gammalt och jämför absolutbelopp; välj aldrig på vilken absolut skillnad som ser störst ut.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'största procentuella förändring'-frågor i tab- eller: (1) lokalisera rätt kolumn och rader, (2) skriv ned alla värden numeriskt, (3) räkna (nytt − gammalt)/gammalt × 100 för varje övergång, (4) jämför absolutbelopp och plocka det största. Triggern: 'procentuell förändring + flera år' → fyra-räknesteg per alternativ, aldrig huvudräkning på absoluta skillnader."
+  "technique": "DTK-strategi för 'största procentuella förändring'-frågor i tabeller: (1) lokalisera rätt kolumn och rader, (2) skriv ned alla värden numeriskt, (3) räkna (nytt − gammalt)/gammalt × 100 för varje övergång, (4) jämför absolutbelopp och plocka det största. Triggern: 'procentuell förändring + flera år' → ett räknesteg per alternativ, aldrig huvudräkning på absoluta skillnader."
  },
  "host-2014-kvant1-DTK-030": {
   "_meta": {
@@ -9965,103 +9959,103 @@
  },
  "host-2014-kvant1-DTK-033": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "55 km motsvarar ungefär 2,5–3 skalstreck och kan kännas rimligt om man bara mäter den tjockaste delen av sandstensfältet i Kalmar utan att inkludera utlöparna åt norr och söder.",
-    "why_wrong": "Som steg 6 understryker måste man mäta från NORDLIGASTE till SYDLIGASTE punkten av sandstensfältet längs Östersjökusten. Skalan visar 20 km — fältet sträcker sig över ungefär 5,5 skalstreck = cirka 110 km. Facit fastslår 110 km (alternativ C). 55 km är ungefär hälften av den totala utbredningen."
+    "why_tempting": "55 km motsvarar ungefär 2,75 skalstreck och kan kännas rimligt om man bara mäter den bredaste, mest iögonfallande delen av sandstensremsan kring själva Kalmar utan att inkludera fortsättningen norrut och söderut.",
+    "why_wrong": "Man måste mäta från remsans NORDLIGASTE till dess SYDLIGASTE punkt längs kusten. Mot 20 km-skalstrecket sträcker sig remsan cirka 5,5 streck = cirka 110 km. 55 km är ungefär hälften av den totala utbredningen."
    },
    {
     "letter": "B",
-    "why_tempting": "85 km motsvarar drygt 4 skalstreck och är en frestande mellanvärdes-gissning om man är osäker på exakt var fältet börjar och slutar.",
-    "why_wrong": "Steg 7: mätningen ska göras längs fältets LÄNGSTA axel — från norr till söder i Kalmar-delkartan. Längden mot skalstrecket 20 km är cirka 5,5 streck, inte 4. Facit fastslår 110 km (alternativ C). 85 km hamnar i ingenmansland mellan den ofullständiga mätningen och den korrekta."
+    "why_tempting": "85 km motsvarar drygt 4 skalstreck och är en frestande mellanvärdes-gissning om man är osäker på exakt var remsan börjar och slutar.",
+    "why_wrong": "Mätningen ska göras längs fältets LÄNGSTA axel — från norr till söder i Kalmar-delkartan. Remsans längd mot 20 km-skalstrecket är cirka 5,5 streck = 110 km, inte drygt 4. 85 km hamnar i ingenmansland mellan en ofullständig mätning och den korrekta."
    },
    {
     "letter": "D",
-    "why_tempting": "150 km kan vara frestande om man av misstag mäter Kalmar-delkartans HELA höjd (kartan visar mer än sandstensfältet — den visar även havet och kustnära områden) som om det vore fältets längd.",
-    "why_wrong": "Som steg 5 påpekar måste man begränsa sig till den GRÅ-ZONEN som är märkt som kambrisk sandsten — inte hela kartblockets dimension. Sandstensfältet i Kalmar sträcker sig över cirka 5,5 skalstreck = 110 km. Facit fastslår C. 150 km kräver att man mäter karthöjden istället för fältets faktiska utbredning."
+    "why_tempting": "150 km kan vara frestande om man av misstag mäter Kalmar-delkartans HELA höjd (kartan visar mer än sandstensremsan — den visar även havet, Öland och det grå urberget) som om det vore fältets längd.",
+    "why_wrong": "Man måste begränsa sig till den vita, prickiga remsan som enligt legenden är kambrisk sandsten — den grå ytan är urberg (Prekambrium) och havet ingår inte heller. Remsan sträcker sig cirka 5,5 skalstreck = 110 km; 150 km kräver att man mäter karthöjden i stället för fältets faktiska utbredning."
    }
   ],
   "framework_id": null,
-  "pitfall": "Klassiska fällan vid avståndsmätning på kartor är att mäta något annat än det frågan ber om — antingen för lite (bara den tjockaste delen) eller för mycket (hela kartblocket). Botemedlet: identifiera EXAKT fältets gränser med legendmönstret för 'kambrisk sandsten', mät från nordligaste till sydligaste punkten LÄNGS skalstrecket, och multiplicera antal streck med skalans värde (20 km).",
+  "pitfall": "Klassiska fällan vid avståndsmätning på kartor är att mäta något annat än det frågan ber om — antingen för lite (bara den bredaste delen) eller för mycket (hela kartblocket, eller fel bergart: den grå ytan är urberg, inte sandsten). Botemedlet: identifiera EXAKT fältets gränser med legendmönstret för kambrisk 'sandsten' (vit yta med glesa prickar), mät från nordligaste till sydligaste punkten mot skalstrecket, och multiplicera antal streck med skalans värde (20 km).",
   "pregrade_tactic": {
    "handle": "Skalstreck-räkning-på-rätt-fält",
-   "move": "Lås in mönstret för kambrisk sandsten i legenden, hitta dess utbredning i Kalmar-delkartan från norr till söder, mät längden mot 20 km-skalstrecket och multiplicera antal streck."
+   "move": "Lås in mönstret för kambrisk sandsten i legenden (vit yta med glesa svarta prickar — inte det grå urberget), hitta remsans utbredning längs kusten i Kalmar-delkartan från norr till söder, mät längden mot 20 km-skalstrecket och multiplicera antal streck."
   },
-  "solution_path": "Facit fastslår 110 km (alternativ C). I Kalmar-delkartan (nere till höger på sidan) är skalstrecket 20 km långt. Det kambriska sandstensfältet visar sig som en avlång struktur från norr till söder längs kusten. Mät från fältets nordligaste till sydligaste punkt: längden är cirka 5,5 skalstreck = 5,5 × 20 km = 110 km.",
+  "solution_path": "I Kalmar-delkartan (nere i mitten av sidan, till vänster om Gotland-delkartan) är skalstrecket 20 km långt. Kambrisk sandsten har enligt legenden mönstret vit yta med glesa svarta prickar — den grå ytan är urberg (Prekambrium) och ska inte räknas med. Sandstensfältet syns som en smal, prickig remsa som följer fastlandskusten i nord–sydlig riktning, förbi Kalmar. Mät från remsans nordligaste till sydligaste punkt mot skalstrecket: längden är cirka 5,5 skalstreck = 5,5 × 20 km = 110 km, alltså alternativ C.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: hur långt sträcker sig fältet med sandsten från kambrium i området där Kalmar ligger? Svarsformatet är antal km (55, 85, 110, 150). Facit fastslår 110 km (alternativ C). 'Sträcker sig' = den längsta utsträckningen från ena änden till den andra.",
+    "text": "Frågan: hur långt sträcker sig fältet med sandsten från kambrium i området där Kalmar ligger? Svarsformatet är antal km (55, 85, 110, 150). 'Sträcker sig' = den längsta utsträckningen från ena änden till den andra.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Lokalisera Kalmar-delkartan",
-    "text": "Sidan 'Fanerozoisk berggrund' har sex delkartor. Kalmar ligger i den näst sista delkartan (nere till höger, jämte Gotland-delkartan). Den visar Östersjökusten med Kalmar markerad, samt 'Borg holme' och delar av Öland norrut. Skalstrecket är 20 km långt.",
+    "text": "Sidan 'Fanerozoisk berggrund' har sex delkartor. Kalmar-delkartan ligger nere i mitten av sidan, till vänster om Gotland-delkartan. Den visar fastlandskusten med Kalmar markerad samt Öland med Borgholm, och havet Östersjön däremellan. Skalstrecket i just denna delkarta är 20 km långt (flera av de andra delkartorna har 10 km — kontrollera alltid).",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Identifiera kambrisk sandsten i legenden",
-    "text": "Legenden listar tre sandstensvarianter: 'sandsten' under Silur, 'sandsten' under Kambrium, 'sandsten (Visingsö-, Dala-)' under Prekambrium. Mönstret för 'kambrisk sandsten' är specifikt — en av halvtonsrutorna i legenden. Lås in det mönstret innan du letar i Kalmar-delkartan.",
+    "text": "Legenden listar tre sandstensvarianter: 'sandsten' under Silur, 'sandsten' under Kambrium och 'sandsten (Visingsö-, Dala-)' under Prekambrium. Kambrium-sandstenens mönster är en VIT yta med glesa svarta prickar. Viktigt: den grå heltäckande ytan i kartorna är 'urberg' (Prekambrium) — den ska INTE förväxlas med sandstenen. Lås in det prickiga vita mönstret innan du letar i Kalmar-delkartan.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Hitta sandstensfältet i Kalmar-området",
-    "text": "I Kalmar-delkartan finns ett avlångt fält längs Östersjökusten med det kambriska sandstensmönstret. Fältet är smalt i öst-västlig riktning men LÅNGT i nord-sydlig — det följer kusten. Du ska mäta dess längsta axel.",
+    "text": "I Kalmar-delkartan finns en smal, vit remsa med glesa prickar som följer fastlandskusten — det är den kambriska sandstenen. Fältet är smalt i öst–västlig riktning men LÅNGT i nord–sydlig; det löper längs kusten förbi Kalmar. Innanför remsan, västerut, tar det grå urberget vid. Du ska mäta remsans längsta axel.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Definiera 'sträcker sig' geografiskt",
-    "text": "'Sträcker sig' = total utbredning från ena änden till den andra längs fältets längsta axel. I detta fall: från fältets nordligaste punkt (norrut mot Öland-trakten) till dess sydligaste punkt (söder om Kalmar). Mät INTE bredden tvärs över; mät längden längs.",
+    "text": "'Sträcker sig' = total utbredning från ena änden till den andra längs fältets längsta axel. Här: från remsans nordligaste punkt (i höjd med norra delen av Öland i delkartan) till dess sydligaste punkt (söder om Kalmar). Mät INTE bredden tvärs över; mät längden längs kusten.",
     "tier": "detail"
    },
    {
     "n": 6,
     "title": "Använd skalstrecket",
-    "text": "Kalmar-delkartans skalstreck är 20 km. Visuellt: jämför sandstensfältets totala längd med skalstrecket. Räkna hur många 'skalsträcksbredder' fältet utgör. Fältet sträcker sig ungefär 5,5 gånger skalstreckets längd — alltså 5,5 × 20 km = 110 km. Detta är facits svar.",
+    "text": "Kalmar-delkartans skalstreck är 20 km. Jämför sandstensremsans totala nord–sydliga längd med skalstrecket: remsan är ungefär 5,5 skalstreckslängder lång. Alltså 5,5 × 20 km = 110 km.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Sanity-check mot Sveriges geografi",
-    "text": "Kalmar ligger vid sydöstra kusten av Sverige. Den kambriska sandstenens utbredning där (kallas ibland 'Kalmarsund-formationen') är välkänd som ett bälte längs kusten — geologiskt och geografiskt är 100–120 km en rimlig storleksordning för det bältet. 110 km är konsistent.",
+    "title": "Sanity-check mot geografin i kartan",
+    "text": "Delkartan visar större delen av Öland — Öland är i verkligheten cirka 14 mil långt. Sandstensremsan följer fastlandskusten över nästan samma nord–sydliga sträcka som Öland i kartbilden, så ~110 km är helt rimlig storleksordning. Hade du fått 55 km hade remsan bara täckt halva kartans höjd — det stämmer inte med bilden.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Varför inte 55, 85 eller 150 km?",
-    "text": "55 km (≈ 2,75 skalstreck): för kort, motsvarar bara den centrala delen av fältet. 85 km (≈ 4,25 skalstreck): för kort, missar någon av ändarna. 150 km (≈ 7,5 skalstreck): för långt, kräver att du mäter mer än sandstensfältet (t.ex. hela kartrutans dimension). Endast 5,5 skalstreck ≈ 110 km matchar fältets faktiska utbredning.",
+    "text": "55 km (≈ 2,75 skalstreck): för kort, motsvarar bara ungefär halva remsan. 85 km (≈ 4,25 skalstreck): för kort, missar någon av ändarna. 150 km (≈ 7,5 skalstreck): för långt, kräver att du mäter mer än sandstensremsan (t.ex. hela kartrutans höjd inklusive hav och urberg). Endast 5,5 skalstreck ≈ 110 km matchar remsans faktiska utbredning.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Mätstrategi: tumlinje-tekniken",
-    "text": "Praktiskt: håll en tumnagel eller pennspets vid fältets ena ände, markera där skalstrecket slutar, flytta startpunkten till markeringen och upprepa. Räkna hur många hopp innan du når andra änden av fältet. Det är samma princip som linjalmätning utan att behöva linjal.",
+    "text": "Praktiskt: håll en tumnagel eller pennspets vid remsans ena ände, markera där skalstreckets längd slutar, flytta startpunkten till markeringen och upprepa. Räkna hur många hopp innan du når andra änden. Det är samma princip som linjalmätning utan att behöva linjal.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Plocka närmaste svarsalternativ",
-    "text": "Av A=55, B=85, C=110, D=150 ligger den uppmätta längden 110 km exakt på C. Facit fastslår C.",
+    "text": "Uppmätt längd: 5,5 × 20 km = 110 km. Av A=55, B=85, C=110, D=150 ligger det exakt på C.",
     "tier": "essential"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är C (110 km). Insikten i en mening: mäta avstånd på kartor = (a) lås in det specifika fältet via legendmönstret, (b) mät längs dess LÄNGSTA axel mellan ytterpunkterna, (c) räkna antal skalstreck och multiplicera med skalans värde (20 km här).",
+    "title": "Slutsats",
+    "text": "Svaret är C (110 km). Insikten i en mening: mäta avstånd på kartor = (a) lås in det specifika fältets mönster via legenden (här: vit yta med glesa prickar — inte det grå urberget), (b) mät längs fältets LÄNGSTA axel mellan ytterpunkterna, (c) räkna antal skalstreck och multiplicera med skalans värde (20 km här).",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för avståndsmätning på geologiska kartor: (1) identifiera målmönstret i legenden, (2) lokalisera fältets utbredning på rätt delkarta, (3) mät längs den LÄNGSTA axeln (inte bredd), (4) använd skalstreckets exakta värde (här 20 km) som mätlinjal och multiplicera antal streck. Triggern: 'hur långt sträcker sig fältet' → skalstreck × antal upprepningar längs fältets längsta axel."
+  "technique": "DTK-strategi för avståndsmätning på geologiska kartor: (1) identifiera målmönstret i legenden — här Kambrium 'sandsten' = vit yta med glesa svarta prickar, (2) lokalisera fältets utbredning på rätt delkarta, (3) mät längs den LÄNGSTA axeln (inte bredd), (4) använd skalstreckets exakta värde (här 20 km) som mätlinjal och multiplicera antal streck. Triggern: 'hur långt sträcker sig fältet' → skalstreck × antal upprepningar längs fältets längsta axel."
  },
  "host-2014-kvant1-DTK-034": {
   "_meta": {
@@ -10165,115 +10159,109 @@
  },
  "host-2014-kvant1-DTK-035": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "1/3 för 1994 låter rimligt om man överskattar Tysklands ruta — den vågrätt-streckade rutan i 1994-stapeln är synligt stor, och 'tredjedel' känns lagom dramatiskt för en stor del.",
-    "why_wrong": "Som steg 6 visar: Tysklands ruta i 1994-stapeln spänner cirka 500 tusental m³ av en total på cirka 2 100 tusental m³ — det är cirka 24 %, vilket är nära 1/4 (25 %) och INTE 1/3 (33 %). Facit fastslår 1/4 respektive 1/10 (alternativ D). 1/3 är överskattat."
+    "why_tempting": "1/3 för 1994 lockar om man ögonmåttar: Tysklands snedstreckade segment är 1994-stapelns största enskilda segment, och 'en tredjedel' känns lagom stort för det som dominerar stapeln.",
+    "why_wrong": "Mät i stället för att ögonmåtta: segmentet spänner ca 1 350–1 900, alltså ca 550 av totalen ca 2 100 → ca 26 %, vilket är 1/4 (25 %), inte 1/3 (33 %). Dessutom är A:s andra värde 1/5 dubbelt så stort som 2003:s faktiska ca 10 %."
    },
    {
     "letter": "B",
-    "why_tempting": "1/3 för 1994 och 1/10 för 2003 har korrekt andra-värdet men felaktigt första-värdet. Det är frestande att gissa 1/3 om man fixar sig vid hur stor Tysklands del visuellt SER UT 1994 utan att räkna proportionen mot helheten.",
-    "why_wrong": "Steg 6 igen: 1994-andelen är cirka 24 %, närmare 1/4 än 1/3. Facit fastslår alternativ D (1/4 respektive 1/10). Andra-värdet 1/10 är korrekt — men för att svaret ska stämma måste BÅDA värdena vara rätt; A:s första-värde diskvalificerar det."
+    "why_tempting": "1/3 respektive 1/10 har rätt andra-värde, och det är frestande att gissa 1/3 för 1994 om man fastnar vid hur dominant Tysklands segment SER UT utan att räkna kvoten mot helheten.",
+    "why_wrong": "1994-kvoten är 550/2100 ≈ 26 %, klart närmare 1/4 än 1/3 — för 1/3 hade segmentet behövt vara ca 700 tusental m³, men det slutar redan vid ca 1 900 efter start vid ca 1 350. Båda värdena måste stämma; B:s första värde fäller det."
    },
    {
     "letter": "C",
-    "why_tempting": "1/4 respektive 1/5 har korrekt första-värdet men felaktigt andra-värdet. 1/5 (20 %) för 2003 är frestande om man överskattar hur stor Tyskland-rutan ser ut i 2003-stapeln.",
-    "why_wrong": "Som steg 7 visar är Tysklands ruta i 2003-stapeln cirka 400 tusental m³ av en total på cirka 3 950 — alltså cirka 10 %, vilket matchar 1/10. Facit fastslår D (1/4 respektive 1/10). C:s 1/5 är dubbelt så stort som det faktiska 2003-värdet."
+    "why_tempting": "1/4 respektive 1/5 har rätt första-värde, och 1/5 (20 %) för 2003 lockar om man råkar räkna in Japan-segmentet (prickigt, direkt ovanför Tyskland) i avläsningen eller minns 1994-nivån och antar att andelen bara sjönk lite.",
+    "why_wrong": "Tysklands segment 2003 är ca 400 tusental m³ av totalen ca 3 900 → ca 10 % = 1/10. För 1/5 hade det krävts ca 780 tusental m³ — nästan dubbla den faktiska segmenthöjden."
    }
   ],
   "framework_id": "DTK-TACTIC-003",
-  "pitfall": "Den klassiska fällan i stackade andelsdiagram är att jämföra Tysklands ruta MELLAN åren (är den större eller mindre 2003?) utan att normera mot ÅRSTOTALEN. Botemedlet: räkna ut total stapelhöjd för varje år och dela Tyskland-rutans höjd med totalen — andel är proportionerlig till HELHETEN, inte till tidigare år.",
+  "pitfall": "Den klassiska fällan i stackade andelsdiagram är att jämföra Tysklands segment MELLAN åren (är det större eller mindre 2003?) utan att normera mot ÅRSTOTALEN. Botemedlet: räkna ut total stapelhöjd för varje år och dela Tyskland-segmentets höjd med totalen — andel mäts mot HELHETEN det året, inte mot tidigare år.",
   "pregrade_tactic": {
-   "handle": "Ruta-genom-stapeltotal",
-   "move": "Hitta Tysklands ruta (vågrätt streckad) i 1994 och 2003, läs av dess höjd mot y-axeln och dela med stapelns TOTALA höjd det året — översätt sedan båda kvoterna till närmaste bråk."
+   "handle": "Segment-genom-stapeltotal",
+   "move": "Hitta Tysklands snedstreckade segment (direkt ovanför det tunna svarta Frankrike-bandet) i 1994 och 2003, läs av dess höjd mot y-axeln och dela med stapelns TOTALA höjd det året — översätt sedan båda kvoterna till närmaste bråk."
   },
-  "solution_path": "Facit fastslår 1/4 respektive 1/10 (alternativ D). I 1994-stapeln (total ≈ 2 100 tusental m³) är Tysklands ruta cirka 500 tusental m³ → 500/2100 ≈ 0,24, närmast 1/4. I 2003-stapeln (total ≈ 3 950 tusental m³) är Tysklands ruta cirka 400 tusental m³ → 400/3950 ≈ 0,10, närmast 1/10.",
+  "solution_path": "I 1994-stapeln (total ≈ 2 100 tusental m³) är Tysklands snedstreckade segment cirka 550 tusental m³ (från ca 1 350 till ca 1 900) → 550/2100 ≈ 0,26, närmast 1/4. I 2003-stapeln (total ≈ 3 900 tusental m³) är Tysklands segment cirka 400 tusental m³ (från ca 2 300 till ca 2 700) → 400/3900 ≈ 0,10, närmast 1/10. Det enda alternativet med både 1/4 och 1/10 är D.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: hur stor andel av Sveriges export av hyvlade trävaror gick till Tyskland 1994 respektive 2003? Svarsformatet är två bråk (formatet 'X respektive Y'). Facit fastslår 1/4 respektive 1/10 (alternativ D). Andel = (Tysklands rutas höjd) / (stapelns totala höjd).",
+    "text": "Frågan: hur stor andel av Sveriges export av hyvlade trävaror gick till Tyskland 1994 respektive 2003? Svarsformatet är två bråk ('X respektive Y'). Andel = (Tysklands segmenthöjd) / (stapelns totala höjd) — och den kvoten måste räknas separat för varje år.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i diagrammet",
-    "text": "Stapeldiagrammet visar 'Sveriges export av hyvlade trävaror' 1994–2003. Y-axeln: tusental m³, intervall 0–4000 med tickmarkeringar var 500:e (0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000). Varje stapel är stackad efter mottagarland; legenden listar Storbritannien, Danmark, Norge, Holland, Frankrike, Tyskland, Japan, Övriga länder.",
+    "text": "Stapeldiagrammet visar 'Sveriges export av hyvlade trävaror' 1994–2003. Y-axeln: tusental m³, 0–4000 med gridlinjer var 500:e. Varje stapel är stackad efter mottagarland; legenden listar Storbritannien, Danmark, Norge, Holland, Frankrike, Tyskland, Japan, Övriga länder — i den ordningen ligger segmenten också staplade nedifrån och upp.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Identifiera Tysklands ruta i legenden",
-    "text": "Legendsymbolen för Tyskland är ett VÅGRÄT-STRECKAT (horisontellt linjerat) ruta. Notera: liknande mönster kan finnas för andra länder (t.ex. snedstreckat) — lås in just det horisontellt-linjerade mönstret innan du letar i staplarna.",
+    "title": "Identifiera Tysklands segment",
+    "text": "Legendsymbolen för Tyskland är SNEDSTRECKAD (diagonala linjer). Varning: även Danmark är snedstreckat, men med motsatt lutning — och Danmark ligger långt ner i stapeln medan Tyskland ligger högt upp. Säkraste landmärket: Frankrike är ett tunt HELSVART band, och Tysklands segment ligger direkt OVANFÖR det.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Avläs 1994-stapelns total",
-    "text": "1994-stapelns toppskant ligger ungefär vid 2 100 tusental m³ (strax över 2 000-linjen). Det är årets total: cirka 2 100 tusental m³ = 2,1 miljoner m³ totalt export.",
+    "text": "1994-stapelns toppkant ligger ungefär vid 2 100 tusental m³ (strax över 2 000-linjen). Det är årets total: cirka 2 100 tusental m³.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Avläs Tysklands ruta i 1994",
-    "text": "Tysklands vågrätt-streckade ruta i 1994-stapeln ligger som en av rutorna i mitten. Mätt vertikalt mot y-axeln spänner den cirka 500 tusental m³ — ungefär en fjärdedel av stapelns höjd.",
+    "title": "Avläs Tysklands segment i 1994",
+    "text": "Tysklands snedstreckade segment i 1994-stapeln börjar direkt ovanför det svarta Frankrike-bandet vid cirka 1 350 och slutar vid cirka 1 900 tusental m³. Höjden är alltså cirka 550 tusental m³ — ungefär en fjärdedel av stapelns höjd.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Räkna 1994-andelen",
-    "text": "500 / 2 100 = 0,238 ≈ 0,25 = 1/4. Jämfört med alternativen 1/3 (33 %), 1/4 (25 %), 1/5 (20 %): 24 % ligger närmast 1/4. Facit fastslår 1/4 för 1994 — konsistent.",
+    "text": "550 / 2 100 ≈ 0,26 ≈ 1/4. Jämför med alternativens bråk: 1/3 ≈ 33 %, 1/4 = 25 %, 1/5 = 20 %. Cirka 26 % ligger klart närmast 1/4 — även med generös avläsningsmarginal (500–600) hamnar kvoten mellan 24 % och 29 %, aldrig nära 33 %.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Avläs 2003-stapelns total",
-    "text": "2003-stapelns toppskant ligger ungefär vid 3 950 tusental m³ (strax under 4 000-linjen). 2003-totalen är nästan dubbelt så hög som 1994-totalen.",
+    "text": "2003-stapelns toppkant ligger ungefär vid 3 900 tusental m³ (strax under 4 000-linjen). 2003-totalen är nästan dubbelt så hög som 1994-totalen.",
     "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Avläs Tysklands ruta i 2003",
-    "text": "Tysklands vågrätt-streckade ruta i 2003-stapeln är synligt mindre än i 1994 — både i absoluta tal och i förhållande till stapelns total. Höjden är cirka 400 tusental m³, alltså MINDRE än i 1994 trots att totalen är nästan dubbelt så stor.",
+    "title": "Avläs Tysklands segment i 2003",
+    "text": "Tysklands snedstreckade segment i 2003-stapeln (ovanför det svarta Frankrike-bandet) går från cirka 2 300 till cirka 2 700 tusental m³ — höjd cirka 400. Det är MINDRE än 1994 i absoluta tal, trots att totalen nästan fördubblats.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Räkna 2003-andelen",
-    "text": "400 / 3 950 ≈ 0,101 = 10,1 % ≈ 1/10. Jämfört med alternativen 1/5 (20 %) och 1/10 (10 %): 10 % ligger närmast 1/10. Facit fastslår 1/10 för 2003 — konsistent.",
+    "text": "400 / 3 900 ≈ 0,10 = 10 % ≈ 1/10. Jämför med alternativen: 1/5 = 20 % och 1/10 = 10 %. För att 1/5 skulle stämma hade segmentet behövt vara cirka 780 tusental m³ — nästan dubbelt så högt som det faktiskt är. 1/10 matchar.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Vad betyder 'andel' i stackat diagram?",
-    "text": "I ett stackat diagram med absoluta värden (här tusental m³, inte procent) är 'andel' = rutans höjd / stapelns totala höjd. Det är skillnaden mot ett 100-procentsstaplat diagram där andelen redan är direkt avläsbar. Här måste du ALLTID dividera med stapeltotalen.",
+    "text": "I ett stackat diagram med absoluta värden (här tusental m³, inte procent) är 'andel' = segmentets höjd / stapelns totala höjd. Det är skillnaden mot ett 100-procentsstaplat diagram där andelen är direkt avläsbar. Här måste du ALLTID dividera med stapeltotalen.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Sanity-check: Tysklands handel sjönk relativt sett",
-    "text": "Mellan 1994 och 2003 gick Tyskland från cirka 24 % till cirka 10 % av Sveriges hyvlade trävaruexport — alltså en MINSKNING med cirka 14 procentenheter. Visuellt ser Tyskland-rutan ut att krympa relativt sett, vilket bekräftar vår läsning. Mönstret är inte 'Tyskland växte' utan 'Tyskland tappade marknadsandel'.",
+    "title": "Sanity-check: Tyskland tappade marknadsandel",
+    "text": "Mellan 1994 och 2003 gick Tyskland från cirka 26 % till cirka 10 % av exporten — en minskning med cirka 15 procentenheter. Det syns direkt i figuren: segmentet krymper i absoluta tal samtidigt som staplarna växer. Mönstret 'stor andel → liten andel' pekar på D eller B; 1994-beräkningen avgör mellan dem.",
     "tier": "detail"
    },
    {
     "n": 12,
-    "title": "Plocka rätt alternativ",
-    "text": "Det enda alternativet med både 1/4 (för 1994) OCH 1/10 (för 2003) är D. A=1/3 respektive 1/5 fel på båda. B=1/3 respektive 1/10 fel på 1994. C=1/4 respektive 1/5 fel på 2003. Endast D matchar båda värdena. Facit fastslår D.",
-    "tier": "essential"
-   },
-   {
-    "n": 13,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är D (1/4 respektive 1/10). Insikten i en mening: i stackade absolut-staplar måste BÅDA värdena beräknas separat (ruta/total per år) och BÅDA måste matcha — ett rätt + ett fel diskvalificerar alternativet.",
+    "title": "Slutsats",
+    "text": "Det enda alternativet med både 1/4 (för 1994) OCH 1/10 (för 2003) är D. B har rätt 2003-värde men fel 1994-värde; C har rätt 1994-värde men fel 2003-värde; A är fel på båda. Insikten i en mening: i stackade absolut-staplar måste BÅDA värdena beräknas separat (segment/total per år) och BÅDA måste matcha — ett rätt + ett fel diskvalificerar alternativet.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'andel i stackat diagram två år'-frågor: (1) identifiera målkategorins mönster i legenden, (2) avläs stapelns TOTALA höjd för båda åren mot y-axeln, (3) avläs målkategorins rut-höjd för båda åren, (4) dela för att få andelen, (5) jämför mot bråk-alternativen för båda åren — bara alternativet där BÅDA värdena stämmer är rätt. Triggern: 'X respektive Y andel av Z' → två oberoende beräkningar, båda måste matcha."
+  "technique": "DTK-strategi för 'andel i stackat diagram två år'-frågor: (1) identifiera målkategorins mönster i legenden och hitta ett landmärke i stapeln, (2) avläs stapelns TOTALA höjd för båda åren mot y-axeln, (3) avläs målkategorins segmenthöjd för båda åren, (4) dela för att få andelen, (5) jämför mot bråk-alternativen för båda åren — bara alternativet där BÅDA värdena stämmer är rätt. Triggern: 'X respektive Y andel av Z' → två oberoende beräkningar, båda måste matcha."
  },
  "host-2014-kvant1-DTK-036": {
   "_meta": {
@@ -10489,109 +10477,109 @@
  },
  "host-2014-kvant1-DTK-038": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
     "why_tempting": "10 procent låter rimligt om man underskattar professor-linjens värde — den ligger inte högst i diagrammet och kan visuellt verka som en av de 'mindre' kategorierna. Att tippa 'omkring en tiondel' är frestande.",
-    "why_wrong": "Som steg 6 visar är professor-värdet 1997 cirka 2 300 av en total på cirka 16 000 = cirka 14,4 %, närmast 15 % (alternativ B). Facit fastslår 15 %, inte 10 %. 10 % skulle motsvara endast cirka 1 600 professorer — för lågt för diagrammets professor-linje."
+    "why_wrong": "Professor-värdet 1997 är cirka 2 300 av en total på cirka 16 000 ≈ 14,4 % — närmast 15 % (alternativ B). 10 % skulle motsvara endast cirka 1 600 professorer, klart under den nivå professor-linjen faktiskt ligger på 1997."
    },
    {
     "letter": "C",
-    "why_tempting": "20 procent är frestande om man läser av professor-värdet något för högt eller underskattar totalsumman. Eller om man blandar ihop professor-linjen med 'Annan forskande och undervisande personal'-linjen.",
-    "why_wrong": "Steg 5 är tydligt: i 1997 är professor-värdet cirka 2 300 och totalsumman cirka 16 000. 2 300 / 16 000 = 14,4 % — närmare 15 % än 20 %. Facit fastslår B. 20 % skulle motsvara cirka 3 200 professorer, vilket är högre än professor-linjens nivå 1997."
+    "why_tempting": "20 procent lockar om man läser av professor-värdet något för högt, underskattar totalsumman eller tar 'Annan forskande och undervisande personal'-linjen (som ligger strax ovanför) i stället för professor-linjen.",
+    "why_wrong": "Vid 1997 är professor-värdet cirka 2 300 och totalen cirka 16 000: 2 300 / 16 000 ≈ 14,4 % — närmare 15 % än 20 %. 20 % skulle kräva cirka 3 200 professorer, högre än till och med Annan forskande-linjen (≈ 2 800) det året."
    },
    {
     "letter": "D",
-    "why_tempting": "25 procent är frestande om man av misstag avläser 'Annan forskande och undervisande personal'-linjen (filled bullet ≈ 2 700 vid 1997) som professor och samtidigt underskattar totalen.",
-    "why_wrong": "Som steg 4 understryker måste man identifiera RÄTT linje från legenden — professor är en SPECIFIK markörsymbol (lighter bullet/cirkel), inte den filled bullet som tillhör 'Annan forskande'. Facit fastslår 15 %. 25 % skulle kräva cirka 4 000 professorer av 16 000 — markant högre än professor-linjens nivå."
+    "why_tempting": "25 procent lockar om man av misstag summerar Professorer och Annan forskande (≈ 2 300 + 2 800 = 5 100 ≈ 32 %... nära) eller kraftigt underskattar totalen genom att glömma en av de stora kategorierna Lektorer/Adjunkter i summan.",
+    "why_wrong": "Rätt linje är den nästan markörlösa professor-linjen på cirka 2 300, och totalen måste inkludera ALLA sex kategorier ≈ 16 000. 25 % skulle kräva cirka 4 000 professorer av 16 000 — markant högre än professor-linjens nivå 1997."
    }
   ],
   "framework_id": "DTK-TACTIC-003",
-  "pitfall": "Klassiska fällan här är att (a) avläsa fel linje (det finns sex kategorier med liknande markörer i ett tätt linjediagram) och/eller (b) glömma att räkna med ALLA kategorier i totalsumman. Botemedlet: stryk i legenden vilken markörsymbol som är professor, läs av samtliga sex kategoriers värden vid 1997 och summera till total.",
+  "pitfall": "Klassiska fällan här är att (a) avläsa fel linje — sex kategorier trängs i samma diagram och de två kvadratmarkörerna (Adjunkter stor, Annan forskande liten) är lätta att blanda ihop, medan professor-linjen nästan saknar synlig markör — och/eller (b) glömma att räkna med ALLA kategorier i totalsumman. Botemedlet: peka ut i legenden vilken markör som är professor (den lilla punkten), läs av samtliga sex kategoriers värden vid 1997 och summera till total.",
   "pregrade_tactic": {
    "handle": "Summera-alla-sex-linjer",
-   "move": "Lokalisera professor-linjen via legenden, läs av dess värde vid 1997, läs av alla andra fem kategoriers värden vid 1997, summera till total — dela professor-värdet med totalen."
+   "move": "Lokalisera professor-linjen via legenden (den nästan markörlösa linjen med liten punkt), läs av dess värde vid 1997, läs av de andra fem kategoriernas värden vid 1997, summera till total — dela professor-värdet med totalen."
   },
-  "solution_path": "Facit fastslår 15 procent (alternativ B). Vid x = 1997 avläses i diagrammet: Lektorer ≈ 5 100, Adjunkter ≈ 4 600, Annan forskande ≈ 2 700, Professorer ≈ 2 300, Forskarassistenter ≈ 1 100, Gästoch timlärare ≈ 200. Total ≈ 16 000. Professorer / total = 2 300 / 16 000 ≈ 14,4 % — närmast 15 %.",
+  "solution_path": "Vid x = 1997 avläses i diagrammet: Lektorer ≈ 5 100, Adjunkter ≈ 4 650, Annan forskande och undervisande personal ≈ 2 800, Professorer ≈ 2 300, Forskarassistenter ≈ 1 100, Gäst- och timlärare ≈ 200. Total ≈ 16 000. Professorer / total = 2 300 / 16 000 ≈ 14,4 % — närmast 15 %, alternativ B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: hur stor andel av det totala antalet lärare och forskare 1997 utgjordes av professorer? Svarsformatet är procent (10, 15, 20, 25). Facit fastslår 15 % (alternativ B). Andel = professorer / total alla kategorier — vid året 1997.",
+    "text": "Frågan: hur stor andel av det totala antalet lärare och forskare 1997 utgjordes av professorer? Svarsformatet är procent (10, 15, 20, 25). Andel = professorer / summan av alla sex kategorier — avläst vid året 1997.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i linjediagrammet",
-    "text": "Diagrammet 'Lärare och forskare vid högskolan' har x-axel 1995–2007 (årligen) och y-axel 0–7 000 (Antal). Sex linjer enligt legenden: Lektorer (◆), Adjunkter (■), Annan forskande och undervisande personal (•), Professorer (◦), Forskarassistenter (✱), Gästoch timlärare (▲). Varje linje har en distinkt markörsymbol.",
+    "text": "Diagrammet 'Lärare och forskare vid högskolan' har x-axel 1995–2007 (årligen) och y-axel 0–7 000 (Antal). Sex linjer enligt legenden: Lektorer (fylld romb), Adjunkter (stor fylld kvadrat), Annan forskande och undervisande personal (liten fylld kvadrat), Professorer (mycket liten fylld punkt — linjen ser nästan omarkerad ut), Forskarassistenter (asterisk) och Gäst- och timlärare (fylld triangel).",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Identifiera professor-linjen i legenden",
-    "text": "Professorer är markerade med en LIGHTER BULLET / circular markör i legenden (en av två 'bullet'-typer; den andra är 'Annan forskande'). Det är kritiskt att skilja dem åt — båda är cirklar men en är fylld och en är ljusare/öppen. Lås in symbolen innan du letar i diagrammet.",
+    "text": "Professorer har den minsta markören av alla — en pytteliten fylld punkt, så linjen ser i praktiken ut som en tunn kurva utan symboler. Förväxlingsrisken ligger i stället mellan de TVÅ kvadraterna: Adjunkter (stor kvadrat) och Annan forskande (liten kvadrat). Lås in att professor-linjen är den nästan markörlösa innan du letar i diagrammet.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Avläs professor-linjen vid 1997",
-    "text": "Vid x = 1997 ligger professor-linjen cirka 2 300 enligt y-axeln. Den ligger MELLAN 'Annan forskande' (cirka 2 700) och 'Forskarassistenter' (cirka 1 100) — alltså är professorer den näst-lägsta av de fyra mellanstora kategorierna.",
+    "text": "Vid x = 1997 ligger professor-linjen på cirka 2 300 enligt y-axeln. Den ligger MELLAN 'Annan forskande' (cirka 2 800) och 'Forskarassistenter' (cirka 1 100) — professorer är alltså den näst lägsta av de fyra mellanstora kategorierna vid 1997. (Kontroll: professor-linjen dippar lätt mot 1998 och stiger sedan brant, medan Annan forskande stiger jämnt.)",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Avläs alla andra kategorier vid 1997",
-    "text": "Lektorer ◆ ≈ 5 100, Adjunkter ■ ≈ 4 600, Annan forskande • ≈ 2 700, Professorer ◦ ≈ 2 300, Forskarassistenter ✱ ≈ 1 100, Gästoch timlärare ▲ ≈ 200. Det är dessa sex tal vi behöver för att räkna ut totalen.",
+    "text": "Lektorer (romb) ≈ 5 100, Adjunkter (stor kvadrat) ≈ 4 650, Annan forskande (liten kvadrat) ≈ 2 800, Professorer (liten punkt) ≈ 2 300, Forskarassistenter (asterisk) ≈ 1 100, Gäst- och timlärare (triangel) ≈ 200. Det är dessa sex tal vi behöver för totalen.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Räkna totalsumman 1997",
-    "text": "5 100 + 4 600 + 2 700 + 2 300 + 1 100 + 200 = 16 000. Total antal lärare och forskare 1997 ≈ 16 000. Eftersom alla värden är grova läsningar är totalen ungefärlig (±500).",
+    "text": "5 100 + 4 650 + 2 800 + 2 300 + 1 100 + 200 ≈ 16 150 ≈ 16 000. Totalt antal lärare och forskare 1997 ≈ 16 000. Eftersom alla värden är grova avläsningar är totalen ungefärlig (±500).",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Räkna andelen",
-    "text": "Professorer / total = 2 300 / 16 000 = 0,1438 ≈ 14,4 %. Närmaste alternativ: 15 % (skillnad 0,6 procentenheter). 10 % är 4,4 procentenheter bort, 20 % är 5,6 procentenheter bort. Närmast är klart 15 %.",
+    "text": "Professorer / total = 2 300 / 16 000 ≈ 0,144 ≈ 14,4 %. Närmaste alternativ: 15 % (skillnad 0,6 procentenheter). 10 % är 4,4 procentenheter bort, 20 % är 5,6 procentenheter bort. Närmast är klart 15 %.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Vad betyder 'andel av total' i linjediagram?",
-    "text": "I ett linjediagram som visar absoluta antal per kategori per år, är 'andel' = (en linjes y-värde vid året) / (summan av alla linjers y-värden vid året). Det är inte direkt avläsbart från diagrammet — du måste SUMMERA alla linjer för det aktuella året först, sedan dividera. Detta skiljer sig från stackade andelsdiagram där andelen syns direkt.",
+    "text": "I ett linjediagram som visar absoluta antal per kategori per år är 'andel' = (en linjes y-värde vid året) / (summan av alla linjers y-värden vid året). Det syns inte direkt i diagrammet — du måste SUMMERA alla linjer för det aktuella året först och sedan dividera. Detta skiljer sig från stackade andelsdiagram där andelen kan avläsas direkt.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Sanity-check: är 15 % rimligt?",
-    "text": "Professorer är en hög akademisk grad — det vore förvånande om de utgjorde majoriteten av lärar-/forskarkåren. 15 % är konsistent med en pyramidstruktur där lektorer (mindre senior) och adjunkter (också mindre senior) tillsammans utgör majoriteten. Talet är geografiskt och institutionellt rimligt.",
+    "text": "Professorer är den högsta akademiska graden — det vore förvånande om de utgjorde en majoritet av lärar-/forskarkåren. 15 % stämmer med en pyramidstruktur där lektorer och adjunkter (mindre seniora och betydligt fler) tillsammans utgör över hälften av totalen.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Sanity-check mot avläsningsosäkerhet",
-    "text": "Vår totalsumma 16 000 har osäkerhet på ±500 (cirka 3 %), och vår professoravläsning 2 300 har osäkerhet på ±100. Slutsvaret 14,4 % har därför en osäkerhetsmarginal på cirka ±1 procentenhet. Skillnaden till 15 % är 0,6 procentenheter — väl inom marginalen. Skillnaden till 10 % eller 20 % är cirka 5 procentenheter — utanför marginalen. Slutsatsen 15 % är robust.",
+    "text": "Totalen 16 000 har osäkerhet på cirka ±500 (3 %) och professoravläsningen 2 300 cirka ±100. Slutsvaret 14,4 % bär därför en marginal på ungefär ±1 procentenhet. Avståndet till 15 % är 0,6 procentenheter — väl inom marginalen. Avstånden till 10 % och 20 % är runt 5 procentenheter — långt utanför. Slutsatsen 15 % är robust.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Plocka rätt alternativ",
-    "text": "Av A=10, B=15, C=20, D=25 ligger 14,4 % närmast B. Facit fastslår B.",
+    "text": "Av A = 10, B = 15, C = 20 och D = 25 ligger 14,4 % klart närmast B (15 procent).",
     "tier": "essential"
    },
    {
     "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är B (15 %). Insikten i en mening: 'andel av total' i ett linjediagram med flera kategorier = (a) avläs målkategorin via legenden, (b) avläs ALLA andra kategorier vid samma år, (c) summera till total, (d) dela mål med total.",
+    "title": "Slutsats",
+    "text": "Svaret är B (15 procent). Insikten i en mening: 'andel av total' i ett flerkategori-linjediagram = (a) hitta målkategorin via legendens markör, (b) avläs ALLA kategorier vid samma år, (c) summera till total, (d) dela mål med total.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'andel av total i flerkategori-linjediagram'-frågor: (1) identifiera målkategorins markörsymbol i legenden noggrant (det finns liknande symboler), (2) avläs målkategorins y-värde vid året, (3) avläs ALLA andra kategoriers y-värden vid samma år, (4) summera till total, (5) dela målet med totalen och översätt till procent. Triggern: 'andel av total' utan staplad bas → manuell summering av alla linjer."
+  "technique": "DTK-strategi för 'andel av total i flerkategori-linjediagram'-frågor: (1) identifiera målkategorins markörsymbol i legenden noggrant (det finns lätt förväxlade symboler), (2) avläs målkategorins y-värde vid året, (3) avläs ALLA andra kategoriers y-värden vid samma år, (4) summera till total, (5) dela målet med totalen och översätt till procent. Triggern: 'andel av total' utan staplad bas → manuell summering av alla linjer."
  },
  "host-2014-kvant1-DTK-039": {
   "_meta": {
@@ -10695,615 +10683,615 @@
  },
  "host-2014-kvant1-DTK-040": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Lektorer (◆) är en stor och synlig linje; om den ändras visuellt med några hundra mellan 2000 och 2001 ser det 'mycket' ut på diagrammet och man kan gissa A som svar.",
-    "why_wrong": "Som steg 6 visar: lektorers absoluta förändring 2000→2001 är cirka 200–300 av en bas på cirka 5 700, vilket ger cirka 4–5 % procentuell förändring. Det är litet jämfört med gäst-/timlärares procentuella förändring (cirka 50–100 %, även små absoluta tal blir stora procent på en låg bas). Facit fastslår D, inte A."
+    "why_tempting": "Lektorer (◆) är en av de två stora topplinjerna, och mellan 2000 och 2001 syns ett tydligt uppåtkliv efter dippen vid 2000 — det ser 'mycket' ut på diagrammet.",
+    "why_wrong": "Lektorer går från cirka 5 400 till cirka 5 700, alltså +300 på en bas på 5 400 ≈ 6 %. Gäst-/timlärarnas 150 på basen 200 ger 75 % — mer än tio gånger större relativ förändring."
    },
    {
     "letter": "B",
-    "why_tempting": "Adjunkter (■) är en av de mest dynamiska linjerna under perioden — den växer kraftigt 1995–2003. Mellan 2000 och 2001 är förändringen synlig, vilket lockar gissningen B.",
-    "why_wrong": "Steg 6: adjunkter går från cirka 6 100 till cirka 6 600 mellan 2000 och 2001 = cirka 500 absolut, cirka 8 % procentuellt. Gäst-/timlärare har en mycket lägre bas (cirka 200–500) och även en liten absolut förändring där blir stor procentuellt. Facit fastslår D."
+    "why_tempting": "Adjunkter (■) är diagrammets högsta linje just 2000–2001 och växer stadigt — den största kategorin känns som den som 'förändras mest'.",
+    "why_wrong": "Adjunkter går från cirka 6 100 till cirka 6 450, alltså +350 på basen 6 100 ≈ 6 %. Störst absolut betyder inte störst procentuellt; gäst-/timlärarnas låga bas ger 75 %."
    },
    {
     "letter": "C",
-    "why_tempting": "Professorer (◦) växte stadigt under perioden och man kan tro att en betydelsefull akademisk grad MÅSTE ha den största förändringen vid något tillfälle.",
-    "why_wrong": "Som steg 7 visar är professorernas tillväxt jämn och måttlig (cirka 3 200 till 3 400 mellan 2000 och 2001 = 200 absolut, cirka 6 % procentuellt). Gäst-/timlärare har bas runt 200–500 — varje förändring på 100–200 ger 50–100 % procentuellt. Facit fastslår D — låg bas + märkbar absolut förändring = störst procent."
+    "why_tempting": "Professorlinjen (liten fylld punkt) klättrar faktiskt brantast av de stora serierna just 2000→2001 — från cirka 2 900 till cirka 3 400, hela +500 eller ≈ 17 %. Det är den bästa fel-gissningen och tvåan i jämförelsen.",
+    "why_wrong": "17 % är imponerande men gäst-/timlärarnas hopp från cirka 200 till cirka 350 ger 75 % — den låga basen gör att även +150 personer slår professorernas +500 med bred marginal."
    }
   ],
   "framework_id": "DTK-TACTIC-002",
-  "pitfall": "Klassiska fällan vid 'största procentuella förändring'-frågor är att fixera sig vid de STORA linjerna (lektorer, adjunkter, professorer) och missa att en LITEN linje med låg bas kan ha enorma procentförändringar även med små absoluta hopp. Botemedlet: räkna (förändring/utgångsvärde) × 100 för varje kategori — låga baser ger stora procent även med små absoluta tal.",
+  "pitfall": "Klassiska fällan vid 'största procentuella förändring'-frågor är att fixera sig vid de STORA linjerna (lektorer, adjunkter, professorer) och missa att en LITEN linje med låg bas kan ge enorma procentförändringar även med små absoluta hopp. Här finns dessutom en avläsningsfälla: professorer (liten fylld punkt) och annan forskande (liten fylld kvadrat) har snarlika markörer och ligger nära varandra kring 3 000-nivån. Botemedlet: lås markörerna först, räkna sedan (förändring/utgångsvärde) × 100 för varje alternativ.",
   "pregrade_tactic": {
    "handle": "Procent-på-låg-bas-vinner-ofta",
-   "move": "Räkna procentuell förändring 2000→2001 för varje av de fyra alternativen — gör divisionen (2001 − 2000) / 2000 × 100. Glöm inte att låga baser (gäst-/timlärare) kan ge stora procent även med små absoluta hopp."
+   "move": "Räkna procentuell förändring 2000→2001 för vart och ett av de fyra alternativen — (värde 2001 − värde 2000) / värde 2000 × 100. Börja gärna med den lägsta linjen (gäst-/timlärare, ▲): en låg bas kan ge störst procent även med små absoluta hopp."
   },
-  "solution_path": "Facit fastslår gäst- och timlärare (alternativ D). Vid x = 2000 ligger triangel-linjen (▲, gäst-/timlärare) cirka 250; vid x = 2001 ligger den cirka 400. Procentuell förändring: (400 − 250) / 250 × 100 = 60 %. Detta är väsentligt större än de andra kategoriernas förändringar (lektorer cirka 4 %, adjunkter cirka 8 %, professorer cirka 6 %).",
+  "solution_path": "Gäst- och timlärare (▲, fylld triangel) är den lägsta linjen i diagrammet: vid x = 2000 ligger den kring 200, vid x = 2001 kring 350. Procentuell förändring: (350 − 200) / 200 × 100 = 75 %. Jämför med de övriga alternativen: lektorer (◆) cirka 5 400 → 5 700 (≈ 6 %), adjunkter (■) cirka 6 100 → 6 450 (≈ 6 %), professorer (liten fylld punkt) cirka 2 900 → 3 400 (≈ 17 %). Även professorernas branta klättring når inte i närheten av gäst-/timlärarnas 75 % — låg bas ger stor procent. Svaret är D.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilken tjänstekategori uppvisade den största PROCENTUELLA förändringen av antalet personer från 2000 till 2001? Alternativen är lektorer, adjunkter, professorer, gäst- och timlärare. Facit fastslår D (gäst- och timlärare). Procentuell förändring = (värde 2001 − värde 2000) / värde 2000 × 100.",
+    "text": "Frågan: vilken tjänstekategori uppvisade den största PROCENTUELLA förändringen av antalet personer från 2000 till 2001? Alternativen är lektorer, adjunkter, professorer samt gäst- och timlärare. Procentuell förändring = (värde 2001 − värde 2000) / värde 2000 × 100 — det är den relativa förändringen som räknas, inte den absoluta.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Identifiera de fyra linjerna i legenden",
-    "text": "Lektorer ◆ (filled diamond), Adjunkter ■ (filled square), Professorer ◦ (lighter bullet/open circle), Gästoch timlärare ▲ (filled triangle). Var och en har distinkt markör. Lås in symbolerna innan du läser av värdena.",
+    "title": "Identifiera linjerna i legenden",
+    "text": "Legenden har sex serier men bara fyra är alternativ: Lektorer ◆ (fylld romb), Adjunkter ■ (stor fylld kvadrat), Professorer (liten fylld punkt — den minsta markören), Gäst- och timlärare ▲ (fylld triangel). Två serier är INTE alternativ: Annan forskande och undervisande personal (liten fylld kvadrat) och Forskarassistenter ✳ (asterisk). Varning: professorer och annan forskande har snarlika små markörer och ligger nära varandra i mittzonen — håll isär dem innan du läser av.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Avläs lektorer 2000 och 2001",
-    "text": "Lektorer (◆): vid x = 2000 cirka 5 700, vid x = 2001 cirka 5 850–6 000 (linjen stiger). Absolut förändring: cirka +200 till +300. Bas: 5 700.",
+    "text": "Lektorer (◆): linjen dippar vid x = 2000 till cirka 5 400 och stiger sedan till cirka 5 700 vid x = 2001. Absolut förändring: cirka +300. Bas: 5 400.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Avläs adjunkter 2000 och 2001",
-    "text": "Adjunkter (■): vid x = 2000 cirka 6 100, vid x = 2001 cirka 6 600. Absolut förändring: cirka +500. Bas: 6 100.",
+    "text": "Adjunkter (■): vid x = 2000 cirka 6 100, vid x = 2001 cirka 6 450. Absolut förändring: cirka +350. Bas: 6 100.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Avläs professorer och gäst-/timlärare 2000 och 2001",
-    "text": "Professorer (◦): vid 2000 cirka 3 200, vid 2001 cirka 3 400. Absolut +200, bas 3 200. Gästoch timlärare (▲): vid 2000 cirka 250, vid 2001 cirka 400. Absolut +150, bas 250.",
+    "text": "Professorer (liten fylld punkt): linjen klättrar brant just här — cirka 2 900 vid 2000 och cirka 3 400 vid 2001. Absolut +500, bas 2 900. Gäst- och timlärare (▲): den lägsta linjen i diagrammet — cirka 200 vid 2000 och cirka 350 vid 2001. Absolut +150, bas 200.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Räkna procentuella förändringar",
-    "text": "Lektorer: 250 / 5 700 × 100 ≈ 4,4 %. Adjunkter: 500 / 6 100 × 100 ≈ 8,2 %. Professorer: 200 / 3 200 × 100 ≈ 6,3 %. Gästoch timlärare: 150 / 250 × 100 = 60 %. Gäst-/timlärare har klart störst procent — konsistent med facits svar D.",
+    "text": "Lektorer: 300 / 5 400 × 100 ≈ 6 %. Adjunkter: 350 / 6 100 × 100 ≈ 6 %. Professorer: 500 / 2 900 × 100 ≈ 17 %. Gäst- och timlärare: 150 / 200 × 100 = 75 %. Gäst-/timlärare har klart störst procentuell förändring — svaret är D.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Vad betyder 'procentuell förändring'?",
-    "text": "Procentuell förändring = (nytt − gammalt) / gammalt × 100. Den ENDA gammalt-värdet som är liten (250) är gäst-/timlärare — det gör att även en liten absolut förändring (150) blir en stor relativ förändring (60 %). De andra kategorierna har baser i tusentalsregistret, så absoluta förändringar måste vara mycket större för att slå 60 %.",
+    "title": "Varför vinner den lägsta linjen?",
+    "text": "Procentuell förändring = (nytt − gammalt) / gammalt × 100. Det enda utgångsvärde som är litet (cirka 200) är gäst-/timlärarnas — därför blir även en liten absolut förändring (+150) en enorm relativ förändring (75 %). De andra kategorierna har baser på tusentals personer, så deras absoluta förändringar hade behövt vara mycket större för att slå 75 %.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Sanity-check: hur går detta ihop?",
-    "text": "Visuellt på diagrammet ser gäst-/timlärar-linjen ut som en mycket låg, kraftigt fluktuerande linje. En hopp från 250 till 400 ser i absoluta tal litet ut jämfört med adjunkter som hoppar från 6 100 till 6 600. Men procentuellt är gäst-/timlärares 60 % flera gånger större än adjunkters 8 %. Detta är en pedagogisk insikt om procentuell vs absolut förändring.",
+    "title": "Förväxla inte professorer med annan forskande",
+    "text": "Vid x = 2000 ligger annan forskande och undervisande personal (liten fylld kvadrat) på cirka 3 200 medan professorer (liten fylld punkt) ligger på cirka 2 900 — det är professorlinjen som klättrar brantast mellan 2000 och 2001. Läser man av fel av de två snarlika mittserierna underskattar man professorernas förändring, men slutsatsen påverkas inte: annan forskande är dessutom inte ett alternativ, och ingen av dem når gäst-/timlärarnas 75 %.",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Varför 'Annan forskande' inte är ett alternativ",
-    "text": "Annan forskande och undervisande personal (•, filled bullet) hade också snabb tillväxt 1998–2002 (cirka 2 200 till 3 500). Men kategorin är INTE ett alternativ — frågan begränsar sig till lektorer, adjunkter, professorer, gäst-/timlärare. Det är okej att den är utelämnad — vi väljer det BÄSTA alternativet bland de FYRA givna.",
+    "title": "Absolut vs procentuell — den visuella fällan",
+    "text": "Visuellt ser gäst-/timlärarnas hopp litet ut: från 200 till 350 är knappt synligt intill adjunkternas kliv från 6 100 till 6 450. Men procentuellt är 75 % mer än tio gånger större än adjunkternas cirka 6 %. Ögat jämför absoluta avstånd — frågan kräver relativa. Det är hela poängen med den här frågetypen.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Sanity-check mot avläsningsosäkerhet",
-    "text": "Gäst-/timlärar-linjens värden är svåra att avläsa exakt eftersom den är nära x-axeln. Men även om verkliga värden vore 200→300 eller 300→500 blir procentförändringen 50–67 % — fortfarande mycket högre än de övriga kategoriernas 4–8 %. Slutsatsen är robust mot avläsningsosäkerhet.",
+    "title": "Robusthet mot avläsningsosäkerhet",
+    "text": "Gäst-/timlärarlinjen ligger nära x-axeln och är svår att avläsa exakt. Men även med generösa felmarginaler — säg 250 → 350 (40 %) eller 200 → 300 (50 %) — ligger procentförändringen långt över professorernas cirka 17 %, som är näst störst. Slutsatsen står stadigt oavsett exakt avläsning.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Plocka rätt alternativ",
-    "text": "Av A (lektorer, cirka 4 %), B (adjunkter, cirka 8 %), C (professorer, cirka 6 %), D (gäst-/timlärare, cirka 60 %) är D klart störst. Facit fastslår D.",
+    "text": "A (lektorer, cirka 6 %), B (adjunkter, cirka 6 %), C (professorer, cirka 17 %), D (gäst- och timlärare, cirka 75 %). D är klart störst.",
     "tier": "essential"
    },
    {
     "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är D (gäst- och timlärare). Insikten i en mening: vid 'största procentuella förändring'-frågor — kategorier med LÅG BAS kan ge stora procent även med små absoluta förändringar; jämför aldrig absoluta tal direkt utan att dela med utgångsvärdet.",
+    "title": "Slutsats",
+    "text": "Svaret är D (gäst- och timlärare). Insikten i en mening: vid 'största procentuella förändring'-frågor kan kategorin med LÄGST bas vinna även med små absoluta förändringar — dela alltid förändringen med utgångsvärdet i stället för att jämföra hoppens storlek med ögat.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'största procentuella förändring i kategori X→Y'-frågor i linjediagram: (1) identifiera markörsymbol för varje alternativ-kategori, (2) avläs y-värdet för varje vid både utgångsår och slutår, (3) räkna (slut − utgång) / utgång × 100 för var och en, (4) jämför procenttalen. Triggern: 'största procentuella förändring' → räkna ut procent för ALLA alternativ, lita aldrig på att den största absoluta förändringen även är den största procentuella."
+  "technique": "DTK-strategi för 'största procentuella förändring i kategori X→Y'-frågor i linjediagram: (1) identifiera markörsymbolen för varje alternativ-kategori i legenden, (2) avläs y-värdet för varje kategori vid både utgångsår och slutår, (3) räkna (slut − utgång) / utgång × 100 för var och en, (4) jämför procenttalen. Triggern: 'största procentuella förändring' → räkna procent för ALLA alternativ; anta aldrig att den största absoluta förändringen också är den största procentuella — en låg bas kan vända på allt."
  },
  "host-2014-kvant2-DTK-029": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "2 500 000 motsvarar cirka 40 %. Det är frestande om man läser av Internet-linjen några år för sent (1999 eller 2000) eller blandar ihop Internet-kurvan med Dator-kurvan vid 1998.",
-    "why_wrong": "Som steg 5 visar: vid x = 1998 ligger Internet-linjen på cirka 33 % — INTE 40 %. Facit fastslår 2 100 000 (alternativ A). 6,3 milj × 0,33 ≈ 2,08 milj ≈ 2,1 milj. 2,5 milj kräver att andelen vore 40 %, vilket Internet-linjen inte når förrän cirka år 2000."
+    "why_tempting": "2 500 000 motsvarar cirka 40 % av 6,3 miljoner. Det är frestande om man råkar läsa av Internet-kurvan ett steg för sent — kurvan stiger så brant att ett enda år åt fel håll flyttar värdet rejält.",
+    "why_wrong": "Vid x = 1998 ligger Internet-linjen på cirka 33 %, inte 40 %. Kurvan passerar 40 % först under 1999 (då den redan närmar sig 50 %). 6,3 milj × 0,33 ≈ 2,1 milj = A; 2,5 milj skulle kräva en andel som 1998 helt enkelt inte har nåtts."
    },
    {
     "letter": "C",
-    "why_tempting": "2 800 000 motsvarar cirka 44 % — frestande om man läser av FEL kurva (t.ex. Dator-kurvan, som låg klart högre än Internet vid 1998).",
-    "why_wrong": "Steg 4 är tydligt: Internet-linjen är distinkt markerad och låg lägre än Dator-linjen 1998. Internet vid 1998 ≈ 33 %, inte 44 %. Facit fastslår A. C är en typisk följd av att avläsa fel kurva (Dator istället för Internet) eller fel år (2000–2001)."
+    "why_tempting": "2 800 000 motsvarar cirka 44 % — frestande om man börjar avläsa fel kurva, till exempel den streckade Dator-linjen som korsar området strax ovanför Internet.",
+    "why_wrong": "Internet vid 1998 ≈ 33 %, inte 44 %. Dator-kurvan ligger dessutom ännu högre (kring 60 % vid 1998), så inte ens en ren kurvförväxling landar på C — C kräver en blandad felavläsning. Rätt kurva vid rätt år ger 2,1 milj = A."
    },
    {
     "letter": "D",
-    "why_tempting": "3 200 000 motsvarar cirka 50 %. Det låter rimligt om man tror att 'hälften av befolkningen' hade Internet redan 1998 — vilket är en typisk feltro om man tänker på senare år.",
-    "why_wrong": "Som steg 5 visar var Internet-andelen 1998 cirka 33 %, inte 50 %. 50 % nåddes inte förrän omkring 2002–2003. Facit fastslår 2 100 000 (alternativ A). D är cirka 50 % för stort relativt det verkliga värdet."
+    "why_tempting": "3 200 000 motsvarar cirka 50 %. 'Hälften av svenskarna hade väl Internet 1998?' känns rimligt om man projicerar senare års siffror bakåt.",
+    "why_wrong": "Diagrammet visar att 50 % nåddes först omkring 1999 — vid 1998, kurvans allra första mätpunkt, var andelen cirka 33 %. D är ungefär 50 % för stort relativt det avlästa värdet."
    }
   ],
   "framework_id": "DTK-TACTIC-006",
-  "pitfall": "Klassiska fällan vid 'hur många personer hade X år Y'-frågor på ett linjediagram med många kurvor är (a) att avläsa fel kurva (Dator vs Internet liknar varandra i tätheten) och (b) att läsa fel år (Internet-kurvan stiger snabbt så ett år åt fel håll skiftar resultatet stort). Botemedlet: identifiera precis vilken kurva 'Internet' är från legenden/etikett, läs av exakt vid år 1998, multiplicera procentandelen med 6,3 milj.",
+  "pitfall": "Klassiska fällan vid 'hur många personer hade X år Y' på ett linjediagram med många kurvor är (a) att avläsa fel kurva (Dator- och Internet-linjerna ligger nära varandra i högerdelen) och (b) att läsa fel år (Internet-kurvan stiger så brant att ett års förskjutning ändrar svaret kraftigt). Botemedlet: hitta etiketten 'Internet' på själva diagrammet, notera att kurvans första punkt är just 1998, läs av cirka 33 % där, och multiplicera med 6,3 miljoner.",
   "pregrade_tactic": {
    "handle": "Procent-gånger-population",
-   "move": "Lokalisera Internet-linjen via dess etikett i diagrammet, läs av andelen vid x = 1998 (cirka 33 %), multiplicera med 6,3 milj för att få antalet personer."
+   "move": "Lokalisera Internet-linjen via dess etikett i diagrammet (kurvans första punkt är 1998), läs av andelen vid x = 1998 (cirka 33 %), multiplicera med 6,3 miljoner för att få antalet personer."
   },
-  "solution_path": "Facit fastslår 2 100 000 (alternativ A). I diagrammet 'Hushållens materiella standard 1975–2005' är Internet-linjen den nyaste och brantaste — den dyker upp först i mitten av 1990-talet. Vid x = 1998 ligger Internet-andelen cirka 33 %. 6 300 000 × 0,33 ≈ 2 100 000.",
+  "solution_path": "I diagrammet 'Hushållens materiella standard 1975–2005' är Internet-kurvan den yngsta linjen — dess första datapunkt ligger vid år 1998, på cirka 33 %. Frågan gäller just 1998, alltså kurvans startpunkt. Antal personer = 6 300 000 × 0,33 ≈ 2 080 000 ≈ 2 100 000 = alternativ A.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: 1998 fanns cirka 6,3 milj människor i Sverige i åldern 16–74 år. Hur många av dessa hade Internet i hushållet? Svarsformatet är antal personer (2,1 milj; 2,5 milj; 2,8 milj; 3,2 milj). Facit fastslår 2,1 milj (alternativ A). Antal = total population × procentandelen från diagrammet.",
+    "text": "År 1998 fanns cirka 6,3 miljoner människor i Sverige i åldern 16–74 år. Hur många av dessa hade Internet i hushållet? Svarsformatet är antal personer (2,1; 2,5; 2,8; 3,2 miljoner). Receptet: antal = total population × procentandelen från diagrammet.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i diagrammet",
-    "text": "Diagrammet 'Hushållens materiella standard 1975–2005' har x-axel 1975–2005 (årligen) och y-axel 0–100 procent. Många linjer ritade och etiketterade direkt på chartet: TV, Daglig tidning, Frys, Bil, Tvättmaskin, Semesterresa, Fritidshus, Diskmaskin, Båt, Husvagn, Video, Dator, Internet. Varje linje är märkt på själva diagrammet, inte i en separat legend.",
+    "text": "Diagrammet 'Hushållens materiella standard 1975–2005' har x-axel 1975–2005 och y-axel 0–100 procent. Många linjer är etiketterade direkt på diagrammet (ingen separat legend): TV, Daglig tidning, Frys, Bil, Tvättmaskin, Semesterresa, Fritidshus, Diskmaskin, Båt, Husvagn, Video, Dator, Internet.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Lokalisera Internet-linjen",
-    "text": "Internet-linjen är märkt direkt på diagrammet med ordet 'Internet'. Den dyker upp från slutet av 1990-talet (startar cirka 1996–1997, eftersom Internet inte fanns i hushåll innan dess), och STIGER mycket BRANT genom slutet av 1990-talet och början av 2000-talet. Den är en av de yngsta och snabbast stigande linjerna.",
+    "title": "Lokalisera Internet-kurvan",
+    "text": "Internet-kurvan är den tjocka linjen märkt 'Internet' till höger i diagrammet. Den är diagrammets yngsta kurva: dess FÖRSTA datapunkt ligger vid år 1998 — det finns inga Internet-värden alls före 1998. Det gör frågan ovanligt lätt att pricka: 1998 är kurvans startpunkt, längst till vänster på just den linjen.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Avläs Internet vid 1998",
-    "text": "Vid x = 1998 ligger Internet-linjen cirka 33 % på y-axeln. Det är några tickar mellan 30 % och 40 %, närmare 30 %. Notera: Internet-linjen är mer brant än de flesta andra — den passerar från cirka 10 % (1996) till cirka 33 % (1998) till cirka 50 % (2000).",
+    "text": "Vid x = 1998 (kurvans startpunkt) ligger Internet-linjen på cirka 33 % — en bit över 30-strecket men klart under 40. Kurvan stiger sedan mycket brant: redan 1999 är den uppe kring 50 %.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Multiplicera med befolkningen",
-    "text": "Antal = 6 300 000 × 0,33 = 2 079 000 ≈ 2 100 000. Konsistent med facits svar 2,1 miljoner (alternativ A).",
+    "text": "Antal = 6 300 000 × 0,33 ≈ 2 080 000 ≈ 2 100 000. Det matchar alternativ A exakt.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Vad betyder 'andel som hade Internet'?",
-    "text": "Diagrammet visar 'andelen personer i Sverige i åldrarna 16–74 år som hade olika resurser knutna till det egna hushållet 1975–2005'. Internet-värdet 33 % vid 1998 = 33 % av personerna i åldern 16–74 hade Internet i hushållet. Detta gäller per person, inte per hushåll — så vi multiplicerar med antalet personer i åldersgruppen (6,3 milj).",
+    "text": "Bildtexten säger 'Andelen personer i Sverige i åldrarna 16–74 år som hade olika resurser knutna till det egna hushållet 1975–2005'. Värdet 33 % vid 1998 betyder alltså att 33 % av PERSONERNA i åldern 16–74 hade Internet i sitt hushåll — därför multiplicerar vi direkt med antalet personer i åldersgruppen (6,3 miljoner).",
     "tier": "detail"
    },
    {
     "n": 7,
     "title": "Sanity-check: är 33 % rimligt för 1998?",
-    "text": "1998 var Internet i hushåll fortfarande relativt nytt — dial-up modems via telefonjacket dominerade, och bredband var en lyx. Cirka en tredjedel av befolkningen hade tillgång till Internet hemma är konsistent med svensk teknik-historia. 1995–1996 var siffran kring 10 %, 2000 cirka 50 %, 2005 cirka 75 %.",
+    "text": "1998 var hem-Internet fortfarande relativt nytt — uppringda modem dominerade och bredband var en lyx. Att ungefär en tredjedel hade Internet hemma stämmer med svensk teknikhistoria. Diagrammet bekräftar hur nytt det var: 1998 är kurvans allra första mätpunkt, och 2005 hade andelen vuxit till uppåt 75–80 %.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Sanity-check: jämför mot avläsningsosäkerhet",
-    "text": "Om verkliga avläsningen vore 30 % istället för 33 %, blir antalet 1,89 milj — fortfarande närmast A (2,1) jämfört med B (2,5). Om avläsningen vore 35 %, blir antalet 2,2 milj — fortfarande närmast A. Slutsatsen är robust mot ±2 procentenheters läsfel.",
+    "title": "Robusthet mot läsfel",
+    "text": "Om avläsningen i stället vore 30 % blir antalet 1,89 miljoner — fortfarande klart närmast A (2,1). Vore den 35 % blir det 2,2 miljoner — också närmast A. Slutsatsen tål alltså ±2 procentenheters avläsningsosäkerhet.",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Varför inte andra kurvor (Dator)?",
-    "text": "Dator-linjen ligger HÖGRE än Internet vid 1998 — cirka 60 %. Om man avläser den blir antalet 6,3 × 0,60 = 3,78 milj — vilket är högre än alla alternativ. Facit fastslår A (Internet 33 % → 2,1 milj). Kritiskt: läs RÄTT etikett innan du avläser värdet.",
+    "title": "Varför inte Dator-kurvan?",
+    "text": "Dator-kurvan (den streckade linjen, med start kring 1994 vid cirka 26 %) ligger KLART högre än Internet vid 1998 — omkring 60 %. Läser man av den blir antalet 6,3 × 0,60 ≈ 3,8 miljoner, vilket är högre än alla alternativ. Kontrollera alltså etiketten innan du avläser: frågan gäller Internet, inte Dator.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Plocka rätt alternativ",
-    "text": "Av A=2,1 milj, B=2,5 milj, C=2,8 milj, D=3,2 milj är 2,08 milj klart närmast A. Skillnaden är 0,02 milj; nästa alternativ är 0,42 milj bort. Facit fastslår A.",
+    "text": "Av A = 2,1; B = 2,5; C = 2,8; D = 3,2 miljoner är vårt beräknade 2,08 miljoner bara 0,02 miljoner från A — nästa alternativ ligger 0,42 miljoner bort. Svaret är A.",
     "tier": "essential"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är A (2 100 000). Insikten i en mening: 'hur många personer hade X år Y' = (a) avläs andelen från rätt linje vid rätt år, (b) multiplicera med given populationsstorlek — kontrollera kurv-etiketten innan avläsning.",
+    "title": "Slutsats",
+    "text": "Svaret är A (2 100 000). Insikten i en mening: 'hur många personer hade X år Y' = avläs andelen från RÄTT kurva vid rätt år (här Internets startpunkt 1998 ≈ 33 %) och multiplicera med den givna populationen — kontrollera kurvetiketten före avläsning.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'hur många personer hade X år Y'-frågor på tätt linjediagram: (1) identifiera målkurvans etikett (direkt skriven på chartet eller i legenden), (2) avläs procentandelen vid målåret mot y-axeln, (3) multiplicera med given populationsstorlek. Triggern: 'antal personer med egenskap X' → andel × population, var noga med etikettidentifiering."
+  "technique": "DTK-strategi för 'hur många personer hade X år Y'-frågor på tätt linjediagram: (1) identifiera målkurvan via dess etikett (här skriven direkt på diagrammet), (2) avläs procentandelen vid målåret mot y-axeln, (3) multiplicera med given populationsstorlek. Triggern: 'antal personer med egenskap X' → andel × population, var noga med etikettidentifieringen innan du avläser."
  },
  "host-2014-kvant2-DTK-030": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "10 procentenheter låter rimligt om man avläser dator-kurvans tillväxt grovt och underskattar det brantaste året.",
-    "why_wrong": "Som steg 6 visar är dator-kurvans BRANTASTE år ett hopp om cirka 13 procentenheter (typiskt 1997→1998 eller 1998→1999 där kurvan stiger snabbast). Facit fastslår 13 procentenheter (alternativ B). 10 procentenheter underskattar brantaste året."
+    "why_tempting": "10 procentenheter är exakt det NÄST brantaste årshoppet för Dator: 1998→1999 stiger kurvan från cirka 57 % till cirka 67 %. Fastnar ögat på det segmentet i stället för året innan får du precis 10.",
+    "why_wrong": "Året innan är brantare: 1997→1998 stiger Dator från cirka 44 % till cirka 57 %, alltså cirka 13 procentenheter — mer än 10. Frågan ber om det STÖRSTA hoppet, så B vinner."
    },
    {
     "letter": "C",
-    "why_tempting": "16 procentenheter låter rimligt om man råkar avläsa ett två-årsintervall (t.ex. 1997→1999) istället för ett ENSKILT år.",
-    "why_wrong": "Steg 4 är explicit: 'mellan två på varandra följande år' — bara ett-årshopp. Dator-kurvans största ett-årshopp är cirka 13 procentenheter. 16 procentenheter skulle kräva ett ännu brantare år, vilket inte syns i diagrammet. Facit fastslår B."
+    "why_tempting": "16 ligger nära Internet-kurvans brantaste årshopp: den tjocka heldragna Internet-linjen stiger 1998→1999 från cirka 34 % till cirka 51 %, cirka 17 procentenheter. Greppar du fel kurva i det täta diagrammet hamnar du här.",
+    "why_wrong": "Frågan gäller DATOR, den streckade linjen med fyllda punkter — inte Internet. Dator-kurvans största ettårshopp är 1997→1998, cirka 44 → 57 %, alltså cirka 13 procentenheter. Inget Dator-år når 16."
    },
    {
     "letter": "D",
-    "why_tempting": "25 procentenheter är frestande om man av misstag avläser INTERNET-kurvan istället för Dator-kurvan — Internet stiger ännu brantare och kan ha enstaka årshopp på 20+ procentenheter.",
-    "why_wrong": "Som steg 3 understryker handlar frågan om DATOR i hushållet, inte Internet. Dator-kurvan är inte lika brant — dess största årshopp är cirka 13 procentenheter. Facit fastslår B. 25 procentenheter är en typisk följd av att förväxla Dator och Internet i det täta diagrammet."
+    "why_tempting": "25 lockar om man råkar mäta ett TVÅårsintervall på Dator: 1997→1999 stiger kurvan från cirka 44 % till cirka 67 %, cirka 23 procentenheter — vilket avrundas mot 25.",
+    "why_wrong": "Frågan säger 'mellan två på varandra följande år' — bara ett-årshopp räknas. Delar man upp 1997→1999 blir stegen cirka +13 (1997→1998) och cirka +10 (1998→1999); det största enskilda är 13 procentenheter, alternativ B."
    }
   ],
   "framework_id": "DTK-TACTIC-002",
-  "pitfall": "Klassiska fällan är att (a) förväxla Dator-kurvan med Internet-kurvan (båda stiger brant i slutet av 1990-talet), och (b) jämföra tvåeller flerårsintervall istället för ett-årsintervall. Botemedlet: lås in Dator-etiketten på chartet, kontrollera kurvans värde vid VARJE år 1994–2005, beräkna årshoppet (nytt − gammalt) i procentenheter och plocka det största absolutbeloppet.",
+  "pitfall": "Klassiska fällan är att (a) förväxla den streckade Dator-kurvan med den tjocka heldragna Internet-kurvan — båda stiger brant i slutet av 1990-talet — och (b) mäta två- eller flerårsintervall i stället för ett-årsintervall. Botemedlet: lås in Dator-etiketten och den streckade linjestilen, avläs kurvans värde vid VARJE år 1994–2005, beräkna årshoppet (nytt − gammalt) i procentenheter och plocka det största absolutbeloppet.",
   "pregrade_tactic": {
-   "handle": "Brantaste-ett-årshoppet",
-   "move": "Hitta Dator-linjen, scanna 1994–2005 och identifiera det year-to-year-hopp där linjen är som BRANTAST — räkna ut förändringen i procentenheter mot y-axeln."
+   "handle": "Brantaste-ettårshoppet",
+   "move": "Hitta den streckade Dator-linjen, skanna 1994–2005 och identifiera det år-till-år-segment där linjen är som BRANTAST — avläs start- och slutvärdet mot y-axeln och räkna ut förändringen i procentenheter."
   },
-  "solution_path": "Facit fastslår 13 procentenheter (alternativ B). Dator-kurvan stiger brant från cirka 30 % (1994) till cirka 80 % (2005). Det brantaste enskilda årshoppet ligger i slutet av 1990-talet, då kurvan hoppar från cirka 50 % till cirka 63 % på ett år (1997→1998 eller liknande) — en förändring på cirka 13 procentenheter. Inga andra ettårshopp i diagrammet överstiger detta för Dator.",
+  "solution_path": "Dator-kurvan är den streckade linjen med fyllda punkter som börjar 1994 vid cirka 25 %. Den stiger till cirka 30 % (1995), 35 % (1996), 44 % (1997), 57 % (1998) och 67 % (1999), varefter den planar ut mot cirka 84 % år 2005. Det brantaste enskilda årshoppet är 1997→1998: från cirka 44 % till cirka 57 %, en förändring på cirka 13 procentenheter. Näst brantast är 1998→1999 (cirka +10 pp); inget annat ettårshopp för Dator kommer i närheten. Cirka 13 procentenheter matchar alternativ B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: studera andelen som hade DATOR i hushållet 1994–2005. Hur stor var den största förändringen mellan TVÅ PÅ VARANDRA FÖLJANDE år, i procentenheter? Svarsalternativ: 10, 13, 16, 25 procentenheter. Facit fastslår 13 procentenheter (alternativ B). Procentenhet = absolut förändring i en procentskala (inte procent OF procent).",
+    "text": "Frågan: studera andelen som hade DATOR i hushållet 1994–2005. Hur stor var den största förändringen mellan TVÅ PÅ VARANDRA FÖLJANDE år, i procentenheter? Svarsalternativ: 10, 13, 16, 25 procentenheter. Procentenhet = absolut förändring i en procentskala (inte procent av procent).",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i diagrammet",
-    "text": "Diagrammet 'Hushållens materiella standard 1975–2005' visar många linjer; varje är märkt på chartet. Y-axeln är procent (0–100). Frågan begränsar tidsperioden till 1994–2005 — det är slutdelen av diagrammet, där dator-kurvan finns.",
+    "text": "Diagrammet 'Hushållens materiella standard 1975–2005' visar många linjer; varje är märkt direkt på chartet. Y-axeln är procent (0–100) med gridlinjer var tionde enhet, x-axeln har en gridlinje per år. Frågan begränsar tidsperioden till 1994–2005 — diagrammets högra del, där Dator-kurvan finns.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Lokalisera Dator-linjen",
-    "text": "Dator-linjen är märkt 'Dator' direkt på chartet, ungefär kring 30–60 %-området i mitten av 1990-talet. Den är distinkt från Internet-linjen (som dyker upp senare och stiger brantare än Dator). Lås in just Dator-etiketten.",
+    "text": "Dator-linjen är den STRECKADE linjen med fyllda punkter, märkt 'Dator', som dyker upp 1994 vid cirka 25 % och stiger brant. Förväxla den inte med Internet-linjen — den tjocka heldragna kurvan som börjar först 1998 (vid cirka 34 %). Lås in Dator-etiketten och den streckade stilen innan du läser av något.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Definiera 'mellan två på varandra följande år'",
-    "text": "På-varandra-följande år betyder ett-årshopp: 1994→1995, 1995→1996, ..., 2004→2005. Vi söker det ENSKILDA år-till-år-hoppet där förändringen är som STÖRST i absoluta procentenheter (oavsett om det är ökning eller minskning).",
+    "text": "På varandra följande år betyder ett-årshopp: 1994→1995, 1995→1996, ..., 2004→2005. Vi söker det ENSKILDA år-till-år-hopp där förändringen är som störst i absoluta procentenheter (oavsett om det är ökning eller minskning).",
     "tier": "detail"
    },
    {
     "n": 5,
     "title": "Skanna Dator-kurvan år för år",
-    "text": "Cirka-värden från Dator-kurvan (uppskattade från chartet): 1994 ≈ 30 %, 1995 ≈ 38 %, 1996 ≈ 45 %, 1997 ≈ 50 %, 1998 ≈ 63 %, 1999 ≈ 70 %, 2000 ≈ 70 %, 2001 ≈ 72 %, 2002 ≈ 75 %, 2003 ≈ 77 %, 2004 ≈ 78 %, 2005 ≈ 80 %. (Talen är uppskattade — det viktiga är riktningen och de relativa stegen.)",
+    "text": "Cirkavärden från den streckade Dator-kurvan: 1994 ≈ 25 %, 1995 ≈ 30 %, 1996 ≈ 35 %, 1997 ≈ 44 %, 1998 ≈ 57 %, 1999 ≈ 67 %, 2000 ≈ 69 %, 2001 ≈ 73 %, 2002 ≈ 76 %, 2003 ≈ 80 %, 2004 ≈ 82 %, 2005 ≈ 84 %. (Talen är avlästa mot gridlinjerna — det viktiga är de relativa stegen.)",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Räkna ett-årshoppen",
-    "text": "1994→1995: +8 pp. 1995→1996: +7 pp. 1996→1997: +5 pp. 1997→1998: +13 pp (brantaste). 1998→1999: +7 pp. 1999→2000: 0 pp. 2000→2001: +2 pp. 2001→2002: +3 pp. 2002→2003: +2 pp. 2003→2004: +1 pp. 2004→2005: +2 pp. Maximala årshoppet är cirka +13 procentenheter (1997→1998).",
+    "text": "1994→1995: +5 pp. 1995→1996: +5 pp. 1996→1997: +9 pp. 1997→1998: +13 pp (brantast). 1998→1999: +10 pp. 1999→2000: +2 pp. 2000→2001: +4 pp. 2001→2002: +3 pp. 2002→2003: +4 pp. 2003→2004: +2 pp. 2004→2005: +2 pp. Största årshoppet är cirka +13 procentenheter (1997→1998).",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Sanity-check: matchar 13 pp brantheten?",
-    "text": "Vid 1997→1998 är dator-kurvan visuellt som BRANTAST i hela 1994–2005-perioden. En hopp från cirka 50 % till cirka 63 % motsvarar 13 procentenheter. Detta är konsistent med facits 13 procentenheter (alternativ B).",
+    "text": "Vid 1997→1998 är Dator-kurvan visuellt som brantast i hela 1994–2005-perioden — kurvan klättrar där mer än en hel gridruta (10 pp) på ett enda år. Ett hopp från cirka 44 % till cirka 57 % motsvarar cirka 13 procentenheter, vilket pekar direkt på alternativ B.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Vad betyder 'procentenhet'?",
-    "text": "Procentenhet (pp) är absolut skillnad i procentskala. Skillnaden från 50 % till 63 % är 13 procentenheter (50 − 63 = −13 enheter i procentskala), INTE 26 % (vilket vore den procentuella förändringen 13/50 × 100). Frågan ber explicit om procentenheter, vilket gör räkneoperationen enkel: nytt − gammalt.",
+    "text": "Procentenhet (pp) är absolut skillnad i procentskala. Skillnaden från 44 % till 57 % är 13 procentenheter (57 − 44 = 13), INTE cirka 30 % (vilket vore den procentuella förändringen 13/44 × 100). Frågan ber explicit om procentenheter, vilket gör räkneoperationen enkel: nytt − gammalt.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Sanity-check mot avläsningsosäkerhet",
-    "text": "Om verkliga 1997→1998-hoppet vore 11 eller 15 pp blir slutsatsen ändå att det är det största. Närmaste alternativ är A=10 och C=16 — bägge ungefär 3 pp bort från B=13. Vår avläsning 13 pp är robust mot ±2 pp läsfel.",
+    "text": "Även om det verkliga 1997→1998-hoppet vore 12 eller 14 pp blir slutsatsen densamma. Näst största hoppet (1998→1999) är cirka 10 pp, och närmaste alternativ är A=10 och C=16 — bägge cirka 3 pp från B=13. Avläsningen är alltså robust mot ±2 pp läsfel.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Plocka rätt alternativ",
-    "text": "Av A=10, B=13, C=16, D=25 är 13 (vår beräkning) klart närmast B. Facit fastslår B.",
+    "text": "Av A=10, B=13, C=16, D=25 ligger vår beräkning cirka 13 pp exakt på B. Inget annat ettårshopp för Dator överstiger 10 pp, så inget stödjer C eller D.",
     "tier": "essential"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är B (13 procentenheter). Insikten i en mening: 'största förändringen mellan på varandra följande år i procentenheter' = identifiera den BRANTASTE delen av kurvan, beräkna nytt − gammalt = ENKEL subtraktion i procentskala.",
+    "title": "Slutsats",
+    "text": "Svaret är B (13 procentenheter). Insikten i en mening: 'största förändringen mellan på varandra följande år i procentenheter' = hitta kurvans brantaste ettårssegment (här Dator 1997→1998, cirka 44 → 57 %) och räkna nytt − gammalt — enkel subtraktion i procentskala.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'största förändringen i procentenheter mellan på varandra följande år'-frågor: (1) lås in målkurvans etikett, (2) identifiera den brantaste delen av kurvan visuellt, (3) avläs y-värdet vid både start- och slutåret, (4) subtrahera för procentenheter (NOT procentuell förändring — bara enkel subtraktion). Triggern: 'största förändring i procentenheter mellan på varandra följande år' → brantaste ettårshoppet, enkel subtraktion."
+  "technique": "DTK-strategi för 'största förändringen i procentenheter mellan på varandra följande år'-frågor: (1) lås in målkurvans etikett och linjestil, (2) identifiera den brantaste delen av kurvan visuellt, (3) avläs y-värdet vid både start- och slutåret, (4) subtrahera för procentenheter (INTE procentuell förändring — bara enkel subtraktion). Triggern: 'största förändring i procentenheter mellan på varandra följande år' → brantaste ettårshoppet, enkel subtraktion."
  },
  "host-2014-kvant2-DTK-031": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "100 fler låter rimligt om man underskattar 15–24-åldersgruppens topp eller överskattar 25–44-gruppens nivå. En differens på 100 'ser ut' som en lagom skillnad.",
-    "why_wrong": "Som steg 5 visar är kvinnor 15–24 år 2005 cirka 230 per 100 000 och 25–44 år cirka 90 per 100 000. Differensen är 230 − 90 = 140. Facit fastslår 140 fler (alternativ B). 100 fler underskattar med cirka 40, vilket är märkbart i diagrammet."
+    "why_tempting": "100 fler känns rimligt om man tar fel år i 15–24-gruppen — grannstaplarna 1999 eller 2008 ligger runt 205–210, och 210 − 118 ≈ 90–100. Med tio tätt packade staplar per grupp är ett sådant felgrepp lätt gjort.",
+    "why_wrong": "2005 är den SJUNDE stapeln och samtidigt gruppens högsta: den toppar strax över 250-linjen, inte vid 210. Cirka 258 − 118 ≈ 140, inte 100."
    },
    {
     "letter": "C",
-    "why_tempting": "190 fler låter rimligt om man överskattar 15–24-gruppens topp eller underskattar 25–44-gruppens nivå.",
-    "why_wrong": "Steg 5 igen: differensen är cirka 140, inte 190. 190 skulle kräva att 15–24 var 280 eller att 25–44 var 40 — bägge är inkonsekventa med 2005-staplarna i kvinno-diagrammet. Facit fastslår B."
+    "why_tempting": "190 är precis vad man får om man av misstag räknar i MÄN-diagrammet: män 15–24 år 2005 är cirka 390 och män 25–44 cirka 195, differens cirka 195 → man kryssar C.",
+    "why_wrong": "Frågan gäller KVINNOR — det nedre diagrammet. Där är 2005-värdena cirka 258 respektive cirka 118, och differensen cirka 140, inte 190."
    },
    {
     "letter": "D",
-    "why_tempting": "250 fler är frestande om man av misstag avläser MÄN-diagrammet (där 15–24 år är mycket högre, cirka 380) eller blandar ihop åldersgruppen 15–24 med max-värdet över alla år.",
-    "why_wrong": "Som steg 3 understryker handlar frågan om KVINNOR, inte män. Kvinno-diagrammet visar 15–24 år 2005 cirka 230 — inte 380. Facit fastslår B (140). 250 är typisk följd av att avläsa fel diagram (män) eller fel år."
+    "why_tempting": "250 är (avrundat) själva NIVÅN på kvinnornas 15–24-stapel 2005 — toppen ligger strax över 250-linjen. Läser man av toppvärdet och glömmer att subtrahera 25–44-värdet fastnar man för D.",
+    "why_wrong": "Frågan ber om differensen, inte nivån. Dra bort 25–44-gruppens cirka 118: cirka 258 − 118 ≈ 140 = B."
    }
   ],
   "framework_id": "DTK-TACTIC-005",
-  "pitfall": "Klassiska fällan här är (a) avläsa fel diagram (sidan visar både män och kvinnor som separata stapeldiagram) och (b) avläsa fel år (10 år tätt staplade per åldersgrupp). Botemedlet: identifiera först KVINNOR-diagrammet (nedre), sedan rätt år (2005, det näst sista staplen i varje grupp), läs av båda åldersgrupperna och subtrahera.",
+  "pitfall": "Klassiska fällan här är dubbel: (a) avläsa fel diagram — sidan visar Män överst och Kvinnor nederst med identisk skala, och männens värden ger differensen cirka 190 (alternativ C); (b) avläsa fel år — tio staplar per åldersgrupp gör det lätt att ta en granne till 2005. Botemedlet: lås först KVINNOR-diagrammet (nedre), räkna fram till sjunde stapeln (2005) i både 15–24 och 25–44, läs mot gridlinjerna och subtrahera.",
   "pregrade_tactic": {
    "handle": "Rätt-kön-rätt-år-subtraktion",
-   "move": "Kontrollera först att du är i kvinno-diagrammet, hitta 2005-stapeln i åldersgruppen 15–24 år och i 25–44 år, läs av båda mot y-axeln (antal per 100 000), subtrahera."
+   "move": "Kontrollera först att du är i kvinno-diagrammet (nedre), hitta 2005 = sjunde stapeln i åldersgruppen 15–24 år och i 25–44 år, läs av båda mot gridlinjerna (antal per 100 000), subtrahera."
   },
-  "solution_path": "Facit fastslår 140 fler (alternativ B). I det nedre diagrammet 'Antalet kvinnor per 100 000 i olika åldersgrupper som skrevs ut från sjukhus efter transportolycksfall 1999–2008': i 15–24-åldersgruppen är 2005-stapeln cirka 230 per 100 000. I 25–44-åldersgruppen är 2005-stapeln cirka 90 per 100 000. Differens: 230 − 90 = 140.",
+  "solution_path": "I det NEDRE diagrammet ('Antalet kvinnor per 100 000 i olika åldersgrupper som skrevs ut från sjukhus efter transportolycksfall 1999–2008') är 2005-stapeln den sjunde i varje grupp. I 15–24-gruppen är 2005-stapeln gruppens högsta och toppar strax OVANFÖR 250-linjen, cirka 255–260. I 25–44-gruppen ligger 2005-stapeln strax under 120, tydligt ovanför 100-linjen. Differens: cirka 258 − 118 ≈ 140 per 100 000 = alternativ B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: studera de utskrivna KVINNORNA 2005. Hur många fler per 100 000 var de i åldersgruppen 15–24 år jämfört med i åldersgruppen 25–44 år? Svarsalternativ: 100, 140, 190, 250 fler. Facit fastslår 140 fler (alternativ B). Differens = 15–24-värdet MINUS 25–44-värdet (i samma år, samma kön).",
+    "text": "Frågan: studera de utskrivna KVINNORNA 2005. Hur många fler per 100 000 var de i åldersgruppen 15–24 år jämfört med i åldersgruppen 25–44 år? Differens = 15–24-värdet MINUS 25–44-värdet, samma år (2005), samma kön (kvinnor). Alternativen är 100, 140, 190 och 250 fler.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Orientera dig i diagram- men",
-    "text": "Sidan 'Transportolycksfall' har TVÅ stapeldiagram: överst 'Män' och nederst 'Kvinnor'. Båda visar antal per 100 000 i åtta åldersgrupper (0–4, 5–14, 15–24, 25–44, 45–64, 65–74, 75–84, 85+) över 10 år (1999–2008, en stapel per år i varje grupp). Y-axeln är 'Antal per 100 000', skala 0–450.",
+    "title": "Orientera dig på sidan",
+    "text": "Sidan 'Transportolycksfall' har TVÅ stapeldiagram: överst 'Män' och nederst 'Kvinnor'. Båda visar antal per 100 000 i åtta åldersgrupper (0–4, 5–14, 15–24, 25–44, 45–64, 65–74, 75–84, 85+) med tio staplar per grupp (1999–2008, olika mönster enligt legenden). Y-axeln 'Antal per 100 000' går 0–450 med gridlinjer var 50:e enhet i båda diagrammen.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Välj kvinno-diagrammet",
-    "text": "Frågan handlar om KVINNOR, inte män. Det NEDRE diagrammet är 'Kvinnor'. Det är där all avläsning ska ske. Notera: skalan är samma (0–450) men kvinnors värden är generellt lägre än männens.",
+    "text": "Frågan handlar om KVINNOR — allt avläses i det NEDRE diagrammet. Skalan är densamma (0–450) men kvinnornas staplar är genomgående lägre än männens; toppgruppen 15–24 når cirka 260 hos kvinnor mot cirka 400 hos män.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Lokalisera 2005-stapeln i varje åldersgrupp",
-    "text": "I varje åldersgrupp finns 10 staplar (1999, 2000, ..., 2008) med olika rutmönster enligt legenden. 2005 är den sjunde från vänster i varje grupp. Lås in 2005-mönstret i legenden och peka ut den stapeln i 15–24 och i 25–44.",
+    "text": "I varje åldersgrupp står tio staplar i årsordning 1999, 2000, ..., 2008. 2005 är alltså den SJUNDE stapeln från vänster i varje grupp. Kontrollera mot 2005-mönstret i legenden och peka ut den sjunde stapeln i 15–24 och i 25–44.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Avläs båda åldersgrupperna",
-    "text": "Kvinnor 15–24 år 2005: stapeln ligger cirka 230 per 100 000 (en av de högsta i kvinno-diagrammet, eftersom 15–24-gruppen toppar generellt). Kvinnor 25–44 år 2005: stapeln ligger cirka 90 per 100 000 (märkbart lägre — 25–44-gruppen har en av de lägre profilerna efter att 15–24-toppen sjunkit).",
+    "text": "Kvinnor 15–24 år 2005: gruppens högsta stapel — toppen ligger strax OVANFÖR 250-linjen, cirka 255–260 per 100 000. Kvinnor 25–44 år 2005: stapeln ligger strax under 120, tydligt ovanför 100-linjen — cirka 118 per 100 000 (först 2006–2008 sjunker gruppen ned mot 100).",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Räkna differensen",
-    "text": "230 − 90 = 140. Detta är facits svar (alternativ B). 140 per 100 000 fler i 15–24-gruppen än i 25–44-gruppen.",
+    "text": "Cirka 258 − 118 ≈ 140. Alltså cirka 140 fler per 100 000 i 15–24-gruppen än i 25–44-gruppen — alternativ B.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Vad betyder 'per 100 000'?",
-    "text": "Värdena är NORMERADE per 100 000 invånare i varje åldersgrupp — alltså inte absoluta antal personer utan en frekvens (rate). Detta gör det möjligt att jämföra åldersgrupper med olika storlek. När man säger '140 fler per 100 000' menar man att för varje 100 000 kvinnor i 15–24-gruppen var det 140 fler utskrivna än för varje 100 000 kvinnor i 25–44-gruppen.",
+    "text": "Värdena är NORMERADE per 100 000 invånare i respektive åldersgrupp — en frekvens, inte absoluta antal. Det gör åldersgrupper av olika storlek jämförbara. '140 fler per 100 000' betyder att för varje 100 000 kvinnor i 15–24-gruppen skrevs cirka 140 fler ut än per 100 000 kvinnor i 25–44-gruppen.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Sanity-check: är 230 respektive 90 rimliga?",
-    "text": "Unga vuxna (15–24) har generellt högre trafikolycksfrekvens — de är nya förare, kör mer riskfullt, och statistiken visar konsekvent toppar i denna åldersgrupp. 25–44-gruppen är typiskt mer erfarna förare med lägre frekvens. Differensen 140 är konsistent med epidemiologisk litteratur om trafikolyckor.",
+    "title": "Rimlighetskoll: är avläsningarna troliga?",
+    "text": "Unga vuxna (15–24) har genomgående högst trafikolycksfrekvens — 15–24 är den klart högsta gruppen i båda diagrammen. Att 25–44-gruppen ligger runt hälften av 15–24-toppen stämmer med diagrammets övergripande profil.",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Sanity-check mot avläsningsosäkerhet",
-    "text": "Om verkliga värden vore 220 och 100, differensen blir 120 — fortfarande närmast B (140) jämfört med A (100, 20 ifrån). Om vore 240 och 80, differensen blir 160 — fortfarande närmast B (20 ifrån). Slutsatsen är robust mot ±10 läsfel.",
+    "title": "Robusthet mot läsfel",
+    "text": "Även med ±10 i läsosäkerhet håller svaret: 250 − 120 = 130 och 260 − 110 = 150 — båda klart närmast B (140). För att landa på A (100) eller C (190) skulle någon avläsning behöva vara fel med 40–50 enheter, nästan en hel gridruta.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Plocka rätt alternativ",
-    "text": "Av A=100, B=140, C=190, D=250 är 140 (vår beräkning) klart närmast B. Facit fastslår B.",
+    "text": "Av A=100, B=140, C=190, D=250 ligger vår differens cirka 140 mitt på B. Svar: B.",
     "tier": "essential"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är B (140 fler). Insikten i en mening: i ett diagram med båda könen och flera åldersgrupper × år — identifiera först rätt diagram (kvinnor), sedan rätt år (2005-stapeln per åldersgrupp), läs av båda värdena och subtrahera.",
+    "title": "Insikten i en mening",
+    "text": "Insikten i en mening: i en sida med båda könen och många år per åldersgrupp — lås först rätt diagram (Kvinnor, nedre), sedan rätt stapel (2005 = sjunde i varje grupp), läs av mot gridlinjerna (strax över 250 respektive knappt 120) och subtrahera: cirka 140 fler, alternativ B.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'X fler/färre per Y'-frågor i flerkönsstapeldiagram: (1) identifiera rätt köns-diagram (här Kvinnor), (2) lokalisera rätt år (2005-mönstret) i båda åldersgrupperna, (3) avläs värdena per 100 000, (4) subtrahera i frågans riktning (yngre minus äldre). Triggern: 'X fler per Y i grupp A än grupp B' → subtraktion av värden för samma år i samma diagram."
+  "technique": "DTK-strategi för 'X fler/färre per Y'-frågor i flerkönsstapeldiagram: (1) identifiera rätt köns-diagram (här Kvinnor, det nedre), (2) lokalisera rätt år (2005 = sjunde stapeln) i båda åldersgrupperna, (3) avläs värdena mot gridlinjerna per 100 000, (4) subtrahera i frågans riktning (15–24 minus 25–44). Triggern: 'hur många fler per Y i grupp A än grupp B' → subtraktion av två avläsningar för samma år i samma diagram."
  },
  "host-2014-kvant2-DTK-032": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "2001 är tidigt i tidsperioden och man kan tro att tröskelvärden för båda villkoren uppfylls tidigt. Eller om man bara kontrollerar ett av villkoren.",
-    "why_wrong": "Som steg 5 visar: i män 5–14-gruppen 2001 ligger värdet cirka 190 — UNDER tröskeln 200. Villkoret är inte uppfyllt. Facit fastslår B (2003). 2001 misslyckas redan vid första villkoret."
+    "why_tempting": "Kollar du bara KVINNO-villkoret ser 2001 bra ut: kvinnor 45–64 ligger cirka 105, över 100-linjen. Då känns det tidiga året som ett fullgott svar.",
+    "why_wrong": "Mansvillkoret faller: män 5–14 år 2001 (tredje stapeln) toppar cirka 190 — under 200-linjen. Båda villkoren måste hålla; 2001 klarar bara ett. Rätt år är 2003 (B)."
    },
    {
     "letter": "C",
-    "why_tempting": "2004 är frestande om man av misstag avläser 2003-stapeln som 2004 eller skiftar ett år i läsningen.",
-    "why_wrong": "Steg 6: båda villkoren ska kontrolleras för EXAKT samma år. Vid 2004 ligger män 5–14 cirka 200 (gränsfall, troligen UNDER) och kvinnor 45–64 cirka 100 (gränsfall). Något av villkoren är på gränsen. Facit fastslår B (2003) där båda villkoren är tydligt uppfyllda — män 5–14 cirka 220 och kvinnor 45–64 cirka 110."
+    "why_tempting": "2004 klarar faktiskt mansvillkoret (cirka 210 > 200), så börjar du med övre diagrammet ser 2004 lovande ut — eller så räknar du fel en position bland de tio täta staplarna och läser 2003-stapeln som 2004.",
+    "why_wrong": "Kvinnovillkoret faller: kvinnor 45–64 år 2004 (sjätte stapeln) slutar strax under 100-linjen, cirka 97. Bara 2003 (femte stapeln, cirka 105) ligger över linjen och klarar samtidigt mansvillkoret. Svar B."
    },
    {
     "letter": "D",
-    "why_tempting": "2006 är frestande om man tror att senare år har högre värden generellt. Men trenden i trafikskaderegistreringar 1999–2008 är inte monotont stigande.",
-    "why_wrong": "Som steg 7 visar: vid 2006 ligger män 5–14 cirka 150 — under tröskeln 200. Trenden för pojkar 5–14 går nedåt över perioden. Facit fastslår B (2003). 2006 misslyckas vid första villkoret."
+    "why_tempting": "2006 klarar också mansvillkoret — män 5–14 ligger cirka 205, över 200-linjen — så den som bara kontrollerar övre diagrammet har inget skäl att avfärda 2006.",
+    "why_wrong": "Kvinnovillkoret faller: kvinnor 45–64 år 2006 (åttonde stapeln) toppar cirka 95 — under 100-linjen. Villkor 2 kräver fler än 100. 2003 är det enda alternativet som klarar båda villkoren. Svar B."
    }
   ],
   "framework_id": null,
-  "pitfall": "Klassiska fällan vid 'vilket år gäller VILLKOR 1 OCH VILLKOR 2'-frågor är att kontrollera bara ett villkor, eller att avläsa fel år/grupp i ett tätt diagram. Botemedlet: BÅDA villkoren ska uppfyllas i SAMMA år. Skapa en liten checklista: för varje kandidatår, läs villkor 1 (män 5–14 > 200) och villkor 2 (kvinnor 45–64 > 100) separat, kontrollera båda.",
+  "pitfall": "Klassiska fällan vid 'vilket år gäller VILLKOR 1 OCH VILLKOR 2'-frågor är att kontrollera bara ett villkor — och här är den extra lömsk eftersom de fel åren faller på OLIKA villkor: 2001 klarar kvinnovillkoret men inte mansvillkoret, medan 2004 och 2006 klarar mansvillkoret men inte kvinnovillkoret. Botemedlet: för varje kandidatår, kontrollera villkor 1 (män 5–14 > 200) och villkor 2 (kvinnor 45–64 > 100) separat, och eliminera först när du sett vilket villkor som faller.",
   "pregrade_tactic": {
    "handle": "Två-villkor-samma-år",
-   "move": "För varje kandidatår: läs av män 5–14 i övre diagrammet, kontrollera > 200, läs av kvinnor 45–64 i nedre diagrammet, kontrollera > 100. Bara året där BÅDA är uppfyllda är svaret."
+   "move": "För varje kandidatår: räkna fram årets stapel via legendordningen (1999 längst till vänster), läs av män 5–14 i övre diagrammet mot 200-linjen och kvinnor 45–64 i undre diagrammet mot 100-linjen. Bara året där BÅDA topparna ligger över sina linjer är svaret."
   },
-  "solution_path": "Facit fastslår 2003 (alternativ B). I MÄN-diagrammet, åldersgrupp 5–14 år: 2003-stapeln ligger cirka 220 per 100 000 — över tröskeln 200. I KVINNOR-diagrammet, åldersgrupp 45–64 år: 2003-stapeln ligger cirka 110 per 100 000 — över tröskeln 100. Båda villkoren uppfyllda vid 2003.",
+  "solution_path": "Två diagram: det övre visar MÄN, det undre KVINNOR, båda med antal per 100 000 på y-axeln och tio staplar per åldersgrupp i årsordning 1999–2008. Villkor 1 (övre diagrammet, grupp 5–14 år): 2003 är femte stapeln — toppen ligger cirka 218, tydligt över 200-linjen. Villkor 2 (undre diagrammet, grupp 45–64 år): 2003-stapelns topp ligger strax över 100-linjen, cirka 105. Båda villkoren uppfyllda 2003. Kontroll av övriga: 2001 faller på villkor 1 (män 5–14 cirka 190 < 200), medan 2004 och 2006 klarar villkor 1 (cirka 210 respektive 205) men faller på villkor 2 — kvinnostaplarna slutar strax under 100-linjen (cirka 97 respektive 95). Svar: B (2003).",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilket av följande år gäller BÅDA dessa villkor? Villkor 1: utskrivna MÄN i åldersgruppen 5–14 år > 200 per 100 000. Villkor 2: utskrivna KVINNOR i åldersgruppen 45–64 år > 100 per 100 000. Alternativen: 2001, 2003, 2004, 2006. Facit fastslår 2003 (alternativ B). Båda villkoren ska gälla för SAMMA år.",
+    "text": "Vilket av åren 2001, 2003, 2004, 2006 uppfyller BÅDA dessa villkor? Villkor 1: utskrivna MÄN i åldersgruppen 5–14 år > 200 per 100 000. Villkor 2: utskrivna KVINNOR i åldersgruppen 45–64 år > 100 per 100 000. Båda villkoren ska gälla för SAMMA år.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Definiera trösklarna strikt",
-    "text": "'Fler än 200' = > 200, alltså värdet ska vara STRIKT över 200 (200 räcker inte; 201, 250, 300 räknas). 'Fler än 100' = > 100. Notera att 'fler än' inte är 'minst' — gränsvärdet räknas inte.",
+    "text": "'Fler än 200' = strikt över 200 (exakt 200 räcker inte). 'Fler än 100' = strikt över 100. I praktiken: stapelns topp ska ligga OVANFÖR gridlinjen vid 200 respektive 100 — linjerna finns i diagrammen och gör avläsningen till en ren över/under-koll.",
     "tier": "detail"
    },
    {
     "n": 3,
     "title": "Identifiera diagram och åldersgrupper",
-    "text": "Övre diagrammet = Män, undre = Kvinnor. Åldersgrupp 5–14 år är den andra stapelgruppen från vänster (efter 0–4-gruppen). Åldersgrupp 45–64 år är den femte stapelgruppen från vänster (efter 25–44-gruppen).",
+    "text": "Övre diagrammet är märkt 'Män', det undre 'Kvinnor'. Åldersgrupp 5–14 år är andra stapelgruppen från vänster (efter 0–4). Åldersgrupp 45–64 år är femte gruppen från vänster (efter 25–44).",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Avläsningsstrategi",
-    "text": "För varje kandidatår (2001, 2003, 2004, 2006): (a) lokalisera årets stapel i Män 5–14, läs av värde, kontrollera > 200; (b) lokalisera årets stapel i Kvinnor 45–64, läs av värde, kontrollera > 100. Bara året där BÅDA villkoren är uppfyllda är svaret.",
+    "title": "Hitta rätt år i gruppen",
+    "text": "Varje åldersgrupp har tio staplar i årsordning enligt legenden: 1999 längst till vänster, 2008 längst till höger. Alltså: 2001 = tredje stapeln, 2003 = femte, 2004 = sjätte, 2006 = åttonde. Räkna position i stället för att försöka tyda de täta mönstren.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Kontrollera 2001",
-    "text": "Män 5–14 år 2001: stapeln ligger cirka 190 per 100 000 — UNDER tröskeln 200. Villkor 1 ej uppfyllt. Behöver inte kontrollera kvinnor — 2001 är diskvalificerat. Inte alternativet.",
+    "text": "Män 5–14, tredje stapeln (2001): toppen ligger cirka 190 — UNDER 200-linjen. Villkor 1 faller, och då spelar det ingen roll att kvinnor 45–64 samma år ligger cirka 105 över 100-linjen. 2001 är eliminerat.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Kontrollera 2003",
-    "text": "Män 5–14 år 2003: cirka 220 per 100 000 — ÖVER tröskeln 200. Villkor 1 uppfyllt. Kvinnor 45–64 år 2003: cirka 110 per 100 000 — ÖVER tröskeln 100. Villkor 2 uppfyllt. BÅDA villkoren OK vid 2003. Konsistent med facits svar B.",
+    "text": "Män 5–14, femte stapeln (2003): cirka 218 — tydligt ÖVER 200-linjen. Villkor 1 uppfyllt. Kvinnor 45–64, femte stapeln (2003): toppen ligger strax över 100-linjen, cirka 105. Villkor 2 uppfyllt. BÅDA villkoren håller 2003 — det är kandidaten.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Kontrollera 2004 och 2006",
-    "text": "2004: Män 5–14 ligger cirka 200 (gränsfall, troligen under 200 strikt). Villkor 1 osäkert. Kvinnor 45–64 cirka 100 (gränsfall, troligen under 100 strikt). Villkor 2 osäkert. 2003 är säkrare. 2006: Män 5–14 ligger cirka 150 — UNDER tröskeln 200. Villkor 1 ej uppfyllt. Inte alternativet.",
+    "text": "2004: män 5–14 cirka 210 — över 200, villkor 1 OK. Men kvinnor 45–64 slutar strax UNDER 100-linjen, cirka 97 — villkor 2 faller. 2006: män 5–14 cirka 205 — också över 200. Men kvinnor 45–64 cirka 95 — under 100-linjen. Båda åren faller alltså på KVINNO-villkoret, inte på mansvillkoret.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Vad betyder 'och' i sammansatta villkor?",
-    "text": "Konjunktion 'och' kräver att BÅDA villkoren samtidigt är sanna. Om bara villkor 1 är uppfyllt räcker det inte; samma med bara villkor 2. Bara året där båda är samtidigt sanna är svaret. Detta är logikkraft — många DTK-frågor testar denna 'AND'-tolkning.",
+    "text": "Konjunktionen 'och' kräver att BÅDA villkoren samtidigt är sanna. Notera hur de fel alternativen faller på OLIKA villkor: 2001 på mansvillkoret, 2004 och 2006 på kvinnovillkoret. Kollar du bara ett av villkoren överlever alltid fel år.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Sanity-check: är 2003 den enda lösningen?",
-    "text": "Av de fyra givna åren är 2003 det enda där man kan TYDLIGT se att båda villkoren är uppfyllda (220 > 200 och 110 > 100, med viss marginal). 2001 misslyckas vid villkor 1. 2004 är gränsfall för båda. 2006 misslyckas vid villkor 1. Bara 2003 är robust. Facit fastslår B.",
+    "text": "2001: villkor 1 faller (190 < 200). 2003: båda uppfyllda (218 > 200 och 105 > 100). 2004: villkor 2 faller (97 < 100). 2006: villkor 2 faller (95 < 100). Bara 2003 klarar båda.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Sanity-check mot avläsningsosäkerhet",
-    "text": "Vid 2003 har vi män 5–14 ≈ 220 (20 över tröskeln) och kvinnor 45–64 ≈ 110 (10 över tröskeln). Båda har marginal. Om avläsningarna är ±10 fel är slutsatsen ändå robust för 2003. För 2004 är värdena precis på gränsen — för osäkert.",
+    "title": "Hantera de knappa marginalerna",
+    "text": "I kvinnodiagrammet är avstånden små: 2003 ligger strax ÖVER 100-linjen medan 2004 och 2006 slutar strax UNDER den. Lita på gridlinjen — frågan är binär (över eller under linjen), inte en exakt värdesavläsning. I mansdiagrammet är 2003:s marginal bekvämare: cirka 18 enheter över 200-linjen.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Plocka rätt alternativ",
-    "text": "Av A=2001, B=2003, C=2004, D=2006 är 2003 det enda som tydligt uppfyller båda villkoren. Facit fastslår B.",
+    "text": "Av A=2001, B=2003, C=2004, D=2006 är 2003 det enda år där båda villkoren är uppfyllda. Svaret är B.",
     "tier": "essential"
    },
    {
     "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är B (2003). Insikten i en mening: 'vilket år gäller villkor X OCH villkor Y' = båda villkoren samtidigt sanna — kontrollera varje kandidatår mot BÅDA villkoren, inte bara ett.",
+    "title": "Slutsats",
+    "text": "Svaret är B (2003). Insikten i en mening: 'vilket år gäller villkor X OCH villkor Y' = båda villkoren samtidigt sanna — kontrollera varje kandidatår mot BÅDA villkoren, för olika år kan falla på olika villkor.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'vilket år gäller villkor X OCH villkor Y'-frågor: (1) definiera båda trösklarna strikt (> betyder strikt över), (2) för varje kandidatår, kontrollera båda villkoren separat (en i taget, eliminera direkt om något misslyckas), (3) bara året där BÅDA är uppfyllda är svaret. Triggern: 'OCH' i sammansatt villkor → konjunktion, ALLA villkor måste hålla samtidigt."
+  "technique": "DTK-strategi för 'vilket år gäller villkor X OCH villkor Y'-frågor: (1) definiera båda trösklarna strikt (> betyder strikt över), (2) hitta rätt stapel via årsordningen i legenden (10 staplar per grupp, 1999 längst till vänster → 2008 längst till höger), (3) kontrollera båda villkoren för varje kandidatår och eliminera direkt när ett villkor faller. Triggern: 'OCH' i sammansatt villkor → konjunktion, ALLA villkor måste hålla samtidigt — och olika år kan falla på OLIKA villkor."
  },
  "host-2014-kvant2-DTK-033": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "3 åldersgrupper låter rimligt om man bara ser några tydliga toppar i 2002 och missar andra grupper där 2002-stapeln är lika med eller marginellt högst.",
-    "why_wrong": "Som steg 5 visar är 2002 faktiskt det maximala året för cirka 5 av de 8 åldersgrupperna. 3 underskattar — det är värt att kolla varje grupp separat. Facit fastslår 5 (alternativ B)."
+    "why_tempting": "3 lockar om du bara ser de tre 'mittengrupperna' 25–44, 45–64 och 65–74, där 2002-puckeln är lätt att upptäcka, och slutar leta innan du granskat de äldsta grupperna.",
+    "why_wrong": "Även 75–84 och 85+ har sin högsta stapel på fjärde positionen (2002): ~225 respektive ~285, klart över alla andra år i sina kluster. Det är 5 grupper, inte 3."
    },
    {
     "letter": "C",
-    "why_tempting": "6 åldersgrupper är frestande om man räknar grupper där 2002 är 'nära' toppen eller delar topp med ett annat år.",
-    "why_wrong": "Steg 6 räknar exakt: i 5 av 8 grupper är 2002 det maximala året; i de resterande 3 är max-året något annat (t.ex. 2003, 2007 eller 2001). Facit fastslår B (5). 6 överskattar med 1."
+    "why_tempting": "6 lockar om du även räknar in 15–24, där 2002-stapeln (~375) är hög och ligger nära toppen — på ögonmått kan den se ut att vara högst.",
+    "why_wrong": "I 15–24 når staplarna för 2003/2004 ~400, tydligt över 2002:s ~375. 'Nära toppen' räknas inte — bara grupper där 2002 är strikt högst, och de är 5."
    },
    {
     "letter": "D",
-    "why_tempting": "7 åldersgrupper är frestande om man antar att 2002 var ett 'toppåret' globalt sett — t.ex. på grund av en specifik händelse eller statistisk anomali.",
-    "why_wrong": "Som steg 6 visar var 2002 maximalt för 5 av 8 grupper, inte 7. Trenderna skiljer sig mellan åldersgrupper — t.ex. har 85+ ofta sin topp i senare år (2007 eller 2008). Facit fastslår B."
+    "why_tempting": "7 lockar om du antar att 2002 var ett generellt toppår och bara stryker den grupp som uppenbart avviker (0–4).",
+    "why_wrong": "Två grupper till saknar 2002-topp: 5–14 stiger genom hela perioden och toppar 2007 (~230), och 15–24 toppar 2003/2004 (~400). Kvar blir 5 grupper, inte 7."
    }
   ],
   "framework_id": "DTK-TACTIC-006",
-  "pitfall": "Klassiska fällan i 'för hur många grupper gäller X'-frågor är att antingen (a) underskatta antalet genom att bara titta på de mest framträdande grupperna eller (b) överskatta genom att räkna grupper där X är 'nära' men inte exakt maximalt. Botemedlet: gå systematiskt igenom alla 8 åldersgrupper i män-diagrammet, för varje identifiera VILKET år som har den högsta stapeln, och kryssa av där det är 2002.",
+  "pitfall": "Klassiska fällan i 'för hur många grupper gäller X'-frågor är att antingen (a) underskatta genom att bara räkna grupperna med mest iögonfallande 2002-toppar och missa de äldsta grupperna, eller (b) överskatta genom att räkna grupper där 2002 är 'nära' men inte strikt högst (som 15–24). Botemedlet: lås att 2002 = fjärde stapeln i varje kluster, gå igenom alla 8 grupper i män-diagrammet och bocka bara av där fjärde stapeln är klustrets högsta.",
   "pregrade_tactic": {
-   "handle": "Topp-år-per-grupp-tabell",
-   "move": "Gå genom de 8 åldersgrupperna i män-diagrammet en i taget, för varje peka ut den HÖGSTA stapeln och notera dess år. Räkna hur många grupper som har 2002 som topp-år."
+   "handle": "Fjärde-stapeln-checklista",
+   "move": "Lås att 2002 är den fjärde stapeln från vänster i varje kluster (legendens ordning). Gå genom de 8 åldersgrupperna i män-diagrammet en i taget, avgör om fjärde stapeln är gruppens högsta, och räkna träffarna."
   },
-  "solution_path": "Facit fastslår 5 (alternativ B). I män-diagrammet 1999–2008, granska varje av de 8 åldersgrupperna (0–4, 5–14, 15–24, 25–44, 45–64, 65–74, 75–84, 85+) separat. För varje grupp: identifiera det år då stapeln är högst. I 5 av grupperna är 2002 maxåret — i de övriga 3 är max-året något annat (typiskt 2003 eller 2007 för äldre grupper).",
+  "solution_path": "I det ÖVRE diagrammet (Män) står 10 staplar (1999–2008) i varje av de 8 åldersgrupperna; 2002 är alltid den fjärde stapeln från vänster (tunt ljust snedstreck enligt legenden). Gå grupp för grupp och jämför fjärde stapeln mot resten: 0–4 toppar 2001 (~80), 5–14 toppar 2007 (~230), 15–24 toppar 2003/2004 (~400, medan 2002 bara når ~375). Men i 25–44 (~215), 45–64 (~158), 65–74 (~154), 75–84 (~225) och 85+ (~285) är 2002-stapeln klustrets högsta. Det ger exakt 5 grupper med topp 2002 = alternativ B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: för hur många av åldersgrupperna gäller att antalet utskrivna MÄN per 100 000 nådde sin TOPP år 2002? Svarsalternativ: 3, 5, 6, 7. Facit fastslår 5 (alternativ B). 'Nådde sin topp' = det högsta värdet för den åldersgruppen under tidsperioden 1999–2008.",
+    "text": "Frågan: för hur många av åldersgrupperna nådde antalet utskrivna MÄN per 100 000 sin TOPP år 2002? 'Nådde sin topp' = 2002-stapeln är den högsta av de tio staplarna (1999–2008) i den gruppen. Svarsalternativ: 3, 5, 6, 7.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Identifiera åldersgrupperna",
-    "text": "Män-diagrammet (övre) har 8 åldersgrupper på x-axeln: 0–4, 5–14, 15–24, 25–44, 45–64, 65–74, 75–84, 85+. Varje grupp har 10 staplar (1999–2008) med olika rutmönster enligt legenden. Lås in 2002-mönstret i legenden.",
+    "title": "Rätt diagram och strukturen",
+    "text": "Sidan har TVÅ diagram. Frågan gäller män, alltså det ÖVRE ('Män'). X-axeln har 8 åldersgrupper: 0–4, 5–14, 15–24, 25–44, 45–64, 65–74, 75–84, 85+. Varje grupp har 10 staplar i årsordning 1999–2008.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Metodik: per grupp, identifiera den högsta stapeln",
-    "text": "För varje av de 8 åldersgrupperna: skanna de 10 staplarna, identifiera vilken som är HÖGST, kontrollera vilket år det är (vilket rutmönster matchar legenden). Notera detta år. Räkna sedan hur många grupper som hade 2002 som topp-år.",
+    "title": "Lås in 2002-stapeln",
+    "text": "Legendens ordning är 1999, 2000, 2001, 2002, ... — alltså är 2002 alltid den FJÄRDE stapeln från vänster i varje kluster (tunt ljust snedstrecksmönster). Positionen är ett säkrare handtag än mönstret: du behöver inte skilja tio subtilt olika skrafferingar, bara räkna till fyra.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Lås in 2002-mönstret",
-    "text": "2002-stapeln har ett specifikt rutmönster (en av tio mönster i legenden). Det är viktigt att skilja på 2001, 2002, 2003 etc — staplarna är typiskt staplade tätt och mönsterna är subtilt olika. Identifiera 2002 i legenden innan du letar i grupperna.",
-    "tier": "detail"
+    "title": "Metodik: en grupp i taget",
+    "text": "För varje av de 8 grupperna: hitta fjärde stapeln och fråga 'är den klustrets högsta?'. Ja → bocka av. Nej → vidare. Ingen genväg via helhetsintryck — 2002-toppen syns tydligt i vissa grupper och saknas helt i andra.",
+    "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Granska varje åldersgrupp",
-    "text": "(Uppskattade observationer från diagrammet — det viktiga är räkningen): 0–4 år: topp 2001 (cirka 70). 5–14 år: topp 2002 (cirka 220). 15–24 år: topp 2002 (cirka 400). 25–44 år: topp 2002 (cirka 220). 45–64 år: topp 2002 (cirka 160). 65–74 år: topp 2002 (cirka 160). 75–84 år: topp 2007 (cirka 290). 85+: topp 2007 eller 2008 (cirka 290). Räkning: 5 grupper har topp 2002.",
+    "title": "Grupperna där 2002 INTE toppar",
+    "text": "0–4: högsta stapeln är den tredje (2001, ~80); 2002 ligger kring ~65. 5–14: trenden STIGER genom perioden — högst är den nionde stapeln (2007, ~230), medan 2002 bara når ~200. 15–24: toppen ligger vid femte/sjätte stapeln (2003/2004, ~400); 2002 stannar kring ~375. Tre grupper utan 2002-topp.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Räkna 2002-toppar",
-    "text": "5–14, 15–24, 25–44, 45–64, 65–74 — 5 grupper med 2002 som maxår. 0–4 har topp i 2001, 75–84 och 85+ har topp i senare år (2007/2008). Totalt 5 grupper med 2002 som topp. Konsistent med facits svar B.",
+    "title": "Grupperna där 2002 toppar",
+    "text": "25–44: fjärde stapeln ~215, klart över grannarna (~190–205). 45–64: fjärde stapeln ~158, högst i klustret. 65–74: fjärde stapeln ~154, högst. 75–84: fjärde stapeln ~225, tydligt över allt annat (näst högst är 2001 på ~212). 85+: fjärde stapeln ~285 — den sticker upp långt över resten (näst högst ~240). Fem grupper med 2002-topp.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Vad betyder 'nådde sin topp'?",
-    "text": "Toppvärde = max-värdet för den åldersgruppen över hela tidsperioden 1999–2008. Om 2002-stapeln är den högsta i en grupp har den gruppen sin topp 2002. Om en annan stapel är högre (även marginellt) räknas inte 2002. Vid ties (mycket sällsynt) tolkas det som att toppen delas mellan båda åren — då räknas det inte som 2002 ensam.",
-    "tier": "detail"
+    "title": "Räkningen",
+    "text": "2002-toppar: 25–44, 45–64, 65–74, 75–84, 85+ = 5 grupper. Ej 2002: 0–4 (2001), 5–14 (2007), 15–24 (2003/2004) = 3 grupper. 5 + 3 = 8, alla grupper avprickade — räkningen går ihop.",
+    "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Sanity-check: varför vissa grupper inte har 2002 som topp",
-    "text": "Olika åldersgrupper har olika tidstrender. Yngsta (0–4) och äldsta (75+) kategorierna har ofta andra dynamiker — pediatriska olyckor toppade kring 2001, geriatriska olyckor (lite ironiskt) ökade mot slutet av perioden då befolkningen blev äldre. De fem 'mellangrupperna' (5–14 till 65–74) följer däremot en mer enhetlig trafik-olyckstrend som toppade 2002.",
+    "title": "Vad betyder 'nådde sin topp'?",
+    "text": "Toppen = maxvärdet för gruppen över hela perioden 1999–2008. Räcker det att 2002 är 'högt'? Nej — om någon annan stapel är högre, även marginellt, räknas gruppen inte. Det är precis vad som fäller 15–24: 2002 är högt (~375) men 2003/2004 är högre (~400).",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Sanity-check mot facits 5",
-    "text": "Facit säger 5 av 8, vilket är 62,5 %. Det innebär att en majoritet av åldersgrupperna hade sin topp samma år (2002) — något som ger en koherent epidemiologisk bild för det specifika året (möjligen en topp i trafikvolymer eller statistisk metodologi). Övriga 3 grupper har olika top-år, vilket också är konsistent. Slutsatsen 5 är logisk.",
+    "title": "Sanity-check på mönstret",
+    "text": "Lägg märke till formen per grupp: i de fem 2002-grupperna bildar staplarna en 'puckel' med spetsen på fjärde stapeln — särskilt dramatiskt i 85+ där 2002 (~285) tornar upp sig. I 5–14 lutar hela klustret i stället uppåt mot höger (topp sent), och i 15–24 sitter puckelns spets ett par staplar längre högerut. Formen bekräftar räkningen.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Plocka rätt alternativ",
-    "text": "Av A=3, B=5, C=6, D=7 är 5 (vår räkning) klart matchande B. Facit fastslår B.",
+    "text": "Vår räkning gav 5. Av A=3, B=5, C=6, D=7 matchar det B.",
     "tier": "essential"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är B (5 åldersgrupper). Insikten i en mening: 'för hur många grupper gäller X = topp år Y' = gå systematiskt grupp för grupp, identifiera maxstapel-året i varje, räkna träffar — ingen genväg via visuellt 'helhetsintryck'.",
+    "title": "Slutsats",
+    "text": "Svaret är B (5 åldersgrupper). Insikten i en mening: i 'för hur många grupper gäller X'-frågor låser du målårets POSITION i klustret (2002 = fjärde stapeln), går grupp för grupp och bockar av — helhetsintryck under- eller överskattar alltid.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'för hur många grupper gäller X'-frågor i flergrupp-stapeldiagram: (1) identifiera de N grupperna (8 åldersgrupper här), (2) för varje grupp, identifiera maxstapel och dess år, (3) räkna hur många grupper som har målåret som maxår. Triggern: 'för hur många X gäller villkor Y' → systematisk grupp-för-grupp-checklista, lita inte på helhetsintryck."
+  "technique": "DTK-strategi för \"för hur många grupper gäller X\"-frågor i flergrupp-stapeldiagram: (1) lås målårets mönster i legenden och dess POSITION i varje kluster (2002 = fjärde stapeln från vänster), (2) gå grupp för grupp och avgör om den stapeln är klustrets högsta, (3) räkna träffarna. Triggern: \"för hur många X gäller villkor Y\" → systematisk grupp-för-grupp-checklista, lita aldrig på helhetsintryck."
  },
  "host-2014-kvant2-DTK-034": {
   "_meta": {
@@ -11409,109 +11397,103 @@
  },
  "host-2014-kvant2-DTK-035": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "6 mil längre låter dramatiskt och kan vara frestande om man feltolkar de koncentriska ringarna (5, 10, 15, 20 mil) eller blandar ihop sommarvägen med kemitransporten via Stockholm.",
-    "why_wrong": "Som steg 5 visar är sommarvägen till Nederkalix cirka 8 mil och vintervägen cirka 5 mil — differensen är 3 mil, inte 6. Facit fastslår 3 mil längre (alternativ A). 6 mil är dubbelt så stor differens som verkligheten."
+    "why_tempting": "Strax innanför vinterns NK-markör, vid ungefär 5-milsringen, ligger Råneå (R). Tar man av misstag R-markören som vintervärde blir differensen cirka 11 − 5 = 6 mil längre — B ser då helt logisk ut.",
+    "why_wrong": "Vinterns Nederkalix-markör är den som är märkt NK, och den ligger vid cirka 8 mil, inte 5. 11 − 8 = 3 mil, alternativ A. Gapet mellan sommar-NK och vinter-NK är dessutom synbart mindre än en hel ringbredd (5 mil), så 6 mil kan uteslutas direkt på ögonmått."
    },
    {
     "letter": "C",
-    "why_tempting": "3 mil kortare har rätt magnitud men felaktig RIKTNING. Det är frestande om man tror att sommaren är 'enklare' eftersom isvägar inte krävs, och därför att sommarvägen vore kortare.",
-    "why_wrong": "Steg 6 är tydligt: sommarvägen från Luleå till Nederkalix är LÄNGRE än vintervägen. På vintern kan man köra över is direkt; på sommaren måste man köra runt vattenvägar. Facit fastslår A (3 mil LÄNGRE), inte 3 mil kortare. Riktning är inverterad i C."
+    "why_tempting": "Rätt magnitud men fel RIKTNING. Frestande om man antar att båtresa på öppet vatten borde vara den kortare vägen, eller om man råkar räkna vinter minus sommar (8 − 11) och tappar tecknet.",
+    "why_wrong": "Figuren visar det omvända: sommar-NK ligger vid 10-milsringen, LÄNGRE ut än vinter-NK vid cirka 8 mil. Sommarvägen är alltså 3 mil längre, inte kortare."
    },
    {
     "letter": "D",
-    "why_tempting": "6 mil kortare kombinerar felaktig magnitud med felaktig riktning — frestande om man tror att vintervägar tar betydligt längre tid på grund av snö och kyla.",
-    "why_wrong": "Som steg 5 och 6 visar är sommarvägen 3 mil LÄNGRE, inte 6 mil kortare. Vintervägen är kortare eftersom isen tillåter direkt-sträckning över vatten. Facit fastslår A. D har fel både i magnitud (6 vs 3) och i riktning (kortare vs längre)."
+    "why_tempting": "Kombinerar två fel som var för sig är lätta att göra: R-förväxlingen (som ger 6 i stället för 3) och inverterad riktning (kortare i stället för längre).",
+    "why_wrong": "Både magnitud och riktning är fel. Avläst mot ringarna: sommar ≈ 11 mil, vinter ≈ 8 mil, differens 3 mil med sommaren som den längre — alternativ A."
    }
   ],
   "framework_id": "DTK-TACTIC-005",
-  "pitfall": "Klassiska fällan på den cirkulära handelsdiagrammet är att (a) blanda ihop sommar- och vinterresor (de visas typiskt med olika rutmönster eller på olika månadssegment) och (b) felidentifiera de koncentriska milringarna. Botemedlet: identifiera först månads-segmenten (vinterhalvår vs sommarhalvår), hitta Nederkalix-pilarna i båda halvåren, mät mot mil-ringarna (5, 10, 15, 20).",
+  "pitfall": "Klassiska fällan i det cirkulära säsongsdiagrammet är att (a) förväxla vilka markörer som hör till vinter respektive sommar och (b) läsa av fel markör nära centrum — Råneå (R) ligger vid cirka 5 mil alldeles innanför vinterns NK vid cirka 8 mil. Botemedlet: lås först månadssektorerna (vinter = december–mars, sommar = sjöfartssäsongens båge maj–september), leta sedan upp etiketten NK i varje halva och mät mot milringarna 5, 10, 15, 20.",
   "pregrade_tactic": {
-   "handle": "Sommar-pil-vs-vinter-pil",
-   "move": "Hitta Nederkalix (NK) i förklaringen, identifiera sommarvägen till NK (typiskt under sjöfartssäsongen) och vintervägen (under vinterhalvåret), mät bägge avstånden mot ring-skalan, ta differensen i frågans riktning (sommar minus vinter)."
+   "handle": "Två-NK-mot-ringarna",
+   "move": "Hitta NK i vinterhalvan (uppåt, december/januari) och NK i sommarhalvan (nedåt, juni/juli under sjöfartssäsongen). Mät båda avstånden från centrum mot ringskalan (vinter ≈ 8 mil, sommar ≈ 11 mil) och ta differensen i frågans riktning: sommar minus vinter."
   },
-  "solution_path": "Facit fastslår 3 mil längre (alternativ A). I den cirkulära handelsdiagrammet är resvägarna ritade som radiella pilar från Luleå (L) i centrum till andra orter, med mil-värden mot koncentriska ringar (5, 10, 15, 20). Sommarvägen Luleå → Nederkalix är cirka 8 mil (under sjöfartssäsongen, längre väg runt vatten). Vintervägen Luleå → Nederkalix är cirka 5 mil (rakare väg över is). Differens: 8 − 5 = 3 mil längre på sommaren.",
+  "solution_path": "Diagrammet visar handelsmannen Stenholms resor som markörer runt Luleå (L) i centrum: månaderna ligger i den yttre ringen och avståndet läses mot de koncentriska ringarna 5, 10, 15 och 20 mil. Nederkalix (NK) förekommer både på vinterhalvan och sommarhalvan. Vinterns NK-markör (rakt uppåt, i december–januari-sektorn) ligger mellan 5- och 10-milsringen, cirka 8 mil från centrum. Sommarens NK-markörer (i juni/juli respektive augusti, under sjöfartssäsongens båge) ligger vid eller strax utanför 10-milsringen, cirka 11 mil. Differensen: 11 − 8 = cirka 3 mil, och sommarvägen är den längre. Svar: A, 3 mil längre.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: hur lång var resvägen från Luleå till Nederkalix under SOMMAREN jämfört med under VINTERN? Svarsalternativ: 3 mil längre, 6 mil längre, 3 mil kortare, 6 mil kortare. Facit fastslår 3 mil längre (alternativ A). Skillnaden = sommarväg minus vinterväg, riktning POSITIV (sommar är längre).",
+    "text": "Frågan: hur lång var resvägen Luleå → Nederkalix under SOMMAREN jämfört med under VINTERN? Två saker ska ut ur figuren: magnituden på skillnaden (3 eller 6 mil) och riktningen (längre eller kortare). Räkna sommarväg minus vinterväg och håll koll på tecknet.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i diagrammet",
-    "text": "Diagrammet 'Handelsmannen Abraham Stenholms marknadsbesök' är en CIRKULÄR figur. Det yttre cirkelsegmentet är uppdelat i 12 månader (januari, februari, ..., december). I centrum finns Luleå (L). Pilar utgår från L till andra orter under olika tider på året, med distans mätt mot koncentriska ringar (5, 10, 15, 20 mil). Förkortningar i förklaringen: G=Gällivare, J=Jokkmokk, NK=Nederkalix, ÖK=Överkalix, R=Råneå, L=Luleå.",
+    "text": "Figuren 'Handelsmannen Abraham Stenholms marknadsbesök' är CIRKULÄR. Yttersta ringen är årets tolv månader (januari överst till höger, motsols runt). I centrum ligger Luleå (L). Avstånd läses mot de koncentriska ringarna märkta 5, 10, 15 och 20 mil. Teckenförklaringen ger orterna: G = Gällivare, J = Jokkmokk, NK = Nederkalix, ÖK = Överkalix, R = Råneå, L = Luleå. De svarta rektanglarna anger hur länge marknadsbesöken varade — inte avstånd.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Identifiera vinterperioden och sommarperioden",
-    "text": "I beskrivningen markeras 'Sjöfartssäsongen och Finlandsresor osv' under en period på året (typiskt augusti-september), och en annan period markeras med kommentaren om kemitransport, smör, ren och ackja (vinter). Detta säger att resor under olika delar av året följde olika rutter — vinter (med renor och ackjor på snö/is) och sommar (med båt under sjöfartssäsongen, eller landväg).",
+    "title": "Skilj vinterhalvan från sommarhalvan",
+    "text": "Figurens egna texter delar året: vid februari–mars står 'Leverans av varor till Luleå med ren och ackja' (vinterresor på snö och is), och över sommarmånaderna löper bågen 'SJÖFARTSSÄSONGEN — Stockholms- och Finlandsresor osv.' samt 'Hemtransport av böndernas varor (tjära, bräder) med båt till Luleå'. Alltså: markörer i december–mars-sektorerna = vinterresor, markörer i maj–september-sektorerna = sommarresor.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Hitta båda Nederkalix-pilarna",
-    "text": "Nederkalix (NK) är en specifik destinationsmärkning. Det finns två 'NK' i diagrammet: en under sommarperioden och en under vinterperioden. Båda pilar utgår från L. Den ena är längre (sommarens båt-/landväg) och den andra är kortare (vinterns is-väg över Bottenviken).",
+    "title": "Hitta alla NK-markörer",
+    "text": "Nederkalix (NK) dyker upp på flera ställen: en NK-markör rakt uppåt i december/januari-sektorn (vinterresan) och NK-markörer på sommarhalvan — en rakt nedåt i juni/juli och en i augusti-sektorn. Alla mäts från centrum (L) mot milringarna.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Mät sommarvägen",
-    "text": "Sommarvägen Luleå → Nederkalix går troligen via båtväg i Bottenviken (sjöfartssäsongen). Mät pilens längd mot ringarna: den sträcker sig cirka 8 mil ut från centrum. (Mil-ringarna är 5, 10, 15, 20 mil.) Pilen för sommaren NK ligger ungefär mellan 5- och 10-mils ringarna, närmare 10.",
+    "title": "Mät vintervägen",
+    "text": "Vinterns NK-markör (uppåt, december/januari) ligger mellan 5- och 10-milsringen, en bit över mitten mot 10 — cirka 8 mil från Luleå. Se upp: strax innanför, vid ungefär 5-milsringen, ligger Råneå (R). Läs etiketten NK, inte bara närmaste markör.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Mät vintervägen",
-    "text": "Vintervägen Luleå → Nederkalix går rakare över is i Bottenviken. Mät pilens längd: cirka 5 mil från centrum, vid 5-mils ringen. Vinterresan är kortare eftersom man kan ta genvägar över is istället för att följa kustlinjen.",
+    "title": "Mät sommarvägen",
+    "text": "Sommarens NK-markörer (juni/juli rakt nedåt, och augusti) ligger vid eller strax utanför 10-milsringen — cirka 11 mil från Luleå. Att båda sommarmarkörerna ligger på samma radie är en bra kontroll: sommarresan till Nederkalix var konsekvent runt 10–11 mil.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Räkna differensen",
-    "text": "Sommarväg − Vinterväg = 8 − 5 = 3 mil. Sommaren är 3 mil LÄNGRE än vintern. Konsistent med facits svar A.",
+    "text": "Sommarväg − vinterväg ≈ 11 − 8 = 3 mil. Positivt tecken betyder att sommarvägen var LÄNGRE. Exakta ögonmått spelar mindre roll än relationen: sommar-NK ligger tydligt en bit utanför vinter-NK, och gapet är klart mindre än en hel ringbredd om 5 mil — alltså 3 mil, inte 6.",
     "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Vad betyder 'mil' i svenskt sammanhang?",
-    "text": "Svensk mil = 10 kilometer (inte engelska mile). En mil = 10 km, så 3 mil = 30 km. I 1800-talets handelskontext mättes resvägar i mil — diagrammets ringar är märkta 5, 10, 15, 20 mil = 50, 100, 150, 200 km.",
+    "title": "Vad betyder 'mil'?",
+    "text": "Svensk mil = 10 kilometer (inte engelska mile). 3 mil = 30 km. Ringarna 5, 10, 15, 20 mil motsvarar alltså 50, 100, 150 och 200 km från Luleå.",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Sanity-check: är 3 mil rimligt?",
-    "text": "Geografiskt: Luleå och Nederkalix (nuvarande Kalix) ligger båda vid Bottenvikens nordliga del, separerade av land och vattendrag. Sommarvägen runt landet är längre än vintervägen rak över isen. 3 mil = 30 km är en rimlig genvägsbesparing över isen. Konsistent med facits svar A.",
+    "title": "Rimlighetskoll: varför längre på sommaren?",
+    "text": "På vintern kunde man färdas med ren och ackja rakare vägar över snö och is; på sommaren gick resan med båt längs kusten under sjöfartssäsongen, vilket ger en längre färdväg. Att sommarvägen är längre stämmer alltså med hur figuren beskriver transportsätten — och med avläsningen 11 mot 8 mil.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Sanity-check: är riktningen rätt?",
-    "text": "Sommar är LÄNGRE än vinter därför att sommarvägen följer land/vatten och vintervägen kan korsa is direkt. Detta är genomgående för norra Sverige under förindustriell tid. Facit fastslår A (3 mil LÄNGRE), inte C (3 mil kortare) eller D (6 mil kortare). Riktning bekräftad.",
-    "tier": "detail"
+    "title": "Plocka rätt alternativ",
+    "text": "A = 3 mil längre, B = 6 mil längre, C = 3 mil kortare, D = 6 mil kortare. Avläsningen gav cirka 3 mil med sommaren som den längre. Endast A matchar både magnitud och riktning.",
+    "tier": "essential"
    },
    {
     "n": 11,
-    "title": "Plocka rätt alternativ",
-    "text": "Av A=3 mil längre, B=6 mil längre, C=3 mil kortare, D=6 mil kortare är A den enda som matchar både magnitud (3 mil) och riktning (längre). Facit fastslår A.",
-    "tier": "essential"
-   },
-   {
-    "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är A (3 mil längre). Insikten i en mening: på cirkulära handelsdiagram med distance-ringar — identifiera korrekt destination i båda säsongerna, mät bägge pilarnas längder mot ringarna, beräkna differens i FRÅGANS riktning (sommar − vinter).",
+    "title": "Slutsats",
+    "text": "Svaret är A (3 mil längre). Insikten i en mening: på cirkulära säsongsdiagram är positionen i cirkeln årstiden och avståndet från centrum värdet — hitta samma ortsetikett i båda säsongerna, mät båda mot ringskalan och ta differensen i frågans riktning.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'resvägsfrågor på cirkulär diagram'-frågor: (1) identifiera centrum (utgångspunkt) och destinationsmärket (NK för Nederkalix), (2) hitta båda resvägs-pilarna (för båda säsongerna), (3) mät längderna mot ring-skalan (5, 10, 15, 20 mil), (4) beräkna differensen i frågans riktning. Triggern: 'X längre/kortare jämfört med Y' → båda mätningarna separat, sedan differens."
+  "technique": "DTK-strategi för resvägsfrågor på cirkulära säsongsdiagram: (1) lås tidsaxeln — yttre ringen är årets tolv månader, så position i cirkeln = årstid, (2) hitta destinationsmärket (NK) i BÅDA säsongerna, (3) mät varje markörs avstånd från centrum mot ring-skalan (5, 10, 15, 20 mil), (4) beräkna differensen i frågans riktning. Triggern: 'X längre/kortare under sommaren jämfört med vintern' → två separata avläsningar, sedan sommar minus vinter."
  },
  "host-2014-kvant2-DTK-036": {
   "_meta": {
@@ -11821,103 +11803,103 @@
  },
  "host-2014-kvant2-DTK-039": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "214 ligger nära det korrekta värdet och är frestande om man avläser värdena marginellt fel eller missar något av ämnesområdena litteratur/konst/musik.",
-    "why_wrong": "Som steg 5 visar är summan av artiklarna inom rec-1-genren och de tre ämnesområdena (litteratur + konst + musik) 1969 cirka 242. Facit fastslår 242 (alternativ B). 214 underskattar — det motsvarar typiskt att missa ett av de tre ämnesområdena (t.ex. om man bara räknar litteratur + konst utan musik)."
+    "why_tempting": "214 ligger nära 242 och lockar om du slarvläser någon av de tre procentcellerna i den suddiga tabellen, eller tappar en decimal när du summerar 12,6 + 3,0 + 6,5.",
+    "why_wrong": "214 skulle kräva en procentsumma på ca 19,6 % av 1094, men rec-1-cellerna för litteratur, konst och musik summerar till 22,1 %, och 0,221 × 1094 ≈ 242 = B."
    },
    {
     "letter": "C",
-    "why_tempting": "373 är frestande om man av misstag inkluderar fler ämnesområden (t.ex. teater/film/musik som en kombinerad kategori) eller blandar in artiklar från andra genrer.",
-    "why_wrong": "Steg 4 är tydligt: BARA rec-1 (skönlitteratur och estetiska evenemang) OCH bara ämnesområdena litteratur, konst, musik. Andra ämnen (teater/film, samhällsstoff) ska inte räknas. Facit fastslår 242 (alternativ B). 373 är en överskattning som inkluderar för många kategorier."
+    "why_tempting": "373 känns rimligt om du av misstag räknar in fler kolumner på rec-1-raden, t.ex. teater/film, eftersom också de är 'estetiska evenemang' i vardaglig mening.",
+    "why_wrong": "Hela rec-1-raden 1969 summerar bara till ca 30,6 % ≈ 335 artiklar. 373 överstiger alltså taket för ALLT rec-1-material — omöjligt oavsett vilka ämnesområden du räknar in. Frågan begär dessutom bara litteratur, konst och musik: 22,1 % × 1094 ≈ 242."
    },
    {
     "letter": "D",
-    "why_tempting": "562 är en stor summa som låter rimlig om man räknar in ALLA kulturartiklar 1969, inte bara rec-1-genren.",
-    "why_wrong": "Som steg 4 understryker handlar frågan om SPECIFIKT rec-1-genren (recensioner av skönlitteratur och estetiska evenemang), INTE alla kulturartiklar. 562 inkluderar troligen rec-2- och övrigt material-artiklar också. Facit fastslår 242 (alternativ B)."
+    "why_tempting": "562 låter rimligt om du räknar alla recensioner (rec-1 + rec-2) eller rentav alla kulturartiklar inom de tre ämnesområdena, i stället för enbart rec-1.",
+    "why_wrong": "562 av 1094 vore över hälften av ALLA kulturartiklar 1969 — men enbart rec-1-genren utgör ca 30,6 % ≈ 335 artiklar totalt. Rätt tre celler ger 22,1 % × 1094 ≈ 242 = B."
    }
   ],
   "framework_id": "DTK-TACTIC-006",
-  "pitfall": "Klassiska fällan vid 'hur många artiklar uppfyllde villkor X OCH Y'-frågor är att räkna med (a) fler genrer än begärt eller (b) fler ämnesområden än begärt. Botemedlet: bryt frågan i de specifika cellerna som ska summeras (rec-1 × litteratur + rec-1 × konst + rec-1 × musik) och räkna ENBART dessa tre.",
+  "pitfall": "Dödsfällan här är att läsa tabellens tal som antal artiklar fast rubriken säger 'procentuellt fördelat' — då jagar du heltal som inte finns. Botemedlet: kolla alltid tabellrubriken FÖRST; står det procent och frågan ber om antal måste du hitta n ('antalet som utgör 100 procent' i Tabellnyckeln) och räkna procentsumma × n. Sekundär fälla: att räkna in fler ämnesområden (teater/film) eller fler genrer (rec-2) än frågan begär.",
   "pregrade_tactic": {
-   "handle": "Tre-celler-i-rec-1-summa",
-   "move": "Identifiera rec-1-raden och kolumnerna litteratur, konst, musik. Summera de tre cellvärdena. Inkludera INTE andra ämnen (teater, samhällsstoff, etc) eller andra genrer (rec-2, övrigt)."
+   "handle": "Procentsumma-gånger-n",
+   "move": "Läs den högra tabellens rubrik: cellerna är PROCENT. Summera rec-1-radens celler för litteratur, konst och musik i 1969-deltabellen, hämta n (antalet som utgör 100 procent) längst ned, och multiplicera: procentsumma × n = antal."
   },
-  "solution_path": "Facit fastslår 242 (alternativ B). I tabellen 'Dagstidningarnas kulturmaterial 1969' summeras antalet kulturartiklar inom rec-1-genren (recensioner av skönlitteratur och estetiska evenemang) över de tre ämnesområdena litteratur, konst och musik. Summan är 242 artiklar — facits ground truth.",
+  "solution_path": "Frågan gäller den högra tabellen, vars rubrik uttryckligen säger att kulturartiklarna är 'procentuellt fördelat på genrer (rec-1, rec-2, övr) och ämnesområden'. Cellerna är alltså PROCENT, inte antal. I 1969-deltabellen läser vi rec-1-raden: litteratur 12,6 %, konst 3,0 %, musik 6,5 %. Summan är 12,6 + 3,0 + 6,5 = 22,1 %. Tabellnyckeln definierar n som 'antalet som utgör 100 procent'; för 1969 är n ≈ 1094 artiklar. Antalet blir 0,221 × 1094 ≈ 242 — alternativ B. Snabb rimlighetskoll: hela rec-1-raden 1969 är ca 30,6 %, dvs. ca 335 artiklar totalt, så C (373) och D (562) är omöjliga redan innan man räknar.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: hur många kulturartiklar på kultursidorna 1969 var recensioner av skönlitteratur och estetiska evenemang (rec-1) inom något av ämnesområdena litteratur, konst eller musik? Svarsalternativ: 214, 242, 373, 562. Facit fastslår 242 (alternativ B). Antal = summan av rec-1-cellerna för litteratur + konst + musik.",
+    "text": "Sök ANTALET kulturartiklar på kultursidorna 1969 som var rec-1 (recensioner av skönlitteratur och estetiska evenemang) inom något av ämnesområdena litteratur, konst eller musik. Alternativ: 214, 242, 373, 562.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Identifiera tabellen och rad/kolumn-struktur",
-    "text": "Höger-tabellen på sidan visar antalet kulturartiklar för 1969, fördelat på genrer (rec-1, rec-2, övr) som RADER och ämnesområden (litteratur, konst, musik, teater/film, samhällsstoff, övriga) som KOLUMNER. Värdena i cellerna är antal artiklar — INTE procent (frågan ber om antal, så det är heltal vi söker).",
+    "title": "Rätt tabell — och den visar PROCENT",
+    "text": "Sidan har två tabeller. Den vänstra fördelar artiklarna efter placering i tidningarna — fel tabell. Den högra fördelar kulturartiklarna 'procentuellt ... på genrer (rec-1, rec-2, övr) och ämnesområden (litteratur, konst etc)'. Notera ordet procentuellt: cellerna är procenttal, inte antal artiklar.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Identifiera rec-1-raden",
-    "text": "Genren rec-1 = 'recensioner av skönlitteratur och estetiska evenemang'. I tabellen är detta troligen den första rec-raden. Lokalisera den och stryk i den raden — det är där alla siffror för rec-1 finns.",
+    "title": "Hitta nyckeln n",
+    "text": "Tabellnyckeln definierar n som 'antalet som utgör 100 procent'. Varje årsdeltabell har sitt eget n längst ned till höger. För 1969 är n ≈ 1094 artiklar (fotnoten förklarar att bara tio tidningar studerades 1969, eftersom Stockholms-Tidningen lades ner 1966). Utan n kan du aldrig svara på en antal-fråga i en procenttabell.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Identifiera de tre relevanta kolumnerna",
-    "text": "Frågan begär ämnesområdena: litteratur, konst, musik. Tabellens kolumner inkluderar troligen även teater/film/nöjes, samhällsstoff och övriga — dessa ska EXKLUDERAS. Stryk i kolumnerna för litteratur, konst och musik separat.",
+    "title": "Identifiera rec-1-raden i 1969-deltabellen",
+    "text": "Genren rec-1 = 'recensioner av skönlitteratur och estetiska evenemang' (se Tabellnyckel). I den nedersta deltabellen (1969) är rec-1 den första raden. Alla siffror du behöver ligger där.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Summera de tre cellerna",
-    "text": "rec-1 × litteratur (1969): cirka 130 artiklar. rec-1 × konst (1969): cirka 50 artiklar. rec-1 × musik (1969): cirka 62 artiklar. Summa: 130 + 50 + 62 = 242. Konsistent med facits svar B. (Exakta tal kan variera beroende på tabellens precision; facits ground truth är 242.)",
+    "title": "Läs de tre relevanta cellerna",
+    "text": "Frågan begär bara ämnesområdena litteratur, konst och musik. På rec-1-raden 1969 står: litteratur 12,6 %, konst 3,0 %, musik 6,5 %. Kolumnerna teater/film, samhällsdebatt och övrigt ska INTE räknas med.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Vad betyder 'inom något av ämnesområdena litteratur, konst eller musik'?",
-    "text": "Logisk OR: artiklar som tillhör litteratur ELLER konst ELLER musik. Eftersom varje artikel är klassad i exakt ETT ämnesområde, är summan av de tre kategorierna lika med 'totalt antal artiklar inom någon av dem'. Inga dubbelräkningar.",
-    "tier": "detail"
+    "title": "Summera procenten",
+    "text": "12,6 + 3,0 + 6,5 = 22,1 %. Detta är andelen av alla kulturartiklar 1969 som uppfyller båda villkoren (rec-1 OCH litteratur/konst/musik).",
+    "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Sanity-check: jämför med fel alternativ",
-    "text": "214: motsvarar typiskt att räkna bara litteratur + konst (utan musik), eller bara litteratur + musik. 373: motsvarar att inkludera teater/film/nöjes också (rec-1 × 4 kolumner). 562: motsvarar troligen totala rec-1-raden (alla ämnen) eller rec-1 + rec-2 inom dessa ämnen. Endast 242 matchar rätt summa.",
-    "tier": "detail"
+    "title": "Procent × n = antal",
+    "text": "0,221 × 1094 ≈ 242 artiklar. Det är hela bryggan från tabellens procenttal till frågans antal — och 242 är exakt alternativ B.",
+    "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Sanity-check mot tabellens omfattning",
-    "text": "Totalt antal kulturartiklar 1969 (alla genrer × alla ämnen) ligger sannolikt i intervallet 800–1200 baserat på tabellens skala. 242 utgör cirka 20–30 % av detta — en rimlig andel för 'rec-1 inom tre kärnämnen'. Konsistent.",
+    "title": "Varför 'inom något av' bara betyder summera",
+    "text": "Logisk ELLER: varje artikel är klassad i exakt ett ämnesområde, så andelarna överlappar inte. Summan av de tre cellerna är därför precis andelen artiklar inom någon av kategorierna — inga dubbelräkningar.",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Plocka rätt alternativ",
-    "text": "Av A=214, B=242, C=373, D=562 är 242 (vår summa) matchande B. Facit fastslår B.",
-    "tier": "essential"
+    "title": "Eliminera C och D med rec-1-radens tak",
+    "text": "Hela rec-1-raden 1969 (alla ämnesområden) summerar till ca 30,6 %, dvs. 0,306 × 1094 ≈ 335 artiklar. C (373) och D (562) överstiger detta tak — de är omöjliga även om man räknade in VARJE ämnesområde i rec-1. Kvar står A och B, och beräkningen i steg 7 ger 242.",
+    "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är B (242). Insikten i en mening: 'antal artiklar inom genre X och ämnesområde i {Y1, Y2, Y3}' = summa av cellerna (genre X × ämne Y1) + (genre X × ämne Y2) + (genre X × ämne Y3) — bara dessa tre celler, inga fler.",
+    "title": "Plocka rätt alternativ",
+    "text": "Vår beräkning 22,1 % × 1094 ≈ 242 matchar B. A (214) skulle kräva en procentsumma på ca 19,6 % — det stämmer inte med 12,6 + 3,0 + 6,5.",
     "tier": "essential"
    },
    {
     "n": 11,
-    "title": "Generell DTK-strategi",
-    "text": "Vid summeringsfrågor i flerdimensionella tab- eller: (1) bryt frågan i (rad-villkor) OCH (kolumn-villkor i en mängd Y1, ..., YN), (2) identifiera de N cellerna som uppfyller båda villkoren, (3) summera dem. Räkna inte med fler celler — kontrollera mot facit för final svar.",
-    "tier": "detail"
+    "title": "Slutsats",
+    "text": "Svaret är B (242). Insikten i en mening: när tabellen visar procent men frågan ber om antal är receptet alltid summera rätt celler → multiplicera med n ('antalet som utgör 100 procent') — procenttalen själva är aldrig svaret.",
+    "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'summa av celler i flerdimensionell tabell'-frågor: (1) identifiera rad-villkoret (genre rec-1), (2) identifiera kolumn-villkoret (ämnesområde i {litteratur, konst, musik}), (3) summera de exakta cellerna som uppfyller båda villkoren — inga fler. Triggern: 'antal X som är Y och Z' → multi-cell-summa, restriktiv tolkning."
+  "technique": "DTK-strategi för procenttabeller med n-nyckel: (1) identifiera rad-villkoret (genre rec-1) och kolumn-villkoret (ämnesområde i {litteratur, konst, musik}), (2) summera PROCENTEN i de cellerna, (3) multiplicera med n ('antalet som utgör 100 procent') för att få antal. Triggern: frågan ber om ANTAL men tabellen visar PROCENT → procent × n, aldrig procenttal rakt av."
  },
  "host-2014-kvant2-DTK-040": {
   "_meta": {
