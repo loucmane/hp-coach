@@ -6316,99 +6316,99 @@
  },
  "var-2018-1-kvant1-DTK-032": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": null,
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Pilarna ovanför 4 feb kan vid första anblicken se ut att peka snett uppåt åt höger eller åt nordost. Det är frestande att översätta detta till 'nordostlig vind'. Många dygn under perioden har faktiskt nordostliga komponenter.",
-    "why_wrong": "Nyckeln finns i fotnoten: 'Med vindriktning menas den riktning VARIFRÅN det blåser.' Och exemplet 30 jan med pilar uppåt = SYDLIG vind. För 4 feb pekar pilarna huvudsakligen rakt upp eller åt nord, vilket betyder vind FRÅN SÖDER, inte nordost. Som steg 4 visar är det riktningen pilen pekar MOT som anger varifrån vinden kommer — men spegelvänt mot intuition. Facit fastslår A."
+    "why_tempting": "Pilarna ovanför 4 feb pekar snett uppåt åt höger — alltså åt nordost på en vanlig kompassros. Det är frestande att direkt översätta pilens riktning till 'nordostlig vind' utan att läsa fotnoten.",
+    "why_wrong": "Fotnoten vänder på tolkningen: 'Med vindriktning menas den riktning VARIFRÅN det blåser', och exemplet 30 jan (pilar uppåt) = SYDLIG vind. Pilens spets visar vart vinden blåser MOT, så pilar uppåt/uppåt-höger på 4 feb betyder vind från söder/sydväst — inte nordost. Nordostlig vind hade krävt pilar snett nedåt vänster, och sådana finns inte någonstans i diagrammet."
    },
    {
     "letter": "C",
-    "why_tempting": "Temperaturkurvan 4 feb ligger någonstans nere bland minustalen, och en grov ögonmätning kan hamna inom intervallet -12 till -5 °C. Det är ett rimligt-låtande temperaturintervall för februari i Stockholm.",
-    "why_wrong": "Läs av temperaturkurvan mot vänsteraxelns gridlinjer (-20, -15, -10, -5, 0, 5, 10, 15) för just 4 feb. Den högsta punkten ligger snarare strax under 0 °C än vid -5 °C, och lägsta punkten ligger snarare runt -10 °C. Intervallet -12 till -5 är förskjutet några grader nedåt jämfört med faktisk avläsning. Facit fastslår A, inte C."
+    "why_tempting": "Temperaturkurvan 4 feb ligger nere bland minusgraderna, och en grov ögonmätning kan hamna inom intervallet −12 till −5 °C. Det är ett rimligt-låtande temperaturintervall för februari i Stockholm.",
+    "why_wrong": "Läs av temperaturkurvan mot vänsteraxelns gridlinjer (−20 till 15 i steg om 5) för just 4 feb: kurvan startar kring −10 °C och klättrar under dygnet upp mot 0 °C. Lägsta punkten når inte −12, och högsta punkten ligger långt över −5 — intervallet i C är förskjutet nedåt jämfört med faktisk avläsning."
    },
    {
     "letter": "D",
-    "why_tempting": "2,1 mm finns som ett av de printade nederbördsvärdena i diagrammet, och det är lätt att läsa 'nederbörden var 2,1 mm' utan att kolla vilket DYGN värdet hör till.",
-    "why_wrong": "2,1 mm-rutan ligger vid 5 feb, inte vid 4 feb. På 4 feb finns INGEN nederbördsruta alls — det dygnet är torrt. Som steg 7 påpekar måste du verifiera vilket dygn varje siffra hör till genom att projicera den nedåt till x-axelns datumlabels. Facit fastslår A."
+    "why_tempting": "2,1 mm finns som ett av de printade nederbördsvärdena i diagrammet, och det är lätt att läsa 'nederbörden var 2,1 mm' utan att kolla vilket DYGN rutan hör till.",
+    "why_wrong": "2,1 mm-rutan sitter över 5 feb, inte över 4 feb. Ovanför 4 feb finns INGEN nederbördsruta alls — det dygnet redovisas utan nederbörd. Projicera alltid varje siffra nedåt till x-axelns datumetiketter innan du använder den."
    }
   ],
-  "pitfall": "Den klassiska fällan på sammansatta diagram med flera serier är att blanda ihop värden mellan dygnen — du läser en siffra (t.ex. nederbörd 2,1 mm) utan att kolla VILKET dygn den hör till. Botemedlet: för varje påstående, peka först ut DAGEN på x-axeln, läs sedan alla värden vertikalt ovanför just den dagen.",
+  "pitfall": "Den klassiska fällan på sammansatta diagram med flera serier är att blanda ihop värden mellan dygnen — du läser en siffra (t.ex. nederbörd 2,1 mm) utan att kolla VILKET dygn den hör till, eller tolkar vindpilen som en kompasspil fast fotnoten definierar riktningen som 'varifrån det blåser'. Botemedlet: för varje påstående, peka först ut DAGEN på x-axeln, läs sedan alla värden vertikalt ovanför just den dagen — och läs fotnoten innan du tolkar symboler.",
   "pregrade_tactic": {
    "handle": "En-dag-i-taget",
-   "move": "Sätt fingret på 4 feb på x-axeln, läs av temperaturkurva, vindstyrka, vindriktning och nederbörd VERTIKALT ovanför just det dygnet. Kontrollera varje påstående mot det vertikala snittet."
+   "move": "Sätt fingret på 4 feb på x-axeln (sjätte dygnet), läs av temperaturkurva, vindstyrka, vindriktning och nederbörd VERTIKALT ovanför just det dygnet. Kontrollera varje påstående mot det vertikala snittet — och kalibrera pilarna mot fotnotens 30 jan-exempel först."
   },
-  "solution_path": "Facit fastslår A: 'Vindstyrkan varierade mellan 3 m/s och 6 m/s'. Identifiera 4 feb på x-axeln. Läs av vindstyrkekurvan mot höger y-axelns gridlinjer (0, 5, 10, 15, 20, 25 m/s) — kurvan håller sig i intervallet mellan 3 och 6 m/s under hela 4 feb-dygnet. B (nordostlig vind) faller på att pilarna pekar rakt upp/norrut (= sydlig vind enligt fotnoten). C (temperatur -12 till -5) faller på att kurvan ligger ungefär -10 till strax under 0. D (nederbörd 2,1 mm) faller på att 2,1-rutan hör till 5 feb, inte 4 feb.",
+  "solution_path": "Identifiera 4 feb på x-axeln — det sjätte dygnet av åtta (30 jan, 31 jan, 1, 2, 3, 4, 5, 6 feb). Läs av vindstyrkekurvan mot höger y-axelns gridlinjer (0, 5, 10, 15, 20, 25 m/s): under hela 4 feb-dygnet ligger kurvan mellan gridlinjerna 0 och 5, kring 3–5 m/s, och stiger mot cirka 6 m/s i dygnets slut — alltså inom intervallet 3–6 m/s. Det stämmer med A. B (nordostlig vind) faller: pilarna på 4 feb pekar snett uppåt höger och rakt upp, vilket enligt fotnotens exempel (pil upp 30 jan = sydlig vind) betyder vind från söder/sydväst — nordostlig vind hade krävt pilar snett nedåt vänster, och sådana finns inte. C (temperatur −12 till −5) faller: kurvan klättrar från cirka −10 upp mot 0 under dygnet. D (nederbörd 2,1 mm) faller: 2,1-rutan sitter över 5 feb, och över 4 feb finns ingen nederbördsruta alls. Endast A överlever verifieringen.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilket svarsförslag stämmer BÄST med väderdata för 4 februari? Du ska granska fyra påståenden om vind, temperatur eller nederbörd och välja det enda som stämmer. Facit fastslår A (vindstyrkan 3-6 m/s).",
+    "text": "Frågan: vilket svarsförslag stämmer BÄST med väderdata för 4 februari? Du ska granska fyra påståenden om vind, temperatur eller nederbörd och behålla det enda som diagrammet faktiskt verifierar.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig i det sammansatta diagrammet",
-    "text": "Diagrammet visar fyra olika väderparametrar samtidigt över 8 dygn (30 jan till 6 feb). Vänster y-axel: Temperatur (°C), gridlinjer -20, -15, -10, -5, 0, 5, 10, 15. Höger y-axel: Vindstyrka (m/s), gridlinjer 0, 5, 10, 15, 20, 25. X-axel: åtta dygn med tidsangivelsen 00:00-24:00 under varje. Två kurvor (temperatur, vindstyrka), pilar (vindriktning), grå rutor med printade tal (nederbörd i mm), samt små väderikoner (sol, moln, måne).",
+    "text": "Diagrammet visar fyra väderparametrar samtidigt över åtta dygn (30 jan till 6 feb). Vänster y-axel: Temperatur i grader Celsius, skalstreck −20 till 15 i steg om 5. Höger y-axel: Vindstyrka i m/s, skalstreck 0 till 25 i steg om 5. X-axel: åtta dygn med tidsangivelsen 00:00–24:00 under varje. Två kurvor (temperatur överst, vindstyrka nederst), pilar (vindriktning), grå rutor med printade tal (nederbörd i mm) samt väderikoner (moln, sol, måne, snömoln).",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Hitta 4 feb-snittet",
-    "text": "4 feb är det FEMTE dygnet från vänster på x-axeln (30 jan, 31 jan, 1 feb, 2 feb, 3 feb, 4 feb, 5 feb, 6 feb). Sätt fingret rakt ner i kolumnen ovanför '4 feb' och läs av allt som finns i den vertikala remsan.",
+    "text": "4 feb är det SJÄTTE dygnet från vänster på x-axeln (30 jan, 31 jan, 1 feb, 2 feb, 3 feb, 4 feb, 5 feb, 6 feb). Sätt fingret rakt ner i kolumnen ovanför '4 feb' och läs av allt som finns i den vertikala remsan.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Vad betyder 'vindriktning' enligt fotnoten?",
-    "text": "Fotnoten är avgörande: 'Med vindriktning menas den riktning VARIFRÅN det blåser. Den tidigast förekommande vindriktningsangivelsen (30 jan) visar på sydlig vind.' Pilarna 30 jan pekar uppåt — alltså = pil upp = sydlig vind = vind FRÅN söder. Vill du tolka pilen, läs alltså 'varifrån' i pilens spets, inte 'vart mot'.",
+    "text": "Fotnoten är avgörande: 'Med vindriktning menas den riktning VARIFRÅN det blåser', och exemplet säger att den tidigaste pilen (30 jan) visar sydlig vind. Pilarna 30 jan pekar uppåt — pil upp = sydlig vind = vind FRÅN söder. Pilens spets visar alltså vart vinden blåser MOT; riktningen 'varifrån' är den motsatta, där pilen har sin bakände. Uppåtpil = från söder, högerpil = från väster, nedåtpil = från norr.",
     "tier": "detail"
    },
    {
     "n": 5,
-    "title": "Granska alternativ A: vindstyrkan 3-6 m/s",
-    "text": "Höger y-axeln visar m/s. Vindstyrkekurvan på 4 feb håller sig i intervallet mellan ungefär 3 och 6 m/s mot gridlinjerna 0 och 5 — kurvan rör sig kring och strax över 5-linjen. Påståendet stämmer mot avläsningen.",
+    "title": "Granska alternativ A: vindstyrkan 3–6 m/s",
+    "text": "Höger y-axel gäller vindstyrkan. Under 4 feb ligger vindstyrkekurvan hela tiden mellan gridlinjerna 0 och 5 — kring 3–5 m/s — och stiger mot cirka 6 m/s i slutet av dygnet. Hela dygnet ryms inom intervallet 3 till 6 m/s. Påståendet stämmer mot avläsningen.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Granska alternativ B: nordostlig vind",
-    "text": "Pilarna på 4 feb pekar huvudsakligen uppåt (norrut). Enligt fotnoten (steg 4) betyder pil upp 'vind från söder' = sydlig vind. INTE nordostlig. För nordostlig vind skulle pilarna behöva peka nedåt-vänster (eftersom vinden skulle komma 'från nordost'). De gör de inte. B faller.",
+    "text": "Pilarna på 4 feb pekar snett uppåt åt höger och rakt upp. Enligt fotnotens konvention (steg 4) betyder det vind från söder till sydväst — sydlig/sydvästlig, INTE nordostlig. Nordostlig vind (från nordost) hade krävt pilar som pekar snett NEDÅT åt vänster, och ingen pil i hela diagrammet pekar åt det hållet. B faller.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Granska alternativ C: temperatur -12 till -5 °C",
-    "text": "Temperaturkurvan på 4 feb svänger mellan ungefär -10 °C (lägsta) och strax under 0 °C (högsta) mot vänster y-axelns gridlinjer. Intervallet -12 till -5 ligger lägre än den faktiska avläsningen — kurvan klättrar upp tydligt mot 0-linjen under dygnet. C faller.",
+    "title": "Granska alternativ C: temperatur −12 till −5 °C",
+    "text": "Temperaturkurvan på 4 feb startar kring −10 °C och klättrar under dygnet upp mot 0 °C mot vänster y-axelns gridlinjer. Intervallet −12 till −5 missar alltså i båda ändar: lägsta punkten når inte −12, och kurvan går klart över −5 mot dygnets slut. C faller.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Granska alternativ D: nederbörd 2,1 mm",
-    "text": "Sök efter en nederbördsruta vertikalt ovanför 4 feb. Det finns INGEN ruta på 4 feb — alltså noll nederbörd det dygnet. Värdet 2,1 mm finns visserligen på diagrammet men hör till 5 feb (en kolumn till höger), inte 4 feb. D faller på dygnsförväxling.",
+    "text": "Sök en nederbördsruta vertikalt ovanför 4 feb. Det finns INGEN ruta där — det dygnet redovisas utan nederbörd. Värdet 2,1 mm finns visserligen i diagrammet men rutan sitter över 5 feb (i raden 2,3 / 2,1 / 2,8 / 1,5 som hör till 5–6 feb), inte över 4 feb. D faller på dygnsförväxling.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Vad betyder 'stämmer bäst'?",
-    "text": "I frågor med flera påståenden måste exakt ETT alternativ vara helt rätt. Det är inte 'närmast' eller 'ungefär' — det är det enda som är konsistent med diagrammet. A är det enda alternativ där 4 feb-data verifierar påståendet.",
+    "text": "I frågor med flera påståenden ska exakt ETT alternativ vara helt konsistent med diagrammet. Det handlar inte om 'närmast' eller 'ungefär' — tre av påståendena motsägs direkt av figuren, och bara ett verifieras.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Korsa alla fyra alternativ samtidigt",
-    "text": "A: vindstyrka 3-6 — OK enligt steg 5. B: nordostlig vind — falskt enligt steg 6. C: temp -12 till -5 — falskt enligt steg 7. D: nederbörd 2,1 mm — falskt enligt steg 8 (fel dygn). Bara A klarar verifieringen. Facit fastslår A.",
+    "text": "A: vindstyrka 3–6 m/s — verifierat i steg 5. B: nordostlig vind — motbevisat i steg 6 (pilarna visar sydlig/sydvästlig). C: temp −12 till −5 — motbevisat i steg 7 (kurvan går −10 upp mot 0). D: nederbörd 2,1 mm — motbevisat i steg 8 (fel dygn, 4 feb saknar ruta). Bara A klarar verifieringen.",
     "tier": "essential"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är A. Insikten i en mening: läs alltid värden VERTIKALT ovanför rätt dygn på sammansatta diagram — siffror på diagrammet hör till specifika kolumner, inte hela diagrammet.",
+    "title": "Slutsats",
+    "text": "Svaret är A. Insikten i en mening: läs alltid värden VERTIKALT ovanför rätt dygn på sammansatta diagram — siffror och symboler hör till specifika kolumner, inte till diagrammet som helhet.",
     "tier": "essential"
    }
   ],
@@ -6416,175 +6416,175 @@
  },
  "var-2018-1-kvant1-DTK-033": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": null,
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "+2 °C är frestande om man bara lägger märke till att kurvan stiger mot slutet av perioden (4-6 feb klättrar mot 0 °C och däröver) och 'glömmer' de djupa minusgraderna i början av perioden (30-31 jan ner till -15 till -18 °C).",
-    "why_wrong": "Som steg 4-5 visar är kurvan tydligt under noll de flesta dygnen. En grov uppskattning av minimum- och maximumpunkter över de 8 dygnen ger inte ett snitt vid +2 °C — det skulle kräva att kurvan låg klart ovanför nollan, vilket den inte gör. Facit fastslår -4 °C (alternativ C)."
+    "why_tempting": "+2 °C lockar om du ankrar på periodens BÖRJAN: 30–31 jan ligger temperaturkurvan helt över noll (upp till ca +5,5), och det är det första ögat ser längst till vänster i figuren.",
+    "why_wrong": "De två plusdygnen följs av fyra rejält kalla dygn (1–4 feb) där kurvan pendlar mellan ca -4 och -12. Redan de dygnen ger runt -28 gradsumma tillsammans, vilket de två plusdygnen (+3, +2) inte alls väger upp. Snittet hamnar kring -3, långt från +2."
    },
    {
     "letter": "B",
-    "why_tempting": "-1 °C är frestande som ett 'försiktigt minus'-svar — ungefär noll, lite åt minussidan. Om du fokuserar på de varmare dygnen (3 feb, 4 feb) och missar djupet i januaridygnen kan du landa nära nollan.",
-    "why_wrong": "Kurvans lägsta dygn (30 jan, 31 jan) går ner mot -15 till -18 °C, vilket drar ner snittet betydligt. För att snittet ska bli -1 skulle kurvan i sin lägsta punkt sluta vid maximalt -5 °C — det stämmer inte med diagrammet. Facit fastslår -4 °C."
+    "why_tempting": "-1 °C känns rimligt som 'ungefär noll, lite åt minussidan' om du bara tittar på ändarna: starten (30–31 jan över noll) och slutet (5 feb nära noll) ger intrycket av ett milt genomsnitt.",
+    "why_wrong": "Mitten av perioden fäller det: 1–4 feb har dygnsmedel kring -6 till -8, fyra av åtta dygn. Summan blir ca -25,5 och snittet ca -3,2 — det är mer än dubbelt så långt från -1 som från -4."
    },
    {
     "letter": "D",
-    "why_tempting": "-7 °C är frestande om man övervärderar djupet på de kalla dygnen — janurariminimerna ner mot -15 syns tydligt och kan dominera helhetsintrycket. Då kan snittet kännas väldigt kallt.",
-    "why_wrong": "De varmare dygnen (3-4 feb, 6 feb) klättrar upp till runt 0 °C eller däröver, vilket balanserar ut januarikylan delvis. Snittet hamnar inte så lågt som -7. Som steg 6 visar är det mer balanserat — facit fastslår -4 °C."
+    "why_tempting": "-7 °C lockar om köldperioden dominerar helhetsintrycket — 2–4 feb tillbringar kurvan mycket tid kring -10 till -12, och de dygnens egna medel ligger faktiskt nära -7.",
+    "why_wrong": "Men 30–31 jan ligger ÖVER noll (dygnsmedel ca +3 och +2) och 5 feb ligger vid ca -0,5 — tre av åtta dygn drar kraftigt uppåt. Medlet över alla åtta dygn blir ca -3, klart varmare än -7."
    }
   ],
-  "pitfall": "Den klassiska fällan i medeltemperaturfrågor är att fastna i extremvärdena (de kallaste eller de varmaste dagarna) istället för att uppskatta MITTEN av kurvan. Botemedlet: hitta för varje dygn ett dygns-medel (snitt av topp och dal), summera de 8 dygnsmedlena, och dela med 8.",
+  "pitfall": "Två fällor i den här figuren: (1) fel kurva — den tjocka kurvan är Vindstyrka (höger axel i m/s), temperaturen är den TUNNA kurvan mot vänster axel; (2) ankring på extremer — den varma starten (30–31 jan över noll) eller den kalla mitten (ner mot -12 under 2–4 feb) får inte ensamma styra. Botemedlet: ett dygnsmedel per dygn, summera alla åtta, dela med 8.",
   "pregrade_tactic": {
    "handle": "Mitt-i-kurvan-per-dygn",
-   "move": "För varje dygn, läs av ungefärligt min och max på temperaturkurvan, ta mittpunkten = dygnsmedel. Snitta de 8 dygnsmedlena. Snittet av kalla och varma dygn balanserar ut."
+   "move": "Lås först rätt kurva (tunn = Temperatur, vänster axel). Läs sedan för varje dygnskolumn av ungefärligt min och max, ta mittpunkten som dygnsmedel, summera de åtta dygnsmedlen och dela med 8."
   },
-  "solution_path": "Facit fastslår -4 °C (alternativ C). Läs av temperaturkurvan dygn för dygn, identifiera ungefärligt min och max för varje dygn, beräkna dygnsmedel. Grovt: 30 jan ~-10, 31 jan ~-12, 1 feb ~-8, 2 feb ~-2, 3 feb ~-1, 4 feb ~-5, 5 feb ~-1, 6 feb 0 till +2. Snitt av dessa ≈ -4 °C — konsistent med facit.",
+  "solution_path": "Läs den TUNNA kurvan märkt 'Temperatur' mot vänster y-axel (Grader Celsius, gridlinjer var 5:e grad från -20 till 15) — den tjocka kurvan är Vindstyrka på höger axel. Dygnsmedel per dygn: 30 jan ≈ +3 (kurvan ligger över noll, topp ~+5,5), 31 jan ≈ +2, 1 feb ≈ -6, 2 feb ≈ -8, 3 feb ≈ -8, 4 feb ≈ -6, 5 feb ≈ -0,5, 6 feb ≈ -2. Summa ≈ -25,5; delat med 8 ≈ -3,2 °C. Det ligger klart närmast -4 °C (avståndet till -1 är mer än dubbelt så stort), alltså alternativ C.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilken var medeltemperaturen för de åtta dygnen (30 jan till 6 feb)? Svarsalternativ: +2, -1, -4 eller -7 °C. Facit fastslår -4 °C (alternativ C). Skillnaderna mellan alternativen är 3 grader vardera — du måste avläsa bättre än ±2 grader i snittet.",
+    "text": "Frågan: vilken var medeltemperaturen för de åtta dygnen (30 jan till 6 feb)? Alternativen +2, -1, -4 och -7 °C ligger 3 grader isär — din avläsning behöver alltså bara vara träffsäker på ett par graders marginal.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Vad betyder 'medeltemperatur'?",
-    "text": "Medeltemperatur över flera dygn = (summa av varje dygns medeltemp) / antal dygn. För varje dygn behöver du ett representativt 'dygnssnitt' — i praktiken hittar du det genom att ta mitten mellan dygnets högsta och lägsta temperatur på kurvan.",
+    "title": "Rätt kurva, rätt axel",
+    "text": "Figuren har TVÅ kurvor och TVÅ y-axlar. Den tunna kurvan är märkt 'Temperatur' och läses mot vänster axel (Grader Celsius, -20 till 15 med gridlinjer var 5:e grad). Den tjocka kurvan är 'Vindstyrka' och hör till höger axel (meter per sekund). Läser du fel kurva blir allt fel.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Orientera dig mot temperaturaxeln",
-    "text": "Vänster y-axeln visar 'Grader Celsius' med PRINTADE gridlinjer vid -20, -15, -10, -5, 0, 5, 10, 15. Varje gridruta = 5 grader. Temperaturkurvan slingrar sig genom rutorna; läs av min och max för varje dygnskolumn mot dessa gridlinjer.",
+    "title": "Metod: dygnsmedel per dygn",
+    "text": "Medeltemperatur över flera dygn = (summan av varje dygns medeltemperatur) / antal dygn. För varje dygnskolumn: ta mitten mellan kurvans högsta och lägsta punkt under dygnet — det blir dygnets ungefärliga medel.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Läs av dygn 30-31 jan (kallaste delen)",
-    "text": "30 jan: kurvan svänger mellan ungefär -15 °C (natt-dipp) och -5 °C (dag). Dygnssnitt ≈ -10. 31 jan: ännu kallare, mellan -18 och -7. Dygnssnitt ≈ -12.",
+    "title": "Läs av 30–31 jan (varmast, över noll)",
+    "text": "Perioden BÖRJAR mild: 30 jan ligger kurvan helt över noll, från ca +1 upp till toppen ca +5,5 — dygnsmedel ≈ +3. 31 jan ligger den kring +2 till +3 och börjar sjunka mot slutet — dygnsmedel ≈ +2. (Molnsymbolerna med regn dessa dygn bekräftar plusgrader.)",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Läs av dygn 1-3 feb (uppvärmning)",
-    "text": "1 feb: kurvan stiger, mellan ungefär -13 och -3. Dygnssnitt ≈ -8. 2 feb: -5 till +1, snitt ≈ -2. 3 feb: -5 till +2, snitt ≈ -1. Trenden är tydligt klimat mot mildare väder.",
+    "title": "Läs av 1–4 feb (köldperioden i mitten)",
+    "text": "Kylan kommer MITT i perioden. 1 feb: kurvan faller brant, pendlar mellan ca -9 och -4 — dygnsmedel ≈ -6. 2 feb: dipp ner mot ca -12, topp ca -4 — dygnsmedel ≈ -8. 3 feb: mellan ca -11 och -4 med ny dipp mot -12 — dygnsmedel ≈ -8. 4 feb: klättrar från ca -12 upp mot 0 — dygnsmedel ≈ -6. Kurvans absoluta minimum för hela perioden är ca -12, nådd 2–4 feb.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Läs av dygn 4-6 feb (slut på perioden)",
-    "text": "4 feb: -10 till 0, snitt ≈ -5 (kort återfall). 5 feb: -3 till +1, snitt ≈ -1. 6 feb: -2 till +3, snitt ≈ 0 till +1. Snittet stiger igen mot slutet.",
+    "title": "Läs av 5–6 feb (milt slut)",
+    "text": "5 feb: kurvan ligger flackt strax under noll, ca 0 till -1 — dygnsmedel ≈ -0,5. 6 feb: sjunker svagt från ca -1 mot -3 — dygnsmedel ≈ -2.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Addera de 8 dygnssnitten",
-    "text": "Grovt: -10 + (-12) + (-8) + (-2) + (-1) + (-5) + (-1) + 0 = -39 °C. Dela med 8 dygn: -39 / 8 ≈ -4,9 °C. Det är konsistent med facit -4 °C (rundad uppåt från en avläsning som är något under -4,5).",
+    "title": "Summera och dela med 8",
+    "text": "Summa av dygnsmedlen: 3 + 2 + (-6) + (-8) + (-8) + (-6) + (-0,5) + (-2) = -25,5. Dela med 8 dygn: -25,5 / 8 ≈ -3,2 °C.",
     "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Sanity-check via grov visuell mitt",
-    "text": "Titta var temperaturkurvan tillbringar 'mest tid' — den glider mestadels mellan -10 och 0 °C. Mittpunkten av detta brukar ligga kring -5. Snittet -4 °C är konsistent med var kurvan ligger 'visuellt mest'. Inte +2 (då skulle kurvan ligga ovanför nollan), inte -7 (då skulle kurvan ligga djupare).",
-    "tier": "detail"
-   },
-   {
-    "n": 9,
-    "title": "Korsa mot svarsalternativen",
-    "text": "Avläsningen -4,5 till -5 ligger närmast -4 °C (alternativ C) — definitivt under -1 och +2, lite varmare än -7. Facit fastslår C.",
+    "title": "Välj närmaste alternativ",
+    "text": "-3,2 ligger 0,8 grader från -4 men 2,2 grader från -1 — klart närmast -4 °C. Läser du köldperioden en aning kallare (dygnen 2–3 feb tillbringar mycket tid nära -10/-12) landar du på -3,5 till -4, fortfarande samma alternativ. Svaret är C.",
     "tier": "essential"
    },
    {
+    "n": 9,
+    "title": "Sanity-check: var tillbringar kurvan sin tid?",
+    "text": "Bara ca 2 av 8 dygn ligger över noll (30–31 jan); fyra dygn (1–4 feb) ligger mestadels mellan -4 och -12. Ett snitt en bit under noll men klart över -7 är exakt vad man ska förvänta sig — konsekvent med -4.",
+    "tier": "detail"
+   },
+   {
     "n": 10,
-    "title": "Varför extremvärden inte ska dominera",
-    "text": "Det är frestande att fastna i kurvans bottenvärden (-18 °C i 31 jan) eller toppvärden (+3 °C på 6 feb). Men medel = balans mellan höga och låga. Som steg 7 visar väger varje dygn lika mycket — ett extremt kallt dygn balanseras av ett milt dygn.",
+    "title": "Varför varken extremerna eller ändpunkterna får styra",
+    "text": "Anchor-fällor: den varma starten (+5,5 på 30 jan) lockar mot plusalternativ, den kalla mitten (-12) lockar mot -7. Men medel = alla åtta dygn väger lika. Två plusdygn i början och ett nästan-noll-dygn (5 feb) lyfter snittet från köldperiodens -6 till -8 upp till ca -3.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är C (-4 °C). Insikten i en mening: medeltemperatur över flera dygn = uppskatta dygnsmedel för varje dygn, summera, dela med antalet dygn — fastna inte i extremtopparna.",
+    "title": "Slutsats",
+    "text": "Svaret är C (-4 °C). Insikten i en mening: vid medel-över-perioden på en kurva — lås först rätt kurva och axel, ta sedan ett dygnsmedel per dygn (mitten av max och min), summera och dela med antalet dygn; låt varken den varma starten eller den kalla mitten dominera.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för medel-över-tid-frågor på kurvor: för varje tidsenhet (dygn, vecka, år), uppskatta ett representativt mittvärde (snitt av min och max), summera, dela med antal enheter. Triggern: 'medel/snitt över redovisade perioder' → enhetsvis snitt + summa + division, inte ögonmått direkt på kurvan."
+  "technique": "DTK-strategi för medel-över-tid-frågor på kurvor: för varje tidsenhet (här dygn), uppskatta ett representativt dygnsmedel (mitten mellan dygnets max och min), summera alla dygnsmedel, dela med antalet enheter. Triggern: 'medeltemperaturen för perioden' → enhetsvis snitt + summa + division, inte ögonmått direkt på hela kurvan."
  },
  "var-2018-1-kvant1-DTK-034": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": null,
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "3 dygn med nederbörd är frestande om man missar något av de tidiga nederbördsdygnen (t.ex. 31 jan med små värden 0,3 och 1,1 som lätt missas) eller om man räknar 5 och 6 feb som ett enda 'snöfall' i stället för två. 1 dygn med rakt sydlig vind är frestande om man bara räknar den dag fotnoten nämner uttryckligen (30 jan).",
-    "why_wrong": "Som steg 5 visar finns nederbörd på fyra dygn: 30 jan (4,8 mm), 31 jan (0,3 + 1,1), 5 feb (2,3 + 2,1) och 6 feb (2,8 + 1,5). Och steg 6 räknar tre dygn med PIL RAKT UPP (=sydlig). Facit fastslår 4 respektive 3 (alternativ D)."
+    "why_tempting": "3 dygn med nederbörd är frestande om man missar de små staplarna kring 30–31 jan (0,3 och 1,1 är låga och lätta att förbise) eller räknar 5 och 6 feb som ett enda 'snöfall'. 1 dygn med rakt sydlig vind är frestande om man bara räknar den dag fotnoten nämner uttryckligen (30 jan).",
+    "why_wrong": "Nederbörd finns på fyra dygn: 30 jan (4,8; 0,3), 31 jan (1,1), 5 feb (2,3; 2,1) och 6 feb (2,8; 1,5). Och pilar rakt upp finns på tre dygn: 30 jan, 4 feb och 5 feb — inte bara ett."
    },
    {
     "letter": "B",
-    "why_tempting": "3 nederbördsdygn + 3 sydliga = 3 respektive 3 är frestande som ett 'snyggt-symmetriskt' svar om man undermissar nederbördsdygnen och räknar pilarna rätt.",
-    "why_wrong": "Nederbördsdygnen är 4, inte 3 (du missar ett av: 30 jan, 31 jan, 5 feb, 6 feb). Som steg 5 räknar visar fyrtalet. Facit fastslår D (4 resp 3), inte B."
+    "why_tempting": "3 respektive 3 lockar som ett 'snyggt symmetriskt' svar om man räknar pilarna rätt men tappar ett av nederbördsdygnen — t.ex. genom att slå ihop 30 och 31 jan till ett regntillfälle.",
+    "why_wrong": "Nederbördsdygnen är 4, inte 3: 30 jan, 31 jan, 5 feb och 6 feb har alla minst en grå stapel med ett printat mm-värde."
    },
    {
     "letter": "C",
-    "why_tempting": "4 nederbörd + 1 sydlig = 4 resp 1 är frestande om man räknar nederbördsdygnen rätt men bara registrerar 30 jan som 'tydligt sydlig' (eftersom det är dygnet fotnoten kalibrerar) och missar att fler dygn har pilar rakt uppåt.",
-    "why_wrong": "Pilarna i flera dygn — inte bara 30 jan — pekar rakt upp = rakt sydlig vind. Som steg 6 visar är det tre dygn där rakt-upp-pilar dominerar. Facit fastslår 4 resp 3 (alternativ D), inte C."
+    "why_tempting": "4 respektive 1 är frestande om man räknar nederbördsdygnen rätt men bara registrerar 30 jan som 'tydligt sydlig' (dygnet fotnoten kalibrerar) och missar de senare rakt-upp-pilarna — särskilt 5 feb-pilen som står inklämd mellan nederbördsstaplarna 2,3 och 2,1.",
+    "why_wrong": "Pilar rakt upp finns på tre dygn, inte ett: 30 jan (två pilar), 4 feb (en i dygnets slut) och 5 feb (en mellan staplarna 2,3 och 2,1)."
    }
   ],
-  "pitfall": "Den klassiska fällan här är att räkna fel på små nederbördsvärden (som 0,3 mm i 31 jan) eller att missförstå vad 'rakt sydlig vind' ser ut som på diagrammet. Botemedlet: (1) räkna alla grå rutor inklusive de minsta värdena, (2) använd fotnoten som kalibrering — pil rakt upp = sydlig vind = vind FRÅN söder.",
+  "pitfall": "Två klassiska fällor: (1) att missa de små nederbördsvärdena (0,3 mm syns knappt) och (2) att godkänna sneda pilar som 'sydliga' — 31 jan-pilarna lutar alla snett upp-höger och är sydvästliga, inte rakt sydliga, medan 5 feb-pilen rakt upp är lätt att missa mellan nederbördsstaplarna. Botemedlet: kalibrera mot fotnotens 30 jan-exempel (pil rakt upp = sydlig) och godkänn bara pilar som pekar exakt rakt upp.",
   "pregrade_tactic": {
    "handle": "Två-räkningar-en-i-taget",
-   "move": "Räkna först alla dygn med en eller flera grå nederbördsrutor. Räkna sedan alla dygn där pilarna pekar rakt upp (kalibrera mot fotnotens 30 jan-exempel). Två separata räkningar — skifta inte fram och tillbaka."
+   "move": "Räkna först alla dygn med minst en grå nederbördsstapel. Räkna sedan alla dygn med en pil som pekar EXAKT rakt upp (kalibrera mot fotnotens 30 jan-exempel). Två separata räkningar — skifta inte fram och tillbaka."
   },
-  "solution_path": "Facit fastslår 4 respektive 3 dygn (alternativ D). Nederbördsdygn (grå rutor med printade mm-värden): 30 jan (4,8), 31 jan (0,3 + 1,1), 5 feb (2,3 + 2,1), 6 feb (2,8 + 1,5) = 4 dygn. Rakt sydliga dygn (pilar rakt upp; fotnoten kalibrerar 30 jan som sydlig): 30 jan, 31 jan, 4 feb = 3 dygn (eller motsvarande tre dygn där pilarna pekar rätt upp).",
+  "solution_path": "Två separata räkningar. Nederbördsdygn (grå staplar med printade mm-värden): 30 jan (4,8 och 0,3), 31 jan (1,1), 5 feb (2,3 och 2,1), 6 feb (2,8 och 1,5) = 4 dygn. Rakt sydlig vind: fotnoten kalibrerar att pil RAKT UPP = sydlig (30 jan-exemplet). Pilar rakt upp finns på 30 jan (två stycken), 4 feb (en, i dygnets slut) och 5 feb (en, mellan rutorna 2,3 och 2,1) = 3 dygn. 31 jan-pilarna lutar alla snett upp-höger (↗ = sydvästlig) och räknas inte. 4 respektive 3 dygn = alternativ D.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: hur många av de åtta dygnen noterades nederbörd RESPEKTIVE rakt sydlig vind? Du ska svara med två tal: antal nederbördsdygn och antal dygn med rakt sydlig vind. Facit fastslår 4 respektive 3 dygn (alternativ D).",
+    "text": "Frågan: hur många av de åtta dygnen noterades nederbörd RESPEKTIVE rakt sydlig vind? Du ska svara med två tal: antal nederbördsdygn och antal dygn med rakt sydlig vind. Det är två helt oberoende räkningar — gör dem en i taget.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Vad betyder 'rakt sydlig vind'?",
-    "text": "Fotnoten ger nyckeln: 'Med vindriktning menas den riktning VARIFRÅN det blåser' + 'den tidigast förekommande vindriktningsangivelsen (30 jan) visar på sydlig vind'. På 30 jan pekar pilarna rakt UPP — alltså pil upp = sydlig vind = vind FRÅN söder. RAKT sydlig kräver att pilen pekar rakt upp (inte snett upp-höger eller snett upp-vänster, vilket skulle vara sydostlig eller sydvästlig).",
+    "text": "Fotnoten ger nyckeln: 'Med vindriktning menas den riktning VARIFRÅN det blåser' + 'den tidigast förekommande vindriktningsangivelsen (30 jan) visar på sydlig vind'. På 30 jan pekar pilarna rakt UPP — alltså pil rakt upp = vind FRÅN söder = sydlig. RAKT sydlig kräver att pilen pekar exakt rakt upp: snett upp-höger (↗) betyder vind från sydväst, och en pil åt höger (→) betyder vind från väster.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Räkna nederbördsdygnen — strategi",
-    "text": "Nederbörd visas som GRÅ RUTOR med printade mm-värden inuti eller bredvid (legenden överst: 'Nederbörd (mm)'). Räkna varje DYGN där det finns minst en grå ruta — inte varje ruta, eftersom ett dygn kan ha två rutor (morgon + kväll).",
+    "text": "Nederbörd visas som GRÅ staplar med printade mm-värden (legenden överst: 'Nederbörd (mm)'). Räkna varje DYGN där det finns minst en grå stapel — inte varje stapel, eftersom ett dygn kan ha två staplar.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Räkna nederbördsdygnen — utför",
-    "text": "Gå igenom dygn för dygn: 30 jan: en grå ruta med 4,8 mm — JA. 31 jan: två grå rutor med 0,3 och 1,1 — JA. 1 feb: ingen ruta — nej. 2 feb: ingen — nej. 3 feb: ingen — nej. 4 feb: ingen — nej. 5 feb: två rutor med 2,3 och 2,1 — JA. 6 feb: två rutor med 2,8 och 1,5 — JA. Total: 4 dygn (30 jan, 31 jan, 5 feb, 6 feb).",
+    "text": "Gå igenom dygn för dygn: 30 jan: stapel med 4,8 mm (plus en låg stapel 0,3 mot dygnets slut) — JA. 31 jan: stapel med 1,1 — JA. 1 feb: ingen stapel — nej. 2 feb: ingen — nej. 3 feb: ingen — nej. 4 feb: ingen — nej. 5 feb: två staplar med 2,3 och 2,1 — JA. 6 feb: två staplar med 2,8 och 1,5 — JA. Totalt: 4 dygn (30 jan, 31 jan, 5 feb, 6 feb).",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Räkna rakt sydliga dygn — strategi",
-    "text": "Gå igenom dygn för dygn och fråga: pekar pilarna rakt upp den dagen? Tillåt en eller två pilar; det viktiga är att de pekar rakt upp, inte snett. Kalibrera mot 30 jan som fotnoten uttryckligen kallar sydlig.",
+    "text": "Gå igenom dygn för dygn och fråga: finns det en pil som pekar EXAKT rakt upp den dagen? Kalibrera mot 30 jan som fotnoten uttryckligen kallar sydlig. Var sträng: en pil som lutar det minsta åt höger eller vänster är inte RAKT sydlig.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Räkna rakt sydliga dygn — utför",
-    "text": "30 jan: pilar pekar rakt upp — JA (kalibreringsexempel från fotnoten). 31 jan: pilar varierar men flera rakt upp — JA. 1 feb: pilarna är mer åt sidan (västligt-sydvästligt) — nej. 2 feb: liknande, snett — nej. 3 feb: pilar mer åt höger (östligt) — nej. 4 feb: pilarna pekar rakt upp — JA. 5 feb och 6 feb: pilarna pekar olika håll, ingen rakt upp dominans. Total: 3 dygn (30 jan, 31 jan, 4 feb).",
+    "text": "30 jan: två pilar rakt upp — JA (fotnotens kalibreringsexempel). 31 jan: alla pilar lutar snett upp-höger (↗ = sydvästlig) — nej. 1 feb: pilar snett och åt höger (väst-sektorn) — nej. 2 feb: pilar åt höger (→ = västlig) — nej. 3 feb: pilar snett ner-höger och åt höger (nordväst-/västlig) — nej. 4 feb: efter ett par ↗ kommer en pil RAKT UPP i dygnets slut — JA. 5 feb: en pil RAKT UPP mellan nederbördsstaplarna 2,3 och 2,1 — JA. 6 feb: pil rakt NER (↓ = nordlig) och snett ner-höger — nej. Totalt: 3 dygn (30 jan, 4 feb, 5 feb).",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Vad betyder 'noterades nederbörd'?",
-    "text": "Noterades = registrerades, dvs > 0 mm uppmätt. Även ett litet värde som 0,3 mm räknas — det är fortfarande icke-noll nederbörd. Det är därför du måste granska ALLA grå rutor, även de små.",
+    "text": "Noterades = registrerades, dvs > 0 mm uppmätt. Även ett litet värde som 0,3 mm räknas — det är fortfarande icke-noll nederbörd. Det är därför du måste granska ALLA grå staplar, även de lägsta.",
     "tier": "detail"
    },
    {
@@ -6596,123 +6596,123 @@
    {
     "n": 9,
     "title": "Korsa mot svarsalternativen",
-    "text": "A: 3 resp 1 — fel på båda. B: 3 resp 3 — fel på nederbörd (3 i stället för 4). C: 4 resp 1 — fel på sydlig (1 i stället för 3). D: 4 resp 3 — matchar båda räkningarna. Facit fastslår D.",
+    "text": "A: 3 resp 1 — fel på båda. B: 3 resp 3 — fel på nederbörd (3 i stället för 4). C: 4 resp 1 — fel på sydlig (1 i stället för 3). D: 4 resp 3 — matchar båda räkningarna. Svaret är D.",
     "tier": "essential"
    },
    {
     "n": 10,
-    "title": "Sanity-check: nederbördsdygnen klumpar sig i ändarna",
-    "text": "Veckan börjar och slutar med snö/regn (30-31 jan och 5-6 feb), och mitten av perioden (1-4 feb) är torr — det är ett typiskt vintervädersmönster och stämmer med ikonerna (moln/snö i ändarna, sol/måne i mitten). Det är konsistent med 4 nederbördsdygn.",
+    "title": "Sanity-check: nederbörden klumpar sig i ändarna",
+    "text": "Perioden börjar och slutar med nederbörd (30–31 jan och 5–6 feb) medan mitten (1–4 feb) är torr — det stämmer med väderikonerna: regnmoln i början, sol/måne i mitten, snömoln över 5–6 feb. Konsistent med 4 nederbördsdygn.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är D (4 respektive 3). Insikten i en mening: räkna två saker separat, kalibrera vindriktningen mot fotnotens 30 jan-exempel, och missa inte de små nederbördsvärdena.",
+    "title": "Slutsats",
+    "text": "Svaret är D (4 respektive 3). Insikten i en mening: räkna två saker separat, kalibrera vindriktningen mot fotnotens 30 jan-exempel (pil rakt upp = sydlig), och godkänn bara pilar som pekar EXAKT rakt upp — sneda pilar är sydväst eller väst, inte rakt syd.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'X respektive Y'-räknefrågor: utför två oberoende räkningar dygn för dygn (eller kategori för kategori). Kalibrera tolkningen mot eventuella fotnoter/exempel innan du börjar räkna. Triggern: 'antal X respektive antal Y' → två separata räkningar i tabellform, inte parallella tankar."
+  "technique": "DTK-strategi för 'X respektive Y'-räknefrågor: utför två oberoende räkningar dygn för dygn (eller kategori för kategori). Kalibrera tolkningen mot eventuella fotnoter/exempel innan du börjar räkna. Triggern: 'antal X respektive antal Y' → två separata räkningar i tur och ordning, inte parallella tankar."
  },
  "var-2018-1-kvant1-DTK-035": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": "DTK-TACTIC-002",
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Ekonomer 1980-1984 har ett relativt stort kvartilsspann (övre kvartil cirka 42 000, undre cirka 27 000, alltså ~15 000 kr). Det är ett iögonenfallande spann och det är frestande att tro att det är störst — särskilt om man inte jämför systematiskt mot personalvetarna.",
-    "why_wrong": "Personalvetares 1980-1984-spann är ÄNNU större: övre kvartil ~52 550 minus undre ~33 100 ≈ 19 450 kr. Det är cirka 4 000 kr mer än ekonomernas spann. Som steg 5 visar krävs alla fem spann beräknas innan man väljer. Facit fastslår B (Personalvetare), inte A."
+    "why_tempting": "Ekonomer förknippas spontant med stor lönespridning, och deras övre kvartil 1980–1984 (42 000) ser hög ut vid en snabb blick. Halkar du dessutom en rad fel och tar 1985–1989-radens undre kvartil (27 000) ihop med 42 000 får du ett spann på 15 000 som känns stort.",
+    "why_wrong": "Rätt rad för Ekonomer 1980–1984 är undre 31 000 och övre 42 000 → spann 11 000 kr. Det är näst minst av de fem grupperna, långt under personalvetarnas 52 550 − 33 100 = 19 450 kr."
    },
    {
     "letter": "C",
-    "why_tempting": "Samhällsvetare 1980-1984 har ett synligt tydligt löneintervall mellan undre och övre kvartil — det ser brett ut visuellt. Och samhällsvetare är ett 'centralt' alternativ som man inte tänker fel på spontant.",
-    "why_wrong": "Spannet för samhällsvetare 1980-1984 är ungefär 41 000 - 30 400 = ~10 600 kr. Det är knappt hälften så stort som personalvetarnas ~19 450 kr. Som steg 6 visar måste alla fem yrkesgrupper jämföras likvärdigt. Facit fastslår B (Personalvetare)."
+    "why_tempting": "Samhällsvetare 1980–1984 har verkligen ett stort spann: 49 200 − 31 400 = 17 800 kr, tvåa av alla fem grupper och bara cirka 1 650 kr efter personalvetarna. Dessutom har de den högsta medellönen på raden (43 472). Detta är det farligaste felsvaret.",
+    "why_wrong": "Personalvetares spann är ändå större: 52 550 − 33 100 = 19 450 kr mot samhällsvetarnas 17 800 kr. Skillnaden är liten men entydig när du räknar med de printade talen — övre kvartilen 52 550 slår 49 200 med mer än vad undre kvartilerna skiljer."
    },
    {
     "letter": "D",
-    "why_tempting": "Socionomer 1980-1984 är den största årsgruppen i absolut antal (133 personer) — den största gruppen kan kännas som 'mest spridd' i intuitionen. Det är frestande att associera 'största gruppen' med 'största kvartilspann'.",
-    "why_wrong": "Stort antal personer säger inget om kvartilspannets STORLEK. Socionomers spann är 37 500 - 29 100 = ~8 400 kr — det MINSTA spannet av alla fem yrkesgrupper för 1980-1984. Som steg 7 visar är socionomers lönesättning relativt jämn. Facit fastslår B (Personalvetare)."
+    "why_tempting": "Socionomer 1980–1984 är den överlägset största gruppen i antal (133 personer) — och 'störst grupp' glider lätt ihop med 'störst spridning' i intuitionen.",
+    "why_wrong": "Antal personer säger inget om kvartilspannets storlek. Socionomernas spann är 40 000 − 28 800 = 11 200 kr — knappt 60 procent av personalvetarnas 19 450 kr."
    }
   ],
-  "pitfall": "Den klassiska fällan i kvartilsfrågor är att jämföra fel kolumner (t.ex. medellön i stället för kvartiler) eller att skippa beräkningen och gå på visuell intuition. Botemedlet: skriv ner båda kvartilerna för varje grupp, beräkna SKILLNADEN (övre - undre), jämför endast skillnaderna.",
+  "pitfall": "Den klassiska fällan i den här tabellsidan är RADGLIDNING: raderna 1975–1979, 1980–1984 och 1985–1989 ligger tätt, och tar du kvartilvärden från fel examensår blir hela rankingen fel (t.ex. ser Ekonomer plötsligt ut som tvåa). Botemedlet: följ raden 1980–1984 med fingret hela vägen, skriv ner båda kvartilerna för varje grupp, beräkna SKILLNADEN (övre − undre) och jämför endast skillnaderna — inte medellön, median eller antal.",
   "pregrade_tactic": {
    "handle": "Spann-i-tabellform",
-   "move": "För varje yrkesgrupp, hitta raden 1980-1984, läs av undre kvartil och övre kvartil, räkna ut skillnaden. Jämför de fem skillnaderna. Det är inte medellön eller medianvärde som söks — bara spannet mellan kvartilerna."
+   "move": "För varje yrkesgrupp, hitta raden 1980–1984, läs av undre kvartil och övre kvartil, räkna ut skillnaden. Jämför de fem skillnaderna. Det är inte medellön eller median som söks — bara spannet mellan kvartilerna, och rätt rad är avgörande eftersom grannraderna ligger tätt."
   },
-  "solution_path": "Facit fastslår B (Personalvetare). I varje yrkesgrupps tabell, hitta raden 1980-1984. Beräkna övre kvartil minus undre kvartil. Beteendevetare ≈ 45 450 - 36 130 = 9 320. Ekonomer ≈ 42 000 - 27 000 = 15 000. Personalvetare ≈ 52 550 - 33 100 = 19 450 (störst). Samhällsvetare ≈ 41 000 - 30 400 = 10 600. Socionomer ≈ 37 500 - 29 100 = 8 400. Personalvetare har störst spann — konsistent med facit B.",
+  "solution_path": "Hitta raden 1980–1984 i varje yrkesgrupps deltabell och räkna övre kvartil minus undre kvartil. Beteendevetare: 45 450 − 36 330 = 9 120. Ekonomer: 42 000 − 31 000 = 11 000. Personalvetare: 52 550 − 33 100 = 19 450. Samhällsvetare: 49 200 − 31 400 = 17 800. Socionomer: 40 000 − 28 800 = 11 200. Störst spann har Personalvetare (19 450 kr), knappt 1 700 kr före Samhällsvetare (17 800 kr). Svaret är B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: studera skillnaden mellan ÖVRE och UNDRE KVARTIL bland dem med examensår 1980-1984. Inom vilken utbildningsinriktning är den skillnaden störst? Svarsalternativ: ekonomer, personalvetare, samhällsvetare eller socionomer (beteendevetare finns men är inte med bland alternativen). Facit fastslår B (personalvetare).",
+    "text": "Frågan: studera skillnaden mellan ÖVRE och UNDRE KVARTIL bland dem med examensår 1980–1984. Inom vilken utbildningsinriktning är den skillnaden störst, i kronor? Svarsalternativ: ekonomer, personalvetare, samhällsvetare eller socionomer (beteendevetare finns i figuren men är inte med bland alternativen).",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Vad är 'undre' och 'övre kvartil'?",
-    "text": "Sidans definitionsruta är explicit: UNDRE KVARTIL = lönen sådan att 25 procent av individerna i gruppen har LÄGRE lön. ÖVRE KVARTIL = lönen sådan att 75 procent har lägre. Spannet (övre minus undre) visar var 'mitten 50%' av lönerna ligger — alltså löneSPRIDNINGEN i gruppen. Stor skillnad = stor spridning.",
+    "text": "Sidans definitionsruta är explicit: UNDRE KVARTIL = lönen sådan att 25 procent av individerna i gruppen har LÄGRE lön. ÖVRE KVARTIL = lönen sådan att 75 procent har lägre. Spannet (övre minus undre) visar var 'mitten 50 %' av lönerna ligger — alltså löneSPRIDNINGEN i gruppen. Stor skillnad = stor spridning.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Hitta raden 1980-1984 i varje grupp",
-    "text": "Tabellen är uppdelad i fem yrkesgrupper (Beteendevetare, Ekonomer, Personalvetare, Samhällsvetare, Socionomer). I varje grupps deltabell finns en kolumn 'Examensår' med raden '1980-1984'. Hoppa direkt dit i varje deltabell — du behöver bara den raden.",
+    "title": "Hitta raden 1980–1984 i varje grupp",
+    "text": "Sidan har fem deltabeller per utbildningsinriktning (Beteendevetare, Ekonomer, Personalvetare, Samhällsvetare, Socionomer). I varje deltabell finns en kolumn 'Examensår' med raden '1980–1984'. Hoppa direkt dit — du behöver bara den raden. Varning: raderna 1975–1979 och 1985–1989 ligger precis intill; låt fingret följa rätt rad hela vägen till kvartilkolumnerna.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Vad ska du SKIPPA i tabellen?",
-    "text": "Du behöver INTE: medellön, antal, median. Bara två tal per yrkesgrupp: undre kvartil och övre kvartil i raden 1980-1984. Skippar du dessa irrelevanta kolumner förlorar du inte tid på fel kolumn.",
+    "text": "Du behöver INTE medellön, antal eller median. Bara två tal per yrkesgrupp: undre kvartil och övre kvartil i raden 1980–1984. Skippar du de irrelevanta kolumnerna förlorar du ingen tid på fel kolumn.",
     "tier": "detail"
    },
    {
     "n": 5,
     "title": "Beräkna spannet för varje yrkesgrupp",
-    "text": "Beteendevetare 1980-1984: undre ~36 130, övre ~45 450 → spann ~9 320 kr. Ekonomer 1980-1984: undre ~27 000, övre ~42 000 → spann ~15 000 kr. Personalvetare 1980-1984: undre ~33 100, övre ~52 550 → spann ~19 450 kr. Samhällsvetare 1980-1984: undre ~30 400, övre ~41 000 → spann ~10 600 kr. Socionomer 1980-1984: undre ~29 100, övre ~37 500 → spann ~8 400 kr.",
+    "text": "Beteendevetare 1980–1984: undre 36 330, övre 45 450 → spann 9 120 kr. Ekonomer 1980–1984: undre 31 000, övre 42 000 → spann 11 000 kr. Personalvetare 1980–1984: undre 33 100, övre 52 550 → spann 19 450 kr. Samhällsvetare 1980–1984: undre 31 400, övre 49 200 → spann 17 800 kr. Socionomer 1980–1984: undre 28 800, övre 40 000 → spann 11 200 kr.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Sortera spannen",
-    "text": "Från störst till minst: Personalvetare ~19 450 > Ekonomer ~15 000 > Samhällsvetare ~10 600 > Beteendevetare ~9 320 > Socionomer ~8 400. Personalvetare har det överlägset största kvartilspannet — drygt 4 000 kr mer än näst största.",
+    "text": "Från störst till minst: Personalvetare 19 450 > Samhällsvetare 17 800 > Socionomer 11 200 > Ekonomer 11 000 > Beteendevetare 9 120. Personalvetare har det största kvartilspannet — men bara cirka 1 650 kr före Samhällsvetare, så här måste du räkna, inte gissa på ögonmått.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Vad betyder ett stort kvartilspann?",
-    "text": "Stort spann mellan undre och övre kvartil betyder att personerna i mitten av lönefördelningen tjänar mycket olika. Personalvetare 1980-1984 har alltså ett brett spritt mellansegment — det finns både mellan-betalda och rätt välbetalda. Liten spann (socionomer) betyder att de flesta lönerna ligger tätt grupperade.",
+    "text": "Stort spann mellan undre och övre kvartil betyder att personerna i mitten av lönefördelningen tjänar mycket olika. Personalvetare 1980–1984 har alltså ett brett spritt mellansegment — undre kvartilen 33 100 är måttlig medan övre kvartilen 52 550 är sidans högsta för det examensåret. Litet spann (beteendevetare) betyder att lönerna ligger tätt grupperade.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Plocka närmaste svarsalternativ",
-    "text": "Alternativen är A (Ekonomer), B (Personalvetare), C (Samhällsvetare), D (Socionomer). Personalvetare är klart störst. Facit fastslår B.",
+    "title": "Plocka svarsalternativ",
+    "text": "Alternativen är A (Ekonomer), B (Personalvetare), C (Samhällsvetare), D (Socionomer). Personalvetare har störst spann, 19 450 kr. Svaret är B.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Varför 'stor grupp' inte = 'stort spann'",
-    "text": "Socionomer 1980-1984 har den största gruppstorleken (~133 personer mot ~16-30 i andra grupper), men det spelar ingen roll för kvartilSPANNET. Antalet personer påverkar inte differensen mellan kvartiler. Falla aldrig för att likställa 'stor grupp' med 'stor spridning'.",
+    "text": "Socionomer 1980–1984 har den överlägset största gruppstorleken (133 personer mot 14–30 i de andra grupperna), men det spelar ingen roll för kvartilSPANNET. Antalet personer påverkar inte differensen mellan kvartilerna — socionomernas spann är 11 200 kr, bara drygt hälften av personalvetarnas. Likställ aldrig 'stor grupp' med 'stor spridning'.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Sanity-check: medellön spegling",
-    "text": "Personalvetare 1980-1984 har också den högsta medellönen i gruppen (~43 200 kr) — det är konsistent med att övre kvartilen är väldigt hög (52 550). När övre kvartilen ligger högt drar den upp medelvärdet, vilket bekräftar att spannet är brett.",
+    "title": "Sanity-check: övre kvartilen driver spannet",
+    "text": "Personalvetares övre kvartil 1980–1984 (52 550) är den högsta bland alla fem grupperna för det examensåret, samtidigt som deras undre kvartil (33 100) inte är särskilt hög. Just den kombinationen — hög topp, måttlig botten — är vad som ger störst spann. Samhällsvetare har också hög topp (49 200) men något lägre botten (31 400), vilket förklarar att de hamnar strax efter.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är B (Personalvetare). Insikten i en mening: kvartilspann = övre kvartil minus undre kvartil, bara för rätt rad — ignorera medellön, median och antal när frågan handlar om spridningen mellan kvartiler.",
+    "title": "Insikten i en mening",
+    "text": "Svaret är B (Personalvetare). Insikten i en mening: kvartilspann = övre kvartil minus undre kvartil, avläst på exakt rätt rad — och när två grupper ligger nära (19 450 mot 17 800) avgör noggrann radavläsning, inte ögonmått.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för kvartilfrågor: beräkna (övre kvartil) - (undre kvartil) för varje kandidatgrupp, jämför skillnaderna. Använd definitionsrutan på sidan för att förstå vad kvartilerna är (25% / 75%). Triggern: 'skillnad mellan övre och undre kvartil' → fokuserad tva-kolumns-avläsning per grupp, inte hela tabellen."
+  "technique": "DTK-strategi för kvartilfrågor: beräkna (övre kvartil) − (undre kvartil) för varje kandidatgrupp på RÄTT rad, jämför skillnaderna. Använd definitionsrutan på sidan för att förstå vad kvartilerna är (25 % / 75 %). Triggern: 'skillnaden mellan övre och undre kvartil' → fokuserad två-kolumns-avläsning per grupp på raden 1980–1984, inte hela tabellen."
  },
  "var-2018-1-kvant1-DTK-036": {
   "_meta": {
@@ -6816,409 +6816,403 @@
  },
  "var-2018-1-kvant1-DTK-037": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": null,
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Gotlands län har bara 7 svarande, och med så lite data är det lätt att tro att alla extrema fördelningar är möjliga. Det är frestande att gissa Gotland när man inte är säker — låga antal upplevs som 'ovanliga' och alltså kandidater för 'ovanliga svar'.",
-    "why_wrong": "Test: i Gotland är medellön ungefär 27 517, median ungefär 26 000. Eftersom medianen är LÄGRE än medellönen betyder det att MINDRE än hälften har högre lön än medellönen — högavlönade drar upp snittet ovanför medianen. Som steg 4 visar är kravet att MEDIAN > MEDELLÖN. Gotland uppfyller inte det. Facit fastslår B (Örebro)."
+    "why_tempting": "Gotlands rad ser tät ut: medellön 27 517 och tal strax under. Läser du tredje talkolumnen (undre kvartilen 26 000) som median känns det som en 'nära'-rad, och med bara 7 svarande är det lätt att tro att vad som helst kan hända i så liten grupp.",
+    "why_wrong": "Gotlands median är 27 000 (fjärde talkolumnen), inte 26 000 — och 27 000 < 27 517. Medellönen är högre än medianen, alltså har MINDRE än hälften lön över medellönen. Villkoret median > medellön uppfylls inte."
    },
    {
     "letter": "C",
-    "why_tempting": "Dalarnas län har 37 svarande och en relativt jämn fördelning visuellt — det är frestande att tro att 'i ett medelstort län med jämn fördelning är medellönen ungefär lika med medianen', vilket kan gå antingen vägen.",
-    "why_wrong": "I Dalarna är medellön ~29 053 och median ~28 520 (medellönen är HÖGRE). Det betyder att högavlönade tjänar mer än vad det krävs för att 'väga upp' lågavlönade — alltså MINDRE än hälften har lön över medellönen. Som steg 5 visar går villkoret bara åt ett håll, och Dalarna uppfyller det inte. Facit fastslår B."
+    "why_tempting": "Dalarnas rad ser jämn ut — 29 035 mot 28 520 är en liten skillnad, och det är frestande att avfärda den som 'ungefär lika', där utfallet kunde gå åt vilket håll som helst.",
+    "why_wrong": "Riktningen är entydig: medellönen 29 035 är HÖGRE än medianen 28 520. Då ligger mindre än hälften över medellönen — det räcker inte att talen är nära, tecknet på skillnaden avgör."
    },
    {
     "letter": "D",
-    "why_tempting": "Västerbottens län har 36 svarande och en hög medellön (~26 662). Det kan kännas som ett 'väl-representerat' län där fördelningen är jämn nog att medianen kunde överstiga medellönen.",
-    "why_wrong": "I Västerbotten är medellönen ~26 662 och medianen ~25 000 (medellön HÖGRE). Återigen: medellön > median betyder att färre än hälften har högre lön än medellönen. Som steg 5 påpekar är villkoret medellön < median, och Västerbotten uppfyller det inte. Facit fastslår B (Örebro)."
+    "why_tempting": "Västerbotten har 50 svarande — ett 'väl representerat' län — och det kan kännas som att en stor, jämn grupp borde ha medianen ungefär vid eller över medellönen.",
+    "why_wrong": "Raden visar medellön 26 662 och median 25 750: medellönen är nästan 900 kr HÖGRE än medianen. Alltså har färre än hälften lön över medellönen, och antalet svarande ändrar inte den jämförelsen."
    }
   ],
-  "pitfall": "Den klassiska fällan i 'mer än hälften'-frågor är att blanda ihop medellön och median. Mer än hälften har högre lön än medellönen om och endast om MEDIANEN ÄR HÖGRE än medellönen. Det är inte 'medellön över ett visst tröskelvärde' eller 'storstadsmedellön högre än småstad' — det är jämförelsen INOM samma rad. Botemedlet: kolla varje läns medellön och median, leta efter rader där median > medellön.",
+  "pitfall": "Två fällor samverkar här. Den begreppsliga: 'mer än hälften har högre lön än medellönen' gäller om och endast om MEDIANEN är högre än medellönen — det är en jämförelse inom samma rad, inget tröskelvärde. Den avläsningsmässiga: median är FJÄRDE talkolumnen (efter Antal, Medellön, Undre kvartil) — läser du undre kvartilen som median blir alla jämförelser fel. Botemedlet: lås kolumnordningen först, jämför sedan Medellön mot Median rad för rad.",
   "pregrade_tactic": {
    "handle": "Median-över-medel",
-   "move": "Skanna länstabellen kolumn för kolumn: i vilka rader är medianen HÖGRE än medellönen? Det är där mer än hälften tjänar mer än medellönen. Bland alternativen är det bara Örebro län."
+   "move": "Lås kolumnerna (Median = fjärde talkolumnen, efter Antal/Medellön/Undre kvartil). Skanna de fyra alternativens rader: i vilken är medianen HÖGRE än medellönen? Bara Örebro (29 800 > 29 615)."
   },
-  "solution_path": "Facit fastslår B (Örebro län). 'Mer än hälften har högre lön än medellönen' = 'medianen är högre än medellönen' (per definition: median = lönen där exakt hälften ligger under). Skanna länstabellen efter rader där median > medellön. För Örebro: medellön ~29 615, median ~30 500 — alltså MEDIAN > MEDELLÖN, vilket innebär att fler än hälften ligger över medellönen. Övriga län bland alternativen har median ≤ medellön.",
+  "solution_path": "'Mer än hälften har högre lön än medellönen' betyder per definition att medianen ligger ÖVER medellönen (medianen är lönen där exakt hälften ligger under). Läs tabellen 'Löner per län' rad för rad för de fyra alternativen — kolumnordningen är Antal, Medellön, Undre kvartil, Median, Övre kvartil. Gotland: medellön 27 517, median 27 000 → median lägre. Örebro: medellön 29 615, median 29 800 → MEDIANEN HÖGRE, villkoret uppfyllt. Dalarna: medellön 29 035, median 28 520 → median lägre. Västerbotten: medellön 26 662, median 25 750 → median lägre. Endast Örebro län har median > medellön, alltså är svaret B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: i vilket av följande län hade MER ÄN HÄLFTEN högre lön än medellönen för länet? Svarsalternativ: Gotlands, Örebro, Dalarnas eller Västerbottens län. Facit fastslår B (Örebro län).",
+    "text": "Frågan: i vilket av följande län hade MER ÄN HÄLFTEN högre lön än medellönen för länet? Alternativen är Gotlands, Örebro, Dalarnas och Västerbottens län. All information finns i tabellen 'Löner per län' till vänster på sidan.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Vad är 'medellön' och 'median'?",
-    "text": "Medellön = SUMMA av alla löner delat med antalet personer. Median = lönen i mitten — exakt 50 procent ligger under, 50 procent ligger över medianen.",
+    "text": "Medellön = summan av alla löner delat med antalet personer. Median = lönen i mitten — exakt hälften ligger under och hälften över medianen.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Översätt frågan till en jämförelse",
-    "text": "'Mer än hälften har högre lön än medellönen' = 'mer än 50% ligger över medellönen' = 'medellönen ligger UNDER mitten av fördelningen' = 'medellön < median'. Det är en direkt jämförelse mellan två tal i samma rad i tabellen.",
+    "text": "'Mer än hälften har högre lön än medellönen' = 'mer än 50 % ligger över medellönen' = 'medellönen ligger under mitten av fördelningen' = 'medellön < median'. Frågan är alltså en direkt jämförelse mellan två tal i samma rad i tabellen — ingen beräkning krävs.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Varför går asymmetrin denna väg?",
-    "text": "I lönefördelningar drar några högavlönade ofta upp medelvärdet ovanför medianen. Det är typiskt: medellön > median i lönedata. När det är OMVÄNT (median > medellön) är fördelningen 'skev åt andra hållet': några LÅGavlönade drar ner medelvärdet under mittenpunkten. Det är ovanligt — och det är just sådana län frågan letar efter.",
+    "title": "Varför är detta ovanligt i lönedata?",
+    "text": "I lönefördelningar drar några högavlönade oftast upp medelvärdet över medianen — det typiska är medellön > median. När det är omvänt (median > medellön) är fördelningen skev åt andra hållet: några lågavlönade drar ner snittet under mittenpunkten. Frågan letar efter just en sådan ovanlig rad.",
     "tier": "detail"
    },
    {
     "n": 5,
-    "title": "Skanna länstabellen för 'median > medellön'",
-    "text": "Gå genom alternativen ett i taget. Gotland: medellön ~27 517, median ~26 000 — medellön HÖGRE, inte villkoret. Örebro: medellön ~29 615, median ~30 500 — MEDIANEN HÖGRE, villkoret uppfyllt! Dalarna: medellön ~29 053, median ~28 520 — medellön högre, inte villkoret. Västerbotten: medellön ~26 662, median ~25 000 — medellön högre, inte villkoret.",
+    "title": "Lås kolumnordningen innan du läser",
+    "text": "Tabellens kolumner efter länsnamnet är: Antal, Medellön, Undre kvartil, Median, Övre kvartil. Median är alltså FJÄRDE talkolumnen — inte tredje. Läser du undre kvartilen som median (t.ex. Gotlands 26 000 i stället för medianen 27 000) blir hela jämförelsen fel.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Verifiera Örebros nummer noggrant",
-    "text": "I rader där talen ligger nära varandra (som Örebros ~29 615 vs ~30 500) finns risk för felavläsning. Dubbelkolla mot tabellens kolumnordning: efter länamn kommer Antal, Medellön, Undre kvartil, Median, Övre kvartil. Median-kolumnen är fjärde efter Antal. Bekräfta att medianen 30 500 är klart större än medellönen 29 615 — skillnad knappt 900 kr.",
+    "title": "Skanna alternativen: median mot medellön",
+    "text": "Gotland: medellön 27 517, median 27 000 — medellönen högre, inte villkoret. Örebro: medellön 29 615, median 29 800 — MEDIANEN HÖGRE, villkoret uppfyllt! Dalarna: medellön 29 035, median 28 520 — medellönen högre, inte villkoret. Västerbotten: medellön 26 662, median 25 750 — medellönen högre, inte villkoret.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Vad betyder skev lönefördelning åt det 'omvända' hållet?",
-    "text": "Om median > medellön betyder det att den övre halvan av lönefördelningen ligger relativt tätt grupperade medan den undre halvan har några riktiga 'lågflygare' som drar ner snittet. Det är en ovanlig fördelningsform — vilket är frågans poäng.",
-    "tier": "detail"
-   },
-   {
-    "n": 8,
-    "title": "Korsa alla fyra alternativen samtidigt",
-    "text": "Gotland (median < medellön → nej), Örebro (median > medellön → JA), Dalarna (median < medellön → nej), Västerbotten (median < medellön → nej). Bara Örebro uppfyller villkoret. Facit fastslår B.",
+    "title": "Dubbelkolla Örebro — marginalen är liten",
+    "text": "I Örebros rad står 29 615 (Medellön) och 29 800 (Median) — skillnaden är bara 185 kr, så det är lätt att slarvläsa. Bekräfta mot kolumnrubrikerna: 23 500 är undre kvartilen och 33 550 övre kvartilen; talet mellan dem, 29 800, är medianen. 29 800 > 29 615 håller.",
     "tier": "essential"
    },
    {
-    "n": 9,
-    "title": "Sanity-check via undre kvartil",
-    "text": "Om mer än hälften ligger över medellönen är det rimligt att undre kvartilen ligger BRA mycket under medellönen — eftersom fördelningen är 'skev nedåt'. Kolla Örebro: undre kvartil ~23 500, medellön ~29 615 — skillnad ~6 000 kr. Det är konsistent med att enstaka lågavlönade drar ner snittet.",
+    "n": 8,
+    "title": "Vad säger det om Örebros fördelning?",
+    "text": "Median 29 800 med medellön 29 615 betyder att den undre halvan innehåller några löner som ligger tillräckligt lågt (undre kvartil 23 500, hela 6 100 kr under medellönen) för att dra ner snittet strax under mittenlönen. Kvartilerna är alltså konsistenta med bilden: skev nedåt.",
     "tier": "detail"
    },
    {
+    "n": 9,
+    "title": "Eliminera de tre övriga i en rad",
+    "text": "Gotland (27 000 < 27 517 → nej), Dalarna (28 520 < 29 035 → nej), Västerbotten (25 750 < 26 662 → nej). Bara Örebro (29 800 > 29 615) uppfyller median > medellön. Svaret är B.",
+    "tier": "essential"
+   },
+   {
     "n": 10,
-    "title": "Varför 'antal svarande' inte hjälper här",
-    "text": "Det är frestande att tro att stora län (Stockholm, Skåne) sannolikt har annan fördelning än små (Gotland). Men frågan handlar bara om relationen mellan medellön och median INOM varje län — antalet personer påverkar inte vilken sida av medellönen medianen ligger på.",
+    "title": "Varför 'Antal svarande' inte hjälper",
+    "text": "Gotland har 7 svarande, Dalarna 37, Västerbotten 50 och Örebro 61 — men frågan handlar bara om relationen mellan medellön och median INOM varje rad. Antalet personer avgör inte vilken sida av medellönen medianen hamnar på, så kolumnen Antal kan ignoreras helt.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är B (Örebro län). Insikten i en mening: 'mer än hälften över medellönen' = 'median > medellön' — en direkt två-tals-jämförelse per rad, inte gissning från ländets storlek.",
+    "title": "Slutsats",
+    "text": "Svaret är B (Örebro län). Insikten i en mening: 'mer än hälften över medellönen' = 'median > medellön' — en två-tals-jämförelse per rad där du först måste låsa vilken kolumn som är medianen, inte en gissning utifrån länets storlek.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'mer än hälften'-frågor: översätt till en jämförelse mellan medellön och median. Medianen delar gruppen i två lika halvor — så om medellönen ligger under medianen ligger MER än hälften över medellönen. Triggern: 'mer/mindre än hälften har högre/lägre värde än medel' → median vs medellön-jämförelse, inte percentilavläsning."
+  "technique": "DTK-strategi för 'mer än hälften'-frågor i lönetabeller: översätt frågan till en jämförelse mellan medellön och median i samma rad. Medianen delar gruppen i två lika halvor — så om medellönen ligger UNDER medianen ligger mer än hälften över medellönen. Triggern: 'mer/mindre än hälften har högre/lägre lön än medellönen' → jämför kolumnerna Medellön och Median rad för rad, ingen räkning behövs."
  },
  "var-2018-1-kvant1-DTK-038": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": "DTK-TACTIC-006",
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "15 procent högre är frestande om man läser av ekonomernas medellön något lägre eller beteendevetarnas medellön något högre — då blir kvoten kring 1,15 i stället för 1,25. Lätt att underskatta löneskillnader om man inte räknar exakt.",
-    "why_wrong": "Beräkna kvoten: ekonomer 1995-1999 medellön ~37 800 / beteendevetare 1995-1999 medellön ~30 240 ≈ 1,25. Det är 25 procents skillnad, inte 15. Som steg 5 visar är det viktigt att räkna ut kvoten med båda värdena från tabellen, inte gissa. Facit fastslår B (25%)."
+    "why_tempting": "Räknar du med fel nämnare — (40 967 − 33 071) / 40 967 ≈ 19 % — hamnar du mittemellan 15 och 25 och kan runda nedåt. Samma sak om du blandar rader: ekonomernas Samtliga (36 554) mot beteendevetarnas 1995–1999 (33 071) ger bara ≈ 11 %, vilket drar mot 15.",
+    "why_wrong": "Rätt formel för 'procent högre' är skillnaden delad med den LÄGRE lönen: 7 896 / 33 071 ≈ 24 %, entydigt närmast 25. Fel nämnare (19 %) och fel rad (11 %) är båda räknefel, inte avläsningar av frågans celler."
    },
    {
     "letter": "C",
-    "why_tempting": "35 procent högre är frestande om man förväxlar ekonomers SAMTLIGA-medellön (~36 654) med deras 1995-1999-medellön och därmed jämför fel rad mot beteendevetares 1995-1999-rad. Eller om man läser fel medellön åt beteendevetare.",
-    "why_wrong": "Frågan gäller bara EXAMENSÅR 1995-1999 i båda tabellerna, inte Samtliga. Ekonomers 1995-1999-medellön är ~37 800 (inte ~36 654 som är Samtliga), och beteendevetares 1995-1999 är ~30 240. Kvoten 37 800 / 30 240 ≈ 1,25, alltså 25%. Facit fastslår B, inte C."
+    "why_tempting": "Läser du Median-kolumnen i stället för Medellön blir det ekonomer 41 711 mot beteendevetare 30 248 — kvot ≈ 1,38, alltså cirka 38 %, som rundar till 35. Kolumnerna står vägg i vägg och ser likadana ut.",
+    "why_wrong": "Frågan gäller MEDELLÖNEN, inte medianen. Medellön-kolumnen ger 40 967 mot 33 071, kvot ≈ 1,24 — cirka 24 %, inte 38. Alternativ B."
    },
    {
     "letter": "D",
-    "why_tempting": "45 procent är frestande om man jämför ekonomernas 1995-1999-medellön mot beteendevetarnas LÄGSTA undre kvartil (eller mot en helt annan kolumn). Eller om man räknar (E - B) / B fel som (E - B) / E.",
-    "why_wrong": "Kvoten ekonomer/beteendevetare 1995-1999 är ~1,25, inte ~1,45. 45 procent högre skulle kräva en ekonomerlön på ~30 240 × 1,45 = 43 850 — men ekonomernas medellön 1995-1999 är ~37 800. Som steg 5 visar är skillnaden 7 560 kr, vilket är 25% av 30 240, inte 45%. Facit fastslår B."
+    "why_tempting": "45 procent lockar om du korsar kolumner — t.ex. ekonomernas övre kvartil 1995–1999 (47 300) mot beteendevetarnas medellön (33 071) ger ≈ 43 % — eller om du jämför mot en helt annan examensårsrad hos beteendevetarna.",
+    "why_wrong": "45 procent högre skulle kräva en ekonom-medellön på 33 071 × 1,45 ≈ 48 000 kr, men tabellen visar 40 967 för 1995–1999. Rätt celler ger kvoten 1,24 ≈ 25 procent — alternativ B."
    }
   ],
-  "pitfall": "Den klassiska fällan i 'hur många procent högre'-frågor är att (1) läsa fel rad (Samtliga i stället för 1995-1999), eller (2) använda fel formel — det är (stor - liten) / LITEN, inte (stor - liten) / stor. Botemedlet: lås in EXAMENSÅR-raden 1995-1999 i båda deltabellerna, läs av båda medellönerna, och räkna (E - B) / B × 100.",
+  "pitfall": "Den klassiska fällan i 'hur många procent högre'-frågor är trippel här: (1) läsa fel rad (Samtliga i stället för 1995–1999), (2) läsa fel kolumn (Median 41 711 respektive 30 248 i stället för Medellön 40 967 respektive 33 071), och (3) använda fel formel — det är (stor − liten) / LITEN, inte (stor − liten) / stor. Botemedlet: lås in raden 1995–1999 och kolumnen Medellön i BÅDA deltabellerna innan du räknar (E − B) / B × 100.",
   "pregrade_tactic": {
    "handle": "Procent-högre-mot-mindre",
-   "move": "Hitta ekonomers 1995-1999 medellön. Hitta beteendevetares 1995-1999 medellön. Räkna (ekonom - beteendevetare) / beteendevetare × 100. Inte / ekonom — det ger 'procent lägre', vilket är fel formel för 'procent högre'."
+   "move": "Hitta ekonomernas medellön för 1995–1999 (40 967). Hitta beteendevetarnas medellön för samma period (33 071). Räkna (ekonom − beteendevetare) / beteendevetare × 100 ≈ 24 % → 25. Inte / ekonom — det ger 'procent lägre', fel formel för 'procent högre'."
   },
-  "solution_path": "Facit fastslår B (25 procent högre). I Ekonomer-deltabellen raden 1995-1999: medellön ~37 800. I Beteendevetare-deltabellen raden 1995-1999: medellön ~30 240. Skillnad: 7 560 kr. Räkna procent: 7 560 / 30 240 ≈ 0,25 = 25%. Kvoten ekonomer/beteendevetare ≈ 1,25.",
+  "solution_path": "I Ekonomer-deltabellen, raden Examensår 1995–1999, kolumnen Medellön: 40 967 kr. I Beteendevetare-deltabellen, samma rad och kolumn: 33 071 kr. Skillnad: 40 967 − 33 071 = 7 896 kr. Procent högre: 7 896 / 33 071 ≈ 0,24 = cirka 24 %. Av alternativen 15, 25, 35 och 45 ligger 24 klart närmast 25 — svaret är B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: hur mycket högre var medellönen bland EKONOMER med examensår 1995-1999 än bland BETEENDEVETARE med examen från samma period? Svarsalternativ: 15, 25, 35 eller 45 procent högre. Facit fastslår B (25 procent högre).",
+    "text": "Frågan: hur mycket högre var medellönen bland EKONOMER med examensår 1995–1999 än bland BETEENDEVETARE med examen från samma period? Svarsalternativ: 15, 25, 35 eller 45 procent högre. Två tabellavläsningar plus en procentberäkning.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Vad betyder 'N procent högre'?",
-    "text": "Om A är N procent högre än B betyder det A = B × (1 + N/100). Alternativ formulering: (A - B) / B = N / 100. Nämnaren är ALLTID den LÄGRE (referensen). Inte (A - B) / A — det skulle vara 'B är N procent lägre än A', en annan fråga.",
+    "text": "Om A är N procent högre än B betyder det A = B × (1 + N/100). Alternativ formulering: (A − B) / B = N/100. Nämnaren är ALLTID referensen — den lägre lönen (beteendevetarnas). Inte (A − B) / A — det skulle svara på 'hur många procent lägre', en annan fråga med ett annat tal.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Hitta de två relevanta raderna",
-    "text": "Du behöver: Ekonomer-deltabellens rad EXAMENSÅR = 1995-1999, kolumnen Medellön. OCH Beteendevetare-deltabellens rad EXAMENSÅR = 1995-1999, kolumnen Medellön. Inte Samtliga, inte median, inte kvartiler.",
+    "title": "Hitta de två relevanta cellerna",
+    "text": "Du behöver: Ekonomer-deltabellens rad Examensår = 1995–1999, kolumnen Medellön. OCH Beteendevetare-deltabellens rad Examensår = 1995–1999, kolumnen Medellön. Inte Samtliga-raden, inte Median-kolumnen, inte kvartilerna — Median står direkt bredvid Medellön och är den klassiska felavläsningen här.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Läs av medellönerna",
-    "text": "Ekonomer 1995-1999: Medellön ~37 800 kr (raden under '1990-1994' och över '2000-2004'). Beteendevetare 1995-1999: Medellön ~30 240 kr (motsvarande rad i Beteendevetare-deltabellen).",
+    "text": "Ekonomer 1995–1999: Medellön 40 967 kr (raden mellan 1990–1994 och 2000–2004). Beteendevetare 1995–1999: Medellön 33 071 kr (motsvarande rad i Beteendevetare-deltabellen). Kontrollera att du står i Medellön-kolumnen: beteendevetarnas Median för samma rad är 30 248 — ett annat tal, fel kolumn.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Räkna skillnaden absolut",
-    "text": "Ekonomer minus Beteendevetare: 37 800 - 30 240 = 7 560 kr. Det är hur mycket MER ekonomer tjänar i absolut tal.",
+    "text": "Ekonomer minus Beteendevetare: 40 967 − 33 071 = 7 896 kr. Det är hur mycket MER ekonomerna tjänade i absoluta tal per månad.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Konvertera till procent — välj rätt nämnare",
-    "text": "Frågan är 'hur många procent HÖGRE'. Då är beteendevetarnas medellön (den LÄGRE) nämnaren: 7 560 / 30 240 ≈ 0,25 = 25%. Hade frågan i stället varit 'hur många procent LÄGRE än ekonomers' skulle nämnaren vara 37 800 och svaret 7 560 / 37 800 ≈ 20%. Olika tal — så formeln måste matcha frågan.",
+    "text": "Frågan är 'hur många procent HÖGRE'. Då är beteendevetarnas medellön (den lägre, 33 071) nämnaren: 7 896 / 33 071 ≈ 0,24 = cirka 24 %. Hade frågan i stället varit 'hur många procent LÄGRE var beteendevetarnas lön' skulle nämnaren vara 40 967 och svaret 7 896 / 40 967 ≈ 19 % — ett annat tal, så formeln måste matcha frågan.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Verifiera via kvotmultiplikation",
-    "text": "Kvot ekonomer / beteendevetare = 37 800 / 30 240 ≈ 1,25. Kvot 1,25 = 25 procent högre. Konsistent. Som dubbelcheck: 30 240 × 1,25 = 37 800 — exakt. Avläsningen håller.",
+    "title": "Snabb huvudräkningsväg",
+    "text": "Avrunda: 41 000 / 33 000 ≈ 1,24. En kvot på 1,24 = 24 procent högre. Kontroll åt andra hållet: 33 000 × 1,25 = 41 250, vilket ligger strax över 40 967 — så den sanna procenten är strax under 25. Bland alternativen 15/25/35/45 är det entydigt 25.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Vad skiljer 1995-1999 från Samtliga?",
-    "text": "Samtliga för ekonomer (~36 654 kr) skiljer sig från deras 1995-1999 (~37 800). Skillnad knappa 1 200 kr. Att råka läsa Samtliga i stället för 1995-1999 förskjuter beräkningen. På samma sätt för beteendevetare: Samtliga (~30 199) vs 1995-1999 (~30 240). Skillnaderna är små men kan kasta runt svaret om båda används fel.",
+    "title": "Vad skiljer 1995–1999 från Samtliga?",
+    "text": "Ekonomernas Samtliga-medellön är 36 554 kr — klart lägre än deras 1995–1999-medellön 40 967. Beteendevetarnas Samtliga är 30 199 vs 33 071 för 1995–1999. Läser du Samtliga-raden av misstag jämför du fel population; kvoten råkar bli snarlik (36 554 / 30 199 ≈ 1,21) men det är fel celler och det är inte alltid du har den turen.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Korsa procenten mot svarsalternativen",
-    "text": "Alternativen är 15, 25, 35 och 45 procent. 25% är ensamt klart närmast 25 — definitivt över 15, klart under 35 och 45. Facit fastslår B.",
+    "text": "Beräknat: cirka 24 %. Alternativen är 15, 25, 35 och 45. Avståndet till 25 är 1 procentenhet; till 15 är det 9. Alternativen ligger 10 enheter isär just för att en korrekt avläsning ska landa entydigt — svaret är B, 25 procent högre.",
     "tier": "essential"
    },
    {
     "n": 10,
-    "title": "Sanity-check via gross överblick",
-    "text": "Ekonomers Samtliga-medellön (~36 654) ligger högre än Beteendevetares Samtliga (~30 199) — kvot ~1,21. Det är konsistent med att även i 1995-1999-raden är kvoten kring 1,25. Om kvoten hade legat på 1,45 skulle ekonomers Samtliga ligga vid ~43 800, vilket den inte gör. Avläsningen håller.",
+    "title": "Sanity-check via Samtliga-raderna",
+    "text": "Grov rimlighetskoll: även på Samtliga-nivå tjänar ekonomer mer än beteendevetare (36 554 vs 30 199, kvot ≈ 1,21). Att kvoten för 1995–1999-kullen ligger kring 1,24 är helt konsistent. Hade kvoten varit 1,45 skulle ekonomernas 1995–1999-medellön behövt vara 33 071 × 1,45 ≈ 48 000 — men tabellen visar 40 967. Avläsningen håller.",
     "tier": "detail"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är B (25 procent). Insikten i en mening: 'N procent högre än X' = jämför mot X som nämnare, inte mot den högre lönen — fel nämnare ger fel svar i samma data.",
+    "title": "Slutsats",
+    "text": "Svaret är B (25 procent högre). Insikten i en mening: 'N procent högre än X' = räkna skillnaden och dela med X, den lägre lönen — och läs av exakt rätt rad (1995–1999, inte Samtliga) och exakt rätt kolumn (Medellön, inte Median).",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'hur många procent högre/lägre'-frågor: hitta båda värdena i exakt rätt rad (samma kategori, samma år), räkna skillnaden, dela med RÄTT nämnare. 'Procent högre' = dela med det lägre värdet; 'procent lägre' = dela med det högre. Triggern: 'N procent X-er än' → identifiera den lägre/högre och välj rätt nämnare."
+  "technique": "DTK-strategi för 'hur många procent högre/lägre'-frågor i tabeller: hitta båda värdena i exakt rätt rad (samma examensårsperiod) och exakt rätt kolumn (Medellön, inte Median), räkna skillnaden, dela med RÄTT nämnare. 'Procent högre' = dela med det lägre värdet; 'procent lägre' = dela med det högre. Triggern: 'N procent X-er än' → identifiera referensvärdet och välj rätt nämnare."
  },
  "var-2018-1-kvant1-DTK-039": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": "DTK-TACTIC-002",
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "3 hamnområden är frestande om du bara räknar de mest synliga 'stora papperspilarna' (de tjockaste, 800+ kategorin) och missar mellankategorin 400-799. Det är lätt att underräkna när man fokuserar på extremerna.",
-    "why_wrong": "Frågan gäller MINST 400 000 ton — det inkluderar BÅDE kategorin 400-799 OCH kategorin 800+. Som steg 4 betonar måste du räkna båda klasserna. Facit fastslår 5 hamnområden (alternativ C). Att bara räkna 800+ ger för få."
+    "why_tempting": "3 lockar om du bara hinner räkna de mest iögonfallande papper-exporterna längs Norrlandskusten (Haparanda–Skellefteå, Umeå–Sundsvall, Hudiksvall–Gävle) och slutar skanna innan du når Mälardalen.",
+    "why_wrong": "Även Norrtälje–Nynäshamn och Södertälje–Norrköping har tjocka gråskuggade papper-pilar som pekar ut från kusten. En fullständig skanning av alla 13 områden ger 5, inte 3."
    },
    {
     "letter": "B",
-    "why_tempting": "4 hamnområden är frestande som ett 'mellansvar' — du har räknat några av de uppenbara papper-exporterna men missar ett. Möjligt att du glömt att inkludera ett område där papper-pilen är medeltjock (400-799) eller där export och import är blandade på samma område.",
-    "why_wrong": "En noggrann genomgång av alla 13 hamnområden ger 5 områden med papper-export över 400 000 ton — inte 4. Som steg 5 visar måste du systematiskt skanna varje område för papper-mönstret med rätt tjocklek + utåt-riktning. Facit fastslår C (5)."
+    "why_tempting": "4 är det klassiska 'missade en'-svaret — lätt hänt om du hoppar över Norrtälje–Nynäshamn (vars grå pil ligger direkt under en svart trä-pil och är lätt att avfärda som samma pil) eller missar Södertälje–Norrköping i det täta pilklustret.",
+    "why_wrong": "Räkna om med tre-filters-metoden: fem områden har en tjock gråskuggad pil utåt — Haparanda–Skellefteå, Umeå–Sundsvall, Hudiksvall–Gävle, Norrtälje–Nynäshamn och Södertälje–Norrköping. Det är 5, inte 4."
    },
    {
     "letter": "D",
-    "why_tempting": "7 hamnområden är frestande om du räknar alla områden med PAPPER-PIL (oavsett tjocklek) — alltså även de tunna 40-399 pilarna. Eller om du blandar in papper-IMPORT (pilar in mot kust) i räkningen.",
-    "why_wrong": "Frågan kräver MINST 400 000 ton och EXPORT (pil från kust utåt). De tunna 40-399 papper-pilarna räknas INTE (de är under 400-tröskeln). Och pilar som pekar mot kusten är import, inte export. Som steg 3 påpekar: båda kriterierna måste gälla samtidigt. Facit fastslår C (5)."
+    "why_tempting": "7 lockar om du räknar ALLA områden med någon gråskuggad papper-pil oavsett tjocklek — då smyger sig t.ex. västkustens tunna 40–399-pilar in — eller om du även räknar pilar som pekar MOT kusten (import, som Vänerns grå pil).",
+    "why_wrong": "Frågan kräver både ≥400 000 ton OCH export. De tunna 40–399-pilarna faller på tröskeln, och pilar mot kusten är import. Bara 5 områden passerar alla tre filtren."
    }
   ],
-  "pitfall": "Den klassiska DTK-fällan på flödeskartor är att blanda ihop (a) mönster (trä vs pappersmassa vs papper), (b) tjocklek (tonklass), eller (c) riktning (import vs export). Tre filter samtidigt — och du måste tillämpa alla tre innan du räknar med. Botemedlet: gå systematiskt område för område och notera bara de PAPPER-pilar som pekar UTÅT FRÅN KUSTEN och är i klassen 400-799 eller 800+.",
+  "pitfall": "Den klassiska DTK-fällan på flödeskartor är att blanda ihop (a) mönster (trä = helsvart, pappersmassa = vit/randig, papper = gråskuggad), (b) tjocklek (tonklass) och (c) riktning (import mot kusten vs export från kusten). Alla tre filter måste stämma innan ett område räknas med. Botemedlet: gå systematiskt område för område och bocka bara av de GRÅSKUGGADE pilar som pekar UT från kusten och är i klassen 400–799 eller 800–.",
   "pregrade_tactic": {
    "handle": "Tre-filter-per-område",
-   "move": "För varje hamnområde, tillämpa tre filter: (1) papper-mönstret (legendens nedersta block), (2) tjocklek ≥400-799, (3) riktning UTÅT från kusten. Bocka av bara de som passerar alla tre. Räkna sedan."
+   "move": "För varje hamnområde, tillämpa tre filter: (1) papper-mönstret (gråskuggad pil, legendens nedersta block), (2) tjocklek i klass 400–799 eller 800–, (3) riktning UT från kusten. Bocka av bara de som passerar alla tre. Räkna sedan."
   },
-  "solution_path": "Facit fastslår C (5 hamnområden). Identifiera papper-mönstret i legenden (nedersta blocket, tre tjockleksklasser). Pilarna pekar FRÅN kusten utåt = export. Skanna alla 13 hamnområden för papper-pilar i klassen 400-799 eller 800+ som pekar utåt. Bland kandidaterna landar 5 områden på kriteriet (typiskt: Hudiksvall-Gävle, Norrtälje-Nynäshamn, Södertälje-Norrköping, Västervik-Kalmar, Haparanda-Skellefteå eller liknande beroende på exakt avläsning).",
+  "solution_path": "Kartan visar 13 hamnområden med pilar för trä (helsvarta), pappersmassa (vita/randiga med dubbla linjer) och papper (gråskuggade). Bildtexten säger att pil riktad från kusten avser export. 'Minst 400 000 ton' = pilklasserna 400–799 och 800– (de två tjocka gråskuggade papper-pilarna i legenden). Skanna alla områden efter en tjock grå papper-pil som pekar UT från kusten: Haparanda–Skellefteå, Umeå–Sundsvall, Hudiksvall–Gävle, Norrtälje–Nynäshamn och Södertälje–Norrköping har alla en sådan pil. Övriga områden (t.ex. Västervik–Kalmar, Vänern, västkusten) har antingen ingen papper-pil, bara en tunn (40–399) eller en som pekar mot kusten (import). Det ger exakt 5 hamnområden = alternativ C.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: hur många hamnområden exporterade MINST 400 000 ton papper? Svarsalternativ: 3, 4, 5 eller 7. Facit fastslår 5 (alternativ C). Du behöver räkna ut antalet hamnområden som uppfyller en specifik kombination av mönster + tjocklek + riktning.",
+    "text": "Frågan: hur många hamnområden exporterade MINST 400 000 ton papper? Alternativen är 3, 4, 5 och 7. Du ska alltså räkna antalet områden som uppfyller tre villkor samtidigt: rätt varugrupp (papper), rätt tjocklek (≥400) och rätt riktning (export).",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Orientera dig på kartan",
-    "text": "Kartan visar Sverige med 13 hamnområden markerade längs kusterna och vid Vänern. Varje område har upp till tre pilar utgående — en per varugrupp: trä, pappersmassa, papper. Pilarnas tjocklek visar tonintervallen i tusental ton, och pilens riktning visar import (mot kusten) eller export (från kusten).",
+    "text": "Kartan visar Sverige med 13 hamnområden längs kusterna, vid Mälaren och vid Vänern. Vid varje område finns en knippe pilar — en pil per varugrupp och riktning. Pilens mönster visar varugrupp, tjockleken visar tonklass och riktningen visar import (mot kusten) eller export (från kusten).",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Läs legenden bokstavligt: papper-mönstret",
-    "text": "Legenden längst till vänster har tre block: Trä (helt svarta pilar), Pappersmassa (hatchade/lined pilar), Papper inkl. papp (randiga/dottade pilar). Varje block har tre tjocklekar: 1000-tal ton 40-399 (tunn), 400-799 (medeltjock), 800+ (mycket tjock). Vi söker PAPPER-mönstret i de två tjockaste klasserna (≥400-799).",
+    "text": "Legenden har tre block. Trä: helsvarta pilar i tre tjocklekar (40–399, 400–799, 800–). Pappersmassa: vita/randiga pilar med dubbla linjer i bara TVÅ tjocklekar (40–399, 400–800). Papper (inkl. papp): gråskuggade pilar i tre tjocklekar (40–399, 400–799, 800–). Vi söker de GRÅSKUGGADE pilarna — och bara de två tjockare klasserna.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Förstå tröskeln 400 000 ton",
-    "text": "Frågan säger 'minst 400 000 ton' = ≥400. Det innefattar klassen 400-799 OCH klassen 800+. Det innefattar INTE klassen 40-399. Du letar alltså efter de två tjockare papper-pilkategorierna.",
+    "text": "Skalan är i 1000-tal ton, så 'minst 400 000 ton' = klass 400–799 ELLER klass 800–. Den tunna klassen 40–399 räknas inte. Visuellt: bara de två tjocka gråskuggade pilvarianterna kvalar in.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Förstå riktningen: export = pil från kusten",
-    "text": "Bildtexten under kartan säger uttryckligen: 'Pil riktad mot kusten avser import och pil riktad från kusten avser export.' Vi vill ha EXPORT, alltså pilar som pekar UTÅT från kusten (för västkusten betyder det åt vänster/västerut, för östkusten åt höger/österut, etc.).",
+    "text": "Bildtexten under kartan säger uttryckligen: 'Pil riktad mot kusten avser import och pil riktad från kusten avser export.' På östkusten pekar exportpilar alltså åt höger (ut mot havet), importpilar åt vänster (in mot land) — och omvänt på västkusten.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Strategi: ett område i taget",
-    "text": "Gå igenom de 13 hamnområdena systematiskt. För varje område, fråga: finns det en papper-pil (randigt/dottat mönster) i klassen 400-799 eller 800+ som pekar UTÅT från kusten? Ja → räkna med, Nej → hoppa över.",
+    "text": "Gå igenom alla 13 hamnområden systematiskt, uppifrån och ned. För varje område, fråga: finns en gråskuggad papper-pil i tjock klass (400–799 eller 800–) som pekar UT från kusten? Ja → räkna med. Nej → hoppa över.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Skanna norra östkusten",
-    "text": "Haparanda-Skellefteå, Umeå-Sundsvall, Hudiksvall-Gävle: dessa är stora skogsindustriområden med tydliga utgående pilar. Sök papper-mönstret i utgående pilar. Markera de som har papper-pil ≥400. Vanligen 2-3 av dessa kvalar in.",
+    "title": "Skanna norra östkusten — tre träffar",
+    "text": "Haparanda–Skellefteå: nedersta pilen i knippet är en tjock gråskuggad pil som pekar åt höger (ut från kusten) — papper-export ≥400. Träff. Umeå–Sundsvall: högerspalten har längst ned en tjock grå pil åt höger. Träff. Hudiksvall–Gävle: samma mönster, tjock grå pil åt höger längst ned till höger. Träff. Tre områden hittills.",
     "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Skanna mellan- och södra östkusten",
-    "text": "Norrtälje-Nynäshamn, Mälaren (inland), Södertälje-Norrköping, Västervik-Kalmar, Gotland, Karlskrona-Trelleborg: skanna papper-utåt-pilar. Vanligen ytterligare 1-2 kvalar in här.",
+    "title": "Skanna mellersta östkusten — två träffar till",
+    "text": "Norrtälje–Nynäshamn: under den svarta trä-pilen finns en tjock gråskuggad pil åt höger — papper-export ≥400. Träff (fyra). Södertälje–Norrköping: högerspalten har längst ned en tjock grå pil åt höger. Träff (fem). Mälaren har bara två tunna pilar — ingen träff.",
     "tier": "essential"
    },
    {
     "n": 9,
-    "title": "Skanna västkusten + Vänern",
-    "text": "Malmö-Helsingborg, Halmstad-Varberg, Stenungsund-Strömstad, Hamnar vid Vänern: kontrollera papper-utåt-pilar. Vissa områden saknar papper-pil överlag (de exporterar trä eller pappersmassa men inte papper) eller har bara tunn papper-pil (40-399, faller bort).",
+    "title": "Skanna resten — inga fler träffar",
+    "text": "Västervik–Kalmar: en tjock svart trä-pil mot kusten (import) och tunna pilar utåt — ingen tjock grå papper-pil. Gotland: en enda tunn pil. Karlskrona–Trelleborg och Malmö–Helsingborg: svarta och vita/tunna pilar, ingen tjock grå utåt. Halmstad–Varberg och Stenungsund–Strömstad: papper-pilarna är tunna (40–399). Hamnar vid Vänern: den gråskuggade pilen är tunn och pekar mot kusten (import). Ingen av dessa kvalar in.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Summera och korsa mot alternativen",
-    "text": "Totalt blir det 5 hamnområden där papper-export är ≥400 000 ton. Alternativen är 3, 4, 5, 7. Facit fastslår C (5). Skillnaderna mellan alternativen är 1-3, så även en någorlunda noggrann räkning räcker.",
+    "text": "Träffarna är exakt fem: Haparanda–Skellefteå, Umeå–Sundsvall, Hudiksvall–Gävle, Norrtälje–Nynäshamn och Södertälje–Norrköping. Alternativen är 3, 4, 5, 7 — svaret är C (5).",
     "tier": "essential"
    },
    {
     "n": 11,
-    "title": "Sanity-check: papper är pappersindustrins huvudprodukt",
-    "text": "Sverige är en stor pappersexporterande nation, så det är inte konstigt att flera hamnområden exporterar minst 400 000 ton papper. Det är rimligt att svaret ligger runt 4-6, inte 1-2 eller 8-10. Facits 5 hamnar lagom i det förväntade intervallet.",
+    "title": "Sanity-check: skogsindustrins geografi",
+    "text": "Fyra av de fem träffarna ligger längs Norrlandskusten och Mälardalen, där de stora pappersbruken finns — rimligt att just dessa exporterar mest papper. Sverige är en stor pappersexportör, så ett svar runt 5 av 13 områden är trovärdigt.",
     "tier": "detail"
    },
    {
     "n": 12,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är C (5 hamnområden). Insikten i en mening: på flödeskartor måste tre filter (mönster, tjocklek, riktning) tillämpas SAMTIDIGT — räkna inte halvvägs, kolla alla tre.",
+    "title": "Slutsats",
+    "text": "Svaret är C (5 hamnområden). Insikten i en mening: på flödeskartor måste tre filter (mönster, tjocklek, riktning) tillämpas SAMTIDIGT — räkna inte förrän alla tre är låsta för varje område.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för flödeskartor med flera varuslag och tjocklekar: tillämpa tre filter samtidigt — mönster (vilken varugrupp), tjocklek (vilken tonklass), riktning (import vs export). Gå systematiskt område för område och räkna bara de pilar som passerar alla tre. Triggern: 'antal hamnområden där X exporterades ≥Y ton' → tre-filters-räkning per område."
+  "technique": "DTK-strategi för flödeskartor med flera varuslag och tjocklekar: tillämpa tre filter samtidigt — mönster (vilken varugrupp), tjocklek (vilken tonklass), riktning (import vs export). Gå systematiskt område för område och räkna bara de pilar som passerar alla tre. Triggern: 'hur många hamnområden exporterade minst Y ton X' → tre-filters-räkning per område."
  },
  "var-2018-1-kvant1-DTK-040": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "framework_id": "DTK-TACTIC-002",
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Haparanda-Skellefteå har stora utgående pilar (nordligaste exporthamn för trä och papper) och kan kännas som ett 'industriområde med mycket flöde'. Det är frestande att gissa på det när villkoren handlar om trä + pappersmassa.",
-    "why_wrong": "Haparanda-Skellefteå har stora UTGÅENDE (export) trä-pilar — alltså är trä-exporten där snarare i den högre klassen, INTE i 40-399 som villkoret kräver. Och trä-importen där är knappast i 800+ klassen. Två av tre villkor brytna. Facit fastslår D (Västervik-Kalmar)."
+    "why_tempting": "Haparanda–Skellefteå klarar faktiskt TVÅ av tre villkor: den har en tjock svart pil in mot kusten (trä-import 800+) och en tunn svart pil utåt (trä-export 40–399). Bockar du av villkor 1 och 2 och slutar där ser A helt rätt ut.",
+    "why_wrong": "Det tredje villkoret fäller A: dess pappersmassa-exportpil är den tunna dubbellinjen, alltså klassen 40–399 — inte 400–800 som frågan kräver. Bara D har den tjockare randiga pappersmassa-pilen utåt."
    },
    {
     "letter": "B",
-    "why_tempting": "Umeå-Sundsvall är centrum för skogsindustrin och har stora flöden av både trä och pappersmassa — det är ett naturligt 'industrihamn'-svar.",
-    "why_wrong": "Umeå-Sundsvall är en EXPORTÖR av trä, inte en stor IMPORTÖR — det finns ingen 800+ trä-pil pekande IN mot kusten där. Som steg 5 visar bryter detta första villkoret. Facit fastslår D, inte B."
+    "why_tempting": "Umeå–Sundsvall har den tjocka svarta pilen in mot kusten (trä-import 800+) och är dessutom skogsindustrins hjärtland — kollar du bara första villkoret kvalar B in direkt.",
+    "why_wrong": "Villkor 2 fäller B: dess trä-EXPORTpil (svart pil utåt) är TJOCK, alltså i högsta klassen — inte 40–399. Frågan kräver en TUNN svart pil utåt, och den finns hos D (och A), inte hos B."
    },
    {
     "letter": "C",
-    "why_tempting": "Hudiksvall-Gävle har också stora flöden av papper och trä, och ligger geografiskt mellan de stora skogslänen — frestande att gissa på 'mitten' om man inte är säker.",
-    "why_wrong": "Hudiksvall-Gävle exporterar mest, har inte den stora 800+ INKOMMANDE trä-pilen som villkoret kräver. Området är netto-EXPORTÖR av skogsprodukter. Som steg 5 betonar: trä-importen måste vara minst 800 000 ton, vilket pekar in mot kusten — det är ett ovanligt mönster bara hos vissa hamnar. Facit fastslår D."
+    "why_tempting": "Hudiksvall–Gävle har samma profil som B: tjock svart pil in mot kusten (trä-import 800+) och stora skogsflöden — frestande om man bara hittat första villkoret och gissar på 'stor skogshamn'.",
+    "why_wrong": "Precis som B faller C på villkor 2: trä-exportpilen är tjock, inte i klassen 40–399. Kravet på en TUNN trä-exportpil utesluter C."
    }
   ],
-  "pitfall": "Den klassiska fällan i kombinationsfrågor på flödeskartor är att hitta ETT av flera villkor och anta att resten också stämmer. Botemedlet: BOCKA AV alla tre villkor explicit (trä-import ≥800, trä-export 40-399, pappersmassa-export 400-800) område för område — först när alla tre stämmer för samma område väljer du det.",
+  "pitfall": "Den klassiska fällan i kombinationsfrågor på flödeskartor är att hitta ETT (eller två) av villkoren och anta att resten också stämmer. Här är fällan extra elak: det första villkoret (trä-import 800+) uppfylls av ALLA fyra alternativen, och A klarar dessutom villkor 2 — det är först det tredje villkoret som pekar ut D. Botemedlet: bocka av alla tre villkor explicit (trä-import 800+, trä-export 40–399, pappersmassa-export 400–800), område för område, hela vägen.",
   "pregrade_tactic": {
    "handle": "Bocka-av-tre-villkor",
-   "move": "Skapa en mental checklista: (1) Trä-pil INÅT, tjocklek 800+. (2) Trä-pil UTÅT, tjocklek 40-399. (3) Pappersmassa-pil UTÅT, tjocklek 400-799. Gå område för område och bocka av — endast Västervik-Kalmar passerar."
+   "move": "Skapa en mental checklista: (1) heldragen svart pil INÅT, tjock (800+). (2) heldragen svart pil UTÅT, tunn (40–399). (3) randig pil UTÅT, den tjockare klassen (400–800). Testa varje villkor mot alla fyra alternativen — villkor 1 sållar inget, villkor 2 fäller B och C, villkor 3 fäller A. Kvar: D."
   },
-  "solution_path": "Facit fastslår D (Västervik-Kalmar). Tre villkor måste gälla samtidigt på samma hamnområde: trä-import (svart pil INÅT mot kust) i tjocklekklassen 800+, trä-export (svart pil UTÅT) i klassen 40-399, samt pappersmassa-export (hatchad pil UTÅT) i klassen 400-799. Bara Västervik-Kalmar uppfyller alla tre — alternativen A-C bryter mot minst ett villkor.",
+  "solution_path": "Tre villkor måste gälla samtidigt i samma hamnområde: trä-import (heldragen svart pil MOT kusten) i klassen 800+, trä-export (heldragen svart pil FRÅN kusten) i klassen 40–399, samt pappersmassa-export (randig pil FRÅN kusten) i klassen 400–800. Villkor 1 sållar inget: alla fyra alternativen har en tjock svart pil in mot kusten. Villkor 2 fäller B (Umeå–Sundsvall) och C (Hudiksvall–Gävle), vars trä-exportpilar är tjocka, inte tunna. Villkor 3 fäller A (Haparanda–Skellefteå), vars pappersmassa-exportpil är den tunna dubbellinjen (40–399). Bara D (Västervik–Kalmar) klarar alla tre: tjock svart pil inåt, tunn svart pil utåt och den tjockare randiga pilen utåt.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilket hamnområde har trä-import ≥800 000 ton, trä-export 40-399 000 ton, OCH pappersmassa-export 400-800 000 ton? Tre villkor, alla måste stämma. Facit fastslår D (Västervik-Kalmar).",
+    "text": "Frågan: vilket hamnområde har trä-import minst 800 000 ton, trä-export 40 000–399 000 ton OCH pappersmassa-export 400 000–800 000 ton? Tre villkor — alla måste stämma i samma område.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Orientera dig på kartan + legenden",
-    "text": "Kartan: 13 hamnområden, pilar i tre mönster (trä=svart, pappersmassa=hatchad, papper=dottad/randig) och tre tjocklekar (40-399 tunn, 400-799 medeltjock, 800+ tjock). Pil mot kusten = import, pil från kusten = export. Vi söker en kombination som är ovanlig.",
+    "title": "Läs legenden noga",
+    "text": "Trä = heldragen svart pil i tre tjocklekar (tunn 40–399, medeltjock 400–799, tjock 800+). Pappersmassa = randig pil med bara TVÅ klasser: tunn dubbellinje 40–399 och en tjockare randig 400–800. Papper = gråprickig pil. Pil riktad MOT kusten = import, pil riktad FRÅN kusten = export (står i figurtexten). Allt i tusental ton.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Översätt villkoren till visuella mönster",
-    "text": "Villkor 1: Trä-import ≥800 = SVART, TJOCK pil pekande IN mot kusten. Villkor 2: Trä-export 40-399 = SVART, TUNN pil pekande UT från kusten. Villkor 3: Pappersmassa-export 400-799 = HATCHAD, MEDELTJOCK pil pekande UT från kusten. Tre olika pilar måste alla finnas i samma hamnområde.",
+    "title": "Översätt villkoren till pilar",
+    "text": "Villkor 1: TJOCK heldragen svart pil pekande IN mot kusten (trä-import 800+). Villkor 2: TUNN heldragen svart pil pekande UT från kusten (trä-export 40–399). Villkor 3: den TJOCKARE randiga pilen pekande UT (pappersmassa-export 400–800). Tre olika pilar, samma hamnområde.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Vad är ovanligt med trä-import 800+?",
-    "text": "Sverige är trä-EXPORTÖR netto. En hamn som IMPORTERAR mycket trä (800+ klassen) är ovanligt — det är hamnar som tar emot stora mängder utländsk trä, troligen för att förse en industrigren med råvara. Att leta efter den ovanliga 'in mot kust + 800+'-svart-pilen är genvägen — den finns bara hos enstaka hamnar.",
-    "tier": "detail"
+    "title": "Villkor 1 sållar inget alternativ",
+    "text": "Kolla alternativen: Haparanda–Skellefteå, Umeå–Sundsvall, Hudiksvall–Gävle och Västervik–Kalmar har ALLA en tjock svart pil in mot kusten — trä-import 800+ finns hos samtliga fyra. Första villkoret skiljer alltså inte alternativen åt; låt det inte lura dig att välja tidigt.",
+    "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Skanna kandidaterna efter tjock svart pil INÅT",
-    "text": "Gå genom alternativen A (Haparanda-Skellefteå), B (Umeå-Sundsvall), C (Hudiksvall-Gävle), D (Västervik-Kalmar). Sök tjock SVART pil PEKANDE MOT kusten. A och B och C är stora skogsexporthamnar med trä-pilar UTÅT, inte inåt med 800+ tjocklek. D (Västervik-Kalmar) på sydostkusten har en sådan tjock svart pil pekande inåt (västerut, mot kusten).",
+    "title": "Villkor 2 fäller B och C",
+    "text": "Titta på den svarta pilen som pekar UT från kusten hos varje område. Hos Umeå–Sundsvall och Hudiksvall–Gävle är trä-exportpilen TJOCK — högsta klassen, inte 40–399. Båda faller på villkor 2. Kvar står A och D, som båda har en TUNN svart pil utåt.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Kontrollera villkor 2 hos D: trä-export 40-399",
-    "text": "Vid Västervik-Kalmar finns också en TUNN svart pil pekande utåt (österut, från kusten). Den tunna svarta pilen = trä-export i klassen 40-399. Villkoret stämmer.",
+    "title": "Villkor 3 fäller A",
+    "text": "Hos Haparanda–Skellefteå är pappersmassa-exportpilen den TUNNA dubbellinjen, dvs. 40–399 — inte 400–800 som villkoret kräver. A klarar villkor 1 och 2 men faller på det tredje.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Kontrollera villkor 3 hos D: pappersmassa-export 400-800",
-    "text": "Vid Västervik-Kalmar finns dessutom en MEDELTJOCK HATCHAD pil pekande utåt — pappersmassa-export i klassen 400-799. Det tredje villkoret stämmer också.",
+    "title": "Verifiera alla tre villkor hos D",
+    "text": "Västervik–Kalmar: tjock heldragen svart pil in mot kusten (trä-import 800+) — bock. Tunn heldragen svart pil ut från kusten (trä-export 40–399) — bock. Den tjockare randiga pilen ut från kusten (pappersmassa-export 400–800) — bock. Alla tre villkor uppfyllda.",
     "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Verifiera att A, B, C INTE uppfyller alla tre",
-    "text": "Haparanda-Skellefteå: trä-export är TJOCK (800+), inte tunn — fel kategori. Umeå-Sundsvall: inga 800+ trä-pilar INÅT — fel riktning på den stora träpilen. Hudiksvall-Gävle: stora EXPORTflöden, ingen 800+ import-pil för trä. Alla tre faller på minst ett villkor.",
-    "tier": "essential"
-   },
-   {
-    "n": 9,
-    "title": "Vad betyder att tre villkor sammanfaller?",
-    "text": "Frågan är konstruerad så att exakt ett område passar alla tre filter. Det är typiskt för 'vilket hamnområde avses'-frågor: kombinationen är unikt särskiljande. Du behöver alltså inte mäta exakt — du behöver bara verifiera att alla tre villkor uppfylls hos ETT alternativ och brister hos de andra tre.",
+    "title": "Varför sista villkoret är avgörande",
+    "text": "Frågan är konstruerad så att exakt ett område passar alla filter — och här är det just det TREDJE villkoret som skiljer A från D. Slutar du bocka av efter två villkor ser A helt rätt ut. Kör alltid checklistan hela vägen.",
     "tier": "detail"
    },
    {
-    "n": 10,
+    "n": 9,
     "title": "Korsa mot svarsalternativen",
-    "text": "A (Haparanda-Skellefteå): trä-import fel kategori → nej. B (Umeå-Sundsvall): trä-import fel riktning → nej. C (Hudiksvall-Gävle): trä-import fel riktning → nej. D (Västervik-Kalmar): alla tre villkor uppfyllda → JA. Facit fastslår D.",
+    "text": "A (Haparanda–Skellefteå): faller på villkor 3 (pappersmassa-export 40–399) → nej. B (Umeå–Sundsvall): faller på villkor 2 (trä-export tjock) → nej. C (Hudiksvall–Gävle): faller på villkor 2 (trä-export tjock) → nej. D (Västervik–Kalmar): alla tre uppfyllda → JA.",
     "tier": "essential"
    },
    {
-    "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är D (Västervik-Kalmar). Insikten i en mening: 'vilket hamnområde avses'-frågor lägger flera filter över varandra — gå område för område och bocka av varje villkor explicit innan du väljer.",
+    "n": 10,
+    "title": "Slutsats",
+    "text": "Svaret är D (Västervik–Kalmar). Insikten i en mening: i 'vilket hamnområde avses'-frågor lägger provet flera filter över varandra — bocka av VARJE villkor mot VARJE alternativ, för det villkor som ser viktigast ut (här trä-import 800+) kan visa sig sålla ingenting alls.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'vilket område matchar villkoren X, Y, Z'-frågor: gör en checklista av villkoren först (mönster + tjocklek + riktning per villkor), gå område för område, bocka av varje villkor separat. Det område som passerar alla bockar är svaret. Triggern: 'flera samtidiga krav om import/export' → checklista, inte gissning från områdets storlek eller läge."
+  "technique": "DTK-strategi för \"vilket område matchar villkoren X, Y, Z\"-frågor på flödeskartor: gör en checklista av villkoren först (varutyp = pilmönster, klass = tjocklek, import/export = riktning), och testa varje villkor mot ALLA alternativ innan du väljer. Börja med det villkor som sållar hårdast — här sållar villkor 1 (trä-import 800+) ingenting alls, medan villkor 2 och 3 gör hela jobbet. Triggern: \"flera samtidiga krav om import/export\" → checklista, inte gissning från områdets storlek eller läge."
  },
  "var-2018-1-kvant1-KVA-014": {
   "solution_path": "I = 50/9 ≈ 5,56. II = 80. Per facit B: II > I. Räkning: 80 >> 5,56. Eller annan tolkning där I och II är båda nära varandra. Per facit B: II > I.",

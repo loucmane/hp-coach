@@ -301,102 +301,102 @@
  },
  "host-ver1-2019-kvant1-DTK-032": {
   "_meta": {
-   "generated_at": "2026-05-17",
-   "model": "claude-opus-4-7",
-   "recipe": "variant-c-ultra-granular"
+   "generated_at": "2026-07-08",
+   "model": "claude-fable-5",
+   "recipe": "figure-grounded-medfix-v1"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "5 är det HÖGSTA svarsalternativet och alla sex platserna är ungefär 'i mitten' av kvicksilver-diagrammet 1991–1992. Om du tittar slarvigt och tänker 'de flesta gick ner' kan du landa på 5.",
-    "why_wrong": "Som steg 7 visar måste 5 platser minska 1992 jämfört med 1991 — men då finns det bara EN plats kvar som ÖKAR. Vid noggrann avläsning av varje platss linje 1991→1992 ser du att fler än en plats ökar eller är i princip oförändrad. Facit fastslår C (3)."
+    "why_tempting": "5 är det högsta alternativet, och efter 1991 års toppar (Ängskärsklubb uppe vid ≈ 81) ser hela diagrammet ut att 'sjunka ihop' mot 1992. Tittar du på helhetsintrycket i stället för linje för linje kan det kännas som att nästan allt gick ner.",
+    "why_wrong": "5 minskningar kräver att ALLA fem platser med data går ner — men Fladen (fylld kvadrat) stiger tydligt från ≈ 25 till ≈ 37, och Harufjärden (fylld cirkel) ligger kvar kring 46–47. Bara tre av fem minskar."
    },
    {
     "letter": "B",
-    "why_tempting": "4 ligger nära 'majoriteten av sex platser minskade' utan att vara den dramatiskt stora siffran 5. Det är psykologiskt frestande att avrunda uppåt om man är osäker mellan 3 och 4.",
-    "why_wrong": "Som steg 6 betonar måste varje plats granskas separat med fokus på exakt 1991-värdet och exakt 1992-värdet — inte på trenden runt om. Vid noggrann tick-avläsning för var och en av de sex platserna ger exakt tre platser en minskning. Facit fastslår C."
+    "why_tempting": "4 lockar om du räknar in Harufjärden: dess fyllda cirkel ligger nästan stilla kring 46–47, och på ögonmått är det lätt att avrunda 'nästan platt' till 'liten minskning' — då blir det fyra kryss i stället för tre.",
+    "why_wrong": "Läs Harufjärdens två punkter noga: 1992-punkten ligger inte under 1991-punkten (≈ 46 → ≈ 47, om något en hårsmån uppåt). En oförändrad eller svagt stigande linje är ingen minskning — kvar står exakt tre: Ängskärsklubb, Landsort, Karlskrona."
    },
    {
     "letter": "D",
-    "why_tempting": "2 kan kännas rätt om du fokuserar på de mest dramatiska minskningarna och ignorerar mindre minskningar som ligger inom någon nanogram. Då räknar du bara de mest synliga rörelserna.",
-    "why_wrong": "Frågan säger 'minskat' — det räcker med en värdeminskning oavsett hur liten. Som steg 8 betonar gäller att räkna ALLA platser där 1992-värdet är lägre än 1991-värdet, även om skillnaden är liten. Tre platser visar minskning. Facit fastslår C."
+    "why_tempting": "2 kan kännas rätt om du bara räknar de mest iögonfallande fallen — Ängskärsklubbs stora ras från ≈ 81 och kanske ett till — och missar en mindre dipp som drunknar i myllret av linjer kring 20–40.",
+    "why_wrong": "Frågan säger 'minskat' — även måttliga minskningar räknas. Landsort (≈ 40 → ≈ 33) och Karlskrona (≈ 29 → ≈ 21) är båda äkta minskningar precis som Ängskärsklubb. Tre platser minskar, inte två."
    }
   ],
   "framework_id": "DTK-TACTIC-005",
-  "pitfall": "Den klassiska DTK-fällan i 'hur många platser/år förändrades'-frågor är att låta dramatiska rörelser dominera ögat och ignorera de små förändringarna. Botemedlet: granska varje plats SEPARAT (en linje i taget), läs av exakt 1991- och 1992-värdet mot y-axelns tick-värden, och pricka ett kryss eller plus efter varje plats — räkna sedan minskningarna.",
-  "solution_path": "Facit fastslår C (3). Det undre diagrammet 'Kvicksilver' visar kvicksilverhalt i muskel från sill/strömming för sex platser (Harufjärden, Ängskärsklubb, Landsort, Karlskrona, Fladen, Väderöarna). För varje plats läser du av värdet 1991 och värdet 1992 mot y-axelns tick-värden (0, 20, 40, ..., 200), och räknar hur många platser där 1992-värdet är lägre än 1991-värdet. Tre platser visar minskning — vilket matchar facit.",
+  "pitfall": "Den klassiska DTK-fällan i 'hur många platser/år förändrades'-frågor är att låta helhetsintrycket och de dramatiska rörelserna styra ögat: en nästan platt linje (Harufjärden) avrundas felaktigt till 'minskning', eller en måttlig dipp (Landsort, Karlskrona) missas i linjemyllret. Botemedlet: granska varje plats SEPARAT (en symbol i taget), läs av exakt 1991- och 1992-värdet mot y-axelns tick-värden, och pricka ett minus eller plus efter varje plats — räkna sedan minusen.",
+  "solution_path": "Det undre diagrammet 'Kvicksilver' visar kvicksilverhalt i muskel från sill/strömming för sex platser: Harufjärden (fylld cirkel), Ängskärsklubb (öppen cirkel), Landsort (fylld triangel), Karlskrona (öppen kvadrat), Fladen (fylld kvadrat) och Väderöarna (öppen triangel, mäts först från 1995). Väderöarna saknar alltså data 1991–1992 och faller bort direkt. För de fem återstående läser du av 1991- och 1992-värdet mot y-axeln (tick 0, 20, 40 … 200): Ängskärsklubb ≈ 81 → ≈ 68 (minskar), Landsort ≈ 40 → ≈ 33 (minskar), Karlskrona ≈ 29 → ≈ 21 (minskar), Harufjärden ≈ 46 → ≈ 47 (i princip oförändrat, snarast en hårsmån uppåt), Fladen ≈ 25 → ≈ 37 (ökar tydligt). Exakt tre platser minskar → alternativ C.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: på hur många av de sex redovisade platserna hade kvicksilverhalten MINSKAT 1992 jämfört med 1991? Svarsformatet är en siffra 2–5. Facit fastslår C (3). Din uppgift är att läsa av kvicksilver-diagrammet plats-för-plats och räkna minskningarna.",
+    "text": "Frågan: på hur många av de redovisade platserna hade kvicksilverhalten MINSKAT 1992 jämfört med 1991? Svarsformatet är en siffra 2–5. Din uppgift är att läsa av kvicksilver-diagrammet plats för plats och räkna minskningarna.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Vilket av de två diagram- men?",
+    "title": "Vilket av de två diagrammen?",
     "text": "Sidan har två diagram. Det övre visar KADMIUM (mikrogram/gram torrvikt) på sex platser inkl. Utlängtan. Det undre visar KVICKSILVER (nanogram/gram färskvikt) på sex platser inkl. Karlskrona (i stället för Utlängtan). Frågan handlar om kvicksilver — använd det UNDRE diagrammet.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Läs legenden bokstavligt",
-    "text": "Den undre legenden listar sex platser med distinkta symboler: Harufjärden (fylld cirkel), Ängskärsklubb (öppen cirkel), Landsort (fylld triangel), Karlskrona (öppen triangel), Fladen (fylld kvadrat), Väderöarna från 1995 (öppen kvadrat — START 1995). Notera att Väderöarna inte ens har data för 1991–1992 (startade 1995).",
+    "text": "Den undre legenden listar sex platser med distinkta symboler: Harufjärden (fylld cirkel), Ängskärsklubb (öppen cirkel), Landsort (fylld triangel), Karlskrona (öppen kvadrat), Fladen (fylld kvadrat) och Väderöarna (öppen triangel, med tillägget 'från 1995'). Notera att Väderöarna inte ens har data för 1991–1992 — mätningarna startar 1995.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Väderöarna eliminerad direkt",
-    "text": "Eftersom Väderöarna börjar mätas 1995, har den platsen ingen 1991→1992-jämförelse. Av de återstående fem platserna (Harufjärden, Ängskärsklubb, Landsort, Karlskrona, Fladen) ska du räkna hur många som har lägre värde 1992 än 1991. Det är därmed max 5 minskningar — men eftersom svarsalternativen går upp till 5 räknas en eventuell minskning på Väderöarna inte alls.",
+    "text": "Eftersom Väderöarna börjar mätas 1995 finns ingen 1991→1992-jämförelse för den platsen. Av de återstående fem platserna (Harufjärden, Ängskärsklubb, Landsort, Karlskrona, Fladen) ska du räkna hur många som har lägre värde 1992 än 1991. Max möjliga antal minskningar är alltså 5.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Orientera dig mot y-axeln",
-    "text": "Y-axeln 'Nanogram/gram färskvikt' har printade tick-värden 0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200. X-axeln är år 1980–2005. Mellan tick-värdena finns 20-enhets-intervall, så avläsningar med ungefär 5–10 enheters noggrannhet räcker.",
+    "title": "Orientera dig mot axlarna",
+    "text": "Y-axeln 'Nanogram/gram färskvikt' har printade tick-värden 0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200 — mellan ticken är intervallen 20 enheter, så avläsning med ca 5 enheters noggrannhet räcker. X-axeln är märkt vartannat år (1980, 1982, … 2004); 1991 är det omärkta ticket mellan 1990 och 1992 — sätt fingret där först.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Plats för plats: avläs 1991 och 1992",
-    "text": "För varje plats sätter du fingret först på 1991-x-koordinaten och läser av y-värdet, sedan på 1992-x-koordinaten och läser av det y-värdet, och avgör om det är LÄGRE. Harufjärden (fylld cirkel): 1991 ≈ 40, 1992 ≈ 30 → MINSKAR. Ängskärsklubb (öppen cirkel): 1991 ≈ 70, 1992 ≈ 60 → MINSKAR. Landsort (fylld triangel): 1991 ≈ 35, 1992 ≈ 30 → MINSKAR. Karlskrona (öppen triangel): 1991 ≈ 25, 1992 ≈ 35 → ÖKAR. Fladen (fylld kvadrat): 1991 ≈ 25, 1992 ≈ 30 → ÖKAR.",
+    "text": "För varje plats: läs av y-värdet vid 1991, sedan vid 1992, och avgör om det är LÄGRE. Ängskärsklubb (öppen cirkel): 1991 ≈ 81, 1992 ≈ 68 → MINSKAR. Landsort (fylld triangel): 1991 ≈ 40, 1992 ≈ 33 → MINSKAR. Karlskrona (öppen kvadrat): 1991 ≈ 29, 1992 ≈ 21 → MINSKAR. Harufjärden (fylld cirkel): 1991 ≈ 46, 1992 ≈ 47 → i princip oförändrat, om något en hårsmån UPPÅT — ingen minskning. Fladen (fylld kvadrat): 1991 ≈ 25, 1992 ≈ 37 → ÖKAR tydligt.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Räkna minskningarna",
-    "text": "Av de fem relevanta platserna (Väderöarna saknar data 1991–1992) ger tre minskning: Harufjärden, Ängskärsklubb, Landsort. Två ökar eller är oförändrade: Karlskrona, Fladen. Tre minskningar matchar svarsförslag C.",
+    "text": "Av de fem relevanta platserna (Väderöarna saknar data 1991–1992) ger tre minskning: Ängskärsklubb, Landsort och Karlskrona. Två minskar inte: Harufjärden (oförändrad/svagt uppåt) och Fladen (ökar). Tre minskningar.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Vad betyder 'minskat'?",
-    "text": "'Minskat 1992 jämfört med året innan' = 1992-värdet är LÄGRE än 1991-värdet, oavsett hur liten skillnaden är. Det räcker att linjen sluttar nedåt från 1991 till 1992 — även små minskningar räknas. Du letar alltså inte efter 'stora minskningar' utan efter alla platser där linjens 1991-punkt ligger ÖVER linjens 1992-punkt.",
+    "text": "'Minskat 1992 jämfört med året innan' = 1992-värdet är LÄGRE än 1991-värdet, oavsett hur liten skillnaden är. Även Landsorts måttliga dipp (≈ 40 → ≈ 33) räknas fullt ut. Omvänt räknas Harufjärden INTE — dess linje går inte nedåt mellan 1991 och 1992, hur nära det än ser ut på håll.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Sanity-check: prick av symboler",
-    "text": "Repris med kryss/plus: Harufjärden (fylld cirkel) − minskar. Ängskärsklubb (öppen cirkel) − minskar. Landsort (fylld triangel) − minskar. Karlskrona (öppen triangel) − ökar. Fladen (fylld kvadrat) − ökar. Tre minus, två plus, en utan data (Väderöarna). Tre minskningar.",
+    "text": "Repris med kryss/plus: Ängskärsklubb (öppen cirkel) − minskar. Landsort (fylld triangel) − minskar. Karlskrona (öppen kvadrat) − minskar. Harufjärden (fylld cirkel) + oförändrad/uppåt. Fladen (fylld kvadrat) + ökar. Väderöarna (öppen triangel) — ingen data. Tre minus, två plus, en utan data. Tre minskningar.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Plocka närmaste svarsalternativ",
-    "text": "Bland 5 (A), 4 (B), 3 (C), 2 (D) matchar din räkning exakt 3 → alternativ C. Facit fastslår C.",
+    "title": "Plocka rätt svarsalternativ",
+    "text": "Bland 5 (A), 4 (B), 3 (C), 2 (D) matchar din räkning exakt 3 → alternativ C.",
     "tier": "essential"
    },
    {
     "n": 11,
-    "title": "Slutsats med facit-bekräftelse",
-    "text": "Facit bekräftar: svaret är C (3). Insikten i en mening: när frågan gäller 'hur många platser/år förändrades' — granska varje plats/linje SEPARAT mellan de två exakta x-koordinaterna och räkna varje minskning, oavsett storlek.",
+    "title": "Insikten i en mening",
+    "text": "Svaret är C (3). Insikten i en mening: när frågan gäller 'hur många platser/år förändrades' — granska varje plats/linje SEPARAT mellan de två exakta x-koordinaterna och räkna varje äkta minskning, varken fler eller färre.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för räkningsfrågor på linjediagram: jobba ENT plats/linje i taget. För varje: läs av y-värdet i båda specifika x-värdena mot tick-värdena, jämför, kryssa eller plussa. Summera krys efter att alla platser är prickade. Triggern: 'på hur många platser/för hur många år ökade/minskade X mellan A och B' → systematisk plats-för-plats-räkning, inte helhetsintryck.",
+  "technique": "DTK-strategi för räkningsfrågor på linjediagram: jobba EN plats/linje i taget. För varje: läs av y-värdet vid båda de specifika x-värdena mot tick-värdena, jämför, kryssa eller plussa. Summera kryssen efter att alla platser är prickade. Triggern: 'på hur många platser/för hur många år ökade/minskade X mellan A och B' → systematisk plats-för-plats-räkning, inte helhetsintryck.",
   "pregrade_tactic": {
    "handle": "Plats-för-plats-prick",
-   "move": "I undre diagrammet (Kvicksilver), gå igenom de fem platserna med 1991–1992-data och kryssa varje plats där 1992 ligger under 1991. Du ska få tre kryss: Harufjärden, Ängskärsklubb, Landsort."
+   "move": "I undre diagrammet (Kvicksilver): hitta det omärkta 1991-ticket mellan 1990 och 1992, gå igenom de fem platserna med 1991–1992-data och kryssa varje plats där 1992-punkten ligger under 1991-punkten. Du ska få tre kryss: Ängskärsklubb, Landsort, Karlskrona."
   }
  },
  "host-ver1-2019-kvant1-DTK-033": {
@@ -423,7 +423,7 @@
    }
   ],
   "framework_id": "DTK-TACTIC-006",
-  "pitfall": "Den klassiska fällan i medelvärdes-DTK är att ögat omedvetet exkluderar \\\"outliers\\\" i botten (Väderöarna ≈ 0,3, Fladen ≈ 0,5) eller toppen (Landsort ≈ 2,55) och snittar de återstående. En andra fälla här är att förväxla de två öppna symbolerna — Utlängtan är öppen kvadrat, Väderöarna öppen triangel. Botemedlet: koppla varje symbol till rätt plats i legenden, läs av varje plats 1997-värde explicit mot tick-värdena, addera och dividera med EXAKT antalet (6).",
+  "pitfall": "Den klassiska fällan i medelvärdes-DTK är att ögat omedvetet exkluderar \"outliers\" i botten (Väderöarna ≈ 0,3, Fladen ≈ 0,5) eller toppen (Landsort ≈ 2,55) och snittar de återstående. En andra fälla här är att förväxla de två öppna symbolerna — Utlängtan är öppen kvadrat, Väderöarna öppen triangel. Botemedlet: koppla varje symbol till rätt plats i legenden, läs av varje plats 1997-värde explicit mot tick-värdena, addera och dividera med EXAKT antalet (6).",
   "solution_path": "I det ÖVRE diagrammet (Kadmium, y-axeln \"Mikrogram/gram torrvikt\" med tick var 0,5:e enhet) läser du av alla sex platsernas värde vid x = 1997: Harufjärden (fylld cirkel) ≈ 1,2; Ängskärsklubb (öppen cirkel) ≈ 2,25; Landsort (fylld triangel) ≈ 2,55 (högst detta år); Utlängtan (öppen kvadrat) ≈ 1,7; Fladen (fylld kvadrat) ≈ 0,5; Väderöarna (öppen triangel, data från 1995) ≈ 0,3 (lägst). Summa ≈ 8,5. Genomsnitt = 8,5 / 6 ≈ 1,4 mikrogram/gram torrvikt, vilket är alternativ B.",
   "steps": [
    {
@@ -459,7 +459,7 @@
    {
     "n": 6,
     "title": "Avläs varje plats 1997-värde",
-    "text": "Vid x = 1997, läs varje markörs höjd mot tick-värdena: Landsort (fylld triangel) ligger strax under 2,5-linjen ≈ 2,55 (högst detta år). Ängskärsklubb (öppen cirkel) knappt över 2,0 ≈ 2,25. Utlängtan (öppen kvadrat) mellan 1,5 och 2,0 ≈ 1,7. Harufjärden (fylld cirkel) drygt 1,0 ≈ 1,2. Fladen (fylld kvadrat) på 0,5-linjen ≈ 0,5. Väderöarna (öppen triangel) strax under 0,5 ≈ 0,3 (lägst).",
+    "text": "Vid x = 1997, läs varje markörs höjd mot tick-värdena: Landsort (fylld triangel) ligger strax över 2,5-linjen ≈ 2,55 (högst detta år). Ängskärsklubb (öppen cirkel) drygt 2,0 ≈ 2,25. Utlängtan (öppen kvadrat) mellan 1,5 och 2,0 ≈ 1,7. Harufjärden (fylld cirkel) drygt 1,0 ≈ 1,2. Fladen (fylld kvadrat) på 0,5-linjen ≈ 0,5. Väderöarna (öppen triangel) strax under 0,5 ≈ 0,3 (lägst).",
     "tier": "essential"
    },
    {
@@ -514,17 +514,17 @@
    {
     "letter": "B",
     "why_tempting": "1998 lockar om du råkar följa fel kurva i kadmium-diagrammet — flera serier korsar varandra i det området och någon av dem passerar 1,5 där, så en slarvig avläsning kan se ut som en träff.",
-    "why_wrong": "Utlängtan (öppen kvadrat) ligger 1998 på ~2,6 mikrogram — det är seriens topp i den perioden och det året som avviker MEST från 1,5 av alla fyra alternativen. Kvicksilvret i Karlskrona ligger dessutom kring 15–19, inte 20. 2005 är enda året där båda stämmer."
+    "why_wrong": "Utlängtan (öppen kvadrat) ligger 1998 på ~2,6 mikrogram — det året avviker MEST från 1,5 av alla fyra alternativen. Kvicksilvret i Karlskrona ligger dessutom kring 18, inte 20. 2005 är enda året där båda stämmer."
    },
    {
     "letter": "C",
     "why_tempting": "2004 klarar faktiskt kadmium-villkoret: Utlängtans öppna kvadrat ligger på ~1,5 både 2004 och 2005, så på övre diagrammet ensamt går de inte att skilja åt.",
-    "why_wrong": "Avgörandet ligger i undre diagrammet: Karlskronas kvicksilver är ~24–25 år 2004 men ~20 år 2005. Bara 2005 prickar båda talen — 20 nanogram fäller 2004."
+    "why_wrong": "Avgörandet ligger i undre diagrammet: Karlskronas kvicksilver är ~24 år 2004 men ~20 år 2005. Bara 2005 prickar båda talen — 20 nanogram fäller 2004."
    }
   ],
   "framework_id": null,
   "pitfall": "Två fällor samverkar här. Den klassiska tvåvillkors-fällan: att hitta året som passar EN kurva och nöja sig — 1992 ser rätt ut på kvicksilvret och 2004 ser rätt ut på kadmiumet, men bara 2005 klarar båda. Och symbol-fällan: öppen kvadrat betyder Utlängtan i övre diagrammet men Karlskrona i undre — och den öppna triangeln (Väderöarna) är lätt att ta av misstag. Botemedlet: läs legenden i VARJE diagram separat, granska sedan de två villkoren i två omgångar och hitta överlappet.",
-  "solution_path": "Villkor 1: Kadmium i Utlängtan = 1,5 mikrogram/gram torrvikt (övre diagrammet, öppen kvadrat). Villkor 2: Kvicksilver i Karlskrona = 20 nanogram/gram färskvikt (undre diagrammet, också öppen kvadrat — samma symbol men annan plats). Läs av den öppna kvadraten vid vart och ett av åren 1992, 1998, 2004 och 2005. Kadmium: 1992 ≈ 2,2 och 1998 ≈ 2,6 — båda långt över 1,5; 2004 ≈ 1,5 och 2005 ≈ 1,5 — båda klarar villkor 1. Kvicksilver avgör: 2004 ≈ 24–25, men 2005 ≈ 20 — bara 2005 klarar villkor 2. Endast 2005 uppfyller båda villkoren samtidigt, alltså D.",
+  "solution_path": "Villkor 1: Kadmium i Utlängtan = 1,5 mikrogram/gram torrvikt (övre diagrammet, öppen kvadrat). Villkor 2: Kvicksilver i Karlskrona = 20 nanogram/gram färskvikt (undre diagrammet, också öppen kvadrat — samma symbol men annan plats). Läs av den öppna kvadraten vid vart och ett av åren 1992, 1998, 2004 och 2005. Kadmium: 1992 ≈ 2,2 och 1998 ≈ 2,6 — båda långt över 1,5; 2004 ≈ 1,5 och 2005 ≈ 1,5 — båda klarar villkor 1. Kvicksilver avgör: 2004 ≈ 24, men 2005 ≈ 20 — bara 2005 klarar villkor 2. Endast 2005 uppfyller båda villkoren samtidigt, alltså D.",
   "steps": [
    {
     "n": 1,
@@ -553,13 +553,13 @@
    {
     "n": 5,
     "title": "Villkor (b) — Karlskrona-kvicksilver över de fyra åren",
-    "text": "I undre diagrammet, för Karlskrona (öppen kvadrat): 1992 ≈ 21, 1998 ≈ 15–19, 2004 ≈ 24–25, 2005 ≈ 20. Det år som prickar 20 är 2005 — den öppna kvadraten är där diagrammets lägsta punkt i årsklustret, strax under Fladens fyllda kvadrat.",
+    "text": "I undre diagrammet, för Karlskrona (öppen kvadrat): 1992 ≈ 21, 1998 ≈ 18, 2004 ≈ 24, 2005 ≈ 20. Det år som prickar 20 är 2005 — den öppna kvadraten är där årsklustrets lägsta punkt, under Landsorts fyllda triangel (≈ 24).",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Korsa villkor (a) och (b)",
-    "text": "Hitta året där BÅDA stämmer: 1992 har kadmium ~2,2 (inte 1,5) — faller på (a). 1998 har kadmium ~2,6 — faller på (a). 2004 klarar (a) med ~1,5 men har kvicksilver ~24–25 (inte 20) — faller på (b). 2005 har kadmium ~1,5 OCH kvicksilver ~20 — båda stämmer.",
+    "text": "Hitta året där BÅDA stämmer: 1992 har kadmium ~2,2 (inte 1,5) — faller på (a). 1998 har kadmium ~2,6 — faller på (a). 2004 klarar (a) med ~1,5 men har kvicksilver ~24 (inte 20) — faller på (b). 2005 har kadmium ~1,5 OCH kvicksilver ~20 — båda stämmer.",
     "tier": "essential"
    },
    {
@@ -577,7 +577,7 @@
    {
     "n": 9,
     "title": "Sanity-check 2004 mot 2005 — kvicksilvret avgör",
-    "text": "2004 och 2005 är nästan omöjliga att skilja på kadmiumsidan — den öppna kvadraten ligger kring 1,5 båda åren. Avgörandet ligger i undre diagrammet: 2004 ligger Karlskrona på ~24–25, medan 2005 (sista mätpunkten) ligger på ~20. Bara 2005 prickar båda talen.",
+    "text": "2004 och 2005 är nästan omöjliga att skilja på kadmiumsidan — den öppna kvadraten ligger kring 1,5 båda åren. Avgörandet ligger i undre diagrammet: 2004 ligger Karlskrona på ~24, medan 2005 (sista mätpunkten) ligger på ~20. Bara 2005 prickar båda talen.",
     "tier": "detail"
    },
    {
@@ -596,7 +596,7 @@
   "technique": "DTK-strategi för 'vilket år matchar två villkor samtidigt'-frågor: kontrollera villkor 1 över alla svarsår (lista de år som klarar det), kontrollera villkor 2 över alla svarsår, hitta SKÄRNINGEN. Triggern: 'år då X = a och Y = b' → tvåvillkors-test, inte enkelsökning.",
   "pregrade_tactic": {
    "handle": "Två-villkor-skärning",
-   "move": "Lås symbolen först: öppen kvadrat = Utlängtan (övre) respektive Karlskrona (undre). Kontrollera vilka år som ger Utlängtan-kadmium ≈ 1,5 i övre diagrammet (2004 och 2005). Kontrollera vilka år som ger Karlskrona-kvicksilver ≈ 20 i undre diagrammet (2005; 2004 ligger på ~24–25). Skärning: 2005."
+   "move": "Lås symbolen först: öppen kvadrat = Utlängtan (övre) respektive Karlskrona (undre). Kontrollera vilka år som ger Utlängtan-kadmium ≈ 1,5 i övre diagrammet (2004 och 2005). Kontrollera vilka år som ger Karlskrona-kvicksilver ≈ 20 i undre diagrammet (2005; 2004 ligger på ~24). Skärning: 2005."
   }
  },
  "host-ver1-2019-kvant1-DTK-035": {
@@ -624,24 +624,24 @@
   ],
   "framework_id": "DTK-TACTIC-003",
   "pitfall": "Den klassiska DTK-fällan i tabellfrågor är att räkna i fel kolumn eller att avrunda extremt grovt utan att kontrollera mot tabellradens 'Totalt'-kolumn. Botemedlet: läs 'God' / 'Totalt' för varje operationstyp i tabellraden, räkna i huvudet (eller på papper), och jämför med de procenttal alternativen faktiskt erbjuder.",
-  "solution_path": "I den MELLERSTA tabellen ('Antalet operationer utförda vid civila sjukhus i Sverige år 1900...'), i raden 'Huvud och hals': Totalt = 745, God = 620, så 620/745 ≈ 83,2 % — närmast 85 % bland alternativen. I raden 'Plastiska': Totalt = 635, God = 582, så 582/635 ≈ 91,7 % — närmast 90 %. Paret 85/90 är alternativ B.",
+  "solution_path": "I den MELLERSTA tabellen ('Antalet operationer utförda vid civila sjukhus i Sverige år 1900 uppdelat efter typ av operation samt operationens utgång'), i raden 'Huvud och hals': Totalt = 745, God = 620, så 620/745 ≈ 83,2 % — närmast 85 % bland alternativen. I raden 'Plastiska': Totalt = 635, God = 582, så 582/635 ≈ 91,7 % — närmast 90 %. Paret 85/90 är alternativ B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: hur stor andel av (a) huvud- och halsoperationer respektive (b) plastiska operationer som utfördes 1900 hade god utgång? Svarsformatet är två procenttal kopplade med 'respektive'. Du ska räkna 'God / Totalt' för båda operationstyperna i den mellersta tabellen och matcha paret mot alternativen.",
+    "text": "Frågan: hur stor andel av (a) huvud- och halsoperationer respektive (b) plastiska operationer som utfördes 1900 hade god utgång? Svarsformatet är två procenttal kopplade med 'respektive'. Du ska räkna 'God / Totalt' för båda operationstyperna och matcha paret mot alternativen.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Vilken tabell?",
-    "text": "Sidan har TRE tabeller. (1) Antalet läkare, sjukhus, sjuksängar, apotek och barnmorskor per län. (2) Antalet operationer per typ med utfall ('Utgång av operationen': God, Mindre god, Dålig, Dödlig, Oviss). (3) Antalet kurgäster vid hälsobrunnar samt bad- och kallvattenkuranstalter. Frågan handlar om operationer med god utgång — tabell (2), den mellersta.",
+    "text": "Sidan har TRE tabeller. (1) Antalet läkare, sjukhus, sjuksängar, apotek och barnmorskor per län. (2) Antalet operationer utförda vid civila sjukhus, uppdelat efter typ av operation samt operationens utgång. (3) Antalet kurgäster vid hälsobrunnar samt bad- och kallvattenkuranstalter. Frågan handlar om operationer med god utgång — tabell (2), den mellersta.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Läs tabellrubrikerna",
-    "text": "Tabell (2) har kolumnerna: Operationer, Totalt, och under 'Utgång av operationen': God, Mindre god, Dålig, Dödlig, Oviss. Du behöver bara 'Totalt' och 'God' för varje rad. 'Totalt' anger hela antalet operationer av typen, och utfallskolumnerna delar upp det totalet — de fem utfallen ska summera till Totalt.",
+    "text": "Tabell (2) har kolumnerna: Operationer, Totalt, och under 'Utgång av operationen': God, Mindre god, Dålig, Dödlig, Oviss. Du behöver bara 'Totalt' och 'God' för varje rad. 'Totalt' anger hela antalet operationer av typen, och de fem utfallskolumnerna delar upp det totalet — de ska summera till Totalt.",
     "tier": "essential"
    },
    {
@@ -813,7 +813,7 @@
    },
    {
     "letter": "B",
-    "why_tempting": "Operation av ledgångar, senor och senskidor är tabellens största rad (Totalt 3 070) — den drar blicken, och vid grov huvudräkning kan '2 822 av 3 070' kännas som 'ungefär nittio procent'.",
+    "why_tempting": "Operation av ledgångar, senor och senskidor är tabellens största rad bland alternativen (Totalt 3 070) — den drar blicken, och vid grov huvudräkning kan '2 822 av 3 070' kännas som 'ungefär nittio procent'.",
     "why_wrong": "Räknat exakt: 2 822 / 3 070 ≈ 91,9 % — inte 89. Redan god-kolumnen utesluter B oavsett vad övriga kolumner ger."
    },
    {
@@ -909,12 +909,12 @@
    {
     "letter": "B",
     "why_tempting": "Södra position III är exakt samma grupptyp som rätt svar (utflyttade till ej angränsande) och även där sitter en svart kvadrat av 2 000-storleken — rätt storlek, rätt färg, rätt position. Kollar du inte inkomsten noga känns B identiskt med A.",
-    "why_wrong": "Mittpricken på Södras III-kvadrat ligger vid ca 310 tusen kr, fyra axelsteg under 410. Bara Norras III-kvadrat har pricken vid 410 — därför A, inte B."
+    "why_wrong": "Mittpricken på Södras III-kvadrat ligger vid ca 310 tusen kr — hela 100 tusen kr (fem axelsteg) under 410. Bara Norras III-kvadrat har pricken vid 410 — därför A, inte B."
    },
    {
     "letter": "C",
-    "why_tempting": "I Östra-panelen finns vid position II en svart kvadrat av just 2 000-storleken — rätt antal hushåll och rätt färg (utflytt). Ser du den och slarvar med y-avläsningen ser Östra ut som en träff.",
-    "why_wrong": "Dess mittprick ligger vid ca 370 tusen kr, inte 410. Dessutom gäller alternativ C 'till angränsande' (position II) medan den enda 2 000-kvadraten vid 410 står på position III i Norra — Östra klarar inte inkomstkravet någonstans."
+    "why_tempting": "Alternativ C:s grupp (utflyttade från Östra till angränsande = position II) är faktiskt en svart kvadrat av just 2 000-storleken — rätt antal hushåll och rätt färg. Ser du den och slarvar med y-avläsningen ser Östra ut som en träff.",
+    "why_wrong": "Dess mittprick ligger vid ca 370 tusen kr, inte 410. Ingen annan Östra-symbol hjälper heller: III är en liten svart cirkel (ca 1 000) vid ca 330 och IV–V är små grå cirklar kring 350–360 — Östra klarar aldrig 2 000 + 410 samtidigt."
    },
    {
     "letter": "D",
@@ -965,13 +965,13 @@
    {
     "n": 7,
     "title": "Granska Kommun Östra",
-    "text": "Östras farligaste symbol är position II (utflyttade till angränsande): en SVART kvadrat av just 2 000-storleken — men dess mittprick ligger vid ca 370, inte 410. Rätt storlek och färg, fel inkomst. Position IV (inflyttade från angränsande, alternativ C:s riktning är dock 'från Östra', dvs. utflytt) är dessutom bara en liten grå cirkel (ca 1 000) med pricken vid ca 350, på riksgenomsnittslinjen. Ingen Östra-symbol klarar 2 000 + 410. Eliminera Östra.",
+    "text": "Alternativ C pekar på Östra position II ('flyttade från Östra till angränsande kommun'). Där sitter mycket riktigt en SVART kvadrat av just 2 000-storleken — men dess mittprick ligger vid ca 370, inte 410. Rätt storlek och färg, fel inkomst. Övriga Östra-symboler klarar sig inte heller: III är en liten svart cirkel (ca 1 000) vid ca 330, och IV och V är små grå cirklar (ca 1 000) med prickarna vid ca 350 (på riksgenomsnittslinjen) respektive ca 360. Ingen Östra-symbol klarar 2 000 + 410. Eliminera Östra.",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Granska Kommun Södra",
-    "text": "Hela Södra-panelen ligger lågt: position III (utflyttade till ej angränsande) är visserligen en svart 2 000-kvadrat, men mittpricken sitter vid ca 310 — fyra axelsteg under 410. Övriga symboler (II, IV, V) ligger också kring 290–330. Inget i Södra kommer i närheten av 410. Eliminera Södra.",
+    "text": "Hela Södra-panelen ligger lågt: position III (utflyttade till ej angränsande) är visserligen en svart 2 000-kvadrat, men mittpricken sitter vid ca 310 — hela 100 tusen kr under 410. Övriga flyttsymboler ligger också långt ner: II (liten svart cirkel) vid ca 330, IV och V (små grå kvadrater) vid ca 290 respektive ca 270. Inget i Södra kommer i närheten av 410. Eliminera Södra.",
     "tier": "essential"
    },
    {
@@ -1002,7 +1002,7 @@
   "technique": "DTK-strategi för flerdimensionella symboldiagram: gör om frågan till en sökspecifikation med tre krav (symbolstorlek/form enligt legend, färg, y-koordinat) och bocka av kraven panel för panel. Triggern: 'vilken grupp hade både X hushåll och Y i inkomst' → trippel-villkors-test i flera paneler.",
   "pregrade_tactic": {
    "handle": "Storlek-Färg-Inkomst-tre-krav",
-   "move": "Slå fast i legenden att 2 000 hushåll = medelstor kvadrat. Skanna de fyra panelerna efter en sådan kvadrat med mittpricken vid y = 410. Tre kandidater i rätt storlek finns (Norra III, Östra II, Södra III) men bara Norra III sitter vid 410 — position III = utflyttade till ej angränsande = A."
+   "move": "Slå fast i legenden att 2 000 hushåll = medelstor kvadrat. Skanna de fyra panelerna efter en sådan kvadrat med mittpricken vid y = 410. Tre svarta kandidater i rätt storlek finns (Norra III, Östra II vid ca 370, Södra III vid ca 310) men bara Norra III sitter vid 410 — position III = utflyttade till ej angränsande = A."
   }
  },
  "host-ver1-2019-kvant1-DTK-039": {
@@ -1014,23 +1014,23 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "1 är frestande om du bara noterar Södra, där hela panelen ligger dramatiskt under riksgenomsnittslinjen och skillnaden syns direkt, och missar Norra — där allt ligger högt (över 350) men IV ≈ 385 och V ≈ 370 ändå ligger under I:s ≈ 400.",
+    "why_tempting": "1 är frestande om du bara noterar Södra, där hela panelen ligger dramatiskt under riksgenomsnittslinjen och skillnaden syns direkt, och missar Norra — där allt ligger högt (över 350) men IV ≈ 380 och V ≈ 370 ändå ligger under I:s ≈ 400.",
     "why_wrong": "Villkoret gäller relativt position I i samma panel, inte relativt den streckade linjen. I Norra ligger båda gråa symbolerna under I precis som i Södra — det är TVÅ kommuner, alltså B."
    },
    {
     "letter": "C",
-    "why_tempting": "3 är frestande om du räknar in Västra för att position IV (≈ 370) ligger under I (≈ 385) — 'minst en inflyttargrupp lägre' känns som att kommunen kvalificerar.",
-    "why_wrong": "Frågan gäller de inflyttade hushållen som grupp. I Västra ligger V vid ≈ 410, klart ÖVER I, och V-symbolen är minst lika stor som IV-symbolen — det sammanvägda inflyttargenomsnittet hamnar runt 390 eller högre, inte under 385. Västra faller bort och antalet stannar på 2."
+    "why_tempting": "3 är frestande om du räknar in Västra för att position IV (≈ 370) ligger under I (≈ 380) — 'minst en inflyttargrupp lägre' känns som att kommunen kvalificerar.",
+    "why_wrong": "Frågan gäller de inflyttade hushållen som grupp. I Västra ligger V vid ≈ 410, klart ÖVER I, och V-symbolen är minst lika stor som IV-symbolen — det sammanvägda inflyttargenomsnittet hamnar runt 390 eller högre, inte under 380. Västra faller bort och antalet stannar på 2."
    },
    {
     "letter": "D",
     "why_tempting": "4 = alla kommuner. Det är ett 'trend-svar' om man antar att inflyttare alltid har lägre inkomst än de som redan bor i kommunen.",
-    "why_wrong": "Östra motbevisar antagandet direkt: där ligger båda inflyttarsymbolerna (IV ≈ 365, V ≈ 370) ÖVER I (≈ 350). Även Västra faller bort. Bara 2 kommuner uppfyller villkoret."
+    "why_wrong": "Östra motbevisar antagandet direkt: där ligger position IV (≈ 350) i nivå med I och position V (≈ 360) ÖVER I (≈ 350) — ingen av inflyttargrupperna låg lägre. Även Västra faller bort. Bara 2 kommuner uppfyller villkoret."
    }
   ],
   "framework_id": null,
   "pitfall": "Den klassiska DTK-fällan här är att blanda ihop utflytt (positionerna II och III, SVARTA symboler) med inflytt (positionerna IV och V, GRÅA symboler) — eller att jämföra inflyttarnas inkomst mot den streckade riksgenomsnittslinjen vid 350 i stället för mot position I i samma panel. Botemedlet: definiera jämförelsen entydigt innan du läser av — y-värdet för de gråa symbolerna IV och V ska jämföras med y-värdet för position I (hushåll år 0) i respektive kommun.",
-  "solution_path": "I varje av de fyra panelerna (Norra, Östra, Södra, Västra) jämförs y-värdet för position I (hushåll år 0) med y-värdena för de gråa inflyttarsymbolerna IV och V. Norra: I ≈ 400, IV ≈ 385, V ≈ 370 — båda inflyttargrupperna under I → räknas. Östra: I ≈ 350 (på den streckade riksgenomsnittslinjen), IV ≈ 365, V ≈ 370 — båda över I → räknas inte. Södra: I ≈ 300–305, IV ≈ 295, V ≈ 285 — båda under I → räknas. Västra: I ≈ 385, IV ≈ 370 (under) men V ≈ 410 (över), och V-symbolen är minst lika stor som IV, så de inflyttade som helhet låg inte under I → räknas inte. Två kommuner (Norra och Södra) uppfyller villkoret → svar B.",
+  "solution_path": "I varje av de fyra panelerna (Norra, Östra, Södra, Västra) jämförs y-värdet för position I (hushåll år 0) med y-värdena för de gråa inflyttarsymbolerna IV och V. Norra: I ≈ 400, IV ≈ 380, V ≈ 370 — båda inflyttargrupperna under I → räknas. Östra: I ≈ 350 (mittpricken på den streckade riksgenomsnittslinjen), IV ≈ 350 (i nivå med I) och V ≈ 360 (över I) — ingen av dem lägre → räknas inte. Södra: I ≈ 300, IV ≈ 290, V ≈ 270 — båda under I → räknas. Västra: I ≈ 380, IV ≈ 370 (under) men V ≈ 410 (klart över), och V-symbolen är minst lika stor som IV, så de inflyttade som grupp låg vid ungefär 390 eller högre — inte under I → räknas inte. Två kommuner (Norra och Södra) uppfyller villkoret → svar B.",
   "steps": [
    {
     "n": 1,
@@ -1053,25 +1053,25 @@
    {
     "n": 4,
     "title": "Granska Kommun Norra",
-    "text": "I Norra ligger position I (stor vit cirkel) vid ungefär 400 tusen kr — klart över den streckade riksgenomsnittslinjen vid 350. Position IV (stor grå cirkel) ligger vid ungefär 385 och position V (grå kvadrat) vid ungefär 370. BÅDA inflyttargrupperna ligger alltså UNDER I:s 400 — inflyttarna hade lägre inkomst än år 0. Norra räknas.",
+    "text": "I Norra ligger position I (stor vit cirkel) med mittpricken vid ungefär 400 tusen kr — klart över den streckade riksgenomsnittslinjen vid 350. Position IV (grå cirkel) ligger vid ungefär 380 och position V (grå kvadrat) vid ungefär 370. BÅDA inflyttargrupperna ligger alltså UNDER I:s 400 — inflyttarna hade lägre inkomst än år 0. Norra räknas.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Granska Kommun Östra",
-    "text": "I Östra ligger position I (mycket stor vit kvadrat) med mittpunkten ungefär PÅ den streckade linjen vid 350. Position IV (grå cirkel) ligger vid ungefär 365 och position V (grå cirkel) vid ungefär 370 — BÅDA ÖVER I. Inflyttarna hade högre inkomst än år 0. Östra räknas inte.",
+    "text": "I Östra ligger position I (mycket stor vit kvadrat) med mittpricken ungefär PÅ den streckade linjen vid 350. Position IV (grå cirkel) har sin mittprick i nivå med I, vid ungefär 350, och position V (grå cirkel) ligger vid ungefär 360 — ÖVER I. Ingen av inflyttargrupperna låg alltså LÄGRE än år 0. Östra räknas inte.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Granska Kommun Södra",
-    "text": "I Södra ligger position I (stor vit kvadrat) vid ungefär 300–305 tusen kr — hela panelen ligger under riksgenomsnittet 350. Position IV (grå kvadrat) ligger vid ungefär 295 och position V (liten grå kvadrat) vid ungefär 285. BÅDA UNDER I. Inflyttarna hade lägre inkomst än år 0. Södra räknas.",
+    "text": "I Södra ligger position I (stor vit kvadrat) med mittpricken vid ungefär 300 tusen kr — hela panelen ligger under riksgenomsnittet 350. Position IV (grå kvadrat) ligger vid ungefär 290 och position V (grå kvadrat) vid ungefär 270. BÅDA UNDER I. Inflyttarna hade lägre inkomst än år 0. Södra räknas.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Granska Kommun Västra — det blandade fallet",
-    "text": "I Västra ligger position I (vit kvadrat) vid ungefär 385. Position IV (grå cirkel) ligger vid ungefär 370 — under I — men position V (grå cirkel) ligger vid ungefär 410 — ÖVER I. Frågan gäller de inflyttade hushållen som grupp, och V-symbolen är minst lika stor som IV-symbolen (minst lika många hushåll), så det sammanvägda inflyttargenomsnittet hamnar runt 390 eller högre — inte lägre än I:s 385. Västra räknas inte.",
+    "text": "I Västra ligger position I (vit kvadrat) vid ungefär 380. Position IV (grå cirkel) ligger vid ungefär 370 — under I — men position V (grå cirkel) ligger vid ungefär 410 — klart ÖVER I. Frågan gäller de inflyttade hushållen som grupp, och V-symbolen är minst lika stor som IV-symbolen (minst lika många hushåll), så det sammanvägda inflyttargenomsnittet hamnar runt 390 eller högre — inte lägre än I:s 380. Västra räknas inte.",
     "tier": "essential"
    },
    {
@@ -1083,7 +1083,7 @@
    {
     "n": 9,
     "title": "Sanity-check: jämför mot I, inte mot den streckade linjen",
-    "text": "Den streckade linjen vid 350 är RIKSGENOMSNITTET — inte jämförelsepunkten. Hade du jämfört inflyttarna mot linjen i stället för mot position I hade Norra (IV/V över 350) felaktigt fallit bort och Södra sett likadan ut, och räkningen hade spårat ur. Villkoret är alltid 'lägre än hushållen i KOMMUNEN år 0', dvs. position I i samma panel.",
+    "text": "Den streckade linjen vid 350 är RIKSGENOMSNITTET — inte jämförelsepunkten. Hade du jämfört inflyttarna mot linjen i stället för mot position I hade Norra felaktigt fallit bort (IV ≈ 380 och V ≈ 370 ligger ju ÖVER 350, men UNDER I:s 400) och räkningen hade spårat ur. Villkoret är alltid 'lägre än hushållen i KOMMUNEN år 0', dvs. position I i samma panel.",
     "tier": "detail"
    },
    {
@@ -1096,7 +1096,7 @@
   "technique": "DTK-strategi för \"för hur många paneler/kommuner gäller villkoret\"-frågor: identifiera exakt de symboler som jämförelsen gäller (här de gråa inflyttarsymbolerna IV/V mot position I), gå panel för panel och sätt ja/nej, räkna sedan ja-panelerna. Triggern: \"för hur många X gällde att Y\" → systematisk panel-genomgång med kryss/plus.",
   "pregrade_tactic": {
    "handle": "Grå-inflytt-mot-vit-år0",
-   "move": "I varje panel: läs y-värdet vid mittpricken på position I (stor vit symbol, år 0) och på de gråa symbolerna IV och V. Räkna kommunerna där inflyttarna som grupp ligger UNDER I — tydligast där båda gråa symbolerna ligger under. Norra och Södra klarar villkoret; du ska få 2."
+   "move": "I varje panel: läs y-värdet vid mittpricken på position I (stor vit symbol, år 0) och på de gråa symbolerna IV och V. Räkna kommunerna där inflyttarna som grupp ligger UNDER I — tydligast där båda gråa symbolerna ligger under. Norra (380/370 mot 400) och Södra (290/270 mot 300) klarar villkoret; du ska få 2."
   }
  },
  "host-ver1-2019-kvant1-DTK-040": {
@@ -1108,12 +1108,12 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "7 000 är precis vad du får om du bara bokför utflyttarna och glömmer inflyttarna: 10 000 − 1 000 − 2 000 = 7 000. De svarta symbolerna står dessutom närmare år 0-cirkeln i panelen, så det är lätt att fastna på dem.",
+    "why_tempting": "7 000 är precis vad du får om du bara bokför utflyttarna och glömmer inflyttarna: 10 000 − 1 000 − 2 000 = 7 000. De svarta symbolerna (II och III) ligger dessutom närmast år 0-cirkeln i Norra-panelen, så det är lätt att fastna på dem.",
     "why_wrong": "De gråa symbolerna (IV = 3 000, V = 2 000) är inflyttare och ska ADDERAS. Med båda riktningarna: 10 000 + 5 000 − 3 000 = 12 000, alltså C. Nettot är dessutom positivt (in 5 000 > ut 3 000), så antalet kan inte ha minskat."
    },
    {
     "letter": "B",
-    "why_tempting": "10 000 lockar om du läser av position I-symbolen (stor cirkel = 10 000) och stannar där — dvs. antar att antalet hushåll är oförändrat mellan år 0 och år 5.",
+    "why_tempting": "10 000 lockar om du läser av position I-symbolen (stor vit cirkel = 10 000) och stannar där — dvs. antar att antalet hushåll är oförändrat mellan år 0 och år 5.",
     "why_wrong": "Frågan gäller år 5, inte år 0. Panelen visar fyra flyttrörelser som ger netto +2 000 (in 3 000 + 2 000 = 5 000 mot ut 1 000 + 2 000 = 3 000). År 5 = 10 000 + 2 000 = 12 000 = C."
    },
    {
@@ -1141,13 +1141,13 @@
    {
     "n": 3,
     "title": "Läs legendens kod",
-    "text": "Legenden 'Antal hushåll' växlar form mellan storleksklasserna: 500 = liten kvadrat, 1 000 = liten cirkel, 2 000 = kvadrat, 3 000 = cirkel, 5 000 = kvadrat, 10 000 = stor cirkel, 15 000 = störst kvadrat. Formen (kvadrat eller cirkel) pekar alltså direkt ut vilken storleksklass en symbol tillhör — du behöver inte gissa på ögonmått mellan närliggande storlekar. Färgen anger riktning: svart = utflytt, grå = inflytt, och år 0-symbolen är vit.",
+    "text": "Legenden 'Antal hushåll' växlar form mellan storleksklasserna: 500 = liten kvadrat, 1 000 = liten cirkel, 2 000 = kvadrat, 3 000 = cirkel, 5 000 = kvadrat, 10 000 = stor cirkel, 15 000 = störst kvadrat. Formen (kvadrat eller cirkel) pekar alltså direkt ut vilken storleksklass en symbol tillhör — du behöver inte gissa på ögonmått mellan närliggande storlekar. Färgen anger riktning: svart = utflytt, grå = inflytt, och år 0-symbolen (position I) är vit.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Avläs position I (Hushåll år 0)",
-    "text": "I Norra-panelen är symbolen vid position I en stor vit cirkel — den största i panelen. En cirkel i legenden är antingen 1 000, 3 000 eller 10 000, och den här matchar den stora 10 000-cirkeln. Hushåll år 0 = 10 000.",
+    "text": "I Norra-panelen är symbolen vid position I en stor vit cirkel — den största symbolen i panelen. En cirkel i legenden är antingen 1 000, 3 000 eller 10 000, och den här matchar den stora 10 000-cirkeln. Hushåll år 0 = 10 000.",
     "tier": "essential"
    },
    {
@@ -1195,7 +1195,7 @@
    {
     "n": 12,
     "title": "Slutsats",
-    "text": "Svaret är C (12 000 hushåll i Norra år 5). Insikten i en mening: i flyttbokföringsfrågor gäller år 5 = år 0 + inflyttning − utflyttning, där varje symbol avläses via legendens form-och-storlekskod (svart = ut, grå = in).",
+    "text": "Svaret är C (12 000 hushåll i Norra år 5). Insikten i en mening: i flyttbokföringsfrågor gäller år 5 = år 0 + inflyttning − utflyttning, där varje symbol avläses via legendens form-och-storlekskod (svart = ut, grå = in, vit = år 0).",
     "tier": "essential"
    }
   ],
@@ -3909,7 +3909,7 @@
   ],
   "framework_id": null,
   "pitfall": "Den klassiska DTK-fällan i 'X stod för Y andel'-frågor är att gissa på det som 'känns rimligt' i stället för att beräkna bråkdelen från tabellens Totalt-rad. Botemedlet: hitta totalsumman (1 815), räkna ut bråkdelen (en femtedel = 1 815/5 = 363) och jämför alternativens totalvärden mot det talet — här är 372 den enda kandidaten. Se också upp med att läsa i fel tabellhalva: frågan gäller Skademekanism (höger), inte Skadeplats (vänster).",
-  "solution_path": "Frågan gäller Skademekanism-tabellen (högra tabellen). Totalt-raden längst ner: 985 pojkar + 830 flickor = 1 815 rapporterade skadefall. En femtedel = 1 815 / 5 = 363. Läs alternativens rader i kolumnen 'Antal rapporterade, Totalt': 02 Annat fall i samma plan = 205, 03 Fall på eller från trappa = 118, 04 Fall/hopp från låg höjd (&lt;1 meter) = 372, 12 Kontakt med person, tex spark/drag/knuff = 98. Endast 372 ligger nära 363 (372/1 815 ≈ 20,5 %, differens bara 9) — de övriga ligger på 5–11 % av totalen. Svaret är C, Fall/hopp från låg höjd.",
+  "solution_path": "Frågan gäller Skademekanism-tabellen (högra tabellen). Totalt-raden längst ner: 985 pojkar + 830 flickor = 1 815 rapporterade skadefall. En femtedel = 1 815 / 5 = 363. Läs alternativens rader i kolumnen 'Antal rapporterade, Totalt': 02 Annat fall i samma plan = 205, 03 Fall på eller från trappa = 118, 04 Fall/hopp från låg höjd (<1 meter) = 372, 12 Kontakt med person, tex spark/drag/knuff = 98. Endast 372 ligger nära 363 (372/1 815 ≈ 20,5 %, differens bara 9) — de övriga ligger på 5–11 % av totalen. Svaret är C, Fall/hopp från låg höjd.",
   "steps": [
    {
     "n": 1,
@@ -4009,18 +4009,18 @@
   ],
   "framework_id": "DTK-TACTIC-008",
   "pitfall": "Den klassiska fällan i \"projicera till hela Sverige\"-frågor är att blanda rader eller kolumner: rätt andel från fel rads Sverige-tal, eller fel andel (flickor/pojkar i stället för flickor/totalt). Botemedlet: lås rad 22 först, läs av alla tre rapporterade talen (21/9/30) och Sverige-talet (600) från SAMMA rad, och räkna andelen mot totalen: 9/30 = 30 % → 0,30 × 600 = 180.",
-  "solution_path": "Hitta raden \"22. Hugg/skärning/sågning mot skarp yta/kant\" i Skademekanism-tabellen (högra tabellen). Antal rapporterade: Pojkar 21, Flickor 9, Totalt 30. Flickornas andel = 9/30 = 0,30. Skattat antal i Sverige för samma rad = 600. Med samma könsfördelning i Sverige: 0,30 × 600 = 180 flickor = alternativ B.",
+  "solution_path": "Hitta raden \"22. Hugg/skärning/sågning mot skarp yta/kant\" i Skademekanism-tabellen (den högra tabellen), under gruppen \"2. Klämning, skärning, stick\". Antal rapporterade: Pojkar 21, Flickor 9, Totalt 30. Flickornas andel = 9/30 = 0,30. Skattat antal i Sverige för samma rad = 600. Med samma könsfördelning i Sverige: 0,30 × 600 = 180 flickor = alternativ B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan gäller skadetypen hugg/skärning/sågning mot skarp yta/kant. Du ska (1) läsa av hur rapporterade fall fördelades på flickor och pojkar, (2) anta att samma fördelning gäller för det SKATTADE antalet i hela Sverige, och (3) räkna ut hur många flickor det motsvarar. Alltså: flickor-andel från rapporterade × Skattat antal i Sverige.",
+    "text": "Frågan gäller skadetypen hugg/skärning/sågning mot skarp yta/kant. Du ska (1) läsa av hur de rapporterade fallen fördelades på flickor och pojkar, (2) anta att samma fördelning gäller för det SKATTADE antalet i hela Sverige, och (3) räkna ut hur många flickor det motsvarar. Alltså: flickor-andel från rapporterade × Skattat antal i Sverige.",
     "tier": "essential"
    },
    {
     "n": 2,
     "title": "Vilken tabell och vilken rad?",
-    "text": "Sidan har två tabeller: vänstra efter Skadeplats, högra efter Skademekanism. Skadetypen i frågan är en mekanism, så använd den HÖGRA tabellen. Rätt rad är \"22. Hugg/skärning/sågning mot skarp yta/kant\" under rubriken \"2. Klämning, skärning, stick\".",
+    "text": "Sidan har två tabeller: den vänstra efter Skadeplats, den högra efter Skademekanism. Skadetypen i frågan är en mekanism, så använd den HÖGRA tabellen. Rätt rad är \"22. Hugg/skärning/sågning mot skarp yta/kant\" under grupprubriken \"2. Klämning, skärning, stick\".",
     "tier": "essential"
    },
    {
@@ -4038,7 +4038,7 @@
    {
     "n": 5,
     "title": "Läs Skattat antal i Sverige för samma rad",
-    "text": "I kolumnen \"Skattat antal i Sverige, Totalt\" står 600 på rad 22. Håll dig kvar på exakt samma rad — grannraderna har helt andra Sverige-tal (t.ex. rad 24 Stick/inträngning: 400, rad 25 Bett/stick av djur: 1 700).",
+    "text": "I kolumnen \"Skattat antal i Sverige, Totalt\" står 600 på rad 22. Håll dig kvar på exakt samma rad — grannraderna har helt andra Sverige-tal (rad 24 Stick och annan inträngning: 400, rad 25 Bett/stick av människa/djur: 1 700).",
     "tier": "essential"
    },
    {
@@ -4056,7 +4056,7 @@
    {
     "n": 8,
     "title": "Vad betyder \"skattat antal i Sverige\"?",
-    "text": "De rapporterade fallen kommer från några utvalda sjukhus (Norrland, Hälsingland, Skaraborg). \"Skattat antal i Sverige\" är en uppräkning av dessa till hela landet — en uppskattning av det verkliga antalet skadefall bland barn 0–3 år, inte en rapporterad siffra.",
+    "text": "De rapporterade fallen kommer från några utvalda sjukhus (Norrlands universitetssjukhus, Hälsinglands sjukhus och Skaraborgs sjukhus, år 2003). \"Skattat antal i Sverige\" är en uppräkning av dessa till hela landet — en uppskattning av det verkliga antalet skadefall bland barn 0–3 år, inte en rapporterad siffra.",
     "tier": "detail"
    },
    {
@@ -4075,7 +4075,7 @@
   "technique": "DTK-strategi för \"projektion under förutsättning av samma fördelning\"-frågor: identifiera rätt rad i tabellen, läs av delgrupp och totalt i Antal rapporterade-kolumnerna (det ger andelen), multiplicera andelen med Skattat antal i Sverige för samma rad. Triggern: \"anta att fördelningen var densamma … hur många X i Sverige?\" → andel-från-rapporterade × Sverige-totalt.",
   "pregrade_tactic": {
    "handle": "Andel-från-rapporterade-gånger-Sverige-total",
-   "move": "Rad 22 i mekanism-tabellen: Pojkar 21, Flickor 9, Totalt 30 → flickor-andel 9/30 = 30 %. Skattat antal i Sverige = 600. 0,30 × 600 = 180."
+   "move": "Rad 22 i mekanism-tabellen (högra): Pojkar 21, Flickor 9, Totalt 30 → flickor-andel 9/30 = 30 %. Skattat antal i Sverige = 600. 0,30 × 600 = 180."
   }
  },
  "host-ver1-2019-kvant2-DTK-035": {
@@ -4088,7 +4088,7 @@
    {
     "letter": "A",
     "why_tempting": "Storbritanniens linje stiger varje år, så villkor (a) stämmer perfekt. Kollar du bara 'ökade samtliga år' och nöjer dig där kan du stanna vid A utan att testa var det största hoppet ligger.",
-    "why_wrong": "Storbritanniens brantaste sträcka är 1935–1939, då linjen rusar från ca 50 ‰ till ca 70 ‰ (4–6 ‰ per år). Hoppet 1928→1929 är bara omkring 3 ‰ — villkor (b) faller."
+    "why_wrong": "Storbritanniens brantaste sträcka ligger i slutet av 1930-talet, då linjen rusar från ca 50 ‰ till ca 70 ‰ (4–6 ‰ per år). Hoppet 1928→1929 är bara omkring 3 ‰ — villkor (b) faller."
    },
    {
     "letter": "B",
@@ -4098,12 +4098,12 @@
    {
     "letter": "C",
     "why_tempting": "Belgiens prickade linje stiger raskt under sena 1920-talet, och 1928–1929 ligger mitt i den branta fasen — vid en snabb blick kan Belgien se ut som ett hett spår.",
-    "why_wrong": "Belgiens linje toppar kring 37 ‰ omkring 1932 och sjunker sedan 1933–1934 — villkoret 'ökade samtliga redovisade år' faller direkt, oavsett hur 1928–1929 ser ut."
+    "why_wrong": "Belgiens linje toppar kring 37 ‰ omkring 1931–1932 och viker sedan nedåt mot ca 36 ‰ innan den vänder upp igen — villkoret 'ökade samtliga redovisade år' faller direkt, oavsett hur 1928–1929 ser ut."
    }
   ],
   "framework_id": "DTK-TACTIC-005",
   "pitfall": "Den klassiska DTK-fällan i linjediagram med många linjer är att blanda ihop linjer som ligger nära varandra — här trängs Storbritannien, Nederländerna, Belgien och Frankrike i bandet 20–50 ‰. Botemedlet: identifiera linjerna en åt gången via landsnamnet som står printat vid varje kurva och via linjestilen (Frankrike heldragen längst ner, Belgien prickad, Nederländerna heldragen, Tyskland streckad), och kontrollera sedan båda villkoren explicit per kandidat.",
-  "solution_path": "Diagrammet 'Telefonapparater i några länder' visar antal telefoner per 1 000 invånare (‰) åren 1925–1939; varje kurva är märkt med landsnamn direkt i diagrammet. Sök det land där (a) linjen stiger varje redovisat år (ingen nedgång) OCH (b) det största årshoppet ligger just mellan 1928 och 1929. Belgiens prickade linje toppar kring 37 ‰ omkring 1932 och sjunker 1933–1934 — villkor (a) faller. Storbritannien stiger alla år men är som brantast 1935–1939 (från ca 50 ‰ till ca 70 ‰) — villkor (b) faller. Nederländerna planar ut kring 40 ‰ i början av 1930-talet och växer mest sent i decenniet — inget utmärkande hopp 1928–1929. Frankrikes linje, den nedersta heldragna, stiger varje år från ca 19 ‰ (1925) till ca 40 ‰ (1939), och dess brantaste segment är just 1928→1929: från ca 22 ‰ till ca 25–26 ‰, ett hopp på 3,5–4 ‰ medan övriga år ger 1–2,5 ‰. Bara Frankrike uppfyller båda villkoren — svaret är D.",
+  "solution_path": "Diagrammet 'Telefonapparater i några länder' visar antal telefoner per 1 000 invånare (‰) åren 1925–1939; varje kurva är märkt med landsnamn direkt i diagrammet. Sök det land där (a) linjen stiger varje redovisat år (ingen nedgång) OCH (b) det största årshoppet ligger just mellan 1928 och 1929. Belgiens prickade linje stiger raskt under sena 1920-talet till ca 37 ‰ kring 1931–1932 men viker sedan nedåt mot ca 36 ‰ innan den vänder upp igen — villkor (a) faller. Storbritannien stiger alla år men är som brantast i slutet av 1930-talet (från ca 50 ‰ vid 1934–35 till ca 70 ‰ år 1939) — villkor (b) faller. Nederländerna planar ut kring 40 ‰ i början av 1930-talet och växer mest sent i decenniet — inget utmärkande hopp 1928–1929. Frankrikes linje, den nedersta heldragna, stiger varje år från ca 19 ‰ (1925) till ca 40 ‰ (1939), och dess brantaste segment är just 1928→1929: från ca 22 ‰ till ca 25–26 ‰, ett hopp på 3,5–4 ‰ medan övriga år ger 1–2,5 ‰. Bara Frankrike uppfyller båda villkoren — svaret är D.",
   "steps": [
    {
     "n": 1,
@@ -4126,7 +4126,7 @@
    {
     "n": 4,
     "title": "Granska Storbritannien (alt A)",
-    "text": "Storbritanniens linje stiger varje år — villkor (a) håller. Men titta var linjen är som brantast: 1935–1939 rusar den från ca 50 ‰ till ca 70 ‰, alltså 4–6 ‰ per år. Hoppet 1928→1929 är bara omkring 3 ‰. Den största ökningen ligger alltså i slutet av 1930-talet, inte 1928–1929 — villkor (b) faller. Eliminera.",
+    "text": "Storbritanniens linje stiger varje år — villkor (a) håller. Men titta var linjen är som brantast: i slutet av 1930-talet rusar den från ca 50 ‰ (1934–35) till ca 70 ‰ (1939), alltså 4–6 ‰ per år. Hoppet 1928→1929 är bara omkring 3 ‰. Den största ökningen ligger alltså i slutet av 1930-talet, inte 1928–1929 — villkor (b) faller. Eliminera.",
     "tier": "essential"
    },
    {
@@ -4138,7 +4138,7 @@
    {
     "n": 6,
     "title": "Granska Belgien (alt C)",
-    "text": "Belgiens prickade linje stiger raskt under sena 1920-talet men toppar kring 37 ‰ omkring 1932 och SJUNKER sedan 1933–1934 (ned mot ca 35–36 ‰) innan den vänder upp igen. Villkoret 'ökade samtliga redovisade år' faller direkt. Eliminera.",
+    "text": "Belgiens prickade linje stiger raskt under sena 1920-talet men når en topp kring 37 ‰ omkring 1931–1932 och VIKER sedan nedåt (mot ca 36 ‰) innan den vänder upp igen och klättrar mot ca 50 ‰ i slutet av decenniet. Villkoret 'ökade samtliga redovisade år' faller direkt. Eliminera.",
     "tier": "essential"
    },
    {
@@ -4156,13 +4156,13 @@
    {
     "n": 9,
     "title": "Sanity-check: 1928–1929-hoppet i siffror",
-    "text": "Läs Frankrikes linje mot gridlinjerna: 1928 ≈ 22 ‰ och 1929 ≈ 25–26 ‰, alltså ett hopp på 3,5–4 ‰. Frankrikes övriga årshopp ligger kring 1–2,5 ‰ (t.ex. 1929→1930 ca 2,5 ‰, och 30-talets år ännu mindre). Observera att jämförelsen ska göras mot landets EGNA övriga år — frågan gäller var landets största ökning ligger, inte hur landet står sig mot andra länder.",
+    "text": "Läs Frankrikes linje mot gridlinjerna: 1928 ≈ 22 ‰ och 1929 ≈ 25–26 ‰, alltså ett hopp på 3,5–4 ‰. Frankrikes övriga årshopp ligger kring 1–2,5 ‰ (t.ex. 1929→1930 ca 2,5 ‰), och 30-gränsen passeras först omkring 1931–1932. Observera att jämförelsen ska göras mot landets EGNA övriga år — frågan gäller var landets största ökning ligger, inte hur landet står sig mot andra länder.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Eliminera och välj",
-    "text": "Belgien faller på villkor (a) (nedgång 1933–1934). Storbritannien och Nederländerna faller på villkor (b) (störst ökning i slutet av 1930-talet, inte 1928–1929). Bara Frankrike klarar båda villkoren — svaret är D.",
+    "text": "Belgien faller på villkor (a) (nedgång i början av 1930-talet, kring 1932–1933). Storbritannien och Nederländerna faller på villkor (b) (störst ökning i slutet av 1930-talet, inte 1928–1929). Bara Frankrike klarar båda villkoren — svaret är D.",
     "tier": "essential"
    },
    {
@@ -4175,7 +4175,7 @@
   "technique": "DTK-strategi för tvåvillkors-frågor på linjediagram med många linjer: använd linje-etiketterna och linjestilarna för att identifiera kandidatlinjerna, kontrollera båda villkoren explicit för varje kandidat (a OCH b), eliminera så fort ett villkor faller. Triggern: 'land/linje med både egenskap X och Y' → tvåvillkors-test per kandidat.",
   "pregrade_tactic": {
    "handle": "Båda-villkoren-per-kandidat",
-   "move": "Hitta de fyra kandidatlinjerna via etiketterna. Släng först varje linje med någon nedgång (Belgien sjunker 1933–1934). Jämför sedan var återstående linjer är som brantast: Storbritannien och Nederländerna toppar sent i 1930-talet, bara Frankrike har sitt brantaste segment exakt 1928→1929."
+   "move": "Hitta de fyra kandidatlinjerna via etiketterna. Släng först varje linje med någon nedgång (Belgien viker nedåt i början av 1930-talet). Jämför sedan var återstående linjer är som brantast: Storbritannien och Nederländerna toppar sent i 1930-talet, bara Frankrike har sitt brantaste segment exakt 1928→1929."
   }
  },
  "host-ver1-2019-kvant2-DTK-036": {
@@ -4297,7 +4297,7 @@
   ],
   "framework_id": "DTK-TACTIC-002",
   "pitfall": "Två fällor samverkar här. (1) Diagrammet har 14 linjer i olika stilar — pekar du på fel prickad/streckad linje (Nederländerna eller Frankrike i stället för Belgien) spårar alla avläsningar ur; lås linjeidentiteten vid etiketten först. (2) 'Störst skillnad' är inte 'högsta värde': Tyskland toppar 1930, men Belgien hade då redan klättrat ikapp en bit — gapet var störst 1926, när Belgien fortfarande låg kvar nere vid ~21 ‰.",
-  "solution_path": "Diagrammet visar antal telefoner per 1 000 invånare (‰) i 14 länder 1925–1939. Tyskland är den streckade linjen märkt 'Tyskland' (toppar ~51 ‰ kring 1930), Belgien den finprickade linjen märkt 'Belgien' (stiger från ~20 ‰). Avläsning vid de fyra kandidatåren: 1926 ≈ 42 mot 21,5 (gap ~20 ‰); 1930 ≈ 51 mot 33 (gap ~18 ‰); 1932 ≈ 46 mot 36 (gap ~10 ‰); 1933 ≈ 44,5 mot 37 (gap ~8 ‰) — Tyskland är då nere i sin svacka efter 1931 medan Belgien fortsätter uppåt. Störst skillnad 1926, minst 1933 = alternativ B.",
+  "solution_path": "Diagrammet visar antal telefoner per 1 000 invånare (‰) i 14 länder 1925–1939, med rutnät i steg om 10 ‰. Tyskland är den streckade linjen märkt 'Tyskland' (toppar ~51 ‰ kring 1930), Belgien den finprickade linjen märkt 'Belgien' (startar ~20 ‰ år 1925). Avläsning vid de fyra kandidatåren: 1926 ≈ 42 mot 21,5 (gap ~20 ‰); 1930 ≈ 51 mot 33 (gap ~18 ‰); 1932 ≈ 46 mot 36 (gap ~10 ‰); 1933 ≈ 44,5 mot 37 (gap ~8 ‰) — Tyskland är då nere i sin svacka efter toppen 1930/31 medan Belgien fortsätter uppåt. Störst skillnad 1926, minst 1933 = alternativ B.",
   "steps": [
    {
     "n": 1,
@@ -4338,7 +4338,7 @@
    {
     "n": 7,
     "title": "Avläs 1933",
-    "text": "Vid 1933: Tyskland ≈ 44,5 ‰ — botten av svackan. Belgien ≈ 37 ‰, på väg upp igen. Gap ≈ 8 ‰. Detta är det minsta gapet bland kandidatåren: Tyskland faller samtidigt som Belgien stiger, så avståndet kläms ihop från båda håll. (Linjerna möts dock inte här — de korsar/tangerar varandra först kring 1937–38, uppe vid ~50 ‰.)",
+    "text": "Vid 1933: Tyskland ≈ 44,5 ‰ — botten av svackan. Belgien ≈ 37 ‰, på väg upp igen. Gap ≈ 8 ‰. Detta är det minsta gapet bland kandidatåren: Tyskland faller samtidigt som Belgien stiger, så avståndet kläms ihop från båda håll. (Linjerna möts dock inte här — de konvergerar först kring 1937–38, uppe vid ~50 ‰.)",
     "tier": "essential"
    },
    {
@@ -4587,23 +4587,23 @@
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "540 km² lockar om du använder två SIDLÄNGDER i stället för bas och höjd: (37 × 32) / 2 ≈ 590, eller (37 × 30) / 2 ≈ 555 — dvs du behandlar den långa sidan Karlsfors–Backor som om den vore höjden mot basen Karlsfors–Varv.",
-    "why_wrong": "Höjden är det VINKELRÄTA avståndet från Stora/Lilla Backor till linjen Karlsfors–Varv, och eftersom den linjen löper nästan lodrätt är höjden det horisontella avståndet ≈ 22 km — inte sidlängden 37 km. (32 × 22) / 2 ≈ 350 → A."
+    "why_tempting": "540 km² lockar om du använder två SIDLÄNGDER i stället för bas och höjd: (33 × 35) / 2 ≈ 580, eller den långa sidan gånger den korta, (37 × 30) / 2 ≈ 555 — dvs du behandlar sidan Karlsfors–Backor som om den vore höjden mot basen Karlsfors–Varv.",
+    "why_wrong": "Höjden är det VINKELRÄTA avståndet från Stora/Lilla Backor till linjen Karlsfors–Varv, och eftersom den linjen löper nästan lodrätt är höjden det horisontella avståndet ≈ 21 km — inte sidlängden 35–37 km. (33 × 21) / 2 ≈ 350 → A."
    },
    {
     "letter": "C",
-    "why_tempting": "760 km² lockar om du glömmer faktorn 1/2 och räknar bas × höjd rakt av: 32 × 22 = 704, och med lite generösa avläsningar (t.ex. 33 × 23) hamnar du nära 760.",
+    "why_tempting": "760 km² lockar om du glömmer faktorn 1/2 och räknar bas × höjd rakt av: 33 × 21 ≈ 700, och med lite generösa avläsningar (t.ex. 34 × 22) hamnar du nära 760.",
     "why_wrong": "Bas × höjd utan halvering är arean av en parallellogram, inte en triangel. Formeln är (bas × höjd) / 2, och halveringen ger ca 350 km² → A. Att C ≈ 2 × A är just fällans signatur."
    },
    {
     "letter": "D",
     "why_tempting": "1 400 km² lockar om du gör flera fel samtidigt — överskattar båda måtten (t.ex. läser skalbaren fel med en faktor) OCH glömmer halveringen. En stor karttriangel 'känns' lätt större än den är.",
-    "why_wrong": "Hela kartan täcker i storleksordningen 6 000–7 000 km², och triangeln är bara en liten flik mellan Skövde och Falköping — klart under en tiondel av kartan. 1 400 km² skulle kräva att triangeln spände över en femtedel av hela kartan, vilket den uppenbart inte gör."
+    "why_wrong": "Hela kartrutan täcker i storleksordningen 6 000 km², och triangeln är bara en flik mellan Skövde och Falköping — klart under en tiondel av kartan. 1 400 km² skulle kräva att triangeln spände över nästan en fjärdedel av hela kartan, vilket den uppenbart inte gör."
    }
   ],
   "framework_id": "DTK-TACTIC-009",
   "pitfall": "Den klassiska DTK-fällan i triangelarea-frågor på karta är att glömma faktorn 1/2 — eller att använda en sidlängd som 'höjd'. Botemedlet: välj en bas som ligger bekvämt (här den nästan lodräta sidan Karlsfors–Varv), mät höjden VINKELRÄTT mot basen med skalbaren, tillämpa (bas × höjd) / 2, och kontrollera storleksordningen mot kartans totala yta.",
-  "solution_path": "Karlsfors ligger strax norr om Skövde, medan Stora/Lilla Backor (nordväst om Falköping) och Varv (öster om Falköping, mot Tidaholm) ligger nästan på samma breddgrad längst ner. Sidan Karlsfors–Varv löper därför nästan lodrätt: mätt mot skalbaren ≈ 32 km. Höjden mot den basen är det nästan horisontella avståndet från Stora/Lilla Backor till linjen Karlsfors–Varv ≈ 22 km. Area = (32 × 22) / 2 ≈ 350 km², klart närmast A (380 km²) — avståndet till B (540) är nästan 190 km², så även grova mätningar pekar entydigt på A.",
+  "solution_path": "Karlsfors ligger strax norr om Skövde, medan Stora/Lilla Backor (nordväst om Falköping, nära Bestorp) och Varv (öster om Falköping, mot Tidaholm) ligger nästan på samma breddgrad längst ner. Varv ligger dessutom nästan rakt söder om Karlsfors, så sidan Karlsfors–Varv löper nästan lodrätt: mätt mot skalbaren (0–20 km) ≈ 33 km. Höjden mot den basen är det nästan horisontella avståndet från Stora/Lilla Backor in till linjen Karlsfors–Varv ≈ 21 km. Area = (33 × 21) / 2 ≈ 350 km², klart närmast A (380 km²) — avståndet upp till B (540) är nästan 190 km², så även grova mätningar pekar entydigt på A.",
   "steps": [
    {
     "n": 1,
@@ -4614,25 +4614,25 @@
    {
     "n": 2,
     "title": "Hitta de tre orterna",
-    "text": "Leta efter prickarna för 'Provtagna lokaler' (fyllda punkter). Karlsfors: prick strax norr om Skövde, uppe till höger på kartan. Stora/Lilla Backor: prick nere till vänster, strax nordväst om Falköping (nära Bestorp). Varv: prick nere till höger, öster om Falköping mot Tidaholm. Notera formen: Backor och Varv ligger nästan på samma breddgrad, och Varv ligger nästan rakt söder om Karlsfors.",
+    "text": "Leta efter prickarna för 'Provtagna lokaler' (fyllda punkter, se teckenförklaringen). Karlsfors: prick strax norr om Skövde, i kartans övre högra del. Stora/Lilla Backor: prick nere till vänster, nordväst om Falköping (nära Bestorp). Varv: prick nere till höger, öster om Falköping mot Tidaholm. Notera formen: Backor och Varv ligger nästan på samma breddgrad, och Varv ligger nästan rakt söder om Karlsfors.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Mät triangelns sidor",
-    "text": "Med skalbaren (0–20 km, nere till höger): Karlsfors–Stora/Lilla Backor ≈ 37 km (längsta sidan), Stora/Lilla Backor–Varv ≈ 22 km (kortast, nästan horisontell), Karlsfors–Varv ≈ 32 km (nästan lodrät). Triangeln är alltså tydligt oliksidig — lång i nord–sydled och smalare i öst–västled.",
+    "text": "Med skalbaren (0–20 km, nere till höger i kartrutan): Karlsfors–Stora/Lilla Backor ≈ 35–37 km (längsta sidan, snett över kartan), Stora/Lilla Backor–Varv ≈ 21–22 km (kortast, nästan horisontell), Karlsfors–Varv ≈ 30–33 km (nästan lodrät). Triangeln är alltså tydligt oliksidig — lång i nord–sydled och smalare i öst–västled.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Välj bas och höjd",
-    "text": "Triangelareaformel: area = (bas × höjd) / 2. Smartast är att välja Karlsfors–Varv ≈ 32 km som bas, eftersom den löper nästan lodrätt på kartan. Höjden blir då det nästan horisontella avståndet från Stora/Lilla Backor in till den linjen — i praktiken ungefär samma sträcka som Backor–Varv, dvs ≈ 22 km.",
+    "text": "Triangelareaformel: area = (bas × höjd) / 2. Smartast är att välja Karlsfors–Varv ≈ 33 km som bas, eftersom den löper nästan lodrätt på kartan. Höjden blir då det nästan horisontella avståndet från Stora/Lilla Backor vinkelrätt in till den linjen — i praktiken nästan samma sträcka som Backor–Varv, dvs ≈ 21 km.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Räkna ut arean",
-    "text": "Area = (32 × 22) / 2 = 704 / 2 = 352 km². Mätosäkerheten är liten i sammanhanget: även med bas 30–33 km och höjd 21–23 km hamnar du i spannet ca 315–380 km² — alltid klart närmast A (380).",
+    "text": "Area = (33 × 21) / 2 ≈ 693 / 2 ≈ 350 km². Mätosäkerheten är liten i sammanhanget: även med bas 30–33 km och höjd 20–23 km hamnar du i spannet ca 300–380 km² — alltid klart närmast A (380).",
     "tier": "essential"
    },
    {
@@ -4644,19 +4644,19 @@
    {
     "n": 7,
     "title": "Sanity-check med omskriven rektangel",
-    "text": "Triangeln ryms i en rektangel som är ca 32 km hög och 22 km bred: 32 × 22 ≈ 700 km². En triangel med hörnen så här placerade fyller ungefär halva den rektangeln → ca 350 km². Konsistent med uträkningen och med alternativ A (380) — inte med 760 eller 1 400.",
+    "text": "Triangeln ryms i en rektangel som är ca 33 km hög och 21 km bred: 33 × 21 ≈ 700 km². En triangel fyller alltid högst halva sin omskrivna rektangel → ca 350 km². Konsistent med uträkningen och med alternativ A (380) — inte med 760 eller 1 400.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Sanity-check mot hela kartan",
-    "text": "Kartan täcker Skaraborg från Vänern i norr till Floby/Tidaholm i söder — grovt 75 × 90 km, i storleksordningen 6 000–7 000 km². Triangeln Karlsfors–Backor–Varv är bara en liten flik av det, klart under en tiondel. 1 400 km² (en femtedel av kartan) är alltså orimligt stort; 380 km² är rätt storleksordning.",
+    "text": "Kartrutan täcker Skaraborg från Vänern i norr till Floby/Tidaholm i söder — grovt 70 × 85 km, i storleksordningen 6 000 km². Triangeln Karlsfors–Backor–Varv är bara en flik av det, klart under en tiondel. 1 400 km² (nästan en fjärdedel av kartan) är alltså orimligt stort; 380 km² är rätt storleksordning.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Felfälla: glöm inte faktorn 1/2",
-    "text": "Räknar du bas × höjd = 32 × 22 = 704 utan att halvera får du en PARALLELLOGRAM-area, och med lite generösa avläsningar landar den nära alternativ C (760). Att C ligger nästan exakt på 2 × A är provkonstruktörernas vink om att fällan är just den glömda halveringen.",
+    "text": "Räknar du bas × höjd = 33 × 21 ≈ 700 utan att halvera får du en PARALLELLOGRAM-area, och med lite generösa avläsningar landar den nära alternativ C (760). Att C ligger nästan exakt på 2 × A är provkonstruktörernas vink om att fällan är just den glömda halveringen.",
     "tier": "detail"
    },
    {
@@ -4668,14 +4668,14 @@
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Svaret är A (380 km²). Insikten i en mening: triangelarea på karta = (bas × höjd) / 2, där du väljer en bas som ligger bekvämt (här den nästan lodräta sidan Karlsfors–Varv ≈ 32 km) och mäter höjden vinkelrätt (≈ 22 km) — och GLÖM INTE faktorn 1/2.",
+    "text": "Svaret är A (380 km²). Insikten i en mening: triangelarea på karta = (bas × höjd) / 2, där du väljer en bas som ligger bekvämt (här den nästan lodräta sidan Karlsfors–Varv ≈ 33 km) och mäter höjden vinkelrätt mot den (≈ 21 km) — och GLÖM INTE faktorn 1/2.",
     "tier": "essential"
    }
   ],
   "technique": "DTK-strategi för areafrågor på karta: identifiera de tre orterna (prickarna för provtagna lokaler), mät en bas och en höjd (vinkelrät mot basen) med skalbaren, tillämpa (bas × höjd) / 2. Triggern: 'triangelformat område / hur stort är området' → mät bas + höjd, halvera produkten.",
   "pregrade_tactic": {
    "handle": "Bas-gånger-höjd-genom-två",
-   "move": "Hitta de tre prickarna. Basen Karlsfors–Varv löper nästan lodrätt ≈ 32 km; höjden från Stora/Lilla Backor ≈ 22 km. Area = (32 × 22) / 2 ≈ 350 km² → närmast A (380)."
+   "move": "Hitta de tre prickarna för provtagna lokaler. Basen Karlsfors–Varv löper nästan lodrätt ≈ 33 km; höjden från Stora/Lilla Backor vinkelrätt mot den ≈ 21 km. Area = (33 × 21) / 2 ≈ 350 km² → närmast A (380)."
   }
  },
  "host-ver1-2019-kvant2-KVA-013": {
