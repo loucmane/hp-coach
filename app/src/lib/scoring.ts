@@ -18,6 +18,10 @@ import type { Section } from '@/data/questions'
 export const VERBAL_SECTIONS: ReadonlyArray<Section> = ['ORD', 'LÄS', 'MEK', 'ELF']
 export const QUANT_SECTIONS: ReadonlyArray<Section> = ['XYZ', 'KVA', 'NOG', 'DTK']
 
+/** Fixed exam-order across both halves — used only as a deterministic
+ *  tie-break, never as a ranking signal on its own. */
+const SECTION_ORDER: ReadonlyArray<Section> = [...VERBAL_SECTIONS, ...QUANT_SECTIONS]
+
 /** Raw per-section aggregates from the worker. */
 export type SectionStats = {
   attempts7d: number
@@ -151,7 +155,17 @@ export function rankWeakness(scores: SectionScore[]): SectionScore[] {
   const pool = confident.length > 0 ? confident : scored
   return [...pool]
     .map((s) => ({ s, w: weaknessWeight(s) }))
-    .sort((a, b) => b.w - a.w)
+    .sort((a, b) => {
+      // Exact-weight ties fall on `Array#sort`'s input order, which
+      // silently flips ranked[0]/ranked[1] — and therefore the daily
+      // plan's lesson/drill prescription — depending on caller
+      // iteration order (observed: all-tied → LÄS first, reversed
+      // input → NOG first). Break ties on a fixed section order so the
+      // result is identical regardless of how the caller ordered the
+      // scores.
+      if (b.w !== a.w) return b.w - a.w
+      return SECTION_ORDER.indexOf(a.s.section) - SECTION_ORDER.indexOf(b.s.section)
+    })
     .map((x) => x.s)
 }
 

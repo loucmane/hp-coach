@@ -202,6 +202,30 @@ describe('rankWeakness', () => {
     const r = rankWeakness(onlyLow)
     expect(r.map((s) => s.section)).toEqual(['XYZ', 'KVA']) // lower score first
   })
+
+  it('breaks exact-weight ties deterministically regardless of input order', () => {
+    // All sections tied at score 1.7, same confidence, no trend/staleness
+    // signal — every section computes the identical weaknessWeight. Array
+    // order (Array#sort is stable) then decides ranked[0]/ranked[1], which
+    // silently flips the daily-plan prescription depending on caller
+    // iteration order. Observed: all-1.7 → LÄS first; reversed input → NOG
+    // first. A stable tie-break (fixed section order) must make the
+    // result identical no matter how the caller ordered the input.
+    const forward = [
+      mkScore('ORD', 1.7),
+      mkScore('LÄS', 1.7),
+      mkScore('MEK', 1.7),
+      mkScore('ELF', 1.7),
+      mkScore('XYZ', 1.7),
+      mkScore('KVA', 1.7),
+      mkScore('NOG', 1.7),
+      mkScore('DTK', 1.7),
+    ]
+    const reversed = [...forward].reverse()
+    const rForward = rankWeakness(forward)
+    const rReversed = rankWeakness(reversed)
+    expect(rReversed.map((s) => s.section)).toEqual(rForward.map((s) => s.section))
+  })
 })
 
 describe('formatScore / formatTrend', () => {
