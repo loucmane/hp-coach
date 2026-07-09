@@ -18,10 +18,10 @@ import { useState } from 'react'
 import type { MockResultRow } from '@/api/hooks/useMockResults'
 import { MobileFrame } from '@/components/MobileFrame'
 import { MockResult } from '@/components/mock/MockResult'
-import type { PassOption } from '@/components/mock/passOption'
 import { Page } from '@/components/Page'
 import { Btn, Eyebrow } from '@/components/primitives'
 import { isDevSurface } from '@/lib/devSurface'
+import type { PassOption } from '@/lib/mock'
 import { Instructions, Picker } from './prov'
 
 export const Route = createFileRoute('/prov-verify')({

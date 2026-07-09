@@ -42,6 +42,8 @@ import {
 } from '@/lib/mockSheet'
 import { sectionLongLabel } from '@/lib/sectionRailLabel'
 
+export type { MockSheetState } from '@/lib/mockSheet'
+
 export const MOCK_DURATION_MS = 55 * 60_000
 
 export type MockRunnerSession = {
@@ -59,6 +61,18 @@ type Props = {
   seenBefore: number
   onSettled: (result: MockResultRow) => void
   onVoid: () => void
+  /** Reload-adopt: a sheet rebuilt from persisted attempts (lib/mockSheet.ts
+   *  sheetFromAttempts), so re-mounting an in-flight mock after a refresh
+   *  restores the answer grid instead of starting blank. Omit for a fresh
+   *  start (the default createMockSheet() empty state). */
+  initialSheet?: MockSheetState
+  /** Which question to land on when adopting a reload — mirrors the
+   *  session's last-known position. Defaults to 0 (index into `plan`,
+   *  clamped). */
+  initialIndex?: number
+  /** Dev-only override for the pass duration (see /prov's `?devMinutes`
+   *  knob, isDevSurface()-gated) — never set in production paths. */
+  durationMsOverride?: number
 }
 
 function formatClock(ms: number): string {
@@ -88,12 +102,23 @@ function sectionBoundaries(
   return out
 }
 
-export function MockRunner({ plan, session, seenBefore, onSettled, onVoid }: Props) {
+export function MockRunner({
+  plan,
+  session,
+  seenBefore,
+  onSettled,
+  onVoid,
+  initialSheet,
+  initialIndex,
+  durationMsOverride,
+}: Props) {
   const viewport = useViewport()
   const isPhone = viewport === 'phone'
 
-  const [index, setIndex] = useState(0)
-  const [sheet, setSheet] = useState<MockSheetState>(() => createMockSheet())
+  const [index, setIndex] = useState(() =>
+    initialIndex != null ? Math.min(Math.max(initialIndex, 0), Math.max(plan.length - 1, 0)) : 0,
+  )
+  const [sheet, setSheet] = useState<MockSheetState>(() => initialSheet ?? createMockSheet())
   const settledRef = useRef(false)
 
   const updateSession = useUpdateSession()
@@ -101,7 +126,7 @@ export function MockRunner({ plan, session, seenBefore, onSettled, onVoid }: Pro
   const recordMistake = useRecordMistake()
   const submitMockResult = useSubmitMockResult()
 
-  const countdown = useCountdown(session.startedAt, MOCK_DURATION_MS)
+  const countdown = useCountdown(session.startedAt, durationMsOverride ?? MOCK_DURATION_MS)
 
   const q = plan[index]
   const blockPosition = useMemo(() => dtkBlockPosition(plan, index), [plan, index])

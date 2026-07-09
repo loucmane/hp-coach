@@ -199,6 +199,8 @@ export function useSessionAttempts(sessionId: number | null) {
         questionId: string
         selectedAnswer: string | null
         correct: boolean | null
+        timeTakenMs: number | null
+        createdAt: number | string | null
       }>
     },
   })

@@ -15,6 +15,7 @@ import type { ComponentProps } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { Question } from '@/data/questions'
+import { createMockSheet, mockSheetReducer } from '@/lib/mockSheet'
 import { MockRunner, type MockRunnerSession } from './MockRunner'
 
 vi.mock('@/data/explanations', () => ({
@@ -256,5 +257,39 @@ describe('MockRunner — abandon', () => {
     expect(updateSessionMutate).not.toHaveBeenCalled()
     expect(onVoid).not.toHaveBeenCalled()
     vi.unstubAllGlobals()
+  })
+})
+
+describe('MockRunner — reload-adopt props (initialSheet/initialIndex/durationMsOverride)', () => {
+  it('renders the grid pre-filled from initialSheet instead of starting blank', async () => {
+    const initialSheet = createMockSheet()
+    const withPick = mockSheetReducer(initialSheet, {
+      type: 'pick',
+      qid: 'q1',
+      letter: 'A',
+      now: 1000,
+    })
+    renderRunner({ initialSheet: withPick })
+    await screen.findByTestId('mock-grid')
+    expect(screen.getByTestId('mock-cell-1')).toHaveAttribute('data-answered', 'true')
+    expect(screen.getByTestId('mock-cell-2')).toHaveAttribute('data-answered', 'false')
+  })
+
+  it('lands on initialIndex instead of question 0', async () => {
+    renderRunner({ initialIndex: 2 })
+    expect(await screen.findByTestId('drill-prompt')).toHaveTextContent('prompt q3')
+    expect(screen.getByTestId('mock-cell-3')).toHaveAttribute('data-current', 'true')
+  })
+
+  it('clamps an out-of-range initialIndex into the plan', async () => {
+    renderRunner({ initialIndex: 999 })
+    expect(await screen.findByTestId('drill-prompt')).toHaveTextContent('prompt q3')
+  })
+
+  it('durationMsOverride shortens the countdown instead of the default 55 minutes', async () => {
+    renderRunner({ durationMsOverride: 3 * 60_000 })
+    const clock = await screen.findByTestId('mock-countdown')
+    // Just-mounted remaining time should read close to 03:00, never 55:00.
+    expect(clock.textContent).toMatch(/^0[0-3]:/)
   })
 })
