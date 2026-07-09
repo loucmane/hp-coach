@@ -1,18 +1,29 @@
-// useLessonReads — read/unread state for framework entries.
+// useLessonReads — read/unread state for framework entries, cross-device.
 //
-// Backed by the `hpc-lesson-read-{entryId}` localStorage flags that
-// useDailyPlan already consumes to auto-complete lesson plan items.
+// Source of truth is now the server read set (`/api/lesson-reads`,
+// GET/PUT/DELETE). localStorage (`hpc-lesson-read-{entryId}` flags) is kept
+// as an OPTIMISTIC WRITE-THROUGH cache:
+//   - `toggleRead` writes localStorage FIRST (instant, offline-tolerant)
+//     then fires the server mutation. A server failure must NOT lose the
+//     local mark — the flag stays, and the next successful GET reconciles.
+//   - The reader shows the UNION of localStorage and the server set, so a
+//     mark made offline is honoured immediately and survives until the
+//     server catches up (or, on unmark, is removed both places).
+//
+// This makes lesson completion + the scheduler's next-unread-entry hint
+// converge across the user's phone/desktop, while staying usable offline.
+//
 // Lives once at the LessonReader level; per-card props (read + toggle)
 // avoid every TrapCard / ProtocolCard / LexiconCard re-scanning storage.
-//
-// `toggleRead(entryId)` flips the flag both ways — tap to mark, tap
-// again to unmark. Cheap escape hatch if the user accidentally marks
-// the wrong card; gameability is already gone because the daily-plan
-// card derives its own completion from this signal independently.
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { loadLessonReads, markLessonRead } from '@/lib/scheduler'
+import {
+  useLessonReadsQuery,
+  useMarkLessonReadServer,
+  useUnmarkLessonReadServer,
+} from '@/api/hooks/useLessonReadsApi'
+import { loadLessonReads, markLessonRead, unmarkLessonRead } from '@/lib/scheduler'
 
 const LESSON_READ_PREFIX = 'hpc-lesson-read-'
 
@@ -23,36 +34,71 @@ export type UseLessonReads = {
 }
 
 export function useLessonReads(): UseLessonReads {
-  const [reads, setReads] = useState<Set<string>>(() => loadLessonReads())
+  const [local, setLocal] = useState<Set<string>>(() => loadLessonReads())
+  const serverQuery = useLessonReadsQuery()
+  const markServer = useMarkLessonReadServer()
+  const unmarkServer = useUnmarkLessonReadServer()
 
-  // Pick up cross-tab changes via the storage event. A second tab
-  // marking a lesson read shouldn't leave this tab stale.
+  // Reconcile the server set into localStorage whenever it arrives/changes.
+  // The server is authoritative for MARKS (a read on another device shows
+  // up here), so we fold server ids into local. We do NOT delete local ids
+  // that the server lacks — those may be offline marks not yet flushed, or
+  // a just-made mark racing its own PUT; an explicit unmark removes them.
+  const serverIds = serverQuery.data
+  useEffect(() => {
+    if (!serverIds) return
+    let changed = false
+    setLocal((prev) => {
+      const next = new Set(prev)
+      for (const id of serverIds) {
+        if (!next.has(id)) {
+          next.add(id)
+          markLessonRead(id)
+          changed = true
+        }
+      }
+      return changed ? next : prev
+    })
+  }, [serverIds])
+
+  // Pick up cross-tab localStorage changes.
   useEffect(() => {
     const handler = (e: StorageEvent) => {
-      if (e.key && e.key.startsWith(LESSON_READ_PREFIX)) {
-        setReads(loadLessonReads())
-      }
+      if (e.key?.startsWith(LESSON_READ_PREFIX)) setLocal(loadLessonReads())
     }
     window.addEventListener('storage', handler)
     return () => window.removeEventListener('storage', handler)
   }, [])
 
+  // The union of local (incl. offline marks) and the server set. Local
+  // already contains reconciled server ids, so `local` IS the union.
+  const reads = useMemo<ReadonlySet<string>>(() => local, [local])
+
   const isRead = useCallback((entryId: string) => reads.has(entryId), [reads])
 
-  const toggleRead = useCallback((entryId: string) => {
-    setReads((prev) => {
-      const next = new Set(prev)
-      const key = `${LESSON_READ_PREFIX}${entryId}`
-      if (next.has(entryId)) {
-        next.delete(entryId)
-        localStorage.removeItem(key)
-      } else {
-        next.add(entryId)
-        markLessonRead(entryId)
-      }
-      return next
-    })
-  }, [])
+  const toggleRead = useCallback(
+    (entryId: string) => {
+      setLocal((prev) => {
+        const next = new Set(prev)
+        if (next.has(entryId)) {
+          // Unmark: localStorage first (optimistic), then the server. A
+          // failed DELETE leaves the server row; the next GET re-adds it —
+          // acceptable (a briefly-resurrected read), and never data loss.
+          next.delete(entryId)
+          unmarkLessonRead(entryId)
+          unmarkServer.mutate(entryId)
+        } else {
+          // Mark: localStorage first so the flag survives an offline /
+          // failed PUT; the next successful GET reconciles server → local.
+          next.add(entryId)
+          markLessonRead(entryId)
+          markServer.mutate(entryId)
+        }
+        return next
+      })
+    },
+    [markServer, unmarkServer],
+  )
 
   return { isRead, toggleRead, reads }
 }

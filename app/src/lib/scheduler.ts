@@ -598,6 +598,12 @@ export function markLessonRead(entryId: string, storage: Storage = localStorage)
   storage.setItem(`${LESSON_READ_PREFIX}${entryId}`, '1')
 }
 
+/** Remove the localStorage read flag for one entry. Paired with the
+ *  server DELETE in the write-through cache (useLessonReads). */
+export function unmarkLessonRead(entryId: string, storage: Storage = localStorage): void {
+  storage.removeItem(`${LESSON_READ_PREFIX}${entryId}`)
+}
+
 /** Test-only: wipe both plan and lesson-read keys. */
 export function __resetSchedulerStorage(storage: Storage = localStorage): void {
   const toDelete: string[] = []

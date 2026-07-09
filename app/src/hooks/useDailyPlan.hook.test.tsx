@@ -75,6 +75,25 @@ vi.mock('@/api/hooks/useSessions', () => ({
   useActiveSessions: () => ({ data: activeSessions, isLoading: false }),
 }))
 
+// Server plan + read-set hooks. Default to "no server plan, empty read
+// set" so this suite exercises the local generate → PUT path; the PUT is a
+// no-op spy. The dedicated cross-device suite drives the adopt path.
+const putServerPlanMock = vi.fn()
+let serverPlanData: unknown = null
+// Reference-stable payloads (see the statsData note above): a fresh literal
+// per render changes the query `.data` reference every render, which cascades
+// through mergedReads → the build effect and can trip the very render loop
+// this hook is designed to avoid.
+const emptyReads: string[] = []
+vi.mock('@/api/hooks/useDailyPlanApi', () => ({
+  useDailyPlanQuery: () => ({ data: serverPlanData, isLoading: false }),
+  usePutDailyPlan: () => ({ mutate: putServerPlanMock }),
+}))
+
+vi.mock('@/api/hooks/useLessonReadsApi', () => ({
+  useLessonReadsQuery: () => ({ data: emptyReads, isLoading: false }),
+}))
+
 vi.mock('@/data/frameworks', () => ({
   loadFramework: async () => null,
   entryHeadword: () => null,
@@ -94,6 +113,8 @@ describe('useDailyPlan — day-boundary recompute', () => {
     vi.useRealTimers()
     localStorage.clear()
     activeSessions = []
+    serverPlanData = null
+    putServerPlanMock.mockClear()
     vi.setSystemTime(new Date('2026-05-18T10:00:00'))
   })
 

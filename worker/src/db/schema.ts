@@ -119,6 +119,77 @@ export const lessonProgress = sqliteTable(
   }),
 )
 
+// ── lesson_reads — a per-(user, entry) READ SET ───────────────────────
+//
+// Distinct from `lesson_progress` (above), which is a single per-section
+// reading BOOKMARK of the last-opened entry. This table records the FULL
+// set of framework entries the user has marked read — one row per
+// (user, entry). The daily-plan scheduler consumes it two ways:
+//   1. lesson-item completion (a lesson item is done once the section's
+//      recommended entry is read), and
+//   2. the next-unread-entry hint in resolveFrameworkHints.
+// Both were device-local (localStorage) before this table; promoting them
+// to D1 makes lesson completion + hints converge across the user's
+// phone/desktop. localStorage stays as a write-through / offline cache.
+//
+//   - GET    /   → the full set of read entry ids for this user
+//   - PUT    /   → mark { entryId } read (idempotent upsert)
+//   - DELETE /:entryId → unmark
+export const lessonReads = sqliteTable(
+  'lesson_reads',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    entryId: text('entry_id').notNull(),
+    readAt: integer('read_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+  },
+  (t) => ({
+    // One row per (user, entry). Makes PUT an idempotent upsert and the
+    // GET a single indexed scan by user.
+    userEntry: uniqueIndex('idx_lesson_reads_user_entry').on(t.userId, t.entryId),
+  }),
+)
+
+// ── daily_plans — the per-day plan baseline, server-authoritative ──────
+//
+// Promotes the localStorage `hpc-daily-plan-<date>` blob to D1 so both
+// devices adopt the SAME generated baseline for a given local date
+// (first-generator-wins). Semantics: on Home mount a device GETs today's
+// plan BEFORE generating; if a row exists it adopts it verbatim; if not it
+// generates locally then PUTs it. localStorage remains the fast-path /
+// offline cache, but on divergence the SERVER row wins. "Generera om"
+// overwrites via PUT.
+//
+// `plan` is the exact JSON blob `savePlan` stores today (items +
+// attemptsSnapshot + totalAttemptsSnapshot + version), so completion
+// derivation is unchanged — only the storage location moves. This
+// SUBSUMES any plan_completions concept; completion stays signal-derived
+// client-side.
+//
+//   - GET /:date → today's plan for this user, or null
+//   - PUT /:date → upsert (adopt-or-overwrite) the plan for this user+date
+export const dailyPlans = sqliteTable(
+  'daily_plans',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    // Local-date the plan is for, ISO 8601 (YYYY-MM-DD). Local, not UTC —
+    // matches the client's localDateString keying.
+    date: text('date').notNull(),
+    // The DailyPlan JSON blob, verbatim from the client's savePlan shape.
+    plan: text('plan', { mode: 'json' }).$type<unknown>().notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+  },
+  (t) => ({
+    // One plan per (user, local-date) — first-generator-wins upsert target.
+    userDate: uniqueIndex('idx_daily_plans_user_date').on(t.userId, t.date),
+  }),
+)
+
 // ── attempts — one row per question answered ──────────────────────────
 export const attempts = sqliteTable(
   'attempts',
@@ -230,3 +301,7 @@ export type Attempt = typeof attempts.$inferSelect
 export type Mistake = typeof mistakes.$inferSelect
 export type LessonProgress = typeof lessonProgress.$inferSelect
 export type NewLessonProgress = typeof lessonProgress.$inferInsert
+export type LessonRead = typeof lessonReads.$inferSelect
+export type NewLessonRead = typeof lessonReads.$inferInsert
+export type DailyPlanRow = typeof dailyPlans.$inferSelect
+export type NewDailyPlanRow = typeof dailyPlans.$inferInsert
