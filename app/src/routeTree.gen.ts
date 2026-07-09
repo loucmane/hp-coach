@@ -47,6 +47,7 @@ import { Route as DevRouteImport } from './routes/dev'
 import { Route as CoachRouteImport } from './routes/coach'
 import { Route as AvanceratRouteImport } from './routes/avancerat'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DevNavCtaBakeoffRouteImport } from './routes/dev_.nav-cta-bakeoff'
 
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
@@ -239,6 +240,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevNavCtaBakeoffRoute = DevNavCtaBakeoffRouteImport.update({
+  id: '/dev_/nav-cta-bakeoff',
+  path: '/dev/nav-cta-bakeoff',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -279,6 +285,7 @@ export interface FileRoutesByFullPath {
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
+  '/dev/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -319,6 +326,7 @@ export interface FileRoutesByTo {
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
+  '/dev/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -360,6 +368,7 @@ export interface FileRoutesById {
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
+  '/dev_/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -402,6 +411,7 @@ export interface FileRouteTypes {
     | '/sign-in-bakeoff'
     | '/sign-up'
     | '/welcome'
+    | '/dev/nav-cta-bakeoff'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -442,6 +452,7 @@ export interface FileRouteTypes {
     | '/sign-in-bakeoff'
     | '/sign-up'
     | '/welcome'
+    | '/dev/nav-cta-bakeoff'
   id:
     | '__root__'
     | '/'
@@ -482,6 +493,7 @@ export interface FileRouteTypes {
     | '/sign-in-bakeoff'
     | '/sign-up'
     | '/welcome'
+    | '/dev_/nav-cta-bakeoff'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -523,6 +535,7 @@ export interface RootRouteChildren {
   SignInBakeoffRoute: typeof SignInBakeoffRoute
   SignUpRoute: typeof SignUpRoute
   WelcomeRoute: typeof WelcomeRoute
+  DevNavCtaBakeoffRoute: typeof DevNavCtaBakeoffRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -793,6 +806,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dev_/nav-cta-bakeoff': {
+      id: '/dev_/nav-cta-bakeoff'
+      path: '/dev/nav-cta-bakeoff'
+      fullPath: '/dev/nav-cta-bakeoff'
+      preLoaderRoute: typeof DevNavCtaBakeoffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -835,6 +855,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignInBakeoffRoute: SignInBakeoffRoute,
   SignUpRoute: SignUpRoute,
   WelcomeRoute: WelcomeRoute,
+  DevNavCtaBakeoffRoute: DevNavCtaBakeoffRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
