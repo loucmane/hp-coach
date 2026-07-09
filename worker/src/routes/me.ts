@@ -35,6 +35,41 @@ const PrefsPatch = z
   .strict()
 
 export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
+  // GET /api/me/exposure — per-question exposure map: how many times this
+  // user has attempted each question, and when they last did. Seeds a
+  // mock's seenBefore snapshot (Provpass PR 1) client-side, and any future
+  // "you've seen this before" surface.
+  //
+  // A plain object keyed by question_id (not an array) — cheapest shape
+  // for a client-side O(1) lookup per presented question, and the payload
+  // is a few thousand small entries at most for a single dogfood user.
+  //
+  // LIVE aggregate over `attempts`, unlike mock_results.seenBefore (a
+  // stored snapshot taken once at mock-submit time). attempts rows are
+  // pruned after ~120 days (lib/retention.ts), so this endpoint's counts
+  // silently shrink as old attempts age out of the window — by design;
+  // callers that need a stable historical count (e.g. a past mock's
+  // "you'd seen N of these before") must use the stored snapshot, not
+  // this live endpoint.
+  .get('/exposure', async (c) => {
+    const db = getDb(c.env.DB)
+    const userId = await ensureUserRow(db, c.var.userId)
+    const rows = await db
+      .select({
+        questionId: attempts.questionId,
+        n: sql<number>`count(*)`,
+        last: sql<number>`max(${attempts.createdAt})`,
+      })
+      .from(attempts)
+      .where(eq(attempts.userId, userId))
+      .groupBy(attempts.questionId)
+    const exposure: Record<string, { n: number; last: number }> = {}
+    for (const r of rows) {
+      exposure[r.questionId] = { n: Number(r.n), last: Number(r.last) }
+    }
+    return c.json({ exposure })
+  })
+
   // GET /api/me/prefs — current user prefs. Lazy-creates the row.
   .get('/prefs', async (c) => {
     const db = getDb(c.env.DB)

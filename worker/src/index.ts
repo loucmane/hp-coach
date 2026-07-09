@@ -31,6 +31,7 @@ import { lessonProgressRoute } from './routes/lessonProgress'
 import { lessonReadsRoute } from './routes/lessonReads'
 import { meRoute } from './routes/me'
 import { mistakesRoute } from './routes/mistakes'
+import { mockResultsRoute } from './routes/mockResults'
 import { sessionsRoute } from './routes/sessions'
 import { testResetRoute } from './routes/testReset'
 import type { Env, Vars } from './types'
@@ -86,6 +87,7 @@ const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .route('/daily-plans', dailyPlansRoute)
   .route('/attempts', attemptsRoute)
   .route('/mistakes', mistakesRoute)
+  .route('/mock-results', mockResultsRoute)
   .route('/test-reset', testResetRoute)
 
 // Chained route registration → preserves route types in `typeof routes`.

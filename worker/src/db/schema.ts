@@ -292,6 +292,60 @@ export const frameworkProgress = sqliteTable('framework_progress', {
   ),
 })
 
+// ── mock_results — one row per completed Provpass (mock exam) ─────────
+//
+// A mock is scored as a whole pass, distinct from the per-question
+// `attempts` rows (which still get written during the mock so mistakes/
+// mastery/exposure pipelines are unaffected). This table is the summary
+// the results screen and history read from — one row per session.
+//
+// `seenBefore` is an EXPOSURE SNAPSHOT taken at mock submission time: the
+// count of questions in this mock the user had already seen in a prior
+// attempt. It is captured once and stored, NOT recomputed later, because
+// `attempts` rows are pruned after ~120 days (see lib/retention.ts) — a
+// later recompute would silently lose exposure history as old attempts
+// age out, making a genuinely-repeated question look fresh. The snapshot
+// keeps the historical "you'd seen N of these before" disclosure stable
+// for as long as the mock_results row itself lives.
+//
+// `breakdown` is a JSON blob: { perSection: Record<Section, { presented,
+// correct, timeMs }>, missedQids: string[], version: 1 }. Kept opaque
+// (like daily_plans.plan) so the summary shape can evolve without a
+// migration — bump `version` in the blob when the shape changes.
+export const mockResults = sqliteTable(
+  'mock_results',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    // One result per session — POST is an idempotent upsert on retry.
+    sessionId: integer('session_id')
+      .notNull()
+      .unique()
+      .references(() => sessions.id, { onDelete: 'cascade' }),
+    mode: text('mode', { enum: ['authentic', 'synthetic'] }).notNull(),
+    half: text('half', { enum: ['verbal', 'kvant'] }).notNull(),
+    // Which real exam this mock replayed, when mode === 'authentic'
+    // (e.g. 'var-2024'). Null for synthetic mocks.
+    examId: text('exam_id'),
+    // Which authentic provpass within the exam ('verbal-1' etc), when
+    // applicable. Null otherwise.
+    provpass: text('provpass'),
+    presented: integer('presented').notNull(),
+    answered: integer('answered').notNull(),
+    correct: integer('correct').notNull(),
+    seenBefore: integer('seen_before').notNull(),
+    durationMs: integer('duration_ms').notNull(),
+    breakdown: text('breakdown', { mode: 'json' }).$type<unknown>().notNull(),
+    createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+  },
+  (t) => ({
+    // Newest-first per-user history read.
+    byUserCreated: index('idx_mock_results_user_created').on(t.userId, t.createdAt),
+  }),
+)
+
 // Type aliases used by routes + tests
 export type User = typeof users.$inferSelect
 export type NewUser = typeof users.$inferInsert
@@ -305,3 +359,5 @@ export type LessonRead = typeof lessonReads.$inferSelect
 export type NewLessonRead = typeof lessonReads.$inferInsert
 export type DailyPlanRow = typeof dailyPlans.$inferSelect
 export type NewDailyPlanRow = typeof dailyPlans.$inferInsert
+export type MockResultRow = typeof mockResults.$inferSelect
+export type NewMockResultRow = typeof mockResults.$inferInsert
