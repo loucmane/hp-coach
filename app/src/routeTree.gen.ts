@@ -18,6 +18,8 @@ import { Route as RedesignLayoutBakeoffRouteImport } from './routes/redesign-lay
 import { Route as RedesignLabRouteImport } from './routes/redesign-lab'
 import { Route as RedesignL12RouteImport } from './routes/redesign-l12'
 import { Route as RedesignBakeoffRouteImport } from './routes/redesign-bakeoff'
+import { Route as ProvVerifyRouteImport } from './routes/prov-verify'
+import { Route as ProvRouteImport } from './routes/prov'
 import { Route as ProgressBakeoffRouteImport } from './routes/progress-bakeoff'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as NavBakeoffRouteImport } from './routes/nav-bakeoff'
@@ -89,6 +91,16 @@ const RedesignL12Route = RedesignL12RouteImport.update({
 const RedesignBakeoffRoute = RedesignBakeoffRouteImport.update({
   id: '/redesign-bakeoff',
   path: '/redesign-bakeoff',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProvVerifyRoute = ProvVerifyRouteImport.update({
+  id: '/prov-verify',
+  path: '/prov-verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProvRoute = ProvRouteImport.update({
+  id: '/prov',
+  path: '/prov',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProgressBakeoffRoute = ProgressBakeoffRouteImport.update({
@@ -256,6 +268,8 @@ export interface FileRoutesByFullPath {
   '/nav-bakeoff': typeof NavBakeoffRoute
   '/progress': typeof ProgressRoute
   '/progress-bakeoff': typeof ProgressBakeoffRoute
+  '/prov': typeof ProvRoute
+  '/prov-verify': typeof ProvVerifyRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
   '/redesign-lab': typeof RedesignLabRoute
@@ -294,6 +308,8 @@ export interface FileRoutesByTo {
   '/nav-bakeoff': typeof NavBakeoffRoute
   '/progress': typeof ProgressRoute
   '/progress-bakeoff': typeof ProgressBakeoffRoute
+  '/prov': typeof ProvRoute
+  '/prov-verify': typeof ProvVerifyRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
   '/redesign-lab': typeof RedesignLabRoute
@@ -333,6 +349,8 @@ export interface FileRoutesById {
   '/nav-bakeoff': typeof NavBakeoffRoute
   '/progress': typeof ProgressRoute
   '/progress-bakeoff': typeof ProgressBakeoffRoute
+  '/prov': typeof ProvRoute
+  '/prov-verify': typeof ProvVerifyRoute
   '/redesign-bakeoff': typeof RedesignBakeoffRoute
   '/redesign-l12': typeof RedesignL12Route
   '/redesign-lab': typeof RedesignLabRoute
@@ -373,6 +391,8 @@ export interface FileRouteTypes {
     | '/nav-bakeoff'
     | '/progress'
     | '/progress-bakeoff'
+    | '/prov'
+    | '/prov-verify'
     | '/redesign-bakeoff'
     | '/redesign-l12'
     | '/redesign-lab'
@@ -411,6 +431,8 @@ export interface FileRouteTypes {
     | '/nav-bakeoff'
     | '/progress'
     | '/progress-bakeoff'
+    | '/prov'
+    | '/prov-verify'
     | '/redesign-bakeoff'
     | '/redesign-l12'
     | '/redesign-lab'
@@ -449,6 +471,8 @@ export interface FileRouteTypes {
     | '/nav-bakeoff'
     | '/progress'
     | '/progress-bakeoff'
+    | '/prov'
+    | '/prov-verify'
     | '/redesign-bakeoff'
     | '/redesign-l12'
     | '/redesign-lab'
@@ -488,6 +512,8 @@ export interface RootRouteChildren {
   NavBakeoffRoute: typeof NavBakeoffRoute
   ProgressRoute: typeof ProgressRoute
   ProgressBakeoffRoute: typeof ProgressBakeoffRoute
+  ProvRoute: typeof ProvRoute
+  ProvVerifyRoute: typeof ProvVerifyRoute
   RedesignBakeoffRoute: typeof RedesignBakeoffRoute
   RedesignL12Route: typeof RedesignL12Route
   RedesignLabRoute: typeof RedesignLabRoute
@@ -562,6 +588,20 @@ declare module '@tanstack/react-router' {
       path: '/redesign-bakeoff'
       fullPath: '/redesign-bakeoff'
       preLoaderRoute: typeof RedesignBakeoffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prov-verify': {
+      id: '/prov-verify'
+      path: '/prov-verify'
+      fullPath: '/prov-verify'
+      preLoaderRoute: typeof ProvVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prov': {
+      id: '/prov'
+      path: '/prov'
+      fullPath: '/prov'
+      preLoaderRoute: typeof ProvRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/progress-bakeoff': {
@@ -784,6 +824,8 @@ const rootRouteChildren: RootRouteChildren = {
   NavBakeoffRoute: NavBakeoffRoute,
   ProgressRoute: ProgressRoute,
   ProgressBakeoffRoute: ProgressBakeoffRoute,
+  ProvRoute: ProvRoute,
+  ProvVerifyRoute: ProvVerifyRoute,
   RedesignBakeoffRoute: RedesignBakeoffRoute,
   RedesignL12Route: RedesignL12Route,
   RedesignLabRoute: RedesignLabRoute,
