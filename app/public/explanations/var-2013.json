@@ -12484,97 +12484,103 @@
   }
  },
  "var-2013-kvant2-KVA-022": {
-  "solution_path": "Villkor n, m heltal med n ≥ 0, m ≥ 0. I = (n+1)^m, II = m^(n+1). Beroende på n och m flippar olikheten. Test n = 0, m = 1: I = 1¹ = 1, II = 1^1 = 1 — lika. Test n = 1, m = 2: I = 2² = 4, II = 2² = 4 — lika. Test n = 2, m = 3: I = 3³ = 27, II = 3³ = 27 — lika. Hmm. Verdikten är specifik. Per facit D: olika kombinationer ger olika svar.",
+  "solution_path": "I = (n+1)^{m}, II = m^{(n+1)}, med n, m icke-negativa heltal. Testa två tillåtna fall. n=0, m=0: I = 1^{0}=1, II = 0^{1}=0 → I > II. n=1, m=3: I = 2^{3}=8, II = 3^{2}=9 → I < II. Ordningen flippar mellan fallen, så informationen är otillräcklig — svaret är D.",
   "steps": [
    {
     "n": 1,
-    "title": "Förstå problemet",
-    "text": "n, m heltal ≥ 0. I = (n+1)^m, II = m^(n+1). Jämför.",
+    "title": "Förstå frågan",
+    "text": "n och m är heltal med n ≥ 0 och m ≥ 0. Vi jämför I = (n+1)^{m} med II = m^{(n+1)}. Inga exakta värden är givna, så vi måste testa om ordningen kan flippa.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Test n = 0, m = 0",
-    "text": "I = 1^0 = 1, II = 0^1 = 0 — I > II.",
-    "tier": "essential"
+    "title": "KVA-strategin vid fria variabler",
+    "text": "När kvantiteterna innehåller obestämda variabler räcker det att hitta TVÅ tillåtna talval som ger olika verdikt — då är svaret D.",
+    "tier": "detail"
    },
    {
     "n": 3,
-    "title": "Test n = 0, m = 2",
-    "text": "I = 1² = 1, II = 2¹ = 2 — II > I.",
-    "tier": "essential"
+    "title": "Notera potensregler för 0",
+    "text": "Kom ihåg: a^{0}=1 för a ≠ 0, och 0^{k}=0 för k ≥ 1. Dessa gränsfall är ofta nyckeln.",
+    "tier": "detail"
    },
    {
     "n": 4,
-    "title": "Test n = 1, m = 0",
-    "text": "I = 2⁰ = 1, II = 0² = 0 — I > II.",
+    "title": "Fall 1: n = 0, m = 0",
+    "text": "I = (0+1)^{0}=1^{0}=1. II = 0^{(0+1)}=0^{1}=0. Alltså I = 1 > 0 = II. Här vinner I.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Verdikten flippar",
-    "text": "A, B, och möjligen C alla möjliga beroende på n, m.",
+    "title": "Behöver vi ett fall där II vinner?",
+    "text": "Ja — om vi hittar ett tillåtet fall där I < II, är ordningen inte bestämd och svaret måste bli D.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Räkna frihetsgrader",
-    "text": "Två heltal n, m ≥ 0; massa frihet.",
-    "tier": "detail"
+    "title": "Fall 2: n = 1, m = 3",
+    "text": "I = (1+1)^{3}=2^{3}=8. II = 3^{(1+1)}=3^{2}=9. Alltså I = 8 < 9 = II. Här vinner II.",
+    "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Räcker informationen?",
-    "text": "Nej — alla tre verdikter A, B, C möjliga.",
+    "title": "Sammanställ",
+    "text": "Fall 1 gav I > II. Fall 2 gav I < II. Två tillåtna talval, två olika verdikt.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Tecken-check",
-    "text": "Båda ≥ 0.",
-    "tier": "detail"
+    "title": "Varför det räcker",
+    "text": "I KVA måste svaret gälla för ALLA tillåtna värden. Så snart två giltiga fall pekar åt olika håll kan varken A, B eller C vara sant generellt.",
+    "tier": "essential"
    },
    {
     "n": 9,
-    "title": "Verifiera mot facit",
-    "text": "Facit D bekräftar otillräcklig info.",
+    "title": "En brasklapp om lika-fall",
+    "text": "Det finns dessutom fall där de är lika, t.ex. n = 1, m = 2: I = 2^{2}=4, II = 2^{2}=4. Det stärker bara slutsatsen att ordningen inte är låst.",
     "tier": "detail"
    },
    {
     "n": 10,
+    "title": "Räcker informationen?",
+    "text": "Nej. Villkoren n, m ≥ 0 lämnar utfallet öppet — ordningen mellan I och II beror på de exakta värdena.",
+    "tier": "essential"
+   },
+   {
+    "n": 11,
     "title": "Slutsats",
-    "text": "Svaret är D. Insikten: exponential-uttryck med två okända heltal flippar olika beroende på vilken är större.",
+    "text": "Ordningen är inte bestämd — svaret är D. Insikten: vid fria heltalsvariabler i exponenter, pröva småfall (särskilt 0 och 1) tills du hittar både 'I vinner' och 'II vinner'.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Om man testar bara små n, m.",
-    "why_wrong": "Steg 3: n = 0, m = 2 ger II > I, så A misslyckas."
+    "why_tempting": "Testar du bara n = 0, m = 0 (I = 1 > 0 = II) drar du förhastat slutsatsen att I alltid vinner.",
+    "why_wrong": "Steg 6 ger ett tillåtet motexempel (n=1, m=3) där I < II. Ett enda fall bevisar aldrig ett KVA-svar."
    },
    {
     "letter": "B",
-    "why_tempting": "Spegel.",
-    "why_wrong": "Steg 2 och 4: I > II vid andra n, m."
+    "why_tempting": "Testar du istället n = 1, m = 3 (I = 8 < 9 = II) fastnar du på att II vinner.",
+    "why_wrong": "Steg 4 ger motexemplet n = 0, m = 0 där I > II. Båda utfall är möjliga."
    },
    {
     "letter": "C",
-    "why_tempting": "Likhet vid specifika n, m (t.ex. n = m − 1).",
-    "why_wrong": "Steg 5: bara specifika fall."
+    "why_tempting": "Fallet n = 1, m = 2 ger I = II = 4, vilket kan lura dig att tro att de alltid är lika.",
+    "why_wrong": "Likhet gäller bara i enstaka fall (steg 9). Stegen 4 och 6 visar strikta olikheter åt båda håll — inte generell likhet."
    }
   ],
-  "technique": "Två-variabel exponential-test: testa flera (n, m) för att se om verdikten är konstant.",
-  "pitfall": "Botemedlet mot att gissa: alltid testa minst tre olika (n, m)-kombinationer.",
-  "framework_id": "KVA-TRAP-002",
+  "technique": "Motexempeljakten: vid fria heltalsvariabler, pröva systematiskt småfall (0, 1, 2) tills du hittar både ett 'I > II'-fall och ett 'I < II'-fall — då är svaret D. Triggern: variabler i både bas och exponent, inga fasta värden → leta teckenflip via småtal.",
+  "pitfall": "Vanliga fällan är att testa ett enda talval och generalisera. Botemedlet: leta AKTIVT efter ett fall som motsäger ditt första — särskilt gränsfallen 0 och 1, där a^{0}=1 och 0^{k}=0 ofta bryter mönstret.",
   "pregrade_tactic": {
-   "handle": "Två-variabel-testet",
-   "move": "Med två fria heltal i exponent-uttryck — testa minst 3-4 kombinationer för att avgöra om svaret är D."
+   "handle": "Dubbeltestet",
+   "move": "Hittade du 'I vinner' i ett fall — leta genast efter ett tillåtet fall där II vinner; lyckas du är svaret D."
   },
+  "framework_id": "KVA-TRAP-005",
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   }
  },
  "var-2013-kvant1-XYZ-005": {

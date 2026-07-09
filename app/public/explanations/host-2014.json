@@ -12492,97 +12492,103 @@
   }
  },
  "host-2014-kvant2-KVA-019": {
-  "solution_path": "L₁: −y + (1/6)x − (1/3) = 1/2 ⇒ y = (1/6)x − 5/6. Lutning k₁ = 1/6. L₂: −y + 3x = 18 ⇒ y = 3x − 18. Lutning k₂ = 3. Eftersom 3 > 1/6 är k₂ > k₁ — svaret B.",
+  "solution_path": "Skriv båda linjerna på formen y = kx + m och läs av lutningen k. L_{1}: -\\frac{1}{6}y+\\frac{1}{3}x=\\frac{1}{2} ger y=2x-3, alltså k_{1}=2. L_{2}: -y+3x=-18 ger y=3x+18, alltså k_{2}=3. Eftersom 3 > 2 är lutningen för L_{2} större — II > I. Svaret är B.",
   "steps": [
    {
     "n": 1,
-    "title": "Förstå problemet",
-    "text": "Två räta linjer L₁ och L₂ ges av ekvationer (parsed text är delvis brusig men strukturen är att vi har två ekvationer i x och y). Jämför deras lutningar.",
+    "title": "Förstå frågan",
+    "text": "Vi ska jämföra LUTNINGARNA (riktningskoefficienterna) för två linjer. Lutningen är talet k i formen y = kx + m.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Standardform för lutning",
-    "text": "Skriv om varje ekvation som y = kx + m; då är k lutningen direkt avläsbar.",
+    "title": "Vad är lutning?",
+    "text": "Lutningen k säger hur mycket y ändras när x ökar med 1. För att läsa av den måste vi först lösa ut y ensamt på ena sidan.",
     "tier": "detail"
    },
    {
     "n": 3,
-    "title": "Omarrangera L₁",
-    "text": "L₁ är på formen där y kan isoleras. Efter förenkling: y = (1/6)x + konstant. Så k₁ = 1/6.",
+    "title": "Lös ut y i L_{1}",
+    "text": "Utgå från -\\frac{1}{6}y+\\frac{1}{3}x=\\frac{1}{2}. Flytta x-termen: -\\frac{1}{6}y=\\frac{1}{2}-\\frac{1}{3}x.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Omarrangera L₂",
-    "text": "L₂: y + 3x = 18 ⇒ y = −3x + 18 ELLER om koefficienten är annorlunda y = 3x − 18. Lutning k₂ är konstanten framför x.",
+    "title": "Multiplicera bort bråket",
+    "text": "Multiplicera båda led med −6 (så y blir ensamt): y=-6\\cdot\\frac{1}{2}+6\\cdot\\frac{1}{3}x=-3+2x. Alltså y=2x-3.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Jämför k₁ och k₂",
-    "text": "k₁ = 1/6 ≈ 0,17. k₂ = 3 (eller annan större magnitud beroende på tolkning). Eftersom 3 > 1/6 är k₂ > k₁.",
-    "tier": "essential"
+    "title": "Läs av k_{1}",
+    "text": "I y=2x-3 är lutningen k_{1}=2 (och skärningen m = −3, men den behövs inte).",
+    "tier": "detail"
    },
    {
     "n": 6,
-    "title": "Tecken-kontroll",
-    "text": "Båda k positiva (uppåtsluttande linjer), så det är ren magnitudjämförelse.",
-    "tier": "detail"
+    "title": "Lös ut y i L_{2}",
+    "text": "Utgå från -y+3x=-18. Flytta 3x: -y=-18-3x. Multiplicera med −1: y=3x+18.",
+    "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Sanity check",
-    "text": "L₁ med k₁ = 1/6 stiger långsamt; L₂ med k₂ = 3 stiger 18 gånger snabbare per x-enhet.",
-    "tier": "detail"
+    "title": "Läs av k_{2}",
+    "text": "I y=3x+18 är lutningen k_{2}=3.",
+    "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Räcker informationen?",
-    "text": "Ja — båda ekvationerna ger fullständig information om respektive lutning.",
+    "title": "Jämför",
+    "text": "Kvantitet I = k_{1}=2, Kvantitet II = k_{2}=3. Eftersom 3 > 2 är II större än I.",
     "tier": "essential"
    },
    {
     "n": 9,
-    "title": "Verifiera mot facit",
-    "text": "Facit B betyder k₂ > k₁. Stämmer med vår räkning.",
-    "tier": "essential"
+    "title": "Kan svaret flippa?",
+    "text": "Nej — linjernas ekvationer är helt bestämda, så lutningarna är fixa tal (2 respektive 3). Inget beror på x.",
+    "tier": "detail"
    },
    {
     "n": 10,
+    "title": "Räcker informationen?",
+    "text": "Ja. Båda ekvationerna är fullständigt givna, så D (otillräcklig) är utesluten.",
+    "tier": "detail"
+   },
+   {
+    "n": 11,
     "title": "Slutsats",
-    "text": "k₂ > k₁ — svaret är B. Insikten: skriv om till y = kx + m-form innan du jämför lutningar, så blir koefficientavläsningen entydig.",
+    "text": "II > I — svaret är B. Insikten: skriv ALLTID om till y = kx + m innan du jämför lutningar; teckenbyten vid −y är den vanligaste felkällan.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Om man räknar fel på tecknen vid omarrangeringen kan man få k₁ > k₂.",
-    "why_wrong": "Steg 3-4: noggrann isolering av y ger k₁ = 1/6 och k₂ = 3 (eller annan ordning där k₂ vinner)."
+    "why_tempting": "Det är lätt att slarva med tecknet när man delar med -\\frac{1}{6} respektive −1 och landa i att L_{1} har den brantare lutningen.",
+    "why_wrong": "Som steg 4 och 6 visar blir k_{1}=2 och k_{2}=3. 3 > 2, så II vinner, inte I."
    },
    {
     "letter": "C",
-    "why_tempting": "Om båda ekvationerna förenklas symmetriskt kan likhet verka rimlig.",
-    "why_wrong": "Steg 5: 1/6 och 3 är inte ens nära varandra. Strikt olikhet."
+    "why_tempting": "Om du missar att multiplicera igenom hela ledet kan de två lutningarna se lika stora ut.",
+    "why_wrong": "Steg 5 och 7 ger olika värden (2 och 3). Kvantiteterna är aldrig lika här."
    },
    {
     "letter": "D",
-    "why_tempting": "Snabbsvar 'komplicerade ekvationer → otillräcklig'.",
-    "why_wrong": "Steg 8 påminner: räta-linje-ekvationer ger entydiga lutningar efter isolering av y."
+    "why_tempting": "Snabbsvar är ofta D när ekvationerna ser röriga ut med bråk och minustecken.",
+    "why_wrong": "Bråken och minustecknen försvinner så fort du löser ut y (steg 4, 6). Lutningarna blir bestämda tal — informationen räcker."
    }
   ],
-  "technique": "Isolera y till standardform y = kx + m för säker lutningsavläsning. Triggern: 'två räta linjer med ekvationer i blandad form'.",
-  "pitfall": "Botemedlet mot tecken-fel: hantera +/− systematiskt — flytta x-termen till höger, dela med y:s koefficient.",
-  "framework_id": "KVA-TRAP-016",
+  "technique": "Lutnings-avläsningen: skriv varje linje på formen y = kx + m genom att lösa ut y ensamt, och läs sedan av k. Triggern: 'jämför lutningar/riktningskoefficienter' + ekvationer som inte redan är lösta för y → normalisera först, jämför sen.",
+  "pitfall": "Vanliga fällan är att jämföra koefficienterna direkt i den oordnade ekvationen. Botemedlet: lös ALLTID ut y först; kom ihåg att dela HELA ledet med koefficienten framför y (inklusive tecknet), annars smyger ett teckenfel in.",
   "pregrade_tactic": {
-   "handle": "Standardform-isoleringen",
-   "move": "Skriv om varje linjeekvation till y = kx + m FÖRST — sedan är k direkt avläsbar och jämförelsen blir aritmetik."
+   "handle": "Normalformen",
+   "move": "Lös ut y ensamt (y = kx + m) i båda ekvationerna innan du jämför — talet framför x är lutningen."
   },
+  "framework_id": "KVA-TRAP-054",
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   }
  },
  "host-2014-kvant2-KVA-020": {
@@ -12781,103 +12787,103 @@
   }
  },
  "host-2014-kvant2-KVA-022": {
-  "solution_path": "Villkor 4 ≤ x ≤ 10, 1 ≤ y ≤ 6, 3 ≤ z ≤ 8. I = medelvärdet av x, −y, −z. II = medelvärdet av −x, y, z. I − II = (2/3)(x − y/2... ); algebraiskt I − II = (2/3)(x − y − z + 0) hmm. Mer noga: I = (x − y − z)/3, II = (−x + y + z)/3. I − II = (2x − 2y − 2z)/3. Tecknet beror på x mot y+z; intervallen ger både positiva och negativa skillnader. Verdikt D.",
+  "solution_path": "I = medelvärdet av x, −y, −z = \\frac{x-y-z}{3}. II = medelvärdet av −x, y, z = \\frac{-x+y+z}{3}. Skillnaden I − II = \\frac{2x-2y-2z}{3}=\\frac{2(x-y-z)}{3}. Tecknet styrs av x − y − z. Med 4\\le x\\le 10, 1\\le y\\le 6, 3\\le z\\le 8 varierar x − y − z från 4-6-8=-10 till 10-1-3=6 — alltså både negativt och positivt. Verdikten flippar, så svaret är D.",
   "steps": [
    {
     "n": 1,
-    "title": "Förstå problemet",
-    "text": "Villkor 4 ≤ x ≤ 10, 1 ≤ y ≤ 6, 3 ≤ z ≤ 8. I = medelvärdet av x, −y, −z. II = medelvärdet av −x, y, z. Jämför.",
+    "title": "Förstå frågan",
+    "text": "Vi jämför två medelvärden. Kvantitet I = medelvärdet av talen x, −y, −z. Kvantitet II = medelvärdet av −x, y, z. x, y, z ligger i givna intervall.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Skriv ut medelvärdena",
-    "text": "I = (x − y − z)/3. II = (−x + y + z)/3.",
-    "tier": "essential"
+    "title": "Vad är ett medelvärde?",
+    "text": "Medelvärdet av tre tal är deras summa delad med 3. Så I = \\frac{x+(-y)+(-z)}{3}=\\frac{x-y-z}{3}.",
+    "tier": "detail"
    },
    {
     "n": 3,
-    "title": "Bilda skillnaden",
-    "text": "I − II = ((x − y − z) − (−x + y + z))/3 = (2x − 2y − 2z)/3 = (2/3)(x − y − z).",
+    "title": "Skriv upp II",
+    "text": "På samma sätt: II = \\frac{(-x)+y+z}{3}=\\frac{-x+y+z}{3}.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Verdikten beror på x − y − z",
-    "text": "Om x > y + z är I > II (verdikt A). Om x < y + z är I < II (verdikt B). Om x = y + z är likhet (C).",
+    "title": "Bilda skillnaden",
+    "text": "För att jämföra tar vi I − II = \\frac{x-y-z}{3}-\\frac{-x+y+z}{3}=\\frac{(x-y-z)-(-x+y+z)}{3}.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Testa max-värdet av x − y − z",
-    "text": "x_max − y_min − z_min = 10 − 1 − 3 = 6. Positivt — verdikt A möjlig.",
+    "title": "Förenkla täljaren",
+    "text": "Minustecknet framför parentesen byter tecken på varje term: (x-y-z)+x-y-z=2x-2y-2z. Så I − II = \\frac{2(x-y-z)}{3}.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Testa min-värdet av x − y − z",
-    "text": "x_min − y_max − z_max = 4 − 6 − 8 = −10. Negativt — verdikt B möjlig.",
+    "title": "Vad avgör tecknet?",
+    "text": "Faktorn \\frac{2}{3} är positiv, så tecknet på I − II är samma som tecknet på x-y-z. Vi måste alltså ta reda på om x − y − z kan bli både positivt och negativt.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Mellanvärden",
-    "text": "Mellan −10 och 6 finns 0; t.ex. x = 8, y = 5, z = 3 ger x − y − z = 0, verdikt C möjlig.",
-    "tier": "detail"
+    "title": "Största möjliga x − y − z",
+    "text": "Gör x så stor och y, z så små som möjligt: x=10, y=1, z=3 ger 10-1-3=6>0. Då är I > II.",
+    "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Verdikten flippar",
-    "text": "Alla tre verdikter (A, B, C) är förenliga med villkoren beroende på x, y, z.",
+    "title": "Minsta möjliga x − y − z",
+    "text": "Gör x liten och y, z stora: x=4, y=6, z=8 ger 4-6-8=-10<0. Då är I < II.",
     "tier": "essential"
    },
    {
     "n": 9,
-    "title": "Räkna frihetsgrader",
-    "text": "Tre obekanta med endast intervall-villkor: x, y, z är fria inom sina intervall. Frihetsgrad 3, inga ekvationer som låser.",
-    "tier": "essential"
+    "title": "Slutsatsen om variationen",
+    "text": "Eftersom x − y − z kan vara både +6 och −10 beroende på vilka tillåtna värden vi väljer, kan I vara både större OCH mindre än II.",
+    "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Verifiera D",
-    "text": "Eftersom flera olika verdikter alla är möjliga, är informationen otillräcklig.",
+    "title": "Räcker informationen?",
+    "text": "Nej. Intervallen låser inte tecknet på skillnaden — verdikten hänger på de exakta värdena, som inte är givna.",
     "tier": "essential"
    },
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Svaret är D. Insikten: intervall-villkor med flera variabler ger nästan alltid D — testa båda ändarna av varje intervall.",
+    "text": "Ordningen mellan I och II är inte bestämd — svaret är D. Insikten: när en jämförelse reduceras till ett uttryck som kan byta tecken inom de tillåtna intervallen, är informationen otillräcklig.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Om man bara plockar mittpunkter av intervallen kan I > II verka konsekvent.",
-    "why_wrong": "Steg 6: vid x = 4, y = 6, z = 8 är I − II < 0, så A misslyckas."
+    "why_tempting": "Om du bara testar ett fall där x är stor (t.ex. x = 10) får du I > II och lockas svara A.",
+    "why_wrong": "Steg 8 visar ett lika giltigt fall (x=4, y=6, z=8) där I < II. Ett enda gynnsamt exempel bevisar ingenting i KVA."
    },
    {
     "letter": "B",
-    "why_tempting": "Spegelfel: bara mid-värden ger B konsekvent.",
-    "why_wrong": "Steg 5: vid x = 10, y = 1, z = 3 är I − II > 0, så B misslyckas."
+    "why_tempting": "Testar du istället ett fall där y + z dominerar (t.ex. x=4) får du I < II och fastnar på B.",
+    "why_wrong": "Steg 7 ger ett motexempel där I > II. Båda utfall är möjliga, så B kan inte vara rätt."
    },
    {
     "letter": "C",
-    "why_tempting": "Likhet bara vid en specifik kombination, inte universellt.",
-    "why_wrong": "Steg 7-8: likhet gäller bara för specifika tripletter, inte hela intervallet."
+    "why_tempting": "Om du intuitivt tycker att de två medelvärdena 'speglar' varandra kan lika kännas elegant.",
+    "why_wrong": "Steg 5 ger skillnaden \\frac{2(x-y-z)}{3}, som bara är noll i specialfallet x = y + z — inte generellt. Kvantiteterna är oftast olika."
    }
   ],
-  "technique": "Intervall-frihetsgrad: när flera variabler är fria inom intervall, testa båda ändarna för varje. Triggern: 'flera obekanta + intervallvillkor + medelvärden eller summor jämförs'.",
-  "pitfall": "Botemedlet mot mittpunkts-bias: testa alltid båda ÄNDPUNKTER av varje intervall, inte mittvärden — fällan dyker upp i extremer.",
-  "framework_id": null,
+  "technique": "Skillnadsteckenmetoden: bilda I − II algebraiskt, förenkla, och testa om det förenklade uttrycket kan byta tecken inom de tillåtna intervallen. Triggern: 'medelvärde/summa av variabler i intervall' → subtrahera, faktorisera, undersök teckenväxling.",
+  "pitfall": "Vanliga fällan är att testa ett enda talval och generalisera. Botemedlet: pröva systematiskt extremfallen — maximera respektive minimera det uttryck som avgör tecknet (här x − y − z). Får du båda tecknen är svaret D.",
   "pregrade_tactic": {
-   "handle": "Intervall-extrem-testet",
-   "move": "När variabler är fria inom intervall — räkna kvantiteterna vid båda ändpunkter av varje variabel; om verdikten flippar är svaret D."
+   "handle": "Teckenväxlingstestet",
+   "move": "Bilda I − II, förenkla, och maximera/minimera det inom intervallen — får du både + och − är svaret D."
   },
+  "framework_id": "KVA-TRAP-039",
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   }
  },
  "host-2014-kvant1-XYZ-011": {

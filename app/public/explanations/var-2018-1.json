@@ -7215,97 +7215,97 @@
   "technique": "DTK-strategi för \"vilket område matchar villkoren X, Y, Z\"-frågor på flödeskartor: gör en checklista av villkoren först (varutyp = pilmönster, klass = tjocklek, import/export = riktning), och testa varje villkor mot ALLA alternativ innan du väljer. Börja med det villkor som sållar hårdast — här sållar villkor 1 (trä-import 800+) ingenting alls, medan villkor 2 och 3 gör hela jobbet. Triggern: \"flera samtidiga krav om import/export\" → checklista, inte gissning från områdets storlek eller läge."
  },
  "var-2018-1-kvant1-KVA-014": {
-  "solution_path": "I = 50/9 ≈ 5,56. II = 80. Per facit B: II > I. Räkning: 80 >> 5,56. Eller annan tolkning där I och II är båda nära varandra. Per facit B: II > I.",
+  "solution_path": "I = \\left(\\frac{7}{9}\\right)^{2}=\\frac{49}{81}. II = \\frac{50}{80}=\\frac{5}{8}. Jämför via korsmultiplikation: \\frac{49}{81} mot \\frac{5}{8} ⇒ 49\\cdot 8=392 mot 5\\cdot 81=405. Eftersom 392 < 405 är I < II, alltså II > I. Svaret är B.",
   "steps": [
    {
     "n": 1,
-    "title": "Förstå problemet",
-    "text": "Två numeriska uttryck.",
+    "title": "Förstå frågan",
+    "text": "Vi jämför I = \\left(\\frac{7}{9}\\right)^{2} med II = \\frac{50}{80}. Två bråk-tal ska storleksordnas.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Tolka I",
-    "text": "Trolig: 9 · något / 50 eller 50/9 = 5,56.",
-    "tier": "essential"
+    "title": "Kvadrera bråket i I",
+    "text": "Att kvadrera ett bråk betyder att kvadrera täljare och nämnare var för sig: \\left(\\frac{7}{9}\\right)^{2}=\\frac{7^{2}}{9^{2}}=\\frac{49}{81}.",
+    "tier": "detail"
    },
    {
     "n": 3,
-    "title": "Tolka II",
-    "text": "80 (eller annan stor heltal).",
-    "tier": "essential"
+    "title": "Förenkla II",
+    "text": "\\frac{50}{80} förkortas med 10: \\frac{5}{8}. (Man kan också jämföra oförenklat, men \\frac{5}{8} är enklare.)",
+    "tier": "detail"
    },
    {
     "n": 4,
-    "title": "Jämför",
-    "text": "Per facit B: II > I.",
+    "title": "Uppskatta grovt först",
+    "text": "\\frac{49}{81}\\approx 0{,}60 och \\frac{5}{8}=0{,}625. De ligger nära, så vi bekräftar exakt med korsmultiplikation.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Räcker informationen?",
-    "text": "Ja.",
-    "tier": "detail"
+    "title": "Korsmultiplicera",
+    "text": "För att jämföra \\frac{49}{81} och \\frac{5}{8}: multiplicera 'på kors'. Vänsterns täljare gånger högerns nämnare: 49\\cdot 8=392. Högerns täljare gånger vänsterns nämnare: 5\\cdot 81=405.",
+    "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Tecken-check",
-    "text": "Båda positiva.",
+    "title": "Tolka korsprodukterna",
+    "text": "Regeln: \\frac{a}{b}<\\frac{c}{d} (med b, d > 0) precis när a\\cdot d<c\\cdot b. Här är 392<405, så \\frac{49}{81}<\\frac{5}{8}, dvs I < II.",
     "tier": "detail"
    },
    {
     "n": 7,
-    "title": "Sanity check",
-    "text": "Stora numeriska skillnader.",
-    "tier": "detail"
+    "title": "Sammanfatta jämförelsen",
+    "text": "I = \\frac{49}{81} är mindre än II = \\frac{5}{8}. Alltså är II större än I.",
+    "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Verifiera mot facit",
-    "text": "B.",
+    "title": "Kan svaret flippa?",
+    "text": "Nej — det finns inga variabler. Båda är bestämda tal, och I < II med säkerhet.",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Räkning",
-    "text": "Stega genom båda noggrant.",
+    "title": "Räcker informationen?",
+    "text": "Ja, allt är givet. D är utesluten.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Slutsats",
-    "text": "II > I — svaret är B.",
+    "text": "II > I — svaret är B. Insikten: när två bråk ligger nära varandra, avgör korsmultiplikation ordningen exakt utan avrundningsrisk.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Felaktig tolkning.",
-    "why_wrong": "Steg 4: facit B."
+    "why_tempting": "Talet 7/9 ser 'stort' ut, och en kvadrat känns som att den borde göra I ännu större än II.",
+    "why_wrong": "Att kvadrera ett bråk under 1 gör det MINDRE: \\left(\\frac{7}{9}\\right)^{2}=\\frac{49}{81}\\approx 0{,}60, vilket är under \\frac{5}{8}=0{,}625 (steg 6). I är inte störst."
    },
    {
     "letter": "C",
-    "why_tempting": "Likhet utesluten.",
-    "why_wrong": "Steg 4: strikt olikhet."
+    "why_tempting": "Eftersom 0,60 och 0,625 ligger nära lockas man att kalla dem lika.",
+    "why_wrong": "Korsmultiplikationen (steg 5) ger 392 ≠ 405 — en strikt skillnad. Bråken är olika, om än nära."
    },
    {
     "letter": "D",
-    "why_tempting": "'Otydligt → otillräcklig'.",
-    "why_wrong": "Steg 5: räcker."
+    "why_tempting": "Två bråk med kvadrat och stora nämnare ser krångligt ut, vilket lockar till 'informationen räcker inte'.",
+    "why_wrong": "Steg 9: båda är bestämda tal. Korsmultiplikation ger ett entydigt svar. Informationen räcker."
    }
   ],
-  "technique": "Räkna båda noggrant.",
-  "pitfall": "Botemedlet: räkna båda tolkningar.",
-  "framework_id": null,
+  "technique": "Korsmultiplikationsjämförelsen: för att ordna två positiva bråk \\frac{a}{b} och \\frac{c}{d}, jämför a\\cdot d med c\\cdot b. Triggern: två närliggande bråk där avrundning är riskabel → korsmultiplicera för exakt ordning.",
+  "pitfall": "Vanliga fällan är att avrunda till 0,6 och 0,63 och gissa, eller att tro att en kvadrat alltid förstorar. Botemedlet: kom ihåg att kvadrera ett bråk UNDER 1 gör det mindre, och använd korsmultiplikation när bråken ligger nära.",
   "pregrade_tactic": {
-   "handle": "Numerisk-räkning",
-   "move": "Räkna båda uttryck noggrant och jämför."
+   "handle": "Korsmultiplikationen",
+   "move": "Jämför två bråk genom att korsmultiplicera täljare mot motstående nämnare — större korsprodukt hör till större bråk."
   },
+  "framework_id": "KVA-TRAP-034",
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   }
  },
  "var-2018-1-kvant1-KVA-017": {

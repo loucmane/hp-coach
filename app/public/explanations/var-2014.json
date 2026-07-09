@@ -12693,97 +12693,103 @@
   }
  },
  "var-2014-kvant2-KVA-020": {
-  "solution_path": "Villkor y ≠ −3, y ≠ 0. I = x/(y+3), II = x/3 + x/y. Vid specifika x och y kan båda räknas och jämföras. Verdikten beror på y:s tecken och magnitud. Per facit D: otillräcklig info.",
+  "solution_path": "I = \\frac{x}{y+3}, II = \\frac{x}{3}+\\frac{x}{y}, med enda villkor y ≠ −3 och y ≠ 0 (x helt fritt). Testa: x=0 ger I = 0 och II = 0 → lika (C). x=3, y=3 ger I = \\frac{3}{6}=0{,}5, II = 1+1=2 → I < II (B). Verdikten flippar mellan lika och I < II, så informationen är otillräcklig — svaret är D.",
   "steps": [
    {
     "n": 1,
-    "title": "Förstå problemet",
-    "text": "y ≠ −3, y ≠ 0. Jämför I = x/(y+3) med II = x/3 + x/y.",
+    "title": "Förstå frågan",
+    "text": "Vi jämför I = \\frac{x}{y+3} med II = \\frac{x}{3}+\\frac{x}{y}. Enda villkoren är y ≠ −3 och y ≠ 0 (annars division med noll). x är helt fritt — även 0 och negativt tillåtet.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Förenkla II",
-    "text": "x/3 + x/y = x(1/3 + 1/y) = x(y + 3)/(3y).",
-    "tier": "essential"
+    "title": "KVA-strategin",
+    "text": "Med fria variabler räcker det att hitta två tillåtna talval som ger olika verdikt för att svaret ska bli D.",
+    "tier": "detail"
    },
    {
     "n": 3,
-    "title": "Skillnaden I − II",
-    "text": "x/(y+3) − x(y+3)/(3y) = x[1/(y+3) − (y+3)/(3y)].",
+    "title": "Utnyttja att x får vara 0",
+    "text": "Sätt x = 0. Då är I = \\frac{0}{y+3}=0 och II = \\frac{0}{3}+\\frac{0}{y}=0. Alltså I = II — verdikt C för detta val.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Räkna kvadrat-skillnad",
-    "text": "1/(y+3) − (y+3)/(3y) = [3y − (y+3)²]/[3y(y+3)].",
+    "title": "Behöver vi ett icke-lika fall?",
+    "text": "Ja. Om något annat tillåtet val ger I ≠ II är ordningen inte bestämd och svaret blir D.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Test specifika värden",
-    "text": "Tag x = 1, y = 1: I = 1/4, II = 1/3 + 1 = 4/3. II > I — B.",
+    "title": "Testa x = 3, y = 3",
+    "text": "I = \\frac{3}{3+3}=\\frac{3}{6}=\\frac{1}{2}. II = \\frac{3}{3}+\\frac{3}{3}=1+1=2. Alltså I = 0,5 < 2 = II — verdikt B för detta val.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Test annan kombination",
-    "text": "Tag x = −1, y = 1: I = −1/4, II = −4/3. II < I — A.",
-    "tier": "essential"
-   },
-   {
-    "n": 7,
-    "title": "Verdikten flippar",
-    "text": "Båda A och B möjliga.",
-    "tier": "essential"
-   },
-   {
-    "n": 8,
-    "title": "Räkna frihetsgrader",
-    "text": "x och y fria — många kombinationer.",
+    "title": "Sammanställ",
+    "text": "x = 0 gav I = II (C). x = 3, y = 3 gav I < II (B). Två tillåtna val, två olika verdikt.",
     "tier": "detail"
    },
    {
+    "n": 7,
+    "title": "Ännu ett håll (valfritt)",
+    "text": "Med x negativt kan även I > II uppstå (t.ex. x = −3, y = 3: I = -\\tfrac{1}{2}, II = −2, så I > II). Det förstärker att alla tre utfall är möjliga.",
+    "tier": "detail"
+   },
+   {
+    "n": 8,
+    "title": "Varför det räcker",
+    "text": "Ett KVA-svar måste gälla för ALLA tillåtna värden. Så snart olika val ger olika ordning kan varken A, B eller C vara generellt sant.",
+    "tier": "essential"
+   },
+   {
     "n": 9,
-    "title": "Räcker informationen?",
-    "text": "Nej.",
+    "title": "Kan man låsa det med villkoren?",
+    "text": "Nej — villkoren y ≠ −3, y ≠ 0 utesluter bara division med noll; de begränsar inte x eller y:s tecken tillräckligt för att fixera ordningen.",
     "tier": "detail"
    },
    {
     "n": 10,
+    "title": "Räcker informationen?",
+    "text": "Nej. Utfallet hänger helt på de exakta värdena på x och y, som inte är givna.",
+    "tier": "essential"
+   },
+   {
+    "n": 11,
     "title": "Slutsats",
-    "text": "Svaret är D. Insikten: kvoter och summor av bråk med två okända flippar beroende på tecken och magnitud.",
+    "text": "Ordningen är inte bestämd — svaret är D. Insikten: när x får vara 0 blir båda sidor 0 (lika), men andra val ger olikhet — det ensamt räcker för att avgöra D.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Vid x < 0 kan I > II.",
-    "why_wrong": "Steg 5: vid x = 1 är II > I, så A misslyckas."
+    "why_tempting": "Om du testar ett negativt x kan du få I > II och tro att I alltid vinner.",
+    "why_wrong": "Steg 5 ger ett tillåtet fall där I < II. Ett enstaka val avgör inte ett KVA-svar."
    },
    {
     "letter": "B",
-    "why_tempting": "Vid x > 0 oftast II > I.",
-    "why_wrong": "Steg 6: vid x = −1 är I > II."
+    "why_tempting": "Testar du x = 3, y = 3 (I = 0,5 < 2 = II) fastnar du på att II alltid vinner.",
+    "why_wrong": "Steg 3 ger x = 0 där I = II, och steg 7 ett fall där I > II. Alla tre utfall är möjliga."
    },
    {
     "letter": "C",
-    "why_tempting": "Likhet bara vid specifika x, y.",
-    "why_wrong": "Steg 7: ej universellt."
+    "why_tempting": "Fallet x = 0 ger I = II = 0, vilket kan lura dig att tro att uttrycken alltid är lika.",
+    "why_wrong": "Likheten gäller bara för x = 0. Steg 5 visar strikt I < II för andra val. De är inte generellt lika."
    }
   ],
-  "technique": "Två-variabel-bråk-jämförelse: testa olika tecken och magnituder.",
-  "pitfall": "Botemedlet mot att gissa: räkna I − II och se vilka tecken som ger vilken verdikt.",
-  "framework_id": "KVA-TRAP-014",
+  "technique": "Nollvärdesknepet plus motexempel: när x är en fri faktor, testa x = 0 (ger ofta likhet) och ett annat värde (ger olikhet) — skiljer sig verdikten är svaret D. Triggern: fria variabler i täljare/nämnare utan teckenvillkor → pröva 0 och ett positivt fall.",
+  "pitfall": "Vanliga fällan är att förenkla uttrycken algebraiskt och tro att de kan jämföras generellt. Botemedlet: leta konkreta motexempel; särskilt x = 0 (som nollställer båda) kontrasterat mot ett vanligt talval avslöjar snabbt att ordningen inte är låst.",
   "pregrade_tactic": {
-   "handle": "Två-variabel-bråk-testet",
-   "move": "Vid bråk med två okända — testa olika tecken och magnituder; om verdikten flippar är D svaret."
+   "handle": "Nollprövningen",
+   "move": "Är x en fri faktor? Testa x = 0 (ofta lika) mot ett annat värde — olika verdikt betyder D."
   },
+  "framework_id": "KVA-TRAP-005",
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   }
  },
  "var-2014-kvant2-KVA-021": {

@@ -12556,97 +12556,103 @@
   }
  },
  "host-2016-kvant1-KVA-018": {
-  "solution_path": "I = 2 + 1 + 1/2 + 1/4 + 1/8 + 1/16 + 1/32 + 1/64 (geometrisk serie). Summa = 2·(1 − (1/2)⁷)/(1 − 1/2) = 4(1 − 1/128) = 4 − 4/128 ≈ 3,97. Vänta — om det är 2·(1 + 1/2 + ...) blir det 2·summan. Räkning ger I ≈ 3,97. II = 22 = 4 (om det avser 2² eller liknande). Per facit B: II > I, så svaret B.",
+  "solution_path": "I = 2\\left(1+\\frac{1}{2}+\\frac{1}{4}+\\frac{1}{8}+\\frac{1}{16}+\\frac{1}{32}+\\frac{1}{64}\\right). Parentesen är en geometrisk summa som är NÄSTAN 2 men saknar en bit: 1+\\frac{1}{2}+\\dots+\\frac{1}{64}=2-\\frac{1}{64}. Alltså I = 2\\left(2-\\frac{1}{64}\\right)=4-\\frac{1}{32}\\approx 3{,}97. II = 2^{2}=4. Eftersom 4-\\frac{1}{32}<4 är II > I. Svaret är B.",
   "steps": [
    {
     "n": 1,
-    "title": "Förstå problemet",
-    "text": "Kvantitet I är en summa med geometrisk struktur (potens-bråk), II = 22 eller liknande. Jämför.",
+    "title": "Förstå frågan",
+    "text": "Vi jämför I = 2·(en lång summa av bråk) med II = 2^{2}. Nyckeln är att räkna parentesen smart, inte term för term i panik.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Identifiera geometrisk serie",
-    "text": "Termerna 1/2, 1/4, 1/8, ... är geometrisk med kvot 1/2.",
+    "title": "Känn igen mönstret",
+    "text": "Parentesen 1+\\frac{1}{2}+\\frac{1}{4}+\\frac{1}{8}+\\frac{1}{16}+\\frac{1}{32}+\\frac{1}{64} är en geometrisk summa: varje term är hälften av den föregående.",
     "tier": "detail"
    },
    {
     "n": 3,
-    "title": "Summera den geometriska delen",
-    "text": "Summa = a/(1-r) (oändlig) eller a(1-r^n)/(1-r) (ändlig). Med a = 1, r = 1/2, n = 6: summa ≈ 2.",
-    "tier": "essential"
+    "title": "Vad menas med geometrisk summa?",
+    "text": "När varje term halveras närmar sig summan 2 men når det aldrig helt. Ju fler termer, desto närmare 2.",
+    "tier": "detail"
    },
    {
     "n": 4,
-    "title": "Lägg till de inledande termerna",
-    "text": "I = 2·(1 + 1/2 + ... + 1/64) ≈ 2·(2 − 1/64) ≈ 3,97.",
+    "title": "Räkna summan exakt",
+    "text": "Ett känt knep: 1+\\frac{1}{2}+\\frac{1}{4}+\\dots+\\frac{1}{2^{n}}=2-\\frac{1}{2^{n}}. Här är sista termen \\frac{1}{64}=\\frac{1}{2^{6}}, så summan = 2-\\frac{1}{64}.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Räkna II",
-    "text": "II = 22 (eller 4 om det är 2²). Per facit gäller II > I.",
+    "title": "Multiplicera med 2",
+    "text": "I = 2\\left(2-\\frac{1}{64}\\right)=4-\\frac{2}{64}=4-\\frac{1}{32}.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Jämför",
-    "text": "Om II = 22, då 22 > 3,97. Svaret B.",
+    "title": "Uppskatta I",
+    "text": "Eftersom \\frac{1}{32}\\approx 0{,}03 är I \\approx 3{,}97 — strax UNDER 4.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Verifiera I:s gränsvärde",
-    "text": "Geometrisk serie 1 + 1/2 + 1/4 + ... konvergerar till 2; multiplicera med 2 ger 4. I < 4.",
-    "tier": "detail"
-   },
-   {
-    "n": 8,
-    "title": "Magnitudkontroll",
-    "text": "Om II är 22, då är skillnaden enorm.",
-    "tier": "detail"
-   },
-   {
-    "n": 9,
-    "title": "Räcker informationen?",
-    "text": "Ja — båda är konkreta numeriska uttryck.",
+    "title": "Räkna II",
+    "text": "II = 2^{2}=4 exakt.",
     "tier": "essential"
    },
    {
+    "n": 8,
+    "title": "Jämför",
+    "text": "I = 4-\\frac{1}{32} är mindre än II = 4, eftersom vi drar bort en liten positiv bit \\frac{1}{32} från 4.",
+    "tier": "essential"
+   },
+   {
+    "n": 9,
+    "title": "Kan svaret flippa?",
+    "text": "Nej — det finns inga okända variabler. Båda kvantiteter är bestämda tal, och I < II med säkerhet.",
+    "tier": "detail"
+   },
+   {
     "n": 10,
+    "title": "Räcker informationen?",
+    "text": "Ja, allt är givet. D är utesluten.",
+    "tier": "detail"
+   },
+   {
+    "n": 11,
     "title": "Slutsats",
-    "text": "I < II — svaret är B. Insikten: geometriska serier konvergerar mot ett ändligt gränsvärde — räkna ut innan jämförelse.",
+    "text": "II > I — svaret är B. Insikten: en halveringssumma 1+\\frac12+\\dots+\\frac{1}{2^{n}} är alltid 2-\\frac{1}{2^{n}}, alltså strax under 2. Multiplicerad med 2 blir den strax under 4.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Om man bara räknar de inledande termerna kan I se 'större' ut.",
-    "why_wrong": "Steg 3-4: hela geometriska serien konvergerar mot 2, multiplicerat med 2 blir det 4 — strikt mindre än 22."
+    "why_tempting": "Det är frestande att avrunda parentesen till 2, få I = 2·2 = 4 och sedan tro att I 'nog är lite större'.",
+    "why_wrong": "Som steg 4 visar är summan 2-\\frac{1}{64}, strikt UNDER 2. Multiplicerat med 2 blir I strikt under 4, alltså mindre än II."
    },
    {
     "letter": "C",
-    "why_tempting": "Likhet vore möjlig om serien råkar summera till exakt II.",
-    "why_wrong": "Steg 5: II = 22 (eller 4) — inte exakt 3,97."
+    "why_tempting": "Om du avrundar summan till exakt 2 landar du i I = 4 = II och svarar lika.",
+    "why_wrong": "Avrundning döljer den avgörande lilla biten \\frac{1}{32} (steg 5). Kvantiteterna är inte lika; I ligger en aning under."
    },
    {
     "letter": "D",
-    "why_tempting": "'Oändlig serie → otillräcklig'.",
-    "why_wrong": "Steg 9: geometriska serier har slutna formler — exakt jämförelse möjlig."
+    "why_tempting": "Den långa summan ser krånglig ut, vilket lockar till 'informationen räcker inte'.",
+    "why_wrong": "Allt är fullständigt bestämt (steg 10). Halveringsformeln ger ett exakt värde — informationen räcker gott."
    }
   ],
-  "technique": "Geometrisk serie-summa: Σ a·r^k = a(1−r^n)/(1−r) (ändlig) eller a/(1−r) (oändlig, |r| < 1). Triggern: 'summa av bråk med konstant kvot'.",
-  "pitfall": "Botemedlet mot räknehets: identifiera den geometriska kvoten och använd slutna formeln istället för att räkna alla termer.",
-  "framework_id": null,
+  "technique": "Halveringssumme-tricket: känn igen 1+\\frac12+\\frac14+\\dots+\\frac{1}{2^{n}}=2-\\frac{1}{2^{n}} och undvik att addera term för term. Triggern: en summa där varje bråk är hälften av det förra → använd slutna formeln, jämför sedan.",
+  "pitfall": "Vanliga fällan är att avrunda summan till 2 och tappa den lilla resten. Botemedlet: skriv summan exakt som 2-\\frac{1}{2^{n}} — resten \\frac{1}{2^{n}} är precis det som avgör om I hamnar under eller över II.",
   "pregrade_tactic": {
-   "handle": "Geometriska-serien-genväg",
-   "move": "Vid en bråk-summa med konstant kvot — använd slutna formeln Σ = a(1−r^n)/(1−r), inte termvis räkning."
+   "handle": "Halveringsformeln",
+   "move": "Ser du 1+\\frac12+\\frac14+\\dots? Använd 2-\\frac{1}{2^{n}} istället för att addera — den lilla resten avgör jämförelsen."
   },
+  "framework_id": "KVA-TRAP-018",
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   }
  },
  "host-2016-kvant2-KVA-017": {

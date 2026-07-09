@@ -12782,97 +12782,103 @@
   }
  },
  "host-2017-kvant1-KVA-016": {
-  "solution_path": "x ≥ 0 (per parsing 'x ≥ 0' eller 'x ≠ 0'). I = (x+3)², II = x + 3. Med x = 0: I = 9, II = 3, A. Med x = 1: I = 16, II = 4, A. Med x = −2 (om tillåtet): I = 1, II = 1, C. Verdikten beror på x. Per facit C: x = 0 gör båda lika? Nej. Med x ≥ 0 är (x+3)² > x+3 eftersom x + 3 ≥ 3 > 1. Per facit C måste det vara att I = II för det specifika villkoret. Mest sannolikt: kanske villkoret är x = 0 och inget annat. Facit C.",
+  "solution_path": "Villkor: x ≥ 0. I = \\sqrt{(x+3)^{2}}=|x+3|. Eftersom x ≥ 0 är x + 3 ≥ 3 > 0, så absolutbeloppet kan tas bort utan tecken: |x+3|=x+3. Då är I = x + 3 = II för varje tillåtet x. Kvantiteterna är alltid lika — svaret är C.",
   "steps": [
    {
     "n": 1,
-    "title": "Förstå problemet",
-    "text": "Villkor x relateras till 0; kvantiteterna är (x+3)² och x + 3.",
+    "title": "Förstå frågan",
+    "text": "Villkor x ≥ 0. Jämför I = \\sqrt{(x+3)^{2}} med II = x + 3. Frestelsen är att tro att kvadratrot och kvadrat 'tar ut varandra' rakt av.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Standardfall x = 0",
-    "text": "(0+3)² = 9, 0+3 = 3. I > II.",
-    "tier": "essential"
+    "title": "Regeln för \\sqrt{a^{2}}",
+    "text": "En kvadratrot ger alltid ett ICKE-negativt svar. Därför gäller \\sqrt{a^{2}}=|a| (absolutbeloppet), INTE bara a. Det är den regel som avgör hela uppgiften.",
+    "tier": "detail"
    },
    {
     "n": 3,
-    "title": "Faktorisera",
-    "text": "I = (x+3)² = (x+3)(x+3); II = x + 3. För x + 3 ≠ 0 är I/II = x + 3, så I = II ⇔ x + 3 = 1 ⇔ x = −2.",
+    "title": "Tillämpa på I",
+    "text": "Med a=x+3 blir I = \\sqrt{(x+3)^{2}}=|x+3|.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Verifiera x = −2",
-    "text": "I = 1, II = 1. Lika.",
+    "title": "Vad är x + 3 för tecken?",
+    "text": "Villkoret säger x ≥ 0. Då är x + 3 ≥ 0 + 3 = 3, alltså alltid POSITIVT.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Verifiera vid x = −2 mot villkoret",
-    "text": "Villkoret kan vara att x = 0 specifikt eller annat.",
+    "title": "Ta bort absolutbeloppet",
+    "text": "Absolutbeloppet av ett positivt tal är talet självt: eftersom x + 3 > 0 gäller |x+3|=x+3.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Lösning beror på villkoret",
-    "text": "Om x ≥ 0 är I > II strikt. Om x = −2 är likhet.",
+    "title": "Jämför",
+    "text": "Alltså I = x + 3 och II = x + 3. De är identiska uttryck — I = II.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Per facit C",
-    "text": "Facit anger likhet, vilket kräver att x = −2 är det enda fallet eller villkor specifikt utesluter andra.",
-    "tier": "essential"
+    "title": "Testa ett värde",
+    "text": "x = 0: I = \\sqrt{3^{2}}=\\sqrt{9}=3, II = 3 — lika. x = 5: I = \\sqrt{8^{2}}=8, II = 8 — lika.",
+    "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Räkning för det specifika fallet",
-    "text": "Vid x = −2: I = (−2+3)² = 1, II = −2+3 = 1. C.",
+    "title": "Varför villkoret x ≥ 0 spelar roll",
+    "text": "Om x hade fått vara mycket negativt (t.ex. x = −5) skulle x + 3 = −2 < 0 och då I = |-2|=2 medan II = −2 — då hade de skilt sig. Men villkoret x ≥ 0 utesluter det.",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Räcker informationen?",
-    "text": "Ja om villkoret är specifikt nog.",
+    "title": "Kan svaret flippa?",
+    "text": "Nej — för HELA det tillåtna området x ≥ 0 är x + 3 positivt, så I = II gäller alltid. Ingen flip.",
     "tier": "essential"
    },
    {
     "n": 10,
+    "title": "Räcker informationen?",
+    "text": "Ja. Villkoret x ≥ 0 räcker för att fastställa likheten; ett specifikt x behövs inte.",
+    "tier": "essential"
+   },
+   {
+    "n": 11,
     "title": "Slutsats",
-    "text": "I = II — svaret är C. Insikten: (x+3)² = x+3 om och endast om x+3 = 0 eller x+3 = 1, dvs x = −3 eller x = −2.",
+    "text": "I = II för alla x ≥ 0 — svaret är C. Insikten: \\sqrt{a^{2}}=|a|, och absolutbeloppet försvinner GRATIS bara när uttrycket redan är icke-negativt, vilket villkoret här garanterar.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "För x ≥ 0 (typiskt fall) är I > II.",
-    "why_wrong": "Steg 7: villkoret kan vara x = −2 specifikt, vilket ger likhet."
+    "why_tempting": "Det är frestande att tro att en kvadrat 'alltid är större' och därför att I = (x+3)^{2} > x + 3.",
+    "why_wrong": "Här står \\sqrt{(x+3)^{2}}, inte (x+3)^{2}. Kvadratroten tar bort kvadraten och lämnar |x+3| = x+3 (steg 3–5). I är inte kvadrerat."
    },
    {
     "letter": "B",
-    "why_tempting": "Aldrig II > I för (x+3)² mot x+3 om x + 3 > 1.",
-    "why_wrong": "Steg 6: II > I kräver 0 < x+3 < 1, dvs −3 < x < −2 — en smal zon."
+    "why_tempting": "Om du tror att kvadratroten gör talet mindre kan II kännas störst.",
+    "why_wrong": "Steg 5 visar att \\sqrt{(x+3)^{2}} är exakt x + 3 för x ≥ 0 — varken större eller mindre. De är lika."
    },
    {
     "letter": "D",
-    "why_tempting": "'Villkor oklart → otillräcklig'.",
-    "why_wrong": "Steg 9: när villkoret är specifikt blir svaret bestämt."
+    "why_tempting": "x är okänt, vilket lockar till 'informationen räcker inte'.",
+    "why_wrong": "Steg 9–10 visar att likheten gäller för hela intervallet x ≥ 0, oberoende av det exakta x-värdet. Informationen räcker."
    }
   ],
-  "technique": "Faktorisera kvadratiskt: (x+3)² = (x+3)·(x+3). Jämför med (x+3) ger en relation som beror på (x+3) > 1, < 1 eller = 1.",
-  "pitfall": "Botemedlet mot att glömma att (x+3)² inte alltid är större än x+3 — det beror på om |x+3| är större eller mindre än 1.",
-  "framework_id": "KVA-TRAP-018",
+  "technique": "Rot-och-kvadrat-regeln: \\sqrt{a^{2}}=|a|, inte a. Kontrollera sedan tecknet på a via villkoret — är a ≥ 0 försvinner absolutbeloppet. Triggern: \\sqrt{a^{2}} med ett uttryck a + ett teckenvillkor → skriv om till absolutbelopp, ta sedan hänsyn till tecknet.",
+  "pitfall": "Vanliga fällan är att låta rot och kvadrat 'ta ut varandra' till a utan absolutbelopp. Botemedlet: skriv alltid \\sqrt{a^{2}}=|a| först, och ta bara bort beloppstecknen när du VET att a ≥ 0 (som villkoret här garanterar för x + 3).",
   "pregrade_tactic": {
-   "handle": "Kvadrering-mot-bas",
-   "move": "Skriv om (a)² mot a som a·a mot a — sedan blir frågan 'är a > 1, = 1 eller < 1?'; det avgör verdikten."
+   "handle": "Beloppsregeln",
+   "move": "Skriv \\sqrt{a^{2}} som |a|, kolla sedan om a är positivt via villkoret — är det så blir |a| = a och kvantiteterna lika."
   },
+  "framework_id": "KVA-TRAP-037",
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   }
  },
  "host-2017-kvant1-KVA-017": {

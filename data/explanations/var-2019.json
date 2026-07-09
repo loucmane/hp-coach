@@ -13036,97 +13036,97 @@
   }
  },
  "var-2019-kvant1-KVA-021": {
-  "solution_path": "Villkor x > 0, x² = 1/4. Lös: x = 1/2 (positiv lösning). I = 1/4 (eller (1/4)²·1) = 0,25. II = x = 1/2. Per facit B: II > I.",
+  "solution_path": "Villkor: x > 0 och x^{2}=\\frac{1}{4}. Den positiva lösningen är x=\\frac{1}{2} (den negativa -\\frac{1}{2} utesluts av x > 0). I = \\left(\\frac{1}{4}\\right)^{2}=\\frac{1}{16}. II = x = \\frac{1}{2}=\\frac{8}{16}. Eftersom \\frac{1}{16}<\\frac{8}{16} är I < II, alltså II > I. Svaret är B.",
   "steps": [
    {
     "n": 1,
-    "title": "Förstå problemet",
-    "text": "x > 0 och x² = 1/4. Räkna x och jämför.",
+    "title": "Förstå frågan",
+    "text": "Villkor: x > 0 och x^{2}=\\frac{1}{4}. Kvantitet I = \\left(\\frac{1}{4}\\right)^{2} (ett fast tal). Kvantitet II = x. Vi behöver först bestämma x.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Lös x² = 1/4",
-    "text": "x = ±1/2. Med x > 0: x = 1/2.",
+    "title": "Lös ut x",
+    "text": "x^{2}=\\frac{1}{4} har två lösningar: x=\\frac{1}{2} och x=-\\frac{1}{2} (båda kvadrerade ger 1/4).",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Räkna I",
-    "text": "I = (1/4)² eller liknande = 1/16, eller om I = 1/4 = 0,25.",
-    "tier": "essential"
+    "title": "Använd villkoret x > 0",
+    "text": "Villkoret x > 0 utesluter den negativa lösningen. Alltså x=\\frac{1}{2}. Så II = \\frac{1}{2}.",
+    "tier": "detail"
    },
    {
     "n": 4,
-    "title": "Räkna II",
-    "text": "II = x = 1/2 = 0,5.",
+    "title": "Räkna Kvantitet I",
+    "text": "I = \\left(\\frac{1}{4}\\right)^{2}=\\frac{1^{2}}{4^{2}}=\\frac{1}{16}. Observera: I innehåller inte x — det är bara ett tal.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Jämför",
-    "text": "1/4 = 0,25 < 0,5 = II. Verdikt B.",
-    "tier": "essential"
+    "title": "Gör nämnarna lika",
+    "text": "För att jämföra \\frac{1}{16} med \\frac{1}{2}, skriv \\frac{1}{2}=\\frac{8}{16}.",
+    "tier": "detail"
    },
    {
     "n": 6,
-    "title": "Per facit B",
-    "text": "Bekräftat.",
+    "title": "Jämför",
+    "text": "I = \\frac{1}{16}, II = \\frac{8}{16}. Eftersom 1 < 8 är I < II.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Räcker informationen?",
-    "text": "Ja.",
+    "title": "Vanligt feltänk",
+    "text": "Man kan blanda ihop \\left(\\frac{1}{4}\\right)^{2} (= 1/16) med x själv, eller tro att I 'också är x på något sätt'. I är ett rent tal, oberoende av x.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Tecken-check",
-    "text": "Båda positiva.",
+    "title": "Kan svaret flippa?",
+    "text": "Nej — x är entydigt bestämt till 1/2 av villkoren, och I är ett fast tal. II > I med säkerhet.",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Sanity check",
-    "text": "1/2 dubbelt av 1/4.",
-    "tier": "detail"
+    "title": "Räcker informationen?",
+    "text": "Ja. Villkoren x > 0 och x^{2}=\\frac{1}{4} fixerar x. D är utesluten.",
+    "tier": "essential"
    },
    {
     "n": 10,
     "title": "Slutsats",
-    "text": "II > I — svaret är B.",
+    "text": "II > I — svaret är B. Insikten: när x^{2}=k med x > 0 tar du den POSITIVA roten; glöm inte att Kvantitet I här är ett rent tal, inte x.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Felaktig kvadratrots-räkning.",
-    "why_wrong": "Steg 2: x = 1/2 entydigt."
+    "why_tempting": "Om du felaktigt tror att \\left(\\frac{1}{4}\\right)^{2} är större än 1/2 (t.ex. blandar ihop kvadrering med något större) svarar du A.",
+    "why_wrong": "Steg 4: \\left(\\frac{1}{4}\\right)^{2}=\\frac{1}{16}, ett litet tal. Det är mindre än x = 1/2, inte större."
    },
    {
     "letter": "C",
-    "why_tempting": "Likhet kräver matchning.",
-    "why_wrong": "Steg 5: 0,25 ≠ 0,5."
+    "why_tempting": "Om du tar x = 1/4 (förväxlar x med basen i I) kan I och II se lika ut.",
+    "why_wrong": "x^{2}=\\frac{1}{4} ger x = 1/2, inte 1/4 (steg 2–3). Och I = 1/16 ≠ 1/2. Kvantiteterna är inte lika."
    },
    {
     "letter": "D",
-    "why_tempting": "'Bara ekvation → otillräcklig'.",
-    "why_wrong": "Steg 7: ekvationen ger unik x."
+    "why_tempting": "Villkoret x^{2}=\\frac{1}{4} har två rötter, vilket lockar till 'informationen räcker inte'.",
+    "why_wrong": "Villkoret x > 0 väljer entydigt den positiva roten (steg 3). x är bestämt, så informationen räcker."
    }
   ],
-  "technique": "Kvadratrots-räkning med tecken-villkor.",
-  "pitfall": "Botemedlet: filtrera lösningar mot villkor.",
-  "framework_id": null,
+  "technique": "Kvadratrots-urvalet: lös x^{2}=k som x=\\pm\\sqrt{k} och välj tecken enligt villkoret (här x > 0 ⇒ positiv rot). Räkna sedan varje kvantitet exakt. Triggern: ett kvadratvillkor plus ett teckenvillkor → välj rätt rot innan du jämför.",
+  "pitfall": "Vanliga fällan är att tro att Kvantitet I innehåller x, eller att glömma välja den positiva roten. Botemedlet: identifiera att I = \\left(\\frac{1}{4}\\right)^{2} är ett rent tal (1/16), och använd x > 0 för att låsa x = 1/2.",
   "pregrade_tactic": {
-   "handle": "Kvadratrots-filtrering",
-   "move": "Vid x² = a — båda rötter ±√a, filtrera med tecken-villkor."
+   "handle": "Rotvalet",
+   "move": "Löser du x^{2}=k? Skriv x=\\pm\\sqrt{k} och låt teckenvillkoret välja roten innan du jämför."
   },
+  "framework_id": "KVA-TRAP-037",
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   }
  },
  "var-2019-kvant1-XYZ-011": {

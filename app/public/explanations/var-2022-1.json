@@ -12664,97 +12664,103 @@
   }
  },
  "var-2022-1-kvant1-KVA-021": {
-  "solution_path": "Villkor x ≥ 0. I = √x, II = x/2. Jämför √x mot x/2. Vid x = 0: I = 0, II = 0 — lika (C). Vid x = 4: I = 2, II = 2 — lika. Vid x = 1: I = 1, II = 0,5 — A. Vid x = 16: I = 4, II = 8 — B. Verdikten flippar — svaret D.",
+  "solution_path": "Villkor: x ≥ 0. I = \\sqrt{x}, II = \\frac{x}{2}. Testa flera tillåtna värden. x = 1: I = 1, II = 0,5 → I > II. x = 16: I = 4, II = 8 → I < II. Ordningen flippar (dessutom lika vid x = 0 och x = 4), så informationen är otillräcklig — svaret är D.",
   "steps": [
    {
     "n": 1,
-    "title": "Förstå problemet",
-    "text": "x ≥ 0. I = \\sqrt{x}, II = x/2. Jämför.",
+    "title": "Förstå frågan",
+    "text": "Villkor x ≥ 0. Vi jämför I = \\sqrt{x} med II = \\frac{x}{2}. Ingen fixerad x — vi måste undersöka hur ordningen beror på x.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Sätt I = II",
-    "text": "√x = x/2 ⇒ 2√x = x ⇒ 4x = x² (kvadrera) ⇒ x² − 4x = 0 ⇒ x(x − 4) = 0. Lösningar x = 0 eller x = 4.",
-    "tier": "essential"
+    "title": "KVA-strategin",
+    "text": "Med en fri variabel räcker det att hitta två tillåtna x-värden som ger olika verdikt för att svaret ska bli D.",
+    "tier": "detail"
    },
    {
     "n": 3,
-    "title": "Test x = 0",
-    "text": "I = 0, II = 0 — lika (C).",
+    "title": "Testa ett litet x: x = 1",
+    "text": "I = \\sqrt{1}=1. II = \\frac{1}{2}=0{,}5. Alltså I = 1 > 0,5 = II — här vinner I.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Test x = 4",
-    "text": "I = 2, II = 2 — lika (C).",
+    "title": "Behöver vi ett fall där II vinner?",
+    "text": "Ja. Om något större x ger I < II är ordningen inte bestämd och svaret blir D.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Test x = 1 (mellan 0 och 4)",
-    "text": "I = 1, II = 0,5 — I > II (A).",
+    "title": "Testa ett stort x: x = 16",
+    "text": "I = \\sqrt{16}=4. II = \\frac{16}{2}=8. Alltså I = 4 < 8 = II — här vinner II.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Test x = 16 (> 4)",
-    "text": "I = 4, II = 8 — II > I (B).",
-    "tier": "essential"
+    "title": "Sammanställ",
+    "text": "x = 1 gav I > II. x = 16 gav I < II. Två tillåtna val, motsatta verdikt.",
+    "tier": "detail"
    },
    {
     "n": 7,
-    "title": "Verdikten flippar",
-    "text": "C vid x = 0 och 4; A för 0 < x < 4; B för x > 4. Tre olika utfall.",
+    "title": "Varför flippar det?",
+    "text": "\\sqrt{x} växer långsamt, \\frac{x}{2} växer linjärt. För små x är roten störst; för stora x springer \\frac{x}{2} ifrån. De korsar varandra vid x = 4 (där \\sqrt{4}=2=\\frac{4}{2}).",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Räcker informationen?",
-    "text": "Nej — alla tre verdikter möjliga.",
+    "title": "Lika-fallen",
+    "text": "Vid x = 0: I = 0 = II. Vid x = 4: I = 2 = II. Så förutom flippen finns punkter där de är lika — ännu ett tecken på att ordningen inte är låst.",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Per facit D",
-    "text": "Bekräftat.",
-    "tier": "detail"
+    "title": "Varför det räcker för D",
+    "text": "Ett KVA-svar måste gälla för ALLA tillåtna x. Eftersom I > II, I = II och I < II alla förekommer, kan varken A, B eller C vara generellt sant.",
+    "tier": "essential"
    },
    {
     "n": 10,
+    "title": "Räcker informationen?",
+    "text": "Nej. Utan ett bestämt x-värde är ordningen mellan \\sqrt{x} och \\frac{x}{2} öppen.",
+    "tier": "essential"
+   },
+   {
+    "n": 11,
     "title": "Slutsats",
-    "text": "Svaret är D. Insikten: √x och x/2 korsar varandra vid x = 0 och x = 4; mellan och utanför korsningarna är ordningen olika.",
+    "text": "Ordningen är inte bestämd — svaret är D. Insikten: en kvadratrot och en linjär funktion korsar varandra, så deras ordning byts beroende på x — klassiskt D-fall.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Vid 0 < x < 4 är I > II.",
-    "why_wrong": "Steg 6: vid x = 16 är II > I, så A misslyckas universellt."
+    "why_tempting": "Testar du bara ett litet x (t.ex. x = 1, där \\sqrt{x}>\\frac{x}{2}) drar du slutsatsen att I alltid vinner.",
+    "why_wrong": "Steg 5 ger ett tillåtet fall (x = 16) där I < II. Ett litet x bevisar inget generellt."
    },
    {
     "letter": "B",
-    "why_tempting": "Vid x > 4 är II > I.",
-    "why_wrong": "Steg 5: vid x = 1 är I > II."
+    "why_tempting": "Testar du ett stort x (t.ex. x = 16) fastnar du på att II alltid vinner.",
+    "why_wrong": "Steg 3 ger x = 1 där I > II. För små x vinner roten. Båda utfall är möjliga."
    },
    {
     "letter": "C",
-    "why_tempting": "Likhet bara vid x = 0 och 4.",
-    "why_wrong": "Steg 7: bara två specifika punkter."
+    "why_tempting": "Fallen x = 0 och x = 4 ger I = II, vilket kan lura dig att tro att de alltid är lika.",
+    "why_wrong": "Likhet gäller bara i de två skärningspunkterna (steg 8). Mellan och utanför dem är de olika (steg 3, 5). Inte generellt lika."
    }
   ],
-  "technique": "Korsnings-analys: hitta x där I = II, undersök båda sidor av varje korsning.",
-  "pitfall": "Botemedlet mot att gissa: alltid testa minst 3-4 x-värden över hela det tillåtna intervallet.",
-  "framework_id": "KVA-TRAP-005",
+  "technique": "Rot-mot-linje-flippen: \\sqrt{x} växer långsammare än en linjär \\frac{x}{2}, så de korsas — testa ett litet och ett stort x för att fånga båda ordningarna. Triggern: en kvadratrot jämförd med ett linjärt uttryck i x utan fast x → förvänta teckenflip, svara D.",
+  "pitfall": "Vanliga fällan är att testa ett enda x och generalisera. Botemedlet: eftersom \\sqrt{x} och \\frac{x}{2} korsar varandra, pröva både ett litet (x = 1) och ett stort (x = 16) värde — de ger motsatta verdikt och avslöjar D.",
   "pregrade_tactic": {
-   "handle": "Korsningspunkts-undersökning",
-   "move": "Vid √x mot x/2 — hitta korsningar, undersök beteende på alla sidor."
+   "handle": "Litet-och-stort-testet",
+   "move": "Jämför rot mot linje? Testa ett litet och ett stort x — får du olika ordning är svaret D."
   },
+  "framework_id": "KVA-TRAP-005",
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   }
  },
  "var-2022-1-kvant2-KVA-019": {

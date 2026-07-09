@@ -12718,97 +12718,103 @@
   "technique": "DTK-strategi för 'triangelarea på karta'-frågor: (1) hitta de tre hörnen via kartans etiketter och punktmarkeringar, (2) välj en sida som bas — helst en som ligger nästan vågrätt eller lodrätt — och mät den mot skalstocken, (3) mät det VINKELRÄTA avståndet från det tredje hörnet till baslinjen, (4) area = (bas × höjd)/2. Triggern: 'triangelformat område' → geometri-formel med vinkelrät höjd, inte sida-gånger-sida och inte rektangel."
  },
  "host-ver2-2019-kvant1-KVA-018": {
-  "solution_path": "Identisk med host-ver1-2019-kvant1-KVA-018 men med I och II i omvänd ordning. I = 0,51, II = Sannolikhet att 4x jämnt = 1. Eftersom 1 > 0,51 är II > I — svaret B.",
+  "solution_path": "Detta är samma uppgift som version 1, men med kvantiteterna i omvänd ordning. Kvantitet I = 0,51. Kvantitet II = sannolikheten att 4^{x} är jämnt. Eftersom 4^{x}=2^{2x} är jämnt för varje positivt heltal x, är den sannolikheten 1. Då är II = 1 > 0,51 = I — svaret B.",
   "steps": [
    {
     "n": 1,
-    "title": "Förstå problemet",
-    "text": "x heltal 1 ≤ x ≤ 100000. I = 0,51. II = Sannolikhet att 4x är jämnt.",
+    "title": "Förstå frågan",
+    "text": "x är ett heltal med 1\\le x\\le 100\\,000. Kvantitet I = 0,51. Kvantitet II = sannolikheten att 4^{x} är ett jämnt tal.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Sannolikheten",
-    "text": "4x = 2·(2x), så 4x är alltid jämnt. Sannolikhet = 1.",
-    "tier": "essential"
+    "title": "Vad är jämnt?",
+    "text": "Ett tal är jämnt om det är delbart med 2. En produkt med minst en jämn faktor är jämn.",
+    "tier": "detail"
    },
    {
     "n": 3,
-    "title": "Jämför",
-    "text": "I = 0,51 < II = 1, så II > I.",
+    "title": "Analysera 4^{x}",
+    "text": "4^{x}=2^{2x} — alltid delbart med 2 för varje heltal x ≥ 1. Så 4^{x} är alltid jämnt.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Sanity check",
-    "text": "Skillnaden 1 − 0,51 = 0,49.",
-    "tier": "detail"
+    "title": "Sannolikheten är 1",
+    "text": "Eftersom '4^{x} jämnt' inträffar för alla möjliga x är det en säker händelse: Kvantitet II = 1.",
+    "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Tecken-check",
-    "text": "Båda positiva.",
-    "tier": "detail"
+    "title": "Jämför",
+    "text": "Kvantitet I = 0,51, Kvantitet II = 1. Eftersom 1 > 0,51 är II större än I.",
+    "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Räcker informationen?",
-    "text": "Ja.",
+    "title": "Kolla mot 0,51 specifikt",
+    "text": "0,51 är strax över hälften men fortfarande långt under 1. Den lilla marginalen 0,01 över 0,5 ändrar inget — 1 är fortfarande större.",
     "tier": "detail"
    },
    {
     "n": 7,
-    "title": "Verifiera mot facit",
-    "text": "Facit B: II > I.",
+    "title": "Testa några x",
+    "text": "x = 1: 4=2^{2} jämnt. x = 5: 4^{5}=1024 jämnt. Alltid jämnt, så p = 1.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Paritets-fortplantning",
-    "text": "Multipel av 4 är alltid multipel av 2.",
+    "title": "Varför ordningen mellan versionerna spelar roll",
+    "text": "I version 1 stod sannolikheten som Kvantitet I (och 0,5 som II) → svar A. Här står 0,51 som I och sannolikheten som II → svaret blir B. Samma matematik, spegelvänd uppställning.",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Insikt",
-    "text": "Vissa 'sannolikheter' är egentligen säkra händelser (sannolikhet 1).",
-    "tier": "detail"
+    "title": "Kan svaret flippa?",
+    "text": "Nej — II = 1 exakt, oavsett x. II > I med säkerhet.",
+    "tier": "essential"
    },
    {
     "n": 10,
+    "title": "Räcker informationen?",
+    "text": "Ja. Att x är positivt heltal räcker för att fastställa II = 1. D är utesluten.",
+    "tier": "essential"
+   },
+   {
+    "n": 11,
     "title": "Slutsats",
-    "text": "II = 1 > I = 0,51 — svaret är B.",
+    "text": "II > I — svaret är B. Insikten: läs alltid noga VILKEN kvantitet som är sannolikheten; talet 0,51 (nära 0,5) är en distraktion — sannolikheten är 1.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Felaktig sannolikhetsberäkning.",
-    "why_wrong": "Steg 2: 4x är ALLTID jämnt."
+    "why_tempting": "Talet 0,51 ser 'större än hälften' ut, vilket lockar till att tro att I vinner.",
+    "why_wrong": "0,51 är fortfarande långt under 1. Steg 4: sannolikheten (II) är exakt 1, alltså större. I kan inte vinna."
    },
    {
     "letter": "C",
-    "why_tempting": "Likhet kräver sannolikhet 0,51.",
-    "why_wrong": "Steg 2: sannolikheten är 1."
+    "why_tempting": "Om du snabbläser och tror sannolikheten är ungefär 0,5 kan 0,51 ≈ 0,5 kännas som lika.",
+    "why_wrong": "Steg 3–4: sannolikheten är 1, inte 0,5. Kvantiteterna skiljer sig med nästan en halv enhet."
    },
    {
     "letter": "D",
-    "why_tempting": "'Sannolikhet → otillräcklig'.",
-    "why_wrong": "Steg 6: räcker."
+    "why_tempting": "Ett stort okänt x lockar till 'informationen räcker inte'.",
+    "why_wrong": "Steg 10: svaret är bestämt för hela intervallet — 4^{x} är alltid jämnt (p = 1). Informationen räcker."
    }
   ],
-  "technique": "Paritets-fortplantning.",
-  "pitfall": "Botemedlet: undersök om händelsen är säker (sannolikhet 1) innan du gissar 'hälften'.",
-  "framework_id": "KVA-TRAP-028",
+  "technique": "Paritet-hos-potens-regeln (spegelversion): en jämn bas upphöjd till ett positivt heltal är alltid jämn, så sannolikheten = 1. Läs noga vilken kvantitet som bär sannolikheten. Triggern: samma som version 1, men kontrollera uppställningsordningen innan du väljer bokstav.",
+  "pitfall": "Vanliga fällan är att låta talet 0,51 (nära 0,5) förleda dig till lika, eller att välja fel bokstav för att uppställningen är spegelvänd. Botemedlet: fastställ sannolikheten (= 1) först, och matcha sedan noggrant mot rätt kvantitet.",
   "pregrade_tactic": {
-   "handle": "Säker-händelsen",
-   "move": "Vid 'sannolikhet att kx jämn' med jämn k — sannolikheten är 1, inte 0,5."
+   "handle": "Uppställningskollen",
+   "move": "Räkna ut sannolikheten (= 1 här), och matcha den mot rätt kvantitet — talet 0,51 är en avledning nära 0,5."
   },
+  "framework_id": "KVA-TRAP-036",
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   }
  },
  "host-ver2-2019-kvant1-KVA-019": {
