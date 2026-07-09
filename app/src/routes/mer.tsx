@@ -39,6 +39,11 @@ const TOOLS = [
     rationale: 'Mät om var du står — 10 frågor över alla sektioner, ny baslinje.',
   },
   {
+    to: '/prov',
+    headline: 'Provpass',
+    rationale: '40 frågor, 55 minuter, riktiga provvillkor — hela halvan på riktigt.',
+  },
+  {
     to: '/avancerat',
     headline: 'Avancerat',
     rationale: 'Typsnitt, täthet och andra finjusteringar bortom tema.',

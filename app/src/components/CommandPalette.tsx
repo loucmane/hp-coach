@@ -89,6 +89,13 @@ const COMMANDS: Command[] = [
     action: ({ navigate }) => navigate({ to: '/repetition' }),
   },
   {
+    id: 'provpass',
+    label: 'Starta provpass',
+    hint: '40 frågor · 55 minuter · riktiga provvillkor',
+    keywords: ['provpass', 'mock', 'prov', 'exam', 'tenta'],
+    action: ({ navigate }) => navigate({ to: '/prov' }),
+  },
+  {
     id: 'lektion',
     label: 'Lektion',
     hint: 'Bläddra alla sektioner',
