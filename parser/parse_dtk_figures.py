@@ -54,6 +54,52 @@ INDEX_PATH = OUT_DIR / "_index.json"
 # UX > smaller PWA install.
 RENDER_SCALE = 4.0
 
+# Inline-figure overrides — the hard cases the page-pairing logic can't see.
+#
+# `process_pass` pairs every question page with the *preceding* figure page
+# and renders only that figure page. That model breaks when a chart the
+# question depends on is printed on the question page ITSELF, not on a
+# separate preceding figure page:
+#
+#   - A question page can carry a *second* figure at its top (a figure the
+#     3-question block shares) — e.g. host-2018 kvant2 p21 prints the
+#     "behöriga till yrkesprogram" bar chart above the prompts, and q37
+#     reads off that chart, not the p20 "meritvärde" chart the pairing gave
+#     it.
+#   - A single question can embed its own chart *between* its prompt and its
+#     options — e.g. var-2019 kvant2 q37's driftkostnad pie chart (a
+#     "cirkeldiagram" the prompt explicitly points at) sits mid-question.
+#
+# In both cases the page classifies as a pure `question` page (it has
+# numbered prompts), so the inline chart is never rendered and the qid ends
+# up pointing at the wrong (preceding) figure page. The vision audit
+# false-flags these because the served figure genuinely doesn't match the
+# prompt.
+#
+# We fix them by cropping the chart region off the question page and
+# pointing just the affected qid at that crop. `page_idx` is 0-based; `clip`
+# is a PDF-point (x0, y0, x1, y1) box on that page, rendered at RENDER_SCALE
+# like every other figure. Keeping these here (rather than only in
+# _index.json) means a full re-run of the extractor reproduces both the
+# JPEG and the index entry instead of silently reverting the qid to its
+# wrong preceding-page figure.
+INLINE_FIGURE_OVERRIDES: dict[str, dict[str, object]] = {
+    # Shared bar chart at the top of the q35–37 question page; q37 reads it.
+    "host-2018-kvant2-DTK-037": {
+        "provpass": "kvant2",
+        "page_idx": 20,  # p21
+        "clip": (75.0, 50.0, 520.0, 326.0),
+        "name": "host-2018-kvant2-p21.jpg",
+    },
+    # Pie chart embedded inside q37, between its prompt and its options.
+    "var-2019-kvant2-DTK-037": {
+        "provpass": "kvant2",
+        "page_idx": 20,  # p21
+        "clip": (90.0, 440.0, 500.0, 578.0),
+        "name": "var-2019-kvant2-p21.jpg",
+    },
+}
+
 # Page-level classification — DTK pages always carry "DTK" in the
 # header / footer (e.g., "– 17 – DTK" or "DTK – 17 –"). Question
 # pages additionally contain "Uppgifter". Figure pages do NOT.
@@ -164,6 +210,36 @@ def process_pass(
     return index
 
 
+def apply_inline_overrides(
+    exam_id: str, out_dir: Path
+) -> dict[str, dict[str, object]]:
+    """Render the inline-figure crops for `exam_id` and return their index rows.
+
+    Only the crops whose qid prefix matches `exam_id` are produced, so a
+    single-exam `--exam` run stays scoped. Each crop is rendered off its
+    source page at RENDER_SCALE with a PDF-point clip box, matching the
+    format of every full-page figure. Returns index rows to merge in AFTER
+    the page-pairing pass so they win over the (wrong) preceding-page figure.
+    """
+    index: dict[str, dict[str, object]] = {}
+    for qid, spec in INLINE_FIGURE_OVERRIDES.items():
+        if not qid.startswith(f"{exam_id}-"):
+            continue
+        provpass = str(spec["provpass"])
+        pdf_path = PDF_ROOT / exam_id / f"{provpass}.pdf"
+        if not pdf_path.exists():
+            continue
+        doc = fitz.open(pdf_path)
+        page = doc[int(spec["page_idx"])]  # type: ignore[call-overload]
+        clip = fitz.Rect(*spec["clip"])  # type: ignore[misc]
+        mat = fitz.Matrix(RENDER_SCALE, RENDER_SCALE)
+        pix = page.get_pixmap(matrix=mat, clip=clip)
+        name = str(spec["name"])
+        pix.pil_save(str(out_dir / name), format="JPEG", quality=80, optimize=True)
+        index[qid] = {"figure": name, "width": pix.width, "height": pix.height}
+    return index
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -203,6 +279,15 @@ def main() -> int:
                 q_count = len(idx)
                 total_figures += fig_count
                 print(f"[{exam_id}/{provpass}] {q_count} questions, {fig_count} figures")
+
+        # Inline-figure overrides win over the page-pairing result: a qid
+        # here had its chart printed on its own question page, so the
+        # preceding-page figure the pairing assigned is wrong.
+        overrides = apply_inline_overrides(exam_id, OUT_DIR)
+        if overrides:
+            full_index.update(overrides)
+            total_figures += len({v["figure"] for v in overrides.values()})
+            print(f"[{exam_id}] {len(overrides)} inline-figure override(s)")
 
     INDEX_PATH.write_text(json.dumps(full_index, indent=2, sort_keys=True, ensure_ascii=False))
     print(f"\nWrote {len(full_index)} qid entries · {total_figures} figure PNGs total")
