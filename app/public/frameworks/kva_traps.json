@@ -874,6 +874,270 @@
         "answer": "C — I är lika med II."
       },
       "counter_example": "Om II i stället var \"42 % av 1242\", då bryts symmetrin och II blir marginellt större — svaret blir B."
+    },
+    {
+      "id": "KVA-TRAP-039",
+      "pattern_description": "Distribuera ett minustecken över en parentes i en av kvantiteterna — studenten byter tecken på första termen men inte resten, och jämför sedan fel förenkling mot den andra sidan.",
+      "why_it_occurs": "I en jämförelse förenklas I och II var för sig först. −(a + b) läses som −a + b när bara minustecknet framför a syns; multiplikationen mot de senare termerna tappas, särskilt vid tre eller fler termer. Ett tappat tecken flyttar kvantiteten och kastar om verdikten.",
+      "common_distractor_signature": "Väljer A eller B efter att ena kvantiteten fått rätt storlek men fel tecken på en inre term (t.ex. förenklar II: 8 − (2 − 9x) till 6 − 9x istället för 6 + 9x), vilket ser ut att peka åt fel håll.",
+      "countermeasure": "Innan du jämför I mot II: distribuera in minustecknet på VARJE term i parentesen, en i taget, i båda kvantiteterna. Jämför först när alla tecken är utskrivna — aldrig \"minus framför, klart\".",
+      "example_questions": [
+        "host-2018-kvant2-KVA-016",
+        "host-2018-kvant1-KVA-016",
+        "var-2016-kvant1-KVA-014"
+      ],
+      "notes": "KVA-tvilling till XYZ-TRAP-001 (distribuera-minus). XYZ-entryn fokuserar på den rena förenklingen; denna på hur tecknslarvet flippar en I-mot-II-verdikt.",
+      "tldr": "Minustecken framför parentes byter tecken på varje inre term — ett tappat tecken kastar om hela jämförelsen.",
+      "recognition_cue": "När I eller II innehåller −(… + … + …) eller en negativ koefficient framför en flertermsparentes som ska förenklas före jämförelsen.",
+      "worked_example": {
+        "setup": "Villkoret 3(x − 1) = 18 och 6(y − x) = 18 gäller. Jämför I: x med II: y.",
+        "trap_thinking": "Studenten multiplicerar in i den andra ekvationen som 6y − x = 18 (tappar minustecknet på x) och drar slutsatsen att x ligger över y — väljer A.",
+        "correct_thinking": "Distribuera in tecknet ordentligt: 6(y − x) = 18 ger y − x = 3, alltså y = x + 3. Första ekvationen ger x = 7, så y = 10. Eftersom y − x = 3 > 0 är II större än I — och redan differensens tecken avgör jämförelsen.",
+        "answer": "B — II är större än I."
+      },
+      "counter_example": "Om andra ekvationen istället hade plus framför parentesen, 6(y + x) = 18, då bevaras alla tecken och ingen distributionsväxling behövs — fällan är död."
+    },
+    {
+      "id": "KVA-TRAP-040",
+      "pattern_description": "Räkneordning (PEMDAS) i ett blandat uttryck i en av kvantiteterna — studenten räknar vänster till höger och jämför fel värde mot den andra sidan.",
+      "why_it_occurs": "När I eller II är ett blandat uttryck (t.ex. 5 − 3·2) räknar studenten naivt vänster→höger istället för att låta multiplikation och division gå före addition och subtraktion. Fel värde i den ena kvantiteten kastar om verdikten, och felet är alltid \"rimligt\" på ytan.",
+      "common_distractor_signature": "Väljer A eller B efter att ha räknat en kvantitet vänster→höger utan prioritet — värdet ligger nära det rätta men på fel sida om jämförelsemålet.",
+      "countermeasure": "I varje kvantitet: identifiera ALLA multiplikationer och divisioner först, räkna ut dem, ersätt med resultaten, och kör sedan addition/subtraktion. Jämför I mot II först när båda är fullständigt reducerade.",
+      "example_questions": [
+        "host-2013-kvant1-KVA-013",
+        "host-2018-kvant1-KVA-022",
+        "var-2015-kvant2-KVA-015"
+      ],
+      "notes": "KVA-tvilling till XYZ-TRAP-006 (räkneordning). Samma mekanik, men här avgör felet en I-mot-II-verdikt snarare än ett valt svarsvärde.",
+      "tldr": "Multiplikation och division före addition och subtraktion — fel ordning i en kvantitet kastar om jämförelsen.",
+      "recognition_cue": "När I eller II blandar +, −, · och / utan parenteser som styr ordningen, eller har en bråkmultiplikation insprängd mellan additionstermer.",
+      "worked_example": {
+        "setup": "Jämför I: 1 + ½ · ⅓ med II: 1.",
+        "trap_thinking": "Studenten räknar I vänster→höger: 1 + ½ = 3/2, sedan 3/2 · ⅓ = ½. Då är I = ½ < 1 och väljer B.",
+        "correct_thinking": "Multiplikation går före addition. I = 1 + (½ · ⅓) = 1 + 1/6 = 7/6. Eftersom 7/6 > 1 är I större än II.",
+        "answer": "A — I är större än II."
+      },
+      "counter_example": "Om I istället var (1 + ½) · ⅓, då tvingar parenteserna additionen först och I = ½ < 1 — svaret blir B och fällan är död."
+    },
+    {
+      "id": "KVA-TRAP-041",
+      "pattern_description": "Rot över en summa eller differens i en kvantitet — studenten räknar √a + √b som √(a + b) (eller √a − √b som √(a − b)) och jämför fel värde.",
+      "why_it_occurs": "Mönstret från multiplikationsregeln √a · √b = √(ab) överförs felaktigt till addition och subtraktion. I en jämförelse låter det studenten kollapsa en kvantitet till en enda rot som ser ren ut, men värdet blir fel och verdikten kastas om.",
+      "common_distractor_signature": "Väljer A eller B efter att ha förenklat en kvantitet med √a ± √b = √(a ± b) — den kollapsade roten hamnar på fel sida om jämförelsemålet.",
+      "countermeasure": "Roten distribuerar bara över multiplikation och division, aldrig över + eller −. Räkna √a och √b separat i varje kvantitet (eller förenkla den som har en perfekt kvadrat) innan du jämför I mot II.",
+      "example_questions": [
+        "host-2017-kvant1-KVA-017",
+        "var-2018-1-kvant2-KVA-022",
+        "var-2022-2-kvant1-KVA-022"
+      ],
+      "notes": "KVA-tvilling till XYZ-TRAP-033 (√ distribuerar inte över addition). XYZ-entryn räknar fram ett värde; denna avgör en I-mot-II-verdikt.",
+      "tldr": "Roten distribuerar inte över + eller − — √a ± √b är inte √(a ± b), och den felaktiga kollapsen kastar om jämförelsen.",
+      "recognition_cue": "När I eller II innehåller en summa eller differens av två rotuttryck, och det frestar att slå ihop dem till en enda rot av en kombinerad konstant.",
+      "worked_example": {
+        "setup": "Jämför I: √84 − √10 med II: 6.",
+        "trap_thinking": "Studenten kollapsar I till √(84 − 10) = √74 ≈ 8,6 och drar slutsatsen att I > 6 — väljer A.",
+        "correct_thinking": "Roten distribuerar bara över multiplikation. Räkna varje rot: √84 ≈ 9,2 och √10 ≈ 3,2, så I ≈ 9,2 − 3,2 = 6,0. Kvantiteterna är i praktiken lika stora, och den felaktiga kollapsen till √74 hade gett fel verdikt.",
+        "answer": "C — I är ungefär lika med II (≈ 6)."
+      },
+      "counter_example": "Om I istället var √84 · √10, då gäller multiplikationsregeln: √840 ≈ 29 > 6 — förenklingen är tillåten eftersom roten faktiskt distribuerar över multiplikation."
+    },
+    {
+      "id": "KVA-TRAP-042",
+      "pattern_description": "En kvantitet innehåller √n där n döljer en perfekt kvadrat — studenten lämnar roten oförenklad och jämför ett grovt närmevärde mot den andra sidan.",
+      "why_it_occurs": "√72 ser inte färdigförenklad ut, men √72 = √(36·2) = 6√2. I en jämförelse hoppar studenten till ett grovt decimalvärde och tappar precisionen som avgör en tät jämförelse — eller missar att kvantiteterna är exakt lika efter förenkling.",
+      "common_distractor_signature": "Väljer A eller B baserat på ett avrundat decimalvärde av den oförenklade roten, missar att den utbrutna kvadratfaktorn hade gett ett exakt värde som ligger på andra sidan jämförelsemålet.",
+      "countermeasure": "Vid √n i en kvantitet: faktorisera n och bryt ut den största perfekta kvadraten (√(a²·b) = a√b) innan du jämför. Ofta blir kvantiteten ett exakt heltal eller n√k som gör verdikten uppenbar.",
+      "example_questions": [
+        "var-2026-kvant2-KVA-021",
+        "host-2014-kvant1-KVA-019",
+        "host-2022-kvant2-KVA-019"
+      ],
+      "notes": "KVA-tvilling till XYZ-TRAP-032 (rotförenkling / dra ut perfekta kvadrater).",
+      "tldr": "Roten av ett stort tal döljer ofta en snygg form — bryt ut kvadratfaktorn innan du jämför, annars avgör avrundningsfel verdikten.",
+      "recognition_cue": "När I eller II innehåller √n där n inte är en perfekt kvadrat men kan faktoriseras med en kvadratfaktor (4, 9, 16, 25, 36, …), och jämförelsen är tät.",
+      "worked_example": {
+        "setup": "En triangel har kateterna 3 och 4 och samma area som en kvadrat K. Jämför I: sidan i K med II: √6.",
+        "trap_thinking": "Studenten räknar triangelns area = (1/2)·3·4 = 6, sätter kvadratens sida till √6 och drar slutsatsen att I = II = √6 — väljer C, utan att inse att sidan i K är √6, inte 6.",
+        "correct_thinking": "Kvadratens area är 6, så sidan är √6. Här sammanfaller I och II faktiskt — men bara om man behåller roten oförenklad och inte avrundar √6 ≈ 2,449 till ett grovt värde som råkar hamna fel. Poängen: bryt ut och behåll den exakta rotformen istället för att jämföra decimaler på höft.",
+        "answer": "C — I är lika med II."
+      },
+      "counter_example": "Om kvadratens area istället var 8, då är sidan √8 = 2√2 ≈ 2,83 > √6 ≈ 2,45 — och den utbrutna formen 2√2 gör verdikten (A) uppenbar utan avrundning."
+    },
+    {
+      "id": "KVA-TRAP-043",
+      "pattern_description": "En kvantitet innehåller a⁰ (ofta en exponentialfunktion utvärderad i x = 0) — studenten räknar a⁰ som 0 eller a och jämför fel värde.",
+      "why_it_occurs": "Exponent 0 strider mot vanan \"aⁿ är produkten av n stycken a\". I en jämförelse där ena kvantiteten är C·aˣ vid x = 0 tolkar studenten a⁰ som 0 (eller basen själv) och får fel storlek på hela kvantiteten.",
+      "common_distractor_signature": "Väljer A eller B efter att ha satt a⁰ = 0 (kvantiteten blir för liten) eller a⁰ = a (kvantiteten blir för stor) — jämförelsen mot den andra sidan kastas om.",
+      "countermeasure": "a⁰ = 1 för alla a ≠ 0 — memorera som specialfall. En exponentialfunktion C·aˣ ger ALLTID C när x = 0. Sätt in det värdet innan du jämför I mot II.",
+      "example_questions": [
+        "var-2023-kvant2-KVA-020",
+        "var-2023-kvant1-KVA-019",
+        "host-ver1-2019-kvant1-KVA-013"
+      ],
+      "notes": "KVA-tvilling till XYZ-TRAP-034 (a⁰ = 1).",
+      "tldr": "Exponenten 0 ger alltid 1 — inte 0 och inte basen — så C·aˣ vid x = 0 är exakt C.",
+      "recognition_cue": "När I eller II innehåller a⁰ eller en exponentialfunktion utvärderad i x = 0, särskilt i formen C·aˣ där kvantiteten vid x = 0 ska bli C.",
+      "worked_example": {
+        "setup": "Givet f(x) = a·3ˣ med f(1) = 3. Jämför I: f(0) med II: 1.",
+        "trap_thinking": "Studenten hittar a = 1 ur f(1) = 3a = 3, men tolkar sedan 3⁰ som 0 och får f(0) = 0 — väljer B.",
+        "correct_thinking": "3⁰ = 1 per konvention för alla baser ≠ 0, så f(0) = 1·3⁰ = 1·1 = 1. Kvantiteterna är exakt lika.",
+        "answer": "C — I är lika med II."
+      },
+      "counter_example": "Om jämförelsen istället gällde f(1) mot 1, då ger exponenten 1 basen själv: f(1) = 3 > 1 och svaret blir A — fällan uppstår bara när argumentet är just 0."
+    },
+    {
+      "id": "KVA-TRAP-044",
+      "pattern_description": "En kvantitet är en potens av en potens (xᵃ)ᵇ — studenten adderar exponenterna istället för att multiplicera och jämför fel uttryck.",
+      "why_it_occurs": "Exponentlagarna blandas ihop: xᵃ · xᵇ = xᵃ⁺ᵇ förväxlas med (xᵃ)ᵇ = xᵃ·ᵇ. I en jämförelse ger fel regel en kvantitet med fel exponent, vilket kan kasta om verdikten helt.",
+      "common_distractor_signature": "Väljer A eller B efter att ha förenklat (xᵃ)ᵇ till xᵃ⁺ᵇ (eller tvärtom), så att kvantiteten hamnar på fel sida om jämförelsemålet.",
+      "countermeasure": "Skilj de tre reglerna åt: xᵃ · xᵇ = xᵃ⁺ᵇ (produkt → addera), (xᵃ)ᵇ = xᵃ·ᵇ (potens av potens → multiplicera), xᵃ / xᵇ = xᵃ⁻ᵇ (kvot → subtrahera). Tillämpa rätt regel i varje kvantitet innan jämförelse.",
+      "example_questions": [
+        "var-2015-kvant1-KVA-013",
+        "var-2015-kvant1-KVA-016",
+        "host-2021-kvant1-KVA-022"
+      ],
+      "notes": "KVA-tvilling till XYZ-TRAP-026 (potens av potens multiplicerar exponenterna).",
+      "tldr": "Potens av potens multiplicerar exponenterna — adderar gör man bara vid produkt med samma bas.",
+      "recognition_cue": "När I eller II har formen (xᵃ)ᵇ och den andra sidan är en potens där skillnaden mellan xᵃ⁺ᵇ och xᵃ·ᵇ avgör verdikten.",
+      "worked_example": {
+        "setup": "Jämför I: (2³)² med II: 2⁵.",
+        "trap_thinking": "Studenten adderar exponenterna i I: 3 + 2 = 5, alltså I = 2⁵ — och väljer C.",
+        "correct_thinking": "Potens av potens multiplicerar exponenterna: (2³)² = 2³·² = 2⁶ = 64. II = 2⁵ = 32. Eftersom 64 > 32 är I större än II.",
+        "answer": "A — I är större än II."
+      },
+      "counter_example": "Om I istället var 2³ · 2² (produkt med samma bas), då gäller additionsregeln: 2⁵ = 32 = II och svaret blir C — det är parentesen som flyttar regeln från addition till multiplikation."
+    },
+    {
+      "id": "KVA-TRAP-045",
+      "pattern_description": "En negativ värde substitueras i en kvantitet med potens eller yttre tecken — studenten tappar parenteserna, så (−a)² läses som −a², och jämför fel tecken.",
+      "why_it_occurs": "Vid f(−2) ska −2 ersätta variabeln överallt, inklusive inuti potenser: (−2)² = +4 men −2² = −4. I en jämförelse skriver studenten mekaniskt −2² och tappar tecknet, vilket flippar kvantitetens tecken och verdikten.",
+      "common_distractor_signature": "Väljer A eller B efter att ha låtit (−värde)² tolkas som −värde² — magnituden blir rätt men tecknet fel, så jämförelsen kastas om.",
+      "countermeasure": "Vid substitution av ett negativt värde: sätt ALLTID parentes runt det, f(−2) = f((−2)). Då kan potens och yttre tecken inte slarva bort tecknet. Räkna klart varje kvantitet med parenteser innan du jämför.",
+      "example_questions": [
+        "host-2015-kvant1-KVA-018",
+        "var-2018-1-kvant2-KVA-016",
+        "var-2026-kvant1-KVA-016"
+      ],
+      "notes": "KVA-tvilling till XYZ-TRAP-007 (negativ substitution, parenteser). Se även KVA-TRAP-013 (paritet på negativ bas) för det närliggande teckenmönstret.",
+      "tldr": "Vid substitution av ett negativt värde: sätt parentes runt det — annars slarvar tecknet med exponenter och kastar om jämförelsen.",
+      "recognition_cue": "När en kvantitet utvärderar en funktion eller ett uttryck vid ett negativt argument, särskilt med en potens eller ett yttre tecken som kombineras med den insatta variabeln.",
+      "worked_example": {
+        "setup": "Låt g(z) = 2(z − 1) och h(z) = 3(1 − z). Jämför I: g(2) − h(2) med II: 0.",
+        "trap_thinking": "Studenten räknar g(2) = 2 rätt men tappar tecknet i h(2) = 3(1 − 2) och läser det som +3 — får I = 2 − 3 = −1 < 0 och väljer B.",
+        "correct_thinking": "Substituera med parentes runt argumentet: h(2) = 3·(1 − 2) = 3·(−1) = −3. Då är I = g(2) − h(2) = 2 − (−3) = 5 > 0, så I är större än II.",
+        "answer": "A — I är större än II."
+      },
+      "counter_example": "Om h(z) istället var 3·|1 − z| med absolutbelopp, då låses tecknet positivt och I = 2 − 3 = −1 < 0 — svaret blir B eftersom absolutbeloppet dödar tecknflippen."
+    },
+    {
+      "id": "KVA-TRAP-046",
+      "pattern_description": "En jämförelse hänger på om π ligger över eller under 3 — studenten approximerar π ≈ 3 och drar slutsatsen att kvantiteterna är lika.",
+      "why_it_occurs": "π ≈ 3 är en bekväm överslagsräkning, men π ≈ 3,14 ligger strax ÖVER 3. KVA bygger avsiktligt jämförelser där skillnaden mellan π och 3 (eller mellan π och 4) är exakt det som avgör verdikten, så en avrundning till 3 dödar informationen och pekar mot ett felaktigt C.",
+      "common_distractor_signature": "Väljer C (lika) efter att ha satt π = 3, missar att den lilla överskjutningen 0,14 tippar jämförelsen åt ena hållet.",
+      "countermeasure": "Behåll π som π, eller använd π ≈ 3,14 (aldrig 3) i en tät KVA-jämförelse. När kvantiteterna reduceras till \"π mot ett heltal\" avgörs verdikten av att 3 < π < 4.",
+      "example_questions": [
+        "var-2018-1-kvant2-KVA-019",
+        "host-2015-kvant1-KVA-020",
+        "host-2021-kvant1-KVA-021"
+      ],
+      "notes": null,
+      "tldr": "π ligger strax över 3 — avrunda till 3 och du missar den överskjutning som avgör jämförelsen.",
+      "recognition_cue": "Cirkelarea, omkrets eller volym ställd mot ett heltal eller en polygon där kvantiteterna efter förenkling blir en π-multipel mot en heltalsmultipel, och skillnaden π − 3 (eller 4 − π) är hela marginalen.",
+      "worked_example": {
+        "setup": "En cirkel har radien x. Jämför I: cirkelns area (π·x²) med II: arean av en triangel med basen 3x och höjden 2x.",
+        "trap_thinking": "Studenten räknar triangelns area = (3x · 2x)/2 = 3x², sätter π ≈ 3 och drar slutsatsen att I = 3x² = II — väljer C.",
+        "correct_thinking": "I = π·x² och II = 3x², så jämförelsen står mellan koefficienterna π och 3. Eftersom π ≈ 3,14 > 3 och x² > 0 är I strikt större än II. Avrundningen π ≈ 3 var precis vad fällan ville få dig att göra.",
+        "answer": "A — I är större än II."
+      },
+      "counter_example": "Om triangelns höjd istället var 2,1x blir II = 3,15x² > π·x² och svaret kantrar till B — då räcker inte π > 3, utan man måste jämföra π mot 3,15."
+    },
+    {
+      "id": "KVA-TRAP-047",
+      "pattern_description": "\"Högre procent vinner\" — studenten jämför två procenttal direkt och ignorerar att de tas av olika stora baser.",
+      "why_it_occurs": "Procent känns som ett direkt mått på storlek, så 14 % ser större ut än 13 %. Men 14 % av en liten bas kan vara mindre än 13 % av en stor bas — det är produkten procent × bas som avgör, inte procenten ensam.",
+      "common_distractor_signature": "Väljer den kvantitet med högre procenttal (eller högre bas) utan att räkna produkten, missar att den andra komponenten vänder verdikten.",
+      "countermeasure": "Räkna alltid ut det faktiska värdet procent × bas för båda kvantiteterna innan du jämför. Ett högre procenttal säger ingenting om utfallet när baserna skiljer sig.",
+      "example_questions": [
+        "var-2015-kvant1-KVA-018",
+        "var-2022-2-kvant1-KVA-013",
+        "var-2018-1-kvant2-KVA-021"
+      ],
+      "notes": "Skild från KVA-TRAP-011 (procent låser förhållandet, inte antalet, när totalen saknas) och KVA-TRAP-038 (procentmultiplikation är kommutativ). Här ges båda baserna explicit — felet är att jämföra procenttalen istället för produkterna.",
+      "tldr": "Ett högre procenttal vinner inte automatiskt — det är procent × bas som räknas.",
+      "recognition_cue": "Två kvantiteter på formen \"a % av M\" och \"b % av N\" där både procenttalen och baserna är givna men skiljer sig, och det frestar att jämföra bara a mot b.",
+      "worked_example": {
+        "setup": "Jämför I: 13 % av 55 med II: 14 % av 50.",
+        "trap_thinking": "Studenten ser att 14 % > 13 % och drar slutsatsen att II är större — väljer B.",
+        "correct_thinking": "Räkna produkterna: I = 0,13 · 55 = 7,15 och II = 0,14 · 50 = 7,00. Trots att II har högre procenttal är I större, eftersom I:s bas (55) är tillräckligt mycket större.",
+        "answer": "A — I är större än II."
+      },
+      "counter_example": "Om baserna vore lika (13 % av 50 mot 14 % av 50), då avgör procenttalen ensamt och II > I — men det kräver att baserna är identiska."
+    },
+    {
+      "id": "KVA-TRAP-048",
+      "pattern_description": "Exponentiell förändring jämförs som om den vore linjär — studenten antar att lika steg i x ger lika stora steg i funktionsvärdet.",
+      "why_it_occurs": "För en rät linje är differensen f(b) − f(a) densamma för alla punktpar med samma avstånd. Studenten generaliserar detta till exponentialfunktioner, men där multipliceras värdet med en faktor per steg, så samma x-avstånd ger olika stora hopp beroende på var man står.",
+      "common_distractor_signature": "Väljer C (lika) genom att anta att två differenser med samma x-avstånd är lika, missar att exponentiell tillväxt gör det senare hoppet mycket större.",
+      "countermeasure": "Vid exponentialfunktion C·aˣ: räkna ut de faktiska funktionsvärdena och bilda differenserna explicit — anta aldrig att lika x-steg ger lika y-steg. Bara linjära funktioner har konstant differens.",
+      "example_questions": [
+        "host-2016-kvant2-KVA-016",
+        "host-2018-kvant2-KVA-013",
+        "host-2025-kvant2-XYZ-007"
+      ],
+      "notes": "Tredje exemplet (host-2025-kvant2-XYZ-007, populationsfördubbling) ligger i XYZ men illustrerar samma exponentiella mekanik — bara KVA-frågorna är taggade till denna entry.",
+      "tldr": "Exponentiell tillväxt multiplicerar per steg — lika x-avstånd ger olika stora hopp, till skillnad från en rät linje.",
+      "recognition_cue": "En exponentialfunktion (C·aˣ, konstant tillväxtfaktor, \"ränta på ränta\", \"fördubblas var …\") där I och II jämför differenser eller funktionsvärden vid punkter med samma x-avstånd.",
+      "worked_example": {
+        "setup": "Låt f(x) = 3·2ˣ. Jämför I: f(0) − f(−1) med II: f(1) − f(0).",
+        "trap_thinking": "Båda differenserna spänner ett x-steg, så studenten antar att de är lika — väljer C.",
+        "correct_thinking": "Räkna värdena: f(−1) = 3/2, f(0) = 3, f(1) = 6. Då är I = 3 − 3/2 = 3/2 och II = 6 − 3 = 3. Samma x-avstånd men II är dubbelt så stort, eftersom varje steg multiplicerar med 2 — exponentiell, inte linjär.",
+        "answer": "B — II är större än I."
+      },
+      "counter_example": "Om f istället vore linjär, f(x) = 3x + 3, då ger båda differenserna 3 och svaret blir C — konstant differens gäller bara för räta linjer."
+    },
+    {
+      "id": "KVA-TRAP-049",
+      "pattern_description": "Hastigheter i m/s och km/h jämförs utan omvandling — studenten jämför siffrorna direkt eller använder fel omvandlingsfaktor.",
+      "why_it_occurs": "m/s och km/h ser ut som samma sorts tal, men 1 m/s = 3,6 km/h. Att jämföra 40 m/s med 100 km/h utan att räkna om, eller att gissa faktorn (3,0 eller 3,5 istället för 3,6), ger fel storleksordning på den ena kvantiteten.",
+      "common_distractor_signature": "Väljer A eller B efter att ha jämfört råa tal i olika enheter, eller efter att ha multiplicerat/dividerat med en felaktig faktor — verdikten hamnar fel.",
+      "countermeasure": "Räkna om båda kvantiteterna till SAMMA enhet först: m/s → km/h genom att multiplicera med 3,6 (km/h → m/s genom att dela med 3,6). Härled 3,6 ur enheterna (1000 m / 3600 s) om du är osäker. Jämför först när enheterna matchar.",
+      "example_questions": [
+        "host-2022-kvant2-KVA-021",
+        "var-2022-1-kvant1-KVA-022",
+        "host-2023-kvant2-XYZ-006"
+      ],
+      "notes": "Tredje exemplet (host-2023-kvant2-XYZ-006, 20 m/s = 72 km/h) ligger i XYZ men visar samma omvandling; bara KVA-frågorna taggas till denna entry.",
+      "tldr": "1 m/s = 3,6 km/h — jämför aldrig råa tal i olika enheter, och gissa aldrig faktorn.",
+      "recognition_cue": "När I och II anger hastighet, sträcka eller tid men i olika enhetssystem (m/s mot km/h, meter mot kilometer, sekunder mot minuter), och jämförelsen bara fungerar efter omvandling.",
+      "worked_example": {
+        "setup": "En sträcka på 40 km ska köras. Jämför I: tiden vid 100 km/h med II: tiden vid 40 m/s.",
+        "trap_thinking": "Studenten ser att 100 > 40 och drar slutsatsen att I:s hastighet är högre, alltså I:s tid kortare — väljer B utan att röra enheterna.",
+        "correct_thinking": "Räkna om 40 m/s till km/h: 40 · 3,6 = 144 km/h. Nu är II:s hastighet (144) större än I:s (100), så II tar KORTARE tid, alltså I:s tid är längre — I > II.",
+        "answer": "A — I är större än II."
+      },
+      "counter_example": "Om II istället var \"tiden vid 25 m/s\", då blir det 25 · 3,6 = 90 km/h < 100 km/h, så I:s hastighet är högre och I:s tid kortare — svaret kantrar till B."
+    },
+    {
+      "id": "KVA-TRAP-050",
+      "pattern_description": "En ekvation aˣ = N (eller en produkt av rötter satt lika med en potens) ska lösas för exponenten — studenten når efter logaritmer eller räknar ut decimaler istället för att känna igen samma bas.",
+      "why_it_occurs": "Utan miniräknare känns aˣ = N olösligt, så studenten fastnar eller gissar. Men HP-varianterna är byggda så att N är en perfekt potens av basen (23³ = 12167), eller så kan båda leden skrivas med SAMMA bas (√5·√9 = √45 = 45^{1/2}). Då är exponenten trivial att avläsa och jämförelsen avgörs exakt.",
+      "common_distractor_signature": "Väljer fel alternativ efter att ha tappat rottecken (läser √5·√9 = 45^x som 5·9 = 45^x → x = 1 i stället för 1/2), eller efter en decimalgissning som hamnar på fel sida.",
+      "countermeasure": "Skriv om båda leden som EN potens med samma bas och sätt exponenterna lika (för bas > 1 är detta entydigt). Vid aˣ = N: kolla först om N är en perfekt potens av a. Räkna aldrig ut decimalvärden i en KVA-uppgift som kan skrivas med gemensam bas.",
+      "example_questions": [
+        "var-2018-1-kvant2-KVA-022",
+        "host-2018-kvant2-KVA-013",
+        "var-2022-2-kvant1-KVA-022"
+      ],
+      "notes": "Dogfood-belägg: host-2018-kvant2-KVA-013 (aˣ = perfekt potens) missades upprepade gånger och saknade tidigare framework-koppling. HP kräver ingen logaritmtabell — lösningen är alltid gemensam-bas-igenkänning.",
+      "tldr": "aˣ = N löses genom att känna igen samma bas, inte med logaritmer — skriv om båda leden och sätt exponenterna lika.",
+      "recognition_cue": "En ekvation där ena ledet är aˣ (eller en produkt/kvot av rötter) och andra ledet är ett stort heltal eller en annan potens, och I/II jämför exponenten mot ett tal.",
+      "worked_example": {
+        "setup": "Ekvationen √5 · √9 = 45ˣ gäller. Jämför I: 0,5 med II: x.",
+        "trap_thinking": "Studenten tappar rottecknen och läser ekvationen som 5 · 9 = 45ˣ, alltså 45 = 45ˣ och x = 1 — väljer B.",
+        "correct_thinking": "Slå ihop rötterna först: √5 · √9 = √(5·9) = √45 = 45^{1/2}. Alltså 45ˣ = 45^{1/2}, och eftersom basen 45 > 1 måste exponenterna vara lika: x = 1/2 = 0,5. Kvantiteterna är exakt lika.",
+        "answer": "C — I är lika med II."
+      },
+      "counter_example": "Om högerledet istället var 45²ˣ, då ger √45 = 45^{1/2} att 2x = 1/2, alltså x = 1/4 < 0,5 — svaret kantrar till A."
     }
   ]
 }

@@ -1338,6 +1338,94 @@
         "answer": "D — 37x/27, när varje \"x gånger så stor som\" tolkas med subjektet som multiplikator."
       },
       "counter_example": "Om uppgiften istället sa \"antalet päron är 3 gånger antalet äpplen\", då vänds riktningen helt och päron = 3x — formuleringen styr vilken sida som blir multiplicerad."
+    },
+    {
+      "id": "XYZ-TRAP-056",
+      "pattern_description": "Triangelarea utan delning med 2 — student räknar bas · höjd och glömmer faktorn ½.",
+      "why_it_occurs": "Rektangelns area är bas · höjd, och triangelformeln bas · höjd / 2 blandas ihop med den. Faktorn ½ är lätt att tappa eftersom bas · höjd redan \"ser klart ut\", särskilt när talen är snygga.",
+      "common_distractor_signature": "Svar som är exakt dubbelt så stort som det rätta — bas · höjd i stället för bas · höjd / 2.",
+      "countermeasure": "Triangelns area = bas · höjd / 2, ALLTID. Rita en rektangel runt triangeln: triangeln är exakt hälften. Skriv ut divisionen med 2 som ett eget steg så det inte tappas.",
+      "example_questions": [
+        "host-2020-kvant1-XYZ-006",
+        "var-2019-kvant2-XYZ-009",
+        "var-2018-1-kvant2-KVA-019"
+      ],
+      "notes": "Tredje exemplet (var-2018-1-kvant2-KVA-019) ligger i KVA men bygger på samma triangelarea-formel; bara XYZ-frågan taggas till denna entry.",
+      "tldr": "Triangelns area är bas · höjd delat med 2 — glöm ½ och svaret blir exakt dubbelt för stort.",
+      "recognition_cue": "När en triangels area beräknas eller sätts lika med en annan figurs area, och svarsalternativen innehåller ett värde som är dubbelt så stort som ett annat.",
+      "worked_example": {
+        "setup": "En triangel har basen 4 cm och samma area som en kvadrat med sidan 6 cm. Hur hög är triangeln?",
+        "trap_thinking": "Studenten sätter bas · höjd = kvadratens area: 4·h = 36, alltså h = 9 — och väljer det svaret.",
+        "correct_thinking": "Triangelns area är bas · höjd / 2 = 4·h / 2 = 2h. Sätt lika med kvadratens area 36: 2h = 36, alltså h = 18. Den bortglömda faktorn ½ hade halverat höjden fel.",
+        "answer": "D — 18 cm, eftersom triangelarean är bas · höjd / 2, inte bas · höjd."
+      },
+      "counter_example": "Om figuren i stället var en parallellogram (area = bas · höjd, ingen ½), då vore h = 9 rätt — det är just triangeln som bär faktorn ½."
+    },
+    {
+      "id": "XYZ-TRAP-057",
+      "pattern_description": "Arbetstakt / sammanlagd hastighet — student adderar tiderna i stället för hastigheterna när två aktörer arbetar tillsammans.",
+      "why_it_occurs": "\"A gör det på 9 min, B på 18 min\" frestar till 9 + 18 = 27 eller ett medelvärde. Men det är takterna (arbete per tidsenhet) som adderas, inte tiderna: 1/9 + 1/18 tank/min, och den sammanlagda tiden är inversen av summan.",
+      "common_distractor_signature": "Svar som motsvarar summan eller medelvärdet av tiderna (27 min, 37,5 min) i stället för inversen av den adderade takten.",
+      "countermeasure": "Skriv ALLTID hastigheten i bråkform först: 1/t₁ + 1/t₂ = sammanlagd takt. Total tid = 1 / (sammanlagd takt). Addera aldrig tider direkt — addera takterna och invertera.",
+      "example_questions": [
+        "host-2015-kvant2-XYZ-008",
+        "host-2017-kvant1-XYZ-003",
+        "var-2024-kvant2-XYZ-005"
+      ],
+      "notes": null,
+      "tldr": "När två arbetar tillsammans adderas takterna (1/t₁ + 1/t₂), inte tiderna — och den totala tiden är inversen.",
+      "recognition_cue": "Två aktörer (pumpar, personer, kranar) som fyller, tömmer eller gör klart samma uppgift tillsammans, med varsin egen tid eller hastighet given.",
+      "worked_example": {
+        "setup": "En liten pump fyller en tank på 60 min, en stor pump på 15 min. Hur lång tid tar det om båda pumpar samtidigt?",
+        "trap_thinking": "Studenten tar ett medelvärde av tiderna: (60 + 15)/2 = 37,5 min — eller adderar dem. Väljer ett sådant svar.",
+        "correct_thinking": "Addera takterna: 1/60 + 1/15 = 1/60 + 4/60 = 5/60 = 1/12 tank/min. Total tid = 1 / (1/12) = 12 minuter. Tillsammans går det snabbare än den snabbaste ensam — vilket 37,5 min omöjligt kunde ge.",
+        "answer": "C — 12 minuter, eftersom takterna adderas och tiden är inversen."
+      },
+      "counter_example": "Om aktörerna arbetar i FÖLJD i stället för samtidigt, då adderas tiderna (60 + 15 = 75 min) — takt-additionen gäller bara vid samtidigt arbete."
+    },
+    {
+      "id": "XYZ-TRAP-058",
+      "pattern_description": "Decimalförskjutning vid multiplikation/division med tiopotens eller procent — student flyttar decimaltecknet fel antal steg.",
+      "why_it_occurs": "0,2 % betyder 0,002 (två steg för procenttecknet, ett för siffran), och multiplikation med 10ⁿ flyttar decimaltecknet n steg. Studenten räknar fel antal steg eller åt fel håll och får ett svar som är en tiopotens fel.",
+      "common_distractor_signature": "Svar som är rätt siffror men fel storleksordning — tio eller hundra gånger för stort eller för litet (t.ex. läser 0,2 % som 2 % och får svaret tiofaldigt).",
+      "countermeasure": "Skriv om procent och tiopotenser till decimalform explicit innan du multiplicerar: x % = x/100, och räkna antalet nollor/steg noga. Kontrollera storleksordningen på svaret mot en grov överslagsräkning.",
+      "example_questions": [
+        "host-2018-kvant1-XYZ-002",
+        "var-2015-kvant1-XYZ-011",
+        "host-2021-kvant1-XYZ-009"
+      ],
+      "notes": null,
+      "tldr": "0,2 % = 0,002, inte 0,02 — flytta decimaltecknet rätt antal steg, annars blir svaret en tiopotens fel.",
+      "recognition_cue": "När uttrycket innehåller ett litet decimaltal (0,2 %, 0,25 %), en multiplikation eller division med en tiopotens, och svarsalternativen skiljer sig med en faktor 10 eller 100.",
+      "worked_example": {
+        "setup": "Beräkna 0,2 % av 50.",
+        "trap_thinking": "Studenten läser 0,2 % som 2 % (eller 0,02) och räknar 0,02 · 50 = 1 — väljer det svaret.",
+        "correct_thinking": "Procenttecknet flyttar decimaltecknet två steg åt vänster: 0,2 % = 0,002. Då är 0,002 · 50 = 0,1. Svaret är tio gånger mindre än den felaktiga tolkningen.",
+        "answer": "B — 0,1, eftersom 0,2 % = 0,002."
+      },
+      "counter_example": "Om frågan i stället var 0,2 · 50 (inget procenttecken), då är 0,2 = två tiondelar och svaret 10 — det är procenttecknets extra två steg som gör skillnaden."
+    },
+    {
+      "id": "XYZ-TRAP-059",
+      "pattern_description": "Komplement-sannolikhet — student räknar den händelse som frågan uttryckligen negerar (\"inte\", \"ingen\", \"minst en\") som om den vore den direkta händelsen.",
+      "why_it_occurs": "\"inte sexa\", \"ingen sexa\" och \"minst en sexa\" låter snarlika men har olika sannolikheter. Det är ofta enklast att räkna komplementet: P(minst en) = 1 − P(ingen). Studenten hoppar över komplementsteget eller glömmer att dra bort från 1.",
+      "common_distractor_signature": "Svar som är den direkta händelsens sannolikhet i stället för komplementets (P i stället för 1 − P), eller en förväxling mellan \"ingen\" och \"minst en\".",
+      "countermeasure": "Skriv ut komplement-paret explicit: P(minst en) = 1 − P(ingen), P(inte A) = 1 − P(A). Räkna det led som är lättast (ofta \"ingen\", en ren produkt av oberoende utfall) och dra sedan från 1 om frågan gäller \"minst en\".",
+      "example_questions": [
+        "var-2017-kvant1-XYZ-011",
+        "host-2021-kvant1-XYZ-008",
+        "var-2022-1-kvant1-XYZ-011"
+      ],
+      "notes": null,
+      "tldr": "\"Minst en\" räknas enklast som 1 − P(ingen) — hoppa inte över komplementsteget.",
+      "recognition_cue": "Sannolikhetsfrågor med orden \"inte\", \"ingen\", \"minst en\" eller \"varken\", särskilt vid upprepade oberoende försök (tärningskast, dragningar).",
+      "worked_example": {
+        "setup": "En tärning kastas två gånger. Vad är sannolikheten att INGEN sexa dyker upp?",
+        "trap_thinking": "Studenten räknar sannolikheten för att FÅ en sexa, 1/6, och fastnar där — eller blandar ihop \"ingen\" med \"minst en\" och drar från 1 i onödan.",
+        "correct_thinking": "P(inte sexa) i ett kast är 5/6. De två kasten är oberoende, så P(ingen sexa i båda) = 5/6 · 5/6 = 25/36. Hade frågan gällt \"minst en sexa\" vore svaret 1 − 25/36 = 11/36.",
+        "answer": "B — 25/36, produkten av de två komplement-sannolikheterna."
+      },
+      "counter_example": "Om frågan gällde \"minst en sexa\", då måste man dra från 1: 1 − 25/36 = 11/36 — komplementsteget vänder svaret helt beroende på formuleringen."
     }
   ]
 }
