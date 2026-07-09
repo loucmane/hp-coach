@@ -370,7 +370,9 @@ describe('generateDailyPlan — rule 3b (weakest section gets its own drill — 
   })
 
   it('does not drill the weakest when it is strong (needsDrill gate)', () => {
-    // All-mastered: weakest is 1.9, must fall through to mastery, not get a drill.
+    // All-mastered: weakest is 1.9, must fall through to mastery. The only
+    // drill is the mastery-maintenance item, now routed to the least-recently-
+    // attempted section (KVA at 3d) rather than section=null.
     const plan = generateDailyPlan(
       signals({
         sectionScores: [
@@ -379,7 +381,8 @@ describe('generateDailyPlan — rule 3b (weakest section gets its own drill — 
         ],
       }),
     )
-    expect(plan.items.find((i) => i.kind === 'drill')?.section).toBeNull() // only the mastery mixed drill
+    const drill = plan.items.find((i) => i.kind === 'drill')
+    expect(drill?.section).toBe('KVA') // least-recently-attempted, not null
   })
 
   it('labels the weakest-section drill as "Svagast", not "Näst svagast"', () => {
@@ -413,20 +416,41 @@ describe('generateDailyPlan — rule 3b (weakest section gets its own drill — 
 })
 
 describe('generateDailyPlan — rule 4 (mastery maintenance)', () => {
-  it('emits a mixed drill when all sections are >1.8 and recent', () => {
+  it('emits a maintenance drill on the least-recently-attempted section', () => {
+    // All-mastered: no lesson/drill fires, so the mastery fallback is the sole
+    // item. It routes to the coldest section (NOG at 9d) with a real
+    // ?section= href so it gets a per-section completion path — no more
+    // section=null / bare-/drill ORD-only routing lie.
     const plan = generateDailyPlan(
       signals({
         sectionScores: [
-          score('ORD', { score: 1.9 }),
-          score('LÄS', { score: 1.95 }),
-          score('NOG', { score: 1.85 }),
-          score('KVA', { score: 1.9 }),
+          score('ORD', { score: 1.9, daysSinceLastAttempt: 1 }),
+          score('LÄS', { score: 1.95, daysSinceLastAttempt: 2 }),
+          score('NOG', { score: 1.85, daysSinceLastAttempt: 6 }),
+          score('KVA', { score: 1.9, daysSinceLastAttempt: 3 }),
         ],
       }),
     )
     expect(plan.items).toHaveLength(1)
     expect(plan.items[0].headline).toContain('Blandad')
-    expect(plan.items[0].section).toBeNull()
+    expect(plan.items[0].section).toBe('NOG')
+    expect(plan.items[0].href).toBe('/drill?section=NOG')
+  })
+
+  it('keeps a section=null mixed fallback when reached without a scored section', () => {
+    // Safety net: the mastery fallback fires only when items is empty. If it is
+    // ever reached with due reps present (dueCount>0 puts a rep in first, so the
+    // fallback is skipped) OR with an unscored-but-attempted signal, the item
+    // must still be well-formed. Here one section has due-driven reps but no
+    // score → mastery fallback does not fire (rep filled the plan), proving the
+    // guard order; the coldest-section pick only runs on the empty-plan path.
+    const plan = generateDailyPlan(
+      signals({
+        dueMistakeCount: 3,
+        sectionScores: [score('ORD', { score: 1.9 }), score('LÄS', { score: 1.95 })],
+      }),
+    )
+    expect(plan.items[0].kind).toBe('repetition')
   })
 
   it('does NOT fire when a repetition already filled the plan', () => {

@@ -231,7 +231,7 @@ export function generateDailyPlan(signals: SchedulerSignals): DailyPlan {
 
   // Rule 4 — mastery maintenance fallback.
   if (items.length === 0) {
-    items.push(masteryMaintenanceItem(date))
+    items.push(masteryMaintenanceItem(sectionScores, date))
   }
 
   return finalize(date, items)
@@ -429,7 +429,28 @@ function warmupItem(scores: SectionScore[], date: string): PlanItem {
   }
 }
 
-function masteryMaintenanceItem(date: string): PlanItem {
+function masteryMaintenanceItem(scores: SectionScore[], date: string): PlanItem {
+  // Route the maintenance drill to the least-recently-attempted scored section
+  // (highest `daysSinceLastAttempt`). This gives the item a real per-section
+  // completion path (the `attemptsSnapshot` drill signal) instead of the loose
+  // section=null total-diff fallback, fixes the "Blandad övning · alla
+  // sektioner" → `?mixed=1`/bare-/drill routing lie, and powers SF2's
+  // least-recently-touched rotation. Falls back to the interleaved mixed drill
+  // only when no section has a score (degenerate — cold-start normally guards
+  // this path).
+  const coldest = pickColdestSection(scores)
+  if (coldest) {
+    return {
+      id: `mastery-${date}`,
+      kind: 'drill',
+      section: coldest.section,
+      headline: `Blandad övning · börja med ${coldest.section}`,
+      rationale: 'Du är ifatt — sikta mot 2.0. Börja med sektionen du rört minst.',
+      estimatedMinutes: SECTION_DURATIONS[coldest.section],
+      href: `/drill?section=${coldest.section}`,
+      completed: false,
+    }
+  }
   return {
     id: `mastery-${date}`,
     kind: 'drill',
@@ -442,6 +463,20 @@ function masteryMaintenanceItem(date: string): PlanItem {
     href: '/drill?mixed=1',
     completed: false,
   }
+}
+
+/** Pick the scored section with the largest `daysSinceLastAttempt` (the
+ *  least-recently-attempted). Ties keep array order. Returns null when no
+ *  section has a non-null score. */
+function pickColdestSection(scores: SectionScore[]): SectionScore | null {
+  let coldest: SectionScore | null = null
+  for (const s of scores) {
+    if (s.score == null) continue
+    if (coldest === null || s.daysSinceLastAttempt > coldest.daysSinceLastAttempt) {
+      coldest = s
+    }
+  }
+  return coldest
 }
 
 function coldStartItem(date: string): PlanItem {

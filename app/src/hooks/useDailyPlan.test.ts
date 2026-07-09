@@ -72,6 +72,52 @@ describe('isItemComplete — section=null via server attempts.total (F1)', () =>
   })
 })
 
+describe('isItemComplete — mastery drill routed to a section completes per-section', () => {
+  // After the mixed-drill routing fix, the mastery-maintenance item carries a
+  // real `section` (least-recently-attempted) + `?section=X` href, so it
+  // completes via the same per-section attempts7d snapshot path as any other
+  // section drill — not the loose total-diff fallback.
+  function sectionMasteryItem(section: Section): PlanItem {
+    return {
+      id: `mastery-2026-05-18`,
+      kind: 'drill',
+      section,
+      headline: `Blandad övning · börja med ${section}`,
+      rationale: 'Du är ifatt — sikta mot 2.0. Börja med sektionen du rört minst.',
+      estimatedMinutes: 12,
+      href: `/drill?section=${section}`,
+      completed: false,
+    }
+  }
+
+  function planWithSnapshot(items: PlanItem[], attemptsSnapshot: Partial<Record<Section, number>>) {
+    return {
+      version: PLAN_SCHEMA_VERSION,
+      date: '2026-05-18',
+      items,
+      estimatedMinutes: items.reduce((s, i) => s + i.estimatedMinutes, 0),
+      attemptsSnapshot,
+      // A generous total snapshot proves completion comes from the per-section
+      // path, not the total-diff fallback.
+      totalAttemptsSnapshot: 100_000,
+    } as DailyPlan
+  }
+
+  it('stays incomplete until the section attempts7d grew >= threshold', () => {
+    const item = sectionMasteryItem('NOG')
+    const plan = planWithSnapshot([item], { NOG: 10 })
+    const bySection = { NOG: { attempts7d: 13 } } as unknown as Record<Section, SectionStats>
+    expect(isItemComplete(item, plan, 0, new Set(), bySection, 100_000)).toBe(false)
+  })
+
+  it('completes once the section attempts7d grew >= threshold', () => {
+    const item = sectionMasteryItem('NOG')
+    const plan = planWithSnapshot([item], { NOG: 10 })
+    const bySection = { NOG: { attempts7d: 15 } } as unknown as Record<Section, SectionStats>
+    expect(isItemComplete(item, plan, 0, new Set(), bySection, 100_000)).toBe(true)
+  })
+})
+
 describe('deriveCompletion — allComplete reachable for an all-mastered plan (F1)', () => {
   it('flips the section=null item to completed once total grew, so allComplete is reachable', () => {
     const item = masteryItem()
