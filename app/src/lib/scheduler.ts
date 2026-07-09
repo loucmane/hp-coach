@@ -565,26 +565,6 @@ export function savePlan(plan: DailyPlan, storage: Storage = localStorage): void
   pruneOldPlans(plan.date, storage)
 }
 
-/** Flip a plan item's `completed` flag and write back. No-op when the
- *  date or item isn't found. Returns the updated plan (or null). */
-export function markItemComplete(
-  date: string,
-  itemId: string,
-  storage: Storage = localStorage,
-): DailyPlan | null {
-  const plan = loadPlan(date, storage)
-  if (!plan) return null
-  const next: DailyPlan = {
-    ...plan,
-    items: plan.items.map((i) => (i.id === itemId ? { ...i, completed: true } : i)),
-  }
-  next.estimatedMinutes = next.items
-    .filter((i) => !i.completed)
-    .reduce((sum, i) => sum + i.estimatedMinutes, 0)
-  savePlan(next, storage)
-  return next
-}
-
 function pruneOldPlans(currentDate: string, storage: Storage): void {
   const cutoff = new Date(currentDate)
   cutoff.setDate(cutoff.getDate() - PLAN_RETENTION_DAYS)

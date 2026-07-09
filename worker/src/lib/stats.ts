@@ -24,6 +24,19 @@ export function formatDayUTC(d: Date): string {
 }
 
 /**
+ * Floor a Date to 00:00:00.000 UTC on the same calendar day. Same UTC-
+ * anchoring tradeoff as `formatDayUTC` (see its docstring) — used by
+ * `/api/me/stats` to compute the same-day monotonic `attemptsToday`
+ * counter that backs the section-drill completion gate. Pure; does not
+ * mutate the input.
+ */
+export function startOfUtcDay(d: Date): Date {
+  const out = new Date(d)
+  out.setUTCHours(0, 0, 0, 0)
+  return out
+}
+
+/**
  * Subtract one calendar day from a "YYYY-MM-DD" string. Returns the
  * same shape. Operates entirely in UTC.
  */

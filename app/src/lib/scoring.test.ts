@@ -19,6 +19,7 @@ const emptyStats: SectionStats = {
   correct90d: 0,
   avgTimeMs: null,
   lastAttemptedAt: null,
+  attemptsToday: 0,
 }
 
 const stats = (overrides: Partial<SectionStats>): SectionStats => ({
@@ -286,6 +287,7 @@ function weekStats(over: Partial<SectionStats>): SectionStats {
     correct90d: 0,
     avgTimeMs: null,
     lastAttemptedAt: null,
+    attemptsToday: 0,
     ...over,
   }
 }

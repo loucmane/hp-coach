@@ -75,8 +75,8 @@ describe('isItemComplete — section=null via server attempts.total (F1)', () =>
 describe('isItemComplete — mastery drill routed to a section completes per-section', () => {
   // After the mixed-drill routing fix, the mastery-maintenance item carries a
   // real `section` (least-recently-attempted) + `?section=X` href, so it
-  // completes via the same per-section attempts7d snapshot path as any other
-  // section drill — not the loose total-diff fallback.
+  // completes via the same per-section attemptsToday snapshot path as any
+  // other section drill — not the loose total-diff fallback.
   function sectionMasteryItem(section: Section): PlanItem {
     return {
       id: `mastery-2026-05-18`,
@@ -103,17 +103,32 @@ describe('isItemComplete — mastery drill routed to a section completes per-sec
     } as DailyPlan
   }
 
-  it('stays incomplete until the section attempts7d grew >= threshold', () => {
+  it('stays incomplete until the section attemptsToday grew >= threshold', () => {
     const item = sectionMasteryItem('NOG')
     const plan = planWithSnapshot([item], { NOG: 10 })
-    const bySection = { NOG: { attempts7d: 13 } } as unknown as Record<Section, SectionStats>
+    const bySection = { NOG: { attemptsToday: 13 } } as unknown as Record<Section, SectionStats>
     expect(isItemComplete(item, plan, 0, new Set(), bySection, 100_000)).toBe(false)
   })
 
-  it('completes once the section attempts7d grew >= threshold', () => {
+  it('completes once the section attemptsToday grew >= threshold', () => {
     const item = sectionMasteryItem('NOG')
     const plan = planWithSnapshot([item], { NOG: 10 })
-    const bySection = { NOG: { attempts7d: 15 } } as unknown as Record<Section, SectionStats>
+    const bySection = { NOG: { attemptsToday: 15 } } as unknown as Record<Section, SectionStats>
+    expect(isItemComplete(item, plan, 0, new Set(), bySection, 100_000)).toBe(true)
+  })
+
+  it('SF2b: stays complete across an overnight attempts7d window-slide', () => {
+    // The bug this replaces: attempts7d is a rolling 7-day window that can
+    // DROP overnight as old attempts age out of the window, flipping a
+    // finished drill back to incomplete intraday. attemptsToday is a
+    // same-UTC-day monotonic counter — it never decrements within the day,
+    // so a completed drill stays completed even if attempts7d would have
+    // slid backward under the old signal.
+    const item = sectionMasteryItem('NOG')
+    const plan = planWithSnapshot([item], { NOG: 10 })
+    const bySection = {
+      NOG: { attemptsToday: 15, attempts7d: 4 }, // attempts7d dropped below baseline+threshold
+    } as unknown as Record<Section, SectionStats>
     expect(isItemComplete(item, plan, 0, new Set(), bySection, 100_000)).toBe(true)
   })
 })

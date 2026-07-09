@@ -17,7 +17,7 @@ import { getDb } from '../db/client'
 import { attempts, mistakes, sessions, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
 import { extractSection, SECTIONS, type Section } from '../lib/section'
-import { currentStreak, formatDayUTC } from '../lib/stats'
+import { currentStreak, formatDayUTC, startOfUtcDay } from '../lib/stats'
 import type { Env, Vars } from '../types'
 
 const PrefsPatch = z
@@ -69,8 +69,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     const userId = await ensureUserRow(db, c.var.userId)
 
     const now = new Date()
-    const todayStart = new Date(now)
-    todayStart.setUTCHours(0, 0, 0, 0)
+    const todayStart = startOfUtcDay(now)
     const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60_000)
 
     // Lifetime totals come from the O(1) counters on the user row, not a
@@ -183,6 +182,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       timeMsSum: number
       timeMsCount: number
       lastAttemptedAt: number | null
+      attemptsToday: number
     }
     const seed = (): SectionAgg => ({
       attempts7d: 0,
@@ -194,6 +194,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       timeMsSum: 0,
       timeMsCount: 0,
       lastAttemptedAt: null,
+      attemptsToday: 0,
     })
     const bySectionAgg: Record<Section, SectionAgg> = Object.fromEntries(
       SECTIONS.map((s) => [s, seed()]),
@@ -221,6 +222,15 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         agg.attempts7to14d += 1
         agg.correct7to14d += correct
       }
+      // Same-UTC-day monotonic counter — backs the section-drill
+      // completion gate. Unlike attempts7d (a rolling window that can
+      // DROP overnight as old attempts age out, flipping a finished
+      // drill back to incomplete intraday), this only grows across the
+      // UTC day and resets cleanly at the next UTC midnight. See
+      // startOfUtcDay's docstring for the UTC-anchoring tradeoff.
+      if (ts >= todayStart.getTime()) {
+        agg.attemptsToday += 1
+      }
     }
 
     const bySection: Record<
@@ -234,6 +244,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         correct90d: number
         avgTimeMs: number | null
         lastAttemptedAt: number | null
+        attemptsToday: number
       }
     > = Object.fromEntries(
       SECTIONS.map((s) => {
@@ -249,6 +260,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
             correct90d: agg.correct90d,
             avgTimeMs: agg.timeMsCount > 0 ? Math.round(agg.timeMsSum / agg.timeMsCount) : null,
             lastAttemptedAt: agg.lastAttemptedAt,
+            attemptsToday: agg.attemptsToday,
           },
         ]
       }),
