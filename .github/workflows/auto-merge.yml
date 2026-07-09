@@ -63,10 +63,16 @@ jobs:
           else
             # The auto-merge label was just added. CI may or may not have
             # finished; merge only if every check on the PR has passed.
-            # `gh pr checks` exits non-zero on pending or failing checks —
-            # in that case the workflow_run pass will merge on completion.
+            # NOT `gh pr checks`: this very job runs as a pull_request-event
+            # check on the same head SHA, so it would always see itself
+            # pending and defer forever (self-deadlock, observed on PR #196).
+            # Query check-runs directly and exclude our own job by name.
             PR="${{ github.event.pull_request.number }}"
-            if ! gh pr checks "$PR" --repo "$REPO"; then
+            SHA="${{ github.event.pull_request.head.sha }}"
+            GREEN=$(gh api "repos/$REPO/commits/$SHA/check-runs" --paginate \
+              --jq '[.check_runs[] | select(.name != "${{ github.job }}")]
+                    | length > 0 and all(.status == "completed" and .conclusion == "success")')
+            if [ "$GREEN" != "true" ]; then
               echo "Checks on PR #$PR not (yet) green — the CI-completion pass will merge."
               exit 0
             fi
