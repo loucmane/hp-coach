@@ -15,7 +15,6 @@ import {
   loadLessonReads,
   loadPlan,
   localDateString,
-  markItemComplete,
   markLessonRead,
   PLAN_SCHEMA_VERSION,
   type SchedulerSignals,
@@ -694,26 +693,6 @@ describe('savePlan — prune old plans', () => {
     // 17 days back is inside the retention window — kept.
     expect(storage.getItem('hpc-daily-plan-2026-05-01')).not.toBeNull()
     expect(storage.getItem(`hpc-daily-plan-${TODAY}`)).not.toBeNull()
-  })
-})
-
-describe('markItemComplete', () => {
-  it('flips the completed flag and rewrites estimatedMinutes', () => {
-    const storage = fakeStorage()
-    const plan = generateDailyPlan(
-      signals({ dueMistakeCount: 3, sectionScores: [score('NOG', { score: 1.0 })] }),
-    )
-    savePlan(plan, storage)
-    const next = markItemComplete(plan.date, `rep-${plan.date}`, storage)
-    expect(next).not.toBeNull()
-    const rep = next!.items.find((i) => i.id === `rep-${plan.date}`)!
-    expect(rep.completed).toBe(true)
-    // 3 min rep is now complete; remaining = lesson 5 min only.
-    expect(next!.estimatedMinutes).toBe(5)
-  })
-
-  it('returns null when the date has no plan', () => {
-    expect(markItemComplete(TODAY, 'rep-anything', fakeStorage())).toBeNull()
   })
 })
 

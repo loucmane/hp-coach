@@ -17,21 +17,35 @@
 //
 //   - Repetition items   complete when `dueMistakeCount === 0`
 //   - Lesson items       complete when `lessonReads.has(framework)`
-//   - Drill items        complete when the section's `attempts7d` has
-//                        grown by ≥5 since the plan was generated
-//                        (snapshot stored in `plan.attemptsSnapshot`).
-//                        Half a session is enough signal — the user
-//                        clearly engaged the section.
+//   - Drill items        complete when the section's `attemptsToday`
+//                        (same-UTC-day monotonic counter) has grown by
+//                        ≥5 since the plan was generated (snapshot
+//                        stored in `plan.attemptsSnapshot`). Half a
+//                        session is enough signal — the user clearly
+//                        engaged the section. attemptsToday replaced
+//                        attempts7d here because the rolling 7-day
+//                        window can drop overnight, flipping a
+//                        finished drill back to incomplete intraday.
 //
 // The plan does NOT auto-regenerate when signals change within a day.
 // Stability is intentional — if the user starts the day with NOG-1.2
 // and works it up to 1.5 by lunch, we don't want the morning plan to
 // disappear under them. New local-date or "Generera om" force a fresh
 // generation.
+//
+// Day-boundary recompute (SF2b): `today` is also re-evaluated on
+// `focus` / `visibilitychange` — an overnight-open tab would otherwise
+// keep serving yesterday's plan until a hard remount. This is
+// deliberately event-driven, NOT a `setInterval` poll and NOT a naive
+// `now`-in-deps — see the comment on the build-effect below for why
+// the latter caused an infinite render loop. Regeneration is skipped
+// while the user has an active session (any kind) so a day rollover
+// can't yank the plan out from under an in-progress drill/lesson.
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useDueMistakes } from '@/api/hooks/useMistakes'
+import { useActiveSessions } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
 import { type TopTrap, useTopTraps } from '@/api/hooks/useTopTraps'
 import { entryHeadword, loadFramework } from '@/data/frameworks'
@@ -63,7 +77,7 @@ export type UseDailyPlan = {
   allComplete: boolean
 }
 
-export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
+export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   const stats = useStats()
   const due = useDueMistakes()
   // Top recurring traps drive the trap-aware drill rule. We don't
@@ -71,6 +85,17 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
   // (cold start, first render), the scheduler falls back to generic
   // section drills.
   const topTraps = useTopTraps()
+  // Any in-progress session (drill/lesson/repetition/diagnostic, any
+  // device) — gates day-boundary regeneration below. Server-tracked
+  // (useActiveSessions), so this is correct even if the rollover
+  // happens while a session started on another device is still open.
+  const activeSessions = useActiveSessions()
+
+  // `now` lives in state (seeded once from `initialNow`) instead of
+  // being recomputed every render, so its reference — and therefore
+  // `today` — only changes when we explicitly decide the day rolled
+  // over. See the recompute effect below for the event-driven trigger.
+  const [now, setNow] = useState(initialNow)
   const today = useMemo(() => localDateString(now), [now])
 
   const [plan, setPlan] = useState<DailyPlan | null>(null)
@@ -89,17 +114,48 @@ export function useDailyPlan(now: Date = new Date()): UseDailyPlan {
     }
   }, [])
 
+  // Day-boundary recompute: re-check the local date on `focus` and
+  // `visibilitychange` (becoming visible) — the two events that fire
+  // when the user returns to an overnight-open tab. Deliberately NOT a
+  // `setInterval` poll (nothing needs to notice a rollover while the
+  // tab is backgrounded and unattended) and NOT a raw `new Date()` in
+  // a dep array (see the build-effect comment below for the infinite-
+  // loop this caused before). Only commits a new `now` when the local
+  // date string actually changed, so a same-day focus event is a
+  // no-op — no extra renders, no plan churn. Suppressed entirely while
+  // any session is active so a rollover can't regenerate the plan out
+  // from under an in-progress drill/lesson.
+  const activeSessionsRef = useRef(activeSessions.data)
+  activeSessionsRef.current = activeSessions.data
+  useEffect(() => {
+    const recomputeIfDayChanged = () => {
+      const hasActiveSession = (activeSessionsRef.current?.length ?? 0) > 0
+      if (hasActiveSession) return
+      const fresh = new Date()
+      setNow((prev) => (localDateString(fresh) !== localDateString(prev) ? fresh : prev))
+    }
+    window.addEventListener('focus', recomputeIfDayChanged)
+    document.addEventListener('visibilitychange', recomputeIfDayChanged)
+    return () => {
+      window.removeEventListener('focus', recomputeIfDayChanged)
+      document.removeEventListener('visibilitychange', recomputeIfDayChanged)
+    }
+  }, [])
+
   // Build / load the plan when all inputs are ready.
   //
-  // `now` is intentionally EXCLUDED from the dep array. The caller
-  // (HomeRoute) calls `useDailyPlan()` without an argument, so the
-  // default `new Date()` evaluates to a fresh reference every render.
-  // Including it would re-fire this effect on every render —
-  // combined with `loadPlan()` returning a JSON.parse'd fresh object,
-  // setPlan saw a new reference each time and React entered an
-  // infinite render loop. `today` (memoized from `now` as a stable
-  // YYYY-MM-DD string) is the cache key — that's the right signal
-  // for "the day rolled over, regenerate."
+  // `now` is intentionally EXCLUDED from the dep array — only `today`
+  // (its memoized YYYY-MM-DD string) is a dependency. `now` is state
+  // now (seeded once from `initialNow`, updated only by the day-
+  // boundary effect above), but the original failure mode this guards
+  // against still matters: HomeRoute calls `useDailyPlan()` with no
+  // argument, and the default `new Date()` evaluates to a fresh
+  // reference on every render of the CALLER — if this effect closed
+  // over that raw value in its deps, combined with `loadPlan()`
+  // returning a JSON.parse'd fresh object, setPlan would see a new
+  // reference every render and React would enter an infinite render
+  // loop. `today`, not `now`, is the correct "did the day roll over"
+  // signal.
   // biome-ignore lint/correctness/useExhaustiveDependencies: `now` excluded by design
   useEffect(() => {
     if (!stats.data || due.data === undefined || hints === null) return
@@ -211,11 +267,13 @@ function buildPlan(
     firstUnreadEntry: hints,
     topTraps,
   })
-  // Attach the per-section attempts7d snapshot so drill items can
-  // auto-complete later when the section's attempts7d grows.
+  // Attach the per-section attemptsToday snapshot so drill items can
+  // auto-complete later when the section's attemptsToday grows. See
+  // isItemComplete for why attemptsToday (same-UTC-day monotonic) replaced
+  // attempts7d (rolling window, can drop overnight) as the signal.
   const attemptsSnapshot: Partial<Record<Section, number>> = {}
   for (const s of SECTION_KEYS) {
-    attemptsSnapshot[s] = bySection[s].attempts7d
+    attemptsSnapshot[s] = bySection[s].attemptsToday
   }
   // And the lifetime total snapshot so section=null items (mastery,
   // cold-start) complete cross-device when the server total grows.
@@ -289,7 +347,13 @@ export function isItemComplete(
   }
   if (item.kind === 'drill' && item.section && plan.attemptsSnapshot) {
     const baseline = plan.attemptsSnapshot[item.section] ?? 0
-    const current = bySection[item.section].attempts7d
+    // attemptsToday (same-UTC-day monotonic) replaces attempts7d here:
+    // attempts7d is a rolling 7-day window that can DROP overnight as old
+    // attempts age out, which flips a finished drill back to incomplete
+    // intraday. attemptsToday only grows within the day, so it can't slide
+    // backward under an active-streak user. See worker/src/lib/stats.ts
+    // (startOfUtcDay) for the UTC-day-boundary tradeoff this inherits.
+    const current = bySection[item.section].attemptsToday
     return current - baseline >= DRILL_COMPLETE_THRESHOLD
   }
   // Section=null drills (mastery-mixed, cold-start) have no per-section

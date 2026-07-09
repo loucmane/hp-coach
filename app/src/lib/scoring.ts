@@ -32,6 +32,10 @@ export type SectionStats = {
   correct90d: number
   avgTimeMs: number | null
   lastAttemptedAt: number | null
+  /** Same-UTC-day monotonic count — grows only within the current UTC
+   *  day, never drops the way the rolling `attempts7d` window can.
+   *  Backs the section-drill completion gate in useDailyPlan. */
+  attemptsToday: number
 }
 
 export type Confidence = 'low' | 'medium' | 'high'

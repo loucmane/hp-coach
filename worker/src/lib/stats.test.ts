@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest'
 
-import { currentStreak, formatDayUTC, previousDay } from './stats'
+import { currentStreak, formatDayUTC, previousDay, startOfUtcDay } from './stats'
 
 const NOW = new Date('2026-05-08T10:00:00Z')
 
@@ -76,5 +76,29 @@ describe('currentStreak', () => {
       cursor = previousDay(cursor)
     }
     expect(currentStreak(days, NOW)).toBe(35)
+  })
+})
+
+describe('startOfUtcDay', () => {
+  it('zeroes the time-of-day, staying on the same UTC calendar day', () => {
+    const mid = new Date('2026-05-08T14:32:07.123Z')
+    expect(startOfUtcDay(mid).toISOString()).toBe('2026-05-08T00:00:00.000Z')
+  })
+
+  it('is idempotent — flooring an already-midnight timestamp is a no-op', () => {
+    const midnight = new Date('2026-05-08T00:00:00.000Z')
+    expect(startOfUtcDay(midnight).toISOString()).toBe(midnight.toISOString())
+  })
+
+  it('does not mutate the input Date', () => {
+    const input = new Date('2026-05-08T14:32:07.123Z')
+    const copy = new Date(input)
+    startOfUtcDay(input)
+    expect(input.getTime()).toBe(copy.getTime())
+  })
+
+  it('handles late-evening UTC without rolling to the next day', () => {
+    const lateEvening = new Date('2026-05-08T23:59:59.999Z')
+    expect(startOfUtcDay(lateEvening).toISOString()).toBe('2026-05-08T00:00:00.000Z')
   })
 })
