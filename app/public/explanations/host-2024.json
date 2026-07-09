@@ -11915,13 +11915,15 @@
   "_meta": {
    "generated_at": "2026-07-08",
    "model": "claude-fable-5",
-   "recipe": "figure-grounded-medfix-v1"
+   "recipe": "figure-grounded-medfix-v1",
+   "adjudicated": "2026-07-09",
+   "adjudication": "REAL_MINOR"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Kring 1968 korsar starköl- och vinlinjerna faktiskt varandra (~4 mot ~5 liter), så villkor 1 ser uppfyllt ut om man bara kollar det.",
-    "why_wrong": "Villkor 2 fallerar grovt: spritdrycker ligger 1968 på ~5–6 liter, alltså ungefär LIKA mycket som vin — inte hälften (vin/2 ≈ 2,5). Vid 1985 stämmer båda villkoren."
+    "why_tempting": "Kring 1968 ligger starköl- och vinlinjerna som närmast varandra (~4–4,5 mot ~5 liter — starkölens lilla lokala topp), så villkor 1 ser uppfyllt ut om man bara kollar det.",
+    "why_wrong": "Villkor 2 fallerar grovt: spritdrycker ligger 1968 på ~6–6,5 liter, alltså ungefär LIKA mycket som vin — inte hälften (vin/2 ≈ 2,5). Vid 1985 stämmer båda villkoren."
    },
    {
     "letter": "B",
@@ -11934,7 +11936,7 @@
     "why_wrong": "Villkor 2 avgör: spritdryckerna är 1978 nära sin topp på ~7 liter, medan vin/2 ≈ 5. Sprit är alltså närmare HELA vinnivån än halva. Vid 1985 har sprit sjunkit till ~5 ≈ 12/2 — där stämmer båda."
    }
   ],
-  "framework_id": "DTK-TACTIC-010",
+  "framework_id": null,
   "pitfall": "Den klassiska fällan i 'vilket år gäller två villkor samtidigt'-frågor är att sluta läsa så fort det första villkoret stämmer. Här är både 1968 och 1978 år där starköl ≈ vin nästan håller — men bara 1985 klarar även sprit ≈ vin/2. Botemedlet: avläs alla tre linjer vid varje kandidatår och pröva båda villkoren separat innan du väljer.",
   "solution_path": "I det nedersta linjediagrammet (Liter 0–35, år 1960–2016) finns tre linjer: Starköl (tjock streckad), Vin (tunn prickad), Spritdrycker (heldragen). Vid 1985: starköl ≈ 12–13 liter och vin ≈ 12 liter (ungefär lika ✓), spritdrycker ≈ 5 liter ≈ 12/2 (hälften av vin ✓). Vid 1968 och 1972 är sprit ungefär lika stor som vin (inte hälften), och vid 1978 ligger sprit på sin topp ≈ 7 liter ≈ vin — inte vin/2. Endast 1985 uppfyller båda villkoren samtidigt → D.",
   "steps": [
@@ -11965,7 +11967,7 @@
    {
     "n": 5,
     "title": "Avläs 1968",
-    "text": "Vid 1968: starköl ~4 liter, vin ~5 liter, sprit ~5–6 liter. Villkor 1 stämmer nästan (linjerna korsar varandra kring slutet av 1960-talet), men villkor 2 FALLERAR grovt: sprit är ungefär lika stor som vin, inte hälften (5–6 ≠ 5/2 = 2,5). Bocka bort A.",
+    "text": "Vid 1968: starköl ~4–4,5 liter (en liten lokal topp), vin ~5 liter, sprit ~6–6,5 liter. Villkor 1 stämmer nästan (linjerna ligger som närmast varandra här — bara ~en halv liter emellan, även om de inte korsas förrän kring 1977), men villkor 2 FALLERAR grovt: sprit är ungefär lika stor som vin, inte hälften (6–6,5 ≠ 5/2 = 2,5). Bocka bort A.",
     "tier": "essential"
    },
    {

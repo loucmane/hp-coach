@@ -10446,7 +10446,9 @@
   "_meta": {
    "generated_at": "2026-07-08",
    "model": "claude-fable-5",
-   "recipe": "figure-grounded-medfix-v1"
+   "recipe": "figure-grounded-medfix-v1",
+   "adjudicated": "2026-07-08",
+   "adjudication": "REAL_MINOR"
   },
   "pregrade_tactic": {
    "handle": "Minskning-först-sen-leta-totalmatch",
@@ -10460,8 +10462,8 @@
    },
    {
     "letter": "C",
-    "why_tempting": "2005 ligger mitt i perioden och dess total (≈ 10 300) är inte långt från 11 000 — läser man 1997 slarvigt som ≈ 12 300 (grannstapeln 1998) blir minskningen ≈ 10 300 och C ser ut att träffa.",
-    "why_wrong": "1997-stapeln toppar vid ≈ 13 000, inte 12 300, så minskningen är ≈ 11 000. 2005-stapeln toppar strax över 10 000-linjen (≈ 10 300) — knappt 1 000 för lågt. 2003 (≈ 11 100) ligger närmare."
+    "why_tempting": "2005 ligger mitt i perioden och dess total (≈ 10 300) är inte långt från 11 000 — läser man 1997 slarvigt som ≈ 12 600 (grannstapeln 1998) blir minskningen ≈ 10 600 och C ser ut att träffa.",
+    "why_wrong": "1997-stapeln toppar vid ≈ 13 000, inte 12 600, så minskningen är ≈ 11 000. 2005-stapeln toppar strax över 10 000-linjen (≈ 10 300) — knappt 1 000 för lågt. 2003 (≈ 11 100) ligger närmare."
    },
    {
     "letter": "D",
@@ -10469,7 +10471,7 @@
     "why_wrong": "2007-stapeln toppar runt 9 000, cirka 2 000 under den korrekta minskningen 13 000 − 2 000 = 11 000. Det är 2003-stapeln som når ≈ 11 100."
    }
   ],
-  "framework_id": "DTK-TACTIC-005",
+  "framework_id": null,
   "pitfall": "Två fällor samverkar här. (1) Den klassiska två-stegs-fällan: räkna minskningen fel först (slarv på endera ändpunkten) och leta sedan i fel region. Botemedel: räkna minskningen på papper (13 000 − 2 000 = 11 000) innan du tittar på kandidaterna. (2) Fel-stapel-fällan: diagrammet har 19 staplar men etiketter bara vartannat år, och mellanåret 2000 (≈ 11 100) råkar ligga precis vid minskningen — glider du en stapel åt vänster vid 2001 väljer du fel. Botemedel: verifiera att stapeln står rakt ovanför årsetiketten.",
   "solution_path": "Diagrammet visar antalet räknade ejdrar 1997–2015 som staplade staplar — en stapel per år (19 staplar), med årsetiketter bara vartannat år. Periodens första år (1997) har totalhöjd ≈ 13 000; periodens sista år (2015) ≈ 2 000. Minskningen = 13 000 − 2 000 ≈ 11 000 ejdrar. Kandidaternas totalhöjder: 2001 ≈ 12 300 (för högt), 2003 ≈ 11 100 (träff), 2005 ≈ 10 300 (för lågt), 2007 ≈ 9 000 (för lågt). Endast 2003-stapeln når ungefär 11 000 — svaret är B.",
   "steps": [
@@ -10482,19 +10484,19 @@
    {
     "n": 2,
     "title": "Orientera i diagrammet",
-    "text": "Diagrammet visar 1997–2015 med EN stapel per år — 19 staplar totalt — men x-axeln har etiketter bara vartannat år (1997, 1999, 2001 …). Varje stapel är stackad av 14 platser (Nåttaröfladen överst ner till Håkanskär); totalen för ett år = hela stapelhöjden. Y-axeln går 0–14 000 med tjocka linjer var 2 000 och tunna hjälplinjer var 500.",
+    "text": "Diagrammet visar 1997–2015 med EN stapel per år — 19 staplar totalt — men x-axeln har etiketter bara vartannat år (1997, 1999, 2001 …). Varje stapel är stackad av 14 platser (Nåttaröfladen överst ner till Håkanskär); totalen för ett år = hela stapelhöjden. Y-axeln går 0–14 000 med tjocka linjer var 2 000 och tunna hjälplinjer var 400 (fem mellanrum per 2 000-band).",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Avläs 1997-stapelns totalhöjd",
-    "text": "1997-stapeln (längst till vänster) toppar strax över 13 000 — mellan hjälplinjerna för 13 000 och 13 500, närmast 13 000. Skriv ner \"1997 ≈ 13 000\".",
+    "text": "1997-stapeln (längst till vänster) toppar strax över 13 000 — mellan hjälplinjerna för 12 800 och 13 200. Skriv ner \"1997 ≈ 13 000\".",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Avläs 2015-stapelns totalhöjd",
-    "text": "2015-stapeln (längst till höger) är dramatiskt mindre — toppen ligger strax under hjälplinjen för 2 000. Skriv ner \"2015 ≈ 2 000\".",
+    "text": "2015-stapeln (längst till höger) är dramatiskt mindre — toppen ligger strax under den tjocka linjen för 2 000. Skriv ner \"2015 ≈ 2 000\".",
     "tier": "essential"
    },
    {
@@ -10536,7 +10538,7 @@
    {
     "n": 11,
     "title": "Sanity-check: precision",
-    "text": "Avstånden mellan kandidaternas totalhöjder är ungefär 1 000–1 300 ejdrar mellan grannar, medan avläsningsfelet mot hjälplinjerna (var 500) är klart mindre. 11 000 ligger entydigt mellan 2001 (≈ 12 300) och 2005 (≈ 10 300) — bara 2003 passar. Svaret är B.",
+    "text": "Avstånden mellan kandidaternas totalhöjder är ungefär 1 000–1 300 ejdrar mellan grannar, medan avläsningsfelet mot hjälplinjerna (var 400) är klart mindre. 11 000 ligger entydigt mellan 2001 (≈ 12 300) och 2005 (≈ 10 300) — bara 2003 passar. Svaret är B.",
     "tier": "detail"
    },
    {

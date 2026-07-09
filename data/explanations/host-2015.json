@@ -11166,28 +11166,30 @@
   "_meta": {
    "generated_at": "2026-07-08",
    "model": "claude-fable-5",
-   "recipe": "figure-grounded-medfix-v1"
+   "recipe": "figure-grounded-medfix-v1",
+   "adjudicated": "2026-07-08",
+   "adjudication": "REAL_MINOR"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Ekerö ligger tydligt till vänster om −1 000-strecket (x ≈ −1 380), så indexvillkoret stämmer — och pricken har positiv y, så 'ökning' känns rätt.",
-    "why_wrong": "Ekerös y ligger klart över halvvägspunkten mellan 0 och 50, cirka +35 — alltså MER än 25 %. Villkoret kräver en ökning MINDRE än 25 %. Norrtälje (≈ +12) är den enda med rätt kombination."
+    "why_tempting": "Ekerö ligger tydligt till vänster om −1 000-strecket (x ≈ −1 470), så indexvillkoret stämmer — och pricken har positiv y, så 'ökning' känns rätt.",
+    "why_wrong": "Ekerös y ligger klart över halvvägspunkten mellan 0 och 50, cirka +32 — alltså MER än 25 %. Villkoret kräver en ökning MINDRE än 25 %. Norrtälje (≈ +12) är den enda med rätt kombination."
    },
    {
     "letter": "C",
-    "why_tempting": "Nynäshamn har både negativ x och positiv y — 'minskat index' och 'ökad sysselsättning' stämmer i riktning, så pricken ser lovande ut vid en snabb blick.",
-    "why_wrong": "Storlekarna faller: pricken ligger strax HÖGER om −1 000-strecket (x ≈ −975), så minskningen är mindre än 1 000 enheter — och y ≈ +30 är dessutom över 25-gränsen. Norrtälje ligger på rätt sida strecket med y klart under 25."
+    "why_tempting": "Nynäshamn har både negativ x och positiv y — 'minskat index' och 'ökad sysselsättning' stämmer i riktning, och pricken ligger dessutom nästan exakt på −1 000-strecket, så den ser lovande ut vid en snabb blick.",
+    "why_wrong": "Sysselsättningsvillkoret faller: y ≈ +28 ligger klart över 25-gränsen (över halvvägs mot 50-strecket). Att pricken sitter praktiskt taget på −1 000-strecket spelar därför ingen roll — C fälls av y-villkoret. Norrtälje ligger tydligt vänster om strecket med y klart under 25."
    },
    {
     "letter": "D",
-    "why_tempting": "Österåker uppfyller faktiskt y-villkoret: pricken ligger vid ungefär +19, en ökning som är positiv men mindre än 25 %. Checkar man bara sysselsättningsaxeln ser D helt rätt ut.",
-    "why_wrong": "X-villkoret faller: Österåkers prick ligger vid x ≈ −875, till HÖGER om −1 000-strecket — indexminskningen är alltså under 1 000 enheter, inte 'mer än 1 000'. Norrtälje (x ≈ −1 110) ligger på rätt sida strecket."
+    "why_tempting": "Österåker uppfyller faktiskt y-villkoret: pricken ligger vid ungefär +21, en ökning som är positiv men mindre än 25 %. Checkar man bara sysselsättningsaxeln ser D helt rätt ut.",
+    "why_wrong": "X-villkoret faller: Österåkers prick ligger vid x ≈ −910, till HÖGER om −1 000-strecket — indexminskningen är alltså under 1 000 enheter, inte 'mer än 1 000'. Norrtälje (x ≈ −1 145) ligger på rätt sida strecket."
    }
   ],
   "framework_id": null,
-  "pitfall": "Den klassiska fällan i 'vilken kommun avses'-frågor är att bara kontrollera RIKTNINGEN (ökat/minskat) och glömma STORLEKEN på båda axlarna. Här ligger tre av fyra alternativ nära −1 000-strecket, så millimeterläget avgör. Botemedlet: skriv ner båda villkoren som olikheter (0 < y < 25 OCH x < −1000) och kolla för varje alternativ exakt vilken sida om gränsstrecken pricken ligger.",
-  "solution_path": "Villkoren: (1) 0 < y < 25 (sysselsättningen ökade, men mindre än 25 %), (2) x < −1000 (indexet minskade med mer än 1 000 enheter). De fyra alternativens prickar ligger i vänsterklustret: Ekerö ≈ (−1 380, +35) — x klarar men y > 25; Nynäshamn ≈ (−975, +30) — strax HÖGER om −1 000-strecket, x klarar inte (och y > 25); Österåker ≈ (−875, +19) — y klarar men minskningen är under 1 000; Norrtälje ≈ (−1 110, +12) — strax vänster om −1 000-strecket och klart under +25. Bara Norrtälje uppfyller båda villkoren, alltså B.",
+  "pitfall": "Den klassiska fällan i 'vilken kommun avses'-frågor är att bara kontrollera RIKTNINGEN (ökat/minskat) och glömma STORLEKEN på båda axlarna. Här ligger tre av fyra alternativ nära −1 000-strecket, så millimeterläget avgör. Botemedlet: skriv ner båda villkoren som olikheter (0 < y < 25 OCH x < −1000) och kolla för varje alternativ exakt vilken sida om gränsstrecken pricken ligger — och ligger en prick precis på ett streck, låt det ANDRA villkoret fälla avgörandet.",
+  "solution_path": "Villkoren: (1) 0 < y < 25 (sysselsättningen ökade, men mindre än 25 %), (2) x < −1000 (indexet minskade med mer än 1 000 enheter). De fyra alternativens prickar ligger i vänsterklustret: Ekerö ≈ (−1 470, +32) — x klarar men y > 25; Nynäshamn ≈ (−1 020, +28) — praktiskt taget PÅ −1 000-strecket, för nära för att avgöra x, men y > 25 fäller den ändå; Österåker ≈ (−910, +21) — y klarar men pricken ligger höger om −1 000-strecket, minskningen är under 1 000; Norrtälje ≈ (−1 145, +12) — tydligt vänster om −1 000-strecket och klart under +25. Bara Norrtälje uppfyller båda villkoren, alltså B.",
   "steps": [
    {
     "n": 1,
@@ -11216,50 +11218,50 @@
    {
     "n": 5,
     "title": "Granska Ekerö (alternativ A)",
-    "text": "Ekerös prick ligger ungefär vid (−1 380, +35) — mellan −2 000- och −1 000-strecken i sidled, och klart över halvvägspunkten mellan 0 och 50 i höjdled. X-villkoret uppfylls (−1380 < −1000 ✓), MEN y ≈ +35 > +25. Villkoret 'mindre än 25 %' MISSLYCKAS. A är fel. ✗",
+    "text": "Ekerös prick ligger ungefär vid (−1 470, +32) — mellan −2 000- och −1 000-strecken i sidled, och klart över halvvägspunkten mellan 0 och 50 i höjdled. X-villkoret uppfylls (−1470 < −1000 ✓), MEN y ≈ +32 > +25. Villkoret 'mindre än 25 %' MISSLYCKAS. A är fel. ✗",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Granska Norrtälje (alternativ B)",
-    "text": "Norrtäljes prick ligger ungefär vid (−1 110, +12) — strax VÄNSTER om −1 000-strecket, och lågt över x-axeln, klart under halvvägs till 50. X-villkoret uppfylls (−1110 < −1000 ✓) och y-villkoret uppfylls (0 < 12 < 25 ✓). Båda villkoren uppfyllda. B är möjlig. ✓",
+    "text": "Norrtäljes prick ligger ungefär vid (−1 145, +12) — tydligt VÄNSTER om −1 000-strecket, och lågt över x-axeln, klart under halvvägs till 50. X-villkoret uppfylls (−1145 < −1000 ✓) och y-villkoret uppfylls (0 < 12 < 25 ✓). Båda villkoren uppfyllda. B är möjlig. ✓",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Granska Nynäshamn (alternativ C)",
-    "text": "Nynäshamns prick (följ pilen från etiketten) ligger ungefär vid (−975, +30) — strax HÖGER om −1 000-strecket. Minskningen är alltså MINDRE än 1 000 enheter, så x-villkoret MISSLYCKAS. Dessutom är y ≈ +30, över 25-gränsen. C faller på båda villkoren. ✗",
+    "text": "Nynäshamns prick (följ pilen från etiketten) ligger ungefär vid (−1 020, +28) — praktiskt taget PÅ −1 000-strecket, för nära för att säkert avgöra vilken sida den ligger på. Men det behövs inte: y ≈ +28 ligger klart ÖVER halvvägspunkten mellan 0 och 50, alltså över 25-gränsen. Y-villkoret MISSLYCKAS, och C faller oavsett hur x-avläsningen döms. ✗",
     "tier": "essential"
    },
    {
     "n": 8,
     "title": "Granska Österåker (alternativ D)",
-    "text": "Österåkers prick (följ pilen från etiketten) ligger ungefär vid (−875, +19). Y-villkoret uppfylls faktiskt (0 < 19 < 25 ✓) — men pricken ligger till HÖGER om −1 000-strecket, så indexminskningen är bara cirka 875 enheter, inte mer än 1 000. X-villkoret MISSLYCKAS. D är fel. ✗",
+    "text": "Österåkers prick (följ pilen från etiketten) ligger ungefär vid (−910, +21). Y-villkoret uppfylls faktiskt (0 < 21 < 25 ✓) — men pricken ligger till HÖGER om −1 000-strecket, så indexminskningen är bara cirka 900 enheter, inte mer än 1 000. X-villkoret MISSLYCKAS. D är fel. ✗",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Verifiera Norrtälje en gång till",
-    "text": "Lägg fingret på pricken vid etiketten 'Norrtälje'. Sidled: pricken ligger precis förbi −1 000-strecket åt vänster — minskningen är alltså drygt 1 000 enheter, tillräckligt för 'mer än 1 000'. Höjdled: pricken ligger tydligt över x-axeln men långt under 50-strecket, cirka +10 till +15 — en ökning som är klart mindre än 25 %.",
+    "text": "Lägg fingret på pricken vid etiketten 'Norrtälje'. Sidled: pricken ligger tydligt förbi −1 000-strecket åt vänster — minskningen är alltså drygt 1 100 enheter, tillräckligt för 'mer än 1 000'. Höjdled: pricken ligger tydligt över x-axeln men långt under 50-strecket, cirka +10 till +15 — en ökning som är klart mindre än 25 %.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Vad betyder 'mer än 1 000 enheter'?",
-    "text": "Villkoret 'minskat med mer än 1 000 enheter' handlar om absolutbelopp — indexet har sjunkit med >1 000, alltså x < −1000. Det är exakt därför −1 000-strecket blir skiljelinjen: Norrtälje (x ≈ −1 110) ligger vänster om strecket och klarar villkoret, medan Nynäshamn (≈ −975) och Österåker (≈ −875) ligger höger om strecket och faller.",
+    "text": "Villkoret 'minskat med mer än 1 000 enheter' handlar om absolutbelopp — indexet har sjunkit med >1 000, alltså x < −1000. Det är exakt därför −1 000-strecket blir skiljelinjen: Norrtälje (x ≈ −1 145) ligger tydligt vänster om strecket och klarar villkoret, medan Österåker (≈ −910) ligger höger om strecket och faller. Nynäshamn (≈ −1 020) ligger praktiskt taget på strecket — men den fälls i stället av sysselsättningsvillkoret (y ≈ +28 > 25).",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Endast Norrtälje uppfyller båda olikheterna, så svaret är B. Insikten i en mening: när frågan ställer flera kvantitativa villkor samtidigt — översätt dem till en visuell målrektangel i scatterplotten, och var extra noga med prickar som ligger nära rektangelns kant (här avgör millimetrarna kring −1 000-strecket allt).",
+    "text": "Endast Norrtälje uppfyller båda olikheterna, så svaret är B. Insikten i en mening: när frågan ställer flera kvantitativa villkor samtidigt — översätt dem till en visuell målrektangel i scatterplotten, och var extra noga med prickar som ligger nära rektangelns kant (här avgör millimetrarna kring −1 000-strecket och 25-gränsen allt).",
     "tier": "essential"
    }
   ],
   "technique": "DTK-strategi för 'vilken kommun avses'-frågor med multipla villkor på scatterplot: (1) skriv ner alla villkor som matematiska olikheter, (2) översätt dem till en MÅLREKTANGEL i diagrammet, (3) testa varje alternativ A–D — bara den prick som ligger inuti rektangeln stämmer. Triggern: 'mer än/mindre än N' kombinerat på två axlar → målrektangel-jakt, inte sökning per kommun.",
   "pregrade_tactic": {
    "handle": "Målrektangel-i-scatterplot",
-   "move": "Sätt upp rektangeln 0 < y < 25 och x < −1000 mentalt, och hitta den prick som ligger inuti — bara Norrtälje, strax vänster om −1 000-strecket med låg positiv y."
+   "move": "Sätt upp rektangeln 0 < y < 25 och x < −1000 mentalt, och hitta den prick som ligger inuti — bara Norrtälje, tydligt vänster om −1 000-strecket med låg positiv y."
   }
  },
  "host-2015-kvant1-DTK-035": {
@@ -12496,28 +12498,30 @@
   "_meta": {
    "generated_at": "2026-07-08",
    "model": "claude-fable-5",
-   "recipe": "figure-grounded-medfix-v1"
+   "recipe": "figure-grounded-medfix-v1",
+   "adjudicated": "2026-07-08",
+   "adjudication": "REAL_MINOR"
   },
   "distractors": [
    {
     "letter": "A",
     "why_tempting": "2 500 är nästan exakt Mikaels ensamma värde vid 1970 (≈ 2 350). Läser du bara den mest iögonfallande kurvan — den feta svarta — och glömmer att frågan säger 'något av de redovisade namnen', landar du precis här.",
-    "why_wrong": "Frågan kräver summan av ALLA sex kurvor vid 1970. Johan (≈ 1 750), Lars (≈ 1 450) och Karl (≈ 600) bidrar tillsammans nästan lika mycket som Mikael. Totalsumman ≈ 6 300 → C."
+    "why_wrong": "Frågan kräver summan av ALLA sex kurvor vid 1970. Johan (≈ 1 750), Lars (≈ 1 400) och Karl (≈ 600) bidrar tillsammans mer än Mikael. Totalsumman ≈ 6 600 → C."
    },
    {
     "letter": "B",
     "why_tempting": "4 000 är nästan exakt Mikaels TOPPVÄRDE (~4 200). Om du felaktigt tror att Mikaels spetsiga topp ligger vid 1970 — den ligger nära 1970-strecket i ögonvrån — och svarar med toppvärdet, får du ~4 000.",
-    "why_wrong": "Mikaels topp ligger vid ~1964, inte 1970; vid 1970 har kurvan fallit till ≈ 2 350. Och även toppvärdet vore fel sak att svara med — frågan gäller summan av alla sex kurvor vid 1970, ≈ 6 300."
+    "why_wrong": "Mikaels topp ligger vid ~1964, inte 1970; vid 1970 har kurvan fallit till ≈ 2 350. Och även toppvärdet vore fel sak att svara med — frågan gäller summan av alla sex kurvor vid 1970, ≈ 6 600."
    },
    {
     "letter": "D",
     "why_tempting": "8 000 lockar om man summerar kurvornas TOPPVÄRDEN i stället för deras värden vid just 1970 (t.ex. Mikael 4 200 + Lars 3 050 + Karl 1 650 ger redan nära 9 000), eller om man läser Mikael som 4 000 vid 1970 och lägger på de andra.",
-    "why_wrong": "Topparna inträffar olika år (1930, 1946, 1964, 1980, ...). Vid den lodräta linjen 1970 är värdena 2 350 + 1 450 + 1 750 + 600 + 150 + 0 ≈ 6 300 — långt under 8 000."
+    "why_wrong": "Topparna inträffar olika år (1930, 1946, 1964, 1980, ...). Vid den lodräta linjen 1970 är värdena 2 350 + 1 400 + 1 750 + 600 + 400 + 100 ≈ 6 600 — långt under 8 000."
    }
   ],
-  "framework_id": "DTK-TACTIC-006",
+  "framework_id": null,
   "pitfall": "Den klassiska fällan i \"summa över flera kurvor vid år X\"-frågor är att (a) bara läsa toppkurvan och glömma de mindre, eller (b) läsa en kurvas TOPPVÄRDE i stället för värdet just vid år X — extra lömskt här eftersom Mikaels spetsiga topp ligger vid 1964, nära nog 1970 för att luras. Botemedlet: dra en LODRÄT linje från år X och avläs alla kurvor vid exakt den linjen INNAN du summerar.",
-  "solution_path": "Vid år 1970 i pojk-diagrammet (undre panelen): Mikael (fet heldragen svart) toppar redan ~1964 på ~4 200 och har vid 1970 fallit till ≈ 2 350. Lars (streckad svart) är på nedgång från 1940-talstoppen: ≈ 1 450. Johan (streckad grå) är på brant uppgång mot sin topp runt 1980: ≈ 1 750. Karl (heldragen grå) ≈ 600. Marcus (tunn heldragen svart) har precis lyft: ≈ 100-150. Oskar (fet streckad svart) ≈ 0. Summa: 2 350 + 1 450 + 1 750 + 600 + 150 ≈ 6 300 → klart närmast alternativ C (6 500).",
+  "solution_path": "Vid år 1970 i pojk-diagrammet (undre panelen): Mikael (fet heldragen svart) toppar redan ~1964 på ~4 200 och har vid 1970 fallit till ≈ 2 350. Lars (streckad svart) är på nedgång från 1940-talstoppen: ≈ 1 400. Johan (streckad grå) är på brant uppgång mot sin topp runt 1980: ≈ 1 750. Karl (heldragen grå) ≈ 600. Marcus (tunn heldragen svart) har precis börjat stiga brant: ≈ 400. Oskar (fet streckad svart) ≈ 100. Summa: 2 350 + 1 400 + 1 750 + 600 + 400 + 100 ≈ 6 600 → klart närmast alternativ C (6 500).",
   "steps": [
    {
     "n": 1,
@@ -12552,7 +12556,7 @@
    {
     "n": 6,
     "title": "Läs av varje kurvas värde vid 1970",
-    "text": "Dra den lodräta linjen vid 1970: Mikael har redan passerat sin 1964-topp och fallit brant — vid 1970 ≈ 2 350. Lars: nedgång från 1946-toppen, ≈ 1 450. Johan: brant uppgång mot 1980-toppen, ≈ 1 750. Karl: långsam nedgång, ≈ 600. Marcus: har precis börjat stiga, ≈ 100-150. Oskar: fortfarande nära noll, ≈ 0.",
+    "text": "Dra den lodräta linjen vid 1970: Mikael har redan passerat sin 1964-topp och fallit brant — vid 1970 ≈ 2 350. Lars: nedgång från 1946-toppen, ≈ 1 400. Johan: brant uppgång mot 1980-toppen, ≈ 1 750. Karl: långsam nedgång, ≈ 600. Marcus: har precis börjat stiga brant, ≈ 400. Oskar: fortfarande lågt, ≈ 100.",
     "tier": "essential"
    },
    {
@@ -12564,13 +12568,13 @@
    {
     "n": 8,
     "title": "Summera värdena",
-    "text": "2 350 + 1 450 + 1 750 + 600 + 150 + 0 = ? Stegvis: 2 350 + 1 450 = 3 800. 3 800 + 1 750 = 5 550. 5 550 + 600 = 6 150. 6 150 + 150 = 6 300. Summa ≈ 6 300.",
+    "text": "2 350 + 1 400 + 1 750 + 600 + 400 + 100 = ? Stegvis: 2 350 + 1 400 = 3 750. 3 750 + 1 750 = 5 500. 5 500 + 600 = 6 100. 6 100 + 400 = 6 500. 6 500 + 100 = 6 600. Summa ≈ 6 600.",
     "tier": "essential"
    },
    {
     "n": 9,
     "title": "Konvertera till svarsalternativ",
-    "text": "Alternativen är 2 500, 4 000, 6 500, 8 000. Vår beräkning ≈ 6 300 ligger närmast 6 500 (skillnad 200). Övriga alternativ är minst 1 700 bort — avläsningsosäkerheten på ±100-200 per kurva rubbar inte valet. Svaret är C (6 500).",
+    "text": "Alternativen är 2 500, 4 000, 6 500, 8 000. Vår beräkning ≈ 6 600 ligger närmast 6 500 (skillnad 100). Övriga alternativ är minst 1 500 bort — avläsningsosäkerheten på ±100-200 per kurva rubbar inte valet. Svaret är C (6 500).",
     "tier": "essential"
    },
    {
@@ -12582,7 +12586,7 @@
    {
     "n": 11,
     "title": "Sanity-check mot kurvornas form",
-    "text": "Vid 1970 är tre kurvor mitt i höga lägen samtidigt: Mikael på väg NER från sin topp, Johan på väg UPP mot sin, och Lars fortfarande en bit ner från sin. Just den överlappningen gör att summan (≈ 6 300) blir klart större än någon enskild kurva (max 2 350) — det utesluter A och B direkt.",
+    "text": "Vid 1970 är tre kurvor mitt i höga lägen samtidigt: Mikael på väg NER från sin topp, Johan på väg UPP mot sin, och Lars fortfarande en bit ner från sin. Just den överlappningen gör att summan (≈ 6 600) blir klart större än någon enskild kurva (max 2 350) — det utesluter A och B direkt.",
     "tier": "detail"
    },
    {
@@ -12595,7 +12599,7 @@
   "technique": "DTK-strategi för \"antal vid år X med något av flera kurvor\"-frågor: (1) hitta året på x-axeln, (2) dra en mental lodrät linje, (3) avläs y-värdet för VARJE kurva separat vid den linjen — inte vid kurvans topp, (4) summera alla värden. Triggern: \"antal X med något av Y namn/kategorier\" → multi-kurvs-avläsning vid samma x-värde + summering.",
   "pregrade_tactic": {
    "handle": "Lodrät-linje-och-summera-alla-kurvor",
-   "move": "Dra lodrät linje vid 1970 i pojk-diagrammet, läs Mikael (~2 350), Johan (~1 750), Lars (~1 450), Karl (~600), Marcus (~150), Oskar (~0) — summa ≈ 6 300 → närmast 6 500."
+   "move": "Dra lodrät linje vid 1970 i pojk-diagrammet, läs Mikael (~2 350), Johan (~1 750), Lars (~1 400), Karl (~600), Marcus (~400), Oskar (~100) — summa ≈ 6 600 → närmast 6 500."
   }
  },
  "host-2015-kvant2-DTK-036": {

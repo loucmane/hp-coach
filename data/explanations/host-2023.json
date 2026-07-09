@@ -4836,32 +4836,34 @@
   "_meta": {
    "generated_at": "2026-07-08",
    "model": "claude-fable-5",
-   "recipe": "figure-grounded-medfix-v1"
+   "recipe": "figure-grounded-medfix-v1",
+   "adjudicated": "2026-07-09",
+   "adjudication": "REAL_MINOR"
   },
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "90 TWh lockar om du överskattar Kärnbränsle-bandet (t.ex. läser ~190 TWh genom att missa att gränslinjen dippar just vid 2010) eller om du läser Förluster i kärnkraften som bara ~60 TWh.",
-    "why_wrong": "Vid 2010 spänner Kärnbränsle-bandet ~305→455 TWh, alltså ~150 TWh tjockt, och Förluster-bandet är ~100 TWh tjockt. 150 − 100 ≈ 50 — närmast 60, inte 90."
+    "why_tempting": "90 TWh lockar om du överskattar Kärnbränsle-bandet (t.ex. läser ~190 TWh genom att ta stackens topplinje som bandets övre gräns) eller om du läser Förluster i kärnkraften som bara ~75 TWh.",
+    "why_wrong": "Vid 2010 spänner Kärnbränsle-bandet ~340→505 TWh, alltså ~165 TWh tjockt, och Förluster-bandet är ~100 TWh tjockt. 165 − 100 ≈ 65 — närmast 60, inte 90."
    },
    {
     "letter": "C",
-    "why_tempting": "110 TWh lockar om du råkar mäta ett annat, bredare band (t.ex. Råolja) i stället för Kärnbränsle, eller om du tror att förlusterna bara är ~40 TWh. En stor skillnad känns 'dramatisk' och därför tänkbar.",
-    "why_wrong": "Förluster i kärnkraften är det stora gråa toppbandet i nedre diagrammet, ~100 TWh tjockt 2010 — långt ifrån 40. Skillnaden blir ~50, inte 110."
+    "why_tempting": "110 TWh lockar om du råkar mäta ett annat, bredare band (t.ex. Råolja) i stället för Kärnbränsle, eller om du tror att förlusterna bara är ~55 TWh. En stor skillnad känns 'dramatisk' och därför tänkbar.",
+    "why_wrong": "Förluster i kärnkraften är det stora gråa toppbandet i nedre diagrammet, ~100 TWh tjockt 2010 — långt ifrån 55. Skillnaden blir ~65, inte 110."
    },
    {
     "letter": "D",
-    "why_tempting": "140 TWh lockar om du tar hela kärnbränsle-tillförseln (~150 TWh) rakt av som svar och behandlar förlusterna som försumbara.",
-    "why_wrong": "Förlusterna är inte försumbara — kärnkraften förlorar ~2/3 av bränslets energi som värme (~100 TWh 2010), vilket syns som ett brett band i nedre diagrammet. Skillnaden är därför bara ~50 TWh, närmast 60."
+    "why_tempting": "140 TWh lockar om du tar nästan hela kärnbränsle-tillförseln (~165 TWh) rakt av som svar och behandlar förlusterna som försumbara.",
+    "why_wrong": "Förlusterna är inte försumbara — kärnkraften förlorar ~2/3 av bränslets energi som värme (~100 TWh 2010), vilket syns som ett brett band i nedre diagrammet. Skillnaden är därför bara ~60–65 TWh, närmast 60."
    }
   ],
-  "framework_id": "DTK-TACTIC-006",
-  "pitfall": "Den klassiska fällan: använda hela kärnbränsle-tillförselns värde (~150 TWh) som skillnaden och glömma att förlusterna är en STOR post. Botemedlet: kom ihåg att kärnkraft har ~33 % verkningsgrad — det mesta av bränslets energi går förlorat, så skillnaden (den nyttiga elen) är bara ungefär en tredjedel av tillförseln.",
+  "framework_id": null,
+  "pitfall": "Den klassiska fällan: använda hela kärnbränsle-tillförselns värde (~165 TWh) som skillnaden och glömma att förlusterna är en STOR post. Botemedlet: kom ihåg att kärnkraft har ~33 % verkningsgrad — det mesta av bränslets energi går förlorat, så skillnaden (den nyttiga elen) är bara ungefär en tredjedel av tillförseln.",
   "pregrade_tactic": {
    "handle": "Två-diagram-kärnkraft",
-   "move": "Kärnbränsle (övre diagrammet, energitillförsel): tjocklek 2010 ≈ 455 − 305 ≈ 150 TWh — observera att gränslinjen dippar just vid 2010. Förluster i kärnkraften (nedre diagrammet, översta gråa bandet): tjocklek 2010 ≈ 100 TWh. Skillnad ≈ 50 TWh, närmast 60."
+   "move": "Kärnbränsle (övre diagrammet, energitillförsel): det breda ljusa bandet i mittzonen, tjocklek 2010 ≈ 505 − 340 ≈ 165 TWh — observera att den kraftiga gränslinjens dipp ligger vid 2009, läs vid 2010. Förluster i kärnkraften (nedre diagrammet, översta gråa bandet): tjocklek 2010 ≈ 100 TWh. Skillnad ≈ 60–65 TWh, närmast 60."
   },
-  "solution_path": "Sidan har TVÅ staplade ytdiagram. I det övre, 'Total energitillförsel', är Kärnbränsle-bandet vid 2010 avgränsat nedåt vid ungefär 305 TWh och uppåt vid ungefär 455 TWh (den kraftiga gränslinjen dippar tydligt just vid 2010) — tjocklek ≈ 150 TWh. I det nedre, 'Total energianvändning', är Förluster i kärnkraften det översta gråa bandet; vid 2010 är det ungefär 90–110 TWh tjockt, säg ~100 TWh. Skillnad ≈ 150 − 100 ≈ 50–60 TWh, klart närmast 60 TWh = alternativ A.",
+  "solution_path": "Sidan har TVÅ staplade ytdiagram. I det övre, 'Total energitillförsel', är Kärnbränsle-bandet det breda ljusa bandet i stackens mittzon; vid 2010 är det avgränsat nedåt vid ungefär 340 TWh och uppåt vid ungefär 505 TWh (den kraftiga gränslinjens djupa dipp ligger strax intill, vid 2009 — se till att läsa vid rätt årtal) — tjocklek ≈ 165 TWh. I det nedre, 'Total energianvändning', är Förluster i kärnkraften det översta gråa bandet; vid 2010 är det ungefär 100 TWh tjockt (≈ 465→570). Skillnad ≈ 165 − 100 ≈ 60–65 TWh, klart närmast 60 TWh = alternativ A.",
   "steps": [
    {
     "n": 1,
@@ -4872,13 +4874,13 @@
    {
     "n": 2,
     "title": "Hitta Kärnbränsle-bandet i övre diagrammet",
-    "text": "Övre diagrammet 'Total energitillförsel' staplar energikällorna nedifrån och upp: Biobränslen (ljusgrått band längst ned), Kol och koks, Råolja och petroleumprodukter (det stora mörkgrå bandet), Naturgas och stadsgas, Övriga bränslen, sedan Kärnbränsle, och överst Primär värme, Vattenkraft och Vindkraft. Kärnbränsle-etiketten pekar på det breda ljusa bandet i stackens mittzon, ovanför råolje-bandet.",
+    "text": "Övre diagrammet 'Total energitillförsel' staplar energikällorna nedifrån och upp: Biobränslen (ljusgrått band längst ned), Kol och koks, Råolja och petroleumprodukter (det stora mörkgrå bandet), Naturgas och stadsgas, Övriga bränslen, sedan Kärnbränsle, och överst Primär värme, Vattenkraft och Vindkraft. Kärnbränsle-etiketten pekar på det breda ljusa bandet i stackens mittzon, ovanför råolje-bandet och de smala Naturgas/Övriga bränslen-banden.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Avläs Kärnbränsle-bandets tjocklek 2010",
-    "text": "Vid x = 2010 i övre diagrammet: bandets undre gräns ligger vid ungefär 305 TWh och dess övre gräns — den kraftiga linjen — dippar tydligt just vid 2010 ned till ungefär 455 TWh. Tjocklek ≈ 455 − 305 = 150 TWh. (2010 var ett svagt år för kärnkraften, därav dippen.)",
+    "text": "Vid x = 2010 i övre diagrammet: bandets undre gräns (ovanpå det smala svarta Övriga bränslen-bandet) ligger vid ungefär 340 TWh och dess övre gräns — den kraftiga linjen — vid ungefär 505 TWh. Tjocklek ≈ 505 − 340 = 165 TWh. Obs: den kraftiga linjens djupa V-dipp ligger vid 2009, inte 2010 — placera fingret på rätt årtal innan du läser av.",
     "tier": "essential"
    },
    {
@@ -4890,43 +4892,43 @@
    {
     "n": 5,
     "title": "Avläs Förluster-bandets tjocklek 2010",
-    "text": "Vid x = 2010 i nedre diagrammet: Förluster i kärnkraften-bandets undre gräns ligger runt 460–470 TWh och dess övre gräns (stackens topp) runt 560 TWh — även här syns en dipp vid 2010. Tjocklek ≈ 90–110 TWh, säg ~100 TWh.",
+    "text": "Vid x = 2010 i nedre diagrammet: Förluster i kärnkraften-bandets undre gräns ligger runt 465–470 TWh och dess övre gräns (stackens topp) runt 570 TWh. Tjocklek ≈ 100 TWh. (Den streckade 500-linjen skär genom bandet — låt den inte lura dig att bandet slutar där.)",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Räkna ut skillnaden",
-    "text": "Skillnad = kärnbränsle-tillförsel − förluster i kärnkraften ≈ 150 − 100 = 50 TWh (spannet 40–60 beroende på exakt avläsning). Närmast bland alternativen är 60 TWh.",
+    "text": "Skillnad = kärnbränsle-tillförsel − förluster i kärnkraften ≈ 165 − 100 = 65 TWh (spannet 55–70 beroende på exakt avläsning). Närmast bland alternativen är 60 TWh.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Vad betyder skillnaden fysikaliskt?",
-    "text": "Kärnbränsle-tillförsel är all energi som matas in i kärnkraftverken (uranets fissionsenergi). Förluster i kärnkraften är den del som går förlorad, mest som spillvärme. Skillnaden ≈ den nyttiga elen. Cirka 50 TWh el från ~150 TWh kärnbränsle ger en verkningsgrad kring 1/3 — precis vad kärnkraftverk brukar ha.",
+    "text": "Kärnbränsle-tillförsel är all energi som matas in i kärnkraftverken (uranets fissionsenergi). Förluster i kärnkraften är den del som går förlorad, mest som spillvärme. Skillnaden ≈ den nyttiga elen. Cirka 60 TWh el från ~165 TWh kärnbränsle ger en verkningsgrad kring 1/3 — precis vad kärnkraftverk brukar ha.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Sanity-check med verkningsgrad",
-    "text": "Kärnkraftverks termiska verkningsgrad är ~33–35 %: 1/3 av bränslets energi blir el, 2/3 blir förluster. Med 150 TWh tillförsel väntas el ≈ 150/3 = 50 TWh och förluster ≈ 100 TWh. Det matchar avläsningarna (förluster ~100, skillnad ~50) — konsistent och bekräftande.",
+    "text": "Kärnkraftverks termiska verkningsgrad är ~33–35 %: 1/3 av bränslets energi blir el, 2/3 blir förluster. Med 165 TWh tillförsel väntas el ≈ 165/3 ≈ 55 TWh och förluster ≈ 110 TWh. Det matchar avläsningarna (förluster ~100, skillnad ~60) — konsistent och bekräftande.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Jämför mot svarsalternativen",
-    "text": "Alternativen är 60, 90, 110, 140 TWh. Din uträkning ~50 ligger närmast 60 (10 bort). 90 är 40 bort, 110 är 60 bort, 140 är 90 bort. Otvetydigt A.",
+    "text": "Alternativen är 60, 90, 110, 140 TWh. Din uträkning ~65 ligger närmast 60 (5 bort). 90 är 25 bort, 110 är 45 bort, 140 är 75 bort. Otvetydigt A.",
     "tier": "essential"
    },
    {
     "n": 10,
     "title": "Eliminera de andra alternativen via förlusterna",
-    "text": "Med kärnbränsle ~150 TWh skulle 140 TWh i skillnad kräva förluster på bara ~10 TWh — omöjligt givet det breda gråa bandet överst i nedre diagrammet. 110 skulle kräva förluster ~40 och 90 skulle kräva ~60 — båda för tunna mot det observerade ~100 TWh-bandet. Bara 60 stämmer med avläsningen.",
+    "text": "Med kärnbränsle ~165 TWh skulle 140 TWh i skillnad kräva förluster på bara ~25 TWh — omöjligt givet det breda gråa bandet överst i nedre diagrammet. 110 skulle kräva förluster ~55 och 90 skulle kräva ~75 — båda för tunna mot det observerade ~100 TWh-bandet. Bara 60 stämmer med avläsningen.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Plocka rätt alternativ",
-    "text": "Skillnaden ≈ 50 TWh ≈ 60 TWh = alternativ A. Övriga alternativ kräver band-tjocklekar som inte matchar diagrammet.",
+    "text": "Skillnaden ≈ 60–65 TWh ≈ 60 TWh = alternativ A. Övriga alternativ kräver band-tjocklekar som inte matchar diagrammet.",
     "tier": "essential"
    },
    {
