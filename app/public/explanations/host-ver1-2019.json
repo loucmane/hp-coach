@@ -803,100 +803,108 @@
   "_meta": {
    "generated_at": "2026-07-08",
    "model": "claude-fable-5",
-   "recipe": "figure-grounded-medfix-v1"
+   "recipe": "figure-grounded-medfix-v1",
+   "adjudicated": "2026-07-08",
+   "adjudication": "REAL_MINOR"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "'Operation av ben' är en stor rad i tabellen (Totalt 2 508) och dess god-andel 2 213 / 2 508 ≈ 88,2 % ligger nära promptens 89 — stannar du vid god-kolumnen ser Ben ut som en träff.",
-    "why_wrong": "Övriga kolumner spräcker matchningen: Mindre god 159 / 2 508 ≈ 6,3 % (bör vara 3), Dödlig 56 / 2 508 ≈ 2,2 % (bör vara 4), Oviss 52 / 2 508 ≈ 2,1 % (bör vara 3). Bara Dålig 28 / 2 508 ≈ 1,1 % stämmer. Tre av fem kolumner avviker — Ben passar inte."
-   },
-   {
-    "letter": "B",
-    "why_tempting": "Operation av ledgångar, senor och senskidor är tabellens största rad bland alternativen (Totalt 3 070) — den drar blicken, och vid grov huvudräkning kan '2 822 av 3 070' kännas som 'ungefär nittio procent'.",
-    "why_wrong": "Räknat exakt: 2 822 / 3 070 ≈ 91,9 % — inte 89. Redan god-kolumnen utesluter B oavsett vad övriga kolumner ger."
+    "why_tempting": "1932 kan se ut som minst-året eftersom Belgien-linjen har en liten lokal svacka just där (~36 ‰) — tittar du bara på Belgiens dipp missar du att Tyskland fortsätter falla ännu ett år.",
+    "why_wrong": "1933 är Tyskland ännu djupare i sin svacka (~44–45 ‰) medan Belgien återhämtat sig till ~37 ‰. Gapet 1933 (~8 ‰) är mindre än gapet 1932 (~10 ‰). Minst-året är 1933, inte 1932."
    },
    {
     "letter": "C",
-    "why_tempting": "Operation av kärl- och nervsystem har en mycket hög god-utgång (744 / 775 ≈ 96 %). Skummar du raderna utan att dividera kan 'nästan alla goda' kännas förenligt med 89 %.",
-    "why_wrong": "96,0 % är sju procentenheter från 89 — alldeles för långt bort. Dessutom är Dödlig 11 / 775 ≈ 1,4 % (bör vara 4) och Oviss 2 / 775 ≈ 0,3 % (bör vara 3). C faller på flera kolumner."
+    "why_tempting": "1930 är Tysklands toppår — linjen når sitt högsta värde (~51 ‰), så det är lätt att blanda ihop 'Tyskland som högst' med 'skillnaden som störst'. Dessutom fel minst-år av samma skäl som A.",
+    "why_wrong": "Skillnad är inte samma sak som nivå. 1930 har Belgien också klättrat, till ~35 ‰, så gapet är ~16 ‰. 1926 låg Belgien fortfarande nere på ~21–22 ‰ medan Tyskland redan var uppe på ~42 ‰ — gap ~20 ‰, klart störst. Och minst-året är 1933, inte 1932."
+   },
+   {
+    "letter": "D",
+    "why_tempting": "Rätt minst-år (1933) parat med Tysklands toppår 1930 — halva frågan rätt. Frestande om du bara kontrollerade minst-delen noggrant och gissade störst-delen från var Tyskland-linjen toppar.",
+    "why_wrong": "Störst-året är 1926: gap ~20 ‰ (42 − 21,5) mot ~16 ‰ år 1930 (51 − 35). Belgien växte snabbare än Tyskland 1926–1930, så gapet krympte trots att Tyskland steg. Båda årtalen i alternativet måste stämma — bara B klarar det."
    }
   ],
   "framework_id": null,
-  "pitfall": "Den klassiska DTK-fällan i fördelningsfrågor mot tabeller är att fokusera på 'God'-kolumnen och bortse från de övriga procentvärdena (Mindre god / Dålig / Dödlig / Oviss). En match på enbart God räcker inte — alla fem procentvärden måste stämma. Botemedlet: räkna alla fem kolumner som procent av radens Totalt och kontrollera mot prompten kolumn för kolumn.",
-  "solution_path": "I den mellersta tabellen ('Antalet operationer utförda vid civila sjukhus i Sverige år 1900 ...'), rad 'Öron': Totalt = 573, God = 511, Mindre god = 17, Dålig = 8, Dödlig = 22, Oviss = 15. Kontroll: 511 + 17 + 8 + 22 + 15 = 573. Räkna varje som procent av totalt: 511/573 ≈ 89,2 % (matchar 89), 17/573 ≈ 3,0 % (matchar 3), 8/573 ≈ 1,4 % (matchar 1), 22/573 ≈ 3,8 % (matchar 4), 15/573 ≈ 2,6 % (matchar 3). Alla fem kolumner matchar promptens fördelning — inget annat alternativ kommer i närheten. Svar: D (Operation av öron).",
+  "pitfall": "Två fällor samverkar här. (1) Diagrammet har 14 linjer i olika stilar — pekar du på fel prickad/streckad linje (Nederländerna eller Frankrike i stället för Belgien) spårar alla avläsningar ur; lås linjeidentiteten vid etiketten först. (2) 'Störst skillnad' är inte 'högsta värde': Tyskland toppar 1930, men Belgien hade då redan klättrat ikapp en bit — gapet var störst 1926, när Belgien fortfarande låg kvar nere vid ~21 ‰.",
+  "solution_path": "Diagrammet visar antal telefoner per 1 000 invånare (‰) i 14 länder 1925–1939, med rutnät i steg om 10 ‰. Tyskland är den streckade linjen märkt 'Tyskland' (toppar ~51 ‰ kring 1930), Belgien den finprickade linjen märkt 'Belgien' (startar ~20 ‰ år 1925). Avläsning vid de fyra kandidatåren: 1926 ≈ 42 mot 21,5 (gap ~20 ‰); 1930 ≈ 51 mot 35 (gap ~16 ‰); 1932 ≈ 46 mot 36 (gap ~10 ‰); 1933 ≈ 44,5 mot 37 (gap ~8 ‰) — Tyskland är då nere i sin svacka efter toppen 1930/31 medan Belgien fortsätter uppåt. Störst skillnad 1926, minst 1933 = alternativ B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "Frågan: vilken operationstyp hade utfallsfördelningen God 89 %, Mindre god 3 %, Dålig 1 %, Dödlig 4 %, Oviss 3 %? Svarsalternativen är fyra operationstyper (Ben, Ledgångar/senor, Kärl/nerv, Öron). Du ska räkna varje kolumn som procent av radens totalsumma för varje kandidatrad och hitta den som matchar alla fem siffror.",
+    "text": "Frågan söker TVÅ årtal i samma alternativ: det år då skillnaden mellan Tyskland och Belgien var STÖRST, och det år då den var MINST, i antal telefoner per 1 000 invånare (‰). Båda måste stämma samtidigt.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Mellersta tabellen är arenan",
-    "text": "Sidan har tre tabeller. Den mellersta, 'Antalet operationer utförda vid civila sjukhus i Sverige år 1900 ...', listar operationstyper i raderna och utfall i kolumnerna (Totalt + God / Mindre god / Dålig / Dödlig / Oviss). Talen är absoluta antal, inte procent — du måste själv dividera med Totalt.",
+    "title": "Lås rätt linjer i det täta diagrammet",
+    "text": "Diagrammet har 14 landslinjer i olika stilar. Tyskland är den STRECKADE linjen med etiketten 'Tyskland' i diagrammets nedre mitt — den ligger kring 41 ‰ år 1925 och toppar strax över 50 ‰ kring 1930. Belgien är den FINPRICKADE linjen med etiketten 'Belgien' — den startar kring 20 ‰ år 1925 och stiger stadigt. Förväxla inte Belgien med Nederländerna (långstreckad, strax över) eller Frankrike (heldragen, strax under).",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Vad betyder 'fördelning'?",
-    "text": "Utfallsfördelningen är hur radens totala operationer fördelas över fem kategorier. Eftersom varje operation hade ETT utfall summerar de fem procenttalen till 100 %. Kolla att 89 + 3 + 1 + 4 + 3 = 100 — bra, summan stämmer för en giltig fördelning.",
-    "tier": "detail"
+    "title": "Identifiera kandidatåren",
+    "text": "Alternativen använder bara fyra årtal: 1926, 1930, 1932 och 1933. Du behöver alltså inte granska hela perioden — läs av Tyskland och Belgien vid exakt dessa fyra år och jämför gapen.",
+    "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Beräkningsstrategi: god-kolumnen först",
-    "text": "Bedöm först varje rads 'andel god' eftersom de fyra kandidaterna ligger på olika nivåer där. Räkna God/Totalt för A, B, C och D och eliminera de som inte ligger nära 89 %. Verifiera sedan den överlevande raden mot alla fem kolumner.",
+    "title": "Avläs 1926",
+    "text": "Vid 1926: Tyskland ≈ 42 ‰, Belgien ≈ 21,5 ‰. Gap ≈ 20 ‰ — ungefär två hela rutor på y-axeln (rutnätet går i steg om 10 ‰). Belgien ligger fortfarande kvar nere nära startnivån medan Tyskland redan är uppe över 40.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Räkna alt A (Ben)",
-    "text": "Ben: Totalt 2 508, God 2 213, Mindre god 159, Dålig 28, Dödlig 56, Oviss 52. God-andel: 2 213 / 2 508 ≈ 88,2 % (nära 89 — inte avgörande ännu). Men Mindre god: 159 / 2 508 ≈ 6,3 % (bör vara 3 — avviker tydligt). Eliminera Ben.",
+    "title": "Avläs 1930",
+    "text": "Vid 1930: Tyskland ≈ 51 ‰ (linjens toppår), Belgien ≈ 35 ‰. Gap ≈ 16 ‰. Observera: trots att Tyskland är som HÖGST är gapet MINDRE än 1926, eftersom Belgien klättrat snabbare (från ~21,5 till ~35).",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Räkna alt B (Ledgångar, senor och senskidor)",
-    "text": "Ledgångar: Totalt 3 070, God 2 822, Mindre god 149, Dålig 43, Dödlig 18, Oviss 38. God-andel: 2 822 / 3 070 ≈ 91,9 % (bör vara 89 — för högt). Eliminera Ledgångar.",
+    "title": "Avläs 1932",
+    "text": "Vid 1932: Tyskland ≈ 46 ‰ — linjen faller efter toppen 1930/31 (depressionsåren). Belgien ≈ 36 ‰, med en liten lokal svacka just här. Gap ≈ 10 ‰.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Räkna alt C (Kärl- och nervsystem)",
-    "text": "Kärl-nerv: Totalt 775, God 744, Mindre god 16, Dålig 2, Dödlig 11, Oviss 2. God-andel: 744 / 775 ≈ 96,0 % (bör vara 89 — för högt med stor marginal). Eliminera Kärl-nerv.",
+    "title": "Avläs 1933",
+    "text": "Vid 1933: Tyskland ≈ 44,5 ‰ — botten av svackan. Belgien ≈ 37 ‰, på väg upp igen. Gap ≈ 8 ‰. Detta är det minsta gapet bland kandidatåren: Tyskland faller samtidigt som Belgien stiger, så avståndet kläms ihop från båda håll. (Linjerna möts dock inte här — de konvergerar först kring 1937–38, uppe vid ~50 ‰.)",
     "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Räkna alt D (Öron) — alla fem kolumner",
-    "text": "Öron: Totalt 573, God 511, Mindre god 17, Dålig 8, Dödlig 22, Oviss 15. Kontroll: 511 + 17 + 8 + 22 + 15 = 573, radens tal summerar korrekt. Procent: God 511/573 ≈ 89,2 % (matchar 89). Mindre god 17/573 ≈ 3,0 % (matchar 3). Dålig 8/573 ≈ 1,4 % (matchar 1). Dödlig 22/573 ≈ 3,8 % (matchar 4). Oviss 15/573 ≈ 2,6 % (matchar 3). Alla fem kolumner matchar promptens fördelning.",
+    "title": "Jämför gapen",
+    "text": "Sammanställning: 1926 ≈ 20 ‰, 1930 ≈ 16 ‰, 1932 ≈ 10 ‰, 1933 ≈ 8 ‰. STÖRST: 1926. MINST: 1933. Ingen tvekan behövs — 1926-gapet är synligt bredare än 1930-gapet (två hela rutor mot drygt en och en halv), och 1933-gapet är synligt smalare än 1932-gapet.",
     "tier": "essential"
    },
    {
     "n": 9,
-    "title": "Avrundningsmarginal",
-    "text": "Prompten anger heltalsprocent (89/3/1/4/3). Öron ger 89,2 / 3,0 / 1,4 / 3,8 / 2,6 — varje värde avrundar till eller ligger inom en procentenhet från promptens siffra. Inga andra kandidater kommer ens nära att matcha alla fem kolumner: A faller redan på Mindre god, B och C faller redan på God.",
+    "title": "Vad betyder 'respektive'?",
+    "text": "'Störst respektive minst' betyder att alternativets FÖRSTA årtal ska vara max-året och det ANDRA min-året. Kontrollera båda leden — flera distraktorer har ena ledet rätt.",
     "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Sanity-check: summan för Öron",
-    "text": "89,2 + 3,0 + 1,4 + 3,8 + 2,6 = 100,0 %. Promptens summa 89 + 3 + 1 + 4 + 3 = 100. Båda summerar till 100, vilket bekräftar att du läst en komplett rad och räknat konsekvent.",
+    "title": "Varför 1926 slår 1930 utan mätsticka",
+    "text": "Du behöver inga exakta tal för störst-delen: mellan 1926 och 1930 steg Belgien med ~13–14 ‰ men Tyskland bara med ~9 ‰, så gapet KRYMPTE under hela uppgången. Trenden räcker — gapet är som störst i periodens början, alltså 1926 av kandidatåren.",
     "tier": "detail"
    },
    {
     "n": 11,
+    "title": "Matcha mot alternativen",
+    "text": "Störst 1926 + minst 1933 = alternativ B. A har fel minst-år (1932), C och D har fel störst-år (1930), och C har dessutom fel minst-år.",
+    "tier": "essential"
+   },
+   {
+    "n": 12,
     "title": "Slutsats",
-    "text": "Svaret är D (Operation av öron). Insikten i en mening: när en DTK-fråga ger en hel fördelning (alla fem utfall) — räkna ALLA fem kolumners procent för varje kandidat och välj raden där alla fem siffror matchar, inte den som bara matchar en kolumn.",
+    "text": "Svaret är B (1926 respektive 1933). Insikten i en mening: 'störst/minst skillnad mellan två linjer' avgörs av gapets bredd år för år — inte av var någon av linjerna toppar — så lås rätt linjer, läs båda vid varje kandidatår och jämför differenserna.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för 'vilken operationstyp har fördelningen X/Y/Z/W/V'-frågor: räkna procentandel för varje utfallskolumn för varje kandidatrad, eliminera rader där minst en kolumn avviker tydligt, och välj den enda raden som matchar alla fem. Triggern: 'vilken typ av operation hade fördelningen ...' → fem-kolumners-test, inte enkolumns-match.",
+  "technique": "DTK-strategi för 'störst/minst skillnad mellan två linjer' i täta flerlinjediagram: lås först båda linjernas identitet vid deras etiketter (linjestil + nivå), läs sedan av båda värdena vid varje kandidatår ur alternativen och beräkna gapet. Triggern: 'år då skillnaden mellan X och Y var störst/minst' → parvisa avläsningar per kandidatår + gapjämförelse; kom ihåg att störst gap ≠ högsta värde.",
   "pregrade_tactic": {
-   "handle": "Fem-procent-kolumner-per-rad",
-   "move": "Räkna God/Totalt för Ben (≈88), Ledgångar (≈92), Kärl-nerv (≈96), Öron (≈89). Bara Öron matchar 89. Verifiera Öron med övriga fyra kolumner: 17/573 ≈ 3, 8/573 ≈ 1, 22/573 ≈ 4, 15/573 ≈ 3 — alla matchar."
+   "handle": "Gap-per-kandidatår",
+   "move": "Lås Tyskland-linjen (streckad, toppar ~51 ‰ vid 1930) och Belgien-linjen (finprickad, från ~20 ‰ 1925). Läs båda vid 1926, 1930, 1932, 1933 och räkna gapet: ~20, ~16, ~10, ~8 ‰. Störst 1926, minst 1933 = B."
   }
  },
  "host-ver1-2019-kvant1-DTK-038": {

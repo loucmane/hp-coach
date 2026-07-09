@@ -11862,7 +11862,9 @@
   "_meta": {
    "generated_at": "2026-07-08",
    "model": "claude-fable-5",
-   "recipe": "figure-grounded-medfix-v1"
+   "recipe": "figure-grounded-medfix-v1",
+   "adjudicated": "2026-07-08",
+   "adjudication": "REAL_MINOR"
   },
   "distractors": [
    {
@@ -11872,22 +11874,22 @@
    },
    {
     "letter": "C",
-    "why_tempting": "Ökning + Minskning lockar om man på samma sätt läser Matlöks stigande position (överkanten flyttas från cirka 850 till cirka 875) som en ökning, eller förväxlar Matlök med grannfältet Annan sallat.",
-    "why_wrong": "Matlök-fältets höjd krymper från cirka 145 (705–850) till cirka 115 miljoner kr (760–875). Båda fälten är tunnare 2015 → Minskning + Minskning = A."
+    "why_tempting": "Ökning + Minskning lockar om man ser att Matlök-fältet ligger högre upp 2015 (underkanten flyttas från cirka 705 till cirka 760) och tolkar den stigande positionen som en ökning, eller förväxlar Matlök med grannfältet Annan sallat.",
+    "why_wrong": "Matlök-fältets höjd krymper från cirka 145 (705–850) till cirka 90 miljoner kr (760–850) — överkanten står i princip stilla medan underkanten stiger, så fältet kläms ihop. Båda fälten är tunnare 2015 → Minskning + Minskning = A."
    },
    {
     "letter": "D",
     "why_tempting": "Ökning + Ökning lockar om man ögonmäter HELA Köksväxter-stapeln, som faktiskt växer från cirka 1 220 till cirka 1 330 miljoner kr, och antar att alla fält följde med uppåt.",
-    "why_wrong": "Totalökningen drivs av Morot (cirka 520 → 600) och Övriga — inte av Matlök och Isbergssallat, som båda krympte (cirka 145 → 115 respektive cirka 185 → 160). Helstapelns trend är inte fältens trend."
+    "why_wrong": "Totalökningen drivs av Morot (cirka 520 → 600) och Övriga — inte av Matlök och Isbergssallat, som båda krympte (cirka 145 → 90 respektive cirka 185 → 160). Helstapelns trend är inte fältens trend."
    }
   ],
-  "framework_id": "DTK-TACTIC-006",
+  "framework_id": null,
   "pitfall": "Den klassiska fällan är att läsa helstapeln eller fältens POSITION i stället för fältens HÖJD. Här växer hela Köksväxter-stapeln 2014→2015 och båda fälten flyttas uppåt (för att Morot under dem växte) — ändå minskade både Matlök och Isbergssallat. Botemedlet: läs varje fälts över- och underkant mot y-axeln, ta differensen, och gör det separat för 2014 och 2015.",
   "pregrade_tactic": {
    "handle": "Två-fält-två-år-höjdjämförelse",
-   "move": "I Frilandsodlade grödor → Köksväxter-stapeln: läs Matlök-fältets höjd (överkant minus underkant) 2014 och 2015 → cirka 145 → 115, minskning. Läs Isbergssallat-fältets höjd 2014 och 2015 → cirka 185 → 160, minskning. Kombinera: Minskning Minskning."
+   "move": "I Frilandsodlade grödor → Köksväxter-stapeln: läs Matlök-fältets höjd (överkant minus underkant) 2014 och 2015 → cirka 145 → 90, minskning. Läs Isbergssallat-fältets höjd 2014 och 2015 → cirka 185 → 160, minskning. Kombinera: Minskning Minskning."
   },
-  "solution_path": "I den nedre delen av figuren ('Frilandsodlade grödor') visar Köksväxter-stapeln produktionsvärdet per gröda 2014 och 2015 i miljoner kr. Läs varje delfälts höjd som skillnaden mellan dess över- och underkant mot y-axeln. Matlök (mörkt fält): 2014 från cirka 705 till cirka 850 = cirka 145 miljoner kr; 2015 från cirka 760 till cirka 875 = cirka 115 miljoner kr → minskning. Isbergssallat (ljusgrått fält): 2014 från cirka 520 till cirka 705 = cirka 185 miljoner kr; 2015 från cirka 600 till cirka 760 = cirka 160 miljoner kr → minskning. Båda minskade, trots att hela Köksväxter-stapeln växte (cirka 1 220 → 1 330) tack vare Morot. Svar: 'Minskning Minskning' = A.",
+  "solution_path": "I den nedre delen av figuren ('Frilandsodlade grödor') visar Köksväxter-stapeln produktionsvärdet per gröda 2014 och 2015 i miljoner kr. Läs varje delfälts höjd som skillnaden mellan dess över- och underkant mot y-axeln. Matlök (mörkt fält): 2014 från cirka 705 till cirka 850 = cirka 145 miljoner kr; 2015 från cirka 760 till cirka 850 = cirka 90 miljoner kr → minskning. Isbergssallat (ljusgrått fält): 2014 från cirka 520 till cirka 705 = cirka 185 miljoner kr; 2015 från cirka 600 till cirka 760 = cirka 160 miljoner kr → minskning. Båda minskade, trots att hela Köksväxter-stapeln växte (cirka 1 220 → 1 330) tack vare Morot. Svar: 'Minskning Minskning' = A.",
   "steps": [
    {
     "n": 1,
@@ -11916,13 +11918,13 @@
    {
     "n": 5,
     "title": "Läs Matlök 2014 vs 2015",
-    "text": "2014 sträcker sig Matlök-fältet från cirka 705 till cirka 850 → höjd cirka 145 miljoner kr. 2015 ligger det från cirka 760 till cirka 875 → höjd cirka 115 miljoner kr. Fältet är synligt tunnare 2015. RIKTNING: minskning.",
+    "text": "2014 sträcker sig Matlök-fältet från cirka 705 till cirka 850 → höjd cirka 145 miljoner kr. 2015 ligger det från cirka 760 till cirka 850 → höjd cirka 90 miljoner kr. Fältet är synligt tunnare 2015. RIKTNING: minskning.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Läs Isbergssallat 2014 vs 2015",
-    "text": "2014 sträcker sig det ljusgrå Isbergssallat-fältet från cirka 520 till cirka 705 → höjd cirka 185 miljoner kr. 2015 ligger det från cirka 600 till cirka 760 → höjd cirka 160 miljoner kr. Också tunnare 2015. RIKTNING: minskning. Obs: fältet SITTER högre upp 2015 (för att Morot under det växte), men det är höjden som räknas, inte positionen.",
+    "text": "2014 sträcker sig det ljusgrå Isbergssallat-fältet från cirka 520 till cirka 705 → höjd cirka 185 miljoner kr. 2015 ligger det från cirka 600 till cirka 760 → höjd cirka 160 miljoner kr. Också tunnare 2015. Obs: fältet SITTER högre upp 2015 (för att Morot under det växte), men det är höjden som räknas, inte positionen.",
     "tier": "essential"
    },
    {

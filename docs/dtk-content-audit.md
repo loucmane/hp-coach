@@ -162,6 +162,39 @@ var-2018-1 carry a wrong answer key** (kvant2 + verb2), which also means:
    only proves the other 26 exams' *kvant2 DTK* keys are figure-consistent;
    verbal passes were never checked.
 
+## Post-regen adversarial verification (2026-07-08/09) — FINAL LEDGER
+
+All 351 regenerated explanations (PR #191) were adversarially verified:
+two independently-lensed Sonnet skeptics per item (A: value accuracy,
+B: identity/structure), reading the actual figure raster and instructed
+to refute; any refutation or disagreement escalated to a senior
+Fable-tier adjudicator who re-measured the disputed figure reads
+(pixel-calibrated against printed axis ticks) and ruled.
+
+| Stage | Count |
+|---|---|
+| Verified | **351 / 351** |
+| Double-clean (both skeptics found nothing) | 295 |
+| Flagged → adjudicated | 56 |
+| — skeptic false positives | 42 |
+| — REAL_MINOR (wrong value/claim, derivation sound; minimally edited) | 10 |
+| — REAL_MAJOR (load-bearing misread; re-derived from the figure) | 4 |
+| **True defect rate after figure-grounded regen** | **14 / 351 ≈ 4 %** |
+
+The four majors: `var-2014-kvant1-DTK-040` (region XIV area),
+`var-2018-1-kvant2-DTK-037` (map navigation, Voxna belt),
+`host-2014-kvant2-DTK-035`, and `host-2020-kvant1-DTK-040` (wrong
+county — Gävleborg where the figure supports Jämtland; re-derived to
+D via the 100 %-stack at the vårsådd tick). All 14 corrections are
+persisted to both stores with `_meta.adjudicated` stamps.
+
+Notable adjudicator findings about the *pipeline*, not the prose:
+`host-2018-kvant2-DTK-037` false-flagged because its real chart (p21)
+was never extracted into `figures/dtk/`; `var-2019-kvant2-DTK-037`'s
+pie chart is printed inline on the question page rather than the
+figure page. Both are figure-extraction gaps to fix in the parser, and
+until then skeptics will keep false-flagging those two items.
+
 ## Final headline (645 questions)
 
 sight: with=56 / without=61 / mixed=98 (26 % with-sight) · defects:

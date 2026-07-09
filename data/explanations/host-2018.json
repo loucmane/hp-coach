@@ -10373,23 +10373,25 @@
   "_meta": {
    "generated_at": "2026-07-08",
    "model": "claude-fable-5",
-   "recipe": "figure-grounded-medfix-v1"
+   "recipe": "figure-grounded-medfix-v1",
+   "adjudicated": "2026-07-09",
+   "adjudication": "REAL_MINOR"
   },
   "distractors": [
    {
     "letter": "B",
     "why_tempting": "Ser du Chasmopskalk-mönstret på kartan och vill få med den i svaret är B ett av två alternativ som innehåller den — och 'yngre i norr' i B stämmer ju, så halva alternativet känns rätt.",
-    "why_wrong": "Chasmopskalk finns bara på den yttersta nordspetsen vid Böda — söder om Borgholm förekommer den inte alls. Sydliga delen domineras av det täta horisontella mönstret = Ortocerkalk (äldre), vilket ger A, inte B."
+    "why_wrong": "Chasmopskalk finns bara i den nordliga delen — söder om Borgholm förekommer den inte alls. Sydliga delen domineras av det täta horisontella mönstret = Ortocerkalk (äldre), vilket ger A, inte B."
    },
    {
     "letter": "C",
     "why_tempting": "C kastar om riktningarna (äldre i norr, yngre i söder) — lätt att råka byta om man resonerar 'äldre berggrund borde ligga längst norrut' eller helt enkelt förväxlar de två snarlika linjemönstren i legenden.",
-    "why_wrong": "Legenden skiljer dem på tätheten: yngre = glesa tunna linjer, äldre = täta mörkare linjer. På kartan ligger det glesa mönstret norr om Borgholm och det täta söder om — alltså yngre i norr och äldre i söder, som i A."
+    "why_wrong": "Legenden skiljer dem på tätheten: yngre = glesa tunna linjer, äldre = täta mörkare linjer. På kartan dominerar det glesa mönstret norr om Borgholm och det täta söder om — alltså yngre i norr och äldre i söder, som i A."
    },
    {
     "letter": "D",
-    "why_tempting": "Chasmopskalk ligger faktiskt i den nordliga delen (vid Böda), så 'Chasmopskalk i norr' känns kartriktigt om man förväxlar 'finns i norr' med 'vanligast i norr'.",
-    "why_wrong": "Frågan gäller vad som är VANLIGAST, inte vad som förekommer. Chasmopskalk täcker bara en liten spets vid Böda, medan Ortocerkalk (yngre) fyller nästan hela ytan norr om Borgholm. Norr = yngre, vilket ger A."
+    "why_tempting": "Chasmopskalk ligger faktiskt i den nordliga delen och täcker en iögonfallande bred zon kring Böda, så 'Chasmopskalk i norr' känns kartriktigt om man förväxlar 'stort och synligt i norr' med 'vanligast i norr'.",
+    "why_wrong": "Frågan gäller vad som är VANLIGAST, inte vad som syns. Chasmopskalk täcker bara den övre delen av norra halvan — bandet tar slut långt norr om Borgholm — medan Ortocerkalk (yngre) löper längs hela sträckan från nordspetsen till Borgholm och täcker störst areal. Norr = yngre, vilket ger A."
    }
   ],
   "framework_id": null,
@@ -10398,7 +10400,7 @@
    "handle": "Dominerande-mönster-per-zon",
    "move": "Dra en mental linje vid Borgholm. Identifiera den DOMINANTA fyllnadsstrukturen norr om linjen och sedan söder om linjen. Matcha varje mot legenden — jämför linjetäthet, inte bara linjeriktning — och bortse från småfläckar och kustremsor."
   },
-  "solution_path": "Använd ENDAST vänsterkartan (BERGGRUNDEN). Dra en linje i höjd med Borgholm. Norr om linjen täcks nästan hela ytan av tunna, glesa horisontella linjer = Ortocerkalk (yngre) enligt legenden; bara den yttersta nordspetsen vid Böda har Chasmopskalks streckade mönster. Söder om linjen täcks den stora centrala ytan (Alvaret ner mot Ottenby) av det tätare, mörkare horisontella mönstret = Ortocerkalk (äldre); Tessinisandsten, Alunskiffer och Ölandicusskiffer syns bara som smala remsor längs västkusten. Vanligast i norr = Ortocerkalk (yngre), vanligast i söder = Ortocerkalk (äldre) → alternativ A.",
+  "solution_path": "Använd ENDAST vänsterkartan (BERGGRUNDEN). Dra en linje i höjd med Borgholm. Norr om linjen löper mönstren i band: Chasmopskalks streckade mönster täcker en bred zon längs östsidan från nordspetsen ner förbi Böda, men bandet tar slut långt norr om Borgholm. De tunna, glesa horisontella linjerna = Ortocerkalk (yngre) löper däremot längs HELA sträckan från nordspetsen ända ner till Borgholm och täcker därför störst sammanlagd areal i norr. Söder om linjen täcks den stora centrala ytan (Alvaret ner mot Ottenby) av det tätare, mörkare horisontella mönstret = Ortocerkalk (äldre); Tessinisandsten, Alunskiffer och Ölandicusskiffer syns bara som smala remsor längs västkusten, och Chasmopskalk förekommer inte alls söder om Borgholm. Vanligast i norr = Ortocerkalk (yngre), vanligast i söder = Ortocerkalk (äldre) → alternativ A.",
   "steps": [
    {
     "n": 1,
@@ -10427,7 +10429,7 @@
    {
     "n": 5,
     "title": "Skanna nordliga delen",
-    "text": "Norr om Borgholm (upp mot Böda): nästan hela ytan fylls av de tunna, glesa horisontella linjerna = Ortocerkalk (yngre). Bara den allra yttersta nordspetsen runt Böda har Chasmopskalks streckade mönster — en liten areal jämfört med resten. Ortocerkalk (yngre) är klart vanligast i norr.",
+    "text": "Norr om Borgholm ser du bergarterna som långsträckta band. Chasmopskalks streckade mönster täcker en bred zon längs östsidan av norra Öland — från nordspetsen ner förbi Böda — men bandet tar slut långt norr om Borgholm. Ortocerkalk (yngre), de tunna glesa horisontella linjerna, löper däremot längs HELA sträckan från nordspetsen ända ner till Borgholm (med ett smalare band Ortocerkalk äldre längs västkusten). Räknat på hela nordliga delen täcker Ortocerkalk (yngre) därför störst areal — Chasmopskalk är stor men finns bara i den övre delen. Ortocerkalk (yngre) är vanligast i norr.",
     "tier": "essential"
    },
    {
@@ -10445,7 +10447,7 @@
    {
     "n": 8,
     "title": "Eliminera felalternativen",
-    "text": "B (yngre + Chasmopskalk): nej, sydliga delen har inget Chasmopskalk alls — den ligger bara vid Böda i norr. C (äldre + yngre): nej, omkastad riktning; det glesa mönstret ligger i norr, det täta i söder. D (Chasmopskalk + äldre): nej, Chasmopskalk täcker bara nordspetsen, inte merparten av norra halvan. A (yngre + äldre): stämmer i både riktning och kategori.",
+    "text": "B (yngre + Chasmopskalk): nej, sydliga delen har inget Chasmopskalk alls — den finns bara i norra delen. C (äldre + yngre): nej, omkastad riktning; det glesa mönstret dominerar i norr, det täta i söder. D (Chasmopskalk + äldre): nej, Chasmopskalk täcker visserligen en bred zon i nordost, men bandet tar slut långt norr om Borgholm — Ortocerkalk (yngre) löper hela sträckan och täcker mer av norra halvan. A (yngre + äldre): stämmer i både riktning och kategori.",
     "tier": "essential"
    },
    {
@@ -10457,7 +10459,7 @@
    {
     "n": 10,
     "title": "Sanity-check mot kartans helhet",
-    "text": "Chasmopskalk-området vid Böda är synligt mycket mindre än de två stora Ortocerkalk-zonerna. Inget alternativ där Chasmopskalk är 'vanligast' kan alltså stämma för någondera halvan — det eliminerar B och D direkt. Mellan A och C avgör riktningen: glesa linjer (yngre) i norr, täta linjer (äldre) i söder.",
+    "text": "Chasmopskalk-bandet är stort men begränsat till den nordöstra delen av ön, medan Ortocerkalk (yngre) löper längs hela norra halvan och Ortocerkalk (äldre) fyller nästan hela södra halvan. Inget alternativ där Chasmopskalk är 'vanligast' kan alltså stämma för någondera halvan — det eliminerar B och D. Mellan A och C avgör riktningen: glesa linjer (yngre) dominerar i norr, täta linjer (äldre) i söder.",
     "tier": "detail"
    },
    {

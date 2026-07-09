@@ -1139,32 +1139,34 @@
   "_meta": {
    "generated_at": "2026-07-08",
    "model": "claude-fable-5",
-   "recipe": "figure-grounded-medfix-v1"
+   "recipe": "figure-grounded-medfix-v1",
+   "adjudicated": "2026-07-08",
+   "adjudication": "REAL_MAJOR"
   },
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "1 500 km² lockar om du mäter fel område — t.ex. ett av de mindre grannområdena i norr — eller mäter XIV alldeles för snålt utan att lägga måtten mot skalstrecket.",
-    "why_wrong": "Sydsvenska höglandets skogsbygd (XIV) är kartans största B-område: ca 75 × 45 km mot skalstrecket. 1 500 km² vore bara 14 % av Skåne — alldeles för lite för ett område som dominerar hela norra kartbilden."
+    "why_tempting": "1 500 km² lockar om du mäter fel område — t.ex. ett av de mindre grannområdena i norr — eller bara en bråkdel av XIV utan att lägga måtten mot skalstrecket.",
+    "why_wrong": "Sydsvenska höglandets skogsbygd (XIV) är kartans största B-område och spänner nästan 100 km från västgränsen till nordostspetsen. 1 500 km² vore bara 14 % av Skåne — alldeles för lite för ett område som dominerar hela norra kartbilden."
    },
    {
     "letter": "B",
-    "why_tempting": "2 000 km² är den klassiska ögonmåttsgissningen — 'sådär tvåtusen' — om du hoppar över skalstrecket och chansar på ett runt tal i mitten.",
-    "why_wrong": "Mätt mot skalstrecket ger den omslutande rektangeln 75 × 45 ≈ 3 400 km², och även efter formjustering till ~80 % landar du på ≈ 2 700, inte 2 000."
+    "why_tempting": "2 000 km² är precis vad du får om du bara mäter XIV:s västra huvuddel (Örkelljunga–Hässleholmstrakten, ca 60 × 35 km) och missar att bandet fortsätter förbi Osby ända till Skånes nordostspets.",
+    "why_wrong": "XIV tar inte slut vid Hästveda — det östra bandet läggs till med ytterligare ca 700 km². Hela området summerar till ≈ 2 500–2 700 km², inte 2 000."
    },
    {
     "letter": "D",
-    "why_tempting": "3 500 km² är precis vad du får om du tar hela den omslutande rektangeln (75 × 45 ≈ 3 400) och rundar av — utan att dra av för att området inte fyller rektangeln.",
-    "why_wrong": "XIV fyller synligt inte sin rektangel: grannområdena I, XII, XV och XIII naggar kanterna. Med rimlig formjustering (~80 %) blir arean ≈ 2 700 km², och 3 500 vore 32 % av hela Skåne — för mycket."
+    "why_tempting": "3 500 km² är vad du landar på om du slår en enda grov rektangel över hela det bågformade området utan att dra av för att östra delen bara är ett smalt band.",
+    "why_wrong": "XIV fyller inte en sådan rektangel: XII:s bukt vid Hästveda och det smala östbandet lämnar stora tomrum. Blockvis mätning ger ≈ 2 500–2 700 km², och 3 500 vore 32 % av hela Skåne — för mycket."
    }
   ],
   "framework_id": null,
-  "pitfall": "Den klassiska fällan i arealfrågor på karta är dubbel: (1) fel område — XVI är den lilla nordvästhalvön, medan Sydsvenska höglandets skogsbygd är det stora XIV längs Smålandsgränsen; (2) rektangelmått utan formjustering — den omslutande rektangeln 75 × 45 km ger ~3 400 km² och lockar mot D, men området fyller bara ~80 % av rektangeln. Botemedlet: placera området geografiskt först, mät sedan mot skalstrecket och dra av för formen.",
+  "pitfall": "Den klassiska fällan i arealfrågor på karta är dubbel: (1) fel eller HALVT område — XVI är den lilla nordvästhalvön, och den som bara mäter XIV:s västra del (och missar bandet förbi Osby till nordostspetsen) landar kring 2 000 och nappar på B; (2) en enda stor rektangel över det bågformade området utan formavdrag lockar mot D. Botemedlet: placera området geografiskt, följ det till dess slut och mät blockvis mot skalstrecket.",
   "pregrade_tactic": {
-   "handle": "Skalstreck-rektangel-formjustering",
-   "move": "Hitta Sydsvenska höglandets skogsbygd i indelning B: det stora romersk-siffer-området (XIV) längs norra Smålandsgränsen på vänsterkartan. Mät bredd och höjd mot skalstrecket (0–50 km), multiplicera till en omslutande rektangel, dra av ca 20 % för formen. Jämför mot 1 500, 2 000, 2 700, 3 500."
+   "handle": "Skalstreck-block-summering",
+   "move": "Hitta Sydsvenska höglandets skogsbygd i indelning B: det stora romersk-siffer-området (XIV) längs hela Smålandsgränsen på vänsterkartan — från Örkelljunga förbi Osby till nordostspetsen. Mät det blockvis mot skalstrecket (0–50 km): västra huvuddelen ca 60 × 35 km plus östra bandet ca 35 × 20 km, summera och dra av lite för formen. Jämför mot 1 500, 2 000, 2 700, 3 500."
   },
-  "solution_path": "Frågan gäller indelning B på vänsterkartan — de 16 områden som markeras med romerska siffror. Sydsvenska höglandet är det småländska höglandet som sträcker sig ned i nordligaste Skåne, så dess skogsbygd är det stora området XIV som löper längs Smålandsgränsen i norra och mellersta Skåne (trakten kring Örkelljunga och norr om Hässleholm) — ett av kartans allra största B-områden. Mätt mot skalstrecket (0–50 km) spänner XIV över ungefär 75 km i öst-västlig riktning och 45 km i nord-sydlig, en omslutande rektangel på ca 3 400 km². Området fyller inte hela rektangeln — grannområden som I, XII och XV naggar den i kanterna — så justera ned till ungefär 80 %: ≈ 2 700 km². Rimlighetskoll: 2 700 av Skånes ca 11 000 km² är en dryg fjärdedel, vilket stämmer med att XIV är kartans största enskilda B-område. Närmaste alternativ är C, 2 700 km².",
+  "solution_path": "Frågan gäller indelning B på vänsterkartan — de 16 områden som markeras med romerska siffror (kartan namnger dem inte, så området måste placeras geografiskt). Sydsvenska höglandet är det småländska höglandet som sträcker sig ned i nordligaste Skåne, så dess skogsbygd är det stora bandet XIV som löper längs HELA Smålandsgränsen: från trakten väster om Örkelljunga, förbi Osby, ända ut till Skånes nordostspets — kartans största B-område. Mätt mot skalstrecket (0–50 km) är bandet bågformat och mäts bäst i två block: den västra huvuddelen (Örkelljunga–Klippan–Hässleholmstrakten) ca 60 × 35 km ≈ 2 100 km², och det smalare östra bandet (förbi Osby till nordostspetsen) ca 35 × 20 km ≈ 700 km². Summa ≈ 2 800 km²; dra av något för XII:s bukt vid Hästveda och gränsens sneddragning → ≈ 2 500–2 700 km². Rimlighetskoll: 2 700 av Skånes ca 11 000 km² är en dryg fjärdedel, vilket stämmer med att XIV är kartans största enskilda B-område. Närmaste alternativ är C, 2 700 km².",
   "steps": [
    {
     "n": 1,
@@ -1175,43 +1177,43 @@
    {
     "n": 2,
     "title": "Rätt karta och rätt indelning",
-    "text": "Använd VÄNSTERKARTAN ('Skåne indelat i jordbruksområden 1937'). Den kombinerar två indelningar: indelning A är 8 områden markerade med raster (deras namn står i legenden under kartan), indelning B är 16 områden markerade med romerska siffror I–XVI. Frågan säger 'enligt indelning B' — alltså är det de romerska siffrorna, inte rastren, som avgränsar området.",
+    "text": "Använd VÄNSTERKARTAN ('Skåne indelat i jordbruksområden 1937'). Den kombinerar två indelningar: indelning A är 8 områden markerade med raster (deras namn står i legenden under kartan), indelning B är 16 områden markerade med romerska siffror I–XVI. Frågan säger 'enligt indelning B' — alltså är det de romerska siffrorna, inte rastren, som avgränsar området. Observera att B-områdena inte namnges på kartan: du måste placera namnet geografiskt.",
     "tier": "essential"
    },
    {
     "n": 3,
     "title": "Placera området geografiskt",
-    "text": "Sydsvenska höglandet är det småländska höglandet, som sträcker sig ned i Skånes nordligaste del. Dess skogsbygd är därför det stora B-området längs norra gränsen mot Småland: område XIV, som täcker trakten kring Örkelljunga och landet norr om Hässleholm. Notera fällan: XVI ligger också långt norrut men är den LILLA halvön i nordvästra hörnet (Kullen/Bjäre) — inte rätt område.",
+    "text": "Sydsvenska höglandet är det småländska höglandet, som sträcker sig ned i Skånes nordligaste del. Dess skogsbygd är därför det stora B-området längs norra gränsen mot Småland: område XIV. Följ det hela vägen — det börjar väster om Örkelljunga, passerar norr om Hässleholm, fortsätter förbi Osby och når ända ut till Skånes nordostspets. Notera fällan: XVI ligger också långt norrut men är den LILLA halvön i nordvästra hörnet (Kullen/Bjäre) — inte rätt område.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Storleksintryck innan du mäter",
-    "text": "Skåne är totalt ca 11 000 km² och indelning B delar det i 16 områden — i snitt runt 700 km² per område. XIV är synligt ett av kartans allra största B-områden, alltså väntar du dig ett flertal gånger snittet. Det utesluter redan små tal och pekar mot alternativens övre halva.",
+    "text": "Skåne är totalt ca 11 000 km² och indelning B delar det i 16 områden — i snitt runt 700 km² per område. XIV är synligt kartans allra största B-område, alltså väntar du dig ett flertal gånger snittet. Det utesluter redan små tal och pekar mot alternativens övre halva.",
     "tier": "detail"
    },
    {
     "n": 5,
-    "title": "Mät mot skalstrecket",
-    "text": "Skalstrecket nere till höger på vänsterkartan går från 0 till 50 km. För över det måttet på område XIV: öst-västlig utsträckning ungefär 75 km, nord-sydlig ungefär 45 km. Den omslutande rektangeln blir 75 × 45 ≈ 3 400 km².",
+    "title": "Mät blockvis mot skalstrecket",
+    "text": "Skalstrecket nere till höger på vänsterkartan går från 0 till 50 km. XIV är bågformat — brett i väster, smalt band i öster — så mät det i två block i stället för en enda rektangel. Västra huvuddelen (Örkelljunga–Klippan–Hässleholmstrakten): ungefär 60 km bred och 35 km hög ≈ 2 100 km². Östra bandet (förbi Osby ut till nordostspetsen): ungefär 35 km långt och 20 km brett ≈ 700 km². Summa ≈ 2 800 km².",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Justera för formen",
-    "text": "XIV fyller inte hela sin rektangel — grannområdena (I i väster, XII i öster, XV och XIII i söder) naggar den i kanterna, så området täcker uppskattningsvis 80 % av rektangeln. 0,8 × 3 400 ≈ 2 700 km². Det är formjusteringen som skiljer C från D.",
+    "text": "Blocken är nästan fyllda men inte helt: XII:s bukt vid Hästveda naggar bandet underifrån och Smålandsgränsen löper snett i stället för rakt. Dra av ungefär 5–10 %: ≈ 2 500–2 700 km². Att du mäter HELA området skiljer C från B; att du inte slår en enda stor rektangel över alltihop skiljer C från D.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Sanity-check mot hela Skåne",
-    "text": "2 700 / 11 000 ≈ 25 % — en dryg fjärdedel av Skåne, rimligt för kartans största enskilda B-område. 3 500 km² (32 %) skulle kräva att området fyllde hela sin rektangel, vilket det synligt inte gör. 1 500 km² (14 %) är för lite för ett område som dominerar hela norra kartbilden.",
+    "text": "2 700 / 11 000 ≈ 25 % — en dryg fjärdedel av Skåne, rimligt för kartans största enskilda B-område. 2 000 km² (18 %) motsvarar bara den västra halvan av bandet. 3 500 km² (32 %) skulle kräva att en stor rektangel över hela bågen vore fylld, men östra delen är bara ett smalt band.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Vanlig fälla: fel romerskt nummer",
-    "text": "Siffrornas ordning på kartan följer ingen enkel geografi — XVI är den lilla nordvästra halvön, medan det stora norra området är XIV. Den som råkar mäta XVI får bara några hundra km² och hittar inget alternativ som passar. Placera området via geografin (Sydsvenska höglandet = Smålandsgränsen), inte via siffrans storlek.",
+    "title": "Vanlig fälla: fel romerskt nummer eller halva området",
+    "text": "Siffrornas ordning på kartan följer ingen enkel geografi — XVI är den lilla nordvästra halvön, medan det stora norra bandet är XIV. Och XIV tar inte slut vid Hässleholmstrakten: det fortsätter förbi Osby ända till nordostspetsen. Den som mäter XVI får bara några hundra km², och den som bara mäter västra delen av XIV landar kring 2 000 och nappar på fel alternativ. Placera området via geografin (Sydsvenska höglandet = Smålandsgränsen) och följ det till dess slut.",
     "tier": "detail"
    },
    {
@@ -1223,17 +1225,17 @@
    {
     "n": 10,
     "title": "Välj närmaste alternativ",
-    "text": "Uppskattningen ≈ 2 700 km² träffar alternativ C exakt, och sanity-checken utesluter både 1 500, 2 000 och 3 500. Svaret är C.",
+    "text": "Uppskattningen ≈ 2 500–2 700 km² ligger klart närmast alternativ C, och sanity-checken utesluter 1 500, 2 000 och 3 500. Svaret är C.",
     "tier": "essential"
    },
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Svaret är C (2 700 km²). Insikten i en mening: i arealfrågor på karta = placera området geografiskt i RÄTT indelning, mät bredd och höjd mot skalstrecket, justera rektangeln nedåt för oregelbunden form — och sanity-checka mot totalytan.",
+    "text": "Svaret är C (2 700 km²). Insikten i en mening: i arealfrågor på karta = placera området geografiskt i RÄTT indelning, följ det till dess HELA utsträckning, mät blockvis mot skalstrecket och summera — och sanity-checka mot totalytan.",
     "tier": "essential"
    }
   ],
-  "technique": "DTK-strategi för arealfrågor på kartor: (1) identifiera rätt indelning och rätt område via kartans markeringar, (2) mät områdets utsträckning i två riktningar mot skalstrecket, (3) approximera med en omslutande rektangel och justera nedåt för oregelbunden form, (4) räkna i km² (kvadratenheten), (5) sanity-checka mot ett känt totalmått som hela Skånes yta. Triggern: 'hur stor var arean' → skalstreck + två mått + formjustering."
+  "technique": "DTK-strategi för arealfrågor på kartor: (1) identifiera rätt indelning och rätt område via kartans markeringar, (2) följ områdets HELA utsträckning innan du mäter — avlånga områden delas i block, (3) mät varje block i två riktningar mot skalstrecket och summera, (4) räkna i km² (kvadratenheten), (5) sanity-checka mot ett känt totalmått som hela Skånes yta. Triggern: 'hur stor var arean' → skalstreck + blockvis mätning + summering."
  },
  "var-2014-kvant1-KVA-013": {
   "_meta": {

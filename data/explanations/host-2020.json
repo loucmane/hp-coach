@@ -11032,15 +11032,17 @@
   "_meta": {
    "generated_at": "2026-07-08",
    "model": "claude-fable-5",
-   "recipe": "figure-grounded-medfix-v1"
+   "recipe": "figure-grounded-medfix-v1",
+   "adjudicated": "2026-07-09",
+   "adjudication": "REAL_MAJOR"
   },
-  "framework_id": "DTK-TACTIC-001",
-  "solution_path": "Teckenförklaringen (nedre högra panelen) ger skiktens ordning nedifrån och upp: Skogsarbete (lodräta streck), Flottningsarbete (svart), Vägarbete, Övrigt arbete — och överst Jordbruksarbete som den vita ytan upp till 100 %. Steg 1: hitta vårsåddens markör i tidsbanden över varje läns diagram. Steg 2: vid den tidpunkten, läs av skogsarbetets (streckade bottenskiktets) tjocklek i varje län. Endast i Gävleborgs län är skogsarbetet nere vid cirka 4 % vid vårsådden — i de övriga länen är bottenskiktet tydligt tjockare. Steg 3: i Gävleborg vid samma tidpunkt når hela den skuggade stapeln (skog + flottning + väg + övrigt) upp till cirka 25 % på y-axeln. Jordbruksarbete är den vita ytan därovanför: 100 − 25 = cirka 75 %. Svar D.",
+  "framework_id": null,
+  "solution_path": "Teckenförklaringen (nedre högra panelen) ger skiktens ordning nedifrån och upp: Skogsarbete (lodräta streck), Flottningsarbete (svart), Vägarbete, Övrigt arbete — och överst Jordbruksarbete som den vita ytan upp till 100 %. Steg 1: hitta vårsåddens markör i tidsbanden över varje läns diagram — den lilla streckade markeringen i det vita fältet, strax efter 'Vårbruket börjar'. Steg 2: vid den tidpunkten, läs av skogsarbetets (streckade bottenskiktets) tjocklek i varje län. Endast i Jämtlands län är skogsarbetet nere vid cirka 4 % vid vårsådden — i de övriga länen ligger bottenskiktet kring 7–14 %. Steg 3: i Jämtland vid samma tidpunkt når hela den skuggade stapeln (skog + flottning + väg + övrigt) upp till cirka 25 % på y-axeln. Jordbruksarbete är den vita ytan därovanför: 100 − 25 = cirka 75 %. Svar D.",
   "technique": "DTK-strategi för tvåstegsläsning i 100 %-staplade ytdiagram: hitta tidpunkten via händelsemarkören (här vårsådd) i tidsbanden ovanför diagrammet, gå sedan rakt NER i ytdiagrammet och läs av rätt skikt vid den lodräta linjen. Triggern: 'vid tidpunkten för X, hur stor andel av Y' → två koordinater (tidpunkt + skikt), inte en.",
-  "pitfall": "Två klassiska fällor samverkar här: (1) att förväxla skikten — svart är FLOTTNINGSARBETE, inte skogsarbete; skogsarbete är det streckade bottenskiktet — vilket får dig att leta 4 % i fel band och hamna i fel län; (2) att tappa tidpunkten — vårsåddens markör sitter i tidsbanden och varierar mellan länen. Botemedlet: lås först skiktordningen i teckenförklaringen, hitta sedan vårsåddsmarkören per län, och läs allt längs samma lodräta linje.",
+  "pitfall": "Två klassiska fällor samverkar här: (1) att förväxla skikten — svart är FLOTTNINGSARBETE, inte skogsarbete; skogsarbete är det streckade bottenskiktet — vilket får dig att leta 4 % i fel band och hamna i fel län; (2) att nöja sig med 'länet där bottenskiktet ser tunnast ut' utan att läsa exakt vid vårsåddsmarkören — flera län ligger på 7–14 % och bara Jämtland på 4 %. Botemedlet: lås först skiktordningen i teckenförklaringen, hitta sedan vårsåddsmarkören per län, och läs allt längs samma lodräta linje.",
   "pregrade_tactic": {
    "handle": "Lodrät linje vid markören",
-   "move": "Lås skiktordningen i teckenförklaringen (skogsarbete = streckat nederst, svart = flottning, vitt överst = jordbruk). Hitta vårsåddsmarkören per län, leta länet där det streckade bottenskiktet är 4 % (Gävleborg), och läs jordbruket som 100 minus stapelns överkant — cirka 75 %."
+   "move": "Lås skiktordningen i teckenförklaringen (skogsarbete = streckat nederst, svart = flottning, vitt överst = jordbruk). Hitta vårsåddsmarkören per län, leta länet där det streckade bottenskiktet är 4 % (Jämtland), och läs jordbruket som 100 minus stapelns överkant — cirka 75 %."
   },
   "steps": [
    {
@@ -11058,31 +11060,31 @@
    {
     "n": 3,
     "title": "Vad är 'vårsådd' i diagrammet?",
-    "text": "Vårsådden är en händelsemarkör i de horisontella tidsbanden över varje läns ytdiagram — en specifik tidpunkt på våren, mellan sista snön och höskörden. Vilket mönster som betyder vårsådd står i teckenförklaringens övre band.",
+    "text": "Vårsådden är en händelsemarkör i de horisontella tidsbanden över varje läns ytdiagram — den lilla streckade markeringen i det vita fältet, strax efter 'Vårbruket börjar'. Vilket mönster som betyder vårsådd står i teckenförklaringens övre band.",
     "tier": "essential"
    },
    {
     "n": 4,
     "title": "Vårsåddens tidpunkt varierar",
-    "text": "Varje län har två tidsband (t.ex. Hälsingland och Gästrikland för Gävleborg), och vårsådden infaller något olika — tidigare söderut, senare norrut. Leta upp markören i varje läns band innan du läser av ytdiagrammet.",
+    "text": "Varje län har två tidsband (t.ex. Härjedalen och Jämtland för Jämtlands län), och vårsådden infaller något olika — tidigare söderut, senare norrut och i fjälltrakterna. Leta upp markören i varje läns band innan du läser av ytdiagrammet; i de flesta länen ligger den kring slutet av maj.",
     "tier": "detail"
    },
    {
     "n": 5,
     "title": "Skanna länen efter 4 % skogsarbete vid vårsådden",
-    "text": "Vid vårsåddens tidpunkt i varje län: läs av det streckade bottenskiktets tjocklek på y-axeln. I Norrbotten, Västerbotten, Jämtland och Västernorrland är skogsarbetet fortfarande tydligt tjockare än 4 % vid vårsådden. I Gävleborg har skogsarbetet sjunkit brantast — där är det streckade bottenskiktet bara cirka 4 % tjockt vid vårsådden. Gävleborg är länet vi söker.",
+    "text": "Vid vårsåddens tidpunkt i varje län: läs av det streckade bottenskiktets tjocklek på y-axeln. I Norrbotten är skogsarbetet kring 7–8 %, i Västerbotten cirka 10–15 %, i Västernorrland cirka 12 % och i Gävleborg cirka 9–14 % — alla tydligt över 4 %. Endast i Jämtland har det streckade bottenskiktet tunnats ut till cirka 4 % vid vårsådden. Jämtland är länet vi söker.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Dra en lodrät linje vid vårsådden i Gävleborg",
-    "text": "Hitta vårsåddens markör i Gävleborgs tidsband och dra en lodrät linje rakt ner genom ytdiagrammet vid den tidpunkten. Alla avläsningar görs längs den linjen.",
+    "title": "Dra en lodrät linje vid vårsådden i Jämtland",
+    "text": "Hitta vårsåddens markör i Jämtlands tidsband (slutet av maj) och dra en lodrät linje rakt ner genom ytdiagrammet vid den tidpunkten. Alla avläsningar görs längs den linjen.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Läs av jordbruksarbetet i Gävleborg",
-    "text": "Längs den lodräta linjen: skogsarbete (streckat, nederst) är cirka 4 %, och ovanpå det ligger flottningsarbete (svart — tydligt just här, flottningen kommer igång när isen släppt) samt de tunna skikten vägarbete och övrigt arbete. Tillsammans når hela den skuggade stapeln upp till cirka 25 % på y-axeln. Jordbruksarbete är den vita ytan från cirka 25 % upp till 100 % — alltså cirka 75 %.",
+    "title": "Läs av jordbruksarbetet i Jämtland",
+    "text": "Längs den lodräta linjen: skogsarbete (streckat, nederst) är cirka 4 %, och ovanpå det ligger flottningsarbete (svart — tjockt just här, flottningen kommer igång när isen släppt, cirka 4 till 16 %) samt skikten vägarbete och övrigt arbete upp till stapelns överkant. Tillsammans når hela den skuggade stapeln upp till cirka 25 % på y-axeln. Jordbruksarbete är den vita ytan från cirka 25 % upp till 100 % — alltså cirka 75 %.",
     "tier": "essential"
    },
    {
@@ -11094,7 +11096,7 @@
    {
     "n": 9,
     "title": "Korsa mot alternativen",
-    "text": "A 25 % — det är den skuggade stapelns höjd, inte den vita ytan. B 40 % — skulle kräva att stapelns överkant låg vid 60 %, långt över det avlästa cirka 25 %. C 60 % — skulle kräva överkant vid 40 %, fortfarande för högt. D 75 % — matchar överkant vid cirka 25 %. Endast D passar.",
+    "text": "A 25 % — det är den skuggade stapelns höjd, inte den vita ytan. B 40 % — skulle kräva att stapelns överkant låg vid 60 %, långt över det avlästa cirka 25 %. C 60 % — skulle kräva överkant vid 40 %; så högt når stapeln bara i de nordliga länen, inte i Jämtland. D 75 % — matchar överkant vid cirka 25 %. Endast D passar.",
     "tier": "essential"
    },
    {
@@ -11113,18 +11115,18 @@
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "25 % är exakt den skuggade stapelns höjd vid Gävleborgs vårsådd — läser du var stapelns överkant ligger och stannar där, i stället för att ta den vita ytan därovanför, landar du på 25.",
+    "why_tempting": "25 % är exakt den skuggade stapelns höjd vid Jämtlands vårsådd — läser du var stapelns överkant ligger och stannar där, i stället för att ta den vita ytan därovanför, landar du på 25.",
     "why_wrong": "Jordbruksarbete är den VITA ytan ovanför stapeln, från cirka 25 % upp till 100 %. Dess bredd är 100 − 25 = 75 %, alltså D — 25 % är komplementet, inte svaret."
    },
    {
     "letter": "B",
-    "why_tempting": "40 % lockar om man läser av fel län — i ett nordligare län, där skogsarbetet fortfarande är tjockt vid vårsådden, är den vita jordbruksytan klart smalare — eller om man förväxlar det svarta flottningsskiktet med skogsarbete och därför letar 4 % på fel ställe.",
-    "why_wrong": "Skogsarbete är det STRECKADE bottenskiktet, inte det svarta (svart = flottning). Länet med 4 % skogsarbete vid vårsådden är Gävleborg, och där ligger stapelns överkant vid cirka 25 % → jordbruk cirka 75 %, inte 40 %."
+    "why_tempting": "40 % lockar om man hamnar i fel län och dessutom läser fel yta — i de nordliga länen ligger stapelns överkant kring 35–40 % vid vårsådden, och rapporterar man den skuggade stapelns höjd där i stället för den vita ytan landar man kring 40.",
+    "why_wrong": "Skogsarbete är det STRECKADE bottenskiktet, inte det svarta (svart = flottning), och länet med 4 % skogsarbete vid vårsådden är Jämtland. Där ligger stapelns överkant vid cirka 25 % → jordbruk cirka 75 %, inte 40 %."
    },
    {
     "letter": "C",
-    "why_tempting": "60 % känns nära rätt om man läser stapelns överkant slarvigt och tror att den ligger vid cirka 40 % — till exempel om man råkar läsa vid flottningstoppen strax intill i stället för exakt vid vårsåddsmarkören.",
-    "why_wrong": "Precis vid vårsåddens lodräta linje i Gävleborg ligger stapelns överkant vid cirka 25 %, inte 40 %. Den vita jordbruksytan är därmed cirka 75 % bred — D, inte C."
+    "why_tempting": "60 % är ungefär jordbruksandelen vid vårsådden i de nordligare länen (Norrbotten, Västerbotten), där stapeln når 35–40 % — väljer man fel län för att man inte kontrollerade 4 %-villkoret exakt hamnar man här.",
+    "why_wrong": "I de länen är skogsarbetet 7–15 % vid vårsådden, inte 4 %. Precis vid vårsåddens lodräta linje i Jämtland ligger stapelns överkant vid cirka 25 %, så den vita jordbruksytan är cirka 75 % bred — D, inte C."
    }
   ]
  },

@@ -11399,32 +11399,34 @@
   "_meta": {
    "generated_at": "2026-07-08",
    "model": "claude-fable-5",
-   "recipe": "figure-grounded-medfix-v1"
+   "recipe": "figure-grounded-medfix-v1",
+   "adjudicated": "2026-07-08",
+   "adjudication": "REAL_MAJOR"
   },
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Strax innanför vinterns NK-markör, vid ungefär 5-milsringen, ligger Råneå (R). Tar man av misstag R-markören som vintervärde blir differensen cirka 11 − 5 = 6 mil längre — B ser då helt logisk ut.",
-    "why_wrong": "Vinterns Nederkalix-markör är den som är märkt NK, och den ligger vid cirka 8 mil, inte 5. 11 − 8 = 3 mil, alternativ A. Gapet mellan sommar-NK och vinter-NK är dessutom synbart mindre än en hel ringbredd (5 mil), så 6 mil kan uteslutas direkt på ögonmått."
+    "why_tempting": "I vinterknippet rakt uppåt ligger Råneå (R) närmast centrum, vid cirka 3 mil. Tar man av misstag R-rutan som vintervärde blir differensen cirka 9 − 3 = 6 mil längre — B ser då helt logisk ut.",
+    "why_wrong": "Vinterns Nederkalix-markör är den som är märkt NK, och den ligger strax utanför 5-milsringen vid cirka 6 mil, inte 3. 9 − 6 = 3 mil, alternativ A. Gapet mellan sommar-NK och vinter-NK är dessutom synbart mindre än en hel ringbredd (5 mil), så 6 mil kan uteslutas direkt på ögonmått."
    },
    {
     "letter": "C",
-    "why_tempting": "Rätt magnitud men fel RIKTNING. Frestande om man antar att båtresa på öppet vatten borde vara den kortare vägen, eller om man råkar räkna vinter minus sommar (8 − 11) och tappar tecknet.",
-    "why_wrong": "Figuren visar det omvända: sommar-NK ligger vid 10-milsringen, LÄNGRE ut än vinter-NK vid cirka 8 mil. Sommarvägen är alltså 3 mil längre, inte kortare."
+    "why_tempting": "Rätt magnitud men fel RIKTNING. Frestande om man antar att båtresa på öppet vatten borde vara den kortare vägen, eller om man råkar räkna vinter minus sommar (6 − 9) och tappar tecknet.",
+    "why_wrong": "Figuren visar det omvända: sommar-NK ligger strax innanför 10-milsringen vid cirka 9 mil, LÄNGRE ut än vinter-NK vid cirka 6 mil. Sommarvägen är alltså 3 mil längre, inte kortare."
    },
    {
     "letter": "D",
     "why_tempting": "Kombinerar två fel som var för sig är lätta att göra: R-förväxlingen (som ger 6 i stället för 3) och inverterad riktning (kortare i stället för längre).",
-    "why_wrong": "Både magnitud och riktning är fel. Avläst mot ringarna: sommar ≈ 11 mil, vinter ≈ 8 mil, differens 3 mil med sommaren som den längre — alternativ A."
+    "why_wrong": "Både magnitud och riktning är fel. Avläst mot ringarna: sommar ≈ 9 mil, vinter ≈ 6 mil, differens 3 mil med sommaren som den längre — alternativ A."
    }
   ],
-  "framework_id": "DTK-TACTIC-005",
-  "pitfall": "Klassiska fällan i det cirkulära säsongsdiagrammet är att (a) förväxla vilka markörer som hör till vinter respektive sommar och (b) läsa av fel markör nära centrum — Råneå (R) ligger vid cirka 5 mil alldeles innanför vinterns NK vid cirka 8 mil. Botemedlet: lås först månadssektorerna (vinter = december–mars, sommar = sjöfartssäsongens båge maj–september), leta sedan upp etiketten NK i varje halva och mät mot milringarna 5, 10, 15, 20.",
+  "framework_id": null,
+  "pitfall": "Klassiska fällan i det cirkulära säsongsdiagrammet är att (a) förväxla vilka markörer som hör till vinter respektive sommar och (b) plocka fel ruta i vinterknippet rakt uppåt, där TRE svarta rutor ligger nästan i rad: Råneå (R) vid cirka 3 mil, NK strax utanför 5-milsringen vid cirka 6 mil och Överkalix (ÖK) vid cirka 9 mil. Läser du ÖK-rutan som NK blir differensen mot sommaren nästan noll — inget alternativ stämmer, en tydlig signal att du tagit fel ruta. Botemedlet: lås först månadssektorerna (vinter = december–mars, sommar = sjöfartssäsongens båge maj–september), leta sedan upp etiketten NK i varje halva och mät mot milringarna 5, 10, 15, 20.",
   "pregrade_tactic": {
    "handle": "Två-NK-mot-ringarna",
-   "move": "Hitta NK i vinterhalvan (uppåt, december/januari) och NK i sommarhalvan (nedåt, juni/juli under sjöfartssäsongen). Mät båda avstånden från centrum mot ringskalan (vinter ≈ 8 mil, sommar ≈ 11 mil) och ta differensen i frågans riktning: sommar minus vinter."
+   "move": "Hitta NK i vinterhalvan (uppåt, december/januari — mittenrutan i stapeln R–NK–ÖK) och NK i sommarhalvan (nedåt, juni/juli under sjöfartssäsongen). Mät båda avstånden från centrum mot ringskalan (vinter ≈ 6 mil, sommar ≈ 9 mil) och ta differensen i frågans riktning: sommar minus vinter."
   },
-  "solution_path": "Diagrammet visar handelsmannen Stenholms resor som markörer runt Luleå (L) i centrum: månaderna ligger i den yttre ringen och avståndet läses mot de koncentriska ringarna 5, 10, 15 och 20 mil. Nederkalix (NK) förekommer både på vinterhalvan och sommarhalvan. Vinterns NK-markör (rakt uppåt, i december–januari-sektorn) ligger mellan 5- och 10-milsringen, cirka 8 mil från centrum. Sommarens NK-markörer (i juni/juli respektive augusti, under sjöfartssäsongens båge) ligger vid eller strax utanför 10-milsringen, cirka 11 mil. Differensen: 11 − 8 = cirka 3 mil, och sommarvägen är den längre. Svar: A, 3 mil längre.",
+  "solution_path": "Diagrammet visar handelsmannen Stenholms resor som markörer runt Luleå (L) i centrum: månaderna ligger i den yttre ringen och avståndet läses mot de koncentriska ringarna 5, 10, 15 och 20 mil. Nederkalix (NK) förekommer både på vinterhalvan och sommarhalvan. Vinterns NK-markör sitter i knippet av nästan lodräta linjer rakt uppåt (december–januari-sektorn), där tre svarta rutor ligger i rad: R närmast centrum (cirka 3 mil), NK strax utanför 5-milsringen (cirka 6 mil) och ÖK längst ut (cirka 9 mil). Sommarens NK-markörer (rakt nedåt i juni/juli respektive snett nedåt vänster i augusti/september, under sjöfartssäsongens båge) ligger båda strax innanför 10-milsringen, cirka 9 mil. Differensen: 9 − 6 = cirka 3 mil, och sommarvägen är den längre. Svar: A, 3 mil längre.",
   "steps": [
    {
     "n": 1,
@@ -11435,7 +11437,7 @@
    {
     "n": 2,
     "title": "Orientera dig i diagrammet",
-    "text": "Figuren 'Handelsmannen Abraham Stenholms marknadsbesök' är CIRKULÄR. Yttersta ringen är årets tolv månader (januari överst till höger, motsols runt). I centrum ligger Luleå (L). Avstånd läses mot de koncentriska ringarna märkta 5, 10, 15 och 20 mil. Teckenförklaringen ger orterna: G = Gällivare, J = Jokkmokk, NK = Nederkalix, ÖK = Överkalix, R = Råneå, L = Luleå. De svarta rektanglarna anger hur länge marknadsbesöken varade — inte avstånd.",
+    "text": "Figuren 'Handelsmannen Abraham Stenholms marknadsbesök' är CIRKULÄR. Yttersta ringen är årets tolv månader (januari överst till höger, medsols runt). I centrum ligger Luleå (L). Avstånd läses mot de koncentriska ringarna märkta 5, 10, 15 och 20 mil. Teckenförklaringen ger orterna: G = Gällivare, J = Jokkmokk, NK = Nederkalix, ÖK = Överkalix, R = Råneå, L = Luleå. De svarta rektanglarna anger hur länge marknadsbesöken varade — deras LÄGE på linjen ger avståndet, deras längd tiden.",
     "tier": "essential"
    },
    {
@@ -11447,25 +11449,25 @@
    {
     "n": 4,
     "title": "Hitta alla NK-markörer",
-    "text": "Nederkalix (NK) dyker upp på flera ställen: en NK-markör rakt uppåt i december/januari-sektorn (vinterresan) och NK-markörer på sommarhalvan — en rakt nedåt i juni/juli och en i augusti-sektorn. Alla mäts från centrum (L) mot milringarna.",
+    "text": "Nederkalix (NK) dyker upp på flera ställen: en NK-markör rakt uppåt i december/januari-sektorn (vinterresan) och NK-markörer på sommarhalvan — en rakt nedåt i juni/juli och en snett nedåt vänster i augusti/september-sektorn. Alla mäts från centrum (L) mot milringarna.",
     "tier": "essential"
    },
    {
     "n": 5,
     "title": "Mät vintervägen",
-    "text": "Vinterns NK-markör (uppåt, december/januari) ligger mellan 5- och 10-milsringen, en bit över mitten mot 10 — cirka 8 mil från Luleå. Se upp: strax innanför, vid ungefär 5-milsringen, ligger Råneå (R). Läs etiketten NK, inte bara närmaste markör.",
+    "text": "Rakt uppåt ligger TRE svarta rutor nästan i rad på var sin linje — läs etiketterna noga. Närmast centrum ligger Råneå (R) vid cirka 3 mil, sedan kommer NK strax utanför 5-milsringen vid cirka 6 mil, och längst ut ligger Överkalix (ÖK) vid cirka 9 mil. Vinterns Nederkalix-väg är alltså cirka 6 mil. Plockar du fel ruta i stapeln får du fel svar.",
     "tier": "essential"
    },
    {
     "n": 6,
     "title": "Mät sommarvägen",
-    "text": "Sommarens NK-markörer (juni/juli rakt nedåt, och augusti) ligger vid eller strax utanför 10-milsringen — cirka 11 mil från Luleå. Att båda sommarmarkörerna ligger på samma radie är en bra kontroll: sommarresan till Nederkalix var konsekvent runt 10–11 mil.",
+    "text": "Sommarens NK-markörer (juni/juli rakt nedåt, och augusti/september snett nedåt vänster) ligger båda strax innanför 10-milsringen — cirka 9 mil från Luleå. Att båda sommarmarkörerna ligger på samma radie är en bra kontroll: sommarresan till Nederkalix var konsekvent cirka 9 mil.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Räkna differensen",
-    "text": "Sommarväg − vinterväg ≈ 11 − 8 = 3 mil. Positivt tecken betyder att sommarvägen var LÄNGRE. Exakta ögonmått spelar mindre roll än relationen: sommar-NK ligger tydligt en bit utanför vinter-NK, och gapet är klart mindre än en hel ringbredd om 5 mil — alltså 3 mil, inte 6.",
+    "text": "Sommarväg − vinterväg ≈ 9 − 6 = 3 mil. Positivt tecken betyder att sommarvägen var LÄNGRE. Exakta ögonmått spelar mindre roll än relationen: sommar-NK ligger tydligt en bit utanför vinter-NK, och gapet är klart mindre än en hel ringbredd om 5 mil — alltså 3 mil, inte 6.",
     "tier": "essential"
    },
    {
@@ -11477,7 +11479,7 @@
    {
     "n": 9,
     "title": "Rimlighetskoll: varför längre på sommaren?",
-    "text": "På vintern kunde man färdas med ren och ackja rakare vägar över snö och is; på sommaren gick resan med båt längs kusten under sjöfartssäsongen, vilket ger en längre färdväg. Att sommarvägen är längre stämmer alltså med hur figuren beskriver transportsätten — och med avläsningen 11 mot 8 mil.",
+    "text": "På vintern kunde man färdas med ren och ackja rakare vägar över snö och is; på sommaren gick resan med båt längs kusten under sjöfartssäsongen, vilket ger en längre färdväg. Att sommarvägen är längre stämmer alltså med hur figuren beskriver transportsätten — och med avläsningen 9 mot 6 mil.",
     "tier": "detail"
    },
    {

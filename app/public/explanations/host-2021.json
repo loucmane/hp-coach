@@ -11639,32 +11639,34 @@
   "_meta": {
    "generated_at": "2026-07-08",
    "model": "claude-fable-5",
-   "recipe": "figure-grounded-medfix-v1"
+   "recipe": "figure-grounded-medfix-v1",
+   "adjudicated": "2026-07-09",
+   "adjudication": "REAL_MINOR"
   },
   "distractors": [
    {
     "letter": "A",
     "why_tempting": "900 000 hektar är frestande om man bara läser Sötvatten-lagret och utelämnar Hav, eller om man underskattar tjockleken av båda lagren. Det är resultatet av att räkna bara EN av de två efterfrågade naturtyperna.",
-    "why_wrong": "Frågan gäller sötvatten OCH hav TILLSAMMANS. Sötvatten ensamt vid 2004 är kring 1 miljon hektar, men hela bandet Sötvatten+Hav går från ca 4,0 till ca 5,6 miljoner — 1,6 miljoner hektar tjockt. A motsvarar att utelämna ett av lagren."
+    "why_wrong": "Frågan gäller sötvatten OCH hav TILLSAMMANS. Sötvatten ensamt vid 2004 är kring 1 miljon hektar, men hela bandet Sötvatten+Hav går från ca 4,3 till ca 5,9 miljoner — 1,6 miljoner hektar tjockt. A motsvarar att utelämna ett av lagren."
    },
    {
     "letter": "C",
     "why_tempting": "2 400 000 hektar är frestande om man av misstag inkluderar ett angränsande lager (t.ex. Myr) i sin avläsning, eller om man tar bandets kanter fel och mäter Sötvatten + Hav + Myr.",
-    "why_wrong": "Sötvatten + Hav vid 2004 är ca 1,6 miljoner hektar, inte 2,4. Bandets nedre kant sitter vid Skogs topp (ca 4,0 miljoner) och övre kant vid Myrs botten (ca 5,6 miljoner) — läser man förbi Myrs botten har man tagit med ett extra lager."
+    "why_wrong": "Sötvatten + Hav vid 2004 är ca 1,6 miljoner hektar, inte 2,4. Bandets nedre kant sitter vid Skogs topp (ca 4,3 miljoner) och övre kant vid Myrs botten (ca 5,9 miljoner) — läser man förbi Myrs botten har man tagit med ett extra lager."
    },
    {
     "letter": "D",
-    "why_tempting": "5 900 000 hektar är frestande om man läser HELA stapelhöjden vid 2004 i stället för just lagrens tjocklek — den totala arealen skyddad natur 2004 ligger nära 6 miljoner hektar. En klassisk 'läs hela stapeln'-fälla.",
+    "why_tempting": "5 900 000 hektar är frestande om man läser HELA stapelhöjden vid 2004 i stället för just lagrens tjocklek — den totala arealen skyddad natur 2004 ligger kring 6,5 miljoner hektar, och D är det alternativ som ligger närmast. En klassisk 'läs hela stapeln'-fälla.",
     "why_wrong": "Hela stapelns höjd vid 2004 är ALL skyddad natur — men frågan ber om bara två lager (sötvatten och hav). Isolera det ljusa Sötvatten-bandet och det mörkgrå Hav-bandet och mät deras gemensamma tjocklek: ca 1,6 miljoner hektar, inte 5,9."
    }
   ],
-  "framework_id": "DTK-TACTIC-006",
+  "framework_id": null,
   "pitfall": "Den klassiska fällan i area-diagram med flera lager är att läsa hela stapelns höjd i stället för enbart de namngivna lagrens tjocklek. Botemedlet: identifiera de två lagren via etiketterna i diagrammet (Sötvatten = ljust band, Hav = mörkgrått band direkt ovanför), hitta NEDRE och ÖVRE kanten av Sötvatten–Hav-bandet vid x=2004, och läs av differensen mot y-axeln.",
   "pregrade_tactic": {
    "handle": "Lagerband-tjocklek-mot-y",
-   "move": "I övre area-diagrammet vid x=2004: hitta det ljusa Sötvatten-bandet (ovanför Skog) och det mörkgrå Hav-bandet direkt ovanför. Projicera bandets underkant (≈4,0 mln) och överkant (≈5,6 mln) mot y-axeln — kombinerad tjocklek ≈ 1,6 mln hektar."
+   "move": "I övre area-diagrammet vid x=2004: hitta det ljusa Sötvatten-bandet (ovanför Skog) och det mörkgrå Hav-bandet direkt ovanför. Projicera bandets underkant (≈4,3 mln) och överkant (≈5,9 mln) mot y-axeln — kombinerad tjocklek ≈ 1,6 mln hektar."
   },
-  "solution_path": "Övre diagrammet är ett staplat area-diagram över total areal skyddad natur 1909–2009. Vid x=2004 ligger Sötvatten-lagret (ljust, nästan vitt band) direkt ovanför Skog och Hav-lagret (mörkgrått band) direkt ovanför Sötvatten. Avläs bandets kanter mot y-axeln: nedre kant av Sötvatten ≈ 4 000 000 hektar, övre kant av Hav ≈ 5 600 000 hektar. Differensen ≈ 1 600 000 hektar — alternativ B.",
+  "solution_path": "Övre diagrammet är ett staplat area-diagram över total areal skyddad natur 1909–2009. Vid x=2004 ligger Sötvatten-lagret (ljust, nästan vitt band) direkt ovanför Skog och Hav-lagret (mörkgrått band) direkt ovanför Sötvatten. Avläs bandets kanter mot y-axeln: nedre kant av Sötvatten ≈ 4 300 000 hektar, övre kant av Hav ≈ 5 900 000 hektar. Differensen ≈ 1 600 000 hektar — alternativ B.",
   "steps": [
    {
     "n": 1,
@@ -11687,7 +11689,7 @@
    {
     "n": 4,
     "title": "Avläs Sötvatten+Hav vid x=2004",
-    "text": "Vid x=2004, projicera NEDRE kanten av Sötvatten och ÖVRE kanten av Hav mot y-axeln. Nedre kant av Sötvatten ≈ 4 000 000 hektar (precis ovanför Skog-lagrets topp). Övre kant av Hav ≈ 5 600 000 hektar (precis under Myr-lagret). Differens ≈ 5 600 000 − 4 000 000 = 1 600 000 hektar.",
+    "text": "Vid x=2004, projicera NEDRE kanten av Sötvatten och ÖVRE kanten av Hav mot y-axeln. Nedre kant av Sötvatten ≈ 4 300 000 hektar (precis ovanför Skog-lagrets topp). Övre kant av Hav ≈ 5 900 000 hektar (precis under Myr-lagret). Differens ≈ 5 900 000 − 4 300 000 = 1 600 000 hektar.",
     "tier": "essential"
    },
    {
@@ -11699,31 +11701,31 @@
    {
     "n": 6,
     "title": "Verifiera mot alternativen",
-    "text": "1 600 000 hektar matchar B exakt. 900 000 motsvarar ungefär ett av lagren ensamt, 2 400 000 kräver att man drar in ett extra angränsande lager, och 5 900 000 ligger nära hela stapelns höjd vid 2004. Bara B stämmer med bandets uppmätta tjocklek.",
+    "text": "1 600 000 hektar matchar B exakt. 900 000 motsvarar ungefär ett av lagren ensamt, 2 400 000 kräver att man drar in ett extra angränsande lager, och 5 900 000 är det alternativ som ligger närmast hela stapelns höjd vid 2004. Bara B stämmer med bandets uppmätta tjocklek.",
     "tier": "essential"
    },
    {
     "n": 7,
     "title": "Sanity-check: total areal 2004",
-    "text": "Vid x=2004 ligger den översta linjen (toppen av hela stapeln = total skyddad natur) kring 6 miljoner hektar. Sötvatten+Hav ≈ 1,6 miljoner är alltså drygt en fjärdedel av totalen — en betydande men inte dominerande andel. Det stämmer visuellt: bandet upptar ungefär en fjärdedel av stapelns höjd.",
+    "text": "Vid x=2004 ligger den översta linjen (toppen av hela stapeln = total skyddad natur) kring 6,5 miljoner hektar. Sötvatten+Hav ≈ 1,6 miljoner är alltså ungefär en fjärdedel av totalen — en betydande men inte dominerande andel. Det stämmer visuellt: bandet upptar ungefär en fjärdedel av stapelns höjd.",
     "tier": "detail"
    },
    {
     "n": 8,
     "title": "Vanlig miss: läs översta linjen",
-    "text": "Om du läser HELA stapelns höjd vid 2004 (närmare 6 miljoner) hamnar du på alternativ D. Det är total skyddad natur — INTE bara sötvatten + hav. Frågan specificerar två lager; håll dig vid dem.",
+    "text": "Om du läser HELA stapelns höjd vid 2004 (ca 6,5 miljoner) hamnar du närmast alternativ D. Det är total skyddad natur — INTE bara sötvatten + hav. Frågan specificerar två lager; håll dig vid dem.",
     "tier": "detail"
    },
    {
     "n": 9,
     "title": "Vanlig miss: bara ett lager",
-    "text": "Vart och ett av lagren ensamt är klart tunnare än bandet: Sötvatten ligger kring 1 miljon hektar och Hav kring 0,6 miljoner vid 2004. Mäter du bara ett av dem hamnar du under eller kring 1 miljon — närmast A (900 000). Frågan ber om BÅDA tillsammans, alltså deras summa.",
+    "text": "Vart och ett av lagren ensamt är klart tunnare än bandet: Sötvatten ligger kring 1 miljon hektar och Hav kring 0,7 miljoner vid 2004. Mäter du bara ett av dem hamnar du kring 1 miljon eller under — närmast A (900 000). Frågan ber om BÅDA tillsammans, alltså deras summa.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Visuellt: hur ser bandet ut?",
-    "text": "I det övre area-diagrammet finns inga fyllnadsmönster — lagren skiljs åt med gråtoner. Sötvatten är ett ljust, nästan vitt band och Hav är det mörkgrå bandet direkt ovanför. Ihop bildar de ett tydligt ljus-mörkt parti i stapelns mittdel; identifiera partiets under- och överkant vid 2004 och projicera mot y-axeln. (Kryssrut-mönstret för Sötvatten och den svarta fyllningen för Hav hör till det NEDRE stapeldiagrammets teckenförklaring — blanda inte ihop dem.)",
+    "text": "I det övre area-diagrammet finns inga fyllnadsmönster — lagren skiljs åt med gråtoner. Sötvatten är ett ljust, nästan vitt band och Hav är det mörkgrå bandet direkt ovanför. Ihop bildar de ett tydligt ljus-mörkt parti i stapelns mittdel; identifiera partiets under- och överkant vid 2004 och projicera mot y-axeln. (Kryssrut-mönstret för Sötvatten och den svarta fyllningen för Hav hör till det NEDRE stapeldiagrammets teckenförklaring — blanda inte ihop dem. Se också upp med de tryckta etiketterna 'Myr', 'Hav' och 'Sötvatten' i banden — textstreck är inte lagergränser.)",
     "tier": "detail"
    },
    {
