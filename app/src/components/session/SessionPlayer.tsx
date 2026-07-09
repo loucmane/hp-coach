@@ -85,6 +85,28 @@ export function dtkBlockPosition(
 
 type Phase = 'idle' | 'answering' | 'graded' | 'done'
 
+// Session ids ended in THIS tab, module-scoped so the memory survives a
+// SessionPlayer remount. Task #166 Symptom B: the end:true PATCH is fired
+// non-awaited and its active-sessions cache eviction only lands on the
+// response, so re-drilling the SAME section before it lands can re-adopt the
+// just-finished session. A per-instance ref closed the same-instance "öva
+// igen" case, but re-drilling by navigating (Home "Starta", a fresh /drill
+// visit) REMOUNTS SessionPlayer with an empty ref — the finished id has to
+// outlive the component. A module-level set does that within the tab; it is
+// intentionally not persisted (a reload refetches a clean /active, which the
+// server already filters). Bounded below so a long-lived tab can't leak.
+const endedSessionIdsThisTab = new Set<number>()
+function markSessionEnded(id: number) {
+  endedSessionIdsThisTab.add(id)
+  // Cap the set so a marathon tab doesn't grow it without bound. Ended ids
+  // only matter for the brief window before /active drops the row, so
+  // forgetting the oldest once we're well past that window is safe.
+  if (endedSessionIdsThisTab.size > 64) {
+    const oldest = endedSessionIdsThisTab.values().next().value
+    if (oldest !== undefined) endedSessionIdsThisTab.delete(oldest)
+  }
+}
+
 /** Build the props payload that DispatchedVariant expects. Centralised
  *  so the legacy /drill-style-{a,b,c} routes and SessionPlayer share
  *  the same dispatch logic. The `onAdvance` callback maps to the
@@ -218,11 +240,9 @@ export function SessionPlayer(props: SessionPlayerProps) {
   const [questionStartedAt, setQuestionStartedAt] = useState(0)
   const [sessionId, setSessionId] = useState<number | null>(null)
   const [emptyAttempted, setEmptyAttempted] = useState(false)
-  // Session ids this instance has already ended (`end:true`). The active-
-  // sessions cache eviction is async (mutation onSuccess), so a synchronous
-  // "öva igen" → begin() would otherwise re-adopt the corpse. Guards the
-  // adopt path in begin(). A ref so recording an end doesn't re-render.
-  const endedSessionIds = useRef<Set<number>>(new Set())
+  // Session ids ended this tab live in the module-level `endedSessionIdsThisTab`
+  // set (above) so the memory survives a remount — see its comment. begin()
+  // and onNext read/write it directly; no per-instance ref.
   // True once a live pass has begun this mount — gates the completed-pass
   // reconstruction so it only fires on a genuine cold mount with `?done`.
   const beganRef = useRef(false)
@@ -264,7 +284,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
       // section (the "click XYZ, get a leftover ORD question" bug). resolvePlan
       // is the surface-capability check (diagnostik omits it to skip resume).
       const existing = activeOfKind.data
-      const locallyEnded = existing?.id != null && endedSessionIds.current.has(existing.id)
+      const locallyEnded = existing?.id != null && endedSessionIdsThisTab.has(existing.id)
       if (
         canAdoptActiveSession(existing, props.sections, staleResume, locallyEnded) &&
         props.resolvePlan
@@ -278,7 +298,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
           // "Laddar …". Ending drops it from the active-sessions cache
           // (useUpdateSession), so the next render offers a fresh start.
           if (existing.id != null) {
-            endedSessionIds.current.add(existing.id)
+            markSessionEnded(existing.id)
             updateSession.mutate({ id: existing.id, patch: { end: true } })
           }
           // Drop the stale qid from the URL. Without this the route stays
@@ -388,7 +408,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
     const last = index === plan.length - 1
     if (last) {
       if (sessionId !== null) {
-        endedSessionIds.current.add(sessionId)
+        markSessionEnded(sessionId)
         updateSession.mutate({ id: sessionId, patch: { end: true } })
         // Stamp `?done=<id>` so a refresh reconstructs this Klart instead
         // of cold-starting a new drill. onComplete owns the URL (it drops
