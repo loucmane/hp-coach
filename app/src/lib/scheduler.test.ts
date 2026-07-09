@@ -413,6 +413,48 @@ describe('generateDailyPlan — rule 3b (weakest section gets its own drill — 
     expect(drill?.section).toBe('KVA')
     expect(drill?.rationale).toContain('Näst svagast')
   })
+
+  it('does not round the drill-rationale score to a misleading value next to the 1.8 threshold', () => {
+    // 1.79 rounded with toFixed(1) reads "1.8" — indistinguishable from the
+    // top-percentile threshold it's sitting just under. A careful user
+    // (the target 2.0-seeker) notices the mismatch between the number shown
+    // and their actual standing. Full precision (toFixed(2)) removes the
+    // ambiguity.
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [
+          score('NOG', { score: 1.79, daysSinceLastAttempt: 2 }), // weakest, dead-zone generic drill
+          score('KVA', { score: 1.95, daysSinceLastAttempt: 3 }),
+        ],
+      }),
+    )
+    const drill = plan.items.find((i) => i.kind === 'drill')
+    expect(drill?.rationale).toContain('1.79')
+    expect(drill?.rationale).not.toContain('1.8,')
+  })
+
+  it('does not re-prescribe a drill for a fresh, improving, just-practiced section (freshness/trend gate)', () => {
+    // Below the 1.8 mastery floor, but practiced today, trending up, and
+    // not remotely stale — the "mastery-endgame monotony" bug from the
+    // loop-findings doc (byte-identical "KVA-drill · 10 frågor" every day
+    // for a section already moving in the right direction). Gating this
+    // case must NOT empty the plan: the mastery-maintenance fallback
+    // (routed to the least-recently-attempted section) backstops it.
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [
+          score('NOG', { score: 1.7, trend: 0.1, daysSinceLastAttempt: 0 }),
+          score('KVA', { score: 1.9, daysSinceLastAttempt: 5 }),
+        ],
+      }),
+    )
+    const drill = plan.items.find((i) => i.kind === 'drill')
+    // No targeted re-drill on the fresh/improving/just-practiced section...
+    expect(drill?.section).not.toBe('NOG')
+    // ...but the plan is never empty — mastery fallback fires instead.
+    expect(plan.items.length).toBeGreaterThan(0)
+    expect(drill).toBeDefined()
+  })
 })
 
 describe('generateDailyPlan — rule 4 (mastery maintenance)', () => {

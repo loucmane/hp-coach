@@ -145,6 +145,12 @@ const LONG_BREAK_DAYS = 14
 const MASTERY_FLOOR = 1.8
 const MAX_ITEMS = 3
 
+// Freshness/trend exemption for needsDrill — a section practiced within
+// this many days counts as "just practiced" for the exemption below.
+const DRILL_FRESH_DAYS = 1
+// A trend at or above this counts as "improving" for the exemption.
+const DRILL_IMPROVING_TREND = 0.05
+
 /** Convert a Date to a YYYY-MM-DD local-date string (not UTC). */
 export function localDateString(d: Date): string {
   const y = d.getFullYear()
@@ -244,7 +250,17 @@ function needsLesson(score: SectionScore): boolean {
 
 function needsDrill(score: SectionScore): boolean {
   if (score.score == null) return false
-  if (score.score < DRILL_SCORE_THRESHOLD) return true
+  if (score.score < DRILL_SCORE_THRESHOLD) {
+    // Mastery-endgame monotony guard: a section just below the 1.8 floor
+    // that was JUST practiced AND is trending up doesn't need the
+    // byte-identical re-drill every day — the user is already actively
+    // closing the gap. Requires all three signals (fresh + improving +
+    // below-floor) so this never suppresses a stale or declining section.
+    const isFresh = score.daysSinceLastAttempt <= DRILL_FRESH_DAYS
+    const isImproving = score.trend != null && score.trend >= DRILL_IMPROVING_TREND
+    if (isFresh && isImproving) return false
+    return true
+  }
   if (score.trend != null && score.trend < DRILL_TREND_THRESHOLD) return true
   if (score.daysSinceLastAttempt > DRILL_STALE_DAYS) return true
   return false
@@ -402,7 +418,11 @@ function drillRationale(score: SectionScore, weakest = false): string {
   }
   if (score.score != null && score.score < DRILL_SCORE_THRESHOLD) {
     const rank = weakest ? 'Svagast' : 'Näst svagast'
-    return `${rank} — ${score.score.toFixed(1)}, övning skärper formen.`
+    // Full precision, not toFixed(1) — 1.79 rounded to "1.8" reads as
+    // indistinguishable from the 1.8 top-percentile threshold right next
+    // to it, which misleads exactly the careful 2.0-seeker this rationale
+    // is coaching.
+    return `${rank} — ${score.score.toFixed(2)}, övning skärper formen.`
   }
   if (score.daysSinceLastAttempt > DRILL_STALE_DAYS) {
     const days = Number.isFinite(score.daysSinceLastAttempt)
