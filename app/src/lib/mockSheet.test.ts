@@ -8,6 +8,7 @@ import {
   dwellFor,
   type MockSheetState,
   mockSheetReducer,
+  sheetFromAttempts,
   toSummarySheet,
 } from './mockSheet'
 
@@ -126,5 +127,63 @@ describe('toSummarySheet', () => {
     s = reduce(s, { type: 'enter', qid: 'q1', now: 0 })
     const summary = toSummarySheet(s, 2500)
     expect(summary.get('q1')).toEqual({ letter: null, timeMs: 2500 })
+  })
+})
+
+describe('sheetFromAttempts', () => {
+  it('rebuilds answers from attempt rows, oldest-first', () => {
+    const state = sheetFromAttempts([
+      { questionId: 'q1', selectedAnswer: 'A', timeTakenMs: 1000, createdAt: 10 },
+      { questionId: 'q2', selectedAnswer: 'B', timeTakenMs: 2000, createdAt: 20 },
+    ])
+    expect(state.answers.get('q1')).toEqual({ letter: 'A', lastAt: 10 })
+    expect(state.answers.get('q2')).toEqual({ letter: 'B', lastAt: 20 })
+    expect(state.current).toBeNull()
+  })
+
+  it('a later attempt for the same qid overwrites the earlier one (latest pick wins)', () => {
+    const state = sheetFromAttempts([
+      { questionId: 'q1', selectedAnswer: 'A', timeTakenMs: 1000, createdAt: 10 },
+      { questionId: 'q1', selectedAnswer: 'C', timeTakenMs: 500, createdAt: 30 },
+    ])
+    expect(state.answers.get('q1')?.letter).toBe('C')
+  })
+
+  it('sums timeTakenMs across multiple attempts for the same qid (revisit dwell, not just the latest)', () => {
+    const state = sheetFromAttempts([
+      { questionId: 'q1', selectedAnswer: 'A', timeTakenMs: 1000, createdAt: 10 },
+      { questionId: 'q1', selectedAnswer: 'A', timeTakenMs: 1500, createdAt: 40 },
+    ])
+    expect(state.dwellMs.get('q1')).toBe(2500)
+  })
+
+  it('a blank attempt (selectedAnswer null) contributes no answer entry', () => {
+    const state = sheetFromAttempts([
+      { questionId: 'q1', selectedAnswer: null, timeTakenMs: 500, createdAt: 10 },
+    ])
+    expect(state.answers.has('q1')).toBe(false)
+    expect(state.dwellMs.get('q1')).toBe(500)
+  })
+
+  it('a null/absent timeTakenMs contributes zero dwell instead of NaN', () => {
+    const state = sheetFromAttempts([
+      { questionId: 'q1', selectedAnswer: 'A', timeTakenMs: null, createdAt: 10 },
+    ])
+    expect(state.dwellMs.has('q1')).toBe(false)
+    expect(state.answers.get('q1')?.letter).toBe('A')
+  })
+
+  it('an empty attempts array rebuilds an empty (fresh-equivalent) sheet', () => {
+    const state = sheetFromAttempts([])
+    expect(state.answers.size).toBe(0)
+    expect(state.dwellMs.size).toBe(0)
+    expect(state.current).toBeNull()
+  })
+
+  it('accepts a stringified createdAt (some transports numify D1 timestamps as strings)', () => {
+    const state = sheetFromAttempts([
+      { questionId: 'q1', selectedAnswer: 'A', timeTakenMs: 100, createdAt: '12345' },
+    ])
+    expect(state.answers.get('q1')?.lastAt).toBe(12345)
   })
 })

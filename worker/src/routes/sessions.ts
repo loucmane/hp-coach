@@ -125,7 +125,11 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // oldest first. Powers summary hydration: when a paused drill is adopted
   // on resume, the client pre-fills picks[] for questions answered before
   // the pause so the "Klart." payoff shows the true total, not just the
-  // post-resume answers.
+  // post-resume answers. `createdAt`/`timeTakenMs` are included so a
+  // reload-adopted Provpass mock can rebuild its answer-sheet dwell times
+  // (lib/mockSheet.ts sheetFromAttempts) rather than losing pacing data on
+  // every resume — additive columns, existing (non-mock) consumers ignore
+  // the extra fields.
   .get('/:id/attempts', zValidator('param', IdParam), async (c) => {
     const { id } = c.req.valid('param')
     const db = getDb(c.env.DB)
@@ -136,6 +140,8 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         questionId: attempts.questionId,
         selectedAnswer: attempts.selectedAnswer,
         correct: attempts.correct,
+        timeTakenMs: attempts.timeTakenMs,
+        createdAt: attempts.createdAt,
       })
       .from(attempts)
       .where(and(eq(attempts.sessionId, id), eq(attempts.userId, userId)))

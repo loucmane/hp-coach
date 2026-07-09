@@ -1,14 +1,25 @@
-// prov.tsx — Provpass picker + instructions interstitial (PR 3,
-// presentational only). Tests target the exported `Picker` and
-// `Instructions` screens directly (no router harness needed — they
-// take plain props/callbacks, same idiom as DrillResult/
-// DiagnosticReport tests).
+// prov.tsx — Provpass picker + instructions interstitial (PR 3) plus the
+// PR 4 integration helpers. Picker/Instructions tests target the exported
+// screens directly (no router harness needed — they take plain props/
+// callbacks, same idiom as DrillResult/DiagnosticReport tests). The PR 4
+// session-metadata/search/duration helpers are plain functions, tested
+// directly for the same reason lib/mock.ts's functions are — ProvRoute
+// itself (Route.useSearch/useNavigate) isn't mounted anywhere in this
+// codebase's test suite.
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-import type { PassOption } from '@/components/mock/passOption'
-import { Instructions, Picker } from './prov'
+import type { PassOption } from '@/lib/mock'
+import {
+  countSeenBefore,
+  decodeMockSections,
+  encodeMockSections,
+  Instructions,
+  Picker,
+  resolveDurationMs,
+  validateSearch,
+} from './prov'
 
 function pass(overrides: Partial<PassOption> = {}): PassOption {
   return {
@@ -143,6 +154,24 @@ describe('Picker', () => {
     expect(onStart).toHaveBeenCalledTimes(1)
   })
 
+  it('passes the CLICKED row (not just the first) to onStart, so the route can start that exact pass', () => {
+    const onStart = vi.fn()
+    const suggested = pass({ examId: 'var-2019', provpass: 'verb1', seenBefore: 8 })
+    const other = pass({ examId: 'var-2018-1', provpass: 'verb1', seenBefore: 1 })
+    render(
+      <Picker
+        mode="authentic"
+        half="verbal"
+        onModeChange={() => {}}
+        onHalfChange={() => {}}
+        passes={[suggested, other]}
+        onStart={onStart}
+      />,
+    )
+    fireEvent.click(screen.getByTestId('prov-pass-var-2018-1-verb1'))
+    expect(onStart).toHaveBeenCalledWith(other)
+  })
+
   it('renders the synthetic CTA card with the quota line and indikativ note', () => {
     render(
       <Picker
@@ -219,5 +248,97 @@ describe('Instructions', () => {
     render(<Instructions onStart={() => {}} onBack={onBack} />)
     fireEvent.click(screen.getByTestId('prov-instructions-back'))
     expect(onBack).toHaveBeenCalledTimes(1)
+  })
+})
+
+// ── PR 4 integration helpers (pure) ─────────────────────────────────
+// Route-level wiring itself (ProvRoute) leans on TanStack Router's
+// Route.useSearch()/useNavigate — this codebase's route tests never
+// mount the full router (see every other *.test.tsx alongside a route
+// file), so the load-bearing logic PR 4 added is kept in small pure
+// functions and tested directly here, same idiom as lib/mock.ts.
+
+describe('encodeMockSections / decodeMockSections', () => {
+  it('round-trips an authentic pass', () => {
+    const encoded = encodeMockSections('authentic', 'verbal', 'var-2018-1', 'verb1')
+    expect(encoded).toBe('authentic:verbal:var-2018-1:verb1')
+    expect(decodeMockSections(encoded)).toEqual({
+      mode: 'authentic',
+      half: 'verbal',
+      examId: 'var-2018-1',
+      provpass: 'verb1',
+    })
+  })
+
+  it('round-trips a synthetic pass with blank examId/provpass', () => {
+    const encoded = encodeMockSections('synthetic', 'kvant', '', '')
+    expect(encoded).toBe('synthetic:kvant::')
+    expect(decodeMockSections(encoded)).toEqual({
+      mode: 'synthetic',
+      half: 'kvant',
+      examId: '',
+      provpass: '',
+    })
+  })
+
+  it('returns null for null/empty/malformed input instead of throwing', () => {
+    expect(decodeMockSections(null)).toBeNull()
+    expect(decodeMockSections('')).toBeNull()
+    expect(decodeMockSections('not-enough-fields')).toBeNull()
+    expect(decodeMockSections('bogus:verbal:x:y')).toBeNull()
+    expect(decodeMockSections('authentic:bogus-half:x:y')).toBeNull()
+  })
+})
+
+describe('validateSearch', () => {
+  it('parses result and devMinutes from numbers or numeric strings', () => {
+    expect(validateSearch({ result: 5 })).toEqual({ result: 5 })
+    expect(validateSearch({ result: '5' })).toEqual({ result: 5 })
+    expect(validateSearch({ devMinutes: 3 })).toEqual({ devMinutes: 3 })
+    expect(validateSearch({ devMinutes: '3' })).toEqual({ devMinutes: 3 })
+  })
+
+  it('ignores non-positive or non-numeric devMinutes', () => {
+    expect(validateSearch({ devMinutes: 0 })).toEqual({})
+    expect(validateSearch({ devMinutes: -1 })).toEqual({})
+    expect(validateSearch({ devMinutes: 'x' })).toEqual({})
+  })
+
+  it('parses run=1 (number or string)', () => {
+    expect(validateSearch({ run: 1 })).toEqual({ run: 1 })
+    expect(validateSearch({ run: '1' })).toEqual({ run: 1 })
+    expect(validateSearch({ run: 2 })).toEqual({})
+  })
+
+  it('returns an empty object for no recognized keys', () => {
+    expect(validateSearch({})).toEqual({})
+    expect(validateSearch({ unrelated: 'x' })).toEqual({})
+  })
+})
+
+describe('resolveDurationMs', () => {
+  it('defaults to 55 minutes when devMinutes is absent', () => {
+    expect(resolveDurationMs(undefined)).toBe(55 * 60_000)
+  })
+
+  it('honors devMinutes only on a dev surface (import.meta.env.DEV is true under vitest)', () => {
+    // vitest runs with import.meta.env.DEV = true, so isDevSurface() is
+    // unconditionally true in this test environment — this test documents
+    // that devMinutes IS honored here, and the isDevSurface() gate itself
+    // is covered by lib/devSurface's own tests (DEV / ?dev=1 / sessionStorage).
+    expect(resolveDurationMs(3)).toBe(3 * 60_000)
+  })
+})
+
+describe('countSeenBefore', () => {
+  it('counts only qids with a positive exposure n', () => {
+    const plan = [{ qid: 'a' } as never, { qid: 'b' } as never, { qid: 'c' } as never]
+    const exposure = { a: { n: 2 }, b: { n: 0 }, d: { n: 5 } }
+    expect(countSeenBefore(plan, exposure)).toBe(1)
+  })
+
+  it('returns 0 for an empty plan or empty exposure map', () => {
+    expect(countSeenBefore([], {})).toBe(0)
+    expect(countSeenBefore([{ qid: 'a' } as never], {})).toBe(0)
   })
 })

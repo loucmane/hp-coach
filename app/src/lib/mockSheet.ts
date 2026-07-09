@@ -126,3 +126,52 @@ export function toSummarySheet(
   }
   return out
 }
+
+/** One row of `GET /sessions/:id/attempts` — the fields sheetFromAttempts
+ *  needs. `createdAt` is whatever the API layer deserializes a D1 unix-ms
+ *  timestamp column into (number, or a numeric string over some transports)
+ *  — accept both rather than forcing every caller to pre-normalize. */
+export type MockAttemptRow = {
+  questionId: string
+  selectedAnswer: string | null
+  timeTakenMs: number | null
+  createdAt: number | string | null
+}
+
+/**
+ * Reload-adopt: rebuild a MockSheetState from a session's persisted
+ * attempts (oldest-first, per GET /sessions/:id/attempts) instead of
+ * starting from createMockSheet(). Every pick during a live pass POSTs an
+ * attempt (see MockRunner's `pick`), so replaying them in order and letting
+ * later rows overwrite earlier ones per qid reconstructs "latest pick wins"
+ * for free — same invariant the live reducer maintains.
+ *
+ * Dwell time is restored from each attempt's own `timeTakenMs` (the
+ * accumulated-at-submit-time dwell MockRunner already computed via
+ * `dwellFor` when it POSTed) rather than recomputed from `createdAt` deltas
+ * — a qid answered, left, and revisited before the reload has its dwell
+ * spread across multiple attempt rows, so summing `timeTakenMs` per qid
+ * (not just taking the latest) is what keeps that total honest. Blanks
+ * (never attempted) are simply absent, same as a fresh sheet.
+ *
+ * The rebuilt state has `current: null` — the caller (prov.tsx) issues an
+ * `enter` action for the resumed question right after, same as a normal
+ * mount, so dwell continues accruing from the moment of adoption.
+ */
+export function sheetFromAttempts(rows: readonly MockAttemptRow[]): MockSheetState {
+  const answers = new Map<string, MockSheetAnswer>()
+  const dwellMs = new Map<string, number>()
+  let seq = 0
+  for (const row of rows) {
+    seq += 1
+    if (row.selectedAnswer != null) {
+      const lastAt = row.createdAt != null ? Number(row.createdAt) : seq
+      answers.set(row.questionId, { letter: row.selectedAnswer, lastAt })
+    }
+    const ms = row.timeTakenMs ?? 0
+    if (ms > 0) {
+      dwellMs.set(row.questionId, (dwellMs.get(row.questionId) ?? 0) + ms)
+    }
+  }
+  return { answers, dwellMs, current: null }
+}
