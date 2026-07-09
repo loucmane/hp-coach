@@ -18,7 +18,7 @@
 // surfaces as 404, not 403, by design.
 
 import { zValidator } from '@hono/zod-validator'
-import { and, asc, desc, eq, isNotNull, isNull, sql } from 'drizzle-orm'
+import { and, asc, desc, eq, isNotNull, isNull, ne, sql } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
@@ -80,6 +80,10 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // they're dropped too. Repetition passes are legitimately < 10 (bounded by
   // the due-mistake count), so we compare to the plan, not a fixed 10.
   // Capped at 50 recent.
+  //
+  // kind='mock' is EXCLUDED — a 40-question Provpass run has its own
+  // completion + summary surface (/api/mock-results) and would otherwise
+  // pollute this drill-history view with a very differently-shaped row.
   .get('/history', async (c) => {
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
@@ -95,7 +99,9 @@ export const sessionsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       })
       .from(sessions)
       .leftJoin(attempts, eq(attempts.sessionId, sessions.id))
-      .where(and(eq(sessions.userId, userId), isNotNull(sessions.endedAt)))
+      .where(
+        and(eq(sessions.userId, userId), isNotNull(sessions.endedAt), ne(sessions.kind, 'mock')),
+      )
       .groupBy(sessions.id)
       .orderBy(desc(sessions.endedAt))
       .limit(200)
