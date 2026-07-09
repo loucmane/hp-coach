@@ -48,6 +48,22 @@ describe('canAdoptActiveSession', () => {
     expect(canAdoptActiveSession(finished, 'XYZ', false, true)).toBe(false) // ended → fresh pick
   })
 
+  it('does NOT adopt a session that already carries endedAt (cross-mount rapid re-drill)', () => {
+    // Task #166 Symptom B: the `locallyEnded` ref only knows about ends THIS
+    // component instance issued. After finishing a drill, navigating away and
+    // re-drilling the SAME section remounts SessionPlayer with an empty ref,
+    // so `locallyEnded` is false — yet the just-finished session can still sit
+    // in the active-sessions cache (its end:true PATCH's onSuccess eviction
+    // raced the refetch, or a stale write-through kept it). Sections match, so
+    // the section guard passes and begin() would adopt the corpse and land on
+    // its result screen. A row that carries endedAt is finished by definition
+    // and must never be adopted, regardless of the instance ref.
+    const finished = session({ sections: 'XYZ', endedAt: '2026-07-08T12:00:00.000Z' })
+    expect(canAdoptActiveSession(finished, 'XYZ', false, false)).toBe(false)
+    // …and the same holds even if the caller never got a chance to set the ref.
+    expect(canAdoptActiveSession(finished, 'XYZ', false)).toBe(false)
+  })
+
   it('does not adopt when there is no active session', () => {
     expect(canAdoptActiveSession(null, 'XYZ', false)).toBe(false)
     expect(canAdoptActiveSession(undefined, 'XYZ', false)).toBe(false)
