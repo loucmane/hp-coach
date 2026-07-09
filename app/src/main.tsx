@@ -1,4 +1,5 @@
 import { ClerkProvider } from '@clerk/clerk-react'
+import { svSE } from '@clerk/localizations'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { StrictMode } from 'react'
@@ -48,6 +49,23 @@ if (!PUBLISHABLE_KEY) {
   )
 }
 
+// @clerk/localizations' svSE ships two untranslated strings on the
+// sign-in "use email instead" links (the rest of the ~1400 keys are
+// fully translated; the remaining English leftovers we found — SAML,
+// organizations, web3 wallet — are all features this product doesn't
+// use, so they're unreachable and left as-is).
+const localization: typeof svSE = {
+  ...svSE,
+  signIn: {
+    ...svSE.signIn,
+    start: {
+      ...svSE.signIn?.start,
+      actionLink__use_email: 'Använd e-post istället',
+      actionLink__use_email_username: 'Använd e-post eller användarnamn',
+    },
+  },
+}
+
 const rootEl = document.getElementById('root')
 if (!rootEl) throw new Error('Missing #root element in index.html')
 
@@ -55,6 +73,7 @@ createRoot(rootEl).render(
   <StrictMode>
     <ClerkProvider
       publishableKey={PUBLISHABLE_KEY}
+      localization={localization}
       // Map Clerk's redirects to TanStack Router routes so all auth
       // navigations stay inside our SPA shell.
       signInUrl="/sign-in"
