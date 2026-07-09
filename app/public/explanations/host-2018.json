@@ -12839,97 +12839,109 @@
   }
  },
  "host-2018-kvant2-KVA-013": {
-  "solution_path": "Villkor: (23/7)^x = 12167 och (23·y)^7 = 13000 (per parsing). Räkning: 23³ = 12167, så x = 3 (om (23)^x = 12167) eller annan form. Per facit B: y > x.",
+  "solution_path": "Skriv båda ekvationerna med basen 23. (23^{7})^{x}=23^{7x} och 12167=23^{3}, alltså 7x=3\\Rightarrow x=\\frac{3}{7}. (23^{y})^{7}=23^{7y}=13000. Här är 23^{3}=12167<13000, så 7y>3, alltså y>\\frac{3}{7}=x. Vi behöver inte räkna ut y exakt — det räcker att 13000 > 12167. Därför är y > x, dvs II > I. Svaret är B.",
   "steps": [
    {
     "n": 1,
-    "title": "Förstå problemet",
-    "text": "Två exponentialekvationer ger x och y. Jämför.",
+    "title": "Förstå frågan",
+    "text": "Två ekvationer bestämmer x respektive y. Vi jämför x (Kvantitet I) med y (Kvantitet II). Knepet är att INTE räkna ut de exakta talen, utan jämföra exponenter.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Identifiera 12167",
-    "text": "12167 = 23³ (eftersom 23·23·23 = 12167).",
-    "tier": "essential"
+    "title": "Samma bas är nyckeln",
+    "text": "Båda ekvationerna bygger på basen 23. Om vi kan skriva höger- och vänsterled som 23 upphöjt till något, kan vi jämföra exponenterna direkt.",
+    "tier": "detail"
    },
    {
     "n": 3,
-    "title": "Räkna x",
-    "text": "Om 23^x = 12167, då x = 3.",
+    "title": "Förenkla vänsterledet i (I)",
+    "text": "(23^{7})^{x} — en potens upphöjd till en potens multipliceras: (23^{7})^{x}=23^{7x}.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Räkna y",
-    "text": "Den andra ekvationen ger y > 3 (per facit B). Detaljerna beror på exakt parsing.",
+    "title": "Skriv 12167 som en 23-potens",
+    "text": "Testa: 23^{2}=529, 23^{3}=23\\cdot 529=12167. Alltså 12167=23^{3}.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Jämför",
-    "text": "y > x = 3 enligt facit. II > I.",
+    "title": "Lös ut x",
+    "text": "23^{7x}=23^{3} ger 7x=3, alltså x=\\frac{3}{7}.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Sanity check",
-    "text": "Båda ekvationer ger entydiga lösningar via logaritmer eller direkt potens-igenkänning.",
-    "tier": "detail"
+    "title": "Förenkla vänsterledet i (II)",
+    "text": "(23^{y})^{7}=23^{7y} på samma sätt. Så 23^{7y}=13000.",
+    "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Räcker informationen?",
-    "text": "Ja — två exponentialekvationer låser båda obekanta.",
-    "tier": "detail"
+    "title": "Jämför 13000 med 23-potenser",
+    "text": "Vi vet 23^{3}=12167 och 23^{4} är mycket större. Eftersom 13000 ligger STRAX ÖVER 12167 är exponenten 7y strax över 3.",
+    "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Tecken-check",
-    "text": "x och y är reella tal från ekvationerna; teckenflöde beror på baserna.",
-    "tier": "detail"
+    "title": "Slutsats om y",
+    "text": "Från 23^{7y}=13000>12167=23^{3} följer 7y>3, alltså y>\\frac{3}{7}. Vi behöver inte det exakta y-värdet.",
+    "tier": "essential"
    },
    {
     "n": 9,
-    "title": "Verifiera mot facit",
-    "text": "Facit B betyder II > I, alltså y > x. Stämmer med vår identifikation av 23³.",
+    "title": "Jämför x och y",
+    "text": "x = \\frac{3}{7} exakt, medan y > \\frac{3}{7}. Alltså y > x, dvs II > I.",
     "tier": "detail"
    },
    {
     "n": 10,
+    "title": "Kan svaret flippa?",
+    "text": "Nej — 13000 > 12167 är ett fast faktum, så y > x med säkerhet. Inget beror på okända.",
+    "tier": "detail"
+   },
+   {
+    "n": 11,
+    "title": "Räcker informationen?",
+    "text": "Ja. Båda ekvationerna bestämmer sina exponenter entydigt (basen 23 > 1 är monoton). D är utesluten.",
+    "tier": "essential"
+   },
+   {
+    "n": 12,
     "title": "Slutsats",
-    "text": "y > x — svaret är B. Insikten: känn igen perfekta potenser (23³ = 12167) snabbare än att logaritmera.",
+    "text": "y > x — svaret är B. Insikten: när samma bas > 1 förekommer på båda sidor jämför du EXPONENTERNA; det räcker att veta att 13000 > 23^{3} utan att räkna ut y.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Om man räknar log fel kan x verka större.",
-    "why_wrong": "Steg 3: 23³ = 12167 är en specifik perfekt potens; x = 3 entydigt."
+    "why_tempting": "Om du gissar att den 'större' högersidan (13000 > 12167) hör till x, kan du felaktigt tro x > y.",
+    "why_wrong": "Steg 5 och 8 visar att det är y som hör till 13000-ekvationen. Större högersida ⇒ större exponent ⇒ större y, inte x."
    },
    {
     "letter": "C",
-    "why_tempting": "Likhet kräver att båda ekvationer ger samma exponent.",
-    "why_wrong": "Steg 5: facit B ger strikt olikhet."
+    "why_tempting": "Talen 12167 och 13000 ligger nära varandra, vilket lockar till 'x ≈ y, alltså lika'.",
+    "why_wrong": "Nära är inte lika. Steg 8: 23^{7y}=13000>12167 ger strikt y>\\frac{3}{7}=x. Kvantiteterna är olika."
    },
    {
     "letter": "D",
-    "why_tempting": "'Komplicerade ekvationer → otillräcklig'.",
-    "why_wrong": "Steg 7: exponentialekvationer har unika lösningar."
+    "why_tempting": "Ekvationerna ser avskräckande ut med stora tal, vilket lockar till 'informationen räcker inte'.",
+    "why_wrong": "Basen 23 är samma och > 1, så varje ekvation bestämmer sin exponent entydigt (steg 11). Man behöver inte ens y:s exakta värde — bara att 13000 > 12167. Informationen räcker."
    }
   ],
-  "technique": "Perfekta potenser: 23³ = 12167, 17³ = 4913, etc. Memorera typer av kub-/kvadrattal för snabb avläsning. Triggern: 'a^x = stor heltal'.",
-  "pitfall": "Botemedlet mot logaritm-räkning: kolla först om talet är en perfekt potens av basen — om ja, exponenten är trivial att hitta.",
-  "framework_id": "KVA-TRAP-050",
+  "technique": "Exponentjämförelsen med gemensam bas: skriv båda led som 23^{(\\dots)} och jämför exponenterna (basen 23 > 1 bevarar ordningen). Triggern: 'jämför x och y' där båda definieras av potensekvationer med samma bas → jämför exponenter, räkna aldrig ut de stora talen.",
+  "pitfall": "Vanliga fällan är att försöka räkna ut y exakt eller att koppla den större högersidan till fel variabel. Botemedlet: identifiera basen (här 23^{3}=12167), och notera att 13000 bara är LITE större än 12167, så y>x — inget mer behövs.",
   "pregrade_tactic": {
-   "handle": "Perfekta-potens-igenkänningen",
-   "move": "Vid a^x = N — kolla först om N är en perfekt potens av a (t.ex. 12167 = 23³); annars logaritmera."
+   "handle": "Basmatchningen",
+   "move": "Skriv båda sidor som samma bas upphöjt till något, jämför exponenterna — den med större högerled har större exponent."
   },
+  "framework_id": "KVA-TRAP-013",
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   }
  },
  "host-2018-kvant2-KVA-019": {

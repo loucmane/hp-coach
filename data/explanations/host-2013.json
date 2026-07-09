@@ -11977,103 +11977,109 @@
   }
  },
  "host-2013-kvant2-KVA-013": {
-  "solution_path": "Villkor x > 0. I = (7/4)x, II = (3/2)x = (6/4)x. Eftersom 7/4 > 6/4 och x > 0 är I > II — svaret A.",
+  "solution_path": "Villkor: x > 0. Kvantitet I = -\\frac{7}{4}x, Kvantitet II = -\\frac{3}{2}x = -\\frac{6}{4}x. Båda är NEGATIVA för x > 0. Eftersom \\frac{7}{4} > \\frac{6}{4} har I större absolutbelopp och ligger därför LÄNGRE till vänster på tallinjen — I är alltså mindre än II. Alltså II > I. Svaret är B.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå problemet",
-    "text": "Givet x > 0. Jämför \\frac{7}{4}x (Kvantitet I) med \\frac{3}{2}x (Kvantitet II).",
+    "text": "Givet x > 0. Jämför Kvantitet I = -\\frac{7}{4}x med Kvantitet II = -\\frac{3}{2}x. Notera minustecknet framför BÅDA — det är hela poängen med uppgiften.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Bryt ut x",
-    "text": "Båda uttryck är (bråk)·x. Eftersom x > 0 bevaras storleksordningen vid multiplikation.",
+    "title": "Vad betyder minustecknet?",
+    "text": "Ett minustecken framför ett uttryck vänder dess tecken. Eftersom x > 0 är \\frac{7}{4}x och \\frac{3}{2}x båda positiva — och med minus framför blir båda kvantiteterna alltså NEGATIVA.",
     "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Varför x > 0 är viktigt",
-    "text": "Multiplikation med positivt tal bevarar olikheter. Multiplikation med negativt skulle vända dem — men det är inget bekymmer här.",
-    "tier": "detail"
+    "title": "Bryt ut x",
+    "text": "Båda uttryck har formen (konstant)·x. Eftersom x > 0 bevaras storleksordningen mellan konstanterna när vi multiplicerar med x. Så vi kan först jämföra konstanterna -\\frac{7}{4} och -\\frac{3}{2}.",
+    "tier": "essential"
    },
    {
     "n": 4,
     "title": "Gemensam nämnare",
-    "text": "7/4 har nämnaren 4. 3/2 = 6/4 (multiplicera täljare och nämnare med 2). Båda nu över 4.",
+    "text": "För att jämföra \\frac{7}{4} och \\frac{3}{2} skriver vi dem över samma nämnare: \\frac{3}{2} = \\frac{6}{4} (multiplicera täljare och nämnare med 2). Nu står båda över 4.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Jämför täljarna",
-    "text": "Med samma nämnare vinner det större täljaren: 7 > 6, så 7/4 > 6/4 = 3/2.",
+    "title": "Jämför magnituderna",
+    "text": "Med samma nämnare vinner den större täljaren: 7 > 6, så \\frac{7}{4} > \\frac{6}{4} = \\frac{3}{2}. Alltså har \\frac{7}{4}x STÖRRE absolutbelopp än \\frac{3}{2}x.",
     "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Översätt tillbaka",
-    "text": "7/4 > 3/2 ⇒ (7/4)x > (3/2)x för alla x > 0. I > II.",
+    "title": "Här sitter fällan: negativa tal",
+    "text": "För NEGATIVA tal betyder större absolutbelopp MINDRE värde. -\\frac{7}{4}x ligger längre till vänster om noll än -\\frac{3}{2}x — alltså är I mindre, inte större. 'Störst magnitud' ≠ 'störst värde' när tecknet är minus.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Konkret test",
-    "text": "Sätt x = 4: I = 7, II = 6 — A. Sätt x = 100: I = 175, II = 150 — A.",
+    "title": "Rita tallinjen",
+    "text": "Tänk dig x = 4: I = -\\frac{7}{4}\\cdot 4 = -7, II = -\\frac{3}{2}\\cdot 4 = -6. På tallinjen: −7 ligger till vänster om −6. Längre till vänster = mindre. Så I < II.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Skillnaden",
-    "text": "I − II = (7/4 − 3/2)x = (1/4)x. Strikt positivt för alla x > 0.",
-    "tier": "essential"
-   },
-   {
-    "n": 9,
-    "title": "Kan svaret flippa?",
-    "text": "Nej — skillnaden (1/4)x är alltid positiv så länge x > 0. Inget x-värde får II att vinna.",
+    "title": "Konkret test till",
+    "text": "Sätt x = 100: I = -\\frac{7}{4}\\cdot 100 = -175, II = -\\frac{3}{2}\\cdot 100 = -150. Igen: −175 < −150, så II > I. Samma slutsats oavsett hur stort x är.",
     "tier": "detail"
    },
    {
-    "n": 10,
-    "title": "Räcker informationen?",
-    "text": "Ja — x > 0 räcker; det specifika värdet på x behövs inte eftersom skillnaden är proportionell mot x.",
+    "n": 9,
+    "title": "Skillnaden algebraiskt",
+    "text": "I − II = -\\frac{7}{4}x - \\left(-\\frac{3}{2}x\\right) = -\\frac{7}{4}x + \\frac{6}{4}x = -\\frac{1}{4}x. För x > 0 är -\\frac{1}{4}x strikt negativ, så I − II < 0, alltså I < II.",
     "tier": "essential"
    },
    {
+    "n": 10,
+    "title": "Kan svaret flippa?",
+    "text": "Nej. Skillnaden -\\frac{1}{4}x är negativ för VARJE x > 0. Inget positivt x-värde får I att vinna. Ordningen är låst.",
+    "tier": "detail"
+   },
+   {
     "n": 11,
+    "title": "Räcker informationen?",
+    "text": "Ja. Villkoret x > 0 räcker; det exakta värdet på x behövs inte, eftersom skillnaden är proportionell mot x och alltid negativ. Svara aldrig D bara för att x är okänt.",
+    "tier": "detail"
+   },
+   {
+    "n": 12,
     "title": "Slutsats",
-    "text": "I > II för alla x > 0 — svaret är A. Insikten: när båda kvantiteter är (konstant)·x med x > 0, reduceras jämförelsen till konstanterna.",
+    "text": "II > I för alla x > 0 — svaret är B. Insikten: när båda kvantiteter är (negativ konstant)·x med x > 0, vinner den vars konstant är NÄRMAST noll, inte den med störst siffra.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
-    "letter": "B",
-    "why_tempting": "Om man slarvigt ser '3/2 ser större ut' (större siffror, eller missar att 3/2 = 1,5).",
-    "why_wrong": "Steg 5 räknar exakt: 7/4 = 1,75 > 1,5 = 3/2. Större täljare med samma nämnare vinner."
+    "letter": "A",
+    "why_tempting": "Det är lätt att se att \\frac{7}{4} > \\frac{3}{2} (steg 5) och slentrianmässigt dra slutsatsen att I är störst — som om minustecknen inte fanns.",
+    "why_wrong": "Minustecknen vänder allt. Som steg 6 visar betyder större magnitud MINDRE värde för negativa tal. I ligger längst till vänster på tallinjen, alltså är I minst."
    },
    {
     "letter": "C",
-    "why_tempting": "Att bråken känns 'ungefär lika' kan lura ögat.",
-    "why_wrong": "Steg 5 ger en strikt olikhet 7 > 6 i täljarna. Ingen likhet."
+    "why_tempting": "Om du hastar och tänker att koefficienterna 'nästan' är lika, eller att x kan trolla bort skillnaden, kan lika kännas rimligt.",
+    "why_wrong": "Steg 9 ger skillnaden -\\frac{1}{4}x, som är strikt skild från noll för alla x > 0. Kvantiteterna är aldrig lika."
    },
    {
     "letter": "D",
-    "why_tempting": "Snabbsvar är 'okänt x → otillräcklig'.",
-    "why_wrong": "Steg 9 visar att skillnaden är ALLTID positiv för x > 0. Specifika värdet är irrelevant."
+    "why_tempting": "Snabbsvar är ofta D när x inte har ett bestämt värde — det känns som att information saknas.",
+    "why_wrong": "Steg 10–11 visar att ordningen är låst för hela intervallet x > 0. Det räcker gott; ett specifikt x behövs inte."
    }
   ],
-  "technique": "Bråk-koefficient-strategin: när båda kvantiteter har samma positiva variabel som faktor, släng variabeln och jämför koefficienterna med gemensam nämnare. Triggern: '(a/b)x mot (c/d)x med x > 0'.",
-  "pitfall": "Botemedlet mot dubbelarbete: konvertera bråken till gemensam nämnare en gång och jämför täljarna — inget mer behövs.",
-  "framework_id": "KVA-TRAP-023",
+  "technique": "Negativ-koefficient-strategin: när båda kvantiteter är (konstant)·x med samma x > 0, jämför först konstanternas storlek med gemensam nämnare, och VÄND sedan slutsatsen om båda konstanter är negativa. Triggern: minustecken framför båda uttryck + samma positiva variabel → jämför magnitud, flippa för tecknet.",
+  "pitfall": "Vanliga fällan är att jämföra \\frac{7}{4} och \\frac{3}{2} som om de vore positiva och välja I. Botemedlet: för negativa tal är 'större' = närmare noll, inte längst bort. Rita en tallinje om du tvekar — längre till höger vinner alltid.",
   "pregrade_tactic": {
-   "handle": "Koefficient-renodlingen",
-   "move": "När båda kvantiteter har samma garanterat positiva variabel som faktor — släng variabeln och jämför koefficienterna med gemensam nämnare."
+   "handle": "Teckenvändningen",
+   "move": "Har båda kvantiteter minus framför? Jämför magnituderna som vanligt, vänd sedan slutsatsen: den med minst magnitud är störst."
   },
+  "framework_id": "KVA-TRAP-015",
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   }
  },
  "host-2013-kvant2-KVA-014": {

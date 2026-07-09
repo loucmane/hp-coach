@@ -12498,97 +12498,103 @@
   }
  },
  "host-ver1-2019-kvant1-KVA-018": {
-  "solution_path": "Villkor 1 ≤ x ≤ 100000 (x heltal). Sannolikhet att 4x är jämnt = 1 (eftersom 4x är alltid jämnt). Så I = 1 > 0,5 = II — svaret A.",
+  "solution_path": "x är ett positivt heltal. 4^{x} är en produkt av x stycken faktorer 4, och 4 är jämnt — en produkt som innehåller minst en jämn faktor är alltid jämn. Så 4^{x} är jämnt för VARJE tillåtet x, dvs sannolikheten att det är jämnt är 1. Kvantitet I = 1, Kvantitet II = 0,5. Eftersom 1 > 0,5 är I > II — svaret A.",
   "steps": [
    {
     "n": 1,
-    "title": "Förstå problemet",
-    "text": "x är ett heltal 1 ≤ x ≤ 100000. Sannolikhet att 4x är jämnt — jämför med 0,5.",
+    "title": "Förstå frågan",
+    "text": "x är ett heltal med 1\\le x\\le 100\\,000. Kvantitet I är sannolikheten att 4^{x} är ett jämnt tal. Kvantitet II är 0,5. Vi ska avgöra vilken som är störst.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Är 4x alltid jämnt?",
-    "text": "4x = 2·(2x), så 4x är alltid jämnt (delbart med 2) oavsett vilket heltal x är.",
-    "tier": "essential"
+    "title": "Vad betyder jämnt tal?",
+    "text": "Ett tal är jämnt om det är delbart med 2. En produkt är jämn så snart minst en av faktorerna är jämn.",
+    "tier": "detail"
    },
    {
     "n": 3,
-    "title": "Sannolikheten",
-    "text": "Sannolikhet att 4x är jämnt = (antal x där 4x jämnt)/(totalt antal x) = 100000/100000 = 1.",
-    "tier": "essential"
+    "title": "Vad är 4^{x}",
+    "text": "4^{x} betyder 4 multiplicerat med sig självt x gånger: 4^{x}=4\\cdot 4\\cdots 4 (x faktorer). Talet 4 är jämnt.",
+    "tier": "detail"
    },
    {
     "n": 4,
-    "title": "Jämför med 0,5",
-    "text": "1 > 0,5, så I > II.",
+    "title": "Är 4^{x} alltid jämnt?",
+    "text": "Ja. Redan en enda faktor 4 gör produkten jämn (delbar med 2). Faktiskt är 4^{x}=2^{2x}, alltid delbart med 2. Så 4^{x} är jämnt för varje heltal x ≥ 1.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Sanity check",
-    "text": "4·1 = 4 (jämnt), 4·2 = 8 (jämnt), 4·3 = 12 (jämnt), alltid jämnt.",
-    "tier": "detail"
+    "title": "Översätt till sannolikhet",
+    "text": "Om en händelse inträffar för ALLA möjliga utfall är dess sannolikhet 1 (säker händelse). Här är '4^{x} jämnt' säkert, så Kvantitet I = 1.",
+    "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Räcker informationen?",
-    "text": "Ja — 4x:s paritet är låst.",
+    "title": "Jämför",
+    "text": "Kvantitet I = 1, Kvantitet II = 0,5. Eftersom 1 > 0,5 är I större än II.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Tecken-check",
-    "text": "Sannolikheter ≥ 0.",
+    "title": "Testa några x",
+    "text": "x = 1: 4^{1}=4 (jämnt). x = 2: 4^{2}=16 (jämnt). x = 7: 4^{7}=16384 (jämnt). Alltid jämnt.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Verifiera mot facit",
-    "text": "Facit A: I > II.",
+    "title": "Varför intervallet inte spelar roll",
+    "text": "Villkoret 1\\le x\\le 100\\,000 ger bara positiva heltal — och för alla sådana är 4^{x} jämnt. Storleken på intervallet ändrar inget.",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Insikt",
-    "text": "När en faktor i en produkt är jämn, är hela produkten jämn — paritets-fortplantning.",
-    "tier": "detail"
+    "title": "Kan svaret flippa?",
+    "text": "Nej — sannolikheten är exakt 1 oavsett vilket x i intervallet man tänker sig. I > II med säkerhet.",
+    "tier": "essential"
    },
    {
     "n": 10,
+    "title": "Räcker informationen?",
+    "text": "Ja. Att x är ett positivt heltal räcker för att fastställa att 4^{x} alltid är jämnt. D är utesluten.",
+    "tier": "essential"
+   },
+   {
+    "n": 11,
     "title": "Slutsats",
-    "text": "I = 1 > II = 0,5 — svaret är A. Insikten: 4x är jämn för ALLA heltal x, så sannolikheten är 1.",
+    "text": "I > II — svaret är A. Insikten: en potens av ett jämnt tal är alltid jämn, så sannolikheten är 1, inte något som behöver 'slumpas fram'.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Om man tror att 'hälften är jämn, hälften udda' alltid gäller.",
-    "why_wrong": "Steg 2: 4x är ALLTID jämn, inte 'ungefär hälften'. Multipel av 4 är alltid multipel av 2."
+    "why_tempting": "Ordet 'sannolikhet' lockar till att tro att det finns en verklig chansfördelning kring 0,5 — som om 4^{x} ibland vore udda.",
+    "why_wrong": "4^{x} är jämnt för VARJE x (steg 4), så sannolikheten är 1, inte under 0,5. II kan inte vara störst."
    },
    {
     "letter": "C",
-    "why_tempting": "Likhet kräver sannolikhet 0,5, vilket inte är fallet.",
-    "why_wrong": "Steg 3: sannolikheten är 1, inte 0,5."
+    "why_tempting": "Om du blandar ihop 0,5 med 'hälften av fallen' kan lika kännas rimligt.",
+    "why_wrong": "Steg 5: sannolikheten är exakt 1, inte 0,5. Kvantiteterna är olika."
    },
    {
     "letter": "D",
-    "why_tempting": "'Sannolikhet okänt → otillräcklig'.",
-    "why_wrong": "Steg 6: 4x:s paritet är låst av faktorn 4."
+    "why_tempting": "Ett stort okänt x lockar till 'informationen räcker inte'.",
+    "why_wrong": "Steg 10 visar att svaret är bestämt för hela intervallet — 4^{x} är alltid jämnt. Informationen räcker."
    }
   ],
-  "technique": "Paritets-fortplantning: produkt med jämn faktor är jämn. Triggern: 'sannolikhet att kx är jämnt för k jämn'.",
-  "pitfall": "Botemedlet mot 'hälften är jämn'-felet: undersök varje multipel av 2 — om en faktor är jämn, så är produkten också jämn.",
-  "framework_id": "KVA-TRAP-028",
+  "technique": "Paritet-hos-potens-regeln: en potens a^{x} med jämn bas a och heltalsexponent x ≥ 1 är alltid jämn, så 'sannolikheten att den är jämn' = 1. Triggern: 'sannolikheten att a^{x} är jämnt' där a är en jämn bas → inse att det är en säker händelse (p = 1).",
+  "pitfall": "Vanliga fällan är att behandla '4^{x} jämnt' som en slumphändelse nära 0,5. Botemedlet: fråga 'kan detta någonsin vara falskt?' Kan det aldrig vara falskt är sannolikheten 1 — här är 4^{x}=2^{2x} garanterat jämnt.",
   "pregrade_tactic": {
-   "handle": "Paritets-multiplikationen",
-   "move": "Vid 'sannolikhet att kx är jämnt' — räkna paritets-fortplantning: jämn k ger sannolikhet 1."
+   "handle": "Säkra-händelsen",
+   "move": "Fråga om händelsen kan vara falsk för något tillåtet x — kan den aldrig det, är sannolikheten 1, inte 0,5."
   },
+  "framework_id": "KVA-TRAP-036",
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   }
  },
  "host-ver1-2019-kvant1-KVA-019": {

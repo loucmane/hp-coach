@@ -12814,97 +12814,97 @@
   }
  },
  "var-2015-kvant1-KVA-021": {
-  "solution_path": "I = (7/3)³ = 343/27 ≈ 12,7. II = 49. Per facit C: lika. Räkning ger 12,7 ≠ 49, så tolkningen måste vara annorlunda. Trolig tolkning: I = 7³ = 343 och II = 49·7 = 343 — lika. Eller (something different).",
+  "solution_path": "I = \\left(\\frac{1}{7}\\right)^{-2}. En negativ exponent betyder invertera: \\left(\\frac{1}{7}\\right)^{-2}=\\left(\\frac{7}{1}\\right)^{2}=7^{2}=49. II = 49. Alltså I = 49 = II — kvantiteterna är lika. Svaret är C.",
   "steps": [
    {
     "n": 1,
-    "title": "Förstå problemet",
-    "text": "Två numeriska uttryck. Per facit C ska de vara lika.",
+    "title": "Förstå frågan",
+    "text": "Vi jämför I = \\left(\\frac{1}{7}\\right)^{-2} med II = 49. Hela uppgiften handlar om att tolka den NEGATIVA exponenten rätt.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Tolka I",
-    "text": "Trolig tolkning ger 343 (7³) eller liknande.",
-    "tier": "essential"
+    "title": "Vad betyder negativ exponent?",
+    "text": "En negativ exponent betyder 'ett delat med': a^{-n}=\\frac{1}{a^{n}}. Ekvivalent, för ett bråk: \\left(\\frac{p}{q}\\right)^{-n}=\\left(\\frac{q}{p}\\right)^{n} — man vänder bråket och gör exponenten positiv.",
+    "tier": "detail"
    },
    {
     "n": 3,
-    "title": "Tolka II",
-    "text": "II = 49·7 = 343 (om 49 = 7² och multipliceras med 7).",
+    "title": "Vänd bråket",
+    "text": "Tillämpa regeln: \\left(\\frac{1}{7}\\right)^{-2}=\\left(\\frac{7}{1}\\right)^{2}=7^{2}.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Jämför",
-    "text": "Båda = 343 — lika.",
+    "title": "Räkna ut",
+    "text": "7^{2}=7\\cdot 7=49. Alltså I = 49.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Verifiera",
-    "text": "7³ = 343 ✓ och 49·7 = 343 ✓.",
-    "tier": "detail"
+    "title": "Jämför",
+    "text": "Kvantitet I = 49, Kvantitet II = 49. De är exakt lika.",
+    "tier": "essential"
    },
    {
     "n": 6,
-    "title": "Räcker informationen?",
-    "text": "Ja.",
+    "title": "Dubbelkolla med den andra regeln",
+    "text": "\\left(\\frac{1}{7}\\right)^{-2}=\\frac{1}{\\left(\\frac{1}{7}\\right)^{2}}=\\frac{1}{\\frac{1}{49}}=49. Samma svar — bekräftar tolkningen.",
     "tier": "detail"
    },
    {
     "n": 7,
-    "title": "Tecken-check",
-    "text": "Båda positiva.",
+    "title": "Vanligt feltänk",
+    "text": "Om man ignorerar minustecknet räknar man \\left(\\frac{1}{7}\\right)^{2}=\\frac{1}{49} och tror I är pytteliten. Minustecknet vänder just detta uppochner.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Per facit C",
-    "text": "Bekräftat.",
+    "title": "Kan svaret flippa?",
+    "text": "Nej — det finns inga variabler. Båda kvantiteter är bestämda tal och exakt lika.",
     "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Insikt",
-    "text": "7³ = 7² · 7 = 49 · 7 — potenslagar.",
+    "title": "Räcker informationen?",
+    "text": "Ja, allt är givet. D är utesluten.",
     "tier": "detail"
    },
    {
     "n": 10,
     "title": "Slutsats",
-    "text": "I = II = 343 — svaret är C.",
+    "text": "I = II = 49 — svaret är C. Insikten: negativ exponent på ett bråk = vänd bråket och gör exponenten positiv; \\left(\\frac{1}{7}\\right)^{-2} är alltså 7^{2}=49.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Om man inte ser identiteten.",
-    "why_wrong": "Steg 9: 7³ = 7²·7 är standard."
+    "why_tempting": "Om du vänder bråket men överdriver kan du tro att I blir större än 49.",
+    "why_wrong": "Steg 3–4 ger exakt 7^{2}=49. I är precis 49, inte större."
    },
    {
     "letter": "B",
-    "why_tempting": "Spegel.",
-    "why_wrong": "Samma."
+    "why_tempting": "Missar du minustecknet räknar du \\left(\\frac17\\right)^{2}=\\frac{1}{49}, en pytteliten I, och svarar att II (49) vinner.",
+    "why_wrong": "Minustecknet i exponenten VÄNDER bråket (steg 2–3). Rätt värde är 49, inte \\frac{1}{49}. I är inte mindre."
    },
    {
     "letter": "D",
-    "why_tempting": "'Otydligt → otillräcklig'.",
-    "why_wrong": "Steg 6: räcker."
+    "why_tempting": "Uttrycket med negativ exponent ser krångligt ut, vilket lockar till 'informationen räcker inte'.",
+    "why_wrong": "Steg 9: allt är bestämt. En negativ exponent är en vanlig räkneoperation, inte en okänd. Informationen räcker."
    }
   ],
-  "technique": "Potensregeln a^(m+n) = a^m · a^n.",
-  "pitfall": "Botemedlet mot räknehets: faktorisera i potens-form först.",
-  "framework_id": null,
+  "technique": "Negativ-exponent-regeln: \\left(\\frac{p}{q}\\right)^{-n}=\\left(\\frac{q}{p}\\right)^{n} — vänd bråket, gör exponenten positiv. Triggern: ett bråk upphöjt till en negativ exponent → invertera först, räkna sen.",
+  "pitfall": "Vanliga fällan är att tappa minustecknet och räkna som om exponenten vore +2, vilket ger \\frac{1}{49} istället för 49. Botemedlet: skriv alltid om negativ exponent som en inversion INNAN du kvadrerar.",
   "pregrade_tactic": {
-   "handle": "Potens-addition",
-   "move": "Vid a^n mot a^(n-1)·a — använd potensregeln för att se likhet direkt."
+   "handle": "Inverteringen",
+   "move": "Se en negativ exponent på ett bråk? Vänd bråket och gör exponenten positiv innan du räknar."
   },
+  "framework_id": "KVA-TRAP-034",
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   }
  },
  "var-2015-kvant2-KVA-018": {
