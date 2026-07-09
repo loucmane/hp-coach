@@ -1,8 +1,17 @@
 name: Auto-merge
 
-# Fires when CI completes. If the head branch has an open PR labeled
-# `auto-merge`, squash-merge it and delete the branch. Lets us land
-# work without watching GitHub once CI goes green.
+# Squash-merge an open PR labeled `auto-merge` once CI is green, then
+# delete the branch. Lets us land work without watching GitHub.
+#
+# Two triggers close the label/CI race in BOTH orderings:
+#   - workflow_run: CI finishes after the label was added → merge.
+#   - pull_request labeled: label added after CI already finished → the
+#     workflow_run pass has already come and gone, so check CI state now
+#     and merge if it's green. If CI is still running, exit quietly and
+#     let the workflow_run pass handle it on completion.
+# Before the labeled trigger existed, labeling a PR whose CI had already
+# completed meant nothing ever fired again (only a new push would), and
+# we kept paying an empty retrigger commit per PR.
 #
 # Why a workflow and not native GitHub auto-merge: private repos on the
 # free tier can't require status checks via branch protection, so the
@@ -13,37 +22,63 @@ on:
   workflow_run:
     workflows: ["CI"]
     types: [completed]
+  pull_request:
+    types: [labeled]
 
 jobs:
   merge:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request' }}
+    if: >-
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'pull_request') ||
+      (github.event_name == 'pull_request' &&
+       github.event.label.name == 'auto-merge')
     permissions:
       contents: write
       pull-requests: write
     steps:
-      - name: Merge if PR has auto-merge label
+      - name: Merge if PR has auto-merge label and CI is green
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          BRANCH="${{ github.event.workflow_run.head_branch }}"
           REPO="${{ github.repository }}"
 
-          PR=$(gh pr list \
-            --repo "$REPO" \
-            --head "$BRANCH" \
-            --state open \
-            --json number,labels \
-            --jq '.[] | select(.labels | map(.name) | index("auto-merge")) | .number' \
-            | head -1)
-
-          if [ -z "$PR" ]; then
-            echo "No open PR on $BRANCH carries the auto-merge label — nothing to do."
-            exit 0
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            # CI just completed (successfully, per the job `if`). Find an
+            # open labeled PR on that branch.
+            BRANCH="${{ github.event.workflow_run.head_branch }}"
+            PR=$(gh pr list \
+              --repo "$REPO" \
+              --head "$BRANCH" \
+              --state open \
+              --json number,labels \
+              --jq '.[] | select(.labels | map(.name) | index("auto-merge")) | .number' \
+              | head -1)
+            if [ -z "$PR" ]; then
+              echo "No open PR on $BRANCH carries the auto-merge label — nothing to do."
+              exit 0
+            fi
+          else
+            # The auto-merge label was just added. CI may or may not have
+            # finished; merge only if every check on the PR has passed.
+            # NOT `gh pr checks`: this very job runs as a pull_request-event
+            # check on the same head SHA, so it would always see itself
+            # pending and defer forever (self-deadlock, observed on PR #196).
+            # Query check-runs directly and exclude our own job by name.
+            PR="${{ github.event.pull_request.number }}"
+            SHA="${{ github.event.pull_request.head.sha }}"
+            GREEN=$(gh api "repos/$REPO/commits/$SHA/check-runs" --paginate \
+              --jq '[.check_runs[] | select(.name != "${{ github.job }}")]
+                    | length > 0 and all(.status == "completed" and .conclusion == "success")')
+            if [ "$GREEN" != "true" ]; then
+              echo "Checks on PR #$PR not (yet) green — the CI-completion pass will merge."
+              exit 0
+            fi
           fi
 
-          echo "CI green on $BRANCH; squash-merging PR #$PR."
+          echo "CI green; squash-merging PR #$PR."
           gh pr merge "$PR" \
             --repo "$REPO" \
             --squash \
