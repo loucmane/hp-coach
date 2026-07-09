@@ -1138,6 +1138,94 @@
         "answer": "C — I är lika med II."
       },
       "counter_example": "Om högerledet istället var 45²ˣ, då ger √45 = 45^{1/2} att 2x = 1/2, alltså x = 1/4 < 0,5 — svaret kantrar till A."
+    },
+    {
+      "id": "KVA-TRAP-051",
+      "pattern_description": "Vinklar mellan parallella linjer — student läser av två markerade vinklar visuellt och gissar om de är lika eller summerar till 180°, istället för att avgöra relationen från vinkelparets läge.",
+      "why_it_occurs": "När L₁ ∥ L₂ skärs av en transversal bestämmer POSITIONEN relationen: alternat- och likbelägna vinklar (Z- och F-läge) är lika, konsekutiva vinklar (samma sida, U-läge) summerar till 180°. I en jämförelse antar studenten fel relation och får I mot II att kantra.",
+      "common_distractor_signature": "Väljer A eller B när svaret är C (alternatvinklar är lika men figuren fått dem att se olika ut) — eller C när relationen är supplementär (U-läge) och kvantiteterna skiljer sig.",
+      "countermeasure": "Innan du jämför: rita ut transversalen och läs av läget — Z = alternat (lika), F = likbelägna (lika), U = konsekutiva på samma sida (summa 180°). Låt läget avgöra likhetstecknet, aldrig hur vinklarna ser ut i figuren.",
+      "example_questions": [
+        "host-2013-kvant2-KVA-014",
+        "var-2024-kvant2-KVA-020",
+        "host-2022-kvant1-KVA-017"
+      ],
+      "notes": "KVA-tvilling till XYZ-TRAP-037 (vinklar mellan parallella linjer). XYZ-entryn fokuserar på att välja rätt vinkelrelation; denna på hur ett felläst läge flippar en I-mot-II-verdikt — särskilt att alternatvinklar ger C fast figuren pekar mot A/B.",
+      "tldr": "Parallella linjer med transversal: läget (Z/F/U), inte utseendet, avgör om de två vinklarna är lika eller summerar till 180° — och därmed jämförelsen.",
+      "recognition_cue": "När I och II är två vinklar (eller en vinkel mot ett gradtal) i en figur med två parallella linjer skurna av en transversal, och du frestas att uppskatta storleken visuellt.",
+      "worked_example": {
+        "setup": "Två parallella linjer skärs av en transversal. Den ena markerade vinkeln är 20°. Jämför I: x (den andra markerade vinkeln, i alternatläge) med II: 20°. Detta är host-2013-kvant2-KVA-014.",
+        "trap_thinking": "Studenten ser att x ritats i ett annat hörn och ser \"mindre\" ut, gissar att x < 20° och väljer B — eller antar att de två vinklarna är konsekutiva och att x = 180° − 20° = 160°, och väljer A.",
+        "correct_thinking": "Läs läget: x och 20°-vinkeln ligger i Z-läge (alternatvinklar) om transversalen. Alternatvinklar mellan parallella linjer är lika, så x = 20° exakt — oberoende av hur figuren är ritad.",
+        "answer": "C — I är lika med II, eftersom alternatvinklarna är lika."
+      },
+      "counter_example": "Om de två vinklarna istället låg i U-läge (samma sida om transversalen, mellan parallellerna), då vore relationen x + 20° = 180°, alltså x = 160° > 20° och svaret A — läget, inte figurens utseende, avgör verdikten."
+    },
+    {
+      "id": "KVA-TRAP-052",
+      "pattern_description": "Sammansatt/skuggad area — student försöker läsa av eller gissa den skuggade ytan i ett svep istället för att dekomponera figuren i grundformer och räkna del för del.",
+      "why_it_occurs": "En skuggad yta är nästan alltid en grundform plus/minus en annan (rektangel minus halvcirklar, kvadrat minus triangel). I en jämförelse hoppar studenten över dekomponeringen, missar en delarea eller dubbelräknar, och den felaktiga totalen kastar om I mot II.",
+      "common_distractor_signature": "Väljer A eller B efter att ha glömt en delarea eller subtraherat en bortklippt del som skulle adderats (eller tvärtom) — totalen hamnar precis på fel sida om jämförelsevärdet.",
+      "countermeasure": "Vid skuggad yta: markera varje delfigur, skriv ner dess mått, räkna en del i taget. Addera de delar som ingår, subtrahera de som klippts bort. Jämför mot II först när hela totalen står utskriven.",
+      "example_questions": [
+        "var-2019-kvant1-KVA-018",
+        "var-2019-kvant2-KVA-019",
+        "var-2024-kvant2-KVA-014"
+      ],
+      "notes": "KVA-tvilling till XYZ-TRAP-041 (sammansatt figur — dekomponera). XYZ-entryn fokuserar på att bryta ner figuren; denna på hur en glömd eller feltecknad delarea kastar om en I-mot-II-jämförelse mot ett fast areatal.",
+      "tldr": "Skuggad yta = grundformer plus/minus varandra — räkna varje del separat, annars pekar en glömd bit jämförelsen åt fel håll.",
+      "recognition_cue": "När I eller II är \"arean av den skuggade ytan\" i en sammansatt figur (rektangel med halvcirklar, regelbunden månghörning med en del ifylld) och den ska jämföras mot ett areatal eller mot den oskuggade delen.",
+      "worked_example": {
+        "setup": "En skuggad yta i en figur ska jämföras. Jämför I: arean av den skuggade ytan med II: 6 cm². Detta är var-2019-kvant1-KVA-018.",
+        "trap_thinking": "Studenten ögonmäter den skuggade ytan, tycker att den ser ut som \"ungefär 6\" och väljer C — eller räknar bara den ena delfiguren och missar en till, landar under 6 och väljer B.",
+        "correct_thinking": "Dekomponera: markera varje delfigur, skriv ut sidorna och räkna en del i taget. Summan av delareorna överstiger 6 cm² (delarna ger tillsammans en area mellan 7 och 9 cm²). Alltså är I > II.",
+        "answer": "A — I är större än II, sedan varje delarea räknats och summerats."
+      },
+      "counter_example": "Om figuren istället bestått av en enda hel grundform (t.ex. bara en kvadrat med känd sida), då behövs ingen dekomponering och ingen delarea kan glömmas — fällan uppstår bara när ytan är sammansatt av flera bitar."
+    },
+    {
+      "id": "KVA-TRAP-053",
+      "pattern_description": "Cirkelmått — student stoppar in diametern där radien krävs (eller hoppar över steget r = d/2), så att en kvantitet blir dubbelt eller fyra gånger för stor.",
+      "why_it_occurs": "A = πr² och O = 2πr använder radien. När problemet ger diametern (eller omkretsen, eller en rullad sträcka) måste man halvera eller dela med π först. I en jämförelse tappar studenten det steget och kvantiteten hamnar på fel sida om jämförelsevärdet.",
+      "common_distractor_signature": "Väljer A eller B med en kvantitet som är 2× för stor (radie tagen lika med diametern) eller där omkrets/sträcka inte delats med π innan diametern lästes av.",
+      "countermeasure": "Markera EXPLICIT om du har radie eller diameter innan formeln: d = 2r, så r = d/2. För rullande hjul: sträcka per varv = πd, så d = sträcka/π. Halvera respektive dela med π först, jämför sedan.",
+      "example_questions": [
+        "host-2020-kvant1-KVA-019",
+        "host-2013-kvant2-KVA-020",
+        "host-2024-kvant1-KVA-021"
+      ],
+      "notes": "KVA-tvilling till XYZ-TRAP-042 (radie kontra diameter). XYZ-entryn fokuserar på själva halveringen i formeln; denna på hur det tappade steget r = d/2 (eller d = omkrets/π) flippar en I-mot-II-verdikt mot ett fast tal.",
+      "tldr": "Cirkelformler använder radien — ges diametern, omkretsen eller en rullad sträcka måste du halvera eller dela med π innan du jämför.",
+      "recognition_cue": "När I eller II är en cirkels radie, area, omkrets eller ett rullande hjuls diameter och det som ges är diametern, omkretsen eller sträckan per varv — steget r = d/2 eller d = O/π står mellan dig och jämförelsen.",
+      "worked_example": {
+        "setup": "Omkretsen av en cirkel är 25π cm. Jämför I: cirkelns radie med II: 10 cm. Detta är host-2020-kvant1-KVA-019.",
+        "trap_thinking": "Studenten delar omkretsen med π och läser av 25 som radien (glömmer faktorn 2 i O = 2πr), ser 25 > 10 men känner sig osäker — eller tar radien = diametern och rör ihop det, och gissar.",
+        "correct_thinking": "O = 2πr = 25π ger r = 25/2 = 12,5 cm. Halveringssteget är det avgörande: 12,5 > 10, alltså är I större än II.",
+        "answer": "A — I är större än II, eftersom radien är 12,5 cm sedan omkretsen delats med 2π."
+      },
+      "counter_example": "Om problemet istället gett radien direkt (\"cirkelns radie är 12,5 cm\"), då behövs ingen halvering och steget r = d/2 kan inte tappas — fällan dyker upp bara när det är diametern, omkretsen eller sträckan som ges."
+    },
+    {
+      "id": "KVA-TRAP-054",
+      "pattern_description": "Differens av en linjär funktion — student räknar f-värdena var för sig istället för att se att f(b) − f(a) = k(b − a) och att konstanten m faller bort.",
+      "why_it_occurs": "För f(x) = kx + m kancellerar m i varje differens: f(b) − f(a) = k(b − a). Studenten räknar ut varje f-värde separat, drar med m i onödan och gör teckenfel — och den felaktiga differensen kastar om I mot II.",
+      "common_distractor_signature": "Väljer fel alternativ efter ett teckenfel i f(a) − f(b) (räknat som f(b) − f(a)) eller efter att m dragits med felaktigt, så att differensen hamnar på fel sida om jämförelsevärdet.",
+      "countermeasure": "För linjär f(x) = kx + m: använd f(b) − f(a) = k(b − a). Identifiera k och x-skillnaden, multiplicera — m är irrelevant för differenser. Skriv ut parentesen i mellansteget så teckenordningen inte kastas om.",
+      "example_questions": [
+        "var-2013-kvant2-KVA-018",
+        "var-2022-2-kvant1-KVA-015",
+        "host-2017-kvant2-KVA-016"
+      ],
+      "notes": "KVA-tvilling till XYZ-TRAP-052 (linjär funktions differens). XYZ-entryn fokuserar på genvägen k(b − a); denna på hur ett teckenfel eller ett medsläpat m i differensen flippar en I-mot-II-verdikt.",
+      "tldr": "För linjär f gäller f(b) − f(a) = k(b − a) — m faller bort. Räknar du f-värdena var för sig smyger teckenfel in och kastar om jämförelsen.",
+      "recognition_cue": "När I eller II innehåller en differens f(uttryck₁) − f(uttryck₂) för en linjär funktion f(x) = kx + m — oavsett vad m är, styr bara k och x-skillnaden.",
+      "worked_example": {
+        "setup": "Funktionen ges av f(x) = 3x + 1. Jämför I: f(a) − f(a + 1) med II: 3. Detta är var-2013-kvant2-KVA-018.",
+        "trap_thinking": "Studenten skriver f(a) = 3a + 1 och f(a + 1) = 3a + 4 men subtraherar i fel ordning eller tappar tecknet, får differensen +3 och väljer C — likhet.",
+        "correct_thinking": "f(a) − f(a + 1) = k(a − (a + 1)) = 3·(−1) = −3. Konstanten 1 (rollen som m) faller bort. Kvantitet I = −3, Kvantitet II = 3, så II är större.",
+        "answer": "B — II är större än I, eftersom differensen är k gånger x-skillnaden = −3."
+      },
+      "counter_example": "Om f istället var kvadratisk, t.ex. f(x) = x² + 1, då faller m fortfarande bort men differensen beror på både a och b — genvägen k(b − a) gäller inte och man måste räkna f-värdena."
     }
   ]
 }
