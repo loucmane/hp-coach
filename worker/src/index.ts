@@ -24,9 +24,11 @@ import { runRetention } from './lib/retention'
 import { requireAuth } from './middleware/auth'
 import { rateLimit } from './middleware/rateLimit'
 import { attemptsRoute } from './routes/attempts'
+import { dailyPlansRoute } from './routes/dailyPlans'
 import { devLoginRoute } from './routes/devLogin'
 import { healthRoute } from './routes/health'
 import { lessonProgressRoute } from './routes/lessonProgress'
+import { lessonReadsRoute } from './routes/lessonReads'
 import { meRoute } from './routes/me'
 import { mistakesRoute } from './routes/mistakes'
 import { sessionsRoute } from './routes/sessions'
@@ -80,6 +82,8 @@ const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .route('/me', meRoute)
   .route('/sessions', sessionsRoute)
   .route('/lesson-progress', lessonProgressRoute)
+  .route('/lesson-reads', lessonReadsRoute)
+  .route('/daily-plans', dailyPlansRoute)
   .route('/attempts', attemptsRoute)
   .route('/mistakes', mistakesRoute)
   .route('/test-reset', testResetRoute)

@@ -44,6 +44,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { useDailyPlanQuery, usePutDailyPlan } from '@/api/hooks/useDailyPlanApi'
+import { useLessonReadsQuery } from '@/api/hooks/useLessonReadsApi'
 import { useDueMistakes } from '@/api/hooks/useMistakes'
 import { useActiveSessions } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
@@ -57,6 +59,7 @@ import {
   loadLessonReads,
   loadPlan,
   localDateString,
+  PLAN_SCHEMA_VERSION,
   type PlanItem,
   savePlan,
 } from '@/lib/scheduler'
@@ -91,6 +94,16 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   // happens while a session started on another device is still open.
   const activeSessions = useActiveSessions()
 
+  // Server lesson READ SET — the cross-device source of truth for which
+  // framework entries the user has read. Fed into BOTH lesson-item
+  // completion and the next-unread-entry hint below, merged with the
+  // localStorage cache so an offline mark is honoured before it flushes.
+  const serverReads = useLessonReadsQuery()
+
+  // Server plan mutation — used to PUT a freshly-generated plan so the
+  // other device adopts the identical baseline (first-generator-wins).
+  const putServerPlan = usePutDailyPlan()
+
   // `now` lives in state (seeded once from `initialNow`) instead of
   // being recomputed every render, so its reference — and therefore
   // `today` — only changes when we explicitly decide the day rolled
@@ -101,18 +114,37 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   const [plan, setPlan] = useState<DailyPlan | null>(null)
   const [hints, setHints] = useState<FrameworkHints | null>(null)
 
-  // Resolve framework first-unread-entry hints once per session. The
-  // framework JSON is small (<10KB each, 8 sections); a parallel fetch
-  // is ~80KB total and the loader memoises so re-mounts are free.
+  // Server plan for today's local date — GET'd BEFORE we generate so a plan
+  // authored on another device is adopted verbatim (first-generator-wins),
+  // rather than each device re-rolling its own. Keyed by `today`, so a
+  // day-boundary rollover re-queries automatically.
+  const serverPlan = useDailyPlanQuery(today)
+
+  // Merged read set: server (cross-device truth) ∪ localStorage (offline /
+  // fast-path cache). Both the lesson-completion branch and the framework
+  // hint resolution consume this so a read made on either device — or
+  // offline before it flushes — is honoured. Memoised on the server data
+  // reference so it's stable across renders that don't change reads.
+  const mergedReads = useMemo(() => {
+    const merged = loadLessonReads()
+    for (const id of serverReads.data ?? []) merged.add(id)
+    return merged
+  }, [serverReads.data])
+
+  // Resolve framework first-unread-entry hints. Re-runs when the merged
+  // read set changes (a read on the other device should advance the hint),
+  // so the "next unread entry" is cross-device, not device-local. The
+  // framework JSON is small (<10KB each, 8 sections); the loader memoises
+  // so re-resolves are cheap.
   useEffect(() => {
     let alive = true
-    resolveFrameworkHints().then((h) => {
+    resolveFrameworkHints(mergedReads).then((h) => {
       if (alive) setHints(h)
     })
     return () => {
       alive = false
     }
-  }, [])
+  }, [mergedReads])
 
   // Day-boundary recompute: re-check the local date on `focus` and
   // `visibilitychange` (becoming visible) — the two events that fire
@@ -156,24 +188,53 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   // reference every render and React would enter an infinite render
   // loop. `today`, not `now`, is the correct "did the day roll over"
   // signal.
-  // biome-ignore lint/correctness/useExhaustiveDependencies: `now` excluded by design
+  // Adopt-or-generate, first-generator-wins across devices:
+  //   1. If the SERVER has a plan for `today`, adopt it verbatim (server
+  //      wins over any local copy — identical baseline on every device) and
+  //      mirror it into localStorage as the fast-path cache.
+  //   2. Else if localStorage has a cached plan (offline / this device
+  //      generated it earlier this session), adopt that.
+  //   3. Else GENERATE locally, cache it, and PUT it to the server so the
+  //      other device adopts the same baseline.
+  //
+  // We wait for the server plan query to SETTLE (`!isLoading`) before
+  // generating, so we never race-generate a second baseline while the
+  // server's first-generated plan is still in flight. If the GET failed
+  // (offline), `isLoading` still resolves (to error) and we fall through to
+  // the localStorage/generate path — offline-tolerant.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: `now` excluded by design; serverPlan.data/status drive re-run
   useEffect(() => {
     if (!stats.data || due.data === undefined || hints === null) return
+    if (serverPlan.isLoading) return
 
-    const cached = loadPlan(today)
-    if (cached) {
-      setPlan(
-        deriveCompletion(
-          cached,
-          due.data.length,
-          loadLessonReads(),
-          stats.data.bySection,
-          stats.data.attempts.total,
-        ),
+    const derive = (p: DailyPlan) =>
+      deriveCompletion(
+        p,
+        due.data.length,
+        mergedReads,
+        stats.data.bySection,
+        stats.data.attempts.total,
       )
+
+    // 1. Server plan present → adopt verbatim (server wins), mirror local.
+    const remote = serverPlan.data
+    if (remote?.version === PLAN_SCHEMA_VERSION && remote.date === today) {
+      savePlan(remote)
+      setPlan(derive(remote))
       return
     }
 
+    // 2. Local cache present → adopt.
+    const cached = loadPlan(today)
+    if (cached) {
+      setPlan(derive(cached))
+      // No server row yet (we're here because remote was null/stale) — push
+      // this device's cached plan up so the other device can adopt it.
+      putServerPlan.mutate(cached)
+      return
+    }
+
+    // 3. Generate fresh, cache, and publish as the baseline.
     const fresh = buildPlan(
       now,
       stats.data.bySection,
@@ -183,27 +244,30 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       stats.data.attempts.total,
     )
     savePlan(fresh)
-    setPlan(
-      deriveCompletion(
-        fresh,
-        due.data.length,
-        loadLessonReads(),
-        stats.data.bySection,
-        stats.data.attempts.total,
-      ),
-    )
-  }, [stats.data, due.data, hints, today, topTraps])
+    putServerPlan.mutate(fresh)
+    setPlan(derive(fresh))
+  }, [
+    stats.data,
+    due.data,
+    hints,
+    today,
+    topTraps,
+    mergedReads,
+    serverPlan.data,
+    serverPlan.isLoading,
+  ])
 
-  // Re-run derivation when due count or stats change mid-session
-  // (user just finished /repetition or a drill and bounced back).
-  // Lesson reads also change mid-session but require a re-mount of
-  // Home to be picked up — that's fine for v1.
+  // Re-run derivation when due count, stats, or the (cross-device) read
+  // set change mid-session (user just finished /repetition or a drill and
+  // bounced back, or read a lesson entry on the other device). This only
+  // recomputes completion flags — it never regenerates the plan, so the
+  // baseline stays stable within the day.
   useEffect(() => {
     if (!plan || due.data === undefined || !stats.data) return
     const next = deriveCompletion(
       plan,
       due.data.length,
-      loadLessonReads(),
+      mergedReads,
       stats.data.bySection,
       stats.data.attempts.total,
     )
@@ -211,8 +275,12 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       savePlan(next)
       setPlan(next)
     }
-  }, [plan, due.data, stats.data])
+  }, [plan, due.data, stats.data, mergedReads])
 
+  // "Generera om" — force a fresh baseline. Overwrites both the local
+  // cache AND the server row (PUT), so the regenerated plan becomes the
+  // new cross-device baseline rather than being clobbered by the old
+  // server row on the next adopt.
   const regenerate = useCallback(() => {
     if (!stats.data || due.data === undefined || hints === null) return
     const fresh = buildPlan(
@@ -224,16 +292,17 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       stats.data.attempts.total,
     )
     savePlan(fresh)
+    putServerPlan.mutate(fresh)
     setPlan(
       deriveCompletion(
         fresh,
         due.data.length,
-        loadLessonReads(),
+        mergedReads,
         stats.data.bySection,
         stats.data.attempts.total,
       ),
     )
-  }, [stats.data, due.data, hints, now, topTraps])
+  }, [stats.data, due.data, hints, now, topTraps, mergedReads, putServerPlan])
 
   const allComplete = !!plan && plan.items.length > 0 && plan.items.every((i) => i.completed)
 
@@ -283,9 +352,14 @@ function buildPlan(
 /** Resolve the first-unread framework entry for every wired section.
  *  Returns a map suitable for the scheduler's `firstUnreadEntry`
  *  field. Sections whose framework can't be loaded are omitted (the
- *  scheduler treats absent keys as "no hint", same as undefined). */
-async function resolveFrameworkHints(): Promise<FrameworkHints> {
-  const reads = loadLessonReads()
+ *  scheduler treats absent keys as "no hint", same as undefined).
+ *
+ *  `reads` is the MERGED (server ∪ localStorage) read set so the
+ *  "next unread entry" is cross-device — an entry read on the phone
+ *  advances the hint on the desktop. */
+export async function resolveFrameworkHints(
+  reads: Set<string> = loadLessonReads(),
+): Promise<FrameworkHints> {
   const out: FrameworkHints = {}
   await Promise.all(
     SECTION_KEYS.map(async (section) => {
