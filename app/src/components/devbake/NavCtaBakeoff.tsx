@@ -20,6 +20,12 @@
 //                       opening a hub with three large entries —
 //                       Drilla / Provpass / Diagnostik. Renders both the
 //                       modified BottomTabs bar and the hub screen.
+//   V4 · Prescribed +   The 4-specialist panel consensus. The mock is the
+//        line + confirm  ANCHOR of a reduced plan on a provpass-dag, a
+//                       passive status LINE keeps the door visible every
+//                       day, and a CONFIRM SHEET protects the start. Four
+//                       states via sub-toggle. Renders WITHOUT the streak
+//                       stat (no-streak-shame rule).
 //
 // This is a DESIGN artifact. It renders real hpc-m3-* classes + tokens
 // and the real BottomTabs idiom (mirrored from MobileFrame's TABS), but
@@ -588,6 +594,310 @@ export function VariantOvaHub() {
           <BottomTabs active="drill" drillLabel="Öva" drillActive />
         </Artboard>
       </div>
+    </div>
+  )
+}
+
+// ── V4 — Prescribed + passive line + confirm (panel consensus) ──────
+//
+// The 4-specialist panel (ADHD-behavioral / IA / pedagogy / devil's
+// advocate) converged here over two rounds. Three moves work together:
+//   • the PLAN decides the day — on a provpass-dag the mock is the ANCHOR
+//     item of a reduced plan (mock + at most one tiny item); on an
+//     ordinary day it is NOT in the plan at all.
+//   • a passive STATUS LINE keeps the door visible every day — a muted
+//     mono readout in the Tidigare-pass area, no button chrome, no verb.
+//   • a CONFIRM SHEET protects the start — tapping the plan row opens the
+//     contract BEFORE any clock, so a mis-timed impulsive tap can't void
+//     the mock (ADHD-PI impulsivity protection).
+//
+// Deliberately renders WITHOUT the "6 dagar i rad" streak stat — the
+// panel found the streak violates the product's own no-streak-shame
+// rule. This Masthead shows prognos + min idag only.
+
+function MastheadNoStreak({ minutesToday }: { minutesToday: number }) {
+  return (
+    <header style={{ padding: '4px 22px 0' }}>
+      <div style={eyebrow}>
+        <strong style={{ color: 'var(--ink-2)' }}>Onsdag 9 juli</strong> · 148 dagar · höstprov 26
+      </div>
+      <h1
+        className="hpc-m3-display"
+        style={{ fontSize: 38, margin: '18px 0 0', fontStyle: 'italic' }}
+      >
+        God dag.
+      </h1>
+      <div className="hpc-m3-stats" style={{ gap: 36, marginTop: 22, paddingTop: 16 }}>
+        <div>
+          <div className="hpc-m3-stat-n">1,41</div>
+          <div className="hpc-m3-stat-l">prognos av 2,0</div>
+        </div>
+        <div>
+          <div className="hpc-m3-stat-n">{minutesToday}</div>
+          <div className="hpc-m3-stat-l">min idag</div>
+        </div>
+      </div>
+    </header>
+  )
+}
+
+// The reduced provpass-dag plan: the mock is item 1 (the anchor), with at
+// most one tiny item after it — estimated-minutes honesty, not a full
+// drill load.
+const PLAN_PROV_ANCHOR: Row[] = [
+  {
+    id: 'provpass',
+    tag: 'PROVPASS',
+    headline: 'Provpass · Verbal',
+    rationale: '12 dagar sedan senaste — dags att mäta.',
+    min: 55,
+    verb: 'starta',
+    provpass: true,
+  },
+  {
+    id: 'rep',
+    tag: null,
+    headline: 'Repetition · 5 frågor',
+    rationale: 'Några frågor är mogna för återkoppling i din kö.',
+    min: 4,
+    verb: 'repetera',
+  },
+]
+
+// The passive status line — a READOUT, not a CTA. Muted mono, no verb, no
+// arrow-as-CTA; the only affordance is a subtle full-row tap (chevron at
+// far right, muted). Lives above "Senaste passen".
+function ProvpassStatusLine() {
+  return (
+    <button
+      type="button"
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 12,
+        width: 'calc(100% + 44px)',
+        margin: '0 -22px',
+        padding: '12px 22px',
+        border: 'none',
+        borderTop: '1px solid var(--hairline)',
+        borderBottom: '1px solid var(--hairline)',
+        background: 'transparent',
+        cursor: 'pointer',
+        textAlign: 'left',
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 11,
+          letterSpacing: MONO_TRACK,
+          color: 'var(--muted)',
+          lineHeight: 1.4,
+        }}
+      >
+        <span style={{ color: 'var(--muted-2)' }}>PROVPASS</span> · senast Verbal 31/40 · nästa om 2
+        dagar
+      </span>
+      <span aria-hidden style={{ color: 'var(--muted-2)', fontSize: 14, flexShrink: 0 }}>
+        ›
+      </span>
+    </button>
+  )
+}
+
+// Recent passes with the status line wired ABOVE the "Senaste passen"
+// heading (still inside the Tidigare-pass rail section).
+function RecentPassesWithLine() {
+  return (
+    <RailSection meta="Tidigare pass">
+      <ProvpassStatusLine />
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          marginTop: 18,
+        }}
+      >
+        <h2 className="hpc-m3-h" style={{ marginBottom: 0 }}>
+          Senaste passen
+        </h2>
+        <span style={{ ...eyebrow, color: 'var(--accent)', fontSize: 10 }}>alla pass →</span>
+      </div>
+      <div style={{ display: 'flex', gap: 12, marginTop: 14, flexWrap: 'wrap' }}>
+        {[
+          { tag: 'Verbal', score: '31/40' },
+          { tag: 'KVA', score: '9/12' },
+          { tag: 'ORD', score: '34/40' },
+        ].map((c) => (
+          <div
+            key={c.tag}
+            style={{
+              flex: '0 0 auto',
+              minWidth: 92,
+              border: '1px solid var(--hairline)',
+              borderRadius: 'calc(var(--radius) * 0.5)',
+              padding: '11px 14px',
+              background: 'var(--panel)',
+            }}
+          >
+            <span className="hpc-m3-tag">{c.tag}</span>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 20, marginTop: 5 }}>
+              {c.score}
+            </div>
+            <div
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 10,
+                color: 'var(--muted)',
+                marginTop: 1,
+              }}
+            >
+              rätt
+            </div>
+          </div>
+        ))}
+      </div>
+    </RailSection>
+  )
+}
+
+// The confirm sheet — what the plan row opens BEFORE any clock starts. A
+// bottom-sheet in M3 idiom: heading, the contract in three mono lines, a
+// primary "Starta nu →" and a quiet zero-penalty "Inte nu".
+function ConfirmSheet() {
+  return (
+    <Artboard>
+      <StatusStrip />
+      {/* dimmed Home + tab bar behind the sheet, so it reads as a modal */}
+      <div style={{ flex: 1, overflow: 'hidden', opacity: 0.4, pointerEvents: 'none' }}>
+        <MastheadNoStreak minutesToday={59} />
+        <PlanCard rows={PLAN_PROV_ANCHOR} />
+      </div>
+      <div style={{ opacity: 0.4, pointerEvents: 'none' }}>
+        <BottomTabs active="home" />
+      </div>
+      {/* scrim + sheet — an absolute modal layer over the whole artboard,
+       *  above the (dimmed) tab bar, exactly like a real bottom sheet. */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'color-mix(in oklch, var(--ink) 22%, transparent)',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'var(--panel)',
+          borderTop: '1px solid var(--accent)',
+          borderTopLeftRadius: 24,
+          borderTopRightRadius: 24,
+          padding: '20px 22px 30px',
+          boxShadow: '0 -20px 50px -24px rgba(0,0,0,0.5)',
+        }}
+      >
+        <div
+          style={{
+            width: 38,
+            height: 4,
+            borderRadius: 999,
+            background: 'var(--hairline)',
+            margin: '0 auto 18px',
+          }}
+        />
+        <div style={{ ...eyebrow, color: 'var(--accent)' }}>Provpass</div>
+        <h2
+          className="hpc-m3-display"
+          style={{ fontSize: 26, margin: '10px 0 18px', fontStyle: 'italic' }}
+        >
+          Provpass · Verbal
+        </h2>
+        <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 10 }}>
+          {[
+            '55 minuter · ingen paus',
+            'avbryter du blir provet ogiltigt',
+            'lämna ingen fråga obesvarad — fel ger inga avdrag',
+          ].map((line) => (
+            <li
+              key={line}
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 12,
+                letterSpacing: MONO_TRACK,
+                color: 'var(--ink-2)',
+                lineHeight: 1.4,
+                display: 'flex',
+                gap: 10,
+              }}
+            >
+              <span aria-hidden style={{ color: 'var(--accent)', flexShrink: 0 }}>
+                ·
+              </span>
+              {line}
+            </li>
+          ))}
+        </ul>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 18, marginTop: 24 }}>
+          <span
+            className="hpc-m3-cta"
+            style={{
+              cursor: 'default',
+              background: 'var(--accent)',
+              color: 'var(--panel)',
+              padding: '11px 20px',
+              borderRadius: 999,
+            }}
+          >
+            Starta nu →
+          </span>
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 12,
+              letterSpacing: MONO_TRACK,
+              color: 'var(--muted-2)',
+              cursor: 'default',
+            }}
+          >
+            Inte nu
+          </span>
+        </div>
+      </div>
+    </Artboard>
+  )
+}
+
+export function VariantPrescribedConsensus() {
+  const [state, setState] = useState<'prov' | 'rest' | 'confirm'>('prov')
+  return (
+    <div>
+      <SubToggle
+        options={[
+          { key: 'prov', label: 'Provpass-dag' },
+          { key: 'rest', label: 'Vanlig dag' },
+          { key: 'confirm', label: 'Confirm-sheet' },
+        ]}
+        value={state}
+        onChange={(k) => setState(k as 'prov' | 'rest' | 'confirm')}
+      />
+      {state === 'confirm' ? (
+        <ConfirmSheet />
+      ) : (
+        <Artboard>
+          <StatusStrip />
+          <Scroll>
+            <MastheadNoStreak minutesToday={state === 'prov' ? 59 : 33} />
+            <PlanCard rows={state === 'prov' ? PLAN_PROV_ANCHOR : PLAN_REST} />
+            <RecentPassesWithLine />
+          </Scroll>
+          <BottomTabs active="home" />
+        </Artboard>
+      )}
     </div>
   )
 }
