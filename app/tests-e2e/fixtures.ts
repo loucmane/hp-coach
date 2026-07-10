@@ -31,7 +31,7 @@ const API_BASE_URL = process.env.VITE_API_BASE_URL ?? 'http://localhost:8787'
 // trust is "got a non-null token back".
 async function testReset(
   page: Page,
-  action: 'clear' | 'expire-all' | 'seed',
+  action: 'clear' | 'expire-all' | 'seed' | 'seed-mocks',
   questionId?: string,
 ): Promise<void> {
   const result = await page.evaluate(
@@ -74,6 +74,18 @@ export async function clearMistakes(page: Page): Promise<void> {
 
 export async function expireAllMistakes(page: Page): Promise<void> {
   await testReset(page, 'expire-all')
+}
+
+/**
+ * Seed one fresh, ended `mock` session + `mock_results` row per half
+ * (verbal, kvant). Makes the scheduler's `prescribeMock` see both halves
+ * as just-mocked (`due: false`), so the Kallelse summons doesn't preempt
+ * the ordinary daily-plan card — see the comment on `action: 'seed-mocks'`
+ * in worker/src/routes/testReset.ts for the full "mock-only day renders
+ * neither daily-plan-card nor daily-plan-skeleton" story this works around.
+ */
+export async function seedMockResults(page: Page): Promise<void> {
+  await testReset(page, 'seed-mocks')
 }
 
 /**
@@ -127,12 +139,30 @@ export async function recordMistakeViaApi(page: Page, questionId: string): Promi
   }
 }
 
+// Diagnostic-only: when HPC_E2E_COUNT_FAPI is set, every request to Clerk's
+// Frontend API is appended to this module-level counter and printed once at
+// process exit. Used to measure the before/after effect of the auth
+// architecture on FAPI traffic (task #175 investigation) — no effect on
+// normal runs since the env var is never set in CI or local `pnpm test:e2e`.
+let fapiRequestCount = 0
+if (process.env.HPC_E2E_COUNT_FAPI) {
+  process.on('exit', () => {
+    // eslint-disable-next-line no-console
+    console.log(`[fapi-count] total requests to *.clerk.accounts.dev: ${fapiRequestCount}`)
+  })
+}
+
 export const test = base.extend({
   // Override the default `page` fixture: every test starts already signed
   // in via the saved storageState (auth.setup.ts + the `setup` project
   // dependency in playwright.config.ts), so there's NO per-test sign-in —
   // that churn was rate-limiting Clerk's dev FAPI under the full suite.
   page: async ({ page }, use) => {
+    if (process.env.HPC_E2E_COUNT_FAPI) {
+      page.on('request', (req) => {
+        if (req.url().includes('.clerk.accounts.dev')) fapiRequestCount++
+      })
+    }
     // The testing token is a per-context route interception (not carried by
     // storageState), so it's still injected here — but it reads the env
     // token cached by clerkSetup, so no per-test network call.

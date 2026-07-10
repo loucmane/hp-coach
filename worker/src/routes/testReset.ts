@@ -22,6 +22,18 @@
 //     question, which is the slow, Clerk-refresh-sensitive part of the
 //     old flow. The qid must exist in the question bank the SPA loads so
 //     the replay queue can render it; the caller passes one it knows.
+//   - `action: "seed-mocks"` — insert one ended `mock` session + one
+//     `mock_results` row per half (verbal, kvant), both dated `now`.
+//     Added for task #175 (home.spec.ts e2e flake): `useDailyPlan`'s
+//     scheduler treats a user with no mock history as "baseline due"
+//     (scheduler.ts `prescribeMock`) and renders the Kallelse summons
+//     instead of an ordinary plan row; when the Kallelse item is the
+//     ONLY plan item, `DailyPlanCard` renders null (mock-only day —
+//     see its own comment), so neither `daily-plan-card` nor
+//     `daily-plan-skeleton` ever appears and home.spec.ts:40's
+//     `card.or(skeleton)` wait times out. Seeding one fresh result per
+//     half makes both halves "just mocked" so `prescribeMock` returns
+//     `due: false` and the ordinary numbered plan renders deterministically.
 //
 // Safety: route is mounted in index.ts ONLY when ENVIRONMENT !== 'production'.
 // We also gate inside the handler so a future routing slip can't bypass.
@@ -32,13 +44,13 @@ import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { getDb } from '../db/client'
-import { mistakes, sessions, users } from '../db/schema'
+import { mistakes, mockResults, sessions, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
 import type { Env, Vars } from '../types'
 
 const Body = z
   .object({
-    action: z.enum(['clear', 'expire-all', 'seed']).default('clear'),
+    action: z.enum(['clear', 'expire-all', 'seed', 'seed-mocks']).default('clear'),
     // Only read for action:'seed'. The qid to log as a due mistake; must
     // be a real question in the SPA's bank so the replay queue can render
     // it. Bounded like the other qid params in the API.
@@ -110,6 +122,45 @@ export const testResetRoute = new Hono<{ Bindings: Env; Variables: Vars }>().pos
         })
         .returning({ id: mistakes.id })
       return c.json({ ok: true as const, action, seeded: { id: row.id, questionId } })
+    }
+    if (action === 'seed-mocks') {
+      // One ended `mock` session + one `mock_results` row per half, both
+      // dated `now`. `sessions.kind` has no partial-unique constraint
+      // outside "one ACTIVE session per (user, kind)" (endedAt IS NULL),
+      // so multiple ended mock sessions coexist fine — no clear needed
+      // first. `mock_results.sessionId` is unique, so each session gets
+      // exactly one result row (upsert not needed — these are fresh ids).
+      const halves = ['verbal', 'kvant'] as const
+      const seeded: { half: string; sessionId: number; resultId: number }[] = []
+      for (const half of halves) {
+        const [session] = await db
+          .insert(sessions)
+          .values({
+            userId,
+            kind: 'mock',
+            sections: half,
+            position: 0,
+            endedAt: new Date(),
+          })
+          .returning({ id: sessions.id })
+        const [result] = await db
+          .insert(mockResults)
+          .values({
+            userId,
+            sessionId: session.id,
+            mode: 'synthetic',
+            half,
+            presented: 12,
+            answered: 12,
+            correct: 10,
+            seenBefore: 0,
+            durationMs: 600_000,
+            breakdown: { perSection: {}, missedQids: [], version: 1 },
+          })
+          .returning({ id: mockResults.id })
+        seeded.push({ half, sessionId: session.id, resultId: result.id })
+      }
+      return c.json({ ok: true as const, action, seeded })
     }
     // action === 'expire-all'
     // Backdate every active mistake's nextReviewAt to the unix epoch so
