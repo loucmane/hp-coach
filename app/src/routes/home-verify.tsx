@@ -61,6 +61,7 @@ function HomeVerify() {
   const dev = isDevSurface()
   const [provpassDag, setProvpassDag] = useState(true)
   const [layout, setLayout] = useState<'phone' | 'studio'>('phone')
+  const [sparse, setSparse] = useState(false)
 
   if (!dev) {
     return (
@@ -102,35 +103,79 @@ function HomeVerify() {
         >
           Desktop
         </Btn>
+        <Btn
+          size="sm"
+          variant={sparse ? 'accent' : 'secondary'}
+          onClick={() => setSparse((s) => !s)}
+        >
+          Sparse (low-data)
+        </Btn>
       </div>
-      <HomeMobile
-        forceLayout={layout}
-        plan={fixturePlan(provpassDag) as never}
-        projected={{ total: 0.65, verbal: 0.81, quant: 0.49 }}
-        firstName="Loucmane"
-        now={new Date(2026, 6, 8, 9)}
-        mockPrescription={
-          provpassDag
-            ? { due: true, half: 'verbal', daysSinceLast: 12, daysUntilNext: 0, interval: 14 }
-            : { due: false, half: 'verbal', daysSinceLast: 5, daysUntilNext: 2, interval: 14 }
-        }
-        lastMockResult={{
-          id: 1,
-          userId: 1,
-          sessionId: 1,
-          mode: 'authentic',
-          half: 'verbal',
-          examId: 'var-2026',
-          provpass: '1',
-          presented: 40,
-          answered: 40,
-          correct: 31,
-          seenBefore: 0,
-          durationMs: 3_000_000,
-          breakdown: { perSection: {}, missedQids: [], version: 1 },
-          createdAt: Date.now(),
-        }}
-      />
+      {sparse ? (
+        <HomeMobile
+          forceLayout={layout}
+          plan={sparsePlan() as never}
+          projected={null}
+          firstName="Loucmane"
+          now={new Date(2026, 6, 8, 9)}
+          topTraps={[]}
+          recentPasses={[]}
+          mockPrescription={null}
+          lastMockResult={null}
+        />
+      ) : (
+        <HomeMobile
+          forceLayout={layout}
+          plan={fixturePlan(provpassDag) as never}
+          projected={{ total: 0.65, verbal: 0.81, quant: 0.49 }}
+          firstName="Loucmane"
+          now={new Date(2026, 6, 8, 9)}
+          mockPrescription={
+            provpassDag
+              ? { due: true, half: 'verbal', daysSinceLast: 12, daysUntilNext: 0, interval: 14 }
+              : { due: false, half: 'verbal', daysSinceLast: 5, daysUntilNext: 2, interval: 14 }
+          }
+          lastMockResult={{
+            id: 1,
+            userId: 1,
+            sessionId: 1,
+            mode: 'authentic',
+            half: 'verbal',
+            examId: 'var-2026',
+            provpass: '1',
+            presented: 40,
+            answered: 40,
+            correct: 31,
+            seenBefore: 0,
+            durationMs: 3_000_000,
+            breakdown: { perSection: {}, missedQids: [], version: 1 },
+            createdAt: Date.now(),
+          }}
+        />
+      )}
     </div>
   )
+}
+
+/** First-day / low-data fixture: one plan item, no traps, no history, no
+ *  resumable session, no prognosis yet — the degenerate state task #78
+ *  targets. */
+function sparsePlan() {
+  return {
+    version: PLAN_SCHEMA_VERSION,
+    date: '2026-07-08',
+    items: [
+      {
+        id: 'lesson-XYZ-2026-07-08',
+        kind: 'lesson' as const,
+        section: 'XYZ' as const,
+        headline: 'XYZ-lektion',
+        rationale: 'Första passet — börja här.',
+        estimatedMinutes: 5,
+        href: '/lektion?section=XYZ',
+        completed: false,
+      },
+    ],
+    estimatedMinutes: 5,
+  }
 }

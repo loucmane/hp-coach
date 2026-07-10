@@ -4,11 +4,16 @@
 // A rail section (MÖNSTER) listing the user's recurring trap patterns
 // from their active mistake queue: section tag + plain-language
 // headline on the left, the trap id + miss count + week-over-week
-// trend on the mono right. Renders only when at least one trap meets
-// the threshold — silent on good days.
+// trend on the mono right. Renders full rows once at least one trap
+// meets the threshold.
 //
 // Each row links to /drill?framework=ID — action-first per ADHD-PI:
 // the user has already missed this pattern 2+ times.
+//
+// No traps yet (task #78 — the low-data Home shouldn't leave an empty
+// void where this section would sit): a single muted invitation line,
+// same rail chassis, no boxed empty-state card and no illustration —
+// this is a book page, not a SaaS dashboard.
 
 import type { TopTrap } from '@/api/hooks/useTopTraps'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
@@ -19,7 +24,15 @@ type TopTrapsCardProps = {
 }
 
 export function TopTrapsCard({ traps }: TopTrapsCardProps) {
-  if (traps.length === 0) return null
+  if (traps.length === 0) {
+    return (
+      <section data-testid="home-top-traps-empty">
+        <DrillRailSection meta="Mönster" delay={320}>
+          <p className="hpc-m3-quiet-line">Inga återkommande fällor än — de dyker upp här.</p>
+        </DrillRailSection>
+      </section>
+    )
+  }
 
   return (
     <section data-testid="home-top-traps">

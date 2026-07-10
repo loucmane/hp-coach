@@ -61,8 +61,10 @@ type HomeMobileProps = {
   diagnosticMemory?: DiagnosticMemory | null
   /** Accepted for caller compatibility; the kicker is currently parked. */
   daysAway?: number | null
-  /** Top recurring trap patterns from the active mistake queue.
-   *  Empty array hides the section — silent on signal-less days. */
+  /** Top recurring trap patterns from the active mistake queue. Empty
+   *  array renders TopTrapsCard's quiet one-line invitation instead of
+   *  the boxed trap list — the section always occupies its rail slot
+   *  (task #78: no orphaned void on signal-less days). */
   topTraps?: TopTrap[]
   /** Recent completed passes for the "Senaste passen" glance. Empty
    *  array hides the section (first-day user sees no empty shell). */
@@ -236,7 +238,7 @@ export function HomeMobile({
             <PlanSkeleton />
           )}
 
-          {topTraps.length > 0 && <TopTrapsCard traps={topTraps} />}
+          <TopTrapsCard traps={topTraps} />
 
           {/* Reflection, last — a glance at recent completed passes, below
            *  the plan/traps so it never competes with the next action.
