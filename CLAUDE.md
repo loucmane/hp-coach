@@ -84,7 +84,7 @@ For product decisions, architecture, and scope, read **`.taskmaster/docs/prd.txt
 
 - Vision and audience (§ 1)
 - Design pillars (§ 2): zero prior knowledge, target 2.0, neurodivergent-friendly UX
-- Three-layer pedagogical architecture (§ 3): Layer 1 frameworks → Layer 2 explanations → Layer 3 adaptive logic, plus Layer 4 synthetic generator (§ 5.15) and § 5.16 lesson content pipeline
+- Three-layer pedagogical architecture (§ 3): Layer 1 frameworks → Layer 2 explanations → Layer 3 adaptive logic, plus Layer 4 synthetic generator (§ 5.15) and § 5.16 lesson content pipeline — **both § 5.15 and § 5.16 are DEFERRED (not built); see the dated status notes in those PRD sections and the repo-layout note below for what shipped instead**
 - Screen-by-screen UX flows (§ 4)
 - Functional + non-functional requirements (§§ 5–6) — Cmd+K palette is a hard requirement (§ 6.4)
 - Technical stack (§ 7): Vite + React 19 + TS + Tailwind v4 + shadcn/ui frontend on **Cloudflare Pages**; **Hono on Cloudflare Workers** API; **Cloudflare D1** (SQLite-at-edge) via Drizzle ORM; **Clerk** for auth (MFA / passkeys / WebAuthn); R2 for object storage; KV for rate limits. *Architecture pivoted 2026-05-07 from local-first OPFS — multi-device sync is now a hard product requirement.*
@@ -105,14 +105,19 @@ hpfetcher/
 ├── parser/                       # planned, Phase 0–2
 ├── frameworks/                   # Layer 1 JSON (planned, Phase 1)
 ├── pipeline/
-│   ├── explanations.py           # Layer 2 (per-question explanations + QA queue)
-│   ├── synthetic/                # Layer 4 (dual-model question generation)
-│   └── lessons/                  # § 5.16 lesson generator + teach-back gate
+│   ├── explanations/              # Layer 2 (per-question explanations; shipped, all drillable questions)
+│   └── frameworks/                # Layer 1 extraction (shipped)
 ├── data/                         # parser output (uploaded to R2 in production)
 ├── app/                          # frontend → Cloudflare Pages (Vite + React)
 ├── worker/                       # API → Cloudflare Workers (Hono + Drizzle on D1)
 └── docs/                         # design docs (e.g. curriculum-scheduler.md, written before Phase 3)
 ```
+
+**PRD §§ 5.15–5.16 (Layer 4 synthetic generator, lesson content pipeline) are DEFERRED — not built.** `pipeline/synthetic/` and `pipeline/lessons/` do not exist; Taskmaster tasks 40, 46–50 carry status `deferred`. Two look-alikes shipped instead, neither of which implements these specs:
+- **Lektion surface** (`app/src/routes/lektion.tsx`): renders Layer-1 framework JSON directly ("framework-as-lesson") — no LLM generation, no teach-back gate. The route's own header comment says so.
+- **Provpass "Genererat pass"** (`app/src/lib/mock.ts`): composes a quota-matched pass from existing *authentic* questions, least-seen-first — not LLM-generated synthetic questions. "Synthetic" here names the pass-composition mode, not Layer 4.
+
+See the dated status notes in PRD §§ 5.15–5.16 for detail. The sections remain valid future scope.
 
 ## Running the scraper
 

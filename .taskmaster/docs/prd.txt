@@ -478,6 +478,8 @@ Hard requirement — see § 6.4.
 
 ### 5.15 Synthetic question generator (Layer 4) — `pipeline/synthetic/`
 
+**Status (2026-07-10): DEFERRED — not built.** Taskmaster tasks 40 (MVP ORD/KVA) and 49–50 (extend to remaining sections) all carry status `deferred`; `pipeline/synthetic/` does not exist in the repo. What shipped instead, covering the adjacent product need (exam-pacing practice beyond the fixed set of official passes), is provpass's "Genererat pass" mode (`app/src/lib/mock.ts`, `pickSynthetic`): a **quota-matched composition of existing authentic questions** drawn least-seen-first from the real 2160-question corpus — not LLM-generated novel questions. It reuses the word "synthetic" for the pass-composition mode, which is a naming coincidence with this section, not an implementation of it. This section remains valid **future scope** — no vision change, no decision to abandon Layer 4 — and stays as the spec to build against whenever the deferred tasks are picked back up.
+
 Layer 4 generates synthetic questions to extend the corpus beyond the 2160 official questions. **Architecture: dual-model verification with manual review only on conflicts.** This is an automated pipeline, not a human-heavy QA queue.
 
 **Pipeline (applies to all sections):**
@@ -515,6 +517,8 @@ Layer 4 generates synthetic questions to extend the corpus beyond the 2160 offic
 - F5.15.8 Pipeline is rerunnable: trap-pattern catalogs and prompt templates are versioned. Regenerating with updated frameworks marks prior synthetic questions for re-verification.
 
 ### 5.16 Lesson content pipeline (`pipeline/lessons/`)
+
+**Status (2026-07-10): DEFERRED — not built.** Taskmaster tasks 46 (pipeline + teach-back gate), 47 (XYZ lesson set), and 48 (NOG/MEK/LÄS/ELF lesson sets) all carry status `deferred`; `pipeline/lessons/` does not exist in the repo. What shipped instead — "framework-as-lesson" — is the `/lektion` route (`app/src/routes/lektion.tsx`) rendering Layer-1 framework JSON directly via `LessonReader` → `TrapCard`, with no LLM generation step and no teach-back gate. The route's own header comment flags this explicitly: *"PRD § 5.16 reserves 'Lektion' for LLM-curated pedagogy (Phase B5). What this route renders today is raw framework JSON... The chrome stays when B5 swaps the content source."* This section remains valid **future scope** — the framework-as-lesson surface is a placeholder for the content, not a replacement for the pipeline described below — and stays as the spec for Phase B5 whenever the deferred tasks are picked back up.
 
 Generates and validates concept lessons (the lesson cards rendered by Screen 5) following the LLM-generated-with-structural-review approach in § 3.4.
 
