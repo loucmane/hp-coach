@@ -1,11 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-
-import {
-  loadNormeringTable,
-  normedScore,
-  __resetNormeringCacheForTests,
-} from './normering'
 import type { NormeringSitting } from './normering'
+import { __resetNormeringCacheForTests, loadNormeringTable, normedScore } from './normering'
 
 // A tiny hand-built sitting whose 80q verbal table we can reason about
 // exactly. Bands: only what the tests below touch matter; the dense
@@ -115,9 +110,7 @@ describe('loadNormeringTable (fetch loader)', () => {
   })
 
   it('memoises per exam id (second call does not refetch)', async () => {
-    const fetchMock = vi.fn(
-      async () => new Response(JSON.stringify(SITTING), { status: 200 }),
-    )
+    const fetchMock = vi.fn(async () => new Response(JSON.stringify(SITTING), { status: 200 }))
     vi.stubGlobal('fetch', fetchMock)
     await loadNormeringTable('test-2099')
     await loadNormeringTable('test-2099')

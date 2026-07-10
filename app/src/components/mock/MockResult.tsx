@@ -28,7 +28,7 @@ import { type CSSProperties, type ReactNode, useEffect, useMemo, useState } from
 import type { MockHalf, MockResultRow } from '@/api/hooks/useMockResults'
 import { useMockResults } from '@/api/hooks/useMockResults'
 import { Eyebrow } from '@/components/primitives'
-import { loadNormeringTable, normedScore, type NormeringSitting } from '@/lib/normering'
+import { loadNormeringTable, type NormeringSitting, normedScore } from '@/lib/normering'
 import { formatScore, scoreFromFraction } from '@/lib/scoring'
 import { useTrapCluster } from '@/lib/trapCluster'
 

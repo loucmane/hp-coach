@@ -99,9 +99,7 @@ describe('MockResult', () => {
     expect(screen.getByTestId('mock-result-disclaimer')).toHaveTextContent(
       'Linjär skattning — indikativ, inte UHR-normerad.',
     )
-    expect(screen.getByTestId('mock-result-score').nextSibling).toHaveTextContent(
-      'skattad poäng',
-    )
+    expect(screen.getByTestId('mock-result-score').nextSibling).toHaveTextContent('skattad poäng')
   })
 
   it('shows the linear fallback for an authentic pass with no sourced table', () => {
@@ -117,12 +115,8 @@ describe('MockResult', () => {
     mockSitting = sittingWithVerbal()
     render(<MockResult result={row({ correct: 30, presented: 40 })} />)
     // 30/40 scales to raw 60 -> table[60] = 1.4 (not linear 1.5).
-    await waitFor(() =>
-      expect(screen.getByTestId('mock-result-score')).toHaveTextContent('1,40'),
-    )
-    expect(screen.getByTestId('mock-result-disclaimer')).toHaveTextContent(
-      'UHR:s normeringstabell',
-    )
+    await waitFor(() => expect(screen.getByTestId('mock-result-score')).toHaveTextContent('1,40'))
+    expect(screen.getByTestId('mock-result-disclaimer')).toHaveTextContent('UHR:s normeringstabell')
     expect(screen.getByTestId('mock-result-score').nextSibling).toHaveTextContent(
       'normerat (härlett)',
     )
