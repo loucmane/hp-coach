@@ -181,4 +181,4 @@ pnpm db:apply     # wrangler d1 migrations apply hpc-staging (or hpc-prod)
 
 ## Legal note
 
-HP material is copyrighted by UHR (Universitets- och högskolerådet). allakando.se publishes with permission. Whether a third-party can build a commercial service on top of the material without separate permission is **unresolved** (PRD § 9.2) and must be addressed before public launch to other users. Does not affect the dogfood phase (single user, no distribution). The repo is private for this reason.
+HP material is copyrighted by UHR (Universitets- och högskolerådet). allakando.se publishes with permission. **Owner decision 2026-07-11 (PRD § 9.2): this is not treated as a launch blocker** — public-facing work (landing page, SEO, signup) may proceed. The underlying copyright facts remain worth revisiting if the commercial model or distribution scope changes materially. The repo stays private as ordinary practice, not as a legal gate.

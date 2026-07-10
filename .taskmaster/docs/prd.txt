@@ -797,9 +797,9 @@ Layer 2 QA volume is **per-section, not all-at-once**. A solo dev who is also do
 **Action:** `docs/curriculum-scheduler.md` is the first deliverable in Phase 3, **before** the scheduler is coded. The scheduler is the product's hardest single problem; architectural decisions are made on paper, not in real time.
 
 ### 9.2 Legal: UHR copyright + commercial service
-**Status:** unresolved
-**Background:** UHR owns the HP material. allakando.se publishes with permission. It is **unclear** whether a third party can build a commercial service on top of the material without its own permission.
-**Action:** **must be resolved before public launch to other users, not after.** Does not affect dogfood phase (single user, no distribution). Affects every choice after MVP.
+**Status:** owner decision 2026-07-11 — not treated as a launch blocker
+**Background:** UHR owns the HP material. allakando.se publishes with permission. Whether a third party needs its own permission to build a commercial service on the material was flagged as unclear when this PRD was written.
+**Owner decision (2026-07-11):** the owner has determined this does not gate public-facing work (landing page, SEO, signup). Public-launch roadmap items may proceed. The underlying copyright facts above remain true and worth revisiting if the commercial model or distribution scope changes materially.
 
 ### 9.3 Hosting choice
 **Status:** **resolved 2026-05-07.** Cloudflare-everything: Pages (frontend) + Workers (API) + D1 (DB) + R2 (object storage) + KV (rate-limit / ephemeral cache). Auth via Clerk. Reasoning: matches the multi-device requirement on day one, edge perf from Sweden, ~3-4× cheaper than Vercel + Neon at scale, single vendor for compute/storage/DB simplifies ops for a solo founder. Trade-off: D1 is SQLite (smaller ecosystem than Postgres) and we accept some Cloudflare-stack lock — see § 9.14.
