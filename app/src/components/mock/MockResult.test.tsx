@@ -3,16 +3,42 @@
 // budget, two misses sharing a trap) exercises every section the task
 // spec calls for.
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { MockResultRow } from '@/api/hooks/useMockResults'
+import type { NormeringSitting } from '@/lib/normering'
 import { MockResult } from './MockResult'
 
 let mockHistoryRows: MockResultRow[] = []
 vi.mock('@/api/hooks/useMockResults', () => ({
   useMockResults: () => ({ data: mockHistoryRows, isLoading: false }),
 }))
+
+// Normering loader is mocked so the component's official-vs-linear
+// branch is exercised deterministically (jsdom has no static assets).
+let mockSitting: NormeringSitting | null = null
+vi.mock('@/lib/normering', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/normering')>()
+  return {
+    ...actual,
+    loadNormeringTable: () => Promise.resolve(mockSitting),
+  }
+})
+
+// A sitting whose verbal 80q table maps raw 60 -> 1.4 (so a 40q pass of
+// 30/40 scales to raw 60 and derives 1.4, distinct from linear 1.5).
+function sittingWithVerbal(): NormeringSitting {
+  const table = Array.from({ length: 81 }, (_, raw) =>
+    raw >= 60 ? 1.4 : Math.min(2, Math.round((raw / 40) * 100) / 100),
+  )
+  table[80] = 2.0
+  return {
+    exam_id: 'var-2018-1',
+    source_url: 'https://studera.nu/x',
+    verbal: { source_pdf: 'https://studera.nu/x.pdf', bands: [], table },
+  }
+}
 
 let mockCluster: {
   framework_id: string
@@ -57,6 +83,7 @@ describe('MockResult', () => {
   beforeEach(() => {
     mockHistoryRows = []
     mockCluster = null
+    mockSitting = null
   })
 
   it('renders the headline and raw X/40 score', () => {
@@ -65,12 +92,39 @@ describe('MockResult', () => {
     expect(screen.getByTestId('mock-result-raw')).toHaveTextContent('30 av 40')
   })
 
-  it('renders scoreFromFraction with the linear-approximation disclaimer', () => {
-    render(<MockResult result={row({ correct: 30, presented: 40 })} />)
-    // scoreFromFraction(30/40) = 1.5 → '1,50'
+  it('shows the linear indikativ disclaimer for a synthetic pass', () => {
+    render(<MockResult result={row({ mode: 'synthetic', correct: 30, presented: 40 })} />)
+    // linear 30/40 * 2 = 1.5 → '1,50'
     expect(screen.getByTestId('mock-result-score')).toHaveTextContent('1,50')
     expect(screen.getByTestId('mock-result-disclaimer')).toHaveTextContent(
-      'Linjär skattning — UHR-normering kommer senare.',
+      'Linjär skattning — indikativ, inte UHR-normerad.',
+    )
+    expect(screen.getByTestId('mock-result-score').nextSibling).toHaveTextContent(
+      'skattad poäng',
+    )
+  })
+
+  it('shows the linear fallback for an authentic pass with no sourced table', () => {
+    mockSitting = null
+    render(<MockResult result={row({ correct: 30, presented: 40 })} />)
+    expect(screen.getByTestId('mock-result-score')).toHaveTextContent('1,50')
+    expect(screen.getByTestId('mock-result-disclaimer')).toHaveTextContent(
+      'Linjär skattning — indikativ',
+    )
+  })
+
+  it('derives the normed score from the UHR table for an authentic sourced pass', async () => {
+    mockSitting = sittingWithVerbal()
+    render(<MockResult result={row({ correct: 30, presented: 40 })} />)
+    // 30/40 scales to raw 60 -> table[60] = 1.4 (not linear 1.5).
+    await waitFor(() =>
+      expect(screen.getByTestId('mock-result-score')).toHaveTextContent('1,40'),
+    )
+    expect(screen.getByTestId('mock-result-disclaimer')).toHaveTextContent(
+      'UHR:s normeringstabell',
+    )
+    expect(screen.getByTestId('mock-result-score').nextSibling).toHaveTextContent(
+      'normerat (härlett)',
     )
   })
 
