@@ -449,9 +449,7 @@ export function StyleA({
                           // Strikethrough on wrong-picked text makes the
                           // "this was the wrong choice" reading instant —
                           // even before the eye gets to the bad-rail.
-                          textDecoration: isWrong ? 'line-through' : 'none',
-                          textDecorationColor: 'var(--bad)',
-                          textDecorationThickness: 1.5,
+                          textDecoration: isWrong ? 'line-through var(--bad) 1.5px' : 'none',
                         }}
                       >
                         <MathText>{opt.text}</MathText>

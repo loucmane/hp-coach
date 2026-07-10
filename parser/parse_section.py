@@ -11,13 +11,21 @@ zig-zags across columns.
 We solve this by classifying each block's column from its `x0` against
 the page midline, then sorting (column, y0) inside each column.
 
-Currently implemented:
-  parse_ord(pages)  — verbal ORD section, 2-column page layout
-  parse_mek(pages)  — verbal MEK section, single-column long stems
+Implemented here:
+  parse_ord(pages)       — verbal ORD section, 2-column page layout
+  parse_mek(pages)       — verbal MEK section, single-column long stems
+  find_section_pages(doc, section) — locates a section's pages via a
+    three-method cascade (header text, continuation tag, structural
+    question-number fallback); covers ORD, LÄS, MEK, ELF page ranges.
 
-Out of scope for this MVP (left for a later pass):
-  LÄS, ELF, XYZ, KVA, NOG, DTK
-These have passages, math, or images that need richer extraction.
+The remaining sections parse in sibling modules, since they need richer
+extraction (passages, math notation, or figures) than the block-sort
+approach here:
+  LÄS, ELF  — parser/parse_passages.py
+  XYZ, KVA, NOG — parser/parse_quant.py (reuses this module's cascade
+    strategy for page-finding, see parse_quant.find_quant_section_pages)
+  DTK       — parser/parse_dtk_prompts.py, parse_dtk_figures.py,
+    parse_dtk_option_figures.py, parse_figures.py
 """
 from __future__ import annotations
 
