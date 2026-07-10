@@ -490,5 +490,9 @@ function kickerFor(item: PlanItem): string {
       return `Lektion${sectionPart}`
     case 'drill':
       return `Drill${sectionPart}`
+    case 'mock':
+      // Historical bake-off variant — predates the mock plan-item kind;
+      // labeled minimally so the exhaustive switch stays total.
+      return `Provpass${sectionPart}`
   }
 }
