@@ -13333,103 +13333,97 @@
   }
  },
  "host-2023-kvant1-DTK-033": {
-  "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
-  },
-  "pregrade_tactic": {
-   "handle": "Identifier-först-receptet",
-   "move": "'Identifiera ... . Hur ...' = två steg. Pinna identifieraren (år/land/cell) FÖRST, läs sedan av det andra värdet på den positionen."
-  },
-  "framework_id": "DTK-TACTIC-001",
-  "solution_path": "Sammansatt DTK-prompt: först identifiera ett objekt, sedan läs av ett relaterat värde. Att hoppa över identifieringssteget ger fel rad. Per facit: svar A. Nyckelsteg: Avsluta identifieringen innan du börjar räkna.",
-  "technique": "DTK-taktik DTK-TACTIC-001: 'Identifiera ... . Hur ...' = två steg. Pinna identifieraren (år/land/cell) FÖRST, läs sedan av det andra värdet på den positionen. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
-  "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+  "solution_path": "Frågan gäller könsfördelningen i EN rad i tabellen: rad 9 'Exponering för rök och öppen eld'. Läs av cellerna: Kvinnor 217, Män 413, Totalt 630. Andelarna blir Kvinnor 217/630 \\approx 34 % och Män 413/630 \\approx 66 %, alltså ungefär en tredjedel mot två tredjedelar. Rätt cirkel har en mindre sektor på ~1/3 och en större på ~2/3. Alternativ A visar en grå sektor på ~34 % och en vit på ~66 % — exakt denna fördelning. Svaret är A.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
+    "text": "Vi ska hitta cirkeldiagrammet som visar könsfördelningen (kvinnor mot män) bland patienterna i EN specifik orsakskategori: 'Exponering för rök och öppen eld'. Bara två sektorer behövs — kvinnor och män.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Definition: DTK",
-    "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
-    "tier": "detail"
+    "title": "Orientera dig i tabellen",
+    "text": "Sidan 'Yttre orsaker till vård' är en tabell där varje rad är en yttre orsak och kolumnerna anger Antal uppdelat på Kvinnor, Män och Totalt. Vi behöver EN rad; resten av tabellen är brus för den här frågan.",
+    "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Identifiera figurtyp",
-    "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+    "title": "Hitta rätt rad",
+    "text": "Sök raden med rätt rubrik: '9. Exponering för rök och öppen eld'. Låt inte rad 8 ('Exponering för elektrisk ström, strålning...') eller rad 12 ('Exponering för naturkrafter') lura dig — det är rök OCH ÖPPEN ELD som gäller.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Pinna entiteten",
-    "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Avsluta identifieringen innan du börjar räkna.",
+    "title": "Läs av cellerna",
+    "text": "På rad 9 står PRINTADE tal: Kvinnor 217, Män 413, Totalt 630. Inga avläsningar ur ett diagram behövs — dessa är hårda värden i tabellcellerna. Kontroll: 217 + 413 = 630, stämmer med Totalt-kolumnen.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Definition: andel vs förhållande",
-    "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+    "title": "Bestäm vilken grupp som är störst",
+    "text": "Män (413) är fler än Kvinnor (217) — nästan dubbelt så många. Alltså måste männens sektor vara den STÖRRE i cirkeln och kvinnornas den mindre.",
     "tier": "detail"
    },
    {
     "n": 6,
-    "title": "Läs av värde",
-    "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+    "title": "Räkna kvinnornas andel",
+    "text": "Kvinnor: 217/630. Grovt: 217/630 \\approx 210/630 = 1/3 \\approx 0,33; lite mer, \\approx 0,34. Alltså ungefär 34 %, drygt en tredjedel.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Definition: procent vs procentenheter",
-    "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
-    "tier": "detail"
-   },
-   {
-    "n": 8,
-    "title": "Räkneoperation",
-    "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+    "title": "Räkna männens andel",
+    "text": "Män: 413/630 \\approx 420/630 = 2/3 \\approx 0,67; något mindre, \\approx 0,66. Alltså ungefär 66 %, knappt två tredjedelar. Kontroll: 34 % + 66 % = 100 %.",
     "tier": "essential"
    },
    {
+    "n": 8,
+    "title": "Översätt till en cirkelbild",
+    "text": "En 34/66-cirkel har en mindre sektor på drygt en tredjedel (34 % \\approx 122° av 360°) och en större på knappt två tredjedelar. Den mindre sektorn ska INTE se ut som en fjärdedel (25 %) eller som exakt en halv (50 %).",
+    "tier": "detail"
+   },
+   {
     "n": 9,
-    "title": "Jämför mot alternativen",
-    "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+    "title": "Matcha mot alternativen",
+    "text": "A: grå sektor ~34 %, vit ~66 % — matchar en tredjedel mot två tredjedelar. B: grå ~40 % — för stor minoritetssektor. C: grå ~60/vit ~40 — omvänt och fel. D: grå ~66 %, vit ~34 % — rätt storlekar men ombytt skuggning mot A.",
     "tier": "essential"
    },
    {
     "n": 10,
-    "title": "Verifiera storleksordning",
-    "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
-    "tier": "detail"
-   },
-   {
-    "n": 11,
     "title": "Slutsats",
-    "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+    "text": "Kvinnor 217 (~34 %) och Män 413 (~66 %) ger en cirkel med en tredjedels-sektor och en två tredjedels-sektor. A visar just detta med den mindre grå sektorn på ~34 %. Svaret är A. Insikten: läs de printade cellerna, dela varje kön med Totalt och matcha sektorernas STORLEK — inte bara att det finns två sektorer.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "B har rätt struktur (en mindre och en större sektor) och den mindre grå sektorn ligger nära en tredjedel, så vid en snabb blick kan B kännas rätt.",
+    "why_wrong": "B:s grå sektor är för stor — den ligger runt 40 %, inte 34 %. Kvinnornas andel är 217/630 \\approx 34 % (steg 6); en 40-procentig sektor skulle kräva ~250 kvinnor. Nära, men fel proportion."
    },
    {
     "letter": "C",
-    "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "C visar en ~60/40-fördelning, och eftersom fördelningen faktiskt är ojämn (fler män) kan C locka om man kommer ihåg 'ungefär två tredjedelar–en tredjedel' men råkar göra den grå sektorn till majoriteten.",
+    "why_wrong": "I C är den grå sektorn majoriteten (~60 %). Om grått står för kvinnor är det fel (kvinnor är minoriteten, 34 %); och proportionen ~60/40 stämmer inte heller med 34/66. C blandar ihop vem som är störst OCH har fel kvot."
    },
    {
     "letter": "D",
-    "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "D har exakt rätt storlekar: en sektor på ~1/3 och en på ~2/3, precis 217 mot 413. Räknar du bara andelarna och struntar i skuggningen ser D ut som svaret.",
+    "why_wrong": "D är spegelvänd mot A: den GRÅ sektorn är den stora (~66 %) och den vita den lilla (~34 %). Storleksmässigt rätt, men A är alternativet där den mindre sektorn (~34 %) har den avvikande skuggningen. D är skuggnings-fällan: rätt kvot, ombytt sektor."
    }
-  ]
+  ],
+  "technique": "Rad-andelen ur tabell: vid 'könsfördelning/andel i kategori X' — hitta raden, läs de printade Kvinnor/Män-cellerna och dela var och en med radens Totalt. Triggern: 'Hur fördelades ... på kön/kategori?' pekar mot EN rad, inte hela tabellen; matcha sedan kvoten mot cirkelns sektorstorlekar.",
+  "pitfall": "Två fällor: (1) att välja fel rad — rad 8, 9 och 12 börjar alla med 'Exponering för' (steg 3); botemedlet är att läsa hela rubriken 'rök och öppen eld'. (2) Att få rätt kvot (1/3 mot 2/3) men välja den spegelvända skuggningen (A mot D); botemedlet är att först avgöra att MÄN är majoriteten (413 > 217) och kontrollera att det är den mindre sektorn som markerar minoriteten kvinnor.",
+  "pregrade_tactic": {
+   "handle": "Radkvoten",
+   "move": "Hitta den exakta raden, dela Kvinnor och Män var för sig med radens Totalt, och matcha den mindre kvoten (~1/3) mot cirkelns mindre sektor."
+  },
+  "framework_id": "DTK-TACTIC-003",
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
  }
 }

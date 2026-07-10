@@ -12726,103 +12726,97 @@
   }
  },
  "host-2021-kvant1-DTK-033": {
-  "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
-  },
-  "pregrade_tactic": {
-   "handle": "Andel-av-nämnaren",
-   "move": "Vid 'hur stor andel av X' — pinna nämnaren explicit FÖRST. 'Av nettoomsättningen 2016' har en specifik total som måste identifieras."
-  },
-  "framework_id": "DTK-TACTIC-003",
-  "solution_path": "Frågan ber om en andel av en specifik total — den vanligaste DTK-mallen. Felmöjligheten ligger i att välja fel nämnare (global total istället för kategoritotal). Per facit: svar D. Nyckelsteg: Identifiera vilken total som åsyftas innan division.",
-  "technique": "DTK-taktik DTK-TACTIC-003: Vid 'hur stor andel av X' — pinna nämnaren explicit FÖRST. 'Av nettoomsättningen 2016' har en specifik total som måste identifieras. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
-  "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+  "solution_path": "Frågan gäller EN källnod i flödesdiagrammet: 'Övrigt från återvinningscentral' i hushållssektorn, totalt 171 000 ton. Följ de svarta pilarna ut från den noden: 145 000 ton går till Materialåtervinning och 26 000 ton till Omhändertagande av hushållens farliga avfall. Summan 145 000 + 26 000 = 171 000 ton bekräftar att detta är hela noden. Andelarna blir 145/171 \\approx 85 % och 26/171 \\approx 15 %. Rätt cirkel är alltså ett tvåslags-diagram med en stor sektor på ~85 % (den dominerande behandlingstypen) och en liten på ~15 %. Alternativ D visar just detta: en fylld sektor på ~85 % och en ljus på ~15 %. Svaret är D.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar D.",
+    "text": "Frågan vill veta hur EN avfallstyp — 'Övrigt från återvinningscentral' från hushållssektorn — fördelade sig på behandlingstyper. Svaret är den cirkel vars sektorer matchar hur det avfallet delades upp. Vi ska alltså inte läsa hela diagrammet, bara flödena UT från den ena källnoden.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Definition: DTK",
-    "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
-    "tier": "detail"
+    "title": "Orientera dig på sidan",
+    "text": "Sidan 'Flöden av hushållsavfall' är ett flödesdiagram (Sankey). Till vänster står källor (Hushållssektorn och Verksamheter) uppdelade i avfallstyper; till höger står behandlingstyper (Materialåtervinning, Biologisk behandling, Energiåtervinning, Deponering, Omhändertagande av farligt avfall). Pilarnas skraffering kopplar en källa till dess behandlingsmål; pilens etikett anger ton.",
+    "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Identifiera figurtyp",
-    "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+    "title": "Hitta rätt källnod",
+    "text": "I hushållssektorn (övre vänstra rutan) står avfallstyperna radvis: Producentansvarsmaterial, Bioavfall, Blandat avfall (säck och kärl), Bygg/trä och längst ner 'Övrigt från återvinningscentral 171 000 ton'. Det är den sista raden vi behöver. Total mängd i denna källa: 171 000 ton.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Pinna entiteten",
-    "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Identifiera vilken total som åsyftas innan division.",
+    "title": "Följ pilarna ut från noden",
+    "text": "Från 'Övrigt från återvinningscentral' utgår heldragna svarta pilar. En svart pil på 145 000 ton pekar in i Materialåtervinning. En svart pil på 26 000 ton pekar in i 'Omhändertagande av hushållens farliga avfall'. Inga andra pilar utgår från just denna nod.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Definition: andel vs förhållande",
-    "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+    "title": "Kontrollera att flödena summerar",
+    "text": "145 000 + 26 000 = 171 000 ton — exakt nodens totala mängd. Det bekräftar att vi fångat ALLA utflöden och inte blandat in en pil från en grannnod. En bra kontroll: delarna måste summera till helheten innan du räknar andelar.",
     "tier": "detail"
    },
    {
     "n": 6,
-    "title": "Läs av värde",
-    "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+    "title": "Räkna andelen för den stora sektorn",
+    "text": "Materialåtervinning: 145 000 / 171 000. Grovt: 145/171 ligger nära 145/170 \\approx 0,85, alltså ungefär 85 %. Det blir cirkelns stora sektor.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Definition: procent vs procentenheter",
-    "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
-    "tier": "detail"
-   },
-   {
-    "n": 8,
-    "title": "Räkneoperation",
-    "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+    "title": "Räkna andelen för den lilla sektorn",
+    "text": "Farligt avfall: 26 000 / 171 000 \\approx 26/171 \\approx 0,15, alltså ungefär 15 %. Kontroll: 85 % + 15 % = 100 %. Cirkeln har alltså exakt två sektorer, ~85 % och ~15 %.",
     "tier": "essential"
    },
    {
+    "n": 8,
+    "title": "Översätt andelarna till en cirkelbild",
+    "text": "En 85/15-cirkel har en dominerande sektor som täcker drygt fem sjättedelar och en smal sektor på ungefär en sjättedel (15 % \\approx 54° av 360°). Leta efter den cirkel där den lilla biten är en tunn tårtbit, inte en fjärdedel eller en tredjedel.",
+    "tier": "detail"
+   },
+   {
     "n": 9,
-    "title": "Jämför mot alternativen",
-    "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+    "title": "Matcha mot alternativen",
+    "text": "A: liten mörk sektor ~15 % + stor ljus ~85 % — rätt storlekar, men den lilla biten är den mörka. D: liten LJUS sektor ~15 % + stor MÖRK ~85 % — samma 85/15 men med den dominerande behandlingstypen som fylld sektor. B (~40/60) och C (~75/25) har fel proportioner helt.",
     "tier": "essential"
    },
    {
     "n": 10,
-    "title": "Verifiera storleksordning",
-    "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
-    "tier": "detail"
-   },
-   {
-    "n": 11,
     "title": "Slutsats",
-    "text": "Svar: D. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+    "text": "Fördelningen är 145 000 ton (~85 %) till materialåtervinning och 26 000 ton (~15 %) till farligt avfall. Den cirkel som visar en dominerande fylld sektor på ~85 % och en smal ljus på ~15 % är D. Insikten: i ett flödesdiagram räknar du andelar bara på pilarna UT ur den efterfrågade noden — summera dem först, dela sedan.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att välja A om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är D."
+    "why_tempting": "A har helt rätt storlekar: en smal sektor på ~15 % och en stor på ~85 %, precis de andelar 26 000 respektive 145 000 ton ger. Räknar du bara talen och struntar i vilken sektor som fylls, ser A ut som en fullträff.",
+    "why_wrong": "I A är den LILLA sektorn (~15 %) den mörka och den stora ljus — spegelvänd skuggning mot D. Storleksmässigt stämmer A, men eftersom D visar samma 85/15 med den dominerande behandlingstypen som den fyllda sektorn är A den klassiska skuggnings-fällan: rätt proportion, ombytt sektor."
    },
    {
     "letter": "B",
-    "why_tempting": "Många stannar vid välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är D."
+    "why_tempting": "B ser ut som en 'ojämn men inte extrem' fördelning (~40/60), vilket kan kännas rimligt om du minns att avfallet delades på två behandlingstyper men inte räknat kvoten 145/26.",
+    "why_wrong": "B:s mindre sektor är alldeles för stor — den ligger runt 38–40 %, inte 15 %. 26 000 av 171 000 är knappt en sjättedel (steg 7), inte drygt en tredjedel. Fel proportion."
    },
    {
     "letter": "C",
-    "why_tempting": "Första instinkten är välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är D."
+    "why_tempting": "C:s ljusa sektor är ungefär en fjärdedel (~25 %), och en fjärdedel är en 'snygg' bråkdel som lätt känns rätt om man ögonmäter 26 000 mot 171 000 utan att dela.",
+    "why_wrong": "C visar ungefär 75/25, men den lilla behandlingstypen är bara ~15 % (26 000 av 171 000, steg 7). 25 % skulle kräva ~43 000 ton — det stämmer inte med pilens 26 000 ton. Fel proportion."
    }
-  ]
+  ],
+  "technique": "Nod-utflödesandelen: i ett flödes-/Sankey-diagram räknas 'hur fördelades X' bara på pilarna UT ur nod X. Triggern: 'Hur fördelades [avfallstyp/kategori] på [behandling/mål]?' → pinna källnoden, summera dess utpilar (kontroll mot nodtotalen), dela varje utflöde med totalen och översätt till sektorstorlek.",
+  "pitfall": "Två fällor lurar här. (1) Att plocka en pil som passerar nära noden men egentligen kommer från en grannkälla — botemedlet är summeringskontrollen 145 000 + 26 000 = 171 000 (steg 5). (2) Att välja rätt storlekar men fel skuggad sektor (A mot D) — botemedlet är att bestämma VILKEN behandlingstyp som är den stora och kontrollera att det är den sektorn som är fylld i det valda alternativet.",
+  "pregrade_tactic": {
+   "handle": "Nodutflödet",
+   "move": "Pinna källnoden, summera pilarna UT ur den och kontrollera mot nodtotalen — dela sedan varje utflöde med totalen och matcha sektorstorlekarna, inte bara antalet sektorer."
+  },
+  "framework_id": "DTK-TACTIC-003",
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
  }
 }
