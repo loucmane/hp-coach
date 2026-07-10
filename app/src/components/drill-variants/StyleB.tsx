@@ -283,9 +283,7 @@ export function StyleB({
                           letterSpacing: '-0.005em',
                           fontWeight: isPicked || isCorrect ? 500 : 400,
                           color: 'var(--ink)',
-                          textDecoration: isWrong ? 'line-through' : 'none',
-                          textDecorationColor: 'var(--bad)',
-                          textDecorationThickness: 1.5,
+                          textDecoration: isWrong ? 'line-through var(--bad) 1.5px' : 'none',
                         }}
                       >
                         <MathText>{opt.text}</MathText>
