@@ -43,9 +43,13 @@ type Props = {
   summary: DrillSummary
   onReplay: () => void
   onHome: () => void
+  /** Optional extra CTA in the coda button row — e.g. the adaptive-review
+   *  detour's "Tillbaka till din övning" continuation (task #16). Rendered
+   *  after the quiet "öva igen" word, before the "esc hem" hint. */
+  continuation?: ReactNode
 }
 
-export function DrillResult({ summary, onReplay, onHome }: Props) {
+export function DrillResult({ summary, onReplay, onHome, continuation }: Props) {
   const { questions, picks } = summary
   const total = questions.length
   const correct = picks.reduce<number>((n, p, i) => (p === questions[i].answer ? n + 1 : n), 0)
@@ -214,6 +218,7 @@ export function DrillResult({ summary, onReplay, onHome }: Props) {
             <button type="button" onClick={onReplay} style={quietWord}>
               öva igen
             </button>
+            {continuation}
             <span style={{ ...quietWord, cursor: 'default' }}>esc hem</span>
           </div>
         </Rail>

@@ -459,6 +459,52 @@ describe('generateDailyPlan — rule 3b (weakest section gets its own drill — 
   })
 })
 
+describe('generateDailyPlan — adaptive-review hot-trap boost (task #16)', () => {
+  it('sorts the hot trap’s drill item FIRST when it is present', () => {
+    // NOG is weakest → lesson (item 0). KVA second-weakest with a top trap →
+    // trap drill (item 1). A hot trap on the KVA framework must lift that
+    // drill to plan[0], ahead of the NOG lesson.
+    const plan = generateDailyPlan(
+      signals({
+        dueMistakeCount: 4, // repetition item would normally lead
+        sectionScores: [score('NOG', { score: 1.1 }), score('KVA', { score: 1.5 })],
+        topTraps: [
+          { framework_id: 'KVA-TRAP-024', section: 'KVA', count: 4, headline: 'Kvotjakten' },
+        ],
+        hotTrap: { framework_id: 'KVA-TRAP-024' },
+      }),
+    )
+    expect(plan.items[0].kind).toBe('drill')
+    expect(plan.items[0].framework).toBe('KVA-TRAP-024')
+  })
+
+  it('leaves ordering untouched when there is no hot trap', () => {
+    const base = signals({
+      dueMistakeCount: 4,
+      sectionScores: [score('NOG', { score: 1.1 }), score('KVA', { score: 1.5 })],
+      topTraps: [{ framework_id: 'KVA-TRAP-024', section: 'KVA', count: 4, headline: 'x' }],
+    })
+    const withNull = generateDailyPlan({ ...base, hotTrap: null })
+    const without = generateDailyPlan(base)
+    expect(withNull.items.map((i) => i.id)).toEqual(without.items.map((i) => i.id))
+    // Repetition still leads when no boost applies.
+    expect(withNull.items[0].kind).toBe('repetition')
+  })
+
+  it('is a no-op reorder (no duplication) when no assembled item targets the trap', () => {
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [score('NOG', { score: 1.1 }), score('KVA', { score: 1.5 })],
+        // Hot trap references a framework NOT prescribed in any item.
+        hotTrap: { framework_id: 'DTK-TACTIC-099' },
+      }),
+    )
+    const targeting = plan.items.filter((i) => i.framework === 'DTK-TACTIC-099')
+    expect(targeting).toHaveLength(0)
+    expect(plan.items.length).toBeGreaterThan(0)
+  })
+})
+
 describe('generateDailyPlan — rule 4 (mastery maintenance)', () => {
   it('emits a maintenance drill on the least-recently-attempted section', () => {
     // All-mastered: no lesson/drill fires, so the mastery fallback is the sole

@@ -216,6 +216,15 @@ export type SessionPlayerProps = {
    *  the route can stamp `?done=<id>` into the URL (refresh-proof Klart).
    *  When omitted, completion just clears the qid as before. */
   onComplete?: (sessionId: number) => void
+  /** Adaptive-review hot-trap offer (task #16). A render-prop so the
+   *  offer's "Inte nu" can start the original drill in ONE tap: it
+   *  receives `startOriginal`, which begins this drill immediately (same
+   *  path the idle Start button takes). Rendered ONCE on the idle masthead
+   *  (before the first question) as a zero-guilt insert above the idle
+   *  body, only when a live pass hasn't begun, no auto-resume is in
+   *  flight, and we're not resuming an existing session. Return null to
+   *  show nothing. Omitted on every surface except a normal /drill. */
+  adaptiveOffer?: (args: { startOriginal: () => void }) => ReactNode
 }
 
 export function SessionPlayer(props: SessionPlayerProps) {
@@ -625,6 +634,12 @@ export function SessionPlayer(props: SessionPlayerProps) {
     // happens when there's nothing active.
     const isPhone = viewport === 'phone'
     const resuming = !!activeOfKind.data
+    // Adaptive-review offer (task #16): only on a genuine cold idle for a
+    // fresh drill — never while resuming an existing session (the user is
+    // mid-pattern, not starting one) and never once a live pass began.
+    const showOffer = !!props.adaptiveOffer && !resuming && !beganRef.current
+    const offerNode =
+      showOffer && props.adaptiveOffer ? props.adaptiveOffer({ startOriginal: begin }) : null
     const idleBody = (
       <IdleBody
         {...props}
@@ -634,6 +649,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
         resuming={resuming}
         emptyAttempted={emptyAttempted}
         staleResume={staleResume}
+        adaptiveOffer={offerNode}
       />
     )
     if (isPhone) {
@@ -872,7 +888,10 @@ export function SessionPlayer(props: SessionPlayerProps) {
 }
 
 // ── Idle body ─────────────────────────────────────────────────────────────
-type IdleBodyProps = SessionPlayerProps & {
+// `adaptiveOffer` is Omit'd from the SessionPlayerProps spread because the
+// prop is a render-prop there (function) but IdleBody receives an already-
+// rendered node (or null) via the resolved `offerNode`.
+type IdleBodyProps = Omit<SessionPlayerProps, 'adaptiveOffer'> & {
   starting: boolean
   onStart: () => void
   /** An active session of this kind exists — the CTA continues it. */
@@ -885,6 +904,9 @@ type IdleBodyProps = SessionPlayerProps & {
    *  uses the chapter-opening composition (hero headline, marginalia
    *  keyboard hints, bottom-right CTA). */
   isPhone: boolean
+  /** Adaptive-review hot-trap offer (task #16). Rendered at the top of the
+   *  idle masthead when set; null suppresses it. */
+  adaptiveOffer?: ReactNode
 }
 
 function IdleBody({
@@ -903,6 +925,7 @@ function IdleBody({
   disableStartLabel,
   idleSecondaryCta,
   isPhone,
+  adaptiveOffer,
 }: IdleBodyProps) {
   // When the resumed session's plan is gone, override the section's
   // generic empty copy with an explicit recovery line, and treat the
@@ -931,6 +954,16 @@ function IdleBody({
           : 'clamp(48px, 8vh, 96px) clamp(28px, 4vw, 64px) clamp(32px, 5vh, 56px)',
       }}
     >
+      {/* Adaptive-review hot-trap offer (task #16) — a zero-guilt insert
+       *  ABOVE the chapter opening. It leads because it's the more
+       *  targeted use of the next 5 minutes; declining drops straight
+       *  into the drill below. */}
+      {adaptiveOffer && (
+        <div style={{ marginBottom: isPhone ? 24 : 32, maxWidth: isPhone ? undefined : '52ch' }}>
+          {adaptiveOffer}
+        </div>
+      )}
+
       <div
         style={{
           display: 'flex',

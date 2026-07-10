@@ -44,6 +44,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { useAdaptiveReview } from '@/api/hooks/useAdaptiveReview'
 import { useDailyPlanQuery, usePutDailyPlan } from '@/api/hooks/useDailyPlanApi'
 import { useLessonReadsQuery } from '@/api/hooks/useLessonReadsApi'
 import { useDueMistakes } from '@/api/hooks/useMistakes'
@@ -100,6 +101,12 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   // (cold start, first render), the scheduler falls back to generic
   // section drills.
   const topTraps = useTopTraps()
+  // Adaptive-review hot trap (task #16) — when present, its trap-drill item
+  // is boosted to plan[0]. Resolved via the same detector the drill offer
+  // uses, so plan-anchor and offer agree on what's "hot". Not gated on: a
+  // null hot trap simply means no boost.
+  const adaptive = useAdaptiveReview()
+  const hotTrap = adaptive.hotTrap
   // Mock (Provpass) history drives the Provpass steering rule (Rule 0).
   // Same pattern as topTraps: not gated on — when it hasn't resolved
   // yet, `buildPlan` passes an empty history (== "never mocked" from
@@ -260,6 +267,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       topTraps,
       mockResults.data,
       daysToExam,
+      hotTrap,
     )
     setPrescription(prescribeMock(signals))
 
@@ -291,6 +299,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       stats.data.attempts.total,
       mockResults.data,
       daysToExam,
+      hotTrap,
     )
     savePlan(fresh.plan)
     putServerPlan.mutate(fresh.plan)
@@ -306,6 +315,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
     serverPlan.isLoading,
     mockResults.data,
     daysToExam,
+    hotTrap,
   ])
 
   // Re-run derivation when due count, stats, or the (cross-device) read
@@ -344,6 +354,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       stats.data.attempts.total,
       mockResults.data,
       daysToExam,
+      hotTrap,
     )
     savePlan(fresh.plan)
     putServerPlan.mutate(fresh.plan)
@@ -368,6 +379,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
     putServerPlan,
     mockResults.data,
     daysToExam,
+    hotTrap,
   ])
 
   const allComplete = !!plan && plan.items.length > 0 && plan.items.every((i) => i.completed)
@@ -399,6 +411,7 @@ function buildSchedulerSignals(
   topTraps: TopTrap[],
   mockResults: MockResultRow[] | undefined,
   daysToExam: number,
+  hotTrap: { framework_id: string } | null,
 ): SchedulerSignals {
   const sectionScores: SectionScore[] = SECTION_KEYS.map((s) =>
     computeSectionScore(s, bySection[s], now),
@@ -411,6 +424,7 @@ function buildSchedulerSignals(
     topTraps,
     mockHistory: toMockHistory(mockResults),
     daysToExam,
+    hotTrap,
   }
 }
 
@@ -423,6 +437,7 @@ function buildPlan(
   totalAttempts: number,
   mockResults: MockResultRow[] | undefined,
   daysToExam: number,
+  hotTrap: { framework_id: string } | null,
 ): { plan: DailyPlan; prescription: MockPrescription } {
   const signals = buildSchedulerSignals(
     now,
@@ -432,6 +447,7 @@ function buildPlan(
     topTraps,
     mockResults,
     daysToExam,
+    hotTrap,
   )
   const base = generateDailyPlan(signals)
   const prescription = prescribeMock(signals)
