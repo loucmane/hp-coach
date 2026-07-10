@@ -13342,103 +13342,103 @@
   ]
  },
  "var-2022-2-kvant2-DTK-029": {
-  "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
-  },
-  "pregrade_tactic": {
-   "handle": "Två-stegs-identifierare",
-   "move": "Behandla sammansatta prompter ('Identifiera ... . Vilk ...') som två separata operationer; varje fel i steg 1 förstör steg 2."
-  },
-  "framework_id": "DTK-TACTIC-001",
-  "solution_path": "Promptens första halva pinnar en entitet; andra halvan kräver att man läser av ett relaterat värde där. Per facit: svar A. Nyckelsteg: Skriv ner identifieraren explicit innan andra avläsningen.",
-  "technique": "DTK-taktik DTK-TACTIC-001: Behandla sammansatta prompter ('Identifiera ... . Vilk ...') som två separata operationer; varje fel i steg 1 förstör steg 2. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
-  "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+  "technique": "Tvåstegsfråga (Identifiera -> läs av): FÖRST hitta åldersgruppen med störst antal mottagare i kolumnen 'Samtliga', SEDAN läs den gruppens Kvinnor- och Män-tal och gör om till andelar. Trigger: 'Identifiera gruppen med störst ... . Vilket svarsförslag visar fördelningen ...' -> pinna först, räkna sedan.",
+  "solution_path": "Steg 1 - störst antal MOTTAGARE (kolumnen Antal mottagare -> Samtliga) per åldersgrupp: 25-29 = 100 397, 30-34 = 196 308, 35-39 = 223 465, 40-44 = 134 150. Störst är 35-39 med 223 465. Steg 2 - inom 35-39: Kvinnor 119 518, Män 103 947 (summa 223 465). Andelar: Kvinnor 119 518/223 465 = 53,5 %, Män 103 947/223 465 = 46,5 %. Rätt diagram är en nästan jämn tvådelning med lätt övervikt (~53,5 %) för kvinnor. Mätning: alternativ A är svart ~53,6 % (kvinnor) / ljus ~46,4 % (män). Svaret är A.",
   "steps": [
    {
     "n": 1,
+    "tier": "essential",
     "title": "Förstå frågan",
-    "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
-    "tier": "essential"
+    "text": "Tabellen visar mottagare av föräldrapenning 2012 per åldersgrupp, uppdelat på kvinnor och män (dessutom finns kolumner för Antal barn och Antal nettodagar - de ska INTE användas här). Frågan har två led: hitta åldersgruppen med flest mottagare, sedan visa dess könsfördelning."
    },
    {
     "n": 2,
-    "title": "Definition: DTK",
-    "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Led 1 - välj rätt kolumn",
+    "text": "'Störst antal MOTTAGARE' -> kolumnen 'Antal mottagare -> Samtliga'. Använd inte 'Antal barn' eller 'Antal nettodagar' - de har helt andra och mycket större tal."
    },
    {
     "n": 3,
-    "title": "Identifiera figurtyp",
-    "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Led 1 - skanna åldersgrupperna",
+    "text": "Samtliga mottagare: 25-29 = 100 397, 30-34 = 196 308, 35-39 = 223 465, 40-44 = 134 150. Toppen är 35-39 med 223 465 - större än både 30-34 och 40-44."
    },
    {
     "n": 4,
-    "title": "Pinna entiteten",
-    "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Skriv ner identifieraren explicit innan andra avläsningen.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Led 2 - pinna raden 35-39",
+    "text": "Lås åldersgruppen 35-39 innan du räknar könsfördelningen (annars är det lätt att råka läsa av grannraden 30-34 eller 40-44)."
    },
    {
     "n": 5,
-    "title": "Definition: andel vs förhållande",
-    "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Led 2 - läs könsvärdena",
+    "text": "På raden 35-39: Kvinnor 119 518, Män 103 947. Summan 119 518 + 103 947 = 223 465, samma som Samtliga - bekräftar rätt rad."
    },
    {
     "n": 6,
-    "title": "Läs av värde",
-    "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
-    "tier": "essential"
+    "tier": "detail",
+    "title": "Definition: procentuell fördelning",
+    "text": "Andel kvinnor = 119 518 / 223 465; andel män = 103 947 / 223 465. Två sektorer som summerar till 100 %."
    },
    {
     "n": 7,
-    "title": "Definition: procent vs procentenheter",
-    "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Räkna andelarna",
+    "text": "Kvinnor 119 518/223 465 = 53,5 %; Män 103 947/223 465 = 46,5 %. Nästan jämnt, med lätt övervikt för kvinnor."
    },
    {
     "n": 8,
-    "title": "Räkneoperation",
-    "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
-    "tier": "essential"
+    "tier": "detail",
+    "title": "Grovkoll",
+    "text": "Skillnaden mellan könen är ~15 600 av ~223 000, alltså bara några procentenheter. Cirkeln ska se nästan delad-på-mitten ut, med kvinnosektorn aningen större."
    },
    {
     "n": 9,
-    "title": "Jämför mot alternativen",
-    "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Mät alternativen",
+    "text": "A: svart ~53,6 % / ljus ~46,4 %. B: svart ~62 % / ljus ~38 %. C: svart ~40 % / ljus ~60 %. D: svart ~48 % / ljus ~52 %."
    },
    {
     "n": 10,
-    "title": "Verifiera storleksordning",
-    "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Matcha",
+    "text": "Kvinnor 53,5 % = den svarta sektorn. A (~53,6/46,4) träffar exakt. D (~48/52) är den omvända, nästan-jämna tvillingen och ger fel könsövervikt; B och C är för sneda."
    },
    {
     "n": 11,
+    "tier": "essential",
     "title": "Slutsats",
-    "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
-    "tier": "essential"
+    "text": "Svaret är A. Insikten i en mening: en 'Identifiera-sedan-fördela'-fråga faller på FÖRSTA ledet lika ofta som det andra - pinna rätt åldersgrupp (35-39) i rätt kolumn (mottagare), räkna sedan könsandelarna 53,5/46,5."
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "B (~62/38) lockar den som överdriver kvinnornas övervikt - föräldrapenning tas ju historiskt ut mest av kvinnor, så en tydlig svart majoritet 'känns' rätt.",
+    "why_wrong": "Bland 35-39-åringar är fördelningen bara 53,5/46,5, inte 62/38. Papporna i den åldersgruppen tar ut nästan lika mycket; A:s milda övervikt (~54 %) är rätt, inte B:s kraftiga."
    },
    {
     "letter": "C",
-    "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "C (~40/60) är en nästan-jämn tvådelning med samma färger och lockar om man kastar om vilken sektor som är kvinnor respektive män.",
+    "why_wrong": "C gör den svarta sektorn till minoritet (~40 %). Men kvinnorna (119 518) är FLER än männen (103 947) i 35-39, så kvinnosektorn ska vara den STÖRRE (~53,5 %), som i A."
    },
    {
     "letter": "D",
-    "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "D (~48/52) ligger allra närmast rätt och är den farligaste distraktorn - nästan samma jämna delning som A, bara med övervikten åt fel håll.",
+    "why_wrong": "D ger den svarta sektorn ~48 %, alltså en svag MINORITET. Kvinnorna är dock i majoritet (53,5 %). Den exakta matchningen 53,5/46,5 kräver A; D vänder på vem som är störst."
    }
-  ]
+  ],
+  "pitfall": "Två fällor: (1) läsa 'störst' i fel kolumn (Antal barn eller nettodagar i stället för mottagare), (2) välja den nästan-jämna tvillingen (D) som lutar åt fel håll. Botemedlet: bekräfta att kvinnornas tal (119 518) är STÖRRE än männens (103 947) i 35-39 och att den svarta sektorn därför ska vara den aningen större (~53,5 %).",
+  "pregrade_tactic": {
+   "handle": "Identifiera-sedan-fördela-greppet",
+   "move": "Hitta först åldersgruppen med flest mottagare i kolumnen Samtliga (35-39), läs sedan Kvinnor 119 518 och Män 103 947 och matcha den lätta överviktens 53,5/46,5 mot cirkeln."
+  },
+  "framework_id": "DTK-TACTIC-001",
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
  }
 }

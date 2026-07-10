@@ -13438,103 +13438,103 @@
   }
  },
  "var-2026-kvant1-DTK-038": {
-  "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
-  },
-  "pregrade_tactic": {
-   "handle": "Extremvärdes-scan",
-   "move": "Vid extremvärdesfrågor: skanna först visuellt, identifiera kandidaten, läs sedan av precis."
-  },
-  "framework_id": "DTK-TACTIC-002",
-  "solution_path": "Extremvärdesfråga över datamängd. Snabb visuell scan avgör snabbt. Per facit: svar A. Nyckelsteg: Toppen hittas med ögat, inte med räkning.",
-  "technique": "DTK-taktik DTK-TACTIC-002: Vid extremvärdesfrågor: skanna först visuellt, identifiera kandidaten, läs sedan av precis. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
-  "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+  "technique": "Läs av TVÅ nivåer i det överlagrade ytdiagrammet vid ålder 63: den yttre kurvan (Befolkning = total) och den inre (Medlemmar = delmängd). Icke-medlemmar = skillnaden. Gör om medlemmar och icke-medlemmar till andelar av befolkningen och matcha en tvåsektorerad cirkel. Trigger: 'procentuella fördelningen av medlemmar och icke medlemmar ... bland N-åringar' -> total minus delmängd, vid en given ålder.",
+  "solution_path": "Diagrammet är överlagrat, inte staplat: ljusgrå yta = hela Befolkningen per ålder, mörkgrå yta = de som är Medlemmar (en delmängd). Vid 63 år: Befolkning ~110 000, Medlemmar ~73 000. Icke-medlemmar = 110 000 - 73 000 = ~37 000. Andelar: Medlemmar 73/110 = 66,4 %, Icke-medlemmar 37/110 = 33,6 %. Rätt cirkel har en mörk sektor på ~66 % (medlemmar) och en vit på ~34 %. Mätning: alternativ A är mörk ~66,5 % / vit ~33,5 %. Svaret är A.",
   "steps": [
    {
     "n": 1,
+    "tier": "essential",
     "title": "Förstå frågan",
-    "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
-    "tier": "essential"
+    "text": "Ytdiagrammet visar för varje ålder hur många som ingår i Befolkningen (ljusgrå) och hur många av dem som är Medlemmar i Svenska kyrkan (mörkgrå). Frågan gäller 63-åringar: hur delar sig de mellan medlemmar och icke-medlemmar?"
    },
    {
     "n": 2,
-    "title": "Definition: DTK",
-    "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Läs diagrammet rätt - överlagrat, inte staplat",
+    "text": "Den mörka ytan ligger UNDER den ljusa; medlemmarna är en delmängd av befolkningen. Befolkningskurvan (yttre) ger totalen, medlemskurvan (inre) ger delmängden. Icke-medlemmar = avståndet mellan kurvorna."
    },
    {
     "n": 3,
-    "title": "Identifiera figurtyp",
-    "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Pinna ålder 63",
+    "text": "Ställ blicken vid 63 år på ålderaxeln och läs av båda kurvornas höjd där (området runt 57-66 år är en platå, så värdena är stabila)."
    },
    {
     "n": 4,
-    "title": "Pinna entiteten",
-    "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Toppen hittas med ögat, inte med räkning.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Läs av de två nivåerna",
+    "text": "Vid 63 år: Befolkning (yttre, ljus) ~110 000; Medlemmar (inre, mörk) ~73 000 (medlemskurvan planar ut kring 72-73 000 för åldrarna ~54-66)."
    },
    {
     "n": 5,
-    "title": "Definition: andel vs förhållande",
-    "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Räkna icke-medlemmar",
+    "text": "Icke-medlemmar = Befolkning - Medlemmar = 110 000 - 73 000 = ~37 000."
    },
    {
     "n": 6,
-    "title": "Läs av värde",
-    "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
-    "tier": "essential"
+    "tier": "detail",
+    "title": "Definition: andel av befolkningen",
+    "text": "Andel medlemmar = medlemmar / befolkning; andel icke-medlemmar = icke-medlemmar / befolkning. Nämnaren är hela befolkningen vid 63 år (~110 000), inte medlemsantalet."
    },
    {
     "n": 7,
-    "title": "Definition: procent vs procentenheter",
-    "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Räkna andelarna",
+    "text": "Medlemmar 73 000/110 000 = 66,4 %; Icke-medlemmar 37 000/110 000 = 33,6 %."
    },
    {
     "n": 8,
-    "title": "Räkneoperation",
-    "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
-    "tier": "essential"
+    "tier": "detail",
+    "title": "Grovkoll",
+    "text": "Ungefär två tredjedelar mot en tredjedel. Medlemssektorn ska klart dominera men inte vara överväldigande - inte 80 % och inte 50 %."
    },
    {
     "n": 9,
-    "title": "Jämför mot alternativen",
-    "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Mät alternativen",
+    "text": "A: mörk ~66,5 % / vit ~33,5 %. B: mörk ~52 % / vit ~48 %. C: mörk ~40 % / vit ~60 %. D: mörk ~29 % / vit ~71 %."
    },
    {
     "n": 10,
-    "title": "Verifiera storleksordning",
-    "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Matcha",
+    "text": "Medlemmar 66,4 % = den mörka sektorn. A (~66,5/33,5) träffar 'två tredjedelar'-profilen exakt. B (~52 %) är nästan jämnt, C och D gör medlemmarna till minoritet - alla fel."
    },
    {
     "n": 11,
+    "tier": "essential",
     "title": "Slutsats",
-    "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
-    "tier": "essential"
+    "text": "Svaret är A. Insikten i en mening: i ett överlagrat ytdiagram är delmängdens andel = inre kurva / yttre kurva vid den givna åldern - 73/110 = 66 %, alltså den mörka två-tredjedels-sektorn."
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "B (~52/48) lockar den som läser medlemskurvan för lågt eller befolkningskurvan för högt vid 63 år och landar i 'ungefär hälften'.",
+    "why_wrong": "Vid 63 år är medlemmarna ~73 000 av ~110 000 = 66 %, inte ~52 %. Den mörka sektorn ska vara klart större än hälften - B underskattar medlemsandelen."
    },
    {
     "letter": "C",
-    "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "C (~40/60) är en tvådelad cirkel med samma färger, och den som förväxlar vilken sektor som är medlemmar respektive icke-medlemmar kan kasta om dem.",
+    "why_wrong": "C gör den mörka (medlems-)sektorn till minoritet (~40 %). Men medlemmarna (73 000) är FLER än icke-medlemmarna (37 000) bland 63-åringar, så medlemssektorn ska vara den STÖRRE (~66 %), som i A."
    },
    {
     "letter": "D",
-    "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "D (~29/71) lockar om man läser av vid fel ålder - bland de yngsta eller allra äldsta är medlemsandelen lägre - eller vänder på kurvorna.",
+    "why_wrong": "D:s mörka sektor (~29 %) motsvarar en låg medlemsandel som inte gäller vid 63 år. Där är förhållandet ~66/34; icke-medlemssektorn (vit) ska vara ~34 %, inte 71 %."
    }
-  ]
+  ],
+  "pitfall": "Fällan är att behandla diagrammet som STAPLAT (och addera kurvorna) eller att läsa av vid fel ålder, samt att kasta om vilken sektor som är medlemmar. Botemedlet: läs inre kurvan (medlemmar ~73 000) och yttre kurvan (befolkning ~110 000) vid EXAKT 63 år, ta skillnaden som icke-medlemmar, och låt den större mörka sektorn (~66 %) vara medlemmarna.",
+  "pregrade_tactic": {
+   "handle": "Delmängdsavläsningen",
+   "move": "Läs medlemskurvan (~73 000) och befolkningskurvan (~110 000) vid 63 år, ta skillnaden som icke-medlemmar, och matcha 66/34 mot cirkeln - den mörka sektorn är den större."
+  },
+  "framework_id": "DTK-TACTIC-003",
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
  }
 }

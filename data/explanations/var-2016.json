@@ -13395,203 +13395,203 @@
   }
  },
  "var-2016-kvant2-DTK-030": {
-  "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
-  },
-  "pregrade_tactic": {
-   "handle": "Lokal-total-jakten",
-   "move": "Vid 'andel av specifik kategori' — leta upp den lokala totalen i tabellen/diagrammet INNAN du räknar. Globala totaler är distraktorer."
-  },
-  "framework_id": "DTK-TACTIC-003",
-  "solution_path": "Andel av en lokal underkategori. Vanligaste fel: använda global total istället för subset-total. Per facit: svar A. Nyckelsteg: Verifiera nämnaren genom att läsa frågan en gång till.",
-  "technique": "DTK-taktik DTK-TACTIC-003: Vid 'andel av specifik kategori' — leta upp den lokala totalen i tabellen/diagrammet INNAN du räknar. Globala totaler är distraktorer. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
-  "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+  "technique": "Bygg cirkeldiagrammet ur RÅDATA, inte tvärtom: läs av de tre könskategorierna på Ensamhet-raden (Flickor, Pojkar, Ej framkommit), gör om varje antal till en andel av radsumman, och matcha sedan sektorstorlekarna mot alternativen. Trigger: 'Vilket svarsförslag redovisar hur ... var fördelat på kön' -> tre andelar som ska summera till 100 %.",
+  "solution_path": "På Ensamhet-raden i BRIS-tabellen står Flickor 3 237, Pojkar 862, Ej framkommit 29, Summa 4 128. Andelar: Flickor 3 237/4 128 = 78,4 %, Pojkar 862/4 128 = 20,9 %, Ej framkommit 29/4 128 = 0,7 %. Det rätta diagrammet har alltså EN dominerande sektor (~78 %, vit), EN dryg femtedel (~21 %, prickig) och en nästan osynlig strimma (~0,7 %, svart). Alternativ A visar just detta: vit ~78 %, prickig knappt över en femtedel, svart hårfin. Svaret är A.",
   "steps": [
    {
     "n": 1,
+    "tier": "essential",
     "title": "Förstå frågan",
-    "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
-    "tier": "essential"
+    "text": "Tabellen visar hur många gånger olika områden berördes när barn kontaktade BRIS 2011, uppdelat på Flickor, Pojkar och Ej framkommit. Frågan gäller ENDAST området Ensamhet: hur fördelade sig dess kontakter på kön? Du ska välja det cirkeldiagram som återger den fördelningen."
    },
    {
     "n": 2,
-    "title": "Definition: DTK",
-    "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Pinna rätt rad",
+    "text": "Lås raden Ensamhet innan du räknar (DTK-grundregeln: lokalisera cellen först). På den raden: Flickor 3 237, Pojkar 862, Ej framkommit 29, Summa 4 128."
    },
    {
     "n": 3,
-    "title": "Identifiera figurtyp",
-    "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
-    "tier": "essential"
+    "tier": "detail",
+    "title": "Definition: andel",
+    "text": "Andel = del / total, ett tal mellan 0 och 1 (eller 0-100 %). Här är totalen radsumman 4 128 - INTE hela tabellens totalsumma. Fel nämnare är den vanligaste DTK-fällan."
    },
    {
     "n": 4,
-    "title": "Pinna entiteten",
-    "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Verifiera nämnaren genom att läsa frågan en gång till.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Räkna andelen flickor",
+    "text": "3 237 / 4 128 = 0,784, alltså 78,4 %. Detta är den klart största sektorn - nästan fyra femtedelar av cirkeln."
    },
    {
     "n": 5,
-    "title": "Definition: andel vs förhållande",
-    "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Räkna andelen pojkar",
+    "text": "862 / 4 128 = 0,209, alltså 20,9 %. En dryg femtedel - märkbart större än en 'liten' sektor men långt mindre än flickornas."
    },
    {
     "n": 6,
-    "title": "Läs av värde",
-    "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Räkna andelen 'ej framkommit'",
+    "text": "29 / 4 128 = 0,007, alltså 0,7 %. Nästan noll - i cirkeln blir det en hårfin strimma, knappt synlig."
    },
    {
     "n": 7,
-    "title": "Definition: procent vs procentenheter",
-    "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
-    "tier": "detail"
+    "tier": "detail",
+    "title": "Kontrollera summan",
+    "text": "78,4 + 20,9 + 0,7 = 100,0 %. Andelarna går ihop, så uppdelningen är rimlig."
    },
    {
     "n": 8,
-    "title": "Räkneoperation",
-    "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Översätt till sektorform",
+    "text": "Sök diagrammet med profilen 78 / 21 / <1: en stor vit sektor på ~fyra femtedelar, en prickig sektor på drygt en femtedel, och en svart strimma nära noll."
    },
    {
     "n": 9,
-    "title": "Jämför mot alternativen",
-    "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Läs av alternativen",
+    "text": "A: vit ~78 %, prickig knappt över en femtedel, svart hårfin strimma. B: prickig bara ~15 % och svart ~4 % - fel storlekar. C: prickig ~30 % (för stor), vit bara ~65 %. D: prickig ~33 % OCH svart ~8 % - båda de små kategorierna uppblåsta."
    },
    {
     "n": 10,
-    "title": "Verifiera storleksordning",
-    "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
-    "tier": "detail"
+    "tier": "detail",
+    "title": "Elimineringskoll",
+    "text": "Endast A har en svart strimma nära noll (0,7 %). Så snart en option ger 'ej framkommit' en tydligt synlig kil (B:s ~4 %, D:s ~8 %) faller den - 29 av 4 128 kan aldrig bli en synlig tårtbit."
    },
    {
     "n": 11,
+    "tier": "essential",
     "title": "Slutsats",
-    "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
-    "tier": "essential"
+    "text": "Svaret är A. Insikten i en mening: i 'vilket diagram visar fördelningen'-frågor räknar du andelarna ur raden FÖRST och matchar mot sektorerna sedan - den minsta kategorin (här 0,7 %) är ofta det snabbaste elimineringsverktyget."
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "B har samma dominerande vita sektor och samma prick/vit/svart-uppsättning som A, så vid en snabb blick ser den 'ungefär rätt' ut.",
+    "why_wrong": "I B är den prickiga sektorn bara ~15 % (för liten för pojkarnas 20,9 %) och den svarta kilen ~4 % - alltför stor för 'ej framkommit', som bara är 0,7 %. Rätt profil är 78 / 21 / <1, vilket A visar."
    },
    {
     "letter": "C",
-    "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "C har också en stor sektor och en prickig sektor, och om man bara kollar 'stor vs mindre' utan att mäta kan storleksordningen kännas riktig.",
+    "why_wrong": "I C är den prickiga sektorn uppblåst till ~30-33 % och den dominerande sektorn krymper till ~65 %. Det motsvarar snarare 65 / 30 / 5, inte flickornas 78 % mot pojkarnas 21 %. Andelen flickor ska vara tydligt nära fyra femtedelar."
    },
    {
     "letter": "D",
-    "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "D visar en stor vit sektor och lockar den som nöjer sig med att flickorna 'dominerar' utan att kontrollera de två mindre sektorerna.",
+    "why_wrong": "I D är BÅDE den prickiga (~33 %) och den svarta (~8 %) sektorn för stora. 'Ej framkommit' med 29 kontakter (0,7 %) kan aldrig bli en ~8 %-kil. Bara A ger den svarta strimman nära noll."
    }
-  ]
+  ],
+  "pitfall": "Klassiska fällan är att välja rätt 'dominerande' sektor men strunta i de två små - och därmed missa att bara ETT diagram ger 'ej framkommit' en strimma nära noll. Botemedlet: räkna även den minsta andelen (29/4 128 = 0,7 %) och använd den som filter; varje option där den lilla kategorin har en synlig kil kan strykas direkt.",
+  "pregrade_tactic": {
+   "handle": "Andelsbygget",
+   "move": "Läs av de tre könsantalen på Ensamhet-raden, dela var och en med radsumman 4 128, och matcha 78/21/<1 mot sektorerna - börja med den minsta andelen som elimineringsfilter."
+  },
+  "framework_id": "DTK-TACTIC-003",
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
  },
  "var-2016-kvant1-DTK-037": {
-  "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
-  },
-  "pregrade_tactic": {
-   "handle": "Topp-och-dalskannen",
-   "move": "I linje-/stapeldiagram: ögats bäst — använd den att hitta kandidatextremvärden, läs sedan av precis bara dem."
-  },
-  "framework_id": "DTK-TACTIC-002",
-  "solution_path": "Extremvärdesfråga över en serie. Risken är att läsa av varje punkt och spendera för mycket tid. Per facit: svar D. Nyckelsteg: Visuell scan → välj kandidat → precis avläsning.",
-  "technique": "DTK-taktik DTK-TACTIC-002: I linje-/stapeldiagram: ögats bäst — använd den att hitta kandidatextremvärden, läs sedan av precis bara dem. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
-  "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+  "technique": "Läs av 2008 års värde för varje vetenskapsområde i det HÖGRA linjediagrammet, summera till en total, och gör om varje område till en andel. Sök sedan cirkeldiagrammet med rätt SILHUETT: en ledare på ~40 %, ett par mellansektorer, och en liten svans. Trigger: 'Hur var antalet ... fördelat på ...' -> fem andelar ur ett linjediagram vid ETT givet år.",
+  "solution_path": "I det högra diagrammet (vetenskapsområden 2001-2010) avläses 2008: Humanistisk-samhällsvetenskapligt ~9 500, Medicinskt ~5 300, Tekniskt ~4 700, Naturvetenskapligt ~3 100, SLU ~1 300. Total ~23 900. Andelar: Hum-samh 39,7 %, Medicinskt 22,2 %, Tekniskt 19,7 %, Naturvetenskapligt 13,0 %, SLU 5,4 %. Rätt diagram har EN dominerande sektor (~40 %), TVÅ jämnstora mellansektorer (~22 % och ~20 %), en ~13 %-sektor och en liten ~5 %-strimma. Alternativ D visar precis den profilen. Svaret är D.",
   "steps": [
    {
     "n": 1,
+    "tier": "essential",
     "title": "Förstå frågan",
-    "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar D.",
-    "tier": "essential"
+    "text": "Sidan har två linjediagram. Frågan gäller det HÖGRA: forskande och undervisande personal inom olika VETENSKAPSOMRÅDEN 2001-2010. Du ska välja cirkeldiagrammet som visar fördelningen mellan områdena år 2008."
    },
    {
     "n": 2,
-    "title": "Definition: DTK",
-    "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Välj rätt diagram och rätt år",
+    "text": "Blanda inte ihop med det vänstra (tjänstekategorier). Ställ blicken på den lodräta 2008-linjen i det högra diagrammet och läs av var varje kurva korsar den."
    },
    {
     "n": 3,
-    "title": "Identifiera figurtyp",
-    "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Läs av de fem områdena 2008",
+    "text": "Humanistisk-samhällsvetenskapligt ~9 500 (klart högst), Medicinskt ~5 300, Tekniskt ~4 700 (streckad, strax under Medicinskt), Naturvetenskapligt ~3 100, SLU ~1 300 (lägst)."
    },
    {
     "n": 4,
-    "title": "Pinna entiteten",
-    "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Visuell scan → välj kandidat → precis avläsning.",
-    "tier": "essential"
+    "tier": "detail",
+    "title": "Definition: andel av total",
+    "text": "Andel = områdets antal / summan av alla områden. Nämnaren är totalsumman för 2008, inte något enskilt områdes värde."
    },
    {
     "n": 5,
-    "title": "Definition: andel vs förhållande",
-    "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Summera",
+    "text": "9 500 + 5 300 + 4 700 + 3 100 + 1 300 = 23 900."
    },
    {
     "n": 6,
-    "title": "Läs av värde",
-    "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Räkna andelarna",
+    "text": "Hum-samh 9 500/23 900 = 39,7 %; Medicinskt 5 300/23 900 = 22,2 %; Tekniskt 4 700/23 900 = 19,7 %; Naturvet 3 100/23 900 = 13,0 %; SLU 1 300/23 900 = 5,4 %."
    },
    {
     "n": 7,
-    "title": "Definition: procent vs procentenheter",
-    "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
-    "tier": "detail"
+    "tier": "detail",
+    "title": "Kontrollera summan",
+    "text": "39,7 + 22,2 + 19,7 + 13,0 + 5,4 = 100,0 %. Går ihop."
    },
    {
     "n": 8,
-    "title": "Räkneoperation",
-    "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Bygg silhuetten",
+    "text": "Profil att leta efter: EN ledare på ~40 %, sedan TVÅ nästan lika stora mellansektorer (~22 % och ~20 %), därefter en ~13 %-sektor och till sist en liten ~5 %-strimma."
    },
    {
     "n": 9,
-    "title": "Jämför mot alternativen",
-    "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Läs av alternativen",
+    "text": "A: största sektorn bara ~kvart av cirkeln - ingen 40 %-ledare. B: två sektorer (grå + svart) är co-dominanta på ~30 % var - ingen ensam ledare. C: grå ledare ~40 %, men bara EN mellansektor (~25 %); de två övriga är båda ~13 % - saknar 22/20-paret. D: grå ledare ~40 %, sicksack ~20 % och svart ~18 % som mellanpar, ljus ~13 %, diagonal-strimma ~5 %."
    },
    {
     "n": 10,
-    "title": "Verifiera storleksordning",
-    "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
-    "tier": "detail"
+    "tier": "detail",
+    "title": "Skilj D från C",
+    "text": "Nyckelskillnaden: uppgiften kräver TVÅ mellanstora sektorer (Medicinskt 22 % och Tekniskt 20 %) som ligger nära varandra. C har bara en sådan och gör de två återstående lika små (~13 %). D har paret - det matchar att Medicinskt och Tekniskt är nästan jämnstora 2008."
    },
    {
     "n": 11,
+    "tier": "essential",
     "title": "Slutsats",
-    "text": "Svar: D. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
-    "tier": "essential"
+    "text": "Svaret är D. Insikten i en mening: matcha inte bara den största sektorn - hela SILHUETTEN måste stämma, och här är det närheten mellan Medicinskt (22 %) och Tekniskt (20 %) som avgör mellan D och C."
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att välja A om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är D."
+    "why_tempting": "A har fem sektorer i rätt antal och en tydlig uppsättning mönster, så den ser strukturellt riktig ut vid en snabb blick.",
+    "why_wrong": "I A är den största sektorn bara ~30 % (ungefär en kvart), och två sektorer är ~22 % var. Det saknas en ledare på ~40 % - men Hum-samh är 39,7 %, klart dominerande. A visar en för jämn fördelning."
    },
    {
     "letter": "B",
-    "why_tempting": "Många stannar vid välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är D."
+    "why_tempting": "B har en stor grå sektor som kan förväxlas med Hum-samh-ledaren, och rätt antal sektorer.",
+    "why_wrong": "I B är den svarta sektorn nästan lika stor som den grå (~30 % var), alltså två co-dominanta sektorer. Men 2008 finns bara EN sektor nära 40 %; näst största (Medicinskt) är bara 22 %. B överdriver den näst största."
    },
    {
     "letter": "C",
-    "why_tempting": "Första instinkten är välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är D."
+    "why_tempting": "C har en grå ledare på ~40 % - precis rätt för Hum-samh - så den är den farligaste distraktorn.",
+    "why_wrong": "C har bara EN mellansektor (~25 %) och gör de två övriga lika små (~13 %). Men Medicinskt (22 %) och Tekniskt (20 %) är nästan jämnstora och BÅDA klart större än Naturvet (13 %). Rätt diagram (D) har det mellanparet; C saknar det."
    }
-  ]
+  ],
+  "pitfall": "Fällan är att stanna vid den största sektorn (~40 %) och godta första bästa diagram som har en sådan - då kan C och D inte skiljas åt. Botemedlet: kontrollera hela profilen, särskilt att Medicinskt (22 %) och Tekniskt (20 %) bildar ett par av jämnstora mellansektorer; endast D återger det.",
+  "pregrade_tactic": {
+   "handle": "Silhuettmatchningen",
+   "move": "Läs av alla fem områdenas värde på 2008-linjen, dela med totalen ~23 900, och matcha hela silhuetten 40/22/20/13/5 - låt det jämnstora Medicinskt-Tekniskt-paret avgöra mellan de grå-ledda alternativen."
+  },
+  "framework_id": "DTK-TACTIC-006",
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
  }
 }
