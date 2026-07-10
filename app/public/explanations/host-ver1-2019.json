@@ -13385,103 +13385,103 @@
   ]
  },
  "host-ver1-2019-kvant2-DTK-032": {
-  "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
-  },
-  "pregrade_tactic": {
-   "handle": "Egennams-låsningen",
-   "move": "När prompten nämner ett egennamn (årtal, plats, sjukhus) — fingeravtrycka entiteten i tabellen FÖRST. Räkna inte på fel rad."
-  },
-  "framework_id": "DTK-TACTIC-006",
-  "solution_path": "Specifikt år/land/objekt nämns; risken är att räkna på en grannrad under tidspress. Per facit: svar A. Nyckelsteg: Dra ett finger längs rätt rad innan avläsning.",
-  "technique": "DTK-taktik DTK-TACTIC-006: När prompten nämner ett egennamn (årtal, plats, sjukhus) — fingeravtrycka entiteten i tabellen FÖRST. Räkna inte på fel rad. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
-  "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+  "solution_path": "Frågan gäller kategorin 'Skola, offentlig lokal, institutionsområde' och hur dess totala antal skadefall (211) fördelade sig på de enskilda skadeplatserna under kategorin. Läs delraderna i vänstertabellen (Skadeplats): Daghem/fritidshem/ungdomsgård 130, Skolgård 10, Lekplats på institution 53, Offentlig lokal (post/kyrka/polis/museum) 11, Sjukhus/vårdcentral 5, Annat spec. offentligt 2. Kontroll: 130 + 10 + 53 + 11 + 5 + 2 = 211. Andelar: 130/211 \\approx 62 %, 53/211 \\approx 25 %, resten är smala sektorer (~5 %, ~5 %, ~2 %, ~1 %). Rätt cirkel har en dominerande sektor på ~62 %, en näst största på ~25 % och fyra tunna sektorer. Alternativ A visar exakt den fördelningen. Svaret är A.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
+    "text": "Vi ska hitta cirkeln som visar hur skadefallen i EN kategori — 'Skola, offentlig lokal, institutionsområde' — fördelade sig på de olika skadeplatserna under den kategorin. Alltså delposterna inom en och samma grupp, inte hela tabellen.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Definition: DTK",
-    "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
-    "tier": "detail"
+    "title": "Orientera dig i tabellen",
+    "text": "Sidan 'Skadefall bland barn 0–3 år' har två tabeller. Den vänstra ('Skadeplats') är den vi behöver. Den är grupperad: feta rader är kategori-totaler (t.ex. '4. Skola, offentlig lokal, institutionsområde, totalt') och de icke-feta raderna under är delplatserna. Kolumnen 'Antal rapporterade – Totalt' ger talen.",
+    "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Identifiera figurtyp",
-    "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+    "title": "Hitta kategorins total",
+    "text": "Kategori 4 'Skola, offentlig lokal, institutionsområde, totalt' har Totalt = 211 (Pojkar 112, Flickor 99). Det är nämnaren vi delar med.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Pinna entiteten",
-    "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Dra ett finger längs rätt rad innan avläsning.",
+    "title": "Lista delplatserna",
+    "text": "Under kategori 4 står delraderna (Totalt-kolumnen): rad 40 Daghem/fritidshem/ungdomsgård = 130, rad 42 Skolgård inkl lekplats på skolgård = 10, rad 43 Lekplats på institution = 53, rad 44 Offentlig lokal (post/kyrka/polis/museum) = 11, rad 45 Sjukhus/vårdcentral/folktandvård = 5, rad 48 Annat spec. offentligt område = 2.",
     "tier": "essential"
    },
    {
     "n": 5,
-    "title": "Definition: andel vs förhållande",
-    "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+    "title": "Kontrollera summan",
+    "text": "130 + 10 + 53 + 11 + 5 + 2 = 211 — exakt kategorins total. Det bekräftar att vi fångat alla sex delplatserna och ingen extra rad. Delarna måste summera till helheten innan andelar räknas.",
     "tier": "detail"
    },
    {
     "n": 6,
-    "title": "Läs av värde",
-    "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+    "title": "Räkna den största andelen",
+    "text": "Daghem/fritidshem/ungdomsgård: 130/211. Grovt: 130/211 \\approx 130/210 \\approx 0,62, alltså ~62 %. Detta blir cirkelns dominerande sektor, drygt tre femtedelar.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Definition: procent vs procentenheter",
-    "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
-    "tier": "detail"
+    "title": "Räkna den näst största andelen",
+    "text": "Lekplats på institution: 53/211 \\approx 53/210 \\approx 0,25, alltså ~25 %, en dryg fjärdedel. Detta är cirkelns näst största sektor.",
+    "tier": "essential"
    },
    {
     "n": 8,
-    "title": "Räkneoperation",
-    "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
-    "tier": "essential"
+    "title": "Räkna de fyra små andelarna",
+    "text": "Offentlig lokal: 11/211 \\approx 5 %. Skolgård: 10/211 \\approx 5 %. Sjukhus/vårdcentral: 5/211 \\approx 2 %. Annat spec. offentligt: 2/211 \\approx 1 %. Fyra tunna sektorer. Kontroll: 62 + 25 + 5 + 5 + 2 + 1 = 100 %.",
+    "tier": "detail"
    },
    {
     "n": 9,
-    "title": "Jämför mot alternativen",
-    "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
-    "tier": "essential"
+    "title": "Översätt till en cirkelbild",
+    "text": "Cirkeln ska ha EN stor sektor (~62 %, drygt halva cirkeln plus lite till), EN medelstor (~25 %, en dryg fjärdedel) och FYRA smala tårtbitar (två på ~5 %, en på ~2 %, en på ~1 %). Leta efter den cirkel där den näst största biten är ungefär en fjärdedel och de fyra små tillsammans utgör ~13 %.",
+    "tier": "detail"
    },
    {
     "n": 10,
-    "title": "Verifiera storleksordning",
-    "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
-    "tier": "detail"
+    "title": "Matcha mot alternativen",
+    "text": "A: stor vit sektor ~62 %, en dottad ~25 % och fyra smala (rutmönstrad, grå, svart, streckad) — stämmer. B: den grå sektorn är uppblåst (~12 % istället för ~5 %). C: den rutmönstrade sektorn är för stor (~12 %). D: den dottade sektorn är för stor (~33 % istället för ~25 %). Bara A har alla sex sektorerna i rätt storlek.",
+    "tier": "essential"
    },
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+    "text": "Fördelningen domineras av daghem/fritidshem (130, ~62 %) följt av lekplats på institution (53, ~25 %), med fyra små platser på ~5, ~5, ~2 och ~1 %. Cirkeln med en stor sektor, en fjärdedels-sektor och fyra smala bitar i rätt storlek är A. Insikten: i en grupperad tabell räknar du andelar på DELRADERNA under kategorin och delar med kategori-totalen — kontrollera att delarna summerar först.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "B har samma sex sektorer och samma två dominerande bitar som rätt svar, så vid en snabb blick ser strukturen bekant ut.",
+    "why_wrong": "I B är den grå sektorn tydligt uppblåst — den täcker runt 12 %, medan den plats grått står för bara är ~5 % (10 eller 11 av 211, steg 8). En delplats har fått för stor tårtbit. Fel proportion."
    },
    {
     "letter": "C",
-    "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "C har också alla sex sektorer, och den rutmönstrade biten ser ut att kunna vara en av de mellanstora platserna om man inte räknar kvoten.",
+    "why_wrong": "I C är den rutmönstrade sektorn för stor (~12 %) på bekostnad av de riktiga andelarna. Den plats mönstret svarar för är bara ~5 % (11 av 211, steg 8). Fel proportion."
    },
    {
     "letter": "D",
-    "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "D har rätt dominerande vit sektor och rätt uppsättning småsektorer, så den kan kännas som en nära match om man bara kontrollerar den största biten.",
+    "why_wrong": "I D är den DOTTADE sektorn uppblåst till ~33 % istället för ~25 %, och den stora vita krymper därmed. Lekplats på institution är 53/211 \\approx 25 % (steg 7), inte en tredjedel. Förhållandet mellan de två största sektorerna är fel."
    }
-  ]
+  ],
+  "technique": "Delrads-andelen i grupperad tabell: vid 'hur fördelades kategori X:s total på delplatser/delposter' — använd kategori-totalen som nämnare och de icke-feta delraderna under den som täljare. Triggern: en fet 'totalt'-rad med indragna underrader → summera underraderna (kontroll mot totalen), dela var och en och matcha sektorstorlekarna.",
+  "pitfall": "Två fällor: (1) att dela med fel total — hela tabellens 985/1815 istället för kategorins 211; botemedlet är summeringskontrollen 130+10+53+11+5+2 = 211 (steg 5). (2) Att få de två dominerande sektorerna rätt men missa att en delplats fått fel storlek (B, C och D blåser upp var sin mellansektor); botemedlet är att kontrollera ALLA sex sektorernas storlek, inte bara den största.",
+  "pregrade_tactic": {
+   "handle": "Delradssumman",
+   "move": "Summera kategorins underrader och kontrollera mot 'totalt'-raden, dela sedan varje delplats med kategori-totalen och matcha alla sektorstorlekarna."
+  },
+  "framework_id": "DTK-TACTIC-003",
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
  }
 }
