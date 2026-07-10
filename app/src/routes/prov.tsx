@@ -8,7 +8,9 @@
 //                    (Verbal/Kvantitativ). Authentic: listAuthenticPasses
 //                    rows (least-exposed first, top one suggested).
 //                    Synthetic: one CTA card, quota line + indikativ note.
-//   2. Instructions — mandatory interstitial before ANY pass starts.
+//   2. ConfirmSheet — mandatory pre-commitment bottom sheet before ANY
+//                    pass starts (replaces the old full-page Instructions
+//                    interstitial; kallelsen-surfaces PR).
 //   3. Running      — MockRunner mounted with a resolved plan + session.
 //
 // URL contract:
@@ -56,6 +58,7 @@ import {
 } from '@/api/hooks/useSessions'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
+import { ConfirmSheet } from '@/components/mock/ConfirmSheet'
 import { MockResult } from '@/components/mock/MockResult'
 import { MockRunner, type MockRunnerSession } from '@/components/mock/MockRunner'
 import { Page } from '@/components/Page'
@@ -64,6 +67,7 @@ import { findQuestion, loadBank, type Question } from '@/data/questions'
 import { isDevSurface } from '@/lib/devSurface'
 import { seededRng } from '@/lib/drill'
 import { listAuthenticPasses, type PassOption, pickSynthetic, resolveAuthentic } from '@/lib/mock'
+import { logMockEvent } from '@/lib/mockEvents'
 import { sheetFromAttempts } from '@/lib/mockSheet'
 
 export type ProvSearch = { result?: number; run?: 1; devMinutes?: number }
@@ -357,6 +361,7 @@ function ProvRoute() {
   }
 
   const handleVoid = () => {
+    logMockEvent('voided')
     setRunning(null)
     setPhase('picker')
     setVoidNotice(true)
@@ -426,7 +431,7 @@ function ProvRoute() {
           />
         )}
         {phase === 'instructions' && (
-          <Instructions onStart={beginRun} onBack={() => setPhase('picker')} />
+          <ConfirmSheet half={half} onConfirm={beginRun} onDismiss={() => setPhase('picker')} />
         )}
       </Page>
     </MobileFrame>
@@ -736,66 +741,6 @@ function ToggleRow<T extends string>({
           </button>
         )
       })}
-    </div>
-  )
-}
-
-// ── Instructions interstitial ───────────────────────────────────────
-
-export function Instructions({ onStart, onBack }: { onStart: () => void; onBack: () => void }) {
-  const rules = [
-    '40 frågor',
-    '55 minuter',
-    'ingen paus',
-    'du kan ändra svar tills tiden går ut',
-    'avbryter du blir provet ogiltigt',
-    'lämna ingen fråga obesvarad — fel ger inga avdrag',
-  ]
-  return (
-    <div className="hpc-m3-frame" style={{ paddingBottom: 96 }} data-testid="prov-instructions">
-      <DrillRailSection meta="Innan du kör" delay={0}>
-        <h1 className="hpc-m3-display" style={{ marginTop: 0 }}>
-          Riktiga provvillkor.
-        </h1>
-        <ul
-          data-testid="prov-instructions-rules"
-          style={{
-            listStyle: 'none',
-            margin: '16px 0 0 0',
-            padding: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 8,
-          }}
-        >
-          {rules.map((r) => (
-            <li
-              key={r}
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 15,
-                lineHeight: 1.5,
-                color: 'var(--ink-2)',
-                paddingLeft: 18,
-                position: 'relative',
-              }}
-            >
-              <span aria-hidden style={{ position: 'absolute', left: 0, color: 'var(--accent)' }}>
-                ·
-              </span>
-              {r}
-            </li>
-          ))}
-        </ul>
-        <div style={{ display: 'flex', gap: 12, marginTop: 32, flexWrap: 'wrap' }}>
-          <Btn variant="primary" size="lg" data-testid="prov-instructions-start" onClick={onStart}>
-            Starta provpasset →
-          </Btn>
-          <Btn variant="ghost" onClick={onBack} data-testid="prov-instructions-back">
-            Tillbaka
-          </Btn>
-        </div>
-      </DrillRailSection>
     </div>
   )
 }

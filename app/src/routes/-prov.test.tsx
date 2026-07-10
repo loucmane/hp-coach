@@ -15,7 +15,6 @@ import {
   countSeenBefore,
   decodeMockSections,
   encodeMockSections,
-  Instructions,
   Picker,
   resolveDurationMs,
   validateSearch,
@@ -223,33 +222,11 @@ describe('Picker', () => {
   })
 })
 
-describe('Instructions', () => {
-  it('renders the mandatory rules and a single start CTA', () => {
-    render(<Instructions onStart={() => {}} onBack={() => {}} />)
-    const rules = screen.getByTestId('prov-instructions-rules')
-    expect(rules).toHaveTextContent('40 frågor')
-    expect(rules).toHaveTextContent('55 minuter')
-    expect(rules).toHaveTextContent('ingen paus')
-    expect(rules).toHaveTextContent('du kan ändra svar tills tiden går ut')
-    expect(rules).toHaveTextContent('avbryter du blir provet ogiltigt')
-    expect(rules).toHaveTextContent('lämna ingen fråga obesvarad — fel ger inga avdrag')
-    expect(screen.getByTestId('prov-instructions-start')).toHaveTextContent('Starta provpasset →')
-  })
-
-  it('fires onStart when the CTA is clicked', () => {
-    const onStart = vi.fn()
-    render(<Instructions onStart={onStart} onBack={() => {}} />)
-    fireEvent.click(screen.getByTestId('prov-instructions-start'))
-    expect(onStart).toHaveBeenCalledTimes(1)
-  })
-
-  it('fires onBack when the back affordance is clicked', () => {
-    const onBack = vi.fn()
-    render(<Instructions onStart={() => {}} onBack={onBack} />)
-    fireEvent.click(screen.getByTestId('prov-instructions-back'))
-    expect(onBack).toHaveBeenCalledTimes(1)
-  })
-})
+// The old "Instructions" full-page interstitial (and its tests) was
+// replaced by src/components/mock/ConfirmSheet.tsx — a bottom-sheet
+// pre-commitment gate wired directly into ProvRoute's `instructions`
+// phase. Its coverage (rules, start/dismiss callbacks, event logging)
+// lives in ConfirmSheet.test.tsx now.
 
 // ── PR 4 integration helpers (pure) ─────────────────────────────────
 // Route-level wiring itself (ProvRoute) leans on TanStack Router's

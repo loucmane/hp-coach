@@ -154,7 +154,12 @@ describe('HomeMobile — stats row (M3H)', () => {
     expect(screen.queryByText(/sedan förra veckan/)).not.toBeInTheDocument()
   })
 
-  it('renders streak and minutes stats alongside', () => {
+  it('renders prognos and minutes stats, no streak — even when streakDays is passed', () => {
+    // V4A FINAL ships exactly 2 stats (prognos + min idag); the streak
+    // stat is removed for good (no-streak-shame product rule — see
+    // dev/nav-cta-bakeoff's V4 caption). streakDays is still accepted as
+    // a prop (MobileFrame chrome may consume it independently), but it
+    // must never resurrect the inline "dagar i rad" stat.
     render(
       <HomeMobile
         forceLayout="phone"
@@ -163,8 +168,9 @@ describe('HomeMobile — stats row (M3H)', () => {
         streakDays={12}
       />,
     )
-    expect(screen.getByText('dagar i rad')).toBeInTheDocument()
+    expect(screen.queryByText('dagar i rad')).not.toBeInTheDocument()
     expect(screen.getByText('min idag')).toBeInTheDocument()
+    expect(screen.getByTestId('home-score-line')).toBeInTheDocument()
   })
 })
 
