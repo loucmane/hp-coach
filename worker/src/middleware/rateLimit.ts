@@ -29,6 +29,18 @@ export const rateLimit: MiddlewareHandler<{ Bindings: Env; Variables: Vars }> = 
     await next()
     return
   }
+  // The bucket is ONE global 60/min budget per user across ALL routes.
+  // The e2e suite runs ~44 tests (plus retries) as a single Clerk user
+  // against a local `wrangler dev` worker — it exhausts that shared
+  // budget mid-suite and whichever tests land in the exhausted minute
+  // eat 429s (confirmed in CI logs 2026-07-10: POST /api/mistakes 429
+  // while prefs PATCHes silently died the same way). Rate limiting
+  // exists to protect the deployed API, not a throwaway local dev
+  // instance, so it's dev-off / staging+production-on.
+  if (c.env.ENVIRONMENT === 'dev') {
+    await next()
+    return
+  }
   const window = Math.floor(Date.now() / 1000 / WINDOW_SECONDS)
   const key = `rl:${userId}:${window}`
   try {

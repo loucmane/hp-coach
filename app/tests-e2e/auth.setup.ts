@@ -17,6 +17,7 @@
 import { clerk, setupClerkTestingToken } from '@clerk/testing/playwright'
 import { test as setup } from '@playwright/test'
 
+import { awaitClerkFapiHealthy, installFapiRetryRoute } from './clerk-fapi-hardening'
 import { STORAGE_STATE } from './storage-state'
 
 setup('authenticate once and persist storage state', async ({ page }) => {
@@ -36,7 +37,31 @@ setup('authenticate once and persist storage state', async ({ page }) => {
     })
   }
   await setupClerkTestingToken({ page })
+  // Register our resilient FAPI retry route AFTER @clerk/testing's so ours
+  // runs first and supersedes its 4-attempt budget for the whole run.
+  await installFapiRetryRoute(page)
   await page.goto('/')
+
+  // Pre-flight health gate: the shared Clerk dev instance intermittently
+  // degrades. Don't attempt sign-in until it answers healthily N times in a
+  // row — otherwise the whole suite red-fails on infra, misattributed to
+  // code. On budget exhaustion, fail LOUD and unambiguous.
+  const health = await awaitClerkFapiHealthy(page, { budgetMs: 90_000, needConsecutive: 3 })
+  if (!health.healthy) {
+    throw new Error(
+      `Clerk FAPI unhealthy — infra, not code. Gate gave up after ${Math.round(
+        health.elapsedMs / 1000,
+      )}s (${health.consecutive}/3 consecutive OK, lastStatus=${health.lastStatus}, lastError=${
+        health.lastError ?? 'none'
+      }). The e2e suite is blocked on the shared ${process.env.CLERK_FAPI} dev instance, not on this branch.`,
+    )
+  }
+  // eslint-disable-next-line no-console
+  console.log(
+    `[fapi-health] Clerk FAPI healthy after ${Math.round(health.elapsedMs / 1000)}s ` +
+      `(${health.consecutive} consecutive OK) — proceeding to sign-in`,
+  )
+
   await clerk.signIn({
     page,
     signInParams: { strategy: 'email_code', identifier: email },
