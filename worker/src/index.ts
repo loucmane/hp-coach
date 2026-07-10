@@ -52,7 +52,12 @@ app.use(
       if (/\.pages\.dev$/.test(url.hostname)) return origin
       return undefined
     },
-    allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+    // PUT: /api/daily-plans/:date (the cross-device plan-baseline upsert)
+    // is the only PUT route — it was silently CORS-blocked from the SPA
+    // origin until PUT was added here (preflight 204'd but disallowed the
+    // method, so the browser never sent the request and the plan never
+    // reached the server).
+    allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Authorization', 'Content-Type'],
     credentials: false,
     maxAge: 86_400,
