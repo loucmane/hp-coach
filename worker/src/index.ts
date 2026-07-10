@@ -26,6 +26,7 @@ import { rateLimit } from './middleware/rateLimit'
 import { attemptsRoute } from './routes/attempts'
 import { dailyPlansRoute } from './routes/dailyPlans'
 import { devLoginRoute } from './routes/devLogin'
+import { exportRoute, importRoute } from './routes/export'
 import { healthRoute } from './routes/health'
 import { lessonProgressRoute } from './routes/lessonProgress'
 import { lessonReadsRoute } from './routes/lessonReads'
@@ -93,6 +94,8 @@ const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .route('/attempts', attemptsRoute)
   .route('/mistakes', mistakesRoute)
   .route('/mock-results', mockResultsRoute)
+  .route('/me/export', exportRoute)
+  .route('/me/import', importRoute)
   .route('/test-reset', testResetRoute)
 
 // Chained route registration → preserves route types in `typeof routes`.
