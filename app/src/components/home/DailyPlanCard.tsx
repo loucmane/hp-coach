@@ -175,5 +175,9 @@ function verbFor(item: PlanItem): string {
       return 'läs'
     case 'drill':
       return 'öva'
+    case 'mock':
+      // Mock items render as the Kallelse block, not as plan rows —
+      // this case only keeps the switch total for the type system.
+      return 'starta'
   }
 }
