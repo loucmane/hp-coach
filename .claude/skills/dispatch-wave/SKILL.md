@@ -104,7 +104,20 @@ fraction of generation. Per completed agent:
 4. Auto-merge fires on CI green OR on label-added-after-CI (PR #196).
    If a PR stalls green+labeled, read the pull_request-event Auto-merge
    run log first.
-5. After merges: `git checkout main && git pull`, `git worktree remove`
+5. **SERIALIZE the e2e jobs — never let two CI e2e runs overlap.** All
+   e2e suites share ONE Clerk dev instance; concurrent runs kill each
+   other's prefs/auth round-trips (2026-07-10: two PRs pushed+labeled
+   together failed the same prefs-family tests twice; the identical
+   commit passed on a solo rerun). So: push+label ONE PR, wait for its
+   CI to complete, then push the next. Same for reruns — trigger one at
+   a time (and remember a merge push can itself start a main run). The
+   flake signature: failing set drifts between runs, all failures are
+   worker-API round-trips (prefs/mistakes/api specs), logs show
+   "[Clerk Testing] FAPI request failed after 4 attempts". When you see
+   it: verify locally in the worktree (`pnpm exec playwright test
+   <spec>:<line> --project=chromium` — needs app/.env.local copied from
+   the main checkout), then rerun CI solo; don't debug the diff first.
+6. After merges: `git checkout main && git pull`, `git worktree remove`
    each agent worktree, delete local branches, mark tasks completed with
    a residue ledger in the description (what was NOT fixed and where the
    investigation stopped — future sessions start from there).
