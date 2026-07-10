@@ -47,6 +47,7 @@ import { Route as DevLoginRouteImport } from './routes/dev-login'
 import { Route as DevRouteImport } from './routes/dev'
 import { Route as CoachRouteImport } from './routes/coach'
 import { Route as AvanceratRouteImport } from './routes/avancerat'
+import { Route as AdaptiveVerifyRouteImport } from './routes/adaptive-verify'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DevNavCtaBakeoffRouteImport } from './routes/dev_.nav-cta-bakeoff'
 import { Route as DevMockEventsRouteImport } from './routes/dev_.mock-events'
@@ -242,6 +243,11 @@ const AvanceratRoute = AvanceratRouteImport.update({
   path: '/avancerat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdaptiveVerifyRoute = AdaptiveVerifyRouteImport.update({
+  id: '/adaptive-verify',
+  path: '/adaptive-verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -260,6 +266,7 @@ const DevMockEventsRoute = DevMockEventsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/adaptive-verify': typeof AdaptiveVerifyRoute
   '/avancerat': typeof AvanceratRoute
   '/coach': typeof CoachRoute
   '/dev': typeof DevRoute
@@ -303,6 +310,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/adaptive-verify': typeof AdaptiveVerifyRoute
   '/avancerat': typeof AvanceratRoute
   '/coach': typeof CoachRoute
   '/dev': typeof DevRoute
@@ -347,6 +355,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/adaptive-verify': typeof AdaptiveVerifyRoute
   '/avancerat': typeof AvanceratRoute
   '/coach': typeof CoachRoute
   '/dev': typeof DevRoute
@@ -392,6 +401,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/adaptive-verify'
     | '/avancerat'
     | '/coach'
     | '/dev'
@@ -435,6 +445,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/adaptive-verify'
     | '/avancerat'
     | '/coach'
     | '/dev'
@@ -478,6 +489,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/adaptive-verify'
     | '/avancerat'
     | '/coach'
     | '/dev'
@@ -522,6 +534,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdaptiveVerifyRoute: typeof AdaptiveVerifyRoute
   AvanceratRoute: typeof AvanceratRoute
   CoachRoute: typeof CoachRoute
   DevRoute: typeof DevRoute
@@ -832,6 +845,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AvanceratRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/adaptive-verify': {
+      id: '/adaptive-verify'
+      path: '/adaptive-verify'
+      fullPath: '/adaptive-verify'
+      preLoaderRoute: typeof AdaptiveVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -858,6 +878,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdaptiveVerifyRoute: AdaptiveVerifyRoute,
   AvanceratRoute: AvanceratRoute,
   CoachRoute: CoachRoute,
   DevRoute: DevRoute,

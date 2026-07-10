@@ -75,8 +75,12 @@ export type PlanItem = {
  *    New `kind: 'mock'` anchor item (`/prov?half=X&prescribed=1`) can
  *    now occupy item 1 and reduce the day to at most one companion
  *    item. Plans cached before this never had a mock item even when
- *    one was due. */
-export const PLAN_SCHEMA_VERSION = 7
+ *    one was due.
+ *  - v8: adaptive-review hot-trap boost (task #16). When a hot trap is
+ *    active, its trap-drill item is reordered to plan[0]. A plan cached
+ *    before this could show the same items in a different order, so we
+ *    invalidate to guarantee the boosted ordering takes effect. */
+export const PLAN_SCHEMA_VERSION = 8
 
 export type DailyPlan = {
   /** Schema version — see `PLAN_SCHEMA_VERSION`. Older plans are
@@ -150,6 +154,13 @@ export type SchedulerSignals = {
    *  interval. Missing defaults to the longest interval (14d) so an
    *  unresolved exam date never falsely under-primes cadence. */
   daysToExam?: number
+  /** Adaptive-review hot trap (task #16) — a framework the user is
+   *  actively falling for (≥3 misses in the last 7d), resolved by
+   *  `detectHotTrap` in the hook layer. When present, its trap-drill
+   *  item is BOOSTED to plan[0] — a light priority nudge on top of the
+   *  existing trap-aware rules, NOT a structural change. Undefined /
+   *  null → no boost (unchanged plan). */
+  hotTrap?: { framework_id: string } | null
 }
 
 /** Minimal shape `prescribeMock` needs from a mock-results row — a
@@ -432,7 +443,28 @@ export function generateDailyPlan(signals: SchedulerSignals): DailyPlan {
     items.push(masteryMaintenanceItem(sectionScores, date))
   }
 
+  // Adaptive-review hot-trap boost (task #16). A light priority nudge:
+  // when the user has an active hot trap, its trap-drill item sorts
+  // FIRST so the plan leads with the pattern they keep falling for.
+  // Applied last so it reorders the assembled plan without disturbing
+  // which items got selected (the cap already ran). NOT applied on the
+  // mock-anchor / cold-start early returns — those own their anchor.
+  applyHotTrapBoost(items, signals.hotTrap)
+
   return finalize(date, items)
+}
+
+/** Move the hot trap's own drill item to position 0, in place. A trap
+ *  drill item carries `framework: <id>` (see `trapDrillItem`); when one
+ *  matches the hot trap we already prescribed it via the trap-aware rules,
+ *  so this is a pure reorder — no new item, no duplication. No-op when no
+ *  hot trap, or when none of the assembled items targets it. */
+function applyHotTrapBoost(items: PlanItem[], hotTrap: SchedulerSignals['hotTrap']): void {
+  if (!hotTrap) return
+  const idx = items.findIndex((i) => i.framework === hotTrap.framework_id)
+  if (idx <= 0) return // already first, or absent
+  const [item] = items.splice(idx, 1)
+  items.unshift(item)
 }
 
 function needsLesson(score: SectionScore): boolean {

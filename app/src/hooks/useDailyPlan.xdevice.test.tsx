@@ -65,6 +65,18 @@ vi.mock('@/api/hooks/useMockResults', () => ({
 vi.mock('@/api/hooks/useSessions', () => ({
   useActiveSessions: () => ({ data: [], isLoading: false }),
 }))
+// Stub the adaptive-review detector (task #16) — this suite exercises the
+// cross-device adopt path, not hot-trap boosting.
+vi.mock('@/api/hooks/useAdaptiveReview', () => ({
+  useAdaptiveReview: () => ({
+    hotTrap: null,
+    section: null,
+    trapName: null,
+    detourHref: null,
+    lektionHref: null,
+    decline: () => {},
+  }),
+}))
 vi.mock('@/data/frameworks', () => ({ loadFramework: async () => null, entryHeadword: () => null }))
 vi.mock('@/api/hooks/useLessonReadsApi', () => ({
   useLessonReadsQuery: () => ({ data: emptyReads, isLoading: false }),

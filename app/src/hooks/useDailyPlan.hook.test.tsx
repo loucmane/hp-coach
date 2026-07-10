@@ -83,6 +83,21 @@ vi.mock('@/api/hooks/useSessions', () => ({
   useActiveSessions: () => ({ data: activeSessions, isLoading: false }),
 }))
 
+// Adaptive-review hot-trap detector (task #16). This suite doesn't exercise
+// hot-trap boosting — stub it to "no hot trap" so useDailyPlan's new
+// useAdaptiveReview() call resolves without pulling in the mistakes/session-
+// history plumbing (covered by adaptiveReview.test.ts).
+vi.mock('@/api/hooks/useAdaptiveReview', () => ({
+  useAdaptiveReview: () => ({
+    hotTrap: null,
+    section: null,
+    trapName: null,
+    detourHref: null,
+    lektionHref: null,
+    decline: () => {},
+  }),
+}))
+
 // Server plan + read-set hooks. Default to "no server plan, empty read
 // set" so this suite exercises the local generate → PUT path; the PUT is a
 // no-op spy. The dedicated cross-device suite drives the adopt path.

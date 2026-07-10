@@ -9,12 +9,17 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useAdaptiveReview } from '@/api/hooks/useAdaptiveReview'
 import { useDueMistakes, useRecordMistake } from '@/api/hooks/useMistakes'
 import { useActiveSession } from '@/api/hooks/useSessions'
 import { useTopTraps } from '@/api/hooks/useTopTraps'
+import { DrillResult } from '@/components/drill/DrillResult'
+import { AdaptiveReviewOffer } from '@/components/session/AdaptiveReviewOffer'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { entryHeadword, loadFramework } from '@/data/frameworks'
 import { findQuestion, loadBank, type Question, type Section } from '@/data/questions'
+import { logAdaptiveEvent } from '@/lib/adaptiveEvents'
+import { encodeTreatedMarker } from '@/lib/adaptiveReview'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions, pickMixedDrillQuestions } from '@/lib/drill'
 import { REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
@@ -29,6 +34,14 @@ type DrillSearch = {
   mixed?: true
   weak?: true
   done?: number
+  /** `?ar=1` — this drill is an adaptive-review detour (task #16). Marks
+   *  the session row treated (rides `sections`) and surfaces the lektion
+   *  anchor + a "Tillbaka till din övning" return on completion. Always
+   *  paired with `?framework=`. */
+  ar?: true
+  /** `?back=<section>` — the section the user originally asked to drill;
+   *  restored by the detour's "Tillbaka till din övning" continuation. */
+  back?: DrillSection
 }
 
 function validateSearch(input: Record<string, unknown>): DrillSearch {
@@ -68,6 +81,15 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
   const done = Number(input.done)
   if (Number.isInteger(done) && done > 0) {
     out.done = done
+  }
+  // `?ar=1` — adaptive-review detour marker (task #16).
+  if (input.ar === '1' || input.ar === true) {
+    out.ar = true
+  }
+  // `?back=<section>` — original drill section to return to after a detour.
+  const back = input.back
+  if (typeof back === 'string' && (DRILL_SECTIONS as readonly string[]).includes(back)) {
+    out.back = back as DrillSection
   }
   return out
 }
@@ -110,9 +132,16 @@ export const Route = createFileRoute('/drill')({
 })
 
 function DrillScreen() {
-  const { section: sectionFromUrl, qid, framework, mixed, weak, done } = Route.useSearch()
+  const { section: sectionFromUrl, qid, framework, mixed, weak, done, ar, back } = Route.useSearch()
   const section: DrillSection = sectionFromUrl ?? 'ORD'
   const navigate = useNavigate()
+
+  // A NORMAL drill is the only surface that offers the adaptive-review
+  // detour: plain section drills, not the detour itself (`framework`/`ar`),
+  // a direct-link (`qid`), a weak-traps or mixed pass, or a reconstructed
+  // `done` view.
+  const isNormalDrill = !framework && !qid && !weak && !mixed && !ar && !done
+  const adaptive = useAdaptiveReview()
 
   // `?weak=1` — the user's weakest traps in this section, off the live
   // mistake queue (same source as Home's "Återkommande fällor"). We gather
@@ -146,16 +175,53 @@ function DrillScreen() {
 
   // On completion, stamp `?done=<sessionId>` (keeping the section so
   // "öva igen" re-picks the same one) so a refresh reconstructs the Klart.
+  // On a detour (`ar`), keep the `ar`/`back` params so DrillResult can
+  // surface the "Tillbaka till din övning" continuation.
   const onComplete = useCallback(
     (sessionId: number) => {
+      if (ar) logAdaptiveEvent('detour_completed', { framework_id: framework })
       navigate({
         to: '/drill',
-        search: (prev: DrillSearch) => ({ section: prev.section, done: sessionId }),
+        search: (prev: DrillSearch) => ({
+          section: prev.section,
+          done: sessionId,
+          ar: prev.ar,
+          back: prev.back,
+        }),
         replace: true,
       })
     },
-    [navigate],
+    [navigate, ar, framework],
   )
+
+  // Adaptive-review offer (task #16). "Ja" runs the targeted detour (carrying
+  // `back` so the return button can restore this section); "Inte nu" records
+  // a decline and starts the drill the user actually asked for.
+  const acceptDetour = useCallback(() => {
+    if (!adaptive.hotTrap) return
+    logAdaptiveEvent('offer_accepted', { framework_id: adaptive.hotTrap.framework_id })
+    navigate({
+      to: '/drill',
+      search: { framework: adaptive.hotTrap.framework_id, ar: true, back: section },
+    })
+  }, [navigate, adaptive.hotTrap, section])
+
+  const showOffer = !!(isNormalDrill && adaptive.hotTrap && adaptive.trapName && adaptive.section)
+  // Render-prop: "Inte nu" records the decline AND starts the original drill
+  // in one tap (SessionPlayer hands us `startOriginal`).
+  const adaptiveOffer = showOffer
+    ? ({ startOriginal }: { startOriginal: () => void }) => (
+        <AdaptiveReviewOffer
+          trapName={adaptive.trapName as string}
+          section={adaptive.section as string}
+          onAccept={acceptDetour}
+          onDecline={() => {
+            adaptive.decline()
+            startOriginal()
+          }}
+        />
+      )
+    : undefined
 
   const recordMistake = useRecordMistake()
   const due = useDueMistakes()
@@ -231,14 +297,22 @@ function DrillScreen() {
       qids.map((q) => findQuestion(b, q)).filter((q): q is Question => q !== undefined),
     )
 
+  // Session `sections` metadata. For an adaptive-review detour (`ar`), ride
+  // the treated marker on this field (encodeTreatedMarker) so the completed
+  // session row is recoverable as "treated" — same free-form-field trick
+  // MockRunner uses, NO schema migration. Otherwise the plain section code.
+  const sessionSections = ar && framework ? encodeTreatedMarker(section, framework) : section
+
   const frameworkDisplay = frameworkHeadword ?? framework
   const idleEyebrow = directLinkQid
     ? 'Direktlänk'
-    : framework
-      ? 'Mönsterövning'
-      : weak
-        ? 'Svagaste fällorna'
-        : 'Övning'
+    : ar
+      ? 'Riktad repetition'
+      : framework
+        ? 'Mönsterövning'
+        : weak
+          ? 'Svagaste fällorna'
+          : 'Övning'
   const idleHeadline = directLinkQid
     ? directLinkQid
     : framework
@@ -268,10 +342,19 @@ function DrillScreen() {
         ? `Inga svaga mönster i ${section} än — öva sektionen så hittar vi dem.`
         : `Inga ${section}-frågor klara att öva på just nu.`
 
+  // Detour idle: surface the lektion anchor so the user can refresh the
+  // pattern before drilling it. Otherwise the normal repetition hint.
+  const idleExtra =
+    ar && framework ? (
+      <LektionAnchorLink section={section} frameworkId={framework} />
+    ) : !directLinkQid && !framework && dueCount > 0 ? (
+      <RepetitionHint count={dueCount} />
+    ) : null
+
   return (
     <SessionPlayer
       sessionKind="drill"
-      sections={section}
+      sections={sessionSections}
       activeTab="drill"
       pickQuestions={pickQuestions}
       idleEyebrow={idleEyebrow}
@@ -279,18 +362,94 @@ function DrillScreen() {
       idleSubcopy={idleSubcopy}
       idleMeta={idleMeta}
       emptyCopy={emptyCopy}
-      idleExtra={
-        !directLinkQid && !framework && dueCount > 0 ? <RepetitionHint count={dueCount} /> : null
-      }
+      idleExtra={idleExtra}
       urlSyncedQid={{ qid: qid ?? null, setQid: setUrlQid }}
       completedSessionId={done ?? null}
       onComplete={onComplete}
       resolvePlan={resolvePlan}
+      adaptiveOffer={adaptiveOffer}
+      renderDone={
+        ar && back
+          ? ({ summary, onReplay, onHome }) => (
+              <DrillResult
+                summary={summary}
+                onReplay={onReplay}
+                onHome={onHome}
+                continuation={<BackToOriginalDrill section={back} />}
+              />
+            )
+          : undefined
+      }
       onWrong={(q) => {
         // Fire-and-forget: a failed mistake-write doesn't block the UX.
         recordMistake.mutate({ questionId: q.qid })
       }}
     />
+  )
+}
+
+/** Lektion anchor surfaced at the top of a detour session — one tap to
+ *  refresh the pattern before drilling it. Deep-links to
+ *  /lektion?section=SEC#FRAMEWORK_ID (the reader opens + scrolls the entry). */
+function LektionAnchorLink({ section, frameworkId }: { section: Section; frameworkId: string }) {
+  return (
+    <Link
+      to="/lektion"
+      search={{ section }}
+      hash={frameworkId}
+      data-testid="adaptive-review-lektion-anchor"
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '12px 14px',
+        background: 'var(--panel-2)',
+        border: '1px solid var(--hairline)',
+        borderRadius: 'calc(var(--radius) * 0.5)',
+        textDecoration: 'none',
+        color: 'var(--ink)',
+      }}
+    >
+      <span style={{ fontSize: 14 }}>Läs mönstret i lektionen först</span>
+      <span
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 11,
+          letterSpacing: 'var(--font-mono-track)',
+          color: 'var(--ink-2)',
+        }}
+      >
+        →
+      </span>
+    </Link>
+  )
+}
+
+/** "Tillbaka till din övning" — the continuation shown on a completed detour's
+ *  Klart, starting the drill the user originally asked for. */
+function BackToOriginalDrill({ section }: { section: DrillSection }) {
+  return (
+    <Link
+      to="/drill"
+      search={{ section }}
+      data-testid="adaptive-review-return"
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 8,
+        padding: '10px 20px',
+        borderRadius: 999,
+        border: '1px solid var(--hairline)',
+        background: 'var(--panel)',
+        textDecoration: 'none',
+        color: 'var(--ink)',
+        fontFamily: 'var(--font-mono)',
+        fontSize: 12,
+        letterSpacing: 'var(--font-mono-track)',
+      }}
+    >
+      Tillbaka till din övning →
+    </Link>
   )
 }
 
