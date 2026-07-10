@@ -18,18 +18,25 @@
 // is prescriptive and completion stays signal-derived — no manual
 // "mark complete", no regenerate affordance.
 
+import { useState } from 'react'
+
+import type { MockResultRow } from '@/api/hooks/useMockResults'
 import type { SessionHistoryRow } from '@/api/hooks/useSessions'
 import type { TopTrap } from '@/api/hooks/useTopTraps'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { DailyPlanCard } from '@/components/home/DailyPlanCard'
+import { Kallelse } from '@/components/home/Kallelse'
+import { ProvpassStatusLine } from '@/components/home/ProvpassStatusLine'
 import { RecentPassesCard } from '@/components/home/RecentPassesCard'
 import { ResumptionPanel } from '@/components/home/ResumptionPanel'
 import { TopTrapsCard } from '@/components/home/TopTrapsCard'
 import { MobileFrame, type TabKey } from '@/components/MobileFrame'
+import { ConfirmSheet } from '@/components/mock/ConfirmSheet'
 import { Page } from '@/components/Page'
 import { useViewport } from '@/hooks/useViewport'
 import { formatSwedishHeader } from '@/lib/dates'
 import type { DiagnosticMemory } from '@/lib/diagnosticMemory'
+import type { MockPrescription, PlanItemWithMock } from '@/lib/mockContract'
 import type { DailyPlan } from '@/lib/scheduler'
 import { formatDeltaSv, formatScoreSv, type ProjectedTotal } from '@/lib/scoring'
 import type { CoachKey } from '@/lib/voice'
@@ -78,6 +85,14 @@ type HomeMobileProps = {
   onAvancerat?: () => void
   /** Test-only override for viewport detection. */
   forceLayout?: 'phone' | 'reader' | 'studio'
+  /** CONTRACT (see @/lib/mockContract) — Provpass due/countdown state for
+   *  ProvpassStatusLine. Optional: when omitted the status line renders
+   *  nothing, so callers that don't have prescribeMock wired yet (every
+   *  caller today — see mockContract.ts) simply don't pass it. */
+  mockPrescription?: MockPrescription | null
+  /** CONTRACT — most recent Provpass result, for the status line's
+   *  "senast X N/M" countdown copy. */
+  lastMockResult?: MockResultRow | null
 }
 
 export function HomeMobile({
@@ -98,7 +113,24 @@ export function HomeMobile({
   onTabChange,
   onAvancerat,
   forceLayout,
+  mockPrescription = null,
+  lastMockResult = null,
 }: HomeMobileProps = {}) {
+  // The confirm sheet is a Home-owned modal, not a route-owned one — it
+  // has no URL state of its own (unlike /prov's phase machine) and only
+  // ever opens from a Home-local affordance (Kallelse's Starta, or the
+  // status line). Kept here rather than lifted into routes/index.tsx so
+  // Kallelse/ProvpassStatusLine stay simple prop-driven components and
+  // HomeMobile (which already owns viewport/layout state) is the natural
+  // owner of "is the pre-start sheet open".
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  // The real PlanItem['kind'] union (@/lib/scheduler) doesn't include
+  // 'mock' yet — CONTRACT-widen the search to PlanItemWithMock (see
+  // @/lib/mockContract) rather than asserting a type predicate against
+  // the real PlanItem, which TS correctly rejects as unsound.
+  const mockItem = (plan?.items as PlanItemWithMock[] | undefined)?.find(
+    (item) => item.kind === 'mock',
+  )
   const renderStreak = showStreak ?? (streakDays !== undefined && streakDays > 0)
   const streakValue = streakDays ?? 0
   // Coach voice stays parked for a future home deployment; keep the
@@ -171,12 +203,6 @@ export function HomeMobile({
                   )}
                 </div>
               )}
-              {renderStreak && (
-                <div>
-                  <div className="hpc-m3-stat-n">{streakValue}</div>
-                  <div className="hpc-m3-stat-l">dagar i rad</div>
-                </div>
-              )}
               {plan && (
                 <div>
                   <div className="hpc-m3-stat-n">{plan.estimatedMinutes}</div>
@@ -191,6 +217,11 @@ export function HomeMobile({
            *  merged into M3's accent band). */}
           <ResumptionPanel now={today} />
 
+          {/* Kallelse — the colored Provpass summons, ABOVE Dagens plan on
+           *  a provpass-dag (V4A FINAL). Renders null when there's no
+           *  `kind: 'mock'` item in today's plan. */}
+          {mockItem && <Kallelse item={mockItem} onStart={() => setConfirmOpen(true)} />}
+
           {plan ? (
             <DailyPlanCard plan={plan} allComplete={allComplete} onNavigate={onPlanItemNavigate} />
           ) : (
@@ -200,10 +231,36 @@ export function HomeMobile({
           {topTraps.length > 0 && <TopTrapsCard traps={topTraps} />}
 
           {/* Reflection, last — a glance at recent completed passes, below
-           *  the plan/traps so it never competes with the next action. */}
+           *  the plan/traps so it never competes with the next action.
+           *  The passive PROVPASS readout sits just above it — see
+           *  ProvpassStatusLine's own suppression logic for why it's
+           *  silent on a day where the Kallelse is already showing.
+           *
+           *  TODO(PR-3): `mockPrescription` is undefined until the real
+           *  @/lib/scheduler.prescribeMock lands (see @/lib/mockContract)
+           *  — until then no caller passes it, so this renders nothing.
+           *  ProvpassStatusLine itself is complete/tested; only the real
+           *  scheduling data is out of scope here. */}
+          {mockPrescription && (
+            <ProvpassStatusLine
+              prescription={mockPrescription}
+              lastResult={lastMockResult}
+              showingKallelse={mockItem != null}
+            />
+          )}
           <RecentPassesCard passes={recentPasses} />
         </div>
       </Page>
+      {confirmOpen && mockItem && (
+        <ConfirmSheet
+          half={mockItem.headline.toLowerCase().includes('kvant') ? 'kvant' : 'verbal'}
+          onConfirm={() => {
+            setConfirmOpen(false)
+            onPlanItemNavigate?.(mockItem.href)
+          }}
+          onDismiss={() => setConfirmOpen(false)}
+        />
+      )}
     </MobileFrame>
   )
 }

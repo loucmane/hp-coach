@@ -4,7 +4,7 @@
 // inside the Clerk-gated <SignedIn> tree (see __root.tsx), and the
 // house verification rule requires a screenshot of real components
 // with real output before claiming a UI change done. This route
-// renders the exact same Picker / Instructions / MockResult
+// renders the exact same Picker / ConfirmSheet / MockResult
 // components /prov uses, fed realistic fixture data, outside the auth
 // gate so it's reachable in a plain `pnpm dev` session.
 //
@@ -17,12 +17,13 @@ import { useState } from 'react'
 
 import type { MockResultRow } from '@/api/hooks/useMockResults'
 import { MobileFrame } from '@/components/MobileFrame'
+import { ConfirmSheet } from '@/components/mock/ConfirmSheet'
 import { MockResult } from '@/components/mock/MockResult'
 import { Page } from '@/components/Page'
 import { Btn, Eyebrow } from '@/components/primitives'
 import { isDevSurface } from '@/lib/devSurface'
 import type { PassOption } from '@/lib/mock'
-import { Instructions, Picker } from './prov'
+import { Picker } from './prov'
 
 export const Route = createFileRoute('/prov-verify')({
   component: ProvVerify,
@@ -129,7 +130,7 @@ function ProvVerify() {
               variant={screen === 'instructions' ? 'accent' : 'secondary'}
               onClick={() => setScreen('instructions')}
             >
-              Instruktioner
+              Bekräfta-sheet
             </Btn>
             <Btn
               size="sm"
@@ -164,9 +165,10 @@ function ProvVerify() {
           />
         )}
         {screen === 'instructions' && (
-          <Instructions
-            onStart={() => setScreen('result')}
-            onBack={() => setScreen('picker-authentic')}
+          <ConfirmSheet
+            half="verbal"
+            onConfirm={() => setScreen('result')}
+            onDismiss={() => setScreen('picker-authentic')}
           />
         )}
         {screen === 'result' && <MockResult result={FIXTURE_RESULT} />}

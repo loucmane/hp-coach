@@ -29,6 +29,7 @@ import { Route as LoopBakeoffRouteImport } from './routes/loop-bakeoff'
 import { Route as LektionPracticeBakeoffRouteImport } from './routes/lektion-practice-bakeoff'
 import { Route as LektionRouteImport } from './routes/lektion'
 import { Route as KlartBakeoffRouteImport } from './routes/klart-bakeoff'
+import { Route as HomeVerifyRouteImport } from './routes/home-verify'
 import { Route as HomePhoneResumeBakeoffRouteImport } from './routes/home-phone-resume-bakeoff'
 import { Route as HomeBakeoffRouteImport } from './routes/home-bakeoff'
 import { Route as HistorikPlacementBakeoffRouteImport } from './routes/historik-placement-bakeoff'
@@ -48,6 +49,7 @@ import { Route as CoachRouteImport } from './routes/coach'
 import { Route as AvanceratRouteImport } from './routes/avancerat'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DevNavCtaBakeoffRouteImport } from './routes/dev_.nav-cta-bakeoff'
+import { Route as DevMockEventsRouteImport } from './routes/dev_.mock-events'
 
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
@@ -149,6 +151,11 @@ const KlartBakeoffRoute = KlartBakeoffRouteImport.update({
   path: '/klart-bakeoff',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HomeVerifyRoute = HomeVerifyRouteImport.update({
+  id: '/home-verify',
+  path: '/home-verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HomePhoneResumeBakeoffRoute = HomePhoneResumeBakeoffRouteImport.update({
   id: '/home-phone-resume-bakeoff',
   path: '/home-phone-resume-bakeoff',
@@ -245,6 +252,11 @@ const DevNavCtaBakeoffRoute = DevNavCtaBakeoffRouteImport.update({
   path: '/dev/nav-cta-bakeoff',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevMockEventsRoute = DevMockEventsRouteImport.update({
+  id: '/dev_/mock-events',
+  path: '/dev/mock-events',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -265,6 +277,7 @@ export interface FileRoutesByFullPath {
   '/historik-placement-bakeoff': typeof HistorikPlacementBakeoffRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
+  '/home-verify': typeof HomeVerifyRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
   '/lektion': typeof LektionRoute
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
@@ -285,6 +298,7 @@ export interface FileRoutesByFullPath {
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
+  '/dev/mock-events': typeof DevMockEventsRoute
   '/dev/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
 }
 export interface FileRoutesByTo {
@@ -306,6 +320,7 @@ export interface FileRoutesByTo {
   '/historik-placement-bakeoff': typeof HistorikPlacementBakeoffRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
+  '/home-verify': typeof HomeVerifyRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
   '/lektion': typeof LektionRoute
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
@@ -326,6 +341,7 @@ export interface FileRoutesByTo {
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
+  '/dev/mock-events': typeof DevMockEventsRoute
   '/dev/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
 }
 export interface FileRoutesById {
@@ -348,6 +364,7 @@ export interface FileRoutesById {
   '/historik-placement-bakeoff': typeof HistorikPlacementBakeoffRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
+  '/home-verify': typeof HomeVerifyRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
   '/lektion': typeof LektionRoute
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
@@ -368,6 +385,7 @@ export interface FileRoutesById {
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
+  '/dev_/mock-events': typeof DevMockEventsRoute
   '/dev_/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
 }
 export interface FileRouteTypes {
@@ -391,6 +409,7 @@ export interface FileRouteTypes {
     | '/historik-placement-bakeoff'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
+    | '/home-verify'
     | '/klart-bakeoff'
     | '/lektion'
     | '/lektion-practice-bakeoff'
@@ -411,6 +430,7 @@ export interface FileRouteTypes {
     | '/sign-in-bakeoff'
     | '/sign-up'
     | '/welcome'
+    | '/dev/mock-events'
     | '/dev/nav-cta-bakeoff'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -432,6 +452,7 @@ export interface FileRouteTypes {
     | '/historik-placement-bakeoff'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
+    | '/home-verify'
     | '/klart-bakeoff'
     | '/lektion'
     | '/lektion-practice-bakeoff'
@@ -452,6 +473,7 @@ export interface FileRouteTypes {
     | '/sign-in-bakeoff'
     | '/sign-up'
     | '/welcome'
+    | '/dev/mock-events'
     | '/dev/nav-cta-bakeoff'
   id:
     | '__root__'
@@ -473,6 +495,7 @@ export interface FileRouteTypes {
     | '/historik-placement-bakeoff'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
+    | '/home-verify'
     | '/klart-bakeoff'
     | '/lektion'
     | '/lektion-practice-bakeoff'
@@ -493,6 +516,7 @@ export interface FileRouteTypes {
     | '/sign-in-bakeoff'
     | '/sign-up'
     | '/welcome'
+    | '/dev_/mock-events'
     | '/dev_/nav-cta-bakeoff'
   fileRoutesById: FileRoutesById
 }
@@ -515,6 +539,7 @@ export interface RootRouteChildren {
   HistorikPlacementBakeoffRoute: typeof HistorikPlacementBakeoffRoute
   HomeBakeoffRoute: typeof HomeBakeoffRoute
   HomePhoneResumeBakeoffRoute: typeof HomePhoneResumeBakeoffRoute
+  HomeVerifyRoute: typeof HomeVerifyRoute
   KlartBakeoffRoute: typeof KlartBakeoffRoute
   LektionRoute: typeof LektionRoute
   LektionPracticeBakeoffRoute: typeof LektionPracticeBakeoffRoute
@@ -535,6 +560,7 @@ export interface RootRouteChildren {
   SignInBakeoffRoute: typeof SignInBakeoffRoute
   SignUpRoute: typeof SignUpRoute
   WelcomeRoute: typeof WelcomeRoute
+  DevMockEventsRoute: typeof DevMockEventsRoute
   DevNavCtaBakeoffRoute: typeof DevNavCtaBakeoffRoute
 }
 
@@ -680,6 +706,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KlartBakeoffRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/home-verify': {
+      id: '/home-verify'
+      path: '/home-verify'
+      fullPath: '/home-verify'
+      preLoaderRoute: typeof HomeVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/home-phone-resume-bakeoff': {
       id: '/home-phone-resume-bakeoff'
       path: '/home-phone-resume-bakeoff'
@@ -813,6 +846,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DevNavCtaBakeoffRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dev_/mock-events': {
+      id: '/dev_/mock-events'
+      path: '/dev/mock-events'
+      fullPath: '/dev/mock-events'
+      preLoaderRoute: typeof DevMockEventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -835,6 +875,7 @@ const rootRouteChildren: RootRouteChildren = {
   HistorikPlacementBakeoffRoute: HistorikPlacementBakeoffRoute,
   HomeBakeoffRoute: HomeBakeoffRoute,
   HomePhoneResumeBakeoffRoute: HomePhoneResumeBakeoffRoute,
+  HomeVerifyRoute: HomeVerifyRoute,
   KlartBakeoffRoute: KlartBakeoffRoute,
   LektionRoute: LektionRoute,
   LektionPracticeBakeoffRoute: LektionPracticeBakeoffRoute,
@@ -855,6 +896,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignInBakeoffRoute: SignInBakeoffRoute,
   SignUpRoute: SignUpRoute,
   WelcomeRoute: WelcomeRoute,
+  DevMockEventsRoute: DevMockEventsRoute,
   DevNavCtaBakeoffRoute: DevNavCtaBakeoffRoute,
 }
 export const routeTree = rootRouteImport
