@@ -24,6 +24,17 @@ setup('authenticate once and persist storage state', async ({ page }) => {
   if (!email) {
     throw new Error('Missing E2E_TEST_EMAIL — set it in app/.env.local')
   }
+  // Diagnostic-only, see fixtures.ts for the matching counter/printer.
+  if (process.env.HPC_E2E_COUNT_FAPI) {
+    let n = 0
+    page.on('request', (req) => {
+      if (req.url().includes('.clerk.accounts.dev')) n++
+    })
+    process.on('exit', () => {
+      // eslint-disable-next-line no-console
+      console.log(`[fapi-count] setup project requests to *.clerk.accounts.dev: ${n}`)
+    })
+  }
   await setupClerkTestingToken({ page })
   await page.goto('/')
   await clerk.signIn({
