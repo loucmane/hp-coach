@@ -15,8 +15,11 @@ import {
   loadLessonReads,
   loadPlan,
   localDateString,
+  type MockHistoryEntry,
   markLessonRead,
+  mockCadenceInterval,
   PLAN_SCHEMA_VERSION,
+  prescribeMock,
   type SchedulerSignals,
   savePlan,
 } from './scheduler'
@@ -728,5 +731,264 @@ describe('__resetSchedulerStorage', () => {
     expect(storage.getItem('hpc-daily-plan-2026-05-18')).toBeNull()
     expect(storage.getItem('hpc-lesson-read-NOG-TRAP-001')).toBeNull()
     expect(storage.getItem('unrelated-key')).toBe('leave-me-alone')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// Provpass (mock exam) steering — "Kallelsen färgad" (PR #218, 2026-07-10).
+// ---------------------------------------------------------------------------
+
+function mockEntry(half: 'verbal' | 'kvant', daysAgo: number, from: Date = NOW): MockHistoryEntry {
+  const d = new Date(from)
+  d.setDate(d.getDate() - daysAgo)
+  return { half, createdAt: d.getTime() }
+}
+
+describe('mockCadenceInterval', () => {
+  it('is 14 days when the exam is far away (> 35 days)', () => {
+    expect(mockCadenceInterval(36)).toBe(14)
+    expect(mockCadenceInterval(200)).toBe(14)
+  })
+
+  it('is 10 days in the mid window (14–35 days)', () => {
+    expect(mockCadenceInterval(35)).toBe(10)
+    expect(mockCadenceInterval(20)).toBe(10)
+    expect(mockCadenceInterval(14)).toBe(10)
+  })
+
+  it('is 7 days close to the exam (< 14 days)', () => {
+    expect(mockCadenceInterval(13)).toBe(7)
+    expect(mockCadenceInterval(0)).toBe(7)
+  })
+
+  it('defaults to the calmest (14-day) interval when daysToExam is unresolved', () => {
+    expect(mockCadenceInterval(undefined)).toBe(14)
+  })
+})
+
+describe('prescribeMock — baseline (zero completed mocks ever)', () => {
+  it('is due immediately with no history, half = weaker prognosis', () => {
+    const p = prescribeMock(
+      signals({
+        sectionScores: [score('ORD', { score: 1.2 }), score('XYZ', { score: 1.6 })],
+        mockHistory: [],
+        daysToExam: 100,
+      }),
+    )
+    expect(p.due).toBe(true)
+    expect(p.daysSinceLast).toBeNull()
+    expect(p.daysUntilNext).toBe(0)
+    expect(p.interval).toBe(14)
+    // ORD (verbal) is weaker than XYZ (kvant) → prescribe verbal.
+    expect(p.half).toBe('verbal')
+  })
+
+  it('picks the weaker kvant half when kvant sections score lower', () => {
+    const p = prescribeMock(
+      signals({
+        sectionScores: [score('ORD', { score: 1.8 }), score('XYZ', { score: 1.1 })],
+        mockHistory: [],
+        daysToExam: 100,
+      }),
+    )
+    expect(p.half).toBe('kvant')
+  })
+
+  it('defaults to verbal when no prognosis exists for either half', () => {
+    const p = prescribeMock(signals({ mockHistory: [], daysToExam: 100 }))
+    expect(p.due).toBe(true)
+    expect(p.half).toBe('verbal')
+  })
+})
+
+describe('prescribeMock — staleness cadence by daysToExam', () => {
+  it('due when the stalest half has aged past the far interval (14d)', () => {
+    const history = [mockEntry('verbal', 14), mockEntry('kvant', 2)]
+    const p = prescribeMock(signals({ mockHistory: history, daysToExam: 100 }))
+    expect(p.due).toBe(true)
+    expect(p.half).toBe('verbal')
+    expect(p.daysSinceLast).toBe(14)
+    expect(p.interval).toBe(14)
+  })
+
+  it('not due when both halves are within the far interval', () => {
+    const history = [mockEntry('verbal', 13), mockEntry('kvant', 2)]
+    const p = prescribeMock(signals({ mockHistory: history, daysToExam: 100 }))
+    expect(p.due).toBe(false)
+    expect(p.daysUntilNext).toBe(1)
+  })
+
+  it('due when the stalest half has aged past the mid interval (10d)', () => {
+    const history = [mockEntry('verbal', 10), mockEntry('kvant', 1)]
+    const p = prescribeMock(signals({ mockHistory: history, daysToExam: 20 }))
+    expect(p.due).toBe(true)
+    expect(p.interval).toBe(10)
+  })
+
+  it('due when the stalest half has aged past the near interval (7d)', () => {
+    const history = [mockEntry('verbal', 7), mockEntry('kvant', 1)]
+    const p = prescribeMock(signals({ mockHistory: history, daysToExam: 5 }))
+    expect(p.due).toBe(true)
+    expect(p.interval).toBe(7)
+  })
+
+  it('not due right at the boundary minus one day', () => {
+    const history = [mockEntry('verbal', 6), mockEntry('kvant', 1)]
+    const p = prescribeMock(signals({ mockHistory: history, daysToExam: 5 }))
+    expect(p.due).toBe(false)
+  })
+})
+
+describe('prescribeMock — stalest-half pick', () => {
+  it('prescribes the half with the larger daysSinceLast', () => {
+    const history = [mockEntry('verbal', 3), mockEntry('kvant', 9)]
+    const p = prescribeMock(signals({ mockHistory: history, daysToExam: 100 }))
+    expect(p.half).toBe('kvant')
+    expect(p.daysSinceLast).toBe(9)
+  })
+
+  it('treats a never-mocked half as infinitely stale relative to a mocked half', () => {
+    const history = [mockEntry('verbal', 2)]
+    const p = prescribeMock(signals({ mockHistory: history, daysToExam: 100 }))
+    expect(p.half).toBe('kvant')
+    expect(p.daysSinceLast).toBeNull()
+    expect(p.due).toBe(true)
+  })
+})
+
+describe('prescribeMock — tie-break on equal staleness', () => {
+  it('breaks a tie toward the weaker-prognosis half', () => {
+    const history = [mockEntry('verbal', 5), mockEntry('kvant', 5)]
+    const p = prescribeMock(
+      signals({
+        sectionScores: [score('ORD', { score: 1.1 }), score('XYZ', { score: 1.7 })],
+        mockHistory: history,
+        daysToExam: 100,
+      }),
+    )
+    expect(p.daysSinceLast).toBe(5)
+    expect(p.half).toBe('verbal')
+  })
+})
+
+describe('prescribeMock — window slides silently (no stored state)', () => {
+  it('stays due across multiple generations on later days without a completed mock', () => {
+    const history = [mockEntry('verbal', 14), mockEntry('kvant', 14)]
+    const day0 = prescribeMock(signals({ mockHistory: history, daysToExam: 100 }))
+    expect(day0.due).toBe(true)
+
+    // Simulate "one day later" purely via `now` — no state carried over.
+    const laterNow = new Date(NOW)
+    laterNow.setDate(laterNow.getDate() + 3)
+    const day3 = prescribeMock(signals({ now: laterNow, mockHistory: history, daysToExam: 100 }))
+    expect(day3.due).toBe(true)
+    expect(day3.daysSinceLast).toBe(17)
+  })
+})
+
+describe('generateDailyPlan — Provpass anchor (Rule 0)', () => {
+  it('emits the mock item as item 1 with baseline rationale when never mocked', () => {
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [score('ORD', { score: 1.2 }), score('XYZ', { score: 1.6 })],
+        mockHistory: [],
+        daysToExam: 100,
+      }),
+    )
+    expect(plan.items[0]).toMatchObject({
+      kind: 'mock',
+      headline: 'Provpass · Verbal',
+      rationale: 'Dags för ditt första provpass — vi behöver en baslinje.',
+      estimatedMinutes: 55,
+      href: '/prov?half=verbal&prescribed=1',
+    })
+  })
+
+  it('emits the mock item with a days-since rationale when stale', () => {
+    const history = [mockEntry('verbal', 14), mockEntry('kvant', 1)]
+    const plan = generateDailyPlan(signals({ mockHistory: history, daysToExam: 100 }))
+    expect(plan.items[0]).toMatchObject({
+      kind: 'mock',
+      headline: 'Provpass · Verbal',
+      rationale: '14 dagar sedan senaste — dags att mäta.',
+    })
+  })
+
+  it('reduces the day to the mock + at most one cheap due-repetition item', () => {
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [score('ORD', { score: 1.1 }), score('XYZ', { score: 1.9 })],
+        dueMistakeCount: 3,
+        mockHistory: [],
+        daysToExam: 100,
+      }),
+    )
+    expect(plan.items).toHaveLength(2)
+    expect(plan.items[0].kind).toBe('mock')
+    expect(plan.items[1].kind).toBe('repetition')
+  })
+
+  it('drops the repetition companion when it exceeds 5 minutes', () => {
+    // REPETITION_SESSION_SIZE reps at MINUTES_PER_REP=0.75 → a large due
+    // count produces an estimate well above 5 minutes.
+    const plan = generateDailyPlan(
+      signals({ dueMistakeCount: 50, mockHistory: [], daysToExam: 100 }),
+    )
+    expect(plan.items).toHaveLength(1)
+    expect(plan.items[0].kind).toBe('mock')
+  })
+
+  it('emits ONLY the mock item when there is no due repetition', () => {
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [score('ORD', { score: 1.9 }), score('XYZ', { score: 1.9 })],
+        dueMistakeCount: 0,
+        mockHistory: [],
+        daysToExam: 100,
+      }),
+    )
+    expect(plan.items).toHaveLength(1)
+    expect(plan.items[0].kind).toBe('mock')
+  })
+
+  it('takes priority over cold start — a fresh user with no attempts still gets the mock', () => {
+    const plan = generateDailyPlan(signals({ mockHistory: [], daysToExam: 100 }))
+    expect(plan.items).toHaveLength(1)
+    expect(plan.items[0].kind).toBe('mock')
+  })
+
+  it('leaves the plan UNCHANGED on non-due days (no mock item at all)', () => {
+    const history = [mockEntry('verbal', 1), mockEntry('kvant', 1)]
+    const withMockSignals = signals({
+      sectionScores: [score('ORD', { score: 1.1 }), score('XYZ', { score: 1.9 })],
+      dueMistakeCount: 3,
+      mockHistory: history,
+      daysToExam: 100,
+    })
+    const withoutMockSignals: SchedulerSignals = { ...withMockSignals }
+    delete (withoutMockSignals as { mockHistory?: unknown }).mockHistory
+    delete (withoutMockSignals as { daysToExam?: unknown }).daysToExam
+
+    const planWithFeature = generateDailyPlan(withMockSignals)
+    const planWithoutFeature = generateDailyPlan(withoutMockSignals)
+
+    expect(planWithFeature.items.every((i) => i.kind !== 'mock')).toBe(true)
+    // Same rule-1..5 outcome regardless of whether the (non-due) mock
+    // signals were supplied at all.
+    expect(planWithFeature.items.map((i) => i.kind)).toEqual(
+      planWithoutFeature.items.map((i) => i.kind),
+    )
+  })
+
+  it('does not engage the Provpass rule at all when daysToExam is not supplied', () => {
+    // Backward-compat: callers that never opted into mock steering (no
+    // daysToExam) see identical behaviour to before this feature existed,
+    // even if mockHistory is somehow present.
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [score('ORD', { score: 1.9 }), score('XYZ', { score: 1.9 })],
+      }),
+    )
+    expect(plan.items.every((i) => i.kind !== 'mock')).toBe(true)
   })
 })

@@ -47,6 +47,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDailyPlanQuery, usePutDailyPlan } from '@/api/hooks/useDailyPlanApi'
 import { useLessonReadsQuery } from '@/api/hooks/useLessonReadsApi'
 import { useDueMistakes } from '@/api/hooks/useMistakes'
+import { type MockResultRow, useMockResults } from '@/api/hooks/useMockResults'
 import { useActiveSessions } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
 import { type TopTrap, useTopTraps } from '@/api/hooks/useTopTraps'
@@ -59,11 +60,13 @@ import {
   loadLessonReads,
   loadPlan,
   localDateString,
+  type MockHistoryEntry,
   PLAN_SCHEMA_VERSION,
   type PlanItem,
   savePlan,
 } from '@/lib/scheduler'
 import { computeSectionScore, type SectionScore, type SectionStats } from '@/lib/scoring'
+import { useDaysRemaining } from '@/stores/examStore'
 
 type FrameworkHints = Partial<Record<Section, FrameworkHint>>
 type BySection = Record<Section, SectionStats>
@@ -88,6 +91,13 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   // (cold start, first render), the scheduler falls back to generic
   // section drills.
   const topTraps = useTopTraps()
+  // Mock (Provpass) history drives the Provpass steering rule (Rule 0).
+  // Same pattern as topTraps: not gated on — when it hasn't resolved
+  // yet, `buildPlan` passes an empty history (== "never mocked" from
+  // the scheduler's point of view, which is a safe default: it's
+  // strictly MORE eager to prescribe a baseline mock than to miss one,
+  // and re-derives on the next resolved render anyway).
+  const mockResults = useMockResults()
   // Any in-progress session (drill/lesson/repetition/diagnostic, any
   // device) — gates day-boundary regeneration below. Server-tracked
   // (useActiveSessions), so this is correct even if the rollover
@@ -110,6 +120,10 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   // over. See the recompute effect below for the event-driven trigger.
   const [now, setNow] = useState(initialNow)
   const today = useMemo(() => localDateString(now), [now])
+  // Same exam-date source NavRail renders ("Höstprov 26 · N dagar") —
+  // reused, not reinvented, so the scheduler's cadence and the nav
+  // clock never disagree about how many days remain.
+  const daysToExam = useDaysRemaining(now)
 
   const [plan, setPlan] = useState<DailyPlan | null>(null)
   const [hints, setHints] = useState<FrameworkHints | null>(null)
@@ -214,6 +228,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
         mergedReads,
         stats.data.bySection,
         stats.data.attempts.total,
+        toMockHistory(mockResults.data),
       )
 
     // 1. Server plan present → adopt verbatim (server wins), mirror local.
@@ -242,6 +257,8 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       hints,
       topTraps,
       stats.data.attempts.total,
+      mockResults.data,
+      daysToExam,
     )
     savePlan(fresh)
     putServerPlan.mutate(fresh)
@@ -255,6 +272,8 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
     mergedReads,
     serverPlan.data,
     serverPlan.isLoading,
+    mockResults.data,
+    daysToExam,
   ])
 
   // Re-run derivation when due count, stats, or the (cross-device) read
@@ -270,12 +289,13 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       mergedReads,
       stats.data.bySection,
       stats.data.attempts.total,
+      toMockHistory(mockResults.data),
     )
     if (next !== plan) {
       savePlan(next)
       setPlan(next)
     }
-  }, [plan, due.data, stats.data, mergedReads])
+  }, [plan, due.data, stats.data, mergedReads, mockResults.data])
 
   // "Generera om" — force a fresh baseline. Overwrites both the local
   // cache AND the server row (PUT), so the regenerated plan becomes the
@@ -290,6 +310,8 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       hints,
       topTraps,
       stats.data.attempts.total,
+      mockResults.data,
+      daysToExam,
     )
     savePlan(fresh)
     putServerPlan.mutate(fresh)
@@ -300,9 +322,20 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
         mergedReads,
         stats.data.bySection,
         stats.data.attempts.total,
+        toMockHistory(mockResults.data),
       ),
     )
-  }, [stats.data, due.data, hints, now, topTraps, mergedReads, putServerPlan])
+  }, [
+    stats.data,
+    due.data,
+    hints,
+    now,
+    topTraps,
+    mergedReads,
+    putServerPlan,
+    mockResults.data,
+    daysToExam,
+  ])
 
   const allComplete = !!plan && plan.items.length > 0 && plan.items.every((i) => i.completed)
 
@@ -325,6 +358,8 @@ function buildPlan(
   hints: FrameworkHints,
   topTraps: TopTrap[],
   totalAttempts: number,
+  mockResults: MockResultRow[] | undefined,
+  daysToExam: number,
 ): DailyPlan {
   const sectionScores: SectionScore[] = SECTION_KEYS.map((s) =>
     computeSectionScore(s, bySection[s], now),
@@ -335,6 +370,8 @@ function buildPlan(
     dueMistakeCount: dueCount,
     firstUnreadEntry: hints,
     topTraps,
+    mockHistory: toMockHistory(mockResults),
+    daysToExam,
   })
   // Attach the per-section attemptsToday snapshot so drill items can
   // auto-complete later when the section's attemptsToday grows. See
@@ -347,6 +384,17 @@ function buildPlan(
   // And the lifetime total snapshot so section=null items (mastery,
   // cold-start) complete cross-device when the server total grows.
   return { ...base, attemptsSnapshot, totalAttemptsSnapshot: totalAttempts }
+}
+
+/** Narrow `MockResultRow[]` (the server shape, useMockResults.ts) down to
+ *  the `{ half, createdAt }` the scheduler needs — decouples the pure
+ *  `lib/scheduler.ts` from the API hook module. Undefined (not yet
+ *  resolved) becomes an empty array — "no history" from the scheduler's
+ *  point of view, same as a genuinely fresh user (see the buildPlan
+ *  call-site comment for why that's a safe default). */
+function toMockHistory(rows: MockResultRow[] | undefined): MockHistoryEntry[] {
+  if (!rows) return []
+  return rows.map((r) => ({ half: r.half, createdAt: r.createdAt }))
 }
 
 /** Resolve the first-unread framework entry for every wired section.
@@ -390,10 +438,21 @@ export function deriveCompletion(
   lessonReads: Set<string>,
   bySection: BySection,
   totalAttempts: number,
+  // See isItemComplete's matching param — optional, defaults to "no
+  // history" so pre-existing call sites/tests are unaffected.
+  mockHistory: MockHistoryEntry[] = [],
 ): DailyPlan {
   let changed = false
   const items: PlanItem[] = plan.items.map((item) => {
-    const derived = isItemComplete(item, plan, dueCount, lessonReads, bySection, totalAttempts)
+    const derived = isItemComplete(
+      item,
+      plan,
+      dueCount,
+      lessonReads,
+      bySection,
+      totalAttempts,
+      mockHistory,
+    )
     if (derived === item.completed) return item
     changed = true
     return { ...item, completed: derived }
@@ -405,6 +464,15 @@ export function deriveCompletion(
   return { ...plan, items, estimatedMinutes }
 }
 
+/** Extract the `half` query param from a mock item's href
+ *  (`/prov?half=verbal&prescribed=1`). Parsing the href rather than
+ *  storing `section` (mock items have `section: null` — they're not
+ *  section-scoped) keeps PlanItem's shape unchanged for this kind. */
+function mockHalfFromHref(href: string): 'verbal' | 'kvant' | null {
+  const match = href.match(/[?&]half=(verbal|kvant)\b/)
+  return (match?.[1] as 'verbal' | 'kvant' | undefined) ?? null
+}
+
 export function isItemComplete(
   item: PlanItem,
   plan: DailyPlan,
@@ -412,12 +480,32 @@ export function isItemComplete(
   lessonReads: Set<string>,
   bySection: BySection,
   totalAttempts: number,
+  // Optional so existing call sites (and the direct isItemComplete unit
+  // tests that predate Provpass steering) keep working unchanged. A mock
+  // item simply can't auto-complete without history — same "no signal,
+  // stays actionable" posture as the lesson branch's missing-framework case.
+  mockHistory: MockHistoryEntry[] = [],
 ): boolean {
   if (item.kind === 'repetition') return dueCount === 0
   if (item.kind === 'lesson') {
     // No framework hint resolved → can't auto-complete (rare edge case
     // where the section has no entries; the item is still actionable).
     return item.framework ? lessonReads.has(item.framework) : false
+  }
+  if (item.kind === 'mock') {
+    // Complete once a mock result exists for this half, created AFTER the
+    // plan was generated (plan.date is the local-date the plan is FOR, so
+    // any result timestamped that day or later counts — a mock finished
+    // earlier the same calendar day the plan was generated for still
+    // completes it; there is no separate "generatedAt" instant stored).
+    const half = mockHalfFromHref(item.href)
+    if (!half) return false
+    const planDateMs = new Date(`${plan.date}T00:00:00`).getTime()
+    return mockHistory.some((m) => {
+      if (m.half !== half) return false
+      const ts = m.createdAt == null ? null : new Date(m.createdAt).getTime()
+      return ts != null && ts >= planDateMs
+    })
   }
   if (item.kind === 'drill' && item.section && plan.attemptsSnapshot) {
     const baseline = plan.attemptsSnapshot[item.section] ?? 0
