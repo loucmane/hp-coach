@@ -28,9 +28,28 @@ export type Section = (typeof SECTION_KEYS)[number]
 export const ANSWER_LETTERS = ['A', 'B', 'C', 'D', 'E'] as const
 export type AnswerLetter = (typeof ANSWER_LETTERS)[number]
 
+/** Per-option image — the 11 DTK questions whose four answer choices are
+ *  printed as pie-chart images rather than text (e.g. "which pie chart
+ *  matches..."). `text` stays REQUIRED even for image options: it holds a
+ *  short accessible label ("Cirkeldiagram A") rather than the transcribed
+ *  choice, so every non-image consumer of `option.text` (OptionRow's copy
+ *  fallback, PedagogyPanel's "rätt svar var X: {text}" line, ShareDebugButton's
+ *  bug-report dump) keeps working without a special case. `aspect_ratio` lets
+ *  the row reserve layout space before the crop paints, same convention as
+ *  QuestionFigureMeta. Parser writes crops to
+ *  app/public/figures/options/{qid}-{letter}.png. */
+export type OptionFigureMeta = {
+  src: string
+  aspect_ratio: number
+}
+
 export type Option = {
   letter: AnswerLetter
   text: string
+  /** Present only for the handful of DTK questions whose options are
+   *  pie-chart images. Renders inside the option row alongside the
+   *  (accessible-label) text; see OptionRow in DrillQuestion.tsx. */
+  figure?: OptionFigureMeta
 }
 
 /** Figure attached to a quant question.
