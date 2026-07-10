@@ -5,6 +5,7 @@
 // session must not render a broken "FRÅGA undefined AV undefined" line.
 
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
 import type { Question } from '@/data/questions'
@@ -185,5 +186,139 @@ describe('DrillQuestion — ELF cloze gaps', () => {
     ])
     expect(screen.getByTestId('cloze-gap-32')).toHaveAttribute('data-active', 'true')
     expect(screen.getByTestId('drill-prompt')).toHaveTextContent('Lucka 32')
+  })
+})
+
+// ── Image answer options (task #176) ────────────────────────────────
+//
+// The 11 DTK questions whose four choices are printed as pie-chart
+// images, not text. `option.figure` carries the crop; `option.text`
+// stays a short accessible label ("Cirkeldiagram A") so every existing
+// consumer that reads opt.text (copy fallback, PedagogyPanel's "rätt
+// svar var X: {text}" line) keeps working without a special case.
+
+const DTK_IMAGE_QUESTION: Question = {
+  qid: 'var-2016-kvant2-DTK-030',
+  exam_id: 'var-2016',
+  provpass: 'kvant2',
+  section: 'DTK',
+  number: 30,
+  prompt: 'Vilket cirkeldiagram visar fördelningen korrekt?',
+  options: [
+    {
+      letter: 'A',
+      text: 'Cirkeldiagram A',
+      figure: { src: 'figures/options/var-2016-kvant2-DTK-030-A.png', aspect_ratio: 1 },
+    },
+    {
+      letter: 'B',
+      text: 'Cirkeldiagram B',
+      figure: { src: 'figures/options/var-2016-kvant2-DTK-030-B.png', aspect_ratio: 1 },
+    },
+    {
+      letter: 'C',
+      text: 'Cirkeldiagram C',
+      figure: { src: 'figures/options/var-2016-kvant2-DTK-030-C.png', aspect_ratio: 1 },
+    },
+    {
+      letter: 'D',
+      text: 'Cirkeldiagram D',
+      figure: { src: 'figures/options/var-2016-kvant2-DTK-030-D.png', aspect_ratio: 1 },
+    },
+  ],
+  answer: 'A',
+  context: null,
+  parsing_status: 'complete',
+}
+
+describe('DrillQuestion — image answer options', () => {
+  it('renders an <img> inside each option row that carries a figure', () => {
+    render(
+      <DrillQuestion
+        question={DTK_IMAGE_QUESTION}
+        picked={null}
+        graded={false}
+        onPick={() => {}}
+      />,
+    )
+    for (const letter of ['A', 'B', 'C', 'D']) {
+      const row = screen.getByTestId(`option-${letter}`)
+      const img = row.querySelector('img')
+      expect(img).not.toBeNull()
+      expect(img).toHaveAttribute('src', `/figures/options/var-2016-kvant2-DTK-030-${letter}.png`)
+    }
+  })
+
+  it('still renders the accessible text label alongside the image', () => {
+    render(
+      <DrillQuestion
+        question={DTK_IMAGE_QUESTION}
+        picked={null}
+        graded={false}
+        onPick={() => {}}
+      />,
+    )
+    expect(screen.getByTestId('option-A')).toHaveTextContent('Cirkeldiagram A')
+  })
+
+  it('does not reveal correctness pre-grade — no verdict text, no correct/incorrect data-state', async () => {
+    const user = userEvent.setup()
+    render(
+      <DrillQuestion
+        question={DTK_IMAGE_QUESTION}
+        picked={null}
+        graded={false}
+        onPick={() => {}}
+      />,
+    )
+    await user.click(screen.getByTestId('option-B'))
+    expect(screen.queryByText('Rätt svar')).not.toBeInTheDocument()
+    expect(screen.queryByText('Ditt svar')).not.toBeInTheDocument()
+    expect(screen.getByTestId('option-A')).toHaveAttribute('data-state', 'idle')
+    expect(screen.getByTestId('option-B')).toHaveAttribute('data-state', 'idle')
+  })
+
+  it('reveals correct/incorrect state once graded, same as text options', () => {
+    render(
+      <DrillQuestion question={DTK_IMAGE_QUESTION} picked="B" graded={true} onPick={() => {}} />,
+    )
+    expect(screen.getByTestId('option-A')).toHaveAttribute('data-state', 'correct')
+    expect(screen.getByTestId('option-B')).toHaveAttribute('data-state', 'incorrect')
+  })
+
+  it('keyboard a-d picks an image option, same as text options', async () => {
+    const user = userEvent.setup()
+    const onPick = vi.fn()
+    render(
+      <DrillQuestion question={DTK_IMAGE_QUESTION} picked={null} graded={false} onPick={onPick} />,
+    )
+    await user.click(screen.getByTestId('option-C'))
+    expect(onPick).toHaveBeenCalledWith('C')
+  })
+
+  it('shows the a-d keys hint (only 4 options, no E)', () => {
+    render(
+      <DrillQuestion
+        question={DTK_IMAGE_QUESTION}
+        picked={null}
+        graded={false}
+        onPick={() => {}}
+      />,
+    )
+    expect(screen.getByText('Tangenter a–d väljer · klick fungerar också')).toBeInTheDocument()
+  })
+
+  it('a text-only option in the same option list renders no image (mixed safety)', () => {
+    const mixed: Question = {
+      ...DTK_IMAGE_QUESTION,
+      options: [
+        { letter: 'A', text: 'Cirkeldiagram A', figure: DTK_IMAGE_QUESTION.options?.[0].figure },
+        { letter: 'B', text: 'plain text option' },
+        ...DTK_IMAGE_QUESTION.options!.slice(2),
+      ],
+    }
+    render(<DrillQuestion question={mixed} picked={null} graded={false} onPick={() => {}} />)
+    expect(screen.getByTestId('option-B').querySelector('img')).toBeNull()
+    expect(screen.getByTestId('option-A').querySelector('img')).not.toBeNull()
   })
 })

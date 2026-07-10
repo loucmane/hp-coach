@@ -392,6 +392,25 @@ function OptionRow({
       <span aria-hidden className="hpc-m3-ind" />
       <span className="hpc-m3-opt-k">{opt.letter.toLowerCase()}</span>
       <span className="hpc-m3-opt-t">
+        {opt.figure && (
+          <img
+            src={`/${opt.figure.src}`}
+            alt={opt.text}
+            loading="lazy"
+            className="hpc-m3-opt-fig"
+            style={{
+              display: 'block',
+              width: 'auto',
+              height: 'clamp(120px, 22vw, 160px)',
+              aspectRatio: String(opt.figure.aspect_ratio),
+              objectFit: 'contain',
+              background: 'var(--panel)',
+              border: '1px solid var(--hairline)',
+              borderRadius: 'calc(var(--radius) * 0.5)',
+              marginBottom: 8,
+            }}
+          />
+        )}
         <MathText>{opt.text}</MathText>
       </span>
       <span className="hpc-m3-opt-v">{verdict}</span>
