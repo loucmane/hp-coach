@@ -201,9 +201,10 @@ describe('HomeMobile — stats row (M3H)', () => {
 // no-op until the affordance returns somewhere.
 
 describe('HomeMobile — top traps', () => {
-  it('hides the traps card when no traps qualify', () => {
+  it('shows the quiet single-line invitation (not the boxed card) when no traps qualify', () => {
     render(<HomeMobile forceLayout="phone" plan={makePlan()} topTraps={[]} />)
     expect(screen.queryByTestId('home-top-traps')).not.toBeInTheDocument()
+    expect(screen.getByTestId('home-top-traps-empty')).toBeInTheDocument()
   })
 
   it('renders trap rows with id, headline, and miss count when present', () => {
