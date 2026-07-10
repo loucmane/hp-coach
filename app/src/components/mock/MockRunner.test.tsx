@@ -32,7 +32,15 @@ vi.mock('@/api/hooks/useMistakes', () => ({
   useRecordMistake: () => ({ mutate: recordMistakeMutate }),
 }))
 
-const updateSessionMutate = vi.fn()
+// Mirrors submitMockResultMutate below: invokes onSuccess synchronously so
+// the settle flow (which sequences the result POST behind the end-session
+// PATCH — see MockRunner.settle) proceeds in tests. Ordering-sensitive
+// tests override the implementation per-test.
+const updateSessionMutate = vi.fn(
+  (_input: unknown, opts?: { onSuccess?: (r: unknown) => void }) => {
+    opts?.onSuccess?.({})
+  },
+)
 vi.mock('@/api/hooks/useSessions', () => ({
   useUpdateSession: () => ({ mutate: updateSessionMutate }),
 }))
@@ -203,7 +211,37 @@ describe('MockRunner — settle', () => {
     await user.click(await screen.findByTestId('option-A'))
     await user.click(screen.getByTestId('mock-submit'))
     await waitFor(() => expect(submitMockResultMutate).toHaveBeenCalled())
-    expect(updateSessionMutate).toHaveBeenCalledWith({ id: 42, patch: { end: true } })
+    expect(updateSessionMutate).toHaveBeenCalledWith(
+      { id: 42, patch: { end: true } },
+      expect.anything(),
+    )
+    expect(onSettled).toHaveBeenCalled()
+    vi.unstubAllGlobals()
+  })
+
+  it('does not POST the result until the end-session PATCH succeeds', async () => {
+    // The worker rejects POST /api/mock-results for a session that isn't
+    // ended yet (400 not_ended) — so the POST must be sequenced BEHIND the
+    // PATCH, not fired concurrently. Hold the PATCH open and assert no POST
+    // happened; release it and assert the POST follows.
+    let releasePatch: (() => void) | undefined
+    updateSessionMutate.mockImplementationOnce(
+      (_input: unknown, opts?: { onSuccess?: (r: unknown) => void }) => {
+        releasePatch = () => opts?.onSuccess?.({})
+      },
+    )
+    vi.stubGlobal('confirm', () => true)
+    const user = userEvent.setup()
+    const { onSettled } = renderRunner()
+    await user.click(await screen.findByTestId('option-A'))
+    await user.click(screen.getByTestId('mock-submit'))
+
+    expect(updateSessionMutate).toHaveBeenCalled()
+    expect(submitMockResultMutate).not.toHaveBeenCalled()
+    expect(onSettled).not.toHaveBeenCalled()
+
+    releasePatch?.()
+    await waitFor(() => expect(submitMockResultMutate).toHaveBeenCalled())
     expect(onSettled).toHaveBeenCalled()
     vi.unstubAllGlobals()
   })

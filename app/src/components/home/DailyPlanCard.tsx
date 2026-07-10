@@ -35,6 +35,12 @@ export function DailyPlanCard({ plan, allComplete, onNavigate }: DailyPlanCardPr
   // the mock kind.
   const rows = plan.items.filter((item) => item.kind !== 'mock')
 
+  // Mock-only day (pure provpass-dag): every item was filtered out, so the
+  // Kallelse above IS the day's plan — render nothing rather than a bare
+  // "Dagens plan" heading over an empty list (and a margin-rail minute count
+  // that would just double-count the summons's own "· 55 minuter").
+  if (rows.length === 0) return null
+
   return (
     <section data-testid="daily-plan-card">
       <DrillRailSection

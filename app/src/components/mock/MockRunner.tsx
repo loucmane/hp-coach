@@ -191,22 +191,33 @@ export function MockRunner({
     const summary = computeMockSummary(plan, summarySheet)
 
     recordFinalMistakes(settled)
-    updateSession.mutate({ id: session.id, patch: { end: true } })
-    submitMockResult.mutate(
+    // SEQUENCED, not concurrent: the worker rejects POST /api/mock-results
+    // for a session that isn't ended yet (400 not_ended), so the result POST
+    // must wait for the end-session PATCH to commit. Fired concurrently these
+    // raced — whenever the POST landed first the submit silently died and the
+    // runner sat on 00:00 forever (onSettled only fires on POST success).
+    updateSession.mutate(
+      { id: session.id, patch: { end: true } },
       {
-        sessionId: session.id,
-        mode: session.mode,
-        half: session.half,
-        examId: session.examId ?? null,
-        provpass: session.provpass ?? null,
-        presented: summary.presented,
-        answered: summary.answered,
-        correct: summary.correct,
-        seenBefore,
-        durationMs: summaryTimestamp - session.startedAt.getTime(),
-        breakdown: summary.breakdown,
+        onSuccess: () => {
+          submitMockResult.mutate(
+            {
+              sessionId: session.id,
+              mode: session.mode,
+              half: session.half,
+              examId: session.examId ?? null,
+              provpass: session.provpass ?? null,
+              presented: summary.presented,
+              answered: summary.answered,
+              correct: summary.correct,
+              seenBefore,
+              durationMs: summaryTimestamp - session.startedAt.getTime(),
+              breakdown: summary.breakdown,
+            },
+            { onSuccess: onSettled },
+          )
+        },
       },
-      { onSuccess: onSettled },
     )
   }, [
     sheet,

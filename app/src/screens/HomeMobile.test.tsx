@@ -97,6 +97,15 @@ describe('HomeMobile — plan rendering', () => {
     expect(screen.getByText(/perfect game/i)).toBeInTheDocument()
     expect(screen.queryByTestId('daily-plan-card')).not.toBeInTheDocument()
   })
+
+  it('hides "Dagens plan" entirely on a mock-only day (the Kallelse IS the plan)', () => {
+    // A pure provpass-dag: the plan's only item is the mock, which renders
+    // as the Kallelse summons above — filtering it out of the card's rows
+    // would otherwise leave a bare "Dagens plan" heading over an empty list.
+    render(<HomeMobile forceLayout="phone" plan={mockPlan()} />)
+    expect(screen.getByTestId('kallelse-start')).toBeInTheDocument()
+    expect(screen.queryByTestId('daily-plan-card')).not.toBeInTheDocument()
+  })
 })
 
 describe('HomeMobile — stats row (M3H)', () => {
