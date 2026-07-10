@@ -36,8 +36,7 @@ import { Page } from '@/components/Page'
 import { useViewport } from '@/hooks/useViewport'
 import { formatSwedishHeader } from '@/lib/dates'
 import type { DiagnosticMemory } from '@/lib/diagnosticMemory'
-import type { MockPrescription, PlanItemWithMock } from '@/lib/mockContract'
-import type { DailyPlan } from '@/lib/scheduler'
+import type { DailyPlan, MockPrescription } from '@/lib/scheduler'
 import { formatDeltaSv, formatScoreSv, type ProjectedTotal } from '@/lib/scoring'
 import type { CoachKey } from '@/lib/voice'
 import { useCoachStore } from '@/stores/coachStore'
@@ -85,13 +84,12 @@ type HomeMobileProps = {
   onAvancerat?: () => void
   /** Test-only override for viewport detection. */
   forceLayout?: 'phone' | 'reader' | 'studio'
-  /** CONTRACT (see @/lib/mockContract) — Provpass due/countdown state for
-   *  ProvpassStatusLine. Optional: when omitted the status line renders
-   *  nothing, so callers that don't have prescribeMock wired yet (every
-   *  caller today — see mockContract.ts) simply don't pass it. */
+  /** Provpass due/countdown state for ProvpassStatusLine (from
+   *  `useDailyPlan()`'s `prescribeMock` call). Optional: when omitted
+   *  the status line renders nothing. */
   mockPrescription?: MockPrescription | null
-  /** CONTRACT — most recent Provpass result, for the status line's
-   *  "senast X N/M" countdown copy. */
+  /** Most recent Provpass result, for the status line's "senast X N/M"
+   *  countdown copy. */
   lastMockResult?: MockResultRow | null
 }
 
@@ -124,13 +122,7 @@ export function HomeMobile({
   // HomeMobile (which already owns viewport/layout state) is the natural
   // owner of "is the pre-start sheet open".
   const [confirmOpen, setConfirmOpen] = useState(false)
-  // The real PlanItem['kind'] union (@/lib/scheduler) doesn't include
-  // 'mock' yet — CONTRACT-widen the search to PlanItemWithMock (see
-  // @/lib/mockContract) rather than asserting a type predicate against
-  // the real PlanItem, which TS correctly rejects as unsound.
-  const mockItem = (plan?.items as PlanItemWithMock[] | undefined)?.find(
-    (item) => item.kind === 'mock',
-  )
+  const mockItem = plan?.items.find((item) => item.kind === 'mock')
   const renderStreak = showStreak ?? (streakDays !== undefined && streakDays > 0)
   const streakValue = streakDays ?? 0
   // Coach voice stays parked for a future home deployment; keep the
@@ -235,12 +227,9 @@ export function HomeMobile({
            *  The passive PROVPASS readout sits just above it — see
            *  ProvpassStatusLine's own suppression logic for why it's
            *  silent on a day where the Kallelse is already showing.
-           *
-           *  TODO(PR-3): `mockPrescription` is undefined until the real
-           *  @/lib/scheduler.prescribeMock lands (see @/lib/mockContract)
-           *  — until then no caller passes it, so this renders nothing.
-           *  ProvpassStatusLine itself is complete/tested; only the real
-           *  scheduling data is out of scope here. */}
+           *  `mockPrescription` comes from `useDailyPlan()` (HomeRoute) —
+           *  omitted only by callers that don't wire it (dev fixtures,
+           *  tests), in which case the line renders nothing. */}
           {mockPrescription && (
             <ProvpassStatusLine
               prescription={mockPrescription}

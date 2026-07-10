@@ -28,13 +28,12 @@ export function DailyPlanCard({ plan, allComplete, onNavigate }: DailyPlanCardPr
     return <CompletePanel plan={plan} />
   }
 
-  // A `kind: 'mock'` item (CONTRACT — see @/lib/mockContract) is rendered
-  // as the Kallelse summons ABOVE this card, not as an ordinary numbered
-  // row here — filtering before mapping (rather than a per-row guard in
-  // PlanRow) keeps the ordinal numbering contiguous for the remaining
-  // items and avoids a `verbFor` case for a kind the real PlanItemKind
-  // union doesn't even know about yet.
-  const rows = plan.items.filter((item) => (item.kind as string) !== 'mock')
+  // A `kind: 'mock'` item is rendered as the Kallelse summons ABOVE this
+  // card, not as an ordinary numbered row here — filtering before mapping
+  // (rather than a per-row guard in PlanRow) keeps the ordinal numbering
+  // contiguous for the remaining items and avoids a `verbFor` case for
+  // the mock kind.
+  const rows = plan.items.filter((item) => item.kind !== 'mock')
 
   return (
     <section data-testid="daily-plan-card">

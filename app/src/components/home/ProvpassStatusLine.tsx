@@ -19,8 +19,8 @@
 import { useNavigate } from '@tanstack/react-router'
 
 import type { MockResultRow } from '@/api/hooks/useMockResults'
-import type { MockPrescription } from '@/lib/mockContract'
 import { logMockEvent } from '@/lib/mockEvents'
+import type { MockPrescription } from '@/lib/scheduler'
 
 const MONO_TRACK = 'var(--font-mono-track, 0.04em)'
 
