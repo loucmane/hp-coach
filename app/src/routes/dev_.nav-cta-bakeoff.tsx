@@ -15,6 +15,7 @@ import {
   Caption,
   VariantOvaHub,
   VariantPlanItem,
+  VariantPrescribedConsensus,
   VariantStandingCard,
 } from '@/components/devbake/NavCtaBakeoff'
 import { isDevSurface } from '@/lib/devSurface'
@@ -54,6 +55,10 @@ function NavCtaBakeoffRoute() {
         </div>
         <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 6 }}>
           Principle under test: viktiga saker ska synas utan ⌘K (house rule).
+        </div>
+        <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 3 }}>
+          V4 = 4-specialist panel consensus (ADHD-behavioral / IA / pedagogy / devil's advocate), 2
+          rounds.
         </div>
       </header>
 
@@ -99,6 +104,29 @@ function NavCtaBakeoffRoute() {
           <Caption>
             Trade-off: gives all three practice modes equal, permanent nav real estate — but adds a
             hop (tab → hub → start) and demotes the plan's prescriptive "do this next" steer.
+          </Caption>
+        </Stage>
+
+        <Stage
+          tag="V4"
+          title="Prescribed + passive line + confirm"
+          note="Panel consensus: mock is the plan ANCHOR on a provpass-dag, a passive status line keeps the door visible daily, and a confirm sheet protects the start."
+        >
+          <VariantPrescribedConsensus />
+          <Caption>
+            Note: V4's Home renders WITHOUT the "6 dagar i rad" streak stat — the panel found the
+            streak violates the product's own no-streak-shame rule; the stats row shows prognos +
+            min idag only.
+          </Caption>
+          <Caption>
+            The status line is a READOUT, not a CTA (no verb, no arrow-as-CTA); a full-row tap opens
+            a detail sheet with history + a quiet start path. Tapping the plan row opens the confirm
+            sheet BEFORE any clock — a pre-commitment device; a mis-timed impulsive start voids the
+            mock (ADHD-PI impulsivity protection).
+          </Caption>
+          <Caption>
+            Consensus: the plan decides the day, the confirm sheet protects the start, the line
+            keeps the door visible — bets everything on scheduler trust.
           </Caption>
         </Stage>
       </div>
