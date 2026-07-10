@@ -17,6 +17,8 @@
 import { setupClerkTestingToken } from '@clerk/testing/playwright'
 import { type Page, test as base, expect } from '@playwright/test'
 
+import { installFapiRetryRoute } from './clerk-fapi-hardening'
+
 const API_BASE_URL = process.env.VITE_API_BASE_URL ?? 'http://localhost:8787'
 
 // Hit /api/test-reset to put the authenticated user's mistakes/sessions
@@ -167,6 +169,13 @@ export const test = base.extend({
     // storageState), so it's still injected here — but it reads the env
     // token cached by clerkSetup, so no per-test network call.
     await setupClerkTestingToken({ page })
+    // Register our resilient FAPI retry route AFTER @clerk/testing's so ours
+    // runs first (Playwright dispatches most-recently-registered handlers
+    // first) and rides out dev-instance blips with a larger, capped-backoff
+    // budget than @clerk/testing's hardcoded 4 attempts. The app's own
+    // getToken() refreshes (every typed-client call in the worker-API tests)
+    // route through this, which is where the mid-test FAPI flake lived.
+    await installFapiRetryRoute(page)
     // Pre-seed the `/welcome` gate's bypass flag so __root.tsx's
     // first-time-visit redirect doesn't trap e2e tests on /welcome.
     // The gate (app/src/lib/welcome.ts) treats hpc-welcomed='1' as
