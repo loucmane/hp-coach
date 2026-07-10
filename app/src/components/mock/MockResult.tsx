@@ -23,13 +23,44 @@
 //   7. Own-mock history — useMockResults() filtered to same half+mode,
 //      compact list, newest first.
 
-import { type CSSProperties, type ReactNode, useMemo } from 'react'
+import { type CSSProperties, type ReactNode, useEffect, useMemo, useState } from 'react'
 
-import type { MockResultRow } from '@/api/hooks/useMockResults'
+import type { MockHalf, MockResultRow } from '@/api/hooks/useMockResults'
 import { useMockResults } from '@/api/hooks/useMockResults'
 import { Eyebrow } from '@/components/primitives'
+import { loadNormeringTable, type NormeringSitting, normedScore } from '@/lib/normering'
 import { formatScore, scoreFromFraction } from '@/lib/scoring'
 import { useTrapCluster } from '@/lib/trapCluster'
+
+// Load the sitting's official UHR normeringstabell for an authentic
+// pass (loadNormeringTable memoises per exam id, so re-renders and
+// sibling screens share one round-trip). Synthetic passes have no
+// single sitting table, so we never fetch for them — normedScore falls
+// back to the linear "indikativ" estimate.
+function useNormedScore(result: MockResultRow) {
+  const { mode, examId, half, correct, presented } = result
+  const enabled = mode === 'authentic' && !!examId
+  const [table, setTable] = useState<NormeringSitting | null>(null)
+
+  useEffect(() => {
+    if (!enabled) {
+      setTable(null)
+      return
+    }
+    let live = true
+    loadNormeringTable(examId).then((t) => {
+      if (live) setTable(t)
+    })
+    return () => {
+      live = false
+    }
+  }, [enabled, examId])
+
+  return useMemo(
+    () => normedScore(enabled ? table : null, half as MockHalf, correct, presented),
+    [enabled, table, half, correct, presented],
+  )
+}
 
 // 55-minute pass budget, proportioned per section by its quota. Kept
 // local (mirrors the quota table in routes/prov.tsx) since PR 2's
@@ -59,7 +90,9 @@ type Props = {
 export function MockResult({ result }: Props) {
   const { presented, answered, correct, seenBefore, breakdown } = result
   const incomplete = presented < 40
-  const score = presented > 0 ? scoreFromFraction(correct / presented) : null
+  const normed = useNormedScore(result)
+  const score = normed.score
+  const isOfficial = normed.derived === 'official-derived'
 
   const missedQids = useMemo(() => breakdown.missedQids, [breakdown.missedQids])
   const cluster = useTrapCluster(missedQids)
@@ -107,7 +140,9 @@ export function MockResult({ result }: Props) {
                 <div className="hpc-m3-stat-n" data-testid="mock-result-score">
                   {formatScore(score).replace('.', ',')}
                 </div>
-                <div className="hpc-m3-stat-l">skattad poäng · 0–2,0</div>
+                <div className="hpc-m3-stat-l">
+                  {isOfficial ? 'normerat (härlett) · 0–2,0' : 'skattad poäng · 0–2,0'}
+                </div>
               </div>
             )}
           </div>
@@ -135,7 +170,9 @@ export function MockResult({ result }: Props) {
               marginTop: 8,
             }}
           >
-            Linjär skattning — UHR-normering kommer senare.
+            {isOfficial
+              ? 'Härlett ur UHR:s normeringstabell för detta provtillfälle. UHR normerar hela delprovet (80 frågor) — ett provpass på 40 frågor har ingen officiell tabell, så poängen skalas upp och läses av tabellen.'
+              : 'Linjär skattning — indikativ, inte UHR-normerad.'}
           </p>
         </Rail>
 
