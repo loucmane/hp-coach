@@ -20,6 +20,7 @@
 import { useRouterState } from '@tanstack/react-router'
 import { useState } from 'react'
 
+import { useViewport } from '@/hooks/useViewport'
 import { isDevSurface } from '@/lib/devSurface'
 import { useCoachStore } from '@/stores/coachStore'
 import { useUiStore } from '@/stores/uiStore'
@@ -309,10 +310,16 @@ function buildSnapshot(): string {
 
 export function ShareDebugButton() {
   const here = useRouterState({ select: (s) => s.location.pathname })
+  const viewport = useViewport()
   const [status, setStatus] = useState<'idle' | 'copied' | 'error'>('idle')
 
   if (!isDevSurface()) return null
   if (here === '/dev') return null
+
+  // Same viewport-aware lift as TweaksLauncher (its sibling, right:130
+  // vs right:18) — see that component for why `bottom: 18` alone
+  // occludes the phone tab bar.
+  const bottomOffset = viewport === 'phone' ? 'calc(var(--frame-tabbar) + 12px)' : 18
 
   const onClick = async () => {
     try {
@@ -341,7 +348,7 @@ export function ShareDebugButton() {
         // Sits left of the tweaks launcher (which is at right: 18).
         // Roughly 100px wide; gap 10px.
         right: 130,
-        bottom: 18,
+        bottom: bottomOffset,
         display: 'inline-flex',
         alignItems: 'center',
         gap: 8,

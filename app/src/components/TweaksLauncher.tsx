@@ -12,13 +12,24 @@
 
 import { Link, useRouterState } from '@tanstack/react-router'
 
+import { useViewport } from '@/hooks/useViewport'
 import { isDevSurface } from '@/lib/devSurface'
 
 export function TweaksLauncher() {
   const here = useRouterState({ select: (s) => s.location.pathname })
+  const viewport = useViewport()
 
   if (!isDevSurface()) return null
   if (here === '/dev') return null
+
+  // On phone the bottom tab bar reserves `--frame-tabbar` (88px) at the
+  // bottom of the artboard, but that reservation is an internal-layout
+  // convention — this button is `position: fixed` to the real browser
+  // viewport, so it doesn't inherit it. Without a viewport-aware offset
+  // the dev pill sits directly on top of Lektion/Feedback in the tab
+  // bar (dogfood find, task #76). Lift it clear on phone; reader/studio
+  // has no bottom chrome to clash with at bottom:18.
+  const bottomOffset = viewport === 'phone' ? 'calc(var(--frame-tabbar) + 12px)' : 18
 
   return (
     <Link
@@ -27,7 +38,7 @@ export function TweaksLauncher() {
       style={{
         position: 'fixed',
         right: 18,
-        bottom: 18,
+        bottom: bottomOffset,
         display: 'inline-flex',
         alignItems: 'center',
         gap: 8,
