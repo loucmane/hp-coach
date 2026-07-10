@@ -13291,101 +13291,107 @@
  },
  "var-2015-kvant1-DTK-037": {
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   },
   "pregrade_tactic": {
-   "handle": "Extremvärdes-skanningen",
-   "move": "Vid 'störst', 'minst', 'flest' — skanna VISUELLT över hela figuren först. Räkna inte varje värde; toppen/dalen hittas med ögat."
+   "handle": "Andelsbygget ur linjediagrammet",
+   "move": "Läs av alla åtta serier vid 2007 i linjediagrammet, summera dem till en nämnare, dela varje serie med summan och matcha 30/24/20 plus fem små kilar mot cirkeldiagrammen — använd den näst största stora sektorn (Läkar ~24 %) och grekilen (Ospec ~20 %) som avgörande filter."
   },
-  "framework_id": "DTK-TACTIC-002",
-  "solution_path": "Identifiera extremvärde (max/min) över en datamängd. Visuell skanning är snabbast. Per facit: svar A. Nyckelsteg: Hitta kandidaten med ögat, läs sedan av precist endast den.",
-  "technique": "DTK-taktik DTK-TACTIC-002: Vid 'störst', 'minst', 'flest' — skanna VISUELLT över hela figuren först. Räkna inte varje värde; toppen/dalen hittas med ögat. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
-  "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+  "framework_id": "DTK-TACTIC-003",
+  "solution_path": "Frågan gäller freemover-studenternas PROCENTUELLA fördelning på utbildningstyper år 2007, så nämnaren är summan av alla åtta serier just det året — inte något färdigt totaltal. Läs av 2007-kolumnen i linjediagrammet: Ekonomutbildning ~2 860, Läkarprogram ~2 290, Ospecificerat/fristående ~1 950, Bild- och formkonstnärligt ~600, Psykologi/terapeut ~580, Mode- och design ~500, Musik ~490, Veterinär ~360. Summan blir ca 9 630. Andelar: Ekonom 2 860/9 630 = 29,7 %, Läkar 2 290/9 630 = 23,8 %, Ospec 1 950/9 630 = 20,2 %; de fem små serierna hamnar var och en på 4–6 %. Profilen är alltså TRE stora sektorer i storleksordning ~30 / ~24 / ~20 plus fem små kilar. Cirkeldiagram A visar precis detta: vit sektor ~28 % (Ekonom), rutig sektor direkt medurs ~25 % (Läkar) och grå sektor ~18 % (Ospec), följt av fem små mönstrade kilar. Svaret är A.",
+  "technique": "Bygg cirkeldiagrammet ur RÅDATA i linjediagrammet, inte tvärtom: en 'procentuell fördelning'-fråga kräver att du summerar alla serier vid det efterfrågade året till en nämnare och gör varje serievärde till en andel. Trigger: 'Vilket diagram visar den procentuella fördelningen ... år X?' -> läs kolumnen X, summera, dela, matcha sektorstorlekar. Verifiera nämnaren först (DTK-TACTIC-003): totalen är summan för 2007, inte hela periodens summa och inte ett enskilt års delmängd.",
+  "pitfall": "Klassiska fällan är att bara kontrollera den största sektorn (vit ~30 % Ekonom) — den ser likadan ut i både A och B — och därmed missa att den avgörande skillnaden ligger i de två näst största stora sektorerna. Botemedlet: mät även Läkar-sektorn (~24 %) och Ospec-sektorn (~20 %). Så snart den grå Ospec-kilen krymper till ~14 % (B) eller sväller till ~24 % (D), eller den vita Ekonom-sektorn faller till ~23 % (C), kan alternativet strykas. Andra fällan är fel nämnare: nämnaren är 2007 års summa över alla åtta serier, inte en enskild series värde.",
   "steps": [
    {
     "n": 1,
+    "tier": "essential",
     "title": "Förstå frågan",
-    "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
-    "tier": "essential"
+    "text": "Linjediagrammet visar det totala antalet svenska freemover-studenter 2002–2010, uppdelat på åtta utbildningstyper. Frågan gäller ENDAST år 2007 och vill ha den PROCENTUELLA fördelningen — hur de åtta typerna delar upp helheten det året. Du ska välja det cirkeldiagram som återger den fördelningen."
    },
    {
     "n": 2,
-    "title": "Definition: DTK",
-    "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Lås rätt år",
+    "text": "Pinna 2007-kolumnen innan du läser något (DTK-grundregeln: lokalisera positionen först). 2007 är sjätte årspunkten från vänster; följ den lodräta linjen upp och läs av var serie där den skär linjen."
    },
    {
     "n": 3,
-    "title": "Identifiera figurtyp",
-    "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Läs av de tre stora serierna",
+    "text": "Vid 2007: Ekonomutbildning (romb) ligger nära 2 860, Läkarprogram (fylld fyrkant) ~2 290 på väg upp brant, och Ospecificerat program/fristående kurser (triangel) ~1 950. Dessa tre bär nästan hela cirkeln."
    },
    {
     "n": 4,
-    "title": "Pinna entiteten",
-    "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Hitta kandidaten med ögat, läs sedan av precist endast den.",
-    "tier": "essential"
+    "tier": "detail",
+    "title": "Läs av de fem små serierna",
+    "text": "De övriga fem trängs kring 350–600: Bild- och formkonstnärligt (cirkel) ~600, Psykologi/terapeut (kryss) ~580, Mode- och design (asterisk) ~500, Musik (streck) ~490 och Veterinär (plus) ~360. De blir alla små kilar på 4–6 %."
    },
    {
     "n": 5,
-    "title": "Definition: andel vs förhållande",
-    "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
-    "tier": "detail"
+    "tier": "detail",
+    "title": "Definition: procentuell andel",
+    "text": "Andel = del / total. Totalen här är SUMMAN av alla åtta serier år 2007 — inte hela periodens summa och inte något enskilt årtal. Fel nämnare är den vanligaste DTK-fällan (DTK-TACTIC-003)."
    },
    {
     "n": 6,
-    "title": "Läs av värde",
-    "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Summera till nämnaren",
+    "text": "2 860 + 2 290 + 1 950 + 600 + 580 + 500 + 490 + 360 ≈ 9 630. Det är den totala freemover-siffran för 2007 och nämnaren i alla andelar."
    },
    {
     "n": 7,
-    "title": "Definition: procent vs procentenheter",
-    "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Räkna de tre stora andelarna",
+    "text": "Ekonom 2 860/9 630 = 29,7 % (~30 %, dryg fjärdedel-till-tredjedel). Läkar 2 290/9 630 = 23,8 % (~24 %). Ospec 1 950/9 630 = 20,2 % (~20 %). Storleksordning: Ekonom > Läkar > Ospec, ganska tätt men tydligt fallande."
    },
    {
     "n": 8,
-    "title": "Räkneoperation",
-    "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
-    "tier": "essential"
+    "tier": "detail",
+    "title": "Kontrollera summan",
+    "text": "De tre stora ger 29,7 + 23,8 + 20,2 = 73,7 %. Kvar till de fem små: ~26 %, alltså i snitt drygt 5 % var — stämmer med avläsningen. Andelarna går ihop till 100 %, uppdelningen är rimlig."
    },
    {
     "n": 9,
-    "title": "Jämför mot alternativen",
-    "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Översätt till sektorform",
+    "text": "Sök diagrammet med profilen 30 / 24 / 20 plus fem små: en vit sektor på knappt en tredjedel (Ekonom), en rutig sektor direkt medurs på ~en fjärdedel (Läkar), en grå sektor på ~en femtedel (Ospec), och därefter en krans av fem små mönstrade kilar (streckad, prickig, svart, lodrätt- och tät-prickig)."
    },
    {
     "n": 10,
-    "title": "Verifiera storleksordning",
-    "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Läs av alternativen",
+    "text": "A: vit ~28 %, rutig ~25 %, grå ~18 % — profilen 30/24/20. B: samma vita ~28 % men grå Ospec-sektorn krymper till ~14 %, för liten. C: vita Ekonom-sektorn bara ~23 % och en uppblåst svart kil ~9 % — fel storlekar. D: vita ~33 % OCH grå ~24 % — båda de stora sektorerna för stora, de små hoptryckta."
    },
    {
     "n": 11,
+    "tier": "detail",
+    "title": "Elimineringskoll",
+    "text": "Den vita Ekonom-sektorn ser nästan lika ut i A och B, så den skiljer dem inte åt. Avgör på den grå Ospec-sektorn: den ska motsvara ~20 %. I A är den märkbart bredare (~18 %) än i B (~14 %). D och C faller redan på sina uppblåsta stora sektorer."
+   },
+   {
+    "n": 12,
+    "tier": "essential",
     "title": "Slutsats",
-    "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
-    "tier": "essential"
+    "text": "Svaret är A. Insikten i en mening: i 'vilket diagram visar den procentuella fördelningen'-frågor summerar du serierna vid det efterfrågade året till en nämnare FÖRST och matchar andelarna sedan — och när den största sektorn inte skiljer alternativen åt är det den näst största som avgör."
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "B har samma dominerande vita sektor (~28 %, Ekonom) och samma rutiga Läkar-sektor som A, plus samma uppsättning små kilar, så vid en snabb blick på 'den största biten' ser den ut precis som A.",
+    "why_wrong": "I B är den grå Ospec-sektorn bara ~14 % — för smal för de 20,2 % som 1 950/9 630 kräver. Jämfört med A är gråkilen tydligt tunnare och de små kilarna därmed något större. Rätt profil är 30/24/20, vilket A visar."
    },
    {
     "letter": "C",
-    "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "C har också en vit sektor, en rutig sektor och en grå sektor, och om man bara kollar 'stor / mellan / mindre' utan att mäta kan storleksordningen kännas riktig.",
+    "why_wrong": "I C krymper den vita Ekonom-sektorn till ~23 % (ska vara ~30 %) och den svarta kilen sväller till ~9 %. En enskild liten serie (Veterinär 360, ~4 %) kan aldrig bli en ~9 %-kil, och Ekonom ska vara klart störst — inte nästan lika stor som Läkar."
    },
    {
     "letter": "D",
-    "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "D visar en stor vit sektor och en rejäl grå sektor och lockar den som tänker 'Ekonom och Ospec ska ju vara stora' utan att kontrollera hur stora.",
+    "why_wrong": "I D är BÅDE den vita Ekonom-sektorn (~33 %) och den grå Ospec-sektorn (~24 %) för stora, vilket tränger ihop de fem små kilarna. Ekonom är 29,7 % (inte en tredjedel) och Ospec 20,2 % (inte en fjärdedel). Bara A håller alla tre stora sektorerna på rätt storlek 30/24/20."
    }
   ]
  }

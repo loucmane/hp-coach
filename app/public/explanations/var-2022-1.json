@@ -13146,103 +13146,103 @@
   }
  },
  "var-2022-1-kvant2-DTK-038": {
-  "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
-  },
-  "pregrade_tactic": {
-   "handle": "Snabb-extremvärden",
-   "move": "Visuell skanning för extremvärden + verifiering vid två närliggande kandidater. Räkna aldrig varje datapunkt vid 'störst/minst'."
-  },
-  "framework_id": "DTK-TACTIC-002",
-  "solution_path": "Extremvärdesfråga. Två kandidater ligger ofta nära varandra; precis avläsning bara där. Per facit: svar A. Nyckelsteg: Identifiera topp 2 visuellt, läs av precist endast dessa.",
-  "technique": "DTK-taktik DTK-TACTIC-002: Visuell skanning för extremvärden + verifiering vid två närliggande kandidater. Räkna aldrig varje datapunkt vid 'störst/minst'. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
-  "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+  "technique": "Förhållande-fråga: läs av de TVÅ kurvornas värde vid det givna året (2013), bilda kvoten, och gör om den till två sektorer. Trigger: 'Vilket cirkeldiagram illustrerar förhållandet mellan ... X och ... Y år N' -> läs två punkter, dela, matcha silhuett.",
+  "solution_path": "Vid 2013 i linjediagrammet: Nitrofurantoin (heldragen svart) ~46 förskrivningar/1 000 kvinnor, Fluorokinoloner (heldragen grå) ~19. Förhållandet är ~46:19 = 2,4:1. I ett cirkeldiagram med bara dessa två: Nitrofurantoin 46/(46+19) = 46/65 = 70,8 %, Fluorokinoloner 19/65 = 29,2 %. Rätt diagram har alltså en svart sektor på ~71 % och en grå på ~29 %. Mätning: alternativ A är svart ~71 % / grå ~29 %. Svaret är A.",
   "steps": [
    {
     "n": 1,
+    "tier": "essential",
     "title": "Förstå frågan",
-    "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar A.",
-    "tier": "essential"
+    "text": "Diagrammet visar förskrivning per 1 000 kvinnor av fyra antibiotika 2000-2015. Frågan gäller BARA två av dem - Nitrofurantoin och Fluorokinoloner - vid år 2013, och deras inbördes förhållande i cirkelform."
    },
    {
     "n": 2,
-    "title": "Definition: DTK",
-    "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Identifiera rätt två kurvor",
+    "text": "Nitrofurantoin = heldragen svart linje (den som STIGER kraftigt över perioden). Fluorokinoloner = heldragen grå linje (den som FALLER). Ignorera de streckade (Pivmecillinam, Trimetoprim)."
    },
    {
     "n": 3,
-    "title": "Identifiera figurtyp",
-    "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Läs av vid 2013",
+    "text": "Ställ blicken på den lodräta 2013-linjen. Nitrofurantoin ligger på ~46 (nära sin platå), Fluorokinoloner på ~19 (nära sitt bottenläge)."
    },
    {
     "n": 4,
-    "title": "Pinna entiteten",
-    "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Identifiera topp 2 visuellt, läs av precist endast dessa.",
-    "tier": "essential"
+    "tier": "detail",
+    "title": "Definition: förhållande vs andel",
+    "text": "Förhållande = A:B (här 46:19). För att rita en cirkel gör vi om det till andelar: varje del delas med summan A+B. Cirkeln innehåller bara dessa två - inga andra antibiotika."
    },
    {
     "n": 5,
-    "title": "Definition: andel vs förhållande",
-    "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Bilda kvoten",
+    "text": "46 / 19 = 2,4. Nitrofurantoin är alltså knappt två och en halv gånger så vanligt som Fluorokinoloner 2013."
    },
    {
     "n": 6,
-    "title": "Läs av värde",
-    "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Räkna andelarna",
+    "text": "Summa 46 + 19 = 65. Nitrofurantoin 46/65 = 70,8 %; Fluorokinoloner 19/65 = 29,2 %."
    },
    {
     "n": 7,
-    "title": "Definition: procent vs procentenheter",
-    "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
-    "tier": "detail"
+    "tier": "detail",
+    "title": "Grovkoll",
+    "text": "2,4:1 ligger nära 70:30 - den större biten tar ungefär två tredjedelar till tre fjärdedelar av cirkeln, den mindre knappt en tredjedel."
    },
    {
     "n": 8,
-    "title": "Räkneoperation",
-    "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Mät alternativen",
+    "text": "A: svart ~71 % / grå ~29 %. B: svart ~61 % / grå ~39 %. C: svart ~41 % / grå ~59 %. D: svart ~31 % / grå ~69 %."
    },
    {
     "n": 9,
-    "title": "Jämför mot alternativen",
-    "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Matcha",
+    "text": "Nitrofurantoin (större, 70,8 %) = svart. Bara A har den svarta sektorn på ~71 %. B (~61 %) motsvarar ett förhållande ~1,6:1, C och D vänder på vilken sektor som är störst."
    },
    {
     "n": 10,
-    "title": "Verifiera storleksordning",
-    "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
-    "tier": "detail"
+    "tier": "detail",
+    "title": "Skilj A från B",
+    "text": "Skillnaden mellan A (71/29) och B (61/39) är just kvoten: 2,4:1 mot ~1,6:1. Eftersom 46/19 = 2,4 är A rätt; B skulle kräva att fluorokinolonerna låg på ~29, inte 19, år 2013."
    },
    {
     "n": 11,
+    "tier": "essential",
     "title": "Slutsats",
-    "text": "Svar: A. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
-    "tier": "essential"
+    "text": "Svaret är A. Insikten i en mening: en förhållande-fråga är två avläsningar och en division - kvoten 46/19 = 2,4 pekar direkt på 71/29-sektorn, inte den mildare 61/39."
    }
   ],
   "distractors": [
    {
     "letter": "B",
-    "why_tempting": "Det är lätt att välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "B (~61/39) är den närmaste grannen till rätt svar och lockar den som läser nitrofurantoin lite för lågt eller fluorokinoloner lite för högt vid 2013.",
+    "why_wrong": "B motsvarar förhållandet ~1,6:1. Men 2013 är Nitrofurantoin ~46 och Fluorokinoloner ~19, alltså ~2,4:1. Rätt sektorstorlek är 71/29 (A), inte 61/39."
    },
    {
     "letter": "C",
-    "why_tempting": "Många stannar vid välja C om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "C är också en tvådelad cirkel med samma färger, och den som förväxlar vilken kurva som är vilken (nitro stiger, fluor faller) kan kasta om sektorerna.",
+    "why_wrong": "C gör den svarta sektorn MINDRE (~41 %) än den grå. Det skulle betyda att Fluorokinoloner var vanligare än Nitrofurantoin 2013 - tvärtemot diagrammet, där nitro ~46 klart överstiger fluor ~19."
    },
    {
     "letter": "D",
-    "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är A."
+    "why_tempting": "D visar den svarta sektorn som klar minoritet (~31 %) och lockar om man läser av på fel år eller vänder på kurvorna helt.",
+    "why_wrong": "D:s förhållande är ~31/69 till fluorokinolonernas fördel - helt fel riktning. 2013 dominerar nitrofurantoin (~2,4:1), så den svarta sektorn ska vara ~71 %, som i A."
    }
-  ]
+  ],
+  "pitfall": "Fällan är att läsa av fel år (kurvorna korsas runt 2008) eller att kasta om vilken sektor som är störst - nitro STIGER, fluor FALLER, så 2013 är nitro klart störst. Botemedlet: pinna 2013-linjen, notera att svart ligger högt (~46) och grå lågt (~19), och låt kvoten 2,4:1 välja 71/29-cirkeln.",
+  "pregrade_tactic": {
+   "handle": "Kvotavläsningen",
+   "move": "Läs de två kurvornas värde vid 2013 (nitro ~46, fluor ~19), bilda kvoten ~2,4:1, och matcha 71/29 mot cirkeln - den stigande svarta kurvan är den större sektorn."
+  },
+  "framework_id": "DTK-TACTIC-005",
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
  }
 }

@@ -13405,103 +13405,103 @@
   }
  },
  "var-2017-kvant2-DTK-030": {
-  "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
-  },
-  "pregrade_tactic": {
-   "handle": "Förhållande-uppskattningen",
-   "move": "Vid 'förhållande X:Y' eller 'kvot' — uppskatta till ENA värdesiffran först. Alternativen är glesa (1:2 vs 1:3 vs 2:5), grov uppskattning eliminerar 3 av 4."
-  },
-  "framework_id": "DTK-TACTIC-005",
-  "solution_path": "Förhållandefråga med glest spridda alternativ. Uppskattning räcker oftast. Per facit: svar C. Nyckelsteg: Grov uppskattning först, exakt räkning bara om två alternativ ligger nära.",
-  "technique": "DTK-taktik DTK-TACTIC-005: Vid 'förhållande X:Y' eller 'kvot' — uppskatta till ENA värdesiffran först. Alternativen är glesa (1:2 vs 1:3 vs 2:5), grov uppskattning eliminerar 3 av 4. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
-  "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
+  "technique": "Detta är en tvådelad fördelning: läs summakolumnen på TOTALT-raden för de två huvudgrupperna (Läkarbesök vs Besök hos andra personalkategorier), dela var och en med totalantalet, och matcha mot en tvåsektorerad cirkel. Trigger: 'Vilket cirkeldiagram visar hur totala antalet ... var fördelat på X och Y' -> två andelar som summerar till 100 %.",
+  "solution_path": "På TOTALT-raden: Läkarbesök summa 27 442,1 tusental och Besök hos andra personalkategorier summa 36 440,3 tusental; totalt 63 882,4 (kontroll: 27 442,1 + 36 440,3 = 63 882,4). Andelar: Läkarbesök 27 442,1/63 882,4 = 43,0 %; Andra personalkategorier 36 440,3/63 882,4 = 57,0 %. Rätt diagram är alltså en tvåsektorerad cirkel med en ~43 %-sektor (läkarbesök) och en ~57 %-sektor (andra). Mätning: alternativ C har den svarta sektorn på ~44 % (läkarbesök) och den ljusa på ~56 % (andra) - exakt rätt. Svaret är C.",
   "steps": [
    {
     "n": 1,
+    "tier": "essential",
     "title": "Förstå frågan",
-    "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar C.",
-    "tier": "essential"
+    "text": "Tabellen delar upp alla hälso- och sjukvårdsbesök i två huvudgrupper: Läkarbesök och Besök hos andra personalkategorier. Frågan: hur fördelar sig det TOTALA antalet besök mellan dessa två? Välj rätt tvådelat cirkeldiagram."
    },
    {
     "n": 2,
-    "title": "Definition: DTK",
-    "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Pinna rätt rad och kolumner",
+    "text": "Gå till TOTALT-raden längst ner. Läs de två 'Summa besök'-värdena: Läkarbesök 27 442,1 och Andra personalkategorier 36 440,3 (allt i tusental)."
    },
    {
     "n": 3,
-    "title": "Identifiera figurtyp",
-    "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Hitta totalen",
+    "text": "Totalt antal besök = 63 882,4. Kontroll: 27 442,1 + 36 440,3 = 63 882,4. De två grupperna täcker precis hela cirkeln - inga fler sektorer."
    },
    {
     "n": 4,
-    "title": "Pinna entiteten",
-    "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Grov uppskattning först, exakt räkning bara om två alternativ ligger nära.",
-    "tier": "essential"
+    "tier": "detail",
+    "title": "Definition: andel",
+    "text": "Andel = gruppens summa / totalsumman. Två grupper -> två sektorer som tillsammans blir 100 %."
    },
    {
     "n": 5,
-    "title": "Definition: andel vs förhållande",
-    "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Räkna andelen läkarbesök",
+    "text": "27 442,1 / 63 882,4 = 0,430, alltså 43,0 %. Läkarbesöken är alltså den MINDRE av de två sektorerna."
    },
    {
     "n": 6,
-    "title": "Läs av värde",
-    "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Räkna andelen andra personalkategorier",
+    "text": "36 440,3 / 63 882,4 = 0,570, alltså 57,0 %. Andra personalkategorier är den STÖRRE sektorn."
    },
    {
     "n": 7,
-    "title": "Definition: procent vs procentenheter",
-    "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
-    "tier": "detail"
+    "tier": "detail",
+    "title": "Kontrollera",
+    "text": "43,0 + 57,0 = 100 %. Går ihop. Fördelningen är nära jämn men med tydlig övervikt (57 %) för 'andra'."
    },
    {
     "n": 8,
-    "title": "Räkneoperation",
-    "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Översätt till sektorform",
+    "text": "Sök en tvåsektorerad cirkel där den ena biten är knappt under hälften (~43 %) och den andra knappt över (~57 %). Ordningen på färgerna (svart/ljus) avgör vilken sektor som är vilken."
    },
    {
     "n": 9,
-    "title": "Jämför mot alternativen",
-    "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
-    "tier": "essential"
+    "tier": "essential",
+    "title": "Mät alternativen",
+    "text": "A: svart ~68 % / ljus ~32 % (för sned). B: svart ~58 % / ljus ~42 %. C: svart ~44 % / ljus ~56 %. D: svart ~34 % / ljus ~67 % (för sned åt andra hållet)."
    },
    {
     "n": 10,
-    "title": "Verifiera storleksordning",
-    "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
-    "tier": "detail"
+    "tier": "essential",
+    "title": "Matcha rätt sektor mot rätt grupp",
+    "text": "Läkarbesök = 43 %, andra = 57 %. C:s svarta sektor (~44 %) motsvarar läkarbesöken och den ljusa (~56 %) de andra personalkategorierna. B (~58/42) skulle i stället göra läkarbesöken till majoritet - fel."
    },
    {
     "n": 11,
+    "tier": "essential",
     "title": "Slutsats",
-    "text": "Svar: C. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
-    "tier": "essential"
+    "text": "Svaret är C. Insikten i en mening: vid en tvådelad fördelning nära 50/50 avgör den EXAKTA sektorstorleken - 43 mot 57 - vilken av de nästan lika alternativen (C mot B) som stämmer."
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att välja A om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är C."
+    "why_tempting": "A visar en tvådelad cirkel med tydlig majoritet, och den som gissar att läkarbesök 'borde' dominera väljer den stora svarta sektorn.",
+    "why_wrong": "A:s split är ~68/32 - alldeles för snett. Ingen grupp når 68 %; den större (andra personalkategorier) är bara 57 %. A överdriver övervikten."
    },
    {
     "letter": "B",
-    "why_tempting": "Många stannar vid välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är C."
+    "why_tempting": "B ligger nära rätt (~58/42) och är den farligaste distraktorn - nästan samma proportion som C, bara med sektorerna omkastade.",
+    "why_wrong": "B gör den svarta sektorn till ~58 %. Om svart = läkarbesök blir de 58 % (men de är 43 %); om svart = andra blir andelarna 58/42 i stället för 57/43. Den exakta matchningen 43/57 kräver C, där den svarta sektorn är ~44 % = läkarbesökens andel."
    },
    {
     "letter": "D",
-    "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är C."
+    "why_tempting": "D visar också en nästan jämn tvådelning och lockar om man kastar om vilken grupp som är störst.",
+    "why_wrong": "D:s split är ~34/67 - för snett. Den större sektorn (67 %) överstiger 'andra personalkategoriers' faktiska 57 %. Rätt är den mildare övervikten 57/43, som C visar."
    }
-  ]
+  ],
+  "pitfall": "Fällan är att nöja sig med 'ungefär hälften/hälften' och välja fel av de två närliggande alternativen (B mot C). Botemedlet: räkna andelen exakt (43,0 % läkarbesök) och matcha den mot den mindre sektorn - B:s ~58 % gör fel grupp till majoritet.",
+  "pregrade_tactic": {
+   "handle": "Tvådelningsavläsningen",
+   "move": "Läs de två summorna på TOTALT-raden, dela med 63 882,4, och matcha den exakta 43/57-delningen mot cirkeln - se till att den MINDRE sektorn (43 %) motsvarar läkarbesöken."
+  },
+  "framework_id": "DTK-TACTIC-003",
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
  }
 }
