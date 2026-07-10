@@ -24,6 +24,16 @@
 //   ?devMinutes=N   → isDevSurface()-gated only: overrides the 55-minute
 //                     duration for manual timeout/auto-submit testing.
 //                     Never read outside a dev surface.
+//   ?half=verbal|kvant&prescribed=1 → the scheduler's Kallelse mock item
+//                     (lib/scheduler.ts mockItem) links here with the
+//                     prescribed half. Seeds the picker's half toggle on
+//                     mount so tapping Starta from the summons lands
+//                     directly on the half the scheduler steered towards,
+//                     rather than always defaulting to Verbal. `prescribed`
+//                     is accepted but not read — the half alone is enough
+//                     signal; it exists for possible future instrumentation
+//                     (e.g. distinguishing a prescribed start from a picker
+//                     start) and to keep the URL self-describing.
 //
 // Session metadata (mode/half/examId/provpass): the `sessions` table has
 // no dedicated columns for these — `StartBody.sections` (worker/src/
@@ -70,7 +80,13 @@ import { listAuthenticPasses, type PassOption, pickSynthetic, resolveAuthentic }
 import { logMockEvent } from '@/lib/mockEvents'
 import { sheetFromAttempts } from '@/lib/mockSheet'
 
-export type ProvSearch = { result?: number; run?: 1; devMinutes?: number }
+export type ProvSearch = {
+  result?: number
+  run?: 1
+  devMinutes?: number
+  half?: MockHalf
+  prescribed?: 1
+}
 
 /** `sessions.sections` encoding for a mock session — see the header
  *  comment. `examId`/`provpass` are empty-string, not omitted, for a
@@ -122,6 +138,8 @@ export function validateSearch(input: Record<string, unknown>): ProvSearch {
   ) {
     out.devMinutes = Number(devMinutes)
   }
+  if (input.half === 'verbal' || input.half === 'kvant') out.half = input.half
+  if (input.prescribed === 1 || input.prescribed === '1') out.prescribed = 1
   return out
 }
 
@@ -185,7 +203,7 @@ type RunningState = {
 
 function ProvRoute() {
   const navigate = useNavigate()
-  const { result: resultId, devMinutes } = Route.useSearch()
+  const { result: resultId, devMinutes, half: prescribedHalf } = Route.useSearch()
   const resultsQuery = useMockResults()
   const exposureQuery = useExposure()
   const activeMock = useActiveSessionOfKind('mock')
@@ -198,7 +216,11 @@ function ProvRoute() {
   // is found on mount.
   const [phase, setPhase] = useState<'picker' | 'instructions' | 'running'>('picker')
   const [mode, setMode] = useState<MockMode>('authentic')
-  const [half, setHalf] = useState<MockHalf>('verbal')
+  // Seeded from `?half=` (the Kallelse summons's prescribed half) when
+  // present, so tapping Starta from Home lands the picker directly on the
+  // scheduler's steered half instead of always defaulting to Verbal. A
+  // bare /prov visit (no query param) keeps the Verbal default.
+  const [half, setHalf] = useState<MockHalf>(prescribedHalf ?? 'verbal')
   const [bank, setBank] = useState<readonly Question[] | null>(null)
   const [passes, setPasses] = useState<PassOption[]>([])
   const [running, setRunning] = useState<RunningState | null>(null)

@@ -291,6 +291,22 @@ describe('validateSearch', () => {
     expect(validateSearch({})).toEqual({})
     expect(validateSearch({ unrelated: 'x' })).toEqual({})
   })
+
+  it('parses half=verbal|kvant from the Kallelse summons link', () => {
+    expect(validateSearch({ half: 'verbal' })).toEqual({ half: 'verbal' })
+    expect(validateSearch({ half: 'kvant' })).toEqual({ half: 'kvant' })
+  })
+
+  it('ignores an unrecognized half value', () => {
+    expect(validateSearch({ half: 'quant' })).toEqual({})
+    expect(validateSearch({ half: 'Verbal' })).toEqual({})
+  })
+
+  it('parses prescribed=1 (number or string)', () => {
+    expect(validateSearch({ prescribed: 1 })).toEqual({ prescribed: 1 })
+    expect(validateSearch({ prescribed: '1' })).toEqual({ prescribed: 1 })
+    expect(validateSearch({ prescribed: 2 })).toEqual({})
+  })
 })
 
 describe('resolveDurationMs', () => {
