@@ -16,11 +16,18 @@
 // Cmd+K. Keep flat for now.
 
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
-
+import { useRef, useState } from 'react'
+import type { DataExportEnvelope } from '@/api/hooks/useDataExport'
+import {
+  downloadExport,
+  parseImportFile,
+  useExportData,
+  useImportData,
+} from '@/api/hooks/useDataExport'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Hairline, Mono, Stack } from '@/components/primitives'
+import { ImportConfirmSheet } from '@/components/settings/ImportConfirmSheet'
 import { clearDiagnosticMemory, loadDiagnosticMemory } from '@/lib/diagnosticMemory'
 
 export const Route = createFileRoute('/avancerat')({
@@ -40,6 +47,46 @@ function AvanceratScreen() {
     clearDiagnosticMemory()
     setHasMemory(false)
     setConfirmingReset(false)
+  }
+
+  // ── Data export/import (task #28) ─────────────────────────────────────
+  const exportData = useExportData()
+  const importData = useImportData()
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const [pendingImport, setPendingImport] = useState<DataExportEnvelope | null>(null)
+  const [importError, setImportError] = useState<string | null>(null)
+  const [importDone, setImportDone] = useState(false)
+
+  const handleExportClick = async () => {
+    setImportError(null)
+    const envelope = await exportData.mutateAsync()
+    downloadExport(envelope)
+  }
+
+  const handleImportFileChosen = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    e.target.value = '' // allow re-picking the same file later
+    if (!file) return
+    setImportError(null)
+    setImportDone(false)
+    try {
+      const envelope = await parseImportFile(file)
+      setPendingImport(envelope)
+    } catch (err) {
+      setImportError(err instanceof Error ? err.message : 'Kunde inte läsa filen.')
+    }
+  }
+
+  const handleImportConfirm = async () => {
+    if (!pendingImport) return
+    try {
+      await importData.mutateAsync(pendingImport)
+      setImportDone(true)
+    } catch (err) {
+      setImportError(err instanceof Error ? err.message : 'Importen misslyckades.')
+    } finally {
+      setPendingImport(null)
+    }
   }
 
   return (
@@ -101,6 +148,61 @@ function AvanceratScreen() {
             <Hairline />
 
             <Stack gap={8}>
+              <Mono>Din data</Mono>
+              <div style={{ fontSize: 14, lineHeight: 1.5, color: 'var(--ink-2)' }}>
+                Exportera allt HP-Coach vet om dig — pass, misstag, inställningar, provresultat —
+                som en JSON-fil. Bra som backup, eller om du vill ta med dig din data.
+              </div>
+              <Btn
+                onClick={handleExportClick}
+                data-testid="avancerat-export-data"
+                variant="ghost"
+                disabled={exportData.isPending}
+              >
+                {exportData.isPending ? 'Exporterar…' : 'Exportera min data'}
+              </Btn>
+
+              <div style={{ fontSize: 14, lineHeight: 1.5, color: 'var(--ink-2)', marginTop: 8 }}>
+                Importera en tidigare export. Detta ersätter all din nuvarande data — du får
+                bekräfta innan något skrivs.
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="application/json"
+                data-testid="avancerat-import-file-input"
+                onChange={handleImportFileChosen}
+                style={{ display: 'none' }}
+              />
+              <Btn
+                onClick={() => fileInputRef.current?.click()}
+                data-testid="avancerat-import-data"
+                variant="ghost"
+                disabled={importData.isPending}
+              >
+                {importData.isPending ? 'Importerar…' : 'Importera data'}
+              </Btn>
+              {importError && (
+                <div
+                  data-testid="avancerat-import-error"
+                  style={{ fontSize: 13, color: 'var(--danger, #b3261e)' }}
+                >
+                  {importError}
+                </div>
+              )}
+              {importDone && (
+                <div
+                  data-testid="avancerat-import-done"
+                  style={{ fontSize: 13, color: 'var(--accent)' }}
+                >
+                  Klart — din data är återställd.
+                </div>
+              )}
+            </Stack>
+
+            <Hairline />
+
+            <Stack gap={8}>
               <Mono>Feedback (dogfood)</Mono>
               <div style={{ fontSize: 14, lineHeight: 1.5, color: 'var(--ink-2)' }}>
                 Förklaringar du har markerat med 👎 hamnar i Feedback-fliken — exportera dem
@@ -129,6 +231,12 @@ function AvanceratScreen() {
           </Stack>
         </div>
       </Page>
+      {pendingImport && (
+        <ImportConfirmSheet
+          onConfirm={handleImportConfirm}
+          onCancel={() => setPendingImport(null)}
+        />
+      )}
     </MobileFrame>
   )
 }
