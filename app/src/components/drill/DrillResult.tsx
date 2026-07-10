@@ -278,7 +278,8 @@ function FacitRow({
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: 11,
-            color: 'var(--muted-2)',
+            // WCAG AA: --muted-2 fails 4.5:1 at 11px — --muted passes.
+            color: 'var(--muted)',
             fontVariantNumeric: 'tabular-nums',
           }}
         >
@@ -302,7 +303,9 @@ function FacitRow({
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: 11,
-            color: ok ? 'var(--muted-2)' : 'var(--bad)',
+            // WCAG AA: --muted-2 fails 4.5:1 at 11px — --muted passes.
+            // --bad already passes for the wrong-answer branch.
+            color: ok ? 'var(--muted)' : 'var(--bad)',
             fontVariantNumeric: 'tabular-nums',
             whiteSpace: 'nowrap',
           }}
@@ -352,7 +355,9 @@ const quietWord: CSSProperties = {
   fontSize: 11,
   letterSpacing: '0.08em',
   textTransform: 'uppercase',
-  color: 'var(--muted-2)',
+  // WCAG AA: --muted-2 fails 4.5:1 at 11px for this real button/link
+  // text ("stäng granskning" etc.) — --muted passes.
+  color: 'var(--muted)',
 }
 
 const ctaReset: CSSProperties = {

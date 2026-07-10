@@ -485,7 +485,11 @@ function renderClozeText(text: string, currentNumber: number, gapSet: Set<number
           color: active ? 'var(--accent)' : 'var(--muted)',
           fontWeight: active ? 700 : 400,
           background: active ? 'var(--accent-soft)' : 'transparent',
-          borderBottom: `2px solid ${active ? 'var(--accent)' : 'var(--muted-2)'}`,
+          // WCAG 2.2 SC 1.4.11 non-text contrast (3:1): --muted-2 measures
+          // ~2.6-3.2:1 against the panel/bg tokens — too close to/below
+          // the 3:1 floor for this state-bearing underline. --muted
+          // clears it comfortably (~6.2-6.9:1).
+          borderBottom: `2px solid ${active ? 'var(--accent)' : 'var(--muted)'}`,
           lineHeight: 1.2,
         }}
       >

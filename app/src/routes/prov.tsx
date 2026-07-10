@@ -628,7 +628,8 @@ export function Picker({ mode, half, onModeChange, onHalfChange, passes, onStart
                 fontFamily: 'var(--font-display)',
                 fontStyle: 'italic',
                 fontSize: 13,
-                color: 'var(--muted-2)',
+                // WCAG AA: --muted-2 fails 4.5:1 at 13px — --muted passes.
+                color: 'var(--muted)',
                 margin: '10px 0 0 0',
               }}
             >

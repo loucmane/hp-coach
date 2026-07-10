@@ -123,7 +123,11 @@ function KallelseBody({
           fontSize: 11,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
-          color: 'var(--accent)',
+          // WCAG AA: --accent on --accent-soft measures ~3.01:1 at this
+          // 11px size — fails the 4.5:1 normal-text threshold (axe-core
+          // audit). --ink passes; the accent-soft fill + accent top
+          // border already carry the "Kallelse" visual identity.
+          color: 'var(--ink)',
         }}
       >
         Kallelse · Provpass

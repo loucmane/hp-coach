@@ -445,7 +445,10 @@ export function StyleA({
                           lineHeight: 1.45,
                           letterSpacing: '-0.005em',
                           fontWeight: isPicked ? 500 : 400,
-                          color: isWrong ? 'var(--muted-2)' : 'var(--ink)',
+                          // WCAG AA: --muted-2 fails 4.5:1 at this size
+                          // (the non-ORD clamp bottoms out at 15px, below
+                          // the large-text exemption) — --muted passes.
+                          color: isWrong ? 'var(--muted)' : 'var(--ink)',
                           // Strikethrough on wrong-picked text makes the
                           // "this was the wrong choice" reading instant —
                           // even before the eye gets to the bad-rail.

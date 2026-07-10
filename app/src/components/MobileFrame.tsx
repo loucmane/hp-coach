@@ -180,7 +180,10 @@ function BottomTabs({
                 cursor: 'pointer',
                 padding: floating ? '8px 14px' : '6px 12px',
                 borderRadius: floating ? 999 : 0,
-                color: on ? 'var(--ink)' : 'var(--muted-2)',
+                // WCAG AA: --muted-2 fails 4.5:1 at this 10-12px label
+                // size (confirmed by axe-core audit) — --muted passes
+                // while keeping the inactive/active visual distinction.
+                color: on ? 'var(--ink)' : 'var(--muted)',
                 fontFamily: 'inherit',
               }}
             >
@@ -257,24 +260,36 @@ export function MobileFrame({
       {/* Phase A.8 — DesktopNav removed; the <Page> shell each screen
        *  wraps in provides the editorial running-head + status-line
        *  chrome at reader/studio. Phone keeps its bottom-tab nav
-       *  (touch needs a visible nav target). */}
-      <div
-        style={{
-          flex: 1,
-          position: 'relative',
-          // Phone: vertical scroll so content taller than the artboard
-          // (Home with 3 traps + a 4-item plan; Lektion with all 25
-          // entries; Drill miss-list with 10+ rows) reaches its end
-          // instead of clipping under the floating tab bar. The
-          // children pad their own bottom by var(--frame-tabbar) so
-          // the last row clears the BottomTabs strip.
-          overflowY: isPhone ? 'auto' : 'visible',
-          overflowX: isPhone ? 'hidden' : 'visible',
-          ...(isPhone ? {} : { display: 'flex', flexDirection: 'column' }),
-        }}
-      >
-        {children}
-      </div>
+       *  (touch needs a visible nav target).
+       *
+       * a11y: rendered as <main> only on phone (isPhone) — at
+       * reader/studio, <Page>'s RailShell already owns the <main>
+       * landmark (see NavRail.tsx's page-content div) since <Page> is a
+       * passthrough on phone and MobileFrame nests it. Two <main>s in
+       * the same document would themselves be a landmark violation, so
+       * this element is one or the other, never both. */}
+      {(() => {
+        const Content = isPhone ? 'main' : 'div'
+        return (
+          <Content
+            style={{
+              flex: 1,
+              position: 'relative',
+              // Phone: vertical scroll so content taller than the artboard
+              // (Home with 3 traps + a 4-item plan; Lektion with all 25
+              // entries; Drill miss-list with 10+ rows) reaches its end
+              // instead of clipping under the floating tab bar. The
+              // children pad their own bottom by var(--frame-tabbar) so
+              // the last row clears the BottomTabs strip.
+              overflowY: isPhone ? 'auto' : 'visible',
+              overflowX: isPhone ? 'hidden' : 'visible',
+              ...(isPhone ? {} : { display: 'flex', flexDirection: 'column' }),
+            }}
+          >
+            {children}
+          </Content>
+        )
+      })()}
       {tabs && isPhone && <BottomTabs active={activeTab} onChange={onTabChange} floating={false} />}
       {showIosChrome && <HomeIndicator />}
     </div>
