@@ -120,7 +120,8 @@ function HistorikRoute() {
               fontFamily: 'var(--font-mono)',
               fontSize: 11,
               letterSpacing: '0.06em',
-              color: 'var(--muted-2)',
+              // WCAG AA: --muted-2 fails 4.5:1 at 11px — --muted passes.
+              color: 'var(--muted)',
             }}
           >
             ← tillbaka hem

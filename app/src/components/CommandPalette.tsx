@@ -286,6 +286,7 @@ export function CommandPalette() {
           <input
             ref={inputRef}
             type="text"
+            aria-label="Sök kommandon"
             placeholder="Sök kommandon…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}

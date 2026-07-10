@@ -122,7 +122,8 @@ function MerRoute() {
                 fontFamily: 'var(--font-mono)',
                 fontSize: 11,
                 letterSpacing: '0.06em',
-                color: 'var(--muted-2)',
+                // WCAG AA: --muted-2 fails 4.5:1 at 11px — --muted passes.
+                color: 'var(--muted)',
               }}
             >
               ← tillbaka hem · esc fungerar också
@@ -194,7 +195,10 @@ function Word({
         fontSize: 12,
         letterSpacing: '0.1em',
         textTransform: 'uppercase',
-        color: active ? 'var(--ink)' : 'var(--muted-2)',
+        // WCAG AA: --muted-2 fails 4.5:1 at 12px for this settings-picker
+        // word — --muted passes while keeping the active/inactive
+        // distinction (active also gets an underline).
+        color: active ? 'var(--ink)' : 'var(--muted)',
         borderBottom: active ? '1px solid var(--accent)' : '1px solid transparent',
         paddingBottom: 2,
       }}

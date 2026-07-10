@@ -8,6 +8,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { Question } from '@/data/questions'
+import { formatViolations, runAxe } from '@/test/a11y'
 import { DrillResult } from './DrillResult'
 
 vi.mock('@/data/explanations', () => ({
@@ -104,5 +105,22 @@ describe('DrillResult (facit rebuild)', () => {
     expect(pass).toHaveTextContent('−0,07 mot snittet')
     // the section prognosis stat is also present
     expect(screen.getByTestId('drill-result-detaljer')).toHaveTextContent('ORD-prognos')
+  })
+
+  // WCAG 2.2 AA regression net (2026-07 a11y pass) — see the matching
+  // comment in DrillQuestion.test.tsx for what this does and doesn't
+  // cover (color-contrast is disabled; that's the live Playwright audit's
+  // job).
+  it('has no axe violations on the session-end summary', async () => {
+    render(<DrillResult summary={SUMMARY} onReplay={() => {}} onHome={() => {}} />)
+    const violations = await runAxe()
+    expect(violations, formatViolations(violations)).toEqual([])
+  })
+
+  it('has no axe violations with a facit row expanded', async () => {
+    render(<DrillResult summary={SUMMARY} onReplay={() => {}} onHome={() => {}} />)
+    fireEvent.click(screen.getByTestId('facit-row-2'))
+    const violations = await runAxe()
+    expect(violations, formatViolations(violations)).toEqual([])
   })
 })

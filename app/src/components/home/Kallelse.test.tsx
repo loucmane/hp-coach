@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { __resetMockEvents, loadMockEvents } from '@/lib/mockEvents'
 import type { PlanItem } from '@/lib/scheduler'
+import { formatViolations, runAxe } from '@/test/a11y'
 import { Kallelse } from './Kallelse'
 
 function mockItem(overrides: Partial<PlanItem> = {}): PlanItem {
@@ -71,6 +72,18 @@ describe('Kallelse', () => {
     rerender(<Kallelse item={mockItem()} onStart={() => {}} forceLayout="phone" />)
     const events = loadMockEvents().filter((e) => e.type === 'provpassdag_shown')
     expect(events).toHaveLength(1)
+  })
+
+  // WCAG 2.2 AA regression net (2026-07 a11y pass). This component's
+  // "Kallelse · Provpass" eyebrow used --accent text on --accent-soft
+  // background, which measured ~3.01:1 — below the 4.5:1 AA threshold —
+  // and was fixed to --ink (see Kallelse.tsx). jsdom can't compute real
+  // paint contrast so color-contrast stays disabled here; this guards
+  // the DOM-shape half (accessible names, aria wiring) instead.
+  it('has no axe violations', async () => {
+    render(<Kallelse item={mockItem()} onStart={() => {}} forceLayout="phone" />)
+    const violations = await runAxe()
+    expect(violations, formatViolations(violations)).toEqual([])
   })
 
   it('renders the desktop composition wrapped in a KALLELSE rail section', () => {

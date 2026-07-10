@@ -166,7 +166,8 @@ export function MockResult({ result }: Props) {
               fontFamily: 'var(--font-display)',
               fontStyle: 'italic',
               fontSize: 13,
-              color: 'var(--muted-2)',
+              // WCAG AA: --muted-2 fails 4.5:1 at 13px — --muted passes.
+              color: 'var(--muted)',
               marginTop: 8,
             }}
           >
@@ -287,7 +288,9 @@ export function MockResult({ result }: Props) {
           {ownHistory.length === 0 ? (
             <p
               data-testid="mock-result-history-empty"
-              style={{ fontFamily: 'var(--font-display)', color: 'var(--muted-2)', margin: 0 }}
+              // WCAG AA: --muted-2 fails 4.5:1 at the inherited (16px)
+              // body size — --muted passes.
+              style={{ fontFamily: 'var(--font-display)', color: 'var(--muted)', margin: 0 }}
             >
               Inga tidigare pass av samma sort ännu.
             </p>

@@ -356,7 +356,10 @@ function Sparkline({ weekly }: { weekly: WeeklyBucket[] }) {
 
   const monoText = {
     fontSize: '9.5',
-    fill: 'var(--muted-2)',
+    // WCAG AA: --muted-2 fails 4.5:1 for this rendered SVG <text> (axis
+    // tick labels) — the parent svg's aria-label doesn't exempt visually
+    // rendered text from the contrast requirement. --muted passes.
+    fill: 'var(--muted)',
     fontFamily: 'var(--font-mono)',
   } as const
 
@@ -389,7 +392,9 @@ function Sparkline({ weekly }: { weekly: WeeklyBucket[] }) {
             key={d}
             d={d}
             fill="none"
-            stroke="var(--muted-2)"
+            // WCAG 2.2 non-text contrast (3:1): --muted-2 is marginal/
+            // below 3:1 against the panel/bg tokens — --muted clears it.
+            stroke="var(--muted)"
             strokeWidth={1.25}
             strokeDasharray="2 4"
           />
@@ -622,7 +627,9 @@ function FokusItem({ s, index }: { s: SectionScore; index: number }) {
           <Link
             to="/lektion"
             search={{ section: s.section }}
-            style={{ ...actionWord, color: 'var(--muted-2)' }}
+            // WCAG AA: --muted-2 fails 4.5:1 at this link's size —
+            // --muted passes.
+            style={{ ...actionWord, color: 'var(--muted)' }}
           >
             läs lektion
           </Link>

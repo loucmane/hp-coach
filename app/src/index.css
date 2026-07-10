@@ -32,6 +32,14 @@
   --ink: oklch(0.18 0.011 70);
   --ink-2: oklch(0.32 0.013 70);
   --muted: oklch(0.51 0.017 70);
+  /* --muted-2 measures ~2.6-3.2:1 against --bg/--panel/--panel-2 across
+   * all 4 palettes (WCAG AA a11y pass, 2026-07) — below the 4.5:1
+   * normal-text threshold. It is safe for large text (≥18.66px / ≥14px
+   * bold), decorative/aria-hidden glyphs, and non-text UI (borders,
+   * hover fills) which only need 3:1, but NOT for small informational
+   * text. Every text-color usage of --muted-2 in this file was swapped
+   * to --muted (which passes ~6.2-6.9:1) during that pass — don't
+   * reintroduce --muted-2 as a text color without checking contrast. */
   --muted-2: oklch(0.68 0.014 70);
   --hairline: oklch(0.88 0.012 70);
   --hairline-2: oklch(0.92 0.012 70);
@@ -723,7 +731,7 @@ details[open] > summary .hpc-lesson-practice {
 .hpc-m3-stmt-n {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--muted-2);
+  color: var(--muted);
   font-variant-numeric: tabular-nums;
   padding-top: 4px;
 }
@@ -793,7 +801,7 @@ details[open] > summary .hpc-lesson-practice {
 .hpc-m3-opt-k {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--muted-2);
+  color: var(--muted);
   padding: 15px 0;
   text-transform: lowercase;
   font-variant-numeric: tabular-nums;
@@ -811,7 +819,7 @@ details[open] > summary .hpc-lesson-practice {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding-right: 14px;
-  color: var(--muted-2);
+  color: var(--muted);
   white-space: nowrap;
 }
 .hpc-m3-opt.is-ok {
@@ -844,7 +852,7 @@ details[open] > summary .hpc-lesson-practice {
 }
 .hpc-m3-opt.is-dim .hpc-m3-opt-t,
 .hpc-m3-opt.is-dim .hpc-m3-opt-k {
-  color: var(--muted-2);
+  color: var(--muted);
 }
 .hpc-m3-opts.is-prose .hpc-m3-opt {
   align-items: start;
@@ -1154,7 +1162,7 @@ details[open] > summary .hpc-lesson-practice {
 .hpc-m3-plan-min {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--muted-2);
+  color: var(--muted);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -1187,7 +1195,7 @@ details[open] > summary .hpc-lesson-practice {
 .hpc-m3-trap-n {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--muted-2);
+  color: var(--muted);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -1223,7 +1231,7 @@ details[open] > summary .hpc-lesson-practice {
 .hpc-m3-keys {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--muted-2);
+  color: var(--muted);
   margin-top: 14px;
   letter-spacing: 0.06em;
 }
@@ -1275,7 +1283,7 @@ details[open] > summary .hpc-lesson-practice {
   font-weight: 400;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--muted-2);
+  color: var(--muted);
   margin-left: 10px;
   vertical-align: 3px;
 }
@@ -1305,7 +1313,7 @@ details[open] > summary .hpc-lesson-practice {
   font-family: var(--font-mono);
   font-weight: 400;
   font-size: 12px;
-  color: var(--muted-2);
+  color: var(--muted);
   margin-right: 8px;
 }
 /* M3.tsx L538 */

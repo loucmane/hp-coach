@@ -159,7 +159,11 @@ export function L1Chip({ id, size = 'md', locked = false, onClick }: L1ChipProps
         background: locked ? 'transparent' : 'var(--panel-2)',
         border: '1px solid var(--hairline)',
         borderRadius: 4,
-        color: locked ? 'var(--muted-2)' : 'var(--ink-2)',
+        // WCAG AA: --muted-2 fails 4.5:1 at this 10.5-11px chip label —
+        // --muted passes. Not a native `disabled` control (still
+        // clickable-looking with a title tooltip), so the AA exemption
+        // for disabled UI doesn't apply.
+        color: locked ? 'var(--muted)' : 'var(--ink-2)',
         cursor: locked ? 'default' : 'pointer',
         fontWeight: 500,
       }}

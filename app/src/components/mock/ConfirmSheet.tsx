@@ -165,7 +165,8 @@ export function ConfirmSheet({ half, onConfirm, onDismiss }: ConfirmSheetProps) 
               fontFamily: 'var(--font-mono)',
               fontSize: 12,
               letterSpacing: MONO_TRACK,
-              color: 'var(--muted-2)',
+              // WCAG AA: --muted-2 fails 4.5:1 at 12px — --muted passes.
+              color: 'var(--muted)',
               cursor: 'pointer',
             }}
           >

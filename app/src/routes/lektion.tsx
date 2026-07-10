@@ -279,7 +279,15 @@ function PickerBody() {
                     }}
                   >
                     {isWeakest && (
-                      <span data-testid="lektion-svagast" style={{ color: 'var(--accent)' }}>
+                      // WCAG AA: --accent measures ~3.65:1 on the Sand-light
+                      // default at this 11px size — fails the 4.5:1
+                      // normal-text threshold (axe-core audit). --ink
+                      // passes; the word "svagast" itself carries the
+                      // signal, not just the color.
+                      <span
+                        data-testid="lektion-svagast"
+                        style={{ color: 'var(--ink)', fontWeight: 600 }}
+                      >
                         svagast
                       </span>
                     )}

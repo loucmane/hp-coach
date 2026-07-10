@@ -9,6 +9,7 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
 import type { Question } from '@/data/questions'
+import { formatViolations, runAxe } from '@/test/a11y'
 import { DrillQuestion } from './DrillQuestion'
 
 // Explanation fetch is out of scope (test fetch shim only serves /data/).
@@ -94,6 +95,33 @@ describe('DrillQuestion pre-answer apparatus', () => {
     expect(
       screen.queryByText('Tangenter a–e väljer · klick fungerar också'),
     ).not.toBeInTheDocument()
+  })
+
+  // WCAG 2.2 AA regression net (2026-07 a11y pass). jsdom can't compute
+  // real layout/paint, so color-contrast is disabled here — that's
+  // covered by the Playwright + @axe-core/playwright live audit instead
+  // (see a11y-audit-{before,after}.json at the repo root). This catches
+  // the DOM-shape classes of violation: missing accessible names,
+  // landmark/label wiring, aria attribute misuse.
+  it('has no axe violations pre-answer', async () => {
+    render(
+      <DrillQuestion
+        question={ORD_QUESTION}
+        picked={null}
+        graded={false}
+        onPick={() => {}}
+        position={3}
+        total={10}
+      />,
+    )
+    const violations = await runAxe()
+    expect(violations, formatViolations(violations)).toEqual([])
+  })
+
+  it('has no axe violations graded (options revealed correct/incorrect)', async () => {
+    render(<DrillQuestion question={ORD_QUESTION} picked={'B'} graded={true} onPick={() => {}} />)
+    const violations = await runAxe()
+    expect(violations, formatViolations(violations)).toEqual([])
   })
 })
 

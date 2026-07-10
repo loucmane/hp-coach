@@ -94,12 +94,16 @@ export function RailShell({
       }}
     >
       <NavRail collapsed={collapsed} onToggle={toggle} />
-      <div
+      {/* a11y: <main> landmark — the sibling <NavRail> above is an
+       *  <aside>, so this is the one-and-only main-content region at
+       *  reader/studio viewport (see MobileFrame.tsx for the phone
+       *  equivalent, which is mutually exclusive with this one). */}
+      <main
         data-testid="page-content"
         style={{ minWidth: 0, display: 'flex', flexDirection: 'column' }}
       >
         {children}
-      </div>
+      </main>
     </div>
   )
 }
@@ -120,7 +124,11 @@ const footWord: CSSProperties = {
   fontSize: 11,
   letterSpacing: '0.1em',
   textTransform: 'uppercase',
-  color: 'var(--muted-2)',
+  // WCAG AA color-contrast: --muted-2 measures ~2.6-3.2:1 against the
+  // panel/bg tokens at this 11px size (fails the 4.5:1 normal-text
+  // threshold — confirmed by axe-core audit). --muted passes (~6.2-6.9:1)
+  // while staying visually "quiet" per the Boksidan footer-link idiom.
+  color: 'var(--muted)',
 }
 
 function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
@@ -159,7 +167,9 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
             boxSizing: 'border-box',
           }}
         >
-          <span style={{ color: 'var(--muted-2)', fontSize: 13 }}>»</span>
+          <span style={{ color: 'var(--muted)', fontSize: 13 }} aria-hidden>
+            »
+          </span>
           <span
             style={{
               fontFamily: 'var(--font-display)',
@@ -178,7 +188,7 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
             style={{
               fontFamily: 'var(--font-mono)',
               fontSize: 10,
-              color: 'var(--muted-2)',
+              color: 'var(--muted)',
               writingMode: 'vertical-rl',
               fontVariantNumeric: 'tabular-nums',
             }}
@@ -229,7 +239,12 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
               whiteSpace: 'nowrap',
             }}
           >
-            <span style={{ color: 'var(--muted-2)', fontStyle: 'normal', marginRight: 5 }}>⌜</span>
+            <span
+              style={{ color: 'var(--muted)', fontStyle: 'normal', marginRight: 5 }}
+              aria-hidden
+            >
+              ⌜
+            </span>
             HP-Coach
           </span>
         </Link>
@@ -266,7 +281,14 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
                 fontSize: 12,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: active ? 'var(--accent)' : 'var(--ink-2)',
+                // WCAG AA: --accent on the Sand-light default measures
+                // ~3.65:1 at this 12px size — below the 4.5:1 normal-text
+                // threshold (confirmed by axe-core audit). --ink always
+                // passes; the border-left + bold weight already carry the
+                // "active" signal so accent color isn't load-bearing here.
+                // Accent stays on the border (non-text UI, 3:1 threshold
+                // applies and it clears that).
+                color: active ? 'var(--ink)' : 'var(--ink-2)',
                 fontWeight: active ? 600 : 400,
                 padding: '11px 18px',
                 borderLeft: active ? '2px solid var(--accent)' : '2px solid transparent',
@@ -351,7 +373,9 @@ function NavSignal({ label }: { label: string }) {
         fontSize: 10,
         letterSpacing: '0.04em',
         textTransform: 'none',
-        color: 'var(--muted-2)',
+        // WCAG AA: --muted-2 fails 4.5:1 at 10px (see footWord comment
+        // above); --muted passes.
+        color: 'var(--muted)',
         fontVariantNumeric: 'tabular-nums',
         whiteSpace: 'nowrap',
         overflow: 'hidden',
@@ -386,7 +410,12 @@ function RailResume() {
             fontSize: 10,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
-            color: 'var(--muted)',
+            // WCAG AA: --muted on --accent-soft (this chip's background)
+            // measures ~4.31:1 at this size — just under the 4.5:1
+            // normal-text threshold (axe-core audit). --muted passes fine
+            // on the neutral bg/panel tokens; the more saturated
+            // accent-soft fill needs --ink-2 instead.
+            color: 'var(--ink-2)',
           }}
         >
           Påbörjad
@@ -406,7 +435,7 @@ function RailResume() {
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: 11,
-            color: 'var(--muted)',
+            color: 'var(--ink-2)',
             fontVariantNumeric: 'tabular-nums',
           }}
         >
