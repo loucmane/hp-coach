@@ -718,7 +718,7 @@
   ],
   "technique": "Vid x mot x^2: identifiera tre regimer beroende på var x ligger relativt 0 och 1. Trigger: \"jämför x och en potens av x\". Skriv ner skillnaden x - x^2 = x(1-x) och utnyttja olikhetsvillkoret direkt om det är samma uttryck.",
   "pitfall": "Botemedlet mot \"kvadrering förstorar alltid\": kvadrering FÖRMINSKAR i intervallet (0,1) och FÖRSTORAR utanför [0,1]; vid 0 och 1 är värdena lika.",
-  "framework_id": null,
+  "framework_id": "KVA-TRAP-018",
   "pregrade_tactic": {
    "handle": "Tre-regim-tricket",
    "move": "Vid x mot x²: bestäm vilket av intervallen (−∞, 0), (0, 1), (1, ∞) som x ligger i — i (0, 1) gäller x > x², i (1, ∞) gäller x² > x."
@@ -3049,7 +3049,7 @@
   ],
   "technique": "När en känd totalvikt fördelas på tre komponenter räcker två absoluta värden — den tredje är total − summa(övriga). Räkna ekvationer: en total + två kända = en obekant kvar.",
   "pitfall": "Att glömma att procent (0,4 %) och ppm (500/1 000 000) är olika skalor — båda måste översättas till samma absoluta enhet (gram) först. Botemedlet: gör alla mått till samma enhet innan du räknar.",
-  "framework_id": null,
+  "framework_id": "NOG-TRAP-002",
   "pregrade_tactic": {
    "handle": "Total-minus-summa-receptet",
    "move": "Vid tre komponenter med känd total: kräv två absoluta värden — sedan är det tredje deterministiskt via subtraktion."
@@ -3271,7 +3271,7 @@
   ],
   "technique": "I sannolikhets-NOG med tre uteslutande kategorier: två P(union) räcker tillsammans med P-totalen = 1. Varje union ger komplementet av en kategori direkt.",
   "pitfall": "Att tro att \"röd eller blå\" är samma som \"röd\" — det är komplementet till grön. Botemedlet: skriv ner alla tre sannolikheter med variabler och använd sum = 1 explicit.",
-  "framework_id": null,
+  "framework_id": "NOG-TRAP-002",
   "pregrade_tactic": {
    "handle": "Komplement-i-trippeln",
    "move": "Vid tre uteslutande utfall: varje P(A∪B) = 1 − P(C) — använd två sådana + totalen för att låsa alla tre."
@@ -13253,7 +13253,7 @@
   ],
   "technique": "Skärningspunkt mellan två linjer: likställ y-uttrycken, lös för x, sätt sedan in x i den enklaste linjen för att få y. Multiplicera bort nämnare först om bråk är inblandade.",
   "pitfall": "Att glömma multiplicera båda led med nämnarens 3 INNAN man samlar termer — leder ofta till räknefel i mellansteg där x-koefficienten halveras eller förskjuts.",
-  "framework_id": null,
+  "framework_id": "XYZ-TRAP-014",
   "pregrade_tactic": {
    "handle": "Korsskärningen",
    "move": "Sätt y-uttrycken lika, rensa nämnare med multiplikation, och beräkna x först; sätt sedan in x i den linje med enklast intercept för att få y."
