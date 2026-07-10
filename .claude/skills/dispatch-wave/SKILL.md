@@ -42,6 +42,26 @@ Every dispatch prompt must carry:
 7. Known gotchas relevant to the task (PUA / escape rule for
    math sentinels; canonical-vs-served data stores both need the patch;
    line numbers may have shifted — locate by content).
+8. **The anti-park rule (verbatim, in every prompt with long-running
+   steps):** "Never launch a background job and then wait for its
+   completion notification — notifications are not a reliable wake
+   signal for you. Run long steps as foreground commands in ≤2-minute
+   batches, or poll a background job's output artifact in a bounded
+   foreground loop. If any single step blocks >2 minutes, record the
+   blocker, descope it explicitly, and keep moving." (Two agents parked
+   this way on 2026-07-10 — each burned ~15 idle minutes before
+   detection.)
+
+## Stall detection & recovery (orchestrator)
+
+An agent whose transcript mtime is frozen for >5 minutes
+(`stat -c '%y' ~/.claude/projects/<proj>/<session>/subagents/agent-<id>.jsonl`)
+is parked, not thinking. Recovery that preserves context: TaskStop it,
+then SendMessage the SAME agentId with a corrective ("you are the
+implementer; nothing is running for you to wait on; continue from where
+you are") — the resume keeps its accumulated reading AND salvages any
+commits a nested worker landed. Re-dispatch fresh only if the resumed
+agent parks again.
 
 ## Dispatch mechanics
 
