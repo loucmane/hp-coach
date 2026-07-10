@@ -81,7 +81,14 @@ fraction of generation. Per completed agent:
    the agent's report — verification-before-completion).
 3. Artifact-specific check: Read produced images for figure work; render/
    screenshot for UI-visible changes; shape-validate JSON against schema.
-4. If it fails review: SendMessage to the SAME agent (context intact) with
+4. Run EVERY CI gate the agent reported skipping — especially
+   `pnpm exec biome check src` (agents routinely can't run it in their
+   worktree and note "lint skipped" in the residue; twice that residue
+   became a red CI run, 2026-07-10 PR #233 the second time). Read the
+   residue list as a checklist of what YOU must run before pushing, not
+   as informational. `biome check --write` auto-fixes format/import-sort;
+   re-run the suite after.
+5. If it fails review: SendMessage to the SAME agent (context intact) with
    the specific defect — far cheaper than a fresh agent re-learning the
    repo. Verifier *fleets* (adversarial skeptics) only pay off for
    content/vision corpora at scale, not code PRs.
