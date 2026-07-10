@@ -217,6 +217,54 @@ describe('useDailyPlan — day-boundary recompute', () => {
   })
 })
 
+describe('useDailyPlan — mockPrescription (PR-3 wiring)', () => {
+  beforeEach(() => {
+    vi.useRealTimers()
+    localStorage.clear()
+    activeSessions = []
+    serverPlanData = null
+    putServerPlanMock.mockClear()
+    vi.setSystemTime(new Date('2026-05-18T10:00:00'))
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('is null while loading', () => {
+    const { result } = renderHook(() => useDailyPlan(), { wrapper: wrapper() })
+    // First render, synchronously: `hints` hasn't resolved yet (it's set by
+    // an effect), so isLoading is true and mockPrescription must not have
+    // been computed from partial signals.
+    expect(result.current.isLoading).toBe(true)
+    expect(result.current.mockPrescription).toBeNull()
+  })
+
+  it('returns a mockPrescription matching prescribeMock for the resolved signals (baseline: no mock history → due:true)', async () => {
+    const { result } = renderHook(() => useDailyPlan(), { wrapper: wrapper() })
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+
+    expect(result.current.mockPrescription).not.toBeNull()
+    // Baseline (mockResultsData is empty — never mocked) → due immediately.
+    expect(result.current.mockPrescription?.due).toBe(true)
+    expect(result.current.mockPrescription?.daysSinceLast).toBeNull()
+  })
+
+  it('regenerate() recomputes mockPrescription', async () => {
+    const { result } = renderHook(() => useDailyPlan(), { wrapper: wrapper() })
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    const before = result.current.mockPrescription
+
+    act(() => {
+      result.current.regenerate()
+    })
+
+    await waitFor(() => expect(result.current.mockPrescription).not.toBeNull())
+    // Same signals → an equivalent (deep-equal) prescription, freshly computed.
+    expect(result.current.mockPrescription).toEqual(before)
+  })
+})
+
 describe('localDateString sanity (documents the day-boundary semantics)', () => {
   it('uses the browser LOCAL calendar, not UTC', () => {
     // 2026-05-18T23:30 local time is still "2026-05-18" locally even
