@@ -142,3 +142,57 @@ describe('deriveCompletion — allComplete reachable for an all-mastered plan (F
     expect(next.items.every((i) => i.completed)).toBe(true)
   })
 })
+
+describe('isItemComplete — kind "mock" via mock history (Provpass steering)', () => {
+  function mockPlanItem(half: 'verbal' | 'kvant', date = '2026-05-18'): PlanItem {
+    return {
+      id: `mock-${half}-${date}`,
+      kind: 'mock',
+      section: null,
+      headline: `Provpass · ${half === 'verbal' ? 'Verbal' : 'Kvantitativ'}`,
+      rationale: 'Dags för ditt första provpass — vi behöver en baslinje.',
+      estimatedMinutes: 55,
+      href: `/prov?half=${half}&prescribed=1`,
+      completed: false,
+    }
+  }
+
+  it('stays incomplete with no mock history at all', () => {
+    const item = mockPlanItem('verbal')
+    const plan = planWith([item])
+    expect(isItemComplete(item, plan, 0, new Set(), EMPTY_BY_SECTION, 0, [])).toBe(false)
+  })
+
+  it('stays incomplete when history only has the OTHER half', () => {
+    const item = mockPlanItem('verbal')
+    const plan = planWith([item])
+    const history = [
+      { half: 'kvant' as const, createdAt: new Date('2026-05-18T12:00:00').getTime() },
+    ]
+    expect(isItemComplete(item, plan, 0, new Set(), EMPTY_BY_SECTION, 0, history)).toBe(false)
+  })
+
+  it('completes once a matching-half result lands on/after the plan date', () => {
+    const item = mockPlanItem('verbal', '2026-05-18')
+    const plan = planWith([item])
+    const history = [
+      { half: 'verbal' as const, createdAt: new Date('2026-05-18T15:00:00').getTime() },
+    ]
+    expect(isItemComplete(item, plan, 0, new Set(), EMPTY_BY_SECTION, 0, history)).toBe(true)
+  })
+
+  it('ignores a matching-half result from BEFORE the plan date (stale history)', () => {
+    const item = mockPlanItem('verbal', '2026-05-18')
+    const plan = planWith([item])
+    const history = [
+      { half: 'verbal' as const, createdAt: new Date('2026-05-10T15:00:00').getTime() },
+    ]
+    expect(isItemComplete(item, plan, 0, new Set(), EMPTY_BY_SECTION, 0, history)).toBe(false)
+  })
+
+  it('defaults to incomplete when mockHistory is omitted (backward-compat)', () => {
+    const item = mockPlanItem('verbal')
+    const plan = planWith([item])
+    expect(isItemComplete(item, plan, 0, new Set(), EMPTY_BY_SECTION, 0)).toBe(false)
+  })
+})

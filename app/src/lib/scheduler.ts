@@ -17,7 +17,7 @@
 
 import type { Section } from '@/data/questions'
 import { REPETITION_SESSION_SIZE } from '@/lib/replay'
-import { rankWeakness, type SectionScore } from '@/lib/scoring'
+import { computeProjected, rankWeakness, type SectionScore } from '@/lib/scoring'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
 
 /** Average wall-clock minutes per repetition rep — used to estimate
@@ -27,7 +27,7 @@ import { SECTION_DURATIONS } from '@/lib/sectionDurations'
  *  the 10-question session cap. */
 const MINUTES_PER_REP = 0.75
 
-export type PlanItemKind = 'lesson' | 'drill' | 'repetition'
+export type PlanItemKind = 'lesson' | 'drill' | 'repetition' | 'mock'
 
 export type PlanItem = {
   /** Stable id for completion tracking. Deterministic per-day, so a
@@ -70,8 +70,13 @@ export type PlanItem = {
  *    weakest section, the drill item now points to that specific
  *    trap (`/drill?framework=NOG-TRAP-007`, headline names the
  *    trap, rationale cites recent miss count). Plans cached before
- *    this still prescribe generic section drills. */
-export const PLAN_SCHEMA_VERSION = 6
+ *    this still prescribe generic section drills.
+ *  - v7: Provpass (mock exam) steering — "Kallelsen färgad" (PR #218).
+ *    New `kind: 'mock'` anchor item (`/prov?half=X&prescribed=1`) can
+ *    now occupy item 1 and reduce the day to at most one companion
+ *    item. Plans cached before this never had a mock item even when
+ *    one was due. */
+export const PLAN_SCHEMA_VERSION = 7
 
 export type DailyPlan = {
   /** Schema version — see `PLAN_SCHEMA_VERSION`. Older plans are
@@ -134,6 +139,42 @@ export type SchedulerSignals = {
      *  data hasn't loaded yet — caller decides whether to wait. */
     headline: string | null
   }>
+  /** Provpass (mock exam) steering — "Kallelsen färgad" (owner-approved
+   *  2026-07-10, PR #218). Optional so existing call sites/tests that
+   *  don't care about mocks keep working; `prescribeMock` treats a
+   *  missing/empty history as "never mocked" (baseline case). */
+  mockHistory?: MockHistoryEntry[]
+  /** Days remaining until the target exam sitting — from
+   *  `daysUntil(sitting.date, now)` in `lib/dates.ts` (the same source
+   *  NavRail's "Höstprov 26 · N dagar" reads). Drives the cadence
+   *  interval. Missing defaults to the longest interval (14d) so an
+   *  unresolved exam date never falsely under-primes cadence. */
+  daysToExam?: number
+}
+
+/** Minimal shape `prescribeMock` needs from a mock-results row — a
+ *  structural subset of `MockResultRow` (app/src/api/hooks/
+ *  useMockResults.ts) so the scheduler doesn't import the API hook
+ *  module directly. */
+export type MockHistoryEntry = {
+  half: MockHalf
+  createdAt: number | string | null
+}
+
+export type MockHalf = 'verbal' | 'kvant'
+
+/** THE CONTRACT — a parallel surfaces-PR imports these exact names.
+ *  See prescribeMock below for the cadence rules. */
+export type MockPrescription = {
+  due: boolean
+  /** Which half to prescribe (stalest; tie → weaker-prognosis half). */
+  half: MockHalf
+  /** null = never mocked (either half). */
+  daysSinceLast: number | null
+  /** 0 when due; >= 1 otherwise. */
+  daysUntilNext: number
+  /** The active cadence interval (days) used for this prescription. */
+  interval: number
 }
 
 const LESSON_SCORE_THRESHOLD = 1.4
@@ -144,6 +185,132 @@ const DRILL_STALE_DAYS = 14
 const LONG_BREAK_DAYS = 14
 const MASTERY_FLOOR = 1.8
 const MAX_ITEMS = 3
+
+// ---------------------------------------------------------------------------
+// Provpass (mock exam) steering — "Kallelsen färgad" (PR #218 design).
+// ---------------------------------------------------------------------------
+
+/** Cadence interval (days) by proximity to the exam — tightens as the
+ *  exam approaches so staleness is caught sooner when it matters most. */
+const MOCK_INTERVAL_FAR = 14 // daysToExam > 35
+const MOCK_INTERVAL_MID = 10 // 14 <= daysToExam <= 35
+const MOCK_INTERVAL_NEAR = 7 // daysToExam < 14
+const MOCK_FAR_THRESHOLD = 35
+const MOCK_NEAR_THRESHOLD = 14
+
+const MOCK_MINUTES = 55
+
+/** Cadence interval (days) for the given proximity to the exam. Missing
+ *  `daysToExam` defaults to the longest (calmest) interval — an
+ *  unresolved exam date should never manufacture urgency. */
+export function mockCadenceInterval(daysToExam: number | undefined): number {
+  if (daysToExam == null) return MOCK_INTERVAL_FAR
+  if (daysToExam > MOCK_FAR_THRESHOLD) return MOCK_INTERVAL_FAR
+  if (daysToExam >= MOCK_NEAR_THRESHOLD) return MOCK_INTERVAL_MID
+  return MOCK_INTERVAL_NEAR
+}
+
+function toTimestamp(v: number | string | null): number | null {
+  if (v == null) return null
+  if (typeof v === 'number') return v
+  const parsed = new Date(v).getTime()
+  return Number.isFinite(parsed) ? parsed : null
+}
+
+/** Days between `now` and the most recent entry for a half, or null when
+ *  the half has never been mocked. Calendrical (local-midnight-anchored,
+ *  matching `daysUntil` in lib/dates.ts) so "practiced this morning,
+ *  checked again this evening" doesn't read as 1 day stale. */
+function daysSinceHalf(history: MockHistoryEntry[], half: MockHalf, now: Date): number | null {
+  let latest: number | null = null
+  for (const entry of history) {
+    if (entry.half !== half) continue
+    const ts = toTimestamp(entry.createdAt)
+    if (ts == null) continue
+    if (latest == null || ts > latest) latest = ts
+  }
+  if (latest == null) return null
+  const a = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())
+  const b = new Date(latest)
+  const bMid = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate())
+  return Math.round((a - bMid) / 86_400_000)
+}
+
+/** Prescribe the next Provpass (mock exam) — pure, exported, THE
+ *  CONTRACT. See `MockPrescription` for the shape; a parallel
+ *  surfaces-PR imports these exact names.
+ *
+ *  Cadence rules (STATIC, MVP — panel pedagogy spec):
+ *   - Baseline: zero completed mocks ever → due immediately, half =
+ *     the WEAKER half by prognosis (verbal vs kvant section scores).
+ *   - Staleness: interval(daysToExam) is 14 / 10 / 7 by proximity (see
+ *     `mockCadenceInterval`). Due when `daysSinceLast[half] >= interval`
+ *     for the STALEST half (largest daysSinceLast; never-mocked half
+ *     counts as infinitely stale). Tie on daysSinceLast → weaker-
+ *     prognosis half.
+ *   - The window slides silently: due stays true until a mock
+ *     completes. There is no stored "already prescribed today" state —
+ *     the result is purely signal-derived from `now` + history, so
+ *     calling this again tomorrow without a new mock still returns
+ *     `due: true` for the same (or a more overdue) half. */
+export function prescribeMock(signals: SchedulerSignals): MockPrescription {
+  const history = signals.mockHistory ?? []
+  const interval = mockCadenceInterval(signals.daysToExam)
+  const projected = computeProjected(signals.sectionScores)
+
+  // Weaker-prognosis half: lower score is weaker. Nulls (no signal for
+  // either half yet) fall back to 'verbal' — arbitrary but deterministic,
+  // matching the "pick the first half" spirit of other scheduler ties.
+  const weakerHalf: MockHalf =
+    projected.verbal != null && projected.quant != null
+      ? projected.quant < projected.verbal
+        ? 'kvant'
+        : 'verbal'
+      : 'verbal'
+
+  const daysSinceVerbal = daysSinceHalf(history, 'verbal', signals.now)
+  const daysSinceKvant = daysSinceHalf(history, 'kvant', signals.now)
+
+  const neverMocked = daysSinceVerbal == null && daysSinceKvant == null
+
+  if (neverMocked) {
+    return {
+      due: true,
+      half: weakerHalf,
+      daysSinceLast: null,
+      daysUntilNext: 0,
+      interval,
+    }
+  }
+
+  // Stalest half: largest daysSinceLast wins; a never-mocked half is
+  // infinitely stale (Infinity sorts above any finite day count).
+  const verbalStaleness = daysSinceVerbal ?? Number.POSITIVE_INFINITY
+  const kvantStaleness = daysSinceKvant ?? Number.POSITIVE_INFINITY
+
+  let stalestHalf: MockHalf
+  if (verbalStaleness === kvantStaleness) {
+    stalestHalf = weakerHalf
+  } else {
+    stalestHalf = verbalStaleness > kvantStaleness ? 'verbal' : 'kvant'
+  }
+
+  const stalestDaysSince = stalestHalf === 'verbal' ? daysSinceVerbal : daysSinceKvant
+  const staleness = stalestHalf === 'verbal' ? verbalStaleness : kvantStaleness
+  const due = staleness >= interval
+  const daysUntilNext = due
+    ? 0
+    : // Finite because `due` already handles the Infinity (never-mocked) case.
+      Math.max(1, interval - (stalestDaysSince as number))
+
+  return {
+    due,
+    half: stalestHalf,
+    daysSinceLast: stalestDaysSince,
+    daysUntilNext,
+    interval,
+  }
+}
 
 // Freshness/trend exemption for needsDrill — a section practiced within
 // this many days counts as "just practiced" for the exemption below.
@@ -163,6 +330,31 @@ export function generateDailyPlan(signals: SchedulerSignals): DailyPlan {
   const { now, sectionScores, dueMistakeCount, firstUnreadEntry } = signals
   const date = localDateString(now)
   const hasAnyAttempt = sectionScores.some((s) => s.score != null)
+
+  // Rule 0 — Provpass anchor. When a mock is due, it becomes the day's
+  // ANCHOR: item 1, plus at most one cheap due-repetition item, nothing
+  // else. Takes priority over cold start too — the baseline "never
+  // mocked" case IS a due prescription, and a fresh user with a mock due
+  // shouldn't get the generic diagnostic instead.
+  //
+  // Gated on `daysToExam` being provided: it's the signal that means
+  // "the caller has opted into Provpass steering" (useDailyPlan always
+  // supplies it in production). Callers/tests that only exercise the
+  // pre-existing lesson/drill/repetition rules and never pass
+  // `daysToExam` see unchanged behaviour — the mock feature simply
+  // doesn't engage without its input.
+  const mockPrescription = signals.daysToExam != null ? prescribeMock(signals) : null
+  if (mockPrescription?.due) {
+    const items: PlanItem[] = [mockItem(mockPrescription, date)]
+    if (dueMistakeCount > 0 && items.length < MAX_ITEMS) {
+      const rep = repetitionItem(dueMistakeCount, date)
+      // "cheapest due-repetition item if any (≤5 min)" — cap the anchor
+      // day's companion item so it never balloons the session past the
+      // Provpass itself.
+      if (rep.estimatedMinutes <= 5) items.push(rep)
+    }
+    return finalize(date, items)
+  }
 
   // Rule 5 — cold start. Early return: a fresh user with no signal
   // shouldn't be drilled into a section we picked arbitrarily.
@@ -271,6 +463,28 @@ function finalize(date: string, items: PlanItem[]): DailyPlan {
     .filter((i) => !i.completed)
     .reduce((sum, i) => sum + i.estimatedMinutes, 0)
   return { version: PLAN_SCHEMA_VERSION, date, items, estimatedMinutes }
+}
+
+const MOCK_HALF_LABEL: Record<MockHalf, string> = {
+  verbal: 'Verbal',
+  kvant: 'Kvantitativ',
+}
+
+function mockItem(prescription: MockPrescription, date: string): PlanItem {
+  const rationale =
+    prescription.daysSinceLast == null
+      ? 'Dags för ditt första provpass — vi behöver en baslinje.'
+      : `${prescription.daysSinceLast} dagar sedan senaste — dags att mäta.`
+  return {
+    id: `mock-${prescription.half}-${date}`,
+    kind: 'mock',
+    section: null,
+    headline: `Provpass · ${MOCK_HALF_LABEL[prescription.half]}`,
+    rationale,
+    estimatedMinutes: MOCK_MINUTES,
+    href: `/prov?half=${prescription.half}&prescribed=1`,
+    completed: false,
+  }
 }
 
 function repetitionItem(count: number, date: string): PlanItem {

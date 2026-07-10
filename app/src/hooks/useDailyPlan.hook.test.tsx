@@ -57,6 +57,7 @@ const statsData = {
   weekly: [],
 }
 const dueData: unknown[] = []
+const mockResultsData: unknown[] = []
 const topTrapsData: unknown[] = []
 
 vi.mock('@/api/hooks/useStats', () => ({
@@ -69,6 +70,13 @@ vi.mock('@/api/hooks/useMistakes', () => ({
 
 vi.mock('@/api/hooks/useTopTraps', () => ({
   useTopTraps: () => topTrapsData,
+}))
+
+// Provpass steering (B1): no mock history in this suite's fixtures — the
+// scheduler treats that as "never mocked" (baseline case), same as any
+// other cold-start-shaped fixture already exercised here.
+vi.mock('@/api/hooks/useMockResults', () => ({
+  useMockResults: () => ({ data: mockResultsData, isLoading: false }),
 }))
 
 vi.mock('@/api/hooks/useSessions', () => ({

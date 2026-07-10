@@ -47,6 +47,7 @@ const statsData = {
   weekly: [],
 }
 const dueData: unknown[] = []
+const mockResultsData: unknown[] = []
 const topTrapsData: unknown[] = []
 const emptyReads: string[] = []
 
@@ -55,6 +56,12 @@ vi.mock('@/api/hooks/useMistakes', () => ({
   useDueMistakes: () => ({ data: dueData, isLoading: false }),
 }))
 vi.mock('@/api/hooks/useTopTraps', () => ({ useTopTraps: () => topTrapsData }))
+
+// Provpass steering (B1): no mock history in this suite's fixtures — see
+// the same-named mock in useDailyPlan.hook.test.tsx for rationale.
+vi.mock('@/api/hooks/useMockResults', () => ({
+  useMockResults: () => ({ data: mockResultsData, isLoading: false }),
+}))
 vi.mock('@/api/hooks/useSessions', () => ({
   useActiveSessions: () => ({ data: [], isLoading: false }),
 }))
