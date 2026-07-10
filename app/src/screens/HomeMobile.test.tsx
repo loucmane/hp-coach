@@ -106,6 +106,16 @@ describe('HomeMobile — plan rendering', () => {
     expect(screen.getByTestId('kallelse-start')).toBeInTheDocument()
     expect(screen.queryByTestId('daily-plan-card')).not.toBeInTheDocument()
   })
+
+  it('hides the Kallelse once the mock item is completed (pass done — no re-summons)', () => {
+    // After the user finishes the prescribed pass, the plan's mock item
+    // auto-completes (isItemComplete, mockHistory-derived). A completed
+    // summons must not keep shouting STARTA on the same Home.
+    const plan = mockPlan()
+    plan.items = plan.items.map((i) => ({ ...i, completed: true }))
+    render(<HomeMobile forceLayout="phone" plan={plan} />)
+    expect(screen.queryByTestId('kallelse-start')).not.toBeInTheDocument()
+  })
 })
 
 describe('HomeMobile — stats row (M3H)', () => {

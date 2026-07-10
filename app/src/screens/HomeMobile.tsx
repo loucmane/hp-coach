@@ -123,7 +123,11 @@ export function HomeMobile({
   // HomeMobile (which already owns viewport/layout state) is the natural
   // owner of "is the pre-start sheet open".
   const [confirmOpen, setConfirmOpen] = useState(false)
-  const mockItem = plan?.items.find((item) => item.kind === 'mock')
+  // Only an UNCOMPLETED mock item summons — once the pass is done for the
+  // day (isItemComplete flips it via mockHistory), the Kallelse must not
+  // keep shouting STARTA. ProvpassStatusLine's suppression keys off the
+  // same value, so a completed pass also un-suppresses the passive line.
+  const mockItem = plan?.items.find((item) => item.kind === 'mock' && !item.completed)
 
   // window_slid — fired once per day when the mock item is due AND was
   // ALREADY overdue more than one cadence interval ago (silently slid past
