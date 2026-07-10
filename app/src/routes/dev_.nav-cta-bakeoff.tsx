@@ -13,6 +13,9 @@ import type { ReactNode } from 'react'
 
 import {
   Caption,
+  StudyBokmarke,
+  StudyKallelse,
+  StudyStatusStat,
   VariantOvaHub,
   VariantPlanItem,
   VariantPrescribedConsensus,
@@ -130,6 +133,58 @@ function NavCtaBakeoffRoute() {
           </Caption>
         </Stage>
       </div>
+
+      <section style={{ marginTop: 64 }}>
+        <div style={{ marginBottom: 8 }}>
+          <div
+            style={{
+              fontSize: 12,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+            }}
+          >
+            <span style={{ color: 'var(--accent)' }}>◆</span>&nbsp; V4 layout studies
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 6 }}>
+            Same mechanics, three compositions — pick by eye. The idiom and the mechanics are fixed;
+            only WHERE the provpass anchor lives and HOW loudly it speaks changes.
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(420px, auto))',
+            gap: 40,
+            justifyContent: 'start',
+            marginTop: 28,
+          }}
+        >
+          <Stage
+            tag="V4a"
+            title="Kallelsen"
+            note="On a provpass-dag the mock is a distinct summons block ABOVE the plan — a printed kallelse notice, rules only, no fill. The plan shrinks behind it."
+          >
+            <StudyKallelse />
+          </Stage>
+
+          <Stage
+            tag="V4b"
+            title="Status-as-stat"
+            note="The status readout becomes a fourth stat (nästa provpass); the anchor row drops the fill for a 2px cobalt margin rule."
+          >
+            <StudyStatusStat />
+          </Stage>
+
+          <Stage
+            tag="V4c"
+            title="Bokmärket"
+            note="One element carries the state: a full-width band at the page's end that inverts on a provpass-dag. The plan stays a normal 3-item plan."
+          >
+            <StudyBokmarke />
+          </Stage>
+        </div>
+      </section>
     </div>
   )
 }

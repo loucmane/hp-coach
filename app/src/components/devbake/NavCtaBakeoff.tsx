@@ -902,6 +902,413 @@ export function VariantPrescribedConsensus() {
   )
 }
 
+// ══ V4 LAYOUT STUDIES ═══════════════════════════════════════════════
+//
+// Same fixed mechanics as V4 (scheduler prescribes; passive status on
+// ordinary days; pre-commit confirm), same M3 Boksidan idiom, same
+// fixtures. The ONE free axis is COMPOSITION. Each study makes one
+// deliberate choice about WHERE the provpass anchor lives and HOW loudly
+// it speaks. All three render as 390px artboards with a provpass-dag /
+// vanlig-dag sub-toggle, exactly like V4.
+
+// ── V4a · "Kallelsen" (the summons) ─────────────────────────────────
+//
+// On a provpass-dag the mock is NOT a plan row — it is a distinct block
+// ABOVE "Dagens plan", composed like a Swedish exam kallelse (a summons
+// notice): rules only, no fill, no shadow — a DOCUMENT ARRIVING, not a
+// card. Double-rule top + single-rule bottom give the letterpress-notice
+// feel. The plan below shrinks to its one tiny remaining item. On an
+// ordinary day there is no kallelse; the passive status line stands in.
+
+function KallelseBlock() {
+  return (
+    <section style={{ padding: '26px 22px 0' }}>
+      {/* the notice: hairline double-rule top, single-rule bottom, no
+       *  fill and no shadow — rules only, so it reads as printed matter. */}
+      <div
+        style={{
+          borderTop: '1px solid var(--ink-2)',
+          boxShadow: 'inset 0 3px 0 -2px var(--ink-2)',
+          borderBottom: '1px solid var(--hairline)',
+          padding: '16px 0 18px',
+        }}
+      >
+        <div style={{ ...eyebrow, color: 'var(--accent)' }}>Kallelse · Provpass</div>
+        <h2
+          className="hpc-m3-display"
+          style={{ fontSize: 27, margin: '10px 0 0', fontStyle: 'italic', lineHeight: 1.12 }}
+        >
+          Verbal · 55 minuter
+        </h2>
+        <p
+          style={{
+            fontSize: 13.5,
+            color: 'var(--muted)',
+            lineHeight: 1.5,
+            margin: '8px 0 0',
+            maxWidth: '42ch',
+          }}
+        >
+          12 dagar sedan senaste — dags att mäta.
+        </p>
+        <div style={{ textAlign: 'right', marginTop: 14 }}>
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 11,
+              letterSpacing: MONO_TRACK,
+              textTransform: 'uppercase',
+              color: 'var(--muted-2)',
+            }}
+          >
+            starta →
+          </span>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// The remaining plan on a kallelse-day — just the one tiny item, so the
+// day still has a "then this" without competing with the summons.
+const PLAN_AFTER_KALLELSE: Row[] = [
+  {
+    id: 'rep',
+    tag: null,
+    headline: 'Repetition · 5 frågor',
+    rationale: 'Några frågor är mogna för återkoppling i din kö.',
+    min: 4,
+    verb: 'repetera',
+  },
+]
+
+export function StudyKallelse() {
+  const [rest, setRest] = useState(false)
+  return (
+    <div>
+      <SubToggle
+        options={[
+          { key: 'prov', label: 'Provpass-dag' },
+          { key: 'rest', label: 'Vanlig dag' },
+        ]}
+        value={rest ? 'rest' : 'prov'}
+        onChange={(k) => setRest(k === 'rest')}
+      />
+      <Artboard>
+        <StatusStrip />
+        <Scroll>
+          <MastheadNoStreak minutesToday={rest ? 33 : 59} />
+          {rest ? null : <KallelseBlock />}
+          <PlanCard rows={rest ? PLAN_REST : PLAN_AFTER_KALLELSE} />
+          {rest ? <RecentPassesWithLine /> : <RecentPasses />}
+        </Scroll>
+        <BottomTabs active="home" />
+      </Artboard>
+      <Caption>
+        A mock is a session, not a task — the visual grammar should say so. The summons arrives
+        above the plan as a printed notice (rules only, no fill), and the day's plan shrinks behind
+        it.
+      </Caption>
+    </div>
+  )
+}
+
+// ── V4b · "Status-as-stat" ──────────────────────────────────────────
+//
+// The disciplined refinement. Two moves from V4:
+//   (1) the status readout LEAVES the Tidigare-pass area and becomes a
+//       FOURTH stat in the stats row — "om 2 dagar" / "nästa provpass"
+//       (or "redo" in the slid vanlig-dag state). Readouts live with
+//       readouts.
+//   (2) the provpass plan row drops the teal fill for the marginalia
+//       treatment — a 2px cobalt left rule + slight indent (the
+//       .hpc-m3-tactic border-left idiom, promoted to 2px cobalt). The
+//       anchor whispers with a rule instead of shouting with a fill.
+
+function MastheadWithNextStat({
+  minutesToday,
+  nextMock,
+}: {
+  minutesToday: number
+  nextMock: string
+}) {
+  return (
+    <header style={{ padding: '4px 22px 0' }}>
+      <div style={eyebrow}>
+        <strong style={{ color: 'var(--ink-2)' }}>Onsdag 9 juli</strong> · 148 dagar · höstprov 26
+      </div>
+      <h1
+        className="hpc-m3-display"
+        style={{ fontSize: 38, margin: '18px 0 0', fontStyle: 'italic' }}
+      >
+        God dag.
+      </h1>
+      <div
+        className="hpc-m3-stats"
+        style={{ gap: 28, marginTop: 22, paddingTop: 16, alignItems: 'baseline' }}
+      >
+        <div>
+          <div className="hpc-m3-stat-n">1,41</div>
+          <div className="hpc-m3-stat-l">prognos av 2,0</div>
+        </div>
+        <div>
+          <div className="hpc-m3-stat-n">{minutesToday}</div>
+          <div className="hpc-m3-stat-l">min idag</div>
+        </div>
+        <div>
+          {/* the value is a short phrase, not a single numeric token, so it
+           *  reads at a smaller size than 1,41/59 — otherwise "om 2 dagar"
+           *  wraps to two lines and breaks the stats baseline. Same mono
+           *  tabular ink face, just sized to sit on one line. */}
+          <div className="hpc-m3-stat-n" style={{ fontSize: 20, whiteSpace: 'nowrap' }}>
+            {nextMock}
+          </div>
+          <div className="hpc-m3-stat-l">nästa provpass</div>
+        </div>
+      </div>
+    </header>
+  )
+}
+
+// The provpass anchor row, marginalia-treated: 2px cobalt left rule +
+// slight indent, no fill. Everything else is a normal PlanRow.
+function MarginaliaPlanRow({ row, ordinal }: { row: Row; ordinal: number }) {
+  return (
+    <li
+      className="hpc-m3-plan-item"
+      style={{
+        borderLeft: '2px solid var(--accent)',
+        paddingLeft: 14,
+        marginLeft: -16,
+      }}
+    >
+      <span className="hpc-m3-plan-n" aria-hidden>
+        {ordinal}.
+      </span>
+      <div style={{ minWidth: 0 }}>
+        <div className="hpc-m3-plan-t">
+          {row.tag ? <span className="hpc-m3-tag">{row.tag}</span> : null}
+          {row.headline}
+        </div>
+        <div className="hpc-m3-plan-r">{row.rationale}</div>
+        <span
+          style={{
+            display: 'inline-block',
+            marginTop: 6,
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'var(--accent)',
+          }}
+        >
+          {row.verb} →
+        </span>
+      </div>
+      <span className="hpc-m3-plan-min">~{row.min} min</span>
+    </li>
+  )
+}
+
+function MarginaliaPlanCard({ rows }: { rows: Row[] }) {
+  const total = rows.reduce((s, r) => s + r.min, 0)
+  return (
+    <RailSection
+      meta={
+        <>
+          <strong style={{ color: 'var(--ink-2)' }}>Idag</strong> · ~{total} min · uppskattat
+        </>
+      }
+    >
+      <h2 className="hpc-m3-h">Dagens plan</h2>
+      <ol style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+        {rows.map((r, i) =>
+          r.provpass ? (
+            <MarginaliaPlanRow key={r.id} row={r} ordinal={i + 1} />
+          ) : (
+            <PlanRow key={r.id} row={r} ordinal={i + 1} />
+          ),
+        )}
+      </ol>
+    </RailSection>
+  )
+}
+
+export function StudyStatusStat() {
+  const [rest, setRest] = useState(false)
+  return (
+    <div>
+      <SubToggle
+        options={[
+          { key: 'prov', label: 'Provpass-dag' },
+          { key: 'rest', label: 'Vanlig dag (redo)' },
+        ]}
+        value={rest ? 'rest' : 'prov'}
+        onChange={(k) => setRest(k === 'rest')}
+      />
+      <Artboard>
+        <StatusStrip />
+        <Scroll>
+          <MastheadWithNextStat
+            minutesToday={rest ? 33 : 59}
+            nextMock={rest ? 'redo' : 'om 2 dagar'}
+          />
+          <MarginaliaPlanCard rows={rest ? PLAN_REST : PLAN_PROV_ANCHOR} />
+          <RecentPasses />
+        </Scroll>
+        <BottomTabs active="home" />
+      </Artboard>
+      <Caption>
+        Readouts live with readouts; the anchor whispers with a rule instead of shouting with a
+        fill. The "nästa provpass" stat sits with prognos + min idag; the mock row carries a 2px
+        cobalt margin rule.
+      </Caption>
+    </div>
+  )
+}
+
+// ── V4c · "Bokmärket" (the bookmark) ────────────────────────────────
+//
+// The structural simplification. BOTH the status line and (on a
+// provpass-dag) the anchor plan row are removed. ONE element carries the
+// state: a full-width quiet band at the END of the Home content, in-flow
+// above the tab bar.
+//   vanlig dag → muted mono readout with a hairline top rule.
+//   provpass-dag → the band INVERTS to accent-soft, serif summons + mono
+//                  start; the plan stays a normal 3-item plan.
+// One element that changes state beats two mechanisms — but a band at the
+// page's end bets the student scrolls.
+
+function BokmarkeBand({ prov }: { prov: boolean }) {
+  if (prov) {
+    return (
+      <div
+        style={{
+          marginTop: 26,
+          background: 'var(--accent-soft)',
+          padding: '16px 22px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 16,
+        }}
+      >
+        <div style={{ minWidth: 0 }}>
+          <div style={{ ...eyebrow, color: 'var(--accent)', marginBottom: 4 }}>Provpass</div>
+          <div
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontStyle: 'italic',
+              fontSize: 18,
+              lineHeight: 1.3,
+              color: 'var(--ink)',
+            }}
+          >
+            Verbal — dags att mäta.
+          </div>
+        </div>
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            letterSpacing: MONO_TRACK,
+            textTransform: 'uppercase',
+            color: 'var(--accent)',
+            whiteSpace: 'nowrap',
+            textAlign: 'right',
+            lineHeight: 1.5,
+          }}
+        >
+          55 min
+          <br />
+          starta →
+        </span>
+      </div>
+    )
+  }
+  return (
+    <div
+      style={{
+        marginTop: 26,
+        borderTop: '1px solid var(--hairline)',
+        padding: '14px 22px 0',
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 11,
+          letterSpacing: MONO_TRACK,
+          color: 'var(--muted)',
+        }}
+      >
+        <span style={{ color: 'var(--muted-2)' }}>PROVPASS</span> · senast Verbal 31/40 · nästa om 2
+        dagar
+      </span>
+    </div>
+  )
+}
+
+export function StudyBokmarke() {
+  const [rest, setRest] = useState(false)
+  const prov = !rest
+  return (
+    <div>
+      <SubToggle
+        options={[
+          { key: 'prov', label: 'Provpass-dag' },
+          { key: 'rest', label: 'Vanlig dag' },
+        ]}
+        value={rest ? 'rest' : 'prov'}
+        onChange={(k) => setRest(k === 'rest')}
+      />
+      <Artboard>
+        <StatusStrip />
+        <Scroll>
+          <MastheadNoStreak minutesToday={rest ? 33 : 41} />
+          <PlanCard rows={rest ? PLAN_REST : PLAN_WITH_PROV_NO_ANCHOR} />
+          <RecentPasses />
+          <BokmarkeBand prov={prov} />
+        </Scroll>
+        <BottomTabs active="home" />
+      </Artboard>
+      <Caption>
+        One element that changes state beats two mechanisms — but a band at the page's end bets the
+        student scrolls.
+      </Caption>
+    </div>
+  )
+}
+
+// The Bokmärket provpass-dag plan is a NORMAL 3-item plan — the band is
+// the anchor, so the plan itself carries no provpass row.
+const PLAN_WITH_PROV_NO_ANCHOR: Row[] = [
+  {
+    id: 'lesson-nog',
+    tag: 'NOG',
+    headline: 'Tillräcklig information',
+    rationale: 'Svagast just nu (1,3) och 8 dagar sedan du läste ramverket.',
+    min: 12,
+    verb: 'läs',
+  },
+  {
+    id: 'rep',
+    tag: null,
+    headline: 'Repetition · 14 frågor',
+    rationale: '14 frågor är mogna för återkoppling i din kö.',
+    min: 11,
+    verb: 'repetera',
+  },
+  {
+    id: 'drill-kva',
+    tag: 'KVA',
+    headline: 'Kvantitativa jämförelser',
+    rationale: 'Näst svagast — en kort drill håller den varm.',
+    min: 10,
+    verb: 'öva',
+  },
+]
+
 // ── sub-toggle (V1's rest-state switch) ─────────────────────────────
 
 function SubToggle({
