@@ -1309,6 +1309,627 @@ const PLAN_WITH_PROV_NO_ANCHOR: Row[] = [
   },
 ]
 
+// ══ V4A FINAL · KALLELSEN FÄRGAD ════════════════════════════════════
+//
+// The owner's verdict: "I like V4a (Kallelsen), but I like that V4c's
+// bookmark is COLORED — and show me desktop." So the final is a
+// SYNTHESIS: V4a's document grammar (the rules-only summons above the
+// plan, mono KALLELSE · PROVPASS eyebrow, serif "Verbal · 55 minuter",
+// rationale line) carrying V4c's colour voice (the way StudyBokmarke's
+// provpass-dag band brings the accent in).
+//
+// Two colour treatments were tried on the phone; ONE ships. Both are
+// kept as functions so the report can show the loser, but the render
+// below uses only the winner (KallelseFilled — see the section caption
+// in the route for which won and why).
+//
+// The one non-negotiable from the verdict: "STARTA →" must now read as
+// the DAY'S PRIMARY ACTION. V4a's original whispered it (muted mono,
+// right-aligned, no chrome); both treatments here promote it to a real
+// affordance — full accent, a pill in the filled treatment.
+
+// Treatment A — ACCENT-SOFT FILL. The notice sits on an accent-soft wash
+// (same token StudyBokmarke's band inverts to), keeping the double-rule
+// letterpress top but trading paper for colour. STARTA becomes a solid
+// accent pill — the loudest, most unmistakable primary on the page.
+function KallelseFilled() {
+  return (
+    <section style={{ padding: '26px 22px 0' }}>
+      <div
+        style={{
+          background: 'var(--accent-soft)',
+          borderTop: '2px solid var(--accent)',
+          padding: '16px 18px 18px',
+        }}
+      >
+        <div style={{ ...eyebrow, color: 'var(--accent)' }}>Kallelse · Provpass</div>
+        <h2
+          className="hpc-m3-display"
+          style={{
+            fontSize: 27,
+            margin: '10px 0 0',
+            fontStyle: 'italic',
+            lineHeight: 1.12,
+            color: 'var(--ink)',
+          }}
+        >
+          Verbal · 55 minuter
+        </h2>
+        <p
+          style={{
+            fontSize: 13.5,
+            color: 'var(--ink-2)',
+            lineHeight: 1.5,
+            margin: '8px 0 0',
+            maxWidth: '42ch',
+          }}
+        >
+          12 dagar sedan senaste — dags att mäta.
+        </p>
+        <div style={{ textAlign: 'right', marginTop: 16 }}>
+          <span
+            className="hpc-m3-cta"
+            style={{
+              cursor: 'default',
+              display: 'inline-block',
+              borderRadius: 999,
+              padding: '11px 22px',
+              fontFamily: 'var(--font-mono)',
+              fontSize: 12,
+              letterSpacing: MONO_TRACK,
+              textTransform: 'uppercase',
+            }}
+          >
+            Starta →
+          </span>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Treatment B — PAPER, COBALT INK. Background stays paper (the document
+// character V4a prized), but the accent moves into the TYPE: the eyebrow
+// and the STARTA affordance go full accent, and the letterpress top rule
+// becomes a 2px ACCENT double-rule. Colour as voice, not as fill.
+function KallelseInk() {
+  return (
+    <section style={{ padding: '26px 22px 0' }}>
+      <div
+        style={{
+          borderTop: '2px solid var(--accent)',
+          boxShadow: 'inset 0 4px 0 -2px var(--accent)',
+          borderBottom: '1px solid var(--hairline)',
+          padding: '16px 0 18px',
+        }}
+      >
+        <div style={{ ...eyebrow, color: 'var(--accent)' }}>Kallelse · Provpass</div>
+        <h2
+          className="hpc-m3-display"
+          style={{ fontSize: 27, margin: '10px 0 0', fontStyle: 'italic', lineHeight: 1.12 }}
+        >
+          Verbal · 55 minuter
+        </h2>
+        <p
+          style={{
+            fontSize: 13.5,
+            color: 'var(--muted)',
+            lineHeight: 1.5,
+            margin: '8px 0 0',
+            maxWidth: '42ch',
+          }}
+        >
+          12 dagar sedan senaste — dags att mäta.
+        </p>
+        <div style={{ textAlign: 'right', marginTop: 14 }}>
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 12,
+              letterSpacing: MONO_TRACK,
+              textTransform: 'uppercase',
+              color: 'var(--accent)',
+              fontWeight: 600,
+            }}
+          >
+            Starta →
+          </span>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// The shipped phone artboard. `treatment` lets the report screenshot both;
+// the route renders only the winner.
+export function V4aFinalPhone({ treatment = 'filled' }: { treatment?: 'filled' | 'ink' }) {
+  const [rest, setRest] = useState(false)
+  return (
+    <div>
+      <SubToggle
+        options={[
+          { key: 'prov', label: 'Provpass-dag' },
+          { key: 'rest', label: 'Vanlig dag' },
+        ]}
+        value={rest ? 'rest' : 'prov'}
+        onChange={(k) => setRest(k === 'rest')}
+      />
+      <Artboard>
+        <StatusStrip />
+        <Scroll>
+          <MastheadNoStreak minutesToday={rest ? 33 : 59} />
+          {rest ? null : treatment === 'filled' ? <KallelseFilled /> : <KallelseInk />}
+          <PlanCard rows={rest ? PLAN_REST : PLAN_AFTER_KALLELSE} />
+          {rest ? <RecentPassesWithLine /> : <RecentPasses />}
+        </Scroll>
+        <BottomTabs active="home" />
+      </Artboard>
+    </div>
+  )
+}
+
+// ── the real DESKTOP chrome, mirrored ───────────────────────────────
+//
+// Desktop Home is NOT the phone shrunk. The real product (verified in
+// src/components/NavRail.tsx + Page.tsx + Frame.tsx + HomeMobile.tsx)
+// renders, at ≥1280px:
+//   • a 224px sticky NavRail on the left (brand ⌜ HP-Coach, nav with
+//     live signals + the active cobalt left-rule, a cross-device resume
+//     band, the countdown, and ljus ◐ · historik · mer →),
+//   • the Home column to its right inside the studio canvas, built from
+//     the .hpc-m3 margin-rail chassis: each section is a
+//     [rail-label | hairline spine | content] grid (128px | 1px | 1fr),
+//     NOT the phone's stacked eyebrow.
+// This artboard reproduces both faithfully so the colored kallelse is
+// judged in its real desktop home, at desktop type sizes.
+
+// One margin-rail section (desktop grammar): right-aligned mono rail
+// label, vertical spine, content column. Mirrors DrillRailSection +
+// .hpc-m3-row so the desktop artboard reads as the real Boksidan.
+function DeskRailSection({
+  meta,
+  children,
+  first = false,
+}: {
+  meta: ReactNode
+  children: ReactNode
+  first?: boolean
+}) {
+  return (
+    <section style={{ marginTop: first ? 0 : 56 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '128px 1px 1fr', columnGap: 28 }}>
+        <div
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: 'var(--muted)',
+            textAlign: 'right',
+            paddingTop: 5,
+            fontVariantNumeric: 'tabular-nums',
+            lineHeight: 1.5,
+          }}
+        >
+          {meta}
+        </div>
+        <div style={{ background: 'var(--hairline)', alignSelf: 'stretch' }} />
+        <div style={{ minWidth: 0 }}>{children}</div>
+      </div>
+    </section>
+  )
+}
+
+// The desktop NavRail (mirrors NavRail.tsx expanded state — brand, nav
+// with the active cobalt left-rule, resume band, countdown, foot words).
+function DeskNavRail() {
+  const nav = [
+    { label: 'HEM', active: true, signal: null },
+    { label: 'ÖVNING', active: false, signal: '14 att repetera' },
+    { label: 'LEKTION', active: false, signal: null },
+    { label: 'FRAMSTEG', active: false, signal: '+0,04 denna vecka' },
+  ]
+  return (
+    <aside
+      style={{
+        width: 224,
+        flexShrink: 0,
+        borderRight: '1px solid var(--hairline)',
+        display: 'flex',
+        flexDirection: 'column',
+        background: 'var(--bg)',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
+          padding: '20px 18px 22px',
+        }}
+      >
+        <span
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontStyle: 'italic',
+            fontWeight: 600,
+            fontSize: 17,
+            color: 'var(--ink)',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <span style={{ color: 'var(--muted-2)', fontStyle: 'normal', marginRight: 5 }}>⌜</span>
+          HP-Coach
+        </span>
+        <span style={{ ...footWordDesk, fontSize: 13 }}>«</span>
+      </div>
+      <nav style={{ display: 'flex', flexDirection: 'column' }}>
+        {nav.map((n) => (
+          <div
+            key={n.label}
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'baseline',
+              gap: 10,
+              fontFamily: 'var(--font-mono)',
+              fontSize: 12,
+              letterSpacing: '0.12em',
+              color: n.active ? 'var(--accent)' : 'var(--ink-2)',
+              fontWeight: n.active ? 600 : 400,
+              padding: '11px 18px',
+              borderLeft: n.active ? '2px solid var(--accent)' : '2px solid transparent',
+            }}
+          >
+            {n.label}
+            {n.signal ? (
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 10,
+                  letterSpacing: '0.04em',
+                  textTransform: 'none',
+                  color: 'var(--muted-2)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {n.signal}
+              </span>
+            ) : null}
+          </div>
+        ))}
+      </nav>
+      {/* cross-device resume band */}
+      <div style={{ padding: '18px 18px 0' }}>
+        <div style={{ background: 'var(--accent-soft)', padding: '12px 14px' }}>
+          <div
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 10,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+            }}
+          >
+            Påbörjad
+          </div>
+          <div
+            style={{
+              fontFamily: 'var(--font-ui)',
+              fontSize: 13,
+              fontWeight: 600,
+              color: 'var(--ink)',
+              margin: '5px 0 2px',
+            }}
+          >
+            Övning · KVA
+          </div>
+          <div
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 11,
+              color: 'var(--muted)',
+              fontVariantNumeric: 'tabular-nums',
+            }}
+          >
+            4 av 10 · fortsätt →
+          </div>
+        </div>
+      </div>
+      <div style={{ flex: 1 }} />
+      <div
+        style={{
+          padding: '14px 18px 16px',
+          borderTop: '1px solid var(--hairline-2)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
+        }}
+      >
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            letterSpacing: '0.06em',
+            color: 'var(--ink-2)',
+            fontVariantNumeric: 'tabular-nums',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          Höstprov 26 · 148 dagar
+        </span>
+        <span style={{ display: 'flex', gap: 14, alignItems: 'baseline' }}>
+          <span style={footWordDesk}>ljus ◐</span>
+          <span style={footWordDesk}>historik</span>
+          <span style={footWordDesk}>mer →</span>
+        </span>
+      </div>
+    </aside>
+  )
+}
+
+const footWordDesk: CSSProperties = {
+  fontFamily: 'var(--font-mono)',
+  fontSize: 11,
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+  color: 'var(--muted-2)',
+}
+
+// The colored kallelse at desktop scale — the winner treatment, sized up
+// for the reading column. Lives ABOVE "Dagens plan" in the content
+// column of its own rail section (rail label: KALLELSE).
+function KallelseFilledDesk() {
+  return (
+    <div
+      style={{
+        background: 'var(--accent-soft)',
+        borderTop: '2px solid var(--accent)',
+        padding: '22px 26px 24px',
+      }}
+    >
+      <div style={{ ...eyebrow, color: 'var(--accent)' }}>Kallelse · Provpass</div>
+      <h2
+        className="hpc-m3-display"
+        style={{
+          fontSize: 34,
+          margin: '12px 0 0',
+          fontStyle: 'italic',
+          lineHeight: 1.1,
+          color: 'var(--ink)',
+        }}
+      >
+        Verbal · 55 minuter
+      </h2>
+      <p
+        style={{
+          fontSize: 15,
+          color: 'var(--ink-2)',
+          lineHeight: 1.5,
+          margin: '10px 0 0',
+          maxWidth: 280,
+        }}
+      >
+        12 dagar sedan senaste — dags att mäta. Ett helt pass under riktiga villkor.
+      </p>
+      <div style={{ marginTop: 20 }}>
+        <span
+          className="hpc-m3-cta"
+          style={{
+            cursor: 'default',
+            display: 'inline-block',
+            borderRadius: 999,
+            padding: '12px 26px',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 12.5,
+            letterSpacing: MONO_TRACK,
+            textTransform: 'uppercase',
+          }}
+        >
+          Starta →
+        </span>
+      </div>
+    </div>
+  )
+}
+
+// A desktop plan row (larger type than the phone artboard's).
+function DeskPlanRow({ row, ordinal }: { row: Row; ordinal: number }) {
+  return (
+    <li className="hpc-m3-plan-item">
+      <span className="hpc-m3-plan-n" aria-hidden>
+        {ordinal}.
+      </span>
+      <div style={{ minWidth: 0 }}>
+        <div className="hpc-m3-plan-t">
+          {row.tag ? <span className="hpc-m3-tag">{row.tag}</span> : null}
+          {row.headline}
+        </div>
+        <div className="hpc-m3-plan-r">{row.rationale}</div>
+        <span
+          style={{
+            display: 'inline-block',
+            marginTop: 6,
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'var(--accent)',
+          }}
+        >
+          {row.verb} →
+        </span>
+      </div>
+      <span className="hpc-m3-plan-min">~{row.min} min</span>
+    </li>
+  )
+}
+
+// The full desktop artboard: a ~1200px window (rail + studio Home column),
+// rendered for a provpass-dag OR a vanlig dag via its own toggle.
+export function V4aFinalDesktop() {
+  const [rest, setRest] = useState(false)
+  const prov = !rest
+  const planRows = prov ? PLAN_AFTER_KALLELSE : PLAN_REST
+  const planTotal = planRows.reduce((s, r) => s + r.min, 0)
+  return (
+    <div>
+      <SubToggle
+        options={[
+          { key: 'prov', label: 'Provpass-dag' },
+          { key: 'rest', label: 'Vanlig dag' },
+        ]}
+        value={rest ? 'rest' : 'prov'}
+        onChange={(k) => setRest(k === 'rest')}
+      />
+      {/* the desktop window: studio canvas (rail + content) */}
+      <div
+        style={{
+          width: 1200,
+          minHeight: 720,
+          background: 'var(--bg)',
+          border: '1px solid var(--hairline)',
+          borderRadius: 12,
+          overflow: 'hidden',
+          display: 'flex',
+          boxShadow: '0 24px 60px -30px rgba(0,0,0,0.4)',
+        }}
+      >
+        <DeskNavRail />
+        {/* the Home column — the .hpc-m3-frame padding + margin-rail sections */}
+        <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
+          <div style={{ maxWidth: 820, margin: '0 auto', padding: '48px 44px 64px' }}>
+            {/* greeting + stats (rail: date) */}
+            <DeskRailSection
+              first
+              meta={
+                <>
+                  <strong style={{ display: 'block', color: 'var(--ink-2)', fontWeight: 500 }}>
+                    Onsdag 9 juli
+                  </strong>
+                  148 dagar · höstprov 26
+                </>
+              }
+            >
+              <h1
+                className="hpc-m3-display"
+                style={{ fontSize: 46, margin: 0, fontStyle: 'italic' }}
+              >
+                God dag.
+              </h1>
+              <div className="hpc-m3-stats">
+                <div>
+                  <div className="hpc-m3-stat-n">1,41</div>
+                  <div className="hpc-m3-stat-l">prognos av 2,0</div>
+                </div>
+                <div>
+                  <div className="hpc-m3-stat-n">{prov ? 59 : 33}</div>
+                  <div className="hpc-m3-stat-l">min idag</div>
+                </div>
+              </div>
+            </DeskRailSection>
+
+            {/* the colored kallelse — its own rail section, ABOVE the plan.
+             *  On a vanlig dag it is absent; the passive status line stands
+             *  in inside the plan-rail area instead. */}
+            {prov ? (
+              <DeskRailSection meta="Kallelse">
+                <KallelseFilledDesk />
+              </DeskRailSection>
+            ) : null}
+
+            {/* Dagens plan (rail: Idag) */}
+            <DeskRailSection
+              meta={
+                <>
+                  <strong style={{ display: 'block', color: 'var(--ink-2)', fontWeight: 500 }}>
+                    Idag
+                  </strong>
+                  ~{planTotal} min · uppskattat
+                </>
+              }
+            >
+              <h2 className="hpc-m3-h">Dagens plan</h2>
+              <ol style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+                {planRows.map((r, i) => (
+                  <DeskPlanRow key={r.id} row={r} ordinal={i + 1} />
+                ))}
+              </ol>
+              {rest ? (
+                <div
+                  style={{
+                    marginTop: 18,
+                    paddingTop: 14,
+                    borderTop: '1px solid var(--hairline)',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 11,
+                    letterSpacing: MONO_TRACK,
+                    color: 'var(--muted)',
+                  }}
+                >
+                  <span style={{ color: 'var(--muted-2)' }}>PROVPASS</span> · senast Verbal 31/40 ·
+                  nästa om 2 dagar
+                </div>
+              ) : null}
+            </DeskRailSection>
+
+            {/* Senaste passen (rail: Tidigare pass) */}
+            <DeskRailSection meta="Tidigare pass">
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <h2 className="hpc-m3-h" style={{ marginBottom: 0 }}>
+                  Senaste passen
+                </h2>
+                <span style={{ ...eyebrow, color: 'var(--accent)', fontSize: 10 }}>
+                  alla pass →
+                </span>
+              </div>
+              <div style={{ display: 'flex', gap: 14, marginTop: 16 }}>
+                {[
+                  { tag: 'Verbal', score: '31/40' },
+                  { tag: 'KVA', score: '9/12' },
+                  { tag: 'ORD', score: '34/40' },
+                ].map((c) => (
+                  <div
+                    key={c.tag}
+                    style={{
+                      minWidth: 104,
+                      border: '1px solid var(--hairline)',
+                      borderRadius: 'calc(var(--radius) * 0.5)',
+                      padding: '12px 16px',
+                      background: 'var(--panel)',
+                    }}
+                  >
+                    <span className="hpc-m3-tag">{c.tag}</span>
+                    <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, marginTop: 6 }}>
+                      {c.score}
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: 10,
+                        color: 'var(--muted)',
+                        marginTop: 1,
+                      }}
+                    >
+                      rätt
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </DeskRailSection>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ── sub-toggle (V1's rest-state switch) ─────────────────────────────
 
 function SubToggle({

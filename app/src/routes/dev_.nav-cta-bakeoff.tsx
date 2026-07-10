@@ -9,13 +9,15 @@
 // Dev-gated via isDevSurface().
 
 import { createFileRoute } from '@tanstack/react-router'
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 
 import {
   Caption,
   StudyBokmarke,
   StudyKallelse,
   StudyStatusStat,
+  V4aFinalDesktop,
+  V4aFinalPhone,
   VariantOvaHub,
   VariantPlanItem,
   VariantPrescribedConsensus,
@@ -64,6 +66,90 @@ function NavCtaBakeoffRoute() {
           rounds.
         </div>
       </header>
+
+      {/* ── V4A FINAL — the leading candidate, first thing the owner sees ── */}
+      <section
+        style={{
+          marginTop: 36,
+          paddingBottom: 40,
+          borderBottom: '1px solid color-mix(in oklch, var(--ink) 14%, transparent)',
+        }}
+      >
+        <div style={{ marginBottom: 8 }}>
+          <div style={{ fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            <span style={{ color: 'var(--accent)' }}>★</span>&nbsp; V4A FINAL · Kallelsen färgad
+          </div>
+          <div
+            style={{
+              fontSize: 11,
+              color: 'var(--muted)',
+              marginTop: 6,
+              maxWidth: 760,
+              lineHeight: 1.5,
+            }}
+          >
+            The synthesis the owner asked for: V4a's DOCUMENT GRAMMAR (the rules-only summons above
+            the plan, KALLELSE · PROVPASS eyebrow, serif "Verbal · 55 minuter") carrying V4c's COLOR
+            VOICE (the accent-soft band). STARTA is now the day's primary action — the owner found
+            V4a's original too quiet.
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--accent)', marginTop: 6 }}>
+            Shipped treatment: accent-soft fill + solid accent STARTA pill (see caption below).
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            gap: 44,
+            flexWrap: 'wrap',
+            alignItems: 'flex-start',
+            marginTop: 24,
+          }}
+        >
+          <div>
+            <div style={{ ...stageLabel, marginBottom: 12 }}>
+              <span style={{ color: 'var(--accent)' }}>PHONE</span> · 390px
+            </div>
+            <V4aFinalPhone treatment="filled" />
+            <Caption>
+              Provpass-dag: the colored kallelse arrives above the plan as an accent-soft notice
+              (letterpress accent top-rule kept), and the plan shrinks to its one remaining item.
+              Vanlig dag: no kallelse — the passive PROVPASS status line stands in.
+            </Caption>
+          </div>
+
+          <div style={{ flex: '1 1 640px', minWidth: 0 }}>
+            <div style={{ ...stageLabel, marginBottom: 12 }}>
+              <span style={{ color: 'var(--accent)' }}>DESKTOP</span> · 1200px · rail + Boksidan
+              margin-rail
+            </div>
+            <div style={{ overflowX: 'auto', paddingBottom: 8 }}>
+              <V4aFinalDesktop />
+            </div>
+            <Caption>
+              The REAL desktop Home: a 224px sticky NavRail (brand, nav with the active cobalt
+              left-rule + live signals, cross-device resume band, countdown, ljus ◐ · historik · mer
+              →) beside the Boksidan reading column, where every section is a margin-rail grid
+              (label | spine | content), not the phone's stacked eyebrow. The colored kallelse gets
+              its own KALLELSE rail section above Dagens plan.
+            </Caption>
+          </div>
+        </div>
+
+        <Caption>
+          Synthesizes V4a's document grammar (kallelse notice, rules/letterpress top) with V4c's
+          color voice (accent-soft fill). Each artboard carries its OWN provpass-dag / vanlig-dag
+          toggle so phone and desktop can be judged in either state independently.
+        </Caption>
+      </section>
+
+      <div style={{ marginTop: 40, marginBottom: 8 }}>
+        <div style={{ fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          <span style={{ color: 'var(--muted-2)' }}>▽</span>&nbsp; Earlier candidates (for
+          reference)
+        </div>
+      </div>
 
       <div
         style={{
@@ -187,6 +273,13 @@ function NavCtaBakeoffRoute() {
       </section>
     </div>
   )
+}
+
+const stageLabel: CSSProperties = {
+  fontSize: 11,
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+  color: 'var(--muted)',
 }
 
 function Stage({
