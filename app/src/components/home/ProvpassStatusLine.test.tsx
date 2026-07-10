@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { MockResultRow } from '@/api/hooks/useMockResults'
-import type { MockPrescription } from '@/lib/mockContract'
 import { __resetMockEvents, loadMockEvents } from '@/lib/mockEvents'
+import type { MockPrescription } from '@/lib/scheduler'
 
 const navigateMock = vi.fn()
 vi.mock('@tanstack/react-router', () => ({

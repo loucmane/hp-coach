@@ -5,7 +5,7 @@
 // verification rule requires a screenshot of real components with real
 // output before claiming a UI change done. HomeMobile is prop-driven (see
 // its own test file), so it renders here with a fixture DailyPlan that
-// includes a CONTRACT `kind: 'mock'` item — outside the auth gate, no
+// includes a `kind: 'mock'` item — outside the auth gate, no
 // QueryClient/Clerk needed.
 //
 // Dev-gated via isDevSurface() — same mechanism as every other dev route.
@@ -17,15 +17,14 @@ import { useState } from 'react'
 
 import { Btn, Eyebrow } from '@/components/primitives'
 import { isDevSurface } from '@/lib/devSurface'
-import type { PlanItemWithMock } from '@/lib/mockContract'
-import { PLAN_SCHEMA_VERSION } from '@/lib/scheduler'
+import { PLAN_SCHEMA_VERSION, type PlanItem } from '@/lib/scheduler'
 import { HomeMobile } from '@/screens/HomeMobile'
 
 export const Route = createFileRoute('/home-verify')({
   component: HomeVerify,
 })
 
-const MOCK_PLAN_ITEM: PlanItemWithMock = {
+const MOCK_PLAN_ITEM: PlanItem = {
   id: 'mock-2026-07-08',
   kind: 'mock',
   section: null,

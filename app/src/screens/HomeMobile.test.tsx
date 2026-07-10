@@ -7,9 +7,10 @@
 //   - No regenerate affordance (the daily plan is authoritative)
 
 import { render, screen, within } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { type DailyPlan, PLAN_SCHEMA_VERSION } from '@/lib/scheduler'
+import { __resetMockEvents, loadMockEvents } from '@/lib/mockEvents'
+import { type DailyPlan, type MockPrescription, PLAN_SCHEMA_VERSION } from '@/lib/scheduler'
 import { HomeMobile } from './HomeMobile'
 
 // HomeMobile is prop-driven in these tests (no QueryClient / Clerk
@@ -95,6 +96,25 @@ describe('HomeMobile — plan rendering', () => {
     expect(screen.getByTestId('daily-plan-complete')).toBeInTheDocument()
     expect(screen.getByText(/perfect game/i)).toBeInTheDocument()
     expect(screen.queryByTestId('daily-plan-card')).not.toBeInTheDocument()
+  })
+
+  it('hides "Dagens plan" entirely on a mock-only day (the Kallelse IS the plan)', () => {
+    // A pure provpass-dag: the plan's only item is the mock, which renders
+    // as the Kallelse summons above — filtering it out of the card's rows
+    // would otherwise leave a bare "Dagens plan" heading over an empty list.
+    render(<HomeMobile forceLayout="phone" plan={mockPlan()} />)
+    expect(screen.getByTestId('kallelse-start')).toBeInTheDocument()
+    expect(screen.queryByTestId('daily-plan-card')).not.toBeInTheDocument()
+  })
+
+  it('hides the Kallelse once the mock item is completed (pass done — no re-summons)', () => {
+    // After the user finishes the prescribed pass, the plan's mock item
+    // auto-completes (isItemComplete, mockHistory-derived). A completed
+    // summons must not keep shouting STARTA on the same Home.
+    const plan = mockPlan()
+    plan.items = plan.items.map((i) => ({ ...i, completed: true }))
+    render(<HomeMobile forceLayout="phone" plan={plan} />)
+    expect(screen.queryByTestId('kallelse-start')).not.toBeInTheDocument()
   })
 })
 
@@ -361,5 +381,112 @@ describe('HomeMobile — callbacks', () => {
   it('does not render a regenerate affordance in the complete state', () => {
     render(<HomeMobile forceLayout="phone" plan={makePlan()} allComplete />)
     expect(screen.queryByTestId('daily-plan-regenerate-complete')).not.toBeInTheDocument()
+  })
+})
+
+// window_slid — fired once per day when the mock item is due AND it was
+// already overdue more than one cadence interval ago (i.e. it silently
+// slid past being due on an earlier day without a completed mock).
+// Derived from mockPrescription.daysSinceLast vs .interval — see
+// prescribeMock's cadence rules in @/lib/scheduler.
+function mockPlan(): DailyPlan {
+  return {
+    version: PLAN_SCHEMA_VERSION,
+    date: '2026-05-18',
+    estimatedMinutes: 55,
+    items: [
+      {
+        id: 'mock-2026-05-18',
+        kind: 'mock',
+        section: null,
+        headline: 'Provpass · Verbal',
+        rationale: '30 dagar sedan senaste — dags att mäta.',
+        estimatedMinutes: 55,
+        href: '/prov?half=verbal&prescribed=1',
+        completed: false,
+      },
+    ],
+  }
+}
+
+function prescription(overrides: Partial<MockPrescription> = {}): MockPrescription {
+  return {
+    due: true,
+    half: 'verbal',
+    daysSinceLast: 30,
+    daysUntilNext: 0,
+    interval: 14,
+    ...overrides,
+  }
+}
+
+describe('HomeMobile — window_slid instrumentation', () => {
+  beforeEach(() => {
+    __resetMockEvents()
+    window.localStorage.clear()
+  })
+
+  it('logs window_slid when due and daysSinceLast > interval (genuinely slid)', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={mockPlan()}
+        mockPrescription={prescription({ due: true, daysSinceLast: 30, interval: 14 })}
+      />,
+    )
+    const events = loadMockEvents().filter((e) => e.type === 'window_slid')
+    expect(events).toHaveLength(1)
+    expect(events[0].meta).toEqual({ slidDays: 16 })
+  })
+
+  it('does NOT log window_slid when daysSinceLast is null (baseline, never mocked)', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={mockPlan()}
+        mockPrescription={prescription({ due: true, daysSinceLast: null })}
+      />,
+    )
+    expect(loadMockEvents().filter((e) => e.type === 'window_slid')).toHaveLength(0)
+  })
+
+  it('does NOT log window_slid when daysSinceLast <= interval (not stale beyond one window)', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={mockPlan()}
+        mockPrescription={prescription({ due: true, daysSinceLast: 14, interval: 14 })}
+      />,
+    )
+    expect(loadMockEvents().filter((e) => e.type === 'window_slid')).toHaveLength(0)
+  })
+
+  it('does NOT log window_slid when not due', () => {
+    render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={mockPlan()}
+        mockPrescription={prescription({ due: false, daysSinceLast: 30, interval: 14 })}
+      />,
+    )
+    expect(loadMockEvents().filter((e) => e.type === 'window_slid')).toHaveLength(0)
+  })
+
+  it('does not double-log window_slid on rerender the same day', () => {
+    const { rerender } = render(
+      <HomeMobile
+        forceLayout="phone"
+        plan={mockPlan()}
+        mockPrescription={prescription({ due: true, daysSinceLast: 30, interval: 14 })}
+      />,
+    )
+    rerender(
+      <HomeMobile
+        forceLayout="phone"
+        plan={mockPlan()}
+        mockPrescription={prescription({ due: true, daysSinceLast: 30, interval: 14 })}
+      />,
+    )
+    expect(loadMockEvents().filter((e) => e.type === 'window_slid')).toHaveLength(1)
   })
 })

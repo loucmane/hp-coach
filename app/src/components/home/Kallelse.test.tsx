@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { PlanItemWithMock } from '@/lib/mockContract'
 import { __resetMockEvents, loadMockEvents } from '@/lib/mockEvents'
+import type { PlanItem } from '@/lib/scheduler'
 import { Kallelse } from './Kallelse'
 
-function mockItem(overrides: Partial<PlanItemWithMock> = {}): PlanItemWithMock {
+function mockItem(overrides: Partial<PlanItem> = {}): PlanItem {
   return {
     id: 'mock-2026-07-08',
     kind: 'mock',

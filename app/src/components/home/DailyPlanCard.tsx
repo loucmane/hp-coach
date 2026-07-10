@@ -28,13 +28,18 @@ export function DailyPlanCard({ plan, allComplete, onNavigate }: DailyPlanCardPr
     return <CompletePanel plan={plan} />
   }
 
-  // A `kind: 'mock'` item (CONTRACT — see @/lib/mockContract) is rendered
-  // as the Kallelse summons ABOVE this card, not as an ordinary numbered
-  // row here — filtering before mapping (rather than a per-row guard in
-  // PlanRow) keeps the ordinal numbering contiguous for the remaining
-  // items and avoids a `verbFor` case for a kind the real PlanItemKind
-  // union doesn't even know about yet.
-  const rows = plan.items.filter((item) => (item.kind as string) !== 'mock')
+  // A `kind: 'mock'` item is rendered as the Kallelse summons ABOVE this
+  // card, not as an ordinary numbered row here — filtering before mapping
+  // (rather than a per-row guard in PlanRow) keeps the ordinal numbering
+  // contiguous for the remaining items and avoids a `verbFor` case for
+  // the mock kind.
+  const rows = plan.items.filter((item) => item.kind !== 'mock')
+
+  // Mock-only day (pure provpass-dag): every item was filtered out, so the
+  // Kallelse above IS the day's plan — render nothing rather than a bare
+  // "Dagens plan" heading over an empty list (and a margin-rail minute count
+  // that would just double-count the summons's own "· 55 minuter").
+  if (rows.length === 0) return null
 
   return (
     <section data-testid="daily-plan-card">

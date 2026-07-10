@@ -18,7 +18,7 @@
 // is prescriptive and completion stays signal-derived — no manual
 // "mark complete", no regenerate affordance.
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import type { MockResultRow } from '@/api/hooks/useMockResults'
 import type { SessionHistoryRow } from '@/api/hooks/useSessions'
@@ -36,8 +36,8 @@ import { Page } from '@/components/Page'
 import { useViewport } from '@/hooks/useViewport'
 import { formatSwedishHeader } from '@/lib/dates'
 import type { DiagnosticMemory } from '@/lib/diagnosticMemory'
-import type { MockPrescription, PlanItemWithMock } from '@/lib/mockContract'
-import type { DailyPlan } from '@/lib/scheduler'
+import { logMockEvent } from '@/lib/mockEvents'
+import type { DailyPlan, MockPrescription } from '@/lib/scheduler'
 import { formatDeltaSv, formatScoreSv, type ProjectedTotal } from '@/lib/scoring'
 import type { CoachKey } from '@/lib/voice'
 import { useCoachStore } from '@/stores/coachStore'
@@ -85,13 +85,12 @@ type HomeMobileProps = {
   onAvancerat?: () => void
   /** Test-only override for viewport detection. */
   forceLayout?: 'phone' | 'reader' | 'studio'
-  /** CONTRACT (see @/lib/mockContract) — Provpass due/countdown state for
-   *  ProvpassStatusLine. Optional: when omitted the status line renders
-   *  nothing, so callers that don't have prescribeMock wired yet (every
-   *  caller today — see mockContract.ts) simply don't pass it. */
+  /** Provpass due/countdown state for ProvpassStatusLine (from
+   *  `useDailyPlan()`'s `prescribeMock` call). Optional: when omitted
+   *  the status line renders nothing. */
   mockPrescription?: MockPrescription | null
-  /** CONTRACT — most recent Provpass result, for the status line's
-   *  "senast X N/M" countdown copy. */
+  /** Most recent Provpass result, for the status line's "senast X N/M"
+   *  countdown copy. */
   lastMockResult?: MockResultRow | null
 }
 
@@ -124,13 +123,22 @@ export function HomeMobile({
   // HomeMobile (which already owns viewport/layout state) is the natural
   // owner of "is the pre-start sheet open".
   const [confirmOpen, setConfirmOpen] = useState(false)
-  // The real PlanItem['kind'] union (@/lib/scheduler) doesn't include
-  // 'mock' yet — CONTRACT-widen the search to PlanItemWithMock (see
-  // @/lib/mockContract) rather than asserting a type predicate against
-  // the real PlanItem, which TS correctly rejects as unsound.
-  const mockItem = (plan?.items as PlanItemWithMock[] | undefined)?.find(
-    (item) => item.kind === 'mock',
-  )
+  // Only an UNCOMPLETED mock item summons — once the pass is done for the
+  // day (isItemComplete flips it via mockHistory), the Kallelse must not
+  // keep shouting STARTA. ProvpassStatusLine's suppression keys off the
+  // same value, so a completed pass also un-suppresses the passive line.
+  const mockItem = plan?.items.find((item) => item.kind === 'mock' && !item.completed)
+
+  // window_slid — fired once per day when the mock item is due AND was
+  // ALREADY overdue more than one cadence interval ago (silently slid past
+  // being due on an earlier day without a completed mock). HomeMobile owns
+  // this (rather than Kallelse, which owns provpassdag_shown) because the
+  // slide check needs `daysSinceLast`/`interval` from MockPrescription —
+  // Kallelse only ever receives the plain PlanItem, not the prescription.
+  useEffect(() => {
+    if (!mockPrescription) return
+    logSlidOncePerDay(mockPrescription)
+  }, [mockPrescription])
   const renderStreak = showStreak ?? (streakDays !== undefined && streakDays > 0)
   const streakValue = streakDays ?? 0
   // Coach voice stays parked for a future home deployment; keep the
@@ -235,12 +243,9 @@ export function HomeMobile({
            *  The passive PROVPASS readout sits just above it — see
            *  ProvpassStatusLine's own suppression logic for why it's
            *  silent on a day where the Kallelse is already showing.
-           *
-           *  TODO(PR-3): `mockPrescription` is undefined until the real
-           *  @/lib/scheduler.prescribeMock lands (see @/lib/mockContract)
-           *  — until then no caller passes it, so this renders nothing.
-           *  ProvpassStatusLine itself is complete/tested; only the real
-           *  scheduling data is out of scope here. */}
+           *  `mockPrescription` comes from `useDailyPlan()` (HomeRoute) —
+           *  omitted only by callers that don't wire it (dev fixtures,
+           *  tests), in which case the line renders nothing. */}
           {mockPrescription && (
             <ProvpassStatusLine
               prescription={mockPrescription}
@@ -291,4 +296,30 @@ function hourGreeting(d: Date): string {
   if (h < 18) return 'God eftermiddag'
   if (h < 22) return 'God kväll'
   return 'God natt'
+}
+
+const SLID_KEY = 'hpc-window-slid-shown-date'
+
+/** Fire window_slid at most once per calendar day — same date-string-
+ *  comparison idiom as Kallelse's logShownOncePerDay (SHOWN_KEY),
+ *  scoped under its own storage key. Only fires when the prescription is
+ *  due AND was already overdue more than one cadence interval ago —
+ *  `daysSinceLast == null` is the baseline "never mocked" case, not a
+ *  slide, and is explicitly excluded. */
+function logSlidOncePerDay(prescription: MockPrescription): void {
+  if (!prescription.due) return
+  if (prescription.daysSinceLast == null) return
+  const slidDays = prescription.daysSinceLast - prescription.interval
+  if (slidDays <= 0) return
+
+  if (typeof window === 'undefined') return
+  try {
+    const today = new Date().toISOString().slice(0, 10)
+    const last = window.localStorage.getItem(SLID_KEY)
+    if (last === today) return
+    window.localStorage.setItem(SLID_KEY, today)
+    logMockEvent('window_slid', { slidDays })
+  } catch {
+    // storage unavailable — err on NOT double-logging, same as Kallelse.
+  }
 }

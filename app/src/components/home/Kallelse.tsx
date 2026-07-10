@@ -16,13 +16,13 @@ import { useEffect } from 'react'
 
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { useViewport } from '@/hooks/useViewport'
-import type { PlanItemWithMock } from '@/lib/mockContract'
 import { logMockEvent } from '@/lib/mockEvents'
+import type { PlanItem } from '@/lib/scheduler'
 
 const MONO_TRACK = 'var(--font-mono-track, 0.04em)'
 
 type KallelseProps = {
-  item: PlanItemWithMock
+  item: PlanItem
   onStart: () => void
   /** Test-only override for viewport detection (mirrors HomeMobile's forceLayout). */
   forceLayout?: 'phone' | 'reader' | 'studio'
@@ -49,11 +49,12 @@ function logShownOncePerDay(): void {
 
 /** Derives "Verbal · 55 minuter" / "Kvant · 55 minuter" from the plan
  *  item's headline ("Provpass · Verbal" / "Provpass · Kvant") — the
- *  scheduler-shaped item doesn't carry a typed `half` field yet (that's
- *  MockPrescription's job, out of scope here), so we parse the part
- *  after the separator. Falls back to the bare headline if it doesn't
- *  match the expected shape, so this never crashes on unknown copy. */
-function deriveHeading(item: PlanItemWithMock): string {
+ *  scheduler-shaped item doesn't carry a typed `half` field itself
+ *  (that's MockPrescription's job, out of scope here), so we parse the
+ *  part after the separator. Falls back to the bare headline if it
+ *  doesn't match the expected shape, so this never crashes on unknown
+ *  copy. */
+function deriveHeading(item: PlanItem): string {
   const parts = item.headline.split('·').map((s) => s.trim())
   const half = parts.length > 1 ? parts[parts.length - 1] : item.headline
   return `${half} · ${item.estimatedMinutes} minuter`

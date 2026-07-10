@@ -61,8 +61,11 @@ import {
   loadPlan,
   localDateString,
   type MockHistoryEntry,
+  type MockPrescription,
   PLAN_SCHEMA_VERSION,
   type PlanItem,
+  prescribeMock,
+  type SchedulerSignals,
   savePlan,
 } from '@/lib/scheduler'
 import { computeSectionScore, type SectionScore, type SectionStats } from '@/lib/scoring'
@@ -81,6 +84,12 @@ export type UseDailyPlan = {
   isLoading: boolean
   regenerate: () => void
   allComplete: boolean
+  /** The scheduler's current Provpass (mock exam) prescription — same
+   *  `SchedulerSignals` `buildPlan` resolves for `generateDailyPlan`, fed
+   *  to `prescribeMock` in the same call so the two can never drift.
+   *  Null while the plan is still resolving, or before the first
+   *  build/regenerate has run. */
+  mockPrescription: MockPrescription | null
 }
 
 export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
@@ -127,6 +136,12 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
 
   const [plan, setPlan] = useState<DailyPlan | null>(null)
   const [hints, setHints] = useState<FrameworkHints | null>(null)
+  // Provpass (mock exam) prescription — computed from the SAME
+  // SchedulerSignals object buildPlan builds for generateDailyPlan (see
+  // buildPlan below). Only updated by the build/regenerate effects, not
+  // by deriveCompletion — the prescription isn't part of completion
+  // derivation.
+  const [prescription, setPrescription] = useState<MockPrescription | null>(null)
 
   // Server plan for today's local date — GET'd BEFORE we generate so a plan
   // authored on another device is adopted verbatim (first-generator-wins),
@@ -231,6 +246,23 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
         toMockHistory(mockResults.data),
       )
 
+    // The mock prescription isn't part of the adopted-plan payload (server
+    // rows and the local cache only ever store the plan, not the scheduler's
+    // live cadence read) — so it's always computed fresh from the current
+    // signals, even when the PLAN itself is adopted verbatim in branches 1/2
+    // below. Same signals object `generateDailyPlan` would build in branch 3,
+    // just not threaded through it when we don't actually call it.
+    const signals = buildSchedulerSignals(
+      now,
+      stats.data.bySection,
+      due.data.length,
+      hints,
+      topTraps,
+      mockResults.data,
+      daysToExam,
+    )
+    setPrescription(prescribeMock(signals))
+
     // 1. Server plan present → adopt verbatim (server wins), mirror local.
     const remote = serverPlan.data
     if (remote?.version === PLAN_SCHEMA_VERSION && remote.date === today) {
@@ -260,9 +292,9 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       mockResults.data,
       daysToExam,
     )
-    savePlan(fresh)
-    putServerPlan.mutate(fresh)
-    setPlan(derive(fresh))
+    savePlan(fresh.plan)
+    putServerPlan.mutate(fresh.plan)
+    setPlan(derive(fresh.plan))
   }, [
     stats.data,
     due.data,
@@ -313,11 +345,12 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       mockResults.data,
       daysToExam,
     )
-    savePlan(fresh)
-    putServerPlan.mutate(fresh)
+    savePlan(fresh.plan)
+    putServerPlan.mutate(fresh.plan)
+    setPrescription(fresh.prescription)
     setPlan(
       deriveCompletion(
-        fresh,
+        fresh.plan,
         due.data.length,
         mergedReads,
         stats.data.bySection,
@@ -344,12 +377,42 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
     isLoading: stats.isLoading || due.isLoading || hints === null,
     regenerate,
     allComplete,
+    mockPrescription: prescription,
   }
 }
 
 // ---------------------------------------------------------------------------
 // Helpers — exported (or testable in isolation) where useful.
 // ---------------------------------------------------------------------------
+
+/** Build the ONE `SchedulerSignals` object both `generateDailyPlan` and
+ *  `prescribeMock` consume. Single construction site — see `buildPlan`
+ *  and `useDailyPlan`'s `mockPrescription` — so the plan's mock item and
+ *  the standalone prescription (status line, window_slid detection) can
+ *  never drift by being derived from two independently-built signals
+ *  objects. */
+function buildSchedulerSignals(
+  now: Date,
+  bySection: BySection,
+  dueCount: number,
+  hints: FrameworkHints,
+  topTraps: TopTrap[],
+  mockResults: MockResultRow[] | undefined,
+  daysToExam: number,
+): SchedulerSignals {
+  const sectionScores: SectionScore[] = SECTION_KEYS.map((s) =>
+    computeSectionScore(s, bySection[s], now),
+  )
+  return {
+    now,
+    sectionScores,
+    dueMistakeCount: dueCount,
+    firstUnreadEntry: hints,
+    topTraps,
+    mockHistory: toMockHistory(mockResults),
+    daysToExam,
+  }
+}
 
 function buildPlan(
   now: Date,
@@ -360,19 +423,18 @@ function buildPlan(
   totalAttempts: number,
   mockResults: MockResultRow[] | undefined,
   daysToExam: number,
-): DailyPlan {
-  const sectionScores: SectionScore[] = SECTION_KEYS.map((s) =>
-    computeSectionScore(s, bySection[s], now),
-  )
-  const base = generateDailyPlan({
+): { plan: DailyPlan; prescription: MockPrescription } {
+  const signals = buildSchedulerSignals(
     now,
-    sectionScores,
-    dueMistakeCount: dueCount,
-    firstUnreadEntry: hints,
+    bySection,
+    dueCount,
+    hints,
     topTraps,
-    mockHistory: toMockHistory(mockResults),
+    mockResults,
     daysToExam,
-  })
+  )
+  const base = generateDailyPlan(signals)
+  const prescription = prescribeMock(signals)
   // Attach the per-section attemptsToday snapshot so drill items can
   // auto-complete later when the section's attemptsToday grows. See
   // isItemComplete for why attemptsToday (same-UTC-day monotonic) replaced
@@ -383,7 +445,8 @@ function buildPlan(
   }
   // And the lifetime total snapshot so section=null items (mastery,
   // cold-start) complete cross-device when the server total grows.
-  return { ...base, attemptsSnapshot, totalAttemptsSnapshot: totalAttempts }
+  const plan = { ...base, attemptsSnapshot, totalAttemptsSnapshot: totalAttempts }
+  return { plan, prescription }
 }
 
 /** Narrow `MockResultRow[]` (the server shape, useMockResults.ts) down to
