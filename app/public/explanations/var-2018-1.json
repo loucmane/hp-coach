@@ -12441,5 +12441,681 @@
    "adjudicated": "2026-07-08",
    "adjudication": "REAL_MAJOR"
   }
+ },
+ "var-2018-1-kvant2-XYZ-001": {
+  "solution_path": "Uttrycket är \\frac{5}{2}-\\frac{8}{5}. Gör gemensam nämnare 10: \\frac{25}{10}-\\frac{16}{10}=\\frac{9}{10}. Som decimaltal 0{,}9. Svar B.",
+  "steps": [
+   {
+    "n": 1,
+    "title": "Förstå problemet",
+    "text": "Du ska räkna ut differensen \\frac{5}{2}-\\frac{8}{5} och matcha den mot ett decimaltal bland alternativen. Svaret är B: 0{,}9.",
+    "tier": "essential"
+   },
+   {
+    "n": 2,
+    "title": "Vad kräver bråksubtraktion?",
+    "text": "Regel: du kan bara subtrahera bråk rakt av när de har SAMMA nämnare. \\frac{a}{n}-\\frac{b}{n}=\\frac{a-b}{n}. Här är nämnarna 2 och 5 — olika — så första jobbet är att göra dem lika.",
+    "tier": "essential"
+   },
+   {
+    "n": 3,
+    "title": "Hitta gemensam nämnare",
+    "text": "Minsta gemensamma nämnare för 2 och 5 är deras produkt 2\\cdot 5=10, eftersom 2 och 5 inte har någon gemensam faktor.",
+    "tier": "essential"
+   },
+   {
+    "n": 4,
+    "title": "Skriv om första bråket",
+    "text": "Förläng \\frac{5}{2} så nämnaren blir 10: multiplicera täljare och nämnare med 5. \\frac{5}{2}=\\frac{5\\cdot 5}{2\\cdot 5}=\\frac{25}{10}.",
+    "tier": "essential"
+   },
+   {
+    "n": 5,
+    "title": "Skriv om andra bråket",
+    "text": "Förläng \\frac{8}{5} så nämnaren blir 10: multiplicera täljare och nämnare med 2. \\frac{8}{5}=\\frac{8\\cdot 2}{5\\cdot 2}=\\frac{16}{10}.",
+    "tier": "essential"
+   },
+   {
+    "n": 6,
+    "title": "Subtrahera täljarna",
+    "text": "Nu har båda bråken nämnaren 10, så subtrahera bara täljarna och behåll nämnaren: \\frac{25}{10}-\\frac{16}{10}=\\frac{25-16}{10}=\\frac{9}{10}.",
+    "tier": "essential"
+   },
+   {
+    "n": 7,
+    "title": "Gör om till decimaltal",
+    "text": "\\frac{9}{10} betyder nio tiondelar, alltså 0{,}9. Att dela med 10 flyttar decimaltecknet ett steg åt vänster.",
+    "tier": "essential"
+   },
+   {
+    "n": 8,
+    "title": "Rimlighetskoll med uppskattning",
+    "text": "\\frac{5}{2}=2{,}5 och \\frac{8}{5}=1{,}6. Differensen 2{,}5-1{,}6=0{,}9 — samma svar, och positivt eftersom 2{,}5>1{,}6.",
+    "tier": "detail"
+   },
+   {
+    "n": 9,
+    "title": "Matcha mot alternativ",
+    "text": "0{,}9 står som alternativ B. Klart.",
+    "tier": "essential"
+   },
+   {
+    "n": 10,
+    "title": "Slutsats",
+    "text": "Svaret är B: 0,9.",
+    "tier": "essential"
+   }
+  ],
+  "distractors": [
+   {
+    "letter": "A",
+    "why_tempting": "Det är lätt att kasta om ordningen och räkna \\frac{8}{5}-\\frac{5}{2} istället, vilket ger 1{,}6-2{,}5=-0{,}9 — och avrunda det till -0{,}3.",
+    "why_wrong": "Frågan står \\frac{5}{2}-\\frac{8}{5} i den ordningen; det större bråket kommer först, så differensen är positiv. -0{,}3 är dessutom fel magnitud (steg 6 ger exakt 0{,}9)."
+   },
+   {
+    "letter": "C",
+    "why_tempting": "Snabbsvar 1{,}2 kan dyka upp om man delar 10 på fel ställe eller läser \\frac{9}{10} som något runt 1.",
+    "why_wrong": "\\frac{9}{10} är mindre än 1, inte större. 1{,}2 skulle kräva en täljare på 12, inte 9."
+   },
+   {
+    "letter": "D",
+    "why_tempting": "Det är frestande att slarva med gemensam nämnare och addera fel, eller läsa av 2{,}5-1{,}6 som ungefär 1{,}7 i huvudet.",
+    "why_wrong": "Som steg 8 visar är 2{,}5-1{,}6=0{,}9, inte 1{,}7. 1{,}7 vore snarare 2{,}5-0{,}8 — en felläst term."
+   }
+  ],
+  "technique": "Bråksubtraktion med olika nämnare: hitta minsta gemensamma nämnare (villkor: nämnarna är olika), förläng varje bråk till den nämnaren, subtrahera sedan bara täljarna. Utlösare — två bråk med olika nämnare och ett minustecken emellan.",
+  "pitfall": "Det kluriga är att man frestas subtrahera täljare och nämnare var för sig (\\frac{5-8}{2-5}), vilket är fel operation. Botemedlet: gör ALLTID gemensam nämnare först — då rör du aldrig nämnaren i själva subtraktionen.",
+  "framework_id": "XYZ-TRAP-016",
+  "pregrade_tactic": {
+   "handle": "Gemensam-nämnare-först-receptet",
+   "move": "När du ser \\frac{a}{b}\\pm\\frac{c}{d} med olika nämnare: förläng båda till samma nämnare INNAN du gör något annat, subtrahera sedan bara täljarna."
+  },
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
+ },
+ "var-2018-1-kvant2-XYZ-004": {
+  "solution_path": "Figuren är en drakform (kite) vars två diagonaler står vinkelrätt mot varandra: den lodräta är 30+70=100 cm, den vågräta är 60 cm. Area av en drake = \\tfrac{1}{2}\\cdot d_1\\cdot d_2=\\tfrac{1}{2}\\cdot 100\\cdot 60=3000 cm². Svar B.",
+  "steps": [
+   {
+    "n": 1,
+    "title": "Förstå problemet",
+    "text": "Figuren visar en drakformad fyrhörning (kite) med en lodrät symmetrilinje. Du ska räkna ut arean. Svaret är B: 3000 cm².",
+    "tier": "essential"
+   },
+   {
+    "n": 2,
+    "title": "Läs av figurens mått",
+    "text": "Den lodräta diagonalen är delad av korsningspunkten i två delar: 30 cm från översta hörnet ned till korsningen, och 70 cm från korsningen ned till nedersta hörnet. Den vågräta diagonalen (hela bredden) är 60 cm.",
+    "tier": "essential"
+   },
+   {
+    "n": 3,
+    "title": "Vad är en drakes diagonaler?",
+    "text": "En drake har två diagonaler som skär varandra i rät vinkel. Den ena är hela den lodräta linjen, den andra hela den vågräta linjen.",
+    "tier": "detail"
+   },
+   {
+    "n": 4,
+    "title": "Räkna ut den lodräta diagonalen",
+    "text": "Den lodräta diagonalen är hela sträckan uppifrån och ner, alltså de två delarna adderade: 30+70=100 cm. Kalla den d_1=100 cm.",
+    "tier": "essential"
+   },
+   {
+    "n": 5,
+    "title": "Notera den vågräta diagonalen",
+    "text": "Den vågräta diagonalen är redan given som hela bredden, 60 cm. Kalla den d_2=60 cm.",
+    "tier": "essential"
+   },
+   {
+    "n": 6,
+    "title": "Areaformeln för en drake",
+    "text": "När två diagonaler skär varandra vinkelrätt är arean halva produkten av diagonalerna: A=\\tfrac{1}{2}\\cdot d_1\\cdot d_2. Halveringen kommer av att figuren byggs av trianglar vars sammanlagda area blir just det.",
+    "tier": "essential"
+   },
+   {
+    "n": 7,
+    "title": "Sätt in värdena",
+    "text": "A=\\tfrac{1}{2}\\cdot 100\\cdot 60.",
+    "tier": "essential"
+   },
+   {
+    "n": 8,
+    "title": "Räkna steg för steg",
+    "text": "Först 100\\cdot 60=6000. Sedan halva: \\tfrac{1}{2}\\cdot 6000=3000.",
+    "tier": "essential"
+   },
+   {
+    "n": 9,
+    "title": "Kontroll via triangeluppdelning",
+    "text": "Den vågräta diagonalen delar draken i en övre och en nedre triangel, båda med bas 60. Övre: \\tfrac{1}{2}\\cdot 60\\cdot 30=900. Nedre: \\tfrac{1}{2}\\cdot 60\\cdot 70=2100. Summa 900+2100=3000 — samma svar.",
+    "tier": "detail"
+   },
+   {
+    "n": 10,
+    "title": "Slutsats",
+    "text": "Arean är 3000 cm², alltså alternativ B.",
+    "tier": "essential"
+   }
+  ],
+  "distractors": [
+   {
+    "letter": "A",
+    "why_tempting": "1500 cm² dyker upp om man delar med 2 en gång för mycket, t.ex. räknar \\tfrac{1}{2}\\cdot\\tfrac{1}{2}\\cdot 100\\cdot 60 eller bara använder den ena triangeln.",
+    "why_wrong": "Draken består av BÅDA trianglarna (steg 9): 900+2100=3000. 1500 är exakt halva det rätta svaret."
+   },
+   {
+    "letter": "C",
+    "why_tempting": "4500 cm² kan komma om man använder fel diagonallängd, t.ex. tar den lodräta som 30+70+50 eller blandar in en sida.",
+    "why_wrong": "Den lodräta diagonalen är exakt 30+70=100 och den vågräta 60; \\tfrac{1}{2}\\cdot 100\\cdot 60=3000, inte 4500."
+   },
+   {
+    "letter": "D",
+    "why_tempting": "6000 cm² är just d_1\\cdot d_2=100\\cdot 60 — man har glömt att halvera.",
+    "why_wrong": "Areaformeln för en drake har faktorn \\tfrac{1}{2} (steg 6). Utan den räknar man produkten av diagonalerna, vilket är dubbla arean."
+   }
+  ],
+  "technique": "Area av en drake (eller romb) vars diagonaler skär varandra vinkelrätt: A=\\tfrac{1}{2}\\cdot d_1\\cdot d_2. Utlösare — fyrhörning med två vinkelräta diagonaler och deras längder givna; addera först ihop diagonaldelar till hela diagonaler.",
+  "pitfall": "Det kluriga är dubbelt: att glömma faktorn \\tfrac{1}{2} (ger 6000) och att bara addera EN del av den lodräta diagonalen. Botemedlet: bygg först varje HEL diagonal (30+70=100), och skriv alltid ut \\tfrac{1}{2} innan du multiplicerar.",
+  "framework_id": "XYZ-TRAP-056",
+  "pregrade_tactic": {
+   "handle": "Halva-diagonalprodukten",
+   "move": "Vid drake/romb med vinkelräta diagonaler: bygg först varje hel diagonal genom att addera delarna, sätt sedan in i A=\\tfrac{1}{2}\\cdot d_1\\cdot d_2 — glöm aldrig halveringen."
+  },
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
+ },
+ "var-2018-1-kvant2-XYZ-005": {
+  "solution_path": "Utveckla uttrycket: 2(-r+3s)=-2r+6s. Testa alternativen — D: -6\\left(\\frac{r}{3}-s\\right)=-2r+6s, samma sak. Svar D.",
+  "steps": [
+   {
+    "n": 1,
+    "title": "Förstå problemet",
+    "text": "Du ska hitta vilket alternativ som är LIKA med 2(-r+3s). Ett uttryck kan skrivas på flera sätt; du letar efter det som förenklas till samma sak. Svaret är D.",
+    "tier": "essential"
+   },
+   {
+    "n": 2,
+    "title": "Vad betyder distribution?",
+    "text": "Distributiva lagen: en faktor framför en parentes gångras med VARJE term inuti. a(b+c)=ab+ac. Ingen term får hoppas över.",
+    "tier": "essential"
+   },
+   {
+    "n": 3,
+    "title": "Utveckla frågans uttryck",
+    "text": "Multiplicera in 2:an i varje term: 2\\cdot(-r)=-2r och 2\\cdot 3s=6s. Alltså 2(-r+3s)=-2r+6s. Det här är målformen att matcha mot.",
+    "tier": "essential"
+   },
+   {
+    "n": 4,
+    "title": "Testa alternativ A",
+    "text": "3s-r+2 innehåller en fristående +2 som inte finns i -2r+6s, och r-termen är -r istället för -2r. Matchar inte.",
+    "tier": "detail"
+   },
+   {
+    "n": 5,
+    "title": "Testa alternativ B",
+    "text": "-2r+3s har rätt r-term -2r men s-termen är 3s, inte 6s. Här har man glömt att gångra 3s med 2:an. Matchar inte.",
+    "tier": "detail"
+   },
+   {
+    "n": 6,
+    "title": "Testa alternativ C",
+    "text": "2(s-r)+s=2s-2r+s=-2r+3s. Rätt r-term men bara 3s, inte 6s. Matchar inte.",
+    "tier": "detail"
+   },
+   {
+    "n": 7,
+    "title": "Utveckla alternativ D — faktorn in",
+    "text": "-6\\left(\\frac{r}{3}-s\\right): gångra -6 med varje term. Första: -6\\cdot\\frac{r}{3}.",
+    "tier": "essential"
+   },
+   {
+    "n": 8,
+    "title": "Räkna första termen i D",
+    "text": "-6\\cdot\\frac{r}{3}=\\frac{-6}{3}\\cdot r=-2r. Sexan delad med tre ger 2, med minustecknet -2r.",
+    "tier": "essential"
+   },
+   {
+    "n": 9,
+    "title": "Räkna andra termen i D",
+    "text": "-6\\cdot(-s)=+6s. Minus gånger minus blir plus, så +6s.",
+    "tier": "essential"
+   },
+   {
+    "n": 10,
+    "title": "Sätt ihop D",
+    "text": "-6\\left(\\frac{r}{3}-s\\right)=-2r+6s — exakt frågans målform från steg 3.",
+    "tier": "essential"
+   },
+   {
+    "n": 11,
+    "title": "Rimlighetskoll med tal",
+    "text": "Sätt r=3, s=1: frågan ger 2(-3+3)=0; D ger -6(1-1)=0. Samma. Sätt r=3, s=0: frågan 2(-3)=-6; D -6(1-0)=-6. Samma igen.",
+    "tier": "detail"
+   },
+   {
+    "n": 12,
+    "title": "Slutsats",
+    "text": "Svaret är D.",
+    "tier": "essential"
+   }
+  ],
+  "distractors": [
+   {
+    "letter": "A",
+    "why_tempting": "Det är lätt att luras av att A innehåller både r och s och ser 'algebraiskt nog' ut.",
+    "why_wrong": "A har en extra konstant +2 som frågans uttryck saknar, och fel koefficient på r (steg 4)."
+   },
+   {
+    "letter": "B",
+    "why_tempting": "B ger rätt r-term -2r, så halva jobbet stämmer och det frestar att stanna där.",
+    "why_wrong": "Som steg 3 visar ska s-termen vara 6s (2 gånger 3s), inte 3s. B har glömt att multiplicera 3s med 2:an."
+   },
+   {
+    "letter": "C",
+    "why_tempting": "C ser strukturerat ut och ger -2r efter utveckling, precis som målet börjar.",
+    "why_wrong": "Steg 6: 2(s-r)+s förenklas till -2r+3s, inte -2r+6s. s-termen blir för liten."
+   }
+  ],
+  "technique": "Igenkänning av ekvivalenta uttryck: utveckla frågans uttryck till en kanonisk form (-2r+6s), utveckla sedan varje alternativ på samma sätt och jämför term för term. Utlösare — 'vilket är lika med'-frågor där alternativen är olika skrivsätt.",
+  "pitfall": "Det kluriga är att D har en NEGATIV faktor -6 och ett bråk \\frac{r}{3}, vilket ser krångligt ut men bär två teckenfällor: -6\\cdot\\frac{r}{3}=-2r och -6\\cdot(-s)=+6s. Botemedlet: distribuera in tecknet på VARJE term, en i taget.",
+  "framework_id": null,
+  "pregrade_tactic": {
+   "handle": "Kanonisk-form-jämförelsen",
+   "move": "Utveckla frågans uttryck till en fast normalform (-2r+6s), utveckla sedan varje alternativ helt och jämför koefficient för koefficient — inte utseendet."
+  },
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
+ },
+ "var-2018-1-kvant2-XYZ-006": {
+  "solution_path": "x-axeln: sätt y=0 → 0=5x+10 → x_1=-2. y-axeln: sätt x=0 → y_1=10. Summan x_1+y_1=-2+10=8. Svar C.",
+  "steps": [
+   {
+    "n": 1,
+    "title": "Förstå problemet",
+    "text": "Linjen y=5x+10 korsar x-axeln i en punkt och y-axeln i en annan. Du ska hitta x-koordinaten för den ena och y-koordinaten för den andra och addera dem. Svaret är C: 8.",
+    "tier": "essential"
+   },
+   {
+    "n": 2,
+    "title": "Vad kännetecknar x-axeln?",
+    "text": "Varje punkt PÅ x-axeln har y=0 (höjden är noll). Så skärningen med x-axeln hittas genom att sätta y=0 i ekvationen.",
+    "tier": "essential"
+   },
+   {
+    "n": 3,
+    "title": "Lös för x-skärningen",
+    "text": "Sätt y=0: 0=5x+10. Subtrahera 10 från båda leden: -10=5x.",
+    "tier": "essential"
+   },
+   {
+    "n": 4,
+    "title": "Dela ut x",
+    "text": "Dela båda leden med 5: x=\\frac{-10}{5}=-2. Alltså x_1=-2.",
+    "tier": "essential"
+   },
+   {
+    "n": 5,
+    "title": "Vad kännetecknar y-axeln?",
+    "text": "Varje punkt PÅ y-axeln har x=0 (den ligger i mitten i sidled). Så skärningen med y-axeln hittas genom att sätta x=0.",
+    "tier": "essential"
+   },
+   {
+    "n": 6,
+    "title": "Lös för y-skärningen",
+    "text": "Sätt x=0: y=5\\cdot 0+10=10. Alltså y_1=10. (Detta är samma sak som konstanten m i y=kx+m — linjen skär y-axeln i m=10.)",
+    "tier": "essential"
+   },
+   {
+    "n": 7,
+    "title": "Identifiera vad som ska adderas",
+    "text": "Frågan vill ha x_1+y_1: x-koordinaten för x-skärningen (-2) plus y-koordinaten för y-skärningen (10).",
+    "tier": "essential"
+   },
+   {
+    "n": 8,
+    "title": "Addera",
+    "text": "x_1+y_1=-2+10=8.",
+    "tier": "essential"
+   },
+   {
+    "n": 9,
+    "title": "Rimlighetskoll",
+    "text": "x-skärningen är (-2,0) och y-skärningen (0,10). Kontroll: 5\\cdot(-2)+10=0 ✓ och 5\\cdot 0+10=10 ✓.",
+    "tier": "detail"
+   },
+   {
+    "n": 10,
+    "title": "Slutsats",
+    "text": "Summan är 8, alltså alternativ C.",
+    "tier": "essential"
+   }
+  ],
+  "distractors": [
+   {
+    "letter": "A",
+    "why_tempting": "5 är linjens lutning (koefficienten framför x) och frestar den som svarar med det första talet som syns i ekvationen.",
+    "why_wrong": "Lutningen 5 har inget med skärningspunkterna att göra. Summan är x_1+y_1, inte lutningen (steg 7–8)."
+   },
+   {
+    "letter": "B",
+    "why_tempting": "6 kan komma om man räknar x-skärningen med fel tecken, t.ex. x_1=-4 och y_1=10 → 6, eller slarvar med -10/5.",
+    "why_wrong": "0=5x+10 ger x_1=-2 (steg 4), inte -4. Med rätt x_1 blir summan 8."
+   },
+   {
+    "letter": "D",
+    "why_tempting": "15 uppstår om man adderar konstanten och lutningen (10+5) istället för skärningskoordinaterna.",
+    "why_wrong": "10+5 blandar ihop y-skärningen med lutningen. Rätt summa använder x-skärningens x-värde -2, inte lutningen 5."
+   }
+  ],
+  "technique": "Skärningar med axlarna: x-skärning fås av y=0, y-skärning av x=0. Utlösare — 'linjen skär x-axeln/y-axeln i…'; sätt in noll för rätt variabel och lös för den andra.",
+  "pitfall": "Det kluriga är att blanda ihop vilken koordinat som är noll var, och att förväxla lutningen 5 med en skärningskoordinat. Botemedlet: skriv ut punkterna helt — (x_1,0) kräver y=0, (0,y_1) kräver x=0.",
+  "framework_id": "XYZ-TRAP-004",
+  "pregrade_tactic": {
+   "handle": "Noll-in-för-axeln-receptet",
+   "move": "x-skärning: sätt y=0 och lös för x. y-skärning: sätt x=0 och läs av y. Blanda aldrig in lutningen i summan."
+  },
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
+ },
+ "var-2018-1-kvant2-XYZ-009": {
+  "solution_path": "Varje par skakar hand en gång, så antalet handskakningar bland n personer är \\frac{n(n-1)}{2}. Sätt lika med 15: \\frac{n(n-1)}{2}=15 → n(n-1)=30 → n=6 (eftersom 6\\cdot 5=30). Svar B.",
+  "steps": [
+   {
+    "n": 1,
+    "title": "Förstå problemet",
+    "text": "Alla på ett möte skakar hand med varandra exakt en gång. Totalt blev det 15 handskakningar. Du ska hitta antalet personer. Svaret är B: 6.",
+    "tier": "essential"
+   },
+   {
+    "n": 2,
+    "title": "Räkna handskakningar per person",
+    "text": "Om det är n personer skakar varje person hand med alla UTOM sig själv, alltså med n-1 andra.",
+    "tier": "essential"
+   },
+   {
+    "n": 3,
+    "title": "Varför dela med 2?",
+    "text": "Om du räknar n personer gånger n-1 handskakningar var, räknar du varje handskakning TVÅ gånger (en gång från vardera personen i paret). Därför är antalet \\frac{n(n-1)}{2}.",
+    "tier": "essential"
+   },
+   {
+    "n": 4,
+    "title": "Ställ upp ekvationen",
+    "text": "Sätt formeln lika med 15: \\frac{n(n-1)}{2}=15.",
+    "tier": "essential"
+   },
+   {
+    "n": 5,
+    "title": "Rensa bort nämnaren",
+    "text": "Multiplicera båda leden med 2: n(n-1)=30.",
+    "tier": "essential"
+   },
+   {
+    "n": 6,
+    "title": "Tänk i termer av produkt",
+    "text": "Du söker två på varandra följande heltal (n och n-1) vars produkt är 30. Testa: 5\\cdot 6=30 — det stämmer.",
+    "tier": "essential"
+   },
+   {
+    "n": 7,
+    "title": "Välj rätt n",
+    "text": "Eftersom n är det större av de två talen och n-1 det mindre, är n=6 och n-1=5.",
+    "tier": "essential"
+   },
+   {
+    "n": 8,
+    "title": "Verifiera i ursprungsformeln",
+    "text": "\\frac{6\\cdot 5}{2}=\\frac{30}{2}=15 ✓ — precis 15 handskakningar.",
+    "tier": "essential"
+   },
+   {
+    "n": 9,
+    "title": "Testa grannalternativen",
+    "text": "Med n=5: \\frac{5\\cdot 4}{2}=10 (för få). Med n=7: \\frac{7\\cdot 6}{2}=21 (för många). Bara n=6 ger 15.",
+    "tier": "detail"
+   },
+   {
+    "n": 10,
+    "title": "Slutsats",
+    "text": "Det deltog 6 personer, alltså alternativ B.",
+    "tier": "essential"
+   }
+  ],
+  "distractors": [
+   {
+    "letter": "A",
+    "why_tempting": "5 personer frestar om man tror att varje person står för en handskakning, eller räknar n-1 istället för n.",
+    "why_wrong": "Med 5 personer blir det \\frac{5\\cdot 4}{2}=10 handskakningar (steg 9), inte 15."
+   },
+   {
+    "letter": "C",
+    "why_tempting": "7 kan väljas om man glömmer att dela med 2 och löser n(n-1)=15 slarvigt, eller räknar ett steg för långt.",
+    "why_wrong": "Med 7 personer blir det \\frac{7\\cdot 6}{2}=21 handskakningar — för många."
+   },
+   {
+    "letter": "D",
+    "why_tempting": "8 lockar om man tänker att fler handskakningar (15) kräver ganska många personer och gissar högt.",
+    "why_wrong": "\\frac{8\\cdot 7}{2}=28, långt över 15. Antalet handskakningar växer snabbt (kvadratiskt) med antalet personer."
+   }
+  ],
+  "technique": "Handskakningsproblem: antalet par bland n personer är \\frac{n(n-1)}{2} (varje par en gång). Sätt lika med det givna antalet och lös. Utlösare — 'alla skakar hand/spelar mot alla en gång'.",
+  "pitfall": "Det kluriga är att glömma faktorn 2 i nämnaren och därmed dubbelräkna varje handskakning. Botemedlet: kom ihåg att n(n-1) räknar varje par TVÅ gånger, så du delar alltid med 2.",
+  "framework_id": null,
+  "pregrade_tactic": {
+   "handle": "Par-räkningen",
+   "move": "Vid 'alla mot alla en gång': använd \\frac{n(n-1)}{2}, sätt lika med totalen, multiplicera bort tvåan och sök två grannheltal med rätt produkt."
+  },
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
+ },
+ "var-2018-1-kvant2-XYZ-011": {
+  "solution_path": "Förenkla högerledet: r=\\frac{k+p}{k}-1=1+\\frac{p}{k}-1=\\frac{p}{k}. Ur r=\\frac{p}{k} fås k=\\frac{p}{r}. Svar D.",
+  "steps": [
+   {
+    "n": 1,
+    "title": "Förstå problemet",
+    "text": "Du har sambandet r=\\frac{k+p}{k}-1 och ska lösa ut k uttryckt i p och r. Villkoren p>0 och p\\neq r garanterar att uttrycken är väldefinierade. Svaret är D.",
+    "tier": "essential"
+   },
+   {
+    "n": 2,
+    "title": "Dela upp bråket i högerledet",
+    "text": "Ett bråk med summa i täljaren kan delas term för term: \\frac{k+p}{k}=\\frac{k}{k}+\\frac{p}{k}.",
+    "tier": "essential"
+   },
+   {
+    "n": 3,
+    "title": "Förenkla första biten",
+    "text": "\\frac{k}{k}=1 (så länge k\\neq 0). Alltså \\frac{k+p}{k}=1+\\frac{p}{k}.",
+    "tier": "essential"
+   },
+   {
+    "n": 4,
+    "title": "Sätt tillbaka minus ett",
+    "text": "Nu blir högerledet 1+\\frac{p}{k}-1. Ettorna tar ut varandra: 1-1=0.",
+    "tier": "essential"
+   },
+   {
+    "n": 5,
+    "title": "Det förenklade sambandet",
+    "text": "Kvar blir r=\\frac{p}{k}. Hela krånglet kollapsade till ett enkelt bråk.",
+    "tier": "essential"
+   },
+   {
+    "n": 6,
+    "title": "Lös ut k — rensa nämnaren",
+    "text": "Multiplicera båda leden med k: r\\cdot k=p.",
+    "tier": "essential"
+   },
+   {
+    "n": 7,
+    "title": "Isolera k",
+    "text": "Dela båda leden med r (går eftersom r\\neq 0 — annars vore p=0, men p>0): k=\\frac{p}{r}.",
+    "tier": "essential"
+   },
+   {
+    "n": 8,
+    "title": "Rimlighetskoll med tal",
+    "text": "Sätt p=4, k=2: då är r=\\frac{2+4}{2}-1=3-1=2. Formeln ger k=\\frac{p}{r}=\\frac{4}{2}=2 ✓ — samma k.",
+    "tier": "detail"
+   },
+   {
+    "n": 9,
+    "title": "Varför inte alternativ B eller C?",
+    "text": "B \\frac{p-1}{r-1} och C \\frac{p}{r+2} klarar inte kontrollen: med p=4,r=2 ger B \\frac{3}{1}=3\\neq 2 och C \\frac{4}{4}=1\\neq 2.",
+    "tier": "detail"
+   },
+   {
+    "n": 10,
+    "title": "Slutsats",
+    "text": "k = p/r, alltså alternativ D.",
+    "tier": "essential"
+   }
+  ],
+  "distractors": [
+   {
+    "letter": "A",
+    "why_tempting": "k=1 lockar om man tror problemet är enklare än det är eller testar det snabbaste värdet.",
+    "why_wrong": "Med kontrollvärdena p=4,r=2 är k=2, inte 1 (steg 8). k beror på både p och r."
+   },
+   {
+    "letter": "B",
+    "why_tempting": "\\frac{p-1}{r-1} ser ut som resultatet av att dra bort 1 någonstans i mellanleden och frestar den som subtraherar 1 i fel steg.",
+    "why_wrong": "Ettorna i 1+\\frac{p}{k}-1 tar ut varandra HELT (steg 4) — de blir inte kvar i täljare eller nämnare. Kontrollen i steg 9 förkastar B."
+   },
+   {
+    "letter": "C",
+    "why_tempting": "\\frac{p}{r+2} liknar rätt svar men med en extra +2 i nämnaren, som om man behållit en term.",
+    "why_wrong": "Det finns ingen +2 i det förenklade sambandet r=\\frac{p}{k} (steg 5). Kontrollen i steg 9 förkastar C."
+   }
+  ],
+  "technique": "Lös ut variabel ur rationellt samband: dela upp \\frac{k+p}{k} term för term, förenkla, korsmultiplicera och isolera. Utlösare — den okända står i en nämnare och uttrycket kan brytas isär i \\frac{k}{k}+\\frac{p}{k}.",
+  "pitfall": "Det kluriga är att inte se att \\frac{k+p}{k}-1 förenklas till \\frac{p}{k} innan man löser ut. Botemedlet: dela alltid upp ett summa-över-nämnare-bråk term för term FÖRST — då syns förkortningen \\frac{k}{k}=1 direkt.",
+  "framework_id": "XYZ-TRAP-014",
+  "pregrade_tactic": {
+   "handle": "Term-för-term-uppdelningen",
+   "move": "Vid \\frac{a+b}{a}: dela upp i \\frac{a}{a}+\\frac{b}{a}=1+\\frac{b}{a}, förenkla bort ettorna, korsmultiplicera sedan för att lösa ut den okända."
+  },
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
+ },
+ "var-2018-1-kvant2-XYZ-012": {
+  "solution_path": "5^{-2}=\\frac{1}{25} och (-2)^{-1}=-\\frac{1}{2}, så 5^{-2}-(-2)^{-1}=\\frac{1}{25}+\\frac{1}{2}=\\frac{2}{50}+\\frac{25}{50}=\\frac{27}{50}. Svar A.",
+  "steps": [
+   {
+    "n": 1,
+    "title": "Förstå problemet",
+    "text": "Du ska hitta det alternativ som har samma värde som 5^{-2}-(-2)^{-1}. Det handlar om negativa exponenter och teckenhantering. Svaret är A: \\frac{27}{50}.",
+    "tier": "essential"
+   },
+   {
+    "n": 2,
+    "title": "Vad betyder en negativ exponent?",
+    "text": "En negativ exponent betyder ETT DELAT MED potensen: a^{-n}=\\frac{1}{a^{n}}. Det är alltså INTE ett negativt tal — bara en invers.",
+    "tier": "essential"
+   },
+   {
+    "n": 3,
+    "title": "Räkna första termen",
+    "text": "5^{-2}=\\frac{1}{5^{2}}=\\frac{1}{25}. Femman i kvadrat är 25, och den negativa exponenten vänder det till \\frac{1}{25}.",
+    "tier": "essential"
+   },
+   {
+    "n": 4,
+    "title": "Räkna andra termen — bas och tecken",
+    "text": "(-2)^{-1}: basen är hela -2 (parentesen omsluter minustecknet). Exponent -1 ger (-2)^{-1}=\\frac{1}{-2}=-\\frac{1}{2}.",
+    "tier": "essential"
+   },
+   {
+    "n": 5,
+    "title": "Sätt in i uttrycket",
+    "text": "5^{-2}-(-2)^{-1}=\\frac{1}{25}-\\left(-\\frac{1}{2}\\right).",
+    "tier": "essential"
+   },
+   {
+    "n": 6,
+    "title": "Hantera dubbla minustecknet",
+    "text": "Att subtrahera ett negativt tal är att addera: -\\left(-\\frac{1}{2}\\right)=+\\frac{1}{2}. Så uttrycket blir \\frac{1}{25}+\\frac{1}{2}.",
+    "tier": "essential"
+   },
+   {
+    "n": 7,
+    "title": "Gemensam nämnare",
+    "text": "Minsta gemensamma nämnare för 25 och 2 är 50. Skriv om: \\frac{1}{25}=\\frac{2}{50} och \\frac{1}{2}=\\frac{25}{50}.",
+    "tier": "essential"
+   },
+   {
+    "n": 8,
+    "title": "Addera",
+    "text": "\\frac{2}{50}+\\frac{25}{50}=\\frac{27}{50}.",
+    "tier": "essential"
+   },
+   {
+    "n": 9,
+    "title": "Matcha mot alternativ A",
+    "text": "\\frac{27}{50} står exakt som alternativ A.",
+    "tier": "essential"
+   },
+   {
+    "n": 10,
+    "title": "Kontrollera de andra alternativen",
+    "text": "Som decimaltal är \\frac{27}{50}=0{,}54. B 7^{-3}=\\frac{1}{343}\\approx 0{,}003, C \\frac{2}{27}\\approx 0{,}074, D 27 — inget annat är i närheten.",
+    "tier": "detail"
+   },
+   {
+    "n": 11,
+    "title": "Slutsats",
+    "text": "Svaret är A: 27/50.",
+    "tier": "essential"
+   }
+  ],
+  "distractors": [
+   {
+    "letter": "B",
+    "why_tempting": "7^{-3} lockar om man felaktigt slår ihop 5 och 2 till 7 och exponenterna till -3.",
+    "why_wrong": "Man kan inte addera baser eller exponenter så; termerna räknas var för sig (steg 3–4). 7^{-3}\\approx 0{,}003, långt från 0{,}54."
+   },
+   {
+    "letter": "C",
+    "why_tempting": "\\frac{2}{27} kan komma om man vänder på \\frac{27}{50} eller blandar ihop täljare och nämnare.",
+    "why_wrong": "Rätt bråk är \\frac{27}{50} (steg 8), inte dess spegling. \\frac{2}{27}\\approx 0{,}074."
+   },
+   {
+    "letter": "D",
+    "why_tempting": "27 frestar den som tappar bort nämnaren 50 och bara läser täljaren, eller tror negativa exponenter ger stora tal.",
+    "why_wrong": "En negativ exponent ger ett tal MINDRE än 1 (steg 2), inte 27. Hela uttrycket är \\frac{27}{50}=0{,}54, inte 27."
+   }
+  ],
+  "technique": "Negativa exponenter: a^{-n}=\\frac{1}{a^{n}}, räkna varje term separat, håll koll på basens tecken när den står inom parentes. Utlösare — potenser med negativa exponenter och/eller negativa baser inom parentes.",
+  "pitfall": "Det kluriga är dubbelt: att tolka 5^{-2} som ett negativt tal (det är \\frac{1}{25}, positivt) och att missa att -(-2)^{-1} blir ett PLUS. Botemedlet: skriv om varje negativ exponent som \\frac{1}{a^{n}} direkt, och hantera dubbla minustecken som addition.",
+  "framework_id": "XYZ-TRAP-028",
+  "pregrade_tactic": {
+   "handle": "Invers-först-receptet",
+   "move": "Skriv om varje a^{-n} som \\frac{1}{a^{n}} FÖRST, behåll basens tecken från parentesen, och gör subtraktion av ett negativt tal till addition."
+  },
+  "_meta": {
+   "generated_at": "2026-07-10",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
+  }
  }
 }
