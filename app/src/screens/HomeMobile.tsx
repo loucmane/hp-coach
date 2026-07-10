@@ -18,7 +18,7 @@
 // is prescriptive and completion stays signal-derived — no manual
 // "mark complete", no regenerate affordance.
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import type { MockResultRow } from '@/api/hooks/useMockResults'
 import type { SessionHistoryRow } from '@/api/hooks/useSessions'
@@ -36,6 +36,7 @@ import { Page } from '@/components/Page'
 import { useViewport } from '@/hooks/useViewport'
 import { formatSwedishHeader } from '@/lib/dates'
 import type { DiagnosticMemory } from '@/lib/diagnosticMemory'
+import { logMockEvent } from '@/lib/mockEvents'
 import type { DailyPlan, MockPrescription } from '@/lib/scheduler'
 import { formatDeltaSv, formatScoreSv, type ProjectedTotal } from '@/lib/scoring'
 import type { CoachKey } from '@/lib/voice'
@@ -123,6 +124,17 @@ export function HomeMobile({
   // owner of "is the pre-start sheet open".
   const [confirmOpen, setConfirmOpen] = useState(false)
   const mockItem = plan?.items.find((item) => item.kind === 'mock')
+
+  // window_slid — fired once per day when the mock item is due AND was
+  // ALREADY overdue more than one cadence interval ago (silently slid past
+  // being due on an earlier day without a completed mock). HomeMobile owns
+  // this (rather than Kallelse, which owns provpassdag_shown) because the
+  // slide check needs `daysSinceLast`/`interval` from MockPrescription —
+  // Kallelse only ever receives the plain PlanItem, not the prescription.
+  useEffect(() => {
+    if (!mockPrescription) return
+    logSlidOncePerDay(mockPrescription)
+  }, [mockPrescription])
   const renderStreak = showStreak ?? (streakDays !== undefined && streakDays > 0)
   const streakValue = streakDays ?? 0
   // Coach voice stays parked for a future home deployment; keep the
@@ -280,4 +292,30 @@ function hourGreeting(d: Date): string {
   if (h < 18) return 'God eftermiddag'
   if (h < 22) return 'God kväll'
   return 'God natt'
+}
+
+const SLID_KEY = 'hpc-window-slid-shown-date'
+
+/** Fire window_slid at most once per calendar day — same date-string-
+ *  comparison idiom as Kallelse's logShownOncePerDay (SHOWN_KEY),
+ *  scoped under its own storage key. Only fires when the prescription is
+ *  due AND was already overdue more than one cadence interval ago —
+ *  `daysSinceLast == null` is the baseline "never mocked" case, not a
+ *  slide, and is explicitly excluded. */
+function logSlidOncePerDay(prescription: MockPrescription): void {
+  if (!prescription.due) return
+  if (prescription.daysSinceLast == null) return
+  const slidDays = prescription.daysSinceLast - prescription.interval
+  if (slidDays <= 0) return
+
+  if (typeof window === 'undefined') return
+  try {
+    const today = new Date().toISOString().slice(0, 10)
+    const last = window.localStorage.getItem(SLID_KEY)
+    if (last === today) return
+    window.localStorage.setItem(SLID_KEY, today)
+    logMockEvent('window_slid', { slidDays })
+  } catch {
+    // storage unavailable — err on NOT double-logging, same as Kallelse.
+  }
 }
