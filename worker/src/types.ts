@@ -11,6 +11,8 @@ export type Env = {
   RATE_LIMIT: KVNamespace
   // Plain string vars
   ENVIRONMENT: 'dev' | 'staging' | 'production'
+  // Deploy commit SHA, set by the deploy workflow; absent in local dev.
+  GIT_SHA?: string
   // Secrets (set via `wrangler secret put`)
   CLERK_SECRET_KEY: string
   // Optional. When set in dev/staging, /api/dev/login issues a sign-in

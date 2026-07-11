@@ -25,5 +25,9 @@ export const healthRoute = new Hono<{ Bindings: Env }>().get('/', async (c) => {
     environment: c.env.ENVIRONMENT,
     db: dbOk,
     latencyMs: Date.now() - startedAt,
+    // Deploy SHA, injected by the deploy workflow (`--var GIT_SHA:<sha>`)
+    // so a red deploy is attributable to a commit at a glance. 'local'
+    // for wrangler dev, which has no var set.
+    version: c.env.GIT_SHA ?? 'local',
   })
 })
