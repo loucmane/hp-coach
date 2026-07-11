@@ -1,0 +1,186 @@
+# Deploy pipeline (service-plan PR 0.1).
+#
+# Staging deploys automatically after CI succeeds on main; production is
+# the same steps behind the `production` GitHub environment, whose
+# required-reviewer rule is the manual promote gate.
+#
+# Security posture (from the plan-v3 security review):
+# - Third-party actions pinned to commit SHAs, not tags.
+# - The jobs holding CLOUDFLARE_API_TOKEN never run `pnpm install` over
+#   the full dependency tree: the app is built in a token-less job and
+#   passed as an artifact; wrangler runs via `pnpm dlx wrangler@<pinned>`
+#   (one known package, no lifecycle scripts from the app's dep tree).
+# - Staging lockdown smoke: /api/dev/login and /api/test-reset must be
+#   dead on the internet-facing staging worker.
+#
+# `workflow_run` only fires for workflows on the default branch — the
+# merge that introduces this file won't trigger it; use the manual
+# `workflow_dispatch` for the first run.
+
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      promote_prod:
+        description: "Also deploy to production (still gated by the environment)"
+        type: boolean
+        default: false
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  WRANGLER_VERSION: "4.42.0"
+
+jobs:
+  build:
+    name: build app (token-less)
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      # actions/checkout@v4.2.2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      # pnpm/action-setup@v4.0.0
+      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2
+        with:
+          run_install: false
+      # actions/setup-node@v4.1.0
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: app/pnpm-lock.yaml
+      - name: Install (app)
+        run: pnpm install --frozen-lockfile
+      - name: Install (worker — type-only dep of app tsc/build)
+        working-directory: worker
+        run: pnpm install --frozen-lockfile
+      - name: Build (staging config)
+        run: pnpm build
+        env:
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+          VITE_API_BASE_URL: ${{ vars.STAGING_API_URL }}
+      # actions/upload-artifact@v4.4.3
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
+        with:
+          name: app-dist-staging
+          path: app/dist/
+          retention-days: 3
+      - name: Build (production config)
+        run: pnpm build
+        env:
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+          VITE_API_BASE_URL: ${{ vars.PROD_API_URL }}
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
+        with:
+          name: app-dist-production
+          path: app/dist/
+          retention-days: 3
+
+  staging:
+    name: deploy staging
+    needs: build
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2
+        with:
+          run_install: false
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
+        with:
+          node-version: 22
+      # actions/download-artifact@v4.1.8
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
+        with:
+          name: app-dist-staging
+          path: app/dist/
+      - name: Apply D1 migrations (staging)
+        working-directory: worker
+        run: pnpm dlx wrangler@${{ env.WRANGLER_VERSION }} d1 migrations apply hpc-staging --env staging --remote
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Deploy worker (staging)
+        working-directory: worker
+        run: pnpm dlx wrangler@${{ env.WRANGLER_VERSION }} deploy --env staging --var GIT_SHA:${{ github.sha }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Ensure Pages project exists
+        run: |
+          pnpm dlx wrangler@${{ env.WRANGLER_VERSION }} pages project list | grep -q "hpc-app" || \
+          pnpm dlx wrangler@${{ env.WRANGLER_VERSION }} pages project create hpc-app --production-branch main
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Deploy app to Pages (staging alias = branch "staging")
+        run: pnpm dlx wrangler@${{ env.WRANGLER_VERSION }} pages deploy app/dist --project-name hpc-app --branch staging
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Smoke — worker health + staging lockdown
+        if: vars.STAGING_API_URL != ''
+        run: |
+          set -euo pipefail
+          base="${{ vars.STAGING_API_URL }}"
+          echo "health:" && curl -fsS "$base/health"
+          # Staging must NOT expose the dev-login or test-reset primitives.
+          dl=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$base/api/dev/login")
+          tr_=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$base/api/test-reset")
+          echo "dev/login=$dl test-reset=$tr_"
+          case "$dl" in 401|403|404|503) ;; *) echo "::error::/api/dev/login answered $dl on staging — auth-bypass exposure"; exit 1;; esac
+          case "$tr_" in 401|403|404|503) ;; *) echo "::error::/api/test-reset answered $tr_ on staging"; exit 1;; esac
+
+  production:
+    name: deploy production (gated)
+    needs: staging
+    if: github.event_name == 'workflow_dispatch' && inputs.promote_prod
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2
+        with:
+          run_install: false
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
+        with:
+          name: app-dist-production
+          path: app/dist/
+      - name: Apply D1 migrations (production)
+        working-directory: worker
+        run: pnpm dlx wrangler@${{ env.WRANGLER_VERSION }} d1 migrations apply hpc-prod --env production --remote
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Deploy worker (production)
+        working-directory: worker
+        run: pnpm dlx wrangler@${{ env.WRANGLER_VERSION }} deploy --env production --var GIT_SHA:${{ github.sha }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Deploy app to Pages (production branch)
+        run: pnpm dlx wrangler@${{ env.WRANGLER_VERSION }} pages deploy app/dist --project-name hpc-app --branch main
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Smoke — prod worker health
+        if: vars.PROD_API_URL != ''
+        run: curl -fsS "${{ vars.PROD_API_URL }}/health"
