@@ -11,7 +11,7 @@ import { getDb } from '../db/client'
 import { attempts, mistakes, mockResults, sessions, users } from '../db/schema'
 import { makeTestD1, type ShimD1 } from '../lib/testD1'
 import type { Env, Vars } from '../types'
-import { exportRoute, importRoute, SCHEMA_VERSION } from './export'
+import { exportRoute, importRoute, SCHEMA_VERSION, TABLE_ROW_CAPS } from './export'
 
 let d1: ShimD1
 
@@ -269,5 +269,116 @@ describe('validation', () => {
     const { res, body } = await postImport('user_a', bigString)
     expect(res.status).toBe(413)
     expect((body as { error: { code: string } }).error.code).toBe('payload_too_large')
+  })
+
+  it('rejects an over-cap table BEFORE deleting existing data (wipe-then-fail guard)', async () => {
+    const { userId } = await seedUserData('user_a')
+    const before = await countAllRowsForUser(userId)
+    expect(before.mistakes).toBeGreaterThan(0)
+
+    const { body: exported } = await getExport('user_a')
+    const envelope = exported as {
+      schemaVersion: number
+      exportedAt: string
+      user: unknown
+      tables: { mistakes: Array<Record<string, unknown>> } & Record<string, unknown>
+    }
+
+    // Build a `mistakes` table one row over its documented cap — small
+    // rows so the payload stays well under MAX_IMPORT_BYTES and the test
+    // exercises the row-cap check specifically, not the byte-size check.
+    const template = envelope.tables.mistakes[0]
+    const overCapMistakes = Array.from({ length: TABLE_ROW_CAPS.mistakes + 1 }, (_, i) => ({
+      ...template,
+      id: i + 1,
+      questionId: `synthetic-${i}`,
+    }))
+
+    const payload = {
+      ...envelope,
+      tables: { ...envelope.tables, mistakes: overCapMistakes },
+    }
+
+    const { res, body } = await postImport('user_a', payload)
+    expect(res.status).toBe(413)
+    const err = (body as { error: { code: string; message: string } }).error
+    expect(err.code).toBe('table_row_cap_exceeded')
+    expect(err.message).toContain('mistakes')
+
+    // The invariant under test: existing data must be UNTOUCHED — the
+    // delete phase must never run for a payload that fails cap validation.
+    const after = await countAllRowsForUser(userId)
+    expect(after).toEqual(before)
+  })
+
+  it('id-remapping stays correct across insert-chunk boundaries', async () => {
+    const { userId } = await seedUserData('user_a')
+    const { body: exported } = await getExport('user_a')
+    const envelope = exported as {
+      schemaVersion: number
+      exportedAt: string
+      user: unknown
+      tables: {
+        sessions: Array<Record<string, unknown>>
+        attempts: Array<Record<string, unknown>>
+        mistakes: Array<Record<string, unknown>>
+        lessonProgress: unknown[]
+        lessonReads: unknown[]
+        dailyPlans: unknown[]
+        mockResults: Array<Record<string, unknown>>
+      }
+    }
+
+    // Build a payload with 250 sessions (spans multiple insert-chunk
+    // boundaries at any chunk size <= 100) and an attempt referencing the
+    // LAST session, to prove the id map is fully built (across every
+    // chunk) before dependent-table inserts read from it.
+    const sessionTemplate = envelope.tables.sessions.find((s) => s.kind === 'drill')
+    const attemptTemplate = envelope.tables.attempts[0]
+    const sessionCount = 250
+    const payloadSessions = Array.from({ length: sessionCount }, (_, i) => ({
+      ...sessionTemplate,
+      id: 10_000 + i,
+      kind: 'drill',
+    }))
+    const lastSessionPayloadId = 10_000 + sessionCount - 1
+    const payloadAttempts = [
+      {
+        ...attemptTemplate,
+        id: 1,
+        sessionId: lastSessionPayloadId,
+        questionId: 'chunk-boundary-q',
+      },
+    ]
+
+    const payload = {
+      ...envelope,
+      tables: {
+        ...envelope.tables,
+        sessions: payloadSessions,
+        attempts: payloadAttempts,
+        mockResults: [],
+      },
+    }
+
+    const { res, body: importResult } = await postImport('user_a', payload)
+    expect(res.status).toBe(200)
+    expect((importResult as { ok: boolean }).ok).toBe(true)
+    expect((importResult as { restored: { sessions: number; attempts: number } }).restored).toEqual(
+      expect.objectContaining({ sessions: sessionCount, attempts: 1 }),
+    )
+
+    const db = getDb(d1 as unknown as D1Database)
+    const attemptRows = await db.select().from(attempts).where(eq(attempts.userId, userId))
+    expect(attemptRows).toHaveLength(1)
+    expect(attemptRows[0].questionId).toBe('chunk-boundary-q')
+
+    // The attempt's remapped sessionId must point at a REAL session row
+    // owned by this user (proving the map entry for the 250th/last session
+    // — inserted in a later chunk — was captured correctly).
+    const sessionRows = await db.select().from(sessions).where(eq(sessions.userId, userId))
+    const sessionIds = new Set(sessionRows.map((s) => s.id))
+    expect(sessionIds.has(attemptRows[0].sessionId)).toBe(true)
+    expect(sessionRows).toHaveLength(sessionCount)
   })
 })

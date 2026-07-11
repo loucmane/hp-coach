@@ -122,9 +122,17 @@ export function makeTestD1(): ShimD1 {
 
   return {
     prepare: (sql: string) => new ShimPreparedStatement(db, sql),
+    // Real D1's batch() returns one D1Result per statement — the same
+    // `{ results, success, meta }` shape as `.all()` (see D1's docs and
+    // drizzle-orm's d1 session.js, which maps every batch result through
+    // the same `mapResult` path as a plain `.all()`/`.raw()` call). That
+    // shape is what lets `INSERT ... RETURNING` inside a batch surface
+    // its rows via drizzle's `.returning()` — using `.run()` here (as
+    // this shim previously did) silently dropped RETURNING data for any
+    // batched insert.
     batch: async (stmts) => {
       const out: unknown[] = []
-      for (const s of stmts) out.push(await s.run())
+      for (const s of stmts) out.push(await s.all())
       return out as never
     },
     exec: async (sql: string) => {
