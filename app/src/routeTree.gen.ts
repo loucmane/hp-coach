@@ -51,6 +51,7 @@ import { Route as AdaptiveVerifyRouteImport } from './routes/adaptive-verify'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DevNavCtaBakeoffRouteImport } from './routes/dev_.nav-cta-bakeoff'
 import { Route as DevMockEventsRouteImport } from './routes/dev_.mock-events'
+import { Route as DevAccountMenuBakeoff2RouteImport } from './routes/dev_.account-menu-bakeoff-2'
 import { Route as DevAccountMenuBakeoffRouteImport } from './routes/dev_.account-menu-bakeoff'
 
 const WelcomeRoute = WelcomeRouteImport.update({
@@ -264,6 +265,11 @@ const DevMockEventsRoute = DevMockEventsRouteImport.update({
   path: '/dev/mock-events',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevAccountMenuBakeoff2Route = DevAccountMenuBakeoff2RouteImport.update({
+  id: '/dev_/account-menu-bakeoff-2',
+  path: '/dev/account-menu-bakeoff-2',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DevAccountMenuBakeoffRoute = DevAccountMenuBakeoffRouteImport.update({
   id: '/dev_/account-menu-bakeoff',
   path: '/dev/account-menu-bakeoff',
@@ -312,6 +318,7 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
   '/dev/account-menu-bakeoff': typeof DevAccountMenuBakeoffRoute
+  '/dev/account-menu-bakeoff-2': typeof DevAccountMenuBakeoff2Route
   '/dev/mock-events': typeof DevMockEventsRoute
   '/dev/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
 }
@@ -357,6 +364,7 @@ export interface FileRoutesByTo {
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
   '/dev/account-menu-bakeoff': typeof DevAccountMenuBakeoffRoute
+  '/dev/account-menu-bakeoff-2': typeof DevAccountMenuBakeoff2Route
   '/dev/mock-events': typeof DevMockEventsRoute
   '/dev/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
 }
@@ -403,6 +411,7 @@ export interface FileRoutesById {
   '/sign-up': typeof SignUpRoute
   '/welcome': typeof WelcomeRoute
   '/dev_/account-menu-bakeoff': typeof DevAccountMenuBakeoffRoute
+  '/dev_/account-menu-bakeoff-2': typeof DevAccountMenuBakeoff2Route
   '/dev_/mock-events': typeof DevMockEventsRoute
   '/dev_/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
 }
@@ -450,6 +459,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/welcome'
     | '/dev/account-menu-bakeoff'
+    | '/dev/account-menu-bakeoff-2'
     | '/dev/mock-events'
     | '/dev/nav-cta-bakeoff'
   fileRoutesByTo: FileRoutesByTo
@@ -495,6 +505,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/welcome'
     | '/dev/account-menu-bakeoff'
+    | '/dev/account-menu-bakeoff-2'
     | '/dev/mock-events'
     | '/dev/nav-cta-bakeoff'
   id:
@@ -540,6 +551,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/welcome'
     | '/dev_/account-menu-bakeoff'
+    | '/dev_/account-menu-bakeoff-2'
     | '/dev_/mock-events'
     | '/dev_/nav-cta-bakeoff'
   fileRoutesById: FileRoutesById
@@ -586,6 +598,7 @@ export interface RootRouteChildren {
   SignUpRoute: typeof SignUpRoute
   WelcomeRoute: typeof WelcomeRoute
   DevAccountMenuBakeoffRoute: typeof DevAccountMenuBakeoffRoute
+  DevAccountMenuBakeoff2Route: typeof DevAccountMenuBakeoff2Route
   DevMockEventsRoute: typeof DevMockEventsRoute
   DevNavCtaBakeoffRoute: typeof DevNavCtaBakeoffRoute
 }
@@ -886,6 +899,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DevMockEventsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dev_/account-menu-bakeoff-2': {
+      id: '/dev_/account-menu-bakeoff-2'
+      path: '/dev/account-menu-bakeoff-2'
+      fullPath: '/dev/account-menu-bakeoff-2'
+      preLoaderRoute: typeof DevAccountMenuBakeoff2RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dev_/account-menu-bakeoff': {
       id: '/dev_/account-menu-bakeoff'
       path: '/dev/account-menu-bakeoff'
@@ -938,6 +958,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignUpRoute: SignUpRoute,
   WelcomeRoute: WelcomeRoute,
   DevAccountMenuBakeoffRoute: DevAccountMenuBakeoffRoute,
+  DevAccountMenuBakeoff2Route: DevAccountMenuBakeoff2Route,
   DevMockEventsRoute: DevMockEventsRoute,
   DevNavCtaBakeoffRoute: DevNavCtaBakeoffRoute,
 }
