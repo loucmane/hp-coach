@@ -19,6 +19,14 @@
 //                               whole half in a viewport, micro-meters,
 //                               pinned MINST SETT strip.
 //
+// Round 2 — the owner-specced synthesis after reviewing all four:
+//   H  "Kallelsen & registret" — B1×B2 hybrid: Kallelse-lead + mobile
+//                               ledger where the SITTING is the tap
+//                               target (micro-meters carry the pass-level
+//                               story; "Provpass N" lives only in the
+//                               confirm sheet), desktop = B2's matrix
+//                               under the Kallelse.
+//
 // Dev-gated. Round stays live forever per the keep-bake-offs rule.
 
 import { createFileRoute } from '@tanstack/react-router'
@@ -26,6 +34,7 @@ import { useState } from 'react'
 
 import { PPA1, PPA2 } from '@/components/devbake/ProvpassPickerA'
 import { PPB1, PPB2 } from '@/components/devbake/ProvpassPickerB'
+import { PPH } from '@/components/devbake/ProvpassPickerH'
 import { isDevSurface } from '@/lib/devSurface'
 
 export const Route = createFileRoute('/dev_/provpass-picker-bakeoff')({
@@ -37,6 +46,7 @@ const VARIANTS = [
   { key: 'a2', label: 'A2 · Utgåvorna', C: PPA2 },
   { key: 'b1', label: 'B1 · Kallelsen & arkivet', C: PPB1 },
   { key: 'b2', label: 'B2 · Registret', C: PPB2 },
+  { key: 'h', label: 'H · Kallelsen & registret', C: PPH },
 ] as const
 
 function ProvpassPickerBakeoffPage() {
