@@ -35,7 +35,7 @@ export function useDailyPlanQuery(date: string) {
     },
     // The baseline for a given date rarely changes after first generation;
     // a slow poll lets the other device's first-write surface here.
-    refetchInterval: 60_000,
+    refetchInterval: 300_000,
     refetchIntervalInBackground: false,
   })
 }

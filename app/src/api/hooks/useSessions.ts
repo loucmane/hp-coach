@@ -98,7 +98,7 @@ export function useActiveSessions() {
       const body = await res.json()
       return (body.sessions ?? []) as ActiveSession[]
     },
-    refetchInterval: 30_000,
+    refetchInterval: 180_000,
     refetchIntervalInBackground: false,
   })
 }

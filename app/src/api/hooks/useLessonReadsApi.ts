@@ -29,7 +29,7 @@ export function useLessonReadsQuery() {
     // Cheap, small, and read on Home + the lesson reader. Refetch on focus
     // (default) plus a slow poll so the other device converges without a
     // manual reload.
-    refetchInterval: 60_000,
+    refetchInterval: 300_000,
     refetchIntervalInBackground: false,
   })
 }

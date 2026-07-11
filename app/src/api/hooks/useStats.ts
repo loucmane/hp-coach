@@ -68,7 +68,7 @@ export function useStats() {
       const body = await res.json()
       return body.stats as Stats
     },
-    refetchInterval: 60_000,
+    refetchInterval: 300_000,
     refetchIntervalInBackground: false,
   })
 }

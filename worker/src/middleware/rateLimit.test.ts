@@ -19,10 +19,13 @@ function makeKv(counts: Map<string, string>) {
   } as unknown as Env['RATE_LIMIT']
 }
 
-function makeApp(environment: Env['ENVIRONMENT'], kv: Env['RATE_LIMIT']) {
+function makeApp(environment: Env['ENVIRONMENT'], kv: Env['RATE_LIMIT'], userId = 42) {
   const app = new Hono<{ Bindings: Env; Variables: Vars }>()
   app.use('*', async (c, next) => {
-    c.set('userId', 42 as never)
+    // Unique per test: the limiter's in-isolate memCounts Map is module
+    // scoped (deliberately — that's the production behavior), so tests
+    // sharing a userId would pollute each other's windows.
+    c.set('userId', userId as never)
     await next()
   })
   app.use('*', rateLimit)
@@ -43,14 +46,51 @@ describe('rateLimit', () => {
     expect(counts.size).toBe(0)
   })
 
-  it('still limits in staging once the bucket is exhausted', async () => {
+  it('still limits in staging once the bucket is exhausted — and diets on KV writes', async () => {
     const counts = new Map<string, string>()
-    const { app, env } = makeApp('staging', makeKv(counts))
+    let puts = 0
+    const kv = makeKv(counts)
+    const rawPut = kv.put.bind(kv)
+    kv.put = (async (key: string, value: string) => {
+      puts++
+      return rawPut(key, value)
+    }) as typeof kv.put
+    const { app, env } = makeApp('staging', kv, 43)
     let limited = 0
     for (let i = 0; i < 70; i++) {
       const res = await app.request('/api/thing', {}, env)
       if (res.status === 429) limited++
     }
-    expect(limited).toBe(10)
+    // Memory-first: requests 1–29 never touch KV; durable accounting
+    // starts at the half-limit escalation point; the 60-req limit still
+    // bites (requests 60–70 → 11 rejections).
+    expect(limited).toBe(11)
+    // The actual point of the 2026-07-11 change: a 70-request burst
+    // costs ~30 KV writes, not 70 — and typical polling traffic
+    // (< 30/min) costs ZERO.
+    expect(puts).toBeLessThan(35)
+    expect(puts).toBeGreaterThan(0)
+  })
+
+  it('polling-shaped traffic (under half the limit) costs zero KV operations', async () => {
+    const counts = new Map<string, string>()
+    let ops = 0
+    const kv = makeKv(counts)
+    const rawGet = kv.get.bind(kv)
+    const rawPut = kv.put.bind(kv)
+    kv.get = (async (key: string) => {
+      ops++
+      return rawGet(key)
+    }) as typeof kv.get
+    kv.put = (async (key: string, value: string) => {
+      ops++
+      return rawPut(key, value)
+    }) as typeof kv.put
+    const { app, env } = makeApp('staging', kv, 44)
+    for (let i = 0; i < 20; i++) {
+      const res = await app.request('/api/thing', {}, env)
+      expect(res.status).toBe(200)
+    }
+    expect(ops).toBe(0)
   })
 })
