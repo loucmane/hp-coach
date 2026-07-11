@@ -17,6 +17,7 @@
 // shape MUST stay in lock-step with the parser's emit; we cast at
 // fetch time so the rest of the SPA gets real types instead of `any`.
 
+import { contentFetch } from './contentSource'
 import { EXCLUDED_QUESTIONS, SUPPRESSED_FIGURES } from './figureOverrides'
 
 export const PROVPASS_KEYS = ['verb1', 'verb2', 'kvant1', 'kvant2'] as const
@@ -112,10 +113,17 @@ type DtkIndex = Record<string, DtkIndexEntry>
 
 export function loadBank(): Promise<readonly Question[]> {
   if (cached) return cached
-  cached = (async () => {
-    const idx = (await fetch('/data/_index.json').then(handleJson)) as IndexFile
+  // Memoise the in-flight Promise, but DROP it on rejection so a failed
+  // load can be retried. Before content-gating this never mattered (the
+  // static /data/*.json practically always resolved); post-gating a boot
+  // that fires before Clerk is ready — or a transient 401 — would reject,
+  // and a permanently-cached rejected Promise meant the bank never loaded
+  // after sign-in without a hard reload. The `cached === p` guard avoids
+  // clobbering a newer attempt that a retry may have already installed.
+  const p = (async () => {
+    const idx = (await contentFetch('data/_index.json').then(handleJson)) as IndexFile
     const [examFiles, dtkIndex] = await Promise.all([
-      Promise.all(idx.exams.map((e) => fetch(`/data/${e.exam_id}.json`).then(handleJson))),
+      Promise.all(idx.exams.map((e) => contentFetch(`data/${e.exam_id}.json`).then(handleJson))),
       // DTK figures live in a separate index because they're rendered
       // by a different parser stage (parse_dtk_figures.py). Treat 404
       // as "no DTK figures available" rather than fatal — the verbal
@@ -147,6 +155,10 @@ export function loadBank(): Promise<readonly Question[]> {
     }
     return out
   })()
+  cached = p
+  p.catch(() => {
+    if (cached === p) cached = null
+  })
   return cached
 }
 

@@ -85,6 +85,14 @@ jobs:
         env:
           VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
           VITE_API_BASE_URL: ${{ vars.STAGING_API_URL }}
+          # Content-gating switch (PR 1.0a). Empty/unset → flag OFF → the
+          # corpus still ships in the bundle (pre-gating behavior). Set the
+          # repo variable CONTENT_FROM_API to "true" to activate gating:
+          # the build then excludes /data + /explanations and the app fetches
+          # them auth-gated from R2. The R2 sync step below runs regardless,
+          # so the bucket is warm BEFORE this flag is flipped — a two-step
+          # cutover (populate, verify, then flip) rather than a big-bang.
+          VITE_CONTENT_FROM_API: ${{ vars.CONTENT_FROM_API }}
       # actions/upload-artifact@v4.4.3
       - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
         with:
@@ -96,6 +104,8 @@ jobs:
         env:
           VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
           VITE_API_BASE_URL: ${{ vars.PROD_API_URL }}
+          # See the staging build's note — same content-gating switch.
+          VITE_CONTENT_FROM_API: ${{ vars.CONTENT_FROM_API }}
       - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
         with:
           name: app-dist-production
@@ -134,6 +144,17 @@ jobs:
         working-directory: worker
         run: pnpm dlx wrangler@${{ env.WRANGLER_VERSION }} deploy dist/index.js --no-bundle --env staging --var GIT_SHA:${{ github.sha }}
         env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      # Push the strict-tier corpus to R2 BEFORE the app deploys — the gated
+      # app no longer bundles /data or /explanations, so they must already be
+      # live at /api/content when the new Pages build goes up. The script
+      # create-if-missing's the hpc-content bucket and skips unchanged files
+      # by checksum (see scripts/content-sync.mjs).
+      - name: Sync strict-tier content to R2 (staging)
+        run: node scripts/content-sync.mjs
+        env:
+          WRANGLER_VERSION: ${{ env.WRANGLER_VERSION }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       - name: Ensure Pages project exists
@@ -193,6 +214,13 @@ jobs:
         working-directory: worker
         run: pnpm dlx wrangler@${{ env.WRANGLER_VERSION }} deploy dist/index.js --no-bundle --env production --var GIT_SHA:${{ github.sha }}
         env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      # Same rationale as staging: corpus into R2 before the gated app ships.
+      - name: Sync strict-tier content to R2 (production)
+        run: node scripts/content-sync.mjs
+        env:
+          WRANGLER_VERSION: ${{ env.WRANGLER_VERSION }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       - name: Deploy app to Pages (production branch)

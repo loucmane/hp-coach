@@ -24,6 +24,15 @@ migrations_dir = "drizzle"
 binding = "RATE_LIMIT"
 id = "d849e18f563d4029a64fd7149bba3da7"
 
+# Strict-tier corpus (question bank + Layer 2 explanations) served
+# auth-gated via /api/content. `wrangler dev` uses a local R2 simulation
+# for this binding, but dev/e2e default to VITE_CONTENT_FROM_API unset,
+# so the SPA fetches local /data + /explanations and never hits this
+# binding locally. Present here so the worker type-checks and boots.
+[[r2_buckets]]
+binding = "CONTENT"
+bucket_name = "hpc-content"
+
 [vars]
 ENVIRONMENT = "dev"
 
@@ -53,6 +62,10 @@ migrations_dir = "drizzle"
 binding = "RATE_LIMIT"
 id = "d849e18f563d4029a64fd7149bba3da7"
 
+[[env.staging.r2_buckets]]
+binding = "CONTENT"
+bucket_name = "hpc-content"
+
 # ── Production ────────────────────────────────────────────────────────
 [env.production]
 name = "hpc-api"
@@ -72,3 +85,7 @@ migrations_dir = "drizzle"
 [[env.production.kv_namespaces]]
 binding = "RATE_LIMIT"
 id = "942693e7fefb411898a55e3abcf17394"
+
+[[env.production.r2_buckets]]
+binding = "CONTENT"
+bucket_name = "hpc-content"
