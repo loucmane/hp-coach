@@ -18,7 +18,7 @@
 // is prescriptive and completion stays signal-derived — no manual
 // "mark complete", no regenerate affordance.
 
-import { useEffect, useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 
 import type { MockResultRow } from '@/api/hooks/useMockResults'
 import type { SessionHistoryRow } from '@/api/hooks/useSessions'
@@ -94,6 +94,12 @@ type HomeMobileProps = {
   /** Most recent Provpass result, for the status line's "senast X N/M"
    *  countdown copy. */
   lastMockResult?: MockResultRow | null
+  /** The account/identity medallion (AccountMenu), anchored top-right of
+   *  the reading column. Home is the ONLY surface that mounts it — the
+   *  route (index.tsx) owns the Clerk-connected node and passes it here so
+   *  HomeMobile stays presentational and its tests need no Clerk provider.
+   *  Omitted → the corner is empty (tests, signed-out preview). */
+  accountMenu?: ReactNode
 }
 
 export function HomeMobile({
@@ -116,6 +122,7 @@ export function HomeMobile({
   forceLayout,
   mockPrescription = null,
   lastMockResult = null,
+  accountMenu,
 }: HomeMobileProps = {}) {
   // The confirm sheet is a Home-owned modal, not a route-owned one — it
   // has no URL state of its own (unlike /prov's phase machine) and only
@@ -181,9 +188,27 @@ export function HomeMobile({
           className="hpc-m3-frame"
           style={{
             color: 'var(--ink)',
+            position: 'relative',
             paddingBottom: isPhone ? 'var(--frame-tabbar)' : undefined,
           }}
         >
+          {/* Account medallion — top-right of the reading column (the frame
+           *  is the column: max-width, centered), so the desktop card's
+           *  right hairline lands on the column's right text margin and the
+           *  phone medallion sits in the masthead corner. Home only. */}
+          {accountMenu ? (
+            <div
+              data-testid="home-account-slot"
+              style={{
+                position: 'absolute',
+                top: isPhone ? 34 : 50,
+                right: isPhone ? 18 : 24,
+                zIndex: 5,
+              }}
+            >
+              {accountMenu}
+            </div>
+          ) : null}
           {/* Greeting section — the date owns the margin rail (M3.tsx
            *  L763-765), the italic display greeting + stats row own the
            *  content column. */}

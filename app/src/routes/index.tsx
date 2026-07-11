@@ -12,6 +12,7 @@ import { useMockResults } from '@/api/hooks/useMockResults'
 import { useSessionHistory } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
 import { useTopTraps } from '@/api/hooks/useTopTraps'
+import { AccountMenu } from '@/components/account/AccountMenu'
 import { SECTION_KEYS } from '@/data/questions'
 import { useDailyPlan } from '@/hooks/useDailyPlan'
 import { type DiagnosticMemory, loadDiagnosticMemory } from '@/lib/diagnosticMemory'
@@ -125,6 +126,7 @@ function HomeRoute() {
       onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
       mockPrescription={mockPrescription}
       lastMockResult={lastMockResult}
+      accountMenu={<AccountMenu />}
     />
   )
 }

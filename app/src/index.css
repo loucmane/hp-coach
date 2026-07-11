@@ -52,6 +52,14 @@
   --ok-soft: oklch(0.93 0.04 145);
   --bad-soft: oklch(0.93 0.05 25);
 
+  /* Elevation — the tipped-in colophon card (AccountMenu) and the phone
+   * bottom sheet. A token (not a hardcoded rgba at the call site) so the
+   * dark override below can deepen the throw without touching component
+   * code. buildThemeVars does NOT emit these, so the stylesheet cascade
+   * (:root + .dark) owns them cleanly. */
+  --shadow-card: 0 18px 40px -20px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.06);
+  --shadow-sheet: 0 -20px 50px -24px rgba(0, 0, 0, 0.5);
+
   --font-display: "Newsreader", "Times New Roman", Georgia, serif;
   --font-display-w: 500;
   --font-display-track: -0.022em;
@@ -675,6 +683,60 @@ details[open] > summary .hpc-lesson-practice {
     transform: scaleX(1);
   }
 }
+
+/* ── Account surface (Kolofonkortet) ──────────────────────────────────
+ * The tipped-in colophon card, its scrim, and the phone bottom sheet.
+ * Motion lives in NAMESPACED classes (not a component-injected <style>)
+ * so the global prefers-reduced-motion guard below collapses it for free
+ * — no per-component media query needed. Deeper elevation in dark. */
+.dark {
+  --shadow-card: 0 18px 44px -20px rgba(0, 0, 0, 0.66), 0 2px 8px rgba(0, 0, 0, 0.42);
+  --shadow-sheet: 0 -20px 54px -24px rgba(0, 0, 0, 0.72);
+}
+@keyframes hpc-acct-settle {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes hpc-acct-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes hpc-acct-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hpc-acct-card {
+  animation: hpc-acct-settle 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hpc-acct-scrim {
+  animation: hpc-acct-fade 160ms ease-out both;
+}
+.hpc-acct-sheet {
+  animation: hpc-acct-rise 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+/* GRAFT 2: the trigger's `all: unset` strips the default focus ring, so
+ * restore a 2px accent outline offset from the seal (keyboard only). */
+.hpc-acct-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* prompt / headword */
 .hpc-m3-display {
   font-family: var(--font-display);
