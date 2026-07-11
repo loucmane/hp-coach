@@ -37,6 +37,8 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      # For dispatching the Deploy workflow after a merge (see below).
+      actions: write
     steps:
       - name: Merge if PR has auto-merge label and CI is green
         env:
@@ -83,3 +85,12 @@ jobs:
             --repo "$REPO" \
             --squash \
             --delete-branch
+
+          # GitHub suppresses workflow runs for events caused by
+          # GITHUB_TOKEN (recursion prevention) — so this merge's push to
+          # main fires neither CI-on-main nor the Deploy workflow's
+          # workflow_run trigger. workflow_dispatch is the documented
+          # exception, so kick the deploy explicitly. The merged code was
+          # already CI-green on the PR (that's what gated the merge).
+          echo "Dispatching Deploy for main."
+          gh workflow run deploy.yml --repo "$REPO" --ref main
