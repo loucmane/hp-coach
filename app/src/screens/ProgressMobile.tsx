@@ -70,6 +70,9 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
   const projected = stats ? computeProjected(scores) : null
   const delta = stats ? computeProjectedDelta(stats.bySection) : null
   const weak = stats ? rankWeakness(scores).slice(0, 3) : []
+  // How many sections actually carry a signal — the Fokus copy must not
+  // claim "lägsta sektionen" when there is nothing to compare against.
+  const scoredCount = scores.filter((s) => s.score != null).length
 
   return (
     <div
@@ -141,7 +144,7 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
           <DrillRailSection meta="Fokus" delay={240}>
             <div>
               {weak.map((s, i) => (
-                <FokusItem key={s.section} s={s} index={i} />
+                <FokusItem key={s.section} s={s} index={i} scoredCount={scoredCount} />
               ))}
             </div>
           </DrillRailSection>
@@ -663,13 +666,35 @@ function longestStreak(counts: number[]): number {
 
 // ── Fokus items ────────────────────────────────────────────────────
 
-function FokusItem({ s, index }: { s: SectionScore; index: number }) {
+// The rank line is only an honest comparison when other sections have
+// data too (owner-reported 2026-07-12: a single drilled section was
+// labeled "Lägsta sektionen just nu" — with nothing to compare against
+// it is equally the highest). Ranks past the first were also all
+// claiming "lägsta"; they now say their actual place.
+const RANK_SV = ['Lägsta sektionen just nu', 'Näst lägst just nu', 'Tredje lägst just nu']
+
+/** Exported for the regression test. */
+export function fokusRankLine(index: number, scoredCount: number): string {
+  if (scoredCount <= 1) return 'Enda sektionen med försök hittills'
+  return RANK_SV[index] ?? RANK_SV[2]
+}
+
+function FokusItem({
+  s,
+  index,
+  scoredCount,
+}: {
+  s: SectionScore
+  index: number
+  scoredCount: number
+}) {
+  const rankLine = fokusRankLine(index, scoredCount)
   const headline =
     s.trend != null && s.trend < -0.1
       ? `${fmtSv(s.score)} och på väg ner`
       : s.daysSinceLastAttempt >= 14 && s.score != null
         ? `${fmtSv(s.score)} · inte rörd på ${s.daysSinceLastAttempt} dagar`
-        : `Lägsta sektionen just nu · ${fmtSv(s.score)}`
+        : `${rankLine} · ${fmtSv(s.score)}`
   return (
     <div className="hpc-m3-plan-item">
       <span className="hpc-m3-plan-n">{index + 1}.</span>
