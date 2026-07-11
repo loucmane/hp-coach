@@ -1,0 +1,13 @@
+# Cloudflare Pages header rules (this file ships inside the deployment).
+#
+# The gated content paths must NEVER be edge-cached: Pages' default
+# gives static assets s-maxage=604800, and the edge does not purge
+# entries for files that a later deployment removes — observed live on
+# staging 2026-07-11, where /data/*.json kept answering from cache for
+# hours after the cutover build pruned them. These rules are the
+# belt-and-suspenders for any future build that accidentally ships the
+# corpus: even then, nothing gets pinned into shared caches for a week.
+/data/*
+  Cache-Control: no-store
+/explanations/*
+  Cache-Control: no-store
