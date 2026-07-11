@@ -39,6 +39,10 @@ jobs:
           stamp=$(date -u +%Y-%m-%dT%H%M)
           npx wrangler@${{ env.WRANGLER_VERSION }} d1 export hpc-staging --env staging --remote --output /tmp/staging.sql
           gzip -9 /tmp/staging.sql
+          # EU-jurisdiction buckets live in a separate namespace — try
+          # -J eu first (how the bucket was created), fall back to the
+          # default namespace so a non-jurisdiction bucket also works.
+          npx wrangler@${{ env.WRANGLER_VERSION }} r2 object put "hpc-backups/staging/${stamp}.sql.gz" --file /tmp/staging.sql.gz --remote --jurisdiction eu || \
           npx wrangler@${{ env.WRANGLER_VERSION }} r2 object put "hpc-backups/staging/${stamp}.sql.gz" --file /tmp/staging.sql.gz --remote
           echo "staging backup: ${stamp}.sql.gz ($(du -h /tmp/staging.sql.gz | cut -f1))"
         env:
@@ -51,6 +55,10 @@ jobs:
           stamp=$(date -u +%Y-%m-%dT%H%M)
           npx wrangler@${{ env.WRANGLER_VERSION }} d1 export hpc-prod --env production --remote --output /tmp/prod.sql
           gzip -9 /tmp/prod.sql
+          # EU-jurisdiction buckets live in a separate namespace — try
+          # -J eu first (how the bucket was created), fall back to the
+          # default namespace so a non-jurisdiction bucket also works.
+          npx wrangler@${{ env.WRANGLER_VERSION }} r2 object put "hpc-backups/production/${stamp}.sql.gz" --file /tmp/prod.sql.gz --remote --jurisdiction eu || \
           npx wrangler@${{ env.WRANGLER_VERSION }} r2 object put "hpc-backups/production/${stamp}.sql.gz" --file /tmp/prod.sql.gz --remote
           echo "production backup: ${stamp}.sql.gz ($(du -h /tmp/prod.sql.gz | cut -f1))"
         env:
