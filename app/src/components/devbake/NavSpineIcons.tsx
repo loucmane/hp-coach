@@ -192,7 +192,7 @@ function Board({ caption, children }: { caption: string; children: ReactNode }) 
 
 /** One spine slot: glyph centered; the bokmärke hangs at the LEFT EDGE
  *  beside the active glyph; the optional count rides top-right. */
-export type SpineMarker = 'solid' | 'outline' | 'ground'
+export type SpineMarker = 'solid' | 'outline' | 'ground' | 'tint'
 
 function SpineSlot({
   door,
@@ -215,7 +215,7 @@ function SpineSlot({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: active ? 'var(--ink)' : 'var(--muted)',
+        color: active ? (marker === 'tint' ? 'var(--accent)' : 'var(--ink)') : 'var(--muted)',
       }}
     >
       {active && marker === 'solid' && (
@@ -769,6 +769,11 @@ export function SPINEM() {
       marker: 'outline',
       label: 'M1 · Graverat band',
       note: 'Bokmärket omritat i glyfernas eget språk: 1.6-streck, öppen fyllnad, brett nog att skåran i svansen faktiskt läses.',
+    },
+    {
+      marker: 'tint',
+      label: 'M3 · Färgad glyf',
+      note: 'Ingen markör alls — den aktiva glyfen bär själv accentfärgen. Obs: bryter studiens "accenten rör aldrig en glyf"; jämför mot Öva-siffran som redan är accent.',
     },
     {
       marker: 'ground',
