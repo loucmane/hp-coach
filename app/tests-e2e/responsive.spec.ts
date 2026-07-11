@@ -1,8 +1,8 @@
 // Responsive shell E2E — covers Frame, MobileFrame, and Page (EDITION).
 //
 // Three viewport sizes that anchor the Frame component's behaviour:
-//   - 390×844    → phone     (.hpc-frame-phone, iOS chrome visible,
-//                              BottomTabs anchored in the artboard)
+//   - 390×844    → phone     (.hpc-frame-phone, BottomTabs anchored
+//                              in the artboard)
 //   - 1024×768   → reader    (.hpc-frame-reader, ~960px canvas)
 //   - 1440×900   → studio    (.hpc-frame-studio, ~1344px canvas)
 //
@@ -30,14 +30,12 @@ const VIEWPORTS = [
     width: 390,
     height: 844,
     expectedFrameClass: 'hpc-frame-phone',
-    expectedIosChrome: true,
   },
   {
     name: 'reader',
     width: 1024,
     height: 768,
     expectedFrameClass: 'hpc-frame-reader',
-    expectedIosChrome: false,
     // Reader canvas caps at 960px max-width.
     canvasMaxWidth: 960,
   },
@@ -46,7 +44,6 @@ const VIEWPORTS = [
     width: 1440,
     height: 900,
     expectedFrameClass: 'hpc-frame-studio',
-    expectedIosChrome: false,
     // Studio canvas = min(1440, viewport - 96gutter) — at 1440vw the
     // canvas should be 1344px (1440 - 96), capped further by the
     // 1440 ceiling.
@@ -67,12 +64,10 @@ for (const v of VIEWPORTS) {
     const frame = page.locator(`.${v.expectedFrameClass}`)
     await expect(frame).toHaveCount(1)
 
-    // iOS-decorative chrome: status bar shows "09:41" on phone only.
-    if (v.expectedIosChrome) {
-      await expect(page.getByText('09:41', { exact: true })).toBeVisible()
-    } else {
-      await expect(page.getByText('09:41', { exact: true })).toHaveCount(0)
-    }
+    // The decorative iOS status bar (fake 09:41 + battery) was removed
+    // 2026-07-11 — real devices own their status bar. Assert it never
+    // returns, at any viewport.
+    await expect(page.getByText('09:41', { exact: true })).toHaveCount(0)
 
     // BottomTabs are phone-only since Phase A.7. The desktop nav is the
     // <Page> shell (running head + status line) — see the dedicated
