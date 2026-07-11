@@ -166,8 +166,69 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
             </MonoNote>
           )}
         </DrillRailSection>
+
+        {/* ── Bilaga — Historik ───────────────────────────────────── */}
+        {/* The results ledger's nearest door is Framsteg. A standing
+         *  appendix row (always rendered, zero conditions) is the phone's
+         *  entry point to /historik — the desktop rail keeps its own
+         *  'historik' foot word AND this row. Set as the book's appendix
+         *  in the ToC idiom. */}
+        <DrillRailSection meta="Bilaga" delay={360}>
+          <HistorikRow total={stats?.drills.total ?? null} />
+        </DrillRailSection>
       </div>
     </div>
+  )
+}
+
+/** The appendix line to the results journal — book-native ToC row. */
+function HistorikRow({ total }: { total: number | null }) {
+  return (
+    <Link
+      to="/historik"
+      data-testid="progress-historik"
+      style={{
+        display: 'flex',
+        alignItems: 'baseline',
+        gap: 8,
+        paddingBlock: 4,
+        textDecoration: 'none',
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 15,
+          fontVariant: 'all-small-caps',
+          letterSpacing: '0.07em',
+          color: 'var(--ink-2)',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        Bilaga — Historik
+      </span>
+      <span
+        aria-hidden
+        style={{
+          flex: 1,
+          borderBottom: '1px dotted var(--muted)',
+          opacity: 0.55,
+          transform: 'translateY(-3px)',
+          minWidth: 12,
+        }}
+      />
+      <span
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 10.5,
+          color: 'var(--muted)',
+          fontVariantNumeric: 'tabular-nums',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {total != null ? `${total} pass ` : ''}→
+      </span>
+    </Link>
   )
 }
 
@@ -631,7 +692,7 @@ function FokusItem({ s, index }: { s: SectionScore; index: number }) {
             // --muted passes.
             style={{ ...actionWord, color: 'var(--muted)' }}
           >
-            läs lektion
+            läs uppslag
           </Link>
         </span>
       </div>

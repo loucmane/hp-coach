@@ -53,7 +53,7 @@ function DiagnostikScreen() {
     <SessionPlayer
       sessionKind="mock_diagnostic"
       sections="diagnostic"
-      activeTab="drill"
+      activeTab="ova"
       urlSyncedQid={{ qid: urlQid ?? null, setQid: setUrlQid }}
       pickQuestions={pickDiagnosticQuestions}
       idleEyebrow="Diagnos"

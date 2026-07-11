@@ -28,11 +28,15 @@ import type { TabKey } from '@/components/MobileFrame'
 
 import { BrandMark } from './BrandMark'
 
+// NOTE: DesktopNav is no longer mounted (Phase A.8 replaced it with the
+// Page shell / NavRail). Kept compiling against the shared door ids so a
+// future desktop-band experiment stays type-honest.
 const TABS: ReadonlyArray<{ id: TabKey; label: string }> = [
   { id: 'home', label: 'Hem' },
-  { id: 'drill', label: 'Övning' },
-  { id: 'coach', label: 'Coach' },
-  { id: 'progress', label: 'Framsteg' },
+  { id: 'ova', label: 'Öva' },
+  { id: 'provpass', label: 'Provpass' },
+  { id: 'uppslag', label: 'Uppslag' },
+  { id: 'framsteg', label: 'Framsteg' },
 ]
 
 type Props = {

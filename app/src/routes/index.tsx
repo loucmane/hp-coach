@@ -8,6 +8,7 @@
 import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react'
+import { useDueMistakes } from '@/api/hooks/useMistakes'
 import { useMockResults } from '@/api/hooks/useMockResults'
 import { useSessionHistory } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
@@ -43,6 +44,7 @@ function HomeRoute() {
   const firstName = user?.firstName ?? user?.fullName?.split(' ')[0] ?? null
 
   const streakDays = stats.data?.streakDays
+  const dueCount = useDueMistakes().data?.length ?? 0
   const topTraps = useTopTraps()
   const recentPasses = useSessionHistory()
 
@@ -124,6 +126,7 @@ function HomeRoute() {
       firstName={firstName}
       onAvancerat={() => navigate({ to: '/avancerat' })}
       onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
+      ovaDueCount={dueCount}
       mockPrescription={mockPrescription}
       lastMockResult={lastMockResult}
       accountMenu={<AccountMenu />}

@@ -83,11 +83,11 @@ function LektionRoute() {
 
 function PickerShell() {
   return (
-    <MobileFrame activeTab="lektion">
+    <MobileFrame activeTab="uppslag">
       <Page
-        runningHead={['HP · COACH', 'Lektion']}
+        runningHead={['HP · COACH', 'Uppslag']}
         status={{
-          mode: 'LEKTION',
+          mode: 'UPPSLAG',
           context: 'välj sektion',
           hints: ['esc tillbaka', '⌘k palett'],
         }}
@@ -176,7 +176,7 @@ function PickerBody() {
           <span aria-hidden style={{ color: 'var(--hairline)' }}>
             ·
           </span>
-          <Mono>LEKTION</Mono>
+          <Mono>UPPSLAG</Mono>
         </div>
         <h1
           style={{
@@ -357,11 +357,11 @@ const shortcutMeta: React.CSSProperties = {
 
 function ReaderShell({ section }: { section: Section }) {
   return (
-    <MobileFrame activeTab="lektion">
+    <MobileFrame activeTab="uppslag">
       <Page
-        runningHead={['HP · COACH', `Lektion · ${section}`]}
+        runningHead={['HP · COACH', `Uppslag · ${section}`]}
         status={{
-          mode: 'LEKTION',
+          mode: 'UPPSLAG',
           context: section,
           hints: ['esc tillbaka', '⌘k palett'],
         }}

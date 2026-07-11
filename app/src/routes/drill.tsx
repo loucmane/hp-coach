@@ -323,7 +323,7 @@ function DrillScreen() {
   const idleSubcopy = directLinkQid
     ? 'En specifik fråga via ?qid= — för granskning eller debug.'
     : framework
-      ? `Exempelfrågor från lektionen som illustrerar detta mönster.`
+      ? `Exempelfrågor från uppslaget som illustrerar detta mönster.`
       : weak
         ? `Frågor från de mönster du oftast faller för i ${section}.`
         : copy.subcopy
@@ -355,7 +355,7 @@ function DrillScreen() {
     <SessionPlayer
       sessionKind="drill"
       sections={sessionSections}
-      activeTab="drill"
+      activeTab="ova"
       pickQuestions={pickQuestions}
       idleEyebrow={idleEyebrow}
       idleHeadline={idleHeadline}
@@ -410,7 +410,7 @@ function LektionAnchorLink({ section, frameworkId }: { section: Section; framewo
         color: 'var(--ink)',
       }}
     >
-      <span style={{ fontSize: 14 }}>Läs mönstret i lektionen först</span>
+      <span style={{ fontSize: 14 }}>Läs mönstret i uppslaget först</span>
       <span
         style={{
           fontFamily: 'var(--font-mono)',

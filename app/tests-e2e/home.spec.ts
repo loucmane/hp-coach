@@ -70,16 +70,21 @@ authedTest('Daily Home renders the prescriptive plan card', async ({ page }) => 
   await authedExpect(card.or(skeleton).or(complete).or(kallelse)).toBeVisible({ timeout: 10_000 })
 })
 
-authedTest('Bottom tabs visible on phone (Hem/Övning/Feedback/Framsteg)', async ({ page }, testInfo) => {
-  test.skip(
-    testInfo.project.name !== 'mobile',
-    'BottomTabs render only at phone viewport (EDITION dropped them on desktop)',
-  )
-  await authedExpect(page.getByRole('button', { name: 'Hem' })).toBeVisible()
-  await authedExpect(page.getByRole('button', { name: 'Övning' })).toBeVisible()
-  await authedExpect(page.getByRole('button', { name: 'Feedback' })).toBeVisible()
-  await authedExpect(page.getByRole('button', { name: 'Framsteg' })).toBeVisible()
-})
+authedTest(
+  'Bottom tabs visible on phone — the five doors (Hem/Öva/Provpass/Uppslag/Framsteg)',
+  async ({ page }, testInfo) => {
+    test.skip(
+      testInfo.project.name !== 'mobile',
+      'BottomTabs render only at phone viewport (EDITION dropped them on desktop)',
+    )
+    // The owner-locked five doors, same set + order as the desktop rail.
+    for (const label of ['Hem', 'Öva', 'Provpass', 'Uppslag', 'Framsteg']) {
+      await authedExpect(page.getByRole('button', { name: label, exact: true })).toBeVisible()
+    }
+    // Feedback left the bar for /mer · Verktyg.
+    await authedExpect(page.getByRole('button', { name: 'Feedback' })).toHaveCount(0)
+  },
+)
 
 authedTest('Bottom tabs route between sections', async ({ page }, testInfo) => {
   test.skip(

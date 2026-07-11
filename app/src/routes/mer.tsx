@@ -32,7 +32,9 @@ export const Route = createFileRoute('/mer')({
 const PALETTE_KEYS = Object.keys(PALETTES) as PaletteKey[]
 const COACH_KEYS: CoachKey[] = ['kompis', 'professor', 'taktiker']
 
-const TOOLS = [
+// Exported for the nav contract test: "Feedback" (the dogfood exporter)
+// left the phone bar and lives HERE, alongside Diagnostik, under Verktyg.
+export const TOOLS = [
   {
     to: '/diagnostik',
     headline: 'Diagnostik',

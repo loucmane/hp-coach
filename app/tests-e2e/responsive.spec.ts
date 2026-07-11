@@ -18,7 +18,7 @@
 //   - DesktopNav removed. The <Page> shell (running head + folio +
 //     status line) provides editorial chrome at reader/studio.
 //   - BottomTabs render ONLY at phone — desktop tests can't depend on
-//     Hem/Övning/Coach/Framsteg buttons existing.
+//     Hem/Öva/Provpass/Uppslag/Framsteg buttons existing.
 //   - AuthLayout testids `auth-form-pane` / `auth-brand-pane` stay; the
 //     brand pane is hidden at phone.
 
@@ -74,7 +74,7 @@ for (const v of VIEWPORTS) {
     // test below.
     if (v.name === 'phone') {
       await expect(page.getByRole('button', { name: 'Hem', exact: true })).toBeVisible()
-      await expect(page.getByRole('button', { name: 'Övning', exact: true })).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Öva', exact: true })).toBeVisible()
     } else {
       await expect(page.getByRole('button', { name: 'Hem', exact: true })).toHaveCount(0)
     }

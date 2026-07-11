@@ -102,7 +102,7 @@ function RepetitionScreen() {
     <SessionPlayer
       sessionKind="adaptive_review"
       sections="ORD"
-      activeTab="drill"
+      activeTab="ova"
       urlSyncedQid={{ qid: urlQid ?? null, setQid: setUrlQid }}
       completedSessionId={doneSessionId ?? null}
       onComplete={onComplete}

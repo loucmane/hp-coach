@@ -18,71 +18,58 @@
 import type { CSSProperties, ReactNode } from 'react'
 
 import { useViewport } from '@/hooks/useViewport'
+import { DOORS, type TabKey } from '@/lib/nav'
 
-import { Book, Chart, Home, Pencil, User } from './icons'
+export type { TabKey }
 
-// ── Bottom tabs ──────────────────────────────────────────────────────
-export type TabKey = 'home' | 'drill' | 'lektion' | 'coach' | 'progress'
-
-const TABS: ReadonlyArray<{
-  id: TabKey
-  label: string
-  Icon: (p: { s?: number }) => ReactNode
-}> = [
-  { id: 'home', label: 'Hem', Icon: Home },
-  { id: 'drill', label: 'Övning', Icon: Pencil },
-  { id: 'lektion', label: 'Lektion', Icon: Book },
-  // /coach hosts the dogfood-feedback exporter, not coaching. Audit
-  // rec #5 — rename the user-facing label so the tab matches reality.
-  { id: 'coach', label: 'Feedback', Icon: User },
-  { id: 'progress', label: 'Framsteg', Icon: Chart },
-]
+// ── Bottom tabs — B2 "löpande foten" (running footer) ────────────────
+//
+// Owner-picked nav redesign (2026-07-11): the phone bar is text-only —
+// five small-caps serif words under a hairline rule, the SAME five doors
+// as the desktop rail (DOORS is the shared source). No icons: five short
+// Swedish words distinguish faster than five abstract glyphs at 10px,
+// and the bar finally speaks the same language as every surface above
+// it. "Feedback" left the bar (its dogfood exporter lives under /mer ·
+// Verktyg). Active door = accent label (the accent-active law); the one
+// due-count numeral rides Öva's word. No bokmärke ribbon anywhere.
 
 function BottomTabs({
   active = 'home',
   onChange,
-  floating = false,
+  ovaDueCount,
 }: {
   active?: TabKey
   onChange?: (id: TabKey) => void
-  /** When true (reader/studio), render as a viewport-anchored floating
-   *  pill. When false (phone), render absolute-bottom inside the
-   *  device artboard. */
-  floating?: boolean
+  /** Öva's spaced-repetition queue size, shown as the one accent numeral
+   *  on the bar. Threaded from routes that already load it (Home); omit
+   *  elsewhere — a missing count simply shows no numeral (never a fake
+   *  zero). */
+  ovaDueCount?: number
 }) {
-  const positionStyle: CSSProperties = floating
-    ? {
-        position: 'fixed',
-        bottom: 'clamp(16px, 2vh, 32px)',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        background: 'var(--panel)',
-        border: '1px solid var(--hairline)',
-        borderRadius: 999,
-        boxShadow: '0 10px 30px -8px rgba(0,0,0,0.25)',
-        zIndex: 30,
-      }
-    : {
+  return (
+    <div
+      data-testid="bottom-tabs"
+      style={{
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
-        paddingBottom: 28,
+        paddingBottom: 26,
         background: 'var(--panel)',
         borderTop: '1px solid var(--hairline)',
-      }
-  return (
-    <div style={positionStyle}>
+      }}
+    >
       <div
         style={{
           display: 'flex',
-          justifyContent: floating ? 'center' : 'space-around',
-          gap: floating ? 4 : 0,
-          padding: floating ? '6px 10px' : '8px 0 4px',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
+          padding: '13px 22px 6px',
         }}
       >
-        {TABS.map(({ id, label, Icon }) => {
+        {DOORS.map(({ id, label }) => {
           const on = active === id
+          const count = id === 'ova' && ovaDueCount && ovaDueCount > 0 ? ovaDueCount : null
           return (
             <button
               key={id}
@@ -90,24 +77,38 @@ function BottomTabs({
               onClick={() => onChange?.(id)}
               aria-current={on ? 'page' : undefined}
               style={{
-                display: 'flex',
-                flexDirection: floating ? 'row' : 'column',
-                alignItems: 'center',
-                gap: floating ? 6 : 4,
-                background: on && floating ? 'var(--panel-2)' : 'transparent',
+                position: 'relative',
+                background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
-                padding: floating ? '8px 14px' : '6px 12px',
-                borderRadius: floating ? 999 : 0,
-                // WCAG AA: --muted-2 fails 4.5:1 at this 10-12px label
-                // size (confirmed by axe-core audit) — --muted passes
-                // while keeping the inactive/active visual distinction.
-                color: on ? 'var(--ink)' : 'var(--muted)',
-                fontFamily: 'inherit',
+                padding: '2px 6px 6px',
+                fontFamily: 'var(--font-display)',
+                fontSize: 14,
+                fontVariant: 'all-small-caps',
+                letterSpacing: '0.07em',
+                fontWeight: on ? 600 : 500,
+                // Accent-active law: the active door is the ONE place
+                // accent touches a nav label. Inactive stays muted.
+                color: on ? 'var(--accent)' : 'var(--muted)',
               }}
             >
-              <Icon s={floating ? 16 : 20} />
-              <span style={{ fontSize: floating ? 12 : 10, fontWeight: 500 }}>{label}</span>
+              {label}
+              {count != null && (
+                <span
+                  aria-hidden
+                  style={{
+                    position: 'absolute',
+                    top: -3,
+                    right: -8,
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 8.5,
+                    color: 'var(--accent)',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}
+                >
+                  {count}
+                </span>
+              )}
             </button>
           )
         })}
@@ -136,6 +137,9 @@ type MobileFrameProps = {
    *  and MobileFrame agree on which nav chrome to render. Production
    *  callers omit this and rely on useViewport(). */
   forceLayout?: 'phone' | 'reader' | 'studio'
+  /** Öva's spaced-repetition queue size — the one accent numeral on the
+   *  phone bar (see BottomTabs). Omit where unavailable. */
+  ovaDueCount?: number
   style?: CSSProperties
 }
 
@@ -147,6 +151,7 @@ export function MobileFrame({
   streakDays: _streakDays, // Phase A.8 unused (Page handles status-line streak)
   onAvancerat: _onAvancerat, // Phase A.8 unused (status-line + screen own this)
   forceLayout,
+  ovaDueCount,
   style,
 }: MobileFrameProps) {
   // Phase A.7 — viewport drives nav chrome AND iOS decorations:
@@ -216,7 +221,9 @@ export function MobileFrame({
           </Content>
         )
       })()}
-      {tabs && isPhone && <BottomTabs active={activeTab} onChange={onTabChange} floating={false} />}
+      {tabs && isPhone && (
+        <BottomTabs active={activeTab} onChange={onTabChange} ovaDueCount={ovaDueCount} />
+      )}
       {showIosChrome && (
         <div style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)', flexShrink: 0 }} />
       )}

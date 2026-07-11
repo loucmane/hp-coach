@@ -1,17 +1,27 @@
-// NavRail — the product chrome (owner-picked B+ from /nav-bakeoff,
-// 2026-07-03). A Linear-class persistent left rail speaking the
-// product's own margin-rail language, replacing the MC minimal mast.
+// NavRail — the product chrome. Rebuilt to the owner-picked nav
+// redesign (2026-07-11): B2 "Innehållet" (document-native) expanded, the
+// bespoke glyph spine (S2) collapsed. Five identical doors, same set and
+// order as the phone bar (DOORS is the shared source):
 //
-// Not a link list — a compass:
+//     Hem · Öva · Provpass · Uppslag · Framsteg
+//
+// Expanded = the book's table of contents:
 //
 //   ⌜ HP-Coach              «        brand + collapse (⌘B)
-//   HEM / ÖVNING / LEKTION /         nav with LIVE SIGNALS — Övning
-//   FRAMSTEG                          carries the due-rep count,
-//                                     Framsteg the honest week delta
-//   [ PÅBÖRJAD · Övning · KVA ]      the cross-device resume card —
-//                                     "where was I" from ANY page
-//   Höstprov 26 · 114 dagar          the clock, always present
-//   ljus ◐ · mer →                   quick mode toggle + the /mer hub
+//   INNEHÅLL                          the ToC eyebrow
+//   Hem                               small-caps serif rows; the active
+//   Öva ················· 14           row is set in var(--accent). Dot
+//   Provpass                          leaders run to REAL folio signals:
+//   Uppslag ················ 8         Öva → due queue, Uppslag → wired
+//   Framsteg ········· +0,04           sections, Framsteg → week delta.
+//   [ PÅBÖRJAD · Övning · KVA ]       the cross-device resume card
+//   Höstprov 26 · 114 dagar           the clock, always present
+//   ljus ◐ · historik · mer →         mode toggle + appendix + /mer hub
+//
+// Collapsed = the closed book's spine: the five engraved glyphs (19px),
+// the active one in var(--accent), Öva's due count as the one accent
+// numeral. NO bokmärke ribbon anywhere — accent marks the active door
+// and nothing else (the accent-active law, owner 2026-07-11).
 //
 // Collapse: « chevron or ⌘B → a 44px spine (vertical wordmark, »-peek,
 // countdown kept as "114 d"). The preference persists per device via
@@ -27,6 +37,8 @@ import { useDueMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { useResumptionCandidate } from '@/components/home/useResumptionCandidate'
+import { wiredSections } from '@/data/frameworks'
+import { DOORS, type Door, type DoorId } from '@/lib/nav'
 import { computeProjectedDelta, formatDeltaSv } from '@/lib/scoring'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
 import { useUiStore } from '@/stores/uiStore'
@@ -108,14 +120,24 @@ export function RailShell({
   )
 }
 
-// ── The rail itself ────────────────────────────────────────────────
+// ── Active-door resolution ─────────────────────────────────────────
+//
+// A door owns a family of sub-surfaces: the Öva hub also lights up on
+// the drill/repetition/diagnostik flows it launches; Uppslag on the
+// reader; Provpass on the mock. Home matches only the exact root.
 
-const NAV = [
-  { to: '/', label: 'Hem' },
-  { to: '/drill', label: 'Övning' },
-  { to: '/lektion', label: 'Lektion' },
-  { to: '/progress', label: 'Framsteg' },
-] as const
+const DOOR_PREFIXES: Record<DoorId, readonly string[]> = {
+  home: [],
+  ova: ['/ova', '/drill', '/repetition', '/diagnostik'],
+  provpass: ['/prov'],
+  uppslag: ['/lektion'],
+  framsteg: ['/progress'],
+}
+
+function isActiveDoor(id: DoorId, pathname: string): boolean {
+  if (id === 'home') return pathname === '/'
+  return DOOR_PREFIXES[id].some((p) => pathname === p || pathname.startsWith(`${p}/`))
+}
 
 const footWord: CSSProperties = {
   all: 'unset',
@@ -124,84 +146,38 @@ const footWord: CSSProperties = {
   fontSize: 11,
   letterSpacing: '0.1em',
   textTransform: 'uppercase',
-  // WCAG AA color-contrast: --muted-2 measures ~2.6-3.2:1 against the
-  // panel/bg tokens at this 11px size (fails the 4.5:1 normal-text
-  // threshold — confirmed by axe-core audit). --muted passes (~6.2-6.9:1)
-  // while staying visually "quiet" per the Boksidan footer-link idiom.
+  // WCAG AA color-contrast: --muted passes (~6.2-6.9:1) while staying
+  // visually "quiet" per the Boksidan footer-link idiom.
   color: 'var(--muted)',
 }
+
+// ── The rail itself ────────────────────────────────────────────────
 
 function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
   const location = useLocation()
   const sitting = useSitting()
   const days = useDaysRemaining()
+  const pathname = location.pathname
 
-  if (collapsed) {
-    return (
-      <aside
-        data-testid="nav-rail"
-        data-collapsed="true"
-        style={{
-          borderRight: '1px solid var(--hairline)',
-          position: 'sticky',
-          top: 0,
-          height: '100dvh',
-          overflow: 'hidden',
-        }}
-      >
-        <button
-          type="button"
-          onClick={onToggle}
-          aria-label="Visa menyn (⌘B)"
-          title="Visa menyn (⌘B)"
-          style={{
-            all: 'unset',
-            cursor: 'pointer',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 14,
-            padding: '20px 0',
-            width: '100%',
-            height: '100%',
-            boxSizing: 'border-box',
-          }}
-        >
-          <span style={{ color: 'var(--muted)', fontSize: 13 }} aria-hidden>
-            »
-          </span>
-          <span
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontStyle: 'italic',
-              fontWeight: 600,
-              fontSize: 14,
-              color: 'var(--muted)',
-              writingMode: 'vertical-rl',
-              letterSpacing: '0.04em',
-            }}
-          >
-            HP-Coach
-          </span>
-          <span style={{ flex: 1 }} />
-          <span
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 10,
-              color: 'var(--muted)',
-              writingMode: 'vertical-rl',
-              fontVariantNumeric: 'tabular-nums',
-            }}
-          >
-            {days} d
-          </span>
-        </button>
-      </aside>
-    )
+  // Real folio signals — wired via the live hooks, not fixtures. A door
+  // with no honest number simply renders no dot-leader (signals are real
+  // data or nothing).
+  const due = useDueMistakes()
+  const stats = useStats()
+  const dueCount = due.data?.length ?? 0
+  const weekDelta = useMemo(() => {
+    if (!stats.data) return null
+    return computeProjectedDelta(stats.data.bySection)
+  }, [stats.data])
+  const folios: Partial<Record<DoorId, string>> = {
+    ova: dueCount > 0 ? String(dueCount) : undefined,
+    uppslag: String(wiredSections().length),
+    framsteg: weekDelta != null ? formatDeltaSv(weekDelta) : undefined,
   }
 
-  const pathname = location.pathname
-  const isActive = (to: string) => (to === '/' ? pathname === '/' : pathname.startsWith(to))
+  if (collapsed) {
+    return <Spine onToggle={onToggle} pathname={pathname} days={days} dueCount={dueCount} />
+  }
 
   return (
     <aside
@@ -259,48 +235,34 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
         </button>
       </div>
 
-      {/* nav with live signals */}
+      {/* the table of contents */}
+      <div
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 9,
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          color: 'var(--muted)',
+          padding: '0 18px 8px',
+          borderBottom: '1px solid var(--hairline-2)',
+          marginBottom: 4,
+        }}
+      >
+        Innehåll
+      </div>
       <nav
         data-testid="page-nav"
         aria-label="Sektioner"
         style={{ display: 'flex', flexDirection: 'column' }}
       >
-        {NAV.map(({ to, label }) => {
-          const active = isActive(to)
-          return (
-            <Link
-              key={to}
-              to={to}
-              aria-current={active ? 'page' : undefined}
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'baseline',
-                gap: 10,
-                fontFamily: 'var(--font-mono)',
-                fontSize: 12,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                // WCAG AA: --accent on the Sand-light default measures
-                // ~3.65:1 at this 12px size — below the 4.5:1 normal-text
-                // threshold (confirmed by axe-core audit). --ink always
-                // passes; the border-left + bold weight already carry the
-                // "active" signal so accent color isn't load-bearing here.
-                // Accent stays on the border (non-text UI, 3:1 threshold
-                // applies and it clears that).
-                color: active ? 'var(--ink)' : 'var(--ink-2)',
-                fontWeight: active ? 600 : 400,
-                padding: '11px 18px',
-                borderLeft: active ? '2px solid var(--accent)' : '2px solid transparent',
-                textDecoration: 'none',
-                minWidth: 0,
-              }}
-            >
-              {label}
-              <NavSignal label={label} />
-            </Link>
-          )
-        })}
+        {DOORS.map((door) => (
+          <TocRow
+            key={door.id}
+            door={door}
+            active={isActiveDoor(door.id, pathname)}
+            folio={folios[door.id]}
+          />
+        ))}
       </nav>
 
       {/* the compass: cross-device resume */}
@@ -348,44 +310,211 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
   )
 }
 
-// ── Live signals ───────────────────────────────────────────────────
+// ── Expanded — a table-of-contents row ─────────────────────────────
 
-/** Övning carries the due-rep count; Framsteg the honest week delta
- *  (computeProjectedDelta — blank when the weeks aren't comparable).
- *  Both from cached queries; render nothing while loading. */
-function NavSignal({ label }: { label: string }) {
-  const due = useDueMistakes()
-  const stats = useStats()
-
-  let text: string | null = null
-  if (label === 'Övning') {
-    const n = due.data?.length ?? 0
-    if (n > 0) text = `${n} att repetera`
-  } else if (label === 'Framsteg' && stats.data) {
-    const delta = computeProjectedDelta(stats.data.bySection)
-    if (delta != null) text = `${formatDeltaSv(delta)} denna vecka`
-  }
-  if (!text) return null
+/** One ToC entry: small-caps serif label, optional dot-leader out to a
+ *  real folio signal. The active row is the ONE accent object in the
+ *  expanded rail (accent-active law — no ribbon). */
+function TocRow({ door, active, folio }: { door: Door; active: boolean; folio?: string }) {
   return (
-    <span
+    <Link
+      to={door.to}
+      aria-current={active ? 'page' : undefined}
       style={{
-        fontFamily: 'var(--font-mono)',
-        fontSize: 10,
-        letterSpacing: '0.04em',
-        textTransform: 'none',
-        // WCAG AA: --muted-2 fails 4.5:1 at 10px (see footWord comment
-        // above); --muted passes.
-        color: 'var(--muted)',
-        fontVariantNumeric: 'tabular-nums',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
+        display: 'flex',
+        alignItems: 'baseline',
+        gap: 8,
+        padding: '11px 18px',
+        textDecoration: 'none',
+        minWidth: 0,
       }}
     >
-      {text}
-    </span>
+      <span
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 15,
+          fontVariant: 'all-small-caps',
+          letterSpacing: '0.07em',
+          fontWeight: active ? 600 : 500,
+          color: active ? 'var(--accent)' : 'var(--ink-2)',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {door.label}
+      </span>
+      {folio ? (
+        <>
+          <span
+            aria-hidden
+            style={{
+              flex: 1,
+              borderBottom: '1px dotted var(--muted)',
+              opacity: 0.55,
+              transform: 'translateY(-3px)',
+              minWidth: 12,
+            }}
+          />
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 10.5,
+              letterSpacing: '0.04em',
+              color: active ? 'var(--accent)' : 'var(--muted)',
+              fontVariantNumeric: 'tabular-nums',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {folio}
+          </span>
+        </>
+      ) : null}
+    </Link>
   )
 }
+
+// ── Collapsed — the glyph spine ────────────────────────────────────
+
+/** 44px closed-book spine: collapse-toggle peek, vertical wordmark, the
+ *  five engraved glyphs as nav links (active = accent), Öva's due count
+ *  as the one accent numeral, countdown folio. */
+function Spine({
+  onToggle,
+  pathname,
+  days,
+  dueCount,
+}: {
+  onToggle: () => void
+  pathname: string
+  days: number
+  dueCount: number
+}) {
+  return (
+    <aside
+      data-testid="nav-rail"
+      data-collapsed="true"
+      style={{
+        borderRight: '1px solid var(--hairline)',
+        position: 'sticky',
+        top: 0,
+        height: '100dvh',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '20px 0',
+        boxSizing: 'border-box',
+      }}
+    >
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-label="Visa menyn (⌘B)"
+        title="Visa menyn (⌘B)"
+        style={{
+          all: 'unset',
+          cursor: 'pointer',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 14,
+        }}
+      >
+        <span style={{ color: 'var(--muted)', fontSize: 13 }} aria-hidden>
+          »
+        </span>
+        <span
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontStyle: 'italic',
+            fontWeight: 600,
+            fontSize: 14,
+            color: 'var(--muted)',
+            writingMode: 'vertical-rl',
+            letterSpacing: '0.04em',
+          }}
+        >
+          HP-Coach
+        </span>
+      </button>
+
+      <nav
+        data-testid="page-nav"
+        aria-label="Sektioner"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 9,
+          marginTop: 24,
+        }}
+      >
+        {DOORS.map((door) => (
+          <SpineSlot
+            key={door.id}
+            door={door}
+            active={isActiveDoor(door.id, pathname)}
+            count={door.id === 'ova' && dueCount > 0 ? dueCount : undefined}
+          />
+        ))}
+      </nav>
+
+      <span style={{ flex: 1 }} />
+      <span
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 10,
+          color: 'var(--muted)',
+          writingMode: 'vertical-rl',
+          fontVariantNumeric: 'tabular-nums',
+        }}
+      >
+        {days} d
+      </span>
+    </aside>
+  )
+}
+
+/** One spine slot: the glyph (19px), active in accent; the optional due
+ *  count rides the top-right corner as the one accent numeral. */
+function SpineSlot({ door, active, count }: { door: Door; active: boolean; count?: number }) {
+  return (
+    <Link
+      to={door.to}
+      aria-current={active ? 'page' : undefined}
+      aria-label={door.label}
+      style={{
+        position: 'relative',
+        width: 42,
+        height: 30,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textDecoration: 'none',
+        color: active ? 'var(--accent)' : 'var(--muted)',
+      }}
+    >
+      <door.Glyph s={19} />
+      {count != null && (
+        <span
+          aria-hidden
+          style={{
+            position: 'absolute',
+            top: -2,
+            right: 1,
+            fontFamily: 'var(--font-mono)',
+            fontSize: 8.5,
+            color: 'var(--accent)',
+            fontVariantNumeric: 'tabular-nums',
+          }}
+        >
+          {count}
+        </span>
+      )}
+    </Link>
+  )
+}
+
+// ── Live compass + mode toggle ─────────────────────────────────────
 
 function RailResume() {
   const now = useMemo(() => new Date(), [])
@@ -410,11 +539,8 @@ function RailResume() {
             fontSize: 10,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
-            // WCAG AA: --muted on --accent-soft (this chip's background)
-            // measures ~4.31:1 at this size — just under the 4.5:1
-            // normal-text threshold (axe-core audit). --muted passes fine
-            // on the neutral bg/panel tokens; the more saturated
-            // accent-soft fill needs --ink-2 instead.
+            // WCAG AA: --muted on --accent-soft measures ~4.31:1 — just
+            // under threshold; --ink-2 passes on this saturated fill.
             color: 'var(--ink-2)',
           }}
         >

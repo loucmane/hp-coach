@@ -22,6 +22,7 @@ import { Route as ProvVerifyRouteImport } from './routes/prov-verify'
 import { Route as ProvRouteImport } from './routes/prov'
 import { Route as ProgressBakeoffRouteImport } from './routes/progress-bakeoff'
 import { Route as ProgressRouteImport } from './routes/progress'
+import { Route as OvaRouteImport } from './routes/ova'
 import { Route as NavBakeoffRouteImport } from './routes/nav-bakeoff'
 import { Route as MerRouteImport } from './routes/mer'
 import { Route as MCompareRouteImport } from './routes/m-compare'
@@ -120,6 +121,11 @@ const ProgressBakeoffRoute = ProgressBakeoffRouteImport.update({
 const ProgressRoute = ProgressRouteImport.update({
   id: '/progress',
   path: '/progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OvaRoute = OvaRouteImport.update({
+  id: '/ova',
+  path: '/ova',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NavBakeoffRoute = NavBakeoffRouteImport.update({
@@ -324,6 +330,7 @@ export interface FileRoutesByFullPath {
   '/m-compare': typeof MCompareRoute
   '/mer': typeof MerRoute
   '/nav-bakeoff': typeof NavBakeoffRoute
+  '/ova': typeof OvaRoute
   '/progress': typeof ProgressRoute
   '/progress-bakeoff': typeof ProgressBakeoffRoute
   '/prov': typeof ProvRoute
@@ -373,6 +380,7 @@ export interface FileRoutesByTo {
   '/m-compare': typeof MCompareRoute
   '/mer': typeof MerRoute
   '/nav-bakeoff': typeof NavBakeoffRoute
+  '/ova': typeof OvaRoute
   '/progress': typeof ProgressRoute
   '/progress-bakeoff': typeof ProgressBakeoffRoute
   '/prov': typeof ProvRoute
@@ -423,6 +431,7 @@ export interface FileRoutesById {
   '/m-compare': typeof MCompareRoute
   '/mer': typeof MerRoute
   '/nav-bakeoff': typeof NavBakeoffRoute
+  '/ova': typeof OvaRoute
   '/progress': typeof ProgressRoute
   '/progress-bakeoff': typeof ProgressBakeoffRoute
   '/prov': typeof ProvRoute
@@ -474,6 +483,7 @@ export interface FileRouteTypes {
     | '/m-compare'
     | '/mer'
     | '/nav-bakeoff'
+    | '/ova'
     | '/progress'
     | '/progress-bakeoff'
     | '/prov'
@@ -523,6 +533,7 @@ export interface FileRouteTypes {
     | '/m-compare'
     | '/mer'
     | '/nav-bakeoff'
+    | '/ova'
     | '/progress'
     | '/progress-bakeoff'
     | '/prov'
@@ -572,6 +583,7 @@ export interface FileRouteTypes {
     | '/m-compare'
     | '/mer'
     | '/nav-bakeoff'
+    | '/ova'
     | '/progress'
     | '/progress-bakeoff'
     | '/prov'
@@ -622,6 +634,7 @@ export interface RootRouteChildren {
   MCompareRoute: typeof MCompareRoute
   MerRoute: typeof MerRoute
   NavBakeoffRoute: typeof NavBakeoffRoute
+  OvaRoute: typeof OvaRoute
   ProgressRoute: typeof ProgressRoute
   ProgressBakeoffRoute: typeof ProgressBakeoffRoute
   ProvRoute: typeof ProvRoute
@@ -734,6 +747,13 @@ declare module '@tanstack/react-router' {
       path: '/progress'
       fullPath: '/progress'
       preLoaderRoute: typeof ProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ova': {
+      id: '/ova'
+      path: '/ova'
+      fullPath: '/ova'
+      preLoaderRoute: typeof OvaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/nav-bakeoff': {
@@ -1006,6 +1026,7 @@ const rootRouteChildren: RootRouteChildren = {
   MCompareRoute: MCompareRoute,
   MerRoute: MerRoute,
   NavBakeoffRoute: NavBakeoffRoute,
+  OvaRoute: OvaRoute,
   ProgressRoute: ProgressRoute,
   ProgressBakeoffRoute: ProgressBakeoffRoute,
   ProvRoute: ProvRoute,
