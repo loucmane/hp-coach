@@ -78,31 +78,14 @@ import { type CSSProperties, type ReactNode, useEffect, useMemo, useState } from
 import { type ExposureMap, type MockHalf, useExposure } from '@/api/hooks/useMockResults'
 import { Book, Chart, Home, Pencil, User } from '@/components/icons'
 import { loadBank, type Question } from '@/data/questions'
+import { formatPass, formatSitting } from '@/lib/examNames'
 import { listAuthenticPasses, type PassOption } from '@/lib/mock'
 
-// ── canonical naming (LAW — shared vocabulary with designer A) ─────────
-
-/** `var-2026` → "Våren 2026" · `host-2025` → "Hösten 2025" ·
- *  `var-2022-1` → "Våren 2022 · provtillfälle 1" ·
- *  `host-ver1-2019` → "Hösten 2019 · version 1". Unknown shapes fall
- *  back to the raw id rather than guessing. */
-export function formatSitting(examId: string): string {
-  const m = /^(var|host)-(?:ver(\d+)-)?(\d{4})(?:-(\d+))?$/.exec(examId)
-  if (!m) return examId
-  const [, seasonKey, version, year, sitting] = m
-  const season = seasonKey === 'var' ? 'Våren' : 'Hösten'
-  let out = `${season} ${year}`
-  if (sitting) out += ` · provtillfälle ${sitting}`
-  if (version) out += ` · version ${version}`
-  return out
-}
-
-/** `verb1`/`kvant1` → "Provpass 1"; `verb2`/`kvant2` → "Provpass 2".
- *  The half is chosen by the page toggle — never repeated per row. */
-export function formatPass(provpass: string): string {
-  const m = /^(?:verb|kvant)([12])$/.exec(provpass)
-  return m ? `Provpass ${m[1]}` : provpass
-}
+// Canonical naming (LAW) now lives in @/lib/examNames — this bake-off
+// re-exports it so PPH (which imports `formatSitting`/`formatPass` from
+// this file) and any historical reference keep working with no second
+// copy of the grammar to drift. See app/src/lib/examNames.ts.
+export { formatPass, formatSitting } from '@/lib/examNames'
 
 // ── chronology (presentation order for both concepts) ──────────────────
 

@@ -17,6 +17,7 @@
 
 import type { Explanation } from '@/data/explanations'
 import type { Question } from '@/data/questions'
+import { formatPass, formatSitting } from '@/lib/examNames'
 
 import { pickTactic } from './pregrade-tactics'
 
@@ -137,7 +138,7 @@ function ApparatusFooter({
       }}
     >
       <div>
-        {exam} · {provpass}
+        {formatSitting(exam)} · {formatPass(provpass)}
       </div>
       {position !== undefined && total !== undefined && (
         <div>

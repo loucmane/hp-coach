@@ -55,8 +55,9 @@
 // PATCH-ended silently (void — no result row, mistakes already persisted
 // via MockRunner's per-pick attempts) and the picker renders instead.
 
+import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { type CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { MockHalf, MockMode } from '@/api/hooks/useMockResults'
 import { useExposure, useMockResults } from '@/api/hooks/useMockResults'
@@ -74,8 +75,10 @@ import { MockRunner, type MockRunnerSession } from '@/components/mock/MockRunner
 import { Page } from '@/components/Page'
 import { Btn } from '@/components/primitives'
 import { findQuestion, loadBank, type Question } from '@/data/questions'
+import { useViewport, type Viewport } from '@/hooks/useViewport'
 import { isDevSurface } from '@/lib/devSurface'
 import { seededRng } from '@/lib/drill'
+import { formatPass, formatSitting } from '@/lib/examNames'
 import { listAuthenticPasses, type PassOption, pickSynthetic, resolveAuthentic } from '@/lib/mock'
 import { logMockEvent } from '@/lib/mockEvents'
 import { sheetFromAttempts } from '@/lib/mockSheet'
@@ -209,6 +212,12 @@ function ProvRoute() {
   const activeMock = useActiveSessionOfKind('mock')
   const startSession = useStartSession()
   const updateSession = useUpdateSession()
+  // The Kallelse summons addresses the real signed-in candidate. Clerk's
+  // `fullName` is the addressee line ("Inskriven: <name>"); fall back to
+  // the first name, then null (KallelseCard drops the addressee line
+  // entirely rather than printing a placeholder) while Clerk loads.
+  const { user } = useUser()
+  const candidateName = user?.fullName ?? user?.firstName ?? null
 
   // Idle-phase state machine: picker → instructions → running. `running`
   // is also entered directly by the reload-adopt effect below, without
@@ -225,8 +234,10 @@ function ProvRoute() {
   const [passes, setPasses] = useState<PassOption[]>([])
   const [running, setRunning] = useState<RunningState | null>(null)
   const [voidNotice, setVoidNotice] = useState(false)
-  const [pendingExamId, setPendingExamId] = useState<string | null>(null)
-  const [pendingProvpass, setPendingProvpass] = useState<string | null>(null)
+  // The authentic pass the picker auto-picked (a sitting tap resolves to
+  // its least-seen pass) and stashed for the confirm sheet + start flow.
+  // null in synthetic mode (there is no single sitting).
+  const [pendingPass, setPendingPass] = useState<PassOption | null>(null)
   // A fresh active mock session found on mount, resolved to a Question[]
   // plan, waiting on its attempts (useSessionAttempts below) before the
   // rehydrated sheet can be built and `running` can be set. null once
@@ -324,30 +335,29 @@ function ProvRoute() {
 
   const startAuthentic = (pass: PassOption) => {
     if (!bank) return
-    setPendingExamId(pass.examId)
-    setPendingProvpass(pass.provpass)
+    setPendingPass(pass)
     setMode('authentic')
     setHalf(pass.half)
     setPhase('instructions')
   }
 
   const startSynthetic = () => {
-    setPendingExamId(null)
-    setPendingProvpass(null)
+    setPendingPass(null)
+    setMode('synthetic')
     setPhase('instructions')
   }
 
   const beginRun = async () => {
     if (!bank) return
     const plan =
-      mode === 'authentic' && pendingExamId && pendingProvpass
-        ? resolveAuthentic([...bank], pendingExamId, pendingProvpass)
+      mode === 'authentic' && pendingPass
+        ? resolveAuthentic([...bank], pendingPass.examId, pendingPass.provpass)
         : pickSynthetic([...bank], exposureQuery.data ?? {}, half, seededRng(Date.now()))
     if (plan.length === 0) return
 
     const qids = plan.map((q) => q.qid)
-    const examId = mode === 'authentic' ? (pendingExamId ?? '') : ''
-    const provpass = mode === 'authentic' ? (pendingProvpass ?? '') : ''
+    const examId = mode === 'authentic' ? (pendingPass?.examId ?? '') : ''
+    const provpass = mode === 'authentic' ? (pendingPass?.provpass ?? '') : ''
     const seenBefore = exposureQuery.data ? countSeenBefore(plan, exposureQuery.data) : 0
 
     startSession.mutate(
@@ -442,6 +452,7 @@ function ProvRoute() {
           <Picker
             mode={mode}
             half={half}
+            candidateName={candidateName}
             onModeChange={setMode}
             onHalfChange={setHalf}
             passes={passes}
@@ -453,7 +464,21 @@ function ProvRoute() {
           />
         )}
         {phase === 'instructions' && (
-          <ConfirmSheet half={half} onConfirm={beginRun} onDismiss={() => setPhase('picker')} />
+          <ConfirmSheet
+            half={half}
+            target={
+              mode === 'authentic' && pendingPass
+                ? {
+                    mode: 'authentic',
+                    examId: pendingPass.examId,
+                    provpass: pendingPass.provpass,
+                    presented: pendingPass.presented,
+                  }
+                : { mode: 'synthetic' }
+            }
+            onConfirm={beginRun}
+            onDismiss={() => setPhase('picker')}
+          />
         )}
       </Page>
     </MobileFrame>
@@ -497,20 +522,468 @@ function ResultNotFound({ loading, onHome }: { loading: boolean; onHome: () => v
 export type PickerProps = {
   mode: MockMode
   half: MockHalf
+  /** The signed-in candidate's name for the Kallelse addressee line
+   *  ("Inskriven: <name>"). null → the line is dropped (no placeholder). */
+  candidateName?: string | null
   onModeChange: (mode: MockMode) => void
   onHalfChange: (half: MockHalf) => void
   /** Authentic-mode pass list, least-exposed first (lib/mock.ts's
-   *  listAuthenticPasses) — the top row renders "föreslagen". Empty
-   *  renders the "inga riktiga pass" empty state. */
+   *  listAuthenticPasses) — `passes[0]` (filtered to the half) is the
+   *  suggested "kallelse". Empty renders the "inga riktiga pass" state. */
   passes: PassOption[]
-  /** Fired on a synthetic-CTA click (no arg) or an authentic pass ROW
-   *  click (the clicked PassOption, so PR4's route can resolve/start
-   *  that exact exam+provpass instead of only ever the suggested one). */
+  /** Fired with the exact PassOption to start (a mobile sitting tap
+   *  resolves to the sitting's least-seen pass; a desktop cell is the
+   *  pass itself) so the route can resolve/start that exact
+   *  exam+provpass — or with no arg on the synthetic CTA. */
   onStart: (pass?: PassOption) => void
+  /** Test/dev override for viewport detection (mirrors HomeMobile's
+   *  forceLayout) — production omits it and uses useViewport(). */
+  forceViewport?: Viewport
 }
 
-export function Picker({ mode, half, onModeChange, onHalfChange, passes, onStart }: PickerProps) {
+// ── chronology (identical presentation order to the bake-off) ──────────
+
+type SittingKey = { year: number; late: number; qualifier: number }
+
+function sittingKey(examId: string): SittingKey {
+  const m = /^(var|host)-(?:ver(\d+)-)?(\d{4})(?:-(\d+))?$/.exec(examId)
+  if (!m) return { year: 0, late: 0, qualifier: 0 }
+  const [, seasonKey, version, year, sitting] = m
+  return {
+    year: Number(year),
+    late: seasonKey === 'host' ? 1 : 0,
+    qualifier: Number(sitting ?? version ?? 0),
+  }
+}
+
+/** Newest sitting first; höst after vår within a year; qualifier 1 before 2. */
+function compareSittingsDesc(a: string, z: string): number {
+  const ka = sittingKey(a)
+  const kz = sittingKey(z)
+  if (ka.year !== kz.year) return kz.year - ka.year
+  if (ka.late !== kz.late) return kz.late - ka.late
+  return ka.qualifier - kz.qualifier
+}
+
+type SittingRow = {
+  examId: string
+  /** Pass 1 / pass 2 of the CURRENT half (verb1+verb2 or kvant1+kvant2). */
+  passes: [PassOption | undefined, PassOption | undefined]
+}
+
+function groupBySitting(halfPasses: PassOption[]): SittingRow[] {
+  const byExam = new Map<string, SittingRow>()
+  for (const p of halfPasses) {
+    let row = byExam.get(p.examId)
+    if (!row) {
+      row = { examId: p.examId, passes: [undefined, undefined] }
+      byExam.set(p.examId, row)
+    }
+    row.passes[p.provpass.endsWith('2') ? 1 : 0] = p
+  }
+  return [...byExam.values()].sort((a, z) => compareSittingsDesc(a.examId, z.examId))
+}
+
+/** The pass a sitting tap auto-picks: the sitting's first pass in the
+ *  product's least-exposed-first ordering (`halfPasses` is already
+ *  sorted by listAuthenticPasses), so tapping a row starts its
+ *  least-seen pass without ever showing a "Provpass 1 / 2" menu. */
+function leastSeenOf(row: SittingRow, ordered: PassOption[]): PassOption | undefined {
+  return ordered.find((p) => p.examId === row.examId)
+}
+
+const PICKER_MONO_TRACK = 'var(--font-mono-track, 0.04em)'
+
+const pickerEyebrow: CSSProperties = {
+  fontFamily: 'var(--font-mono)',
+  fontSize: 11,
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'var(--muted)',
+}
+
+const pickerMonoMeta: CSSProperties = {
+  fontFamily: 'var(--font-mono)',
+  fontSize: 11,
+  letterSpacing: PICKER_MONO_TRACK,
+  color: 'var(--muted)',
+  fontVariantNumeric: 'tabular-nums',
+}
+
+/** Mono "sett X/40" plus the red incompleteness flag when the parse is
+ *  short — carried over from both bake-off parents as LAW. */
+function ExposureLine({ pass, style }: { pass: PassOption; style?: CSSProperties }) {
+  return (
+    <span style={{ ...pickerMonoMeta, display: 'inline-flex', gap: 8, ...style }}>
+      <span data-testid="prov-meta-exposure">
+        sett {pass.seenBefore}/{pass.presented}
+      </span>
+      {pass.presented < 40 && (
+        <span data-testid="prov-meta-completeness" style={{ color: 'var(--bad)' }}>
+          {pass.presented}/40 frågor
+        </span>
+      )}
+    </span>
+  )
+}
+
+/** Dual-encoded micro-meter (B2's device, verbatim): track LENGTH =
+ *  presented/40 (a short track IS the incompleteness flag), FILL =
+ *  seenBefore, 1px per fråga. Decorative — the literal numbers live in
+ *  ExposureLine and the button aria-label. */
+function Meter({ pass, accent }: { pass: PassOption; accent?: boolean }) {
+  return (
+    <span
+      aria-hidden
+      style={{ position: 'relative', display: 'inline-block', width: 40, height: 4, flexShrink: 0 }}
+    >
+      <span
+        style={{
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          width: Math.min(40, pass.presented),
+          background: 'var(--hairline)',
+        }}
+      />
+      <span
+        style={{
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          width: Math.min(40, pass.seenBefore),
+          background: accent ? 'var(--accent)' : 'var(--ink-2)',
+        }}
+      />
+    </span>
+  )
+}
+
+/** The Kallelse-lead: the least-exposed pass rendered as the house
+ *  summons (accent-soft fill, accent top rule) with the real candidate
+ *  addressee line. Starta commits the suggestion into the confirm sheet. */
+function KallelseCard({
+  pass,
+  candidate,
+  onStart,
+}: {
+  pass: PassOption
+  candidate: string | null
+  onStart: () => void
+}) {
+  return (
+    <div
+      data-testid="prov-kallelse"
+      style={{
+        background: 'var(--accent-soft)',
+        borderTop: '2px solid var(--accent)',
+        padding: '16px 18px 18px',
+      }}
+    >
+      <div style={{ ...pickerEyebrow, color: 'var(--ink)' }}>Kallelse · minst sett</div>
+      <h2
+        className="hpc-m3-display"
+        style={{ fontSize: 27, margin: '10px 0 0', fontStyle: 'italic', lineHeight: 1.12 }}
+      >
+        {formatSitting(pass.examId)}
+      </h2>
+      <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+        <span style={{ ...pickerMonoMeta, color: 'var(--ink-2)' }}>
+          {formatPass(pass.provpass)}
+        </span>
+        <span aria-hidden style={{ ...pickerMonoMeta, color: 'var(--ink-2)' }}>
+          ·
+        </span>
+        <ExposureLine pass={pass} style={{ color: 'var(--ink-2)' }} />
+      </div>
+      {candidate && (
+        <div style={{ marginTop: 13, display: 'flex', alignItems: 'baseline', gap: 8 }}>
+          <span
+            style={{
+              ...pickerMonoMeta,
+              color: 'var(--ink-2)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+            }}
+          >
+            Inskriven
+          </span>
+          <span
+            data-testid="prov-kallelse-candidate"
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontStyle: 'italic',
+              fontSize: 15.5,
+              color: 'var(--ink)',
+              borderBottom: '1px dotted var(--ink-2)',
+              paddingBottom: 1,
+              flex: 1,
+            }}
+          >
+            {candidate}
+          </span>
+        </div>
+      )}
+      <div style={{ textAlign: 'right', marginTop: 14 }}>
+        <button
+          type="button"
+          className="hpc-m3-cta"
+          data-testid="prov-kallelse-start"
+          onClick={onStart}
+          style={{
+            display: 'inline-block',
+            borderRadius: 999,
+            padding: '11px 22px',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 12,
+            letterSpacing: PICKER_MONO_TRACK,
+            textTransform: 'uppercase',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          Starta →
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/** Mobile ledger row — the SITTING is the single tap target; inside it,
+ *  micro-meters stacked tight, one per pass. No "Provpass N" text: the
+ *  numbering is reference metadata that lives only in the confirm sheet.
+ *  Tapping resolves to the sitting's least-seen pass and opens the sheet. */
+function SittingLedgerRow({
+  row,
+  suggested,
+  onTap,
+}: {
+  row: SittingRow
+  suggested: PassOption | undefined
+  onTap: () => void
+}) {
+  const present = row.passes.filter((p): p is PassOption => Boolean(p))
+  const short = present.filter((p) => p.presented < 40)
+  const label = [
+    formatSitting(row.examId),
+    ...present.map((p) => `${formatPass(p.provpass)} sett ${p.seenBefore} av ${p.presented}`),
+  ].join(' · ')
+  const isSuggested = (p: PassOption): boolean =>
+    suggested !== undefined && p.examId === suggested.examId && p.provpass === suggested.provpass
+  return (
+    <button
+      type="button"
+      data-testid={`prov-sitting-${row.examId}`}
+      onClick={onTap}
+      aria-label={label}
+      style={{
+        all: 'unset',
+        boxSizing: 'border-box',
+        cursor: 'pointer',
+        display: 'grid',
+        gridTemplateColumns: 'minmax(0,1fr) auto auto',
+        gap: 14,
+        alignItems: 'center',
+        width: '100%',
+        padding: '11px 6px',
+        borderBottom: '1px solid var(--hairline-2)',
+      }}
+    >
+      <span style={{ minWidth: 0 }}>
+        <span
+          style={{
+            display: 'block',
+            fontFamily: 'var(--font-display)',
+            fontWeight: 500,
+            fontSize: 16.5,
+            letterSpacing: '-0.01em',
+            color: 'var(--ink)',
+          }}
+        >
+          {formatSitting(row.examId)}
+        </span>
+        {short.length > 0 && (
+          <span
+            data-testid="prov-meta-completeness"
+            style={{ ...pickerMonoMeta, color: 'var(--bad)', display: 'block', marginTop: 2 }}
+          >
+            {short.map((p) => `${p.presented}/40 frågor`).join(' · ')}
+          </span>
+        )}
+      </span>
+      <span style={{ display: 'grid', gap: 3, justifyItems: 'end' }}>
+        {present.map((p) => (
+          <Meter key={p.provpass} pass={p} accent={isSuggested(p)} />
+        ))}
+      </span>
+      <span aria-hidden style={{ color: 'var(--muted-2)', fontSize: 13 }}>
+        →
+      </span>
+    </button>
+  )
+}
+
+/** Desktop register cell — an explicit per-pass start affordance. Micro-
+ *  meter + "sett X/40" + red incompleteness flag; the suggested cell
+ *  carries the accent marker. Clicking starts THAT pass (through the same
+ *  confirm sheet — one gate everywhere). */
+function RegisterCell({
+  pass,
+  suggested,
+  onStart,
+}: {
+  pass: PassOption | undefined
+  suggested: boolean
+  onStart: () => void
+}) {
+  if (!pass) {
+    return (
+      <span aria-hidden style={{ ...pickerMonoMeta, color: 'var(--muted-2)', padding: '7px 8px' }}>
+        —
+      </span>
+    )
+  }
+  return (
+    <button
+      type="button"
+      data-testid={`prov-pass-${pass.examId}-${pass.provpass}`}
+      onClick={onStart}
+      aria-label={`${formatSitting(pass.examId)} · ${formatPass(pass.provpass)} · sett ${pass.seenBefore} av ${pass.presented}`}
+      style={{
+        all: 'unset',
+        boxSizing: 'border-box',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        padding: '7px 8px',
+        borderLeft: suggested ? '2px solid var(--accent)' : '2px solid transparent',
+        minWidth: 0,
+      }}
+    >
+      <Meter pass={pass} accent={suggested} />
+      <span
+        data-testid="prov-meta-exposure"
+        style={{
+          ...pickerMonoMeta,
+          color: suggested ? 'var(--accent)' : 'var(--muted)',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        sett {pass.seenBefore}/{pass.presented}
+      </span>
+      {pass.presented < 40 && (
+        <span
+          data-testid="prov-meta-completeness"
+          style={{ ...pickerMonoMeta, color: 'var(--bad)', whiteSpace: 'nowrap' }}
+        >
+          {pass.presented}/40 frågor
+        </span>
+      )}
+      {suggested && (
+        <span
+          data-testid="prov-meta-suggested"
+          style={{
+            ...pickerMonoMeta,
+            color: 'var(--accent)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+          }}
+        >
+          minst sett
+        </span>
+      )}
+    </button>
+  )
+}
+
+/** Desktop MINST SETT strip — position:sticky inside the register so the
+ *  recommendation follows the matrix once the Kallelse card scrolls away.
+ *  Starta commits the suggested pass through the same confirm sheet. */
+function MinstSettStrip({ pass, onStart }: { pass: PassOption; onStart: () => void }) {
+  return (
+    <div
+      data-testid="prov-minst-sett"
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 2,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+        flexWrap: 'wrap',
+        background: 'var(--accent-soft)',
+        borderTop: '2px solid var(--accent)',
+        padding: '10px 14px',
+        marginBottom: 14,
+      }}
+    >
+      <span style={{ ...pickerEyebrow, color: 'var(--ink)' }}>Minst sett</span>
+      <span style={{ ...pickerMonoMeta, color: 'var(--ink)', fontSize: 12 }}>
+        {formatSitting(pass.examId)} · {formatPass(pass.provpass)}
+      </span>
+      <ExposureLine pass={pass} style={{ color: 'var(--ink-2)' }} />
+      <button
+        type="button"
+        data-testid="prov-minst-sett-start"
+        onClick={onStart}
+        style={{
+          all: 'unset',
+          cursor: 'pointer',
+          marginLeft: 'auto',
+          fontFamily: 'var(--font-mono)',
+          fontSize: 11,
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+          color: 'var(--accent)',
+        }}
+      >
+        Starta →
+      </button>
+    </div>
+  )
+}
+
+// ── Picker ───────────────────────────────────────────────────────────
+// The production port of the provpass-picker bake-off winner (PPH ·
+// "Kallelsen & registret"). Exported so component/verify surfaces can
+// render the idle-phase picker directly without mounting the router —
+// ProvRoute is a thin router-aware shell around it.
+//
+// Structure (both breakpoints share the house rail chassis):
+//   Kallelse-lead — the least-exposed pass as a summons, addressed to the
+//     real candidate, Starta commits it.
+//   Register — chronological sittings, newest first. MOBILE: one tap
+//     target per sitting, its passes shown only as stacked micro-meters
+//     (tap → auto-pick least-seen → confirm sheet; no pass menu). DESKTOP:
+//     an explicit sitting × pass matrix with a sticky MINST SETT strip and
+//     per-pass start affordances. Every start — mobile tap, desktop cell,
+//     Kallelse, strip — goes through the one confirm sheet.
+
+export function Picker({
+  mode,
+  half,
+  candidateName = null,
+  onModeChange,
+  onHalfChange,
+  passes,
+  onStart,
+  forceViewport,
+}: PickerProps) {
+  const detectedViewport = useViewport()
+  const viewport = forceViewport ?? detectedViewport
+  const isPhone = viewport === 'phone'
+
   const halfPasses = useMemo(() => passes.filter((p) => p.half === half), [passes, half])
+  const suggested = halfPasses[0]
+  const sittings = useMemo(() => groupBySitting(halfPasses), [halfPasses])
+  const isSuggestedPass = (p: PassOption | undefined): boolean =>
+    p !== undefined &&
+    suggested !== undefined &&
+    p.examId === suggested.examId &&
+    p.provpass === suggested.provpass
 
   return (
     <div className="hpc-m3-frame" style={{ paddingBottom: 96 }} data-testid="prov-picker">
@@ -524,7 +997,7 @@ export function Picker({ mode, half, onModeChange, onHalfChange, passes, onStart
         delay={0}
       >
         <h1 className="hpc-m3-display" style={{ marginTop: 0 }}>
-          Kör provpasset.
+          Anmälan.
         </h1>
         <p
           style={{
@@ -564,8 +1037,8 @@ export function Picker({ mode, half, onModeChange, onHalfChange, passes, onStart
       </DrillRailSection>
 
       {mode === 'authentic' ? (
-        <DrillRailSection meta="Välj pass" delay={180} testid="prov-authentic-list">
-          {halfPasses.length === 0 ? (
+        halfPasses.length === 0 ? (
+          <DrillRailSection meta="Välj pass" delay={180} testid="prov-authentic-list">
             <p
               data-testid="prov-authentic-empty"
               style={{
@@ -578,19 +1051,104 @@ export function Picker({ mode, half, onModeChange, onHalfChange, passes, onStart
               Inga riktiga pass tillgängliga just nu för {half === 'verbal' ? 'verbal' : 'kvant'}.
               Prova ett genererat pass istället.
             </p>
-          ) : (
-            <div>
-              {halfPasses.map((p, i) => (
-                <AuthenticPassRow
-                  key={`${p.examId}-${p.provpass}`}
-                  pass={p}
-                  suggested={i === 0}
-                  onStart={() => onStart(p)}
-                />
-              ))}
-            </div>
-          )}
-        </DrillRailSection>
+          </DrillRailSection>
+        ) : (
+          <>
+            <DrillRailSection meta="Kallelse" delay={180}>
+              {suggested && (
+                <div style={{ maxWidth: 560 }}>
+                  <KallelseCard
+                    pass={suggested}
+                    candidate={candidateName}
+                    onStart={() => onStart(suggested)}
+                  />
+                </div>
+              )}
+            </DrillRailSection>
+
+            <DrillRailSection
+              meta={
+                <>
+                  <strong>Register</strong>
+                  {sittings.length} provtillfällen
+                </>
+              }
+              delay={220}
+              testid="prov-authentic-list"
+            >
+              {isPhone ? (
+                <div>
+                  {sittings.map((row) => (
+                    <SittingLedgerRow
+                      key={row.examId}
+                      row={row}
+                      suggested={suggested}
+                      onTap={() => {
+                        const p = leastSeenOf(row, halfPasses)
+                        if (p) onStart(p)
+                      }}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div style={{ maxWidth: 880 }}>
+                  {suggested && (
+                    <MinstSettStrip pass={suggested} onStart={() => onStart(suggested)} />
+                  )}
+                  <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr 1fr' }}>
+                    <span style={{ ...pickerEyebrow, fontSize: 10, padding: '0 8px 6px 0' }}>
+                      Provtillfälle
+                    </span>
+                    <span style={{ ...pickerEyebrow, fontSize: 10, padding: '0 8px 6px' }}>
+                      Provpass 1
+                    </span>
+                    <span style={{ ...pickerEyebrow, fontSize: 10, padding: '0 8px 6px' }}>
+                      Provpass 2
+                    </span>
+                    {sittings.map((row) => (
+                      <div
+                        key={row.examId}
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: '250px 1fr 1fr',
+                          gridColumn: '1 / -1',
+                          alignItems: 'center',
+                          borderTop: '1px solid var(--hairline-2)',
+                          minHeight: 34,
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: 12.5,
+                            letterSpacing: PICKER_MONO_TRACK,
+                            color: 'var(--ink)',
+                            fontVariantNumeric: 'tabular-nums',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {formatSitting(row.examId)}
+                        </span>
+                        <RegisterCell
+                          pass={row.passes[0]}
+                          suggested={isSuggestedPass(row.passes[0])}
+                          onStart={() => row.passes[0] && onStart(row.passes[0])}
+                        />
+                        <RegisterCell
+                          pass={row.passes[1]}
+                          suggested={isSuggestedPass(row.passes[1])}
+                          onStart={() => row.passes[1] && onStart(row.passes[1])}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </DrillRailSection>
+          </>
+        )
       ) : (
         <DrillRailSection meta="Genererat" delay={180}>
           <button
@@ -639,90 +1197,6 @@ export function Picker({ mode, half, onModeChange, onHalfChange, passes, onStart
         </DrillRailSection>
       )}
     </div>
-  )
-}
-
-function AuthenticPassRow({
-  pass,
-  suggested,
-  onStart,
-}: {
-  pass: PassOption
-  suggested: boolean
-  onStart: () => void
-}) {
-  const incomplete = pass.presented < 40
-  return (
-    <button
-      type="button"
-      data-testid={`prov-pass-${pass.examId}-${pass.provpass}`}
-      onClick={onStart}
-      style={{
-        all: 'unset',
-        cursor: 'pointer',
-        display: 'grid',
-        gridTemplateColumns: 'minmax(0, 1fr) auto',
-        gap: 12,
-        alignItems: 'center',
-        width: '100%',
-        boxSizing: 'border-box',
-        padding: '14px 0',
-        borderBottom: '1px solid var(--hairline-2)',
-        background: suggested ? 'var(--panel-2)' : 'transparent',
-        paddingInline: suggested ? 12 : 0,
-        borderRadius: suggested ? 'calc(var(--radius) * 0.5)' : 0,
-      }}
-    >
-      <span>
-        <span
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 16,
-            color: 'var(--ink)',
-            display: 'block',
-          }}
-        >
-          {pass.examId} · {pass.provpass}
-          {suggested && (
-            <span
-              data-testid="prov-pass-suggested"
-              style={{
-                marginLeft: 8,
-                fontFamily: 'var(--font-mono)',
-                fontSize: 10,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: 'var(--accent)',
-              }}
-            >
-              föreslagen
-            </span>
-          )}
-        </span>
-        <span
-          style={{
-            display: 'flex',
-            gap: 8,
-            marginTop: 4,
-            fontFamily: 'var(--font-mono)',
-            fontSize: 11,
-            color: 'var(--muted)',
-          }}
-        >
-          <span data-testid="prov-pass-exposure">
-            sett {pass.seenBefore}/{pass.presented}
-          </span>
-          {incomplete && (
-            <span data-testid="prov-pass-completeness" style={{ color: 'var(--bad)' }}>
-              {pass.presented}/40 frågor
-            </span>
-          )}
-        </span>
-      </span>
-      <span aria-hidden style={{ color: 'var(--muted-2)' }}>
-        →
-      </span>
-    </button>
   )
 }
 

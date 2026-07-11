@@ -148,6 +148,7 @@ function ProvVerify() {
           <Picker
             mode="authentic"
             half="verbal"
+            candidateName="Lookman Benali"
             onModeChange={() => {}}
             onHalfChange={() => {}}
             passes={FIXTURE_PASSES}
@@ -158,6 +159,7 @@ function ProvVerify() {
           <Picker
             mode="synthetic"
             half="verbal"
+            candidateName="Lookman Benali"
             onModeChange={() => {}}
             onHalfChange={() => {}}
             passes={FIXTURE_PASSES}
@@ -167,6 +169,12 @@ function ProvVerify() {
         {screen === 'instructions' && (
           <ConfirmSheet
             half="verbal"
+            target={{
+              mode: 'authentic',
+              examId: 'host-2021',
+              provpass: 'verb2',
+              presented: 40,
+            }}
             onConfirm={() => setScreen('result')}
             onDismiss={() => setScreen('picker-authentic')}
           />
