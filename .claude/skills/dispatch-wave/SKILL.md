@@ -122,6 +122,31 @@ fraction of generation. Per completed agent:
    a residue ledger in the description (what was NOT fixed and where the
    investigation stopped — future sessions start from there).
 
+## Orchestrator shell discipline (cwd persists between calls)
+
+The orchestrator's Bash cwd survives across tool calls, and three
+incidents on 2026-07-11 came from forgetting it: a feature branch
+created inside an agent's worktree instead of the main checkout, the
+main checkout's gitignored `app/.env.local` deleted by a cleanup that
+thought it was in a worktree copy, and a `pkill -f <port>` that matched
+and killed the orchestrator's own shell (exit 144).
+
+- **Every mutating command starts with an explicit `cd <absolute
+  path>`** — git branch/commit/checkout, rm, cp-into-place. Never rely
+  on where the previous command left you; verification reads are the
+  only commands allowed to inherit cwd.
+- **`rm`/cleanup only with absolute paths**, and never delete a
+  gitignored file by relative name — worktree copies and the real
+  checkout's original look identical from inside `app/`.
+- **Never `pkill -f <pattern>` where the pattern appears in your own
+  command line** (ports, filenames). Kill dev servers by socket:
+  `fuser -k <port>/tcp` — it matches the socket owner, not command
+  strings.
+- If a compound's early `cd` can fail, chain with `&&` so later
+  mutations don't run somewhere unexpected — and remember `| tail -1`
+  resets exit codes, letting a failed push fall through to the next
+  step.
+
 ## Budget rules of thumb
 
 - Expensive-model tokens go to prompts + verification, never bulk work.
