@@ -25,8 +25,8 @@ import { logMockEvent } from '@/lib/mockEvents'
 const MONO_TRACK = 'var(--font-mono-track, 0.04em)'
 
 const RULES = [
-  '40 frågor',
-  '55 minuter',
+  // '40 frågor' / '55 minuter' live in the subline now — repeating them
+  // as rules read as padding once the naming header landed (H picker).
   'ingen paus',
   'du kan ändra svar tills tiden går ut',
   'avbryter du blir provet ogiltigt',

@@ -41,8 +41,10 @@ test('Provpass picker — tap a pass, confirm sheet names it, Avbryt returns to 
 
   // A pass tap target: a SITTING row on phone, a per-pass matrix cell on
   // desktop. Either opens the confirm sheet. Take the first one present.
+  // Scope to <button> so decorative testids can never satisfy the
+  // selector (prov-pass-exposure once did — clicked a label, no sheet).
   const tapTarget = page
-    .locator('[data-testid^="prov-sitting-"], [data-testid^="prov-pass-"]')
+    .locator('button[data-testid^="prov-sitting-"], button[data-testid^="prov-pass-"]')
     .first()
   await expect(tapTarget).toBeVisible({ timeout: 10_000 })
   await tapTarget.click()

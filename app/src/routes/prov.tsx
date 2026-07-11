@@ -615,11 +615,11 @@ const pickerMonoMeta: CSSProperties = {
 function ExposureLine({ pass, style }: { pass: PassOption; style?: CSSProperties }) {
   return (
     <span style={{ ...pickerMonoMeta, display: 'inline-flex', gap: 8, ...style }}>
-      <span data-testid="prov-pass-exposure">
+      <span data-testid="prov-meta-exposure">
         sett {pass.seenBefore}/{pass.presented}
       </span>
       {pass.presented < 40 && (
-        <span data-testid="prov-pass-completeness" style={{ color: 'var(--bad)' }}>
+        <span data-testid="prov-meta-completeness" style={{ color: 'var(--bad)' }}>
           {pass.presented}/40 frågor
         </span>
       )}
@@ -806,7 +806,7 @@ function SittingLedgerRow({
         </span>
         {short.length > 0 && (
           <span
-            data-testid="prov-pass-completeness"
+            data-testid="prov-meta-completeness"
             style={{ ...pickerMonoMeta, color: 'var(--bad)', display: 'block', marginTop: 2 }}
           >
             {short.map((p) => `${p.presented}/40 frågor`).join(' · ')}
@@ -865,7 +865,7 @@ function RegisterCell({
     >
       <Meter pass={pass} accent={suggested} />
       <span
-        data-testid="prov-pass-exposure"
+        data-testid="prov-meta-exposure"
         style={{
           ...pickerMonoMeta,
           color: suggested ? 'var(--accent)' : 'var(--muted)',
@@ -876,7 +876,7 @@ function RegisterCell({
       </span>
       {pass.presented < 40 && (
         <span
-          data-testid="prov-pass-completeness"
+          data-testid="prov-meta-completeness"
           style={{ ...pickerMonoMeta, color: 'var(--bad)', whiteSpace: 'nowrap' }}
         >
           {pass.presented}/40 frågor
@@ -884,7 +884,7 @@ function RegisterCell({
       )}
       {suggested && (
         <span
-          data-testid="prov-pass-suggested"
+          data-testid="prov-meta-suggested"
           style={{
             ...pickerMonoMeta,
             color: 'var(--accent)',

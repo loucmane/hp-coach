@@ -9,13 +9,13 @@ describe('ConfirmSheet', () => {
     __resetMockEvents()
   })
 
-  it('renders the eyebrow, half-only heading (no target), and the full 6-rule list', () => {
+  it('renders the eyebrow, half-only heading (no target), and the full rule list', () => {
     render(<ConfirmSheet half="verbal" onConfirm={() => {}} onDismiss={() => {}} />)
     expect(screen.getByText('Starta provpass')).toBeInTheDocument()
     expect(screen.getByTestId('mock-confirm-heading')).toHaveTextContent('Provpass · Verbal')
+    // '40 frågor'/'55 minuter' moved into the subline (H picker header);
+    // the rule list carries only the conduct rules now.
     const rules = [
-      '40 frågor',
-      '55 minuter',
       'ingen paus',
       'du kan ändra svar tills tiden går ut',
       'avbryter du blir provet ogiltigt',

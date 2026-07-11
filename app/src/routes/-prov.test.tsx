@@ -246,7 +246,7 @@ describe('Picker', () => {
     // Both passes are explicit cells on desktop.
     expect(screen.getByTestId('prov-pass-var-2019-verb1')).toBeInTheDocument()
     const suggestedCell = screen.getByTestId('prov-pass-var-2019-verb2')
-    expect(suggestedCell.querySelector('[data-testid="prov-pass-suggested"]')).toBeInTheDocument()
+    expect(suggestedCell.querySelector('[data-testid="prov-meta-suggested"]')).toBeInTheDocument()
     // Sticky MINST SETT strip names the suggested pass.
     expect(screen.getByTestId('prov-minst-sett')).toHaveTextContent('Provpass 2')
     // Clicking the other cell starts THAT pass, not the suggested one.
