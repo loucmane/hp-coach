@@ -50,6 +50,7 @@ import { Route as CoachRouteImport } from './routes/coach'
 import { Route as AvanceratRouteImport } from './routes/avancerat'
 import { Route as AdaptiveVerifyRouteImport } from './routes/adaptive-verify'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DevProvpassPickerBakeoffRouteImport } from './routes/dev_.provpass-picker-bakeoff'
 import { Route as DevNavCtaBakeoffRouteImport } from './routes/dev_.nav-cta-bakeoff'
 import { Route as DevMockEventsRouteImport } from './routes/dev_.mock-events'
 import { Route as DevAccountMenuBakeoff2RouteImport } from './routes/dev_.account-menu-bakeoff-2'
@@ -261,6 +262,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevProvpassPickerBakeoffRoute =
+  DevProvpassPickerBakeoffRouteImport.update({
+    id: '/dev_/provpass-picker-bakeoff',
+    path: '/dev/provpass-picker-bakeoff',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const DevNavCtaBakeoffRoute = DevNavCtaBakeoffRouteImport.update({
   id: '/dev_/nav-cta-bakeoff',
   path: '/dev/nav-cta-bakeoff',
@@ -328,6 +335,7 @@ export interface FileRoutesByFullPath {
   '/dev/account-menu-bakeoff-2': typeof DevAccountMenuBakeoff2Route
   '/dev/mock-events': typeof DevMockEventsRoute
   '/dev/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
+  '/dev/provpass-picker-bakeoff': typeof DevProvpassPickerBakeoffRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -375,6 +383,7 @@ export interface FileRoutesByTo {
   '/dev/account-menu-bakeoff-2': typeof DevAccountMenuBakeoff2Route
   '/dev/mock-events': typeof DevMockEventsRoute
   '/dev/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
+  '/dev/provpass-picker-bakeoff': typeof DevProvpassPickerBakeoffRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -423,6 +432,7 @@ export interface FileRoutesById {
   '/dev_/account-menu-bakeoff-2': typeof DevAccountMenuBakeoff2Route
   '/dev_/mock-events': typeof DevMockEventsRoute
   '/dev_/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
+  '/dev_/provpass-picker-bakeoff': typeof DevProvpassPickerBakeoffRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -472,6 +482,7 @@ export interface FileRouteTypes {
     | '/dev/account-menu-bakeoff-2'
     | '/dev/mock-events'
     | '/dev/nav-cta-bakeoff'
+    | '/dev/provpass-picker-bakeoff'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -519,6 +530,7 @@ export interface FileRouteTypes {
     | '/dev/account-menu-bakeoff-2'
     | '/dev/mock-events'
     | '/dev/nav-cta-bakeoff'
+    | '/dev/provpass-picker-bakeoff'
   id:
     | '__root__'
     | '/'
@@ -566,6 +578,7 @@ export interface FileRouteTypes {
     | '/dev_/account-menu-bakeoff-2'
     | '/dev_/mock-events'
     | '/dev_/nav-cta-bakeoff'
+    | '/dev_/provpass-picker-bakeoff'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -614,6 +627,7 @@ export interface RootRouteChildren {
   DevAccountMenuBakeoff2Route: typeof DevAccountMenuBakeoff2Route
   DevMockEventsRoute: typeof DevMockEventsRoute
   DevNavCtaBakeoffRoute: typeof DevNavCtaBakeoffRoute
+  DevProvpassPickerBakeoffRoute: typeof DevProvpassPickerBakeoffRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -905,6 +919,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dev_/provpass-picker-bakeoff': {
+      id: '/dev_/provpass-picker-bakeoff'
+      path: '/dev/provpass-picker-bakeoff'
+      fullPath: '/dev/provpass-picker-bakeoff'
+      preLoaderRoute: typeof DevProvpassPickerBakeoffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dev_/nav-cta-bakeoff': {
       id: '/dev_/nav-cta-bakeoff'
       path: '/dev/nav-cta-bakeoff'
@@ -982,6 +1003,7 @@ const rootRouteChildren: RootRouteChildren = {
   DevAccountMenuBakeoff2Route: DevAccountMenuBakeoff2Route,
   DevMockEventsRoute: DevMockEventsRoute,
   DevNavCtaBakeoffRoute: DevNavCtaBakeoffRoute,
+  DevProvpassPickerBakeoffRoute: DevProvpassPickerBakeoffRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
