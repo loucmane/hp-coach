@@ -9,10 +9,10 @@ describe('ConfirmSheet', () => {
     __resetMockEvents()
   })
 
-  it('renders the eyebrow, heading with the Swedish half label, and the full 6-rule list', () => {
+  it('renders the eyebrow, half-only heading (no target), and the full 6-rule list', () => {
     render(<ConfirmSheet half="verbal" onConfirm={() => {}} onDismiss={() => {}} />)
-    expect(screen.getByText('Provpass')).toBeInTheDocument()
-    expect(screen.getByText(/Provpass · Verbal/)).toBeInTheDocument()
+    expect(screen.getByText('Starta provpass')).toBeInTheDocument()
+    expect(screen.getByTestId('mock-confirm-heading')).toHaveTextContent('Provpass · Verbal')
     const rules = [
       '40 frågor',
       '55 minuter',
@@ -26,9 +26,41 @@ describe('ConfirmSheet', () => {
     }
   })
 
-  it('renders Kvant heading for the kvant half', () => {
+  it('renders Kvant heading for the kvant half (no target)', () => {
     render(<ConfirmSheet half="kvant" onConfirm={() => {}} onDismiss={() => {}} />)
-    expect(screen.getByText(/Provpass · Kvant/)).toBeInTheDocument()
+    expect(screen.getByTestId('mock-confirm-heading')).toHaveTextContent('Provpass · Kvant')
+  })
+
+  it('names the exact authentic pass from its target (sitting + provpass + count)', () => {
+    render(
+      <ConfirmSheet
+        half="verbal"
+        target={{ mode: 'authentic', examId: 'host-2025', provpass: 'verb2', presented: 40 }}
+        onConfirm={() => {}}
+        onDismiss={() => {}}
+      />,
+    )
+    expect(screen.getByTestId('mock-confirm-heading')).toHaveTextContent('Hösten 2025')
+    expect(screen.getByTestId('mock-confirm-subline')).toHaveTextContent(
+      'Provpass 2 · 40 frågor · 55 minuter',
+    )
+    // The full contract still rides along (one gate, not two).
+    expect(screen.getByText('avbryter du blir provet ogiltigt')).toBeInTheDocument()
+  })
+
+  it('names a synthetic pass by mode + half from its target', () => {
+    render(
+      <ConfirmSheet
+        half="kvant"
+        target={{ mode: 'synthetic' }}
+        onConfirm={() => {}}
+        onDismiss={() => {}}
+      />,
+    )
+    expect(screen.getByTestId('mock-confirm-heading')).toHaveTextContent('Genererat pass')
+    expect(screen.getByTestId('mock-confirm-subline')).toHaveTextContent(
+      'Kvant · 40 frågor · 55 minuter',
+    )
   })
 
   it('calls onConfirm and logs confirm_started when the primary button is clicked', () => {

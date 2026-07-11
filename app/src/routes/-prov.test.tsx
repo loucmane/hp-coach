@@ -83,80 +83,53 @@ describe('Picker', () => {
     expect(screen.getByTestId('prov-authentic-empty')).toBeInTheDocument()
   })
 
-  it('lists authentic passes filtered to the active half, exposure badge, suggested top row', () => {
+  // ── Kallelse-lead (both breakpoints) ─────────────────────────────────
+
+  it('leads with the least-seen pass as the Kallelse, addressed to the candidate, in canonical Swedish', () => {
     const passes = [
-      pass({ examId: 'var-2019', provpass: 'verb1', seenBefore: 8, presented: 40 }),
-      pass({ examId: 'var-2018-1', provpass: 'verb1', seenBefore: 1, presented: 40 }),
-      pass({ examId: 'var-2020', provpass: 'kvant1', half: 'kvant', seenBefore: 0, presented: 40 }),
+      pass({ examId: 'host-2025', provpass: 'verb2', seenBefore: 1, totalExposure: 1 }),
+      pass({ examId: 'var-2019', provpass: 'verb1', seenBefore: 8, totalExposure: 12 }),
     ]
     render(
       <Picker
         mode="authentic"
         half="verbal"
+        candidateName="Lookman Benali"
         onModeChange={() => {}}
         onHalfChange={() => {}}
         passes={passes}
         onStart={() => {}}
       />,
     )
-    // Only verbal passes render.
-    expect(screen.getByTestId('prov-pass-var-2019-verb1')).toBeInTheDocument()
-    expect(screen.getByTestId('prov-pass-var-2018-1-verb1')).toBeInTheDocument()
-    expect(screen.queryByTestId('prov-pass-var-2020-kvant1')).not.toBeInTheDocument()
-    // Exposure badge text.
-    expect(screen.getByTestId('prov-pass-var-2019-verb1')).toHaveTextContent('sett 8/40')
-    // Top (first) row is visually suggested.
-    expect(
-      screen
-        .getByTestId('prov-pass-var-2019-verb1')
-        .querySelector('[data-testid="prov-pass-suggested"]'),
-    ).toBeInTheDocument()
-    expect(
-      screen
-        .getByTestId('prov-pass-var-2018-1-verb1')
-        .querySelector('[data-testid="prov-pass-suggested"]'),
-    ).not.toBeInTheDocument()
+    const kallelse = screen.getByTestId('prov-kallelse')
+    // Suggestion consistency: the Kallelse is passes[0] filtered to half —
+    // the least-exposed pass in listAuthenticPasses ordering — named in
+    // canonical Swedish (no raw exam id leak).
+    expect(kallelse).toHaveTextContent('Hösten 2025')
+    expect(kallelse).toHaveTextContent('Provpass 2')
+    expect(kallelse).not.toHaveTextContent('host-2025')
+    expect(screen.getByTestId('prov-kallelse-candidate')).toHaveTextContent('Lookman Benali')
   })
 
-  it('shows a completeness badge only when presented < 40', () => {
-    const passes = [
-      pass({ examId: 'var-2018-1', provpass: 'verb1', presented: 39 }),
-      pass({ examId: 'var-2019', provpass: 'verb1', presented: 40 }),
-    ]
+  it('drops the addressee line when no candidate name is available', () => {
     render(
       <Picker
         mode="authentic"
         half="verbal"
-        onModeChange={() => {}}
-        onHalfChange={() => {}}
-        passes={passes}
-        onStart={() => {}}
-      />,
-    )
-    expect(screen.getByTestId('prov-pass-var-2018-1-verb1')).toHaveTextContent('39/40 frågor')
-    expect(screen.getByTestId('prov-pass-var-2019-verb1')).not.toHaveTextContent('40/40 frågor')
-  })
-
-  it('starting an authentic pass row fires onStart', () => {
-    const onStart = vi.fn()
-    render(
-      <Picker
-        mode="authentic"
-        half="verbal"
+        candidateName={null}
         onModeChange={() => {}}
         onHalfChange={() => {}}
         passes={[pass()]}
-        onStart={onStart}
+        onStart={() => {}}
       />,
     )
-    fireEvent.click(screen.getByTestId('prov-pass-var-2018-1-verb1'))
-    expect(onStart).toHaveBeenCalledTimes(1)
+    expect(screen.queryByTestId('prov-kallelse-candidate')).not.toBeInTheDocument()
   })
 
-  it('passes the CLICKED row (not just the first) to onStart, so the route can start that exact pass', () => {
+  it('starting from the Kallelse fires onStart with the suggested (least-seen) pass', () => {
     const onStart = vi.fn()
-    const suggested = pass({ examId: 'var-2019', provpass: 'verb1', seenBefore: 8 })
-    const other = pass({ examId: 'var-2018-1', provpass: 'verb1', seenBefore: 1 })
+    const suggested = pass({ examId: 'host-2025', provpass: 'verb2', seenBefore: 1 })
+    const other = pass({ examId: 'var-2019', provpass: 'verb1', seenBefore: 8 })
     render(
       <Picker
         mode="authentic"
@@ -167,7 +140,117 @@ describe('Picker', () => {
         onStart={onStart}
       />,
     )
-    fireEvent.click(screen.getByTestId('prov-pass-var-2018-1-verb1'))
+    fireEvent.click(screen.getByTestId('prov-kallelse-start'))
+    expect(onStart).toHaveBeenCalledWith(suggested)
+  })
+
+  // ── Mobile register: one tap target per sitting, auto-picks least-seen ─
+
+  it('phone lists sittings (not passes) filtered to the half, newest first, in canonical Swedish', () => {
+    const passes = [
+      pass({ examId: 'host-2025', provpass: 'verb1', seenBefore: 1 }),
+      pass({ examId: 'var-2019', provpass: 'verb1', seenBefore: 8 }),
+      pass({ examId: 'var-2020', provpass: 'kvant1', half: 'kvant', seenBefore: 0 }),
+    ]
+    render(
+      <Picker
+        mode="authentic"
+        half="verbal"
+        forceViewport="phone"
+        onModeChange={() => {}}
+        onHalfChange={() => {}}
+        passes={passes}
+        onStart={() => {}}
+      />,
+    )
+    // One row per verbal SITTING — no "Provpass N" menu on mobile.
+    expect(screen.getByTestId('prov-sitting-host-2025')).toBeInTheDocument()
+    expect(screen.getByTestId('prov-sitting-var-2019')).toBeInTheDocument()
+    expect(screen.queryByTestId('prov-sitting-var-2020')).not.toBeInTheDocument()
+    expect(screen.getByTestId('prov-sitting-host-2025')).toHaveTextContent('Hösten 2025')
+  })
+
+  it('phone: tapping a sitting auto-picks its least-seen pass and fires onStart with it', () => {
+    const onStart = vi.fn()
+    // Same sitting, both passes present; listAuthenticPasses ordering puts
+    // the least-exposed pass first in the array → auto-pick is verb2.
+    const leastSeen = pass({
+      examId: 'var-2019',
+      provpass: 'verb2',
+      seenBefore: 1,
+      totalExposure: 1,
+    })
+    const moreSeen = pass({
+      examId: 'var-2019',
+      provpass: 'verb1',
+      seenBefore: 9,
+      totalExposure: 14,
+    })
+    render(
+      <Picker
+        mode="authentic"
+        half="verbal"
+        forceViewport="phone"
+        onModeChange={() => {}}
+        onHalfChange={() => {}}
+        passes={[leastSeen, moreSeen]}
+        onStart={onStart}
+      />,
+    )
+    fireEvent.click(screen.getByTestId('prov-sitting-var-2019'))
+    expect(onStart).toHaveBeenCalledWith(leastSeen)
+  })
+
+  it('phone: shows the red completeness flag only when a pass is short', () => {
+    const passes = [
+      pass({ examId: 'var-2018-1', provpass: 'verb1', presented: 39 }),
+      pass({ examId: 'var-2019', provpass: 'verb1', presented: 40 }),
+    ]
+    render(
+      <Picker
+        mode="authentic"
+        half="verbal"
+        forceViewport="phone"
+        onModeChange={() => {}}
+        onHalfChange={() => {}}
+        passes={passes}
+        onStart={() => {}}
+      />,
+    )
+    expect(screen.getByTestId('prov-sitting-var-2018-1')).toHaveTextContent('39/40 frågor')
+    expect(screen.getByTestId('prov-sitting-var-2019')).not.toHaveTextContent('40/40 frågor')
+  })
+
+  // ── Desktop register: explicit sitting × pass matrix ─────────────────
+
+  it('desktop renders per-pass cells, the suggested cell marked, and starts that exact pass', () => {
+    const onStart = vi.fn()
+    const suggested = pass({
+      examId: 'var-2019',
+      provpass: 'verb2',
+      seenBefore: 1,
+      totalExposure: 1,
+    })
+    const other = pass({ examId: 'var-2019', provpass: 'verb1', seenBefore: 9, totalExposure: 14 })
+    render(
+      <Picker
+        mode="authentic"
+        half="verbal"
+        forceViewport="studio"
+        onModeChange={() => {}}
+        onHalfChange={() => {}}
+        passes={[suggested, other]}
+        onStart={onStart}
+      />,
+    )
+    // Both passes are explicit cells on desktop.
+    expect(screen.getByTestId('prov-pass-var-2019-verb1')).toBeInTheDocument()
+    const suggestedCell = screen.getByTestId('prov-pass-var-2019-verb2')
+    expect(suggestedCell.querySelector('[data-testid="prov-pass-suggested"]')).toBeInTheDocument()
+    // Sticky MINST SETT strip names the suggested pass.
+    expect(screen.getByTestId('prov-minst-sett')).toHaveTextContent('Provpass 2')
+    // Clicking the other cell starts THAT pass, not the suggested one.
+    fireEvent.click(screen.getByTestId('prov-pass-var-2019-verb1'))
     expect(onStart).toHaveBeenCalledWith(other)
   })
 
