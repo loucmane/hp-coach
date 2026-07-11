@@ -19,7 +19,7 @@
 
 import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-
+import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { Btn, Eyebrow } from '@/components/primitives'
 import type { PaletteKey } from '@/lib/tokens'
 import { WELCOMED_KEY } from '@/lib/welcome'
@@ -33,8 +33,12 @@ function WelcomeRoute() {
   const navigate = useNavigate()
   const mode = useUiStore((s) => s.mode)
   const palette = useUiStore((s) => s.palette)
-  const setMode = useUiStore((s) => s.setMode)
-  const setPalette = useUiStore((s) => s.setPalette)
+  // Write-through setters: local store (instant paint) + PATCH to the
+  // server prefs row. Raw uiStore setters were a bug here — choices made
+  // in onboarding never reached the server, so the next useHydratePrefs
+  // pass reverted them (owner-reported on staging 2026-07-11: dark+spalt
+  // picked in /welcome, reverted on reload).
+  const { setMode, setPalette } = useSyncedPrefs()
   const { user } = useUser()
   const firstName = user?.firstName ?? user?.fullName?.split(' ')[0] ?? null
 
