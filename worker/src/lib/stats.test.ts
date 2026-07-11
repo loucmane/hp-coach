@@ -62,9 +62,7 @@ describe('currentStreak', () => {
 
   it('stops at the first gap', () => {
     // Active today, yesterday, then a gap before further history.
-    expect(
-      currentStreak(['2026-05-08', '2026-05-07', '2026-05-04', '2026-05-03'], NOW),
-    ).toBe(2)
+    expect(currentStreak(['2026-05-08', '2026-05-07', '2026-05-04', '2026-05-03'], NOW)).toBe(2)
   })
 
   it('handles a long unbroken streak across a month boundary', () => {

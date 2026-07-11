@@ -13,6 +13,40 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # The worker's own gates. Until 2026-07-11 these never ran in CI — the
+  # app job installs worker deps only for cross-package typechecking, so
+  # worker/src/**/*.test.ts gated nothing (found by the plan-v2 review).
+  worker:
+    name: worker · typecheck · lint · test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: worker
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: worker/pnpm-lock.yaml
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
+
   app:
     name: app · typecheck · lint · test · build · e2e
     runs-on: ubuntu-latest
