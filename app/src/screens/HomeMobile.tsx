@@ -85,6 +85,9 @@ type HomeMobileProps = {
   firstName?: string | null
   onTabChange?: (id: TabKey) => void
   onAvancerat?: () => void
+  /** Öva's spaced-repetition queue size — the one accent numeral on the
+   *  phone tab bar. Optional; omitted → no numeral. */
+  ovaDueCount?: number
   /** Test-only override for viewport detection. */
   forceLayout?: 'phone' | 'reader' | 'studio'
   /** Provpass due/countdown state for ProvpassStatusLine (from
@@ -119,6 +122,7 @@ export function HomeMobile({
   now,
   onTabChange,
   onAvancerat,
+  ovaDueCount,
   forceLayout,
   mockPrescription = null,
   lastMockResult = null,
@@ -174,6 +178,7 @@ export function HomeMobile({
       onTabChange={onTabChange}
       streakDays={renderStreak ? streakValue : undefined}
       onAvancerat={onAvancerat}
+      ovaDueCount={ovaDueCount}
       forceLayout={forceLayout}
     >
       <Page

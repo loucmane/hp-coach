@@ -19,7 +19,7 @@ function ProgressRoute() {
   const navigate = useNavigate()
   const stats = useStats()
   return (
-    <MobileFrame tabs activeTab="progress" onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}>
+    <MobileFrame tabs activeTab="framsteg" onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}>
       <Page
         runningHead={['HP · COACH', 'Framsteg']}
         status={{

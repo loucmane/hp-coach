@@ -181,7 +181,7 @@ export function LessonReader({ section }: { section: Section }) {
           <span aria-hidden style={{ color: 'var(--hairline)' }}>
             ·
           </span>
-          <Mono>LEKTION</Mono>
+          <Mono>UPPSLAG</Mono>
         </div>
         <h1
           style={{

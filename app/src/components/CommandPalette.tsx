@@ -82,6 +82,13 @@ const COMMANDS: Command[] = [
     action: ({ navigate }) => navigate({ to: '/drill', search: { section: 'NOG' } }),
   },
   {
+    id: 'ova',
+    label: 'Öva',
+    hint: 'Övningshubben — drilla eller repetera',
+    keywords: ['öva', 'ova', 'drill', 'övning', 'hub', 'repetera'],
+    action: ({ navigate }) => navigate({ to: '/ova' }),
+  },
+  {
     id: 'repetition',
     label: 'Repetition (missar)',
     hint: 'Repetera fel svar',
@@ -96,17 +103,17 @@ const COMMANDS: Command[] = [
     action: ({ navigate }) => navigate({ to: '/prov' }),
   },
   {
-    id: 'lektion',
-    label: 'Lektion',
+    id: 'uppslag',
+    label: 'Uppslag',
     hint: 'Bläddra alla sektioner',
-    keywords: ['lektion', 'lesson', 'framework', 'ramverk', 'mönster'],
+    keywords: ['uppslag', 'lektion', 'lesson', 'framework', 'ramverk', 'mönster', 'referens'],
     action: ({ navigate }) => navigate({ to: '/lektion' }),
   },
   {
-    id: 'lektion-nog',
-    label: 'Lektion · NOG',
+    id: 'uppslag-nog',
+    label: 'Uppslag · NOG',
     hint: '25 mönster · datasufficiens',
-    keywords: ['lektion', 'lesson', 'nog', 'datasufficiens', 'sufficiency'],
+    keywords: ['uppslag', 'lektion', 'lesson', 'nog', 'datasufficiens', 'sufficiency'],
     action: ({ navigate }) => navigate({ to: '/lektion', search: { section: 'NOG' } }),
   },
   {
@@ -123,8 +130,9 @@ const COMMANDS: Command[] = [
   },
   {
     id: 'coach',
-    label: 'Coach',
-    keywords: ['coach', 'kompis', 'professor', 'taktiker'],
+    label: 'Feedback',
+    hint: 'Exportera flaggade frågor (dogfood)',
+    keywords: ['feedback', 'coach', 'export', 'dogfood', 'flagga'],
     action: ({ navigate }) => navigate({ to: '/coach' }),
   },
   {

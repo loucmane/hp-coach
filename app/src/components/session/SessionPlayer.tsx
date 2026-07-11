@@ -56,7 +56,7 @@ import { Btn, Eyebrow, Mono } from '@/components/primitives'
 import { type AnswerLetter, loadBank, type Question } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
 import { currentDevice } from '@/lib/device'
-import { TAB_ROUTE } from '@/lib/nav'
+import { TAB_ROUTE, type TabKey } from '@/lib/nav'
 import { canAdoptActiveSession } from './canAdoptSession'
 import { reconstructSummary } from './reconstructSummary'
 
@@ -161,7 +161,7 @@ export type SessionPlayerProps = {
   onCorrect?: (q: Question) => void
   onWrong?: (q: Question) => void
   /** Active-tab to highlight in the bottom nav while idle/done. */
-  activeTab: 'home' | 'drill' | 'coach' | 'progress'
+  activeTab: TabKey
   /** Optional extra content rendered on the idle screen, after the meta
    *  line. Used by /drill to surface a "repetera missar" hint. */
   idleExtra?: ReactNode

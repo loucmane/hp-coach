@@ -10,13 +10,12 @@
 // When v2 ships (POST /api/explanations/feedback), this view becomes
 // a server-backed feedback dashboard. For now: localStorage + clipboard.
 
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { clearFeedback, getAllFeedback } from '@/api/feedback'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { Btn, Card, Eyebrow, Mono, Stack } from '@/components/primitives'
-import { TAB_ROUTE } from '@/lib/nav'
 
 export const Route = createFileRoute('/coach')({
   component: CoachView,
@@ -25,7 +24,6 @@ export const Route = createFileRoute('/coach')({
 type ToastState = { kind: 'success' | 'empty' | 'error'; message: string } | null
 
 function CoachView() {
-  const navigate = useNavigate()
   const [toast, setToast] = useState<ToastState>(null)
   const [count, setCount] = useState<number>(() => getAllFeedback().length)
 
@@ -71,7 +69,7 @@ function CoachView() {
   }
 
   return (
-    <MobileFrame tabs activeTab="coach" onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}>
+    <MobileFrame tabs={false}>
       <Page
         runningHead={['HP · COACH', 'Feedback']}
         status={{

@@ -8,7 +8,7 @@
 
 import type { SVGProps } from 'react'
 
-type IconProps = SVGProps<SVGSVGElement> & { s?: number; title?: string }
+export type IconProps = SVGProps<SVGSVGElement> & { s?: number; title?: string }
 
 const base = (s = 16): SVGProps<SVGSVGElement> => ({
   width: s,
@@ -107,5 +107,77 @@ export const Book = ({ s, title, ...p }: IconProps) =>
     <>
       <path d="M4 5a2 2 0 012-2h13v15H6a2 2 0 00-2 2V5z" />
       <path d="M4 19a2 2 0 012-2h13" />
+    </>,
+  )
+
+// ── Primary-nav glyph system ────────────────────────────────────────
+//
+// The five door glyphs for the collapsed rail spine, promoted from the
+// nav bake-off (NavSpineIcons.tsx, owner verdict 2026-07-11). One
+// engraver's plate: every glyph stands on a shared ground band at
+// y≈20.3, one dominant mass, no interior detail that dies at 18px.
+// Same house law as the icons above — 24×24 viewBox, stroke 1.6,
+// currentColor, decorative-by-default via wrap(). The accent is applied
+// by the caller (active door = accent), never baked into the glyph.
+
+/** Hem — floating eave chevron over walls; door as a single slit. */
+export const GlyphHem = ({ s, title, ...p }: IconProps) =>
+  wrap(
+    s,
+    title,
+    p,
+    <>
+      <path d="M3.5 10.6 12 3.6l8.5 7" />
+      <path d="M5.7 9.6v10.7h12.6V9.6" />
+      <path d="M12 20.3v-4.4" />
+    </>,
+  )
+
+/** Öva — pencil with the line it just wrote (the ground band). */
+export const GlyphOva = ({ s, title, ...p }: IconProps) =>
+  wrap(
+    s,
+    title,
+    p,
+    <>
+      <path d="M16.2 3.8a2.05 2.05 0 0 1 2.9 2.9L7.6 18.2l-3.9 1.1 1.1-3.9z" />
+      <path d="M12.6 20.3h7.9" />
+    </>,
+  )
+
+/** Provpass — stopwatch: flat crown, one sweep hand. */
+export const GlyphProvpass = ({ s, title, ...p }: IconProps) =>
+  wrap(
+    s,
+    title,
+    p,
+    <>
+      <circle cx="12" cy="13.7" r="6.6" />
+      <path d="M9.9 2.6h4.2M12 2.6v4.5" />
+      <path d="M12 13.7l3.1-3.1" />
+    </>,
+  )
+
+/** Uppslag — the open spread, gutter marked. */
+export const GlyphUppslag = ({ s, title, ...p }: IconProps) =>
+  wrap(
+    s,
+    title,
+    p,
+    <>
+      <path d="M12 7.2C10.1 5.6 7.3 4.9 3.4 4.9v13.4c3.9 0 6.7.7 8.6 2.3 1.9-1.6 4.7-2.3 8.6-2.3V4.9c-3.9 0-6.7.7-8.6 2.3z" />
+      <path d="M12 7.2v13.4" />
+    </>,
+  )
+
+/** Framsteg — "Din kurva": the ascending curve over the ground rule. */
+export const GlyphFramsteg = ({ s, title, ...p }: IconProps) =>
+  wrap(
+    s,
+    title,
+    p,
+    <>
+      <path d="M3.5 20.3h17" />
+      <path d="M4.6 16.6l4.8-4.6 3.4 2.7 6.6-7" />
     </>,
   )
