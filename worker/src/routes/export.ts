@@ -38,6 +38,7 @@
 // Clerk identity.
 
 import { eq } from 'drizzle-orm'
+import type { BatchItem } from 'drizzle-orm/batch'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
@@ -62,6 +63,53 @@ export const SCHEMA_VERSION = 1 as const
 // MB of JSON; 5 MB leaves headroom for years of use while still refusing
 // a pathological/malicious payload before it reaches D1.
 const MAX_IMPORT_BYTES = 5 * 1024 * 1024
+
+// ── Per-table row-count caps ─────────────────────────────────────────────
+// The byte cap alone (MAX_IMPORT_BYTES) is not enough: a 5 MB payload can
+// still contain tens of thousands of TINY rows, and the insert phase used
+// to run one `await` per row. Enough rows there blows Workers' wall-clock
+// budget or D1's per-request limits — AFTER the wipe phase has already
+// deleted the user's existing data. That's the wipe-then-fail bug this
+// cap + the chunked batching below (see insertChunked) close.
+//
+// Budget arithmetic: pick a total-statement ceiling comfortably inside any
+// plausible Workers/D1 execution budget, then split it across tables.
+// 20,000 total insert statements, executed in db.batch() chunks of 100
+// (INSERT_CHUNK_SIZE below), is at most 200 sequential batch round trips
+// for the WORST case payload — each round trip is a single D1 call, not a
+// per-row fetch, so 200 of them finishes in low single-digit seconds even
+// on a slow edge, nowhere near the ~30s wall-clock ceiling. The per-table
+// split below sums to exactly that 20,000 budget:
+//
+//   sessions        2,000
+//   attempts       12,000   (heaviest table — many attempts per session)
+//   mistakes        2,000
+//   lessonProgress  1,000
+//   lessonReads     1,000
+//   dailyPlans        500
+//   mockResults     1,500
+//   ────────────────────
+//   total          20,000
+//
+// Each cap is still generous against a real single-user export: per the
+// comment above, a heavy dogfood account sits at hundreds-to-low-thousands
+// of rows TOTAL across every table, under 1 MB of JSON — these per-table
+// numbers are 1–2 orders of magnitude above that.
+export const TABLE_ROW_CAPS = {
+  sessions: 2_000,
+  attempts: 12_000,
+  mistakes: 2_000,
+  lessonProgress: 1_000,
+  lessonReads: 1_000,
+  dailyPlans: 500,
+  mockResults: 1_500,
+} as const
+
+// Statements per db.batch() call. D1 batches are atomic per chunk (not
+// across chunks), and keeping each chunk in the tens avoids oversized
+// single requests while still cutting round trips by ~100x versus one
+// await per row.
+const INSERT_CHUNK_SIZE = 100
 
 // ── Per-table row shapes accepted on import ─────────────────────────────
 // Deliberately permissive on optional/nullable fields (mirrors the
@@ -196,6 +244,39 @@ function toDateOrUndefined(v: number | string | null | undefined): Date | undefi
   return d ?? undefined
 }
 
+function chunksOf<T>(items: T[], size: number): T[][] {
+  const out: T[][] = []
+  for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size))
+  return out
+}
+
+// db.batch()'s type wants a statically non-empty tuple ([U, ...U[]]) so it
+// can't be called directly on a dynamically-built array — this helper
+// contains the one cast that bridges that gap, guarded by the emptiness
+// check so it's never applied to an actually-empty array.
+async function batchNonEmpty(
+  db: ReturnType<typeof getDb>,
+  stmts: BatchItem<'sqlite'>[],
+): Promise<unknown[]> {
+  if (stmts.length === 0) return []
+  return db.batch(stmts as [BatchItem<'sqlite'>, ...BatchItem<'sqlite'>[]])
+}
+
+// Insert every row in `items` via chunked db.batch() calls (INSERT_CHUNK_SIZE
+// per chunk) instead of one `await` per row — this is what keeps a
+// tens-of-thousands-of-rows import from blowing Workers' wall-clock budget
+// with sequential round trips (see TABLE_ROW_CAPS comment for the budget
+// arithmetic this depends on).
+async function insertChunked<T>(
+  db: ReturnType<typeof getDb>,
+  items: T[],
+  toStmt: (item: T) => BatchItem<'sqlite'>,
+): Promise<void> {
+  for (const chunk of chunksOf(items, INSERT_CHUNK_SIZE)) {
+    await batchNonEmpty(db, chunk.map(toStmt))
+  }
+}
+
 // GET /api/me/export — everything this user owns, one JSON document.
 export const exportRoute = new Hono<{ Bindings: Env; Variables: Vars }>().get('/', async (c) => {
   const db = getDb(c.env.DB)
@@ -292,6 +373,27 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
   }
   const body = parsed.data
 
+  // Row-count caps, validated BEFORE anything touches the database. This
+  // must run before the delete phase below — the whole point is that an
+  // over-cap payload leaves existing data untouched (see TABLE_ROW_CAPS
+  // comment for the budget arithmetic).
+  for (const [table, cap] of Object.entries(TABLE_ROW_CAPS) as Array<
+    [keyof typeof TABLE_ROW_CAPS, number]
+  >) {
+    const rowCount = body.tables[table].length
+    if (rowCount > cap) {
+      return c.json(
+        {
+          error: {
+            code: 'table_row_cap_exceeded',
+            message: `Table "${table}" has ${rowCount} rows, exceeding the cap of ${cap}`,
+          },
+        },
+        413,
+      )
+    }
+  }
+
   const db = getDb(c.env.DB)
   const userId = await ensureUserRow(db, c.var.userId)
 
@@ -309,112 +411,110 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
     db.delete(sessions).where(eq(sessions.userId, userId)),
   ])
 
-  // Sessions are inserted FIRST, outside the batch, so we can capture
-  // the fresh autoincrement id D1 assigns each row (never the payload's
-  // id — that id may already belong to another user's row on this
-  // shared table). `attempts` and `mockResults` reference sessions by
-  // id, so this mapping (payload session id → freshly-inserted session
+  // Sessions are inserted FIRST, in chunked db.batch() calls, so we can
+  // capture the fresh autoincrement id D1 assigns each row (never the
+  // payload's id — that id may already belong to another user's row on
+  // this shared table). `attempts` and `mockResults` reference sessions
+  // by id, so this mapping (payload session id → freshly-inserted session
   // id) is threaded through when inserting them below. Rows whose
   // sessionId isn't in the map (a malformed export) are skipped rather
   // than thrown, so one bad row can't sink the whole import.
+  //
+  // The map MUST be fully built — every chunk's results merged in — before
+  // any dependent-table insert reads from it, since a referenced session
+  // can land in any chunk (including the last one).
   const sessionIdMap = new Map<number, number>()
-  for (const s of body.tables.sessions) {
-    const [row] = await db
-      .insert(sessions)
-      .values({
-        userId,
-        startedAt: toDateOrUndefined(s.startedAt),
-        endedAt: toDateOrNull(s.endedAt),
-        kind: s.kind,
-        sections: s.sections ?? null,
-        position: s.position ?? 0,
-        currentQuestionId: s.currentQuestionId ?? null,
-        plan: s.plan ?? null,
-        device: s.device ?? null,
-      })
-      .returning({ id: sessions.id })
-    sessionIdMap.set(s.id, row.id)
+  for (const chunk of chunksOf(body.tables.sessions, INSERT_CHUNK_SIZE)) {
+    const stmts = chunk.map((s) =>
+      db
+        .insert(sessions)
+        .values({
+          userId,
+          startedAt: toDateOrUndefined(s.startedAt),
+          endedAt: toDateOrNull(s.endedAt),
+          kind: s.kind,
+          sections: s.sections ?? null,
+          position: s.position ?? 0,
+          currentQuestionId: s.currentQuestionId ?? null,
+          plan: s.plan ?? null,
+          device: s.device ?? null,
+        })
+        .returning({ id: sessions.id }),
+    )
+    const results = await batchNonEmpty(db, stmts)
+    results.forEach((rows, i) => {
+      const [row] = rows as Array<{ id: number }>
+      sessionIdMap.set(chunk[i].id, row.id)
+    })
   }
 
   const attemptsToInsert = body.tables.attempts.filter((a) => sessionIdMap.has(a.sessionId))
   const mockResultsToInsert = body.tables.mockResults.filter((mr) => sessionIdMap.has(mr.sessionId))
 
-  const insertStmts = [
-    ...attemptsToInsert.map((a) =>
-      db.insert(attempts).values({
-        userId,
-        sessionId: sessionIdMap.get(a.sessionId) as number,
-        questionId: a.questionId,
-        selectedAnswer: a.selectedAnswer ?? null,
-        correct: a.correct ?? null,
-        timeTakenMs: a.timeTakenMs ?? null,
-        createdAt: toDateOrUndefined(a.createdAt),
-      }),
-    ),
-    ...body.tables.mistakes.map((m) =>
-      db.insert(mistakes).values({
-        userId,
-        questionId: m.questionId,
-        layer1Ids: m.layer1Ids ?? null,
-        status: m.status ?? 'active',
-        errorCount7d: m.errorCount7d ?? 1,
-        lastErrorAt: toDateOrUndefined(m.lastErrorAt),
-        nextReviewAt: toDateOrNull(m.nextReviewAt),
-        intervalMinutes: m.intervalMinutes ?? 0,
-      }),
-    ),
-    ...body.tables.lessonProgress.map((lp) =>
-      db.insert(lessonProgress).values({
-        userId,
-        section: lp.section,
-        frameworkId: lp.frameworkId ?? null,
-        device: lp.device ?? null,
-        updatedAt: toDateOrUndefined(lp.updatedAt),
-      }),
-    ),
-    ...body.tables.lessonReads.map((lr) =>
-      db.insert(lessonReads).values({
-        userId,
-        entryId: lr.entryId,
-        readAt: toDateOrUndefined(lr.readAt),
-      }),
-    ),
-    ...body.tables.dailyPlans.map((dp) =>
-      db.insert(dailyPlans).values({
-        userId,
-        date: dp.date,
-        plan: dp.plan,
-        updatedAt: toDateOrUndefined(dp.updatedAt),
-      }),
-    ),
-    ...mockResultsToInsert.map((mr) =>
-      db.insert(mockResults).values({
-        userId,
-        sessionId: sessionIdMap.get(mr.sessionId) as number,
-        mode: mr.mode,
-        half: mr.half,
-        examId: mr.examId ?? null,
-        provpass: mr.provpass ?? null,
-        presented: mr.presented,
-        answered: mr.answered,
-        correct: mr.correct,
-        seenBefore: mr.seenBefore,
-        durationMs: mr.durationMs,
-        breakdown: mr.breakdown,
-        createdAt: toDateOrUndefined(mr.createdAt),
-      }),
-    ),
-  ]
-
-  // db.batch's type wants a statically-known-length tuple; this list is
-  // built dynamically from the payload's per-table row counts, so we
-  // execute each insert sequentially instead of forcing it through
-  // batch's tuple overload. D1/SQLite still runs each as its own
-  // single-statement transaction, and MAX_IMPORT_BYTES bounds how many
-  // statements this loop can ever produce.
-  for (const stmt of insertStmts) {
-    await stmt
-  }
+  await insertChunked(db, attemptsToInsert, (a) =>
+    db.insert(attempts).values({
+      userId,
+      sessionId: sessionIdMap.get(a.sessionId) as number,
+      questionId: a.questionId,
+      selectedAnswer: a.selectedAnswer ?? null,
+      correct: a.correct ?? null,
+      timeTakenMs: a.timeTakenMs ?? null,
+      createdAt: toDateOrUndefined(a.createdAt),
+    }),
+  )
+  await insertChunked(db, body.tables.mistakes, (m) =>
+    db.insert(mistakes).values({
+      userId,
+      questionId: m.questionId,
+      layer1Ids: m.layer1Ids ?? null,
+      status: m.status ?? 'active',
+      errorCount7d: m.errorCount7d ?? 1,
+      lastErrorAt: toDateOrUndefined(m.lastErrorAt),
+      nextReviewAt: toDateOrNull(m.nextReviewAt),
+      intervalMinutes: m.intervalMinutes ?? 0,
+    }),
+  )
+  await insertChunked(db, body.tables.lessonProgress, (lp) =>
+    db.insert(lessonProgress).values({
+      userId,
+      section: lp.section,
+      frameworkId: lp.frameworkId ?? null,
+      device: lp.device ?? null,
+      updatedAt: toDateOrUndefined(lp.updatedAt),
+    }),
+  )
+  await insertChunked(db, body.tables.lessonReads, (lr) =>
+    db.insert(lessonReads).values({
+      userId,
+      entryId: lr.entryId,
+      readAt: toDateOrUndefined(lr.readAt),
+    }),
+  )
+  await insertChunked(db, body.tables.dailyPlans, (dp) =>
+    db.insert(dailyPlans).values({
+      userId,
+      date: dp.date,
+      plan: dp.plan,
+      updatedAt: toDateOrUndefined(dp.updatedAt),
+    }),
+  )
+  await insertChunked(db, mockResultsToInsert, (mr) =>
+    db.insert(mockResults).values({
+      userId,
+      sessionId: sessionIdMap.get(mr.sessionId) as number,
+      mode: mr.mode,
+      half: mr.half,
+      examId: mr.examId ?? null,
+      provpass: mr.provpass ?? null,
+      presented: mr.presented,
+      answered: mr.answered,
+      correct: mr.correct,
+      seenBefore: mr.seenBefore,
+      durationMs: mr.durationMs,
+      breakdown: mr.breakdown,
+      createdAt: toDateOrUndefined(mr.createdAt),
+    }),
+  )
 
   // Restore prefs onto the (already-provisioned) user row. clerkUserId
   // and the lifetime counters are NEVER taken from the payload — they
