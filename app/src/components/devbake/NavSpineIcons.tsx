@@ -192,7 +192,19 @@ function Board({ caption, children }: { caption: string; children: ReactNode }) 
 
 /** One spine slot: glyph centered; the bokmärke hangs at the LEFT EDGE
  *  beside the active glyph; the optional count rides top-right. */
-function SpineSlot({ door, active, count }: { door: Door; active: boolean; count?: number }) {
+export type SpineMarker = 'solid' | 'outline' | 'ground'
+
+function SpineSlot({
+  door,
+  active,
+  count,
+  marker = 'solid',
+}: {
+  door: Door
+  active: boolean
+  count?: number
+  marker?: SpineMarker
+}) {
   return (
     <span
       aria-current={active ? 'page' : undefined}
@@ -206,7 +218,7 @@ function SpineSlot({ door, active, count }: { door: Door; active: boolean; count
         color: active ? 'var(--ink)' : 'var(--muted)',
       }}
     >
-      {active && (
+      {active && marker === 'solid' && (
         <span
           aria-hidden
           style={{
@@ -217,6 +229,47 @@ function SpineSlot({ door, active, count }: { door: Door; active: boolean; count
             height: 27,
             background: 'var(--accent)',
             clipPath: 'polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 4px), 0 100%)',
+          }}
+        />
+      )}
+      {active && marker === 'outline' && (
+        /* Owner note 2026-07-11: the solid slab was "the only filled
+         * object in a hairline world". This ribbon speaks the glyphs'
+         * own language — 1.6 stroke, open fill, wide enough (7px) that
+         * the notched tail actually reads at spine size. */
+        <svg
+          aria-hidden
+          role="presentation"
+          width="9"
+          height="30"
+          viewBox="0 0 9 30"
+          style={{ position: 'absolute', left: 2, top: -6, color: 'var(--accent)' }}
+        >
+          <path
+            d="M1.3 0.5 L7.7 0.5 L7.7 27 L4.5 23.6 L1.3 27 Z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+          />
+        </svg>
+      )}
+      {active && marker === 'ground' && (
+        /* The glyph system's own invention doing the marking: every
+         * glyph stands on a shared ground band — the active door is the
+         * one standing on the ACCENT segment. No new object enters the
+         * spine at all. */
+        <span
+          aria-hidden
+          style={{
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            bottom: 1,
+            width: 15,
+            height: 1.6,
+            borderRadius: 1,
+            background: 'var(--accent)',
           }}
         />
       )}
@@ -246,10 +299,12 @@ function Spine({
   active,
   signal,
   height = 560,
+  marker = 'solid',
 }: {
   active: string
   signal?: boolean
   height?: number
+  marker?: SpineMarker
 }) {
   return (
     <div
@@ -293,6 +348,7 @@ function Spine({
             door={d}
             active={active === d.id}
             count={signal && d.id === 'ova' ? FIX.dueCount : undefined}
+            marker={marker}
           />
         ))}
       </nav>
@@ -695,6 +751,61 @@ export function SPINE2() {
       thesis="Samma glyfsystem, men ryggen behåller exakt en siffra: Övas kö-antal som liten tabellsiffra i glyfens övre hörn — samma grammatik som telefonfotens siffra. Allt annat tiger; nedräkningen står kvar som ryggens folio."
     >
       <SpineConcept signal />
+    </ConceptShell>
+  )
+}
+
+/** SPINEM — marker study: the owner flagged the solid bokmärke as
+ *  "off" next to the 1.6-stroke glyphs (2026-07-11). Three treatments
+ *  of the active marker, everything else held constant (S2 signal). */
+export function SPINEM() {
+  const treatments: { marker: SpineMarker; label: string; note: string }[] = [
+    {
+      marker: 'solid',
+      label: 'M0 · Fyllt band (nuvarande)',
+      note: 'Det enda fyllda objektet i en värld av 1.6-streck — tyngdklyftan som stack ut.',
+    },
+    {
+      marker: 'outline',
+      label: 'M1 · Graverat band',
+      note: 'Bokmärket omritat i glyfernas eget språk: 1.6-streck, öppen fyllnad, brett nog att skåran i svansen faktiskt läses.',
+    },
+    {
+      marker: 'ground',
+      label: 'M2 · Accentmark',
+      note: 'Inget nytt objekt alls — glyfernas gemensamma markyta blir accent under den aktiva dörren: du står på den markerade raden.',
+    },
+  ]
+  return (
+    <ConceptShell
+      title="SPINEM · Markörstudien"
+      thesis="Samma S2-rygg tre gånger; bara den aktiva markören varierar. Frågan: vilken markering talar glyfernas graverade språk i stället för att ligga ovanpå det?"
+    >
+      <Board caption="Tre behandlingar × tre aktiva dörrar (Hem / Öva+siffra / Uppslag) — jämför markörens vikt mot glyfens">
+        <div style={{ display: 'flex', gap: 44, alignItems: 'flex-start' }}>
+          {treatments.map((t) => (
+            <div key={t.marker} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{ ...eyebrow, fontSize: 9 }}>{t.label}</div>
+              <div style={{ display: 'flex', gap: 16 }}>
+                <Spine active="hem" signal marker={t.marker} height={420} />
+                <Spine active="ova" signal marker={t.marker} height={420} />
+                <Spine active="uppslag" signal marker={t.marker} height={420} />
+              </div>
+              <p
+                style={{
+                  fontSize: 11.5,
+                  color: 'var(--ink-2)',
+                  maxWidth: '26ch',
+                  margin: 0,
+                  lineHeight: 1.45,
+                }}
+              >
+                {t.note}
+              </p>
+            </div>
+          ))}
+        </div>
+      </Board>
     </ConceptShell>
   )
 }

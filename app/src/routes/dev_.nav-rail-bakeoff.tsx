@@ -40,6 +40,7 @@ import {
   GlyphUppslag,
   SPINE1,
   SPINE2,
+  SPINEM,
 } from '@/components/devbake/NavSpineIcons'
 import { isDevSurface } from '@/lib/devSurface'
 
@@ -58,6 +59,7 @@ const VARIANTS = [
   // decision is pixel-vs-pixel, not ideology).
   { key: 's1', label: 'S1 · Spine — stum', C: SPINE1 },
   { key: 's2', label: 'S2 · Spine — en signal', C: SPINE2 },
+  { key: 'sm', label: 'SM · Markörstudien', C: SPINEM },
   { key: 'l', label: 'L · Lucide-jämförelsen', C: LucideComparison },
 ] as const
 
