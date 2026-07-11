@@ -3,7 +3,7 @@
 // Phase A.6V. The Edition Strip lives in the running head once the
 // app is open, so technically the user could discover it themselves
 // — but starting day one in the default Sand/Editorial/Light look
-// without ever knowing the four palettes + three editions exist is
+// without ever knowing the palettes exist is
 // the kind of "I had no idea this existed" friction we keep hitting
 // with editorial chrome. So we show the picker once, at full canvas,
 // as a chapter-opening composition: "Make it yours. (You can change
@@ -21,9 +21,9 @@ import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
 import { Btn, Eyebrow } from '@/components/primitives'
-import { EDITIONS, type EditionKey, type PaletteKey } from '@/lib/tokens'
+import type { PaletteKey } from '@/lib/tokens'
 import { WELCOMED_KEY } from '@/lib/welcome'
-import { useActiveEdition, useUiStore } from '@/stores/uiStore'
+import { useUiStore } from '@/stores/uiStore'
 
 export const Route = createFileRoute('/welcome')({
   component: WelcomeRoute,
@@ -35,8 +35,6 @@ function WelcomeRoute() {
   const palette = useUiStore((s) => s.palette)
   const setMode = useUiStore((s) => s.setMode)
   const setPalette = useUiStore((s) => s.setPalette)
-  const setEdition = useUiStore((s) => s.setEdition)
-  const activeEdition = useActiveEdition()
   const { user } = useUser()
   const firstName = user?.firstName ?? user?.fullName?.split(' ')[0] ?? null
 
@@ -98,7 +96,7 @@ function WelcomeRoute() {
               margin: 0,
             }}
           >
-            Tre val. Du kan ändra dem från toppen av varje sida när som helst — det här är bara en
+            Två val. Du kan ändra dem under Mer → Inställningar när som helst — det här är bara en
             mjuk start.
           </p>
         </header>
@@ -119,8 +117,15 @@ function WelcomeRoute() {
           />
         </PickerRow>
 
-        {/* Palette picker — four named palettes. */}
+        {/* Palette picker — the five product palettes, default first. */}
         <PickerRow label="Palett">
+          <PaletteOption
+            p="spalt"
+            label="spalt"
+            sub="sval blågrön · standard"
+            active={palette === 'spalt'}
+            onClick={() => setPalette('spalt')}
+          />
           <PaletteOption
             p="sand"
             label="sand"
@@ -148,31 +153,6 @@ function WelcomeRoute() {
             sub="mjuk rosa"
             active={palette === 'rose'}
             onClick={() => setPalette('rose')}
-          />
-        </PickerRow>
-
-        {/* Edition picker — bundles font + density + drill layout. */}
-        <PickerRow label="Edition">
-          <EditionOption
-            ekey="editorial"
-            label="editorial"
-            sub="läsande · serif · 2 spalter"
-            active={activeEdition === 'editorial'}
-            onClick={() => setEdition('editorial')}
-          />
-          <EditionOption
-            ekey="workbook"
-            label="workbook"
-            sub="räknande · 2 spalter · FRÅGA / FÖRKLARING"
-            active={activeEdition === 'workbook'}
-            onClick={() => setEdition('workbook')}
-          />
-          <EditionOption
-            ekey="cockpit"
-            label="cockpit"
-            sub="kompakt · mono · terminal-känsla"
-            active={activeEdition === 'cockpit'}
-            onClick={() => setEdition('cockpit')}
           />
         </PickerRow>
 
@@ -300,24 +280,4 @@ function PaletteOption({
       accent={PALETTE_ACCENTS[p]}
     />
   )
-}
-
-function EditionOption({
-  ekey,
-  label,
-  sub,
-  active,
-  onClick,
-}: {
-  ekey: EditionKey
-  label: string
-  sub: string
-  active: boolean
-  onClick: () => void
-}) {
-  // No accent — edition isn't a color choice. The sublabel hints
-  // at the kind of work each is shaped for. Same monochrome
-  // treatment as the mode picker.
-  void EDITIONS[ekey] /* type assertion to keep ekey in scope */
-  return <PickerOption label={label} sublabel={sub} active={active} onClick={onClick} />
 }
