@@ -1,0 +1,58 @@
+# Nightly D1 backups → R2 (service-plan PR 0.2, F5.14.6).
+#
+# First-line restore for recent mistakes is D1 Time Travel (native
+# 30-day point-in-time recovery, to the minute) — see runbook.md. These
+# nightly SQL exports are the OFFSITE/long-horizon backstop: they
+# survive database deletion, account mishaps, and anything Time Travel
+# is scoped inside of. The R2 bucket's 30-day lifecycle rule ages them
+# out, which also caps how long deleted user data persists in backups
+# (the privacy-page claim depends on that rule staying on).
+
+name: Backup
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  WRANGLER_VERSION: "4.42.0"
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      # actions/checkout@v4.2.2 (pinned by SHA; wrangler.toml is needed
+      # for D1 binding resolution)
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      # actions/setup-node@v4.1.0
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
+        with:
+          node-version: 22
+      - name: Export + upload (staging)
+        working-directory: worker
+        run: |
+          set -euo pipefail
+          stamp=$(date -u +%Y-%m-%dT%H%M)
+          npx wrangler@${{ env.WRANGLER_VERSION }} d1 export hpc-staging --env staging --remote --output /tmp/staging.sql
+          gzip -9 /tmp/staging.sql
+          npx wrangler@${{ env.WRANGLER_VERSION }} r2 object put "hpc-backups/staging/${stamp}.sql.gz" --file /tmp/staging.sql.gz --remote
+          echo "staging backup: ${stamp}.sql.gz ($(du -h /tmp/staging.sql.gz | cut -f1))"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Export + upload (production)
+        working-directory: worker
+        run: |
+          set -euo pipefail
+          stamp=$(date -u +%Y-%m-%dT%H%M)
+          npx wrangler@${{ env.WRANGLER_VERSION }} d1 export hpc-prod --env production --remote --output /tmp/prod.sql
+          gzip -9 /tmp/prod.sql
+          npx wrangler@${{ env.WRANGLER_VERSION }} r2 object put "hpc-backups/production/${stamp}.sql.gz" --file /tmp/prod.sql.gz --remote
+          echo "production backup: ${stamp}.sql.gz ($(du -h /tmp/prod.sql.gz | cut -f1))"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
