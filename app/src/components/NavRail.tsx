@@ -10,10 +10,12 @@
 //   ⌜ HP-Coach              «        brand + collapse (⌘B)
 //   INNEHÅLL                          the ToC eyebrow
 //   Hem                               small-caps serif rows; the active
-//   Öva ················· 14           row is set in var(--accent). Dot
-//   Provpass                          leaders run to REAL folio signals:
-//   Uppslag ················ 8         Öva → due queue, Uppslag → wired
-//   Framsteg ········· +0,04           sections, Framsteg → week delta.
+//   Öva ¹⁴                              row is set in var(--accent). A
+//   Provpass                          raised folio numeral rides right
+//   Uppslag ⁸                           after the label (spine-corner
+//   Framsteg ⁺⁰,⁰⁴                      grammar) — REAL signals: Öva →
+//                                     due queue, Uppslag → wired
+//                                     sections, Framsteg → week delta.
 //   [ PÅBÖRJAD · Övning · KVA ]       the cross-device resume card
 //   Höstprov 26 · 114 dagar           the clock, always present
 //   ljus ◐ · historik · mer →         mode toggle + appendix + /mer hub
@@ -160,7 +162,7 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
   const pathname = location.pathname
 
   // Real folio signals — wired via the live hooks, not fixtures. A door
-  // with no honest number simply renders no dot-leader (signals are real
+  // with no honest number simply renders no numeral (signals are real
   // data or nothing).
   const due = useDueMistakes()
   const stats = useStats()
@@ -312,9 +314,9 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
 
 // ── Expanded — a table-of-contents row ─────────────────────────────
 
-/** One ToC entry: small-caps serif label, optional dot-leader out to a
- *  real folio signal. The active row is the ONE accent object in the
- *  expanded rail (accent-active law — no ribbon). */
+/** One ToC entry: small-caps serif label, optional raised folio numeral
+ *  riding right after it (spine-corner grammar). The active row is the
+ *  ONE accent object in the expanded rail (accent-active law — no ribbon). */
 function TocRow({ door, active, folio }: { door: Door; active: boolean; folio?: string }) {
   return (
     <Link
@@ -343,30 +345,24 @@ function TocRow({ door, active, folio }: { door: Door; active: boolean; folio?: 
         {door.label}
       </span>
       {folio ? (
-        <>
-          <span
-            aria-hidden
-            style={{
-              flex: 1,
-              borderBottom: '1px dotted var(--muted)',
-              opacity: 0.55,
-              transform: 'translateY(-3px)',
-              minWidth: 12,
-            }}
-          />
-          <span
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 10.5,
-              letterSpacing: '0.04em',
-              color: active ? 'var(--accent)' : 'var(--muted)',
-              fontVariantNumeric: 'tabular-nums',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {folio}
-          </span>
-        </>
+        /* Owner call 2026-07-12: the dot-leader running the full rail
+         * width read as a long ugly line. The signal now rides right
+         * after the label, slightly raised — the same grammar as the
+         * spine glyph's corner numeral and the phone tab's count. */
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 10.5,
+            letterSpacing: '0.04em',
+            color: active ? 'var(--accent)' : 'var(--muted)',
+            fontVariantNumeric: 'tabular-nums',
+            whiteSpace: 'nowrap',
+            position: 'relative',
+            top: -5,
+          }}
+        >
+          {folio}
+        </span>
       ) : null}
     </Link>
   )
