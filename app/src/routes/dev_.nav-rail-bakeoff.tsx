@@ -27,10 +27,20 @@
 // unconditional). Dev-gated; kept forever per house rule.
 
 import { createFileRoute } from '@tanstack/react-router'
+import { BookOpen, House, PencilLine, Timer, TrendingUp } from 'lucide-react'
 import { useState } from 'react'
 
 import { NAVA1, NAVA2 } from '@/components/devbake/NavBakeoffA'
 import { NAVB1, NAVB2 } from '@/components/devbake/NavBakeoffB'
+import {
+  GlyphFramsteg,
+  GlyphHem,
+  GlyphOva,
+  GlyphProvpass,
+  GlyphUppslag,
+  SPINE1,
+  SPINE2,
+} from '@/components/devbake/NavSpineIcons'
 import { isDevSurface } from '@/lib/devSurface'
 
 export const Route = createFileRoute('/dev_/nav-rail-bakeoff')({
@@ -42,6 +52,13 @@ const VARIANTS = [
   { key: 'a2', label: 'A2 · Fem dörrar', C: NAVA2 },
   { key: 'b1', label: 'B1 · Slingan', C: NAVB1 },
   { key: 'b2', label: 'B2 · Innehållet', C: NAVB2 },
+  // Round 2 — the owner picked B2 but rejected the dots-only collapsed
+  // spine. S1/S2 = bespoke glyph study (mute / one-signal spines); L =
+  // the Lucide fair fight (lucide-react is already a dependency; the
+  // decision is pixel-vs-pixel, not ideology).
+  { key: 's1', label: 'S1 · Spine — stum', C: SPINE1 },
+  { key: 's2', label: 'S2 · Spine — en signal', C: SPINE2 },
+  { key: 'l', label: 'L · Lucide-jämförelsen', C: LucideComparison },
 ] as const
 
 function NavRailBakeoffPage() {
@@ -96,6 +113,105 @@ function NavRailBakeoffPage() {
         </div>
       </header>
       <Active key={variant} />
+    </div>
+  )
+}
+
+// ── The Lucide fair fight ─────────────────────────────────────────────
+// Bespoke glyphs (house 1.6-stroke grid) against the five closest Lucide
+// equivalents at identical sizes and stroke. Judge the SYSTEM: which row
+// reads faster at 16-20px, and which belongs in the book.
+
+const LUCIDE = [
+  { name: 'Hem', L: House, B: GlyphHem },
+  { name: 'Öva', L: PencilLine, B: GlyphOva },
+  { name: 'Provpass', L: Timer, B: GlyphProvpass },
+  { name: 'Uppslag', L: BookOpen, B: GlyphUppslag },
+  { name: 'Framsteg', L: TrendingUp, B: GlyphFramsteg },
+] as const
+
+function LucideComparison() {
+  const sizes = [28, 20, 16] as const
+  return (
+    <div style={{ maxWidth: 720, margin: '0 auto', color: 'var(--ink)' }}>
+      {(['Bespoke — huset', 'Lucide — hyllvara'] as const).map((row, ri) => (
+        <section key={row} style={{ marginBottom: 36 }}>
+          <div
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 11,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+              borderBottom: '1px solid var(--hairline)',
+              paddingBottom: 8,
+              marginBottom: 18,
+            }}
+          >
+            {row}
+          </div>
+          {sizes.map((size) => (
+            <div
+              key={size}
+              style={{ display: 'flex', alignItems: 'center', gap: 36, marginBottom: 16 }}
+            >
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 10,
+                  color: 'var(--muted-2)',
+                  width: 34,
+                }}
+              >
+                {size}px
+              </span>
+              {LUCIDE.map(({ name, L, B }) => (
+                <span
+                  key={name}
+                  title={name}
+                  style={{ display: 'inline-flex', width: 34, justifyContent: 'center' }}
+                >
+                  {ri === 0 ? (
+                    <B s={size} />
+                  ) : (
+                    <L size={size} strokeWidth={1.6} absoluteStrokeWidth />
+                  )}
+                </span>
+              ))}
+            </div>
+          ))}
+          <div style={{ display: 'flex', gap: 36, marginLeft: 70 }}>
+            {LUCIDE.map(({ name }) => (
+              <span
+                key={name}
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 9,
+                  letterSpacing: '0.08em',
+                  color: 'var(--muted)',
+                  width: 34,
+                  textAlign: 'center',
+                }}
+              >
+                {name.slice(0, 4)}
+              </span>
+            ))}
+          </div>
+        </section>
+      ))}
+      <p
+        style={{
+          fontFamily: 'var(--font-serif, Georgia, serif)',
+          fontSize: 14,
+          lineHeight: 1.55,
+          color: 'var(--ink-2)',
+          maxWidth: '52ch',
+        }}
+      >
+        Samma storlekar, samma linjetjocklek (1,6). Husets glyfer står på en gemensam marklinje och
+        äger en huvudmassa per tecken; Lucide är hyllvaran hela ekosystemet använder. Välj den rad
+        som läses snabbast vid 16–20&nbsp;px — inte den med bäst ideologi.
+      </p>
     </div>
   )
 }
