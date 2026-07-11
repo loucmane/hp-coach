@@ -28,6 +28,7 @@ import { Route as MCompareRouteImport } from './routes/m-compare'
 import { Route as LoopBakeoffRouteImport } from './routes/loop-bakeoff'
 import { Route as LektionPracticeBakeoffRouteImport } from './routes/lektion-practice-bakeoff'
 import { Route as LektionRouteImport } from './routes/lektion'
+import { Route as KontoRouteImport } from './routes/konto'
 import { Route as KlartBakeoffRouteImport } from './routes/klart-bakeoff'
 import { Route as HomeVerifyRouteImport } from './routes/home-verify'
 import { Route as HomePhoneResumeBakeoffRouteImport } from './routes/home-phone-resume-bakeoff'
@@ -147,6 +148,11 @@ const LektionPracticeBakeoffRoute = LektionPracticeBakeoffRouteImport.update({
 const LektionRoute = LektionRouteImport.update({
   id: '/lektion',
   path: '/lektion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KontoRoute = KontoRouteImport.update({
+  id: '/konto',
+  path: '/konto',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KlartBakeoffRoute = KlartBakeoffRouteImport.update({
@@ -298,6 +304,7 @@ export interface FileRoutesByFullPath {
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/home-verify': typeof HomeVerifyRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
+  '/konto': typeof KontoRoute
   '/lektion': typeof LektionRoute
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
@@ -344,6 +351,7 @@ export interface FileRoutesByTo {
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/home-verify': typeof HomeVerifyRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
+  '/konto': typeof KontoRoute
   '/lektion': typeof LektionRoute
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
@@ -391,6 +399,7 @@ export interface FileRoutesById {
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/home-verify': typeof HomeVerifyRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
+  '/konto': typeof KontoRoute
   '/lektion': typeof LektionRoute
   '/lektion-practice-bakeoff': typeof LektionPracticeBakeoffRoute
   '/loop-bakeoff': typeof LoopBakeoffRoute
@@ -439,6 +448,7 @@ export interface FileRouteTypes {
     | '/home-phone-resume-bakeoff'
     | '/home-verify'
     | '/klart-bakeoff'
+    | '/konto'
     | '/lektion'
     | '/lektion-practice-bakeoff'
     | '/loop-bakeoff'
@@ -485,6 +495,7 @@ export interface FileRouteTypes {
     | '/home-phone-resume-bakeoff'
     | '/home-verify'
     | '/klart-bakeoff'
+    | '/konto'
     | '/lektion'
     | '/lektion-practice-bakeoff'
     | '/loop-bakeoff'
@@ -531,6 +542,7 @@ export interface FileRouteTypes {
     | '/home-phone-resume-bakeoff'
     | '/home-verify'
     | '/klart-bakeoff'
+    | '/konto'
     | '/lektion'
     | '/lektion-practice-bakeoff'
     | '/loop-bakeoff'
@@ -578,6 +590,7 @@ export interface RootRouteChildren {
   HomePhoneResumeBakeoffRoute: typeof HomePhoneResumeBakeoffRoute
   HomeVerifyRoute: typeof HomeVerifyRoute
   KlartBakeoffRoute: typeof KlartBakeoffRoute
+  KontoRoute: typeof KontoRoute
   LektionRoute: typeof LektionRoute
   LektionPracticeBakeoffRoute: typeof LektionPracticeBakeoffRoute
   LoopBakeoffRoute: typeof LoopBakeoffRoute
@@ -736,6 +749,13 @@ declare module '@tanstack/react-router' {
       path: '/lektion'
       fullPath: '/lektion'
       preLoaderRoute: typeof LektionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/konto': {
+      id: '/konto'
+      path: '/konto'
+      fullPath: '/konto'
+      preLoaderRoute: typeof KontoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/klart-bakeoff': {
@@ -938,6 +958,7 @@ const rootRouteChildren: RootRouteChildren = {
   HomePhoneResumeBakeoffRoute: HomePhoneResumeBakeoffRoute,
   HomeVerifyRoute: HomeVerifyRoute,
   KlartBakeoffRoute: KlartBakeoffRoute,
+  KontoRoute: KontoRoute,
   LektionRoute: LektionRoute,
   LektionPracticeBakeoffRoute: LektionPracticeBakeoffRoute,
   LoopBakeoffRoute: LoopBakeoffRoute,
