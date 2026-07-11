@@ -33,6 +33,7 @@ import {
   useCallback,
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
 } from 'react'
@@ -460,6 +461,28 @@ function DesktopMenu({
   const onKeyDown = useMenuKeys(menuRef, close)
   useFocusFirstItem(menuRef, open)
 
+  // Fixed-position card coordinates, measured from the trigger when the
+  // menu opens (the trigger is column-anchored, so the card inherits the
+  // column anchoring: its right hairline aligns to the trigger's right
+  // edge). Recomputed on resize; scroll while open is a non-issue at
+  // desktop (the menu is transient and Esc/scrim are one gesture away).
+  const CARD_WIDTH = 268
+  const [cardPos, setCardPos] = useState({ top: 0, left: 0 })
+  useLayoutEffect(() => {
+    if (!open) return
+    const measure = () => {
+      const r = triggerRef.current?.getBoundingClientRect()
+      if (!r) return
+      setCardPos({
+        top: r.bottom + 10,
+        left: Math.max(8, r.right - CARD_WIDTH),
+      })
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [open, triggerRef])
+
   return (
     <>
       <MedallionTrigger
@@ -472,59 +495,63 @@ function DesktopMenu({
       />
       {open ? (
         <>
-          {/* Genuinely fixed, portaled scrim — the house ink-14% dim.
-              Portaled to <body> so `position: fixed` resolves against the
-              viewport (no translateZ containment hack). */}
+          {/* Scrim AND card share ONE body-level portal so they live in the
+              same stacking context, ordered by DOM position — the card can
+              never end up under the scrim regardless of what stacking
+              contexts the page tree creates (shipped bug 2026-07-11: the
+              card's in-page z-index 61 was capped by an animated ancestor's
+              context and the body-level scrim at 60 ate every click; jsdom
+              tests can't see stacking, the e2e added with this fix can).
+              Column anchoring is preserved because the card positions off
+              the trigger's rect, and the trigger is column-anchored. */}
           {createPortal(
-            <button
-              type="button"
-              aria-label="Stäng menyn"
-              onClick={() => close(true)}
-              className="hpc-acct-scrim"
-              style={{
-                position: 'fixed',
-                inset: 0,
-                border: 'none',
-                padding: 0,
-                cursor: 'default',
-                background: 'color-mix(in oklch, var(--ink) 14%, transparent)',
-                zIndex: 60,
-              }}
-            />,
+            <>
+              <button
+                type="button"
+                aria-label="Stäng menyn"
+                onClick={() => close(true)}
+                className="hpc-acct-scrim"
+                style={{
+                  position: 'fixed',
+                  inset: 0,
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'default',
+                  background: 'color-mix(in oklch, var(--ink) 14%, transparent)',
+                  zIndex: 60,
+                }}
+              />
+              <div
+                id={menuId}
+                ref={menuRef}
+                role="menu"
+                aria-labelledby={labelId}
+                onKeyDown={onKeyDown}
+                className="hpc-acct-card"
+                style={{
+                  position: 'fixed',
+                  top: cardPos.top,
+                  left: cardPos.left,
+                  zIndex: 61,
+                  width: 268,
+                  maxHeight: 'calc(100vh - 88px)',
+                  overflowY: 'auto',
+                  background: 'var(--panel)',
+                  border: '1px solid var(--hairline)',
+                  borderRadius: 3,
+                  boxShadow: 'var(--shadow-card)',
+                }}
+              >
+                <MenuBody
+                  identity={identity}
+                  actions={actions}
+                  onSettings={onSettings}
+                  labelId={labelId}
+                />
+              </div>
+            </>,
             document.body,
           )}
-          {/* The card is positioned by the caller's column-anchored wrapper
-              (top: 44, right: 0 → its right hairline on the column's right
-              text margin). max-height + overflow keep it in-viewport on a
-              short window; the scrim above catches outside clicks. */}
-          <div
-            id={menuId}
-            ref={menuRef}
-            role="menu"
-            aria-labelledby={labelId}
-            onKeyDown={onKeyDown}
-            className="hpc-acct-card"
-            style={{
-              position: 'absolute',
-              top: 44,
-              right: 0,
-              zIndex: 61,
-              width: 268,
-              maxHeight: 'calc(100vh - 88px)',
-              overflowY: 'auto',
-              background: 'var(--panel)',
-              border: '1px solid var(--hairline)',
-              borderRadius: 3,
-              boxShadow: 'var(--shadow-card)',
-            }}
-          >
-            <MenuBody
-              identity={identity}
-              actions={actions}
-              onSettings={onSettings}
-              labelId={labelId}
-            />
-          </div>
         </>
       ) : null}
     </>
