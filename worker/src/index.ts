@@ -24,6 +24,7 @@ import { runRetention } from './lib/retention'
 import { requireAuth } from './middleware/auth'
 import { rateLimit } from './middleware/rateLimit'
 import { attemptsRoute } from './routes/attempts'
+import { contentRoute } from './routes/content'
 import { dailyPlansRoute } from './routes/dailyPlans'
 import { devLoginRoute } from './routes/devLogin'
 import { exportRoute, importRoute } from './routes/export'
@@ -96,6 +97,10 @@ const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .route('/mock-results', mockResultsRoute)
   .route('/me/export', exportRoute)
   .route('/me/import', importRoute)
+  // Strict-tier content (question bank + explanations) from R2. requireAuth
+  // gates it; rateLimit exempts it (see rateLimit.ts carve-out) so a boot's
+  // bulk content pulls don't starve the shared per-user mutation budget.
+  .route('/content', contentRoute)
   .route('/test-reset', testResetRoute)
 
 // Chained route registration → preserves route types in `typeof routes`.

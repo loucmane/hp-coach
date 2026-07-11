@@ -9,6 +9,9 @@ export type Env = {
   DB: D1Database
   // KV namespace for rate-limit counters and ephemeral cache
   RATE_LIMIT: KVNamespace
+  // R2 bucket holding the strict-tier corpus (question bank data/*.json
+  // + Layer 2 explanations/*.json). Served auth-gated via /api/content.
+  CONTENT: R2Bucket
   // Plain string vars
   ENVIRONMENT: 'dev' | 'staging' | 'production'
   // Deploy commit SHA, set by the deploy workflow; absent in local dev.

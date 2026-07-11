@@ -29,6 +29,17 @@ export const rateLimit: MiddlewareHandler<{ Bindings: Env; Variables: Vars }> = 
     await next()
     return
   }
+  // Content GETs (/api/content/*) are exempt from the shared budget. A
+  // single SPA boot pulls ~27 exam files plus per-question explanations
+  // on demand — counting each against the 60/min per-user bucket would
+  // starve the real mutations (attempts, prefs, mistakes) that budget
+  // exists to protect. These are cheap read-only R2 reads of static,
+  // already-owned bytes; abuse at current scale is covered by the weekly
+  // SQL volume review, not per-request throttling here.
+  if (c.req.path.startsWith('/api/content/')) {
+    await next()
+    return
+  }
   // The bucket is ONE global 60/min budget per user across ALL routes.
   // The e2e suite runs ~44 tests (plus retries) as a single Clerk user
   // against a local `wrangler dev` worker — it exhausts that shared

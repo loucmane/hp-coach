@@ -8,6 +8,15 @@
 # (They used to live in app/src/data/ and ride along in the JS bundle;
 # moved out 2026-05-08 because 6 MB of bundled JSON was inflating
 # Clerk bootstrap to the point of e2e flake.)
+#
+# app/public/data/ and app/public/explanations/ are ALSO the source of
+# truth for the production R2 content sync (scripts/content-sync.mjs,
+# run in deploy.yml): in staging/production the SPA is built with
+# VITE_CONTENT_FROM_API=true, which excludes these dirs from the Pages
+# bundle and serves them auth-gated from the hpc-content R2 bucket via
+# the worker's /api/content route. So: run this script → commit → the
+# deploy workflow pushes the same bytes to R2. Dev/e2e keep reading the
+# local copies here with no flag and no extra setup.
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"

@@ -1,7 +1,16 @@
 """Upload `data/explanations/` to the production R2 bucket.
 
-STUB for v2. Documented now so future-me doesn't have to design from
-scratch when the multi-user beta lands.
+SUPERSEDED 2026-07-11 by `scripts/content-sync.mjs`, which is the shipped
+implementation (content-gating PR 1.0a). That Node script syncs BOTH the
+question bank (data/*.json) and the explanations (explanations/*.json) to
+the single `hpc-content` bucket, keyed `data/<exam>.json` /
+`explanations/<exam>.json`, checksum-skipping unchanged files, and is
+wired into .github/workflows/deploy.yml. The worker serves them auth-gated
+via /api/content. Prefer that script; this stub remains only as the
+original design note (note the bucket/key/cache shape below differs from
+what shipped — the shipped route uses `Cache-Control: private, max-age=3600`).
+
+Original v2 design sketch (historical):
 
 Production shape:
   - R2 bucket name: hpc-explanations

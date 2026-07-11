@@ -3,11 +3,12 @@
 // Mirrors the shape of questions.ts: explanations live as static JSON
 // under `app/public/explanations/`, one file per exam, keyed by qid.
 // `loadExplanation(qid)` is the SINGLE call site for fetching an
-// explanation; the body of this function is the v1 → v2 migration
-// seam (see docs/explanations.md "Migration seams"). When the
-// multi-user beta lands, swap the `fetch('/explanations/...')` call
-// for `fetch('/api/explanations/:qid', { headers: authHeader })`
-// without touching any other file in the SPA.
+// explanation; `loadExamExplanations` is the v1 → v2 migration seam
+// (see docs/explanations.md "Migration seams"). That seam is now
+// REALIZED via `contentFetch`: in dev/e2e it fetches local
+// `/explanations/*.json`; when VITE_CONTENT_FROM_API is on it hits the
+// auth-gated worker `/api/content/explanations/:exam.json` route out of
+// R2 — no other file in the SPA changes. See data/contentSource.ts.
 //
 // SOURCE: data/explanations/{exam_id}.json — generated offline by
 // pipeline/explanations/generate.py and copied into public/ via
@@ -20,6 +21,8 @@
 // Same pattern as questions.ts but per-exam-grained instead of
 // global, because explanations are fetched on-demand (one question
 // at a time during drill) rather than bulk-loaded.
+
+import { contentFetch } from './contentSource'
 
 /** Per-distractor analysis. One entry per WRONG option (correct
  *  option is skipped — schema invariant enforced by the generator). */
@@ -131,10 +134,14 @@ function extractExamId(qid: string): string | null {
 }
 
 async function loadExamExplanations(examId: string): Promise<Record<string, Explanation>> {
-  let entry = examCache.get(examId)
-  if (entry) return entry
-  entry = (async () => {
-    const res = await fetch(`/explanations/${examId}.json`)
+  const existing = examCache.get(examId)
+  if (existing) return existing
+  const entry = (async () => {
+    // Migration seam (v1 → v2): local static `/explanations/*.json` in
+    // dev/e2e, or the auth-gated worker `/api/content/explanations/*.json`
+    // route out of R2 when VITE_CONTENT_FROM_API is on. contentFetch hides
+    // the transport swap; every response-status branch below is unchanged.
+    const res = await contentFetch(`explanations/${examId}.json`)
     if (!res.ok) {
       // Missing exam file is the common case for un-backfilled exams.
       // We return empty rather than throwing so the panel just doesn't
@@ -145,6 +152,14 @@ async function loadExamExplanations(examId: string): Promise<Record<string, Expl
     return (await res.json()) as Record<string, Explanation>
   })()
   examCache.set(examId, entry)
+  // Same rejected-Promise hygiene as loadBank: a transport error (or a
+  // pre-auth 401 once content is gated) must not poison the cache and
+  // block every later lookup for this exam. Drop the memo on rejection
+  // so a retry re-fetches; `get(examId) === entry` guards against
+  // clobbering a newer attempt.
+  entry.catch(() => {
+    if (examCache.get(examId) === entry) examCache.delete(examId)
+  })
   return entry
 }
 
