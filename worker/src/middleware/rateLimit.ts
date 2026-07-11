@@ -54,9 +54,28 @@ export const rateLimit: MiddlewareHandler<{ Bindings: Env; Variables: Vars }> = 
   }
   const window = Math.floor(Date.now() / 1000 / WINDOW_SECONDS)
   const key = `rl:${userId}:${window}`
+
+  // Memory-first counting (2026-07-11): the original implementation did
+  // a KV get+put PER REQUEST — and Workers KV's free tier allows 1,000
+  // writes/day, which one politely-polling client burned in ~2 hours
+  // (the limiter was rate-limiting the rate limiter). Each isolate now
+  // counts in a Map and only escalates to KV once a user's in-isolate
+  // count crosses half the limit inside a window — traffic shaped like
+  // real use never touches KV; traffic shaped like abuse starts being
+  // accounted durably (and across isolates) exactly when it matters.
+  // Isolates undercount globally (each has its own Map), but the
+  // half-limit escalation threshold means any single isolate seeing
+  // abuse-volume engages the shared KV count well before 2× the limit.
+  const memCount = (memCounts.get(key) ?? 0) + 1
+  memCounts.set(key, memCount)
+  if (memCounts.size > 1024) pruneMemCounts(window)
+  if (memCount < ESCALATE_AT) {
+    await next()
+    return
+  }
   try {
     const raw = await c.env.RATE_LIMIT.get(key)
-    const count = raw ? Number.parseInt(raw, 10) : 0
+    const count = Math.max(raw ? Number.parseInt(raw, 10) : 0, memCount)
     if (count >= LIMIT) {
       return c.json(
         {
@@ -74,4 +93,18 @@ export const rateLimit: MiddlewareHandler<{ Bindings: Env; Variables: Vars }> = 
     // Fail-open: KV outages shouldn't take the API down.
   }
   await next()
+}
+
+// In-isolate request counts, keyed rl:<userId>:<window>. Module scope —
+// persists for the isolate's lifetime, reset naturally on redeploy/evict.
+const memCounts = new Map<string, number>()
+// Escalate to durable KV accounting at half the limit.
+const ESCALATE_AT = Math.floor(LIMIT / 2)
+
+/** Drop entries from expired windows so the Map can't grow unbounded. */
+function pruneMemCounts(currentWindow: number) {
+  for (const k of memCounts.keys()) {
+    const w = Number(k.slice(k.lastIndexOf(':') + 1))
+    if (w < currentWindow) memCounts.delete(k)
+  }
 }

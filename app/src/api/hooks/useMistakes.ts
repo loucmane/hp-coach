@@ -50,7 +50,7 @@ export function useDueMistakes(section?: string) {
       const body = await res.json()
       return body.mistakes as Mistake[]
     },
-    refetchInterval: 30_000,
+    refetchInterval: 180_000,
     refetchIntervalInBackground: false,
   })
 }

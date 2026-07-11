@@ -33,7 +33,7 @@ export function useLessonProgress() {
       const body = await res.json()
       return (body.progress ?? null) as LessonProgress | null
     },
-    refetchInterval: 30_000,
+    refetchInterval: 180_000,
     refetchIntervalInBackground: false,
   })
 }
