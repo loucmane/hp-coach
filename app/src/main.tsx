@@ -1,3 +1,4 @@
+import { registerSW } from 'virtual:pwa-register'
 import { ClerkProvider, useAuth } from '@clerk/clerk-react'
 import { svSE } from '@clerk/localizations'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -71,6 +72,24 @@ declare module '@tanstack/react-router' {
     router: typeof router
   }
 }
+
+// SW update discovery for long-lived tabs. `registerType: 'autoUpdate'`
+// only helps once the browser RE-CHECKS sw.js — which happens on hard
+// navigations, not SPA route changes. A tab left open across deploys
+// (the owner's daily reality, three stale-verification incidents on
+// 2026-07-11) never discovers the new version. Poll the registration
+// every 60s; when an update lands, autoUpdate's skipWaiting +
+// controllerchange reload takes over as before.
+registerSW({
+  onRegisteredSW(_url, registration) {
+    if (!registration) return
+    setInterval(() => {
+      registration.update().catch(() => {
+        // offline / transient — next tick retries.
+      })
+    }, 60_000)
+  },
+})
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as string | undefined
 if (!PUBLISHABLE_KEY) {
