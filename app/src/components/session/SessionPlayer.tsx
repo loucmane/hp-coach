@@ -36,6 +36,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
+import { motion } from 'motion/react'
 import { type CSSProperties, type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 
 import { useSubmitAttempt } from '@/api/hooks/useAttempts'
@@ -51,11 +52,14 @@ import { DrillResult } from '@/components/drill/DrillResult'
 import { BoksidanDesk } from '@/components/drill-variants/BoksidanDesk'
 import { DispatchedVariant } from '@/components/drill-variants/DispatchedVariant'
 import { MobileFrame } from '@/components/MobileFrame'
+import { DueHeaderStation } from '@/components/motion/DueNumeral'
+import { QuestionPan } from '@/components/motion/QuestionPan'
 import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
 import { type AnswerLetter, loadBank, type Question } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
 import { currentDevice } from '@/lib/device'
+import { useArketMotion } from '@/lib/motion'
 import { TAB_ROUTE, type TabKey } from '@/lib/nav'
 import { canAdoptActiveSession } from './canAdoptSession'
 import { reconstructSummary } from './reconstructSummary'
@@ -225,6 +229,20 @@ export type SessionPlayerProps = {
    *  flight, and we're not resuming an existing session. Return null to
    *  show nothing. Omitted on every surface except a normal /drill. */
   adaptiveOffer?: (args: { startOriginal: () => void }) => ReactNode
+  /** Begin the session immediately on mount instead of stopping on the
+   *  idle interstitial — the Öva hub's door path (owner 2026-07-12: "the
+   *  row is the door"). Uses the exact path the idle Start button takes
+   *  (adopt-active-session, empty fallback included); an empty pick
+   *  drops back to the recoverable idle state. Waits for the active-
+   *  session query so a paused pass is adopted, never duplicated. */
+  autoStart?: boolean
+  /** The section-door shared element (A2 "the row is the door"): the
+   *  code that morphed out of the Öva-hub lane / Home plan row lands on
+   *  this surface — on the loading interstitial while the session spins
+   *  up, on the idle headline on the direct path — and finally settles
+   *  into the first question's eyebrow (DrillQuestion). `layoutId` from
+   *  sectionDoorLayoutId(); `code` is the section literal to print. */
+  door?: { layoutId: string; code: string }
 }
 
 export function SessionPlayer(props: SessionPlayerProps) {
@@ -238,6 +256,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // hook-rule isn't violated when the phase transitions through
   // different render paths.
   const viewport = useViewport()
+  const ark = useArketMotion()
   // Phase A.6V — DispatchedVariant reads drillLayout from the store
   // directly when it renders the picked variant, so SessionPlayer no
   // longer needs to thread it through. See docs/edition-strip.md.
@@ -580,29 +599,85 @@ export function SessionPlayer(props: SessionPlayerProps) {
     void begin()
   }, [phase, autoResumeQid, emptyAttempted, begin])
 
+  // Hub-door auto-start (`?start=1`). Same begin() path as the idle
+  // Start button; gated on the active-sessions query having resolved so
+  // an existing paused pass is ADOPTED (seamless resume — the product's
+  // standard conflict handling) rather than raced by a duplicate POST.
+  // Fires once per mount; an empty pick sets emptyAttempted, which drops
+  // us to the normal recoverable idle state.
+  const didAutoStartRef = useRef(false)
+  useEffect(() => {
+    if (didAutoStartRef.current) return
+    if (!props.autoStart) return
+    if (phase !== 'idle') return
+    if (emptyAttempted) return
+    if (autoResumeQid) return // qid deep-link path already auto-resumes
+    if (activeOfKind.isPending) return
+    didAutoStartRef.current = true
+    void begin()
+  }, [props.autoStart, phase, emptyAttempted, autoResumeQid, activeOfKind.isPending, begin])
+
+  // The due-numeral header station (A2 flight, station 2) lives on the
+  // drill/repetition session worlds only — never diagnostik/mock. Null
+  // on phone or at 0 due (the component self-gates).
+  const dueStation =
+    props.sessionKind === 'drill' || props.sessionKind === 'adaptive_review' ? (
+      <DueHeaderStation />
+    ) : null
+
   if (phase === 'idle') {
     // Auto-resume in flight: the URL has a qid and we haven't found it
-    // missing yet. Render a thin loading line rather than the idle
-    // masthead + stale warning, so resuming reads as a continuation,
-    // not a fresh start that flickers the chapter opening first.
-    if (autoResumeQid && !emptyAttempted) {
+    // missing yet (or the hub door asked for an immediate start). Render
+    // a thin loading line rather than the idle masthead + stale warning,
+    // so entering reads as a continuation, not a fresh start that
+    // flickers the chapter opening first.
+    if ((autoResumeQid || props.autoStart) && !emptyAttempted) {
       const { headLabel, statusMode } = chromeLabelsFor(props.sessionKind, props.sections)
+      // The hub-door interstitial: the section code that morphed out of
+      // the clicked row lands HERE (same door layoutId) while the
+      // session spins up, then settles into the first question's eyebrow
+      // in the same commit the question mounts — the code never blinks
+      // out of existence between stations.
       const loading = (
         <div
           data-testid="drill-resuming"
           style={{
             flex: 1,
             display: 'flex',
+            flexDirection: 'column',
+            gap: 14,
             alignItems: 'center',
             justifyContent: 'center',
-            fontFamily: 'var(--font-mono)',
-            fontSize: 12,
-            letterSpacing: 'var(--font-mono-track)',
-            textTransform: 'uppercase',
-            color: 'var(--muted)',
           }}
         >
-          Laddar …
+          {props.door && !ark.rm && (
+            <motion.span
+              layoutId={props.door.layoutId}
+              transition={ark.arket}
+              style={{
+                display: 'inline-block',
+                fontFamily: 'var(--font-display)',
+                fontStyle: 'italic',
+                fontSize: 40,
+                lineHeight: 1.05,
+                letterSpacing: '-0.01em',
+                color: 'var(--ink)',
+              }}
+            >
+              {props.door.code}
+            </motion.span>
+          )}
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 12,
+              letterSpacing: 'var(--font-mono-track)',
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+            }}
+          >
+            Laddar …
+          </span>
         </div>
       )
       if (viewport === 'phone') {
@@ -618,6 +693,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
       }
       return (
         <MobileFrame tabs={false}>
+          {dueStation}
           <Page
             runningHead={['HP · Coach', headLabel]}
             status={{ mode: statusMode, context: 'redo', hints: ['esc hem', '⌘k palett'] }}
@@ -675,6 +751,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
     )
     return (
       <MobileFrame tabs={false}>
+        {dueStation}
         <Page
           runningHead={['HP · Coach', sectionLabel]}
           status={{
@@ -710,6 +787,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
     const { headLabel: sectionLabel } = chromeLabelsFor(props.sessionKind, props.sections)
     return (
       <MobileFrame tabs={false}>
+        {dueStation}
         <Page
           runningHead={['HP · Coach', sectionLabel]}
           status={{
@@ -750,6 +828,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
   if (useStudyDesk) {
     return (
       <MobileFrame tabs={false}>
+        {dueStation}
         <BoksidanDesk
           {...variantPropsFor({
             question: q,
@@ -801,15 +880,19 @@ export function SessionPlayer(props: SessionPlayerProps) {
             })}
           />
         ) : (
-          <DrillQuestion
-            question={q}
-            picked={picked}
-            graded={phase === 'graded'}
-            onPick={onPick}
-            position={index + 1}
-            total={plan.length}
-            blockPosition={blockPosition}
-          />
+          // A2 ribbon camera on the phone path too — the graded sheet
+          // exits upward, the next question arrives from below.
+          <QuestionPan id={q.qid}>
+            <DrillQuestion
+              question={q}
+              picked={picked}
+              graded={phase === 'graded'}
+              onPick={onPick}
+              position={index + 1}
+              total={plan.length}
+              blockPosition={blockPosition}
+            />
+          </QuestionPan>
         )}
       </div>
       <div
@@ -926,7 +1009,9 @@ function IdleBody({
   idleSecondaryCta,
   isPhone,
   adaptiveOffer,
+  door,
 }: IdleBodyProps) {
+  const ark = useArketMotion()
   // When the resumed session's plan is gone, override the section's
   // generic empty copy with an explicit recovery line, and treat the
   // primary CTA as a fresh start (not "Fortsätt").
@@ -992,7 +1077,21 @@ function IdleBody({
               fontWeight: 400,
             }}
           >
-            {idleHeadline}
+            {/* Direct-path door station: the section code that morphed
+             *  out of a Home plan row lands as this chapter headline,
+             *  and flies on into the first question's eyebrow when the
+             *  session starts. */}
+            {door && !ark.rm && idleHeadline === door.code ? (
+              <motion.span
+                layoutId={door.layoutId}
+                transition={ark.arket}
+                style={{ display: 'inline-block' }}
+              >
+                {idleHeadline}
+              </motion.span>
+            ) : (
+              idleHeadline
+            )}
           </div>
           {/* Hairline under the headword — book-chapter cue, sized
            *  to the word above (~2.5em). */}

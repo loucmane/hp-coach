@@ -13,8 +13,10 @@
 //
 // This is the shared numeral treatment for the Öva due-count across the
 // nav rail (expanded folio + collapsed spine corner), the phone tab, and
-// the drill/repetition header — see the note in NavRail.tsx on why a
-// true cross-surface layoutId flight is not wired.
+// the drill/repetition header station. The cross-surface layoutId FLIGHT
+// between those stations lives in DueNumeral.tsx (rail ↔ DueHeaderStation
+// under RouteScene's root LayoutGroup); this component is the roll the
+// numeral performs at whichever station currently owns it.
 
 import { AnimatePresence, motion } from 'motion/react'
 import { type CSSProperties, useEffect, useRef } from 'react'

@@ -654,6 +654,16 @@ details[open] > summary .hpc-lesson-practice {
   }
 }
 
+/* A2 ark-kort (Klart folds home): a section that IS shared material
+ * (layoutId a2-kort) must be VISIBLE while its box morphs — the M3
+ * entrance stagger would hide the arriving ink and swallow the fold.
+ * Material that traveled here doesn't re-enter; it lands. */
+.hpc-arkkort .hpc-m3-rule,
+.hpc-arkkort .hpc-m3-meta,
+.hpc-arkkort .hpc-m3-content {
+  animation: none;
+}
+
 /* M3.tsx L689-692 */
 @keyframes hpc-m3-in-x {
   from {

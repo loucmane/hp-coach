@@ -2,7 +2,12 @@
 // drill: two lanes shown UNCONDITIONALLY (owner nav redesign 2026-07-11).
 //
 //   Öva      — drill entry. Pick a section (the scheduler suggests your
-//              weakest), or take a blended pass across all eight.
+//              weakest), or take a blended pass across all eight. Each
+//              lane is a DOOR (A2/owner 2026-07-12): tapping it starts
+//              that section's drill immediately (`start: true`, no idle
+//              interstitial) with the section code morphing from the row
+//              into the first question's eyebrow, and each lane shows its
+//              live due-repetition count ("N väntar", dueCountsBySection).
 //   Repetera — the spaced-repetition queue. Stands even at 0 in queue
 //              ("kön är tom just nu"): a door that disappears is a door
 //              you can't learn the location of (ADHD-PI: stable geography
@@ -13,6 +18,7 @@
 // goes here.
 
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { motion } from 'motion/react'
 import { useMemo } from 'react'
 
 import { useDueMistakes } from '@/api/hooks/useMistakes'
@@ -21,6 +27,8 @@ import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { SECTION_KEYS, type Section } from '@/data/questions'
+import { dueCountsBySection } from '@/lib/dueBySection'
+import { sectionDoorLayoutId, useArketMotion } from '@/lib/motion'
 import { TAB_ROUTE } from '@/lib/nav'
 import { computeSectionScore, rankWeakness } from '@/lib/scoring'
 
@@ -33,6 +41,13 @@ function OvaRoute() {
   const stats = useStats()
   const due = useDueMistakes()
   const dueCount = due.data?.length ?? 0
+  const ark = useArketMotion()
+
+  // The bake-off's live per-lane folio signal: how many due repetitions
+  // each section carries RIGHT NOW, derived from the same due-mistakes
+  // rows the nav numeral counts. Zero due → no number (real data or
+  // nothing).
+  const dueBySection = useMemo(() => dueCountsBySection(due.data), [due.data])
 
   // The scheduler's suggestion — the weakest section with real signal.
   // Null on a cold start (no ranking signal yet), which just means no
@@ -93,11 +108,17 @@ function OvaRoute() {
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
               {SECTION_KEYS.map((s) => {
                 const hot = s === weakest
+                const laneDue = dueBySection[s]
                 return (
+                  // The row is the door (A2): the lane starts the drill
+                  // IMMEDIATELY (`start: true` — no idle interstitial on
+                  // the hub path) and the section code travels with you:
+                  // it morphs from this row into the first question's
+                  // eyebrow via the shared door layoutId.
                   <Link
                     key={s}
                     to="/drill"
-                    search={{ section: s }}
+                    search={{ section: s, start: true }}
                     data-testid={`ova-section-${s}`}
                     style={{
                       fontFamily: 'var(--font-mono)',
@@ -115,7 +136,17 @@ function OvaRoute() {
                       gap: 7,
                     }}
                   >
-                    {s}
+                    {ark.rm ? (
+                      s
+                    ) : (
+                      <motion.span
+                        layoutId={sectionDoorLayoutId(s)}
+                        transition={ark.arket}
+                        style={{ display: 'inline-block' }}
+                      >
+                        {s}
+                      </motion.span>
+                    )}
                     {hot && (
                       <span
                         data-testid="ova-suggested"
@@ -129,11 +160,33 @@ function OvaRoute() {
                         svagast
                       </span>
                     )}
+                    {laneDue > 0 && (
+                      // The lane's live folio signal (bake-off idiom:
+                      // "3 väntar") — this section's CURRENT due
+                      // repetitions. Mono + muted: the accent numeral
+                      // stays reserved for the nav station.
+                      <span
+                        data-testid={`ova-due-${s}`}
+                        style={{
+                          fontSize: 10,
+                          letterSpacing: '0.06em',
+                          color: 'var(--muted)',
+                          fontVariantNumeric: 'tabular-nums',
+                        }}
+                      >
+                        {laneDue} väntar
+                      </span>
+                    )}
                   </Link>
                 )
               })}
             </div>
-            <Link to="/drill" search={{ mixed: true }} data-testid="ova-mixed" style={laneCta}>
+            <Link
+              to="/drill"
+              search={{ mixed: true, start: true }}
+              data-testid="ova-mixed"
+              style={laneCta}
+            >
               Blandad övning · alla åtta delprov →
             </Link>
           </DrillRailSection>

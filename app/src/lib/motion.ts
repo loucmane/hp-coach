@@ -227,6 +227,75 @@ export function optWordLayoutId(qid: string, letter: string): string {
   return `optword-${qid}-${letter}`
 }
 
+// ── A2 MACRO continuity — the shared-element stations ────────────────
+//
+// The bake-off's "total continuity" layer: material that survives a
+// scene change travels as ONE object via layoutId under the root
+// LayoutGroup (RouteScene). Three flights exist; their ids live here so
+// every station agrees without cross-imports.
+
+/**
+ * The living due-count numeral (reference: `a2-due`). Exactly ONE
+ * station owns it at a time: the nav rail everywhere, except on the
+ * drill / repetition surfaces where the page header station owns it and
+ * the rail slot stays genuinely empty (exact-width reserve — A2 fix 3:
+ * nothing reflows on departure or arrival). Under reduced motion the
+ * flight is disabled and the rail numeral stays put.
+ */
+export const DUE_NUMERAL_LAYOUT_ID = 'a2-due'
+
+/** Route-ownership rule for the due numeral: on these surfaces the
+ *  page-header station (DueHeaderStation) owns the numeral and the rail
+ *  slot is empty. Exact-segment match — `/drill-style-a` (bake-off
+ *  archive) has no station, so its rail keeps the numeral. */
+export function dueNumeralOwnedByPage(pathname: string): boolean {
+  return (
+    pathname === '/drill' ||
+    pathname.startsWith('/drill/') ||
+    pathname === '/repetition' ||
+    pathname.startsWith('/repetition/')
+  )
+}
+
+/**
+ * "The row is the door" (reference: `a2-ord`): the section code on an
+ * Öva-hub lane / Home plan row morphs into the drill's first-question
+ * eyebrow across the route change. Keyed per section so only the
+ * clicked door's code travels.
+ */
+export function sectionDoorLayoutId(section: string): string {
+  return `door-${section}`
+}
+
+/** The mixed-drill door ("Blandad övning") — same grammar, one id. */
+export const MIXED_DOOR_LAYOUT_ID = 'door-mixed'
+
+/**
+ * "Klart folds home" (reference: `a2-kort`): the drill completion
+ * panel's Klart block and Home's day-card ("Dagens plan" / complete
+ * panel) are one sheet of material — finishing a session and returning
+ * home folds the panel back into the card.
+ */
+export const ARK_KORT_LAYOUT_ID = 'a2-kort'
+
+/**
+ * The ribbon-camera pan between drill questions (the nearest honest
+ * form of the reference's remsan strip on the product's one-question-
+ * at-a-time architecture): the graded sheet exits UPWARD off the
+ * reading window while the next question arrives from below onto the
+ * same sheet — forward = down the page, exits lead entrances. Travel
+ * values in px; the exit is the ut register, the entrance rides a
+ * remsan-flavoured spring.
+ */
+export const PAN = {
+  /** How far the outgoing question sheet lifts up while its ink dries off. */
+  exitY: -28,
+  /** Where the incoming question sheet arrives from (below the fold). */
+  enterY: 36,
+  /** Outgoing tween — slightly longer than `ut` so the pan reads as travel. */
+  exitDuration: 0.14,
+} as const
+
 /**
  * The resolved Arket transition set for the current reduced-motion
  * state. Springs collapse to `{ duration: 0 }` under reduced motion

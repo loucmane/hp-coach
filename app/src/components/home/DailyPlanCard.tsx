@@ -11,7 +11,10 @@
 //
 // When every item is complete, the section flips to "Klart för idag".
 
+import { motion } from 'motion/react'
+
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
+import { ARK_KORT_LAYOUT_ID, sectionDoorLayoutId, useArketMotion } from '@/lib/motion'
 import type { DailyPlan, PlanItem } from '@/lib/scheduler'
 
 type DailyPlanCardProps = {
@@ -24,6 +27,7 @@ type DailyPlanCardProps = {
 }
 
 export function DailyPlanCard({ plan, allComplete, onNavigate }: DailyPlanCardProps) {
+  const ark = useArketMotion()
   if (allComplete) {
     return <CompletePanel plan={plan} />
   }
@@ -41,8 +45,16 @@ export function DailyPlanCard({ plan, allComplete, onNavigate }: DailyPlanCardPr
   // that would just double-count the summons's own "· 55 minuter").
   if (rows.length === 0) return null
 
+  // ark-kort (A2 "Klart folds home"): the day-card and the drill
+  // completion panel's Klart block share this layoutId — finishing a
+  // session and returning home folds the panel back into the card.
   return (
-    <section data-testid="daily-plan-card">
+    <motion.section
+      data-testid="daily-plan-card"
+      className={ark.rm ? undefined : 'hpc-arkkort'}
+      layoutId={ark.rm ? undefined : ARK_KORT_LAYOUT_ID}
+      transition={ark.arket}
+    >
       <DrillRailSection
         meta={
           <>
@@ -59,7 +71,7 @@ export function DailyPlanCard({ plan, allComplete, onNavigate }: DailyPlanCardPr
           ))}
         </ol>
       </DrillRailSection>
-    </section>
+    </motion.section>
   )
 }
 
@@ -72,12 +84,19 @@ function PlanRow({
   ordinal: number
   onNavigate?: (href: string) => void
 }) {
+  const ark = useArketMotion()
   const handleNavigate = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (onNavigate) {
       e.preventDefault()
       onNavigate(item.href)
     }
   }
+  // The row is the door (A2), Home edition: a drill row's section tag
+  // morphs into the drill surface's headline/eyebrow across the route
+  // change. Drill rows only — repetition/lesson rows land on surfaces
+  // with no matching section-code anchor.
+  const doorTag =
+    !ark.rm && item.kind === 'drill' && item.section ? sectionDoorLayoutId(item.section) : null
   return (
     <li
       className="hpc-m3-plan-item"
@@ -98,7 +117,20 @@ function PlanRow({
           className="hpc-m3-plan-t"
           style={{ textDecoration: item.completed ? 'line-through' : undefined }}
         >
-          {item.section ? <span className="hpc-m3-tag">{item.section}</span> : null}
+          {item.section ? (
+            doorTag ? (
+              <motion.span
+                className="hpc-m3-tag"
+                layoutId={doorTag}
+                transition={ark.arket}
+                style={{ display: 'inline-block' }}
+              >
+                {item.section}
+              </motion.span>
+            ) : (
+              <span className="hpc-m3-tag">{item.section}</span>
+            )
+          ) : null}
           {item.headline}
           {item.completed && ' · klar ✓'}
         </div>
@@ -128,9 +160,17 @@ function PlanRow({
 }
 
 function CompletePanel({ plan }: { plan: DailyPlan }) {
+  const ark = useArketMotion()
   const totalMinutes = plan.items.reduce((sum, i) => sum + i.estimatedMinutes, 0)
+  // Same sheet as the plan card — on an all-complete day the Klart
+  // panel folds into THIS block instead.
   return (
-    <section data-testid="daily-plan-complete">
+    <motion.section
+      data-testid="daily-plan-complete"
+      className={ark.rm ? undefined : 'hpc-arkkort'}
+      layoutId={ark.rm ? undefined : ARK_KORT_LAYOUT_ID}
+      transition={ark.arket}
+    >
       <DrillRailSection
         meta={
           <>
@@ -167,7 +207,7 @@ function CompletePanel({ plan }: { plan: DailyPlan }) {
           {totalMinutes} min. Vill du ha mer? Plocka en sektion eller vila — du har gjort dagens.
         </p>
       </DrillRailSection>
-    </section>
+    </motion.section>
   )
 }
 
