@@ -19,7 +19,8 @@
 // same composition holds across phone/reader/studio. See index.css `.hpc-m3-*`
 // and docs/design-system-conventions.md.
 
-import { type ReactNode, useEffect, useRef } from 'react'
+import { animate, motion, useMotionTemplate, useMotionValue, useTransform } from 'motion/react'
+import { type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from 'react'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { PedagogyPanel } from '@/components/drill/PedagogyPanel'
@@ -28,6 +29,7 @@ import { useExplanation } from '@/components/drill-variants/useExplanation'
 import { MathText } from '@/components/MathText'
 import { pickTactic } from '@/components/pre-grade/pregrade-tactics'
 import type { AnswerLetter, Option, Question } from '@/data/questions'
+import { DRAG, optWordLayoutId, useArketMotion } from '@/lib/motion'
 import { parseNogPrompt } from '@/lib/nogPrompt'
 import { RAIL_STATEMENTS, railMeta, sectionLongLabel } from '@/lib/sectionRailLabel'
 
@@ -90,6 +92,19 @@ export function DrillQuestion({
   // section-default hash-rotation catalog (same fallback as PreGradeFill).
   // The loader is cached per exam, so this shares PedagogyPanel's fetch.
   const explanation = useExplanation(question.qid)
+
+  // A2 "Arket" motion: the verdict morph + drag-to-commit are a
+  // presentation layer over the unchanged grading contract (onPick still
+  // carries just the letter; grading/mistakes/session flow are untouched).
+  const ark = useArketMotion()
+  // The hand's release energy, captured by a drag commit and inherited
+  // into the verdict morph spring (0 on a click/keyboard commit — those
+  // paths stay the visually identical defaults). Reset per question.
+  const [commitV, setCommitV] = useState(0)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: reset the inherited velocity when the question changes
+  useEffect(() => {
+    setCommitV(0)
+  }, [question.qid])
 
   if (!question.options || question.parsing_status !== 'complete') {
     return (
@@ -309,9 +324,26 @@ export function DrillQuestion({
             <OptionRow
               key={opt.letter}
               opt={opt}
+              qid={question.qid}
               state={rowState(opt.letter, picked, question.answer, graded)}
-              onClick={() => !graded && onPick(opt.letter)}
-              disabled={graded}
+              onCommit={(v) => {
+                if (graded) return
+                // Inherit the hand's velocity (clamped) into the verdict
+                // morph, then commit through the unchanged onPick path.
+                setCommitV(Math.max(-DRAG.vClamp, Math.min(DRAG.vClamp, v * DRAG.vScale)))
+                onPick(opt.letter)
+              }}
+              graded={graded}
+              // The picked row's word flies to the verdict (layoutId), so
+              // its in-row instance becomes a width-holding placeholder.
+              picked={graded && opt.letter === picked}
+              // Drag is a premium accelerator, never required: text
+              // options only (a figure/prose row has no clean strip),
+              // pre-grade, and never under reduced motion.
+              canDrag={!ark.rm && !graded && !opt.figure && !meta.optionsProse}
+              rm={ark.rm}
+              arketTransition={ark.arket}
+              seat={ark.sate}
             />
           ))}
         </div>
@@ -329,6 +361,11 @@ export function DrillQuestion({
           correct={picked === question.answer}
           answer={question.answer}
           options={question.options}
+          // A2 verdict morph: the picked word flew up here from its row.
+          picked={picked}
+          pickedText={question.options.find((o) => o.letter === picked)?.text}
+          pickedHasFigure={!!question.options.find((o) => o.letter === picked)?.figure}
+          commitV={commitV}
         />
       )}
     </div>
@@ -368,53 +405,199 @@ function rowClass(state: RowState, graded: boolean): string {
 
 function OptionRow({
   opt,
+  qid,
   state,
-  onClick,
-  disabled,
+  onCommit,
+  graded,
+  picked,
+  canDrag,
+  rm,
+  arketTransition,
+  seat,
 }: {
   opt: Option
+  qid: string
   state: RowState
-  onClick: () => void
-  disabled: boolean
+  /** Commit this option with the release velocity (0 for click/keyboard). */
+  onCommit: (velocity: number) => void
+  graded: boolean
+  /** True when this is the graded row the user picked — its word has
+   *  flown to the verdict, so the in-row instance is a hidden spacer. */
+  picked: boolean
+  /** Drag is enabled (text option, pre-grade, full motion). */
+  canDrag: boolean
+  rm: boolean
+  arketTransition: import('motion/react').Transition
+  seat: { stiffness: number; damping: number; mass: number }
 }) {
   // Post-grade caption: the correct row is labelled "Rätt svar"; a wrong
   // pick is labelled "Ditt svar".
   const verdict = state === 'correct' ? 'Rätt svar' : state === 'incorrect' ? 'Ditt svar' : null
+
+  const x = useMotionValue(0)
+  const [armed, setArmed] = useState(false)
+  // MATERIAL LIGHT (A2): the finger-lift's paper backing + shadow are a
+  // pure function of drag distance, never time — so they can't arrive or
+  // leave a frame late, and they decay along the same seat spring the
+  // strip rides home on. The crease under the hand obeys the same law.
+  const liftA = useTransform(x, [0, DRAG.liftMax], [0, 1])
+  const shadowNear = useTransform(liftA, (v) => v * 0.14)
+  const shadowFar = useTransform(liftA, (v) => v * 0.1)
+  const shadow = useMotionTemplate`0 1px 5px rgba(31, 26, 16, ${shadowNear}), 0 0.5px 1.5px rgba(31, 26, 16, ${shadowFar})`
+  const grooveOpacity = useTransform(x, [0, DRAG.creaseMax], [0, 0.4])
+  const tickOpacity = useTransform(
+    x,
+    [0, DRAG.creaseMax, DRAG.detent * 0.6, DRAG.detent],
+    [0, 0.3, 0.45, 1],
+  )
+  const armOpacity = useTransform(x, [DRAG.detent * 0.72, DRAG.detent], [0, 1])
+
+  const commit = (v: number) => {
+    if (graded) return
+    onCommit(v)
+  }
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (graded) return
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      commit(0)
+    }
+  }
+
+  const wordInner = (
+    <>
+      {opt.figure && (
+        <img
+          src={`/${opt.figure.src}`}
+          alt={opt.text}
+          loading="lazy"
+          className="hpc-m3-opt-fig"
+          style={{
+            display: 'block',
+            width: 'auto',
+            height: 'clamp(120px, 22vw, 160px)',
+            aspectRatio: String(opt.figure.aspect_ratio),
+            objectFit: 'contain',
+            background: 'var(--panel)',
+            border: '1px solid var(--hairline)',
+            borderRadius: 'calc(var(--radius) * 0.5)',
+            marginBottom: 8,
+          }}
+        />
+      )}
+      <MathText>{opt.text}</MathText>
+    </>
+  )
+
   return (
-    <button
+    <motion.button
       type="button"
-      onClick={onClick}
-      disabled={disabled}
+      // Click stays the visually identical default (velocity 0). A real
+      // drag settle is caught in onDragEnd, so onClick only fires on a
+      // true tap.
+      onClick={() => {
+        if (x.get() > 4) return
+        commit(0)
+      }}
+      onKeyDown={onKeyDown}
+      disabled={graded}
       data-testid={`option-${opt.letter}`}
       data-state={state}
-      className={rowClass(state, disabled)}
+      className={rowClass(state, graded)}
+      style={{ x, position: 'relative', touchAction: 'pan-y' }}
+      drag={canDrag ? 'x' : false}
+      dragConstraints={{ left: 0, right: DRAG.hardStop }}
+      // The wrong direction refuses (0 left); a whisper of give right.
+      dragElastic={{ left: 0, right: 0.04 }}
+      dragMomentum={false}
+      onDrag={() => {
+        const past = x.get() >= DRAG.detent
+        if (past !== armed) setArmed(past)
+      }}
+      onDragEnd={(_, info) => {
+        if (x.get() >= DRAG.detent) {
+          commit(info.velocity.x)
+        } else {
+          // Seat home on säte with the hand's velocity inherited — the
+          // shadow decays along this very spring (f(drag)).
+          setArmed(false)
+          animate(x, 0, { type: 'spring', ...seat, velocity: info.velocity.x })
+        }
+      }}
     >
-      <span aria-hidden className="hpc-m3-ind" />
-      <span className="hpc-m3-opt-k">{opt.letter.toLowerCase()}</span>
-      <span className="hpc-m3-opt-t">
-        {opt.figure && (
-          <img
-            src={`/${opt.figure.src}`}
-            alt={opt.text}
-            loading="lazy"
-            className="hpc-m3-opt-fig"
+      {/* the crease: a dotted guide to the detent + a tick at the stop,
+          materialising only under the hand (f(drag)) */}
+      {canDrag && (
+        <span
+          aria-hidden
+          style={{
+            position: 'absolute',
+            left: 44,
+            top: 0,
+            bottom: 1,
+            display: 'flex',
+            alignItems: 'center',
+            pointerEvents: 'none',
+          }}
+        >
+          <motion.span
             style={{
-              display: 'block',
-              width: 'auto',
-              height: 'clamp(120px, 22vw, 160px)',
-              aspectRatio: String(opt.figure.aspect_ratio),
-              objectFit: 'contain',
-              background: 'var(--panel)',
-              border: '1px solid var(--hairline)',
-              borderRadius: 'calc(var(--radius) * 0.5)',
-              marginBottom: 8,
+              width: DRAG.detent,
+              borderBottom: '1px dotted var(--muted)',
+              opacity: grooveOpacity,
             }}
           />
+          <motion.span
+            style={{ width: 1.6, height: 12, background: 'var(--ink)', opacity: tickOpacity }}
+          />
+        </span>
+      )}
+      {/* the lifted strip's paper backing — occludes the crease it slides
+          over; the shadow strength rides the same lift value */}
+      {canDrag && (
+        <motion.span
+          aria-hidden
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'var(--bg)',
+            opacity: liftA,
+            boxShadow: shadow,
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+      <span aria-hidden className="hpc-m3-ind" />
+      <span className="hpc-m3-opt-k">{opt.letter.toLowerCase()}</span>
+      <span className="hpc-m3-opt-t" style={{ position: 'relative' }}>
+        {picked && !rm ? (
+          // The word has flown to the verdict — hold its box so the
+          // graded row keeps its height and background (state intact).
+          <span style={{ visibility: 'hidden' }}>{wordInner}</span>
+        ) : rm || opt.figure ? (
+          wordInner
+        ) : (
+          <motion.span
+            layoutId={optWordLayoutId(qid, opt.letter)}
+            transition={arketTransition}
+            style={{ display: 'inline-block' }}
+          >
+            {wordInner}
+          </motion.span>
         )}
-        <MathText>{opt.text}</MathText>
       </span>
-      <span className="hpc-m3-opt-v">{verdict}</span>
-    </button>
+      {canDrag && (
+        <motion.span
+          aria-hidden={!armed}
+          className="hpc-m3-opt-v"
+          style={{ opacity: armOpacity, color: 'var(--ink)' }}
+        >
+          släpp = svara
+        </motion.span>
+      )}
+      {verdict && <span className="hpc-m3-opt-v">{verdict}</span>}
+    </motion.button>
   )
 }
 
