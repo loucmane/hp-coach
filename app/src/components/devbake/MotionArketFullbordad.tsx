@@ -292,6 +292,30 @@ function DigitRoll({
 }
 
 /** Mono action button; the press is the sheet giving way 1 px. */
+/** The camera law, extended one level: the demo stage lives inside a
+ *  scrolling page (unlike the product drill, which owns the viewport),
+ *  so when the verdict grows the active block past the page fold the
+ *  action row could end up half-hidden (owner find, 2026-07-12). On
+ *  mount — i.e. the moment the verdict lands — nudge the page the
+ *  minimal distance that keeps the row fully visible. */
+function KeepInView({ rm, children }: { rm: boolean; children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    // Wait out the verdict block's layout settle (veck ≈ 300 ms) —
+    // scrolling earlier measures a target that is still growing.
+    const t = setTimeout(
+      () => ref.current?.scrollIntoView({ block: 'nearest', behavior: rm ? 'auto' : 'smooth' }),
+      rm ? 0 : 380,
+    )
+    return () => clearTimeout(t)
+  }, [rm])
+  return (
+    <div ref={ref} style={{ scrollMarginBottom: 20 }}>
+      {children}
+    </div>
+  )
+}
+
 function Press({
   label,
   onClick,
@@ -830,11 +854,13 @@ function A2Question({
             {/* past verdicts stay on the ribbon as marks, not controls */}
             {active && (
               <Tork delay={0.22} style={{ marginTop: 14 }}>
-                <Press
-                  probe={`next-${qi}`}
-                  label={isLast ? 'Vidare till Klart →' : 'Nästa →'}
-                  onClick={onNext}
-                />
+                <KeepInView rm={ark.rm}>
+                  <Press
+                    probe={`next-${qi}`}
+                    label={isLast ? 'Vidare till Klart →' : 'Nästa →'}
+                    onClick={onNext}
+                  />
+                </KeepInView>
               </Tork>
             )}
           </div>
