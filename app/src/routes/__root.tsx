@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react'
 import { useHydratePrefs } from '@/api/useSyncedPrefs'
 import { CommandPalette } from '@/components/CommandPalette'
 import { Frame } from '@/components/Frame'
+import { RouteScene } from '@/components/motion/RouteScene'
 import { Btn, Mono } from '@/components/primitives'
 import { isWelcomed } from '@/lib/welcome'
 import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
@@ -156,7 +157,13 @@ function SignedInTree() {
       navigate({ to: '/welcome' })
     }
   }, [navigate, location.pathname])
-  return <Outlet />
+  // A2 scene handoff: door changes re-ink the reading window (opacity
+  // only, exits lead) instead of sliding. See RouteScene.
+  return (
+    <RouteScene>
+      <Outlet />
+    </RouteScene>
+  )
 }
 
 // Tiny redirect helper — client-side, not Clerk's <RedirectToSignIn />, so

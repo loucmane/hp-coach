@@ -21,6 +21,7 @@
 // Pre-grade the panel renders NOTHING — M3 has no waiting pedagogy.
 
 import { useNavigate } from '@tanstack/react-router'
+import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 
 import { type FeedbackEntry, getFeedback, submitFeedback } from '@/api/feedback'
@@ -29,6 +30,7 @@ import { MathText } from '@/components/MathText'
 import { L1Chip, Mono } from '@/components/primitives'
 import { type Explanation, type ExplanationStep, loadExplanation } from '@/data/explanations'
 import { type AnswerLetter, type Option, SECTION_KEYS, type Section } from '@/data/questions'
+import { optWordLayoutId, useArketMotion } from '@/lib/motion'
 import { RAIL_OUTCOME } from '@/lib/sectionRailLabel'
 
 type Props = {
@@ -44,6 +46,19 @@ type Props = {
   /** Question options — the distractor rows re-print the struck option
    *  text and the verdict-sub quotes the correct one. */
   options?: Option[] | null
+  /** A2 verdict morph (task): the letter the user picked. When set (and
+   *  not a figure option / reduced motion), the verdict word IS the
+   *  picked option word, flown here from its row via a shared layoutId,
+   *  the semantic colour switching instantly and the "— rätt./— fel."
+   *  drying in beside it. Omitted → the calm "Rätt./Fel." fallback. */
+  picked?: AnswerLetter | null
+  /** The picked option's text — the word that morphs into the verdict. */
+  pickedText?: string
+  /** Picked an image option — no clean word to morph, use the fallback. */
+  pickedHasFigure?: boolean
+  /** Release velocity inherited from a drag commit (0 on click/keyboard),
+   *  carried into the verdict morph spring. */
+  commitV?: number
 }
 
 type LoadState =
@@ -52,7 +67,18 @@ type LoadState =
   | { kind: 'missing' }
   | { kind: 'error'; message: string }
 
-export function PedagogyPanel({ qid, graded, correct, answer, options }: Props) {
+export function PedagogyPanel({
+  qid,
+  graded,
+  correct,
+  answer,
+  options,
+  picked,
+  pickedText,
+  pickedHasFigure,
+  commitV = 0,
+}: Props) {
+  const ark = useArketMotion()
   const [state, setState] = useState<LoadState>({ kind: 'loading' })
 
   useEffect(() => {
@@ -116,9 +142,48 @@ export function PedagogyPanel({ qid, graded, correct, answer, options }: Props) 
           aria-atomic="true"
           aria-label={correct ? 'Rätt svar' : 'Fel svar'}
         >
-          <span aria-hidden className={`hpc-m3-verdict-word ${correct ? 'is-ok' : 'is-bad'}`}>
-            {correct ? 'Rätt.' : 'Fel.'}
-          </span>
+          {picked && pickedText && !pickedHasFigure && !ark.rm ? (
+            // The picked word flew up from its option row (shared
+            // layoutId). Semantic colour switches instantly (no transition
+            // on colour — A2's law); the "— rätt./— fel." dries in beside
+            // it (tork). A wrong pick keeps its strike as it lands.
+            <span
+              aria-hidden
+              style={{ display: 'inline-flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}
+            >
+              <motion.span
+                layoutId={optWordLayoutId(qid, picked)}
+                transition={{ ...ark.arket, velocity: commitV }}
+                className={`hpc-m3-verdict-word ${correct ? 'is-ok' : 'is-bad'}`}
+                // Override the CSS translate-in entrance (A2: no
+                // translate-in) — the layout morph is the entrance.
+                style={{ animation: 'none' }}
+              >
+                <span
+                  style={
+                    correct
+                      ? undefined
+                      : { textDecoration: 'line-through', textDecorationThickness: '2px' }
+                  }
+                >
+                  {pickedText}
+                </span>
+              </motion.span>
+              <motion.span
+                initial={ark.rm ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ ...ark.tork, delay: ark.rm ? 0 : 0.08 }}
+                className={`hpc-m3-verdict-word ${correct ? 'is-ok' : 'is-bad'}`}
+                style={{ animation: 'none', fontSize: 'clamp(20px, 3vw, 28px)' }}
+              >
+                {correct ? '— rätt.' : '— fel.'}
+              </motion.span>
+            </span>
+          ) : (
+            <span aria-hidden className={`hpc-m3-verdict-word ${correct ? 'is-ok' : 'is-bad'}`}>
+              {correct ? 'Rätt.' : 'Fel.'}
+            </span>
+          )}
           <p className="hpc-m3-verdict-sub">
             {correct ? (
               'Snyggt — rätt tänkt hela vägen.'

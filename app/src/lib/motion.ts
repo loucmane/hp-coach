@@ -21,6 +21,9 @@
 // Reference: Linear's spring easing, Apple HIG springs, Stripe's
 // reading-pace tweens. Pick a vocabulary, name it, use it everywhere.
 
+import { type Transition, useReducedMotion } from 'motion/react'
+import { createElement, type ReactNode, useEffect, useRef } from 'react'
+
 /**
  * Easing curves keyed by intent. Pass to `motion`'s `transition.ease`
  * or to CSS `transition-timing-function` via the matching `--ease-*`
@@ -119,3 +122,196 @@ export const CSS_VARS = {
     payoff: 'var(--dur-payoff)',
   },
 } as const
+
+// ── A2 · Arket, fullbordad — the app-wide motion system ──────────────
+//
+// The owner-approved motion identity (won a 4-round bake-off; reference
+// fixture: components/devbake/MotionArketFullbordad.tsx). Its laws:
+//
+//   ONE SHEET — nothing appears or disappears. Material rearranges
+//   (layout / layoutId — the arket spring) or ink dries in place
+//   (opacity — tork/ut; ZERO entrance offsets, no translate-in ever).
+//
+//   ONE CAMERA — exactly one degree of freedom (the drill's y-pan,
+//   remsan). Every other motion is in-plane.
+//
+//   TWO DEPTH STATIONS — the sheet plane (flat, shadowless) and the
+//   finger-lift (only a dragged strip leaves the plane; its shadow is
+//   f(drag distance), never f(time)).
+//
+// This block is the SINGLE SOURCE OF TRUTH for the Arket spring numbers.
+// No product code should inline spring literals — import SPRING / the
+// `useArketMotion()` hook instead.
+
+/**
+ * The four named Arket springs — the ONLY place these numbers live.
+ *
+ *   `arket`  k320 c36 m1     — all layoutId morphs; the material of the
+ *                              sheet rearranging in plane. The verdict
+ *                              morph rides this and inherits the drag
+ *                              release velocity.
+ *   `remsan` k240 c30 m1.15  — the drill camera pan (the reader's eye
+ *                              has mass); live-aimed, re-targets in
+ *                              flight via a ResizeObserver.
+ *   `veck`   k480 c40 m0.8   — small in-place layout shifts (rows
+ *                              closing up) and the masked digit roll.
+ *   `sate`   k620 c42 m0.9   — a released strip seating home before the
+ *                              detent (inherits the hand's velocity).
+ */
+export const SPRING = {
+  arket: { stiffness: 320, damping: 36, mass: 1 },
+  remsan: { stiffness: 240, damping: 30, mass: 1.15 },
+  veck: { stiffness: 480, damping: 40, mass: 0.8 },
+  sate: { stiffness: 620, damping: 42, mass: 0.9 },
+} as const
+
+/**
+ * The two Arket ink tweens — drying and lifting. Zero travel; opacity
+ * only. `tork` (240ms, reading ease) is ink surfacing onto the sheet;
+ * `ut` (90ms, exit ease) is the only exit the sheet allows — ink
+ * lifting off. Exits lead entrances by design (see HANDOFF).
+ */
+export const INK = {
+  tork: { duration: 0.24, ease: EASE.reading },
+  ut: { duration: 0.09, ease: EASE.exit },
+} as const
+
+/**
+ * The drag-to-commit constants (F4 "Greppet", folded into Arket).
+ * `detent` is the mechanical arming stop; `hardStop` is the travel
+ * limit; a release past the detent commits with the hand's velocity
+ * carried into the arket spring, clamped ×`vScale` to ±`vClamp` px/s.
+ * `liftMax` is the drag distance over which the finger-lift shadow
+ * rises from 0 to full (f(drag), never f(time)); `creaseMax` the pull
+ * over which the groove + tick materialise.
+ */
+export const DRAG = {
+  detent: 72,
+  hardStop: 88,
+  vClamp: 700,
+  vScale: 0.5,
+  liftMax: 12,
+  creaseMax: 14,
+} as const
+
+/**
+ * Per-pair scene handoff entrance delays, in seconds. A scene exit
+ * leads at 90ms (INK.ut); the incoming scene's ink then waits its
+ * pair's delay so the two never double-expose. The öva→drill pair
+ * carries the biggest morph set, so its ink waits longest. Keyed
+ * `${from}→${to}` on the route family; unknown pairs fall back to 40ms.
+ */
+export const HANDOFF: Record<string, number> = {
+  'home→ova': 0.04,
+  'ova→home': 0.04,
+  'ova→drill': 0.06,
+  'drill→home': 0.05,
+  'drill→ova': 0.05,
+  'home→drill': 0.06,
+}
+
+/** Resolve a scene-handoff entrance delay for a `${from}→${to}` pair. */
+export function handoffDelay(from: string | null, to: string): number {
+  if (!from) return 0.04
+  return HANDOFF[`${from}→${to}`] ?? 0.04
+}
+
+/**
+ * Shared layoutId for a drill option's word, so the picked option can
+ * fly from its row into the verdict slot (the A2 verdict morph). Kept
+ * here — the one place both the source (DrillQuestion option row) and
+ * the target (PedagogyPanel verdict) can agree without a circular
+ * component import.
+ */
+export function optWordLayoutId(qid: string, letter: string): string {
+  return `optword-${qid}-${letter}`
+}
+
+/**
+ * The resolved Arket transition set for the current reduced-motion
+ * state. Springs collapse to `{ duration: 0 }` under reduced motion
+ * (opacity-or-nothing app-wide), so a `layoutId` morph becomes an
+ * instant re-seat and a `tork` fade an instant swap. Consumers that
+ * drive their own `animate(motionValue, …)` (the camera pan, a strip
+ * seating home) read `.rm` and the raw `SPRING.*` records directly.
+ */
+export interface ArketMotion {
+  /** True when the viewer prefers reduced motion. */
+  rm: boolean
+  /** layoutId morphs — the sheet rearranging in plane. */
+  arket: Transition
+  /** in-place layout shifts + the digit roll. */
+  veck: Transition
+  /** ink drying: opacity only, zero travel. */
+  tork: Transition
+  /** ink lifting off — the only exit. */
+  ut: Transition
+  /** Raw camera-pan spring for imperative `animate(y, …)`. */
+  remsan: typeof SPRING.remsan
+  /** Raw seat-home spring for imperative `animate(x, 0, …)`. */
+  sate: typeof SPRING.sate
+  /** Build an arbitrary spring transition honouring reduced motion. */
+  spring: (opts: { stiffness: number; damping: number; mass?: number }) => Transition
+  /** Build a tween honouring reduced motion. */
+  tween: (duration: number, ease?: readonly [number, number, number, number]) => Transition
+}
+
+/**
+ * The Arket motion hook. Reads `prefers-reduced-motion` (via framer's
+ * `useReducedMotion`, which also honours the root `MotionConfig
+ * reducedMotion="user"`) and returns transitions collapsed to
+ * `{ duration: 0 }` when reduced. This is the documented entry point
+ * every product surface uses — never inline the spring numbers.
+ */
+export function useArketMotion(): ArketMotion {
+  const rm = useReducedMotion() === true
+  const spring = (opts: { stiffness: number; damping: number; mass?: number }): Transition =>
+    rm ? { duration: 0 } : { type: 'spring', ...opts }
+  const tween = (
+    duration: number,
+    ease: readonly [number, number, number, number] = EASE.reading,
+  ): Transition => (rm ? { duration: 0 } : { duration, ease: [...ease] })
+  return {
+    rm,
+    arket: spring(SPRING.arket),
+    veck: spring(SPRING.veck),
+    tork: rm ? { duration: 0 } : { ...INK.tork, ease: [...INK.tork.ease] },
+    ut: rm ? { duration: 0 } : { ...INK.ut, ease: [...INK.ut.ease] },
+    remsan: SPRING.remsan,
+    sate: SPRING.sate,
+    spring,
+    tween,
+  }
+}
+
+/**
+ * KeepInView — the camera law extended to a scrolling page. In the
+ * product drill the verdict grows the graded block; on desktop the page
+ * body owns scroll, so a tall verdict can push its "Nästa" control below
+ * the fold. On mount (the moment the verdict lands) this nudges the page
+ * the minimal distance that keeps its child fully visible — after the
+ * veck settle, never during it (scrolling mid-grow measures a moving
+ * target). Under reduced motion the scroll is instant.
+ *
+ * Authored with `createElement` so this JSX-free helper can live in the
+ * `.ts` token module alongside the springs it belongs with.
+ */
+export function KeepInView({
+  rm,
+  children,
+  delayMs = 380,
+}: {
+  rm: boolean
+  children: ReactNode
+  delayMs?: number
+}): ReactNode {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const t = setTimeout(
+      () => ref.current?.scrollIntoView({ block: 'nearest', behavior: rm ? 'auto' : 'smooth' }),
+      rm ? 0 : delayMs,
+    )
+    return () => clearTimeout(t)
+  }, [rm, delayMs])
+  return createElement('div', { ref, style: { scrollMarginBottom: 20 } }, children)
+}

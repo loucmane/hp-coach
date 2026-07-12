@@ -17,6 +17,7 @@
 
 import type { CSSProperties, ReactNode } from 'react'
 
+import { DigitRoll } from '@/components/motion/DigitRoll'
 import { useViewport } from '@/hooks/useViewport'
 import { DOORS, type TabKey } from '@/lib/nav'
 
@@ -106,7 +107,7 @@ function BottomTabs({
                     fontVariantNumeric: 'tabular-nums',
                   }}
                 >
-                  {count}
+                  <DigitRoll value={count} />
                 </span>
               )}
             </button>

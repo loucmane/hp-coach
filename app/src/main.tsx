@@ -3,6 +3,7 @@ import { ClerkProvider, useAuth } from '@clerk/clerk-react'
 import { svSE } from '@clerk/localizations'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
+import { MotionConfig } from 'motion/react'
 import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 
@@ -132,7 +133,14 @@ createRoot(rootEl).render(
     >
       <QueryClientProvider client={queryClient}>
         <ContentAuthBridge />
-        <RouterProvider router={router} />
+        {/* A2 "Arket" motion root: reducedMotion="user" makes every
+         *  framer-motion consumer below honour prefers-reduced-motion
+         *  without its own guard — springs collapse, ink swaps instantly.
+         *  useArketMotion() reads the same signal for imperative animate()
+         *  loops (the drill camera, a strip seating home). */}
+        <MotionConfig reducedMotion="user">
+          <RouterProvider router={router} />
+        </MotionConfig>
       </QueryClientProvider>
     </ClerkProvider>
   </StrictMode>,

@@ -39,6 +39,7 @@ import { useDueMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { useResumptionCandidate } from '@/components/home/useResumptionCandidate'
+import { DigitRoll } from '@/components/motion/DigitRoll'
 import { wiredSections } from '@/data/frameworks'
 import { DOORS, type Door, type DoorId } from '@/lib/nav'
 import { computeProjectedDelta, formatDeltaSv } from '@/lib/scoring'
@@ -171,6 +172,21 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
     if (!stats.data) return null
     return computeProjectedDelta(stats.data.bySection)
   }, [stats.data])
+  // The living numeral (A2 deliverable 4): the Öva due-count. It rolls
+  // A2-style on every change (DigitRoll — up on a new mistake, down on a
+  // resolve) at all three nav stations: the expanded folio (TocRow), the
+  // collapsed spine corner (SpineSlot), and the phone tab (MobileFrame).
+  //
+  // A true cross-surface layoutId FLIGHT (the rail numeral physically
+  // flying into a drill/repetition header numeral) is deliberately NOT
+  // wired: the rail lives inside RouteScene's AnimatePresence scope and a
+  // drill header would live inside the route's own subtree — different
+  // layout scopes across a scene crossfade, so a shared layoutId would
+  // fly toward a destination that is itself fading in/out and land off
+  // its settled position (exactly the round-3 "numeral raced the camera"
+  // corner-cut the reference warns about, but across scopes we cannot
+  // sequence the handoff). The direction-aware roll is therefore the
+  // living-numeral treatment everywhere; the flight is cut by design.
   const folios: Partial<Record<DoorId, string>> = {
     ova: dueCount > 0 ? String(dueCount) : undefined,
     uppslag: String(wiredSections().length),
@@ -263,6 +279,7 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
             door={door}
             active={isActiveDoor(door.id, pathname)}
             folio={folios[door.id]}
+            roll={door.id === 'ova' && dueCount > 0 ? dueCount : undefined}
           />
         ))}
       </nav>
@@ -317,7 +334,20 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
 /** One ToC entry: small-caps serif label, optional raised folio numeral
  *  riding right after it (spine-corner grammar). The active row is the
  *  ONE accent object in the expanded rail (accent-active law — no ribbon). */
-function TocRow({ door, active, folio }: { door: Door; active: boolean; folio?: string }) {
+function TocRow({
+  door,
+  active,
+  folio,
+  roll,
+}: {
+  door: Door
+  active: boolean
+  folio?: string
+  /** When set (the Öva due-count), the numeral rolls A2-style on every
+   *  change — up on a new mistake, down on a resolve — instead of
+   *  swapping. The living numeral, station 1. */
+  roll?: number
+}) {
   return (
     <Link
       to={door.to}
@@ -361,7 +391,7 @@ function TocRow({ door, active, folio }: { door: Door; active: boolean; folio?: 
             top: -5,
           }}
         >
-          {folio}
+          {roll != null ? <DigitRoll value={roll} /> : folio}
         </span>
       ) : null}
     </Link>
@@ -503,7 +533,7 @@ function SpineSlot({ door, active, count }: { door: Door; active: boolean; count
             fontVariantNumeric: 'tabular-nums',
           }}
         >
-          {count}
+          <DigitRoll value={count} />
         </span>
       )}
     </Link>
