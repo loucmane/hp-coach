@@ -31,6 +31,8 @@ import { useState } from 'react'
 import { MOTC1, MOTC2 } from '@/components/devbake/MotionBakeoffC'
 import { MOTP1, MOTP2 } from '@/components/devbake/MotionBakeoffP'
 import { MOTB2 } from '@/components/devbake/MotionBlacket2'
+import { MOTF1, MOTF2 } from '@/components/devbake/MotionSpringF'
+import { MOTF3, MOTF4 } from '@/components/devbake/MotionSpringG'
 import { isDevSurface } from '@/lib/devSurface'
 
 export const Route = createFileRoute('/dev_/motion-bakeoff')({
@@ -47,6 +49,13 @@ const VARIANTS = [
   // flow with interruptible springs, layoutId shared elements, and a
   // velocity-thresholded gesture. Judge choreography, not clips.
   { key: 'b2', label: 'B2 · Bläcket 2.0', C: MOTB2 },
+  // Round 3 — the owner liked B2 and asked for a spread of spring-based
+  // options ("2026 classy and clean"). Two axes, four systems, all the
+  // same walkable flow so only the motion language varies:
+  { key: 'f1', label: 'F1 · Sättningen', C: MOTF1 },
+  { key: 'f2', label: 'F2 · Arket', C: MOTF2 },
+  { key: 'f3', label: 'F3 · Partituret', C: MOTF3 },
+  { key: 'f4', label: 'F4 · Greppet', C: MOTF4 },
 ] as const
 
 function MotionBakeoffPage() {
