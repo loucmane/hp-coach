@@ -24,6 +24,16 @@ function openPalette() {
 }
 
 describe('CommandPalette', () => {
+  // The dev affordances that used to float as pills (tweaks,
+  // share-debug) live here now — but never in prod sessions
+  // (isDevSurface mocked false above).
+  it('hides the dev-only commands when the dev gate is off', () => {
+    render(<CommandPalette />)
+    openPalette()
+    expect(screen.queryByText('Dev panel')).toBeNull()
+    expect(screen.queryByText('Kopiera felsökningssnapshot')).toBeNull()
+  })
+
   it('is closed by default', () => {
     render(<CommandPalette />)
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()

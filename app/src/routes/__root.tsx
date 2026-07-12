@@ -19,8 +19,6 @@ import { useHydratePrefs } from '@/api/useSyncedPrefs'
 import { CommandPalette } from '@/components/CommandPalette'
 import { Frame } from '@/components/Frame'
 import { Btn, Mono } from '@/components/primitives'
-import { ShareDebugButton } from '@/components/ShareDebugButton'
-import { TweaksLauncher } from '@/components/TweaksLauncher'
 import { isWelcomed } from '@/lib/welcome'
 import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
 
@@ -54,8 +52,6 @@ function RootShell() {
        *  sessionStorage flag is set. Hidden in pure production
        *  preview otherwise. No outer gate here (an earlier attempt to
        *  add one broke the e2e `?dev=1` flow). */}
-      <ShareDebugButton />
-      <TweaksLauncher />
       <CommandPalette />
     </>
   )
