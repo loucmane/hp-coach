@@ -134,12 +134,19 @@ authedTest('palette swatch click applies the new palette to <html>', async ({ pa
   authedExpect(bg).toBe('oklch(0.965 0.012 175)')
 })
 
-authedTest('floating launcher links to /dev and Cmd+K opens the palette', async ({ page }) => {
+authedTest('dev affordances live in the palette — no floating pills', async ({ page }) => {
   await page.goto('/?dev=1')
-  await page.getByRole('link', { name: /öppna design-tweaks/i }).click()
+  // The floating pills are retired (owner call 2026-07-12): nothing
+  // fixed to the viewport corner anymore.
+  await authedExpect(page.getByRole('link', { name: /öppna design-tweaks/i })).toHaveCount(0)
+  await authedExpect(page.getByTestId('share-debug-button')).toHaveCount(0)
+  // Their actions live in the palette: Dev panel navigates to /dev.
+  await page.keyboard.press('Control+K')
+  await authedExpect(page.getByTestId('cmdk')).toBeVisible({ timeout: 3_000 })
+  await page.getByPlaceholder(/sök/i).fill('dev panel')
+  await page.getByText('Dev panel', { exact: true }).click()
   await authedExpect(page).toHaveURL(/\/dev$/)
-  // Cmd+K is now owned by <CommandPalette>: opens the palette overlay
-  // instead of toggling /dev. Pressing it again closes the overlay.
+  // Cmd+K toggles the overlay closed again.
   await page.keyboard.press('Control+K')
   await authedExpect(page.getByTestId('cmdk')).toBeVisible({ timeout: 3_000 })
   await page.keyboard.press('Control+K')
