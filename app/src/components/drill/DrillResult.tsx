@@ -30,7 +30,7 @@ import { useStats } from '@/api/hooks/useStats'
 import { DrillQuestion } from '@/components/drill/DrillQuestion'
 import { MathText } from '@/components/MathText'
 import type { AnswerLetter, Question, Section } from '@/data/questions'
-import { TRANSITION } from '@/lib/motion'
+import { ARK_KORT_LAYOUT_ID, TRANSITION, useArketMotion } from '@/lib/motion'
 import { computeSectionScore } from '@/lib/scoring'
 import { useTrapCluster } from '@/lib/trapCluster'
 
@@ -111,7 +111,11 @@ export function DrillResult({ summary, onReplay, onHome, continuation }: Props) 
     >
       <div className="hpc-m3-frame" style={{ paddingBottom: 120 }}>
         {/* ── Klart. + stats ─────────────────────────────────────── */}
+        {/* ark-kort (A2 "Klart folds home"): this block and Home's
+         *  day-card are one sheet — leaving for Hem folds the Klart
+         *  panel back into "Dagens plan". */}
         <Rail
+          arkKort
           meta={
             <>
               <strong>{section ?? 'Blandat'}</strong>
@@ -365,15 +369,38 @@ const ctaReset: CSSProperties = {
   cursor: 'pointer',
 }
 
-function Rail({ meta, children }: { meta: ReactNode; children: ReactNode }) {
-  return (
-    <section className="hpc-m3-section">
+function Rail({
+  meta,
+  arkKort = false,
+  children,
+}: {
+  meta: ReactNode
+  /** This rail section IS the ark-kort sheet (shared with Home's
+   *  day-card) — the Klart block only. */
+  arkKort?: boolean
+  children: ReactNode
+}) {
+  const ark = useArketMotion()
+  const inner = (
+    <>
       <hr className="hpc-m3-rule" />
       <div className="hpc-m3-row">
         <div className="hpc-m3-meta">{meta}</div>
         <div className="hpc-m3-spine" />
         <div className="hpc-m3-content">{children}</div>
       </div>
-    </section>
+    </>
   )
+  if (arkKort && !ark.rm) {
+    return (
+      <motion.section
+        className="hpc-m3-section hpc-arkkort"
+        layoutId={ARK_KORT_LAYOUT_ID}
+        transition={ark.arket}
+      >
+        {inner}
+      </motion.section>
+    )
+  }
+  return <section className="hpc-m3-section">{inner}</section>
 }

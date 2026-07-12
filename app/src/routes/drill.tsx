@@ -21,6 +21,7 @@ import { findQuestion, loadBank, type Question, type Section } from '@/data/ques
 import { logAdaptiveEvent } from '@/lib/adaptiveEvents'
 import { encodeTreatedMarker } from '@/lib/adaptiveReview'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions, pickMixedDrillQuestions } from '@/lib/drill'
+import { sectionDoorLayoutId } from '@/lib/motion'
 import { REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
 
@@ -42,6 +43,12 @@ type DrillSearch = {
   /** `?back=<section>` — the section the user originally asked to drill;
    *  restored by the detour's "Tillbaka till din övning" continuation. */
   back?: DrillSection
+  /** `?start=1` — the Öva hub's door path (owner 2026-07-12): the row IS
+   *  the door, so the drill starts immediately instead of stopping on the
+   *  idle interstitial. Session setup runs with the standard defaults the
+   *  idle Start button would use (adopt-active-session included); direct
+   *  /drill navigation without this flag keeps the idle screen. */
+  start?: true
 }
 
 function validateSearch(input: Record<string, unknown>): DrillSearch {
@@ -91,6 +98,10 @@ function validateSearch(input: Record<string, unknown>): DrillSearch {
   if (typeof back === 'string' && (DRILL_SECTIONS as readonly string[]).includes(back)) {
     out.back = back as DrillSection
   }
+  // `?start=1` — hub-door direct start (skip the idle interstitial).
+  if (input.start === '1' || input.start === true) {
+    out.start = true
+  }
   return out
 }
 
@@ -132,7 +143,17 @@ export const Route = createFileRoute('/drill')({
 })
 
 function DrillScreen() {
-  const { section: sectionFromUrl, qid, framework, mixed, weak, done, ar, back } = Route.useSearch()
+  const {
+    section: sectionFromUrl,
+    qid,
+    framework,
+    mixed,
+    weak,
+    done,
+    ar,
+    back,
+    start,
+  } = Route.useSearch()
   const section: DrillSection = sectionFromUrl ?? 'ORD'
   const navigate = useNavigate()
 
@@ -368,6 +389,19 @@ function DrillScreen() {
       onComplete={onComplete}
       resolvePlan={resolvePlan}
       adaptiveOffer={adaptiveOffer}
+      // Hub-door path: the Öva row already expressed the intent (this
+      // section, standard drill) — begin immediately, no idle stop. A
+      // stale `?done` means we're LOOKING at a completed pass's Klart,
+      // not entering; reconstruction wins.
+      autoStart={!!start && !done}
+      // The section-door shared element: plain section drills only —
+      // framework/qid/weak/mixed surfaces headline something other than
+      // the section code, so there is no honest door there.
+      door={
+        !directLinkQid && !framework && !weak && !mixed
+          ? { layoutId: sectionDoorLayoutId(section), code: section }
+          : undefined
+      }
       renderDone={
         ar && back
           ? ({ summary, onReplay, onHome }) => (

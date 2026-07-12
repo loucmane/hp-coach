@@ -39,8 +39,9 @@ import { useDueMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { useResumptionCandidate } from '@/components/home/useResumptionCandidate'
-import { DigitRoll } from '@/components/motion/DigitRoll'
+import { DueNumeral } from '@/components/motion/DueNumeral'
 import { wiredSections } from '@/data/frameworks'
+import { dueNumeralOwnedByPage } from '@/lib/motion'
 import { DOORS, type Door, type DoorId } from '@/lib/nav'
 import { computeProjectedDelta, formatDeltaSv } from '@/lib/scoring'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
@@ -172,21 +173,16 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
     if (!stats.data) return null
     return computeProjectedDelta(stats.data.bySection)
   }, [stats.data])
-  // The living numeral (A2 deliverable 4): the Öva due-count. It rolls
-  // A2-style on every change (DigitRoll — up on a new mistake, down on a
-  // resolve) at all three nav stations: the expanded folio (TocRow), the
-  // collapsed spine corner (SpineSlot), and the phone tab (MobileFrame).
-  //
-  // A true cross-surface layoutId FLIGHT (the rail numeral physically
-  // flying into a drill/repetition header numeral) is deliberately NOT
-  // wired: the rail lives inside RouteScene's AnimatePresence scope and a
-  // drill header would live inside the route's own subtree — different
-  // layout scopes across a scene crossfade, so a shared layoutId would
-  // fly toward a destination that is itself fading in/out and land off
-  // its settled position (exactly the round-3 "numeral raced the camera"
-  // corner-cut the reference warns about, but across scopes we cannot
-  // sequence the handoff). The direction-aware roll is therefore the
-  // living-numeral treatment everywhere; the flight is cut by design.
+  // The living numeral (A2): the Öva due-count. It rolls A2-style on
+  // every change (DigitRoll — up on a new mistake, down on a resolve)
+  // AND it flies: on the drill/repetition surfaces the page-header
+  // station (DueHeaderStation) owns the numeral via the shared layoutId
+  // under RouteScene's root LayoutGroup — RouteScene overlaps scenes
+  // (popLayout) precisely so this handoff has both stations mounted.
+  // While the numeral is away, the rail slot holds an exact-width
+  // reserve (genuinely empty, no reflow — A2 fix 3). Under reduced
+  // motion the flight is disabled and the rail numeral stays put.
+  const dueAway = dueNumeralOwnedByPage(pathname)
   const folios: Partial<Record<DoorId, string>> = {
     ova: dueCount > 0 ? String(dueCount) : undefined,
     uppslag: String(wiredSections().length),
@@ -194,7 +190,15 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
   }
 
   if (collapsed) {
-    return <Spine onToggle={onToggle} pathname={pathname} days={days} dueCount={dueCount} />
+    return (
+      <Spine
+        onToggle={onToggle}
+        pathname={pathname}
+        days={days}
+        dueCount={dueCount}
+        dueAway={dueAway}
+      />
+    )
   }
 
   return (
@@ -279,7 +283,7 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
             door={door}
             active={isActiveDoor(door.id, pathname)}
             folio={folios[door.id]}
-            roll={door.id === 'ova' && dueCount > 0 ? dueCount : undefined}
+            due={door.id === 'ova' && dueCount > 0 ? { count: dueCount, away: dueAway } : undefined}
           />
         ))}
       </nav>
@@ -338,15 +342,15 @@ function TocRow({
   door,
   active,
   folio,
-  roll,
+  due,
 }: {
   door: Door
   active: boolean
   folio?: string
   /** When set (the Öva due-count), the numeral rolls A2-style on every
-   *  change — up on a new mistake, down on a resolve — instead of
-   *  swapping. The living numeral, station 1. */
-  roll?: number
+   *  change AND is a flight station: `away` yields ownership to the
+   *  drill/repetition header (exact-width reserve holds the slot). */
+  due?: { count: number; away: boolean }
 }) {
   return (
     <Link
@@ -391,7 +395,17 @@ function TocRow({
             top: -5,
           }}
         >
-          {roll != null ? <DigitRoll value={roll} /> : folio}
+          {due != null ? (
+            <DueNumeral
+              count={due.count}
+              away={due.away}
+              size={10.5}
+              color={active ? 'var(--accent)' : 'var(--muted)'}
+              testid="rail-due"
+            />
+          ) : (
+            folio
+          )}
         </span>
       ) : null}
     </Link>
@@ -408,11 +422,15 @@ function Spine({
   pathname,
   days,
   dueCount,
+  dueAway,
 }: {
   onToggle: () => void
   pathname: string
   days: number
   dueCount: number
+  /** The header station owns the numeral (drill/repetition) — the spine
+   *  corner stays genuinely empty while it is away. */
+  dueAway: boolean
 }) {
   return (
     <aside
@@ -480,6 +498,7 @@ function Spine({
             door={door}
             active={isActiveDoor(door.id, pathname)}
             count={door.id === 'ova' && dueCount > 0 ? dueCount : undefined}
+            away={dueAway}
           />
         ))}
       </nav>
@@ -502,7 +521,17 @@ function Spine({
 
 /** One spine slot: the glyph (19px), active in accent; the optional due
  *  count rides the top-right corner as the one accent numeral. */
-function SpineSlot({ door, active, count }: { door: Door; active: boolean; count?: number }) {
+function SpineSlot({
+  door,
+  active,
+  count,
+  away,
+}: {
+  door: Door
+  active: boolean
+  count?: number
+  away?: boolean
+}) {
   return (
     <Link
       to={door.to}
@@ -529,11 +558,10 @@ function SpineSlot({ door, active, count }: { door: Door; active: boolean; count
             right: 1,
             fontFamily: 'var(--font-mono)',
             fontSize: 8.5,
-            color: 'var(--accent)',
             fontVariantNumeric: 'tabular-nums',
           }}
         >
-          <DigitRoll value={count} />
+          <DueNumeral count={count} away={away} size={8.5} testid="spine-due" />
         </span>
       )}
     </Link>

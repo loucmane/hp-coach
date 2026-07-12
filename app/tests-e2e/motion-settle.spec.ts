@@ -28,7 +28,7 @@
 
 import type { Page } from '@playwright/test'
 
-import { clearMistakes, expect, test } from './fixtures'
+import { clearMistakes, expect, seedMistake, test } from './fixtures'
 
 type Rect = { x: number; y: number; width: number; height: number }
 
@@ -193,6 +193,77 @@ test('A2 motion settles on static layout — animated rects match reduced-motion
   expect(
     drifts,
     `probes drifted >1px between animated-settled and reduced-static:\n${drifts.join('\n')}`,
+  ).toEqual([])
+})
+
+// The A2 MACRO flights (rail↔header numeral, section-door code): the
+// same settle law applied to the cross-route shared elements. Walk the
+// Öva hub → section-lane door via CLIENT-SIDE navigation (a full-page
+// goto never flies), once under reduced motion (flights disabled → true
+// static layout: the header station renders its plain numeral, the
+// eyebrow its plain strong) and once fully animated (numeral flight +
+// door morph). Every flight DESTINATION must land within 1px of the
+// static rect.
+test('A2 flights settle on static layout — numeral + door destinations within 1px', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile', 'flights are desktop rail↔page continuity')
+  await clearMistakes(page)
+  // One due ORD mistake so the numeral exists at both stations.
+  await seedMistake(page, 'var-2026-verb1-ORD-003')
+
+  const flightProbes = [
+    '[data-testid="due-station"]',
+    '[data-testid="due-station-numeral"]',
+    '[data-testid="drill-eyebrow"]',
+    '[data-testid="option-A"]',
+  ]
+
+  const walkDoor = async (): Promise<Record<string, Rect | null>> => {
+    await page.goto('/ova')
+    await expect(page.getByTestId('ova-lane-drill')).toBeVisible({ timeout: 15_000 })
+    await page.waitForLoadState('networkidle')
+    // Client-side door: the lane starts the drill directly (hub→q1).
+    await page.getByTestId('ova-section-ORD').click()
+    await expect(page.getByTestId('option-A')).toBeVisible({ timeout: 30_000 })
+    await expect(page.getByTestId('due-station')).toBeVisible({ timeout: 15_000 })
+    await waitSettled(page, flightProbes)
+    const out: Record<string, Rect | null> = {}
+    for (const s of flightProbes) out[s] = await rectOf(page, s)
+    return out
+  }
+
+  // Pass A — reduced motion: flights disabled, static layout.
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  const staticRects = await walkDoor()
+
+  // Pass B — full motion: the numeral flies rail→station, the section
+  // code morphs lane→eyebrow. (The session from pass A is adopted —
+  // same plan, same q1 — so content is identical across passes.)
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  const animatedRects = await walkDoor()
+
+  const drifts: string[] = []
+  for (const key of Object.keys(staticRects)) {
+    const a = staticRects[key]
+    const b = animatedRects[key]
+    if (!a || !b) {
+      drifts.push(`${key}: present in one pass only (static=${!!a}, animated=${!!b})`)
+      continue
+    }
+    const worst = Math.max(
+      Math.abs(a.x - b.x),
+      Math.abs(a.y - b.y),
+      Math.abs(a.width - b.width),
+      Math.abs(a.height - b.height),
+    )
+    if (worst > 1) {
+      drifts.push(`${key}: drift ${worst.toFixed(2)}px (static ${JSON.stringify(a)} vs animated ${JSON.stringify(b)})`)
+    }
+  }
+  expect(
+    drifts,
+    `flight destinations drifted >1px from static layout:\n${drifts.join('\n')}`,
   ).toEqual([])
 })
 

@@ -29,7 +29,7 @@ import { useExplanation } from '@/components/drill-variants/useExplanation'
 import { MathText } from '@/components/MathText'
 import { pickTactic } from '@/components/pre-grade/pregrade-tactics'
 import type { AnswerLetter, Option, Question } from '@/data/questions'
-import { DRAG, optWordLayoutId, useArketMotion } from '@/lib/motion'
+import { DRAG, optWordLayoutId, sectionDoorLayoutId, useArketMotion } from '@/lib/motion'
 import { parseNogPrompt } from '@/lib/nogPrompt'
 import { RAIL_STATEMENTS, railMeta, sectionLongLabel } from '@/lib/sectionRailLabel'
 
@@ -169,9 +169,22 @@ export function DrillQuestion({
   // (M3.tsx L873-893); multi-part pages give the eyebrow its own first rail
   // row (M3.tsx L1026-1039) so 'Texten'/'Frågan' labels stay on their rows.
   const mergeEyebrow = hasEyebrow && promptIsShort && !hasContext && !question.figure
+  // The section-door landing station (A2 "the row is the door"): the
+  // code that morphed out of the Öva-hub lane / Home plan row / the
+  // loading interstitial settles here, as the question's eyebrow. Only
+  // session mounts carry the eyebrow, so facit-review re-mounts never
+  // duplicate the layoutId.
   const eyebrowMeta = (
     <>
-      <strong>{question.section}</strong>
+      {ark.rm ? (
+        <strong>{question.section}</strong>
+      ) : (
+        // No display override — .hpc-m3-meta strong keeps its block
+        // line; the layout animation handles the box directly.
+        <motion.strong layoutId={sectionDoorLayoutId(question.section)} transition={ark.arket}>
+          {question.section}
+        </motion.strong>
+      )}
       {position} / {total}
     </>
   )

@@ -6,33 +6,41 @@
 // positional slides, no translate-in entrances (One Sheet law). The
 // effect reads as the page re-inking under a fixed reading window.
 //
-// Placement: this wraps the <Outlet /> in __root. In this app the nav
-// rail lives INSIDE each route (Page → RailShell), so it is part of the
-// scene subtree. Because the rail's markup is identical across routes,
-// an opacity crossfade of two identical rails is visually steady — the
-// only rail delta that reads is the active-door accent, which re-inks
-// with the page rather than sliding. Hoisting the rail to a persistent
-// root frame (so it is provably untouched) is a larger refactor tracked
-// separately; the crossfade already honours "no slides, no rail motion
-// of position".
+// Placement: this wraps the <Outlet /> in __root, inside ONE root
+// <LayoutGroup> — the group that lets material shared between scenes
+// (the due numeral, a section-door code, the ark-kort sheet) travel as
+// a single object via layoutId across the route change.
 //
-// Mode: `wait`, not `popLayout`. The task's reference used popLayout on a
-// SINGLE fixture stage, where overlapping the outgoing + incoming scenes
-// is the crossfade. At ROUTE scale that overlap mounts the ENTIRE next
-// route subtree alongside the old one for the exit's duration — which
-// duplicates every landmark and testid (two <main>s, two `drill-idle`s)
-// and, for two full-viewport pages, stacks them rather than crossfading.
-// That is jank, not the one-sheet re-ink. `wait` keeps exactly one scene
-// mounted: the outgoing ink lifts off first (ut, leading), then the
-// incoming ink dries in (tork) — "exits lead entrances" read literally,
-// no doubled DOM, no positional slide. Deviation from the literal
-// popLayout instruction, made for correctness; see the report.
+// Mode: `popLayout`, with a STATIC SNAPSHOT as the exit material.
+// Two constraints meet here:
+//
+//   1. Cross-route layoutId flights need the old station's snapshot and
+//      the new station's mount to land in the SAME React commit — which
+//      overlap (popLayout) gives and `wait` does not (with `wait` the
+//      new scene mounts a full animation later, after the old members'
+//      projection snapshots are discarded).
+//
+//   2. TanStack's <Outlet/> is LIVE: the exiting scene's outlet
+//      re-resolves to the NEW route the moment navigation commits. An
+//      exiting scene that renders React children therefore duplicates
+//      the incoming page — two <main>s, two sets of testids, and worst,
+//      a second SessionPlayer whose effects double-fire.
+//
+//   So the exiting scene renders no React at all: on every family
+//   change the outgoing scene's DOM is cloned (render-phase, before
+//   React mutates it), stripped of testids/ids, and that inert clone is
+//   what fades out — the literal old ink lifting off the sheet. It is
+//   `aria-hidden` + `inert` + `data-exiting` (one live main landmark at
+//   all times; no focus, no clicks), and popLayout pins it absolute
+//   over the incoming scene so full-viewport pages crossfade instead of
+//   stacking.
 
-import { useLocation } from '@tanstack/react-router'
-import { AnimatePresence, motion } from 'motion/react'
-import type { ReactNode } from 'react'
+import { useRouterState } from '@tanstack/react-router'
+import { AnimatePresence, LayoutGroup, motion, useIsPresent } from 'motion/react'
+import { type ReactNode, type Ref, useRef } from 'react'
 
-import { EASE, useArketMotion } from '@/lib/motion'
+import { makeExitClone, StaticExitInk } from '@/components/motion/exitInk'
+import { EASE, handoffDelay, useArketMotion } from '@/lib/motion'
 
 /** Map a pathname to its scene family, for per-pair handoff delays. */
 function sceneFamily(pathname: string): string {
@@ -51,31 +59,131 @@ function sceneFamily(pathname: string): string {
   return pathname.split('/')[1] || 'home'
 }
 
-export function RouteScene({ children }: { children: ReactNode }) {
-  const location = useLocation()
+function Scene({
+  ref,
+  family,
+  enterDelay,
+  sceneRef,
+  exitInk,
+  children,
+}: {
+  /** Forwarded to the motion element — REQUIRED by AnimatePresence's
+   *  popLayout mode, which measures the exiting child through its ref to
+   *  pin it position:absolute. Without it the exiting scene stays in
+   *  flow and the two scenes stack vertically instead of crossfading. */
+  ref?: Ref<HTMLDivElement>
+  family: string
+  enterDelay: number
+  /** RouteScene's handle on the LIVE scene's DOM, for exit cloning. */
+  sceneRef: (el: HTMLDivElement | null, family: string) => void
+  /** The static clone to show while exiting (never live React). */
+  exitInk: (family: string) => HTMLElement | null
+  children: ReactNode
+}) {
   const ark = useArketMotion()
-  const family = sceneFamily(location.pathname)
+  // Present = the live scene. The moment presence is lost (exit began)
+  // the scene leaves the accessibility tree and the interaction plane,
+  // and its content is swapped for the static exit clone — unmounting
+  // the old route's React subtree (whose <Outlet/> would otherwise
+  // re-resolve to the NEW route) in the very commit the new scene
+  // mounts, which is also what hands the layoutId flights their
+  // departure snapshots.
+  const present = useIsPresent()
+  return (
+    <motion.div
+      ref={(el: HTMLDivElement | null) => {
+        if (typeof ref === 'function') ref(el)
+        else if (ref) ref.current = el
+        if (present) sceneRef(el, family)
+      }}
+      data-scene={family}
+      data-exiting={present ? undefined : 'true'}
+      aria-hidden={present ? undefined : true}
+      inert={present ? undefined : true}
+      initial={{ opacity: 0 }}
+      animate={{
+        opacity: 1,
+        transition: ark.rm
+          ? { duration: 0 }
+          : { duration: 0.2, ease: [...EASE.reading], delay: enterDelay },
+      }}
+      exit={{
+        opacity: 0,
+        // The exit leads (ut register); the incoming scene's ink waits
+        // out its per-pair handoff delay so the two never double-expose.
+        transition: ark.rm ? { duration: 0 } : { duration: 0.09, ease: [...EASE.exit] },
+      }}
+      style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}
+    >
+      {present ? children : <StaticExitInk node={exitInk(family)} />}
+    </motion.div>
+  )
+}
+
+export function RouteScene({ children }: { children: ReactNode }) {
+  // Key scenes off the COMMITTED matches, not `useLocation`. During an
+  // async route transition (code-split chunks) the location store
+  // updates first while <Outlet/> keeps rendering the OLD matches — a
+  // location-keyed scene would re-key in that window and REMOUNT the
+  // old route inside the new scene (double-firing its mount effects;
+  // found as a /drill session re-adopt that bounced the URL back and
+  // cancelled the navigation). `state.matches` flips in the same store
+  // update the outlet renders from, so the scene key and the scene
+  // content always swap in one commit.
+  const pathname = useRouterState({
+    select: (s) => s.matches[s.matches.length - 1]?.pathname ?? s.location.pathname,
+  })
+  const family = sceneFamily(pathname)
+  // The nav pair (from → to), for the per-pair handoff delay. Stored as
+  // a pair (not a bare prev) so StrictMode's double render can't smear
+  // it: the second render sees `to === family` and keeps `from` intact.
+  const pairRef = useRef<{ from: string | null; to: string }>({ from: null, to: family })
+  // Live scene DOM + per-family exit clones. The clone is taken in the
+  // RENDER PHASE of the navigation render — the last moment the old
+  // scene's DOM is still the old route's pixels (React hasn't committed
+  // the outlet re-resolution yet). cloneNode is read-only on the live
+  // tree, so this is render-safe; StrictMode's double render just
+  // clones twice.
+  const liveSceneEl = useRef<HTMLDivElement | null>(null)
+  const exitClones = useRef(new Map<string, HTMLElement>())
+  if (pairRef.current.to !== family) {
+    const from = pairRef.current.to
+    if (liveSceneEl.current) {
+      exitClones.current.set(from, makeExitClone(liveSceneEl.current))
+    }
+    pairRef.current = { from, to: family }
+  }
+  const enterDelay = handoffDelay(pairRef.current.from, family)
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={family}
-        data-scene={family}
-        initial={{ opacity: 0 }}
-        animate={{
-          opacity: 1,
-          transition: ark.rm ? { duration: 0 } : { duration: 0.2, ease: [...EASE.reading] },
+    <LayoutGroup>
+      <div
+        style={{
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          flex: 1,
+          minHeight: 0,
         }}
-        exit={{
-          opacity: 0,
-          // The exit leads; `mode="wait"` finishes it before the next
-          // scene's ink dries in.
-          transition: ark.rm ? { duration: 0 } : { duration: 0.09, ease: [...EASE.exit] },
-        }}
-        style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}
       >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+        <AnimatePresence
+          mode="popLayout"
+          initial={false}
+          onExitComplete={() => exitClones.current.clear()}
+        >
+          <Scene
+            key={family}
+            family={family}
+            enterDelay={enterDelay}
+            sceneRef={(el) => {
+              if (el) liveSceneEl.current = el
+            }}
+            exitInk={(f) => exitClones.current.get(f) ?? null}
+          >
+            {children}
+          </Scene>
+        </AnimatePresence>
+      </div>
+    </LayoutGroup>
   )
 }

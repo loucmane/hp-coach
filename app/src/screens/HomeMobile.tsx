@@ -18,6 +18,7 @@
 // is prescriptive and completion stays signal-derived — no manual
 // "mark complete", no regenerate affordance.
 
+import { motion } from 'motion/react'
 import { type ReactNode, useEffect, useState } from 'react'
 
 import type { MockResultRow } from '@/api/hooks/useMockResults'
@@ -37,6 +38,7 @@ import { useViewport } from '@/hooks/useViewport'
 import { formatSwedishHeader } from '@/lib/dates'
 import type { DiagnosticMemory } from '@/lib/diagnosticMemory'
 import { logMockEvent } from '@/lib/mockEvents'
+import { ARK_KORT_LAYOUT_ID, useArketMotion } from '@/lib/motion'
 import type { DailyPlan, MockPrescription } from '@/lib/scheduler'
 import { formatDeltaSv, formatScoreSv, type ProjectedTotal } from '@/lib/scoring'
 import type { CoachKey } from '@/lib/voice'
@@ -303,9 +305,16 @@ export function HomeMobile({
 }
 
 function PlanSkeleton() {
+  const ark = useArketMotion()
+  // ark-kort (A2 "Klart folds home"): the skeleton is the day-card
+  // slot's first tenant — it mounts in the SAME commit as the Home
+  // scene, so a Klart panel folding home lands here, then hands the
+  // sheet to DailyPlanCard / CompletePanel when the plan resolves.
   return (
-    <div
+    <motion.div
       data-testid="daily-plan-skeleton"
+      layoutId={ark.rm ? undefined : ARK_KORT_LAYOUT_ID}
+      transition={ark.arket}
       style={{
         marginTop: 32,
         fontFamily: 'var(--font-mono)',
@@ -316,7 +325,7 @@ function PlanSkeleton() {
       }}
     >
       Laddar dagens plan …
-    </div>
+    </motion.div>
   )
 }
 
