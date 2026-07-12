@@ -27,7 +27,8 @@
 
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
-
+import { MOTA2 } from '@/components/devbake/MotionArketFullbordad'
+import { MOTA1 } from '@/components/devbake/MotionArketRedigerad'
 import { MOTC1, MOTC2 } from '@/components/devbake/MotionBakeoffC'
 import { MOTP1, MOTP2 } from '@/components/devbake/MotionBakeoffP'
 import { MOTB2 } from '@/components/devbake/MotionBlacket2'
@@ -56,6 +57,11 @@ const VARIANTS = [
   { key: 'f2', label: 'F2 · Arket', C: MOTF2 },
   { key: 'f3', label: 'F3 · Partituret', C: MOTF3 },
   { key: 'f4', label: 'F4 · Greppet', C: MOTF4 },
+  // Round 4 — owner verdict: Arket as base + Greppet's drag-to-commit,
+  // refined against the "powerpoint jank" kill-list (settle-verified).
+  // A1 improves by subtraction, A2 by fit-and-finish.
+  { key: 'a1', label: 'A1 · Arket, redigerad', C: MOTA1 },
+  { key: 'a2', label: 'A2 · Arket, fullbordad', C: MOTA2 },
 ] as const
 
 function MotionBakeoffPage() {
