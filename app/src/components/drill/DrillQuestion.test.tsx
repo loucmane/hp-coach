@@ -86,6 +86,36 @@ describe('DrillQuestion pre-answer apparatus', () => {
     expect(screen.queryByText('Välj svar')).not.toBeInTheDocument()
   })
 
+  it('keeps the picked word rendered IN the option list after grading (also flies to utfall)', () => {
+    // Owner regression: on a wrong answer the picked word used to vanish
+    // from the "välj synonym" list (its layoutId instance flew to the
+    // verdict, leaving a hidden spacer). It must now stay legible in the
+    // row — a plain graded copy — while the verdict copy exists too.
+    render(<DrillQuestion question={ORD_QUESTION} picked="B" graded onPick={() => {}} />)
+    const pickedRow = screen.getByTestId('option-B')
+    expect(pickedRow).toHaveAttribute('data-state', 'incorrect')
+    // The word text is present and visible inside the row (not a
+    // visibility:hidden spacer).
+    const wordCell = pickedRow.querySelector('.hpc-m3-opt-t')
+    expect(wordCell).not.toBeNull()
+    expect(wordCell).toHaveTextContent('motivera')
+    expect(wordCell?.querySelector('[style*="visibility: hidden"]')).toBeNull()
+  })
+
+  it('all five options remain legible post-grade', () => {
+    render(<DrillQuestion question={ORD_QUESTION} picked="B" graded onPick={() => {}} />)
+    const expected: Record<string, string> = {
+      A: 'fundera över',
+      B: 'motivera',
+      C: 'anklaga',
+      D: 'skryta',
+      E: 'undvika',
+    }
+    for (const [letter, word] of Object.entries(expected)) {
+      expect(screen.getByTestId(`option-${letter}`)).toHaveTextContent(word)
+    }
+  })
+
   it('shows the dynamic keys hint pre-grade and hides it once graded', () => {
     const { rerender } = render(
       <DrillQuestion question={ORD_QUESTION} picked={null} graded={false} onPick={() => {}} />,

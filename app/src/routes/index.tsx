@@ -8,7 +8,7 @@
 import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react'
-import { useDueMistakes } from '@/api/hooks/useMistakes'
+import { useActiveMistakes } from '@/api/hooks/useMistakes'
 import { useMockResults } from '@/api/hooks/useMockResults'
 import { useSessionHistory } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
@@ -44,7 +44,12 @@ function HomeRoute() {
   const firstName = user?.firstName ?? user?.fullName?.split(' ')[0] ?? null
 
   const streakDays = stats.data?.streakDays
-  const dueCount = useDueMistakes().data?.length ?? 0
+  // The phone tab bar's Öva numeral (threaded through as ovaDueCount) counts
+  // the WHOLE active repetition queue so it matches the desktop rail numeral
+  // and rolls up on a fresh mistake. The Home daily-plan prescription still
+  // uses the due count (useDailyPlan → useDueMistakes) — that's the ripe-now
+  // "N mogna missar" number, a different vocabulary on purpose.
+  const dueCount = useActiveMistakes().data?.length ?? 0
   const topTraps = useTopTraps()
   const recentPasses = useSessionHistory()
 

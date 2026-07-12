@@ -527,7 +527,12 @@ function repetitionItem(count: number, date: string): PlanItem {
   // user knows there's more behind today's session.
   const playable = Math.min(count, REPETITION_SESSION_SIZE)
   const queueTotal = count
-  const noun = playable === 1 ? 'miss' : 'missar'
+  // "mogna" = these are the DUE (ripe-now) missar the plan prescribes for
+  // today — the actionable slice, NOT the whole repetition queue (that
+  // larger number is the nav numeral's "hela kön"). Labelling it "mogna"
+  // stops the plan row from reading as the total. `count` here is the due
+  // count (useDailyPlan feeds it from useDueMistakes).
+  const noun = playable === 1 ? 'mogen miss' : 'mogna missar'
   const headline =
     queueTotal > playable
       ? `Repetition · ${playable} av ${queueTotal} ${noun}`

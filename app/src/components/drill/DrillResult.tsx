@@ -26,6 +26,7 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { type CSSProperties, type ReactNode, useEffect, useMemo, useState } from 'react'
 
+import { useActiveMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
 import { DrillQuestion } from '@/components/drill/DrillQuestion'
 import { MathText } from '@/components/MathText'
@@ -71,6 +72,14 @@ export function DrillResult({ summary, onReplay, onHome, continuation }: Props) 
     [questions, picks],
   )
   const cluster = useTrapCluster(missedQids)
+
+  // The Imorgon coda names the WHOLE repetition queue (active, scope=all),
+  // not just this pass's misses — by the time this mounts SessionPlayer has
+  // logged the fresh mistakes and invalidated the active query, so this
+  // run's misses are already counted here. This is the same numeral the nav
+  // rail shows, so the two can never disagree (the owner's core complaint).
+  // The per-pass "till repetition" stat below stays session-scoped.
+  const activeCount = useActiveMistakes().data?.length ?? 0
 
   // Post-session section prognosis. By the time this mounts the
   // attempts have landed, so the score already includes this pass.
@@ -145,7 +154,16 @@ export function DrillResult({ summary, onReplay, onHome, continuation }: Props) 
                 <div className="hpc-m3-stat-n">{passScore.toFixed(2).replace('.', ',')}</div>
                 <div className="hpc-m3-stat-l">detta pass</div>
                 {passDeltaShown && passDelta != null && (
-                  <div className="hpc-m3-stat-d">
+                  // Color by SIGN, not hard-coded green: a pass BELOW your
+                  // average is a negative delta and must read red (--bad), a
+                  // pass at/above reads green (--ok). The CSS class keeps the
+                  // layout (size/margin); the inline color overrides its
+                  // hard-coded --ok.
+                  <div
+                    className="hpc-m3-stat-d"
+                    data-testid="drill-result-delta"
+                    style={{ color: passDelta >= 0 ? 'var(--ok)' : 'var(--bad)' }}
+                  >
                     {passDelta >= 0 ? '+' : '−'}
                     {Math.abs(passDelta).toFixed(2).replace('.', ',')} mot snittet
                   </div>
@@ -202,9 +220,8 @@ export function DrillResult({ summary, onReplay, onHome, continuation }: Props) 
               'Inga missar — inget att repetera. Snyggt.'
             ) : (
               <>
-                Att repetera imorgon: {missedQids.length}{' '}
-                {missedQids.length === 1 ? 'fråga' : 'frågor'} — de ligger först i morgondagens
-                plan.
+                I repetitionskön: {activeCount} {activeCount === 1 ? 'fråga' : 'frågor'} — dina nya
+                missar ligger först i morgondagens plan.
                 {cluster?.headline && (
                   <>
                     {' '}

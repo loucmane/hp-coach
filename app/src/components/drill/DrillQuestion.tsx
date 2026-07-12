@@ -347,8 +347,9 @@ export function DrillQuestion({
                 onPick(opt.letter)
               }}
               graded={graded}
-              // The picked row's word flies to the verdict (layoutId), so
-              // its in-row instance becomes a width-holding placeholder.
+              // The picked row's word flies to the verdict (layoutId) AND
+              // stays rendered in place (a plain graded copy) so it exists
+              // in both the option list and the utfall.
               picked={graded && opt.letter === picked}
               // Drag is a premium accelerator, never required: text
               // options only (a figure/prose row has no clean strip),
@@ -434,8 +435,9 @@ function OptionRow({
   /** Commit this option with the release velocity (0 for click/keyboard). */
   onCommit: (velocity: number) => void
   graded: boolean
-  /** True when this is the graded row the user picked — its word has
-   *  flown to the verdict, so the in-row instance is a hidden spacer. */
+  /** True when this is the graded row the user picked — its word flew to
+   *  the verdict AND stays in place as a plain graded copy (so the word
+   *  is legible in both the option list and the utfall). */
   picked: boolean
   /** Drag is enabled (text option, pre-grade, full motion). */
   canDrag: boolean
@@ -585,9 +587,17 @@ function OptionRow({
       <span className="hpc-m3-opt-k">{opt.letter.toLowerCase()}</span>
       <span className="hpc-m3-opt-t" style={{ position: 'relative' }}>
         {picked && !rm ? (
-          // The word has flown to the verdict — hold its box so the
-          // graded row keeps its height and background (state intact).
-          <span style={{ visibility: 'hidden' }}>{wordInner}</span>
+          // The picked word ALSO flew up to the verdict (UTFALL) — but it
+          // must still EXIST here, in place, so the option list stays
+          // legible post-grade (owner: the word must be in both the
+          // "välj synonym" list AND the utfall). We render a PLAIN copy
+          // (no layoutId) so this instance stays put and takes the row's
+          // graded treatment (is-bad strike / is-ok, via .hpc-m3-opt-t).
+          // The flight still animates: the layoutId element that lived
+          // here during answering unmounts as the verdict's matching
+          // layoutId mounts, so motion tweens from this row's last rect
+          // up to the verdict. The source word never visibly vanishes.
+          <span style={{ display: 'inline-block' }}>{wordInner}</span>
         ) : rm || opt.figure ? (
           wordInner
         ) : (

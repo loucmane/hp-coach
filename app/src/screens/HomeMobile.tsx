@@ -239,7 +239,14 @@ export function HomeMobile({
                   <div className="hpc-m3-stat-n">{formatScoreSv(projected.total)}</div>
                   <div className="hpc-m3-stat-l">prognos av 2,0</div>
                   {projectedDelta != null && (
-                    <div className="hpc-m3-stat-d">
+                    // Color by sign, not hard-coded green (same rule as the
+                    // DrillResult pass-delta): a week-over-week drop reads red.
+                    // A flat 0 delta stays green (≥0). The CSS class keeps the
+                    // layout; inline color overrides its hard-coded --ok.
+                    <div
+                      className="hpc-m3-stat-d"
+                      style={{ color: projectedDelta >= 0 ? 'var(--ok)' : 'var(--bad)' }}
+                    >
                       {formatDeltaSv(projectedDelta)} sedan förra veckan
                     </div>
                   )}

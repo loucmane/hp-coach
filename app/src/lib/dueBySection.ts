@@ -1,9 +1,12 @@
-// Per-section due-repetition derivation for the Öva hub lanes.
+// Per-section mistake-count derivation for the Öva hub lanes.
 //
 // The hub's section rows carry the bake-off's live folio signal ("N
-// väntar") — each lane shows how many due mistakes belong to THAT
-// section, derived from the same due-mistakes rows the nav numeral
-// reads. Real data or nothing: a section with zero due shows no number.
+// väntar") — each lane shows how many mistakes belong to THAT section.
+// The counter itself is agnostic about WHICH slice of the queue it's
+// fed: the Öva lanes now pass the ACTIVE queue (scope=all) so the lane
+// counts match the living nav numeral and roll up the instant a wrong
+// answer is logged — but the same function counts the due-now slice too
+// when that's the honest signal. See `countsBySection` below.
 //
 // Sections are derived from the qid, whose shape is stable across the
 // whole corpus: `{exam}-{half}-{SECTION}-{number}` — the second-to-last
@@ -25,16 +28,22 @@ export function sectionOfQid(qid: string): Section | null {
   return token && SECTION_SET.has(token) ? (token as Section) : null
 }
 
-/** Count due mistakes per section. Every section key is present (0 when
- *  clean) so consumers can index without guards; unresolvable rows are
- *  dropped, never mis-bucketed. */
-export function dueCountsBySection(
-  due: readonly Pick<Mistake, 'questionId'>[] | undefined,
+/** Count mistakes per section for whatever slice of the queue is passed
+ *  (active or due — the counter doesn't care which). Every section key
+ *  is present (0 when clean) so consumers can index without guards;
+ *  unresolvable rows are dropped, never mis-bucketed. */
+export function countsBySection(
+  rows: readonly Pick<Mistake, 'questionId'>[] | undefined,
 ): Record<Section, number> {
   const out = Object.fromEntries(SECTION_KEYS.map((s) => [s, 0])) as Record<Section, number>
-  for (const row of due ?? []) {
+  for (const row of rows ?? []) {
     const section = sectionOfQid(row.questionId)
     if (section) out[section] += 1
   }
   return out
 }
+
+/** @deprecated Prefer `countsBySection` — the slice (active vs due) is the
+ *  caller's choice, not this function's. Kept as an alias so existing
+ *  imports keep compiling. */
+export const dueCountsBySection = countsBySection
