@@ -30,6 +30,7 @@ import { useState } from 'react'
 
 import { MOTC1, MOTC2 } from '@/components/devbake/MotionBakeoffC'
 import { MOTP1, MOTP2 } from '@/components/devbake/MotionBakeoffP'
+import { MOTB2 } from '@/components/devbake/MotionBlacket2'
 import { isDevSurface } from '@/lib/devSurface'
 
 export const Route = createFileRoute('/dev_/motion-bakeoff')({
@@ -41,6 +42,11 @@ const VARIANTS = [
   { key: 'p2', label: 'P2 · Bläckets väg', C: MOTP2 },
   { key: 'c1', label: 'C1 · Trycket', C: MOTC1 },
   { key: 'c2', label: 'C2 · Bläcket', C: MOTC2 },
+  // Round 2 — the owner picked Bläcket but judged the CSS-keyframe round
+  // "pretty basic". B2 rebuilds the grammar on motion/react: a walkable
+  // flow with interruptible springs, layoutId shared elements, and a
+  // velocity-thresholded gesture. Judge choreography, not clips.
+  { key: 'b2', label: 'B2 · Bläcket 2.0', C: MOTB2 },
 ] as const
 
 function MotionBakeoffPage() {
