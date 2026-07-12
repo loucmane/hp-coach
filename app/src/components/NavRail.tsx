@@ -35,7 +35,7 @@
 import { Link, useLocation } from '@tanstack/react-router'
 import { type CSSProperties, type ReactNode, useEffect, useMemo, useState } from 'react'
 
-import { useDueMistakes } from '@/api/hooks/useMistakes'
+import { useActiveMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { useResumptionCandidate } from '@/components/home/useResumptionCandidate'
@@ -166,7 +166,13 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
   // Real folio signals — wired via the live hooks, not fixtures. A door
   // with no honest number simply renders no numeral (signals are real
   // data or nothing).
-  const due = useDueMistakes()
+  //
+  // The Öva numeral counts the WHOLE active repetition queue (scope=all),
+  // not just what's due now — so it rolls UP the instant a wrong answer is
+  // logged mid-drill, even though that mistake isn't due until tomorrow
+  // (numeral = hela repetitionskön; the /repetition CTA + Home plan use
+  // the due count). Label stays "att repetera".
+  const due = useActiveMistakes()
   const stats = useStats()
   const dueCount = due.data?.length ?? 0
   const weekDelta = useMemo(() => {

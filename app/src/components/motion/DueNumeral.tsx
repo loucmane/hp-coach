@@ -21,7 +21,7 @@
 
 import { motion } from 'motion/react'
 import type { CSSProperties } from 'react'
-import { useDueMistakes } from '@/api/hooks/useMistakes'
+import { useActiveMistakes } from '@/api/hooks/useMistakes'
 import { DigitRoll } from '@/components/motion/DigitRoll'
 import { useViewport } from '@/hooks/useViewport'
 import { DUE_NUMERAL_LAYOUT_ID, useArketMotion } from '@/lib/motion'
@@ -94,7 +94,10 @@ export function DueNumeral({
  */
 export function DueHeaderStation() {
   const viewport = useViewport()
-  const due = useDueMistakes()
+  // The header station is a flight destination of the rail numeral, so it
+  // MUST read the same source — the whole active queue (scope=all), not the
+  // due-now slice — or the number would jump when it flies between stations.
+  const due = useActiveMistakes()
   const count = due.data?.length ?? 0
   if (viewport === 'phone' || count === 0) return null
   return (

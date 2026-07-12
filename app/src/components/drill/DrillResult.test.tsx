@@ -23,6 +23,14 @@ vi.mock('@/api/hooks/useStats', () => ({
 vi.mock('@/lib/trapCluster', () => ({
   useTrapCluster: () => null,
 }))
+// The Imorgon coda reads the whole active repetition queue. Mutable so a
+// test can assert the synced total shows in the copy.
+let mockActiveCount = 0
+vi.mock('@/api/hooks/useMistakes', () => ({
+  useActiveMistakes: () => ({
+    data: Array.from({ length: mockActiveCount }, (_, i) => ({ id: i })),
+  }),
+}))
 
 function sectionStats(attempts90d: number, correct90d: number) {
   return {
@@ -63,6 +71,7 @@ const SUMMARY = {
 describe('DrillResult (facit rebuild)', () => {
   beforeEach(() => {
     mockStats = undefined
+    mockActiveCount = 0
   })
 
   it('renders Klart., the stats row, and one facit row per question', () => {
@@ -90,9 +99,13 @@ describe('DrillResult (facit rebuild)', () => {
     expect(screen.queryByTestId('drill-prompt')).not.toBeInTheDocument()
   })
 
-  it('the imorgon coda names the repetition load', () => {
+  it('the imorgon coda names the synced repetition-queue total (not the session count)', () => {
+    // The whole active queue is 5 (this pass's misses already logged in).
+    mockActiveCount = 5
     render(<DrillResult summary={SUMMARY} onReplay={() => {}} onHome={() => {}} />)
-    expect(screen.getByTestId('drill-result-tomorrow')).toHaveTextContent(/1 fråga/)
+    const tomorrow = screen.getByTestId('drill-result-tomorrow')
+    expect(tomorrow).toHaveTextContent(/I repetitionskön: 5 frågor/)
+    expect(tomorrow).toHaveTextContent(/dina nya missar ligger först/)
   })
 
   it("shows the pass score's delta vs the section average when stats exist", () => {
@@ -105,6 +118,24 @@ describe('DrillResult (facit rebuild)', () => {
     expect(pass).toHaveTextContent('−0,07 mot snittet')
     // the section prognosis stat is also present
     expect(screen.getByTestId('drill-result-detaljer')).toHaveTextContent('ORD-prognos')
+  })
+
+  it('renders a NEGATIVE pass delta in red (var(--bad)), not green', () => {
+    // Below-average pass (1,33 vs 1,40 prognosis) → delta −0,07 → red.
+    mockStats = { bySection: { ORD: sectionStats(100, 70) } }
+    render(<DrillResult summary={SUMMARY} onReplay={() => {}} onHome={() => {}} />)
+    const delta = screen.getByTestId('drill-result-delta')
+    expect(delta).toHaveTextContent('−0,07 mot snittet')
+    expect(delta).toHaveStyle({ color: 'var(--bad)' })
+  })
+
+  it('renders a POSITIVE pass delta in green (var(--ok))', () => {
+    // Weak average (50/100 → 1,00) so this 1,33 pass beats it: +0,33 → green.
+    mockStats = { bySection: { ORD: sectionStats(100, 50) } }
+    render(<DrillResult summary={SUMMARY} onReplay={() => {}} onHome={() => {}} />)
+    const delta = screen.getByTestId('drill-result-delta')
+    expect(delta).toHaveTextContent('+0,33 mot snittet')
+    expect(delta).toHaveStyle({ color: 'var(--ok)' })
   })
 
   // WCAG 2.2 AA regression net (2026-07 a11y pass) — see the matching

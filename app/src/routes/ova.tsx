@@ -21,13 +21,13 @@ import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 import { useMemo } from 'react'
 
-import { useDueMistakes } from '@/api/hooks/useMistakes'
+import { useActiveMistakes, useDueMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { SECTION_KEYS, type Section } from '@/data/questions'
-import { dueCountsBySection } from '@/lib/dueBySection'
+import { countsBySection } from '@/lib/dueBySection'
 import { sectionDoorLayoutId, useArketMotion } from '@/lib/motion'
 import { TAB_ROUTE } from '@/lib/nav'
 import { computeSectionScore, rankWeakness } from '@/lib/scoring'
@@ -39,15 +39,22 @@ export const Route = createFileRoute('/ova')({
 function OvaRoute() {
   const navigate = useNavigate()
   const stats = useStats()
+  // Two vocabularies (see useMistakes.ts):
+  //   - active = the whole repetition queue → the nav numeral + the
+  //     per-section "N väntar" lane counts (matches the numeral, rolls up
+  //     on a fresh mistake).
+  //   - due = ripe-now → the repetera lane's "mogna för återkoppling"
+  //     copy and CTA (you can only replay what's ripe).
+  const active = useActiveMistakes()
   const due = useDueMistakes()
+  const activeCount = active.data?.length ?? 0
   const dueCount = due.data?.length ?? 0
   const ark = useArketMotion()
 
-  // The bake-off's live per-lane folio signal: how many due repetitions
-  // each section carries RIGHT NOW, derived from the same due-mistakes
-  // rows the nav numeral counts. Zero due → no number (real data or
-  // nothing).
-  const dueBySection = useMemo(() => dueCountsBySection(due.data), [due.data])
+  // The live per-lane folio signal: how many mistakes each section carries
+  // in the ACTIVE queue — same slice the nav numeral counts, so the lane
+  // numbers and the numeral agree. Zero → no number (real data or nothing).
+  const activeBySection = useMemo(() => countsBySection(active.data), [active.data])
 
   // The scheduler's suggestion — the weakest section with real signal.
   // Null on a cold start (no ranking signal yet), which just means no
@@ -63,7 +70,7 @@ function OvaRoute() {
       tabs
       activeTab="ova"
       onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
-      ovaDueCount={dueCount}
+      ovaDueCount={activeCount}
     >
       <Page
         runningHead={['HP · COACH', 'Öva']}
@@ -108,7 +115,7 @@ function OvaRoute() {
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
               {SECTION_KEYS.map((s) => {
                 const hot = s === weakest
-                const laneDue = dueBySection[s]
+                const laneDue = activeBySection[s]
                 return (
                   // The row is the door (A2): the lane starts the drill
                   // IMMEDIATELY (`start: true` — no idle interstitial on
@@ -205,8 +212,15 @@ function OvaRoute() {
               }}
             >
               {dueCount > 0
-                ? `${dueCount} ${dueCount === 1 ? 'miss' : 'missar'} är mogna för återkoppling — de äldsta först.`
-                : 'Kön är tom just nu — allt du missat är återlärt. Repetitionen står kvar här ändå.'}
+                ? // "mogna" = due now (replayable). When the whole queue is
+                  // larger, name the total as "i kön" so the two numbers can't
+                  // be confused — you replay the ripe ones, the rest wait.
+                  `${dueCount} ${dueCount === 1 ? 'miss' : 'missar'} ${dueCount === 1 ? 'är mogen' : 'är mogna'} för återkoppling — de äldsta först.${
+                    activeCount > dueCount ? ` ${activeCount} i kön totalt.` : ''
+                  }`
+                : activeCount > 0
+                  ? `Inget är moget för återkoppling just nu — ${activeCount} ${activeCount === 1 ? 'miss ligger' : 'missar ligger'} i kön och mognar snart.`
+                  : 'Kön är tom just nu — allt du missat är återlärt. Repetitionen står kvar här ändå.'}
             </p>
             <Link
               to="/repetition"
@@ -217,7 +231,11 @@ function OvaRoute() {
                 color: dueCount === 0 ? 'var(--muted)' : laneCta.color,
               }}
             >
-              {dueCount > 0 ? `Repetera ${Math.min(dueCount, 10)} →` : 'Kön är tom'}
+              {dueCount > 0
+                ? `Repetera ${Math.min(dueCount, 10)} →`
+                : activeCount > 0
+                  ? 'Inget moget än'
+                  : 'Kön är tom'}
             </Link>
           </DrillRailSection>
         </div>

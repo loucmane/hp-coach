@@ -32,7 +32,7 @@ function makePlan(overrides: Partial<DailyPlan> = {}): DailyPlan {
         id: 'rep-2026-05-18',
         kind: 'repetition',
         section: null,
-        headline: 'Repetition · 3 missar',
+        headline: 'Repetition · 3 mogna missar',
         rationale: 'Gör dem först — de förlorar effekt om de väntar.',
         estimatedMinutes: 3,
         href: '/repetition',
@@ -74,11 +74,11 @@ describe('HomeMobile — plan rendering', () => {
     render(<HomeMobile forceLayout="phone" plan={makePlan()} />)
     expect(screen.getByTestId('daily-plan-card')).toBeInTheDocument()
     // The ProgressSigil's zero-state marginalia also renders the first
-    // pending item's headline ("Börja med: Repetition · 3 missar"), so
+    // pending item's headline ("Börja med: Repetition · 3 mogna missar"), so
     // scope the plan-row assertion to the DailyPlanCard instead of a
-    // bare getByText — otherwise "Repetition · 3 missar" matches twice.
+    // bare getByText — otherwise "Repetition · 3 mogna missar" matches twice.
     const planCard = screen.getByTestId('daily-plan-card')
-    expect(within(planCard).getByText('Repetition · 3 missar')).toBeInTheDocument()
+    expect(within(planCard).getByText('Repetition · 3 mogna missar')).toBeInTheDocument()
     expect(within(planCard).getByText('NOG-lektion')).toBeInTheDocument()
     expect(within(planCard).getByText('KVA-drill · 10 frågor')).toBeInTheDocument()
   })

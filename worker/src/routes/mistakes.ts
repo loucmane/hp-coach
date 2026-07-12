@@ -63,6 +63,17 @@ const DueQuery = z
     // enough rows to render the total accurately. Dogfood scale
     // (single user, SRS spacing) keeps the active set well under 500.
     limit: z.coerce.number().int().min(1).max(500).default(10),
+    // Which slice of the queue to return:
+    //   - "due" (default) — only mistakes whose nextReviewAt has elapsed
+    //     (or is NULL): what the user can replay RIGHT NOW ("mogna nu").
+    //   - "all" — every active mistake regardless of nextReviewAt: the
+    //     whole repetition queue ("hela repetitionskön"). Powers the
+    //     living nav numeral, which must roll up the instant a fresh
+    //     mistake is logged even though that mistake is scheduled for
+    //     tomorrow and so is NOT yet due. Same sort, same cap.
+    // These two vocabularies (numeral = active; plan/CTA = due) are used
+    // consistently across every surface — see the app-side comments.
+    scope: z.enum(['due', 'all']).default('due'),
   })
   .strict()
 
@@ -134,12 +145,17 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // This keeps the queue from accumulating — long-overdue items rise
   // to the top instead of being buried under recent mistakes.
   .get('/due', zValidator('query', DueQuery), async (c) => {
-    const { section, limit } = c.req.valid('query')
+    const { section, limit, scope } = c.req.valid('query')
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
     const now = new Date()
 
-    const dueClause = or(isNull(mistakes.nextReviewAt), lte(mistakes.nextReviewAt, now))
+    // scope="all" drops the nextReviewAt gate — every active mistake counts,
+    // due or not — so the caller sees the whole queue. scope="due" (default)
+    // keeps the ripe-only gate the replay flow relies on. Everything else
+    // (sort, cap, section filter, auth) is identical between the two.
+    const dueClause =
+      scope === 'all' ? null : or(isNull(mistakes.nextReviewAt), lte(mistakes.nextReviewAt, now))
     const conds = dueClause
       ? [eq(mistakes.userId, userId), eq(mistakes.status, 'active'), dueClause]
       : [eq(mistakes.userId, userId), eq(mistakes.status, 'active')]

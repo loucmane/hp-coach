@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { dueCountsBySection, sectionOfQid } from './dueBySection'
+import { countsBySection, dueCountsBySection, sectionOfQid } from './dueBySection'
 
 describe('sectionOfQid', () => {
   it('reads the second-to-last dash segment as the section', () => {
@@ -20,9 +20,9 @@ describe('sectionOfQid', () => {
   })
 })
 
-describe('dueCountsBySection', () => {
+describe('countsBySection', () => {
   it('buckets rows per section and zero-fills every section key', () => {
-    const counts = dueCountsBySection([
+    const counts = countsBySection([
       { questionId: 'host-2022-verb1-ORD-001' },
       { questionId: 'host-2022-verb1-ORD-002' },
       { questionId: 'var-2026-kvant1-XYZ-004' },
@@ -34,12 +34,28 @@ describe('dueCountsBySection', () => {
   })
 
   it('drops unresolvable rows instead of mis-bucketing', () => {
-    const counts = dueCountsBySection([{ questionId: 'q1' }, { questionId: 'trasig' }])
+    const counts = countsBySection([{ questionId: 'q1' }, { questionId: 'trasig' }])
     expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(0)
   })
 
   it('tolerates undefined input (query still loading)', () => {
-    const counts = dueCountsBySection(undefined)
+    const counts = countsBySection(undefined)
     expect(counts.ORD).toBe(0)
+  })
+
+  it('counts whatever slice it is fed — the active queue includes not-yet-due rows', () => {
+    // The Öva lanes now feed the ACTIVE queue (scope=all), so a section can
+    // show a lane count that exceeds its due-now count. The counter is
+    // slice-agnostic: pass active rows in, get per-section active counts out.
+    const active = countsBySection([
+      { questionId: 'var-2026-verb1-ORD-001' }, // due now
+      { questionId: 'var-2026-verb1-ORD-002' }, // scheduled tomorrow — still active
+      { questionId: 'var-2026-verb1-ORD-003' }, // scheduled tomorrow — still active
+    ])
+    expect(active.ORD).toBe(3)
+  })
+
+  it('dueCountsBySection remains a working alias', () => {
+    expect(dueCountsBySection([{ questionId: 'host-2022-verb1-MEK-001' }]).MEK).toBe(1)
   })
 })
