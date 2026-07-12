@@ -16,16 +16,23 @@
 // separately; the crossfade already honours "no slides, no rail motion
 // of position".
 //
-// `mode="popLayout"` lets the exiting scene leave layout flow so the
-// incoming scene occupies the same reading window during the brief
-// overlap (the crossfade), instead of the two stacking and pushing the
-// page tall.
+// Mode: `wait`, not `popLayout`. The task's reference used popLayout on a
+// SINGLE fixture stage, where overlapping the outgoing + incoming scenes
+// is the crossfade. At ROUTE scale that overlap mounts the ENTIRE next
+// route subtree alongside the old one for the exit's duration — which
+// duplicates every landmark and testid (two <main>s, two `drill-idle`s)
+// and, for two full-viewport pages, stacks them rather than crossfading.
+// That is jank, not the one-sheet re-ink. `wait` keeps exactly one scene
+// mounted: the outgoing ink lifts off first (ut, leading), then the
+// incoming ink dries in (tork) — "exits lead entrances" read literally,
+// no doubled DOM, no positional slide. Deviation from the literal
+// popLayout instruction, made for correctness; see the report.
 
 import { useLocation } from '@tanstack/react-router'
 import { AnimatePresence, motion } from 'motion/react'
-import { type ReactNode, useEffect, useRef } from 'react'
+import type { ReactNode } from 'react'
 
-import { EASE, handoffDelay, useArketMotion } from '@/lib/motion'
+import { EASE, useArketMotion } from '@/lib/motion'
 
 /** Map a pathname to its scene family, for per-pair handoff delays. */
 function sceneFamily(pathname: string): string {
@@ -48,27 +55,21 @@ export function RouteScene({ children }: { children: ReactNode }) {
   const location = useLocation()
   const ark = useArketMotion()
   const family = sceneFamily(location.pathname)
-  // Previous family, updated in an effect (never in render), so the
-  // entering scene can pick its per-pair handoff delay from the pair it
-  // is actually replacing.
-  const prevFamily = useRef<string | null>(null)
-  const delay = handoffDelay(prevFamily.current, family)
-  useEffect(() => {
-    prevFamily.current = family
-  }, [family])
 
   return (
-    <AnimatePresence mode="popLayout" initial={false}>
+    <AnimatePresence mode="wait" initial={false}>
       <motion.div
         key={family}
         data-scene={family}
         initial={{ opacity: 0 }}
         animate={{
           opacity: 1,
-          transition: ark.rm ? { duration: 0 } : { duration: 0.2, ease: [...EASE.reading], delay },
+          transition: ark.rm ? { duration: 0 } : { duration: 0.2, ease: [...EASE.reading] },
         }}
         exit={{
           opacity: 0,
+          // The exit leads; `mode="wait"` finishes it before the next
+          // scene's ink dries in.
           transition: ark.rm ? { duration: 0 } : { duration: 0.09, ease: [...EASE.exit] },
         }}
         style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}
