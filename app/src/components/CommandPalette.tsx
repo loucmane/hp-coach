@@ -13,6 +13,7 @@
 import { useNavigate } from '@tanstack/react-router'
 import { type KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { copyDebugSnapshot } from '@/lib/debugSnapshot'
 import { isDevSurface } from '@/lib/devSurface'
 import { Mono } from './primitives'
 
@@ -148,14 +149,20 @@ const COMMANDS: Command[] = [
     keywords: ['dev', 'debug', 'panel', 'tweaks'],
     action: ({ navigate }) => navigate({ to: '/dev' }),
   },
+  {
+    id: 'share-debug',
+    label: 'Kopiera felsökningssnapshot',
+    hint: 'skärmens tillstånd → urklipp, klistra in i chatten',
+    keywords: ['share', 'debug', 'snapshot', 'felsökning', 'urklipp', 'kopiera'],
+    action: () => void copyDebugSnapshot(),
+  },
 ]
 
-// IDs that surface only when isDevSurface() returns true — same gate
-// TweaksLauncher and ShareDebugButton use, so all three dev-only
-// affordances appear/disappear together (dogfood B10). Without this
-// the palette showed "Dev panel /DEV" on every production session
-// even though the floating launcher already correctly hid itself.
-const DEV_ONLY_COMMAND_IDS = new Set(['dev'])
+// IDs that surface only when isDevSurface() returns true (dogfood
+// B10). The former floating pills (TweaksLauncher, ShareDebugButton)
+// are gone — owner call 2026-07-12: they occluded page content; the
+// palette is the one home for dev affordances now.
+const DEV_ONLY_COMMAND_IDS = new Set(['dev', 'share-debug'])
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false)

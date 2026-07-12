@@ -1,4 +1,6 @@
-// Dev-only "share debug snapshot" button — sibling of TweaksLauncher.
+// Dev-only "share debug snapshot" capture — invoked from the ⌘K
+// palette (the floating pill it used to be was occluding page content;
+// owner call 2026-07-12: pills removed, actions live in the palette).
 //
 // Use case: the user sees something visibly wrong on a question (font,
 // glyph, layout) and instead of describing it from memory, they hit this
@@ -8,8 +10,8 @@
 // prompt) and write it to the clipboard as a markdown report. The user
 // pastes it back to me as a single message, no screenshot drudgery.
 //
-// Visibility: same gate as TweaksLauncher — `import.meta.env.DEV` or
-// `?dev=1` flag, sticky via sessionStorage. Hidden in pure prod builds.
+// Visibility: the palette command is gated by isDevSurface() like all
+// dev-only affordances — hidden in pure prod sessions.
 //
 // Why not use the chrome-devtools console / right-click? Because
 // gathering all the relevant signals manually each time is tedious,
@@ -17,11 +19,6 @@
 // the moment the bug appears) before it changes via a route transition
 // or a Clerk re-auth.
 
-import { useRouterState } from '@tanstack/react-router'
-import { useState } from 'react'
-
-import { useViewport } from '@/hooks/useViewport'
-import { isDevSurface } from '@/lib/devSurface'
 import { useCoachStore } from '@/stores/coachStore'
 import { useUiStore } from '@/stores/uiStore'
 
@@ -308,75 +305,14 @@ function buildSnapshot(): string {
   return lines.join('\n')
 }
 
-export function ShareDebugButton() {
-  const here = useRouterState({ select: (s) => s.location.pathname })
-  const viewport = useViewport()
-  const [status, setStatus] = useState<'idle' | 'copied' | 'error'>('idle')
-
-  if (!isDevSurface()) return null
-  if (here === '/dev') return null
-
-  // Same viewport-aware lift as TweaksLauncher (its sibling, right:130
-  // vs right:18) — see that component for why `bottom: 18` alone
-  // occludes the phone tab bar.
-  const bottomOffset = viewport === 'phone' ? 'calc(var(--frame-tabbar) + 12px)' : 18
-
-  const onClick = async () => {
-    try {
-      const snapshot = buildSnapshot()
-      await navigator.clipboard.writeText(snapshot)
-      setStatus('copied')
-      setTimeout(() => setStatus('idle'), 2000)
-    } catch (e) {
-      console.error('share-debug clipboard write failed', e)
-      setStatus('error')
-      setTimeout(() => setStatus('idle'), 2500)
-    }
+/** Build the snapshot and put it on the clipboard. Palette command
+ *  entry point. Returns true on success. */
+export async function copyDebugSnapshot(): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(buildSnapshot())
+    return true
+  } catch (e) {
+    console.error('share-debug clipboard write failed', e)
+    return false
   }
-
-  const label =
-    status === 'copied' ? 'kopierat ✓' : status === 'error' ? 'fel — se konsol' : 'share'
-
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label="Kopiera felsökningssnapshot till urklipp"
-      data-testid="share-debug-button"
-      style={{
-        position: 'fixed',
-        // Sits left of the tweaks launcher (which is at right: 18).
-        // Roughly 100px wide; gap 10px.
-        right: 130,
-        bottom: bottomOffset,
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 8,
-        padding: '8px 12px',
-        background: status === 'copied' ? 'var(--accent)' : 'var(--panel)',
-        color: status === 'copied' ? 'var(--bg)' : 'var(--ink-2)',
-        border: '1px solid var(--hairline)',
-        borderRadius: 999,
-        fontFamily: 'var(--font-mono)',
-        fontSize: 11,
-        letterSpacing: 'var(--font-mono-track)',
-        cursor: 'pointer',
-        boxShadow: '0 8px 20px -10px rgba(0,0,0,0.18)',
-        zIndex: 50,
-        transition: 'background 200ms, color 200ms',
-      }}
-    >
-      <span
-        aria-hidden
-        style={{
-          width: 6,
-          height: 6,
-          borderRadius: 3,
-          background: status === 'copied' ? 'var(--bg)' : 'var(--ink-2)',
-          opacity: 0.6,
-        }}
-      />
-      {label}
-    </button>
-  )
 }
