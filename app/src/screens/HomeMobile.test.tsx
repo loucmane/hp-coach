@@ -26,7 +26,11 @@ function makePlan(overrides: Partial<DailyPlan> = {}): DailyPlan {
   return {
     version: PLAN_SCHEMA_VERSION,
     date: '2026-05-18',
-    estimatedMinutes: 18,
+    // Sum of the not-completed items below (3 + 5 + 6). The plan card's
+    // margin recomputes from the visible rows rather than echoing this
+    // field (so a mock item's minutes never leak into a list that renders
+    // it as the Kallelse), so keep the fixture internally consistent.
+    estimatedMinutes: 14,
     items: [
       {
         id: 'rep-2026-05-18',
@@ -87,8 +91,9 @@ describe('HomeMobile — plan rendering', () => {
     render(<HomeMobile forceLayout="phone" plan={makePlan()} />)
     // M3H: the plan section's margin rail carries "Idag" + "~N min ·
     // uppskattat" — the qualifier sets expectation that the total is
-    // heuristic, not a measured commitment.
-    expect(screen.getByText(/~18 min · uppskattat/i)).toBeInTheDocument()
+    // heuristic, not a measured commitment. The value is the sum of the
+    // visible numbered rows (3 + 5 + 6).
+    expect(screen.getByText(/~14 min · uppskattat/i)).toBeInTheDocument()
   })
 
   it('renders the "Klart för idag" complete panel when allComplete is true', () => {

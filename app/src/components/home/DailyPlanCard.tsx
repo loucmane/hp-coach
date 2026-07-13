@@ -15,7 +15,7 @@ import { motion } from 'motion/react'
 
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { ARK_KORT_LAYOUT_ID, sectionDoorLayoutId, useArketMotion } from '@/lib/motion'
-import type { DailyPlan, PlanItem } from '@/lib/scheduler'
+import { type DailyPlan, type PlanItem, repetitionCopy } from '@/lib/scheduler'
 
 type DailyPlanCardProps = {
   plan: DailyPlan
@@ -24,9 +24,51 @@ type DailyPlanCardProps = {
    *  href so the route can pick a navigation strategy. Defaults to
    *  the anchor's native behaviour when omitted (full-page nav). */
   onNavigate?: (href: string) => void
+  /** LIVE due-mistake count (useDueMistakes → HomeRoute → HomeMobile).
+   *  The repetition row's count is live data, not a prescription baked
+   *  into the cached plan — so its headline/rationale/minutes are
+   *  recomputed from THIS at render time, overriding whatever the plan
+   *  cached at generation. Undefined (not resolved, or a caller that
+   *  doesn't wire it) → fall back to the cached strings unchanged. */
+  dueMistakeCount?: number
 }
 
-export function DailyPlanCard({ plan, allComplete, onNavigate }: DailyPlanCardProps) {
+/** Repetition rows carry LIVE data, not a frozen prescription: the cached
+ *  plan may hold a stale count and pre-#283 copy ("Repetition · 4 missar")
+ *  while the real due queue has moved on. Recompute the row from the
+ *  current due count so the number and copy are always honest.
+ *   - count === 0  → the queue is empty right now: render completed-style
+ *     ("Kön är tom just nu") rather than a false "0 missar" prescription.
+ *   - count > 0    → override headline/rationale/minutes from repetitionCopy
+ *     (the same shape scheduler.ts snapshots), overriding the cache.
+ *  Non-repetition items, or an unresolved count, pass through untouched. */
+function withLiveData(item: PlanItem, dueMistakeCount: number | undefined): PlanItem {
+  if (item.kind !== 'repetition' || dueMistakeCount === undefined) return item
+  if (dueMistakeCount === 0) {
+    return {
+      ...item,
+      completed: true,
+      headline: 'Repetition · Kön är tom just nu',
+      rationale: 'Inga mogna missar just nu — kön är tom. Bra jobbat.',
+      estimatedMinutes: 0,
+    }
+  }
+  const copy = repetitionCopy(dueMistakeCount)
+  return {
+    ...item,
+    completed: false,
+    headline: copy.headline,
+    rationale: copy.rationale,
+    estimatedMinutes: copy.estimatedMinutes,
+  }
+}
+
+export function DailyPlanCard({
+  plan,
+  allComplete,
+  onNavigate,
+  dueMistakeCount,
+}: DailyPlanCardProps) {
   const ark = useArketMotion()
   if (allComplete) {
     return <CompletePanel plan={plan} />
@@ -37,13 +79,27 @@ export function DailyPlanCard({ plan, allComplete, onNavigate }: DailyPlanCardPr
   // (rather than a per-row guard in PlanRow) keeps the ordinal numbering
   // contiguous for the remaining items and avoids a `verbFor` case for
   // the mock kind.
-  const rows = plan.items.filter((item) => item.kind !== 'mock')
+  const rows = plan.items
+    .filter((item) => item.kind !== 'mock')
+    .map((item) => withLiveData(item, dueMistakeCount))
 
   // Mock-only day (pure provpass-dag): every item was filtered out, so the
   // Kallelse above IS the day's plan — render nothing rather than a bare
   // "Dagens plan" heading over an empty list (and a margin-rail minute count
   // that would just double-count the summons's own "· 55 minuter").
   if (rows.length === 0) return null
+
+  // Margin minute estimate reflects the VISIBLE numbered rows only, using
+  // the live-overridden repetition minutes — NOT `plan.estimatedMinutes`,
+  // which also counts the mock item that renders as the Kallelse (its ~55
+  // min is shown there, not here). Counting it in this margin implied
+  // invisible work ("~58 min" over a 3-min list). When an uncompleted mock
+  // still exists, name it explicitly instead of hiding its minutes.
+  const visibleMinutes = rows
+    .filter((item) => !item.completed)
+    .reduce((sum, item) => sum + item.estimatedMinutes, 0)
+  const hasUncompletedMock = plan.items.some((item) => item.kind === 'mock' && !item.completed)
+  const marginEstimate = `~${visibleMinutes} min${hasUncompletedMock ? ' + provpass' : ''} · uppskattat`
 
   // ark-kort (A2 "Klart folds home"): the day-card and the drill
   // completion panel's Klart block share this layoutId — finishing a
@@ -59,7 +115,7 @@ export function DailyPlanCard({ plan, allComplete, onNavigate }: DailyPlanCardPr
         meta={
           <>
             <strong>Idag</strong>
-            {`~${plan.estimatedMinutes} min · uppskattat`}
+            {marginEstimate}
           </>
         }
         delay={220}

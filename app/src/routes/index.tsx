@@ -8,7 +8,7 @@
 import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react'
-import { useActiveMistakes } from '@/api/hooks/useMistakes'
+import { useActiveMistakes, useDueMistakes } from '@/api/hooks/useMistakes'
 import { useMockResults } from '@/api/hooks/useMockResults'
 import { useSessionHistory } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
@@ -50,6 +50,13 @@ function HomeRoute() {
   // uses the due count (useDailyPlan → useDueMistakes) — that's the ripe-now
   // "N mogna missar" number, a different vocabulary on purpose.
   const dueCount = useActiveMistakes().data?.length ?? 0
+  // LIVE ripe-now ("mogna") count — the vocabulary the daily-plan
+  // repetition row speaks, distinct from the whole-queue `dueCount`
+  // (ovaDueCount) above. Threaded into HomeMobile → DailyPlanCard so the
+  // repetition row shows the current count, not the one cached in the
+  // plan. Same query key useDailyPlan already reads, so React Query
+  // dedupes — no extra request.
+  const dueMistakeCount = useDueMistakes().data?.length
   const topTraps = useTopTraps()
   const recentPasses = useSessionHistory()
 
@@ -132,6 +139,7 @@ function HomeRoute() {
       onAvancerat={() => navigate({ to: '/avancerat' })}
       onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
       ovaDueCount={dueCount}
+      dueMistakeCount={dueMistakeCount}
       mockPrescription={mockPrescription}
       lastMockResult={lastMockResult}
       accountMenu={<AccountMenu />}
