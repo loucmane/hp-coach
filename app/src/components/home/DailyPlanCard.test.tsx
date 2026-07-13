@@ -45,8 +45,8 @@ describe('DailyPlanCard — live repetition override', () => {
     render(<DailyPlanCard plan={plan} allComplete={false} dueMistakeCount={23} />)
 
     const row = screen.getByTestId('daily-plan-item-rep-2026-07-13')
-    // New copy (mogna missar, capped playable/total), not "4 missar".
-    expect(within(row).getByText(/Repetition · 10 av 23 mogna missar/)).toBeInTheDocument()
+    // New plain copy (no "mogna"), capped playable/total, not "4 missar".
+    expect(within(row).getByText(/Repetition · 10 av 23 missar/)).toBeInTheDocument()
     expect(screen.queryByText('Repetition · 4 missar')).not.toBeInTheDocument()
     // Live minutes: ceil(min(23,10) * 0.75) = 8.
     expect(within(row).getByText('~8 min')).toBeInTheDocument()

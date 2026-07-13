@@ -520,44 +520,41 @@ function mockItem(prescription: MockPrescription, date: string): PlanItem {
 }
 
 /** The presentation triple (headline / rationale / estimatedMinutes) a
- *  repetition item shows for a given DUE count. Extracted so the copy
- *  lives in ONE place: `repetitionItem` snapshots it at plan-generation
- *  time, and the Home render layer (DailyPlanCard) recomputes it from the
- *  LIVE due count to override a cached plan's stale strings/count — the
- *  repetition row's COUNT is live data, not a prescription decision.
+ *  repetition item shows. Extracted so the copy lives in ONE place:
+ *  `repetitionItem` snapshots it at plan-generation time, and the Home
+ *  render layer (DailyPlanCard) recomputes it from the LIVE counts to
+ *  override a cached plan's stale strings — the repetition row's COUNT is
+ *  live data, not a prescription decision.
  *
- *  `count` is the DUE (ripe-now) count — useDailyPlan feeds it from
- *  useDueMistakes. Caller handles the count === 0 case (empty queue); this
- *  helper always renders an actionable "N mogna missar" prescription. */
+ *  `dueCount` is the DUE (ripe-now) count — what /repetition actually
+ *  plays. `pileTotal` (optional) is today's whole "att repetera" pile —
+ *  the context total M in "N av M missar"; it defaults to `dueCount` when
+ *  the caller has no separate pile signal. Caller handles the dueCount === 0
+ *  case (nothing to play). Plain Swedish only — no "mogna/mogen" (owner
+ *  2026-07-13: the target user did not understand that vocabulary). */
 export type RepetitionCopy = {
   headline: string
   rationale: string
   estimatedMinutes: number
 }
 
-export function repetitionCopy(count: number): RepetitionCopy {
-  // Cap the displayed count to the per-session size so prescription and
-  // execution agree. `playable` is what /repetition actually plays;
-  // `queueTotal` is how many missar exist in the backlog. The headline
-  // surfaces both ("10 av 50 missar") when the backlog overflows so the
-  // user knows there's more behind today's session.
-  const playable = Math.min(count, REPETITION_SESSION_SIZE)
-  const queueTotal = count
-  // "mogna" = these are the DUE (ripe-now) missar the plan prescribes for
-  // today — the actionable slice, NOT the whole repetition queue (that
-  // larger number is the nav numeral's "hela kön"). Labelling it "mogna"
-  // stops the plan row from reading as the total.
-  const noun = playable === 1 ? 'mogen miss' : 'mogna missar'
+export function repetitionCopy(dueCount: number, pileTotal?: number): RepetitionCopy {
+  // `playable` is what /repetition plays this session (capped so the
+  // prescription and the execution agree). `total` is today's whole pile —
+  // surfaced as "N av M" only when it genuinely exceeds the playable slice,
+  // so the user knows there's more behind today's session.
+  const playable = Math.min(dueCount, REPETITION_SESSION_SIZE)
+  const total = Math.max(pileTotal ?? dueCount, dueCount)
   const headline =
-    queueTotal > playable
-      ? `Repetition · ${playable} av ${queueTotal} ${noun}`
-      : `Repetition · ${playable} ${noun}`
+    total > playable
+      ? `Repetition · ${playable} av ${total} missar`
+      : `Repetition · ${playable} ${playable === 1 ? 'miss' : 'missar'}`
   const rationale =
-    queueTotal === 1
-      ? '1 miss väntar på repetition — gör den först, den förlorar effekt om den väntar för länge.'
-      : queueTotal > playable
-        ? `${playable} av ${queueTotal} missar denna session — de äldsta först, de förlorar effekt om de väntar för länge.`
-        : `${queueTotal} missar väntar på repetition — gör dem först, de förlorar effekt om de väntar för länge.`
+    total > playable
+      ? `${playable} av ${total} missar — de äldsta först, de förlorar effekt om de väntar för länge.`
+      : dueCount === 1
+        ? '1 miss är redo att repeteras nu — gör den först, den förlorar effekt om den väntar för länge.'
+        : `${dueCount} missar är redo att repeteras nu — de äldsta först, de förlorar effekt om de väntar för länge.`
   return {
     headline,
     rationale,

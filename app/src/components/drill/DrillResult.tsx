@@ -26,7 +26,7 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { type CSSProperties, type ReactNode, useEffect, useMemo, useState } from 'react'
 
-import { useActiveMistakes } from '@/api/hooks/useMistakes'
+import { usePileMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
 import { DrillQuestion } from '@/components/drill/DrillQuestion'
 import { MathText } from '@/components/MathText'
@@ -73,13 +73,12 @@ export function DrillResult({ summary, onReplay, onHome, continuation }: Props) 
   )
   const cluster = useTrapCluster(missedQids)
 
-  // The Imorgon coda names the WHOLE repetition queue (active, scope=all),
-  // not just this pass's misses — by the time this mounts SessionPlayer has
-  // logged the fresh mistakes and invalidated the active query, so this
-  // run's misses are already counted here. This is the same numeral the nav
-  // rail shows, so the two can never disagree (the owner's core complaint).
-  // The per-pass "till repetition" stat below stays session-scoped.
-  const activeCount = useActiveMistakes().data?.length ?? 0
+  // The Imorgon coda names TODAY'S PILE (scope=pile) — the same "att
+  // repetera" number the nav rail shows, so the two can never disagree. By
+  // the time this mounts SessionPlayer has logged the fresh mistakes and
+  // invalidated the pile query, so this run's misses are already counted
+  // here. The per-pass "till repetition" stat below stays session-scoped.
+  const pileCount = usePileMistakes().data?.length ?? 0
 
   // Post-session section prognosis. By the time this mounts the
   // attempts have landed, so the score already includes this pass.
@@ -220,8 +219,8 @@ export function DrillResult({ summary, onReplay, onHome, continuation }: Props) 
               'Inga missar — inget att repetera. Snyggt.'
             ) : (
               <>
-                I repetitionskön: {activeCount} {activeCount === 1 ? 'fråga' : 'frågor'} — dina nya
-                missar ligger först i morgondagens plan.
+                Att repetera: {pileCount} {pileCount === 1 ? 'fråga' : 'frågor'} — dina nya missar
+                ligger först i morgondagens plan.
                 {cluster?.headline && (
                   <>
                     {' '}

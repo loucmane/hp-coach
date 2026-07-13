@@ -55,6 +55,13 @@ const Body = z
     // be a real question in the SPA's bank so the replay queue can render
     // it. Bounded like the other qid params in the API.
     questionId: z.string().min(1).max(80).optional(),
+    // Only read for action:'seed'. Backdates the seeded row's lastErrorAt
+    // by this many days so it models an OLDER miss (last errored on a prior
+    // day). scope=pile keys "correct → drops out of today's pile" on
+    // lastErrorAt being before today, so tests that verify the numeral
+    // ticks DOWN on a correct repetition need a non-today lastErrorAt.
+    // Default 0 → lastErrorAt = now (a fresh miss).
+    lastErrorDaysAgo: z.coerce.number().int().min(0).max(365).optional(),
   })
   .strict()
 
@@ -96,6 +103,7 @@ export const testResetRoute = new Hono<{ Bindings: Env; Variables: Vars }>().pos
     }
     if (action === 'seed') {
       const questionId = c.req.valid('json').questionId
+      const lastErrorDaysAgo = c.req.valid('json').lastErrorDaysAgo ?? 0
       if (!questionId) {
         return c.json(
           {
@@ -116,7 +124,7 @@ export const testResetRoute = new Hono<{ Bindings: Env; Variables: Vars }>().pos
           questionId,
           status: 'active',
           errorCount7d: 1,
-          lastErrorAt: new Date(),
+          lastErrorAt: new Date(Date.now() - lastErrorDaysAgo * 86_400_000),
           nextReviewAt: new Date(0),
           intervalMinutes: 0,
         })

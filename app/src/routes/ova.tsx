@@ -21,7 +21,7 @@ import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 import { useMemo } from 'react'
 
-import { useActiveMistakes, useDueMistakes } from '@/api/hooks/useMistakes'
+import { useDueMistakes, usePileMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
@@ -40,21 +40,20 @@ function OvaRoute() {
   const navigate = useNavigate()
   const stats = useStats()
   // Two vocabularies (see useMistakes.ts):
-  //   - active = the whole repetition queue → the nav numeral + the
-  //     per-section "N väntar" lane counts (matches the numeral, rolls up
-  //     on a fresh mistake).
-  //   - due = ripe-now → the repetera lane's "mogna för återkoppling"
-  //     copy and CTA (you can only replay what's ripe).
-  const active = useActiveMistakes()
+  //   - pile = today's "att repetera" pile → the nav numeral + the
+  //     per-section "N väntar" lane counts (matches the numeral exactly).
+  //   - due = ripe-now → what the repetera lane can actually replay right
+  //     now (drives the CTA and its enabled/disabled state).
+  const pile = usePileMistakes()
   const due = useDueMistakes()
-  const activeCount = active.data?.length ?? 0
+  const pileCount = pile.data?.length ?? 0
   const dueCount = due.data?.length ?? 0
   const ark = useArketMotion()
 
   // The live per-lane folio signal: how many mistakes each section carries
-  // in the ACTIVE queue — same slice the nav numeral counts, so the lane
-  // numbers and the numeral agree. Zero → no number (real data or nothing).
-  const activeBySection = useMemo(() => countsBySection(active.data), [active.data])
+  // in today's PILE — same slice the nav numeral counts, so the lane numbers
+  // and the numeral agree. Zero → no number (real data or nothing).
+  const pileBySection = useMemo(() => countsBySection(pile.data), [pile.data])
 
   // The scheduler's suggestion — the weakest section with real signal.
   // Null on a cold start (no ranking signal yet), which just means no
@@ -70,7 +69,7 @@ function OvaRoute() {
       tabs
       activeTab="ova"
       onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
-      ovaDueCount={activeCount}
+      ovaDueCount={pileCount}
     >
       <Page
         runningHead={['HP · COACH', 'Öva']}
@@ -115,7 +114,7 @@ function OvaRoute() {
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
               {SECTION_KEYS.map((s) => {
                 const hot = s === weakest
-                const laneDue = activeBySection[s]
+                const laneDue = pileBySection[s]
                 return (
                   // The row is the door (A2): the lane starts the drill
                   // IMMEDIATELY (`start: true` — no idle interstitial on
@@ -211,19 +210,25 @@ function OvaRoute() {
                 maxWidth: '46ch',
               }}
             >
-              {dueCount > 0
-                ? // "mogna" = due now (replayable). When the whole queue is
-                  // larger, name the total as "i kön" so the two numbers can't
-                  // be confused — you replay the ripe ones, the rest wait.
-                  `${dueCount} ${dueCount === 1 ? 'miss' : 'missar'} ${dueCount === 1 ? 'är mogen' : 'är mogna'} för återkoppling — de äldsta först.${
-                    activeCount > dueCount ? ` ${activeCount} i kön totalt.` : ''
-                  }`
-                : activeCount > 0
-                  ? `Inget är moget för återkoppling just nu — ${activeCount} ${activeCount === 1 ? 'miss ligger' : 'missar ligger'} i kön och mognar snart.`
-                  : 'Kön är tom just nu — allt du missat är återlärt. Repetitionen står kvar här ändå.'}
+              {pileCount > 0
+                ? // Prefer ONE number — today's pile — wherever the two agree.
+                  // Only when some of the pile isn't ripe yet do we name both
+                  // ("N redo nu · M i dagens hög"), since you replay the ripe
+                  // ones and the rest become ready soon.
+                  dueCount === pileCount
+                  ? `${pileCount} ${pileCount === 1 ? 'miss' : 'missar'} att repetera — de äldsta först.`
+                  : dueCount > 0
+                    ? `${dueCount} redo att repetera nu · ${pileCount} i dagens hög — de äldsta först.`
+                    : `Inget är redo just nu — ${pileCount} ${pileCount === 1 ? 'miss ligger' : 'missar ligger'} i dagens hög och blir redo snart.`
+                : 'Kön är tom just nu — allt du missat är återlärt. Repetitionen står kvar här ändå.'}
             </p>
             <Link
               to="/repetition"
+              // The row is the door (Fix C, owner 2026-07-13): tapping starts
+              // the repetition session immediately (?start=1 → autoStart), no
+              // idle interstitial — same pattern as the section lanes. Direct
+              // /repetition navigation keeps its idle screen.
+              search={{ start: true }}
               data-testid="ova-repetition"
               aria-disabled={dueCount === 0 ? true : undefined}
               style={{
@@ -233,8 +238,8 @@ function OvaRoute() {
             >
               {dueCount > 0
                 ? `Repetera ${Math.min(dueCount, 10)} →`
-                : activeCount > 0
-                  ? 'Inget moget än'
+                : pileCount > 0
+                  ? 'Inget redo än'
                   : 'Kön är tom'}
             </Link>
           </DrillRailSection>

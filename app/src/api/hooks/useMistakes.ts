@@ -1,30 +1,31 @@
 // Mistakes-replay hooks.
 //
-// Two vocabularies, used consistently across every surface (see the
-// queue-sync fix, 2026-07):
-//   - DUE   ("mogna nu")  = mistakes whose nextReviewAt has elapsed —
-//     what you can replay right now. Drives the /repetition flow, the
-//     Öva repetera-lane CTA, and the Home daily-plan prescription.
-//   - ACTIVE ("hela kön") = every active mistake regardless of schedule
-//     — the whole repetition queue. Drives the living nav numeral and
-//     the per-section "N väntar" lane counts, so a fresh mistake makes
-//     the number roll UP immediately even though it's scheduled for
-//     tomorrow and so is NOT yet due.
+// Vocabularies, used consistently across every surface:
+//   - DUE   ("redo nu") = mistakes whose nextReviewAt has elapsed — what
+//     you can replay right now. Drives the /repetition replay flow and the
+//     Home daily-plan's actionable "N att repetera" prescription.
+//   - PILE  ("att repetera", owner 2026-07-13) = TODAY'S PILE: active
+//     mistakes that are due now OR were touched today. This is the single
+//     number shown on every numeral station (nav rail, spine, phone tab,
+//     drill/repetition header), the Öva hub lanes, and DrillResult. It
+//     rolls UP the instant a wrong answer is logged (touched today) and
+//     DOWN the instant a correct repetition reschedules an older miss out
+//     — the intuitive "things to deal with today" count. Replaces the old
+//     "ACTIVE / hela kön" number that never went down on a correct answer.
+//   - ACTIVE ("hela kön", scope=all) = every active mistake regardless of
+//     schedule. Kept for any consumer that wants the unbounded queue.
 //
-// useDueMistakes(section?) — the ripe-now queue (scope=due). Used by
-//   /repetition (the actual replay flow) and the due-based CTAs/copy.
-//
-// useActiveMistakes(section?) — the whole active queue (scope=all). Used
-//   by the nav numeral stations, the Öva section lanes, and DrillResult's
-//   "i repetitionskön" total. Its own query key so the two never collide.
+// useDueMistakes(section?)   — ripe-now queue (scope=due).
+// usePileMistakes(section?)  — today's pile (scope=pile). The numeral hook.
+// useActiveMistakes(section?)— whole active queue (scope=all).
+// Each has its own query key so they never collide.
 //
 // useRecordMistake — POST /api/mistakes (upsert by questionId). Called
-//   from /drill on every wrong answer. Invalidates BOTH keys so the
-//   numeral (active) rolls up mid-drill and the due count stays honest.
-//
+//   from /drill AND /repetition on every wrong answer. Invalidates ALL
+//   keys so the pile numeral rolls and the due count stays honest.
 // useResolveMistake — PATCH /api/mistakes/:id { resolve: true }. Called
-//   from /repetition on every right answer that came from the queue.
-//   Also invalidates BOTH keys.
+//   from /repetition on every right answer. Also invalidates ALL keys so
+//   a correct repetition drops the pile numeral live.
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
@@ -37,6 +38,19 @@ const dueKeyForSection = (section?: string) =>
 const ACTIVE_KEY = ['mistakes', 'active'] as const
 const activeKeyForSection = (section?: string) =>
   section ? ([...ACTIVE_KEY, section] as const) : ACTIVE_KEY
+
+const PILE_KEY = ['mistakes', 'pile'] as const
+const pileKeyForSection = (section?: string) =>
+  section ? ([...PILE_KEY, section] as const) : PILE_KEY
+
+/** The client's local-midnight epoch (ms) — the "start of today" the
+ *  worker's scope=pile filter compares lastErrorAt against. The worker has
+ *  no user timezone, so the client owns this boundary. */
+function localDayStartEpoch(): number {
+  const d = new Date()
+  d.setHours(0, 0, 0, 0)
+  return d.getTime()
+}
 
 export type Mistake = {
   id: number
@@ -98,6 +112,35 @@ export function useActiveMistakes(section?: string) {
   })
 }
 
+/** TODAY'S PILE (scope=pile) — the single "att repetera" number every
+ *  numeral station shows. Active mistakes that are due now OR touched
+ *  today. Rolls up on a fresh wrong answer, down on a correct repetition;
+ *  a WRONG repetition leaves it dead static (the item was touched today,
+ *  so it stays). Same 500 limit reasoning as the others. */
+export function usePileMistakes(section?: string) {
+  const api = useApiClient()
+  return useQuery({
+    queryKey: pileKeyForSection(section),
+    queryFn: async () => {
+      const res = await api.api.mistakes.due.$get({
+        query: {
+          section,
+          limit: '500',
+          scope: 'pile',
+          dayStart: String(localDayStartEpoch()),
+        },
+      })
+      if (!res.ok) {
+        throw new Error(`GET /api/mistakes/due?scope=pile failed: ${res.status}`)
+      }
+      const body = await res.json()
+      return body.mistakes as Mistake[]
+    },
+    refetchInterval: 180_000,
+    refetchIntervalInBackground: false,
+  })
+}
+
 export function useRecordMistake() {
   const api = useApiClient()
   const qc = useQueryClient()
@@ -115,6 +158,7 @@ export function useRecordMistake() {
       // the idle banner count + replay list both reflect it next render.
       qc.invalidateQueries({ queryKey: DUE_KEY })
       qc.invalidateQueries({ queryKey: ACTIVE_KEY })
+      qc.invalidateQueries({ queryKey: PILE_KEY })
     },
   })
 }
@@ -137,6 +181,7 @@ export function useResolveMistake() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: DUE_KEY })
       qc.invalidateQueries({ queryKey: ACTIVE_KEY })
+      qc.invalidateQueries({ queryKey: PILE_KEY })
     },
   })
 }

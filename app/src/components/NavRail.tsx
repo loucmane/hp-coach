@@ -35,7 +35,7 @@
 import { Link, useLocation } from '@tanstack/react-router'
 import { type CSSProperties, type ReactNode, useEffect, useMemo, useState } from 'react'
 
-import { useActiveMistakes } from '@/api/hooks/useMistakes'
+import { usePileMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { useResumptionCandidate } from '@/components/home/useResumptionCandidate'
@@ -167,12 +167,12 @@ function NavRail({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
   // with no honest number simply renders no numeral (signals are real
   // data or nothing).
   //
-  // The Öva numeral counts the WHOLE active repetition queue (scope=all),
-  // not just what's due now — so it rolls UP the instant a wrong answer is
-  // logged mid-drill, even though that mistake isn't due until tomorrow
-  // (numeral = hela repetitionskön; the /repetition CTA + Home plan use
-  // the due count). Label stays "att repetera".
-  const due = useActiveMistakes()
+  // The Öva numeral counts TODAY'S PILE (scope=pile): due-now mistakes plus
+  // anything touched today. It rolls UP the instant a wrong answer is logged
+  // and DOWN the instant a correct repetition reschedules an older miss out
+  // — the single honest "att repetera" number, shared with the header
+  // station it flies into. Label stays "att repetera".
+  const due = usePileMistakes()
   const stats = useStats()
   const dueCount = due.data?.length ?? 0
   const weekDelta = useMemo(() => {

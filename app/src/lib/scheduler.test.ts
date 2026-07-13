@@ -102,9 +102,9 @@ describe('generateDailyPlan — rule 1 (due repetitions)', () => {
       }),
     )
     expect(plan.items[0].kind).toBe('repetition')
-    // "mogna" = the DUE (ripe-now) slice the plan prescribes today, disjoint
-    // from the nav numeral's whole-queue count (queue-sync fix, 2026-07).
-    expect(plan.items[0].headline).toBe('Repetition · 3 mogna missar')
+    // Plain Swedish, no "mogna" (owner 2026-07-13). N == pile here (no
+    // separate pile total passed), so a bare "N missar".
+    expect(plan.items[0].headline).toBe('Repetition · 3 missar')
     expect(plan.items[0].estimatedMinutes).toBe(3)
   })
 
@@ -115,8 +115,8 @@ describe('generateDailyPlan — rule 1 (due repetitions)', () => {
         sectionScores: [score('NOG', { score: 1.2 })],
       }),
     )
-    expect(plan.items[0].headline).toBe('Repetition · 1 mogen miss')
-    expect(plan.items[0].rationale).toContain('1 miss väntar')
+    expect(plan.items[0].headline).toBe('Repetition · 1 miss')
+    expect(plan.items[0].rationale).toContain('1 miss är redo att repeteras nu')
   })
 
   it('clamps estimatedMinutes to ≥1', () => {
@@ -140,9 +140,9 @@ describe('generateDailyPlan — rule 1 (due repetitions)', () => {
         sectionScores: [score('NOG', { score: 1.2 })],
       }),
     )
-    expect(plan.items[0].headline).toBe('Repetition · 10 av 50 mogna missar')
+    expect(plan.items[0].headline).toBe('Repetition · 10 av 50 missar')
     expect(plan.items[0].estimatedMinutes).toBe(8) // ceil(10 * 0.75)
-    expect(plan.items[0].rationale).toContain('10 av 50 missar denna session')
+    expect(plan.items[0].rationale).toContain('10 av 50 missar — de äldsta först')
   })
 })
 

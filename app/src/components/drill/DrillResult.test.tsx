@@ -23,12 +23,12 @@ vi.mock('@/api/hooks/useStats', () => ({
 vi.mock('@/lib/trapCluster', () => ({
   useTrapCluster: () => null,
 }))
-// The Imorgon coda reads the whole active repetition queue. Mutable so a
-// test can assert the synced total shows in the copy.
-let mockActiveCount = 0
+// The Imorgon coda reads today's PILE. Mutable so a test can assert the
+// synced total shows in the copy.
+let mockPileCount = 0
 vi.mock('@/api/hooks/useMistakes', () => ({
-  useActiveMistakes: () => ({
-    data: Array.from({ length: mockActiveCount }, (_, i) => ({ id: i })),
+  usePileMistakes: () => ({
+    data: Array.from({ length: mockPileCount }, (_, i) => ({ id: i })),
   }),
 }))
 
@@ -71,7 +71,7 @@ const SUMMARY = {
 describe('DrillResult (facit rebuild)', () => {
   beforeEach(() => {
     mockStats = undefined
-    mockActiveCount = 0
+    mockPileCount = 0
   })
 
   it('renders Klart., the stats row, and one facit row per question', () => {
@@ -100,11 +100,11 @@ describe('DrillResult (facit rebuild)', () => {
   })
 
   it('the imorgon coda names the synced repetition-queue total (not the session count)', () => {
-    // The whole active queue is 5 (this pass's misses already logged in).
-    mockActiveCount = 5
+    // Today's pile is 5 (this pass's misses already logged in).
+    mockPileCount = 5
     render(<DrillResult summary={SUMMARY} onReplay={() => {}} onHome={() => {}} />)
     const tomorrow = screen.getByTestId('drill-result-tomorrow')
-    expect(tomorrow).toHaveTextContent(/I repetitionskön: 5 frågor/)
+    expect(tomorrow).toHaveTextContent(/Att repetera: 5 frågor/)
     expect(tomorrow).toHaveTextContent(/dina nya missar ligger först/)
   })
 

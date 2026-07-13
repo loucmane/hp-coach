@@ -8,7 +8,7 @@
 import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react'
-import { useActiveMistakes, useDueMistakes } from '@/api/hooks/useMistakes'
+import { useDueMistakes, usePileMistakes } from '@/api/hooks/useMistakes'
 import { useMockResults } from '@/api/hooks/useMockResults'
 import { useSessionHistory } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
@@ -44,18 +44,16 @@ function HomeRoute() {
   const firstName = user?.firstName ?? user?.fullName?.split(' ')[0] ?? null
 
   const streakDays = stats.data?.streakDays
-  // The phone tab bar's Öva numeral (threaded through as ovaDueCount) counts
-  // the WHOLE active repetition queue so it matches the desktop rail numeral
-  // and rolls up on a fresh mistake. The Home daily-plan prescription still
-  // uses the due count (useDailyPlan → useDueMistakes) — that's the ripe-now
-  // "N mogna missar" number, a different vocabulary on purpose.
-  const dueCount = useActiveMistakes().data?.length ?? 0
-  // LIVE ripe-now ("mogna") count — the vocabulary the daily-plan
-  // repetition row speaks, distinct from the whole-queue `dueCount`
-  // (ovaDueCount) above. Threaded into HomeMobile → DailyPlanCard so the
-  // repetition row shows the current count, not the one cached in the
-  // plan. Same query key useDailyPlan already reads, so React Query
-  // dedupes — no extra request.
+  // The phone tab bar's Öva numeral (threaded through as ovaDueCount) shows
+  // TODAY'S PILE (usePileMistakes) so it matches the desktop rail/header
+  // numeral exactly — rolls up on a fresh miss, down on a correct
+  // repetition.
+  const pileCount = usePileMistakes().data?.length
+  const ovaDueCount = pileCount ?? 0
+  // LIVE ripe-now ("redo nu") count — the actionable slice the daily-plan
+  // repetition row plays. Threaded into HomeMobile → DailyPlanCard as the
+  // playable N; the pile above is the context total M ("N av M"). Same
+  // query keys useDailyPlan already reads, so React Query dedupes.
   const dueMistakeCount = useDueMistakes().data?.length
   const topTraps = useTopTraps()
   const recentPasses = useSessionHistory()
@@ -138,8 +136,9 @@ function HomeRoute() {
       firstName={firstName}
       onAvancerat={() => navigate({ to: '/avancerat' })}
       onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
-      ovaDueCount={dueCount}
+      ovaDueCount={ovaDueCount}
       dueMistakeCount={dueMistakeCount}
+      pileMistakeCount={pileCount}
       mockPrescription={mockPrescription}
       lastMockResult={lastMockResult}
       accountMenu={<AccountMenu />}
