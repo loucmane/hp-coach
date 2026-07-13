@@ -181,9 +181,7 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     } else if (scope === 'pile') {
       const dueNow = or(isNull(mistakes.nextReviewAt), lte(mistakes.nextReviewAt, now))
       scopeClause =
-        dayStart != null
-          ? or(dueNow, gte(mistakes.lastErrorAt, new Date(dayStart)))
-          : dueNow
+        dayStart != null ? or(dueNow, gte(mistakes.lastErrorAt, new Date(dayStart))) : dueNow
     }
     const conds = scopeClause
       ? [eq(mistakes.userId, userId), eq(mistakes.status, 'active'), scopeClause]

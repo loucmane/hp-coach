@@ -224,11 +224,15 @@ describe("GET /api/mistakes/due — scope=pile (today's pile)", () => {
     // count a repeated stumble.
     const { app, env } = appFor('u1')
     const record = (questionId: string) =>
-      app.request('/', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ questionId }),
-      }, env)
+      app.request(
+        '/',
+        {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ questionId }),
+        },
+        env,
+      )
     await record('var-2026-verb1-ORD-006')
     await record('var-2026-verb1-ORD-006')
     const { body } = await getDue('u1', { scope: 'pile', dayStart })
