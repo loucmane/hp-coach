@@ -21,7 +21,7 @@
 
 import { motion } from 'motion/react'
 import type { CSSProperties } from 'react'
-import { useActiveMistakes } from '@/api/hooks/useMistakes'
+import { usePileMistakes } from '@/api/hooks/useMistakes'
 import { DigitRoll } from '@/components/motion/DigitRoll'
 import { useViewport } from '@/hooks/useViewport'
 import { DUE_NUMERAL_LAYOUT_ID, useArketMotion } from '@/lib/motion'
@@ -67,17 +67,20 @@ export function DueNumeral({
     <motion.span
       data-testid={testid}
       layoutId={ark.rm ? undefined : DUE_NUMERAL_LAYOUT_ID}
-      // Gate the layout projection: measure/animate ONLY when the count
-      // changes (a roll) — never on every render. Without this, the
-      // owning station (drill/repetition header) re-projects on every
-      // question advance, and any incidental re-measure of the surrounding
-      // reading column springs the numeral → the visible bounce on "Nästa
-      // fråga" (owner report, staging). The enter/leave flight between the
-      // rail and the header survives: that's a shared-layout transition
-      // driven by the layoutId node MOUNTING at a new station under
-      // RouteScene's LayoutGroup, which measures on mount regardless of
-      // this dependency.
-      layoutDependency={count}
+      // Freeze the layout projection to a STABLE dependency so the numeral
+      // NEVER re-projects on a count change — position moves only on a
+      // genuine station change. Fix B (owner 2026-07-13): with
+      // layoutDependency={count}, every count change (frequent on
+      // /repetition, where a correct answer drops the pile by 1) re-measured
+      // the shared-layout box, and any incidental re-measure of the
+      // surrounding reading column in that frame SPRANG the numeral — the
+      // positional bounce the owner saw on /repetition (and, on a wrong
+      // answer, on /drill). The VALUE change is owned entirely by the
+      // DigitRoll child (a masked roll, in place). The rail↔header FLIGHT
+      // still works: it is a shared-layout transition driven by the layoutId
+      // node MOUNTING at a new station under RouteScene's LayoutGroup, which
+      // measures on mount regardless of this constant dependency.
+      layoutDependency={DUE_NUMERAL_LAYOUT_ID}
       transition={ark.arket}
       style={{
         display: 'inline-flex',
@@ -106,9 +109,10 @@ export function DueNumeral({
 export function DueHeaderStation() {
   const viewport = useViewport()
   // The header station is a flight destination of the rail numeral, so it
-  // MUST read the same source — the whole active queue (scope=all), not the
-  // due-now slice — or the number would jump when it flies between stations.
-  const due = useActiveMistakes()
+  // MUST read the same source — today's PILE (scope=pile), the same "att
+  // repetera" number the rail shows — or the number would jump when it flies
+  // between stations.
+  const due = usePileMistakes()
   const count = due.data?.length ?? 0
   if (viewport === 'phone' || count === 0) return null
   return (

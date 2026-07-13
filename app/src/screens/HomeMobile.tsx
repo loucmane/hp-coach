@@ -90,12 +90,16 @@ type HomeMobileProps = {
   /** Öva's spaced-repetition queue size — the one accent numeral on the
    *  phone tab bar. Optional; omitted → no numeral. */
   ovaDueCount?: number
-  /** LIVE due-mistake count (useDueMistakes) — the "mogna nu" slice, NOT
+  /** LIVE due-mistake count (useDueMistakes) — the "redo nu" slice, NOT
    *  the whole-queue `ovaDueCount`. Forwarded to DailyPlanCard so the
    *  repetition row's count/copy/minutes are recomputed live rather than
    *  frozen at plan-generation time. Optional; omitted → the row keeps the
    *  cached plan's strings. */
   dueMistakeCount?: number
+  /** LIVE pile count (usePileMistakes) — today's whole "att repetera" list.
+   *  Forwarded to DailyPlanCard as the context total M in the repetition
+   *  row's "N av M missar" (N = the playable due count). Optional. */
+  pileMistakeCount?: number
   /** Test-only override for viewport detection. */
   forceLayout?: 'phone' | 'reader' | 'studio'
   /** Provpass due/countdown state for ProvpassStatusLine (from
@@ -132,6 +136,7 @@ export function HomeMobile({
   onAvancerat,
   ovaDueCount,
   dueMistakeCount,
+  pileMistakeCount,
   forceLayout,
   mockPrescription = null,
   lastMockResult = null,
@@ -284,6 +289,7 @@ export function HomeMobile({
               allComplete={allComplete}
               onNavigate={onPlanItemNavigate}
               dueMistakeCount={dueMistakeCount}
+              pileMistakeCount={pileMistakeCount}
             />
           ) : (
             <PlanSkeleton />

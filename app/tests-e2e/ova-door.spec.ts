@@ -35,6 +35,26 @@ test('Öva hub — a section lane opens straight into question 1 (no idle stop)'
   await expect(page.getByTestId('drill-eyebrow')).toContainText('FRÅGA 1 AV')
 })
 
+test('Öva hub — the repetera lane opens straight into the first repetition item', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile', 'desktop drill chassis probe')
+  await clearMistakes(page)
+  await seedMistake(page, SEED_QID)
+
+  await page.goto('/ova')
+  await expect(page.getByTestId('ova-lane-repetition')).toBeVisible({ timeout: 15_000 })
+
+  await page.getByTestId('ova-repetition').click()
+
+  // The door leads into the room: the first repetition question renders
+  // without the idle chapter-opening ever taking the stage. (Direct
+  // /repetition navigation still shows the idle screen — no ?start there.)
+  await expect(page.getByTestId('option-A')).toBeVisible({ timeout: 30_000 })
+  await expect(page.getByTestId('drill-idle')).toHaveCount(0)
+  expect(page.url()).toContain('/repetition')
+})
+
 test('Öva hub — section lanes carry live per-section due counts', async ({ page }) => {
   await clearMistakes(page)
   await seedMistake(page, SEED_QID)

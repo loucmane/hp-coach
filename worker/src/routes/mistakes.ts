@@ -26,7 +26,7 @@
 // don't leak existence either way.
 
 import { zValidator } from '@hono/zod-validator'
-import { and, desc, eq, isNull, lte, or, sql } from 'drizzle-orm'
+import { and, desc, eq, gte, isNull, lte, or, sql } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
@@ -65,15 +65,33 @@ const DueQuery = z
     limit: z.coerce.number().int().min(1).max(500).default(10),
     // Which slice of the queue to return:
     //   - "due" (default) — only mistakes whose nextReviewAt has elapsed
-    //     (or is NULL): what the user can replay RIGHT NOW ("mogna nu").
+    //     (or is NULL): what the user can replay RIGHT NOW ("redo nu").
     //   - "all" — every active mistake regardless of nextReviewAt: the
-    //     whole repetition queue ("hela repetitionskön"). Powers the
-    //     living nav numeral, which must roll up the instant a fresh
-    //     mistake is logged even though that mistake is scheduled for
-    //     tomorrow and so is NOT yet due. Same sort, same cap.
-    // These two vocabularies (numeral = active; plan/CTA = due) are used
-    // consistently across every surface — see the app-side comments.
-    scope: z.enum(['due', 'all']).default('due'),
+    //     whole repetition queue ("hela repetitionskön"). Kept for any
+    //     consumer that genuinely wants the unbounded queue.
+    //   - "pile" — TODAY'S PILE (owner 2026-07-13): the single "att
+    //     repetera" number shown on every numeral station, the Öva hub
+    //     lanes, and DrillResult. An active mistake counts when it is
+    //     due now (nextReviewAt ≤ now / NULL) OR it was touched today
+    //     (lastErrorAt ≥ dayStart). The lastErrorAt branch is what makes
+    //     the count behave the way the target user expects:
+    //       · a fresh wrong answer (lastErrorAt = now) → +1 immediately;
+    //       · a WRONG repetition resets nextReviewAt to +10 min (no
+    //         longer "due") but bumps lastErrorAt to now, so the item
+    //         STAYS in the pile → the number is dead static, never a
+    //         phantom −1 (owner clarification 2026-07-13);
+    //       · a CORRECT repetition on an older mistake pushes nextReviewAt
+    //         days out and does NOT touch lastErrorAt, so an item last
+    //         errored on a previous day LEAVES the pile → −1 immediately.
+    //     (The mistakes table has no createdAt column — lastErrorAt is
+    //     the honest "touched/created today" signal, and it is exactly
+    //     the discriminator the wrong-vs-correct behaviour needs.)
+    scope: z.enum(['due', 'all', 'pile']).default('due'),
+    // Client's local-midnight epoch (ms). Required in spirit for
+    // scope=pile (the worker has no user timezone); the client always
+    // sends it. Absent → the lastErrorAt branch is simply disabled and
+    // pile degrades to due. Ignored for scope=due / scope=all.
+    dayStart: z.coerce.number().int().nonnegative().optional(),
   })
   .strict()
 
@@ -145,19 +163,30 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // This keeps the queue from accumulating — long-overdue items rise
   // to the top instead of being buried under recent mistakes.
   .get('/due', zValidator('query', DueQuery), async (c) => {
-    const { section, limit, scope } = c.req.valid('query')
+    const { section, limit, scope, dayStart } = c.req.valid('query')
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
     const now = new Date()
 
-    // scope="all" drops the nextReviewAt gate — every active mistake counts,
-    // due or not — so the caller sees the whole queue. scope="due" (default)
-    // keeps the ripe-only gate the replay flow relies on. Everything else
-    // (sort, cap, section filter, auth) is identical between the two.
-    const dueClause =
-      scope === 'all' ? null : or(isNull(mistakes.nextReviewAt), lte(mistakes.nextReviewAt, now))
-    const conds = dueClause
-      ? [eq(mistakes.userId, userId), eq(mistakes.status, 'active'), dueClause]
+    // The scope-specific gate on top of (userId, status='active'):
+    //   - "all"  → no gate (whole active queue).
+    //   - "due"  → ripe-only: nextReviewAt ≤ now / NULL (the replay flow).
+    //   - "pile" → due-now OR touched-today (lastErrorAt ≥ dayStart) — the
+    //     "att repetera" number every station shows. See the DueQuery
+    //     comment for why lastErrorAt (not a createdAt) is the right signal.
+    // Sort, cap, section filter, and auth are identical across all three.
+    let scopeClause: ReturnType<typeof or> | null = null
+    if (scope === 'due') {
+      scopeClause = or(isNull(mistakes.nextReviewAt), lte(mistakes.nextReviewAt, now))
+    } else if (scope === 'pile') {
+      const dueNow = or(isNull(mistakes.nextReviewAt), lte(mistakes.nextReviewAt, now))
+      scopeClause =
+        dayStart != null
+          ? or(dueNow, gte(mistakes.lastErrorAt, new Date(dayStart)))
+          : dueNow
+    }
+    const conds = scopeClause
+      ? [eq(mistakes.userId, userId), eq(mistakes.status, 'active'), scopeClause]
       : [eq(mistakes.userId, userId), eq(mistakes.status, 'active')]
     if (section) {
       // questionId format: "var-2026-verb1-ORD-001". Section is the 4th

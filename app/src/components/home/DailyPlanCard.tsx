@@ -31,6 +31,10 @@ type DailyPlanCardProps = {
    *  cached at generation. Undefined (not resolved, or a caller that
    *  doesn't wire it) → fall back to the cached strings unchanged. */
   dueMistakeCount?: number
+  /** LIVE pile count (usePileMistakes) — today's whole "att repetera" list,
+   *  the context total M in "N av M missar". Optional; defaults to the due
+   *  count when unwired. */
+  pileMistakeCount?: number
 }
 
 /** Repetition rows carry LIVE data, not a frozen prescription: the cached
@@ -42,18 +46,22 @@ type DailyPlanCardProps = {
  *   - count > 0    → override headline/rationale/minutes from repetitionCopy
  *     (the same shape scheduler.ts snapshots), overriding the cache.
  *  Non-repetition items, or an unresolved count, pass through untouched. */
-function withLiveData(item: PlanItem, dueMistakeCount: number | undefined): PlanItem {
+function withLiveData(
+  item: PlanItem,
+  dueMistakeCount: number | undefined,
+  pileMistakeCount: number | undefined,
+): PlanItem {
   if (item.kind !== 'repetition' || dueMistakeCount === undefined) return item
   if (dueMistakeCount === 0) {
     return {
       ...item,
       completed: true,
       headline: 'Repetition · Kön är tom just nu',
-      rationale: 'Inga mogna missar just nu — kön är tom. Bra jobbat.',
+      rationale: 'Inga missar att repetera just nu — kön är tom. Bra jobbat.',
       estimatedMinutes: 0,
     }
   }
-  const copy = repetitionCopy(dueMistakeCount)
+  const copy = repetitionCopy(dueMistakeCount, pileMistakeCount)
   return {
     ...item,
     completed: false,
@@ -68,6 +76,7 @@ export function DailyPlanCard({
   allComplete,
   onNavigate,
   dueMistakeCount,
+  pileMistakeCount,
 }: DailyPlanCardProps) {
   const ark = useArketMotion()
   if (allComplete) {
@@ -81,7 +90,7 @@ export function DailyPlanCard({
   // the mock kind.
   const rows = plan.items
     .filter((item) => item.kind !== 'mock')
-    .map((item) => withLiveData(item, dueMistakeCount))
+    .map((item) => withLiveData(item, dueMistakeCount, pileMistakeCount))
 
   // Mock-only day (pure provpass-dag): every item was filtered out, so the
   // Kallelse above IS the day's plan — render nothing rather than a bare

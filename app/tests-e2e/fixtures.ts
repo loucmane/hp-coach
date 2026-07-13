@@ -35,9 +35,10 @@ async function testReset(
   page: Page,
   action: 'clear' | 'expire-all' | 'seed' | 'seed-mocks',
   questionId?: string,
+  lastErrorDaysAgo?: number,
 ): Promise<void> {
   const result = await page.evaluate(
-    async ({ baseUrl, action, questionId }) => {
+    async ({ baseUrl, action, questionId, lastErrorDaysAgo }) => {
       type ClerkLike = {
         loaded?: boolean
         session?: { getToken: () => Promise<string | null> } | null
@@ -55,15 +56,18 @@ async function testReset(
         await new Promise((r) => setTimeout(r, 100))
       }
       if (!token) return { ok: false as const, status: 0, body: 'no Clerk token after 15s' }
+      const payload: Record<string, unknown> = { action }
+      if (questionId) payload.questionId = questionId
+      if (lastErrorDaysAgo != null) payload.lastErrorDaysAgo = lastErrorDaysAgo
       const res = await fetch(`${baseUrl}/api/test-reset`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify(questionId ? { action, questionId } : { action }),
+        body: JSON.stringify(payload),
       })
       const body = await res.text()
       return { ok: res.ok, status: res.status, body }
     },
-    { baseUrl: API_BASE_URL, action, questionId },
+    { baseUrl: API_BASE_URL, action, questionId, lastErrorDaysAgo },
   )
   if (!result.ok) {
     throw new Error(`/api/test-reset ${action} failed: ${result.status} ${result.body}`)
@@ -96,8 +100,12 @@ export async function seedMockResults(page: Page): Promise<void> {
  * precondition deterministically — `questionId` must be a real question in
  * the SPA's bank so the replay queue can render it.
  */
-export async function seedMistake(page: Page, questionId: string): Promise<void> {
-  await testReset(page, 'seed', questionId)
+export async function seedMistake(
+  page: Page,
+  questionId: string,
+  lastErrorDaysAgo?: number,
+): Promise<void> {
+  await testReset(page, 'seed', questionId, lastErrorDaysAgo)
 }
 
 /**

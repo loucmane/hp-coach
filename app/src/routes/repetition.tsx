@@ -18,7 +18,7 @@ import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { findQuestion, loadBank, type Question } from '@/data/questions'
 import { pickReplayQuestions, REPETITION_SESSION_SIZE } from '@/lib/replay'
 
-type RepetitionSearch = { qid?: string; done?: number }
+type RepetitionSearch = { qid?: string; done?: number; start?: true }
 
 function validateSearch(input: Record<string, unknown>): RepetitionSearch {
   const out: RepetitionSearch = {}
@@ -31,6 +31,13 @@ function validateSearch(input: Record<string, unknown>): RepetitionSearch {
   const done = Number(input.done)
   if (Number.isInteger(done) && done > 0) {
     out.done = done
+  }
+  // `?start=1` — the Öva hub's repetera-lane door path (owner 2026-07-13):
+  // the row is the door, so the session starts immediately instead of
+  // stopping on the idle interstitial. Direct /repetition keeps the idle
+  // screen.
+  if (input.start === '1' || input.start === true) {
+    out.start = true
   }
   return out
 }
@@ -45,7 +52,7 @@ function RepetitionScreen() {
   const recordMistake = useRecordMistake()
   const resolveMistake = useResolveMistake()
   const navigate = useNavigate()
-  const { qid: urlQid, done: doneSessionId } = Route.useSearch()
+  const { qid: urlQid, done: doneSessionId, start } = Route.useSearch()
 
   // URL-as-state for the active qid. `replace: true` keeps history
   // clean — a 10-question replay shouldn't add 10 back-button stops.
@@ -105,6 +112,12 @@ function RepetitionScreen() {
       activeTab="ova"
       urlSyncedQid={{ qid: urlQid ?? null, setQid: setUrlQid }}
       completedSessionId={doneSessionId ?? null}
+      // Hub-door direct start (?start=1). Gated on the due query having
+      // resolved so the replay pick has its rows — begin() reads `due.data`
+      // synchronously via pickQuestions. An empty due queue resolves to the
+      // recoverable "inget att repetera" idle state, not a hang. A stale
+      // ?done means we're viewing a finished pass; reconstruction wins.
+      autoStart={!!start && !doneSessionId && due.data !== undefined}
       onComplete={onComplete}
       resolvePlan={(qids) =>
         loadBank().then((b) =>
