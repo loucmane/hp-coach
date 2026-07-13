@@ -67,6 +67,17 @@ export function DueNumeral({
     <motion.span
       data-testid={testid}
       layoutId={ark.rm ? undefined : DUE_NUMERAL_LAYOUT_ID}
+      // Gate the layout projection: measure/animate ONLY when the count
+      // changes (a roll) — never on every render. Without this, the
+      // owning station (drill/repetition header) re-projects on every
+      // question advance, and any incidental re-measure of the surrounding
+      // reading column springs the numeral → the visible bounce on "Nästa
+      // fråga" (owner report, staging). The enter/leave flight between the
+      // rail and the header survives: that's a shared-layout transition
+      // driven by the layoutId node MOUNTING at a new station under
+      // RouteScene's LayoutGroup, which measures on mount regardless of
+      // this dependency.
+      layoutDependency={count}
       transition={ark.arket}
       style={{
         display: 'inline-flex',

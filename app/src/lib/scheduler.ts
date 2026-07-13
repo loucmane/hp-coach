@@ -519,7 +519,23 @@ function mockItem(prescription: MockPrescription, date: string): PlanItem {
   }
 }
 
-function repetitionItem(count: number, date: string): PlanItem {
+/** The presentation triple (headline / rationale / estimatedMinutes) a
+ *  repetition item shows for a given DUE count. Extracted so the copy
+ *  lives in ONE place: `repetitionItem` snapshots it at plan-generation
+ *  time, and the Home render layer (DailyPlanCard) recomputes it from the
+ *  LIVE due count to override a cached plan's stale strings/count — the
+ *  repetition row's COUNT is live data, not a prescription decision.
+ *
+ *  `count` is the DUE (ripe-now) count — useDailyPlan feeds it from
+ *  useDueMistakes. Caller handles the count === 0 case (empty queue); this
+ *  helper always renders an actionable "N mogna missar" prescription. */
+export type RepetitionCopy = {
+  headline: string
+  rationale: string
+  estimatedMinutes: number
+}
+
+export function repetitionCopy(count: number): RepetitionCopy {
   // Cap the displayed count to the per-session size so prescription and
   // execution agree. `playable` is what /repetition actually plays;
   // `queueTotal` is how many missar exist in the backlog. The headline
@@ -530,8 +546,7 @@ function repetitionItem(count: number, date: string): PlanItem {
   // "mogna" = these are the DUE (ripe-now) missar the plan prescribes for
   // today — the actionable slice, NOT the whole repetition queue (that
   // larger number is the nav numeral's "hela kön"). Labelling it "mogna"
-  // stops the plan row from reading as the total. `count` here is the due
-  // count (useDailyPlan feeds it from useDueMistakes).
+  // stops the plan row from reading as the total.
   const noun = playable === 1 ? 'mogen miss' : 'mogna missar'
   const headline =
     queueTotal > playable
@@ -544,12 +559,21 @@ function repetitionItem(count: number, date: string): PlanItem {
         ? `${playable} av ${queueTotal} missar denna session — de äldsta först, de förlorar effekt om de väntar för länge.`
         : `${queueTotal} missar väntar på repetition — gör dem först, de förlorar effekt om de väntar för länge.`
   return {
-    id: `rep-${date}`,
-    kind: 'repetition',
-    section: null,
     headline,
     rationale,
     estimatedMinutes: Math.max(1, Math.ceil(playable * MINUTES_PER_REP)),
+  }
+}
+
+function repetitionItem(count: number, date: string): PlanItem {
+  const copy = repetitionCopy(count)
+  return {
+    id: `rep-${date}`,
+    kind: 'repetition',
+    section: null,
+    headline: copy.headline,
+    rationale: copy.rationale,
+    estimatedMinutes: copy.estimatedMinutes,
     href: '/repetition',
     completed: false,
   }
