@@ -13,7 +13,22 @@ import type { HTMLAttributes } from 'react'
 
 /** Clone an element's DOM for its exit, neutralised into dead ink. */
 export function makeExitClone(el: HTMLElement): HTMLElement {
+  // Fixed-position descendants must not survive into the clone: a
+  // position:fixed node ignores the exiting scene's absolute pinning and
+  // re-pins to the VIEWPORT — dead ink floating OVER the incoming page
+  // (seen 2026-07-14: the fixed due-station ghosting "N att repetera"
+  // onto Home after leaving a session). Collect them from the LIVE tree
+  // (computed styles are lost on clone) and hide their clone twins.
+  const fixedIdx: number[] = []
+  const liveAll = el.querySelectorAll<HTMLElement>('*')
+  liveAll.forEach((n, i) => {
+    if (getComputedStyle(n).position === 'fixed') fixedIdx.push(i)
+  })
   const clone = el.cloneNode(true) as HTMLElement
+  if (fixedIdx.length > 0) {
+    const cloneAll = clone.querySelectorAll<HTMLElement>('*')
+    for (const i of fixedIdx) cloneAll[i]?.style.setProperty('visibility', 'hidden')
+  }
   for (const n of clone.querySelectorAll('[data-testid]')) n.removeAttribute('data-testid')
   for (const n of clone.querySelectorAll('[id]')) n.removeAttribute('id')
   clone.removeAttribute('data-testid')

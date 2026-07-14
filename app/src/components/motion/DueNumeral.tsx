@@ -76,10 +76,16 @@ export function DueNumeral({
       // surrounding reading column in that frame SPRANG the numeral — the
       // positional bounce the owner saw on /repetition (and, on a wrong
       // answer, on /drill). The VALUE change is owned entirely by the
-      // DigitRoll child (a masked roll, in place). The rail↔header FLIGHT
-      // still works: it is a shared-layout transition driven by the layoutId
-      // node MOUNTING at a new station under RouteScene's LayoutGroup, which
-      // measures on mount regardless of this constant dependency.
+      // DigitRoll child (a masked roll, in place).
+      //
+      // Known state 2026-07-14 (frame-capture evidence, scripts-bounce/):
+      // the rail↔header FLIGHT does not currently ANIMATE — the numeral
+      // re-seats instantly at the new station (verified identical on
+      // unmodified main, so not a regression of the sticky station; it is
+      // dead with or without this dependency, so the freeze is not the
+      // killer either). The motion-settle e2e's settle-parity contract
+      // (destination rects equal static layout) holds. Resurrecting the
+      // animated flight is a separate investigation.
       layoutDependency={DUE_NUMERAL_LAYOUT_ID}
       transition={ark.arket}
       style={{
@@ -116,37 +122,61 @@ export function DueHeaderStation() {
   const count = due.data?.length ?? 0
   if (viewport === 'phone' || count === 0) return null
   return (
+    // STICKY, not fixed and not page-flow (third positioning, the honest
+    // one — 2026-07-14). The two previous primitives each failed a real
+    // requirement:
+    //   - absolute (page flow) rode every scroll, so the instant scroll
+    //     reset on "Nästa" yanked the numeral — the original bounce.
+    //   - fixed (#286) pinned it still, but (a) glued it to the VIEWPORT
+    //     edge, far right of the reading column at ≥1440 (M3 "Boksidan":
+    //     the column is the page — the station belongs to ITS top-right);
+    //     (b) killed the rail↔header layoutId flight both ways (framer's
+    //     layout projection does not support position:fixed elements —
+    //     the numeral teleported); and (c) ghosted: RouteScene's exit
+    //     clone kept the fixed div, which pinned "N att repetera" OVER
+    //     the incoming page during every cross-family exit.
+    // Sticky is in-flow (projection measures it, so the flight lives),
+    // pins at the viewport top while the body scrolls (no scroll yank),
+    // and its horizontal frame is the same centered 880px column as
+    // .hpc-studydesk — column-aligned at every width. A zero-height
+    // strip so it reserves no reading space.
     <div
-      data-testid="due-station"
       style={{
-        // FIXED, not absolute: the station is part of the FRAME (A2's
-        // camera model — the reading window is still; the sheet moves).
-        // As page-flow content it rode every scroll, so the instant
-        // scroll reset on "Nästa" made the numeral rush back into the
-        // corner — the "ugly bounce" the owner kept seeing, invisible
-        // in unscrolled verification runs (2026-07-14).
-        position: 'fixed',
-        top: 20,
-        right: 'clamp(24px, 3vw, 48px)',
+        position: 'sticky',
+        top: 0,
         zIndex: 6,
-        display: 'flex',
-        alignItems: 'baseline',
-        gap: 7,
+        height: 0,
+        width: '100%',
         pointerEvents: 'none',
       }}
     >
-      <DueNumeral count={count} size={15} testid="due-station-numeral" />
-      <span
-        style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: 10,
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-          color: 'var(--muted)',
-        }}
-      >
-        att repetera
-      </span>
+      <div style={{ position: 'relative', maxWidth: 880, margin: '0 auto', height: 0 }}>
+        <div
+          data-testid="due-station"
+          style={{
+            position: 'absolute',
+            top: 20,
+            right: 24,
+            display: 'flex',
+            alignItems: 'baseline',
+            gap: 7,
+            pointerEvents: 'none',
+          }}
+        >
+          <DueNumeral count={count} size={15} testid="due-station-numeral" />
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 10,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+            }}
+          >
+            att repetera
+          </span>
+        </div>
+      </div>
     </div>
   )
 }
