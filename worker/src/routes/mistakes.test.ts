@@ -246,3 +246,91 @@ describe("GET /api/mistakes/due — scope=pile (today's pile)", () => {
     expect(body.mistakes.map((m) => m.questionId)).toEqual(['var-2026-verb1-ORD-001'])
   })
 })
+
+describe('PATCH /api/mistakes/by-question — resolve by questionId', () => {
+  it('advances/graduates the active row for the question and returns it', async () => {
+    const { app, env } = appFor('u10')
+    await app.request(
+      '/',
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ questionId: 'var-2026-verb1-ORD-009' }),
+      },
+      env,
+    )
+    const res = await app.request(
+      '/by-question',
+      {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ questionId: 'var-2026-verb1-ORD-009', resolve: true }),
+      },
+      env,
+    )
+    expect(res.status).toBe(200)
+    const body = (await res.json()) as {
+      mistake: { questionId: string; nextReviewAt: string | null } | null
+    }
+    expect(body.mistake?.questionId).toBe('var-2026-verb1-ORD-009')
+    // Advanced up the ladder: no longer due now → out of the due list.
+    const due = await app.request('/due?limit=500', {}, env)
+    const dueBody = (await due.json()) as { mistakes: Array<{ questionId: string }> }
+    expect(dueBody.mistakes.find((m) => m.questionId === 'var-2026-verb1-ORD-009')).toBeUndefined()
+  })
+
+  it('returns { mistake: null } when no active row exists (drifted session plan)', async () => {
+    const { app, env } = appFor('u11')
+    const res = await app.request(
+      '/by-question',
+      {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ questionId: 'never-missed-question', resolve: true }),
+      },
+      env,
+    )
+    expect(res.status).toBe(200)
+    expect(((await res.json()) as { mistake: unknown }).mistake).toBeNull()
+  })
+})
+
+describe('scope=pile — same-day miss leaves the pile once correctly repeated', () => {
+  it('correct repetition on a today-missed item → out of the pile; wrong → stays', async () => {
+    const { app, env } = appFor('u12')
+    const record = (questionId: string) =>
+      app.request(
+        '/',
+        {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ questionId }),
+        },
+        env,
+      )
+    await record('q-today-1')
+    await record('q-today-2')
+    const dayStart = new Date().setHours(0, 0, 0, 0)
+    const pile = async () => {
+      const res = await app.request(`/due?limit=500&scope=pile&dayStart=${dayStart}`, {}, env)
+      return ((await res.json()) as { mistakes: Array<{ questionId: string }> }).mistakes
+    }
+    expect((await pile()).length).toBe(2)
+    // correct repetition on q-today-1 → climbs off the relearn rung → −1
+    await app.request(
+      '/by-question',
+      {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ questionId: 'q-today-1', resolve: true }),
+      },
+      env,
+    )
+    const after = await pile()
+    expect(after.length).toBe(1)
+    expect(after[0]?.questionId).toBe('q-today-2')
+    // wrong repetition on q-today-2 (re-record) → stays, no duplicate
+    await record('q-today-2')
+    expect((await pile()).length).toBe(1)
+  })
+})

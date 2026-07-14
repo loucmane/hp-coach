@@ -11,9 +11,13 @@
 // counter will drive the next-review-at calculation.
 
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 
-import { useDueMistakes, useRecordMistake, useResolveMistake } from '@/api/hooks/useMistakes'
+import {
+  useDueMistakes,
+  useRecordMistake,
+  useResolveMistakeByQuestion,
+} from '@/api/hooks/useMistakes'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { findQuestion, loadBank, type Question } from '@/data/questions'
 import { pickReplayQuestions, REPETITION_SESSION_SIZE } from '@/lib/replay'
@@ -50,7 +54,7 @@ export const Route = createFileRoute('/repetition')({
 function RepetitionScreen() {
   const due = useDueMistakes()
   const recordMistake = useRecordMistake()
-  const resolveMistake = useResolveMistake()
+  const resolveMistake = useResolveMistakeByQuestion()
   const navigate = useNavigate()
   const { qid: urlQid, done: doneSessionId, start } = Route.useSearch()
 
@@ -78,17 +82,6 @@ function RepetitionScreen() {
     },
     [navigate],
   )
-
-  // Build the qid → mistakeId map once per query result so onCorrect
-  // can find the mistake row to resolve in O(1) without re-running
-  // the picker. The map covers the *entire* due queue, not just the
-  // 10 we play, so resolves are correct even if the SessionPlayer
-  // grabbed a different subset (it doesn't, but defensive).
-  const qidToMistakeId = useMemo(() => {
-    const m = new Map<string, number>()
-    for (const row of due.data ?? []) m.set(row.questionId, row.id)
-    return m
-  }, [due.data])
 
   // Three button states. We gate on "do we actually have data yet?"
   // rather than `isPending` alone — the latter goes false on error
@@ -187,8 +180,10 @@ function RepetitionScreen() {
         ) : null
       }
       onCorrect={(q) => {
-        const id = qidToMistakeId.get(q.qid)
-        if (id !== undefined) resolveMistake.mutate({ id })
+        // Server-side lookup by question — immune to the adopted-session
+        // plan drifting from the current due list (the old client-side
+        // map silently no-oped on a miss and the pile never went down).
+        resolveMistake.mutate({ questionId: q.qid })
       }}
       onWrong={(q) => {
         // The upsert keeps errorCount climbing for chronic stumbles.

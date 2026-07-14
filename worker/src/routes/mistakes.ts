@@ -33,7 +33,7 @@ import { z } from 'zod'
 import { getDb } from '../db/client'
 import { mistakes } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
-import { nextOnCorrect, nextOnWrong } from '../lib/srs'
+import { nextOnCorrect, nextOnWrong, RELEARN_MINUTES } from '../lib/srs'
 import type { Env, Vars } from '../types'
 
 const RecordBody = z
@@ -181,7 +181,22 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     } else if (scope === 'pile') {
       const dueNow = or(isNull(mistakes.nextReviewAt), lte(mistakes.nextReviewAt, now))
       scopeClause =
-        dayStart != null ? or(dueNow, gte(mistakes.lastErrorAt, new Date(dayStart))) : dueNow
+        dayStart != null
+          ? or(
+              dueNow,
+              // "Missed today AND not yet correctly repeated": the
+              // relearn rung (intervalMinutes ≤ RELEARN_MINUTES) is the
+              // discriminator — a correct answer climbs to ≥1 day and
+              // LEAVES this branch (owner 2026-07-14: a same-day miss,
+              // once correctly repeated, must −1 like any other; the
+              // bare lastErrorAt branch kept it pinned all day). A wrong
+              // repetition resets to the relearn rung and stays.
+              and(
+                gte(mistakes.lastErrorAt, new Date(dayStart)),
+                lte(mistakes.intervalMinutes, RELEARN_MINUTES),
+              ),
+            )
+          : dueNow
     }
     const conds = scopeClause
       ? [eq(mistakes.userId, userId), eq(mistakes.status, 'active'), scopeClause]
@@ -202,6 +217,59 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       .limit(limit)
     return c.json({ mistakes: rows })
   })
+
+  // PATCH /api/mistakes/by-question — { questionId, resolve: true }.
+  // Same ladder as /:id, addressed by QUESTION instead of row id. Added
+  // 2026-07-14 (owner: "the number is completely static"): /repetition
+  // resolved via a client-side qid→rowId map built from the CURRENT due
+  // list, but an adopted session's stored plan can drift from that list
+  // — the map missed, onCorrect silently no-oped, and correct answers
+  // never decremented the pile. The server owns the lookup now: any
+  // correctly-answered question with an active row advances/graduates,
+  // regardless of how the session plan drifted. No active row → 200
+  // { mistake: null } (nothing to resolve is a fine outcome, not an
+  // error — e.g. replaying an already-graduated question).
+  .patch(
+    '/by-question',
+    zValidator('json', z.object({ questionId: z.string().min(1), resolve: z.literal(true) })),
+    async (c) => {
+      const { questionId } = c.req.valid('json')
+      const db = getDb(c.env.DB)
+      const userId = await ensureUserRow(db, c.var.userId)
+      const [existing] = await db
+        .select()
+        .from(mistakes)
+        .where(
+          and(
+            eq(mistakes.userId, userId),
+            eq(mistakes.questionId, questionId),
+            eq(mistakes.status, 'active'),
+          ),
+        )
+        .limit(1)
+      if (!existing) {
+        return c.json({ mistake: null })
+      }
+      const outcome = nextOnCorrect(existing.intervalMinutes ?? 0)
+      if (outcome.graduated) {
+        const [row] = await db
+          .update(mistakes)
+          .set({ status: 'resolved' })
+          .where(eq(mistakes.id, existing.id))
+          .returning()
+        return c.json({ mistake: row })
+      }
+      const [row] = await db
+        .update(mistakes)
+        .set({
+          intervalMinutes: outcome.intervalMinutes,
+          nextReviewAt: outcome.nextReviewAt,
+        })
+        .where(eq(mistakes.id, existing.id))
+        .returning()
+      return c.json({ mistake: row })
+    },
+  )
 
   // PATCH /api/mistakes/:id — { resolve: true } reports a correct
   // answer in /repetition. The server advances the row up the ladder
