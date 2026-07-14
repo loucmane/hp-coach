@@ -119,7 +119,13 @@ export function DueHeaderStation() {
     <div
       data-testid="due-station"
       style={{
-        position: 'absolute',
+        // FIXED, not absolute: the station is part of the FRAME (A2's
+        // camera model — the reading window is still; the sheet moves).
+        // As page-flow content it rode every scroll, so the instant
+        // scroll reset on "Nästa" made the numeral rush back into the
+        // corner — the "ugly bounce" the owner kept seeing, invisible
+        // in unscrolled verification runs (2026-07-14).
+        position: 'fixed',
         top: 20,
         right: 'clamp(24px, 3vw, 48px)',
         zIndex: 6,
