@@ -19,10 +19,10 @@ import {
   useResolveMistakeByQuestion,
 } from '@/api/hooks/useMistakes'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
-import { findQuestion, loadBank, type Question } from '@/data/questions'
+import { findQuestion, loadBank, type Question, SECTION_KEYS, type Section } from '@/data/questions'
 import { pickReplayQuestions, REPETITION_SESSION_SIZE } from '@/lib/replay'
 
-type RepetitionSearch = { qid?: string; done?: number; start?: true }
+type RepetitionSearch = { qid?: string; done?: number; start?: true; section?: Section }
 
 function validateSearch(input: Record<string, unknown>): RepetitionSearch {
   const out: RepetitionSearch = {}
@@ -43,6 +43,14 @@ function validateSearch(input: Record<string, unknown>): RepetitionSearch {
   if (input.start === '1' || input.start === true) {
     out.start = true
   }
+  // `?section=ORD` — section-scoped repetition (owner 2026-07-14): replay
+  // only this section's due misses. Same door grammar as the drill lanes.
+  if (
+    typeof input.section === 'string' &&
+    (SECTION_KEYS as readonly string[]).includes(input.section)
+  ) {
+    out.section = input.section as Section
+  }
   return out
 }
 
@@ -52,11 +60,11 @@ export const Route = createFileRoute('/repetition')({
 })
 
 function RepetitionScreen() {
-  const due = useDueMistakes()
+  const { qid: urlQid, done: doneSessionId, start, section } = Route.useSearch()
+  const due = useDueMistakes(section)
   const recordMistake = useRecordMistake()
   const resolveMistake = useResolveMistakeByQuestion()
   const navigate = useNavigate()
-  const { qid: urlQid, done: doneSessionId, start } = Route.useSearch()
 
   // URL-as-state for the active qid. `replace: true` keeps history
   // clean — a 10-question replay shouldn't add 10 back-button stops.
@@ -67,11 +75,17 @@ function RepetitionScreen() {
     (next: string | null) => {
       navigate({
         to: '/repetition',
-        search: next ? { qid: next } : {},
+        search: next
+          ? section
+            ? { qid: next, section }
+            : { qid: next }
+          : section
+            ? { section }
+            : {},
         replace: true,
       })
     },
-    [navigate],
+    [navigate, section],
   )
 
   // On completion, stamp `?done=<sessionId>` so a refresh reconstructs
@@ -101,7 +115,13 @@ function RepetitionScreen() {
   return (
     <SessionPlayer
       sessionKind="adaptive_review"
-      sections="ORD"
+      // The adoption guard compares this against the active session's
+      // stored `sections` — a scoped entry (?section=ORD) must not adopt
+      // an unscoped session's plan (or vice versa), same rule as the
+      // drill's cross-section guard. 'alla' = the unscoped whole-queue
+      // pass. (Was a hardcoded "ORD" placeholder, which made every
+      // repetition session adopt every other.)
+      sections={section ?? 'alla'}
       activeTab="ova"
       urlSyncedQid={{ qid: urlQid ?? null, setQid: setUrlQid }}
       completedSessionId={doneSessionId ?? null}
@@ -144,7 +164,11 @@ function RepetitionScreen() {
             : `${dueCount} ATT REPETERA NU`
           : undefined
       }
-      emptyCopy="Inga missar att repetera. När du svarar fel i en övning landar frågan här."
+      emptyCopy={
+        section
+          ? `Inga ${section}-missar att repetera just nu. Hela kön finns under Repetera i Öva.`
+          : 'Inga missar att repetera. När du svarar fel i en övning landar frågan här.'
+      }
       disableStart={startDisabled}
       disableStartLabel={disabledLabel}
       idleSecondaryCta={

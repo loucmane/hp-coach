@@ -54,6 +54,9 @@ function OvaRoute() {
   // in today's PILE — same slice the nav numeral counts, so the lane numbers
   // and the numeral agree. Zero → no number (real data or nothing).
   const pileBySection = useMemo(() => countsBySection(pile.data), [pile.data])
+  // Ripe-now per section — the repetera lane's section chips replay only
+  // what is actually due (you can't replay tomorrow's items early).
+  const dueBySection = useMemo(() => countsBySection(due.data), [due.data])
 
   // The scheduler's suggestion — the weakest section with real signal.
   // Null on a cold start (no ranking signal yet), which just means no
@@ -222,6 +225,49 @@ function OvaRoute() {
                     : `Inget är redo just nu — ${pileCount} ${pileCount === 1 ? 'miss ligger' : 'missar ligger'} i dagens hög och blir redo snart.`
                 : 'Kön är tom just nu — allt du missat är återlärt. Repetitionen står kvar här ändå.'}
             </p>
+            {dueCount > 0 && (
+              // Section-scoped repetition (owner 2026-07-14): chips for the
+              // sections that have ripe misses, same door grammar as the
+              // drill lanes — "just the ORD ones" without taking the whole
+              // queue. Only ripe sections render (real data or nothing);
+              // the all-sections door below is the stable geography.
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 14 }}>
+                {SECTION_KEYS.filter((s) => (dueBySection[s] ?? 0) > 0).map((s) => (
+                  <Link
+                    key={s}
+                    to="/repetition"
+                    search={{ section: s, start: true }}
+                    data-testid={`ova-rep-${s}`}
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 12,
+                      letterSpacing: '0.08em',
+                      padding: '8px 13px',
+                      border: '1px solid var(--hairline)',
+                      background: 'var(--panel)',
+                      color: 'var(--ink)',
+                      borderRadius: 'calc(var(--radius) * 0.4)',
+                      textDecoration: 'none',
+                      display: 'inline-flex',
+                      alignItems: 'baseline',
+                      gap: 7,
+                    }}
+                  >
+                    {s}
+                    <span
+                      style={{
+                        fontSize: 10,
+                        letterSpacing: '0.06em',
+                        color: 'var(--muted)',
+                        fontVariantNumeric: 'tabular-nums',
+                      }}
+                    >
+                      {dueBySection[s]}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            )}
             <Link
               to="/repetition"
               // The row is the door (Fix C, owner 2026-07-13): tapping starts
