@@ -331,3 +331,216 @@ test('due station: column-aligned, still through throttled refetch, no detached 
   })
   expect(lingering, 'due-station ink lingers on Home after the crossfade').toBe(0)
 })
+
+// The 2026-07-14 INTRA-station regression pack (the owner's remaining
+// report: "the number still gets bumped by the 'att repetera' when you
+// answer … and when you press next as well"). Two contracts, proven at
+// ELEMENT granularity with full motion on a throttled network:
+//
+//   1. STATIC-COUNT STILLNESS — through a WRONG grade (count unchanged
+//      in repetition) and a Nästa advance, the digit glyphs, the numeral
+//      wrapper, the "att repetera" label, and the station strip must
+//      each hold their absolute rect ≤0.5px AND the digit-vs-label
+//      relative offset must hold ≤0.5px. Per-animation-frame recorder;
+//      no glyph may re-animate (transform must stay identity).
+//
+//   2. ROLL COHERENCE — when the count DOES change, the exiting and
+//      entering glyphs must travel the SAME direction. The shipped bug:
+//      `exit` was a literal object, so AnimatePresence never re-resolved
+//      it with the fresh `custom` dir — every static re-render (each
+//      pile refetch) reset the captured dir to +1, and the next decrease
+//      criss-crossed: the new digit fell from above while the old flew
+//      up THROUGH it, a mid-cell collision the owner read as a bump.
+//      Under real-world latency the refetch (and thus the collision)
+//      landed right after answering or right after pressing Nästa —
+//      both reported triggers, one mechanism. Fixed by making the
+//      enter/exit variants (DigitRoll fix 6).
+test('due station: intra-station stillness on static count, coherent roll on change', async ({
+  page,
+  context,
+}, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile', 'the header numeral station is a desktop surface')
+  test.setTimeout(90_000)
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+
+  type BankQ = { qid: string; answer: string }
+  const ords = (await page.evaluate(async () => {
+    const idx = (await (await fetch('/data/_index.json')).json()) as {
+      exams: { exam_id: string }[]
+    }
+    const out: Array<{ qid: string; answer: string }> = []
+    for (const e of idx.exams) {
+      const rows = (await (await fetch(`/data/${e.exam_id}.json`)).json()) as Array<{
+        qid: string
+        section: string
+        parsing_status: string
+        options?: unknown[] | null
+        answer: string
+      }>
+      for (const q of rows) {
+        if (q.section === 'ORD' && q.parsing_status === 'complete' && q.options && q.answer) {
+          out.push({ qid: q.qid, answer: q.answer })
+          if (out.length >= 3) return out
+        }
+      }
+    }
+    return out
+  })) as BankQ[]
+  expect(ords.length).toBe(3)
+  const answerOf = new Map(ords.map((q) => [q.qid, q.answer.toUpperCase()]))
+
+  await clearMistakes(page)
+  for (const q of ords) await seedMistake(page, q.qid, 3)
+
+  await page.goto('/ova')
+  await page.getByTestId('ova-repetition').click()
+  await expect(page.getByTestId('option-A')).toBeVisible({ timeout: 30_000 })
+  await expect(page.getByTestId('due-station-numeral')).toBeVisible({ timeout: 10_000 })
+  await page.waitForTimeout(1200) // let the entry flight settle
+
+  // Real-world latency: the pile refetch lands well after the grade —
+  // in the field it is exactly this delay that parked the (broken) roll
+  // on the answer or the Nästa press.
+  const cdp = await context.newCDPSession(page)
+  await cdp.send('Network.enable')
+  await cdp.send('Network.emulateNetworkConditions', {
+    offline: false,
+    latency: 400,
+    downloadThroughput: (1.5 * 1024 * 1024) / 8,
+    uploadThroughput: (750 * 1024) / 8,
+  })
+
+  type Frame = {
+    station: { x: number; y: number } | null
+    numeral: { x: number; y: number } | null
+    label: { x: number; y: number } | null
+    glyphs: Array<{ text: string | null; ty: number }>
+  }
+  const startRecorder = () =>
+    page.evaluate(() => {
+      const w = window as unknown as { __rec: unknown[]; __recStop: boolean }
+      w.__rec = []
+      w.__recStop = false
+      const pos = (el: Element | null) => {
+        if (!el) return null
+        const b = el.getBoundingClientRect()
+        return { x: +b.x.toFixed(2), y: +b.y.toFixed(2) }
+      }
+      const step = () => {
+        if (w.__recStop) return
+        const station = document.querySelector('[data-testid="due-station"]')
+        const numeral = document.querySelector('[data-testid="due-station-numeral"]')
+        let label: Element | null = null
+        if (station)
+          for (const s of station.querySelectorAll('span'))
+            if (s.textContent === 'att repetera') label = s
+        const glyphs: Array<{ text: string | null; ty: number }> = []
+        if (numeral)
+          for (const slot of numeral.querySelectorAll(':scope > span > span'))
+            for (const g of slot.querySelectorAll(':scope > span')) {
+              const m = getComputedStyle(g).transform
+              const ty = m.startsWith('matrix(') ? +(m.slice(7, -1).split(',')[5] ?? 0) : 0
+              glyphs.push({ text: g.textContent, ty: +ty.toFixed(2) })
+            }
+        w.__rec.push({ station: pos(station), numeral: pos(numeral), label: pos(label), glyphs })
+        requestAnimationFrame(step)
+      }
+      requestAnimationFrame(step)
+    })
+  const stopRecorder = () =>
+    page.evaluate(() => {
+      const w = window as unknown as { __rec: Frame[]; __recStop: boolean }
+      w.__recStop = true
+      return w.__rec
+    }) as Promise<Frame[]>
+
+  const spanOf = (vals: number[]) => (vals.length ? Math.max(...vals) - Math.min(...vals) : 0)
+  const assertStill = (rec: Frame[], phase: string) => {
+    expect(rec.length, `${phase}: recorder captured frames`).toBeGreaterThan(20)
+    for (const key of ['station', 'numeral', 'label'] as const) {
+      const pts = rec.map((f) => f[key])
+      expect(
+        pts.filter((p) => p === null).length,
+        `${phase}: ${key} unmounted mid-window`,
+      ).toBe(0)
+      const defined = pts.filter((p): p is { x: number; y: number } => p !== null)
+      expect(spanOf(defined.map((p) => p.x)), `${phase}: ${key} x drifted`).toBeLessThanOrEqual(0.5)
+      expect(spanOf(defined.map((p) => p.y)), `${phase}: ${key} y drifted`).toBeLessThanOrEqual(0.5)
+    }
+    // The owner's observable: the digits relative to the label.
+    const rel = rec
+      .filter((f) => f.numeral && f.label)
+      .map((f) => ({
+        x: (f.numeral as { x: number }).x - (f.label as { x: number }).x,
+        y: (f.numeral as { y: number }).y - (f.label as { y: number }).y,
+      }))
+    expect(spanOf(rel.map((r) => r.x)), `${phase}: digit-vs-label x offset shifted`).toBeLessThanOrEqual(0.5)
+    expect(spanOf(rel.map((r) => r.y)), `${phase}: digit-vs-label y offset shifted`).toBeLessThanOrEqual(0.5)
+    // No glyph may re-animate on a static count.
+    for (const f of rec)
+      for (const g of f.glyphs)
+        expect(Math.abs(g.ty), `${phase}: glyph "${g.text}" re-animated (y=${g.ty})`).toBeLessThanOrEqual(0.5)
+  }
+
+  // ── 1a. WRONG grade: count static, everything dead still ───────────
+  const qid1 = new URL(page.url()).searchParams.get('qid') ?? ''
+  const correct1 = answerOf.get(qid1)
+  expect(correct1, `answer for ${qid1}`).toBeTruthy()
+  let wrong = ''
+  for (const l of ['A', 'B', 'C', 'D', 'E']) {
+    if (l === correct1) continue
+    if (await page.getByTestId(`option-${l}`).count()) {
+      wrong = l
+      break
+    }
+  }
+  await startRecorder()
+  await page.getByTestId(`option-${wrong}`).click()
+  await expect(page.getByTestId('drill-next')).toBeVisible({ timeout: 15_000 })
+  await page.waitForTimeout(2000) // let the throttled refetch land inside the window
+  assertStill(await stopRecorder(), 'wrong grade')
+  await expect(page.getByTestId('due-station-numeral')).toHaveText('3')
+  await page.screenshot({ path: `${SHOTS}/05-intra-wrong-still.png` })
+
+  // ── 1b. Nästa advance: count static, everything dead still ─────────
+  await startRecorder()
+  await page.getByTestId('drill-next').click()
+  await expect(page.getByTestId('option-A')).toBeVisible({ timeout: 15_000 })
+  await page.waitForTimeout(1500)
+  assertStill(await stopRecorder(), 'nästa advance')
+  await expect(page.getByTestId('due-station-numeral')).toHaveText('3')
+  await page.screenshot({ path: `${SHOTS}/06-intra-nasta-still.png` })
+
+  // ── 2. CORRECT grade: count 3 → 2 must roll COHERENTLY ─────────────
+  const qid2 = new URL(page.url()).searchParams.get('qid') ?? ''
+  const correct2 = answerOf.get(qid2)
+  expect(correct2, `answer for ${qid2}`).toBeTruthy()
+  await startRecorder()
+  await page.getByTestId(`option-${correct2}`).click()
+  await expect(page.getByTestId('due-station-numeral')).toHaveText('2', { timeout: 15_000 })
+  await page.waitForTimeout(1200) // let the roll finish inside the window
+  const roll = await stopRecorder()
+  // Wrapper + label stay pinned even while the digits roll.
+  for (const key of ['numeral', 'label'] as const) {
+    const pts = roll
+      .map((f) => f[key])
+      .filter((p): p is { x: number; y: number } => p !== null)
+    expect(spanOf(pts.map((p) => p.x)), `roll: ${key} x drifted`).toBeLessThanOrEqual(0.5)
+    expect(spanOf(pts.map((p) => p.y)), `roll: ${key} y drifted`).toBeLessThanOrEqual(0.5)
+  }
+  // Coherence: on this DECREASE the exiting "3" must travel DOWN and
+  // ONLY down (the stale-dir bug sent it UP through the incoming "2").
+  const exitYs = roll
+    .flatMap((f) => f.glyphs)
+    .filter((g) => g.text === '3')
+    .map((g) => g.ty)
+  const enterYs = roll
+    .flatMap((f) => f.glyphs)
+    .filter((g) => g.text === '2')
+    .map((g) => g.ty)
+  expect(Math.min(...exitYs), 'exiting digit moved UP on a decrease (criss-cross)').toBeGreaterThanOrEqual(-0.5)
+  expect(Math.max(...exitYs), 'exiting digit never left downward').toBeGreaterThan(5)
+  expect(Math.min(...enterYs), 'entering digit rolled in from above').toBeLessThan(-5)
+  expect(Math.max(...enterYs), 'entering digit overshot below its seat').toBeLessThanOrEqual(0.5)
+  await page.screenshot({ path: `${SHOTS}/07-intra-roll-coherent.png` })
+})
