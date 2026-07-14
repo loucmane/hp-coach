@@ -1530,3 +1530,14 @@ details[open] > summary .hpc-lesson-practice {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
 }
+
+/* Scrollbar-gutter reservation (owner 2026-07-14 — the LAST layer of
+ * the numeral-"bounce" saga): when the verdict grows the page the
+ * scrollbar appears; Nästa shrinks it away again. Each toggle changes
+ * the viewport width and the centered reading column — station, digits,
+ * everything — jerks sideways a few px (frame-diff evidence:
+ * horizontally ghost-doubled glyphs). Reserving the gutter kills the
+ * whole class of scrollbar layout jank app-wide. */
+html {
+  scrollbar-gutter: stable;
+}
