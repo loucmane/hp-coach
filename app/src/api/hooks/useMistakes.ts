@@ -163,6 +163,32 @@ export function useRecordMistake() {
   })
 }
 
+/** Resolve by QUESTION id — the server finds the active row. Replaces
+ *  the client-side qid→rowId map in /repetition (owner 2026-07-14: an
+ *  adopted session's stored plan drifts from the current due list, the
+ *  map missed, and correct answers never decremented the pile). */
+export function useResolveMistakeByQuestion() {
+  const api = useApiClient()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (input: { questionId: string }) => {
+      const res = await api.api.mistakes['by-question'].$patch({
+        json: { questionId: input.questionId, resolve: true },
+      })
+      if (!res.ok) {
+        throw new Error(`PATCH /api/mistakes/by-question failed: ${res.status}`)
+      }
+      const body = await res.json()
+      return body.mistake as Mistake | null
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: DUE_KEY })
+      qc.invalidateQueries({ queryKey: ACTIVE_KEY })
+      qc.invalidateQueries({ queryKey: PILE_KEY })
+    },
+  })
+}
+
 export function useResolveMistake() {
   const api = useApiClient()
   const qc = useQueryClient()
