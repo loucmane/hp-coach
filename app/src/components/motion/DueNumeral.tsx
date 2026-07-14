@@ -145,9 +145,34 @@ export function DueHeaderStation() {
         position: 'sticky',
         top: 0,
         zIndex: 6,
-        height: 0,
+        // A REAL band, not a zero-height ghost strip (owner 2026-07-14,
+        // the last visible "bump"): with height 0 the station floated
+        // transparent over the sheet, and the exiting question's rules /
+        // verdict ink slid within a few px of the digits — a moving line
+        // under still glyphs reads as the glyphs moving (induced
+        // motion). The band is the frame's top edge: opaque, full
+        // column width, the sheet slides UNDER it. The negative margin
+        // gives the height back so nothing reflows.
+        height: 52,
+        marginBottom: -52,
+        background: 'var(--bg)',
         width: '100%',
         pointerEvents: 'none',
+        // Own compositor layer, permanently. Without this the band gets
+        // layer-promoted only WHILE the question pan animates beneath it,
+        // and the text's anti-aliasing flips mode for those frames — a
+        // visible shimmer on every grade/Nästa (4x-zoom frame evidence,
+        // 2026-07-14). A constant layer = constant rasterization.
+        transform: 'translateZ(0)',
+        // Forced grayscale AA: the station sits at a fractional x (the
+        // centered column), and every compositor rebuild during the pan
+        // re-rasterized its text in the OTHER antialiasing mode
+        // (subpixel-LCD <-> grayscale) — a persistent one-frame shimmer
+        // read as the digits "bumping" (DOM provably still: identical
+        // rects, no transforms — computed-style dumps 2026-07-14). One
+        // constant AA mode = one constant rasterization.
+        WebkitFontSmoothing: 'antialiased',
+        MozOsxFontSmoothing: 'grayscale',
       }}
     >
       <div style={{ position: 'relative', maxWidth: 880, margin: '0 auto', height: 0 }}>
@@ -161,6 +186,14 @@ export function DueHeaderStation() {
             alignItems: 'baseline',
             gap: 7,
             pointerEvents: 'none',
+            // Constant layer-snap for the station itself: the numeral's
+            // motion.span toggles between transform:none and an identity
+            // matrix as framer's projection idles, and each toggle flips
+            // compositor pixel-snapping — at the column's fractional x
+            // that was a persistent half-pixel jump of the text on EVERY
+            // grade/Nästa (333px diff signature, 2026-07-14). With the
+            // station on its own always-on layer the snap never changes.
+            transform: 'translateZ(0)',
           }}
         >
           <DueNumeral count={count} size={15} testid="due-station-numeral" />
