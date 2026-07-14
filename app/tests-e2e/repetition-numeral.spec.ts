@@ -37,6 +37,13 @@ test('repetition numeral: correct → −1, wrong → static, no positional boun
 }, testInfo) => {
   test.skip(testInfo.project.name === 'mobile', 'the header numeral station is a desktop surface')
 
+  // FULL MOTION — the config's global reducedMotion:'reduce' disables the
+  // layoutId projection and collapses every spring to 0, a world where the
+  // bounce class this spec exists for CANNOT occur (that is exactly how
+  // three shipped "fixes" passed verification while the owner kept seeing
+  // the bounce). Stillness must be proven with the animations ON.
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+
   // A known-good set of drillable ORD questions, resolved from the live
   // static corpus (same /data/* files loadBank reads) so we know each
   // correct answer.
@@ -132,4 +139,195 @@ test('repetition numeral: correct → −1, wrong → static, no positional boun
 
   // ── Fix D: no "mogna/mogen" anywhere on this surface ──────────────
   await expect(page.getByText(/mogn/i)).toHaveCount(0)
+})
+
+// The 2026-07-14 root-cause regression pack (post-#286 findings):
+//
+//   1. COLUMN GEOMETRY — the station belongs to the reading column's
+//      top-right (M3 "Boksidan"), not the viewport edge (#286 glued it
+//      to the viewport; owner: "offset way to the right").
+//   2. SCROLLED STILLNESS UNDER THROTTLED REFETCH — the pile refetch
+//      after a correct answer lands while the reader is scrolled deep in
+//      the explanation on a slow network. The numeral must roll its
+//      VALUE in place: zero positional movement, zero unmount/remount
+//      (an unmount would teleport/fly the numeral — the bounce class).
+//      Verified with a per-animation-frame in-page recorder, full motion.
+//   3. NO DETACHED GHOST — leaving the session across a scene-family
+//      boundary (drill/repetition → Hem) clones the old page as exit
+//      ink; the station must ride INSIDE that clone (old-page pixels),
+//      never float detached over the incoming page, and must be gone
+//      when the crossfade ends.
+test('due station: column-aligned, still through throttled refetch, no detached ghost', async ({
+  page,
+  context,
+}, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile', 'the header numeral station is a desktop surface')
+  test.setTimeout(90_000)
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+
+  type BankQ = {
+    qid: string
+    section: string
+    parsing_status: string
+    options?: { letter: string }[] | null
+    answer: string
+  }
+  const ords = (await page.evaluate(async () => {
+    const idx = (await (await fetch('/data/_index.json')).json()) as {
+      exams: { exam_id: string }[]
+    }
+    const out: Array<{ qid: string; section: string; parsing_status: string; answer: string; options?: unknown[] | null }> = []
+    for (const e of idx.exams) {
+      const rows = (await (await fetch(`/data/${e.exam_id}.json`)).json()) as typeof out
+      for (const q of rows) {
+        if (q.section === 'ORD' && q.parsing_status === 'complete' && q.options && q.answer) {
+          out.push(q)
+          if (out.length >= 3) return out
+        }
+      }
+    }
+    return out
+  })) as BankQ[]
+  const answerOf = new Map(ords.map((q) => [q.qid, q.answer.toUpperCase()]))
+
+  await clearMistakes(page)
+  for (const q of ords) await seedMistake(page, q.qid, 3)
+
+  await page.goto('/ova')
+  await page.getByTestId('ova-repetition').click()
+  await expect(page.getByTestId('option-A')).toBeVisible({ timeout: 30_000 })
+  await expect(page.getByTestId('due-station-numeral')).toBeVisible({ timeout: 10_000 })
+
+  // ── 1. Column geometry: station right edge sits 24px inside the 880px
+  //       reading column (the .hpc-studydesk frame), NOT at the viewport
+  //       edge. Tolerance 1.5px.
+  const geo = await page.evaluate(() => {
+    const st = document.querySelector('[data-testid="due-station"]')?.getBoundingClientRect()
+    const col = document.querySelector('.hpc-studydesk')?.getBoundingClientRect()
+    return st && col
+      ? { stRight: st.right, colRight: col.right, viewport: window.innerWidth }
+      : null
+  })
+  if (!geo) throw new Error('station or column frame missing')
+  expect(
+    Math.abs(geo.stRight - (geo.colRight - 24)),
+    `station right ${geo.stRight} vs column right-inset ${geo.colRight - 24}`,
+  ).toBeLessThanOrEqual(1.5)
+  // And demonstrably NOT viewport-glued (the #286 regression put it
+  // within ~50px of the right viewport edge).
+  expect(geo.viewport - geo.stRight).toBeGreaterThan(100)
+
+  // ── 2. Scrolled stillness under a throttled refetch ───────────────
+  const cdp = await context.newCDPSession(page)
+  await cdp.send('Network.enable')
+  await cdp.send('Network.emulateNetworkConditions', {
+    offline: false,
+    latency: 400,
+    downloadThroughput: (1.5 * 1024 * 1024) / 8,
+    uploadThroughput: (750 * 1024) / 8,
+  })
+
+  // Per-animation-frame recorder on the numeral: rect + presence.
+  await page.evaluate(() => {
+    const w = window as unknown as {
+      __rec: Array<{ x: number; y: number } | null>
+      __recStop: boolean
+    }
+    w.__rec = []
+    w.__recStop = false
+    const step = () => {
+      if (w.__recStop) return
+      const el = document.querySelector('[data-testid="due-station-numeral"]')
+      if (el) {
+        const b = el.getBoundingClientRect()
+        w.__rec.push({ x: +b.x.toFixed(1), y: +b.y.toFixed(1) })
+      } else {
+        w.__rec.push(null)
+      }
+      requestAnimationFrame(step)
+    }
+    requestAnimationFrame(step)
+  })
+
+  const qid1 = new URL(page.url()).searchParams.get('qid') ?? ''
+  const correct1 = answerOf.get(qid1)
+  expect(correct1, `answer for ${qid1}`).toBeTruthy()
+  await page.getByTestId(`option-${correct1}`).click()
+  // Reader scrolls into the explanation while the (throttled) pile
+  // refetch is still in flight — the roll lands scrolled.
+  await page.mouse.wheel(0, 600)
+  // Wait out the throttled resolve → invalidate → refetch → roll.
+  await expect(page.getByTestId('due-station-numeral')).toHaveText('2', { timeout: 15_000 })
+  await page.waitForTimeout(1200) // let any (illegal) spring play out
+
+  const rec = await page.evaluate(() => {
+    const w = window as unknown as {
+      __rec: Array<{ x: number; y: number } | null>
+      __recStop: boolean
+    }
+    w.__recStop = true
+    return w.__rec
+  })
+  expect(rec.length).toBeGreaterThan(30)
+  const gaps = rec.filter((f) => f === null).length
+  expect(gaps, 'numeral unmounted mid-refetch (would teleport/fly the numeral)').toBe(0)
+  const xs = new Set(rec.map((f) => f && f.x))
+  const ys = new Set(rec.map((f) => f && f.y))
+  const spanOf = (s: Set<number | null>) => {
+    const v = [...s].filter((n): n is number => n != null)
+    return Math.max(...v) - Math.min(...v)
+  }
+  expect(spanOf(xs), 'numeral x drifted across the roll').toBeLessThanOrEqual(1)
+  expect(spanOf(ys), 'numeral y drifted across the roll').toBeLessThanOrEqual(1)
+
+  await cdp.send('Network.emulateNetworkConditions', {
+    offline: false,
+    latency: 0,
+    downloadThroughput: -1,
+    uploadThroughput: -1,
+  })
+
+  // ── 3. No detached ghost on a cross-family exit ────────────────────
+  // Leave to Hem (family ova→home): during the crossfade any visible
+  // "att repetera" must live INSIDE the exiting clone ([data-exiting]);
+  // after it, none at all.
+  await page.locator('a[href="/"]').first().click()
+  await expect(page.getByTestId('home-greeting')).toBeVisible({ timeout: 30_000 })
+  const detached = await page.evaluate(() => {
+    // A ghost is DETACHED when it is visible and either lives outside the
+    // exiting clone entirely, or is re-pinned to the viewport by a
+    // position:fixed ancestor INSIDE the clone (the #286 failure: the
+    // clone kept the fixed station, DOM-inside but visually floating over
+    // the incoming page — a DOM-only closest() check misses it).
+    let found = 0
+    for (const el of document.querySelectorAll('span')) {
+      if (el.textContent !== 'att repetera') continue
+      const b = el.getBoundingClientRect()
+      if (b.width === 0 || getComputedStyle(el).visibility === 'hidden') continue
+      const clone = el.closest('[data-exiting]')
+      if (!clone) {
+        found++
+        continue
+      }
+      let n: HTMLElement | null = el as HTMLElement
+      while (n && n !== clone) {
+        const cs = getComputedStyle(n)
+        if (cs.position === 'fixed' || cs.visibility === 'hidden') break
+        n = n.parentElement
+      }
+      if (n && n !== clone && getComputedStyle(n).position === 'fixed') found++
+    }
+    return found
+  })
+  expect(detached, 'a due-station ghost floats detached over Home during the exit').toBe(0)
+  await page.waitForTimeout(1500)
+  await expect(page.locator('[data-exiting]')).toHaveCount(0)
+  const lingering = await page.evaluate(() => {
+    let found = 0
+    for (const el of document.querySelectorAll('span')) {
+      if (el.textContent === 'att repetera' && el.getBoundingClientRect().width > 0) found++
+    }
+    return found
+  })
+  expect(lingering, 'due-station ink lingers on Home after the crossfade').toBe(0)
 })

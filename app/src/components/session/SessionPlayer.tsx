@@ -693,11 +693,11 @@ export function SessionPlayer(props: SessionPlayerProps) {
       }
       return (
         <MobileFrame tabs={false}>
-          {dueStation}
           <Page
             runningHead={['HP · Coach', headLabel]}
             status={{ mode: statusMode, context: 'redo', hints: ['esc hem', '⌘k palett'] }}
           >
+            {dueStation}
             {loading}
           </Page>
         </MobileFrame>
@@ -751,7 +751,6 @@ export function SessionPlayer(props: SessionPlayerProps) {
     )
     return (
       <MobileFrame tabs={false}>
-        {dueStation}
         <Page
           runningHead={['HP · Coach', sectionLabel]}
           status={{
@@ -760,6 +759,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
             hints: ['esc hem', '⌘k palett'],
           }}
         >
+          {dueStation}
           {idleBody}
         </Page>
       </MobileFrame>
@@ -787,7 +787,6 @@ export function SessionPlayer(props: SessionPlayerProps) {
     const { headLabel: sectionLabel } = chromeLabelsFor(props.sessionKind, props.sections)
     return (
       <MobileFrame tabs={false}>
-        {dueStation}
         <Page
           runningHead={['HP · Coach', sectionLabel]}
           status={{
@@ -796,6 +795,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
             hints: ['esc hem', '⌘k palett'],
           }}
         >
+          {dueStation}
           {doneBody}
         </Page>
       </MobileFrame>
@@ -828,8 +828,8 @@ export function SessionPlayer(props: SessionPlayerProps) {
   if (useStudyDesk) {
     return (
       <MobileFrame tabs={false}>
-        {dueStation}
         <BoksidanDesk
+          dueStation={dueStation}
           {...variantPropsFor({
             question: q,
             picked,

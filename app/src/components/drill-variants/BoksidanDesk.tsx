@@ -13,6 +13,8 @@
 // (a–e to pick, Enter to advance, Esc to parent) lives in SessionPlayer
 // and drives onPick / onReset here unchanged.
 
+import type { ReactNode } from 'react'
+
 import { QuestionPan } from '@/components/motion/QuestionPan'
 import { RailShell } from '@/components/NavRail'
 import { StudyDesk } from '@/components/StudyDesk'
@@ -27,7 +29,15 @@ export function BoksidanDesk({
   position,
   total,
   blockPosition,
-}: VariantData) {
+  dueStation,
+}: VariantData & {
+  /** The due-numeral header station (DueHeaderStation), mounted INSIDE
+   *  the centered reading canvas so its sticky strip shares the exact
+   *  880px column frame as StudyDesk — column-aligned, not viewport-
+   *  glued. Rendered before the QuestionPan so it never rides the
+   *  question sheet's exit/enter pan. */
+  dueStation?: ReactNode
+}) {
   return (
     <div
       style={{
@@ -44,6 +54,7 @@ export function BoksidanDesk({
         {/* Centered editorial canvas. StudyDesk owns the 880px frame +
          *  its own padding; we just center it like a printed page. */}
         <main style={{ flex: 1, width: '100%', maxWidth: 1320, margin: '0 auto' }}>
+          {dueStation}
           {/* A2 ribbon camera: between questions the graded sheet exits
            *  upward while the next arrives from below — see QuestionPan. */}
           <QuestionPan id={question.qid}>
