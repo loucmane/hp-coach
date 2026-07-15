@@ -92,6 +92,51 @@ a 10-question pass (scales with session length — honest bookkeeping).
   ledger is honest, the rule draws regardless, Klart. seats
   regardless. 7 av 10 gets the full ceremony.
 
+## KH · Hybriden — the press that keeps the books
+
+**Owner verdict on the round (verbatim): "I like a mix between K1+K3.
+I like the motion of K1 and the bottom of K3 with the sum part."**
+
+**Composition decision: the count rides the wave.** The synthesis
+risk was two ceremonies glued at the waist — a press up top, then a
+separate bookkeeper ticking below it. KH avoids that by giving the
+ceremony exactly ONE impulse: K1's strike. Everything after the
+strike is its consequence, and the wave it launches IS the
+bookkeeping hand:
+
+- Page pre-set at faint ink (0.18), 260 ms stillness, *Klart.*
+  struck at the top on **slag k380 c26 m1.4** — K1's motion, intact,
+  including the 70 ms ink slap and the one z-moment.
+- The pressure wave leaves the strike point at K1's 50 ms/element
+  pace through the head furniture (hero rule, column header)…
+- …then **slows to K3's 90 ms counting-house cadence over the facit
+  column**. Each row it displaces (2 px) and inks to full is a
+  counted mark, and the live summa ("N av M") beneath the column
+  advances on the same clock — `khRowDelay(i)` drives both the row's
+  ink delay and the tally timer, so the number can never desync from
+  the ink. The count is not a second hand; it is the wave observed
+  from below.
+- When the wave inks the last row: bookkeeper's rule (scaleX 0 → 1,
+  origin left, 320 ms) at +200 ms, then pass stats + coda seat on
+  **sats k480 c40 m0.8** at +480 ms — the ceremony ends in the house
+  veck physics, exactly as K3 did.
+
+Layout is K1's top (eyebrow + struck hero) over K3's bottom (ledger,
+summa, rule, settled stats + coda). The "N av M rätt" stat is NOT
+duplicated up top — the sum lives only where the owner asked for it,
+at the bottom, earned. Total beat ≈ 2.1 s for a 10-question pass:
+longer than K1 alone, but every ms over the ledger is literal
+counting (K3's honesty law) and every ms after the strike is
+consequence (K1's causality law) — nothing is padding.
+
+Shared laws hold: identical ceremony for ren and 7-av-10 runs, ✗
+struck and counted with the same hand as ✓, reduced motion collapses
+to final-state-immediately (step preset to total, phase to settle),
+nothing loops, replay = remount, accent only on the till-repetition
+numeral. State-driven via the same `useGo` two-rAF flag (RouteScene's
+`AnimatePresence initial={false}` cannot veto it); the tally timers
+arm only when `go` flips.
+
 ## Verification
 
 Driven on the real `/dev/motion-bakeoff?dev=1` route (vite :5192,
@@ -101,3 +146,9 @@ signature pass — 53 frames in `screenshots-klart/` (repo root). No
 console or page errors. Gates: vitest 592 green, `tsc -b --noEmit`,
 biome clean on both touched files. `routeTree.gen.ts` unchanged (no
 new route — chips added to the existing bake-off page).
+
+KH verified the same way: authed chromium on `/dev/motion-bakeoff?dev=1`
+(vite :5192), both runs frame-captured through strike → wave/count →
+rule → settle — 22 frames in `screenshots-klart-hybrid/` (repo root),
+no console or page errors. Gates: vitest 620 green, `tsc -b --noEmit`,
+biome clean on both touched files.
