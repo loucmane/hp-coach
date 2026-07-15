@@ -29,6 +29,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { INKDEMO } from '@/components/devbake/DryingInkDemo'
 import { KLART1, KLART2, KLART3, KLARTH } from '@/components/devbake/KlartBakeoff'
+import { LOAD1, LOAD2, LOAD3 } from '@/components/devbake/LoadingBakeoff'
 import { MOTA2 } from '@/components/devbake/MotionArketFullbordad'
 import { MOTA1 } from '@/components/devbake/MotionArketRedigerad'
 import { MOTC1, MOTC2 } from '@/components/devbake/MotionBakeoffC'
@@ -81,6 +82,15 @@ const VARIANTS = [
   // Wave W1 — the shipped drying-ink data-arrival treatment (skeleton
   // and content as one surface; tork/ut only), replayable on demand.
   { key: 'd1', label: 'D1 · Torkande bläck', C: INKDEMO },
+  // W1 round 2 — owner verdict on D1: "i didnt get the drying ink
+  // feeling" (it reads as a quieter skeleton). Three competing
+  // loading-arrival languages on one shared stage, each replayable at
+  // snabb (300 ms) and långsam (2,5 s): the blurred ghost that sharpens
+  // into focus, the page that writes itself in, and the blank sheet
+  // that arrives in one composed beat.
+  { key: 'l1', label: 'L1 · Bläckfläcken', C: LOAD1 },
+  { key: 'l2', label: 'L2 · Skriften', C: LOAD2 },
+  { key: 'l3', label: 'L3 · Vita arket', C: LOAD3 },
 ] as const
 
 function MotionBakeoffPage() {
