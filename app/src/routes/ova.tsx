@@ -56,6 +56,15 @@ function OvaRoute() {
   // queries skip the ceremony (isPending false on first render).
   const laneCopyPending = stats.isPending
   const queuePending = pile.isPending || due.isPending
+  // Ghost-loading fix: when the backing query errors AND no data has ever
+  // resolved (no cache to fall back to), the sentence would otherwise
+  // render a confidently WRONG state (e.g. "Kön är tom" when the queue
+  // query actually failed) rather than an honest "couldn't load". React
+  // Query's own retry/focus-refetch recovers it — no manual retry button.
+  const laneCopyErrored = stats.isError && stats.data === undefined
+  const queueErrored =
+    (pile.isError || due.isError) && pile.data === undefined && due.data === undefined
+  const RETRY_LINE = 'Gick inte att hämta just nu — försöker igen automatiskt.'
 
   // The live per-lane folio signal: how many mistakes each section carries
   // in today's PILE — same slice the nav numeral counts, so the lane numbers
@@ -121,9 +130,11 @@ function OvaRoute() {
                *  writes itself in over a faint baseline rule. */}
               <Skrift ready={!laneCopyPending} lines={1}>
                 <SkriftLine line={0} inline ruleW="42ch">
-                  {weakest
-                    ? `Schemat föreslår ${weakest} — svagast just nu. Välj fritt om du hellre tar något annat.`
-                    : 'Välj en sektion att öva, eller ta en blandad övning över alla åtta delprov.'}
+                  {laneCopyErrored
+                    ? RETRY_LINE
+                    : weakest
+                      ? `Schemat föreslår ${weakest} — svagast just nu. Välj fritt om du hellre tar något annat.`
+                      : 'Välj en sektion att öva, eller ta en blandad övning över alla åtta delprov.'}
                 </SkriftLine>
               </Skrift>
             </p>
@@ -252,17 +263,19 @@ function OvaRoute() {
             >
               <Skrift ready={!queuePending} lines={1}>
                 <SkriftLine line={0} inline ruleW="40ch">
-                  {pileCount > 0
-                    ? // Prefer ONE number — today's pile — wherever the two agree.
-                      // Only when some of the pile isn't ripe yet do we name both
-                      // ("N redo nu · M i dagens hög"), since you replay the ripe
-                      // ones and the rest become ready soon.
-                      dueCount === pileCount
-                      ? `${pileCount} ${pileCount === 1 ? 'miss' : 'missar'} att repetera — de äldsta först.`
-                      : dueCount > 0
-                        ? `${dueCount} redo att repetera nu · ${pileCount} i dagens hög — de äldsta först.`
-                        : `Inget är redo just nu — ${pileCount} ${pileCount === 1 ? 'miss ligger' : 'missar ligger'} i dagens hög och blir redo snart.`
-                    : 'Kön är tom just nu — allt du missat är återlärt. Repetitionen står kvar här ändå.'}
+                  {queueErrored
+                    ? RETRY_LINE
+                    : pileCount > 0
+                      ? // Prefer ONE number — today's pile — wherever the two agree.
+                        // Only when some of the pile isn't ripe yet do we name both
+                        // ("N redo nu · M i dagens hög"), since you replay the ripe
+                        // ones and the rest become ready soon.
+                        dueCount === pileCount
+                        ? `${pileCount} ${pileCount === 1 ? 'miss' : 'missar'} att repetera — de äldsta först.`
+                        : dueCount > 0
+                          ? `${dueCount} redo att repetera nu · ${pileCount} i dagens hög — de äldsta först.`
+                          : `Inget är redo just nu — ${pileCount} ${pileCount === 1 ? 'miss ligger' : 'missar ligger'} i dagens hög och blir redo snart.`
+                      : 'Kön är tom just nu — allt du missat är återlärt. Repetitionen står kvar här ändå.'}
                 </SkriftLine>
               </Skrift>
             </p>

@@ -25,6 +25,16 @@ type DailyPlanCardProps = {
    *  skeleton inside the card means the chrome never remounts on data
    *  arrival — only the ink swaps. */
   plan: DailyPlan | null
+  /** True when the queries the plan depends on (stats/due-mistakes) have
+   *  errored — e.g. a rapid refresh trips the worker rate limiter. When
+   *  `plan` is still null in this state, the ghost rows would otherwise
+   *  wait FOREVER on a `ready` signal that can never flip (the
+   *  ghost-loading bug this prop fixes): the card renders one quiet
+   *  fallback line instead. React Query's own retry/focus-refetch
+   *  recovers it — no manual retry affordance. Has no effect once `plan`
+   *  is non-null (a cached plan still renders normally even if a later
+   *  poll errors). */
+  planError?: boolean
   allComplete: boolean
   /** Called when a plan item's row is tapped. Receives the item's
    *  href so the route can pick a navigation strategy. Defaults to
@@ -79,6 +89,7 @@ function withLiveData(
 
 export function DailyPlanCard({
   plan,
+  planError = false,
   allComplete,
   onNavigate,
   dueMistakeCount,
@@ -87,6 +98,16 @@ export function DailyPlanCard({
   const ark = useArketMotion()
   if (plan && allComplete) {
     return <CompletePanel plan={plan} />
+  }
+
+  // Ghost-loading fix: the queries the plan depends on errored and no
+  // plan has ever resolved (cached or fresh) — the ordinary ghost rows
+  // wait on `ready` (`rows != null`), which never flips once the
+  // underlying query is stuck in an error state. Render the fallback
+  // sheet instead of waiting forever. A cached plan (however stale)
+  // still takes priority — this branch only fires with NOTHING to show.
+  if (!plan && planError) {
+    return <PlanErrorPanel />
   }
 
   // A `kind: 'mock'` item is rendered as the Kallelse summons ABOVE this
@@ -163,6 +184,40 @@ export function DailyPlanCard({
           )}
         </DrillRailSection>
       </Skrift>
+    </motion.section>
+  )
+}
+
+/** The ghost-loading fallback sheet — same card chrome as the ordinary
+ *  ready/waiting states (so nothing remounts), but the plan body is one
+ *  quiet house-voice line instead of eternal ghost rows, and the margin
+ *  minute estimate is blank (there's nothing to estimate). Static — no
+ *  Skrift write-in ceremony; this isn't data arriving, it's an honest
+ *  "we don't know yet" that React Query's retry/focus-refetch resolves
+ *  on its own. */
+function PlanErrorPanel() {
+  const ark = useArketMotion()
+  return (
+    <motion.section
+      data-testid="daily-plan-error"
+      className={ark.rm ? undefined : 'hpc-arkkort'}
+      layoutId={ark.rm ? undefined : ARK_KORT_LAYOUT_ID}
+      transition={ark.arket}
+    >
+      <DrillRailSection meta={<strong>Idag</strong>} delay={220}>
+        <h2 className="hpc-m3-h">Dagens plan</h2>
+        <p
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 12,
+            letterSpacing: '0.02em',
+            color: 'var(--muted)',
+            margin: '10px 0 0',
+          }}
+        >
+          Gick inte att hämta planen just nu — försöker igen automatiskt.
+        </p>
+      </DrillRailSection>
     </motion.section>
   )
 }
