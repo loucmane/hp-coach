@@ -32,7 +32,7 @@ import { ResumptionPanel } from '@/components/home/ResumptionPanel'
 import { TopTrapsCard } from '@/components/home/TopTrapsCard'
 import { MobileFrame, type TabKey } from '@/components/MobileFrame'
 import { ConfirmSheet } from '@/components/mock/ConfirmSheet'
-import { InkSlot } from '@/components/motion/InkDry'
+import { Skrift, SkriftLine } from '@/components/motion/Skrift'
 import { Page } from '@/components/Page'
 import { useViewport } from '@/hooks/useViewport'
 import { formatSwedishHeader } from '@/lib/dates'
@@ -263,14 +263,16 @@ export function HomeMobile({
                   )}
                 </div>
               )}
-              {/* Drying ink: the label is real ink from frame one (the
-               *  plan ALWAYS resolves to a minute estimate); only the
-               *  numeral waits as a pre-impression and dries in. */}
+              {/* Skriften: the label is real ink from frame one (the plan
+               *  ALWAYS resolves to a minute estimate); only the numeral
+               *  waits over a baseline rule and writes in. */}
               <div>
                 <div className="hpc-m3-stat-n">
-                  <InkSlot ready={plan != null} w={2}>
-                    {plan?.estimatedMinutes}
-                  </InkSlot>
+                  <Skrift ready={plan != null} lines={1}>
+                    <SkriftLine line={0} inline ruleW="2ch">
+                      {plan?.estimatedMinutes}
+                    </SkriftLine>
+                  </Skrift>
                 </div>
                 <div className="hpc-m3-stat-l">min idag</div>
               </div>

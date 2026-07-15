@@ -22,7 +22,7 @@
 // reading-pace tweens. Pick a vocabulary, name it, use it everywhere.
 
 import { type Transition, useReducedMotion } from 'motion/react'
-import { createElement, type ReactNode, useEffect, useRef } from 'react'
+import { createElement, type ReactNode, useEffect, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
 
 /**
@@ -438,4 +438,120 @@ export function KeepInView({
     return () => clearTimeout(t)
   }, [rm, delayMs])
   return createElement('div', { ref, style: { scrollMarginBottom: 20 } }, children)
+}
+
+// ── The mount-suppression law + its escape hatch ─────────────────────
+//
+// LAW: mount animations do NOT play under RouteScene. Every product
+// route renders inside RouteScene's `AnimatePresence initial={false}`
+// (see components/motion/RouteScene.tsx), which suppresses mount-driven
+// `initial → animate` on EVERY descendant — the presence context vetoes
+// the first commit's entrance. A `<motion.div initial={{opacity:0}}
+// animate={{opacity:1}}>` mounted inside a route therefore renders at
+// its FINAL state with no transition. This is by design (cross-route
+// layoutId flights need the mount frame stable) and is not a bug to
+// route around at the RouteScene level.
+//
+// ESCAPE HATCH: to play an in-page beat when a surface (re)mounts —
+// the Klart. ceremony, a first-paint reveal — drive it off STATE, not
+// mount. `useMountGo` flips a flag two rAFs after (re)mount; animate on
+// that PROP change, which presence context cannot veto. Remounting the
+// subtree (e.g. `key={playKey}`) re-arms it. Under reduced motion the
+// flag starts `true`, so the final state renders on the first frame.
+//
+// Graduated from the KlartBakeoff / LoadingBakeoff `useGo` fixture idiom
+// (W2/W1) — the one place the two-rAF pattern now lives.
+
+/**
+ * A state-driven mount flag that survives RouteScene's mount
+ * suppression. Returns `false` on the first paint, then flips to `true`
+ * two animation frames later — so a `motion` element animating on this
+ * prop change plays its entrance even though `initial → animate` is
+ * vetoed by the enclosing `AnimatePresence initial={false}`.
+ *
+ * Pass the surface's reduced-motion state: when `rm` is true the flag
+ * starts (and stays) `true`, collapsing the beat to its final state on
+ * the first frame — the reduced-motion parity contract.
+ *
+ * Two rAFs, not one: the first lets the suppressed mount commit paint at
+ * the pre-state; the second guarantees a distinct post-mount frame for
+ * the flip, so the transition has a real start keyframe to run from.
+ */
+export function useMountGo(rm: boolean): boolean {
+  const [go, setGo] = useState(rm)
+  useEffect(() => {
+    if (rm) return
+    let inner = 0
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => setGo(true))
+    })
+    return () => {
+      cancelAnimationFrame(outer)
+      cancelAnimationFrame(inner)
+    }
+  }, [rm])
+  return go
+}
+
+// ── KH · "Hybriden" — the Klart. session-end ceremony ────────────────
+//
+// The owner-ratified session-complete payoff (won the W2 bake-off;
+// reference fixture: components/devbake/KlartBakeoff.tsx `KLARTH`). The
+// single SOURCE OF TRUTH for its springs + timeline — DrillResult (the
+// product surface) and the devbake chip both import from here.
+//
+// One impulse, one consequence chain: after a beat of stillness "Klart."
+// is STRUCK on `KLART_SLAG` (the system's one z-moment), the strike
+// launches a pressure wave that inks the page — fast (headStep) through
+// the header furniture, then slowing to a counting cadence (tick) over
+// the facit rows, each inked row advancing a live "N av M" summa in
+// lockstep (`khRowDelay` drives both the ink delay and the tally). When
+// the wave runs out the bookkeeper's rule draws and the tail seats on
+// `KLART_SATS` — control handed back to the house veck physics.
+
+/** The strike spring — a heavy platen, one small recoil, settles
+ *  ~600 ms. The ceremony's single z-moment (scale 1.14 → 1). */
+export const KLART_SLAG = { type: 'spring', stiffness: 380, damping: 26, mass: 1.4 } as const
+
+/** The settle spring — the tail (summa, rule, coda) seating home in the
+ *  Arket veck register on purpose: the ceremony ends in house physics. */
+export const KLART_SATS = { type: 'spring', stiffness: 480, damping: 40, mass: 0.8 } as const
+
+/**
+ * The KH timeline, in seconds. `strike` is the stillness before the
+ * platen falls; `waveLead` the delay before the wave leaves the strike
+ * point; `headStep` the per-element pace above the ledger; `tick` the
+ * counting-house cadence over the facit column; `headCount` the number
+ * of head elements (rule + column header) the wave crosses before the
+ * first facit row; `ruleDelay` / `settleDelay` fire after the last mark
+ * (the bookkeeper's rule, then the seated tail).
+ */
+export const KLART = {
+  strike: 0.26,
+  waveLead: 0.12,
+  headStep: 0.05,
+  tick: 0.09,
+  headCount: 2,
+  ruleDelay: 0.2,
+  settleDelay: 0.48,
+} as const
+
+/**
+ * Delay (s) until the wave reaches facit row `i`. `tick` defaults to the
+ * counting cadence but callers pass a COMPRESSED tick for long sessions
+ * so the ledger stays inside the one-beat budget (ADHD: the ceremony is
+ * the single long beat, not a minute of counting).
+ */
+export function khRowDelay(i: number, tick: number = KLART.tick): number {
+  return KLART.strike + KLART.waveLead + KLART.headCount * KLART.headStep + i * tick
+}
+
+/**
+ * The counting cadence, compressed when a session has many facit rows so
+ * the whole ledger inks within `budget` seconds (default 1.4 s — the KH
+ * beat over a 10-question pass). A 10-row pass keeps the full 90 ms tick;
+ * a 40-row pass tightens it so the count never outlasts the beat.
+ */
+export function khTick(rows: number, budget = 1.4): number {
+  return Math.min(KLART.tick, budget / Math.max(1, rows))
 }
