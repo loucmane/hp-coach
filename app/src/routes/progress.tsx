@@ -8,6 +8,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useStats } from '@/api/hooks/useStats'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
+import { useFirstContentSignal } from '@/lib/motion'
 import { TAB_ROUTE } from '@/lib/nav'
 import { ProgressMobile } from '@/screens/ProgressMobile'
 
@@ -16,6 +17,10 @@ export const Route = createFileRoute('/progress')({
 })
 
 function ProgressRoute() {
+  // Boot-veil content signal (#305 owner verdict) — /progress has no
+  // Skrift block; its placeholder-while-loading UI is the route's own
+  // primary content, present at mount.
+  useFirstContentSignal()
   const navigate = useNavigate()
   const stats = useStats()
   return (

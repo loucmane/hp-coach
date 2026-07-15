@@ -21,7 +21,7 @@ import { findQuestion, loadBank, type Question, type Section } from '@/data/ques
 import { logAdaptiveEvent } from '@/lib/adaptiveEvents'
 import { encodeTreatedMarker } from '@/lib/adaptiveReview'
 import { DEFAULT_DRILL_LENGTH, pickDrillQuestions, pickMixedDrillQuestions } from '@/lib/drill'
-import { sectionDoorLayoutId } from '@/lib/motion'
+import { sectionDoorLayoutId, useFirstContentSignal } from '@/lib/motion'
 import { REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
 
@@ -156,6 +156,10 @@ function DrillScreen() {
   } = Route.useSearch()
   const section: DrillSection = sectionFromUrl ?? 'ORD'
   const navigate = useNavigate()
+  // Boot-veil content signal (#305 owner verdict) — /drill has no Skrift
+  // block; its plan/question set is synchronous local data, so by the
+  // time this component commits its primary content is already in the DOM.
+  useFirstContentSignal()
 
   // A NORMAL drill is the only surface that offers the adaptive-review
   // detour: plain section drills, not the detour itself (`framework`/`ar`),

@@ -555,3 +555,60 @@ export function khRowDelay(i: number, tick: number = KLART.tick): number {
 export function khTick(rows: number, budget = 1.4): number {
   return Math.min(KLART.tick, budget / Math.max(1, rows))
 }
+
+/**
+ * First-content signal — the boot veil's lift condition (owner verdict on
+ * #305: the veil holds until the first REAL CONTENT has committed, not
+ * merely until Clerk resolves). One-shot, app-wide: whichever surface
+ * commits real content first fires `hpc:first-content`; every caller
+ * after that is a no-op. `__root.tsx`'s `ClerkGate` listens for it.
+ *
+ * Two call sites:
+ *   - `Skrift` (components/motion/Skrift.tsx) dispatches it directly the
+ *     first time a written block's `ready` is true (mount-ready skip, or
+ *     the data arriving later) — it already tracks that state.
+ *   - Surfaces with no `Skrift` block (drill/session, prov, konto, legal,
+ *     dev routes, …) call `useFirstContentSignal()` once at their
+ *     route-level component's mount — by the time that component
+ *     commits, its primary content is in the DOM.
+ *
+ * `firstContentFired` is also mirrored onto `window.__hpcFirstContentFired`
+ * — a plain synchronous flag, not just the event. React fires a mounting
+ * tree's effects bottom-up (children before parents) within one commit, so
+ * when Clerk resolves and the whole signed-in tree mounts in the SAME
+ * commit as `ClerkGate`, a content surface that's ready at first render
+ * (e.g. a `Skrift` skip, or `useFirstContentSignal`) dispatches from ITS
+ * effect before `ClerkGate`'s own effect gets to `addEventListener` —
+ * the event would already be gone. `ClerkGate` checks the flag first and
+ * only falls back to the listener when it isn't set yet.
+ */
+let firstContentFired = false
+
+export function dispatchFirstContent(): void {
+  if (firstContentFired) return
+  firstContentFired = true
+  if (typeof window !== 'undefined') {
+    window.__hpcFirstContentFired = true
+    window.dispatchEvent(new Event('hpc:first-content'))
+  }
+}
+
+/** True once `dispatchFirstContent` has fired — the synchronous escape
+ *  hatch for a late subscriber (see the ordering note above). */
+export function hasFirstContentFired(): boolean {
+  return typeof window !== 'undefined' && window.__hpcFirstContentFired === true
+}
+
+/** Test-only: rearm the one-shot latch between test cases. */
+export function __resetFirstContentSignalForTests(): void {
+  firstContentFired = false
+  if (typeof window !== 'undefined') window.__hpcFirstContentFired = false
+}
+
+/** One-line opt-in for a route/surface with no `Skrift` block: fires the
+ *  first-content signal once, on mount. */
+export function useFirstContentSignal(): void {
+  useEffect(() => {
+    dispatchFirstContent()
+  }, [])
+}

@@ -13,6 +13,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 
 import { LegalPage, type LegalSection, P } from '@/components/legal/LegalPage'
+import { useFirstContentSignal } from '@/lib/motion'
 
 export const Route = createFileRoute('/integritet')({
   component: IntegritetRoute,
@@ -138,6 +139,9 @@ const SECTIONS: LegalSection[] = [
 // Exported for the legal-page render test (no router harness needed —
 // same idiom as prov.tsx's Picker).
 export function IntegritetRoute() {
+  // Boot-veil content signal (#305 owner verdict) — legal pages are
+  // static local content, ready by mount.
+  useFirstContentSignal()
   return (
     <LegalPage
       title="Integritetspolicy."

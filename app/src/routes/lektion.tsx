@@ -24,7 +24,7 @@ import { Page } from '@/components/Page'
 import { Mono } from '@/components/primitives'
 import { wiredSections } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
-import { uppslagDoorLayoutId, useArketMotion } from '@/lib/motion'
+import { uppslagDoorLayoutId, useArketMotion, useFirstContentSignal } from '@/lib/motion'
 import { computeSectionScore, formatScore, rankWeakness } from '@/lib/scoring'
 
 type Search = { section?: Section }
@@ -59,6 +59,10 @@ const SECTION_BLURB: Record<Section, string> = {
 }
 
 function LektionRoute() {
+  // Boot-veil content signal (#305 owner verdict) — /lektion (Uppslag)
+  // has no Skrift block at the picker/reader entry; content is local
+  // framework data, ready by mount.
+  useFirstContentSignal()
   const { section } = Route.useSearch()
   const navigate = useNavigate()
   // Esc-to-parent: reader → picker, picker → home. Status line shows

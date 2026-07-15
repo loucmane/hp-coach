@@ -9,12 +9,16 @@ import { createFileRoute } from '@tanstack/react-router'
 import { AuthLayout } from '@/components/AuthLayout'
 import { MobileFrame } from '@/components/MobileFrame'
 import { clerkAppearance } from '@/lib/clerkAppearance'
+import { useFirstContentSignal } from '@/lib/motion'
 
 export const Route = createFileRoute('/sign-in')({
   component: SignInScreen,
 })
 
 function SignInScreen() {
+  // Boot-veil content signal (#305 owner verdict) — public route, no
+  // Skrift block; the card chrome is present at mount.
+  useFirstContentSignal()
   return (
     <MobileFrame tabs={false}>
       <AuthLayout

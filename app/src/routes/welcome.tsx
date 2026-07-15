@@ -21,6 +21,7 @@ import { useUser } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { Btn, Eyebrow } from '@/components/primitives'
+import { useFirstContentSignal } from '@/lib/motion'
 import type { PaletteKey } from '@/lib/tokens'
 import { WELCOMED_KEY } from '@/lib/welcome'
 import { useUiStore } from '@/stores/uiStore'
@@ -30,6 +31,10 @@ export const Route = createFileRoute('/welcome')({
 })
 
 function WelcomeRoute() {
+  // Boot-veil content signal (#305 owner verdict) — a fresh sign-up can
+  // cold-boot directly into /welcome (SignedInTree's redirect); no
+  // Skrift block, the picker is present at mount.
+  useFirstContentSignal()
   const navigate = useNavigate()
   const mode = useUiStore((s) => s.mode)
   const palette = useUiStore((s) => s.palette)

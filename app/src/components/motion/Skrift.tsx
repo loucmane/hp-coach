@@ -33,9 +33,16 @@
 // everywhere so RouteScene's mount suppression has nothing to suppress.
 
 import { motion } from 'motion/react'
-import { type CSSProperties, createContext, type ReactNode, useContext, useRef } from 'react'
+import {
+  type CSSProperties,
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useRef,
+} from 'react'
 
-import { EASE, useArketMotion, useMountGo } from '@/lib/motion'
+import { dispatchFirstContent, EASE, useArketMotion, useMountGo } from '@/lib/motion'
 
 /* ── graduated constants (from LOAD2 "Skriften") ─────────────────────
    The insets over-scan by 8 % so italic overhangs and descenders never
@@ -76,6 +83,14 @@ export function Skrift({
   // later `ready` flip after a cold wait still writes in.
   const skip = useRef(ready)
   const cadence = Math.min(BASE_CADENCE, BUDGET_S / Math.max(1, lines))
+  // Boot-veil content signal (owner verdict on #305): the first time this
+  // block's data is ready — at mount (skip case) or when `ready` flips
+  // true later — is real content committing. `dispatchFirstContent` is
+  // itself one-shot app-wide, so this firing on every ready-true render
+  // (including re-renders where `ready` stays true) is harmless.
+  useEffect(() => {
+    if (ready) dispatchFirstContent()
+  }, [ready])
   return (
     <SkriftCtx.Provider value={{ ready, cadence, skip: skip.current }}>
       {children}
