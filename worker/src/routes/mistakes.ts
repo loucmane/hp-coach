@@ -97,16 +97,15 @@ const DueQuery = z
 
 export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // POST /api/mistakes — record a wrong answer; upsert if already present.
-  // Schedule: a wrong answer always resets the SRS ladder back to the
-  // 10-minute relearn rung, regardless of how far the user had climbed
-  // before. Binary feedback can't tell "almost right" apart from "off
-  // by a mile", so a partial reset would be guesswork.
+  // Schedule: a wrong answer sends the SRS ladder back to the 10-minute
+  // relearn rung so the item is due again today — but it no longer forgets
+  // how high the item had climbed. The previous height is stashed in
+  // `lapseIntervalMinutes` (FSRS-lite, PL-L.2) so the next correct answer
+  // resumes at half of it instead of restarting at day 1. See lib/srs.ts.
   .post('/', zValidator('json', RecordBody), async (c) => {
     const body = c.req.valid('json')
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
-
-    const wrong = nextOnWrong()
 
     // Look for an existing row first. We could use INSERT … ON CONFLICT
     // but Drizzle's D1 dialect doesn't expose a clean upsert helper, and
@@ -119,6 +118,14 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       .limit(1)
 
     if (existing) {
+      // Lapse memory: stash the height this row had climbed to (or keep
+      // the height already banked from an earlier lapse) before the
+      // relearn rung overwrites the interval. See lib/srs.ts. Store 0 as
+      // NULL so "no banked height" stays a clean NULL in the column.
+      const wrong = nextOnWrong(new Date(), {
+        intervalMinutes: existing.intervalMinutes ?? 0,
+        lapseIntervalMinutes: existing.lapseIntervalMinutes ?? null,
+      })
       const [row] = await db
         .update(mistakes)
         .set({
@@ -127,6 +134,7 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
           lastErrorAt: new Date(),
           intervalMinutes: wrong.intervalMinutes,
           nextReviewAt: wrong.nextReviewAt,
+          lapseIntervalMinutes: wrong.lapseIntervalMinutes > 0 ? wrong.lapseIntervalMinutes : null,
           // Layer 1 tags: keep whichever set is non-empty. Server is the
           // source of truth once tagging starts (task 38).
           layer1Ids: body.layer1Ids ?? existing.layer1Ids ?? null,
@@ -136,6 +144,9 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       return c.json({ mistake: row })
     }
 
+    // Brand-new mistake — no prior height to stash, so lapse memory stays
+    // NULL (the column default). Behaviour identical to the old reset.
+    const wrong = nextOnWrong()
     const [row] = await db
       .insert(mistakes)
       .values({
@@ -250,7 +261,11 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       if (!existing) {
         return c.json({ mistake: null })
       }
-      const outcome = nextOnCorrect(existing.intervalMinutes ?? 0)
+      const outcome = nextOnCorrect(
+        existing.intervalMinutes ?? 0,
+        new Date(),
+        existing.lapseIntervalMinutes ?? null,
+      )
       if (outcome.graduated) {
         const [row] = await db
           .update(mistakes)
@@ -264,6 +279,8 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         .set({
           intervalMinutes: outcome.intervalMinutes,
           nextReviewAt: outcome.nextReviewAt,
+          // Consume/clear any stashed lapse height (null on every correct).
+          lapseIntervalMinutes: outcome.lapseIntervalMinutes,
         })
         .where(eq(mistakes.id, existing.id))
         .returning()
@@ -297,7 +314,11 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       return c.json({ error: { code: 'not_found', message: 'Mistake not found' } }, 404)
     }
 
-    const outcome = nextOnCorrect(existing.intervalMinutes ?? 0)
+    const outcome = nextOnCorrect(
+      existing.intervalMinutes ?? 0,
+      new Date(),
+      existing.lapseIntervalMinutes ?? null,
+    )
 
     if (outcome.graduated) {
       const [row] = await db
@@ -315,6 +336,8 @@ export const mistakesRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         // not visible until nextReviewAt elapses.
         intervalMinutes: outcome.intervalMinutes,
         nextReviewAt: outcome.nextReviewAt,
+        // Consume/clear any stashed lapse height (null on every correct).
+        lapseIntervalMinutes: outcome.lapseIntervalMinutes,
       })
       .where(eq(mistakes.id, id))
       .returning()
