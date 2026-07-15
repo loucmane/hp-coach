@@ -8,6 +8,7 @@
 // end — only the gating and wiring.
 
 import { fireEvent, render, screen, within } from '@testing-library/react'
+import type { JSX } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // ── provider stubs (this surface is Clerk + router + query connected) ──
