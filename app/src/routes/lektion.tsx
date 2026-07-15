@@ -13,6 +13,7 @@
 // swaps the content source.
 
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { motion } from 'motion/react'
 import { useEffect, useMemo } from 'react'
 
 import { useDueMistakes } from '@/api/hooks/useMistakes'
@@ -23,6 +24,7 @@ import { Page } from '@/components/Page'
 import { Mono } from '@/components/primitives'
 import { wiredSections } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
+import { uppslagDoorLayoutId, useArketMotion } from '@/lib/motion'
 import { computeSectionScore, formatScore, rankWeakness } from '@/lib/scoring'
 
 type Search = { section?: Section }
@@ -98,11 +100,16 @@ function PickerShell() {
   )
 }
 
-function PickerBody() {
+// Exported (not just used by PickerShell) so the W4 door-continuity unit
+// test can render the chip list without a router context — PickerBody
+// itself has no route dependency (no Route.useSearch()), only its parent
+// LektionRoute does.
+export function PickerBody() {
   const navigate = useNavigate()
   const wired = new Set(wiredSections())
   const stats = useStats()
   const dueCount = useDueMistakes().data?.length ?? 0
+  const ark = useArketMotion()
 
   // Weakness ranking — sections the user is weakest at percolate to
   // the top of the picker so "what should I study?" answers itself.
@@ -251,7 +258,22 @@ function PickerBody() {
                       minWidth: 80,
                     }}
                   >
-                    {sec}
+                    {/* The chip is the door (W4): the section code morphs
+                     *  into the reader's header eyebrow via the shared
+                     *  uppslag-door layoutId. Only wired sections open a
+                     *  reader, so only wired chips carry the id — a
+                     *  disabled "kommer snart" chip has no landing station. */}
+                    {ark.rm || !isWired ? (
+                      sec
+                    ) : (
+                      <motion.span
+                        layoutId={uppslagDoorLayoutId(sec)}
+                        transition={ark.arket}
+                        style={{ display: 'inline-block' }}
+                      >
+                        {sec}
+                      </motion.span>
+                    )}
                   </span>
                   <span
                     style={{
