@@ -20,7 +20,7 @@ import {
 } from '@/api/hooks/useMistakes'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { findQuestion, loadBank, type Question, SECTION_KEYS, type Section } from '@/data/questions'
-import { pickReplayQuestions, REPETITION_SESSION_SIZE } from '@/lib/replay'
+import { pickReplayQuestions, prunePlan, REPETITION_SESSION_SIZE } from '@/lib/replay'
 
 type RepetitionSearch = { qid?: string; done?: number; start?: true; section?: Section }
 
@@ -132,14 +132,32 @@ function RepetitionScreen() {
       // ?done means we're viewing a finished pass; reconstruction wins.
       autoStart={!!start && !doneSessionId && due.data !== undefined}
       onComplete={onComplete}
-      resolvePlan={(qids) =>
-        loadBank().then((b) =>
+      resolvePlan={(qids, position) => {
+        // Ghost-replay guard (residual #290): an adopted session's stored
+        // plan can include qids whose mistakes were since resolved (a
+        // correct answer elsewhere) or rescheduled out (SRS pushed
+        // nextReviewAt into the future). Prune those against the CURRENT
+        // due list before replaying — otherwise the user replays a
+        // question that's already "done". Scoped to this route because
+        // only /repetition's sessions (kind=adaptive_review) are
+        // mistake-backed; /drill's resolvePlan doesn't prune.
+        const pruned = prunePlan(qids, due.data ?? [])
+        // If the saved cursor now falls at-or-past the pruned plan's end,
+        // there's nothing left to play at that position — treat the
+        // session as complete rather than silently replaying from 0 (a
+        // surprising jump) or the last question. Returning [] reuses the
+        // existing "stored plan no longer resolves" path below: it ends
+        // the dangling session and falls through to a fresh pick.
+        if (position !== undefined && position >= pruned.length) {
+          return Promise.resolve([])
+        }
+        return loadBank().then((b) =>
           // Resolve safely — a stale qid in the stored plan must not crash
           // the resume; SessionPlayer treats an empty resolve as a
           // recoverable "session no longer available" state.
-          qids.map((q) => findQuestion(b, q)).filter((q): q is Question => q !== undefined),
+          pruned.map((q) => findQuestion(b, q)).filter((q): q is Question => q !== undefined),
         )
-      }
+      }}
       pickQuestions={async () => {
         // Cross-device resume is handled by SessionPlayer adopting the
         // active server session + its stored plan (resolvePlan above).

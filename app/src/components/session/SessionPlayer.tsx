@@ -208,8 +208,16 @@ export type SessionPlayerProps = {
    *  active session of this kind exists, SessionPlayer replays its plan
    *  via this instead of calling pickQuestions (which would re-roll a
    *  fresh batch). Omit for surfaces that never resume (e.g. /diagnostik);
-   *  without it, an active session falls through to a fresh pick. */
-  resolvePlan?: (qids: string[]) => Promise<Question[]>
+   *  without it, an active session falls through to a fresh pick.
+   *
+   *  `position` is the session's saved cursor (existing.position), passed
+   *  through so a resolver that PRUNES the stored plan (/repetition's
+   *  ghost-replay guard, residual #290 — dropping qids whose mistakes
+   *  were since resolved) can decide the prune left nothing playable at
+   *  that cursor and return [] to signal "treat as complete", reusing the
+   *  same empty-plan path as a fully-stale plan below. Resolvers that
+   *  never prune (e.g. /drill) can ignore it. */
+  resolvePlan?: (qids: string[], position?: number) => Promise<Question[]>
   /** Show a COMPLETED pass's Klart, reconstructed from its persisted
    *  attempts, instead of the live drill. Set from the route's `?done=<id>`
    *  search param so the payoff survives a refresh (the done phase is
@@ -317,7 +325,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
         canAdoptActiveSession(existing, props.sections, staleResume, locallyEnded) &&
         props.resolvePlan
       ) {
-        const questions = await props.resolvePlan(existing.plan)
+        const questions = await props.resolvePlan(existing.plan, existing.position)
         if (questions.length === 0) {
           // The stored plan no longer resolves to any live question
           // (corpus drift / stale seed rows like `q1`). End the dangling
