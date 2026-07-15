@@ -12,7 +12,11 @@ import type { MiddlewareHandler } from 'hono'
 
 import type { Env, Vars } from '../types'
 
-const LIMIT = 60
+// 120/min: a full SPA reload fires ~8 authed queries, and a dogfooding
+// owner hammering F5 a handful of times tripped 60/min (2026-07-15 —
+// Home ghosted for the retry window). Memory-first counting means the
+// higher ceiling costs zero extra KV writes.
+const LIMIT = 120
 const WINDOW_SECONDS = 60
 
 export const rateLimit: MiddlewareHandler<{ Bindings: Env; Variables: Vars }> = async (c, next) => {

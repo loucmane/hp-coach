@@ -57,18 +57,19 @@ describe('rateLimit', () => {
     }) as typeof kv.put
     const { app, env } = makeApp('staging', kv, 43)
     let limited = 0
-    for (let i = 0; i < 70; i++) {
+    for (let i = 0; i < 130; i++) {
       const res = await app.request('/api/thing', {}, env)
       if (res.status === 429) limited++
     }
     // Memory-first: requests 1–29 never touch KV; durable accounting
     // starts at the half-limit escalation point; the 60-req limit still
-    // bites (requests 60–70 → 11 rejections).
+    // bites (requests 120–130 → 11 rejections at the 2026-07-15
+    // ceiling of 120/min).
     expect(limited).toBe(11)
-    // The actual point of the 2026-07-11 change: a 70-request burst
-    // costs ~30 KV writes, not 70 — and typical polling traffic
+    // The actual point of the 2026-07-11 change: a burst costs KV
+    // writes only past ESCALATE_AT — and typical polling traffic
     // (< 30/min) costs ZERO.
-    expect(puts).toBeLessThan(35)
+    expect(puts).toBeLessThan(75)
     expect(puts).toBeGreaterThan(0)
   })
 
