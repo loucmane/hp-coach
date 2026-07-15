@@ -28,7 +28,7 @@ function ProgressRoute() {
           hints: ['esc tillbaka', '⌘k palett'],
         }}
       >
-        <ProgressMobile stats={stats.data} loading={stats.isPending} />
+        <ProgressMobile stats={stats.data} loading={stats.isPending} error={stats.isError} />
       </Page>
     </MobileFrame>
   )

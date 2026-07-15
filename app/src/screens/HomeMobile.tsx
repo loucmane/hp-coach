@@ -47,6 +47,13 @@ import { useDaysRemaining, useSitting } from '@/stores/examStore'
 type HomeMobileProps = {
   /** The day's plan from useDailyPlan. Null while resolving. */
   plan?: DailyPlan | null
+  /** True when the stats/due-mistakes queries the plan depends on have
+   *  errored (useDailyPlan's `isError`). When `plan` is still null in this
+   *  state, DailyPlanCard and the "min idag" stat render a quiet fallback
+   *  line instead of waiting on a `ready` that will never flip — see
+   *  DailyPlanCard's own comment for why the ghost rows must not persist
+   *  forever. Has no effect once a plan (cached or fresh) is present. */
+  planError?: boolean
   /** True iff every plan item is complete. Drives the "Klart för idag" state. */
   allComplete?: boolean
   /** Optional per-half + total projection — the stats row's prognosis.
@@ -118,6 +125,7 @@ type HomeMobileProps = {
 
 export function HomeMobile({
   plan = null,
+  planError = false,
   allComplete = false,
   projected = null,
   projectedDelta = null,
@@ -263,19 +271,21 @@ export function HomeMobile({
                   )}
                 </div>
               )}
-              {/* Skriften: the label is real ink from frame one (the plan
-               *  ALWAYS resolves to a minute estimate); only the numeral
-               *  waits over a baseline rule and writes in. */}
-              <div>
-                <div className="hpc-m3-stat-n">
-                  <Skrift ready={plan != null} lines={1}>
-                    <SkriftLine line={0} inline ruleW="2ch">
-                      {plan?.estimatedMinutes}
-                    </SkriftLine>
-                  </Skrift>
-                </div>
-                <div className="hpc-m3-stat-l">min idag</div>
-              </div>
+              {/* Skriften: numeral AND label write in together as ONE line
+               *  (ghost-loading fix) — previously the label rendered
+               *  unconditionally while only the numeral waited on `plan`,
+               *  so a stalled plan (e.g. the stats/due queries erroring
+               *  after a rate-limited refresh) left "min idag" standing
+               *  over a blank numeral forever. `plan != null || planError`
+               *  so the line also writes in — as an honest em dash — once
+               *  the queries have settled into an error, instead of
+               *  waiting on a `ready` that will never come. */}
+              <Skrift ready={plan != null || planError} lines={1}>
+                <SkriftLine line={0} ruleW="10ch">
+                  <div className="hpc-m3-stat-n">{plan ? plan.estimatedMinutes : '—'}</div>
+                  <div className="hpc-m3-stat-l">minuter idag</div>
+                </SkriftLine>
+              </Skrift>
             </div>
           </DrillRailSection>
 
@@ -295,6 +305,7 @@ export function HomeMobile({
            *  ark-kort layoutId chain (Klart folds home) is unbroken. */}
           <DailyPlanCard
             plan={plan}
+            planError={planError}
             allComplete={allComplete}
             onNavigate={onPlanItemNavigate}
             dueMistakeCount={dueMistakeCount}

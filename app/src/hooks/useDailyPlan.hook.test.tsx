@@ -60,12 +60,17 @@ const dueData: unknown[] = []
 const mockResultsData: unknown[] = []
 const topTrapsData: unknown[] = []
 
+// Mutable so the isError-passthrough suite (below) can flip these without
+// a fresh module mock per test — mirrors the `activeSessions` pattern.
+let statsIsError = false
+let dueIsError = false
+
 vi.mock('@/api/hooks/useStats', () => ({
-  useStats: () => ({ data: statsData, isLoading: false }),
+  useStats: () => ({ data: statsData, isLoading: false, isError: statsIsError }),
 }))
 
 vi.mock('@/api/hooks/useMistakes', () => ({
-  useDueMistakes: () => ({ data: dueData, isLoading: false }),
+  useDueMistakes: () => ({ data: dueData, isLoading: false, isError: dueIsError }),
 }))
 
 vi.mock('@/api/hooks/useTopTraps', () => ({
@@ -277,6 +282,49 @@ describe('useDailyPlan — mockPrescription (PR-3 wiring)', () => {
     await waitFor(() => expect(result.current.mockPrescription).not.toBeNull())
     // Same signals → an equivalent (deep-equal) prescription, freshly computed.
     expect(result.current.mockPrescription).toEqual(before)
+  })
+})
+
+// Ghost-loading fix: `isError` surfaces the stats/due queries' error state
+// so callers (DailyPlanCard, the Home "min idag" stat) can render a
+// fallback instead of waiting on a `ready` that never flips when the plan
+// itself can't resolve (see useDailyPlan.ts's build-effect comment: it
+// early-returns on missing `stats.data`, which stays undefined forever on
+// an errored query with no cache).
+describe('useDailyPlan — isError passthrough', () => {
+  beforeEach(() => {
+    vi.useRealTimers()
+    localStorage.clear()
+    activeSessions = []
+    serverPlanData = null
+    statsIsError = false
+    dueIsError = false
+    putServerPlanMock.mockClear()
+    vi.setSystemTime(new Date('2026-05-18T10:00:00'))
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+    statsIsError = false
+    dueIsError = false
+  })
+
+  it('is false when neither query has errored', async () => {
+    const { result } = renderHook(() => useDailyPlan(), { wrapper: wrapper() })
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    expect(result.current.isError).toBe(false)
+  })
+
+  it('is true when the stats query has errored', async () => {
+    statsIsError = true
+    const { result } = renderHook(() => useDailyPlan(), { wrapper: wrapper() })
+    await waitFor(() => expect(result.current.isError).toBe(true))
+  })
+
+  it('is true when the due-mistakes query has errored', async () => {
+    dueIsError = true
+    const { result } = renderHook(() => useDailyPlan(), { wrapper: wrapper() })
+    await waitFor(() => expect(result.current.isError).toBe(true))
   })
 })
 

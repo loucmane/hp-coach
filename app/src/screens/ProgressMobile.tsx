@@ -46,7 +46,17 @@ import { useDaysRemaining, useSitting } from '@/stores/examStore'
 type ProgressMobileProps = {
   stats?: Stats
   loading?: boolean
+  /** True when the /api/me/stats query has errored (e.g. worker rate
+   *  limit, offline) — ghost-loading fix. When there's also no `stats`
+   *  data to fall back to, each Skriften block below renders one quiet
+   *  fallback line instead of the ruled waiting sheet, which would
+   *  otherwise wait on `!loading` forever if `loading` (isPending) never
+   *  settles true→false in a way the block can act on. React Query's own
+   *  retry/focus-refetch recovers it; no manual retry affordance. */
+  error?: boolean
 }
+
+const RETRY_LINE = 'Gick inte att hämta just nu — försöker igen automatiskt.'
 
 /** `1,41` — two-decimal Swedish comma form. /progress is the page
  *  where precision matters (the home compass rounds to one). */
@@ -56,10 +66,11 @@ function fmtSv(score: number | null): string {
 
 const CONF_SV = { low: 'låg', medium: 'medel', high: 'hög' } as const
 
-export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
+export function ProgressMobile({ stats, loading, error }: ProgressMobileProps) {
   const viewport = useViewport()
   const days = useDaysRemaining()
   const sitting = useSitting()
+  const erroredNoData = error === true && stats == null
 
   const scores: SectionScore[] = useMemo(
     () =>
@@ -115,6 +126,14 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
                 <br />
                 <SkriftRule w={31} />
               </Paragraph>
+            ) : erroredNoData ? (
+              <Paragraph>
+                <span
+                  style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--muted)' }}
+                >
+                  {RETRY_LINE}
+                </span>
+              </Paragraph>
             ) : (
               <SkriftLine line={0} ruleW="52ch">
                 <PrognosParagraph
@@ -154,6 +173,8 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
           <Skrift ready={!loading} lines={Math.max(1, scores.length)}>
             {loading ? (
               <LedgerRules />
+            ) : erroredNoData ? (
+              <MonoNote>{RETRY_LINE}</MonoNote>
             ) : scores.length === 0 ? (
               <MonoNote>inga övningar än</MonoNote>
             ) : (
@@ -177,6 +198,8 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
           <Skrift ready={!loading} lines={1}>
             {loading ? (
               <NarvaroRules />
+            ) : erroredNoData ? (
+              <MonoNote>{RETRY_LINE}</MonoNote>
             ) : (
               <SkriftLine line={0}>
                 <NarvaroBlock stats={stats} />
@@ -208,6 +231,8 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
                   <SkriftRule w={32} />
                 </MonoNote>
               </>
+            ) : erroredNoData ? (
+              <MonoNote>{RETRY_LINE}</MonoNote>
             ) : (
               <>
                 <MonoNote>

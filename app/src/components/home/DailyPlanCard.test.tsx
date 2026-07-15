@@ -126,3 +126,38 @@ describe('DailyPlanCard — drying-ink skeleton (plan null)', () => {
     expect(screen.getByTestId('daily-plan-item-drill-KVA-2026-07-13')).toBeInTheDocument()
   })
 })
+
+// Ghost-loading fix (owner report: rapid refreshes trip the worker rate
+// limiter → stats/due error → useDailyPlan's `plan` never resolves → the
+// ordinary ghost rows wait forever on a `ready` signal that can never
+// flip). `planError` gives the card an escape hatch: a quiet fallback
+// line instead of an eternal skeleton.
+describe('DailyPlanCard — planError fallback', () => {
+  it('renders one fallback line instead of the ghost rows when errored with no plan', () => {
+    render(<DailyPlanCard plan={null} planError allComplete={false} />)
+    expect(screen.getByTestId('daily-plan-error')).toBeInTheDocument()
+    expect(
+      screen.getByText('Gick inte att hämta planen just nu — försöker igen automatiskt.'),
+    ).toBeInTheDocument()
+    // The heading survives (same chrome), but the ghost rows and the
+    // margin minute estimate do not.
+    expect(screen.getByText('Dagens plan')).toBeInTheDocument()
+    expect(screen.queryByTestId('daily-plan-skeleton')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('daily-plan-card')).not.toBeInTheDocument()
+    expect(screen.queryByText(/uppskattat/)).not.toBeInTheDocument()
+  })
+
+  it('still renders the plan normally when a cached plan is present alongside planError', () => {
+    const plan = makePlan([drillItem], 6)
+    render(<DailyPlanCard plan={plan} planError allComplete={false} />)
+    expect(screen.queryByTestId('daily-plan-error')).not.toBeInTheDocument()
+    expect(screen.getByTestId('daily-plan-card')).toBeInTheDocument()
+    expect(screen.getByTestId('daily-plan-item-drill-KVA-2026-07-13')).toBeInTheDocument()
+  })
+
+  it('keeps the ordinary ghost-row skeleton when there is no error, just resolving', () => {
+    render(<DailyPlanCard plan={null} planError={false} allComplete={false} />)
+    expect(screen.getByTestId('daily-plan-skeleton')).toBeInTheDocument()
+    expect(screen.queryByTestId('daily-plan-error')).not.toBeInTheDocument()
+  })
+})

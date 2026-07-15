@@ -29,7 +29,7 @@ export const Route = createFileRoute('/')({
 function HomeRoute() {
   const navigate = useNavigate()
   const stats = useStats()
-  const { plan, allComplete, mockPrescription } = useDailyPlan()
+  const { plan, allComplete, mockPrescription, isError: planError } = useDailyPlan()
   // Newest-first (server contract, useMockResults.ts) — [0] is the most
   // recent Provpass result, feeding ProvpassStatusLine's "senast X N/M"
   // countdown copy.
@@ -124,6 +124,7 @@ function HomeRoute() {
   return (
     <HomeMobile
       plan={plan}
+      planError={planError}
       allComplete={allComplete}
       projected={projected}
       projectedDelta={projectedDelta}

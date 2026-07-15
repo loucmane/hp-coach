@@ -83,6 +83,15 @@ const DRILL_COMPLETE_THRESHOLD = 5
 export type UseDailyPlan = {
   plan: DailyPlan | null
   isLoading: boolean
+  /** True when the stats or due-mistakes queries the plan depends on have
+   *  errored (e.g. worker rate-limit, offline) — surfaced so callers can
+   *  render a "couldn't load, retrying" affordance instead of leaving the
+   *  plan clipped forever with no explanation (ghost-loading bug: a rapid
+   *  refresh trips the rate limiter, the queries error, `plan` never
+   *  resolves, and the Skrift ceremony waits on a `ready` that never
+   *  flips). Does not affect generation — a cached/adopted plan can still
+   *  be present alongside `isError: true` if the error is transient. */
+  isError: boolean
   regenerate: () => void
   allComplete: boolean
   /** The scheduler's current Provpass (mock exam) prescription — same
@@ -387,6 +396,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   return {
     plan,
     isLoading: stats.isLoading || due.isLoading || hints === null,
+    isError: stats.isError || due.isError,
     regenerate,
     allComplete,
     mockPrescription: prescription,
