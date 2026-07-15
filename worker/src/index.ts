@@ -20,6 +20,7 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 
 import { getDb } from './db/client'
+import { runFit } from './lib/fit'
 import { runRetention } from './lib/retention'
 import { requireAuth } from './middleware/auth'
 import { rateLimit } from './middleware/rateLimit'
@@ -30,6 +31,7 @@ import { contentRoute } from './routes/content'
 import { dailyPlansRoute } from './routes/dailyPlans'
 import { devLoginRoute } from './routes/devLogin'
 import { exportRoute, importRoute } from './routes/export'
+import { fitRoute, itemStatsRoute } from './routes/fit'
 import { healthRoute } from './routes/health'
 import { lessonProgressRoute } from './routes/lessonProgress'
 import { lessonReadsRoute } from './routes/lessonReads'
@@ -97,6 +99,10 @@ const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .route('/attempts', attemptsRoute)
   .route('/mistakes', mistakesRoute)
   .route('/mock-results', mockResultsRoute)
+  // Learned item-difficulty layer (PL-L.1): read fitted difficulties and
+  // trigger the fit on demand. The nightly cron is the production path.
+  .route('/item-stats', itemStatsRoute)
+  .route('/fit', fitRoute)
   .route('/me/export', exportRoute)
   .route('/me/import', importRoute)
   // DELETE /api/account — Clerk-first permanent account deletion.
@@ -128,11 +134,24 @@ const routes = app
   .route('/api/webhooks/clerk', clerkWebhookRoute)
   .route('/api', authed)
 
-// Daily Cron Trigger (see [triggers] in wrangler.toml) — prune
-// attempts/sessions past the retention window so the append-only tables
-// stay bounded as the user base grows. Lifetime totals live on the user
-// counters, so this never changes a displayed number.
-const scheduled: ExportedHandlerScheduledHandler<Env> = async (_event, env) => {
+// Cron Triggers (see [triggers] in wrangler.toml). Two schedules share this
+// one handler, discriminated by `event.cron`:
+//
+//   · "0 3 * * *" — fit the learned item-difficulty layer (PL-L.1): fold
+//     new attempts past the watermark into item_stats / user_ability. This
+//     is the PRODUCTION path for the fit; POST /api/fit/run is the manual
+//     escape hatch. Idempotent, so a missed night self-heals next run.
+//   · "0 4 * * *" — prune attempts/sessions past the retention window so
+//     the append-only tables stay bounded. Lifetime totals live on the user
+//     counters, so this never changes a displayed number.
+//
+// Logs carry only counts / ids / a cutoff timestamp — never PII.
+const scheduled: ExportedHandlerScheduledHandler<Env> = async (event, env) => {
+  if (event.cron === '0 3 * * *') {
+    const { processed, watermark } = await runFit(getDb(env.DB))
+    console.log(`[fit] folded ${processed} attempts; watermark now at id ${watermark}`)
+    return
+  }
   const { cutoff } = await runRetention(getDb(env.DB))
   console.log(`[retention] pruned rows older than ${cutoff.toISOString()}`)
 }
