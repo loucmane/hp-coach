@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as VillkorRouteImport } from './routes/villkor'
 import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as SignInBakeoffRouteImport } from './routes/sign-in-bakeoff'
 import { Route as SignInRouteImport } from './routes/sign-in'
@@ -31,6 +32,7 @@ import { Route as LektionPracticeBakeoffRouteImport } from './routes/lektion-pra
 import { Route as LektionRouteImport } from './routes/lektion'
 import { Route as KontoRouteImport } from './routes/konto'
 import { Route as KlartBakeoffRouteImport } from './routes/klart-bakeoff'
+import { Route as IntegritetRouteImport } from './routes/integritet'
 import { Route as HomeVerifyRouteImport } from './routes/home-verify'
 import { Route as HomePhoneResumeBakeoffRouteImport } from './routes/home-phone-resume-bakeoff'
 import { Route as HomeBakeoffRouteImport } from './routes/home-bakeoff'
@@ -62,6 +64,11 @@ import { Route as DevAccountMenuBakeoffRouteImport } from './routes/dev_.account
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VillkorRoute = VillkorRouteImport.update({
+  id: '/villkor',
+  path: '/villkor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignUpRoute = SignUpRouteImport.update({
@@ -167,6 +174,11 @@ const KontoRoute = KontoRouteImport.update({
 const KlartBakeoffRoute = KlartBakeoffRouteImport.update({
   id: '/klart-bakeoff',
   path: '/klart-bakeoff',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntegritetRoute = IntegritetRouteImport.update({
+  id: '/integritet',
+  path: '/integritet',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HomeVerifyRoute = HomeVerifyRouteImport.update({
@@ -328,6 +340,7 @@ export interface FileRoutesByFullPath {
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/home-verify': typeof HomeVerifyRoute
+  '/integritet': typeof IntegritetRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
   '/konto': typeof KontoRoute
   '/lektion': typeof LektionRoute
@@ -349,6 +362,7 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof SignInRoute
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
   '/sign-up': typeof SignUpRoute
+  '/villkor': typeof VillkorRoute
   '/welcome': typeof WelcomeRoute
   '/dev/account-menu-bakeoff': typeof DevAccountMenuBakeoffRoute
   '/dev/account-menu-bakeoff-2': typeof DevAccountMenuBakeoff2Route
@@ -379,6 +393,7 @@ export interface FileRoutesByTo {
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/home-verify': typeof HomeVerifyRoute
+  '/integritet': typeof IntegritetRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
   '/konto': typeof KontoRoute
   '/lektion': typeof LektionRoute
@@ -400,6 +415,7 @@ export interface FileRoutesByTo {
   '/sign-in': typeof SignInRoute
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
   '/sign-up': typeof SignUpRoute
+  '/villkor': typeof VillkorRoute
   '/welcome': typeof WelcomeRoute
   '/dev/account-menu-bakeoff': typeof DevAccountMenuBakeoffRoute
   '/dev/account-menu-bakeoff-2': typeof DevAccountMenuBakeoff2Route
@@ -431,6 +447,7 @@ export interface FileRoutesById {
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/home-verify': typeof HomeVerifyRoute
+  '/integritet': typeof IntegritetRoute
   '/klart-bakeoff': typeof KlartBakeoffRoute
   '/konto': typeof KontoRoute
   '/lektion': typeof LektionRoute
@@ -452,6 +469,7 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInRoute
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
   '/sign-up': typeof SignUpRoute
+  '/villkor': typeof VillkorRoute
   '/welcome': typeof WelcomeRoute
   '/dev_/account-menu-bakeoff': typeof DevAccountMenuBakeoffRoute
   '/dev_/account-menu-bakeoff-2': typeof DevAccountMenuBakeoff2Route
@@ -484,6 +502,7 @@ export interface FileRouteTypes {
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
     | '/home-verify'
+    | '/integritet'
     | '/klart-bakeoff'
     | '/konto'
     | '/lektion'
@@ -505,6 +524,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-in-bakeoff'
     | '/sign-up'
+    | '/villkor'
     | '/welcome'
     | '/dev/account-menu-bakeoff'
     | '/dev/account-menu-bakeoff-2'
@@ -535,6 +555,7 @@ export interface FileRouteTypes {
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
     | '/home-verify'
+    | '/integritet'
     | '/klart-bakeoff'
     | '/konto'
     | '/lektion'
@@ -556,6 +577,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-in-bakeoff'
     | '/sign-up'
+    | '/villkor'
     | '/welcome'
     | '/dev/account-menu-bakeoff'
     | '/dev/account-menu-bakeoff-2'
@@ -586,6 +608,7 @@ export interface FileRouteTypes {
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
     | '/home-verify'
+    | '/integritet'
     | '/klart-bakeoff'
     | '/konto'
     | '/lektion'
@@ -607,6 +630,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-in-bakeoff'
     | '/sign-up'
+    | '/villkor'
     | '/welcome'
     | '/dev_/account-menu-bakeoff'
     | '/dev_/account-menu-bakeoff-2'
@@ -638,6 +662,7 @@ export interface RootRouteChildren {
   HomeBakeoffRoute: typeof HomeBakeoffRoute
   HomePhoneResumeBakeoffRoute: typeof HomePhoneResumeBakeoffRoute
   HomeVerifyRoute: typeof HomeVerifyRoute
+  IntegritetRoute: typeof IntegritetRoute
   KlartBakeoffRoute: typeof KlartBakeoffRoute
   KontoRoute: typeof KontoRoute
   LektionRoute: typeof LektionRoute
@@ -659,6 +684,7 @@ export interface RootRouteChildren {
   SignInRoute: typeof SignInRoute
   SignInBakeoffRoute: typeof SignInBakeoffRoute
   SignUpRoute: typeof SignUpRoute
+  VillkorRoute: typeof VillkorRoute
   WelcomeRoute: typeof WelcomeRoute
   DevAccountMenuBakeoffRoute: typeof DevAccountMenuBakeoffRoute
   DevAccountMenuBakeoff2Route: typeof DevAccountMenuBakeoff2Route
@@ -676,6 +702,13 @@ declare module '@tanstack/react-router' {
       path: '/welcome'
       fullPath: '/welcome'
       preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/villkor': {
+      id: '/villkor'
+      path: '/villkor'
+      fullPath: '/villkor'
+      preLoaderRoute: typeof VillkorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sign-up': {
@@ -823,6 +856,13 @@ declare module '@tanstack/react-router' {
       path: '/klart-bakeoff'
       fullPath: '/klart-bakeoff'
       preLoaderRoute: typeof KlartBakeoffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/integritet': {
+      id: '/integritet'
+      path: '/integritet'
+      fullPath: '/integritet'
+      preLoaderRoute: typeof IntegritetRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/home-verify': {
@@ -1038,6 +1078,7 @@ const rootRouteChildren: RootRouteChildren = {
   HomeBakeoffRoute: HomeBakeoffRoute,
   HomePhoneResumeBakeoffRoute: HomePhoneResumeBakeoffRoute,
   HomeVerifyRoute: HomeVerifyRoute,
+  IntegritetRoute: IntegritetRoute,
   KlartBakeoffRoute: KlartBakeoffRoute,
   KontoRoute: KontoRoute,
   LektionRoute: LektionRoute,
@@ -1059,6 +1100,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignInRoute: SignInRoute,
   SignInBakeoffRoute: SignInBakeoffRoute,
   SignUpRoute: SignUpRoute,
+  VillkorRoute: VillkorRoute,
   WelcomeRoute: WelcomeRoute,
   DevAccountMenuBakeoffRoute: DevAccountMenuBakeoffRoute,
   DevAccountMenuBakeoff2Route: DevAccountMenuBakeoff2Route,
