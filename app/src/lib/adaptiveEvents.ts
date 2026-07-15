@@ -15,6 +15,10 @@ export type AdaptiveEventType =
   | 'offer_declined'
   | 'detour_completed'
   | 'suppressed'
+  // Smart-picker A/B provenance (PL-L.3): logged once per drill session start
+  // with meta { mode: 'smart' | 'random', section }. Lets the owner's later
+  // telemetry read compare in-band vs random selection by eye during dogfood.
+  | 'drill-pick'
 
 export type AdaptiveEvent = {
   type: AdaptiveEventType

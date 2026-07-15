@@ -92,6 +92,9 @@ function MerRoute() {
             <SettingRow label="Coach">
               <CoachWords />
             </SettingRow>
+            <SettingRow label="Urval">
+              <SmartDrillWords />
+            </SettingRow>
           </DrillRailSection>
 
           <DrillRailSection meta="Verktyg" delay={240}>
@@ -293,6 +296,44 @@ function CoachWords() {
           {COACH_LABELS[c]}
         </Word>
       ))}
+    </>
+  )
+}
+
+// Smart drill selection (PL-L.3). Quiet two-word toggle in the same active-word
+// grammar: "smart" targets questions near your level (the learning band),
+// "slumpat" is the old uniform-random pick. DEFAULT ON. A muted hint line
+// (flex-basis:100% → wraps under the words) explains the active choice.
+function SmartDrillWords() {
+  const smartDrill = useUiStore((s) => s.smartDrill)
+  const synced = useSyncedPrefs()
+  return (
+    <>
+      <Word
+        active={smartDrill}
+        onClick={() => synced.setSmartDrill(true)}
+        ariaLabel="Smart urval — frågor nära din nivå"
+      >
+        smart
+      </Word>
+      <Word
+        active={!smartDrill}
+        onClick={() => synced.setSmartDrill(false)}
+        ariaLabel="Slumpat urval — helt slumpade frågor"
+      >
+        slumpat
+      </Word>
+      <span
+        style={{
+          flexBasis: '100%',
+          fontFamily: 'var(--font-mono)',
+          fontSize: 11,
+          letterSpacing: '0.04em',
+          color: 'var(--muted)',
+        }}
+      >
+        {smartDrill ? 'Frågor nära din nivå.' : 'Helt slumpade frågor.'}
+      </span>
     </>
   )
 }

@@ -43,6 +43,13 @@ export const users = sqliteTable('users', {
   }).default('literary'),
   density: text('density', { enum: ['compact', 'regular', 'comfy'] }).default('regular'),
   showStreak: integer('show_streak', { mode: 'boolean' }).default(false),
+  // Smart drill selection (PL-L.3): when on, the section-drill picker targets
+  // questions predicted to land in the 0.70–0.85 learning band (via the
+  // learned Elo fit) instead of picking uniformly at random. DEFAULT ON — the
+  // band targets learning, and a graceful fallback to random covers users with
+  // no fitted ratings yet. The synced pref lets the owner run the A/B by
+  // toggling it, and holds cross-device.
+  smartDrill: integer('smart_drill', { mode: 'boolean' }).default(true),
   // "Inte idag" Provpass defer — a local YYYY-MM-DD date string. When it
   // equals TODAY (client-local), the scheduler suppresses that day's
   // Provpass anchor (Kallelse) and generates the ordinary Dagens plan
