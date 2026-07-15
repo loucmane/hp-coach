@@ -9,6 +9,7 @@
 // the artefact is a reading surface, not a dashboard.
 
 import { Link } from '@tanstack/react-router'
+import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { usePutLessonProgress } from '@/api/hooks/useLessonProgress'
 import { Mono } from '@/components/primitives'
@@ -16,6 +17,7 @@ import { type Framework, loadFramework } from '@/data/frameworks'
 import type { Section } from '@/data/questions'
 import { useLessonReads } from '@/hooks/useLessonReads'
 import { currentDevice } from '@/lib/device'
+import { uppslagDoorLayoutId, useArketMotion } from '@/lib/motion'
 
 import { LexiconCard } from './LexiconCard'
 import { ProtocolCard } from './ProtocolCard'
@@ -64,6 +66,7 @@ export function LessonReader({ section }: { section: Section }) {
   const [framework, setFramework] = useState<Framework | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const ark = useArketMotion()
 
   useEffect(() => {
     let alive = true
@@ -197,7 +200,21 @@ export function LessonReader({ section }: { section: Section }) {
             margin: '12px 0 0 0',
           }}
         >
-          {title.headline}
+          {/* The uppslag door's landing station (W4): the section code
+           *  that morphed out of the picker chip settles here, as the
+           *  reader's header eyebrow. Reduced motion renders plain text
+           *  — no layoutId, no morph. */}
+          {ark.rm ? (
+            title.headline
+          ) : (
+            <motion.span
+              layoutId={uppslagDoorLayoutId(section)}
+              transition={ark.arket}
+              style={{ display: 'inline-block' }}
+            >
+              {title.headline}
+            </motion.span>
+          )}
         </h1>
         <p
           style={{

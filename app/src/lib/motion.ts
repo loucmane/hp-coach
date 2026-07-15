@@ -271,6 +271,20 @@ export function sectionDoorLayoutId(section: string): string {
 export const MIXED_DOOR_LAYOUT_ID = 'door-mixed'
 
 /**
+ * The Uppslag door (W4 "the section chip is the door"): the section
+ * code on the Uppslag picker's chip morphs into the framework reader's
+ * header eyebrow across the route change, and reverses on the way
+ * back. Deliberately a DISTINCT namespace from `sectionDoorLayoutId` —
+ * the drill door and the uppslag door can be mounted simultaneously
+ * (⌘K can jump straight to a drill while a lektion reader is still
+ * live in another tab/history entry), so they must never collide on
+ * one layoutId.
+ */
+export function uppslagDoorLayoutId(section: string): string {
+  return `uppslag-door-${section}`
+}
+
+/**
  * "Klart folds home" (reference: `a2-kort`): the drill completion
  * panel's Klart block and Home's day-card ("Dagens plan" / complete
  * panel) are one sheet of material — finishing a session and returning
