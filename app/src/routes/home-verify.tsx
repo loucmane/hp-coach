@@ -130,6 +130,10 @@ function HomeVerify() {
           projected={{ total: 0.65, verbal: 0.81, quant: 0.49 }}
           firstName="Loucmane"
           now={new Date(2026, 6, 8, 9)}
+          // "Inte idag" defer — the real hook writes the synced pref and
+          // regenerates; here the harness just swaps the fixture to the
+          // ordinary (non-mock) plan so the visual swap can be verified.
+          onDeferMock={() => setProvpassDag(false)}
           mockPrescription={
             provpassDag
               ? { due: true, half: 'verbal', daysSinceLast: 12, daysUntilNext: 0, interval: 14 }

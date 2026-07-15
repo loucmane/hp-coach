@@ -1,0 +1,1 @@
+ALTER TABLE `users` ADD `mock_deferred_date` text;

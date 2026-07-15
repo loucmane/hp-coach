@@ -52,6 +52,7 @@ import { type MockResultRow, useMockResults } from '@/api/hooks/useMockResults'
 import { useActiveSessions } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
 import { type TopTrap, useTopTraps } from '@/api/hooks/useTopTraps'
+import { useUpdateUserPrefs, useUserPrefs } from '@/api/hooks/useUserPrefs'
 import { entryHeadword, loadFramework } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import {
@@ -93,6 +94,11 @@ export type UseDailyPlan = {
    *  be present alongside `isError: true` if the error is transient. */
   isError: boolean
   regenerate: () => void
+  /** "Inte idag" — quietly defer today's Provpass anchor. Writes the synced
+   *  `mockDeferredDate` pref (cross-device) and regenerates today's plan with
+   *  the mock item suppressed, so the ordinary Dagens plan takes its place.
+   *  No-op until the plan's inputs have resolved. */
+  deferMock: () => void
   allComplete: boolean
   /** The scheduler's current Provpass (mock exam) prescription — same
    *  `SchedulerSignals` `buildPlan` resolves for `generateDailyPlan`, fed
@@ -139,6 +145,14 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   // other device adopts the identical baseline (first-generator-wins).
   const putServerPlan = usePutDailyPlan()
 
+  // Synced prefs — the "Inte idag" Provpass defer lives here as
+  // `mockDeferredDate` (a local YYYY-MM-DD string). Read to gate today's
+  // anchor; written (below, in `deferMock`) via the prefs mutation so the
+  // defer holds cross-device. Day-scoped: only a value equal to TODAY
+  // suppresses the anchor — stale values are inert, no cleanup needed.
+  const userPrefs = useUserPrefs()
+  const updatePrefs = useUpdateUserPrefs()
+
   // `now` lives in state (seeded once from `initialNow`) instead of
   // being recomputed every render, so its reference — and therefore
   // `today` — only changes when we explicitly decide the day rolled
@@ -149,6 +163,11 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   // reused, not reinvented, so the scheduler's cadence and the nav
   // clock never disagree about how many days remain.
   const daysToExam = useDaysRemaining(now)
+
+  // "Inte idag" defer, day-scoped: the anchor is suppressed only when the
+  // stored defer date equals TODAY (local). A value from a prior day is
+  // inert — the pass re-anchors on its own cadence the next suitable day.
+  const mockDeferredForToday = userPrefs.data?.mockDeferredDate === today
 
   const [plan, setPlan] = useState<DailyPlan | null>(null)
   const [hints, setHints] = useState<FrameworkHints | null>(null)
@@ -277,12 +296,26 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       mockResults.data,
       daysToExam,
       hotTrap,
+      mockDeferredForToday,
     )
     setPrescription(prescribeMock(signals))
 
+    // A defer-for-today plan must never carry the Provpass anchor. A plan
+    // adopted from the server row or the local cache could have been authored
+    // BEFORE the defer (e.g. the defer write raced ahead of its plan PUT, or
+    // the other device generated the mock plan earlier today) — so when the
+    // defer is active, an adopted plan that still holds a mock item is treated
+    // as stale and we fall through to regenerate the ordinary plan instead.
+    const staleWhenDeferred = (p: DailyPlan) =>
+      mockDeferredForToday && p.items.some((i) => i.kind === 'mock')
+
     // 1. Server plan present → adopt verbatim (server wins), mirror local.
     const remote = serverPlan.data
-    if (remote?.version === PLAN_SCHEMA_VERSION && remote.date === today) {
+    if (
+      remote?.version === PLAN_SCHEMA_VERSION &&
+      remote.date === today &&
+      !staleWhenDeferred(remote)
+    ) {
       savePlan(remote)
       setPlan(derive(remote))
       return
@@ -290,7 +323,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
 
     // 2. Local cache present → adopt.
     const cached = loadPlan(today)
-    if (cached) {
+    if (cached && !staleWhenDeferred(cached)) {
       setPlan(derive(cached))
       // No server row yet (we're here because remote was null/stale) — push
       // this device's cached plan up so the other device can adopt it.
@@ -309,6 +342,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
       mockResults.data,
       daysToExam,
       hotTrap,
+      mockDeferredForToday,
     )
     savePlan(fresh.plan)
     putServerPlan.mutate(fresh.plan)
@@ -325,6 +359,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
     mockResults.data,
     daysToExam,
     hotTrap,
+    mockDeferredForToday,
   ])
 
   // Re-run derivation when due count, stats, or the (cross-device) read
@@ -352,44 +387,71 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   // cache AND the server row (PUT), so the regenerated plan becomes the
   // new cross-device baseline rather than being clobbered by the old
   // server row on the next adopt.
-  const regenerate = useCallback(() => {
-    if (!stats.data || due.data === undefined || hints === null) return
-    const fresh = buildPlan(
-      now,
-      stats.data.bySection,
-      due.data.length,
+  // Shared build-and-commit path for the two user-triggered regenerations
+  // (`regenerate` and `deferMock`). `suppressMock` is an explicit argument
+  // rather than a read of `mockDeferredForToday` so `deferMock` can suppress
+  // the anchor in the SAME tick it writes the pref — before the prefs query
+  // has round-tripped and flipped the reactive flag.
+  const buildAndCommit = useCallback(
+    (suppressMock: boolean) => {
+      if (!stats.data || due.data === undefined || hints === null) return
+      const fresh = buildPlan(
+        now,
+        stats.data.bySection,
+        due.data.length,
+        hints,
+        topTraps,
+        stats.data.attempts.total,
+        mockResults.data,
+        daysToExam,
+        hotTrap,
+        suppressMock,
+      )
+      savePlan(fresh.plan)
+      putServerPlan.mutate(fresh.plan)
+      setPrescription(fresh.prescription)
+      setPlan(
+        deriveCompletion(
+          fresh.plan,
+          due.data.length,
+          mergedReads,
+          stats.data.bySection,
+          stats.data.attempts.total,
+          toMockHistory(mockResults.data),
+        ),
+      )
+    },
+    [
+      stats.data,
+      due.data,
       hints,
+      now,
       topTraps,
-      stats.data.attempts.total,
+      mergedReads,
+      putServerPlan,
       mockResults.data,
       daysToExam,
       hotTrap,
-    )
-    savePlan(fresh.plan)
-    putServerPlan.mutate(fresh.plan)
-    setPrescription(fresh.prescription)
-    setPlan(
-      deriveCompletion(
-        fresh.plan,
-        due.data.length,
-        mergedReads,
-        stats.data.bySection,
-        stats.data.attempts.total,
-        toMockHistory(mockResults.data),
-      ),
-    )
-  }, [
-    stats.data,
-    due.data,
-    hints,
-    now,
-    topTraps,
-    mergedReads,
-    putServerPlan,
-    mockResults.data,
-    daysToExam,
-    hotTrap,
-  ])
+    ],
+  )
+
+  // "Generera om" — force a fresh baseline, honouring an active defer.
+  const regenerate = useCallback(
+    () => buildAndCommit(mockDeferredForToday),
+    [buildAndCommit, mockDeferredForToday],
+  )
+
+  // "Inte idag" — quietly defer today's Provpass anchor. Write-through the
+  // synced pref (mockDeferredDate = today) so the defer holds cross-device,
+  // then rebuild today's plan with the mock item suppressed — overwriting the
+  // local cache AND the server row (buildAndCommit's PUT) so the other device
+  // adopts the ordinary plan too. No confirmation, no reschedule: the pass
+  // re-anchors on its own cadence the next suitable day.
+  const deferMock = useCallback(() => {
+    if (!stats.data || due.data === undefined || hints === null) return
+    updatePrefs.mutate({ mockDeferredDate: today })
+    buildAndCommit(true)
+  }, [updatePrefs, today, buildAndCommit, stats.data, due.data, hints])
 
   const allComplete = !!plan && plan.items.length > 0 && plan.items.every((i) => i.completed)
 
@@ -398,6 +460,7 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
     isLoading: stats.isLoading || due.isLoading || hints === null,
     isError: stats.isError || due.isError,
     regenerate,
+    deferMock,
     allComplete,
     mockPrescription: prescription,
   }
@@ -422,6 +485,9 @@ function buildSchedulerSignals(
   mockResults: MockResultRow[] | undefined,
   daysToExam: number,
   hotTrap: { framework_id: string } | null,
+  // "Inte idag" defer — when true the scheduler skips Rule 0 (the Provpass
+  // anchor) so the ordinary day generates. See SchedulerSignals.suppressMock.
+  suppressMock = false,
 ): SchedulerSignals {
   const sectionScores: SectionScore[] = SECTION_KEYS.map((s) =>
     computeSectionScore(s, bySection[s], now),
@@ -435,6 +501,7 @@ function buildSchedulerSignals(
     mockHistory: toMockHistory(mockResults),
     daysToExam,
     hotTrap,
+    suppressMock,
   }
 }
 
@@ -448,6 +515,7 @@ function buildPlan(
   mockResults: MockResultRow[] | undefined,
   daysToExam: number,
   hotTrap: { framework_id: string } | null,
+  suppressMock = false,
 ): { plan: DailyPlan; prescription: MockPrescription } {
   const signals = buildSchedulerSignals(
     now,
@@ -458,6 +526,7 @@ function buildPlan(
     mockResults,
     daysToExam,
     hotTrap,
+    suppressMock,
   )
   const base = generateDailyPlan(signals)
   const prescription = prescribeMock(signals)

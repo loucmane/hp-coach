@@ -29,7 +29,7 @@ export const Route = createFileRoute('/')({
 function HomeRoute() {
   const navigate = useNavigate()
   const stats = useStats()
-  const { plan, allComplete, mockPrescription, isError: planError } = useDailyPlan()
+  const { plan, allComplete, mockPrescription, deferMock, isError: planError } = useDailyPlan()
   // Newest-first (server contract, useMockResults.ts) — [0] is the most
   // recent Provpass result, feeding ProvpassStatusLine's "senast X N/M"
   // countdown copy.
@@ -133,6 +133,7 @@ function HomeRoute() {
       topTraps={topTraps}
       recentPasses={recentPasses.data ?? []}
       onPlanItemNavigate={navigateHref}
+      onDeferMock={deferMock}
       streakDays={streakDays}
       firstName={firstName}
       onAvancerat={() => navigate({ to: '/avancerat' })}

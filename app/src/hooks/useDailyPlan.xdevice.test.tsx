@@ -81,6 +81,12 @@ vi.mock('@/data/frameworks', () => ({ loadFramework: async () => null, entryHead
 vi.mock('@/api/hooks/useLessonReadsApi', () => ({
   useLessonReadsQuery: () => ({ data: emptyReads, isLoading: false }),
 }))
+// No "Inte idag" defer in this cross-device suite — an empty prefs row means
+// mockDeferredDate is undefined, so the anchor is never suppressed.
+vi.mock('@/api/hooks/useUserPrefs', () => ({
+  useUserPrefs: () => ({ data: {} }),
+  useUpdateUserPrefs: () => ({ mutate: vi.fn() }),
+}))
 
 const putMock = vi.fn()
 let serverPlanData: DailyPlan | null = null

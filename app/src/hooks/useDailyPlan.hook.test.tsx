@@ -127,6 +127,16 @@ vi.mock('@/data/frameworks', () => ({
   entryHeadword: () => null,
 }))
 
+// Synced prefs — the "Inte idag" defer reads `mockDeferredDate` here and
+// writes it via the update mutation. Mutable so the defer suite can flip the
+// stored date without a fresh module mock per test (mirrors `activeSessions`).
+let userPrefsData: { mockDeferredDate?: string | null } = {}
+const updatePrefsMock = vi.fn()
+vi.mock('@/api/hooks/useUserPrefs', () => ({
+  useUserPrefs: () => ({ data: userPrefsData }),
+  useUpdateUserPrefs: () => ({ mutate: updatePrefsMock }),
+}))
+
 import { useDailyPlan } from './useDailyPlan'
 
 function wrapper() {
@@ -325,6 +335,78 @@ describe('useDailyPlan — isError passthrough', () => {
     dueIsError = true
     const { result } = renderHook(() => useDailyPlan(), { wrapper: wrapper() })
     await waitFor(() => expect(result.current.isError).toBe(true))
+  })
+})
+
+// "Inte idag" defer (owner decision 2026-07-15). A synced `mockDeferredDate`
+// pref equal to TODAY suppresses the Provpass anchor so the ordinary Dagens
+// plan generates; a stale date is inert; the standalone prescription that
+// feeds the passive status line stays truthful. These fixtures are
+// cold-start-shaped (no attempts, no due reps), so the baseline "never
+// mocked" case makes the mock due by default.
+describe('useDailyPlan — "Inte idag" defer', () => {
+  beforeEach(() => {
+    vi.useRealTimers()
+    localStorage.clear()
+    activeSessions = []
+    serverPlanData = null
+    userPrefsData = {}
+    updatePrefsMock.mockClear()
+    putServerPlanMock.mockClear()
+    vi.setSystemTime(new Date('2026-05-18T10:00:00'))
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+    userPrefsData = {}
+  })
+
+  it('anchors the Provpass by default (no defer) — plan carries the mock item', async () => {
+    const { result } = renderHook(() => useDailyPlan(), { wrapper: wrapper() })
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    expect(result.current.plan?.items.some((i) => i.kind === 'mock')).toBe(true)
+  })
+
+  it('suppresses the anchor when mockDeferredDate === today; ordinary rules generate', async () => {
+    userPrefsData = { mockDeferredDate: '2026-05-18' }
+    const { result } = renderHook(() => useDailyPlan(), { wrapper: wrapper() })
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    expect(result.current.plan?.items.some((i) => i.kind === 'mock')).toBe(false)
+    // The ordinary path still produces a plan (cold-start diagnostic here).
+    expect(result.current.plan?.items.length).toBeGreaterThan(0)
+  })
+
+  it('is inert for a stale (yesterday) defer date — the anchor still shows', async () => {
+    userPrefsData = { mockDeferredDate: '2026-05-17' }
+    const { result } = renderHook(() => useDailyPlan(), { wrapper: wrapper() })
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    expect(result.current.plan?.items.some((i) => i.kind === 'mock')).toBe(true)
+  })
+
+  it('deferMock() writes the pref for today AND regenerates without the anchor', async () => {
+    const { result } = renderHook(() => useDailyPlan(), { wrapper: wrapper() })
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    expect(result.current.plan?.items.some((i) => i.kind === 'mock')).toBe(true)
+
+    act(() => {
+      result.current.deferMock()
+    })
+
+    expect(updatePrefsMock).toHaveBeenCalledWith({ mockDeferredDate: '2026-05-18' })
+    await waitFor(() =>
+      expect(result.current.plan?.items.some((i) => i.kind === 'mock')).toBe(false),
+    )
+    // Regenerate overwrote the server baseline too, so the other device agrees.
+    expect(putServerPlanMock).toHaveBeenCalled()
+  })
+
+  it('keeps the prescription truthful after defer (the passive line still reads due)', async () => {
+    userPrefsData = { mockDeferredDate: '2026-05-18' }
+    const { result } = renderHook(() => useDailyPlan(), { wrapper: wrapper() })
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    // The anchor item is gone from the plan, but prescribeMock is NOT
+    // suppressed — the status line's "redo när du är" readout stays honest.
+    expect(result.current.mockPrescription?.due).toBe(true)
   })
 })
 

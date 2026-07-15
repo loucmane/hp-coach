@@ -24,6 +24,10 @@ export type UserPrefsPatch = {
   font?: 'literary' | 'geometric' | 'editorial' | 'hyperlegible'
   density?: 'compact' | 'regular' | 'comfy'
   showStreak?: boolean
+  /** "Inte idag" Provpass defer — a local YYYY-MM-DD date string, or null
+   *  to clear. When it equals TODAY the scheduler suppresses that day's
+   *  Provpass anchor (see useDailyPlan's `deferMock`). */
+  mockDeferredDate?: string | null
 }
 
 export function useUserPrefs() {
