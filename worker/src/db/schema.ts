@@ -247,6 +247,12 @@ export const mistakes = sqliteTable(
     // ladder, capped at MAX_INTERVAL_MINUTES (30 days). One more correct
     // at the cap flips status='resolved' (graduation). See lib/srs.ts.
     intervalMinutes: integer('interval_minutes').notNull().default(0),
+    // FSRS-lite lapse memory (PL-L.2). When a wrong answer knocks the row
+    // back to the relearn rung, the height it fell from is stashed here so
+    // the next correct answer resumes at half of it instead of restarting
+    // at day 1. NULL means "no banked height" (fresh mistake, or already
+    // consumed by a correct answer). See lib/srs.ts.
+    lapseIntervalMinutes: integer('lapse_interval_minutes'),
   },
   (t) => ({
     // The due-queue read filters by user + status and orders by review

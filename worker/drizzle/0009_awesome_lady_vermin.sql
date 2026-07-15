@@ -1,0 +1,1 @@
+ALTER TABLE `mistakes` ADD `lapse_interval_minutes` integer;

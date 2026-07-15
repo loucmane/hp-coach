@@ -295,6 +295,81 @@ describe('PATCH /api/mistakes/by-question — resolve by questionId', () => {
   })
 })
 
+describe('FSRS-lite lapse memory (PL-L.2) — a lapse remembers the height', () => {
+  // Drive the real POST (wrong) + PATCH /by-question (correct) paths and
+  // read the row back to prove the ladder resumes after a lapse instead of
+  // restarting at day 1.
+  const DAY_MIN = 24 * 60
+
+  async function post(app: ReturnType<typeof appFor>['app'], env: Env, questionId: string) {
+    return app.request(
+      '/',
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ questionId }),
+      },
+      env,
+    )
+  }
+  async function correct(app: ReturnType<typeof appFor>['app'], env: Env, questionId: string) {
+    const res = await app.request(
+      '/by-question',
+      {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ questionId, resolve: true }),
+      },
+      env,
+    )
+    return (await res.json()) as {
+      mistake: { intervalMinutes: number; lapseIntervalMinutes: number | null } | null
+    }
+  }
+
+  it('correct-after-lapse resumes at half the climbed height and clears the stash', async () => {
+    const { app, env } = appFor('u20')
+    const q = 'var-2026-verb1-ORD-100'
+    // Climb: wrong → 10min, then 4 corrects → 1d, 2d, 4d, 8d.
+    await post(app, env, q)
+    await correct(app, env, q) // → 1d
+    await correct(app, env, q) // → 2d
+    await correct(app, env, q) // → 4d
+    const climbed = await correct(app, env, q) // → 8d
+    expect(climbed.mistake?.intervalMinutes).toBe(8 * DAY_MIN)
+
+    // Lapse: wrong answer stashes 8d, drops interval to the relearn rung.
+    await post(app, env, q)
+    // Read the row via scope=all so we can inspect the stash directly.
+    const db = getDb(d1 as unknown as D1Database)
+    const [row] = await db.select().from(mistakes).where(eq(mistakes.questionId, q))
+    expect(row.intervalMinutes).toBe(10)
+    expect(row.lapseIntervalMinutes).toBe(8 * DAY_MIN)
+
+    // Correct: resume at floor(8d / 2) = 4d, NOT 1d, and clear the stash.
+    const resumed = await correct(app, env, q)
+    expect(resumed.mistake?.intervalMinutes).toBe(4 * DAY_MIN)
+    expect(resumed.mistake?.lapseIntervalMinutes).toBeNull()
+  })
+
+  it('a second lapse during relearn keeps the higher banked height', async () => {
+    const { app, env } = appFor('u21')
+    const q = 'var-2026-verb1-ORD-101'
+    await post(app, env, q)
+    await correct(app, env, q) // 1d
+    await correct(app, env, q) // 2d → climbed height 2d
+    await post(app, env, q) // lapse: stash = 2d
+    await post(app, env, q) // lapse again while at relearn: must keep 2d, not overwrite with 10
+    const db = getDb(d1 as unknown as D1Database)
+    const [row] = await db.select().from(mistakes).where(eq(mistakes.questionId, q))
+    expect(row.lapseIntervalMinutes).toBe(2 * DAY_MIN)
+    // Correct resumes at floor(2d/2)=1d (== FIRST floor) and clears.
+    const resumed = await correct(app, env, q)
+    expect(resumed.mistake?.intervalMinutes).toBe(DAY_MIN)
+    expect(resumed.mistake?.lapseIntervalMinutes).toBeNull()
+  })
+})
+
 describe('scope=pile — same-day miss leaves the pile once correctly repeated', () => {
   it('correct repetition on a today-missed item → out of the pile; wrong → stays', async () => {
     const { app, env } = appFor('u12')
