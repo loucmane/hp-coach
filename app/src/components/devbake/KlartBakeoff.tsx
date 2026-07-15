@@ -18,6 +18,13 @@
 //                        house cadence, the sum-rule draws itself, and
 //                        Klart. dries beneath the settled total.
 //                        Accumulation.
+//   KH "Hybriden"     — owner verdict on the round: K1's motion +
+//                        K3's bottom. ONE ceremony: the strike launches
+//                        the wave, and the wave DOES the bookkeeping —
+//                        it slows to counting cadence over the ledger,
+//                        each row it inks is a counted mark, the summa
+//                        rides beneath it, and the bookkeeper's rule +
+//                        total settle when the wave runs out.
 //
 // Shared law: the payoff must not read as a reward withheld when you
 // missed some — every concept performs the identical ritual for a
@@ -714,6 +721,211 @@ export function KLART3() {
       thesis="Summan förtjänas framför ögonen. Inget tal utropas; det räknas fram — ett bokfört märke per fråga i räknekammarens kadens (90 ms) medan summan rullar i samma hand. När sista märket landar drar sig summeringslinjen (scaleX, origo vänster), och först då sätter sig Klart. under den färdiga summan, i husets veck-fysik. Ett ✗ bokförs med samma hand som ett ✓ — räkenskapen är ärlig och ritualen identisk vid 7 av 10."
     >
       {(fx, playKey) => <K3Content key={`${playKey}`} fx={fx} rm={rm} />}
+    </Stage>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   KH · HYBRIDEN — the press that keeps the books
+   ═══════════════════════════════════════════════════════════════════
+
+   Owner verdict on the round: K1's motion + K3's bottom (the sum).
+   Composition decision: the count RIDES the wave — one impulse, one
+   consequence chain. Klart. is struck at the top (K1's slag, the
+   system's one z-moment) into a page pre-set at faint ink. The strike
+   launches K1's pressure wave, and the wave IS the bookkeeping hand:
+   above the ledger it rolls at K1's 50 ms/element, but over the facit
+   column it slows to K3's 90 ms counting-house cadence — each row it
+   displaces and inks to full is a counted mark, and the live summa
+   ("N av M") beneath the column advances in lockstep with the wave's
+   passage. When the wave inks the last row the bookkeeper's rule
+   draws under the total (scaleX, origin left), and the pass stats +
+   coda seat on the house SATS spring — the ceremony ends by handing
+   control back to the Arket physics, exactly as K3 did.
+
+   Rejected composition: strike lands, then a separate tally counts
+   beneath it. That is two hands — a press AND a bookkeeper — i.e.
+   two ceremonies glued at the waist. Here every millisecond after
+   the strike is consequence of the strike (K1's ADHD-safe causality
+   law), and the duration over the ledger is literal (K3's honesty
+   law: the time is the session being counted, one question a tick).
+
+   Misses: the wave strikes a ✗ row at the same 2 px amplitude as a
+   ✓ row and the same hand counts it. Identical ceremony at 7 av 10. */
+
+const KH_STRIKE = 0.26 // s of stillness before the platen falls (K1)
+const KH_WAVE_LEAD = 0.12 // wave leaves the strike point after this (K1)
+const KH_HEAD_STEP = 0.05 // s per element above the ledger (K1 pace)
+const KH_TICK = 0.09 // s per facit row — the wave at counting cadence (K3)
+const KH_HEAD_COUNT = 2 // elements between strike and first row (rule, col head)
+const KH_RULE_DELAY = 0.2 // after the last mark, before the sum-rule (K3)
+const KH_SETTLE_DELAY = 0.48 // after the last mark, before stats seat (K3)
+
+/** Delay (s) until the wave reaches facit row `i`. */
+function khRowDelay(i: number): number {
+  return KH_STRIKE + KH_WAVE_LEAD + KH_HEAD_COUNT * KH_HEAD_STEP + i * KH_TICK
+}
+
+function KHContent({ fx, rm }: { fx: RunFx; rm: boolean }) {
+  const go = useGo(rm)
+  // The tally rides the wave: step i flips exactly when the wave inks
+  // row i — same clock, one hand. Phase advances when the wave runs out.
+  const [step, setStep] = useState(rm ? fx.total : 0)
+  const [phase, setPhase] = useState<'wave' | 'rule' | 'settle'>(rm ? 'settle' : 'wave')
+  const timers = useRef<number[]>([])
+  useEffect(() => {
+    if (rm || !go) return
+    for (let i = 0; i < fx.total; i++) {
+      timers.current.push(window.setTimeout(() => setStep(i + 1), khRowDelay(i) * 1000))
+    }
+    const lastMark = khRowDelay(fx.total - 1)
+    timers.current.push(
+      window.setTimeout(() => setPhase('rule'), (lastMark + KH_RULE_DELAY) * 1000),
+    )
+    timers.current.push(
+      window.setTimeout(() => setPhase('settle'), (lastMark + KH_SETTLE_DELAY) * 1000),
+    )
+    return () => {
+      for (const t of timers.current) clearTimeout(t)
+      timers.current = []
+    }
+  }, [rm, go, fx.total])
+  const rightSoFar = fx.rows.slice(0, step).filter((r) => r.ok).length
+  const settled = phase === 'settle'
+  /** A K1 wave element with an absolute delay (so the ledger can run
+   *  on tick cadence while the head runs on head cadence). */
+  const wave = (delay: number, children: ReactNode, style?: CSSProperties) => (
+    <motion.div
+      initial={false}
+      animate={go ? { opacity: 1, y: rm ? 0 : [0, 2, 0] } : { opacity: rm ? 1 : 0.18, y: 0 }}
+      transition={
+        rm
+          ? { duration: 0 }
+          : { delay: go ? delay : 0, duration: go ? 0.3 : 0, ease: [...EASE.reading] }
+      }
+      style={style}
+    >
+      {children}
+    </motion.div>
+  )
+  return (
+    <div>
+      {wave(KH_STRIKE + KH_WAVE_LEAD - 0.05, <div style={eyebrow}>ORD · pass slut</div>)}
+      {/* K1's strike — the ceremony's one impulse */}
+      <motion.h1
+        initial={false}
+        animate={go ? { opacity: 1, scale: 1 } : { opacity: 0, scale: rm ? 1 : 1.14 }}
+        transition={
+          rm || !go
+            ? { duration: 0 }
+            : {
+                opacity: { delay: KH_STRIKE, duration: 0.07, ease: [...EASE.exit] },
+                scale: { delay: KH_STRIKE, ...SLAG },
+              }
+        }
+        style={{ ...displayHero, margin: '10px 0 0', transformOrigin: '0% 80%' }}
+      >
+        Klart.
+      </motion.h1>
+      {/* the wave leaves the strike point at K1 pace… */}
+      {wave(KH_STRIKE + KH_WAVE_LEAD, <div style={{ height: 1, background: 'var(--ink)' }} />, {
+        margin: '22px 0 0',
+      })}
+      {wave(
+        KH_STRIKE + KH_WAVE_LEAD + KH_HEAD_STEP,
+        <div style={{ padding: '10px 0 2px' }}>
+          <span style={{ ...monoSmall, textTransform: 'uppercase' }}>
+            facit · {fx.total} frågor
+          </span>
+        </div>,
+      )}
+      {/* …and slows to counting cadence over the ledger: each row it
+          inks is a counted mark */}
+      <div>
+        {fx.rows.map((row, i) => (
+          <div key={row.word}>{wave(khRowDelay(i), <FacitLine row={row} index={i} />)}</div>
+        ))}
+      </div>
+      {/* K3's bottom — the summa the wave has been writing */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          marginTop: 12,
+        }}
+      >
+        <motion.span
+          initial={false}
+          animate={{ opacity: rm || step > 0 ? 1 : 0.18 }}
+          transition={rm ? { duration: 0 } : { duration: 0.2, ease: [...EASE.reading] }}
+          style={{ ...monoSmall, textTransform: 'uppercase' }}
+        >
+          summa
+        </motion.span>
+        <motion.span
+          data-testid="kh-sum"
+          initial={false}
+          animate={{ opacity: rm || step > 0 ? 1 : 0.18 }}
+          transition={rm ? { duration: 0 } : { duration: 0.2, ease: [...EASE.reading] }}
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontWeight: 500,
+            fontSize: 26,
+            color: 'var(--ink)',
+            fontVariantNumeric: 'tabular-nums',
+          }}
+        >
+          {rightSoFar} av {step > 0 ? step : '—'}
+        </motion.span>
+      </div>
+      {/* the bookkeeper's rule — draws when the wave runs out */}
+      <motion.div
+        aria-hidden
+        initial={false}
+        animate={{ scaleX: phase === 'wave' && !rm ? 0 : 1 }}
+        transition={rm ? { duration: 0.01 } : { duration: 0.32, ease: [...EASE.reading] }}
+        style={{ height: 2, background: 'var(--ink)', transformOrigin: '0% 50%', marginTop: 8 }}
+      />
+      {/* the settled total — house physics close the ceremony */}
+      <motion.div
+        initial={false}
+        animate={settled ? { opacity: 1, scale: 1 } : { opacity: 0, scale: rm ? 1 : 0.96 }}
+        transition={rm ? { duration: 0.01 } : { opacity: { duration: 0.24 }, scale: SATS }}
+        style={{ marginTop: 20, transformOrigin: '0% 0%' }}
+      >
+        <div style={{ display: 'flex', gap: 40 }}>
+          <StatBlock n={fx.pass} l="detta pass" />
+          <StatBlock n={fx.prognos} l="ORD-prognos" />
+          {fx.toRep > 0 && <StatBlock n={String(fx.toRep)} l="till repetition" accent />}
+        </div>
+        <p
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontStyle: 'italic',
+            fontSize: 15,
+            lineHeight: 1.55,
+            color: 'var(--ink-2)',
+            margin: '16px 0 0',
+            maxWidth: '60ch',
+          }}
+        >
+          {fx.codaLine}
+        </p>
+      </motion.div>
+    </div>
+  )
+}
+
+export function KLARTH() {
+  const rm = useReducedMotion() === true
+  return (
+    <Stage
+      code="KH"
+      title="Hybriden — pressen som för boken"
+      thesis="K1:s rörelse, K3:s botten — som EN ceremoni. Klart. slås ner i arket (slag k380 c26 m1,4 — systemets enda z-ögonblick) på en sida som redan är satt i svagt bläck, och slaget släpper K1:s tryckvåg. Men vågen ÄR bokföringshanden: över facitkolumnen saktar den till räknekammarens kadens (90 ms per rad), varje rad den trycker till fullt bläck är ett bokfört märke, och summan därunder rullar i takt med vågens gång. När sista raden är tryckt drar sig summeringslinjen och passets siffror sätter sig i husets veck-fysik. Ett ✗ trycks och bokförs med samma hand som ett ✓."
+    >
+      {(fx, playKey) => <KHContent key={`${playKey}`} fx={fx} rm={rm} />}
     </Stage>
   )
 }
