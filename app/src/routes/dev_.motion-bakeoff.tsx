@@ -27,6 +27,7 @@
 
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
+import { KLART1, KLART2, KLART3 } from '@/components/devbake/KlartBakeoff'
 import { MOTA2 } from '@/components/devbake/MotionArketFullbordad'
 import { MOTA1 } from '@/components/devbake/MotionArketRedigerad'
 import { MOTC1, MOTC2 } from '@/components/devbake/MotionBakeoffC'
@@ -62,6 +63,13 @@ const VARIANTS = [
   // A1 improves by subtraction, A2 by fit-and-finish.
   { key: 'a1', label: 'A1 · Arket, redigerad', C: MOTA1 },
   { key: 'a2', label: 'A2 · Arket, fullbordad', C: MOTA2 },
+  // W2 — the Klart. payoff bake-off: Arket stands app-wide, but the
+  // owner has earned ONE ritual moment at session end. Three competing
+  // emotional theses for that single beat (each may breathe past
+  // 400 ms, once): the press, the exhale, the tally.
+  { key: 'k1', label: 'K1 · Djuptrycket', C: KLART1 },
+  { key: 'k2', label: 'K2 · Andningen', C: KLART2 },
+  { key: 'k3', label: 'K3 · Räkenskapen', C: KLART3 },
 ] as const
 
 function MotionBakeoffPage() {
