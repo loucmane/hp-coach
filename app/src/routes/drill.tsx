@@ -10,6 +10,7 @@ import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useAdaptiveReview } from '@/api/hooks/useAdaptiveReview'
+import { useAbility, useItemStats } from '@/api/hooks/useItemStats'
 import { useDueMistakes, useRecordMistake } from '@/api/hooks/useMistakes'
 import { useActiveSession } from '@/api/hooks/useSessions'
 import { useTopTraps } from '@/api/hooks/useTopTraps'
@@ -20,10 +21,16 @@ import { entryHeadword, loadFramework } from '@/data/frameworks'
 import { findQuestion, loadBank, type Question, type Section } from '@/data/questions'
 import { logAdaptiveEvent } from '@/lib/adaptiveEvents'
 import { encodeTreatedMarker } from '@/lib/adaptiveReview'
-import { DEFAULT_DRILL_LENGTH, pickDrillQuestions, pickMixedDrillQuestions } from '@/lib/drill'
+import {
+  DEFAULT_DRILL_LENGTH,
+  type DrillRatings,
+  pickDrillQuestions,
+  pickMixedDrillQuestions,
+} from '@/lib/drill'
 import { sectionDoorLayoutId, useFirstContentSignal } from '@/lib/motion'
 import { REPETITION_SESSION_SIZE } from '@/lib/replay'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
+import { useUiStore } from '@/stores/uiStore'
 
 const DRILL_SECTIONS = ['ORD', 'LÄS', 'MEK', 'ELF', 'XYZ', 'KVA', 'NOG', 'DTK'] as const
 type DrillSection = (typeof DRILL_SECTIONS)[number]
@@ -289,6 +296,24 @@ function DrillScreen() {
     ? { headline: 'Blandad övning', subcopy: '10 frågor blandat från alla åtta delprov.' }
     : SECTION_COPY[section]
 
+  // Smart drill selection (PL-L.3): thread the learned Elo ratings into the
+  // section-drill picker so it targets the 0.70–0.85 learning band. These
+  // queries are the ONLY new inputs and they NEVER gate rendering — the drill
+  // route commits the same with or without them (no ghost-loading states).
+  // When smart-picking is off, or no item in this section has been rated yet,
+  // `drillRatings` is undefined and the picker is byte-for-byte the old random
+  // path. Ability defaults to 0 (the fit's baseline) for a user who has drilled
+  // items but has no ability row for this section yet.
+  const smartDrill = useUiStore((s) => s.smartDrill)
+  const itemStats = useItemStats(section as Section)
+  const ability = useAbility()
+  const drillRatings = useMemo<DrillRatings | undefined>(() => {
+    if (!smartDrill) return undefined
+    const difficulty = itemStats.data
+    if (!difficulty || Object.keys(difficulty).length === 0) return undefined
+    return { difficulty, ability: ability.data?.[section]?.ability ?? 0 }
+  }, [smartDrill, itemStats.data, ability.data, section])
+
   // Three picker modes (cross-device resume is handled by SessionPlayer
   // adopting the active server session + its stored plan via resolvePlan
   // below — the route no longer re-derives a resume plan from localStorage):
@@ -310,7 +335,22 @@ function DrillScreen() {
         ? () => pickWeakTrapsQuestions(section as Section, weakFrameworkIds)
         : mixed
           ? () => pickMixedDrillQuestions(DEFAULT_DRILL_LENGTH)
-          : () => pickDrillQuestions(section as Section, DEFAULT_DRILL_LENGTH)
+          : () => {
+              // Log which mode picked this session for the owner's A/B read
+              // (localStorage ledger). Fires once, at fresh-start pick time —
+              // SessionPlayer only calls pickQuestions on a new session, not
+              // when adopting an active one.
+              logAdaptiveEvent('drill-pick', {
+                mode: drillRatings ? 'smart' : 'random',
+                section,
+              })
+              return pickDrillQuestions(
+                section as Section,
+                DEFAULT_DRILL_LENGTH,
+                undefined,
+                drillRatings,
+              )
+            }
 
   // Turn a stored plan (server session qids) back into Questions so
   // SessionPlayer can replay the exact paused session on any device.

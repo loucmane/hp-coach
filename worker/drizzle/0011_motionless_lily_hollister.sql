@@ -1,0 +1,1 @@
+ALTER TABLE `users` ADD `smart_drill` integer DEFAULT true;

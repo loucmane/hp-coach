@@ -10,7 +10,15 @@ import { beforeAll, describe, expect, it } from 'vitest'
 
 import { loadBank, type Question, questionsInSection } from '@/data/questions'
 
-import { pickDrillQuestions, pickMixedDrillQuestions, seededRng } from './drill'
+import {
+  bandDistance,
+  type DrillRatings,
+  pickDrillQuestions,
+  pickMixedDrillQuestions,
+  predictedPCorrect,
+  questionBandScore,
+  seededRng,
+} from './drill'
 
 // Hot-load the bank once per file. After this every test (and every
 // pickDrillQuestions call inside it) hits the cached Promise.
@@ -144,5 +152,142 @@ describe('pickMixedDrillQuestions', () => {
     const a = (await pickMixedDrillQuestions(10, seededRng(42))).map((q) => q.qid)
     const b = (await pickMixedDrillQuestions(10, seededRng(42))).map((q) => q.qid)
     expect(a).toEqual(b)
+  })
+})
+
+// ── Smart picking (PL-L.3): learning-band targeting ───────────────────────
+//
+// When the caller passes learned `ratings`, the picker prefers questions
+// predicted to land in the 0.70–0.85 band. The scoring formula mirrors the
+// server Elo fit (worker/src/lib/fit.ts). ability=0 throughout; difficulties
+// are chosen so P(correct) lands in / out of band deterministically.
+
+// P(correct) at ability 0 for a few reference difficulties:
+//   d = -163 → ~0.775 (band centre, IN band)
+//   d = +400 → ~0.273 (HARD, well below band)
+const IN_BAND_D = -163
+const HARD_D = 400
+
+describe('band scoring helpers', () => {
+  it('predictedPCorrect matches the guess-floored logistic (floor 0.2)', () => {
+    // Equal ability/difficulty → raw 0.5 → 0.2 + 0.8*0.5 = 0.6
+    expect(predictedPCorrect(0, 0)).toBeCloseTo(0.6, 5)
+    // Chosen in-band difficulty really lands in the band.
+    const p = predictedPCorrect(IN_BAND_D, 0)
+    expect(p).toBeGreaterThanOrEqual(0.7)
+    expect(p).toBeLessThanOrEqual(0.85)
+  })
+
+  it('bandDistance is 0 inside the band and positive outside', () => {
+    expect(bandDistance(0.775)).toBe(0)
+    expect(bandDistance(0.7)).toBe(0)
+    expect(bandDistance(0.85)).toBe(0)
+    expect(bandDistance(0.99)).toBeGreaterThan(0)
+    expect(bandDistance(0.3)).toBeGreaterThan(0)
+  })
+
+  it('gives unrated questions the neutral in-band score (0)', () => {
+    const ratings: DrillRatings = { difficulty: {}, ability: 0 }
+    expect(questionBandScore('nonexistent-qid', ratings)).toBe(0)
+  })
+})
+
+describe('pickDrillQuestions — smart band targeting', () => {
+  // Rate the WHOLE ORD pool: half in-band, half hard. With no unrated
+  // questions, an in-band-preferring picker must return only in-band items.
+  it('clusters the pick inside the learning band when every item is rated', async () => {
+    const pool = questionsInSection(bank, 'ORD')
+    const difficulty: Record<string, number> = {}
+    const inBand = new Set<string>()
+    pool.forEach((q, i) => {
+      if (i % 2 === 0) {
+        difficulty[q.qid] = IN_BAND_D
+        inBand.add(q.qid)
+      } else {
+        difficulty[q.qid] = HARD_D
+      }
+    })
+    const picked = await pickDrillQuestions('ORD', 10, seededRng(1), { difficulty, ability: 0 })
+    expect(picked).toHaveLength(10)
+    for (const q of picked) {
+      expect(inBand.has(q.qid)).toBe(true)
+      const p = predictedPCorrect(difficulty[q.qid], 0)
+      expect(p).toBeGreaterThanOrEqual(0.7)
+      expect(p).toBeLessThanOrEqual(0.85)
+    }
+  })
+
+  // Unrated items score neutral-in-band (0), so they beat clearly-out-of-band
+  // rated items — new content keeps circulating rather than being buried.
+  it('prefers unrated items over clearly out-of-band rated ones', async () => {
+    const pool = questionsInSection(bank, 'ORD')
+    // Rate only the first 5 as HARD; leave the rest unrated.
+    const difficulty: Record<string, number> = {}
+    const hard = new Set<string>()
+    for (let i = 0; i < 5; i++) {
+      difficulty[pool[i].qid] = HARD_D
+      hard.add(pool[i].qid)
+    }
+    const picked = await pickDrillQuestions('ORD', 10, seededRng(2), { difficulty, ability: 0 })
+    expect(picked).toHaveLength(10)
+    // The hard rated items are worse than every unrated one, and there are
+    // plenty of unrated items, so none of the hard five should be picked.
+    for (const q of picked) expect(hard.has(q.qid)).toBe(false)
+  })
+
+  // Circulation guard: when only a few items are rated in-band and the rest
+  // are unrated (also neutral-in-band), the pick still fills to `count` from
+  // the unrated pool — smart picking never starves fresh content.
+  it('still fills the session from unrated items when few are rated', async () => {
+    const pool = questionsInSection(bank, 'ORD')
+    const difficulty: Record<string, number> = {}
+    const rated = new Set<string>()
+    for (let i = 0; i < 3; i++) {
+      difficulty[pool[i].qid] = IN_BAND_D
+      rated.add(pool[i].qid)
+    }
+    const picked = await pickDrillQuestions('ORD', 10, seededRng(3), { difficulty, ability: 0 })
+    expect(picked).toHaveLength(10)
+    // Includes unrated questions (new content circulates).
+    expect(picked.some((q) => !rated.has(q.qid))).toBe(true)
+  })
+
+  // Regression pin: passing `ratings: undefined` must be byte-for-byte
+  // identical to the old three-arg random picker.
+  it('is byte-identical to the random picker when ratings are absent', async () => {
+    const withArg = (await pickDrillQuestions('ORD', 10, seededRng(42), undefined)).map(
+      (q) => q.qid,
+    )
+    const withoutArg = (await pickDrillQuestions('ORD', 10, seededRng(42))).map((q) => q.qid)
+    expect(withArg).toEqual(withoutArg)
+  })
+
+  // Group-atomic under smart picking: DTK blocks stay WHOLE and CONSECUTIVE
+  // even when band-sorted — the picker reorders blocks, never splits them.
+  it('preserves DTK block-atomicity under smart band sorting', async () => {
+    const pool = questionsInSection(bank, 'DTK')
+    // Rate every DTK question in-band so the band sort is fully engaged.
+    const difficulty: Record<string, number> = {}
+    for (const q of pool) difficulty[q.qid] = IN_BAND_D
+    const picked = await pickDrillQuestions('DTK', 10, seededRng(7), { difficulty, ability: 0 })
+    expect(picked.length).toBeGreaterThan(0)
+    const pageOf = (q: Question) => q.figure?.src ?? q.qid
+    // Once we leave a page we never return to it (whole + consecutive).
+    const closed = new Set<string>()
+    let prev: string | null = null
+    for (const q of picked) {
+      const page = pageOf(q)
+      if (page !== prev) {
+        expect(closed.has(page)).toBe(false)
+        if (prev !== null) closed.add(prev)
+        prev = page
+      }
+    }
+    // Every page present contributes ALL its pool questions (no partial block).
+    const poolByPage = new Map<string, number>()
+    for (const q of pool) poolByPage.set(pageOf(q), (poolByPage.get(pageOf(q)) ?? 0) + 1)
+    const resByPage = new Map<string, number>()
+    for (const q of picked) resByPage.set(pageOf(q), (resByPage.get(pageOf(q)) ?? 0) + 1)
+    for (const [page, n] of resByPage) expect(n).toBe(poolByPage.get(page))
   })
 })

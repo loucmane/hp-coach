@@ -32,6 +32,11 @@ type UiState = {
   drillLayout: DrillLayoutKey
   useFluid: boolean
   studioRails: boolean
+  /** Smart drill selection (PL-L.3): when true, the section-drill picker
+   *  targets the 0.70–0.85 learning band via the learned Elo fit; when false,
+   *  it picks uniformly at random. DEFAULT ON. Synced cross-device via
+   *  useSyncedPrefs → the server prefs row. */
+  smartDrill: boolean
   setPalette: (palette: PaletteKey) => void
   setMode: (mode: ThemeMode) => void
   applyServerTheme: (palette: PaletteKey | undefined, mode: ThemeMode | undefined) => void
@@ -47,6 +52,7 @@ type UiState = {
   setUseFluid: (useFluid: boolean) => void
   setStudioRails: (studioRails: boolean) => void
   toggleStudioRails: () => void
+  setSmartDrill: (smartDrill: boolean) => void
 }
 
 export const useUiStore = create<UiState>()(
@@ -59,6 +65,9 @@ export const useUiStore = create<UiState>()(
       drillLayout: DEFAULT_THEME.drillLayout,
       useFluid: DEFAULT_THEME.useFluid,
       studioRails: DEFAULT_THEME.studioRails,
+      // Smart drill selection defaults ON — the band targets learning and the
+      // picker degrades gracefully to random when a user has no ratings yet.
+      smartDrill: true,
       // Palette + mode changes crossfade the whole page as one image via
       // the View Transitions API (task W3) — see `withViewTransition` for
       // the feature-detect / reduced-motion / Firefox-fallback rules.
@@ -101,6 +110,7 @@ export const useUiStore = create<UiState>()(
       setUseFluid: (useFluid) => set({ useFluid }),
       setStudioRails: (studioRails) => set({ studioRails }),
       toggleStudioRails: () => set((s) => ({ studioRails: !s.studioRails })),
+      setSmartDrill: (smartDrill) => set({ smartDrill }),
     }),
     { name: 'hpc-ui' },
   ),

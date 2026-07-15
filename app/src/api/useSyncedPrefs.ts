@@ -38,6 +38,7 @@ export function useHydratePrefs() {
   const applyServerTheme = useUiStore((s) => s.applyServerTheme)
   const setFont = useUiStore((s) => s.setFont)
   const setDensity = useUiStore((s) => s.setDensity)
+  const setSmartDrill = useUiStore((s) => s.setSmartDrill)
   const setSitting = useExamStore((s) => s.setSitting)
 
   useEffect(() => {
@@ -55,12 +56,25 @@ export function useHydratePrefs() {
     )
     if (prefs.data.font) setFont(prefs.data.font as FontKey)
     if (prefs.data.density) setDensity(prefs.data.density as Density)
+    // smartDrill defaults ON server-side; only override the local store when
+    // the server explicitly carries a boolean (never clobber the default with
+    // an undefined from an older row).
+    if (typeof prefs.data.smartDrill === 'boolean') setSmartDrill(prefs.data.smartDrill)
     if (prefs.data.targetSittingId) {
       // Only apply if the id is one we know about; setSitting silently
       // ignores unknowns, so this is safe.
       setSitting(prefs.data.targetSittingId as Parameters<typeof setSitting>[0])
     }
-  }, [applyServerTheme, prefs.data, prefs.dataUpdatedAt, setCoach, setFont, setDensity, setSitting])
+  }, [
+    applyServerTheme,
+    prefs.data,
+    prefs.dataUpdatedAt,
+    setCoach,
+    setFont,
+    setDensity,
+    setSmartDrill,
+    setSitting,
+  ])
 }
 
 /**
@@ -86,6 +100,9 @@ export function useSyncedPrefs() {
   const setDensity = useUiStore((s) => s.setDensity)
   const densityLocal = useUiStore((s) => s.density)
 
+  const setSmartDrill = useUiStore((s) => s.setSmartDrill)
+  const smartDrillLocal = useUiStore((s) => s.smartDrill)
+
   // One write-through helper, parameterised by which axis is changing.
   // Captures the previous local value so we can roll back on failure.
   const writeThrough =
@@ -106,6 +123,7 @@ export function useSyncedPrefs() {
     setMode: writeThrough(setMode, modeLocal, 'mode'),
     setFont: writeThrough(setFont, fontLocal, 'font'),
     setDensity: writeThrough(setDensity, densityLocal, 'density'),
+    setSmartDrill: writeThrough(setSmartDrill, smartDrillLocal, 'smartDrill'),
     isPending: update.isPending,
     isError: update.isError,
   }

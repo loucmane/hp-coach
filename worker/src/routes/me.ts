@@ -31,6 +31,8 @@ const PrefsPatch = z
     font: z.enum(['literary', 'geometric', 'editorial', 'hyperlegible']).optional(),
     density: z.enum(['compact', 'regular', 'comfy']).optional(),
     showStreak: z.boolean().optional(),
+    // Smart drill selection toggle (PL-L.3). See users.smartDrill.
+    smartDrill: z.boolean().optional(),
     // "Inte idag" Provpass defer — a local YYYY-MM-DD date string, or null
     // to clear. Format-validated so a malformed value can't slip past the
     // day-scoped equality check the scheduler relies on.
