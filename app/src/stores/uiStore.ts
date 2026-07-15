@@ -34,6 +34,7 @@ type UiState = {
   studioRails: boolean
   setPalette: (palette: PaletteKey) => void
   setMode: (mode: ThemeMode) => void
+  applyServerTheme: (palette: PaletteKey | undefined, mode: ThemeMode | undefined) => void
   setFont: (font: FontKey) => void
   setDensity: (density: Density) => void
   setDrillLayout: (drillLayout: DrillLayoutKey) => void
@@ -75,6 +76,18 @@ export const useUiStore = create<UiState>()(
       setMode: (mode) => {
         if (get().mode === mode) return
         withViewTransition(() => set({ mode }))
+      },
+      // Hydration path — server prefs arriving at boot (useSyncedPrefs)
+      // apply WITHOUT a view transition: the crossfade is the user's
+      // toggle gesture, not data arrival. During a transition the
+      // browser's snapshot overlay also blocks hit-testing, which made
+      // the phone tab bar unclickable for the first beat after boot
+      // (#299 mobile e2e: "Element is not visible").
+      applyServerTheme: (palette, mode) => {
+        const next: Partial<{ palette: PaletteKey; mode: ThemeMode }> = {}
+        if (palette && get().palette !== palette) next.palette = palette
+        if (mode && get().mode !== mode) next.mode = mode
+        if (Object.keys(next).length > 0) set(next)
       },
       setFont: (font) => set({ font }),
       setDensity: (density) => set({ density }),
