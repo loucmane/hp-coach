@@ -84,6 +84,12 @@ function ClerkGate() {
     const t = setTimeout(() => setTimedOut(true), CLERK_LOAD_TIMEOUT_MS)
     return () => clearTimeout(t)
   }, [isLoaded])
+  // Lift the boot veil (index.html) the moment Clerk resolves — that's the
+  // first frame the app can show a stable surface instead of the "laddar…"
+  // splash. The inline script's 1.5s failsafe covers a stalled Clerk.
+  useEffect(() => {
+    if (isLoaded) window.__hpcBootVeil?.remove()
+  }, [isLoaded])
 
   if (isLoaded) return <AuthRouter />
   if (timedOut) return <ClerkLoadFailed />

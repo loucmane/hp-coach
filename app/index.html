@@ -35,25 +35,87 @@
     />
     <title>HP-Coach — träna för högskoleprovet</title>
     <script>
-      // Anti-FOUC: read the persisted UI store and toggle the .dark class
-      // before React paints. The CSS file ships Sand-light defaults; we
-      // only need to flip dark-mode here to avoid the brief flash of light
-      // surfaces under a user who picked dark. Full palette/font/density
-      // application is a single render away once React mounts.
-      try {
-        var raw = localStorage.getItem('hpc-ui')
-        if (raw) {
-          var s = JSON.parse(raw)
-          var mode = s && s.state && s.state.mode
-          if (mode === 'dark') {
-            document.documentElement.classList.add('dark')
-            document.documentElement.style.colorScheme = 'dark'
-          }
+      // Boot choreography — runs BEFORE the bundle so the very first paint
+      // is already in the user's theme and nothing flashes underneath.
+      //
+      // Two jobs:
+      //   1. Theme-before-first-paint. The CSS file only ships Sand-light /
+      //      Sand-dark defaults (:root + .dark); every non-Sand palette's
+      //      surfaces come from inline vars written by applyThemeToDocument
+      //      AFTER React mounts. That left a real flash: a sage/rose/ink/
+      //      spalt user (or the Spalt DEFAULT_THEME) saw a Sand frame first,
+      //      then a repaint into their palette. We read the persisted store
+      //      here and set --bg + the html background + .dark synchronously,
+      //      so first paint is the correct surface colour. The remaining
+      //      palette vars (ink, panel, accent…) still land one render later
+      //      via applyThemeToDocument — fine, because the boot veil below
+      //      covers that beat and --bg (the dominant surface) is already right.
+      //   2. Boot veil. A solid --bg screen (#boot-veil, in <body>) sits over
+      //      everything so the old-page retention → Clerk "laddar…" splash →
+      //      route skeleton churn is hidden behind one calm colour. React
+      //      lifts it once Clerk resolves (see ClerkGate); a 1.5s failsafe
+      //      here removes it no matter what, so the app can never hide behind it.
+      //
+      // BG below mirrors PALETTES[*].{light,dark}.bg in src/lib/tokens.ts.
+      // Keep in sync if a palette's bg value changes (guarded by a token test).
+      ;(function () {
+        var BG = {
+          sand: ['oklch(0.97 0.011 78)', 'oklch(0.16 0.008 70)'],
+          sage: ['oklch(0.965 0.012 175)', 'oklch(0.18 0.014 200)'],
+          ink: ['oklch(0.97 0.008 250)', 'oklch(0.17 0.020 260)'],
+          rose: ['oklch(0.97 0.011 25)', 'oklch(0.17 0.012 20)'],
+          spalt: ['oklch(0.972 0.016 95)', 'oklch(0.17 0.015 270)'],
         }
-      } catch (_) {}
+        // Defaults mirror DEFAULT_THEME in src/lib/tokens.ts (Spalt / light).
+        var palette = 'spalt'
+        var isDark = false
+        try {
+          var raw = localStorage.getItem('hpc-ui')
+          if (raw) {
+            var st = JSON.parse(raw).state
+            if (st) {
+              if (st.palette && BG[st.palette]) palette = st.palette
+              if (st.mode === 'dark') isDark = true
+            }
+          }
+        } catch (_) {}
+        var bg = (BG[palette] || BG.spalt)[isDark ? 1 : 0]
+        var root = document.documentElement
+        try {
+          root.style.setProperty('--bg', bg)
+          root.style.background = bg
+          root.style.colorScheme = isDark ? 'dark' : 'light'
+          root.dataset.palette = palette
+          if (isDark) root.classList.add('dark')
+        } catch (_) {}
+        // Boot-veil remover: idempotent, exposed for React to call on Clerk
+        // load, plus a hard 1.5s failsafe. Never let the app hide behind it.
+        var removed = false
+        function remove() {
+          if (removed) return
+          removed = true
+          var v = document.getElementById('boot-veil')
+          if (v && v.parentNode) v.parentNode.removeChild(v)
+        }
+        window.__hpcBootVeil = { remove: remove }
+        setTimeout(remove, 1500)
+      })()
     </script>
+    <style>
+      /* Boot veil — a solid --bg curtain over the mount churn. Same colour
+         as the page, so it reads as a calm surface, not a spinner. No
+         transition: reduced-motion users must see no animation, and there
+         is nothing to animate — it is simply present, then gone. */
+      #boot-veil {
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        z-index: 2147483647;
+      }
+    </style>
   </head>
   <body>
+    <div id="boot-veil"></div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

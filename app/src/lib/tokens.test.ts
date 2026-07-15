@@ -5,6 +5,9 @@
 // value intentionally, update the snapshot AND the corresponding fallback
 // in src/index.css (Sand-light only) together.
 
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+
 import { describe, expect, it } from 'vitest'
 
 import {
@@ -72,5 +75,22 @@ describe('design tokens', () => {
     expect(regular['--pad'].startsWith('clamp(')).toBe(true)
     expect(regular['--pad']).toContain('18px') // baseline value still present as floor
     expect(regular['--fluid']).toBe('1')
+  })
+
+  // The boot script in index.html inlines a palette→[lightBg, darkBg] map so
+  // first paint is already in the user's --bg (kills the reload theme flash).
+  // That map is a hand-copy of these palette bg values; this guard fails CI if
+  // the two ever drift apart. If you change a palette's bg in tokens.ts, update
+  // the BG map in index.html to match (and vice versa).
+  it('index.html boot BG map matches every palette bg (no drift)', () => {
+    const html = readFileSync(resolve(process.cwd(), 'index.html'), 'utf8')
+    const mapBlock = html.match(/var BG = \{([\s\S]*?)\}/)?.[1]
+    expect(mapBlock, 'BG map not found in index.html boot script').toBeTruthy()
+    for (const k of PALETTE_KEYS) {
+      const row = mapBlock?.match(new RegExp(`${k}:\\s*\\['([^']+)',\\s*'([^']+)'\\]`))
+      expect(row, `BG map missing palette ${k}`).toBeTruthy()
+      expect(row?.[1], `${k} light bg drift`).toBe(PALETTES[k].light.bg)
+      expect(row?.[2], `${k} dark bg drift`).toBe(PALETTES[k].dark.bg)
+    }
   })
 })
