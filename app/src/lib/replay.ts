@@ -40,3 +40,25 @@ export async function pickReplayQuestions(
   }
   return out
 }
+
+/** Ghost-replay guard (residual #290) — prunes an adopted adaptive_review
+ *  session's STORED plan down to qids that still correspond to a mistake
+ *  in the CURRENT due list. Without this, resuming/adopting an active
+ *  repetition session replays its plan verbatim, including questions
+ *  whose mistakes were since resolved (a correct answer elsewhere) or
+ *  rescheduled out (SRS pushed nextReviewAt into the future) — the user
+ *  replays a question that's already "done".
+ *
+ *  Pure and synchronous: no bank/network access, just a set-membership
+ *  filter over questionIds, so it's trivial to unit-test and safe to run
+ *  on every adopt. Preserves the STORED plan's own order — that order is
+ *  already meaningful (server-sorted errorCount desc, lastErrorAt desc at
+ *  session-creation time) — we only drop entries, never reorder.
+ *
+ *  Scope: only wired into /repetition's resolvePlan (kind=adaptive_review).
+ *  Drill plans aren't mistake-backed, so pruning against the due-mistakes
+ *  list would be meaningless there — drill's resolvePlan doesn't call this. */
+export function prunePlan(qids: readonly string[], due: readonly Mistake[]): string[] {
+  const dueIds = new Set(due.map((m) => m.questionId))
+  return qids.filter((qid) => dueIds.has(qid))
+}

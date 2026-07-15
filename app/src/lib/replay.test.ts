@@ -10,7 +10,7 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import type { Mistake } from '@/api/hooks/useMistakes'
 import { loadBank } from '@/data/questions'
 
-import { pickReplayQuestions } from './replay'
+import { pickReplayQuestions, prunePlan } from './replay'
 
 // Resolved once per file from the lazy bank — keeps test bodies tight.
 let ordQids: string[]
@@ -75,5 +75,38 @@ describe('pickReplayQuestions', () => {
     const due = [mistake(ordQids[3]), mistake(ordQids[0]), mistake(ordQids[2])]
     const items = await pickReplayQuestions(due, 10)
     expect(items.map((i) => i.question.qid)).toEqual([ordQids[3], ordQids[0], ordQids[2]])
+  })
+})
+
+// prunePlan — ghost-replay guard (residual #290): an adopted adaptive_review
+// session's stored plan may include qids whose mistakes were since resolved
+// or rescheduled out. prunePlan drops those, keeping the plan's own order.
+describe('prunePlan', () => {
+  it('drops stored qids that no longer have a matching due mistake', () => {
+    const due = [mistake(ordQids[0]), mistake(ordQids[2])]
+    const stored = [ordQids[0], ordQids[1], ordQids[2]]
+    expect(prunePlan(stored, due)).toEqual([ordQids[0], ordQids[2]])
+  })
+
+  it('keeps the stored plan order, not the due list order', () => {
+    const due = [mistake(ordQids[2]), mistake(ordQids[0]), mistake(ordQids[1])]
+    const stored = [ordQids[1], ordQids[0], ordQids[2]]
+    expect(prunePlan(stored, due)).toEqual([ordQids[1], ordQids[0], ordQids[2]])
+  })
+
+  it('returns an empty array when every stored qid was resolved out', () => {
+    const due = [mistake(ordQids[4])]
+    const stored = [ordQids[0], ordQids[1]]
+    expect(prunePlan(stored, due)).toEqual([])
+  })
+
+  it('is a no-op when nothing was resolved', () => {
+    const due = [mistake(ordQids[0]), mistake(ordQids[1])]
+    const stored = [ordQids[0], ordQids[1]]
+    expect(prunePlan(stored, due)).toEqual(stored)
+  })
+
+  it('handles an empty stored plan', () => {
+    expect(prunePlan([], [mistake(ordQids[0])])).toEqual([])
   })
 })
