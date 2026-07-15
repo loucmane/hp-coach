@@ -161,6 +161,16 @@ export type SchedulerSignals = {
    *  existing trap-aware rules, NOT a structural change. Undefined /
    *  null → no boost (unchanged plan). */
   hotTrap?: { framework_id: string } | null
+  /** "Inte idag" defer (owner decision 2026-07-15). When true, Rule 0 —
+   *  the Provpass anchor — does NOT engage even though a mock is due, so
+   *  the ORDINARY day (lesson/drill/repetition/cold-start rules) generates
+   *  in its place. Set by the hook layer when the synced `mockDeferredDate`
+   *  pref equals TODAY (local). This ONLY gates the plan's mock ITEM —
+   *  `prescribeMock` deliberately ignores it, so the passive
+   *  ProvpassStatusLine stays truthful ("redo när du är") and the Provpass
+   *  door remains the gentle way back. The prescription's own cadence is
+   *  untouched, so the pass re-anchors naturally on the next suitable day. */
+  suppressMock?: boolean
 }
 
 /** Minimal shape `prescribeMock` needs from a mock-results row — a
@@ -354,7 +364,12 @@ export function generateDailyPlan(signals: SchedulerSignals): DailyPlan {
   // pre-existing lesson/drill/repetition rules and never pass
   // `daysToExam` see unchanged behaviour — the mock feature simply
   // doesn't engage without its input.
-  const mockPrescription = signals.daysToExam != null ? prescribeMock(signals) : null
+  // `suppressMock` is the "Inte idag" defer — the user quietly deferred
+  // today's anchor, so Rule 0 stands down and the ordinary rules below run.
+  // Only the plan ITEM is gated here; the standalone `prescribeMock`
+  // consumed by the status line is intentionally NOT suppressed.
+  const mockPrescription =
+    signals.daysToExam != null && !signals.suppressMock ? prescribeMock(signals) : null
   if (mockPrescription?.due) {
     const items: PlanItem[] = [mockItem(mockPrescription, date)]
     if (dueMistakeCount > 0 && items.length < MAX_ITEMS) {

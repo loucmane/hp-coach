@@ -86,6 +86,26 @@ describe('Kallelse', () => {
     expect(violations, formatViolations(violations)).toEqual([])
   })
 
+  it('renders the muted "Inte idag" defer action when onDefer is wired', () => {
+    render(<Kallelse item={mockItem()} onStart={() => {}} onDefer={() => {}} forceLayout="phone" />)
+    expect(screen.getByRole('button', { name: /inte idag/i })).toBeInTheDocument()
+  })
+
+  it('omits the defer action when onDefer is not provided', () => {
+    render(<Kallelse item={mockItem()} onStart={() => {}} forceLayout="phone" />)
+    expect(screen.queryByRole('button', { name: /inte idag/i })).not.toBeInTheDocument()
+  })
+
+  it('calls onDefer when the "Inte idag" action is clicked', () => {
+    const onDefer = vi.fn()
+    const onStart = vi.fn()
+    render(<Kallelse item={mockItem()} onStart={onStart} onDefer={onDefer} forceLayout="phone" />)
+    screen.getByRole('button', { name: /inte idag/i }).click()
+    expect(onDefer).toHaveBeenCalledTimes(1)
+    // The quiet out must not also fire the primary Starta action.
+    expect(onStart).not.toHaveBeenCalled()
+  })
+
   it('renders the desktop composition wrapped in a KALLELSE rail section', () => {
     render(<Kallelse item={mockItem()} onStart={() => {}} forceLayout="studio" />)
     expect(screen.getByText('Kallelse')).toBeInTheDocument()

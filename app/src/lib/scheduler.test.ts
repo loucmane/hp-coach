@@ -1040,3 +1040,51 @@ describe('generateDailyPlan — Provpass anchor (Rule 0)', () => {
     expect(plan.items.every((i) => i.kind !== 'mock')).toBe(true)
   })
 })
+
+describe('generateDailyPlan — "Inte idag" defer (suppressMock)', () => {
+  it('does not engage Rule 0 when suppressMock is true, even though the mock is due', () => {
+    // Same due-mock signals as the anchor tests, but the user deferred:
+    // the ordinary rules must run instead of the Provpass anchor.
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [score('ORD', { score: 1.1 }), score('XYZ', { score: 1.9 })],
+        dueMistakeCount: 3,
+        mockHistory: [],
+        daysToExam: 100,
+        suppressMock: true,
+      }),
+    )
+    expect(plan.items.every((i) => i.kind !== 'mock')).toBe(true)
+    // The ordinary rules fired — the due repetition still leads the day.
+    expect(plan.items[0].kind).toBe('repetition')
+  })
+
+  it('produces the SAME ordinary plan a non-due day would (defer == a non-anchor day)', () => {
+    const base = {
+      sectionScores: [score('ORD', { score: 1.1 }), score('XYZ', { score: 1.9 })],
+      dueMistakeCount: 3,
+    }
+    const deferred = generateDailyPlan(
+      signals({ ...base, mockHistory: [], daysToExam: 100, suppressMock: true }),
+    )
+    // A day with no mock steering at all — the reference ordinary plan.
+    const ordinary = generateDailyPlan(signals(base))
+    expect(deferred.items.map((i) => i.kind)).toEqual(ordinary.items.map((i) => i.kind))
+  })
+
+  it('leaves prescribeMock UNAFFECTED by suppressMock (the status line stays truthful)', () => {
+    // suppressMock gates only the plan ITEM (Rule 0) — the standalone
+    // prescription that feeds ProvpassStatusLine ignores it entirely.
+    const s = signals({ mockHistory: [], daysToExam: 100, suppressMock: true })
+    expect(prescribeMock(s).due).toBe(true)
+  })
+
+  it('cold-start user who defers gets the diagnostic, not the mock', () => {
+    const plan = generateDailyPlan(
+      signals({ mockHistory: [], daysToExam: 100, suppressMock: true }),
+    )
+    expect(plan.items).toHaveLength(1)
+    expect(plan.items[0].kind).toBe('drill')
+    expect(plan.items[0].href).toBe('/diagnostik')
+  })
+})

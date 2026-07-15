@@ -89,3 +89,44 @@ describe('GET /api/me/exposure', () => {
     expect(b.body.exposure['var-2024-XYZ-001'].n).toBe(1)
   })
 })
+
+describe('PATCH /api/me/prefs — mockDeferredDate ("Inte idag" defer)', () => {
+  async function patchPrefs(body: unknown, asUser = 'user_a') {
+    const { app, env } = appFor(asUser)
+    const res = await app.request(
+      '/prefs',
+      {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(body),
+      },
+      env,
+    )
+    return { res, body: (await res.json()) as { prefs?: { mockDeferredDate?: string | null } } }
+  }
+
+  it('persists a valid YYYY-MM-DD defer date and reads it back', async () => {
+    const { res, body } = await patchPrefs({ mockDeferredDate: '2026-07-15' })
+    expect(res.status).toBe(200)
+    expect(body.prefs?.mockDeferredDate).toBe('2026-07-15')
+  })
+
+  it('clears the defer with null', async () => {
+    await patchPrefs({ mockDeferredDate: '2026-07-15' })
+    const { body } = await patchPrefs({ mockDeferredDate: null })
+    expect(body.prefs?.mockDeferredDate).toBeNull()
+  })
+
+  it('rejects a malformed defer date (not YYYY-MM-DD)', async () => {
+    const { res } = await patchPrefs({ mockDeferredDate: 'today' })
+    expect(res.status).toBe(400)
+  })
+
+  it('defaults to null for a fresh user row', async () => {
+    // A prefs GET lazily creates the row; the new column has no default.
+    const { app, env } = appFor('user_fresh')
+    const res = await app.request('/prefs', {}, env)
+    const body = (await res.json()) as { prefs?: { mockDeferredDate?: string | null } }
+    expect(body.prefs?.mockDeferredDate ?? null).toBeNull()
+  })
+})

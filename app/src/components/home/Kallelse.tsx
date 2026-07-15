@@ -24,6 +24,11 @@ const MONO_TRACK = 'var(--font-mono-track, 0.04em)'
 type KallelseProps = {
   item: PlanItem
   onStart: () => void
+  /** "Inte idag" — quietly defer today's Provpass. No confirmation, no
+   *  reschedule: the Kallelse leaves and the ordinary Dagens plan takes its
+   *  place. Optional so callers that don't wire the defer (dev fixtures,
+   *  the bake-off) simply omit the action word. */
+  onDefer?: () => void
   /** Test-only override for viewport detection (mirrors HomeMobile's forceLayout). */
   forceLayout?: 'phone' | 'reader' | 'studio'
 }
@@ -60,7 +65,7 @@ function deriveHeading(item: PlanItem): string {
   return `${half} · ${item.estimatedMinutes} minuter`
 }
 
-export function Kallelse({ item, onStart, forceLayout }: KallelseProps) {
+export function Kallelse({ item, onStart, onDefer, forceLayout }: KallelseProps) {
   const isMock = item.kind === 'mock'
   const detectedViewport = useViewport()
   const viewport = forceLayout ?? detectedViewport
@@ -83,6 +88,7 @@ export function Kallelse({ item, onStart, forceLayout }: KallelseProps) {
           heading={heading}
           rationale={item.rationale}
           onStart={onStart}
+          onDefer={onDefer}
           desktop={false}
         />
       </section>
@@ -93,7 +99,13 @@ export function Kallelse({ item, onStart, forceLayout }: KallelseProps) {
   // placed ABOVE Dagens plan by the caller (HomeMobile).
   return (
     <DrillRailSection meta="Kallelse">
-      <KallelseBody heading={heading} rationale={item.rationale} onStart={onStart} desktop />
+      <KallelseBody
+        heading={heading}
+        rationale={item.rationale}
+        onStart={onStart}
+        onDefer={onDefer}
+        desktop
+      />
     </DrillRailSection>
   )
 }
@@ -102,11 +114,13 @@ function KallelseBody({
   heading,
   rationale,
   onStart,
+  onDefer,
   desktop,
 }: {
   heading: string
   rationale: string
   onStart: () => void
+  onDefer?: () => void
   desktop: boolean
 }) {
   return (
@@ -155,7 +169,40 @@ function KallelseBody({
       >
         {rationale}
       </p>
-      <div style={{ textAlign: desktop ? undefined : 'right', marginTop: desktop ? 20 : 16 }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          // "Inte idag" sits left, the accent CTA right — the quiet out
+          // never competes with the primary action for the eye.
+          justifyContent: onDefer ? 'space-between' : desktop ? 'flex-start' : 'flex-end',
+          gap: 16,
+          marginTop: desktop ? 20 : 16,
+        }}
+      >
+        {onDefer && (
+          <button
+            type="button"
+            onClick={onDefer}
+            data-testid="kallelse-defer"
+            // House footer-link grammar: muted mono, NEVER accent — a quiet
+            // defer, no guilt, no confirmation. Reads as a plain word, not a
+            // second CTA competing with Starta.
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              fontFamily: 'var(--font-mono)',
+              fontSize: desktop ? 12 : 11.5,
+              letterSpacing: MONO_TRACK,
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+              cursor: 'pointer',
+            }}
+          >
+            Inte idag →
+          </button>
+        )}
         <button
           type="button"
           className="hpc-m3-cta"

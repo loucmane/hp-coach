@@ -35,6 +35,12 @@ export const users = sqliteTable('users', {
   }).default('literary'),
   density: text('density', { enum: ['compact', 'regular', 'comfy'] }).default('regular'),
   showStreak: integer('show_streak', { mode: 'boolean' }).default(false),
+  // "Inte idag" Provpass defer — a local YYYY-MM-DD date string. When it
+  // equals TODAY (client-local), the scheduler suppresses that day's
+  // Provpass anchor (Kallelse) and generates the ordinary Dagens plan
+  // instead. Day-scoped: stale values are inert, so no cleanup job is
+  // needed. Synced so a defer on the phone holds on the laptop.
+  mockDeferredDate: text('mock_deferred_date'),
   // Lifetime activity counters, incremented on each write. They let the
   // all-time stats ("X frågor totalt", "Y pass") be O(1) reads instead of
   // count(*) scans, AND — crucially — they decouple the lifetime totals

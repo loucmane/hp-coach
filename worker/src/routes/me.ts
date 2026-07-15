@@ -31,6 +31,14 @@ const PrefsPatch = z
     font: z.enum(['literary', 'geometric', 'editorial', 'hyperlegible']).optional(),
     density: z.enum(['compact', 'regular', 'comfy']).optional(),
     showStreak: z.boolean().optional(),
+    // "Inte idag" Provpass defer — a local YYYY-MM-DD date string, or null
+    // to clear. Format-validated so a malformed value can't slip past the
+    // day-scoped equality check the scheduler relies on.
+    mockDeferredDate: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .nullable()
+      .optional(),
   })
   .strict()
 

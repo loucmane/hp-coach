@@ -80,6 +80,10 @@ type HomeMobileProps = {
   /** Called when a plan item is tapped. Receives the item's href so
    *  the route can dispatch SPA navigation. */
   onPlanItemNavigate?: (href: string) => void
+  /** "Inte idag" — quietly defer today's Provpass anchor (useDailyPlan's
+   *  `deferMock`). Wired to the Kallelse's muted action word. Optional:
+   *  omitted (dev fixtures / tests) → no defer action renders. */
+  onDeferMock?: () => void
   /** Override coach (tests / preview); defaults to store value. */
   coach?: CoachKey
   /** Force the streak stat on or off (default auto: show iff streakDays > 0). */
@@ -134,6 +138,7 @@ export function HomeMobile({
   topTraps = [],
   recentPasses = [],
   onPlanItemNavigate,
+  onDeferMock,
   coach: coachProp,
   firstName,
   showStreak,
@@ -297,7 +302,9 @@ export function HomeMobile({
           {/* Kallelse — the colored Provpass summons, ABOVE Dagens plan on
            *  a provpass-dag (V4A FINAL). Renders null when there's no
            *  `kind: 'mock'` item in today's plan. */}
-          {mockItem && <Kallelse item={mockItem} onStart={() => setConfirmOpen(true)} />}
+          {mockItem && (
+            <Kallelse item={mockItem} onStart={() => setConfirmOpen(true)} onDefer={onDeferMock} />
+          )}
 
           {/* Drying ink (A2): DailyPlanCard owns its own pre-impression
            *  state for a null plan — same chrome, ghost rows — so the
