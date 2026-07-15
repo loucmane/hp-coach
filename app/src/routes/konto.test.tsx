@@ -8,7 +8,7 @@
 // end — only the gating and wiring.
 
 import { fireEvent, render, screen, within } from '@testing-library/react'
-import type { JSX } from 'react'
+import type { JSX, ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // ── provider stubs (this surface is Clerk + router + query connected) ──
@@ -21,6 +21,13 @@ vi.mock('@tanstack/react-router', async () => {
     ...actual,
     useNavigate: () => navigate,
     createFileRoute: () => (opts: unknown) => ({ options: opts }),
+    // The legal footer renders <Link> (added with the /integritet +
+    // /villkor pages); the real one needs a live router context.
+    Link: ({ to, children, ...rest }: { to: string; children: ReactNode }) => (
+      <a href={to} {...rest}>
+        {children}
+      </a>
+    ),
   }
 })
 

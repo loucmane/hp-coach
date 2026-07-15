@@ -30,7 +30,15 @@ export const Route = createRootRoute({
 // /dev-login bootstraps a Clerk session against the worker's
 // /api/dev/login endpoint (dev/staging only). Has to be public — the
 // whole point is to render before there's a session.
-const PUBLIC_ROUTES = new Set<string>(['/sign-in', '/sign-up', '/dev-login'])
+// /integritet and /villkor are public legal pages — they must render
+// logged-out (footer/landing/sign-in links reach them without a session).
+const PUBLIC_ROUTES = new Set<string>([
+  '/sign-in',
+  '/sign-up',
+  '/dev-login',
+  '/integritet',
+  '/villkor',
+])
 
 function RootShell() {
   const palette = useUiStore((s) => s.palette)

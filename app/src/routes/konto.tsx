@@ -9,7 +9,7 @@
 // lands here when P3 ships; until then it is a quiet single line.
 
 import { useClerk } from '@clerk/clerk-react'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { type CSSProperties, type ReactNode, useState } from 'react'
 
 import { downloadExport, useExportData } from '@/api/hooks/useDataExport'
@@ -18,6 +18,7 @@ import { Medallion, useAccountIdentity } from '@/components/account/AccountMenu'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
+import { LEGAL_LINK_STYLE, LEGAL_LINKS } from '@/lib/legal'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
 
 export const Route = createFileRoute('/konto')({
@@ -134,6 +135,31 @@ function KontoRoute() {
           ))}
 
           <DeleteAccountSection />
+
+          {/* Legal footer — quiet mono rows linking the public policy
+              pages. Same discoverability grammar as /mer. */}
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '8px 20px',
+              marginTop: 36,
+              marginLeft: 'var(--hpc-m3-content-inset, 0)',
+              paddingTop: 18,
+              borderTop: '1px solid var(--hairline-2)',
+            }}
+          >
+            {LEGAL_LINKS.map((l) => (
+              <Link
+                key={l.to}
+                to={l.to}
+                data-testid={`konto-legal-${l.to.slice(1)}`}
+                style={LEGAL_LINK_STYLE}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </div>
 
           <BackHome />
         </div>

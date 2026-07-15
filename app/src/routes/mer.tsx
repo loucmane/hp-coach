@@ -19,6 +19,7 @@ import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
+import { LEGAL_LINK_STYLE, LEGAL_LINKS } from '@/lib/legal'
 import { PALETTES, type PaletteKey } from '@/lib/tokens'
 import { COACH_BLURBS, COACH_LABELS, type CoachKey } from '@/lib/voice'
 import { useCoachStore } from '@/stores/coachStore'
@@ -113,6 +114,31 @@ function MerRoute() {
                 </div>
               ))}
             </div>
+            {/* Legal footer — small mono rows in the same muted grammar as
+                the back link. Discoverable but quiet; NOT in the nav rail
+                or phone tabs. */}
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '8px 20px',
+                marginTop: 28,
+                paddingTop: 18,
+                borderTop: '1px solid var(--hairline-2)',
+              }}
+            >
+              {LEGAL_LINKS.map((l) => (
+                <Link
+                  key={l.to}
+                  to={l.to}
+                  data-testid={`mer-legal-${l.to.slice(1)}`}
+                  style={LEGAL_LINK_STYLE}
+                >
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+
             <button
               type="button"
               onClick={() => navigate({ to: '/' })}
@@ -120,7 +146,7 @@ function MerRoute() {
               style={{
                 all: 'unset',
                 cursor: 'pointer',
-                marginTop: 28,
+                marginTop: 20,
                 fontFamily: 'var(--font-mono)',
                 fontSize: 11,
                 letterSpacing: '0.06em',
