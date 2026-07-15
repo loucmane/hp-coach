@@ -8,9 +8,12 @@
 // affordance — the exact leak the jury flagged). Subscription management
 // lands here when P3 ships; until then it is a quiet single line.
 
+import { useClerk } from '@clerk/clerk-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import type { ReactNode } from 'react'
+import { type CSSProperties, type ReactNode, useState } from 'react'
 
+import { downloadExport, useExportData } from '@/api/hooks/useDataExport'
+import { useDeleteAccount } from '@/api/hooks/useDeleteAccount'
 import { Medallion, useAccountIdentity } from '@/components/account/AccountMenu'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
@@ -130,10 +133,172 @@ function KontoRoute() {
             </DrillRailSection>
           ))}
 
+          <DeleteAccountSection />
+
           <BackHome />
         </div>
       </Page>
     </MobileFrame>
+  )
+}
+
+// The quietest thing on the page, at the very bottom, reachable only by
+// scrolling: permanent account deletion. Owner law keeps "Radera konto"
+// out of every MENU — it lives DEEP here and nowhere else. House voice:
+// plain, no drama, honest about what is lost. The export-first prompt sits
+// ABOVE the destructive control; the button is inert until the user has
+// typed the exact word "radera".
+const DELETE_WORD = 'radera'
+
+function DeleteAccountSection(): ReactNode {
+  const exportData = useExportData()
+  const deleteAccount = useDeleteAccount()
+  const { signOut } = useClerk()
+  const [confirm, setConfirm] = useState('')
+  const [done, setDone] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const armed = confirm === DELETE_WORD
+  const busy = deleteAccount.isPending
+
+  const onExport = () => {
+    exportData
+      .mutateAsync()
+      .then((envelope) => downloadExport(envelope))
+      .catch(() => setError('Kunde inte exportera just nu. Försök igen om en stund.'))
+  }
+
+  const onDelete = async () => {
+    if (!armed || busy) return
+    setError(null)
+    try {
+      await deleteAccount.mutateAsync()
+      // Endpoint → sign-out → goodbye. The account is gone; clear the
+      // session so nothing signed-in lingers, then show a plain farewell.
+      setDone(true)
+      await signOut()
+    } catch {
+      setError('Kunde inte radera kontot. Inget raderades — försök igen.')
+    }
+  }
+
+  if (done) {
+    return (
+      <DrillRailSection meta="Farväl" delay={360} testid="konto-delete-done">
+        <h2 className="hpc-m3-h">Kontot är raderat.</h2>
+        <p
+          style={{
+            fontFamily: 'var(--font-ui)',
+            fontSize: 14,
+            color: 'var(--ink-2)',
+            lineHeight: 1.55,
+            margin: '6px 0 0',
+            maxWidth: 560,
+          }}
+        >
+          Allt är borta. Tack för att du testade HP-Coach.
+        </p>
+      </DrillRailSection>
+    )
+  }
+
+  const mono: CSSProperties = {
+    fontFamily: 'var(--font-mono)',
+    fontSize: 12,
+    color: 'var(--muted)',
+    lineHeight: 1.6,
+  }
+
+  return (
+    <DrillRailSection meta="Radera konto" delay={360} testid="konto-delete">
+      <h2 className="hpc-m3-h" style={{ fontSize: 15, color: 'var(--ink-2)' }}>
+        Radera konto
+      </h2>
+      <p style={{ ...mono, margin: '8px 0 0', maxWidth: 520 }}>
+        Allt raderas direkt — konto, försök, missar och resultat. Säkerhetskopior tunnas ut inom 30
+        dagar. Det går inte att ångra.
+      </p>
+
+      {/* EXPORT FIRST — offered ABOVE the destructive control. */}
+      <button
+        type="button"
+        data-testid="konto-delete-export"
+        onClick={onExport}
+        disabled={exportData.isPending}
+        style={{
+          all: 'unset',
+          cursor: exportData.isPending ? 'default' : 'pointer',
+          display: 'inline-block',
+          marginTop: 16,
+          fontFamily: 'var(--font-mono)',
+          fontSize: 12,
+          letterSpacing: '0.02em',
+          color: 'var(--muted)',
+          textDecoration: 'underline',
+          textUnderlineOffset: 3,
+          opacity: exportData.isPending ? 0.5 : 1,
+        }}
+      >
+        Exportera min data först →
+      </button>
+
+      <div style={{ marginTop: 20, maxWidth: 320 }}>
+        <label
+          htmlFor="konto-delete-confirm"
+          style={{ ...mono, display: 'block', marginBottom: 6 }}
+        >
+          Skriv <span style={{ color: 'var(--ink-2)' }}>radera</span> för att bekräfta.
+        </label>
+        <input
+          id="konto-delete-confirm"
+          data-testid="konto-delete-confirm"
+          type="text"
+          value={confirm}
+          onChange={(e) => setConfirm(e.target.value)}
+          autoComplete="off"
+          autoCapitalize="none"
+          spellCheck={false}
+          style={{
+            width: '100%',
+            boxSizing: 'border-box',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 13,
+            padding: '8px 10px',
+            color: 'var(--ink)',
+            background: 'transparent',
+            border: '1px solid var(--hairline)',
+            borderRadius: 6,
+          }}
+        />
+        <button
+          type="button"
+          data-testid="konto-delete-submit"
+          onClick={onDelete}
+          disabled={!armed || busy}
+          style={{
+            all: 'unset',
+            display: 'block',
+            marginTop: 12,
+            cursor: !armed || busy ? 'default' : 'pointer',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 12,
+            letterSpacing: '0.04em',
+            padding: '8px 14px',
+            borderRadius: 6,
+            border: '1px solid var(--hairline)',
+            color: armed ? 'var(--ink)' : 'var(--muted-2, var(--muted))',
+            opacity: !armed || busy ? 0.45 : 1,
+          }}
+        >
+          {busy ? 'Raderar…' : 'Radera kontot permanent'}
+        </button>
+        {error && (
+          <p style={{ ...mono, color: 'var(--ink-2)', margin: '10px 0 0' }} role="alert">
+            {error}
+          </p>
+        )}
+      </div>
+    </DrillRailSection>
   )
 }
 

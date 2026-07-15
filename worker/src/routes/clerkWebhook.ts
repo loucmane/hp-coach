@@ -43,23 +43,9 @@
 //      `--env production`) with the `whsec_…` signing secret Clerk shows
 //      for that endpoint. Local dev reads it from worker/.dev.vars.
 
-import { eq } from 'drizzle-orm'
 import { Hono } from 'hono'
-
 import { getDb } from '../db/client'
-import {
-  attempts,
-  dailyPlans,
-  frameworkProgress,
-  lessonProgress,
-  lessonReads,
-  mastery,
-  mistakes,
-  mockResults,
-  sessions,
-  srsState,
-  users,
-} from '../db/schema'
+import { cascadeDeleteUser } from '../lib/cascade'
 import { ensureUserRow } from '../lib/ensureUser'
 import type { Env, Vars } from '../types'
 
@@ -159,34 +145,9 @@ async function verifySignature(params: {
   return { ok: false, status: 401 }
 }
 
-// Delete every row this user owns across ALL user-scoped tables, then the
-// user row itself, in a single db.batch (the strongest atomicity D1
-// offers — no interactive transactions). Children are deleted before the
-// parent so the wipe holds even where FK cascade is not enforced. Absent
-// user → no-op (idempotent: a redelivered user.deleted after the row is
-// already gone is harmless).
-async function cascadeDeleteUser(db: ReturnType<typeof getDb>, clerkUserId: string): Promise<void> {
-  const [row] = await db
-    .select({ id: users.id })
-    .from(users)
-    .where(eq(users.clerkUserId, clerkUserId))
-    .limit(1)
-  if (!row) return
-  const uid = row.id
-  await db.batch([
-    db.delete(mockResults).where(eq(mockResults.userId, uid)),
-    db.delete(dailyPlans).where(eq(dailyPlans.userId, uid)),
-    db.delete(lessonReads).where(eq(lessonReads.userId, uid)),
-    db.delete(lessonProgress).where(eq(lessonProgress.userId, uid)),
-    db.delete(frameworkProgress).where(eq(frameworkProgress.userId, uid)),
-    db.delete(mastery).where(eq(mastery.userId, uid)),
-    db.delete(srsState).where(eq(srsState.userId, uid)),
-    db.delete(mistakes).where(eq(mistakes.userId, uid)),
-    db.delete(attempts).where(eq(attempts.userId, uid)),
-    db.delete(sessions).where(eq(sessions.userId, uid)),
-    db.delete(users).where(eq(users.id, uid)),
-  ])
-}
+// User erasure lives in the shared lib/cascade helper — the same code
+// path DELETE /api/account uses, so webhook-driven and user-driven
+// deletions can never drift apart.
 
 export const clerkWebhookRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post(
   '/',

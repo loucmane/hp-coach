@@ -23,6 +23,7 @@ import { getDb } from './db/client'
 import { runRetention } from './lib/retention'
 import { requireAuth } from './middleware/auth'
 import { rateLimit } from './middleware/rateLimit'
+import { accountRoute } from './routes/account'
 import { attemptsRoute } from './routes/attempts'
 import { clerkWebhookRoute } from './routes/clerkWebhook'
 import { contentRoute } from './routes/content'
@@ -98,6 +99,8 @@ const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .route('/mock-results', mockResultsRoute)
   .route('/me/export', exportRoute)
   .route('/me/import', importRoute)
+  // DELETE /api/account — Clerk-first permanent account deletion.
+  .route('/account', accountRoute)
   // Strict-tier content (question bank + explanations) from R2. requireAuth
   // gates it; rateLimit exempts it (see rateLimit.ts carve-out) so a boot's
   // bulk content pulls don't starve the shared per-user mutation budget.
