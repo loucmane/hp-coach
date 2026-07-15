@@ -35,6 +35,7 @@ import { MOTP1, MOTP2 } from '@/components/devbake/MotionBakeoffP'
 import { MOTB2 } from '@/components/devbake/MotionBlacket2'
 import { MOTF1, MOTF2 } from '@/components/devbake/MotionSpringF'
 import { MOTF3, MOTF4 } from '@/components/devbake/MotionSpringG'
+import { THEMEDEMO } from '@/components/devbake/ThemeCrossfadeDemo'
 import { isDevSurface } from '@/lib/devSurface'
 
 export const Route = createFileRoute('/dev_/motion-bakeoff')({
@@ -70,6 +71,9 @@ const VARIANTS = [
   { key: 'k1', label: 'K1 · Djuptrycket', C: KLART1 },
   { key: 'k2', label: 'K2 · Andningen', C: KLART2 },
   { key: 'k3', label: 'K3 · Räkenskapen', C: KLART3 },
+  // D2 — theme crossfade demo (task W3): isolated stage for the real
+  // withViewTransition-wrapped ljus/mörk + palette toggles.
+  { key: 'd2', label: 'D2 · Temaövergången', C: THEMEDEMO },
 ] as const
 
 function MotionBakeoffPage() {

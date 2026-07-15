@@ -35,8 +35,7 @@ export function useHydratePrefs() {
 
   // Local store setters
   const setCoach = useCoachStore((s) => s.setCoach)
-  const setPalette = useUiStore((s) => s.setPalette)
-  const setMode = useUiStore((s) => s.setMode)
+  const applyServerTheme = useUiStore((s) => s.applyServerTheme)
   const setFont = useUiStore((s) => s.setFont)
   const setDensity = useUiStore((s) => s.setDensity)
   const setSitting = useExamStore((s) => s.setSitting)
@@ -48,8 +47,12 @@ export function useHydratePrefs() {
     lastHydrated.current = updatedAtSignal
 
     if (prefs.data.coach) setCoach(prefs.data.coach as CoachKey)
-    if (prefs.data.palette) setPalette(prefs.data.palette as PaletteKey)
-    if (prefs.data.mode) setMode(prefs.data.mode as ThemeMode)
+    // Hydration applies WITHOUT the view-transition crossfade — see
+    // uiStore.applyServerTheme.
+    applyServerTheme(
+      prefs.data.palette as PaletteKey | undefined,
+      prefs.data.mode as ThemeMode | undefined,
+    )
     if (prefs.data.font) setFont(prefs.data.font as FontKey)
     if (prefs.data.density) setDensity(prefs.data.density as Density)
     if (prefs.data.targetSittingId) {
@@ -57,16 +60,7 @@ export function useHydratePrefs() {
       // ignores unknowns, so this is safe.
       setSitting(prefs.data.targetSittingId as Parameters<typeof setSitting>[0])
     }
-  }, [
-    prefs.data,
-    prefs.dataUpdatedAt,
-    setCoach,
-    setPalette,
-    setMode,
-    setFont,
-    setDensity,
-    setSitting,
-  ])
+  }, [applyServerTheme, prefs.data, prefs.dataUpdatedAt, setCoach, setFont, setDensity, setSitting])
 }
 
 /**

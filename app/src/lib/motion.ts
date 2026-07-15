@@ -23,6 +23,7 @@
 
 import { type Transition, useReducedMotion } from 'motion/react'
 import { createElement, type ReactNode, useEffect, useRef } from 'react'
+import { flushSync } from 'react-dom'
 
 /**
  * Easing curves keyed by intent. Pass to `motion`'s `transition.ease`
@@ -97,6 +98,46 @@ export const TRANSITION = {
 export function prefersReducedMotion(): boolean {
   if (typeof window === 'undefined') return false
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
+/**
+ * Wrap a theme-changing state update in a View Transition so the whole
+ * page cross-fades as ONE image (the default `::view-transition-old(root)`
+ * / `::view-transition-new(root)` swap) instead of every color property
+ * tweening independently. Used by the ljus/mörk toggle and the palette
+ * setters (`uiStore`) — apply it once at the setter and every entry point
+ * (rail-foot toggle, /mer settings, palette picker, ⌘K) gets it for free.
+ *
+ * Feature-detects `document.startViewTransition` — unsupported in Firefox
+ * as of this writing — and falls back to a plain synchronous call when
+ * it's missing. No polyfill. Also skips the transition entirely under
+ * `prefers-reduced-motion: reduce`, per the product's reduced-motion
+ * contract (see `prefersReducedMotion` above): the state still changes,
+ * it just doesn't cross-fade.
+ *
+ * `fn` is wrapped in `flushSync` inside the transition callback. The View
+ * Transitions API snapshots the "new" DOM state synchronously right after
+ * the callback returns; React state updates (e.g. a zustand `set()` that
+ * a component reads via a hook) are otherwise applied on React's own
+ * schedule, which can land AFTER that snapshot — producing a transition
+ * between two visually-identical "old" frames. `flushSync` forces the
+ * update (and its effects) to commit before `startViewTransition`'s
+ * callback resolves. Harmless to call on a plain synchronous DOM write
+ * too (e.g. a direct `element.dataset.x = ...`), so this always wraps.
+ */
+export function withViewTransition(fn: () => void): void {
+  if (
+    prefersReducedMotion() ||
+    typeof document === 'undefined' ||
+    typeof document.startViewTransition !== 'function'
+  ) {
+    fn()
+    return
+  }
+
+  document.startViewTransition(() => {
+    flushSync(fn)
+  })
 }
 
 /**

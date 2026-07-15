@@ -10,6 +10,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+import { withViewTransition } from '@/lib/motion'
 import {
   buildThemeVars,
   DEFAULT_THEME,
@@ -33,6 +34,7 @@ type UiState = {
   studioRails: boolean
   setPalette: (palette: PaletteKey) => void
   setMode: (mode: ThemeMode) => void
+  applyServerTheme: (palette: PaletteKey | undefined, mode: ThemeMode | undefined) => void
   setFont: (font: FontKey) => void
   setDensity: (density: Density) => void
   setDrillLayout: (drillLayout: DrillLayoutKey) => void
@@ -49,7 +51,7 @@ type UiState = {
 
 export const useUiStore = create<UiState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       palette: DEFAULT_THEME.palette,
       mode: DEFAULT_THEME.mode,
       font: DEFAULT_THEME.font,
@@ -57,8 +59,36 @@ export const useUiStore = create<UiState>()(
       drillLayout: DEFAULT_THEME.drillLayout,
       useFluid: DEFAULT_THEME.useFluid,
       studioRails: DEFAULT_THEME.studioRails,
-      setPalette: (palette) => set({ palette }),
-      setMode: (mode) => set({ mode }),
+      // Palette + mode changes crossfade the whole page as one image via
+      // the View Transitions API (task W3) — see `withViewTransition` for
+      // the feature-detect / reduced-motion / Firefox-fallback rules.
+      // Wrapped here (not at each call site) so every entry point — rail
+      // foot toggle, /mer settings, palette picker, ⌘K — gets it for free.
+      // Same-value writes (synced-prefs hydration on boot, write-through
+      // echoes after every server response) must NOT fire a transition:
+      // each startViewTransition snapshots the page and pauses rendering
+      // a beat, and repeated no-op transitions stalled route paints under
+      // CI load (#299 e2e: toHaveURL timeouts on tab navigation).
+      setPalette: (palette) => {
+        if (get().palette === palette) return
+        withViewTransition(() => set({ palette }))
+      },
+      setMode: (mode) => {
+        if (get().mode === mode) return
+        withViewTransition(() => set({ mode }))
+      },
+      // Hydration path — server prefs arriving at boot (useSyncedPrefs)
+      // apply WITHOUT a view transition: the crossfade is the user's
+      // toggle gesture, not data arrival. During a transition the
+      // browser's snapshot overlay also blocks hit-testing, which made
+      // the phone tab bar unclickable for the first beat after boot
+      // (#299 mobile e2e: "Element is not visible").
+      applyServerTheme: (palette, mode) => {
+        const next: Partial<{ palette: PaletteKey; mode: ThemeMode }> = {}
+        if (palette && get().palette !== palette) next.palette = palette
+        if (mode && get().mode !== mode) next.mode = mode
+        if (Object.keys(next).length > 0) set(next)
+      },
       setFont: (font) => set({ font }),
       setDensity: (density) => set({ density }),
       setDrillLayout: (drillLayout) => set({ drillLayout }),
@@ -66,7 +96,8 @@ export const useUiStore = create<UiState>()(
         const b = EDITIONS[edition]
         set({ font: b.font, density: b.density, drillLayout: b.drillLayout })
       },
-      toggleMode: () => set((s) => ({ mode: s.mode === 'light' ? 'dark' : 'light' })),
+      toggleMode: () =>
+        withViewTransition(() => set((s) => ({ mode: s.mode === 'light' ? 'dark' : 'light' }))),
       setUseFluid: (useFluid) => set({ useFluid }),
       setStudioRails: (studioRails) => set({ studioRails }),
       toggleStudioRails: () => set((s) => ({ studioRails: !s.studioRails })),
