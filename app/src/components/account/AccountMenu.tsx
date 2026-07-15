@@ -14,7 +14,9 @@
 //
 // Owner law honored throughout: "Radera konto" appears NOWHERE. Surface
 // actions are Konto → /konto, Exportera min data (the real export
-// download), Logga ut (real signOut → /sign-in), and a quiet Inställningar
+// download), Logga ut (real signOut → /sign-in), a Tema row (ljus/mörk +
+// palette dots, one click from the medallion — writes through
+// useSyncedPrefs so it persists cross-device), and a quiet Inställningar
 // cross-reference → /mer. Identity chrome exists ONLY on Home.
 //
 // Desktop: a tipped-in colophon card anchored to the reading COLUMN (its
@@ -40,7 +42,10 @@ import {
 import { createPortal } from 'react-dom'
 
 import { downloadExport, useExportData } from '@/api/hooks/useDataExport'
+import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { useViewport } from '@/hooks/useViewport'
+import { PALETTES, type PaletteKey, type ThemeMode } from '@/lib/tokens'
+import { useUiStore } from '@/stores/uiStore'
 
 // ── registers ────────────────────────────────────────────────────────
 
@@ -62,6 +67,8 @@ const monoWord: CSSProperties = {
   textTransform: 'uppercase',
   color: 'var(--muted)',
 }
+
+const PALETTE_KEYS = Object.keys(PALETTES) as PaletteKey[]
 
 // ── identity: the real Clerk user, with a sample fallback ────────────
 
@@ -300,6 +307,99 @@ function ActionRow({ action }: { action: MenuAction }) {
   )
 }
 
+/** One color swatch per palette (`@/lib/tokens` PALETTES) — the dot is
+ *  painted in that palette's accent color at the CURRENT mode, so the
+ *  swatches update in place when the ljus/mörk toggle flips. The active
+ *  dot's ring is --ink (never --accent — accent stays reserved for nav
+ *  + due numeral). Real <button>, so it's keyboard-operable; joins the
+ *  same role="menuitem" roving-focus subtree as the rest of the card
+ *  (see MenuBody doc). Selecting does NOT close the menu — the point is
+ *  to compare palettes live. */
+function PaletteDot({
+  paletteKey,
+  mode,
+  active,
+  onSelect,
+}: {
+  paletteKey: PaletteKey
+  mode: ThemeMode
+  active: boolean
+  onSelect: () => void
+}) {
+  const swatch = PALETTES[paletteKey][mode].accent
+  return (
+    <button
+      type="button"
+      role="menuitem"
+      tabIndex={-1}
+      onClick={onSelect}
+      aria-label={`Palett: ${PALETTES[paletteKey].label}${active ? ' (aktiv)' : ''}`}
+      style={{
+        all: 'unset',
+        boxSizing: 'border-box',
+        cursor: 'pointer',
+        display: 'inline-flex',
+        width: 14,
+        height: 14,
+        borderRadius: '50%',
+        background: swatch,
+        border: active ? '2px solid var(--ink)' : '1px solid var(--hairline)',
+      }}
+    />
+  )
+}
+
+/** The Tema row — one click from the medallion to switch ljus/mörk AND
+ *  palette, without leaving Home for /mer. Reuses the rail-foot ◐ word
+ *  idiom for mode; palette choices render as PaletteDot swatches. Both
+ *  write through useSyncedPrefs (the /mer pattern) so they persist
+ *  cross-device and pick up the View-Transitions crossfade for free. */
+function TemaRow() {
+  const palette = useUiStore((s) => s.palette)
+  const mode = useUiStore((s) => s.mode)
+  const synced = useSyncedPrefs()
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 12,
+      }}
+    >
+      <span style={monoWord}>Tema</span>
+      <span style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <button
+          type="button"
+          role="menuitem"
+          tabIndex={-1}
+          onClick={() => {
+            void synced.setMode(mode === 'dark' ? 'light' : 'dark')
+          }}
+          aria-label={mode === 'dark' ? 'Växla till ljust läge' : 'Växla till mörkt läge'}
+          style={{ all: 'unset', cursor: 'pointer', ...monoWord }}
+        >
+          {mode === 'dark' ? 'mörk' : 'ljus'} ◐
+        </button>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {PALETTE_KEYS.map((p) => (
+            <PaletteDot
+              key={p}
+              paletteKey={p}
+              mode={mode}
+              active={p === palette}
+              onSelect={() => {
+                void synced.setPalette(p)
+              }}
+            />
+          ))}
+        </span>
+      </span>
+    </div>
+  )
+}
+
 /** The shared card body: the three-register identity stack, the rule
  *  pair, the tracked-mono action rows, and the quiet Inställningar footer.
  *  Rendered identically inside the desktop card and the phone sheet. All
@@ -366,8 +466,19 @@ export function MenuBody({
         ))}
       </div>
 
-      {/* quiet cross-reference to product prefs (routes to /mer) */}
-      <div style={{ borderTop: '1px solid var(--hairline)', padding: '10px 16px 12px' }}>
+      {/* Tema (mode + palette, applies live) + quiet cross-reference to
+          the rest of product prefs (routes to /mer) — one bordered
+          footer section, the menu's quiet grammar. */}
+      <div
+        style={{
+          borderTop: '1px solid var(--hairline)',
+          padding: '10px 16px 12px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
+        }}
+      >
+        <TemaRow />
         <button
           type="button"
           role="menuitem"
