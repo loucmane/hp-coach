@@ -64,6 +64,10 @@ Normal feature-work loop:
 
 After any mutation, use `aegis log --pending-id <id> --note "<past-tense note>" --plan-step auto` before attempting the next mutation. Use explicit `--handler`, `--evidence`, and explicit plan step only when no pending event exists or auto inference reports ambiguity.
 Read `.aegis/contract.md` for the shared contract and access policy.
+
+## Continuation
+
+Continuation contract: a short intent (continue / go / proceed / next / resume) advances the Aegis workflow by exactly ONE safe step — resolved from `aegis next` (its `next_safe_action`), never from memory — then re-consult. It is not new authority. Surface and ask before repairs (`aegis repair --apply`), non-dry-run `closeout`, protected/owned paths, switching tasks, or push/PR. Never automatic: merge, force-push, history rewrite, `.aegis/` writes, BLOCKED-readiness bypass, skipping S:W:H:E. "Finish this" still stops at these boundaries. Full text in `.aegis/contract.md`.
 <!-- AEGIS:END claude-runtime -->
 
 ---

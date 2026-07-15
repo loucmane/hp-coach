@@ -25,6 +25,7 @@ import { useDueMistakes, usePileMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
+import { Impress, InkDryOnMount, InkSlot } from '@/components/motion/InkDry'
 import { Page } from '@/components/Page'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import { countsBySection } from '@/lib/dueBySection'
@@ -49,6 +50,12 @@ function OvaRoute() {
   const pileCount = pile.data?.length ?? 0
   const dueCount = due.data?.length ?? 0
   const ark = useArketMotion()
+  // Drying ink (A2): while the queue/stats queries resolve, the slots
+  // where their numbers and copy will land hold static pre-impressions;
+  // the ink dries in (opacity only) when the data arrives. Cached
+  // queries skip the ceremony (isPending false on first render).
+  const laneCopyPending = stats.isPending
+  const queuePending = pile.isPending || due.isPending
 
   // The live per-lane folio signal: how many mistakes each section carries
   // in today's PILE — same slice the nav numeral counts, so the lane numbers
@@ -110,9 +117,22 @@ function OvaRoute() {
                 maxWidth: '46ch',
               }}
             >
-              {weakest
-                ? `Schemat föreslår ${weakest} — svagast just nu. Välj fritt om du hellre tar något annat.`
-                : 'Välj en sektion att öva, eller ta en blandad övning över alla åtta delprov.'}
+              {/* Inline slot (a <p> cannot host a div) — the span wraps
+               *  its text lines exactly as the bare paragraph did. */}
+              <InkSlot
+                ready={!laneCopyPending}
+                impression={
+                  <>
+                    <Impress w={42} />
+                    <br />
+                    <Impress w={26} />
+                  </>
+                }
+              >
+                {weakest
+                  ? `Schemat föreslår ${weakest} — svagast just nu. Välj fritt om du hellre tar något annat.`
+                  : 'Välj en sektion att öva, eller ta en blandad övning över alla åtta delprov.'}
+              </InkSlot>
             </p>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
               {SECTION_KEYS.map((s) => {
@@ -124,69 +144,91 @@ function OvaRoute() {
                   // the hub path) and the section code travels with you:
                   // it morphs from this row into the first question's
                   // eyebrow via the shared door layoutId.
-                  <Link
+                  // The layout wrapper lets a chip whose live count
+                  // arrives (or resolves to zero) re-seat its width on
+                  // the veck spring instead of snapping, and its flex
+                  // siblings glide rather than jump (A2: small in-place
+                  // layout shifts ride veck).
+                  <motion.span
                     key={s}
-                    to="/drill"
-                    search={{ section: s, start: true }}
-                    data-testid={`ova-section-${s}`}
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 12,
-                      letterSpacing: '0.08em',
-                      padding: '8px 13px',
-                      border: hot ? '1px solid var(--ink-2)' : '1px solid var(--hairline)',
-                      background: 'var(--panel)',
-                      color: 'var(--ink)',
-                      borderRadius: 'calc(var(--radius) * 0.4)',
-                      textDecoration: 'none',
-                      fontWeight: hot ? 600 : 400,
-                      display: 'inline-flex',
-                      alignItems: 'baseline',
-                      gap: 7,
-                    }}
+                    layout
+                    transition={ark.veck}
+                    style={{ display: 'inline-flex' }}
                   >
-                    {ark.rm ? (
-                      s
-                    ) : (
-                      <motion.span
-                        layoutId={sectionDoorLayoutId(s)}
-                        transition={ark.arket}
-                        style={{ display: 'inline-block' }}
-                      >
-                        {s}
-                      </motion.span>
-                    )}
-                    {hot && (
-                      <span
-                        data-testid="ova-suggested"
-                        style={{
-                          fontSize: 9,
-                          letterSpacing: '0.12em',
-                          textTransform: 'uppercase',
-                          color: 'var(--ink-2)',
-                        }}
-                      >
-                        svagast
-                      </span>
-                    )}
-                    {laneDue > 0 && (
-                      // The lane's live folio signal (bake-off idiom:
-                      // "3 väntar") — this section's CURRENT due
-                      // repetitions. Mono + muted: the accent numeral
-                      // stays reserved for the nav station.
-                      <span
-                        data-testid={`ova-due-${s}`}
-                        style={{
-                          fontSize: 10,
-                          letterSpacing: '0.06em',
-                          color: 'var(--muted)',
-                          fontVariantNumeric: 'tabular-nums',
-                        }}
-                      >
-                        {laneDue} väntar
-                      </span>
-                    )}
-                  </Link>
+                    <Link
+                      to="/drill"
+                      search={{ section: s, start: true }}
+                      data-testid={`ova-section-${s}`}
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: 12,
+                        letterSpacing: '0.08em',
+                        padding: '8px 13px',
+                        border: hot ? '1px solid var(--ink-2)' : '1px solid var(--hairline)',
+                        background: 'var(--panel)',
+                        color: 'var(--ink)',
+                        borderRadius: 'calc(var(--radius) * 0.4)',
+                        textDecoration: 'none',
+                        fontWeight: hot ? 600 : 400,
+                        display: 'inline-flex',
+                        alignItems: 'baseline',
+                        gap: 7,
+                      }}
+                    >
+                      {ark.rm ? (
+                        s
+                      ) : (
+                        <motion.span
+                          layoutId={sectionDoorLayoutId(s)}
+                          transition={ark.arket}
+                          style={{ display: 'inline-block' }}
+                        >
+                          {s}
+                        </motion.span>
+                      )}
+                      {hot && (
+                        // Post-data material with no honest pre-reservation
+                        // (any of the eight could be "svagast") — dries in
+                        // on mount instead of popping.
+                        <InkDryOnMount>
+                          <span
+                            data-testid="ova-suggested"
+                            style={{
+                              fontSize: 9,
+                              letterSpacing: '0.12em',
+                              textTransform: 'uppercase',
+                              color: 'var(--ink-2)',
+                            }}
+                          >
+                            svagast
+                          </span>
+                        </InkDryOnMount>
+                      )}
+                      {(pile.isPending || laneDue > 0) && (
+                        // The lane's live folio signal (bake-off idiom:
+                        // "3 väntar") — this section's CURRENT due
+                        // repetitions. Mono + muted: the accent numeral
+                        // stays reserved for the nav station. While the
+                        // pile resolves the slot holds a pre-impression;
+                        // the count dries in over it, or the slot closes
+                        // up on the veck spring when the lane is clear.
+                        <span
+                          style={{
+                            fontSize: 10,
+                            letterSpacing: '0.06em',
+                            color: 'var(--muted)',
+                            fontVariantNumeric: 'tabular-nums',
+                          }}
+                        >
+                          <InkSlot ready={!pile.isPending} w={7}>
+                            {laneDue > 0 ? (
+                              <span data-testid={`ova-due-${s}`}>{laneDue} väntar</span>
+                            ) : null}
+                          </InkSlot>
+                        </span>
+                      )}
+                    </Link>
+                  </motion.span>
                 )
               })}
             </div>
@@ -213,17 +255,28 @@ function OvaRoute() {
                 maxWidth: '46ch',
               }}
             >
-              {pileCount > 0
-                ? // Prefer ONE number — today's pile — wherever the two agree.
-                  // Only when some of the pile isn't ripe yet do we name both
-                  // ("N redo nu · M i dagens hög"), since you replay the ripe
-                  // ones and the rest become ready soon.
-                  dueCount === pileCount
-                  ? `${pileCount} ${pileCount === 1 ? 'miss' : 'missar'} att repetera — de äldsta först.`
-                  : dueCount > 0
-                    ? `${dueCount} redo att repetera nu · ${pileCount} i dagens hög — de äldsta först.`
-                    : `Inget är redo just nu — ${pileCount} ${pileCount === 1 ? 'miss ligger' : 'missar ligger'} i dagens hög och blir redo snart.`
-                : 'Kön är tom just nu — allt du missat är återlärt. Repetitionen står kvar här ändå.'}
+              <InkSlot
+                ready={!queuePending}
+                impression={
+                  <>
+                    <Impress w={40} />
+                    <br />
+                    <Impress w={22} />
+                  </>
+                }
+              >
+                {pileCount > 0
+                  ? // Prefer ONE number — today's pile — wherever the two agree.
+                    // Only when some of the pile isn't ripe yet do we name both
+                    // ("N redo nu · M i dagens hög"), since you replay the ripe
+                    // ones and the rest become ready soon.
+                    dueCount === pileCount
+                    ? `${pileCount} ${pileCount === 1 ? 'miss' : 'missar'} att repetera — de äldsta först.`
+                    : dueCount > 0
+                      ? `${dueCount} redo att repetera nu · ${pileCount} i dagens hög — de äldsta först.`
+                      : `Inget är redo just nu — ${pileCount} ${pileCount === 1 ? 'miss ligger' : 'missar ligger'} i dagens hög och blir redo snart.`
+                  : 'Kön är tom just nu — allt du missat är återlärt. Repetitionen står kvar här ändå.'}
+              </InkSlot>
             </p>
             {dueCount > 0 && (
               // Section-scoped repetition (owner 2026-07-14): chips for the
@@ -231,42 +284,46 @@ function OvaRoute() {
               // drill lanes — "just the ORD ones" without taking the whole
               // queue. Only ripe sections render (real data or nothing);
               // the all-sections door below is the stable geography.
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 14 }}>
-                {SECTION_KEYS.filter((s) => (dueBySection[s] ?? 0) > 0).map((s) => (
-                  <Link
-                    key={s}
-                    to="/repetition"
-                    search={{ section: s, start: true }}
-                    data-testid={`ova-rep-${s}`}
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 12,
-                      letterSpacing: '0.08em',
-                      padding: '8px 13px',
-                      border: '1px solid var(--hairline)',
-                      background: 'var(--panel)',
-                      color: 'var(--ink)',
-                      borderRadius: 'calc(var(--radius) * 0.4)',
-                      textDecoration: 'none',
-                      display: 'inline-flex',
-                      alignItems: 'baseline',
-                      gap: 7,
-                    }}
-                  >
-                    {s}
-                    <span
+              // Post-data material (which sections are ripe is unknowable
+              // beforehand) — the whole row dries in on mount.
+              <InkDryOnMount block>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 14 }}>
+                  {SECTION_KEYS.filter((s) => (dueBySection[s] ?? 0) > 0).map((s) => (
+                    <Link
+                      key={s}
+                      to="/repetition"
+                      search={{ section: s, start: true }}
+                      data-testid={`ova-rep-${s}`}
                       style={{
-                        fontSize: 10,
-                        letterSpacing: '0.06em',
-                        color: 'var(--muted)',
-                        fontVariantNumeric: 'tabular-nums',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: 12,
+                        letterSpacing: '0.08em',
+                        padding: '8px 13px',
+                        border: '1px solid var(--hairline)',
+                        background: 'var(--panel)',
+                        color: 'var(--ink)',
+                        borderRadius: 'calc(var(--radius) * 0.4)',
+                        textDecoration: 'none',
+                        display: 'inline-flex',
+                        alignItems: 'baseline',
+                        gap: 7,
                       }}
                     >
-                      {dueBySection[s]}
-                    </span>
-                  </Link>
-                ))}
-              </div>
+                      {s}
+                      <span
+                        style={{
+                          fontSize: 10,
+                          letterSpacing: '0.06em',
+                          color: 'var(--muted)',
+                          fontVariantNumeric: 'tabular-nums',
+                        }}
+                      >
+                        {dueBySection[s]}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </InkDryOnMount>
             )}
             <Link
               to="/repetition"
@@ -276,17 +333,19 @@ function OvaRoute() {
               // /repetition navigation keeps its idle screen.
               search={{ start: true }}
               data-testid="ova-repetition"
-              aria-disabled={dueCount === 0 ? true : undefined}
+              aria-disabled={!queuePending && dueCount === 0 ? true : undefined}
               style={{
                 ...laneCta,
-                color: dueCount === 0 ? 'var(--muted)' : laneCta.color,
+                color: !queuePending && dueCount === 0 ? 'var(--muted)' : laneCta.color,
               }}
             >
-              {dueCount > 0
-                ? `Repetera ${Math.min(dueCount, 10)} →`
-                : pileCount > 0
-                  ? 'Inget redo än'
-                  : 'Kön är tom'}
+              <InkSlot ready={!queuePending} w={12}>
+                {dueCount > 0
+                  ? `Repetera ${Math.min(dueCount, 10)} →`
+                  : pileCount > 0
+                    ? 'Inget redo än'
+                    : 'Kön är tom'}
+              </InkSlot>
             </Link>
           </DrillRailSection>
         </div>

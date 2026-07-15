@@ -18,7 +18,6 @@
 // is prescriptive and completion stays signal-derived — no manual
 // "mark complete", no regenerate affordance.
 
-import { motion } from 'motion/react'
 import { type ReactNode, useEffect, useState } from 'react'
 
 import type { MockResultRow } from '@/api/hooks/useMockResults'
@@ -33,12 +32,12 @@ import { ResumptionPanel } from '@/components/home/ResumptionPanel'
 import { TopTrapsCard } from '@/components/home/TopTrapsCard'
 import { MobileFrame, type TabKey } from '@/components/MobileFrame'
 import { ConfirmSheet } from '@/components/mock/ConfirmSheet'
+import { InkSlot } from '@/components/motion/InkDry'
 import { Page } from '@/components/Page'
 import { useViewport } from '@/hooks/useViewport'
 import { formatSwedishHeader } from '@/lib/dates'
 import type { DiagnosticMemory } from '@/lib/diagnosticMemory'
 import { logMockEvent } from '@/lib/mockEvents'
-import { ARK_KORT_LAYOUT_ID, useArketMotion } from '@/lib/motion'
 import type { DailyPlan, MockPrescription } from '@/lib/scheduler'
 import { formatDeltaSv, formatScoreSv, type ProjectedTotal } from '@/lib/scoring'
 import type { CoachKey } from '@/lib/voice'
@@ -264,12 +263,17 @@ export function HomeMobile({
                   )}
                 </div>
               )}
-              {plan && (
-                <div>
-                  <div className="hpc-m3-stat-n">{plan.estimatedMinutes}</div>
-                  <div className="hpc-m3-stat-l">min idag</div>
+              {/* Drying ink: the label is real ink from frame one (the
+               *  plan ALWAYS resolves to a minute estimate); only the
+               *  numeral waits as a pre-impression and dries in. */}
+              <div>
+                <div className="hpc-m3-stat-n">
+                  <InkSlot ready={plan != null} w={2}>
+                    {plan?.estimatedMinutes}
+                  </InkSlot>
                 </div>
-              )}
+                <div className="hpc-m3-stat-l">min idag</div>
+              </div>
             </div>
           </DrillRailSection>
 
@@ -283,17 +287,17 @@ export function HomeMobile({
            *  `kind: 'mock'` item in today's plan. */}
           {mockItem && <Kallelse item={mockItem} onStart={() => setConfirmOpen(true)} />}
 
-          {plan ? (
-            <DailyPlanCard
-              plan={plan}
-              allComplete={allComplete}
-              onNavigate={onPlanItemNavigate}
-              dueMistakeCount={dueMistakeCount}
-              pileMistakeCount={pileMistakeCount}
-            />
-          ) : (
-            <PlanSkeleton />
-          )}
+          {/* Drying ink (A2): DailyPlanCard owns its own pre-impression
+           *  state for a null plan — same chrome, ghost rows — so the
+           *  skeleton→card handoff never remounts the surface and the
+           *  ark-kort layoutId chain (Klart folds home) is unbroken. */}
+          <DailyPlanCard
+            plan={plan}
+            allComplete={allComplete}
+            onNavigate={onPlanItemNavigate}
+            dueMistakeCount={dueMistakeCount}
+            pileMistakeCount={pileMistakeCount}
+          />
 
           <TopTrapsCard traps={topTraps} />
 
@@ -326,31 +330,6 @@ export function HomeMobile({
         />
       )}
     </MobileFrame>
-  )
-}
-
-function PlanSkeleton() {
-  const ark = useArketMotion()
-  // ark-kort (A2 "Klart folds home"): the skeleton is the day-card
-  // slot's first tenant — it mounts in the SAME commit as the Home
-  // scene, so a Klart panel folding home lands here, then hands the
-  // sheet to DailyPlanCard / CompletePanel when the plan resolves.
-  return (
-    <motion.div
-      data-testid="daily-plan-skeleton"
-      layoutId={ark.rm ? undefined : ARK_KORT_LAYOUT_ID}
-      transition={ark.arket}
-      style={{
-        marginTop: 32,
-        fontFamily: 'var(--font-mono)',
-        fontSize: 12,
-        color: 'var(--muted)',
-        letterSpacing: 'var(--font-mono-track)',
-        textTransform: 'uppercase',
-      }}
-    >
-      Laddar dagens plan …
-    </motion.div>
   )
 }
 

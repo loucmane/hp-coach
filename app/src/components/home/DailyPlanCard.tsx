@@ -14,11 +14,17 @@
 import { motion } from 'motion/react'
 
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
+import { Impress, InkSlot } from '@/components/motion/InkDry'
 import { ARK_KORT_LAYOUT_ID, sectionDoorLayoutId, useArketMotion } from '@/lib/motion'
 import { type DailyPlan, type PlanItem, repetitionCopy } from '@/lib/scheduler'
 
 type DailyPlanCardProps = {
-  plan: DailyPlan
+  /** The day's plan. Null while resolving — the card renders its OWN
+   *  pre-impression state (A2 drying ink): same section chrome, same
+   *  heading, ghost rows where the plan rows will dry in. Keeping the
+   *  skeleton inside the card means the chrome never remounts on data
+   *  arrival — only the ink swaps. */
+  plan: DailyPlan | null
   allComplete: boolean
   /** Called when a plan item's row is tapped. Receives the item's
    *  href so the route can pick a navigation strategy. Defaults to
@@ -79,7 +85,7 @@ export function DailyPlanCard({
   pileMistakeCount,
 }: DailyPlanCardProps) {
   const ark = useArketMotion()
-  if (allComplete) {
+  if (plan && allComplete) {
     return <CompletePanel plan={plan} />
   }
 
@@ -88,15 +94,17 @@ export function DailyPlanCard({
   // (rather than a per-row guard in PlanRow) keeps the ordinal numbering
   // contiguous for the remaining items and avoids a `verbFor` case for
   // the mock kind.
-  const rows = plan.items
-    .filter((item) => item.kind !== 'mock')
-    .map((item) => withLiveData(item, dueMistakeCount, pileMistakeCount))
+  const rows = plan
+    ? plan.items
+        .filter((item) => item.kind !== 'mock')
+        .map((item) => withLiveData(item, dueMistakeCount, pileMistakeCount))
+    : null
 
   // Mock-only day (pure provpass-dag): every item was filtered out, so the
   // Kallelse above IS the day's plan — render nothing rather than a bare
   // "Dagens plan" heading over an empty list (and a margin-rail minute count
   // that would just double-count the summons's own "· 55 minuter").
-  if (rows.length === 0) return null
+  if (rows && rows.length === 0) return null
 
   // Margin minute estimate reflects the VISIBLE numbered rows only, using
   // the live-overridden repetition minutes — NOT `plan.estimatedMinutes`,
@@ -104,18 +112,22 @@ export function DailyPlanCard({
   // min is shown there, not here). Counting it in this margin implied
   // invisible work ("~58 min" over a 3-min list). When an uncompleted mock
   // still exists, name it explicitly instead of hiding its minutes.
-  const visibleMinutes = rows
+  const visibleMinutes = (rows ?? [])
     .filter((item) => !item.completed)
     .reduce((sum, item) => sum + item.estimatedMinutes, 0)
-  const hasUncompletedMock = plan.items.some((item) => item.kind === 'mock' && !item.completed)
+  const hasUncompletedMock =
+    plan?.items.some((item) => item.kind === 'mock' && !item.completed) ?? false
   const marginEstimate = `~${visibleMinutes} min${hasUncompletedMock ? ' + provpass' : ''} · uppskattat`
 
   // ark-kort (A2 "Klart folds home"): the day-card and the drill
   // completion panel's Klart block share this layoutId — finishing a
   // session and returning home folds the panel back into the card.
+  // The pre-impression state (plan null) is the SAME sheet: chrome and
+  // heading are real ink from the first frame; only the plan rows and
+  // the margin estimate dry in when the plan lands (InkSlot).
   return (
     <motion.section
-      data-testid="daily-plan-card"
+      data-testid={rows ? 'daily-plan-card' : 'daily-plan-skeleton'}
       className={ark.rm ? undefined : 'hpc-arkkort'}
       layoutId={ark.rm ? undefined : ARK_KORT_LAYOUT_ID}
       transition={ark.arket}
@@ -124,19 +136,50 @@ export function DailyPlanCard({
         meta={
           <>
             <strong>Idag</strong>
-            {marginEstimate}
+            <InkSlot ready={rows != null} w={10}>
+              {marginEstimate}
+            </InkSlot>
           </>
         }
         delay={220}
       >
         <h2 className="hpc-m3-h">Dagens plan</h2>
-        <ol style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-          {rows.map((item, i) => (
-            <PlanRow key={item.id} item={item} ordinal={i + 1} onNavigate={onNavigate} />
-          ))}
-        </ol>
+        <InkSlot ready={rows != null} block impression={<PlanImpression />}>
+          <ol style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+            {(rows ?? []).map((item, i) => (
+              <PlanRow key={item.id} item={item} ordinal={i + 1} onNavigate={onNavigate} />
+            ))}
+          </ol>
+        </InkSlot>
       </DrillRailSection>
     </motion.section>
+  )
+}
+
+/** The plan rows' pre-impression: three ghost rows in the exact
+ *  `.hpc-m3-plan-item` grid — real ordinals (structure is known before
+ *  the data), faint bars where headline / rationale / minutes will dry
+ *  in. Static by law: an impression, not an animation. */
+function PlanImpression() {
+  return (
+    <ol aria-hidden style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+      {[1, 2, 3].map((n) => (
+        <li key={n} className="hpc-m3-plan-item">
+          <span className="hpc-m3-plan-n">{n}.</span>
+          <span style={{ display: 'block', minWidth: 0 }}>
+            <span className="hpc-m3-plan-t" style={{ display: 'block' }}>
+              <Impress w={22} />
+            </span>
+            <span className="hpc-m3-plan-r" style={{ display: 'block' }}>
+              <Impress w={34} />
+            </span>
+          </span>
+          <span className="hpc-m3-plan-min">
+            <Impress w={6} />
+          </span>
+        </li>
+      ))}
+    </ol>
   )
 }
 
