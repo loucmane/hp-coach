@@ -10,6 +10,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+import { withViewTransition } from '@/lib/motion'
 import {
   buildThemeVars,
   DEFAULT_THEME,
@@ -57,8 +58,13 @@ export const useUiStore = create<UiState>()(
       drillLayout: DEFAULT_THEME.drillLayout,
       useFluid: DEFAULT_THEME.useFluid,
       studioRails: DEFAULT_THEME.studioRails,
-      setPalette: (palette) => set({ palette }),
-      setMode: (mode) => set({ mode }),
+      // Palette + mode changes crossfade the whole page as one image via
+      // the View Transitions API (task W3) — see `withViewTransition` for
+      // the feature-detect / reduced-motion / Firefox-fallback rules.
+      // Wrapped here (not at each call site) so every entry point — rail
+      // foot toggle, /mer settings, palette picker, ⌘K — gets it for free.
+      setPalette: (palette) => withViewTransition(() => set({ palette })),
+      setMode: (mode) => withViewTransition(() => set({ mode })),
       setFont: (font) => set({ font }),
       setDensity: (density) => set({ density }),
       setDrillLayout: (drillLayout) => set({ drillLayout }),
@@ -66,7 +72,8 @@ export const useUiStore = create<UiState>()(
         const b = EDITIONS[edition]
         set({ font: b.font, density: b.density, drillLayout: b.drillLayout })
       },
-      toggleMode: () => set((s) => ({ mode: s.mode === 'light' ? 'dark' : 'light' })),
+      toggleMode: () =>
+        withViewTransition(() => set((s) => ({ mode: s.mode === 'light' ? 'dark' : 'light' }))),
       setUseFluid: (useFluid) => set({ useFluid }),
       setStudioRails: (studioRails) => set({ studioRails }),
       toggleStudioRails: () => set((s) => ({ studioRails: !s.studioRails })),

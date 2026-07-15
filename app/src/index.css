@@ -159,6 +159,14 @@
   --dur-reveal: 360ms;
   --dur-payoff: 1100ms;
 
+  /* Theme crossfade (task W3) — ljus/mörk toggle + palette switches wrap
+   * the state change in `document.startViewTransition` (see
+   * `withViewTransition` in lib/motion.ts, applied at the uiStore setter
+   * level). Tune the default root cross-fade duration here; the browser's
+   * built-in `::view-transition-old(root)` / `::view-transition-new(root)`
+   * opacity swap does the rest — no per-element view-transition-names. */
+  --dur-theme-crossfade: 240ms;
+
   /* Frame chrome sizes (Phase A / A.5 — Frame component reads these) */
   --frame-tabbar: 88px; /* bottom-tab reserved on phone; 0 on reader/studio */
   --frame-max-w: 640px; /* narrow focus column max-width (rarely used after A.5) */
@@ -365,6 +373,14 @@ body::before {
 
 .hpc-breathe {
   animation: hpc-breathe 6s ease-in-out infinite;
+}
+
+/* Theme crossfade (task W3) — tune the built-in root cross-fade so it
+ * matches the product's motion pace instead of the UA default (~250ms
+ * pass, close enough that we only need to pin the number). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--dur-theme-crossfade);
 }
 
 @media (prefers-reduced-motion: reduce) {
