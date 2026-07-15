@@ -27,6 +27,7 @@
 
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
+import { INKDEMO } from '@/components/devbake/DryingInkDemo'
 import { KLART1, KLART2, KLART3 } from '@/components/devbake/KlartBakeoff'
 import { MOTA2 } from '@/components/devbake/MotionArketFullbordad'
 import { MOTA1 } from '@/components/devbake/MotionArketRedigerad'
@@ -74,6 +75,9 @@ const VARIANTS = [
   // D2 — theme crossfade demo (task W3): isolated stage for the real
   // withViewTransition-wrapped ljus/mörk + palette toggles.
   { key: 'd2', label: 'D2 · Temaövergången', C: THEMEDEMO },
+  // Wave W1 — the shipped drying-ink data-arrival treatment (skeleton
+  // and content as one surface; tork/ut only), replayable on demand.
+  { key: 'd1', label: 'D1 · Torkande bläck', C: INKDEMO },
 ] as const
 
 function MotionBakeoffPage() {

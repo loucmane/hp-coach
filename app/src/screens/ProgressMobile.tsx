@@ -27,6 +27,7 @@ import { type ReactNode, useMemo, useState } from 'react'
 
 import type { Stats, WeeklyBucket } from '@/api/hooks/useStats'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
+import { Impress, InkSlot } from '@/components/motion/InkDry'
 import { ConsistencyHeat } from '@/components/progress/ConsistencyHeat'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
@@ -94,12 +95,30 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
           delay={0}
         >
           <h1 className="hpc-m3-display" style={{ marginTop: 0 }}>
+            {/* Drying ink: the hero numeral's slot holds a faint
+             *  pre-impression sized to "1,41" while the stats resolve;
+             *  the number dries in over the same box. A resolved-but-
+             *  scoreless account still prints the honest em dash. */}
             <span data-testid="progress-projected">
-              {loading ? '—' : fmtSv(projected?.total ?? null)}
+              <InkSlot ready={!loading} w={4}>
+                {fmtSv(projected?.total ?? null)}
+              </InkSlot>
             </span>
             <span style={{ fontSize: '0.45em', color: 'var(--muted)' }}> av 2,0</span>
           </h1>
-          <PrognosParagraph stats={stats} projected={projected} delta={delta} scores={scores} />
+          <InkSlot
+            ready={!loading}
+            block
+            impression={
+              <Paragraph>
+                <Impress w={52} />
+                <br />
+                <Impress w={31} />
+              </Paragraph>
+            }
+          >
+            <PrognosParagraph stats={stats} projected={projected} delta={delta} scores={scores} />
+          </InkSlot>
         </DrillRailSection>
 
         {/* ── Prognos över tid — sparkline vs the goal ────────────── */}
@@ -120,23 +139,32 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
         {/* ── Sektioner — the ledger ──────────────────────────────── */}
         <DrillRailSection meta="Sektioner" delay={120}>
           <h2 className="hpc-m3-h">Var poängen finns</h2>
-          {loading ? (
-            <MonoNote>laddar…</MonoNote>
-          ) : scores.length === 0 ? (
-            <MonoNote>inga övningar än</MonoNote>
-          ) : (
-            <div>
-              {scores.map((s) => (
-                <SectionRow key={s.section} s={s} />
-              ))}
-            </div>
-          )}
+          {/* The ledger's pre-impression is the ledger itself: all eight
+           *  section rows exist before the data (the exam's structure is
+           *  known), so the tags print as real ink from frame one and
+           *  only the numbers dry in — zero reflow on arrival. */}
+          <InkSlot ready={!loading} block impression={<LedgerImpression />}>
+            {scores.length === 0 ? (
+              <MonoNote>inga övningar än</MonoNote>
+            ) : (
+              <div>
+                {scores.map((s) => (
+                  <SectionRow key={s.section} s={s} />
+                ))}
+              </div>
+            )}
+          </InkSlot>
         </DrillRailSection>
 
         {/* ── Närvaro — compact strip, expands on interaction ─────── */}
         <DrillRailSection meta="Närvaro" delay={180}>
           <h2 className="hpc-m3-h">Senaste 12 veckorna</h2>
-          <NarvaroBlock stats={stats} />
+          {/* Pre-impression = the empty heat grid itself (the zero-bucket
+           *  tone): the calendar exists before the data; attendance dries
+           *  into it. */}
+          <InkSlot ready={!loading} block impression={<NarvaroImpression />}>
+            <NarvaroBlock stats={stats} />
+          </InkSlot>
         </DrillRailSection>
 
         {/* ── Fokus — drill this next ─────────────────────────────── */}
@@ -152,22 +180,37 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
 
         {/* ── Repetition + lifetime ledger ────────────────────────── */}
         <DrillRailSection meta="Repetition" delay={300}>
-          <MonoNote>
-            {stats == null ? (
-              '—'
-            ) : (
+          <InkSlot
+            ready={!loading}
+            block
+            impression={
               <>
-                {stats.mistakes.due} att repetera nu · {stats.mistakes.active} aktiva i kön ·{' '}
-                {stats.mistakes.resolved} utlärda
+                <MonoNote>
+                  <Impress w={38} />
+                </MonoNote>
+                <MonoNote style={{ marginTop: 6 }}>
+                  <Impress w={32} />
+                </MonoNote>
               </>
-            )}
-          </MonoNote>
-          {stats != null && (
-            <MonoNote style={{ marginTop: 6 }}>
-              {stats.attempts.total} frågor totalt · {stats.attempts.today} idag ·{' '}
-              {stats.drills.thisWeek} pass denna vecka
+            }
+          >
+            <MonoNote>
+              {stats == null ? (
+                '—'
+              ) : (
+                <>
+                  {stats.mistakes.due} att repetera nu · {stats.mistakes.active} aktiva i kön ·{' '}
+                  {stats.mistakes.resolved} utlärda
+                </>
+              )}
             </MonoNote>
-          )}
+            {stats != null && (
+              <MonoNote style={{ marginTop: 6 }}>
+                {stats.attempts.total} frågor totalt · {stats.attempts.today} idag ·{' '}
+                {stats.drills.thisWeek} pass denna vecka
+              </MonoNote>
+            )}
+          </InkSlot>
         </DrillRailSection>
 
         {/* ── Bilaga — Historik ───────────────────────────────────── */}
@@ -177,7 +220,7 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
          *  'historik' foot word AND this row. Set as the book's appendix
          *  in the ToC idiom. */}
         <DrillRailSection meta="Bilaga" delay={360}>
-          <HistorikRow total={stats?.drills.total ?? null} />
+          <HistorikRow total={stats?.drills.total ?? null} loading={loading === true} />
         </DrillRailSection>
       </div>
     </div>
@@ -185,7 +228,7 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
 }
 
 /** The appendix line to the results journal — book-native ToC row. */
-function HistorikRow({ total }: { total: number | null }) {
+function HistorikRow({ total, loading }: { total: number | null; loading: boolean }) {
   return (
     <Link
       to="/historik"
@@ -229,9 +272,77 @@ function HistorikRow({ total }: { total: number | null }) {
           whiteSpace: 'nowrap',
         }}
       >
-        {total != null ? `${total} pass ` : ''}→
+        <InkSlot ready={!loading} w={7}>
+          {total != null ? `${total} pass ` : ''}
+        </InkSlot>
+        →
       </span>
     </Link>
+  )
+}
+
+// ── Pre-impressions (drying ink, A2) ────────────────────────────────
+//
+// Static ghosts with the resolved surfaces' exact geometry, so the ink
+// dries in with zero reflow. Never animated — an impression on the
+// sheet, not an activity indicator (no shimmer on study surfaces).
+
+/** Ghost ledger: all eight rows with real section tags (the exam's
+ *  structure needs no data), faint bars where score / band / attempts
+ *  will dry in. Same `.hpc-m3-trap` grid as SectionRow. */
+function LedgerImpression() {
+  return (
+    <div>
+      {SECTION_KEYS.map((section) => (
+        <span key={section} className="hpc-m3-trap" style={{ opacity: 0.55 }}>
+          <span className="hpc-m3-trap-t">
+            <span className="hpc-m3-tag">{section}</span>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 500 }}>
+              <Impress w={4} />
+            </span>
+          </span>
+          <span className="hpc-m3-trap-n">
+            <Impress w={9} />
+          </span>
+        </span>
+      ))}
+    </div>
+  )
+}
+
+/** Ghost heat strip: the 12×7 calendar at the zero-bucket tone plus the
+ *  streak line's bar — same cell metrics as NarvaroBlock's compact
+ *  strip, so attendance dries into an already-standing calendar. */
+function NarvaroImpression() {
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 3 }}>
+        {Array.from({ length: WEEKS }, (_, w) => (
+          <div key={`w${String(w)}`} style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            {Array.from({ length: 7 }, (_, d) => (
+              <span
+                key={`w${String(w)}d${String(d)}`}
+                style={{
+                  width: 9,
+                  height: 9,
+                  borderRadius: 1,
+                  background: RAMP[0],
+                  display: 'block',
+                }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+      {/* Two ghost lines — the resolved block carries both the
+       *  "visa detalj" toggle line and the streak line. */}
+      <p style={{ ...mono11, marginTop: 10, marginBottom: 0 }}>
+        <Impress w={12} />
+      </p>
+      <p style={{ ...mono11, marginTop: 6, marginBottom: 0 }}>
+        <Impress w={16} />
+      </p>
+    </div>
   )
 }
 

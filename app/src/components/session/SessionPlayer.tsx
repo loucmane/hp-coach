@@ -54,6 +54,7 @@ import { DispatchedVariant } from '@/components/drill-variants/DispatchedVariant
 import { MobileFrame } from '@/components/MobileFrame'
 import { DueHeaderStation } from '@/components/motion/DueNumeral'
 import { QuestionPan } from '@/components/motion/QuestionPan'
+import { StageInk } from '@/components/motion/StageInk'
 import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
 import { type AnswerLetter, loadBank, type Question } from '@/data/questions'
@@ -688,27 +689,35 @@ export function SessionPlayer(props: SessionPlayerProps) {
           </span>
         </div>
       )
+      // Stage "laddar": when the session resolves, StageInk hands this
+      // sheet to the live question — the interstitial's ink lifts off
+      // (ut) and the question chrome dries in, instead of a hard swap.
+      // The door code keeps its layoutId flight through the handoff.
       if (viewport === 'phone') {
         return (
-          <MobileFrame
-            tabs
-            activeTab={props.activeTab}
-            onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
-          >
-            {loading}
-          </MobileFrame>
+          <StageInk stage="laddar">
+            <MobileFrame
+              tabs
+              activeTab={props.activeTab}
+              onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
+            >
+              {loading}
+            </MobileFrame>
+          </StageInk>
         )
       }
       return (
-        <MobileFrame tabs={false}>
-          <Page
-            runningHead={['HP · Coach', headLabel]}
-            status={{ mode: statusMode, context: 'redo', hints: ['esc hem', '⌘k palett'] }}
-          >
-            {dueStation}
-            {loading}
-          </Page>
-        </MobileFrame>
+        <StageInk stage="laddar">
+          <MobileFrame tabs={false}>
+            <Page
+              runningHead={['HP · Coach', headLabel]}
+              status={{ mode: statusMode, context: 'redo', hints: ['esc hem', '⌘k palett'] }}
+            >
+              {dueStation}
+              {loading}
+            </Page>
+          </MobileFrame>
+        </StageInk>
       )
     }
 
@@ -738,13 +747,15 @@ export function SessionPlayer(props: SessionPlayerProps) {
     )
     if (isPhone) {
       return (
-        <MobileFrame
-          tabs
-          activeTab={props.activeTab}
-          onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
-        >
-          {idleBody}
-        </MobileFrame>
+        <StageInk stage="session">
+          <MobileFrame
+            tabs
+            activeTab={props.activeTab}
+            onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
+          >
+            {idleBody}
+          </MobileFrame>
+        </StageInk>
       )
     }
     // Desktop idle gets the same Page chrome as the active drill phase
@@ -758,19 +769,21 @@ export function SessionPlayer(props: SessionPlayerProps) {
       props.sections,
     )
     return (
-      <MobileFrame tabs={false}>
-        <Page
-          runningHead={['HP · Coach', sectionLabel]}
-          status={{
-            mode: statusMode,
-            context: 'redo',
-            hints: ['esc hem', '⌘k palett'],
-          }}
-        >
-          {dueStation}
-          {idleBody}
-        </Page>
-      </MobileFrame>
+      <StageInk stage="session">
+        <MobileFrame tabs={false}>
+          <Page
+            runningHead={['HP · Coach', sectionLabel]}
+            status={{
+              mode: statusMode,
+              context: 'redo',
+              hints: ['esc hem', '⌘k palett'],
+            }}
+          >
+            {dueStation}
+            {idleBody}
+          </Page>
+        </MobileFrame>
+      </StageInk>
     )
   }
 
@@ -783,30 +796,34 @@ export function SessionPlayer(props: SessionPlayerProps) {
     )
     if (isPhone) {
       return (
-        <MobileFrame
-          tabs
-          activeTab={props.activeTab}
-          onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
-        >
-          {doneBody}
-        </MobileFrame>
+        <StageInk stage="session">
+          <MobileFrame
+            tabs
+            activeTab={props.activeTab}
+            onTabChange={(id) => navigate({ to: TAB_ROUTE[id] })}
+          >
+            {doneBody}
+          </MobileFrame>
+        </StageInk>
       )
     }
     const { headLabel: sectionLabel } = chromeLabelsFor(props.sessionKind, props.sections)
     return (
-      <MobileFrame tabs={false}>
-        <Page
-          runningHead={['HP · Coach', sectionLabel]}
-          status={{
-            mode: 'Klar',
-            context: 'resultat',
-            hints: ['esc hem', '⌘k palett'],
-          }}
-        >
-          {dueStation}
-          {doneBody}
-        </Page>
-      </MobileFrame>
+      <StageInk stage="session">
+        <MobileFrame tabs={false}>
+          <Page
+            runningHead={['HP · Coach', sectionLabel]}
+            status={{
+              mode: 'Klar',
+              context: 'resultat',
+              hints: ['esc hem', '⌘k palett'],
+            }}
+          >
+            {dueStation}
+            {doneBody}
+          </Page>
+        </MobileFrame>
+      </StageInk>
     )
   }
 
@@ -835,22 +852,24 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // slot. Continuous picker presence; no chrome stacking.
   if (useStudyDesk) {
     return (
-      <MobileFrame tabs={false}>
-        <BoksidanDesk
-          dueStation={dueStation}
-          {...variantPropsFor({
-            question: q,
-            picked,
-            graded: phase === 'graded',
-            correct: picked === q.answer,
-            onPick,
-            onAdvance: onNext,
-            position: index + 1,
-            total: plan.length,
-            blockPosition,
-          })}
-        />
-      </MobileFrame>
+      <StageInk stage="session">
+        <MobileFrame tabs={false}>
+          <BoksidanDesk
+            dueStation={dueStation}
+            {...variantPropsFor({
+              question: q,
+              picked,
+              graded: phase === 'graded',
+              correct: picked === q.answer,
+              onPick,
+              onAdvance: onNext,
+              position: index + 1,
+              total: plan.length,
+              blockPosition,
+            })}
+          />
+        </MobileFrame>
+      </StageInk>
     )
   }
 
@@ -961,20 +980,22 @@ export function SessionPlayer(props: SessionPlayerProps) {
 
   const { statusMode: activeStatusMode } = chromeLabelsFor(props.sessionKind, props.sections)
   return (
-    <MobileFrame tabs={false}>
-      <Page
-        runningHead={['HP · Coach', q.section]}
-        folio={{ current: index + 1, total: plan.length }}
-        status={{
-          mode: activeStatusMode,
-          context: `${q.section.toLowerCase()} · fråga ${index + 1}`,
-          progress: (index + 1) / plan.length,
-          hints: ['⌘k palett'],
-        }}
-      >
-        {drillBody}
-      </Page>
-    </MobileFrame>
+    <StageInk stage="session">
+      <MobileFrame tabs={false}>
+        <Page
+          runningHead={['HP · Coach', q.section]}
+          folio={{ current: index + 1, total: plan.length }}
+          status={{
+            mode: activeStatusMode,
+            context: `${q.section.toLowerCase()} · fråga ${index + 1}`,
+            progress: (index + 1) / plan.length,
+            hints: ['⌘k palett'],
+          }}
+        >
+          {drillBody}
+        </Page>
+      </MobileFrame>
+    </StageInk>
   )
 }
 

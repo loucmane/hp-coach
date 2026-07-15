@@ -106,3 +106,23 @@ describe('DailyPlanCard — margin estimate', () => {
     expect(screen.queryByTestId('daily-plan-item-mock-verbal-2026-07-13')).not.toBeInTheDocument()
   })
 })
+
+describe('DailyPlanCard — drying-ink skeleton (plan null)', () => {
+  it('renders the same card chrome with a pre-impression while the plan resolves', () => {
+    render(<DailyPlanCard plan={null} allComplete={false} />)
+    // The skeleton IS the card surface — same section chrome, same heading.
+    expect(screen.getByTestId('daily-plan-skeleton')).toBeInTheDocument()
+    expect(screen.getByText('Dagens plan')).toBeInTheDocument()
+    // No real rows yet, and the ghost rows are hidden from AT.
+    expect(screen.queryByTestId('daily-plan-card')).not.toBeInTheDocument()
+    expect(screen.queryByText(/uppskattat/)).not.toBeInTheDocument()
+  })
+
+  it('hands the same surface to the real rows when the plan lands', () => {
+    const plan = makePlan([drillItem], 6)
+    const { rerender } = render(<DailyPlanCard plan={null} allComplete={false} />)
+    rerender(<DailyPlanCard plan={plan} allComplete={false} />)
+    expect(screen.getByTestId('daily-plan-card')).toBeInTheDocument()
+    expect(screen.getByTestId('daily-plan-item-drill-KVA-2026-07-13')).toBeInTheDocument()
+  })
+})
