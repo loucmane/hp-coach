@@ -50,7 +50,7 @@ type UiState = {
 
 export const useUiStore = create<UiState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       palette: DEFAULT_THEME.palette,
       mode: DEFAULT_THEME.mode,
       font: DEFAULT_THEME.font,
@@ -63,8 +63,19 @@ export const useUiStore = create<UiState>()(
       // the feature-detect / reduced-motion / Firefox-fallback rules.
       // Wrapped here (not at each call site) so every entry point — rail
       // foot toggle, /mer settings, palette picker, ⌘K — gets it for free.
-      setPalette: (palette) => withViewTransition(() => set({ palette })),
-      setMode: (mode) => withViewTransition(() => set({ mode })),
+      // Same-value writes (synced-prefs hydration on boot, write-through
+      // echoes after every server response) must NOT fire a transition:
+      // each startViewTransition snapshots the page and pauses rendering
+      // a beat, and repeated no-op transitions stalled route paints under
+      // CI load (#299 e2e: toHaveURL timeouts on tab navigation).
+      setPalette: (palette) => {
+        if (get().palette === palette) return
+        withViewTransition(() => set({ palette }))
+      },
+      setMode: (mode) => {
+        if (get().mode === mode) return
+        withViewTransition(() => set({ mode }))
+      },
       setFont: (font) => set({ font }),
       setDensity: (density) => set({ density }),
       setDrillLayout: (drillLayout) => set({ drillLayout }),
