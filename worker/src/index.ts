@@ -24,6 +24,7 @@ import { runRetention } from './lib/retention'
 import { requireAuth } from './middleware/auth'
 import { rateLimit } from './middleware/rateLimit'
 import { attemptsRoute } from './routes/attempts'
+import { clerkWebhookRoute } from './routes/clerkWebhook'
 import { contentRoute } from './routes/content'
 import { dailyPlansRoute } from './routes/dailyPlans'
 import { devLoginRoute } from './routes/devLogin'
@@ -117,6 +118,11 @@ const routes = app
   )
   .route('/health', healthRoute)
   .route('/api/dev/login', devLoginRoute)
+  // Clerk sync webhook — mounted OUTSIDE `authed`, so it bypasses
+  // requireAuth AND rateLimit by construction (Clerk has no session token
+  // and no per-user rate-limit bucket). Auth is the Svix signature the
+  // route verifies itself. See routes/clerkWebhook.ts.
+  .route('/api/webhooks/clerk', clerkWebhookRoute)
   .route('/api', authed)
 
 // Daily Cron Trigger (see [triggers] in wrangler.toml) — prune

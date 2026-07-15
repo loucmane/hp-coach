@@ -18,6 +18,11 @@ export type Env = {
   GIT_SHA?: string
   // Secrets (set via `wrangler secret put`)
   CLERK_SECRET_KEY: string
+  // Svix signing secret for the Clerk sync webhook (whsec_…). Set per env
+  // via `wrangler secret put CLERK_WEBHOOK_SECRET --env staging|production`
+  // once the owner creates the webhook endpoint in the Clerk dashboard.
+  // Absent until then — the route 500s (Clerk-retryable) while unset.
+  CLERK_WEBHOOK_SECRET: string
   // Optional. When set in dev/staging, /api/dev/login issues a sign-in
   // token for this user — lets MCP-driven browsers bypass Clerk's email
   // OTP flow for visual verification. Refused in production regardless.
