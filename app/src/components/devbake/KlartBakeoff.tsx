@@ -37,7 +37,7 @@
 
 import { motion, useReducedMotion } from 'motion/react'
 import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from 'react'
-import { EASE } from '@/lib/motion'
+import { EASE, KLART, KLART_SATS, KLART_SLAG, khRowDelay, useMountGo } from '@/lib/motion'
 
 /* ── concept-local springs (bake-off scope; graduate to lib/motion on
       a win) ─────────────────────────────────────────────────────────
@@ -50,9 +50,12 @@ import { EASE } from '@/lib/motion'
                             Arket veck numbers — the tally ends in the
                             house physics on purpose).                */
 
-const SLAG = { type: 'spring', stiffness: 380, damping: 26, mass: 1.4 } as const
+// slag/sats graduated to lib/motion (KLART_SLAG / KLART_SATS) on the KH
+// win; aliased so K1 / K3 / KH read identically. andning stays local —
+// K2 lost the round, its spring never left the fixture.
+const SLAG = KLART_SLAG
 const ANDNING = { type: 'spring', stiffness: 52, damping: 15, mass: 1.5 } as const
-const SATS = { type: 'spring', stiffness: 480, damping: 40, mass: 0.8 } as const
+const SATS = KLART_SATS
 
 /* ── shared type shorthands ──────────────────────────────────────── */
 
@@ -337,21 +340,9 @@ const K1_STRIKE = 0.26 // s of stillness before the platen falls
 const K1_WAVE_LEAD = 0.12 // wave leaves the strike point after this
 const K1_WAVE_STEP = 0.05 // s per element as the wave rolls down
 
-/** The whole route tree lives under RouteScene's `AnimatePresence
- *  initial={false}`, which suppresses mount-driven `initial → animate`
- *  on every descendant. So the beat is STATE-driven: `go` flips one
- *  frame after (re)mount and every element animates on that prop
- *  change — presence context can't veto it. Under reduced motion `go`
- *  starts true: the final state renders immediately. */
-function useGo(rm: boolean): boolean {
-  const [go, setGo] = useState(rm)
-  useEffect(() => {
-    if (rm) return
-    const id = requestAnimationFrame(() => requestAnimationFrame(() => setGo(true)))
-    return () => cancelAnimationFrame(id)
-  }, [rm])
-  return go
-}
+/** State-driven mount flag that survives RouteScene's mount suppression
+ *  (graduated to lib/motion as `useMountGo`; see the law there). */
+const useGo = useMountGo
 
 /** An element the pressure wave passes through: pre-set at low ink,
  *  displaced 2 px and inked to full when its turn comes. */
@@ -753,18 +744,13 @@ export function KLART3() {
    Misses: the wave strikes a ✗ row at the same 2 px amplitude as a
    ✓ row and the same hand counts it. Identical ceremony at 7 av 10. */
 
-const KH_STRIKE = 0.26 // s of stillness before the platen falls (K1)
-const KH_WAVE_LEAD = 0.12 // wave leaves the strike point after this (K1)
-const KH_HEAD_STEP = 0.05 // s per element above the ledger (K1 pace)
-const KH_TICK = 0.09 // s per facit row — the wave at counting cadence (K3)
-const KH_HEAD_COUNT = 2 // elements between strike and first row (rule, col head)
-const KH_RULE_DELAY = 0.2 // after the last mark, before the sum-rule (K3)
-const KH_SETTLE_DELAY = 0.48 // after the last mark, before stats seat (K3)
-
-/** Delay (s) until the wave reaches facit row `i`. */
-function khRowDelay(i: number): number {
-  return KH_STRIKE + KH_WAVE_LEAD + KH_HEAD_COUNT * KH_HEAD_STEP + i * KH_TICK
-}
+// Graduated to lib/motion (the KLART timeline + khRowDelay) on the KH
+// win; aliased so the chip below reads identically to the fixture.
+const KH_STRIKE = KLART.strike // s of stillness before the platen falls (K1)
+const KH_WAVE_LEAD = KLART.waveLead // wave leaves the strike point after this (K1)
+const KH_HEAD_STEP = KLART.headStep // s per element above the ledger (K1 pace)
+const KH_RULE_DELAY = KLART.ruleDelay // after the last mark, before the sum-rule (K3)
+const KH_SETTLE_DELAY = KLART.settleDelay // after the last mark, before stats seat (K3)
 
 function KHContent({ fx, rm }: { fx: RunFx; rm: boolean }) {
   const go = useGo(rm)

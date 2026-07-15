@@ -14,7 +14,7 @@
 import { motion } from 'motion/react'
 
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
-import { Impress, InkSlot } from '@/components/motion/InkDry'
+import { Skrift, SkriftLine, SkriftRule } from '@/components/motion/Skrift'
 import { ARK_KORT_LAYOUT_ID, sectionDoorLayoutId, useArketMotion } from '@/lib/motion'
 import { type DailyPlan, type PlanItem, repetitionCopy } from '@/lib/scheduler'
 
@@ -122,9 +122,12 @@ export function DailyPlanCard({
   // ark-kort (A2 "Klart folds home"): the day-card and the drill
   // completion panel's Klart block share this layoutId — finishing a
   // session and returning home folds the panel back into the card.
-  // The pre-impression state (plan null) is the SAME sheet: chrome and
-  // heading are real ink from the first frame; only the plan rows and
-  // the margin estimate dry in when the plan lands (InkSlot).
+  // The waiting state (plan null) is the SAME sheet: chrome and heading
+  // are real ink from the first frame; the plan rows and the margin
+  // estimate WRITE IN when the plan lands (Skriften). A cached plan skips
+  // the write-in (data present at mount). One line for the margin, two
+  // per plan row (headline + rationale) sets the cadence.
+  const skriftLines = 1 + (rows?.length ?? 3) * 2
   return (
     <motion.section
       data-testid={rows ? 'daily-plan-card' : 'daily-plan-skeleton'}
@@ -132,35 +135,44 @@ export function DailyPlanCard({
       layoutId={ark.rm ? undefined : ARK_KORT_LAYOUT_ID}
       transition={ark.arket}
     >
-      <DrillRailSection
-        meta={
-          <>
-            <strong>Idag</strong>
-            <InkSlot ready={rows != null} w={10}>
-              {marginEstimate}
-            </InkSlot>
-          </>
-        }
-        delay={220}
-      >
-        <h2 className="hpc-m3-h">Dagens plan</h2>
-        <InkSlot ready={rows != null} block impression={<PlanImpression />}>
-          <ol style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-            {(rows ?? []).map((item, i) => (
-              <PlanRow key={item.id} item={item} ordinal={i + 1} onNavigate={onNavigate} />
-            ))}
-          </ol>
-        </InkSlot>
-      </DrillRailSection>
+      <Skrift ready={rows != null} lines={skriftLines}>
+        <DrillRailSection
+          meta={
+            <>
+              <strong>Idag</strong>
+              {rows != null ? (
+                <SkriftLine line={0} inline ruleW="10ch">
+                  {marginEstimate}
+                </SkriftLine>
+              ) : (
+                <SkriftRule w={10} />
+              )}
+            </>
+          }
+          delay={220}
+        >
+          <h2 className="hpc-m3-h">Dagens plan</h2>
+          {rows != null ? (
+            <ol style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+              {rows.map((item, i) => (
+                <PlanRow key={item.id} item={item} ordinal={i + 1} onNavigate={onNavigate} />
+              ))}
+            </ol>
+          ) : (
+            <PlanRules />
+          )}
+        </DrillRailSection>
+      </Skrift>
     </motion.section>
   )
 }
 
-/** The plan rows' pre-impression: three ghost rows in the exact
+/** The plan rows' waiting state: three ruled rows in the exact
  *  `.hpc-m3-plan-item` grid — real ordinals (structure is known before
- *  the data), faint bars where headline / rationale / minutes will dry
- *  in. Static by law: an impression, not an animation. */
-function PlanImpression() {
+ *  the data), faint baseline rules where the headline / rationale /
+ *  minutes will write in. Static by law: the ruled sheet, not an
+ *  activity indicator. */
+function PlanRules() {
   return (
     <ol aria-hidden style={{ listStyle: 'none', margin: 0, padding: 0 }}>
       {[1, 2, 3].map((n) => (
@@ -168,14 +180,14 @@ function PlanImpression() {
           <span className="hpc-m3-plan-n">{n}.</span>
           <span style={{ display: 'block', minWidth: 0 }}>
             <span className="hpc-m3-plan-t" style={{ display: 'block' }}>
-              <Impress w={22} />
+              <SkriftRule w={22} />
             </span>
             <span className="hpc-m3-plan-r" style={{ display: 'block' }}>
-              <Impress w={34} />
+              <SkriftRule w={34} />
             </span>
           </span>
           <span className="hpc-m3-plan-min">
-            <Impress w={6} />
+            <SkriftRule w={6} />
           </span>
         </li>
       ))}
@@ -205,6 +217,10 @@ function PlanRow({
   // with no matching section-code anchor.
   const doorTag =
     !ark.rm && item.kind === 'drill' && item.section ? sectionDoorLayoutId(item.section) : null
+  // The row's write-in cadence indices (headline, then rationale),
+  // threaded after the margin line (line 0) so the block writes cleanly
+  // top-to-bottom.
+  const base = 1 + (ordinal - 1) * 2
   return (
     <li
       className="hpc-m3-plan-item"
@@ -225,24 +241,30 @@ function PlanRow({
           className="hpc-m3-plan-t"
           style={{ textDecoration: item.completed ? 'line-through' : undefined }}
         >
-          {item.section ? (
-            doorTag ? (
-              <motion.span
-                className="hpc-m3-tag"
-                layoutId={doorTag}
-                transition={ark.arket}
-                style={{ display: 'inline-block' }}
-              >
-                {item.section}
-              </motion.span>
-            ) : (
-              <span className="hpc-m3-tag">{item.section}</span>
-            )
-          ) : null}
-          {item.headline}
-          {item.completed && ' · klar ✓'}
+          <SkriftLine line={base} ruleW="24ch">
+            {item.section ? (
+              doorTag ? (
+                <motion.span
+                  className="hpc-m3-tag"
+                  layoutId={doorTag}
+                  transition={ark.arket}
+                  style={{ display: 'inline-block' }}
+                >
+                  {item.section}
+                </motion.span>
+              ) : (
+                <span className="hpc-m3-tag">{item.section}</span>
+              )
+            ) : null}
+            {item.headline}
+            {item.completed && ' · klar ✓'}
+          </SkriftLine>
         </div>
-        <div className="hpc-m3-plan-r">{item.rationale}</div>
+        <div className="hpc-m3-plan-r">
+          <SkriftLine line={base + 1} ruleW="34ch">
+            {item.rationale}
+          </SkriftLine>
+        </div>
         {/* Tap affordance (dogfood #170) — quiet mono verb per kind so
          *  the rows read as actions, not static text. Live-only
          *  extension of the M3 row. */}

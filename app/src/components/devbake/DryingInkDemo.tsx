@@ -1,30 +1,32 @@
-// D1 · Torkande bläck — the drying-ink data-arrival treatment, replayable.
+// D1 · Skriften (levererad) — the shipped data-arrival treatment,
+// replayable.
 //
-// W1 of the motion wave: query resolution used to POP content in,
-// violating Arket's One Sheet law. The product treatment (shipped on
-// Home / Öva / Framsteg / the session interstitial) makes the skeleton
-// and the content the SAME surface: a static faint pre-impression
-// (Impress — never shimmering, never looping) reserves the ink's honest
-// dimensions, and when the data lands the impression lifts off (ut,
-// 90ms, popLayout so nothing reflows) while the real ink dries in over
-// the same box (tork register, opacity only, zero travel).
+// Owner verdict on the original drying-ink (a gray impression that fades
+// to content): "i didnt get the drying ink feeling" — it read as a
+// quieter skeleton, not ink. W1 round 2 replaced it with L2 "Skriften"
+// (the pen school), now SHIPPED on Home / Öva / Framsteg: before data,
+// almost nothing — a faint BASELINE RULE per line; when the data lands
+// each line WRITES IN, a left→right clip wipe at a snappy top-to-bottom
+// cadence, the rule lifting as its line is written. The whole block
+// finishes within ~600 ms however many lines (the cadence compresses),
+// and a cached query skips the write-in entirely.
 //
 // This stage fakes a slow query so the owner can replay the arrival at
-// will: "Ladda om" resets to the pre-impression state and re-resolves
-// after a beat. Three representative surfaces, all running the ACTUAL
-// product components/tokens:
+// will: "Ladda om" resets to the ruled sheet and re-resolves after a
+// beat. Three representative surfaces, all running the ACTUAL product
+// components/tokens:
 //
 //   1. the Home plan-card handoff (the real DailyPlanCard, plan null →
-//      plan) — chrome and heading are ink from frame one, rows dry in;
+//      plan) — chrome and heading are ink from frame one, rows write in;
 //   2. an Öva-style lane line (copy + a "N väntar" count slot);
 //   3. a Framsteg-style hero numeral.
 //
-// Reduced motion: every tween collapses to duration 0 — instant swap.
+// Reduced motion / cached query: content written instantly, no rule.
 
 import { useEffect, useState } from 'react'
 
 import { DailyPlanCard } from '@/components/home/DailyPlanCard'
-import { Impress, InkSlot } from '@/components/motion/InkDry'
+import { Skrift, SkriftLine } from '@/components/motion/Skrift'
 import { type DailyPlan, PLAN_SCHEMA_VERSION } from '@/lib/scheduler'
 
 /** How long the faked query "runs" — long enough to read the impression. */
@@ -102,7 +104,7 @@ export function INKDEMO() {
             margin: 0,
           }}
         >
-          datan anländer · skelettet är samma ark — bläcket torkar in
+          datan anländer · sidan skrivs in rad för rad — pennans skola (Skriften)
         </p>
         <button
           type="button"
@@ -130,56 +132,53 @@ export function INKDEMO() {
       <DailyPlanCard plan={ready ? DEMO_PLAN : null} allComplete={false} />
 
       {/* 2 · Öva-lane grammar: copy line + count slot, product tokens. */}
-      <section style={{ marginTop: 36 }}>
-        <p
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 15,
-            lineHeight: 1.5,
-            color: 'var(--ink-2)',
-            margin: 0,
-            maxWidth: '46ch',
-          }}
-        >
-          <InkSlot
-            ready={ready}
-            impression={
-              <>
-                <Impress w={42} />
-                <br />
-                <Impress w={26} />
-              </>
-            }
+      <Skrift ready={ready} lines={2}>
+        <section style={{ marginTop: 36 }}>
+          <p
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 15,
+              lineHeight: 1.5,
+              color: 'var(--ink-2)',
+              margin: 0,
+              maxWidth: '46ch',
+            }}
           >
-            Schemat föreslår NOG — svagast just nu. Välj fritt om du hellre tar något annat.
-          </InkSlot>
-        </p>
-        <p
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: 12,
-            letterSpacing: '0.08em',
-            margin: '14px 0 0',
-          }}
-        >
-          ORD{' '}
-          <span style={{ fontSize: 10, color: 'var(--muted)', fontVariantNumeric: 'tabular-nums' }}>
-            <InkSlot ready={ready} w={7}>
-              3 väntar
-            </InkSlot>
-          </span>
-        </p>
-      </section>
+            <SkriftLine line={0} inline ruleW="42ch">
+              Schemat föreslår NOG — svagast just nu. Välj fritt om du hellre tar något annat.
+            </SkriftLine>
+          </p>
+          <p
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 12,
+              letterSpacing: '0.08em',
+              margin: '14px 0 0',
+            }}
+          >
+            ORD{' '}
+            <span
+              style={{ fontSize: 10, color: 'var(--muted)', fontVariantNumeric: 'tabular-nums' }}
+            >
+              <SkriftLine line={1} inline ruleW="7ch">
+                3 väntar
+              </SkriftLine>
+            </span>
+          </p>
+        </section>
+      </Skrift>
 
-      {/* 3 · Framsteg hero numeral: the impression sized to the score. */}
-      <section style={{ marginTop: 36 }}>
-        <h2 className="hpc-m3-display" style={{ margin: 0 }}>
-          <InkSlot ready={ready} w={4}>
-            1,41
-          </InkSlot>
-          <span style={{ fontSize: '0.45em', color: 'var(--muted)' }}> av 2,0</span>
-        </h2>
-      </section>
+      {/* 3 · Framsteg hero numeral: the rule sized to the score. */}
+      <Skrift ready={ready} lines={1}>
+        <section style={{ marginTop: 36 }}>
+          <h2 className="hpc-m3-display" style={{ margin: 0 }}>
+            <SkriftLine line={0} inline ruleW="4ch">
+              1,41
+            </SkriftLine>
+            <span style={{ fontSize: '0.45em', color: 'var(--muted)' }}> av 2,0</span>
+          </h2>
+        </section>
+      </Skrift>
     </div>
   )
 }

@@ -79,9 +79,11 @@ const VARIANTS = [
   // D2 — theme crossfade demo (task W3): isolated stage for the real
   // withViewTransition-wrapped ljus/mörk + palette toggles.
   { key: 'd2', label: 'D2 · Temaövergången', C: THEMEDEMO },
-  // Wave W1 — the shipped drying-ink data-arrival treatment (skeleton
-  // and content as one surface; tork/ut only), replayable on demand.
-  { key: 'd1', label: 'D1 · Torkande bläck', C: INKDEMO },
+  // Wave W1 — the SHIPPED data-arrival treatment, replayable on demand.
+  // Originally drying-ink (tork/ut); after the owner's "i didnt get the
+  // drying ink feeling" it now demos the shipped L2 "Skriften" write-in
+  // (baseline rule → left-to-right clip wipe) on the real components.
+  { key: 'd1', label: 'D1 · Skriften (levererad)', C: INKDEMO },
   // W1 round 2 — owner verdict on D1: "i didnt get the drying ink
   // feeling" (it reads as a quieter skeleton). Three competing
   // loading-arrival languages on one shared stage, each replayable at

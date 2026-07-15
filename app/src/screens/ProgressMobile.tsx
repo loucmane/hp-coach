@@ -27,7 +27,7 @@ import { type ReactNode, useMemo, useState } from 'react'
 
 import type { Stats, WeeklyBucket } from '@/api/hooks/useStats'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
-import { Impress, InkSlot } from '@/components/motion/InkDry'
+import { Skrift, SkriftLine, SkriftRule } from '@/components/motion/Skrift'
 import { ConsistencyHeat } from '@/components/progress/ConsistencyHeat'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
@@ -95,30 +95,37 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
           delay={0}
         >
           <h1 className="hpc-m3-display" style={{ marginTop: 0 }}>
-            {/* Drying ink: the hero numeral's slot holds a faint
-             *  pre-impression sized to "1,41" while the stats resolve;
-             *  the number dries in over the same box. A resolved-but-
-             *  scoreless account still prints the honest em dash. */}
+            {/* Skriften: the hero numeral writes itself in over a faint
+             *  baseline rule sized to "1,41" once the stats resolve. A
+             *  resolved-but-scoreless account still prints the honest em
+             *  dash. */}
             <span data-testid="progress-projected">
-              <InkSlot ready={!loading} w={4}>
-                {fmtSv(projected?.total ?? null)}
-              </InkSlot>
+              <Skrift ready={!loading} lines={1}>
+                <SkriftLine line={0} inline ruleW="4ch">
+                  {fmtSv(projected?.total ?? null)}
+                </SkriftLine>
+              </Skrift>
             </span>
             <span style={{ fontSize: '0.45em', color: 'var(--muted)' }}> av 2,0</span>
           </h1>
-          <InkSlot
-            ready={!loading}
-            block
-            impression={
+          <Skrift ready={!loading} lines={1}>
+            {loading ? (
               <Paragraph>
-                <Impress w={52} />
+                <SkriftRule w={52} />
                 <br />
-                <Impress w={31} />
+                <SkriftRule w={31} />
               </Paragraph>
-            }
-          >
-            <PrognosParagraph stats={stats} projected={projected} delta={delta} scores={scores} />
-          </InkSlot>
+            ) : (
+              <SkriftLine line={0} ruleW="52ch">
+                <PrognosParagraph
+                  stats={stats}
+                  projected={projected}
+                  delta={delta}
+                  scores={scores}
+                />
+              </SkriftLine>
+            )}
+          </Skrift>
         </DrillRailSection>
 
         {/* ── Prognos över tid — sparkline vs the goal ────────────── */}
@@ -139,32 +146,43 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
         {/* ── Sektioner — the ledger ──────────────────────────────── */}
         <DrillRailSection meta="Sektioner" delay={120}>
           <h2 className="hpc-m3-h">Var poängen finns</h2>
-          {/* The ledger's pre-impression is the ledger itself: all eight
+          {/* The ledger's waiting state is the ledger itself: all eight
            *  section rows exist before the data (the exam's structure is
-           *  known), so the tags print as real ink from frame one and
-           *  only the numbers dry in — zero reflow on arrival. */}
-          <InkSlot ready={!loading} block impression={<LedgerImpression />}>
-            {scores.length === 0 ? (
+           *  known), so the tags print as real ink from frame one and the
+           *  rows WRITE IN top-to-bottom over baseline rules — zero reflow
+           *  on arrival. */}
+          <Skrift ready={!loading} lines={Math.max(1, scores.length)}>
+            {loading ? (
+              <LedgerRules />
+            ) : scores.length === 0 ? (
               <MonoNote>inga övningar än</MonoNote>
             ) : (
               <div>
-                {scores.map((s) => (
-                  <SectionRow key={s.section} s={s} />
+                {scores.map((s, i) => (
+                  <SkriftLine key={s.section} line={i}>
+                    <SectionRow s={s} />
+                  </SkriftLine>
                 ))}
               </div>
             )}
-          </InkSlot>
+          </Skrift>
         </DrillRailSection>
 
         {/* ── Närvaro — compact strip, expands on interaction ─────── */}
         <DrillRailSection meta="Närvaro" delay={180}>
           <h2 className="hpc-m3-h">Senaste 12 veckorna</h2>
-          {/* Pre-impression = the empty heat grid itself (the zero-bucket
-           *  tone): the calendar exists before the data; attendance dries
+          {/* Waiting state = the empty heat grid itself (the zero-bucket
+           *  tone): the calendar exists before the data; attendance writes
            *  into it. */}
-          <InkSlot ready={!loading} block impression={<NarvaroImpression />}>
-            <NarvaroBlock stats={stats} />
-          </InkSlot>
+          <Skrift ready={!loading} lines={1}>
+            {loading ? (
+              <NarvaroRules />
+            ) : (
+              <SkriftLine line={0}>
+                <NarvaroBlock stats={stats} />
+              </SkriftLine>
+            )}
+          </Skrift>
         </DrillRailSection>
 
         {/* ── Fokus — drill this next ─────────────────────────────── */}
@@ -180,37 +198,41 @@ export function ProgressMobile({ stats, loading }: ProgressMobileProps) {
 
         {/* ── Repetition + lifetime ledger ────────────────────────── */}
         <DrillRailSection meta="Repetition" delay={300}>
-          <InkSlot
-            ready={!loading}
-            block
-            impression={
+          <Skrift ready={!loading} lines={2}>
+            {loading ? (
               <>
                 <MonoNote>
-                  <Impress w={38} />
+                  <SkriftRule w={38} />
                 </MonoNote>
                 <MonoNote style={{ marginTop: 6 }}>
-                  <Impress w={32} />
+                  <SkriftRule w={32} />
                 </MonoNote>
               </>
-            }
-          >
-            <MonoNote>
-              {stats == null ? (
-                '—'
-              ) : (
-                <>
-                  {stats.mistakes.due} att repetera nu · {stats.mistakes.active} aktiva i kön ·{' '}
-                  {stats.mistakes.resolved} utlärda
-                </>
-              )}
-            </MonoNote>
-            {stats != null && (
-              <MonoNote style={{ marginTop: 6 }}>
-                {stats.attempts.total} frågor totalt · {stats.attempts.today} idag ·{' '}
-                {stats.drills.thisWeek} pass denna vecka
-              </MonoNote>
+            ) : (
+              <>
+                <MonoNote>
+                  <SkriftLine line={0} ruleW="38ch">
+                    {stats == null ? (
+                      '—'
+                    ) : (
+                      <>
+                        {stats.mistakes.due} att repetera nu · {stats.mistakes.active} aktiva i kön
+                        · {stats.mistakes.resolved} utlärda
+                      </>
+                    )}
+                  </SkriftLine>
+                </MonoNote>
+                {stats != null && (
+                  <MonoNote style={{ marginTop: 6 }}>
+                    <SkriftLine line={1} ruleW="32ch">
+                      {stats.attempts.total} frågor totalt · {stats.attempts.today} idag ·{' '}
+                      {stats.drills.thisWeek} pass denna vecka
+                    </SkriftLine>
+                  </MonoNote>
+                )}
+              </>
             )}
-          </InkSlot>
+          </Skrift>
         </DrillRailSection>
 
         {/* ── Bilaga — Historik ───────────────────────────────────── */}
@@ -272,25 +294,27 @@ function HistorikRow({ total, loading }: { total: number | null; loading: boolea
           whiteSpace: 'nowrap',
         }}
       >
-        <InkSlot ready={!loading} w={7}>
-          {total != null ? `${total} pass ` : ''}
-        </InkSlot>
+        <Skrift ready={!loading} lines={1}>
+          <SkriftLine line={0} inline ruleW="7ch">
+            {total != null ? `${total} pass ` : ''}
+          </SkriftLine>
+        </Skrift>
         →
       </span>
     </Link>
   )
 }
 
-// ── Pre-impressions (drying ink, A2) ────────────────────────────────
+// ── Waiting states (Skriften ruled sheet) ───────────────────────────
 //
-// Static ghosts with the resolved surfaces' exact geometry, so the ink
-// dries in with zero reflow. Never animated — an impression on the
-// sheet, not an activity indicator (no shimmer on study surfaces).
+// Ruled placeholders with the resolved surfaces' exact geometry, so the
+// content writes in with zero reflow. Never animated — the ruled sheet
+// waiting, not an activity indicator (no shimmer on study surfaces).
 
-/** Ghost ledger: all eight rows with real section tags (the exam's
- *  structure needs no data), faint bars where score / band / attempts
- *  will dry in. Same `.hpc-m3-trap` grid as SectionRow. */
-function LedgerImpression() {
+/** Ruled ledger: all eight rows with real section tags (the exam's
+ *  structure needs no data), faint baseline rules where score / band /
+ *  attempts will write in. Same `.hpc-m3-trap` grid as SectionRow. */
+function LedgerRules() {
   return (
     <div>
       {SECTION_KEYS.map((section) => (
@@ -298,11 +322,11 @@ function LedgerImpression() {
           <span className="hpc-m3-trap-t">
             <span className="hpc-m3-tag">{section}</span>
             <span style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 500 }}>
-              <Impress w={4} />
+              <SkriftRule w={4} />
             </span>
           </span>
           <span className="hpc-m3-trap-n">
-            <Impress w={9} />
+            <SkriftRule w={9} />
           </span>
         </span>
       ))}
@@ -310,10 +334,10 @@ function LedgerImpression() {
   )
 }
 
-/** Ghost heat strip: the 12×7 calendar at the zero-bucket tone plus the
+/** Ruled heat strip: the 12×7 calendar at the zero-bucket tone plus the
  *  streak line's bar — same cell metrics as NarvaroBlock's compact
  *  strip, so attendance dries into an already-standing calendar. */
-function NarvaroImpression() {
+function NarvaroRules() {
   return (
     <div>
       <div style={{ display: 'flex', gap: 3 }}>
@@ -337,10 +361,10 @@ function NarvaroImpression() {
       {/* Two ghost lines — the resolved block carries both the
        *  "visa detalj" toggle line and the streak line. */}
       <p style={{ ...mono11, marginTop: 10, marginBottom: 0 }}>
-        <Impress w={12} />
+        <SkriftRule w={12} />
       </p>
       <p style={{ ...mono11, marginTop: 6, marginBottom: 0 }}>
-        <Impress w={16} />
+        <SkriftRule w={16} />
       </p>
     </div>
   )

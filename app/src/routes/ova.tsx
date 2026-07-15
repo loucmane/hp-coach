@@ -25,7 +25,7 @@ import { useDueMistakes, usePileMistakes } from '@/api/hooks/useMistakes'
 import { useStats } from '@/api/hooks/useStats'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
-import { Impress, InkDryOnMount, InkSlot } from '@/components/motion/InkDry'
+import { InkDryOnMount, Skrift, SkriftLine } from '@/components/motion/Skrift'
 import { Page } from '@/components/Page'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import { countsBySection } from '@/lib/dueBySection'
@@ -117,22 +117,15 @@ function OvaRoute() {
                 maxWidth: '46ch',
               }}
             >
-              {/* Inline slot (a <p> cannot host a div) — the span wraps
-               *  its text lines exactly as the bare paragraph did. */}
-              <InkSlot
-                ready={!laneCopyPending}
-                impression={
-                  <>
-                    <Impress w={42} />
-                    <br />
-                    <Impress w={26} />
-                  </>
-                }
-              >
-                {weakest
-                  ? `Schemat föreslår ${weakest} — svagast just nu. Välj fritt om du hellre tar något annat.`
-                  : 'Välj en sektion att öva, eller ta en blandad övning över alla åtta delprov.'}
-              </InkSlot>
+              {/* Inline write-in (a <p> cannot host a div) — the copy
+               *  writes itself in over a faint baseline rule. */}
+              <Skrift ready={!laneCopyPending} lines={1}>
+                <SkriftLine line={0} inline ruleW="42ch">
+                  {weakest
+                    ? `Schemat föreslår ${weakest} — svagast just nu. Välj fritt om du hellre tar något annat.`
+                    : 'Välj en sektion att öva, eller ta en blandad övning över alla åtta delprov.'}
+                </SkriftLine>
+              </Skrift>
             </p>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
               {SECTION_KEYS.map((s) => {
@@ -220,11 +213,13 @@ function OvaRoute() {
                             fontVariantNumeric: 'tabular-nums',
                           }}
                         >
-                          <InkSlot ready={!pile.isPending} w={7}>
-                            {laneDue > 0 ? (
-                              <span data-testid={`ova-due-${s}`}>{laneDue} väntar</span>
-                            ) : null}
-                          </InkSlot>
+                          <Skrift ready={!pile.isPending} lines={1}>
+                            <SkriftLine line={0} inline ruleW="7ch">
+                              {laneDue > 0 ? (
+                                <span data-testid={`ova-due-${s}`}>{laneDue} väntar</span>
+                              ) : null}
+                            </SkriftLine>
+                          </Skrift>
                         </span>
                       )}
                     </Link>
@@ -255,28 +250,21 @@ function OvaRoute() {
                 maxWidth: '46ch',
               }}
             >
-              <InkSlot
-                ready={!queuePending}
-                impression={
-                  <>
-                    <Impress w={40} />
-                    <br />
-                    <Impress w={22} />
-                  </>
-                }
-              >
-                {pileCount > 0
-                  ? // Prefer ONE number — today's pile — wherever the two agree.
-                    // Only when some of the pile isn't ripe yet do we name both
-                    // ("N redo nu · M i dagens hög"), since you replay the ripe
-                    // ones and the rest become ready soon.
-                    dueCount === pileCount
-                    ? `${pileCount} ${pileCount === 1 ? 'miss' : 'missar'} att repetera — de äldsta först.`
-                    : dueCount > 0
-                      ? `${dueCount} redo att repetera nu · ${pileCount} i dagens hög — de äldsta först.`
-                      : `Inget är redo just nu — ${pileCount} ${pileCount === 1 ? 'miss ligger' : 'missar ligger'} i dagens hög och blir redo snart.`
-                  : 'Kön är tom just nu — allt du missat är återlärt. Repetitionen står kvar här ändå.'}
-              </InkSlot>
+              <Skrift ready={!queuePending} lines={1}>
+                <SkriftLine line={0} inline ruleW="40ch">
+                  {pileCount > 0
+                    ? // Prefer ONE number — today's pile — wherever the two agree.
+                      // Only when some of the pile isn't ripe yet do we name both
+                      // ("N redo nu · M i dagens hög"), since you replay the ripe
+                      // ones and the rest become ready soon.
+                      dueCount === pileCount
+                      ? `${pileCount} ${pileCount === 1 ? 'miss' : 'missar'} att repetera — de äldsta först.`
+                      : dueCount > 0
+                        ? `${dueCount} redo att repetera nu · ${pileCount} i dagens hög — de äldsta först.`
+                        : `Inget är redo just nu — ${pileCount} ${pileCount === 1 ? 'miss ligger' : 'missar ligger'} i dagens hög och blir redo snart.`
+                    : 'Kön är tom just nu — allt du missat är återlärt. Repetitionen står kvar här ändå.'}
+                </SkriftLine>
+              </Skrift>
             </p>
             {dueCount > 0 && (
               // Section-scoped repetition (owner 2026-07-14): chips for the
@@ -339,13 +327,15 @@ function OvaRoute() {
                 color: !queuePending && dueCount === 0 ? 'var(--muted)' : laneCta.color,
               }}
             >
-              <InkSlot ready={!queuePending} w={12}>
-                {dueCount > 0
-                  ? `Repetera ${Math.min(dueCount, 10)} →`
-                  : pileCount > 0
-                    ? 'Inget redo än'
-                    : 'Kön är tom'}
-              </InkSlot>
+              <Skrift ready={!queuePending} lines={1}>
+                <SkriftLine line={0} inline ruleW="12ch">
+                  {dueCount > 0
+                    ? `Repetera ${Math.min(dueCount, 10)} →`
+                    : pileCount > 0
+                      ? 'Inget redo än'
+                      : 'Kön är tom'}
+                </SkriftLine>
+              </Skrift>
             </Link>
           </DrillRailSection>
         </div>
