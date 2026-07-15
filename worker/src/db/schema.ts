@@ -10,7 +10,15 @@
 // the first time a signed-in user hits any authenticated route.
 
 import { sql } from 'drizzle-orm'
-import { index, integer, real, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core'
+import {
+  index,
+  integer,
+  primaryKey,
+  real,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from 'drizzle-orm/sqlite-core'
 
 // Device provenance for resumption surfaces — "pausad på telefon" reads
 // as a warm memory anchor for a single phone↔laptop user. Nullable on
@@ -358,6 +366,67 @@ export const mockResults = sqliteTable(
   }),
 )
 
+// ── item_stats — learned per-question difficulty (Elo item side) ──────
+//
+// PL-L.1: the app used to treat every question as equally hard. This is
+// the item pole of an Elo-style rating fit incrementally from `attempts`
+// (see lib/fit.ts). One row per question_id, GLOBAL across all users —
+// difficulty is a property of the item, not of any one solver. `attempts`
+// is the count of fitted attempts that have moved this item so far; it
+// drives the K-factor decay (K=32 for the first 30, then 16). `difficulty`
+// is clamped to ±800. Only items with ≥1 fitted attempt ever get a row.
+//
+// Granularity note: difficulty is per-QUESTION here. Per-framework-tag
+// difficulty (rolling a qid up to its Layer-1 cluster) is deliberately
+// FUTURE work — the qid→framework map lives client-side only, so the
+// worker can't resolve it without shipping that map server-side too.
+export const itemStats = sqliteTable('item_stats', {
+  questionId: text('question_id').primaryKey(),
+  difficulty: real('difficulty').notNull().default(0),
+  attempts: integer('attempts').notNull().default(0),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+})
+
+// ── user_ability — learned per-(user, section) ability (Elo user side) ─
+//
+// The user pole of the same fit. Ability is tracked at SECTION grain for
+// v1 (section parsed from the qid the same way lib/section.ts /
+// app/src/lib/dueBySection.ts do — the `{exam}-{half}-{SECTION}-{number}`
+// shape). Per-framework-tag ability is future work for the same reason
+// item difficulty is: the qid→framework map is client-side only.
+//
+// `ability` clamps to ±800; `attempts` is the per-(user, section) fitted
+// count backing the K decay. PK is (user_id, section).
+export const userAbility = sqliteTable(
+  'user_ability',
+  {
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    section: text('section').notNull(),
+    ability: real('ability').notNull().default(0),
+    attempts: integer('attempts').notNull().default(0),
+    updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.userId, t.section] }),
+  }),
+)
+
+// ── fit_state — the incremental-fit watermark (single row, id=1) ──────
+//
+// The nightly cron (and POST /api/fit/run) process only `attempts` newer
+// than `lastAttemptId`, then advance the watermark. attempts.id is
+// autoincrement = insertion order = chronological, so `id > watermark`
+// ordered by id ascending replays every attempt exactly once, in order.
+// This is what makes re-runs idempotent: a second run finds no new rows
+// and changes nothing. Exactly one row lives here (id fixed to 1).
+export const fitState = sqliteTable('fit_state', {
+  id: integer('id').primaryKey(),
+  lastAttemptId: integer('last_attempt_id').notNull().default(0),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+})
+
 // Type aliases used by routes + tests
 export type User = typeof users.$inferSelect
 export type NewUser = typeof users.$inferInsert
@@ -373,3 +442,7 @@ export type DailyPlanRow = typeof dailyPlans.$inferSelect
 export type NewDailyPlanRow = typeof dailyPlans.$inferInsert
 export type MockResultRow = typeof mockResults.$inferSelect
 export type NewMockResultRow = typeof mockResults.$inferInsert
+export type ItemStat = typeof itemStats.$inferSelect
+export type NewItemStat = typeof itemStats.$inferInsert
+export type UserAbility = typeof userAbility.$inferSelect
+export type NewUserAbility = typeof userAbility.$inferInsert

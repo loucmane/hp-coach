@@ -14,7 +14,7 @@ import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { getDb } from '../db/client'
-import { attempts, mistakes, sessions, users } from '../db/schema'
+import { attempts, mistakes, sessions, userAbility, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
 import { extractSection, SECTIONS, type Section } from '../lib/section'
 import { currentStreak, formatDayUTC, startOfUtcDay } from '../lib/stats'
@@ -76,6 +76,27 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       exposure[r.questionId] = { n: Number(r.n), last: Number(r.last) }
     }
     return c.json({ exposure })
+  })
+
+  // GET /api/me/ability — this user's learned per-section ability (the user
+  // pole of the PL-L.1 Elo fit; the item pole is /api/item-stats). Shape:
+  // { [section]: { ability, attempts } }, only sections the fit has moved.
+  // Feeds PL-L.3 (adaptive picker) and Framsteg later. The fit itself runs
+  // nightly (cron) or via POST /api/fit/run.
+  .get('/ability', async (c) => {
+    const db = getDb(c.env.DB)
+    const userId = await ensureUserRow(db, c.var.userId)
+    const rows = await db
+      .select({
+        section: userAbility.section,
+        ability: userAbility.ability,
+        attempts: userAbility.attempts,
+      })
+      .from(userAbility)
+      .where(eq(userAbility.userId, userId))
+    const ability: Record<string, { ability: number; attempts: number }> = {}
+    for (const r of rows) ability[r.section] = { ability: r.ability, attempts: r.attempts }
+    return c.json({ ability })
   })
 
   // GET /api/me/prefs — current user prefs. Lazy-creates the row.

@@ -36,18 +36,23 @@ bucket_name = "hpc-content"
 [vars]
 ENVIRONMENT = "dev"
 
-# Daily retention prune (04:00 UTC) — bounds the append-only attempts/
-# sessions tables. Cron triggers don't inherit into named envs, so
-# staging/production each declare their own below.
+# Daily crons (UTC). Both fan into the one `scheduled` handler (index.ts),
+# discriminated by event.cron:
+#   03:00 — fit the learned item-difficulty layer (PL-L.1): fold new
+#           attempts into item_stats / user_ability (lib/fit.ts). Runs first
+#           so ratings are current before the 04:00 prune touches attempts.
+#   04:00 — retention prune; bounds the append-only attempts/sessions tables.
+# Cron triggers don't inherit into named envs, so staging/production each
+# declare their own below.
 [triggers]
-crons = ["0 4 * * *"]
+crons = ["0 3 * * *", "0 4 * * *"]
 
 # ── Staging ───────────────────────────────────────────────────────────
 [env.staging]
 name = "hpc-api-staging"
 
 [env.staging.triggers]
-crons = ["0 4 * * *"]
+crons = ["0 3 * * *", "0 4 * * *"]
 
 [env.staging.vars]
 ENVIRONMENT = "staging"
@@ -71,7 +76,7 @@ bucket_name = "hpc-content"
 name = "hpc-api"
 
 [env.production.triggers]
-crons = ["0 4 * * *"]
+crons = ["0 3 * * *", "0 4 * * *"]
 
 [env.production.vars]
 ENVIRONMENT = "production"
