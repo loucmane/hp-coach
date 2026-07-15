@@ -82,6 +82,7 @@ import { formatPass, formatSitting } from '@/lib/examNames'
 import { listAuthenticPasses, type PassOption, pickSynthetic, resolveAuthentic } from '@/lib/mock'
 import { logMockEvent } from '@/lib/mockEvents'
 import { sheetFromAttempts } from '@/lib/mockSheet'
+import { useFirstContentSignal } from '@/lib/motion'
 
 export type ProvSearch = {
   result?: number
@@ -205,6 +206,9 @@ type RunningState = {
 }
 
 function ProvRoute() {
+  // Boot-veil content signal (#305 owner verdict) — /prov has no Skrift
+  // block; the picker/instructions view renders from local data at mount.
+  useFirstContentSignal()
   const navigate = useNavigate()
   const { result: resultId, devMinutes, half: prescribedHalf } = Route.useSearch()
   const resultsQuery = useMockResults()

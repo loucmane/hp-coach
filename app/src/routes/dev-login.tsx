@@ -22,6 +22,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
 import { Mono } from '@/components/primitives'
+import { useFirstContentSignal } from '@/lib/motion'
 
 const BASE_URL =
   (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? 'http://localhost:8787'
@@ -31,6 +32,9 @@ export const Route = createFileRoute('/dev-login')({
 })
 
 function DevLoginScreen() {
+  // Boot-veil content signal (#305 owner verdict) — dev/e2e bootstrap
+  // route; its status line is present at mount.
+  useFirstContentSignal()
   const { isLoaded, signIn, setActive } = useSignIn()
   const navigate = useNavigate()
   const [status, setStatus] = useState<string>('Väntar på Clerk...')

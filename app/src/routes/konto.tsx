@@ -19,6 +19,7 @@ import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
 import { LEGAL_LINK_STYLE, LEGAL_LINKS } from '@/lib/legal'
+import { useFirstContentSignal } from '@/lib/motion'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
 
 export const Route = createFileRoute('/konto')({
@@ -41,6 +42,9 @@ const COMING = [
 ] as const
 
 function KontoRoute() {
+  // Boot-veil content signal (#305 owner verdict) — /konto has no Skrift
+  // block; its identity/settings content is local-derived at mount.
+  useFirstContentSignal()
   const identity = useAccountIdentity()
   const sitting = useSitting()
   const days = useDaysRemaining()

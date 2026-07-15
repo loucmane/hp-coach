@@ -11,6 +11,7 @@ import { useUpdateUserPrefs, useUserPrefs } from '@/api/hooks/useUserPrefs'
 import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Btn, Eyebrow, Hairline, Mono, Stack } from '@/components/primitives'
+import { useFirstContentSignal } from '@/lib/motion'
 import {
   DENSITIES,
   type Density,
@@ -33,6 +34,9 @@ const FONT_KEYS: FontKey[] = ['literary', 'geometric', 'editorial', 'hyperlegibl
 const DENSITY_KEYS: Density[] = ['compact', 'regular', 'comfy']
 
 function DevPanel() {
+  // Boot-veil content signal (#305 owner verdict) — dev-only route, no
+  // Skrift block; the panel is present at mount.
+  useFirstContentSignal()
   const navigate = useNavigate()
   // Read from local stores (instant), write through useSyncedPrefs (server +
   // local rollback on failure). The store values stay aligned with the

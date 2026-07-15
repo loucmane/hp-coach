@@ -20,6 +20,7 @@ import { CommandPalette } from '@/components/CommandPalette'
 import { Frame } from '@/components/Frame'
 import { RouteScene } from '@/components/motion/RouteScene'
 import { Btn, Mono } from '@/components/primitives'
+import { hasFirstContentFired } from '@/lib/motion'
 import { isWelcomed } from '@/lib/welcome'
 import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
 
@@ -76,6 +77,20 @@ function RootShell() {
 // show a recoverable error instead of an indefinite splash.
 const CLERK_LOAD_TIMEOUT_MS = 15_000
 
+// Owner verdict on #305: the brief skeleton frame between the boot veil
+// lifting and the page's real content landing read as janky. The veil
+// now holds past Clerk resolving until the first REAL CONTENT commits
+// (see lib/motion.ts `hpc:first-content` / `useFirstContentSignal`) — the
+// user sees their surface colour, then the finished page, never a
+// skeleton frame in between on a normal cold boot.
+//
+// This grace window covers a route we failed to instrument (no Skrift,
+// no `useFirstContentSignal` call): once Clerk itself has resolved, give
+// the mounted route up to this long to signal before lifting anyway — an
+// unsignalled route must not ride all the way to the 1.5s inline
+// failsafe on every single load.
+const FIRST_CONTENT_GRACE_MS = 1_200
+
 function ClerkGate() {
   const { isLoaded } = useAuth()
   const [timedOut, setTimedOut] = useState(false)
@@ -84,11 +99,46 @@ function ClerkGate() {
     const t = setTimeout(() => setTimedOut(true), CLERK_LOAD_TIMEOUT_MS)
     return () => clearTimeout(t)
   }, [isLoaded])
-  // Lift the boot veil (index.html) the moment Clerk resolves — that's the
-  // first frame the app can show a stable surface instead of the "laddar…"
-  // splash. The inline script's 1.5s failsafe covers a stalled Clerk.
+
+  // Arm the first-content listener at MOUNT, not gated on `isLoaded`. React
+  // fires a commit's effects bottom-up (children before parents) — when
+  // `isLoaded` flips true, the signed-in tree mounts as ClerkGate's child
+  // in the SAME commit, so a surface that's ready at first render (a
+  // `Skrift` skip, `useFirstContentSignal`) can dispatch from ITS effect
+  // before this effect would otherwise run. Registering the listener
+  // early avoids the race for the async case; `hasFirstContentFired()`
+  // below covers the synchronous case where the dispatch already
+  // happened by the time this effect runs.
   useEffect(() => {
-    if (isLoaded) window.__hpcBootVeil?.remove()
+    const lift = () => {
+      // Two rAFs so the just-committed content is actually painted
+      // before the veil comes off — one rAF only guarantees the browser
+      // has scheduled the paint, not that it has happened.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          window.__hpcBootVeil?.remove()
+        })
+      })
+    }
+    if (hasFirstContentFired()) {
+      lift()
+      return
+    }
+    window.addEventListener('hpc:first-content', lift, { once: true })
+    return () => window.removeEventListener('hpc:first-content', lift)
+  }, [])
+
+  // Grace fallback: once Clerk has resolved, an unsignalled route still
+  // gets the veil lifted after a short, bounded wait instead of riding to
+  // the 1.5s inline failsafe (see FIRST_CONTENT_GRACE_MS above). Skrift/
+  // useFirstContentSignal firing first makes this a no-op — remove() is
+  // idempotent.
+  useEffect(() => {
+    if (!isLoaded) return
+    const t = setTimeout(() => {
+      window.__hpcBootVeil?.remove()
+    }, FIRST_CONTENT_GRACE_MS)
+    return () => clearTimeout(t)
   }, [isLoaded])
 
   if (isLoaded) return <AuthRouter />

@@ -7,8 +7,9 @@
 //   - a rule is a static hairline, never an animation.
 
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { __resetFirstContentSignalForTests } from '@/lib/motion'
 import { Skrift, SkriftLine, SkriftRule } from './Skrift'
 
 /** The baseline rule is the aria-hidden hairline SkriftLine draws while
@@ -79,5 +80,88 @@ describe('SkriftRule', () => {
     expect(bar).not.toBeNull()
     expect(bar.style.animation).toBe('')
     expect(bar.style.width).toBe('12ch')
+  })
+})
+
+describe('Skrift — boot-veil first-content dispatch (#305)', () => {
+  // Earlier `<Skrift ready>` renders in this file (SkriftLine tests above)
+  // already latch the app-wide one-shot flag — reset it BEFORE each test
+  // here too, not just after, so the first test in this block doesn't
+  // inherit that residue.
+  beforeEach(() => {
+    __resetFirstContentSignalForTests()
+  })
+
+  it('dispatches hpc:first-content when it first renders with ready=true', () => {
+    const onSignal = vi.fn()
+    window.addEventListener('hpc:first-content', onSignal)
+
+    render(
+      <Skrift ready lines={1}>
+        <SkriftLine line={0}>
+          <span>klar</span>
+        </SkriftLine>
+      </Skrift>,
+    )
+
+    window.removeEventListener('hpc:first-content', onSignal)
+    expect(onSignal).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not dispatch while ready=false, but fires once ready flips true', () => {
+    const onSignal = vi.fn()
+    window.addEventListener('hpc:first-content', onSignal)
+
+    const { rerender } = render(
+      <Skrift ready={false} lines={1}>
+        <SkriftLine line={0}>
+          <span>väntar</span>
+        </SkriftLine>
+      </Skrift>,
+    )
+    expect(onSignal).not.toHaveBeenCalled()
+
+    rerender(
+      <Skrift ready lines={1}>
+        <SkriftLine line={0}>
+          <span>klar</span>
+        </SkriftLine>
+      </Skrift>,
+    )
+    expect(onSignal).toHaveBeenCalledTimes(1)
+
+    window.removeEventListener('hpc:first-content', onSignal)
+  })
+
+  it('does not re-dispatch on later re-renders once already fired (ready stays true)', () => {
+    const onSignal = vi.fn()
+    window.addEventListener('hpc:first-content', onSignal)
+
+    const { rerender } = render(
+      <Skrift ready lines={1}>
+        <SkriftLine line={0}>
+          <span>klar</span>
+        </SkriftLine>
+      </Skrift>,
+    )
+    expect(onSignal).toHaveBeenCalledTimes(1)
+
+    rerender(
+      <Skrift ready lines={1}>
+        <SkriftLine line={0}>
+          <span>klar, uppdaterad</span>
+        </SkriftLine>
+      </Skrift>,
+    )
+    rerender(
+      <Skrift ready lines={1}>
+        <SkriftLine line={0}>
+          <span>klar, igen</span>
+        </SkriftLine>
+      </Skrift>,
+    )
+
+    window.removeEventListener('hpc:first-content', onSignal)
+    expect(onSignal).toHaveBeenCalledTimes(1)
   })
 })

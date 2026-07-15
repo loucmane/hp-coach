@@ -5,9 +5,17 @@
 // `removeStartViewTransition` below, and mocks `window.matchMedia` to
 // control the `prefers-reduced-motion` branch.
 
+import { render } from '@testing-library/react'
+import { createElement } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { withViewTransition } from './motion'
+import {
+  __resetFirstContentSignalForTests,
+  dispatchFirstContent,
+  hasFirstContentFired,
+  useFirstContentSignal,
+  withViewTransition,
+} from './motion'
 
 function mockMatchMedia(reduced: boolean) {
   window.matchMedia = vi.fn().mockImplementation((query: string) => ({
@@ -93,5 +101,71 @@ describe('withViewTransition', () => {
     withViewTransition(fn)
 
     expect(fn).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('dispatchFirstContent / useFirstContentSignal — boot veil one-shot (#305)', () => {
+  afterEach(() => {
+    __resetFirstContentSignalForTests()
+  })
+
+  it('dispatches hpc:first-content exactly once, even when called repeatedly', () => {
+    const onSignal = vi.fn()
+    window.addEventListener('hpc:first-content', onSignal)
+
+    dispatchFirstContent()
+    dispatchFirstContent()
+    dispatchFirstContent()
+
+    window.removeEventListener('hpc:first-content', onSignal)
+    expect(onSignal).toHaveBeenCalledTimes(1)
+  })
+
+  it('sets the synchronous __hpcFirstContentFired flag alongside the event', () => {
+    expect(hasFirstContentFired()).toBe(false)
+    dispatchFirstContent()
+    expect(hasFirstContentFired()).toBe(true)
+  })
+
+  it('stays one-shot app-wide across independent callers (a second caller is a no-op)', () => {
+    const onSignal = vi.fn()
+    window.addEventListener('hpc:first-content', onSignal)
+
+    dispatchFirstContent() // caller A (e.g. Skrift)
+    dispatchFirstContent() // caller B (e.g. a route's useFirstContentSignal)
+
+    window.removeEventListener('hpc:first-content', onSignal)
+    expect(onSignal).toHaveBeenCalledTimes(1)
+  })
+
+  it('useFirstContentSignal fires the signal once on mount', () => {
+    const onSignal = vi.fn()
+    window.addEventListener('hpc:first-content', onSignal)
+
+    function Probe() {
+      useFirstContentSignal()
+      return null
+    }
+    render(createElement(Probe))
+
+    window.removeEventListener('hpc:first-content', onSignal)
+    expect(onSignal).toHaveBeenCalledTimes(1)
+    expect(hasFirstContentFired()).toBe(true)
+  })
+
+  it('useFirstContentSignal does not re-fire the app-wide signal on re-render', () => {
+    const onSignal = vi.fn()
+    window.addEventListener('hpc:first-content', onSignal)
+
+    function Probe({ n }: { n: number }) {
+      useFirstContentSignal()
+      return createElement('span', null, n)
+    }
+    const { rerender } = render(createElement(Probe, { n: 1 }))
+    rerender(createElement(Probe, { n: 2 }))
+    rerender(createElement(Probe, { n: 3 }))
+
+    window.removeEventListener('hpc:first-content', onSignal)
+    expect(onSignal).toHaveBeenCalledTimes(1)
   })
 })
