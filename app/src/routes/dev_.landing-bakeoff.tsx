@@ -33,6 +33,9 @@ import { LAND_P3B, LAND_P3S } from '@/components/devbake/LandingBakeoffR3'
 import { LandV4A } from '@/components/devbake/LandingBakeoffR4A'
 import { LandV4B } from '@/components/devbake/LandingBakeoffR4B'
 import { LandV4C } from '@/components/devbake/LandingBakeoffR4C'
+import { LandV5A } from '@/components/devbake/LandingBakeoffR5A'
+import { LandV5B } from '@/components/devbake/LandingBakeoffR5B'
+import { LandV5C } from '@/components/devbake/LandingBakeoffR5C'
 import { isDevSurface } from '@/lib/devSurface'
 
 export const Route = createFileRoute('/dev_/landing-bakeoff')({
@@ -51,6 +54,9 @@ const VARIANTS = [
   { key: 'v4a', label: 'V4A · Titelsidan', C: LandV4A },
   { key: 'v4b', label: 'V4B · Tryckpressen', C: LandV4B },
   { key: 'v4c', label: 'V4C · Tidslinjen', C: LandV4C },
+  { key: 'v5a', label: 'V5A · Frågan under datumet', C: LandV5A },
+  { key: 'v5b', label: 'V5B · Pressen trycker schemat', C: LandV5B },
+  { key: 'v5c', label: 'V5C · Rättelsen', C: LandV5C },
 ] as const
 
 function LandingBakeoffPage() {
