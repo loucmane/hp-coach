@@ -23,13 +23,26 @@
 // authentic HP style. Nothing comes from data/ (© UHR); each question
 // is labeled as an example on the page itself.
 //
+// CTA SYSTEM (round 2.1, owner verdict "there needs to be more CTAs"):
+// one action — "Skapa konto" → /sign-up — repeated at four stations per
+// concept, never competing actions, no urgency theater:
+//   1. EARLY: a quiet inline CTA inside the hero (reachable in the
+//      first ~1.2 viewports at 390px WITHOUT answering anything).
+//   2. EARNED: the round-2 mid-page moments stay (P1v2 post-verdict
+//      note, P2v2 completed ledger).
+//   3. STICKY: a slim fixed bar (phone: full-width bottom; ≥900px:
+//      bottom-right corner pill — see notes) that inks in once the
+//      hero has scrolled away and lifts off when the final CTA block
+//      enters the viewport — never two CTAs stacked on screen.
+//   4. FINAL: the price block carries the button (unchanged).
+//
 // Self-contained: no auth, no router, no app stores. CTA is a plain
 // <a href="/sign-up">. DESIGN artifact — consumed by /dev/landing-bakeoff.
 
 import { motion } from 'motion/react'
-import { type CSSProperties, type ReactNode, useState } from 'react'
+import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from 'react'
 
-import { EASE, useArketMotion, useMountGo } from '@/lib/motion'
+import { DUR, EASE, useArketMotion, useMountGo } from '@/lib/motion'
 
 /* ── demo content — ORIGINAL questions in HP style (not from any exam) ── */
 
@@ -312,6 +325,59 @@ function QuietCta() {
   )
 }
 
+/* ── sticky CTA — the always-reachable door ────────────────────────────
+ *    Visible only in the dead zone between the hero (once it has fully
+ *    scrolled away) and the final CTA block (hides the moment that block
+ *    enters the viewport — never two CTAs on screen). Phone: a slim
+ *    full-width bottom bar. ≥900px: the same object shrunk to a bottom-
+ *    right corner pill (see .notes.md for the reasoning). Arket-lawful:
+ *    opacity + a small y settle, tokens from lib/motion; reduced motion
+ *    collapses to instant. ─────────────────────────────────────────── */
+
+function useStickyCta() {
+  const heroRef = useRef<HTMLElement>(null)
+  const endRef = useRef<HTMLElement>(null)
+  const [heroGone, setHeroGone] = useState(false)
+  const [endNear, setEndNear] = useState(false)
+
+  useEffect(() => {
+    const hero = heroRef.current
+    const end = endRef.current
+    if (!hero || !end || typeof IntersectionObserver === 'undefined') return
+    const heroObs = new IntersectionObserver(([e]) => setHeroGone(!e.isIntersecting))
+    const endObs = new IntersectionObserver(([e]) => setEndNear(e.isIntersecting))
+    heroObs.observe(hero)
+    endObs.observe(end)
+    return () => {
+      heroObs.disconnect()
+      endObs.disconnect()
+    }
+  }, [])
+
+  return { heroRef, endRef, visible: heroGone && !endNear }
+}
+
+function StickyCta({ visible }: { visible: boolean }) {
+  const m = useArketMotion()
+  return (
+    <motion.div
+      className="lr2-sticky"
+      initial={false}
+      animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 14 }}
+      transition={m.rm ? { duration: 0 } : { duration: DUR.chrome, ease: [...EASE.reading] }}
+      style={{ pointerEvents: visible ? 'auto' : 'none' }}
+      aria-hidden={!visible}
+    >
+      <a className="lr2-sticky-link" href="/sign-up" tabIndex={visible ? 0 : -1}>
+        <span className="lr2-sticky-cta">
+          {COPY.cta} <span aria-hidden>→</span>
+        </span>
+        <span className="lr2-sticky-price">{COPY.priceX} · engångsköp</span>
+      </a>
+    </motion.div>
+  )
+}
+
 /* ── landing-local styles (layout only; color/type from live tokens) ──── */
 
 const LR2_CSS = `
@@ -477,9 +543,54 @@ const LR2_CSS = `
 .lr2-ledger .ok { color: var(--ok); }
 .lr2-ledger .bad { color: var(--bad); }
 .lr2-ledger .slot { color: var(--muted); }
+.lr2-sticky {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  background: var(--bg);
+  border-top: 1px solid var(--hairline);
+}
+.lr2-sticky-link {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 13px 20px calc(13px + env(safe-area-inset-bottom, 0px));
+  text-decoration: none;
+  white-space: nowrap;
+}
+.lr2-sticky-cta {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+.lr2-sticky-price {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.lr2-sticky-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
 @media (min-width: 900px) {
   .lr2-col { max-width: 720px; padding: 48px 24px 120px; }
   .lr2-p1-hero { padding-top: 52px; }
+  .lr2-sticky {
+    left: auto;
+    right: 24px;
+    bottom: 22px;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+  }
+  .lr2-sticky-link { max-width: none; padding: 9px 18px; gap: 14px; }
 }
 `
 
@@ -491,6 +602,7 @@ export function LAND_P1V2() {
   const m = useArketMotion()
   const go = useMountGo(m.rm)
   const [q1Done, setQ1Done] = useState(false)
+  const sticky = useStickyCta()
 
   return (
     <div className="lr2-root">
@@ -506,7 +618,7 @@ export function LAND_P1V2() {
 
         {/* HERO = an answerable question, setting like ink in one beat:
             eyebrow → headword (typographic settle) → options → tag. */}
-        <section className="lr2-p1-hero" aria-label="Prova en uppgift">
+        <section className="lr2-p1-hero" aria-label="Prova en uppgift" ref={sticky.heroRef}>
           <Ink go={go} delay={0.1}>
             <div className="hpc-m3-eyebrow">{Q_ORD.kicker}</div>
           </Ink>
@@ -528,6 +640,8 @@ export function LAND_P1V2() {
             <p className="lr2-folio" style={{ marginTop: 16 }}>
               {COPY.exampleTag}
             </p>
+            {/* early door — conversion is not conditional on playing */}
+            <QuietCta />
           </Ink>
         </section>
 
@@ -585,8 +699,10 @@ export function LAND_P1V2() {
 
         <hr className="lr2-sep" />
 
-        <PriceBlock />
-        <Cta sub={COPY.ctaSub} />
+        <section ref={sticky.endRef} aria-label="Pris och konto">
+          <PriceBlock />
+          <Cta sub={COPY.ctaSub} />
+        </section>
 
         <hr className="lr2-sep" style={{ marginBottom: 20 }} />
         <div className="lr2-brandline">
@@ -597,6 +713,7 @@ export function LAND_P1V2() {
           {COPY.human}
         </p>
       </div>
+      <StickyCta visible={sticky.visible} />
     </div>
   )
 }
@@ -738,45 +855,50 @@ export function LAND_P2V2() {
   const go = useMountGo(m.rm)
   const [tally, setTally] = useState<Record<string, boolean>>({})
   const book = (id: string, ok: boolean) => setTally((t) => (id in t ? t : { ...t, [id]: ok }))
+  const sticky = useStickyCta()
 
   return (
     <div className="lr2-root">
       <style>{LR2_CSS}</style>
       <div className="hpc-m3-frame" style={{ paddingTop: 28 }}>
-        <Ink go={go} delay={0}>
-          <header className="lr2-p2-masthead">
-            <span className="lr2-brand">{COPY.brand}</span>
-            <span className="lr2-folio">
-              {COPY.tagline} · {COPY.domain}
-            </span>
-          </header>
-        </Ink>
-        {/* the masthead rule draws left→right, then the thesis settles */}
-        <motion.div
-          className="lr2-p2-rule"
-          style={{ transformOrigin: 'left center' }}
-          initial={false}
-          animate={{ scaleX: go ? 1 : 0 }}
-          transition={
-            m.rm ? { duration: 0 } : { duration: 0.34, ease: [...EASE.reading], delay: 0.08 }
-          }
-        />
-        <motion.h1
-          className="lr2-p2-thesis"
-          initial={false}
-          animate={{ opacity: go ? 1 : 0, letterSpacing: go ? '-0.015em' : '0.015em' }}
-          transition={
-            m.rm ? { duration: 0 } : { duration: 0.52, ease: [...EASE.reading], delay: 0.18 }
-          }
-        >
-          Det här är inte en broschyr. Det är appen.
-        </motion.h1>
-        <Ink go={go} delay={0.36}>
-          <p className="lr2-body" style={{ marginTop: 14, maxWidth: '50ch' }}>
-            Uppslaget nedan är en riktig övningssession. Svara på uppgifterna, se hur appen rättar —
-            och avgör själv.
-          </p>
-        </Ink>
+        <section ref={sticky.heroRef} aria-label="HP-Coach — vad sidan är">
+          <Ink go={go} delay={0}>
+            <header className="lr2-p2-masthead">
+              <span className="lr2-brand">{COPY.brand}</span>
+              <span className="lr2-folio">
+                {COPY.tagline} · {COPY.domain}
+              </span>
+            </header>
+          </Ink>
+          {/* the masthead rule draws left→right, then the thesis settles */}
+          <motion.div
+            className="lr2-p2-rule"
+            style={{ transformOrigin: 'left center' }}
+            initial={false}
+            animate={{ scaleX: go ? 1 : 0 }}
+            transition={
+              m.rm ? { duration: 0 } : { duration: 0.34, ease: [...EASE.reading], delay: 0.08 }
+            }
+          />
+          <motion.h1
+            className="lr2-p2-thesis"
+            initial={false}
+            animate={{ opacity: go ? 1 : 0, letterSpacing: go ? '-0.015em' : '0.015em' }}
+            transition={
+              m.rm ? { duration: 0 } : { duration: 0.52, ease: [...EASE.reading], delay: 0.18 }
+            }
+          >
+            Det här är inte en broschyr. Det är appen.
+          </motion.h1>
+          <Ink go={go} delay={0.36}>
+            <p className="lr2-body" style={{ marginTop: 14, maxWidth: '50ch' }}>
+              Uppslaget nedan är en riktig övningssession. Svara på uppgifterna, se hur appen rättar
+              — och avgör själv.
+            </p>
+            {/* early door — conversion is not conditional on playing */}
+            <QuietCta />
+          </Ink>
+        </section>
 
         <RailRow label="Uppgift 1" sub="ORD · exempel">
           <p className="lr2-folio" style={{ marginBottom: 14 }}>
@@ -823,8 +945,10 @@ export function LAND_P2V2() {
         </RailRow>
 
         <RailRow label="Pris" sub="villkor i klartext">
-          <PriceBlock />
-          <Cta sub={COPY.ctaSub} />
+          <section ref={sticky.endRef} aria-label="Pris och konto">
+            <PriceBlock />
+            <Cta sub={COPY.ctaSub} />
+          </section>
         </RailRow>
 
         <hr className="lr2-sep" style={{ marginBottom: 20 }} />
@@ -836,6 +960,7 @@ export function LAND_P2V2() {
           {COPY.human}
         </p>
       </div>
+      <StickyCta visible={sticky.visible} />
     </div>
   )
 }
