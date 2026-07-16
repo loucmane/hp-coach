@@ -132,6 +132,72 @@ vägen."), "Rätt svar"/"Ditt svar", "Varför den lockar", specimen-ledet
 "Ordet bär alltid tyngd: en vedermöda uthärdas, den uppskattas inte.",
 kolofonen "byggd av en som själv skriver provet".
 
+## CTA system (round 2.1 — owner verdict "there needs to be more CTAs")
+
+One action — "Skapa konto" → `/sign-up` — repeated at four stations per
+concept. Identical label and destination everywhere; no urgency theater
+(no countdowns, no "endast idag"). Verified at 390px and 1440px
+(frames in `screenshots-landing-cta/`).
+
+### CTA placement map — P1v2 "Första frågan"
+
+1. **Early inline** (`QuietCta`, hero): under the exampleTag, inside the
+   hero's last ink beat (delay 0.5 with the tag). At 390px it lands ON
+   THE FIRST VIEWPORT — a ready-to-buy visitor never has to answer the
+   question to convert.
+2. **Earned** (unchanged): the "Det där var appen" note after the first
+   graded answer keeps its quiet CTA.
+3. **Sticky bar**: appears once the hero `<section>` has fully scrolled
+   out (IntersectionObserver), hides the moment the final price/CTA
+   `<section>` intersects the viewport.
+4. **Final** (unchanged): the price block carries the button — `Cta`
+   with the zero-choice sub-line renders inside the same
+   "Pris och konto" section as `PriceBlock`.
+
+### CTA placement map — P2v2 "Uppslaget"
+
+1. **Early inline** (`QuietCta`, masthead): directly under the intro
+   paragraph ("… och avgör själv."), same ink beat (delay 0.36). First
+   viewport at 390px.
+2. **Earned** (unchanged): the completed ledger's CTA in the UTFALL row.
+3. **Sticky bar**: hero = masthead + rule + thesis + intro (one wrapping
+   `<section>`); same appear/hide contract as P1v2.
+4. **Final** (unchanged): PriceBlock + Cta inside the "Pris" RailRow,
+   wrapped as the observer's end target.
+
+### The sticky bar itself
+
+- One `<a>` — the whole bar is the tap target: "Skapa konto →" (mono,
+  accent) left, "X kr · engångsköp" (mono, muted) right. Solid
+  `var(--bg)`, 1px `var(--hairline)` top rule, safe-area inset padding.
+- Motion: opacity + 14px y settle on `DUR.chrome` / `EASE.reading`
+  (state-driven, so it survives RouteScene's mount suppression);
+  reduced motion collapses to instant via `useArketMotion().rm`.
+- Hidden state is inert: `pointer-events: none`, `aria-hidden`,
+  `tabIndex={-1}` — it never traps keyboard focus off-screen.
+- **Never two CTAs stacked**: the bar's hide condition is the final CTA
+  section *touching* the viewport, so the bar has lifted off before the
+  button can be seen (verified: `p1v2-390-05/06`, `p2v2-390-04/05`).
+  The early inline CTA lives INSIDE the observed hero, so the bar only
+  appears after that door has scrolled away too. The mid-page earned
+  links can coexist with the bar — they are text-level moments, not
+  blocks, and the spec keeps them.
+
+### Desktop (≥900px) decision: bottom-right corner pill
+
+The same element, restyled by media query (`left:auto; right:24px;
+bottom:22px; border-radius:999px`) — not a top-right pill, and not
+omitted:
+
+- **Not omitted**: neither concept has persistent chrome; on 1440px the
+  dead zone between hero and price block is ~0.7–1 viewport of scroll
+  with no door — the pill has real work to do.
+- **Not top-right**: it would collide with the bake-off's sticky chip
+  header today and with P2v2's masthead brand line on a shipped page.
+- **Bottom-right** keeps ONE object with ONE motion grammar across
+  breakpoints (same edge, same slide), sits outside the 720px column,
+  and points forward — toward the final CTA it hands off to.
+
 ## Known residue
 
 - Dark mode inherits from tokens (all colors token-bound) but was not
@@ -143,3 +209,9 @@ kolofonen "byggd av en som själv skriver provet".
   own eyebrow + headword for the ink beat — acceptable fixture-level
   duplication; a shipped landing would refactor `DemoQuestion` to
   accept a `heading` slot.
+- P2v2's end target is a `<section>` nested inside the Pris RailRow's
+  own `<section>` — harmless, but a shipped page would give RailRow a
+  ref pass-through instead.
+- On a very tall desktop window (viewport ≳ the hero-to-price gap) the
+  sticky pill may never appear — correct by construction: the final CTA
+  is already reachable.
