@@ -58,6 +58,7 @@ import { Route as DevNavRailBakeoffRouteImport } from './routes/dev_.nav-rail-ba
 import { Route as DevNavCtaBakeoffRouteImport } from './routes/dev_.nav-cta-bakeoff'
 import { Route as DevMotionBakeoffRouteImport } from './routes/dev_.motion-bakeoff'
 import { Route as DevMockEventsRouteImport } from './routes/dev_.mock-events'
+import { Route as DevLandingBakeoffRouteImport } from './routes/dev_.landing-bakeoff'
 import { Route as DevAccountMenuBakeoff2RouteImport } from './routes/dev_.account-menu-bakeoff-2'
 import { Route as DevAccountMenuBakeoffRouteImport } from './routes/dev_.account-menu-bakeoff'
 
@@ -308,6 +309,11 @@ const DevMockEventsRoute = DevMockEventsRouteImport.update({
   path: '/dev/mock-events',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevLandingBakeoffRoute = DevLandingBakeoffRouteImport.update({
+  id: '/dev_/landing-bakeoff',
+  path: '/dev/landing-bakeoff',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DevAccountMenuBakeoff2Route = DevAccountMenuBakeoff2RouteImport.update({
   id: '/dev_/account-menu-bakeoff-2',
   path: '/dev/account-menu-bakeoff-2',
@@ -366,6 +372,7 @@ export interface FileRoutesByFullPath {
   '/welcome': typeof WelcomeRoute
   '/dev/account-menu-bakeoff': typeof DevAccountMenuBakeoffRoute
   '/dev/account-menu-bakeoff-2': typeof DevAccountMenuBakeoff2Route
+  '/dev/landing-bakeoff': typeof DevLandingBakeoffRoute
   '/dev/mock-events': typeof DevMockEventsRoute
   '/dev/motion-bakeoff': typeof DevMotionBakeoffRoute
   '/dev/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
@@ -419,6 +426,7 @@ export interface FileRoutesByTo {
   '/welcome': typeof WelcomeRoute
   '/dev/account-menu-bakeoff': typeof DevAccountMenuBakeoffRoute
   '/dev/account-menu-bakeoff-2': typeof DevAccountMenuBakeoff2Route
+  '/dev/landing-bakeoff': typeof DevLandingBakeoffRoute
   '/dev/mock-events': typeof DevMockEventsRoute
   '/dev/motion-bakeoff': typeof DevMotionBakeoffRoute
   '/dev/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
@@ -473,6 +481,7 @@ export interface FileRoutesById {
   '/welcome': typeof WelcomeRoute
   '/dev_/account-menu-bakeoff': typeof DevAccountMenuBakeoffRoute
   '/dev_/account-menu-bakeoff-2': typeof DevAccountMenuBakeoff2Route
+  '/dev_/landing-bakeoff': typeof DevLandingBakeoffRoute
   '/dev_/mock-events': typeof DevMockEventsRoute
   '/dev_/motion-bakeoff': typeof DevMotionBakeoffRoute
   '/dev_/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
@@ -528,6 +537,7 @@ export interface FileRouteTypes {
     | '/welcome'
     | '/dev/account-menu-bakeoff'
     | '/dev/account-menu-bakeoff-2'
+    | '/dev/landing-bakeoff'
     | '/dev/mock-events'
     | '/dev/motion-bakeoff'
     | '/dev/nav-cta-bakeoff'
@@ -581,6 +591,7 @@ export interface FileRouteTypes {
     | '/welcome'
     | '/dev/account-menu-bakeoff'
     | '/dev/account-menu-bakeoff-2'
+    | '/dev/landing-bakeoff'
     | '/dev/mock-events'
     | '/dev/motion-bakeoff'
     | '/dev/nav-cta-bakeoff'
@@ -634,6 +645,7 @@ export interface FileRouteTypes {
     | '/welcome'
     | '/dev_/account-menu-bakeoff'
     | '/dev_/account-menu-bakeoff-2'
+    | '/dev_/landing-bakeoff'
     | '/dev_/mock-events'
     | '/dev_/motion-bakeoff'
     | '/dev_/nav-cta-bakeoff'
@@ -688,6 +700,7 @@ export interface RootRouteChildren {
   WelcomeRoute: typeof WelcomeRoute
   DevAccountMenuBakeoffRoute: typeof DevAccountMenuBakeoffRoute
   DevAccountMenuBakeoff2Route: typeof DevAccountMenuBakeoff2Route
+  DevLandingBakeoffRoute: typeof DevLandingBakeoffRoute
   DevMockEventsRoute: typeof DevMockEventsRoute
   DevMotionBakeoffRoute: typeof DevMotionBakeoffRoute
   DevNavCtaBakeoffRoute: typeof DevNavCtaBakeoffRoute
@@ -1040,6 +1053,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DevMockEventsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dev_/landing-bakeoff': {
+      id: '/dev_/landing-bakeoff'
+      path: '/dev/landing-bakeoff'
+      fullPath: '/dev/landing-bakeoff'
+      preLoaderRoute: typeof DevLandingBakeoffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dev_/account-menu-bakeoff-2': {
       id: '/dev_/account-menu-bakeoff-2'
       path: '/dev/account-menu-bakeoff-2'
@@ -1104,6 +1124,7 @@ const rootRouteChildren: RootRouteChildren = {
   WelcomeRoute: WelcomeRoute,
   DevAccountMenuBakeoffRoute: DevAccountMenuBakeoffRoute,
   DevAccountMenuBakeoff2Route: DevAccountMenuBakeoff2Route,
+  DevLandingBakeoffRoute: DevLandingBakeoffRoute,
   DevMockEventsRoute: DevMockEventsRoute,
   DevMotionBakeoffRoute: DevMotionBakeoffRoute,
   DevNavCtaBakeoffRoute: DevNavCtaBakeoffRoute,
