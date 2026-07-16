@@ -16,6 +16,10 @@ export type Env = {
   ENVIRONMENT: 'dev' | 'staging' | 'production'
   // Deploy commit SHA, set by the deploy workflow; absent in local dev.
   GIT_SHA?: string
+  // Sentry DSN for error capture. Optional — set per env via
+  // `wrangler secret put SENTRY_DSN --env staging|production` (see
+  // docs/sentry.md). Absent → the Sentry SDK initialises fully inert.
+  SENTRY_DSN?: string
   // Secrets (set via `wrangler secret put`)
   CLERK_SECRET_KEY: string
   // Svix signing secret for the Clerk sync webhook (whsec_…). Set per env

@@ -61,6 +61,9 @@ jobs:
         env:
           VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
           VITE_API_BASE_URL: ${{ vars.STAGING_API_URL }}
+          # Sentry error capture — inert without the secret. See docs/sentry.md.
+          VITE_SENTRY_DSN: ${{ secrets.VITE_SENTRY_DSN }}
+          VITE_GIT_SHA: ${{ github.sha }}
           VITE_CONTENT_FROM_API: ${{ vars.CONTENT_FROM_API }}
       # actions/upload-artifact@v4.4.3
       - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882

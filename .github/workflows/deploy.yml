@@ -85,6 +85,11 @@ jobs:
         env:
           VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
           VITE_API_BASE_URL: ${{ vars.STAGING_API_URL }}
+          # Sentry error capture. Absent secret → empty string → the SPA
+          # ships with Sentry INERT (no init). VITE_GIT_SHA pins the Sentry
+          # release to the deploy commit. See docs/sentry.md.
+          VITE_SENTRY_DSN: ${{ secrets.VITE_SENTRY_DSN }}
+          VITE_GIT_SHA: ${{ github.sha }}
           # Content-gating switch (PR 1.0a). Empty/unset → flag OFF → the
           # corpus still ships in the bundle (pre-gating behavior). Set the
           # repo variable CONTENT_FROM_API to "true" to activate gating:
@@ -104,6 +109,9 @@ jobs:
         env:
           VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
           VITE_API_BASE_URL: ${{ vars.PROD_API_URL }}
+          # See the staging build's note — Sentry inert without the secret.
+          VITE_SENTRY_DSN: ${{ secrets.VITE_SENTRY_DSN }}
+          VITE_GIT_SHA: ${{ github.sha }}
           # See the staging build's note — same content-gating switch.
           VITE_CONTENT_FROM_API: ${{ vars.CONTENT_FROM_API }}
       - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882

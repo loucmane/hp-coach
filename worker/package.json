@@ -18,10 +18,13 @@
     "db:apply:prod": "wrangler d1 migrations apply hpc-prod --env production --remote",
     "db:apply:local": "wrangler d1 migrations apply hpc-staging --local",
     "secrets:put:staging": "wrangler secret put CLERK_SECRET_KEY --env staging",
-    "secrets:put:prod": "wrangler secret put CLERK_SECRET_KEY --env production"
+    "secrets:put:prod": "wrangler secret put CLERK_SECRET_KEY --env production",
+    "secrets:put:sentry:staging": "wrangler secret put SENTRY_DSN --env staging",
+    "secrets:put:sentry:prod": "wrangler secret put SENTRY_DSN --env production"
   },
   "dependencies": {
     "@clerk/backend": "^1.0.0",
+    "@sentry/cloudflare": "^10.66.0",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.6.14"
   },

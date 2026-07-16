@@ -16,12 +16,14 @@
 // Adding a new endpoint here flows its request/response types into the
 // frontend at compile time — no code-gen, no spec drift.
 
+import * as Sentry from '@sentry/cloudflare'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 
 import { getDb } from './db/client'
 import { runFit } from './lib/fit'
 import { runRetention } from './lib/retention'
+import { sentryOptions } from './lib/sentry'
 import { requireAuth } from './middleware/auth'
 import { rateLimit } from './middleware/rateLimit'
 import { accountRoute } from './routes/account'
@@ -72,6 +74,10 @@ app.use(
 
 app.onError((err, c) => {
   console.error('unhandled', err)
+  // Explicit capture in the top-level handler. No-op unless a DSN is set
+  // (withSentry initialises inert without one). withSentry also catches
+  // truly-unhandled throws; this covers errors Hono routes into onError.
+  Sentry.captureException(err)
   return c.json(
     {
       error: {
@@ -156,7 +162,13 @@ const scheduled: ExportedHandlerScheduledHandler<Env> = async (event, env) => {
   console.log(`[retention] pruned rows older than ${cutoff.toISOString()}`)
 }
 
-// The worker now exports BOTH a fetch and a scheduled handler. AppType is
-// still the Hono app type the SPA client infers from — unchanged.
-export default { fetch: routes.fetch, scheduled }
+// The worker exports BOTH a fetch and a scheduled handler, wrapped by
+// `withSentry` for unhandled-exception capture. `sentryOptions(env)` hands
+// the SDK `dsn: env.SENTRY_DSN` — undefined until the owner sets the
+// secret, so this is fully inert by default (zero behaviour change). See
+// worker/src/lib/sentry.ts + docs/sentry.md. AppType is unchanged.
+export default Sentry.withSentry(sentryOptions, {
+  fetch: routes.fetch,
+  scheduled,
+})
 export type AppType = typeof routes

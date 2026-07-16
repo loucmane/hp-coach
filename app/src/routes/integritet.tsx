@@ -66,7 +66,7 @@ const SECTIONS: LegalSection[] = [
   },
   {
     eyebrow: 'Vem som hjälper oss',
-    heading: 'Två leverantörer, inga fler.',
+    heading: 'Tre leverantörer, inga fler.',
     body: (
       <>
         <P>
@@ -75,6 +75,11 @@ const SECTIONS: LegalSection[] = [
         </P>
         <P>
           <strong>Clerk</strong> sköter inloggningen och lagrar dina kontouppgifter.
+        </P>
+        <P>
+          <strong>Sentry</strong> tar emot felrapporter när något i appen går sönder (aktiveras vid
+          lansering). Rapporterna innehåller tekniska detaljer om felet — aldrig dina svar, din
+          e-post eller dina kakor; sådant skalas bort innan rapporten skickas.
         </P>
         {/* TODO(owner): verify D1 storage jurisdiction before making any EU-only
             region claim. Until confirmed, keep the wording at "hos Cloudflare"
