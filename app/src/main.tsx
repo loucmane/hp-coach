@@ -6,15 +6,20 @@ import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { MotionConfig } from 'motion/react'
 import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
-
 import { queryClient } from './api/queryClient'
+import { AppErrorBoundary } from './components/AppErrorBoundary'
 import { contentFromApi, registerContentAuth } from './data/contentSource'
 import { loadBank, type Question } from './data/questions'
+import { initSentry } from './lib/sentry'
 import './index.css'
 // KaTeX CSS — ships once globally so any <InlineMath> in the tree
 // can render without per-component-style imports.
 import 'katex/dist/katex.min.css'
 import { routeTree } from './routeTree.gen'
+
+// Initialise error capture before anything else so boot-time failures are
+// caught. No-op unless VITE_SENTRY_DSN is set (inert by default).
+initSentry()
 
 // Expose the resolved bank on `window.__HPC_BANK__` so the Playwright
 // e2e suite can resolve the correct answer for the rendered prompt
@@ -121,27 +126,29 @@ if (!rootEl) throw new Error('Missing #root element in index.html')
 
 createRoot(rootEl).render(
   <StrictMode>
-    <ClerkProvider
-      publishableKey={PUBLISHABLE_KEY}
-      localization={localization}
-      // Map Clerk's redirects to TanStack Router routes so all auth
-      // navigations stay inside our SPA shell.
-      signInUrl="/sign-in"
-      signUpUrl="/sign-up"
-      signInFallbackRedirectUrl="/"
-      signUpFallbackRedirectUrl="/"
-    >
-      <QueryClientProvider client={queryClient}>
-        <ContentAuthBridge />
-        {/* A2 "Arket" motion root: reducedMotion="user" makes every
-         *  framer-motion consumer below honour prefers-reduced-motion
-         *  without its own guard — springs collapse, ink swaps instantly.
-         *  useArketMotion() reads the same signal for imperative animate()
-         *  loops (the drill camera, a strip seating home). */}
-        <MotionConfig reducedMotion="user">
-          <RouterProvider router={router} />
-        </MotionConfig>
-      </QueryClientProvider>
-    </ClerkProvider>
+    <AppErrorBoundary>
+      <ClerkProvider
+        publishableKey={PUBLISHABLE_KEY}
+        localization={localization}
+        // Map Clerk's redirects to TanStack Router routes so all auth
+        // navigations stay inside our SPA shell.
+        signInUrl="/sign-in"
+        signUpUrl="/sign-up"
+        signInFallbackRedirectUrl="/"
+        signUpFallbackRedirectUrl="/"
+      >
+        <QueryClientProvider client={queryClient}>
+          <ContentAuthBridge />
+          {/* A2 "Arket" motion root: reducedMotion="user" makes every
+           *  framer-motion consumer below honour prefers-reduced-motion
+           *  without its own guard — springs collapse, ink swaps instantly.
+           *  useArketMotion() reads the same signal for imperative animate()
+           *  loops (the drill camera, a strip seating home). */}
+          <MotionConfig reducedMotion="user">
+            <RouterProvider router={router} />
+          </MotionConfig>
+        </QueryClientProvider>
+      </ClerkProvider>
+    </AppErrorBoundary>
   </StrictMode>,
 )

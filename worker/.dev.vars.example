@@ -8,3 +8,9 @@ CLERK_SECRET_KEY=sk_test_REPLACE_ME
 # for visual verification. Refused in production regardless of this var.
 # Same email as app/.env.local's E2E_TEST_EMAIL is the typical choice.
 DEV_LOGIN_EMAIL=hpc-e2e+clerk_test@example.com
+
+# Optional. Sentry DSN for API error capture. Leave unset for local dev —
+# unset means the Sentry SDK initialises fully inert. Staging/prod set it
+# via `wrangler secret put SENTRY_DSN --env staging|production`. See
+# docs/sentry.md.
+# SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0
