@@ -29,6 +29,7 @@ import { useState } from 'react'
 import { LAND_E1, LAND_E2 } from '@/components/devbake/LandingBakeoffE'
 import { LAND_P1, LAND_P2 } from '@/components/devbake/LandingBakeoffP'
 import { LAND_P1V2, LAND_P2V2 } from '@/components/devbake/LandingBakeoffR2'
+import { LAND_P3B, LAND_P3S } from '@/components/devbake/LandingBakeoffR3'
 import { isDevSurface } from '@/lib/devSurface'
 
 export const Route = createFileRoute('/dev_/landing-bakeoff')({
@@ -42,6 +43,8 @@ const VARIANTS = [
   { key: 'p2', label: 'P2 · Uppslaget', C: LAND_P2 },
   { key: 'p1v2', label: 'P1v2 · Första frågan', C: LAND_P1V2 },
   { key: 'p2v2', label: 'P2v2 · Uppslaget', C: LAND_P2V2 },
+  { key: 'p3s', label: 'P3S · Scenen', C: LAND_P3S },
+  { key: 'p3b', label: 'P3B · Bläddran', C: LAND_P3B },
 ] as const
 
 function LandingBakeoffPage() {

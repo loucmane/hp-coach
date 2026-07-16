@@ -46,7 +46,7 @@ import { DUR, EASE, useArketMotion, useMountGo } from '@/lib/motion'
 
 /* ── demo content — ORIGINAL questions in HP style (not from any exam) ── */
 
-type DemoQ = {
+export type DemoQ = {
   id: string
   section: string
   kicker: string
@@ -89,7 +89,7 @@ const Q_MEK: DemoQ = {
   why: 'Den hårda kritiken kräver ett negativt laddat första led — bristfälligt — och ett verb som anger gräns: vad materialet medgav.',
 }
 
-const Q_KVA: DemoQ = {
+export const Q_KVA: DemoQ = {
   id: 'kva-1',
   section: 'KVA',
   kicker: 'Vilken kvantitet är störst?',
@@ -107,7 +107,7 @@ const Q_KVA: DemoQ = {
 /* ── shared copy (Swedish product strings — see .notes.md for the
  *    native-quality pass log) ─────────────────────────────────────────── */
 
-const COPY = {
+export const COPY = {
   brand: 'HP-Coach',
   domain: 'hp-coach.se',
   tagline: 'inför högskoleprovet',
@@ -148,7 +148,7 @@ const COPY = {
  *    mount suppression, and collapses to the final state under reduced
  *    motion (go starts true). ─────────────────────────────────────────── */
 
-function Ink({
+export function Ink({
   go,
   delay = 0,
   children,
@@ -177,7 +177,7 @@ function Ink({
 
 /* ── the live demo question — real .hpc-m3-* verdict treatment ────────── */
 
-function DemoQuestion({ q, onGraded }: { q: DemoQ; onGraded?: (correct: boolean) => void }) {
+export function DemoQuestion({ q, onGraded }: { q: DemoQ; onGraded?: (correct: boolean) => void }) {
   const [picked, setPicked] = useState<string | null>(null)
   const graded = picked !== null
   const correct = picked === q.correct
@@ -281,7 +281,7 @@ function ExplanationSpecimen() {
 
 /* ── shared closing blocks — villkor/pris + CTA (trust lives here) ────── */
 
-function PriceBlock() {
+export function PriceBlock() {
   return (
     <div>
       <div className="lr2-price-row">
@@ -300,7 +300,7 @@ function PriceBlock() {
   )
 }
 
-function Cta({ sub }: { sub?: string }) {
+export function Cta({ sub }: { sub?: string }) {
   return (
     <div style={{ marginTop: 20 }}>
       <a className="hpc-m3-cta hpc-btn lr2-cta" href="/sign-up">
@@ -317,7 +317,7 @@ function Cta({ sub }: { sub?: string }) {
 
 /** The quiet conversion link — appears mid-page once the reader has
  *  already felt the product. Text-level, never competes with the beat. */
-function QuietCta() {
+export function QuietCta() {
   return (
     <a className="lr2-quiet-cta" href="/sign-up">
       {COPY.cta} <span aria-hidden>→</span>
@@ -334,7 +334,7 @@ function QuietCta() {
  *    opacity + a small y settle, tokens from lib/motion; reduced motion
  *    collapses to instant. ─────────────────────────────────────────── */
 
-function useStickyCta() {
+export function useStickyCta() {
   const heroRef = useRef<HTMLElement>(null)
   const endRef = useRef<HTMLElement>(null)
   const [heroGone, setHeroGone] = useState(false)
@@ -357,7 +357,7 @@ function useStickyCta() {
   return { heroRef, endRef, visible: heroGone && !endNear }
 }
 
-function StickyCta({ visible }: { visible: boolean }) {
+export function StickyCta({ visible }: { visible: boolean }) {
   const m = useArketMotion()
   return (
     <motion.div
@@ -380,7 +380,7 @@ function StickyCta({ visible }: { visible: boolean }) {
 
 /* ── landing-local styles (layout only; color/type from live tokens) ──── */
 
-const LR2_CSS = `
+export const LR2_CSS = `
 .lr2-root {
   background: var(--bg);
   color: var(--ink);
@@ -784,7 +784,15 @@ function OptionsOnly({ q, onGraded }: { q: DemoQ; onGraded?: (correct: boolean) 
  * LAND_P2V2 — "Uppslaget" (the session facsimile, perfected)
  * ════════════════════════════════════════════════════════════════════════ */
 
-function RailRow({ label, sub, children }: { label: string; sub?: string; children: ReactNode }) {
+export function RailRow({
+  label,
+  sub,
+  children,
+}: {
+  label: string
+  sub?: string
+  children: ReactNode
+}) {
   return (
     <section className="hpc-m3-row hpc-m3-section" style={{ marginTop: 54 }}>
       <div className="hpc-m3-meta" style={{ animation: 'none' }}>
