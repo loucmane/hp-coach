@@ -405,7 +405,7 @@ const FACIT_ROWS = ['21 C   22 A   23 E   24 B', '25 D   26 B   27 A   28 C']
 /** Book pagination per question — the structure the errata rows cite. */
 const SIDOR: Record<string, { sida: string; name: string }> = {
   [Q1_HERO.id]: { sida: 's. 1', name: 'vederhäftig' },
-  [Q2_KVA.id]: { sida: 's. 2', name: 'kvantiteterna' },
+  [Q2_KVA.id]: { sida: 's. 2', name: 'procentparet' },
   [Q3_MEK.id]: { sida: 's. 3', name: 'luckparet' },
 }
 
@@ -782,12 +782,12 @@ function BookPage({ q, onGraded }: { q: GenContent; onGraded: (e: Erratum) => vo
             {wrong && ` — ${q.trapTags[picked]}`}
           </span>
           <button type="button" className="lr5c-replay" onClick={replay}>
-            spela igen
+            spela upp igen
           </button>
         </div>
       )}
       {picked && phase === 'done' && wrong && (
-        <p className="lr5c-booked">→ satt som rad i Rättelser — slipen längre ner</p>
+        <p className="lr5c-booked">→ satt som rad i Rättelser — se lappen längre ner</p>
       )}
     </section>
   )
@@ -837,11 +837,11 @@ function ErrataSlip({ errata }: { errata: Erratum[] }) {
           </motion.div>
         ))}
         <p className="lr5c-slip-foot">
-          varje rad repeteras: i morgon · om tre dagar · veckan före provet — tills den håller
+          varje rad repeteras: i morgon · om tre dagar · veckan före provet — tills den sitter
         </p>
       </div>
       <p className="lr5c-slip-cap">
-        en rättelselapp läggs i böcker där fel upptäckts efter tryck — den här boken sätter sin
+        en rättelselapp läggs i böcker där fel upptäckts efter tryckning — den här boken sätter sin
         egen, medan du läser
       </p>
       {errata.length > 0 && (
@@ -897,7 +897,7 @@ export function LandV5C() {
           />
 
           <Blek go={go} delay={0.22}>
-            <p className="lr5c-facit-l">Det enda provet skickar tillbaka:</p>
+            <p className="lr5c-facit-l">Det enda som provet skickar tillbaka:</p>
           </Blek>
           <div className="lr5c-facit">
             {FACIT_ROWS.map((row, i) => (
@@ -945,8 +945,8 @@ export function LandV5C() {
           <Blek go={go} delay={1.3}>
             <p className="lr2-body" style={{ marginTop: 16, maxWidth: '50ch' }}>
               Svara på tre uppgifter. Varje svar får hela genomgången — och varje fel blir en rad i
-              sidans rättelselista: vad det stod, vad det skulle stå, varför du valde det och när
-              det rättas.
+              sidans rättelselapp: vad det stod, vad det skulle stå, varför du valde det och när det
+              rättas.
             </p>
             {/* station 1 — the early door: reachable without answering */}
             <QuietCta />
