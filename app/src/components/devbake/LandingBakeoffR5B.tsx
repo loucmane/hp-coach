@@ -1383,7 +1383,7 @@ export function LandV5B() {
           label={`Provdagen · ${PROV_DATE_SHORT}`}
         >
           <p className="lr5b-scene">
-            Klockan 09:10 öppnas häftet. Varje fälla i din kö har då tryckts om tre gånger — den här
+            Klockan 08:10 öppnas häftet. Varje fälla i din kö har då tryckts om tre gånger — den här
             gången är det du som känner igen den först.
           </p>
           <section ref={sticky.endRef} aria-label="Pris och konto">
