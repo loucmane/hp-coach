@@ -28,6 +28,17 @@
 // typography marks exactly which part of the line is alive. Everything
 // else on the title page stays quiet so this single splice reads.
 //
+// GRAFT (owner-ratified, post-bake-off): V5C's struck facit sits
+// between the dateline and the question — compressed to ONE mono line
+// in the dateline's own register (invented answer-key pattern, nothing
+// from © UHR), crossed by the corrector's stroke: the only
+// non-orthogonal line the title page allows. Its label sets it up
+// ("Det enda som provet skickar tillbaka:"), its micro-caption carries
+// C's thesis (WHICH you got wrong, never WHY) folded together with the
+// legal disclosure, and the strike lands as one beat in the load
+// choreography, before the kicker. The hero's foot line answers it:
+// the page begins with a question, not with a facit.
+//
 // MECHANICS (owner-ratified): every demo question plays the full
 // genomgång as a fixed-height Scenen-style beat stage (skippable) and
 // collapses to a numbered, replayable receipt. Beat engine + all three
@@ -84,6 +95,11 @@ import {
 
 /* ── what each question is called once it is booked in the schema ─────── */
 
+/* ── the hero facit — an invented answer-key PATTERN (not from any exam),
+ *    one line: V5C's two-row strip compressed for the title page ──────── */
+
+const FACIT_ROW = '21 C   22 A   23 E   24 B'
+
 const SCHED_LABELS: Record<string, string> = {
   [Q1_HERO.id]: 'vederhäftig',
   [Q2_KVA.id]: 'procentparet',
@@ -132,6 +148,56 @@ const LR5A_CSS = `
   margin-top: 3px;
   white-space: nowrap;
 }
+/* the struck facit — V5C's verdict compressed to one line under the
+   clock: the exam's only reply, crossed out before the question begins */
+.lr5a-facit-l {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  margin: 24px 0 0;
+}
+.lr5a-facit {
+  position: relative;
+  display: block;
+  width: fit-content;
+  margin: 9px auto 0;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  letter-spacing: 0.14em;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+/* the corrector's stroke — the one non-orthogonal line the title page
+   allows. Static rotate on the wrapper; motion animates scaleX inside. */
+.lr5a-strike-wrap {
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  top: 50%;
+  margin-top: -1px;
+  transform: rotate(-3deg);
+  pointer-events: none;
+}
+.lr5a-strike {
+  height: 2px;
+  background: var(--bad);
+  transform-origin: left center;
+}
+.lr5a-facit-cap {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 1.6;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  text-align: center;
+  margin: 8px auto 0;
+}
+.lr5a-facit-cap .disclose { display: block; margin-top: 1px; }
 .lr5a-hero-center {
   flex: 1;
   display: flex;
@@ -959,8 +1025,43 @@ function TitleHero({
         </p>
       </Ink>
 
+      {/* the struck facit — the graft from V5C: the exam's only reply,
+          one mono line in the dateline's register, crossed by the
+          corrector's stroke before the question takes the page */}
+      <Ink go={go} delay={0.5}>
+        <p className="lr5a-facit-l">Det enda som provet skickar tillbaka:</p>
+      </Ink>
+      <div className="lr5a-facit">
+        <motion.span
+          initial={false}
+          animate={{ opacity: go ? 1 : 0 }}
+          transition={
+            m.rm ? { duration: 0 } : { duration: 0.26, ease: [...EASE.reading], delay: 0.62 }
+          }
+        >
+          {FACIT_ROW}
+        </motion.span>
+        {/* the corrector's stroke — the page's verdict on the facit */}
+        <div className="lr5a-strike-wrap" aria-hidden>
+          <motion.div
+            className="lr5a-strike"
+            initial={false}
+            animate={{ scaleX: go ? 1 : 0 }}
+            transition={
+              m.rm ? { duration: 0 } : { duration: 0.4, ease: [...EASE.reading], delay: 0.86 }
+            }
+          />
+        </div>
+      </div>
+      <Ink go={go} delay={1.02}>
+        <p className="lr5a-facit-cap">
+          facit — vilka du hade fel på, aldrig varför
+          <span className="disclose">exempel, inte ur något prov</span>
+        </p>
+      </Ink>
+
       <div className="lr5a-hero-center">
-        <Ink go={go} delay={0.45}>
+        <Ink go={go} delay={1.14}>
           <p className="lr5a-kicker">
             {q.section} · {q.kicker}
           </p>
@@ -972,7 +1073,7 @@ function TitleHero({
           initial={false}
           animate={{ opacity: go ? 1 : 0, letterSpacing: go ? '-0.015em' : '0.06em' }}
           transition={
-            m.rm ? { duration: 0 } : { duration: 0.8, ease: [...EASE.reading], delay: 0.6 }
+            m.rm ? { duration: 0 } : { duration: 0.8, ease: [...EASE.reading], delay: 1.24 }
           }
         >
           {q.headword}
@@ -983,7 +1084,7 @@ function TitleHero({
           initial={false}
           animate={{ scaleX: go ? 1 : 0 }}
           transition={
-            m.rm ? { duration: 0 } : { duration: 0.38, ease: [...EASE.reading], delay: 1.14 }
+            m.rm ? { duration: 0 } : { duration: 0.38, ease: [...EASE.reading], delay: 1.78 }
           }
         />
         {/* the options settle like set type, one row at a time */}
@@ -1011,7 +1112,7 @@ function TitleHero({
                 transition={
                   m.rm
                     ? { duration: 0 }
-                    : { duration: 0.32, ease: [...EASE.reading], delay: 1.26 + i * 0.08 }
+                    : { duration: 0.32, ease: [...EASE.reading], delay: 1.9 + i * 0.08 }
                 }
                 style={i === 0 ? { borderTop: '1px solid var(--hairline)' } : undefined}
               >
@@ -1046,10 +1147,10 @@ function TitleHero({
       {/* the foot: the hand-off line — the title page passes the eye
           down onto the timeline spine */}
       <div className="lr5a-hero-foot">
-        <Ink go={go} delay={1.8}>
+        <Ink go={go} delay={2.4}>
           <p className="lr5a-framing">
-            Sidan börjar där appen börjar: med en fråga. Resten av sidan är dagarna fram till
-            provet.
+            Sidan börjar där appen börjar: med en fråga, inte med ett facit. Resten av sidan är
+            dagarna fram till provet.
           </p>
           <p className="lr5a-legal">{COPY.exampleTag}</p>
         </Ink>
@@ -1165,7 +1266,7 @@ export function LandV5A() {
 
           <Station tag={`Provdagen · ${PROV_DATE_SHORT}`}>
             <p className="lr5a-scene">
-              Klockan 09:10 öppnas häftet, och orden på titelsidan ser likadana ut som ikväll — men
+              Klockan 08:10 öppnas häftet, och orden på titelsidan ser likadana ut som ikväll — men
               den här gången är det du som känner igen fällorna först.
             </p>
             <section ref={sticky.endRef} aria-label="Pris och konto">
