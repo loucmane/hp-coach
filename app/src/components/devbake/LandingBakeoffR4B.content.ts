@@ -131,7 +131,7 @@ export const PRESS_KVA: PressContent = {
       whyTempting:
         'x är okänt, och »okänt« låter som »otillräcklig information« — alternativet står ju där som en nödutgång.',
       whyWrong:
-        'Otillräcklig gäller bara när olika x ger OLIKA utfall. Här ger varje positivt x samma resultat: 1,2x på båda sidor. Prova x = 10 — det blir 12 mot 12. Likheten är inte en slump, den är algebra.',
+        '»Otillräcklig« gäller bara när olika x ger OLIKA utfall. Här ger varje positivt x samma resultat: 1,2x på båda sidor. Prova x = 10 — det blir 12 mot 12. Likheten är inte en slump, den är algebra.',
     },
   },
   distractorOrder: ['a', 'b', 'd'],
@@ -181,7 +181,7 @@ export const PRESS_ORD2: PressContent = {
       whyTempting:
         'En enda bokstav skiljer — ögat läser förslagen som föreslagen och hjärnan fyller i resten. Under tidspress är det provets vanligaste felläsning.',
       whyWrong:
-        'Föreslagen är particip av föreslå — den som blivit nominerad. Förslagen är ett eget adjektiv: listig. Orden delar stam men inte betydelse; bokstaven ö gör hela jobbet.',
+        'Föreslagen är particip av föreslå — den som blivit nominerad. Förslagen är ett eget adjektiv: listig. Orden delar stam men inte betydelse; bokstaven e gör hela jobbet.',
     },
     c: {
       whyTempting:

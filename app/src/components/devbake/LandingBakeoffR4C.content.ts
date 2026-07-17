@@ -113,7 +113,7 @@ export const Q2_KVA: R4CQuestion = {
     },
     d: {
       whyTempting:
-        'Alternativ d) är KVA-vanans nödutgång: när något känns ounderbyggt räddar det en. Bråkdelar av två olika tal kan se ut som ett sådant läge.',
+        'Alternativ d) är KVA-vanans nödutgång: när något känns ounderbyggt räddar det dig. Bråkdelar av två olika tal kan se ut som ett sådant läge.',
       whyWrong:
         'd) är rätt när information faktiskt saknas — okända variabler, villkor som lämnar flera möjligheter öppna. Här står två färdiga tal i klartext. Allt som går att räkna ut är per definition tillräcklig information.',
     },
@@ -147,7 +147,7 @@ export const Q3_MEK: R4CQuestion = {
     {
       title: 'Hitta meningens skelett',
       tier: 'kärna',
-      body: 'Stryk allt utom bindeorden: »kritiken var ____: de avstyrkte inte bara, de ____«. Konstruktionen inte bara X, de Y är en trappa — Y måste ta i MER än X. Grammatiken gör halva jobbet innan ordförrådet ens behövs.',
+      body: 'Stryk allt utom bindeorden: »kritiken var ____: de avstyrkte inte bara, de ____«. Konstruktionen »inte bara X, de Y« är en trappa — Y måste ta i MER än X. Grammatiken gör halva jobbet innan ordförrådet ens behövs.',
     },
     {
       title: 'Pröva andra luckan först',
