@@ -678,7 +678,7 @@ function GenBeatView({
       </div>
       <p className="lr5a-kvitto-line">
         {beat.correct
-          ? 'inga fel att tagga — fällorna kartlagda ändå'
+          ? 'inga fel att boka in — fällorna kartlagda ändå'
           : `felet taggat: ${q.trapTags[picked]} → inbokat ${SCHED_CADENCE}`}
       </p>
       <QuietCta />
@@ -770,7 +770,7 @@ function Receipt({
           {!correct && ` — ${q.trapTags[picked]}`}
         </span>
         <button type="button" className="lr5a-replay" onClick={onReplay}>
-          spela igen
+          spela upp igen
         </button>
       </div>
       {!correct && (
@@ -859,7 +859,7 @@ function SchedLedger({ entries }: { entries: SchedEntry[] }) {
       <div className="lr5a-sched" role="status" aria-label="Din repetitionskö">
         {entries.length === 0 && (
           <p className="lr5a-sched-empty">
-            svara på uppgifterna ovan — schemat bokför sig självt här
+            svara på uppgifterna ovan — schemat skriver sig självt här
           </p>
         )}
         {entries.map((e) => (
@@ -881,7 +881,7 @@ function SchedLedger({ entries }: { entries: SchedEntry[] }) {
                   · <em>{e.tag}</em>
                 </>
               )}{' '}
-              — {e.ok ? 'klarad · fällorna kartlagda ändå' : SCHED_CADENCE}
+              — {e.ok ? 'rätt · fällorna kartlagda ändå' : SCHED_CADENCE}
             </span>
           </motion.div>
         ))}
