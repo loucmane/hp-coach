@@ -1008,7 +1008,7 @@ function PressReceipt({
           Ark satt · {q.section} · {ok ? 'rätt' : `fel — ${q.trapTags[picked] ?? 'fälla'}`} ·
         </span>{' '}
         <button type="button" className="lr5b-replay" onClick={onReplay}>
-          spela igen
+          spela upp igen
         </button>
       </div>
       {!ok && (
@@ -1171,7 +1171,7 @@ function SchemaPress({ entries }: { entries: LoggEntry[] }) {
       <div role="status" aria-label="Ditt schema — tryckkön">
         {entries.length === 0 && (
           <p className="lr5b-sched-empty">
-            svara på uppgifterna ovan — varje fel trycks in här, pass för pass
+            svara på uppgifterna ovan — varje fel trycks om här, tryck för tryck
           </p>
         )}
         {entries.map((e) => (
