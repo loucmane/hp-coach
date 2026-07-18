@@ -8,8 +8,9 @@
 // chrome auto-hides at reader+).
 //
 // Wraps the outlet in a Clerk auth gate: signed-in users see the
-// screen; signed-out users see <SignIn /> (except on the /sign-in
-// and /sign-up routes themselves, which are public).
+// screen; signed-out users are redirected to /sign-in (except on the
+// public routes, and `/`, where logged-out visitors get the public
+// landing — see AuthRouter).
 
 import { SignedIn, SignedOut, useAuth } from '@clerk/clerk-react'
 import { createRootRoute, Outlet, useLocation, useNavigate } from '@tanstack/react-router'
@@ -18,6 +19,7 @@ import { useEffect, useState } from 'react'
 import { useHydratePrefs } from '@/api/useSyncedPrefs'
 import { CommandPalette } from '@/components/CommandPalette'
 import { Frame } from '@/components/Frame'
+import { PublicLanding } from '@/components/landing/PublicLanding'
 import { RouteScene } from '@/components/motion/RouteScene'
 import { Btn, Mono } from '@/components/primitives'
 import { hasFirstContentFired } from '@/lib/motion'
@@ -184,6 +186,17 @@ function ClerkLoadFailed() {
 function AuthRouter() {
   const location = useLocation()
   const isPublic = PUBLIC_ROUTES.has(location.pathname)
+  // `/` splits on auth state: signed-in users keep the Daily Home
+  // (routes/index.tsx, via the normal SignedInTree → Outlet path);
+  // logged-out visitors get the public landing instead of the old
+  // redirect to /sign-in. The landing is rendered directly (not via
+  // Outlet) so the index route's authed hooks never mount without a
+  // session; it drives its own veil/first-content choreography.
+  //
+  // ONE tree shape for every non-public route — only the SignedOut
+  // child varies by path. An earlier draft returned a differently
+  // nested tree for '/', which made React remount SignedInTree (and
+  // kill route/session state) on every '/' ↔ other-route navigation.
   return (
     <>
       {isPublic ? (
@@ -194,7 +207,7 @@ function AuthRouter() {
             <SignedInTree />
           </SignedIn>
           <SignedOut>
-            <RedirectToSignIn />
+            {location.pathname === '/' ? <PublicLanding /> : <RedirectToSignIn />}
           </SignedOut>
         </>
       )}
