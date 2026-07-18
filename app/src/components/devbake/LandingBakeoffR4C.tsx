@@ -876,7 +876,7 @@ export function LandV4C() {
 
           <Station tag={`Provdagen · ${PROV_DATE_SHORT}`}>
             <p className="lr4c-scene">
-              Klockan 09:10 öppnas häftet. Syskonorden ser likadana ut som ikväll — men den här
+              Klockan 08:10 öppnas häftet. Syskonorden ser likadana ut som ikväll — men den här
               gången är det du som känner igen dem först.
             </p>
             <section ref={sticky.endRef} aria-label="Pris och konto">

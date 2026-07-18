@@ -86,7 +86,7 @@ export const Q2_KVA: GenContent = {
     {
       title: 'Skriv om procenten',
       tier: 'kärna',
-      body: 'Procent av betyder gånger: 25 % av 84 är 0,25 · 84, och 84 % av 25 är 0,84 · 25. Så fort orden blivit multiplikation är kvantiteterna bara två produkter — inget mer.',
+      body: '»Procent av« betyder gånger: 25 % av 84 är 0,25 · 84, och 84 % av 25 är 0,84 · 25. Så fort orden blivit multiplikation är kvantiteterna bara två produkter — inget mer.',
     },
     {
       title: 'Byt plats på faktorerna',
@@ -149,12 +149,12 @@ export const Q3_MEK: GenContent = {
     {
       title: 'Lyssna på signalordet',
       tier: 'kärna',
-      body: 'Men lovar en vändning: det som kommer efter ska bryta mot hård, inte förstärka det. Redan där faller alternativ som bara ekar första ledet med mer av samma.',
+      body: '»Men« lovar en vändning: det som kommer efter ska bryta mot hård, inte förstärka det. Redan där faller alternativ som bara ekar första ledet med mer av samma.',
     },
     {
       title: 'Hitta rätt axel för kontrasten',
       tier: 'kärna',
-      body: 'Vändningen får inte bli en motsägelse. Hård och mild mäter samma sak och krockar i samma andetag. Hård men saklig byter skala — styrkan står kvar, men tonen är renhårig. Det är så men används på riktigt.',
+      body: 'Vändningen får inte bli en motsägelse. Hård och mild mäter samma sak och krockar i samma andetag. »Hård men saklig« byter skala — styrkan står kvar, men tonen är renhårig. Det är så »men« används på riktigt.',
     },
     {
       title: 'Lås med den andra luckan',
@@ -167,13 +167,13 @@ export const Q3_MEK: GenContent = {
       whyTempting:
         'Skoningslös känns som ett naturligt nästa steg efter hård — hjärnan fyller gärna luckan med mer av samma.',
       whyWrong:
-        'Men kräver ett brott, inte en förstärkning: hård men skoningslös säger samma sak två gånger. Och ett avslutat samtal går rakt emot dörren som lämnas öppen.',
+        '»Men« kräver ett brott, inte en förstärkning: »hård men skoningslös« säger samma sak två gånger. Och ett avslutat samtal går rakt emot dörren som lämnas öppen.',
     },
     c: {
       whyTempting:
         'Hård kritik läses lätt som orättvis kritik — orden umgås ofta i vardagsspråket, så paret känns bekant.',
       whyWrong:
-        'Inskottet avgör: kritiken gällde metoden, inte personen. Det beskriver en renhårig kritik — motsatsen till orättvis. Och ett hetsigt samtal rimmar illa med en öppet lämnad dörr.',
+        'Inskottet avgör: kritiken gällde metoden, inte personen. Det beskriver en renhårig kritik — motsatsen till orättvis. Och ett hetsigt samtal rimmar illa med en dörr som lämnats öppen.',
     },
     d: {
       whyTempting:
