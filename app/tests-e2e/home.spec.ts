@@ -27,12 +27,13 @@ import { clearMistakes, expect as authedExpect, seedMockResults, test as authedT
 test.describe('unauthenticated', () => {
   test.use({ storageState: { cookies: [], origins: [] } })
 
-  test('visit to / redirects to /sign-in', async ({ page }) => {
+  test('visit to / shows the public landing (no redirect)', async ({ page }) => {
+    // Since the public landing shipped, `/` no longer redirects a
+    // signed-out visitor to /sign-in — it IS the public front door.
+    // Full landing coverage lives in landing.spec.ts.
     await page.goto('/')
-    await expect(page).toHaveURL(/\/sign-in$/, { timeout: 10_000 })
-    // The Clerk default header "Sign in to hp-coach" is suppressed via
-    // clerkAppearance. Our AuthLayout shows "Logga in" as the card label.
-    await expect(page.getByText(/logga in/i).first()).toBeVisible()
+    await expect(page.getByTestId('public-landing')).toBeVisible({ timeout: 10_000 })
+    await expect(page).not.toHaveURL(/sign-in/)
   })
 })
 
