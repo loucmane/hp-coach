@@ -30,6 +30,9 @@ import { LAND_E1, LAND_E2 } from '@/components/devbake/LandingBakeoffE'
 import { LAND_P1, LAND_P2 } from '@/components/devbake/LandingBakeoffP'
 import { LAND_P1V2, LAND_P2V2 } from '@/components/devbake/LandingBakeoffR2'
 import { LAND_P3B, LAND_P3S } from '@/components/devbake/LandingBakeoffR3'
+import { LandV4A } from '@/components/devbake/LandingBakeoffR4A'
+import { LandV4B } from '@/components/devbake/LandingBakeoffR4B'
+import { LandV4C } from '@/components/devbake/LandingBakeoffR4C'
 import { isDevSurface } from '@/lib/devSurface'
 
 export const Route = createFileRoute('/dev_/landing-bakeoff')({
@@ -45,6 +48,9 @@ const VARIANTS = [
   { key: 'p2v2', label: 'P2v2 · Uppslaget', C: LAND_P2V2 },
   { key: 'p3s', label: 'P3S · Scenen', C: LAND_P3S },
   { key: 'p3b', label: 'P3B · Bläddran', C: LAND_P3B },
+  { key: 'v4a', label: 'V4A · Titelsidan', C: LandV4A },
+  { key: 'v4b', label: 'V4B · Tryckpressen', C: LandV4B },
+  { key: 'v4c', label: 'V4C · Tidslinjen', C: LandV4C },
 ] as const
 
 function LandingBakeoffPage() {
