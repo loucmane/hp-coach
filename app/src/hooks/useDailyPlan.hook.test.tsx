@@ -60,13 +60,39 @@ const dueData: unknown[] = []
 const mockResultsData: unknown[] = []
 const topTrapsData: unknown[] = []
 
+// P2.2: a fixture WITH attempt signal, for suites that must not be
+// day-zero-shaped (the defer suite exercises the baseline Provpass
+// anchor, which now stands down for a true day-zero user). One scored
+// section is enough — `hasAnyAttempt` flips and the anchor engages.
+const scoredStatsData = {
+  ...statsData,
+  attempts: { total: 30, today: 0, thisWeek: 10 },
+  bySection: {
+    ...bySection,
+    ORD: {
+      attempts7d: 10,
+      correct7d: 6,
+      attempts7to14d: 10,
+      correct7to14d: 6,
+      attempts90d: 30,
+      correct90d: 18,
+      avgTimeMs: 30_000,
+      lastAttemptedAt: new Date('2026-05-17T10:00:00').getTime(),
+      attemptsToday: 0,
+    } satisfies SectionStats,
+  },
+}
+
 // Mutable so the isError-passthrough suite (below) can flip these without
 // a fresh module mock per test — mirrors the `activeSessions` pattern.
 let statsIsError = false
 let dueIsError = false
+// Mutable stats payload — defaults to the day-zero-shaped fixture; the
+// defer suite swaps in `scoredStatsData`. Reference-stable per test.
+let currentStatsData: typeof statsData = statsData
 
 vi.mock('@/api/hooks/useStats', () => ({
-  useStats: () => ({ data: statsData, isLoading: false, isError: statsIsError }),
+  useStats: () => ({ data: currentStatsData, isLoading: false, isError: statsIsError }),
 }))
 
 vi.mock('@/api/hooks/useMistakes', () => ({
@@ -341,9 +367,10 @@ describe('useDailyPlan — isError passthrough', () => {
 // "Inte idag" defer (owner decision 2026-07-15). A synced `mockDeferredDate`
 // pref equal to TODAY suppresses the Provpass anchor so the ordinary Dagens
 // plan generates; a stale date is inert; the standalone prescription that
-// feeds the passive status line stays truthful. These fixtures are
-// cold-start-shaped (no attempts, no due reps), so the baseline "never
-// mocked" case makes the mock due by default.
+// feeds the passive status line stays truthful. P2.2: these fixtures now
+// carry attempt signal (scoredStatsData) — a TRUE day-zero user no longer
+// gets the baseline anchor at all, so the defer semantics are exercised on
+// the first user shape that actually meets the anchor.
 describe('useDailyPlan — "Inte idag" defer', () => {
   beforeEach(() => {
     vi.useRealTimers()
@@ -351,6 +378,7 @@ describe('useDailyPlan — "Inte idag" defer', () => {
     activeSessions = []
     serverPlanData = null
     userPrefsData = {}
+    currentStatsData = scoredStatsData
     updatePrefsMock.mockClear()
     putServerPlanMock.mockClear()
     vi.setSystemTime(new Date('2026-05-18T10:00:00'))
@@ -359,6 +387,7 @@ describe('useDailyPlan — "Inte idag" defer', () => {
   afterEach(() => {
     vi.useRealTimers()
     userPrefsData = {}
+    currentStatsData = statsData
   })
 
   it('anchors the Provpass by default (no defer) — plan carries the mock item', async () => {

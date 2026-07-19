@@ -175,6 +175,11 @@ export type SessionPlayerProps = {
   disableStart?: boolean
   /** Replacement label shown on the disabled primary button. */
   disableStartLabel?: string
+  /** P2.2 empty-state law (one line + ONE action): hide the primary
+   *  button entirely while `disableStart` is true, instead of rendering
+   *  a dead black CTA. The consumer supplies the single live action via
+   *  `idleSecondaryCta`. No effect when the start is enabled. */
+  hideDisabledStart?: boolean
   /** Secondary CTA rendered just above the primary button. Used to give
    *  the user a way out when the primary action is disabled. */
   idleSecondaryCta?: ReactNode
@@ -1035,6 +1040,7 @@ function IdleBody({
   staleResume,
   disableStart,
   disableStartLabel,
+  hideDisabledStart,
   idleSecondaryCta,
   isPhone,
   adaptiveOffer,
@@ -1258,22 +1264,24 @@ function IdleBody({
             {idleSecondaryCta}
           </div>
         )}
-        <Btn
-          full={isPhone}
-          size="xl"
-          onClick={onStart}
-          disabled={starting || !!disableStart}
-          data-testid="drill-start"
-          style={isPhone ? undefined : { minWidth: 260 }}
-        >
-          {starting
-            ? 'Startar…'
-            : disableStart
-              ? (disableStartLabel ?? 'Inget att starta')
-              : resuming && !staleResume
-                ? 'Fortsätt övning →'
-                : 'Starta övning →'}
-        </Btn>
+        {!(disableStart && hideDisabledStart) && (
+          <Btn
+            full={isPhone}
+            size="xl"
+            onClick={onStart}
+            disabled={starting || !!disableStart}
+            data-testid="drill-start"
+            style={isPhone ? undefined : { minWidth: 260 }}
+          >
+            {starting
+              ? 'Startar…'
+              : disableStart
+                ? (disableStartLabel ?? 'Inget att starta')
+                : resuming && !staleResume
+                  ? 'Fortsätt övning →'
+                  : 'Starta övning →'}
+          </Btn>
+        )}
       </div>
     </div>
   )

@@ -415,8 +415,31 @@ function PrognosParagraph({
   if (!stats) return null
 
   if (projected?.total == null) {
+    // P2.2 empty-state law: the invitation carries its own door — one
+    // line + one action, not a bare description of absence.
     return (
-      <Paragraph>Ingen prognos än — svara på några frågor så börjar den här sidan leva.</Paragraph>
+      <>
+        <Paragraph>
+          Ingen prognos än — svara på några frågor så börjar den här sidan leva.
+        </Paragraph>
+        <Link
+          to="/diagnostik"
+          search={{ start: true }}
+          data-testid="progress-empty-cta"
+          style={{
+            display: 'inline-block',
+            marginTop: 12,
+            fontFamily: 'var(--font-mono)',
+            fontSize: 12,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: 'var(--accent)',
+            textDecoration: 'none',
+          }}
+        >
+          Börja här · 10 frågor →
+        </Link>
+      </>
     )
   }
 

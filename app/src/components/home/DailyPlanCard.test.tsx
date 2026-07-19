@@ -5,8 +5,8 @@
 // Prop-driven, no providers needed (the live due count arrives via
 // `dueMistakeCount`, sourced upstream from useDueMistakes in HomeRoute).
 
-import { render, screen, within } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { fireEvent, render, screen, within } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
 
 import { type DailyPlan, PLAN_SCHEMA_VERSION, type PlanItem } from '@/lib/scheduler'
 import { DailyPlanCard } from './DailyPlanCard'
@@ -159,5 +159,47 @@ describe('DailyPlanCard — planError fallback', () => {
     render(<DailyPlanCard plan={null} planError={false} allComplete={false} />)
     expect(screen.getByTestId('daily-plan-skeleton')).toBeInTheDocument()
     expect(screen.queryByTestId('daily-plan-error')).not.toBeInTheDocument()
+  })
+})
+
+// P2.2 — day-zero first-drill panel. A plan whose ONLY item is the
+// cold-start "Börja här" drill renders one door, not a numbered list:
+// the stranger's first minute gets a single obvious action.
+describe('DailyPlanCard — day-zero first-drill panel', () => {
+  const coldItem: PlanItem = {
+    id: 'cold-2026-07-13',
+    kind: 'drill',
+    section: null,
+    headline: 'Börja här · 10 frågor',
+    rationale:
+      'Tio frågor från riktiga prov — svara, läs genomgången efter varje. Sen vet vi var du står.',
+    estimatedMinutes: 12,
+    href: '/diagnostik?start=1',
+    completed: false,
+  }
+
+  it('renders the dedicated first-drill door instead of numbered rows', () => {
+    const plan = makePlan([coldItem], 12)
+    render(<DailyPlanCard plan={plan} allComplete={false} />)
+    // Still the plan card surface (e2e stability), but no ordinal list.
+    expect(screen.getByTestId('daily-plan-card')).toBeInTheDocument()
+    expect(screen.queryByText('1.')).not.toBeInTheDocument()
+    expect(screen.getByTestId('daily-plan-first-cta')).toBeInTheDocument()
+    expect(screen.getByText(/läs genomgången efter varje/)).toBeInTheDocument()
+  })
+
+  it('the door navigates to the direct-start diagnostic', () => {
+    const plan = makePlan([coldItem], 12)
+    const onNavigate = vi.fn()
+    render(<DailyPlanCard plan={plan} allComplete={false} onNavigate={onNavigate} />)
+    fireEvent.click(screen.getByTestId('daily-plan-first-cta'))
+    expect(onNavigate).toHaveBeenCalledWith('/diagnostik?start=1')
+  })
+
+  it('does NOT special-case a multi-item plan that happens to include a cold item', () => {
+    const plan = makePlan([coldItem, drillItem], 18)
+    render(<DailyPlanCard plan={plan} allComplete={false} />)
+    expect(screen.queryByTestId('daily-plan-first-cta')).not.toBeInTheDocument()
+    expect(screen.getByTestId('daily-plan-item-cold-2026-07-13')).toBeInTheDocument()
   })
 })

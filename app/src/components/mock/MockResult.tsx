@@ -28,6 +28,7 @@ import { type CSSProperties, type ReactNode, useEffect, useMemo, useState } from
 import type { MockHalf, MockResultRow } from '@/api/hooks/useMockResults'
 import { useMockResults } from '@/api/hooks/useMockResults'
 import { Eyebrow } from '@/components/primitives'
+import { TermHint } from '@/components/ui/TermHint'
 import { loadNormeringTable, type NormeringSitting, normedScore } from '@/lib/normering'
 import { formatScore, scoreFromFraction } from '@/lib/scoring'
 import { useTrapCluster } from '@/lib/trapCluster'
@@ -141,7 +142,15 @@ export function MockResult({ result }: Props) {
                   {formatScore(score).replace('.', ',')}
                 </div>
                 <div className="hpc-m3-stat-l">
-                  {isOfficial ? 'normerat (härlett) · 0–2,0' : 'skattad poäng · 0–2,0'}
+                  {isOfficial ? (
+                    // P2.2 micro-glossary: the label itself is the tap
+                    // target; the plain sentence unfolds inline below.
+                    <>
+                      <TermHint term="normerat-harlett" /> · 0–2,0
+                    </>
+                  ) : (
+                    'skattad poäng · 0–2,0'
+                  )}
                 </div>
               </div>
             )}
@@ -171,9 +180,14 @@ export function MockResult({ result }: Props) {
               marginTop: 8,
             }}
           >
-            {isOfficial
-              ? 'Härlett ur UHR:s normeringstabell för detta provtillfälle. UHR normerar hela delprovet (80 frågor) — ett provpass på 40 frågor har ingen officiell tabell, så poängen skalas upp och läses av tabellen.'
-              : 'Linjär skattning — indikativ, inte UHR-normerad.'}
+            {isOfficial ? (
+              'Härlett ur UHR:s normeringstabell för detta provtillfälle. UHR normerar hela delprovet (80 frågor) — ett provpass på 40 frågor har ingen officiell tabell, så poängen skalas upp och läses av tabellen.'
+            ) : (
+              // P2.2 micro-glossary on the epistemic word itself.
+              <>
+                Linjär skattning — <TermHint term="indikativ" />, inte UHR-normerad.
+              </>
+            )}
           </p>
         </Rail>
 

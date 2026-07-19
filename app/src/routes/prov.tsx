@@ -74,6 +74,7 @@ import { MockResult } from '@/components/mock/MockResult'
 import { MockRunner, type MockRunnerSession } from '@/components/mock/MockRunner'
 import { Page } from '@/components/Page'
 import { Btn } from '@/components/primitives'
+import { TermHint } from '@/components/ui/TermHint'
 import { findQuestion, loadBank, type Question } from '@/data/questions'
 import { useViewport, type Viewport } from '@/hooks/useViewport'
 import { isDevSurface } from '@/lib/devSurface'
@@ -1184,20 +1185,23 @@ export function Picker({
             >
               {quotaLine(half)}
             </p>
-            <p
-              data-testid="prov-synthetic-note"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontStyle: 'italic',
-                fontSize: 13,
-                // WCAG AA: --muted-2 fails 4.5:1 at 13px — --muted passes.
-                color: 'var(--muted)',
-                margin: '10px 0 0 0',
-              }}
-            >
-              Indikativt resultat — inte ett riktigt pass.
-            </p>
           </button>
+          {/* P2.2: moved OUT of the CTA button — TermHint is itself a
+           *  button, and nested interactive elements are invalid HTML
+           *  (and the hint tap would have started the pass). */}
+          <p
+            data-testid="prov-synthetic-note"
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontStyle: 'italic',
+              fontSize: 13,
+              // WCAG AA: --muted-2 fails 4.5:1 at 13px — --muted passes.
+              color: 'var(--muted)',
+              margin: '10px 0 0 0',
+            }}
+          >
+            <TermHint term="indikativ">Indikativt</TermHint> resultat — inte ett riktigt pass.
+          </p>
         </DrillRailSection>
       )}
     </div>

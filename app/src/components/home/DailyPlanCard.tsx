@@ -110,6 +110,16 @@ export function DailyPlanCard({
     return <PlanErrorPanel />
   }
 
+  // P2.2 day-zero: when the WHOLE plan is the cold-start item, the
+  // stranger's first minute gets ONE door, not a numbered list of one.
+  // Same ark-kort sheet + testid (chrome and e2e stability), different
+  // body: heading, the genomgång rationale, one full-width CTA.
+  const coldOnly =
+    plan && plan.items.length === 1 && plan.items[0].id.startsWith('cold-') ? plan.items[0] : null
+  if (coldOnly) {
+    return <FirstDayPanel item={coldOnly} onNavigate={onNavigate} />
+  }
+
   // A `kind: 'mock'` item is rendered as the Kallelse summons ABOVE this
   // card, not as an ordinary numbered row here — filtering before mapping
   // (rather than a per-row guard in PlanRow) keeps the ordinal numbering
@@ -217,6 +227,91 @@ function PlanErrorPanel() {
         >
           Gick inte att hämta planen just nu — försöker igen automatiskt.
         </p>
+      </DrillRailSection>
+    </motion.section>
+  )
+}
+
+/** P2.2 — the day-zero door. Same sheet chrome as the ordinary card
+ *  (ark-kort layoutId, `daily-plan-card` testid) so nothing about the
+ *  home surface remounts once real plans start arriving; the body is
+ *  ONE action in the house voice. No ordinal ceremony — a numbered
+ *  list of one reads as an empty dashboard, not an invitation. */
+function FirstDayPanel({
+  item,
+  onNavigate,
+}: {
+  item: PlanItem
+  onNavigate?: (href: string) => void
+}) {
+  const ark = useArketMotion()
+  return (
+    <motion.section
+      data-testid="daily-plan-card"
+      className={ark.rm ? undefined : 'hpc-arkkort'}
+      layoutId={ark.rm ? undefined : ARK_KORT_LAYOUT_ID}
+      transition={ark.arket}
+    >
+      <DrillRailSection
+        meta={
+          <>
+            <strong>Idag</strong>
+            {`~${item.estimatedMinutes} min · uppskattat`}
+          </>
+        }
+        delay={220}
+      >
+        <h2 className="hpc-m3-h">Dagens plan</h2>
+        <h3
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontStyle: 'italic',
+            fontWeight: 400,
+            fontSize: 'clamp(28px, 3.4vw, 40px)',
+            lineHeight: 1.1,
+            letterSpacing: '-0.01em',
+            margin: '4px 0 10px',
+            color: 'var(--ink)',
+          }}
+        >
+          Börja här.
+        </h3>
+        <p
+          style={{
+            fontSize: 15,
+            lineHeight: 1.6,
+            color: 'var(--ink-2)',
+            margin: '0 0 16px',
+            maxWidth: '46ch',
+          }}
+        >
+          {item.rationale}
+        </p>
+        <a
+          href={item.href}
+          data-testid="daily-plan-first-cta"
+          onClick={(e) => {
+            if (onNavigate) {
+              e.preventDefault()
+              onNavigate(item.href)
+            }
+          }}
+          style={{
+            display: 'inline-block',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 13,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            fontWeight: 700,
+            color: 'var(--paper, var(--bg))',
+            background: 'var(--accent)',
+            borderRadius: 999,
+            padding: '12px 22px',
+            textDecoration: 'none',
+          }}
+        >
+          Starta första övningen →
+        </a>
       </DrillRailSection>
     </motion.section>
   )

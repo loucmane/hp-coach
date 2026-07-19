@@ -72,15 +72,20 @@ describe('localDateString', () => {
 })
 
 describe('generateDailyPlan — rule 5 (cold start)', () => {
-  it('emits a single diagnostic item when no signal exists at all', () => {
+  it('emits a single "Börja här" first-drill item when no signal exists at all', () => {
     const plan = generateDailyPlan(signals())
     expect(plan.items).toHaveLength(1)
     expect(plan.items[0]).toMatchObject({
       kind: 'drill',
-      headline: expect.stringContaining('Diagnos'),
-      href: '/diagnostik',
+      headline: 'Börja här · 10 frågor',
+      // Direct start — the day-zero door lands IN the first question,
+      // not on an idle interstitial (P2.2).
+      href: '/diagnostik?start=1',
       section: null,
     })
+    // The rationale names the genomgång — the continuous thread from
+    // the landing demo.
+    expect(plan.items[0].rationale).toContain('genomgången')
   })
 
   it('does NOT trigger cold start when reps exist but scores are all null', () => {
@@ -999,9 +1004,42 @@ describe('generateDailyPlan — Provpass anchor (Rule 0)', () => {
     expect(plan.items[0].kind).toBe('mock')
   })
 
-  it('takes priority over cold start — a fresh user with no attempts still gets the mock', () => {
+  it('yields to cold start for a TRUE day-zero user (P2.2 reversal, owner-ratified)', () => {
+    // Pre-P2.2 the baseline "never mocked" prescription anchored even a
+    // zero-attempt stranger's first day with a 55-min Provpass. The
+    // onboarding decision reversed that: no attempts + no due reps +
+    // never mocked → the cold-start first drill is the day's one door.
     const plan = generateDailyPlan(signals({ mockHistory: [], daysToExam: 100 }))
     expect(plan.items).toHaveLength(1)
+    expect(plan.items[0].kind).toBe('drill')
+    expect(plan.items[0].href).toBe('/diagnostik?start=1')
+  })
+
+  it('still anchors the baseline mock once the user has ANY attempt signal', () => {
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [score('ORD', { score: 1.2 })],
+        mockHistory: [],
+        daysToExam: 100,
+      }),
+    )
+    expect(plan.items[0].kind).toBe('mock')
+  })
+
+  it('still anchors the baseline mock when a zero-attempt user has due reps', () => {
+    // Due reps mean the user is NOT day-zero (signal exists) — the
+    // baseline prescription engages as before.
+    const plan = generateDailyPlan(
+      signals({ dueMistakeCount: 2, mockHistory: [], daysToExam: 100 }),
+    )
+    expect(plan.items[0].kind).toBe('mock')
+  })
+
+  it('still anchors a STALE (not baseline) mock for a user with history but no recent attempts', () => {
+    // daysSinceLast != null → not the baseline case; day-zero never
+    // applies to someone with mock history.
+    const history = [mockEntry('verbal', 20), mockEntry('kvant', 20)]
+    const plan = generateDailyPlan(signals({ mockHistory: history, daysToExam: 100 }))
     expect(plan.items[0].kind).toBe('mock')
   })
 
@@ -1079,12 +1117,12 @@ describe('generateDailyPlan — "Inte idag" defer (suppressMock)', () => {
     expect(prescribeMock(s).due).toBe(true)
   })
 
-  it('cold-start user who defers gets the diagnostic, not the mock', () => {
+  it('cold-start user who defers gets the first drill, not the mock', () => {
     const plan = generateDailyPlan(
       signals({ mockHistory: [], daysToExam: 100, suppressMock: true }),
     )
     expect(plan.items).toHaveLength(1)
     expect(plan.items[0].kind).toBe('drill')
-    expect(plan.items[0].href).toBe('/diagnostik')
+    expect(plan.items[0].href).toBe('/diagnostik?start=1')
   })
 })
