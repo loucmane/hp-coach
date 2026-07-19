@@ -185,7 +185,7 @@ export function MockResult({ result }: Props) {
             ) : (
               // P2.2 micro-glossary on the epistemic word itself.
               <>
-                Linjär skattning — <TermHint term="indikativ" />, inte UHR-normerad.
+                Linjär skattning — <TermHint term="indikativ" tail=", inte UHR-normerad." />
               </>
             )}
           </p>

@@ -42,9 +42,14 @@ type TermHintProps = {
   /** Style override forwarded to the button (rarely needed — the
    *  button inherits font/size/color from its site by default). */
   style?: CSSProperties
+  /** Text that completes the host sentence AFTER the term (", inte
+   *  UHR-normerad."). Rendered inline before the note block, so an
+   *  open note never orphans a sentence fragment below itself. Use
+   *  whenever the term is not sentence-final. */
+  tail?: ReactNode
 }
 
-export function TermHint({ term, children, style }: TermHintProps) {
+export function TermHint({ term, children, style, tail }: TermHintProps) {
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLSpanElement>(null)
   const noteId = useId()
@@ -93,6 +98,7 @@ export function TermHint({ term, children, style }: TermHintProps) {
       >
         {children ?? entry.label}
       </button>
+      {tail}
       {open && (
         // <span display:block> — the note must be valid inside a <p>
         // (a <div> would auto-close the paragraph).
