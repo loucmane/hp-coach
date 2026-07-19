@@ -185,7 +185,16 @@ function ClerkLoadFailed() {
 
 function AuthRouter() {
   const location = useLocation()
-  const isPublic = PUBLIC_ROUTES.has(location.pathname)
+  // Exact match, plus Clerk's path-routing sub-steps: <SignUp
+  // routing="path"> navigates to /sign-up/verify-email-address (and
+  // /sign-in/factor-one etc.) MID-FLOW while still signed out. The
+  // exact-match guard treated those as protected and ejected the user
+  // to /sign-in before the verification code could be entered, so
+  // interactive email sign-up could never complete (2026-07-19).
+  const isPublic =
+    PUBLIC_ROUTES.has(location.pathname) ||
+    location.pathname.startsWith('/sign-in/') ||
+    location.pathname.startsWith('/sign-up/')
   // `/` splits on auth state: signed-in users keep the Daily Home
   // (routes/index.tsx, via the normal SignedInTree → Outlet path);
   // logged-out visitors get the public landing instead of the old
