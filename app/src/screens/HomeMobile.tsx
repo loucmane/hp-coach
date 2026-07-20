@@ -56,6 +56,17 @@ type HomeMobileProps = {
   planError?: boolean
   /** True iff every plan item is complete. Drives the "Klart för idag" state. */
   allComplete?: boolean
+  /** Whole minutes ACTUALLY practiced today (lib/scoring
+   *  minutesPracticedToday) — the "minuter idag" numeral. An elapsed
+   *  counter: 0 on a fresh day, counts up as attempts land, never the
+   *  plan's estimate (the pre-fix bug showed `plan.estimatedMinutes`
+   *  here, so a day-zero user saw "12 minuter idag" before doing
+   *  anything and "—" after finishing). Null while stats resolve. */
+  minutesToday?: number | null
+  /** True when useStats has errored — lets the minutes line settle into
+   *  an honest em dash instead of ghost-loading forever (same idiom as
+   *  `planError` for the plan card). */
+  statsError?: boolean
   /** Optional per-half + total projection — the stats row's prognosis.
    *  Null/undefined hides the stat (cold-start, loading). Route owns
    *  the data wire so HomeMobile stays pure. */
@@ -131,6 +142,8 @@ export function HomeMobile({
   plan = null,
   planError = false,
   allComplete = false,
+  minutesToday = null,
+  statsError = false,
   projected = null,
   projectedDelta = null,
   diagnosticMemory: _diagnosticMemory = null,
@@ -277,17 +290,15 @@ export function HomeMobile({
                 </div>
               )}
               {/* Skriften: numeral AND label write in together as ONE line
-               *  (ghost-loading fix) — previously the label rendered
-               *  unconditionally while only the numeral waited on `plan`,
-               *  so a stalled plan (e.g. the stats/due queries erroring
-               *  after a rate-limited refresh) left "min idag" standing
-               *  over a blank numeral forever. `plan != null || planError`
-               *  so the line also writes in — as an honest em dash — once
-               *  the queries have settled into an error, instead of
-               *  waiting on a `ready` that will never come. */}
-              <Skrift ready={plan != null || planError} lines={1}>
+               *  (ghost-loading fix — see the prop docs). The numeral is
+               *  ELAPSED practice (minutesToday), not the plan estimate:
+               *  0 on a fresh day, counts up as attempts land, and stays
+               *  a number after the plan completes (no "—" after
+               *  activity). The em dash survives only for the stats-
+               *  errored-with-no-value case, mirroring planError. */}
+              <Skrift ready={minutesToday != null || statsError} lines={1}>
                 <SkriftLine line={0} ruleW="10ch">
-                  <div className="hpc-m3-stat-n">{plan ? plan.estimatedMinutes : '—'}</div>
+                  <div className="hpc-m3-stat-n">{minutesToday ?? '—'}</div>
                   <div className="hpc-m3-stat-l">minuter idag</div>
                 </SkriftLine>
               </Skrift>

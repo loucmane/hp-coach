@@ -199,6 +199,33 @@ describe('HomeMobile — stats row (M3H)', () => {
   })
 })
 
+describe('HomeMobile — "minuter idag" is elapsed practice, not the plan estimate', () => {
+  it('day-zero: shows 0 before any practice, even when the plan estimates minutes', () => {
+    render(<HomeMobile forceLayout="phone" plan={makePlan()} minutesToday={0} />)
+    const stat = screen.getByText('minuter idag').previousElementSibling
+    expect(stat).toHaveTextContent('0')
+    // The plan's estimate (14) must not leak into the stat numeral.
+    expect(stat).not.toHaveTextContent('14')
+  })
+
+  it('renders the practiced-minutes value as the numeral', () => {
+    render(<HomeMobile forceLayout="phone" plan={makePlan()} minutesToday={57} />)
+    expect(screen.getByText('minuter idag').previousElementSibling).toHaveTextContent('57')
+  })
+
+  it('keeps the number when the plan is null/complete — no "—" after activity', () => {
+    render(<HomeMobile forceLayout="phone" plan={null} minutesToday={12} />)
+    const stat = screen.getByText('minuter idag').previousElementSibling
+    expect(stat).toHaveTextContent('12')
+    expect(stat).not.toHaveTextContent('—')
+  })
+
+  it('falls back to an honest em dash only when stats have errored with no value', () => {
+    render(<HomeMobile forceLayout="phone" plan={makePlan()} minutesToday={null} statsError />)
+    expect(screen.getByText('minuter idag').previousElementSibling).toHaveTextContent('—')
+  })
+})
+
 // Diagnostic-memory in-Home block removed by home-bakeoff B pick —
 // the affordance now lives on /diagnostik itself. Tests pinning the
 // in-Home memory line are deleted; the prop is still accepted by the
