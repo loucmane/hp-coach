@@ -44,6 +44,27 @@ The seeds deliberately isolate one failure mode each: the language seeds
 fired, not G-KEY; the correctness seeds (001–004, 014) carry **clean
 language**. This is what makes a per-gate diagnosis possible.
 
+## G-KEY verdict-conversion convention
+
+G-KEY executors are blind to the key, so they cannot emit a real verdict.
+The convention (both executors of the 2026-07-20 run independently
+converged on it; codified here):
+
+- The **executor** records a solver report as a verdict line with
+  `verdict: "pass"`, `solver_answer` set to its committed answer, empty
+  `findings`, and its justification. The `pass` is a placeholder meaning
+  "no self-detected defect", never a key judgment.
+- The **orchestrator** performs the mechanical comparison against the
+  stored key: on mismatch (or `NONE_DEFENSIBLE` / `MULTIPLE_DEFENSIBLE`)
+  it rewrites that line to `verdict: "kill"` with a lethal finding of the
+  form "blind solver answered X, stored key is Y" plus the solver's
+  justification. Matching answers stay `pass` as written.
+
+Executor-side comparison is rejected because handing the executor the key
+would break the contamination rule the gate exists to enforce. Never let a
+G-KEY executor see or infer the key; never treat an unconverted `pass` as
+final until the orchestrator has run the comparison.
+
 ## When to rerun (required)
 
 Rerun the FULL eval, and pass it, before gating any batch, whenever ANY of:
