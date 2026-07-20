@@ -10,6 +10,9 @@ describes it, this file decides it):
   * Language gate (G-SPRAK for LÄS, G-ENG for ELF): 3 independent votes.
     >= 2 kill votes => DEAD; exactly 1 kill vote => FLAGGED (survives, but
     the dissenting vote's findings go to adjudication).
+  * killed_by on a DEAD candidate is the UNION of all lethal-gate kills and
+    the language gate when it reached its kill threshold — a lethal kill
+    never shadows a concurrent language-majority kill.
   * Any 'flag' verdict anywhere => candidate is at best FLAGGED.
   * Missing required verdicts => INCOMPLETE (never ship an INCOMPLETE item).
 
@@ -70,12 +73,20 @@ def aggregate(verdicts: list[dict], candidates: dict[str, dict]) -> dict:
         lang_kills = [v for v in lang_votes if v["verdict"] == "kill"]
         flags = [v for v in vs if v["verdict"] == "flag"]
 
-        if lethal_kills:
+        lang_majority = len(lang_kills) >= LANGUAGE_KILL_THRESHOLD
+        if lethal_kills or lang_majority:
+            # killed_by is the UNION of lethal-gate kills and any
+            # language-majority kill. A lethal kill must not shadow a
+            # concurrent >=2-vote language kill: score_eval's
+            # killed-by-right-gate check needs to see every gate that
+            # independently earned the kill (regression: las-b0-005,
+            # eval run 2026-07-20 — 3/3 G-SPRAK kill votes hidden behind
+            # killed_by=[G-STEM]).
             status = "DEAD"
-            killed_by = sorted({v["gate"] for v in lethal_kills})
-        elif len(lang_kills) >= LANGUAGE_KILL_THRESHOLD:
-            status = "DEAD"
-            killed_by = sorted({v["gate"] for v in lang_kills})
+            killed_by = sorted(
+                {v["gate"] for v in lethal_kills}
+                | ({v["gate"] for v in lang_kills} if lang_majority else set())
+            )
         elif missing:
             status = "INCOMPLETE"
             killed_by = []

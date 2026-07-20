@@ -209,6 +209,41 @@ def test_aggregate_language_votes():
     assert r["las-b1-001"]["status"] == "DEAD"
 
 
+def test_aggregate_lethal_kill_does_not_shadow_language_majority():
+    """Regression: eval run 2026-07-20, las-b0-005.
+
+    G-SPRAK recorded 3/3 kill votes AND G-STEM also killed; killed_by listed
+    only [G-STEM], hiding the language-majority kill from score_eval's
+    killed-by-right-gate check (the seed's intended gate was G-SPRAK, so it
+    scored FAIL(wrong-gate) despite the gate having fired 3/3).
+    killed_by must be the UNION of lethal-gate kills and language-majority
+    kills.
+    """
+    f = [{"severity": "lethal", "quote": "spenderade tid", "note": "calque"}]
+    vs = full_pass_verdicts()
+    vs[5] = V("las-b1-001", "G-STEM", "q:1", verdict="kill",
+              findings=[{"severity": "lethal", "quote": "stem", "note": "blind-answerable"}])
+    for i in (7, 8, 9):
+        vs[i] = V("las-b1-001", "G-SPRAK", verdict="kill", vote=i - 6, findings=f)
+    r = aggregate(vs, {"las-b1-001": make_candidate()})
+    assert r["las-b1-001"]["status"] == "DEAD"
+    assert r["las-b1-001"]["killed_by"] == ["G-SPRAK", "G-STEM"]
+    assert r["las-b1-001"]["language_kill_votes"] == 3
+
+
+def test_aggregate_language_minority_not_in_killed_by():
+    """A single dissenting language vote alongside a lethal kill is NOT a
+    language-majority kill and must not appear in killed_by."""
+    f = [{"severity": "lethal", "quote": "spenderade tid", "note": "calque"}]
+    vs = full_pass_verdicts()
+    vs[5] = V("las-b1-001", "G-STEM", "q:1", verdict="kill",
+              findings=[{"severity": "lethal", "quote": "stem", "note": "blind-answerable"}])
+    vs[7] = V("las-b1-001", "G-SPRAK", verdict="kill", vote=1, findings=f)
+    r = aggregate(vs, {"las-b1-001": make_candidate()})
+    assert r["las-b1-001"]["status"] == "DEAD"
+    assert r["las-b1-001"]["killed_by"] == ["G-STEM"]
+
+
 def test_aggregate_incomplete():
     vs = full_pass_verdicts()[:-1]  # G-REGISTER missing, nothing killed
     r = aggregate(vs, {"las-b1-001": make_candidate()})
