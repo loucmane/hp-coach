@@ -166,7 +166,10 @@ export function PedagogyPanel({
                       : { textDecoration: 'line-through', textDecorationThickness: '2px' }
                   }
                 >
-                  {pickedText}
+                  {/* Bank text can carry math-sentinel LaTeX runs (NOG
+                   *  statement refs, XYZ expressions) — same canonical
+                   *  render path as the option rows and verdict-sub. */}
+                  <MathText>{pickedText}</MathText>
                 </span>
               </motion.span>
               <motion.span

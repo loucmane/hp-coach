@@ -91,6 +91,33 @@ describe('PedagogyPanel (M2 graded rewrite)', () => {
     expect(dis).toHaveTextContent('Betyder något annat.')
   })
 
+  // Regression: var-2018-1-kvant1-NOG-023. NOG option text carries the
+  // quant parser's math sentinels (U+E000/U+E001) around LaTeX runs like
+  // `(_{1}` — the A2 verdict morph interpolated pickedText raw, so the
+  // owner saw the literal "i (_{1} ) tillsammans med (_{2} ) — fel."
+  it('verdict morph renders picked option through MathText, not raw markup', async () => {
+    mockExplanation = EXPLANATION
+    const nogOptions: Option[] = [
+      {
+        letter: 'C',
+        text: 'i \uE000(_{1}\uE001 ) tillsammans med \uE000(_{2}\uE001 )',
+      },
+      { letter: 'E', text: 'ej genom de båda påståendena' },
+    ]
+    renderPanel({
+      answer: 'E',
+      options: nogOptions,
+      picked: 'C',
+      pickedText: nogOptions[0].text,
+    })
+    const panel = await screen.findByTestId('pedagogy-panel')
+    await screen.findByText('— fel.')
+    expect(panel.textContent).not.toContain('_{1}')
+    expect(panel.textContent).not.toContain('_{2}')
+    expect(panel.textContent).not.toContain('\uE000')
+    expect(panel.textContent).not.toContain('\uE001')
+  })
+
   it('missing explanation → M3 missing line + the flag CTA survives', async () => {
     mockExplanation = null
     renderPanel()
