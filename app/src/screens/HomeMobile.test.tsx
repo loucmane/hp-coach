@@ -99,7 +99,7 @@ describe('HomeMobile — plan rendering', () => {
   it('renders the "Klart för idag" complete panel when allComplete is true', () => {
     render(<HomeMobile forceLayout="phone" plan={makePlan()} allComplete />)
     expect(screen.getByTestId('daily-plan-complete')).toBeInTheDocument()
-    expect(screen.getByText(/perfect game/i)).toBeInTheDocument()
+    expect(screen.getByText('Dagens klart.')).toBeInTheDocument()
     expect(screen.queryByTestId('daily-plan-card')).not.toBeInTheDocument()
   })
 

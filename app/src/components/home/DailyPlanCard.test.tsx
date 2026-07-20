@@ -203,3 +203,14 @@ describe('DailyPlanCard — day-zero first-drill panel', () => {
     expect(screen.getByTestId('daily-plan-item-cold-2026-07-13')).toBeInTheDocument()
   })
 })
+
+describe('DailyPlanCard — "Klart för idag" completion copy', () => {
+  it('speaks Swedish and does not over-claim ("Dagens klart.", never "Perfect game.")', () => {
+    const plan = makePlan([{ ...drillItem, completed: true }], 6)
+    render(<DailyPlanCard plan={plan} allComplete />)
+
+    const panel = screen.getByTestId('daily-plan-complete')
+    expect(within(panel).getByText('Dagens klart.')).toBeInTheDocument()
+    expect(within(panel).queryByText(/perfect game/i)).not.toBeInTheDocument()
+  })
+})

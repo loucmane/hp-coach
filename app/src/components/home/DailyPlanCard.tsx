@@ -473,7 +473,7 @@ function CompletePanel({ plan }: { plan: DailyPlan }) {
             color: 'var(--ink)',
           }}
         >
-          Perfect game.
+          Dagens klart.
         </h3>
         <p
           style={{
