@@ -137,6 +137,13 @@ const COMMANDS: Command[] = [
     action: ({ navigate }) => navigate({ to: '/coach' }),
   },
   {
+    id: 'support',
+    label: 'Hjälp & support',
+    hint: 'en person, inte ett team',
+    keywords: ['hjälp', 'support', 'kontakt', 'mejl', 'email', 'help', 'bugg'],
+    action: ({ navigate }) => navigate({ to: '/hjalp' }),
+  },
+  {
     id: 'tweaks',
     label: 'Öppna tweaks (tema, font)',
     keywords: ['tema', 'palette', 'font', 'tweaks', 'theme'],

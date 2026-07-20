@@ -36,6 +36,7 @@ import { Route as IntegritetRouteImport } from './routes/integritet'
 import { Route as HomeVerifyRouteImport } from './routes/home-verify'
 import { Route as HomePhoneResumeBakeoffRouteImport } from './routes/home-phone-resume-bakeoff'
 import { Route as HomeBakeoffRouteImport } from './routes/home-bakeoff'
+import { Route as HjalpRouteImport } from './routes/hjalp'
 import { Route as HistorikPlacementBakeoffRouteImport } from './routes/historik-placement-bakeoff'
 import { Route as HistorikRouteImport } from './routes/historik'
 import { Route as ExplanationBakeOffRouteImport } from './routes/explanation-bake-off'
@@ -199,6 +200,11 @@ const HomeBakeoffRoute = HomeBakeoffRouteImport.update({
   path: '/home-bakeoff',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HjalpRoute = HjalpRouteImport.update({
+  id: '/hjalp',
+  path: '/hjalp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HistorikPlacementBakeoffRoute =
   HistorikPlacementBakeoffRouteImport.update({
     id: '/historik-placement-bakeoff',
@@ -355,6 +361,7 @@ export interface FileRoutesByFullPath {
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/historik': typeof HistorikRoute
   '/historik-placement-bakeoff': typeof HistorikPlacementBakeoffRoute
+  '/hjalp': typeof HjalpRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/home-verify': typeof HomeVerifyRoute
@@ -411,6 +418,7 @@ export interface FileRoutesByTo {
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/historik': typeof HistorikRoute
   '/historik-placement-bakeoff': typeof HistorikPlacementBakeoffRoute
+  '/hjalp': typeof HjalpRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/home-verify': typeof HomeVerifyRoute
@@ -468,6 +476,7 @@ export interface FileRoutesById {
   '/explanation-bake-off': typeof ExplanationBakeOffRoute
   '/historik': typeof HistorikRoute
   '/historik-placement-bakeoff': typeof HistorikPlacementBakeoffRoute
+  '/hjalp': typeof HjalpRoute
   '/home-bakeoff': typeof HomeBakeoffRoute
   '/home-phone-resume-bakeoff': typeof HomePhoneResumeBakeoffRoute
   '/home-verify': typeof HomeVerifyRoute
@@ -526,6 +535,7 @@ export interface FileRouteTypes {
     | '/explanation-bake-off'
     | '/historik'
     | '/historik-placement-bakeoff'
+    | '/hjalp'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
     | '/home-verify'
@@ -582,6 +592,7 @@ export interface FileRouteTypes {
     | '/explanation-bake-off'
     | '/historik'
     | '/historik-placement-bakeoff'
+    | '/hjalp'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
     | '/home-verify'
@@ -638,6 +649,7 @@ export interface FileRouteTypes {
     | '/explanation-bake-off'
     | '/historik'
     | '/historik-placement-bakeoff'
+    | '/hjalp'
     | '/home-bakeoff'
     | '/home-phone-resume-bakeoff'
     | '/home-verify'
@@ -695,6 +707,7 @@ export interface RootRouteChildren {
   ExplanationBakeOffRoute: typeof ExplanationBakeOffRoute
   HistorikRoute: typeof HistorikRoute
   HistorikPlacementBakeoffRoute: typeof HistorikPlacementBakeoffRoute
+  HjalpRoute: typeof HjalpRoute
   HomeBakeoffRoute: typeof HomeBakeoffRoute
   HomePhoneResumeBakeoffRoute: typeof HomePhoneResumeBakeoffRoute
   HomeVerifyRoute: typeof HomeVerifyRoute
@@ -921,6 +934,13 @@ declare module '@tanstack/react-router' {
       path: '/home-bakeoff'
       fullPath: '/home-bakeoff'
       preLoaderRoute: typeof HomeBakeoffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hjalp': {
+      id: '/hjalp'
+      path: '/hjalp'
+      fullPath: '/hjalp'
+      preLoaderRoute: typeof HjalpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/historik-placement-bakeoff': {
@@ -1155,6 +1175,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExplanationBakeOffRoute: ExplanationBakeOffRoute,
   HistorikRoute: HistorikRoute,
   HistorikPlacementBakeoffRoute: HistorikPlacementBakeoffRoute,
+  HjalpRoute: HjalpRoute,
   HomeBakeoffRoute: HomeBakeoffRoute,
   HomePhoneResumeBakeoffRoute: HomePhoneResumeBakeoffRoute,
   HomeVerifyRoute: HomeVerifyRoute,

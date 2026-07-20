@@ -117,17 +117,27 @@ function MerRoute() {
                 </div>
               ))}
             </div>
-            {/* Legal footer — small mono rows in the same muted grammar as
-                the back link. Discoverable but quiet; NOT in the nav rail
-                or phone tabs. */}
+            {/* Support + legal footer — small mono rows in the same muted
+                grammar as the back link. Discoverable but quiet; NOT in
+                the nav rail or phone tabs. Support gets its own row above
+                the legal pair: a door, not a policy. */}
+            <div
+              style={{
+                marginTop: 28,
+                paddingTop: 18,
+                borderTop: '1px solid var(--hairline-2)',
+              }}
+            >
+              <Link to="/hjalp" data-testid="mer-support" style={LEGAL_LINK_STYLE}>
+                Hjälp &amp; support →
+              </Link>
+            </div>
             <div
               style={{
                 display: 'flex',
                 flexWrap: 'wrap',
                 gap: '8px 20px',
-                marginTop: 28,
-                paddingTop: 18,
-                borderTop: '1px solid var(--hairline-2)',
+                marginTop: 14,
               }}
             >
               {LEGAL_LINKS.map((l) => (
