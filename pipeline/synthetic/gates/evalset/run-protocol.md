@@ -26,7 +26,7 @@ required eval run.**
 | las-b0-001     | LÄS     | wrong key (passage supports A, key says C)               | G-KEY              |
 | elf-b0-002     | ELF     | wrong key (passage supports B, key says D)               | G-KEY              |
 | las-b0-003     | LÄS     | passage-independent stem (general-knowledge date)        | G-STEM             |
-| elf-b0-004     | ELF     | double key (distractor D also defensible)                | G-DISTRACTOR       |
+| elf-b0-004     | ELF     | double key (B supported as directly as key A)            | G-DISTRACTOR (+G-KEY) |
 | las-b0-005     | LÄS     | calques: *spenderade tid*, *ta plats framför*            | G-SPRÅK            |
 | las-b0-006     | LÄS     | BIFF word-order error in subordinate clause              | G-SPRÅK            |
 | las-b0-007     | LÄS     | register break: spoken/blog Swedish                      | G-SPRÅK (+G-REGISTER) |
@@ -36,7 +36,7 @@ required eval run.**
 | las-b0-011     | LÄS     | verbatim lift from host-2022-verb1-LÄS-011               | M-PLAGIARISM       |
 | elf-b0-012     | ELF     | non-HP register: clickbait listicle                      | G-REGISTER (+G-ENG)|
 | las-b0-013     | LÄS     | HARD NEGATIVE — no defect, attractive distractors        | NONE (must PASS)   |
-| las-b0-014     | LÄS     | double key (distractor B also defensible)                | G-DISTRACTOR       |
+| las-b0-014     | LÄS     | double key (B is a verbatim passage sentence, like key A)| G-DISTRACTOR (+G-KEY) |
 | las-b0-015     | LÄS     | subtle non-word *slipen* + calque *bokför sig självt*    | G-SPRÅK            |
 
 The seeds deliberately isolate one failure mode each: the language seeds
