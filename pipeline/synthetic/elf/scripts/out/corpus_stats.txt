@@ -1,0 +1,165 @@
+== per-exam completeness ==
+exam               q no-ctx  tiny trust
+host-2013         20     10     1 degraded
+host-2014         20     10     1 degraded
+host-2015         20     10     1 degraded
+host-2016         20     10     0 degraded
+host-2017         20      0     0 full
+host-2018         20      0     0 full
+host-2020         20      0     6 degraded
+host-2021         20      0     0 full
+host-2022         20      0     1 full
+host-2023         20      0     0 full
+host-2024         20      0     1 full
+host-2025         20      0     1 full
+host-ver1-2019    20      0     1 full
+host-ver2-2019    20      0     1 full  (dedup-excluded)
+var-2013          20     11     0 degraded
+var-2014          20     10     1 degraded
+var-2015          20     10     1 degraded
+var-2016          20      0     0 full
+var-2017          20      1     0 full
+var-2018-1        20      0     0 full
+var-2019          20      0     1 full
+var-2022-1        20      0     1 full
+var-2022-2        20      0     1 full
+var-2023          20      0     1 full
+var-2024          20      0     1 full
+var-2025          20      0     0 full
+var-2026          20      0     0 full
+
+== block format counts (dedup) ==
+  single_short_text    90
+  short_texts_bundle   52
+  long_passage         38
+  cloze                26
+
+== stem types ==
+  cloze_gap            135
+  detail_stated        132
+  detail_specific      105
+  inference            66
+  main_idea            65
+  conclusion           15
+  attitude_tone        12
+  argument_claim       6
+  vocab_in_context     2
+  purpose              1
+  other                1
+
+== format x metric ==
+  [cloze]
+    words                    mean=  355.7 median=    362 sd=  39.5 range=[219,408] n=25
+    sentences                mean=   18.0 median=     17 sd=   3.8 range=[9,25] n=25
+    avg_sentence_len         mean=   20.3 median=   21.2 sd=   3.4 range=[13.9,25.6] n=25
+    sentence_len_sd          mean=    9.2 median=    8.8 sd=   2.7 range=[4.5,14.6] n=25
+    flesch_reading_ease      mean=   50.9 median=   51.2 sd=   6.7 range=[35.5,60.1] n=25
+    fk_grade                 mean=   11.2 median=   11.5 sd=   1.7 range=[8.7,14.6] n=25
+    smog_approx              mean=   13.4 median=   13.4 sd=   1.3 range=[11.2,15.5] n=25
+    pct_polysyllabic         mean=   15.9 median=   15.8 sd=   2.2 range=[12.1,19.7] n=25
+    pct_words_7plus_chars    mean=   23.5 median=   23.4 sd=   2.8 range=[19.2,30.3] n=25
+    pct_latinate_suffix      mean=    4.1 median=    4.4 sd=   1.5 range=[1.4,6.4] n=25
+    type_token_ratio         mean=    0.6 median=    0.6 sd=   0.0 range=[0.5,0.7] n=25
+    paragraphs               mean=    2.8 median=      2 sd=   1.5 range=[2,6] n=25
+  [long_passage]
+    words                    mean=  698.3 median=  730.5 sd= 116.4 range=[353,824] n=38
+    sentences                mean=   31.2 median=   31.5 sd=   6.6 range=[12,43] n=38
+    avg_sentence_len         mean=   22.8 median=   23.2 sd=   3.2 range=[15.8,30.6] n=38
+    sentence_len_sd          mean=   10.6 median=   10.7 sd=   2.3 range=[7.0,15.8] n=38
+    flesch_reading_ease      mean=   45.7 median=   46.3 sd=   7.3 range=[29.1,57.8] n=38
+    fk_grade                 mean=   12.6 median=   12.6 sd=   1.6 range=[9.4,15.4] n=38
+    smog_approx              mean=   14.2 median=   14.2 sd=   1.2 range=[12.0,17.0] n=38
+    pct_polysyllabic         mean=   16.8 median=   16.1 sd=   3.0 range=[12.4,23.9] n=38
+    pct_words_7plus_chars    mean=   25.9 median=   25.2 sd=   3.3 range=[19.4,33.9] n=38
+    pct_latinate_suffix      mean=    4.3 median=    4.0 sd=   1.3 range=[2.3,7.7] n=38
+    type_token_ratio         mean=    0.5 median=    0.5 sd=   0.0 range=[0.5,0.6] n=38
+    paragraphs               mean=    2.0 median=    2.0 sd=   0.3 range=[1,3] n=38
+  [short_texts_bundle]
+    words                    mean=  231.0 median=  237.0 sd=  60.4 range=[105,351] n=52
+    sentences                mean=   10.3 median=   10.0 sd=   3.1 range=[3,17] n=52
+    avg_sentence_len         mean=   23.1 median=   22.4 sd=   4.3 range=[12.3,36.7] n=52
+    sentence_len_sd          mean=    8.6 median=    8.4 sd=   2.7 range=[3.5,17.9] n=52
+    flesch_reading_ease      mean=   43.4 median=   42.8 sd=   8.2 range=[28.5,64.8] n=52
+    fk_grade                 mean=   12.9 median=   12.8 sd=   2.0 range=[8.1,17.9] n=52
+    smog_approx              mean=   14.4 median=   14.6 sd=   1.5 range=[10.5,16.7] n=52
+    pct_polysyllabic         mean=   17.1 median=   16.9 sd=   3.2 range=[10.3,21.9] n=52
+    pct_words_7plus_chars    mean=   26.7 median=   27.4 sd=   3.6 range=[19.1,33.0] n=52
+    pct_latinate_suffix      mean=    4.9 median=    4.5 sd=   2.1 range=[0.9,11.3] n=52
+    type_token_ratio         mean=    0.7 median=    0.7 sd=   0.1 range=[0.6,0.8] n=52
+    paragraphs               mean=    1.9 median=    2.0 sd=   0.4 range=[1,3] n=52
+  [single_short_text]
+    words                    mean=  143.7 median=    139 sd=   8.8 range=[136,156] n=3
+    sentences                mean=    5.3 median=      5 sd=   2.1 range=[3,8] n=3
+    avg_sentence_len         mean=   30.9 median=   27.8 sd=  10.8 range=[19.5,45.3] n=3
+    sentence_len_sd          mean=   14.7 median=   15.2 sd=   5.9 range=[7.3,21.7] n=3
+    flesch_reading_ease      mean=   39.8 median=   41.7 sd=  18.3 range=[16.5,61.2] n=3
+    fk_grade                 mean=   15.4 median=   12.3 sd=   4.8 range=[11.6,22.2] n=3
+    smog_approx              mean=   15.7 median=   14.4 sd=   2.6 range=[13.3,19.3] n=3
+    pct_polysyllabic         mean=   16.3 median=   17.6 sd=   3.5 range=[11.5,19.9] n=3
+    pct_words_7plus_chars    mean=   24.4 median=   25.7 sd=   5.3 range=[17.3,30.1] n=3
+    pct_latinate_suffix      mean=    4.9 median=    5.1 sd=   3.9 range=[0.0,9.6] n=3
+    type_token_ratio         mean=    0.7 median=    0.7 sd=   0.0 range=[0.7,0.7] n=3
+    paragraphs               mean=      1 median=      1 sd=   0.0 range=[1,1] n=3
+
+== main-idea question position within long 5q block ==
+   {1: 9, 2: 2, 3: 1, 4: 3, 5: 10}
+
+== attributed publications (all real blocks, dedup) ==
+  The Economist                        12
+  New Scientist                        10
+  History Today                        7
+  Scientific American Mind             6
+  Time                                 5
+  Scientific American                  4
+  Psychology Today                     3
+  American Scientist                   2
+  New African                          2
+  National Geographic History          2
+  New Statesman                        2
+  Psychologies Magazine                2
+  International New York Times         1
+  The Guardian                         1
+  Literary Review                      1
+  Archaeology                          1
+  The New York Times Book Review       1
+  The Guardian Weekly                  1
+
+== titles of real long passages (dedup) ==
+  host-2017      verb1 q33-37   364w  Religion and Well-being / Sandra Upson, Scientific American Mind
+  host-2017      verb2 q36-40   809w  Opening the Doors of Diplomacy
+  host-2018      verb1 q33-37   695w  Clocking Cultures / Scientific American
+  host-2018      verb2 q36-40   745w  Pheromones / American Scientist
+  host-2020      verb1 q33-37   802w  Time / Kensy Cooperride & Rafael Núñez, Scientific American Mind
+  host-2020      verb2 q36-40   734w  Schools in Britain / Kenan Malik, International New York Times
+  host-2021      verb1 q33-37   568w  Rising Seas / Penny Sarchet, New Scientist
+  host-2021      verb2 q36-40   675w  The Pantheon / Luis Baena del Alcázar, National Geographic History
+  host-2022      verb1 q33-37   658w  On the Origin of Language / The Economist
+  host-2022      verb2 q36-40   727w  Daisy Yuhas, Scientific American Mind
+  host-2023      verb1 q33-37   737w  No Child Left Undiagnosed / Allen Frances, M.D., Psychology Today
+  host-2023      verb2 q36-40   673w  Lothar and Theutberga / Charles West, History Today
+  host-2024      verb1 q33-37   713w  Moominland and Beyond / Lizzie Palmer, New Statesman
+  host-2024      verb2 q36-40   812w  Mystery Script / Lisa Grossman, New Scientist
+  host-2025      verb1 q33-37   765w  Reading Abbey / Eleanor Parker, History Today
+  host-2025      verb2 q36-40   773w  Cross-Cultural Psychology / Nicolas Geeraert, American Scientist
+  host-ver1-2019 verb1 q33-37   555w  The Rise of Modern Religions / Bret Stetka, Scientific American Mind
+  host-ver1-2019 verb2 q36-40   673w  The Marshmallow Test / Kaja Perina, Psychology Today
+  var-2016       verb1 q33-37   820w  New Orleans / Thomas Ruys Smith, History Today
+  var-2016       verb2 q36-40   575w  Shona Sculpture / Juliet Highet, New African
+  var-2017       verb1 q33-37   584w  Setting Standards / The Economist
+  var-2017       verb2 q36-40   720w  Our True Dawn / Catherine Brahic, New Scientist
+  var-2018-1     verb1 q36-40   478w  Sandra Knapp, New Scientist
+  var-2018-1     verb2 q33-37   579w  Bosses / The Economist
+  var-2019       verb1 q33-37   824w  Doing Good / Julian Baggini, Psychologies Magazine
+  var-2019       verb2 q36-40   353w  Lady Sings the Blues / Daniel Matlin, Literary Review
+  var-2022-1     verb1 q33-37   816w  Bitter Pills / The Economist
+  var-2022-1     verb2 q36-40   796w  The Cave of Altamira / José Antonio Lasheras National Geographic History
+  var-2022-2     verb1 q33-37   796w  The Power of Images / Archaeology
+  var-2022-2     verb2 q36-40   716w  Hitler and Hollywood / Taylor Downing, History Today
+  var-2023       verb1 q33-37   802w  Kroomen – Hunting Down Black Slavers / John Broich, History Today
+  var-2023       verb2 q36-40   668w  No Smiling Matter / The Economist
+  var-2024       verb1 q33-37   710w  Something to Laugh About / Kate Davison, History Today
+  var-2024       verb2 q36-40   750w  The Two Cultures / Peter Dizikes, The New York Times Book Review
+  var-2025       verb1 q33-37   773w  In the Footsteps of Florence Nightingale / Slavea Chankova, The Economist
+  var-2025       verb2 q36-40   770w  Rachel Wilson, History Today
+  var-2026       verb1 q33-37   736w  Indie Bookstores / Lev Grossman, Time
+  var-2026       verb2 q36-40   792w  Killer Cats / Ida Emilie Steinmark, The Guardian Weekly
