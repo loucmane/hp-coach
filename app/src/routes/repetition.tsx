@@ -173,7 +173,10 @@ function RepetitionScreen() {
           ? dueCount > REPETITION_SESSION_SIZE
             ? `Repetera ${REPETITION_SESSION_SIZE} av ${dueCount} missar denna session — de äldsta först.`
             : `Repetera ${dueCount} ${dueCount === 1 ? 'fråga' : 'frågor'} du svarat fel på.`
-          : 'Du har inga missar att repetera just nu.'
+          : // P2.2 empty-state law: ONE line, an invitation — the old
+            // pairing ("Du har inga missar…" + the emptyCopy line below
+            // it) said the same thing twice on a day-zero screen.
+            'Inga missar än — när du svarar fel i en övning landar frågan här.'
       }
       idleMeta={
         dueCount && dueCount > 0
@@ -185,10 +188,19 @@ function RepetitionScreen() {
       emptyCopy={
         section
           ? `Inga ${section}-missar att repetera just nu. Hela kön finns under Repetera i Öva.`
-          : 'Inga missar att repetera. När du svarar fel i en övning landar frågan här.'
+          : isEmpty
+            ? // The unscoped empty idle already says it in idleSubcopy —
+              // suppress the duplicate missing-line (P2.2).
+              undefined
+            : 'Inga missar att repetera. När du svarar fel i en övning landar frågan här.'
       }
       disableStart={startDisabled}
       disableStartLabel={disabledLabel}
+      // Empty queue: the dead black "Inget att repetera" button goes; the
+      // one live action is the "Öva istället" door below. Loading keeps
+      // the disabled "Laddar…" button (honest pre-state, not an empty
+      // state).
+      hideDisabledStart={isEmpty}
       idleSecondaryCta={
         isEmpty ? (
           <Link

@@ -29,6 +29,11 @@ export type Stats = {
   /** 0–1 ratio over attempts in the last 7 days; null if zero attempts. */
   accuracy7d: number | null
   streakDays: number
+  /** Exact sum of timeTakenMs over today's (UTC) attempts — backs the
+   *  Home "minuter idag" elapsed counter. Optional during the worker
+   *  rollout window; lib/scoring's minutesPracticedToday falls back to
+   *  a per-section attemptsToday × avgTimeMs estimate when absent. */
+  timeMsToday?: number
   /** Per-section rolling-90d aggregates that feed lib/scoring.ts.
    *  Worker computes these from raw attempts; the SPA computes the
    *  derived score / trend / weakness ranking in lib/scoring.ts. */

@@ -5,6 +5,7 @@ import {
   computeSectionScore,
   formatScore,
   formatTrend,
+  minutesPracticedToday,
   rankWeakness,
   type SectionStats,
   scoreFromFraction,
@@ -331,5 +332,40 @@ describe('formatDeltaSv', () => {
   it('signs and comma-formats', () => {
     expect(formatDeltaSv(0.12)).toBe('+0,1')
     expect(formatDeltaSv(-0.2)).toBe('−0,2')
+  })
+})
+
+describe('minutesPracticedToday — the Home "minuter idag" elapsed counter', () => {
+  it('is 0 for a day-zero user (no practice yet — never the plan estimate)', () => {
+    expect(minutesPracticedToday({ timeMsToday: 0, bySection: {} })).toBe(0)
+    expect(minutesPracticedToday({ bySection: {} })).toBe(0)
+  })
+
+  it('prefers the exact worker sum when present', () => {
+    expect(minutesPracticedToday({ timeMsToday: 720_000, bySection: {} })).toBe(12)
+  })
+
+  it('rounds to whole minutes', () => {
+    expect(minutesPracticedToday({ timeMsToday: 89_000, bySection: {} })).toBe(1)
+    expect(minutesPracticedToday({ timeMsToday: 95_000, bySection: {} })).toBe(2)
+  })
+
+  it('falls back to attemptsToday × avgTimeMs per section while the worker field rolls out', () => {
+    expect(
+      minutesPracticedToday({
+        bySection: {
+          ORD: weekStats({ attemptsToday: 10, avgTimeMs: 30_000 }),
+          KVA: weekStats({ attemptsToday: 4, avgTimeMs: 60_000 }),
+        },
+      }),
+    ).toBe(9)
+  })
+
+  it('fallback skips sections with no time signal (null avgTimeMs) instead of producing NaN', () => {
+    expect(
+      minutesPracticedToday({
+        bySection: { ORD: weekStats({ attemptsToday: 3, avgTimeMs: null }) },
+      }),
+    ).toBe(0)
   })
 })

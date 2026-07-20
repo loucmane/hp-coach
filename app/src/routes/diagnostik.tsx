@@ -18,14 +18,22 @@ import { DiagnosticReport } from '@/components/diagnostic/DiagnosticReport'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { DIAGNOSTIC_LENGTH, pickDiagnosticQuestions } from '@/lib/diagnostic'
 
-type DiagnostikSearch = { qid?: string }
+type DiagnostikSearch = { qid?: string; start?: true }
 
 function validateSearch(input: Record<string, unknown>): DiagnostikSearch {
+  const out: DiagnostikSearch = {}
   const qid = input.qid
   if (typeof qid === 'string' && qid.length > 0 && qid.length < 80) {
-    return { qid }
+    out.qid = qid
   }
-  return {}
+  // `?start=1` — the day-zero door path (P2.2): Home's "Börja här" CTA
+  // lands the user IN the first question, no idle interstitial. Same
+  // grammar as /repetition and the Öva hub lanes. Direct /diagnostik
+  // navigation keeps its idle screen.
+  if (input.start === '1' || input.start === true) {
+    out.start = true
+  }
+  return out
 }
 
 export const Route = createFileRoute('/diagnostik')({
@@ -36,7 +44,7 @@ export const Route = createFileRoute('/diagnostik')({
 function DiagnostikScreen() {
   const recordMistake = useRecordMistake()
   const navigate = useNavigate()
-  const { qid: urlQid } = Route.useSearch()
+  const { qid: urlQid, start } = Route.useSearch()
 
   const setUrlQid = useCallback(
     (next: string | null) => {
@@ -55,6 +63,7 @@ function DiagnostikScreen() {
       sections="diagnostic"
       activeTab="ova"
       urlSyncedQid={{ qid: urlQid ?? null, setQid: setUrlQid }}
+      autoStart={!!start}
       pickQuestions={pickDiagnosticQuestions}
       idleEyebrow="Diagnos"
       idleHeadline="Var står du?"

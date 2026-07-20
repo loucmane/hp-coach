@@ -18,7 +18,12 @@ import { SECTION_KEYS } from '@/data/questions'
 import { useDailyPlan } from '@/hooks/useDailyPlan'
 import { type DiagnosticMemory, loadDiagnosticMemory } from '@/lib/diagnosticMemory'
 import { TAB_ROUTE } from '@/lib/nav'
-import { computeProjected, computeProjectedDelta, computeSectionScore } from '@/lib/scoring'
+import {
+  computeProjected,
+  computeProjectedDelta,
+  computeSectionScore,
+  minutesPracticedToday,
+} from '@/lib/scoring'
 import { daysSinceVisit, loadPreviousVisit, markVisit } from '@/lib/visitMemory'
 import { HomeMobile } from '@/screens/HomeMobile'
 
@@ -79,6 +84,11 @@ function HomeRoute() {
     [stats.data],
   )
 
+  // "minuter idag" — ELAPSED practice, not the plan estimate. Null while
+  // stats resolve (Skrift ghost); statsError lets the line settle into an
+  // honest em dash if the query fails outright.
+  const minutesToday = stats.data ? minutesPracticedToday(stats.data) : null
+
   // Diagnostic memory — read once on mount so the localStorage hit
   // doesn't run on every render. Lives client-side per
   // diagnosticMemory.ts; an effect resyncs when the user returns to
@@ -126,6 +136,8 @@ function HomeRoute() {
       plan={plan}
       planError={planError}
       allComplete={allComplete}
+      minutesToday={minutesToday}
+      statsError={stats.isError}
       projected={projected}
       projectedDelta={projectedDelta}
       diagnosticMemory={diagnosticMemory}

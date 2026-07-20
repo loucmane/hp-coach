@@ -266,10 +266,21 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       SECTIONS.map((s) => [s, seed()]),
     ) as Record<Section, SectionAgg>
 
+    // Actual practice time today (UTC-anchored, same calendar as
+    // attemptsToday). Backs the Home "minuter idag" stat — an ELAPSED
+    // counter, not the plan estimate — so it starts at 0 on a fresh day
+    // and only ever grows as attempts land. Summed over ALL of today's
+    // attempts (before the section guard below: an unparseable
+    // question id is still real practice time).
+    let timeMsToday = 0
     for (const a of recentAttempts) {
+      const attemptTs = a.createdAt instanceof Date ? a.createdAt.getTime() : 0
+      if (attemptTs >= todayStart.getTime() && a.timeTakenMs != null && a.timeTakenMs > 0) {
+        timeMsToday += a.timeTakenMs
+      }
       const section = extractSection(a.questionId)
       if (!section) continue
-      const ts = a.createdAt instanceof Date ? a.createdAt.getTime() : 0
+      const ts = attemptTs
       const correct = a.correct ? 1 : 0
       const agg = bySectionAgg[section]
       agg.attempts90d += 1
@@ -406,6 +417,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         },
         accuracy7d,
         streakDays,
+        timeMsToday,
         bySection,
         weekly,
         attemptsDaily,

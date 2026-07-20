@@ -15,7 +15,7 @@ export const Route = createFileRoute('/sign-in')({
   component: SignInScreen,
 })
 
-function SignInScreen() {
+export function SignInScreen() {
   // Boot-veil content signal (#305 owner verdict) — public route, no
   // Skrift block; the card chrome is present at mount.
   useFirstContentSignal()

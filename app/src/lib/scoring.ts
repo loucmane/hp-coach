@@ -231,6 +231,35 @@ export function computeProjectedDelta(
   return scoreFromFraction(c7 / a7) - scoreFromFraction(c14 / a14)
 }
 
+/** Whole minutes ACTUALLY practiced today — the Home "minuter idag"
+ *  numeral. An elapsed counter, not the plan estimate: day-zero shows 0
+ *  and the number only counts up as attempts land (the old plan-derived
+ *  value started at the estimate and went 0 → "—" after completion).
+ *
+ *  Prefers the worker's exact `timeMsToday` sum (UTC-day timeTakenMs
+ *  over today's attempts). While that field rolls out, falls back to
+ *  Σ attemptsToday × avgTimeMs per section — an estimate, but provably
+ *  non-decreasing within a day: each new attempt multiplies a section's
+ *  term by (n+1)/n while the 90d average shrinks by at most N/(N+1),
+ *  and n ≤ N always. Sections with no time signal contribute 0. */
+export function minutesPracticedToday(stats: {
+  timeMsToday?: number
+  bySection: Partial<Record<Section, SectionStats>>
+}): number {
+  let ms: number
+  if (stats.timeMsToday != null) {
+    ms = stats.timeMsToday
+  } else {
+    ms = 0
+    for (const section of [...VERBAL_SECTIONS, ...QUANT_SECTIONS]) {
+      const st = stats.bySection[section]
+      if (!st || st.avgTimeMs == null) continue
+      ms += st.attemptsToday * st.avgTimeMs
+    }
+  }
+  return Math.max(0, Math.round(ms / 60_000))
+}
+
 /** `+0,1` / `−0,2` / `±0,0` — the stats-row delta, Swedish comma. */
 export function formatDeltaSv(delta: number): string {
   const rounded = Math.round(delta * 10) / 10

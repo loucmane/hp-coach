@@ -79,8 +79,14 @@ export type PlanItem = {
  *  - v8: adaptive-review hot-trap boost (task #16). When a hot trap is
  *    active, its trap-drill item is reordered to plan[0]. A plan cached
  *    before this could show the same items in a different order, so we
- *    invalidate to guarantee the boosted ordering takes effect. */
-export const PLAN_SCHEMA_VERSION = 8
+ *    invalidate to guarantee the boosted ordering takes effect.
+ *  - v9: day-zero onboarding (P2.2). A true day-zero user (no attempts,
+ *    no due reps, never mocked) now gets the cold-start first drill
+ *    instead of the baseline Provpass anchor, and the cold-start item
+ *    became "Börja här" with a direct-start href. Plans cached before
+ *    this could hold a 55-min mock summons as a stranger's first
+ *    action. */
+export const PLAN_SCHEMA_VERSION = 9
 
 export type DailyPlan = {
   /** Schema version — see `PLAN_SCHEMA_VERSION`. Older plans are
@@ -370,7 +376,17 @@ export function generateDailyPlan(signals: SchedulerSignals): DailyPlan {
   // consumed by the status line is intentionally NOT suppressed.
   const mockPrescription =
     signals.daysToExam != null && !signals.suppressMock ? prescribeMock(signals) : null
-  if (mockPrescription?.due) {
+  // Day-zero exception (P2.2, owner-ratified 2026-07): a TRUE day-zero
+  // user — zero attempts anywhere, zero due reps, never mocked — must
+  // NOT meet a 55-minute Provpass summons as their first action. For
+  // them the baseline prescription stands down and Rule 5 (cold start)
+  // takes the day: a short first drill that delivers the genomgång
+  // idiom the landing just taught. The moment they have ANY signal
+  // (attempts or reps), the baseline anchor re-engages as before.
+  const dayZero = !hasAnyAttempt && dueMistakeCount === 0
+  const mockAnchorDue =
+    mockPrescription?.due && !(dayZero && mockPrescription.daysSinceLast == null)
+  if (mockAnchorDue && mockPrescription) {
     const items: PlanItem[] = [mockItem(mockPrescription, date)]
     if (dueMistakeCount > 0 && items.length < MAX_ITEMS) {
       const rep = repetitionItem(dueMistakeCount, date)
@@ -789,15 +805,19 @@ function pickColdestSection(scores: SectionScore[]): SectionScore | null {
 function coldStartItem(date: string): PlanItem {
   // /diagnostik is the B4 onboarding flow — 10 questions across all
   // sections, seeds the score model so the next plan generation has
-  // real signal.
+  // real signal. P2.2: this is the day-zero user's ONE first action —
+  // "Börja här" energy, direct start (?start=1 skips the idle
+  // interstitial), and the rationale names the genomgång so the thread
+  // from the landing demo stays unbroken.
   return {
     id: `cold-${date}`,
     kind: 'drill',
     section: null,
-    headline: 'Diagnos · några frågor',
-    rationale: 'Vi behöver några frågor först för att veta var du står.',
+    headline: 'Börja här · 10 frågor',
+    rationale:
+      'Tio frågor från riktiga prov — svara, läs genomgången efter varje. Sen vet vi var du står.',
     estimatedMinutes: 12,
-    href: '/diagnostik',
+    href: '/diagnostik?start=1',
     completed: false,
   }
 }

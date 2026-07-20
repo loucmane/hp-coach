@@ -38,7 +38,12 @@ async function getExposure(asUser = 'user_a') {
   }
 }
 
-async function seedAttempt(clerkUserId: string, questionId: string, createdAt: Date = new Date()) {
+async function seedAttempt(
+  clerkUserId: string,
+  questionId: string,
+  createdAt: Date = new Date(),
+  timeTakenMs?: number,
+) {
   const db = getDb(d1 as unknown as D1Database)
   const [user] = await db
     .insert(users)
@@ -55,6 +60,7 @@ async function seedAttempt(clerkUserId: string, questionId: string, createdAt: D
     questionId,
     correct: true,
     createdAt,
+    timeTakenMs: timeTakenMs ?? null,
   })
 }
 
@@ -87,6 +93,34 @@ describe('GET /api/me/exposure', () => {
     const b = await getExposure('user_b')
     expect(a.body.exposure['var-2024-XYZ-001'].n).toBe(1)
     expect(b.body.exposure['var-2024-XYZ-001'].n).toBe(1)
+  })
+})
+
+describe('GET /api/me/stats — timeMsToday (Home "minuter idag" stat)', () => {
+  async function getStats(asUser = 'user_a') {
+    const { app, env } = appFor(asUser)
+    const res = await app.request('/stats', {}, env)
+    return { res, body: (await res.json()) as { stats: { timeMsToday: number } } }
+  }
+
+  it('is 0 for a fresh user with no attempts (day-zero shows 0, not the plan estimate)', async () => {
+    const { res, body } = await getStats('user_fresh')
+    expect(res.status).toBe(200)
+    expect(body.stats.timeMsToday).toBe(0)
+  })
+
+  it('sums timeTakenMs over attempts created today (UTC) only', async () => {
+    const now = new Date()
+    const yesterday = new Date(now.getTime() - 24 * 60 * 60_000)
+    await seedAttempt('user_a', 'var-2024-XYZ-001', now, 90_000)
+    await seedAttempt('user_a', 'var-2024-ORD-002', now, 30_000)
+    // Yesterday's practice must not leak into today's stat.
+    await seedAttempt('user_a', 'var-2024-KVA-003', yesterday, 600_000)
+    // Null timeTakenMs rows contribute nothing (never NaN).
+    await seedAttempt('user_a', 'var-2024-NOG-004', now)
+
+    const { body } = await getStats()
+    expect(body.stats.timeMsToday).toBe(120_000)
   })
 })
 

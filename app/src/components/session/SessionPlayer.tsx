@@ -63,7 +63,9 @@ import { currentDevice } from '@/lib/device'
 import { useArketMotion } from '@/lib/motion'
 import { TAB_ROUTE, type TabKey } from '@/lib/nav'
 import { canAdoptActiveSession } from './canAdoptSession'
+import { LeaveConfirmSheet } from './LeaveConfirmSheet'
 import { reconstructSummary } from './reconstructSummary'
+import { useSessionBackTrap } from './useSessionBackTrap'
 
 /**
  * The current DTK question's place in its figure block. The block picker
@@ -175,6 +177,11 @@ export type SessionPlayerProps = {
   disableStart?: boolean
   /** Replacement label shown on the disabled primary button. */
   disableStartLabel?: string
+  /** P2.2 empty-state law (one line + ONE action): hide the primary
+   *  button entirely while `disableStart` is true, instead of rendering
+   *  a dead black CTA. The consumer supplies the single live action via
+   *  `idleSecondaryCta`. No effect when the start is enabled. */
+  hideDisabledStart?: boolean
   /** Secondary CTA rendered just above the primary button. Used to give
    *  the user a way out when the primary action is disabled. */
   idleSecondaryCta?: ReactNode
@@ -296,6 +303,35 @@ export function SessionPlayer(props: SessionPlayerProps) {
   // which can include the very first dataset fetch (~6 MB) on a cold
   // load — that's long enough for a double-click to fire begin() twice.
   const [starting, setStarting] = useState(false)
+
+  // Back-trap (P2 dogfood finding 3): while a pass is LIVE (answering/
+  // graded), a browser back gesture must not silently discard it. The
+  // hook holds a marker history entry; a pop past it re-arms the trap
+  // and opens the quiet confirm sheet below. Only the sheet's explicit
+  // "Avsluta" performs the real back (leave()). Provpass (MockRunner)
+  // is a separate component with its own abandon=void semantics and is
+  // deliberately not covered here.
+  const sessionActive = phase === 'answering' || phase === 'graded'
+  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false)
+  const { leave } = useSessionBackTrap(
+    sessionActive,
+    useCallback(() => setLeaveConfirmOpen(true), []),
+  )
+  useEffect(() => {
+    // A finished/reset pass must not leave a stale open sheet behind
+    // (e.g. "öva igen" straight after backing out of the done screen).
+    if (!sessionActive) setLeaveConfirmOpen(false)
+  }, [sessionActive])
+  const leaveSheet =
+    sessionActive && leaveConfirmOpen ? (
+      <LeaveConfirmSheet
+        onContinue={() => setLeaveConfirmOpen(false)}
+        onLeave={() => {
+          setLeaveConfirmOpen(false)
+          leave()
+        }}
+      />
+    ) : null
 
   const begin = useCallback(async () => {
     if (starting) return
@@ -868,6 +904,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
               blockPosition,
             })}
           />
+          {leaveSheet}
         </MobileFrame>
       </StageInk>
     )
@@ -994,6 +1031,7 @@ export function SessionPlayer(props: SessionPlayerProps) {
         >
           {drillBody}
         </Page>
+        {leaveSheet}
       </MobileFrame>
     </StageInk>
   )
@@ -1035,6 +1073,7 @@ function IdleBody({
   staleResume,
   disableStart,
   disableStartLabel,
+  hideDisabledStart,
   idleSecondaryCta,
   isPhone,
   adaptiveOffer,
@@ -1258,22 +1297,24 @@ function IdleBody({
             {idleSecondaryCta}
           </div>
         )}
-        <Btn
-          full={isPhone}
-          size="xl"
-          onClick={onStart}
-          disabled={starting || !!disableStart}
-          data-testid="drill-start"
-          style={isPhone ? undefined : { minWidth: 260 }}
-        >
-          {starting
-            ? 'Startar…'
-            : disableStart
-              ? (disableStartLabel ?? 'Inget att starta')
-              : resuming && !staleResume
-                ? 'Fortsätt övning →'
-                : 'Starta övning →'}
-        </Btn>
+        {!(disableStart && hideDisabledStart) && (
+          <Btn
+            full={isPhone}
+            size="xl"
+            onClick={onStart}
+            disabled={starting || !!disableStart}
+            data-testid="drill-start"
+            style={isPhone ? undefined : { minWidth: 260 }}
+          >
+            {starting
+              ? 'Startar…'
+              : disableStart
+                ? (disableStartLabel ?? 'Inget att starta')
+                : resuming && !staleResume
+                  ? 'Fortsätt övning →'
+                  : 'Starta övning →'}
+          </Btn>
+        )}
       </div>
     </div>
   )

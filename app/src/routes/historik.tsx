@@ -97,7 +97,26 @@ function HistorikRoute() {
             {history.isPending ? (
               <MonoNote>laddar…</MonoNote>
             ) : rows.length === 0 ? (
-              <MonoNote>Inga avslutade pass än. Kör en övning så landar den här.</MonoNote>
+              // P2.2 empty-state law: the invitation carries its own door.
+              <>
+                <MonoNote>Inga avslutade pass än. Kör en övning så landar den här.</MonoNote>
+                <Link
+                  to="/ova"
+                  data-testid="historik-empty-cta"
+                  style={{
+                    display: 'inline-block',
+                    marginTop: 10,
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 12,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: 'var(--accent)',
+                    textDecoration: 'none',
+                  }}
+                >
+                  Öva →
+                </Link>
+              </>
             ) : (
               <div>
                 {rows.map((row) => (

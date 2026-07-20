@@ -275,7 +275,12 @@ function OvaRoute() {
                         : dueCount > 0
                           ? `${dueCount} redo att repetera nu · ${pileCount} i dagens hög — de äldsta först.`
                           : `Inget är redo just nu — ${pileCount} ${pileCount === 1 ? 'miss ligger' : 'missar ligger'} i dagens hög och blir redo snart.`
-                      : 'Kön är tom just nu — allt du missat är återlärt. Repetitionen står kvar här ändå.'}
+                      : stats.data?.attempts.total === 0
+                        ? // P2.2 day-zero: "allt du missat är återlärt" is
+                          // false for someone who never missed anything —
+                          // the invitation form is the honest one.
+                          'Inga missar än — när du svarar fel i en övning landar frågan här.'
+                        : 'Kön är tom just nu — allt du missat är återlärt. Repetitionen står kvar här ändå.'}
                 </SkriftLine>
               </Skrift>
             </p>

@@ -53,6 +53,8 @@ import { Route as CoachRouteImport } from './routes/coach'
 import { Route as AvanceratRouteImport } from './routes/avancerat'
 import { Route as AdaptiveVerifyRouteImport } from './routes/adaptive-verify'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SignUpSplatRouteImport } from './routes/sign-up.$'
+import { Route as SignInSplatRouteImport } from './routes/sign-in.$'
 import { Route as DevProvpassPickerBakeoffRouteImport } from './routes/dev_.provpass-picker-bakeoff'
 import { Route as DevNavRailBakeoffRouteImport } from './routes/dev_.nav-rail-bakeoff'
 import { Route as DevNavCtaBakeoffRouteImport } from './routes/dev_.nav-cta-bakeoff'
@@ -283,6 +285,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignUpSplatRoute = SignUpSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => SignUpRoute,
+} as any)
+const SignInSplatRoute = SignInSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => SignInRoute,
+} as any)
 const DevProvpassPickerBakeoffRoute =
   DevProvpassPickerBakeoffRouteImport.update({
     id: '/dev_/provpass-picker-bakeoff',
@@ -365,9 +377,9 @@ export interface FileRoutesByFullPath {
   '/redesign-lab': typeof RedesignLabRoute
   '/redesign-layout-bakeoff': typeof RedesignLayoutBakeoffRoute
   '/repetition': typeof RepetitionRoute
-  '/sign-in': typeof SignInRoute
+  '/sign-in': typeof SignInRouteWithChildren
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
-  '/sign-up': typeof SignUpRoute
+  '/sign-up': typeof SignUpRouteWithChildren
   '/villkor': typeof VillkorRoute
   '/welcome': typeof WelcomeRoute
   '/dev/account-menu-bakeoff': typeof DevAccountMenuBakeoffRoute
@@ -378,6 +390,8 @@ export interface FileRoutesByFullPath {
   '/dev/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
   '/dev/nav-rail-bakeoff': typeof DevNavRailBakeoffRoute
   '/dev/provpass-picker-bakeoff': typeof DevProvpassPickerBakeoffRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -419,9 +433,9 @@ export interface FileRoutesByTo {
   '/redesign-lab': typeof RedesignLabRoute
   '/redesign-layout-bakeoff': typeof RedesignLayoutBakeoffRoute
   '/repetition': typeof RepetitionRoute
-  '/sign-in': typeof SignInRoute
+  '/sign-in': typeof SignInRouteWithChildren
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
-  '/sign-up': typeof SignUpRoute
+  '/sign-up': typeof SignUpRouteWithChildren
   '/villkor': typeof VillkorRoute
   '/welcome': typeof WelcomeRoute
   '/dev/account-menu-bakeoff': typeof DevAccountMenuBakeoffRoute
@@ -432,6 +446,8 @@ export interface FileRoutesByTo {
   '/dev/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
   '/dev/nav-rail-bakeoff': typeof DevNavRailBakeoffRoute
   '/dev/provpass-picker-bakeoff': typeof DevProvpassPickerBakeoffRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -474,9 +490,9 @@ export interface FileRoutesById {
   '/redesign-lab': typeof RedesignLabRoute
   '/redesign-layout-bakeoff': typeof RedesignLayoutBakeoffRoute
   '/repetition': typeof RepetitionRoute
-  '/sign-in': typeof SignInRoute
+  '/sign-in': typeof SignInRouteWithChildren
   '/sign-in-bakeoff': typeof SignInBakeoffRoute
-  '/sign-up': typeof SignUpRoute
+  '/sign-up': typeof SignUpRouteWithChildren
   '/villkor': typeof VillkorRoute
   '/welcome': typeof WelcomeRoute
   '/dev_/account-menu-bakeoff': typeof DevAccountMenuBakeoffRoute
@@ -487,6 +503,8 @@ export interface FileRoutesById {
   '/dev_/nav-cta-bakeoff': typeof DevNavCtaBakeoffRoute
   '/dev_/nav-rail-bakeoff': typeof DevNavRailBakeoffRoute
   '/dev_/provpass-picker-bakeoff': typeof DevProvpassPickerBakeoffRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -543,6 +561,8 @@ export interface FileRouteTypes {
     | '/dev/nav-cta-bakeoff'
     | '/dev/nav-rail-bakeoff'
     | '/dev/provpass-picker-bakeoff'
+    | '/sign-in/$'
+    | '/sign-up/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -597,6 +617,8 @@ export interface FileRouteTypes {
     | '/dev/nav-cta-bakeoff'
     | '/dev/nav-rail-bakeoff'
     | '/dev/provpass-picker-bakeoff'
+    | '/sign-in/$'
+    | '/sign-up/$'
   id:
     | '__root__'
     | '/'
@@ -651,6 +673,8 @@ export interface FileRouteTypes {
     | '/dev_/nav-cta-bakeoff'
     | '/dev_/nav-rail-bakeoff'
     | '/dev_/provpass-picker-bakeoff'
+    | '/sign-in/$'
+    | '/sign-up/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -693,9 +717,9 @@ export interface RootRouteChildren {
   RedesignLabRoute: typeof RedesignLabRoute
   RedesignLayoutBakeoffRoute: typeof RedesignLayoutBakeoffRoute
   RepetitionRoute: typeof RepetitionRoute
-  SignInRoute: typeof SignInRoute
+  SignInRoute: typeof SignInRouteWithChildren
   SignInBakeoffRoute: typeof SignInBakeoffRoute
-  SignUpRoute: typeof SignUpRoute
+  SignUpRoute: typeof SignUpRouteWithChildren
   VillkorRoute: typeof VillkorRoute
   WelcomeRoute: typeof WelcomeRoute
   DevAccountMenuBakeoffRoute: typeof DevAccountMenuBakeoffRoute
@@ -1018,6 +1042,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sign-up/$': {
+      id: '/sign-up/$'
+      path: '/$'
+      fullPath: '/sign-up/$'
+      preLoaderRoute: typeof SignUpSplatRouteImport
+      parentRoute: typeof SignUpRoute
+    }
+    '/sign-in/$': {
+      id: '/sign-in/$'
+      path: '/$'
+      fullPath: '/sign-in/$'
+      preLoaderRoute: typeof SignInSplatRouteImport
+      parentRoute: typeof SignInRoute
+    }
     '/dev_/provpass-picker-bakeoff': {
       id: '/dev_/provpass-picker-bakeoff'
       path: '/dev/provpass-picker-bakeoff'
@@ -1077,6 +1115,28 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface SignInRouteChildren {
+  SignInSplatRoute: typeof SignInSplatRoute
+}
+
+const SignInRouteChildren: SignInRouteChildren = {
+  SignInSplatRoute: SignInSplatRoute,
+}
+
+const SignInRouteWithChildren =
+  SignInRoute._addFileChildren(SignInRouteChildren)
+
+interface SignUpRouteChildren {
+  SignUpSplatRoute: typeof SignUpSplatRoute
+}
+
+const SignUpRouteChildren: SignUpRouteChildren = {
+  SignUpSplatRoute: SignUpSplatRoute,
+}
+
+const SignUpRouteWithChildren =
+  SignUpRoute._addFileChildren(SignUpRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdaptiveVerifyRoute: AdaptiveVerifyRoute,
@@ -1117,9 +1177,9 @@ const rootRouteChildren: RootRouteChildren = {
   RedesignLabRoute: RedesignLabRoute,
   RedesignLayoutBakeoffRoute: RedesignLayoutBakeoffRoute,
   RepetitionRoute: RepetitionRoute,
-  SignInRoute: SignInRoute,
+  SignInRoute: SignInRouteWithChildren,
   SignInBakeoffRoute: SignInBakeoffRoute,
-  SignUpRoute: SignUpRoute,
+  SignUpRoute: SignUpRouteWithChildren,
   VillkorRoute: VillkorRoute,
   WelcomeRoute: WelcomeRoute,
   DevAccountMenuBakeoffRoute: DevAccountMenuBakeoffRoute,
