@@ -75,11 +75,37 @@ def test_bands_pass_in_band():
     assert gate_bands(make_candidate())["verdict"] == "pass"
 
 
-def test_bands_uncalibrated_flags_not_kills():
+def test_bands_uncalibrated_flags_not_kills(tmp_path):
+    # bands.json on disk is calibrated=true (see gates/bands.json); the
+    # uncalibrated-downgrade behavior is tested against an explicit
+    # uncalibrated fixture so it doesn't depend on that committed state.
+    bands = json.loads((Path(__file__).resolve().parents[2] / "bands.json").read_text(encoding="utf-8"))
+    bands["calibrated"] = False
+    bp = tmp_path / "bands.json"
+    bp.write_text(json.dumps(bands), encoding="utf-8")
     c = make_candidate(passage="Alldeles för kort passage. Bara två meningar.")
-    v = gate_bands(c)
+    v = gate_bands(c, bands_path=bp)
     assert v["verdict"] == "flag"  # calibrated=false => downgrade
     assert any("passage_words" in f["quote"] for f in v["findings"])
+
+
+def test_band_check_union_across_classes():
+    # a stat given as multiple class bands passes if the value is in ANY of
+    # them -- e.g. ELF passage_words: cloze ~228-401, short_text ~101-368,
+    # long_passage ~332-873 (see bands.json). A value in the short_text-only
+    # region (below cloze's floor) must still pass via short_text alone.
+    f = []
+    bands = [{"class": "short_text", "min": 101, "max": 368},
+             {"class": "cloze", "min": 228, "max": 401},
+             {"class": "long_passage", "min": 332, "max": 873}]
+    from mech import _band_check
+    _band_check(f, "passage_words", 150, bands)  # short_text only
+    assert f == []
+    _band_check(f, "passage_words", 900, bands)  # outside all three
+    assert len(f) == 1
+    assert "short_text=[101, 368]" in f[0]["note"]
+    assert "cloze=[228, 401]" in f[0]["note"]
+    assert "long_passage=[332, 873]" in f[0]["note"]
 
 
 def test_bands_calibrated_kills(tmp_path):

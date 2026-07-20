@@ -122,10 +122,21 @@ def _load_bands(bands_path: Path | None = None) -> dict:
     return json.loads((bands_path or GATES_DIR / "bands.json").read_text(encoding="utf-8"))
 
 
-def _band_check(f, name, value, band):
-    lo, hi = band["min"], band["max"]
-    if not lo <= value <= hi:
-        f.append(_finding("major", f"{name}={value}", f"outside band [{lo}, {hi}]"))
+def _band_check(f, name, value, bands):
+    """bands is a list of {class, min, max} (see bands.json _band_semantics):
+    PASS if value falls within ANY listed class band (union across the
+    documented format classes) -- this lets one stat cover e.g. LÄS long vs
+    short, or ELF long_passage vs cloze vs short_text, without the gate
+    needing to classify the candidate's format itself. Legacy single-dict
+    {min,max} bands (no class list) are still accepted for callers that pass
+    a bespoke fixture."""
+    if isinstance(bands, dict):
+        bands = [{"class": "any", "min": bands["min"], "max": bands["max"]}]
+    for b in bands:
+        if b["min"] <= value <= b["max"]:
+            return
+    ranges = "; ".join(f"{b['class']}=[{b['min']}, {b['max']}]" for b in bands)
+    f.append(_finding("major", f"{name}={value}", f"outside all bands ({ranges})"))
 
 
 def gate_bands(cand: dict, bands_path: Path | None = None) -> dict:

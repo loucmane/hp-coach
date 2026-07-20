@@ -3,27 +3,45 @@
   "section": "LÄS",
   "family": "evalset-seeded",
   "title": "Var kartan slutar",
-  "passage": "Okej, så här är grejen med gamla kartor: de är egentligen ganska sjukt opålitliga. På medeltiden ritade kartograferna glatt in monster och paradis i kanterna där kunskapen tog slut, och ingen tyckte att det var konstigt. Det tomma utrymmet skulle liksom fyllas med nånting, och då fick fantasin ta över.\n\nMen här kommer det intressanta. De där monstren var inte bara dekoration. Forskaren Chet Van Duzer, som har kollat på jättemånga sådana kartor, menar att de faktiskt markerade var det farliga och okända började. Ett sjömonster var ungefär som en varningsskylt: hit men inte längre. Så på sitt sätt var kartorna ärligare än våra, för de erkände öppet vad de inte visste.\n\nModerna kartor låtsas ju att allt är känt och uppmätt, att varenda kvadratmeter är kartlagd och avklarad. Men den som har försökt hitta rätt i en främmande stad med bara en app vet ju att kartan och verkligheten inte alltid är polare. Kanske borde vi återinföra monstren, typ som en påminnelse om att vi inte kan allt.",
+  "passage": "Okej, så här är grejen med gamla kartor: de är egentligen ganska sjukt opålitliga. På medeltiden ritade kartograferna glatt in monster och paradis i kanterna där kunskapen tog slut, och ingen tyckte att det var konstigt. Det tomma utrymmet skulle liksom fyllas med nånting, och då fick fantasin ta över.\n\nMen här kommer det intressanta. De där monstren var inte bara dekoration. Forskaren Chet Van Duzer, som har kollat på jättemånga sådana kartor, menar att de faktiskt markerade var det farliga och okända började. Ett sjömonster var ungefär som en varningsskylt: hit men inte längre. Så på sitt sätt var kartorna ärligare än våra, för de erkände öppet vad de inte visste.\n\nModerna kartor låtsas ju att allt är känt och uppmätt, att varenda kvadratmeter är kartlagd och avklarad. Men den som har försökt hitta rätt i en främmande stad med bara en app vet ju att kartan och verkligheten inte alltid är polare. Kanske borde vi återinföra monstren, typ som en påminnelse om att vi inte kan allt.\n\nOch det coola är ju att kartografer typ redan visste det här. De la inte in monstren av misstag, utan för att markera 'här slutar vår koll'. Så nästa gång du zoomar in på Google Maps och appen bara visar en tom grå ruta, tänk på att det egentligen inte är så annorlunda från ett gammalt sjömonster i marginalen. Det är fortfarande ett sätt att säga: vi vet inte, var försiktig.",
   "questions": [
     {
       "q_index": 1,
       "prompt": "Vad menar Chet Van Duzer att monstren på gamla kartor fyllde för funktion?",
       "options": [
-        { "letter": "A", "text": "De markerade gränsen mot det farliga och okända." },
-        { "letter": "B", "text": "De var enbart dekorativa utsmyckningar." },
-        { "letter": "C", "text": "De visade var verkliga djur hade observerats." },
-        { "letter": "D", "text": "De ersatte text för en analfabetisk publik." }
+        {
+          "letter": "A",
+          "text": "De markerade gränsen mot det farliga och okända."
+        },
+        {
+          "letter": "B",
+          "text": "De var enbart dekorativa utsmyckningar."
+        },
+        {
+          "letter": "C",
+          "text": "De visade var verkliga djur hade observerats."
+        },
+        {
+          "letter": "D",
+          "text": "De ersatte text för en analfabetisk publik."
+        }
       ],
       "key": "A",
       "rationale": "Key A is correct ('markerade var det farliga och okända började'). The seeded defect is REGISTER: the passage is written in chatty blog/spoken Swedish ('Okej så här är grejen', 'sjukt opålitliga', 'jättemånga', 'polare', 'typ'), utterly wrong for an HP LÄS text. This should be caught by both G-SPRÅK (register break, class 5) AND G-REGISTER (non-HP genre)."
     }
   ],
-  "generator_meta": { "origin": "evalset-author", "authored": "2026-07-20" },
+  "generator_meta": {
+    "origin": "evalset-author",
+    "authored": "2026-07-20"
+  },
   "_seed": {
     "defect": "Register break: spoken/blog Swedish in an HP LÄS passage ('Okej, så här är grejen', 'sjukt opålitliga', 'kollat på jättemånga', 'polare', 'typ som en påminnelse', direct reader address). Grammatical but the wrong register entirely.",
     "intended_kill_gate": "G-SPRAK",
     "secondary_kill_gate": "G-REGISTER",
     "expected_verdict": "kill",
-    "defect_locations": ["passage: 'Okej, så här är grejen med gamla kartor: de är egentligen ganska sjukt opålitliga'", "passage: 'kartan och verkligheten inte alltid är polare. Kanske borde vi återinföra monstren, typ'"]
+    "defect_locations": [
+      "passage: 'Okej, så här är grejen med gamla kartor: de är egentligen ganska sjukt opålitliga'",
+      "passage: 'kartan och verkligheten inte alltid är polare. Kanske borde vi återinföra monstren, typ'"
+    ]
   }
 }
