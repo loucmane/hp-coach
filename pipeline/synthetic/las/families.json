@@ -1,0 +1,1367 @@
+{
+ "corpus": {
+  "n_questions": 540,
+  "n_passages": 174,
+  "n_options_per_item": 4,
+  "difficulty_data": "absent"
+ },
+ "type_x_macrogenre_crosstab": {
+  "enligt_texten_detalj": {
+   "sakprosa": 183,
+   "juridik_myndighet": 17,
+   "litterar": 6
+  },
+  "detalj_ospecificerad": {
+   "sakprosa": 174,
+   "juridik_myndighet": 14,
+   "litterar": 14
+  },
+  "jamforelse_relation": {
+   "sakprosa": 23,
+   "litterar": 3
+  },
+  "forfattarens_hallning": {
+   "sakprosa": 28,
+   "litterar": 1
+  },
+  "inference_slutsats": {
+   "sakprosa": 26,
+   "litterar": 3,
+   "juridik_myndighet": 1
+  },
+  "struktur_funktion": {
+   "sakprosa": 12,
+   "litterar": 1
+  },
+  "huvudbudskap_syfte": {
+   "sakprosa": 29,
+   "litterar": 1
+  },
+  "hallning_stamning_ton": {
+   "sakprosa": 2
+  },
+  "ordbetydelse_i_kontext": {
+   "sakprosa": 1,
+   "litterar": 1
+  }
+ },
+ "trap_glossary": {
+  "overgeneralisation": "Distraktorn tar textens nyanserade påstående och gör det absolut (alla/alltid/aldrig/bara).",
+  "reversed_causality": "Rätt element, fel riktning: orsak/verkan eller subjekt/objekt kastas om (textens 'tvärtom').",
+  "scope_shift": "Rätt tema, fel omfång/stycke: svaret gäller en annan del eller vidgar/snävar räckvidden.",
+  "detail_as_main": "En delfråga eller ett exempel presenteras som textens huvudpoäng.",
+  "plausible_worldknowledge": "Låter rimligt utifrån allmän kunskap men saknar stöd i just denna text.",
+  "true_but_irrelevant": "Sant i sig men besvarar inte den ställda frågan.",
+  "surface_lexical_echo": "Återanvänder ord/fraser som finns i texten för att kännas bekant och rätt.",
+  "half_right_conjunction": "Två-ledad distraktor där ena ledet stämmer och det andra inte."
+ },
+ "families": [
+  {
+   "family_id": "enligt_texten_detalj",
+   "label_sv": "Detaljhämtning (text-ankrad)",
+   "frequency": {
+    "count": 206,
+    "pct": 38.1
+   },
+   "genre_distribution": {
+    "populärvetenskap": 104,
+    "debatt_opinion": 58,
+    "juridik_myndighet": 17,
+    "facktext_larobok": 10,
+    "recension": 6,
+    "intervju_reportage": 5,
+    "skonlitteratur": 4,
+    "poesi": 2
+   },
+   "macro_genre_distribution": {
+    "sakprosa": 183,
+    "juridik_myndighet": 17,
+    "litterar": 6
+   },
+   "trap_profile": [
+    {
+     "tag": "overgeneralisation",
+     "distractor_instances": 153,
+     "share_of_family_traps": 0.36,
+     "gloss": "Distraktorn tar textens nyanserade påstående och gör det absolut (alla/alltid/aldrig/bara)."
+    },
+    {
+     "tag": "reversed_causality",
+     "distractor_instances": 114,
+     "share_of_family_traps": 0.27,
+     "gloss": "Rätt element, fel riktning: orsak/verkan eller subjekt/objekt kastas om (textens 'tvärtom')."
+    },
+    {
+     "tag": "scope_shift",
+     "distractor_instances": 52,
+     "share_of_family_traps": 0.12,
+     "gloss": "Rätt tema, fel omfång/stycke: svaret gäller en annan del eller vidgar/snävar räckvidden."
+    },
+    {
+     "tag": "plausible_worldknowledge",
+     "distractor_instances": 33,
+     "share_of_family_traps": 0.08,
+     "gloss": "Låter rimligt utifrån allmän kunskap men saknar stöd i just denna text."
+    },
+    {
+     "tag": "detail_as_main",
+     "distractor_instances": 25,
+     "share_of_family_traps": 0.06,
+     "gloss": "En delfråga eller ett exempel presenteras som textens huvudpoäng."
+    },
+    {
+     "tag": "surface_lexical_echo",
+     "distractor_instances": 19,
+     "share_of_family_traps": 0.04,
+     "gloss": "Återanvänder ord/fraser som finns i texten för att kännas bekant och rätt."
+    },
+    {
+     "tag": "true_but_irrelevant",
+     "distractor_instances": 17,
+     "share_of_family_traps": 0.04,
+     "gloss": "Sant i sig men besvarar inte den ställda frågan."
+    },
+    {
+     "tag": "half_right_conjunction",
+     "distractor_instances": 12,
+     "share_of_family_traps": 0.03,
+     "gloss": "Två-ledad distraktor där ena ledet stämmer och det andra inte."
+    }
+   ],
+   "difficulty_spread": "unknown — no Elo/item_stats in repo (see anti-plagiarism.md note)",
+   "exemplar_qids": [
+    "host-2013-verb1-LÄS-011",
+    "host-2013-verb1-LÄS-012",
+    "host-2013-verb1-LÄS-014"
+   ],
+   "exemplars": [
+    {
+     "qid": "host-2013-verb1-LÄS-011",
+     "prompt": "Enligt texten ser Madjidian en risk för ”ett slags rundgång”. Vad skulle detta i första hand få för följder?",
+     "answer": "B",
+     "genre": "populärvetenskap",
+     "pregrade_handle": "Citatdefinitionen",
+     "trap_tags": {},
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är frestande att läsa rundgång som ett slags brus där det blir svårt att se kopplingar — och alternativ A handlar just om förlorade samband.",
+       "why_wrong": "Rundgången skapar inte luckor mellan saker — den förstärker en koppling som redan finns men som är felaktig. Som steg 3 visar handlar mekaniken om upprepning och förstärkning, inte om att information försvinner."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Många stannar vid att Madjidian kritiserar forskningen för att vara otydlig och tror att rundgången gör oklarheterna mer synliga.",
+       "why_wrong": "Texten säger motsatsen: rundgången gör att stereotypa formuleringar börjar låta som säkra biologiska sanningar. Som steg 4 visar är problemet att felaktigheterna döljs som självklarheter — inte att oklarheter framhävs."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Vid snabbläsning är det lätt att tro att Madjidians huvudpoäng är att läsare missförstår forskningen.",
+       "why_wrong": "Madjidian klagar inte på missförstånd utan på att forskarnas egna ord redan är värdeladdade. Som steg 5 visar är hennes kritik intern — det handlar om hur biologerna formulerar sig, inte hur lekmännen misstolkar dem."
+      }
+     ]
+    },
+    {
+     "qid": "host-2013-verb1-LÄS-012",
+     "prompt": "Vad är det som riskerar att inte upptäckas i den biologiska forskning som Madjidian och Karlsson Green kritiserar?",
+     "answer": "D",
+     "genre": "populärvetenskap",
+     "pregrade_handle": "Modalord-pekfingret",
+     "trap_tags": {
+      "reversed_causality": 2
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är frestande att läsa \"manipulation\" och \"trakasserier\" som påståenden om medveten illvilja och tro att forskarna missar att medvetenheten är överdriven.",
+       "why_wrong": "Texten säger uttryckligen att beteendena är evolutionära, inte medvetna — och det är inte det som missas utan tvärtom det Madjidian betonar. Som steg 5 visar är medvetenhetsfrågan redan klar i texten."
+      },
+      {
+       "letter": "B",
+       "why_tempting": "Många stannar vid ordet \"kunskapsluckor\" i femte stycket och tror att det är luckornas orsaker som forskningen riskerar att missa.",
+       "why_wrong": "Orsaken till kunskapsluckorna — språkbruket — är precis vad texten analyserar och alltså redan känd. Det som förblir outforskat är inte luckornas orsak utan luckornas innehåll: själva könskonflikternas mekanik. Som steg 3 visar handlar det om en metalogisk skillnad mellan att veta varför man inte vet och att veta vad man inte vet."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Första instinkten kan vara att den mänskliga kontexten är textens huvudpoäng (rundgången) och därför också det som hotar att missas.",
+       "why_wrong": "Den mänskliga kontexten är just det som forskarna RISKERAR ATT KRYPA NÄRA — inte det de missar. Som steg 5 visar är kopplingen till människovärlden tvärtom överdriven i forskningen, inte underutforskad."
+      }
+     ]
+    },
+    {
+     "qid": "host-2013-verb1-LÄS-014",
+     "prompt": "Vilket av följande påståenden stämmer bäst överens med resonemanget i texten?",
+     "answer": "D",
+     "genre": "debatt_opinion",
+     "pregrade_handle": "Tre-upprepningarnas-lag",
+     "trap_tags": {
+      "overgeneralisation": 2,
+      "reversed_causality": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är frestande att tolka Rabes klagomål på biblioteksvärlden som ett kvalitetsförsvar — att hon vill skydda god litteratur från dålig.",
+       "why_wrong": "Texten gör aldrig den jämförelsen. Rabe säger inte att vad man läser är viktigt; hon säger att litteraturens värde inte ska reduceras till dess nytta. Som steg 3 visar är hennes axel egenvärde-vs-nyttovärde, inte god-vs-dålig litteratur."
+      },
+      {
+       "letter": "B",
+       "why_tempting": "Många stannar vid Rabes kritik mot biblioteken och tror att hon vill att biblioteken ska bredda sin verksamhet — kanske inkludera fler genrer.",
+       "why_wrong": "Tvärtom — Rabe klagar på att biblioteken redan har breddat bort från litteraturen och vill att de smalnar tillbaka till boken som egenvärde. B inverterar hennes riktning. Som steg 5 visar finns ingen mening i texten som föreslår ett \"vidare litteraturbegrepp\"."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Vid snabbläsning kan e-bok-stycket låta som ett avfärdande av e-böcker, och C verkar då samla textens hållning.",
+       "why_wrong": "Rabes anmärkning om e-böcker är specifik: de är osynliga, dåliga att bläddra bland. Hon påstår inte att de saknar litterärt värde. C är ett alldeles för starkt påstående jämfört med vad texten faktiskt säger. Som steg 5 visar — texten talar om synlighet, inte om värde."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "family_id": "detalj_ospecificerad",
+   "label_sv": "Detaljhämtning (innehålls-ankrad)",
+   "frequency": {
+    "count": 202,
+    "pct": 37.4
+   },
+   "genre_distribution": {
+    "populärvetenskap": 90,
+    "debatt_opinion": 52,
+    "facktext_larobok": 17,
+    "juridik_myndighet": 14,
+    "recension": 10,
+    "skonlitteratur": 9,
+    "intervju_reportage": 5,
+    "poesi": 5
+   },
+   "macro_genre_distribution": {
+    "sakprosa": 174,
+    "juridik_myndighet": 14,
+    "litterar": 14
+   },
+   "trap_profile": [
+    {
+     "tag": "overgeneralisation",
+     "distractor_instances": 124,
+     "share_of_family_traps": 0.32,
+     "gloss": "Distraktorn tar textens nyanserade påstående och gör det absolut (alla/alltid/aldrig/bara)."
+    },
+    {
+     "tag": "reversed_causality",
+     "distractor_instances": 104,
+     "share_of_family_traps": 0.27,
+     "gloss": "Rätt element, fel riktning: orsak/verkan eller subjekt/objekt kastas om (textens 'tvärtom')."
+    },
+    {
+     "tag": "scope_shift",
+     "distractor_instances": 42,
+     "share_of_family_traps": 0.11,
+     "gloss": "Rätt tema, fel omfång/stycke: svaret gäller en annan del eller vidgar/snävar räckvidden."
+    },
+    {
+     "tag": "detail_as_main",
+     "distractor_instances": 37,
+     "share_of_family_traps": 0.09,
+     "gloss": "En delfråga eller ett exempel presenteras som textens huvudpoäng."
+    },
+    {
+     "tag": "plausible_worldknowledge",
+     "distractor_instances": 27,
+     "share_of_family_traps": 0.07,
+     "gloss": "Låter rimligt utifrån allmän kunskap men saknar stöd i just denna text."
+    },
+    {
+     "tag": "surface_lexical_echo",
+     "distractor_instances": 23,
+     "share_of_family_traps": 0.06,
+     "gloss": "Återanvänder ord/fraser som finns i texten för att kännas bekant och rätt."
+    },
+    {
+     "tag": "true_but_irrelevant",
+     "distractor_instances": 21,
+     "share_of_family_traps": 0.05,
+     "gloss": "Sant i sig men besvarar inte den ställda frågan."
+    },
+    {
+     "tag": "half_right_conjunction",
+     "distractor_instances": 13,
+     "share_of_family_traps": 0.03,
+     "gloss": "Två-ledad distraktor där ena ledet stämmer och det andra inte."
+    }
+   ],
+   "difficulty_spread": "unknown — no Elo/item_stats in repo (see anti-plagiarism.md note)",
+   "exemplar_qids": [
+    "host-2013-verb1-LÄS-013",
+    "host-2013-verb1-LÄS-017",
+    "host-2013-verb1-LÄS-018"
+   ],
+   "exemplars": [
+    {
+     "qid": "host-2013-verb1-LÄS-013",
+     "prompt": "Litteraturen har dåligt självförtroende, skriver textförfattaren. Hur bör man enligt henne argumentera för att återge litteraturen dess självförtroende?",
+     "answer": "B",
+     "genre": "debatt_opinion",
+     "pregrade_handle": "Receptmeningen",
+     "trap_tags": {
+      "overgeneralisation": 1,
+      "reversed_causality": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är frestande att läsa \"litteraturen är så viktig\" som att den är mer än bara konst — att den också är demokrati, språk osv.",
+       "why_wrong": "Rabes klagomål är just att försvararna lägger TILL nyttovärden ovanpå konsten — hon vill tvärtom att man tar bort allt det extra och bara står kvar med det konstnärliga värdet. A inverterar hennes argument. Som steg 3 visar handlar receptet om att SKALA BORT nyttoargumenten, inte lägga till fler."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Många stannar vid Rabes klagomål på bokhandeln och tror att hennes ärende är att försvara den fysiska boken mot e-boken.",
+       "why_wrong": "Rabe nämner e-böckers osynlighet i förbifarten — men hennes recept handlar inte om format utan om värdetyp. Som steg 5 visar finns ingen mening där hon säger att fysiska böcker ÖVERTRÄFFAR e-böcker; hon säger att båda är osynliga."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Första instinkten kan vara att språkutveckling är ett klassiskt argument för litteratur och därför Rabes recept.",
+       "why_wrong": "Det är precis det argument hon räknar upp och avfärdar i sjätte stycket: \"det är bra för barns verbala utveckling\" — exakt sådana nyttoargument som hon säger ger litteraturen dåligt självförtroende. Som steg 2 visar är hennes recept motsatsen till D."
+      }
+     ]
+    },
+    {
+     "qid": "host-2013-verb1-LÄS-017",
+     "prompt": "Vilken är den centrala motsättning som texten vill belysa?",
+     "answer": "C",
+     "genre": "debatt_opinion",
+     "pregrade_handle": "Dikotomi-spårning",
+     "trap_tags": {
+      "overgeneralisation": 1,
+      "detail_as_main": 1,
+      "reversed_causality": 1,
+      "plausible_worldknowledge": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är frestande att läsa \"värdegrund\" som värderingsfrågor och tro att texten ställer dem mot lärande/kunskap.",
+       "why_wrong": "Texten gör tvärtom: den behandlar värdegrunden SOM en del av lärandet, inte som dess motsats. Som steg 3 visar löper värderingsfrågor genom alla pedagogiska situationer; spänningen ligger mellan vad värderingarna SÄGER och vad som FAKTISKT händer."
+      },
+      {
+       "letter": "B",
+       "why_tempting": "Många stannar vid utklädningslåde-exemplet och tror att det är pedagogernas grepp om barnen som är textens huvudtema.",
+       "why_wrong": "Pedagogerna och barnen står inte mot varandra i texten — båda är parter inom samma praktik som tillsammans skapar ett gap mellan policy och verklighet. Som steg 5 visar är motpolerna intention vs. verklighet, inte vuxen vs. barn."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Vid snabbläsning kan man tro att texten handlar om hur individen blir formad av gruppen — särskilt med ord som \"sortering\" och \"kategorisering\".",
+       "why_wrong": "Texten talar om risk för sortering som ett SYMPTOM på glappet mellan intention och praktik, inte som en konflikt mellan individ och grupp. Som steg 2 visar är artikelns ramberättelse glapp mellan styrdokument och vardagspraktik."
+      }
+     ]
+    },
+    {
+     "qid": "host-2013-verb1-LÄS-018",
+     "prompt": "Vad nämner textförfattarna som ett pro­ blem med läroplanens formuleringar?",
+     "answer": "D",
+     "genre": "debatt_opinion",
+     "pregrade_handle": "Problemmeningen",
+     "trap_tags": {
+      "overgeneralisation": 2
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är frestande att läsa textens långa uppräkning av läroplansord (demokrati, jämställdhet, generositet, tolerans...) och dra slutsatsen att den är för ambitiös.",
+       "why_wrong": "Författarna kritiserar inte mängden mål utan ordens oprecision. Som steg 5 visar är problemet inte hög ribba utan otydlig ribba — orden kan tolkas så olika att man inte ens vet vad ribban är."
+      },
+      {
+       "letter": "B",
+       "why_tempting": "Många stannar vid att texten kallar arbetet \"kvalificerat\" och säger att det \"tar tid\" och drar slutsatsen att resurser är problemet.",
+       "why_wrong": "Texten säger att arbetet är komplicerat men nämner aldrig resurser som det specifika problemet med FORMULERINGARNA. Som steg 2 visar handlar formuleringskritiken om tolkningsutrymme, inte om tid eller pengar."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Första instinkten kan vara att läroplaner alltid är politiskt laddade och därför att politisk debatt är problemet.",
+       "why_wrong": "Texten talar inte om läroplanen som politisk strid — den talar om vad ORDEN tillåter för tolkningar i den pedagogiska praktiken. Som steg 4 visar är förskollärarens dilemma intern (vilken tolkning ska jag välja?), inte politisk."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "family_id": "inference_slutsats",
+   "label_sv": "Inferens / slutsats bortom det bokstavliga",
+   "frequency": {
+    "count": 30,
+    "pct": 5.6
+   },
+   "genre_distribution": {
+    "populärvetenskap": 13,
+    "debatt_opinion": 7,
+    "facktext_larobok": 5,
+    "skonlitteratur": 3,
+    "juridik_myndighet": 1,
+    "intervju_reportage": 1
+   },
+   "macro_genre_distribution": {
+    "sakprosa": 26,
+    "litterar": 3,
+    "juridik_myndighet": 1
+   },
+   "trap_profile": [
+    {
+     "tag": "reversed_causality",
+     "distractor_instances": 20,
+     "share_of_family_traps": 0.33,
+     "gloss": "Rätt element, fel riktning: orsak/verkan eller subjekt/objekt kastas om (textens 'tvärtom')."
+    },
+    {
+     "tag": "overgeneralisation",
+     "distractor_instances": 20,
+     "share_of_family_traps": 0.33,
+     "gloss": "Distraktorn tar textens nyanserade påstående och gör det absolut (alla/alltid/aldrig/bara)."
+    },
+    {
+     "tag": "scope_shift",
+     "distractor_instances": 10,
+     "share_of_family_traps": 0.16,
+     "gloss": "Rätt tema, fel omfång/stycke: svaret gäller en annan del eller vidgar/snävar räckvidden."
+    },
+    {
+     "tag": "detail_as_main",
+     "distractor_instances": 6,
+     "share_of_family_traps": 0.1,
+     "gloss": "En delfråga eller ett exempel presenteras som textens huvudpoäng."
+    },
+    {
+     "tag": "surface_lexical_echo",
+     "distractor_instances": 3,
+     "share_of_family_traps": 0.05,
+     "gloss": "Återanvänder ord/fraser som finns i texten för att kännas bekant och rätt."
+    },
+    {
+     "tag": "true_but_irrelevant",
+     "distractor_instances": 1,
+     "share_of_family_traps": 0.02,
+     "gloss": "Sant i sig men besvarar inte den ställda frågan."
+    },
+    {
+     "tag": "plausible_worldknowledge",
+     "distractor_instances": 1,
+     "share_of_family_traps": 0.02,
+     "gloss": "Låter rimligt utifrån allmän kunskap men saknar stöd i just denna text."
+    }
+   ],
+   "difficulty_spread": "unknown — no Elo/item_stats in repo (see anti-plagiarism.md note)",
+   "exemplar_qids": [
+    "host-2013-verb2-LÄS-015",
+    "host-2013-verb2-LÄS-017",
+    "host-2014-verb1-LÄS-014"
+   ],
+   "exemplars": [
+    {
+     "qid": "host-2013-verb2-LÄS-015",
+     "prompt": "Vad talar enligt texten för att man kan få fram en röd allergifri jordgubbe?",
+     "answer": "A",
+     "genre": "populärvetenskap",
+     "pregrade_handle": "Negationen-som-öppnar",
+     "trap_tags": {
+      "detail_as_main": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "B",
+       "why_tempting": "Det är frestande att läsa Emanuelssons kommentar om antikroppstest och tro att antikropparna förhindrar allergin.",
+       "why_wrong": "Antikropparna i texten används som DIAGNOSTIK — för att mäta om allergenet finns. De är inte en behandling. Som steg 5 visar är det inte förhindrandet utan särkopplingen från färgen som möjliggör röd allergifri sort."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Många stannar vid att proteinet identifierats (\"Fra a 1\") och tror att identifieringen i sig är receptet.",
+       "why_wrong": "Identifieringen är ett FÖRSTA steg, men receptet för en röd allergifri sort kräver att färg och allergen kan separeras — vilket är A:s poäng. Som steg 3 visar är just oberoendet mellan färg och allergen den biologiska förutsättningen för att uppgiften ens är möjlig."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Vid snabbläsning kan man fästa vid att \"odlingsförhållandena spelar en stor roll\" och tro att allergenet kommer utifrån.",
+       "why_wrong": "Texten säger att odlingsförhållandena PÅVERKAR halten av allergen — inte att allergenet kommer utifrån. Allergenet är en del av jordgubbens egna proteiner. Som steg 4 visar är Fra a 1 jordgubbens eget protein."
+      }
+     ]
+    },
+    {
+     "qid": "host-2013-verb2-LÄS-017",
+     "prompt": "Hur kan man utifrån textens referat av Berglunds avhandling bäst beskriva 1800-talets fadersfigur?",
+     "answer": "C",
+     "genre": "debatt_opinion",
+     "pregrade_handle": "Verbjakten",
+     "trap_tags": {
+      "surface_lexical_echo": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är lätt att läsa ”mjukt, kärleksfullt och engagerat” och fastna vid ”känslig och flexibel”.",
+       "why_wrong": "Som steg 3–4 visar är textens tyngdpunkt verbserien om vård, lek och hushåll — alltså handling, inte i första hand känslighet. ”Aktiv och delaktig” täcker den bredden, ”känslig och flexibel” gör det inte."
+      },
+      {
+       "letter": "B",
+       "why_tempting": "Många stannar vid orden ”aga, tukt och lydnad” som dyker upp tidigt i recensionen.",
+       "why_wrong": "Steg 2 påminner om att texten EXPLICIT säger att den bilden ”måste omvärderas”. ”Dominerande” är just den schablon Berglund argumenterar mot, inte det han framställer."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Snabbsvar är ofta en kompromiss — om fadern varken är dominerande eller känslig, kanske han är passiv men insiktsfull.",
+       "why_wrong": "Steg 3 räknar upp fem aktivitetsverb. ”Passiv” strider direkt mot dem — Berglunds fader gör saker hela tiden."
+      }
+     ]
+    },
+    {
+     "qid": "host-2014-verb1-LÄS-014",
+     "prompt": "Vad bör AD:s utslag rimligen ha inneburit för den berörda kvinnan, om man följer textens resonemang?",
+     "answer": "C",
+     "genre": "juridik_myndighet",
+     "pregrade_handle": "Översätt ter- men",
+     "trap_tags": {
+      "reversed_causality": 1,
+      "overgeneralisation": 1,
+      "detail_as_main": 1,
+      "scope_shift": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är frestande att tänka att en domstol som blandar sig i ett avtal måste göra det \"verkställande\" — alltså få anställningen att upphöra på riktigt.",
+       "why_wrong": "Domstolen ogiltigförklarade det avtal som SKULLE få anställningen att upphöra. Som steg 3 visar betyder \"ogiltigförklara\" att avtalet inte gäller — alltså finns inget avtal som avslutar hennes anställning. A inverterar logiken."
+      },
+      {
+       "letter": "B",
+       "why_tempting": "Många stannar vid \"viss ersättning\" som nämns i samband med avtalet och tror att domen leder till mer pengar.",
+       "why_wrong": "Ersättningen var en del av det ursprungliga avtalet, inte en följd av domen. Texten beskriver bara ogiltigförklaringen som domstolens åtgärd — ingen ekonomisk kompensation utöver det nämns. B blandar ihop avtalets innehåll med domens innehåll."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Snabbsvar är ofta att om arbetsgivaren ville ha någon annan (\"arbetsgivaren avsåg att rekrytera\"), så hade det ju redan skett.",
+       "why_wrong": "Texten säger att arbetsgivaren AVSÅG att rekrytera — som motiv för lögnen om arbetsbrist. Den säger inget om att kvinnan ersattes, och frågan handlar dessutom om vad SOM hände med henne, inte med tjänsten. Som steg 4 visar är konsekvensen för henne att hennes anställning fortsatte."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "family_id": "huvudbudskap_syfte",
+   "label_sv": "Huvudbudskap / syfte / bästa rubrik",
+   "frequency": {
+    "count": 30,
+    "pct": 5.6
+   },
+   "genre_distribution": {
+    "populärvetenskap": 16,
+    "debatt_opinion": 10,
+    "intervju_reportage": 2,
+    "recension": 1,
+    "skonlitteratur": 1
+   },
+   "macro_genre_distribution": {
+    "sakprosa": 29,
+    "litterar": 1
+   },
+   "trap_profile": [
+    {
+     "tag": "overgeneralisation",
+     "distractor_instances": 21,
+     "share_of_family_traps": 0.33,
+     "gloss": "Distraktorn tar textens nyanserade påstående och gör det absolut (alla/alltid/aldrig/bara)."
+    },
+    {
+     "tag": "reversed_causality",
+     "distractor_instances": 17,
+     "share_of_family_traps": 0.27,
+     "gloss": "Rätt element, fel riktning: orsak/verkan eller subjekt/objekt kastas om (textens 'tvärtom')."
+    },
+    {
+     "tag": "scope_shift",
+     "distractor_instances": 7,
+     "share_of_family_traps": 0.11,
+     "gloss": "Rätt tema, fel omfång/stycke: svaret gäller en annan del eller vidgar/snävar räckvidden."
+    },
+    {
+     "tag": "true_but_irrelevant",
+     "distractor_instances": 6,
+     "share_of_family_traps": 0.1,
+     "gloss": "Sant i sig men besvarar inte den ställda frågan."
+    },
+    {
+     "tag": "detail_as_main",
+     "distractor_instances": 6,
+     "share_of_family_traps": 0.1,
+     "gloss": "En delfråga eller ett exempel presenteras som textens huvudpoäng."
+    },
+    {
+     "tag": "half_right_conjunction",
+     "distractor_instances": 3,
+     "share_of_family_traps": 0.05,
+     "gloss": "Två-ledad distraktor där ena ledet stämmer och det andra inte."
+    },
+    {
+     "tag": "plausible_worldknowledge",
+     "distractor_instances": 2,
+     "share_of_family_traps": 0.03,
+     "gloss": "Låter rimligt utifrån allmän kunskap men saknar stöd i just denna text."
+    },
+    {
+     "tag": "surface_lexical_echo",
+     "distractor_instances": 1,
+     "share_of_family_traps": 0.02,
+     "gloss": "Återanvänder ord/fraser som finns i texten för att kännas bekant och rätt."
+    }
+   ],
+   "difficulty_spread": "unknown — no Elo/item_stats in repo (see anti-plagiarism.md note)",
+   "exemplar_qids": [
+    "host-2014-verb2-LÄS-012",
+    "host-2015-verb1-LÄS-014",
+    "host-2017-verb2-LÄS-011"
+   ],
+   "exemplars": [
+    {
+     "qid": "host-2014-verb2-LÄS-012",
+     "prompt": "Vilket påstående överensstämmer bäst med texten?",
+     "answer": "B",
+     "genre": "populärvetenskap",
+     "pregrade_handle": "Kärnmeningen",
+     "trap_tags": {
+      "reversed_causality": 2
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är frestande att läsa \"den kunskap som finns ändå inte till vara\" som att forskning saknas.",
+       "why_wrong": "Texten säger uttryckligen motsatsen: forskning FINNS (\"forskningsresultat som presenterats under senare år\"), men den ignoreras av debattörerna. Som steg 5 visar handlar problemet om användning av forskning, inte om brist på den. A inverterar textens påstående."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Många stannar vid att Rohlin \"ger en utmärkt bakgrund till ett samtal\" och tror att texten välkomnar bred debatt.",
+       "why_wrong": "Texten välkomnar INFORMERAD debatt — och kritiserar de \"bestämda uppfattningar som torgförs utan kännedom om forskningsresultat\". Som steg 5 visar är textens hållning kvalitet före kvantitet i deltagandet. C tar bredd-värdet för givet."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Snabbsvar är ofta att en kritisk text om en institution måste föreslå alternativ.",
+       "why_wrong": "Texten är kritisk mot HUR fritidshem- men utvecklats — inte mot deras existens. Som steg 5 visar argumenterar den tvärtom för bättre fritidshem (rätt bemanning, rätt utbildning), inte för alternativ. D inför ett tema texten inte berör."
+      }
+     ]
+    },
+    {
+     "qid": "host-2015-verb1-LÄS-014",
+     "prompt": "Vad är det textförfattaren vill belysa när hon berör copyright?",
+     "answer": "C",
+     "genre": "populärvetenskap",
+     "pregrade_handle": "Exemplets-tes",
+     "trap_tags": {
+      "half_right_conjunction": 1,
+      "overgeneralisation": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Vid snabbläsning kan man missa att copyright-exemplen är generiska och tro att de speglar en utveckling där talspråket blivit mer standardiserat över tid.",
+       "why_wrong": "Texten ger ingen tidsdimension för exemplen — \"Stockholm är Sveriges huvudstad\" är inte uttryckligen modernt. Som steg 4 visar handlar det om språkets natur, inte dess förändring. A läser in en process som inte finns."
+      },
+      {
+       "letter": "B",
+       "why_tempting": "Det är frestande att kombinera copyright med textens tidigare diskussion om imitation och dra slutsatsen att copyright belyser hur vanlig imitationen är.",
+       "why_wrong": "Copyright-exemplen är inte imitationer av någon — de är allmänna fraser utan ursprungsförfattare. Frågan är om de KAN ägas, inte hur ofta de kopieras. Som steg 5 visar är detta en blandning av två separata trådar i texten."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Många stannar vid ordet \"copyright\" och associerar omedelbart till skydd och dess gränser — och drar slutsatsen att skyddet håller på att urholkas.",
+       "why_wrong": "Texten säger inte att skyddet försämrats; den säger att vardagsuttryck aldrig omfattades av skydd. Som steg 2 visar är poängen \"varken vardagligt eller juridiskt betraktar vi dem som någons\" — inte att skyddet skulle ha försvagats över tid."
+      }
+     ]
+    },
+    {
+     "qid": "host-2017-verb2-LÄS-011",
+     "prompt": "Vilket svarsförslag sammanfattar bäst vad texten beskriver?",
+     "answer": "A",
+     "genre": "populärvetenskap",
+     "pregrade_handle": "Sammanfattningsspåret",
+     "trap_tags": {
+      "overgeneralisation": 2,
+      "scope_shift": 1,
+      "half_right_conjunction": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "B",
+       "why_tempting": "Det är frestande att tänka att två verk med liknande utformning innebär att en TEKNIK har förts över från ett verk till ett annat.",
+       "why_wrong": "Texten beskriver inga tekniska experiment eller utvecklingssteg — bara att verken är gjutna och har päls. Som steg 4 visar är de gemensamma dragen tematiska och formmässiga, inte en metod som överförts. B förvandlar likhet till utveckling."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Många stannar vid att författaren är deltidsbrandman och tror att texten handlar om att kombinera yrkena.",
+       "why_wrong": "Brandmannarollen nämns för att förklara perspektivet i L-ABC, inte för att texten är en yrkesberättelse. Som steg 3 visar är texten en presentation av VERKEN — yrket är källmaterial, inte ämne."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Första instinkten kan vara att eftersom båda verken nämner barn/utsatthet/räddningsarbete, så är textens poäng att dra paralleller mellan dem.",
+       "why_wrong": "Texten ställer aldrig skolbarn och räddningsarbetare som JÄMFÖRELSEPAR — de hör till varsitt verk. Som steg 2 visar är strukturen \"här är verk ett — här är verk två\", inte en jämförande analys av två livsvärldar."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "family_id": "forfattarens_hallning",
+   "label_sv": "Författarens hållning / värdering / kritik",
+   "frequency": {
+    "count": 29,
+    "pct": 5.4
+   },
+   "genre_distribution": {
+    "debatt_opinion": 13,
+    "populärvetenskap": 12,
+    "facktext_larobok": 2,
+    "recension": 1,
+    "skonlitteratur": 1
+   },
+   "macro_genre_distribution": {
+    "sakprosa": 28,
+    "litterar": 1
+   },
+   "trap_profile": [
+    {
+     "tag": "overgeneralisation",
+     "distractor_instances": 25,
+     "share_of_family_traps": 0.35,
+     "gloss": "Distraktorn tar textens nyanserade påstående och gör det absolut (alla/alltid/aldrig/bara)."
+    },
+    {
+     "tag": "reversed_causality",
+     "distractor_instances": 17,
+     "share_of_family_traps": 0.24,
+     "gloss": "Rätt element, fel riktning: orsak/verkan eller subjekt/objekt kastas om (textens 'tvärtom')."
+    },
+    {
+     "tag": "detail_as_main",
+     "distractor_instances": 10,
+     "share_of_family_traps": 0.14,
+     "gloss": "En delfråga eller ett exempel presenteras som textens huvudpoäng."
+    },
+    {
+     "tag": "half_right_conjunction",
+     "distractor_instances": 8,
+     "share_of_family_traps": 0.11,
+     "gloss": "Två-ledad distraktor där ena ledet stämmer och det andra inte."
+    },
+    {
+     "tag": "scope_shift",
+     "distractor_instances": 5,
+     "share_of_family_traps": 0.07,
+     "gloss": "Rätt tema, fel omfång/stycke: svaret gäller en annan del eller vidgar/snävar räckvidden."
+    },
+    {
+     "tag": "plausible_worldknowledge",
+     "distractor_instances": 4,
+     "share_of_family_traps": 0.06,
+     "gloss": "Låter rimligt utifrån allmän kunskap men saknar stöd i just denna text."
+    },
+    {
+     "tag": "true_but_irrelevant",
+     "distractor_instances": 2,
+     "share_of_family_traps": 0.03,
+     "gloss": "Sant i sig men besvarar inte den ställda frågan."
+    },
+    {
+     "tag": "surface_lexical_echo",
+     "distractor_instances": 1,
+     "share_of_family_traps": 0.01,
+     "gloss": "Återanvänder ord/fraser som finns i texten för att kännas bekant och rätt."
+    }
+   ],
+   "difficulty_spread": "unknown — no Elo/item_stats in repo (see anti-plagiarism.md note)",
+   "exemplar_qids": [
+    "host-2013-verb2-LÄS-012",
+    "host-2013-verb2-LÄS-020",
+    "host-2014-verb1-LÄS-011"
+   ],
+   "exemplars": [
+    {
+     "qid": "host-2013-verb2-LÄS-012",
+     "prompt": "Vilken kritik riktar recensenten mot He­ lena Granströms resonemang i Det barns­ liga manifestet?",
+     "answer": "A",
+     "genre": "facktext_larobok",
+     "pregrade_handle": "Stort-vs-litet",
+     "trap_tags": {
+      "overgeneralisation": 1,
+      "reversed_causality": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "B",
+       "why_tempting": "Det är frestande att läsa \"det lilla problemet\" om infantiliseringen som recensentens huvudkritik mot Granström.",
+       "why_wrong": "Recensenten kallar uttryckligen detta \"det LILLA problemet\" och redogör för \"det STORA problemet\" i nästa stycke. Som steg 5 visar är det stora problemet (fyrkantigheten) huvudkritiken; det lilla problemet är bara en upptakt."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Många stannar vid recensentens beskrivning av Det barnsliga manifestet som \"essäistiskt\", \"motsägelsefullt\", \"far hit och dit\" och tror att han kritiserar bristen på sammanhållning.",
+       "why_wrong": "Recensenten säger uttryckligen \"denna osystematiska karaktär TILL TROTS går det inte att komma ifrån att Granström driver en tes\". Som steg 5 visar har hon en sammanhållande idé enligt recensenten — bristen är inte sammanhållning utan att tesen är fyrkantig."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Vid snabbläsning kan man tro att en kritik av abstrakt resonemang motsvarar en kritik för bristande konkreta exempel.",
+       "why_wrong": "Recensenten räknar tvärtom upp Granströms källor (Freud, Gombrowicz, Winnicott, antropologin) och ger inga signaler om exempelsbrist. Som steg 4 visar är hans klagan på ambivalens och dialektik, inte på exempel."
+      }
+     ]
+    },
+    {
+     "qid": "host-2013-verb2-LÄS-020",
+     "prompt": "Vad anser recensenten om källmaterialet som Berglund använder i avhandlingen?",
+     "answer": "C",
+     "genre": "debatt_opinion",
+     "pregrade_handle": "X-men-Y-meningen",
+     "trap_tags": {
+      "reversed_causality": 1,
+      "overgeneralisation": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är lätt att läsa generell kritik som om den gällde materialets omfång.",
+       "why_wrong": "Steg 3 visar att recensenten beskriver materialet som ”väl underbyggt” — alltså INTE för magert. A inverterar bedömningen."
+      },
+      {
+       "letter": "B",
+       "why_tempting": "Många stannar vid att modersrollen och 1900-talet nämns mot slutet.",
+       "why_wrong": "Som steg 4 visar talar texten om PERIODENS slut för faderns auktoritet, inte om en stor förändring i modersrollen. B importerar en tes som inte finns."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Snabbsvar är ofta att läsa kritiken som ett försvar för tvåsfärsteorin.",
+       "why_wrong": "Steg 5 visar att recensenten håller med om Berglunds slutsats om tvåsfärsteorin — hon kritiserar bara den teoretiska argumentationen, inte resultatet. D blandar samman analyskritik med resultatkritik."
+      }
+     ]
+    },
+    {
+     "qid": "host-2014-verb1-LÄS-011",
+     "prompt": "Vad menar textförfattaren att den sudoku­ liknande övningen ska träna eleverna i?",
+     "answer": "A",
+     "genre": "facktext_larobok",
+     "pregrade_handle": "Övningens verb",
+     "trap_tags": {
+      "overgeneralisation": 2
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "B",
+       "why_tempting": "Det är frestande att läsa \"polynomdivision\" och tänka \"avancerat\" — och därmed välja B.",
+       "why_wrong": "Polynomdivision nämns bara som en frivillig fördjupning för \"de som vill ta det ytterligare ett steg\". Som steg 2 visar är grunduppgiften i matriserna addition och multiplikation — alltså ordinär hantering av uttryck, inte avancerade problem."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Många stannar vid Berggrens första del — algebraiskt tänkande som \"relationer mellan objekt\" — och tror att övningen ligger där.",
+       "why_wrong": "Algebraiska relationer mellan objekt (typ åldersskillnader mellan personer) är vad Berggren tränar med Fibonacci-aktiviteterna, INNAN sudoku-matriserna. Steg 2 visar att matriserna handlar om att addera och multiplicera redan färdiga uttryck — inga objekt och inga relationer."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Snabbsvar är ofta att \"sudoku\" låter som en vardaglig aktivitet och att övningen alltså tränar modellering.",
+       "why_wrong": "Modellering är att översätta något UTOMMATEMATISKT till ett algebraiskt uttryck. I matriserna är uttrycken redan givna — eleverna ska bara räkna med dem. Som steg 5 visar är D Berggrens tredje del, men sudoku-övningen ligger i den andra (grammatiken/hanteringen)."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "family_id": "jamforelse_relation",
+   "label_sv": "Jämförelse / relation (ofta fler-texts)",
+   "frequency": {
+    "count": 26,
+    "pct": 4.8
+   },
+   "genre_distribution": {
+    "populärvetenskap": 13,
+    "debatt_opinion": 7,
+    "skonlitteratur": 3,
+    "facktext_larobok": 2,
+    "intervju_reportage": 1
+   },
+   "macro_genre_distribution": {
+    "sakprosa": 23,
+    "litterar": 3
+   },
+   "trap_profile": [
+    {
+     "tag": "overgeneralisation",
+     "distractor_instances": 16,
+     "share_of_family_traps": 0.27,
+     "gloss": "Distraktorn tar textens nyanserade påstående och gör det absolut (alla/alltid/aldrig/bara)."
+    },
+    {
+     "tag": "reversed_causality",
+     "distractor_instances": 15,
+     "share_of_family_traps": 0.25,
+     "gloss": "Rätt element, fel riktning: orsak/verkan eller subjekt/objekt kastas om (textens 'tvärtom')."
+    },
+    {
+     "tag": "true_but_irrelevant",
+     "distractor_instances": 8,
+     "share_of_family_traps": 0.14,
+     "gloss": "Sant i sig men besvarar inte den ställda frågan."
+    },
+    {
+     "tag": "scope_shift",
+     "distractor_instances": 7,
+     "share_of_family_traps": 0.12,
+     "gloss": "Rätt tema, fel omfång/stycke: svaret gäller en annan del eller vidgar/snävar räckvidden."
+    },
+    {
+     "tag": "plausible_worldknowledge",
+     "distractor_instances": 6,
+     "share_of_family_traps": 0.1,
+     "gloss": "Låter rimligt utifrån allmän kunskap men saknar stöd i just denna text."
+    },
+    {
+     "tag": "surface_lexical_echo",
+     "distractor_instances": 4,
+     "share_of_family_traps": 0.07,
+     "gloss": "Återanvänder ord/fraser som finns i texten för att kännas bekant och rätt."
+    },
+    {
+     "tag": "detail_as_main",
+     "distractor_instances": 3,
+     "share_of_family_traps": 0.05,
+     "gloss": "En delfråga eller ett exempel presenteras som textens huvudpoäng."
+    }
+   ],
+   "difficulty_spread": "unknown — no Elo/item_stats in repo (see anti-plagiarism.md note)",
+   "exemplar_qids": [
+    "host-2013-verb2-LÄS-011",
+    "host-2014-verb1-LÄS-016",
+    "host-2015-verb1-LÄS-013"
+   ],
+   "exemplars": [
+    {
+     "qid": "host-2013-verb2-LÄS-011",
+     "prompt": "Hur förhåller sig, enligt recensentens reso­ nemang, böckerna Infans och Det barnsliga manifestet till varandra?",
+     "answer": "A",
+     "genre": "facktext_larobok",
+     "pregrade_handle": "Recensentens-vändning",
+     "trap_tags": {
+      "overgeneralisation": 1,
+      "reversed_causality": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "B",
+       "why_tempting": "Det är frestande att tänka att en kortroman alltid förenklar idéer från en essä — och dra slutsatsen att Infans är manifestet i koncentrerad form.",
+       "why_wrong": "Recensenten säger att Infans är \"inte enkelt, inte vackert, men heller inte schablonartat\" — den är just inte en förenkling utan en motbild. Som steg 3 visar är romanen mer komplex än manifestet, inte mindre."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Många stannar vid att samma författare gett ut båda böckerna samtidigt och tror att de gestaltar samma tes från olika håll.",
+       "why_wrong": "Recensenten är uttrycklig: \"böckerna inte är särskilt samstämmiga\". Att Infans skulle gestalta manifestets tes konstnärligt vore en bekräftelse, men recensenten ser dem som motsatta. Som steg 5 visar är textens egen formulering \"genmäle\" — ett motargument, inte en gestaltning."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Vid snabbläsning är det lätt att läsa recensentens beröm av manifestets elegans och tro att Infans kritiseras för att sakna samma form.",
+       "why_wrong": "Recensenten kritiserar Infans för att vara \"klaustrofobiskt jagcentrerad\" och \"svår att få grepp om\" — formfrågan handlar om innehåll och struktur, inte om elegans. Som steg 4 visar är hans poäng innehållsligt motsatsförhållande, inte stilistisk jämförelse."
+      }
+     ]
+    },
+    {
+     "qid": "host-2014-verb1-LÄS-016",
+     "prompt": "Skillnaderna i tillgång till psykolog vid vårdcentral varierar inom landet. Ger tex­ ten någon förklaring till detta, och i så fall vilken?",
+     "answer": "D",
+     "genre": "intervju_reportage",
+     "pregrade_handle": "Orsaksordet",
+     "trap_tags": {
+      "true_but_irrelevant": 1,
+      "scope_shift": 1,
+      "plausible_worldknowledge": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är frestande att hämta in Olssons sista citat — \"de flesta vill ha psykologisk behandling, inte medicin i första hand\" — och tolka det som att vårdcentralerna prioriterar fel.",
+       "why_wrong": "Att vårdcentralerna inte prioriterar psykologi sägs visserligen indirekt — men inte som förklaring till GEOGRAFISKA skillnader. Som steg 3 visar saknar texten en kausalmening som kopplar geografin till medicinsk prioritering. A blandar ihop två olika frågor."
+      },
+      {
+       "letter": "B",
+       "why_tempting": "Många stannar vid att texten redovisar siffran \"82 procent offentlig regi\" strax efter de geografiska skillnaderna och tror att det är förklaringen.",
+       "why_wrong": "82 procent offentlig regi är en RIKSSIFFRA, inte regionspecifik — den förklarar inte varför Dalarna har 0 och Gotland 100 procent. Som steg 4 visar är skillnaden privat/offentligt en annan dimension än geografin. Texten presenterar dem som parallella jämförelser, inte som orsak och verkan."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Första instinkten kan vara att \"systemet\" generellt orsakar skillnaderna — och systemet handlar bland annat om läkarremisser.",
+       "why_wrong": "Remissystemet beskriver hur en patient når en psykolog i existerande system — inte varför vissa län har psykologer alls. C är ett orsakspåstående utanför textens räckvidd."
+      }
+     ]
+    },
+    {
+     "qid": "host-2015-verb1-LÄS-013",
+     "prompt": "Vad vill textförfattaren ha sagt med sitt resonemang om förhållandet mellan härmning och ”eget språk”?",
+     "answer": "A",
+     "genre": "populärvetenskap",
+     "pregrade_handle": "Retoriska-frågans-svar",
+     "trap_tags": {
+      "reversed_causality": 1,
+      "surface_lexical_echo": 1,
+      "overgeneralisation": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "B",
+       "why_tempting": "Det är frestande att tro att en pedagogisk text om språkutveckling vill ha en tydlig modell, där härmande och eget hålls åtskilda för pedagogikens skull.",
+       "why_wrong": "Författaren säger uttryckligen att ter- men \"egna ord\" inte är poängfull att hålla isär. Som steg 2 visar är hennes hela poäng den motsatta: att skilja på dem är inte pedagogiskt nyttigt."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Många stannar vid berättelsen om Oliver — där han först härmar och senare \"blir kommentator\" — och läser in en utvecklingsmodell där härmning är ett första steg.",
+       "why_wrong": "Författaren ställer själv den frågan retoriskt (\"när övergår härmandet till att vara Olivers eget språk?\") och svarar med att frågan inte är meningsfull. Som steg 3 visar avvisar hon trappstegsmodellen, inte bekräftar den."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Vid snabbläsning kan man tolka \"orden blir ens egna så fort vi använder dem\" som att inget härmande existerar — bara eget språk.",
+       "why_wrong": "Författaren erkänner att Oliver \"i en mening härmar\" — hon förnekar inte fenomenet, bara att det är meningsfullt att skilja det från eget språk. D drar slutsatsen för långt; A formulerar det rätt: skillnaden är meningslös, inte att den ena sidan inte finns."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "family_id": "struktur_funktion",
+   "label_sv": "Struktur / funktion av ett textelement",
+   "frequency": {
+    "count": 13,
+    "pct": 2.4
+   },
+   "genre_distribution": {
+    "populärvetenskap": 6,
+    "debatt_opinion": 5,
+    "facktext_larobok": 1,
+    "skonlitteratur": 1
+   },
+   "macro_genre_distribution": {
+    "sakprosa": 12,
+    "litterar": 1
+   },
+   "trap_profile": [
+    {
+     "tag": "overgeneralisation",
+     "distractor_instances": 10,
+     "share_of_family_traps": 0.37,
+     "gloss": "Distraktorn tar textens nyanserade påstående och gör det absolut (alla/alltid/aldrig/bara)."
+    },
+    {
+     "tag": "reversed_causality",
+     "distractor_instances": 8,
+     "share_of_family_traps": 0.3,
+     "gloss": "Rätt element, fel riktning: orsak/verkan eller subjekt/objekt kastas om (textens 'tvärtom')."
+    },
+    {
+     "tag": "scope_shift",
+     "distractor_instances": 3,
+     "share_of_family_traps": 0.11,
+     "gloss": "Rätt tema, fel omfång/stycke: svaret gäller en annan del eller vidgar/snävar räckvidden."
+    },
+    {
+     "tag": "true_but_irrelevant",
+     "distractor_instances": 2,
+     "share_of_family_traps": 0.07,
+     "gloss": "Sant i sig men besvarar inte den ställda frågan."
+    },
+    {
+     "tag": "plausible_worldknowledge",
+     "distractor_instances": 2,
+     "share_of_family_traps": 0.07,
+     "gloss": "Låter rimligt utifrån allmän kunskap men saknar stöd i just denna text."
+    },
+    {
+     "tag": "detail_as_main",
+     "distractor_instances": 1,
+     "share_of_family_traps": 0.04,
+     "gloss": "En delfråga eller ett exempel presenteras som textens huvudpoäng."
+    },
+    {
+     "tag": "surface_lexical_echo",
+     "distractor_instances": 1,
+     "share_of_family_traps": 0.04,
+     "gloss": "Återanvänder ord/fraser som finns i texten för att kännas bekant och rätt."
+    }
+   ],
+   "difficulty_spread": "unknown — no Elo/item_stats in repo (see anti-plagiarism.md note)",
+   "exemplar_qids": [
+    "host-2014-verb2-LÄS-011",
+    "host-2022-verb1-LÄS-013",
+    "host-2022-verb2-LÄS-018"
+   ],
+   "exemplars": [
+    {
+     "qid": "host-2014-verb2-LÄS-011",
+     "prompt": "Textförfattaren nämner att deltagande i fritidsverksamhet är frivillig. Varför gör han det?",
+     "answer": "D",
+     "genre": "populärvetenskap",
+     "pregrade_handle": "Men-samtidigt-spänningen",
+     "trap_tags": {
+      "overgeneralisation": 1,
+      "reversed_causality": 1,
+      "scope_shift": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är frestande att inversera frågan — om frivillighet nämns måste författaren diskutera vad som händer om man avskaffar den.",
+       "why_wrong": "Texten diskuterar aldrig konsekvenser av att GÖRA verksamheten obligatorisk. Som steg 3 visar går resonemanget åt motsatt håll: man PRATAR om fritids som om det vore obligatoriskt, fast det inte är det. A vänder pilen åt fel håll."
+      },
+      {
+       "letter": "B",
+       "why_tempting": "Många stannar vid den nästkommande raden — \"Och vad är egentligen fritid?\" — och blandar ihop den med frivillighetsanmärkningen.",
+       "why_wrong": "Fritidsbegreppets innebörd är en SEPARAT fråga författaren ställer (\"Fri för vem? Vilka möjligheter ska barnen själva ha...\"). Som steg 5 visar är frivillighetspoängen riktad mot diskussionens premiss, inte mot ordet \"fritid\". B blandar två närliggande men distinkta frågor."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Första instinkten är att frivillighet handlar om barnens makt över sin tid.",
+       "why_wrong": "Den frågan ställs visserligen i texten — men efter, och separat från, frivillighetsanmärkningen. Som steg 5 visar är frivillighetens funktion i resonemanget att exponera diskussionens inkonsekvens, inte att förespråka barninflytande. C tar en konsekvens för syftet."
+      }
+     ]
+    },
+    {
+     "qid": "host-2022-verb1-LÄS-013",
+     "prompt": "Textförfattaren lyfter särskilt fram en funktion som hon önskar att skolbibliotekarierna ska ha. Vilken?",
+     "answer": "C",
+     "genre": "debatt_opinion",
+     "pregrade_handle": "Motiverings-stycket",
+     "trap_tags": {
+      "true_but_irrelevant": 1,
+      "detail_as_main": 1,
+      "scope_shift": 1,
+      "overgeneralisation": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är frestande att fastna vid det målande avsnittet om boksamtal i smågrupper och tro att det är textens huvudpoäng.",
+       "why_wrong": "Boksamtalet är ett av flera arbetssätt inom läsfrämjande — ett konkret exempel, inte HUVUDFUNKTIONEN. Steg 2 visar att den centrala argumentlinjen handlar om MIK och undervisning, inte om samtalsledning som sådan."
+      },
+      {
+       "letter": "B",
+       "why_tempting": "Många stannar vid orden \"kritiskt värdera\" och drar slutsatsen att bibliotekarien själv ska vara den värderande instansen.",
+       "why_wrong": "Texten säger att eleverna ska lära sig värdera texter — och att bibliotekarien lär ut detta. Funktionen är alltså att UNDERVISA i värdering, inte att vara värderaren. B förväxlar lärarrollen med ämnet."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Första instinkten är att slutmeningen om att vuxna ska vara \"de bästa förebilderna\" är textens kärnbudskap, eftersom den står sist.",
+       "why_wrong": "Den meningen handlar om ALLA vuxna i skolan (\"lärare, bibliotekarier, alla\"), inte specifikt om bibliotekariens särskilda funktion. Som steg 5 visar är textens specifika argument för bibliotekarien hennes pedagogiska kompetens, inte förebilds-rollen."
+      }
+     ]
+    },
+    {
+     "qid": "host-2022-verb2-LÄS-018",
+     "prompt": "Av de två kriterier som lyfts fram intresserar sig Posner i första hand för Kaldor–Hicks-kriteriet (K–H). Varför gör han det, enligt texten?",
+     "answer": "A",
+     "genre": "facktext_larobok",
+     "pregrade_handle": "Därför-meningen",
+     "trap_tags": {
+      "reversed_causality": 2
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "B",
+       "why_tempting": "Det är lätt att läsa \"många olika argument\" och associera det till K-H, särskilt om man har ögat på det kriterium frågan handlar om.",
+       "why_wrong": "Texten kopplar uttryckligen \"många olika argument\" till PARETOKRITERIET (\"det hävdas ofta att detta kriterium för ekonomisk effektivitet kan rättfärdigas med många olika argument\"). K-H är just det kontroversiella kriteriet som är svårare att rättfärdiga. B tilldelar K-H det som gäller Pareto."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Många stannar vid orden \"självbestämmande\" och \"autonomi\" och tror att det är ett K-H-tema.",
+       "why_wrong": "Texten kopplar autonomi och självbestämmande till PARETO: \"Posner försvarar Paretokriteriet just genom att hänvisa till samtycke ... detta kriterium är attraktivt eftersom det inte kränker personlig autonomi.\" K-H är just det kriterium som riskerar kränka autonomin (förlorare har inte samtyckt). C inverterar."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Snabbsvar är ofta att om kriteriet handlar om välstånd så fördelar det vinsterna jämnt.",
+       "why_wrong": "K-H säger uttryckligen att vinster och förluster fördelas ojämnt — \"vissa får det bättre, andra får det sämre\", det är just det kontroversiella med kriteriet. Som steg 4 visar tar texten upp ojämn fördelning som K-H:s problem, inte fördel. D inverterar kriteriets natur."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "family_id": "hallning_stamning_ton",
+   "label_sv": "Ton / stämning / stil",
+   "frequency": {
+    "count": 2,
+    "pct": 0.4
+   },
+   "genre_distribution": {
+    "debatt_opinion": 1,
+    "facktext_larobok": 1
+   },
+   "macro_genre_distribution": {
+    "sakprosa": 2
+   },
+   "trap_profile": [
+    {
+     "tag": "overgeneralisation",
+     "distractor_instances": 3,
+     "share_of_family_traps": 0.75,
+     "gloss": "Distraktorn tar textens nyanserade påstående och gör det absolut (alla/alltid/aldrig/bara)."
+    },
+    {
+     "tag": "detail_as_main",
+     "distractor_instances": 1,
+     "share_of_family_traps": 0.25,
+     "gloss": "En delfråga eller ett exempel presenteras som textens huvudpoäng."
+    }
+   ],
+   "difficulty_spread": "unknown — no Elo/item_stats in repo (see anti-plagiarism.md note)",
+   "exemplar_qids": [
+    "var-2015-verb2-LÄS-012",
+    "var-2025-verb1-LÄS-016"
+   ],
+   "exemplars": [
+    {
+     "qid": "var-2015-verb2-LÄS-012",
+     "prompt": "Ger texten någon förklaring till varför det är viktigt med en korrekt artbestämning av de beskrivna vivlarna, och vilken är för­ klaringen i så fall?",
+     "answer": "D",
+     "genre": "debatt_opinion",
+     "pregrade_handle": "Förklaringstestet",
+     "trap_tags": {
+      "overgeneralisation": 2
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är frestande att fastna vid stycket om \"hona eller hane\" och tolka könsuppgifter som motivet för korrekt artbestämning.",
+       "why_wrong": "Kön nämns som ETT HJÄLPMEDEL vid artbestämning, inte som ett MOTIV för varför artbestämningen är viktig. Som steg 3 visar är förhållandet omvänt — texten säger att man behöver kunna könen FÖR ATT bestämma arten, inte att man bestämmer arten för att kunna kön. A vänder upp och ned på riktningen."
+      },
+      {
+       "letter": "B",
+       "why_tempting": "Många stannar vid första stycket om \"allt fler rapporterar... insektsfynd\" och tror att den ökande variationen i fynd är vikten av korrekt artbestämning.",
+       "why_wrong": "Texten talar om allt fler RAPPORTER, inte allt fler observationer av variation INOM släktet. Och även om rapporterna är många är texten tyst om varför artbestämningen är viktig i sak — endast om att fynd utan belägg är problematiska. B förvränger \"allt fler rapporter\" till en motiv-förklaring som inte ges."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Snabbsvar är ofta att stänga in alla biologiska klassificeringsfrågor under \"släktskap\" och anta att det är poängen.",
+       "why_wrong": "Texten kommenterar släktskap i förbifarten (\"nära besläktade med och tidigare införda under släktet Ceutorhynchus\") men kopplar det aldrig till vikten av korrekt artbestämning. Som steg 4 visar saknas helt formuleringen \"därför är artbestämning viktigt\". C är en logisk gissning utan textstöd."
+      }
+     ]
+    },
+    {
+     "qid": "var-2025-verb1-LÄS-016",
+     "prompt": "Vad är särskilt utmärkande för textens ton?",
+     "answer": "A",
+     "genre": "facktext_larobok",
+     "pregrade_handle": "Tonenssignal",
+     "trap_tags": {
+      "overgeneralisation": 1,
+      "detail_as_main": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "B",
+       "why_tempting": "Det är lätt att förväxla textens skarpa kritik av ett SYSTEM textförfattaren själv lever i med självkritik — han är ju också svensk, också en del av landet han kritiserar.",
+       "why_wrong": "Texten riktar sig HELT utåt: mot bankerna, mot FI, mot politikerna. Textförfattaren reflekterar aldrig över sin egen roll eller sina egna misstag. Som steg 5 visar är riktningen kritik, inte självkritik."
+      },
+      {
+       "letter": "C",
+       "why_tempting": "Många stannar vid att texten innehåller siffror, citat från FI och referenser till IMF-rapporter — alltså verkar saklig.",
+       "why_wrong": "Sakliga ingredienser används i en högst osaklig dräkt. Som steg 3 visar är tonen subjektiv och hetsig — korvmaskiner, snömos, fnissande bankirer. Faktasiffrorna tjänar som ammunition, inte som torr redovisning."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Snabbsvar är ofta att läsa textens slut — \"det börjar bli olustigt\" — som uttryck för uppgivenhet och resignation.",
+       "why_wrong": "\"Olustigt\" är en understatement-form av ilska, inte uppgivenhet. Textförfattaren bränner i raseri genom hela artikeln; \"likgiltig\" är raka motsatsen till hans engagerade hånton, som steg 2 visar."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "family_id": "ordbetydelse_i_kontext",
+   "label_sv": "Ordbetydelse i kontext",
+   "frequency": {
+    "count": 2,
+    "pct": 0.4
+   },
+   "genre_distribution": {
+    "debatt_opinion": 1,
+    "poesi": 1
+   },
+   "macro_genre_distribution": {
+    "sakprosa": 1,
+    "litterar": 1
+   },
+   "trap_profile": [
+    {
+     "tag": "detail_as_main",
+     "distractor_instances": 1,
+     "share_of_family_traps": 0.33,
+     "gloss": "En delfråga eller ett exempel presenteras som textens huvudpoäng."
+    },
+    {
+     "tag": "surface_lexical_echo",
+     "distractor_instances": 1,
+     "share_of_family_traps": 0.33,
+     "gloss": "Återanvänder ord/fraser som finns i texten för att kännas bekant och rätt."
+    },
+    {
+     "tag": "scope_shift",
+     "distractor_instances": 1,
+     "share_of_family_traps": 0.33,
+     "gloss": "Rätt tema, fel omfång/stycke: svaret gäller en annan del eller vidgar/snävar räckvidden."
+    }
+   ],
+   "difficulty_spread": "unknown — no Elo/item_stats in repo (see anti-plagiarism.md note)",
+   "exemplar_qids": [
+    "var-2019-verb1-LÄS-013",
+    "var-2022-1-verb1-LÄS-012"
+   ],
+   "exemplars": [
+    {
+     "qid": "var-2019-verb1-LÄS-013",
+     "prompt": "Vilken innebörd lägger Maria Norlén i begrep- pet ”sluttande plan”?",
+     "answer": "C",
+     "genre": "debatt_opinion",
+     "pregrade_handle": "Författarens-definition",
+     "trap_tags": {
+      "detail_as_main": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Det är frestande att tolka Norléns oro som att hon vill begränsa patienternas självbestämmande.",
+       "why_wrong": "Norlén skriver uttryckligen \"låt den svårt sjuke bestämma själv, men blanda inte in mig\". Hennes problem är inte att patienterna bestämmer, utan att indikationerna utvidgas. Steg 5 fångar skillnaden mellan patientens val och kriterieglidningen."
+      },
+      {
+       "letter": "B",
+       "why_tempting": "Många stannar vid Norléns rubrik \"Inte en uppgift för läkaren!\" och tror att hennes sluttande plan handlar om läkares samvete.",
+       "why_wrong": "Texten nämner uttryckligen att en samvetsklausul redan befriar läkare som inte vill medverka — så någon tvångssituation är inte hennes oro. Hennes definition i steg 2 talar om indikationsglidning, inte om läkarens valfrihet."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Vänster-till-höger-läsning ger intrycket att \"glidning\" handlar om gränsen mellan botbara och obotliga sjukdomar.",
+       "why_wrong": "Norléns exempel på indikationsglidning gäller patienter med psykiatriska diagnoser och PTSD — inte sjukdomar som plötsligt klassas annorlunda. Steg 4 visar att indikationer är de villkor som motiverar behandling, inte en sjukdomskategorisering."
+      }
+     ]
+    },
+    {
+     "qid": "var-2022-1-verb1-LÄS-012",
+     "prompt": "Vilket av följande motsvarar bäst ”språk” i Tomas Tranströmers dikt?",
+     "answer": "C",
+     "genre": "poesi",
+     "pregrade_handle": "Parallell-konstruktion",
+     "trap_tags": {
+      "surface_lexical_echo": 1,
+      "scope_shift": 1
+     },
+     "distractor_anatomy": [
+      {
+       "letter": "A",
+       "why_tempting": "Första instinkten är att Palms upprepade \"När X skrämmer, kalla den Y\" är ett tydligt språkligt mönster — och Tranströmer pratar ju om språk.",
+       "why_wrong": "Tranströmers \"språk\" är just det som ord SAKNAR (\"ord men inget språk\"). Palms upprepningar är raka ord — exakt det Tranströmer är trött på. Som steg 3 visar är hans språk tecken i naturen, inte mänskliga upprepningar."
+      },
+      {
+       "letter": "B",
+       "why_tempting": "Det är lätt att läsa \"språk\" på två ställen — Palms titel \"det språk som ljuger\" och Tranströmers \"språk men inga ord\" — och tro att samma ord betyder samma sak.",
+       "why_wrong": "Palms \"språk\" är mänskliga ord som ljuger; Tranströmers \"språk\" är ordlös mening i naturen — de är motsatser. Tranströmer skulle räkna Palms titel till \"orden\" han flyr ifrån, inte till \"språket\" han söker."
+      },
+      {
+       "letter": "D",
+       "why_tempting": "Snabbsvar är ofta att fingertoppar förknippas med läsning och alltså med språk.",
+       "why_wrong": "Fingertoppar är hos Lundström LÄSAREN av språket — sinnet som mottar — inte språket självt. Tranströmers \"språk\" är det som finns att läsas (spåret i snön), inte den som läser. D förväxlar avsändare med mottagare."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
