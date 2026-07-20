@@ -1,0 +1,28 @@
+{
+  "candidate_id": "elf-b0-009",
+  "section": "ELF",
+  "family": "evalset-seeded",
+  "title": "The Return of the Wolf",
+  "passage": "When wolves were reintroduced to Yellowstone in 1995, few predicted how far the effects would reach. The most dramatic changes were not among the animals but in the landscape itself. With wolves once again hunting elk, the herds no longer lingered in the river valleys, and the willow and aspen that elk had kept cropped began to recover. Beavers returned to the regrown thickets, their dams reshaped the streams, and the rivers themselves ran straighter and cooler.\n\nThis chain of consequences, which ecologists call a trophic cascade, has become the standard example of how a single predator can restructure a whole system. But the story is often told with more confidence than the evidence allows. On a conference in 2014, several researchers presented informations that questioned how much of the recovery was really the wolves' doing and how much depended on milder winters, fewer elk overall, or the return of other species. Eventually the wolves will be blamed for less than the first enthusiastic reports suggested. The lesson many researchers now draw is not that wolves are unimportant, but that ecosystems resist simple stories.",
+  "questions": [
+    {
+      "q_index": 1,
+      "prompt": "What qualification does the passage make about the Yellowstone trophic cascade?",
+      "options": [
+        { "letter": "A", "text": "Factors other than wolves may explain much of the recovery." },
+        { "letter": "B", "text": "The wolves had no measurable effect on the landscape." },
+        { "letter": "C", "text": "The elk population increased after the wolves returned." },
+        { "letter": "D", "text": "Beavers were reintroduced at the same time as the wolves." }
+      ],
+      "key": "A",
+      "rationale": "Key A is correct and clean. The seeded defect is ENGLISH-ONLY: Swedish-interference errors. Correctness gates should pass; G-ENG must kill."
+    }
+  ],
+  "generator_meta": { "origin": "evalset-author", "authored": "2026-07-20" },
+  "_seed": {
+    "defect": "Planted non-native English (Swedish interference, class 1/2): 'On a conference' (should be 'At a conference' — Swedish 'på'); 'presented informations' (uncountable noun pluralized — class 2 countability); 'Eventually the wolves will be blamed for less' uses the false friend 'eventually' in the Swedish 'eventuellt' (=possibly) sense, producing a nonsensical future claim. Multiple lethal, unmistakable non-native errors. G-ENG must kill; correctness gates pass.",
+    "intended_kill_gate": "G-ENG",
+    "expected_verdict": "kill",
+    "defect_locations": ["passage: 'On a conference in 2014, several researchers presented informations'", "passage: 'Eventually the wolves will be blamed for less'"]
+  }
+}

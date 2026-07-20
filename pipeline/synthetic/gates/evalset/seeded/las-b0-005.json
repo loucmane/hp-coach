@@ -1,0 +1,28 @@
+{
+  "candidate_id": "las-b0-005",
+  "section": "LÄS",
+  "family": "evalset-seeded",
+  "title": "Tidens uppfinning",
+  "passage": "Innan järnvägen fanns höll varje svensk stad sin egen tid, ställd efter solen på just den orten. Skillnaden mellan Göteborg och Stockholm var bara några minuter, men för en tågtabell var även minuter förödande. Därför spenderade järnvägsbolagen mycket tid på att införa en gemensam normaltid, och 1879 tog riksdagen beslutet att hela landet skulle följa Stockholms meridian.\n\nMotståndet var större än man kunnat tro. I många församlingar ringde kyrkklockan fortfarande efter den lokala soltiden, och prästerna vägrade att foga sig efter vad de kallade järnvägens konstlade timmar. Att en klocka på stationen kunde ta plats framför Guds egen ordning uppfattades av somliga som ett övergrepp. Först när telegrafen gjorde det möjligt att distribuera en exakt tidssignal från observatoriet i Stockholm tystnade invändningarna på allvar.\n\nHistorikern Nils Ohlsson har påpekat att denna strid egentligen handlade om makt: den som kontrollerade tiden kontrollerade också vardagens rytm. När normaltiden till slut segrade var det inte solen som hade besegrats, utan den lokala självständighet som soltiden hade förkroppsligat.",
+  "questions": [
+    {
+      "q_index": 1,
+      "prompt": "Vad menar Nils Ohlsson att striden om normaltiden ytterst handlade om?",
+      "options": [
+        { "letter": "A", "text": "Kontroll över vardagens rytm och därmed över människorna." },
+        { "letter": "B", "text": "Kyrkans rätt att ringa i sina klockor." },
+        { "letter": "C", "text": "Den astronomiska noggrannheten hos observatoriets tidssignal." },
+        { "letter": "D", "text": "Skillnaden i soltid mellan Göteborg och Stockholm." }
+      ],
+      "key": "A",
+      "rationale": "The question and key are CORRECT and clean (A: 'den som kontrollerade tiden kontrollerade också vardagens rytm'). The seeded defects are LANGUAGE-ONLY, so G-KEY etc. should pass this item while G-SPRÅK kills it."
+    }
+  ],
+  "generator_meta": { "origin": "evalset-author", "authored": "2026-07-20" },
+  "_seed": {
+    "defect": "Planted Swedish calques (language-only; the MCQ is correct): 'spenderade ... tid' (class 2 calque for 'lade/ägnade tid'), 'ta plats framför' (class 2 calque of English 'take place'; Swedish idiom is 'äga rum' / here 'göra intrång på'). Both are grammatical but non-native. G-SPRÅK must convict; correctness gates must pass.",
+    "intended_kill_gate": "G-SPRAK",
+    "expected_verdict": "kill",
+    "defect_locations": ["passage: 'spenderade järnvägsbolagen mycket tid'", "passage: 'kunde ta plats framför Guds egen ordning'"]
+  }
+}

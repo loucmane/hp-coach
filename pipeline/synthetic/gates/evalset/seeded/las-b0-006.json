@@ -1,0 +1,28 @@
+{
+  "candidate_id": "las-b0-006",
+  "section": "LÄS",
+  "family": "evalset-seeded",
+  "title": "Lavarnas långsamma vetenskap",
+  "passage": "Laven är varken en växt eller en svamp, utan ett samarbete mellan båda. Svampen bygger kroppen och skyddar mot uttorkning, medan algen eller cyanobakterien inuti sköter fotosyntesen. Eftersom laven växer inte mer än någon millimeter om året kan en fläck på en klippa vara flera sekler gammal, och forskare använder därför lavar för att datera allt från gravstenar till landhöjning efter istiden.\n\nDenna långsamhet gör laven till en känslig mätare av luftens kvalitet. Många arter tål helt enkelt inte svaveldioxid, och när industrialismens utsläpp var som störst försvann de från städerna nästan helt. Att lavarna långsamt har återvänt till Stockholms trädstammar är ett av de tydligaste tecknen på att luften faktiskt har blivit renare. En sådan biologisk indikator är svår att muta och ännu svårare att argumentera emot.\n\nSamtidigt varnar forskare för att dra för enkla slutsatser. Att en art trivs behöver inte betyda att ekosystemet mår bra; det kan lika gärna betyda att en konkurrent har försvunnit. Lavens budskap måste därför alltid läsas i sitt sammanhang.",
+  "questions": [
+    {
+      "q_index": 1,
+      "prompt": "Varför är lavar användbara som mätare av luftkvalitet, enligt texten?",
+      "options": [
+        { "letter": "A", "text": "Många arter är känsliga för föroreningar som svaveldioxid." },
+        { "letter": "B", "text": "De växer snabbt och reagerar därför omedelbart på förändringar." },
+        { "letter": "C", "text": "De kan datera gravstenar och landhöjning." },
+        { "letter": "D", "text": "De konkurrerar ut andra arter i ren luft." }
+      ],
+      "key": "A",
+      "rationale": "Key A is correct and clean ('Många arter tål helt enkelt inte svaveldioxid'). Seeded defect is grammatical (word order), not a correctness problem."
+    }
+  ],
+  "generator_meta": { "origin": "evalset-author", "authored": "2026-07-20" },
+  "_seed": {
+    "defect": "Planted BIFF word-order error (class 3): 'Eftersom laven växer inte mer än någon millimeter om året' places the negation AFTER the verb in a subordinate clause; native Swedish requires 'Eftersom laven inte växer mer än...'. A grammatical error no native writer produces. G-SPRÅK must convict as lethal.",
+    "intended_kill_gate": "G-SPRAK",
+    "expected_verdict": "kill",
+    "defect_locations": ["passage: 'Eftersom laven växer inte mer än någon millimeter om året'"]
+  }
+}

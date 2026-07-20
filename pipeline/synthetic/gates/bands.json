@@ -1,0 +1,32 @@
+{
+  "_contract": "Interface between the LÄS/ELF generation analysts and the M-BANDS mechanical gate. Analysts: measure these statistics over the authentic corpus (data/parsed/*.json, sections LÄS/ELF, parsing_status=complete), fill in the numbers, set calibrated=true, and record the measurement script + date in provenance. Until calibrated=true, M-BANDS downgrades every out-of-band kill to a flag — placeholder numbers must never kill a candidate.",
+  "_units": "word counts are whitespace-token counts over the raw text; sentence length is words per sentence split on [.!?] followed by space+uppercase; all bands are inclusive [min, max].",
+  "calibrated": false,
+  "provenance": {
+    "measured_by": null,
+    "measured_at": null,
+    "corpus_snapshot": null,
+    "script": null
+  },
+  "LÄS": {
+    "passage_words": { "min": 300, "max": 1250, "_status": "PLACEHOLDER — analyst: measure per text-length class (short ~1-2q vs long ~4q) and decide whether to split the band by question count" },
+    "paragraph_count": { "min": 2, "max": 14, "_status": "PLACEHOLDER" },
+    "mean_sentence_words": { "min": 10, "max": 30, "_status": "PLACEHOLDER" },
+    "prompt_words": { "min": 3, "max": 40, "_status": "PLACEHOLDER" },
+    "option_words": { "min": 1, "max": 40, "_status": "PLACEHOLDER" },
+    "option_length_ratio_max": { "value": 3.0, "_status": "PLACEHOLDER — longest option may be at most this multiple of the shortest, guards key-stands-out-by-length tells; analyst: measure the authentic distribution before trusting" }
+  },
+  "ELF": {
+    "passage_words": { "min": 150, "max": 900, "_status": "PLACEHOLDER — ELF mixes short gap-texts and long passages; analyst decides class split" },
+    "paragraph_count": { "min": 1, "max": 10, "_status": "PLACEHOLDER" },
+    "mean_sentence_words": { "min": 10, "max": 32, "_status": "PLACEHOLDER" },
+    "prompt_words": { "min": 3, "max": 40, "_status": "PLACEHOLDER" },
+    "option_words": { "min": 1, "max": 40, "_status": "PLACEHOLDER" },
+    "option_length_ratio_max": { "value": 3.0, "_status": "PLACEHOLDER" }
+  },
+  "plagiarism": {
+    "_contract": "Consumed by M-PLAGIARISM. ngram_kill: any exact token n-gram of this length shared with the authentic corpus kills (verbatim lift). containment_flag: fraction of the candidate's 8-grams found in the corpus above which the candidate is flagged. Analysts: calibrate against authentic-vs-authentic baseline overlap (stock phrases like 'enligt författaren' overlap legitimately) before tightening.",
+    "ngram_kill": { "value": 13, "_status": "PLACEHOLDER (TBD-per-analyst)" },
+    "containment_flag": { "value": 0.02, "_status": "PLACEHOLDER (TBD-per-analyst)" }
+  }
+}

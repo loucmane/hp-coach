@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hp-coach/pipeline/synthetic/gates/candidate-item.schema.json",
+  "title": "Synthetic passage candidate",
+  "description": "One generated passage plus its questions — the unit that flows through the gate stack. Produced by the LÄS/ELF generation analysts; consumed by every gate.",
+  "type": "object",
+  "required": ["candidate_id", "section", "family", "title", "passage", "questions"],
+  "additionalProperties": false,
+  "properties": {
+    "candidate_id": {
+      "type": "string",
+      "pattern": "^(las|elf)-b[0-9]+-[0-9]{3}$",
+      "description": "e.g. las-b1-007: section, batch number, running index. Stable across gate runs."
+    },
+    "section": { "enum": ["LÄS", "ELF"] },
+    "family": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Generation family / topic-recipe tag assigned by the analyst (e.g. 'kulturhistoria-lang'). Used for family-level kill statistics and adjudication grouping."
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "passage": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The full passage text. Swedish for LÄS, English for ELF. Plain text, paragraphs separated by blank lines."
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["q_index", "prompt", "options", "key"],
+        "additionalProperties": false,
+        "properties": {
+          "q_index": { "type": "integer", "minimum": 1 },
+          "prompt": { "type": "string", "minLength": 1 },
+          "options": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": {
+              "type": "object",
+              "required": ["letter", "text"],
+              "additionalProperties": false,
+              "properties": {
+                "letter": { "enum": ["A", "B", "C", "D"] },
+                "text": { "type": "string", "minLength": 1 }
+              }
+            }
+          },
+          "key": { "enum": ["A", "B", "C", "D"] },
+          "rationale": {
+            "type": "string",
+            "description": "Generator's own argument for the key and against each distractor. NEVER shown to G-KEY solvers; included in the adjudication package."
+          }
+        }
+      }
+    },
+    "generator_meta": {
+      "type": "object",
+      "description": "Free-form provenance from the generation analyst (recipe id, inspiration qids, generation date). Passed through untouched.",
+      "additionalProperties": true
+    },
+    "_seed": {
+      "type": "object",
+      "description": "Present ONLY on eval-set seeded-defect items. Documents the planted defect. Gate agents must never receive this block — the orchestrator strips it before dispatch.",
+      "required": ["defect", "intended_kill_gate", "expected_verdict"],
+      "additionalProperties": true,
+      "properties": {
+        "defect": { "type": "string" },
+        "intended_kill_gate": { "type": "string" },
+        "expected_verdict": { "enum": ["kill", "flag"] },
+        "defect_locations": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
