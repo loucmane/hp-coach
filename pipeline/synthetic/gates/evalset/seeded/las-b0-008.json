@@ -1,0 +1,46 @@
+{
+  "candidate_id": "las-b0-008",
+  "section": "LÄS",
+  "family": "evalset-seeded",
+  "title": "Det tysta biblioteket",
+  "passage": "Tystnaden på ett bibliotek är inte naturlig utan uppfostrad. Långt in på 1800-talet var läsesalarna livliga platser där folk läste högt för varandra, förhandlade och till och med åt. Först när det tyst läsande blev normen förvandlades biblioteket till den andaktsfulla plats vi känner igen i dag, och en stor tystnad lade sig över hyllorna.\n\nDenna förändring hängde samman med en ny syn på kunskap. Att läsa tyst för sig själv uppfattades som ett mer disciplinerat och individuellt sätt att ta till sig text, och det passade väl med tidens ideal om självförbättring. Bibliotekarien blev en väktare inte bara av böckerna utan också av det stora tystnaden, och den som bröt mot den kunde visas ut.\n\nI dag ifrågasätts denna ordning på nytt. Många moderna bibliotek har medvetet öppnat för samtal, grupparbete och till och med kaffe, i en strävan att åter göra rummet till en levande mötesplats. Tystnaden, visar det sig, var aldrig bibliotekets natur utan bara en av dess många historiska skepnader.\n\nForskare som studerat läsesalarnas historia påpekar att övergången sällan var total. Ännu på 1900-talet fanns folkbibliotek där lokala föreningar samlades för högläsning, parallellt med de tysta läsesalarna för självstudier. Tystnaden var alltså aldrig den enda normen, bara den som med tiden kom att representera biblioteket utåt.",
+  "questions": [
+    {
+      "q_index": 1,
+      "prompt": "Vad är textens huvudtanke om bibliotekens tystnad?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Att tystnaden är en historiskt skapad norm snarare än något givet."
+        },
+        {
+          "letter": "B",
+          "text": "Att tystnaden alltid har varit bibliotekets naturliga tillstånd."
+        },
+        {
+          "letter": "C",
+          "text": "Att moderna bibliotek har förbjudit allt tal."
+        },
+        {
+          "letter": "D",
+          "text": "Att högläsning var ett tecken på bristande bildning."
+        }
+      ],
+      "key": "A",
+      "rationale": "Key A is correct and clean. Seeded defects are agreement/definiteness errors (en/ett gender): 'det tyst läsande' and 'det stora tystnaden' — 'tystnad' is en-word, 'läsande' takes 'tysta' in definite. These are grammatical errors."
+    }
+  ],
+  "generator_meta": {
+    "origin": "evalset-author",
+    "authored": "2026-07-20"
+  },
+  "_seed": {
+    "defect": "Planted agreement/definiteness errors (class 4): 'det tyst läsande' should be 'det tysta läsandet' (missing definite adjective ending and neuter noun ending); 'det stora tystnaden' mixes neuter article 'det' with en-word 'tystnad' (should be 'den stora tystnaden'). Both are errors no native writer makes.",
+    "intended_kill_gate": "G-SPRAK",
+    "expected_verdict": "kill",
+    "defect_locations": [
+      "passage: 'när det tyst läsande blev normen'",
+      "passage: 'en väktare ... av det stora tystnaden'"
+    ]
+  }
+}

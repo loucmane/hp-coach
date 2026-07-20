@@ -1,0 +1,45 @@
+{
+  "candidate_id": "las-b0-001",
+  "section": "LÄS",
+  "family": "evalset-seeded",
+  "title": "Kartornas tysta makt",
+  "passage": "Kartor uppfattas gärna som neutrala avbildningar av världen, men varje karta är resultatet av en lång rad val. Redan projektionen avgör vad som framhävs: Mercators klassiska världskarta, ursprungligen ritad för sjöfartens behov, förstorar områdena närmast polerna så kraftigt att Grönland tycks jämförbart med Afrika, trots att Afrika i själva verket är omkring fjorton gånger större.\n\nKarthistorikern Ingrid Svanberg menar att denna skevhet aldrig varit en oskyldig teknikalitet. Under kolonialtiden tjänade de förstorade nordliga länderna som en visuell bekräftelse på Europas självbild, och när skolatlaser långt in på 1900-talet byggde på samma projektion ärvde generationer av elever en förvriden bild av kontinenternas proportioner. Svanberg går så långt som att kalla skolatlasen \"den mest inflytelserika propagandaskrift som aldrig lästs som propaganda\".\n\nMot detta har andra forskare invänt att alternativa projektioner brottas med sina egna förvrängningar, och att kartans makt främst ligger hos den som väljer vad som över huvud taget ska ritas ut. Gränser, ortnamn och tomrum säger ofta mer än ytorna, påpekar de: en karta utan samiska ortnamn påstår någonting, alldeles oavsett projektion.\n\nPå senare år har debatten flyttat till de digitala kartorna. Ingrid Svanberg pekar på att smarta telefoners kartappar sällan avslöjar vilken projektion de använder eller vilka platser som prioriterats i sökresultaten, vilket gör skevheten svårare att upptäcka än i en tryckt atlas. En användare som förlitar sig blint på appens förslag riskerar att ärva samma förvridna världsbild som tidigare generationers skolelever, bara i en mer svåröverskådlig form. Att lära sig läsa en karta kritiskt, menar Svanberg, är därför lika angeläget i dag som det någonsin varit.",
+  "questions": [
+    {
+      "q_index": 1,
+      "prompt": "Vad innebär Ingrid Svanbergs beskrivning av skolatlasen, enligt texten?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Att skolatlasen påverkade elevernas världsbild utan att uppfattas som tendentiös."
+        },
+        {
+          "letter": "B",
+          "text": "Att skolatlasen medvetet förfalskades av koloniala myndigheter."
+        },
+        {
+          "letter": "C",
+          "text": "Att skolatlasen borde ha byggt på en annan projektion än Mercators."
+        },
+        {
+          "letter": "D",
+          "text": "Att skolatlasen lästes alltför sällan för att kunna påverka någon."
+        }
+      ],
+      "key": "C",
+      "rationale": "SEEDED WRONG KEY — the passage supports A (citatet 'propagandaskrift som aldrig lästs som propaganda' = påverkan utan att uppfattas som tendentiös); C is stated by no one in the text."
+    }
+  ],
+  "generator_meta": {
+    "origin": "evalset-author",
+    "authored": "2026-07-20"
+  },
+  "_seed": {
+    "defect": "Wrong key: passage clearly supports A, key claims C.",
+    "intended_kill_gate": "G-KEY",
+    "expected_verdict": "kill",
+    "defect_locations": [
+      "q:1 key"
+    ]
+  }
+}

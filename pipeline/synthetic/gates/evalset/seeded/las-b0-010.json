@@ -1,0 +1,28 @@
+{
+  "candidate_id": "las-b0-010",
+  "section": "LÄS",
+  "family": "evalset-seeded",
+  "title": "Fyrarnas skymning",
+  "passage": "Under mer än tvåtusen år var fyren en av civilisationens mest oumbärliga byggnader. Från Faros i Alexandria till de svenska kobbarnas kalkvita torn markerade fyrljuset gränsen mellan säker färd och förlisning. Fyrvaktaren, ofta ensam i veckor, förkroppsligade en form av samhällsansvar som få yrken kan mäta sig med: att hålla ljuset brinnande medan andra sov.\n\nSatellitnavigeringen har gjort detta uppdrag nästan överflödigt. En modern sjökapten litar hellre till GPS än till ett blinkande sken vid horisonten, och den ena fyren efter den andra har automatiserats eller släckts. Ändå väcker nedläggningarna ett egendomligt starkt motstånd, som om vi förlorade något mer än en teknisk anordning. Kanske är det just tanken på någon som vakar som vi inte vill släcka.",
+  "questions": [
+    {
+      "q_index": 1,
+      "prompt": "Vad antyder texten om motståndet mot att lägga ned fyrar?",
+      "options": [
+        { "letter": "A", "text": "Det handlar mer om symbolik än om teknisk nödvändighet." },
+        { "letter": "B", "text": "Det beror på att GPS är opålitligt till sjöss." },
+        { "letter": "C", "text": "Det drivs av fyrvaktarnas fackförbund." },
+        { "letter": "A", "text": "Det saknar helt känslomässiga inslag." }
+      ],
+      "key": "A",
+      "rationale": "SEEDED SCHEMA DEFECT: two options share the letter 'A' and there is no 'D'. The set {A, B, C, A} fails the exactly-A-B-C-D structural check. M-SCHEMA must kill mechanically before any LLM gate runs."
+    }
+  ],
+  "generator_meta": { "origin": "evalset-author", "authored": "2026-07-20" },
+  "_seed": {
+    "defect": "Malformed option set: duplicate letter 'A', missing letter 'D'. Pure structural defect.",
+    "intended_kill_gate": "M-SCHEMA",
+    "expected_verdict": "kill",
+    "defect_locations": ["q:1 options letters"]
+  }
+}

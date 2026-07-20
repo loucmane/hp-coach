@@ -1,0 +1,45 @@
+{
+  "candidate_id": "las-b0-014",
+  "section": "LÄS",
+  "family": "evalset-seeded",
+  "title": "Den uppfunna traditionen",
+  "passage": "Många av de traditioner vi uppfattar som uråldriga är förvånansvärt unga. Den skotska klantartanen, med sitt bestämda rutmönster för varje släkt, systematiserades i huvudsak på 1800-talet, delvis av textilfabrikanter som såg en marknad. Ändå upplevs den i dag som ett uttryck för en obruten highlandtradition som sträcker sig tillbaka till medeltiden.\n\nHistorikern Eric Hobsbawm kallade fenomenet \"uppfunna traditioner\": bruk som ger sken av kontinuitet med ett avlägset förflutet men i själva verket är av sent datum. Sådana traditioner uppstår ofta i tider av snabb förändring, då de erbjuder en känsla av stabilitet och tillhörighet. Nationalstaten under 1800-talet var en flitig uppfinnare av traditioner: flaggor, nationalsånger och historiska årsdagar skapades för att knyta medborgarna till en gemensam identitet.\n\nPoängen är inte att avslöja traditionerna som falska. En tradition fyller sin funktion oavsett hur gammal den är. Poängen är snarare att kontinuiteten med det förflutna ofta är en berättelse vi väljer, inte ett faktum vi ärver.\n\nLiknande mönster återfinns i olympiska ceremonier, midsommarfirandets nutida form och till och med vissa 'urgamla' matkulturer, som ofta visar sig vara sammanställda och standardiserade långt senare än de utger sig för att vara. Det gör dem inte mindre meningsfulla för dem som firar dem, bara yngre än berättelsen antyder.",
+  "questions": [
+    {
+      "q_index": 1,
+      "prompt": "Vad är enligt texten Hobsbawms viktigaste poäng med begreppet \"uppfunna traditioner\"?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Att kontinuiteten med det förflutna ofta är en vald berättelse snarare än ett ärvt faktum."
+        },
+        {
+          "letter": "B",
+          "text": "Att många traditioner är yngre än de ger sken av att vara."
+        },
+        {
+          "letter": "C",
+          "text": "Att traditioner bör avslöjas som historiskt falska."
+        },
+        {
+          "letter": "D",
+          "text": "Att nationalstaten uppfann flaggor och nationalsånger."
+        }
+      ],
+      "key": "A",
+      "rationale": "SEEDED DOUBLE-KEY: both A and B are defensible answers to 'viktigaste poäng'. B is literally the definition the text gives ('bruk som ... i själva verket är av sent datum') and could be argued to be the central point; A is the concluding thesis. A strong reader could select B and file a complaint with direct passage support ('förvånansvärt unga', 'av sent datum'). The prompt does not delimit sharply enough to make A clearly best over B. G-DISTRACTOR must flag/kill on B."
+    }
+  ],
+  "generator_meta": {
+    "origin": "evalset-author",
+    "authored": "2026-07-20"
+  },
+  "_seed": {
+    "defect": "Double key: distractor B ('many traditions are younger than they appear') is the passage's own definition of the concept and is defensibly the 'viktigaste poäng', competing with intended key A. The prompt lacks a delimiter that would make A uniquely correct.",
+    "intended_kill_gate": "G-DISTRACTOR",
+    "expected_verdict": "kill",
+    "defect_locations": [
+      "q:1 option B vs key A"
+    ]
+  }
+}

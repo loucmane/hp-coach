@@ -1,0 +1,28 @@
+{
+  "candidate_id": "elf-b0-002",
+  "section": "ELF",
+  "family": "evalset-seeded",
+  "title": "The Long Shadow of the Longitude Prize",
+  "passage": "When the British Parliament offered twenty thousand pounds in 1714 for a practical method of determining longitude at sea, it expected the answer to come from astronomy. The great observatories had spent decades mapping the motion of the moon precisely so that navigators might one day read the time from the sky. What Parliament did not expect was John Harrison, a self-taught Yorkshire carpenter who proposed to solve the problem with a clock.\n\nHarrison's insight was disarmingly simple: a ship's local time could be found from the sun, so a navigator who also knew the time in Greenwich could convert the difference into degrees of longitude. The difficulty was entirely practical. No clock of the day could keep time on a pitching deck through changes of temperature and humidity. Harrison spent more than forty years building four successive machines, each smaller and stranger than the last, culminating in the celebrated H4 — essentially an overgrown pocket watch — which lost only a few seconds on its Atlantic trial.\n\nYet the Board of Longitude, dominated by astronomers, repeatedly withheld the full prize, demanding trials and disclosures it never asked of its own lunar-distance method. Historians still argue over whether this was prudence or prejudice; what is not in dispute is that the chronometer, not the moon, became the navigator's instrument of choice for the next century and a half.",
+  "questions": [
+    {
+      "q_index": 1,
+      "prompt": "What does the passage identify as the main obstacle to Harrison's approach?",
+      "options": [
+        { "letter": "A", "text": "The theoretical basis of using clocks for longitude was unproven." },
+        { "letter": "B", "text": "Building a clock that kept accurate time under conditions at sea." },
+        { "letter": "C", "text": "Navigators were unable to determine local time from the sun." },
+        { "letter": "D", "text": "The lunar-distance method had already solved the problem." }
+      ],
+      "key": "D",
+      "rationale": "SEEDED WRONG KEY — the passage states the difficulty was 'entirely practical': no clock could keep time at sea, i.e. B. D contradicts the passage."
+    }
+  ],
+  "generator_meta": { "origin": "evalset-author", "authored": "2026-07-20" },
+  "_seed": {
+    "defect": "Wrong key: passage explicitly supports B ('The difficulty was entirely practical. No clock of the day could keep time...'), key claims D.",
+    "intended_kill_gate": "G-KEY",
+    "expected_verdict": "kill",
+    "defect_locations": ["q:1 key"]
+  }
+}

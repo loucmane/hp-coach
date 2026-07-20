@@ -1,0 +1,574 @@
+{
+ "version": 1,
+ "generated_by": "pipeline/synthetic/elf/scripts/build_families.py",
+ "item_total": 540,
+ "families": [
+  {
+   "family_id": "ELF-TYPE-001",
+   "name": "Direkt detaljhämtning",
+   "layer1_source": "frameworks/elf_taxonomy.json",
+   "corpus_frequency": 159,
+   "share_of_elf": 0.294,
+   "formats": {
+    "long_passage": 81,
+    "short_texts_bundle": 40,
+    "single_short_text": 38
+   },
+   "exemplar_qids": [
+    "host-2013-verb1-ELF-031",
+    "host-2013-verb1-ELF-034",
+    "host-2013-verb1-ELF-035"
+   ],
+   "trap_anatomy": [
+    {
+     "tag": "quantifier_upgrade",
+     "count": 72,
+     "share": 0.15,
+     "exemplar_qid": "host-2013-verb1-ELF-037",
+     "exemplar_why_tempting": "It's easy to read 'Energizing melodies tend to boost our mood in general, waking us up if we are feeling tired' as 'only cheerful music helps when you're down'."
+    },
+    {
+     "tag": "tone_misread",
+     "count": 18,
+     "share": 0.04,
+     "exemplar_qid": "host-2013-verb1-ELF-035",
+     "exemplar_why_tempting": "Left-to-right reading might land on the phrase 'people whose ability to pick up emotion-laden social cues, such as facial expressions or tone of voice, is severely compromised' and"
+    },
+    {
+     "tag": "polarity_contrast_miss",
+     "count": 3,
+     "share": 0.01,
+     "exemplar_qid": "host-2013-verb2-ELF-039",
+     "exemplar_why_tempting": "If you skim 'intelligence is not a substance at all' as a quote attributed to Gardner, you might invert it and read 'Gardner found intelligence is one substance'."
+    },
+    {
+     "tag": "outside_knowledge",
+     "count": 3,
+     "share": 0.01,
+     "exemplar_qid": "host-2014-verb1-ELF-038",
+     "exemplar_why_tempting": "First instinct is to fill in a story-shaped explanation: shortage of GPs because they're going to higher-paid specialties — a plausible real-world cause."
+    },
+    {
+     "tag": "role_or_attribution_swap",
+     "count": 2,
+     "share": 0.0,
+     "exemplar_qid": "host-2016-verb2-ELF-036",
+     "exemplar_why_tempting": "First instinct on resistance to a new medical idea is to attribute it to medical professionals defending their turf."
+    }
+   ],
+   "layer1_distractor_patterns": [
+    "Sant påstående från fel stycke",
+    "Allmänkunskap som inte står i texten",
+    "Kvantifikator-uppgradering (some → all, often → always)",
+    "Orsakssamband påklistrat på beskrivande utsaga"
+   ],
+   "sample_technique": "The past-mistake / present-fix arc: short ELF texts often pivot on one word ('Now', 'Today', 'Recently'). Find that pivot and the correct option is almost always the one that names the lesson learned.",
+   "difficulty_spread": "unknown (no item-level ratings exported from production DB)",
+   "notes": "Känns igen på frågeverben: 'we are told', 'is said', 'is stated', 'according to the text' UTAN 'main' eller 'implied'. ~101 frågor i korpus — den största enskilda kategorin. Lägst svårighetsgrad när man läser noggrant; hög svårighet bara när passagen innehåller flera liknande-klingande stycken."
+  },
+  {
+   "family_id": "ELF-CLOZE-001",
+   "name": "Gapped text (cloze) — banked gap fill",
+   "layer1_source": null,
+   "corpus_frequency": 135,
+   "share_of_elf": 0.25,
+   "formats": {
+    "cloze": 135
+   },
+   "exemplar_qids": [
+    "host-2013-verb2-ELF-031",
+    "host-2013-verb2-ELF-032",
+    "host-2013-verb2-ELF-033"
+   ],
+   "trap_anatomy": [
+    {
+     "tag": "collocation_misfit",
+     "count": 69,
+     "share": 0.17,
+     "exemplar_qid": "host-2013-verb2-ELF-031",
+     "exemplar_why_tempting": "'Soft' is a natural-sounding everyday adjective, and English learners may translate from a native-language collocation."
+    },
+    {
+     "tag": "tone_misread",
+     "count": 28,
+     "share": 0.07,
+     "exemplar_qid": "host-2016-verb2-ELF-034",
+     "exemplar_why_tempting": "Many associate food-tax discussions with disappointment about public health and reach for 'Unfortunately' as a tonal fit."
+    },
+    {
+     "tag": "quantifier_upgrade",
+     "count": 11,
+     "share": 0.03,
+     "exemplar_qid": "host-2013-verb2-ELF-033",
+     "exemplar_why_tempting": "Left-to-right reading might leap from 'quality of life declines' to social consequences like dislike or rejection."
+    },
+    {
+     "tag": "polarity_contrast_miss",
+     "count": 10,
+     "share": 0.02,
+     "exemplar_qid": "host-2013-verb2-ELF-034",
+     "exemplar_why_tempting": "If you read 'Scientists have known' as a piece of conditional knowledge — what they know depends on circumstances — 'unless' might creep in."
+    },
+    {
+     "tag": "outside_knowledge",
+     "count": 3,
+     "share": 0.01,
+     "exemplar_qid": "host-2015-verb2-ELF-034",
+     "exemplar_why_tempting": "It's easy to read 'observations out in the real world' as a STRENGTH — real-world data feels more authentic — and pick 'superior'."
+    }
+   ],
+   "layer1_distractor_patterns": [],
+   "sample_technique": "On cloze adjectives, read TWO sentences past the gap — the author usually spells out the consequence (here: misdiagnosis), and that consequence fixes the missing adjective's meaning.",
+   "difficulty_spread": "unknown (no item-level ratings exported from production DB)",
+   "notes": "Format family, not a cognitive-op family: one ~355-word text with 5 numbered gaps (q31–35 of the second verbal pass in every sitting). Prompts are empty; each gap has 4 alternatives. Tests collocation, discourse polarity (but/yet/however), register fit, and referential cohesion rather than passage comprehension."
+  },
+  {
+   "family_id": "ELF-TYPE-002",
+   "name": "Slutsatsdragning / implikation",
+   "layer1_source": "frameworks/elf_taxonomy.json",
+   "corpus_frequency": 63,
+   "share_of_elf": 0.117,
+   "formats": {
+    "short_texts_bundle": 25,
+    "long_passage": 24,
+    "single_short_text": 14
+   },
+   "exemplar_qids": [
+    "host-2013-verb1-ELF-040",
+    "host-2013-verb2-ELF-037",
+    "host-2014-verb1-ELF-032"
+   ],
+   "trap_anatomy": [
+    {
+     "tag": "quantifier_upgrade",
+     "count": 22,
+     "share": 0.11,
+     "exemplar_qid": "host-2013-verb1-ELF-040",
+     "exemplar_why_tempting": "If you read 'casual or portfolio workers' as 'part-time workers in general', B feels close — the passage does say the present system hurts certain workers."
+    },
+    {
+     "tag": "tone_misread",
+     "count": 6,
+     "share": 0.03,
+     "exemplar_qid": "host-2015-verb1-ELF-038",
+     "exemplar_why_tempting": "Many stop at the phrase 'reality TV' and assume the author looks down on it — so dismissive viewer attitude feels in keeping."
+    },
+    {
+     "tag": "outside_knowledge",
+     "count": 4,
+     "share": 0.02,
+     "exemplar_qid": "host-2015-verb1-ELF-031",
+     "exemplar_why_tempting": "First instinct: a critical paragraph about a public institution implies public anger."
+    },
+    {
+     "tag": "role_or_attribution_swap",
+     "count": 3,
+     "share": 0.02,
+     "exemplar_qid": "var-2013-verb1-ELF-039",
+     "exemplar_why_tempting": "Snap reading swaps the analogy's source for its target: 'drugs have side-effects, so drugs need more control'."
+    },
+    {
+     "tag": "polarity_contrast_miss",
+     "count": 1,
+     "share": 0.01,
+     "exemplar_qid": "host-2021-verb1-ELF-040",
+     "exemplar_why_tempting": "Many stop at the alarming-feeling 'Roman medicines also made use of lead compounds' and project that the Romans must have been ignorant of the dangers."
+    }
+   ],
+   "layer1_distractor_patterns": [
+    "Bokstavlig omformulering av passagen",
+    "Två-stegs-hopp (rimligt men ostött)",
+    "Inferens i omvänd riktning",
+    "Omfångsskifte (specifikt fall → generell princip)"
+   ],
+   "sample_technique": "Implication-question items: when a passage describes a flaw without proposing a fix, the correct option usually names the unspoken fix at the system level ('will have to be revised'). Specifics-only options miss the implied step.",
+   "difficulty_spread": "unknown (no item-level ratings exported from production DB)",
+   "notes": "Känns igen på 'implied' (~56 frågor i korpus). Persona-passet flaggade detta som hög-fel-typen när prosan är tät och akademisk. Kalibreringsregel: om alternativet förekommer ordagrant i passagen är det INTE implikations-svaret."
+  },
+  {
+   "family_id": "ELF-TYPE-004",
+   "name": "Huvudidé / argument / fokus",
+   "layer1_source": "frameworks/elf_taxonomy.json",
+   "corpus_frequency": 53,
+   "share_of_elf": 0.098,
+   "formats": {
+    "short_texts_bundle": 26,
+    "long_passage": 18,
+    "single_short_text": 9
+   },
+   "exemplar_qids": [
+    "host-2013-verb1-ELF-032",
+    "host-2014-verb1-ELF-031",
+    "host-2014-verb1-ELF-037"
+   ],
+   "trap_anatomy": [
+    {
+     "tag": "quantifier_upgrade",
+     "count": 14,
+     "share": 0.09,
+     "exemplar_qid": "host-2013-verb1-ELF-032",
+     "exemplar_why_tempting": "Left-to-right reading lands on 'researchers assessed their physical activity' and 'cognition' and you fill in a familiar phrase like 'short-term memory'."
+    },
+    {
+     "tag": "tone_misread",
+     "count": 7,
+     "share": 0.04,
+     "exemplar_qid": "host-2016-verb1-ELF-037",
+     "exemplar_why_tempting": "Many stop at 'piety and sexual restraint' in the last paragraph and read it as the writer endorsing a return to those values."
+    },
+    {
+     "tag": "polarity_contrast_miss",
+     "count": 2,
+     "share": 0.01,
+     "exemplar_qid": "host-2015-verb2-ELF-036",
+     "exemplar_why_tempting": "Many stop at 'transform itself' and conclude that something is going wrong — maybe forensic evidence is being dismissed when it shouldn't be."
+    },
+    {
+     "tag": "role_or_attribution_swap",
+     "count": 1,
+     "share": 0.01,
+     "exemplar_qid": "host-2015-verb2-ELF-036",
+     "exemplar_why_tempting": "It's tempting to read 'forensic science has to transform itself' and 'a change is already under way' as evidence that the SCIENCE has been extended — progress narrative."
+    },
+    {
+     "tag": "outside_knowledge",
+     "count": 1,
+     "share": 0.01,
+     "exemplar_qid": "host-2023-verb1-ELF-034",
+     "exemplar_why_tempting": "Many stop at 'rate has tripled' and conclude that better screening tools must have uncovered cases that used to be missed — a common real-world hypothesis."
+    }
+   ],
+   "layer1_distractor_patterns": [
+    "Stöddetalj klädd som huvudpunkt",
+    "Slogan som skjuter över textens omfång",
+    "Ämne vs tes-förväxling",
+    "Motposition som författaren nämner men förkastar"
+   ],
+   "sample_technique": "The verdict-sentence rule: paragraphs that describe research usually save their thesis for the last sentence. Read it first when the prompt asks for the main point — the rest is method, the closer is the message.",
+   "difficulty_spread": "unknown (no item-level ratings exported from production DB)",
+   "notes": "Känns igen på 'main point / main argument / main claim / main focus / main conclusion / main impression' (~43 frågor i korpus, plus några 'main purpose'). Hög-hävstångs-typ — toppelever klarar dessa genom att ankra i tesmeningen istället för minnesvärda detaljer."
+  },
+  {
+   "family_id": "ELF-TYPE-005",
+   "name": "Hållning / ton / attityd",
+   "layer1_source": "frameworks/elf_taxonomy.json",
+   "corpus_frequency": 31,
+   "share_of_elf": 0.057,
+   "formats": {
+    "long_passage": 21,
+    "single_short_text": 7,
+    "short_texts_bundle": 3
+   },
+   "exemplar_qids": [
+    "host-2014-verb2-ELF-040",
+    "host-2015-verb1-ELF-037",
+    "host-2015-verb2-ELF-040"
+   ],
+   "trap_anatomy": [
+    {
+     "tag": "role_or_attribution_swap",
+     "count": 18,
+     "share": 0.18,
+     "exemplar_qid": "host-2014-verb2-ELF-040",
+     "exemplar_why_tempting": "It's tempting to read 'inclusive and nuanced' as 'complicated' and conclude non-specialists will struggle — nuance can sound forbidding."
+    },
+    {
+     "tag": "tone_misread",
+     "count": 16,
+     "share": 0.16,
+     "exemplar_qid": "host-2014-verb2-ELF-040",
+     "exemplar_why_tempting": "Many stop at 'fatal impact' and the discussion of colonisation, headline 'Trouble in Paradise' — those feel grim, so the book might come across as depressing."
+    },
+    {
+     "tag": "quantifier_upgrade",
+     "count": 7,
+     "share": 0.07,
+     "exemplar_qid": "host-2015-verb1-ELF-037",
+     "exemplar_why_tempting": "It's easy to read the Lucknow rejection ('petition was turned down… died from starvation') and generalise: the British 'usually' refused responsibility."
+    },
+    {
+     "tag": "outside_knowledge",
+     "count": 2,
+     "share": 0.02,
+     "exemplar_qid": "host-2017-verb1-ELF-032",
+     "exemplar_why_tempting": "It's easy to read the opening statistic (99% male, 4% even by booking app) as the writer warning about a hostile climate toward women drivers and to assume A captures the concern."
+    },
+    {
+     "tag": "scope_error",
+     "count": 1,
+     "share": 0.01,
+     "exemplar_qid": "var-2018-1-verb1-ELF-037",
+     "exemplar_why_tempting": "Many stop at 'other narratives of exploitation and trade are ignored' and read the focus as too narrow for big conclusions."
+    }
+   ],
+   "layer1_distractor_patterns": [
+    "Ämnets ton förväxlad med författarens ton",
+    "En grad för starkt",
+    "Blandad hållning plattad till en pol",
+    "Lånad från en citerad källa"
+   ],
+   "sample_technique": "On 'summarise the reviewer's impression' items, scan the LAST paragraph for the reviewer's verdict — usually a pair of praises or critiques. Pick the option that names BOTH halves of the verdict; options that catch only one half (or reverse one half) are the typical traps.",
+   "difficulty_spread": "unknown (no item-level ratings exported from production DB)",
+   "notes": "Känns igen på 'tone', 'attitude', 'characterized', 'best be described', 'reviewer's' / 'writer's overall' (~23 frågor i korpus). Trajektorian taggade detta som en hög-fel-typ även i v3 — fina distinktioner mellan t.ex. 'on the whole positive but has some serious objections' vs 'clearly impressed but avoids taking a stand' är det envisa felmönstret."
+  },
+  {
+   "family_id": "ELF-TYPE-003",
+   "name": "Logisk slutsats / syntes",
+   "layer1_source": "frameworks/elf_taxonomy.json",
+   "corpus_frequency": 29,
+   "share_of_elf": 0.054,
+   "formats": {
+    "long_passage": 14,
+    "single_short_text": 8,
+    "short_texts_bundle": 7
+   },
+   "exemplar_qids": [
+    "host-2013-verb2-ELF-036",
+    "host-2013-verb2-ELF-040",
+    "host-2014-verb1-ELF-033"
+   ],
+   "trap_anatomy": [
+    {
+     "tag": "quantifier_upgrade",
+     "count": 14,
+     "share": 0.16,
+     "exemplar_qid": "host-2016-verb1-ELF-040",
+     "exemplar_why_tempting": "First instinct on 'highlight the need to think broadly' is to read it as a call to fix the problem entirely with better research."
+    },
+    {
+     "tag": "tone_misread",
+     "count": 5,
+     "share": 0.06,
+     "exemplar_qid": "host-2013-verb2-ELF-040",
+     "exemplar_why_tempting": "Many stop at 'scholastic pecking order' and read it as the author endorsing ranking as common and reliable."
+    },
+    {
+     "tag": "role_or_attribution_swap",
+     "count": 3,
+     "share": 0.03,
+     "exemplar_qid": "var-2014-verb2-ELF-039",
+     "exemplar_why_tempting": "It's easy to read the Macintyre praise as a recommendation for both books."
+    },
+    {
+     "tag": "outside_knowledge",
+     "count": 1,
+     "share": 0.01,
+     "exemplar_qid": "var-2023-verb1-ELF-031",
+     "exemplar_why_tempting": "It's easy to read 'untold value in knowing a little about a lot' as a victory lap for common sense over expert knowledge — as if specialists are being replaced."
+    }
+   ],
+   "layer1_distractor_patterns": [
+    "Slutsats dragen enbart från sista meningen",
+    "Slutsats som överdriver en gardera premiss",
+    "Halv-rätt slutsats som saknar en gren",
+    "Slutsats lånad från ett annat stycke"
+   ],
+   "sample_technique": "First-paragraph items: the headline is usually the second-to-last sentence (the implicit goal) plus the last sentence (the failure mode). Use both. Here: writers SHOULD overturn intuitions, but OFTEN reinforce them — so explaining is hard.",
+   "difficulty_spread": "unknown (no item-level ratings exported from production DB)",
+   "notes": "Känns igen på 'can be concluded' / 'may be concluded' (~32 frågor i korpus). Skiljer sig från ELF-TYPE-002 (inferens) genom att slutsatsen syntetiserar EXPLICITA utsagor; inferens fyller i osagda bryggor. Skiljer sig från ELF-TYPE-004 (huvudidé) genom att slutsatsen riktas mot ett NAMNGIVET STYCKE, inte hela textens tes."
+  },
+  {
+   "family_id": "ELF-TYPE-007",
+   "name": "Påstående-text-överensstämmelse",
+   "layer1_source": "frameworks/elf_taxonomy.json",
+   "corpus_frequency": 26,
+   "share_of_elf": 0.048,
+   "formats": {
+    "long_passage": 17,
+    "single_short_text": 8,
+    "short_texts_bundle": 1
+   },
+   "exemplar_qids": [
+    "host-2013-verb1-ELF-033",
+    "host-2014-verb1-ELF-040",
+    "host-2017-verb1-ELF-036"
+   ],
+   "trap_anatomy": [
+    {
+     "tag": "quantifier_upgrade",
+     "count": 14,
+     "share": 0.17,
+     "exemplar_qid": "host-2014-verb1-ELF-040",
+     "exemplar_why_tempting": "If you bring your own picture of Cleopatra to the passage, 'beautiful and imaginative' feels like a natural description of her popular image."
+    },
+    {
+     "tag": "tone_misread",
+     "count": 4,
+     "share": 0.05,
+     "exemplar_qid": "var-2014-verb1-ELF-035",
+     "exemplar_why_tempting": "Many stop at the sentence 'we invent fictions to justify and rationalise' subconscious choices and read it as a knock against the value of storytelling."
+    },
+    {
+     "tag": "role_or_attribution_swap",
+     "count": 3,
+     "share": 0.04,
+     "exemplar_qid": "var-2019-verb2-ELF-040",
+     "exemplar_why_tempting": "It's easy to read the praise-heavy opening paragraph and infer the reviewer thinks the research is excellent across the board."
+    },
+    {
+     "tag": "polarity_contrast_miss",
+     "count": 1,
+     "share": 0.01,
+     "exemplar_qid": "host-2021-verb1-ELF-035",
+     "exemplar_why_tempting": "It's easy to mix up who said what — 'Storms and other disturbances … seem to be more important than sea level' sounds like a Duvat-style claim if you skim."
+    },
+    {
+     "tag": "outside_knowledge",
+     "count": 1,
+     "share": 0.01,
+     "exemplar_qid": "host-2024-verb1-ELF-037",
+     "exemplar_why_tempting": "Quick scans land here when you read 'Pietilä appears as a character called Too-Ticky' and assume every Moominland figure must have a real-world model."
+    }
+   ],
+   "layer1_distractor_patterns": [
+    "Sant i verkligheten men inte i texten",
+    "Stött av texten men med fel omfång",
+    "Rimlig förlängning som texten inte gör",
+    "Inverterad polaritet"
+   ],
+   "sample_technique": "Agreement-check items ('most in line with the text'): find a sentence in the passage that is repeated in different words — universality phrasing here appears in three forms (across cultures, across abilities, same-room similarity). Whichever option restates that repeated idea in plain English wins.",
+   "difficulty_spread": "unknown (no item-level ratings exported from production DB)",
+   "notes": "Känns igen på 'which of the following statements is most in line with' / 'in agreement with' / 'is true according to' (~24 frågor i korpus). Skiljer sig från ELF-TYPE-001 retrieval genom att frågan INTE namnger vad man ska slå upp — du måste låta alternativen styra scanningen. Tidskrävande typ; budgetera upp till 4 uppslag per fråga."
+  },
+  {
+   "family_id": "ELF-UNTAGGED",
+   "name": "(untagged residual)",
+   "layer1_source": null,
+   "corpus_frequency": 22,
+   "share_of_elf": 0.041,
+   "formats": {
+    "short_texts_bundle": 10,
+    "long_passage": 10,
+    "single_short_text": 2
+   },
+   "exemplar_qids": [
+    "host-2014-verb2-ELF-037",
+    "host-2016-verb1-ELF-032",
+    "host-2021-verb1-ELF-032"
+   ],
+   "trap_anatomy": [
+    {
+     "tag": "tone_misread",
+     "count": 4,
+     "share": 0.06,
+     "exemplar_qid": "host-2014-verb2-ELF-037",
+     "exemplar_why_tempting": "Left-to-right reading of 'cultural difference was negotiated' might land on 'difference' and 'negotiated' as signs of friction — friction reads as suspicion."
+    },
+    {
+     "tag": "quantifier_upgrade",
+     "count": 4,
+     "share": 0.06,
+     "exemplar_qid": "host-2022-verb1-ELF-039",
+     "exemplar_why_tempting": "It's tempting to read 'climate change' in the passage and reach for the modern association — humans causing the change."
+    },
+    {
+     "tag": "wrong_location",
+     "count": 1,
+     "share": 0.02,
+     "exemplar_qid": "host-2022-verb1-ELF-036",
+     "exemplar_why_tempting": "The passage spends a paragraph on birds and chimps, so 'similar to certain types of animal language' feels like a continuation of that thread."
+    }
+   ],
+   "layer1_distractor_patterns": [],
+   "sample_technique": "On 'relationship between X and Y' items, locate the author's view of the CONTACT itself (the verb that describes what happens between X and Y — interactive, exploitative, hostile, neutral). The option that mirrors that verb is the answer.",
+   "difficulty_spread": "unknown (no item-level ratings exported from production DB)",
+   "notes": null
+  },
+  {
+   "family_id": "ELF-TYPE-006",
+   "name": "Syfte / orsak-verkan",
+   "layer1_source": "frameworks/elf_taxonomy.json",
+   "corpus_frequency": 15,
+   "share_of_elf": 0.028,
+   "formats": {
+    "long_passage": 12,
+    "single_short_text": 3
+   },
+   "exemplar_qids": [
+    "host-2013-verb1-ELF-036",
+    "host-2021-verb1-ELF-033",
+    "host-2022-verb2-ELF-040"
+   ],
+   "trap_anatomy": [
+    {
+     "tag": "quantifier_upgrade",
+     "count": 5,
+     "share": 0.11,
+     "exemplar_qid": "host-2013-verb1-ELF-036",
+     "exemplar_why_tempting": "It's easy to project a personality stereotype — gym-goers are impatient, classical is slow — onto the question."
+    },
+    {
+     "tag": "tone_misread",
+     "count": 3,
+     "share": 0.07,
+     "exemplar_qid": "host-2023-verb2-ELF-036",
+     "exemplar_why_tempting": "First instinct on dramatic phrases like 'frantically devising strategies' is that the author is criticising the kings."
+    },
+    {
+     "tag": "role_or_attribution_swap",
+     "count": 1,
+     "share": 0.02,
+     "exemplar_qid": "var-2022-2-verb2-ELF-040",
+     "exemplar_why_tempting": "Once you see 'bizarre to claim', it's tempting to escalate to 'consistent disregard of historical facts'."
+    }
+   ],
+   "layer1_distractor_patterns": [
+    "Rimlig verklig orsak som inte står i texten",
+    "Konsekvens etiketterad som orsak",
+    "Syfte kollapsat till ämne",
+    "Lokal orsak när texten ramar in en djupare"
+   ],
+   "sample_technique": "Cause-question items ('Why, according to the text…'): the answer is the mechanism in the passage, not a plausible-sounding cultural explanation. Look for body-or-brain language ('arousal', 'response', 'system') and match it to the option that names the same mechanism.",
+   "difficulty_spread": "unknown (no item-level ratings exported from production DB)",
+   "notes": "Känns igen på 'why', 'main reason', 'purpose', 'caused', 'why is X mentioned' (~19 frågor i korpus totalt). Två underkategorier delar attack-protokoll eftersom båda frågar 'identifiera författarens explicita tillskrivning'. Liten kategori men distinkt nog att hålla separat — syfte/orsak är inte utbytbara med retrieval (ingen ytfras att matcha) eller inferens (texten namnger orsaken)."
+  },
+  {
+   "family_id": "ELF-TYPE-008",
+   "name": "Ordförråd / uttryck i kontext",
+   "layer1_source": "frameworks/elf_taxonomy.json",
+   "corpus_frequency": 7,
+   "share_of_elf": 0.013,
+   "formats": {
+    "long_passage": 3,
+    "single_short_text": 2,
+    "short_texts_bundle": 2
+   },
+   "exemplar_qids": [
+    "host-2014-verb1-ELF-036",
+    "host-2017-verb2-ELF-040",
+    "host-2018-verb1-ELF-033"
+   ],
+   "trap_anatomy": [
+    {
+     "tag": "quantifier_upgrade",
+     "count": 3,
+     "share": 0.14,
+     "exemplar_qid": "host-2017-verb2-ELF-040",
+     "exemplar_why_tempting": "If you read 'still ran high' as 'a filter still operated', A can sound like a plausible screening mechanism — only certain personalities allowed in."
+    },
+    {
+     "tag": "outside_knowledge",
+     "count": 1,
+     "share": 0.05,
+     "exemplar_qid": "host-2017-verb2-ELF-040",
+     "exemplar_why_tempting": "If you read 'still ran high' as 'a filter still operated', A can sound like a plausible screening mechanism — only certain personalities allowed in."
+    },
+    {
+     "tag": "tone_misread",
+     "count": 1,
+     "share": 0.05,
+     "exemplar_qid": "host-ver1-2019-verb1-ELF-039",
+     "exemplar_why_tempting": "'Modifying genes of crops, animals and even humans' has an ominous tone, and pairing 'growth of millionaires' with massive inequality could feel unethical."
+    }
+   ],
+   "layer1_distractor_patterns": [
+    "Bokstavlig läsning av det bildliga uttrycket",
+    "Standard idiombetydelse vs textens böjda användning",
+    "Närliggande-koncept-substitution"
+   ],
+   "sample_technique": "On vocabulary-in-context questions with a TWO-PART phrase ('X as well as Y'), split it in half and translate each half separately. Then pick the option where BOTH halves match — not just one. This catches options that ace one half and fumble the other.",
+   "difficulty_spread": "unknown (no item-level ratings exported from production DB)",
+   "notes": "Känns igen på citerat uttryck i frågan + verben 'best corresponds to', 'is said about the expression', 'is implied about the expression', 'reflects'. Bara 5 förekomster i korpus — på golvet för en typ. Flaggad för v2: expandera bara om korpus växer; annars överväg att vika in i ELF-TYPE-001 eller ELF-TYPE-002 efter kontext."
+  }
+ ]
+}

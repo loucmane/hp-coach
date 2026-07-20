@@ -1,0 +1,28 @@
+{
+  "candidate_id": "elf-b0-004",
+  "section": "ELF",
+  "family": "evalset-seeded",
+  "title": "The Economics of Attention",
+  "passage": "The phrase \"attention economy\" was coined long before the smartphone, but it has taken on a sharper meaning in an age when a handful of companies compete for the same scarce resource: the hours a person is awake. The economist Herbert Simon put the underlying logic plainly as early as 1971, observing that a wealth of information creates a poverty of attention. When information is effectively unlimited, the binding constraint is no longer access but the human capacity to attend to any of it.\n\nWhat follows from Simon's observation is a set of incentives that critics find troubling. If attention is the currency, then the products best adapted to the market are those that capture and hold it most effectively, whether or not doing so serves the user. Designers speak, without embarrassment, of \"engagement\" as the metric that matters, and the techniques that maximise it — variable rewards, infinite feeds, social validation loops — borrow directly from the psychology of the slot machine. The question the field has been slow to ask is whether a business model that profits from distraction can ever be reconciled with the interests of the distracted.",
+  "questions": [
+    {
+      "q_index": 1,
+      "prompt": "According to the passage, what is the binding constraint in a world of unlimited information?",
+      "options": [
+        { "letter": "A", "text": "The human capacity to attend to information." },
+        { "letter": "B", "text": "The public's access to reliable information." },
+        { "letter": "C", "text": "The willingness of designers to measure engagement." },
+        { "letter": "D", "text": "The scarcity of information worth attending to." }
+      ],
+      "key": "A",
+      "rationale": "The passage: 'the binding constraint is no longer access but the human capacity to attend'. A is the intended key and is clearly best. The SEEDED defect is that distractor D is ALSO defensible: 'a wealth of information creates a poverty of attention' can be read as scarcity of attention-worthy information, and 'a person is awake... scarce resource' invites D — but the prompt asks specifically what the passage names as the constraint, which is A. D is a genuine second-defensible reading built from the passage's own metaphors."
+    }
+  ],
+  "generator_meta": { "origin": "evalset-author", "authored": "2026-07-20" },
+  "_seed": {
+    "defect": "Double key: distractor D ('scarcity of information worth attending to') is defensibly supported by the passage's 'poverty of attention' framing, competing with intended key A. A strong reader could file a complaint for D.",
+    "intended_kill_gate": "G-DISTRACTOR",
+    "expected_verdict": "kill",
+    "defect_locations": ["q:1 option D"]
+  }
+}

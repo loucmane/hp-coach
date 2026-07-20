@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hp-coach/pipeline/synthetic/gates/verdict.schema.json",
+  "title": "Gate verdict",
+  "description": "One gate execution's structured result for one candidate (or one question of a candidate). Every gate — mechanical script or prompt-executed agent — emits exactly this shape, one JSON object per line in the batch's verdicts.jsonl. Aggregation is purely mechanical over these records.",
+  "type": "object",
+  "required": ["candidate_id", "gate", "target", "verdict", "findings"],
+  "additionalProperties": false,
+  "properties": {
+    "candidate_id": { "type": "string" },
+    "gate": {
+      "enum": [
+        "M-SCHEMA", "M-BANDS", "M-PLAGIARISM",
+        "G-KEY", "G-STEM", "G-DISTRACTOR",
+        "G-SPRAK", "G-ENG", "G-REGISTER"
+      ]
+    },
+    "target": {
+      "type": "string",
+      "pattern": "^(passage|q:[0-9]+)$",
+      "description": "'passage' for passage-level gates (M-*, G-SPRAK, G-ENG, G-REGISTER); 'q:<q_index>' for per-question gates (G-KEY, G-STEM, G-DISTRACTOR)."
+    },
+    "verdict": {
+      "enum": ["pass", "kill", "flag"],
+      "description": "pass = no disqualifying finding. kill = disqualifying finding (semantics per gate; see runbook aggregation). flag = survives but the finding must appear in the adjudication package."
+    },
+    "findings": {
+      "type": "array",
+      "description": "Empty array on a clean pass. Every kill or flag MUST carry at least one finding with a verbatim quote.",
+      "items": {
+        "type": "object",
+        "required": ["severity", "quote", "note"],
+        "additionalProperties": false,
+        "properties": {
+          "severity": { "enum": ["lethal", "major", "minor"] },
+          "quote": {
+            "type": "string",
+            "description": "Verbatim excerpt from the candidate that the finding is about. Never paraphrased — aggregation and adjudication anchor on it."
+          },
+          "note": { "type": "string", "description": "Why this is a defect, one or two sentences. English." }
+        }
+      }
+    },
+    "solver_answer": {
+      "enum": ["A", "B", "C", "D", "NONE_DEFENSIBLE", "MULTIPLE_DEFENSIBLE"],
+      "description": "G-KEY only: the answer the blind solver committed to before seeing the key."
+    },
+    "vote": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "For gates run as N independent votes (G-KEY, G-SPRAK, G-ENG): which vote this record is (1..N). Omit for single-run gates."
+    },
+    "executed_by": {
+      "type": "string",
+      "description": "Free-form executor id: script name+version for mechanical gates, agent/model tag for prompt gates."
+    },
+    "executed_at": { "type": "string", "description": "ISO-8601 timestamp." }
+  }
+}

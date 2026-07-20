@@ -1,0 +1,29 @@
+{
+  "candidate_id": "elf-b0-012",
+  "section": "ELF",
+  "family": "evalset-seeded",
+  "title": "5 Things You Didn't Know About Coffee",
+  "passage": "Let's be honest — you probably can't function without your morning coffee, and you're definitely not alone! Coffee is one of the most popular drinks on the planet, and there's way more to it than you might think. Ready to have your mind blown? Here are five amazing facts that will make you love your daily cup even more.\n\nFirst up: coffee was originally eaten, not drunk. That's right! Legend has it that Ethiopian goat herders noticed their goats getting super energetic after munching coffee berries, and the rest is history. Pretty wild, huh?\n\nAnd here's the kicker — that \"coffee\" buzz isn't just in your head. Caffeine actually blocks the chemicals that make you feel sleepy, which is why that first sip feels like magic. So next time you grab a cup, remember: you're basically drinking science. How cool is that?",
+  "questions": [
+    {
+      "q_index": 1,
+      "prompt": "According to the passage, why does caffeine make people feel more awake?",
+      "options": [
+        { "letter": "A", "text": "It blocks the chemicals that produce sleepiness." },
+        { "letter": "B", "text": "It adds energy that the body stores overnight." },
+        { "letter": "C", "text": "It was originally eaten rather than drunk." },
+        { "letter": "D", "text": "It was discovered by Ethiopian goat herders." }
+      ],
+      "key": "A",
+      "rationale": "Key A is correct ('Caffeine actually blocks the chemicals that make you feel sleepy'). SEEDED REGISTER DEFECT: the entire passage is clickbait-listicle English ('Ready to have your mind blown?', 'Pretty wild, huh?', 'here's the kicker', direct second-person hype) — nothing like the authentic ELF register (edited academic-magazine prose). G-REGISTER must kill (wrong genre); G-ENG should at least flag the register breaks."
+    }
+  ],
+  "generator_meta": { "origin": "evalset-author", "authored": "2026-07-20" },
+  "_seed": {
+    "defect": "Non-HP register: clickbait listicle with hype and direct reader address, grammatically fine English but the wrong genre for ELF entirely.",
+    "intended_kill_gate": "G-REGISTER",
+    "secondary_kill_gate": "G-ENG",
+    "expected_verdict": "kill",
+    "defect_locations": ["passage: 'Ready to have your mind blown?'", "passage: 'And here's the kicker'", "title: '5 Things You Didn't Know About Coffee'"]
+  }
+}

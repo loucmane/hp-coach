@@ -1,0 +1,46 @@
+{
+  "candidate_id": "las-b0-015",
+  "section": "LÄS",
+  "family": "evalset-seeded",
+  "title": "Glasets hemlighet",
+  "passage": "Glas är ett av de märkligaste material människan lärt sig behärska. Fysikaliskt sett är det varken en fast kropp eller en vätska, utan något däremellan: en amorf massa där atomerna är oordnade som i en vätska men fastlåsta som i ett fast ämne. Denna dubbelhet ger glaset dess unika egenskaper, men den har också gett upphov till en seglivad myt.\n\nMyten säger att glaset i medeltida kyrkfönster är tjockare nedtill därför att glaset långsamt har runnit nedåt under seklerna. I själva verket beror ojämnheten på dåtidens tillverkningsmetod, där den roterande slipen aldrig gav en helt jämn skiva. Att glaset skulle flyta i rumstemperatur är fysikaliskt orimligt; den tid som skulle krävas överstiger vida universums ålder.\n\nÄndå lever myten vidare, kanske därför att den är så tilltalande. Tanken att även det hårdaste glas i tysthet bokför sig självt, att det obevekligt söker sig nedåt, har en poetisk kraft som sanningen saknar. Vetenskapen vinner sällan mot en vacker bild.\n\nKemister brukar i stället beskriva glas som en 'fryst vätska', ett tillstånd som uppstår när en smälta kyls så snabbt att atomerna aldrig hinner ordna sig i ett kristallgitter. Just denna oordning, som en gång ansågs vara ett tecken på instabilitet, visar sig vara precis det som gör fönsterglaset stabilt i praktiken, århundrade efter århundrade.",
+  "questions": [
+    {
+      "q_index": 1,
+      "prompt": "Varför är medeltida fönsterglas ofta tjockare nedtill, enligt texten?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "På grund av dåtidens tillverkningsmetod."
+        },
+        {
+          "letter": "B",
+          "text": "Därför att glaset långsamt runnit nedåt under seklerna."
+        },
+        {
+          "letter": "C",
+          "text": "Därför att glas är en vätska i rumstemperatur."
+        },
+        {
+          "letter": "D",
+          "text": "På grund av tryck från fönsterkarmen."
+        }
+      ],
+      "key": "A",
+      "rationale": "Key A is correct ('beror ojämnheten på dåtidens tillverkningsmetod'). SEEDED SUBTLE LANGUAGE DEFECTS (the slipen / bokför-sig-självt register — the exact pair from the landing-copy pass): 'den roterande slipen' uses a non-word/wrong derivation ('slipen' is not the tool; should be 'slipningen' or 'sliprörelsen' / 'slipskivan'); 'glas ... bokför sig självt' is a bokföra-calque ('books itself') no native writer uses. Both grammatical-looking but off-native. G-SPRÅK must convict these two; correctness gates pass."
+    }
+  ],
+  "generator_meta": {
+    "origin": "evalset-author",
+    "authored": "2026-07-20"
+  },
+  "_seed": {
+    "defect": "The exact landing-copy defect pair, replanted: 'slipen' (class 1 non-word / wrong derivation — the tool/process is misnamed) and 'bokför sig självt' (class 2 calque of English 'books itself'). Subtle: passes a spell-checker, fails a native copy editor. This is G-SPRÅK's hardest exam item.",
+    "intended_kill_gate": "G-SPRAK",
+    "expected_verdict": "kill",
+    "defect_locations": [
+      "passage: 'den roterande slipen aldrig gav en helt jämn skiva'",
+      "passage: 'även det hårdaste glas i tysthet bokför sig självt'"
+    ]
+  }
+}
