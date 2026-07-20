@@ -26,7 +26,7 @@ import { KvaPrompt } from '@/components/drill/KvaPrompt'
 import { PedagogyPanel } from '@/components/drill/PedagogyPanel'
 import { QuestionFigure } from '@/components/drill/QuestionFigure'
 import { useExplanation } from '@/components/drill-variants/useExplanation'
-import { MathText } from '@/components/MathText'
+import { flattenMathText, MathText } from '@/components/MathText'
 import { pickTactic } from '@/components/pre-grade/pregrade-tactics'
 import type { AnswerLetter, Option, Question } from '@/data/questions'
 import { DRAG, optWordLayoutId, sectionDoorLayoutId, useArketMotion } from '@/lib/motion'
@@ -485,7 +485,7 @@ function OptionRow({
       {opt.figure && (
         <img
           src={`/${opt.figure.src}`}
-          alt={opt.text}
+          alt={flattenMathText(opt.text)}
           loading="lazy"
           className="hpc-m3-opt-fig"
           style={{

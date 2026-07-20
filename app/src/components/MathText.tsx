@@ -49,6 +49,59 @@ function wrapUnits(latex: string): string {
   return latex.replace(UNIT_RE, '\\mathrm{$1}')
 }
 
+/** Flatten one LaTeX run to readable plain text — for plain-string
+ *  contexts (alt/aria-label, document titles) where KaTeX HTML can't
+ *  render. Judgment calls: subscripts drop the underscore (`L_{1}` →
+ *  "L1", so the NOG statement ref `(_{1}` reads "(1"), superscripts
+ *  keep a caret (`x^{2}` → "x^2"), fractions become slashes. Unknown
+ *  commands are dropped rather than leaked. */
+export function flattenLatex(latex: string): string {
+  return latex
+    .replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g, '$1/$2')
+    .replace(/\\sqrt\{([^{}]*)\}/g, '√($1)')
+    .replace(/\\mathrm\{([^{}]*)\}/g, '$1')
+    .replace(/\\text\{([^{}]*)\}/g, '$1')
+    .replace(/_\{([^{}]*)\}/g, '$1')
+    .replace(/\^\{([^{}]*)\}/g, '^$1')
+    .replace(/\\cdot\b/g, '·')
+    .replace(/\\times\b/g, '×')
+    .replace(/\\leq?\b/g, '≤')
+    .replace(/\\geq?\b/g, '≥')
+    .replace(/\\neq?\b/g, '≠')
+    .replace(/\\pi\b/g, 'π')
+    .replace(/\\[a-zA-Z]+/g, '')
+    .replace(/[{}]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+/** Flatten a full bank string (mixed prose + sentinel-fenced math) to
+ *  plain text. Non-math strings pass through unchanged. Never leaks the
+ *  U+E000/U+E001 sentinels. */
+export function flattenMathText(text: string | null | undefined): string {
+  if (!text) return ''
+  if (!text.includes(MATH_OPEN)) return text
+  let out = ''
+  let i = 0
+  while (i < text.length) {
+    const start = text.indexOf(MATH_OPEN, i)
+    if (start === -1) {
+      out += text.slice(i)
+      break
+    }
+    out += text.slice(i, start)
+    const end = text.indexOf(MATH_CLOSE, start + 1)
+    if (end === -1) {
+      // Unbalanced delimiter — mirror the render path's tolerance.
+      out += flattenLatex(text.slice(start + 1))
+      break
+    }
+    out += flattenLatex(text.slice(start + 1, end))
+    i = end + 1
+  }
+  return out
+}
+
 function renderMath(latex: string): string {
   try {
     return katex.renderToString(wrapUnits(latex), {
@@ -104,7 +157,7 @@ export function MathText({ children }: Props) {
             // biome-ignore lint/suspicious/noArrayIndexKey: stable order, no reordering
             key={idx}
             role="math"
-            aria-label={seg.text}
+            aria-label={flattenLatex(seg.text)}
             // KaTeX-emitted HTML on parser-controlled input — no user
             // text ever reaches `seg.text`.
             // biome-ignore lint/security/noDangerouslySetInnerHtml: trusted parser output
