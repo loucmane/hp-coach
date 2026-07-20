@@ -97,7 +97,7 @@ cd pipeline/synthetic/gates
 # 1. materialize the eval batch (authentic loaded from the bank, seeds stripped of _seed)
 python3 scripts/load_evalset.py --out-dir /tmp/evalrun --parsed-dir <repo>/data/parsed
 # 2. mechanical stage
-python3 scripts/run_mech.py /tmp/evalrun/*.json --parsed-dir <repo>/data/parsed --out /tmp/evalrun/verdicts.jsonl
+python3 scripts/run_mech.py /tmp/evalrun/las-*.json /tmp/evalrun/elf-*.json  # NOT *.json — expectations.json is metadata, not a candidate --parsed-dir <repo>/data/parsed --out /tmp/evalrun/verdicts.jsonl
 # 3. LLM stages: dispatch each prompts/*.md against each item per the README
 #    orchestration runbook; append every agent's JSON verdict to verdicts.jsonl
 # 4. aggregate + score
