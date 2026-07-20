@@ -41,6 +41,7 @@ const PUBLIC_ROUTES = new Set<string>([
   '/dev-login',
   '/integritet',
   '/villkor',
+  '/hjalp',
 ])
 
 function RootShell() {

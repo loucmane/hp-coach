@@ -74,10 +74,35 @@ Backup workflow) and a written reason.
 
 ## Incidents
 
-Convention (pre-status-page scale): if staging or prod breaks for the
-dogfood user, note it in this file's log below with date/cause/fix.
-When real users exist (P2+), incident comms move to the landing page
-per the service plan.
+**What counts as an incident** (vs. an ordinary bug): auth is down
+(users can't sign in), data loss or data damage (wrong answers/history
+shown, rows gone), or a broken deploy that stays broken for more than
+30 minutes. Everything else is a bug — fix it in normal course.
+
+**The three steps, in order:**
+
+1. **Verify.** Reproduce on staging and check `GET /health` on the
+   affected environment (does the `version` SHA match what you think
+   is deployed?). Rule out "it's just my machine" before anything else.
+2. **Check status pages.** Cloudflare (cloudflarestatus.com), Clerk
+   (status.clerk.com), Sentry (status.sentry.io), GitHub
+   (githubstatus.com). If an upstream is down, the fix is patience —
+   note it and go straight to step 3.
+3. **Communicate.** Fix or roll back (see the deploy/rollback notes
+   above), then reply.
+
+**Communication convention:** honest, one pinned line, via reply from
+the support address to every affected user who wrote in. No status
+theater — say what broke, that it was ours, and when it was fixed.
+House-voice template (Swedish, adapt the specifics):
+
+> Det var ett fel hos oss, inte hos dig. Det är åtgärdat sedan
+> \<tid\> — säg till om något fortfarande ser konstigt ut.
+
+Future (>100 users): add a status note on the landing page per the
+service plan. Until then the mailbox reply IS the status page.
+
+Every incident gets a line in the log below with date/cause/fix.
 
 ### Incident log
 

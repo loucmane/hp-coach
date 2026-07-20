@@ -29,6 +29,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Q1_HERO, Q2_KVA, Q3_MEK } from '@/components/devbake/LandingBakeoffR4A.content'
 import { dispatchFirstContent, EASE, KeepInView, useArketMotion } from '@/lib/motion'
 import { getProvdatum, type Provdatum } from '@/lib/provdatum'
+import { SUPPORT_EMAIL } from '@/lib/support'
 import { Cta, Ink, LANDING_BASE_CSS, PriceBlock, QuietCta, StickyCta, useStickyCta } from './chrome'
 import { COPY, FACIT_ROW, SCHED_CADENCE, type SchedEntry } from './copy'
 import { GenDemo, GenStage, Receipt, SCHED_LABELS } from './Genomgang'
@@ -885,6 +886,13 @@ export function PublicLanding() {
         </div>
         <p className="hpl-human" style={{ marginTop: 10 }}>
           {COPY.human}
+          {' · '}
+          <a
+            href={`mailto:${SUPPORT_EMAIL}`}
+            style={{ color: 'inherit', textDecoration: 'underline', textUnderlineOffset: 3 }}
+          >
+            {SUPPORT_EMAIL}
+          </a>
         </p>
       </div>
 
