@@ -76,7 +76,7 @@ so aggregation (`scripts/aggregate.py`) is purely mechanical.
 | 2 | **M-BANDS** | python | passage | length/stat outside `bands.json` band → **kill** when `calibrated:true`, else **flag** |
 | 3 | **M-PLAGIARISM** | python | passage | exact shared n-gram ≥ `ngram_kill` with authentic corpus → **kill**; 8-gram containment > `containment_flag` → **flag**. Excludes the candidate's own source passage (eval items only) |
 | 4 | **G-KEY** | prompt ×2 | per question | blind solver's answer ≠ key, or `NONE`/`MULTIPLE_DEFENSIBLE`, on **either** vote → **kill** |
-| 5 | **G-STEM** | prompt | per question | question answerable without the passage → **kill**; partial blind-elimination → **flag** |
+| 5 | **G-STEM** | prompt | per question | structural leak (form-answerable options/stem) or pure factual recall → **kill**; world-knowledge answerability with substantive distractors, or partial blind-elimination → **flag** (authentic keys are often globally true — that is test design, not a defect) |
 | 6 | **G-DISTRACTOR** | prompt | per question | any distractor defensibly correct → **kill**; merely-attractive distractor → **flag** |
 | 7 | **G-SPRÅK** | prompt ×3 | passage (LÄS) | native-register audit; per vote any lethal finding → vote=kill. **≥2 kill votes → kill**; exactly 1 → **flag** |
 | 8 | **G-ENG** | prompt ×3 | passage (ELF) | same as G-SPRÅK for academic-magazine English |

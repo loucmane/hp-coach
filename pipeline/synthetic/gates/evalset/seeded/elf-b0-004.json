@@ -7,22 +7,23 @@
   "questions": [
     {
       "q_index": 1,
-      "prompt": "According to the passage, what is the binding constraint in a world of unlimited information?",
+      "prompt": "Which of the following statements is supported by the passage?",
       "options": [
-        { "letter": "A", "text": "The human capacity to attend to information." },
-        { "letter": "B", "text": "The public's access to reliable information." },
-        { "letter": "C", "text": "The willingness of designers to measure engagement." },
-        { "letter": "D", "text": "The scarcity of information worth attending to." }
+        { "letter": "A", "text": "Companies in the attention economy compete for the hours a person is awake." },
+        { "letter": "B", "text": "Techniques that maximise engagement draw on the psychology of the slot machine." },
+        { "letter": "C", "text": "Designers are reluctant to speak openly of engagement as their guiding metric." },
+        { "letter": "D", "text": "The field was quick to ask whether profiting from distraction serves users." }
       ],
       "key": "A",
-      "rationale": "The passage: 'the binding constraint is no longer access but the human capacity to attend'. A is the intended key and is clearly best. The SEEDED defect is that distractor D is ALSO defensible: 'a wealth of information creates a poverty of attention' can be read as scarcity of attention-worthy information, and 'a person is awake... scarce resource' invites D — but the prompt asks specifically what the passage names as the constraint, which is A. D is a genuine second-defensible reading built from the passage's own metaphors."
+      "rationale": "SEEDED DOUBLE-KEY: the stem asks which statement is supported, and TWO options are supported verbatim with equal directness. Key A restates 'compete for the same scarce resource: the hours a person is awake'; distractor B restates 'the techniques that maximise it ... borrow directly from the psychology of the slot machine'. No delimiter in the stem ranks one supported statement over the other — a blind solver cannot commit to a single answer, and a complaint for B is airtight. C is contradicted ('without embarrassment') and D is contradicted ('slow to ask'), so the item is otherwise well-formed."
     }
   ],
-  "generator_meta": { "origin": "evalset-author", "authored": "2026-07-20" },
+  "generator_meta": { "origin": "evalset-author", "authored": "2026-07-20", "revised": "2026-07-20" },
   "_seed": {
-    "defect": "Double key: distractor D ('scarcity of information worth attending to') is defensibly supported by the passage's 'poverty of attention' framing, competing with intended key A. A strong reader could file a complaint for D.",
+    "defect": "Double key: the stem ('Which of the following statements is supported by the passage?') is satisfied with equal directness by key A ('compete for the same scarce resource: the hours a person is awake') and distractor B ('borrow directly from the psychology of the slot machine') — both are verbatim passage restatements and no stem delimiter ranks them. A blind solver cannot commit to one; an honest solver reports MULTIPLE_DEFENSIBLE. Re-authored 2026-07-20: the original planted second key (option D built from the 'poverty of attention' metaphor) was attractive-but-beatable — three independent judges (both G-KEY blind runs and G-DISTRACTOR) each resolved it to a single answer.",
     "intended_kill_gate": "G-DISTRACTOR",
+    "secondary": "G-KEY",
     "expected_verdict": "kill",
-    "defect_locations": ["q:1 option D"]
+    "defect_locations": ["q:1 option B vs key A"]
   }
 }

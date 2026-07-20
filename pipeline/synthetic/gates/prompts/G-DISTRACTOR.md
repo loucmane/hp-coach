@@ -51,10 +51,16 @@ even though G-KEY passed.
   "findings": [
     {"severity": "lethal | major", "quote": "<distractor text>", "note": "the case for it, with verbatim passage citations"}
   ],
-  "per_option": {"A": "DEFENSIBLE | ARGUABLE | CLEAN", "B": "…", "C": "…", "D": "KEY"},
   "executed_by": "<agent/model tag>"
 }
 ```
+
+Do NOT add fields beyond `verdict.schema.json` (it forbids extra
+properties — there is no `per_option` map). Record the per-option
+classification inside `findings`: every `DEFENSIBLE` or `ARGUABLE`
+distractor gets its own finding whose `note` opens with its
+classification (e.g. "DEFENSIBLE: …" / "ARGUABLE: …") followed by the
+case with verbatim passage citations. `CLEAN` options need no finding.
 
 Verdict mapping (apply it yourself):
 

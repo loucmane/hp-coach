@@ -7,36 +7,38 @@
   "questions": [
     {
       "q_index": 1,
-      "prompt": "Vad är enligt texten Hobsbawms viktigaste poäng med begreppet \"uppfunna traditioner\"?",
+      "prompt": "Vilket av följande påståenden får stöd i texten?",
       "options": [
         {
           "letter": "A",
-          "text": "Att kontinuiteten med det förflutna ofta är en vald berättelse snarare än ett ärvt faktum."
+          "text": "Uppfunna traditioner uppstår ofta i tider av snabb förändring."
         },
         {
           "letter": "B",
-          "text": "Att många traditioner är yngre än de ger sken av att vara."
+          "text": "En tradition fyller sin funktion oavsett hur gammal den är."
         },
         {
           "letter": "C",
-          "text": "Att traditioner bör avslöjas som historiskt falska."
+          "text": "Den skotska klantartanen systematiserades under medeltiden."
         },
         {
           "letter": "D",
-          "text": "Att nationalstaten uppfann flaggor och nationalsånger."
+          "text": "Hobsbawms syfte var att avslöja traditionerna som falska."
         }
       ],
       "key": "A",
-      "rationale": "SEEDED DOUBLE-KEY: both A and B are defensible answers to 'viktigaste poäng'. B is literally the definition the text gives ('bruk som ... i själva verket är av sent datum') and could be argued to be the central point; A is the concluding thesis. A strong reader could select B and file a complaint with direct passage support ('förvånansvärt unga', 'av sent datum'). The prompt does not delimit sharply enough to make A clearly best over B. G-DISTRACTOR must flag/kill on B."
+      "rationale": "SEEDED DOUBLE-KEY: the stem asks which statement has support in the text, and TWO options are supported verbatim with equal directness. Key A restates 'Sådana traditioner uppstår ofta i tider av snabb förändring'; distractor B IS the passage sentence 'En tradition fyller sin funktion oavsett hur gammal den är'. No stem delimiter ranks one supported statement over the other — a blind solver cannot commit to a single answer, and a complaint for B is airtight. C is contradicted (systematiserades 'i huvudsak på 1800-talet') and D is contradicted ('Poängen är inte att avslöja traditionerna som falska'), so the item is otherwise well-formed."
     }
   ],
   "generator_meta": {
     "origin": "evalset-author",
-    "authored": "2026-07-20"
+    "authored": "2026-07-20",
+    "revised": "2026-07-20"
   },
   "_seed": {
-    "defect": "Double key: distractor B ('many traditions are younger than they appear') is the passage's own definition of the concept and is defensibly the 'viktigaste poäng', competing with intended key A. The prompt lacks a delimiter that would make A uniquely correct.",
+    "defect": "Double key: the stem ('Vilket av följande påståenden får stöd i texten?') is satisfied with equal directness by key A ('Sådana traditioner uppstår ofta i tider av snabb förändring') and distractor B, which is the passage's own sentence verbatim ('En tradition fyller sin funktion oavsett hur gammal den är'). No delimiter ranks them; an honest blind solver reports MULTIPLE_DEFENSIBLE. Re-authored 2026-07-20: the original second key (option B as 'viktigaste poäng') was beatable via the passage's explicit 'Poängen är inte ... Poängen är snarare' delimiter — three independent judges (both G-KEY blind runs and G-DISTRACTOR) each resolved it to a single answer.",
     "intended_kill_gate": "G-DISTRACTOR",
+    "secondary": "G-KEY",
     "expected_verdict": "kill",
     "defect_locations": [
       "q:1 option B vs key A"

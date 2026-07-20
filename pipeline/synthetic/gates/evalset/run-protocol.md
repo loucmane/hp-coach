@@ -26,7 +26,7 @@ required eval run.**
 | las-b0-001     | LÄS     | wrong key (passage supports A, key says C)               | G-KEY              |
 | elf-b0-002     | ELF     | wrong key (passage supports B, key says D)               | G-KEY              |
 | las-b0-003     | LÄS     | passage-independent stem (general-knowledge date)        | G-STEM             |
-| elf-b0-004     | ELF     | double key (distractor D also defensible)                | G-DISTRACTOR       |
+| elf-b0-004     | ELF     | double key (B supported as directly as key A)            | G-DISTRACTOR (+G-KEY) |
 | las-b0-005     | LÄS     | calques: *spenderade tid*, *ta plats framför*            | G-SPRÅK            |
 | las-b0-006     | LÄS     | BIFF word-order error in subordinate clause              | G-SPRÅK            |
 | las-b0-007     | LÄS     | register break: spoken/blog Swedish                      | G-SPRÅK (+G-REGISTER) |
@@ -36,13 +36,34 @@ required eval run.**
 | las-b0-011     | LÄS     | verbatim lift from host-2022-verb1-LÄS-011               | M-PLAGIARISM       |
 | elf-b0-012     | ELF     | non-HP register: clickbait listicle                      | G-REGISTER (+G-ENG)|
 | las-b0-013     | LÄS     | HARD NEGATIVE — no defect, attractive distractors        | NONE (must PASS)   |
-| las-b0-014     | LÄS     | double key (distractor B also defensible)                | G-DISTRACTOR       |
+| las-b0-014     | LÄS     | double key (B is a verbatim passage sentence, like key A)| G-DISTRACTOR (+G-KEY) |
 | las-b0-015     | LÄS     | subtle non-word *slipen* + calque *bokför sig självt*    | G-SPRÅK            |
 
 The seeds deliberately isolate one failure mode each: the language seeds
 (005–008, 015) carry a **correct** MCQ so that a kill there proves G-SPRÅK
 fired, not G-KEY; the correctness seeds (001–004, 014) carry **clean
 language**. This is what makes a per-gate diagnosis possible.
+
+## G-KEY verdict-conversion convention
+
+G-KEY executors are blind to the key, so they cannot emit a real verdict.
+The convention (both executors of the 2026-07-20 run independently
+converged on it; codified here):
+
+- The **executor** records a solver report as a verdict line with
+  `verdict: "pass"`, `solver_answer` set to its committed answer, empty
+  `findings`, and its justification. The `pass` is a placeholder meaning
+  "no self-detected defect", never a key judgment.
+- The **orchestrator** performs the mechanical comparison against the
+  stored key: on mismatch (or `NONE_DEFENSIBLE` / `MULTIPLE_DEFENSIBLE`)
+  it rewrites that line to `verdict: "kill"` with a lethal finding of the
+  form "blind solver answered X, stored key is Y" plus the solver's
+  justification. Matching answers stay `pass` as written.
+
+Executor-side comparison is rejected because handing the executor the key
+would break the contamination rule the gate exists to enforce. Never let a
+G-KEY executor see or infer the key; never treat an unconverted `pass` as
+final until the orchestrator has run the comparison.
 
 ## When to rerun (required)
 
