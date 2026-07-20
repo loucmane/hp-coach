@@ -1200,7 +1200,9 @@ export function Picker({
               margin: '10px 0 0 0',
             }}
           >
-            <TermHint term="indikativ" tail=" resultat — inte ett riktigt pass.">Indikativt</TermHint>
+            <TermHint term="indikativ" tail=" resultat — inte ett riktigt pass.">
+              Indikativt
+            </TermHint>
           </p>
         </DrillRailSection>
       )}
