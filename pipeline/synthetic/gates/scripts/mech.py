@@ -79,8 +79,12 @@ def gate_schema(cand: dict) -> dict:
             f.append(_finding("lethal", field, f"required field '{field}' missing or empty"))
     if cand.get("section") not in ("LÄS", "ELF"):
         f.append(_finding("lethal", str(cand.get("section")), "section must be LÄS or ELF"))
-    if cand.get("candidate_id") and not re.fullmatch(r"(las|elf)-b\d+-\d{3}", cand["candidate_id"]):
-        f.append(_finding("major", cand["candidate_id"], "candidate_id does not match (las|elf)-b<batch>-<nnn>"))
+    cid_val = cand.get("candidate_id")
+    # "PLACEHOLDER" is the accepted pre-assignment sentinel: generators emit it
+    # and the orchestrator renumbers into candidates/ (BATCH-RUNBOOK Stage 2), so
+    # a generator self-checking with mech before renumber gets a clean run.
+    if cid_val and cid_val != "PLACEHOLDER" and not re.fullmatch(r"(las|elf)-b\d+-\d{3}", cid_val):
+        f.append(_finding("major", cid_val, "candidate_id does not match (las|elf)-b<batch>-<nnn>"))
 
     questions = cand.get("questions") or []
     # ELF long-passage and cloze blocks are invariantly 5 questions/gaps
