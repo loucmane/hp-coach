@@ -54,6 +54,18 @@ def test_schema_pass():
     assert gate_schema(make_candidate())["verdict"] == "pass"
 
 
+def test_placeholder_candidate_id_is_accepted():
+    # Generators emit "PLACEHOLDER" pre-renumber; a self-check must be clean.
+    v = gate_schema(make_candidate(candidate_id="PLACEHOLDER"))
+    assert v["verdict"] == "pass"
+    assert not any("candidate_id does not match" in f["note"] for f in v["findings"])
+
+
+def test_malformed_candidate_id_still_flagged():
+    v = gate_schema(make_candidate(candidate_id="nope-123"))
+    assert any("candidate_id does not match" in f["note"] for f in v["findings"])
+
+
 @pytest.mark.parametrize("mutate,why", [
     (lambda c: c["questions"][0]["options"].pop(), "3 options"),
     (lambda c: c["questions"][0].update(key="E"), "invalid key letter"),

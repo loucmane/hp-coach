@@ -60,6 +60,17 @@ def aggregate(verdicts: list[dict], candidates: dict[str, dict]) -> dict:
     for v in verdicts:
         by_cand[v["candidate_id"]].append(v)
 
+    # Orphan guard: verdicts whose candidate_id is not in candidates/ would be
+    # silently dropped, and their candidates would fall to INCOMPLETE for no
+    # visible reason. This is the exact symptom of an id-namespace mismatch
+    # (gate inputs not rebuilt from the renumbered candidates/). Fail loud.
+    orphans = sorted(set(by_cand) - set(candidates))
+    if orphans:
+        import sys
+        print(f"WARNING: {len(orphans)} verdict candidate_id(s) not in candidates/ "
+              f"— gate inputs must be built from candidates/ after renumber: {orphans}",
+              file=sys.stderr)
+
     report = {}
     for cid, cand in sorted(candidates.items()):
         vs = by_cand.get(cid, [])
