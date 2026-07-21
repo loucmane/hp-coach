@@ -83,7 +83,10 @@ def gate_schema(cand: dict) -> dict:
         f.append(_finding("major", cand["candidate_id"], "candidate_id does not match (las|elf)-b<batch>-<nnn>"))
 
     questions = cand.get("questions") or []
-    if not isinstance(questions, list) or not 1 <= len(questions) <= 4:
+    # ELF long-passage and cloze blocks are invariantly 5 questions/gaps
+    # (corpus-analysis format inventory); the old cap of 4 was an artifact
+    # of the single-question eval seeds and killed authentic-format units.
+    if not isinstance(questions, list) or not 1 <= len(questions) <= 5:
         f.append(_finding("lethal", f"{len(questions)} questions", "must have 1-4 questions"))
         questions = questions if isinstance(questions, list) else []
 
