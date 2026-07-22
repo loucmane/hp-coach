@@ -1,0 +1,56 @@
+{
+ "candidate_id": "PLACEHOLDER",
+ "section": "ELF",
+ "family": "cold-chain-logistics-science-journalism-short",
+ "title": "The Weak Link",
+ "passage": "When the logistics researcher Priya Valk fitted temperature loggers to a fleet of forty refrigerated lorries, she assumed the long motorway hauls would be where the cold chain failed. They were not. Across a full winter of deliveries, her loggers showed that the reefer units held their set point steadily for hour after hour on the road; the sharp, damaging spikes came instead during the brief handovers, when pallets stood on unheated — but far from cold — loading docks while paperwork was checked and rear doors hung open. Valk is cautious about how far the finding travels. \"We measured one operator, over one winter,\" she notes; a warmer region, or a fleet with tighter dock discipline, might shift the picture entirely. Still, she suspects the weak link in the chain is not the journey but the pause.\n— Rowan Iversen, trade desk",
+ "questions": [
+  {
+   "q_index": 1,
+   "prompt": "According to the text, what did Valk's loggers show about where the cold chain broke down?",
+   "options": [
+    {
+     "letter": "A",
+     "text": "The reefer units failed to hold their set point across the long motorway hauls, and that was where most of the spoilage began."
+    },
+    {
+     "letter": "B",
+     "text": "Opening the lorries' rear doors while they were driving on the motorway was the main cause of the temperature spikes."
+    },
+    {
+     "letter": "C",
+     "text": "Temperatures held steady during the long road hauls, and the damaging spikes came instead during the brief handovers on the loading docks."
+    },
+    {
+     "letter": "D",
+     "text": "Warm loading docks were shown to ruin the great majority of every operator's deliveries throughout the region across the year."
+    }
+   ],
+   "key": "C",
+   "rationale": "Family ELF-TYPE-001 (direct detail retrieval), short text. STEM-LAW: the stem asks where the chain broke down but does not entail the road-versus-dock direction. WHY-KEY (C): the passage states 'the reefer units held their set point steadily for hour after hour on the road; the sharp, damaging spikes came instead during the brief handovers, when pallets stood on unheated ... loading docks'. C paraphrases that road-steady / dock-spike contrast. WHY-DISTRACTORS: A = reversal / contradiction — inverts the finding, putting the failure on the motorway hauls the text says held steady; tempting because it matches Valk's own initial assumption, which the text records and then overturns ('They were not'). B = wrong_location / outside_knowledge — the open rear doors belong to the dock handovers, not to motorway driving, so the distractor relocates a real detail to the wrong phase; tempting because doors and spikes are both genuinely in the text. D = quantifier_upgrade / contradiction — 'warm' contradicts the docks being 'unheated — but far from cold', and 'great majority of every operator's deliveries throughout the region' overstates a study Valk explicitly limits to 'one operator, over one winter'; tempting because it sounds like a bold headline version of the result."
+  }
+ ],
+ "generator_meta": {
+  "origin": "batch5-generator",
+  "model": "claude-opus-4-8",
+  "date": "2026-07-22",
+  "block_format": "short_text_1q",
+  "genre": "science_journalism",
+  "spelling_variety": "BrE",
+  "topic": "cold-chain food logistics field study: temperature loggers showing dock-handover spikes, not motorway hauls, as the weak link in refrigerated transport",
+  "fictional_source": {
+   "byline": "Rowan Iversen, invented trade journalist; research attributed to invented researcher Priya Valk",
+   "publication_type": "logistics/trade monthly (BrE house style)"
+  },
+  "fictional_entities": [
+   "Priya Valk (invented researcher; all findings invented)",
+   "Rowan Iversen (byline, invented)"
+  ],
+  "key_derivation": "paraphrase_one_sentence",
+  "spelling_note": "BrE held throughout ('lorries', 'motorway', 'favoured'-family none present); no AmE-only spellings.",
+  "question_families": {
+   "1": "ELF-TYPE-001"
+  },
+  "engineered_traps": "reversal at A (matches Valk's overturned assumption), wrong_location at B (dock doors relocated to motorway), quantifier_upgrade + 'warm' contradiction at D; key C is the confident specific paraphrase, and the absolute distractor (D) also carries an independent content flaw ('warm' vs 'far from cold'), so it is not eliminable by form alone."
+ }
+}
