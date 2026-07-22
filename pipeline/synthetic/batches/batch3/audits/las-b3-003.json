@@ -1,0 +1,30 @@
+{
+  "candidate_id": "las-b3-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "reviewed_by": "adversarial-meta-auditor/opus (round-2 re-audit)",
+  "date": "2026-07-22",
+  "audited_file_mtime": "2026-07-22T22:02",
+  "probe_summary": {
+    "verbatim_true_distractor": "NONE FOUND across all 6 distractors (both prior failure modes closed).",
+    "q2_form_only_shortcut": "NONE FOUND — hedging distributed (A 'Oftast', C 'kan/villkorad', B 'de flesta'), no absolutes, options 13-15 words (key C=14 not longest), key at unremarkable position 3, and both B and C are thesis-shaped whole-topic claims so 'pick the summary' does not single out C.",
+    "keys": "Q1=B and Q2=C both single defensible; key_spread ['B','C'] matches; no same-letter collision, no cross-question leak.",
+    "language": "New/rewritten Q2 option A is natural, grammatical Swedish; rationales are product-facing Swedish per convention.",
+    "verbatim_quotes": "All 8 rationale quotes confirmed present verbatim in the passage."
+  },
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "final_verify",
+      "claim": "The winning final_verify line (VERIFIED_NOTES) folds an audit of a SUPERSEDED candidate version and predates the current 22:02 rewrite, so its audit-fold evidence is stale (though its verdict still holds).",
+      "evidence": "The final_verify last line notes 'audit=CONFIRMED_NOTES audit_major=0 audit_minor=2' — i.e. it folds the previous audits/las-b3-003.json, whose findings quote a Q2 option A reading '...är det alltid det urskiljbara samtalet, aldrig trafiken, som stör mest.' That option A does NOT exist in the current file (mtime 22:02); the current Q2 A is 'Oftast är det den jämna trafiken utanför fönstret som stör mest, snarare än enstaka samtal.' The final_verify line mtime is 21:49, before the pedagogy round-2 flag (21:54), the 22:02 candidate rewrite, and the language(22:01)/integrated(22:02) re-runs. final_verify did not re-run after the 22:02 rewrite.",
+      "why": "Bookkeeping-only staleness, not a content defect. The gate portion it folded (gkey_kills=0, gdistr_kills=0) is corroborated on the CURRENT text by verdicts-vfinal regate2: G-DISTRACTOR-regate2 passes q1 and q2; G-KEY-regate2 resolves B (q1) and C (q2); G-STEM-regate2 reclassifies the round-1 q2 'sole-hedged-key' kill as WORLD_KNOWLEDGE/flag ('C can no longer be selected by FORM alone'). A re-fold on the current text would still yield VERIFIED. No key is overturned; the unit stands."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "prior-audit",
+      "claim": "The prior audit file (which final_verify folded) is itself stale: its findings describe the 'alltid/aldrig' version of Q2 A, which the round-2 redesign replaced with the hedged reversal 'Oftast...trafiken'. Both prior failure modes are RE-VERIFIED closed on the current text.",
+      "evidence": "(a) verbatim-true probe: current Q2 A reverses the passage ('Ett samtal två bord bort drar örat till sig, medan trafiken utanför fönstret snabbt blir en kuliss man glömmer bort') so it is cleanly FALSE, not verbatim-true; Q2 B is contradicted by 'varnar för att sälja in brus som en billig lösning på allt som skaver'; Q2 D distorts the study's diary METHOD ('Drygt trehundra anställda förde korta dagböcker') into a general employee habit with a self-measurement purpose the text never states; none of the 6 distractors is verbatim-true. (b) blind-read q2: hedging is distributed across A/B/C, no absolutes remain, word counts A=15/B=13/C=14/D=13 give no length or position tell, and B is an equally thesis-shaped opposing overclaim so summary-shape does not select C — matching G-STEM-regate2's WORLD_KNOWLEDGE/flag finding.",
+      "why": "Documents that the round-2 redesign resolved the earlier double-key/form-leak concerns; the superseded audit and the fold that consumed it should not be read as open content issues. The current unit is clean."
+    }
+  ]
+}

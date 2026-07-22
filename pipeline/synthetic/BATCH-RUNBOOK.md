@@ -328,6 +328,19 @@ those feed the next batch's generation prompt as negative examples.
 - **Worktree/port discipline** (see `.claude/skills/dispatch-wave`): absolute
   paths for mutations; never touch dev ports 5173/8787; `fuser -k` not `pkill`.
 - **Eval before gating** on any gate model/prompt change; archive the run.
+- **Repair re-gates must flow into the batch merge.** When a redesigned unit is
+  re-judged, its fresh FLEET-gate lines (G-STEM/G-KEY/G-DISTRACTOR/…) must be
+  merged into `<batch>/verdicts.jsonl` with last-wins per
+  (candidate_id,gate,target,vote) BEFORE promote — `vfinal_fold.py` only reads
+  the V-FINAL legs, and promote's gate-fleet status comes from the merge, so an
+  unmerged regate kill is INVISIBLE to both. (Learned 2026-07-22: a repair's
+  G-STEM kill on las-b3-003 was ignored by a clean-looking promote until the
+  merge was rebuilt.) Corollary: a repair that fixes one tell can create
+  another — the las-b3-003 fix for a verbatim-true distractor (law 11)
+  absolutised it and produced a sole-hedged-key leak (law 10); redesigns must
+  satisfy BOTH laws at once (a hedged-in-form but false-in-content distractor
+  does it).
+
 
 ## History
 
