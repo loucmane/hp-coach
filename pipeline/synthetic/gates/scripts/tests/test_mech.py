@@ -13,7 +13,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from aggregate import aggregate  # noqa: E402
-from mech import Corpus, gate_bands, gate_plagiarism, gate_schema, gate_tell, tokenize  # noqa: E402
+from mech import Corpus, gate_bands, gate_form, gate_plagiarism, gate_schema, gate_tell, tokenize  # noqa: E402
 
 
 def _q(idx, key, texts):
@@ -38,6 +38,52 @@ def test_mtell_passes_when_key_length_varies():
         _q(2, "B", ["one two three", "x", "y", "z"]),
     ]}
     assert gate_tell(cand)["verdict"] == "pass"
+
+
+def test_mform_flags_key_sole_measured_among_absolutes_sv():
+    # The G-STEM kill shape (elf-b3-001 q5, las-b3-003 round-1 q2): every
+    # distractor carries a hard absolutizer while the key is measured — the
+    # key is pickable by form alone.
+    cand = {"candidate_id": "las-b0-000", "questions": [
+        _q(1, "C", ["Det är alltid samtalen, aldrig trafiken, som stör mest",
+                    "Rosa brus är alltid den bästa lösningen för samtliga kontor",
+                    "Effekten kan hjälpa, men den beror på arbetets art",
+                    "Alla anställda störs helt av varje samtal i rummet"]),
+    ]}
+    v = gate_form(cand)
+    assert v["verdict"] == "flag"
+    assert "form tell" in v["findings"][0]["note"]
+
+
+def test_mform_flags_english_absolutes():
+    cand = {"candidate_id": "elf-b0-000", "questions": [
+        _q(1, "D", ["The council always enforced every rule without fail",
+                    "Baltic ports never allowed a single lamp to go dark",
+                    "All keepers were entirely motivated by only the toll",
+                    "Keepers were paid when ships arrived safely, so lit lamps served their interests"]),
+    ]}
+    assert gate_form(cand)["verdict"] == "flag"
+
+
+def test_mform_passes_when_a_distractor_is_hedged_too():
+    cand = {"candidate_id": "las-b0-000", "questions": [
+        _q(1, "C", ["Oftast är det trafiken som stör mest, snarare än samtal",
+                    "Rosa brus är alltid den bästa lösningen för samtliga kontor",
+                    "Effekten kan hjälpa, men den beror på arbetets art",
+                    "Alla anställda störs helt av varje samtal i rummet"]),
+    ]}
+    assert gate_form(cand)["verdict"] == "pass"
+
+
+def test_mform_passes_when_key_is_also_absolute():
+    # No sole-measured-key tell if the key itself absolutises.
+    cand = {"candidate_id": "las-b0-000", "questions": [
+        _q(1, "C", ["Det är alltid samtalen som stör mest i rummet",
+                    "Rosa brus är alltid den bästa lösningen för samtliga",
+                    "Effekten är alltid densamma oavsett arbetets art",
+                    "Alla anställda störs helt av varje samtal i rummet"]),
+    ]}
+    assert gate_form(cand)["verdict"] == "pass"
 
 
 def make_candidate(**over):

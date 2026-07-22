@@ -328,13 +328,61 @@ def gate_tell(cand: dict) -> dict:
     return _verdict(cid, "M-TELL", "unit", "flag" if f else "pass", f)
 
 
+
+
+_ABSOLUTIZERS = {
+    # Swedish
+    "alltid", "aldrig", "samtliga", "alla", "allt", "varje", "enbart", "endast",
+    "ingen", "inget", "inga", "helt", "omöjligt", "garanterat",
+    # English
+    "always", "never", "every", "all", "only", "none", "entirely", "impossible",
+    "proves", "guarantees", "certainly",
+}
+
+
+def _has_absolutizer(text: str) -> bool:
+    return any(t in _ABSOLUTIZERS for t in tokenize(text))
+
+
+def gate_form(cand: dict) -> dict:
+    """M-FORM: option-set form-balance tell. Flags a question where the KEY is
+    the sole measured option — no hard absolutizer — while EVERY distractor
+    carries one. That shape is blind-answerable ("strip the absolutes, pick
+    what's left"); it killed elf-b3-001 q5 and the round-1 repair of
+    las-b3-003 q2 at G-STEM before this lint existed. Flag, never kill — the
+    fix (hedge-balance the distractors, or make one hedged-in-form but
+    false-in-content) is pedagogy-review's call. Catching it mechanically
+    saves a judge round-trip."""
+    cid = cand.get("candidate_id", "?")
+    f = []
+    for q in cand.get("questions", []):
+        key = q.get("key")
+        opts = q.get("options", [])
+        key_text = next((o.get("text", "") for o in opts if o.get("letter") == key), None)
+        if key_text is None or len(opts) < 3:
+            continue
+        distractors = [o.get("text", "") for o in opts if o.get("letter") != key]
+        if not _has_absolutizer(key_text) and all(_has_absolutizer(t) for t in distractors):
+            f.append(_finding(
+                "major",
+                f"q:{q.get('q_index')}: key is the sole non-absolutized option",
+                "form tell — every distractor carries a hard absolutizer "
+                "(alltid/aldrig/samtliga/always/never/every/...) while the key is "
+                "measured; strip-the-absolutes answers it blind. Hedge-balance the "
+                "set: give at least one distractor a measured form with a "
+                "content flaw (e.g. a direction reversal)."))
+    return _verdict(cid, "M-FORM", "unit", "flag" if f else "pass", f)
+
+
+
 def run_all(cand: dict, corpus: Corpus | None, bands_path: Path | None = None) -> list[dict]:
-    """M-SCHEMA -> (stop on kill) -> M-BANDS -> M-TELL -> M-PLAGIARISM."""
+    """M-SCHEMA -> (stop on kill) -> M-BANDS -> M-TELL -> M-FORM -> M-PLAGIARISM."""
     out = [gate_schema(cand)]
     if out[0]["verdict"] == "kill":
         return out
     out.append(gate_bands(cand, bands_path))
     out.append(gate_tell(cand))
+    out.append(gate_form(cand))
     if corpus is not None:
         out.append(gate_plagiarism(cand, corpus, bands_path))
     return out
