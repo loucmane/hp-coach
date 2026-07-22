@@ -43,13 +43,36 @@ shipping.
 4. GATE FLEET 11 Opus judges (blind where required) over candidates/ survivors;
                 gkey_resolve.py converts blind solves to kills → verdicts-*.jsonl
 5. AGGREGATE  merge verdicts → aggregate.py + score_eval.py (killed_by union, lang ≥2 = kill)
-6. PACKAGE    ADJUDICATION.md: passage + questions + key + per-unit judge flags
-7. OWNER      Godkänn / Ändra / Avvisa per unit
-8. (later PR) approved units → product bank under the ÖVNINGSTEXT frame
+6. LANGUAGE   expert-language-review (Opus) adjudicates AND applies edits
+                → candidates-corrected/ ; re-gate (mech + blind G-KEY×2 + G-DISTRACTOR);
+                record one line per unit in reviews/language.jsonl
+7. PEDAGOGY   pedagogy-review (Opus) adjudicates AND applies fixes
+                → candidates-final/ ; re-gate any answer-touching fix;
+                record reviews/pedagogy.jsonl
+8. SWEEP      integrated-review (Opus) — the FINAL whole-unit cross-consistency read
+                (rationale↔edited-option drift, self-contradiction, cross-question leaks,
+                metadata accuracy) that no siloed gate does; record reviews/integrated.jsonl
+9. PROMOTE    promote.py --require-clean — the hard "nothing slips" gate. A unit is
+                eligible for candidates-final ONLY if gate-fleet (survive) + language +
+                pedagogy + sweep ALL recorded a clearing verdict. A MISSING stage HOLDs;
+                it never passes. Fail-closed, mechanical, not orchestrator discipline.
+10. PACKAGE   ADJUDICATION.md: passage + questions + key + per-unit judge/review flags
+11. OWNER     Godkänn / Ändra / Avvisa per unit (spot-checks flags, per the batch cadence)
+12. (later PR) approved units → product bank under the ÖVNINGSTEXT frame
 ```
 
 Stages 3→5 are cheap-lethal-first: mechanical gates kill doomed candidates
-before the expensive judge fleet runs.
+before the expensive judge fleet runs. Stages 6→9 are the correctness layer:
+two expert reviews that *apply* their fixes, then a whole-unit integration
+sweep, then a mechanical promotion gate that refuses to ship a unit any stage
+did not clear. Every stage writes a machine-readable verdict so promote.py can
+prove — not assume — that nothing was skipped.
+
+The whole of steps 4–9 is encoded as a re-runnable workflow in
+`pipeline/run-batch.workflow.js` (invoke via the Workflow tool with
+`{scriptPath, args:{batch:<N>}}`); it is the automation of this sequence, and it
+ends by calling `promote.py --require-clean` so a batch that skipped or failed a
+stage cannot report success.
 
 ---
 
@@ -182,7 +205,53 @@ score_eval.py --report report.json --expectations <expectations>   # eval runs o
   flag. Goes to adjudication with the flags surfaced.
 - **SURVIVED_CLEAN** — no kills, no flags.
 
-## Stage 6 — adjudication package
+## Stages 6–8 — the correctness layer (reviews that APPLY fixes)
+
+The gate fleet proves an item is well-*formed*; it does not clean it. Three
+review stages do, each backed by a skill and each **applying** its fixes, not
+just flagging them, then re-gating anything it touched:
+
+| stage | skill | in → out | pass verdicts | re-gate |
+|---|---|---|---|---|
+| 6 language | `expert-language-review` | `candidates/` → `candidates-corrected/` | CLEAR, CORRECTED | mech + blind G-KEY×2 + G-DISTRACTOR on any option edit |
+| 7 pedagogy | `pedagogy-review` | `candidates-corrected/` → `candidates-final/` | SOUND, MINOR_FIXES | G-KEY/G-DISTRACTOR on any key/distractor edit |
+| 8 integrated | `integrated-review` | reads `candidates-final/` | CONSISTENT, MINOR_NOTES | re-sweep any unit whose finding was fixed |
+
+Each stage appends **one record per unit** to `batches/batch<N>/reviews/<stage>.jsonl`:
+
+```json
+{"candidate_id":"elf-b2-001","stage":"integrated","verdict":"CONSISTENT","reviewed_by":"integrated-review/opus","date":"2026-07-22"}
+```
+
+The integrated sweep (stage 8) is the read no earlier stage does: it holds the
+**whole** unit and checks its parts against each other — a rationale that a
+correction left quoting the old option wording, a rationale that contradicts
+itself, a number that won't reconcile, a distractor that became defensible, a
+cross-question leak, a mislabelled trap. It runs as a small Opus panel per unit;
+a fix that touches a key/option/stem sets `regate:true` and loops back. It has
+full visibility (keys, rationales, metadata) precisely so it can cross-check.
+
+## Stage 9 — the promotion gate (the "nothing slips" enforcement)
+
+`promote.py` is the single, tested decision that a unit may enter (and stay in)
+`candidates-final/`:
+
+```
+promote.py --batch-dir batches/batch<N> --require-clean        # audit / CI gate (exit 1 if any HOLD)
+promote.py --batch-dir batches/batch<N> --promote \            # move PASS units forward
+           --from-dir batches/batch<N>/candidates-corrected
+```
+
+It reads **every** stage's verdict — gate-fleet status via `aggregate.py`, plus
+`reviews/{language,pedagogy,integrated}.jsonl` — and PASSes a unit only if the
+gate-fleet status is a survive status AND each review stage recorded a clearing
+verdict. **A missing stage record is a HOLD, never a pass** — so a skipped or
+forgotten stage cannot leak a unit to students. `--require-clean` makes that a
+non-zero exit, so a batch that skipped a stage cannot report success. Held units
+are listed in `reviews/HELD.txt` with their blocking reasons; they feed the next
+correction pass or the kill autopsy. (Tests: `gates/scripts/tests/test_promote.py`.)
+
+## Stage 10 — adjudication package
 
 Build `batches/batch<N>/ADJUDICATION.md`: a summary line (kills, G-KEY
 blind-solve agreement, gate tallies), then per unit — the judge flags collected

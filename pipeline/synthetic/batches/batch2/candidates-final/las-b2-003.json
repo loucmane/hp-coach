@@ -1,0 +1,87 @@
+{
+ "candidate_id": "las-b2-003",
+ "section": "LÄS",
+ "family": "kyrkorgelhistoria-essa-short",
+ "title": "Vems röst en orgel bär",
+ "passage": "Jag har stått på båda läktarna, och skillnaden sitter i öronen långt innan man förstår den. I Björkedals kyrka byggde Anders Wessman sin orgel 1889, och han byggde den för att inte kunna överröstas. När hela kyrkan sjunger reser sig ändå orgelns grundstämmor över rummet som en trygg vägg. Det var meningen. På den tiden var psalmsången allas egendom, och instrumentet fanns till för att hålla den uppe, inte för att lysa själv.\n\nTvå socknar bort, i Töreby, hände något annat. Där byggdes orgeln om på 1930-talet av Ivar Sjösten. Han plockade bort ett par av de kraftigaste principalerna och satte i stället in mjuka flöjter och en stråkstämma. Församlingen hade krympt, och gudstjänsten hade blivit stillsammare; musiken vändes inåt. Efter ombyggnaden kan Törebyorgeln måla i färger som Wessmans aldrig kunnat, men den leder inte längre en psalm med samma kraft. Den är gjord för att lyssnas till, inte för att sjungas med.\n\nDet är här jag tror att piporna säger mer än protokollen. En orgel är inget neutralt redskap. Sättet den är byggd på röjer vem en församling tänkte sig att musiken var till för — den sjungande hopen eller den lyssnande kretsen. Wessmans orgel är ett svar från en tid då tron var något man gjorde tillsammans och högt. Sjöstens ombyggnad är ett svar från en tid då den blivit mer av en sak man tog emot.\n\nJag ska inte göra kontrasten renare än den är. Björkedals orgel har också burit lysande solokonserter, och i Töreby fylls kyrkan än i dag av sång på julnatten. Instrument är inte öden. Men när jag lägger handen på Törebys svalare tangenter tycker jag mig ändå höra ett helt sekels förändrade förhållande till den egna rösten, inbyggt i metall och trä.\n— Sigrid Hallefors, musikhistoriker\n\nprincipal = orgelns bärande, kraftfulla stämma; stråkstämma = en mjuk stämma som efterliknar stråkinstrument",
+ "questions": [
+  {
+   "q_index": 1,
+   "prompt": "Vilket påstående överensstämmer bäst med texten?",
+   "options": [
+    {
+     "letter": "A",
+     "text": "Törebys orgel byggdes om på 1930-talet och miste då flera av sina kraftiga principaler."
+    },
+    {
+     "letter": "B",
+     "text": "Varje kyrkorgel är byggd för att församlingen ska sjunga med, aldrig för att lyssnas till."
+    },
+    {
+     "letter": "C",
+     "text": "En orgels byggnad avslöjar vad musiken betydde för den församling som skaffade den."
+    },
+    {
+     "letter": "D",
+     "text": "Björkedals orgel byggdes redan 1889 för att kunna höras över en sjungande kyrka."
+    }
+   ],
+   "key": "C",
+   "rationale": "Nyckeln C är den tes som löper genom hela essän: en orgel är ”inget neutralt redskap”, och hur den är byggd röjer vem församlingen tänkte att musiken var till för — Björkedal för den sjungande hopen, Töreby för den lyssnande kretsen. Endast C spänner över båda kyrkorna. A och D är detail_as_main: båda är sanna men gäller bara var sin orgel (Töreby respektive Björkedal) och sammanfattar inte helheten. B är overgeneralisation: ”varje ... aldrig för att lyssnas till” absolutiserar och motsägs rakt av att Törebyorgeln efter ombyggnaden är ”gjord för att lyssnas till”."
+  },
+  {
+   "q_index": 2,
+   "prompt": "Vilken skillnad mellan orglarna framhåller författaren?",
+   "options": [
+    {
+     "letter": "A",
+     "text": "Björkedals orgel skulle bära hela församlingens sång, medan Törebys efter ombyggnaden mest tjänade organistens spel."
+    },
+    {
+     "letter": "B",
+     "text": "Björkedals orgel byggdes framför allt för organistens egna konsertspel, medan Törebys skulle hålla uppe den gemensamma församlingssången."
+    },
+    {
+     "letter": "C",
+     "text": "Efter ombyggnaden kan Törebys orgel inte längre spela några psalmer över huvud taget."
+    },
+    {
+     "letter": "D",
+     "text": "Båda orglarna byggdes av en och samme byggmästare, fast för skilda församlingar."
+    }
+   ],
+   "key": "A",
+   "rationale": "Nyckeln A återger den korrekt attribuerade kontrasten: Björkedalsorgeln fanns till ”för att hålla [psalmsången] uppe” medan Törebyorgeln efter ombyggnaden är ”gjord för att lyssnas till, inte för att sjungas med”. B är reversed_causality: den korsar attributionerna (konsertspelet läggs på Björkedal, församlingssången på Töreby) och vänder därmed hela riktningen. C är overgeneralisation: ”inte längre spela några psalmer över huvud taget” absolutiserar det texten faktiskt säger — att orgeln inte längre ”leder en psalm med samma kraft” — och motsägs av att kyrkan än i dag fylls av sång på julnatten. D är half_right_conjunction/false-shared: ”för skilda församlingar” stämmer, men ”en och samme byggmästare” är fel — orglarna byggdes respektive byggdes om av Wessman och Sjösten."
+  }
+ ],
+ "generator_meta": {
+  "origin": "batch2-las-short-essa",
+  "model": "claude-opus-4-8[1m]",
+  "date": "2026-07-21",
+  "size": "short",
+  "macro_genre": "sakprosa",
+  "fine_genre": "essa_kulturhistorisk",
+  "opening_move": "scene",
+  "question_families": {
+   "1": "huvudbudskap_syfte",
+   "2": "jamforelse_relation"
+  },
+  "planted_traps": {
+   "1": {
+    "A": "detail_as_main",
+    "B": "overgeneralisation",
+    "D": "detail_as_main"
+   },
+   "2": {
+    "B": "reversed_causality",
+    "C": "overgeneralisation",
+    "D": "half_right_conjunction"
+   }
+  },
+  "key_spread": [
+   "C",
+   "A"
+  ],
+  "self_blind_solve": "Blindlöst båda från passagen; exakt ett försvarbart svar per fråga (Q1=C, Q2=A). Alla entiteter fiktiva (Björkedals kyrka, Anders Wessman, Töreby, Ivar Sjösten, Sigrid Hallefors); ingen känd tes anknyts."
+ }
+}
