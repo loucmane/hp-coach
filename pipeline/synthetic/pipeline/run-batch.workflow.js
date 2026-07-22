@@ -14,10 +14,16 @@ export const meta = {
 }
 
 // ---- config from args -------------------------------------------------------
-// NOTE: pass args as a real JSON object; a stringified object leaves every
-// field undefined and the run silently falls back to these defaults.
-const A = (args && typeof args === 'object') ? args : {}
-const BATCH = A.batch != null ? A.batch : 2
+// The harness may deliver args as a JSON-encoded STRING (observed 2026-07-22 on
+// scriptPath invocations): parse it. And batch is REQUIRED — a run that doesn't
+// know its batch must die loudly, not default onto an already-shipped batch
+// (a silent default-to-2 re-ran the full fleet over batch2 and trashed its
+// working-tree artifacts; recovered from git, ~1.5M tokens wasted).
+let A = args
+if (typeof A === 'string') { try { A = JSON.parse(A) } catch (e) { A = null } }
+if (!A || typeof A !== 'object') A = {}
+if (A.batch == null) throw new Error('run-batch: args.batch is REQUIRED (got ' + JSON.stringify(args) + ')')
+const BATCH = A.batch
 const STOP_AFTER = A.stopAfter || 'promote' // aggregate | sweep | promote
 const DATE = A.date || '2026-07-22' // stamp for review records (no Date.now in workflows)
 const ROOT = 'pipeline/synthetic'
