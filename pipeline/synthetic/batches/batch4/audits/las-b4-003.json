@@ -1,0 +1,13 @@
+{
+  "candidate_id": "las-b4-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The keyed answer is the longest option in BOTH questions, and the self_blind_solve's claim that this heuristic fails in Q2 is inaccurate.",
+      "evidence": "Option lengths (chars): Q1 C(key)=126, A=107, B=94, D=82 -> key longest by 19. Q2 B(key)=89, A=85, D=83, C=80 -> key longest by 4. The generator_meta self_blind_solve states 'in Q2 keys A and B tie as longest, so pick the longest fails', but B (89) is strictly longer than A (85), so a rigid longest-option picker keys 2/2 without reading.",
+      "why": "Pedagogy's core mandate is whether a test-wise student can score without reading; here the longest-option surface heuristic returns both keys. This does NOT flip the SOUND verdict because the Q2 margin (4 chars) is a near-tie that would not reliably steer an eyeballing student to B, so the unit is not cleanly gameable in practice — but the self_blind_solve's non-gameability argument rests on a factually wrong 'tie' premise and should have been caught."
+    }
+  ]
+}

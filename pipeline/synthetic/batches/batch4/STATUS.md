@@ -1,23 +1,22 @@
-# Batch 4 — status: GENERATED + assembled, mech 28/28, pipeline PENDING
+# Batch 4 — status: COMPLETE — 5/7 units (15q) shipped, promote CLEAN
 
-7 units / 20 questions. First batch generated with **disjoint topic pools per
-generator** (the batch-3 residue fix) and with the two hardened laws in every
-brief: stem-entailment (from the batch-2 G-STEM kill) and distractor-form
-(from the batch-1 V-FINAL catch — no bare absolutes / circularity as the only
-wrongness).
+Full stages 4–10 flow incl. V-FINAL; promote 5 PASS / 0 HOLD exit 0
+(orchestrator-verified). First batch generated with disjoint topic pools and
+all pre-batch-3 laws; yield 75% (b2 80% → b3 50% → b4 75%).
 
-| unit | title | q |
-|---|---|---|
-| las-b4-001 | Tätvuxen furu och allmogebåtarnas långa liv (long) | 4 |
-| las-b4-002 | Igelkottens nätter mellan kolonilotternas staket | 2 |
-| las-b4-003 | Dialekten dör inte av en skärm | 2 |
-| elf-b4-001 | Wood That Waits (waterlogged-wood archaeology, long) | 5 |
-| elf-b4-002 | Worth Mending (repair economy, cloze) | 5 |
-| elf-b4-003 | First Light (sleep/chronobiology, short) | 1 |
-| elf-b4-004 | Take a Seat (urban benches, short) | 1 |
+| unit | title | q | outcome |
+|---|---|---|---|
+| elf-b4-001 | Wood That Waits | 5 | shipped (language: 'sunk'→'sunken hull') |
+| elf-b4-002 | Worth Mending (cloze) | 5 | shipped — **cloze PASSED G-REGISTER** (3/4 clozes historically; b3 kill likely stochastic) |
+| elf-b4-003 | First Light | 1 | shipped |
+| las-b4-002 | Igelkottens nätter mellan kolonilotternas staket | 2 | shipped |
+| las-b4-003 | Dialekten dör inte av en skärm | 2 | shipped |
+| las-b4-001 | Tätvuxen furu... (boat-building long) | — | **DEAD — G-STEM** (q2 distractors self-eliminate on implausibility/circularity) |
+| elf-b4-004 | Take a Seat | — | **DEAD — G-STEM** (main-idea distractors self-eliminate by form) |
 
-- **Mech 28/28 pass** (M-SCHEMA/M-BANDS/M-TELL/M-PLAGIARISM with corpus).
-- Topic pools held: no cross-generator domain brush this time.
+**Lesson for batch 6 briefs:** the remaining G-STEM kill axis is distractor
+*implausibility* (absurd overclaims, circular causes) — an axis M-FORM's
+absolutizer lexicon does not cover. Distractors must be plausible-but-wrong
+mechanisms a passage-blind reader cannot dismiss.
 
-**Next:** `pipeline/run-batch.workflow.js` with `args:{batch:4}` (stages 4–10
-incl. V-FINAL verify → promote --require-clean).
+Running total: **61q verified** (b1 20 + b2 16 + b3 10 + b4 15) + 20q staged (b5).
