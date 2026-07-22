@@ -87,6 +87,11 @@ def main() -> int:
     paths: list[str] = []
     for pat in args.verdicts:
         paths.extend(sorted(glob.glob(pat)) or ([pat] if Path(pat).exists() else []))
+    # Self-inclusion guard: the conventional input glob verdicts-gkey-*.jsonl
+    # matches our own --out file; re-ingesting it re-emits superseded verdicts
+    # AFTER fresh appends and breaks last-wins superseding downstream.
+    out_resolved = args.out.resolve()
+    paths = [p for p in paths if Path(p).resolve() != out_resolved]
 
     resolved, kills = [], 0
     for p in paths:

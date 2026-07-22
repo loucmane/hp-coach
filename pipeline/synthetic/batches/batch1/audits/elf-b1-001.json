@@ -1,0 +1,27 @@
+{
+ "candidate_id": "elf-b1-001",
+ "audit_verdict": "CONFIRMED_NOTES",
+ "findings": [
+  {
+   "severity": "minor",
+   "stage_challenged": "pedagogy",
+   "claim": "The pedagogy 'Applied' log states the fix left 'keys byte-identical', but the shipped final file's Q1 key (option C) was materially changed from the corrected version.",
+   "evidence": "diff candidates-corrected vs candidates-final, q_index 1 option C: 'Late-life mental gains seem to come from sustained effort, not from music specifically.' -> 'Late-life mental gains come from sustained effort rather than from music specifically.' PEDAGOGY-ADJUDICATION.md Applied line: 'las-b1-001, elf-b1-001, elf-b1-004: distractors padded / lightly de-hedged ...; keys byte-identical'.",
+   "why": "The record is inaccurate: the key TEXT was de-hedged (removed 'seem to'), not just distractors. The answer letter (C), trap structure, and uniqueness of the key are all unchanged, and de-hedging the key actually furthers the anti-'pick-the-qualified-option' goal, so no student-facing defect results and the MINOR_FIXES verdict itself still stands. Bookkeeping-only inaccuracy."
+  },
+  {
+   "severity": "minor",
+   "stage_challenged": "integrated",
+   "claim": "Q1 distractor-D rationale mis-sources the recycled vocabulary it names.",
+   "evidence": "Rationale: D 'recycles \"plasticity\"/\"aging brain\" from Fanshawe's quote'. Passage: Fanshawe says 'The aging MIND is far more PLASTIC than we once believed' (not 'plasticity', not 'aging brain'); 'aging brain' occurs in paragraph 1 narration ('the aging brain, long written off'), and the passage contains no token 'plasticity' (only 'plastic').",
+   "why": "The teaching point (D surface-matches passage vocabulary a skimmer anchors on) is still valid and D remains correctly keyed as wrong, so the CONSISTENT verdict holds; but the rationale's precise attribution is loose — 'aging brain' is narrator vocabulary and 'plasticity' is a morphological variant of the quote's 'plastic'."
+  },
+  {
+   "severity": "minor",
+   "stage_challenged": "pedagogy",
+   "claim": "De-hedged Q1 key C asserts more strongly than the passage's hedged thesis, creating a slight modality gap with the rationale's 'paraphrases that verdict' claim.",
+   "evidence": "Final key C: 'gains COME from sustained effort rather than from music'; passage verdict is hedged: 'They SUGGEST that what an older learner takes up MAY matter far less than whether they keep at it'; Q1 rationale: 'C paraphrases that verdict'.",
+   "why": "For a 'What is this text mainly about?' main-idea item, an unhedged summary of a hedged thesis is conventional and C is still far and away the single best option (A/B/D are clearly wrong), so no key-sanity failure — a complaining student would not prevail. Noted only as a modality drift a stricter integrated read might tighten."
+  }
+ ]
+}

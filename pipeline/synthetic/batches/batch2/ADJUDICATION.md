@@ -1,16 +1,17 @@
-# Batch 2 — adjudication package
-**6 units / 16 frågor.** Hela batchen har gått genom den automatiserade pipelinen (grindflotta → språk → pedagogik → helhetssvep → promote-grind, exit 0). En enhet dödades av grindarna (las-b2-001, G-STEM-läcka) och når dig inte.
+# Batch 2 — adjudication package (rev 2026-07-22, post V-FINAL)
+**6 enheter / 16 frågor.** Varje enhet har klarat hela kedjan: grindflotta → språk → pedagogik → helhetssvep → **V-FINAL dubbelkontroll** (färsk blind lösning ×2 + dubbelnyckel-jakt + kontradiktorisk granskning av granskarna) → promote-grind (exit 0). Nycklarna är blint omhärledda på exakt de filer som skickas.
 **Svara fritt:** `godkänn alla`, `godkänn alla utom X`, `ändra X: …`, `avvisa Y`.
-## Flaggor att titta på (enda öppna punkterna)
-- **las-b2-003, alternativ A:** säger *"flera"* där texten säger *"ett par"* — kvantitetsglidning i en distraktor (fel av annan anledning; nyckeln opåverkad). Rättning kräver om-grindning av alternativet. Säg till om du vill ha den.
+## Att veta
+- V-FINAL fångade och åtgärdade: **las-b2-003 fråga 1** hade en äkta dubbelnyckel (gamla D var helt sant) — D omskrivet till syftesinversion, omgrindat: båda blinda lösarna svarar nu C, ingen dubbelnyckel.
+- las-b2-003 alternativ A ('flera' där texten säger 'ett par') är den DESIGNADE kvantitetsfällan — att 'rätta' den skulle göra A helt sant (ny dubbelnyckel). Lämnad avsiktligt.
 
 ---
 
 ## elf-b2-001 · ELF · Catching Clouds
-*Grindstatus:* SURVIVED_FLAGGED · *Språk:* CLEAR · *Pedagogik:* SOUND · *Helhetssvep:* MINOR_NOTES
+*Grind:* SURVIVED_FLAGGED · *language:* CLEAR · *pedagogy:* SOUND · *integrated:* MINOR_NOTES · *final_verify:* VERIFIED_NOTES
 **Domarflaggor:**
-- [G-STEM q:1] Main-idea item: A/B/D are sweeping absolutes (proven, almost any / finally at scale / surest defense) while C is the sole hedged option, so a no-domain reader can strip the overreaching absolutes and lean C from form alo
-- [G-STEM q:4] Stem premise (fog only occasional) logically entails D; B contradicts the premise and C is absurd, so blind reasoning eliminates two and leans D. A remains a plausible over-generalisation trap the passage must rule out (
+- [G-STEM q:1] Main-idea item: A/B/D are sweeping absolutes (proven, almost any / finally at scale / surest defense) while C is the sole hedged option, so a no-domain reader can strip the overreaching absolutes and 
+- [G-STEM q:4] Stem premise (fog only occasional) logically entails D; B contradicts the premise and C is absurd, so blind reasoning eliminates two and leans D. A remains a plausible over-generalisation trap the pas
 
 ### Text
 
@@ -72,7 +73,7 @@ What is the writer's attitude toward the idea that the nets could green arid coa
 ---
 
 ## elf-b2-002 · ELF · Fewer Fridays
-*Grindstatus:* SURVIVED_CLEAN · *Språk:* CORRECTED · *Pedagogik:* SOUND · *Helhetssvep:* MINOR_NOTES
+*Grind:* SURVIVED_CLEAN · *language:* CORRECTED · *pedagogy:* SOUND · *integrated:* MINOR_NOTES · *final_verify:* VERIFIED
 
 ### Text
 
@@ -130,9 +131,9 @@ Gap (5)
 ---
 
 ## elf-b2-003 · ELF · The Self-Sealing Slab
-*Grindstatus:* SURVIVED_FLAGGED · *Språk:* CLEAR · *Pedagogik:* SOUND · *Helhetssvep:* CONSISTENT
+*Grind:* SURVIVED_FLAGGED · *language:* CLEAR · *pedagogy:* SOUND · *integrated:* CONSISTENT · *final_verify:* VERIFIED_NOTES
 **Domarflaggor:**
-- [G-STEM q:1] Microcapsule self-healing concrete is real-world knowledge; B matches the known autonomous crack-triggered mechanism and C (brushed onto the surface) contradicts self-sealing, but A (thermal) and D (moisture) are substan
+- [G-STEM q:1] Microcapsule self-healing concrete is real-world knowledge; B matches the known autonomous crack-triggered mechanism and C (brushed onto the surface) contradicts self-sealing, but A (thermal) and D (m
 
 ### Text
 
@@ -150,7 +151,7 @@ According to the text, what makes the additive seal a crack in the concrete?
 ---
 
 ## elf-b2-004 · ELF · The Vanished Fair
-*Grindstatus:* SURVIVED_CLEAN · *Språk:* CLEAR · *Pedagogik:* SOUND · *Helhetssvep:* MINOR_NOTES
+*Grind:* SURVIVED_CLEAN · *language:* CLEAR · *pedagogy:* SOUND · *integrated:* MINOR_NOTES · *final_verify:* VERIFIED
 
 ### Text
 
@@ -168,9 +169,9 @@ What does the text suggest about why the goose fair disappears from Nettleholt's
 ---
 
 ## las-b2-002 · LÄS · Vad centralköket inte kan väga
-*Grindstatus:* SURVIVED_FLAGGED · *Språk:* CLEAR · *Pedagogik:* SOUND · *Helhetssvep:* CONSISTENT
+*Grind:* SURVIVED_FLAGGED · *language:* CLEAR · *pedagogy:* SOUND · *integrated:* CONSISTENT · *final_verify:* VERIFIED
 **Domarflaggor:**
-- [G-STEM q:1] A is an absolute (aldrig) and the title itself (Vad centralköket inte kan väga) telegraphs the only-weighs-the-countable thesis, so a blind reader leans B; C and D remain substantive critiques the passage must confirm (P
+- [G-STEM q:1] A is an absolute (aldrig) and the title itself (Vad centralköket inte kan väga) telegraphs the only-weighs-the-countable thesis, so a blind reader leans B; C and D remain substantive critiques the pas
 
 ### Text
 
@@ -206,11 +207,10 @@ Vad visade försöket i Rörsta, enligt texten?
 ---
 
 ## las-b2-003 · LÄS · Vems röst en orgel bär
-*Grindstatus:* SURVIVED_FLAGGED · *Språk:* CLEAR · *Pedagogik:* SOUND · *Helhetssvep:* MINOR_NOTES
+*Grind:* SURVIVED_FLAGGED · *language:* CLEAR · *pedagogy:* MINOR_FIXES · *integrated:* MINOR_NOTES · *final_verify:* VERIFIED_NOTES
 **Domarflaggor:**
-- [G-STEM q:2] The stem asks for a DIFFERENCE but D states a similarity (logical mismatch) and C is an absolute (inte längre... över huvud taget), so blind one eliminates both, leaving the A/B mirror pair at roughly 50%. Better than ch
-- [G-DISTRACTOR q:1] ARGUABLE: This distractor is a fully accurate statement of the text ('byggde Anders Wessman sin orgel 1889, och han byggde den för att inte kunna överröstas. När hela kyrkan sjunger reser sig ändå orgelns grundstämmor öv
-- [G-DISTRACTOR q:1] ARGUABLE: Broadly true per text ('byggdes om på 1930-talet av Ivar Sjösten. Han plockade bort ett par av de kraftigaste principalerna'). Beatable on two grounds: the text says 'ett par' (a couple) not 'flera' (several), 
+- [G-STEM q:2] The stem asks for a DIFFERENCE but D states a similarity (logical mismatch) and C is an absolute (inte längre... över huvud taget), so blind one eliminates both, leaving the A/B mirror pair at roughly
+- [G-DISTRACTOR q:1] ARGUABLE: This distractor is a fully accurate statement of the text ('byggde Anders Wessman sin orgel 1889, och han byggde den för att inte kunna överröstas. När hela kyrkan sjunger reser sig ändå org
 
 ### Text
 
@@ -232,7 +232,7 @@ Vilket påstående överensstämmer bäst med texten?
 - **A.** Törebys orgel byggdes om på 1930-talet och miste då flera av sina kraftiga principaler.
 - **B.** Varje kyrkorgel är byggd för att församlingen ska sjunga med, aldrig för att lyssnas till.
 - **C.** En orgels byggnad avslöjar vad musiken betydde för den församling som skaffade den. **◀ NYCKEL**
-- **D.** Björkedals orgel byggdes redan 1889 för att kunna höras över en sjungande kyrka.
+- **D.** Björkedals orgel byggdes redan 1889 för att lysa på egen hand, inte för att bära psalmsången.
 
 ### Fråga 2
 

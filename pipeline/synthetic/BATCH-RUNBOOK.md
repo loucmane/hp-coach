@@ -254,11 +254,19 @@ that self-report from the trust chain, on the exact files that ship:
    non-verbatim quote the sweep missed, an indefensible key. Evidence-based
    (exact quotes); CONFIRMED is the expected outcome for a clean unit.
 
-The VERIFIED / VERIFIED_NOTES / REFUTED fold is **deterministic script code**
-(any gkey/distractor kill, REFUTED audit, missing audit, or major finding ⇒
-REFUTED; minors ⇒ VERIFIED_NOTES) and is appended to
-`reviews/final_verify.jsonl`. promote.py requires this stage like any other —
-a unit with no V-FINAL record cannot ship. Certification note: the eval-set
+Each auditor persists its own result to `<batch>/audits/<cid>.json` (its own
+finding — authentic provenance). The VERIFIED / VERIFIED_NOTES / REFUTED fold
+is then **derived by `vfinal_fold.py`** from on-disk evidence only (resolved
+G-KEY lines, G-DISTRACTOR lines, the audits/ files; last-wins superseding per
+(gate,target,vote); any kill / REFUTED / missing audit / major finding ⇒
+REFUTED; minors/flags ⇒ VERIFIED_NOTES) and fully regenerates
+`reviews/final_verify.jsonl`. **No agent ever writes a verification record —
+a record an agent can write is a record an agent can fabricate** (a security
+review flagged exactly this on 2026-07-22 when a writer-agent appended fold
+records computed elsewhere; the script is now the only writer). Related guard:
+`gkey_resolve.py` refuses to re-ingest its own `-resolved` output, so appended
+re-gate lines keep true chronological order. promote.py requires this stage
+like any other — a unit with no V-FINAL record cannot ship. Certification note: the eval-set
 discipline (Stage 0) is what certifies the *judges*; V-FINAL is what certifies
 each *batch's artifacts and review records*. The regress stops there by design:
 keys/double-keys are re-derived blind (not re-opined), and the meta-audit is

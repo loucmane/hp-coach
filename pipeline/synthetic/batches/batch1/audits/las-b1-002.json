@@ -1,0 +1,13 @@
+{
+ "candidate_id": "las-b1-002",
+ "audit_verdict": "CONFIRMED_NOTES",
+ "findings": [
+  {
+   "severity": "minor",
+   "stage_challenged": "integrated",
+   "claim": "The integrated MINOR_NOTES note captured only the q1.A trap-label mismatch, but the identical imprecise label persists at q2.B in the shipped file.",
+   "evidence": "Shipped trap_map: q1.A = \"reversed_causality\" and q2.B = \"reversed_causality\". q1's rationale was corrected to '(inverterad hållning — distraktorn vänder författarens värdering)' (no longer says reversed_causality), yet trap_map.q1.A still reads 'reversed_causality'. q2's rationale still reads '(reversed_causality) är den rena riktningsinversionen' and trap_map.q2.B still reads 'reversed_causality'. Pedagogy flagged BOTH (relabel q1-A stance_inversion, q2-B polarity_mirror); the integrated note text mentions only q1.A.",
+   "why": "Metadata-hygiene residual only — trap_map is not shown to students, the keys (B, C) are unaffected, and every rationale factual claim and verbatim quote checks out. It does not flip the SOUND / MINOR_NOTES / CORRECTED verdicts; noted for completeness because the integrated cross-check under-reported one of two identical residuals."
+  }
+ ]
+}

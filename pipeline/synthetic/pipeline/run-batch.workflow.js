@@ -281,7 +281,8 @@ const vaudit = (cid) => () =>
     `(4) KEY SANITY — each keyed answer must be the single best per the passage, defensible to a complaining student.\n` +
     `Refute with EVIDENCE (exact quotes), not vibes; report only defects that would change a stage verdict. ` +
     `CONFIRMED is the expected outcome for a clean unit. CONFIRMED_NOTES for real-but-minor observations. REFUTED only for a demonstrable miss.\n` +
-    `Read-only — edit nothing. ${ANTIPARK}\nReturn the structured audit for ${cid}.`,
+    `Persist YOUR OWN audit result (this is your finding, not someone else's): mkdir -p ${BDIR}/audits and write the exact JSON object you return to ${BDIR}/audits/${cid}.json. Edit nothing else.\n` +
+    `${ANTIPARK}\nReturn the structured audit for ${cid}.`,
     { label: `v-audit:${cid}`, phase: 'Verify', ...OPUS, effort: 'high', schema: AUDIT_SCHEMA }
   )
 
@@ -303,28 +304,19 @@ const vresolve = await agent(
 )
 if (!vresolve) return { aborted: 'v-resolve', vAudits }
 
-// Deterministic fold — script code decides VERIFIED/REFUTED, no agent judgment.
-const vRecords = finalIds.map(cid => {
-  const pu = vresolve.per_unit[cid] || { gkey_kills: 99, gdistr_kills: 99, gdistr_flags: 0 }
-  const audit = vAudits.find(a => a.candidate_id === cid)
-  const auditV = audit ? audit.audit_verdict : 'MISSING'
-  const majors = audit ? audit.findings.filter(f => f.severity !== 'minor').length : 99
-  const minors = audit ? audit.findings.filter(f => f.severity === 'minor').length : 0
-  let verdict
-  if (pu.gkey_kills > 0 || pu.gdistr_kills > 0 || auditV === 'REFUTED' || auditV === 'MISSING' || majors > 0) verdict = 'REFUTED'
-  else if (minors > 0 || pu.gdistr_flags > 0 || auditV === 'CONFIRMED_NOTES') verdict = 'VERIFIED_NOTES'
-  else verdict = 'VERIFIED'
-  return { candidate_id: cid, stage: 'final_verify', verdict,
-    reviewed_by: 'v-final/gkey2+gdistractor+meta-audit/opus', date: DATE,
-    note: `gkey_kills=${pu.gkey_kills} gdistr_kills=${pu.gdistr_kills} gdistr_flags=${pu.gdistr_flags} audit=${auditV} audit_major=${majors === 99 ? 'n/a' : majors} audit_minor=${minors}` }
-})
-log(`v-fold: ${vRecords.filter(r => r.verdict === 'VERIFIED').length} VERIFIED, ${vRecords.filter(r => r.verdict === 'VERIFIED_NOTES').length} NOTES, ${vRecords.filter(r => r.verdict === 'REFUTED').length} REFUTED`)
-
-const vwriter = await agent(
-  `You are V-FINAL WRITER. Append EXACTLY these lines (verbatim, one JSON object per line) to ${BDIR}/reviews/final_verify.jsonl — do not alter them or edit anything else:\n` +
-  vRecords.map(r => JSON.stringify(r)).join('\n') + `\n${ANTIPARK}\nReturn JSON {lines_written:int}.`,
-  { label: 'v-write', phase: 'Verify', ...OPUS, effort: 'low',
-    schema: { type: 'object', required: ['lines_written'], properties: { lines_written: { type: 'integer' } } } }
+// final_verify derivation: vfinal_fold.py derives the records from on-disk
+// evidence (resolved G-KEY + G-DISTRACTOR lines + the audits/ files the
+// auditors persisted themselves). No agent ever writes a verification record —
+// a record an agent can write is a record an agent can fabricate.
+const vfold = await agent(
+  `You are V-FINAL FOLD. Repo root. Run mechanically and report raw output:\n` +
+  `python3 ${ROOT}/gates/scripts/vfinal_fold.py --verdicts-dir ${VDIR} --audits-dir ${BDIR}/audits --candidates-dir ${BDIR}/candidates-final --out ${BDIR}/reviews/final_verify.jsonl --date ${DATE}\n` +
+  `Do NOT edit any file yourself — the script is the only writer. ${ANTIPARK}\n` +
+  `Return JSON {verified:int, verified_notes:int, refuted:int, raw_stdout:"..."}.`,
+  { label: 'v-fold', phase: 'Verify', ...OPUS, effort: 'low',
+    schema: { type: 'object', required: ['verified', 'verified_notes', 'refuted'],
+      properties: { verified: { type: 'integer' }, verified_notes: { type: 'integer' },
+        refuted: { type: 'integer' }, raw_stdout: { type: 'string' } } } }
 )
 
 // =============================================================================
@@ -350,7 +342,7 @@ return {
   gate_incomplete: agg.incomplete || [],
   survivors,
   reviewed,
-  final_verify: vRecords,
+  final_verify_fold: vfold,
   audit_refutations: vAudits.filter(a => a.audit_verdict === 'REFUTED'),
   promote: promoteResult,
   clean: !!promoteResult && promoteResult.exit_code === 0,

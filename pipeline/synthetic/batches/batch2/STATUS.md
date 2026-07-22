@@ -50,3 +50,18 @@ spans not verbatim after edits). All rationale-only, fixed in place, re-verified
 - `promote.py --batch-dir batches/batch2 --candidates-dir batches/batch2/candidates-final --require-clean` → exit 0
 - Structural check: keys/option letters/option texts/prompts byte-identical
   candidates-corrected → candidates-final for all rationale/metadata-only edits; mech 0 non-pass post-edits.
+
+## Addendum 2026-07-22 — V-FINAL double cross-check
+
+The new stage-9 verification (fresh blind G-KEY×2 + G-DISTRACTOR on the exact
+shipping files + adversarial meta-audit of the review records) REFUTED
+`las-b2-003`: q1's option D was fully true per the passage — a genuine
+double-key that the original fleet, both expert reviews, and the sweep had all
+passed. D was redesigned into a purpose-swap distractor (inverts the passage's
+explicit "inte för att lysa själv"), re-gated (both blind solvers now answer C;
+no double-key), re-swept, re-audited. The earlier owner flag on option A is
+CLOSED with a reversal: A's "flera" vs the passage's "ett par" is the designed
+quantity-upgrade trap — "fixing" it would have made A fully true (a new
+double-key). All final_verify records are now DERIVED by
+`gates/scripts/vfinal_fold.py` from on-disk evidence (no agent writes
+verification records). promote --require-clean: 6 PASS / 0 HOLD, exit 0.
