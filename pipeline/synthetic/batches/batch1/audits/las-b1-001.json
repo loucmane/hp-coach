@@ -1,0 +1,20 @@
+{
+ "candidate_id": "las-b1-001",
+ "audit_verdict": "CONFIRMED_NOTES",
+ "findings": [
+  {
+   "severity": "minor",
+   "stage_challenged": "pedagogy",
+   "claim": "The pedagogy length-rebalance fix was applied to the shipping file but is not recorded in CORRECTIONS.md, which lists only the two language corrections.",
+   "evidence": "CORRECTIONS.md for las-b1-001 says '2 applied' and lists only 'betjänar grödorna -> pollinerar grödorna' and 'tvilling att jämföras med -> tvilling att jämföra med'. Yet PEDAGOGY-ADJUDICATION cites original 'next-longest' distractor lengths of Q1=96, Q2=77, Q3=95, whereas the shipping file's option B is now 123, 128, 124 respectively — the distractors were clearly extended post-review (the pedagogy [major] length-tell fix), but that edit is unlogged.",
+   "why": "Provenance gap only: the fix WAS made and works (pick-longest now scores 1/4, not 4/4), so the MINOR_FIXES verdict stands; the missing log entry is a bookkeeping defect, not a shipped content defect."
+  },
+  {
+   "severity": "minor",
+   "stage_challenged": "pedagogy",
+   "claim": "Q4 still carries a residual of the length tell: key B remains the longest option in its own question.",
+   "evidence": "Q4 option lengths: B(key)=120, D=107, A=79, C=70. The rebalance extended distractor D from 86 to 107 but the key at 120 is still the longest, ~12% above the next option.",
+   "why": "Whole-unit blind-solvability is broken (pick-longest = 1/4 across the item), so this does not overturn the MINOR_FIXES verdict; it is a per-question residual worth noting, not a construct-validity failure."
+  }
+ ]
+}

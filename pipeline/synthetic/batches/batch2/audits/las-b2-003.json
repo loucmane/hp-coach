@@ -1,0 +1,27 @@
+{
+ "candidate_id": "las-b2-003",
+ "audit_verdict": "CONFIRMED_NOTES",
+ "findings": [
+  {
+   "severity": "minor",
+   "stage_challenged": "final_verify",
+   "claim": "The last-line final_verify verdict (REFUTED, gkey_kills=1) is stale relative to the redesigned content.",
+   "evidence": "final_verify.jsonl last line: verdict REFUTED, note 'gkey_kills=1 gdistr_kills=1 ... audit=CONFIRMED_NOTES'. This gkey kill is the pre-redesign q1 double-key that the pedagogy stage then fixed ('q1 option D redesigned to kill V-FINAL double-key; regate required and performed downstream'). Post-redesign regates were recorded for pedagogy/integrated/language but NOT for final_verify, so its recorded verdict was never cleared.",
+   "why": "Under 'last line wins', the review chain's final stage still reads REFUTED even though the defect it names is fixed. Bookkeeping gap, not a content defect — my content audit confirms the double-key is genuinely resolved."
+  },
+  {
+   "severity": "minor",
+   "stage_challenged": "integrated",
+   "claim": "Q1 option A quantity trap ('flera') is real but soft vs passage 'ett par'.",
+   "evidence": "Passage: 'Han plockade bort ett par av de kraftigaste principalerna'; option A: 'miste då flera av sina kraftiga principaler.' 'ett par' (=a couple/two) vs 'flera' (=several) is a genuine but soft quantifier upgrade; integrated left it as an explicit OWNER FLAG.",
+   "why": "Distinguishable enough to be a valid distractor, and key C is a complete, unimpeachable thesis match, so single-best-answer holds. Worth surfacing only because the gap is soft."
+  },
+  {
+   "severity": "minor",
+   "stage_challenged": "integrated",
+   "claim": "Q2 key A's phrase 'mest tjänade organistens spel' is a slightly interpretive paraphrase.",
+   "evidence": "Passage frames Töreby as 'gjord för att lyssnas till, inte för att sjungas med' (for the listening circle); A renders this as 'mest tjänade organistens spel'. Passage also attributes solo concerts to Björkedal ('har också burit lysande solokonserter') in the concession paragraph.",
+   "why": "A clever student could try the concession fact, but the stem asks what the author 'framhåller' (emphasizes) = the main sjungas-med/lyssnas-till contrast; A is the only non-false option (B reverses, C false, D false). Key holds; minor interpretive stretch only."
+  }
+ ]
+}

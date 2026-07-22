@@ -69,3 +69,31 @@ def test_end_to_end_file(tmp_path):
     lines = [gk.resolve(json.loads(l), keys) for l in vf.read_text().splitlines()]
     assert lines[0]["verdict"] == "pass"          # B == B
     assert lines[1]["verdict"] == "kill"          # D != A
+
+
+def test_resolver_excludes_its_own_output(tmp_path):
+    # The input glob 'verdicts-gkey-*.jsonl' matches the resolver's own
+    # '-resolved' output; re-running must not re-ingest stale resolved lines
+    # (self-inclusion re-emits superseded verdicts AFTER fresh appends and
+    # breaks last-wins superseding downstream).
+    import json, subprocess, sys
+    from pathlib import Path
+    cand_dir = tmp_path / "candidates"; cand_dir.mkdir()
+    (cand_dir / "u1.json").write_text(json.dumps(
+        {"candidate_id": "u1", "questions": [{"q_index": 1, "key": "C"}]}))
+    raw = tmp_path / "verdicts-gkey-1.jsonl"
+    raw.write_text(json.dumps({"candidate_id": "u1", "gate": "G-KEY", "target": "q:1",
+                               "vote": 1, "solver_answer": "C"}) + "\n")
+    out = tmp_path / "verdicts-gkey-resolved.jsonl"
+    # stale line already in the output file from a previous run
+    out.write_text(json.dumps({"candidate_id": "u1", "gate": "G-KEY", "target": "q:1",
+                               "vote": 1, "verdict": "kill", "findings": []}) + "\n")
+    script = Path(__file__).resolve().parents[1] / "gkey_resolve.py"
+    r = subprocess.run([sys.executable, str(script), str(tmp_path / "verdicts-gkey-*.jsonl"),
+                        "--candidates-dir", str(cand_dir), "--out", str(out)],
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    lines = [json.loads(l) for l in out.read_text().splitlines() if l.strip()]
+    # only the raw line, resolved to pass; the stale kill must NOT be re-ingested
+    assert len(lines) == 1
+    assert lines[0]["verdict"] == "pass"

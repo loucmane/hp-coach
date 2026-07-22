@@ -10,6 +10,7 @@ pipeline recorded a clearing verdict:
   * language review    (expert-language-review)  verdict in {CLEAR, CORRECTED}
   * pedagogy review    (pedagogy-review)          verdict in {SOUND, MINOR_FIXES}
   * integrated sweep   (integrated-review)        verdict in {CONSISTENT, MINOR_NOTES}
+  * final verify       (blind re-solve + meta-audit) verdict in {VERIFIED, VERIFIED_NOTES}
 
 The decisive property: a MISSING stage record is a HOLD, never a pass. Promotion
 requires the presence AND clearance of every stage, so a skipped or forgotten
@@ -45,10 +46,16 @@ GATEFLEET_PASS = {"SURVIVED_CLEAN", "SURVIVED_FLAGGED"}
 
 # Each review stage and the verdicts that clear it. Anything not listed
 # (including an unknown / typo'd verdict string) fails closed -> HOLD.
+# final_verify is the double cross-check OVER the reviewers: fresh blind
+# G-KEY x2 + G-DISTRACTOR on the exact shipping file (mechanically resolved)
+# plus an adversarial meta-audit of the recorded stage verdicts. It exists so
+# that an edit applied by a review stage never ships on that stage's own
+# self-report.
 REVIEW_STAGES = {
     "language": {"CLEAR", "CORRECTED"},
     "pedagogy": {"SOUND", "MINOR_FIXES"},
     "integrated": {"CONSISTENT", "MINOR_NOTES"},
+    "final_verify": {"VERIFIED", "VERIFIED_NOTES"},
 }
 
 
