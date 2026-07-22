@@ -101,7 +101,7 @@ const judge = (gate, vote, sheetDir, applyIds, promptFile, extra) => () =>
     `Judge these candidates by reading their sheets from ${BDIR}/${sheetDir}/: ${applyIds.join(', ')}. ` +
     `${sheetDir === 'blind' ? 'These sheets have NO answer key — if you see a key/rationale field, STOP and report contamination, do not guess. ' : 'These sheets KEEP the key so you can check for a second defensible answer. '}` +
     `${extra || ''}\n\n${VERDICT_FIELDS}\n` +
-    `Write your lines to ${BDIR}/verdicts/verdicts-${gate.toLowerCase()}${vote ? `-${vote}` : ''}.jsonl (create/append with Bash). ` +
+    `Write your lines to ${BDIR}/verdicts/verdicts-${gate.toLowerCase().replace(/-/g, '')}${vote ? `-${vote}` : ''}.jsonl (create/append with Bash). ` +
     `executed_by = "claude-opus-4-8/${gate}${vote ? `-${vote}` : ''}".\n\n${ANTIPARK}\n` +
     `Return JSON {gate, lines_written:int, kills:int, flags:int}.`,
     { label: `${gate}${vote ? `-${vote}` : ''}`, phase: 'GateFleet', ...OPUS, effort: 'high',
