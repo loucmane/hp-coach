@@ -52,23 +52,29 @@ shipping.
 8. SWEEP      integrated-review (Opus) — the FINAL whole-unit cross-consistency read
                 (rationale↔edited-option drift, self-contradiction, cross-question leaks,
                 metadata accuracy) that no siloed gate does; record reviews/integrated.jsonl
-9. PROMOTE    promote.py --require-clean — the hard "nothing slips" gate. A unit is
+9. VERIFY     V-FINAL — the double cross-check OVER the reviewers, on the EXACT
+                shipping files: fresh blind G-KEY×2 + G-DISTRACTOR (mechanically
+                resolved) + one adversarial meta-audit per unit that tries to REFUTE
+                the recorded stage verdicts. Deterministic fold (script code, not
+                agent judgment) → reviews/final_verify.jsonl
+10. PROMOTE   promote.py --require-clean — the hard "nothing slips" gate. A unit is
                 eligible for candidates-final ONLY if gate-fleet (survive) + language +
-                pedagogy + sweep ALL recorded a clearing verdict. A MISSING stage HOLDs;
-                it never passes. Fail-closed, mechanical, not orchestrator discipline.
-10. PACKAGE   ADJUDICATION.md: passage + questions + key + per-unit judge/review flags
-11. OWNER     Godkänn / Ändra / Avvisa per unit (spot-checks flags, per the batch cadence)
-12. (later PR) approved units → product bank under the ÖVNINGSTEXT frame
+                pedagogy + sweep + final_verify ALL recorded a clearing verdict. A
+                MISSING stage HOLDs; it never passes. Fail-closed, mechanical.
+11. PACKAGE   ADJUDICATION.md: passage + questions + key + per-unit judge/review flags
+12. OWNER     Godkänn / Ändra / Avvisa per unit (spot-checks flags, per the batch cadence)
+13. (later PR) approved units → product bank under the ÖVNINGSTEXT frame
 ```
 
 Stages 3→5 are cheap-lethal-first: mechanical gates kill doomed candidates
-before the expensive judge fleet runs. Stages 6→9 are the correctness layer:
-two expert reviews that *apply* their fixes, then a whole-unit integration
-sweep, then a mechanical promotion gate that refuses to ship a unit any stage
-did not clear. Every stage writes a machine-readable verdict so promote.py can
-prove — not assume — that nothing was skipped.
+before the expensive judge fleet runs. Stages 6→10 are the correctness layer:
+two expert reviews that *apply* their fixes, a whole-unit integration sweep,
+a verification pass that double-checks the reviewers themselves, then a
+mechanical promotion gate that refuses to ship a unit any stage did not clear.
+Every stage writes a machine-readable verdict so promote.py can prove — not
+assume — that nothing was skipped.
 
-The whole of steps 4–9 is encoded as a re-runnable workflow in
+The whole of steps 4–10 is encoded as a re-runnable workflow in
 `pipeline/run-batch.workflow.js` (invoke via the Workflow tool with
 `{scriptPath, args:{batch:<N>}}`); it is the automation of this sequence, and it
 ends by calling `promote.py --require-clean` so a batch that skipped or failed a
@@ -216,6 +222,7 @@ just flagging them, then re-gating anything it touched:
 | 6 language | `expert-language-review` | `candidates/` → `candidates-corrected/` | CLEAR, CORRECTED | mech + blind G-KEY×2 + G-DISTRACTOR on any option edit |
 | 7 pedagogy | `pedagogy-review` | `candidates-corrected/` → `candidates-final/` | SOUND, MINOR_FIXES | G-KEY/G-DISTRACTOR on any key/distractor edit |
 | 8 integrated | `integrated-review` | reads `candidates-final/` | CONSISTENT, MINOR_NOTES | re-sweep any unit whose finding was fixed |
+| 9 final_verify | fresh blind G-KEY×2 + G-DISTRACTOR + adversarial meta-audit | reads `candidates-final/` + `reviews/*.jsonl` | VERIFIED, VERIFIED_NOTES | n/a — it IS the re-gate of the final artifact |
 
 Each stage appends **one record per unit** to `batches/batch<N>/reviews/<stage>.jsonl`:
 
@@ -231,7 +238,33 @@ cross-question leak, a mislabelled trap. It runs as a small Opus panel per unit;
 a fix that touches a key/option/stem sets `regate:true` and loops back. It has
 full visibility (keys, rationales, metadata) precisely so it can cross-check.
 
-## Stage 9 — the promotion gate (the "nothing slips" enforcement)
+## Stage 9 — V-FINAL verify (the double cross-check over the reviewers)
+
+Stages 6–8 *apply edits* and self-report their re-verification. V-FINAL removes
+that self-report from the trust chain, on the exact files that ship:
+
+1. **Fresh blind G-KEY ×2** on `candidates-final/` sheets (rebuilt AFTER all
+   edits) — solvers never see keys; `gkey_resolve.py` compares mechanically.
+   Proves no review edit broke a key.
+2. **Fresh G-DISTRACTOR** on the final files — proves no edit created a second
+   defensible answer.
+3. **Adversarial meta-audit, one agent per unit,** with full visibility of the
+   unit AND the recorded review verdicts. Its brief is to REFUTE: find the
+   calque language missed, the false rationale claim pedagogy missed, the
+   non-verbatim quote the sweep missed, an indefensible key. Evidence-based
+   (exact quotes); CONFIRMED is the expected outcome for a clean unit.
+
+The VERIFIED / VERIFIED_NOTES / REFUTED fold is **deterministic script code**
+(any gkey/distractor kill, REFUTED audit, missing audit, or major finding ⇒
+REFUTED; minors ⇒ VERIFIED_NOTES) and is appended to
+`reviews/final_verify.jsonl`. promote.py requires this stage like any other —
+a unit with no V-FINAL record cannot ship. Certification note: the eval-set
+discipline (Stage 0) is what certifies the *judges*; V-FINAL is what certifies
+each *batch's artifacts and review records*. The regress stops there by design:
+keys/double-keys are re-derived blind (not re-opined), and the meta-audit is
+adversarial, evidence-bound, and mechanically folded.
+
+## Stage 10 — the promotion gate (the "nothing slips" enforcement)
 
 `promote.py` is the single, tested decision that a unit may enter (and stay in)
 `candidates-final/`:
@@ -243,7 +276,7 @@ promote.py --batch-dir batches/batch<N> --promote \            # move PASS units
 ```
 
 It reads **every** stage's verdict — gate-fleet status via `aggregate.py`, plus
-`reviews/{language,pedagogy,integrated}.jsonl` — and PASSes a unit only if the
+`reviews/{language,pedagogy,integrated,final_verify}.jsonl` — and PASSes a unit only if the
 gate-fleet status is a survive status AND each review stage recorded a clearing
 verdict. **A missing stage record is a HOLD, never a pass** — so a skipped or
 forgotten stage cannot leak a unit to students. `--require-clean` makes that a
@@ -251,7 +284,7 @@ non-zero exit, so a batch that skipped a stage cannot report success. Held units
 are listed in `reviews/HELD.txt` with their blocking reasons; they feed the next
 correction pass or the kill autopsy. (Tests: `gates/scripts/tests/test_promote.py`.)
 
-## Stage 10 — adjudication package
+## Stage 11 — adjudication package
 
 Build `batches/batch<N>/ADJUDICATION.md`: a summary line (kills, G-KEY
 blind-solve agreement, gate tallies), then per unit — the judge flags collected

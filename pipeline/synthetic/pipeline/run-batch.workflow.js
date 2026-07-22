@@ -1,6 +1,6 @@
 export const meta = {
   name: 'run-batch',
-  description: 'Automate P5 batch stages 4-9: gate fleet -> resolve -> aggregate -> language correct -> pedagogy correct -> integrated sweep -> promote gate. Ends on promote.py --require-clean so a batch that skipped or failed any stage cannot report success. args:{batch:<N>, stopAfter?:"aggregate"|"sweep"|"promote"}',
+  description: 'Automate P5 batch stages 4-10: gate fleet -> resolve -> aggregate -> language correct -> pedagogy correct -> integrated sweep -> V-FINAL verify (fresh blind re-solve + adversarial meta-audit of the reviews) -> promote gate. Ends on promote.py --require-clean so a batch that skipped or failed any stage cannot report success. args:{batch:<N>, stopAfter?:"aggregate"|"sweep"|"promote", date:"YYYY-MM-DD"}',
   phases: [
     { title: 'Prep', detail: 'blind sheets + mech' },
     { title: 'GateFleet', detail: '11 Opus judges' },
@@ -8,13 +8,18 @@ export const meta = {
     { title: 'Language', detail: 'expert-language-review applies edits' },
     { title: 'Pedagogy', detail: 'pedagogy-review applies fixes' },
     { title: 'Sweep', detail: 'integrated-review whole-unit cross-check' },
+    { title: 'Verify', detail: 'V-FINAL: blind re-solve + meta-audit on final files' },
     { title: 'Promote', detail: 'promote.py --require-clean (the hard gate)' },
   ],
 }
 
 // ---- config from args -------------------------------------------------------
-const BATCH = (args && args.batch) != null ? args.batch : 2
-const STOP_AFTER = (args && args.stopAfter) || 'promote' // aggregate | sweep | promote
+// NOTE: pass args as a real JSON object; a stringified object leaves every
+// field undefined and the run silently falls back to these defaults.
+const A = (args && typeof args === 'object') ? args : {}
+const BATCH = A.batch != null ? A.batch : 2
+const STOP_AFTER = A.stopAfter || 'promote' // aggregate | sweep | promote
+const DATE = A.date || '2026-07-22' // stamp for review records (no Date.now in workflows)
 const ROOT = 'pipeline/synthetic'
 const BDIR = `${ROOT}/batches/batch${BATCH}`
 const OPUS = { model: 'opus', agentType: 'general-purpose' } // bulk P5 runs on Opus; needs Bash/Read/Write
@@ -168,7 +173,7 @@ const reGate =
 
 const record = (stage, cid, verdict) =>
   `Append EXACTLY one line to ${BDIR}/reviews/${stage}.jsonl with Bash: ` +
-  `{"candidate_id":"${cid}","stage":"${stage}","verdict":"${verdict}","reviewed_by":"${stage}-review/opus","date":"2026-07-22"} ` +
+  `{"candidate_id":"${cid}","stage":"${stage}","verdict":"${verdict}","reviewed_by":"${stage}-review/opus","date":"${DATE}"} ` +
   `(use the verdict you actually assigned).`
 
 phase('Language')
@@ -219,7 +224,111 @@ log(`reviews done for ${reviewed.length}/${survivors.length} survivors`)
 if (STOP_AFTER === 'sweep') return { stage: 'sweep', prep, agg, reviewed }
 
 // =============================================================================
-// Stage 9: PROMOTE — the hard "nothing slips" gate
+// Stage 9: V-FINAL VERIFY — the double cross-check over the reviewers.
+// Fresh blind G-KEY x2 + G-DISTRACTOR on the EXACT shipping files, plus an
+// adversarial meta-audit of the recorded stage verdicts. The VERIFIED/REFUTED
+// fold is deterministic script code, not agent judgment.
+// =============================================================================
+phase('Verify')
+const VDIR = `${BDIR}/verdicts-vfinal`
+const vprep = await agent(
+  `You are V-FINAL PREP. Repo root. Rebuild judge sheets from the FINAL files (they were edited since the fleet ran):\n` +
+  `For EACH ${BDIR}/candidates-final/*.json: overwrite ${BDIR}/blind/<id>.json with ` +
+  `jq 'del(.questions[].key, .questions[].rationale, .questions[].generator_meta, .questions[].family) | del(.key, .rationale, .family, .generator_meta)' <final>, ` +
+  `and ${BDIR}/distractor/<id>.json with jq 'del(.questions[].rationale, .questions[].generator_meta) | del(.rationale, .generator_meta)' <final>. ` +
+  `VERIFY zero leaks on every blind sheet (grep -E '"(key|rationale|generator_meta|family)"' returns nothing) — contaminated => STOP, report contaminated:true. mkdir -p ${VDIR}.\n${ANTIPARK}\n` +
+  `Return JSON {contaminated:bool, sheets:int}.`,
+  { label: 'v-prep', phase: 'Verify', ...OPUS, effort: 'low',
+    schema: { type: 'object', required: ['contaminated', 'sheets'],
+      properties: { contaminated: { type: 'boolean' }, sheets: { type: 'integer' } } } }
+)
+if (!vprep || vprep.contaminated) return { aborted: 'v-prep', vprep }
+
+const finalIds = reviewed.map(r => r.cid)
+const vjudge = (gate, vote, sheetDir, promptFile, extra) => () =>
+  agent(
+    `You are gate ${gate}${vote ? ` (independent vote ${vote})` : ''} in the V-FINAL verification pass (final shipping files). ` +
+    `Read ${ROOT}/gates/prompts/${promptFile} and follow it EXACTLY. Judge from ${BDIR}/${sheetDir}/: ${finalIds.join(', ')}. ` +
+    `${sheetDir === 'blind' ? 'Sheets have NO key — if you see key/rationale fields, STOP and report contamination. ' : 'Sheets KEEP the key so you can hunt second defensible answers. '}` +
+    `${extra || ''}\n${VERDICT_FIELDS}\n` +
+    `Write to ${VDIR}/verdicts-${gate.toLowerCase().replace(/-/g, '')}${vote ? `-${vote}` : ''}.jsonl\n${ANTIPARK}\n` +
+    `Return JSON {gate, lines_written:int, kills:int, flags:int}.`,
+    { label: `v:${gate}${vote ? `-${vote}` : ''}`, phase: 'Verify', ...OPUS, effort: 'high',
+      schema: { type: 'object', required: ['gate', 'lines_written'],
+        properties: { gate: { type: 'string' }, lines_written: { type: 'integer' }, kills: { type: 'integer' }, flags: { type: 'integer' } } } }
+  )
+
+const AUDIT_SCHEMA = {
+  type: 'object', required: ['candidate_id', 'audit_verdict', 'findings'],
+  properties: {
+    candidate_id: { type: 'string' },
+    audit_verdict: { type: 'string', enum: ['CONFIRMED', 'CONFIRMED_NOTES', 'REFUTED'] },
+    findings: { type: 'array', items: { type: 'object',
+      required: ['severity', 'stage_challenged', 'claim', 'evidence', 'why'],
+      properties: { severity: { type: 'string', enum: ['blocker', 'major', 'minor'] }, stage_challenged: { type: 'string' },
+        claim: { type: 'string' }, evidence: { type: 'string' }, why: { type: 'string' } } } },
+  },
+}
+const vaudit = (cid) => () =>
+  agent(
+    `You are the ADVERSARIAL META-AUDITOR — the reviewer of the reviewers. Try to REFUTE the recorded reviews of this unit: ` +
+    `find a real defect the stages should have caught, or prove a recorded verdict wrong.\n` +
+    `Unit (exact shipping file): ${BDIR}/candidates-final/${cid}.json\n` +
+    `Records to audit: the ${cid} lines in ${BDIR}/reviews/language.jsonl, pedagogy.jsonl, integrated.jsonl.\n` +
+    `Work each: (1) LANGUAGE — hunt passage+options for a missed calque/agreement/register/spelling-variety defect; ` +
+    `(2) PEDAGOGY — fact-check every factual claim in every rationale; one false claim refutes the verdict; ` +
+    `(3) INTEGRATED — every quoted phrase in every rationale must appear VERBATIM in current option/passage text; no self-contradiction; no cross-question leak; trap labels name the actual trap; ` +
+    `(4) KEY SANITY — each keyed answer must be the single best per the passage, defensible to a complaining student.\n` +
+    `Refute with EVIDENCE (exact quotes), not vibes; report only defects that would change a stage verdict. ` +
+    `CONFIRMED is the expected outcome for a clean unit. CONFIRMED_NOTES for real-but-minor observations. REFUTED only for a demonstrable miss.\n` +
+    `Read-only — edit nothing. ${ANTIPARK}\nReturn the structured audit for ${cid}.`,
+    { label: `v-audit:${cid}`, phase: 'Verify', ...OPUS, effort: 'high', schema: AUDIT_SCHEMA }
+  )
+
+const vRes = await parallel([
+  vjudge('G-KEY', 1, 'blind', 'G-KEY.md', 'Blind-solve every question; commit solver_answer before any key reasoning. target q:<n>.'),
+  vjudge('G-KEY', 2, 'blind', 'G-KEY.md', 'Independent blind solve. target q:<n>.'),
+  vjudge('G-DISTRACTOR', null, 'distractor', 'G-DISTRACTOR.md', 'Kill only genuinely defensible 2nd answers.'),
+  ...finalIds.map(cid => vaudit(cid)),
+])
+const vAudits = vRes.slice(3).filter(Boolean)
+
+const vresolve = await agent(
+  `You are V-FINAL RESOLVE. Repo root. Run mechanically:\n` +
+  `1. python3 ${ROOT}/gates/scripts/gkey_resolve.py '${VDIR}/verdicts-gkey-*.jsonl' --candidates-dir ${BDIR}/candidates-final --out ${VDIR}/verdicts-gkey-resolved.jsonl\n` +
+  `2. From the resolved file + ${VDIR}/verdicts-gdistractor.jsonl count per candidate_id: gkey kill lines, gdistractor kill lines, gdistractor flag lines.\n` +
+  `${ANTIPARK}\nReturn JSON {per_unit:{cid:{gkey_kills:int, gdistr_kills:int, gdistr_flags:int}}}.`,
+  { label: 'v-resolve', phase: 'Verify', ...OPUS, effort: 'low',
+    schema: { type: 'object', required: ['per_unit'], properties: { per_unit: { type: 'object' } } } }
+)
+if (!vresolve) return { aborted: 'v-resolve', vAudits }
+
+// Deterministic fold — script code decides VERIFIED/REFUTED, no agent judgment.
+const vRecords = finalIds.map(cid => {
+  const pu = vresolve.per_unit[cid] || { gkey_kills: 99, gdistr_kills: 99, gdistr_flags: 0 }
+  const audit = vAudits.find(a => a.candidate_id === cid)
+  const auditV = audit ? audit.audit_verdict : 'MISSING'
+  const majors = audit ? audit.findings.filter(f => f.severity !== 'minor').length : 99
+  const minors = audit ? audit.findings.filter(f => f.severity === 'minor').length : 0
+  let verdict
+  if (pu.gkey_kills > 0 || pu.gdistr_kills > 0 || auditV === 'REFUTED' || auditV === 'MISSING' || majors > 0) verdict = 'REFUTED'
+  else if (minors > 0 || pu.gdistr_flags > 0 || auditV === 'CONFIRMED_NOTES') verdict = 'VERIFIED_NOTES'
+  else verdict = 'VERIFIED'
+  return { candidate_id: cid, stage: 'final_verify', verdict,
+    reviewed_by: 'v-final/gkey2+gdistractor+meta-audit/opus', date: DATE,
+    note: `gkey_kills=${pu.gkey_kills} gdistr_kills=${pu.gdistr_kills} gdistr_flags=${pu.gdistr_flags} audit=${auditV} audit_major=${majors === 99 ? 'n/a' : majors} audit_minor=${minors}` }
+})
+log(`v-fold: ${vRecords.filter(r => r.verdict === 'VERIFIED').length} VERIFIED, ${vRecords.filter(r => r.verdict === 'VERIFIED_NOTES').length} NOTES, ${vRecords.filter(r => r.verdict === 'REFUTED').length} REFUTED`)
+
+const vwriter = await agent(
+  `You are V-FINAL WRITER. Append EXACTLY these lines (verbatim, one JSON object per line) to ${BDIR}/reviews/final_verify.jsonl — do not alter them or edit anything else:\n` +
+  vRecords.map(r => JSON.stringify(r)).join('\n') + `\n${ANTIPARK}\nReturn JSON {lines_written:int}.`,
+  { label: 'v-write', phase: 'Verify', ...OPUS, effort: 'low',
+    schema: { type: 'object', required: ['lines_written'], properties: { lines_written: { type: 'integer' } } } }
+)
+
+// =============================================================================
+// Stage 10: PROMOTE — the hard "nothing slips" gate
 // =============================================================================
 phase('Promote')
 const promoteResult = await agent(
@@ -241,6 +350,8 @@ return {
   gate_incomplete: agg.incomplete || [],
   survivors,
   reviewed,
+  final_verify: vRecords,
+  audit_refutations: vAudits.filter(a => a.audit_verdict === 'REFUTED'),
   promote: promoteResult,
   clean: !!promoteResult && promoteResult.exit_code === 0,
 }

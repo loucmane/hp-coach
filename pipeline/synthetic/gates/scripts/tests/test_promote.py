@@ -5,9 +5,14 @@ Run from pipeline/synthetic/gates/scripts:  python3 -m pytest tests/ -q
 promote() is the one place that decides whether a unit is allowed into
 candidates-final. A unit is promoted ONLY if every stage recorded a clearing
 verdict: the gate-fleet aggregate status must be a survive status, AND each of
-the three human/agent review stages (language, pedagogy, integrated sweep) must
-have a record whose verdict is in that stage's pass-set. A MISSING stage is a
-HOLD, never a pass — that is the whole point of the gate.
+the four review stages (language, pedagogy, integrated sweep, final verify)
+must have a record whose verdict is in that stage's pass-set. A MISSING stage
+is a HOLD, never a pass — that is the whole point of the gate.
+
+final_verify is the double cross-check over the reviewers themselves: fresh
+blind G-KEY x2 + G-DISTRACTOR on the exact shipping file, plus an adversarial
+meta-audit of the recorded stage verdicts. Without it, an edit applied by a
+review stage ships on that stage's own self-report.
 """
 
 import sys
@@ -32,6 +37,7 @@ def test_all_stages_clear_promotes():
         language=[("u1", "CLEAR")],
         pedagogy=[("u1", "SOUND")],
         integrated=[("u1", "CONSISTENT")],
+        final_verify=[("u1", "VERIFIED")],
     )
     result = promote(agg, reviews, {"u1"})
     assert result["u1"]["decision"] == "PASS"
@@ -45,6 +51,7 @@ def test_flagged_gatefleet_still_promotes():
         language=[("u1", "CORRECTED")],
         pedagogy=[("u1", "MINOR_FIXES")],
         integrated=[("u1", "MINOR_NOTES")],
+        final_verify=[("u1", "VERIFIED_NOTES")],
     )
     assert promote(agg, reviews, {"u1"})["u1"]["decision"] == "PASS"
 
@@ -56,6 +63,7 @@ def test_missing_integrated_review_holds():
     reviews = _reviews(
         language=[("u1", "CLEAR")],
         pedagogy=[("u1", "SOUND")],
+        final_verify=[("u1", "VERIFIED")],
         # integrated deliberately absent
     )
     r = promote(agg, reviews, {"u1"})
@@ -160,7 +168,37 @@ def test_multiple_candidates_mixed():
         language=[("pass1", "CLEAR"), ("hold1", "CLEAR")],
         pedagogy=[("pass1", "SOUND"), ("hold1", "SOUND")],
         integrated=[("pass1", "CONSISTENT")],  # hold1 missing integrated
+        final_verify=[("pass1", "VERIFIED"), ("hold1", "VERIFIED")],
     )
     r = promote(agg, reviews, {"pass1", "hold1"})
     assert r["pass1"]["decision"] == "PASS"
     assert r["hold1"]["decision"] == "HOLD"
+
+
+def test_missing_final_verify_holds():
+    # The double-cross-check case: all reviews cleared but the final
+    # verification pass never ran. Must HOLD — a unit ships only after the
+    # blind re-solve + meta-audit of the exact final file.
+    agg = {"u1": {"status": "SURVIVED_CLEAN"}}
+    reviews = _reviews(
+        language=[("u1", "CLEAR")],
+        pedagogy=[("u1", "SOUND")],
+        integrated=[("u1", "CONSISTENT")],
+        # final_verify deliberately absent
+    )
+    r = promote(agg, reviews, {"u1"})
+    assert r["u1"]["decision"] == "HOLD"
+    assert any("final_verify" in reason for reason in r["u1"]["reasons"])
+
+
+def test_final_verify_refuted_holds():
+    agg = {"u1": {"status": "SURVIVED_CLEAN"}}
+    reviews = _reviews(
+        language=[("u1", "CLEAR")],
+        pedagogy=[("u1", "SOUND")],
+        integrated=[("u1", "CONSISTENT")],
+        final_verify=[("u1", "REFUTED")],
+    )
+    r = promote(agg, reviews, {"u1"})
+    assert r["u1"]["decision"] == "HOLD"
+    assert any("final_verify" in reason and "REFUTED" in reason for reason in r["u1"]["reasons"])
