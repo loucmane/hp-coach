@@ -13,7 +13,31 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from aggregate import aggregate  # noqa: E402
-from mech import Corpus, gate_bands, gate_plagiarism, gate_schema, tokenize  # noqa: E402
+from mech import Corpus, gate_bands, gate_plagiarism, gate_schema, gate_tell, tokenize  # noqa: E402
+
+
+def _q(idx, key, texts):
+    return {"q_index": idx, "prompt": "P", "key": key,
+            "options": [{"letter": L, "text": t} for L, t in zip("ABCD", texts)]}
+
+
+def test_mtell_flags_systematic_longest_key():
+    # key is the strict-longest option in both questions -> systematic tell
+    cand = {"candidate_id": "las-b0-000", "questions": [
+        _q(1, "A", ["one two three four five", "a", "b", "c"]),
+        _q(2, "A", ["one two three four five", "a", "b", "c"]),
+    ]}
+    v = gate_tell(cand)
+    assert v["verdict"] == "flag"
+    assert "length tell" in v["findings"][0]["note"]
+
+
+def test_mtell_passes_when_key_length_varies():
+    cand = {"candidate_id": "las-b0-000", "questions": [
+        _q(1, "A", ["a", "b", "c", "d"]),
+        _q(2, "B", ["one two three", "x", "y", "z"]),
+    ]}
+    assert gate_tell(cand)["verdict"] == "pass"
 
 
 def make_candidate(**over):

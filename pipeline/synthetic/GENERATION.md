@@ -102,9 +102,20 @@ not style opinions; each names the gate that kills it.
    and concrete residue that does not all point at the answer. If a passage
    stages a neat binary, it should dismantle it, not just present it.
 
-10. **Spread the keys; respect the bands.** Vary the key letter across a unit's
-    questions — no all-A column, no positional tell (**M-SCHEMA**-adjacent, and
-    an authenticity tell). Every stat must sit inside its per-section,
+10. **Spread the keys; respect the bands; kill the length tell.** Vary the key
+    letter across a unit's questions — no all-A column, no positional tell
+    (**M-SCHEMA**-adjacent, an authenticity tell). **And do not let the key be
+    the longest option** — the hedged/qualified correct answer naturally runs
+    long, so pad the distractors or trim the key to match; a key that is the
+    single longest option in most questions lets a test-wise student score
+    without reading (**M-TELL** flags this per unit). **The same trap, hidden:**
+    overgeneralisation/quantifier-upgrade distractors are *absolute* ("alltid",
+    "samtliga", "every", "proves"), so the key ends up the only *hedged/qualified*
+    option every time — "pick the qualified answer" then also scores blind. Break
+    the correlation across the unit: on some questions make the key the confident,
+    specific claim and let a distractor over-hedge or mis-scope, so "correct" and
+    "qualified" do not line up. (This is judgment `pedagogy-review` audits; it is
+    not mechanically gated.) Every stat must sit inside its per-section,
     per-format-class band in `gates/bands.json` (**M-BANDS**), and the candidate
     must share no long verbatim n-gram run with the corpus (**M-PLAGIARISM**
     scores the *whole* candidate — title + passage + stems + options — with

@@ -298,12 +298,43 @@ def gate_plagiarism(cand: dict, corpus: Corpus, bands_path: Path | None = None) 
 
 # ---------------------------------------------------------------- runner
 
+def gate_tell(cand: dict) -> dict:
+    """M-TELL: construct-validity surface tell. Flags when the key is the single
+    longest option in MOST of a unit's questions — a test-wise student picking
+    the longest option would score without reading (Batch 1's LÄS unit had the
+    key longest in 4/4). Per-question length outliers are M-BANDS' job; this is
+    the *systematic-across-questions* pattern. Flag, never kill — it is fixed by
+    padding distractors / trimming keys, a judgment call for pedagogy-review."""
+    cid = cand.get("candidate_id", "?")
+    qs = cand.get("questions", [])
+    key_longest = 0
+    considered = 0
+    for q in qs:
+        opts = q.get("options", [])
+        key = q.get("key")
+        lens = {o.get("letter"): len(tokenize(o.get("text", ""))) for o in opts}
+        if key not in lens or len(lens) < 2:
+            continue
+        considered += 1
+        if lens[key] == max(lens.values()) and list(lens.values()).count(max(lens.values())) == 1:
+            key_longest += 1
+    f = []
+    # >= 3/4 of questions with a strict-longest key is a systematic tell.
+    if considered >= 2 and key_longest / considered >= 0.75:
+        f.append(_finding("major", f"key longest in {key_longest}/{considered} questions",
+                          "systematic length tell — the key is the single longest option in most "
+                          "questions; pick-the-longest would score without reading. Pad distractors "
+                          "or trim keys to equalize option lengths."))
+    return _verdict(cid, "M-TELL", "unit", "flag" if f else "pass", f)
+
+
 def run_all(cand: dict, corpus: Corpus | None, bands_path: Path | None = None) -> list[dict]:
-    """M-SCHEMA -> (stop on kill) -> M-BANDS -> M-PLAGIARISM."""
+    """M-SCHEMA -> (stop on kill) -> M-BANDS -> M-TELL -> M-PLAGIARISM."""
     out = [gate_schema(cand)]
     if out[0]["verdict"] == "kill":
         return out
     out.append(gate_bands(cand, bands_path))
+    out.append(gate_tell(cand))
     if corpus is not None:
         out.append(gate_plagiarism(cand, corpus, bands_path))
     return out
