@@ -18,7 +18,7 @@ not style opinions; each names the gate that kills it.
 
 ---
 
-## The ten laws
+## The eleven laws
 
 1. **Particulars, never textbook theses.** Build the passage from
    passage-specific, invented-but-concrete material: fictional researchers,
@@ -126,6 +126,19 @@ not style opinions; each names the gate that kills it.
     authority** — where the blueprint quotes a tighter range, treat the
     blueprint number as the safer authoring target and `bands.json` as the hard
     pass/fail line.
+
+11. **No verbatim-true distractors in "bäst"-items.** In *"Vilket påstående
+    överensstämmer bäst med texten?"*-type questions, every distractor must
+    contain at least one identifiable flaw — an overstatement, a wrong
+    attribution, a scope error, a mangled quantity — that a careful reader can
+    point to. A distractor that is *fully, verbatim true* per the passage (a
+    true detail beside a thesis key) is **not** saved by the word "bäst":
+    blind solvers declare MULTIPLE_DEFENSIBLE and **G-DISTRACTOR** kills it as
+    a second defensible key. This killed or held a unit in three consecutive
+    batches (las-b2-003 q1, las-b1-002 q2 flag, las-b3-003 q2) before becoming
+    a law. The *detail-as-main* trap is still available — but the detail must
+    be slightly distorted (e.g. quantity upgraded, actor swapped), never quoted
+    faithfully.
 
 ---
 
