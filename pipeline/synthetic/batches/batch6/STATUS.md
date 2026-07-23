@@ -1,4 +1,4 @@
-# Batch 6 — status: GENERATED + assembled, mech 35/35 (incl. M-FORM), pipeline PENDING
+# Batch 6 — status: COMPLETE — 7/7 units (20q) shipped, promote CLEAN — second consecutive 100%-yield batch
 
 7 units / 20 questions. Both batch-4 kill slots regenerated with their G-STEM
 implausibility autopsies as negative examples; the distractor-plausibility law
@@ -17,3 +17,13 @@ assembly: 0 flags.
 | elf-b6-004 | Cold Comfort (frost forecasting, short) | 1 |
 
 **Next:** `pipeline/run-batch.workflow.js` with `args:{batch:6}` after batch 5's run.
+
+## Pipeline result (2026-07-23)
+
+**ZERO fleet kills** (second batch running). All reviews clean (language fixed
+two Q5 minors in elf-b6-002: toward→towards BrE consistency, his→her agreement);
+V-FINAL 4 VERIFIED + 3 VERIFIED_NOTES, 0 blind-solve mismatches, 0 double-keys.
+G-ENG vote 3 ran without safety-classifier review — corroborated: all three
+G-ENG votes identical on every unit. Promote: **7 PASS / 0 HOLD, exit 0**
+(orchestrator-verified). Both regenerated slots cleared everything.
+Yield trend: 100/80/50/75/100/**100**.

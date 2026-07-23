@@ -1,0 +1,20 @@
+{
+  "candidate_id": "las-b6-001",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Q3 rationale quotes a phrase that does not appear verbatim in option C.",
+      "evidence": "Q3 rationale: \"men 'genomgående' och 'saknar all grund' blåser upp detta till ett totalt avfärdande\". Option C text is: \"Fäbodlivet var genomgående så fattigt och slitsamt att all längtan tillbaka till det saknar grund.\" The option reads 'saknar grund' with 'all' modifying 'längtan' ('all längtan tillbaka'); the string 'saknar all grund' is not a substring of any option or passage text (verified: 'saknar all grund' in blob == False; 'saknar grund' == True).",
+      "why": "The integrated-review contract requires every phrase quoted in a rationale to appear verbatim in current option/passage text. This in-quote paraphrase is a real verbatim-quote violation the CONSISTENT verdict should have noted. It is meaning-preserving and does not affect the correctness of key B, so it is minor and does not flip the verdict."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Q4 rationale quotes 'oberoende av stöd', which does not appear verbatim in option B.",
+      "evidence": "Q4 rationale: \"'alltid ... oavsett trakt och oberoende av stöd' pressar tesen förbi de uttryckliga förbehållen\". Option B text is: \"...alltid överlevde längre än andra, oavsett trakt och stöd.\" The option reads 'oavsett trakt och stöd'; the appended fragment 'oberoende av stöd' is not present (verified: 'oberoende av stöd' in blob == False; 'oavsett trakt och stöd' == True).",
+      "why": "Same integrated-review verbatim-quote requirement. The ellipsis correctly joins the verbatim fragments 'alltid' and 'oavsett trakt och', but 'oberoende av stöd' is a substituted paraphrase presented inside quote marks. Meaning is preserved and key D is unaffected, so this is minor and does not overturn CONSISTENT."
+    }
+  ]
+}
