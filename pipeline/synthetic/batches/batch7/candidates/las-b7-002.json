@@ -1,0 +1,87 @@
+{
+ "candidate_id": "las-b7-002",
+ "section": "LÄS",
+ "family": "cykelpendling-debatt-short",
+ "title": "Fler kilometer räcker inte — cykelnätet måste hänga ihop",
+ "passage": "Varje gång en kommun vill visa handlingskraft i cykelfrågan mäts framgången i kilometer. Så många meter ny cykelbana, så många miljoner investerade. Men den som pendlar på cykel vet att det inte är längden som avgör, utan var banan tar slut.\n\nI Kvarnby, där jag själv trampar till jobbet, byggdes förra året en bred och fin cykelväg längs Ringleden. Den håller i tre kilometer och upphör sedan tvärt vid en rondell, där cyklisten lämnas att samsas med lastbilarna. Trafikplaneraren Ellen Sundqvist har följt flödena före och efter bygget. Antalet cyklister ökade, men bara marginellt, och mätningarna tyder på att de flesta som vågar sig ut redan var vana pendlare. De nya cyklister man hoppats på uteblev.\n\nSundqvists slutsats är försiktig men tydlig: det är sammanhanget som lockar, inte sträckan i sig. En enda farlig passage tycks väga tyngre i cyklistens beslut än flera kilometer trygg väg. ”Man cyklar inte halva vägen”, säger hon. ”Kedjan är aldrig starkare än sitt sämsta glapp.”\n\nHär bör kommunerna tänka om. Att bygga långa, obrutna stråk genom en förort ser mindre imponerande ut på kartan än att strö korta sträckor lite varstans, men effekten på pendlingen är sannolikt större. Jag menar inte att antalet kilometer är oväsentligt — självklart behövs de. Poängen är att en investering som lämnar ett enda otryggt glapp kvar riskerar att ge nästan ingenting tillbaka.\n\nInvändningen kommer genast: sammanhängande stråk kräver mark, och marken finns sällan där den behövs. Det är sant, och ibland tvingar verkligheten fram kompromisser. Men även då bör den farligaste punkten åtgärdas först, inte den som är enklast att asfaltera.\n\nOm vi vill se fler nya cyklister måste vi sluta räkna meter och börja räkna glapp.\n— Tobias Renander, cykelpendlare och debattör",
+ "questions": [
+  {
+   "q_index": 1,
+   "prompt": "Vad visade, enligt texten, Ellen Sundqvists mätningar vid den nya cykelvägen?",
+   "options": [
+    {
+     "letter": "A",
+     "text": "Ökningen bestod främst av nya cyklister, medan de redan vana pendlarna tycktes ha dragit sig undan."
+    },
+    {
+     "letter": "B",
+     "text": "Den nya cykelvägen fick antalet cyklister att öka kraftigt längs hela sträckan."
+    },
+    {
+     "letter": "C",
+     "text": "Antalet cyklister steg bara obetydligt, mest bland redan vana pendlare snarare än nya."
+    },
+    {
+     "letter": "D",
+     "text": "Mätningarna gällde framför allt hur mycket mark det nya stråket tog i anspråk."
+    }
+   ],
+   "key": "C",
+   "rationale": "Nyckeln C parafraserar fyndet i stycke 2: 'Antalet cyklister ökade, men bara marginellt, och mätningarna tyder på att de flesta som vågar sig ut redan var vana pendlare. De nya cyklister man hoppats på uteblev.' Ökningen är alltså hedgad (marginell) och avgränsad (mest vana pendlare). A är reversed_causality i hedgad form: 'tycktes ha dragit sig undan' behåller ett förbehåll men vänder riktningen — texten säger att de nya uteblev och de vana dominerade, inte tvärtom. B är overgeneralisation: 'öka kraftigt längs hela sträckan' absolutiserar textens 'bara marginellt'. D är scope_shift: mark är invändningen i näst sista stycket, inte det Sundqvist mätte."
+  },
+  {
+   "q_index": 2,
+   "prompt": "Vilken hållning ger textförfattaren uttryck för i debatten om cykelvägar?",
+   "options": [
+    {
+     "letter": "A",
+     "text": "Antalet byggda kilometer är det säkraste måttet på en lyckad cykelsatsning."
+    },
+    {
+     "letter": "B",
+     "text": "Kommuner bör sluta farliga glapp i nätet framför att maximera antalet byggda kilometer."
+    },
+    {
+     "letter": "C",
+     "text": "Eftersom marken sällan finns där den behövs är fler sammanhängande cykelvägar i praktiken ogenomförbara."
+    },
+    {
+     "letter": "D",
+     "text": "Cykelbanornas längd saknar helt betydelse för hur många som väljer cykeln."
+    }
+   ],
+   "key": "B",
+   "rationale": "Nyckeln B fångar den hållning författaren uttryckligen driver: 'Här bör kommunerna tänka om', 'det är sammanhanget som lockar, inte sträckan i sig', och 'bör den farligaste punkten åtgärdas först' — sluta glappen framför att jaga kilometer. A är den uppfattning texten angriper (framgång mätt i kilometer); att välja den är att vända författarens ståndpunkt (reversed_causality / plausible_worldknowledge). C är detail_as_main: markbristen är en invändning författaren medger men avfärdar ('ibland tvingar verkligheten fram kompromisser'), inte hans slutsats att cykelvägar är ogenomförbara. D är overgeneralisation: författaren säger uttryckligen 'Jag menar inte att antalet kilometer är oväsentligt — självklart behövs de', så 'saknar helt betydelse' pressar hans förbehåll till en absolut."
+  }
+ ],
+ "generator_meta": {
+  "origin": "batch7-generator",
+  "model": "claude-opus-4-8",
+  "date": "2026-07-23",
+  "size": "short",
+  "macro_genre": "sakprosa",
+  "fine_genre": "debatt_opinion",
+  "opening_move": "framing-claim",
+  "question_families": {
+   "1": "enligt_texten_detalj",
+   "2": "forfattarens_hallning"
+  },
+  "planted_traps": {
+   "1": {
+    "A": "reversed_causality",
+    "B": "overgeneralisation",
+    "D": "scope_shift"
+   },
+   "2": {
+    "A": "reversed_causality",
+    "C": "detail_as_main",
+    "D": "overgeneralisation"
+   }
+  },
+  "key_spread": [
+   "C",
+   "B"
+  ],
+  "self_blind_solve": "Solved both from passage alone. Q1=C only: text says increase was marginal and mostly habituated commuters, new ones absent — A reverses which group grew, B contradicts 'marginellt', D points to the land-constraint paragraph. Q2=B only: author's explicit stance is to close dangerous gaps over maximizing km — A is the view he attacks, C weaponises a concession he dismisses, D absolutises past his stated 'självklart behövs de'. All entities fictional (Kvarnby, Ringleden, Ellen Sundqvist, Tobias Renander); no famous-thesis anchoring. Hedge balance: Q1 key hedged (two hedged options present, key not sole measured one), Q2 key is the confident normative claim — correlation broken across unit. Keys spread C/B; key is never the longest option in either question."
+ }
+}
