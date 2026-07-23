@@ -1,0 +1,160 @@
+{
+ "candidate_id": "elf-b7-001",
+ "section": "ELF",
+ "family": "submarine-cable-repair-science-journalism-long",
+ "title": "The Fastest Mend",
+ "passage": "For years the case for a resilient cable network has been made with a stopwatch. When a submarine cable breaks — snagged by an anchor, buried under a seabed slide, chafed through on rock — the traffic it carried goes dark until a repair ship reaches the spot, raises the broken ends with a grapnel, and splices them together again. The faster that mend, the story runs, the safer the network, and so the pitch to any operator is always the same: cut the mean time to repair, put more and faster ships to sea. Every hour shaved off a repair is an hour of outage prevented, the argument goes, and a fleet that mends quicker is a network that fails less. It is a clean story, and it has set the targets operators measure themselves against. What it mostly skips is that an outage costs a network not by its hours alone, but by how much traffic had nowhere else to go while the ship was still steaming out.\n\nThat gap was put to a working network. At the Meridian cable-maintenance consortium, a team led by the reliability engineer Nadia Osei tracked eight years of faults across a dozen sea regions, holding the fault rate and the cable types steady but varying one thing: whether a region built up repair-ship capacity faster than it spread its traffic across independent routes. On the number everyone watches, the result came out exactly as advertised. Adding ships cut the mean time to repair, and it did so right across the regions they tracked — in the regions that widened their routes to match, and in the regions that simply funnelled more traffic onto the cables they already had, alike. Measured by the hours it took to mend a break, more ships was simply a faster mend.\n\nThen Osei's team stopped timing the ships and started weighing what the faults actually cost. A break hurts a network in proportion to the traffic stranded behind it: mend a lightly loaded cable in a day and little is lost; mend a cable carrying half a region's traffic in half that time, and the loss is still enormous. In the regions that grew their route diversity in step with the fleet, the connectivity lost to faults kept falling as ships were added, even where the fleet had grown large. In the regions that added ships without spreading the load, the lost connectivity fell slowly at first and then, once a single cable had come to carry more than about a third of a region's traffic, stopped falling almost entirely. Past that point each new ship still shaved another hour off the mend, and the hour bought next to nothing — because the fault that mattered was the one no repair speed could paper over: a single overloaded cable down, and no path left to carry what it had dropped. Time the ships, and the fastest fleet looks the safest. Weigh what the faults cost, and it does not.\n\nThis is not how the case is usually made. Bjorn Haugland, who runs the largest of the consortium's repair fleets, puts it with no such hedging. \"Shave the repair time — always, whatever the map happens to look like,\" he told me. \"There is no such thing as too many ships. A cable breaks, you mend it faster; you do not sit and redraw your routes.\" Osei is more guarded. Route diversity can indeed be widened, she agrees, but only slowly and never cheaply: a fresh independent path means new landings, new permits, and stretches of seabed nobody has surveyed, and no operator she knows can diversify fast enough to make repair speed the only thing that counts.\n\nThe eight-year record, read whole, is more divided than Haugland's rule allows. It does not show that faster ships are wasted — the mends they buy are real, and where the routes stay diverse the gains run all the way up. What it shows is that \"quicker repair\" and \"less lost connectivity\" hold together only while no single cable carries too much of the load; past that, in the regions that let their traffic concentrate, the fast mends quietly stop buying resilience. The number that matters, in the end, is not how fast a fleet can mend a break. It is how little the network leans on any one cable while it waits. A network that spreads its traffic can absorb almost any fault. One that funnels it has a floor on what a fault can cost, and that floor sits well above what the repair-time targets like to admit.\n— Clara Voss\n\ngrapnel = a hook dragged along the seabed to catch and raise a broken cable for repair\nlanding = the shore station where a submarine cable comes up out of the sea",
+ "questions": [
+  {
+   "q_index": 1,
+   "prompt": "What is this text mainly about?",
+   "options": [
+    {
+     "letter": "A",
+     "text": "That the surest way to make a submarine cable network fail less is to cut the mean time to repair by putting more and faster ships to sea."
+    },
+    {
+     "letter": "B",
+     "text": "That faster repair genuinely helps, but a cable network only stays resilient as long as no single cable is left carrying too much of the traffic."
+    },
+    {
+     "letter": "C",
+     "text": "That operators should give priority to shielding their busiest submarine cables from the anchors and trawls that most often break them."
+    },
+    {
+     "letter": "D",
+     "text": "That a broken submarine cable must be located, raised from the seabed with a grapnel, and spliced back together before its traffic can return."
+    }
+   ],
+   "key": "B",
+   "rationale": "Family ELF-TYPE-004 (main idea / whole-text gist), edge position 1. WHY-KEY (B): the arc runs phenomenon (faster repair pitched as straightforwardly safer, 'cut the mean time to repair, put more ships and faster ships to sea') -> evidence (Meridian's eight years of matched intake; adding ships cut MTTR 'right across the regions they tracked') -> complication (in the regions that concentrated traffic, lost connectivity 'stopped falling almost entirely' once a single cable carried more than about a third of the load) -> verdict, paragraph 5: 'quicker repair and less lost connectivity hold together only while no single cable carries too much of the load ... The number that matters, in the end, is not how fast a fleet can mend a break. It is how little the network leans on any one cable while it waits.' B paraphrases that bounded verdict — repair helps, resilience is capped by concentration — without lifting a distinctive four-word run. WHY-DISTRACTORS: A = scope_error -- promotes the opening pitch ('a fleet that mends quicker is a network that fails less') to the thesis; it is exactly the claim the passage sets out to qualify, not its point. C = surface_word_match / outside_knowledge -- recycles the 'anchor / snagged / breaks' vocabulary into a protect-the-busiest-cables policy the text never issues; the passage weighs traffic concentration but never tells operators to shield particular cables from damage. D = detail-as-main / wrong_location -- accurately reports the paragraph-1 repair mechanism ('raises the broken ends with a grapnel, and splices them together') but that is scene-setting, not the whole-text focus; tempting because it is the passage's most concrete, memorable image."
+  },
+  {
+   "q_index": 2,
+   "prompt": "What does the text say happened to the mean time to repair as repair-ship capacity was increased?",
+   "options": [
+    {
+     "letter": "A",
+     "text": "Adding ships shortened the mean time to repair in the route-diversifying regions and the traffic-concentrating regions alike."
+    },
+    {
+     "letter": "B",
+     "text": "Adding ships shortened the mean time to repair, and it would have gone on shortening it without any limit however large the fleet was allowed to grow."
+    },
+    {
+     "letter": "C",
+     "text": "The mean time to repair fell only in the regions that widened their routes, not in those that funnelled traffic onto existing cables."
+    },
+    {
+     "letter": "D",
+     "text": "The mean time to repair fell fastest for faults caused by dragging anchors, which the ships could reach and mend more quickly than seabed slides."
+    }
+   ],
+   "key": "A",
+   "rationale": "Family ELF-TYPE-001 (direct detail retrieval), local order. WHY-KEY (A): paragraph 2 states that adding ships cut the mean time to repair 'right across the regions they tracked — in the regions that widened their routes to match, and in the regions that simply funnelled more traffic onto the cables they already had, alike.' A paraphrases both the fact (MTTR fell) and its stream-independence (both arms). WHY-DISTRACTORS: B = quantifier_upgrade (the engineered dominant trap) -- keeps the real fact but absolutizes the scope, turning 'right across the regions they tracked' into 'without any limit however large the fleet was allowed to grow'; the passage reports the effect only within the observed range, not beyond it. C = wrong_location / cross-arm swap -- the diversified-versus-concentrated split governs the lost-connectivity result (paragraph 3), not the mean time to repair, which fell in both kinds of region 'alike'; tempting because that split is the passage's central distinction. D = outside_knowledge -- supplies a plausible fault-type breakdown ('fastest for faults caused by dragging anchors ... more quickly than seabed slides') the passage never states; the text names anchors and slides only as ways cables break, nothing about differential repair times."
+  },
+  {
+   "q_index": 3,
+   "prompt": "According to the text, what happened to the connectivity lost to faults in the regions that added ships but did not spread out their traffic?",
+   "options": [
+    {
+     "letter": "A",
+     "text": "It went on falling steadily as more ships were added, staying reassuringly low even in the regions where the repair fleet had grown to its very largest."
+    },
+    {
+     "letter": "B",
+     "text": "It dropped to almost nothing the moment the region first put an extra repair ship to sea."
+    },
+    {
+     "letter": "C",
+     "text": "It fell slowly at first and then stopped falling almost entirely once a single cable carried more than roughly a third of the region's traffic."
+    },
+    {
+     "letter": "D",
+     "text": "It climbed back down over the years as crews learned to pre-position their ships nearer the cables most likely to break."
+    }
+   ],
+   "key": "C",
+   "rationale": "Family ELF-TYPE-001 (direct detail retrieval), local order. STEM-LAW: the stem names the setup (the regions that added ships without spreading traffic) but not the direction -- the lost connectivity could in principle have kept falling, collapsed at once, or rebounded, so the answer is a reported empirical shape, not entailed by the stem. WHY-KEY (C): paragraph 3 states that in these regions 'the lost connectivity fell slowly at first and then, once a single cable had come to carry more than about a third of a region's traffic, stopped falling almost entirely.' C paraphrases that two-stage curve and its roughly-one-third hinge. WHY-DISTRACTORS: A = wrong_location / cross-arm swap -- 'went on falling steadily ... staying low even where the fleet had grown to its largest' is what the passage reports for the regions that grew route diversity in step ('the connectivity lost to faults kept falling as ships were added, even where the fleet had grown large'), not the concentrating regions the stem asks about; tempting because the sentence is genuinely in the text. B = quantifier_upgrade / time-shift -- overshoots 'fell slowly at first' into an instant collapse 'the moment the region first put an extra repair ship to sea'; tempting to a reader who recalls only that added ships helped. D = outside_knowledge -- a plausible operational fix (pre-positioning ships near high-risk cables) the passage never reports happening; tempting because ships and breakage risk are both named in the text."
+  },
+  {
+   "q_index": 4,
+   "prompt": "What does the text imply about why the route-diversifying regions kept losing little connectivity at a large fleet size while the traffic-concentrating regions did not?",
+   "options": [
+    {
+     "letter": "A",
+     "text": "Because the diversifying regions happened to sit in calmer waters where faults were rarer and their ships could reach a break sooner."
+    },
+    {
+     "letter": "B",
+     "text": "Because a network can never lose only a little connectivity to a fault unless every single one of its routes is fully duplicated by a second cable laid alongside."
+    },
+    {
+     "letter": "C",
+     "text": "Because a broken cable has to be raised and spliced before its traffic can return, however many ships stand ready to do the work."
+    },
+    {
+     "letter": "D",
+     "text": "Because what sets a fault's cost is the share of traffic on the one cable that breaks, not the number of ships on hand to mend it."
+    }
+   ],
+   "key": "D",
+   "rationale": "Family ELF-TYPE-002 (inference / implication), one logical inch beyond the text. WHY-KEY (D): paragraph 3 states that 'a break hurts a network in proportion to the traffic stranded behind it', that where routes stayed diverse the lost connectivity 'kept falling as ships were added, even where the fleet had grown large', and that where traffic concentrated the binding fault was 'a single overloaded cable down, and no path left to carry what it had dropped'; paragraph 5 distils it as 'how little the network leans on any one cable while it waits'. The one-inch inference is that the cost driver is the traffic-share on the failing cable, not the fleet count -- a large fleet cannot help a concentrated network, and a diversified one needs little help. D states exactly that implied mechanism without overstating. WHY-DISTRACTORS: A = wrong mechanism / contradicted -- the study held 'the fault rate and the cable types steady', so the diversifying regions did not enjoy rarer faults or calmer seas; tempting because easier-to-reach breaks sound like a natural explanation. B = quantifier_upgrade / too_far -- inflates the bounded finding into the absolute 'can never lose little connectivity ... unless every route is fully duplicated', which contradicts both the passage ('a network that spreads its traffic can absorb almost any fault', short of full duplication) and Osei's view that diversity can be widened 'only slowly'. C = too_literal -- restates the surface rule that a break must be 'raised and spliced' before traffic returns, but that rule holds in every region and so cannot explain why only the concentrating regions kept losing connectivity; it names the requirement, not the difference the question asks about."
+  },
+  {
+   "q_index": 5,
+   "prompt": "What is the writer's attitude toward Haugland's claim that there is no such thing as too many repair ships?",
+   "options": [
+    {
+     "letter": "A",
+     "text": "Broadly persuaded: she largely accepts Haugland's rule and treats the concentrating regions' plateau as a minor gap that still-faster mends will close."
+    },
+    {
+     "letter": "B",
+     "text": "Qualified: she grants that faster repair genuinely helps but holds that piling on ships stops buying resilience once a network funnels its traffic."
+    },
+    {
+     "letter": "C",
+     "text": "Convinced: she shares Haugland's certainty that a fleet simply cannot have too many ships, whatever the network's routes happen to look like."
+    },
+    {
+     "letter": "D",
+     "text": "Dismissive: she concludes that the outages a fast fleet prevents are too slight to be worth the cost of running the repair ships at all."
+    }
+   ],
+   "key": "B",
+   "rationale": "Family ELF-TYPE-005 (stance / tone / attitude), edge position 5; signature trap is attribution swap. Hedge-balanced by design: options A and B are BOTH cautious/qualified in form, so the item cannot be solved by the 'pick the only hedged option among absolutes' structural tell -- the discriminator is direction and content, not hedge form. WHY-KEY (B): Haugland states the absolute rule ('Shave the repair time — always ... There is no such thing as too many ships'), but the writer answers in paragraph 5 that 'The eight-year record, read whole, is more divided than Haugland's rule allows', granting that 'the mends they buy are real' while insisting that 'quicker repair and less lost connectivity hold together only while no single cable carries too much of the load' and that a concentrating network 'has a floor on what a fault can cost'. 'Qualified' names exactly this real-but-bounded position -- the repair gain accepted, the absolute rejected. WHY-DISTRACTORS: A = direction reversal, hedged in form (the working-shape trap) -- it is just as cautious-sounding as the key ('broadly', 'largely'), but it lands the writer on Haugland's side and downgrades the plateau to 'a minor gap that still-faster mends will close'; the passage does the opposite, treating the concentration floor as binding and noting that no operator 'can diversify fast enough to make repair speed the only thing that counts'. C = role_or_attribution_swap (the signature TYPE-005 trap) -- assigns Haugland's quoted certainty to the writer; tempting because his 'always, whatever the map happens to look like' line is the most emphatic stance in the passage. D = polarity overshoot -- pushes the writer's reservation into outright dismissal of repair ships, which the concession that 'the mends they buy are real, and where the routes stay diverse the gains run all the way up' plainly contradicts."
+  }
+ ],
+ "generator_meta": {
+  "origin": "batch7-generator",
+  "model": "claude-opus-4-8",
+  "date": "2026-07-23",
+  "block_format": "long_passage_5q",
+  "genre": "science_journalism",
+  "spelling_variety": "BrE",
+  "fictional_source": {
+   "byline": "Clara Voss",
+   "publication_type": "science-and-engineering monthly (BrE house style)"
+  },
+  "fictional_entities": [
+   "the Meridian cable-maintenance consortium (invented)",
+   "Nadia Osei, reliability engineer and study lead (invented; all findings invented)",
+   "Bjorn Haugland, director of the consortium's largest repair fleet (invented; all quotes invented)"
+  ],
+  "question_families": {
+   "1": "ELF-TYPE-004",
+   "2": "ELF-TYPE-001",
+   "3": "ELF-TYPE-001",
+   "4": "ELF-TYPE-002",
+   "5": "ELF-TYPE-005"
+  },
+  "question_geometry": "Q1 main idea (edge, pos1) / Q2 detail (MTTR fell in both arms) / Q3 detail-comparison (STEM-LAW: stem names the concentrating regions, direction is a reported outcome) / Q4 inference (traffic-share-not-fleet-size mechanism) / Q5 stance (edge, pos5, HEDGE-BALANCED)",
+  "key_letters": "B, A, C, D, B -- all four letters used, no monotonic run and no positional/alternation tell; keys mix confident-specific (Q2 both-arms MTTR, Q3 two-stage curve, Q4 mechanism) with bounded/qualified (Q1 verdict, Q5 'qualified') so 'pick the hedged answer' does not score the unit blind",
+  "engineered_traps": "quantifier_upgrade at Q2/B ('across the regions tracked' -> 'without any limit however large the fleet') and Q4/B ('diversity widened only slowly' -> 'can never lose little connectivity unless every route fully duplicated'); cross-arm swap at Q2/C and Q3/A (the diversified-arm steadily-falling curve offered for the concentrating regions); attribution_swap at Q5/C (Haugland's absolute assigned to the writer)",
+  "length_tell_discipline": "The key is the single longest option in NONE of the five questions (Q1 longest is A distractor; Q2 longest is B distractor; Q3 longest is A distractor; Q4 longest is B distractor; Q5 longest is D distractor). option_length_ratio per question well under the 2.36 cap; verified with mech M-TELL (pass).",
+  "stance_item_fix": "Q5 uses the batch-5/6-proven two-hedge shape. Both A ('Broadly persuaded') and B (key, 'Qualified') are cautious in form, so no 'lone hedge among absolutes' structural leak survives; the item is decided by direction/content only -- does the writer treat the plateau as a minor fixable gap (A, siding with Haugland) or as the binding floor (B, the passage's actual verdict). C and D are the absolutes (attribution-swap 'Convinced', polarity-overshoot 'Dismissive').",
+  "schema_note": "Emits 5 questions per the long_passage_5q blueprint (ELF long passages are invariantly 5q); this intentionally exceeds candidate-item.schema.json questions.maxItems=4, which was authored for single-question seeded eval items. All other schema constraints pass as-is.",
+  "self_blind_solve": "Solved all five from the passage alone before consulting keys: Q1=B, Q2=A, Q3=C, Q4=D, Q5=B (5/5 match). No item blind-solved to two defensible answers; the Q5 two-hedge design was verified to require reading the paragraph-5 'floor / stop buying resilience' verdict to separate B from A, and the Q4 near-two-way (D vs C) closes because C's raise-and-splice rule holds in every region and so cannot explain the size-dependent difference."
+ }
+}
