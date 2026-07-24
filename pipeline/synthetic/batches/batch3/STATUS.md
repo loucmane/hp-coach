@@ -40,3 +40,13 @@ orchestrator override. Queued fix: scope G-REGISTER's format-authenticity axis
 to non-cloze units (judge clozes on language register only) → gate-prompt
 change → **eval re-run required** → re-gate the unit. Blocked on the owner's
 call: keep the cloze family? (Recommended: yes — recovers ~5q/batch.)
+
+## Addendum 2026-07-24 — elf-b3-002 resurrected under the certified amended gate
+
+The amended G-REGISTER (eval `runs/2026-07-24-gregister-cloze-scope/`, PASS)
+re-judged the cloze: the prior kill rested SOLELY on the now-excluded format
+reasoning; all in-scope dimensions (genre, intellectual temperature, option
+register) pass clean against exemplars. Full review chain run: language CLEAR,
+pedagogy SOUND, sweep CONSISTENT, V-FINAL legs + audit, script-derived fold.
+Promote: **6 PASS / 0 HOLD, exit 0** (orchestrator-verified). Batch 3 now ships
+**6 units / 15 questions**; only elf-b3-001 (real G-STEM leak) stays dead.
