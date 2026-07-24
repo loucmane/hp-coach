@@ -97,6 +97,7 @@ if (!prep || prep.contaminated) {
   return { aborted: 'prep', reason: prep ? 'blind sheet contaminated' : 'prep agent died', prep }
 }
 const units = prep.units
+if (!units.length) return { aborted: 'prep-empty', reason: 'prep found ZERO candidates — wrong batch dir or unmerged staging PR', prep }
 const lasUnits = units.filter(u => u.section === 'LÄS').map(u => u.candidate_id)
 const elfUnits = units.filter(u => u.section === 'ELF').map(u => u.candidate_id)
 log(`prep done: ${units.length} units (${lasUnits.length} LÄS, ${elfUnits.length} ELF), mech kills=${prep.mech_kills}`)
