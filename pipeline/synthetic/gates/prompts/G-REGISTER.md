@@ -44,6 +44,25 @@ exemplars from the corpus — that is the point of this gate.
      *"enligt författaren"*, *"vad är textens huvudtanke"*); options in HP's
      paraphrase register, not verbatim passage strings; the question mix
      plausible for the passage length.
+### Cloze-format scope rule (owner decision 2026-07-24)
+
+If the candidate is a **numbered-gap cloze** — structurally: the passage
+contains inline numbered gaps (`___(1)___` …) and each question's options are
+single words or short phrases that fill a gap — then the gap FORMAT itself is
+**outside this gate's jurisdiction**. The cloze is a deliberate HP-Coach
+product-design family (its student-facing frame discloses that these are
+practice texts, not exam replicas), and "authentic HP has no cloze section"
+is therefore not a finding. Do NOT kill or flag a cloze for being a cloze,
+for its gap notation, or for its option sets being single lexical items.
+
+Everything else about a cloze remains fully in jurisdiction and is judged
+against the exemplars exactly as for any candidate: the PASSAGE's genre and
+source-plausibility (magazine-grade prose vs manufactured filler), its
+intellectual temperature, the register of the option words relative to the
+passage, and test-manufactured tidiness in the prose. A cloze whose passage
+reads like a listicle, a blog, or content-shaped filler dies here like any
+other candidate.
+
 4. Record a comparative note per dimension, citing at least one exemplar
    by qid.
 
@@ -77,5 +96,7 @@ Verdict mapping (apply it yourself):
 ## Calibration
 
 Must pass authentic items (they ARE the register — killing one is the
-clearest possible eval failure) and kill the non-HP-register seeds
-(blog/listicle tone, reader address, manufactured tidiness).
+clearest possible eval failure), must kill the non-HP-register seeds
+(blog/listicle tone, reader address, manufactured tidiness) **including a
+register-broken cloze**, and must NOT kill a cloze for its format (the cloze
+calibration items in the eval supplement assert both directions).

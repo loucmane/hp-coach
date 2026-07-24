@@ -1,0 +1,59 @@
+{
+ "candidate_id": "elf-b7-004",
+ "section": "ELF",
+ "family": "airport-bird-strike-grass-management-science-journalism-short",
+ "title": "Long Grass",
+ "passage": "Most airfields keep their grass cropped close, on the reasoning that short turf leaves gulls and lapwings nowhere to hide. At Kettle Vane airport the wildlife officer Sanna Iled tried the opposite on two grass belts for three seasons, letting the sward grow tall and rank. Bird counts on the long-grass belts fell by roughly half, and the birds that matter most — the flocking species that rise in numbers into an aircraft's path — fell furthest. Tall grass, Iled reasons, hides an approaching fox or hawk from the birds, not the birds from anyone, so open-country flockers that will not feed where they cannot watch simply go elsewhere. She is careful about the limits: a few solitary species were unmoved, and letting grass grow near the runway edge raises its own worries about drainage and drifting seed.\n— Marco Yates",
+ "questions": [
+  {
+   "q_index": 1,
+   "prompt": "According to Iled, why did letting the grass grow tall reduce the birds that most threaten aircraft?",
+   "options": [
+    {
+     "letter": "A",
+     "text": "Because the tall, rank grass held far fewer of the insects and seeds that such flocking birds come onto an airfield to feed on."
+    },
+    {
+     "letter": "B",
+     "text": "Because tall grass conceals an approaching fox or hawk from the birds, and flocking open-country species will not feed where they cannot watch for danger."
+    },
+    {
+     "letter": "C",
+     "text": "Because the dense, high sward physically blocked the flocking birds from rising quickly enough to reach an aircraft's flight path."
+    },
+    {
+     "letter": "D",
+     "text": "Because the taller grass drove away every species that had previously been using the two belts of the airfield."
+    }
+   ],
+   "key": "B",
+   "rationale": "Family ELF-TYPE-002 (inference / implication), short text. STEM-LAW: the stem names the setup (tall grass reduced the threatening birds) but not the mechanism — it could plausibly work through food, sightlines, or physical obstruction, so the answer is not entailed. WHY-KEY (B): the passage gives Iled's stated reasoning — 'Tall grass ... hides an approaching fox or hawk from the birds, not the birds from anyone, so open-country flockers that will not feed where they cannot watch simply go elsewhere.' B paraphrases that predator-concealment / vigilance mechanism. WHY-DISTRACTORS: A = outside_knowledge — a plausible real-world food-supply explanation (fewer insects and seeds) that the text never offers; the passage attributes the fall to watchfulness, not diet. C = too_literal / wrong mechanism — invents a physical barrier to taking off, whereas the text's mechanism is behavioural avoidance (the birds choose to leave), not obstruction; tempting because 'rising into an aircraft's path' is named. D = quantifier_upgrade — 'drove away every species' contradicts the passage's explicit limit that 'a few solitary species were unmoved'; tempting because the overall counts did fall by half."
+  }
+ ],
+ "generator_meta": {
+  "origin": "batch7-generator",
+  "model": "claude-opus-4-8",
+  "date": "2026-07-23",
+  "block_format": "short_text_1q",
+  "genre": "science_journalism",
+  "spelling_variety": "BrE",
+  "topic": "airport wildlife management / bird-strike prevention: a wildlife officer's trial showing that letting airfield grass grow tall cut counts of the flocking species most dangerous to aircraft, by hiding predators from the birds rather than by any physical barrier",
+  "fictional_source": {
+   "byline": "Marco Yates (invented journalist); research attributed to invented wildlife officer Sanna Iled",
+   "publication_type": "popular-science / aviation-safety monthly (BrE house style)"
+  },
+  "fictional_entities": [
+   "Sanna Iled, airport wildlife officer and trial lead (invented; all findings invented)",
+   "Kettle Vane airport (invented)",
+   "Marco Yates (byline, invented)"
+  ],
+  "key_derivation": "one_inch_inference / paraphrase of Iled's stated reasoning",
+  "spelling_note": "BrE held throughout; no AmE-only spellings present.",
+  "question_families": {
+   "1": "ELF-TYPE-002"
+  },
+  "engineered_traps": "outside_knowledge at A (fewer insects/seeds — a real-world food explanation the text never gives), too_literal/wrong-mechanism at C (physical obstruction rather than the behavioural avoidance the text states), quantifier_upgrade at D ('drove away every species' vs the text's 'a few solitary species were unmoved'); key B is the stated-reasoning paraphrase and is not the sole hedged option — A, C and D are each stated as confident single-cause claims, so 'pick the qualified answer' does not select the key.",
+  "length_tell_discipline": "Options run 19-25 words; key B (25) is the longest, but only one word over distractor A (24), with C 20 and D 19 — a one-word margin over a distractor is no exploitable length tell. option_length_ratio 25/19 = 1.32, well under the 2.36 ELF cap.",
+  "self_blind_solve": "Solved from the passage alone: B is the only option consistent with Iled's stated reasoning that tall grass 'hides an approaching fox or hawk from the birds ... so open-country flockers that will not feed where they cannot watch simply go elsewhere'. A supplies an unstated food mechanism; C invents a physical barrier the text does not claim; D contradicts the stated limit about solitary species. Exactly one defensible answer. All entities fictional; no famous-thesis anchoring."
+ }
+}

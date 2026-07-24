@@ -1,4 +1,4 @@
-# Batch 7 — status: GENERATED + assembled, mech 35/35 (incl. M-FORM), pipeline PENDING
+# Batch 7 — status: COMPLETE — 7/7 units (20q) shipped, promote CLEAN — third consecutive 100%-yield batch
 
 7 units / 20 questions, disjoint pools, all eleven laws, no cloze (owner
 decision pending).
@@ -14,3 +14,11 @@ decision pending).
 | elf-b7-004 | Long Grass (airport wildlife management, short) | 1 |
 
 **Next:** `pipeline/run-batch.workflow.js` with `args:{batch:7}` after batch 6's run.
+
+## Pipeline result (2026-07-24)
+
+ZERO fleet kills (third batch running). Language fixed two toward→towards BrE
+drifts; sweep caught two minor quote/metadata drifts (one fixed in place).
+V-FINAL 2 VERIFIED + 5 VERIFIED_NOTES, 0 blind-solve mismatches, 0 double-keys.
+Promote: **7 PASS / 0 HOLD, exit 0** (orchestrator-verified).
+Yield: 100/80/50/75/100/100/**100**.
