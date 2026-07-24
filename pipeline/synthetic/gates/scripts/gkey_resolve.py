@@ -33,13 +33,26 @@ def load_keys(candidates_dir: Path) -> dict[tuple[str, int], str]:
     keys: dict[tuple[str, int], str] = {}
     for f in sorted(candidates_dir.glob("*.json")):
         cand = json.loads(f.read_text(encoding="utf-8"))
+        if not isinstance(cand, dict) or "candidate_id" not in cand:
+            continue  # metadata files (e.g. expectations.json) share the dir
         cid = cand["candidate_id"]
         for q in cand.get("questions", []):
             keys[(cid, int(q["q_index"]))] = q["key"]
     return keys
 
 
-def resolve(verdict: dict, keys: dict[tuple[str, int], str]) -> dict:
+def resolve(verdict: dict, keys: dict[tuple[str, int], str],
+            sibling_answers: list | None = None) -> dict:
+    """Resolve one G-KEY line. sibling_answers = solver_answer values of ALL
+    votes for the same (candidate_id, target), including this one.
+
+    Split-vote rule (eval 2026-07-24: an authentic hard item died on a single
+    solver error): a lone mismatching vote that has at least one KEY-MATCHING
+    sibling is uncertainty, not proof — it becomes a lethal-severity FLAG (the
+    dissent surfaces to adjudication, and V-FINAL re-solves every shipped
+    question twice more). Mismatch-majority (>=2 mismatching votes) or any
+    MULTIPLE_/NONE_DEFENSIBLE self-kill still kills outright.
+    """
     v = dict(verdict)
     # Already a kill (e.g. executor self-killed with a verdict field): keep it.
     if v.get("verdict") == "kill":
@@ -68,6 +81,18 @@ def resolve(verdict: dict, keys: dict[tuple[str, int], str]) -> dict:
     if sa == key:
         v["verdict"] = "pass"
         v.setdefault("findings", [])
+        return v
+
+    sibs = sibling_answers or [sa]
+    mismatches = sum(1 for a in sibs
+                     if a is not None and a != key and a not in DEFENSIBLE_SELF_KILL)
+    has_matching_sibling = any(a == key for a in sibs)
+    if mismatches == 1 and has_matching_sibling:
+        v["verdict"] = "flag"
+        v["findings"] = [{"severity": "lethal",
+                          "note": (f"SPLIT VOTE: blind solver answered {sa}, stored key is {key}, "
+                                   f"but a sibling vote matched the key — dissent flagged, not lethal "
+                                   f"(kill requires mismatch majority or self-kill)")}]
     else:
         v["verdict"] = "kill"
         v["findings"] = [{"severity": "lethal",
@@ -93,16 +118,27 @@ def main() -> int:
     out_resolved = args.out.resolve()
     paths = [p for p in paths if Path(p).resolve() != out_resolved]
 
-    resolved, kills = [], 0
+    # Pass 1: load all lines and index sibling answers per (cid, target).
+    raw_lines = []
+    siblings: dict[tuple, list] = {}
     for p in paths:
         for line in Path(p).read_text(encoding="utf-8").splitlines():
             line = line.strip()
             if not line:
                 continue
-            out = resolve(json.loads(line), keys)
-            if out["verdict"] == "kill":
-                kills += 1
-            resolved.append(out)
+            rec = json.loads(line)
+            raw_lines.append(rec)
+            siblings.setdefault((rec.get("candidate_id"), rec.get("target")),
+                                []).append(rec.get("solver_answer"))
+
+    # Pass 2: resolve each line with cross-vote context.
+    resolved, kills = [], 0
+    for rec in raw_lines:
+        out = resolve(rec, keys,
+                      siblings.get((rec.get("candidate_id"), rec.get("target"))))
+        if out["verdict"] == "kill":
+            kills += 1
+        resolved.append(out)
 
     args.out.write_text(
         "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in resolved),

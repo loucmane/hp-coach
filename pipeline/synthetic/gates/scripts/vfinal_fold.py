@@ -61,6 +61,7 @@ def fold_unit(cid: str, verdicts_dir: Path, audits_dir: Path) -> dict:
     gkey = _last_wins(verdicts_dir / "verdicts-gkey-resolved.jsonl", cid)
     gdistr = _last_wins(verdicts_dir / "verdicts-gdistractor.jsonl", cid)
     gkey_kills = sum(1 for v in gkey if v.get("verdict") == "kill")
+    gkey_flags = sum(1 for v in gkey if v.get("verdict") == "flag")
     gd_kills = sum(1 for v in gdistr if v.get("verdict") == "kill")
     gd_flags = sum(1 for v in gdistr if v.get("verdict") == "flag")
 
@@ -75,7 +76,7 @@ def fold_unit(cid: str, verdicts_dir: Path, audits_dir: Path) -> dict:
 
     if (gkey_kills or gd_kills or audit_v in ("REFUTED", "MISSING") or majors):
         verdict = "REFUTED"
-    elif gd_flags or minors or audit_v == "CONFIRMED_NOTES":
+    elif gd_flags or gkey_flags or minors or audit_v == "CONFIRMED_NOTES":
         verdict = "VERIFIED_NOTES"
     else:
         verdict = "VERIFIED"
@@ -85,7 +86,7 @@ def fold_unit(cid: str, verdicts_dir: Path, audits_dir: Path) -> dict:
         "stage": "final_verify",
         "verdict": verdict,
         "reviewed_by": "vfinal_fold.py/1 (gkey2+gdistractor+meta-audit evidence)",
-        "note": (f"gkey_records={len(gkey)} gkey_kills={gkey_kills} "
+        "note": (f"gkey_records={len(gkey)} gkey_kills={gkey_kills} gkey_flags={gkey_flags} "
                  f"gdistr_kills={gd_kills} gdistr_flags={gd_flags} "
                  f"audit={audit_v} audit_major={majors} audit_minor={minors}"),
     }
