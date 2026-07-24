@@ -1,0 +1,20 @@
+{
+  "candidate_id": "las-b8-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Q1 distractor-C rationale and self_blind_solve cite 'efterfrågan hänger kvar' inside quotation marks, but the passage word order is 'hänger efterfrågan kvar' (V2 inversion after 'Tvärtom').",
+      "evidence": "Rationale (q1, C): \"texten säger uttryckligen tvärtom, att 'efterfrågan hänger kvar'\". Passage: \"Tvärtom hänger efterfrågan kvar, men den koncentreras.\" Programmatic check: 'efterfrågan hänger kvar' in passage = False; 'hänger efterfrågan kvar' in passage = True.",
+      "why": "Strict verbatim-quote rule is technically violated, but it is a same-three-words reordering that does not alter meaning or mislead a student. Consistent with the integrated stage's MINOR_NOTES verdict; does not change any stage verdict."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "Q2 distractor B is labelled 'reversed_causality / plausible_worldknowledge' but B ('Kontantbetalning är i grunden ett tryggare och bättre sätt att betala') contains no causal claim to reverse — it inverts the author's stance rather than a cause/effect direction.",
+      "evidence": "Q2 rationale: \"B är reversed_causality / plausible_worldknowledge: den vänder författarens ståndpunkt, som uttryckligen förnekar den ('Poängen är inte att det digitala är sämre')\". The distractor is a stance-inversion, not an arrow-flip.",
+      "why": "Label imprecision only. The distractor still teaches a real misconception (textblind reader equates cash-defense with cash-is-better), the key A remains the single best answer, and the pedagogy SOUND verdict stands."
+    }
+  ]
+}

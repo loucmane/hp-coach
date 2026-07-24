@@ -1,0 +1,20 @@
+{
+  "candidate_id": "elf-b8-001",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The Q5 stem uses AmE 'toward' in an item declared spelling_variety=BrE ('house style' BrE), so the item is not internally uniform in variety.",
+      "evidence": "generator_meta.spelling_variety = 'BrE' and fictional_source.publication_type = 'popular-science monthly (BrE house style)'. Q5 prompt: 'What is the writer's attitude toward Broek's rule...'. BrE house style prefers 'towards'. A whole-file scan found exactly one 'toward' and zero 'towards'; the passage prose itself has zero BrE/AmE-divergent spellings (no colour/lustre/centre/-ise leaks either way), so the token sits only in the test-writer stem.",
+      "why": "Does not change the language verdict: the BrE-declared PASSAGE is spelling-clean, and stems are the test's own scaffolding rather than bound to the passage's declared variety. 'toward' is also fully acceptable general English. A real-but-minor consistency observation, not a defect that would flip CORRECTED."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Paragraph 2 attaches 'the undisturbed oysters' to 'the leases that fussed endlessly over their panels', which reads as a literal contradiction given the study's lease-level design (a fussed-over lease disturbs its oysters).",
+      "evidence": "Setup: 'varying just one thing: whether a lease turned and cleaned its panels on a frequent cycle, unsettling the oysters again and again, or left them very largely alone.' Result sentence: 'The undisturbed oysters laid down more nacre, and laid it faster, and they did so right across the bay — in the leases that fussed endlessly over their panels and in the leases that barely touched them, alike.' Read literally there cannot be 'undisturbed oysters' inside a fussed-over lease.",
+      "why": "Intended meaning is across-bay universality of the calm-more-nacre pattern (the trailing '...and in the leases that barely touched them, alike' means 'everywhere'), and the Q2 key A mirrors the passage sentence near-verbatim so no other option becomes defensible and the key stays sound. This is a readability wrinkle already covered by the integrated stage's MINOR_NOTES verdict, not a verdict-flipping self-contradiction."
+    }
+  ]
+}
