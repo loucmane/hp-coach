@@ -97,3 +97,53 @@ def test_resolver_excludes_its_own_output(tmp_path):
     # only the raw line, resolved to pass; the stale kill must NOT be re-ingested
     assert len(lines) == 1
     assert lines[0]["verdict"] == "pass"
+
+
+def _mk(tmp_path, lines, key="C"):
+    import json
+    cand_dir = tmp_path / "candidates"; cand_dir.mkdir()
+    (cand_dir / "u1.json").write_text(json.dumps(
+        {"candidate_id": "u1", "questions": [{"q_index": 1, "key": key}]}))
+    raw = tmp_path / "verdicts-gkey-1.jsonl"
+    raw.write_text("".join(json.dumps(
+        {"candidate_id": "u1", "gate": "G-KEY", "target": "q:1", "vote": i + 1,
+         "solver_answer": sa}) + "\n" for i, sa in enumerate(lines)))
+    return cand_dir, raw
+
+
+def _run(tmp_path, cand_dir, raw):
+    import json, subprocess, sys
+    from pathlib import Path as P
+    out = tmp_path / "resolved.jsonl"
+    script = P(__file__).resolve().parents[1] / "gkey_resolve.py"
+    r = subprocess.run([sys.executable, str(script), str(raw),
+                        "--candidates-dir", str(cand_dir), "--out", str(out)],
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    return [json.loads(l) for l in out.read_text().splitlines() if l.strip()]
+
+
+def test_split_vote_flags_not_kills(tmp_path):
+    # One dissenting solver among matching votes = uncertainty, not execution.
+    # (Eval 2026-07-24: an authentic hard item died on a single solver error.)
+    lines = _run(tmp_path, *_mk(tmp_path, ["C", "D"]))
+    verdicts = {(v["target"], v.get("vote")): v["verdict"] for v in lines}
+    assert verdicts[("q:1", 1)] == "pass"
+    assert verdicts[("q:1", 2)] == "flag"          # demoted from kill
+    assert all(v["verdict"] != "kill" for v in lines)
+
+
+def test_mismatch_majority_still_kills(tmp_path):
+    lines = _run(tmp_path, *_mk(tmp_path, ["D", "D"]))
+    assert sum(1 for v in lines if v["verdict"] == "kill") == 2
+
+
+def test_self_kill_still_kills_even_when_sibling_matches(tmp_path):
+    lines = _run(tmp_path, *_mk(tmp_path, ["C", "MULTIPLE_DEFENSIBLE"]))
+    assert any(v["verdict"] == "kill" for v in lines)
+
+
+def test_single_vote_mismatch_still_kills(tmp_path):
+    # With only ONE vote present, a mismatch has no matching sibling — kill.
+    lines = _run(tmp_path, *_mk(tmp_path, ["D"]))
+    assert lines[0]["verdict"] == "kill"

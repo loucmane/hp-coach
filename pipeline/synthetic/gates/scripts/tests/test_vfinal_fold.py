@@ -84,3 +84,13 @@ def test_audit_refuted_refutes(tmp_path):
         [_gkey("pass", 1), _gkey("pass", 2)], [_gd("pass")],
         {"candidate_id": "u1", "audit_verdict": "REFUTED", "findings": []})
     assert fold_unit("u1", vdir, adir)["verdict"] == "REFUTED"
+
+
+def test_gkey_split_vote_flag_downgrades_to_notes(tmp_path):
+    # A split blind vote (resolved to flag, not kill) must surface as
+    # VERIFIED_NOTES, never silently VERIFIED.
+    vdir, adir = _evidence(tmp_path,
+        [_gkey("pass", 1), _gkey("flag", 2)], [_gd("pass")],
+        {"candidate_id": "u1", "audit_verdict": "CONFIRMED", "findings": []})
+    rec = fold_unit("u1", vdir, adir)
+    assert rec["verdict"] == "VERIFIED_NOTES"

@@ -6,7 +6,9 @@ describes it, this file decides it):
 
   * Lethal gates — M-SCHEMA, M-BANDS(calibrated), M-PLAGIARISM, G-KEY,
     G-STEM, G-DISTRACTOR, G-REGISTER: ANY kill verdict on any target => DEAD.
-    G-KEY runs as 2 independent blind-solve votes; either mismatch kills.
+    G-KEY runs as 2 independent blind-solve votes; gkey_resolve.py kills on
+    mismatch MAJORITY or self-kill, and demotes a lone dissent with a matching
+    sibling to a flag (split-vote rule, eval 2026-07-24).
   * Language gate (G-SPRAK for LÄS, G-ENG for ELF): 3 independent votes.
     >= 2 kill votes => DEAD; exactly 1 kill vote => FLAGGED (survives, but
     the dissenting vote's findings go to adjudication).

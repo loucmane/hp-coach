@@ -180,9 +180,13 @@ gkey_resolve.py batches/batch<N>/verdicts/verdicts-gkey-*.jsonl \
   --candidates-dir batches/batch<N>/candidates \
   --out batches/batch<N>/verdicts/verdicts-gkey-resolved.jsonl
 ```
-It loads each key, rewrites any `solver_answer ≠ key` (and any
-`MULTIPLE_/NONE_DEFENSIBLE`) to a lethal `verdict:"kill"`, and normalizes the
-verdict field. Aggregate the **resolved** file, not the raw G-KEY files.
+It loads each key and resolves with the **split-vote rule** (eval
+2026-07-24): a mismatch kills only on mismatch MAJORITY across the question's
+votes, or on a `MULTIPLE_/NONE_DEFENSIBLE` self-kill; a lone dissent with a
+key-matching sibling becomes a lethal-severity **flag** (surfaces to
+adjudication; V-FINAL re-solves every shipped question twice more, so a truly
+wrong key still accumulates a killing majority). Aggregate the **resolved**
+file, not the raw G-KEY files.
 
 ## Stage 5 — aggregate + score
 
