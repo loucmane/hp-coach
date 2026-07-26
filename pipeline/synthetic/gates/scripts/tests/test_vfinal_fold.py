@@ -94,3 +94,22 @@ def test_gkey_split_vote_flag_downgrades_to_notes(tmp_path):
         {"candidate_id": "u1", "audit_verdict": "CONFIRMED", "findings": []})
     rec = fold_unit("u1", vdir, adir)
     assert rec["verdict"] == "VERIFIED_NOTES"
+
+
+def test_informational_audit_severities_are_notes_not_majors(tmp_path):
+    # Audit agents record resolved-context entries as 'note'/'info'; these are
+    # not refutation-grade. (b9 repair: fresh CONFIRMED_NOTES audits REFUTED
+    # by the fold because note/info counted as majors.)
+    vdir, adir = _evidence(tmp_path,
+        [_gkey("pass", 1), _gkey("pass", 2)], [_gd("pass")],
+        {"candidate_id": "u1", "audit_verdict": "CONFIRMED_NOTES",
+         "findings": [{"severity": "note"}, {"severity": "info"}]})
+    assert fold_unit("u1", vdir, adir)["verdict"] == "VERIFIED_NOTES"
+
+
+def test_unknown_audit_severity_fails_closed(tmp_path):
+    vdir, adir = _evidence(tmp_path,
+        [_gkey("pass", 1), _gkey("pass", 2)], [_gd("pass")],
+        {"candidate_id": "u1", "audit_verdict": "CONFIRMED_NOTES",
+         "findings": [{"severity": "catastrophic"}]})
+    assert fold_unit("u1", vdir, adir)["verdict"] == "REFUTED"

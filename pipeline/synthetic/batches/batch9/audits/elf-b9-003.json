@@ -1,0 +1,58 @@
+{
+  "candidate_id": "elf-b9-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "audited_at": "2026-07-26T12:25:00+00:00",
+  "audited_by": "adversarial-meta-auditor/opus (re-audit of repaired unit)",
+  "prior_findings_disposition": [
+    {
+      "prior": "major / pedagogy — passage stated its own optics backwards ('looking along the rows rather than across them ... almost no pattern')",
+      "status": "RESOLVED",
+      "evidence": "diff candidates-corrected/elf-b9-003.json candidates-final/elf-b9-003.json shows the two-word swap: passage now reads 'a spectator down at pitch level, looking across the rows rather than along them, may find almost no pattern there at all.' The repaired geometry is internally consistent: the pressed-away=pale / pressed-towards=dark rule and the opposite-stand inversion both require the press axis to lie along the line of sight (looking ALONG the rows = maximum contrast), so the ACROSS-the-rows viewer is correctly the one who sees no pattern. It is also externally correct groundskeeping optics. reviews/pedagogy.jsonl last line (MINOR_FIXES, 14:09) records the fix explicitly. Key and options untouched by the edit."
+    },
+    {
+      "prior": "minor / integrated — INCONSISTENT verdict with no findings payload, unit shipping unchanged",
+      "status": "RESOLVED (residual bookkeeping note, see findings[1])",
+      "evidence": "reviews/integrated.jsonl now carries a second, later line for elf-b9-003: verdict MINOR_NOTES, note 'post-repair sweep' (file mtime 14:19, after the 14:09 repair). Last-line-wins therefore no longer leaves an INCONSISTENT unit in candidates-final/, and the underlying defect that motivated INCONSISTENT is gone."
+    },
+    {
+      "prior": "minor / pedagogy — G-STEM WORLD_KNOWLEDGE flag 'routed to adjudication' with no adjudication on record",
+      "status": "RESOLVED",
+      "evidence": "reviews/pedagogy.jsonl last line adjudicates and closes the flag on the record: general knowledge only reaches A by eliminating three folk beliefs (B overgeneralisation, C lighting, D two cutting heights), so the key still requires the passage's invented specifics. The remediation also re-anchored the stem to those specifics — 'why does Elis Torvund say the same pitch is never quite the same pitch twice when you move round to the opposite stand?' (was: 'why does a striped pitch look different when viewed from the far stand rather than the near one?') — which materially raises passage-dependency by forcing location of a named invented speaker's remark. Rationale head updated to match the new stem. Post-repair regate confirms: verdicts-vfinal/verdicts-gkey-1/2 and verdicts-gdistractor all carry '-regate0726' pass records (solver_answer A, votes 1 and 2, 0 kills, 0 flags)."
+    },
+    {
+      "prior": "minor / language — option syntax asymmetry (A/B full 'Because <sub>, <main>' sentences; C/D bare because-fragments)",
+      "status": "UNCHANGED, still non-verdict-changing (see findings[2])",
+      "evidence": "Options untouched by the repair. Split is still 2-2 with the key A grouped with distractor B, so it is not a key-identifying tell; M-TELL passes. Option lengths 24/26/23/25 words — key is not the longest or shortest."
+    }
+  ],
+  "fresh_probes": {
+    "mechanical_regate": "Independently re-ran gates/scripts/run_mech.py on candidates-final/elf-b9-003.json: M-SCHEMA, M-BANDS, M-TELL, M-FORM, M-PLAGIARISM all pass (exit 0). This corroborates the pedagogy note's 'mech re-run ... all pass' claim, which otherwise had no verdict record under verdicts-vfinal/.",
+    "verbatim_quotes": "All six quoted spans in the rewritten rationale verified present character-for-character in passage/options: 'the same pitch is never quite the same pitch twice'; 'grass pressed away from you throws the light back and reads as pale, grass pressed towards you swallows it and reads as dark'; 'every pale band has gone dark and every dark band pale, though not a blade has moved'; 'The pattern is not in the grass. It is in the angle you happen to be standing at.'; 'the far half of a pitch always looks darker' (option B); 'nothing is cut to two heights'.",
+    "key_sanity": "Single question, options A-D, no duplicate option text, key 'A' present in the option set, key derivation ('paraphrase_one_sentence joined to the observation it explains') matches what A actually does. Distractor dispositions re-checked and all hold: B contradicted by 'The pattern is not in the grass'; C unattributed in text; D contradicted by the opening sentence. No distractor is defensible on a full read.",
+    "language_sweep_of_new_text": "The repair introduced new prose (stem + rationale) after the language stage's only elf-b9-003 line was written, so I swept it myself: declared variety BrE holds ('colour', 'towards', 'round', 'half-time', 'overgeneralisation'); zero AmE-only forms across passage, stem, options and rationale; no calque, agreement or register defect in the new stem or rationale. English rationale is house style for ELF units (all four elf-b9-* rationales are English; las-b9-* are Swedish).",
+    "internal_consistency": "Post-repair passage is self-consistent end to end: mechanism sentence -> Torvund remark -> opposite-stand inversion -> camera 'third version' -> across-the-rows spectator sees no pattern -> 'It is in the angle you happen to be standing at.' No new contradiction introduced by the edit."
+  },
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "final_verify",
+      "claim": "The final_verify stage record for elf-b9-003 is stale: its last (only) line still reads REFUTED, computed from the PRE-repair meta-audit, while every other stage has been refreshed post-repair. Under last-line-per-stage-wins the unit's shipping verdict currently contradicts its repaired state.",
+      "evidence": "reviews/final_verify.jsonl: {\"candidate_id\": \"elf-b9-003\", \"stage\": \"final_verify\", \"verdict\": \"REFUTED\", ... \"note\": \"gkey_records=2 ... audit=REFUTED audit_major=1 audit_minor=3\"} — the audit_major=1 it folds in is the now-resolved optics defect. File mtime 14:02; the pedagogy repair landed 14:09, the gkey/gdistractor regate 14:11-14:12, the integrated post-repair sweep 14:19. Also stale in the same direction: report.json (13:33) still records elf-b9-003 as SURVIVED_FLAGGED with the G-STEM WORLD_KNOWLEDGE flag open, though that flag is now adjudicated and closed in reviews/pedagogy.jsonl.",
+      "why": "Bookkeeping, not content — the unit itself is clean. vfinal_fold.py reads audits/*.json, so re-folding against this overwritten audit (audit=CONFIRMED_NOTES, audit_major=0) will produce the correct VERIFIED_NOTES. Flagged so the refold is not skipped; the unit should not ship on a REFUTED final_verify line."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "integrated",
+      "claim": "The post-repair integrated line resolves the earlier INCONSISTENT verdict but carries no findings payload and no note beyond 'post-repair sweep', so a MINOR_NOTES verdict ships with the minor notes themselves unrecorded.",
+      "evidence": "reviews/integrated.jsonl last line: {\"candidate_id\":\"elf-b9-003\",\"stage\":\"integrated\",\"verdict\":\"MINOR_NOTES\",\"reviewed_by\":\"integrated-review/opus\",\"date\":\"2026-07-26\",\"note\":\"post-repair sweep\"} — no findings array. Compare reviews/pedagogy.jsonl and reviews/language.jsonl, whose post-repair lines carry full remediation notes.",
+      "why": "Not verdict-changing: my own independent whole-unit sweep (quotes, key, distractor dispositions, cross-field consistency) found nothing that would justify more than MINOR_NOTES, so the verdict is corroborated. The gap is evidentiary — a reader cannot tell what the 'minor notes' were."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "language",
+      "claim": "The option-shape asymmetry carried over from the previous audit is unchanged, and the language stage has no post-repair line for this unit even though the repair rewrote the stem and the rationale.",
+      "evidence": "Options A and B are full 'Because <subordinate clause>, <main clause>' sentences; C and D are bare because-fragments ('Because floodlights and low afternoon sun reach the two ends of a ground at different angles and alter the colour of the grass.'). reviews/language.jsonl contains exactly one elf-b9-003 line (CORRECTED), written before the 14:09 repair; the only later line in that file belongs to las-b9-003.",
+      "why": "Both sub-points are non-verdict-changing. The 2-2 shape split puts the key on the same side as a distractor, so it is not a tell (M-TELL passes), and all four options are grammatical answers to a 'why' stem. The un-reviewed new prose was swept by this audit instead: BrE held, no defects found. Recorded so the CORRECTED verdict is understood to predate the current text."
+    }
+  ]
+}

@@ -66,11 +66,18 @@ def fold_unit(cid: str, verdicts_dir: Path, audits_dir: Path) -> dict:
     gd_flags = sum(1 for v in gdistr if v.get("verdict") == "flag")
 
     audit_path = audits_dir / f"{cid}.json"
+    # Severity taxonomy: refutation-grade vs informational, explicit allowlists.
+    # Anything OUTSIDE both lists fails closed (counts as refutation-grade) —
+    # an audit finding with an unrecognized severity must not slip through.
+    REFUTE_SEV = {"blocker", "major", "lethal", "critical"}
+    NOTE_SEV = {"minor", "note", "info"}
     if audit_path.exists():
         audit = json.loads(audit_path.read_text(encoding="utf-8"))
         audit_v = audit.get("audit_verdict", "MISSING")
-        majors = sum(1 for f in audit.get("findings", []) if f.get("severity") != "minor")
-        minors = sum(1 for f in audit.get("findings", []) if f.get("severity") == "minor")
+        majors = sum(1 for f in audit.get("findings", [])
+                     if f.get("severity") not in NOTE_SEV)
+        minors = sum(1 for f in audit.get("findings", [])
+                     if f.get("severity") in NOTE_SEV)
     else:
         audit_v, majors, minors = "MISSING", 0, 0
 

@@ -1,0 +1,41 @@
+{
+  "candidate_id": "elf-b9-004",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The keyed option ends on an unanchored demonstrative — 'kept at that depth' — whose referent exists in neither the option nor the passage; the word 'depth' occurs zero times in the passage. No gate or review record mentions it.",
+      "evidence": "Option C (key): 'How gently it stops a falling head, judged against the tallest equipment above it, and whether it is kept at that depth.' No depth is named earlier in C. Programmatic scan of the shipping passage: occurrences of depth = 0, deep = 0 (only 'inches' and 'rakes' carry the maintenance idea). The passage's maintenance clause is 'a bed that met its rating in May may be two inches short of it by September unless somebody rakes it back' — 'it' there is the rating, not a depth. The rationale then treats the referent as established: 'C paraphrases both.'",
+      "why": "expert-language-review's charter explicitly covers answer-key language, and integrated-review's covers option-passage-rationale cross-consistency; a demonstrative in the KEY that points at a noun the passage never supplies is exactly the class both stages exist to catch. It is minor rather than blocking because the intended referent ('the depth at which it was rated') is recoverable by inference and the key remains the single best answer."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The verdict CORRECTED was recorded without the unit-system incoherence that all three G-ENG votes flagged being corrected; the applied edits were spelling-only, and generator_meta still asserts the opposite.",
+      "evidence": "Shipping passage retains 'can fail badly under a three-meter tower' (metric) alongside 'may be two inches short of it by September' (imperial) inside 170 words. G-ENG vote 1 (minor), vote 2 (MAJOR: 'unit-system incoherence inside a short passage ... A copy editor at any of the model publications would harmonise the two') and vote 3 (minor) all convicted the same span. Diff candidates/ -> candidates-corrected/ shows only two edits: 'nothing whatever' -> 'nothing whatsoever' and 'hardens towards' -> 'hardens toward'. generator_meta.spelling_note still reads: \"AmE held throughout ('fiber' not 'fibre', 'three-meter' not 'three-metre', 'lab'; inches rather than metric depth in the closing clause; no BrE-only spellings present).\"",
+      "why": "3/3 independent language votes convicting one span, one at major severity, is the strongest language signal the stack can produce short of a kill; shipping it unedited and unremarked leaves the metadata claiming a single coherent house style that the passage does not hold (metric height, imperial depth). The metadata claim is inside integrated-review's stated metadata-accuracy charter. Minor because the mix is house-style taste, not an error a reader would misparse, and every vote was flag rather than kill."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "Pedagogy recorded SOUND and applied nothing, leaving unaddressed the one blind-scoring vector GENERATION.md Law 10 assigns by name to pedagogy-review, and which G-STEM had already handed it at major severity.",
+      "evidence": "Option shapes: A 'Which material is used, since poured rubber outperforms...', B 'How soft the bed feels underfoot, since a surface that gives...', D 'How quickly it drains, since a waterlogged bed packs down...' — key C alone has no 'since' clause and alone states two conditions (programmatic count of ', since': A=1, B=1, C=0, D=1). G-STEM finding (severity major): 'There is also a mild form asymmetry - A, B and D share a criterion, since <single-cause reason> shape while C alone states a measured criterion plus an upkeep condition', blind_pick C. GENERATION.md Law 10: 'the key ends up the only hedged/qualified option every time - pick the qualified answer then also scores blind ... (This is judgment pedagogy-review audits; it is not mechanically gated.)' Diff candidates-corrected/ -> candidates-final/ is metadata-only ('colour' -> 'color'); passage, prompt, all four options, key and rationale are byte-identical.",
+      "why": "On a one-question unit there is no sibling item across which to break the correlation, so the asymmetry stands alone and a test-wise examinee can reach C on form plus general knowledge. The correct pedagogy outcome was MINOR_FIXES with a one-line reshape of C (or of a distractor), not SOUND with no edit. Held at minor rather than blocking because the finding is not lost: the G-STEM flag rides into report.json as SURVIVED_FLAGGED and reaches Stage 12 owner adjudication, which is the pipeline's designed disposition for a flag."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The rationale's dismissal of distractor A overstates what the passage licenses: it declares material irrelevant, while the closing sentence makes material the driver of the second condition the key itself names.",
+      "evidence": "Rationale: \"A = contradiction: the passage says the loose fills are 'neither the cheap compromise nor the villain they are usually taken for' and that rubber and chips 'can both be built to meet the same fall height', so material is not what decides.\" But the passage continues: 'The difference is that chips travel: children kick them out from under the swings ... and a bed that met its rating in May may be two inches short of it by September unless somebody rakes it back' — i.e. material decides whether the bed STAYS at its rating, which is precisely C's second clause 'whether it is kept at that depth'.",
+      "why": "The rationale is the teaching payload, and 'material is not what decides' is true only of the rated fall height, not of maintained performance; a sharp student who reads the closing sentence can catch the reviewer out. It does not make A defensible — A's proposition is that material choice decides safety and that rubber outperforms wherever affordable, which the 'same fall height' sentence contradicts head-on — so the key survives; the defect is precision of the explanation, not correctness of the item."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Attempted refutations that FAILED, recorded for completeness — the integrated verdict MINOR_NOTES holds on every dimension I could test.",
+      "evidence": "All six quoted spans in the rationale were checked programmatically against the current shipping passage/options and every one is VERBATIM: 'a falling head to rest slowly enough', 'decided by the tallest platform standing above it', 'may be two inches short of it by September unless somebody rakes it back', 'neither the cheap compromise nor the villain they are usually taken for', 'can both be built to meet the same fall height', 'A playground surface is not engineered to feel soft'. No self-contradiction; no cross-question leak possible (single-question unit). Trap labels are accurate: A and B do contradict named passage sentences, and D's 'outside_knowledge' label is exact — scan for drain/water in the passage returns 0 hits. Key sanity: C is the single best answer and is defensible to a complainant — A is refuted by 'Poured rubber and wood chips can both be built to meet the same fall height', B by the opening sentence 'A playground surface is not engineered to feel soft', D by total absence from the text; both blind G-KEY solvers independently returned C. Option lengths are balanced (A 22, B 21, C 22, D 20 words), so there is no length tell. Spelling variety is clean AmE after correction ('fiber', 'meter', 'toward'); no BrE residue, no Swedish-interference calque, no article or countability error found on a sentence-by-sentence read.",
+      "why": "Recorded so the fold can distinguish a unit that was genuinely attacked and held from one that was merely not examined. The adversarial attempt on the key, on quote fidelity and on trap labelling produced nothing; the residual notes above are the entire yield."
+    }
+  ]
+}

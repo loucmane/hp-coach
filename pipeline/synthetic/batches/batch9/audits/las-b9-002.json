@@ -1,0 +1,75 @@
+{
+  "candidate_id": "las-b9-002",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "audit_round": 2,
+  "audited_file_mtime": "2026-07-26T14:16:27+02:00",
+  "prior_findings_recheck": [
+    {
+      "prior_severity": "major",
+      "prior_stage": "pedagogy",
+      "prior_claim": "G-STEM major on q:1 never dispositioned; option D dropped out on form and was a length outlier (90 chars / 14 words vs 121-129 / 18-19).",
+      "status": "RESOLVED",
+      "evidence": "reviews/pedagogy.jsonl now carries a second las-b9-002 line (mtime 14:09:03) that adjudicates the flag UPHELD and records the fix. Shipping q:1 D is rewritten from 'De flesta striderna uppstod när två gator med samma namn låg inom samma utryckningsområde.' to 'Protesterna gällde främst att de nya namnen var svåra att uttala och komma ihåg, inte att de gamla namnen försvann.' — it now stays on the name rather than the person, so it cannot be sifted on form, and is refuted only by 'invändningarna gällde nästan undantagslöst att det gamla namnet försvann'. Length spread on q:1 is now A 135/21, B(key) 127/18, C 121/19, D 115/20 — no outlier and the key is neither longest nor shortest. planted_traps.\"1\".\"D\" retrapped scope_shift -> plausible_worldknowledge and the rationale rewritten to match. Fresh blind regate ran after the fix: verdicts-vfinal/verdicts-gkey-1.jsonl and -gkey-2.jsonl each carry a 'G-KEY-regate0726' line for q:1 (solver_answer B, both votes, pass) and verdicts-gdistractor.jsonl a 'G-DISTRACTOR-regate0726' pass for q:1 and q:2."
+    },
+    {
+      "prior_severity": "minor",
+      "prior_stage": "integrated",
+      "prior_claim": "q:1 option C mislabelled 'reversed_causality' while the parallel q:2 A mislabel was fixed.",
+      "status": "RESOLVED_WITH_REGRESSION",
+      "evidence": "generator_meta.planted_traps.\"1\".\"C\" and the q:1 rationale were both changed reversed_causality -> polarity_mirror, so the internal inconsistency the prior audit named is gone. See finding 2 below: the replacement label is outside the LÄS trap taxonomy."
+    },
+    {
+      "prior_severity": "minor",
+      "prior_stage": "pedagogy",
+      "prior_claim": "q:1 rationale claims lay expectation pulls toward distractor C, while the G-STEM blind record says ordinary knowledge leans toward key B.",
+      "status": "UNRESOLVED_MITIGATED",
+      "evidence": "See finding 3 below. The sentence is byte-identical to candidates-corrected and no stage note dispositions it; the D rewrite reduces but does not remove the concern."
+    },
+    {
+      "prior_severity": "minor",
+      "prior_stage": "language",
+      "prior_claim": "Residual collocation strain 'blir vardagsspråk' in q:1 option A after only the subject half of the G-SPRAK flag was corrected.",
+      "status": "RESOLVED",
+      "evidence": "Shipping q:1 A now reads '... eftersom alla gatunamn förr eller senare går in i vardagsspråket.' — exactly the native alternative G-SPRAK vote 2 supplied. Fix recorded in the pedagogy repair note (minors section). Re-checked all four original G-SPRAK findings against the shipping passage: 'knappt'-echo -> 'där gatorna ännu inte hunnit få någon muntlig historia' (echo broken); 'kommer med skäl' calque -> 'Ett förslag som motiveras går att bemöta i sak. Ett som enbart åtföljs av ett protokollnummer ...'; 'ifred' -> 'i fred' (and 'i fred för politiken', the idiomatic preposition, better than the voter's suggested 'från'). Zero G-SPRAK survivors."
+    }
+  ],
+  "fresh_checks_passed": [
+    "Key sanity q:1 = B — only option supported by 'Protesterna handlade sällan om den person som skulle hedras; invändningarna gällde nästan undantagslöst att det gamla namnet försvann' + 'Mönstret var tydligast i äldre stadsdelar'; A refuted by 'I nybyggda områden ... kom det knappt några invändningar alls', C is the polarity swap, D is text-unsupported. Exactly one defensible key.",
+    "Key sanity q:2 = D — 'Min invändning gäller inte att kommunen ändrar namn, utan att den gör det utan att säga varför'; A is the position explicitly disowned ('Därmed inte sagt att namn aldrig bör ändras'), B inverts a concession, C is unasserted. Exactly one defensible key.",
+    "All rationale quotes verbatim against the passage: 'Därmed inte sagt att namn aldrig bör ändras', 'en skylt kommunen inte längre kan försvara', 'nästan undantagslöst att det gamla namnet försvann' — all exact; paragraph pointers (stycke 2 for the Löwendahl finding, stycke 5 for the writer's objection) both correct.",
+    "generator_meta internally consistent: key_spread ['B','D'] matches keys; question_families match stems (enligt_texten_detalj / forfattarens_hallning); self_blind_solve refreshed for the new D and its length claim re-verified (q:1 longest = A at 135 chars, q:2 longest = B at 103 — key longest in neither).",
+    "No cross-question leak: q:2's stem/options give no purchase on q:1's finding and vice versa; the 'hedrad person vars gärning omvärderats' material in q:2 B comes from stycke 4, not from q:1's target sentence.",
+    "Swedish reads native throughout after repair (idiomatic 'Slutsatsen ligger nära till hands', 'ligger två Bäckvägar i samma utryckningsområde förlorar ambulansen minuter den inte har', 'Det får stå för henne', 'hade halva striden aldrig blivit av'); no calque, agreement or orthography defect found on a fresh read; glossary line present and correct.",
+    "Q:2 option lengths A 101/18, B 103/18, C 91/14, D(key) 98/17 — the single short option is a distractor, so 'drop the shortest' never removes the key; below flag threshold."
+  ],
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "final_verify",
+      "claim": "The recorded final_verify verdict for this unit is a stale REFUTED: it was folded from the pre-repair audit and pre-repair blind evidence, and neither verdicts-gkey-resolved.jsonl nor final_verify.jsonl was regenerated after the repair and the regate.",
+      "evidence": "reviews/final_verify.jsonl (mtime 14:02:49) — the only and therefore last line for las-b9-002 — reads verdict 'REFUTED', note 'gkey_records=4 ... audit=CONFIRMED_NOTES audit_major=1 audit_minor=3'. The audit it folded is audits/las-b9-002.json at mtime 13:56:12 (round 1). The repair landed afterwards: reviews/pedagogy.jsonl 14:09:03, shipping file candidates-final/las-b9-002.json 14:16:27. Fresh blind evidence was appended afterwards too: verdicts-vfinal/verdicts-gkey-2.jsonl 14:11:44, verdicts-gkey-1.jsonl 14:11:53, verdicts-gdistractor.jsonl 14:12:31 (all four new lines executed_by '*-regate0726', all pass, solver_answer B and D). But verdicts-vfinal/verdicts-gkey-resolved.jsonl is still at 14:02:31 and contains only the four pre-repair G-KEY lines, so vfinal_fold.py's _last_wins over the resolved file cannot see the regate. Per vfinal_fold.py's fold rule, 'any non-minor audit finding' -> REFUTED, and majors is computed as `severity != \"minor\"`, so the single round-1 major alone pins the unit at REFUTED.",
+      "why": "vfinal_fold.py's docstring makes it the ONLY legitimate writer of final_verify records and a pure function of on-disk evidence; the evidence changed after the fold ran, so the ledger no longer describes the shipping file. Under last-line-per-stage-wins the unit is currently recorded REFUTED for a major that no longer exists in the file. Fix is mechanical: re-run gkey_resolve.py over verdicts-vfinal/verdicts-gkey-{1,2}.jsonl, then re-run vfinal_fold.py against this round-2 audit (all findings minor + CONFIRMED_NOTES -> VERIFIED_NOTES)."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The q:1 C relabel replaced an in-taxonomy LÄS trap label with 'polarity_mirror', which is not in the LÄS trap set at all and is a defined ELF cloze label meaning something else — while the label the repair discarded, reversed_causality, is defined in this repo to cover exactly this swap.",
+      "evidence": "The LÄS trap taxonomy is closed at five labels: las/blueprint-template.md:95-99 and las/scripts/build_families.py:38-42 list reversed_causality, overgeneralisation, scope_shift, detail_as_main, plausible_worldknowledge. build_families.py:39 defines reversed_causality as 'Rätt element, fel riktning: orsak/verkan ELLER SUBJEKT/OBJEKT kastas om (textens tvärtom)' — q:1 C keeps the right elements and swaps which objection was the common one and which the rare one, i.e. the subject/object clause verbatim. 'polarity_mirror' is defined only in elf/blueprint-template.md:68 as an ELF trap: 'the positive-pole word where the contrastive frame demands negative (cloze signature)' — a lexical-cloze construct with no LÄS meaning. grep over every batch shows batches/batch9/candidates-final/las-b9-002.json is the ONLY LÄS unit in the pipeline that carries it. The contrast is instructive: 'stance_inversion' (used for q:2 A) is a legitimate documented LÄS extension — batch3/gen-las-short-1.NOTES.md:30-31 introduces it with an explicit rationale and it recurs in las-b3-002 and three batch4 units — whereas polarity_mirror was coined in a review note with no taxonomy entry. The label is also student-facing: the q:1 rationale reads 'C är polarity_mirror: ...'.",
+      "why": "Integrated checklist row 9 requires trap labels to name the actual trap, and family/trap accounting downstream (las/families.md, las/scripts/question_taxonomy.py, which has a reversed_causality regex matching 'kastar om'/'byter plats'/'tvärtom' and no polarity_mirror pattern) is keyed to the closed LÄS set. Two in-taxonomy fixes exist: keep reversed_causality on the strength of its own 'subjekt/objekt kastas om' clause, or coin the label properly the way stance_inversion was — a NOTES entry plus a taxonomy line — rather than borrowing a name that already means a different thing in the sibling ELF spec. Metadata-and-rationale-only, so not student-answer-affecting."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "Carryover, still unresolved: the q:1 rationale's claim about which way general knowledge pulls remains byte-identical and undispositioned, and still contradicts the pipeline's own blind record.",
+      "evidence": "Shipping rationale: 'Detta är den mest lockande av distraktorerna, eftersom en läsare som utgår från allmän erfarenhet av namnstrider förväntar sig just en strid om den hedrade personen.' G-STEM record for the same question (report.json / verdicts/verdicts-gstem.jsonl): 'ordinary knowledge of such disputes (people object to losing a familiar address) leans toward B' — B is the key. The corrected -> final diff shows this sentence unchanged; the pedagogy repair note enumerates its edits (D rewrite, C relabel, A collocation, self_blind_solve refresh) and does not include it, and no other stage record mentions it.",
+      "why": "Pedagogy probe 3 requires every factual claim in the rationale — the teaching payload — to be verified. The repair materially mitigated the underlying construct risk (new D is itself a plausible_worldknowledge magnet pulling lay intuition away from the key, and the field is a genuine four-way again), so this is now a rationale-accuracy note rather than a validity threat; but the sentence and the blind record still assert opposite things about the same item and one of them should be corrected or explicitly adjudicated."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "At least one substantive edit landed in the shipping file after the post-repair blind regate, and no stage record names it.",
+      "evidence": "The candidates-corrected -> candidates-final diff contains a q:2 rationale change that no recorded note claims: '... inte en kritik mot att beredningen skulle vara passiv — texten anklagar tvärtom beredningen för att byta för lättvindigt' became '... — textens anklagelse gäller inte passivitet utan att namnbytena genomförs utan redovisade skäl'. The pedagogy note (14:09:03) enumerates its own edits and excludes it; reviews/integrated.jsonl's post-repair line for las-b9-002 carries only note 'post-repair sweep' with no content. The shipping file's mtime is 14:16:27, later than every regate0726 line (14:11:44-14:12:31).",
+      "why": "The edit itself is an improvement — the old clause attributed to the writer a complaint about renaming too lightly, which sits badly next to key D's 'without stating reasons' — and it touches only rationale prose, so the blind G-KEY/G-DISTRACTOR regate remains valid for the shipping options. But the unit's bytes changed after its last blind gate with no stage record describing the change, which is the same evidence gap the round-1 audit's major was about; a one-line note on the integrated post-repair record would close it."
+    }
+  ]
+}
