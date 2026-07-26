@@ -1,0 +1,120 @@
+{
+  "candidate_id": "las-b11-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "audited_by": "adversarial-meta-auditor/opus (round-3 re-audit)",
+  "date": "2026-07-26",
+  "target": "pipeline/synthetic/batches/batch11/candidates-final/las-b11-003.json",
+  "target_md5": "e98ea80dc93146794b3c00bf130714c5",
+  "prior_audit": "audits/las-b11-003.json @ 2026-07-26 15:43 — verdict REFUTED (1 major, 4 minor/note)",
+  "supersedes_note": "The prior audit examined a version of this unit that no longer exists. Its q:2 was 'Vilket påstående överensstämmer bäst med texten?' with key D ('Timmarna utomhus säger lite i sig; vad de blir beror på förberedelse och gruppstorlek'). The shipped file (mtime 16:02, after the prior audit) carries a fully rewritten q:2 — stem 'Vilken roll spelar exemplet Ekbacken i texten?', key C, four new options, new rationale, new trap table, new hedge_balance and self_blind_solve. candidates-corrected/ and candidates-final/ are byte-identical (same md5). This audit re-adjudicates the shipped version.",
+  "prior_findings_disposition": [
+    {
+      "prior": "major / pedagogy — cross-question corroboration: q1 key B and q2 key D assert the same two-factor structure (förberedelse + gruppstorlek), so a passage-blind reader confirms both keys off the answer sheet",
+      "status": "RESOLVED — refutation withdrawn",
+      "verification": "The corroborating option is deleted, not reworded: no string 'förberedelse och gruppstorlek', no mention of group size, total hours or causal direction survives anywhere in q:2. q:2 is now a struktur_funktion item about the rhetorical role of one named case. The two keys assert disjoint propositions — q1 B = the study's subgroup-conditional association; q2 C = a single case that breaks that association and is unexplained. Neither entails the other in either direction: knowing 'Ekbacken is an unexplained anomaly' does not select among q1's A/B/C/D (a blind reader cannot know Ekbacken is a yard, so it does not even touch q1 D), and knowing q1's key does not select a rhetorical role in q2. See finding 1 for the weaker residual that remains."
+    },
+    {
+      "prior": "minor / pedagogy — q1 rationale reads causal direction into a reported association ('Riktningen (förberedelse leder till fler frågor) … är uttrycklig')",
+      "status": "RESOLVED",
+      "verification": "That sentence is gone. The shipped q1 rationale now reads 'Både sambandets led och avgränsningen är uttryckliga i texten, och B påstår inte mer än så — alternativet är formulerat som ett samband, inte som en orsak', and explicitly cites the confound ('de två sakerna går inte att skilja åt i hennes material') as the reason the direction is left open. Correct, and it matches the key's own wording ('när personalen hade …', a conditional, not a causal verb)."
+    },
+    {
+      "prior": "minor / pedagogy — q2 B trap label wrong ('half_right_conjunction')",
+      "status": "SUPERSEDED but RECURRED in a new form — see finding 3",
+      "verification": "The labelled option no longer exists; the new q2 trap table introduces two fresh mislabels."
+    },
+    {
+      "prior": "minor / language — no independent language pass; language.jsonl row is pedagogy self-certifying its own edit",
+      "status": "UNRESOLVED and now WIDER — see finding 2",
+      "verification": "language.jsonl mtime 15:25, unchanged; the round-3 rewrite landed at 16:02. No language row of any kind covers the shipped q:2."
+    },
+    {
+      "prior": "note / gate:G-STEM — blind/ file is not passage-blind",
+      "status": "UNRESOLVED — see finding 7",
+      "verification": "blind/las-b11-003.json was regenerated at 15:51 with the round-3 content and its 'passage' field is still byte-identical to candidates-final (verified programmatically). Both round-3 G-STEM verdicts carry a self-declared contamination_note."
+    },
+    {
+      "prior": "note / language — 'kvalitetsberättelse' slightly off-centre for förskola",
+      "status": "UNCHANGED, no action — see finding 8"
+    }
+  ],
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The corroboration is genuinely broken, but a weaker reverse-direction cross-question leak survives: q:2's option set discloses that preparation-vs-child-outcome is the study's axis and that the study has a 'mönster', which lets a passage-blind reader eliminate two of q:1's four options.",
+      "evidence": "q:2 B names 'vad en förberedd inriktning kan ge barnen'; q:2 C names 'studiens mönster'. From the answer sheet alone, a reader infers (a) the study has a finding, and (b) it concerns preparation and children. That downweights q:1 A (hours→questions, a different independent variable) and q:1 D (yard size/variation, a third variable), leaving q:1 B vs C — which is 2 blind eliminations, the pipeline's own PARTIALLY bar. The round-3 G-STEM record addresses only the stronger claim: 'q:2-B's lone mention of \"förberedd inriktning\" is direction-ambiguous — it is equally compatible with q:1-B and q:1-C … No option in either question decides the other' (verdicts-vfinal/verdicts-gstem.jsonl, G-STEM-regate3). That is true as stated — narrowing is not deciding — and the same run did NOT pass q:1; it kept a major flag with blind_classification WORLD_KNOWLEDGE. So the record does not over-claim.",
+      "why": "Graded minor, not refutation-grade, for three reasons: the leak narrows rather than resolves; it runs in the opposite direction from the mechanism the repair targeted (q2→q1, not the mutual confirmation of two keys naming the same factors); and the surviving q:1 flag already keeps this visible in the ledger. It is inherent to any two-question sheet on one study — q:2 must name something from the passage — and the round-3 design keeps it to the weakest available form."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The entire round-3 q:2 — stem, all four options and the rationale — has never been seen by any language stage. The unit's only language row predates the rewrite by 37 minutes and is itself self-certification by the stage that made the edit.",
+      "evidence": "reviews/language.jsonl mtime 15:25; the las-b11-003 row (last line for the stage, therefore authoritative) is {'verdict': 'CLEAR', 'reviewed_by': 'pedagogy-review/opus', 'note': 'language checked during caricature repair — native Swedish verified'}. Its six siblings all carry {'verdict': 'CORRECTED', 'reviewed_by': 'language-review/opus'}. candidates-final/las-b11-003.json mtime 16:02; reviews/pedagogy.jsonl records the round-3 rewrite at 15:50 and integrated.jsonl the round-3 sweep at 16:03. No language row exists after either.",
+      "why": "Process gap, not a language defect. I read the new Swedish independently and it is native throughout (see clean_checks.language): 'Vilken roll spelar exemplet Ekbacken i texten?' is idiomatic; 'det fall i studien som tydligast visar', 'bryter mot studiens mönster', 'avstår från att dra några slutsatser alls av sitt material' and 'dra slutsatser av' are all correct collocations; no calque, no agreement error, no register break. Recorded because the ledger asserts a stronger claim (a cleared language stage) than any executed pass covers."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "Two of the three trap labels in the newly written q:2 table name the wrong operation — the same defect class the prior audit already flagged on this unit's q:2 and which the rewrite therefore did not learn from.",
+      "evidence": "generator_meta.planted_traps['2']['B'] = 'reversed_causality (motexemplet läst som studiens starkaste stöd)'. Per GENERATION.md law 2, reversed causality is 'invert an arrow' — a cause/effect swap. B swaps nothing causal: it takes a case with 'ingen förberedelse alls' and offers it as the clearest demonstration of what preparation gives, i.e. an evidential-polarity flip on a counterexample. generator_meta.planted_traps['2']['A'] = 'scope_shift (röstförväxling — forskarens material tillskrivs skribentens egna exempel)'. Nothing is rescoped; the operation is an attribution swap, which is a named trap type in the contract's own vocabulary (GENERATION.md, per-section specs: 'attribution-swap for tone items (a quoted expert's stance offered as the writer's)'). The prose rationales for both options describe the mechanism correctly ('Riktningen är den omvända — avdelningen hade \"ingen förberedelse alls\"' / 'A flyttar exemplet till fel röst'); only the taxonomy labels are wrong.",
+      "why": "The trap table is the index over the teaching payload and feeds downstream trap-frequency analysis; a student told q2 B's error is 'reversed causality' will hunt for a cause/effect swap that is not there. Minor because the decisive refutation is present and correct in the same object."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The q:2 rationale's closing meta-lesson is false and is contradicted by the unit's own hedge_balance field two lines later: it tells the student that 'pick the most cautiously formulated answer' misfires here, when the option it names as most cautious carries a hard absolute that the standard anti-absolute heuristic correctly eliminates.",
+      "evidence": "q:2 rationale, final sentence: 'Det är också D, inte nyckeln, som är det mest förbehållsamma alternativet; heuristiken att välja det försiktigast formulerade svaret ger alltså fel här.' D is 'Det är skälet till att Bergkvist avstår från att dra några slutsatser alls av sitt material.' The same rationale, three sentences earlier, calls that wording an overstatement: '\"alls\" är överdriften som gör alternativet gripbart och samtidigt falskt'. generator_meta.hedge_balance says the same thing about the same option: 'Det mest förbehållsamma alternativet är D …, som samtidigt bär den hårda absoluta kvantifieraren'. An option cannot be simultaneously the most cautiously formulated and the bearer of the sheet's only absolute quantifier — D is cautious in content (the researcher abstains) and absolute in form.",
+      "why": "The law-10 claim the rewrite rests on still holds on the hedging axis — 'pick the qualified option' scores q:1 (key B is the sole subgroup-conditional claim) but not q:2 (key C carries no hedge; the superlative sits on B and the absolute on D), so 'correct' and 'qualified' do not line up across the unit, which is what law 10 asks. It is only the explanatory gloss that is wrong, and it is wrong in a way that teaches a false heuristic diagnosis. Minor: the key, the distractor refutations and the law-10 property itself are all sound."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "generator_meta.self_blind_solve overstates q:2's blind-resistance, asserting all four options are formally indistinguishable without the passage — contradicted by the unit's own rationale and by the round-3 G-STEM record.",
+      "evidence": "self_blind_solve: 'Q2:s fyra alternativ är dessutom alla formmässigt hållbara roller för ett exempel (illustration, starkaste stöd, motexempel, skäl till reservation) och kan inte skiljas åt utan passagen.' verdicts-vfinal/verdicts-gstem.jsonl (G-STEM-regate3, q:2, verdict pass): 'Exactly ONE option is eliminable on form — D, on the absolute \"inte dra några slutsatser alls\" — which is 1 elimination, below the PARTIALLY bar of 2+.' The unit's own q:2 rationale agrees D is form-marked ('\"alls\" är överdriften som gör alternativet gripbart').",
+      "why": "The gate's number is the accurate one and its verdict (pass, 1 elimination, below the 2+ bar) is correct on its own arithmetic; the generator's self-report claims zero. Self-blind-solve is the law-4 artefact reviewers rely on, so an inflated claim there is a small integrity cost even when the underlying item is fine. Minor: the true count still clears the bar."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "final_verify",
+      "claim": "The unit's authoritative final_verify row and the batch report.json are both stale — folded from the superseded audit and describing options that no longer exist. Both must be regenerated against this audit.",
+      "evidence": "reviews/final_verify.jsonl mtime 15:44; the las-b11-003 row (only row for the unit) reads {'verdict': 'REFUTED', 'reviewed_by': 'vfinal_fold.py/1 …', 'note': '… audit=REFUTED audit_major=1 audit_minor=5'} — a direct fold of the audit this file replaces. report.json (15:44) still lists a G-STEM q:2 flag whose quote is the deleted option 'Det oförberedda utomhuspasset ger sällan något av värde, och förskolan bör därför sträva efter att planera innehållet i förväg.' and a G-STEM q:1 flag from the regate1126 run, superseded by regate3. Sibling folds confirm final_verify is a mechanical function of the audit verdict (elf-b11-001: 'audit=CONFIRMED_NOTES audit_major=0' → VERIFIED_NOTES).",
+      "why": "Informational and fail-safe in direction — a stale REFUTED withholds rather than ships. But with the major withdrawn (audit_major=0), re-running vfinal_fold.py against this file should flip the unit to VERIFIED_NOTES; leaving the old row in place would sink a unit on a defect that no longer exists. No action taken here: this audit does not write other stages' ledgers."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "gate:G-STEM",
+      "claim": "Every G-STEM verdict on this unit, including the round-3 q:2 pass that the resurrection now rests on, is self-declared contaminated: the blind/ sheet still ships the full passage.",
+      "evidence": "blind/las-b11-003.json was regenerated at 15:51 with round-3 content; its 'passage' field is byte-identical to candidates-final (verified programmatically; stems and all option texts also match, and 'key' is correctly absent). Both regate3 rows carry contamination_note: '… key-blind but NOT passage-blind … A fresh-agent re-run was attempted via the claude-code bridge and failed on auth/credit.' The run argues contamination biases G-STEM toward over-firing and is therefore conservative for a pass — a defensible argument, but it is an argument, not a clean execution.",
+      "why": "Fleet-wide evidence-quality defect in the blind/ builder, unchanged since the prior audit, and it will recur on every batch until the builder strips the passage. Recorded as a note because my own form-only reading (finding 1) reaches compatible conclusions independently, and because the contaminated runs issued no kill."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "gate:G-STEM",
+      "claim": "The q:1 form lean is unchanged by round 3, and the round-3 ground for softening it conflates emphasis hedges with a scope restriction — though the record stays honest, since q:1 was flagged rather than passed.",
+      "evidence": "G-STEM-regate3 demotes the lone-hedge tell because 'THREE of four options carry qualifiers — B \"I de mindre grupperna\" + condition, C \"tenderade att\"/\"oftare\", D \"framför allt\"'. C's and D's are frequency/emphasis hedges on otherwise unrestricted claims; B is the only option stating a subgroup-conditional interaction, which is the specific shape test-wisdom associates with a real study finding — the mechanism regate1126 named ('B is the sole doubly-qualified option'). q:1's option text is byte-identical across candidates/ and candidates-final/ except for D. The regate3 verdict is nonetheless 'flag', severity major, blind_classification WORLD_KNOWLEDGE, blind_pick B.",
+      "why": "No over-claim to refute: the ledger still carries a live major flag on q:1 and never asserts a clean pass. Recorded so a future round does not read regate3's qualifier count as having cleared the lean."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "language",
+      "claim": "'Kvalitetsberättelse' remains a slightly off-centre term for a förskola (standard skolväsende usage is systematiskt kvalitetsarbete / the older kvalitetsredovisning); carried forward unchanged, no action.",
+      "evidence": "Passage P1 'redovisas i kvalitetsberättelsen', glossed in the unit's own footer as 'årlig sammanställning där verksamheten redovisar sitt eget utvecklingsarbete'. Chiefly a socialtjänst/vård term, though individual förskolor use it locally.",
+      "why": "Glossed in-unit, which is the mitigation the format provides, and plausible in a practitioner's first-person voice. Recorded only so a future register pass does not rediscover it as a defect."
+    }
+  ],
+  "focus_questions_answered": {
+    "is_the_cross_question_corroboration_genuinely_broken": "YES. Verified by deletion, not by rewording. The corroborating option — old q:2 D, 'Timmarna utomhus säger lite i sig; vad de blir beror på förberedelse och gruppstorlek' — is gone, and no surviving q:2 option mentions group size, total hours, or a causal direction. q:2 changed family (huvudbudskap-style 'bäst'-item → struktur_funktion on a named case), so the two questions no longer interrogate the same proposition.",
+    "do_the_two_keys_assert_different_propositions": "YES. q:1 B asserts a subgroup-conditional association in the study population ('I de mindre grupperna … när personalen hade en förberedd inriktning'). q:2 C asserts the rhetorical status of one named case ('bryter mot studiens mönster och … Bergkvist inte kan förklara'). Neither entails the other, and neither can be derived from the other without the passage: a blind reader who is handed q:1's key learns nothing about which of four rhetorical roles Ekbacken plays, and a blind reader handed q:2's key cannot know Ekbacken is a yard, an unprepared department, or a large group, so it does not select among q:1's options. The residual is a one-way narrowing (finding 1), not corroboration.",
+    "is_q2s_key_the_specific_confident_option": "SUBSTANTIALLY YES, with one gloss defect. C is a definite point claim about a single named case and carries no hedge; the marked shapes sit on distractors — superlative on B ('tydligast'), hard absolute on D ('några slutsatser alls'), attribution on A ('skribentens eget'). So 'pick the qualified/cautious option' scores q:1 (key B is the sole subgroup-conditional claim) but not q:2, which is exactly what law 10 asks — the correct/qualified correlation is broken across the unit. The gloss defect is finding 4: the rationale claims D is the most cautiously *formulated* option, which is false (D is the sheet's only absolute) and self-contradicted by hedge_balance."
+  },
+  "clean_checks": {
+    "language": "Native Swedish throughout passage, both stems, all eight options and both rationales; no calque, no agreement error, no register break, no non-word. Round-3 material specifically: 'Vilken roll spelar exemplet Ekbacken i texten?' is a corpus-shaped struktur_funktion stem ('what is the function of X' — las/families.md); 'det fall i studien som tydligast visar', 'bryter mot studiens mönster' (deviation sense, correct beside the passage's transitive 'bröt … mönstret helt'), 'avstår från att dra några slutsatser alls av sitt material' ('dra slutsatser av' is the right preposition), 'A flyttar exemplet till fel röst', 'uppgraderar en redovisad begränsning till total avhållsamhet' — all idiomatic. Passage unchanged from the version the prior audit certified: 'för vi statistik över', 'samvarierade inte alls med', 'ägnade … åt påklädning', 'dem som gick ut' (correct object form after 'mellan … och'), 'de förra', ju/desto inversion in q1 A, spelled-out 'nitton'/'trehundrafyrtio' solid per Swedish convention, Swedish quotation marks ”…” used consistently.",
+    "verbatim_quotes": "16/16 quoted spans across both rationales resolve — programmatic scan of every ”…”-delimited span against the shipped passage and option texts, whitespace- and case-normalised. q:1: 8 quotes, 6 verbatim in the passage, 2 quoting current option text ('redan' from C, 'framför allt' from D). q:2: 8 quotes, all 8 verbatim in the passage ('En avdelning bröt dessutom mönstret helt', 'ingen förberedelse alls, och de högsta siffrorna i hela studien', 'Jag har ingen förklaring till Ekbacken', 'öppen med vad hon inte kan visa', 'skriver hon', 'de högsta siffrorna i hela studien', 'ingen förberedelse alls', 'alls'). Zero orphan quotes — notable, since the round-3 rewrite is exactly where stale quotes would survive.",
+    "key_sanity": "Both keys hold and each is uniquely defensible from the passage. q:1 B — stated directly ('I de förra ställde barnen fler frågor') with the scope restriction ('Men skillnaden fanns bara i grupper om högst fjorton barn'); A is contradicted ('Den sammanlagda tiden utomhus samvarierade inte alls med den siffran'); D is contradicted (the large hilly yard is the one case she cannot explain, not the general explanation); C is beatable on unconditionality, on 'redan' importing precedence a single autumn-2022 observation cannot establish, and on Ekbacken as a high-question/no-preparation counterexample. q:2 C — introduced verbatim as the anomaly ('En avdelning bröt dessutom mönstret helt') and closed by the researcher's own disclaimer ('Jag har ingen förklaring till Ekbacken'); A is wrong on attribution (Ekbacken is Bergkvist's, cited with 'skriver hon'; the writer's own contrast is february-yard vs may-skogsbryn, one paragraph later); B is contradicted by 'ingen förberedelse alls'; D is contradicted by the fact that she does report a finding. Recorded G-KEY round-3 votes agree 2/2 on both (B, C), with justifications that match mine independently.",
+    "rationale_fact_check": "Every factual assertion in both rationales checks out against the passage. The prior audit's causal-direction overstatement in the q:1 rationale is repaired (see prior_findings_disposition). Numbers reconcile: 19 avdelningar / ~340 h observed autumn 2022; threshold 'högst fjorton barn' vs the later illustration 'tjugo barn och två vuxna' — consistent, no arithmetic contradiction. The two non-factual defects are the trap labels (finding 3) and the heuristic gloss (finding 4), both in metadata/commentary rather than in any claim about the passage.",
+    "form_balance_measured": "q:1 A/B/C/D = 122/107/118/100 chars, 17/17/17/13 words — key second-shortest, no pick-the-longest tell. q:2 = 85/88/84/92 chars, 15/16/15/16 words — key shortest by 1 char / tied shortest by word count; the spread is 8 chars across all four, the flattest in the batch and well inside noise. Keys B and C — spread, no positional tell, key_spread metadata matches the shipped keys. Hedging: q:1's most hedged option is C ('tenderade att oftare'), q:2's most marked are B (superlative) and D (absolute) — the key is neither in either question.",
+    "mechanical_regate": "Re-ran gates/scripts/run_mech.py on the shipped candidates-final file (not on an earlier copy): M-SCHEMA pass, M-BANDS pass, M-TELL pass, M-FORM pass, M-PLAGIARISM pass — 0 findings on all five. Passage 391 words / 2335 chars.",
+    "metadata_consistency": "key_spread ['B','C'] matches shipped keys ['B','C']. planted_traps letters {1: A,C,D; 2: A,B,D} exactly match the shipped non-key letters. question_families {1: detalj_ospecificerad, 2: struktur_funktion} — q:2's label is now correct and, at 2.4 % of the authentic corpus, is a legitimately rare family rather than an overlap with q:1; the family collision the prior audit flagged is gone. Law 11 holds: no distractor in either question is verbatim-true (q:1 A contradicted, C unconditional/reversed, D contradicted; q:2 A misattributed, B polarity-flipped, D overstated). Remaining metadata defects are findings 3, 4 and 5."
+  }
+}
