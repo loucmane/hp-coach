@@ -1,0 +1,43 @@
+{
+  "candidate_id": "elf-b11-002",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The q4 trap label 'surface_word_match' is mis-applied: the blueprint defines that tag as recycling distinctive PASSAGE vocabulary, but 'endorsement' (and any form of 'endors-') appears nowhere in the passage; the rationale itself describes a domain-association lure, not a word match.",
+      "evidence": "blueprint-template.md: '| surface_word_match | recycles distinctive passage vocabulary in a claim the passage doesn't make |'. Unit q4 rationale: \"endorsement = surface_word_match (an endorsement is what a signature written on the back of a cheque is called, so the banking context makes the word feel at home ...)\". Substring scan of the shipped passage for 'endors' returns [] (zero hits). Every other surface_word_match instance across all batches anchors on text actually present, e.g. elf-b11-00x: \"surface_word_match on 'tuned'\", \"recycles 'mesh'/'fog'/'harvesting water'\", \"it echoes 'hesitation' in the very next clause\". This unit is the sole outlier.",
+      "why": "The integrated stage's remit includes 'trap labels name the actual trap'. The lure here is real and well explained, but the tag is wrong (it is a domain/outside-knowledge association), so the taxonomy field is unreliable for downstream trap-frequency analytics. Content-harmless, hence minor, not a verdict flip."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The q5 rationale dismisses 'gaining' on a sense it does not have to defend: it asserts 'gain weight' means only 'to grow heavier' / 'putting on mass', ignoring the attested figurative sense (an argument/rumour 'gains weight' = acquires force), which is precisely what makes the distractor tempting to a strong student.",
+      "evidence": "Unit q5 rationale: \"gaining = collocation_misfit (a real phrase meaning to grow heavier, and thematically inverted: the sentence is about losing force, not putting on mass)\". Compare the same rationale's own gloss of the key: \"the fixed idiom 'carry weight' (to have force or influence)\" — i.e. the figurative 'weight = influence' reading is explicitly in play two clauses earlier, so restricting 'gain weight' to body mass is inconsistent within the same paragraph.",
+      "why": "The rationale is the teaching payload. The key still stands (the frame 'demanded all the same, long after it has stopped ___ any weight' needs 'ceased to have force', not 'ceased to accrue force'), so this is an incomplete refutation rather than a false key — minor, consistent with the recorded MINOR_FIXES."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "generator_meta.spelling_note offers a non-marker as evidence of the declared BrE variety: 'practice' as a noun is identical in AmE and BrE (only the verb 'practise' is BrE-distinctive), so it carries zero variety information.",
+      "evidence": "generator_meta.spelling_note: \"One variety held throughout: BrE ('cheque' not 'check', 'catalogue' not 'catalog', 'practice' as a noun)\". The passage's only instance is nominal — 'the speed that thirty years of practice had made automatic' — and no verb form ('practise') occurs anywhere ('practis' scan returns []).",
+      "why": "The variety claim itself is TRUE and unbroken (cheque, catalogue, no AmE lexis or -ize spellings anywhere in passage or options), so the language verdict survives; but one of the three cited proofs is spurious metadata that a language reviewer signing CORRECTED should have struck."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "Pronoun-antecedent wobble left in the very sentence the language stage edited: the grammatical subject of 'it is plainly the better test' is 'A signature written on a screen', but a signature is the thing tested, not the test.",
+      "evidence": "Shipped passage: 'A signature written on a screen is judged on stroke order, timing and pressure — measurements the paper card never held — and, on the narrow question of whether two hands are the same hand, it is plainly the better test.' The candidates -> candidates-corrected diff shows the language stage rewrote exactly this span (inserting the commas around 'on the narrow question ... same hand') without touching 'it'. The intended referent is the previous sentence's 'What has replaced the cards ... a cruder instrument'.",
+      "why": "Recoverable from discourse context and the coordinated clause reads acceptably in broadsheet register, and no gap sits in this sentence, so answerability is untouched — but it is a real referential-cohesion wobble in a stage that had its hands on that clause. Minor."
+    }
+  ],
+  "clean_checks": {
+    "key_sanity": "All five keys are single-best and defensible to a complaining student. (1) 'was a forgery' is the only countable term for a name written by another hand ('a trickery'/'a perjury' are not English in this sense; 'a mockery' is a travesty, not a document). (2) 'gave away' is the fixed involuntary-tell idiom; the rationale correctly pre-empts the only live rival ('gave up' needs a concealing subject — 'the sea gave up its dead' — and evenness conceals nothing). (3) 'Nevertheless' is the only concessive after a sentence in which the method succeeds and before 'none of this amounted to a science', which the next sentence then evidences. (4) 'Yet' after 'it is plainly the better test' forces the positive pole, killing 'impoverishment'. (5) 'carry weight' is the only one of the four real weight-collocations meaning 'have force'. Both G-KEY votes independently returned B/C/D/A/B.",
+    "verbatim_quotes": "Every passage span quoted in a rationale matches the SHIPPED text character-for-character, including the language stage's comma repair: 'on the narrow question of whether two hands are the same hand, it is plainly the better test' (q4), 'and it was that evenness, more than any tremor of the hand, that ___ the imitator' (q2), 'none of this amounted to a science' (q3), 'long after it has stopped ___ any weight' (q5), 'judge whether the signature on a cheque was a ___ or merely the same hand on a bad day' (q1). No stale quote survives from candidates/ or candidates-corrected/.",
+    "fact_check": "All factual claims in the rationales hold: endorsement = the signature on the back of a negotiable instrument (TRUE); perjury = false statement under oath, uncountable in modern usage (TRUE); 'a trickery' ungrammatical (TRUE); 'give off' takes emitted things (TRUE); 'give out' = distribute / fail (TRUE); 'pull one's weight' = do one's share and requires the possessive (TRUE); 'shift one's weight' = physical (TRUE); entrenchment = consolidation of the already established (TRUE).",
+    "leak_and_contradiction": "No cross-question leak: none of 'forgery', 'gave away', 'Nevertheless', 'improvement' or 'carrying' occurs anywhere else in the passage (substring scans return [] for endors/improve/forg/carry/give/gave/nevertheless; 'weight' occurs once, inside the q5 frame). No rationale contradicts itself or another. Metadata reconciles: gap_type_map (3 collocation / 1 connective / 1 polarity) matches the rationales, and schema_note's 'Keys spread B/C/D/A/B' matches questions[].key exactly.",
+    "language_sweep": "No calque, no agreement error, no register break, no spelling-variety mixing. The apparent para-3/para-4 tension ('is judged on stroke order, timing and pressure' vs 'illegible, unexamined') is the column's deliberate irony — bank verification vs courier ritual — not a contradiction. The historical generic 'his name' in para 1 is period-appropriate for a 1908 banking practice and was passed by G-REGISTER; not reportable."
+  },
+  "audited_by": "adversarial-meta-auditor/opus",
+  "date": "2026-07-26"
+}

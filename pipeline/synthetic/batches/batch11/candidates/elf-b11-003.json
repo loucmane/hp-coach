@@ -1,0 +1,57 @@
+{
+ "candidate_id": "elf-b11-003",
+ "section": "ELF",
+ "family": "ELF-TYPE-001 / stage-rain-lighting-angle-stagecraft-engineering-short",
+ "title": "Rain on Cue",
+ "passage": "The hard part of rain on a theatre stage is not the water. A pipe drilled with the right nozzles will hang a convincing curtain of it, and a tray under the boards will carry the forty litres a minute away to be warmed and pumped up again. The hard part is being seen. A falling drop shows only by the light it throws back, and a beam from the front of the house passes straight through the shower and lands on the scenery, which obligingly lights up instead. Rain must be lit from the side, or from behind at a shallow angle, so that each drop becomes a bright point against a dark ground. The tray is lined with foam as well, though that is a separate problem: bare metal under a downpour drums loudly enough to bury the dialogue.\n— Bo Ellander, technical director",
+ "questions": [
+  {
+   "q_index": 1,
+   "prompt": "According to the text, why must stage rain be lit from the side or from behind?",
+   "options": [
+    {
+     "letter": "A",
+     "text": "Because light reaching a drop from the front is absorbed rather than thrown back, so the shower would read as a shadow."
+    },
+    {
+     "letter": "B",
+     "text": "Because a beam from the front of the house would throw the actors' shadows across the falling water and break the curtain up in patches."
+    },
+    {
+     "letter": "C",
+     "text": "Because a drop shows only by the light it returns, and a front beam carries on through the shower to the set behind."
+    },
+    {
+     "letter": "D",
+     "text": "Because the foam in the tray takes in light as well as sound, leaving too little coming off the floor to show the rain."
+    }
+   ],
+   "key": "C",
+   "rationale": "TYPE-001 direct detail, keyed to the two-sentence mechanism at the centre of the passage: 'A falling drop shows only by the light it throws back, and a beam from the front of the house passes straight through the shower and lands on the scenery, which obligingly lights up instead.' C paraphrases both halves — visibility depends on returned light, and a front beam does not return, it continues to the set. A = plausible-but-wrong physics built from the passage's own vocabulary: it accepts that reflection matters but reverses the stated behaviour, claiming the front beam is absorbed by the drops, whereas the text says it goes straight through them; 'read as a shadow' is a mechanism the text never proposes. B = outside_knowledge: shadow management is a genuine lighting concern and a reader who knows a little stagecraft will supply it, but the passage attributes nothing to shadows and gives a different reason entirely. D = surface_word_match: the foam lining is real in the text, but it is introduced explicitly as 'a separate problem' concerned with the drumming noise, and no claim is made about light coming off the floor. Hedge balance: none of the four options is hedged and the key is not the longest (B is), so neither 'pick the qualified one' nor 'pick the long one' scores blind."
+  }
+ ],
+ "generator_meta": {
+  "origin": "batch11-generator",
+  "model": "claude-opus-4-8",
+  "date": "2026-07-26",
+  "block_format": "short_text_1q",
+  "spelling_variety": "BrE",
+  "genre": "science_journalism",
+  "topic": "why rain on a theatre stage is a lighting problem rather than a plumbing one — drops are seen only by returned light, so the shower must be lit from the side or from behind",
+  "fictional_source": {
+   "byline": "Bo Ellander, invented technical director",
+   "publication_type": "stagecraft trade monthly (BrE house style)"
+  },
+  "fictional_entities": [
+   "Bo Ellander (technical director, byline)"
+  ],
+  "key_derivation": "paraphrase_one_sentence — the returned-light sentence plus its consequence clause",
+  "spelling_note": "BrE held throughout passage and options; the overt markers are 'theatre' and 'litres'. No AmE spellings ('theater', 'liters', 'center') and no AmE-only lexis anywhere in student-facing text. The rationale field is generator-facing only.",
+  "originality_note": "Bo Ellander is invented; no real theatre, production or manufacturer is named, and the optics are stated in the passage's own terms rather than borrowed from a known source. The tested point is the passage's own explanation, and the most familiar outside belief (front light casting shadows) is the strongest distractor.",
+  "hedge_balance_note": "No option carries a hedge marker and the key is not the longest option, so the two standard blind-solving heuristics both fail.",
+  "residue_note": "The warmed and recirculated water and the foam lining are concrete detail that does not point at the answer; the foam is repurposed as a distractor precisely because the text flags it as a different problem.",
+  "question_families": {
+   "1": "ELF-TYPE-001"
+  }
+ }
+}

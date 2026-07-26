@@ -1,0 +1,71 @@
+{
+  "candidate_id": "elf-b11-001",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "audited_artifact": "candidates-final/elf-b11-001.json (mtime 2026-07-26 15:34, post-repair)",
+  "prior_audit_disposition": {
+    "major_pedagogy_hedged_key_blind_leak": "SUBSTANTIALLY RESOLVED — see findings 2/3 for the residue",
+    "minor_integrated_q1_q3_sole_cause_contradiction": "RESOLVED",
+    "minor_integrated_stale_q2_quote": "RESOLVED",
+    "minor_language_two_unapplied_G_ENG_fixes": "NOT RESOLVED — re-filed as finding 4"
+  },
+  "findings": [
+    {
+      "severity": "info",
+      "stage_challenged": "pedagogy, integrated",
+      "claim": "Three of the four prior-audit findings are verified fixed in the shipped artifact, and the fixes are real content edits rather than record-keeping.",
+      "evidence": "candidates-corrected -> candidates-final diff: (a) q2 option B rewritten 'The bird-carried species reached every one of the seven islands before the drift-line plants got there.' -> 'The bird-carried species reached most of the seven islands somewhat ahead of the drift-line plants.', so the key is no longer the only measured option (B now carries 'most of' + 'somewhat', D carries 'nearly every' + 'close to'); B remains unambiguously false (passage: 'the bird-carried species arrived last and slowest', 'That sequence held on six of the seven islands'). (b) q3 WHY-NOT-B 'it attributes persistence to soil made by the petrels and to nothing else' -> 'where it does explain why anything stays, it points to the ground \"the birds have been manuring for a decade\" rather than to any contest between species' — the collision with q1 WHY-NOT-A ('the colony is not offered as the sole agent') is gone. (c) q2 WHY-NOT-C now quotes 'had already gone again by the time of the survey after it', which is verbatim in the shipped option C. Independent re-check: all quoted spans in all five rationales (7/14/8/7/4) now match passage, stem or option text verbatim; the only non-matches are the two instances of the heuristic label 'choose the qualified answer', which is not a quotation. Also fixed this pass: q1 'returns in three of the five paragraphs' -> 'four of the five' (correct: the ratchet appears in P1, P3, P4, P5 of 5); q4 'four sentences later' -> 'three sentences later' (correct: 'Petrels make soil faster...', 'Petrels are also tenants.', then the Odren sentence); q5 WHY-KEY re-attributed to Draeven.",
+      "why": "The prior audit's minor integrated findings are closed and the pedagogy edit is structural, not cosmetic — the specific mechanism G-STEM quoted ('D is the only doubly hedged option') no longer exists."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The hedge asymmetry was repaired in q2 only; the two other form asymmetries the pre-repair G-STEM run rated major (q4, and q2's own subject-cohesion split) sit in text that the repair did not touch.",
+      "evidence": "q2 subjects: A 'They were too irregular...' and D (key) 'They came in the expected order...' both take the stem's anaphor ('the arrivals recorded in Draeven's surveys'); B and C introduce new subjects ('The bird-carried species', 'Most of what each early survey logged'). A passage-blind solver narrows to A/D on cohesion alone, and A is the set's strongest claim ('too irregular ... for any predicted sequence'). q4 is byte-identical to the pre-repair text and the original G-STEM note still applies verbatim: 'A - which merely narrates an episode - and C - which issues a conservation recommendation rather than an inference - are eliminable on genre alone. B is the only option that generalises about Kelvain.' Key B is also 88 chars against A 107 / C 112 / D 105.",
+      "why": "The prior major is not fully retired: one instance of the family was fixed, two remain in shipped text. It is minor rather than major because in every case the narrowing stops at two substantive options — the passage is still required to choose, which is a flag-severity condition under G-STEM's own rubric, not a kill."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "final_verify",
+      "claim": "The post-repair G-STEM regate flipped four questions from major flag to clean on text that did not change, with no recorded reason; the clean gate record the final fold consumes therefore rests on an unexplained second opinion rather than on the repair.",
+      "evidence": "verdicts/verdicts-gstem.jsonl (pre-repair): q1 flag/major 'PARTIALLY (blind pick C)', q2 flag/major 'PARTIALLY (blind pick D)', q4 flag/major 'PARTIALLY (blind pick B)', q5 flag/major 'PARTIALLY (blind pick D or C)'. verdicts-vfinal/verdicts-gstem.jsonl (executed_by 'claude-opus-4-8/G-STEM-regate1126'): all five 'verdict: pass, findings: [], blind_classification: NOT_ANSWERABLE, blind_pick: null'. Only q2 option B changed between the two runs; q1, q4 and q5 option and stem text are byte-identical across candidates-corrected and candidates-final. G-KEY (both votes, both runs) and G-DISTRACTOR are stable and unanimous on all five keys, so this is specific to G-STEM.",
+      "why": "The flip is defensible on the original notes' own words ('the passage is still needed', 'not decided', 'form does not choose between them' — i.e. arguably NOT_ANSWERABLE under a strict form-alone criterion), which is why this is minor and not a refutation. But it is undocumented, and the final_verify fold reads gate flags as a headline count, so an unexplained regate silently moves the number."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "Both remaining G-ENG minors ship unapplied, with editor rewrites already written by the gate; the language stage's CORRECTED verdict was never revisited after the repair.",
+      "evidence": "Applied (verified in the shipped passage): 'works out at' -> 'works out to'. Not applied: (a) q1 option D 'by species traveling routes that are new' — G-ENG-2: 'class 3 (option text, q1 D): contorted post-modification where English takes the plain attributive; the relative clause reads as padding to length-match the other options. Editor's rewrite: \"by species traveling new routes\"'; (b) G-ENG-1 class 5 on the passage — 'nineteen' carries five loads, verified: 'Kelvain is nineteen years old', 'for nineteen summers', 'What nineteen years show', 'nineteen were found in each of the last three surveys', 'the nineteen surviving plants'; the last two collide inside paragraph 3, which is the paragraph q3's key arithmetic depends on. reviews/language.jsonl still holds a single elf-b11-001 line (CORRECTED, no note), written before the 15:34 repair.",
+      "why": "Both are lane-correct language items with fixes supplied; (a) is additionally a FORM item, since the gate itself calls the clause length-padding, and (b) sits directly under the q3 key. Neither is student-harmful, hence minor."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "integrated",
+      "claim": "A residual length tell survives the repair: the key is the shortest option in three of five questions and the longest in none.",
+      "evidence": "Option lengths in characters, key marked: q1 A98 B108 [C100] D106; q2 A94 B99 C96 [D90]; q3 [A96] B116 C110 D104; q4 A107 [B88] C112 D105; q5 A101 B105 C111 [D109]. Key mean 96.6 vs distractor mean 105.4. Word counts are much closer (key mean 17.6 vs distractor 18.3), so the effect is carried by word length, not clause count.",
+      "why": "This is the mirror of the length tell pedagogy-review probe 4 asks to check across the unit. It is a note rather than a finding of substance: at n=5 the pattern is ~10% likely under chance, and the two largest gaps (q3, q4) are also the two items where the key is a bare arithmetic or a bare generalization, which are naturally short."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "integrated",
+      "claim": "The q5 key asks the student to read as the writer's own a concession the passage voices through Draeven — in the one item whose designated trap is attribution swap.",
+      "evidence": "Key D: 'The writer allows that nothing lives on an uncemented island, but withholds the conclusion Ruhe builds on it.' Passage: 'Draeven grants him the half of it she thinks is his: nothing colonizes a shoal, and an uncemented island never gets an ecology to lose.' Distractor A is flagged in the rationale as 'trap: role_or_attribution_swap — the TYPE-005 signature'. The repaired WHY-KEY confronts this directly ('the passage voices it through Draeven ... and the writer neither contests it nor distances from it, then fences it in unattributed narration').",
+      "why": "The key stays uniquely defensible — the material after the colon is given without a reporting verb, and the next sentence ('But cementation is a fact about the shore rather than the surface') is unattributed narration that presupposes the concession — so this is documentation-grade, not a defect. Worth carrying forward because the same item punishes attribution confusion in A while requiring a free-indirect reading in D."
+    },
+    {
+      "severity": "info",
+      "stage_challenged": "final_verify",
+      "claim": "The recorded final_verify verdict for this unit is stale: it predates the repaired artifact and folds the superseded prior audit.",
+      "evidence": "reviews/final_verify.jsonl (mtime 15:19), single elf-b11-001 line: verdict REFUTED, note 'gkey_records=10 gkey_kills=0 gkey_flags=0 gdistr_kills=0 gdistr_flags=0 audit=CONFIRMED_NOTES audit_major=1 audit_minor=3'. candidates-final/elf-b11-001.json mtime 15:34; the post-repair pedagogy and integrated lines are later still. The 'audit_major=1' the fold cites is the prior audit's pedagogy major, which this pass finds substantially resolved.",
+      "why": "The fold needs re-running against this audit; on the current record the unit carries a REFUTED verdict generated from evidence that no longer describes the artifact."
+    },
+    {
+      "severity": "info",
+      "stage_challenged": "integrated",
+      "claim": "Fresh sweeps on the dimensions the brief names found nothing further: keys, arithmetic, cross-question leakage and spelling variety are all clean.",
+      "evidence": "Key sanity — each of the five keys is uniquely defensible and each distractor is falsifiable from the text (q2 C is false because the passage's median stay of 'a little over three years' against annual surveys means most logged species survive to the next survey; q4 D is contradicted by the Odren measurement; q3 C upgrades a median-for-wind-arrived-plants to all species). Arithmetic — 19/61 is under a third (61/3 = 20.3); 'six younger islands' + Kelvain = the 'seven islands' of paragraph 2; 'two hectares' against 'Ninety hectares' matches the q5 rationale's 'two hectares of ninety'; flora plateau 'since about its twelfth year' is consistent with a decade of petrel manuring on a nineteen-year-old island. Spelling variety — generator_meta declares AmE; hits: kilometers, armored, traveling, meters, colonized; zero BrE forms across a 26-token check (colour/centre/metre/organise/analyse/defence/travelling/grey/whilst/realise/programme etc.). Glossary — both glossed terms (tephra, palagonite) are used in the passage. No doubled words. Key letters C/D/A/B/D, positions 3/4/1/2/4 — no position dominance. No cross-question leak: no stem or option supplies another item's answer (q4's stem premise is a passage fact, not another key).",
+      "why": "Recorded so a later pass knows these dimensions were probed and cleared rather than skipped."
+    }
+  ],
+  "audited_by": "meta-audit/opus (re-audit of repaired artifact)",
+  "date": "2026-07-26"
+}
