@@ -1,0 +1,84 @@
+{
+  "candidate_id": "las-b10-001",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "audited_at": "2026-07-26",
+  "audited_by": "adversarial-meta-auditor (re-audit of repaired unit)",
+  "prior_audit_disposition": {
+    "major/integrated/cross-question-leak": "RESOLVED (verified)",
+    "minor/integrated/senast-vs-fore": "UNRESOLVED, unadjudicated",
+    "minor/language/two-GSPRAK-survivors": "UNRESOLVED, unadjudicated",
+    "minor/integrated/passage-arithmetic": "UNRESOLVED, unadjudicated"
+  },
+  "findings": [
+    {
+      "severity": "info",
+      "stage_challenged": "pedagogy",
+      "claim": "Prior major finding (live cross-question leak q:3 -> q:2) is GENUINELY RESOLVED.",
+      "evidence": "candidates-final q:3 option C now reads 'Rensningsarbetet upphorde helt sa snart arets flottning var avslutad.' (69 chars) against the pre-repair 'Rensningsarbetet upphorde helt sa snart fristen den femtonde september hade lopt ut for aret.' (93 chars). No option in the unit now names the 15 September frist except q:2 D itself, so q:2's key can no longer be read off the question set. reviews/pedagogy.jsonl last line (14:48) records the fix with an explicit note; q:3 keeps single key A and its overgeneralisation trap label; the q:3 rationale was updated in the same pass ('fristen absolutisera' -> 'arets flottning gor'). Independently re-verified: post-repair regate verdicts-vfinal/verdicts-gstem.jsonl q:2 states 'DECISIVE CHECK: the q3->q2 leak is REPAIRED'; G-KEY regate1026 votes 1 and 2 both return B/D/A/C matching the key_spread; G-DISTRACTOR regate1026 passes 4/4; G-STEM q:4 moved flag -> pass. I re-ran gates/scripts/run_mech.py on candidates-final: M-SCHEMA, M-BANDS, M-TELL, M-FORM, M-PLAGIARISM all pass.",
+      "why": "The single refutation-grade defect from the previous audit is gone and the repair was re-gated rather than asserted. Nothing blocker/major survives, so the unit is shippable."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Prior minor #2 survives verbatim: q:2's key still shifts the statutory deadline by one day relative to the passage, and the q:2 rationale still quotes the passage wording instead of the option's - even though the repair pass edited that very rationale.",
+      "evidence": "Passage (byte-identical candidates-corrected -> candidates-final, verified programmatically): 'skulle vara bortfort fore den femtonde september'. q:2 option D unchanged since candidates/: 'Att timmer som lag kvar pa annans strand skulle vara bortfort senast den femtonde september.' q:2 rationale WAS edited at 15:03 ('band medlemmarna vid kostnader' -> 'skrev ned de gemensamma atagandena om kostnaderna och band framfor allt foreningen vid en frist'; 'avloningsform och en frist' -> 'medan avloningen per dagsverke ar nagot texten redovisar vid sidan av stadgan') but the opening clause still reads 'skulle vara bortfort fore den femtonde september'. Swedish deadline usage: 'fore den 15' excludes the 15th, 'senast den 15' includes it.",
+      "why": "The key survives (both G-KEY votes pick D post-repair; no other q:2 option is defensible), so this is not lethal. But the reviewer had the q:2 rationale open and left the mismatch, and no review line records a keep-decision. One-word fix in option D ('fore'), no re-key needed."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "Prior minor #3 survives: two G-SPRAK-1 findings remain in the shipping passage with no adjudication note anywhere in the record. The passage was not touched at all in the repair pass.",
+      "evidence": "candidates-corrected/las-b10-001.json and candidates-final/las-b10-001.json have identical 'passage' fields (verified in Python). Still present: sentence 1 'Brotarna skulle sta i mitten.' and 'en forklaring som hon sjalv kallar naraliggande snarare an bevisad' - both quoted as minor in verdicts/verdicts-gsprak-1.jsonl ('sta i centrum' / 'narliggande' given as native alternatives). reviews/language.jsonl last line for this candidate is still the bare {verdict: CORRECTED} line written at 14:46, with no note; no later language line exists.",
+      "why": "Both were 1-of-3 minors, below the >=2 language-kill threshold, so CORRECTED is not wrong on the lethal axis - but both sit in conspicuous positions (opening sentence; the author's own hedge) and the record still cannot show they were weighed rather than dropped."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Prior minor #4 survives untouched: the lede's efterrensning share is stated over a different denominator than the finding paragraph's, and the vantan category has no slot in the remainder the finding paragraph distributes.",
+      "evidence": "Passage unchanged. Lede: 'Nara varannan noterad arbetsdag galler efterrensning' (~50% of ALL noted days). Method para: 'ungefar var sjatte notering gar inte att fora till nagot bestamt arbete. Andelarna galler alltsa det som faktiskt later sig sorteras.' Finding para: 'Knappt sju procent av de sorterade dagarna galler brotar, medan efterrensningen tar nara halften; resten fordelas pa ilaggning, vakthallning vid ledarmarna och arbete vid skiljestallet.' ~50% of the ~83% sortable = ~42% of all noted days. Next para: 'Var tionde dagsnotering galler vantan' (10% of all notations) with no place in a three-way remainder.",
+      "why": "Still reconcilable (the passage pre-disclaims exactness; vantan can be read as inside the unsortable sixth) and no key depends on either number - q:4 key C needs only that rensning is the largest share. Recorded because integrated row 1 is exactly this check and the lede is one word from consistency."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "NEW: the post-repair G-STEM regate explicitly routed a residual q:3 -> q:2 cross-question hint 'to adjudication rather than passed', and no recorded review line adjudicates it. The recorded integrated sweep is a bare MINOR_NOTES with no findings.",
+      "evidence": "verdicts-vfinal/verdicts-gstem.jsonl (14:56), q:2, severity major, verdict flag: 'Residual: this q3 option, plus \"de sena utryckningarna\" in q3 B, identifies the statutory duty as landowner-facing, which softly eliminates q2 B (a wage method, not a statutory duty) and q2 C (manning Nyhamn). A vs D stays undecided blind ... Weak; routed to adjudication rather than passed.' The only review line written after 14:56 is reviews/integrated.jsonl line 10: {\"stage\":\"integrated\",\"verdict\":\"MINOR_NOTES\",\"note\":\"post-repair sweep\"} - no findings, no mention of the routed flag. reviews/pedagogy.jsonl line 9 (14:48) predates the regate.",
+      "why": "Independently I confirm the residual is real but weak: q:3 A ('foreningens skyldighet mot markagarna') narrows q:2 from four options to {A, D} - both markagare-facing - leaving the student at 50% and still unable to choose without the passage, versus a full leak before. Minor, not major. What is missing is the adjudication record: a gate that says 'routed to adjudication' should have a matching disposition line."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "NEW, introduced by the repair: q:3's rationale refutes option C by appealing to the 15 September frist, but C no longer mentions the frist - it says 'sa snart arets flottning var avslutad', and the passage never equates the end of the year's flottning with the frist. The stated refutation rests on an unstated equivalence.",
+      "evidence": "q:3 option C: 'Rensningsarbetet upphorde helt sa snart arets flottning var avslutad.' q:3 rationale: 'C ar overgeneralisation: arets flottning gors till ett slutdatum for allt arbete, men texten sager att utryckningarna aterkom varje host just efter den femtonde september, och 1941 lag timret kvar en manad efter fristen och kravde sex dagars arbete av ett lag om fem man.' The passage dates the start of driving ('kastades i ... under varfloden') but never states when a year's flottning ends; the frist is a statutory removal deadline, not a season end. The pre-repair C did name the frist, which is what made this exact sentence work.",
+      "why": "The key is not at risk - C remains unsupported by the text and both post-repair G-KEY votes pick A - but the rationale is the teaching payload, and as written it asks the student to accept frist = end of season. Tighter refutation available from the text itself: efterrensning and the autumn utryckningar demonstrably continue into late autumn ('det timmer som bargades sent pa hosten')."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "integrated",
+      "claim": "NEW form tell from the repair: q:3 C is now a 69-character option against 105 / 117 / 124, a 36-character gap below the next shortest.",
+      "evidence": "Measured lengths, candidates-final q:3: A 105, B 124, C 69, D 117. Pre-repair C was 93. M-BANDS option_length_ratio_max (5.25 cap, word-based) is not breached and mech re-run passes. generator_meta.hedge_balance_note discloses it honestly: 'Q3 C is also the unit's shortest option (69 characters ...); C is a distractor, so the odd length does not point at the key, but it does mark C as the first option a length-reading student discards.'",
+      "why": "C is a distractor, so the tell costs the student rather than helping them find the key, and the net blind-solvability is unchanged (4 -> 2 either way, per both the pre- and post-repair G-STEM reads). Recorded only so the next batch's repair pass keeps replacement options length-matched."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "final_verify",
+      "claim": "Record staleness: the last final_verify line for this candidate is REFUTED and predates the repair; the vfinal G-KEY resolved fold is likewise pre-repair.",
+      "evidence": "reviews/final_verify.jsonl line 5 (file mtime 14:42): {\"verdict\": \"REFUTED\", \"note\": \"gkey_records=8 gkey_kills=0 gkey_flags=0 gdistr_kills=0 gdistr_flags=0 audit=REFUTED audit_major=1 audit_minor=3\"} - it folds the superseded 14:40 audit. The repair landed at 14:48 (pedagogy note) with the file rewritten 15:03. verdicts-vfinal/verdicts-gkey-resolved.jsonl is also 14:42 (pre-repair), while verdicts-gkey-1.jsonl (14:51), verdicts-gkey-2.jsonl (14:50), verdicts-gdistractor.jsonl (14:52) and verdicts-gstem.jsonl (14:56) all carry post-repair '-regate1026' lines.",
+      "why": "Under 'last line per stage wins', the shipping record currently says REFUTED for a unit this audit clears. vfinal_fold.py needs a re-run against this audit and the gkey-resolved fold needs regenerating from the regate1026 rounds before the unit is promoted."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "language",
+      "claim": "Pre-existing polysemy the repair did not disturb: the passage uses 'rensa/rensning' in two distinct senses within one sentence, and q:3 C now leans on the ambiguous one.",
+      "evidence": "'Pa de tre nedersta lederna, som under tjugotalet rensades pa block och tvara krokar, steg antalet rensningsdagar per flottad kubikmeter' - 'rensades' = channel clearing of boulders, 'rensningsdagar' = efterrensning of stranded timber. q:3's stem scopes to 'efterrensningen' but option C says 'Rensningsarbetet', which reads either way. The glossary defines efterrensning but not rensning.",
+      "why": "The stem disambiguates in practice and q:1's options depend on the same double use without confusing either G-KEY vote, so this is cosmetic. Worth a glossary line or a term split in a future revision."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "integrated",
+      "claim": "A false metadata claim was corrected by the repair pass, and the true state - q:4's key is the longest option - is now disclosed.",
+      "evidence": "Pre-repair hedge_balance_note: 'No key is the longest option in its question (... Q4 A longer than C)' - false; measured q:4 lengths are C 125 (key), D 116, A 111, B 106. Post-repair note: '... but in Q4 the key C IS the longest option (C 125 characters vs D 116, A 111, B 106). Length is therefore not a uniform safeguard across this unit.'",
+      "why": "Positive finding, recorded for the record: the length tell in q:4 is real but modest (ratio 1.18, far under the 5.25 M-BANDS cap) and is now honestly stated instead of denied."
+    }
+  ]
+}

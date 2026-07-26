@@ -1,0 +1,43 @@
+{
+  "candidate_id": "elf-b10-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The unit's spelling_variety declaration ('BrE') is backed by four non-diagnostic examples, and the shipping text contains no BrE-distinctive orthography or lexis at all.",
+      "evidence": "generator_meta.spelling_note: \"BrE held throughout ('guidebooks', 'crowbar', 'a charge of powder', 'a question of mass')\". All four are identical in AmE and BrE — none is a variety marker. A scan of the passage and all four options finds no -our/-ise/-re/-lled/-ogue form, no BrE-only lexeme, and no AmE contamination either: the text is variety-neutral. Even the one candidate signal, \"Vault doors went round in the 1870s\", is predicate-adjective 'round' (became round), not the BrE adverbial 'round'.",
+      "why": "The language stage owns spelling-variety. Its CORRECTED verdict passed a metadata claim whose supporting evidence does not support it; the declared variety is unverifiable from the shipped text. The text itself is clean (no mixed variety), so the verdict stands — but the note is false evidence that would mislead any later consistency sweep that trusts spelling_note over the text."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Distractor C's internal chronology does not reconcile with the passage's own dates, even though the rationale explicitly presents C's numbers as passage-borrowed.",
+      "evidence": "Passage: \"Vault doors went round in the 1870s and stayed round for sixty years\" (1870s + 60 = 1930s) and \"by the 1940s the rectangular door was quietly back\". Option C: \"the design held for sixty years until better drills arrived in the 1940s\" — making the drills' arrival the terminus of the sixty years implies a start in the 1880s. The rationale leans on exactly these figures: \"the drill, the sixty years and the 1940s are all in the passage — the sixty years in its opening sentence, the drill and the 1940s in its closing one\".",
+      "why": "Integrated review owns 'numbers reconcile'. C is wrong on its merits regardless (the stem asks what made the door hard to force; 'case-hardened against drilling' is outside knowledge the passage never states), so this does not flip the MINOR_NOTES verdict — but it is an accidental second reason C is wrong, and a test-wise student can eliminate C by arithmetic without reading the passage's argument."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The passage's pronoun 'one' in the key sentence has its antecedent 30+ words back across a semicolon, and the keyed option is the only text in the unit that supplies the missing referent.",
+      "evidence": "Passage: \"a corner is where a crowbar or a charge of powder can find a gap to work in; a circular door was ground to a shallow taper and dropped into a matching taper in the frame, so that pressure from outside drove it further into its seat rather than opening one\". The nearest singular NPs to 'one' are 'its seat', 'a matching taper' and 'the frame'; the intended antecedent 'a gap' sits before the semicolon. Key B resolves it explicitly: \"instead of opening a gap at the rim\".",
+      "why": "Compressed essayistic prose makes this readable to a native, so it is not a defect that should have blocked the CORRECTED verdict. It is worth recording because the key option is the one that disambiguates the passage's own anaphora, which gives B a small extra feel-right pull beyond its paraphrase merit."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The unit's only open flag in report.json quotes option text that no longer exists in the shipping file, so the record ships as SURVIVED_FLAGGED against stale evidence.",
+      "evidence": "report.json['elf-b10-003'].flags[0].findings[0].quote = \"Its weight: a plug door of that period was far heavier than the square door it replaced, and heavier than the tools of the day could shift.\" The shipping option A reads \"...far heavier than the slab door it replaced, and that extra mass is what a crowbar had to work against.\" The G-STEM note's two pillars are both gone from the final text: the double absolute was removed from A, and \"C and D make overlapping roundness-distributes-force claims\" no longer holds since C was rewritten from a curvature/blast-deflection claim to a case-hardening claim that makes no roundness claim at all.",
+      "why": "Not a content defect — the post-fix re-verification in verdicts-vfinal/ does cover the shipping text and passes (G-KEY vote 1 = B, G-KEY vote 2 = B, G-DISTRACTOR pass), and G-STEM is not re-run at vfinal in any batch (batch7/8 show the same gdistractor+gkey-only vfinal set). Recorded so a later reader of report.json does not chase a quote that is not in the unit."
+    }
+  ],
+  "checks_performed": {
+    "language": "Passage + all four options scanned for calque, agreement, register, tense-consistency and spelling-variety defects. No calque, no agreement error, no register break. 'Nor was it a question of mass' inverts correctly; the present/past tense mix ('A square door has four corners' vs 'a circular door was ground') is a timeless-fact vs historical-practice split and is legitimate. No AmE contamination found.",
+    "pedagogy": "Every factual claim in the rationale checked. 'case-hardening is a real vault-door fact the passage never states' — true on both halves. 'the sixty years in its opening sentence, the drill and the 1940s in its closing one' — verified against the actual opening and closing sentences. 'the text says the opposite in the same words the option borrows' — verified: option A borrows 'of that period' and 'the slab door it replaced' from the sentence that states the reverse. No false claim found.",
+    "integrated": "All four quoted phrases in the rationale appear VERBATIM in the current passage: 'was ground to a shallow taper ... rather than opening one', 'the plug doors of that period were often lighter than the slab doors they replaced', 'a drill cares nothing for corners', 'not, as the guidebooks like to say, because a circle is the strongest shape'. No self-contradiction in the rationale. Single-question unit, so no cross-question leak possible. Trap labels name the actual traps: A = contradiction (passage says 'often lighter'), C = outside_knowledge + surface_word_match (case-hardening is unstated; drill/sixty years/1940s are lifted surface tokens with the drill's role reversed).",
+    "key_sanity": "B is the single best answer and is defensible. The passage states its thesis twice — 'The reason was the seat' and the explicit rejection 'not ... because a circle is the strongest shape' — and B paraphrases the taper-seat mechanism sentence directly. The strongest student complaint would be for D, since the passage does say 'a corner is where a crowbar or a charge of powder can find a gap to work in'; but D's stated mechanism ('carries load evenly', 'could not be pulled out of true') is nowhere in the passage and is precisely the guidebook belief sentence 1 rejects. A is a flat contradiction of 'often lighter'. C's answer to the stem ('hardened face') is never stated. Blind-solvability is healthy on the final text: the option that explains the stem's 'round' is D, not the key, so a passage-blind test-wise reader is pulled toward the trap.",
+    "option_balance": "Word counts A=29, B=22, C=23, D=26 — key is not the longest or most qualified. hedge_balance_note holds: no distractor carries a hard absolutizer (D's 'could not be pulled out of true the way a square one could' is a comparative negative, not an always/never/all form), so 'strip the absolutes' does not deliver the key."
+  },
+  "audited_by": "adversarial-meta-auditor/opus",
+  "date": "2026-07-26"
+}

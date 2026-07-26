@@ -1,0 +1,49 @@
+{
+  "candidate_id": "las-b10-002",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "audited_at": "2026-07-26",
+  "audited_artifact": "candidates-final/las-b10-002.json (mtime 2026-07-26 15:01:23)",
+  "prior_audit_disposition": {
+    "prior_verdict": "REFUTED",
+    "prior_major_1_domain_register_kurser": "RESOLVED — passage now reads \"började lägga in moment om källkritik i sin egen undervisning\"; substring 'kurs' occurs 0 times anywhere in the unit (passage, options, rationales, generator_meta), and the fix is propagated into the q1 rationale and generator_meta.self_blind_solve (\"into their own teaching\").",
+    "prior_minor_2_incomplete_limit_enumeration": "RESOLVED — the q1 rationale now names all three unstated limits: \"lämnar hedgningen, stadieavgränsningen och ämnesavgränsningen outsagda\", and argues the silence/widening distinction against D explicitly.",
+    "prior_minor_3_non_verbatim_quote": "RESOLVED — \"tycktes förändras\" is no longer quoted; the sentence now reads unquoted (\"tycktes undervisningen förändras genom att ...\"). Mechanical re-check of every quoted phrase in both rationales against passage + prompts + option text: 'tycktes' VERBATIM, 'både utlåningen' VERBATIM, 'samtliga stadier' VERBATIM; no unmatched quote remains."
+  },
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "final_verify",
+      "claim": "The unit-level cross-question coupling that G-STEM raised as a major on q:2 (\"Cross-question leak … The pair is answerable without the passage\") is still structurally live in the shipping unit, and no review stage recorded an adjudication of it; the only counter-evidence is a later G-STEM re-run that silently returned pass on an essentially unchanged option set.",
+      "evidence": "verdicts/verdicts-gstem.jsonl, q:2, severity major: \"taken alone the four critiques are not separable blind (A is only a generic more-money complaint), but q:1 of the same set establishes the staffed-librarian finding across three of its four options, and B is the only critique that follows from it.\" That structure is unchanged in candidates-final: q1 A/C/D all assert a librarian-presence ↔ källkritik relation (\"blev det vanligare att en bibliotekarie anställdes\"; \"Där en bibliotekarie fanns på plats flera dagar i veckan arbetade lärarna oftare med källkritik\"; \"Bemannade skolbibliotek ökade …\"), and q2 B is the only critique that follows from a staffing thesis (\"Att pengarna gick till böcker och hyllor när det som saknades var någon som kunde arbeta med samlingen\"). The reciprocal direction also holds: verdicts-vfinal/verdicts-gstem.jsonl flags q:1 with \"A and C are exact causal mirrors of one association … the direction is not decidable without the passage (lean C)\" — and q2 B supplies exactly that missing direction (what was missing was the person, so staffing is the antecedent). The same re-run recorded q:2 \"verdict\": \"pass\" with empty findings, i.e. the two G-STEM runs disagree on q:2 and only the newer, more permissive one reaches reviews/final_verify.jsonl. Diff candidates-corrected→candidates-final touched only the passage register phrase, the q1 rationale, one trap label and self_blind_solve; no q1/q2 option text changed between the two G-STEM runs beyond the earlier \"höjde\"→\"ökade\" and \"samtliga stadier som ingick i\"→\"samtliga stadier i\" edits, neither of which affects the leak path.",
+      "why": "Held at minor rather than major on three grounds: the owning gate never escalated past \"flag\" (never kill) on either run and explicitly wrote \"Mirror-pair distractors are legitimate design\"; the coupling transmits the passage's thesis rather than a decidable key, so it lifts blind performance without making it deterministic; and a two-question single-thesis debattartikel cannot fully decouple its questions. Recorded so the owner can see that a gate-surfaced major was closed by a later pass with no written adjudication — the pipeline demonstrably does repair this class (reviews/pedagogy.jsonl las-b10-001: \"Broke live cross-question leak: q:3 option C no longer names the 15 Sept frist\"), so the silence here is a traceability gap, not evidence of absence."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The language stage recorded CORRECTED and its note enumerates only the register fix and the de-quoting; four gate-surfaced G-SPRÅK minors from the same votes are still verbatim in the shipping passage with no recorded accept-or-fix decision.",
+      "evidence": "Present in candidates-final passage (verified by substring check, all True): \"Skillnaden kan låta petig\" (verdicts-gsprak-1, class 6 idiomatic temperature; native \"Det kan låta petigt, men …\"); \"låter dörren stå låst\" (verdicts-gsprak-1, class 6 collocation — \"stå\" pairs with \"öppen\"; native \"håller dörren låst\"); \"planera tillsammans med någon\" (verdicts-gsprak-2, class 6, \"a vague dangling complement no native essayist would leave\"); \"Underlaget är smalt\" (verdicts-gsprak-3, class 6; native \"Underlaget är tunt\"). reviews/language.jsonl last row for this candidate: \"Fixed the shipped domain-register break … de-quoted the non-verbatim rationale phrase \\\"tycktes förändras\\\"; no option, key or trap touched; M-SCHEMA/M-BANDS/M-TELL/M-FORM pass\" — the four minors are neither fixed nor dismissed in writing.",
+      "why": "Informational only: all four are minor-severity idiom/collocation near-misses in author-voice prose; none touches an option, key, trap or rationale, and none is a comprehension hazard for a student. The observation concerns the completeness of the CORRECTED record, not shippability. By contrast, both majors from the same G-SPRÅK votes (\"sina egna kurser\", \"höjde både utlåningen\") are confirmed fixed — 'höjde' occurs 0 times in the final passage."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "integrated",
+      "claim": "q1 key C loosens two qualifiers of the passage finding beyond the three the rewritten rationale now accounts for: \"minst tre dagar i veckan\" becomes \"flera dagar i veckan\", and \"en utbildad bibliotekarie\" becomes \"en bibliotekarie\".",
+      "evidence": "Passage: \"Där en utbildad bibliotekarie fanns på plats minst tre dagar i veckan tycktes undervisningen förändras\". Key C: \"Där en bibliotekarie fanns på plats flera dagar i veckan arbetade lärarna oftare med källkritik inom sin ordinarie undervisning.\" The final rationale enumerates hedging, stadie- and ämnesavgränsning (the prior audit's minor 2, now resolved) but not these two.",
+      "why": "Does not unseat the key or make C false: the paragraph-3 exception (\"en bibliotekarie delades mellan tre eller fyra enheter\", where \"syntes ingen sådan förändring alls\") cannot plausibly be read as \"flera dagar i veckan\" at one school, so the loosening admits no counter-case, and no other option is closer to the passage. Recorded as the residual edge of the same generalisation family the pedagogy stage already tightened."
+    },
+    {
+      "severity": "info",
+      "stage_challenged": "pedagogy",
+      "claim": "generator_meta.planted_traps q2/A was relabelled reversed_causality → stance_inversion between candidates-corrected and candidates-final; no review note declares the edit.",
+      "evidence": "candidates/las-b10-002.json and candidates-corrected/las-b10-002.json: \"A\": \"reversed_causality (hållningsinvertering)\"; candidates-final: \"A\": \"stance_inversion (hållningsinvertering)\". reviews/language.jsonl for this candidate states \"no option, key or trap touched\"; reviews/pedagogy.jsonl carries no note for this candidate.",
+      "why": "The new label is the correct one — the Swedish parenthetical always read hållningsinvertering and the q2 rationale describes stance inversion (\"A inverterar hållningen\"), not reversed causality — so this is a genuine metadata repair. It is flagged only because it lands inside the same write the language note declares trap-clean, which makes this file's change log slightly inaccurate."
+    },
+    {
+      "severity": "info",
+      "stage_challenged": "final_verify",
+      "claim": "reviews/final_verify.jsonl still carries REFUTED for las-b10-002 on superseded evidence and must be re-folded against this audit.",
+      "evidence": "final_verify.jsonl (mtime 14:42:37) last row: \"verdict\": \"REFUTED\" … \"audit=REFUTED audit_major=1 audit_minor=2\" — computed from audits/las-b10-002.json as it stood at 14:36:24, i.e. 25 minutes before candidates-final was repaired at 15:01:23. Repair verified complete (see prior_audit_disposition). Independent re-verification of the shipping artifact: gates/scripts/run_mech.py → M-SCHEMA pass, M-BANDS pass, M-TELL pass, M-FORM pass, M-PLAGIARISM pass; verdicts-vfinal G-KEY 4 records (votes 1 and 2, both questions) all pass with solver_answer C / B matching key_spread [\"C\",\"B\"]; verdicts-vfinal G-DISTRACTOR both questions pass; passage word count 316 unchanged by the repair.",
+      "why": "Bookkeeping: the fold input changed under it. With audit_major now 0, the same fold rule that produced VERIFIED_NOTES for elf-b10-002/003/004 and las-b10-003 should now produce VERIFIED_NOTES here."
+    }
+  ]
+}

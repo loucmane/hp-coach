@@ -1,0 +1,20 @@
+{
+ "candidate_id": "elf-b10-002",
+ "audit_verdict": "CONFIRMED_NOTES",
+ "findings": [
+  {
+   "severity": "minor",
+   "stage_challenged": "integrated",
+   "claim": "The Q5 rationale's trap label for 'remittance' names a trap the rationale itself never argues. It is labelled 'collocation_misfit', but both grounds given are semantic/contextual, and the same rationale calls the exceptive phrase 'beyond the observation that' a 'concessive'. Two of the three metalinguistic labels in this rationale do not name what is actually going on.",
+   "evidence": "Q5 rationale: \"remittance = collocation_misfit (a sum of money sent in payment; 'no remittance to offer them' would promise a refund the passage never raises, and the sentence goes on to offer an argument, not a payment).\" Both reasons after the semicolon are about meaning and context, not collocation - and the unit uses 'sense misfit' for exactly that kind of argument twice in the same rationale ('reminder = sense misfit', 'remnant = sense misfit'). Compare Q4, where the label IS earned by the argument: \"sprouted = collocation_misfit ... but takings do not sprout in English.\" Same rationale, earlier: \"the concessive 'beyond the observation that' signals that what he lacks is a cure for their problem\"; passage: \"Meng has no ___(5)___ to offer them beyond the observation that the alternative is worse\" - 'beyond X' here is exceptive ('other than X'), not concessive.",
+   "why": "'Trap labels name the actual trap' is a first-line integrated-review check, and the label is part of the student-facing teaching payload: a learner who is being taught to distinguish collocation failures from sense failures is shown a sense failure filed under collocation, in a rationale that files two identical-shaped failures correctly three clauses earlier. Batch-1 precedent (las-b1-002) recorded the same class of defect as a minor. It changes no key and no verdict - 'remedy' remains the single defensible answer - so it is a labelling defect in the payload, not an item defect."
+  },
+  {
+   "severity": "minor",
+   "stage_challenged": "integrated",
+   "claim": "The unit's provenance document was not updated when the Q2 distractor was swapped, so gen-elf-cloze.NOTES.md now documents an option set that is not the one that ships, and certifies as 'Single defensible' the very option G-DISTRACTOR flagged as arguable.",
+   "evidence": "Shipped file, q_index 2, option A: \"Incidentally\". gen-elf-cloze.NOTES.md trap table: \"| 2 | connective | **Consequently** (B) | *Conversely* (polarity/wrong logic), *Ostensibly* ..., *Historically* ... |\" and its self-blind-solve section: \"**Gap 2 - Consequently.** Argued for *Conversely* by reading the counter as opposed to the box office - but the sentence states a result of the shortfall ... Single defensible.\" verdicts/verdicts-gdistractor.jsonl, target q:2: {\"verdict\": \"flag\", \"quote\": \"Conversely\", \"note\": \"ARGUABLE: ... 'Conversely, the counter is where the margin lives' is idiomatic and logically sound, and unlike most cloze distractors it survives the syntax and the surrounding sense unchanged.\"}",
+   "why": "The NOTES file is the unit's only record of why each distractor exists, and it is now wrong about the shipped option and wrong about the outcome of the check it reports passing. Anyone reconstructing this item later - a re-review, a family clone, or a future distractor swap - reads a trap table for 'Conversely' and a self-certification that the generator's blind solve found it single-defensible, when the downstream keyed judge disagreed and the option was removed. This is documentation drift only: the shipping JSON is internally consistent (option, rationale and generator_meta all reflect 'Incidentally'), so no stage verdict on the item is wrong."
+  }
+ ]
+}

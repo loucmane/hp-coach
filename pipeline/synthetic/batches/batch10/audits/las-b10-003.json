@@ -1,0 +1,46 @@
+{
+  "candidate_id": "las-b10-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The language stage shipped CORRECTED but fixed only one of the three items the blind G-SPRÅK fleet flagged; the two-voter collocation flag and the one-voter ellipsis flag both survive verbatim in the shipping file.",
+      "evidence": "G-SPRÅK vote 2 and vote 3 both flag \"På de svagt använda platserna minskade dessutom inte klagomålen\" (vote 3 adds: \"The same phrase recurs in q1 option C\"). Vote 3 also flags \"Just att svaret så sällan följs upp har gjort det bekvämt.\" Both strings are unchanged in candidates-final/las-b10-003.json: the passage still reads \"På de svagt använda platserna minskade dessutom inte klagomålen på lösa hundar i den omgivande parken\" and \"Just att svaret så sällan följs upp har gjort det bekvämt.\", and \"svagt använd\" recurs 5 times across passage (1), q1 option C \"I de svagt använda parkerna\" (1) and the two rationales (3). The only applied fix was \"skrivits in i en karta\" -> \"skrivits in på en karta\" (diff candidates/ vs candidates-corrected/).",
+      "why": "Both residuals are genuine near-miss collocations rather than errors ('svagt använd' is comprehensible and internally consistent across all five occurrences; 'gjort det bekvämt' is elliptical but reads as deliberate debate-column rhetoric), so CORRECTED remains a defensible verdict. Noted because the review record carries no findings field, leaving no trace of whether the reviewer adjudicated and overruled these two flags or simply missed them."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "An option-level idiom slip survives in q2 option C, in territory no gate covered — every G-SPRÅK verdict line for this unit has target \"passage\", so option Swedish was the language stage's sole responsibility.",
+      "evidence": "q2 option C: \"Konflikter om parkytor beror främst på att staden förtätas och att grönytorna per invånare blir färre.\" 'grönyta per invånare' is an area ratio (m2/inv.), which Swedish planning prose scales with 'minskar' / 'blir mindre', not with the count predicate 'blir färre'. All three G-SPRÅK lines in verdicts/verdicts-gsprak-{1,2,3}.jsonl read \"target\": \"passage\"; none targets the options.",
+      "why": "Minor: it sits in a distractor, does not affect solvability or the key, and the count reading ('the number of green spaces per inhabitant') is recoverable. It does not move CORRECTED, but it is the kind of class-6 collocation the same reviewer fixed in the passage, so it is a real miss rather than a stylistic preference."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "Two soft over-readings of the passage in the q2 rationale: it attributes an evaluative word to the text that is not there, and attributes the counting motif to the wrong paragraph.",
+      "evidence": "Rationale q2: \"vilket texten uttryckligen avvisar när den slår fast att det finns goda skäl att hägna in\" — the passage says only \"Att det finns skäl att hägna in ser jag mycket väl\"; the substring 'goda skäl' occurs 0 times in the passage (programmatic check). Rationale q2: \"kommunernas standardsvar räknas i antal staket (stycke 1)\" — stycke 1 is \"Hundrastgården har blivit kommunernas standardsvar. Där klagomålen på lösa hundar hopar sig ritas ett staket in, ärendet avslutas och ingen återkommer till frågan. Just att svaret så sällan följs upp har gjort det bekvämt.\" and contains no counting language; 'antal' occurs exactly once in the whole passage, in stycke 3 (\"antalet anlagda rastgårdar\"), which the same rationale separately and correctly cites.",
+      "why": "Neither is a false claim about the world and neither is presented inside quotation marks, so the integrated verbatim-quote contract is not breached and the teaching payload still lands: the writer's concession is real and stycke 1 does portray the fence as the reflexive per-complaint response. Insufficient to flip MINOR_FIXES / MINOR_NOTES, but the rationale is the student-facing text and 'goda' inflates a hedge the unit elsewhere trades on."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "process/re-gate",
+      "claim": "Both stages that edited an option shipped without the re-gate the runbook mandates for option edits; no post-correction verdict record exists for this unit.",
+      "evidence": "BATCH-RUNBOOK.md stage table: stage 6 language re-gate = \"mech + blind G-KEY×2 + G-DISTRACTOR on any option edit\"; stage 7 pedagogy re-gate = \"G-KEY/G-DISTRACTOR on any key/distractor edit\". Stage 6 rewrote q1 option C (\"Klagomålen på lösa hundar flyttade sig i de svagt använda parkerna till andra platser i staden.\" -> \"I de svagt använda parkerna flyttade sig klagomålen på lösa hundar till andra platser i staden.\") and stage 7 rewrote q2 option A (\"...eftersom klagomålen ändå bara flyttar sig till andra tider på dygnet.\" -> \"...eftersom klagomålen ändå bara förflyttas i stället för att minska.\"). Every file in verdicts/ predates the edits (verdicts.jsonl mtime 14:12 vs candidates-corrected/ 14:17 and candidates-final/ 14:22) and verdicts-vfinal/ is empty.",
+      "why": "Kept minor because stage 9 final_verify is defined as \"fresh blind G-KEY×2 + G-DISTRACTOR + adversarial meta-audit ... it IS the re-gate of the final artifact\" and is still in flight, so the coverage gap is closable rather than shipped. Recorded so the empty verdicts-vfinal/ is not later read as evidence that the edited options were ever blind-solved."
+    }
+  ],
+  "confirmed_clean": [
+    "KEY SANITY q1=A: every distractor has an explicit textual defeater — B inverts the arrow the passage never states (the passage gives no placement rationale, and says 'folk', not 'hundägare'); C is defeated by 'de förflyttades i stället till andra tider på dygnet' against its 'till andra platser i staden'; D is defeated by 'minskade dessutom inte klagomålen'. Both blind G-KEY solvers independently returned A.",
+    "KEY SANITY q2=D: A is disowned by 'Att det finns skäl att hägna in ser jag mycket väl' plus 'talar för bättre placerade inhägnader, inte för fler'; B is doubly defeated ('Hennes material talar framför allt om läge' vs 'viktigaste resultat', and 'betydde mindre än väntat' vs 'saknade betydelse'); C is unmentioned in the passage. Both blind G-KEY solvers independently returned D.",
+    "INTEGRATED verbatim check passes: every quoted phrase in both rationales resolves verbatim against the CURRENT passage/option text, including the long stycke-2 quote and the key-facing quotes 'överblivna ytor' (q1 A), 'andra platser i staden' (q1 C), 'saknade betydelse' (q2 B), 'upphörde helt' (q1 D). No stale quote survived either option edit.",
+    "NO cross-question leak in the shipped file — and stage 7 removed one: candidates-corrected q2 option A read 'eftersom klagomålen ändå bara flyttar sig till andra tider på dygnet', i.e. it stated verbatim the passage fact that discriminates q1's trap C. The final rewrite to 'förflyttas i stället för att minska' closes that leak. Correctly caught.",
+    "Stage 7 also repaired a false claim in the q1 rationale: candidates-corrected asserted 'Ett enda utbytt ord skiljer alternativet från texten', which is false (three words differ: 'tider på dygnet' -> 'platser i staden'); the final reads 'Skillnaden mot texten ligger i ett enda led — dygnets tider mot stadens platser'.",
+    "Trap labels name the actual traps: q1 B reversed_causality, q1 C surface_lexical_echo (tider->platser), q1 D overgeneralisation, q2 A overgeneralisation, q2 B detail_as_main, q2 C plausible_worldknowledge — each rationale's characterisation matches generator_meta.planted_traps.",
+    "The length claims in self_blind_solve verify exactly: q1 longest by words = D (18w/101ch), key A 17w/105ch — 'one word shorter though 4 characters longer'; q2 longest = B (115ch); key D is the shortest option in the unit (15w/85ch). No test-wise length cue survives across the unit.",
+    "No self-contradiction between rationales, options, stem wording ('de trettioen hundrastgårdarna' matches 'trettioen hundrastgårdar'), the gloss ('restyta = markbit som blivit över' supports q1 A's 'överblivna ytor'), or generator_meta.key_spread ['A','D']."
+  ],
+  "audited_by": "adversarial-meta-audit/opus",
+  "date": "2026-07-26"
+}
