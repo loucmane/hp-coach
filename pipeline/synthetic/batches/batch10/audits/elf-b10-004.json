@@ -1,0 +1,41 @@
+{
+  "candidate_id": "elf-b10-004",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The trap tag on distractor A does not name the actual trap, and the taxonomy label that does fit sits on the untagged distractor D.",
+      "evidence": "Rationale: \"A = outside_knowledge: the windowless hall means the light is artificial, so a reader may promote that incidental fact into the point\" — the described mechanism is an inference from an IN-passage detail ('the hall has no windows'), not knowledge imported from outside. The same rationale describes D as \"a plausible real-world belief (chemicals or minerals coloring the water) that the passage contradicts\" and gives it no tag, yet that is verbatim the corpus definition of the tag: elf/families.json ELF-TYPE-001 trap_anatomy tag \"outside_knowledge\" — \"First instinct is to fill in a story-shaped explanation ... a plausible real-world cause\"; ELF-TYPE-006 layer1_distractor_patterns — \"Rimlig verklig orsak som inte står i texten\".",
+      "why": "The rationale is declared Layer-2 explanation source material (GENERATION.md: \"This becomes Layer-2 explanation source material downstream\") and the tags feed family-level trap statistics, so a swapped tag propagates a wrong misconception label to students and to the stats. Minor, not verdict-changing: both distractors are correctly ARGUED wrong in prose, only the taxonomy label is misplaced."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The world-knowledge shortcut that G-STEM flagged MAJOR is still present in the shipped file, and nothing in reviews/pedagogy.jsonl records that the pedagogy stage adjudicated it.",
+      "evidence": "verdicts.jsonl G-STEM q:1 verdict \"flag\", severity major: \"WORLD_KNOWLEDGE (blind pick C): water is intrinsically blue through red-end absorption and the standard demonstration is exactly a white-lined indoor pool, so a reader who knows the physics picks C without the text.\" Independent re-test on options alone confirms it: A (\"artificial lighting draws out a tint\"), B (\"a white lining brings out more color ... than a blue lining\") and D (\"comes from what is dissolved in the water\") are all false as real-world physics, leaving C as the only factually true option — so a physics-literate student scores without reading. reviews/pedagogy.jsonl carries only {\"verdict\":\"MINOR_FIXES\"} with no findings field.",
+      "why": "Not a stage miss — the gate caught it and report.json carries the unit as SURVIVED_FLAGGED — so it does not refute the pedagogy verdict. Recorded here because the construct-validity risk ships with the unit and the accepted mitigation (\"B and D are substantive real misconceptions ... normal comprehension work\") lives only in the gate record, not in any review record."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "\"the hall\" for the enclosure of an indoor municipal pool is the one lexical choice in the passage that leans Nordic/European rather than AmE, in a unit whose declared house style is AmE.",
+      "evidence": "Passage: \"the municipal pool at Hallvik settles that question rather neatly: the hall has no windows\". generator_meta.fictional_source.publication_type: \"popular-science weekly, science desk column (AmE house style)\"; spelling_variety \"AmE\". US copy for this referent is normally \"the building\", \"the room\", \"indoor pool\" or \"natatorium\"; \"swimming hall\" is a Scandinavian/German calque pattern (simhall, Schwimmhalle), and in AmE \"pool hall\" denotes billiards.",
+      "why": "Reported as an observation, not a defect: 'hall' = large room for assembly is dictionary-standard English, the setting is explicitly Nordic (Hallvik, Tova Ingelsson), and G-ENG passed 3-0 with G-REGISTER pass. It does not flip the language verdict (CORRECTED), but it is the item a native AmE desk editor would most plausibly still change."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The unit-level `family` slug uses the BrE spelling \"colour\" in a unit whose declared spelling_variety is AmE and whose own spelling_note asserts \"no BrE spellings ('colour', 'metres')\" are used.",
+      "evidence": "family: \"ELF-TYPE-006 / swimming-pool-colour-water-absorption-optics-science-journalism-short\" vs generator_meta.spelling_variety: \"AmE\". The spelling_note scopes its claim to \"student-facing text\", so the note is not false — but the metadata is internally inconsistent with the unit's declared variety.",
+      "why": "Cosmetic and non-student-facing, and there is precedent (elf-b1-001..004 batch: elf-b1-003 is AmE with \"animal-behaviour-science-detail\"). Flagged only because metadata/text cross-consistency is exactly what the integrated stage owns."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language, pedagogy, integrated (record format)",
+      "claim": "The three review records are verdict-only and identical for all seven units in the batch, so the recorded verdicts cannot be falsified from the records themselves.",
+      "evidence": "reviews/language.jsonl: all 7 lines \"CORRECTED\"; reviews/pedagogy.jsonl: all 7 lines \"MINOR_FIXES\"; reviews/integrated.jsonl: all 7 lines \"MINOR_NOTES\". No `findings` key on any line.",
+      "why": "I therefore audited the artifacts instead, and the artifacts DO substantiate each verdict for this unit: candidates→candidates-corrected shows the language edit (\"the tiling gets the rest of it\" → \"the tiling gets the rest\", passage and rationale in step), and candidates-corrected→candidates-final shows the pedagogy/integrated fixes — a rationale that had falsely claimed \"every detail given about it strips one of them away\" (untrue of 'the water is blue anyway') was rewritten to the correct three-way mapping, and a hedge_balance_note that had falsely claimed the key \"carries no hedge marker; the distractors are unhedged too\" was corrected to the accurate reading (C \"can look blue\", A \"tends to\"). Verdicts stand; only the record granularity is weak."
+    }
+  ]
+}
