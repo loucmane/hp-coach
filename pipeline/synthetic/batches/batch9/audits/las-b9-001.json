@@ -1,0 +1,27 @@
+{
+  "candidate_id": "las-b9-001",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The hedge-balance defence that the pedagogy stage itself rewrote is false on Q3: the shipping metadata claims the key is 'confident and specific' in Q3, but Q3's key is the only epistemically qualified option in its set, so 'pick the most-hedged option' scores blind on Q3 and again on Q4 (expected blind yield ~2.75/4 vs 1/4 chance) — probe 4's 'is the key ... the most-hedged?' check returned SOUND with no construct-validity note.",
+      "evidence": "generator_meta.hedge_balance_note (candidates-final): \"Key is hedged in Q1 and Q4 but confident and specific in Q2 and Q3; Q1's reversed-causality distractor carries the same hedge ('tycks oftare') as the key, so 'pick the qualified option' does not score.\" Q3 options as shipped — A \"Den utgör undersökningens tyngsta belägg för att en ledare ur den egna kretsen höll cirkeln vid liv.\", B \"Den visar hur anteckningarna magrade med åren och därmed hur opålitliga de sena protokollen är.\", C \"Den lyfts fram som ett undantag: en cirkel som fortsatte trots att ingen ur kretsen ledde den.\", key D \"Den låter en enskild cirkel åskådliggöra vad materialet i övrigt bara antyder, utan att gälla som bevis.\" — D is the only option carrying epistemic qualification ('bara antyder', 'utan att gälla som bevis') against three absolutes. The pipeline's own blind record says so in writing: verdicts-gstem.jsonl q:3 (severity major) \"D is the only epistemically hedged option (illustrates but does not prove) against A's absolute 'tyngsta belägg'. That is a familiar test-wise lean toward D\"; and q:4 (severity major) \"B is the sole qualified statement among three absolutes ... The hedge-among-absolutes shape gives a strong blind lean to B.\" Attribution: the diff candidates-corrected -> candidates-final (the pedagogy stage's own output) rewrites this exact sentence, replacing \"No question has the key as the strictly longest option.\" with the measured length clause, while leaving the Q3 hedge clause untouched.",
+      "why": "GENERATION law 10 ('Break the correlation across the unit: on some questions make the key the confident, specific claim') is explicitly judgment that pedagogy-review audits (probe 4), and the stage held the false sentence in its hands while editing it; not raised to major because the length claims it added are exactly right (Q1 key 110 chars vs next 112; Q4 key 102 vs next 110; Q2 key 94 vs 91; Q3 key 104 vs 100), Q1 genuinely neutralises the heuristic with a co-hedged distractor ('tycks oftare'), Q2 is hedge-neutral, and the blind gate itself judged the lean 'narrowed, not decided'."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Mislabelled trap in shipping metadata: generator_meta.planted_traps.\"3\".\"C\" is tagged 'reversed_causality', but the operation is a reversal of the anecdote's rhetorical function (illustration -> exception), and no cause-effect relation is asserted by either the option or the passage sentence it distorts.",
+      "evidence": "planted_traps.\"3\".\"C\" = \"reversed_causality\". Option 3C: \"Den lyfts fram som ett undantag: en cirkel som fortsatte trots att ingen ur kretsen ledde den.\" The unit's own rationale avoids the causal word and names the real operation: \"C vänder exemplets riktning (reversed): berättelsen presenteras som en illustration av mönstret, inte som ett undantag från det, och texten säger ingenting om vem som ledde cirkeln i Kvarnfors.\" The source sentence is functional, not causal: \"Men just därför säger den något: här syns i liten skala den återkommande ordning som siffrorna annars bara låter ana\". More accurate labels already exist in the corpus taxonomy (batches/*/candidates-final: 'purpose_swap', 'reversed_direction', 'role_or_attribution_swap').",
+      "why": "The integrated sweep's brief names 'a mislabelled trap' as one of the things it exists to catch, and this label feeds Layer-2 explanation metadata downstream; cosmetic rather than student-facing, which is consistent with the recorded MINOR_NOTES rather than refuting it."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "Rationale accuracy slip in the student-facing teaching payload for q:4 option A: the book grant is described as a condition in the 1921 statute, when the passage makes it the thing the conditions qualified a circle for.",
+      "evidence": "q:4 rationale: \"A är detail_as_main med en förvrängning: bokbidraget nämns som ett villkor i stadgan, men texten hävdar aldrig att det avgjorde vilka cirklar som fortsatte\". Passage: \"Där slogs fast att en cirkel skulle ha minst fem inskrivna medlemmar, föra protokoll över varje sammankomst och hinna med tolv möten per termin för att komma i fråga för bidrag. Bidraget betalades inte ut i pengar utan i böcker\" — the enumerated requirements are the villkor; the bidrag is the reward. The unit's own q:1 rationale states it correctly: \"bokbidraget hör till 1921 års stadga, alltså till bakgrunden och inte till genomgångens resultat\".",
+      "why": "Pedagogy probe 3 treats every claim in a rationale as a claim to verify because rationales ship to students as Layer-2 explanation source; here the loose phrasing inverts the very condition/reward relation that q:2 tests, though the rejection of distractor A is still correct on its stated ground."
+    }
+  ]
+}

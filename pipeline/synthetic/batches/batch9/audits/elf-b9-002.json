@@ -1,0 +1,27 @@
+{
+  "candidate_id": "elf-b9-002",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The Q4 elimination reason taught for 'vanity' is the weakest of the three and is mildly undercut by the same rationale's own account of the mechanism: it tells the student self-regard is irrelevant, when the passage's stated cause of queue-holding is precisely a self-regarding one.",
+      "evidence": "Rationale q_index 4: \"vanity = sense misfit (self-regard is not what anyone would suppose holds a queue together, so denying it explains nothing either).\" Two sentences earlier the SAME rationale says: \"the people 'hold their places anyway, because the alternative is to be looked at', i.e. what does the holding is exposure to other people's eyes, not politeness.\" Passage: \"they hold their places anyway, because the alternative is to be looked at.\"",
+      "why": "The real reason 'vanity' fails is structural and identical to the 'hostility' trap — the negated frame 'is not ___ at all' would have the passage deny a mechanism it in fact affirms — not that self-regard is unimaginable as a queue-holding force. The elimination verdict is still correct (shame/exposure to disapproval is not vanity, which is pride in one's own appearance or merit), and the key is unaffected, so this does not refute MINOR_FIXES; it is an instance of exactly the class of fix that verdict names. Reported as minor, not verdict-changing."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The shipped Q4 rationale is not the text that was carried through the earlier candidate stage, and the three review records carry no version, hash or text-snapshot field, so the records alone cannot establish that the integrated CONSISTENT verdict was taken over the shipping bytes.",
+      "evidence": "diff candidates-corrected/elf-b9-002.json vs candidates-final/elf-b9-002.json shows exactly one changed line — the q_index 4 rationale. Corrected: \"...the next sentence supplies the proof by naming its opposite: the people 'are cold, impatient and privately sure that the counter could be staffed better; they hold their places anyway'... but 'not hostility at all' would claim the queuers are not unfriendly, which the very next clause contradicts\". Final: \"...the sentence that follows supplies the proof: the people 'hold their places anyway, because the alternative is to be looked at'... but 'not hostility at all' would deny exactly the low-grade hostility the passage credits with the enforcing — 'a tightening of the shoulders, a cough, a stare held half a second too long', which 'are usually enough'\". All three review lines are undated beyond \"2026-07-26\" and carry no content reference: {\"candidate_id\":\"elf-b9-002\",\"stage\":\"integrated\",\"verdict\":\"CONSISTENT\",\"reviewed_by\":\"integrated-review/opus\",\"date\":\"2026-07-26\"}.",
+      "why": "Post-review rationale edits are the canonical way an integrated verdict goes stale (a rationale that no longer matches the text it was cleared against). Here the audit re-ran the check directly on the shipped file and it holds — all 13 quoted spans in all 5 rationales appear verbatim in the current passage, including the two spans that are new in the final text ('a tightening of the shoulders, a cough, a stare held half a second too long' and 'are usually enough'). So CONSISTENT is substantively correct for the shipped unit; the gap is record traceability, not content."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "key-sanity",
+      "claim": "The final-version G-KEY vote-1 record for this unit is field-mangled: per-question identity is jammed into candidate_id, the target field is empty and solver_answer is blank, so the vote-1 leg of the key re-verification is only machine-readable by string-parsing candidate_id.",
+      "evidence": "verdicts-vfinal/verdicts-gkey-1.jsonl: {\"candidate_id\":\"elf-b9-002 1 D\",\"gate\":\"G-KEY\",\"target\":\"q:\",\"verdict\":\"pass\",\"findings\":[],\"executed_by\":\"claude-opus-4-8/G-KEY\",\"solver_answer\":\"\",\"vote\":1} — and the same shape for gaps 2-5 and for every other batch-9 unit. Contrast the well-formed vote 2: {\"candidate_id\":\"elf-b9-002\",\"gate\":\"G-KEY\",\"target\":\"q:1\",...,\"solver_answer\":\"D\",\"vote\":2}.",
+      "why": "Batch-wide record-hygiene defect, not a unit defect, and it does not put the keys in doubt: the answers recoverable from the mangled ids (1 D, 2 B, 3 A, 4 C, 5 D) match the shipped keys exactly, well-formed vote 2 agrees on all five, and this auditor's own independent solve of all five gaps agrees. Noted because a split-vote rule that reads solver_answer would see an empty string on the vote-1 leg."
+    }
+  ]
+}
