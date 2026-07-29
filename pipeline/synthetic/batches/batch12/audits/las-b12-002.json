@@ -1,0 +1,41 @@
+{
+  "candidate_id": "las-b12-002",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The q1 rationale contains a quotation that does not appear verbatim in the passage, which is exactly integrated-review check row 4 (\"every phrase a rationale quotes/names actually appears in the current option text and the passage\") — the check the skill itself calls the highest-yield one after corrections.",
+      "evidence": "Rationale q1: \"barnfamiljer nämns faktiskt, men just som den grupp där sambandet ”knappt gick att belägga alls”\". Passage: \"För barnfamiljer gick det knappt att belägga alls; de planerar ändå sina rundor efter caféer.\" The quoted string \"knappt gick att belägga alls\" does not occur; the passage word order is \"gick det knappt att belägga alls\". Mechanical check over all 7 candidates-final units in batch12: 17 of 18 rationale quotes are exact; this is the only miss in the batch, so it is not a corpus convention.",
+      "why": "Per the integrated skill's own scale, a rationale quoting wording that is not in the current text is \"a fixable mismatch\" (INCONSISTENT), not \"cosmetic/metadata\" (MINOR_NOTES); a student who searches the passage for the quoted string will not find it. The recorded verdict is MINOR_NOTES with no findings logged and the text unchanged (candidates-final == candidates-corrected apart from the pedagogy edits made at 11:22, before integrated ran at 11:28)."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The q2 trap label for option D does not name the actual trap, and the rationale contradicts its own label two clauses later.",
+      "evidence": "generator_meta.planted_traps[\"2\"][\"D\"] = \"true_but_irrelevant (fel klagomål om caféerna)\" and the rationale says \"D är true_but_irrelevant i förvrängd form\". The corpus trap glossary (pipeline/synthetic/las/families.json) defines true_but_irrelevant as \"Sant i sig men besvarar inte den ställda frågan.\" But the same rationale states the complaint is not what the text says (\"klagomålet gäller att de tar betalt genom ett köp, inte att de skulle vara för få eller svårhittade\") and closes with \"Ingen distraktor är alltså ordagrant sann; var och en bär ett utpekbart fel.\" D (\"Att caféernas toaletter är för få och alltför svåra att hitta för besökare.\") is unsupported by the passage, so it is not \"sant i sig\" — the operative mechanism is unsupported plausibility plus lexical echo of \"caféerna\", not true-but-irrelevant.",
+      "why": "\"Trap labels name the actual trap\" and \"no self-contradiction\" are both integrated-stage duties; the hedge \"i förvrängd form\" is an admission that the labelled class does not apply, and the label is student-visible inside the rationale."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The q2 rationale states a factual claim about the passage that the passage refutes: that the cost-shifting argument is the only objection the text advances.",
+      "evidence": "Rationale q2: \"Alternativet är en omskrivning, inte ett citat, och det är den enda invändning texten faktiskt för fram.\" The passage advances a second, structurally prominent objection — it is the title claim: \"Toaletterna försvinner utan att någon beslutar det\", restated in §1 (\"Nedläggningen av en offentlig toalett ser sällan ut som ett beslut\") and in §5 (\"kommunen har varken avvecklat den eller tagit ansvar för den ... Ingen bestämmer sig, och sedan är saken ändå bestämd.\").",
+      "why": "Pedagogy probe 3 requires fact-checking every claim in the teaching payload; the rationale is student-visible and here teaches a false reading of the essay's argument structure. The intended sense is clearly \"the only objection among these four options\", which is true — so this is a wording defect, not a key defect; key A remains uniquely correct."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The q1 rationale asserts that the causal direction is explicit in the passage, while the passage explicitly disclaims that its data can establish direction.",
+      "evidence": "Rationale q1: \"Riktningen (toalettovisshet som skäl att inte ge sig ut) och avgränsningen (de äldsta, samt personer med tarmsjukdom) står båda uttryckligen i texten\". Passage §3: \"Vaara medger också att hennes material inte kan skilja orsak från ordningsföljd: den som redan drar sig för att gå ut märker förstås bristen tydligare än andra.\"",
+      "why": "The rationale conflates \"the respondents stated this as their explanation\" (which is explicit) with \"the direction is established\" (which §3 explicitly denies) — the subtlest point in the passage, and the one a strong student will notice. The key survives because option C is carefully worded with \"angav\" (reported), not caused; the fix is one clause in the rationale, so the verdict floor is MINOR_FIXES rather than SOUND."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "Two of the three G-SPRÅK vote-1 class-6 findings — including the one rated major — are still present verbatim in the shipping text, with no disposition recorded anywhere.",
+      "evidence": "verdicts.jsonl, G-SPRAK vote 1: major on \"Institutet för stadsnära tjänster\" (\"'stadsnära' collocates with natur/skog/odling/mark ... as an institute name it reads like a mistranslation of 'urban services'\") and minor on \"Invändningarna mot att bygga nytt är inte tomma.\" (\"Swedish collocates 'tom' with ord/löften/fraser; for arguments the native pairings are 'ihåliga' or 'grundlösa'\"). Both strings are unchanged in candidates-final. Only the third finding was applied: \"lägger förstås märke till bristen tydligare\" → \"märker förstås bristen tydligare\" (the one flagged by two of three votes). reviews/language.jsonl records only {\"verdict\":\"CORRECTED\"} with no findings array.",
+      "why": "I independently reach the same reading on \"stadsnära\": it collocates with land/space near a city (stadsnära natur/odling/skog), not with services, so the invented institute name is a real collocation misfit in student-visible prose. The one-kill-vote outcome legitimately routes to adjudication rather than a kill (gates/README.md: \"the lone dissenter is not discarded but carried to adjudication as a flag\"), so CORRECTED is defensible — but silently dropping a major class-6 finding with no recorded reasoning defeats that routing."
+    }
+  ]
+}

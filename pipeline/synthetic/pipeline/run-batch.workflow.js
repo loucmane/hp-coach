@@ -73,12 +73,14 @@ phase('Prep')
 const prep = await agent(
   `You are the PREP stage of the P5 batch pipeline. Work in the repo root.\n` +
   `Batch dir: ${BDIR}. Candidates: ${BDIR}/candidates/*.json.\n\n` +
-  `1. mkdir -p ${BDIR}/verdicts ${BDIR}/blind ${BDIR}/distractor ${BDIR}/reviews\n` +
+  `1. mkdir -p ${BDIR}/verdicts ${BDIR}/blind ${BDIR}/distractor ${BDIR}/stems ${BDIR}/reviews\n` +
   `2. For EACH candidate file build a BLIND sheet (answer key + teaching payload removed):\n` +
   `   jq 'del(.questions[].key, .questions[].rationale, .questions[].generator_meta, .questions[].family) | del(.key, .rationale, .family, .generator_meta)' <cand> > ${BDIR}/blind/<id>.json\n` +
   `   Then VERIFY zero leaks: grep -E '"(key|rationale|generator_meta|family)"' ${BDIR}/blind/<id>.json must return NOTHING. If any blind sheet is contaminated, STOP and report contaminated:true — do not proceed.\n` +
   `3. For EACH candidate build a DISTRACTOR sheet (key KEPT, only teaching payload removed):\n` +
   `   jq 'del(.questions[].rationale, .questions[].generator_meta) | del(.rationale, .generator_meta)' <cand> > ${BDIR}/distractor/<id>.json\n` +
+  `3b. For EACH candidate build a STEMS-ONLY sheet for G-STEM (its contamination rule forbids the passage in context):\n` +
+  `   jq '{candidate_id, section, questions: [.questions[] | {q_index, prompt, options}]}' <cand> > ${BDIR}/stems/<id>.json  (mkdir -p ${BDIR}/stems; verify no "passage" or "key" string in the output)\n` +
   `4. Run mechanical gates over the REAL candidates:\n` +
   `   python3 ${ROOT}/gates/scripts/run_mech.py ${BDIR}/candidates/*.json --parsed-dir data/parsed --out ${BDIR}/verdicts/verdicts-mech.jsonl\n` +
   `   (if data/parsed is absent, add --no-plagiarism and say so.)\n\n` +
@@ -126,7 +128,7 @@ const allIds = units.map(u => u.candidate_id)
 const fleet = [
   judge('G-KEY', 1, 'blind', allIds, 'G-KEY.md', 'Blind-solve EACH question; commit solver_answer BEFORE any key reasoning. Per-question target q:<n>.'),
   judge('G-KEY', 2, 'blind', allIds, 'G-KEY.md', 'Blind-solve EACH question independently; commit solver_answer. Per-question target q:<n>.'),
-  judge('G-STEM', null, 'blind', allIds, 'G-STEM.md', 'Per-question: can the stem be answered without the passage? structural-leak/recall = kill; world-knowledge = flag.'),
+  judge('G-STEM', null, 'stems', allIds, 'G-STEM.md', 'Per-question: can the stem be answered without the passage? structural-leak/recall = kill; world-knowledge = flag.'),
   judge('G-DISTRACTOR', null, 'distractor', allIds, 'G-DISTRACTOR.md', 'Per-question: is any distractor a genuinely defensible SECOND answer given the kept key? Kill only genuine double-keys.'),
   judge('G-REGISTER', null, 'blind', allIds, 'G-REGISTER.md', 'Passage-level authenticity vs the corpus. target=passage.'),
 ]

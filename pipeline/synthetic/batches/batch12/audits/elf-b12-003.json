@@ -1,0 +1,72 @@
+{
+  "candidate_id": "elf-b12-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "audit_round": 2,
+  "audited_by": "adversarial meta-auditor (re-audit of repaired artifact)",
+  "date": "2026-07-29",
+  "prior_findings_disposition": [
+    {
+      "prior_severity": "major",
+      "prior_claim": "originality_note false — 'Harbor Fog' is a real Benjamin Moore color (2062-70)",
+      "status": "RESOLVED",
+      "verification": "Handle renamed to 'Ferrymouth Haze' throughout passage, rationale, key_derivation and fictional_entities. Independent web check this round: exact-phrase search \"Ferrymouth Haze\" paint color returns ZERO paint colors of that name (only Benjamin Moore 'Sea Haze' 2137-50 and 'Harbor Haze' 2136-60 as near-neighbours, neither matching); search \"Ferrymouth\" returns no place, product or trademark of that name (only real -mouth toponyms: Barmouth, Exmouth, Teignmouth); \"Ferrymouth\" + paint/shade/colour returns nothing. Re-checked the other two entities: \"Bellamy & Roe\" paint returns no such maker (only unrelated Bellamy Painting Contractor / Roe Paint / Bellamy's Paint & Body); \"Odile Brennan\" writer returns no design writer. originality_note was also rewritten honestly — it now DISCLOSES the collision fix ('It replaces an earlier handle that collided with a real, currently catalogued manufacturer color') rather than papering over it, and pre-disposes 'Tomato'/brick/ash/sand as ordinary nouns rather than coined handles, which is the correct reading since the passage's own point is that literal names borrow from real things."
+    },
+    {
+      "prior_severity": "minor",
+      "prior_claim": "q1 rationale mislabels D's trap as surface_word_match on 'checkable', a word absent from D",
+      "status": "RESOLVED",
+      "verification": "Shipping rationale now reads \"D = surface_word_match on 'the trade' with the wrong auditor\". 'the trade' is present in both the passage ('The trade calls them handles') and option D ('the trade's own color standards'), so the label now names real recycled vocabulary."
+    },
+    {
+      "prior_severity": "minor",
+      "prior_claim": "No G-DISTRACTOR record postdating the option-A rewrite",
+      "status": "RESOLVED",
+      "verification": "verdicts-vfinal/verdicts-gdistractor.jsonl line 20, executed_by 'claude-opus-4-8/G-DISTRACTOR-regate1229', file mtime 11:56 — after candidates-final/elf-b12-003.json (11:45) and after the blind/ + distractor/ sheets were rebuilt from the final text (11:52). Sheets verified by hand: blind/elf-b12-003.json contains zero occurrences of key|rationale|generator_meta|family and carries the post-rename 'Ferrymouth Haze' passage; distractor/elf-b12-003.json retains key 'B' and strips rationale/generator_meta, per the runbook's different-sheet rule. Fresh blind G-KEY x2 (11:55, 11:56) both solved B against key B."
+    },
+    {
+      "prior_severity": "minor",
+      "prior_claim": "report.json ships the unit as SURVIVED_FLAGGED against a stale G-STEM flag quoting option text that no longer exists",
+      "status": "NOT RESOLVED (carried forward, see findings)",
+      "verification": "report.json mtime unchanged at 11:09; its elf-b12-003 flag still quotes 'A (tested on customers)'. pedagogy.jsonl last line explicitly defers it to 'stage 9.2 re-gate (records lane, not pedagogy edits)'; no such record exists anywhere on disk."
+    }
+  ],
+  "fresh_probes_run": [
+    "Re-ran run_mech.py against the exact shipping file: M-SCHEMA / M-BANDS / M-TELL / M-FORM / M-PLAGIARISM all pass, zero findings (--parsed-dir data/parsed, 28 files present, so M-PLAGIARISM genuinely compared).",
+    "Band check by hand: passage 132 words, inside ELF short_text [101, 368]; 4 options; stem 16 words inside prompt band.",
+    "hedge_balance_note arithmetic recomputed exactly: B 16 w / 79 ch, A 17/86, C 15/83, D 17/87 — key is shortest by characters and second-shortest by words, as claimed; the note's 2-2 semantic split (A,B insulated / C,D answerable) is the split I read too.",
+    "Every quoted string in the q1 rationale checked verbatim against the passage — all match (only case-normalisation of a sentence-initial 'The' in 'the occasional literal name', which is ordinary quoting practice).",
+    "AmE/BrE scan of all student-facing text: zero BrE forms; 'toward', 'recognized', 'color' present as spelling_note claims.",
+    "Anti-plagiarism Tier-2 spot probe: exact-phrase search of a distinctive 8-token span ('drift toward places nobody has been and weather nobody has photographed') returns zero verbatim hits.",
+    "Cross-unit check requested in brief — las-b12-001: all four open G-STEM majors ARE dispositioned one by one in the last pedagogy.jsonl line (q1-q4, with q2 and q3 edited and the edits described substantively and plausibly); its post-regate 12:07 write was verified NOT to touch student-facing text (blind/las-b12-001.json passage, stems and options are byte-equal to candidates-final), so its V-FINAL legs are not stale."
+  ],
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "REPEAT from audit round 1, not fixed: report.json still ships elf-b12-003 as SURVIVED_FLAGGED on a G-STEM flag whose argument is built from option text that no longer exists in the shipping file, and the repair round consciously deferred it to a 'stage 9.2 re-gate' that was never recorded.",
+      "evidence": "report.json mtime 2026-07-29 11:09 (unchanged since the pre-repair aggregate); report.json['elf-b12-003'].flags[0].findings[0].note: 'a 3-1 asymmetry is visible without any domain knowledge - A (tested on customers), C (describes the shade closely enough) and D (defended against trade standards) all make the name answerable to something external, while B alone says the name is chosen precisely because it is unfalsifiable.' The shipping option A is 'That a name is acceptable as long as the thing it borrows from comes in many versions' — insulated-from-being-caught, not answerable-to-something-external — so the asymmetry the flag names is 2-2 on the artifact, not 3-1. reviews/pedagogy.jsonl last elf-b12-003 line: '...minors on the missing post-rewrite G-DISTRACTOR record and the stale G-STEM flag in report.json left to stage 9.2 re-gate (records lane, not pedagogy edits)'. The G-DISTRACTOR half of that deferral WAS honoured (verdicts-vfinal/verdicts-gdistractor.jsonl line 20, 11:56); the G-STEM half was not — verdicts-vfinal/ holds only gdistractor + gkey-1 + gkey-2 + gkey-resolved, no G-STEM file, and verdicts.jsonl is also still at 11:09.",
+      "why": "Not refutation-grade and not student-visible: BATCH-RUNBOOK Stage 9 does not include G-STEM in the V-FINAL leg set, so no process rule was broken by omitting a re-solve, and the underlying leak concern is materially reduced by the rewrite I re-verified (2-2 split, confirmed independently). The cost is at Stage 11: ADJUDICATION.md is built from the flags collected in report.json, so the owner would be shown, verbatim, an argument about an option the unit does not contain, with no way to tell it was already answered. The cheap remedy is records-lane — either re-run G-STEM on the final sheet and re-aggregate, or append a one-line written disposition, exactly as las-b12-001's four G-STEM majors were dispositioned in reviews/pedagogy.jsonl. Scored minor for the same reason the batch10 precedent (batches/batch10/audits/elf-b10-003.json) was: stale flag text, live artifact correct."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "final_verify",
+      "claim": "The standing G-DISTRACTOR verdict on the shipping file is 'flag' carrying a severity-major finding against option A, and it survives the repair round unchanged. I re-derived the question by hand and agree with the gate's own conclusion that A is not a second defensible answer, so this is a note rather than a refutation — but it is where the unit's ARGUABLE distractor sits on the record and it should reach the owner as such.",
+      "evidence": "verdicts-vfinal/verdicts-gdistractor.jsonl line 20: verdict 'flag', severity 'major', 'ARGUABLE (re-gated after the option edit; A's text is unchanged from the earlier run and the case against it still holds)'. My independent re-derivation agrees on all three defeaters: (i) the stem asks about 'the rule that Bellamy & Roe applies' and the passage names exactly one — 'by two people with a spreadsheet and one rule. The rule is that a handle must not be checkable'; (ii) A converts the passage's 'survives only because' (a necessary condition on the exceptional literal name) into 'acceptable as long as' (a sufficient condition on the general case); (iii) enough versions to 'swallow the error' is itself a way of being uncheckable, so A's mechanism is an instance of B's rule and cannot account for 'the winners drift toward places nobody has been'. Both fresh blind G-KEY runs (verdicts-gkey-1 line 20, verdicts-gkey-2 line 20, executed 11:55/11:56 on the post-rename sheet) committed to B. gates/scripts/vfinal_fold.py line 84 folds only kills and audit majors to REFUTED, so this flag correctly does not by itself sink the unit.",
+      "why": "Informational. Recorded so the flag is not mistaken for noise: A is the strongest distractor in the unit and the gate said so twice, independently, before and after the option edit. That is the desired behaviour of a hard distractor and the unit is better for it — but A is the option to watch if this item ever shows a poor discrimination index in live data."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "language",
+      "claim": "The replacement handle introduces a lowercase genericisation of an invented proper noun — 'Ferrymouth Haze cannot be held up beside a ferrymouth haze' — which reads slightly unusual on first pass. I judge it deliberate and defensible, not a defect.",
+      "evidence": "Passage: 'Ferrymouth Haze cannot be held up beside a ferrymouth haze and found wrong; Tomato can, and a customer who grows tomatoes will say so at the counter.' The same capital-is-the-handle / lowercase-is-the-real-thing device runs through the immediately following clause (Tomato vs tomatoes), so the lowercasing is a consistent authorial contrast, not a capitalisation slip. reviews/language.jsonl records CORRECTED for this unit at 11:16 — before the 11:45 rename — so no language reviewer has read this exact sentence.",
+      "why": "Non-blocking and arguably an improvement on what it replaced: with the old handle, 'cannot be held up beside a harbor fog and found wrong' was logically weak because a harbor fog is a real, observable thing a customer could hold the name against. With an invented place the claim is sound, which is the passage's own thesis ('the winners drift toward places nobody has been'). Recorded only because the sentence post-dates the language stage and therefore carries no language-reviewer signature."
+    },
+    {
+      "severity": "info",
+      "stage_challenged": "integrated",
+      "claim": "No originality dossier exists for this unit, or for any unit in any batch, although elf/anti-plagiarism.md makes one a standing recordkeeping requirement for every accepted passage.",
+      "evidence": "pipeline/synthetic/elf/anti-plagiarism.md, 'Recordkeeping': 'Every accepted passage stores an originality dossier next to the item: Tier-1 max-similarity score + nearest corpus passage id, Tier-2 phrases searched + zero-hit confirmation date, Tier-3 self-check output. If a rights question ever surfaces, the dossier is the evidence that originality was verified at creation time, not asserted after the fact.' No file matching *originalit*/*dossier* exists under batches/. The substance is now partly carried inline by generator_meta.originality_note, which for this unit does record the entity checks and a dated confirmation ('web-checked on 2026-07-29'), and M-PLAGIARISM (Tier 1) is recorded per candidate in the mech verdicts — but the Tier-2 phrase list and Tier-3 self-check output are nowhere.",
+      "why": "Not this unit's defect and not verdict-changing — a pipeline-level records gap the batch-1-forward workflow never implemented. Surfaced because the round-1 major on this very unit is the exact failure mode the dossier exists to prevent, and this unit is now the batch's proof that the inline note alone did not catch it (the note asserted fictionality without a recorded check until an auditor ran one). Worth a runbook decision: either promote originality_note to the dossier of record and say so in anti-plagiarism.md, or add the dossier to the Stage 1 generator deliverables."
+    }
+  ]
+}
