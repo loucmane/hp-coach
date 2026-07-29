@@ -1,0 +1,13 @@
+{
+  "candidate_id": "las-b13-001",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The language stage recorded CORRECTED but applied only one of the two minor findings raised by G-SPRÅK vote 2: the flagged calque/off-collocation 'på sina två sidor' still stands verbatim in the Q1 KEY option of the shipping file, and it contradicts the passage's own wording for the identical concept.",
+      "evidence": "verdicts/verdicts-gsprak-2.jsonl (G-SPRÅK vote 2, severity minor): quote \"Murar med skilda markslag på sina två sidor tycks hysa fler arter i kanten\" — note \"class 6: 'på sina två sidor' is an off-collocation for a wall's flanks and reads like a literal rendering of 'on its two sides'; the passage itself uses 'på sina båda sidor'. Native alternative: 'på var sin sida' / 'på sina båda sidor'.\" The same vote's second finding, \"att de inte är artrikare än snittet\", WAS fixed: diff candidates/las-b13-001.json -> candidates-corrected/las-b13-001.json shows 'än snittet' -> 'än genomsnittet' (plus 'daterings-metod' -> 'dateringsmetod' in the Q2 rationale) and nothing else. candidates-final/las-b13-001.json q_index 1, option B still reads: \"Murar med skilda markslag på sina två sidor tycks hysa fler arter i kanten, men bara på solbelysta sträckor.\" The passage's own formulation of the same relation is \"murar med olika slags mark på sina båda sidor\" (stycke 1), and the sibling distractor C in the same question uses the idiomatic \"Skilda markslag på var sida\". reviews/language.jsonl carries no note recording that the flag was considered and dismissed.",
+      "why": "Swedish prefers 'båda/bägge' (or 'var sin sida' / 'ömse sidor') for an inherent pair; the cardinal 'två' here reads as a literal rendering of English 'on its two sides'. It is minor and 1-of-3 språk votes raised it, so it does not overturn the CORRECTED verdict — but it is an on-record language finding left unresolved and unexplained in the exact shipping file, and it sits in the option a student must select as correct, i.e. the one sentence in the unit whose wording is held up as the model reading of the finding."
+    }
+  ]
+}

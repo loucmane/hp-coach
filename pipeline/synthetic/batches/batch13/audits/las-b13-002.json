@@ -1,0 +1,27 @@
+{
+  "candidate_id": "las-b13-002",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The language stage's own correction removed the calque but introduced an avoidable garden-path parse, and the substituted verb was never re-voted by G-SPRÅK on the shipped text.",
+      "evidence": "candidates/las-b13-002.json: 'I Gävle håller tatueraren Rolf Tvede en pärm med motiv han inte längre får frågor om.' → candidates-final: 'I Gävle för tatueraren Rolf Tvede en pärm med motiv han inte längre får frågor om.' G-SPRÅK-3 (verdicts/verdicts-gsprak-3.jsonl): \"Swedish 'hålla' does not take a document/record as object (one 'har' or 'för' a pärm/förteckning) ... Native alternative: 'I Gävle har tatueraren Rolf Tvede en pärm ...'.\" verdicts-vfinal/ contains only verdicts-gdistractor.jsonl, verdicts-gkey-1.jsonl and verdicts-gkey-2.jsonl — no G-SPRÅK re-vote on the corrected passage.",
+      "why": "In clause-initial inversion, 'för' is overwhelmingly read first as the preposition — 'I Gävle för tatueraren Rolf Tvede' parses as 'in Gävle, for the tattooist Rolf Tvede' — forcing reanalysis at 'en pärm'. The alternative 'har', which the third voter named exclusively and the other two also offered, removes the calque without the ambiguity. This does not overturn CORRECTED (the 'keeps a binder' calque genuinely was fixed), but the shipped fix is the weaker of the two natives the voters proposed and it went out unverified."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The Q2 rationale rejects distractor C on a ground the passage's own closing clause denies, and contradicts its own preceding sentence.",
+      "evidence": "Q2 rationale: 'att vilja återupprätta nyfikenheten är motsatsen till hennes position, eftersom det som sörjs är innebörden, inte kravet.' Passage closing clause: 'och innebörden satt till en del i själva kravet att redogöra för den.' Same rationale, two sentences earlier: 'att innebörden delvis satt i själva kravet att redogöra för motivet'.",
+      "why": "The passage explicitly locates the meaning inside the demand, so 'innebörden, inte kravet' is precisely the split the text refuses to make — and the rationale asserts both halves of that contradiction within one paragraph. The key B still holds, but on a stronger ground the rationale never uses: the author names a loss without ever prescribing a remedy ('Ändå är det värt att säga vad som följer med när den upphör' — worth saying, not worth restoring). Teaching payload is degraded; the key and the distractor ruling are unaffected, so MINOR_FIXES is not overturned."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The de-tell rewrite of Q2 option C was never re-blind-solved, and the equally-severe G-STEM flag on Q1 was left substantively unaddressed.",
+      "evidence": "G-STEM q:2: 'B is left as the only balanced concessive option, the characteristic shape of an author-attitude key.' The corrected→final diff rewrites C from 'Förlusten av förklaringsplikten är så allvarlig att den nyfikenhet som en gång fanns vore värd att återupprätta.' to 'Förklaringsplikten var visserligen påträngande, men den nyfikenhet som låg bakom den vore ändå värd att återupprätta.' — making C concessive too. verdicts-vfinal re-ran only G-DISTRACTOR and G-KEY. G-STEM q:1 ('C and D are an explicit pair on a single axis ... Between the pair the qualified member C is the test-wise pick', severity major) drew only a rationale reword in the same diff ('utan att låna passagens formuleringar' → 'formuleringen är omskriven, inte lyft'), no option change.",
+      "why": "The C rewrite plausibly neutralises the named tell, but no blind solve was run on the shipped text, so the fix is unevidenced; and pedagogy's remit explicitly covers whether a test-wise student can score without reading, so the asymmetric treatment leaves Q1's contradictory-pair-plus-hedge tell live. Held at minor because the pipeline routes G-STEM flags to owner adjudication by design (gates/adjudication-package.md: the gates' job 'was to make the owner's read fast and well-armed, not to pre-decide') and both flags travel on the card as SURVIVED_FLAGGED."
+    }
+  ]
+}
