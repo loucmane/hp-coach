@@ -1,0 +1,59 @@
+{
+ "candidate_id": "elf-b13-003",
+ "section": "ELF",
+ "family": "ELF-TYPE-002 / rounded-window-corners-as-manufacturing-tolerance-engineering-history-short",
+ "title": "Room at the Corner",
+ "passage": "A cabin window has to be a hole, and a hole in a pressurized tube is a place where the load has to travel around something. That is why the corners are rounded, and it is where most accounts stop. The panels kept at the Tarnhouse airframe collection make it less tidy. Fatigue rigs there have cycled skin panels cut by hand in the 1950s, and the ones that failed first were not the squarest: they were the ones whose edges the cutter had left rough, whatever the shape. A generous radius, the collection's curator Maret Ojala says, mostly buys tolerance. It spreads the load over enough metal that a poor finish, a stray scratch, or a rivet set a millimeter off no longer decides how long the panel lives. Square windows were never the only way to lose an airplane; they were the way that left the shop floor no margin.\n— Dev Halloran, aviation pages",
+ "questions": [
+  {
+   "q_index": 1,
+   "prompt": "What is implied about the rounded corners of cabin windows?",
+   "options": [
+    {
+     "letter": "A",
+     "text": "That a square window will always fail sooner in a rig than a rounded one of the same size."
+    },
+    {
+     "letter": "B",
+     "text": "That hand-cut panels were given up once the rigs showed how much the cut edge mattered."
+    },
+    {
+     "letter": "C",
+     "text": "That their main benefit is to make a panel forgiving of rough work on the shop floor."
+    },
+    {
+     "letter": "D",
+     "text": "That the usual load-path account is one the collection's own tests could not confirm."
+    }
+   ],
+   "key": "C",
+   "rationale": "TYPE-002 inference, one logical inch past the rig results. The passage reports that the panels which failed first 'were not the squarest' but the ones with rough-cut edges 'whatever the shape', that a generous radius 'mostly buys tolerance' by spreading the load so that a poor finish or a misplaced rivet 'no longer decides how long the panel lives', and closes on square windows as 'the way that left the shop floor no margin'. Put together, the implication is C: the rounding earns its keep by making the panel forgiving of imperfect workmanship. A = quantifier_upgrade to an absolute ('always') of exactly the belief the rig data contradict — the failures did not sort by squareness — and it is the answer a reader who arrives knowing the textbook stress-concentration story will reach for without reading. B = outside_knowledge; the passage says nothing about hand cutting being abandoned, and it is a plausible industrial inference the text never licenses. D = too_far and surface_word_match on 'most accounts stop'; the passage complicates the load-path account rather than failing to confirm it, and Ojala's own explanation ('it spreads the load over enough metal') is that same mechanism restated. Hedge balance: the key is the confident, specific claim of the set and carries no hedge, while the only absolutizer ('always') sits on distractor A; the key is 17 words against 19 / 16 / 14, so it is not the longest."
+  }
+ ],
+ "generator_meta": {
+  "origin": "batch13-generator",
+  "model": "claude-opus-4-8",
+  "date": "2026-07-29",
+  "block_format": "short_text_1q",
+  "spelling_variety": "AmE",
+  "genre": "history_essay",
+  "topic": "why aircraft cabin windows have rounded corners — a fatigue-rig collection finds that edge finish, not corner shape, sorted the early failures, and reads the radius as a tolerance margin for imperfect shop work",
+  "fictional_source": {
+   "byline": "Dev Halloran, invented aviation writer",
+   "publication_type": "newspaper aviation-history pages (AmE house style)"
+  },
+  "fictional_entities": [
+   "Tarnhouse airframe collection",
+   "Maret Ojala (curator)",
+   "Dev Halloran (byline)"
+  ],
+  "key_derivation": "one_inch_inference — the rough-edge failure result read together with Ojala's 'mostly buys tolerance' and the closing 'no margin' verdict",
+  "spelling_note": "AmE held throughout passage and options ('pressurized', 'millimeter', 'airplane'); no BrE spellings ('pressurised', 'millimetre', 'aeroplane') appear in student-facing text. The rationale field is generator-facing only.",
+  "originality_note": "Tarnhouse, Maret Ojala and Dev Halloran are invented, as are the rig results. Law 1: the passage deliberately does NOT rehearse the famous stress-concentration narrative as its payload — that account is named only as the place 'most accounts stop', and the item turns on this fictional collection's own fatigue data, so a solver who knows the aviation history is steered toward distractor A rather than the key.",
+  "hedge_balance_note": "The key is the flat, specific claim; the sole absolute ('always') sits on A, so neither 'pick the qualified answer' nor 'strip the absolutes' locates the key. Key 17 words against 19 / 16 / 14 — second-longest, not longest; under mech tokenization (hyphens split) 17 against 19 / 17 / 16, ratio 1.19, well under the 2.36 cap.",
+  "residue_note": "The 1950s hand cutting, the stray scratch and the misplaced rivet are concrete residue the question never tests; the passage also concedes the standard explanation instead of demolishing it, so it does not read as a ramp toward its own item.",
+  "question_families": {
+   "1": "ELF-TYPE-002"
+  }
+ }
+}

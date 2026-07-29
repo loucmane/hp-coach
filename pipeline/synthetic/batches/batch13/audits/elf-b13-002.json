@@ -1,0 +1,34 @@
+{
+  "candidate_id": "elf-b13-002",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The q4 rationale's second argument against 'uneventful' is undercut by the passage's own wording, so the teaching payload hands a complaining student a counter-quote.",
+      "evidence": "Rationale (q4): \"Second, 'uneventful' grades a stretch of time for incident (an uneventful week, an uneventful journey), which a half-second cannot be.\" Passage: \"a half-second in which force, timing and attention are all being read at once, and in which the reading goes both ways.\" The same rationale also concedes \"it survives the inversion, because a moment 'with stakes' does sound eventful.\"",
+      "why": "The passage explicitly loads that half-second with three simultaneous readings, i.e. it does grade the half-second for incident. The rationale's first argument (the passage names the comfort dimension: \"That is not the language of a comfortable ritual\") is sound and carries the key on its own, so the key is not in doubt; but the second prop is weak and, quoted back at a student, contradicts the text it is teaching from. Rationale-repair scope, not a key change."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The q1 rationale's usage claim about 'assign' is stated too absolutely; 'assign X to <period>' is attested English.",
+      "evidence": "Rationale (q1): \"assigned = collocation_misfit (one assigns a task, a room or a value to someone, not a custom 'to the past'; ...)\". Counter-usage: scholars 'assign the manuscript to the twelfth century' / 'assign the painting to the 1490s' — assign + to + time period is idiomatic.",
+      "why": "The negative claim as applied to this frame still holds (an etiquette guide declaring a custom obsolete needs 'consign to the past', not a dating claim), so the key 'consigned' is unaffected and the distractor is still beaten. But the flat 'not ... to the past' overstates, and pedagogy's own bar is that every factual claim in a rationale be true. Wording repair, not a verdict change."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "Pronoun overload: 'one' carries two different antecedents inside a single sentence.",
+      "evidence": "Passage: \"found last year that four in five first meetings still opened with one — a figure only a little below the one it recorded before anybody had heard of the substitutes.\" First 'one' = a handshake; 'the one' = the figure.",
+      "why": "A broadsheet sub-editor would flag the collision (class 3, clarity/register), most simply by writing 'still opened with a handshake'. It does not create a wrong reading and does not touch any key or rationale, so it does not move the language stage's CORRECTED verdict; recorded as a residual copy note."
+    }
+  ],
+  "audit_scope_verified": {
+    "language": "Full passage + all 20 options re-read for calque/agreement/register/spelling-variety. Spelling variety BrE is held (lift lobbies, induction); no AmE-only form appears. No agreement, tense, article or preposition error found. Serial-comma usage varies ('unhygienic, unequal in force, and clumsy' / 'repeated, hedged, or quietly withdrawn' vs 'force, timing and attention') but is defensible as phrase-length-conditioned BrE practice — not reported. 'Its fieldworkers still count on clipboards' reads as 'rely on', which the following clause ('nobody has built them anything better') supports — not a misfire.",
+    "pedagogy": "Every idiom/usage claim in all five rationales fact-checked: 'consign X to the past' (true, locking), 'owe money/thanks/an apology/an explanation' (true), 'owe an exclamation/exploration' non-existent (true), 'expectation' raised or met not owed (true), 'bring something to a close' (true), 'in due course'/'run its course' (true), 'resign oneself to' reflexive (true — and the language stage's removal of the earlier false 'and a different preposition' clause is verified in the candidates -> candidates-corrected diff). One overreach noted above.",
+    "integrated": "All 13 passage-anchored quoted fragments across the five rationales verified byte-for-byte present in the current passage (script check). Gap-frame quotes use the '___' normalisation of '___(n)___', matching house convention. No cross-question leak: no option word occurs in the passage (checked all 20 by word-boundary regex); 'rehearsed' appears but 'unrehearsed' does not. Trap labels 'wrong_logic' and 'sense_misfit' are outside blueprint-template.md's mined tag table but are the established cloze convention across batches 3, 4, 8-12 candidates-final — not a defect. No self-contradiction beyond the minor q4 note.",
+    "key_sanity": "All five keys are single best. q4 (the G-DISTRACTOR-flagged 'uneventful') survives adversarial stress: the colon clause's second half — 'a few admit to having rehearsed it beforehand' — speaks only to nerves, not to incident density, and the following sentence names the dimension as comfort ('not the language of a comfortable ritual'). 'untroubled' is defensible to a complaining student. Keys C/D/A/B/D match schema_note; no positional or length tell.",
+    "mechanical_recheck": "run_mech.py on the shipping file: M-SCHEMA / M-BANDS / M-TELL / M-FORM all pass (2026-07-29)."
+  }
+}

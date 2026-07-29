@@ -1,0 +1,35 @@
+{
+  "candidate_id": "elf-b13-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The option set leaves a partial form-path to the key: only A and C predicate anything of the stem's subject (the rounded corners), and A carries the sole absolutizer, so stem-fit plus strip-the-absolute narrows to C without the passage.",
+      "evidence": "Stem: 'What is implied about the rounded corners of cabin windows?' — B is about panels ('That hand-cut panels were given up once the rigs showed how much the cut edge mattered.') and D is about an account ('That the usual load-path account is one the collection's own tests could not confirm.'); only A ('That a square window will always fail sooner in a rig than a rounded one of the same size.') and C ('That their main benefit is to make a panel forgiving of rough work on the shop floor.') say something about corner geometry, and A is the only option containing an absolute ('always'), which the rationale itself names: 'the only absolutizer (\\'always\\') sits on distractor A'. Counter-evidence on record: the blind G-STEM solve landed on D, not C — verdicts/verdicts-gstem.jsonl, 'WORLD_KNOWLEDGE (blind pick D, moderate confidence) ... No recall component and no form-alone determination.'",
+      "why": "Real but not verdict-flipping: the recorded blind solve empirically did not reach the key from form alone, so SOUND stands. Worth carrying into the adjudication package that already holds this unit's major G-STEM WORLD_KNOWLEDGE flag (report.json status SURVIVED_FLAGGED), since the two pressures point at the same option set."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The trap label on D and the rationale's prediction about which distractor knowledge-primed readers take are not what the recorded blind evidence shows.",
+      "evidence": "Rationale: 'D = too_far and surface_word_match on \\'most accounts stop\\'' and, of A, 'it is the answer a reader who arrives knowing the textbook stress-concentration story will reach for without reading'. The recorded blind solve instead reached for D on exactly that domain knowledge: verdicts/verdicts-gstem.jsonl, quote 'That the usual load-path account is one the collection's own tests could not confirm.', note 'Domain knowledge of the square-window fatigue story ... makes \\'the usual load-path account\\' identifiable, and a text framed around a collection's own rigs failing to reproduce it is a recognisable revisionist move.' So D's dominant pull is outside-knowledge/revisionist-frame expectation, which its label does not name.",
+      "why": "The integrated criterion is that trap labels name the actual trap; here the label is defensible but incomplete, and the rationale's A-vs-D prediction is contradicted by on-disk gate evidence. Fully consistent with the recorded MINOR_NOTES verdict — it does not flip it."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The rationale attributes to Ojala a sentence the passage leaves unattributed.",
+      "evidence": "Rationale: \"Ojala's own explanation ('it spreads the load over enough metal') is that same mechanism restated.\" The passage attributes only the preceding sentence to her — 'A generous radius, the collection's curator Maret Ojala says, mostly buys tolerance.' — while the quoted sentence carries no attribution tag: 'It spreads the load over enough metal that a poor finish, a stray scratch, or a rivet set a millimeter off no longer decides how long the panel lives.'",
+      "why": "Journalistic convention lets an untagged sentence continue the source's explanation, so the reading is defensible and the quote is verbatim apart from the sentence-initial capital; the rationale field is generator-facing per generator_meta.spelling_note. Note-level only."
+    }
+  ],
+  "audit_scope": {
+    "language": "No calque, agreement, register or spelling-variety defect found. AmE held in all student-facing text ('pressurized', 'millimeter', 'airplane'); no BrE forms. Compound-subject agreement correct under 'or' ('a poor finish, a stray scratch, or a rivet ... decides'); reduced relative 'skin panels cut by hand in the 1950s' does not put a past-time adverbial on 'have cycled'; 'buys tolerance', 'forgiving of', 'left the shop floor no margin' are idiomatic. Language CLEAR upheld.",
+    "pedagogy": "Every factual claim in the rationale checked against the passage; all hold ('were not the squarest', 'whatever the shape', 'mostly buys tolerance', 'no longer decides how long the panel lives', 'the way that left the shop floor no margin'). Word counts verified: plain-split 17 vs 19/16/14 as claimed, and mech.tokenize gives C=17 vs A=19/B=17/D=16, ratio 1.19 against the 2.36 cap — generator_meta's mech figures reproduce exactly. No false real-world claim in the teaching payload. Pedagogy SOUND upheld apart from the minor above.",
+    "integrated": "All seven single-quoted rationale phrases verified verbatim against passage/options (the eighth, 'it spreads the load over enough metal', differs only in sentence-initial case). candidates/, candidates-corrected/ and candidates-final/ are byte-identical for this unit, so no correction-drift between rationale and edited option text. Single question, so no cross-question leak surface. family / question_families / block_format / passage-length band all mutually consistent.",
+    "key_sanity": "C is the single best answer and is defensible to a complaining student. D is the strongest rival ('the ones that failed first were not the squarest' is literally a non-confirmation) but loses on three independent grounds: the passage restates the load-path mechanism approvingly ('It spreads the load over enough metal'), it concedes the account rather than voiding it ('Square windows were never the only way to lose an airplane'), and D predicates nothing of the rounded corners the stem asks about. A dies on 'always'; B is unlicensed ('hand-cut panels were given up' appears nowhere). Both recorded G-KEY solvers answered C."
+  },
+  "audited_by": "vfinal-meta-audit/opus",
+  "date": "2026-07-29"
+}

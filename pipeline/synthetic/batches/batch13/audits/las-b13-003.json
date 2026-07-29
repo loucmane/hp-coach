@@ -1,0 +1,34 @@
+{
+  "candidate_id": "las-b13-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The trap label `reversed_causality` is wrong for q2/C and no longer fits q1/C after the final rewrite; the house precedent requires a stance/attribution label when no causal arrow is flipped.",
+      "evidence": "generator_meta.planted_traps: {\"2\": {\"C\": \"reversed_causality\"}}. Option 2C contains no causal claim at all: 'Förslaget lägger ansvaret för att dagarna märks på fastighetsägarna i stället för på den myndighet som fastställer listan.' The unit's own rationale describes it non-causally — 'C inverterar hennes ansvarslinje' — and gen-las-short-2.NOTES.md writes '`reversed_causality` på ansvarslinjen'. Same for q1/C: candidates-final softened it from 'Ökningen ... beror på att ...' to 'Ökningen i villaområdena hänger samman med att kommunerna där hade slutat flagga och att de boende tog över.', i.e. an unsupported association, yet the student-facing rationale still reads 'C är reversed_causality i form av en obelagd orsakskedja'. Precedent: batches/batch1/PEDAGOGY-ADJUDICATION.md, las-b1-002 — 'Relabel the trap as stance_inversion (q1-A) / polarity_mirror (q2-B) ... \"reversed_causality\" is the wrong taxonomy term (no causal claim is involved)'; batch3/gen-las-short-1.NOTES.md codifies the same law ('labelled stance_inversion, not reversed_causality (no causal/subject-object arrow is flipped)').",
+      "why": "Integrated's remit explicitly covers 'a mislabelled trap'. The mislabel is metadata/teaching-payload hygiene only — it does not change which option is correct and the substantive rationale text is accurate — so it is consistent with the recorded MINOR_NOTES / MINOR_FIXES verdicts rather than overturning them. Fix: relabel 2C stance_inversion (ansvarsinversion) and 1C unsupported_causation, and drop 'reversed_causality' from the q1 rationale sentence."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "A quoted token in the q1 rationale is not verbatim: the rationale quotes 'svag' but the passage never contains that form.",
+      "evidence": "Rationale q1: \"ökningen kallas 'svag'\". Passage has only the adverb: 'Den privata flaggningen ökade svagt.' A regex over the passage returns ['svagt'] and no standalone 'svag'. The rationale's other quotes all check out verbatim ('Vad det betyder vet jag inte', 'för liten för att väga upp bortfallet på de kommunala stängerna', 'Mot dagarna i sig har jag ingenting', 'en rad i driftbudgeten, och en person som vet att raden gäller henne', and — after the candidates-final edit — 'genomgående i länen, oavsett hur gammal bebyggelsen i området var').",
+      "why": "Integrated's verbatim-quote rule is the check here. It is an inflection-level mismatch inside a quote that paraphrases correctly, so it misteaches nothing; fix by writing ökningen kallas 'svagt' or dropping the quotation marks."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "Option 2C, written after the language stage closed, has a real garden-path: 'ansvaret för att dagarna märks på fastighetsägarna' first parses on the fixed Swedish collocation 'märks på' ('det märks på honom'). No recorded Swedish-language check covers any of the four rewritten options.",
+      "evidence": "candidates-final q2/C: 'Förslaget lägger ansvaret för att dagarna märks på fastighetsägarna i stället för på den myndighet som fastställer listan.' Chain of custody: G-SPRÅK votes 1–3 targeted \"target\": \"passage\" only; reviews/language.jsonl is dated 11:59:56 against candidates-corrected (11:57:57), while candidates-final (12:10:18) rewrote q1 B, q1 C, q1 D and q2 C. Diff evidence: q2/C went from 'Ansvaret för att dagarna märks bör flyttas från fastighetsägarna till den myndighet som fastställer listan.' to the current wording; q1/D from 'så stor att den vägde upp bortfallet' to 'Uppgången bland de privata stängerna var ungefär lika stor som bortfallet på de kommunala' (where 'uppgång bland ... stängerna' is also slightly loose next to the passage's own 'bortfallet på de kommunala stängerna').",
+      "why": "The language verdict CORRECTED is correct for the text it saw — both ≥2-vote items were fixed ('låg still' → 'låg stilla', 'på sin arbetsbeskrivning' → 'i sin arbetsbeskrivning'), and the two surviving single-vote minors ('Den är vad som blir kvar', 'en lista som ingen verkställer') are surfaced to the owner per gates/adjudication-package.md rather than silently dropped. The note is that stage 7/8 option edits re-gate only G-KEY/G-DISTRACTOR, so student-visible Swedish written after stage 6 ships unreviewed. Suggested rewrite: 'Förslaget lägger ansvaret på fastighetsägarna i stället för på den myndighet som fastställer listan.'"
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "No false factual claim found in either rationale; the pedagogy MINOR_FIXES verdict stands. Recorded here as the positive result of the fact-check, with the one wording imprecision found.",
+      "evidence": "Checked every factual assertion: 'stycke 4' is indeed the private-flagging paragraph; the internal arithmetic reconciles (214 stänger, 'Drygt en tredjedel' ≈ 72–75 ≥ the '61' with lashed lines; 2023 minus 'tolv år tidigare' = 2011, matching Hollstensson's '2011 och 2023'); the q2 rationale correctly attributes the economy argument to Hollstensson ('Ansträngd ekonomi kan ha drivit fram både entreprenaden och nedprioriteringen, påpekar han') and not to the author. Only imprecision: the rationale says 'entreprenaderna' (plural) where the passage has 'entreprenaden', and omits 'nedprioriteringen' from the caveat. Key sanity holds: q1 A is killed by 'medan äldre bebyggelse låg stilla', q1 D by 'för liten för att väga upp bortfallet', q1 C by 'jag har ingen förklaring till att den skulle höra hemma just i nybyggda områden'; q2 A by 'Mot dagarna i sig har jag ingenting', q2 B by the fact that she wants a different measure rather than a delay, q2 C by 'en rad i driftbudgeten, och en person som vet att raden gäller henne'. Keys B and D are each the single defensible answer and both are non-longest in their sets (q1: key 17w/107c vs C 18w/108c; q2: key 15w/93c vs C 18w/122c).",
+      "why": "No verdict is refuted. Recording the negative result explicitly so the fold can distinguish 'audited and clean on the fact-check axis' from 'not examined'."
+    }
+  ]
+}
