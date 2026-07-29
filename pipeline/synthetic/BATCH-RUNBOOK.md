@@ -332,6 +332,14 @@ those feed the next batch's generation prompt as negative examples.
 - **Worktree/port discipline** (see `.claude/skills/dispatch-wave`): absolute
   paths for mutations; never touch dev ports 5173/8787; `fuser -k` not `pkill`.
 - **Eval before gating** on any gate model/prompt change; archive the run.
+- **G-STEM gets a STEMS-ONLY sheet — never the blind sheet.** G-STEM.md's
+  contamination rule forbids the passage in the judge's context ("report
+  contamination instead of executing"); the blind sheet strips keys but KEEPS
+  the passage, so handing it to G-STEM risks false negatives on structural
+  leaks (caught by a meta-audit 2026-07-29 when a completion-chain G-STEM ran
+  passage-in-context). Prep builds `<batch>/stems/<id>.json`
+  (candidate_id + section + per-question prompt/options only) and G-STEM
+  judges from that.
 - **Repair re-gates must flow into the batch merge.** When a redesigned unit is
   re-judged, its fresh FLEET-gate lines (G-STEM/G-KEY/G-DISTRACTOR/…) must be
   merged into `<batch>/verdicts.jsonl` with last-wins per
