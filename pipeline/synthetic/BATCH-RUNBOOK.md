@@ -61,10 +61,25 @@ shipping.
                 eligible for candidates-final ONLY if gate-fleet (survive) + language +
                 pedagogy + sweep + final_verify ALL recorded a clearing verdict. A
                 MISSING stage HOLDs; it never passes. Fail-closed, mechanical.
-11. PACKAGE   ADJUDICATION.md: passage + questions + key + per-unit judge/review flags
-12. OWNER     Godkänn / Ändra / Avvisa per unit (spot-checks flags, per the batch cadence)
-13. (later PR) approved units → product bank under the ÖVNINGSTEXT frame
+11. ADJUDICATE fresh-eyes reader (key-stripped sheets, cold solves compared
+                mechanically to keys) + CROSS-BATCH SCAN of the new units against
+                ALL shipped passages (architecture moves, phrase families,
+                name/toponym registry, motif ledger — the 2026-07-30 whole-bank
+                scan found 5 clones no per-batch review could see) + flag triage
+                → adjudicate_fold.py derives GODKANN/GODKANN_NOTED/AGARBLICK
+                mechanically (agents produce evidence, never recommendations)
+12. PACKAGE   consolidated owner surface: recommendations + exceptions only
+13. OWNER     rules on AGARBLICK exceptions, blesses the rest ("godkänn enligt
+                rekommendation"); per-unit overrides always available
+14. (later PR) approved units → product bank under the ÖVNINGSTEXT frame
 ```
+
+**Queued mech gate (required before batch 14 is gated): M-ECHO** — mechanize
+the clone/name checks: (a) name/toponym registry collision vs shipped units,
+(b) phrase-fingerprint containment vs shipped P5 passages (M-PLAGIARISM checks
+the AUTHENTIC corpus only — self-corpus echo is a separate axis). Flag-only,
+like M-TELL/M-FORM. A mech change triggers run-protocol #3: full eval re-run
+before the next batch is gated.
 
 Stages 3→5 are cheap-lethal-first: mechanical gates kill doomed candidates
 before the expensive judge fleet runs. Stages 6→10 are the correctness layer:
