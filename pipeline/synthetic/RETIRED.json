@@ -1,0 +1,48 @@
+{
+  "_comment": "Units excluded from the product-bank import. These are promote-CLEAN at the gate level — cloning and adjudication findings are not gate failures — so exclusion must be mechanical, not remembered. Any import path MUST read this file and skip these candidate_ids.",
+  "_schema": "candidate_id -> {reason, found_by, date, replacement}",
+  "retired": {
+    "elf-b6-001": {
+      "reason": "Architectural clone of elf-b5-001 (paragraph-level: same five moves, same connectives). A student who solves one solves the other without reading. Also reused 'Ingrid Sahlberg' from las-b3-001 and 'Almvik' from las-b2-002.",
+      "found_by": "cross-batch scan (adjudication pipeline, 2026-07-30); independently reproduced by M-ECHO at 41 shared 6-grams",
+      "date": "2026-07-30",
+      "replacement": "elf-b14-001 (buoy tending)"
+    },
+    "elf-b7-001": {
+      "reason": "Third instance of the elf-b5-001 mould; question-to-paragraph mapping identical. Also carried a real-person collision ('Bjorn Haugland', a real Norwegian naval architect, given an invented opinion on cable repair).",
+      "found_by": "cross-batch scan + real-entity audit (2026-07-30); M-ECHO 29 shared 6-grams",
+      "date": "2026-07-30",
+      "replacement": "elf-b14-002 — ALSO RETIRED (see below); slot currently unfilled"
+    },
+    "las-b6-001": {
+      "reason": "Sentence-level clone of las-b5-001 (same opening frame, objection/rebuttal skeleton and coda).",
+      "found_by": "cross-batch scan (2026-07-30); M-ECHO 40 shared 6-grams",
+      "date": "2026-07-30",
+      "replacement": "las-b14-001 (charcoal and tar burning)"
+    },
+    "las-b8-001": {
+      "reason": "Clone of las-b7-001 including a verbatim researcher quote. Also carried two real-entity collisions: 'Vreta pastorat' (a real Church of Sweden pastorat in the same landskap) and 'Karin Lövgren' (a real Swedish ethnologist given an invented byline and findings).",
+      "found_by": "cross-batch scan + real-entity audit (2026-07-30); M-ECHO 30 shared 6-grams",
+      "date": "2026-07-30",
+      "replacement": "las-b14-002 (parish grain stores)"
+    },
+    "las-b11-001": {
+      "reason": "Clone of las-b10-001 (identical confounder/rebuttal/recompute skeleton and closing-caveat formula).",
+      "found_by": "cross-batch scan (2026-07-30)",
+      "date": "2026-07-30",
+      "replacement": "las-b14-003 (the ice trade)"
+    },
+    "elf-b8-001": {
+      "reason": "Passage contained a self-contradictory mechanism at the exact point a key rested on, and the affected option reproduced the impossible clause.",
+      "found_by": "fresh-eyes reader (adjudication pipeline, 2026-07-30)",
+      "date": "2026-07-30",
+      "replacement": "elf-b14-003 (urban bat roosts)"
+    },
+    "elf-b14-002": {
+      "reason": "Failed three repair rounds (governance ceiling): an odd-one-out option-frame tell; then 'Emil Wachter', a real documented church-bell artist, carrying two invented direct quotations; then a fresh G-STEM kill on q5 PLUS a kept name ('Kerrig') that is a real Slovenian metalworking firm PLUS originality_note claims the auditor proved false.",
+      "found_by": "V-FINAL meta-audit rounds 1-3 (2026-07-30)",
+      "date": "2026-07-30",
+      "replacement": "none yet — regenerate in a future batch"
+    }
+  }
+}
