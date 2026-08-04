@@ -1,27 +1,71 @@
 {
  "candidate_id": "las-b2-003",
  "audit_verdict": "CONFIRMED_NOTES",
+ "audited_by": "adversarial-meta-audit/opus (post-declone-wave sweep)",
+ "date": "2026-07-30",
  "findings": [
+  {
+   "severity": "note",
+   "stage_challenged": "declone",
+   "claim": "This unit was NOT de-cloned: no passage or architecture was changed in the declone-tagged round, so there is no de-clone claim to confirm — the '-declone' suffix on its V-FINAL gate lines is a wave tag over an option-level repair.",
+   "evidence": "passage byte-identical across candidates/ -> candidates-corrected/ -> candidates-final/ (string compare: gen==final True, corrected==final True). git diff of candidates-final/las-b2-003.json touches only q1 option A ('miste då flera av sina kraftiga principaler' -> 'fick då kraftigare principaler än tidigare'), q1 option C ('som skaffade den' -> 'som ville ha den sådan'), the q1 rationale, planted_traps.1.A and self_blind_solve. reviews/pedagogy.jsonl last line (2026-07-30) describes the round itself as 'law 10+11 flaw-sharpening', not an architecture rewrite. Only las-b2-003 carries declone-tagged lines in batch2's verdicts-vfinal.",
+   "why": "The repair actually performed is sound and fully re-gated, but any downstream reader who takes the '-declone' tag as evidence that the passage skeleton was regenerated would be wrong. Labelling, not content."
+  },
+  {
+   "severity": "note",
+   "stage_challenged": "cross-batch clone scan",
+   "claim": "Residual architectural kinship with las-b1-003 ('Två herbarier och två sätt att minnas') — the only other essa_kulturhistorisk short in the bank — survives untouched, but it is variety pressure, not answer transfer.",
+   "evidence": "Both: first-person connoisseur essay, two named fictional artefacts/makers held up as a contrast pair, an explicit 'the object reveals a way of seeing' thesis (b1: 'ett pressat blad aldrig bara är ett blad'; b2: 'En orgel är inget neutralt redskap'), a concession move softening the contrast (b1: 'Det vore lätt att kalla den ena boken vetenskap...'; b2: 'Jag ska inte göra kontrasten renare än den är'), terminal byline + glossary lines, identical q-family pair (huvudbudskap_syfte + jamforelse_relation), overlapping trap taxonomy (overgeneralisation in both questions, attribution/reversal swap + half_right_conjunction in q2). COUNTER-EVIDENCE: shared 5-grams between the two passages = 0; keys sit on different letters; b1 dissolves its contrast while b2 asserts it and only partly concedes; the q1 stem is the bank-standard LÄS stem (15 uses across shipped units), not a clone tell.",
+   "why": "Law 12 (added 2026-07-30, after both units shipped 2026-07-21) is a generation-time rule, and no pattern-solve transfer exists — a student who solves one cannot answer the other without reading. Bank-level variety bookkeeping for the cross-batch scan, not a unit defect."
+  },
   {
    "severity": "minor",
    "stage_challenged": "final_verify",
-   "claim": "The last-line final_verify verdict (REFUTED, gkey_kills=1) is stale relative to the redesigned content.",
-   "evidence": "final_verify.jsonl last line: verdict REFUTED, note 'gkey_kills=1 gdistr_kills=1 ... audit=CONFIRMED_NOTES'. This gkey kill is the pre-redesign q1 double-key that the pedagogy stage then fixed ('q1 option D redesigned to kill V-FINAL double-key; regate required and performed downstream'). Post-redesign regates were recorded for pedagogy/integrated/language but NOT for final_verify, so its recorded verdict was never cleared.",
-   "why": "Under 'last line wins', the review chain's final stage still reads REFUTED even though the defect it names is fixed. Bookkeeping gap, not a content defect — my content audit confirms the double-key is genuinely resolved."
+   "claim": "The V-FINAL evidence chain is stale relative to the 2026-07-30 repair: verdicts-gkey-resolved.jsonl was not regenerated after the declone-tagged re-gate, and reviews/final_verify.jsonl still summarises the pre-repair audit.",
+   "evidence": "verdicts-gkey-1.jsonl / -gkey-2.jsonl / -gdistractor.jsonl / -gstem.jsonl each end with '-declone' lines for las-b2-003, but verdicts-gkey-resolved.jsonl contains only -vfinal and -regate lines (no declone). vfinal_fold.py reads verdicts-gkey-resolved.jsonl + audits/<cid>.json. final_verify.jsonl's las-b2-003 record is dated 2026-07-22 with note 'gkey_records=4 gkey_kills=0 ... audit=CONFIRMED_NOTES audit_major=0 audit_minor=3', i.e. derived from the superseded audit that still described option A as the 'flera' quantity trap.",
+   "why": "Outcome is unaffected (the declone G-KEY records are pass/pass at both votes, so last-wins yields gkey_kills=0 either way), but the fold currently certifies the unit off pre-repair evidence. Re-run gkey_resolve.py and then vfinal_fold.py so final_verify derives from the declone-era records and from this audit file."
   },
   {
    "severity": "minor",
    "stage_challenged": "integrated",
-   "claim": "Q1 option A quantity trap ('flera') is real but soft vs passage 'ett par'.",
-   "evidence": "Passage: 'Han plockade bort ett par av de kraftigaste principalerna'; option A: 'miste då flera av sina kraftiga principaler.' 'ett par' (=a couple/two) vs 'flera' (=several) is a genuine but soft quantifier upgrade; integrated left it as an explicit OWNER FLAG.",
-   "why": "Distinguishable enough to be a valid distractor, and key C is a complete, unimpeachable thesis match, so single-best-answer holds. Worth surfacing only because the gap is soft."
+   "claim": "Batch documentation still advertises the retired 'flera vs ett par' quantity trap and its owner flag, which the current text no longer contains.",
+   "evidence": "STATUS.md owner-flag section: 'las-b2-003 option A says **flera** where the passage says **ett par**'; ADJUDICATION.md line 6: \"las-b2-003 alternativ A ('flera' där texten säger 'ett par') är den DESIGNADE kvantitetsfällan ... Lämnad avsiktligt\"; the STATUS.md addendum closes that flag 'with a reversal'. Current option A reads 'Törebys orgel byggdes om på 1930-talet och fick då kraftigare principaler än tidigare.' — a reversed_direction trap with no quantifier at all.",
+   "why": "Doc drift only; the item is stronger after the repair (A is now flatly contradicted by 'plockade bort ett par av de kraftigaste principalerna'), so the soft-quantifier owner flag is genuinely gone and the owner-facing surfaces should stop naming it."
+  },
+  {
+   "severity": "note",
+   "stage_challenged": "integrated",
+   "claim": "Mild cross-question corroboration q2 -> q1: q2's key affirms Björkedal's congregational purpose, which falsifies q1's option D.",
+   "evidence": "q2 A (key): 'Björkedals orgel skulle bära hela församlingens sång...'; q1 D: 'Björkedals orgel byggdes redan 1889 för att lysa på egen hand, inte för att bära psalmsången.' q1 B ('aldrig för att lyssnas till') is likewise pre-falsified by q2 C's premise.",
+   "why": "One-directional elimination help only: it removes a q1 distractor but does not isolate q1's key C (A and B still have to be judged against the passage), and the blind G-STEM declone run still recorded PARTIALLY / pick C on q1 with this exact option set. Below the leak threshold; recorded so a later scan does not re-derive it as new."
   },
   {
    "severity": "minor",
    "stage_challenged": "integrated",
-   "claim": "Q2 key A's phrase 'mest tjänade organistens spel' is a slightly interpretive paraphrase.",
-   "evidence": "Passage frames Töreby as 'gjord för att lyssnas till, inte för att sjungas med' (for the listening circle); A renders this as 'mest tjänade organistens spel'. Passage also attributes solo concerts to Björkedal ('har också burit lysande solokonserter') in the concession paragraph.",
-   "why": "A clever student could try the concession fact, but the stem asks what the author 'framhåller' (emphasizes) = the main sjungas-med/lyssnas-till contrast; A is the only non-false option (B reverses, C false, D false). Key holds; minor interpretive stretch only."
+   "claim": "Q2 key A's phrase 'mest tjänade organistens spel' remains a slightly interpretive paraphrase (carried forward from the pre-repair audit; still true of the current text).",
+   "evidence": "Passage frames Töreby as 'gjord för att lyssnas till, inte för att sjungas med' (a listening circle, not specifically the organist), and it attributes solo concerts to Björkedal in the concession paragraph ('Björkedals orgel har också burit lysande solokonserter').",
+   "why": "The stem asks what the author 'framhåller', i.e. the main sjungas-med / lyssnas-till contrast, and A is the only non-false option (B crosses the attributions, C absolutises, D is false). Key holds; interpretive stretch only."
+  },
+  {
+   "severity": "note",
+   "stage_challenged": "registry",
+   "claim": "Names are registry-safe on the strict reading of law 13, with one soft collision on a first name plus the saturated 'Hal-' prefix.",
+   "evidence": "grep over all shipped batches: 'Björkedal', 'Töreby', 'Wessman', 'Sjösten' and 'Hallefors' appear in no unit outside batch2 (zero hits). First names recur: 'Sigrid' also in batch5/las-b5-003 as 'Sigrid Halldén' — same first name plus the 'Hal-' surname prefix law 13 calls saturated; 'Anders' (batch8 'Anders Bråth', batch11 'Anders Follinger') and 'Ivar' (batch8 'Ivar Brandt', batch10 'Ivar Krull') also recur bank-wide.",
+   "why": "Law 13 bans reuse of full names, surnames, institutes and toponyms — none of those collide here. Sigrid Hallefors / Sigrid Halldén is a same-first-name + 'Hal-' pairing, and las-b2-003 predates both the law and batch5, so the later unit is the offender if anyone is. No action for this unit."
+  },
+  {
+   "severity": "info",
+   "stage_challenged": "integrated",
+   "claim": "The closing 'ett helt sekels förändrade förhållande' does not line up with the 1889 -> 1930-tal span it is heard in.",
+   "evidence": "Passage: built 1889, rebuilt 'på 1930-talet' (≈45 years apart); coda: 'när jag lägger handen på Törebys svalare tangenter tycker jag mig ändå höra ett helt sekels förändrade förhållande till den egna rösten'.",
+   "why": "Defensible as written — the essayist measures from 1889 to her own present, not to the rebuild — and no question turns on the span. Recorded only so a later reader does not mistake it for an unnoticed numeric slip."
+  },
+  {
+   "severity": "info",
+   "stage_challenged": "final_verify",
+   "claim": "Positive verification: rationale quotes, trap labels and both keys check out against the current shipping text.",
+   "evidence": "All 14 typographically quoted spans in the two rationales resolve verbatim into the passage or the option they cite; the two apparent misses are legitimate ('varje ... aldrig för att lyssnas till' is a sentence-initial case fold of option B, 'för att hålla [psalmsången] uppe' is a bracket-marked substitution of passage 'instrumentet fanns till för att hålla den uppe'). Key sanity q1: A contradicted ('plockade bort ett par av de kraftigaste principalerna och satte i stället in mjuka flöjter'), B absolutised and contradicted ('Den är gjord för att lyssnas till'), D inverted ('inte för att lysa själv') -> C uniquely licensed by the stated thesis 'Sättet den är byggd på röjer vem en församling tänkte sig att musiken var till för'. Key sanity q2: B crosses the attributions, C absolutises against 'i Töreby fylls kyrkan än i dag av sång på julnatten', D false (Wessman built, Sjösten rebuilt) -> A alone survives. Metadata: key_spread ['C','A'] matches the keys; question_families and planted_traps (incl. the relabelled 1.A reversed_direction) match the rationales.",
+   "why": "The repaired unit is internally consistent, and the recorded pedagogy / language / integrated verdicts stand on the current text."
   }
  ]
 }

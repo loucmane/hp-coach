@@ -18,7 +18,7 @@ not style opinions; each names the gate that kills it.
 
 ---
 
-## The eleven laws
+## The fifteen laws
 
 1. **Particulars, never textbook theses.** Build the passage from
    passage-specific, invented-but-concrete material: fictional researchers,
@@ -139,6 +139,46 @@ not style opinions; each names the gate that kills it.
     a law. The *detail-as-main* trap is still available — but the detail must
     be slightly distorted (e.g. quantity upgraded, actor swapped), never quoted
     faithfully.
+
+12. **No architectural clones.** Before committing, diff your passage's MOVE
+    SEQUENCE (opening strategy, evidence pattern, objection placement, closing
+    cadence) against shipped P5 units in your section — the 2026-07-30
+    whole-bank scan found one mould reused across three batches and five
+    clones in all; a student who solves one clone solves them all without
+    reading. Vary the skeptic slot (sometimes none, sometimes two, sometimes
+    the skeptic wins), the thesis shape (cap "the metric measures the wrong
+    thing" at ~1 unit per batch; use mechanism-is-the-point,
+    conventional-view-confirmed, straight reconstruction, genuinely
+    unresolved), and the coda (retire the aphoristic two-sentence close and
+    the "not A, but B" chiasmus for several batches — some passages should
+    simply stop).
+
+13. **Registry-safe names and motifs.** Never reuse a full name, surname,
+    invented institute/firm, or invented toponym from ANY shipped unit — grep
+    the shipped batches before committing. Randomise researcher and challenger
+    gender independently (the scan found careful-woman/overconfident-man 18 of
+    18); avoid the saturated "Hal-" prefix and "Ingrid". Keep motifs disjoint
+    (ledger-study sourcing, weakest-link chains, institution-in-decline are
+    saturated).
+
+14. **Phrase blocklist.** Burned phrase families — no close variants either:
+    "is more divided than X's rule allows", "There is no such thing as too…",
+    "It is a clean/tidy story", "What the story mostly skips", "The number
+    that matters, in the end", "…like to admit", "Vi ser ett mönster, inte en
+    lag", "Undersökningen vilar på ett tålmodigt räknande",
+    "Metoden/Materialet har sina hål", "medger … men håller fast vid att
+    mönstret återkommer", "Entydig är bilden inte", "Kanske är det, menar X,
+    just i sådana…", "Invändningen kommer genast", "Det vore lätt att…, och X
+    varnar uttryckligen för frestelsen".
+
+15. **Surface variety quotas.** Titles: cap "The + modifier + noun" ELF
+    titles and Swedish negation headlines; allow colons, long titles, flat
+    descriptive and place-name titles. Vary numeric register (digits,
+    spelled-out, ranges, no numbers at all). Sometimes drop the byline or the
+    glossary. Cloze: randomise which ordinal holds the connective gap; retire
+    the invented-firm-plus-cautious-auditor genre. Debatt: reorder the
+    five-move skeleton; drop the announced objection and the "Jag har X i N
+    år" credential in half the units.
 
 ---
 
