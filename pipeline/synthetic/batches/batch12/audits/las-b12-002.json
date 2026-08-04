@@ -1,41 +1,71 @@
 {
   "candidate_id": "las-b12-002",
   "audit_verdict": "CONFIRMED_NOTES",
+  "audit_scope": "adversarial meta-audit of the 2026-07-30 real-entity rename (Sandviken->Tegelsund, Norrkoping->Savkoping, Sinikka Vaara->Bodil Tjarnedal); every named entity in the CURRENT passage independently web-verified, including names the repair says it 'checked and kept'",
+  "entity_verification": {
+    "method": "sv.wikipedia search API (action=query&list=search), Wikidata wbsearchentities, OpenStreetMap Nominatim global geocoder (method sanity-checked: 'Sandviken' returns town, Sandvikens kommun, Gavleborgs lan), Exa web + people search. WebSearch quota was exhausted for the session, so these independent endpoints were used instead.",
+    "Tegelsund": "CLEAR. sv.wikipedia totalhits 0; Wikidata search array empty; Nominatim global 0 results. Nearest real forms returned: Tegelsmora, Tegelhagen, Tygelsjo, Teg - matching the originality_note's own list.",
+    "Savkoping": "CLEAR. sv.wikipedia totalhits 0; Wikidata empty; Nominatim global 0 results. Nearest real forms: Savsjo, Savja, Soderkoping, Koping, Sava, Save - matching the originality_note's list.",
+    "Bodil Tjarnedal": "CLEAR. sv.wikipedia 'Tjarnedal' totalhits 0; Wikidata empty; people search returns only distinct real surnames Tjarndal (Peter Tjarndal, Chalmers), Tjardal, Ternedal, Tjardalen, and the Skane place/foundation Tjornedala - no bearer of 'Tjarnedal', no 'Bodil Tjarnedal'.",
+    "Institutet for stadsnara tjanster": "CLEAR as a real-entity check. sv.wikipedia exact-phrase 'stadsnara tjanster' totalhits 0; institute search returns only Handelns Forskningsinstitut, Institutet for urbanforskning (Malmo), Institutionen for tjanstevetenskap (Lund), IFN - no institute of this name exists.",
+    "Ola Rimfeldt": "CLEAR at full-name level. sv.wikipedia 'Rimfeldt' returns 3 stem hits that are all 'Rimfeld' (Kaili Rimfeld, behavioural geneticist), not the exact string; people search returns no 'Ola Rimfeldt'. See finding 5 for the surname caveat.",
+    "verdict": "No surviving real-entity collision in any domain. The Kerrig-style failure mode (a replacement that turns out to be a real firm in a related domain) does not recur here, and every originality_note claim I could test reproduced."
+  },
+  "mechanical_checks": {
+    "old_names_gone": "PASS for shipping content. Programmatic scan of candidates-final for Sandviken / Norrkoping / Sinikka / Vaara: 0 hits in passage, both stems, all 8 options, both rationales, and every generator_meta field except generator_meta.originality_note, where they appear by design as provenance (see finding 6).",
+    "options_and_keys_byte_identical": "PASS, verified programmatically against git HEAD (the pre-rename shipped version): questions[*].options compare equal object-for-object; key C / key A unchanged; both rationales byte-identical; title unchanged. The only content deltas are passage (3 names), q1 stem (name only: 'Vad kom fram i Sinikka Vaaras undersokning?' -> 'Vad kom fram i Bodil Tjarnedals undersokning?'), generator_meta.self_blind_solve, and the new originality_note. The repair's assertion holds.",
+    "regate_lines_last": "PARTIAL. entityfix-tagged lines are the last records for this unit in verdicts-gkey-1.jsonl (30-31 of 31), verdicts-gkey-2.jsonl (30-31 of 31), verdicts-gdistractor.jsonl (30-31 of 31) and verdicts-gstem.jsonl (5-6 of 6), all appends, no rewrites of prior lines. verdicts-gkey-resolved.jsonl was not touched - see finding 2. No 'entityfix2' tag exists anywhere in batch12.",
+    "rationale_quotes": "7 of 8 quoted strings resolve verbatim in the current passage; 1 does not - see finding 3."
+  },
   "findings": [
     {
       "severity": "minor",
-      "stage_challenged": "integrated",
-      "claim": "The q1 rationale contains a quotation that does not appear verbatim in the passage, which is exactly integrated-review check row 4 (\"every phrase a rationale quotes/names actually appears in the current option text and the passage\") — the check the skill itself calls the highest-yield one after corrections.",
-      "evidence": "Rationale q1: \"barnfamiljer nämns faktiskt, men just som den grupp där sambandet ”knappt gick att belägga alls”\". Passage: \"För barnfamiljer gick det knappt att belägga alls; de planerar ändå sina rundor efter caféer.\" The quoted string \"knappt gick att belägga alls\" does not occur; the passage word order is \"gick det knappt att belägga alls\". Mechanical check over all 7 candidates-final units in batch12: 17 of 18 rationale quotes are exact; this is the only miss in the batch, so it is not a corpus convention.",
-      "why": "Per the integrated skill's own scale, a rationale quoting wording that is not in the current text is \"a fixable mismatch\" (INCONSISTENT), not \"cosmetic/metadata\" (MINOR_NOTES); a student who searches the passage for the quoted string will not find it. The recorded verdict is MINOR_NOTES with no findings logged and the text unchanged (candidates-final == candidates-corrected apart from the pedagogy edits made at 11:22, before integrated ran at 11:28)."
+      "stage_challenged": "repair-propagation",
+      "claim": "The rename was not propagated into the batch's own adjudication record: ADJUDICATION.md still reprints the full pre-rename passage, including the real place name Sandviken carrying the invented 1927 cast-iron pissoir fact, plus Norrkoping, Sinikka Vaara and the old q1 stem.",
+      "evidence": "pipeline/synthetic/batches/batch12/ADJUDICATION.md lines 258, 260, 264, 271 still read 'Sinikka Vaara vid Institutet for stadsnara tjanster i Norrkoping', 'Vaara medger ocksa', 'Men i Sandviken star fortfarande en gjutjarnspissoar fran 1927' and 'Vad kom fram i Sinikka Vaaras undersokning?'. Both earlier batch-12 repairs DID propagate into this same file: grep 'Ferrymouth' = 1 hit and 'Harbor Fog' = 0 hits (elf-b12-003), grep 'Tovedal' = 3 hits (las-b12-001).",
+      "why": "The batch set its own standard for these repairs ('all mentions propagated', STATUS.md). By that standard the propagation is incomplete: the reviewable record of this unit still displays the exact collision the repair was opened to remove. Shipping content (candidates-final) is clean, so this is a record defect, not a student-facing one. Upstream stage snapshots (candidates/, candidates-corrected/, gen-las-short-1.*) are NOT part of this finding - 'Harbor Fog' survives in those for elf-b12-003 too, so leaving them frozen is the established convention."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "gate-evidence",
+      "claim": "The entityfix regate did not reach verdicts-gkey-resolved.jsonl, so in that file the LAST records for las-b12-002 are still the pre-rename G-KEY lines.",
+      "evidence": "grep -c entityfix over verdicts-vfinal/: gkey-1 = 2, gkey-2 = 2, gdistractor = 2, gstem = 2, gkey-resolved = 0. In verdicts-gkey-resolved.jsonl the unit's records are lines 17-18 (vote 1) and 46-47 (vote 2), all plain 'claude-opus-4-8/G-KEY'. Precedent inside the same file shows resolved IS refreshed after a regate: it carries 8 regate3/clean-rerun-derived lines and appends las-b12-001's round-3 votes at lines 55-58.",
+      "why": "The resolved file is the merged authority for G-KEY; leaving it at the pre-rename state means a reader reconstructing the shipped evidence chain from it alone sees votes cast against a passage that no longer exists. The solve outcome is unaffected - both entityfix votes independently return C/A, matching the keys - so this is a completeness gap, not a correctness one."
     },
     {
       "severity": "minor",
       "stage_challenged": "integrated",
-      "claim": "The q2 trap label for option D does not name the actual trap, and the rationale contradicts its own label two clauses later.",
-      "evidence": "generator_meta.planted_traps[\"2\"][\"D\"] = \"true_but_irrelevant (fel klagomål om caféerna)\" and the rationale says \"D är true_but_irrelevant i förvrängd form\". The corpus trap glossary (pipeline/synthetic/las/families.json) defines true_but_irrelevant as \"Sant i sig men besvarar inte den ställda frågan.\" But the same rationale states the complaint is not what the text says (\"klagomålet gäller att de tar betalt genom ett köp, inte att de skulle vara för få eller svårhittade\") and closes with \"Ingen distraktor är alltså ordagrant sann; var och en bär ett utpekbart fel.\" D (\"Att caféernas toaletter är för få och alltför svåra att hitta för besökare.\") is unsupported by the passage, so it is not \"sant i sig\" — the operative mechanism is unsupported plausibility plus lexical echo of \"caféerna\", not true-but-irrelevant.",
-      "why": "\"Trap labels name the actual trap\" and \"no self-contradiction\" are both integrated-stage duties; the hedge \"i förvrängd form\" is an admission that the labelled class does not apply, and the label is student-visible inside the rationale."
+      "claim": "A rationale quotation still does not appear verbatim in the passage; it survived a repair round that rewrote the same file.",
+      "evidence": "q1 rationale: 'barnfamiljer namns faktiskt, men just som den grupp dar sambandet ”knappt gick att belagga alls”'. Passage: 'For barnfamiljer gick det knappt att belagga alls'. Programmatic check of all 8 quoted spans in the current unit: 7 resolve in the passage, this one does not. The prior audit of this unit raised the identical finding; the 2026-07-30 repair touched passage, stem and generator_meta but left the quote unfixed.",
+      "why": "Integrated-review row 4 (every phrase a rationale quotes must appear in the current text) is the highest-yield post-correction check; a student who searches the passage for the quoted string will not find it. Unchanged severity from the earlier audit - the key is unaffected."
     },
     {
-      "severity": "minor",
-      "stage_challenged": "pedagogy",
-      "claim": "The q2 rationale states a factual claim about the passage that the passage refutes: that the cost-shifting argument is the only objection the text advances.",
-      "evidence": "Rationale q2: \"Alternativet är en omskrivning, inte ett citat, och det är den enda invändning texten faktiskt för fram.\" The passage advances a second, structurally prominent objection — it is the title claim: \"Toaletterna försvinner utan att någon beslutar det\", restated in §1 (\"Nedläggningen av en offentlig toalett ser sällan ut som ett beslut\") and in §5 (\"kommunen har varken avvecklat den eller tagit ansvar för den ... Ingen bestämmer sig, och sedan är saken ändå bestämd.\").",
-      "why": "Pedagogy probe 3 requires fact-checking every claim in the teaching payload; the rationale is student-visible and here teaches a false reading of the essay's argument structure. The intended sense is clearly \"the only objection among these four options\", which is true — so this is a wording defect, not a key defect; key A remains uniquely correct."
+      "severity": "note",
+      "stage_challenged": "gate-disposition",
+      "claim": "The fresh entityfix G-STEM regate re-raised a major flag on q2 and no disposition was recorded for the 2026-07-30 round.",
+      "evidence": "verdicts-vfinal/verdicts-gstem.jsonl line 6: verdict 'flag', severity major, blind_classification PARTIALLY, blind_pick 'A' - which is the key. reviews/pedagogy.jsonl's new line mentions only the renames and 'keys unchanged'; reviews/integrated.jsonl had no post-rename line until this audit appended one.",
+      "why": "las-b12-001 was refuted earlier in this campaign precisely for undispositioned G-STEM flags, so the pattern deserves naming. It is only a note here because the finding is a verbatim repeat of one already adjudicated at batch level - ADJUDICATION.md line 252 records the same 'PARTIALLY (blind pick A)' reasoning under 'Grind: SURVIVED_FLAGGED' - so the rename introduced no new blind-answerability risk, only an unlabelled duplicate record."
     },
     {
-      "severity": "minor",
-      "stage_challenged": "pedagogy",
-      "claim": "The q1 rationale asserts that the causal direction is explicit in the passage, while the passage explicitly disclaims that its data can establish direction.",
-      "evidence": "Rationale q1: \"Riktningen (toalettovisshet som skäl att inte ge sig ut) och avgränsningen (de äldsta, samt personer med tarmsjukdom) står båda uttryckligen i texten\". Passage §3: \"Vaara medger också att hennes material inte kan skilja orsak från ordningsföljd: den som redan drar sig för att gå ut märker förstås bristen tydligare än andra.\"",
-      "why": "The rationale conflates \"the respondents stated this as their explanation\" (which is explicit) with \"the direction is established\" (which §3 explicitly denies) — the subtlest point in the passage, and the one a strong student will notice. The key survives because option C is carefully worded with \"angav\" (reported), not caused; the fix is one clause in the rationale, so the verdict floor is MINOR_FIXES rather than SOUND."
+      "severity": "note",
+      "stage_challenged": "originality_note",
+      "claim": "The originality_note's parenthetical 'bylinen Ola Rimfeldt (ingen barare)' is reproducible only as a statement about the full name; the surname Rimfeldt has real bearers.",
+      "evidence": "People search returns Karl Erik Rimfeldt, CEO of Rimfeldt Eiendom AS (Kongsvinger, Norway); sv.wikipedia surfaces Kaili Rimfeld (behavioural geneticist, spelt without the final t). No 'Ola Rimfeldt' exists in any index I queried.",
+      "why": "The claim as written is about the byline, and at that level it verifies - so this is not a false originality_note claim of the Kerrig kind. But 'ingen barare' reads as a claim about the name as such, which is not true of the surname; a future sweep re-reading this note should not treat it as evidence that the surname is invented. Domain is also unrelated (Norwegian real estate vs a Swedish planeringsarkitekt byline), so no collision follows."
     },
     {
-      "severity": "minor",
+      "severity": "info",
+      "stage_challenged": "repair-propagation",
+      "claim": "The pre-rename names survive inside generator_meta.originality_note, by design.",
+      "evidence": "Programmatic scan: 'Sandviken', 'Norrkoping', 'Sinikka', 'Vaara' appear only in generator_meta.originality_note, nowhere in passage, stems, options or rationales.",
+      "why": "Recorded so a future literal grep does not mistake provenance for a leak. This mirrors the elf-b12-003 precedent, where the rewritten originality_note also names the real Benjamin Moore colour it replaced. generator_meta is not student-visible."
+    },
+    {
+      "severity": "info",
       "stage_challenged": "language",
-      "claim": "Two of the three G-SPRÅK vote-1 class-6 findings — including the one rated major — are still present verbatim in the shipping text, with no disposition recorded anywhere.",
-      "evidence": "verdicts.jsonl, G-SPRAK vote 1: major on \"Institutet för stadsnära tjänster\" (\"'stadsnära' collocates with natur/skog/odling/mark ... as an institute name it reads like a mistranslation of 'urban services'\") and minor on \"Invändningarna mot att bygga nytt är inte tomma.\" (\"Swedish collocates 'tom' with ord/löften/fraser; for arguments the native pairings are 'ihåliga' or 'grundlösa'\"). Both strings are unchanged in candidates-final. Only the third finding was applied: \"lägger förstås märke till bristen tydligare\" → \"märker förstås bristen tydligare\" (the one flagged by two of three votes). reviews/language.jsonl records only {\"verdict\":\"CORRECTED\"} with no findings array.",
-      "why": "I independently reach the same reading on \"stadsnära\": it collocates with land/space near a city (stadsnära natur/odling/skog), not with services, so the invented institute name is a real collocation misfit in student-visible prose. The one-kill-vote outcome legitimately routes to adjudication rather than a kill (gates/README.md: \"the lone dissenter is not discarded but carried to adjudication as a flag\"), so CORRECTED is defensible — but silently dropping a major class-6 finding with no recorded reasoning defeats that routing."
+      "claim": "The carried-over G-SPRAK vote-1 major on 'Institutet for stadsnara tjanster' remains undispositioned, and the new originality_note re-asserts the name as checked-and-kept.",
+      "evidence": "verdicts.jsonl G-SPRAK vote 1 major: \"'stadsnara' collocates with natur/skog/odling/mark ... as an institute name it reads like a mistranslation of 'urban services'\"; the string is unchanged in candidates-final and the originality_note now adds 'Institutet for stadsnara tjanster (inget institut med det namnet finns)'.",
+      "why": "The originality_note's claim is about existence, which I verified as correct - it is a genuinely fictional institute. It does not address the separate collocation objection, which predates this repair and is carried here only so the two checks are not conflated by a later reader."
     }
   ]
 }

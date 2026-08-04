@@ -1,5 +1,97 @@
 {
   "candidate_id": "elf-b5-002",
-  "audit_verdict": "CONFIRMED",
-  "findings": []
+  "audit_verdict": "CONFIRMED_NOTES",
+  "audited_by": "adversarial-meta-audit/opus",
+  "date": "2026-07-30",
+  "scope": "post-real-entity-rename (Verran -> Kjelvarn, Halden -> Loddevik) independent verification",
+  "entity_verification": {
+    "method": "independent re-checks, not taken from the repair's originality_note",
+    "Kjelvarn": {
+      "kartverket_stedsnavn_exact": 0,
+      "kartverket_stedsnavn_wildcard_Kjelvar*": 0,
+      "nominatim_osm_global": 0,
+      "wikidata_wbsearchentities": 0,
+      "no_wikipedia_fulltext": 0,
+      "en_wikipedia_fulltext": 0,
+      "verdict": "clear"
+    },
+    "Loddevik": {
+      "kartverket_stedsnavn_exact": 0,
+      "kartverket_stedsnavn_wildcard_Loddevi*": 0,
+      "nominatim_osm_global": 0,
+      "wikidata_wbsearchentities": 0,
+      "no_wikipedia_fulltext": 0,
+      "en_wikipedia_fulltext": 0,
+      "residual": "indexed as a Norwegian personal surname (a junior athlete on friidrettsresultater.no); not a toponym, not in the passage's domain",
+      "verdict": "clear as a place name"
+    },
+    "Rosalind Teale": {
+      "wikidata_fulltext": 0,
+      "en_wikipedia_fulltext": 0,
+      "exa_index_person_search": "no bearer of the full name; Teale is a real surname only",
+      "verdict": "clear"
+    },
+    "Marta Lovold": {
+      "wikidata_fulltext": 0,
+      "en_wikipedia_fulltext": 0,
+      "exa_index_person_search": "no writer of the full name; Lovold is an ordinary Norwegian surname",
+      "verdict": "clear"
+    },
+    "other_terms": "dead reckoning, log-line, traverse board, sea-clock are generic navigational vocabulary, confirmed not named entities"
+  },
+  "consistency_probes": {
+    "old_names_absent_from_live_unit": true,
+    "old_name_occurrences_remaining": "generator_meta.originality_note only (deliberate provenance text); plus frozen upstream artifacts outside the live unit (candidates/, gen-elf-long-2.json[.NOTES.md], pre-vfinal verdicts/, ADJUDICATION.md, reviews/pedagogy.jsonl repair note)",
+    "sibling_stores_renamed": "stems/, blind/, distractor/, candidates-corrected/ all carry Kjelvarn/Loddevik/Teale and zero old names",
+    "option_letters_byte_identical_vs_pre_rename": true,
+    "keys_byte_identical_vs_pre_rename": true,
+    "option_text_diffs": "toponym substitutions only (q1/A, q1/B, q1/C, q3/B); every other option byte-identical",
+    "prompt_diffs": "q2 and q5 stems, toponym substitution only",
+    "rationale_quotes_reconcile_with_current_passage": true,
+    "cross_store_passage_option_key_agreement": true,
+    "entityfix_last_in_verdicts_vfinal": {
+      "verdicts-gstem.jsonl": true,
+      "verdicts-gkey-1.jsonl": true,
+      "verdicts-gkey-2.jsonl": true,
+      "verdicts-gdistractor.jsonl": true,
+      "verdicts-gkey-resolved.jsonl": false
+    }
+  },
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "regate bookkeeping",
+      "claim": "verdicts-vfinal/verdicts-gkey-resolved.jsonl was not refreshed with the entityfix regate",
+      "evidence": "Last elf-b5-002 record in verdicts-gkey-resolved.jsonl is line 30, executed_by 'claude-opus-4-8/G-KEY' (pre-rename vote 2). The four sibling files all end on '*-entityfix' records for this unit.",
+      "why": "The resolved file is the merged authority for G-KEY; leaving it pre-rename makes the vfinal store internally inconsistent. Non-substantive here because both entityfix votes reproduce the same solver answers (B, A, C, D, B) as the records it still holds."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "G-STEM entityfix regate",
+      "claim": "The entityfix regate introduced a NEW major G-STEM flag at q1 that has no disposition record anywhere",
+      "evidence": "Pre-rename verdicts/verdicts-gstem.jsonl: q1 pass, q2 pass, q3/q4/q5 flag(major). Post-rename verdicts-vfinal/verdicts-gstem.jsonl: q1 flag(major, cross-question corroboration with q5/B), q2 pass, q3/q4/q5 flag(major). ADJUDICATION.md section 'elf-b5-002' lists only q3/q4/q5; reviews/final_verify.jsonl reports gkey/gdistractor counts and is silent on G-STEM.",
+      "why": "Answer design is provably unchanged (letters, keys and all non-toponym option text byte-identical to pre-rename), so the repair did not create the tell; this is regate judgement variance. It is nonetheless an undocumented change of gate state on a shipped unit."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "originality_note wording",
+      "claim": "'Rosalind Teale ... confirmed clear, kept unchanged' understates that Teale was itself introduced the same day",
+      "evidence": "candidates/elf-b5-002.json (generator output) names the historian 'Ottilie Brandt'; reviews/pedagogy.jsonl carries a separate 2026-07-30 registry-collision repair renaming Brandt -> Rosalind Teale because elf-b5-001 also uses 'Ottilie Brandt'. git HEAD of candidates-final already reads Teale, so the claim is true relative to the real-entity repair's own baseline.",
+      "why": "Read on its own the note implies Teale is the original generator name that merely survived a sweep. The claim is accurate in scope but a reader reconstructing provenance from the note alone would be misled."
+    },
+    {
+      "severity": "info",
+      "stage_challenged": "real-entity replacement choice",
+      "claim": "'Loddevik' exists as a Norwegian personal surname",
+      "evidence": "friidrettsresultater.no lists an athlete 'Emil Loddevik' (b. 2009). Kartverket exact and wildcard, OSM/Nominatim, Wikidata and no/en Wikipedia all return 0 for Loddevik as a place.",
+      "why": "Not a collision in a related domain: the passage uses Loddevik as a 17th-century chart-workshop town, and no toponym of that name exists in any consulted gazetteer. Recorded so the residual is on the record rather than rediscovered later."
+    },
+    {
+      "severity": "info",
+      "stage_challenged": "audit method",
+      "claim": "General-web exact-phrase confirmation was unavailable this session",
+      "evidence": "WebSearch budget exhausted (200/200); duckduckgo, duckduckgo-lite and mojeek all returned HTTP 403 to WebFetch. Verification therefore rests on Kartverket (exact + wildcard), OSM/Nominatim, Wikidata (entity + full-text), no/en Wikipedia full-text and the Exa index.",
+      "why": "The gazetteer and knowledge-base checks are the decisive ones for toponyms and notable persons, but a general-index exact-phrase sweep would strengthen the negative result."
+    }
+  ]
 }

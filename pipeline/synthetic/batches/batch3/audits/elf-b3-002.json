@@ -1,17 +1,80 @@
 {
   "candidate_id": "elf-b3-002",
-  "audit_verdict": "CONFIRMED",
+  "audit_verdict": "CONFIRMED_NOTES",
   "auditor": "adversarial-meta-auditor/opus",
-  "date": "2026-07-24",
-  "stages_challenged": ["language", "pedagogy", "integrated"],
+  "date": "2026-07-30",
+  "scope": "post-real-entity-rename adversarial re-audit (supersedes the 2026-07-24 CONFIRMED audit of the pre-rename text)",
+  "stages_challenged": ["pedagogy (real-entity repair)", "originality_note", "verdict-ledger bookkeeping", "integrated"],
   "probes": {
-    "language": "Passage and all 20 options are English; spelling variety consistently BrE (traveller, ageing); zero AmE leaks. language=CLEAR upheld.",
-    "verbatim_quotes": "All five rationale quotes match the current passage text verbatim (modulo gap markers): 'quietly ___ its overnight services', 'a loss ... willing to ___ indefinitely', 'expected to fill perhaps half the cabins' + 'sold out weeks in advance', 'more ___ than the cheering headlines suggest', 'the ledgers look far less ___'. No stale quotes.",
-    "collocation_factcheck": "Every rationale collocation claim verified: (1) 'withdrew its services' idiomatic; dismissed/declined/renounced fail on collocation/sense; the intransitive-reduce-sense note on 'decline' is linguistically correct. (2) 'underwrite a loss' idiomatic; condone requires wrongdoing, overturn takes decision/verdict, dispel takes doubts/fears/myths. (3) 'Instead' carries counter-to-expectation reversal; Accordingly/Otherwise/Meanwhile mis-signal. (4) 'precarious' is the negative pole demanded by 'Yet' + downstream fragility evidence; auspicious is the polarity mirror, gregarious/meticulous sense-misfit. (5) 'less rosy' collocates with a favourable financial picture; hollow/candid/generous fail.",
-    "key_sanity": "All five keys are the unique idiomatic best answer and map to the correct option text (1=C withdrew, 2=A underwrite, 3=D Instead, 4=B precarious, 5=C rosy). No distractor is defensible as a second key. POS uniformity holds per gap (past-tense transitive verbs; base-form verbs after 'willing to'; sentence adverbs; -ious adjectives; adjectives).",
-    "key_spread": "C/A/D/B/C matches schema_note; no problematic position clustering (no adjacent repeats, no letter used more than twice).",
-    "gap_integrity": "All five ___(n)___ markers present in passage; questions[] q_index/prompt align 1:1 with gaps."
+    "entity_independent_web_verification": {
+      "method": "Every named entity in the CURRENT passage re-verified from scratch (OSM/Nominatim, Wikidata wbsearchentities, en/sv Wikipedia insource regex search, Open Library, Exa web/people search). Nothing taken on the repair's word.",
+      "Nattrand (sleeper service)": "CLEAR. Nominatim: empty result array. Wikidata wbsearchentities: empty. en.wikipedia insource:/Nattrand/: totalhits 0. sv.wikipedia insource: 0. Exa night-train search surfaces only real operators (Snalltaget, European Sleeper, UEX Night, RDC/Nachtexpress, VR, SJ) - no Nattrand.",
+      "Vaneby Rail (operator)": "CLEAR as an operator/station/locality, with one disclosed near-neighbour. Nominatim q=Vaneby and q=Vaneby(umlaut) return ONLY 'Vanebyvagen' (Vanebyvagen) - a residential/unclassified road plus one bus stop in Vane-Asaka, Trollhattans kommun, Sweden. No place node, no station, no rail operator; sv.wikipedia insource 0 hits. Exa finds only a US 1850-census given name (Vaneby Harter, Allen Co., Ohio) and a forebears.io surname-variant row with 1 bearer. No collision with any rail entity.",
+      "Anneke Verholt (transport economist)": "CLEAR. Wikidata: only 'Verholtknutten' (a Norwegian topographic feature). Exa people search returns living Dutch bearers of the surname Verholt (psychologist, production manager, PhD candidate, artist, CAD draughtsman) - none in transport, rail or economics, and no person named Anneke Verholt anywhere. Nearest transport-sector 'Anneke' hits are different surnames (van Dorp, van de Mond, Spies-Voogt).",
+      "Miles Wrensham (byline)": "CLEAR. en.wikipedia insource:/Wrensham/: totalhits 0. Exa: 'Wrensham' occurs only as (a) a 19th-century census mis-spelling of Wrentham, Suffolk (1881 St George Union Workhouse, Towcester 1871), (b) 'Wrensham Street', Birmingham baptisms 1859, (c) a fictional locality in George Meredith's 'One of Our Conquerors' (1891), (d) a listed surname variant on a genealogy site. No living bearer, no journalist. Nearest real journalists are Miles Costello / Miles Ellingham / Myles Wren - different surnames.",
+      "Slow Trains Home (title)": "No book or article of that exact title. Open Library q=\"Slow Trains Home\": numFound 2, both the same 1951 novel 'The Slow Train Home' by Dorothy Cowlin (singular 'Train', definite article, unrelated genre). Disclosed as a note, not a collision.",
+      "unnamed referents": "'the capital', 'the northern coast', 'weekly current-affairs magazine' carry no real-world referent - confirmed by reading, nothing to verify."
+    },
+    "originality_note_claim_reproduction": {
+      "CityNightLine Aurora Basel-Copenhagen": "REPRODUCED. en.wikipedia: dedicated article 'Aurora (CityNightLine)'; EuroNight, Through coach ('CNL 472 Aurora Basel SBB - Copenhagen'), Basel SBB station and RDC articles all corroborate the route and its 2014 withdrawal.",
+      "VR Aurora Borealis Express": "REPRODUCED. en.wikipedia 'Aurora Borealis Express' - VR Group overnight Helsinki-Kolari.",
+      "Halden real Norwegian rail town/station": "REPRODUCED. Halden Station on the Ostfold Line, Halden, Ostfold; Berg and Kornsjo stations also in Halden.",
+      "Duncan Thorne is a real newspaper columnist": "REPRODUCED. Duncan Thorne, columnist at CanWest Global Communications (Edmonton Journal).",
+      "'Sollander'/'Alnerud' have real bearers in Swedish transport/forestry policy": "REPRODUCED. Erik Sollander, skogspolitisk strateg / policy strategist at Skogsstyrelsen (named as foredragande on regeringen.se remiss documents). Anna-Lena Alnerud, sekreterare, Malmo stad kommunstyrelsen, signing municipal responses on sarskilda persontransporter (SOU 2018:58) and transporteffektivitet.",
+      "'Ingrid' was registry-saturated": "REPRODUCED in-repo. 'Ingrid' occurs in 9 shipped candidates-final units across batches 1, 3, 6, 7, 8, 9 (plus this one pre-rename).",
+      "'Elias' reused in three shipped units": "REPRODUCED in-repo. las-b3-002 (Elias Bohlin), elf-b4-001 (byline Elias Frisk), las-b10-003 - exactly three besides this unit.",
+      "the real night-train book is Monisha Rajesh's 'Moonlight Express'": "REPRODUCED. Bloomsbury Circus, 'Moonlight Express: Around the World By Night Train', ISBN 9781526644121, first published 28 Aug 2025.",
+      "answer design byte-identical to the pre-repair file": "REPRODUCED BY DIFF, see below."
+    },
+    "old_name_sweep": "Structural walk of every string in the current candidates-final file for Aurora|Halden|Sollander|Ingrid|Alnerud|Elias|Thorne: the ONLY paths that match are root.generator_meta.originality_note (the provenance record itself). Passage, title, family, all 5 prompts, all 20 option texts, all 5 rationales, fictional_entities, fictional_source: zero survivors. stems/elf-b3-002.json: zero old names.",
+    "byte_identity_of_answer_design": "VERIFIED against git HEAD (the pre-repair blob, commit 2b15142). Tuple (q_index, prompt, [(letter, text) x4], key) is IDENTICAL for all five questions; keys C/A/D/B/C unchanged; every key still maps to the intended text (1=C withdrew, 2=A underwrite, 3=D Instead, 4=B precarious, 5=C rosy). Fields that changed: passage, generator_meta.fictional_entities, generator_meta.fictional_source.byline, generator_meta.originality_note (new), and rationale 5 ONLY where it names the speaker ('Sollander says' -> 'Verholt says') - a required consequence of the rename, no analytic content touched. Rationales 1-4 byte-identical.",
+    "rationale_quote_integrity": "All rationale quotes re-matched against the CURRENT passage (gap markers normalised): 'quietly ___ its overnight services', 'willing to ___ indefinitely', 'expected to fill perhaps half the cabins', 'sold out weeks in advance', 'more ___ than the cheering headlines suggest', 'the ledgers look far less ___', 'survive on public subsidy', 'decades old and costly to keep running' - all present. No stale quote, no quote referencing a renamed entity.",
+    "gap_integrity": "All five ___(n)___ markers present and ordered; 5 gaps => 5 questions[]; q_index/prompt align 1:1.",
+    "verdict_ledger_recency": "PARTIAL. entityfix-tagged regate lines ARE the last elf-b3-002 records in verdicts-gstem.jsonl (5x pass, NOT_ANSWERABLE), verdicts-gdistractor.jsonl (4 pass + the pre-existing, rename-independent 'condone' ARGUABLE flag), verdicts-gkey-1.jsonl and verdicts-gkey-2.jsonl (5x pass each, solver answers C/A/D/B/C on both legs). They are NOT present in verdicts-gkey-resolved.jsonl, whose last elf-b3-002 records remain G-KEY-regate0724 - see finding 1."
   },
-  "findings": [],
-  "note": "Adversarial refutation attempt on the post-regate chain (cloze restored by certified amendment) found no defect. All three challenged stage verdicts (language=CLEAR, pedagogy=SOUND, integrated=CONSISTENT) are well-founded against the current unit state."
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "real-entity repair / verdict-ledger bookkeeping",
+      "claim": "The repair asserts the fresh entityfix-tagged regate lines are the last records for this unit in verdicts-vfinal/. That is true for verdicts-gstem, verdicts-gdistractor, verdicts-gkey-1 and verdicts-gkey-2, but verdicts-gkey-resolved.jsonl was never regenerated.",
+      "evidence": "git status shows verdicts-gkey-resolved.jsonl unmodified while the other four are M. Its last elf-b3-002 records (lines 34-38) are executed_by 'claude-opus-4-8/G-KEY-regate0724', vote 2 - the pre-rename generation. Both vote legs did re-run under entityfix and agreed (C/A/D/B/C), so the resolved fold would be unchanged in substance.",
+      "why": "A consumer that treats verdicts-gkey-resolved.jsonl as the authoritative merged G-KEY ledger attributes this unit's key verdicts to the pre-rename passage. No substantive risk here because options and keys are byte-identical, but the recency assertion is not universally true across verdicts-vfinal/."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "real-entity repair / verdict-record schema",
+      "claim": "The entityfix lines appended to verdicts-gkey-1.jsonl use target 'q1'..'q5' (no colon), deviating from the 'q:1' convention used by every other record in verdicts-vfinal/ - including their own sibling lines in verdicts-gkey-2.jsonl.",
+      "evidence": "verdicts-gkey-1.jsonl lines 20-24: \"target\": \"q1\" ... \"q5\"; verdicts-gkey-2.jsonl lines 20-24: \"target\": \"q:1\" ... \"q:5\"; all 19 preceding lines in gkey-1 use 'q:n'.",
+      "why": "Any fold that joins the two vote legs on (candidate_id, gate, target) will fail to pair the vote-1 and vote-2 entityfix records for this unit and could silently drop or double-count a leg."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "real-entity repair / cross-unit corroboration",
+      "claim": "reviews/pedagogy.jsonl line 9 (las-b3-002, dated the same day as the rename) still justifies the avoid-adjacent serving constraint partly by 'the shared first name in the two invented bylines, Elias Bohlin / Elias Thorne' - a fact the rename destroyed.",
+      "evidence": "Grep of las-b3-002's generator_meta shows serving_constraint = 'avoid-adjacent: elf-b3-002 (same topic axis - night trains); scheduler must not serve both to one student in proximity' - the shipped field rests only on the topic axis and does NOT name Elias, so the constraint itself survives the rename. Only the log line's supporting rationale is stale.",
+      "why": "Disclosed because the batch11 precedent was a repair that broke a cross-question corroboration. Here the corroboration holds in the shipped metadata; the stale reference is confined to an immutable review-log entry."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "originality_note",
+      "claim": "The note's flat statement \"'Vaneby' - no Swedish/Norwegian locality, station or rail operator\" is correct as written, but the stem is a real Swedish toponym element that appears in a transport-name context.",
+      "evidence": "Nominatim q=Vaneby returns five 'Vanebyvagen' (Vanebyvagen) features - residential/unclassified/service road plus a bus_stop - in Vane-Asaka, Trollhattans kommun, Vastra Gotalands lan, Sweden. No place node named Vaneby, no station, no operator; sv.wikipedia has no article.",
+      "why": "Not a collision of the Aurora/Halden class (no company, no station, no service), so the repair's decision stands - but a future bank-wide sweep that fuzz-matches toponym stems will surface it, and the note reads more absolutely than the evidence supports."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "originality_note",
+      "claim": "The note's claim that the title 'Slow Trains Home' matches no real book is literally true, but there is a near-miss it does not mention.",
+      "evidence": "Open Library q=\"Slow Trains Home\" returns numFound 2, both the same work: 'The Slow Train Home', Dorothy Cowlin, first published 1951 (singular 'Train', definite article).",
+      "why": "Different title string, different domain (a mid-century English novel, not night-train journalism), 75 years old - no student-facing confusion risk. Recorded so the near-miss is on file rather than rediscovered as a surprise."
+    },
+    {
+      "severity": "info",
+      "stage_challenged": "real-entity repair",
+      "claim": "The pre-rename names survive inside generator_meta.originality_note, which is itself part of generator_meta.",
+      "evidence": "Structural scan: Aurora, Halden, Sollander, Ingrid, Alnerud, Elias, Thorne each match exactly one path - root.generator_meta.originality_note.",
+      "why": "This is the intended provenance record and must not be scrubbed. Flagged only so a naive grep-based real-entity sweep over generator_meta does not re-open this unit as a false positive."
+    }
+  ],
+  "note": "Adversarial refutation attempt on the 2026-07-30 real-entity rename found NO surviving collision and NO unreproducible originality_note claim. All four replacements (Nattrand, Vaneby Rail, Anneke Verholt, Miles Wrensham) were independently web-verified from scratch and are clear in the rail/transport domain and generally; the kept title 'Slow Trains Home' is clear; every factual assertion in the originality_note - including the ones about the removed names and about Monisha Rajesh's 'Moonlight Express' - was reproduced against primary sources. Option letters, option texts and keys are byte-identical to the pre-repair blob at git HEAD, as asserted. The only rationale edit is the speaker's name in rationale 5, which the rename required. The residual findings are ledger-bookkeeping and disclosure items, none refutation-grade."
 }

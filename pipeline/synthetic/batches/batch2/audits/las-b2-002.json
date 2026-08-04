@@ -1,5 +1,78 @@
 {
  "candidate_id": "las-b2-002",
- "audit_verdict": "CONFIRMED",
- "findings": []
+ "audit_verdict": "CONFIRMED_NOTES",
+ "audited_by": "adversarial-meta-audit/opus (post-real-entity-rename sweep, independent live re-verification)",
+ "date": "2026-08-04",
+ "findings": [
+  {
+   "severity": "info",
+   "stage_challenged": "real-entity repair",
+   "claim": "POSITIVE VERIFICATION: every named entity in the current passage was independently re-checked against live sources and none has a real bearer in a related domain. The collision the repair was opened for is genuinely gone.",
+   "evidence": "Skolverkets skolenhetsregister pulled live 2026-08-04 (api.skolverket.se/skolenhetsregistret/v1/skolenhet, 10 630 units — the count the originality_note states): substring probes 'Klöverhag', 'Häggnora', 'Fagerhammar', 'Ödsberga', 'Tjärnfeldt' -> 0 hits each. sv-Wikipedia CirrusSearch insource:// -> Klöverhagsskolan 0, Klöverhagen 0, Häggnora 0, Fagerhammar 0, Ödsberga 0, Tjärnfeldt 0; en-Wikipedia insource -> 0 for all six. Wikidata wbsearchentities (sv) -> no entity for any of the five names (only unrelated Danish 'Kløverhage', Q23752175, a point in Denmark, on the truncated stem). Exa semantic search for 'Klöverhagsskolan grundskola kommun', 'Häggnora ort by gård', 'Ödsberga plats ort', 'Tjärnfeldt efternamn' returned only near-names (Klockarhagsskolan, Klöverträskskolan, Häggum/Häggvik/Häggenäs, Östberga/Ödsby, Tjerneld/Tjernlund/Järnefelt) — no exact bearer. Passage entity set checked in full: Häggnora (kommun), Fagerhammar (centralkök), Klöverhagsskolan (school), Ödsberga (grannkommun), Birgitta Tjärnfeldt (byline). No firm, institute or publication is named anywhere in the text.",
+   "why": "The two cautionary precedents in this campaign (a kept name that turned out to be a real Slovenian firm; a sweep that mis-classified two real Swedish places) do not repeat here — each replacement was re-derived from primary registers by this audit, not taken on the repair's word."
+  },
+  {
+   "severity": "info",
+   "stage_challenged": "entityfix (answer-design invariance)",
+   "claim": "POSITIVE VERIFICATION: the repair's byte-identity assertion holds. Option letters, option texts and both keys are byte-identical to the pre-repair candidates-final file; the only content changes are the five names, the q2 stem's toponym, and metadata.",
+   "evidence": "git show HEAD:pipeline/synthetic/batches/batch2/candidates-final/las-b2-002.json vs working tree, parsed and compared field by field: q1 and q2 letters ['A','B','C','D'] identical; all 8 option texts IDENTICAL True; keys B / D unchanged; SHA-256 of the serialized options blob identical old and new (43518ac9b1e8c736...). q1 prompt and q1 rationale byte-identical. Changed: q2 prompt ('Vad visade försöket i Rörsta' -> '... i Ödsberga'), q2 rationale (name swap plus a quote-boundary tightening: pre-repair 'matsvinnet ”tycktes öka — ...”' -> current '”tycktes matsvinnet öka — ...”', which is now a verbatim span of the passage), generator_meta.self_blind_solve and generator_meta.originality_note. title, family, section, question_families, planted_traps, key_spread untouched. stems/las-b2-002.json matches the shipped prompts and options exactly (both questions).",
+   "why": "No re-gate of the answer design is owed by the rename, and the fresh entityfix G-KEY x2 / G-DISTRACTOR / G-STEM lines that were run anyway all pass (solver B / D at both votes), so the keys are certified against the exact shipping text."
+  },
+  {
+   "severity": "info",
+   "stage_challenged": "integrated",
+   "claim": "POSITIVE VERIFICATION: rationale quotes, trap labels and internal cross-references all resolve against the current post-rename text.",
+   "evidence": "Passage-quoted spans in the rationales resolve verbatim: 'räknar på fel sak', 'något som ingen kalkyl fångar', 'märkningen av allergener blir säkrare', 'fyra kronor är fyra kronor', 'tycktes matsvinnet öka — men framför allt hos de lägre klasserna, och nästan bara när det var lagad varm mat'. The two non-verbatim quoted spans ('aldrig ... i varje skolas eget kök', 'alla elever, oavsett rätt') are compressed citations of options q1-A and q2-B, not of the passage, and both are unchanged from the pre-repair file. Cross-references post-rename: q2 stem toponym == passage toponym (Ödsberga); the q2-C rationale now says 'Häggnoras kalkyl', matching the passage's 'fyra kronor mindre' in Häggnora; byline 'skolkock i Häggnora' matches the writer's Klöverhagsskolan employment inside Häggnora; q2-C 'de tre försöksskolorna' matches 'där tre skolor gick över'. self_blind_solve now lists exactly the five new names. planted_traps and key_spread ['B','D'] match the rationales and keys.",
+   "why": "Renaming a toponym that also appears in a stem is exactly the change that silently breaks a stem/passage or rationale/text link; it did not here."
+  },
+  {
+   "severity": "minor",
+   "stage_challenged": "final_verify (entityfix re-gate bookkeeping)",
+   "claim": "The entityfix re-gate lines are NOT the last records for this unit everywhere in verdicts-vfinal/: verdicts-gkey-resolved.jsonl — the only G-KEY file vfinal_fold.py reads — was never appended to, so the fold still certifies this unit off pre-rename G-KEY evidence.",
+   "evidence": "verdicts-gstem.jsonl (lines 5-6), verdicts-gkey-1.jsonl (21-22), verdicts-gkey-2.jsonl (21-22) and verdicts-gdistractor.jsonl (21-22) all end with '-entityfix' lines for las-b2-002. verdicts-gkey-resolved.jsonl contains 40 lines with executed_by tags {G-KEY-vfinal: 32, G-KEY-regate: 4, G-KEY-declone: 4} and ZERO entityfix lines; its last las-b2-002 records are lines 21-22, tagged 'claude-opus-4-8/G-KEY-vfinal' (pre-rename). vfinal_fold.py:61 reads gkey solely from verdicts-gkey-resolved.jsonl via _last_wins. The sibling declone repair DID propagate into that file (las-b2-003 declone lines at 19-20 and 39-40), so this is a deviation from the directory's own convention. git status confirms the entityfix round modified gdistractor/gkey-1/gkey-2/gstem but not gkey-resolved. reviews/final_verify.jsonl's las-b2-002 record (2026-07-30) reads 'gkey_records=4 ... audit=CONFIRMED audit_major=0 audit_minor=0', i.e. it also predates this audit file.",
+   "why": "Outcome-neutral (all entityfix G-KEY records are pass with solver B/D at both votes, so last-wins yields gkey_kills=0 either way), but vfinal_fold.py's stated guarantee — 'fresh blind G-KEY x2 ... on the exact shipping files' — is only nominal for this unit until gkey_resolve.py is re-run over verdicts-gkey-*.jsonl and vfinal_fold.py re-run over this audit file. Same class of staleness already recorded for las-b2-003."
+  },
+  {
+   "severity": "minor",
+   "stage_challenged": "originality_note (collision evidence for the retired name)",
+   "claim": "The originality_note's count of the Sörgårdsskolan collision is not reproducible as written: it says the register lists 'four real school units with that exact name (Mölndal, Gislaved, Vällingby/Stockholm plus Fritidshemmet Sörgården)'. The live register holds FIVE units with the exact name plus two differently-named Sörgården fritidshem.",
+   "evidence": "Live pull 2026-08-04 (10 630 units): 'Sörgårdsskolan' appears 5x, all Aktiv, kommunkod 0180 (Stockholm), 0662 (Gislaved), 0665 (Vaggeryd), 1481 (Mölndal), 2380 (Östersund); additionally 'Fritidshemmet Sörgården' (kommunkod 1765, Vilande) and 'Sörgårdens fritidshem' (1452, Vilande) — neither carries the exact name the note attributes to it. The adjacent claims about the replaced municipality reproduce exactly: 'Kvarnbyskolan' 2 units (1481 Mölndal, 0180 Stockholm); sv-Wikipedia confirms Kvarnby as a delområde in Husie, Malmö, with Kvarnby folkhögskola; 'Almvik, Västerviks kommun' is confirmed a real småort in Törnsfalls socken.",
+   "why": "The misstatement understates the collision it was written to justify, so the repair decision stands a fortiori — but the note is presented as a verification record and a later reader recomputing it will not land on 'four'. Reword to '5 exact units + 2 Sörgården fritidshem' if the note is kept as evidence."
+  },
+  {
+   "severity": "note",
+   "stage_challenged": "originality_note (rejected-candidate log)",
+   "claim": "One item in the REJECTED list is misclassified: 'Ekhamra and Kvistberga (real school units)' — Ekhamra checks out, Kvistberga does not appear in the school register at all.",
+   "evidence": "Register probe: 'Ekhamra' -> 1 unit ('Ekhamraskolan'); 'Kvistberga' -> 0 units. sv-Wikipedia has Kvistberga only as a place name in Västmanland/Södermanland road lists and a medieval Vadstena land record — a real toponym, not a school unit. Spot-checks of the other rejections all reproduce: Norrhammar -> 4 register units (Norrhammarskolan, 7-9, F-6, Resursskola Norrhammar); Bråtnäs naturreservat, Bengtsfors (sv-wiki); Näverbo and Hällmyra real places (sv-wiki); Sven Vallmark translator; Filip Tallhamn actor; Nybrink real Swedish journalists.",
+   "why": "The name was rejected either way, so no shipping consequence; recorded so the rejected-log is not later cited as register evidence it does not have."
+  },
+  {
+   "severity": "note",
+   "stage_challenged": "real-entity sweep (stem-level allusion)",
+   "claim": "'Klöverhagsskolan' is clean as an exact name but its stem is the surname of landsfiskal Klöverhage, a recurring character across the Åsa-Nisse film series — a culturally salient Swedish fictional bearer the note does not mention.",
+   "evidence": "sv-Wikipedia insource:/Klöverhag/ -> 13 hits, all 'landsfiskal Klöverhage' in Åsa-Nisse film cast lists and actor articles (Gösta Prüzelius, Gösta Krantz, Willy Peters, Gösta Jonsson); en-Wikipedia insource -> 5 hits, same character. The exact strings the note certifies — 'Klöverhagsskolan' and 'Klöverhagen' — are genuinely 0/0/0 across sv-wiki, en-wiki and Wikidata, so no stated claim is false.",
+   "why": "Not a real-entity collision (a film character is not a real school, person or place), so no blocker. But the campaign already retires stems for weaker reasons ('Tegel-' was avoided because three names in las-b12-002 carry it — verified: Tegelhagen, Tegelsmora, Tegelsund), and a Swedish reader may hear an Åsa-Nisse echo in a school named Klöverhagsskolan. Owner call only."
+  },
+  {
+   "severity": "note",
+   "stage_challenged": "entityfix (old-name eradication scope)",
+   "claim": "Every old name is gone from the shipping surfaces, but they survive by design in generator_meta.originality_note and untouched in the upstream stage files and batch documentation.",
+   "evidence": "Field-by-field scan of candidates-final/las-b2-002.json: passage, title, both prompts, all 8 options, both rationales, stems/las-b2-002.json and every generator_meta field except originality_note -> 0 hits for Sörgård / Kvarnby / Almvik / Rörsta / Åkerlund. originality_note carries them as the repair log (intentional). Still pre-rename elsewhere: candidates/las-b2-002.json, candidates-corrected/las-b2-002.json, ADJUDICATION.md (reprints the old passage at lines 178-200), gen-las-short-1.NOTES.md, reviews/pedagogy.jsonl (the repair note itself), and pipeline/synthetic/adjudication/real-entity/{REPORT.md, entities-b1-2-3.json, verdicts-b1-2-3.json}. Repo-wide grep confirms the unit has NOT been promoted into any product-facing bank (data/, app/, worker/ contain no las-b2-002 record).",
+   "why": "candidates/ and candidates-corrected/ are historical stage snapshots and the adjudication files are the audit trail, so they should keep the old names; ADJUDICATION.md is the one owner-facing surface that reprints the retired passage verbatim and may mislead a reader who takes it as current."
+  },
+  {
+   "severity": "note",
+   "stage_challenged": "entityfix (verdict-record schema)",
+   "claim": "The entityfix G-KEY lines in verdicts-gkey-1.jsonl use \"target\": \"q1\"/\"q2\" while every other line in the V-FINAL ledger uses \"q:1\"/\"q:2\".",
+   "evidence": "verdicts-gkey-1.jsonl lines 21-22: '\"target\": \"q1\"' and '\"target\": \"q2\"'; the entityfix lines in gkey-2, gstem and gdistractor all use the colon form. vfinal_fold.py._last_wins keys supersession on (gate, target, vote).",
+   "why": "Harmless today because the fold reads only verdicts-gkey-resolved.jsonl, but if gkey-1 were ever folded directly these two lines would not supersede the pre-rename records for the same questions — they would sit beside them as extra keys."
+  },
+  {
+   "severity": "note",
+   "stage_challenged": "audit method (coverage limit)",
+   "claim": "Broad exact-phrase web search could not be exercised in this session, so 'no exact bearer in broad web search' is corroborated by register/encyclopedia/semantic evidence rather than reproduced literally.",
+   "evidence": "WebSearch returned 'session has used its web search budget (200 of 200)'; html.duckduckgo.com returned HTTP 403; www.mojeek.com served a captcha page; the firecrawl search tool returned HTTP 401; the Wikidata SPARQL endpoint was rate-limited during an active WDQS outage. Substituted: live Skolverket register, sv/en Wikipedia CirrusSearch insource, Wikidata wbsearchentities, and Exa semantic search — all negative for the five new names.",
+   "why": "Stated so the strength of this audit's negative result is legible: it is strong for schools (authoritative register) and for encyclopedic entities, weaker for an obscure business or a private individual that only a general index would surface."
+  }
+ ]
 }
