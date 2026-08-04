@@ -347,6 +347,25 @@ those feed the next batch's generation prompt as negative examples.
 - **Worktree/port discipline** (see `.claude/skills/dispatch-wave`): absolute
   paths for mutations; never touch dev ports 5173/8787; `fuser -k` not `pkill`.
 - **Eval before gating** on any gate model/prompt change; archive the run.
+- **Real-entity verification is a standing audit duty.** Every V-FINAL
+  meta-audit must independently WEB-CHECK the unit's invented names (people,
+  firms, institutes, publications, toponyms) against real-world bearers in the
+  same domain, and REFUTE on a collision. No mechanical gate covers this axis —
+  M-PLAGIARISM knows the authentic corpus, M-ECHO knows our own bank, neither
+  knows the world. The 2026-07-30 whole-bank sweep
+  (`adjudication/real-entity/`) found 16 collisions in 397 entities, including
+  three real people carrying invented quotations; two had already passed every
+  gate and both expert reviews. Re-run that sweep whenever a batch ships
+  (`adjudication/real-entity/REPORT.md` is the standing record).
+- **Never `git checkout main` between staging a batch and running its
+  pipeline.** New batch files live only on the staging branch, so switching
+  back to main removes them from the working tree and the pipeline finds an
+  empty batch dir (hit twice: batch 8 via an unmerged PR, batch 14 via the
+  checkout itself). Either run the pipeline *before* opening the staging PR, or
+  stay on the branch, or restore with
+  `git checkout origin/<branch> -- pipeline/synthetic/batches/batch<N>/`.
+  The prep stage's empty-units guard makes this abort in one agent instead of
+  dispatching a blind fleet — keep that guard.
 - **G-STEM gets a STEMS-ONLY sheet — never the blind sheet.** G-STEM.md's
   contamination rule forbids the passage in the judge's context ("report
   contamination instead of executing"); the blind sheet strips keys but KEEPS

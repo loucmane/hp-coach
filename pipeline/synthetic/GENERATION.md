@@ -18,7 +18,7 @@ not style opinions; each names the gate that kills it.
 
 ---
 
-## The fifteen laws
+## The sixteen laws
 
 1. **Particulars, never textbook theses.** Build the passage from
    passage-specific, invented-but-concrete material: fictional researchers,
@@ -179,6 +179,28 @@ not style opinions; each names the gate that kills it.
     the invented-firm-plus-cautious-auditor genre. Debatt: reorder the
     five-move skeleton; drop the announced objection and the "Jag har X i N
     år" credential in half the units.
+
+16. **Web-verify every invented name before you commit it.** Law 1 says every
+    named entity is fictional; this law says *prove it*. Search each person,
+    firm, foundry, institute, publication and toponym you invent — together
+    with its domain — and reject any name with a real bearer in a related
+    field. The 2026-07-30 whole-bank audit found **16 collisions in 397
+    entities**: a real health-research institute credited with an invented
+    trial, a real second-hand retailer with an invented audit, a real nature
+    reserve with an invented ecology study, a real 1913 insurer with invented
+    record-room decisions, real Norwegian towns given invented histories —
+    and, worst, **three real people with invented words in their mouths**
+    (a bell artist, a naval architect, an ethnologist). Attaching a fabricated
+    quotation to a real person is not a style defect; it is a false claim about
+    someone who exists.
+    **No mechanical gate can catch this**: M-PLAGIARISM compares against the
+    authentic UHR corpus, M-ECHO against our own units — neither knows the real
+    world. Highest-risk names are plausible domain-native surnames in fields
+    with small real expert populations (Swedish ethnologists, Nordic maritime
+    engineers, church-art specialists): exactly where a coined name is most
+    likely to land on a living person. Prefer distinctive coinages over
+    maximally natural ones, and record what you checked in
+    `generator_meta.originality_note`.
 
 ---
 
