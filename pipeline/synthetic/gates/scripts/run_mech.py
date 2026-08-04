@@ -18,7 +18,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from mech import Corpus, run_all  # noqa: E402
+from mech import Corpus, P5Corpus, run_all  # noqa: E402
 
 
 def main(argv=None) -> int:
@@ -29,7 +29,19 @@ def main(argv=None) -> int:
     ap.add_argument("--no-plagiarism", action="store_true",
                     help="skip M-PLAGIARISM (e.g. corpus unavailable in CI)")
     ap.add_argument("--out", type=Path, default=None, help="append verdicts here instead of stdout")
+    ap.add_argument("--p5-corpus-dir", type=Path, nargs="*", default=None,
+                    help="shipped P5 unit dirs for M-ECHO (self-corpus echo). "
+                         "Pass 'auto' to glob batches/*/candidates-final. Omitted => M-ECHO skipped.")
     args = ap.parse_args(argv)
+
+    p5corpus = None
+    if args.p5_corpus_dir:
+        dirs = list(args.p5_corpus_dir)
+        if len(dirs) == 1 and str(dirs[0]) == "auto":
+            batches = Path(__file__).resolve().parents[2] / "batches"
+            dirs = sorted(batches.glob("batch*/candidates-final"))
+        p5corpus = P5Corpus.load(dirs)
+        print(f"M-ECHO: indexed {len(p5corpus.units)} shipped unit(s)", file=sys.stderr)
 
     corpus = None
     if not args.no_plagiarism:
@@ -46,7 +58,7 @@ def main(argv=None) -> int:
         for path in args.candidates:
             cand = json.loads(path.read_text(encoding="utf-8"))
             cand.pop("_seed", None)  # never let seed docs influence anything
-            verdicts = run_all(cand, corpus)
+            verdicts = run_all(cand, corpus, p5corpus=p5corpus)
             for v in verdicts:
                 sink.write(json.dumps(v, ensure_ascii=False) + "\n")
             if any(v["verdict"] == "kill" for v in verdicts):

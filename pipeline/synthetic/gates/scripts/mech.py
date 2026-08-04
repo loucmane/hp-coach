@@ -375,7 +375,140 @@ def gate_form(cand: dict) -> dict:
 
 
 
-def run_all(cand: dict, corpus: Corpus | None, bands_path: Path | None = None) -> list[dict]:
+# ----------------------------------------------------------------- M-ECHO
+# M-PLAGIARISM asks "did this copy the AUTHENTIC corpus?". M-ECHO asks the
+# other question, which no gate asked until the 2026-07-30 whole-bank scan
+# found five architectural clones and two name collisions: "does this echo OUR
+# OWN shipped units?" Flag-only, like M-TELL/M-FORM — a human/agent decides.
+
+ECHO_NGRAM = 6          # phrase-fingerprint width
+# Calibrated on the 87-unit bank (2026-07-30): the five known architectural
+# clones scored 29-41 shared 6-grams with their mould; incidental overlap
+# between unrelated units tops out at 6. 12 separates them with margin.
+ECHO_MIN_SHARED = 12
+
+# Generic words that appear INSIDE invented multi-word names ("Marine Research
+# Institute", "Stiftelsen Norrbo") and real-world proper nouns that may
+# legitimately recur. Reusing these is not a law-13 collision.
+ECHO_NAME_STOP = {
+    "institute", "institutet", "institution", "research", "centre", "center",
+    "university", "universitet", "college", "school", "skola", "board", "bureau",
+    "council", "committee", "society", "association", "foundation", "stiftelsen",
+    "museum", "museet", "library", "biblioteket", "trust", "company", "group",
+    "department", "laboratory", "lab", "observatory", "survey", "agency",
+    "verket", "styrelsen", "nämnden", "föreningen", "sällskapet", "akademien",
+    "kommun", "kommunen", "län", "länet", "socken", "socknen", "kyrka", "kyrkan",
+    "sverige", "sveriges", "norge", "danmark", "finland", "europa", "europe",
+    "stockholm", "göteborg", "malmö", "uppsala", "london", "atlantic", "baltic",
+    "north", "south", "east", "west", "norra", "södra", "östra", "västra",
+    "januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti",
+    "september", "oktober", "november", "december", "january", "february",
+    "march", "june", "july", "august", "october", "november", "december",
+}
+
+
+def _name_runs(text: str) -> list[list[str]]:
+    """Runs of consecutive capitalized words, excluding sentence-initial position.
+
+    Sentence-initial words are dropped because every sentence starts capitalized;
+    what remains is dominated by proper nouns (invented researchers, institutes,
+    toponyms) — exactly the entities law 13 forbids reusing.
+    """
+    runs: list[list[str]] = []
+    for sent in sentences(text or ""):
+        words = sent.split()
+        run: list[str] = []
+        for i, w in enumerate(words):
+            core = w.strip(".,;:!?\"'()[]»«—–-")
+            capitalized = bool(core) and core[:1].isupper() and not core.isupper()
+            if capitalized and i > 0:
+                run.append(core)
+            else:
+                if len(run) >= 2:
+                    runs.append(run)
+                run = []
+        if len(run) >= 2:
+            runs.append(run)
+    return runs
+
+
+def _names(text: str) -> tuple[set[str], set[str]]:
+    """(full names, surnames) — surname = last token of a multi-word run.
+
+    First-name-only collisions are deliberately NOT reported: Swedish given
+    names recur naturally across a large bank, so flagging them would drown the
+    signal. Law 13's given-name diversity is an authoring rule the adjudication
+    scan audits, not a per-unit gate.
+    """
+    full, sur = set(), set()
+    for run in _name_runs(text):
+        kept = [w for w in run if w.lower() not in ECHO_NAME_STOP]
+        if len(kept) >= 2:
+            full.add(" ".join(kept))
+        if kept:
+            sur.add(kept[-1])
+    return full, sur
+
+
+class P5Corpus:
+    """Index over OUR OWN shipped P5 units (batches/*/candidates-final/*.json)."""
+
+    def __init__(self):
+        self.units: list[dict] = []
+
+    @classmethod
+    def load(cls, dirs) -> "P5Corpus":
+        c = cls()
+        for d in dirs:
+            for path in sorted(Path(d).glob("*.json")):
+                try:
+                    u = json.loads(Path(path).read_text(encoding="utf-8"))
+                except Exception:
+                    continue
+                if not isinstance(u, dict) or "candidate_id" not in u:
+                    continue
+                passage = u.get("passage", "")
+                full, sur = _names(passage)
+                c.units.append({
+                    "candidate_id": u["candidate_id"],
+                    "grams": set(_ngrams(tokenize(passage), ECHO_NGRAM)),
+                    "full_names": full,
+                    "surnames": sur,
+                })
+        return c
+
+
+def gate_echo(cand: dict, p5corpus: "P5Corpus | None") -> dict:
+    """M-ECHO: phrase-fingerprint + invented-name overlap against sibling units."""
+    cid = cand.get("candidate_id", "?")
+    f: list[dict] = []
+    if p5corpus is not None and p5corpus.units:
+        passage = cand.get("passage", "")
+        grams = set(_ngrams(tokenize(passage), ECHO_NGRAM))
+        full, sur = _names(passage)
+        for other in p5corpus.units:
+            if other["candidate_id"] == cid:
+                continue  # never echo against your own stored copy
+            shared = grams & other["grams"]
+            if len(shared) >= ECHO_MIN_SHARED:
+                sample = " ".join(sorted(shared, key=len, reverse=True)[0])
+                f.append(_finding(
+                    "major", sample,
+                    f"phrase echo: {len(shared)} shared {ECHO_NGRAM}-grams with "
+                    f"{other['candidate_id']} — passage may reuse its architecture "
+                    f"(law 12) or its phrase families (law 14)"))
+            names = (full & other["full_names"]) | (sur & other["surnames"])
+            if names:
+                f.append(_finding(
+                    "major", ", ".join(sorted(names)[:4]),
+                    f"name reuse: {sorted(names)[:4]} already used in "
+                    f"{other['candidate_id']} — law 13 forbids reusing invented "
+                    f"names across units"))
+    return _verdict(cid, "M-ECHO", "unit", "flag" if f else "pass", f)
+
+
+def run_all(cand: dict, corpus: Corpus | None, bands_path: Path | None = None,
+            p5corpus: "P5Corpus | None" = None) -> list[dict]:
     """M-SCHEMA -> (stop on kill) -> M-BANDS -> M-TELL -> M-FORM -> M-PLAGIARISM."""
     out = [gate_schema(cand)]
     if out[0]["verdict"] == "kill":
@@ -383,6 +516,8 @@ def run_all(cand: dict, corpus: Corpus | None, bands_path: Path | None = None) -
     out.append(gate_bands(cand, bands_path))
     out.append(gate_tell(cand))
     out.append(gate_form(cand))
+    if p5corpus is not None:
+        out.append(gate_echo(cand, p5corpus))
     if corpus is not None:
         out.append(gate_plagiarism(cand, corpus, bands_path))
     return out
