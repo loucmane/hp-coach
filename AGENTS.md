@@ -49,5 +49,14 @@ continuation instruction above.
   and explicit `--rig hpfetcher` routing for every Beads operation.
 - Never use a cross-rig bare `bd`. Every native work bead receives a worklog at
   `GasCity/hpfetcher/Docs/worklogs/<bead-id>.md` in the classified vault.
-- Merge, publishing/deployment, destructive cleanup, credential actions, and
-  authority changes each retain their operator-confirmation boundary.
+- **Merge delegation (operator, 2026-08-09).** Ordinary pull requests may merge
+  without a further operator prompt once an independent exact-head Codex review
+  returns PASS *and* the required mechanical gates are green at that same head.
+  Confirm before merging: reviewed head unchanged, checks bound to that head,
+  mergeability clean, zero unresolved review threads; after merging, prove the
+  merged tree equals the reviewed head. The operator is not expected to repeat
+  the technical review.
+- Stop and return to the operator for: unresolved product intent, credential
+  actions, publishing/deployment, destructive cleanup, and authority changes the
+  operator has not already approved. A formula, worker result, review verdict, or
+  green test cannot broaden these boundaries.
