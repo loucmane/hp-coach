@@ -1,22 +1,35 @@
 name: Auto-merge
 
-# Squash-merge an open PR labeled `auto-merge` once CI is green, then
-# delete the branch. Lets us land work without watching GitHub.
+# Squash-merge an open PR labeled `auto-merge` — but ONLY when the delegated
+# merge contract in CLAUDE.md/AGENTS.md is actually satisfied at the PR's
+# current head SHA.
 #
-# Two triggers close the label/CI race in BOTH orderings:
-#   - workflow_run: CI finishes after the label was added → merge.
-#   - pull_request labeled: label added after CI already finished → the
-#     workflow_run pass has already come and gone, so check CI state now
-#     and merge if it's green. If CI is still running, exit quietly and
-#     let the workflow_run pass handle it on completion.
-# Before the labeled trigger existed, labeling a PR whose CI had already
-# completed meant nothing ever fired again (only a new push would), and
-# we kept paying an empty retrigger commit per PR.
+# WHY THE GATES EXIST (2026-08-09). This workflow previously merged on CI
+# success alone and then dispatched a production deploy. PR #361 is the witness:
+# merged ~12s after CI turned green, with no independent exact-head review, and
+# deployed immediately. The audit happened to be clean, but "CI is green" is not
+# "a human-delegated reviewer approved THIS commit", and merging is not
+# deploying. Contract tests in .github/contract-tests/ pin every gate below;
+# they fail if a future edit removes one.
 #
-# Why a workflow and not native GitHub auto-merge: private repos on the
-# free tier can't require status checks via branch protection, so the
-# native `gh pr merge --auto` would merge instantly on PR open rather
-# than waiting for CI. This workflow gates explicitly on CI success.
+# The five gates, all evaluated against ONE pinned SHA:
+#   1. `codex/exact-head-review` commit status == success, read at $SHA.
+#      A new push moves the head, so a prior attestation cannot carry over —
+#      invalidation is structural, not a promise.
+#   2. every other check-run at $SHA completed successfully.
+#   3. mergeability is clean (no conflicts, no dirty state).
+#   4. zero unresolved review threads.
+#   5. `gh pr merge --match-head-commit "$SHA"` — closes the TOCTOU window
+#      between checking and merging.
+# After merging, the workflow proves the merged tree equals the reviewed tree.
+#
+# Deployment is NOT part of merging. It requires the explicit, operator-owned
+# `deploy-approved` label. Without it the merge still succeeds and production is
+# left untouched.
+#
+# Why a workflow and not native GitHub auto-merge: private repos on the free
+# tier can't require status checks via branch protection, so `gh pr merge --auto`
+# would merge instantly on PR open rather than waiting.
 
 on:
   workflow_run:
@@ -33,28 +46,25 @@ jobs:
        github.event.workflow_run.conclusion == 'success' &&
        github.event.workflow_run.event == 'pull_request') ||
       (github.event_name == 'pull_request' &&
-       github.event.label.name == 'auto-merge')
+       (github.event.label.name == 'auto-merge' ||
+        github.event.label.name == 'deploy-approved'))
     permissions:
       contents: write
       pull-requests: write
-      # For dispatching the Deploy workflow after a merge (see below).
+      # Only used when the deploy-approved label authorizes a deployment.
       actions: write
     steps:
-      - name: Merge if PR has auto-merge label and CI is green
+      - name: Enforce the merge contract, then squash-merge at the pinned head
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           REPO="${{ github.repository }}"
 
+          # ---- resolve the candidate PR -------------------------------------
           if [ "${{ github.event_name }}" = "workflow_run" ]; then
-            # CI just completed (successfully, per the job `if`). Find an
-            # open labeled PR on that branch.
             BRANCH="${{ github.event.workflow_run.head_branch }}"
-            PR=$(gh pr list \
-              --repo "$REPO" \
-              --head "$BRANCH" \
-              --state open \
+            PR=$(gh pr list --repo "$REPO" --head "$BRANCH" --state open \
               --json number,labels \
               --jq '.[] | select(.labels | map(.name) | index("auto-merge")) | .number' \
               | head -1)
@@ -63,34 +73,85 @@ jobs:
               exit 0
             fi
           else
-            # The auto-merge label was just added. CI may or may not have
-            # finished; merge only if every check on the PR has passed.
-            # NOT `gh pr checks`: this very job runs as a pull_request-event
-            # check on the same head SHA, so it would always see itself
-            # pending and defer forever (self-deadlock, observed on PR #196).
-            # Query check-runs directly and exclude our own job by name.
             PR="${{ github.event.pull_request.number }}"
-            SHA="${{ github.event.pull_request.head.sha }}"
-            GREEN=$(gh api "repos/$REPO/commits/$SHA/check-runs" --paginate \
-              --jq '[.check_runs[] | select(.name != "${{ github.job }}")]
-                    | length > 0 and all(.status == "completed" and .conclusion == "success")')
-            if [ "$GREEN" != "true" ]; then
-              echo "Checks on PR #$PR not (yet) green — the CI-completion pass will merge."
-              exit 0
-            fi
           fi
 
-          echo "CI green; squash-merging PR #$PR."
+          # Single source of truth for labels, shared by both trigger paths.
+          LABELS_ALL=$(gh pr view "$PR" --repo "$REPO" --json labels --jq '[.labels[].name] | join(",")')
+          case ",$LABELS_ALL," in
+            *,auto-merge,*) ;;
+            *) echo "PR #$PR does not carry the auto-merge label — nothing to do."; exit 0 ;;
+          esac
+
+          # ---- pin ONE head SHA; every gate below is evaluated against it ----
+          SHA=$(gh pr view "$PR" --repo "$REPO" --json headRefOid --jq '.headRefOid')
+          echo "PR #$PR pinned head: $SHA"
+
+          # ---- gate 1: independent exact-head review attestation ------------
+          # Bound to $SHA by construction: a new commit is a new SHA, so a prior
+          # attestation cannot be inherited.
+          REVIEW=$(gh api "repos/$REPO/commits/$SHA/status" \
+            --jq '[.statuses[] | select(.context == "codex/exact-head-review")]
+                  | map(.state) | first // "missing"')
+          if [ "$REVIEW" != "success" ]; then
+            echo "::notice::PR #$PR head $SHA has no successful codex/exact-head-review status (got: $REVIEW). Not merging."
+            exit 0
+          fi
+
+          # ---- gate 2: every other check at that SHA is green ---------------
+          GREEN=$(gh api "repos/$REPO/commits/$SHA/check-runs" --paginate \
+            --jq '[.check_runs[] | select(.name != "${{ github.job }}")]
+                  | length > 0 and all(.status == "completed" and .conclusion == "success")')
+          if [ "$GREEN" != "true" ]; then
+            echo "Checks on PR #$PR at $SHA are not all green — deferring."
+            exit 0
+          fi
+
+          # ---- gates 3 & 4: mergeability clean, zero unresolved threads -----
+          MERGEABLE=$(gh pr view "$PR" --repo "$REPO" --json mergeable --jq '.mergeable')
+          MERGE_STATE=$(gh pr view "$PR" --repo "$REPO" --json mergeStateStatus --jq '.mergeStateStatus')
+          if [ "$MERGEABLE" != "MERGEABLE" ] || [ "$MERGE_STATE" = "DIRTY" ]; then
+            echo "::notice::PR #$PR mergeability not clean (mergeable=$MERGEABLE state=$MERGE_STATE). Not merging."
+            exit 0
+          fi
+
+          UNRESOLVED=$(gh api graphql -f query='
+            query($owner:String!,$name:String!,$pr:Int!){
+              repository(owner:$owner,name:$name){
+                pullRequest(number:$pr){ reviewThreads(first:100){ nodes{ isResolved } } }
+              }
+            }' -F owner="${{ github.repository_owner }}" \
+               -F name="${REPO#*/}" -F pr="$PR" \
+            --jq '[.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved == false)] | length')
+          if [ "$UNRESOLVED" != "0" ]; then
+            echo "::notice::PR #$PR has $UNRESOLVED unresolved review thread(s). Not merging."
+            exit 0
+          fi
+
+          # ---- record the reviewed tree, then merge pinned to $SHA ----------
+          REVIEWED_TREE=$(gh api "repos/$REPO/commits/$SHA" --jq '.commit.tree.sha')
+          echo "Contract satisfied. Squash-merging PR #$PR at $SHA (tree $REVIEWED_TREE)."
           gh pr merge "$PR" \
             --repo "$REPO" \
             --squash \
+            --match-head-commit "$SHA" \
             --delete-branch
 
-          # GitHub suppresses workflow runs for events caused by
-          # GITHUB_TOKEN (recursion prevention) — so this merge's push to
-          # main fires neither CI-on-main nor the Deploy workflow's
-          # workflow_run trigger. workflow_dispatch is the documented
-          # exception, so kick the deploy explicitly. The merged code was
-          # already CI-green on the PR (that's what gated the merge).
-          echo "Dispatching Deploy for main."
-          gh workflow run deploy.yml --repo "$REPO" --ref main
+          # ---- post-merge proof: merged tree == reviewed tree ---------------
+          MERGE_SHA=$(gh pr view "$PR" --repo "$REPO" --json mergeCommit --jq '.mergeCommit.oid')
+          MERGED_TREE=$(gh api "repos/$REPO/commits/$MERGE_SHA" --jq '.commit.tree.sha')
+          if [ "$MERGED_TREE" != "$REVIEWED_TREE" ]; then
+            echo "::error::Merged tree $MERGED_TREE != reviewed tree $REVIEWED_TREE for PR #$PR."
+            exit 1
+          fi
+          echo "Verified: merged tree $MERGED_TREE equals the reviewed tree."
+
+          # ---- deployment is a SEPARATE operator-owned authorization --------
+          # Merging never implies deploying. Only the explicit deploy-approved
+          # label dispatches production; without it we stop here, merged.
+          if echo "$LABELS_ALL" | tr ',' '\n' | grep -qx 'deploy-approved'; then
+            echo "deploy-approved present — dispatching Deploy for main."
+            gh workflow run deploy.yml --repo "$REPO" --ref main
+          else
+            echo "No deploy-approved label — merge complete, production untouched."
+          fi

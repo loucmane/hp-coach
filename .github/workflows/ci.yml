@@ -13,6 +13,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Contract tests for .github/workflows/auto-merge.yml. These pin the merge
+  # gates (exact-head review attestation, head pin, clean mergeability, zero
+  # unresolved threads, no unconditional deploy) so the automation cannot drift
+  # back to "merge when CI is green" — the defect PR #361 witnessed on
+  # 2026-08-09. Pure stdlib + PyYAML; no product code involved.
+  contract:
+    name: workflow contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pytest pyyaml
+      - run: python3 -m pytest .github/contract-tests -q
+
   # The worker's own gates. Until 2026-07-11 these never ran in CI — the
   # app job installs worker deps only for cross-package typechecking, so
   # worker/src/**/*.test.ts gated nothing (found by the plan-v2 review).
