@@ -108,3 +108,14 @@ def test_incidental_phrase_overlap_below_threshold_passes(tmp_path):
                             "men slutsatsen pekade åt ett helt annat håll än väntat.")
     corpus = _corpus(tmp_path, [a])
     assert gate_echo(b, corpus)["verdict"] == "pass"
+
+
+def test_common_noun_place_words_are_not_name_collisions(tmp_path):
+    # The 2026-07-30 eval caught 'Bank' and 'Office' colliding between two
+    # unrelated AUTHENTIC items — bare common nouns are never invented names.
+    a = _unit("elf-b7-002", "Clerks at the Record Office worked past dark. "
+                            "The Office kept its own hours.")
+    b = _unit("elf-b0-009", "A courier reached the Patent Office at noon. "
+                            "Nobody at the Office had expected him.")
+    corpus = _corpus(tmp_path, [a])
+    assert gate_echo(b, corpus)["verdict"] == "pass"

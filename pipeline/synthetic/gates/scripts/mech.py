@@ -404,6 +404,25 @@ ECHO_NAME_STOP = {
     "januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti",
     "september", "oktober", "november", "december", "january", "february",
     "march", "june", "july", "august", "october", "november", "december",
+    # Generic institution/place-feature nouns that sit inside real and invented
+    # proper names alike ("the Record Office", "the Bank of ...", "Mill Lane").
+    # The 2026-07-30 eval surfaced 'Bank' and 'Office' as false collisions
+    # between unrelated authentic items; a flag-only gate still must not cry
+    # wolf, so the list is generous — a genuinely invented name is never a
+    # bare common noun.
+    "bank", "banken", "office", "kontoret", "hall", "hallen", "house", "huset",
+    "court", "street", "gatan", "road", "vägen", "lane", "bridge", "bron",
+    "park", "parken", "station", "stationen", "market", "torget", "square",
+    "gate", "porten", "mill", "kvarnen", "bruket", "works", "yard", "dock",
+    "harbour", "harbor", "hamnen", "chapel", "kapellet", "abbey", "castle",
+    "slottet", "manor", "gården", "farm", "lake", "sjön", "river", "ån",
+    "älven", "bay", "island", "ön", "valley", "dalen", "hill", "berget",
+    "wood", "forest", "skogen", "act", "bill", "commission", "kommissionen",
+    "ministry", "ministeriet", "register", "registret", "archive", "arkivet",
+    "records", "record", "journal", "review", "gazette", "times", "press",
+    "union", "guild", "gillet", "corporation", "authority", "service", "fund",
+    "fonden", "panel", "bolaget", "riksdagen", "regeringen", "statens",
+    "kungliga", "svenska", "national", "nationella", "royal", "state",
 }
 
 
