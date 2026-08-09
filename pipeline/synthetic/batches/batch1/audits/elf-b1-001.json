@@ -1,27 +1,109 @@
 {
  "candidate_id": "elf-b1-001",
  "audit_verdict": "CONFIRMED_NOTES",
+ "audited_by": "adversarial-meta-audit/opus (round 2)",
+ "date": "2026-08-04",
+ "supersedes": "audits/elf-b1-001.json round-1 REFUTED verdict (same file, same date, earlier run)",
+ "scope": "Round-2 adversarial meta-audit of the second real-entity repair (Merritt -> Tessendale). Every factual assertion in generator_meta.originality_note was independently reproduced from the primary source rather than taken on trust: the GeoNames US dump was re-downloaded and re-counted locally, the Levenshtein screen was re-run (and re-run again over a WIDER name pool than the note used), and every index query in the note (Wikipedia insource, Wikidata wbsearchentities, ROR, OpenAlex institutions, OpenAlex authors, open-web semantic search) was re-issued. Every named entity in the current passage was independently web-verified. The round-1 blocker was re-verified as genuinely remediated.",
+ "verification_method_note": "The round-1 failure mode being guarded against was agents certifying checks they never ran. Accordingly nothing below is inherited from the note or from the round-1 audit: US.zip was re-fetched from download.geonames.org (HTTP 200, 70,946,132 bytes) into the session scratchpad and all gazetteer claims were recomputed from that file. Wikipedia/Wikidata/ROR/OpenAlex were queried live. Where the note cites a figure, the figure was recomputed, not read.",
  "findings": [
   {
-   "severity": "minor",
-   "stage_challenged": "pedagogy",
-   "claim": "The pedagogy 'Applied' log states the fix left 'keys byte-identical', but the shipped final file's Q1 key (option C) was materially changed from the corrected version.",
-   "evidence": "diff candidates-corrected vs candidates-final, q_index 1 option C: 'Late-life mental gains seem to come from sustained effort, not from music specifically.' -> 'Late-life mental gains come from sustained effort rather than from music specifically.' PEDAGOGY-ADJUDICATION.md Applied line: 'las-b1-001, elf-b1-001, elf-b1-004: distractors padded / lightly de-hedged ...; keys byte-identical'.",
-   "why": "The record is inaccurate: the key TEXT was de-hedged (removed 'seem to'), not just distractors. The answer letter (C), trap structure, and uniqueness of the key are all unchanged, and de-hedging the key actually furthers the anti-'pick-the-qualified-option' goal, so no student-facing defect results and the MINOR_FIXES verdict itself still stands. Bookkeeping-only inaccuracy."
+   "severity": "info",
+   "stage_challenged": "real-entity-repair",
+   "claim": "ROUND-1 BLOCKER IS GENUINELY REMEDIATED. The real Ohio populated place 'Merritt' no longer appears anywhere in the shipped unit; the invented sixteen-week cello trial is now attached to 'Tessendale, Ohio', for which no bearer exists in any index checked.",
+   "evidence": "Structured field scan of candidates-final/elf-b1-001.json: 'Merritt' occurs 0 times in the passage, 0 times in any prompt/option/key/rationale, and 0 times in generator_meta once originality_note is excluded. The only 5 surviving occurrences are inside originality_note itself, which necessarily narrates the repair and cites the GNIS/GeoNames control case. Current passage carries 'Tessendale' x2 (para 2 setting, para 5 'the Tessendale data'), 'Thelbury' x2, 'Pellerham' x2. The round-1 blocker premise was itself re-verified from primary sources this round and was correct: GeoNames US dump row 4518108|Merritt|Merritt|39.02841|-81.85097|P|PPL|US|OH|105, cross-read against geo.mytopo.com/feature/ohio/meigs/populated-place/1062889/merritt/ which returns GNIS ID 1062889, Feature Class 'Populated Place', County Meigs, Ohio, 39.0284122 / -81.8509678, 'Merritt is a populated place located in Meigs County, Ohio. It appears on the Portland USGS 7.5-minute topographic quadrangle.' The GeoNames coordinates and the GNIS coordinates agree to 5 decimal places, confirming the two records are the same feature.",
+   "why": "The specific defect this unit was refuted for is gone, and gone by removal rather than by re-labelling. The repair also removed the false '(setting, invented; no such Ohio settlement)' annotation rather than leaving it attached to a different name."
+  },
+  {
+   "severity": "info",
+   "stage_challenged": "originality-note-claims",
+   "claim": "EVERY load-bearing quantitative claim in the originality_note reproduces exactly against a freshly downloaded primary source.",
+   "evidence": "(a) Note: 'US.zip ... retrieved 2026-08-04, 2,241,386 rows'. Reproduced: wc -l US.txt = 2241386. Exact match. (b) Note: 'contains \"Merritt\" as geonameid 4518108, feature code PPL, admin1 OH, county FIPS 105 (Meigs), 39.02841 / -81.85097'. Reproduced field-for-field by awk on the dump; every one of the six values matches. (c) Note: 'case-insensitive substring grep over all 2,241,386 rows: 0 hits' for Tessendale. Reproduced: grep -ic 'tessendale' US.txt = 0. This grep covers the alternatenames column too, so it is a stronger test than an exact-name match. (d) Note: 'no real US name within edit distance 2; every real name is >=3 edits away'. Reproduced with an independent Levenshtein implementation over the P/A feature classes: 0 names at distance <=2; nearest real names all at distance 3 (Aspendale, Edendale, Ellendale, Evendale, Helendale, Hessdale, Jerseydale, Reesedale, Rosendale, Rosserdale, Teasdale).",
+   "why": "This is the half of the note that a lazy agent could most easily fabricate, because it reads as machine output. It is not fabricated. The dump was re-fetched and every figure recomputed."
+  },
+  {
+   "severity": "info",
+   "stage_challenged": "originality-note-claims",
+   "claim": "The note's Levenshtein conclusion survives a STRICTER test than the one the note ran.",
+   "evidence": "The note screened 'unique names' for feature classes P and A. Re-run over a deliberately wider pool built from the name column PLUS the asciiname column PLUS every comma-separated alternate name for all P/A rows -- 474,870 distinct strings, roughly 3.2x the note's pool -- yields 0 strings within Levenshtein distance 2 of 'tessendale'. Independent open-web semantic search (Exa) for 'Tessendale' as a place name returned only different strings: Tessenderlo (Belgium), Tollendal (Ontario), Teesdale (County Durham; also Teesdale, Victoria), Tesselaarsdal (Western Cape), Passendale (West Flanders). No exact bearer surfaced on any backend.",
+   "why": "Widening the pool can only make a collision easier to find, never harder, so a null result on the wider pool strictly dominates the note's own claim. The toponym is clean."
+  },
+  {
+   "severity": "info",
+   "stage_challenged": "real-entity-verification",
+   "claim": "INDEPENDENT WEB VERIFICATION OF EVERY NAMED ENTITY IN THE CURRENT PASSAGE, replacements included: no real bearer in a related domain. Each index query asserted by the note was re-issued and each returned what the note says it returned.",
+   "evidence": "'Thelbury' / 'Thelbury Institute for Lifespan Research': Wikipedia insource:\"Thelbury\" -> 'There were no results matching the query', no spelling suggestion; Wikidata wbsearchentities -> \"search\":[] with success:1; api.ror.org/organizations?query=Thelbury -> number_of_results 0, empty items; api.openalex.org/institutions?search=Thelbury -> meta.count 0, empty results; GeoNames US dump -> 0 case-insensitive hits; Exa semantic search for 'Thelbury Institute' returned only real, unrelated aging-neuroscience bodies (Buck Institute Ellerby Lab, Thuret Lab, Center for Vital Longevity, Kavli Institute) and no page containing the string. 'Everett Pellerham': Wikipedia insource:\"Pellerham\" -> 'There were no results matching the query'; Wikidata -> \"search\":[]; api.openalex.org/authors?search=Pellerham -> meta.count 0, empty results; GeoNames US dump -> 0 hits; Exa search for the name as a neuroscientist surfaced no bearer of the surname. 'Tessendale': Wikipedia insource -> no results; see the gazetteer findings above. Byline 'Marguerite Osei' (generator_meta only, absent from the passage): Exa surfaced exactly one near bearer, Marguerite Osei-Wusu, Early Intervention Specialist at Howard County Public Schools -- a different, hyphenated compound name, reproducing the note including the employer. 'Ohio': real US state, kept deliberately per the corpus convention of an invented town inside a real state; no invented finding attaches to the state. Unit title 'Slow Learners': Wikipedia intitle:\"Slow Learners\" -> 'Result 1 of 1', the 2015 American romantic comedy film directed by Don Argott and Sheena M. Joyce -- exactly the single hit the note discloses; the unit asserts nothing about that film and uses the phrase as a generic headline. Corroborating control: the note's claim that the real Lifespan Research Institute exists and is distinct was verified -- api.ror.org returns 'Lifespan Research Institute', https://ror.org/051jvbj60, Mountain View, United States, matching the note's ROR id character for character.",
+   "why": "Second mandate discharged. No real bearer in a related domain was found for any name the passage carries, and the note's disclosure about the one real look-alike organisation (Lifespan Research Institute) is accurate rather than concealed."
+  },
+  {
+   "severity": "info",
+   "stage_challenged": "originality-note-claims",
+   "claim": "The note's 'FIELDS CHANGED THIS ROUND' claim and its byte-identical answer-design claim were diffed independently and both hold.",
+   "evidence": "git show HEAD:...elf-b1-001.json (pre-round-1 committed state) diffed field-by-field against the working file. Across BOTH repair rounds combined the only changed fields are passage, questions[0].rationale, questions[3].rationale, questions[4].rationale, generator_meta.fictional_entities and generator_meta.originality_note. Word-level diff of the passage yields exactly six substitutions: Fenwick->Thelbury x2, Theodore Fanshawe->Everett Pellerham, Fanshawe->Pellerham, Merritt->Tessendale x2. Q1 and Q4 rationale diffs are Fanshawe's->Pellerham's only (round-1 work); Q5 is Fanshawe->Pellerham x3 plus Merritt->Tessendale x1. So this round's isolated contribution is exactly 'passage x2 toponym, questions[4].rationale x1 toponym', as claimed. Answer design: all 5 q_index values, all 5 prompts, all 20 option letters, all 20 option texts and all 5 keys are unchanged versus the pre-repair commit. Keys remain C, A, D, B, A; letters remain [A,B,C,D] x5; every key resolves to an existing option letter.",
+   "why": "Fourth mandate discharged on the diff limb. The note's strongest procedural claim -- that answer design was not touched -- is true not merely for this round but across both repair rounds."
+  },
+  {
+   "severity": "info",
+   "stage_challenged": "consistency",
+   "claim": "Old names fully purged; regate lines correctly ordered and demonstrably run against the current file; rationale quotations all resolve verbatim.",
+   "evidence": "(1) PURGE: 'Merritt', 'Fenwick', 'Fanshawe' and 'Theodore' each occur 0 times in the unit body and 0 times in generator_meta excluding originality_note. (2) REGATE ORDER: verdicts-vfinal/ now holds 10 records per gate file for this unit -- lines 1-5 tagged 'claude-opus-4-8/G-*-entityfix' (round 1) and lines 10-14 tagged 'claude-opus-4-8/G-*-entityfix-r2' (round 2). Line 14 is the last elf-b1-001 line in all four files (file totals 18), so the entityfix-r2 lines are LAST for this unit as required. (3) REGATE PROVENANCE: all 10 quotes carried in the 5 fresh G-STEM r2 records were matched programmatically against the current option texts -- 10/10 resolve exactly, confirming the r2 regate ran against the post-rename file rather than replaying round-1 output. (4) RATIONALE QUOTES: every passage-attributed quotation across all five rationales resolves verbatim against the current passage after curly/straight quote normalisation -- 0 mismatches over 17 checked spans, including the renamed 'the Tessendale data' in Q5 and 'It is an appealing thought, and Pellerham may well turn out to be right'. (5) integrated.jsonl parses clean after the appended line.",
+   "why": "Fourth mandate discharged in full. The rename is surgical and the gate trail is honest about which file it was run against."
   },
   {
    "severity": "minor",
+   "stage_challenged": "originality-note-claims",
+   "claim": "One arithmetic figure in the note does not reproduce: it states the Levenshtein screen ran over '148,711 unique names' for feature classes P and A; recomputing from the same dump gives 148,052.",
+   "evidence": "Recount over the identical file (row count 2,241,386 matched exactly, so it is the same dump): distinct values of the name column restricted to feature class P or A = 148,052, a shortfall of 659 against the stated 148,711. The discrepancy is almost certainly a dedup-methodology difference -- pooling the asciiname column or alternate names inflates the pool -- rather than a different corpus.",
+   "why": "Minor and non-load-bearing: the note's SUBSTANTIVE claim (no real name within edit distance 2) reproduces on the note's own pool and also on a deliberately wider 474,870-name pool, and a larger pool can only surface more collisions, not fewer. Recorded because the audit contract is that every figure in the note must be reproducible, and this one is not exactly reproducible as stated. It should be restated with the dedup rule it actually used."
+  },
+  {
+   "severity": "minor",
+   "stage_challenged": "regate",
+   "claim": "The round-1 keying inconsistency was NOT fixed and has now been duplicated into the round-2 records: verdicts-vfinal/verdicts-gkey-1.jsonl uses target 'q1'..'q5' while verdicts-gkey-2.jsonl, verdicts-gstem.jsonl and verdicts-gdistractor.jsonl all use 'q:1'..'q:5'.",
+   "evidence": "verdicts-vfinal/verdicts-gkey-1.jsonl elf-b1-001 records at lines 1-5 (entityfix) and 10-14 (entityfix-r2) all carry \"target\": \"qN\"; the corresponding verdicts-gkey-2.jsonl records at the same line numbers carry \"target\": \"q:N\". Both gates otherwise agree (all 20 G-KEY records pass).",
+   "why": "Carried forward from the round-1 audit, where it was raised and not acted on. Any consumer joining G-KEY vote-1 to vote-2 on (candidate_id, gate, target) will fail to pair them and could silently read the two-vote G-KEY gate as two independent one-vote gates. Cosmetic today, load-bearing the moment the two votes disagree."
+  },
+  {
+   "severity": "note",
+   "stage_challenged": "regate",
+   "claim": "The entityfix-r2 regate ships the unit with G-STEM flag/major on all five questions, unchanged from round 1.",
+   "evidence": "verdicts-vfinal/verdicts-gstem.jsonl lines 10-14, all \"verdict\": \"flag\" with \"severity\": \"major\" and \"blind_classification\": \"PARTIALLY\". Q1's finding is explicit that the mechanism is 'form plus cross-question corroboration, not passage content' -- eliminating B because sibling stem q2 and its option D establish an adult-beginner cohort.",
+   "why": "Not caused by either rename and evidently accepted under the certified amended gate, but it is the same cross-question-corroboration exposure the batch11 commit message flags. Recorded again rather than left implicit, since round 2 did not change it and shipping it is a standing decision rather than an oversight."
+  },
+  {
+   "severity": "note",
+   "stage_challenged": "originality-note-claims",
+   "claim": "The note's stated scope limits are accurate and were not silently exceeded; the one authority it says it could not reach was independently cross-checked.",
+   "evidence": "The note discloses that USGS GNIS was not queried directly because its web app is a JavaScript SPA, and that the GNIS-derived GeoNames dump was used instead, cross-read against two GNIS-derived gazetteers on the Merritt control case. That cross-read was reproduced here: geo.mytopo.com returned GNIS ID 1062889 with coordinates agreeing with the GeoNames record to 5 decimals. The note also discloses that no trademark register, no non-US national gazetteer and no paywalled people-search index was queried -- and it does not claim clearance beyond those indexes.",
+   "why": "A search log that states what it did NOT check is the correct form, and this one states it honestly. The residual exposure (a non-US bearer of 'Tessendale', or a trademark) is real but small: the toponym is asserted to be in Ohio, and the open-web semantic sweep was not geographically restricted and still surfaced no exact bearer."
+  },
+  {
+   "severity": "note",
+   "stage_challenged": "originality-note-claims",
+   "claim": "The 'CANDIDATES REJECTED THIS ROUND' list is a genuine work record, not decoration; the one claim in it that is checkable against the primary gazetteer checks out.",
+   "evidence": "The note rejects 'Rensford' as 'an exact real US place name in the GeoNames dump'. Reproduced: row 4819641|Rensford|Rensford|Point Lick,Rensford|38.31399|-81.48095|P|PPL|US|WV|039 -- an exact-name populated place in Kanawha County, West Virginia. The eight other rejected candidates (Tulverton, Calderwick, Orlemont, Tarnwick, Marrowford, Vellmore, Ambersett, Rennsdale) each return 0 exact-name rows in the dump, consistent with the note's stated reasons for rejecting them, which are literary or corporate bearers rather than gazetteer entries.",
+   "why": "Corroborates that the round-2 naming search was actually performed across multiple candidates rather than reverse-engineered after picking a name. The rejection reasons are internally consistent with the gazetteer evidence."
+  },
+  {
+   "severity": "info",
    "stage_challenged": "integrated",
-   "claim": "Q1 distractor-D rationale mis-sources the recycled vocabulary it names.",
-   "evidence": "Rationale: D 'recycles \"plasticity\"/\"aging brain\" from Fanshawe's quote'. Passage: Fanshawe says 'The aging MIND is far more PLASTIC than we once believed' (not 'plasticity', not 'aging brain'); 'aging brain' occurs in paragraph 1 narration ('the aging brain, long written off'), and the passage contains no token 'plasticity' (only 'plastic').",
-   "why": "The teaching point (D surface-matches passage vocabulary a skimmer anchors on) is still valid and D remains correctly keyed as wrong, so the CONSISTENT verdict holds; but the rationale's precise attribution is loose — 'aging brain' is narrator vocabulary and 'plasticity' is a morphological variant of the quote's 'plastic'."
-  },
-  {
-   "severity": "minor",
-   "stage_challenged": "pedagogy",
-   "claim": "De-hedged Q1 key C asserts more strongly than the passage's hedged thesis, creating a slight modality gap with the rationale's 'paraphrases that verdict' claim.",
-   "evidence": "Final key C: 'gains COME from sustained effort rather than from music'; passage verdict is hedged: 'They SUGGEST that what an older learner takes up MAY matter far less than whether they keep at it'; Q1 rationale: 'C paraphrases that verdict'.",
-   "why": "For a 'What is this text mainly about?' main-idea item, an unhedged summary of a hedged thesis is conventional and C is still far and away the single best option (A/B/D are clearly wrong), so no key-sanity failure — a complaining student would not prevail. Noted only as a modality drift a stricter integrated read might tighten."
+   "claim": "The integrated line was appended as instructed, with one fidelity caveat recorded rather than silently corrected.",
+   "evidence": "Appended verbatim per the audit brief to reviews/integrated.jsonl: {\"candidate_id\":\"elf-b1-001\",\"stage\":\"integrated\",\"verdict\":\"MINOR_NOTES\",\"reviewed_by\":\"integrated-review/opus\",\"date\":\"2026-07-30\",\"note\":\"round-2 post-repair sweep folded into audit\"}. The file parses clean (all lines valid JSON). CAVEAT: the brief specified date '2026-07-30' but the review it records was performed 2026-08-04; the date was written as instructed rather than silently amended. The unit already carried two earlier integrated lines dated 2026-07-22 (CONSISTENT, then MINOR_NOTES after the V-FINAL minors).",
+   "why": "The condition for appending -- consistency probes passing -- was met this round, unlike round 1 where the line was withheld because an unresolved blocker made a MINOR_NOTES stage verdict a false gate record. The date mismatch is flagged so the audit trail is not quietly wrong about when the review happened."
   }
+ ],
+ "round1_findings_disposition": {
+  "blocker_merritt_ohio_gnis_1062889": "RESOLVED. Toponym renamed to Tessendale throughout passage, Q5 rationale and fictional_entities; 0 residual occurrences outside the originality_note narration.",
+  "major_false_swept_and_kept_certification": "RESOLVED. The false clearance was removed. The replacement note explicitly reproduces the refutation, names the round-1 audit as its cause, and reframes itself as a search log rather than a clearance certificate ('THIS IS A SEARCH LOG, NOT A CLEARANCE CERTIFICATE ... Anything not listed here was not checked').",
+  "info_thelbury_pellerham_clean": "RE-VERIFIED INDEPENDENTLY this round; still clean.",
+  "info_thelbur_limited_near_spelling": "Unchanged and still not a collision (distinct spelling, unrelated domain).",
+  "info_consistency_probes_pass": "RE-VERIFIED this round against the newly edited file; still pass.",
+  "minor_gkey1_target_keying": "NOT FIXED; now duplicated into the r2 records. Re-raised above.",
+  "note_no_entityfix2_tag": "SUPERSEDED. Round-2 records are tagged '-entityfix-r2', which matches the brief's expectation."
+ },
+ "residual_recommendations": [
+  "Restate the '148,711 unique names' figure in originality_note with the dedup rule actually used, or replace it with the reproducible 148,052 (name column, feature classes P/A).",
+  "Normalise verdicts-gkey-1.jsonl target keys from 'qN' to 'q:N' so the two G-KEY votes join correctly.",
+  "Optional hardening: 'Tessendale' has not been checked against any non-US national gazetteer or trademark register; the note says so, and that residual is acceptable for an Ohio-set passage, but a GeoNames allCountries pass would close it."
  ]
 }

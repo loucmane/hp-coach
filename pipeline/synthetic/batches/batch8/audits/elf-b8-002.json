@@ -1,5 +1,80 @@
 {
   "candidate_id": "elf-b8-002",
-  "audit_verdict": "CONFIRMED",
-  "findings": []
+  "audit_verdict": "CONFIRMED_NOTES",
+  "audited_by": "adversarial-meta-auditor/opus",
+  "date": "2026-07-30",
+  "scope": "post-real-entity-rename audit (Bellwether collision repair): independent web re-verification of every named entity in the CURRENT passage, plus consistency probes on old-name removal, option/key byte-identity, regate recency and rationale-quote fidelity",
+  "entity_verification": {
+    "method": "independent re-check, not trusting the bank-wide sweep or the originality_note; two corroborating sources per name",
+    "entities_in_current_passage": [
+      {
+        "name": "Thrennick",
+        "role": "market-research firm",
+        "status": "CLEAR",
+        "evidence": "UK Companies House name search for 'Thrennick' returns zero results (find-and-update.company-information.service.gov.uk/search?q=Thrennick). Independent web search returns no company, person or publication bearing the exact string; nearest returns are Trekennick Services Ltd / Trekennick Surveys Ltd (Cornwall), Trebnick Systems (Ohio) and Thrum LLC - none a string match, none a market-research collision."
+      },
+      {
+        "name": "Emrik Vinderhed",
+        "role": "sociologist who designed the study",
+        "status": "CLEAR",
+        "evidence": "Wikipedia search for 'Vinderhed' returns zero results. Independent web search finds no bearer of the surname in any language; nearest hit is Vinderhoute, a village in Oost-Vlaanderen, Belgium (place, not person). A Swedish-language domain search (sociolog / telefonsamtal / studie) surfaces only real unrelated researchers (Vesa Leppanen, Mats Ekstrom, Clara Iversen, SOM-institutet) - no Vinderhed."
+      },
+      {
+        "name": "Cecily Ashbrede",
+        "role": "columnist byline",
+        "status": "CLEAR",
+        "evidence": "UK Companies House name search for 'Ashbrede' returns zero results. No person, writer or organisation bears 'Cecily Ashbrede' or the surname 'Ashbrede'; nearest returns are Ashbre Limited (CH 11615151) and Ashbrittle Recruitment LLP / Ashbrittle Ltd - neither a string match nor a writing-domain collision."
+      }
+    ],
+    "no_other_named_entities": "The passage names no institutions, toponyms or publications beyond the three above. 'weekly current-affairs magazine (BrE house style)' in generator_meta.fictional_source is a generic descriptor, not a named title.",
+    "verdict": "No surviving real-entity collision in any domain, related or otherwise."
+  },
+  "originality_note_claims_reproduced": [
+    "Bellwether collision (motivating claim): CONFIRMED. Bellwether Research & Consulting, Alexandria VA, founder/president Christine Matthews, 25+ years in the survey-research business (bellwether-research.com; C-SPAN; LinkedIn) - a real firm in exactly the business the unit attributed to the invented name.",
+    "IPA / S&P Global 'Bellwether Report': CONFIRMED. Quarterly survey of ~300 UK marketing professionals, researched and published by S&P Global on behalf of the Institute of Practitioners in Advertising (ipa.co.uk, pmi.spglobal.com).",
+    "'Trekennick Services Ltd' as a nearest non-matching hit: CONFIRMED. Companies House 06225208, Trekennick House, Altarnun, Launceston, Cornwall.",
+    "'Trebnick Systems': CONFIRMED. Trebnick Systems, Inc., Springboro, Ohio - tag and label manufacturer.",
+    "'Vinderhoute, a Belgian village': CONFIRMED (Oost-Vlaanderen; also a European Pollen Database core site).",
+    "'Marguerite A. Lowe (poet published in The Crisis, 1927)': CONFIRMED. Honorable Mention, 'My Wish', The Crisis, December 1927 (Lehigh African American Poetry digital anthology).",
+    "'Ashbre Ltd' and 'Ashbrittle Recruitment' as nearest non-matching hits: CONFIRMED. Ashbre Limited CH 11615151; Ashbrittle Recruitment LLP CH OC372831 / Ashbrittle Limited CH 09174301 (construction recruitment).",
+    "'All three replacements are absent from every shipped candidates-final unit': CONFIRMED by grep across pipeline/synthetic/batches/*/candidates-final/ - Thrennick, Vinderhed, Emrik, Ashbrede and Cecily appear in no other unit.",
+    "'no option text, option letter, key or gap position was touched - answer design is byte-identical': CONFIRMED programmatically (see consistency_probes)."
+  ],
+  "consistency_probes": {
+    "old_names_removed": "PASS for passage, byline, prompts, options, rationales, fictional_source.byline and fictional_entities[]. Bellwether / Ahlgren / Marguerite Lowe survive ONLY inside generator_meta.originality_note, where they are the repair's own audit trail (see finding 3).",
+    "option_letters_and_keys_byte_identical": "PASS. Programmatic compare of candidates-corrected/ vs candidates-final/: every options[] array, every letter, every key and every prompt is byte-identical. Keys B/C/A/D/B, matching schema_note. Gap markers ___(1)___ .. ___(5)___ all present and in order.",
+    "only_delta_beyond_names": "q5 rationale, single token 'Ahlgren' -> 'Vinderhed'. No other rationale changed.",
+    "rationale_quotes_match_current_text": "PASS. All eleven quoted fragments across the five rationales are present verbatim in the current passage, including the renamed 'Vinderhed suggests, quietly' in q5.",
+    "entityfix_lines_are_last": "PARTIAL - 4 of 5 files. PASS in verdicts-gstem.jsonl, verdicts-gdistractor.jsonl, verdicts-gkey-1.jsonl, verdicts-gkey-2.jsonl. FAIL in verdicts-gkey-resolved.jsonl (see finding 1)."
+  },
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "real-entity repair 2026-07-30 - regate bookkeeping (verdicts-vfinal recency)",
+      "claim": "The repair's assertion that the fresh entityfix-tagged regate lines are the LAST records for this unit in verdicts-vfinal/ holds in four of the five files but not in verdicts-gkey-resolved.jsonl, which was never refreshed and carries no entityfix record at all.",
+      "evidence": "pipeline/synthetic/batches/batch8/verdicts-vfinal/verdicts-gkey-resolved.jsonl: the last elf-b8-002 records are lines 26-30, executed_by 'claude-opus-4-8/G-KEY' (vote 2), i.e. pre-rename. Grep for 'entityfix' across batch8 returns hits only in verdicts-gdistractor.jsonl (21-25), verdicts-gkey-1.jsonl (21-25), verdicts-gkey-2.jsonl (21-25) and verdicts-gstem.jsonl (10-14). Sibling repair batch14/las-b14-001 left its gkey-resolved equally unrefreshed, so this is a campaign-wide convention rather than a defect unique to this unit.",
+      "why": "Non-substantive: the stale resolved-file solver answers are B/C/A/D/B, identical to the post-rename entityfix answers, so no gate outcome is misstated by the omission. Recorded so the 'last records' claim is not read as unqualified."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "real-entity repair 2026-07-30 - downstream roll-up (reviews/final_verify.jsonl)",
+      "claim": "The post-rename regate turned G-DISTRACTOR q:5 from pass to flag (major), but the unit's final_verify roll-up still records the pre-rename state 'gdistr_flags=0 ... VERIFIED' and was never re-dated, so the shipped summary understates the unit's current gate state.",
+      "evidence": "verdicts-vfinal/verdicts-gdistractor.jsonl line 25: {\"candidate_id\": \"elf-b8-002\", ... \"target\": \"q:5\", \"verdict\": \"flag\", \"findings\": [{\"severity\": \"major\", \"quote\": \"collapsed\", ...}], \"executed_by\": \"claude-opus-4-8/G-DISTRACTOR-entityfix\"} - versus the pre-rename line 10 for the same target, which is \"verdict\":\"pass\". reviews/final_verify.jsonl line 2 still reads 'gkey_flags=0 gdistr_kills=0 gdistr_flags=0 audit=CONFIRMED audit_major=0 audit_minor=0', date 2026-07-24. By contrast the sibling repair re-dated its roll-up: batch14/reviews/final_verify.jsonl las-b14-001 carries date 2026-07-30.",
+      "why": "Bookkeeping, and recomputable by re-running vfinal_fold.py - not a correctness defect. The flag itself is disclosed inside the regate record and is self-described there as 'Pre-existing and rename-independent - the entity repair touched only names in the passage', which this audit confirms: the q5 option set is byte-identical to the pre-rename set. Key B remains defensible and both post-rename G-KEY solver votes returned B."
+    },
+    {
+      "severity": "info",
+      "stage_challenged": "real-entity repair 2026-07-30 - old-name removal (strict reading)",
+      "claim": "Under a strict reading of 'zero surviving pre-rename names in generator_meta', the unit fails: Bellwether, Ahlgren, Marguerite and Lowe all still appear inside generator_meta.originality_note.",
+      "evidence": "Field-level walk of candidates-final/elf-b8-002.json reports old-name hits at exactly one path, .generator_meta.originality_note (Bellwether x5, Ahlgren, Marguerite Lowe x2). Passage, title, byline, every prompt, every option, every rationale, generator_meta.fictional_source.byline and generator_meta.fictional_entities[] are clean.",
+      "why": "Not a defect. Those occurrences are the repair's own provenance record naming what was removed and why; erasing them would destroy the audit trail that makes the repair reviewable. Flagged only so a future automated 'zero survivors' grep over generator_meta is not misread as a regression."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "pedagogy - q5 rationale wording (pre-existing, rename-independent)",
+      "claim": "The q5 rationale overstates its case against distractor A: 'assumptions do not \"quietly collapse\"' asserts a collocational impossibility that is not true of English - 'quietly collapsed' is idiomatic for a failure without fanfare.",
+      "evidence": "candidates-final/elf-b8-002.json q5 rationale: \"collapsed = sense/collocation misfit ('collapse' names a sudden, dramatic failure, which jars against 'quietly'; assumptions do not 'quietly collapse')\". The G-DISTRACTOR-entityfix record on the same target reaches the same conclusion independently, calling A 'ARGUABLE' but 'Beatable'.",
+      "why": "Informational only. The key is still uniquely best: the passage's own evidence is a decade-long drift ('across a decade the share ... has roughly halved'), which selects 'lapsed' (gradual falling out of force) over 'collapsed' (sudden). The defect is that the rationale's teaching payload rests on a false absolute rather than on the gradual-vs-sudden contrast that actually decides the item. Pre-existing: the option text is byte-identical to the pre-rename version, so the rename neither caused nor could fix this."
+    }
+  ]
 }
