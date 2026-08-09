@@ -1,0 +1,102 @@
+{
+  "candidate_id": "las-b14-001",
+  "stage": "audit",
+  "role": "adversarial meta-auditor (post-real-entity-rename)",
+  "audited_by": "meta-audit/opus",
+  "date": "2026-08-04",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "target_file": "pipeline/synthetic/batches/batch14/candidates-final/las-b14-001.json",
+  "supersedes": "previous audits/las-b14-001.json (pre-rename; its evidence quoted 'Hyttfallets bruk' and the pre-repair distractors)",
+  "entity_verification": {
+    "method": "independent re-verification of EVERY named entity in the CURRENT passage, in six channels: OpenStreetMap/Nominatim gazetteer, K-samsok (kulturarvsdata.se SOCH fulltext, x-api=test), Libris xsearch (Kungliga biblioteket), sv.wikipedia search API, Wikidata wbsearchentities, Exa web search. Controls were run on the REMOVED names to prove each channel is live.",
+    "entities_checked": [
+      {"name": "Vresfallet / Vresfallets bruk", "status": "clean", "osm": 0, "ksamsok": 0, "libris": 0, "svwiki": 0, "wikidata": 0, "exa": "no bearer (only unrelated Vastanafallet, Vira bruk, Vifors)"},
+      {"name": "Sladbo", "status": "clean", "osm": 0, "ksamsok": 0, "libris": 0, "svwiki": 0, "wikidata": 0, "exa": "no Swedish bearer (only German firm 'SladBo Bauservice GmbH' and Slovene 'sladbo' typos)"},
+      {"name": "Strakasen", "status": "clean", "osm": 0, "ksamsok": 0, "libris": 0, "svwiki": 0, "wikidata": 0, "exa": "no bearer (only unrelated Strakanas/Strakanasberget, lake Straken)"},
+      {"name": "Brantemala (kept)", "status": "clean", "osm": 0, "ksamsok": 0, "libris": 0, "svwiki": 0, "wikidata": 0, "exa": "no bearer (only Rantemala, Bergamala, Brandetorp)"},
+      {"name": "Grubbfors (kept)", "status": "clean", "osm": 0, "ksamsok": 0, "libris": 0, "svwiki": 0, "wikidata": 0, "exa": "no place, harad or heritage record"},
+      {"name": "Assar Bostrand (kept)", "status": "clean", "libris_fullname": 0, "wikidata": 0, "exa_people": "no bearer; surname Bostrand attested (Lisbet, Cecilia, Susanne Bostrand), none in forest history"},
+      {"name": "Vendela Nyfeldt (kept)", "status": "clean", "libris_fullname": 0, "libris_surname": 0, "wikidata": 0, "exa": "no bearer"},
+      {"name": "Hillevi Radmark (kept)", "status": "clean", "libris_fullname": 0, "wikidata": 0, "exa": "no bearer; surname Radmark attested (Olof Radmark the biochemist; Henrik, Kajsa, Lina Radmark), none in this domain"}
+    ],
+    "controls_on_removed_names": {
+      "Hyttfallet": "OSM returns 4 Swedish bearers incl. a suburb in Karlskoga kommun and a hamlet in Nora kommun (Orebro lan, charcoal-iron Bergslagen); K-samsok 3",
+      "Milbo": "K-samsok 9 records, every itemLabel 'Skidtavling i Hille, Milbo'; OSM has 'Milbostigen' in Hille, Gavle",
+      "Kvarnasen": "K-samsok 669; Libris 11 incl. 'Kvarnasen : en tidigmesolitisk boplats med hyddlamningar i Varmland'; OSM 4 Swedish bearers"
+    },
+    "conclusion": "NO surviving real-entity collision. The repair's diagnosis and all three replacements are independently sound, and no institute, firm or publication is named anywhere in the passage."
+  },
+  "findings": [
+    {
+      "severity": "info",
+      "stage_challenged": "real-entity repair (DECISIVE CHECK - VERIFIED, not refuted)",
+      "claim": "Every named entity in the current passage is free of a real-world bearer, and the three replacement coinages are demonstrably cleaner than the names they replaced.",
+      "evidence": "Six independent channels, all zero for Vresfallet(s), Sladbo, Strakasen, Brantemala, Grubbfors, 'Assar Bostrand', 'Vendela Nyfeldt' and 'Hillevi Radmark'. The same channels return real bearers for the removed names: OSM lists Hyttfallet in Karlskoga and Nora (both Orebro lan), K-samsok returns 669 for Kvarnasen and 9 for Milbo. The passage names no institute, firm or publication, so no further class of entity was at risk.",
+      "why": "The Kerrig precedent (a kept name that turned out to be a real Slovenian metalworking firm) does not repeat here. Every name the repair 'checked and kept' was re-checked from scratch, including the two person surnames the note itself flagged as attested."
+    },
+    {
+      "severity": "info",
+      "stage_challenged": "originality_note truthfulness (VERIFIED verbatim)",
+      "claim": "Every checkable factual claim in the new originality_note reproduces, including its two strongest pieces of evidence and its claim about a rejected candidate.",
+      "evidence": "(a) Lansstyrelsen Orebro 'Hammarby hytta' returns the note's sentence verbatim: 'Vid Hyttfallet i Hammarby har forsen dammts sedan 1500-talet och det bruk som senare vaxte fram var i drift anda fram till ar 1923.' (b) K-samsok fulltext 'Milbo' returns exactly 9 records, every itemLabel 'Skidtavling i Hille, Milbo' - count AND uniform title match. (c) K-samsok 'Kvarnasen' returns exactly 669, the note's figure; Libris independently returns the cited 'Kvarnasen : en tidigmesolitisk boplats...'. (d) The rejected candidate: a hembygd torp PDF (filer.hembygd.se/hol/uploads/.../28 Torpet Kalleberg.pdf) contains 'Till torpet Klovasen, Balinge, 1873.' - the note's exact citation. (e) The surname attestations reproduce, incl. Olof Radmark the biochemist.",
+      "why": "The sibling-repair precedent was an originality_note with verifiably false claims. This note is the opposite: its numbers reproduce to the digit and its quotations are verbatim. No REFUTE-grade originality claim exists."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "regate freshness (task premise - PARTLY FALSE)",
+      "claim": "The assertion that the entityfix/entityfix2 lines are the LAST records for this unit in verdicts-vfinal/ does not hold for verdicts-gkey-resolved.jsonl, which contains ZERO entityfix2 lines for this unit - and that is the only G-KEY leg vfinal_fold.py reads. batches/batch14/verdicts.jsonl (promote's fleet view) likewise has zero.",
+      "evidence": "verdicts-vfinal/verdicts-gkey-resolved.jsonl, las-b14-001 lines 16-19 executed_by 'claude-opus-4-8/G-KEY-1' (vote 1) and lines 57-60 executed_by 'claude-opus-4-8/G-KEY' (vote 2), both pre-rename; grep 'entityfix' in that file returns only elf-b14-002 rows 78-82. gates/scripts/vfinal_fold.py line 61: gkey = _last_wins(verdicts_dir / 'verdicts-gkey-resolved.jsonl', cid). The entityfix2 G-KEY solves exist only in verdicts-gkey-1.jsonl lines 42-45 and verdicts-gkey-2.jsonl lines 42-45. G-STEM (lines 19-22, executed_by G-STEM-entityfix2) and G-DISTRACTOR (lines 42-45, G-DISTRACTOR-entityfix2) ARE entityfix2-tagged and ARE last in their files.",
+      "why": "Held to minor rather than major because it is a plumbing gap with no substantive consequence: the stale resolved lines carry solver_answer B/D/A/C, verdict pass, findings [] at both votes - the same outcome as the entityfix2 re-solves, so the fold's numbers are unaffected. It is nonetheless a false freshness assertion; re-run gkey_resolve.py over the entityfix2 legs, and merge them into batches/batch14/verdicts.jsonl, before promote."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "review fold currency",
+      "claim": "reviews/final_verify.jsonl for this unit was written before the rename and cites the audit this file replaces; it must be re-folded.",
+      "evidence": "final_verify.jsonl mtime 18:37:53 vs candidates-final/las-b14-001.json mtime 18:53:06. Its note reads 'gkey_records=8 gkey_kills=0 gkey_flags=0 gdistr_kills=0 gdistr_flags=0 audit=CONFIRMED_NOTES audit_major=0 audit_minor=5' - gkey_records=8 is the pre-rename count and audit_minor=5 is the superseded audit's tally, not this one's.",
+      "why": "The stored VERIFIED_NOTES verdict will very likely survive a re-fold, but it is currently derived from evidence that predates the shipped file."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "old-name eradication (PASS, with one intentional exception)",
+      "claim": "The pre-rename names are gone from passage, prompts, options, rationales and every generator_meta field EXCEPT originality_note, where they appear by design as provenance prose.",
+      "evidence": "Recursive scan of candidates-final/las-b14-001.json: the only string containing 'Hyttfallet', 'Hyttfallets', 'Milbo' or 'Kvarnasen' is /generator_meta/originality_note. self_blind_solve was correctly rewritten (its entity list now reads Vresfallets bruk, Sladbo, Strakasen). The renamed entities never occurred in prompts or options at all - only Bostrand and Nyfeldt appear there (q3 prompt, q3 B, q3 D), and both were kept.",
+      "why": "A literal 'zero survivors in generator_meta' grep would trip on the audit trail. Flagged so a future automated banned-name sweep excludes originality_note rather than raising a false positive. Old names also survive upstream in candidates/, candidates-corrected/, gen-las-long-1.json and its NOTES, which are historical stage records, not the shipped artefact."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "byte-identity of letters and keys (PASS by structure; no pre-rename candidates-final exists on disk or in git)",
+      "claim": "Letters A-D in order and keys B/D/A/C are intact and coherent with all metadata; the repair's byte-identity assertion cannot be diffed directly because candidates-final/ is untracked and was overwritten in place, but it is verified indirectly and holds.",
+      "evidence": "git ls-files shows candidates-final/ untracked ('?? candidates-final/'), so no pre-rename baseline exists. Indirect verification: (i) the renamed strings occur in no prompt or option, so the rename could not have touched them; (ii) key_spread ['B','D','A','C'] equals the on-disk keys; (iii) planted_traps for each question cover exactly the three non-key letters; (iv) the derived gate sheets blind/, stems/ and distractor/las-b14-001.json (all mtime 18:54:51, i.e. written after candidates-final at 18:53:06) match the shipped file exactly on passage, all four prompts and all sixteen option texts, so the entityfix2 gates judged the shipping article. Note that candidates-corrected/ is NOT the pre-rename baseline: it predates a separate b14repair distractor round that rewrote q1/C and q2/B and retagged two traps (q1 C scope_shift -> surface_lexical_echo, q2 B overgeneralisation -> plausible_worldknowledge). Those edits are not rename damage.",
+      "why": "Prevents a future reader from mistaking the corrected-vs-final delta for damage introduced by the rename."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "rationale quote fidelity (PASS)",
+      "claim": "Every quotation in every rationale resolves against the CURRENT passage or the current option text.",
+      "evidence": "All single-quoted spans of 12+ characters across the four rationales were normalised and matched; all resolve. The single apparent miss ('aldrig ... nagot sakert') is an elliptical quote of q3 distractor C, present verbatim. Numeric anchors re-checked in the current passage: 'sex till nio dygn', 'ett par timmar rackte', 'fyrtiotva ar i foljd', '1863 till 1866', 'nittio ore', 'en tredjedel', 'fjorton stig', 'niohundra kolbottnar', 'sjuttiotva tjardalar', 'fem till tolv meter', 'tva mil' - all present.",
+      "why": "Confirms no rationale was left pointing at a pre-rename or pre-repair string."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "content residue carried forward from the superseded audit",
+      "claim": "Two pre-existing content wrinkles survive the rename untouched and should not be lost when this audit replaces the old file.",
+      "evidence": "(i) 'for aren 1863 till 1866 saknas hela band ... men serien tacker anda fyrtiotva ar i foljd' - 'i foljd' asserts consecutiveness while a four-year gap is stated in the same sentence; within '1800-talets andra halft' a 42-year span is arithmetically available but not a gap-free one. (ii) q4's stem says 'samma hushall kunde bedriva bada hantverken' while the passage supports only 'levererade ungefar en tredjedel ocksa tjara nagot ar'; 'nagot ar' does not establish the same-year concurrency that key C's seasonality argument presupposes.",
+      "why": "Neither is caused by or affected by the entity rename; both are inherited. Recorded so the tally is not silently reset to zero by this overwrite."
+    }
+  ],
+  "consistency_probes": {
+    "old_names_zero_in_content": true,
+    "option_letters_ABCD_in_order": true,
+    "keys_BDAC_intact": true,
+    "key_spread_matches_keys": true,
+    "planted_traps_cover_nonkey_letters": true,
+    "gate_sheets_match_shipped_file": true,
+    "rationale_quotes_resolve": true,
+    "entityfix2_last_in_gstem": true,
+    "entityfix2_last_in_gkey1": true,
+    "entityfix2_last_in_gkey2": true,
+    "entityfix2_last_in_gdistractor": true,
+    "entityfix2_present_in_gkey_resolved": false,
+    "entityfix2_present_in_batch_verdicts": false
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "candidate_id": "las-b14-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "supersedes": "audits/las-b14-003.json @ 2026-08-04T17:21 (REFUTED, 2 major / 2 minor) — re-audited against the repaired candidates-final and the b14repair re-gate",
+  "prior_audit_checklist": [
+    {
+      "prior_finding": "major/pedagogy — Q1 solvable from physical common sense (open G-STEM WORLD_KNOWLEDGE major, blind pick C ~85%)",
+      "status": "RESOLVED",
+      "evidence": "Q1 was rewritten end to end onto the firm's invented trading convention in paragraph 2. Shipped stem: \"Vad var, enligt texten, utmärkande för hur Lorentzon & Kompani sålde sin is?\"; all four option strings are new. The retired stem (\"...utmärkande för blocken som togs upp ur Sävlången?\") and its options appear nowhere in candidates-final. Fresh gate: verdicts-vfinal/verdicts-gstem.jsonl line 9, executed_by G-STEM-b14repair, q:1 verdict pass, blind_classification NOT_ANSWERABLE, blind_pick null. Independent blind read reproduces this: all four options describe commercially possible 1890s arrangements (weighing at the town scale / price falling over summer / selling by load rather than kilo / payment in kind), and no physical or economic common sense narrows them — only paragraph 2 does. Key C is nailed by two explicit sentences (\"firman skrev sina kontrakt i lass och inte i kilo\"; \"Ordningen gynnade säljaren, eftersom ett lass som lastades sent på sommaren innehöll mindre is än ett lass i maj\")."
+    },
+    {
+      "prior_finding": "major/pedagogy — the stage silently repaired a false Q1 rationale claim and then logged SOUND with no findings",
+      "status": "RESOLVED",
+      "evidence": "reviews/pedagogy.jsonl now carries a later las-b14-003 line (index 7, LAST for the stage): verdict MINOR_FIXES, note \"supersedes the earlier SOUND record, which was logged after silently repairing a false Q1 rationale claim; q1 re-anchored to invented particulars to close the world-knowledge leak\". The false claim itself is gone — the whole Q1 rationale was rewritten and the option it described no longer exists. generator_meta.repair_note discloses the rewrite, names the open G-STEM flag it was answering, and states the re-gate obligation. The record now matches the artifact."
+    },
+    {
+      "prior_finding": "minor/language — two G-SPRAK vote-3 idiom defects survive the CORRECTED language pass",
+      "status": "NOT RESOLVED — re-filed below",
+      "evidence": "Both strings still present verbatim; the shipped passage is byte-identical to the pre-review candidates/las-b14-003.json."
+    },
+    {
+      "prior_finding": "minor/integrated — Q3 option C trap mislabelled scope_shift",
+      "status": "PARTIALLY RESOLVED — downgraded to note below",
+      "evidence": "Label refined to \"scope_shift på eftergift\" in both generator_meta.planted_traps and the Q3 rationale, and the rationale prose now explicitly frames C as lifting the concession \"tekniskt undermåliga\" to the paragraph's point."
+    }
+  ],
+  "regate_provenance_check": {
+    "verdict": "VALID — the b14repair lines judged the current graded surfaces",
+    "detail": "b14repair-tagged lines are the LAST las-b14-003 records in verdicts-vfinal/verdicts-gstem.jsonl, verdicts-gkey-1.jsonl, verdicts-gkey-2.jsonl and verdicts-gdistractor.jsonl. stems/las-b14-003.json, blind/las-b14-003.json and distractor/las-b14-003.json (all mtime 17:36, i.e. before the 17:38–17:43 gate runs) are byte-identical to candidates-final for passage, all 4 prompts and all 16 option strings, and the distractor sheet's 4 exposed keys match. candidates-final was written again at 17:52, after the gates, but that write touched only rationales and generator_meta — passage and every graded string still match the sheets, so no gate judged stale text. G-KEY votes 1 and 2 both return C/A/D/B = the shipped keys, 8/8 pass, 0 kills, 0 flags; G-DISTRACTOR 4/4 pass.",
+    "exception": "verdicts-vfinal/verdicts-gkey-resolved.jsonl carries NO b14repair lines (last las-b14-003 records are the pre-repair vote-2 lines, mtime 17:25) — see finding 3."
+  },
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy (disposition of the fresh G-STEM re-gate)",
+      "claim": "The b14repair G-STEM run closed q1 but opened three NEW major flags on q2/q3/q4 — text the repair never touched and that the pre-repair run passed. Two of them carry blind_pick == the shipped key. No review stage adjudicated the disagreement between the two gate runs, and no stage record mentions the flags at all.",
+      "evidence": "verdicts-vfinal/verdicts-gstem.jsonl lines 10–12: q:2 flag/major PARTIALLY blind_pick null; q:3 flag/major PARTIALLY blind_pick \"D\" (= key D); q:4 flag/major PARTIALLY blind_pick \"B\" (= key B), with the gate's own note \"the lean to B rests on a cross-question corroboration the orchestrator should see: within this stems sheet q:2 dates the corroborating trial to a modern reconstruction ... which supports B's 'ett försök mer än hundra år senare' and undercuts D's early measurement series\". The same four questions were verdict pass in verdicts/verdicts-gstem.jsonl lines 24–26 (pre-repair run, which recorded no blind_classification at all). Timing: gstem-b14repair 17:43, after pedagogy's post-repair line (17:34) and before integrated's (17:52); integrated's line carries only \"post-repair sweep\" and no note on these flags. I reproduce both picks from the stems sheet alone: on q3, B is scope-mismatched (one under-stair cupboard cannot explain the trade's demise) and A is undercut by q4's \"Lorentzons regel\" framing, leaving D as the counterintuitive economic point such examples exist to make; on q4, A falls to its double absolute (\"enda\"/\"samtliga\") and q2's options establish the trial as a modern reconstruction (\"det återuppförda huset\", \"tre vintrars mätningar\", \"ritningen från 1889\"), killing D and lifting B.",
+      "why": "2 of 4 keys recoverable without the passage is a real construct-validity leak, and q4's is exactly the cross-question corroboration the house treated as repair-worthy in batch11 (commit e771817). Held at minor rather than major on two grounds: the gate itself chose flag, not kill, and self-limits both notes (\"a test-wise lean, not a form leak\"; \"Stems-internal, not passage knowledge\"); and this residual is house-normal under the newer, stricter G-STEM protocol — every regated batch14 unit shows it (elf-b14-002: 2 PARTIALLY-with-pick plus 2 WORLD_KNOWLEDGE-with-pick, audited CONFIRMED_NOTES; las-b14-002: 3 with-pick), and the peer audit of las-b14-001 filed the identical class of undisposed G-STEM major as minor. It should still be dispositioned in writing before ship rather than left silent."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "Re-filed from the prior audit and still unresolved: both G-SPRAK vote-3 minors survive verbatim into the shipping file. Stronger than previously stated — the language stage never edited the passage at all, so the CORRECTED verdict covers no passage-level finding, and no post-repair language record was written.",
+      "evidence": "Shipped passage still contains \"lät 2011 återuppföra ishuset vid Långudden ... och fyllde det tre vintrar i rad med is från Sävlången\" (G-SPRAK-3 class 3: garden-path, \"i rad med is\"; native \"fyllde det med is från Sävlången tre vintrar i rad\") and \"Huset stod kvar till 1968 och revs för en badplats.\" (class 6: \"riva för\" carries no purpose sense; native \"revs för att ge plats åt en badplats\"). Byte comparison: candidates-final passage == candidates-corrected passage == candidates/las-b14-003.json passage (pre-review original), all three identical. reviews/language.jsonl has exactly one las-b14-003 record (index 3, verdict CORRECTED) and it predates the pedagogy repair; nothing was logged afterwards.",
+      "why": "The language review's whole remit is native-expert Swedish, and passage prose is the surface every student reads. Neither defect is an error of fact and neither touches a key, so this does not block ship — but CORRECTED overstates the coverage actually achieved."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "final_verify (and the derived batch record)",
+      "claim": "The LAST final_verify line for this unit still reads REFUTED, and it was written before both the repair and the re-gate; the folded record it summarises no longer exists. Two further derived records are stale in the same way.",
+      "evidence": "reviews/final_verify.jsonl line 4: verdict REFUTED, note \"gkey_records=8 ... audit=REFUTED audit_major=2 audit_minor=2\", i.e. it folds in the superseded 17:21 audit and counts no G-STEM records at all. File mtime 17:25 — before candidates-final (17:52) and before every b14repair gate run (17:38–17:43). verdicts-vfinal/verdicts-gkey-resolved.jsonl was likewise last written 17:25 and contains no b14repair lines, so the \"resolved\" G-KEY view still shows only pre-repair votes. report.json (16:47) still lists las-b14-003 status SURVIVED_FLAGGED with an open G-STEM q:1 WORLD_KNOWLEDGE major quoting \"De hade ett givet mått i fyrkant...\" — a stem string that no longer exists in the unit.",
+      "why": "On a last-line-wins reading of the review record, this unit currently reads as REFUTED with an open major on a retired question. The artifact is fine; the ledger contradicts it. A refreshed final_verify fold (and a gkey-resolved refresh) is required before any 'shipped clean' claim, or the batch record will misreport itself."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "re-gate coverage (mechanical fleet)",
+      "claim": "The re-gate that generator_meta.repair_note itself prescribes covers only G-KEY / G-DISTRACTOR / G-STEM; the unit-level mechanical form gates were never re-run against the new q1 option set they exist to police.",
+      "evidence": "repair_note: \"Touching key text and distractors means q1 needs a G-KEY / G-DISTRACTOR / G-STEM re-gate.\" verdicts/verdicts-mech.jsonl records M-SCHEMA / M-BANDS / M-TELL / M-FORM / M-ECHO / M-PLAGIARISM at executed_at 14:36:08Z and 14:39:37Z (both pre-repair; the 14:39 rerun silently drops M-ECHO), and verdicts-vfinal/ contains no mech file at all. M-TELL, M-FORM and M-ECHO are precisely the gates a wholesale option rewrite can break. I ran the checks by hand and find no live defect: q1 option lengths 120/97/104/98 chars (spread 1.24x, key mid-pack), key is not longest in any question (longest = A 120 / C 125 / A 113 / D 99, matching hedge_balance_note), and the key's content-word overlap with the passage is 0.60 versus distractor B's 0.75, so there is no echo tell on the key.",
+      "why": "Coverage gap rather than a defect — but the artifact currently ships with no mechanical evidence covering a quarter of its graded surface, and the hand-check above is the only thing standing in for it."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy (form balance — fresh probe)",
+      "claim": "Every universal absolute in the unit sits on a distractor and no key carries one, so 'eliminate the option with an absolute' never removes a key on any of the four questions. generator_meta.hedge_balance_note's rebuttal is true as stated but answers only the other direction.",
+      "evidence": "Absolutes: q1 A \"vägde varje lass\"; q2 D \"kan aldrig ge besked\"; q4 A \"den enda regel\" + \"samtliga firmor\". Keys C / A / D / B carry none. hedge_balance_note claims \"'strip the absolutes' does not isolate the key either, since Q1's key carries no absolutizer while two of its distractors are measured\" — correct that stripping does not isolate (3 / 3 / 4 / 3 options survive), but the heuristic's false-positive rate against keys is 0/4, which is the asymmetry that gives a test-wise student real traction.",
+      "why": "Same residual the batch peer audit filed as minor on elf-b14-002 (\"hedge balance ... holds only in one direction\"), so it is a known house pattern rather than a new defect; worth recording so the generator note is not read as a clean bill."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "integrated (trap-label precision — carryover)",
+      "claim": "The Q3 option C relabel is an improvement but still names the wrong mechanism.",
+      "evidence": "Label went scope_shift -> \"scope_shift på eftergift\" in planted_traps and the rationale. C (\"För att antyda att småhandlarna saknade kunskap om packning och därför förlorade mer is än nödvändigt\") does not shift the scope of a textual claim; it contradicts an explicit evaluation — \"Sådana små och tekniskt undermåliga isförråd fanns i varje kvarter, och de var inga misstag\" — and the rationale's own prose describes exactly that (\"medan texten i samma andetag säger att förråden 'var inga misstag'\").",
+      "why": "Teaching prose is correct so the student-facing payload is safe; only the taxonomy tag is off, and it would mis-train downstream trap-frequency analysis. Does not affect ship."
+    },
+    {
+      "severity": "info",
+      "stage_challenged": "pedagogy (length heuristic)",
+      "claim": "The key is the SHORTEST option in q4 (82 chars vs 95 / 96 / 99), and 'pick the shortest' scores 2/4 across the unit (q3 D, q4 B).",
+      "evidence": "Option lengths — q1 A120 B97 C104(key) D98; q2 A109(key) B105 C125 D89; q3 A113 B103 C102 D101(key); q4 A95 B82(key) C96 D99.",
+      "why": "n=4 makes 2/4 statistically meaningless and the generator note only ever claimed the key is not the longest (true, 4/4). Recorded so the inverse tell is on the ledger if the family is extended."
+    }
+  ],
+  "cleared": [
+    "HELD-FOR DEFECT 1 (world-knowledge solvability) — genuinely closed; see prior_audit_checklist. Independent blind read of the new q1 finds no world-knowledge path.",
+    "HELD-FOR DEFECT 2 (honest record) — genuinely closed; pedagogy's last line supersedes SOUND with MINOR_FIXES and an explicit confession, and repair_note discloses the rewrite and the re-gate obligation.",
+    "KEY SANITY 4/4. Q1=C: \"skrev sina kontrakt i lass och inte i kilo\" + \"Ordningen gynnade säljaren...\"; A refuted (no weighing anywhere; the text says explicitly not in kilo), B refuted (price ROSE 1:50 April -> 3 kr August, and \"Priset lutade åt samma håll\"), D refuted (one contract paid in butter; the firm's prices are quoted in kronor). Q2=A: \"säger mer om det nya huset än om de gamla\" + \"Timret ... är nytt, knutarna täta\". Q3=D: \"de var inga misstag: den som räknade in hämtningen i kalkylen kom ibland fram till att svinnet var det billigaste\". Q4=B: rule 1901 in a trade \"som knappt mätte något alls\", 2011 trial \"talade för Lorentzon\" (110 years, matching \"mer än hundra år senare\"). Every non-keyed option is refutable by an explicit sentence.",
+    "RATIONALE FACT-CHECK AND VERBATIM QUOTES: 25/25 double-quoted strings across all four rationales appear exactly in the passage, prompts or options — including the whole rewritten q1 rationale. The prior audit's one exception (\"något varierade\") retired with the q1 rewrite, so the unit is now 100% clean on this probe. No rationale asserts anything the passage contradicts; the q1 B rationale correctly states the price direction, and the q1 D rationale correctly grounds the overgeneralisation on the single butter contract.",
+    "ODD-ONE-OUT FRAME (fresh probe, the defect that produced elf-b14-002's major): q1's three 'Firman ...'-framed options are A, C, D and B ('Priset sjönk ...') is the frame-breaker — but B is a DISTRACTOR, so the odd-one-out heuristic points away from the key. q2/q3/q4 frames are uniform (q3: all four open 'För att ...'). No frame tell leaks a key anywhere in the unit.",
+    "REAL-ENTITY CHECK on invented names: web search returns no person matching \"Yngve Frödell\" teknikhistoriker or \"Vendela Karnstedt\" byggnadsantikvarie — no real-expert collision, which matters because the passage has Frödell withdraw a published conclusion. Fabian Lorentzon / Lorentzon & Kompani / M. Tannerfeldt likewise unattested. Toponyms (Sävlången, Mörtsjön, Hulterud, Långudden) are generic Swedish coinages and every claim about them is neutral.",
+    "PASSAGE UNCHANGED since the pre-review original, so the prior audit's numeric reconciliation carries: 2 fot = 1 aln = 59.4 cm vs \"knappt sextio centimeter\"; 4 alnar = 2.375 m vs \"knappt två och en halv meter\"; 400 t / 150 kg ~ 2670 blocks x 0.36 m2 ~ 960 m2/week, consistent with \"ett fält på några tusen kvadratmeter\".",
+    "META CONSISTENCY: key_spread C/A/D/B matches the four keys; planted_traps has 3 labelled distractors per question matching the actual option letters; question_families match the stems (q1 'enligt texten', q4 'dra för slutsats'); self_blind_solve and repair_note both describe the SHIPPED q1, not the retired one.",
+    "NO CROSS-QUESTION KEY LEAK in the passage-present setting, and no rationale self-contradiction; the q4 stems-sheet corroboration is filed as finding 1 rather than cleared."
+  ],
+  "audited_by": "adversarial-meta-auditor (re-audit)",
+  "date": "2026-08-04"
+}

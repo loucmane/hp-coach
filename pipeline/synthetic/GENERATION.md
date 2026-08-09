@@ -199,8 +199,19 @@ not style opinions; each names the gate that kills it.
     with small real expert populations (Swedish ethnologists, Nordic maritime
     engineers, church-art specialists): exactly where a coined name is most
     likely to land on a living person. Prefer distinctive coinages over
-    maximally natural ones, and record what you checked in
-    `generator_meta.originality_note`.
+    maximally natural ones.
+    **`originality_note` is a SEARCH LOG, never a certificate.** Record the
+    query, the source, the outcome and the date — claims a reader can re-run.
+    Never write "verified fictional" or "swept and kept" without a reproducible
+    basis, and never assert a check you did not perform: the 2026-07-30 rename
+    round was refuted on exactly this, with agents certifying "no bearer of that
+    full name" for a person documented on a museum website, "swept and kept" for
+    a federally registered US place, and "answer design untouched" for a unit
+    whose stem they had edited. A fabricated verification claim is worse than
+    silence — it launders an unchecked name into apparent evidence. The V-FINAL
+    audit re-runs every claim in this field and refutes on any it cannot
+    reproduce; the same principle as `vfinal_fold.py` (an agent never writes its
+    own verification record) applied to authoring metadata.
 
 ---
 
