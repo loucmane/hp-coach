@@ -130,6 +130,44 @@ def test_permissions_are_scoped(merge_job: dict):
     assert perms.get("contents") == "write" and perms.get("pull-requests") == "write"
 
 
+# --------------------------------------------------- token permission scopes
+# Declaring an explicit `permissions:` block sets every UNLISTED scope to none.
+# So each REST call the script makes must have its scope listed, or the real
+# private-repo GITHUB_TOKEN 403s before a single gate is evaluated. The stubbed
+# behavioural tests cannot catch this: the stub ignores authentication entirely.
+
+def test_permissions_cover_the_commit_status_api(merge_job: dict, script_text: str):
+    """GET /repos/{o}/{r}/commits/{sha}/status requires `statuses: read`."""
+    assert "/status" in script_text, "gate 1 reads the commit status API"
+    perms = merge_job.get("permissions", {})
+    assert perms.get("statuses") == "read", (
+        "the script reads commit statuses (gate 1: codex/exact-head-review) so "
+        "the job must declare `statuses: read`; omitting it means a 403 before "
+        "any gate runs"
+    )
+
+
+def test_permissions_cover_the_check_runs_api(merge_job: dict, script_text: str):
+    """GET /repos/{o}/{r}/commits/{sha}/check-runs requires `checks: read`."""
+    assert "/check-runs" in script_text, "gate 2 reads the check-runs API"
+    perms = merge_job.get("permissions", {})
+    assert perms.get("checks") == "read", (
+        "the script reads check runs (gate 2: head-bound checks green) so the "
+        "job must declare `checks: read`"
+    )
+
+
+def test_permission_block_lists_exactly_the_required_scopes(merge_job: dict):
+    """No missing scope (403 at runtime) and no surplus scope (over-grant)."""
+    assert merge_job.get("permissions", {}) == {
+        "actions": "write",        # dispatch Deploy, only under deploy-approved
+        "checks": "read",          # gate 2
+        "contents": "write",       # squash-merge
+        "pull-requests": "write",  # merge + read PR state
+        "statuses": "read",        # gate 1
+    }
+
+
 def test_squash_and_head_pin_preserved(script_text: str):
     assert "--squash" in script_text
     assert "--match-head-commit" in script_text
