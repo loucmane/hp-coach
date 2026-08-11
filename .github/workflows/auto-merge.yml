@@ -17,6 +17,14 @@ name: Auto-merge
 #   - pull_request   → the auto-merge / deploy-approved label was applied
 # Each path re-runs the same gates, so ordering cannot change the outcome.
 #
+# SELF-DEADLOCK (2026-08-11, live witness run 31486935846). Requiring exactly
+# CLEAN stranded PR #363: a pull_request-triggered run is itself a check on the
+# PR head, so the head reads UNSTABLE while the job evaluates and the job
+# refuses itself — forever, since each retry recreates the pending check. The
+# script now admits UNSTABLE only when it PROVES itself the cause (label path,
+# all commit statuses successful, exactly one non-green check, owned by this
+# run's id, still in flight). Everything else still refuses.
+#
 # The decision logic lives in .github/scripts/auto-merge.sh so it can be
 # executed and asserted outside Actions; .github/contract-tests/ runs it against
 # a stubbed `gh` and fails if any gate regresses.
@@ -51,7 +59,8 @@ jobs:
     # An explicit block sets every UNLISTED scope to none, so this must cover
     # every API the script touches or the token 403s before any gate runs.
     permissions:
-      actions: write         # dispatch Deploy — only under deploy-approved
+      actions: write         # dispatch Deploy (deploy-approved only); read subsumed
+                             # for GET /actions/runs/{run_id}/jobs (gate 4d)
       checks: read           # gate 2: GET /commits/{sha}/check-runs
       contents: write        # squash-merge
       pull-requests: write   # merge, and read PR/label/mergeability state
@@ -65,7 +74,7 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           REPO: ${{ github.repository }}
           OWNER: ${{ github.repository_owner }}
-          JOB_NAME: ${{ github.job }}
+          RUN_ID: ${{ github.run_id }}
           WR_BRANCH: ${{ github.event.workflow_run.head_branch }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           STATUS_SHA: ${{ github.event.sha }}

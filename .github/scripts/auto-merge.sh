@@ -7,17 +7,19 @@
 #
 # Contract (every gate evaluated against ONE pinned head SHA):
 #   1. codex/exact-head-review status == success, read at that SHA
-#   2. every other check-run at that SHA completed successfully
+#   2. every check-run at that SHA that does NOT belong to this workflow run
+#      completed successfully
 #   3. mergeable == MERGEABLE
-#   4. mergeStateStatus == CLEAN exactly (BEHIND/BLOCKED/UNSTABLE/HAS_HOOKS
-#      are NOT clean — rejecting only DIRTY was the 2026-08-10 defect)
+#   4. mergeStateStatus == CLEAN exactly (BEHIND/BLOCKED/HAS_HOOKS/DIRTY/
+#      UNKNOWN are NOT clean — rejecting only DIRTY was the 2026-08-10 defect).
+#      UNSTABLE is admitted ONLY when proven self-caused; see gate 4.
 #   5. zero unresolved review threads across the COMPLETE connection; if the
 #      connection has another page we fail closed rather than guess
 #   6. gh pr merge --match-head-commit "$SHA" --squash
 #   7. post-merge: merged tree must equal the reviewed tree
 # Deployment is never implied by merging: it requires the deploy-approved label.
 #
-# Required env: EVENT_NAME REPO OWNER JOB_NAME GH_TOKEN
+# Required env: EVENT_NAME REPO OWNER RUN_ID GH_TOKEN
 # Optional env: WR_BRANCH PR_NUMBER STATUS_SHA STATUS_CONTEXT STATUS_STATE
 set -euo pipefail
 
@@ -73,12 +75,38 @@ if [ "$REVIEW" != "success" ]; then
   exit 0
 fi
 
-# ---- gate 2: every other check at that SHA is green ----------------------
-GREEN=$(gh api "repos/$REPO/commits/$SHA/check-runs" --paginate \
-  --jq "[.check_runs[] | select(.name != \"$JOB_NAME\")]
-        | length > 0 and all(.status == \"completed\" and .conclusion == \"success\")")
-if [ "$GREEN" != "true" ]; then
-  echo "Checks on PR #$PR at $SHA are not all green — deferring."
+# ---- check-run facts at $SHA, fetched once -------------------------------
+# One line per check: "<id> <status> <conclusion> <name...>". The name is last
+# because real names contain spaces; only fields 1-3 are ever parsed.
+CHECK_LINES=$(gh api "repos/$REPO/commits/$SHA/check-runs" --paginate \
+  --jq '.check_runs[] | "\(.id) \(.status) \(.conclusion // "none") \(.name)"')
+
+# This run's OWN check runs, resolved from the run id. Never from the job name:
+# `merge` is reusable, so name-matching would silently excuse a DIFFERENT run's
+# failing check. An id is an identity; a name is not.
+SELF_IDS=$(gh api "repos/$REPO/actions/runs/$RUN_ID/jobs" --paginate \
+  --jq '.jobs[] | .check_run_url | split("/") | last')
+
+is_self() { [ -n "$SELF_IDS" ] && printf '%s\n' "$SELF_IDS" | grep -qx -- "$1"; }
+
+NONGREEN=$(printf '%s\n' "$CHECK_LINES" \
+  | awk 'NF && !($2 == "completed" && $3 == "success")')
+TOTAL=$(printf '%s\n' "$CHECK_LINES" | awk 'NF' | wc -l)
+
+# ---- gate 2: every check NOT owned by this run is green ------------------
+if [ "$TOTAL" -eq 0 ]; then
+  echo "No check runs reported at $SHA yet — deferring."
+  exit 0
+fi
+FOREIGN_NONGREEN=0
+while read -r cid _cstatus _crest; do
+  [ -n "${cid:-}" ] || continue
+  is_self "$cid" || FOREIGN_NONGREEN=$((FOREIGN_NONGREEN + 1))
+done <<EOF
+$NONGREEN
+EOF
+if [ "$FOREIGN_NONGREEN" -ne 0 ]; then
+  echo "Checks on PR #$PR at $SHA are not all green ($FOREIGN_NONGREEN outstanding) — deferring."
   exit 0
 fi
 
@@ -90,10 +118,61 @@ if [ "$MERGEABLE" != "MERGEABLE" ]; then
 fi
 
 # ---- gate 4: mergeStateStatus must be exactly CLEAN ----------------------
+# ...with ONE proven exception. A pull_request-triggered run of this workflow is
+# itself a check run on the PR head, so while it evaluates, GitHub reports the
+# head as UNSTABLE ("a non-required check is pending") and the job refuses
+# ITSELF — permanently, since every retry recreates the pending check. Live
+# witness: run 31486935846 on PR #363 head 6fa8e115.
+#
+# UNSTABLE is therefore admitted only when all five facts prove WE are the
+# cause. Any doubt — a foreign status context, an ambiguous count, a check we
+# do not own, a check that already failed — is a refusal.
 MERGE_STATE=$(gh pr view "$PR" --repo "$REPO" --json mergeStateStatus --jq '.mergeStateStatus')
 if [ "$MERGE_STATE" != "CLEAN" ]; then
-  echo "::notice::PR #$PR mergeStateStatus=$MERGE_STATE (not CLEAN). Not merging."
-  exit 0
+  if [ "$MERGE_STATE" != "UNSTABLE" ]; then
+    echo "::notice::PR #$PR mergeStateStatus=$MERGE_STATE (not CLEAN). Not merging."
+    exit 0
+  fi
+
+  # (a) only a pull_request run is a check on the head; elsewhere UNSTABLE is foreign.
+  if [ "$EVENT_NAME" != "pull_request" ]; then
+    echo "::notice::PR #$PR is UNSTABLE on the $EVENT_NAME wake path, where this job is not a check on the head. Not merging."
+    exit 0
+  fi
+
+  # (b) a second commit-status context could cause UNSTABLE just as easily.
+  #     The combined state is "success" only when EVERY context succeeded.
+  COMBINED=$(gh api "repos/$REPO/commits/$SHA/status" --jq '.state')
+  if [ "$COMBINED" != "success" ]; then
+    echo "::notice::PR #$PR combined commit status is $COMBINED, so UNSTABLE is not proven self-caused. Not merging."
+    exit 0
+  fi
+
+  # (c) exactly one non-green check — an ambiguous count is never a judgement call.
+  NG_COUNT=$(printf '%s\n' "$NONGREEN" | awk 'NF' | wc -l)
+  if [ "$NG_COUNT" -ne 1 ]; then
+    echo "::notice::PR #$PR has $NG_COUNT non-green checks; UNSTABLE cannot be attributed to this run. Not merging."
+    exit 0
+  fi
+
+  # (d) that one check must be OURS, by run id.
+  NG_ID=$(printf '%s\n' "$NONGREEN" | awk 'NF {print $1; exit}')
+  NG_STATUS=$(printf '%s\n' "$NONGREEN" | awk 'NF {print $2; exit}')
+  if ! is_self "$NG_ID"; then
+    echo "::notice::PR #$PR non-green check $NG_ID belongs to another run, not run $RUN_ID. Not merging."
+    exit 0
+  fi
+
+  # (e) and it must be in flight — a failed or cancelled self-check is a failure.
+  case "$NG_STATUS" in
+    queued | in_progress) ;;
+    *)
+      echo "::notice::PR #$PR own check $NG_ID is $NG_STATUS, not in flight. Not merging."
+      exit 0
+      ;;
+  esac
+
+  echo "::notice::PR #$PR is UNSTABLE solely because this run's own check $NG_ID is $NG_STATUS; every external gate passed. Proceeding."
 fi
 
 # ---- gate 5: zero unresolved threads across the COMPLETE connection ------
