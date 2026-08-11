@@ -48,11 +48,14 @@ jobs:
       (github.event_name == 'status' &&
        github.event.state == 'success' &&
        github.event.context == 'codex/exact-head-review')
+    # An explicit block sets every UNLISTED scope to none, so this must cover
+    # every API the script touches or the token 403s before any gate runs.
     permissions:
-      contents: write
-      pull-requests: write
-      # Used only when the deploy-approved label authorizes a deployment.
-      actions: write
+      actions: write         # dispatch Deploy — only under deploy-approved
+      checks: read           # gate 2: GET /commits/{sha}/check-runs
+      contents: write        # squash-merge
+      pull-requests: write   # merge, and read PR/label/mergeability state
+      statuses: read         # gate 1: GET /commits/{sha}/status
     steps:
       - uses: actions/checkout@v4
 
