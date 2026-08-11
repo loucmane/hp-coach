@@ -106,6 +106,16 @@ def test_workflow_passes_the_required_context(merge_job: dict):
         assert var in env_blocks, f"the workflow must pass {var} to the script"
 
 
+def test_workflow_passes_the_run_id(merge_job: dict):
+    """The self-caused UNSTABLE proof needs THIS run's identity, exactly."""
+    env_blocks = " ".join(str(s.get("env", "")) for s in merge_job.get("steps", []))
+    assert "RUN_ID" in env_blocks and "github.run_id" in env_blocks, (
+        "the script must receive ${{ github.run_id }} as RUN_ID so it can tell "
+        "its own in-flight check run from another run's check that happens to "
+        "share the reusable job name `merge`"
+    )
+
+
 # ------------------------------------------------------- guard semantics
 def test_merge_state_guard_requires_exact_clean(script_text: str):
     """Must compare against CLEAN, not merely exclude DIRTY."""
@@ -115,6 +125,24 @@ def test_merge_state_guard_requires_exact_clean(script_text: str):
     )
     assert not re.search(r'MERGE_STATE"?\s*=\s*"?DIRTY', script_text), (
         "the old not-DIRTY guard must be gone"
+    )
+
+
+def test_self_check_is_identified_by_run_id_not_job_name(script_text: str):
+    """`merge` is a reusable job name; only the run id is an identity."""
+    assert "RUN_ID" in script_text, "the script must consume the current run id"
+    assert re.search(r"actions/runs/\$\{?RUN_ID", script_text), (
+        "the script must resolve its own check runs from "
+        "GET /repos/{o}/{r}/actions/runs/{run_id}/jobs — matching on the job "
+        "name would excuse another run's failing `merge` check"
+    )
+
+
+def test_permissions_cover_the_workflow_jobs_api(merge_job: dict, script_text: str):
+    """GET /actions/runs/{id}/jobs needs `actions: read`; write subsumes it."""
+    assert "/jobs" in script_text
+    assert merge_job.get("permissions", {}).get("actions") in {"read", "write"}, (
+        "resolving this run's own check runs reads the Actions API"
     )
 
 
