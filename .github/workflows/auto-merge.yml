@@ -1,96 +1,83 @@
 name: Auto-merge
 
-# Squash-merge an open PR labeled `auto-merge` once CI is green, then
-# delete the branch. Lets us land work without watching GitHub.
+# Squash-merge an open PR labeled `auto-merge` — but ONLY when the delegated
+# merge contract in CLAUDE.md/AGENTS.md is satisfied at the PR's current head.
 #
-# Two triggers close the label/CI race in BOTH orderings:
-#   - workflow_run: CI finishes after the label was added → merge.
-#   - pull_request labeled: label added after CI already finished → the
-#     workflow_run pass has already come and gone, so check CI state now
-#     and merge if it's green. If CI is still running, exit quietly and
-#     let the workflow_run pass handle it on completion.
-# Before the labeled trigger existed, labeling a PR whose CI had already
-# completed meant nothing ever fired again (only a new push would), and
-# we kept paying an empty retrigger commit per PR.
+# WHY THE GATES EXIST (2026-08-09). This workflow used to merge on CI success
+# alone and then dispatch a production deploy. PR #361 is the witness: merged
+# ~12s after CI turned green, with no independent exact-head review, and
+# deployed immediately. "CI is green" is not "a delegated reviewer approved
+# THIS commit", and merging is not deploying.
 #
-# Why a workflow and not native GitHub auto-merge: private repos on the
-# free tier can't require status checks via branch protection, so the
-# native `gh pr merge --auto` would merge instantly on PR open rather
-# than waiting for CI. This workflow gates explicitly on CI success.
+# WAKE PATHS (2026-08-10). Review, labelling and checks finish in any order, so
+# every one of them must be able to wake evaluation — otherwise a review that
+# lands last strands the PR forever:
+#   - status         → a codex/exact-head-review result arrived
+#   - workflow_run   → CI *or* Preview finished
+#   - pull_request   → the auto-merge / deploy-approved label was applied
+# Each path re-runs the same gates, so ordering cannot change the outcome.
+#
+# SELF-DEADLOCK (2026-08-11, live witness run 31486935846). Requiring exactly
+# CLEAN stranded PR #363: a pull_request-triggered run is itself a check on the
+# PR head, so the head reads UNSTABLE while the job evaluates and the job
+# refuses itself — forever, since each retry recreates the pending check. The
+# script now admits UNSTABLE only when it PROVES itself the cause (label path,
+# all commit statuses successful, exactly one non-green check, owned by this
+# run's id, still in flight). Everything else still refuses.
+#
+# The decision logic lives in .github/scripts/auto-merge.sh so it can be
+# executed and asserted outside Actions; .github/contract-tests/ runs it against
+# a stubbed `gh` and fails if any gate regresses.
+#
+# Why not native GitHub auto-merge: private repos on the free tier can't require
+# status checks via branch protection, so `gh pr merge --auto` would merge
+# instantly on PR open rather than waiting.
 
 on:
   workflow_run:
-    workflows: ["CI"]
+    workflows: ["CI", "Preview"]
     types: [completed]
   pull_request:
     types: [labeled]
+  status:
 
 jobs:
   merge:
     runs-on: ubuntu-latest
+    # Admit all three orderings. The script re-checks every gate regardless of
+    # which event woke it, so a permissive condition cannot weaken the contract.
     if: >-
       (github.event_name == 'workflow_run' &&
        github.event.workflow_run.conclusion == 'success' &&
        github.event.workflow_run.event == 'pull_request') ||
       (github.event_name == 'pull_request' &&
-       github.event.label.name == 'auto-merge')
+       (github.event.label.name == 'auto-merge' ||
+        github.event.label.name == 'deploy-approved')) ||
+      (github.event_name == 'status' &&
+       github.event.state == 'success' &&
+       github.event.context == 'codex/exact-head-review')
+    # An explicit block sets every UNLISTED scope to none, so this must cover
+    # every API the script touches or the token 403s before any gate runs.
     permissions:
-      contents: write
-      pull-requests: write
-      # For dispatching the Deploy workflow after a merge (see below).
-      actions: write
+      actions: write         # dispatch Deploy (deploy-approved only); read subsumed
+                             # for GET /actions/runs/{run_id}/jobs (gate 4d)
+      checks: read           # gate 2: GET /commits/{sha}/check-runs
+      contents: write        # squash-merge
+      pull-requests: write   # merge, and read PR/label/mergeability state
+      statuses: read         # gate 1: GET /commits/{sha}/status
     steps:
-      - name: Merge if PR has auto-merge label and CI is green
+      - uses: actions/checkout@v4
+
+      - name: Enforce the merge contract, then squash-merge at the pinned head
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-          REPO="${{ github.repository }}"
-
-          if [ "${{ github.event_name }}" = "workflow_run" ]; then
-            # CI just completed (successfully, per the job `if`). Find an
-            # open labeled PR on that branch.
-            BRANCH="${{ github.event.workflow_run.head_branch }}"
-            PR=$(gh pr list \
-              --repo "$REPO" \
-              --head "$BRANCH" \
-              --state open \
-              --json number,labels \
-              --jq '.[] | select(.labels | map(.name) | index("auto-merge")) | .number' \
-              | head -1)
-            if [ -z "$PR" ]; then
-              echo "No open PR on $BRANCH carries the auto-merge label — nothing to do."
-              exit 0
-            fi
-          else
-            # The auto-merge label was just added. CI may or may not have
-            # finished; merge only if every check on the PR has passed.
-            # NOT `gh pr checks`: this very job runs as a pull_request-event
-            # check on the same head SHA, so it would always see itself
-            # pending and defer forever (self-deadlock, observed on PR #196).
-            # Query check-runs directly and exclude our own job by name.
-            PR="${{ github.event.pull_request.number }}"
-            SHA="${{ github.event.pull_request.head.sha }}"
-            GREEN=$(gh api "repos/$REPO/commits/$SHA/check-runs" --paginate \
-              --jq '[.check_runs[] | select(.name != "${{ github.job }}")]
-                    | length > 0 and all(.status == "completed" and .conclusion == "success")')
-            if [ "$GREEN" != "true" ]; then
-              echo "Checks on PR #$PR not (yet) green — the CI-completion pass will merge."
-              exit 0
-            fi
-          fi
-
-          echo "CI green; squash-merging PR #$PR."
-          gh pr merge "$PR" \
-            --repo "$REPO" \
-            --squash \
-            --delete-branch
-
-          # GitHub suppresses workflow runs for events caused by
-          # GITHUB_TOKEN (recursion prevention) — so this merge's push to
-          # main fires neither CI-on-main nor the Deploy workflow's
-          # workflow_run trigger. workflow_dispatch is the documented
-          # exception, so kick the deploy explicitly. The merged code was
-          # already CI-green on the PR (that's what gated the merge).
-          echo "Dispatching Deploy for main."
-          gh workflow run deploy.yml --repo "$REPO" --ref main
+          EVENT_NAME: ${{ github.event_name }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+          RUN_ID: ${{ github.run_id }}
+          WR_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          STATUS_SHA: ${{ github.event.sha }}
+          STATUS_CONTEXT: ${{ github.event.context }}
+          STATUS_STATE: ${{ github.event.state }}
+        run: bash .github/scripts/auto-merge.sh
