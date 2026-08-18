@@ -6,8 +6,9 @@
 // disabled controls clickable-looking, and (at route scale) re-resolve
 // live outlets to the new route. So exits render a DOM clone taken at
 // the last render before the swap — neutralised (no testids, no ids,
-// no pointer events, CSS animations pinned at their settled state so
-// freshly-inserted nodes don't replay their entrance keyframes).
+// no question identity, no pointer events, CSS animations pinned at
+// their settled state so freshly-inserted nodes don't replay their
+// entrance keyframes).
 
 import type { HTMLAttributes } from 'react'
 
@@ -31,8 +32,18 @@ export function makeExitClone(el: HTMLElement): HTMLElement {
   }
   for (const n of clone.querySelectorAll('[data-testid]')) n.removeAttribute('data-testid')
   for (const n of clone.querySelectorAll('[id]')) n.removeAttribute('id')
+  // data-qid (hpf-ay8) is question IDENTITY, and dead ink carries the
+  // PREVIOUS question's. QuestionPan wraps its sheet in AnimatePresence
+  // mode="wait" (QuestionPan.tsx:92-93), so during a question transition
+  // the incoming sheet hasn't mounted yet and the only data-qid in the
+  // DOM is the stale one — a reader would resolve the wrong question
+  // SILENTLY. (RouteScene.tsx:170 and StageInk.tsx:113 use popLayout,
+  // where live and dead ink do coexist.) One entry covers all three
+  // consumers of makeExitClone.
+  for (const n of clone.querySelectorAll('[data-qid]')) n.removeAttribute('data-qid')
   clone.removeAttribute('data-testid')
   clone.removeAttribute('id')
+  clone.removeAttribute('data-qid')
   clone.style.pointerEvents = 'none'
   // Freshly-inserted DOM restarts CSS animations from frame 0 — the M3
   // entrance keyframes (rule draws, content rises) would BLINK the old

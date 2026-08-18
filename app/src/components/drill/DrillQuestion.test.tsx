@@ -186,6 +186,26 @@ const ELF_CLOZE: Question = {
   parsing_status: 'complete',
 }
 
+// Regression: 5 cloze passages (e.g. host-2020-verb2-ELF-032) don't
+// carry the "gaps which indicate" instruction line, so the old probe
+// left their gaps as bare numbers. Detection now keys on the reliable
+// signal — an ELF item with no stem prompt is a cloze — so these
+// render their gaps too.
+// Module scope (not inside the cloze describe) because the identity
+// suite at the bottom of this file pins the same fixture: it is the
+// promptless class whose rendered stem and bank prompt disagree.
+const ELF_CLOZE_NO_INSTRUCTION: Question = {
+  ...ELF_CLOZE,
+  qid: 'host-2020-verb2-ELF-032',
+  number: 32,
+  answer: 'C',
+  context:
+    'Two Drinks a Day?\n\n' +
+    'However, any more than that 31 the risk of the most deadly strokes. ' +
+    'The study adds to the 32 around the health benefits of light drinking, ' +
+    'resulting from a blockage in the blood 33 to the brain.',
+}
+
 describe('DrillQuestion — ELF cloze gaps', () => {
   it('renders gap numbers as marked blanks, the current one emphasized', () => {
     render(<DrillQuestion question={ELF_CLOZE} picked={null} graded={false} onPick={() => {}} />)
@@ -209,23 +229,6 @@ describe('DrillQuestion — ELF cloze gaps', () => {
     render(<DrillQuestion question={ELF_CLOZE} picked={null} graded={false} onPick={() => {}} />)
     expect(screen.getByTestId('drill-prompt')).toHaveTextContent('Lucka 34')
   })
-
-  // Regression: 5 cloze passages (e.g. host-2020-verb2-ELF-032) don't
-  // carry the "gaps which indicate" instruction line, so the old probe
-  // left their gaps as bare numbers. Detection now keys on the reliable
-  // signal — an ELF item with no stem prompt is a cloze — so these
-  // render their gaps too.
-  const ELF_CLOZE_NO_INSTRUCTION: Question = {
-    ...ELF_CLOZE,
-    qid: 'host-2020-verb2-ELF-032',
-    number: 32,
-    answer: 'C',
-    context:
-      'Two Drinks a Day?\n\n' +
-      'However, any more than that 31 the risk of the most deadly strokes. ' +
-      'The study adds to the 32 around the health benefits of light drinking, ' +
-      'resulting from a blockage in the blood 33 to the brain.',
-  }
 
   it('renders gaps for a cloze WITHOUT the instruction line', () => {
     render(
@@ -378,5 +381,132 @@ describe('DrillQuestion — image answer options', () => {
     render(<DrillQuestion question={mixed} picked={null} graded={false} onPick={() => {}} />)
     expect(screen.getByTestId('option-B').querySelector('img')).toBeNull()
     expect(screen.getByTestId('option-A').querySelector('img')).not.toBeNull()
+  })
+})
+
+// ── Stable question identity (hpf-ay8) ──────────────────────────────
+//
+// The drill used to expose no stable identity at all, so e2e specs
+// resolved the correct answer by matching the RENDERED prompt text
+// against the runtime bank. That contract is broken by construction for
+// a promptless ELF cloze — the DOM shows the synthesized 'Lucka N'
+// headword while the bank row's prompt is empty — and NOG is exposed to
+// the same mismatch, since its stem prints only the parsed sub-question.
+//
+// `data-qid` on the DrillQuestion root is the identity that does NOT
+// depend on which prompt branch produced the displayed stem. These tests
+// pin it across every render path, and pin the broken class as the bug
+// rather than as mere attribute presence.
+
+const KVA_QUESTION: Question = {
+  qid: 'var-2019-kvant1-KVA-005',
+  exam_id: 'var-2019',
+  provpass: 'kvant1',
+  section: 'KVA',
+  number: 5,
+  prompt: 'b = a + 1 Kvantitet I: ab – 2a² Kvantitet II: a(b – 2a)',
+  options: [
+    { letter: 'A', text: 'I är större än II' },
+    { letter: 'B', text: 'II är större än I' },
+    { letter: 'C', text: 'I är lika med II' },
+    { letter: 'D', text: 'informationen är otillräcklig' },
+  ],
+  answer: 'C',
+  context: null,
+  parsing_status: 'complete',
+}
+
+// The NOG apparatus markers are plain "(1)" / "(2)" here — parseNogPrompt
+// accepts them with or without the parser's private-use sentinels, and a
+// fixture that avoids the sentinels avoids the harness stripping them.
+const NOG_QUESTION: Question = {
+  qid: 'var-2019-kvant1-NOG-018',
+  exam_id: 'var-2019',
+  provpass: 'kvant1',
+  section: 'NOG',
+  number: 18,
+  prompt:
+    'Hur stor är rektangelns area? (1) Omkretsen är 20 cm. (2) Rektangeln är en kvadrat. ' +
+    'Tillräcklig information för lösningen erhålls',
+  options: [
+    { letter: 'A', text: 'i (1) men ej i (2)' },
+    { letter: 'B', text: 'i (2) men ej i (1)' },
+    { letter: 'C', text: 'i (1) tillsammans med (2)' },
+    { letter: 'D', text: 'i (1) och (2) var för sig' },
+    { letter: 'E', text: 'ej genom de båda påståendena' },
+  ],
+  answer: 'C',
+  context: null,
+  parsing_status: 'complete',
+}
+
+describe('DrillQuestion — stable question identity', () => {
+  // Every render path, including the two whose displayed stem is NOT the
+  // bank prompt. The identity must be the qid verbatim in all of them.
+  const paths: { path: string; question: Question }[] = [
+    { path: 'short prompt (h1 branch)', question: ORD_QUESTION },
+    { path: 'long prompt (p branch)', question: DTK_IMAGE_QUESTION },
+    { path: 'KVA prompt (div branch)', question: KVA_QUESTION },
+    { path: 'promptless ELF cloze', question: ELF_CLOZE },
+    { path: 'promptless ELF cloze, no instruction line', question: ELF_CLOZE_NO_INSTRUCTION },
+    { path: 'NOG sub-question stem', question: NOG_QUESTION },
+  ]
+
+  it.each(paths)('renders data-qid on the drill root — $path', ({ question }) => {
+    render(<DrillQuestion question={question} picked={null} graded={false} onPick={() => {}} />)
+    expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', question.qid)
+  })
+
+  // The AC-1 pin. Stated as the BUG, not as attribute presence: for this
+  // fixture the rendered stem is the synthesized 'Lucka 32' while the
+  // fixture's own prompt is empty, so a prompt-text lookup against a
+  // one-row bank misses and a qid lookup hits. This is precisely the
+  // resolution dayzero.spec.ts performs against window.__HPC_BANK__.
+  it('resolves a promptless cloze by identity where prompt text cannot', () => {
+    render(
+      <DrillQuestion
+        question={ELF_CLOZE_NO_INSTRUCTION}
+        picked={null}
+        graded={false}
+        onPick={() => {}}
+      />,
+    )
+    const bank = [
+      {
+        qid: ELF_CLOZE_NO_INSTRUCTION.qid,
+        prompt: ELF_CLOZE_NO_INSTRUCTION.prompt,
+        answer: ELF_CLOZE_NO_INSTRUCTION.answer,
+      },
+    ]
+
+    // What the page displays is not what the bank stores — the old recipe.
+    const renderedPrompt = screen.getByTestId('drill-prompt').textContent?.trim()
+    expect(renderedPrompt).toBe('Lucka 32')
+    expect(bank.find((q) => q.prompt === renderedPrompt)).toBeUndefined()
+
+    // Identity resolves it anyway — the new recipe.
+    const qid = screen.getByTestId('drill-question').getAttribute('data-qid')
+    expect(qid).toBe('host-2020-verb2-ELF-032')
+    expect(bank.find((q) => q.qid === qid)?.answer).toBe('C')
+  })
+
+  it('carries the full qid on a NOG item whose stem shows only the sub-question', () => {
+    render(<DrillQuestion question={NOG_QUESTION} picked={null} graded={false} onPick={() => {}} />)
+    // The stem prints the parsed sub-question, never the flat bank prompt…
+    const stem = screen.getByTestId('drill-prompt').textContent?.trim()
+    expect(stem).toBe('Hur stor är rektangelns area?')
+    expect(stem).not.toBe(NOG_QUESTION.prompt)
+    // …while the identity is the whole qid, unaffected by the split.
+    expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', NOG_QUESTION.qid)
+  })
+
+  it('carries identity on the incomplete-question early return', () => {
+    // The stub path renders no options at all; it still has an identity,
+    // so a spec that lands on one fails on the missing options rather
+    // than on an unresolvable question.
+    const stub: Question = { ...ORD_QUESTION, options: null, parsing_status: 'answer_only' }
+    render(<DrillQuestion question={stub} picked={null} graded={false} onPick={() => {}} />)
+    expect(screen.getByTestId('drill-question')).toHaveAttribute('data-qid', stub.qid)
+    expect(screen.queryByTestId('option-A')).not.toBeInTheDocument()
   })
 })
