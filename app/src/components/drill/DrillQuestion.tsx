@@ -108,7 +108,12 @@ export function DrillQuestion({
 
   if (!question.options || question.parsing_status !== 'complete') {
     return (
+      // Identity here too: a stub question has no options, but a spec that
+      // lands on one should fail on the missing options rather than on an
+      // unidentifiable question.
       <div
+        data-testid="drill-question"
+        data-qid={question.qid}
         style={{
           padding: 'var(--pad-lg)',
           color: 'var(--muted)',
@@ -222,6 +227,21 @@ export function DrillQuestion({
   return (
     <div
       ref={scrollerRef}
+      // The stable question identity (hpf-ay8). e2e specs used to resolve
+      // the correct answer by matching the RENDERED prompt text against
+      // the bank — which misses 100% of the time for a promptless ELF
+      // cloze (the stem is the synthesized 'Lucka N') and is exposed on
+      // NOG (the stem is only the parsed sub-question). The qid sits on
+      // the ROOT, not on drill-prompt: coupling identity to the prompt
+      // element is exactly what caused that bug.
+      //
+      // Locator uniqueness is a property of the four call sites that
+      // render one question at a time — SessionPlayer.tsx:950,
+      // StudyDesk.tsx:48, MockRunner.tsx:319, DrillResult.tsx:555 (the
+      // facit accordion is strictly single-open) — not of this component.
+      // Making the facit review multi-open would break the locator.
+      data-testid="drill-question"
+      data-qid={question.qid}
       // hpc-m3-page: the M3 base type (15px/1.55). On desktop the
       // .hpc-studydesk frame already sets it; the PHONE path renders
       // this component bare, and without the base every em-derived

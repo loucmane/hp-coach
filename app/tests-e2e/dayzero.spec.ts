@@ -72,17 +72,23 @@ test('day zero: fresh account → one first action → first question → genomg
     await expect(optionA).toBeVisible({ timeout: 30_000 })
 
     // ── 4 · answer → the genomgång renders ──────────────────────────
-    // Resolve the correct letter via the runtime bank contract (same
-    // recipe as drill.spec.ts) so the assertion isn't luck-dependent.
-    const prompt = (await page.getByTestId('drill-prompt').textContent())?.trim()
-    expect(prompt, 'first diagnostic prompt missing').toBeTruthy()
-    const correctLetter = await page.evaluate((p) => {
-      const bank = (
-        window as unknown as { __HPC_BANK__: { prompt: string | null; answer: string }[] }
-      ).__HPC_BANK__
-      return bank.find((q) => q.prompt === p)?.answer ?? null
-    }, prompt)
-    expect(correctLetter, `could not resolve answer for "${prompt}"`).not.toBeNull()
+    // Resolve the correct letter by the question's STABLE IDENTITY, not
+    // by its rendered prompt text (hpf-ay8). The old recipe matched
+    // drill-prompt's textContent against the bank, which misses 100% of
+    // the time for a promptless ELF cloze — the DOM shows the synthesized
+    // 'Lucka N' headword while the bank row's prompt is '' — and is
+    // exposed on NOG, whose stem is only the parsed sub-question. Day
+    // zero's first question is chosen by the adaptive plan and is NOT
+    // pinned, so that class was sampled at random and the failure read as
+    // flakiness. The determinism belongs here, in the resolver.
+    const qid = await page.getByTestId('drill-question').getAttribute('data-qid')
+    expect(qid, 'first diagnostic question carries no data-qid').toBeTruthy()
+    const correctLetter = await page.evaluate((id) => {
+      const bank = (window as unknown as { __HPC_BANK__: { qid: string; answer: string }[] })
+        .__HPC_BANK__
+      return bank.find((q) => q.qid === id)?.answer ?? null
+    }, qid)
+    expect(correctLetter, `could not resolve answer for qid "${qid}"`).not.toBeNull()
     await page.getByTestId(`option-${correctLetter}`).click()
 
     await expect(page.getByTestId('pedagogy-panel')).toBeVisible({ timeout: 10_000 })
