@@ -13226,101 +13226,101 @@
  },
  "host-2025-kvant1-DTK-036": {
   "_meta": {
-   "model": "claude-opus-4-7-via-max-subscription",
-   "generated_at": "2026-05-22",
-   "recipe": "variant-c-regen-wave-missing-fill"
+   "generated_at": "2026-07-09",
+   "model": "claude-opus-4-8",
+   "recipe": "variant-c-ultra-granular"
   },
+  "technique": "DTK-taktik DTK-TACTIC-009 (kartfråga): storleks-kodade cirklar avläses mot förklaringens referenscirklar FÖRST. Matcha varje stads cirkel mot närmaste referenscirkel i legenden, avläs dess tunnor-värde, och räkna sedan skillnaden. Triggern: en karta där mängder visas som cirkelstorlek plus en legend med numrerade referenscirklar.",
+  "framework_id": "DTK-TACTIC-009",
+  "solution_path": "Kartans legend (nere till höger) visar tre referenscirklar: 750, 1500 och 2500 tunnor. Västerås stora cirkel matchar den största referenscirkeln (2500 tunnor); Örebros lilla cirkel matchar den minsta (750 tunnor). Skillnaden blir 2500-750=1750 tunnor — alternativ C. Cirkelstorleken avläses, inte räknas exakt; men de två cirklarna ligger så nära två referenscirklar att avläsningen är entydig.",
+  "pitfall": "Den vanligaste fällan är att jämföra cirklarna med FEL skala. Legenden säger uttryckligen att de flesta städers cirklar går på skalan 0–2500, medan Stockholms enorma cirkel går på 0–30000. Botemedlet: läs förklaringstexten och använd referenscirklarna 750/1500/2500 för Västerås och Örebro — blanda inte in Stockholm-skalan.",
   "pregrade_tactic": {
-   "handle": "Andel-utan-nämnar-fälla",
-   "move": "Läs frågans formulering två gånger för att hitta den korrekta nämnaren — DTK-andelsuppgifter har ofta en lokal kategori-total, inte den globala summan."
+   "handle": "Referenscirkel-matchningen",
+   "move": "Lägg varje stads cirkel bredvid legendens referenscirklar (750, 1500, 2500 tunnor), läs av närmaste värde för Västerås och för Örebro, och räkna skillnaden."
   },
-  "framework_id": "DTK-TACTIC-003",
-  "solution_path": "Andel-frågan vill ha en lokal kategori i nämnaren (t.ex. 'av elever i kommun X', inte 'av alla elever'). Räkningen är enkel om nämnaren är rätt. Per facit: svar C. Nyckelsteg: Skanna figuren för att hitta DEN exakta totalen frågan refererar till.",
-  "technique": "DTK-taktik DTK-TACTIC-003: Läs frågans formulering två gånger för att hitta den korrekta nämnaren — DTK-andelsuppgifter har ofta en lokal kategori-total, inte den globala summan. Denna disciplin förebygger den vanligaste DTK-felkällan — räkning på fel rad eller med fel total.",
-  "pitfall": "Botemedlet: när två kandidatsvar ligger nära, gå tillbaka till figuren och läs OM värdet — räkna inte ur minnet. Stora storleksordningsfel kommer från procent/procentenheter-förväxlingar.",
   "steps": [
    {
     "n": 1,
     "title": "Förstå frågan",
-    "text": "DTK-uppgift som kräver avläsning ur figur (diagram, tabell eller karta). Per facit: svar C.",
+    "text": "Du ska hitta SKILLNADEN i årlig fiskimport mellan två städer, Västerås och Örebro. 'Skillnad' betyder det större värdet minus det mindre. Först måste du läsa av hur många tunnor var stad importerar.",
     "tier": "essential"
    },
    {
     "n": 2,
-    "title": "Definition: DTK",
-    "text": "DTK = data, tabeller, kartor, diagram. Frågorna kräver exakt avläsning + minimal räkneoperation.",
-    "tier": "detail"
+    "title": "Vad är det här för figur?",
+    "text": "Det är en KARTA över Stockholms skärgård på 1740-talet. Varje stad har en cirkel, och cirkelns STORLEK visar hur mycket fisk staden importerade per år. Större cirkel = mer fisk.",
+    "tier": "essential"
    },
    {
     "n": 3,
-    "title": "Identifiera figurtyp",
-    "text": "Tabell → sök cell. Stapeldiagram → läs höjd. Linjediagram → läs y vid givet x. Karta → använd skalstreck.",
+    "title": "Hitta skalan (legenden)",
+    "text": "Nere till höger på kartan finns en förklaringsruta med tre referenscirklar staplade på varandra, märkta 750, 1500 och 2500 (tunnor per år). De talar om hur en viss cirkelstorlek översätts till ett antal tunnor.",
     "tier": "essential"
    },
    {
     "n": 4,
-    "title": "Pinna entiteten",
-    "text": "Innan räkning: lokalisera den exakta cellen/raden/året som frågan refererar till. Skanna figuren för att hitta DEN exakta totalen frågan refererar till.",
-    "tier": "essential"
-   },
-   {
-    "n": 5,
-    "title": "Definition: andel vs förhållande",
-    "text": "Andel = del/total (mellan 0 och 1). Förhållande = A:B (ratio mellan två tal). Olika operationer.",
+    "title": "Läs förklaringstexten — vilken skala gäller?",
+    "text": "Texten intill kartan säger att de flesta städers import visas på skalan 0–2500 tunnor, men Stockholms mycket större cirkel går på en egen skala (0–30000). Västerås och Örebro tillhör 0–2500-skalan, så referenscirklarna 750/1500/2500 gäller för dem.",
     "tier": "detail"
    },
    {
+    "n": 5,
+    "title": "Läs av Västerås",
+    "text": "Västerås cirkel (mitt på kartan, där flera transportvägar möts) är stor — den är lika stor som legendens största referenscirkel. Alltså avläses Västerås till ungefär 2500 tunnor per år.",
+    "tier": "essential"
+   },
+   {
     "n": 6,
-    "title": "Läs av värde",
-    "text": "Precis avläsning ur figuren. Använd linjal eller mental linjär. Skriv ned mellansteget.",
+    "title": "Läs av Örebro",
+    "text": "Örebro cirkel (längst ner till vänster på kartan) är tydligt mindre — den matchar legendens minsta referenscirkel. Alltså avläses Örebro till ungefär 750 tunnor per år.",
     "tier": "essential"
    },
    {
     "n": 7,
-    "title": "Definition: procent vs procentenheter",
-    "text": "Procent = relativ förändring (ny/gammal - 1). Procentenheter = absolut skillnad i andel. Att förväxla ger storleksordningsfel.",
+    "title": "Varför är avläsningen trygg trots att den är ungefärlig?",
+    "text": "Cirkelstorlek är en uppskattning, inte ett printat tal. Men här sammanfaller de två städernas cirklar nästan exakt med två av legendens referenscirklar (2500 och 750). När en cirkel ligger mitt emellan två referenser blir det svårt — men det gör de inte här, så avläsningen är entydig.",
     "tier": "detail"
    },
    {
     "n": 8,
-    "title": "Räkneoperation",
-    "text": "Tillämpa frågans operation: andel, kvot, skillnad, summa, jämförelse. Visa mellansteg.",
+    "title": "Ställ upp skillnaden",
+    "text": "Skillnad = större minus mindre = 2500-750. Västerås importerar mer, så det är Västerås värde minus Örebros.",
     "tier": "essential"
    },
    {
     "n": 9,
-    "title": "Jämför mot alternativen",
-    "text": "DTK-alternativ ligger ofta nära. Om ditt svar ligger 'mellan' två alternativ, räkna om från figuren.",
+    "title": "Räkna ut skillnaden",
+    "text": "2500-750=1750. Dra först bort 500 (2500-500=2000), sedan 250 till (2000-250=1750). Skillnaden är 1750 tunnor.",
     "tier": "essential"
    },
    {
     "n": 10,
-    "title": "Verifiera storleksordning",
-    "text": "Andelar 0–100 %, procentenhetsskillnader små. Storleksordningsfel = ofta tecken på tactic-fel.",
+    "title": "Sanity-check mot alternativen",
+    "text": "1750 ligger mellan referensvärdena 1500 och 2500, vilket är rimligt för en skillnad mellan en stor och en liten cirkel. 4500 (alternativ D) är större än den största skalan 2500 och kan inte vara en skillnad mellan två cirklar på 0–2500-skalan.",
     "tier": "detail"
    },
    {
     "n": 11,
     "title": "Slutsats",
-    "text": "Svar: C. Insikten i en mening: DTK kräver avläs-först-räkna-sedan — pinna källdata innan räkning, det förebygger 90 % av DTK-misstagen.",
+    "text": "Västerås ≈ 2500 tunnor, Örebro ≈ 750 tunnor, skillnad 2500-750=1750 tunnor. Det är alternativ C.",
     "tier": "essential"
    }
   ],
   "distractors": [
    {
     "letter": "A",
-    "why_tempting": "Det är lätt att välja A om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är C."
+    "why_tempting": "750 tunnor är exakt Örebros egen import — det är lätt att av misstag svara med Örebros värde istället för skillnaden.",
+    "why_wrong": "Frågan vill ha SKILLNADEN (steg 1, 8), inte Örebros värde. 750 är bara den ena cirkeln; skillnaden är 2500-750=1750."
    },
    {
     "letter": "B",
-    "why_tempting": "Många stannar vid välja B om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är C."
+    "why_tempting": "1000 tunnor ser ut som en 'rund' skillnad om du underskattar Västerås cirkel till ~1750 och drar bort Örebros 750.",
+    "why_wrong": "Steg 5 visar att Västerås cirkel matchar den STÖRSTA referenscirkeln (2500), inte mellersta (1500). Med rätt avläsning blir skillnaden 2500-750=1750, inte 1000."
    },
    {
     "letter": "D",
-    "why_tempting": "Första instinkten är välja D om man räknar på fel rad eller med fel nämnare — det vanligaste DTK-misstaget.",
-    "why_wrong": "Steg 5 betonar att rad/cell-pinning är obligatorisk; steg 7–8 att procent vs procentenheter måste skiljas. Rätt svar är C."
+    "why_tempting": "4500 kan tyckas rimligt om du blandar in Stockholms skala (0–30000) eller ADDERAR cirklarna istället för att subtrahera.",
+    "why_wrong": "Steg 4 och 10: Västerås och Örebro ligger på 0–2500-skalan, så ingen skillnad mellan dem kan överstiga 2500. 4500 är omöjligt — det kommer av fel skala eller av addition, inte subtraktion."
    }
   ]
  }
