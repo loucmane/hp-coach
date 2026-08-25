@@ -1,0 +1,27 @@
+{
+  "candidate_id": "elf-b15-004",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The rationale's control argument imports a premise the passage never supplies: it asserts the other two gates stood 'in the same season and the same weather', but the passage states only the season.",
+      "evidence": "Passage: 'Takings at the main gate fell that season by several times that wage, while the trust's other two gates took what they usually took.' Rationale: 'the passage anticipates exactly that objection with its control - the trust's two other gates, in the same season and the same weather, \\'took what they usually took\\' - so the season cannot carry the fall.' The words 'weather', 'wet', 'dry', 'harvest' appear nowhere in the passage; only 'that season' is textual.",
+      "why": "The teaching payload states as textual what is in fact an outside-world inference (gates of one trust are geographically close, therefore share weather). The inference is sound and D remains indefensible on the stated 'that season' control alone, so the SOUND verdict stands; but a student who checks the rationale against the passage will not find 'the same weather' there, which is exactly the kind of unanchored gloss the pedagogy stage exists to catch."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "generator_meta's spelling_note certifies 'BrE held throughout' on evidence that is entirely lexical, not orthographic: the student-facing text contains zero tokens whose spelling differs between BrE and AmE, so the declared spelling_variety is unverifiable from the unit itself.",
+      "evidence": "spelling_note: \"BrE held throughout passage, prompt and options: 'autumn', 'takings', 'tollman', 'unmanned', 'haymaking', 'three-quarters of a mile'.\" Every one of those six is spelled identically in AmE; they are lexical/idiomatic choices, not spellings. A scan of all 237 student-facing words returns no -ise/-ize, no -our/-or, no -re/-er (centre-type), no doubled-l (travelled), no ae/oe, no -ogue, and no defence/licence/practise token; the only -or hit is 'surveyor', identical in both varieties.",
+      "why": "The prose is genuinely and consistently British in lexis and register ('beck', 'takings', 'tollman', 'went about the two farms' business', 'runs to a page and a half'), so no AmE leak exists and CORRECTED stands. The note is that the spelling-variety check passed on mis-described evidence — the unit has no orthographic BrE anchor at all, so a future AmE edit would leave nothing for the gate to bite on."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "generator_meta.fictional_entities registers a proper noun that never occurs in student-facing text ('Quarnley Lane'), a metadata/text desynchronisation of the kind the integrated sweep is meant to reconcile.",
+      "evidence": "generator_meta.fictional_entities[0] = 'Quarnley bar and Quarnley Lane (invented toponym)'. The passage names the lane only generically: 'at the top of a farm lane' and 'The lane climbed past the farms'. The string 'Quarnley Lane' appears nowhere in passage, prompt, options or rationale.",
+      "why": "Metadata-only, invisible to students, and it over-declares rather than under-declares (no unregistered invented entity exists), so MINOR_NOTES stands. Recorded because the originality/collision log is keyed off fictional_entities, and an entity list that does not match the shipped text degrades that audit trail."
+    }
+  ]
+}
