@@ -1,0 +1,20 @@
+{
+  "candidate_id": "las-b15-002",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The correction pass changed the attribution of the caveat conclusion in the q1 rationale but left the contradicting attribution standing in generator_meta.self_blind_solve, so the shipped file asserts two different owners for the ”siffran är snarare för låg” conclusion.",
+      "evidence": "candidates-final q1 rationale: ”…men som ett av två förbehåll, inte som granskningens resultat, och texten drar den motsatta slutsatsen av förbehållen – att siffran snarare är för låg än för hög” (candidates-corrected read ”och Hasselgrund drar den motsatta slutsatsen av förbehållet”). The same shipped file's generator_meta.self_blind_solve still reads: ”C förväxlar ett av två förbehåll med resultatet och vänder dessutom Hasselgrunds egen slutsats om siffran.” The passage sentence is unattributed and sits in the columnist's voice: ”Två förbehåll hör till: rapporteringen håller ojämn kvalitet, och Hasselgrund har bara räknat de föreningar som lämnat underlag för hela säsongen. Siffran är därför snarare för låg än för hög.”",
+      "why": "Metadata-only, not student-facing, and it touches neither key nor option text, so MINOR_NOTES stands; but it shows the repair was applied to one of two parallel claims and the surviving one asserts an attribution the passage does not license."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Passage-internal tension: paragraph 1 asserts as fact that the slots were not allocated this year or last, while paragraph 3 asserts a class of slots that were reallocated every term – the very clause the q1 rationale leans on to kill distractor A.",
+      "evidence": "P1: ”Det stämmer också att tiderna inte fördelades i år, och inte i fjol heller.” P3: ”medan de tider som fördelades på nytt varje termin användes ungefär så mycket som de var bokade.” Q1 rationale: ”A är reversed_causality: texten säger uttryckligen att de tider som fördelades på nytt varje termin användes ungefär så mycket som de var bokade.”",
+      "why": "Defensible under the reading ”no general allocation round was held”, and the audit covers säsongen 2023/24 rather than ”i år”/”i fjol”; it also does not rescue A (taking P1 literally makes A less supportable, not more), so the key survives. Worth a note only because the reform proposed (annual re-examination) is weaker than the per-term reallocation P3 says already exists for part of the stock."
+    }
+  ]
+}

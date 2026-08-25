@@ -1,0 +1,27 @@
+{
+  "candidate_id": "elf-b15-004",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The key's comparative carries no time unit. Every quantity the passage supplies is per-year or per-season, but option C compares a one-season shortfall against 'the bar ever took' — a phrase that also admits a cumulative-lifetime reading under which the passage cannot settle the comparison at all.",
+      "evidence": "Key C: 'That leaving it unmanned cost the trust more at the main gate than the bar ever took.' The passage's three quantities are all periodised: 'In its best year it took less than the yearly wage of the tollman who sat there' (per year), 'Takings at the main gate fell that season by several times that wage' (per season). The passage never states how many years the bar stood — only that it had a 'best year', so more than one. Under the per-period reading the chain is airtight (best-year take < yearly wage W < several x W = the fall). Under a cumulative reading, a bar standing, say, ten years at ~0.5W a year would have taken ~5W in total against a fall of 'several times that wage', and the passage supplies nothing to rank the two.",
+      "why": "The per-period reading is the natural English of 'more than it ever took' and is anchored by the passage's own superlative ('In its best year'), so C remains the single best answer and MINOR_NOTES stands. Recorded because this is the one non-frivolous handle a complaining student has on this key, and the rationale reproduces the same untimed comparative rather than closing it — 'several times more than Quarnley bar had ever collected at its own'. A five-word anchor in the rationale (e.g. 'in any single year') would remove the handle entirely."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "RE-CONFIRMED, still present in the shipped file (first recorded in audits-round1/elf-b15-004.json): the rationale's control argument presents an outside-world inference as textual, asserting the other two gates stood 'in the same season and the same weather' when the passage states only the season.",
+      "evidence": "Passage: 'Takings at the main gate fell that season by several times that wage, while the trust's other two gates took what they usually took.' Rationale: 'the passage anticipates exactly that objection with its control - the trust's two other gates, in the same season and the same weather, \\'took what they usually took\\''. The tokens 'weather', 'wet', 'dry', 'rain' and 'harvest' occur nowhere in the passage; the only textual control term is 'that season'. The same clause also silently reorders the passage's 'the trust's other two gates' into 'the trust's two other gates' (outside the quotation marks, so not a verbatim breach).",
+      "why": "The weather inference is sound (gates of one trust share a district) and D is already indefensible on the stated 'that season' control alone, so SOUND stands. It survives into the shipped file after a full language CORRECTED pass and a second review round, which is the point of re-recording it: the teaching payload still tells a student the passage says something it does not."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Structural and comparative-construction proximity to elf-b2-004, whose family 'archival-silence-local-history' is on batch15's binding do-not-graze list. The generator's divergence note rebuts the overlap only at the level of subject, and the gate that tests sibling echo (M-ECHO) was not run in batch15 at all.",
+      "evidence": "elf-b2-004 (ELF-TYPE-002, local history): closes on a meticulous official's silence in a document, and turns on 'which that season devoured a sum far larger than the fair had ever yielded'. elf-b15-004 (ELF-TYPE-002, 'local-history essay' per fictional_source): closes on 'Bardsell's report runs to a page and a half and does not mention the summer', and its key is 'cost the trust more at the main gate than the bar ever took' off the passage's 'fell that season by several times that wage'. Shared: section, family type, genre, an official record's silence as the closing beat, and a 'that season' + 'more/larger than X ever took/yielded' comparative. gen-elf-short-2.NOTES.md addresses only subject ('that unit's subject is the absence in a record. Here the closing silence ... is texture at the end'). Gate coverage: batches/batch15/verdicts.jsonl contains M-SCHEMA, M-BANDS, M-TELL, M-FORM, M-PLAGIARISM, G-KEY, G-STEM, G-DISTRACTOR, G-REGISTER, G-ENG, G-SPRAK and no M-ECHO record for any of the 7 units, whereas batch14's verdicts.jsonl carries 6 M-ECHO records.",
+      "why": "Held at minor, not major, on two grounds verified here: the divergence argument is substantively correct (b2-004's item is keyed ON the archival gap, b15-004's is keyed on three stated quantities with the silence as residue), and a direct 6-gram check of this passage against all 57 shipped sibling candidates returns 0 shared 6-grams against a threshold of 12, so M-ECHO would have passed had it run. The unit stands. Recorded because the graze rule is about topic and framing rather than n-grams, the resemblance is at exactly that level, and batch15 shipped without the one mechanical gate designed to look at siblings."
+    }
+  ]
+}

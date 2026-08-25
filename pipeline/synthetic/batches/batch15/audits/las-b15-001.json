@@ -1,0 +1,20 @@
+{
+  "candidate_id": "las-b15-001",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "planted_traps q1/C is labelled 'reversed_causality (faktainvertering)', but option 1C makes no causal claim at all — the trap is a spatial/factual inversion. This is the exact defect class the integrated stage repaired at q2/D in round 3 (head term contradicted by its own parenthetical), left standing one question earlier; the mislabel also leaks into the student-facing rationale.",
+      "evidence": "Option 1C text: 'Att groparna redan låg nedanför köpingens vattentäkt.' — a bare locative assertion, no cause and no 'eftersom/därför'. generator_meta.planted_traps.'1'.'C' = 'reversed_causality (faktainvertering)'. The q1 rationale repeats it verbatim to the student: 'C vänder på sakförhållandet (reversed_causality/faktainvertering): nämnden ålade honom att flytta groparna TILL en plats nedanför vattentäkten, vilket förutsätter att de låg ovanför den.' — the rationale's own gloss ('vänder på sakförhållandet', 'förutsätter att de låg ovanför') describes a reversed spatial FACT, never a reversed cause. Contrast the unit's two genuine instances: q3/C ('Själva garvningen tog längre tid, eftersom hudarna skrevs in efteråt.') and q4/D ('Skomakarna gick över till fabrikernas ovandelar när garveriet lade ned kalvlinjen.'), both of which do invert a causal arrow. repair_log round 3 states the integrated stage's own criterion for the q2/D fix: 'The label's own parenthetical already contradicted its head term' and 'Trap label now names the actual trap'. A fitter label already exists in this corpus's own taxonomy: 'reversed_direction' (2 uses across batches 1-15), alongside 'polarity_mirror' and 'reversed_comparison'.",
+      "why": "Metadata-only in effect on scoring — key B is unaffected and the substantive explanation given to the student is correct — but it is a live inconsistency inside integrated check 9 (metadata accuracy), which in round 3 corrected the identical pattern at q2/D and should have swept q1/C in the same pass. Does not change the MINOR_NOTES verdict; it is a note that belongs under it."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "generator_meta.self_blind_solve asserts absolutely that no question is answerable without the passage, and names 'snittprovet' as one of the invented particulars the keys hang on. That claim is falsified by the batch's own recorded G-STEM finding for q:2 and by the fact that the cut test is a real, standard craft criterion rather than a fabricated detail.",
+      "evidence": "Unit metadata: 'Ingen fråga går att besvara utan passagen: samtliga nycklar hänger på uppdiktade partikulariteter (föreläggandet 1878, snittprovet, bokföringens två noteringar, brevet 1898).' Recorded gate finding for the same unit (batch15/verdicts.jsonl and report.json, gate G-STEM, target q:2, severity major, status SURVIVED_FLAGGED): 'WORLD_KNOWLEDGE (blind_pick C). The cut test - slicing the hide and checking that the tan has penetrated to the core - is the standard craft criterion for a finished vegetable-tanned hide, so anyone who knows tanning picks C blind.' The quoted option is the key: 'Att färgen gick ända in till mitten.' The cut-and-hold-to-the-light test is genuine vegetable-tanning practice, so 'snittprovet' is precisely NOT an 'uppdiktad partikularitet' the way 'föreläggandet 1878' or 'brevet 1898' are.",
+      "why": "The unit ships carrying a metadata claim that its own pipeline record contradicts, so anyone later reading self_blind_solve as evidence of blind-unsolvability is misled. Substantively the risk is small — the target population (Swedish HP takers) has no tannery knowledge, G-STEM itself downgraded to flag because 'the other three ... are substantively plausible craft criteria', and the passage fully grounds C — so pedagogy's SOUND and integrated's MINOR_NOTES both remain defensible; this is a note, not a refutation."
+    }
+  ]
+}
