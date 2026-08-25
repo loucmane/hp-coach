@@ -176,6 +176,28 @@ describe('POST /api/attempts — mastery writer', () => {
     expect(rows[0].score!).toBeLessThan(0.65)
   })
 
+  it('folds ONE EWMA step per answer even when the payload repeats a tag', async () => {
+    // One answer is one observation. Applying a repeated tag once per
+    // occurrence would let a single correct POST walk the ladder
+    // 0.5 → 0.65 → 0.755 → 0.8285 → 0.88 and land on `mastered` off a
+    // single answer — exactly the "one lucky correct" outcome the neutral
+    // prior exists to prevent. Duplicates are input noise, not evidence.
+    const { userId, sessionId } = await seedSession('user_a')
+    await post({
+      sessionId,
+      questionId: KVA_QID,
+      selectedAnswer: 'B',
+      correct: true,
+      layer1Ids: ['KVA-NEG-001', 'KVA-NEG-001', 'KVA-NEG-001', 'KVA-NEG-001'],
+    })
+
+    const rows = await masteryRows(userId)
+    expect(rows).toHaveLength(1)
+    expect(rows[0].score).toBeCloseTo(0.65, 5)
+    // One graded answer can never reach the mastered band.
+    expect((await progressRow(userId, 'KVA-NEG-001'))?.status).toBe('practicing')
+  })
+
   it('writes one row per tag when a question carries several Layer 1 ids', async () => {
     const { userId, sessionId } = await seedSession('user_a')
     await post({

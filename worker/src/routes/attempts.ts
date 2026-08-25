@@ -101,9 +101,21 @@ export const attemptsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     // Awaited, not fire-and-forget: it's 2–4 extra statements against the
     // same D1 and the caller invalidates stats off this response, so a
     // detached write could lose the race with the client's refetch.
+    //
+    // DEDUPED: one answer is one observation per framework. Folding a
+    // repeated tag once per occurrence would let a single correct POST
+    // carrying the same id four times walk 0.5 → 0.65 → 0.755 → 0.8285 →
+    // 0.88 and promote to `mastered` off ONE answer — precisely the
+    // "one lucky correct" outcome the neutral prior exists to prevent.
+    // Duplicates are input noise, so they're collapsed rather than
+    // rejected: a client repeating a tag gets it treated as one, not a
+    // 400. (`/api/mistakes` needs no equivalent — it STORES layer1Ids as
+    // a JSON blob rather than folding them, so duplicates are inert
+    // there.) Set iteration is insertion-ordered, so the first occurrence
+    // of each id keeps its position.
     const section = extractSection(body.questionId)
     if (section && body.layer1Ids?.length) {
-      for (const layer1Id of body.layer1Ids) {
+      for (const layer1Id of new Set(body.layer1Ids)) {
         await applyMasteryOutcome(db, userId, section, layer1Id, body.correct)
       }
     }
