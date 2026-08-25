@@ -6,8 +6,9 @@
 // actually play end-to-end, and does the answer→grade→advance→result loop hold
 // up over dozens of iterations without leaking state or crashing.
 //
-// Correctness is NOT the goal here (we fall back to option A when a prompt is
-// empty/unresolvable) — surviving every section without a crash is.
+// Correctness is NOT the goal here (we fall back to option A when a question's
+// identity can't be resolved against the bank) — surviving every section
+// without a crash is.
 //
 // Rounds via SOAK_ROUNDS env (default 3). Targets = 8 sections + mixed.
 
@@ -70,14 +71,21 @@ async function runOneDrill(page: import('@playwright/test').Page, target: DrillT
     )
     if (await result.isVisible()) break
 
-    const prompt = (await page.getByTestId('drill-prompt').textContent().catch(() => ''))?.trim()
-    const correct = prompt
-      ? await page.evaluate((p) => {
-          const bank = (
-            window as unknown as { __HPC_BANK__: { prompt: string | null; answer: string }[] }
-          ).__HPC_BANK__
-          return bank.find((q) => q.prompt === p)?.answer ?? null
-        }, prompt)
+    // Resolve by STABLE IDENTITY (data-qid on the DrillQuestion root), not
+    // by rendered prompt text (hpf-ay8). This soak deliberately walks the
+    // 135 empty-prompt ELF cloze items and NOG's sub-question stems —
+    // exactly the class prompt-matching can never resolve — so identity is
+    // what keeps the fallback below from swallowing whole sections.
+    const qid = await page
+      .getByTestId('drill-question')
+      .getAttribute('data-qid')
+      .catch(() => null)
+    const correct = qid
+      ? await page.evaluate((id) => {
+          const bank = (window as unknown as { __HPC_BANK__: { qid: string; answer: string }[] })
+            .__HPC_BANK__
+          return bank.find((q) => q.qid === id)?.answer ?? null
+        }, qid)
       : null
     const letter = correct ?? 'A'
 

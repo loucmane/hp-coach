@@ -59,17 +59,23 @@ test.afterEach(async ({ page }) => {
 // suite-wide hiccups; CI already retries twice via playwright.config.ts.
 test.describe.configure({ retries: 2 })
 
-async function readPromptCorrectLetter(page: import('@playwright/test').Page) {
-  const prompt = (await page.getByTestId('drill-prompt').textContent())?.trim()
-  if (!prompt) throw new Error('Drill prompt missing on screen')
-  const correct = await page.evaluate((p) => {
-    const bank = (
-      window as unknown as { __HPC_BANK__: { prompt: string | null; answer: string }[] }
-    ).__HPC_BANK__
-    return bank.find((q) => q.prompt === p)?.answer ?? null
-  }, prompt)
-  if (!correct) throw new Error(`Could not resolve answer for "${prompt}"`)
-  return { prompt, correct }
+/**
+ * Resolve the on-screen question's correct letter by its STABLE IDENTITY —
+ * the data-qid the DrillQuestion root carries — rather than by matching its
+ * rendered prompt text against the bank (hpf-ay8). Prompt matching cannot
+ * resolve a promptless ELF cloze at all, and misresolves NOG, whose stem is
+ * only the parsed sub-question; the replay queue can serve either.
+ */
+async function readQidCorrectLetter(page: import('@playwright/test').Page) {
+  const qid = await page.getByTestId('drill-question').getAttribute('data-qid')
+  if (!qid) throw new Error('Drill question carries no data-qid')
+  const correct = await page.evaluate((id) => {
+    const bank = (window as unknown as { __HPC_BANK__: { qid: string; answer: string }[] })
+      .__HPC_BANK__
+    return bank.find((q) => q.qid === id)?.answer ?? null
+  }, qid)
+  if (!correct) throw new Error(`Could not resolve answer for qid "${qid}"`)
+  return { qid, correct }
 }
 
 /**
@@ -178,7 +184,7 @@ test('Mistakes — a seeded mistake replays and resolves', async ({ page }, test
   // Answer correctly → resolve mutation fires. The replay session would
   // never have started if /due had been empty, so reaching a graded
   // question proves the seed → queue → replay chain end-to-end.
-  const { correct } = await readPromptCorrectLetter(page)
+  const { correct } = await readQidCorrectLetter(page)
   await page.getByTestId(`option-${correct}`).click()
   await expect(page.getByTestId('drill-next')).toBeEnabled({ timeout: 5_000 })
   await page.getByTestId('drill-next').click({ force: true })
