@@ -3,8 +3,8 @@
 // The critical path that proves the whole stack works together:
 //   1. SPA loads /drill, idle screen renders
 //   2. Click "Starta övning" → POST /api/sessions, UI flips to Q1
-//   3. Loop 10 times: read prompt → look up answer in window.__HPC_BANK__
-//      → click that letter → click "Nästa"
+//   3. Loop 10 times: read the question's data-qid → look up answer in
+//      window.__HPC_BANK__ → click that letter → click "Nästa"
 //   4. Result screen shows 10/10 (no misses)
 //
 // First test that exercises:
@@ -59,22 +59,23 @@ test('Drill ORD — 10 questions, all correct, end-to-end', async ({ page }, tes
     const optionA = page.getByTestId('option-A')
     await expect(optionA).toBeVisible({ timeout: 10_000 })
 
-    // Read the prompt the user is currently looking at, then resolve the
-    // correct letter via the bank exposed on window. This couples the test
-    // to the runtime contract __HPC_BANK__ (set in src/main.tsx).
-    const prompt = (await page.getByTestId('drill-prompt').textContent())?.trim()
-    expect(prompt, `prompt missing on question ${i + 1}`).toBeTruthy()
+    // Resolve the correct letter by the question's STABLE IDENTITY — the
+    // data-qid the DrillQuestion root carries — not by its rendered prompt
+    // text (hpf-ay8). Prompt matching misses 100% of the time for a
+    // promptless ELF cloze (the DOM shows the synthesized "Lucka N"
+    // headword while the bank row's prompt is '') and is exposed on NOG,
+    // whose stem is only the parsed sub-question. The lookup still couples
+    // the test to the runtime contract __HPC_BANK__ (set in src/main.tsx),
+    // now through the key the bank is actually indexed by.
+    const qid = await page.getByTestId('drill-question').getAttribute('data-qid')
+    expect(qid, `question ${i + 1} carries no data-qid`).toBeTruthy()
 
-    const correctLetter = await page.evaluate((p) => {
-      const bank = (
-        window as unknown as { __HPC_BANK__: { prompt: string | null; answer: string }[] }
-      ).__HPC_BANK__
-      return bank.find((q) => q.prompt === p)?.answer ?? null
-    }, prompt)
-    expect(
-      correctLetter,
-      `could not resolve correct answer for "${prompt}" on Q${i + 1}`,
-    ).not.toBeNull()
+    const correctLetter = await page.evaluate((id) => {
+      const bank = (window as unknown as { __HPC_BANK__: { qid: string; answer: string }[] })
+        .__HPC_BANK__
+      return bank.find((q) => q.qid === id)?.answer ?? null
+    }, qid)
+    expect(correctLetter, `could not resolve answer for qid "${qid}" on Q${i + 1}`).not.toBeNull()
 
     await page.getByTestId(`option-${correctLetter}`).click()
     // drill-next appears post-grade. On the phone path it's the same

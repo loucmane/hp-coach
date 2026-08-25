@@ -119,15 +119,21 @@ async function completeSession(
   for (let i = 0; i < length; i++) {
     const optionA = page.getByTestId('option-A')
     await expect(optionA).toBeVisible({ timeout: 15_000 })
-    const prompt = (await page.getByTestId('drill-prompt').textContent())?.trim()
-    const correctLetter = await page.evaluate((p) => {
-      const bank = (
-        window as unknown as { __HPC_BANK__: { prompt: string | null; answer: string }[] }
-      ).__HPC_BANK__
-      return bank.find((q) => q.prompt === p)?.answer ?? null
-    }, prompt)
-    // Fallback: if we can't resolve the answer (e.g. a non-text prompt),
-    // just pick A — we only need the attempt POSTed, not a perfect score.
+    // Resolve by STABLE IDENTITY (data-qid on the DrillQuestion root), not
+    // by rendered prompt text (hpf-ay8) — the diagnostic and the mixed
+    // drill both interleave every section, including the promptless ELF
+    // cloze that prompt matching can never resolve.
+    const qid = await page.getByTestId('drill-question').getAttribute('data-qid')
+    const correctLetter = qid
+      ? await page.evaluate((id) => {
+          const bank = (window as unknown as { __HPC_BANK__: { qid: string; answer: string }[] })
+            .__HPC_BANK__
+          return bank.find((q) => q.qid === id)?.answer ?? null
+        }, qid)
+      : null
+    // Fallback: if we can't resolve the answer (an identity missing from the
+    // bank), just pick A — we only need the attempt POSTed, not a perfect
+    // score.
     const letter = correctLetter ?? 'A'
     await page.getByTestId(`option-${letter}`).click()
     const nextBtn = page.getByTestId('drill-next')
@@ -328,22 +334,26 @@ test.describe('SF1 daily-loop closer', () => {
     )
     await page.getByTestId('drill-start').click()
 
-    // Collect the section of each served question via __HPC_BANK__ lookup on
-    // the prompt, then complete the drill.
+    // Collect the section of each served question via a __HPC_BANK__ lookup
+    // keyed on the question's data-qid identity (hpf-ay8 — a prompt-text
+    // lookup silently dropped every promptless ELF cloze from the tally),
+    // then complete the drill.
     const sectionsSeen = new Set<string>()
     for (let i = 0; i < 10; i++) {
       const optionA = page.getByTestId('option-A')
       await expect(optionA).toBeVisible({ timeout: 15_000 })
-      const prompt = (await page.getByTestId('drill-prompt').textContent())?.trim()
-      const info = await page.evaluate((p) => {
-        const bank = (
-          window as unknown as {
-            __HPC_BANK__: { prompt: string | null; answer: string; section?: string }[]
-          }
-        ).__HPC_BANK__
-        const q = bank.find((x) => x.prompt === p)
-        return { answer: q?.answer ?? null, section: q?.section ?? null }
-      }, prompt)
+      const qid = await page.getByTestId('drill-question').getAttribute('data-qid')
+      const info = qid
+        ? await page.evaluate((id) => {
+            const bank = (
+              window as unknown as {
+                __HPC_BANK__: { qid: string; answer: string; section?: string }[]
+              }
+            ).__HPC_BANK__
+            const q = bank.find((x) => x.qid === id)
+            return { answer: q?.answer ?? null, section: q?.section ?? null }
+          }, qid)
+        : { answer: null, section: null }
       if (info.section) sectionsSeen.add(info.section)
       const letter = info.answer ?? 'A'
       await page.getByTestId(`option-${letter}`).click()

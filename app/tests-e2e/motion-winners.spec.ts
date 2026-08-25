@@ -49,7 +49,13 @@ async function driveDrill(page: Page, missNumbers: Set<number>): Promise<void> {
   const bank = await ordBank(page)
 
   for (let n = 1; n <= 40; n++) {
-    const qid = new URL(page.url()).searchParams.get('qid') ?? ''
+    // Identity from the DrillQuestion root (hpf-ay8), not from the URL's
+    // ?qid: the route syncs that param through an async router navigate,
+    // so it can still name the PREVIOUS question a tick after "Nästa" —
+    // which resolves the wrong answer and, on a missed run, strikes the
+    // wrong row. data-qid is whatever is on screen right now.
+    const qid = (await page.getByTestId('drill-question').getAttribute('data-qid')) ?? ''
+    expect(qid, `question ${n} carries no data-qid`).toBeTruthy()
     const answer = (bank.get(qid)?.answer ?? 'A').toUpperCase()
     let pick = answer
     if (missNumbers.has(n)) {
