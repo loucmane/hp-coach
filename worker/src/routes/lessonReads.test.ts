@@ -6,9 +6,12 @@
 // middleware sets in production — so the tests exercise the same
 // ensureUserRow scoping the live routes use, per user.
 
+import { and, eq } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { beforeEach, describe, expect, it } from 'vitest'
 
+import { getDb } from '../db/client'
+import { frameworkProgress, users } from '../db/schema'
 import { makeTestD1, type ShimD1 } from '../lib/testD1'
 import type { Env, Vars } from '../types'
 import { lessonReadsRoute } from './lessonReads'
@@ -119,5 +122,79 @@ describe('user scoping', () => {
 
     expect(a.body.entryIds).toEqual(['LÄS-STRUCT-001'])
     expect(b.body.entryIds).toEqual(['DTK-READ-009'])
+  })
+})
+
+// ── framework_progress writer ────────────────────────────────────────
+//
+// A lesson-read IS the "taught" signal: `entryId` here is the Layer 1
+// entry id straight out of the framework JSON (LessonReader passes
+// `entry.id`), which is exactly what framework_progress.layer1_id holds.
+// Before this, the table had no producer at all.
+
+describe('framework_progress', () => {
+  function db() {
+    return getDb(d1 as unknown as D1Database)
+  }
+
+  async function progressFor(clerkUserId: string, layer1Id: string) {
+    const [user] = await db().select().from(users).where(eq(users.clerkUserId, clerkUserId))
+    if (!user) return null
+    const [row] = await db()
+      .select()
+      .from(frameworkProgress)
+      .where(and(eq(frameworkProgress.userId, user.id), eq(frameworkProgress.layer1Id, layer1Id)))
+      .limit(1)
+    return row ?? null
+  }
+
+  it('moves untaught → learning when an entry is marked read', async () => {
+    await put('KVA-NEG-001')
+    const row = await progressFor('user_a', 'KVA-NEG-001')
+    expect(row?.status).toBe('learning')
+    expect(row?.lastTransitionAt).toBeInstanceOf(Date)
+  })
+
+  it('keeps one progress row however many times the entry is re-read', async () => {
+    await put('KVA-NEG-001')
+    await put('KVA-NEG-001')
+    await put('KVA-NEG-001')
+    const [user] = await db().select().from(users).where(eq(users.clerkUserId, 'user_a'))
+    const rows = await db()
+      .select()
+      .from(frameworkProgress)
+      .where(eq(frameworkProgress.userId, user.id))
+    expect(rows).toHaveLength(1)
+  })
+
+  it('does NOT knock a practised framework back down to learning on a re-read', async () => {
+    const [user] = await db().insert(users).values({ clerkUserId: 'user_a' }).returning()
+    await db()
+      .insert(frameworkProgress)
+      .values({ userId: user.id, layer1Id: 'KVA-NEG-001', status: 'mastered' })
+    await put('KVA-NEG-001')
+    expect((await progressFor('user_a', 'KVA-NEG-001'))?.status).toBe('mastered')
+  })
+
+  it('reverts learning → untaught when the read is undone', async () => {
+    await put('KVA-NEG-001')
+    await del('KVA-NEG-001')
+    expect((await progressFor('user_a', 'KVA-NEG-001'))?.status).toBe('untaught')
+  })
+
+  it('leaves a practised framework alone when the read is undone', async () => {
+    const [user] = await db().insert(users).values({ clerkUserId: 'user_a' }).returning()
+    await db()
+      .insert(frameworkProgress)
+      .values({ userId: user.id, layer1Id: 'KVA-NEG-001', status: 'practicing' })
+    await put('KVA-NEG-001')
+    await del('KVA-NEG-001')
+    expect((await progressFor('user_a', 'KVA-NEG-001'))?.status).toBe('practicing')
+  })
+
+  it('scopes progress per user', async () => {
+    await put('KVA-NEG-001', 'user_a')
+    expect((await progressFor('user_a', 'KVA-NEG-001'))?.status).toBe('learning')
+    expect(await progressFor('user_b', 'KVA-NEG-001')).toBeNull()
   })
 })

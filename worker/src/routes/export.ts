@@ -8,9 +8,20 @@
 // Envelope: { schemaVersion, exportedAt, user, tables: { ... } }. Every
 // user-scoped table with a LIVE route is included: sessions, attempts,
 // mistakes, lessonProgress, lessonReads, dailyPlans, mockResults, plus
-// the `users` row itself (prefs). Tables with no route wired up yet
-// (srsState, mastery, frameworkProgress) hold no live data path and are
-// intentionally excluded — nothing currently writes them.
+// the `users` row itself (prefs).
+//
+// `srsState` still has no producer and is intentionally excluded —
+// nothing writes it.
+//
+// `mastery` and `frameworkProgress` DO have live producers as of the
+// progress-writers change (POST /api/attempts and PUT/DELETE
+// /api/lesson-reads respectively; see lib/progress.ts) but are NOT yet in
+// this envelope — a known gap, not a statement that they're empty. Both
+// are pure aggregates derivable from `attempts` + `lessonReads`, which
+// ARE exported, so an export/import round-trip loses only the accumulated
+// EWMA history, not the underlying evidence. Adding them here is a
+// self-contained follow-up (they're user-scoped with no session FK, so
+// they need no id remapping beyond userId).
 //
 // Import is OVERWRITE mode, scoped to the CURRENT authenticated user:
 //   1. Validate the envelope shape + schemaVersion + a size cap.
