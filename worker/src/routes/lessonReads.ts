@@ -11,6 +11,13 @@
 //   - GET    /            → { entryIds: string[] } — the full set for this user
 //   - PUT    /            → mark { entryId } read (idempotent upsert)
 //   - DELETE /:entryId    → unmark one entry
+//
+// This route is also the "taught" producer for `framework_progress`.
+// `entryId` is the Layer 1 entry id copied straight out of the framework
+// JSON (LessonReader passes `entry.id`) — the same value that table's
+// `layer1_id` column holds — so marking an entry read is exactly the
+// untaught → learning event its state machine was written for. See
+// lib/progress.ts for the ladder and what it refuses to demote.
 
 import { zValidator } from '@hono/zod-validator'
 import { and, eq } from 'drizzle-orm'
@@ -20,6 +27,7 @@ import { z } from 'zod'
 import { getDb } from '../db/client'
 import { lessonReads } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
+import { markFrameworkTaught, unmarkFrameworkTaught } from '../lib/progress'
 import type { Env, Vars } from '../types'
 
 const PutBody = z
@@ -60,6 +68,10 @@ export const lessonReadsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         // No-op-ish update so RETURNING/idempotency hold; refresh readAt.
         set: { readAt: now },
       })
+    // Taught edge. Idempotent and non-demoting, so an offline client
+    // replaying its cache can PUT freely without disturbing a framework
+    // the user has since practised.
+    await markFrameworkTaught(db, userId, entryId)
     return c.json({ ok: true as const, entryId })
   })
 
@@ -73,5 +85,8 @@ export const lessonReadsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       .delete(lessonReads)
       .where(and(eq(lessonReads.userId, userId), eq(lessonReads.entryId, entryId)))
       .returning({ id: lessonReads.id })
+    // Reverse only the edge this route owns — a practised framework keeps
+    // its earned rung. See unmarkFrameworkTaught.
+    await unmarkFrameworkTaught(db, userId, entryId)
     return c.json({ ok: true as const, entryId, removed: removed.length })
   })

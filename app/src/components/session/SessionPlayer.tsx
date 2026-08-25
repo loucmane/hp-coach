@@ -57,6 +57,7 @@ import { QuestionPan } from '@/components/motion/QuestionPan'
 import { StageInk } from '@/components/motion/StageInk'
 import { Page } from '@/components/Page'
 import { Btn, Eyebrow, Mono } from '@/components/primitives'
+import { peekExplanation } from '@/data/explanations'
 import { type AnswerLetter, loadBank, type Question } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
 import { currentDevice } from '@/lib/device'
@@ -463,12 +464,20 @@ export function SessionPlayer(props: SessionPlayerProps) {
       })
       setPhase('graded')
       if (sessionId !== null) {
+        // Tag the attempt with this question's Layer 1 framework so the
+        // worker can fold the outcome into per-framework `mastery`. Read
+        // synchronously from the already-loaded explanation cache (the
+        // variant loaded it when the question rendered) — the attempt POST
+        // must not wait on, or be lost to, a content fetch. No tag → the
+        // attempt still lands, the aggregate just doesn't move.
+        const frameworkId = peekExplanation(q.qid)?.framework_id
         submitAttempt.mutate({
           sessionId,
           questionId: q.qid,
           selectedAnswer: letter,
           correct,
           timeTakenMs: Date.now() - questionStartedAt,
+          layer1Ids: frameworkId ? [frameworkId] : undefined,
         })
       }
       if (correct) props.onCorrect?.(q)

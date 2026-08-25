@@ -114,6 +114,11 @@ export type Explanation = {
 // share a single fetch.
 const examCache = new Map<string, Promise<Record<string, Explanation>>>()
 
+// Settled mirror of `examCache`, for callers that need an answer NOW and
+// have no useful behaviour to offer while a promise is in flight. See
+// peekExplanation.
+const resolvedExams = new Map<string, Record<string, Explanation>>()
+
 /** Extract the exam_id from a fully-qualified qid.
  *  `host-2025-kvant1-XYZ-002` → `host-2025`
  *  `host-ver1-2019-kvant2-NOG-024` → `host-ver1-2019`
@@ -152,6 +157,7 @@ async function loadExamExplanations(examId: string): Promise<Record<string, Expl
     return (await res.json()) as Record<string, Explanation>
   })()
   examCache.set(examId, entry)
+  entry.then((map) => resolvedExams.set(examId, map)).catch(() => {})
   // Same rejected-Promise hygiene as loadBank: a transport error (or a
   // pre-auth 401 once content is gated) must not poison the cache and
   // block every later lookup for this exam. Drop the memo on rejection
@@ -182,8 +188,29 @@ export async function loadExplanation(qid: string): Promise<Explanation | null> 
   return map[qid] ?? null
 }
 
+/**
+ * Synchronous best-effort read of an already-loaded explanation.
+ *
+ * Returns null when this exam's file hasn't finished loading yet — it
+ * never starts a fetch and never waits. That makes it safe to call from
+ * hot, must-not-block paths; the one that needs it is SessionPlayer's
+ * `onPick`, which tags the outgoing attempt with the question's Layer 1
+ * `framework_id` so the worker can fold it into `mastery`. By the time a
+ * user has read a question and picked an answer, the drill variant's
+ * `useExplanation` has long since populated the per-exam cache, so in
+ * practice this hits. When it misses, the attempt is still recorded in
+ * full — it just carries no tag, which the API treats as "don't move the
+ * aggregate". A dropped tag must never cost us the attempt row itself.
+ */
+export function peekExplanation(qid: string): Explanation | null {
+  const examId = extractExamId(qid)
+  if (!examId) return null
+  return resolvedExams.get(examId)?.[qid] ?? null
+}
+
 /** Test-only: clear the per-exam cache. Used by Vitest specs that
  *  exercise the loader against a freshly-mocked fetch handler. */
 export function __resetExplanationCache(): void {
   examCache.clear()
+  resolvedExams.clear()
 }

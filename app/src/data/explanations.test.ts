@@ -6,7 +6,12 @@
 //      share one fetch, missing qids return null without throwing.
 
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-import { __resetExplanationCache, type Explanation, loadExplanation } from './explanations'
+import {
+  __resetExplanationCache,
+  type Explanation,
+  loadExplanation,
+  peekExplanation,
+} from './explanations'
 
 const fakeExplanation = (qid: string): Explanation => ({
   solution_path: `path-${qid}`,
@@ -102,5 +107,52 @@ describe('loadExplanation — cache + missing handling', () => {
     const result = await loadExplanation('not-a-real-qid')
     expect(result).toBeNull()
     expect(fetchMock).not.toHaveBeenCalled()
+  })
+})
+
+// peekExplanation is the synchronous accessor SessionPlayer.onPick uses to
+// tag an outgoing attempt with its Layer 1 `framework_id` (which the worker
+// folds into `mastery`). Its whole contract is "answer now or say no" —
+// it must never fetch and never block the attempt write.
+describe('peekExplanation — synchronous cache read', () => {
+  const QID = 'host-2025-kvant1-XYZ-002'
+
+  beforeEach(() => {
+    __resetExplanationCache()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  test('returns null — without fetching — when the exam is not loaded yet', () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch')
+    expect(peekExplanation(QID)).toBeNull()
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  test('returns the entry once the exam file has resolved', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(
+        JSON.stringify({ [QID]: { ...fakeExplanation(QID), framework_id: 'XYZ-T-001' } }),
+        {
+          status: 200,
+        },
+      ),
+    )
+    await loadExplanation(QID)
+    expect(peekExplanation(QID)?.framework_id).toBe('XYZ-T-001')
+  })
+
+  test('returns null for a loaded exam that has no entry for this qid', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(JSON.stringify({ [QID]: fakeExplanation(QID) }), { status: 200 }),
+    )
+    await loadExplanation(QID)
+    expect(peekExplanation('host-2025-kvant1-XYZ-999')).toBeNull()
+  })
+
+  test('returns null for a qid that does not match the provpass pattern', () => {
+    expect(peekExplanation('not-a-real-qid')).toBeNull()
   })
 })

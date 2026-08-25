@@ -10,6 +10,17 @@
 // on Layer 1 framework tagging (task 38) and SRS scheduling (task 17),
 // which are separate branches. Once those land, mistake-on-wrong logic
 // hooks in here.
+//
+// MASTERY, on the other hand, IS written here. Per-Layer-1 mastery is an
+// aggregate of exactly these graded answers, so the write that records an
+// answer is the honest place to fold it in — see lib/progress.ts for the
+// scoring model and why `framework_progress` moves along with it.
+//
+// The Layer 1 tags come from the CLIENT (`layer1Ids`), the same contract
+// /api/mistakes already uses. The worker can't derive them: the qid →
+// framework_id map lives in the Layer 2 explanation corpus, which is R2
+// content the SPA loads and the API only proxies. Untagged attempts are
+// still recorded in full — they just don't move any aggregate.
 
 import { zValidator } from '@hono/zod-validator'
 import { and, eq, sql } from 'drizzle-orm'
@@ -19,6 +30,8 @@ import { z } from 'zod'
 import { getDb } from '../db/client'
 import { attempts, sessions, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
+import { applyMasteryOutcome } from '../lib/progress'
+import { extractSection } from '../lib/section'
 import type { Env, Vars } from '../types'
 
 const AttemptBody = z
@@ -33,6 +46,10 @@ const AttemptBody = z
       .min(0)
       .max(60 * 60 * 1000)
       .optional(),
+    // Optional Layer 1 tags for this question — mirrors the `layer1Ids`
+    // field /api/mistakes takes. Absent/empty means "untagged": the
+    // attempt lands, the mastery aggregate simply isn't moved.
+    layer1Ids: z.array(z.string().min(1).max(40)).max(8).optional(),
   })
   .strict()
 
@@ -74,5 +91,34 @@ export const attemptsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         .set({ attemptsTotal: sql`${users.attemptsTotal} + 1` })
         .where(eq(users.id, userId)),
     ])
+
+    // Fold the graded answer into the Layer 1 aggregates. Both inputs are
+    // required and neither is guessable: `section` comes off the qid, and
+    // `mastery.section` / `mastery.layer1_id` are both NOT NULL, so an
+    // attempt missing either one is recorded WITHOUT touching mastery
+    // rather than written under a fabricated key.
+    //
+    // Awaited, not fire-and-forget: it's 2–4 extra statements against the
+    // same D1 and the caller invalidates stats off this response, so a
+    // detached write could lose the race with the client's refetch.
+    //
+    // DEDUPED: one answer is one observation per framework. Folding a
+    // repeated tag once per occurrence would let a single correct POST
+    // carrying the same id four times walk 0.5 → 0.65 → 0.755 → 0.8285 →
+    // 0.88 and promote to `mastered` off ONE answer — precisely the
+    // "one lucky correct" outcome the neutral prior exists to prevent.
+    // Duplicates are input noise, so they're collapsed rather than
+    // rejected: a client repeating a tag gets it treated as one, not a
+    // 400. (`/api/mistakes` needs no equivalent — it STORES layer1Ids as
+    // a JSON blob rather than folding them, so duplicates are inert
+    // there.) Set iteration is insertion-ordered, so the first occurrence
+    // of each id keeps its position.
+    const section = extractSection(body.questionId)
+    if (section && body.layer1Ids?.length) {
+      for (const layer1Id of new Set(body.layer1Ids)) {
+        await applyMasteryOutcome(db, userId, section, layer1Id, body.correct)
+      }
+    }
+
     return c.json({ attempt: inserted[0] }, 201)
   })
