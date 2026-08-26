@@ -1,34 +1,171 @@
 {
   "candidate_id": "las-b16-001",
+  "date": "2026-08-26",
+  "auditor": "vfinal-meta-audit/opus",
   "audit_verdict": "CONFIRMED_NOTES",
+  "verdict": "CONFIRMED_NOTES",
+  "severity_contract": "findings[].severity is drawn ONLY from {minor, note, info}. A ship-blocker is expressed as verdict REFUTED, never as a custom severity. Resolution history lives in resolved_findings/cleared. This re-issue found 0 blockers: 1 minor with an ordered metadata-only fix, 5 notes dispositioned, 2 info record-hygiene items.",
+  "scope": "V-FINAL adversarial re-issue after the round-3 chronology repair and re-leg. Supersedes the pre-repair audit at this path (preserved in git at 935f0e4). Attempted refutation of ship-readiness on the shipping bytes candidates-final/las-b16-001.json (mtime 14:02:35). Ship-readiness is NOT refuted: 0 blockers, 0 key moves, 4 keys survive an independent cold solve.",
+  "independent_cold_solve": {
+    "method": "Passage read first, questions solved from the passage alone with every non-key actively defended before the key was accepted. Q1's key was unavoidably seen while dumping the record schema; Q2-Q4 were solved fully blind to key and rationale.",
+    "answers": {
+      "q1": "C",
+      "q2": "B",
+      "q3": "D",
+      "q4": "A"
+    },
+    "shipped_key_spread": [
+      "C",
+      "B",
+      "D",
+      "A"
+    ],
+    "match": "4/4",
+    "single_defensible": "For each question exactly one option survives. Q1: C is the verbatim mechanism of paragraph 6; B is killed by 'I ugnen hände detta sällan'; A misapplies the frost, which works on lera before forming; D invents a cooling fault. Q2: B is the only colour mechanism the text supplies; A and D are ceramics world-knowledge the text never endorses; C belongs to delivery volume in paragraph 3. Q3: D is licensed by the vägfyllning sentence; C inverts who bears the loss; B is absolutised and refuted by the 1890s complaint record; A is unsupported. Q4: A is 'samma värme ... i två led' verbatim; B is denied one sentence earlier; C rides the shared 1884 date; D is unlicensed."
+  },
+  "date_arithmetic_recheck": {
+    "method": "Re-derived from the passage alone, with no reference to repair_log or self_blind_solve, then cross-checked against every other figure in the text.",
+    "result": "Magasinet = 1889. 'Folkskolan i Sölvinge, uppförd 1904' is the nearest and only dated referent for 'I magasinet vid bryggan, murat femton år tidigare'; 1904 - 15 = 1889.",
+    "ledger": [
+      "Bruket i drift 1868-1913 (45 år). Magasinet 1889 sits inside it.",
+      "Ringugn ersatte fältugnen 1884. 1889 > 1884 by five years, so the magasin wall is ring-kiln brick and paragraph 5's chamber mechanism ('Var i kammaren en sten hade stått syntes på den efteråt') applies to the very wall paragraph 1 exhibits. This is the defect the round-3 repair was chartered to fix and it is fixed.",
+      "Kollergången 1884. The magasin (1889) is post-kollergång, yet shows spalled flakes. No contradiction: the kollergång crushed 'de flesta' lime grains, not all, and the passage's own 1890s complaint record is post-1884 evidence that spalling continued.",
+      "Stämpeln försvann 1897; 'teglet under brukets första trettio år bar en stämpel'. 1868 through 1897 inclusive is exactly thirty operating years. Magasinet 1889 is operating year 22, therefore stamped, therefore attributable - which is what licenses paragraph 1's claim that the bruk is 'ovanligt lättläst'.",
+      "Folkskolan 1904 is operating year 37 and therefore unstamped. Not a defect: the passage never claims the stamp is the only attribution route, and a byggnadshistoriker's attribution of the last large building needs no stamp.",
+      "Enkelsortsbränning upphörde 1875. Both exhibited walls (1889, 1904) are post-1875 by 14 and 29 years, so neither can be traced to a single lergrav.",
+      "Vrenmark ledde 1879-1902; vattningen is his measure. Magasinet 1889 and the 1890s complaints both fall inside his tenure.",
+      "Strejken juli 1893 falls inside the April-October arbetsår.",
+      "Brandförsäkringen 1896 lists 'ugnen' in the singular - correct, since the fältugn was torn down in 1884 and only the ringugn remained.",
+      "Uppteckningen 1918 postdates the 1913 closure, as an oral-tradition record should.",
+      "Leran grävdes på hösten, låg ute till våren, var lös 'i april'; arbetsåret began 'i slutet av april'. The two clocks agree."
+    ],
+    "conclusion": "Every figure in the passage reconciles. No arithmetic defect remains."
+  },
+  "q2_key_licensing": {
+    "verdict": "LICENSED",
+    "chain": "Paragraph 5 states the causal claim (chamber position determines density and colour). Paragraph 5's repaired routing sentence ('De bleka gick till innermurar eller till de oversta skiften i en yttermur, dar de bar minst last och stod torrast') then routes pale brick to the top courses of an outer wall, which is exactly what paragraph 1 exhibits ('överst går färgen över i blekgult'). The 1889 date puts that wall after the 1884 ring kiln, so the mechanism is applicable to it. All three links now hold simultaneously, which was not true before round 3.",
+    "adversarial_probe": "Tested whether the new routing sentence opens a seam elsewhere. It does not compete with q:2's key, because it concerns where pale brick was USED, not what DETERMINED colour. It does not contradict q:1, because 'stod torrast' concerns load and liquid-water exposure while paragraph 6's mechanism runs on 'fukt ur luften', which reaches dry-standing brick. It touches no option in the unit.",
+    "referent_robustness": "'Femton ar tidigare' is unambiguously relative to folkskolan 1904 (same paragraph, immediately preceding, and the paragraph's whole point is the contrast between the two facades). Even under the strained alternative reading against the 1918 uppteckning (1903), the wall stays post-1884 and q:2's key chain survives. The key is robust to the ambiguity, so no rewording is needed."
+  },
   "findings": [
     {
+      "id": "F1",
       "severity": "minor",
-      "stage_challenged": "integrated",
-      "claim": "The integrated verdict INCONSISTENT is correct on the merits, but it is a verdict with no remediation behind it: the shipping file was frozen before the record was written and still carries the seam, unchanged across two full review rounds.",
-      "evidence": "Timestamps: candidates-final/las-b16-001.json = 13:25:20; reviews/integrated.jsonl = 13:33:50; no later write to the unit. Diff candidates-corrected → candidates-final touches only questions[1].rationale and generator_meta.question_families.4 — the passage is byte-identical, and diff candidates → candidates-corrected is the single word \"vidgade\" → \"utvidgade\". The seam is still present verbatim: dating gives magasin = 1879 (\"Folkskolan i Sölvinge, uppförd 1904\" + \"murat tjugofem år tidigare\"), kiln history gives \"Den första ugnen var en fältugn\" … \"År 1884 ersattes den av en ringugn med sexton kamrar.\", and the only colour mechanism in the text is chamber-position: \"Var i kammaren en sten hade stått syntes på den efteråt.\" The same paragraph grades the pale stones \"kom ut bleka och porösa och dög bara till innermurar\", while the opening exhibit puts them in an outer wall: \"I ytterväggen på magasinet vid Sölvinges ångbåtsbrygga sitter tegel i tre färger.\" … \"överst går färgen över i blekgult\" … \"Ingenting av detta är slumpartat.\"",
-      "why": "The 1879 magasin brick was fired in a fältugn, which has no kammare and no eldkanaler, so the passage explains the colour of the very wall it opens with by a mechanism belonging to a kiln built five years later — and grades the palest band as fit only for inner walls while showing it in an yttervägg. The round-1 audit logged exactly this against a MINOR_NOTES integrated verdict; round 2 escalated to INCONSISTENT, which is the right call, but nothing was fixed. No key moves — Q2 key B remains the only textually supported answer to \"Vad avgjorde, enligt texten, en stens färg?\" — so the verdict is confirmed rather than refuted; but a consumer reading only reviews/integrated.jsonl would reasonably assume the INCONSISTENT finding had been dispositioned, and it was not."
+      "stage_challenged": "generator_meta / round-3 rebuild",
+      "disposition": "FIX ORDERED (metadata only, one clause; does not gate ship)",
+      "claim": "The rebuilt self_blind_solve asserts that q:3 cannot be answered without the passage and reports the unit's G-STEM flag set as {q:1, q:4}. The batch's own report.json records THREE G-STEM flags on this unit - q:1, q:3 and q:4 - and the q:3 flag is a positive blind pick of the key.",
+      "evidence": "self_blind_solve: 'Q2 och Q3 hänger på uppdiktade partikulariteter ... och går inte att svara på utan texten, medan Q1 och Q4 är delvis åtkomliga med omvärldskunskap. Det senare är redan protokollfört av G-STEM som flaggor'. report.json las-b16-001 flags, gate G-STEM, target q:3: 'PARTIALLY / WORLD_KNOWLEDGE (blind_pick D). B is the only absolute (inga klagomål) and A asserts a mechanism that is false in the world (watering does not harden brick); knowing that watering finished brick is the standard remedy for lime blowing then selects D over its direct opposite C. The passage still grounds the inference, so flag.' The same undercount is present upstream in repair_log ('G-STEM's world-knowledge flags on q:1 and q:4'), so the error has a single propagating source. G-STEM was not re-run for this unit in round 3 (verdicts-r3/verdicts-gstem.jsonl contains no las-b16-001 record), so the round-2 three-flag record is the operative one.",
+      "why": "I tested the q:3 flag rather than deferring to it, and it holds. The stem itself ('vattningen av de färdiga stenarna') already places the watering at the works; a solver who eliminates B for its absolutiser and A for a world-false mechanism is left with C versus D, and ordinary reasoning about why a works would wet its own stock before shipping selects D. So q:3 is partially blind-accessible and the self_blind_solve's claim about it is false. This is metadata, not student-facing content: no passage byte, stem, option, key or rationale is affected, and the key is independently correct. But it is the same defect class the round-3 rebuild was chartered to remove (the round-2 text was replaced precisely because it overstated passage dependence), recurring at a new site, and it leaves shipping bytes contradicting the batch's own gate record - which is what makes the self_blind_solve field evidentially worth anything.",
+      "ordered_fix": "In generator_meta.self_blind_solve, rescope the passage-dependence sentence to match report.json: q:2 is the only fully passage-locked question; q:1, q:3 and q:4 are each partially accessible with world knowledge and are all three protocolled by G-STEM as flags, not as structural leaks. Cite the q:3 flag alongside the q:1 and q:4 flags. Change nothing else in the field and nothing in the unit. Apply with disclosure."
     },
     {
-      "severity": "minor",
-      "stage_challenged": "pedagogy",
-      "claim": "The Q1 rationale and planted_traps misapply the taxonomy tag reversed_causality to option B; B reverses nothing, it displaces the event in time.",
-      "evidence": "Q1 option B: \"Kalkkornen sprängde sönder stenens yta i ugnens hetta under själva bränningen.\" Q1 rationale: \"B är reversed_causality i tidsledet och den svåraste distraktorn\"; planted_traps.1.B: \"reversed_causality (skadans tidsled inverterat)\". pipeline/synthetic/las/families.md defines the tag: \"reversed_causality | 295 | Right elements, wrong direction — cause/effect or subject/object swapped\". In B the causal arrow is intact — the lime grain is still the cause and the spalled face still the effect; only the stage of the process moves (\"i ugnens hetta under själva bränningen\" vs the passage's \"Kornet låg sedan kvar i det färdiga teglet och tog upp fukt ur luften, svällde och tryckte loss en flisa ur ytan.\"). The unit applies the same tag correctly twice elsewhere — Q3-C reverses who bears the loss, Q4-B inverts hotter-fire/less-fuel — so this is a misapplication, not a house convention.",
-      "why": "The rationale is the student-facing teaching payload. Telling a student that B is a reversed-causality trap trains the wrong detector — look for a flipped arrow — when the lesson B actually carries is \"right mechanism, wrong stage of the process\". Sibling units coin a new tag when the taxonomy has no fit (las-b16-002 \"unsupported_causality\"; las-b16-003 \"reversed_direction\", \"role_or_attribution_swap\"), so bank precedent is to name the trap accurately rather than stretch a defined tag with a qualifier."
+      "id": "F2",
+      "severity": "note",
+      "stage_challenged": "pedagogy / carried minor 1",
+      "disposition": "TOLERABLE - NO FIX ORDERED",
+      "claim": "Carried minor: q:1 option B is tagged reversed_causality where the causal arrow is intact and only the stage of the process moves.",
+      "evidence": "q:1/B: 'Kalkkornen sprängde sönder stenens yta i ugnens hetta under själva bränningen.' Tag sites: planted_traps.1.B 'reversed_causality (skadans tidsled inverterat)' and the q:1 rationale 'B är reversed_causality i tidsledet'. las/families.md defines the tag as 'Right elements, wrong direction - cause/effect or subject/object swapped'. In B the lime grain is still the agent and the spalled face still the patient; what moves is the stage (firing heat instead of later moisture uptake).",
+      "why": "The observation is correct and I confirm it on the merits, but ordering a relabel would make the record worse, not better. The taxonomy in las/families.md is closed at eight tags and contains no stage-shift or temporal-shift tag. The two nearest substitutes are both already spent inside the same four-option row - scope_shift on q:1/A and plausible_worldknowledge on q:1/D - so a substitution would either double-tag the row and blur it, or coin an off-taxonomy tag. The tag as actually written is not bare: both sites carry an explicit in-place qualifier ('i tidsledet', 'skadans tidsled inverterat') naming exactly what moved. And the only part of the record with teaching value, the rationale's substantive prose, describes the stage shift correctly and cites the refuting sentence verbatim: 'den flyttar sprängningen till själva bränningen, medan texten uttryckligen säger att detta sällan hände i ugnen'. Student-facing exposure is nil today: raw English taxonomy tokens appear in the rationale field of every candidate in batch16 and in earlier batches (checked batch12), so the field is internal QA prose by corpus-wide convention, and PRD 5.15 Layer 4 is deferred with no renderer. Net: real but cosmetic, with every available fix costing more accuracy than it buys. Logged for corpus hygiene if a stage-shift tag is ever added to families.md."
     },
     {
-      "severity": "minor",
-      "stage_challenged": "pedagogy",
-      "claim": "The Q4 rationale labels distractor D an overgeneralisation and never names the property a G-STEM gate already recorded in writing — that D does not answer the stem at all.",
-      "evidence": "Q4 stem: \"Vad förklarar, enligt texten, att vedåtgången per tusen stenar sjönk efter 1884?\" Option D: \"Skärmtaken tycks ha blivit överflödiga sedan rökgaserna kunde torka godset.\" Q4 rationale: \"D är overgeneralisation i gardad form\"; planted_traps.4.D: \"overgeneralisation (gardad)\". report.json, gate G-STEM, target q:4: \"D additionally fails stem-fit because awnings becoming superfluous does not explain wood consumption.\" families.md defines overgeneralisation by absolutisers (\"alla / alltid / aldrig / bara / enbart\") — D carries none and is explicitly hedged (\"tycks ha\") — and it carries a dedicated tag for what D actually is: \"true_but_irrelevant | 57 | True in itself but doesn't answer the stem.\" The unit uses overgeneralisation correctly at Q3-B, whose option does carry an absolutiser (\"kom inga klagomål\").",
-      "why": "D is a legitimate distractor — true_but_irrelevant is an authentic corpus trap with 57 instances — so this does not make Q4 non-functional and does not flip MINOR_FIXES. But the pedagogy stage's only applied change to this unit was a rewrite of the Q2 A-clause rationale; the G-STEM stem-fit note went undispositioned in both the rationale and the review record, and the label the student is handed points at absolutisers instead of at the option's real defect."
+      "id": "F3",
+      "severity": "note",
+      "stage_challenged": "pedagogy / carried minor 2",
+      "disposition": "TOLERABLE - NO FIX ORDERED; the proposed substitution is REJECTED on the merits",
+      "claim": "Carried minor: q:4 option D is tagged overgeneralisation where the integrated reviewer proposes true_but_irrelevant.",
+      "evidence": "q:4/D: 'Skärmtaken tycks ha blivit överflödiga sedan rökgaserna kunde torka godset.' families.md: true_but_irrelevant = 'True in itself but doesn't answer the stem'; overgeneralisation = 'Text says something nuanced/hedged; distractor makes it absolute'. The passage refutes D twice: paragraph 3 makes roofed drying capacity the binding constraint on summer deliveries ('Vad bruket kunde leverera under en sommar avgjordes därför av hur mycket gods som fick plats under taken'), and the 1896 brandförsäkring still insures 'skärmtaken'.",
+      "why": "I rule against the reviewer. true_but_irrelevant is defined by its first word: the proposition must be true in itself. D as a whole proposition is false and the text refutes it, so the proposed tag cannot apply, and applying it would additionally encode into the corpus the claim that D is true - the worse of the two errors. The incumbent tag fits the substance: D takes a bounded true premise from paragraph 4 (flue gases dried the goods standing next in line inside the ring) and pushes it out to the whole drying operation. families.md's own family notes gloss overgeneralisation as 'a sound inference pushed too far', which is exactly D's shape. The one imperfection is surface: D carries a hedge ('tycks ha') rather than an absolutiser, so it misses the gloss's lexical marker - but those markers are how absolutising usually surfaces, not the definition, and the hedge is doing separate deliberate work, since hedge_map requires a cautiously worded WRONG option in the row and q:4/D is it. half_right_conjunction would map onto D's true-premise/false-conclusion split, but it is already spent on q:4/C in the same row. Incumbent stands."
     },
     {
-      "severity": "minor",
-      "stage_challenged": "pedagogy",
-      "claim": "Two overstatements logged by the round-1 audit survive the round-2 MINOR_FIXES edit, one of them inside the very sentence that was edited.",
-      "evidence": "Q2 rationale still reads \"men texten stänger vägen: leran från de båda gravarna blandades på slagbordet, och efter 1875 brändes inget tegel av enbart den ena sorten\" — the passage's own \"efter 1875\" concedes single-source brick for 1868–1875, and the works ran \"mellan 1868 och 1913\". generator_meta.self_blind_solve still reads \"samtliga nycklar hänger på uppdiktade partikulariteter\", although Q4's key A (\"Luften förvärmdes av svalnande stenar och rökgaserna torkade nästa gods.\") is textbook Hoffmann ring-kiln recuperation that report.json's G-STEM flag records as pickable passage-blind: \"WORLD_KNOWLEDGE (blind_pick A)\". A third, smaller instance is new: the Q1 rationale converts a hedge into an exclusion — passage \"I ugnen hände detta sällan.\" vs rationale \"texten uttryckligen säger att detta sällan hände i ugnen utan när stenen stått en tid i stapeln eller redan var inmurad\".",
-      "why": "The round-2 pedagogy pass did edit questions[1].rationale — it expanded the A-clause about the lexical echo on kalken — so the stage had that sentence open and left the flagged D-clause overstatement verbatim. None of these makes a claim that is false about the world or about a post-1875 stone, and no key moves, so MINOR_FIXES stands; but the record shows fixes landing adjacent to, rather than on, the logged defects."
+      "id": "F4",
+      "severity": "note",
+      "stage_challenged": "G-STEM / carried minor 2, second half",
+      "disposition": "TOLERABLE - NO FIX ORDERED; hereby dispositioned",
+      "claim": "The repair_log records G-STEM's stem-fit note on q:4/D as still undispositioned: 'D additionally fails stem-fit because awnings becoming superfluous does not explain wood consumption.'",
+      "evidence": "report.json, gate G-STEM, target q:4. The stem asks what explains the drop in wood per thousand bricks; D answers a different question.",
+      "why": "Dispositioned as acceptable and by design. A distractor that does not answer the stem is a sanctioned authentic-corpus device - families.md counts 57 true_but_irrelevant instances mined from real HP items - so stem-mismatch is not per se a defect. Row-level analysis shows D is deliberately the softest of the three: B is verbatim contradicted, C is a genuine half-right conjunction riding the shared 1884 date, and D is the hedged, easily eliminated fourth option that hedge_map's rule-10 requirement needs in order to keep the 'pick the most cautiously worded option' heuristic pointing at a wrong answer. Removing or hardening D would break that property. No change."
+    },
+    {
+      "id": "F5",
+      "severity": "note",
+      "stage_challenged": "pedagogy / carried minor 3",
+      "disposition": "TOLERABLE - NO FIX ORDERED; the finding is REFUTED on re-reading",
+      "claim": "Carried minor: the q:2 rationale's unqualified 'texten stänger vägen' rests on the post-1875 clause, which is silent about 1868-1875 brick.",
+      "evidence": "q:2 rationale: 'men texten stänger vägen: leran från de båda gravarna blandades på slagbordet, och efter 1875 brändes inget tegel av enbart den ena sorten.' The very next two sentences of the same rationale read: 'Färgen knyter texten aldrig till lerans sammansättning, utan uteslutande till stenens plats i kammaren.'",
+      "why": "Three independent grounds, any one of which is sufficient. First, the claim is true as stated: the passage never attributes colour to clay at any point in the works' life - paragraph 2 characterises the two clays by plasticity and grain (styv med kalkstensgrus, magrare och sandigare), never by hue - so option D is unsupported for 1868-1913 in full, independent of 1875. Second, the rationale does not in fact rest the closure on the 1875 clause alone; it supplies the unrestricted argument two sentences later in the same paragraph, and the carried minor reads the first clause in isolation from the second. Third, the referent set the question can reach is entirely inside the 1875 clause's scope: both walls the passage exhibits are now dated 1889 and 1904, so no stone q:2 can be about is single-source. The round-3 re-dating widened this margin rather than creating it - the pre-repair 1879 wall was already post-1875 - so the repair strengthens the clause exactly as repair_log claims. No wording change is warranted; a change here would delete a correct narrower argument in favour of one already present."
+    },
+    {
+      "id": "F6",
+      "severity": "note",
+      "stage_challenged": "pedagogy / prior audit finding 4, third instance",
+      "disposition": "TOLERABLE - NO FIX ORDERED",
+      "claim": "Residual from the superseded audit, not carried forward by the integrated sweep and therefore checked here: the q:1 rationale's 'sällan ... utan' construction converts the passage's hedge into an exclusion.",
+      "evidence": "Passage: 'I ugnen hände detta sällan. Det hände när stenen hade stått en tid i stapeln eller redan var inmurad.' Rationale: 'texten uttryckligen säger att detta sällan hände i ugnen utan när stenen stått en tid i stapeln eller redan var inmurad.' The rationale was explicitly NOT changed in round 3.",
+      "why": "The rationale retains the passage's own hedge word 'sällan', so the exclusion is carried only by the loose 'utan' (which idiomatically wants a preceding 'inte' or an 'i stallet'). Round 3's G-SPRAK legs ran at unit scope - target 'unit', not the round-2 'passage' - three times on the shipping bytes with zero findings, so the rationale prose was inside scope and was acquitted three times independently. At worst a stylistic looseness in internal QA prose that preserves the hedge it is accused of dropping. Not ordered."
+    },
+    {
+      "id": "F7",
+      "severity": "info",
+      "stage_challenged": "record hygiene / report.json",
+      "disposition": "NO UNIT DEFECT - record refresh optional",
+      "claim": "report.json (mtime 12:53) carries a stale pre-round-2 G-SPRAK quote for this unit.",
+      "evidence": "report.json flag quote: 'vattnet i klumparna frös, vidgade sig och sprängde sönder dem'. The shipping bytes read 'utvidgade sig'. Verified directly in the passage. The correction was applied in the candidates to candidates-corrected step and the round-3 G-SPRAK legs return zero findings.",
+      "why": "Confirmed as the caller described: a frozen record of a finding that was applied, not a live defect. Flagged only because report.json is the same file that carries the G-STEM flag set F1 turns on, so a reader must be told which parts of it are stale (the G-SPRAK quote) and which are operative (the three G-STEM flags, since G-STEM was not re-run for this unit)."
+    },
+    {
+      "id": "F8",
+      "severity": "info",
+      "stage_challenged": "record hygiene / reviews/final_verify.jsonl",
+      "disposition": "RE-FOLD REQUIRED after this re-issue",
+      "claim": "The las-b16-001 row in reviews/final_verify.jsonl was folded before the round-3 repair and against the superseded audit, so it is stale in both inputs.",
+      "evidence": "reviews/final_verify.jsonl mtime 13:48:02; shipping candidates-final/las-b16-001.json mtime 14:02:35; verdicts-r3 legs 14:06-14:23; re-run integrated 14:14. The row's own note reads 'gkey_records=8 gkey_kills=0 ... audit=CONFIRMED_NOTES audit_major=0 audit_minor=4', which counts the pre-repair audit's four minors, not this re-issue.",
+      "why": "The fold's conclusion happens to survive - the round-3 legs are 8 gkey records with 0 kills and 0 flags, gdistractor 4 pass, and this re-issue is again CONFIRMED_NOTES with 0 major - but the row is evidence about bytes that no longer exist. Re-fold after this audit lands so the verified-notes row points at the shipping unit. No change to the unit itself."
     }
-  ]
+  ],
+  "resolved_findings": [
+    {
+      "from": "prior audit finding 1 (severity minor, stage integrated)",
+      "was": "The round-2 INCONSISTENT integrated verdict was correct on the merits but undispositioned: the shipping file was frozen at 13:25 before the record was written at 13:33, and the chronology seam survived two full review rounds. Dating gave magasin = 1879 ('murat tjugofem år tidigare' against folkskolan 1904), which is fältugn brick, while the only colour mechanism in the text is a ring-kiln chamber effect from 1884.",
+      "now": "RESOLVED. One word changed in paragraph 10: 'tjugofem' to 'femton', giving 1889. I re-derived the date independently from the passage alone and confirm 1889 > 1884. The evidence chain that carries the opening is now valid. reviews/integrated.jsonl line 8 (14:14) re-runs the sweep post-repair and returns MINOR_NOTES, superseding line 4's INCONSISTENT."
+    },
+    {
+      "from": "prior audit finding 1 (second seam, paragraph 5 versus paragraph 1)",
+      "was": "Paragraph 5 graded pale porous stones as fit 'bara till innermurar' while paragraph 1 exhibits pale-yellow brick in the topmost courses of an yttervägg and insists nothing about the wall is random.",
+      "now": "RESOLVED. The exclusive clause was removed and replaced with the sorting's actual two destinations plus the building reason: 'De bleka gick till innermurar eller till de översta skiften i en yttermur, där de bar minst last och stod torrast.' I adversarially probed the new sentence against q:1, q:2 and q:4 and it opens no seam; it reinforces q:2's key by completing the paragraph-1 exhibit's explanation. No option was touched."
+    },
+    {
+      "from": "prior audit finding 4, first instance",
+      "was": "generator_meta.self_blind_solve claimed 'samtliga nycklar hänger på uppdiktade partikulariteter', contradicted by G-STEM's world-knowledge flags.",
+      "now": "RESOLVED in kind but not in full. The field was rebuilt rather than patched, and the blanket claim is gone, replaced by a per-question statement of passage dependence. The replacement is still inaccurate about q:3 - see finding F1, which is the residue of this same defect at a new site."
+    },
+    {
+      "from": "prior audit finding 4, second instance (metadata self-contradiction, hedge_map)",
+      "was": "hedge_map called q:3's key the unit's only hedge two sentences after naming two hedged distractors of its own.",
+      "now": "RESOLVED. Scoped to 'enhetens enda gardering i en nyckel'. I re-verified the map against the shipping options: q:1/D 'tycks ha kylts' and q:4/D 'tycks ha blivit överflödiga' are hedged distractors; q:3/D 'En del av' is the only hedged key. The map's arithmetic - heuristic hits a key in 1 of 4 and misleads in 2 of 4 - is correct as written."
+    },
+    {
+      "from": "round-2 G-SPRAK vote 2 (severity minor, class 6 idiomatic temperature)",
+      "was": "'vattnet i klumparna frös, vidgade sig och sprängde sönder dem' - reflexive 'vidga sig' describes an opening widening, not volumetric expansion.",
+      "now": "RESOLVED. Shipping bytes read 'utvidgade sig'. Three round-3 G-SPRAK legs at unit scope return zero findings on the shipping bytes, including on 'murat femton år tidigare' and the new paragraph-5 sentence. Only report.json's frozen copy still quotes the old string - see F7."
+    }
+  ],
+  "cleared": [
+    "Date arithmetic re-derived independently from the passage alone: magasinet = 1889. Eleven-figure cross-check reconciles with no residue (see date_arithmetic_recheck).",
+    "Cold solve 4/4 against the shipped keys C/B/D/A, with every non-key actively defended before the key was accepted. Exactly one defensible option per question; no double-keying found.",
+    "q:2 key licensing under the repaired chronology: the three-link chain (1889 wall is ring-kiln brick / chamber position determines colour / pale brick routes to the top courses of an outer wall) holds simultaneously for the first time. LICENSED.",
+    "Referent robustness of 'femton år tidigare': unambiguously anchored to folkskolan 1904, and even the strained alternative anchor (uppteckningen 1918, giving 1903) keeps the wall post-1884, so q:2's key survives either parse.",
+    "The new paragraph-5 routing sentence tested adversarially against q:1 ('stod torrast' versus paragraph 6's 'fukt ur luften' - no contradiction, since atmospheric humidity reaches dry-standing brick), q:2 (destination is not cause, so it cannot compete with the key) and q:4 (no bearing). No new foothold.",
+    "Cross-question leak re-checked in both directions on the repaired bytes. q:3's stem and its option B do expose the lime mechanism to a reader working backwards, but both q:1/B and q:1/C are lime-based, so the leak cannot resolve q:1's actual discrimination (stage of failure); and 'kalkspräckningen' is already a passage word, so the options add no new information. Nothing leaks from q:1 to q:3. Confirms the unit's own cross_question_check.",
+    "Round-3 gate legs verified by direct read, not by summary: verdicts-gkey-resolved contains 8 las-b16-001 records across two independent legs, all pass, solver answers C/B/D/A twice each, 0 kills and 0 flags; verdicts-gdistractor 4 records all pass; verdicts-gsprak 3 unit-scope runs all pass with zero findings. All three legs postdate the shipping bytes.",
+    "Raw English taxonomy tokens in the rationale field (reversed_causality, scope_shift, plausible_worldknowledge, surface_lexical_echo, half_right_conjunction, overgeneralisation) are corpus-wide convention, not a unit defect: every candidate in batch16 carries them and batch12 candidates carry the same English QA prose. The field is internal QA prose, PRD 5.15 Layer 4 is deferred, and no renderer exists. Not a Swedish-product-string violation at this stage.",
+    "Convention and mechanical claims re-verified against the shipping bytes: 11 paragraphs plus byline plus 3 glossary lines; 964 whitespace tokens against the claimed 961 mech words; 60 sentence terminators, matching the claimed 60; no quotation marks anywhere in the passage; no em dash anywhere in the file; spaced en dash in the byline only; zero semicolons in options; longest option 12 words; key never the sole longest (q:1 all four at 11 words, q:2 key 3 against longest 5, q:3 key 10 against 12, q:4 key 10 against 12); q:2 short breath intact at a 7-word stem with 3-5 word options; glossary defines only words the passage uses.",
+    "key_spread C/B/D/A: four distinct letters, no positional pattern, matches both the metadata and both independent gkey legs.",
+    "No blocker of any kind found. No key moves. Passage, stems, options and keys are unchanged by every disposition in this audit; the single ordered fix (F1) touches one metadata field."
+  ],
+  "supersedes": {
+    "path": "pipeline/synthetic/batches/batch16/audits/las-b16-001.json",
+    "prior_verdict": "CONFIRMED_NOTES (0 major / 4 minor, pre-round-3-repair)",
+    "git_ref": "935f0e4",
+    "note": "Two of the four prior minors are resolved by the round-3 repair; two are carried and are dispositioned here as tolerable (F2, F3/F4), with the third carried item refuted outright (F5). One new minor is raised (F1)."
+  }
 }
