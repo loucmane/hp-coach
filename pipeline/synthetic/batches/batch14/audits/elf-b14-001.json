@@ -1,65 +1,299 @@
 {
   "candidate_id": "elf-b14-001",
+  "date": "2026-08-26",
+  "auditor": "vfinal-meta-audit/opus",
+  "audited_by": "vfinal-meta-audit/opus",
+  "verdict": "CONFIRMED_NOTES",
   "audit_verdict": "CONFIRMED_NOTES",
+  "scope_note": "V-FINAL adversarial re-verification of the POST-RULING shipping bytes (candidates-final/elf-b14-001.json, written 2026-08-26 11:24 local). This file REPLACES the 2026-08-25 pre-repair audit; that audit's seven findings are carried below as resolved_findings or restated as live findings, and the superseded file remains in git history. Evidence read: the shipping bytes end to end; verdicts-ruling/{gkey-elf-r1,gkey-elf-r2,gkey-resolved,gdistractor,geng,gstem,gregister}.jsonl; ADJUDICATION.md sections elf-b14-001, AGARBLICK 1 and 4, and AGARDOM 2026-08-26; the pre-ruling G-STEM legs in verdicts/ and verdicts-regate2/; the git diff of the repaired file against HEAD. Independent work performed: full cold solve of all five items from the repaired passage alone before reading any key; byte-level diff of the repair; an independent mech re-run on the shipping bytes; token counts under gates/scripts/mech.py:tokenize; verbatim-citation check over all five rationales; sheet sync and contamination check; a bank-wide law-13 name grep; and a cross-question corroboration sweep over the stems sheet.",
+  "no_blocker_statement": "No ship-blocker found. The three owner-ordered edits were applied exactly, exclusively and faithfully; no key moved; every gate leg run against the repaired bytes returns pass or flag with zero kills; and my own cold solve reproduces the recorded keys 5/5 with each key uniquely defensible. Everything below is minor, note or info.",
+
+  "cold_solve": {
+    "method": "Solved from the repaired passage alone, arguing every option in every item, before opening any key, rationale or verdict file.",
+    "answers": {
+      "q1": "B",
+      "q2": "C",
+      "q3": "A",
+      "q4": "D",
+      "q5": "B"
+    },
+    "agreement_with_recorded_keys": "5/5",
+    "reasoning": [
+      "Q1 = B. P2: 'Wear is not spread evenly along the chain either. It gathers in the length that sweeps the ground and in the two or three links either side of the swivel'. B recasts both halves. A is denied by the same sentence's tail ('usually condemned on a single bad metre') and by 'not spread evenly'. C imports salt corrosion, a word the passage never uses. D, in its repaired wording, is still the paragraph-4 concession about POSITION worn as an answer about WEAR; 'channel' does not occur in the passage at all, and nothing says inshore chains wear harder.",
+      "Q2 = C. P2: 'wind and tide swing the buoy about its sinker, and the more chain it has, the wider the ground it can wander over, so the light is somewhere inside that circle rather than on the cross printed on the chart.' A hardens buoy 43's single 31-for-11 measurement into a district rule with 'must', which P4-P5 deny ('on the scope its master chose'); it also fails to answer the stem, which asks what is implied about displacement. B runs the arrow backwards, and the passage states the true direction twice (P2 mechanism; P4 'the buoys laid longest' are the ones measured off). D imports an early-lift policy the fixed three-year cycle never mentions. C alone survives, and 'may be' keeps it inside what the text licenses.",
+      "Q3 = A. The paragraph's load-bearing clause is 'because a moored ship does not sit still either and her keepers knew it', capped by Fewtrell's 'Where we were over it was another question.' The digression dates the position problem that Prigent's loggers now quantify. B is contradicted by 'does not sit still either'. C generalises one vessel's costed withdrawal into a coast-wide post-war decline the text never draws, and 'after the war' is not in the passage. D asks a different question (keeper attentiveness) and is not the writer's purpose.",
+      "Q4 = D. P4 closes 'Cadell has read the recordings and concedes the inshore aids, where the water is narrow. On the outer stations he has not moved.' A overshoots the partial concession into surrender. B substitutes a cost argument for the stated mechanical one ('it is the chain that fails'). C invents an origin for a practice the text attaches to no starting point.",
+      "Q5 = B. The piece is a day on the tender (lift, chain, scope, swing circle, wear, turnaround) with an argument about how much slack running through P4-P5 and left open ('Neither record disposes of the other'). A promotes one paragraph to the whole. C turns reported measurement into a recommendation the writer never makes. D tracks a cost thesis the text does not carry."
+    ]
+  },
+
+  "ruling_edit_fidelity": {
+    "method": "SequenceMatcher opcode diff of the content projection (passage, title, every prompt, key, option and rationale) against git HEAD.",
+    "content_changes_found": 3,
+    "detail": [
+      "passage: insert '-' (relay -> re-lay) — ruling item (b), verified in situ: 'a lift, a scrape, a fresh lamp and a re-lay take about forty minutes'; indefinite article and plural 'take' both still correct.",
+      "passage: replace '35' -> 'thirty-five' — ruling item (c), verified in situ: 'sit as much as thirty-five metres from their charted places for hours together'.",
+      "questions[1].options[D].text: 'where the channel water is narrow' -> 'where the channel is narrow' — ruling item (a).",
+      "questions[2].rationale: replace '35' -> 'thirty-five' — the declared consequential knock-on; the rationale's quoted span now matches the passage again."
+    ],
+    "nothing_else_changed": "No key letter, no prompt, no other option and no other rationale text differs from HEAD. Keys remain B, C, A, D, B. stems/elf-b14-001.json shows exactly the one Q1/D line changed; blind/ and distractor/ are gitignored but were verified byte-equal to the shipping bytes on passage, prompts and options.",
+    "residual_digit_check": "No digit MEASUREMENT survives anywhere in the passage. Remaining digits: 43 (a buoy label) and 1911 / 1968 / 2019 (years). Every measured quantity is now spelled out."
+  },
+
   "findings": [
     {
       "severity": "minor",
-      "check": "record integrity — canonical mech run predates the current bytes by 2m30s",
-      "quote": "MECH -- canonical record: verdicts-regate2/verdicts-mech-final.jsonl, 2026-08-25, covering all six batch14 units at 36/36 pass including M-ECHO",
-      "note": "The record is real and I verified it end to end: 36 lines, 36/36 pass, all six batch14 units, all six gates including M-ECHO, executed_by mech.py/1 at 2026-08-25T18:26:28Z (= 20:26:28 local, matching the file's own mtime to the second), and this unit's six lines each pass with zero findings. My previous major is therefore discharged. The residue: candidates-final/elf-b14-001.json was written at 20:28:58 local, 2m30s AFTER that run, so the canonical record was produced against bytes that differ from the file now on disk. I proved the delta is metadata-only rather than accepting it: all three derived sheets were built at 20:11:10 local — BEFORE the mech run — and stems/, blind/ and distractor/ still match the current file byte-for-byte on passage, every prompt, every option and every key; the passage is unchanged at 4136 chars / 786 mech tokens with both repaired spans intact and no residue of either retired span; keys are still B/C/A/D/B; M-TELL's core property still holds on all five items (no key is the longest option in its question); key-to-passage 4-gram lift is still 0; and all 28 rationale citations are still verbatim, 0 non-verbatim. So no mech-relevant input changed after the run, and the only edit was generator_meta prose. Recorded rather than dropped because it is a true statement about the ledger, and noted as structurally unavoidable: any field that records a mech run necessarily postdates the run it records, so this cannot be driven to zero and should not be chased. Not a blocker."
+      "check": "rationale-option coherence on an edited span — Q1 WHY-DISTRACTORS still describes D by its pre-repair wording",
+      "quote": "D = wrong_location / surface_word_match -- 'inshore aids, where the water is narrow' is lifted from the paragraph-4 concession about position, not about wear",
+      "note": "The ruling changed option D but not the rationale line that argues it. The quoted string is verbatim passage, so this is not a fabricated citation, but the sentence is built as 'D's wording is lifted from paragraph 4', and D no longer contains 'water'. A student who reads D ('where the channel is narrow') and then the rationale ('where the water is narrow') sees two different strings presented as the same one. This is student-facing teaching payload, which is why I record it rather than filing it as metadata. The ARGUMENT is untouched and correct: D really does borrow the paragraph-4 concession about position and answer a question about wear, and generator_meta.self_blind_solve_post_ruling states D's new wording correctly. The repair_log's item (a) note addresses D's role, its trap label and its token count, but never asks whether any rationale quotes D. Fix is a four-word rewrite of that clause ('D borrows the paragraph-4 concession, \"the inshore aids, where the water is narrow\", which is about position, not wear'); it touches no option, key or stem and so triggers no blind re-gate. Recommended before bank import, not a blocker for the ruling round."
     },
     {
       "severity": "minor",
-      "check": "gate-record provenance — one cited G-ENG leg carries a placeholder executed_at",
-      "quote": "executed_by claude-opus-5/G-ENG at 18:17:47Z, 18:17:42Z and 20:30:00Z, i.e. all three after the repair",
-      "note": "regate_status quotes the three legs' self-reported timestamps faithfully, but the third one is not a real clock reading. Legs 1 and 2 carry executed_at values matching their own file mtimes to the second (18:17:47Z and 18:17:42Z). Leg 3 carries executed_at 2026-08-25T20:30:00Z — a round placeholder 2h10m AFTER its own file write at 18:19:59Z, and in the future relative to every other record in the batch. The citation inherits the error. The discharge is unaffected and I did not treat it as reopening anything: the file mtime (18:19:59Z) independently places leg 3 after the 18:05:19Z passage write, and the leg identity is decisive on its own — claude-opus-5/G-ENG-3 is one of the two legs that convicted 'the spring floods' at MAJOR in the first round, and the same leg re-run returns three minors with the retired span unflagged. Worth one correction to the leg record so the batch's timestamps stay usable as evidence; nothing else turns on it."
+      "check": "the ordered repair trades one house-style minor for another (G-REGISTER, fresh leg)",
+      "quote": "the buoys laid longest sit as much as thirty-five metres from their charted places for hours together",
+      "note": "G-REGISTER passes the unit but records that the spell-out puts the passage above the authentic corpus's observed mid-sentence ceiling: across 140 authentic ELF passages the largest spelled-out cardinal in the article's own voice is 'twenty degrees above normal', and every measured quantity above that is in digits ('142 feet', '30 centimetres', '250 kilometres', '13,491 tonnes'). So the edit that discharged a 9-of-9 G-ENG flag opens a 1-of-1 G-REGISTER flag on the same span. I judge the trade net-positive and so does the gate: the pre-repair state rendered two same-unit measurements ('thirty-one metres', '35 metres') two different ways with no rule behind the split, whereas the post-repair state is rule-governed; the same charge already applied pre-repair to 'two hundred and fourteen floating aids', so the density of an existing choice rose rather than a new one appearing; and the unit declares a BrE literary quarterly, a real style family that spells out under a hundred, against a corpus of digit-heavy news and science monthlies. Recorded because an honest audit of an owner-ordered edit must state what the edit cost, not only what it bought."
     },
     {
       "severity": "minor",
-      "check": "unrepaired option-level English flag (fresh G-ENG round) — belongs to the adjudication package",
-      "quote": "It is heaviest on the aids moored inshore, where the channel water is narrow.",
-      "note": "Q1 option D, flagged class 3 at minor by two of the three fresh legs independently, both naming the same rewrite ('where the channel is narrow'). Leg 1: '\"the channel water is narrow\" is not an English collocation — the passage's own \"where the water is narrow\" works because \"narrow water(s)\" is fixed trade idiom, but premodifying it with \"channel\" makes a compound noun of which \"narrow\" cannot naturally be predicated'. Leg 3: 'noun-stacked \"channel water\" is an awkward pairing - a channel is narrow, water is shallow'. Student-facing English in an English-comprehension item, so it is real; minor on the gate's own grounds because it is a distractor rather than a key and the item is unaffected either way (D is wrong_location regardless, and the Q1 rationale grounds itself on the passage's own correct 'inshore aids, where the water is narrow'). regate_status now lists it among the surviving minors, so it is on the ledger rather than lost."
+      "check": "fresh G-ENG minor on the KEYED option of Q1 (leg 3)",
+      "quote": "It builds up where the chain drags on the bottom and close to the swivel.",
+      "note": "Unpunctuated coordination of unlike adjuncts: 'where the chain drags on the bottom' is a clause, 'close to the swivel' is a prepositional phrase, and the first reading can pull the phrase inside the where-clause, giving 'the chain drags both on the bottom and close to the swivel' — which is not the passage's mechanism. Not answer-affecting: under either reading B is the only option naming both ground contact and the swivel, and A, C and D stay false, so the item does not turn on the comma. One leg of three; the gate itself calls the intended reading 'the only sensible one'. The remedy is one comma, but a comma in an OPTION is an option edit and would re-open G-KEY x2 + G-DISTRACTOR under the runbook trigger, so it should ride a later editorial pass rather than a fourth unordered edit inside the ruling round."
     },
     {
       "severity": "minor",
-      "check": "persistent unadjudicated house-style flags + post-hoc metadata defence",
-      "quote": "numeric register mixes digits (43, 1911, 1968, 2019, 35), spelled-out numerals (thirty-one, two hundred and fourteen) and a fraction (a fifth)",
-      "note": "The 'as much as 35 metres' numeral break has now been flagged by every G-ENG leg in both rounds — six of six originally, three of three in the fresh vote, nine of nine — on the ground that the piece spells out every other measured quantity, and one leg per round additionally flagged 'a relay' as wanting the trade hyphenation 're-lay'. Neither has been repaired or argued away across nine leg-opinions. generator_meta.law_12_divergence continues to re-describe the numeral break as intended register mixing, which is a post-hoc defence of a unanimous flag rather than an adjudication of it, and the field's own framing does not survive inspection: 35 is the only measurement rendered in digits, while 43 is a label and 1911/1968/2019 are years, so the list conflates three number classes to make one exception look like a pattern. Either repair the numeral or record a real adjudication of it; do not leave the defence standing in a metadata field. Carried at unchanged severity."
+      "check": "passage pronoun reference — stranded ellipsis (G-ENG 3 of 3 legs)",
+      "quote": "small craft now steer to a plotted mark on the assumption that they do not",
+      "note": "Unanimous across the fresh round. 'they' must reach back over the intervening subject 'small craft' to 'the buoys laid longest' fourteen words upstream, and the elided predicate is the whole of 'sit as much as thirty-five metres from their charted places for hours together'. First-pass attachment gives the nonsense reading that small craft assume they themselves do not sit off their charted places. All three legs propose the same fix ('on the assumption that the buoys do not'). Downstream-inert: no stem, option, key or rationale rests on this clause — Q2's evidence is the first half of the sentence — and the misreading is self-cancelling. Not in the ruling's ordered scope; the referent that the parent flagged as one of G-ENG's four minors, recorded here so the next passage-touching round can take it."
     },
     {
       "severity": "minor",
-      "check": "fresh G-STEM flag set on record but unadjudicated by any review stage",
-      "quote": "Knowledge of buoy moorings supplies the watch-circle explanation, so C is the domain-favoured pick",
-      "note": "With G-STEM complete, the fresh round flags three of five items at major severity: q:1 WORLD_KNOWLEDGE blind pick B, q:2 WORLD_KNOWLEDGE blind pick C, q:5 PARTIALLY blind pick B; q:3 and q:4 are clean NOT_ANSWERABLE. q:2 matches my own independent blind solve exactly, including the reasoning that the repair cured the hedge tell but not the domain lean. This is a property of the topic — mooring scope, watch circle and chain wear are standard marine engineering, so a domain-literate reader recovers two keys without reading — and each flag is self-defended by the gate ('the exact key is not decided blind'; 'world knowledge, not a structural leak'; 'normal main-idea design rather than a leak'), with no kill on any item. Not a blocker and I do not recommend redesign. Recorded because the pedagogy and integrated records predate this set and reason about the pre-repair flags only, so three live major-severity gate findings currently carry no stage disposition. regate_status flags them honestly as 'unadjudicated and not charged here'; they belong in the adjudication package."
+      "check": "passage pronoun reference — 'it' changes referent inside seven words (G-ENG 2 of 3 legs)",
+      "quote": "The chain comes up after it, thirty-one metres of it for eleven metres of water",
+      "note": "First 'it' is buoy 43, second 'it' is the chain, so 'thirty-one metres of it' momentarily offers thirty-one metres of buoy. Self-correcting by absurdity, which is why both legs kept it minor. Pre-existing (word 49 of the passage, untouched by every repair round to date). Editor's fix on record: 'thirty-one metres of chain for eleven metres of water'. No item is anchored here."
     },
     {
       "severity": "minor",
-      "check": "passage internal consistency (arithmetic)",
-      "quote": "In flat water a lift, a scrape, a fresh lamp and a relay take about forty minutes.",
-      "note": "Carried unchanged; no repair round has touched it. The narrated job runs from 'At twenty past six the crane on the Marram takes the weight' to 'By nine o'clock buoy 43 has a scraped skirt, a new lamp and eleven fresh links at the swivel' — about two hours forty against a stated forty minutes. Defensible rather than false ('In flat water' is an explicit hedge, 'eleven fresh links at the swivel' is chainwork beyond the four listed steps, 'by nine o'clock' is an upper bound), but the text never reconciles the two figures and no gate or review has recorded the tension. Downstream-inert: the only rationale that touches it is Q5's WHY-KEY, listing 'the forty-minute turnaround' among the craft details."
+      "check": "passage texture — accidental numeral chime (G-ENG leg 3)",
+      "quote": "Rufus Cadell has had the Marram for thirty-one years and lays his buoys long.",
+      "note": "'thirty-one metres ... for eleven metres of water' (word 49) and 'for thirty-one years' (word 497) chime, each preceded by 'for'. Pre-existing on both spans; the ruling repair touched neither. Recorded rather than dropped because the same leg reached for it while checking whether the new 'thirty-five metres' created a prosody problem — and explicitly CLEARED that adjacency (119 words apart, across a quotation and a new speaker, different units). So the chime that survives is the old one, not one the repair made."
     },
     {
       "severity": "minor",
-      "check": "rationale precision (Q2 WHY-KEY overclaim)",
+      "check": "question style — bare deixis in the main-idea stem is off-corpus (G-REGISTER, new this round)",
+      "quote": "What is this text mainly about?",
+      "note": "Zero of 200 authentic ELF long-passage prompts contain 'this text'; all 24 authentic main-idea prompts name the writer, the article or the paragraph ('What is the writer's main point in connection with...', 'What overall conclusion concerning the NHS is drawn in the text?'). Bareness itself is corpus-legal ('Why is Leo Tolstoy mentioned?'), so this is a phrasing lean toward school-comprehension register, not a wrong question type. The gate records it and does not charge it. New on this unit's ledger, and untouched by the ruling repair. A prompt edit is a stem edit and would re-open the blind gates, so it belongs upstream as a generation law ('name the writer or the article in whole-text stems') rather than as a batch14 repair."
+    },
+    {
+      "severity": "minor",
+      "check": "passage internal consistency (arithmetic) — carried unchanged from the pre-repair audit",
+      "quote": "In flat water a lift, a scrape, a fresh lamp and a re-lay take about forty minutes.",
+      "note": "No repair round has touched it, including this one. The narrated job runs 'At twenty past six' to 'By nine o'clock' — about two hours forty against a stated forty minutes. Defensible rather than false ('In flat water' is an explicit hedge, 'eleven fresh links at the swivel' is chainwork beyond the four listed steps, 'by nine o'clock' is an upper bound), but the text never reconciles the two and no gate or review has recorded the tension in its own voice. Downstream-inert: the only rationale that touches it is Q5's WHY-KEY, listing 'the forty-minute turnaround' among the craft details. Note that the ruling edit rewrote this very sentence ('relay' -> 're-lay') without the arithmetic being reconsidered — the edit was correctly kept to its ordered scope."
+    },
+    {
+      "severity": "minor",
+      "check": "passage pronoun antecedent — declared unrepaired, still unrepaired",
+      "quote": "a mooring engineer who has been fitting position loggers inside the hulls since 2019",
+      "note": "Carried. 'the hulls' means the buoys' hulls, but the nearest antecedents are the lightship's — 'a lamp on a hull that needed none' and 'the whole hull, twice a year' in paragraph 3. The 2026-08-25 repair_log declares this out of scope and downstream-inert, which is honest and still true. Nothing in the ruling round changed it."
+    },
+    {
+      "severity": "minor",
+      "check": "two senses of 'either' in one paragraph — declared unrepaired, still unrepaired",
+      "quote": "Wear is not spread evenly along the chain either. It gathers in the length that sweeps the ground and in the two or three links either side of the swivel",
+      "note": "Carried. 'either' as 'also' and 'either' as 'each' land two sentences apart. Declared out of scope by the 2026-08-25 repair_log; no gate has charged it above the level of taste. Recorded so the ledger stays complete, not because it needs action."
+    },
+    {
+      "severity": "minor",
+      "check": "rationale precision — Q2 WHY-KEY overclaim, carried unchanged",
       "quote": "C states exactly that, and no more",
-      "note": "Carried unchanged. The passage clause is 'so the light is somewhere inside that circle rather than on the cross printed on the chart'; the key says 'It may be riding the edge of the circle its chain allows'. 'The edge' is one notch tighter than 'somewhere inside', and no clause licenses the perimeter specifically. C remains clearly best — the stem stipulates a buoy 'found some way from the position printed on the chart', so the outer part of the circle is the natural reading, 'may be' hedges it, all four post-repair G-KEY legs solved C, and the fresh G-STEM leg picks C too — but the claim of exact equivalence is stronger than the text supports, and it was introduced by the 2026-08-25 re-grounding rather than inherited. A four-word softening of the rationale closes it; no option or key change is implied."
+      "note": "Carried at unchanged severity; the ruling round edited only the '35 metres' quotation inside this rationale. The passage clause is 'the light is somewhere inside that circle'; the key says 'riding the edge of the circle its chain allows'. 'The edge' is one notch tighter than 'somewhere inside', and no clause licenses the perimeter specifically. C remains clearly best — the stem stipulates a buoy 'found some way from the position printed on the chart', so the outer part of the circle is the natural reading, 'may be' hedges it, all ten fresh G-KEY legs solved C, and the fresh G-STEM leg picks C — but the claim of exact equivalence is stronger than the text supports. A four-word softening closes it; no option or key change is implied."
+    },
+    {
+      "severity": "note",
+      "check": "gate-ledger state — the shipping bytes end in an OPEN ledger while the discharging evidence sits outside them",
+      "quote": "[SUPERSEDED 2026-08-26 by the owner ruling: ... G-KEY x2 + G-DISTRACTOR (option edit) and G-ENG x3 + G-REGISTER (passage edits), plus mech and a fresh review, are owed again against the rebuilt sheets.]",
+      "note": "True when written (the file was written at 11:24; the fresh legs ran 11:29-11:37), but a downstream reader of the shipping bytes ALONE now reads this unit as having six outstanding gates when in fact all of them have run and none killed: G-KEY 10 pass / 0 kill, G-DISTRACTOR 5 pass / 0 findings, G-ENG 3 flag / 7 minors / 0 major / 0 lethal, G-REGISTER pass / 3 minors, plus a supererogatory G-STEM leg (5 flag / 0 kill) that the ruling did not even order. This is the mirror image of the pre-repair audit's 'the mech record predates the bytes' item and is the same structural regress — a ledger inside a file can never record the gates that judge that file. The practical close is one amendment to regate_status pointing at verdicts-ruling/ and at this audit as the discharge record. Recorded as a note, not charged: nothing about the unit's quality turns on it."
+    },
+    {
+      "severity": "note",
+      "check": "record provenance — the post-ruling mech claim is TRUE but has no committed record",
+      "quote": "Mech has been re-run on the repaired bytes and returns 6/6 pass with zero findings",
+      "note": "I did not take this on trust. I re-ran gates/scripts/run_mech.py against candidates-final/elf-b14-001.json with the authentic parsed corpus and --p5-corpus-dir auto (100 shipped units indexed): M-SCHEMA, M-BANDS, M-TELL, M-FORM, M-ECHO and M-PLAGIARISM all pass with zero findings. The claim is accurate. The defect is only that verdicts-ruling/ contains no verdicts-mech*.jsonl, so the newest mech record on disk for this unit remains verdicts-regate2/verdicts-mech-final.jsonl (2026-08-25), which predates the repaired bytes. The pre-repair audit specifically praised regate_status for having stopped citing an unrecorded ad-hoc run and started pointing at a committed one; that property has regressed. One appended jsonl line closes it. Note rather than minor because I reproduced the result independently, so no fact is in doubt — only its citability."
+    },
+    {
+      "severity": "note",
+      "check": "historical repair_log entry now quotes a span the passage no longer contains",
+      "quote": "the two spans the Q2 rationale quotes ('the buoys laid longest', 'as much as 35 metres from their charted places') are untouched",
+      "note": "That clause is inside the DATED 2026-08-25 entry, describing that round's own work, and the post-ruling entry immediately below records the substitution and its knock-on. So this is history preserved rather than a false live claim, and preserving it is the right call — the same call the repair-agent made explicitly for law_12_divergence. Recorded only so that nobody greps '35 metres' in the shipping file, finds three metadata hits, and reopens a settled item. All three surviving hits (this entry, generator_meta.self_blind_solve, regate_status) are dated historical records; the passage and all five rationales are clean."
+    },
+    {
+      "severity": "note",
+      "check": "residual defensibility route on Q3/D that the standing defence does not cover — raised and rejected",
+      "quote": "Her recordings put a figure on something the crews had only estimated",
+      "note": "My own hunt, not on any gate's record. The standing defence of Q3/D (G-DISTRACTOR ARGUABLE, 2026-08-25, defended not repaired) argues from the paragraph-3 causal clause. It does not address this paragraph-4 clause, which says the tender crews 'had only estimated' where the lightship keepers took 'three bearings taken on the shore marks' every watch and chalked a corrected position — material a determined candidate could assemble into 'the old keepers may have watched their position more closely than today's crews'. REJECTED on two independent grounds. (1) Different objects: the tender crews were estimating the BUOYS' excursion; the keepers were fixing THEIR OWN position. A tender crew is not on station and has no position of its own to keep, so the comparison the option asserts is not drawn anywhere in the text. (2) Wrong question: the stem asks why the WRITER mentions the lightship, and the paragraph states its own purpose in a causal clause ('because a moored ship does not sit still either and her keepers knew it'), closed by a quotation that says the keepers did NOT know where they were. D is a plausible-sounding proposition that is not the writer's purpose — which is exactly what a well-made purpose distractor is. The fresh G-DISTRACTOR leg returns pass on q:3 with zero findings, superseding the older ARGUABLE."
+    },
+    {
+      "severity": "note",
+      "check": "escalated G-DISTRACTOR observation — repaired Q1/D and the clause where Q4's key lives — written disposition",
+      "quote": "It is heaviest on the aids moored inshore, where the channel is narrow.",
+      "note": "DISPOSITION: no repair, written disposition only. Measured rather than asserted. (i) The channel does not exist. Longest common word run between Q1/D and Q4/D is ONE token ('the'); the only shared content words are 'aids' and 'inshore'. Q4/D's discriminating content — that Cadell CONCEDED the inshore aids and has NOT moved on the outer stations — gets no corroboration whatsoever from Q1/D, which says nothing about concession, about Cadell, or about outer stations. (ii) It is not new. 'inshore' and the narrow-water adjunct were both in D before the ruling; the edit removed the word 'water' and nothing else, so the Q1/D-to-Q4/D conceptual adjacency is exactly as old as the unit. If anything the verbatim tie to the passage LOOSENED: longest common run between D and the passage fell from 3 tokens ('water is narrow') to 2. (iii) Charging it would abolish the trap class. wrong_location is defined as borrowing from a paragraph other than the one the stem is anchored in; in a five-question block every paragraph is some question's anchor, so any wrong_location distractor necessarily borrows from a sibling item's home paragraph. (iv) The blind evidence agrees. The fresh G-STEM leg read the whole sheet with options and no passage, hunted cross-question channels explicitly, FOUND and reported one (q:4 with q:5), and did not name this one; G-DISTRACTOR returns pass on both q:1 and q:4 with zero findings. CONCLUSION: a real adjacency, not a working leak; nothing beyond this written disposition is owed."
+    },
+    {
+      "severity": "note",
+      "check": "cross-question route to eliminating Q2/B that no gate named — my own find, pre-existing surface",
+      "quote": "He has given it up since reading what Prigent's loggers recorded.",
+      "note": "Read as a sheet without the passage: q:4's stem establishes that Cadell 'lays his buoys long'; q:4/A establishes that Prigent's loggers RECORDED something that could make him give it up; q:2's stem establishes that buoy displacement from the charted position is the topic under discussion. A reader who links those three can infer that the loggers measured long-laid buoys as the displaced ones, which inverts and eliminates q:2/B without any physics. G-STEM reached the same elimination of B by the physical route and classified q:2 WORLD_KNOWLEDGE; this is a second route to the same place. NOT charged and NOT repair-caused: q:2 and q:4 options are byte-identical to the pre-ruling surface that three earlier G-STEM legs judged, it takes two inferential steps, and eliminating B still leaves A, C and D, so it does not decide the item — the residual path to C runs through the same domain knowledge the gate already flagged. Recorded so the next reviewer does not rediscover it as new."
+    },
+    {
+      "severity": "note",
+      "check": "five live G-STEM flags, zero kills — each dispositioned in writing per the batch15 process requirement",
+      "quote": "verdicts-ruling/verdicts-gstem.jsonl: q:1 flag, q:2 flag, q:3 flag, q:4 flag, q:5 flag; blind picks B, C, A, D, B (all five = the key)",
+      "note": "The fresh leg flags all five items and its blind pick equals the key on all five, which is the sharpest number in this whole re-verification and deserves to be stated plainly rather than buried. It is not a kill and not, on the evidence, a defect in this unit: see gstem_dispositions below for a written disposition on each of the five, and cleared[] for the leg-variance analysis showing that q:3 and q:4 moved pass -> flag on option sets that did not change. Zero kills on any item in any of the four G-STEM legs ever run against this unit."
+    },
+    {
+      "severity": "info",
+      "check": "repair_log item (a) asserts a lure-tightening it does not demonstrate",
+      "quote": "the shortened form actually tightens the surface lure, since 'where the channel is narrow' sits one word from the passage span 'where the water is narrow'",
+      "note": "True as a claim about the syntactic frame ('where the [noun] is narrow'), and the one-word-apart description is literally accurate. But by the measure the program actually uses for surface lift, the lure loosened: longest common word run between Q1/D and the passage falls from 3 tokens ('water is narrow') to 2 ('it is'). Both statements can be true at once and neither affects the item; recorded at info so that the phrase is not later cited as a measured result. The same note's token arithmetic IS exact and I reproduced it: Q1 A(18) > B key(15) > C(14) > D(13, was 14) under mech.py:tokenize, so M-TELL's no-longest-key property holds."
     }
   ],
+
+  "gstem_dispositions": [
+    {
+      "target": "q:1",
+      "gate_result": "flag / WORLD_KNOWLEDGE / blind pick B (= key)",
+      "disposition": "ACCEPT, no redesign. The lean is topical, not structural. A reader who knows that mooring-chain wear concentrates at the seabed touchdown sweep and at the swivel recovers B without the passage — but the gate's own record states there is 'no structural tell', that A, C and D are 'all substantively plausible passage claims', and that 'a reader without marine knowledge sees four parallel options'. The gate contract routes globally-true-key-plus-substantive-distractors to flag rather than kill precisely because authentic HP ELF items behave the same way: a biologist recovers keys from a biology passage. The lean is not even stable across readers — two of the four G-STEM legs ever run on this item called it clean. No repair is available that would not damage the item: making B false to the world would break the key, and weakening the distractors would create the structural tell the gate says is absent."
+    },
+    {
+      "target": "q:2",
+      "gate_result": "flag / WORLD_KNOWLEDGE / blind pick C (= key), plus a secondary 'mild test-wiseness tell'",
+      "disposition": "ACCEPT, no redesign. Two components, both answered. (1) Domain lean: the watch-circle account is the standard physical explanation for an off-charted buoy, and the same physics inverts B — which is the distractor doing its designed job, not leaking. This is the one flag that has been stable across all four legs, and every leg routed it to flag. (2) Shape tell: C is the only concede-and-reject option ('may be ... not ...'), but the gate itself grades it soft and gives the reason — the hedge count is 2-2 since the 2026-08-25 repair (C 'may be', B 'is likely to lie'), so 'pick the qualified option' scores at chance here. I add one route the gate did not name and reject it as a charge: q:4's stem plus q:4/A plus q:2's own stem let a sheet-only reader infer that long moorings are the displaced ones and so eliminate B, but that takes two inferential steps, rests on option surfaces the ruling repair did not touch, and still leaves A, C and D. Recorded in findings[] as a note; not a basis for redesign."
+    },
+    {
+      "target": "q:3",
+      "gate_result": "flag / PARTIALLY / blind pick A (= key), on a near-duplicate B/D pair plus an off-scope C",
+      "disposition": "ACCEPT, no redesign, with an upstream recommendation. The elimination path the leg describes is real: B and D both assert that the manned arrangement was better on position, so a test-wise reader discards them as mutually undermining, and C's 'after the war' frame is touched by nothing else on the sheet, leaving A. But this is leg variance, not a property the repair introduced and not a stable defect: q:3's stem and all four options are BYTE-IDENTICAL to the surface that three earlier G-STEM legs judged, and all three called it NOT_ANSWERABLE. Three of four legs clean. The only real remedy is a Q3 option-set redesign, which is outside the owner's ordered scope, would re-open a full blind re-gate on an item no gate has ever killed, and would risk regressing an item the passage supports cleanly. Carry it upstream instead as a generation law for batch16: purpose items should not carry two distractors that agree with each other."
+    },
+    {
+      "target": "q:4",
+      "gate_result": "flag / PARTIALLY / blind pick D (= key), on a q:5 cross-question channel plus a partial-concession shape tell",
+      "disposition": "ACCEPT, no redesign. Same leg-variance ground as q:3 and stronger: q:4's stem and all four options are byte-identical to the surface three earlier legs judged, and all three returned NOT_ANSWERABLE. The named channel is weak in both directions — q:5/B tells a sheet-only reader that the argument is UNSETTLED, which disfavours q:4/A because A settles it, but says nothing at all about B, C or D, so it eliminates one option out of four. The gate's own blind pick therefore rests on option shape ('the only two-part partial-concession option'), and it records its own confidence as low: 'B (cost defence) and C (storm origin) remain substantively live passage claims, so the item is not decided blind.' A shape heuristic that happens to land on the key is not a leak; if it were, no HP item could ever key a nuanced two-part answer."
+    },
+    {
+      "target": "q:5",
+      "gate_result": "flag / PARTIALLY / blind pick B (= key), on sibling-stem reconstruction plus a breadth tell",
+      "disposition": "ACCEPT, no redesign for batch14; recommend a generation law for batch16. This is the strongest flag in the sheet and I will not argue it away. B genuinely is reconstructible from the four sibling stems alone — q:1 chain wear, q:2 a buoy off its charted position, q:3 a marked position before loggers, q:4 'laying his buoys long' (i.e. slack) — and both halves of B are spelled out by them without the passage and without domain knowledge. My grounds for accepting anyway are three. (1) It is a property of the FORMAT, not of this unit: in any five-question long-passage block the four detail stems necessarily sample the passage, so the main-idea option that covers what they sample will always be the recoverable one. The gate says as much in its own calibration — 'a main-idea key being the broadest option is the ordinary shape of authentic HP main-idea items'. (2) It is pre-existing and owner-visible: the same flag stood in the ADJUDICATION package, was listed under AGARBLICK 4b, and the owner approved the batch-wide G-STEM point in the AGARDOM of 2026-08-26; the ruling repair touched neither q:5 nor any sibling stem. (3) The only genuine repair is to build q:5 a distractor with comparable stem coverage but a wrong thesis, which is a Q5 redesign — outside the ordered scope and a change the owner did not authorise. The right home for this is a batch16 law: in a 5q block, at least one main-idea distractor must cover the same sibling-stem span as the key."
+    }
+  ],
+
+  "resolved_findings": [
+    {
+      "was_severity": "minor",
+      "check": "unrepaired option-level English flag (channel water)",
+      "resolution": "DISCHARGED by ruling edit (a). Q1/D now reads 'where the channel is narrow'. Zero of the three fresh G-ENG legs re-flag the span, and the string 'channel water' appears nowhere in the shipping bytes outside the dated repair_log record of its own removal."
+    },
+    {
+      "was_severity": "minor",
+      "check": "persistent unadjudicated house-style flags + post-hoc metadata defence (35 metres, a relay)",
+      "resolution": "DISCHARGED by ruling edits (b) and (c). 'a re-lay' and 'thirty-five metres' are both in the passage; no fresh G-ENG leg re-flags either; the Q2 rationale's verbatim quotation was updated in the same write so no rationale quotes text the passage no longer contains. The post-hoc defence in law_12_divergence has been amended with a dated bracket stating that the original clause no longer describes the shipped passage — which converts a self-defending metadata field into an adjudicated record, exactly the remedy the pre-repair audit asked for. I verified the amendment is true of the shipped bytes: no digit measurement survives; the remaining digits are the label 43 and the years 1911 / 1968 / 2019."
+    },
+    {
+      "was_severity": "minor",
+      "check": "gate-record provenance — one cited G-ENG leg carried a placeholder executed_at (2026-08-25T20:30:00Z)",
+      "resolution": "SUPERSEDED. The legs that judge the shipping bytes are the fresh ones in verdicts-ruling/, and all ten files there carry clean date-only stamps ('2026-08-26') with no placeholder clock readings and no future-dated values. The leg that carried the placeholder no longer bears on the shipping decision."
+    },
+    {
+      "was_severity": "minor",
+      "check": "fresh G-STEM flag set on record but unadjudicated by any review stage",
+      "resolution": "DISCHARGED. The pre-repair complaint was that three live major-severity gate findings carried no stage disposition. There are now five, and every one of them has a written disposition in gstem_dispositions above, per the batch15 ruling's process requirement. The batch-wide policy question that sat behind it was answered by the owner in the AGARDOM (batchvida punkter godkanda, incl. AGARBLICK 4b)."
+    },
+    {
+      "was_severity": "minor",
+      "check": "record integrity — the canonical mech run predated the shipping bytes by 2m30s",
+      "resolution": "SUPERSEDED by a mech run on the actual post-ruling bytes, which I executed myself rather than accepting on report: 6/6 pass, zero findings, M-ECHO against 100 shipped units included. The residue is now a citation problem rather than an integrity one and is carried forward as a note in findings[]."
+    }
+  ],
+
+  "cleared": [
+    {
+      "check": "ruling edit fidelity",
+      "result": "CLEAR. Byte-level diff against git HEAD returns exactly three content changes plus the one declared knock-on, and nothing else: passage 'relay' -> 're-lay', passage '35' -> 'thirty-five', Q1/D 'channel water is narrow' -> 'channel is narrow', Q2 rationale '35' -> 'thirty-five'. No key letter, prompt, other option or other rationale differs. The repair did exactly what the owner ordered and nothing the owner did not order."
+    },
+    {
+      "check": "cold solve on the repaired bytes",
+      "result": "CLEAR. 5/5 to the recorded keys (B, C, A, D, B), solved from the passage alone before opening any key or verdict, arguing every option in every item. No item resolved to two defensible options. Q1 re-argued in full because its D changed; D remains false on the text in its new wording."
+    },
+    {
+      "check": "G-KEY, fresh legs",
+      "result": "CLEAR. verdicts-ruling/verdicts-gkey-elf-r1 and -r2, merged in verdicts-gkey-resolved.jsonl: 10 records for this unit, 10 pass, 0 flag, 0 kill, and every solver_answer equals the recorded key. Both legs postdate the repaired file."
+    },
+    {
+      "check": "G-DISTRACTOR, fresh leg",
+      "result": "CLEAR. 5 pass with zero findings on all five items, including q:1 (the edited option) and q:3 (which carried the older ARGUABLE). The older q:3 flag is superseded."
+    },
+    {
+      "check": "G-ENG, fresh legs, kill arithmetic",
+      "result": "CLEAR. Three legs, all verdict flag, 7 minor findings, 0 major, 0 lethal — the unit clears the >=2-kill-votes DEAD rule with room. None of the retired spans ('channel water', 'a relay', '35 metres', and the earlier 'spring floods' / 'drift ice') appears in any finding on any leg. Leg 3 additionally checked and CLEARED the adjacency the spell-out could have created ('thirty-one years' to 'thirty-five metres': 119 words apart, across a quotation and a new speaker, different units)."
+    },
+    {
+      "check": "mech on the shipping bytes",
+      "result": "CLEAR, independently reproduced. M-SCHEMA / M-BANDS / M-TELL / M-FORM / M-ECHO / M-PLAGIARISM all pass, zero findings, run against the authentic parsed corpus with M-ECHO indexing 100 shipped units. M-TELL's core property verified by hand under mech.py:tokenize: Q1 A18 > B15(key); Q2 B18 > C16(key); Q3 D17 > A15(key), A tied with B rather than sole longest; Q4 B17 > C16 > D15(key); Q5 A17 > B14(key). Passage is 4146 chars / 788 mech tokens, exactly +10 chars and +2 tokens against the pre-ruling bytes, which is what the two substitutions predict and nothing more."
+    },
+    {
+      "check": "derived sheet sync and contamination",
+      "result": "CLEAR. blind/, stems/ and distractor/ all carry the post-repair Q1/D and the repaired passage, and match the shipping bytes on every prompt, every option and every q_index. blind/ and stems/ carry no key, no rationale and no generator_meta; distractor/ carries the key, which is what that gate requires. The tracked stems/ file's git diff is the single Q1/D line."
+    },
+    {
+      "check": "rationale citation integrity",
+      "result": "CLEAR. 28 quoted spans across the five rationales: 21 passage citations, all verbatim against the repaired passage (0 non-verbatim), and 7 further quotes that are option text or heuristic labels, each matching the current option wording ('every link', 'may be', 'is likely to lie', 'may have', plus the scare-quoted heuristics). The Q2 knock-on edit is what keeps this at 0 — without it the round would have shipped a rationale quoting text the passage no longer contains."
+    },
+    {
+      "check": "metadata truth sweep",
+      "result": "CLEAR on the three fields the ruling touched. repair_log's post-ruling entry describes five edits and I found exactly those five; its 'unchanged' clause ('No key letter, no prompt, no other option and no other rationale text was touched') is true against the diff. law_12_divergence's amendment is true of the shipped passage. regate_status's supersession note correctly scopes what reopened (one option surface, two passage spans) and correctly lists what that owed. Unchanged fields re-verified as still accurate: engineered_traps ('wrong_location at Q1/D' still right), hedge_balance, key_letters, question_families, length_tell, schema_note. Two live-but-open items about the ledger are carried in findings[] as notes."
+    },
+    {
+      "check": "law 13 name registry, re-run bank-wide",
+      "result": "CLEAR. Cadell, Prigent, Fewtrell, Osian, Naomi, Rufus, Fenella, Moye, Marram, Gaunt and Cleyburn grepped across every batches/*/candidates-final/*.json: zero hits outside this unit."
+    },
+    {
+      "check": "G-STEM q:3 and q:4 regression test",
+      "result": "CLEAR — leg variance, not repair damage. Four G-STEM legs have judged this unit. q:3 reads pass / pass / pass / flag and q:4 reads pass / pass / pass / flag, on option sets that are byte-identical across all four runs (the ruling changed only Q1/D). Three of four legs call both items clean. Nothing the repair did could have moved q:3 or q:4, because G-STEM reads only stems and options and neither item's surface changed."
+    },
+    {
+      "check": "G-STEM scope",
+      "result": "CLEAR, and over-delivered. The AGARDOM ordered G-KEY x2 + G-DISTRACTOR + G-ENG x3 + G-REGISTER + mech + a fresh review. G-STEM was not on that list; the executor ran it anyway against the rebuilt sheet. Its five flags are therefore supererogatory evidence, not an owed gate left half-satisfied."
+    },
+    {
+      "check": "option-length house style (G-REGISTER minor)",
+      "result": "CLEARED BY OWNER. The candidate's 20 options average 14.9 words against an authentic median of 12, and 15 of 20 sit at or above the corpus p90. This is the batch-wide property raised as AGARBLICK 4a, approved in the AGARDOM as a generator-law item for batch15 rather than a per-unit defect, and unrepairable inside a single unit. The ruling edit moved Q1/D 14 -> 13 tokens, i.e. toward the corpus median. Verbatim-lift register is clean and is the dimension that would matter: longest common run with the passage is median 2 / max 5 for this unit against median 2 / max 6 for 800 authentic options."
+    },
+    {
+      "check": "G-REGISTER genre and source plausibility",
+      "result": "CLEAR. Verdict pass against three exemplars read end to end (host-2021-verb2-ELF-040, host-2023-verb1-ELF-033, var-2016-verb1-ELF-033). The gate specifically judged all three ruling edits and found none of them register-damaging, including an exact corpus analogue for the re- hyphen ('a literal re-creation of the cosmos' in the pool exemplar itself). 781 whitespace words sits mid-range for the class (exemplars 570-823)."
+    }
+  ],
+
   "real_entity_check": {
     "names_checked": [
-      "re-checked on the final bytes: the content-only projection of the file is unchanged from the round I web-verified (passage 4136 chars / 786 mech tokens, keys B/C/A/D/B, all prompts and options byte-identical to the pre-mech-run sheets), and the two repaired spans introduce no proper noun, so the invented-entity surface is unchanged and the checks below stand",
-      "Rufus Cadell (tender master) — no real bearer; 'Cadell' is an attested Scottish/Welsh surname (the Edinburgh publishers Thomas and Robert Cadell, the explorer Francis Cadell 1822-1879, the medieval Cadelling of Deheubarth) and 'Rufus' a real given name/epithet, but no Rufus Cadell exists in any domain, maritime or otherwise",
-      "Naomi Prigent (mooring engineer) — no real bearer; 'Prigent' is a real Breton surname (Pascal Prigent, Genfit CEO; Manon Prigent, sound documentarist; Marie/Morgane/Anouck Prigent) and 'Naomi' a common given name, but no Naomi Prigent, and none of the real Prigents works in marine or mooring engineering",
-      "Osian Fewtrell (retired lightship keeper) — no real bearer; 'Fewtrell' is a real Shropshire surname (Max Fewtrell, racing driver; Lorna Fewtrell, WASH researcher; Oliver Fewtrell, surveyor) and 'Osian' a Welsh given name, but no Osian Fewtrell, and no Fewtrell in lightship or aids-to-navigation service",
-      "Fenella Moye (byline) — no real bearer; 'Fenella' is real as a given name (Fenella J Miller, novelist; Fenella Cannell, anthropologist; Fenella Saunders, American Scientist) and 'Moye' is a real surname, but the combination returns nothing and there is no journalist of that name in any coastal-affairs or maritime publication",
-      "the Marram (buoy tender) — no real vessel; 'marram' is the dune grass Ammophila arenaria and appears as a house name at Camber Sands, but no buoy tender, lighthouse tender or lightvessel carries the name (UK tenders are Patricia, Galatea, Alert etc.), so no collision with a real ship carrying invented practice",
-      "Cleyburn (port and tender district) — NEAR MISS, not a collision: 'Cleyburn' is an attested historical spelling of Cliburn, a village and civil parish in Eden, Cumbria (recorded 'Clibbrun' 1150, also Cleburn/Cleyburn), and a locational surname derived from it. Real Cliburn is landlocked, sits on the River Leith some 50 km inland, has no harbour, no approaches and no aids-to-navigation district. Different domain entirely; no real place bears the invented claims, and the invented port shares no institution, person or event with it",
-      "the Gaunt Shoal and its withdrawn lightship — no real bearer; 'Gaunt' exists as a historical name (John of Gaunt) and a surname, but there is no Gaunt Shoal, no lightship station of that name, and no 1911 station or 1968 withdrawal to collide with",
-      "buoy 43 / the Cleyburn approaches (locale designations) — generic, no real referent",
-      "cross-bank registry re-verified independently: all of Cadell, Prigent, Fewtrell, Osian, Naomi, Rufus, Fenella, Moye, Marram, Gaunt, Cleyburn grepped across batches/*/candidates-final/*.json — zero hits outside this unit, so generator_meta.law_13_registry holds"
+      "Re-checked on the post-ruling bytes: none of the three ordered edits, nor the rationale knock-on, introduces or alters a proper noun. The invented-entity surface is identical to the surface web-verified in the 2026-08-25 audit, so those checks stand unmodified and are restated below.",
+      "Rufus Cadell (tender master) — no real bearer; 'Cadell' is an attested Scottish/Welsh surname and 'Rufus' a real given name, but no Rufus Cadell exists in any domain, maritime or otherwise",
+      "Naomi Prigent (mooring engineer) — no real bearer; 'Prigent' is a real Breton surname and 'Naomi' a common given name, but no Naomi Prigent, and no real Prigent works in marine or mooring engineering",
+      "Osian Fewtrell (retired lightship keeper) — no real bearer; 'Fewtrell' is a real Shropshire surname and 'Osian' a Welsh given name, but no Osian Fewtrell, and no Fewtrell in lightship or aids-to-navigation service",
+      "Fenella Moye (byline) — no real bearer; both parts exist separately, the combination returns nothing, and there is no journalist of that name in any coastal-affairs or maritime publication",
+      "the Marram (buoy tender) — no real vessel; 'marram' is the dune grass Ammophila arenaria, and no UK tender or lightvessel carries the name",
+      "Cleyburn (port and tender district) — NEAR MISS, not a collision: an attested historical spelling of Cliburn, Cumbria, which is landlocked, 50 km inland, and has no harbour, approaches or aids-to-navigation district",
+      "the Gaunt Shoal and its withdrawn lightship — no real bearer; no Gaunt Shoal, no station of that name, no 1911 station or 1968 withdrawal to collide with",
+      "buoy 43 / the Cleyburn approaches — generic locale designations, no real referent",
+      "cross-bank registry re-verified independently this round: all eleven names grepped across batches/*/candidates-final/*.json — zero hits outside this unit"
     ],
     "collisions": []
   },
-  "audited_by": "claude-opus-5/meta-audit",
-  "date": "2026-08-25"
+
+  "gate_ledger_on_the_shipping_bytes": {
+    "G-KEY": "10 pass / 0 flag / 0 kill (2 legs x 5 items); every solver_answer = key",
+    "G-DISTRACTOR": "5 pass / 0 kill; zero findings",
+    "G-ENG": "3 legs, all flag; 7 minor / 0 major / 0 lethal; clears the >=2-kill DEAD rule",
+    "G-REGISTER": "pass; 3 minor",
+    "G-STEM": "5 flag / 0 kill (not an owed gate this round); all five dispositioned above",
+    "mech": "6/6 pass, zero findings — reproduced independently by this audit; no committed record in verdicts-ruling/ (see findings[])"
+  }
 }

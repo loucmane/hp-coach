@@ -705,3 +705,22 @@ Blandat svar går bra: en rad per enhet, plus en rad per batchövergripande punk
 - Batchvida punkter godkända, inkl. retroaktivt godkännande av
   granskningsomkodningen (punkt 4c). Severitetskontraktet i auditinstruktionen
   kvarstår som operativ mildring för kommande batcher.
+
+---
+
+## Tillägg (orkestrator, 2026-08-26): ÄGARDOM verkställd — omgrindad och ompromoverad
+
+Båda ÄNDRA-enheterna reparerade exakt enligt domen (fältdiff mot HEAD visar
+endast de beordrade ändringarna + en deklarerad följdändring per enhet).
+Femton färska ben: G-KEY 18/18 nyckelträff (0 kills), G-DISTRACTOR 9/9 pass
+(de omskrivna alternativen hårdprövade), G-STEM 9 flaggor 0 kills med
+**tvåmynningskanalen verifierat STÄNGD** (blindlösaren fick nu q2 FEL — direkt
+bevis att passagen åter är bärande), G-ENG/G-SPRÅK-tripletter enbart minorer
+(alla redigerade spann friade), G-REGISTER pass. Två färska motgranskningar:
+**CONFIRMED_NOTES, 0 majorer** vardera; G-STEMs två »reparationskostnads«-
+anklagelser AVVISADE på diffbevis (alternativramarna identiska före/efter).
+Efterarbete: en föråldrad D-citering i elf-q1:s rationale lagad (granskningens
+fynd 1, fyra ord, ingen omgrindning), grindliggaren stängd, kanonisk mek
+12/12 på slutbyten. G-REGISTER kördes ej för las-b14-001 (domens uppräkning
+utelämnade den; granskningen bedömer den substantiellt täckt — dokumenterat,
+VF4-N1). Fold: 6× VERIFIED_NOTES. **Promote: 6 PASS / 0 HOLD.**
