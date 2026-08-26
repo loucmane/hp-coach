@@ -1,0 +1,34 @@
+{
+  "candidate_id": "las-b17-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The Q1 rationale asserts a contradiction the passage does not contain: publisher provenance and publisher production do not exclude teacher authorship, so \"Texten motsäger det ändå två gånger\" is an invalid inference presented as fact in the teaching payload.",
+      "evidence": "Rationale Q1: \"D är plausible_worldknowledge ... Texten motsäger det ändå två gånger: häftena kommer från de två förlag som dominerade marknaden, och i stycke 4 slås det fast att samma förlag gjorde både bild och häfte.\" Passage p2: \"Jag har fått läsa åttiotre stycken, alla från de två förlag som dominerade marknaden.\" Passage p4: \"Bild och häfte är förstås inte oberoende av varandra, eftersom samma förlag gjorde båda.\" Neither sentence is about authorship; a publisher routinely commissions teacher-authors, which is exactly the real-world plausibility the trap trades on. The passage never states who wrote the handledningar. The one line that actually disfavours D is unused by the rationale: p1 \"den talade om för läraren vad som skulle göras med bilden\", which casts the teacher as the addressee of the booklet.",
+      "why": "The key C survives untouched (D remains unsupported and C is directly paraphrased from the exception sentence), so this is not a key defect. But pedagogy's remit is that the rationale be factually correct, and here the rationale teaches \"provenance = authorship\" as a refutation. It is a one-clause repair, i.e. exactly the magnitude of the recorded MINOR_FIXES verdict, so it does not overturn it. Not present in any recorded gate finding: G-DISTRACTOR q:1 passed and the blind gates never see rationales."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The Q1 rationale's statement that no option reproduces the passage's wording is false on its face: the key's distinguishing lexeme \"påståenden\" is the passage's own word, verbatim, in the final paragraph.",
+      "evidence": "Rationale Q1: \"Ordvalet är utbytt (besked → påståenden, dominerade redan i de tidigaste årgångarna → fulla av påståenden från början), så inget alternativ återger textens formulering.\" Passage p5: \"Det innehåller elva påståenden, en ordlista och en enda fråga.\" Key Q1 C: \"De var fulla av påståenden från början.\" The claimed substitution is not away from the text — it is toward a word the text uses.",
+      "why": "This is a checkable false claim inside a rationale, which is the integrated stage's own criterion, and it also slightly undercuts generator_meta.self_blind_solve's lexical-bridge argument. Harm is low because the echo sits in p5 (a 1958 mjölkhantering chart), not in the historieserie sentence the item is keyed to, so it does not hand a word-matcher the right evidence. Consistent with the recorded MINOR_NOTES verdict rather than overturning it."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The unit's only two questions plant the same reversed-direction falsehood twice, and both are labelled \"reversed_causality\" although neither option nor the passage contains any causal claim; the batch taxonomy carries a distinct \"reversed_direction\" label that names the actual trap.",
+      "evidence": "Q1 B: \"De fick allt fler frågor med tiden.\" Q2 C: \"Handledningarnas frågor blev med tiden fler, medan planscherna samtidigt förenklades.\" Both rationales label them reversed_causality while explaining them as direction reversals — Q1: \"B är reversed_causality: den vänder på riktningen i textens rörelse\"; Q2: \"C är reversed_causality med ett halvsant led ... så alternativet vänder på riktningen i just det led som bär textens poäng.\" A survey of generator_meta.planted_traps across batches 1-17 shows reversed_direction is an existing label in the house taxonomy. Compounding: the recorded G-STEM q:2 flag already states \"A and C then assert mirror-image trends, so one of them is almost certainly the key\", so a student who has settled the direction of travel in Q1 carries it straight into Q2.",
+      "why": "Not a key leak — knowing Q1 B is false does not yield Q1 C, and Q2 still needs the passage to separate A from C for a blind solver. But in a two-question unit the repeated trap reduces independent information, and the label under-describes the trap the integrated stage is asked to verify. Minor: house precedent tolerates reversed_causality as a catch-all for reversals (64 uses, several glossed as direction or ranking reversals), so this is a naming and variety note, not a defect that changes MINOR_NOTES."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The language stage's CORRECTED verdict edited only rationale prose; the passage is byte-identical to the original candidate, so the recorded major-severity G-SPRAK anglicism flag ships unremediated with no recorded adjudication.",
+      "evidence": "Diff of candidates/las-b17-003.json against candidates-final/las-b17-003.json changes only generator_meta.planted_traps[2].D, generator_meta.self_blind_solve and the two rationales; candidates-corrected vs candidates-final confirms passage identical: True, options identical: True. report.json for las-b17-003 records G-SPRAK: \"Det är svårt att komma runt.\" — \"class 2/6: 'komma runt' in the abstract sense 'get around (an objection)' mirrors English; the settled Swedish idiom for conceding an unavoidable point is 'komma ifrån'.\" That sentence stands unchanged in the shipping file: passage p4 \"Det är svårt att komma runt.\"",
+      "why": "I audited the sentence independently and land where the 2-of-3 passing G-SPRAK votes did: Swedish does have komma runt in the kringgå sense (komma runt reglerna), so this is a marked-but-defensible choice rather than a defect, and the elliptical object-less use is the only English-leaning part. Reported as a note because the record shows a major-severity language flag that the language stage neither fixed nor explained. The two remaining G-SPRAK minors I also re-checked and would overrule: \"Häftena samlades inte\" is disambiguated by the following sentence and samla takes the collector sense without a particle (samla frimärken), and the \"dominerade / förblir\" tense mix is principled, not a lurch — the passage consistently uses preterite for the historical situation (\"såg det annorlunda ut\", \"dominerade\", \"fanns\") and descriptive present for corpus measurements (\"sjunker\", \"förblir\", \"går det att räkna\"). My own independent sweep of the passage and all eight options for calques, agreement, register and spelling found nothing beyond these."
+    }
+  ]
+}

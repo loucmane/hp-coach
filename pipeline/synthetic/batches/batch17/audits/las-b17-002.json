@@ -1,0 +1,27 @@
+{
+  "candidate_id": "las-b17-002",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "One phrase inside Swedish quotation marks in the Q2 rationale appears nowhere verbatim in the passage or the options, in a rationale that uses the same ”…” marks for two genuinely verbatim passage quotes.",
+      "evidence": "Q2 rationale: \"A är den försiktighetslockande fällan (plausible_worldknowledge): ”skjut upp och mät mer” låter som den ansvarsfulla medelvägen\". Machine check of every ”…” span in both rationales against passage+options+stems: 'Glesas raderna ut på de två andra gatorna, får de boende där mer av precis det som anmäldes.' = OK (verbatim), 'Jag begär ingen ny utredning, och jag tycker inte att nämnden ska vänta. Förslaget bör avslås i februari.' = OK (verbatim), 'skjut upp och mät mer' = MISS (0 occurrences anywhere in the unit's student-facing text). Option A's actual wording is \"Att beslutet bör skjutas upp för fler mätningar.\"",
+      "why": "The integrated stage's own contract is verbatim-quote fidelity. The string is transparently a paraphrastic gloss/scare-quote of option A rather than a misattributed citation, and it sits beside two correctly verbatim quotes, so it does not mislead a student about what the passage says. This is exactly the class of residual the recorded MINOR_NOTES verdict covers — it does not overturn it."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The Q1 key silently drops one of the passage's two measurement qualifiers, so it names a slightly broader quantity than the one actually measured — and the rationale asserts that the key's only delimiter is the place name.",
+      "evidence": "Passage: \"På den raka delen norr om skolan har medelfarten mellan hindren stigit från 29 till 34 kilometer i timmen.\" Key B: \"Medelfarten norr om skolan har stigit med fem kilometer i timmen.\" Rationale: \"avgränsningen ligger i platsangivelsen (norr om skolan), inte i ett reservationsord.\" The dropped qualifier is 'mellan hindren'; the passage separately establishes that drivers cross a hump at ~20 km/h (\"rullar över i tjugo\"), so the average over the whole stretch north of the school is not the same statistic as the average between humps, and its rise need not be exactly 5.",
+      "why": "Real but not verdict-changing: all three distractors are demonstrably false against the passage (A has no textual anchor for the removal criterion; C is refuted by \"På den krokiga södra delen syns ingen skillnad alls\"; D is false for Tunbergsvägen, whose straight section stands at 34), the only figures the passage supplies are 29 and 34, and 34−29=5, so B remains the single defensible answer to a complaining student. The note is that the rationale's precision claim slightly overstates the key's precision. Consistent with the recorded MINOR_FIXES verdict."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "Audit-trail gap: the language and pedagogy verdict lines were recorded before the shipping file's final content edit, so neither stage's recorded verdict was passed on the exact bytes now in candidates-final/las-b17-002.json.",
+      "evidence": "mtimes: reviews/language.jsonl 13:20, reviews/pedagogy.jsonl 13:23, candidates-final/las-b17-002.json 13:26, reviews/integrated.jsonl 13:30. Diff candidates-corrected -> candidates-final shows a passage edit made after both: \"avståndet mellan de kvarvarande hindren växte från sextiofem meter till drygt hundrafyrtio\" -> \"...till hundratrettio\", plus two Q2-rationale edits. Only the integrated stage (13:30) post-dates the shipped text.",
+      "why": "I re-ran both stages' criteria against the shipping bytes myself and the verdicts survive: 'hundratrettio' is correctly formed Swedish, the edit is what makes \"längs den sträcka där avståndet mellan hindren fördubblades\" arithmetically exact (65 x 2 = 130, and it is also the mean gap when 3 of 7 humps go from a 390 m span), and no rationale, hedge_map or self_blind_solve string references the old figure (grep for 'fyrtio' returns zero hits). All rule-5 option metrics still pass on the shipped file (LÄS options <=21 words, no semicolons; declared short-breath Q2 has a 6-word stem and options of 8/8/7/7 words), key spread is B/C, and no em dash occurs in any passage, stem, option or rationale. So the gap is a process defect, not a content defect."
+    }
+  ]
+}

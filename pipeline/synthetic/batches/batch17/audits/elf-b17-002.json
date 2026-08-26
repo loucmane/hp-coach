@@ -1,0 +1,20 @@
+{
+  "candidate_id": "elf-b17-002",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The passage's ninety-day retention rule does not reconcile with the disposal cadence it states, and the paragraph-3 'exception' presupposes a rule the passage has already abandoned.",
+      "evidence": "P1 S1-S2: 'The lost-property office behind the bus station keeps what it is handed for ninety days. Clothing then goes to a charity shop, phones and cameras to a saleroom, and the umbrellas ... into a bin bag' - the 'then' places disposal at the ninety-day mark. P1 S4: 'the umbrella rack is cleared twice a year and the rest of the room once' - i.e. non-umbrella items are physically disposed of at most once every twelve months and umbrellas once every six, both longer than ninety days. P3: 'Keys are kept past the ninety days, in a tin, because nobody there can quite bring themselves to throw away a stranger's front door' - framed as a deliberate exception, which presupposes that everything else IS gone at ninety days. Under the charitable reading (ninety days = claim window, clearance lags), the P3 sentence loses its force entirely: on a once-a-year clear-out every item in the room is 'kept past the ninety days', so keys are not exceptional. The three statements cannot all hold.",
+      "why": "Integrated review's remit explicitly covers 'a number that won't reconcile' and self-contradiction across passage parts. No key is affected - gap (1)'s 'Predictably' still rests on the intra-sentence comparison (umbrella rack cleared more often than the rest of the room), which survives the mismatch - so this does not overturn the MINOR_NOTES verdict; it is the kind of note that verdict names, and the terse record carries no findings payload showing it was seen."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "reviews/integrated.jsonl records two contradictory verdicts for elf-b17-002 with no field that establishes which supersedes the other.",
+      "evidence": "Line 3: {\"candidate_id\":\"elf-b17-002\",\"stage\":\"integrated\",\"verdict\":\"INCONSISTENT\",\"reviewed_by\":\"integrated-review/opus\",\"date\":\"2026-08-26\"}. Line 7: identical except \"verdict\":\"MINOR_NOTES\". Same stage, same reviewer, same date, no timestamp, run id, or supersedes key. The resolution order is recoverable only from filesystem mtimes (candidates-final/elf-b17-002.json 13:25, integrated.jsonl 13:30), not from the record. language.jsonl and pedagogy.jsonl additionally carry byte-identical duplicate lines for this unit (language lines 1 and 8; pedagogy lines 1 and 9).",
+      "why": "A downstream consumer reading the stage record for elf-b17-002 gets both INCONSISTENT and MINOR_NOTES with no tiebreak, so the recorded verdict for this unit is not machine-determinable. The same pattern appears on las-b17-002, so it is systematic rather than a one-off transcription slip."
+    }
+  ]
+}
