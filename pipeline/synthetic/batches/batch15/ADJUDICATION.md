@@ -707,3 +707,29 @@ exaktfras-sökning över batchens uppfunna fullnamn (körs 2026-08-26, rekord
 läggs i batchen); (2) förnamnsunikhet framåt som bankpolicy — registret i
 kommande batchbriefer listar förnamn separat; (3) närhetsdispositionskravet
 och severitetskontraktet förs in i kommande batchers instruktioner.
+
+---
+
+## Tillägg 2 (orkestrator, 2026-08-26): exaktfras-svepet verkställt
+
+Rekord: `law16-sweep.json` (40 kontroller, 23 entiteter; Mojeek exaktfras via
+hämttransport — INTE semantik; kontrollfrågor validerade metoden). Utfall:
+**29 CLEAR / 10 RECORDED / 1 COLLISION.**
+
+- **KOLLISION — Padgham (elf-b15-002):** verklig återkommande tidningskolumnist
+  Mike Padgham (Yorkshire Post) mot fiktiv »Verity Padgham, weekend columnist«
+  — samma rollfack; enhetens egen originality_note-utsaga (»ingen kolumnist
+  med namnet Padgham«) falsifierad, och enheten förkastade själv Ashlock på
+  exakt denna grund. **Åtgärd: efternamnsbyte utförs** (lag 16 + enhetens egen
+  standard), med append-forward-korrigering av originality_note, mek-omkörning
+  och dokumenterat verifierat ersättningsnamn.
+- **RECORDED, eskalerbara (ägarens blick, ingen textändring):** Steneryd —
+  verkliga bärare i svensk kommunalpolitik (förtroendevalda) mot fiktiv
+  tjänsteman; distinktionen bär, men enhetens »obesläktade fält«-utsaga
+  granskade aldrig kommunsektorn. Quarnley — tidigare FIKTIV användning
+  (Richard Marsh 1903, »Quarnley Terrace«); ingen lag 16-träff, men
+  batchintern standardinkonsekvens (Ockmarsh förkastades på samma grund).
+- Not-precisionsflaggor: Braddick (verklig reporter finns; fiktiv bärare är
+  vaktmästare — ofarligt), Tunemyr (koreograf, närmaste kulturella närhet).
+- Metodbegränsning: oberoende index (Mojeek), tunnare svensk täckning; nollor
+  betyder »ingen exakt bärare i oberoende fulltextindex«.

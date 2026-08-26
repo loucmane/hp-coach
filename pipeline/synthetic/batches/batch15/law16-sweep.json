@@ -1,0 +1,526 @@
+{
+  "date": "2026-08-26",
+  "sweep": "P5 batch15 LAW-16 EXACT-PHRASE SWEEPER",
+  "scope": "All invented named entities in the seven shipping files at batches/batch15/candidates-final/*.json (people, surnames, invented places, institutions, publications).",
+  "tool_ladder_used": {
+    "rung_1_websearch": {
+      "attempted": true,
+      "available": false,
+      "evidence": "WebSearch returned: 'Web search was not performed: this session has used its web search budget (200 of 200 WebSearch calls).' Same exhaustion the batch15 generators recorded on 2026-08-25. Noted once; not retried."
+    },
+    "rung_2_webfetch_direct": {
+      "attempted": true,
+      "available": false,
+      "evidence": "WebFetch -> html.duckduckgo.com HTTP 403; WebFetch -> lite.duckduckgo.com HTTP 403; WebFetch -> www.mojeek.com HTTP 403; WebFetch -> www.bing.com returned an unrelated Outlook landing page (bot-blocked, no search results). Firecrawl MCP search and scrape both returned HTTP 401 (unauthenticated endpoint)."
+    },
+    "rung_2b_working_ladder_EXACT": {
+      "method": "Mojeek exact-phrase search-result pages retrieved through mcp__claude_ai_Exa__web_fetch_exa used purely as a FETCH TRANSPORT.",
+      "why_this_is_exact_not_semantic": "The query string, the quoting semantics, the matching and the ranking are all Mojeek's. Exa only retrieves the rendered results page. Mojeek honours double quotes strictly and reports the exact-match count explicitly, printing 'There were no exact matches for \"X\"' before falling back to unquoted results. These results are therefore EXACT-PHRASE evidence, not semantic.",
+      "controls_run": [
+        "\"Sixten Sason\" -> 'Results 1 to 10 from 1,033' (known real Swedish industrial designer) - index is live and substantive",
+        "\"Jonas Malmryd\" -> 'Results 1 to 4 from 4' then 'There were no more results for \"Jonas Malmryd\"' - quoting is strict and the known prior Malmryd finding reproduces"
+      ],
+      "index_caveat": "Mojeek is an independent crawler with a smaller index than Google. A zero on Mojeek is weaker evidence than a zero on Google, and its Swedish-language coverage is thinner than its English coverage. Zeros below should be read as 'no exact bearer in an independent full-text index', not as proof of universal non-existence.",
+      "operational_notes": "Batching more than ~2 Mojeek URLs per Exa fetch triggers CRAWL_UNKNOWN_ERROR / CRAWL_LIVECRAWL_TIMEOUT or a Mojeek captcha. Adding a throwaway '&reg=&t=N' parameter reliably busted cached error states. Boolean OR in the query string reliably triggered the captcha and was avoided."
+    },
+    "rung_3_exa_semantic_LAST_RESORT": {
+      "tool": "mcp__claude_ai_Exa__web_search_exa",
+      "used_for": "ONLY the three prior-finding re-examinations the orchestrator named (Quarnley 1800 use, Rimhall US bearers). Results from this rung are marked SEMANTIC in the entries below.",
+      "marking": "SEMANTIC"
+    },
+    "corroborating": "Brave Search (via Exa fetch) used once as a second opinion on Rhiannon Bellinghast; Brave reports 'search operators were not applied / Too few matches were found' for the exact phrase."
+  },
+  "kill_criterion_applied": "Law 16: a COLLISION requires a REAL bearer in the SAME field/domain as the fictional entity's role. Real bearers in unrelated fields are RECORDED, not kills. Fictional prior uses of a name are not real bearers and do not kill under law 16 (they are recorded separately where a sibling unit in this batch applied a stricter standard).",
+  "summary_counts": {
+    "entries": 40,
+    "checks_breakdown": "18 invented full names + 5 invented toponyms + 17 surname-level checks = 40 exact-phrase checks over 23 distinct invented entities",
+    "CLEAR": 29,
+    "RECORDED": 10,
+    "COLLISION": 1,
+    "by_result": {
+      "NO_BEARER": 29,
+      "BEARER_UNRELATED_FIELD": 9,
+      "BEARER_SAME_DOMAIN": 2
+    },
+    "note_on_the_two_same_domain_results": "Padgham is graded COLLISION. Steneryd is also BEARER_SAME_DOMAIN but graded RECORDED (borderline, escalatable) - see its orchestrator_note for the reasoning. Every invented FULL NAME in the batch is CLEAR; both same-domain findings are surname-level."
+  },
+  "entries": [
+    {
+      "name": "Rhiannon Bellinghast",
+      "kind": "person_full_name",
+      "fictional_role": "microbiologist, runs a phage collection/laboratory",
+      "unit": "elf-b15-001",
+      "queries": ["\"Rhiannon Bellinghast\" (Mojeek exact)", "\"Rhiannon Bellinghast\" (Brave)"],
+      "tool": "mojeek_exact_via_exa_fetch + brave",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 in 0.06s / No pages found matching: \"Rhiannon Bellinghast\"'. Brave: 'search operators were not applied / Too few matches were found' (only unrelated Rhiannon hits: Fourth Wing fandom, Reverse:1999 character, a Facebook Rhiannon Bellenie).",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Bellinghast",
+      "kind": "surname",
+      "fictional_role": "science / microbiology",
+      "unit": "elf-b15-001",
+      "queries": ["\"Bellinghast\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Bellinghast\"'. Zero pages anywhere in the index, in any field. Confirms the generator's Exa finding that all near-hits were the distinct real surname Bellingham.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Josephine Quilvey",
+      "kind": "person_full_name",
+      "fictional_role": "physician treating bone and joint infection",
+      "unit": "elf-b15-001",
+      "queries": ["\"Josephine Quilvey\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Josephine Quilvey\"'.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Quilvey",
+      "kind": "surname",
+      "fictional_role": "medicine",
+      "unit": "elf-b15-001",
+      "queries": ["\"Quilvey\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Quilvey\"'. Zero pages in any field. Confirms the generator's finding that hits were the distinct names Quivey, Quilley, McQuivey.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Neil Hollowmere",
+      "kind": "person_full_name",
+      "fictional_role": "science correspondent (byline)",
+      "unit": "elf-b15-001",
+      "queries": ["\"Neil Hollowmere\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'There were no exact matches for \"Neil Hollowmere\"'. The single unquoted fallback hit was a D&D halfling name generator page.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Hollowmere",
+      "kind": "surname_or_toponym",
+      "fictional_role": "science journalism (byline surname)",
+      "unit": "elf-b15-001",
+      "queries": ["\"Hollowmere\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "BEARER_UNRELATED_FIELD",
+      "evidence": "Mojeek: 187 exact hits, essentially all fictional/creative uses of Hollowmere as an invented place: 'Hollowmere the Liturgy' (misky.uk), 'The Harvest at Hollowmere Hill' (hellopoetry.com), 'The Lantern of Hollowmere' tabletop adventure, 'Echoes from the Hollowmere Crypt' (novel). One apparent person-bearer: 'Graham Hollowmere', credited as a co-artist on an album 'Italian Lady' (music.amazon.com). Field = music, not science journalism. No journalist, scientist or publication bears the name.",
+      "verdict": "RECORDED"
+    },
+    {
+      "name": "Denhollow",
+      "kind": "invented_toponym_village",
+      "fictional_role": "English village with a reading room",
+      "unit": "elf-b15-002",
+      "queries": ["\"Denhollow\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 1 result total and it is an unquoted fallback (a Pete the Planner podcast page); no exact-match page carries the string. Confirms the generator's Wikipedia and Exa zeros.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Wilf Braddick",
+      "kind": "person_full_name",
+      "fictional_role": "reading-room caretaker, holds the noticeboard key",
+      "unit": "elf-b15-002",
+      "queries": ["\"Wilf Braddick\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'There were no exact matches for \"Wilf Braddick\"'. All 9 hits were unquoted fallbacks combining unrelated Braddicks with the unrelated word 'Wilf'.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Braddick",
+      "kind": "surname",
+      "fictional_role": "village-hall / community administration (caretaker)",
+      "unit": "elf-b15-002",
+      "queries": ["\"Wilf Braddick\" (Mojeek exact, surname bearers read off the fallback set)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "BEARER_UNRELATED_FIELD",
+      "evidence": "Real bearers surfaced: Imogen Braddick, a working news reporter at the Evening Standard (standard.co.uk politics byline); Joan Ellen Mary Braddick (Somerset funeral notice); 'Braddick MA' as a co-author on a birth-weight centile paper. The fictional Braddick is a village-hall caretaker, not a journalist, so no same-domain bearer. NOTE FOR ORCHESTRATOR: the unit's originality_note claims the Exa sweep found 'no bearer in local government, village-hall administration or community journalism'. Imogen Braddick is a working news journalist, so the 'community journalism' clause is over-stated. It does not change the verdict, because the fictional Braddick's role is caretaking and the unit's byline surname is Padgham, not Braddick.",
+      "verdict": "RECORDED"
+    },
+    {
+      "name": "Verity Padgham",
+      "kind": "person_full_name",
+      "fictional_role": "weekend columnist (byline)",
+      "unit": "elf-b15-002",
+      "queries": ["\"Verity Padgham\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'There were no exact matches for \"Verity Padgham\"'. All 28 hits were unquoted fallbacks (Hugh Padgham the record producer, Lin Padgham at RMIT, unrelated Veritys). The FULL NAME is clean; the collision is at surname level - see the 'Padgham' entry.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Padgham",
+      "kind": "surname",
+      "fictional_role": "newspaper columnist (the passage's byline field)",
+      "unit": "elf-b15-002",
+      "queries": ["\"Padgham\" columnist newspaper (Mojeek)", "\"Mike Padgham\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "BEARER_SAME_DOMAIN",
+      "evidence": "Mike Padgham, chair of the Independent Care Group, is a recurring BYLINED NEWSPAPER COLUMNIST at the Yorkshire Post, published under the paper's /news/opinion/columnists/ path with the byline form '- Mike Padgham': 'Enough is enough, broken social care system can no longer carry on - Mike Padgham'; 'Why this Budget must get social care done - Mike Padgham'; 'What Sajid Javid must now do for social care - Mike Padgham'; 'Government turmoil is a setback for social care reform - Mike Padgham' (all yorkshirepost.co.uk). Exact-phrase \"Mike Padgham\" returns 13,507 Mojeek hits; he is a substantial public figure (BBC Breakfast appearances, a named bursary award, tag pages at homecareinsight.co.uk, carehomeprofessional.com, careindustrynews.co.uk, maturetimes.co.uk). Other Padghams: Hugh Padgham (record producer), Lin Padgham (RMIT academic).",
+      "verdict": "COLLISION",
+      "collision_reasoning": "The fictional entity is bylined '- Verity Padgham, weekend columnist'. Mike Padgham's Yorkshire Post pieces carry the identical structural signature: a regional-newspaper opinion column, filed under 'columnists', bylined '- Mike Padgham'. That is a real bearer in the byline's own field. Two independent reasons this is actionable rather than a judgement call: (1) the unit's shipped originality_note asserts 'critically for a byline, no journalist or columnist named Padgham in the results' - exact-phrase search falsifies that assertion, so a factual claim in shipped generator_meta is wrong; (2) the SAME unit rejected the candidate name 'Verity Ashlock' on precisely this ground, recording 'two real journalists bear the surname Ashlock ... i.e. a real bearer in the byline's own field'. Applying that stated standard consistently, Padgham should have been rejected too. Counter-argument the orchestrator should weigh: Mike Padgham's primary identity is care-sector chair rather than professional journalist, he writes op-eds rather than staffing a column, and the full name 'Verity Padgham' has zero bearers. NO CANDIDATE FILE WAS EDITED - reported for orchestrator decision."
+    },
+    {
+      "name": "Isak Vessholm",
+      "kind": "person_full_name",
+      "fictional_role": "permanent-way / railway district engineer",
+      "unit": "elf-b15-003",
+      "queries": ["\"Isak Vessholm\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Isak Vessholm\"'.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Vessholm",
+      "kind": "surname",
+      "fictional_role": "railway engineering",
+      "unit": "elf-b15-003",
+      "queries": ["\"Vessholm\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Vessholm\"'. Zero pages in the index, as person or place. Confirms the generator's finding that nearest returns were the real places Vaxholm and Vivesholm.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Esme Quillenby",
+      "kind": "person_full_name",
+      "fictional_role": "byline (reporter on the railway piece)",
+      "unit": "elf-b15-003",
+      "queries": ["\"Esme Quillenby\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Esme Quillenby\"'.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Quillenby",
+      "kind": "surname",
+      "fictional_role": "journalism (byline)",
+      "unit": "elf-b15-003",
+      "queries": ["\"Quillenby\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Quillenby\"'. Zero pages in any field.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Quarnley",
+      "kind": "invented_toponym",
+      "fictional_role": "toll bar / farm lane on an 1831 English turnpike road",
+      "unit": "elf-b15-004",
+      "queries": [
+        "\"Quarnley\" (Mojeek exact)",
+        "\"Quarnley\" surname parish register baptism transcript (Exa - SEMANTIC, re-examination of prior finding)"
+      ],
+      "tool": "mojeek_exact_via_exa_fetch + exa_semantic",
+      "result": "BEARER_UNRELATED_FIELD",
+      "evidence": "Mojeek exact: 'Results 0 to 0 from 0 / No pages found matching: \"Quarnley\"'. SEMANTIC re-examination confirms the prior finding verbatim: tinstaafl.co.uk Wakefield All Saints transcript row '| 511 | 17/03/1800 | Thomas | SIDNEY | Hannah | QUARNLEY |' - one attested 1800 personal-surname use in an English parish register. That is a genealogical person, not a place, and 1800 Wakefield baptism records are an unrelated field to an invented turnpike toponym. NEW FINDING (SEMANTIC, not previously recorded by the generator): 'Quarnley Terrace' is a street in Richard Marsh's 1903 short story 'The Kit-Bag' (Windsor Magazine vol. 17), full text on en.wikisource.org and quoted at kwize.com. Also two procedurally generated OpenTTD town names (openttd.pro), matching the generator's log.",
+      "verdict": "RECORDED",
+      "orchestrator_note": "NOT a law-16 kill: 'Quarnley Terrace' is a FICTIONAL toponym in fiction, not a real bearer, and the 1800 baptism is a person in an unrelated field. But flagged as a BATCH-INTERNAL STANDARD INCONSISTENCY: the sibling unit elf-b15-002 in this same batch rejected the candidate toponym 'Ockmarsh' precisely because it was 'an existing fictional toponym in Broodcomb Press fiction'. Quarnley is an existing fictional British toponym in a public-domain, fully indexed Edwardian text on Wikisource - a more discoverable prior fictional use than the Broodcomb one. If the batch means to hold the elf-b15-002 standard, Quarnley fails it. The generator's own note already flagged Quarnley as the weakest name it kept ('one attested 1800 use as a personal surname, recorded here rather than suppressed')."
+    },
+    {
+      "name": "Skelbrigg",
+      "kind": "invented_toponym",
+      "fictional_role": "turnpike trust name",
+      "unit": "elf-b15-004",
+      "queries": ["\"Skelbrigg\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Skelbrigg\"'. Zero pages. Confirms the generator's finding that nearest hits were Skelsmergh and Skelwith Bridge.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Josiah Bardsell",
+      "kind": "person_full_name",
+      "fictional_role": "turnpike trust surveyor, 1831",
+      "unit": "elf-b15-004",
+      "queries": ["\"Josiah Bardsell\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'There were no exact matches for \"Josiah Bardsell\"'. The single fallback hit was a Cook County Illinois burial roll listing 'BARDSELL, C S' and, separately, 'BLOOD, JOSIAH'.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Bardsell",
+      "kind": "surname",
+      "fictional_role": "road surveying / turnpike administration",
+      "unit": "elf-b15-004",
+      "queries": ["\"Josiah Bardsell\" (Mojeek exact)", "\"Bardsell\" surveyor turnpike (Mojeek)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "BEARER_UNRELATED_FIELD",
+      "evidence": "Only bearer surfaced: 'BARDSELL, C S' in the Roll of Honor, Cook County, Illinois soldiers' burial places (genealogytrails.com). The domain-hinted query '\"Bardsell\" surveyor turnpike' returned 'Results 0 to 0 from 0'. Consistent with the generator's finding that britishsurnames.uk records Bardsell as so rare it may be a transcription error for Bardsley/Birdsall, and automatedgenealogy.com shows eight Bardsells in the 1911 Canadian census. No bearer in surveying, road administration or history.",
+      "verdict": "RECORDED"
+    },
+    {
+      "name": "Bryony Ombleby",
+      "kind": "person_full_name",
+      "fictional_role": "byline (writer of the turnpike piece)",
+      "unit": "elf-b15-004",
+      "queries": ["\"Bryony Ombleby\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Bryony Ombleby\"'.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Ombleby",
+      "kind": "surname",
+      "fictional_role": "journalism / history writing (byline)",
+      "unit": "elf-b15-004",
+      "queries": ["\"Ombleby\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Ombleby\"'. Zero pages in any field. Confirms the generator's finding that hits were for the unrelated string 'Omble'.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Valfrid Kilbrand",
+      "kind": "person_full_name",
+      "fictional_role": "garvare (tanner), Ödsbol, 1878-1893",
+      "unit": "las-b15-001",
+      "queries": ["\"Valfrid Kilbrand\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Valfrid Kilbrand\"'.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Hulda Kilbrand",
+      "kind": "person_full_name",
+      "fictional_role": "tannery proprietor (widow), ran the business 18 years from 1893",
+      "unit": "las-b15-001",
+      "queries": ["\"Hulda Kilbrand\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Hulda Kilbrand\"'.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Kilbrand",
+      "kind": "surname",
+      "fictional_role": "tanning / craft trade, 19th-century Sweden",
+      "unit": "las-b15-001",
+      "queries": ["\"Kilbrand\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "BEARER_UNRELATED_FIELD",
+      "evidence": "Mojeek: 10 exact hits, all living private Swedes: 'Kilbrand Stina' (a Data Project results listing); 'Olle Kilbrand', trumpet, in a Björn Hagvall jazz-band lineup; 'Carina Deann kilbrand' in the SBFF Sverige 2025 affiliated-clubs competitor list; 'Maria Kilbrand' as a donor on egeninsamling.minstoradag.org; a Stensunds folkhögskola alumni listing. Fields: music, sport, private individuals. No bearer in garveri, hantverkshistoria, museum/heritage work or publishing. (The 'Lord Kilbrandon' and 'Kilbrand Commission' hits are the distinct name Kilbrandon.) Reproduces the generator's finding of ~10 living Swedish Kilbrand families with no same-domain bearer.",
+      "verdict": "RECORDED"
+    },
+    {
+      "name": "Ulrika Tunemyr",
+      "kind": "person_full_name",
+      "fictional_role": "hantverkshistoriker (craft historian)",
+      "unit": "las-b15-001",
+      "queries": ["\"Ulrika Tunemyr\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Ulrika Tunemyr\"'.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Tunemyr",
+      "kind": "surname",
+      "fictional_role": "craft history / material-culture research",
+      "unit": "las-b15-001",
+      "queries": ["\"Tunemyr\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "BEARER_UNRELATED_FIELD",
+      "evidence": "Mojeek: 93 exact hits, overwhelmingly one person - Else Tunemyr, a working dance and choreography artist with a substantial European footprint (nodeforum.org profile 'Else Tunemyr works in dance and choreography'; I/O Gazette; BALTIC 'Satelliser' cast; Gallus Theater Frankfurt; HfG Offenbach; softrains.org). Plus, from the generator's log, Karen Tunemyr (orthoptist, Kungsbacka) and Wilhelm Tunemyr (teacher, former student-paper editor). No bearer in hantverkshistoria, museum, heritage or craft research.",
+      "verdict": "RECORDED",
+      "orchestrator_note": "Closest cultural-field adjacency among the Swedish names: Else Tunemyr is a professional artist, and the fictional Ulrika Tunemyr is a cultural-sector researcher. Judged unrelated because choreography and craft/material-culture history are distinct disciplines with no overlap in institutions, output or method, and the full name has zero bearers. Recorded so the orchestrator can see the adjacency rather than have it buried."
+    },
+    {
+      "name": "Måns Kärrsell",
+      "kind": "person_full_name",
+      "fictional_role": "kulturskribent (culture journalist, byline)",
+      "unit": "las-b15-001",
+      "queries": ["\"Måns Kärrsell\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Måns Kärrsell\"'.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Kärrsell",
+      "kind": "surname",
+      "fictional_role": "cultural journalism (byline)",
+      "unit": "las-b15-001",
+      "queries": ["\"Kärrsell\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Kärrsell\"'. Zero pages in the index, so no journalist and no bearer in any field. Confirms the generator's finding that the engine fell back to the distinct names Kårsell and Kårell.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Ödsbol",
+      "kind": "invented_toponym",
+      "fictional_role": "Swedish köping (market town) with a health board and a tannery",
+      "unit": "las-b15-001",
+      "queries": ["\"Ödsbol\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Ödsbol\"'. No Swedish locality of this name. Confirms the generator's finding that hits were Danish Odsbøl personal names.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Verner Hasselgrund",
+      "kind": "person_full_name",
+      "fictional_role": "utredare for kommunrevisionen (municipal audit investigator)",
+      "unit": "las-b15-002",
+      "queries": ["\"Verner Hasselgrund\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Verner Hasselgrund\"'.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Hasselgrund",
+      "kind": "surname",
+      "fictional_role": "Swedish municipal audit / administration",
+      "unit": "las-b15-002",
+      "queries": ["\"Hasselgrund\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "BEARER_UNRELATED_FIELD",
+      "evidence": "Mojeek: 175 exact hits and NOT ONE is a personal bearer. Every hit is a German toponym: 'Ferienpark Hasselgrund' holiday flats at Schadeleben / Ostharz (feriwa.com); 'Hasselgrund, Julienluster Weg 35, 24109 Kiel' as a children's-activity venue (fg-kiel.de); 'Am unteren Hasselgrund' and 'Am oberen Hasselgrund' as map features at Bad Suderode, Sachsen-Anhalt (kartogiraffe.de). No person of any nationality bears the name; no Swedish bearer at all. Consistent with the generator's finding of only a German kennel designation.",
+      "verdict": "RECORDED"
+    },
+    {
+      "name": "Gunvor Slättmar",
+      "kind": "person_full_name",
+      "fictional_role": "ordförande, Vässlinge gymnastikförening (sports club chair)",
+      "unit": "las-b15-002",
+      "queries": ["\"Gunvor Slättmar\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Gunvor Slättmar\"'.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Slättmar",
+      "kind": "surname",
+      "fictional_role": "Swedish sports-association leadership",
+      "unit": "las-b15-002",
+      "queries": ["\"Slättmar\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Slättmar\"'. Zero pages in any field.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Tora Steneryd",
+      "kind": "person_full_name",
+      "fictional_role": "fritidskonsulent (municipal leisure officer), byline",
+      "unit": "las-b15-002",
+      "queries": ["\"Tora Steneryd\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'There were no exact matches for \"Tora Steneryd\"'. Both fallback hits were folk-music calendar entries combining 'P-O Steneryd' with 'Anna-Tora'. The FULL NAME is clean; see the 'Steneryd' entry for the surname-level finding.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Steneryd",
+      "kind": "surname",
+      "fictional_role": "Swedish municipal leisure administration (fritidskonsulent)",
+      "unit": "las-b15-002",
+      "queries": [
+        "\"Steneryd\" (Mojeek exact)",
+        "\"Steneryd\" kommunfullmäktige (Mojeek)",
+        "\"Steneryd\" fritid idrott (Mojeek)"
+      ],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "BEARER_SAME_DOMAIN",
+      "evidence": "Mojeek: 173 exact hits. The domain-relevant one: 'Hans-Göran Steneryd (S), Gagnefs kommun' listed as an elected member of Språktolknämnden i Dalarna, a joint municipal board (borlange.se, 'Kommunens ledamöter och ersättare väljs av kommunfullmäktige'). A second: a 'Steneryd' listed under 'Kommunfullmäktige - Förtroendevalda hos oss' for Säters kommun (sater.tromanpublik.se). Other bearers, all unrelated: Lars Steneryd (estate agent, Skandiamäklarna), Pia Steneryd (thesis author on recycled ballast materials), Oskar Steneryd (CFO, SmartCella AB), P-O Steneryd (folk-music course leader), Monica Olsson at a Steneryd address (kennel). Steneryd is also a real village in Karlskrona Municipality, Blekinge. The narrowing query '\"Steneryd\" fritid idrott' returned 'Results 0 to 0 from 0'.",
+      "verdict": "RECORDED",
+      "orchestrator_note": "BORDERLINE - escalatable to COLLISION at orchestrator discretion. The unit is set squarely in Swedish kommunal förvaltning (a kommunrevision audit of sports-hall bookings), and a real Steneryd sits in Swedish local government. Graded RECORDED rather than COLLISION for three reasons: (1) the real bearer is a förtroendevald (elected politician) while the fictional Tora Steneryd is a tjänsteman (employed leisure officer) - a distinction this very passage turns on; (2) no bearer exists in leisure or sport administration, the fictional character's actual function; (3) Steneryd is a genuine Swedish village name, so it arises naturally as a toponymic surname rather than reading as a borrowed identity. NOTE: the unit's originality_note asserts the Steneryd bearers lie 'i obesläktade fält', citing only a 1964 maths teacher and the Torhamn village name. That survey did not reach local government and is incomplete."
+    },
+    {
+      "name": "Vässlinge",
+      "kind": "invented_toponym",
+      "fictional_role": "Swedish municipality (the passage's setting)",
+      "unit": "las-b15-002",
+      "queries": ["\"Vässlinge\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Vässlinge\"'. No Swedish locality. Confirms the generator's finding that hits were Välinge, Utvälinge, Nävlinge and Vässingsö.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Algot Rimhall",
+      "kind": "person_full_name",
+      "fictional_role": "etnolog (ethnologist) studying interwar magazine advice columns",
+      "unit": "las-b15-003",
+      "queries": ["\"Algot Rimhall\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'Results 0 to 0 from 0 / No pages found matching: \"Algot Rimhall\"'. This closes the gap the orchestrator's own assembly note left open: 'Algot Rimhall' är inte separat sökt. It has now been searched, exact-phrase, and is clean.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Rimhall",
+      "kind": "surname",
+      "fictional_role": "Swedish ethnology / academic research",
+      "unit": "las-b15-003",
+      "queries": [
+        "\"Rimhall\" (Mojeek exact)",
+        "\"Rimhall\" surname genealogy (Mojeek)",
+        "\"Rimhall\" surname person Utah pioneer or city directory historical record (Exa - SEMANTIC, re-examination of prior finding)"
+      ],
+      "tool": "mojeek_exact_via_exa_fetch + exa_semantic",
+      "result": "BEARER_UNRELATED_FIELD",
+      "evidence": "Mojeek exact: 10 hits, no real person named Rimhall - 'Rimhall & The Valley of the Loremasters' (an Illwinter Dominions game map), 'Rimhallen' a sports hall at Vuollerim (vuollerimsk.com), 'Rimhal-li' a village in Panmun-guyok, North Korea, 'Rimhalsyah' an Indonesian given name, and Traci/Coral BRIMHALL (a different surname). '\"Rimhall\" surname genealogy' returned 0. SEMANTIC re-examination of the prior US finding confirms it: 'RIMHALL, GEORGE HENRY' and 'RIMHALL, GEORGE WASHINGTON' in 'Pioneers and prominent men of Utah'; 'Rimhall Jack r109 Phillips cir' in Hill's Charlotte (Mecklenburg County, N.C.) City Directory 1962; 'J. E. RIMHALL' in an 1875 Chicago Tribune classified; 'Rimhall Street' in a US city directory.",
+      "verdict": "RECORDED",
+      "orchestrator_note": "Two independent reasons this is not a kill. First, domain: 19th-century Utah settlers, a 1962 Charlotte resident and an 1875 Chicago advertiser are as far from modern Swedish ethnology as a bearer can get. Second, provenance: these are very likely OCR corruptions of Brimhall/Bramhall, not genuine Rimhalls - the BYU Utah Supreme Court brief in the same result set renders 'BRIMHALL' as 'RIMHALL' in its own OCR layer within a single document, and the Utah pioneer listing sits inside a documented Bramhall-Brimhall family record. The prior finding is upheld as accurate but harmless."
+    },
+    {
+      "name": "Barbro Malmryd",
+      "kind": "person_full_name",
+      "fictional_role": "essäist (essayist), byline",
+      "unit": "las-b15-003",
+      "queries": ["\"Barbro Malmryd\" (Mojeek exact)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "NO_BEARER",
+      "evidence": "Mojeek: 'There were no exact matches for \"Barbro Malmryd\"' and 'Did you mean: barbro malmedy'. The single fallback hit was a StayFriends school-alumni page.",
+      "verdict": "CLEAR"
+    },
+    {
+      "name": "Malmryd",
+      "kind": "surname",
+      "fictional_role": "Swedish essay writing / literary culture (byline)",
+      "unit": "las-b15-003",
+      "queries": ["\"Malmryd\" (Mojeek exact)", "\"Malmryd\" författare essäist (Mojeek)", "\"Jonas Malmryd\" (Mojeek exact, control)"],
+      "tool": "mojeek_exact_via_exa_fetch",
+      "result": "BEARER_UNRELATED_FIELD",
+      "evidence": "Mojeek: 11 exact hits. Real bearers: Caisa Malmryd Olander, planeringsarkitekt at Radar arkitektur (radararkitektur.se); Jonas Malmryd, Göteborgs Stad, presenting on geofencing and digital traffic rules (drivesweden.net, saferresearch.com - 4 exact hits, matching the known prior finding); Annika Malmryd, credited as 'rektor' in a film listing (filmateljen.com); Gösta Malmryd (Lidköping alumni listings). The domain-narrowing query '\"Malmryd\" författare essäist' returned 'Results 0 to 0 from 0'.",
+      "verdict": "RECORDED",
+      "orchestrator_note": "The prior finding is upheld and the domain distance is real, as asked. Every real Malmryd works in an administrative or technical field - urban planning, municipal traffic engineering, school administration. The fictional Barbro Malmryd is a literary essayist bylining a cultural essay on name-day etiquette. There is no author, essayist, critic, journalist or publisher named Malmryd anywhere in the index, and the targeted författare/essäist query is empty. Not a same-domain bearer."
+    }
+  ],
+  "out_of_scope_generics": [
+    {
+      "name": "Ekbacken",
+      "unit": "las-b15-002",
+      "note": "Generic Swedish place name used inside the invented municipality of Vässlinge. Not an invented entity - the generator's note already records it as unverified and generic. No law-16 exposure: a common Swedish toponym element cannot collide with a real bearer in the way an invented coinage can. Not swept."
+    },
+    {
+      "name": "Kyrkgatan",
+      "unit": "las-b15-002",
+      "note": "Generic Swedish street name ('Church Street'), present in most Swedish towns. Same reasoning as Ekbacken. Not swept."
+    }
+  ],
+  "limitations": [
+    "WebSearch (rung 1) was unavailable for the entire sweep; the primary oracle is Mojeek, an independent crawler with a smaller index than Google, so zeros are 'no exact bearer in an independent full-text index' rather than proof of universal non-existence.",
+    "Mojeek's Swedish-language coverage is thinner than its English coverage, so the las-* zeros carry somewhat less weight than the elf-* zeros.",
+    "No national trade register, Companies House, Ordnance Survey gazetteer or Swedish Lantmäteriet gazetteer was queried directly - only open-web exact-phrase search.",
+    "Rung-3 Exa results are SEMANTIC and were used only for the three named prior-finding re-examinations (Quarnley, Rimhall), never as primary evidence for a CLEAR verdict.",
+    "This sweep checked named entities only. It is not a passage-level plagiarism probe; no distinctive-phrase sweep was run."
+  ],
+  "files_edited": "NONE. No candidate file was modified. This sweep is read-only apart from writing this one file."
+}
