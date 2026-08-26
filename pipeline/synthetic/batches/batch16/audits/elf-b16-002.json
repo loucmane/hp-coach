@@ -1,0 +1,20 @@
+{
+  "candidate_id": "elf-b16-002",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Paragraph 3 still carries a residue of the round-2 repair: the sentence that supplies the 'though' counter-evidence argues against WITHHOLDING an answer, while the counterfactual it is set against is ADDING half a sentence to one, and the bridging step is never stated in the passage.",
+      "evidence": "Passage, para 3: 'Half a sentence about what the landmarks are now would have cost nothing and saved the twenty minutes. Here, though, a shrug is heard as ___(3)___, and the town will take being wrong over being thought cold. ___(4)___, an answer is always produced, and it comes at the speed of a reflex.' The gapped sentence's subject is 'a shrug' — the gesture of not answering — but nothing in the repaired counterfactual proposes not answering; it proposes a fuller answer. generator_meta.repair_log[0].edits[1].note concedes the missing link explicitly: 'a reflex has no room for half a sentence' — an inference the passage does not make. The pre-repair counterfactual it replaced ('Admitting to not knowing would have cost nothing and saved the twenty minutes') is the one the shrug sentence was written to answer.",
+      "why": "Row 1/5 of the integrated checklist (passage internal consistency after a correction): the repaired sentence and the untouched sentence after it are now arguing about different acts, so the 'though' reversal is carried by reader inference rather than by the text. It does not touch any key — gap (3) locks on the in-sentence 'thought cold' anchor and gap (4) on the causal relation to 'an answer is always produced' — so it is a prose seam, not a correctness break, and MINOR_NOTES remains the right integrated verdict."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The q4 option-set gloss overstates the uniformity of the set: 'Conceivably' is an epistemic stance adverb, not a connective, which the same rationale asserts three sentences later.",
+      "evidence": "questions[3].rationale: 'All four options are formal sentence-initial adverbs of the same class and the same Con- shape' vs, in the same rationale, 'Conceivably = wrong_logic and the deliberate hedge trap: it frames the clause as a possibility the writer is entertaining'. generator_meta.gap_type_map labels gap 4 'connective' and gap_pos_map 'sentence-initial connective adverb', a description 'Conceivably' does not satisfy.",
+      "why": "The teaching payload asserts a shared class that does not hold at the level the gap type names (connective); it holds only at the looser level of sentence adverb. The claim is imprecise rather than false — all four are grammatical sentence-initial adverbs in the slot, and the hedge trap is intentional and correctly labelled — so it does not overturn the recorded MINOR_FIXES verdict."
+    }
+  ]
+}
