@@ -683,3 +683,25 @@ Svara fritt. Exempel:
 - **`avvisa las-b14-002`** — enheten pensioneras och regenereras i batch15.
 
 Blandat svar går bra: en rad per enhet, plus en rad per batchövergripande punkt.
+
+---
+
+## ÄGARDOM (2026-08-26)
+
+**»godkänn alla utom elf-b14-001 och las-b14-001, ändra enligt rekommendation«**
+
+- elf-b14-002, elf-b14-003, las-b14-002, las-b14-003: **GODKÄNDA** som de står.
+  las-b14-002 q3: skriftlig disposition per rekommendationen — den formella
+  G-STEM-lutningen (absolutifierad tvilling C mot uppmätt D) bedöms som
+  avsiktlig distraktorarkitektur; C:s absoluta anspråk saknar textstöd och
+  D är unikt försvarbar. Bjärnhult behålls; posten stryks ur registret.
+- elf-b14-001: **ÄNDRA** enligt rekommendation — Q1/D → "where the channel
+  is narrow"; "a relay" → "re-lay"; "35 metres" → "thirty-five metres"
+  (ägarens lean bekräftad i domen). Omgrindning: G-KEY×2 + G-DISTRACTOR +
+  G-ENG×3 + G-REGISTER + mek + ny granskning.
+- las-b14-001: **ÄNDRA** enligt rekommendation — båda mynningarna (q3/D +
+  q4/D) skrivs om; "fyrtiotvå år i följd"-motsägelsen åtgärdas. Omgrindning:
+  G-KEY×2 + G-DISTRACTOR + G-SPRÅK×3 + mek + ny granskning.
+- Batchvida punkter godkända, inkl. retroaktivt godkännande av
+  granskningsomkodningen (punkt 4c). Severitetskontraktet i auditinstruktionen
+  kvarstår som operativ mildring för kommande batcher.

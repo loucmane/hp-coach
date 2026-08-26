@@ -695,3 +695,15 @@ grindar (inklusive M-ECHO, indexerad mot hela den skeppade banken) kördes på
 de exakta skeppningsbytena i `candidates-final/` efter att paketet skrevs —
 **42/42 pass, noll fynd**. Rekord: `verdicts/verdicts-mech-final.jsonl`.
 Punkten kvarstår i texten ovan som historik; ingen mildring behövs längre.
+
+---
+
+## ÄGARDOM (2026-08-26)
+
+**»godkänn alla«** (domen »godkänn alla utom elf-b14-001 och las-b14-001«
+undantar endast batch14-enheter). Samtliga sju enheter **GODKÄNDA** utan
+textändringar. Per rekommendationerna verkställs: (1) separat
+exaktfras-sökning över batchens uppfunna fullnamn (körs 2026-08-26, rekord
+läggs i batchen); (2) förnamnsunikhet framåt som bankpolicy — registret i
+kommande batchbriefer listar förnamn separat; (3) närhetsdispositionskravet
+och severitetskontraktet förs in i kommande batchers instruktioner.
