@@ -1,0 +1,41 @@
+{
+  "candidate_id": "las-b16-003",
+  "audit_verdict": "REFUTED",
+  "findings": [
+    {
+      "severity": "major",
+      "stage_challenged": "integrated",
+      "claim": "Q2 (the huvudbudskap_syfte item) is still blind-solvable from q:1's stem plus option form alone. The batch's own blind gate recorded this as severity 'major' on the pre-repair unit; the repair round replaced only the option that the SEPARATE G-DISTRACTOR flag named, swapped in a C that q:1's stem defeats at least as cleanly, left the D/stem lexical echo untouched, never re-ran G-STEM in V-FINAL, and carried the denial 'No cross-question corroboration' forward into the shipped file unchanged.",
+      "evidence": "report.json las-b16-003 flags[0], gate G-STEM, target q:2, severity 'major': \"PARTIALLY plus cross-question corroboration: A ('Varje by har medvetet bevarat') and B (scope creep from pole form to the whole midsommarfirande) are eliminable as overclaims on form alone, and q:1's stem presupposes a real saved-frame versus unsaved-frame contrast that defeats C's 'mätningar räcker inte'. D also echoes the sibling stem's 'sparade stommen' vocabulary, leaving it essentially decided blind. Blind pick D.\" | The candidates-corrected -> candidates-final diff changes ONLY q:2 option C, from \"Malmgärdes mätningar räcker inte för att säga varför stängerna i de tre byarna fick olika form.\" to \"Luckorna i Malmgärdes material gör att skillnaden mellan byarna inte går att belägga.\" — i.e. the object of the G-DISTRACTOR flag, not the G-STEM one. | The new C is defeated by q:1's stem MORE directly than the old one: q:1 asks \"Vad hände med stångens form i byar som inte sparade stommen?\", which presupposes that the text does document a determinate, per-village-group outcome, flatly contradicting \"skillnaden mellan byarna inte går att belägga\". | The echo the gate named is untouched: q:1 stem \"...i byar som inte sparade stommen\" vs q:2 key D \"Formen bars vidare av en stomme som sparades...\". | verdicts-vfinal/ contains only verdicts-gdistractor.jsonl, verdicts-gkey-1.jsonl and verdicts-gkey-2.jsonl — no G-STEM re-run, so the major flag was never re-adjudicated against the repaired option set. | Independent blind replication on the CURRENT text: A is a universal + intentionality overclaim (\"Varje by har medvetet bevarat...\" plus an unmotivated extra origin \"som ett arv från gamla sockengränser i trakten\"); B is an absolute scope overclaim (\"förblev midsommarfirandet där oförändrat från år till år\"); C is a nihilistic \"nothing can be established\" claim killed by q:1's stem presupposition; D is the only two-part, modally qualified survivor (\"kunde läggas om ändå\"). Blind pick D at ~100%. | The shipped generator_meta.self_blind_solve nonetheless still asserts: \"No cross-question corroboration: Q1 tests the drift direction, Q2 the whole-text mechanism; neither key resolves the other's option set.\"",
+      "why": "'No cross-question leak' is an explicit integrated-review criterion, and 'could a test-wise student score without reading' is the pedagogy criterion. A huvudbudskap_syfte item — the whole-text payoff question, sitting on the same page as its sibling in a real provpass — that is answerable without the passage is not a minor note. The integrated stage recorded MINOR_NOTES over an open, gate-recorded major of exactly its own remit, while the shipping artifact's metadata affirmatively denies the defect; the repair round's narrow C-swap plausibly caused the denial to be carried forward unre-tested. Correct disposition is a blocking repair of q:2 (re-cast A and B so they are not form-eliminable, and re-cast C so it does not collide with q:1's stem presupposition), or a written adjudication that rebuts the G-STEM finding on the repaired text — neither exists."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "generator_meta.self_blind_solve contains a single-quoted phrase presented as passage text that appears nowhere in the passage.",
+      "evidence": "self_blind_solve: \"Q2=D uniquely (A is contradicted by 'ingen kunde säga varför' + the keeper's quote...)\". The passage contains no such string; the nearest text is \"Frågar man varför blir svaren undvikande. Så har den sett ut, säger folk, och längre än så går svaren sällan.\" The same overread is repeated unquoted in the q:2 rationale: \"'medvetet' motsägs både av att ingen i byarna kunde säga varför\".",
+      "why": "The integrated checklist requires every quoted phrase to appear verbatim in current passage/option text. Beyond the verbatim rule, the paraphrase upgrades evasiveness (unwillingness) into inability, which is a slightly different — and stronger — claim than the passage licenses."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The trap label on q:1 option A does not name the actual trap, and the unit's own rationale gloss contradicts the label it uses.",
+      "evidence": "generator_meta.planted_traps[\"1\"][\"A\"] = \"reversed_causality\"; the q:1 rationale reads \"A är reversed_causality – den vänder på riktningen och gör konvergens till divergens\". Option A is \"Den avlägsnade sig från grannbyns form.\" — a reversal of the DIRECTION OF CHANGE relative to \"tycks ha närmat sig formen i den närmaste by\", not a swap of cause and effect. Nothing in A inverts a causal ordering.",
+      "why": "'Trap labels name the actual trap' is an integrated criterion, and the label is the teaching payload a student reads. The correct label is a polarity/direction reversal (opposite_direction), not reversed_causality; the rationale's own explanatory clause already states the right thing while the label word says otherwise."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The student-facing glossary line for 'stomme' contradicts the passage's own appositive definition on two points.",
+      "evidence": "Glossary: \"stomme = den träställning som midsommarstången kläs på\". Passage: \"Där stommen – stången med sina tvärslåar och järnringar – togs in och sparades till nästa sommar...\". (1) The glossary says trä-ställning while the passage's definition explicitly includes \"järnringar\". (2) The glossary treats the midsommarstång as something dressed ONTO the stomme, while the passage says the stomme IS \"stången\" itself; cf. also \"Stommen bär bara skelettet.\"",
+      "why": "Both texts are Swedish product strings a student reads side by side, and they define the unit's central term incompatibly. Small, but it is precisely the kind of internal mismatch a language/integrated read is meant to catch, and it slightly muddies the mechanism q:2's key depends on."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The q:1 key both de-hedges and de-qualifies the passage sentence it paraphrases, creating an avoidable complaint surface on an item whose hedge_map celebrates the key as 'flat'.",
+      "evidence": "Passage: \"Och de gled inte hur som helst, utan tycks ha närmat sig formen i den närmaste by som hade en sparad stomme att gå efter.\" Key B: \"Den kom att likna grannbyns stång.\" The key drops \"tycks ha\" (asserts what the text only says seems to be so), upgrades \"närmat sig\" (approached) to \"likna\" (resemble), and replaces \"den närmaste by SOM HADE EN SPARAD STOMME\" with the unqualified \"grannbyns\" — the nearest neighbour village need not be the stored-frame one. hedge_map states \"key B is a flat unhedged assertion\" as a virtue.",
+      "why": "B remains the single best option (A inverts the direction, C belongs to the stored-frame group, D is unsupported), so this does not overturn the key. But a complaining student has a real quotation to point at, and the hedge-balance metadata treats the de-hedging as a design win rather than a residual — worth a written disposition rather than silence."
+    }
+  ]
+}

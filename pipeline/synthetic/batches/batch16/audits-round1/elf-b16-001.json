@@ -1,0 +1,41 @@
+{
+  "candidate_id": "elf-b16-001",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The unit's declared short-breath item (Q2) breaches addendum rule 5's \"options ≤8 words\", and because Q2 is the only short-stem item in the unit, the unit has no rule-5-conforming short-breath question.",
+      "evidence": "BRIEF-ADDENDUM.md rule 5: \"in any multi-question unit at least one short-breath question (short stem, options ≤8 words). ELF longs too, where natural.\" Q2 option word counts: A \"They carry the phenols through to the bunches.\" = 8; B \"They release the phenols again as they dry.\" = 8; C \"They are stripped off before a smoke-affected harvest.\" = 8; D (key) \"They take up the phenols and keep them there.\" = 9. The unit's own Q2 rationale concedes the breach: \"this is the unit's short-breath item (short stem, options of eight or nine words)\". No other question has options under 12 words.",
+      "why": "Rule 5 is a binding form rule the language stage is positioned to catch, and the generator states the non-conformance in plain text in the shipped rationale rather than fixing it. The breach is one word on one option and rule 5 carries a \"where natural\" hedge for ELF longs, so it does not justify rejecting the unit — but a CORRECTED verdict that left a self-confessed rule breach in place is incomplete."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The metadata's M-TELL self-certification — \"The key is never the strict-longest option in any of the five questions (M-TELL 0/5)\" — is true only under character count and false under word count at Q2, where the key is the unique longest option.",
+      "evidence": "generator_meta.key_letters: \"The key is never the strict-longest option in any of the five questions (M-TELL 0/5).\" Q2 word counts: A=8, B=8, C=8, D=9, key=D. (By character count Q2's longest is C at 54 chars vs D at 45, which is why the mechanical M-TELL gate recorded \"pass\".)",
+      "why": "\"Pick the longest option\" is the canonical test-wise heuristic the pedagogy stage exists to defeat, and Q2 is the one item where the four options are otherwise length-matched, which makes the single extra word visible. The tell is weak in practice — a student eyeballing length sees C (\"smoke-affected harvest\") as the bulkiest — so it does not make the item solvable without reading, but the metadata claim was accepted at face value rather than checked against the metric that matters to a solver."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Paragraph 5 contains a number that will not reconcile: the shed-ferment test is said to require ten days but is described as being started one week before picking.",
+      "evidence": "Passage ¶5: \"Growers ferment five kilograms from each block in a shed the week before picking, and taste it warm out of a jar, because ten days of that is the shortest honest test anybody has. It is the sensible answer, and it is still too slow for a fire that comes in the last fortnight.\" Seven days of lead time cannot contain a ten-day minimum test, and the following sentence leans on the duration figure to argue the method is too slow.",
+      "why": "\"A number that won't reconcile\" is an explicit integrated-review category, and this one sits in the paragraph that supplies Q5's key evidence (\"why the district now ferments five kilograms from each block in a shed before it will commit to picking\"). It stays minor because no question, key or rationale turns on the timeline — no student can be mis-keyed by it — but it is a live inconsistency the whole-unit sweep should have flagged."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The Q1/D rationale misdescribes how the passage defeats the distractor: it says the passage states the opposite, when the passage in fact states an absence of any attribution.",
+      "evidence": "Q1 rationale: \"D = invented attribution – the passage says the opposite, that Pemberdine \\\"will not build on a single pair\\\"\". Option D reads \"Pemberdine put the higher of the two washed readings down to ash blown back onto the bunches.\" The passage says only \"One washed lot even read a little higher than the block beside it, though Pemberdine will not build on a single pair.\" Declining to build on a pair is not the opposite of attributing the reading to blown-back ash; it is the refusal to attribute it to anything.",
+      "why": "The rationale is the teaching payload, and it teaches the wrong refutation move here — a student following it would look for a contrary attribution in the passage and not find one. The trap label (\"invented attribution\") and the cited sentence are both correct, so the item still works and the key is unaffected; only the one-clause gloss is imprecise."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The originality_note states a false provenance fact about the intra-batch name collision: it says sibling unit gen-elf-short-2 took the surname 'Brindlow' for its byline, but that unit never bore the name and its own log records the opposite causal story.",
+      "evidence": "elf-b16-001 originality_note: \"a sibling batch16 unit (gen-elf-short-2) independently took 'Brindlow' for its byline, and a duplicate surname inside one batch is precisely what addendum rules 8-9 and law 13 exist to prevent, so this unit renamed rather than ship the clash.\" gen-elf-short-2 is \"Sixpence a Night\" (= elf-b16-004); its fictional_source byline is \"Aveline Hemblow\", 'Brindlow' does not appear in its passage, and its own note says 'Brindlow' was \"rejected late under law 13, because at the time of this pass the sibling batch16 unit gen-elf-long held the surname for its chemist, Corin Brindlow; gen-elf-long has since renamed that character Corin Pemberdine, so no batch16 unit now bears Brindlow\".",
+      "why": "The two units' records mutually blame each other for holding the name; the artifact evidence shows this unit's version is the wrong one. The substantive outcome is correct — no batch16 unit ships 'Brindlow', and Pemberdine/Quennerly/Kettlestrand appear in no sibling passage — so nothing student-facing is harmed. It stays minor, but the originality_note is the record V-FINAL name re-verification is supposed to re-run from, and one of its stated facts does not survive checking."
+    }
+  ]
+}

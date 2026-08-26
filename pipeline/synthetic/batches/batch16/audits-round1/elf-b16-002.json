@@ -1,0 +1,34 @@
+{
+  "candidate_id": "elf-b16-002",
+  "audit_verdict": "REFUTED",
+  "findings": [
+    {
+      "severity": "major",
+      "stage_challenged": "integrated",
+      "claim": "The shipped passage runs two incompatible diagnoses one sentence apart: paragraph 3 asserts that the answer given was correct, then immediately proposes 'admitting to not knowing' as the alternative that would have saved the same twenty minutes. Nobody in the passage lacks knowledge, so the hinge sentence of paragraph 3 rests on a premise the passage has already ruled out. Integrated's MINOR_NOTES (and pedagogy's MINOR_FIXES) shipped this untouched - the passage byte-string is identical across candidates/, candidates-corrected/ and candidates-final/, so no stage edited it.",
+      "evidence": "Passage, para 2: 'The landmarks are not picked for visibility; they are the points at which the person speaking has turned for thirty years. The route therefore comes out in the right order while the names on it stay private.' Passage, para 3, consecutive sentences: 'The cost is duller and is paid one person at a time: twenty minutes, a wrong turning, and the same answer at the same corner, because the answer was never wrong. Admitting to not knowing would have cost nothing and saved the twenty minutes.' The definite article in 'the twenty minutes' binds sentence 4 to the very case sentence 3 has just certified as not wrong. The following sentence compounds it: 'the town will take being wrong over being thought cold' - the town is said to accept being wrong two sentences after the text states 'the answer was never wrong'. Paragraph 4's own remedy is not an admission of ignorance either: 'A shopkeeper near the level crossing ... now comes out onto the pavement and points.' generator_meta.topic confirms the divergence between intent and execution: '...what the refusal to say \"I don't know\" costs the person who asked' - but the executed mechanism is untranslatable private landmark names, not ignorance.",
+      "why": "This is passage-level self-contradiction, squarely inside the integrated stage's mandate, and it is load-bearing rather than decorative: q3's rationale restates the flawed premise as established fact ('the sentence before it says that admitting ignorance \"would have cost nothing and saved the twenty minutes\"'). A student who reads carefully can object that there was nothing to admit, since the passage says the answer was never wrong and the answerer has turned at those corners for thirty years. It does not flip a key - 'hostility' remains the only option satisfying the 'thought cold' anchor - so it is not a blocker, but it requires a passage repair, not a note, which is a verdict higher than the MINOR_NOTES recorded."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The q2 rationale states a false uniqueness claim, and its own example noun refutes it: 'travel' is not the only English verb that takes a quality adverb to mean 'survives transfer to another context poorly'.",
+      "evidence": "q2 rationale: 'English has one verb that takes an adverb of quality to mean \"survives transfer to another context poorly\": wine travels badly, a joke travels badly.' A joke also translates badly / does not translate well, which is exactly the 'survives transfer to another context' frame. The unit's own NOTES.md states the narrower, true version instead: 'Only *travel* carries the figurative \"transfers well or badly\" reading' among the four options.",
+      "why": "The rationale is the teaching payload, and pedagogy review's stated job is fact-checking every factual claim in it. The claim is option-irrelevant (no option is 'translate'), so nothing about the key or the distractor set changes - hence minor - but the sentence as written teaches a false generalisation about English."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "generator_meta.typography_note makes a false claim about the shipped file: it says the spaced en dash appears at the byline only, but a second spaced en dash appears inside generator_meta.key_letters.",
+      "evidence": "typography_note: 'Spaced en dash (U+2013) for the byline only; no em dash (U+2014) anywhere in the file, per batch16 addendum rule 3.' Byte scan of candidates-final/elf-b16-002.json finds exactly two U+2013: '\\n\\u2013 Kester Orrenshaw, from a monthly column' and key_letters: 'D / B / C / A / B \\u2013 all four letters used, no column...'. gen-elf-cloze.NOTES.md states the accurate version: 'the only en dashes (U+2013) in the file are the byline marker and one in generator_meta.key_letters'.",
+      "why": "Metadata-vs-artifact consistency is an integrated-stage check, and the note's own scope word is 'in the file'. Student-facing text is unaffected (one en dash, byline only), and no em dash exists anywhere, so this is documentation drift rather than a content defect."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The originality_note's audit trail does not support its own conclusion: the people-search query it quotes is for a different surname than the name it certifies, while the note simultaneously asserts that it claims no unrun check.",
+      "evidence": "originality_note: \"(1) 'Kester Orrenshaw' - Exa people search 'category:people \\\"Kester Ollerby\\\"' and a follow-up Exa query '\\\"Orrenshaw\\\" surname person'. The people search surfaced only other Kesters ... confirming Kester is a real but uncommon English given name with no bearer of the target full name.\" A query for 'Kester Ollerby' cannot establish 'no bearer of the target full name' for 'Kester Orrenshaw'. The same note closes: 'NO CLAIM IN THIS NOTE ASSERTS A CHECK THAT WAS NOT RUN'.",
+      "why": "The note exists to make the name sweep auditable, so an inference presented as a search result is a real defect in it. Mitigating: the surname query was run and returned a single private bearer ('Molly Orrenshaw'), the note is already 'FLAGGED FOR V-FINAL RE-VERIFICATION', and batch16/verdicts-vfinal/ contains only G-KEY files, so the flag is still open by design rather than falsely closed."
+    }
+  ]
+}
