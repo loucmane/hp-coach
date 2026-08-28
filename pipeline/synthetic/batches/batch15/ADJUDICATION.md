@@ -733,3 +733,17 @@ hämttransport — INTE semantik; kontrollfrågor validerade metoden). Utfall:
   vaktmästare — ofarligt), Tunemyr (koreograf, närmaste kulturella närhet).
 - Metodbegränsning: oberoende index (Mojeek), tunnare svensk täckning; nollor
   betyder »ingen exakt bärare i oberoende fulltextindex«.
+
+---
+
+## Tillägg 3 (orkestrator, 2026-08-28): mekanisk adjudicering körd i efterhand
+
+Stage 11:s formella maskineri kördes på slutbytena (inkl. Quennerby-bytet;
+enhetens blindark var föråldrat och byggdes om före läsningen — det gamla
+arket bar Padgham). Utfall, härlett av regel: **7× GODKÄNN_NOTED,
+kalläsarlösning 20/20, noll läsarblockerare; sex naturliga + en
+minor_friction (elf-b15-003:s täta facklexikon, samma kompression
+generatorn deklarerade).** Rekord: `reviews/adjudication.jsonl` +
+`adjudication-evidence/`. Läsarnot för registret: elf-b15-001:s 41+11=52
+av 63 går inte ihop synligt vid första läsning (ingen fråga berörs).
+ÄGARDOMEN av 2026-08-26 står oförändrad.

@@ -724,3 +724,23 @@ fynd 1, fyra ord, ingen omgrindning), grindliggaren stängd, kanonisk mek
 12/12 på slutbyten. G-REGISTER kördes ej för las-b14-001 (domens uppräkning
 utelämnade den; granskningen bedömer den substantiellt täckt — dokumenterat,
 VF4-N1). Fold: 6× VERIFIED_NOTES. **Promote: 6 PASS / 0 HOLD.**
+
+---
+
+## Tillägg (orkestrator, 2026-08-28): mekanisk adjudicering körd i efterhand
+
+Stage 11:s formella maskineri (färsköga-läsare på blindark → triagerad
+flaggfil → `adjudicate_fold.py`) kördes på slutbytena EFTER ÄGARDOMEN och
+dess verkställda reparationer. Utfall, härlett av regel:
+**6× GODKÄNN_NOTED, kalläsarlösning 27/27 mot nycklarna, noll
+läsarblockerare, samtliga enheter naturliga.** Rekord:
+`reviews/adjudication.jsonl` + `adjudication-evidence/`.
+
+Två aggregatnoter från läsaren (utanför enhetsnivån, för registret):
+(1) namnstock-eko — två Vendela i batchens LÄS-enheter (-001, -003) samt
+Karnstedt/Karnell och Sävlinge/Sävlången; ofarligt per enhet, en
+generatorsignatur i aggregat — förs till namnregistrets policyspår.
+(2) las-b14-002 och las-b14-003 delar identiskt nyckelmönster (C, A, D, B)
+— bekräftat mot nycklarna; noteras för nyckeldistributionen vid import.
+ÄGARDOMEN av 2026-08-26 står oförändrad; denna körning ändrar ingenting,
+den kompletterar bankens bevisbas till samma klass som batch 1–13.
