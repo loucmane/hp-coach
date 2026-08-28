@@ -1088,3 +1088,24 @@ Svara fritt. Exempel:
 Blandat svar går bra: en rad per enhet, plus en rad per batchövergripande punkt.
 Vill du att **lag 16-svepet, åttafrassvepet och M-ECHO** ska köras **före** import, räcker det
 att skriva `kör ut skulderna först`.
+
+---
+
+## Tillägg (orkestrator, 2026-08-28): mekanisk adjudicering körd
+
+Stage 11:s formella maskineri är nu kört på denna batch: färsköga-läsare
+(blindark, utan pipelinehistorik) → `adjudication-evidence/` per enhet,
+triagerad flaggfil (`adjudication-flags.json`: granskningsfynd + levande
+grindflaggor med ordagranna severiteter) → `adjudicate_fold.py` →
+`reviews/adjudication.jsonl`. Utfall, härlett av regel — inte av agent:
+
+**Samtliga sju enheter: GODKÄNN_NOTED. Kalläsarlösning 20/20 mot nycklarna.
+Noll läsarblockerare; alla enheter "makes_sense", naturlighet natural.**
+
+Foldens dispositionsregel (kodad, ej improviserad): grindkällade flaggor på
+en skeppad enhet är redan adjudicerade av batchpipelinen (promote släppte
+enheten med flaggan i protokollet) och ytar som anteckningar; endast
+icke-grindkällade majorer, läsarblockerare eller kalläsningsmissar
+eskalerar till ÄGARBLICK — inga fanns. ÄGARBLICK-punkterna ovan i detta
+paket kvarstår som ägarens beslutsyta; den mekaniska rekommendationen
+per enhet är GODKÄNN_NOTED.
