@@ -1278,3 +1278,60 @@ texten entydigt fel.
 Batch 17: **7/7 GODKÄNN_NOTED** — elf-b17-001…004, las-b17-001…003.
 Banktal efter denna dom: 313/313 kallösningar står kvar; batch 16- och
 batch 17-paketen väntar fortsatt på paketvisa ÄGARDOM-utslag.
+
+---
+
+## ÄGARDOM (2026-08-31): las-b17-003 passage — »komma runt« → »komma ifrån«
+
+**»ÄNDRA las-b17-003 passage«** — ändra den enhälligt språkflaggade raden
+»Det är svårt att komma runt.« till »Det är svårt att komma ifrån.« som en
+SEPARAT append-forward-dom genom befintlig adjudikationspipeline. Uppdatera
+ENBART passagen och det exakta rationale-citat som måste hållas synkront
+(questions[1].rationale citerar meningen ordagrant). Därefter omkörning
+enbart för denna enhet: språkgranskning, två oberoende blinda
+G-KEY-lösningar, G-DISTRACTOR, G-STEM, adversariell granskning, vikning och
+slutverifikation. Övriga enheter bytidentiska. Verkställs under bead
+**hpf-hzks**. Publicering är HOLD tills detta passerat och grenen
+avstämts mot origin/main med signerat publiceringshuvud.
+
+---
+
+## VERKSTÄLLD ÄGARDOM (2026-08-31): »komma runt« → »komma ifrån« — GODKÄNN_NOTED
+
+Utförd under bead **hpf-hzks**, som separat append-forward-dom.
+
+### Före / efter (passagen, stycke 4)
+
+- **FÖRE:** »Det är svårt att komma runt.« — enhällig G-SPRÅK-flagga
+  (anglicism/transitivitet; »komma runt« kräver objekt på svenska).
+- **EFTER:** »Det är svårt att komma ifrån.« — kanonisk svensk idiomatik
+  för ett ofrånkomligt medgivande. Citatet i Q2:s rationale synkroniserat
+  ordagrant (inklusive punkt innanför citattecknen).
+
+Exakt fyra ändrade fält, bytverifierat mot förreparationsläget: passagen
+(ett ord i en mening av 28), questions[1].rationale (samma ordbyte i
+citatet), self_blind_solve (strikt append-not), repair_log (en ny post).
+
+### Omkörda kontroller (enbart denna enhet)
+
+| Kontroll | Resultat |
+|---|---|
+| Mech-gates | 5/5 pass (M-SCHEMA, M-BANDS, M-TELL, M-FORM, M-PLAGIARISM) |
+| G-KEY ×2 blind (oberoende lösare) | Båda valde **C, A**; `gkey_resolve`: 4 verdicts, 0 kills |
+| G-DISTRACTOR | pass/pass — fällningen av Q2/D FÖRSVAGAS INTE av ordbytet; starkaste motläsningen (»Det«-anafor som återhävdande) avvisad på Men-pivoten m.fl. grunder |
+| G-STEM (enbart stammar) | flag/flag PARTIALLY_ANSWERABLE — på ett ark BEVISAT bytidentiskt med förra rondens pass/pass: bedömarvarians, inget introducerat läckage; residualen (B/C-antonympar i Q1, frågor/påståenden-axeln) hålls på note-nivå i auditen |
+| G-SPRÅK ×3 | **pass/pass/pass** — den korrigerade meningen idiomatisk; förra rondens enhälliga fynd HELT LÖST; endast note-fynd |
+| Adversariell granskning | Nyutfärdad audit: **CONFIRMED_NOTES, 0 majors** (9 fynd: 3 minor/4 note/2 info); »Det«-anafor-attacken avvisad på fyra oberoende grunder; unik lösbarhet står under varje upplösning av anaforen |
+| V-FINAL-vikning | las-b17-003 VERIFIED_NOTES; promote `--require-clean` **PASS 7 / HOLD 0** |
+| Adjudikationsvikning (×2) | **7× GODKÄNN_NOTED**, bytreproducerbar; övriga sex poster identiska |
+| Bytidentitet övriga enheter | Alla sex övriga kandidater bytidentiska mot commit 6811724 |
+| Nya digestar | 18 artefakter i `DIGESTS-agardom2-hpf-hzks.json` |
+
+### Slutstatus
+
+Batch 17: **7/7 GODKÄNN_NOTED**, nu utan kvarvarande språkresidual i
+passagen. Kvarstående noterade residualer är samtliga minor/note/info
+(rationale-formuleringar, G-STEM-axeln, historisk bokföringstypo
+»dateradnot«) — ingen påverkar nyckel eller unik lösbarhet. Publicering
+förbereds under samma bead: avstämning mot origin/main, signerat
+publiceringshuvud, normala hooks, PR.
