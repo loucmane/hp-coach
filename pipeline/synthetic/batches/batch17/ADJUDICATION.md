@@ -1109,3 +1109,99 @@ icke-grindkällade majorer, läsarblockerare eller kalläsningsmissar
 eskalerar till ÄGARBLICK — inga fanns. ÄGARBLICK-punkterna ovan i detta
 paket kvarstår som ägarens beslutsyta; den mekaniska rekommendationen
 per enhet är GODKÄNN_NOTED.
+
+
+---
+
+## Tillägg (orkestrator, 2026-08-30): extern Sol-evidens invikt — las-b17-003 lyft till ÄGARBLICK
+
+Den oberoende evidenskörningen (bead hpf-fk02, körning
+hpf-fk02-batch17-shadow-20260830-001, subjekt exakt f2968fcfbeb012fd1b69247ae3b2c25a3c1cd499)
+är nu invikt i stage 11 via den spårade importvägen
+(`gates/scripts/ingest_external_evidence.py` → `adjudication-flags.json` →
+`adjudicate_fold.py`, som förblir enda skrivare av `reviews/adjudication.jsonl`).
+Vikningen är deterministisk (två körningar bytidentiska) och gav EXAKT ett
+evidensdrivet delta: **las-b17-003: GODKÄNN_NOTED → ÄGARBLICK.** Övriga sex
+enheter oförändrade post för post. Granskarevidens är rådgivande — ingen
+ägardom är fattad här.
+
+### Proveniens
+- Adversariell Sol-rapport (fynd AA-B17-001, severity critical):
+  SHA-256 `36f566a48f486e84803e8ee108ec7fd7a35004142270647b84e076c90495536c`
+- Blind Sol-rapport (motbevis, 20/20 mot förseglade nycklar):
+  SHA-256 `187c72b5e1033371ae32c515749b7a674ce78cc476ccd0199e8da71e12045a6f`
+- Jämförelse (domain_verdict=null):
+  SHA-256 `df89107fb1bd31346488f8622f0c6c7a1f9c7b41ad4352e8c3eec026d3684371`
+- Evidenssökvägar oföränderliga under `/home/loucmane/gascity/evidence-runs/hpf-fk02-batch17-shadow-20260830-001/`
+
+### Texten (fullständig passage)
+
+Till varje serie skolplanscher hörde ett häfte. Handledningen var sällan mer än tjugo sidor lång, och den talade om för läraren vad som skulle göras med bilden. Häftet ingick i priset för serien och hade inget eget nummer i förlagets katalog. Häftena samlades inte. De följde med planschen till klassrummet och blev liggande i katederlådan, och när skolorna gjorde sig av med planscherna på sextiotalet gick häftena först.
+
+Vilgot Bråtemo har letat i trettio år och har nu drygt fyrahundra av dem, från 1890-talet till 1958. Han hittar dem på loppmarknader och i lådor som ingen har öppnat sedan skolan lades ner. Jag har fått läsa åttiotre stycken, alla från de två förlag som dominerade marknaden. I ett enda av dem har en lärare skrivit något i marginalen, och det som står där är ett datum.
+
+Ämnena ligger stilla genom hela materialet. Tonen gör det inte. I de tidiga naturhäftena består det mesta av frågor som läraren ska ställa till klassen – ”Vad har djuret för fötter?”, ”Var i bilden är det sommar?” – och svaren står sällan utskrivna. Det fanns gott om sådant att fråga om i bilderna. I utkanten av en enda plansch över en bondgård går det att räkna till fyrtio ting som inte har med huvudmotivet att göra. I häftena från trettio- och fyrtiotalet har frågorna blivit färre och de färdiga beskeden fler. Räknat på de åttiotre häftena sjunker andelen frågor från ungefär två tredjedelar till knappt en tredjedel. I historieserierna såg det annorlunda ut. Där dominerade beskeden redan i de tidigaste årgångarna, och andelen frågor förblir liten hela vägen.
+
+Bråtemo tycker att jag läser in för mycket. Ett häfte är en önskan, säger han, och ingen vet vad läraren faktiskt sade när dörren var stängd. Det är svårt att komma runt. Men bilderna förändras i takt med texterna: de sena planscherna har färre småting i utkanterna, mindre att peka på som inte redan är förklarat. Bild och häfte är förstås inte oberoende av varandra, eftersom samma förlag gjorde båda. Just därför säger de något, nämligen att förändringen var avsiktlig.
+
+Det sista häftet i Bråtemos samling är från 1958 och hör till en plansch om mjölkhantering. Det innehåller elva påståenden, en ordlista och en enda fråga. Den står allra sist, efter ordlistan, och den gäller vad klassen har lärt sig.
+– Alfhild Bräddlund, essäist
+
+skolplansch = stor bild på väv som hängdes upp i klassrummet under lektionen
+handledning = häftet med anvisningar som följde med en planschserie
+
+### Frågan i sin helhet (q2)
+
+**Vilket påstående överensstämmer bäst med texten?**
+
+- **A**: Planschen blev med tiden mer ett stöd för lärarens besked än ett underlag för frågor. **◀ NYCKEL**
+- **B**: Bråtemos samling är värdefull främst därför att häftena trycktes i mycket små upplagor och sällan bevarades.
+- **C**: Handledningarnas frågor blev med tiden fler, medan planscherna samtidigt förenklades.
+- **D**: Häftena kan knappast säga något om hur planscherna faktiskt användes i klassrummen.
+
+### Exakt textstöd för de två läsningarna
+
+**För A (nyckeln)** — hela textens båge: handledningens syfte (¶1); den mätta
+förskjutningen »frågorna blivit färre och de färdiga beskeden fler … andelen
+frågor [sjunker] från ungefär två tredjedelar till knappt en tredjedel« (83
+häften); bildledet »de sena planscherna har färre småting i utkanterna, mindre
+att peka på som inte redan är förklarat«; och slutsatsen »Just därför säger de
+något, nämligen att förändringen var avsiktlig«. Bäst-överensstämmelse över
+hela essän.
+
+**För D (utmanaren)** — direkt källstöd + medgivande: Bråtemo: »Ett häfte är en
+önskan … ingen vet vad läraren faktiskt sade när dörren var stängd«, följt av
+berättarens eget »Det är svårt att komma runt.« Vändningen »Men bilderna
+förändras i takt med texterna … Just därför säger de något« bemöter
+DESIGN-slutsatsen (avsiktlig förändring) — den motsäger inte D:s smalare
+anspråk om FAKTISK klassrumsanvändning. D är alltså delvis medgiven, inte
+motbevisad.
+
+### Blindresultatet (motbevis)
+Sol:s nyckelblinda lane löste 20/20, inkl. just denna fråga = **A** med hög
+konfidens (»…så bilden blev mer stöd för lärarens förklaringar än underlag för
+frågor«). Färskögonläsaren och Fable-baslinjen valde också A. Frågan är
+lösbar — tvisten gäller unik lösbarhet.
+
+### Befintlig residualnot (redan deklarerad)
+ASSEMBLY.md/generatorns NOTES §9 förutsade exakt detta: »Q2/D … är det
+alternativ som mest sannolikt drar MULTIPLE_DEFENSIBLE — titta där först.«
+Sol-fyndet återupptäcker och skärper den deklarerade residualen; det
+motsäger G-DISTRACTOR-friandena i båda ronderna, som vilade på att
+essä-argumentet besegrar D.
+
+### Tillgängliga ägardomar
+1. **ÄNDRA (rekommenderad)** — skriv om q2/D så att passagen MOTSÄGER den i
+   stället för att delvis medge den. Riktning: låt D *hävda* det texten
+   uttryckligen förnekar att någon kan veta (t.ex. att häftena *visar* hur
+   lärarna faktiskt använde planscherna) — då fäller Bråtemos egen mening
+   alternativet demonstrerbart. Därefter omkörning ENBART för denna enhet:
+   språkpass på nya optionen, G-KEY×2 blind, G-DISTRACTOR, G-STEM,
+   adversariell kontroll, vikning och slutverifikation.
+2. **GODKÄNN som den står** — med skriftlig disposition att »bäst«-stemmet
+   bär entydigheten (alla blinda lösare valde A); accepterar att en
+   källmedgiven distraktor lever kvar mot huskriteriet att en distraktor ska
+   vara demonstrerbart fel, inte bara svårare.
+3. **AVVISA q2** — regenerera frågan från passagen.
+
+Fri form gäller som alltid: godkänn / ändra enligt rekommendation / avvisa.
