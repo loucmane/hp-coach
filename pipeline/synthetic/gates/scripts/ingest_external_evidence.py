@@ -116,13 +116,70 @@ def ingest(evidence_path: Path, flags_path: Path) -> str:
     return "ingested"
 
 
+RESOLUTION_REQUIRED = {
+    "schema", "identity", "ruling", "ruling_source", "repair_commit",
+    "repaired_report_sha256", "resolution_note",
+}
+RESOLUTION_SCHEMA = "hpfetcher-external-evidence-resolution.v1"
+
+
+def resolve(resolution_path: Path, flags_path: Path) -> str:
+    """Re-class an ingested external finding after an owner ruling + repair.
+
+    The original entry is preserved verbatim inside `resolved.original`; only
+    the live severity is downgraded to "note" so the deterministic fold stops
+    escalating a finding whose subject bytes the owner has since ruled on and
+    repaired. Idempotent: resolving an already-resolved entry with the same
+    resolution record is a no-op; a conflicting resolution fails closed.
+    """
+    rec = _load(resolution_path, "resolution record")
+    missing = RESOLUTION_REQUIRED - set(rec)
+    if missing:
+        raise IngestError(f"resolution record lacks required fields: {sorted(missing)}")
+    if rec["schema"] != RESOLUTION_SCHEMA:
+        raise IngestError(f"unsupported resolution schema: {rec['schema']}")
+    flags = _load(flags_path, "flags file")
+    for entries in flags.values():
+        for entry in entries:
+            prov = entry.get("provenance") or {}
+            if prov.get("identity") != rec["identity"]:
+                continue
+            existing = entry.get("resolved")
+            resolution = {k: rec[k] for k in sorted(RESOLUTION_REQUIRED)}
+            if existing is not None:
+                if existing.get("resolution") == resolution:
+                    return "already resolved (no-op)"
+                raise IngestError(
+                    f"conflicting resolution for identity {rec['identity']}"
+                )
+            entry["resolved"] = {
+                "original": {"severity": entry["severity"], "note": entry["note"]},
+                "resolution": resolution,
+            }
+            entry["severity"] = "note"
+            entry["note"] = (
+                f"RESOLVED by owner ruling ({rec['ruling']}): {rec['resolution_note']}"
+            )[:400]
+            flags_path.write_text(
+                json.dumps(flags, ensure_ascii=False, indent=1) + "\n",
+                encoding="utf-8",
+            )
+            return "resolved"
+    raise IngestError(f"no ingested entry carries identity {rec['identity']}")
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--evidence", required=True, type=Path)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--evidence", type=Path)
+    group.add_argument("--resolve", type=Path)
     parser.add_argument("--flags-file", required=True, type=Path)
     args = parser.parse_args(argv)
     try:
-        outcome = ingest(args.evidence, args.flags_file)
+        if args.evidence:
+            outcome = ingest(args.evidence, args.flags_file)
+        else:
+            outcome = resolve(args.resolve, args.flags_file)
     except IngestError as exc:
         print(f"ingest-external-evidence: REFUSED: {exc}", file=sys.stderr)
         return 2

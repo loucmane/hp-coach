@@ -1,34 +1,165 @@
 {
   "candidate_id": "las-b17-003",
+  "date": "2026-08-31",
+  "auditor": "vfinal-meta-audit/opus",
   "audit_verdict": "CONFIRMED_NOTES",
+  "verdict": "CONFIRMED_NOTES",
+  "scope_note": "Re-issue of the V-FINAL adversarial double-answer audit on the POST-ÄGARDOM shipping bytes of candidates-final/las-b17-003.json. The prior issue of this file (2026-08-26) was written against pre-repair bytes and is preserved in git history at cfbb963. Prime directive of this pass was to REFUTE the claim that Q2 is now uniquely solvable. I could not. Three of the four prior findings survive because they sit in parts the ägardom deliberately did not touch; they are re-issued below rather than carried as resolved.",
   "findings": [
     {
       "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The G-SPRÅK major on shipping PASSAGE text — objectless \"Det är svårt att komma runt.\" — has escalated from 1-of-3 in round 1 to 3-of-3 unanimous on the fresh ägardom legs, and my own adjudication now lands against the prior audit's overrule: the flag is about the OBJECTLESS use, which is not what the prior audit defended.",
+      "evidence": "Passage p4: \"Bråtemo tycker att jag läser in för mycket. Ett häfte är en önskan, säger han, och ingen vet vad läraren faktiskt sade när dörren var stängd. Det är svårt att komma runt.\" Fresh verdicts-agardom/verdicts-gsprak.jsonl runs 1, 2 and 3 all flag it major and all propose the same native form: \"Det är svårt att komma ifrån.\" Run 1: \"'komma runt' är transitivt i svenskan och kräver objekt ('komma runt problemet/invändningen'). Objektslöst i den koncessiva positionen är det den fasta svenska vändningen 'komma ifrån' som gäller.\" Run 3: \"Utan objekt kalkerar frasen 'That is hard to get around.'\" Round-1 record (verdicts.jsonl) had two G-SPRÅK passes and one flag on the same sentence. The prior audit overruled on the ground that \"Swedish does have komma runt in the kringgå sense (komma runt reglerna)\" — but that defends the TRANSITIVE use, and all three fresh legs locate the defect precisely in the missing object, which the prior audit itself conceded was \"the only English-leaning part\". ADJUDICATION.md line 1083 offered the owner the exact fix as a menu item (`ändra las-b17-003: komma runt → komma ifrån`); the ÄGARDOM of 2026-08-30 selected only the Q2/D rewrite and expressly preserved the passage, so the sentence ships unremediated by design, not by oversight.",
+      "why": "I verified independently that this has ZERO impact on uniqueness or answerability, in either question. The sentence carries the narrator's concession, which is the SECOND pillar of D's refutation; the first pillar — Bråtemos \"ingen vet vad läraren faktiskt sade när dörren var stängd\" — kills new D on its own, and the following \"Men …\" would signal a preceding concession even to a reader who misparses the verb. So this is a language-quality defect on shipped prose, not a ship-blocker, and it does not overturn the CONFIRMED verdict. OWNER NOTE: the evidence base changed materially since the owner last saw this item (1/3 → 3/3, and the specific ground shifted from lexical availability to object ellipsis), so the deferral is worth re-taking rather than assumed to stand. Cost of the fix is now two coordinated one-word edits, not one — see the finding below."
+    },
+    {
+      "severity": "minor",
       "stage_challenged": "pedagogy",
-      "claim": "The Q1 rationale asserts a contradiction the passage does not contain: publisher provenance and publisher production do not exclude teacher authorship, so \"Texten motsäger det ändå två gånger\" is an invalid inference presented as fact in the teaching payload.",
-      "evidence": "Rationale Q1: \"D är plausible_worldknowledge ... Texten motsäger det ändå två gånger: häftena kommer från de två förlag som dominerade marknaden, och i stycke 4 slås det fast att samma förlag gjorde både bild och häfte.\" Passage p2: \"Jag har fått läsa åttiotre stycken, alla från de två förlag som dominerade marknaden.\" Passage p4: \"Bild och häfte är förstås inte oberoende av varandra, eftersom samma förlag gjorde båda.\" Neither sentence is about authorship; a publisher routinely commissions teacher-authors, which is exactly the real-world plausibility the trap trades on. The passage never states who wrote the handledningar. The one line that actually disfavours D is unused by the rationale: p1 \"den talade om för läraren vad som skulle göras med bilden\", which casts the teacher as the addressee of the booklet.",
-      "why": "The key C survives untouched (D remains unsupported and C is directly paraphrased from the exception sentence), so this is not a key defect. But pedagogy's remit is that the rationale be factually correct, and here the rationale teaches \"provenance = authorship\" as a refutation. It is a one-clause repair, i.e. exactly the magnitude of the recorded MINOR_FIXES verdict, so it does not overturn it. Not present in any recorded gate finding: G-DISTRACTOR q:1 passed and the blind gates never see rationales."
+      "claim": "CARRIED, UNRESOLVED. The Q1 rationale still asserts a contradiction the passage does not contain: publisher provenance and publisher production do not exclude teacher authorship, so \"Texten motsäger det ändå två gånger\" is an invalid inference presented as fact in the teaching payload.",
+      "evidence": "Q1 rationale, byte-identical to the pre-repair commit (verified: questions[0] compares equal to HEAD:candidates-final/las-b17-003.json in full): \"D är plausible_worldknowledge … Texten motsäger det ändå två gånger: häftena kommer från de två förlag som dominerade marknaden, och i stycke 4 slås det fast att samma förlag gjorde både bild och häfte.\" Passage p2: \"alla från de två förlag som dominerade marknaden.\" Passage p4: \"Bild och häfte är förstås inte oberoende av varandra, eftersom samma förlag gjorde båda.\" Neither sentence is about authorship; \"gjorde\" is not \"skrev\", and a publisher commissioning teacher-authors is exactly the real-world plausibility the trap trades on. The sentence that actually disfavours Q1/D remains unused by the rationale: p1 \"den talade om för läraren vad som skulle göras med bilden\" casts the teacher as ADDRESSEE, and p2's single marginal note in eighty-three booklets — a date — shows near-zero teacher inscription.",
+      "why": "Re-verified on current bytes rather than carried on trust. The key C is untouched and survives (Q1/D additionally fails the stem's \"utmärkte … historieserierna\" requirement, since nothing in the text distinguishes history-series authorship from nature-series authorship), so this is not a key defect. It remains a one-clause repair in the teaching payload. Unchanged severity from the prior issue."
     },
     {
       "severity": "minor",
       "stage_challenged": "integrated",
-      "claim": "The Q1 rationale's statement that no option reproduces the passage's wording is false on its face: the key's distinguishing lexeme \"påståenden\" is the passage's own word, verbatim, in the final paragraph.",
-      "evidence": "Rationale Q1: \"Ordvalet är utbytt (besked → påståenden, dominerade redan i de tidigaste årgångarna → fulla av påståenden från början), så inget alternativ återger textens formulering.\" Passage p5: \"Det innehåller elva påståenden, en ordlista och en enda fråga.\" Key Q1 C: \"De var fulla av påståenden från början.\" The claimed substitution is not away from the text — it is toward a word the text uses.",
-      "why": "This is a checkable false claim inside a rationale, which is the integrated stage's own criterion, and it also slightly undercuts generator_meta.self_blind_solve's lexical-bridge argument. Harm is low because the echo sits in p5 (a 1958 mjölkhantering chart), not in the historieserie sentence the item is keyed to, so it does not hand a word-matcher the right evidence. Consistent with the recorded MINOR_NOTES verdict rather than overturning it."
-    },
-    {
-      "severity": "minor",
-      "stage_challenged": "integrated",
-      "claim": "The unit's only two questions plant the same reversed-direction falsehood twice, and both are labelled \"reversed_causality\" although neither option nor the passage contains any causal claim; the batch taxonomy carries a distinct \"reversed_direction\" label that names the actual trap.",
-      "evidence": "Q1 B: \"De fick allt fler frågor med tiden.\" Q2 C: \"Handledningarnas frågor blev med tiden fler, medan planscherna samtidigt förenklades.\" Both rationales label them reversed_causality while explaining them as direction reversals — Q1: \"B är reversed_causality: den vänder på riktningen i textens rörelse\"; Q2: \"C är reversed_causality med ett halvsant led ... så alternativet vänder på riktningen i just det led som bär textens poäng.\" A survey of generator_meta.planted_traps across batches 1-17 shows reversed_direction is an existing label in the house taxonomy. Compounding: the recorded G-STEM q:2 flag already states \"A and C then assert mirror-image trends, so one of them is almost certainly the key\", so a student who has settled the direction of travel in Q1 carries it straight into Q2.",
-      "why": "Not a key leak — knowing Q1 B is false does not yield Q1 C, and Q2 still needs the passage to separate A from C for a blind solver. But in a two-question unit the repeated trap reduces independent information, and the label under-describes the trap the integrated stage is asked to verify. Minor: house precedent tolerates reversed_causality as a catch-all for reversals (64 uses, several glossed as direction or ranking reversals), so this is a naming and variety note, not a defect that changes MINOR_NOTES."
+      "claim": "CARRIED, UNRESOLVED. The Q1 rationale's claim that no option reproduces the passage's wording is false on its face — the key's distinguishing lexeme \"påståenden\" is the passage's own word — and the same clause additionally carries a collocation slip that a fresh G-SPRÅK leg flags independently.",
+      "evidence": "Q1 rationale (unchanged): \"Ordvalet är utbytt (besked → påståenden, dominerade redan i de tidigaste årgångarna → fulla av påståenden från början), så inget alternativ återger textens formulering.\" Passage p5 contains the corpus's only occurrence of the stem: \"Det innehåller elva påståenden, en ordlista och en enda fråga.\" (verified: exactly one match for /påstående/ in the passage). Key Q1/C: \"De var fulla av påståenden från början.\" The claimed substitution is not away from the text but toward a word the text uses. G-SPRÅK run 1 flags the same clause on separate grounds: \"Man byter ut ord, inte ett 'ordval'; 'ordvalet' är ett resultat, inte ett utbytbart objekt. Native alternative: 'Orden är utbytta (…)'.\"",
+      "why": "Kept at minor for the same reason as the prior issue, re-checked rather than assumed: the lexical echo sits in p5 (the 1958 mjölkhantering booklet), not in the p3 historieserie sentence the item is keyed to, so a word-matcher scanning for \"påståenden\" lands in the wrong paragraph and is not handed the key. The Q1 key still requires the besked → påståenden synonym mapping to be earned from p3. Factual-claim defect in a rationale, which is the integrated stage's own criterion; no key impact."
     },
     {
       "severity": "minor",
       "stage_challenged": "language",
-      "claim": "The language stage's CORRECTED verdict edited only rationale prose; the passage is byte-identical to the original candidate, so the recorded major-severity G-SPRAK anglicism flag ships unremediated with no recorded adjudication.",
-      "evidence": "Diff of candidates/las-b17-003.json against candidates-final/las-b17-003.json changes only generator_meta.planted_traps[2].D, generator_meta.self_blind_solve and the two rationales; candidates-corrected vs candidates-final confirms passage identical: True, options identical: True. report.json for las-b17-003 records G-SPRAK: \"Det är svårt att komma runt.\" — \"class 2/6: 'komma runt' in the abstract sense 'get around (an objection)' mirrors English; the settled Swedish idiom for conceding an unavoidable point is 'komma ifrån'.\" That sentence stands unchanged in the shipping file: passage p4 \"Det är svårt att komma runt.\"",
-      "why": "I audited the sentence independently and land where the 2-of-3 passing G-SPRAK votes did: Swedish does have komma runt in the kringgå sense (komma runt reglerna), so this is a marked-but-defensible choice rather than a defect, and the elliptical object-less use is the only English-leaning part. Reported as a note because the record shows a major-severity language flag that the language stage neither fixed nor explained. The two remaining G-SPRAK minors I also re-checked and would overrule: \"Häftena samlades inte\" is disambiguated by the following sentence and samla takes the collector sense without a particle (samla frimärken), and the \"dominerade / förblir\" tense mix is principled, not a lurch — the passage consistently uses preterite for the historical situation (\"såg det annorlunda ut\", \"dominerade\", \"fanns\") and descriptive present for corpus measurements (\"sjunker\", \"förblir\", \"går det att räkna\"). My own independent sweep of the passage and all eight options for calques, agreement, register and spelling found nothing beyond these."
+      "claim": "The ägardom repair INTRODUCED a new language defect into the teaching payload: the rewritten WHY-D paragraph wedges a heavy source adverbial inside the particle cluster of \"tala om för\", producing a garden path that two of three fresh G-SPRÅK legs flag independently.",
+      "evidence": "New Q2 WHY-D paragraph: \"… för häftena visar just hur planscherna borde användas: handledningen talade enligt stycke 1 om för läraren vad som skulle göras med bilden.\" Verified absent from the pre-repair rationale (substring \"handledningen talade enligt stycke 1 om för läraren\" occurs in the current Q2 rationale, in neither the HEAD Q2 rationale nor the Q1 rationale), so the clause is new in this round. G-SPRÅK run 1: \"'enligt stycke 1' kilas in i det täta partikelklustret 'talade … om för', vilket ger en trädgårdsstig — läsaren binder först 'om' till fel led.\" Run 3 flags the identical span: \"tungt källadverbial inkilat mellan finit verb och partikel i 'tala om för'. Grammatiskt möjligt men flödesbrytande.\" Both propose the same fix: \"enligt stycke 1 talade handledningen om för läraren vad som skulle göras med bilden.\"",
+      "why": "Recorded because the brief's summary that the rewritten D drew ZERO G-SPRÅK findings is true of the OPTION TEXT only — the rewritten RATIONALE did draw two. It is grammatical, it is a fronting-order fix of the sort the legs themselves supply, and it has no effect on correctness or on which option is defensible, so it is minor, not a blocker. Worth surfacing because a repair round that introduces a fresh flag in the artefact it was sent to fix is exactly the class of drift this audit exists to catch."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "integrated",
+      "claim": "The repair tightened the coupling between the passage and the Q2 rationale at precisely the sentence carrying the open G-SPRÅK major, so the deferred \"komma runt → komma ifrån\" fix now costs two coordinated edits where it previously cost one.",
+      "evidence": "Pre-repair WHY-D paraphrased the sentence without quotation marks: \"essäisten medger uttryckligen att ingen vet vad läraren sade när dörren var stängd, och att det är svårt att komma runt.\" Post-repair WHY-D quotes it verbatim inside Swedish quotation marks: \"Essäisten medger det direkt efteråt: ”Det är svårt att komma runt.”\" (verified verbatim against passage p4). A one-word passage edit would now leave a rationale quotation that no longer matches the passage it claims to quote.",
+      "why": "Not a defect in the shipping unit — the quotation is accurate as it stands, and quoting verbatim is the better rationale practice. Recorded as an owner-facing cost fact: if the owner re-takes the deferral in the finding above, the instruction must name both sites (passage p4 and questions[1].rationale) or it will create rationale-vs-text drift of exactly the kind this audit checks for."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "integrated",
+      "claim": "CARRIED, NARROWED. The unit's two questions still plant the same reversed-direction falsehood, and both are still labelled \"reversed_causality\" although neither option nor the passage contains a causal claim. The compounding limb of the prior issue has weakened on fresh evidence.",
+      "evidence": "Q1/B \"De fick allt fler frågor med tiden.\" and Q2/C \"Handledningarnas frågor blev med tiden fler, medan planscherna samtidigt förenklades.\" — both unchanged by the repair, both labelled reversed_causality in generator_meta.planted_traps and in their rationales, both explained as direction reversals. Narrowing: the prior issue leaned on the round-1 G-STEM q:2 major (\"A and C then assert mirror-image trends, so one of them is almost certainly the key\"). The fresh G-STEM leg in verdicts-agardom returns pass with blind_classification NOT_ANSWERABLE and zero findings for BOTH questions, i.e. it did not reproduce the mirror-image tell on current bytes.",
+      "why": "Downgraded from minor to note. Still not a key leak — knowing Q1/B is false does not yield Q1/C, and separating Q2/A from Q2/C still requires the passage. What remains is a variety-and-labelling observation in a two-question unit, and house precedent tolerates reversed_causality as a catch-all for reversals. The fresh blind leg is the reason this no longer carries its prior weight."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "language",
+      "claim": "Definiteness mismatch between the two glossary entries in shipping content: the definiendum is indefinite but one definiens is definite, while its sister entry is indefinite.",
+      "evidence": "Passage glossary: \"skolplansch = stor bild på väv som hängdes upp i klassrummet under lektionen\" (indefinite) against \"handledning = häftet med anvisningar som följde med en planschserie\" (definite). G-SPRÅK run 3, class 4, proposes \"handledning = häfte med anvisningar som följde med en planschserie\".",
+      "why": "No correctness impact and no bearing on either key; the definite form is faintly licensed by p1 having already introduced \"ett häfte\". Recorded only because it is a genuine internal inconsistency in shipped student-facing text that a proofreader would harmonise, and because it lives in the passage the ägardom preserved, so no round has owned it."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "integrated",
+      "claim": "Q1/A carries a non-parallel comparison ellipsis in shipping option text: the subject is the guides, the comparandum is the series.",
+      "evidence": "Q1 stem \"Vad utmärkte handledningarna till historieserierna?\"; Q1/A \"De innehöll färre bilder än naturserierna.\" — \"De\" resolves to handledningarna, but the compared term is naturserierna, the series themselves. G-SPRÅK run 2 flags it class 4/6 and proposes \"… än handledningarna till naturserierna\".",
+      "why": "No uniqueness impact: under EITHER reading — booklets vs booklets, or booklets vs series — A is unsupported, because the passage never counts images in either genre and discusses image density only for the late planscher (\"färre småting i utkanterna\"). Recorded as a note rather than a minor because the fix costs three to four words and Q1 is the declared short_breath_question (5-word stem, 6–7-word options per addendum_compliance), so the expansion is not free and would need an explicit trade."
+    },
+    {
+      "severity": "info",
+      "stage_challenged": "language",
+      "claim": "Register mixing in the rationales — an open corpus-wide question that this unit exemplifies rather than causes.",
+      "evidence": "Q1 rationale: \"hedgningen ”troligen”\" (English stem + Swedish -ning, not in SAOL; the Swedish term is \"gardering\") and \"över tid\" where the same unit uses the native \"med tiden\" in three options. Q2 rationale (unchanged A paragraph): \"Sista stycket ger samma sak i ett enda konkret fall\" — thin verb, \"visar\" expected. Both rationales carry untranslated taxonomy labels (scope_shift, reversed_causality, plausible_worldknowledge, detail_as_main, half_right_conjunction). G-SPRÅK run 1 states the policy question directly: \"konvention i korpusen, men om rationalen visas för eleven är hela registerblandningen värd ett beslut.\"",
+      "why": "Filed as info, not as a defect of las-b17-003: the taxonomy labels are house convention across every batch, and the two lexical items are register wobbles with no correctness impact. It belongs in a corpus-level decision about whether rationales are student-facing, not in this unit's ledger."
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "AA-B17-001 / round-1 G-DISTRACTOR q:2 (major)",
+      "status": "RESOLVED",
+      "was": "\"ARGUABLE: the text concedes this claim rather than refuting it.\" Old Q2/D read \"Häftena kan knappast säga något om hur planscherna faktiskt användes i klassrummen.\" — Bråtemo raises exactly that objection (\"Ett häfte är en önskan … ingen vet vad läraren faktiskt sade när dörren var stängd\") and the narrator grants it (\"Det är svårt att komma runt.\"), so the distractor was textually defensible and the unit carried a live double answer.",
+      "resolution": "The ÄGARDOM of 2026-08-30 chose ÄNDRA. New D reads \"Häftena visar hur planscherna faktiskt användes i klassrummen, inte bara hur de borde användas.\" I re-litigated it with maximum hostility on current bytes and found no defensible reading — see cleared[] entries 'q2-D-relitigation', 'q2-D-avsiktlig-turn' and 'q2-D-partial-credit'. The polarity is now inverted onto the exact lexical axis the passage denies: \"faktiskt användes\" against \"ingen vet vad läraren faktiskt sade\". Corroborated by two independent fresh G-KEY legs, both solving A and both naming D as contradicted, and by a fresh G-DISTRACTOR leg returning pass with zero findings on both questions."
+    },
+    {
+      "id": "round-1 G-STEM q:2 (major)",
+      "status": "RESOLVED",
+      "was": "\"PARTIALLY (blind lean A). D is pragmatically self-undermining — a text built on the häften would not conclude that they say nothing — and B is a reductive 'främst därför att' claim … A and C then assert mirror-image trends, so one of them is almost certainly the key.\"",
+      "resolution": "The self-undermining limb is structurally gone: new D no longer says the booklets say nothing, it says the opposite, so the pragmatic tell it rested on cannot fire. The fresh G-STEM leg on current bytes returns pass with blind_classification NOT_ANSWERABLE and zero findings for BOTH questions, i.e. the blind lean did not reproduce. The residual A/C mirror observation is carried forward at reduced weight as a note in findings[] rather than left here."
+    },
+    {
+      "id": "round-1 G-SPRÅK minor: \"Häftena samlades inte\"",
+      "status": "RESOLVED — OVERRULED",
+      "was": "\"the collector sense in Swedish takes the particle — 'ingen samlade på häftena'. Bare 'samlades inte' first reads as 'were not gathered/assembled'.\"",
+      "resolution": "Not reproduced by any of the three fresh G-SPRÅK legs. I concur with the prior audit's overrule and re-verified it: samla takes the collector sense without a particle (samla frimärken), and the following sentence disambiguates immediately — \"De följde med planschen till klassrummet och blev liggande i katederlådan\". Closed."
+    },
+    {
+      "id": "prior-audit finding 4 (record gap on the komma-runt major)",
+      "status": "PARTIALLY RESOLVED — record gap closed, text unchanged",
+      "was": "\"the record shows a major-severity language flag that the language stage neither fixed nor explained\" — the round-1 CORRECTED verdict edited only rationale prose and left the passage flag with no written disposition, matching ADJUDICATION.md residual item 10.",
+      "resolution": "The record gap is now closed: three independent fresh G-SPRÅK legs exist in verdicts-agardom/, ADJUDICATION.md carries the residual item and offered the owner the exact punctual fix, and this audit adjudicates the sentence in writing. What is NOT resolved is the sentence itself, and my adjudication diverges from the prior audit's — see the first entry in findings[], re-issued at minor with the evidence escalation from 1-of-3 to 3-of-3 and the narrowed ground (object ellipsis, not lexical availability)."
+    }
+  ],
+  "cleared": [
+    {
+      "check": "repair-scope",
+      "result": "CLEAN. Byte-level structural diff of the shipping file against the pre-repair commit (HEAD = cfbb963) shows exactly six changed paths: questions[1].options[3].text, questions[1].rationale, generator_meta.planted_traps.2.D, generator_meta.hedge_map, generator_meta.self_blind_solve, and generator_meta.repair_log (added). Passage byte-identical: True. Title identical: True. Both stems identical: True. Both key letters unchanged (C / A). questions[0] compares equal in FULL, rationale included. Q2 options A, B and C compare equal. The repair matches its repair_log claim exactly, with no undeclared edit."
+    },
+    {
+      "check": "rationale-paragraph-isolation",
+      "result": "CLEAN. The common prefix of the old and new Q2 rationales is 1074 characters and terminates precisely at \"… kan luras hit. D är \", so the WHY-A, WHY-B and WHY-C paragraphs are byte-identical and only the WHY-D paragraph was rewritten. The repair_log's claim that those three paragraphs are unchanged 'tecken för tecken' verifies."
+    },
+    {
+      "check": "append-forward-metadata",
+      "result": "CLEAN. Both hedge_map and self_blind_solve are strict extensions of their pre-repair values (new.startswith(old) is True for both), so the dated bracket notes were appended and the original text was not rewritten, as the repair_log states."
+    },
+    {
+      "check": "why-D-quotation-fidelity",
+      "result": "CLEAN. Both substantive quotations in the new WHY-D paragraph are verbatim against the passage: \"Ett häfte är en önskan, säger han, och ingen vet vad läraren faktiskt sade när dörren var stängd.\" and \"Det är svårt att komma runt.\" The third, \"just därför säger de något, nämligen att förändringen var avsiktlig\", is the passage's sentence with the initial J lowercased for mid-sentence quotation — licensed. The fourth quoted string, \"inte bara\", quotes the OPTION, not the passage, and is correctly used as such. No rationale-vs-text drift introduced."
+    },
+    {
+      "check": "cold-solve-q1",
+      "result": "CLEAN — answer C, uniquely defensible. I argued every option. A \"De innehöll färre bilder än naturserierna\": the passage never counts images in any booklet or series; image density appears once, for the late PLANSCHER (\"färre småting i utkanterna\"), never split by genre — unsupported. B \"De fick allt fler frågor med tiden\": contradicted by \"andelen frågor förblir liten hela vägen\" — the history share is flat-and-small, not rising. C \"De var fulla av påståenden från början\": carried by p3's exception sentence \"Där dominerade beskeden redan i de tidigaste årgångarna\", with the besked/påståenden equivalence licensed by p5's \"elva påståenden … och en enda fråga\". D \"De skrevs troligen av lärarna själva\": disfavoured by p1 (the booklet ADDRESSES the teacher) and p2 (one marginal note in eighty-three, and it is a date), and — a route the rationale does not use — it fails the stem outright, since nothing in the text distinguishes history-series authorship from nature-series authorship. Additional hostile pass: A and D both fail the stem's \"utmärkte … historieserierna\" requirement; only C is both supported and genre-specific."
+    },
+    {
+      "check": "cold-solve-q2",
+      "result": "CLEAN — answer A, uniquely defensible. A \"Planschen blev med tiden mer ett stöd för lärarens besked än ett underlag för frågor\": two converging strands, the booklet trend in p3 (\"frågorna blivit färre och de färdiga beskeden fler\"; \"sjunker andelen frågor från ungefär två tredjedelar till knappt en tredjedel\") and the chart trend in p4 (\"de sena planscherna har färre småting i utkanterna, mindre att peka på som inte redan är förklarat\"), with p5's 1958 booklet as the concrete case. B: \"trycktes i mycket små upplagor\" is never claimed anywhere in the passage — scarcity is attributed to non-collection and disposal (\"Häftena samlades inte\"; \"gick häftena först\") — and \"värdefull främst därför att\" imports a claim about the collection's value that the text does not make; two independent failures. C: second clause true, first clause flatly inverted (frågorna blev färre, not fler). D: see the dedicated re-litigation entries. Exactly one defensible answer."
+    },
+    {
+      "check": "q2-D-relitigation",
+      "result": "CLEAN — no defensible reading found under maximum hostility. New D's load-bearing clause asserts that the booklets show how the charts were ACTUALLY used. Passage p4 denies exactly that, on the same lexeme: \"ingen vet vad läraren faktiskt sade när dörren var stängd\" against D's \"hur planscherna faktiskt användes\". I then swept every paragraph for a rescue. p1 \"De följde med planschen till klassrummet och blev liggande i katederlådan\" places the booklet in the room but says nothing about it recording events, and \"blev liggande\" if anything implies neglect. p2's single marginal date is one booklet in eighty-three and its content — a date — says nothing about HOW anything was used; the passage frames it as an absence. p3 measures the booklets' own contents, i.e. the script, not the performance. p5 inventories one booklet post by post, again the artefact. No paragraph supports D."
+    },
+    {
+      "check": "q2-D-avsiktlig-turn",
+      "result": "CLEAN — the turn does not rescue D. p4's recovery is \"Just därför säger de något, nämligen att förändringen var avsiktlig.\" Avsiktlig is a claim about the producers' INTENT, which sits on the önskan/borde side of the ought-is divide that D tries to cross; it is not a claim about classroom practice. The premise the turn rests on — \"Bild och häfte är förstås inte oberoende av varandra, eftersom samma förlag gjorde båda\" — is explicitly a PRODUCTION fact, which makes the recovered conclusion production-side by construction. The independent G-DISTRACTOR counsel case for D dies on this same point, and I reach it independently."
+    },
+    {
+      "check": "q2-D-partial-credit",
+      "result": "CLEAN — no partial-credit reading. \"X, inte bara Y\" asserts X and merely declines to limit the situation to Y; it presupposes Y rather than asserting it. So D's truth value is determined entirely by \"Häftena visar hur planscherna faktiskt användes i klassrummen\", which is denied. A student who reads only the trailing clause is reading a presupposition the passage does grant (p1: the booklet told the teacher what to do), but that reading leaves the sentence's main assertion false. There is no reading on which D is true, and the stem is a superlative (\"överensstämmer bäst\"), so even a hypothetical partial support would still rank behind A."
+    },
+    {
+      "check": "key-A-does-not-over-read",
+      "result": "CLEAN — the sharpest available refutation, tested and defeated. If A were itself a claim about classroom PRACTICE, it would be killed by the same sentence that kills D and the item would have no answer. It is not: A predicates a change of the PLANSCH as an instrument, and p4 asserts that change at the artefact level — the late charts objectively carry less pointable material, \"mindre att peka på som inte redan är förklarat\". \"Lärarens besked\" is the passage's own term for what the booklet HANDS the teacher (\"de färdiga beskeden\"), so A stays on the material/design side of the divide throughout. Two independent fresh G-KEY legs solved A cold and neither raised over-reading; the asymmetry the repair_log claims between A and new D holds up under attack."
+    },
+    {
+      "check": "cross-question-integrity",
+      "result": "CLEAN. Q1/C says the history booklets were statement-heavy from the start; Q2/A says the chart became more a support for besked over time. Apparent tension is resolved by the passage itself: the history series is explicitly marked as the exception (\"I historieserierna såg det annorlunda ut\"), while A's aggregate trend is measured across all eighty-three booklets, history series included. Neither key is derivable from the other's option set in either direction, and neither contradicts the other."
+    },
+    {
+      "check": "leakage-and-lexical-bridge",
+      "result": "CLEAN. Content-word intersection between new Q2/D and every Q1 option is empty — the only shared token is the function word \"de\". Key-to-key intersection (Q1/C ∩ Q2/A) is the empty set; the two keys share no content word at all, and their time markers are opposed (\"från början\" vs \"med tiden\"). \"Med tiden\" appears in Q1/B (wrong), Q2/A (key) and Q2/C (wrong), so it is not a key-only bridge. The las-b15-003 defect that this check exists for is absent."
+    },
+    {
+      "check": "mechanical-form",
+      "result": "CLEAN, and the repair_log's numbers verify exactly. Q2 option lengths D 14 / A 15 / B 16 / C 10 tokens — the key is neither longest nor shortest, the max/min ratio is 1.6, and all options are ≤16 words per addendum_compliance. Q1 preserves its short_breath budget: 5-word stem, options 6/7/7/6. No semicolons in any option. No em-dash (U+2014) anywhere in the file; the passage uses two spaced en-dashes, as declared. Swedish quotation marks throughout."
+    },
+    {
+      "check": "hedge-heuristic",
+      "result": "CLEAN under my own reading as well as the file's. generator_meta.hedge_map's appended note claims the softest-sounding Q2 option is now B (\"värdefull främst därför att\"). I read D's \"inte bara\" as an equally plausible candidate for the softest-sounding option. It does not matter: B and D are BOTH wrong, and Q1's only hedged option (\"troligen\") is wrong, so the heuristic \"pick the qualified option\" hits the key in 0 of 2 questions on either reading, and each question retains at least one hedged wrong option."
+    },
+    {
+      "check": "sibling-sheet-propagation",
+      "result": "CLEAN. blind/, stems/ and distractor/ all carry the new D; the old string \"Häftena kan knappast säga något…\" is absent from all three. candidates/ and candidates-corrected/ retain the old D, correctly, as preserved append-forward history, and the pre-repair audit is preserved in git at HEAD. blind/ and distractor/ show no git modification only because .gitignore lines 84–85 exclude those directories — verified with git check-ignore, not assumed."
+    },
+    {
+      "check": "gsprak-minors-overruled",
+      "result": "CLEAN — two fresh minors examined and overruled rather than carried. (1) Run 2's intrasentential tense mix \"Där dominerade beskeden … och andelen frågor förblir liten hela vägen\": the passage applies a consistent division — preterite for the historical situation (\"såg det annorlunda ut\", \"dominerade\", \"fanns\") and descriptive present for corpus measurement (\"ligger stilla\", \"sjunker\", \"förblir\", \"går det att räkna\") — so the shift inside the sentence is principled, marking the move from a historical statement to a corpus statement. (2) Run 2's preposition inconsistency \"plansch om mjölkhantering\" vs \"plansch över en bondgård\": both are idiomatic and the distinction is real — över for a depicted scene, om for a topic. Neither is a defect."
     }
   ]
 }

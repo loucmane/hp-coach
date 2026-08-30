@@ -1205,3 +1205,18 @@ essä-argumentet besegrar D.
 3. **AVVISA q2** — regenerera frågan från passagen.
 
 Fri form gäller som alltid: godkänn / ändra enligt rekommendation / avvisa.
+
+---
+
+## ÄGARDOM (2026-08-30): las-b17-003 Q2/D
+
+**»ÄNDRA las-b17-003 Q2/D«** — skriv om ENBART distraktor D så att passagen
+tydligt MOTSÄGER den i stället för att delvis medge den. Passage, stam,
+nyckel A, lärandemål, svårighetsmål och alla orelaterade frågor/enheter
+bevaras. Därefter omkörning enbart för denna enhet: språkgranskning,
+två oberoende blinda G-KEY-lösningar (båda ska välja A), G-DISTRACTOR,
+G-STEM, adversariell dubbelsvarsgranskning, deterministisk vikning och
+slutverifikation. Vikningen ska återföra enheten till GODKÄNN_NOTED; övriga
+enheter bytidentiska; nya digestar för ändrade artefakter. Ursprunglig
+kandidat och all tidigare evidens bevaras append-forward; Sol-rapporterna
+omtolkas eller överskrivs aldrig. Verkställs under bead hpf-y75e.
