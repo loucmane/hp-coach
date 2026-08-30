@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "candidate_id": {"minLength": 1, "type": "string"},
+    "findings": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "candidate_id": {"minLength": 1, "type": "string"},
+          "category": {
+            "enum": [
+              "answerability",
+              "double-answer",
+              "form-leak",
+              "language",
+              "option-quality",
+              "world-knowledge",
+              "other"
+            ]
+          },
+          "evidence": {"minLength": 1, "type": "string"},
+          "id": {"minLength": 1, "type": "string"},
+          "location": {"minLength": 1, "type": "string"},
+          "severity": {"enum": ["minor", "major", "critical"]}
+        },
+        "required": ["id", "candidate_id", "location", "severity", "category", "evidence"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "lane_id": {"const": "adversarial-audit"},
+    "run_id": {"minLength": 1, "type": "string"},
+    "schema": {"const": "gas-city-evidence-report.v1"},
+    "status": {"const": "evidence-only"},
+    "summary": {"minLength": 1, "type": "string"}
+  },
+  "required": ["schema", "run_id", "lane_id", "candidate_id", "status", "summary", "findings"],
+  "type": "object"
+}

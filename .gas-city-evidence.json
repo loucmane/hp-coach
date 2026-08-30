@@ -1,0 +1,54 @@
+{
+  "id": "hpfetcher-exam-batch-v1",
+  "lanes": [
+    {
+      "allowed_outputs": [
+        "report.json"
+      ],
+      "bundle_builder": "pipeline/synthetic/evidence/build_blind_solver_bundle.py",
+      "declared_bundle_files": [
+        "candidates.json",
+        "instructions.md",
+        "report.schema.json"
+      ],
+      "forbidden_patterns": [
+        "\"key\"",
+        "\"rationale\"",
+        "\"generator_meta\"",
+        "\"family\"",
+        ".git"
+      ],
+      "id": "blind-solver",
+      "prompt": "pipeline/synthetic/evidence/prompts/blind-solver.md",
+      "report_schema": "pipeline/synthetic/evidence/schemas/blind-solver-report.schema.json",
+      "rubric": "pipeline/synthetic/evidence/rubrics/blind-solver.md"
+    },
+    {
+      "allowed_outputs": [
+        "report.json"
+      ],
+      "bundle_builder": "pipeline/synthetic/evidence/build_adversarial_audit_bundle.py",
+      "declared_bundle_files": [
+        "candidates.json",
+        "instructions.md",
+        "report.schema.json"
+      ],
+      "forbidden_patterns": [
+        "\"key\"",
+        "\"rationale\"",
+        "\"generator_meta\"",
+        "\"family\"",
+        ".git"
+      ],
+      "id": "adversarial-audit",
+      "prompt": "pipeline/synthetic/evidence/prompts/adversarial-audit.md",
+      "report_schema": "pipeline/synthetic/evidence/schemas/adversarial-audit-report.schema.json",
+      "rubric": "pipeline/synthetic/evidence/rubrics/adversarial-audit.md"
+    }
+  ],
+  "project": {
+    "id": "hpfetcher",
+    "rig": "hpfetcher"
+  },
+  "schema": "gas-city-evidence-profile.v1"
+}
