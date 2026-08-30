@@ -70,18 +70,17 @@ async function waitSettled(
   }
 }
 
-// Resolve a deterministic ORD text question + its correct letter, so both
-// passes drill the exact same content and the click always grades.
-async function pickOrdProbe(
-  page: Page,
-): Promise<{ qid: string; answer: string }> {
+// Pick a deterministic ORD text question to deep-link, so both passes drill
+// the exact same content. Only the IDENTITY travels — the correct letter is
+// resolved later from whatever the drill actually rendered (see
+// shownAnswerLetter).
+async function pickOrdProbeQid(page: Page): Promise<string> {
   return await page.evaluate(() => {
     const bank = (
       window as unknown as {
         __HPC_BANK__: {
           qid: string
           section: string
-          answer: string
           parsing_status?: string
           options?: unknown[] | null
         }[]
@@ -91,15 +90,33 @@ async function pickOrdProbe(
       (b) => b.section === 'ORD' && b.parsing_status === 'complete' && !!b.options,
     )
     if (!q) throw new Error('no complete ORD question in bank')
-    return { qid: q.qid, answer: q.answer }
+    return q.qid
   })
+}
+
+// Resolve the correct letter for the question CURRENTLY on screen, keyed on
+// the stable identity its DrillQuestion root carries (hpf-ay8) rather than on
+// the probe we asked for. `?qid=` direct-link mode only engages when no
+// active session exists for the section, so a leftover session can serve a
+// different question — and clicking the probe's letter against it would grade
+// a row that isn't the answer, quietly changing what these frames show.
+async function shownAnswerLetter(page: Page): Promise<string> {
+  const qid = await page.getByTestId('drill-question').getAttribute('data-qid')
+  expect(qid, 'drill question carries no data-qid').toBeTruthy()
+  const answer = await page.evaluate((id) => {
+    const bank = (window as unknown as { __HPC_BANK__: { qid: string; answer: string }[] })
+      .__HPC_BANK__
+    return bank.find((q) => q.qid === id)?.answer ?? null
+  }, qid)
+  expect(answer, `could not resolve answer for qid "${qid}"`).not.toBeNull()
+  return answer as string
 }
 
 // Walk one pass (home → drill(?qid) → answer) and return probe rects at
 // each checkpoint. `animated` gates the settle wait + the screenshots.
 async function walk(
   page: Page,
-  probe: { qid: string; answer: string },
+  probeQid: string,
   animated: boolean,
 ): Promise<Record<string, Rect | null>> {
   const out: Record<string, Rect | null> = {}
@@ -117,7 +134,7 @@ async function walk(
   if (animated) await page.screenshot({ path: `${SHOT_DIR}/01-home.png` })
 
   // CP2 — drill, answering. Deterministic single question via ?qid.
-  await page.goto(`/drill?section=ORD&qid=${encodeURIComponent(probe.qid)}`)
+  await page.goto(`/drill?section=ORD&qid=${encodeURIComponent(probeQid)}`)
   await page.waitForFunction(
     () => {
       const bank = (window as unknown as { __HPC_BANK__?: unknown[] }).__HPC_BANK__
@@ -140,7 +157,8 @@ async function walk(
   if (animated) await page.screenshot({ path: `${SHOT_DIR}/02-drill-answering.png` })
 
   // CP3 — graded. Click the correct letter → verdict morph + pedagogy.
-  await page.getByTestId(`option-${probe.answer}`).click({ force: true })
+  const correctLetter = await shownAnswerLetter(page)
+  await page.getByTestId(`option-${correctLetter}`).click({ force: true })
   await expect(page.getByTestId('pedagogy-panel')).toBeVisible({ timeout: 10_000 })
   await expect(page.getByTestId('drill-next')).toBeVisible({ timeout: 10_000 })
   // Graded option rows keep their box (the picked word's slot is a
@@ -162,18 +180,18 @@ test('A2 motion settles on static layout — animated rects match reduced-motion
 }, testInfo) => {
   test.skip(testInfo.project.name === 'mobile', 'settle probe is the desktop drill chassis')
   await clearMistakes(page)
-  const probe = await pickOrdProbe(page)
+  const probeQid = await pickOrdProbeQid(page)
 
   // Pass A — reduced motion (true static layout).
   await page.emulateMedia({ reducedMotion: 'reduce' })
-  const staticRects = await walk(page, probe, false)
+  const staticRects = await walk(page, probeQid, false)
 
   // Reset session state so pass B re-enters the drill fresh at the same qid.
   await clearMistakes(page)
 
   // Pass B — full motion. Record settled rects + the review screenshots.
   await page.emulateMedia({ reducedMotion: 'no-preference' })
-  const animatedRects = await walk(page, probe, true)
+  const animatedRects = await walk(page, probeQid, true)
 
   // Diff every shared probe. Tolerance 1px — the anti-jank contract.
   const drifts: string[] = []
@@ -276,10 +294,10 @@ test('drag-to-commit — pulling an option past the detent grades like a click',
 }, testInfo) => {
   test.skip(testInfo.project.name === 'mobile', 'drag probe is the desktop drill chassis')
   await clearMistakes(page)
-  const probe = await pickOrdProbe(page)
+  const probeQid = await pickOrdProbeQid(page)
   await page.emulateMedia({ reducedMotion: 'no-preference' })
 
-  await page.goto(`/drill?section=ORD&qid=${encodeURIComponent(probe.qid)}`)
+  await page.goto(`/drill?section=ORD&qid=${encodeURIComponent(probeQid)}`)
   await page.waitForFunction(
     () => {
       const bank = (window as unknown as { __HPC_BANK__?: unknown[] }).__HPC_BANK__
@@ -288,9 +306,13 @@ test('drag-to-commit — pulling an option past the detent grades like a click',
     null,
     { timeout: 20_000 },
   )
-  const target = page.getByTestId(`option-${probe.answer}`)
+  // Wait for the answering phase, then resolve the letter to drag from the
+  // question that actually rendered (hpf-ay8 identity), not from the probe.
+  await expect(page.getByTestId('option-A')).toBeVisible({ timeout: 15_000 })
+  const letter = await shownAnswerLetter(page)
+  const target = page.getByTestId(`option-${letter}`)
   await expect(target).toBeVisible({ timeout: 15_000 })
-  await waitSettled(page, [`[data-testid="option-${probe.answer}"]`])
+  await waitSettled(page, [`[data-testid="option-${letter}"]`])
 
   const box = await target.boundingBox()
   if (!box) throw new Error('option box not measured')

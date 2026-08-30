@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "assessments": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "candidate_id": {"minLength": 1, "type": "string"},
+          "confidence": {"enum": ["low", "medium", "high"]},
+          "predicted_answer": {"pattern": "^[A-D]$", "type": "string"},
+          "question_id": {"minLength": 1, "type": "string"},
+          "reasoning": {"minLength": 1, "type": "string"}
+        },
+        "required": ["candidate_id", "question_id", "predicted_answer", "confidence", "reasoning"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "candidate_id": {"minLength": 1, "type": "string"},
+    "findings": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "candidate_id": {"minLength": 1, "type": "string"},
+          "evidence": {"minLength": 1, "type": "string"},
+          "id": {"minLength": 1, "type": "string"},
+          "question_id": {"minLength": 1, "type": "string"},
+          "severity": {"enum": ["minor", "major", "critical"]}
+        },
+        "required": ["id", "candidate_id", "question_id", "severity", "evidence"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "lane_id": {"const": "blind-solver"},
+    "run_id": {"minLength": 1, "type": "string"},
+    "schema": {"const": "gas-city-evidence-report.v1"},
+    "status": {"const": "evidence-only"},
+    "summary": {"minLength": 1, "type": "string"}
+  },
+  "required": ["schema", "run_id", "lane_id", "candidate_id", "status", "summary", "findings", "assessments"],
+  "type": "object"
+}

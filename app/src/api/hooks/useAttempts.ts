@@ -18,6 +18,11 @@ export type AttemptInput = {
   selectedAnswer: string
   correct: boolean
   timeTakenMs?: number
+  /** Layer 1 ids this question exercises (the explanation's
+   *  `framework_id`). The worker folds the outcome into per-framework
+   *  `mastery` when present; omitting it costs only the aggregate, never
+   *  the attempt row. See SessionPlayer.onPick. */
+  layer1Ids?: string[]
 }
 
 export function useSubmitAttempt() {
