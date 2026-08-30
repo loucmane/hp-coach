@@ -1220,3 +1220,61 @@ slutverifikation. Vikningen ska återföra enheten till GODKÄNN_NOTED; övriga
 enheter bytidentiska; nya digestar för ändrade artefakter. Ursprunglig
 kandidat och all tidigare evidens bevaras append-forward; Sol-rapporterna
 omtolkas eller överskrivs aldrig. Verkställs under bead hpf-y75e.
+
+---
+
+## VERKSTÄLLD ÄGARDOM (2026-08-31): las-b17-003 Q2/D — GODKÄNN_NOTED
+
+Utförd under bead **hpf-y75e**. Reparationscommit
+`a134576d2cf945d71edff8dc6abffdd3a9a2d4ec`; evidenscommit följer denna fil.
+
+### Före / efter (Q2, distraktor D)
+
+- **FÖRE:** »Häftena kan knappast säga något om hur planscherna faktiskt
+  användes i klassrummen.« — *delvis medgiven av källan* (Sol-fyndet
+  AA-B17-001: passagen medger själv detta, så D var försvarbar).
+- **EFTER:** »Häftena visar hur planscherna faktiskt användes i
+  klassrummen, inte bara hur de borde användas.« — *uttryckligen motsagd
+  av källan*.
+
+### Textmotsägelsen som fäller D
+
+Stycke 4, ordagrant: »Ett häfte är en önskan, säger han, och ingen vet vad
+läraren faktiskt sade när dörren var stängd.« D påstår precis det som
+Bråtemo förnekar att någon kan veta. Lockordet »faktiskt« i D pekar på sin
+egen fällande mening. Blind (utan passage) är D fortsatt trovärdig —
+»handledningar visar väl användning« är rimlig världskunskap — men mot
+texten entydigt fel.
+
+### Omkörda kontroller (enbart denna enhet)
+
+| Kontroll | Resultat |
+|---|---|
+| G-KEY ×2 blind (oberoende lösare) | Båda valde **C, A** — nyckel A bekräftad; `gkey_resolve`: 4 verdicts, 0 kills |
+| G-DISTRACTOR | pass/pass — nya D »starkaste distraktorn i enheten … fälls av en explicit mening« |
+| G-STEM (enbart stammar) | pass/pass, NOT_ANSWERABLE blind; inga nya läckor; noll D↔Q1-överlapp |
+| G-SPRÅK ×3 | flag/flag/flag, 0 kills; den omskrivna optionen: noll fynd |
+| Adversariell dubbelsvarsgranskning | Nyutfärdad audit: **CONFIRMED_NOTES, 0 majors** (9 fynd: 4 minor/4 note/1 info); D död på varje fientlig väg |
+| Sol-flaggan AA-B17-001 (critical) | Löst via `ingest_external_evidence.py --resolve` med proveniens (ruling + reparationscommit + reparerad artefakt-sha); original bevarat ordagrant under `resolved.original`; idempotent no-op vid omkörning |
+| V-FINAL-vikning | las-b17-003 **VERIFIED_NOTES** (gkey 4/0, audit 0 majors) |
+| Aggregat + promote `--require-clean` | **PASS: 7, HOLD: 0** |
+| Adjudikationsvikning (adjudicate_fold, körd ×2) | **7× GODKÄNN_NOTED**, bytreproducerbar; enda deltat: las-b17-003 ÄGARBLICK → GODKÄNN_NOTED |
+| Bytidentitet övriga enheter | Alla sex övriga `candidates-final/*.json` bytidentiska mot förreparationscommiten `a134576d^` |
+| Nya digestar | 17 ändrade artefakter registrerade i `DIGESTS-agardom-hpf-y75e.json` |
+
+### Kvarstående noterade residualer (ingen åtgärd beordrad)
+
+- **»komma runt« (passagen, oförändrad rad):** G-SPRÅK-triplet enhälligt
+  major på »Det är svårt att komma runt.« (idiomatiskt väntas »komma
+  ifrån«). Utanför domens omfång — passagen är skyddad. Nedgraderad till
+  minor i auditen med kostnadsnot: en framtida rättning kräver TVÅ
+  koordinerade redigeringar (passagens ¶4 **och** questions[1].rationale
+  som nu citerar meningen ordagrant). Kräver egen ägardom.
+- Blindlanens 20/20-motevidens och Sol-rapporterna bevarade oförändrade i
+  den frysta evidenskörningen `hpf-fk02-batch17-shadow-20260830-001`.
+
+### Slutstatus
+
+Batch 17: **7/7 GODKÄNN_NOTED** — elf-b17-001…004, las-b17-001…003.
+Banktal efter denna dom: 313/313 kallösningar står kvar; batch 16- och
+batch 17-paketen väntar fortsatt på paketvisa ÄGARDOM-utslag.
