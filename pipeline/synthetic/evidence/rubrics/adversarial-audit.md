@@ -1,0 +1,6 @@
+- Inspect each question independently and distinguish text evidence from test-wise heuristics.
+- Prefer reproducible observations over generalized style preferences.
+- Give each finding a stable identifier, candidate/question location, severity, category, and evidence.
+- `critical` means the item is plausibly invalid; `major` means material quality risk; `minor` is bounded.
+- Do not attempt to recover hidden project decisions or turn findings into an authoritative verdict.
+- Write only the one declared JSON report.

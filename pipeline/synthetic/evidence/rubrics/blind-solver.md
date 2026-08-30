@@ -1,0 +1,6 @@
+- Treat the supplied bundle as the entire evidence surface.
+- Give one assessment for every question in every candidate.
+- A finding needs a stable identifier and a specific quote or option-level observation.
+- Use `critical` only for a likely double answer or an item that cannot be answered from its text.
+- Use `major` for a strong ambiguity or construction defect and `minor` for a bounded quality concern.
+- Never infer the project verdict, propose a source edit, or write outside the declared report file.

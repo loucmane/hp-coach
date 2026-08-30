@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install pytest pyyaml
-      - run: python3 -m pytest .github/contract-tests -q
+      - run: python3 -m pytest .github/contract-tests pipeline/synthetic/evidence/tests -q
 
   # The worker's own gates. Until 2026-07-11 these never ran in CI — the
   # app job installs worker deps only for cross-package typechecking, so
