@@ -44,8 +44,13 @@ def test_builder_refuses_existing_output_and_unadjudicated_batch(tmp_path: Path)
     output.mkdir()
     with pytest.raises(bundle_common.BundleError, match="already exists"):
         bundle_common.build_bundle(ROOT, "batch13", output, "blind-solver")
+    # Hermetic subject: pipeline-complete but missing the round-1 report.json
+    # marker required for the default "adjudicated" stage. (Previously this
+    # half pointed at live batch14, whose adjudication state legitimately
+    # advances over time and broke the fixture assumption.)
+    subject = _make_pre_adjudication_subject(tmp_path)
     with pytest.raises(bundle_common.BundleError, match="adjudication-frozen"):
-        bundle_common.build_bundle(ROOT, "batch14", tmp_path / "batch14", "blind-solver")
+        bundle_common.build_bundle(subject, "batch99", tmp_path / "batch99-out", "blind-solver")
 
 
 @pytest.mark.parametrize("batch", ["13", "batch../13", "batch-13", "batch13/other"])
