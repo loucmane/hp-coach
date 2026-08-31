@@ -1,0 +1,27 @@
+{
+  "candidate_id": "elf-b16-004",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The rationale uses a spaced hyphen as its parenthetical dash in seven places, against the batch16 addendum rule 3 dash convention and against the shipped-corpus norm for rationales; the unit's own spelling_note asserts dash compliance without disclosing this.",
+      "evidence": "Rationale, verbatim: \"(iii) Two bills are given for the same week - a heifer taken up on the Monday cost four shillings, another taken up on the Saturday cost one and sixpence - and 'Both were fetched on the Sunday they were cried', so the owners behaved identically.\" Character scan of the unit: rationale contains 7x ' - ' and 0x ' – '; passage/prompt/options contain 0 of either, and the only non-ASCII char in student-facing text is the byline EN DASH (U+2013). BRIEF-ADDENDUM.md line 11: \"3. Spaced en dash ( – ) only; NEVER em dash (—). Corpus ratio ≈10 435:1.\" The unit's spelling_note claims only \"Dash convention per the batch16 addendum: one spaced en dash in the byline, zero em dashes anywhere\" — true as far as it goes, but silent on the rationale. Corpus counts across all batch*/candidates-final: 313 rationales, 46 with a spaced en dash, 5 with a spaced hyphen (3 of those 5 are batch16: elf-b16-002, elf-b16-003, elf-b16-004).",
+      "why": "Rationales are the student-facing teaching payload, so house typography applies to them, and the language stage owns answer-key language. The stage recorded CLEAR here while all six sibling batch16 units were recorded CORRECTED. This does not change the item's correctness, so it is a note rather than a refutation, but it is a real, mechanically checkable house-style miss that the language read passed over."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The spelling_note's evidence for the declared spelling_variety 'BrE' is non-probative: every word it cites is spelled identically in AmE, and the student-facing text contains no BrE/AmE orthographic differentiator at all.",
+      "evidence": "generator_meta.spelling_note: \"BrE held throughout passage, prompt and options: 'pinder', 'vestry', 'smithy', 'shilling', 'sixpence', 'heifer', 'reckoning', 'roofless'.\" None of these eight is an orthographic BrE/AmE pair member — all eight are spelled the same in American English (they are period/lexical choices, not spellings). A regex sweep of passage + prompt + all four options for -our/-ise/-ize/-yse/-yze/-ogue/-lled/-elled endings returns exactly one token, 'four', which is not a differentiator. There is no -ise/-ize, -our/-or, -re/-er, or -lled/-led word anywhere in student-facing text.",
+      "why": "The substantive verdict survives — there is zero AmE contamination and zero AmE-only idiom, so CLEAR is correct on the text. But the recorded justification does not support the claim it makes, and a downstream reviewer relying on that note would believe the BrE declaration had been positively verified when it is in fact unfalsifiable from this passage. Worth correcting in the note, not in the item."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The integrated verdict MINOR_NOTES is recorded with no notes, making the verdict unauditable — I can neither confirm nor refute what the stage observed.",
+      "evidence": "reviews/integrated.jsonl, the elf-b16-004 line in full: {\"candidate_id\":\"elf-b16-004\",\"stage\":\"integrated\",\"verdict\":\"MINOR_NOTES\",\"reviewed_by\":\"integrated-review/opus\",\"date\":\"2026-08-26\"}. There is no findings/notes/quote field. All seven batch16 rows in that file are byte-identical apart from candidate_id, and all seven carry MINOR_NOTES — including las-b16-001, whose pedagogy verdict is SOUND and whose language verdict is CORRECTED. No detail file for the integrated pass exists anywhere under batches/batch16/ (only blind/, verdicts/, verdicts-vfinal/, reviews/, stems/, distractor/).",
+      "why": "A verdict whose entire information content is the word MINOR_NOTES cannot be checked by a later reader or by this audit. On my own independent integrated sweep the unit is clean (see audit summary), so I found nothing the notes should have contained — but the record itself provides no verifiable basis for its own non-CLEAN grade."
+    }
+  ]
+}

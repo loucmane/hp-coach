@@ -1,0 +1,20 @@
+{
+  "candidate_id": "elf-b15-002",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "A passage-level epistemic tension survives at the gap-(4) sentence: the paragraph denies that outcomes can be known and then, with no hedge, asserts an outcome.",
+      "evidence": "Passage (candidates-final): \"None of it can be checked. Nobody writes down what was asked for, and nobody writes down what came of it, so there is no telling whether the ladder was ever lent. Most of what goes up ___(4)___ to nothing.\" Filled with the key, the third sentence states a fact about outcomes immediately after the second denies any such fact can be had, and carries no hedge ('probably', 'no doubt', 'one assumes'). The review chain demonstrably saw the spot and repaired the rationale rather than the sentence: the q4 rationale now reads \"it is the columnist's own concession about the board's traffic, picking up the 'what came of it' of the sentence before, which says that no one records either the asking or the outcome\" — i.e. it names the contradiction and reframes it as a concession. Note also that this framing concedes a lexical echo (came -> comes) sitting 15 words before the gap.",
+      "why": "Reported as an observation, not a refutation. Reading the sentence as an essayistic concession ('for all we know, most of it comes to nothing') is defensible column prose, and the gap is a pure collocation gap decided by the preposition — 'come to nothing' is the only option that takes 'to' ('count FOR nothing' is the trap, 'carry/cut to nothing' do not exist) — so neither the key nor its defensibility against a complaining student is affected, and the lemma echo cannot help a form-only reader who has not read the passage. This is exactly the residue MINOR_NOTES describes; the recorded integrated verdict stands."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "Apostrophe typography is inconsistent across the unit's student-facing text: the q4 rationale is the only place that uses straight apostrophes (U+0027) where the passage and all other rationales use the curly U+2019 the unit's own typography_note commits to.",
+      "evidence": "q4 rationale: \"it is the columnist's own concession about the board's traffic\" — both possessives are U+0027. Mechanical scan of candidates-final/elf-b15-002.json for word-internal apostrophes: q1 six U+2019 ('nobody’s', 'someone’s' x2, 'nobody’s' x3), q2 one U+2019 ('someone’s drift'), q3 none, q4 two U+0027 (\"columnist's\", \"board's\"), q5 none; passage one U+2019 ('nobody’s'). Whole-file counts: 20 en dash U+2013, 0 em dash, 9 curly apostrophes. generator_meta.typography_note asserts \"Curly apostrophe (U+2019) in 'nobody’s', matching the authentic ELF corpus\".",
+      "why": "Cosmetic and non-gap-bearing — rationales are post-answer teaching text, no key or distractor is affected, and the typography_note's own claim is passage-scoped so it is not falsified. But the batch15 addendum makes corpus-matching typography a binding rule and this is the one place in the shipping unit where student-facing prose departs from it, so it is a real miss for a stage that returned CORRECTED. It is a one-character fix and does not overturn the CORRECTED verdict."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "candidate_id": "las-b16-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The MINOR-3 glossary repair made paragraph 5's opening sentence circular for exactly the reader the glossary exists for, and the repair note asserts the opposite.",
+      "evidence": "New glossary line: \"stomme = stången med sina tvärslåar och järnringar, alltså skelettet som sedan lövas\". Passage p5 opens: \"Stommen bär bara skelettet.\" Read with the gloss substituted, that is \"skelettet bär bara skelettet\". The repair_log entry for this edit claims it \"keeps paragraph 5's point (\"Stommen bär bara skelettet.\") intact\".",
+      "why": "The old gloss (\"den träställning som midsommarstången kläs på\") was genuinely wrong and had to go, and the sentence is still recoverable in context (bär = transmits, and the next two sentences are about lövning being redone). But a zero-knowledge student who consults the gloss and then re-reads p5 gets a tautology, and p5 is the sentence q:2's key D rests on (\"medan lövningen kunde läggas om på nya sätt\"). A gloss ending at \"...järnringar\" — or \"alltså bara skelettet, innan lövningen\" — would carry the same correction without the circularity. Not verdict-changing: CORRECTED is still the right language verdict, the correction is just incomplete."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The q:1 rationale's gloss of distractor C attributes to the saved-frame villages a state the passage explicitly denies, teaching the student a slightly false fact in the course of teaching a true trap.",
+      "evidence": "Rationale: \"C är scope_shift: ”oförändrad i över tio år” beskriver den andra gruppen byar – där stommen togs in och sparades rörde sig måtten knappt över de fjorton somrarna.\" The passage says \"rörde sig måtten knappt\" and, in the very next sentence, \"Tvärslåns längd varierade med någon handsbredd.\" — i.e. the measurements were not oförändrad even there.",
+      "why": "C is doubly wrong (wrong group AND an upgrade from knappt/varierade to oförändrad), but the rationale only teaches the first error and, in doing so, states that \"oförändrad i över tio år\" does describe the storing group. A student who has read \"varierade med någon handsbredd\" is being told something the passage contradicts. The fix is one clause (\"...och även där var måtten inte oförändrade, de rörde sig knappt\"). The trap label scope_shift and the key are both untouched, so MINOR_FIXES stands."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "A shipped repair_log note states a length property of the q:2 option set that the shipped bytes do not have.",
+      "evidence": "repair_log edit for questions[1].options[D].text: \"14 mech tokens (was 14); key is neither the longest nor the shortest option (14 / 15 / 15 / 14)\". Counted on the shipped text: A 14, B 15, C 15, D 14 — the key D is tied for SHORTEST with A, not strictly between the extremes.",
+      "why": "Bookkeeping only, not student-facing, and no test-wise lever follows from a tied-shortest key (the classic tell is a uniquely longest or uniquely shortest option, and D is neither). But it is a metadata claim contradicted by the same field's own numbers, in a unit whose round-2 ticket was raised precisely for carrying a false metadata denial forward unchanged. Worth correcting to \"tied shortest with A; not uniquely longest or shortest\"."
+    }
+  ]
+}

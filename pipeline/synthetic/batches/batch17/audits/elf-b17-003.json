@@ -1,0 +1,27 @@
+{
+  "candidate_id": "elf-b17-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "generator_meta.spelling_note and generator_meta.measured_stats._band_deviation_declared both cite a phrase that does not exist in the shipping passage: 'let into'. The integrated stage's verbatim-quote rule was applied to the question rationale (which is clean) but not to the metadata claims about the same text.",
+      "evidence": "spelling_note: \"The rest of the BrE signal is lexical rather than orthographic: 'heel post', 'a matter of hang', 'shimmed', 'green oak', 'measured in feet and inches', 'let into'/'lines the recess'.\" _band_deviation_declared: \"three register edits ('pivots' for 'turns', 'let into the recess', 'throughout') lifted it from 6.9\". The passage reads \"beds its heel into the iron plate that lines the recess\" — programmatic check over candidates-final/elf-b17-003.json passage: \"'let into' in passage == False\"; 'lines the recess' == True, 'pivots' == True, 'throughout' == True.",
+      "why": "Metadata-only; no student-facing text is wrong and no answer design depends on it. The BrE claim itself survives on the tokens that ARE present ('mitre', 'heel post', 'shimmed', 'green oak', 'feet and inches'), and M-BANDS/M-FORM/G-ENG x3/G-REGISTER all pass on the exact shipping file. Does not flip integrated's MINOR_NOTES."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "generator_meta.key_letter_note contradicts itself inside a single sentence: the summary key-letter sequence does not match its own parenthetical enumeration, and the enumeration is the one that matches reality.",
+      "evidence": "key_letter_note: \"Across the six most recently shipped ELF short units the key letters are B, C, D, B, C, B (elf-b13-003 C, elf-b13-004 B, elf-b15-003 B, elf-b15-004 C, elf-b16-003 D, elf-b16-004 B)\". Read directly from the shipped files: elf-b13-003 ['C'], elf-b13-004 ['B'], elf-b15-003 ['B'], elf-b15-004 ['C'], elf-b16-003 ['D'], elf-b16-004 ['B'] = C, B, B, C, D, B — not 'B, C, D, B, C, B'.",
+      "why": "Same multiset, scrambled order, so the load-bearing claim ('A appears in none of them', therefore key letter A improves the spread) is TRUE and the rule-1 justification stands. Cosmetic self-inconsistency in an audit-facing note, not an item defect."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The recorded language CLEAR and pedagogy MINOR_FIXES verdicts were written BEFORE the shipping file existed, and the one content change made afterwards was to an option they reviewed. Both verdicts therefore do not literally cover the shipped option set. (I re-reviewed the shipped option and it holds — this is a coverage gap, not a defect in the unit.)",
+      "evidence": "mtimes: candidates-corrected/elf-b17-003.json 13:16:07, reviews/language.jsonl 13:20:16, reviews/pedagogy.jsonl 13:23:55, candidates-final/elf-b17-003.json 13:26:21, reviews/integrated.jsonl 13:30:11. The sole student-facing diff corrected->final is option B: \"It is fixed hard into the stone so that the leaf cannot move once the water rises.\" -> \"It is fixed hard into the stone below, so the heel cannot shift once the water rises.\" verdicts.jsonl G-STEM had flagged exactly the old wording ('B is self-defeating on its face -- a pin that a leaf stands and swings on cannot be the thing that prevents the leaf moving'). verdicts-vfinal contains only G-KEY (2 votes, both A); G-STEM was not re-run on the shipping text.",
+      "why": "The rewrite repairs the G-STEM flag and introduces nothing new: shipped B is grammatical BrE, is flat (unhedged) so the rule-10 hedge map still reads C-hedged/D-absolute/A-and-B-flat, tokenises to 17 (unchanged), and the rationale's treatment of B quotes only the passage ('The pin is not fastened down'), so no rationale quote went stale. Integrated (13:30) did review the shipping text. Process note for the fleet, not a verdict flip."
+    }
+  ]
+}

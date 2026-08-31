@@ -1,102 +1,329 @@
 {
   "candidate_id": "las-b14-001",
-  "stage": "audit",
-  "role": "adversarial meta-auditor (post-real-entity-rename)",
-  "audited_by": "meta-audit/opus",
-  "date": "2026-08-04",
+  "date": "2026-08-26",
+  "auditor": "vfinal-meta-audit/opus",
+  "verdict": "CONFIRMED_NOTES",
   "audit_verdict": "CONFIRMED_NOTES",
-  "target_file": "pipeline/synthetic/batches/batch14/candidates-final/las-b14-001.json",
-  "supersedes": "previous audits/las-b14-001.json (pre-rename; its evidence quoted 'Hyttfallets bruk' and the pre-repair distractors)",
-  "entity_verification": {
-    "method": "independent re-verification of EVERY named entity in the CURRENT passage, in six channels: OpenStreetMap/Nominatim gazetteer, K-samsok (kulturarvsdata.se SOCH fulltext, x-api=test), Libris xsearch (Kungliga biblioteket), sv.wikipedia search API, Wikidata wbsearchentities, Exa web search. Controls were run on the REMOVED names to prove each channel is live.",
-    "entities_checked": [
-      {"name": "Vresfallet / Vresfallets bruk", "status": "clean", "osm": 0, "ksamsok": 0, "libris": 0, "svwiki": 0, "wikidata": 0, "exa": "no bearer (only unrelated Vastanafallet, Vira bruk, Vifors)"},
-      {"name": "Sladbo", "status": "clean", "osm": 0, "ksamsok": 0, "libris": 0, "svwiki": 0, "wikidata": 0, "exa": "no Swedish bearer (only German firm 'SladBo Bauservice GmbH' and Slovene 'sladbo' typos)"},
-      {"name": "Strakasen", "status": "clean", "osm": 0, "ksamsok": 0, "libris": 0, "svwiki": 0, "wikidata": 0, "exa": "no bearer (only unrelated Strakanas/Strakanasberget, lake Straken)"},
-      {"name": "Brantemala (kept)", "status": "clean", "osm": 0, "ksamsok": 0, "libris": 0, "svwiki": 0, "wikidata": 0, "exa": "no bearer (only Rantemala, Bergamala, Brandetorp)"},
-      {"name": "Grubbfors (kept)", "status": "clean", "osm": 0, "ksamsok": 0, "libris": 0, "svwiki": 0, "wikidata": 0, "exa": "no place, harad or heritage record"},
-      {"name": "Assar Bostrand (kept)", "status": "clean", "libris_fullname": 0, "wikidata": 0, "exa_people": "no bearer; surname Bostrand attested (Lisbet, Cecilia, Susanne Bostrand), none in forest history"},
-      {"name": "Vendela Nyfeldt (kept)", "status": "clean", "libris_fullname": 0, "libris_surname": 0, "wikidata": 0, "exa": "no bearer"},
-      {"name": "Hillevi Radmark (kept)", "status": "clean", "libris_fullname": 0, "wikidata": 0, "exa": "no bearer; surname Radmark attested (Olof Radmark the biochemist; Henrik, Kajsa, Lina Radmark), none in this domain"}
-    ],
-    "controls_on_removed_names": {
-      "Hyttfallet": "OSM returns 4 Swedish bearers incl. a suburb in Karlskoga kommun and a hamlet in Nora kommun (Orebro lan, charcoal-iron Bergslagen); K-samsok 3",
-      "Milbo": "K-samsok 9 records, every itemLabel 'Skidtavling i Hille, Milbo'; OSM has 'Milbostigen' in Hille, Gavle",
-      "Kvarnasen": "K-samsok 669; Libris 11 incl. 'Kvarnasen : en tidigmesolitisk boplats med hyddlamningar i Varmland'; OSM 4 Swedish bearers"
-    },
-    "conclusion": "NO surviving real-entity collision. The repair's diagnosis and all three replacements are independently sound, and no institute, firm or publication is named anywhere in the passage."
+  "audited_by": "vfinal-meta-audit/opus",
+  "brief": "V-FINAL adversarial META-AUDIT, REFUTE brief, post-ÄGARDOM re-verification. Replaces the 2026-08-25 audit of this unit in full (old file recoverable from git history at HEAD 023c512). Both minors the superseded audit left OPEN BY DESIGN are discharged in the shipping artifact and re-verified here by independent test rather than by reading the repair claims. The unit does not refute. Eight live entries remain, all non-blocking: one minor, four notes, three infos. Verdict CONFIRMED_NOTES rather than CONFIRMED because live entries exist, not because ship-readiness is in doubt.",
+  "revision": {
+    "round": 4,
+    "supersedes": "audits/las-b14-001.json @ 2026-08-25 (round 3, CONFIRMED, 0 major / 2 minor)",
+    "trigger": "ÄGARDOM 2026-08-26 »ändra las-b14-001: båda mynningarna (q3/D + q4/D) + i-följd-motsägelsen«. Two option texts and one passage sentence changed, so the whole unit is re-audited, not just the deltas.",
+    "delta_since_round_3": "Independently established by a full field-level diff of the shipping file against git HEAD 023c512: exactly five content deltas plus one repair_log append. passage (one clause), questions[2].options[3].text (q3/D), questions[2].rationale (WHY-D clause only), questions[3].options[3].text (q4/D), questions[3].rationale (WHY-D clause only). No prompt, no key, no other option, no title, no planted_traps, no key_spread, no hedge_balance_note, no originality_note byte moved. generator_meta.repair_log changed type from string to list; element [0] is byte-identical to the whole HEAD string, so no prior audit trail was rewritten or lost."
   },
+  "encoding_note": "Schema note, deliberate and not drift. The tasking specified {candidate_id, date, auditor, verdict, findings, resolved_findings, cleared}. gates/scripts/vfinal_fold.py:74 reads audit.get('audit_verdict') and folds a missing key to REFUTED, and it reads audited_by nowhere but the batch convention carries it. Both the tasked names and the fold's names are therefore emitted, carrying identical values, so neither contract is broken. findings[] carries ONLY severities from the binding allowlist {minor, note, info}; vfinal_fold.py:77 counts any other severity as refutation-grade and fails closed. Discharged history lives in resolved_findings[] and cleared[], which the fold does not read.",
+
+  "cold_solve": {
+    "method": "All four solved from the repaired passage before reading any gate verdict for this round, arguing every option to a textual verdict. Keys were checked only afterwards.",
+    "answers": {"q1": "B", "q2": "D", "q3": "A", "q4": "C"},
+    "keys_in_file": ["B", "D", "A", "C"],
+    "agreement": "4/4 with the shipped keys, and 4/4 with both independent G-KEY rounds (verdicts-ruling/verdicts-gkey-las-r1.jsonl and -r2.jsonl, 8 legs, 8 pass, 0 kill, 0 flag; verdicts-gkey-resolved.jsonl for this cid is byte-identical to r1+r2 concatenated, so it is the merge of those eight legs and not a ninth-through-sixteenth independent vote — counted once here).",
+    "q1": "B. P1 states the chain outright: 'Om en glipa fick sitta kvar obemärkt drog luften in, och det som skulle ha blivit kol brann i stället upp'. A inverts the thermal outcome (cooling, half-charred wood) against 'Veden skulle förkolna, inte brinna'. C asserts prolongation where the text says 'ett par timmar räckte för att göra en hel veckas arbete till aska'. D absolutises ('ofelbart', 'oavsett hur snabbt') the very outcome the round-the-clock watch exists to prevent, and contradicts the stem's own conditional 'inte upptäcks i tid'. Exactly one defensible answer.",
+    "q2": "D. P3 states both halves and then designates the cause: 'Träkol är sprött. Varje omlastning och varje mil på ojämna vägar bröt ner bitarna till finkol och damm' against 'Tjäran låg stilla i sina tunnor och kunde fraktas nedför älven, lastas om och lagras över en vinter utan att förlora i värde', closed by 'Den skillnaden avgjorde var hantverken kunde bedrivas.' A swaps the two products' properties. B substitutes bulk and value-density for the durability the text names as decisive — and since the stem says 'enligt texten', substituting a different cause for the designated one is disqualifying, not merely unsupported. C invents a growing range for resinous pine; the text ties tar wood to barked stumps and roots, never to distance. Exactly one defensible answer.",
+    "q3": "A. P5 gives Nyfeldt's objection in full: 'Det Bostrand tar för en transportgräns skulle då vara en ägogräns, och kartan skulle visa vem som ägde marken snarare än hur långt en slädlast nådde.' B reverses the arrow and would corroborate Bostrand rather than object to him. C attributes to her a blanket source-nihilism she never states. D (the rewritten option) lifts a real P4 detail — the 1870s foreman writing surnames only — and mis-attributes it to her; adversarially probed against her one other remark ('Stråkåsen är ett enda område och ... kronans avverkningstillstånd på 1860-talet var både få och kortvariga') and it does not reach: different decade, different object (felling permits, not bookkeeping), and that remark defends her position against Bostrand's counter-case rather than objecting to his boundary reading. Exactly one defensible answer.",
+    "q4": "C. Requires joining P2 ('Årstiderna skilde dem åt. Tjärdalarna brändes helst på försommaren ... medan kolmilorna restes från sensommaren och in i oktober') to P4 ('av dem som sålde kol till Vresfallet levererade ungefär en tredjedel också tjära något år'). A is refuted twice over by 'Tjärbränningen krävde annat virke och annat kunnande' and by 'Kolarens skicklighet satt i vakthållningen; tjärbrännarens satt i själva klyvningen och resningen'. B upgrades 'ungefär en tredjedel' to 'så gott som varje'. D (the rewritten option) asserts two things the text does not: that the borrowed-vessel fee ROSE, and that it COERCED households into tar burning; the text states the fee flatly, as one of two deductions inside a pay calculation. Exactly one defensible answer."
+  },
+
+  "ordered_repairs_verified": {
+    "method": "Field-level diff of the shipping file against git HEAD 023c512, plus exact-substring tests against the shipped passage. Not read off the repair_log.",
+    "edit_1_passage": "APPLIED FAITHFULLY AND EXACTLY AS THE ADJUDICATION WORDED IT. P4 now reads '... men serien sträcker sig ändå över fyrtiotvå år.' ADJUDICATION.md line 545 proposed the string 'men serien sträcker sig ändå över fyrtiotvå år'; the shipped clause matches it character for character. The old 'täcker ändå fyrtiotvå år i följd' is gone from the file. Sole passage delta in this round: the diff shows one replace ('täcker ändå' -> 'sträcker sig ändå över') and one delete (' i följd'); no other passage byte moved.",
+    "edit_2_q3D": "APPLIED FAITHFULLY, to one of the two substitutes the adjudication named. New text: 'Att Bostrand borde ha uteslutit 1870-talets poster, eftersom föreståndaren då nöjde sig med att skriva efternamn.' ÄGARBLICK 2a offered 'efternamnsbokföringen eller de saknade banden 1863–1866' for this slot; the surname branch was taken. Trap class surface_lexical_echo is preserved and in fact better exemplified than before (see finding VF4-I2). 'finkolet' is gone from the option set entirely — verified by exact-string test over all sixteen options.",
+    "edit_3_q4D": "APPLIED FAITHFULLY, to the other substitute the adjudication named. New text: 'Att hushållen tvingades till tjärbränning sedan bruket börjat ta ut allt högre avgifter för lånade kärl.' ÄGARBLICK 2a named 'avgiften för lånade kärl' for exactly this slot. The coercion frame and the plausible_worldknowledge class are preserved verbatim in shape ('Att hushållen tvingades till tjärbränning sedan bruket börjat <rising charge>'). 'smulat kol' is gone from the option set — verified by exact-string test.",
+    "edit_4_q3_rationale": "REGROUNDED CORRECTLY. The WHY-D clause no longer references the retired measurement objection; it now cites the surname detail and gives the operative reason D fails ('Nyfeldt invänder ingenting om räkenskapernas kvalitet'). The quoted string 'en föreståndare på 1870-talet nöjde sig med att skriva efternamn' resolves as an exact substring of the shipped passage. The paragraph reference 'stycke 4' is correct (P1 kolmila, P2 tjärbränning, P3 produkterna, P4 Bostrand, P5 Nyfeldt, P6 lönsamhet, P7 kolbottnar). The Hedgebalans coda, untouched, remains true of the new option set: it makes no claim about D.",
+    "edit_5_q4_rationale": "REGROUNDED CORRECTLY. The WHY-D clause now says 'bruket tog ut en avgift för lånade kärl står i stycke 6' — P6 reads 'en dryg tredjedel av summan gick tillbaka till bruket som avdrag för smulat kol och som avgift för lånade kärl', so both the fact and the paragraph index check out — and it names the two unstated additions ('ingenting om att avgiften steg eller att den drev hushållen till tjärbränning'). The Hedgebalans coda, untouched, still holds: the new D is still 'formulerad som en avgränsad orsakskedja'.",
+    "repair_log_structure": "SOUND. repair_log went from a string to a two-element list. Element [0] is byte-identical to the entire HEAD string, so the 2026-08-25 entry — including its own self-correction about the overstated byte-identity claim, and including the STILL OPEN paragraph — is preserved verbatim rather than rewritten. Element [1] is the new post-ruling record and states 'Nothing in the 2026-08-25 entry is rewritten here, only superseded', which is exactly what the diff shows. This is the right shape: an audit trail that edits its own history is not an audit trail.",
+    "quote_integrity": "19 quoted strings across the four rationales. 17 resolve as exact substrings of the passage or of an option; the two apparent misses are both legitimate elided quotations whose halves each resolve exactly — q3's 'aldrig ... något säkert' (option C, 'aldrig' + 'något säkert') and q4's 'Tjärdalarna brändes helst på försommaren ... medan kolmilorna restes från sensommaren och in i oktober' (P2, both halves verbatim). Effective 19/19. The repair_log's own before/after quotations of the two old rationale clauses were checked against HEAD and are verbatim, not paraphrased."
+  },
+
+  "independent_leak_probe": {
+    "method": "Re-run by this audit from stems/las-b14-001.json alone, with the passage withheld — not accepted from the repair_log's own probe. The sheet was first verified to be an exact projection of the shipping file (all 4 prompts and all 16 option texts byte-identical; no key, no rationale, no generator_meta present).",
+    "forward_q3_and_q4_to_q2": "CLOSED, CONFIRMED. The q3 sheet now yields: a delivery boundary, works-owned forest, winter sleds, and 1870s bookkeeping. The q4 sheet yields: shared-or-separate know-how, household counts, seasonality, and a borrowed-vessel fee. Neither sheet contains charcoal friability, transloading damage, fine-material deductions, or tar's transport tolerance. The two facts that made q2/D's FRAGILITY mechanism the textually-real one on the pre-repair sheet are both gone. Critically, the sheet is now symmetric between q2/B and q2/D rather than reversed: q3/A and q3/B do supply a haul-distance boundary for charcoal, but a distance boundary is equally predicted by B's bulk-and-many-loads account and by D's friability account, so it corroborates the shared premise and not the discriminating mechanism. Nothing on any sheet supports B's 'skrymmande / högt värde per tunna' either. Symmetric ignorance is the intended state and it is what the sheet now delivers. PROBE PASS.",
+    "reverse_directions": "CHECKED, ALL CLOSED. Nothing on q1/q2/q4 reveals q3's ownership key (no option anywhere else mentions ownership, avverkningsrätt, or property lines). Nothing on q1/q2/q3 establishes q4's seasonal CONTRAST — see the q4 G-STEM disposition below for the one soft cue and why it does not reach. Nothing on q2/q3/q4 bears on q1's kiln physics.",
+    "new_channel_check": "NONE CREATED. This is the failure mode the batch11 repair round produced (commit e771817, 'three-round repair broke a cross-question corroboration'), so it was probed specifically. The new q3/D contributes only 1870s bookkeeping quality; the new q4/D contributes only a borrowed-vessel fee. Neither appears in, nor bears on, any key. Their conjunction ('the works kept records and levied fees') supports no key either. The unedited q1 sheet was re-checked against both new options: no interaction."
+  },
+
+  "arithmetic_recheck": {
+    "verdict": "THE i-FÖLJD CONTRADICTION IS GENUINELY CURED, AND NO OTHER PASSAGE ARITHMETIC CONFLICTS.",
+    "the_cured_item": "P4 now reads 'för åren 1863 till 1866 saknas hela band, och en föreståndare på 1870-talet nöjde sig med att skriva efternamn, men serien sträcker sig ändå över fyrtiotvå år.' 'Sträcker sig över' asserts a SPAN, which four missing volumes inside it do not falsify; 'täcker ... i följd' asserted unbroken COVERAGE, which they did. The concessive 'men ... ändå' now carries both listed defects instead of only the second. The number 42 is retained and is now true of the span.",
+    "full_sweep": [
+      "Span vs frame: the works bought charcoal 'under 1800-talets andra hälft' (1850–1900, 50 years); a 42-year span fits, with room for the gap. No conflict.",
+      "Every dated event lands inside a feasible 42-year window: the 1863–1866 gap, a föreståndare 'på 1870-talet', prices 'på 1870-talet', an 1868 debt standing 'oförändrad i tolv år' (to 1880), and Nyfeldt's 'kronans avverkningstillstånd på 1860-talet'. No conflict.",
+      "The 1840s sockenstämmoprotokoll concern the forest administration's complaints about stubbrytning, not the works' account series, and the text never places them inside it. No conflict.",
+      "Kiln timing: 'sex till nio dygn' of charring against 'ett par timmar räckte för att göra en hel veckas arbete till aska' — a week sits inside 6–9 dygn. Consistent.",
+      "Pay: 'omkring nittio öre' per stig with 'en dryg tredjedel' returning to the works as two named deductions. Internally consistent; no figure is given that could contradict it.",
+      "Field remains: 'drygt niohundra kolbottnar och sjuttiotvå tjärdalar' registered, 'fem till tolv meter tvärs över'. No dependency, no conflict.",
+      "Glossary: 'stig = ... ungefär tolv tunnor' is consistent with every use of stig in the passage."
+    ],
+    "the_one_stretch_examined_and_cleared": "The two-mil figure was the target of the earlier repair and was re-examined adversarially. 'Två mil ... är ungefär så långt ett hästekipage hann köra åt ett håll utan att lasta om och ändå vara hemma igen innan en kort vinterdag var slut' implies a ~40 km round trip in a short winter day, which is at the upper edge of what a loaded horse sled does. It is NOT an internal contradiction: it reconciles with 'Nästan alla leverantörer ... inom drygt två mil' (which the pre-repair round-trip reading did not), it is doubly hedged ('ungefär', 'konstaterar han'), and it is attributed to a fictional researcher as an estimate rather than asserted as measurement. Recorded as examined-and-cleared, not as a finding."
+  },
+
+  "gstem_dispositions": {
+    "preamble": "verdicts-ruling/verdicts-gstem.jsonl returns flag on all four targets for this cid, nine findings in total, zero kills. Blind classifications: q1 WORLD_KNOWLEDGE (pick B), q2 PARTIALLY (pick B — i.e. the blind solver got q2 WRONG, which is the desired result and the strongest single evidence in the round that the passage is load-bearing), q3 PARTIALLY (pick A), q4 WORLD_KNOWLEDGE (pick C). Every finding gets a written disposition below, as required. Two of the nine are REJECTED on their premises, the other seven are ACCEPTED as accurate observations that do not block.",
+    "q1_f1_world_knowledge_pick_B": {
+      "disposition": "ACCEPTED AS ACCURATE, NOT BLOCKING, AND ALREADY OWNER-ADJUDICATED.",
+      "reasoning": "The finding is correct: air ingress converting pyrolysis to combustion is decidable without the passage, and it is the weakest passage-dependence in the unit. Three things settle it. (i) The gate itself declines to escalate: 'Process comprehension, not a date/name lookup, and a passage would ground it — flag, not RECALL_ONLY.' (ii) The property is unchanged by this repair — q1 is byte-identical to HEAD across prompt, all four options, key and rationale — so it is not a regression and cannot be a reason to refuse a repair round's output. (iii) It was placed before the owner: ADJUDICATION.md lists it under las-b14-001's 'Flaggor och öppna poster' with the same blindval-B finding, the adjudicator declined to raise it to ÄGARBLICK, and the ÄGARDOM approved the unit subject to exactly two named changes, neither of which touches q1. Carrying it as a live objection now would re-litigate a decided point."
+    },
+    "q1_f2_D_eliminable_by_form": {
+      "disposition": "ACCEPTED AS ACCURATE, NOT BLOCKING.",
+      "reasoning": "True and unchanged: 'ofelbart ... oavsett hur snabbt' does contradict the stem's presupposition that timeliness matters. But this is what an overgeneralisation trap IS — planted_traps['1']['D'] declares it — and one form-discardable option out of three distractors still leaves A and C requiring the passage (both are unhedged, both are thermally plausible to a non-reader, and the blind leg had to use domain knowledge to rule them out, which is precisely why it classified WORLD_KNOWLEDGE rather than deciding on form alone). Unchanged by the repair. No action."
+    },
+    "q2_f1_A_reverses_stem_premise": {
+      "disposition": "ACCEPTED AS ACCURATE, NOT BLOCKING.",
+      "reasoning": "Correct and by design. The repair_log names this itself and correctly classifies it as stem-internal rather than a cross-question channel: 'q2/A is still eliminable from the stem alone, because it reverses the premise the stem states, but that is stem-internal and not a cross-question channel.' A property_swap distractor in a why-question whose stem states the direction is always eliminable by a careful reader; the item's difficulty lives in B vs C vs D, all three of which survive the stem. Unchanged by the repair."
+    },
+    "q2_f2_B_vs_D_split_routed_to_content_gates": {
+      "disposition": "ACCEPTED, AND ANSWERED IN WRITING HERE — THIS IS THE ONE G-STEM FINDING THAT REQUIRED A CONTENT ANSWER, AND IT RESOLVES FOR D.",
+      "reasoning": "The gate did exactly the right thing: blind, B and D are both true of Swedish bruk economics and both answer the stem, so it declined to decide and routed the key-defensibility question to the gates that read the passage. With the passage, D is uniquely defensible and B is disqualified — not merely unsupported. The discriminator is the stem's 'enligt texten' plus P3's explicit designation sentence: 'Den skillnaden avgjorde var hantverken kunde bedrivas', where 'den skillnaden' refers to the durability contrast the two preceding sentences establish. B substitutes a DIFFERENT cause (bulk, value density) for the one the text names as decisive, and the text supplies neither a volume comparison nor a tar price with which to build B's case. Adversarially probed: the glossary's 'stig = ... ungefär tolv tunnor' plus 'nittio öre' per stig give a partial numeric foothold for B's bulk half, but no tar price is given anywhere, so the value-density half cannot be completed from the text at all. Two independent G-KEY rounds (r1, r2) landed D citing that same designation sentence, and G-DISTRACTOR passed q2. Not a double key. Recorded separately at info severity (VF4-I3) that this is the unit's genuine difficulty and that the WHY-B rationale clause handles it with a load-bearing qualifier."
+    },
+    "q3_f1_test_wiseness_stack_lands_on_A": {
+      "disposition": "ACCEPTED AS ACCURATE, NOT BLOCKING — AND DISPOSED OF ON THE SAME GROUND THE OWNER ALREADY APPLIED TO las-b14-002 q3 IN THIS SAME ÄGARDOM.",
+      "reasoning": "The observation is fair: among an over-absolute C, an off-scope D and a self-defeating B, A is the only well-formed alternative-explanation option. The gate does not convict on it — 'one alternative-explanation option among an absolutist, an off-detail and a muddled option is also the ordinary shape of authentic HP objection items, so per calibration this goes to adjudication.' The written disposition is: with the passage, A is uniquely defensible and each of B, C, D fails on a distinct TEXTUAL ground rather than a formal one — B reverses the arrow Nyfeldt actually draws, C attributes a source-nihilism the text never gives her, D attributes to her a reservation the text places in the description of Bostrand's material. That is deliberate distractor architecture, and it is the same reasoning the ÄGARDOM accepted verbatim for las-b14-002 q3 ('den formella G-STEM-lutningen ... bedöms som avsiktlig distraktorarkitektur'). Note also that this is not a repair artefact: q3/A, /B and /C are byte-identical to HEAD."
+    },
+    "q3_f2_repair_side_effect_D_reads_as_filler": {
+      "disposition": "PREMISE REJECTED. The observation about D's blind discardability is accurate; the attribution of it to the repair is not, and this audit declines to record a regression that the diff does not support.",
+      "reasoning": "The gate calls this a 'Repair side-effect' and says the rewrite 'strengthens the form-based elimination on this question'. Direct comparison of the two texts refutes that. OLD D: 'Att Bostrand borde ha räknat leveranserna i vikt i stället för i stig, eftersom finkolet snedvrider siffrorna.' NEW D: 'Att Bostrand borde ha uteslutit 1870-talets poster, eftersom föreståndaren då nöjde sig med att skriva efternamn.' Identical rhetorical frame ('Att Bostrand borde ha <methodological remedy>, eftersom <defect in the material>'), identical off-scope-ness relative to a stem that asks for an objection to the BOUNDARY'S INTERPRETATION, and therefore identical blind discardability. If anything the new D is marginally LESS discardable blind, since excluding a decade of delivery entries at least bears on the data that constitute the boundary, whereas re-weighing stig in kilograms bears only on units. The gate saw the post-repair sheet and had no pre-repair sheet to compare against; this audit has both. Disposition: the residual — that q3's fourth option is a weak option — is real, PRE-EXISTING, unchanged in strength, and already covered by the q3_f1 disposition above. The repair removed a leak at no cost to discardability, which is a strict improvement. Additionally, and against the gate's 'filler' characterisation, the new D is a better trap WITH the passage than the old one was: Nyfeldt does make one further remark about evidentiary limits ('kronans avverkningstillstånd på 1860-talet var både få och kortvariga'), so a hasty reader can now half-recognise 'Nyfeldt said something about a decade and about thin records' and land on D — a decade-and-object near-miss (1870s vs 1860s; bookkeeping vs felling permits) that the old measurement objection could not create, because Nyfeldt never touches units at all. G-DISTRACTOR, which reads the passage, passed q3."
+    },
+    "q4_f1_B_and_D_fall_to_form": {
+      "disposition": "SPLIT — ACCEPTED for B, PREMISE REJECTED for D.",
+      "reasoning": "B: accepted. 'Så gott som varje torparhushåll' does overreach a stem that says only that the same household COULD do both, and that is the declared overgeneralisation trap. Not blocking; unchanged by the repair (q4/B is byte-identical to HEAD). D: the stated ground — that D 'is a causal origin claim that does not answer \"vad kan man dra för slutsats av att samma hushåll kunde bedriva båda hantverken\" — a stem-form mismatch' — does not survive comparison with the KEY. Key C reads 'Att kombinationen var möjlig framför allt därför att arbetstopparna låg i olika delar av året': that is itself a causal explanation of the dual-craft fact, not a consequence of it. C and D have the SAME logical form relative to this stem; the two differ in textual support, not in form. If D failed the stem's form, so would the key. What is true is that D is discardable blind for asserting unverifiable specifics ('allt högre avgifter'), which is the ordinary signature of a plausible_worldknowledge trap and not a form defect."
+    },
+    "q4_f2_cross_question_seasonal_cue_plus_domain_knowledge": {
+      "disposition": "ACCEPTED AS THE ONE REAL RESIDUAL SOFT CHANNEL — WEIGHED, PRE-EXISTING, AND TOO WEAK TO BLOCK. Not repaired, and repair is not recommended.",
+      "reasoning": "This is the soft q3→q4 channel the tasking asked to be weighed. Four things bound it. (i) It is PRE-EXISTING and untouched: the carriers are q3/A ('hur långt vinterns slädar kom') and q3/B ('så långt ut som slädarna nådde'), both byte-identical to HEAD, so the repair neither created nor widened it. (ii) It cannot establish what C asserts. C claims a CONTRAST between two crafts' work peaks; the q3 sheet supplies a season for ONE craft and nothing whatever about tar's calendar, and a contrast cannot be inferred from one term. (iii) It points at the wrong season. q3's cue is winter SLED HAULAGE, whereas the passage places the charcoal WORK peak 'från sensommaren och in i oktober' — so a solver leaning on the cue is being pulled toward a false premise about when charcoal work happened, which makes the cue mildly misleading rather than corroborating. (iv) The gate itself attributes its blind pick primarily to domain knowledge ('the complementary-season account is also the standard historiography of by-employment') and explicitly declines to call the item decided: 'A (shared know-how) stays substantively live, so the item is not decided blind.' Residual accepted at note level in findings (VF4-N4). Repairing it would mean rewriting q3/A or q3/B — an option edit pulling another full blind re-gate round — to remove a cue that points the wrong way, which fails cost/benefit."
+    },
+    "q4_f3_repair_side_effect_D_no_longer_answers_the_stem": {
+      "disposition": "PREMISE REJECTED, twice over. The channel-closure half is ACCEPTED and independently confirmed.",
+      "reasoning": "Accepted: 'the rewritten D contains no bulk, value-per-barrel, friability or transport content, so it does not hand q:2's answer — the q:4 -> q:2 channel is closed.' This audit reproduced that from the sheet independently. Rejected: 'The cost is that D no longer answers the stem's inferential form.' First, 'no longer' is false as a matter of diff. OLD D: 'Att hushållen tvingades till tjärbränning sedan bruket börjat dra av allt större summor för smulat kol.' NEW D: 'Att hushållen tvingades till tjärbränning sedan bruket börjat ta ut allt högre avgifter för lånade kärl.' The frame 'Att hushållen tvingades till tjärbränning sedan bruket börjat <rising charge>' is preserved word for word; only the charge's referent moved. Whatever relation the option bears to the stem's form, it bore identically before the repair, so no cost was incurred. Second, as argued at q4_f1 above, the alleged mismatch does not hold at all, because the key is an explanation of the same shape. Net: the repair closed a channel at zero cost to this option's stem-fit, and 'fourth-option discard' overstates it."
+    }
+  },
+
+  "gsprak_dispositions": {
+    "summary": "Three legs, all flag, seven findings, all severity minor, zero on any span this repair touched. Verified by exact-string test: neither of the two rewritten options, nor the rewritten passage clause, nor either rewritten rationale clause is quoted by any of the three legs. The edited spans are language-clean.",
+    "convictions": [
+      "q2/B 'gav ett högt värde per tunna' — flagged by ALL THREE legs (class 6, collocation: 'ge ett värde' is the measurement idiom, not the commercial one). Recorded as the one live minor, VF4-M1 below.",
+      "q1/D 'hela lasten' — leg 1 only; 'lasten' is used elsewhere in the passage for charcoal in transit, so 'hela milan' would be the register-native choice.",
+      "q4 stem 'Vad kan man, utifrån texten, dra för slutsats ...' — leg 2 only; the split 'vad ... för slutsats' with a wedged parenthetical reads clunkier than the other three stems.",
+      "q2/A missing comma after a fronted subordinate clause — leg 3 only; the leg itself says the same omission occurs in the passage and is widely tolerated in published Swedish."
+    ],
+    "no_churn_recommendation": "ENDORSED for all four, and the reason is structural, not a preference. Every one of these spans is an OPTION or a STEM. Under the runbook trigger, touching any of them pulls a further full blind round — G-KEY ×2 + G-DISTRACTOR + G-STEM — for taste-level collocations that all three legs describe as grammatical and non-misleading ('no reader will be misled', 'Taste-level'). The ÄGARDOM approved this unit subject to exactly two named changes, and quietly widening the diff beyond an owner's enumerated scope is its own defect class. All four are also PRE-EXISTING on unedited spans. They should be picked up if and only if the unit is reopened for some other reason.",
+    "prior_round_convictions_reverified_gone": "Independently re-tested against the shipping text, since a language regression is exactly what this unit suffered once before: 'Tjäran låg still' -> 'låg stilla' ✓; 'ända tills täckningen har lagats om' (the one MAJOR from verdicts/verdicts-gsprak-2) -> 'lagts om' ✓; 'måste fram kort väg' (convicted by five separate earlier legs) -> 'måste fram en kort väg' ✓; 'kunde flottas nedför älven' -> 'kunde fraktas' ✓; 'älvarna gick höga nog' -> 'älvarna stigit tillräckligt' ✓; the round-trip hästekipage ellipsis -> the one-way formulation ✓. Zero survivors of six."
+  },
+
   "findings": [
     {
-      "severity": "info",
-      "stage_challenged": "real-entity repair (DECISIVE CHECK - VERIFIED, not refuted)",
-      "claim": "Every named entity in the current passage is free of a real-world bearer, and the three replacement coinages are demonstrably cleaner than the names they replaced.",
-      "evidence": "Six independent channels, all zero for Vresfallet(s), Sladbo, Strakasen, Brantemala, Grubbfors, 'Assar Bostrand', 'Vendela Nyfeldt' and 'Hillevi Radmark'. The same channels return real bearers for the removed names: OSM lists Hyttfallet in Karlskoga and Nora (both Orebro lan), K-samsok returns 669 for Kvarnasen and 9 for Milbo. The passage names no institute, firm or publication, so no further class of entity was at risk.",
-      "why": "The Kerrig precedent (a kept name that turned out to be a real Slovenian metalworking firm) does not repeat here. Every name the repair 'checked and kept' was re-checked from scratch, including the two person surnames the note itself flagged as attested."
-    },
-    {
-      "severity": "info",
-      "stage_challenged": "originality_note truthfulness (VERIFIED verbatim)",
-      "claim": "Every checkable factual claim in the new originality_note reproduces, including its two strongest pieces of evidence and its claim about a rejected candidate.",
-      "evidence": "(a) Lansstyrelsen Orebro 'Hammarby hytta' returns the note's sentence verbatim: 'Vid Hyttfallet i Hammarby har forsen dammts sedan 1500-talet och det bruk som senare vaxte fram var i drift anda fram till ar 1923.' (b) K-samsok fulltext 'Milbo' returns exactly 9 records, every itemLabel 'Skidtavling i Hille, Milbo' - count AND uniform title match. (c) K-samsok 'Kvarnasen' returns exactly 669, the note's figure; Libris independently returns the cited 'Kvarnasen : en tidigmesolitisk boplats...'. (d) The rejected candidate: a hembygd torp PDF (filer.hembygd.se/hol/uploads/.../28 Torpet Kalleberg.pdf) contains 'Till torpet Klovasen, Balinge, 1873.' - the note's exact citation. (e) The surname attestations reproduce, incl. Olof Radmark the biochemist.",
-      "why": "The sibling-repair precedent was an originality_note with verifiably false claims. This note is the opposite: its numbers reproduce to the digit and its quotations are verbatim. No REFUTE-grade originality claim exists."
-    },
-    {
+      "id": "VF4-M1",
       "severity": "minor",
-      "stage_challenged": "regate freshness (task premise - PARTLY FALSE)",
-      "claim": "The assertion that the entityfix/entityfix2 lines are the LAST records for this unit in verdicts-vfinal/ does not hold for verdicts-gkey-resolved.jsonl, which contains ZERO entityfix2 lines for this unit - and that is the only G-KEY leg vfinal_fold.py reads. batches/batch14/verdicts.jsonl (promote's fleet view) likewise has zero.",
-      "evidence": "verdicts-vfinal/verdicts-gkey-resolved.jsonl, las-b14-001 lines 16-19 executed_by 'claude-opus-4-8/G-KEY-1' (vote 1) and lines 57-60 executed_by 'claude-opus-4-8/G-KEY' (vote 2), both pre-rename; grep 'entityfix' in that file returns only elf-b14-002 rows 78-82. gates/scripts/vfinal_fold.py line 61: gkey = _last_wins(verdicts_dir / 'verdicts-gkey-resolved.jsonl', cid). The entityfix2 G-KEY solves exist only in verdicts-gkey-1.jsonl lines 42-45 and verdicts-gkey-2.jsonl lines 42-45. G-STEM (lines 19-22, executed_by G-STEM-entityfix2) and G-DISTRACTOR (lines 42-45, G-DISTRACTOR-entityfix2) ARE entityfix2-tagged and ARE last in their files.",
-      "why": "Held to minor rather than major because it is a plumbing gap with no substantive consequence: the stale resolved lines carry solver_answer B/D/A/C, verdict pass, findings [] at both votes - the same outcome as the entityfix2 re-solves, so the fold's numbers are unaffected. It is nonetheless a false freshness assertion; re-run gkey_resolve.py over the entityfix2 legs, and merge them into batches/batch14/verdicts.jsonl, before promote."
+      "check": "language / collocation, unanimous across three fresh G-SPRÅK legs, on a PRE-EXISTING unedited span",
+      "locus": "q2 option B",
+      "quote": "medan tjäran tog liten plats och gav ett högt värde per tunna",
+      "claim": "Genuine, first-time, 3-of-3 conviction. 'Ge ett värde' is the measurement collocation in Swedish ('mätningen gav ett högt värde'); for a commodity a native trade-prose writer produces 'hade ett högt värde per tunna' or 'betingade ett högt pris per tunna'. All three legs converged on it independently and all three rated it minor and taste-level.",
+      "evidence": "verdicts-ruling/verdicts-gsprak.jsonl runs 1, 2 and 3 all quote this span. Independently confirmed that no earlier round caught it: no G-SPRÅK line in verdicts/ or verdicts-regate/ for this cid quotes 'gav ett högt värde', and the six convictions those rounds did raise are all verified repaired. So this is a new signal from a fresh executor generation, not a carried-over item.",
+      "disposition": "NO CHURN, recorded not repaired. Three grounds. (i) All three legs classify it as grammatical, taste-level, non-misleading. (ii) It is an OPTION edit, so repairing it pulls a further blind G-KEY ×2 + G-DISTRACTOR + G-STEM round for a collocation. (iii) It falls outside the ÄGARDOM's enumerated scope for this unit, and widening a repair diff past an owner's explicit enumeration is itself a discipline defect. Pick it up only if the unit is reopened for another reason.",
+      "regate": false,
+      "blocking": false
     },
     {
-      "severity": "minor",
-      "stage_challenged": "review fold currency",
-      "claim": "reviews/final_verify.jsonl for this unit was written before the rename and cites the audit this file replaces; it must be re-folded.",
-      "evidence": "final_verify.jsonl mtime 18:37:53 vs candidates-final/las-b14-001.json mtime 18:53:06. Its note reads 'gkey_records=8 gkey_kills=0 gkey_flags=0 gdistr_kills=0 gdistr_flags=0 audit=CONFIRMED_NOTES audit_major=0 audit_minor=5' - gkey_records=8 is the pre-rename count and audit_minor=5 is the superseded audit's tally, not this one's.",
-      "why": "The stored VERIFIED_NOTES verdict will very likely survive a re-fold, but it is currently derived from evidence that predates the shipped file."
-    },
-    {
+      "id": "VF4-N1",
       "severity": "note",
-      "stage_challenged": "old-name eradication (PASS, with one intentional exception)",
-      "claim": "The pre-rename names are gone from passage, prompts, options, rationales and every generator_meta field EXCEPT originality_note, where they appear by design as provenance prose.",
-      "evidence": "Recursive scan of candidates-final/las-b14-001.json: the only string containing 'Hyttfallet', 'Hyttfallets', 'Milbo' or 'Kvarnasen' is /generator_meta/originality_note. self_blind_solve was correctly rewritten (its entity list now reads Vresfallets bruk, Sladbo, Strakasen). The renamed entities never occurred in prompts or options at all - only Bostrand and Nyfeldt appear there (q3 prompt, q3 B, q3 D), and both were kept.",
-      "why": "A literal 'zero survivors in generator_meta' grep would trip on the audit trail. Flagged so a future automated banned-name sweep excludes originality_note rather than raising a false positive. Old names also survive upstream in candidates/, candidates-corrected/, gen-las-long-1.json and its NOTES, which are historical stage records, not the shipped artefact."
+      "check": "re-gate coverage — G-REGISTER not run for this cid in the ruling round, although the passage was edited",
+      "locus": "process / verdicts-ruling/",
+      "claim": "ÄGARBLICK 2's own re-gate arithmetic states 'passagerättelsen drar G-SPRÅK ×3 + G-REGISTER + mech'. The ÄGARDOM's enumeration for las-b14-001 reads 'G-KEY×2 + G-DISTRACTOR + G-SPRÅK×3 + mek + ny granskning' — G-REGISTER is absent, while the elf-b14-001 enumeration in the very same ruling includes it explicitly. verdicts-ruling/verdicts-gregister.jsonl contains one line and it is for elf-b14-001. So no G-REGISTER leg exists for this unit's post-repair state.",
+      "evidence": "ADJUDICATION.md line ~547 (recommendation) vs the ÄGARDOM enumeration; verdicts-ruling/verdicts-gregister.jsonl (1 line, elf-b14-001, pass).",
+      "disposition": "NON-BLOCKING; the register surface is substantively covered by other evidence this audit re-derived. (i) The passage edit is register-neutral: same clause, same concessive frame, same formality, one verb swapped and a two-word adverbial added. (ii) Three fresh G-SPRÅK legs read the whole post-edit passage and flagged nothing on that sentence. (iii) The option-length profile that the prior G-REGISTER pass keyed on is unchanged — recomputed here: 3 of 16 options exceed the authentic p99 of 18 words (q1/C 19, q2/B 19, q4/A 20) and none exceeds the authentic max of 21, identical to the pre-repair profile, because the only length change was q3/D shortening by one word. Running the leg for completeness is cheap and the parent may choose to; nothing in the evidence suggests it would find anything.",
+      "regate": false,
+      "blocking": false
     },
     {
+      "id": "VF4-N2",
       "severity": "note",
-      "stage_challenged": "byte-identity of letters and keys (PASS by structure; no pre-rename candidates-final exists on disk or in git)",
-      "claim": "Letters A-D in order and keys B/D/A/C are intact and coherent with all metadata; the repair's byte-identity assertion cannot be diffed directly because candidates-final/ is untracked and was overwritten in place, but it is verified indirectly and holds.",
-      "evidence": "git ls-files shows candidates-final/ untracked ('?? candidates-final/'), so no pre-rename baseline exists. Indirect verification: (i) the renamed strings occur in no prompt or option, so the rename could not have touched them; (ii) key_spread ['B','D','A','C'] equals the on-disk keys; (iii) planted_traps for each question cover exactly the three non-key letters; (iv) the derived gate sheets blind/, stems/ and distractor/las-b14-001.json (all mtime 18:54:51, i.e. written after candidates-final at 18:53:06) match the shipped file exactly on passage, all four prompts and all sixteen option texts, so the entityfix2 gates judged the shipping article. Note that candidates-corrected/ is NOT the pre-rename baseline: it predates a separate b14repair distractor round that rewrote q1/C and q2/B and retagged two traps (q1 C scope_shift -> surface_lexical_echo, q2 B overgeneralisation -> plausible_worldknowledge). Those edits are not rename damage.",
-      "why": "Prevents a future reader from mistaking the corrected-vs-final delta for damage introduced by the rename."
+      "check": "downstream fold hazard — the derived final_verify record would certify STALE evidence if regenerated without re-pointing",
+      "locus": "process / reviews/final_verify.jsonl + gates/scripts/vfinal_fold.py",
+      "claim": "vfinal_fold.py reads its G-KEY and G-DISTRACTOR evidence from a single --verdicts-dir. The existing record for this cid ('gkey_records=8 ... audit=CONFIRMED audit_major=0 audit_minor=2') was folded from verdicts-vfinal/, whose las-b14-001 lines are dated 2026-08-25 and were executed against the PRE-repair option set. The fresh post-repair legs live in verdicts-ruling/, which the fold will not see unless it is pointed there.",
+      "evidence": "reviews/final_verify.jsonl las-b14-001 line; verdicts-vfinal/verdicts-gdistractor.jsonl lines 61–64 and verdicts-vfinal/verdicts-gkey-resolved.jsonl, all pre-repair; vfinal_fold.py:63–64 (_last_wins is per-file, so cross-directory supersession does not happen).",
+      "disposition": "OUT OF THIS AUDIT'S WRITE SCOPE (one file only) and RAISED FOR THE PARENT. Before the fold is regenerated, either run it with --verdicts-dir pointed at verdicts-ruling/ or append the ruling lines into verdicts-vfinal/ so _last_wins supersedes correctly. Two consequences worth knowing: with verdicts-ruling/ the note will read gkey_records=4, not 8, because _last_wins keys on (gate, target, vote) and the ruling gkey-resolved file carries no 'vote' field, so r2 supersedes r1 per target — the eight legs are real, the counter just reports the survivors. And this re-issued audit is CONFIRMED_NOTES with 7 allowlisted findings and 0 majors, which folds to VERIFIED_NOTES, not REFUTED.",
+      "regate": false,
+      "blocking": false
     },
     {
+      "id": "VF4-N3",
       "severity": "note",
-      "stage_challenged": "rationale quote fidelity (PASS)",
-      "claim": "Every quotation in every rationale resolves against the CURRENT passage or the current option text.",
-      "evidence": "All single-quoted spans of 12+ characters across the four rationales were normalised and matched; all resolve. The single apparent miss ('aldrig ... nagot sakert') is an elliptical quote of q3 distractor C, present verbatim. Numeric anchors re-checked in the current passage: 'sex till nio dygn', 'ett par timmar rackte', 'fyrtiotva ar i foljd', '1863 till 1866', 'nittio ore', 'en tredjedel', 'fjorton stig', 'niohundra kolbottnar', 'sjuttiotva tjardalar', 'fem till tolv meter', 'tva mil' - all present.",
-      "why": "Confirms no rationale was left pointing at a pre-rename or pre-repair string."
+      "check": "teaching-payload precision — an attribution in the rewritten q3 WHY-D clause that the passage does not make explicitly",
+      "locus": "q3 rationale, WHY-D",
+      "quote": "men det är Bostrands egen reservation om materialet",
+      "claim": "The passage states the surname defect in the narrator's voice ('Materialet är ojämnt: ... och en föreståndare på 1870-talet nöjde sig med att skriva efternamn'), with no reporting verb attaching it to Bostrand. The rationale asserts it as HIS reservation. That is an inference from discourse context, not a textual statement, presented as if textual.",
+      "evidence": "P4 in full. The nearest explicit attribution is the following sentence, 'Två mil, konstaterar han, ...', which is a different clause.",
+      "disposition": "NO REPAIR RECOMMENDED, recorded for precision only. Three grounds. (i) The inference is the natural discourse reading — the paragraph is wholly about Bostrand's source work and the concessive 'men ... ändå' is a researcher's defence of his own material — and it was reached independently by both fresh G-KEY legs, which wrote 'Bostrand's own note on the material's unevenness' and 'Bostrand's own note on uneven material' without prompting. (ii) The clause is not load-bearing: D is refuted by the second half of the same sentence, 'Nyfeldt invänder ingenting om räkenskapernas kvalitet', which is verifiably true and sufficient on its own. (iii) Repairing a rationale is cheap in gate terms but the sentence would have to be reworded to say less than two independent solvers read into it, which is a worse teaching outcome than leaving it.",
+      "regate": false,
+      "blocking": false
     },
     {
+      "id": "VF4-N4",
       "severity": "note",
-      "stage_challenged": "content residue carried forward from the superseded audit",
-      "claim": "Two pre-existing content wrinkles survive the rename untouched and should not be lost when this audit replaces the old file.",
-      "evidence": "(i) 'for aren 1863 till 1866 saknas hela band ... men serien tacker anda fyrtiotva ar i foljd' - 'i foljd' asserts consecutiveness while a four-year gap is stated in the same sentence; within '1800-talets andra halft' a 42-year span is arithmetically available but not a gap-free one. (ii) q4's stem says 'samma hushall kunde bedriva bada hantverken' while the passage supports only 'levererade ungefar en tredjedel ocksa tjara nagot ar'; 'nagot ar' does not establish the same-year concurrency that key C's seasonality argument presupposes.",
-      "why": "Neither is caused by or affected by the entity rename; both are inherited. Recorded so the tally is not silently reset to zero by this overwrite."
+      "check": "residual soft cross-question cue, q3 sheet -> q4 key, PRE-EXISTING and untouched by the repair",
+      "locus": "q3 options A and B -> q4 key C",
+      "quote": "hur långt vinterns slädar kom / så långt ut som slädarna nådde",
+      "claim": "Read as one passage-blind sheet, q3/A and q3/B put winter sled haulage of charcoal in front of a solver, which G-STEM records as corroborating q4/C's 'arbetstopparna låg i olika delar av året'. Carried forward as the unit's one remaining soft channel so that the ledger is honest after the two hard mouths were closed.",
+      "evidence": "verdicts-ruling/verdicts-gstem.jsonl q:4, finding 2. Field diff confirms q3/A and q3/B are byte-identical to git HEAD 023c512, so this predates the repair entirely.",
+      "disposition": "NOT BLOCKING, NOT REPAIRED, AND REPAIR NOT RECOMMENDED. The cue supplies a season for one craft's TRANSPORT and nothing at all about tar's calendar, so it cannot yield the CONTRAST C asserts. It also points at the wrong season — the passage puts the charcoal WORK peak in 'sensommaren och in i oktober', not winter — so a solver leaning on it is being pulled toward a false premise. G-STEM attributes its blind pick chiefly to by-employment historiography and states that q4/A 'stays substantively live, so the item is not decided blind'. Closing it would require rewriting an unedited q3 option, pulling another full blind round, to remove a cue that misdirects. Full reasoning at gstem_dispositions.q4_f2.",
+      "regate": false,
+      "blocking": false
+    },
+    {
+      "id": "VF4-I1",
+      "severity": "info",
+      "check": "repair_log self-reported figure does not reproduce under whitespace tokenisation",
+      "locus": "generator_meta.repair_log[1].edits[1]",
+      "quote": "Token count 17 before, 17 after; D remains the longest option in q3 and key A the shortest, so no length tell is created.",
+      "claim": "Whitespace tokenisation gives 17 before and 16 after, not 17/17. Old D: 17 tokens. New D: 16 tokens. The claim reproduces only if '1870-talets' is split at the hyphen into two tokens, which is a defensible but undeclared convention.",
+      "evidence": "Recomputed here on both texts. The LOAD-BEARING half of the claim is independently VERIFIED TRUE and is what actually matters: q3/D remains the longest option (113 chars vs A 88, B 93, C 91) and key A remains the shortest, before and after, so no length tell was created. Mech M-TELL and M-FORM both pass on an independent re-run.",
+      "disposition": "RECORDED, NOT REPAIRED. Raised at info rather than let go because this unit's repair_log has already had to narrow one overstated verification claim about itself (see the CORRECTED 2026-08-25 passage inside repair_log[0]), and a log whose stated purpose is later auditability should reproduce its own arithmetic or declare its tokeniser. The substantive conclusion is sound and was independently re-derived; nothing follows for ship-readiness.",
+      "regate": false,
+      "blocking": false
+    },
+    {
+      "id": "VF4-I2",
+      "severity": "info",
+      "check": "the rewritten q3/D is now the unit's longest option-to-passage verbatim run, by a margin",
+      "locus": "q3 option D",
+      "quote": "nöjde sig med att skriva efternamn",
+      "claim": "A six-word verbatim lift from P4, against a next-longest of four words anywhere else in the sixteen options (q1/C, 'sex till nio dygn') and roughly two words for the retired q3/D. The repair roughly tripled the longest verbatim run in the option set.",
+      "evidence": "Longest-common-run computed across all 16 options against the passage: q3/D 6, q1/C 4, q3/A 3, q4/D 3, everything else ≤ 2. Keys: q1/B 2, q2/D 2, q3/A 3, q4/C 1.",
+      "disposition": "NOT A DEFECT, RECORDED FOR VISIBILITY. This is what a surface_lexical_echo trap is supposed to look like, planted_traps['3']['D'] declares that class, and the lift sits on a DISTRACTOR, so it cannot function as a 'the key quotes the passage' tell — the four keys carry the shortest verbatim runs in the set (1–3 words), which is the correct polarity. Mech passes 6/6 including M-ECHO on an independent re-run. Recorded only because a test-wise pattern of the form 'the most literally quoting option is the trap' would, if it ever generalised across the bank, be a bank-level tell rather than a unit-level one; that is a batch-composition signal for whoever tracks it, not a repair for this unit.",
+      "regate": false,
+      "blocking": false
+    },
+    {
+      "id": "VF4-I3",
+      "severity": "info",
+      "check": "WHY-B clause in the q2 rationale sits close to the glossary, and is saved by one qualifier",
+      "locus": "q2 rationale",
+      "quote": "texten nämner varken volym eller värde per tunna som skäl",
+      "claim": "The text does mention a volume for charcoal — the glossary line 'stig = äldre rymdmått för träkol, ungefär tolv tunnor' — so a student who reads the glossary can think the rationale overclaims. The clause is nonetheless accurate as written, because 'som skäl' restricts it: the text mentions neither as a REASON for where the crafts could be carried on, which is what B asserts.",
+      "evidence": "Glossary line 1 of the shipped passage; P3's designation sentence 'Den skillnaden avgjorde var hantverken kunde bedrivas'. No tar price appears anywhere in the passage, so B's value-density half cannot be built from the text under any reading.",
+      "disposition": "NO CHURN. The qualifier does its work and the clause is defensible as written. Recorded because q2/B is the unit's genuinely strongest distractor — the fresh G-STEM leg picked it blind, and it is the one place where a strong student can be made to work — and the single qualifier that separates a correct rationale from an overclaim there deserves to be on the record rather than discovered later. Both fresh G-KEY rounds and G-DISTRACTOR independently rejected B with the passage in hand.",
+      "regate": false,
+      "blocking": false
     }
   ],
-  "consistency_probes": {
-    "old_names_zero_in_content": true,
-    "option_letters_ABCD_in_order": true,
-    "keys_BDAC_intact": true,
-    "key_spread_matches_keys": true,
-    "planted_traps_cover_nonkey_letters": true,
-    "gate_sheets_match_shipped_file": true,
-    "rationale_quotes_resolve": true,
-    "entityfix2_last_in_gstem": true,
-    "entityfix2_last_in_gkey1": true,
-    "entityfix2_last_in_gkey2": true,
-    "entityfix2_last_in_gdistractor": true,
-    "entityfix2_present_in_gkey_resolved": false,
-    "entityfix2_present_in_batch_verdicts": false
-  }
+
+  "resolved_findings": [
+    {
+      "id": "VF3-M1",
+      "severity": "resolved",
+      "was": "minor, OPEN BY DESIGN — 'the cross-question channel has TWO mouths, not one'. q3/D ('finkolet snedvrider siffrorna') and q4/D ('allt större summor för smulat kol') together handed a passage-blind solver the two facts that make q2 key D's fragility mechanism the textually-real one, while nothing on the sheet supported q2's competitor B.",
+      "claim": "FULLY RESOLVED IN THE SHIPPING ARTIFACT. BOTH MOUTHS CLOSED, VERIFIED INDEPENDENTLY RATHER THAN ACCEPTED FROM THE REPAIR CLAIM.",
+      "evidence": "Exact-string test over all sixteen shipped options: 'finkol' and 'smulat' now appear in ZERO options (both appear only in the passage, where they belong). Both replacements went to the substitutes ÄGARBLICK 2a named for their respective slots — the surname bookkeeping for q3/D, the borrowed-vessel fee for q4/D. The leak probe was re-run by this audit from stems/las-b14-001.json alone, having first verified the sheet is an exact projection of the shipping file: neither sheet now contains friability, transloading damage, fine-material deductions or tar's transport tolerance, and the residual haul-distance content in q3/A and q3/B is equally predicted by q2/B and q2/D, so it corroborates the shared premise and not the discriminating mechanism. The sheet is now symmetric between B and D, which is the intended state. The fresh G-STEM leg, working the post-repair sheet blind, confirms the closure from the other side: it picked B on q2 — the WRONG answer — which is direct positive evidence that the passage is now load-bearing on this item.",
+      "residual": "None on this channel. The unrelated soft q3->q4 seasonal cue is carried forward separately at VF4-N4; it is pre-existing and is not a mouth of this channel.",
+      "scope_warning_discharged": "The superseded audit's SCOPE WARNING — that repair_log's open-items text named only q4/D, so a repairer working from that description would leave half the channel standing — was honoured. repair_log[1].closes states it explicitly: 'The 2026-08-25 open-item text named only q4/D; the meta-audit found the channel has two mouths and the owner ruling requires both.' Both were in fact edited."
+    },
+    {
+      "id": "VF3-M2",
+      "severity": "resolved",
+      "was": "minor, OPEN BY DESIGN — P4 asserted both 'för åren 1863 till 1866 saknas hela band' and 'men serien täcker ändå fyrtiotvå år i följd', i.e. unbroken coverage that the first clause denies for four named years; with the hole the covered total is 38, not 42.",
+      "claim": "FULLY RESOLVED, WITH THE EXACT WORDING THE ADJUDICATION PROPOSED, AND THE CURE IS GENUINE RATHER THAN COSMETIC.",
+      "evidence": "P4 now reads 'men serien sträcker sig ändå över fyrtiotvå år.' — character-for-character the string ADJUDICATION.md proposed. 'Sträcker sig över' asserts a SPAN, which internal gaps do not falsify, where 'täcker ... i följd' asserted CONTINUITY, which they did; the number is preserved and the concessive 'men ... ändå' now carries both listed defects instead of only the second. A full arithmetic sweep of the passage (see arithmetic_recheck) finds no remaining conflict: the 42-year span fits inside 'under 1800-talets andra hälft', and every dated event in the unit — the 1863–66 gap, the 1870s foreman, 1870s prices, an 1868 debt standing twelve years to 1880, and Nyfeldt's 1860s felling permits — lands inside a feasible window. Independently re-confirmed that no question depends on the sentence: none of 'fyrtiotvå', 'i följd', 'sträcker', 'saknas', 'hela band', '1863', '1866' or 'serien' occurs in any prompt, option or key. Three fresh G-SPRÅK legs read the edited sentence and flagged nothing on it.",
+      "residual": "Only VF4-N1, that no G-REGISTER leg was run against the post-edit passage — a coverage note, disposed of there, not a defect in the sentence."
+    },
+    {
+      "id": "VF3-R1",
+      "severity": "resolved",
+      "was": "carried forward from round 3 — six G-SPRÅK convictions verified gone with zero survivors",
+      "claim": "STILL TRUE AFTER THE REPAIR. RE-TESTED, NOT INHERITED.",
+      "evidence": "Re-run by exact-string test against the current shipping text: 'låg stilla' ✓, 'lagts om' ✓ (this was the one MAJOR, from verdicts/verdicts-gsprak-2), 'måste fram en kort väg' ✓ (five separate earlier legs convicted the article-less form), 'kunde fraktas nedför älven' ✓, 'älvarna stigit tillräckligt' ✓, and the one-way hästekipage formulation ✓. Zero of six survive. This mattered enough to re-test because this unit has already suffered one revert-and-restore regression in which a language pass re-based it on a pre-repair snapshot."
+    },
+    {
+      "id": "VF3-R2",
+      "severity": "resolved",
+      "was": "carried forward from round 3 — the two-mil radius reconciles",
+      "claim": "STILL TRUE, AND RE-EXAMINED ADVERSARIALLY RATHER THAN ASSUMED.",
+      "evidence": "'Två mil ... är ungefär så långt ett hästekipage hann köra åt ett håll ... och ändå vara hemma igen innan en kort vinterdag var slut' reconciles with 'Nästan alla leverantörer visade sig bo inom drygt två mil från hyttan', which the pre-repair round-trip reading did not. The implied ~40 km round trip is at the upper edge of a loaded horse sled's day, but it is doubly hedged and attributed to a fictional researcher as an estimate, so it is a stated in-world claim and not an internal contradiction. Cleared rather than re-opened."
+    },
+    {
+      "id": "VF3-R3",
+      "severity": "resolved",
+      "was": "carried forward from round 3 — zero quotation misses across the rationales; stems sheet in sync",
+      "claim": "STILL TRUE AFTER TWO RATIONALE EDITS AND TWO OPTION EDITS. RE-TESTED IN BOTH DIRECTIONS.",
+      "evidence": "Quotes: 19 quoted strings across the four rationales; 17 resolve as exact substrings of the passage or an option, and the two that a naive matcher misses are legitimate elided quotations whose halves each resolve exactly. Effective 19/19, including the newly introduced 'en föreståndare på 1870-talet nöjde sig med att skriva efternamn'. Sheets: stems/, blind/ and distractor/ were all rebuilt in the same pass (mtimes 11:24–11:26, after the 11:24 candidate write) and are exact projections of the shipping file — all 4 prompts and all 16 option texts byte-identical in each; stems/ and blind/ leak no key, no rationale and no generator_meta; distractor/ correctly carries the keys B/D/A/C and correctly withholds the rationales; blind/ and distractor/ passage bytes identical to the shipping passage. blind/ and distractor/ are gitignored by design (.gitignore:84–85), so their absence from git status is correct and not evidence of a stale rebuild."
+    },
+    {
+      "id": "VF3-R4",
+      "severity": "resolved",
+      "was": "carried forward from round 3 — repair_log narrowing and the fifth-passage-delta disclosure, both fixed correctly",
+      "claim": "PRESERVED VERBATIM THROUGH THIS ROUND, NOT REWRITTEN.",
+      "evidence": "repair_log[0] is byte-identical to the entire HEAD repair_log string, so both of round 3's corrections — the narrowed byte-identity claim and the disclosed en-dash byline delta — survive intact inside the new list structure. Codepoint census re-run: the shipping passage carries 0× U+2014 and 1× U+2013, and the whole file 5× U+2014 / 8× U+2013, unchanged from what round 3 recorded, so the new repair_log entry introduced neither dash class and no new normalisation drift."
+    },
+    {
+      "id": "VF3-R5",
+      "severity": "resolved",
+      "was": "generator_meta.self_blind_solve claimed at generation time that 'no key can be derived from another'",
+      "claim": "A CLAIM THAT WAS FALSE WHEN WRITTEN IS NOW TRUE. Recorded so the ledger is honest in both directions.",
+      "evidence": "The superseded audit demonstrated that claim was wrong — q3/D plus q4/D did hand a blind solver the premise of q2's key. After the ordered repair, and after this audit's independent probe, the claim now holds. It became accurate by repair rather than by being right; the generator's assurance did not detect the channel and should not be credited with it. Noted so that no future reader treats the surviving generator-time sentence as a verification."
+    }
+  ],
+
+  "cleared": [
+    {
+      "severity": "cleared",
+      "check": "mech, re-run independently rather than accepted from the repair_log",
+      "claim": "repair_log[1].regate_owed claims 'clean 6/6 (M-SCHEMA, M-BANDS, M-TELL, M-FORM, M-ECHO, M-PLAGIARISM)'. VERIFIED TRUE, all six.",
+      "evidence": "gates/scripts/run_mech.py executed by this audit over the exact shipping file with --parsed-dir data/parsed and --p5-corpus-dir auto (M-ECHO indexed 100 shipped sibling units). Result: M-SCHEMA pass, M-BANDS pass, M-TELL pass, M-FORM pass, M-ECHO pass, M-PLAGIARISM pass, all with empty findings. Worth noting for anyone reproducing it: M-ECHO is SKIPPED unless --p5-corpus-dir is passed, so a bare invocation returns 5/5 and a 6/6 claim can only be substantiated with that flag. It substantiates here."
+    },
+    {
+      "severity": "cleared",
+      "check": "metadata truth sweep over every generator_meta field that could have gone stale under the repair",
+      "claim": "ALL METADATA REMAINS TRUE OF THE SHIPPED UNIT. No field needed updating that was not updated.",
+      "evidence": "planted_traps: ['3']['D'] surface_lexical_echo — correct, and better exemplified by the new option than the old one; ['4']['D'] plausible_worldknowledge — correct, the fee is stated but neither its rise nor the coercion is. repair_log[1].unchanged claims 'planted_traps needed no relabel', and that is right. key_spread ['B','D','A','C'] matches the four keys. question_families: q1/q2 enligt_texten_detalj (both stems carry 'enligt texten'), q3 detalj_ospecificerad (no such marker), q4 inference_slutsats ('utifrån texten ... dra för slutsats') — all four correct. hedge_balance_note re-verified clause by clause against the post-repair options and still holds, including the 2-of-4 keys-hedged tally, since neither new option changed a hedge. originality_note untouched and still accurate: neither rewritten option introduces any proper name, so no new law-16 exposure was created and no re-run of the real-entity sweep is owed. divergence_vs_anti_model untouched and unaffected by option-level edits."
+    },
+    {
+      "severity": "cleared",
+      "check": "law 16 / real-entity exposure after the repair",
+      "claim": "NO RE-RUN OWED, AND NONE OF THE PRIOR CLEARANCE IS DISTURBED.",
+      "evidence": "The two rewritten options introduce no proper noun of any kind — 'Bostrand', 'föreståndaren', 'hushållen' and 'bruket' are all pre-existing in-passage referents, and the only new token class is the decade '1870-talets'. The passage edit changed a verb and an adverbial. Round 3's four-channel clearance of all eight invented names plus the title (sv/en Wikipedia CirrusSearch, Wikidata, K-samsök, Exa, with both structured channels control-tested against the known-real 'Kvarnåsen') therefore stands unchanged and is carried forward rather than re-executed."
+    },
+    {
+      "severity": "cleared",
+      "check": "q4 key defensibility — the round-3 discharge re-tested against the NEW option set",
+      "claim": "STILL DISCHARGED. C remains the single defensible answer with the rewritten D in place.",
+      "evidence": "The earlier objection — that C rests on a same-year concurrency the passage does not establish — was retired in round 3 on the ground that the stem GRANTS the premise ('att samma hushåll KUNDE bedriva båda hantverken') rather than asking the solver to derive it. That reasoning is untouched by the repair. Re-tested against the new D: it asserts a rising fee and a coercion the text does not state, so it does not become a second defensible answer; and it is not made attractive by the passage, which presents the fee flatly as one of two deductions inside a pay calculation. Both fresh G-KEY rounds and G-DISTRACTOR reached C independently."
+    },
+    {
+      "severity": "cleared",
+      "check": "double-key risk on q3 after the rewrite",
+      "claim": "NO SECOND DEFENSIBLE ANSWER CREATED. A remains unique.",
+      "evidence": "Probed adversarially against the one further remark the passage gives Nyfeldt: 'Nyfeldt kallar det fallet besvärande för sin egen invändning, men påminner om att Stråkåsen är ett enda område och att kronans avverkningstillstånd på 1860-talet var både få och kortvariga.' The new D fails to reach it on three counts — wrong decade (1870s vs 1860s), wrong object (bookkeeping vs felling permits), and wrong function (her remark defends her position against Bostrand's Stråkåsen counter-case; it is not an objection to his boundary interpretation). The passage's own concessive, 'men serien sträcker sig ändå över fyrtiotvå år', additionally resists D's proposed remedy of excluding the 1870s entries. Near-miss, not a second key."
+    },
+    {
+      "severity": "observation",
+      "check": "evidence shape — the G-DISTRACTOR ruling legs persist no reasoning",
+      "claim": "The 'most defensible option found, still fails on three counts' analysis of q4/D that the tasking attributes to G-DISTRACTOR is not persisted anywhere in batch14. Repo-wide grep for the phrase returns nothing. The four las-b14-001 lines in verdicts-ruling/verdicts-gdistractor.jsonl are bare passes with empty findings.",
+      "evidence": "This is the gate's NORMAL pass shape rather than a dropped record — the same executor writes detailed findings on every flag in the same file family (e.g. elf-b14-002 q:3 in verdicts-vfinal/verdicts-gdistractor.jsonl carries a 900-character ARGUABLE analysis) and writes findings:[] on every pass, for every unit, in every round. So a G-DISTRACTOR pass is an unfalsifiable record by construction, unlike a G-KEY pass, which carries a justification string.",
+      "disposition": "Not a defect in this unit and no action against the gate proposed here. The missing analysis is supplied independently by this audit instead: q4/D is indeed the most defensible remaining distractor in the unit after q2/B, and it fails on three counts — the text never says the fee ROSE ('som avgift för lånade kärl', flat, inside a pay calculation), never says any charge DROVE households into tar burning, and the coercion it posits is in tension with the text's own account of the overlap as seasonal complementarity affecting 'ungefär en tredjedel' rather than a majority under duress. Recorded as an observation so that whoever tunes the gate knows a pass currently carries no auditable reasoning."
+    },
+    {
+      "severity": "observation",
+      "check": "batch-level title mannerism, carried forward from round 3",
+      "claim": "Unchanged and still worth carrying: two of the bank's forty LÄS titles contain a colon and both are batch14.",
+      "evidence": "'Kolmilor och tjärdalar: två hantverk i samma skog' (this unit) and 'Magasinet i Hökaryd: en handbok om socknens spannmål' (las-b14-002). The generator_meta claim 'no colon titles exist in the shipped LÄS bank' was accurate at generation time (2026-07-30).",
+      "disposition": "No repair, no re-gate. A batch-composition signal for whoever composes the next batch: a title mannerism that went from zero to two in one batch should not go to three."
+    }
+  ],
+
+  "gate_evidence_reviewed": [
+    "verdicts-ruling/verdicts-gkey-las-r1.jsonl and -r2.jsonl — 8 legs (4 targets × 2 rounds), 8 pass, 0 kill, 0 flag, solver answers B/D/A/C on every leg, each with a justification citing the passage sentence it relies on",
+    "verdicts-ruling/verdicts-gkey-resolved.jsonl — verified BYTE-IDENTICAL to r1+r2 concatenated for this cid, i.e. the merge of the eight legs above and not an additional independent vote; counted once",
+    "verdicts-ruling/verdicts-gdistractor.jsonl — 4 pass, empty findings (gate's normal pass shape; see the observation in cleared[])",
+    "verdicts-ruling/verdicts-gstem.jsonl — 4 flag, 9 findings, 0 kill; every finding given a written disposition in gstem_dispositions",
+    "verdicts-ruling/verdicts-gsprak.jsonl — 3 legs, 3 flag, 7 minor findings, none on any edited span; dispositions in gsprak_dispositions",
+    "verdicts-ruling/verdicts-gregister.jsonl — confirmed to contain no las-b14-001 line; see VF4-N1",
+    "ADJUDICATION.md §las-b14-001, §ÄGARBLICK 2 (a and b), §ÄGARDOM 2026-08-26 — the ordered scope was compared clause by clause against the applied diff",
+    "git HEAD 023c512 full field-level diff against the shipping file — the primary provenance instrument for this round",
+    "gates/scripts/run_mech.py re-executed over the shipping file with --p5-corpus-dir auto — 6/6 pass",
+    "gates/scripts/vfinal_fold.py read directly (not on report) to confirm the severity allowlist and the audit_verdict key this file must satisfy",
+    "stems/, blind/, distractor/ sheets — freshness, exact-projection and leakage checks re-run against the post-repair shipping file",
+    "verdicts-vfinal/ and verdicts-regate/ — read to establish which convictions are pre-existing, which are new in this round, and which prior evidence is now stale (VF4-N2)",
+    "reviews/final_verify.jsonl — existing derived record inspected for the staleness hazard"
+  ],
+
+  "verdict_rationale": "REFUTE brief, executed post-ruling, and the unit does not refute. Both ordered repairs are present in the shipping bytes, applied to the exact substitutes the adjudication named, and worded — in the passage's case — character for character as ÄGARBLICK 2b proposed. The field diff against HEAD shows exactly the five ordered content deltas and nothing else: no prompt, no key, no unedited option, no title, no trap label, no originality_note moved, and the previous repair_log entry is preserved byte-identical rather than rewritten. Every load-bearing claim the repair makes about itself was re-derived independently rather than read: the leak probe was re-run from the option sheets alone and both mouths are closed with no new channel opened in any direction; mech is genuinely 6/6 with M-ECHO actually exercised; the i-följd contradiction is cured by a change of proposition rather than of wording, and a full arithmetic sweep finds nothing else in the passage that conflicts; all nineteen rationale quotations resolve; the three blind sheets are exact projections that leak no key, rationale or metadata. Cold-solving all four items from the repaired passage before reading any verdict returned B/D/A/C — 4/4 agreement with the shipped keys and with eight independent G-KEY legs — with exactly one defensible answer per item and every distractor refutable on a textual ground. On the tension the tasking asked to be weighed: G-STEM's two 'repair side-effect' findings do not survive comparison against the pre-repair texts. Both rewritten options preserve their predecessors' rhetorical frames word for word, so the blind discardability G-STEM attributes to the repair is a pre-existing property of the unit's fourth-option architecture, not a cost the repair incurred; the new q3/D is if anything a better trap with the passage in hand, because it now near-misses Nyfeldt's one further remark on a decade-and-object confusion the retired measurement objection could not create. What G-DISTRACTOR sees with the passage and G-STEM cannot see from the sheet is therefore not in genuine conflict: the options are weak blind and defensible with the text, which is the correct direction for a reading-comprehension item. The single strongest counter-evidence in the round is that the fresh blind G-STEM leg picked B on q2 — the wrong answer — which is direct positive proof that the passage is now load-bearing where the closed channel had previously made it optional. Eight live entries remain: one minor (a unanimous but taste-level collocation on an unedited option, where repair would pull a further blind round and would exceed the owner's enumerated scope), four notes (a G-REGISTER leg the ÄGARDOM's enumeration omitted though its own recommendation named it; a downstream fold that will certify stale evidence unless re-pointed at verdicts-ruling/; an over-precise attribution in one rewritten rationale clause; the pre-existing soft q3-to-q4 seasonal cue, carried forward so the channel ledger stays honest) and three infos. None is a ship-blocker, and under the binding severity contract a ship-blocker would have been expressed as REFUTED rather than as an escalated severity. Verdict CONFIRMED_NOTES."
 }

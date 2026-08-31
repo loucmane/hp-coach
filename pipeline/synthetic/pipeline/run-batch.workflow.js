@@ -26,7 +26,7 @@ if (A.batch == null) throw new Error('run-batch: args.batch is REQUIRED (got ' +
 const BATCH = A.batch
 const STOP_AFTER = A.stopAfter || 'promote' // aggregate | sweep | promote
 const DATE = A.date || '2026-07-22' // stamp for review records (no Date.now in workflows)
-const ROOT = 'pipeline/synthetic'
+const ROOT = '/home/loucmane/dev/hpfetcher-worktrees/p5-batch14-15/pipeline/synthetic'
 const BDIR = `${ROOT}/batches/batch${BATCH}`
 const OPUS = { model: 'opus', agentType: 'general-purpose' } // bulk P5 runs on Opus; needs Bash/Read/Write
 
@@ -35,7 +35,7 @@ const VERDICT_FIELDS =
   `candidate_id (string), gate (one of M-*/G-KEY/G-STEM/G-DISTRACTOR/G-SPRAK/G-ENG/G-REGISTER), ` +
   `target ("passage" or "q:<n>"), verdict ("pass"|"kill"|"flag"), findings (array; empty on pass, ` +
   `else each {severity:"lethal"|"major"|"minor", quote:"<verbatim excerpt>", note:"<why, English>"}), ` +
-  `executed_by ("claude-opus-4-8/<GATE>"). G-KEY adds solver_answer ("A"|"B"|"C"|"D"|"NONE_DEFENSIBLE"|"MULTIPLE_DEFENSIBLE") ` +
+  `executed_by ("claude-opus-5/<GATE>"). G-KEY adds solver_answer ("A"|"B"|"C"|"D"|"NONE_DEFENSIBLE"|"MULTIPLE_DEFENSIBLE") ` +
   `and vote (1 or 2). G-SPRAK/G-ENG add vote (1..3). Append one line per applicable target to the named file with Bash (>>).`
 
 const ANTIPARK =
@@ -82,7 +82,7 @@ const prep = await agent(
   `3b. For EACH candidate build a STEMS-ONLY sheet for G-STEM (its contamination rule forbids the passage in context):\n` +
   `   jq '{candidate_id, section, questions: [.questions[] | {q_index, prompt, options}]}' <cand> > ${BDIR}/stems/<id>.json  (mkdir -p ${BDIR}/stems; verify no "passage" or "key" string in the output)\n` +
   `4. Run mechanical gates over the REAL candidates:\n` +
-  `   python3 ${ROOT}/gates/scripts/run_mech.py ${BDIR}/candidates/*.json --parsed-dir data/parsed --out ${BDIR}/verdicts/verdicts-mech.jsonl\n` +
+  `   python3 ${ROOT}/gates/scripts/run_mech.py ${BDIR}/candidates/*.json --parsed-dir /home/loucmane/dev/hpfetcher/data/parsed --out ${BDIR}/verdicts/verdicts-mech.jsonl\n` +
   `   (if data/parsed is absent, add --no-plagiarism and say so.)\n\n` +
   `${ANTIPARK}\n\n` +
   `Return JSON: {contaminated:bool, mech_kills:int, units:[{candidate_id, section}], notes:"..."}. ` +
@@ -116,7 +116,7 @@ const judge = (gate, vote, sheetDir, applyIds, promptFile, extra) => () =>
     `${sheetDir === 'blind' ? 'These sheets have NO answer key — if you see a key/rationale field, STOP and report contamination, do not guess. ' : 'These sheets KEEP the key so you can check for a second defensible answer. '}` +
     `${extra || ''}\n\n${VERDICT_FIELDS}\n` +
     `Write your lines to ${BDIR}/verdicts/verdicts-${gate.toLowerCase().replace(/-/g, '')}${vote ? `-${vote}` : ''}.jsonl (create/append with Bash). ` +
-    `executed_by = "claude-opus-4-8/${gate}${vote ? `-${vote}` : ''}".\n\n${ANTIPARK}\n` +
+    `executed_by = "claude-opus-5/${gate}${vote ? `-${vote}` : ''}".\n\n${ANTIPARK}\n` +
     `Return JSON {gate, lines_written:int, kills:int, flags:int}.`,
     { label: `${gate}${vote ? `-${vote}` : ''}`, phase: 'GateFleet', ...OPUS, effort: 'high',
       schema: { type: 'object', required: ['gate', 'lines_written'],

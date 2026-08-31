@@ -1,0 +1,41 @@
+{
+  "candidate_id": "las-b17-001",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "Q4 remains materially blind-solvable: two of four options fall to form alone and the surviving pair resolves to the key by the standard test-wise heuristic, and the option set was never touched after the G-STEM flag.",
+      "evidence": "Stem carries no content: \"Vilket påstående överensstämmer bäst med texten?\". A = \"Efterglöden var den svåraste tekniska frågan i hela tändsticksindustrin.\" (industry-wide superlative); B = \"Fabriken avvisade varje förändring som skulle ha krävt en ny maskin.\" (universal quantifier \"varje\"); that leaves C = \"Fabrikens val avgjordes av virkets egenskaper och av vad anläggningen redan rymde.\" (balanced, two-factor, moderate) against D = \"Priset på virket tycks ha styrt fabrikens val, medan träets egenskaper spelade mindre roll.\" (monocausal + dismissive). verdicts/verdicts-gstem.jsonl records target q:4 verdict \"flag\", severity \"major\", note \"PARTIALLY (blind lean C) ... test-wiseness favours C -- materially better than chance\". The four Q4 option strings are byte-identical in gen-las-long.json, candidates/, candidates-corrected/ and candidates-final/, and reviews/pedagogy.jsonl records only \"MINOR_FIXES\".",
+      "why": "The pedagogy stage's own mandate is whether a test-wise student can score without reading. The absolute quantifiers in A and B are a deliberate hedge-inversion device (generator_meta.hedge_map q4: \"two distractors are absolute\"), and that same device is what makes them free eliminations. The disposition (\"not a kill\") is defensible for a huvudbudskap item, but the residual is real and survives into the shipping file undeclared: the unit-level review record shows no trace of the G-STEM major flag, so a downstream reader cannot see that Q4's difficulty rests partly on form."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The passage's two afterglow claims pull in opposite directions on wood density, and the tension is only hidden because the text never states that birch is the denser wood.",
+      "evidence": "Stycke 5: \"Björkstickorna tände lika villigt som aspstickorna och brann lika jämnt, men glöden satt i längre: ... dröjde den i en björksticka ungefär dubbelt så länge som i en aspsticka.\" Stycke 6: \"Den ena var tätare virke. Asp som vuxit långsamt i socknarna längre norrut hade tätare årsringar och glödde mindre.\"",
+      "why": "The unit's own datum is that the denser species glowed roughly twice as long, while the proposed remedy one paragraph later is denser wood, on the premise that denser wood glows less. A reader who brings the ordinary fact that birch is denser than aspen sees the two claims collide. Nothing keyed depends on the direction (Q3 needs only \"skillnaden i verkan var liten\" plus the practical reason), so this is non-blocking — but internal coherence across paragraphs is exactly the integrated read's remit, and MINOR_NOTES carries no record of it."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Two rationale trap labels do not name the trap the option actually instantiates; in both cases the prose that follows silently corrects the label.",
+      "evidence": "Q1: \"A är reversed_causality\" for option A \"Paraffinet hade lagts på så tjockt att satsen inte fäste.\" — the text states no causal chain that A reverses; A invents a failure mode that the passage refutes twice (\"tände men slocknade\" and \"det satt ett svart märke kvar där satsen hade suttit\" both entail that the sats was attached and did ignite). Q2: \"B är true_but_irrelevant vriden till motsats\" for option B \"De blev dyrare än aspen samma år.\" — the passage says the opposite, \"Björk var det året billigare än asp.\", so B is false, not true-but-irrelevant; the rationale's own qualifier \"vriden till motsats\" concedes this.",
+      "why": "The integrated check requires that trap labels name the actual trap, because the label is the machine-readable field a later distractor-quality sweep or item-bank analysis will trust. Both explanations are substantively accurate, so students are not misinstructed and no key moves — hence minor — but the labels are wrong as taxonomy and should be reassigned (Q1/A to an invented-mechanism/contradicted type, Q2/B to the same polarity-reversal type the rationale assigns to Q2/A)."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The language stage's one passage edit fixed an idiom but introduced a referential ambiguity and a needless repetition of \"karet\".",
+      "evidence": "candidates/las-b17-001.json: \"...anger i stället ett temperaturintervall för paraffinkaret och tillägger att karet ska röras om varje halvtimme.\" -> candidates-corrected/ and candidates-final/: \"...anger i stället ett temperaturintervall för paraffinkaret och tillägger att det ska röras om i karet varje halvtimme.\" (the only passage change between the two files).",
+      "why": "\"röra om i\" is the right idiom, so the edit is a genuine improvement, but the new \"det\" sits immediately after the neuter noun \"paraffinkaret\" and invites a momentary reading of \"det\" = the vat, which then collides with the \"i karet\" that follows; the clause also now names the vat twice. A stage whose recorded verdict is CORRECTED should not leave its own edit as the least clean sentence in the paragraph. A clean recast that keeps the idiom and drops both problems: \"...anger i stället ett temperaturintervall för paraffinkaret och tillägger att det ska röras om i det varje halvtimme\" is no better, so recast the whole clause, e.g. \"...och tillägger att arbetaren skulle röra om i karet varje halvtimme\"."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Q1 distractor A has a surface foothold in the passage that G-DISTRACTOR recorded as a clean pass with no findings; the foothold is defeated, but it is close enough to belong in the declared residuals.",
+      "evidence": "Option A: \"Paraffinet hade lagts på så tjockt att satsen inte fäste.\" Passage support a student can point at: \"Badet måste därför hållas så varmt att paraffinet gick in i träet i stället för att lägga sig som ett skal utanpå.\" plus \"ett parti fabriken med paraffin som stannat i ytan\" (surface layer = \"lagts på så tjockt\"), and \"det satt ett svart märke kvar där satsen hade suttit\" — the pluperfect \"hade suttit\" reads on first pass as the sats having come off. Defeater: \"Köpmännen skrev att stickorna ”tände men slocknade”\" — a head that never adhered could not have lit. verdicts-vfinal/verdicts-gdistractor.jsonl records q:1 \"verdict\": \"pass\", \"findings\": [].",
+      "why": "The key is safe (both blind G-KEY runs returned B, vote 1 and vote 2), so this changes nothing about the answer. But las-b17-003 Q2/D was explicitly carried to reviewers in ASSEMBLY.md as \"the option most likely to draw MULTIPLE_DEFENSIBLE\", and this option is of the same kind: a distractor whose only defeater is one verb (\"tände\") three clauses away. Recording it as a declared residual costs nothing and is consistent with the batch's own practice."
+    }
+  ]
+}

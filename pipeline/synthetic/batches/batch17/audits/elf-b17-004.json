@@ -1,0 +1,20 @@
+{
+  "candidate_id": "elf-b17-004",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "generator_meta.residue_note contradicts the Q1 rationale: two details it declares to be untested 'concrete residue' are the rationale's own explicit defeaters for distractors B and D.",
+      "evidence": "residue_note: 'The advertising columns, the pony, the float and the cans, the price the dairy fixed at the gate, the seller keeping what the houses owed on the day of the change, and Hobbage driving the round herself until 1938 before selling it on the same terms are concrete residue the question does not test.' Rationale, defeating D: 'but the milk came 'at the price the dairy fixed' whoever brought it, which leaves rival roundsmen nothing to compete on'. Rationale, defeating B: 'the passage forecloses that verdict twice over - the round was 'reckoned in weeks of takings', and 'What the houses owed on the day of the change stayed the seller's to collect', so the standing debts were not in the bargain at all'.",
+      "why": "Integrated review's remit explicitly covers self-contradiction inside the unit. The same file both declares these two details untested and relies on them as the sole textual defeaters of two of the three distractors. Metadata-only and non-student-facing, so it does not change the MINOR_NOTES verdict; recorded because the review record carries no findings field and cannot show whether it was already caught."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The pedagogy record for elf-b17-004 is internally unreconciled: two verdict lines on the same date disagree (SOUND then MINOR_FIXES), and elf-b17-004 is the ONLY candidate in batch17 whose two pedagogy lines diverge.",
+      "evidence": "reviews/pedagogy.jsonl line 3: {\"candidate_id\":\"elf-b17-004\",\"stage\":\"pedagogy\",\"verdict\":\"SOUND\",\"reviewed_by\":\"pedagogy-review/opus\",\"date\":\"2026-08-26\"}; line 10: {\"candidate_id\":\"elf-b17-004\",\"stage\":\"pedagogy\",\"verdict\":\"MINOR_FIXES\",...}. Every other candidate's paired lines agree (elf-b17-002 lines 1/9 both MINOR_FIXES; elf-b17-003 lines 6/8; las-b17-001 lines 5/13; las-b17-002 lines 2/12; las-b17-003 lines 4/11). candidates-final/elf-b17-004.json has mtime 13:21 and pedagogy.jsonl 13:23, so both sweeps and the divergence post-date the last edit to the shipping file - the disagreement is not explained by the file changing between sweeps.",
+      "why": "The record shape has no findings/notes field, so a consumer reading first-match gets SOUND and last-match gets MINOR_FIXES. The unit's recorded pedagogy verdict is therefore ambiguous. Does not change the substantive outcome (the MINOR_FIXES reading is the stricter and matches the whole batch), but the record should be reconciled."
+    }
+  ]
+}

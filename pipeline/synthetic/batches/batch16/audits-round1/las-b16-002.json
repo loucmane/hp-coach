@@ -1,0 +1,48 @@
+{
+  "candidate_id": "las-b16-002",
+  "audit_verdict": "REFUTED",
+  "findings": [
+    {
+      "severity": "major",
+      "stage_challenged": "integrated",
+      "claim": "The shipped generator_meta.originality_note states a mechanically falsifiable claim that is FALSE, and that false claim is the sole justification recorded for keeping the invented municipality name 'Ödsmyra'. The element Öds- is already used for two other invented places in the shipped bank, one of them a fictional KOMMUN in the same domain and genre (first-person municipal school-service debate). No stage caught this, so the integrated verdict MINOR_NOTES understates the unit.",
+      "evidence": "Shipped unit (candidates-final/las-b16-002.json, generator_meta.originality_note) asserts verbatim: \"The municipality was renamed Ödsmyra: the element Öds- appears nowhere in the bank, -myra appears once with a different first element (Hällmyra)...\". Counter-evidence, re-runnable: `grep -roh 'Öds[a-zåäöA-ZÅÄÖ]*' */candidates-final/` over pipeline/synthetic/batches/ returns Ödsberga x5, Ödsbergas x1, Ödsbergaförsöket x1, Ödsbol x3, Ödsbols x1 (in addition to this unit's Ödsmyra x5). batch2/candidates-final/las-b2-002.json (family 'skolmatslogistik-debatt-short') contains: \"I grannkommunen Ödsberga, där tre skolor gick över till levererad mat redan i fjol, tycktes matsvinnet öka\" — a fictional neighbouring KOMMUN in a first-person kommunal skoldebatt, the same entity type, domain and genre as this unit's \"barn- och utbildningsnämnden i Ödsmyra\". batch15/candidates-final/las-b15-001.json contains: \"I mars 1878 förelade hälsovårdsnämnden i Ödsbols köping garvaren Valfrid Kilbrand...\". The same originality_note applies exactly this bank-element-saturation standard to reject another name — \"Vresmark was REJECTED anyway on a REGISTRY collision... the -mark element is saturated across 16 invented bank names\" — so the standard is the unit's own, not one imposed after the fact.",
+      "why": "Integrated review's mandate is the whole-unit cross-check of passage, stems, options, keys, rationales, glossary AND metadata against each other and against reality. A shipped originality certificate that states a false, one-grep-verifiable fact is a correctness defect in the artifact, and it conceals a real in-domain toponym echo (Ödsmyra / Ödsberga, both invented kommuner in Swedish municipal school-service debate shorts) that a student drilling the bank can plausibly meet in adjacent items. This is above the 'minor notes' band the integrated stage recorded."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The glossary entry glosses an adjective with a noun phrase, breaking the substitution test and departing from the bank's own convention.",
+      "evidence": "Unit glossary: \"skjutsberättigad = elev som enligt kommunens regler har rätt till skolskjuts\". In the passage the word is used adjectivally: \"Reglerna för vem som är skjutsberättigad avgör därmed vilka som sitter i fordonen\" and \"de skjutsberättigade elevernas adresser\". Substituting the gloss yields the ungrammatical \"vem som är elev som ... har rätt till skolskjuts\". Every other LÄS gloss in the bank matches part of speech, including the only other adjective: batch7/candidates-final/las-b7-001.json \"utsocknes = från en annan socken\". A part-of-speech-matching gloss would be \"som enligt kommunens regler har rätt till skolskjuts\".",
+      "why": "The language stage returned CORRECTED and did apply two G-SPRAK fixes ('upphandling ... gjord', 'olämpliga för yngre skolbarn att gå längs'), but missed this one. It is minor (comprehension is unaffected) and does not by itself flip CORRECTED."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The shipped self_blind_solve asserts 'No cross-question leak', which directly contradicts the batch's own recorded G-STEM finding for this unit.",
+      "evidence": "Shipped generator_meta.self_blind_solve: \"No cross-question leak: Q2”s mechanism is compatible with Q1's distractor A, so the mechanism alone does not settle the stance question.\" On record in batch16/report.json and verdicts/verdicts-gstem.jsonl, G-STEM q:1 verdict 'flag', severity major: \"the critical-column genre prior plus the absolute-versus-hedged contrast between D ('inte sparar en enda krona') and C narrows the field, and q:2's option A ('Nästan alla berörda elever åker med turer som ändå körs') corroborates a near-zero-but-not-zero saving.\"",
+      "why": "The unit ships as SURVIVED_FLAGGED on exactly this point, so the flag is adjudicated and not a new defect; but the metadata still carries a self-contradicting denial of it, which the integrated stage's self-contradiction sweep should have reconciled. Minor: no student-facing consequence."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The planted trap label 'reversed_causality' for Q2 option B does not name the actual trap; nothing is reversed.",
+      "evidence": "Q2 B: \"Kostnaden per tur sjunker i takt med att färre elever är berättigade till skjuts.\" The passage never asserts a cost-to-pupil-count arrow in either direction — it denies the dependency: \"en tur med sex elever kostar nästan lika mycket som samma tur med tjugo, så länge fordonsstorleken är densamma\" and \"antalet fordon bestäms av turplaneringen\". The rationale's gloss \"den vänder på pilen och låter kostnaden följa elevantalet\" therefore describes a substituted driver, not a reversed one; an accurate label would be false/unsupported causality.",
+      "why": "The rationale's substantive explanation of why B is wrong is factually correct and well quoted, so the teaching payload holds; only the taxonomy label is loose. Consistent with the recorded MINOR_FIXES verdict rather than a refutation of it."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The Q1 key states a magnitude claim slightly stronger than the author's own explicitly hedged epistemic position, and the rationale's 'rakt, ohedgat påstående' framing papers over that gap.",
+      "evidence": "Key C: \"Att besparingen blir en bråkdel av den budgeterade.\" The author's own limit: \"Det är den enda besparing som går att belägga i förväg\" and \"Det argumentet kan jag inte räkna bort, och jag tänker inte låtsas att jag kan\" — she declines to price the empty-seat/2029-procurement effect rather than asserting the final saving will be small. Rationale: \"Nyckeln är här ett rakt, ohedgat påstående, inte det försiktigaste alternativet.\"",
+      "why": "KEY SANITY still passes: she flatly asserts \"Den summan går inte att få fram ur kommunens egna turlistor\" and \"de ser likadana ut vare sig avståndsgränsen dras vid två eller tre kilometer\", and A, B and D are each independently refuted by the text, so C remains the single defensible best. Recorded here only as the one angle a complaining student could raise."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "The opening sentence presents the decision as settled and as a proposal in the same clause, in mild tension with the Q1 stem's 'den föreslagna höjningen'.",
+      "evidence": "Passage: \"I november ska barn- och utbildningsnämnden i Ödsmyra höja avståndsgränsen för skolskjuts i årskurs 4–6 från två till tre kilometer, och i budgetunderlaget står förslaget bredvid en beräknad besparing på 1,4 miljoner kronor om året.\" 'ska ... höja' presupposes a taken decision; 'förslaget' and the stem's 'den föreslagna höjningen' presuppose it is still pending.",
+      "why": "Readable as 'is set to decide in November' and does not affect answerability, but a native editor would disambiguate (e.g. 'ska ... ta ställning till att höja' / 'föreslås höja'). Minor; does not flip the CORRECTED verdict."
+    }
+  ]
+}

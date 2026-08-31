@@ -1,0 +1,165 @@
+{
+  "candidate_id": "las-b17-003",
+  "date": "2026-08-31",
+  "auditor": "vfinal-meta-audit/claude-fable-5",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "verdict": "CONFIRMED_NOTES",
+  "scope_note": "Re-issue of the V-FINAL adversarial double-answer audit for round “agardom-komma-ifran” (bead hpf-hzks), on the shipping bytes of candidates-final/las-b17-003.json after the ÄGARDOM of 2026-08-31 changed the passage's concession sentence ”Det är svårt att komma runt.” → ”Det är svårt att komma ifrån.” and synchronized the verbatim quotation in questions[1].rationale. The prior issue of this file (round agardom-q2d) is preserved in git at 6811724. Prime directive of this pass was to REFUTE the claim that both questions remain uniquely solvable on the new wording — centrally, to make the “Det”-anaphor of the new sentence bind the essayist's own pattern-claim instead of Bråtemo's objection and thereby reopen Q2/D. I could not: the hostile parse fails on discourse structure and is immaterial to the keys even if granted (see cleared[]). Repair perimeter verified byte-exact. Three prior minors survive untouched because they sit in the Q1/Q2 rationale prose the ägardom deliberately did not reopen; the komma-runt minor is RESOLVED and moved below.",
+  "findings": [
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "CARRIED, UNRESOLVED. The Q1 rationale still asserts a contradiction the passage does not contain: publisher provenance and publisher production do not exclude teacher authorship, so “Texten motsäger det ändå två gånger” is an invalid inference presented as fact in the teaching payload.",
+      "evidence": "Q1 rationale, byte-identical to the pre-repair commit a134576 (verified: questions[0] compares equal in full): “Texten motsäger det ändå två gånger: häftena kommer från de två förlag som dominerade marknaden, och i stycke 4 slås det fast att samma förlag gjorde både bild och häfte.” Neither passage sentence is about authorship; “gjorde” is not “skrev”, and a publisher commissioning teacher-authors is exactly the real-world plausibility the trap trades on. The stronger evidence remains unused by the rationale: p1 casts the teacher as ADDRESSEE (“den talade om för läraren vad som skulle göras med bilden”) and p2's single marginal note in eighty-three booklets — a date — shows near-zero teacher inscription. Both fresh G-KEY legs, notably, reach for that addressee/marginal-note evidence in addition to the publisher point when they kill Q1/D.",
+      "why": "Re-verified on current bytes rather than carried on trust. The key C is untouched and survives (Q1/D additionally fails the stem's “utmärkte … historieserierna” requirement), so this is not a key defect — a one-clause repair in the teaching payload (“motsäger” → “talar emot”, or swap in the addressee evidence). Unchanged severity across three issues of this audit."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "CARRIED, UNRESOLVED. The Q1 rationale's claim that no option reproduces the passage's wording is false on its face — the key's distinguishing lexeme “påståenden” is the passage's own word — and the same clause carries the “Ordvalet är utbytt” collocation slip.",
+      "evidence": "Q1 rationale (unchanged): “Ordvalet är utbytt (besked → påståenden, …), så inget alternativ återger textens formulering.” Passage p5: “Det innehåller elva påståenden, en ordlista och en enda fråga.” — exactly one occurrence of /påstående/ in the passage, and it licenses the key's word. This round's fresh G-KEY leg 2 in fact LEANS on that echo when solving (“the passage itself calls such booklet statements ’påståenden’”), which confirms both that the echo is real and that it does no key harm.",
+      "why": "Kept at minor, re-checked rather than assumed: the lexical echo sits in p5 (the 1958 mjölkhantering booklet), not in the p3 historieserie sentence the item is keyed to, so a word-matcher scanning for “påståenden” lands in the wrong paragraph and is not handed the key — the besked → påståenden mapping must still be earned from p3. Factual-claim defect in a rationale; no key impact."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "language",
+      "claim": "CARRIED, UNRESOLVED. The agardom-q2d repair's WHY-D paragraph still wedges a heavy source adverbial inside the particle cluster of “tala om för”, producing a garden path; this round's one-word edit did not touch it.",
+      "evidence": "Q2 rationale (current bytes): “… för häftena visar just hur planscherna borde användas: handledningen talade enligt stycke 1 om för läraren vad som skulle göras med bilden.” Flagged independently by two of three G-SPRÅK legs in the agardom round (“trädgårdsstig — läsaren binder först ’om’ till fel led”), with the same proposed fronting fix. The three fresh agardom2 legs did not re-flag it, but the construction is byte-unchanged, so silence is variance, not remediation.",
+      "why": "Grammatical, no effect on correctness or on which option is defensible; the fix is a known one-line reorder (“enligt stycke 1 talade handledningen om för läraren …”). Held at minor for consistency with the prior issue: it is a flow defect the repair round itself introduced into the teaching payload, and no round has yet owned it."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "blind",
+      "claim": "The fresh G-STEM leg flags both questions PARTIALLY_ANSWERABLE — on a stems sheet PROVEN byte-identical to the sheet the previous round's leg passed twice as NOT_ANSWERABLE with zero findings. This is stricter-grader variance, not introduced leakage; but the underlying residual test-wise surface is real and belongs on the ledger at note severity.",
+      "evidence": "Byte-identity: stems/las-b17-003.json diffs empty against a134576 (verified with git show | diff), and the sheet carries no passage, key or rationale fields at all; this round changed only passage and Q2 rationale, so nothing the blind grader sees changed. Fresh observations, my adjudication of each: (1) Q1 B/C form an antonym pair on two axes (frågor/påståenden, med tiden/från början) while A and D sit off-axis — real form tell, narrows a blind solver to {B,C} but does not decide. (2) Q2/C's first clause (“frågor blev med tiden fler”) near-verbatim recycles Q1/B (“fick allt fler frågor med tiden”) — real within-sheet corroboration: keys rarely duplicate a sibling option's claim, so a test-wise solver reads the “more questions over time” direction as distractor-side, which chains with (1) to favour Q1/C and disfavour Q2/C. (3) Q2/D is blind-eliminable by source-criticism world knowledge (prescriptive guides evidence intended, not actual, use) — true, and a DESIGNED-IN cost of the agardom-q2d fix: a demonstrably-false D must assert precisely the practice claim the standard caveat inverts. The leg's blind picks, C and A, match both keys; its own summary is “materially better than chance, not decided”.",
+      "why": "Honest weighing: there IS real blind-answerability here for a maximally test-wise solver — a chained heuristic route that lands on both keys with materially-better-than-chance probability — and it is NOT attributable to this round (byte-identity is proof). It stays at note rather than minor for three reasons: expert graders split 1–1 on identical bytes (the previous leg saw none of it), the route narrows rather than decides (step (1) leaves a coin flip that only assumption-laden cross-sheet inference resolves, and separating Q2/A from Q2/B blind needs imported domain knowledge), and the only repair would reopen option texts that two full gate rounds and an ägardom deliberately preserved. Recorded so that a future re-generation of this family avoids planting the thesis axis as an intra-question antonym pair AND an inter-question recycled clause."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "integrated",
+      "claim": "CARRIED, EVIDENCE UPDATED. The unit's two questions still plant the same reversed-direction falsehood (Q1/B, Q2/C first clause), and both are still labelled “reversed_causality” although neither option nor the passage contains a causal claim.",
+      "evidence": "Q1/B “De fick allt fler frågor med tiden.” and Q2/C “Handledningarnas frågor blev med tiden fler, medan planscherna samtidigt förenklades.” — both unchanged by both repairs, both labelled reversed_causality in generator_meta.planted_traps and the rationales. Update: the prior issue downgraded this from minor on the strength of the agardom-round G-STEM pass; the fresh leg has now re-produced the tell in sharper form (see the blind finding above), so that downgrade ground is weakened — the mirror observation and the recycling observation are the same residual seen from two gates.",
+      "why": "Held at note despite the weakened downgrade ground, for the same reasons as the blind finding it now folds into: 1–1 grader split on identical bytes, narrows-not-decides, and house precedent tolerates reversed_causality as a catch-all label for reversals. Still not a key leak on its own: knowing Q1/B is false does not by itself yield Q1/C."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "language",
+      "claim": "CARRIED. Definiteness mismatch between the two glossary entries in shipping content: the definiendum is indefinite but one definiens is definite, while its sister entry is indefinite.",
+      "evidence": "Passage glossary (untouched by this round): “skolplansch = stor bild på väv …” (indefinite) against “handledning = häftet med anvisningar …” (definite). Proposed harmonisation from the agardom-round G-SPRÅK leg stands: “handledning = häfte med anvisningar som följde med en planschserie”.",
+      "why": "No correctness impact and no bearing on either key; the definite form is faintly licensed by p1's prior introduction of “ett häfte”. A genuine internal inconsistency in student-facing text that no round has owned."
+    },
+    {
+      "severity": "note",
+      "stage_challenged": "integrated",
+      "claim": "CARRIED, GRADERS NOW SPLIT. Q1/A carries a non-parallel comparison ellipsis in shipping option text: the subject is the guides, the comparandum is the series.",
+      "evidence": "Q1/A “De innehöll färre bilder än naturserierna.” — “De” resolves to handledningarna, the compared term is the series. The agardom-round leg proposed expanding the comparandum; fresh G-SPRÅK run 3 re-observed the same span and judged grundform comparison ellipsis “naturlig redigerad svenska och autentisk HP-alternativstil” — no fällning.",
+      "why": "No uniqueness impact under either reading (the passage never counts images in either genre; image density is discussed only for the late planscher), and expert graders now disagree on whether it needs fixing at all. The expansion would also break Q1's declared short_breath budget, so it stays a recorded trade, not a repair instruction."
+    },
+    {
+      "severity": "info",
+      "stage_challenged": "language",
+      "claim": "CARRIED. Register mixing in the rationales — an open corpus-wide question that this unit exemplifies rather than causes.",
+      "evidence": "Q1 rationale: “hedgningen ”troligen”” — re-observed by fresh G-SPRÅK run 1, which notes “garderingen” as the native term but declines to fell it as established fackspråk within the rationale's metaregister; “över tid” beside three options using native “med tiden”; untranslated taxonomy labels (scope_shift, reversed_causality, plausible_worldknowledge, half_right_conjunction) throughout both rationales.",
+      "why": "Filed as info, not as a defect of las-b17-003: house convention across every batch. Belongs in a corpus-level decision about whether rationales are student-facing."
+    },
+    {
+      "severity": "info",
+      "stage_challenged": "language",
+      "claim": "NEW (ledger only). A real typo — “dateradnot” for “daterad not” — sits in the HISTORICAL round-1 repair_log bookkeeping, outside every student-facing field.",
+      "evidence": "generator_meta.repair_log[0], edits entry for hedge_map: “(oförändrad text, dateradnot tillagd sist)”. Found by fresh G-SPRÅK run 3, which correctly scoped it outside the contract (historical bookkeeping, not this round's added text; the 2026-08-31 additions were read and are clean).",
+      "why": "Info because fixing it would mean editing frozen append-forward history, which is worse than the typo. Recorded so no future reviewer mistakes it for an unexamined field."
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "prior-issue finding 1 (minor, language): objectless “Det är svårt att komma runt.” anglicism",
+      "status": "RESOLVED",
+      "was": "The 3-of-3 unanimous G-SPRÅK flag on the passage's concession sentence — objectless ’komma runt’ calquing ’get around’ where the Swedish idiom for an inescapable concession is ’komma ifrån’ — carried as minor after the 2026-08-30 ägardom preserved the passage, with an OWNER NOTE that the evidence base had escalated and the deferral was worth re-taking, at a cost of two coordinated edits.",
+      "resolution": "The ÄGARDOM of 2026-08-31 (bead hpf-hzks, ADJUDICATION.md §ÄGARDOM 2026-08-31) re-took the deferral and chose ÄNDRA, executing exactly the two coordinated edits the prior issue costed: passage p4 now reads ”Det är svårt att komma ifrån.” and questions[1].rationale quotes it verbatim, terminal period inside the Swedish quotation marks. Verified on bytes: structural diff against a134576 shows exactly four changed paths (passage; questions[1].rationale; self_blind_solve, a strict append; repair_log, one appended entry with entry[0] byte-identical), the passage diff is one word in one sentence of 28, and ’komma runt’ survives nowhere student-facing — only in generator_meta historical notes and repair_log from-fields, which is correct bookkeeping. All three fresh G-SPRÅK legs verify the corrected sentence (run 1: “idiomatisk tough movement-konstruktion … standardidiomet för ett ofrånkomligt medgivande … Anglicismen från förra rundan är åtgärdad”). The new wording was then attacked for fresh ambiguity and held — see cleared[] ’det-anaphor-attack’ and ’new-wording-hostile-sweep’."
+    },
+    {
+      "id": "prior-issue finding 5 (note, integrated): passage–rationale coupling made the deferred fix a two-site edit",
+      "status": "RESOLVED",
+      "was": "The agardom-q2d repair quoted the flagged sentence verbatim in WHY-D, so a one-word passage edit would strand a stale rationale quotation unless the instruction named both sites.",
+      "resolution": "The ägardom ticket named both sites explicitly (“ÄNDRAT: passagen (en mening) och questions[1].rationale (samma mening citerad ordagrant)”) and the executed edit kept them in sync — verified verbatim including terminal punctuation. The drift this note existed to prevent did not occur."
+    },
+    {
+      "id": "AA-B17-001 / round-1 G-DISTRACTOR q:2 (major)",
+      "status": "RESOLVED (carried from prior issue; re-confirmed on current bytes)",
+      "was": "Old Q2/D (“Häftena kan knappast säga något …”) restated a conceded objection and was textually defensible — a live double answer.",
+      "resolution": "Fixed by the 2026-08-30 ÄNDRA rewrite; re-litigated with maximum hostility again this round on the NEW concession wording, including the strongest fresh attack (the “Det”-anaphor reassertion reading) — no defensible reading of D found. Corroborated this round by two fresh G-KEY legs plus verification votes (gkey_resolve: 4 verdicts, 0 kills), both naming D as contradicted on the ’faktiskt’ axis, and a fresh G-DISTRACTOR leg passing both questions with zero findings after arguing and dismissing the anaphor case itself."
+    },
+    {
+      "id": "round-1 G-STEM q:2 (major)",
+      "status": "RESOLVED (carried from prior issue), with the residual now tracked as a live note",
+      "was": "Old D was pragmatically self-undermining and A/C mirror-trends narrowed a blind solver.",
+      "resolution": "The self-undermining limb died with the D rewrite and stays dead. The mirror/narrowing residual, which the prior issue carried at reduced weight after a clean blind leg, has re-appeared in this round's stricter blind leg on byte-identical stems — it is now adjudicated in findings[] (blind, note) rather than here."
+    },
+    {
+      "id": "round-1 G-SPRÅK minor: “Häftena samlades inte”",
+      "status": "RESOLVED — OVERRULED (carried from prior issue)",
+      "was": "Claimed the collector sense requires the particle (’samla på’).",
+      "resolution": "Overrule stands; not reproduced by any leg in either fresh round. Closed."
+    },
+    {
+      "id": "prior-audit record gap on the komma-runt major",
+      "status": "RESOLVED — fully closed",
+      "was": "Round 1 left the passage-language flag with no written disposition; the prior issue closed the record gap but the sentence itself shipped unremediated by owner choice.",
+      "resolution": "Now closed in both senses: the record carries three adjudication rounds in writing, and the sentence itself is fixed by the 2026-08-31 ägardom. Nothing remains of this thread."
+    }
+  ],
+  "cleared": [
+    {
+      "check": "repair-scope",
+      "result": "CLEAN. Structural diff of the shipping file against pre-repair commit a134576 shows exactly four changed paths: passage, questions[1].rationale, generator_meta.self_blind_solve, generator_meta.repair_log (LEN 1→2). Sentence-level passage diff: 28 sentences before and after, exactly one differs — ”Det är svårt att komma runt.” → ”Det är svårt att komma ifrån.” Character-level Q2 rationale diff: a single replace, ’runt’ → ’ifrån’, inside the verbatim quotation. self_blind_solve is a strict extension (new.startswith(old) True); repair_log[0] is byte-identical and one dated entry is appended. Q1 compares equal in FULL; both prompts, all eight options, both keys (C/A), title, hedge_map and glossary byte-identical. The repair matches its repair_log claim exactly, no undeclared edit."
+    },
+    {
+      "check": "quote-sync-and-residue",
+      "result": "CLEAN. ”Det är svårt att komma ifrån.” appears verbatim in passage p4 and inside Swedish quotation marks in the Q2 rationale, terminal period included. ’komma runt’ is absent from the passage, both prompts, all options and both rationales; it survives only in generator_meta historical bookkeeping (dated bracket notes and repair_log from-fields/tickets), which is correct append-forward practice, and in candidates/ plus candidates-corrected/, which correctly preserve pre-repair history."
+    },
+    {
+      "check": "sheet-propagation",
+      "result": "CLEAN. blind/ and distractor/ passages compare byte-equal to the candidate's new passage; stems/ carries only candidate_id/section/questions{q_index,prompt,options} — no passage, no key, no rationale, and no occurrence of ’komma’ at all. stems/ is git-tracked and byte-identical to a134576; blind/ and distractor/ are unversioned per .gitignore lines 84–85 (verified with git check-ignore, not assumed)."
+    },
+    {
+      "check": "det-anaphor-attack",
+      "result": "CLEAN — the strongest available attack on the new wording, prosecuted independently and defeated. Hostile reading: “Det” in ”Det är svårt att komma ifrån.” binds the essayist's OWN ¶3 pattern-claim, turning the sentence into a reassertion (’there is no getting away from the pattern’) rather than a concession of Bråtemo's objection — which would leave the objection contested and arguably reopen Q2/D. Four independent grounds kill it. (1) Binding: the bare sentential anaphor takes the immediately preceding, maximally salient proposition — Bråtemo's “ingen vet vad läraren faktiskt sade” — and reaching ¶3's thesis requires skipping the whole paragraph-so-far with no forcing context; the reassertion idiom is moreover almost always realised with an explicit complement (”det är svårt att komma ifrån ATT …”), and the complement-less form directly after a reported objection reads as concession. (2) Discourse: the next sentence opens with adversative “Men” and pivots INTO thesis-supporting material (“bilderna förändras i takt med texterna”); that only parses if the preceding sentence conceded — under the reassertion reading “Men” would pivot from thesis to thesis, which is incoherent. (3) Frame: ¶4 opens “Bråtemo tycker att jag läser in för mycket”, establishing an objection–response paragraph whose only coherent arc is report–concede–counter. (4) IMMATERIALITY, the decisive layer: even granting the hostile parse arguendo, “ingen vet vad läraren faktiskt sade när dörren var stängd” stands unrebutted under every reading — the “Men” counter concludes “avsiktlig”, i.e. producer intent, never classroom practice — and ¶2's one-marginal-date-in-83 stands; so Q2/D dies regardless of anaphor resolution, and Q2/A never crosses onto the practice side. My grounds (2) and (4) converge with the fresh G-DISTRACTOR leg's independent dismissal of its own counsel case; ground (1) is additional to it."
+    },
+    {
+      "check": "new-wording-hostile-sweep",
+      "result": "CLEAN — no other hostile reading enabled by the change. (a) Locomotive sense (’svårt att komma ifrån’ = hard to get away from a place/engagement): no travel or schedule frame exists anywhere in ¶4; not viable. (b) Truncated-complement garden path (reader awaits an att-clause that never comes): Swedish fully licenses the raised sentential-object reading; momentary at worst, no key consequence. (c) Strength shift: ’komma ifrån’ (cannot deny) is if anything a STRONGER concession than ’komma runt’ (cannot circumvent) — which strengthens the refutation of Q2/D and cannot hurt Q2/A, whose claim lives entirely on the design side that the essay reasserts after “Men”; a fortiori it cannot touch Q1, which keys on ¶3's exception sentence, whose corpus counts Bråtemo's objection never contests. (d) Lexical surface: ’ifrån’ occurs nowhere else in the unit's student-facing text, so no new echo or bridge is created."
+    },
+    {
+      "check": "cold-solve-q1",
+      "result": "CLEAN — answer C, uniquely defensible, re-solved on current bytes. A: the passage never counts images in any booklet or series (image density appears once, for the late PLANSCHER), and A additionally fails the stem's genre-specificity requirement — unsupported twice over. B: flatly contradicted by “andelen frågor förblir liten hela vägen”. D: disfavoured by p1's addressee framing and p2's single marginal date, and it too fails the “utmärkte … historieserierna” stem since nothing distinguishes history-series authorship from nature-series authorship. C: carried by p3's exception sentence “Där dominerade beskeden redan i de tidigaste årgångarna”, with the besked/påståenden equivalence licensed by p5. Concurs with both fresh G-KEY legs (C, C)."
+    },
+    {
+      "check": "cold-solve-q2",
+      "result": "CLEAN — answer A, uniquely defensible, re-solved on current bytes. A: two converging strands — the booklet trend in p3 (question share falls from about two thirds to under one third as färdiga besked grow) and the chart trend in p4 (“färre småting i utkanterna, mindre att peka på som inte redan är förklarat”) — with p5's 1958 booklet (eleven statements, one question) as the endpoint case. B: “trycktes i mycket små upplagor” is fabricated (booklets shipped with every series, “ingick i priset”; scarcity is attributed to non-collection and disposal) and “värdefull främst därför att” imports a value-ranking the text never makes — two independent failures. C: second clause true, first clause inverted (frågorna blev färre, not fler). D: contradicted — see the dedicated entries. Exactly one defensible answer. Concurs with both fresh G-KEY legs (A, A; gkey_resolve 4 verdicts, 0 kills)."
+    },
+    {
+      "check": "q2-D-relitigation-on-new-bytes",
+      "result": "CLEAN — the three prior D-checks re-run compressed on current bytes, all holding. Load-bearing clause: D asserts the booklets show ACTUAL classroom use; p4 denies exactly that on the same lexeme (“faktiskt användes” vs “ingen vet vad läraren faktiskt sade”), a denial the new sentence now concedes MORE strongly. Paragraph sweep finds no rescue (p1 places the booklet in the room but implies neglect; p2's lone date is framed as absence; p3 and p5 measure the script, not the performance). The avsiktlig-turn is production-side by construction and cannot carry a practice claim. Partial credit: “X, inte bara Y” presupposes Y and asserts X; X is denied, and the stem's superlative (“överensstämmer bäst”) would rank even hypothetical partial support behind A."
+    },
+    {
+      "check": "key-A-does-not-over-read",
+      "result": "CLEAN — retested against the strengthened concession. If A were a practice claim it would die with D and the item would have no answer; it is not — A predicates a change of the PLANSCH as an instrument, asserted at artefact level in p4, and “lärarens besked” is the passage's own term for what the booklet hands the teacher. The stronger concession therefore widens the gap between A and D rather than narrowing it. Both fresh G-KEY legs solved A cold with no over-reading concern."
+    },
+    {
+      "check": "cross-question-integrity-and-leakage",
+      "result": "CLEAN, re-checked on current bytes. Q1/C (history booklets statement-heavy from the start) and Q2/A (aggregate drift toward besked) are reconciled by the passage's own exception marking. Key-to-key content-word intersection remains empty; time markers opposed (“från början” vs “med tiden”); “med tiden” is tri-located (Q1/B wrong, Q2/A key, Q2/C wrong) so it is not a key-only bridge; the changed passage sentence shares no content word with any option. The known residual test-wise surface (antonym pair, recycled clause) is adjudicated as a live note in findings[], not here."
+    },
+    {
+      "check": "mechanical-form",
+      "result": "CLEAN. No option was touched, so all round-agardom numbers stand: Q2 tokens D 14 / A 15 / B 16 / C 10, key neither longest nor shortest, max/min 1.6; Q1 5-word stem with 6/7/7/6-word options; no semicolons in options; no em-dash anywhere in the file; Swedish quotation marks intact including around the resynchronized rationale quote; passage sentence count unchanged at 28. Mech gates 5/5 post-repair per the round record."
+    },
+    {
+      "check": "hedge-heuristic",
+      "result": "CLEAN, unchanged — no option text changed. The pick-the-cautious-option heuristic hits the key in 0 of 2 questions on either candidate reading of Q2's softest option (B's “främst därför att” or D's “inte bara”, both wrong), and Q1's only hedged option (“troligen”) is wrong."
+    },
+    {
+      "check": "gsprak-fresh-notes-adjudicated",
+      "result": "CLEAN — all fresh G-SPRÅK observations examined; none is a defect of this round. Run 2's preterite/present coordination in the historieserie sentence: the corpus-present vs historical-preterite division is principled and consistent; concur with no fällning (consistent with the prior issue's overrule of the same class). Run 2's “medan … samtidigt” pleonasm in Q2/C: attested emphasis in edited prose, distractor text, no impact. Run 3's comparison-ellipsis observation and run 1's “hedgningen” observation are adjudicated in findings[] (note and info respectively). Run 3's morpheme sweep of the whole unit returned no hit, and it verified the 2026-08-31 additions to generator_meta as linguistically clean."
+    }
+  ]
+}

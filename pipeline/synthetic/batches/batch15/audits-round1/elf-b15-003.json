@@ -1,0 +1,34 @@
+{
+  "candidate_id": "elf-b15-003",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "findings": [
+    {
+      "severity": "major",
+      "stage_challenged": "pedagogy",
+      "claim": "The passage's opening clause states the thermal behaviour of a fishplated rail joint backwards: an expansion gap is at its WIDEST in cold weather and CLOSES as the rail expands in heat, so jointed track did not 'open' a gap each summer - it spent one.",
+      "evidence": "Passage sentence 1: 'Jointed track opened a gap at every fishplate each summer; welded rail has no such luxury.' Sentence 2 states the correct mechanism and thereby exposes the clash: 'It has nowhere to put the extra millimetres, so what would have been movement becomes force' - i.e. jointed track DID have somewhere to put the extra millimetres, namely the gap, which is therefore consumed (closed) by summer expansion, not opened by it. The generator's own note confirms the intended sense: 'Welding out the fishplate joints does not abolish thermal expansion - it converts what would have been movement into axial force' (gen-elf-short-1.NOTES.md).",
+      "why": "Pedagogy cleared the unit SOUND and integrated recorded only MINOR_NOTES, yet integrated checklist row 1 (passage internal consistency: facts reconcile, no contradiction) covers exactly this: read literally, the clause teaches a Swedish reader that summer heat opens joint gaps, the reverse of the physics the rest of the passage relies on. It is held to major rather than a REFUTE because 'opened a gap' is genuinely ambiguous between 'created a gap' (false) and 'afforded an open gap' (true), the surrounding sentences carry the correct mechanism, the item never tests the clause, and passage-physics copy accuracy is not one of pedagogy's five required probes (language explicitly excludes content accuracy, so CLEAR stands). Fix: 'Jointed track left a gap at every fishplate for each summer to close; welded rail has no such luxury.'"
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "pedagogy",
+      "claim": "The rationale over-claims when it says the passage 'contradicts' distractor D; the single-week datum does not logically contradict a plural-weeks claim.",
+      "evidence": "Rationale: 'D = outside_knowledge plus the intuition a reader brings to the topic - heat buckles rails, so the hottest weeks should hold the most buckles - which the passage contradicts in one flat sentence: \"The hottest week on record produced none.\"' D reads 'That most of them fell in the hottest weeks the district has on record' (plural); the passage reports only 'The hottest week on record produced none' (singular). Most buckles could still fall in the district's other hot weeks without contradicting that sentence.",
+      "why": "Rationale factual accuracy is pedagogy's probe 3 and the rationale is the student-facing teaching payload; the true reason D fails is that the passage never states any hot-week share at all and its one hot-week datum points the other way. Strictly evidential, not contradictory - a one-word fix ('cuts against' / 'gives no support to'), so the SOUND verdict survives."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The stated mechanism window and the log's cluster window do not match: the loose-ballast effect is given as 'a few weeks' while the tally window is eight weeks.",
+      "evidence": "Passage: 'A tamping machine lifts the track and packs new stone underneath, and for a few weeks afterwards that stone is loose.' Passage: 'two in three came in the eight weeks after ballast work.' The rationale leans on the first to license the second: 'The passage has already supplied the mechanism that makes the timing legible ... \"for a few weeks afterwards that stone is loose\"'.",
+      "why": "Integrated row 1 (quantities reconcile across the passage): eight weeks is not 'a few weeks', so the mechanism sentence under-covers the window the tally reports. Not a contradiction - the eight-week window contains the loose period - so MINOR_NOTES is the right integrated verdict, but 'for some weeks afterwards' or an eight-week mechanism phrasing would close the gap."
+    },
+    {
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "Key B assigns the ballast work to 'a gang', an agent the passage never connects to ballast work; the passage's agent for that work is a tamping machine, and gangs appear only in the reporting-bias sentence.",
+      "evidence": "Key B: 'That two thirds of them came soon after a gang had worked the ballast.' Passage: 'A tamping machine lifts the track and packs new stone underneath'; 'two in three came in the eight weeks after ballast work'; 'Gangs are sent wherever somebody has reported something, Vessholm says, so the quieter miles go uncounted.' Distractor C, not the key, uses the passage's own agent: 'in the eight weeks following a tamping machine's visit.'",
+      "why": "Integrated row 3 (key-passage fidelity) - the key requires a small unstated inference (permanent-way gangs operate the tamper) that the passage does not license explicitly, while the distractor carries the literal agent. Key sanity nevertheless holds: C is flatly false on quantity ('they all' against 'two in three'), A adds two unstated quantifiers ('usually', 'within weeks of one appearing') and inverts the order the tally fixes, and D is unstated, so B is the single defensible answer - already adjudicated at G-DISTRACTOR (report.json flags A as ARGUABLE-but-beatable)."
+    }
+  ]
+}
