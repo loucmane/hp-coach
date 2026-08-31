@@ -1262,3 +1262,165 @@ icke-grindkällade majorer, läsarblockerare eller kalläsningsmissar
 eskalerar till ÄGARBLICK — inga fanns. ÄGARBLICK-punkterna ovan i detta
 paket kvarstår som ägarens beslutsyta; den mekaniska rekommendationen
 per enhet är GODKÄNN_NOTED.
+
+---
+
+## ÄGARDOM (2026-08-31): KÖR UT SKULDERNA FÖRST — ingen bankimport ännu
+
+Ägarens paketdirektiv, fört till protokollet: batch 16 får ingen blank
+`godkänn alla`; en innehållsstängningsbead (**hpf-gehr**) och en separat
+pipeline-härdningsbead (**hpf-y1p4**) kör ut skulderna före import. Därefter
+ny ytregenerering + deterministisk vikning; står enheterna kvar på 7/7
+GODKÄNN_NOTED godkänns paketet och infoldning sker.
+
+### Dom 1 — las-b16-002 GODKÄND; stance-kompositionspolicyn ANTAGEN (ÄGARBLICK 1 + 4)
+
+Enheten godkänns med båda burna resterna (F2-anaforen, F4-blindgolvet) som
+rätt dispositionerade. **Bankpolicy antagen**, med ägarens skärpning av
+villkor (a) till en redovisad siffra:
+
+> Stance-composition skew in single-author opinion passages (no option
+> asserting the position the author is arguing against) is WITHIN TOLERANCE
+> and is not a repairable structural leak. Cross-question stance correlation
+> is REPORTABLE at note severity but does not block, provided (a) the
+> adversarial blind floor is stated explicitly **and is no better than
+> 1-in-2**, and (b) rule 10 holds. G-STEM should continue to name it;
+> adjudication should not treat it as an open major.
+
+Golvet 1-på-2 är därmed uttryckligen **kvitterat** som den siffra policyn
+citerar — granskarens eget ärliga värsta fall, inte benprotokollets 1-på-3.
+Policyn är också förd som daterat efterhandstillägg i den senaste
+BRIEF-ADDENDUM-kedjan (batch17) för nästa batchs generatorer.
+
+### Dom 2 — Quennerby/Quennerly GODKÄNT PAR, skriftlig disposition (ÄGARBLICK 3)
+
+**Skriftlig disposition, förd här som grindens saknade mening:** *Verity
+Quennerby* (elf-b15-002, veckokolumnist, bysamhällsessä) och *Tamsin
+Quennerly* (elf-b16-001, sensorikforskare, vetenskapsjournalistik) är olika
+gestalter i olika roller i olika batchar; ingen elev möter båda i samma
+provpass; banken skeppar redan närmare par (Löfgren/Lövgren). **Inget namn
+byts.** Processregeln — att `ASSEMBLY.md`-flaggan *disposition owed* ska
+tvinga fram en explicit G-REGISTER-disposition eller *not-applicable* med
+skäl — antas och implementeras som källarbete i härdningsbeaden hpf-y1p4.
+
+### Dom 3 — elf-b16-003: båda burna fynden GODKÄNDA, explicita SHIP-dispositioner (ÄGARBLICK 5)
+
+- **(a) G-STEM WORLD_KNOWLEDGE — SHIP, bekräftad:** genvägen kräver
+  specialiserad byggnadspatologi; **lekmannaversionen av samma intuition
+  pekar på fel svar (A)**, vilket gör kanalen till en konstruktionsstyrka,
+  inte en läcka. Redovisad i enhetens `stem_lexis_note`.
+- **(b) G-REGISTER-genremajor — SHIP, accepterad vid kanten av genrespannet:**
+  den korta tekniska ELF-texten accepteras som liggande *på* exemplarspannets
+  kant (fk 8,7; femte lägst av 31 skeppade korttexter, inne i fördelningen);
+  rösten är konsekvent brittisk fackprosa och mekanismen externt korroborerad.
+  **Ingen kosmetisk glosrad läggs till** — den skulle inte adressera grindens
+  faktiska invändning (den kalla in-i-branschen-öppningen).
+
+### Dom 4 — ÄNDRA las-b16-003 (ÄGARBLICK 8g)
+
+»Stommen bär bara skelettet.« → **»Stommen för bara skelettet vidare.«**
+(grindens eget native alternative; upplöser tautologin mot enhetens egen
+ordlista som tre oberoende G-SPRÅK-ben och metagranskningen fällde).
+Passagen + det exakta rationale-citatet i Q2 synkroniserade;
+append-forward-noter i `self_blind_solve` och `repair_log`; blind- och
+distraktorark regenererade (stems-arket bär ingen passage). Omkörning av
+enhetens ben + adversariell granskning + vikning + slutverifikation
+redovisas i stängningssektionen nedan.
+
+### Dom 5 — lag 16-frassökningen (ÄGARBLICK 7)
+
+Exakt frassökning + positiv kontroll på samma endpoint (las-b16-002:s
+bevisade transport) körd 2026-08-31 över samtliga ännu ointygade namn,
+inklusive **Corin Pemberdine som fullständigt par** (batchens enda post som
+var en slutledning i stället för en körning). Den falska
+Brindlow-härkomstmeningen i elf-b16-001:s `originality_note` är rättad
+append-forward till batch14-formen (falsk mening kvar ordagrant,
+korrektionsblock direkt efter, repair_log-post). Resultattabell i
+stängningssektionen nedan; stoppregel vid relevant kollision.
+
+### Dom 6 — sexgrindig mekanik inkl. M-ECHO (ÄGARBLICK 8a)
+
+`run_mech.py` med alla sex grindar (M-SCHEMA, M-BANDS, M-TELL, M-FORM,
+M-PLAGIARISM, M-ECHO via `--p5-corpus-dir auto`) över samtliga sju enheters
+slutliga skeppningsbyten. Krav: **42/42 eller stopp.** Resultat nedan.
+
+### Dom 7 — bokföringsskulderna append-forward (ÄGARBLICK 8b–8f)
+
+1. `verdicts.jsonl` dedupliceras på `candidate_id + target + executed_by +
+   justification` med röstbärande post bevarad — inga distinkta röster
+   förloras (8b).
+2. Retroaktiv `repair_log`-rad för las-b16-001:s »vidgade« → »utvidgade«
+   (8c), enligt elf-b16-002:s runda-3-prejudikat.
+3. `report-final.json` byggs om ur de deduplicerade verdicts så att
+   aggregatets citat matchar skeppade byten (8c).
+4. **Skriftliga dispositioner för burna levande majorer** — se nedan (8d/8e).
+5. Arkssynk-beviset (blind/stems/distractor mot candidates-final) omkört
+   maskinellt efter reparationerna och protokollfört (8f).
+
+### Skriftliga dispositioner — burna levande G-STEM-majorer (dom 7.4)
+
+Redan skriftligt dispositionerade sedan tidigare: elf-b16-003 q:1 (audit N1),
+las-b16-002 q:1 (stance_channel_ruling), las-b16-001 q:3 (audit F4). Härmed
+förs de saknade meningarna, en per levande major:
+
+- **elf-b16-001 q:2 — OMKLASSAD TILL MISSFYRNING (8e):** benets blindval är
+  A, nyckeln är D; under pipelinens egen logik är ett blindval som landar på
+  en distraktor en missfyrning, inte en läcka (samma utfall som
+  elf-b16-003:s firade runda-5-reparation). Flaggan bärs som note-klass
+  kalibreringsobservation, inte som öppen major.
+- **elf-b16-001 q:1 — SHIP:** blindvalet är null (lutar B/D utan avgörande);
+  domänkunskap smalnar men avgör inte, och lekmannaläsaren har ingen väg
+  till nyckeln på form.
+- **elf-b16-001 q:3 — SHIP:** formtellen (enda absoluten i B, svepande D)
+  smalnar till {A, C} men blindvalet C är fel mot nyckeln — kanalen
+  missfyrar snarare än läcker även här.
+- **elf-b16-003 q:1 (residualsmalning 3–1) — SHIP:** riktningsfördelningen
+  är en mjuk prior utan mekanism; strip-the-absolutes-omkörningen efter
+  B-omskrivningen isolerar ingenting.
+- **las-b16-001 q:1 — SHIP:** kalkblåsning är läroboksbyggnadspatologi för
+  en domänläsare, men lekmannaformen av intuitionen ger ingen entydig
+  kandidat; blindvalet C sammanföll med nyckeln i ett enskilt ben utan
+  reproducerbar väg.
+- **las-b16-001 q:4 — SHIP:** Hoffmannugnens värmeåtervinning är
+  domänkunskap av samma klass som ovan; fyra färska kalläsningar löste
+  frågan ur passagen utan genvägen.
+- **las-b16-002 q:2 (residualblindgolv) — SHIP med citerad siffra:** det
+  ärliga värsta fallet är **1-på-2** (A/D-paret efter formeliminering av C),
+  vilket är exakt golvet den antagna bankpolicyn (dom 1) kräver redovisat;
+  autentiskt prejudikat host-ver1-2019-verb1-LÄS-011 skär blint renare.
+- **las-b16-003 q:2 — SHIP:** blindvalet är null (lutar D); lutningen är en
+  prior ur alternativens kausala styrkegrad, ingen mekanism; fyra färska
+  kalläsningar nådde D endast via passagen.
+- **elf-b16-001:s två burna runda-1-poster (8d):** Brindlow-meningen är
+  rättad (dom 5); vecka-före-plockning mot tiodagarsminimum står kvar som
+  redovisad intern spänning i en felmodsklausul ingen fråga rör — SHIP utan
+  textändring, härmed skriftligt dispositionerad.
+
+---
+
+## SKULDSTÄNGNINGENS UTFALL (2026-08-31): 6× GODKÄNN_NOTED + 1 ÄGARBLICK
+
+Samtliga sju domar verkställda under bead **hpf-gehr**, med all delegerad
+granskning routad genom Gas City (evidence-reviewer, report-only,
+sekventiella lanes med allowlist/claim/drain-bevis per lane; körningar
+`hpf-gehr-*-20260831-001` i evidensträdet). De två tidigare
+claude-native-lag-16-rapporterna är bevarade med ärlig proveniens
+(`hpf-gehr-law16-claude-native-20260831-001/PROVENANCE.md`) och är nu
+KORROBORERANDE, inte ensam evidens.
+
+| Dom | Utfall |
+|---|---|
+| 1–3 (dispositioner) | Förda; G-REGISTER-dispositionsposter utlöser alla tre *disposition owed*-markörer (härdad grind: OK 3/3) |
+| 4 (stommen) + Skarpbo→Vrantebo | Kombinerad benvåg via GC: G-KEY ×2 båda **B, D** (= nycklarna, gkey_resolve 4/0); G-DISTRACTOR pass/pass (B-fallet dör på reparerade gränsen); G-SPRÅK ×3 pass, noll fynd (ny mening idiomatisk, ej tautologisk; Vrantebo trovärdigt); G-STEM PARTIALLY ×2 med val = nycklar (kalibreringsknippet) |
+| 5 (lag 16) | Alla namn friade utom Skarpbo (verklig småort, Enköping) → ÄNDRA verkställd till **Vrantebo** (exakt fras 0/0 + positiv kontroll, bank/repo/korpus 0, variantsond 0×5); GC-bekräftelselanen KONFIRMERAR kollisionen ur rådata och graderar Vrantebo provisoriskt fri — kvarstående dokumenterad residual: gazetteer bortom OSM/Wikipedia (Lantmäteriet/GeoNames) ej nåbar i sessionen |
+| 6 (mekanik) | **42/42 pass** — sex grindar inkl. M-ECHO (114 enheter indexerade), körd med den HÄRDADE mech (utökad absolutiserarfamilj) på slutliga skeppningsbyten |
+| 7 (bokföring) | Dedup 157→150 utan röstförlust; retroaktiv loggrad (vidgade→utvidgade); `report-final.json` ombyggd ur kontraktsmergen (172 poster, 35 legacy-kopior kollapsade); skriftliga dispositioner för alla burna majorer; arkssynk-bevis (härdad grind) OK 14/14 över batch16+17 |
+
+**Vikning (×2, bytreproducerbar): 6× GODKÄNN_NOTED + las-b16-003 ÄGARBLICK.**
+Eskaleringen kommer ur den adversariella GC-lanens critical (extern evidens,
+ingested med proveniens): q:2 B påstås ha en yttre-minnes-läsning jämte
+nycklade D, plus major på q:1:s »grannbyn«-kvalifikator. **Motevidens i
+samma våg:** båda blinda benen valde D och refuterade B aktivt; counsel-
+B-fallet dog på den reparerade styckesgränsen. Ägardom krävs — mekaniken
+avgör inte tvisten. Paketet går INTE till godkännande/infoldning förrän
+ägaren dömt (villkoret »7/7 GODKÄNN_NOTED« är inte uppfyllt).

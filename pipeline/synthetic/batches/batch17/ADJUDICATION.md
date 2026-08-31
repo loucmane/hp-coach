@@ -1335,3 +1335,87 @@ passagen. Kvarstående noterade residualer är samtliga minor/note/info
 »dateradnot«) — ingen påverkar nyckel eller unik lösbarhet. Publicering
 förbereds under samma bead: avstämning mot origin/main, signerat
 publiceringshuvud, normala hooks, PR.
+
+---
+
+## PAKETDOM (2026-08-31): GODKÄNN PAKETET — 7/7 GODKÄNN_NOTED
+
+Ägarens dom, ordagrant förd till protokollet:
+
+> »GODKÄNN PAKETET as 7/7 GODKÄNN_NOTED. The two executed rulings are
+> accepted. Preserve the G-STEM PARTIALLY_ANSWERABLE observation as
+> calibration evidence; do not reopen another editing loop. Record the
+> package ruling through the existing adjudication pipeline and prepare
+> Batch 17 for deterministic bank infolding. Preserve all prior evidence
+> and provenance.«
+
+Verkställd under bead **hpf-y8ra**.
+
+- **Paketets slutläge:** elf-b17-001…004 + las-b17-001…003, samtliga
+  GODKÄNN_NOTED i `reviews/adjudication.jsonl` (deterministisk vikning,
+  bytreproducerbar); promote `--require-clean` PASS 7 / HOLD 0.
+- **Accepterade enhetsdomar:** ÄGARDOM 2026-08-30 (Q2/D omskriven
+  motsagd-ej-medgiven, bead hpf-y75e, commit a134576d + 6811724) och
+  ÄGARDOM 2026-08-31 (»komma runt«→»komma ifrån«, bead hpf-hzks, commit
+  520025a; merged till main i squash b296a8e2, träd 7422b379 bytidentiskt).
+- **G-STEM-observationen** (PARTIALLY_ANSWERABLE på bytidentiskt ark) står
+  kvar som kalibreringsevidens på note-nivå; empirisk uppföljning mot
+  verkliga inlärarstatistik före varje eventuell redigering.
+- **Infoldsförberedelse (runbook stadium 14):** STATUS bär nu de maskinlästa
+  godkännandetokens (»status: COMPLETE« + »promote CLEAN«); `RETIRED.json`
+  innehåller inga batch17-poster (ingenting att exkludera); digestmanifesten
+  `DIGESTS-agardom-hpf-y75e.json` + `DIGESTS-agardom2-hpf-hzks.json` binder
+  artefaktbyten; importvägen kan läsa paketet deterministiskt. Själva
+  bankimporten sker i den senare infoldnings-PR:en tillsammans med batch 16
+  när dess skulder är utkörda.
+- All tidigare evidens och proveniens bevarad append-forward; inget
+  överskrivet, inget städat.
+
+---
+
+## ÅTERÖPPNING (2026-08-31): tre inaktuella stems-ark — paketdomen vilar
+
+Ägardom 2026-08-31: den nya obligatoriska arkssynk-grinden
+(`check_sheet_sync.py`, härdningsbead hpf-y1p4) retro-fann att stems-arken
+för **elf-b17-003** (q1 alternativ B), **las-b17-001** (q2-stam) och
+**las-b17-002** (q1-stam) bar för-reparationslydelser — G-STEM-lanen läste
+inaktuella byten för de tre enheterna (samma defektklass som fällde
+las-b16-002:s falska stängning). Paketet återöppnas **append-forward**:
+inget tidigare protokoll ändras; stems-arken är regenererade ur exakta
+slutliga kandidatbyten; tre oberoende G-STEM-granskningar routas genom Gas
+City (evidence-reviewer, report-only). **Paketgodkännandet kvarhålls inte
+förrän alla tre slutbytesgranskningar är dispositionerade.** Övriga
+grindkedjor (G-KEY, G-DISTRACTOR, G-SPRÅK, audits) läste korrekta byten och
+berörs inte.
+
+### Slutbytesgranskningarna (Gas City, 2026-08-31) — utfall per enhet
+
+Tre oberoende G-STEM-granskningar på regenererade slutbytesark, routade som
+report-only-lanes till evidence-reviewer (körningar
+`hpf-gehr-gstem-<enhet>-20260831-001`, rapport-shor i respektive
+controller-post):
+
+1. **elf-b17-003 — DISPOSITIONERAD (missfyrning, note-nivå).** Granskaren
+   graderade q:1 ANSWERABLE med blindval **C** via stamimplikation
+   (»the pin the leaf stands on« ⇒ bär vikten) plus ensam gardering
+   (»usually«) — men **nyckeln är A**: blindrutten landar på en distraktor
+   och ger fel svar. Missfyrning enligt det ratificerade
+   8e-prejudikatet; hålls som kalibreringsevidens. q:2/q:3 rena.
+2. **las-b17-001 — ÄGARBLICK (kritisk, EJ dispositionerbar mekaniskt).**
+   Blindvalen **B/D/A/C matchar samtliga fyra nycklar.** q:2–q:4 graderade
+   ANSWERABLE via reproducerbara korsfrågebryggor (glöd-vokabulären kedjar
+   q:2↔q:3↔q:4) och en stiltell på q:4 (enda kvalificerade
+   tvåfaktorssyntesen). Detta är en äkta blindlösbarhetsläcka på skeppade
+   slutbyten — arkdriften gällde bara q:2-stammen, så bryggmaterialet låg i
+   alternativtexterna även vid den gamla granskningen, som missade eller
+   undergraderade det. **Paketgodkännandet förblir upphävt tills ägaren
+   dömer** (reparationsriktning: bryt vokabulärbryggan i q:3/q:4-alternativ
+   utan att röra nycklarna, alternativt argumenterad disposition).
+3. **las-b17-002 — PRESENTERAD för ägardom (gränsfall).** q:1
+   NOT_ANSWERABLE; q:2 PARTIALLY_ANSWERABLE med blindval **B = nyckeln**
+   via en q:1→q:2-brygga (hinderborttagningsspråket). Smalnar-men-avgör-
+   inte, men valet träffar nyckeln — ligger exakt på den antagna
+   1-på-2-policyns kant; självdispositioneras inte.
+
+Batch 17-paketet vilar därmed på två ägarbeslut: las-b17-001 (kritisk) och
+las-b17-002 (gränsfall). elf-b17-003 är färdigdispositionerad.
