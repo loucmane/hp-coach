@@ -1370,3 +1370,20 @@ Verkställd under bead **hpf-y8ra**.
   när dess skulder är utkörda.
 - All tidigare evidens och proveniens bevarad append-forward; inget
   överskrivet, inget städat.
+
+---
+
+## ÅTERÖPPNING (2026-08-31): tre inaktuella stems-ark — paketdomen vilar
+
+Ägardom 2026-08-31: den nya obligatoriska arkssynk-grinden
+(`check_sheet_sync.py`, härdningsbead hpf-y1p4) retro-fann att stems-arken
+för **elf-b17-003** (q1 alternativ B), **las-b17-001** (q2-stam) och
+**las-b17-002** (q1-stam) bar för-reparationslydelser — G-STEM-lanen läste
+inaktuella byten för de tre enheterna (samma defektklass som fällde
+las-b16-002:s falska stängning). Paketet återöppnas **append-forward**:
+inget tidigare protokoll ändras; stems-arken är regenererade ur exakta
+slutliga kandidatbyten; tre oberoende G-STEM-granskningar routas genom Gas
+City (evidence-reviewer, report-only). **Paketgodkännandet kvarhålls inte
+förrän alla tre slutbytesgranskningar är dispositionerade.** Övriga
+grindkedjor (G-KEY, G-DISTRACTOR, G-SPRÅK, audits) läste korrekta byten och
+berörs inte.
