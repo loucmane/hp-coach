@@ -48,11 +48,14 @@ _KEY_ALIASES = ("key", "keys", "answer", "answers", "answer_key",
                 "solutions", "facit")
 _RATIONALE_ALIASES = ("rationale", "rationales", "explanation",
                       "explanations", "why_wrong", "why_tempting",
-                      "generator_meta", "family", "planted_traps",
+                      "generator_meta", "planted_traps",
                       "hedge_map", "repair_log", "self_blind_solve")
+# "family" hints at question architecture and is forbidden on the BLIND
+# protocols (blind/stems); the distractor sheet carries keys by contract,
+# so family is moot there and historical sheets legitimately include it.
 FORBIDDEN = {
-    "blind": _KEY_ALIASES + _RATIONALE_ALIASES,
-    "stems": ("passage", "title") + _KEY_ALIASES + _RATIONALE_ALIASES,
+    "blind": _KEY_ALIASES + _RATIONALE_ALIASES + ("family",),
+    "stems": ("passage", "title") + _KEY_ALIASES + _RATIONALE_ALIASES + ("family",),
     "distractor": _RATIONALE_ALIASES,
 }
 SHEETS = ("blind", "stems", "distractor")
