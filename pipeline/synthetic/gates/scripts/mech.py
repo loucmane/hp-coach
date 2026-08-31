@@ -334,14 +334,30 @@ _ABSOLUTIZERS = {
     # Swedish
     "alltid", "aldrig", "samtliga", "alla", "allt", "varje", "enbart", "endast",
     "ingen", "inget", "inga", "helt", "omöjligt", "garanterat",
+    # 2026-08-31 family completion (ägardom, bead hpf-y1p4): the batch16
+    # elf-b16-003 miss showed a half-covered family recreates false
+    # confidence on the next absent word. Added the full reviewed set in one
+    # change; bank-wide before/after protocol: 0 -> 0 M-FORM flags on all
+    # shipped candidates-final (114 units / 333 questions). Do not extend
+    # this list again without a fresh bank-wide run.
+    "ingenting", "ingenstans", "uteslutande",
     # English
     "always", "never", "every", "all", "only", "none", "entirely", "impossible",
     "proves", "guarantees", "certainly",
+    # 2026-08-31 family completion (see Swedish note above)
+    "nothing", "nobody",
 }
+
+# Multi-token absolutizers ("no one") cannot live in the single-token set;
+# checked as adjacent-token bigrams over the same tokenize() stream.
+_ABSOLUTIZER_BIGRAMS = {("no", "one")}
 
 
 def _has_absolutizer(text: str) -> bool:
-    return any(t in _ABSOLUTIZERS for t in tokenize(text))
+    toks = tokenize(text)
+    if any(t in _ABSOLUTIZERS for t in toks):
+        return True
+    return any((a, b) in _ABSOLUTIZER_BIGRAMS for a, b in zip(toks, toks[1:]))
 
 
 def gate_form(cand: dict) -> dict:

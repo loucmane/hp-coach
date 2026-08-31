@@ -133,3 +133,31 @@ Adela Rowsholme, Agnes Roth, Agrarhistorikern Sixten, Alenga Bay, Alma Ekwall, A
 - tegelbrukshistoria-facktext-long
 - skolskjuts-landsbygd-debatt-short
 - midsommarstangens-lokalformer-essa-short
+
+---
+
+## Efterhandstillägg (paketdomar 2026-08-31) — gäller nästa batch
+
+Två regler antagna efter batch17:s frysning; nästa batchs generatorer och
+grindar ärver dem härifrån (senaste addendum i kedjan):
+
+1. **Stance-kompositionspolicy (bankpolicy, ägardom batch16 dom 1):**
+   Stance-composition skew in single-author opinion passages (no option
+   asserting the position the author is arguing against) is WITHIN
+   TOLERANCE and is not a repairable structural leak. Cross-question stance
+   correlation is REPORTABLE at note severity but does not block, provided
+   (a) the adversarial blind floor is stated explicitly **and is no better
+   than 1-in-2**, and (b) rule 10 holds. G-STEM should continue to name it;
+   adjudication should not treat it as an open major.
+2. **M-FORM `_ABSOLUTIZERS` — familjen fullbordad (ägardom, bead hpf-y1p4):**
+   tillagda `nothing`, `nobody`, `no one` (bigram), `ingenting`,
+   `ingenstans`, `uteslutande`. Bankvis före/efter-körning 0 → 0 flaggor på
+   alla skeppade candidates-final (114 enheter / 333 frågor); den historiska
+   elf-b16-003-runda-1-formen fångas nu. Listan utökas aldrig igen utan ny
+   bankkörning (semantik dokumenterad i `mech.py`).
+3. **Processregler (ägardomar 2026-08-31, källarbete i hpf-y1p4):**
+   `check_sheet_sync.py` är obligatorisk före varje benvåg och före promote;
+   `merge_verdicts.py` är enda tillåtna sammanslagningsväg (röstkontraktet);
+   `check_assembly_dispositions.py` fäller *disposition owed* utan explicit
+   G-REGISTER-disposition; `lint_learner_output.py` körs i importsteget på
+   renderad elevtext (`LAYER2-RENDERING.md`).
