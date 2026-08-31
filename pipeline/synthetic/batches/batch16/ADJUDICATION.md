@@ -1395,3 +1395,32 @@ förs de saknade meningarna, en per levande major:
   rättad (dom 5); vecka-före-plockning mot tiodagarsminimum står kvar som
   redovisad intern spänning i en felmodsklausul ingen fråga rör — SHIP utan
   textändring, härmed skriftligt dispositionerad.
+
+---
+
+## SKULDSTÄNGNINGENS UTFALL (2026-08-31): 6× GODKÄNN_NOTED + 1 ÄGARBLICK
+
+Samtliga sju domar verkställda under bead **hpf-gehr**, med all delegerad
+granskning routad genom Gas City (evidence-reviewer, report-only,
+sekventiella lanes med allowlist/claim/drain-bevis per lane; körningar
+`hpf-gehr-*-20260831-001` i evidensträdet). De två tidigare
+claude-native-lag-16-rapporterna är bevarade med ärlig proveniens
+(`hpf-gehr-law16-claude-native-20260831-001/PROVENANCE.md`) och är nu
+KORROBORERANDE, inte ensam evidens.
+
+| Dom | Utfall |
+|---|---|
+| 1–3 (dispositioner) | Förda; G-REGISTER-dispositionsposter utlöser alla tre *disposition owed*-markörer (härdad grind: OK 3/3) |
+| 4 (stommen) + Skarpbo→Vrantebo | Kombinerad benvåg via GC: G-KEY ×2 båda **B, D** (= nycklarna, gkey_resolve 4/0); G-DISTRACTOR pass/pass (B-fallet dör på reparerade gränsen); G-SPRÅK ×3 pass, noll fynd (ny mening idiomatisk, ej tautologisk; Vrantebo trovärdigt); G-STEM PARTIALLY ×2 med val = nycklar (kalibreringsknippet) |
+| 5 (lag 16) | Alla namn friade utom Skarpbo (verklig småort, Enköping) → ÄNDRA verkställd till **Vrantebo** (exakt fras 0/0 + positiv kontroll, bank/repo/korpus 0, variantsond 0×5); GC-bekräftelselanen KONFIRMERAR kollisionen ur rådata och graderar Vrantebo provisoriskt fri — kvarstående dokumenterad residual: gazetteer bortom OSM/Wikipedia (Lantmäteriet/GeoNames) ej nåbar i sessionen |
+| 6 (mekanik) | **42/42 pass** — sex grindar inkl. M-ECHO (114 enheter indexerade), körd med den HÄRDADE mech (utökad absolutiserarfamilj) på slutliga skeppningsbyten |
+| 7 (bokföring) | Dedup 157→150 utan röstförlust; retroaktiv loggrad (vidgade→utvidgade); `report-final.json` ombyggd ur kontraktsmergen (172 poster, 35 legacy-kopior kollapsade); skriftliga dispositioner för alla burna majorer; arkssynk-bevis (härdad grind) OK 14/14 över batch16+17 |
+
+**Vikning (×2, bytreproducerbar): 6× GODKÄNN_NOTED + las-b16-003 ÄGARBLICK.**
+Eskaleringen kommer ur den adversariella GC-lanens critical (extern evidens,
+ingested med proveniens): q:2 B påstås ha en yttre-minnes-läsning jämte
+nycklade D, plus major på q:1:s »grannbyn«-kvalifikator. **Motevidens i
+samma våg:** båda blinda benen valde D och refuterade B aktivt; counsel-
+B-fallet dog på den reparerade styckesgränsen. Ägardom krävs — mekaniken
+avgör inte tvisten. Paketet går INTE till godkännande/infoldning förrän
+ägaren dömt (villkoret »7/7 GODKÄNN_NOTED« är inte uppfyllt).
