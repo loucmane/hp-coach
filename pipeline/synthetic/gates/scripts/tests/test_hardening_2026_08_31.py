@@ -244,3 +244,133 @@ def test_lint_gateref_round_version_phrase(tmp_path):
                  encoding="utf-8")
     r = _run("lint_learner_output.py", f)
     assert r.returncode == 1 and "L2-GATEREF" in r.stdout
+
+
+# ------------------------------------------------- 2026-08-31 GC-review round
+def test_absolutizer_bigram_not_across_sentence_boundary():
+    assert not mech._has_absolutizer("There is no. One explanation remains.")
+    assert mech._has_absolutizer("No one explanation covers it")
+
+
+def test_absolutizer_second_family_pass():
+    for w in ("nowhere", "everyone", "everybody", "everything"):
+        assert mech._has_absolutizer(f"It is {w} at once")
+
+
+def test_sheet_sync_missing_dir_fails_closed(tmp_path):
+    b = _mk_batch(tmp_path, drop_sheet=True)
+    import shutil
+    shutil.rmtree(b / "stems")
+    r = _run("check_sheet_sync.py", b)
+    assert r.returncode == 1 and "directory" in r.stdout
+    r2 = _run("check_sheet_sync.py", "--allow-missing-dirs", b)
+    assert r2.returncode == 0, r2.stdout
+
+
+def test_sheet_sync_empty_candidates_fails(tmp_path):
+    b = tmp_path / "batchY"
+    (b / "candidates-final").mkdir(parents=True)
+    r = _run("check_sheet_sync.py", b)
+    assert r.returncode == 1 and "empty" in r.stdout
+
+
+def test_sheet_sync_orphan_sheet_fails(tmp_path):
+    b = _mk_batch(tmp_path)
+    (b / "blind" / "las-b99-999.json").write_text("{}", encoding="utf-8")
+    r = _run("check_sheet_sync.py", b)
+    assert r.returncode == 1 and "orphan" in r.stdout
+
+
+def test_sheet_sync_contamination_alias_answer_key(tmp_path):
+    b = _mk_batch(tmp_path)
+    p = b / "blind" / "las-b99-001.json"
+    d = json.loads(p.read_text(encoding="utf-8"))
+    d["answer_key"] = "A"
+    p.write_text(json.dumps(d), encoding="utf-8")
+    r = _run("check_sheet_sync.py", b)
+    assert r.returncode == 1 and "answer_key" in r.stdout
+
+
+def test_sheet_sync_candidate_id_drift_fails(tmp_path):
+    b = _mk_batch(tmp_path)
+    p = b / "stems" / "las-b99-001.json"
+    d = json.loads(p.read_text(encoding="utf-8"))
+    d["candidate_id"] = "las-b99-777"
+    p.write_text(json.dumps(d), encoding="utf-8")
+    r = _run("check_sheet_sync.py", b)
+    assert r.returncode == 1 and "candidate_id" in r.stdout
+
+
+def test_merge_rejects_missing_identity(tmp_path):
+    bad = _write(tmp_path, "bad.jsonl", [{"gate": "G-KEY", "target": "q:1",
+                                          "verdict": "pass"}])
+    from merge_verdicts import MergeContractError
+    with pytest.raises(MergeContractError):
+        merge([bad])
+
+
+def test_merge_rejects_weak_identity(tmp_path):
+    bad = _write(tmp_path, "bad.jsonl", [{"candidate_id": "u", "gate": "G-KEY",
+                                          "target": "q:1", "verdict": "pass"}])
+    from merge_verdicts import MergeContractError
+    with pytest.raises(MergeContractError):
+        merge([bad])
+
+
+def test_merge_rejects_nonint_vote(tmp_path):
+    from merge_verdicts import MergeContractError
+    for vote in ("", 0, "2", True):
+        bad = _write(tmp_path, "bad.jsonl", [dict(_v(), vote=vote)])
+        with pytest.raises(MergeContractError):
+            merge([bad])
+
+
+def test_disposition_content_free_findings_do_not_discharge(tmp_path):
+    asm = tmp_path / "ASSEMBLY.md"
+    asm.write_text("disposition owed: elf-b16-001\n", encoding="utf-8")
+    vf = tmp_path / "v.jsonl"
+    vf.write_text(json.dumps({"candidate_id": "elf-b16-001", "gate": "G-REGISTER",
+                              "verdict": "flag",
+                              "findings": [{"severity": "note", "note": "seen"}]})
+                  + "\n", encoding="utf-8")
+    r = _run("check_assembly_dispositions.py", asm, vf)
+    assert r.returncode == 1
+
+
+def test_disposition_marker_wrapped_across_lines(tmp_path):
+    asm = tmp_path / "ASSEMBLY.md"
+    asm.write_text("name proximity, disposition\nowed: elf-b16-001\n", encoding="utf-8")
+    vf = tmp_path / "v.jsonl"
+    vf.write_text("", encoding="utf-8")
+    r = _run("check_assembly_dispositions.py", asm, vf)
+    assert r.returncode == 1 and "elf-b16-001" in r.stdout
+
+
+def test_lint_snake_evasions_caught(tmp_path):
+    f = tmp_path / "x.json"
+    f.write_text(json.dumps({"a": "B är scope_x här", "b": "C är scope_2_shift",
+                             "c": "D är Scope_shift", "d": "E är SCOPE_SHIFT"}),
+                 encoding="utf-8")
+    r = _run("lint_learner_output.py", f)
+    assert r.returncode == 1 and r.stdout.count("L2-SNAKE") == 4
+
+
+def test_lint_math_subscripts_still_protected(tmp_path):
+    f = tmp_path / "x.json"
+    f.write_text(json.dumps({"a": "Låt v_r + v_g = 117 och a_1 + a_n = b_m; K_2007=11."}),
+                 encoding="utf-8")
+    r = _run("lint_learner_output.py", f)
+    assert r.returncode == 0, r.stdout
+
+
+def test_lint_lowercase_gateref_caught_but_math_form_free(tmp_path):
+    f = tmp_path / "bad.json"
+    f.write_text(json.dumps({"a": "enligt g-stem är detta blint", "b": "Mech.py listan"}),
+                 encoding="utf-8")
+    r = _run("lint_learner_output.py", f)
+    assert r.returncode == 1 and "L2-GATEREF" in r.stdout
+    g = tmp_path / "good.json"
+    g.write_text(json.dumps({"a": "skriv om på k-m-form: y = kx + m-form ger lutningen"}),
+                 encoding="utf-8")
+    r2 = _run("lint_learner_output.py", g)
+    assert r2.returncode == 0, r2.stdout

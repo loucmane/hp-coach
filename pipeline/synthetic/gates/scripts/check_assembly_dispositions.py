@@ -30,6 +30,15 @@ UNIT_RE = re.compile(r"\b(?:elf|las)-b\d+-\d+\b")
 MARKER = "disposition owed"
 
 
+# Hardened per the 2026-08-31 GC hardening-review lane: a merely non-empty
+# findings array no longer discharges anything — content-free records were
+# indistinguishable from a written disposition. Discharge now requires an
+# EXPLICIT disposition sentence (>= 20 chars of substance) either in a
+# dedicated "disposition" field or in a finding note that begins with
+# "disposition:" / contains "not-applicable"/"not applicable" plus a reason.
+_MIN_SUBSTANCE = 20
+
+
 def discharged(unit: str, verdict_files: list[Path]) -> bool:
     for vf in verdict_files:
         for line in vf.read_text(encoding="utf-8").splitlines():
@@ -39,14 +48,16 @@ def discharged(unit: str, verdict_files: list[Path]) -> bool:
             v = json.loads(line)
             if v.get("gate") != "G-REGISTER" or v.get("candidate_id") != unit:
                 continue
-            if v.get("findings"):
-                return True
             disp = v.get("disposition")
-            if isinstance(disp, str) and disp.strip():
+            if isinstance(disp, str) and len(disp.strip()) >= _MIN_SUBSTANCE:
                 return True
             for f in v.get("findings") or []:
-                note = (f.get("note") or "").lower()
-                if "not-applicable" in note or "not applicable" in note:
+                note = (f.get("note") or "").strip()
+                low = note.lower()
+                explicit = (low.startswith("disposition:")
+                            or "not-applicable" in low
+                            or "not applicable" in low)
+                if explicit and len(note) >= _MIN_SUBSTANCE:
                     return True
     return False
 
@@ -60,9 +71,18 @@ def main() -> int:
     problems: list[str] = []
     markers = 0
     lines = args.assembly.read_text(encoding="utf-8").splitlines()
+    # markdown may wrap the marker phrase itself across a line break: scan
+    # two-line joins as well and attribute the marker to the first line.
+    marker_lines: list[int] = []
     for i, raw in enumerate(lines):
-        if MARKER not in raw.lower():
-            continue
+        if MARKER in raw.lower():
+            marker_lines.append(i)
+        elif i + 1 < len(lines):
+            joined = (raw.rstrip() + " " + lines[i + 1].lstrip()).lower()
+            if MARKER in joined and MARKER not in lines[i + 1].lower():
+                marker_lines.append(i)
+    for i in marker_lines:
+        raw = lines[i]
         markers += 1
         units = UNIT_RE.findall(raw)
         if not units:

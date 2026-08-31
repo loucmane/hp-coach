@@ -26,6 +26,30 @@ import json
 from pathlib import Path
 
 
+class MergeContractError(ValueError):
+    """A record violates the merge contract; the merge fails closed."""
+
+
+def _validate(v: dict, source: str) -> None:
+    # Hardened per the 2026-08-31 GC hardening-review lane: identity built
+    # from silently-None optional fields lets distinct evidence collide.
+    for field in ("candidate_id", "gate", "target"):
+        if not isinstance(v.get(field), str) or not v[field].strip():
+            raise MergeContractError(
+                f"{source}: record missing required identity field "
+                f"'{field}': {json.dumps(v, ensure_ascii=False)[:120]}")
+    if v.get("executed_by") is None and v.get("justification") is None:
+        raise MergeContractError(
+            f"{source}: record carries neither executed_by nor "
+            f"justification — identity too weak to dedup safely: "
+            f"{json.dumps(v, ensure_ascii=False)[:120]}")
+    if "vote" in v and (isinstance(v["vote"], bool)
+                       or not isinstance(v["vote"], int) or v["vote"] < 1):
+        raise MergeContractError(
+            f"{source}: vote must be a positive integer, got "
+            f"{v['vote']!r}")
+
+
 def identity(v: dict) -> tuple:
     return (v.get("candidate_id"), v.get("gate"), v.get("target"),
             v.get("executed_by"), v.get("justification"), v.get("run"))
@@ -41,6 +65,7 @@ def merge(files: list[Path]) -> tuple[list[dict], int]:
             if not line:
                 continue
             v = json.loads(line)
+            _validate(v, fp.name)
             base = identity(v)
             key = base + (v.get("vote"),)
             unstamped = base + (None,)

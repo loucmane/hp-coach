@@ -31,3 +31,16 @@ egenskapen till ett krav i stället för en slump.
 adjudikationsmetadata — bankens 112/114 är korrekt intern konsekvens och
 ska inte skrivas om (ägardom 2026-08-31: att laga en enhet bryter
 konsekvensen i 1 av 114 filer och river taxonomin grindarna joinar på).
+
+## Härdningsrond 2026-08-31 (GC-granskningslane hpf-y1p4-hardening-review)
+
+Linten är tvåskiktad efter den oberoende granskningen: **taxonomistammar**
+(scope/shift/causal/worldknowledge/… inkl. versal-, siffer- och
+trunkeringsvarianter som `scope_x`, `SCOPE_SHIFT`) fäller ALLTID;
+**generiska snake_case-stiltoken** (improviserade formelvariabler som
+`värde_B`, `antal_A`, `K_diff`) fäller endast med `--strict` och utgör den
+bokförda stilskulden i bead hpf-gyo5 (inspektera-före-ersätt;
+matbevarandekontraktet skyddar dem mot blind omskrivning). `_`-prefixade
+JSON-nycklar (bokföring i fil, t.ex. `_meta.adjudication`) skannas aldrig.
+Uppmätt efter härdningen: default = exakt de 2 äkta »hedgning«-fynden i
+host-2017-MEK-025; `--strict` = +74 stiltoken.

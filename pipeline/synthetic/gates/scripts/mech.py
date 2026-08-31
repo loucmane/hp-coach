@@ -344,20 +344,29 @@ _ABSOLUTIZERS = {
     # English
     "always", "never", "every", "all", "only", "none", "entirely", "impossible",
     "proves", "guarantees", "certainly",
-    # 2026-08-31 family completion (see Swedish note above)
-    "nothing", "nobody",
+    # 2026-08-31 family completion (see Swedish note above); second pass
+    # after the GC hardening review closed the remaining direct
+    # counterparts (nowhere ~ ingenstans; everyone/everybody/everything ~
+    # alla/allt). Bank-wide before/after on the full set: 0 -> 0 flags.
+    "nothing", "nobody", "nowhere", "everyone", "everybody", "everything",
 }
 
 # Multi-token absolutizers ("no one") cannot live in the single-token set;
-# checked as adjacent-token bigrams over the same tokenize() stream.
+# checked as adjacent-token bigrams. Bigrams must not cross a sentence
+# boundary (GC review: "There is no. One explanation remains." must not
+# flag), so the text is split on sentence punctuation BEFORE tokenizing.
 _ABSOLUTIZER_BIGRAMS = {("no", "one")}
+_SENTENCE_SPLIT = re.compile(r"[.!?;:]")
 
 
 def _has_absolutizer(text: str) -> bool:
-    toks = tokenize(text)
-    if any(t in _ABSOLUTIZERS for t in toks):
+    if any(t in _ABSOLUTIZERS for t in tokenize(text)):
         return True
-    return any((a, b) in _ABSOLUTIZER_BIGRAMS for a, b in zip(toks, toks[1:]))
+    for sentence in _SENTENCE_SPLIT.split(text):
+        toks = tokenize(sentence)
+        if any((a, b) in _ABSOLUTIZER_BIGRAMS for a, b in zip(toks, toks[1:])):
+            return True
+    return False
 
 
 def gate_form(cand: dict) -> dict:

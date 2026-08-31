@@ -138,7 +138,7 @@ Adela Rowsholme, Agnes Roth, Agrarhistorikern Sixten, Alenga Bay, Alma Ekwall, A
 
 ## Efterhandstillägg (paketdomar 2026-08-31) — gäller nästa batch
 
-Två regler antagna efter batch17:s frysning; nästa batchs generatorer och
+Tre regelblock antagna efter batch17:s frysning; nästa batchs generatorer och
 grindar ärver dem härifrån (senaste addendum i kedjan):
 
 1. **Stance-kompositionspolicy (bankpolicy, ägardom batch16 dom 1):**
