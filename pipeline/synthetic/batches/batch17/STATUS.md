@@ -1,4 +1,7 @@
-# Batch 17 — status: PIPELINE COMPLETE — 7/7 promote PASS 2026-08-26 (round 2), awaiting owner adjudication
+# Batch 17 — status: COMPLETE — 7/7 units (20q) shipped, promote CLEAN
+
+> **Paketdom 2026-08-31 (bead hpf-y8ra):** ägaren dömde »GODKÄNN PAKETET as 7/7 GODKÄNN_NOTED«. Båda verkställda enhetsdomarna (Q2/D motsagd-ej-medgiven, hpf-y75e; »komma ifrån«, hpf-hzks) accepterade. G-STEM PARTIALLY_ANSWERABLE bevaras som kalibreringsevidens — ingen ny redigeringsloop. Historisk statusrad före domen: »PIPELINE COMPLETE — 7/7 promote PASS 2026-08-26 (round 2), awaiting owner adjudication«.
+
 
 **7 units, 20 questions** — the canonical P5 shape (LÄS 4+2+2, ELF 5+5+1+1), authored under
 `BRIEF-ADDENDUM.md`: batch16's rule set 1–10 (key shuffle, ”…” quotes, spaced en dash never em

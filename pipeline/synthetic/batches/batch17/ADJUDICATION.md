@@ -1335,3 +1335,38 @@ passagen. Kvarstående noterade residualer är samtliga minor/note/info
 »dateradnot«) — ingen påverkar nyckel eller unik lösbarhet. Publicering
 förbereds under samma bead: avstämning mot origin/main, signerat
 publiceringshuvud, normala hooks, PR.
+
+---
+
+## PAKETDOM (2026-08-31): GODKÄNN PAKETET — 7/7 GODKÄNN_NOTED
+
+Ägarens dom, ordagrant förd till protokollet:
+
+> »GODKÄNN PAKETET as 7/7 GODKÄNN_NOTED. The two executed rulings are
+> accepted. Preserve the G-STEM PARTIALLY_ANSWERABLE observation as
+> calibration evidence; do not reopen another editing loop. Record the
+> package ruling through the existing adjudication pipeline and prepare
+> Batch 17 for deterministic bank infolding. Preserve all prior evidence
+> and provenance.«
+
+Verkställd under bead **hpf-y8ra**.
+
+- **Paketets slutläge:** elf-b17-001…004 + las-b17-001…003, samtliga
+  GODKÄNN_NOTED i `reviews/adjudication.jsonl` (deterministisk vikning,
+  bytreproducerbar); promote `--require-clean` PASS 7 / HOLD 0.
+- **Accepterade enhetsdomar:** ÄGARDOM 2026-08-30 (Q2/D omskriven
+  motsagd-ej-medgiven, bead hpf-y75e, commit a134576d + 6811724) och
+  ÄGARDOM 2026-08-31 (»komma runt«→»komma ifrån«, bead hpf-hzks, commit
+  520025a; merged till main i squash b296a8e2, träd 7422b379 bytidentiskt).
+- **G-STEM-observationen** (PARTIALLY_ANSWERABLE på bytidentiskt ark) står
+  kvar som kalibreringsevidens på note-nivå; empirisk uppföljning mot
+  verkliga inlärarstatistik före varje eventuell redigering.
+- **Infoldsförberedelse (runbook stadium 14):** STATUS bär nu de maskinlästa
+  godkännandetokens (»status: COMPLETE« + »promote CLEAN«); `RETIRED.json`
+  innehåller inga batch17-poster (ingenting att exkludera); digestmanifesten
+  `DIGESTS-agardom-hpf-y75e.json` + `DIGESTS-agardom2-hpf-hzks.json` binder
+  artefaktbyten; importvägen kan läsa paketet deterministiskt. Själva
+  bankimporten sker i den senare infoldnings-PR:en tillsammans med batch 16
+  när dess skulder är utkörda.
+- All tidigare evidens och proveniens bevarad append-forward; inget
+  överskrivet, inget städat.
