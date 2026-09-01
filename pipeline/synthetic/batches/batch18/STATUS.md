@@ -106,3 +106,13 @@ probing and positive controls on the same endpoints in the same session).
 6. **Fearnbeck sand/mortar seam** (elf-b18-001) — new from the stage-11 reader, no key touched.
 
 **On owner PAKETDOM**, and not before, the 7 units enter the product-bank import.
+
+## Addendum 2026-09-01 — Layer-2 rendering leak (found during batch20 gating)
+
+`lint_learner_output.py` (lives only on the unmerged PR #370 branch; never ran on this
+batch) reports **11 student-visible hits** in shipped rationales: English snake_case trap
+labels inside Swedish LÄS rationales (all SNAKE hits are LÄS), gate/tool names inside ELF
+rationales (all GATEREF hits are ELF), and the anglicism *hedgat* in Swedish. Keys, options,
+stems and passages are untouched; no re-gate needed. Recorded in ADJUDICATION.md as a new
+ledger item with the recommendation ÄNDRA (mechanical rationale scrub before infold).
+Reproduce: `lint_learner_output.py candidates | grep '$.questions'`.

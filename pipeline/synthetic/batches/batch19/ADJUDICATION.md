@@ -391,3 +391,38 @@ G-DISTRACTOR), mekanikkörningen r5, `vfinal_fold.py`, `promote.py` och samtliga
 stage-11-kalläsare — så **varje nyckel, alternativ och passage en elev möter är oberoende löst
 och bedömd på sluttexten**. Det som inte upprepades är det adversariella metadataskiktet, inte
 uppgiften. Detaljer i `STATUS.md`.
+
+---
+
+# Tillägg 2026-09-01 (append-forward, efter batch20:s grindrunda) — post 9: LAGER-2-RENDERINGSLÄCKA
+
+**Upptäckt.** Under batch20:s r1-grindning kördes `lint_learner_output.py` — verktyget som
+finns **enbart på den omergade PR #370-grenen** och därför aldrig kördes på batch19 — mot
+denna batch. Det ger **11 elevsynliga träffar** i skeppade rationaler:
+
+| enhet | fråga | klass | läcka |
+|---|---|---|---|
+| las-b19-001 | q1–q4 | SNAKE | `scope_shift`, `reversed_causality`, `detail_as_main`, `plausible_worldknowledge` i löpande svenska |
+| las-b19-002 | q1, q2 | SNAKE + HEDGAT | `scope_shift`; »det hedgade alternativet« |
+| las-b19-003 | q1, q2 | SNAKE + HEDGAT | `reversed_causality`, `detail_as_main`; »Satsen är hedgad« |
+| elf-b19-003 | q1 | GATEREF | »any token from the completed absolutizer family…« — grindvokabulär |
+| elf-b19-004 | q1 | GATEREF | »a hard absolutizer from mech.py's list…« — verktygsnamn i elevtext |
+
+**Mönstret är mallburet, inte enhetsburet:** varje SNAKE-träff sitter i en LÄS-rational,
+varje GATEREF-träff i en ELF-rational. Samma fördelning som i batch18.
+
+**Vad det är och inte är.** Nyckel, alternativ, stam och passage berörs inte — ingen
+grind behöver köras om. Det är elevsynlig text som bär pipelinens interna etiketter, dvs.
+exakt det `LAYER2-RENDERING.md` (PR #370) förbjuder. Rätt hem för etiketterna är
+`generator_meta.planted_traps`; rationalen ska beskriva felet på svenska.
+
+**Evidens.** Reproducera med
+`python3 <hardened>/lint_learner_output.py batches/batch19/candidates | grep '$.questions'`
+(verktyget extraherat ur `p5/pipeline-hardening`). Batch20 hade 4 sådana träffar och
+rättar dem i sin fleet-repair-1; batch21:s brief förbjuder dem uttryckligen.
+
+> **REKOMMENDATION: ÄNDRA — mekanisk rationalsanering före infoldning, ingen omgrindning.**
+> Elva strängbyten i fem filer, verifierade med linten till noll `$.questions`-träffar,
+> loggade som en egen reparationsrunda (append-forward). Paketdomen i övrigt påverkas
+> inte. Fyndet är dessutom **konkret stöd för att merga PR #370**: defekten skeppade
+> därför att verktyget som ser den inte finns i trädet.

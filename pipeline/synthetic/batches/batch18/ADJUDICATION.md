@@ -295,3 +295,38 @@ elf-b18-002 fick en omgranskning på reparerade byten. Det som **läste de exakt
 stage-11-kalläsarna — så varje nyckel, alternativ och passage en elev möter är oberoende löst och
 bedömd på sluttexten. Det som inte upprepades är det adversariella metadataskiktet, inte
 uppgiften. Detaljer i `STATUS.md`.
+
+---
+
+# Tillägg 2026-09-01 (append-forward, efter batch20:s grindrunda) — post 7: LAGER-2-RENDERINGSLÄCKA
+
+**Upptäckt.** Under batch20:s r1-grindning kördes `lint_learner_output.py` — verktyget som
+finns **enbart på den omergade PR #370-grenen** och därför aldrig kördes på batch18 — mot
+denna batch. Det ger **11 elevsynliga träffar** i skeppade rationaler:
+
+| enhet | fråga | klass | läcka |
+|---|---|---|---|
+| las-b18-001 | q1–q4 | SNAKE | `scope_shift`, `plausible_worldknowledge`, `detail_as_main`, `reversed_causality` i löpande svenska |
+| las-b18-002 | q1, q2 | SNAKE | `scope_shift`, `half_right_conjunction` |
+| las-b18-003 | q1, q2 | SNAKE + HEDGAT | `reversed_causality`, `detail_as_main`; anglicismen »hedgat« |
+| elf-b18-003 | q1 | GATEREF | »no option carries a listed absolutizer, so neither pick-the-qualified…« — grindvokabulär |
+| elf-b18-004 | q1 | GATEREF | »mech.py tokenize gives A 15, B 16…« — verktygsnamn i elevtext |
+
+**Mönstret är mallburet, inte enhetsburet:** varje SNAKE-träff sitter i en LÄS-rational,
+varje GATEREF-träff i en ELF-rational. De två lanemallarna läckte olika intern vokabulär.
+
+**Vad det är och inte är.** Nyckel, alternativ, stam och passage berörs inte — ingen
+grind behöver köras om. Det är elevsynlig text som bär pipelinens interna etiketter, dvs.
+exakt det `LAYER2-RENDERING.md` (PR #370) förbjuder. Rätt hem för etiketterna är
+`generator_meta.planted_traps`; rationalen ska beskriva felet på svenska.
+
+**Evidens.** Reproducera med
+`python3 <hardened>/lint_learner_output.py batches/batch18/candidates | grep '$.questions'`
+(verktyget extraherat ur `p5/pipeline-hardening`). Batch20 hade 4 sådana träffar och
+rättar dem i sin fleet-repair-1; batch21:s brief förbjuder dem uttryckligen.
+
+> **REKOMMENDATION: ÄNDRA — mekanisk rationalsanering före infoldning, ingen omgrindning.**
+> Elva strängbyten i fem filer, verifierade med linten till noll `$.questions`-träffar,
+> loggade som `fleet-repair-7` (append-forward). Paketdomen i övrigt påverkas inte.
+> Fyndet är dessutom **konkret stöd för att merga PR #370**: defekten skeppade därför att
+> verktyget som ser den inte finns i trädet.
