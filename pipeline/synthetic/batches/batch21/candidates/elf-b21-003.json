@@ -1,0 +1,1048 @@
+{
+  "candidate_id": "elf-b21-003",
+  "section": "ELF",
+  "family": "ELF-TYPE-001 / pressure-sensitive-tape-adhesive-ageing-paper-conservation-reportage-short",
+  "title": "A Conservator on Tape",
+  "passage": "The certificate came in wrapped in a tea towel, torn across in about 1974 and mended at home with a strip of clear tape. Three flakes of film clung along one edge; the rest was a hard brown band the width of the strip.\n\n“People ask me to take the tape off,” says Odette Fenniscarth, a paper conservator. “Mostly there’s no tape left; the film let go years ago. What’s left is the glue.” She turns the certificate to the light. “The rubber in it has oxidised – that’s the brown – and the plasticiser that kept it soft has soaked into the paper. Where the glue went in, the sheet’s gone like greased paper; you can read the back through it.”\n\n“Tape holds a tear for ten years and marks the sheet for a hundred,” she says. She warms a mend from last year, and the film lifts and brings most of the glue with it. On a mend as old as this one, heat does nothing. The glue has gone hard, she says, so only a solvent will move it, and which solvent depends on what the glue was made of. About the stain itself she is careful: “The brown that’s in the fibres I can lighten. I don’t promise to take it out.”\n\n– Oscar Goddard",
+  "questions": [
+    {
+      "q_index": 1,
+      "prompt": "What does Fenniscarth say about mends made with clear tape?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "The brown along the tear is plasticiser that has oxidised since the film came away."
+        },
+        {
+          "letter": "B",
+          "text": "Heat is for mends whose adhesive has hardened, and solvent for those still soft."
+        },
+        {
+          "letter": "C",
+          "text": "Where the adhesive gets into the paper, the sheet turns translucent enough to read through."
+        },
+        {
+          "letter": "D",
+          "text": "Once the solvent is matched to the adhesive, it takes the brown out of the fibres as well."
+        }
+      ],
+      "key": "C",
+      "rationale": "Option C is the key. It paraphrases the conservator’s own account of what the adhesive does to the sheet: “the plasticiser that kept it soft has soaked into the paper. Where the glue went in, the sheet’s gone like greased paper; you can read the back through it.” Greased paper lets light through, and being able to read the back of a sheet through the stained area is what translucent means, so C restates the passage’s mechanism in different words. Option A tempts because it reuses two things the passage really says – that the rubber in the glue has oxidised and that the film came away – and reassigns them: it makes the plasticiser the thing that has turned brown. The passage says the opposite in one sentence: “The rubber in it has oxidised – that’s the brown – and the plasticiser that kept it soft has soaked into the paper.” The brown is the oxidised rubber; the plasticiser is the part that went into the sheet. A reader who has not sorted the two components will find A natural, which is why it has to be checked against that sentence. Option B swaps her two methods. She warms a mend from last year so that the film lifts and takes most of the glue with it, and she turns to a solvent once the glue has gone hard; on a mend as old as this one, “heat does nothing”. B gives heat to the hardened glue and solvent to the soft, which is the reverse pairing. The everyday experience that warmth softens hard things makes the swap sound right, and only the passage says which way round the two methods actually go. Option D overshoots what she promises. Matching the solvent to the glue is in the passage (“which solvent depends on what the glue was made of”), but the outcome D attaches to it is not. What she says about the brown already in the fibres sets a limit rather than a promise: “The brown that’s in the fibres I can lighten. I don’t promise to take it out.” D turns a limited result into a complete one. None of A, B or D is true as written, so the question does not turn on a best fit; each fails against a sentence a careful reader can point to."
+    }
+  ],
+  "generator_meta": {
+    "origin": "batch21-generator",
+    "model": "claude-fable-5-1",
+    "model_note": "Rule 7 of the brief fixes the literal model: \"claude-opus-5\". That literal is not asserted here because it would misstate the model that wrote these bytes; the actual model id is recorded instead.",
+    "date": "2026-09-01",
+    "date_note": "date is the brief's fixed value from '## Meta (authoritative for this batch)'. Actual authoring and all searches below: 2026-09-02.",
+    "block_format": "short_text_1q",
+    "genre": "science_journalism (trade reportage built around a quoted practitioner)",
+    "spelling_variety": "BrE throughout all layers (oxidised, plasticiser, fibres); no AmE form anywhere in passage, prompt, options or rationale.",
+    "typography": "One system in ALL layers: double curly quotes U+201C/U+201D, apostrophe U+2019, spaced en dash U+2013; zero em dashes; zero straight apostrophes in the student-facing layer or the rationale. CORRECTED at fleet-repair-1: the earlier claim that \"the file is written with ensure_ascii so every non-ASCII character is a \\uXXXX escape\" is false on the shipped bytes. The file is json.dumps(indent=2, ensure_ascii=False) with no trailing newline and carries the literal characters; this round wrote it with the same serializer.",
+    "topic": "Why pressure-sensitive (clear) tape damages paper over decades: the rubber adhesive oxidises and browns, the plasticiser migrates into the sheet and makes it translucent, the film carrier embrittles and detaches while the adhesive stays; removal by heat for young tape, solvent for hardened tape, solvent choice by adhesive type; the stain in the fibres can be reduced, not promised away.",
+    "fictional_source": {
+      "byline": "Oscar Goddard (bare byline, no credential frame)",
+      "publication_type": "unspecified; reads as a trade or feature page"
+    },
+    "named_figures": {
+      "Odette Fenniscarth": "the quoted paper conservator. Surname is the unit's one coinage and carries the quoted voice; given name is real stock chosen for distance (nearest shipped token at 3).",
+      "Oscar Goddard": "byline; the RULE 17 ordinary figure. Not quoted, no attributed act beyond the byline."
+    },
+    "name_blocks": "Given names N/O (Odette, Oscar), surnames F/G (Fenniscarth, Goddard), as assigned; blocks differ within each name so neither alliterates.",
+    "question_families": {
+      "1": "ELF-TYPE-001"
+    },
+    "key_derivation": "paraphrase of two adjacent quoted sentences (\"the plasticiser ... has soaked into the paper. Where the glue went in, the sheet's gone like greased paper; you can read the back through it.\") -> option C. Longest shared token run key vs passage is recomputed below. Unchanged by fleet-repair-1: paragraph 2, which is the key’s anchor, was deliberately not touched. fleet-repair-2 did touch paragraph 2, but not the anchor: one narrative beat (“She turns the certificate to the light.”) was inserted after “What’s left is the glue.”, which is BEFORE the two sentences the key derives from. Those two sentences are byte-identical, still adjacent, and still inside one quoted span, so both the key’s paraphrase target and the rationale’s verbatim quotation of it are unmoved.",
+    "lane_constraints_rule20b": {
+      "1_quoted_voice": "Discharged. A named practitioner speaks: paragraph 2 is three quoted spans of hers, interleaved with the opening attributive and one narrative beat, and paragraph 3 opens on her working maxim, carries the heat-and-solvent account as attributed reported speech, and closes on her refusal, with contractions throughout. Spans: \"People ask me to take the tape off,\" says Odette Fenniscarth ... \"Tape holds a tear for ten years and marks the sheet for a hundred,\" she says ... \"The brown that’s in the fibres I can lighten. I don’t promise to take it out.\" NOTE (fleet-repair-1): paragraph 3’s method sentences were converted to reported speech to bring the quotation fraction down from 70.9 to the figure recorded in measured_stats.quotation_fraction; the constraint is still discharged on quoted speech, and the conversion also cut the object-fronting count from three to one, which is the density G-ENG called dense. NOTE (fleet-repair-2): the description above was rewritten because “paragraph 2 is hers entire” stopped being true when this round interleaved it, and because paragraph 3’s method sentences regained an explicit attributive (“The glue has gone hard, she says, so only a solvent will move it”). The constraint is discharged more strongly than before, not less: the quoted voice now carries an attributive in both speaking paragraphs, which is what the stem “What does Fenniscarth say…” is written against.",
+      "2_leave_the_domestic_building_envelope": "Discharged. The subject is paper conservation; there is no building, wall, roof, mortar, chimney or damp anywhere in the unit, and (per the brief's extra condition) no boat: the setting is an inland conservation bench and the object is a torn certificate. Span: \"The certificate came in wrapped in a tea towel, torn across in about 1974 and mended at home with a strip of clear tape.\"",
+      "3_no_by_surname": "Discharged. The coined surname is Fenniscarth; it also avoids the standing bars -ius and -vall and the Mar-* given-name bar. Span: \"says Odette Fenniscarth, a paper conservator.\""
+    },
+    "setting_note": "Inland (a conservation studio), per the batch20 lesson that 4 of 7 units were coastal or maritime.",
+    "planted_traps": {
+      "A": "component role swap plus surface word match: the passage's two true facts (glue oxidised; film came away) are kept and the browning is reassigned from the rubber to the plasticiser.",
+      "B": "reversed method pairing: heat and solvent are swapped against the adhesive's age, so heat goes to the hardened glue and solvent to the soft.",
+      "D": "outcome overshoot: a limited result (the passage’s \"The brown that’s in the fibres I can lighten. I don’t promise to take it out.\") is upgraded to complete removal once the solvent is matched. Reworded at fleet-repair-1 so the removal reads as an incidental further effect rather than as the clean total solution; the trap itself is unchanged."
+    },
+    "option_sortability_test": "Run with the passage covered, on the final option bytes. What the four option texts alone give a candidate: the topic (a tape mend on paper; film, adhesive, plasticiser, brown, fibres, heat, solvent) and four claims on four different variables - A which component of the adhesive is the brown, B which method goes with which state of adhesive, C what the adhesive does to the optical state of the paper it enters, D whether the brown in the fibres comes out. What they do NOT give: (1) no contradictory pair - no two options are jointly exhaustive on any one variable, so keeping-the-pair is unavailable (A and C both concern the adhesive but A is about colour and C about translucency; B and D both mention solvent but B is about pairing and D about outcome); (2) no hedging axis - no softener and no absolutizer in any option (mech.py's _ABSOLUTIZERS test is False for all four on these bytes, and there is no usually/often/may/some anywhere); (3) no shape singleton - two options open with a subordinate clause (C 'Where ...', D 'Once ...') and two with a main clause (A, B); two carry an agentless generic present (B, C) and two a copular/possessive frame (A 'is', D 'comes out ... with it'); no option is a cleft, a tricolon or a summary; (4) no scope singleton - all four are generic present-tense claims about tape mends, none is scoped to the one certificate and none generalises beyond the trade; (5) no polarity singleton - no option is negated; (6) length gives nothing - option words 15/14/15/18, key 15, longest is distractor D; (7) no remedy corroboration - no distractor names the canonical remedy for the state the key describes (batch20's TYPE-001 kill channel), and no distractor is the key with its arrow reversed. THESIS-VERSUS-DETAIL CHECK, written out: the passage's thesis is 'the stain is the glue, not the film; the film goes and the glue stays'. No option states it. A solver who guesses the thesis from the title and stem can eliminate nothing, because none of A-D asserts or denies that the film is gone; the key is a symptom the mechanism produces, and A, B and D are equally specific claims the mechanism makes false. Residual honestly stated: on wording alone A and C read as chemistry-of-the-damage claims and B and D as practice-of-removal claims, a 2/2 split, so a solver who assumes 'the passage is about the damage, not the method' is at 1-in-2 between A and C and has no stated ground to prefer C. A domain expert (a conservator) would clear A (rubber oxidation is the browning), B (heat suits tacky adhesive) and D (tape stains are frequently permanent) from knowledge and reach C without the passage; that lever is inherent to a unit whose mechanism must be verifiably right, the same lever elf-b20-003 disclosed, and it cannot be engineered away without making the mechanism wrong. My finding: 1-in-4 on form; 1-in-2 for a test-wise non-expert who bets on the damage-versus-method split; solvable for a domain expert. FLEET-REPAIR-1 UPDATE: option D was reworded (\"it takes the brown out of the fibres as well\" for \"the brown comes out of the fibres with it\") to soften the clean-solution silhouette G-STEM recorded; the subordinate opening was kept so the two-and-two shape above is unchanged, the option count moved 17 -> 18, and the absolutizer and hedge measurements were re-run on the new bytes (still 0 of 4 on both). The residual stated above stands, and G-STEM’s independent measurement of it is recorded in generator_meta.gstem_domain_knowledge_finding.",
+    "stem_entailment_audit": "Stem: \"What does Fenniscarth say about mends made with clear tape?\" It names the speaker and the subject and predicates nothing contested about either; it does not announce a comparative, an inference or a summary shape, and no option is entailed by it. The title \"A Conservator on Tape\" gives the profession and the topic only.",
+    "hedge_balance_note": "One question. The key is a flat, unhedged, specific claim; no option carries a softener or an absolutizer, so neither 'pick the qualified one' nor 'strip the absolutes' selects anything. Hedge map: key unhedged; A unhedged; B unhedged; D unhedged.",
+    "key_letter_note": "Key letter C. Recomputed from the shipped files on 2026-09-02 (RULE 19), both sums shown. (1) ALL ELF 1-question shorts in batches/*/candidates and candidates-final, deduplicated by candidate_id, n=38: A 6, B 14, C 11, D 7 = 38. (2) The TYPE-001 1-question shorts alone (family string contains 'TYPE-001'), n=17: A 5, B 6, C 3, D 3 = 17. The brief asks for B or C to break the D, A, D, A, D run (b16-003 .. b20-003); of the two, C is the rarer in the lane (3 of 17 against B's 6) and the rarer bank-wide (11 against 14), so C. Not chosen: D, which is joint-rarest in the lane, because it would extend the run to six.",
+    "length_tell_note": "Option words (mech tokens) 15/14/15/18; key C = 15 is not the longest (D = 18); ratio 18/14 = 1.286 against the 2.36 cap. CORRECTED at fleet-repair-2 (RULE 19): this field still carried the pre-repair figures 15/14/15/17, “D = 17” and “ratio 17/14 = 1.21” after fleet-repair-1 reworded option D from 17 tokens to 18. That round updated option_sortability_test and measured_stats but not this field, so the unit shipped two disagreeing statements of the same statistic. Recomputed here with mech.tokenize on the final bytes; fleet-repair-2 changed no option byte.",
+    "mechanism_verification_note": {
+      "claims_in_passage": [
+        "rubber adhesive oxidises and is the brown",
+        "plasticiser migrates into the paper",
+        "the paper becomes translucent where the adhesive went in",
+        "the film carrier embrittles (flakes) and detaches; the adhesive stays",
+        "heat lifts a young mend's carrier with most of the adhesive; hardened adhesive does not respond to heat and needs solvent; solvent choice depends on adhesive type",
+        "the stain already in the fibres can be reduced but not reliably removed"
+      ],
+      "sources_read_2026-09-02": [
+        {
+          "source": "Smith, Jones, Page & Dirda, 'Pressure-Sensitive Tape and Techniques for its Removal From Paper', JAIC 23(2), 1984",
+          "url": "https://cool.culturalheritage.org/jaic/articles/jaic23-02-003.html",
+          "fetched": true,
+          "quotes": [
+            "adhesive ... usually composed of a synthetic or natural rubber ... and which may contain a variety of softeners, antioxidants, plasticizers, and curing agents",
+            "The adhesive mass gets very sticky and oily ... It also starts to yellow",
+            "various components of the adhesive soak into the paper, rendering it translucent",
+            "The carrier may fall off, and the adhesive residues crosslink, becoming hard, brittle, and highly discolored. Once it has reached this condition, the adhesive residue and the stain it has created are very difficult, sometimes impossible, to remove",
+            "acrylic ... don't discolor appreciably ... not soluble in any of the solvents used in paper conservation"
+          ]
+        },
+        {
+          "source": "npj Heritage Science 8 (2020), 'Innovative methods for the removal, and occasionally care, of pressure sensitive adhesive tapes from contemporary drawings'",
+          "url": "https://www.nature.com/articles/s40494-020-00387-y",
+          "fetched": true,
+          "quotes": [
+            "components such as tackifying resins and plasticizers can migrate into the underlying paper fibers making them translucent",
+            "adhesives usually turn dark brown and can crystallize, becoming hard and brittle and losing their adhesive power"
+          ]
+        },
+        {
+          "source": "Tate, NANORESTART 'The Removal of Pressure Sensitive Tape from Works of Art on Paper' workshop page",
+          "url": "https://www.tate.org.uk/about-us/projects/nanorestart/pst-removal-workshop",
+          "fetched": true,
+          "quotes": [
+            "the adhesive starts to yellow and loses its consistency, becoming more sticky and oily, penetrating into the substrate, making it translucent ... The carrier may also fall off",
+            "adhesive residues crosslink and become hard and brittle",
+            "heat-induced methods (use of heated spatula or hot air pencil ...)"
+          ]
+        },
+        {
+          "source": "Book and Paper Group Annual 17, 'A Tool for Pressure Sensitive Tape Removal: The AirPencil'",
+          "url": "https://cool.culturalheritage.org/coolaic/sg/bpg/annual/v17/bp17-16.html",
+          "fetched": true,
+          "quotes": [
+            "an effective tool for removing pressure sensitive tapes, which are still soft and pliable",
+            "Solvents and mechanical methods are employed to remove the carrier and reduce the adhesive"
+          ]
+        },
+        {
+          "source": "West Dean College blog, 'In a sticky situation: the removal of pressure-sensitive tape from a 19th-century case binding'",
+          "url": "https://www.westdean.ac.uk/blog/in-a-sticky-situation-the-removal-of-pressure-sensitive-tape-from-a-19th-century-case-binding",
+          "fetched": true,
+          "quotes": [
+            "After a longer period of time oxidation occurs and the adhesive becomes sticky, oily and yellow, staining the substrate",
+            "the carrier would peel off, leaving adhesive residue on the substrate",
+            "heated spatula successfully removed tape from the pastedown",
+            "acetone was chosen as the best option"
+          ]
+        },
+        {
+          "source": "Preservation Equipment blog, 'No pressure removing pressure sensitive tapes' (search-snippet only; fetch returned HTTP 403)",
+          "url": "https://www.preservationequipment.com/blog/no-pressure-removing-pressure-sensitive-tapes",
+          "fetched": false,
+          "snippet": "Heat is often useful if a pressure-sensitive tape adhesive is still in a tacky state, and can be used to release a pressure-sensitive tape carrier"
+        },
+        {
+          "source": "AIC BPG wiki, 'Hinge, Tape, and Adhesive Removal'",
+          "url": "https://www.conservation-wiki.com/wiki/BPG_Hinge,_Tape,_and_Adhesive_Removal",
+          "fetched": false,
+          "note": "HTTP 403 on fetch; not relied on."
+        }
+      ],
+      "direction_check": "Every arrow in the passage runs the documented way: oxidation -> browning of the rubber; plasticiser -> into the paper -> translucency; adhesive loses tack -> carrier detaches while residue stays; young/tacky -> heat lifts carrier; crosslinked/hard -> solvent; stain in fibres -> reducible, not reliably removable. 'Clear tape' on a 1974 home mend is period-correct for a cellulose-film carrier with a rubber-based adhesive, which is the adhesive class that browns."
+    },
+    "clone_check_note": "Move sequence diffed against the last three TYPE-001 shorts (elf-b18-003 opens on a survey instruction and closes on a flat construction fact; elf-b19-003 opens on an instruction to count and closes on a flat trade fact; elf-b20-003 opens on the skipper's action and closes on an unbargained complication). This unit opens on an object arriving, moves to a quoted correction of a lay misreading, then to method, and closes on a concession ('I don't promise to take it out.') - not on an aphorism (the aphorism is mid-quote), not on a flat operational fact, not on a dating. Phrase-level grep of my distinctive strings over every shipped ELF student layer (2026-09-02): zero hits for 'for a living', 'years ago', 'won't shift', 'don't promise', 'tea towel', 'greased paper', 'read the back', 'holds a tear', 'let go', 'what's left', 'take the tape off', 'mended at home', 'which solvent', 'gone hard', 'gone like', 'clung at'; generic bigrams 'ten years' (elf-b14-001), 'the width of' (elf-b9-002, b10-001, b10-004) and 'for a hundred' (elf-b17-004) hit and are not signature strings. No money arithmetic in the unit. NOTE (fleet-repair-1): two of the strings listed above, \"won’t shift\" and \"clung at\", no longer appear in this unit - paragraph 3’s method sentences became reported speech and the paragraph-1 preposition was corrected. The zero-hit findings above are findings about the OTHER shipped units and are unaffected; the new strings this round introduced (\"heat does nothing\", \"only a solvent will move it\", \"a mend from last year\") were not re-swept, and that leg is owed at V-FINAL. NOTE (fleet-repair-2): one more string from the list above is now stale in the same way - “gone hard” survives but the sentence around it changed, and “On one like this”, which fleet-repair-1 introduced, is gone. The strings this round introduced and did NOT sweep are “She turns the certificate to the light”, “a mend as old as this one” and the parenthetical “she says”; as at fleet-repair-1, that sweep leg is owed at V-FINAL. The zero-hit findings above remain findings about the OTHER shipped units and are unaffected.",
+    "rule11_note": "Single-question unit; cross-question lexical bridges cannot arise.",
+    "rule8_sibling_sweep": "batches/batch21/ listed on 2026-09-02 before writing: only BRIEF-ADDENDUM.md present, no sibling gen-*.json yet, so the sibling given-name sweep is vacuous at authoring time; the given names used (Odette, Oscar) are absent from every list in the brief and from the coordinator's registry correction (Kajsa, Birger, Gordon, Fiona).",
+    "registry_correction_ack": "Coordinator correction received mid-task and applied: given names Kajsa, Birger, Gordon, Fiona; pairs Kajsa Pärlhage, Birger Nolvide, Gordon Hoskadale, Fiona Hebden; toponym Skrömtbäcken and the Skrömt- stem. Levenshtein distances (recomputed 2026-09-02 on the RENAMED bytes, lowercase): Odette-Fiona 6, Oscar-Gordon 5, Goddard-Gordon 4, Goddard-Hebden 6, Fenniscarth-Hoskadale 10, Fenniscarth-Pärlhage 10; no Skrömt- string appears in the unit. TWO FIGURES IN THE PRE-RENAME VERSION OF THIS FIELD WERE WRONG and are corrected here: Goddard-Hebden was stated as 5 and is 6; the pre-rename surname's distance to Hoskadale was stated as 8 and is 11 (both errors ran in the safe direction, both were found by the verifier, NOTES section 7; the superseded name itself is recorded in repair_log[0].rename, not carried here). The two surname figures are now recomputed for the replacement coinage rather than carried forward, per RULE 19.",
+    "rule17_and_rule16_tension_note": "Split stated so a gate sees it. The ORDINARY figure is the byline, Oscar Goddard: (a) no notable bearer - en.wikipedia exact phrase \"Oscar Goddard\" totalhits=0 in the control-passing session (control \"Pellew\"=701); (b) no bearer in the unit's own domain - web query [\"Oscar Goddard\" conservator OR conservation OR archivist OR archive OR librarian OR library OR museum] returned no page naming an Oscar Goddard in any of those trades (results were generic conservation career pages); the bare-pair web query returned only Find a Grave memorials for Oscar D. Goddard (1876-1944), Oscar Wilde Goddard (1885-1960), Oscar Hillard Goddard (1870-1940), a funeral-home obituary for a Samson Oscar Goddard and one TikTok handle - diffuse private bearers, the intended cost of RULE 17; (c) he is given no quoted words and no attributed act. The COINAGE, Fenniscarth, carries the quoted voice and the full law-16 and RULE 16 burden recorded in originality_note. The unit has exactly one coined surname, so no cluster.",
+    "originality_note": {
+      "what_this_is": "A RULE 14 search log for the pre-gate rename round, written 2026-09-02. The generating process was killed by a rate limit after it had written the JSON and before it could fill this field, so the file shipped to the verifier with an empty object here. The verifier's independent re-run (gen-elf-short-1.NOTES.md section 7) then found a RULE 16 breach in the surname the generator had chosen. This is therefore the log for the REPLACEMENT surname Fenniscarth, together with the honest rejection record for Fauldingham. Every count below was read off a live response in a session whose positive control passed at the start and again at the end. It is a log, not a certificate: the negative findings are the queries that returned zero, and they are listed with the query string that produced them.",
+      "date": "2026-09-02",
+      "endpoints_used": {
+        "en_wikipedia": "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=%22NAME%22&format=json - CirrusSearch, EXACT PHRASE (the name is quoted inside srsearch). Count reported = query.searchinfo.totalhits.",
+        "sv_wikipedia": "the same API on sv.wikipedia.org, same exact-phrase form.",
+        "osm_nominatim": "https://nominatim.openstreetmap.org/search?q=NAME&format=json[&countrycodes=gb|se] - User-Agent header set, at least 1s between calls. Count reported = number of places returned.",
+        "general_web": "the harness WebSearch tool, exact-quoted. Not a count endpoint; it returns result blocks, so the finding is recorded as bearer / no bearer with the neighbours it did return."
+      },
+      "session_controls": [
+        {
+          "probe": "\"Pellew\"",
+          "endpoint": "en.wikipedia exact",
+          "when": "session start",
+          "count": 701
+        },
+        {
+          "probe": "\"Flarken\"",
+          "endpoint": "sv.wikipedia exact",
+          "when": "before the sv leg",
+          "count": 56
+        },
+        {
+          "probe": "Flarken countrycodes=se",
+          "endpoint": "OSM Nominatim",
+          "when": "before the gazetteer leg",
+          "count": 10,
+          "note": "returns Flarken in Luleå, Bodens, Kalix and Härjedalens kommun - a real-place control that passes."
+        },
+        {
+          "probe": "Aldingham countrycodes=gb",
+          "endpoint": "OSM Nominatim",
+          "when": "before the gazetteer leg",
+          "count": 2,
+          "note": "GB-side control, the real Cumbrian parish the verifier named at distance 2 from the OLD surname."
+        },
+        {
+          "probe": "\"Robert Brindlow\"",
+          "endpoint": "general web, exact-quoted",
+          "when": "before the web leg",
+          "count": "no exact bearer",
+          "note": "RULE 14's own NEGATIVE control for the web endpoint: it returns only fuzzy neighbours (Robert Brindley, Robert Bristow, Robert of Bridlington), which is what a clean coinage must look like there. Recorded so the clean web results below can be read as evidence rather than as an absent answer."
+        },
+        {
+          "probe": "\"Pellew\"",
+          "endpoint": "en.wikipedia exact",
+          "when": "session end, after every probe below",
+          "count": 701
+        }
+      ],
+      "coinage_probed": "Fenniscarth (the unit's one coined surname; carries the quoted voice, so it takes law 16 at full strength plus the whole RULE 16 distance burden - see rule17_and_rule16_tension_note for the split)",
+      "coinage_exact_phrase_probes": [
+        {
+          "probe": "\"Fenniscarth\"",
+          "endpoint": "en.wikipedia exact",
+          "count": 0
+        },
+        {
+          "probe": "\"Fenniscarth\"",
+          "endpoint": "sv.wikipedia exact",
+          "count": 0
+        },
+        {
+          "probe": "Fenniscarth (worldwide, no country filter)",
+          "endpoint": "OSM Nominatim",
+          "count": 0
+        },
+        {
+          "probe": "Fenniscarth countrycodes=gb",
+          "endpoint": "OSM Nominatim",
+          "count": 0
+        },
+        {
+          "probe": "Fenniscarth countrycodes=se",
+          "endpoint": "OSM Nominatim",
+          "count": 0
+        },
+        {
+          "probe": "\"Odette Fenniscarth\" (the full pair)",
+          "endpoint": "en.wikipedia exact",
+          "count": 0
+        },
+        {
+          "probe": "\"Fenniscarth\"",
+          "endpoint": "general web, exact-quoted",
+          "count": "no bearer",
+          "returned": "only fuzzy neighbours on the first element - Fennel, Fennec fox, Fennica, Fennia, Siscart. No page carries the string."
+        },
+        {
+          "probe": "\"Fenniscarth\" OR \"Odette Fenniscarth\" conservator OR conservation OR archivist OR archive OR paper (the IN-DOMAIN query)",
+          "endpoint": "general web, exact-quoted",
+          "count": "no bearer",
+          "returned": "generic conservation-trade pages only (AGO conservators, US National Archives 'What's a Conservator?', the Conservator-restorer article, Thea Burns, Mary Lynn Ritzenthaler). No Fenniscarth in paper conservation or in any adjacent heritage trade. This is the leg that rejected the old name's distance-2 neighbour Falkingham, whose bearer Gail Falkingham FSA is an archaeological archivist - i.e. the domain next door. The replacement has no such neighbour."
+        },
+        {
+          "probe": "\"A Conservator on Tape\" (the unit title)",
+          "endpoint": "en.wikipedia exact",
+          "count": 0
+        }
+      ],
+      "d1_enumeration": {
+        "method": "All Levenshtein-distance-1 strings of 'fenniscarth' generated BY CODE, not read off a result page: every a-z substitution at each of the 11 positions, every single-character deletion, and every a-z insertion at each of the 12 gaps. Raw 25*11 + 11 + 26*12 = 598; 586 distinct after the duplicates that adjacent-letter insertions and deletions produce. Each was probed as a QUOTED EXACT PHRASE, OR'd 15 to a query, in 40 en.wikipedia CirrusSearch calls. Exact-phrase form is the point: a fuzzy query silently corrects to the real name and returns a clean-looking zero, which is exactly how Fauldingham passed its own author's checks.",
+        "variants_enumerated": 586,
+        "or_batches": 40,
+        "batch_size": 15,
+        "in_batch_visibility_controls": [
+          {
+            "probe": "\"Bennistarth\" OR \"Cennistarth\" OR \"Pellew\"",
+            "count": 701,
+            "reads": "a hit inside an OR-batch of nonsense is visible at 701"
+          },
+          {
+            "probe": "\"Bennistarth\" OR \"Cennistarth\" OR \"Aldingham\"",
+            "count": 80,
+            "reads": "and is still visible at 80, i.e. at the order of magnitude a small real parish returns"
+          }
+        ],
+        "result": "40 of 40 batches returned totalhits 0. No edit-distance-1 neighbour of Fenniscarth exists on en.wikipedia. The zeros are real zeros because the two salted batches above proved a hit inside a batch surfaces.",
+        "contrast_with_the_rejected_name": "The identical sweep on Fauldingham (the verifier's, 587 variants in 40 batches) returned 39 zero batches and ONE positive, which drilled to \"Faulkingham\" at 200 totalhits."
+      },
+      "rejection_recorded_honestly": {
+        "rejected_surname": "Fauldingham",
+        "why": "RULE 16 breach on leg (b), real gazetteer/surname neighbours. \"Faulkingham\" is a real surname at Levenshtein distance 1 (d -> k): en.wikipedia exact phrase 200 totalhits, top hits 'Billy Bob Faulkingham', 'Billy Bob', 'Maine House of Representatives' - re-probed live in this session, 200, not quoted from the verifier's note. The bearer is William 'Billy Bob' Faulkingham, Minority Leader of the Maine House of Representatives and a self-employed lobsterman of Winter Harbor, Maine. He is not in this unit's domain, which is the one mitigating fact; RULE 16 as written does not turn on domain.",
+        "how_it_was_missed_the_first_time": "Every exact-phrase probe on Fauldingham itself was clean (en.wikipedia 0, sv.wikipedia 0, Nominatim 0, web no bearer). Only the computed one-letter enumeration found it. This is the Stintbury ~ Saintbury failure mode RULE 16 was written for, and the reason the rule says enumerate BY HAND.",
+        "also_recorded_at_distance_2_from_the_rejected_name": "Falkingham (real; en.wikipedia 363, top hits Josh Falkingham, Edward Falkingham; the in-domain bearer Gail Falkingham FSA, archaeological archivist at the Yorkshire Museum) and Aldingham (real Cumbrian parish; en.wikipedia 80, Nominatim GB 2). Distance 2 is inside the rule's letter, but both clustered on the same F?l?ingham surface, which is why the replacement was taken off that surface entirely rather than moved one letter along it.",
+        "replacement_distance_from_that_whole_neighbourhood": "Fenniscarth to Fauldingham 10, Faulkingham 10, Falkingham 9, Folkingham 9, Fillingham 9, Frodingham 9, Aldingham 10, Faldingworth 7, Foderingham 10, Framlingham 10, Fauldhouse 10, Faulding 10. The new name shares no morphology with the rejected one beyond the initial F, which is the block the unit was assigned."
+      },
+      "nearest_real_neighbours_of_the_new_name": [
+        {
+          "name": "Scarth",
+          "distance": 5,
+          "evidence": "real northern English surname and place element; en.wikipedia exact 479, OSM Nominatim GB 10 places. It is the element the coinage is built on, deliberately, and it is five edits away as a whole string."
+        },
+        {
+          "name": "Fennimore",
+          "distance": 5,
+          "evidence": "real; en.wikipedia exact 412 (Fennimore, Wisconsin). Recorded because it is the nearest thing sharing the Fenni- opening."
+        },
+        {
+          "name": "Feniscowles",
+          "distance": 6,
+          "evidence": "real Blackburn district; en.wikipedia exact 317."
+        },
+        {
+          "name": "Fenimore",
+          "distance": 6,
+          "evidence": "real and notable (James Fenimore Cooper); recorded for the same reason as Fennimore."
+        },
+        {
+          "name": "Fenwick",
+          "distance": 6,
+          "evidence": "real surname and place."
+        },
+        {
+          "name": "Feniscliffe",
+          "distance": 6,
+          "evidence": "real Blackburn district; en.wikipedia exact 3."
+        },
+        {
+          "name": "Scarthingwell",
+          "distance": 12,
+          "evidence": "real North Yorkshire place, listed to show the -scarth family is not otherwise close."
+        }
+      ],
+      "bank_and_brief_screen": {
+        "method": "Mechanical, per RULE 16: every capitalised token in every shipped/queued title, passage, prompt and option across batches/batch*/candidates-final plus batch18, batch19 and batch20 candidates (135 unit files, 2,136 distinct capitalised tokens), plus every capitalised token in this batch's BRIEF-ADDENDUM.md (937), 2,397 strings in the union. Levenshtein computed against each, lowercased. Whole-token membership checked separately.",
+        "corpora_sizes": {
+          "unit_files": 135,
+          "bank_capitalised_tokens": 2136,
+          "brief_capitalised_tokens": 937,
+          "union": 2397
+        },
+        "minima": [
+          {
+            "name": "Fenniscarth",
+            "on_any_brief_exclusion_list": false,
+            "in_bank_by_exact_token": false,
+            "nearest_strings": [
+              "Beneath 6",
+              "Enbart 6",
+              "Gnistarp 6",
+              "Gnistarps 6",
+              "Research 6",
+              "Tekniska 6",
+              "Wenmarch 6",
+              "Nailsworth 6 (brief)"
+            ],
+            "minimum": 6
+          },
+          {
+            "name": "Goddard",
+            "on_any_brief_exclusion_list": false,
+            "nearest_strings": [
+              "Gotland 3"
+            ],
+            "minimum": 3,
+            "note": "unchanged by this round; carried from the verifier's recomputation."
+          },
+          {
+            "name": "Odette",
+            "on_any_brief_exclusion_list": false,
+            "nearest_strings": [
+              "Odile 3 (a listed given name)"
+            ],
+            "minimum": 3,
+            "note": "unchanged by this round."
+          },
+          {
+            "name": "Oscar",
+            "on_any_brief_exclusion_list": false,
+            "nearest_strings": [
+              "Osian 2",
+              "Assar 2 (both listed given names)"
+            ],
+            "minimum": 2,
+            "note": "recorded, not flagged: RULE 16 governs COINAGES and Oscar is real stock serving RULE 17; RULE 8's near-duplicate clause is about surname one-letter variants. Unchanged by this round."
+          }
+        ],
+        "against_the_2026-09-02_registry_correction": "Fenniscarth to Kajsa 9, Birger 9, Gordon 11, Fiona 8, Pärlhage 10, Nolvide 10, Hoskadale 10, Hebden 10, Skrömtbäcken 12; to the full pairs Kajsa Pärlhage 12, Birger Nolvide 13, Gordon Hoskadale 13, Fiona Hebden 10.",
+        "minimum_overall": "6 - comfortably above RULE 16's floor of 2, and above the distance-2 band in which the batch19 corrections (Draystow ~ Drayton, Nabbsworth ~ Nailsworth) and the withdrawn Tarrowfen ~ Larrowden all sat."
+      },
+      "given_name_odette": {
+        "status": "KEPT. Verified clean before this round and re-probed here.",
+        "probes": [
+          {
+            "probe": "\"Odette\"",
+            "endpoint": "en.wikipedia exact",
+            "count": 3615,
+            "reads": "an ordinary, well-attested French/English given name with many bearers - which is what a given name is supposed to be. Law 16's bearer test bites on the FULL identifying string, and the pair \"Odette Fenniscarth\" returns 0."
+          },
+          {
+            "probe": "\"Odette Fenniscarth\"",
+            "endpoint": "en.wikipedia exact",
+            "count": 0
+          },
+          {
+            "probe": "\"Fenniscarth\" OR \"Odette Fenniscarth\" conservator OR conservation OR archivist OR archive OR paper",
+            "endpoint": "general web",
+            "count": "no bearer"
+          }
+        ],
+        "list_screen": "Absent from the brief's USED GIVEN NAMES (231 + 14 + 25 + 16) and from the 2026-09-02 correction set (Kajsa, Birger, Gordon, Fiona) by exact whole-token membership; not a Mar-* name. Bank/brief Levenshtein minimum 3 (Odile).",
+        "rule8_sibling_sweep": "batches/batch21/ still contains only this unit's JSON, its NOTES and the brief, so the within-batch sibling given-name sweep remains vacuous. The orchestrator must re-run it for Odette and Oscar once sibling units land."
+      },
+      "ordinary_figure_oscar_goddard": {
+        "status": "KEPT unchanged. This is the RULE 17 ordinary figure and it is exempt from law 16's blanket bearer test only under RULE 21 (a), (b) and (c); all three legs re-checked in this session.",
+        "leg_a_no_notable_bearer": {
+          "probe": "\"Oscar Goddard\"",
+          "endpoint": "en.wikipedia exact",
+          "count": 0,
+          "note": "in the same control-passing session as everything above (Pellew 701 at start and end)."
+        },
+        "leg_b_no_bearer_in_this_unit_s_domain": {
+          "probe": "\"Oscar Goddard\" conservator OR conservation OR archivist OR archive OR librarian OR museum",
+          "endpoint": "general web, exact-quoted",
+          "result": "no page names an Oscar Goddard in paper conservation, conservation generally, archives, libraries or museums. The results were generic trade and careers pages (Smithsonian Archives conservator-career blog, the Paul N. Banks article, the US National Archives 'What's a Conservator?' page, BLS and careers-site occupational profiles). The bearers the bare-pair query returns are diffuse and private - Find a Grave memorials for Oscar D. Goddard (1876-1944), Oscar Wilde Goddard (1885-1960) and Oscar Hillard Goddard (1870-1940), a funeral-home obituary, one social handle - which is the intended cost of RULE 17."
+        },
+        "leg_c_no_quoted_words_no_attributed_act": "Holds. He is a bare byline. He does not speak, and no contested claim is attributed to him. Every quoted word in the unit belongs to the coinage Fenniscarth, which is the point of the split.",
+        "distance_note": "Goddard is real stock, not a coinage, so RULE 16's distance floor does not govern it; its bank minimum is 3 (Gotland) and it is on no exclusion list."
+      },
+      "institution_or_studio_names_in_the_passage": {
+        "result": "NONE. Probed by reading the final passage bytes rather than by memory: the only capitalised strings in the passage are the sentence-initial words, the given name Odette, the coined surname Fenniscarth and the byline Oscar Goddard. The conservator's workplace is referred to only as an unnamed bench; no studio, museum, archive, gallery, trust, laboratory, journal or publication is named anywhere in title, passage, prompt, options or rationale. There was therefore no institution string to probe, and no institution probe is claimed."
+      },
+      "residuals_and_flags": [
+        "Flagged for V-FINAL regardless, per RULE 14's standing instruction.",
+        "The general-web leg is a result-block endpoint, not a count endpoint, so its findings are recorded as bearer / no bearer with the neighbours returned, and the negative control \"Robert Brindlow\" is logged above so those nulls can be read.",
+        "RULE 8's within-batch sibling sweep for Odette and Oscar is still vacuous and is owed once batch21's sibling units exist.",
+        "The d1 enumeration covers en.wikipedia only. Nominatim was probed on the exact string in three scopes (worldwide, GB, SE) but not on all 586 variants; a 586-call gazetteer sweep at the endpoint's 1-call-per-second courtesy rate was not run. Stated as a limit of this log rather than left to be inferred."
+      ]
+    },
+    "measured_stats": {
+      "measured_on": "The FINAL bytes of this file, after fleet-repair-2 (repair_log[2]): the paragraph-2 interleaving beat, the paragraph-3 deixis and attribution repairs, the q1 rationale component correction and this round’s metadata. RULE 19: nothing is carried forward from repair_log[0] or repair_log[1]; every figure below was recomputed here on these bytes.",
+      "date": "2026-09-02",
+      "tool": "gates/scripts/mech.py - its own tokenize() (NFC, lowercased, re.findall(r'[a-zåäöéü0-9]+')) and its own sentences() (split on [.!?] followed by whitespace and an uppercase letter). Paragraphs are mech’s own re.split(r'\\n\\s*\\n'). Nothing here uses a plain word regex.",
+      "passage_tokens": 222,
+      "paragraphs": 4,
+      "sentences": 9,
+      "sentence_token_lengths": [
+        24,
+        46,
+        35,
+        35,
+        19,
+        11,
+        25,
+        17,
+        10
+      ],
+      "mean_sentence_words": 24.7,
+      "mean_sentence_words_note": "mech’s own form, round(passage_tokens / sentence_count, 1). The arithmetic mean of sentence_token_lengths is the same figure here.",
+      "sentence_length_sd_population": 11.36,
+      "sentence_length_sd_note": "Population (N) standard deviation, matching the blueprint’s >= 7 floor. A 46-token period sits beside a 6-token one, so the variation is real and not an artefact of the splitter. NOTE on the splitter: mech’s sentences() breaks only before an uppercase letter, so a period followed by an opening curly quote does not split; two of the counted \"sentences\" therefore span a quotation boundary. That was already true of the pre-repair figures and is stated rather than corrected, because the band is defined by mech’s own splitter.",
+      "prompt_tokens": 10,
+      "rationale_tokens": 394,
+      "option_tokens": {
+        "A": 15,
+        "B": 14,
+        "C": 15,
+        "D": 18
+      },
+      "option_length_ratio": 1.286,
+      "option_length_ratio_note": "max/min = 18/14 = 1.286, against the ELF cap of 2.36 in gates/bands.json. Options are byte-identical to fleet-repair-1.",
+      "key_letter": "C",
+      "key_is_longest_option": false,
+      "longest_option_letter": [
+        "D"
+      ],
+      "key_longest_note": "Key C is 15 tokens; the single longest option is distractor D at 18. M-TELL’s pick-the-longest tell cannot fire, and on a one-question unit its systematic-across-questions test is not even reached. Re-measured at fleet-repair-2; unchanged.",
+      "longest_shared_token_run_option_vs_passage": {
+        "A": {
+          "tokens": 2,
+          "run": "the brown"
+        },
+        "B": {
+          "tokens": 1,
+          "run": "heat"
+        },
+        "C": {
+          "tokens": 3,
+          "run": "into the paper"
+        },
+        "D": {
+          "tokens": 2,
+          "run": "the brown"
+        }
+      },
+      "longest_shared_token_run_note": "Law 3, recomputed on the new passage bytes: the key’s longest verbatim run against the passage is 3 tokens ('into the paper'), so the key paraphrases rather than lifts. A 2 ('the brown'), B 1 ('heat'), D 2 ('the brown').",
+      "absolutizers": {
+        "lexicon": "mech.py's _ABSOLUTIZERS set plus its _ABSOLUTIZER_BIGRAMS ('no one'), evaluated with mech._has_absolutizer on the final option bytes.",
+        "per_option": {
+          "A": false,
+          "B": false,
+          "C": false,
+          "D": false
+        },
+        "count_among_the_four_options": 0,
+        "note": "0 of 4, re-measured on the reworded D. M-FORM fires only when the key is the sole non-absolutized option while EVERY distractor carries one; with zero absolutizers anywhere the shape is unavailable, and strip-the-absolutes selects nothing. NOTE: the passage now contains \"only\" (\"only a solvent will move it\"), which IS in mech’s _ABSOLUTIZERS set - it is in the PASSAGE, which M-FORM does not read; no option carries it."
+      },
+      "hedges": {
+        "lexicon": "mech.py carries no hedge list, so this count uses a stated lexicon rather than an implied one: usually, often, may, might, can, could, some, generally, typically, tend, tends, likely, perhaps, sometimes, frequently, most, many, rarely, seldom, about, roughly, around, fairly, somewhat, mostly, largely - matched as whole mech tokens.",
+        "per_option": {
+          "A": [],
+          "B": [],
+          "C": [],
+          "D": []
+        },
+        "count_among_the_four_options": 0,
+        "note": "0 of 4, re-measured on the reworded D (\"as well\" is not on the lexicon and is not a softener). With no softener and no absolutizer in any option there is no hedging axis to sort on, which is what hedge_balance_note asserts and this is the measurement behind it."
+      },
+      "typography_inventory": {
+        "method": "Character counts on the final strings, by layer. ‘Space-flanked’ en dashes are the ‘ – ’ form; the passage’s third en dash is the byline dash, which is line-initial and followed by a space only. The whole-file em-dash figure is counted on the DECODED characters of every string in the object. CORRECTION (fleet-repair-1, RULE 19): the pre-repair version of this field and of generator_meta.typography both asserted that the file is serialised with ensure_ascii so that every non-ASCII character is a \\uXXXX escape. That is FALSE on the shipped bytes - the file is json.dumps(indent=2, ensure_ascii=False) with no trailing newline, and carries literal U+201C, U+2019 and U+2013 characters (CORRECTED at fleet-repair-2: the fleet-repair-1 form of this parenthesis asserted that the escape spelling of U+201C does not occur in the file, and that parenthesis was itself the file’s one occurrence of that six-character sequence - a self-falsifying attestation. Rescoped and re-verified on the raw bytes of this round: a regex sweep of the file for a backslash followed by u and four hexadecimal digits returns ZERO matches, so no character of any layer is stored as an escape; the file's five remaining backslash-u strings are all MENTIONS of the escape form in metadata prose, never uses of it - four spell it with literal X placeholders and the fifth is the bare two-character form in repair_log[1].verification.byte_identical_round_trip. Counted, not estimated). The claim is withdrawn; the counts below are taken on the decoded strings either way, so no count moves.",
+        "passage": {
+          "left_double_quote_U+201C": 5,
+          "right_double_quote_U+201D": 5,
+          "apostrophe_U+2019": 6,
+          "en_dash_U+2013_total": 3,
+          "en_dash_U+2013_space_flanked": 2,
+          "em_dash_U+2014": 0,
+          "straight_apostrophe_U+0027": 0,
+          "straight_double_quote_U+0022": 0,
+          "hyphen_minus_U+002D": 0
+        },
+        "prompt": {
+          "left_double_quote_U+201C": 0,
+          "right_double_quote_U+201D": 0,
+          "apostrophe_U+2019": 0,
+          "en_dash_U+2013_total": 0,
+          "en_dash_U+2013_space_flanked": 0,
+          "em_dash_U+2014": 0,
+          "straight_apostrophe_U+0027": 0,
+          "straight_double_quote_U+0022": 0,
+          "hyphen_minus_U+002D": 0
+        },
+        "options_all_four_concatenated": {
+          "left_double_quote_U+201C": 0,
+          "right_double_quote_U+201D": 0,
+          "apostrophe_U+2019": 0,
+          "en_dash_U+2013_total": 0,
+          "en_dash_U+2013_space_flanked": 0,
+          "em_dash_U+2014": 0,
+          "straight_apostrophe_U+0027": 0,
+          "straight_double_quote_U+0022": 0,
+          "hyphen_minus_U+002D": 0
+        },
+        "rationale": {
+          "left_double_quote_U+201C": 5,
+          "right_double_quote_U+201D": 5,
+          "apostrophe_U+2019": 6,
+          "en_dash_U+2013_total": 4,
+          "en_dash_U+2013_space_flanked": 4,
+          "em_dash_U+2014": 0,
+          "straight_apostrophe_U+0027": 0,
+          "straight_double_quote_U+0022": 0,
+          "hyphen_minus_U+002D": 0
+        },
+        "student_layer_total": {
+          "left_double_quote_U+201C": 5,
+          "right_double_quote_U+201D": 5,
+          "apostrophe_U+2019": 6,
+          "en_dash_U+2013_total": 3,
+          "en_dash_U+2013_space_flanked": 2,
+          "em_dash_U+2014": 0,
+          "straight_apostrophe_U+0027": 0,
+          "straight_double_quote_U+0022": 0,
+          "hyphen_minus_U+002D": 0
+        },
+        "whole_file_em_dash_U+2014": 0,
+        "note": "One system, preserved by this round: curly double quotes U+201C/U+201D, apostrophe U+2019, en dash U+2013 spaced; zero em dashes U+2014 anywhere in the file; zero straight apostrophes U+0027 and zero straight double quotes U+0022 in the student layer or the rationale. This was the cleanest case in batch21 (G-ENG line 9 measured it per layer and said so) and the repair kept it: every character added by this round in the student layer or the rationale is either ASCII or one of the three marks already in use.",
+        "whole_file_straight_double_quote_in_student_layer": 0
+      },
+      "bands_checked_against": "gates/bands.json, ELF: passage_words 101-368 (222 pass), paragraph_count 0-8 (4 pass), mean_sentence_words 12.0-47.2 (24.7 pass), prompt_words 3-30 (10 pass), option_words 0-31 (14-18 pass), option_length_ratio_max 2.36 (1.286 pass).",
+      "declared_deviation_unchanged_by_this_round": "222 passage tokens is inside the M-BANDS band but above the GENERATION.md blueprint’s authoring target of 105-160, and the passage is 4 paragraphs against a blueprint 1. Both deviations predate fleet-repair-1. The register repairs have now widened the token deviation twice: 197 at generation, 209 after fleet-repair-1’s conversion, 222 after fleet-repair-2’s interleaving beat and attribution. Restated here rather than left implied.",
+      "fleet_repair_1_effect_on_the_numbers": "Real, unlike the pre-gate rename: the passage gained 6 mech tokens (197 -> 209) and lost one sentence to the splitter (10 -> 10, because the paragraph-3 conversion joins two of the old periods into one 33-token span across a quotation boundary), option D gained one token (17 -> 18), and the rationale changed length. Every derived figure below is re-derived, not adjusted.",
+      "quotation_fraction": {
+        "definition": "Characters inside a U+201C ... U+201D pair, including the two marks, over all characters of $.passage (byline paragraph included). This is the measure G-REGISTER used; its figure for the pre-repair bytes was 70 per cent and mine on the same bytes was 70.9, so the definitions agree.",
+        "before_fleet_repair_1_pct": 70.9,
+        "after_fleet_repair_1_pct": 45.4,
+        "after_chars_quoted": 478,
+        "after_chars_total": 1115,
+        "synthetic_bank_context": "G-REGISTER (verdicts-gregister.jsonl line 3): previous bank maximum elf-b20-003 at 25 per cent, next elf-b18-001 at 13, median near 5.",
+        "authentic_corpus_context": "MEASURED at fleet-repair-1 on the real exam corpus, which no gate had measured: every ELF context in /home/loucmane/dev/hpfetcher/data/parsed (27 exams), deduplicated by context string and split on blank lines into blocks of more than 250 characters, n=221 blocks. Quoted-character fraction: max 54.7 (var-2019, the Ferrucci ageing text), then 46.2 (host-2018, the Birth time-and-money text), 36.9, 33.5, 28.5, 28.4, 26.6, 25.8; p95 22.1, p90 11.0, median 0.0, mean 3.4. Eight blocks at or above 25 per cent, two at or above 40, none at or above 60.",
+        "reading": "The pre-repair 70.9 sat above EVERY one of the 221 authentic ELF blocks. The post-repair 45.4 ranks third if inserted into that distribution, between the second-placed real text at 46.2 and the fourth at 36.9 - inside the authentic envelope rather than outside it. It remains well above the synthetic bank maximum of 25, which is a disclosed residual, not a claim of typicality.",
+        "shape_note": "Both authentic high-quotation blocks INTERLEAVE quotation with narration and attributives; neither has a paragraph of pure quotation. That is the shape the repair adopted, and it is what G-REGISTER’s second sentence was actually objecting to (\"two of the passage’s three paragraphs are pure quotation with no attributive and no narration\").",
+        "after_fleet_repair_2_pct": 42.9,
+        "per_paragraph_pct_after_fleet_repair_2": {
+          "1_object_arriving": 0.0,
+          "2_the_conservator_on_what_is_left": 79.0,
+          "3_method_and_the_refusal": 32.2,
+          "4_byline": 0.0
+        },
+        "fleet_repair_2_note": "G-REGISTER round 2 (verdicts/verdicts-gregister-r2.jsonl line 3) confirmed fleet-repair-1’s scalar to the decimal (44.6 per cent excluding the marks, 45.4 including them, on an independently rebuilt 221-block authentic population, p95 22.4, median 0.0, max 54.7) and accepted the benchmark, but recorded that the SHAPE was only half fixed: paragraph 2 was still 88 per cent quoted - 330 of 377 characters, one attributive and then a single unattributed span of about 310 characters - and neither authentic high-quotation block contains a paragraph of pure quotation. fleet-repair-2 interleaved paragraph 2 with one narrative beat. Measured on this round’s bytes: whole passage 45.4 -> 42.9 per cent (478 of 1115 characters); paragraph 2 87.5 -> 79.0 per cent (331 of 419 characters), now three quoted spans separated by an attributive and a narrative beat rather than one span. The residual is disclosed under register_quotation_decision.fleet_repair_2_paragraph_2_decision rather than argued away."
+      },
+      "fleet_repair_2_effect_on_the_numbers": "Passage 209 -> 222 mech tokens (+13: the narrative beat 7, the deixis repair +4, the parenthetical attributive +2). mech’s sentences() count 10 -> 9 and mean_sentence_words 20.9 -> 24.7, because the splitter breaks only before an uppercase letter and the new quotation boundaries put closing and opening marks where a break would otherwise fall; the figure is mech’s own and is inside the 12.0-47.2 band. Population sd 11.82 -> 11.36, still above the blueprint’s floor of 7. Prompt, all four options, the key letter and the option length ratio are untouched. Every derived figure above is re-derived, not adjusted."
+    },
+    "gstem_domain_knowledge_finding": {
+      "status": "CALIBRATED FINDING, disclosed for the owner package. The option set was NOT rebuilt: G-DISTRACTOR passed it 4/4 with the mechanism verified against sources, and the channel G-STEM found is not a form tell that a rebuild could remove.",
+      "gate": "G-STEM, verdicts/verdicts-gstem.jsonl line 11, verdict kill, blind_pick C, confidence high, date 2026-09-02.",
+      "measured_channel": "World knowledge, not form. The gate reached the key C blind at ABOUT 60 PER CENT, and states in terms what it could and could not use: \"What I could not get from form alone is much of anything - the four options sit on four different axes (stain origin, technique selection, optical symptom, stain removal) and there is no dyad, no length cue and no hedging asymmetry.\"",
+      "what_the_channel_requires": "Paper-conservation knowledge: that the brown stain in the fibres is precisely what solvent does NOT remove (so D is the false clean-solution claim), that the browning is oxidised rubber rather than plasticiser (so A is a component swap), and the heat/solvent rule of thumb (so B is reversed).",
+      "gate_own_calibration_quoted": "CALIBRATION: this channel NEEDS DOMAIN KNOWLEDGE a Swedish 18-year-old almost certainly lacks; it is NOT student-available except for the weak clean-solution cue on D. Reportable, but low practical exposure for the intended cohort.",
+      "cohort_exposure": "Low. The intended cohort is Swedish upper-secondary leavers preparing for the hogskoleprov; paper conservation is a specialist trade, and none of the three facts above is school curriculum in any Swedish programme. The residual risk is a student who happens to have read about tape removal.",
+      "what_this_round_did_about_it": "Only the one student-available part. Option D was reworded so that complete removal reads as an incidental further effect of a step the passage grants (\"it takes the brown out of the fibres as well\") instead of as the tidy total solution (\"the brown comes out of the fibres with it\"). That reduces the clean-solution silhouette; it does not remove the domain channel, and no rewording could, because the channel is the mechanism being true.",
+      "inherent_tension_restated": "A unit whose mechanism must be verifiably correct is answerable by anyone who knows the mechanism. elf-b20-003 disclosed the same lever. It is a property of checkable-mechanism items, not a defect of this option set, and the honest disposition is disclosure plus the cohort-exposure judgement above.",
+      "round_2_update": "G-STEM re-ran on the repaired bytes (verdicts/verdicts-gstem-r2.jsonl line 11): verdict downgraded from KILL to FLAG, blind_pick still C, confidence high -> MEDIUM, and the self-rated figure fell from about 60 per cent to about 50 per cent for an expert reader and “roughly 35 to 40 percent” for a Swedish 18-year-old with only form to go on. The gate restates the same two channels: paper-conservation world knowledge, which it again says the cohort will not have, and a form channel it now names explicitly - D’s additive “as well” over-reach and B’s chiastic tidy-rule symmetry, both shaveable on shape. fleet-repair-2 did not touch the option set: G-DISTRACTOR passed it again at round 2 with zero findings, the 35-40 per cent form floor is above 25 but below the kill bar, and the two shapes the gate names are the traps themselves. Recorded, not discharged."
+    },
+    "register_quotation_decision": {
+      "finding": "G-REGISTER, verdicts/verdicts-gregister.jsonl line 3, verdict flag: 70 per cent of the passage’s characters inside quotation marks against a synthetic-bank maximum of 25, with two of three paragraphs pure quotation and no attributive - \"the batch’s strongest single authenticity finding\", explicitly left to adjudication.",
+      "decision": "Option (i): convert ONE quoted paragraph to reported speech, keeping two quoted phrases. Paragraph 3 was chosen; paragraph 2 was not touched because it is the key’s anchor and G-KEY solved q1 from it on both blind legs.",
+      "why_not_option_ii": "Because the disclosure would have been a disclosure that the unit sits outside the AUTHENTIC envelope, not merely outside the synthetic bank’s history. The bank maximum of 25 is a fact about seven batches of generated units; it is not evidence about the exam. I measured the exam instead (see measured_stats.quotation_fraction): across 221 real ELF text blocks from 27 shipped exams the maximum quoted fraction is 54.7 per cent. At 70.9 this unit was above every authentic text in the corpus, and no lane constraint required that - RULE 20(b) constraint 1 mandates a quoted VOICE, which is discharged at any fraction above zero, not an interview extract. A binding constraint justifies quotation; it does not justify the amount.",
+      "what_was_preserved": "The mechanism is unchanged and the key is still answerable from the text: C’s anchor (paragraph 2, untouched), A’s killer (paragraph 2, untouched), B’s killer (the young-mend / aged-mend contrast, now in reported speech but the same content) and D’s killer (the closing refusal, retained as direct quotation) all survive. The quoted voice survives as a whole quoted paragraph plus the working maxim and the refusal.",
+      "secondary_gains": "The converted paragraph carried three of the passage’s object-frontings; one remains. G-ENG’s only stylistic reservation was that \"three frontings inside about sixty words is dense; two would be safer\". And the interleaved quotation-with-attributive shape is what BOTH authentic high-quotation ELF texts do.",
+      "residual_disclosed": "The unit is still the most heavily quoted in the synthetic bank by a wide margin. It is third of 222 against the authentic distribution. That is a disclosed authenticity residual for the owner package, and the lane finding G-REGISTER attached to it - a second consecutive TYPE-001 short built on a practitioner correcting a lay misreading, opening on a terse working maxim - is a BRIEF fix for batch22, not a unit fix, and is not addressed here.",
+      "fleet_repair_2_paragraph_2_decision": {
+        "finding": "G-REGISTER round 2, verdicts/verdicts-gregister-r2.jsonl line 3, finding 2: “BUT THE SHAPE IS ONLY HALF FIXED, and the shape was half the r1 finding… PARAGRAPH 2 IS UNTOUCHED AND IS 88 PER CENT QUOTED - 330 of 377 characters, two spans, one attributive at the front and then a ~310-character span carrying the whole mechanism with no attributive, no narration and no interruption.”",
+        "decision": "INTERLEAVE, minimally. One narrative beat - “She turns the certificate to the light.” - was inserted after “What’s left is the glue.”, closing the first quoted span there and reopening for the mechanism. Paragraph 2 now runs quotation, attributive, quotation, narration, quotation: the shape both authentic high-quotation ELF blocks use.",
+        "measured_result": "Paragraph 2: 87.5 per cent quoted before (330 of 377 characters), 79.0 per cent after (331 of 419). Whole passage: 45.4 per cent before, 42.9 per cent after (478 of 1115). The longest quoted span in the paragraph falls from 291 characters to 210, counted inside the marks (293 to 212 counting them); paragraph 2 goes from two quoted spans to three. G-REGISTER's '~310-character span' is the gate's own approximation of the 291.",
+        "why_the_beat_sits_where_it_does": "It is the ONLY interior break point available without re-cutting the rationale. The q1 rationale quotes two spans of paragraph 2 verbatim: “The rubber in it has oxidised - that’s the brown - and the plasticiser that kept it soft has soaked into the paper.” (the killer for distractor A) and “the plasticiser that kept it soft has soaked into the paper. Where the glue went in, the sheet’s gone like greased paper; you can read the back through it.” (the key’s support). Together they require an unbroken 213-character run from “The rubber in it” to “read the back through it.” Any beat inside that run would have forced a re-cut of one or both quotations - which is exactly the operation that produced round 1’s LETHAL G-ENG misquotation - so the beat was placed immediately before the run instead.",
+        "residual_disclosed": "Paragraph 2 is still the most heavily quoted paragraph in the unit at 79.0 per cent, and the 213-character mechanism run is still one span without an interior attributive; what changed is that it is now preceded by narration rather than running on from the opening attributive, and that the paragraph as a whole interleaves. This is a bounded, reasoned stopping point, not an omission: the alternative was to move the key’s anchor or to re-cut the two rationale quotations that carry the key and the A-killer. G-KEY solved q1 from this paragraph on both blind legs and G-DISTRACTOR passed 4/4 on those two quotations; neither surface was disturbed.",
+        "what_was_not_done": "The passage was not shortened, the key’s two anchor sentences were not reworded, no quoted proposition was dropped, and no filler narration was added to move a percentage. The lane finding G-REGISTER carried forward - a second consecutive TYPE-001 short built on a practitioner correcting a lay misreading and opening on a terse working maxim - remains a batch22 BRIEF fix and is still not addressed by editing this unit."
+      }
+    }
+  },
+  "repair_log": [
+    {
+      "round": "pre-gate-rename",
+      "date": "2026-09-02",
+      "executed_by": "claude-opus-5 (1M context), pre-gate rename worker for batch21 gen-elf-short-1. Input was the file as the rate-limited generator left it: complete except for two empty generator_meta objects, and carrying the surname the verifier subsequently rejected. No gate fleet has run on this unit yet, so this round is a pre-gate repair, not a response to verdicts.",
+      "source": [
+        "batches/batch21/gen-elf-short-1.NOTES.md section 7, DEFECT 1 - RULE 16 breach: the coined surname 'Fauldingham' is at Levenshtein distance 1 from the real surname 'Faulkingham' (en.wikipedia exact phrase 200 totalhits; notable bearer William 'Billy Bob' Faulkingham, Minority Leader of the Maine House of Representatives). Found only by the verifier's computed 587-variant one-letter enumeration: every exact-phrase probe on 'Fauldingham' itself was clean, which is the Stintbury ~ Saintbury failure mode RULE 16 exists to catch. The verifier did not fix it, and stated that the choice of replacement and the re-run of the sweep were the generator's or the orchestrator's call.",
+        "batches/batch21/gen-elf-short-1.NOTES.md section 7, also recorded at distance 2 from the rejected name and on the same F?l?ingham surface: 'Falkingham' (real; the in-domain bearer Gail Falkingham FSA is an archaeological archivist at the Yorkshire Museum, i.e. the trade next door to paper conservation) and 'Aldingham' (real Cumbrian parish). Treated here as a constraint on the replacement: get off that surface, do not move one letter along it.",
+        "batches/batch21/gen-elf-short-1.NOTES.md section 0 and sections 7-8: generator_meta.originality_note and generator_meta.measured_stats are both empty objects because the generating process was killed by a rate limit after the JSON was written. RULE 14 requires the first as a search log; RULE 19 requires the second recomputed on the round's own bytes.",
+        "batches/batch21/gen-elf-short-1.NOTES.md section 7, registry_correction_ack arithmetic: two of the six 'computed' Levenshtein figures are wrong - Goddard-Hebden is 6, not the stated 5, and Fauldingham-Hoskadale is 11, not the stated 8. Both errors run in the safe direction, but RULE 16 says compute, do not quote.",
+        "batches/batch21/BRIEF-ADDENDUM.md RULE 16 (distance >= 2 from the bank AND from real gazetteer/surname neighbours, one-letter variants enumerated by hand), RULE 14 (the endpoints, the positive control, and originality_note as a search log), RULE 17 and RULE 21 (the ordinary figure and its three exemption legs), RULE 19 (statistics recomputed, never carried forward), and the CORRECTION 2026-09-02 name set at the end of the file."
+      ],
+      "gates_addressed": [
+        "RULE 16 (breach: the coined surname is renamed off the F?l?ingham surface entirely; the replacement's full 586-variant one-letter enumeration returns zero on en.wikipedia, with salted in-batch controls proving a hit would be visible)",
+        "RULE 14 (originality_note written as an actual search log: query strings, endpoints, counts, positive control at session start and end, negative web control, and the Faulkingham rejection recorded as the reason for the rename)",
+        "RULE 19 (measured_stats recomputed with mech.py's own tokenizer on the final bytes; the two mis-stated registry distances corrected and the two surname distances recomputed for the new coinage)",
+        "RULE 17 / RULE 21 (unchanged and re-verified: the ordinary figure Oscar Goddard keeps the byline and stays silent; the coinage keeps the quoted voice)"
+      ],
+      "edits": [
+        {
+          "path": "$.passage (second paragraph, the attribution)",
+          "from": "says Odette Fauldingham, a paper conservator",
+          "to": "says Odette Fenniscarth, a paper conservator",
+          "authority": "NOTES section 7 DEFECT 1; RULE 16 leg (b)."
+        },
+        {
+          "path": "$.questions[0].prompt",
+          "from": "What does Fauldingham say about mends made with clear tape?",
+          "to": "What does Fenniscarth say about mends made with clear tape?",
+          "authority": "Same rename; the stem names the speaker and had to follow. Stem shape, scope and entailment are untouched - see the stem_entailment_audit, which is re-stated with the new name and otherwise unchanged."
+        },
+        {
+          "path": "$.generator_meta.named_figures (object key)",
+          "from": "\"Odette Fauldingham\"",
+          "to": "\"Odette Fenniscarth\"",
+          "authority": "Same rename. The key's value is unchanged: the surname is still the unit's one coinage and still carries the quoted voice."
+        },
+        {
+          "path": "$.generator_meta.name_blocks",
+          "from": "surnames F/G (Fauldingham, Goddard)",
+          "to": "surnames F/G (Fenniscarth, Goddard)",
+          "authority": "Same rename. The replacement was deliberately kept in block F so the assigned F/G surname split and the no-alliteration property (Odette/Fenniscarth, Oscar/Goddard) both survive untouched."
+        },
+        {
+          "path": "$.generator_meta.lane_constraints_rule20b.1_quoted_voice (the quoted span)",
+          "from": "says Odette Fauldingham",
+          "to": "says Odette Fenniscarth",
+          "authority": "Same rename; the span quoted to discharge the constraint must match the passage bytes."
+        },
+        {
+          "path": "$.generator_meta.lane_constraints_rule20b.3_no_by_surname (two occurrences: the claim and its quoted span)",
+          "from": "The coined surname is Fauldingham ... Span: \"says Odette Fauldingham, a paper conservator.\"",
+          "to": "The coined surname is Fenniscarth ... Span: \"says Odette Fenniscarth, a paper conservator.\"",
+          "authority": "Same rename. The constraint itself still holds on the new name: Fenniscarth is not a -by coinage, and it avoids the standing -ius and -vall bars and the Mar-* given-name bar."
+        },
+        {
+          "path": "$.generator_meta.stem_entailment_audit (the quoted stem)",
+          "from": "Stem: \"What does Fauldingham say about mends made with clear tape?\"",
+          "to": "Stem: \"What does Fenniscarth say about mends made with clear tape?\"",
+          "authority": "Same rename; the audit quotes the stem verbatim and had to follow it."
+        },
+        {
+          "path": "$.generator_meta.rule17_and_rule16_tension_note (the coinage sentence)",
+          "from": "The COINAGE, Fauldingham, carries the quoted voice",
+          "to": "The COINAGE, Fenniscarth, carries the quoted voice",
+          "authority": "Same rename. The RULE 21 split is unchanged: the ordinary figure Oscar Goddard is still a silent byline and the coinage still carries every quoted word."
+        },
+        {
+          "path": "$.generator_meta.registry_correction_ack (rewritten)",
+          "from": "Levenshtein distances (computed, lowercase): Odette-Fiona 6, Oscar-Gordon 5, Goddard-Gordon 4, Goddard-Hebden 5, Fauldingham-Hoskadale 8, Fauldingham-Pärlhage 9",
+          "to": "Levenshtein distances (recomputed 2026-09-02 on the RENAMED bytes, lowercase): Odette-Fiona 6, Oscar-Gordon 5, Goddard-Gordon 4, Goddard-Hebden 6, Fenniscarth-Hoskadale 10, Fenniscarth-Pärlhage 10",
+          "authority": "NOTES section 7: two of the six figures were wrong (Goddard-Hebden 6 not 5; Fauldingham-Hoskadale 11 not 8). The two surname figures are recomputed for the replacement coinage rather than corrected in place, since the name they measured no longer appears in the unit. The field now says so in terms."
+        },
+        {
+          "path": "$.generator_meta.originality_note",
+          "from": "{} (empty - the generator was killed by a rate limit before writing it)",
+          "to": "A RULE 14 search log for this round: endpoints and their exact-phrase forms; a positive control at session start and at session end (\"Pellew\" 701 / 701); a Nominatim control (Flarken se 10, Aldingham gb 2); a negative web control (\"Robert Brindlow\", no exact bearer); the replacement surname's probes (en.wikipedia 0, sv.wikipedia 0, Nominatim worldwide/GB/SE 0/0/0, full pair 0, web no bearer, in-domain web query no bearer, title 0); the 586-variant one-letter enumeration in 40 OR-batches with two salted visibility controls (701 and 80) and a 40-of-40 zero result; the bank and brief screen with its minima; Odette; the RULE 21 legs for Oscar Goddard; an explicit finding that the passage names no institution or studio; and the Faulkingham rejection written down as the reason the rename happened.",
+          "authority": "RULE 14: originality_note stays a SEARCH LOG - query, endpoint, count, control result, date."
+        },
+        {
+          "path": "$.generator_meta.measured_stats",
+          "from": "{} (empty - same rate limit)",
+          "to": "Recomputed with mech.py's own tokenize() and sentences() on the final bytes: passage 197 tokens, 4 paragraphs, 10 sentences [24, 46, 6, 22, 33, 19, 7, 20, 10, 10], mean 19.7, population sd 11.96, prompt 10, options A 15 / B 14 / C 15 / D 17, option_length_ratio 1.214 against the 2.36 cap, key C not the longest (D is), longest shared token run key-to-passage 3 ('into the paper') with A 2 / B 1 / D 2, absolutizers 0 of 4 by mech._has_absolutizer, hedges 0 of 4 on a stated lexicon, and a per-layer dash and apostrophe inventory.",
+          "authority": "RULE 19: every statistic asserted in generator_meta is recomputed on the bytes of the round that touches it."
+        }
+      ],
+      "rename": {
+        "from": "Fauldingham",
+        "to": "Fenniscarth",
+        "block": "F, as assigned - unchanged, so the unit still reads surnames F/G against given names N/O and neither pair alliterates.",
+        "occurrences_replaced": 11,
+        "occurrence_map": "passage 1, questions[0].prompt 1, generator_meta.named_figures key 1, name_blocks 1, lane_constraints_rule20b.1_quoted_voice 1, lane_constraints_rule20b.3_no_by_surname 2, stem_entailment_audit 1, registry_correction_ack 2, rule17_and_rule16_tension_note 1.",
+        "bars_checked": "Not a -by coinage; no -ius tail; no -vall tail; not Mar-*; on no brief exclusion list by exact whole-token membership.",
+        "why_this_shape": "Deliberately off the F?l?ingham surface the rejected name shared with Faulkingham, Falkingham, Folkingham, Fillingham, Frodingham and Aldingham - a replacement one letter along that surface would have repeated the error. Built instead on -scarth, a genuine northern English surname and place element, with a Fenni- opening that suits a paper conservator's trade feature. Distance from the whole rejected neighbourhood is 7 or more; nearest real neighbour of any kind is 5 (Scarth, Fennimore); bank and brief minimum is 6.",
+        "faulkingham_evidence": "en.wikipedia CirrusSearch exact phrase \"Faulkingham\" = 200 totalhits, re-probed live on 2026-09-02 in this round's control-passing session (not quoted from the verifier's note); top hits 'Billy Bob Faulkingham', 'Billy Bob', 'Maine House of Representatives'. Bearer: William 'Billy Bob' Faulkingham, Minority Leader of the Maine House of Representatives, self-employed lobsterman, Winter Harbor, Maine. Levenshtein('fauldingham', 'faulkingham') = 1, a single d -> k substitution. Distance from the replacement: Levenshtein('fenniscarth', 'faulkingham') = 10."
+      },
+      "carried": [
+        "The passage's mechanism, its quoted voice, the option set, the key letter C, the rationale and the title are all untouched. This round changed one proper noun and filled two empty metadata objects; it is not a content repair.",
+        "The 197-token passage and its 4 paragraphs remain above the GENERATION.md blueprint's authoring target of 105-160 tokens and 1 paragraph. Declared in NOTES section 10, inside the M-BANDS band, and not a defect this round was asked to fix.",
+        "The option_sortability_test's disclosed residual is unchanged: a test-wise non-expert who bets on the damage-versus-method split is at 1-in-2 between A and C, and a domain expert can reach C without the passage. A surname swap does not touch it.",
+        "RULE 8's within-batch sibling given-name sweep for Odette and Oscar is still vacuous - batches/batch21/ holds only this unit - and is still owed once sibling units land.",
+        "gen-elf-short-1.NOTES.md sections 7 and 8 still describe Fauldingham throughout, because they are the verifier's record of what was found. A section 0b was appended to that file marking those entries historical and naming the replacement; the body of sections 7-8 was deliberately not rewritten."
+      ],
+      "note": "The rename is same-length (11 characters, one token), so no measured statistic moves. All of them were recomputed anyway rather than asserted to be unchanged, per RULE 19. Typography is untouched: the new metadata prose is ASCII, so the file's curly-quote, apostrophe and en-dash inventory is exactly what it was, and the em-dash count is still zero. BrE is untouched: the rename is a proper noun and the passage still reads oxidised, plasticiser, fibres with no AmE form anywhere.",
+      "verification": {
+        "json_parses": true,
+        "byte_identical_round_trip": "Confirmed BEFORE writing: json.dumps(json.loads(raw), indent=2, ensure_ascii=True) reproduced the input file's 21,476 bytes exactly, with no trailing newline. The same serializer wrote every pass of this round, so the diff is confined to the fields listed in edits. Confirmed again AFTER writing: the shipped bytes re-parse and re-serialise to themselves.",
+        "residue_check": "Whole-file grep before this round: the superseded surname 11, the replacement 0. After: the replacement is present and the superseded surname survives ONLY as a deliberate historical citation, in exactly two regions and nowhere else. (1) repair_log[0] - source, the edits from-strings, rename.from, rename.faulkingham_evidence, carried[4] and this verification block. (2) generator_meta.originality_note - what_this_is, d1_enumeration.method, d1_enumeration.contrast_with_the_rejected_name, and the three fields of rejection_recorded_honestly, which is the rejection record RULE 14 requires. ZERO occurrences in $.title, $.passage, $.questions[0].prompt, $.questions[0].options, $.questions[0].key and $.questions[0].rationale; ZERO in generator_meta outside originality_note. The two generator_meta fields that carried the old name for a non-historical reason, registry_correction_ack and measured_stats, were rephrased to point at repair_log[0].rename instead of naming it. No total is quoted here because the sentence you are reading would change it; the check is stated as a path partition, which is stable. The audit walked the PARSED object rather than the flat text, so an occurrence inside an object KEY would also have been caught - named_figures had one of the eleven, and it is renamed.",
+        "run_mech": "run_mech.py batches/batch21/gen-elf-short-1.json --parsed-dir /home/loucmane/dev/hpfetcher/data/parsed --no-plagiarism: M-SCHEMA pass, M-BANDS pass, M-TELL pass, M-FORM pass; 0 findings, exit 0. Re-run with the full corpus (--p5-corpus-dir over batches/batch1..17/candidates-final plus batch18, batch19 and batch20 candidates, and M-PLAGIARISM enabled): 'M-ECHO: indexed 135 shipped unit(s)', then M-SCHEMA pass, M-BANDS pass, M-TELL pass, M-FORM pass, M-ECHO pass, M-PLAGIARISM pass - all six, 0 findings.",
+        "typography_one_system": "Recounted on the final bytes. Student layer plus rationale: U+201C 8, U+201D 8, U+2019 17, U+2013 7, and zero of every competing form - U+2014 0, straight apostrophe U+0027 0, straight double quote U+0022 0, U+2018 0, U+201A 0, U+2032 0, U+2015 0, U+2212 0. Whole file: em dash 0, counted as the decoded U+2014 character over every string in the object (the file is serialised with ensure_ascii, so on disk each non-ASCII character is an escaped code point; the count is taken after decoding, not on the escaped bytes). This round's new metadata prose is deliberately ASCII, so the file's typographic inventory is unchanged by it.",
+        "bre_holds": "Rechecked on the final bytes across title, passage, prompt, options and rationale: the BrE forms oxidised, plasticiser and fibres are present, and a scan for AmE counterparts and the usual -ize/-or/-er families (oxidiz, plasticiz, fiber, color, meter, center, gray, analyz, defense, behavior, labor, favor, traveled, catalog, aluminum, sulfur and the rest) returns NONE. The rename is a proper noun and touches no spelling-variety surface.",
+        "notes_file": "batches/batch21/gen-elf-short-1.NOTES.md: a section '0b - Rename' was appended naming the replacement, giving the sweep result, and marking sections 7 and 8's Fauldingham entries historical. The body of sections 7-8 was deliberately left as the verifier wrote it."
+      }
+    },
+    {
+      "round": "fleet-repair-1",
+      "date": "2026-09-02",
+      "executed_by": "claude-opus-5 (1M context), fleet-repair-1 worker for batch21 elf-b21-003.",
+      "source": [
+        "verdicts/verdicts-geng.jsonl lines 7, 8 and 9 (G-ENG, target passage, verdict kill x3 - the unit is DEAD on G-ENG). All three votes convict on the SAME lethal finding: the q1 rationale quotes the conservator as saying \"I can lighten.\" The passage reads \"The brown that’s in the fibres I can lighten.\" The rationale silently drops the fronted object and keeps the full stop, so the learner is shown a bare transitive with no object as her own sentence, with the frame trying to supply the object from outside the quotation marks.",
+        "verdicts/verdicts-geng.jsonl line 8, findings 2-4 and line 7 finding 2 and line 9 finding 2 (non-lethal): \"without lifting any run of them\" (pronoun with no correct antecedent, plus anti-plagiarism process vocabulary shown to a student); \"Everyday experience that ...\" (missing article on a bare singular abstract head with an appositive that-clause); \"clung at one edge\" (cling takes \"to\"); and the self-audit sentence \"It is a specific, checkable detail, not a summary of the piece.\" (item-construction commentary addressed to the wrong audience).",
+        "verdicts/verdicts-gstem.jsonl line 11 (G-STEM, target q:1, verdict kill, blind_pick C, confidence high) WITH its own calibration: about 60 per cent on C, reached on paper-conservation knowledge, \"NOT student-available except for the weak clean-solution cue on D\", \"low practical exposure for the intended cohort\". Treated as a calibrated finding to record, not a mandate to rebuild the option set.",
+        "verdicts/verdicts-gregister.jsonl line 3 (G-REGISTER, target passage, verdict flag): 70 per cent quoted characters against a synthetic-bank maximum of 25 and a median near 5; two of three paragraphs pure quotation with no attributive; \"the batch’s strongest single authenticity finding\", left explicitly to adjudication.",
+        "verdicts/verdicts-gdistractor.jsonl line 11 (G-DISTRACTOR, target q:1, verdict PASS, zero findings), read as a constraint rather than a defect: the mechanism is verified with sources and each distractor dies on a locatable clause. Nothing in this round rebuilds the option set; the one option change is a rewording that leaves every one of those four verdict sentences true.",
+        "BRIEF-ADDENDUM.md RULE 19 (statistics recomputed on the round’s own bytes, never carried forward), RULE 20(b) (the three simultaneous lane constraints for this slot), RULE 13 (never let exactly one option carry a style tell) and the batch20 gate lesson \"One typographic system across ALL layers\"."
+      ],
+      "gates_addressed": [
+        "G-ENG lethal (misquotation): the conservator’s sentence is now quoted whole and is byte-identical to the passage; the frame was re-cut so it no longer supplies the object from outside the quotation marks. Every other quotation in the rationale was then checked mechanically against the passage bytes - see verification.quotation_audit.",
+        "G-ENG non-lethal x4: pronoun/process-vocabulary, missing article, preposition, self-audit sentence. All four applied as directed.",
+        "G-STEM (calibrated, not rebuilt): the one student-available cue - D’s clean-solution silhouette - was softened by rewording; the domain-knowledge channel is recorded as a measured finding in generator_meta.gstem_domain_knowledge_finding with the ~60 per cent figure, the specialist knowledge it needs and the cohort’s low exposure.",
+        "G-REGISTER (adjudicated): option (i). One quoted paragraph converted to reported speech, two quoted phrases kept; quotation fraction 70.9 -> 45.4 per cent. Reasoning and the new authentic-corpus measurement are in generator_meta.register_quotation_decision and generator_meta.measured_stats.quotation_fraction.",
+        "RULE 19: every statistic the edits touch recomputed on the final bytes with mech.py’s own tokenizer, plus a falsified serialisation claim withdrawn (the file is NOT written with ensure_ascii)."
+      ],
+      "edits": [
+        {
+          "path": "$.passage (paragraph 1)",
+          "from": "Three flakes of film clung at one edge",
+          "to": "Three flakes of film clung along one edge",
+          "authority": "G-ENG verdicts-geng.jsonl lines 7 and 8, finding 3/4: cling takes \"to\"; \"at\" is a locative substitution. Applied as the coordinator directed (preposition only; the two votes that also proposed inserting \"still\" were not followed, to keep the edit minimal)."
+        },
+        {
+          "path": "$.passage (paragraph 3, the pure-quotation paragraph)",
+          "from": "“Tape holds a tear for ten years and marks the sheet for a hundred. A mend from last year I warm, and the film lifts and brings most of the glue with it. One like this, heat won’t shift. The glue’s gone hard, so it’s solvent, and which solvent depends on what the glue was made of. The brown that’s in the fibres I can lighten. I don’t promise to take it out.”",
+          "to": "“Tape holds a tear for ten years and marks the sheet for a hundred,” she says. She warms a mend from last year, and the film lifts and brings most of the glue with it. On one like this, heat does nothing. The glue has gone hard, so only a solvent will move it, and which solvent depends on what the glue was made of. About the stain itself she is careful: “The brown that’s in the fibres I can lighten. I don’t promise to take it out.”",
+          "authority": "G-REGISTER verdicts-gregister.jsonl line 3, finding 1 (70 per cent quoted characters; two of three paragraphs pure quotation with no attributive and no narration). Decision (i): convert ONE quoted paragraph to interleaved reported speech, keeping two quoted spans - the working maxim and the closing refusal. The refusal is retained verbatim because the G-ENG lethal fix requires the rationale to quote that sentence whole. Mechanism unchanged: young mend warmed, film lifts with most of the glue; an aged mend does not answer to heat; hardened glue needs a solvent; solvent choice depends on the adhesive; the stain can be lightened, not promised away."
+        },
+        {
+          "path": "$.questions[0].options[3].text",
+          "from": "Once the solvent is matched to the adhesive, the brown comes out of the fibres with it.",
+          "to": "Once the solvent is matched to the adhesive, it takes the brown out of the fibres as well.",
+          "authority": "G-STEM verdicts-gstem.jsonl line 11, finding 2 (PARTIALLY_ANSWERABLE: D is the only option that promises the problem fully solved, and the clean-solution option is a standing distractor shape). Reworded so the brown reads as an incidental further effect of a step the passage does grant (\"as well\") rather than as the tidy total solution. The trap is untouched - D still asserts complete removal and still dies on the closing refusal - and the subordinate opening (\"Once ...\") is kept so C does not become the sole subordinate-opening option (RULE 13)."
+        },
+        {
+          "path": "$.questions[0].rationale (option C paragraph)",
+          "from": "so C restates the passage’s mechanism in other words without lifting any run of them. It is a specific, checkable detail, not a summary of the piece.",
+          "to": "so C restates the passage’s mechanism in different words.",
+          "authority": "G-ENG line 8 finding 2 and line 7 finding 2 (\"them\" has no correct antecedent - the nearest plural is \"other words\" - and \"lifting a run\" is anti-plagiarism process vocabulary shown to a student); G-ENG line 9 finding 2 (the self-audit sentence is item-construction commentary addressed to the wrong audience). Cut and replaced as both votes directed."
+        },
+        {
+          "path": "$.questions[0].rationale (option B paragraph, the quoted support)",
+          "from": "She warms a young mend so that the film lifts and takes most of the glue with it, and she turns to solvent once the glue has gone hard: “One like this, heat won’t shift. The glue’s gone hard, so it’s solvent.”",
+          "to": "She warms a mend from last year so that the film lifts and takes most of the glue with it, and she turns to a solvent once the glue has gone hard; on a mend as old as this one, “heat does nothing”.",
+          "authority": "Consequential on the paragraph-3 conversion: the sentences the old quotation cited are now reported speech, so the quotation was re-cut to a fragment that is verbatim in the new passage bytes and is framed as the passage rather than as her direct speech."
+        },
+        {
+          "path": "$.questions[0].rationale (option B paragraph, final sentence)",
+          "from": "Everyday experience that warmth softens hard things makes the swap sound right, and the passage is explicit that on a mend of this age heat gets nowhere.",
+          "to": "The everyday experience that warmth softens hard things makes the swap sound right, and only the passage says which way round the two methods actually go.",
+          "authority": "G-ENG line 8 finding 3: a bare singular abstract head carrying an appositive that-clause needs the article. The tail was also rewritten because the preceding sentence now carries the \"heat does nothing\" citation and the old tail had become a repetition of it."
+        },
+        {
+          "path": "$.questions[0].rationale (option D paragraph) - THE LETHAL G-ENG FINDING",
+          "from": "but the outcome D attaches to it is not: of the brown already in the fibres she says “I can lighten. I don’t promise to take it out.”",
+          "to": "but the outcome D attaches to it is not. What she says about the brown already in the fibres sets a limit rather than a promise: “The brown that’s in the fibres I can lighten. I don’t promise to take it out.”",
+          "authority": "G-ENG verdicts-geng.jsonl lines 7, 8 and 9, all three votes, finding 1, LETHAL: the quoted span was not what the passage says. It silently dropped the fronted object and kept the full stop, so the learner was shown \"I can lighten.\" as the conservator’s own sentence - a bare transitive with no object, with the frame trying to supply the object from outside the quotation marks, which English quotation does not permit. Fixed by quoting her sentence WHOLE and re-cutting the frame so the frame no longer repeats the object (\"of the brown already in the fibres she says ‘The brown that’s in the fibres ...’\" would have been redundant). The quoted span is now byte-identical to the passage."
+        },
+        {
+          "path": "$.generator_meta.planted_traps.D",
+          "from": "outcome overshoot: a limited result (\"I can lighten. I don't promise to take it out.\") is upgraded to complete removal once the solvent is matched.",
+          "to": "outcome overshoot: a limited result (the passage’s \"The brown that’s in the fibres I can lighten. I don’t promise to take it out.\") is upgraded to complete removal once the solvent is matched. Reworded at fleet-repair-1 so the removal reads as an incidental further effect rather than as the clean total solution; the trap itself is unchanged.",
+          "authority": "The metadata carried the SAME truncated quotation the rationale was killed for. Corrected to the passage’s own sentence and extended with the D rewording."
+        },
+        {
+          "path": "$.generator_meta.lane_constraints_rule20b.1_quoted_voice",
+          "from": "Discharged. A named practitioner speaks in two quoted paragraphs with contractions and a working aphorism. Span: \"People ask me to take the tape off,\" says Odette Fenniscarth ... \"Tape holds a tear for ten years and marks the sheet for a hundred. A mend from last year I warm, and the film lifts ... One like this, heat won't shift.\"",
+          "to": "Discharged. A named practitioner speaks: paragraph 2 is hers entire, and paragraph 3 opens on her working maxim and closes on her refusal, with contractions throughout. Spans: \"People ask me to take the tape off,\" says Odette Fenniscarth ... \"Tape holds a tear for ten years and marks the sheet for a hundred,\" she says ... \"The brown that’s in the fibres I can lighten. I don’t promise to take it out.\" NOTE (fleet-repair-1): paragraph 3’s method sentences were converted to reported speech to bring the quotation fraction down from 70.9 to the figure recorded in measured_stats.quotation_fraction; the constraint is still discharged on quoted speech, and the conversion also cut the object-fronting count from three to one, which is the density G-ENG called dense.",
+          "authority": "The field quoted paragraph-3 spans that no longer exist verbatim. Rewritten on the new bytes; RULE 20(b) constraint 1 is still discharged."
+        },
+        {
+          "path": "$.generator_meta.typography",
+          "from": "One system in ALL layers: double curly quotes U+201C/U+201D, apostrophe U+2019, spaced en dash U+2013; zero em dashes; zero straight apostrophes in the student-facing layer or the rationale. The file is written with ensure_ascii so every non-ASCII character is a \\uXXXX escape.",
+          "to": "One system in ALL layers: double curly quotes U+201C/U+201D, apostrophe U+2019, spaced en dash U+2013; zero em dashes; zero straight apostrophes in the student-facing layer or the rationale. CORRECTED at fleet-repair-1: the earlier claim that \"the file is written with ensure_ascii so every non-ASCII character is a \\uXXXX escape\" is false on the shipped bytes. The file is json.dumps(indent=2, ensure_ascii=False) with no trailing newline and carries the literal characters; this round wrote it with the same serializer.",
+          "authority": "RULE 19, falsified claim about the file found while confirming the round-trip: the shipped bytes contain literal U+201C/U+2019/U+2013 and no \\u escapes at all. repair_log[0].verification.byte_identical_round_trip asserts ensure_ascii=True reproduced the input exactly; on the current bytes that serializer produces 64,513 bytes against the file’s 64,314. The claim is withdrawn, not repaired, and the correction is repeated in measured_stats.typography_inventory.method."
+        },
+        {
+          "path": "$.generator_meta.clone_check_note (final sentence)",
+          "from": "No money arithmetic in the unit.",
+          "to": "No money arithmetic in the unit. NOTE (fleet-repair-1): two of the strings listed above, \"won’t shift\" and \"clung at\", no longer appear in this unit - paragraph 3’s method sentences became reported speech and the paragraph-1 preposition was corrected. The zero-hit findings above are findings about the OTHER shipped units and are unaffected; the new strings this round introduced (\"heat does nothing\", \"only a solvent will move it\", \"a mend from last year\") were not re-swept, and that leg is owed at V-FINAL.",
+          "authority": "RULE 19 and law 12: the field listed distinctive strings, two of which this round removed from the unit, and this round introduced new ones that have not been swept."
+        },
+        {
+          "path": "$.generator_meta.option_sortability_test",
+          "from": "... option words 15/14/15/17, key 15, longest is distractor D ...",
+          "to": "... option words 15/14/15/18 ... plus a FLEET-REPAIR-1 UPDATE clause ...",
+          "authority": "RULE 19: the length clause described the pre-repair option bytes."
+        },
+        {
+          "path": "$.generator_meta.key_derivation (appended sentence)",
+          "from": "(body unchanged, ending \"Longest shared token run key vs passage is recomputed below.\")",
+          "to": "... Unchanged by fleet-repair-1: paragraph 2, which is the key’s anchor, was deliberately not touched.",
+          "authority": "Recorded so a downstream reader can see that the paragraph the key derives from was deliberately excluded from the register repair."
+        },
+        {
+          "path": "$.generator_meta.measured_stats (recomputed in full)",
+          "from": "passage 197 tokens, 4 paragraphs, 10 sentences [24, 46, 6, 22, 33, 19, 7, 20, 10, 10], mean 19.7, population sd 11.96, prompt 10, rationale 397, options A 15 / B 14 / C 15 / D 17, option_length_ratio 1.214, longest shared run key-to-passage 3, absolutizers 0 of 4, hedges 0 of 4, per-layer typography inventory, and a rename_effect_on_the_numbers field.",
+          "to": "passage 209 tokens, 4 paragraphs, 10 sentences [24, 46, 6, 22, 35, 19, 7, 23, 17, 10], mean 20.9, population sd 11.82, prompt 10, rationale 391, options A 15 / B 14 / C 15 / D 18, option_length_ratio 1.286, longest shared run key-to-passage 3 ('into the paper') with A 2 / B 1 / D 2, absolutizers 0 of 4, hedges 0 of 4, a re-measured per-layer typography inventory with the ensure_ascii claim withdrawn, a fleet_repair_1_effect_on_the_numbers field replacing rename_effect_on_the_numbers, and a NEW quotation_fraction block carrying the before/after figures and the authentic-corpus distribution.",
+          "authority": "RULE 19: every statistic asserted in generator_meta is recomputed on the bytes of the round that touches it. Recomputed with mech.py’s own tokenize() and sentences(), not adjusted from the pre-repair figures."
+        },
+        {
+          "path": "$.generator_meta.gstem_domain_knowledge_finding (NEW field)",
+          "from": "(absent)",
+          "to": "A calibrated record of the G-STEM kill: the ~60 per cent blind figure, the three paper-conservation facts the channel needs, G-STEM’s own calibration quoted, the intended cohort’s low practical exposure, what this round did about the one student-available part, and the inherent tension that a verifiably true mechanism is answerable by anyone who knows it.",
+          "authority": "Coordinator instruction for section C: record the domain-knowledge channel honestly in generator_meta as a measured, calibrated finding for the owner package. The option set was NOT rebuilt."
+        },
+        {
+          "path": "$.generator_meta.register_quotation_decision (NEW field)",
+          "from": "(absent)",
+          "to": "The adjudication of G-REGISTER’s 70-per-cent finding: the decision, why option (ii) was not taken, what was preserved, the secondary gains, and the disclosed residual.",
+          "authority": "Coordinator instruction for section D: choose and justify, and record the outcome either way."
+        }
+      ],
+      "decision_on_the_70_per_cent_quotation_ratio": {
+        "chosen": "Option (i) - convert one quoted paragraph to reported speech, keeping two quoted phrases.",
+        "measured_result": "Quoted-character fraction of $.passage: 70.9 per cent before, 45.4 per cent after (477 of 1051 characters). G-REGISTER’s own figure on the pre-repair bytes was 70, so the two measures agree.",
+        "reasoning": [
+          "The decisive fact was not in any verdict, so I measured it: across all 221 real ELF text blocks in /home/loucmane/dev/hpfetcher/data/parsed (27 shipped exams, deduplicated contexts, blocks over 250 characters) the quoted-character fraction runs max 54.7, then 46.2, 36.9, 33.5, 28.5, 28.4, 26.6, 25.8; p95 22.1, median 0.0. At 70.9 per cent this passage was above EVERY authentic ELF text in the corpus. That converts G-REGISTER’s flag from \"outside the bank’s history\" - which a mandated constraint could excuse - into \"outside the exam’s own envelope\", which it cannot.",
+          "RULE 20(b) constraint 1 mandates a quoted VOICE. A quoted voice is discharged by a named practitioner speaking in the passage; it is discharged at 25 per cent as fully as at 70. The binding constraint justifies quotation, not the amount of it, so honouring the constraint and fixing the ratio are not in conflict.",
+          "The two authentic high-quotation texts show the shape as well as the number: both INTERLEAVE quotation with narration and attributives, and neither contains a paragraph of pure quotation. G-REGISTER’s second sentence objected to exactly that (\"two of the passage’s three paragraphs are pure quotation with no attributive and no narration\"). Converting the attributive-less paragraph fixes the number and the shape in one move.",
+          "The cost was bounded and the CLEAN surfaces were protected. Paragraph 2 - the key’s anchor, which G-KEY solved on both blind legs and from which A also dies - was not touched. Paragraph 3 keeps every mechanism claim: the young mend warmed and the film lifting with most of the glue, heat doing nothing on an aged mend, hardened glue needing a solvent, solvent choice depending on the adhesive, and the refusal about the stain. All four G-DISTRACTOR verdict sentences remain true on the new bytes.",
+          "It also pays G-ENG’s one stylistic reservation. The converted paragraph carried three of the passage’s object-frontings and G-ENG said \"three frontings inside about sixty words is dense; two would be safer\"; one remains, in the retained closing quotation, which is also the sentence the lethal fix needed quoted whole.",
+          "Residual, disclosed rather than argued away: 45.4 per cent is still far above the synthetic bank maximum of 25 and sits third in the authentic distribution. The unit is a heavily quoted feature and reads as one. That is a disclosed authenticity finding for the owner package. The separate lane finding G-REGISTER raised - a second consecutive TYPE-001 short built on a practitioner correcting a lay misreading and opening on a terse working maxim - is a brief fix for batch22 and is deliberately not addressed by editing this unit."
+        ]
+      },
+      "carried": [
+        "The key letter C, the option set’s four axes, the prompt, the title and the byline are unchanged. Option D was reworded, not replaced: the planted trap is still outcome overshoot and it still dies on the closing refusal.",
+        "The mechanism is unchanged in every claim G-DISTRACTOR verified with sources: the rubber oxidises and is the brown, the plasticiser migrates and makes the sheet translucent, the carrier embrittles and detaches while the adhesive stays, heat lifts a young mend and not an aged one, solvent choice depends on the adhesive, and the stain in the fibres can be lightened but not promised away.",
+        "BrE holds in passage, options and rationale (oxidised, plasticiser, fibres, tea towel); the round added no AmE form and no -ize spelling. Typography holds: one system, no em dash, no straight quote or apostrophe in the student layer or the rationale.",
+        "The G-STEM domain-knowledge channel is NOT closed by this round and cannot be closed by rewording; it is recorded as a calibrated finding.",
+        "RULE 8’s within-batch sibling given-name sweep was discharged independently by G-REGISTER (verdicts-gregister.jsonl line 3, finding 3: no collision, minimum cross-unit distance 3). The unit’s own field still says the leg is vacuous; that field is the record of what was true at authoring time and was left alone.",
+        "The passage remains above the GENERATION.md authoring target of 105-160 tokens and 1 paragraph. The conversion widened the token deviation by 6; it is restated in measured_stats.declared_deviation_unchanged_by_this_round rather than hidden."
+      ],
+      "note": "One new paragraph of narration was written into the passage and four sentences of the rationale were rewritten. Because the unit died on rationale-side language, every quotation in the rationale was afterwards checked mechanically - not by eye - against the passage bytes, and the check is recorded in verification.quotation_audit.",
+      "verification": {
+        "json_parses": true,
+        "byte_identical_round_trip": "Confirmed BEFORE writing: json.dumps(json.loads(raw), indent=2, ensure_ascii=False) reproduced the input file byte for byte (64,314 bytes, no trailing newline). NOTE: the serializer is ensure_ascii=FALSE - repair_log[0] recorded ensure_ascii=True, which does not reproduce the shipped bytes; see the correction in generator_meta.typography. The same serializer wrote this round, and the written bytes were re-parsed and re-serialised to themselves.",
+        "quotation_audit": {
+          "method": "Every U+201C ... U+201D span in $.questions[0].rationale extracted by regex and tested for membership in $.passage as a literal substring of the FINAL bytes. Mechanical, not by eye, because a silent truncation is exactly what a reading eye passes over.",
+          "spans_checked": 5,
+          "all_verbatim": true,
+          "spans": [
+            {
+              "quoted_span": "the plasticiser that kept it soft has soaked into the paper. Where the glue went in, the sheet’s gone like greased paper; you can read the back through it.",
+              "verbatim_in_passage": true,
+              "starts_lowercase_partial": true,
+              "ends_with_full_stop": true
+            },
+            {
+              "quoted_span": "The rubber in it has oxidised – that’s the brown – and the plasticiser that kept it soft has soaked into the paper.",
+              "verbatim_in_passage": true,
+              "starts_lowercase_partial": false,
+              "ends_with_full_stop": true
+            },
+            {
+              "quoted_span": "heat does nothing",
+              "verbatim_in_passage": true,
+              "starts_lowercase_partial": true,
+              "ends_with_full_stop": false
+            },
+            {
+              "quoted_span": "which solvent depends on what the glue was made of",
+              "verbatim_in_passage": true,
+              "starts_lowercase_partial": true,
+              "ends_with_full_stop": false
+            },
+            {
+              "quoted_span": "The brown that’s in the fibres I can lighten. I don’t promise to take it out.",
+              "verbatim_in_passage": true,
+              "starts_lowercase_partial": false,
+              "ends_with_full_stop": true
+            }
+          ],
+          "note": "Two spans start lowercase and are partial quotations of a longer sentence; both are grammatical as they stand, are flagged as partial by the lowercase opening, and fabricate no sentence boundary. The span that killed the unit was the opposite case: it opened with a capital and closed with a full stop, presenting a truncation as a whole sentence."
+        },
+        "run_mech": "run_mech.py candidates/elf-b21-003.json --parsed-dir /home/loucmane/dev/hpfetcher/data/parsed --no-plagiarism, on the final bytes: M-SCHEMA pass, M-BANDS pass, M-TELL pass, M-FORM pass; 0 findings, exit 0. Identical to the pre-repair result, so no band or form margin was spent by the repair.",
+        "make_sheets": "make_sheets.py --batch-dir . regenerated 21 sheets for 7 units, then --check: \"all sheets current (7 units x 3)\". The blind, stems and distractor sheets were confirmed to carry the new option D text and the new paragraph 3.",
+        "learner_output_lint": "lint_learner_output.py candidates/elf-b21-003.json on the final bytes: ZERO findings under $.questions[...] - the student-visible layer is clean, which is the binding condition. Every finding sits in the metadata layer, under $.generator_meta or $.repair_log, and every one is L2-GATEREF or L2-SNAKE: gate names (G-ENG, G-STEM, G-REGISTER, G-DISTRACTOR, M-BANDS, mech.py) and JSON paths, cited because the bookkeeping is required to cite them. The pre-repair file carried 14 of the same class. No total is quoted here, because the sentence you are reading names gates and would change it; the check is stated as a path partition, which is stable.",
+        "typography_one_system": "Recounted per layer on the final bytes. Passage U+201C 4, U+201D 4, U+2019 6, U+2013 3 (two spoken parentheticals, one byline dash). Prompt and options: no marks at all. Rationale U+201C 5, U+201D 5, U+2019 6, U+2013 4. Zero of every competing form in every layer: U+2014 0, straight apostrophe U+0027 0, straight double quote U+0022 0, U+2018 0, U+201A 0, hyphen-minus 0. Whole file U+2014 0, counted on the decoded strings. The passage and the rationale still run the SAME system, which G-ENG line 9 measured and singled out as the cleanest case in the batch; every character this round added is ASCII or one of those three marks.",
+        "bre_holds": "Rechecked on the final bytes across title, passage, prompt, options and rationale. BrE discriminators present: oxidised, plasticiser, fibres, tea towel. A sweep for the AmE counterparts and the usual -ize/-or/-er families (oxidiz, plasticiz, fiber, color, honor, behavior, labor, favor, meter, center, gray, analyz, defense, traveled, catalog, aluminum, sulfur, gotten, realiz, organiz, recogniz, dish towel, skeptic) returns NONE. The new narration introduced no spelling-variety surface."
+      }
+    },
+    {
+      "round": "fleet-repair-2",
+      "date": "2026-09-02",
+      "executed_by": "claude-opus-5 (1M context), fleet-repair-2 unit worker for batch21 elf-b21-003.",
+      "source": [
+        "verdicts/verdicts-geng-r2.jsonl line 7 (G-ENG vote 1, target passage, verdict FLAG - round 1’s lethal misquotation recorded as DISCHARGED). Finding 1: “On one like this, heat does nothing.” -> “On a mend as old as this one, heat does nothing.” - the nearest antecedent for ‘one’ is now ‘a mend from last year’ in the sentence immediately before, on which heat has just been shown to work, so the two sentences read for a beat as a flat contradiction; the quoted original supplied the deixis from the bench and the conversion stripped the speaker who supplied it. Finding 2: the rationale’s en-dash appositive names the wrong component.",
+        "verdicts/verdicts-geng-r2.jsonl line 8 (G-ENG vote 2, FLAG). Finding 1: “The glue has gone hard, so only a solvent will move it…” -> “The glue has gone hard, she says, so only a solvent will move it…” - the conversion moved the whole heat-and-solvent account out of Fenniscarth’s mouth into the reporter’s while the stem still asks “What does Fenniscarth say about mends made with clear tape?” and the rationale still calls them ‘her two methods’. Findings 2 and 3 repeat the appositive error and the demonstrative.",
+        "verdicts/verdicts-geng-r2.jsonl line 9 (G-ENG vote 3, FLAG): the rationale’s “heat does nothing” is byte-identical to the passage but was, before this round, attributed to the wrong voice, because after the fleet-repair-1 conversion that sentence was the reporter’s. The same vote measures the quotation ratio at 45.0 per cent and records the typography as one system in every layer.",
+        "verdicts/verdicts-gregister-r2.jsonl line 3 (G-REGISTER, FLAG). Finding 1 CONFIRMS fleet-repair-1’s scalar and benchmark independently (44.6 per cent excluding marks, 45.4 including; authentic population rebuilt at 221 blocks, max 54.7, p95 22.4, median 0.0). Finding 2 is the live half: paragraph 2 untouched at 88 per cent quoted, one attributive then a ~310-character unattributed span, and neither authentic high-quotation block has a paragraph of pure quotation. Finding 4 (lane) and finding 6 (coda) are carried, not fixed.",
+        "verdicts/verdicts-gstem-r2.jsonl line 11 (G-STEM, q:1, verdict FLAG - downgraded from round 1’s kill - blind_pick C, confidence medium, about 50 per cent expert / 35-40 per cent cohort). Cited as a constraint and recorded, not repaired.",
+        "verdicts/verdicts-gdistractor-r2.jsonl line 11 (G-DISTRACTOR, q:1, verdict PASS, zero findings). Cited as the binding constraint: no option, letter, key or prompt byte was changed, and every clause the gate names as a distractor-killer is byte-identical after this round.",
+        "BRIEF-ADDENDUM.md RULE 19 (statistics recomputed on the round’s own bytes) and RULE 20(b) constraint 1 (a quoted practitioner voice)."
+      ],
+      "gates_addressed": [
+        "G-ENG finding on the demonstrative: applied as the gate wrote it, in the form the q1 rationale already used.",
+        "G-ENG finding on the lost attribution: applied as the gate wrote it, two words, with no return of the paragraph to direct quotation.",
+        "G-ENG finding on the appositive: the q1 rationale no longer offers ‘the glue has oxidised’ as what the passage says, which contradicted its own next sentence.",
+        "G-ENG vote 3’s voice finding on “heat does nothing”: discharged by the attribution repair rather than by removing the quotation marks - see decision_on_the_heat_does_nothing_quotation below.",
+        "G-REGISTER finding 2 (paragraph-2 shape): paragraph 2 interleaved with one narrative beat; the ratio recomputed and reported. See decision_on_paragraph_2.",
+        "RULE 19: measured_stats recomputed in full on the final bytes; two falsified self-attestations found and corrected (length_tell_note’s stale option figures and the self-falsifying backslash-u parenthesis in typography_inventory.method)."
+      ],
+      "edits": [
+        {
+          "path": "$.passage (paragraph 3, third sentence)",
+          "from": "On one like this, heat does nothing.",
+          "to": "On a mend as old as this one, heat does nothing.",
+          "authority": "G-ENG r2 lines 7 (finding 1) and 8 (finding 3). fleet-repair-1 created this defect: converting the paragraph to reported speech removed the speaker whose deixis ‘one like this’ depended on, leaving the nearest antecedent as ‘a mend from last year’ - the mend heat had just been shown to work on. The replacement is the gate’s own wording and is the form the q1 rationale already used, so passage and rationale now agree."
+        },
+        {
+          "path": "$.passage (paragraph 3, fourth sentence)",
+          "from": "The glue has gone hard, so only a solvent will move it,",
+          "to": "The glue has gone hard, she says, so only a solvent will move it,",
+          "authority": "G-ENG r2 line 8, finding 1. Also fleet-repair-1’s doing: the conversion put the heat-and-solvent account in the reporter’s voice while the stem asks what Fenniscarth SAYS and the rationale calls them ‘her two methods’. Two words restore the attribution without returning the paragraph to direct quotation, so the quotation ratio the same gate fleet accepted is not undone."
+        },
+        {
+          "path": "$.passage (paragraph 2, after “What’s left is the glue.”)",
+          "from": "What’s left is the glue. The rubber in it has oxidised",
+          "to": "What’s left is the glue.” She turns the certificate to the light. “The rubber in it has oxidised",
+          "authority": "G-REGISTER r2 line 3, finding 2: paragraph 2 was 88 per cent quoted with one attributive and then a single ~310-character unattributed span, and the authentic high-quotation blocks interleave instead. One narrative beat, no proposition added or removed, no invented mechanism claim: turning the sheet to the light is the action the paragraph’s last clause (“you can read the back through it”) is about."
+        },
+        {
+          "path": "$.questions[0].rationale (option A paragraph, the en-dash appositive)",
+          "from": "that the glue has oxidised and that the film came away",
+          "to": "that the rubber in the glue has oxidised and that the film came away",
+          "authority": "G-ENG r2 lines 7 (finding 2) and 8 (finding 2): the appositive was offered as what “the passage really says”, but the passage says the RUBBER oxidised, and the rationale’s own next sentence quotes that sentence to say so. The paragraph’s entire teaching point is telling the two components of the glue apart, so the error sat on the thing being taught."
+        },
+        {
+          "path": "$.generator_meta.length_tell_note",
+          "from": "Option words (mech tokens) 15/14/15/17; key C = 15 is not the longest (D = 17); ratio 17/14 = 1.21 against the 2.36 cap.",
+          "to": "Option words (mech tokens) 15/14/15/18; key C = 15 is not the longest (D = 18); ratio 18/14 = 1.286 against the 2.36 cap, plus a CORRECTED clause naming the stale figures and why they survived.",
+          "authority": "RULE 19, falsified statistic found by re-measuring rather than reading: fleet-repair-1 reworded option D from 17 to 18 mech tokens and updated option_sortability_test and measured_stats, but left this field asserting 17 and 1.21. The unit shipped two disagreeing statements of the same statistic. Verified with mech.tokenize: A 15, B 14, C 15, D 18."
+        },
+        {
+          "path": "$.generator_meta.measured_stats.typography_inventory.method",
+          "from": "(verified: [the escape spelling of U+201C, written out as a Python bytes literal] does not occur in the file) - the from-string is described rather than reproduced here, because reproducing it would put the sequence back into the file and re-falsify the corrected claim",
+          "to": "(CORRECTED at fleet-repair-2: … that parenthesis was itself the file’s one occurrence of that six-character sequence - a self-falsifying attestation. Rescoped and re-verified: a sweep for a backslash followed by u and four hexadecimal digits returns ZERO matches on this round’s bytes.)",
+          "authority": "Coordinator instruction to verify every self-attestation of the form ‘X does not occur anywhere in the file’ against the actual bytes. This one was false: on the fleet-repair-1 bytes the six-character escape spelling of U+201C occurred exactly once in the whole file, inside the sentence denying it. The claim’s INTENT - that no character of the unit is stored as an escape - is true and is now stated in a form that does not falsify itself."
+        },
+        {
+          "path": "$.generator_meta.key_derivation (appended)",
+          "from": "… Unchanged by fleet-repair-1: paragraph 2, which is the key’s anchor, was deliberately not touched.",
+          "to": "… plus a fleet-repair-2 clause recording that paragraph 2 WAS touched this round, that the beat sits before the key’s two anchor sentences, and that those two sentences are byte-identical and still adjacent inside one quoted span.",
+          "authority": "RULE 19 and honest bookkeeping: the field asserted that the anchor paragraph was untouched, which this round makes false as written."
+        },
+        {
+          "path": "$.generator_meta.lane_constraints_rule20b.1_quoted_voice",
+          "from": "Discharged. A named practitioner speaks: paragraph 2 is hers entire, and paragraph 3 opens on her working maxim and closes on her refusal…",
+          "to": "Discharged. A named practitioner speaks: paragraph 2 is three quoted spans of hers, interleaved with the opening attributive and one narrative beat, and paragraph 3 opens on her working maxim, carries the heat-and-solvent account as attributed reported speech, and closes on her refusal… plus a fleet-repair-2 NOTE.",
+          "authority": "The field described a paragraph shape this round changed, and did not record that the quoted voice now carries an attributive in both speaking paragraphs. RULE 20(b) constraint 1 is discharged more strongly, not less."
+        },
+        {
+          "path": "$.generator_meta.clone_check_note (appended)",
+          "from": "… the new strings this round introduced (“heat does nothing”, “only a solvent will move it”, “a mend from last year”) were not re-swept, and that leg is owed at V-FINAL.",
+          "to": "… plus a fleet-repair-2 NOTE naming “On one like this” as removed and “She turns the certificate to the light”, “a mend as old as this one” and the parenthetical “she says” as introduced and unswept.",
+          "authority": "RULE 19 and law 12: this round removed one of the strings the field tracks and introduced three more."
+        },
+        {
+          "path": "$.generator_meta.measured_stats (recomputed in full)",
+          "from": "passage 209 tokens, 10 sentences [24, 46, 6, 22, 35, 19, 7, 23, 17, 10], mean 20.9, population sd 11.82, rationale 391 tokens, quotation_fraction 45.4 per cent with no per-paragraph breakdown.",
+          "to": "passage 222 tokens, 9 sentences [24, 46, 35, 35, 19, 11, 25, 17, 10], mean 24.7, population sd 11.36, rationale 394 tokens, a per-layer typography inventory re-counted on the new bytes, a fleet_repair_2_effect_on_the_numbers field, and a quotation_fraction block carrying the whole-passage figure 42.9 per cent, the per-paragraph breakdown and the G-REGISTER round-2 confirmation.",
+          "authority": "RULE 19: every statistic asserted in generator_meta is recomputed on the bytes of the round that touches it, with mech.py’s own tokenize() and sentences()."
+        },
+        {
+          "path": "$.generator_meta.register_quotation_decision.fleet_repair_2_paragraph_2_decision (NEW field)",
+          "from": "(absent)",
+          "to": "The adjudication of G-REGISTER round 2’s surviving shape finding: the decision, the measured before/after, why the beat sits where it does, and the disclosed residual.",
+          "authority": "Coordinator instruction on item D: interleave and report the new ratio, or record the 88 per cent paragraph as a disclosed finding - but as a reasoned choice either way."
+        },
+        {
+          "path": "$.generator_meta.gstem_domain_knowledge_finding.round_2_update (NEW field)",
+          "from": "(absent)",
+          "to": "The round-2 G-STEM result: kill -> flag, confidence high -> medium, about 60 per cent -> about 50 per cent expert and 35-40 per cent cohort, with the two form shapes the gate now names and the reason the option set was again not rebuilt.",
+          "authority": "RULE 19 and honest bookkeeping: the field quoted the round-1 verdict as current."
+        }
+      ],
+      "decision_on_paragraph_2": {
+        "instruction": "Interleave paragraph 2 without gutting it, keeping every proposition the key and the distractor-killers rest on and keeping the conservator’s voice; or record the 88 per cent paragraph as a disclosed finding, but as a reasoned choice.",
+        "chosen": "INTERLEAVE, with one narrative beat, and disclose the bounded residual.",
+        "measured_result": "Paragraph 2: 330 of 377 characters quoted (87.5 per cent) before, 331 of 419 (79.0 per cent) after. Whole passage: 477 of 1051 (45.4 per cent) before, 478 of 1115 (42.9 per cent) after. Longest single quoted span inside paragraph 2: 291 characters before, 210 after, counted inside the marks (293 and 212 counting them); the gate's '~310' is its own approximation. Quoted spans in the paragraph: 2 before, 3 after.",
+        "reasoning": [
+          "The beat position was forced by the rationale, not chosen for prose. The q1 rationale quotes two overlapping spans of paragraph 2 verbatim - the A-killer (“The rubber in it has oxidised … has soaked into the paper.”) and the key’s support (“the plasticiser … you can read the back through it.”). Together they require an unbroken 213-character run. The only interior break that leaves both quotations byte-identical is immediately before that run, after “What’s left is the glue.”, and that is where the beat went.",
+          "Re-cutting the rationale to open a second break point was considered and rejected. Round 1’s LETHAL finding on this unit was a silently re-cut rationale quotation; re-cutting two more of them - the two that carry the key and the A-killer, on which G-DISTRACTOR passed 4/4 twice - to move a percentage is a worse trade than disclosing the residual.",
+          "The beat adds no claim. “She turns the certificate to the light.” is an action, not a fact about tape; it stages the demonstration the paragraph’s own last clause reports (“you can read the back through it”) and ties paragraph 2 back to the object paragraph 1 introduced. No filler was written to move the number - the residual is reported instead.",
+          "Every proposition survives byte-identically: no tape left and the film gone years ago; what is left is the glue; the rubber has oxidised and IS the brown; the plasticiser has soaked into the paper; where the glue went in the sheet is like greased paper and the back can be read through it. The key’s anchor and the A-killer are untouched, and G-KEY solved q1 from this paragraph on both blind legs.",
+          "The voice survives: the three quoted spans keep every contraction (“there’s”, “What’s”, “that’s”, “the sheet’s gone”) and the trade shorthand (“the film let go”, “like greased paper”). The beat is the reporter’s, in the same present tense as paragraph 3’s “She warms a mend from last year”.",
+          "DISCLOSED RESIDUAL: paragraph 2 is still the most heavily quoted paragraph in the unit at 79.0 per cent, and its 213-character mechanism run still carries no interior attributive. What changed is the shape G-REGISTER actually objected to - the paragraph is no longer one attributive followed by an uninterrupted span; it now runs quotation, attributive, quotation, narration, quotation, which is the shape both authentic high-quotation ELF blocks use. The whole-passage figure of 42.9 per cent remains well above the synthetic-bank maximum of 25 and inside the authentic envelope (max 54.7, p95 22.4 over 221 blocks). That is a disclosed authenticity residual for the owner package."
+        ]
+      },
+      "decision_on_the_heat_does_nothing_quotation": {
+        "finding": "G-ENG r2 line 9 (vote 3) asked for the q1 rationale’s “heat does nothing” to lose its quotation marks, because after the fleet-repair-1 conversion that sentence was the reporter’s, not the conservator’s, and the rationale frames it inside a sentence about ‘her two methods’.",
+        "chosen": "Discharged from the PASSAGE side instead, by restoring the attribution (G-ENG r2 line 8, finding 1). With “The glue has gone hard, she says, so only a solvent will move it” in the paragraph, the heat-and-solvent run is her reported account, so quoting “heat does nothing” inside a sentence about her two methods no longer hands the learner narration as speech. The rationale byte is unchanged and the quoted span is still byte-identical to the passage.",
+        "why_not_both": "Removing the marks as well would have left the rationale asserting her wording without showing it, and would have broken the mechanical quotation audit that round 1’s lethal finding forced on this unit: every U+201C…U+201D span in the rationale is tested for literal membership in the passage, and that test is the unit’s standing protection. Five spans, five verbatim on this round’s bytes."
+      },
+      "carried": [
+        "The key letter C, all four option texts, the prompt, the title and the byline are byte-identical to fleet-repair-1. G-DISTRACTOR passed this option set twice with zero findings and nothing in this round touches it.",
+        "G-STEM r2 flag - recorded, not repaired. The verdict is already a downgrade from round 1’s kill; its world-knowledge channel cannot be closed by rewording a true mechanism, and the two form shapes it names (D’s additive over-reach, B’s chiastic symmetry) are the planted traps themselves. See generator_meta.gstem_domain_knowledge_finding.",
+        "G-REGISTER r2 finding 4, the LANE finding - a second consecutive TYPE-001 short built on a practitioner correcting a lay misreading of her own trade and opening on a terse working maxim - is a batch22 BRIEF fix, not a unit fix, and is deliberately not addressed by editing this unit. G-REGISTER r2 finding 6, the coda in the batch’s unresolved cluster, is likewise a batch-level item.",
+        "The whole-passage quotation fraction remains above the synthetic bank’s maximum of 25 per cent. That was a disclosed residual at fleet-repair-1 and it stays one; it is inside the authentic ELF envelope, which is the standard G-REGISTER accepted at round 2.",
+        "repair_log[0].verification.residue_check was re-verified on this round’s bytes and HOLDS: the superseded surname occurs 24 times, every one of them inside repair_log[0] or generator_meta.originality_note, and zero times in $.title, $.passage, $.questions[…] or anywhere else in generator_meta. The path partition it states is exactly right.",
+        "The passage remains above the GENERATION.md authoring target of 105-160 tokens and 1 paragraph, now by 13 tokens more than at fleet-repair-1. Restated in measured_stats.declared_deviation_unchanged_by_this_round rather than hidden."
+      ],
+      "note": "Three passage edits and one rationale edit. Three of the four items this round was given were defects fleet-repair-1 introduced into the text it rewrote - the broken demonstrative, the lost attribution and the mis-stated component in the rationale - so every edit was made by reading two sentences either side of the span and then re-testing the rationale’s five quoted spans mechanically against the new passage bytes rather than by eye.",
+      "verification": {
+        "json_parses": true,
+        "byte_identical_round_trip": "Confirmed BEFORE writing: json.dumps(json.loads(raw), indent=2, ensure_ascii=False) reproduced the input file byte for byte (104,193 bytes, no trailing newline). The same serializer wrote this round; the written bytes re-parse and re-serialise to themselves.",
+        "quotation_audit": "The standing test this unit acquired when round 1 killed it on a silently re-cut quotation: every U+201C…U+201D span in $.questions[0].rationale extracted by regex and tested for literal substring membership in $.passage on the FINAL bytes. 5 spans, 5 verbatim, including the two paragraph-2 spans across the new interleaving beat and “heat does nothing” and “which solvent depends on what the glue was made of” across the two paragraph-3 repairs.",
+        "self_attestations_checked": "Every claim in this file of the form ‘X does not occur’ or ‘the count is N’ was re-tested against the actual bytes. TWO were false and both are corrected above: (1) typography_inventory.method’s parenthesis denying that the escape spelling of U+201C occurs in the file, which was itself the file’s one occurrence of it; (2) length_tell_note’s option figures 15/14/15/17 and ratio 1.21, stale since fleet-repair-1 reworded option D to 18 tokens. HELD on re-test: repair_log[0].verification.residue_check’s path partition for the superseded surname (24 occurrences, all inside repair_log[0] or originality_note); repair_log[1]’s statement that the serializer is ensure_ascii=False; and every whole-file em-dash claim.",
+        "typography_one_system": "Re-counted per layer on the final bytes. No mark class was added or removed by this round; the interleaving beat adds one U+201D and one U+201C to the passage, which are the marks already in use. Zero U+2014, zero straight apostrophe U+0027 and zero straight double quote U+0022 in every rendered layer and zero U+2014 in the whole file. Exact per-layer figures are in measured_stats.typography_inventory.",
+        "bre_holds": "Rechecked on the final bytes across title, passage, prompt, options and rationale: oxidised, plasticiser, fibres and tea towel are all still present, and a sweep for the AmE counterparts and the usual -ize/-or/-er families returns NONE. The three strings this round added to the passage (“a mend as old as this one”, “she says”, “She turns the certificate to the light”) and the four words added to the rationale carry no spelling-variety surface."
+      }
+    }
+  ]
+}

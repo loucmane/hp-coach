@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "candidate_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "candidate_ids": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "cold_solve": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "reader_answer": {
+            "pattern": "^[A-E]$",
+            "type": "string"
+          },
+          "target": {
+            "pattern": "^q:[0-9]+$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target",
+          "reader_answer"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "lane_class": {
+      "const": "fresh-eyes"
+    },
+    "lane_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "makes_sense": {
+      "type": "boolean"
+    },
+    "naturalness": {
+      "enum": [
+        "natural",
+        "minor_friction",
+        "unnatural"
+      ]
+    },
+    "reader_blockers": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "reader_notes": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "run_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema": {
+      "const": "gas-city-evidence-report.v1"
+    },
+    "status": {
+      "const": "evidence-only"
+    },
+    "summary": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "run_id",
+    "lane_id",
+    "status",
+    "summary",
+    "candidate_ids",
+    "candidate_id",
+    "cold_solve",
+    "naturalness",
+    "makes_sense",
+    "reader_blockers",
+    "reader_notes",
+    "lane_class"
+  ],
+  "type": "object"
+}

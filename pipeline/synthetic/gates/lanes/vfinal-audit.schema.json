@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "audit_note": {
+      "type": "string"
+    },
+    "audit_verdict": {
+      "enum": [
+        "CONFIRMED_CLEAN",
+        "CONFIRMED_NOTES",
+        "REFUTED"
+      ]
+    },
+    "candidate_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "candidate_ids": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "cleared": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "findings": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "claim": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "disposition": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "evidence": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "key_impact": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "minor",
+              "note",
+              "info",
+              "major",
+              "critical"
+            ]
+          },
+          "stage_challenged": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "why": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "severity",
+          "stage_challenged",
+          "claim",
+          "evidence",
+          "why",
+          "disposition",
+          "key_impact"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "lane_class": {
+      "const": "vfinal-audit"
+    },
+    "lane_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "resolved_findings": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "run_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema": {
+      "const": "gas-city-evidence-report.v1"
+    },
+    "scope_note": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "status": {
+      "const": "evidence-only"
+    },
+    "summary": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "run_id",
+    "lane_id",
+    "status",
+    "summary",
+    "candidate_ids",
+    "candidate_id",
+    "audit_verdict",
+    "scope_note",
+    "findings",
+    "resolved_findings",
+    "cleared",
+    "audit_note",
+    "lane_class"
+  ],
+  "type": "object"
+}

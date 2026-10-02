@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "candidate_ids": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "gate": {
+      "enum": [
+        "G-ENG",
+        "G-SPRAK"
+      ]
+    },
+    "lane_class": {
+      "const": "reval-language"
+    },
+    "lane_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "passes": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "candidate_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "findings": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "justification": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "verdict": {
+            "enum": [
+              "pass",
+              "flag",
+              "kill"
+            ]
+          },
+          "vote": {
+            "enum": [
+              1,
+              2,
+              3
+            ]
+          }
+        },
+        "required": [
+          "candidate_id",
+          "vote",
+          "verdict",
+          "findings",
+          "justification"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "run_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema": {
+      "const": "gas-city-evidence-report.v1"
+    },
+    "status": {
+      "const": "evidence-only"
+    },
+    "summary": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "run_id",
+    "lane_id",
+    "status",
+    "summary",
+    "candidate_ids",
+    "gate",
+    "passes",
+    "lane_class"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "answer": {
+      "pattern": "^[A-D]$",
+      "type": "string"
+    },
+    "candidate_id": {
+      "const": "smoke-0001"
+    },
+    "candidate_ids": {
+      "items": {
+        "const": "smoke-0001"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "type": "array"
+    },
+    "lane_class": {
+      "const": "smoke"
+    },
+    "lane_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "run_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema": {
+      "const": "gas-city-evidence-report.v1"
+    },
+    "status": {
+      "const": "evidence-only"
+    },
+    "summary": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "run_id",
+    "lane_id",
+    "lane_class",
+    "status",
+    "summary",
+    "candidate_ids",
+    "candidate_id",
+    "answer",
+    "note"
+  ],
+  "type": "object"
+}

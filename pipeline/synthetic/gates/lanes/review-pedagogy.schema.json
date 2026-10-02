@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "candidate_ids": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "lane_class": {
+      "const": "review-pedagogy"
+    },
+    "lane_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "run_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema": {
+      "const": "gas-city-evidence-report.v1"
+    },
+    "status": {
+      "const": "evidence-only"
+    },
+    "summary": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "units": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "candidate_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "findings": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "candidate_id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "category": {
+                  "enum": [
+                    "rationale-teaching",
+                    "distractor-diagnosis",
+                    "difficulty",
+                    "clarity",
+                    "other"
+                  ]
+                },
+                "evidence": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "fix": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "new": {
+                      "type": "string"
+                    },
+                    "old": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "path": {
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "old",
+                    "new"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "location": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "severity": {
+                  "enum": [
+                    "minor",
+                    "major",
+                    "critical"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "candidate_id",
+                "location",
+                "severity",
+                "category",
+                "evidence"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "verdict": {
+            "enum": [
+              "SOUND",
+              "MINOR_FIXES"
+            ]
+          }
+        },
+        "required": [
+          "candidate_id",
+          "verdict",
+          "findings"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema",
+    "run_id",
+    "lane_id",
+    "status",
+    "summary",
+    "candidate_ids",
+    "units",
+    "lane_class"
+  ],
+  "type": "object"
+}

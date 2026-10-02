@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "answers": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "candidate_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "justification": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "solver_answer": {
+            "pattern": "^([A-E]|MULTIPLE_DEFENSIBLE|NONE_DEFENSIBLE)$",
+            "type": "string"
+          },
+          "target": {
+            "pattern": "^q:[0-9]+$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "candidate_id",
+          "target",
+          "solver_answer",
+          "justification"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "candidate_ids": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "findings": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "candidate_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "answerability",
+              "double-answer",
+              "other"
+            ]
+          },
+          "evidence": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "fix": {
+            "additionalProperties": false,
+            "properties": {
+              "new": {
+                "type": "string"
+              },
+              "old": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "path": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "old",
+              "new"
+            ],
+            "type": "object"
+          },
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "location": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "minor",
+              "major",
+              "critical"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "candidate_id",
+          "location",
+          "severity",
+          "category",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "lane_class": {
+      "const": "vfinal-gkey"
+    },
+    "lane_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "run_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema": {
+      "const": "gas-city-evidence-report.v1"
+    },
+    "status": {
+      "const": "evidence-only"
+    },
+    "summary": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "vote": {
+      "enum": [
+        1,
+        2
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "run_id",
+    "lane_id",
+    "status",
+    "summary",
+    "candidate_ids",
+    "vote",
+    "answers",
+    "findings",
+    "lane_class"
+  ],
+  "type": "object"
+}

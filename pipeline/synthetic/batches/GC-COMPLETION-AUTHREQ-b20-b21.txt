@@ -1,0 +1,78 @@
+AUTHORIZATION REQUEST v5 — Gas City completion packages hpf-ldjj (batch20) then hpf-mjml (batch21)
+Requested 2026-09-03 by the hpfetcher coordinator session after the Codex HOLD reviews of v1–v4. One bounded grant.
+
+SCOPE
+  project hpfetcher / rig hpfetcher; parent beads hpf-ldjj then hpf-mjml (blocked-by hpf-ldjj).
+  subject: worktree /home/loucmane/dev/hpfetcher-worktrees/p5-batch14-15, branch p5/batch18-19 (dirty: batch20/21 and the
+           completion scripts are untracked), HEAD 5848f8c at grant. Untracked contents are bound by the v5 baselines (v1–v4 kept as superseded files):
+           batch20/DIGESTS-completion-hpf-ldjj.json  sha256 5fe993260027fc729acb5b8691a15fb5d3c2ef357d3b77dac2f7368eb251ce30
+           batch21/DIGESTS-completion-hpf-mjml.json  sha256 c2b2e6057fa35f8f2763eb4a3a65492f67bdb9f8fc5ffa42b1abcc05bf417508
+           Every later state is a stage snapshot diffed against its prior with an explicit allowed delta; baselines are never rewritten.
+  subject stage: completion-chain (pre-adjudication, candidates/). This is NOT a run of the bound evidence profile
+           hpfetcher-exam-batch-v1 (adjudicated / pre_owner_adjudication subjects from candidates-final on a clean branch); that
+           profile and its shadow-workflow checks are untouched and not bypassed. Lanes are built by gates/scripts/lane_bundle.py.
+
+WHAT IS AUTHORIZED IF GRANTED (and only this)
+  1. Raw bead routing (gc sling --no-formula --no-convoy) of one child bead per lane to hpfetcher/evidence-reviewer, sequentially,
+     one session per lane (agent max_active_sessions=1), rig resumed only for each lane window and suspended after it, with
+     allowlist / exactly-one-session / report-sha / drain / write-scope evidence per lane. The public formula catalog has no P5
+     gate-chain entrypoint; raw routing is the hpf-gehr / hpf-fk02 precedent and is requested here explicitly, not inferred.
+  2. One owned convoy per batch (gc convoy create --owned), closed by the coordinator at that batch's release event.
+  3. Lane bound per batch: S00 smoke (1) + 20 fixed report-only lanes + at most 5 conditional re-validation SESSIONS = <= 26;
+     <= 52 sessions total. The conditional budget is a session budget, one session per re-validation lane. BEFORE any repair
+     is applied, plan_revalidation.py computes the complete re-validation path the pending fixes require (student-facing
+     change: reval-gstem + reval-gkey x2 + reval-gdistractor + one reval-language lane PER GATE among the changed units;
+     rationale-only change: language lanes only). An ELF-only student-facing repair needs exactly 5 sessions; a repair
+     touching both an ELF and a LAS unit's student-facing text needs 6 and does NOT fit: the coordinator STOPS before applying
+     anything and re-requests. A proposed fix that is not applied stays FIX_PROPOSED (or is recorded as DEFERRED) and keeps
+     its unit on HOLD; the coordinator NEVER records CLEAR / CORRECTED / SOUND for an unapplied fix, and
+     check_review_integrity.py (run by the planner and before promote) fails closed on any journal that does. Nothing is
+     borrowed from the other batch; a second re-validation round is not covered.
+  4. Coordinator file work under ci-ar7o clause 2, limited to: run-root freeze, bundles, controller events and report ingestion
+     under /home/loucmane/gascity/evidence-runs/; the digest-bound scripts (lane_bundle build/verify-bundle/verify-report/ingest,
+     apply_exact_fixes, assemble_verdicts, make_sheets, run_mech, lint_learner_output, gkey_resolve, vfinal_fold, aggregate,
+     promote --require-clean WITHOUT --promote, build_adjudication_flags, adjudicate_fold, completion_digests snapshot/verify);
+     STATUS.md / ADJUDICATION.md authoring; repairs ONLY via apply_exact_fixes (transactional: before-images under exact-fix-backups/, atomic
+     txn.json publication, rollback on any write or finalisation failure, --recover) from exact {path, old, new} prescriptions in a lane report (exactly-one-occurrence rule; anything else
+     stops and is surfaced). Every ingest runs verify-bundle on the files on disk first; a report carrying escalations
+     (major/critical findings, self-kill answers, kill verdicts, REFUTED audits, reader blockers) is ingested only with
+     --record-escalations, which preserves them in reviews/escalations.jsonl so adjudicate_fold escalates the unit.
+  5. Re-validation rule: any byte change to candidates/<cid>.json after a V-FINAL leg invalidates that unit's V-FINAL legs and its
+     language lane; any student-facing change (passage/prompt/option) additionally requires reval-gstem; re-validation lanes are
+     the phase-bound classes reval-gstem / reval-language / reval-gkey / reval-gdistractor and write only to
+     verdicts/*-<round>*.jsonl, never to verdicts-vfinal/; bundles are stage-bound, so a report can only be ingested while its
+     bundle still matches the batch bytes. Fresh-eyes readers never see history.
+  6. Two commits on p5/batch18-19, one per batch, signed with the repo's configured key, recording the completed package: the batch
+     dir plus the untracked gates/scripts + gates/lanes files named in the baseline. No push. Closeout ordering per batch:
+     release event -> signed commit -> post-commit stage snapshot (allowed delta: subject:head, subject:tree) -> bead closeout note.
+     Batch21's baseline is re-taken from the post-batch20-commit head before its step 0.
+  7. Before any blind lane of each batch, two separate things: (a) an OPERATOR-RUN sandbox probe — `sandbox_probe.py prepare`
+     creates a benign fixture tree under $HOME/hpf-sandbox-probe-fixtures/ (OUTSIDE /tmp, $TMPDIR and the agent's production
+     work_dir: writable_roots=[] adds no roots but the sandbox still writes to cwd and the temporary directories, so a /tmp
+     fixture would prove nothing) and prints two commands: an unsandboxed network control and the sandboxed probe with the
+     agent's exact flags. The operator runs both and files `sandbox_probe.py parse` output as controller/sandbox-probe.json.
+     All outputs (control.out, probe.out, sandbox-probe.json) are absolute, plan-bound paths inside the fixture, so the
+     printed commands work from any directory. Exit 0 = every probe matches the expected boundary (reads unconfined, writes
+     confined to cwd, network denied); exit 1 = a CONTRADICTION (e.g. outside write ALLOWED) -> STOP; exit 2 = incomplete /
+     error / inconclusive -> not evidence, STOP until resolved. Network DENIED is accepted only for curl name-resolution or
+     connection failure (rc 6/7) with a successful unsandboxed control; a TLS/protocol/tool error (rc 60, 35, …) is an ERROR
+     and a timeout is INCONCLUSIVE — neither proves denial. The coordinator does not run it;
+     (b) an S00 smoke lane on the embedded fixture text with the production reviewer instructions unchanged: it proves
+     claim -> bundle -> report -> close -> drain-ack and asks the reviewer nothing about its environment.
+
+EXCLUDED (retained operator boundaries)
+  push, merge, deploy, publish, bank import, candidates-final/ creation, owner PAKETDOM or any ruling, authority changes,
+  credential actions, destructive cleanup, edits to batches/batch18 or batch19, any action on PRs #370 / #371 (STOP order
+  stands), retroactive delegation exemption for the native-agent rounds of batches 20/21 (recorded as a gap, not excused),
+  any native Agent/Task delegation from the coordinator session, any change to the bound evidence profile or its builders.
+
+STOP CONDITIONS
+  a second session appears in a lane window; the post-lane write-scope proof shows any path other than the declared report
+  changed under evidence-runs, or the subject worktree verify fails; the S00 smoke contradicts the configured sandbox boundary;
+  a report fails its schema or coverage check; a lane prescribes a repair apply_exact_fixes cannot apply; V-FINAL or fresh-eyes
+  disagrees with a key; aggregate returns DEAD/INCOMPLETE; promote --require-clean returns HOLD; adjudicate_fold escalates to
+  AGARBLICK (surfaced, not resolved); a stage snapshot is DISALLOWED; any prompt for credentials or approvals.
+
+EXPIRY
+  96 hours after grant. Ends earlier only when hpf-mjml's post-commit snapshot is recorded ALLOWED and its bead carries the
+  closeout note — i.e. after verified closeout, never at the release event.
