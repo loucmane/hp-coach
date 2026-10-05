@@ -387,7 +387,11 @@ those feed the next batch's generation prompt as negative examples.
   are kept. (PR #370 review, bead hpf-qo10.) A raw leg record folds into its
   `-v` twin only when the two are identical apart from `vote`; a raw and a
   stamped record with the same evidence identity that differ in anything else
-  (e.g. the verdict) are refused, never collapsed (bead hpf-oy2w).
+  (e.g. the verdict) are refused, never collapsed (bead hpf-oy2w). Every
+  record's `verdict` and `gate` must be exactly one of the verdict schema's
+  enum values (`gates/schemas/verdict.schema.json`); anything else (`PASS`,
+  an unknown string, a missing verdict, a misspelt gate) is refused with its
+  file and line before any supersession (bead hpf-6fkm).
   `vfinal_fold.py` only reads the V-FINAL legs, and promote's gate-fleet
   status comes from the merge, so an unmerged regate kill is INVISIBLE to
   both. (Learned 2026-07-22: a repair's

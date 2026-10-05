@@ -10,7 +10,10 @@ enforced instead of accidental. Run it on RENDERED learner text only;
 it must NOT be pointed at the bank's internal adjudication metadata.
 
 Checks, per JSON string value (or raw text line):
-  L2-SNAKE   snake_case token (two+ lowercase groups joined by _)
+  L2-SNAKE   snake_case token carrying a pipeline taxonomy stem or label,
+             compared with case, diacritics and underscores folded
+             (WORLD_KNOWLEDGE, tone_misread, författarens_hållning); with
+             --strict also any formula-style snake_case token (värde_B)
   L2-HEDGAT  hedgat/hedgad/hedgar/hedgade/hedgning (any case)
   L2-GATEREF gate-internal references: mech.py, M-FORM/M-ECHO/M-TELL/
              M-SCHEMA/M-BANDS/M-PLAGIARISM, G-KEY/G-STEM/G-SPRAK/G-SPRÅK/
@@ -32,6 +35,7 @@ import argparse
 import json
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 # L2-SNAKE — hardened per the 2026-08-31 GC review: case-insensitive,
@@ -42,6 +46,20 @@ from pathlib import Path
 # math-preservation contract: v_r, a_n, b_m (total < 5) and K_2007 /
 # a_1 (no segment with two letters) never flag.
 _SNAKE_TOKEN = re.compile(r"\b[0-9A-Za-zÅÄÖåäö]+(?:_[0-9A-Za-zÅÄÖåäö]+)+\b")
+
+
+def _fold(s: str) -> str:
+    """Case, diacritics and underscores removed (PR #370 round 5, bead
+    hpf-6fkm): WORLD_KNOWLEDGE folds onto the stem worldknowledge, and
+    författarens_hållning onto the label forfattarens_hallning."""
+    return "".join(c for c in unicodedata.normalize("NFKD", s.casefold())
+                   if c != "_" and not unicodedata.combining(c))
+
+
+# Tier 1 vocabulary: a snake token flags when its folded form contains the
+# folded form of any entry below. Never add a bare common word: `trap` would
+# hit the store's formula name A_trap, and `stance` a name like total_distance.
+#
 # The pipeline's trap-taxonomy vocabulary, as STEMS so case/digit/truncation
 # evasions (scope_x, scope_2_shift, Scope_shift, SCOPE_SHIFT) are caught.
 # Extend with any new taxonomy family; never remove without a store run.
@@ -49,12 +67,59 @@ _TAXONOMY_STEMS = ("scope", "shift", "causal", "worldknowledge",
                    "conjunction", "overgeneral", "generalis", "attribution",
                    "swap", "detail_as", "tempting", "hedg", "planted_trap", "trap_label",
                    "distractor", "misdirect", "as_main")
+# Every snake_case label the pipeline's label sources use (survey 2026-10-05,
+# docs/worklog/hpf-6fkm.md). Taxonomy labels, classes and statuses are listed
+# in full; a bank label is listed only when no entry above already catches
+# it. tests/test_verdict_enum_and_label_vocabulary_round5.py scans the same
+# sources and fails on any label the default mode lets through.
+_TAXONOMY_LABELS = (
+    # LÄS trap tags (las/scripts/question_taxonomy.py TRAP_TAGS)
+    "detail_as_main", "half_right_conjunction", "plausible_worldknowledge",
+    "reversed_causality", "scope_shift", "surface_lexical_echo", "true_but_irrelevant",
+    # LÄS question types (question_taxonomy.py TYPE_RULES, FALLBACK)
+    "detalj_ospecificerad", "enligt_texten_detalj", "forfattarens_hallning",
+    "hallning_stamning_ton", "huvudbudskap_syfte", "inference_slutsats",
+    "jamforelse_relation", "ordbetydelse_i_kontext", "struktur_funktion",
+    # LÄS genres (las/scripts/genre_classify.py PRIORITY, MACRO)
+    "debatt_opinion", "facktext_larobok", "intervju_reportage", "juridik_myndighet",
+    # ELF trap tags (elf/scripts/build_families.py TRAP_TAGS)
+    "collocation_misfit", "outside_knowledge", "polarity_contrast_miss",
+    "quantifier_upgrade", "role_or_attribution_swap", "scope_error", "surface_word_match",
+    "tone_misread", "too_literal_or_too_far", "wrong_location",
+    # gate classes (verdict schema, G-KEY/G-STEM prompts, blind_classification
+    # and solver_answer in verdict files) and aggregation statuses
+    "MULTIPLE_DEFENSIBLE", "NONE_DEFENSIBLE", "NOT_ANSWERABLE", "PARTIALLY_ANSWERABLE",
+    "RECALL_ONLY", "STRUCTURAL_LEAK", "WORLD_KNOWLEDGE", "SURVIVED_CLEAN", "SURVIVED_FLAGGED",
+    # review, sweep, audit, V-FINAL and adjudication statuses (BATCH-RUNBOOK,
+    # run-batch.workflow.js, vfinal_fold.py, batch adjudication notes and
+    # records, the law-16 originality sweep)
+    "BEARER_SAME_DOMAIN", "BEARER_UNRELATED_FIELD", "BLOCKED_SHIP", "CONFIRMED_NOTES",
+    "GODKANN_NOTED", "MINOR_EDITS", "MINOR_FIXES", "MINOR_NOTES", "NEEDS_REDESIGN",
+    "NEEDS_WORK", "NO_BEARER", "PUBLISH_READY", "REJECT_LANGUAGE",
+    "RESOLVED_WITH_REGRESSION", "UNRESOLVED_MITIGATED", "VERIFIED_NOTES",
+    # bank labels (candidates' trap/family/genre/format fields and question
+    # rationales) that no entry above catches
+    "absence_of_evidence", "clone_avoidance", "cloze_5gap", "concession_overread",
+    "craft_reportage", "detail_transplant_ort", "detalj_direct_detail",
+    "essa_kulturhistoria", "essa_kulturhistorisk", "explicitly_refuted_criterion",
+    "false_premise_kvantitet", "finding_or_ruling", "hallning_stance_tone",
+    "history_essay", "huvudbudskap_main_idea", "inferens_inference", "key_derivation",
+    "long_passage_5q", "magnitude_overclaim", "method_or_case", "negated_target_restated",
+    "nuance_or_caveat", "one_inch_inference", "paraphrase_one_sentence",
+    "polarity_mirror", "quantifier_downgrade", "reversed_comparison",
+    "reversed_direction", "science_journalism", "self_blind_solve", "sense_misfit",
+    "short_text_1q", "society_commentary", "stance_inversion", "stem_lexis_note",
+    "too_far", "too_literal", "true_but_distorted", "two_step_leap", "umbrella_decoy",
+    "whole_text_gist", "wrong_logic", "wrong_transfer", "zero_sum_displacement",
+)
+_TIER1 = frozenset(_fold(x) for x in _TAXONOMY_STEMS + _TAXONOMY_LABELS)
 
 
 class _Snake:
     """Two-tier snake_case detector.
 
-    Tier 1 (always fails): snake tokens carrying pipeline taxonomy stems —
+    Tier 1 (always fails): snake tokens whose folded form (_fold: case,
+    diacritics and underscores removed) contains a taxonomy stem or label —
     these are internal join keys and must never reach learner prose.
     Tier 2 (only with --strict): any other snake token of length >= 5 with
     a >=2-letter segment — improvised formula variable names (värde_B,
@@ -72,8 +137,8 @@ class _Snake:
         fallback = None
         for m in _SNAKE_TOKEN.finditer(text):
             tok = m.group(0)
-            low = tok.lower()
-            if any(stem in low for stem in _TAXONOMY_STEMS):
+            folded = _fold(tok)
+            if any(entry in folded for entry in _TIER1):
                 return m
             if (self.strict and fallback is None and len(tok) >= 5
                     and any(sum(c.isalpha() for c in seg) >= 2

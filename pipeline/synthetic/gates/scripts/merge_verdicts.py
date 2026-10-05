@@ -34,6 +34,15 @@ verdict beside its repair, and an obsolete kill reads as DEAD. The contract:
      order that carries it wins: its records replace every record for that
      SLOT from earlier files, whatever their executed_by/justification/run.
 
+Every record is validated first, line by line, before any rule above can
+replace, fold or collapse it (PR #370 round 5, bead hpf-6fkm): `verdict` and
+`gate` must each be exactly one of the verdict schema's enum values, read
+from gates/schemas/verdict.schema.json (no second copy here). aggregate.py
+reads any verdict other than kill/flag as a pass and counts kills only under
+gates it knows, so an unknown verdict in a repair record used to supersede a
+kill, and a kill under a misspelt gate vanished. Every refusal names the
+file and line.
+
 Accounting, printed so a silent no-op stays visible: `superseded` counts
 records replaced by different content (a repair took effect, or a same-
 IDENTITY restatement changed something), `duplicates` counts byte-identical
@@ -59,6 +68,28 @@ class MergeContractError(ValueError):
     """A record violates the merge contract; the merge fails closed."""
 
 
+SCHEMA_PATH = Path(__file__).resolve().parent.parent / "schemas" / "verdict.schema.json"
+
+
+def schema_enum(schema: dict, prop: str) -> frozenset[str]:
+    """The verdict schema's enum for `prop`. A schema that lost the enum stops
+    the merge instead of letting every value through."""
+    try:
+        values = schema["properties"][prop]["enum"]
+    except (KeyError, TypeError) as exc:
+        raise RuntimeError(f"{SCHEMA_PATH}: no properties.{prop}.enum") from exc
+    if (not isinstance(values, list) or not values
+            or not all(isinstance(x, str) and x for x in values)):
+        raise RuntimeError(f"{SCHEMA_PATH}: properties.{prop}.enum must be a non-empty "
+                           f"list of non-empty strings, got {values!r}")
+    return frozenset(values)
+
+
+_SCHEMA = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+VERDICTS = schema_enum(_SCHEMA, "verdict")
+GATES = schema_enum(_SCHEMA, "gate")
+
+
 @dataclass
 class MergeStats:
     superseded: int = 0  # replaced by different content
@@ -67,6 +98,12 @@ class MergeStats:
 
 
 def _validate(v: dict, source: str) -> None:
+    # `source` is "<file>:<line>"; merge() runs this on every record before
+    # any merge rule, so a record a rule would drop is checked as well.
+    if not isinstance(v, dict):
+        raise MergeContractError(
+            f"{source}: record must be a JSON object, got "
+            f"{json.dumps(v, ensure_ascii=False)[:120]}")
     # Hardened per the 2026-08-31 GC hardening-review lane: identity built
     # from silently-None optional fields lets distinct evidence collide.
     for field in ("candidate_id", "gate", "target"):
@@ -74,6 +111,23 @@ def _validate(v: dict, source: str) -> None:
             raise MergeContractError(
                 f"{source}: record missing required identity field "
                 f"'{field}': {json.dumps(v, ensure_ascii=False)[:120]}")
+    # PR #370 round 5 (bead hpf-6fkm): exact schema enum values only — no
+    # case folding, no stripping. aggregate.py ignores a kill under a gate
+    # it does not know and reads any verdict but kill/flag as a pass.
+    if v["gate"] not in GATES:
+        raise MergeContractError(
+            f"{source}: gate must be exactly one of {', '.join(sorted(GATES))} "
+            f"(verdict.schema.json), got {v['gate']!r}")
+    if not isinstance(v.get("verdict"), str) or v["verdict"] not in VERDICTS:
+        got = repr(v["verdict"]) if "verdict" in v else "no verdict"
+        raise MergeContractError(
+            f"{source}: verdict must be exactly one of {', '.join(sorted(VERDICTS))} "
+            f"(verdict.schema.json), got {got}")
+    # Deliberately not enforced (docs/worklog/hpf-6fkm.md): the schema's
+    # `target` pattern (837 real records use 'unit', 'q1'..'q5' or 'q:') and
+    # `findings` presence/type (10 real G-KEY passes carry a string). Neither
+    # can turn a kill or a flag into a pass; aggregate.py reads `findings`
+    # only to report flags and a lone language kill.
     if v.get("executed_by") is None and v.get("justification") is None:
         raise MergeContractError(
             f"{source}: record carries neither executed_by nor "
@@ -129,8 +183,11 @@ def merge(files: list[Path]) -> tuple[list[dict], MergeStats]:
             line = line.strip()
             if not line:
                 continue
-            v = json.loads(line)
-            _validate(v, str(fp))
+            try:
+                v = json.loads(line)
+            except json.JSONDecodeError as exc:
+                raise MergeContractError(f"{fp}:{n}: not valid JSON ({exc})") from exc
+            _validate(v, f"{fp}:{n}")
             recs.append((fi, n, v))
 
     stats = MergeStats()
