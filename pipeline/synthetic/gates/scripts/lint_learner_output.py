@@ -17,7 +17,14 @@ Checks, per JSON string value (or raw text line):
              G-DISTRACTOR/G-REGISTER/G-ENG, absolutiser/absolutizer list,
              "round-N version" / "runda N-versionen" pipeline talk
 
+Inputs fail closed (PR #370 round 2, bead hpf-oy2w): a path that does not
+exist, a directory holding no lintable file (.json/.md/.txt, not _-prefixed),
+a file that is not UTF-8, and a .json file that does not parse are input
+failures, printed "INPUT-FAIL <path>: reason" — never scanned as raw text,
+never reported clean. Zero files examined is an input failure too.
+
 Exit 0 = clean. Exit 1 = findings, printed "L2-<RULE> <file>:<jsonpath-or-line>: excerpt".
+Exit 2 = any input failure (findings, if any, are printed as well).
 """
 from __future__ import annotations
 
@@ -129,6 +136,32 @@ def walk_json(obj, path, out):
             out.append((rule, path, excerpt))
 
 
+LINTABLE = (".json", ".md", ".txt")
+
+
+def collect(paths: list[Path]) -> tuple[list[Path], list[str]]:
+    """Files to lint, plus an INPUT-FAIL line for every path that yields none."""
+    files: list[Path] = []
+    failures: list[str] = []
+    for p in paths:
+        if p.is_dir():
+            # underscore-prefixed files are pipeline bookkeeping (audit notes,
+            # skip ledgers) by store convention — never learner-facing.
+            found = sorted(q for q in p.rglob("*")
+                           if q.is_file() and q.suffix.lower() in LINTABLE
+                           and not q.name.startswith("_"))
+            if not found:
+                failures.append(f"INPUT-FAIL {p}: no lintable file in this directory "
+                                f"({'/'.join(LINTABLE)}, not _-prefixed) — nothing to check")
+            files.extend(found)
+        elif p.is_file():
+            files.append(p)
+        else:
+            failures.append(f"INPUT-FAIL {p}: path does not exist (or is not a file "
+                            f"or directory)")
+    return files, failures
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("paths", nargs="+", type=Path,
@@ -138,35 +171,46 @@ def main() -> int:
                          "(formula variable names), not only taxonomy stems")
     args = ap.parse_args()
     SNAKE.strict = args.strict
-    files: list[Path] = []
-    for p in args.paths:
-        if p.is_dir():
-            # underscore-prefixed files are pipeline bookkeeping (audit notes,
-            # skip ledgers) by store convention — never learner-facing.
-            files.extend(sorted(q for q in p.rglob("*")
-                                if q.suffix in (".json", ".md", ".txt")
-                                and not q.name.startswith("_")))
-        else:
-            files.append(p)
-    findings = 0
+    files, failures = collect(args.paths)
+    for line in failures:
+        print(line)
+    findings = examined = 0
     for fp in files:
-        text = fp.read_text(encoding="utf-8")
+        try:
+            text = fp.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError) as exc:
+            failures.append(f"INPUT-FAIL {fp}: not readable as UTF-8 text ({exc})")
+            print(failures[-1])
+            continue
         out: list[tuple[str, str, str]] = []
-        if fp.suffix == ".json":
+        if fp.suffix.lower() == ".json":
             try:
-                walk_json(json.loads(text), "$", out)
-            except json.JSONDecodeError:
-                out = [(r, f"line", e) for r, e in scan_text(text)]
+                doc = json.loads(text)
+            except json.JSONDecodeError as exc:
+                # never fall back to a raw-text scan: a broken store file is
+                # an input failure, not a clean file (bead hpf-oy2w)
+                failures.append(f"INPUT-FAIL {fp}: not valid JSON ({exc})")
+                print(failures[-1])
+                continue
+            walk_json(doc, "$", out)
         else:
             for r, e in scan_text(text):
                 out.append((r, "-", e))
+        examined += 1
         for rule, path, excerpt in out:
             print(f"{rule} {fp}:{path}: …{excerpt}…")
             findings += 1
+    if not examined and not failures:
+        failures.append("INPUT-FAIL -: zero files examined")
+        print(failures[-1])
+    if failures:
+        print(f"learner-output lint: FAILED — {len(failures)} input failure(s), "
+              f"{findings} finding(s) in {examined} file(s) examined")
+        return 2
     if findings:
-        print(f"learner-output lint: {findings} finding(s) in {len(files)} file(s)")
+        print(f"learner-output lint: {findings} finding(s) in {examined} file(s)")
         return 1
-    print(f"learner-output lint: clean — {len(files)} file(s)")
+    print(f"learner-output lint: clean — {examined} file(s)")
     return 0
 
 

@@ -23,6 +23,16 @@ indistinguishable from "never looked". This check closes the loop:
   item, and the second (line 50) names no unit; item-wide lookup would let
   the first obligation's dispositions silently discharge it.
 
+  Sentence (PR #370 round 2, bead hpf-oy2w): it ends at . ; ! or ? followed
+  by whitespace, WHATEVER the case of the next word — "elf-b16-003 is clean.
+  cross-batch echo; disposition owed." names no unit in the marker's
+  sentence. A ";" clause counts as a sentence of its own. Never split: a
+  decimal ("8.7"), a file name ("ASSEMBLY.md") or a unit id (no whitespace
+  after the dot), nor the full stop of an abbreviation that always takes a
+  complement (_ABBREVIATIONS: "vs.", "e.g.", "t.ex." ...). When in doubt the
+  text is split: a split can only narrow a marker's sentence towards
+  "<no unit named>" (fail closed), never lend it a unit from another one.
+
 Exit 0 = all markers discharged (or no markers). Exit 1 = any undischarged
 marker, printed as "DISPOSITION-OWED <unit>: line <n>: <sentence excerpt>",
 with "<no unit named>" in place of the unit when the sentence names none.
@@ -43,11 +53,21 @@ MARKER_RE = re.compile(r"disposition\s+owed", re.IGNORECASE)
 # open block (wrapped continuation) or opens a paragraph.
 _LIST_ITEM = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s+")
 _ONE_LINE_BLOCK = re.compile(r"^\s{0,3}(?:#{1,6}(?:\s|$)|\||(?:[-*_]\s*){3,}$|```|~~~)")
-# A sentence ends at . ! or ? (plus closing quotes/brackets/emphasis) when
-# whitespace and an upper-case letter follow; "vs. las-b16-002", "e.g. the",
-# "8.7" and "ASSEMBLY.md" stay inside one sentence.
-_SENTENCE_GAP = re.compile(r"[.!?][\"')\]*_`”’»]*\s+")
-_SENTENCE_OPENERS = "\"'([*_`“‘«"
+# A sentence ends at . ; ! or ? (plus closing quotes/brackets/emphasis) when
+# whitespace follows — never on the case of the next word (bead hpf-oy2w).
+# "8.7", "ASSEMBLY.md" and unit ids have no whitespace after the dot; a full
+# stop closing one of _ABBREVIATIONS is not a boundary either. Only
+# abbreviations that always take a complement belong there: one that can end
+# a sentence ("etc.", "osv.", "m.m.") would join two sentences and could lend
+# the marker a unit, so it is left to split.
+_SENTENCE_GAP = re.compile(r"[.;!?][\"')\]*_`”’»]*\s+")
+_ABBREVIATIONS = frozenset((
+    "vs", "e.g", "i.e", "cf", "viz", "approx", "ca", "incl", "excl", "resp",
+    "fig", "nr", "dr", "mr", "mrs", "ms", "prof",
+    "t.ex", "bl.a", "d.v.s", "dvs", "s.k", "jfr", "p.g.a", "pga", "fr.o.m",
+    "t.o.m", "inkl", "exkl", "kap",
+))
+_TOKEN_OPENERS = "\"'([{*_`“‘«"
 
 
 # Hardened per the 2026-08-31 GC hardening-review lane: a merely non-empty
@@ -100,15 +120,21 @@ def _blocks(lines: list[str]) -> list[list[int]]:
     return blocks
 
 
+def _closes_abbreviation(text: str, dot: int) -> bool:
+    """True when the full stop at `dot` ends a word listed in _ABBREVIATIONS."""
+    start = dot
+    while start > 0 and not text[start - 1].isspace():
+        start -= 1
+    return text[start:dot].lstrip(_TOKEN_OPENERS).lower() in _ABBREVIATIONS
+
+
 def _sentence_spans(text: str) -> list[tuple[int, int]]:
     spans, start = [], 0
     for m in _SENTENCE_GAP.finditer(text):
-        j = m.end()
-        while j < len(text) and text[j] in _SENTENCE_OPENERS:
-            j += 1
-        if j < len(text) and text[j].isupper():
-            spans.append((start, m.end()))
-            start = m.end()
+        if text[m.start()] == "." and _closes_abbreviation(text, m.start()):
+            continue
+        spans.append((start, m.end()))
+        start = m.end()
     spans.append((start, len(text)))
     return spans
 

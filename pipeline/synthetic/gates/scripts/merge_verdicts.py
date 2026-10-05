@@ -13,9 +13,12 @@ verdict beside its repair, and an obsolete kill reads as DEAD. The contract:
   IDENTITY  = (candidate_id, gate, target, executed_by, justification, run)
                                                        — one piece of evidence
 
-  1. Twins. An unstamped record (no `vote`) whose IDENTITY also occurs
-     vote-stamped is the same evidence: it folds into the stamped copy,
-     whichever file or order either arrives in.
+  1. Twins. An unstamped record (no `vote`) folds into a vote-stamped
+     record of the same IDENTITY only when the two are EQUAL once `vote` is
+     removed — the same evidence, a raw leg and its `-v` copy — whichever
+     file or order either arrives in. A shared IDENTITY with any other
+     difference (PR #370 round 2, bead hpf-oy2w: a stamped pass and an
+     unstamped kill) is contradictory evidence and FAILS CLOSED.
   2. Same input file. Records sharing a SLOT must be the same evidence
      restated (same IDENTITY: the later line wins) or numbered ballots
      (every one carries an integer `run` and the runs differ: all are kept,
@@ -95,6 +98,30 @@ def slot(v: dict) -> tuple:
     return (v.get("candidate_id"), v.get("gate"), v.get("target"), v.get("vote"))
 
 
+def _without_vote(v: dict) -> dict:
+    return {k: x for k, x in v.items() if k != "vote"}
+
+
+_MISSING = object()
+
+
+def _not_a_twin(files: list[Path], recs: list[tuple[int, int, dict]], raw: int,
+                copies: list[int]) -> str:
+    fi, n, v = recs[raw]
+    seen = []
+    for j in copies:
+        fj, m, s = recs[j]
+        diff = sorted(k for k in set(s) | set(v)
+                      if k != "vote" and s.get(k, _MISSING) != v.get(k, _MISSING))
+        seen.append(f"{files[fj]}:{m} (vote={s['vote']}, verdict={s.get('verdict')!r}; "
+                    f"differs in {', '.join(diff)})")
+    return (f"{files[fi]}:{n}: unstamped record (verdict={v.get('verdict')!r}) shares its "
+            f"evidence IDENTITY (candidate_id, gate, target, executed_by, justification, run) "
+            f"with vote-stamped {'; '.join(seen)} — not a twin: a raw leg must equal its "
+            f"stamped copy apart from `vote`. Contradictory evidence is never folded; drop "
+            f"the stale copy or re-stamp the leg from the raw file")
+
+
 def merge(files: list[Path]) -> tuple[list[dict], MergeStats]:
     recs: list[tuple[int, int, dict]] = []  # (input file index, line no, record)
     for fi, fp in enumerate(files):
@@ -114,15 +141,23 @@ def merge(files: list[Path]) -> tuple[list[dict], MergeStats]:
         alive.discard(loser)
         anchor[winner] = min(anchor[winner], anchor[loser])
 
-    # 1. twins: the stamped copy wins, in whichever order the two arrive
-    stamped: dict[tuple, int] = {}
+    # 1. twins: the stamped copy wins, in whichever order the two arrive —
+    #    but only a copy of the SAME evidence (equal once `vote` is removed)
+    #    is a twin; a shared IDENTITY alone fails closed
+    stamped: dict[tuple, list[int]] = defaultdict(list)
     for i, (_, _, v) in enumerate(recs):
         if v.get("vote") is not None:
-            stamped.setdefault(identity(v), i)
+            stamped[identity(v)].append(i)
     for i, (_, _, v) in enumerate(recs):
-        if v.get("vote") is None and identity(v) in stamped:
-            absorb(i, stamped[identity(v)])
-            stats.twins += 1
+        if v.get("vote") is not None or identity(v) not in stamped:
+            continue
+        copies = stamped[identity(v)]
+        bare = _without_vote(v)
+        twin = next((j for j in copies if _without_vote(recs[j][2]) == bare), None)
+        if twin is None:
+            raise MergeContractError(_not_a_twin(files, recs, i, copies))
+        absorb(i, twin)
+        stats.twins += 1
 
     # 2. same input file: restatements collapse, numbered ballots stay,
     #    any other collision on a SLOT is ambiguous and fails closed

@@ -2,7 +2,8 @@
 merge and block/sentence scoping of assembly "disposition owed" markers.
 
 Red-first: every test in this file failed on head 0294fd9 (evidence in
-docs/worklog/hpf-qo10.md).
+docs/worklog/hpf-qo10.md). Round 2 (bead hpf-oy2w) rewrote the two
+BATCH16_ITEM2 attribution tests: ";" now ends the marker's clause.
 """
 from __future__ import annotations
 
@@ -272,18 +273,27 @@ BATCH16_ITEM2 = (
     "3. **Declared shortfalls (elf-b16-003)**: fk_grade 8.7 vs blueprint 11.0–15.0\n")
 
 
-def test_unnamed_second_obligation_is_not_masked_by_the_named_first(tmp_path):
+def test_unnamed_second_obligation_is_not_masked_by_the_first(tmp_path):
+    # round 2 (hpf-oy2w): ";" ends a clause too, so the FIRST obligation's
+    # clause ("one written disposition owed per the 2026-08-26 process rule",
+    # line 3) names no unit either; neither marker borrows the units before it
     r = _asm(tmp_path, BATCH16_ITEM2, [_disposed("las-b16-001"), _disposed("elf-b16-003")])
     assert r.returncode == 1
     owed = _owed(r.stdout)
-    assert len(owed) == 1 and owed[0].startswith("DISPOSITION-OWED <no unit named>")
-    assert "line 5" in owed[0]
+    assert len(owed) == 2 and all(o.startswith("DISPOSITION-OWED <no unit named>") for o in owed)
+    assert "line 3:" in owed[0] and "line 5:" in owed[1]
 
 
-def test_named_first_obligation_still_requires_its_units(tmp_path):
+def test_first_obligation_requires_its_units_once_its_clause_names_them(tmp_path):
+    # round 2 (hpf-oy2w): as committed the first clause names no unit (";"
+    # ends it); naming the units inside it makes each of them owe a disposition
     r = _asm(tmp_path, BATCH16_ITEM2)
     assert r.returncode == 1
-    assert [o.split(":")[0] for o in _owed(r.stdout)] == [
+    assert [o.split(":")[0] for o in _owed(r.stdout)] == ["DISPOSITION-OWED <no unit named>"] * 2
+    named = BATCH16_ITEM2.replace("one written disposition owed per",
+                                  "one written disposition owed for las-b16-001/elf-b16-003 per")
+    r2 = _asm(tmp_path, named)
+    assert [o.split(":")[0] for o in _owed(r2.stdout)] == [
         "DISPOSITION-OWED las-b16-001", "DISPOSITION-OWED elf-b16-003",
         "DISPOSITION-OWED <no unit named>"]
 

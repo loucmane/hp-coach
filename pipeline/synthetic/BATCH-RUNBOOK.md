@@ -384,9 +384,13 @@ those feed the next batch's generation prompt as negative examples.
   and the summary counts superseded records apart from no-op duplicates. A
   re-gate appended into an existing leg file is refused (inside one file it is
   indistinguishable from a second ballot); `run`-numbered ballots in one file
-  are kept. (PR #370 review, bead hpf-qo10.) `vfinal_fold.py` only reads
-  the V-FINAL legs, and promote's gate-fleet status comes from the merge, so an
-  unmerged regate kill is INVISIBLE to both. (Learned 2026-07-22: a repair's
+  are kept. (PR #370 review, bead hpf-qo10.) A raw leg record folds into its
+  `-v` twin only when the two are identical apart from `vote`; a raw and a
+  stamped record with the same evidence identity that differ in anything else
+  (e.g. the verdict) are refused, never collapsed (bead hpf-oy2w).
+  `vfinal_fold.py` only reads the V-FINAL legs, and promote's gate-fleet
+  status comes from the merge, so an unmerged regate kill is INVISIBLE to
+  both. (Learned 2026-07-22: a repair's
   G-STEM kill on las-b3-003 was ignored by a clean-looking promote until the
   merge was rebuilt.) Corollary: a repair that fixes one tell can create
   another — the las-b3-003 fix for a verbatim-true distractor (law 11)

@@ -29,36 +29,58 @@ Contract, per unit in candidates-final/:
 Sheet directories may not contain .json files without a matching final
 candidate (orphans are exactly the stale-sheet bug in file form).
 
+Forbidden fields are matched on a NORMALISED key at any depth (PR #370
+round 2, bead hpf-oy2w: `correctAnswer: "A"` on a blind sheet passed):
+case, accents and every non-alphanumeric character are ignored, so
+correctAnswer / Correct Answer / correct-answer / CORRECT_ANSWER are one
+key, and rätt_svar / Rätt svar / ratt_svar another.
+
 Exit 0 = in sync. Exit 1 = any failure (one line per finding,
-machine-parsable "SYNC-FAIL <unit> <sheet> <field>: detail").
+machine-parsable "SYNC-FAIL <unit> <sheet> <field>: detail"; for a
+forbidden field, <field> is its JSON path in the sheet).
 """
 from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
+import unicodedata
 from pathlib import Path
 
-# Contamination denylists. Alias-complete by design: the 2026-08-31 review
-# showed an exact-key denylist of {"key"} alone is trivially bypassed by
-# answer/answer_key/correct_answer/solution/facit and by rationale-class
-# aliases. Extend HERE (with a bank-wide run) — never narrow.
-_KEY_ALIASES = ("key", "keys", "answer", "answers", "answer_key",
-                "correct", "correct_answer", "correct_option", "solution",
-                "solutions", "facit")
-_RATIONALE_ALIASES = ("rationale", "rationales", "explanation",
-                      "explanations", "why_wrong", "why_tempting",
-                      "generator_meta", "planted_traps",
-                      "hedge_map", "repair_log", "self_blind_solve")
+# Contamination denylists, in normalised form (see _norm_key). Alias-complete
+# by design: the 2026-08-31 review showed an exact-key denylist of {"key"}
+# alone is trivially bypassed, and round 2 that a case-sensitive snake_case
+# list is too. A key is forbidden when its normalised form CONTAINS a stem
+# (catches compounds: answerLetter, isCorrect, correctOption, solutionText,
+# whyWrongB) or EQUALS a word (names too short to match inside other keys:
+# "key" sits in "keyword", "svar" in "svarsalternativ"). Extend HERE (with a
+# bank-wide run) — never narrow.
+_ANSWER_STEMS = ("answer", "correct", "solution", "facit", "keyed", "keyletter",
+                 "rattsvar", "korrekt")
+_ANSWER_WORDS = ("key", "keys", "svar", "svaret", "ratt", "losning")
+_RATIONALE_STEMS = ("rationale", "explanation", "whywrong", "whytempting",
+                    "generatormeta", "plantedtrap", "hedgemap", "repairlog",
+                    "selfblindsolve")
 # "family" hints at question architecture and is forbidden on the BLIND
 # protocols (blind/stems); the distractor sheet carries keys by contract,
 # so family is moot there and historical sheets legitimately include it.
+# (words, stems) per sheet:
 FORBIDDEN = {
-    "blind": _KEY_ALIASES + _RATIONALE_ALIASES + ("family",),
-    "stems": ("passage", "title") + _KEY_ALIASES + _RATIONALE_ALIASES + ("family",),
-    "distractor": _RATIONALE_ALIASES,
+    "blind": (_ANSWER_WORDS, _ANSWER_STEMS + _RATIONALE_STEMS + ("family",)),
+    "stems": (_ANSWER_WORDS, ("passage", "title", "family")
+              + _ANSWER_STEMS + _RATIONALE_STEMS),
+    "distractor": ((), _RATIONALE_STEMS),
 }
 SHEETS = ("blind", "stems", "distractor")
+_PLAIN_KEY = re.compile(r"[^\s.\[\]\"']+")
+
+
+def _norm_key(key: str) -> str:
+    """Case-, accent- and separator-blind form: 'Rätt svar' -> 'rattsvar'."""
+    key = unicodedata.normalize("NFKD", key)
+    return "".join(c for c in key.casefold()
+                   if c.isalnum() and not unicodedata.combining(c))
 
 
 def _questions(obj: dict) -> list[dict]:
@@ -69,20 +91,28 @@ def _fail(out: list[str], unit: str, sheet: str, field: str, detail: str) -> Non
     out.append(f"SYNC-FAIL {unit} {sheet} {field}: {detail}")
 
 
-def _walk_forbidden(obj, names: tuple[str, ...]) -> str | None:
+def _forbidden(key: str, sheet: str) -> bool:
+    words, stems = FORBIDDEN[sheet]
+    norm = _norm_key(key)
+    return norm in words or any(stem in norm for stem in stems)
+
+
+def _walk_forbidden(obj, sheet: str, path: str = "") -> list[str]:
+    """JSON path of every forbidden key, at any depth."""
+    hits: list[str] = []
     if isinstance(obj, dict):
         for k, v in obj.items():
-            if k in names:
-                return k
-            hit = _walk_forbidden(v, names)
-            if hit:
-                return hit
+            if _PLAIN_KEY.fullmatch(k):
+                sub = f"{path}.{k}" if path else k
+            else:
+                sub = f"{path}[{json.dumps(k, ensure_ascii=False)}]"
+            if _forbidden(k, sheet):
+                hits.append(sub)
+            hits.extend(_walk_forbidden(v, sheet, sub))
     elif isinstance(obj, list):
-        for v in obj:
-            hit = _walk_forbidden(v, names)
-            if hit:
-                return hit
-    return None
+        for i, v in enumerate(obj):
+            hits.extend(_walk_forbidden(v, sheet, f"{path}[{i}]"))
+    return hits
 
 
 def check_batch(batch_dir: Path, allow_missing_dirs: bool) -> list[str]:
@@ -121,8 +151,7 @@ def check_batch(batch_dir: Path, allow_missing_dirs: bool) -> list[str]:
                 _fail(problems, unit, sheet, "sheet", "sheet file missing")
                 continue
             s = json.loads(sp.read_text(encoding="utf-8"))
-            hit = _walk_forbidden(s, FORBIDDEN[sheet])
-            if hit:
+            for hit in _walk_forbidden(s, sheet):
                 _fail(problems, unit, sheet, hit, "forbidden field present (contamination)")
             if s.get("candidate_id") != cand.get("candidate_id"):
                 _fail(problems, unit, sheet, "candidate_id", "differs from candidates-final")

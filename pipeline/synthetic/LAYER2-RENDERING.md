@@ -44,3 +44,13 @@ matbevarandekontraktet skyddar dem mot blind omskrivning). `_`-prefixade
 JSON-nycklar (bokföring i fil, t.ex. `_meta.adjudication`) skannas aldrig.
 Uppmätt efter härdningen: default = exakt de 2 äkta »hedgning«-fynden i
 host-2017-MEK-025; `--strict` = +74 stiltoken.
+
+## Indatafel fäller stängt (PR #370 rond 2, bead hpf-oy2w)
+
+Linten är en grind: indata den inte kan verifiera rapporteras aldrig som
+ren. En sökväg som inte finns, en katalog utan lintbar fil (`.json`/`.md`/
+`.txt`, ej `_`-prefixad), en fil som inte är giltig UTF-8 och en `.json`-fil
+som inte går att tolka ger var och en raden `INPUT-FAIL <sökväg>: <orsak>` —
+en trasig `.json` skannas aldrig som råtext. Noll granskade filer är också
+ett indatafel. Exitkoder: 0 = ren, 1 = fynd, 2 = indatafel (eventuella fynd
+skrivs ut ändå).
