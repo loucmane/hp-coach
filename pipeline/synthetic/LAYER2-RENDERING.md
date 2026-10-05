@@ -96,7 +96,8 @@ och `--strict` samma 74 fynd. Ingen token flaggas nytt och ingen tappas.
 
 Linten granskar det eleven faktiskt ser, inte bara den lagrade stavningen.
 Hotmodellen, med varje stavningsvariant och hur den hanteras, finns i
-`docs/worklog/hpf-klv6.md`.
+`docs/worklog/hpf-klv6.md`. Rond 8 (nedan) avgränsar den till elevens faktiska
+renderare.
 
 - **Ordgränser.** En token avgränsas av allt som inte är en bokstav eller en
   siffra, och dess segment skiljs åt av ett eller flera understreck.
@@ -122,12 +123,14 @@ Hotmodellen, med varje stavningsvariant och hur den hanteras, finns i
     länkar och `\`-escape. HTML omfattar taggar, kommentarer och
     teckenreferenser som `&#95;` och `&lowbar;`. KaTeX omfattar stilkommandon
     som `\text` och `\mathrm`, grupper `{}`, `\_`, `\textunderscore`,
-    färgargument och matematikavgränsarna.
+    färgargument och matematikavgränsarna. Vyn är ett skydd på djupet och ett
+    bästa försök, ingen fullständig modell av CommonMark (rond 8).
 
   Appen visar strängvärden som ren text och sätter bara matematiken med
-  KaTeX; app-vyn efterliknar den. En `.md`-fil går i stället genom en
-  Markdown-renderare, och markup-vyn tar med allt som en sådan kan dölja.
-  En etikett som någon renderare visar finns därför i texten eller i en vy.
+  KaTeX; app-vyn efterliknar den. Det är elevens renderare, och den visar
+  Markdown och HTML som de tecken de består av (rond 8). Markup-vyn tolkar
+  dem ändå i hela texten, som en CommonMark-renderare skulle göra, men den gör
+  inget anspråk på att täcka allt en sådan renderare kan dölja.
 - **Skikt 2 bedömer den lagrade stavningen.** `--strict` läser bara den
   skannade texten. En LaTeX-subskript som `V_{\text{gammal}}` är korrekt
   notation, inte stilskuld.
@@ -152,3 +155,55 @@ samma 2 *hedgning*-fynd och `--strict` samma 74 fynd, rad för rad. 11 145
 strängar får minst en vy. Vyerna innehåller 283 snake-token som inte finns i
 den skannade texten. Alla är matematiska subskript (`L_1`, `x_2`), och ingen
 av dem är en etikett.
+
+## Elevens renderare (PR #370 rond 8, bead hpf-4xvy)
+
+Ägarbeslut 2026-10-05 (alternativ A): hotmodellen gäller den renderare eleven
+faktiskt möter. Omklassningen rad för rad finns i `docs/worklog/hpf-4xvy.md`;
+`docs/worklog/hpf-klv6.md` är historik och lämnas orörd.
+
+- **Antagandet.** Appen visar varje elevsträng med `MathText`
+  (`app/src/components/MathText.tsx`): som React-text, tecken för tecken,
+  utom segmenten mellan U+E000 och nästa U+E001, som KaTeX sätter. Appen har
+  ingen Markdown- eller HTML-renderare, så eleven ser markup som de tecken den
+  består av. Butikens lintbara filer är alla `.json`, och varje strängvärde
+  visas genom `MathText`.
+- **Gäller oförändrat.** Raderna som rör den bokstavliga texten eller
+  KaTeX-vägen: C1–C9, M1, M7, H4, K1–K5 och A1, understrecksfallen i M2 och
+  fallen där markupen står *runt* etiketten i M3, M4, M6, H1 och H2.
+  Skanningen, den rena vyn och app-vyn täcker det eleven ser. Detektionen av
+  etiketter i den bokstavliga texten (rond 5–7) är oförändrad.
+- **Ej tillämpligt under nuvarande renderare.** Raderna vars stängning byggde
+  på att Markdown eller HTML renderas: fallen där markupen står *inne i*
+  etiketten i M2 (`*`), M3, M4, M6, H1 och H2, samt M5 och H3. Under
+  `MathText` syns den markupen som synligt skräp inne i token, alltså en annan
+  sträng (klass C8). Samma sak gäller entitets- och taggfallen i L2-HEDGAT och
+  L2-GATEREF (`hedg&#97;t`, `G-<b>STEM</b>`). Markup-vyn behålls som skydd på
+  djupet, bästa försök.
+- **Inget fullständighetsanspråk.** Markup-vyn är ingen fullständig modell av
+  CommonMark. Codex-granskning R8 (hpf-vqbz) visade tre giltiga konstruktioner
+  som en CommonMark-renderare visar som etiketten men som vyn inte modellerar:
+  ett citerat `>` i ett attributvärde
+  (`WORLD_<span title=">">KNOWLEDGE</span>`), en länkdestination med nästlade
+  balanserade parenteser (`[WORLD](a(b(c)d)e)_KNOWLEDGE`) och en
+  processinstruktion som har en andra `<?` och står mitt i etiketten.
+  `MathText` visar markupen. De tre och syskon av samma mekanismer står som
+  strikta xfail-test med skälet "not a learner-visible rendering under
+  MathText": luckan är bokförd, inte dold.
+- **Antagandet är fastnålat.** `test_lint_renderer_assumption_round8.py` (i
+  `gates/scripts/tests/`) fäller med "learner renderer changed — revisit the
+  Layer-2 threat model in LAYER2-RENDERING.md" om `app/package.json`
+  deklarerar en Markdown- eller HTML-renderare (react-markdown, markdown-it,
+  marked, remark\*, rehype\*, micromark, mdx med flera), eller om
+  `MathText.tsx` slutar visa text utanför matematiken som React-text: andra
+  avgränsare, ett andra `dangerouslySetInnerHTML`, ett som matas med annat än
+  KaTeX:s utdata, eller ett KaTeX som får kasta fel in i reservvägen som
+  lägger in segmentets råtext som HTML.
+- **När testet fäller** gäller antagandet inte längre. Hotmodellen ska då ses
+  över, och markup-vyn räcker inte som den är. Detsamma gäller om en `.md`-fil
+  görs elevvänd genom en Markdown-renderare: linten läser `.md` och `.txt`
+  som bokstavlig text, på samma sätt som strängvärdena.
+
+Linten är oförändrad: samma regler, vyer och fynd. Uppmätt på
+`data/explanations/`: default 2 fynd i 27 filer och `--strict` 74, som före
+ronden.

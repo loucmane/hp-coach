@@ -40,10 +40,13 @@ text, each rule reads three rendered views of it:
   markup view  the same after Markdown, HTML and KaTeX markup is interpreted
                everywhere (emphasis, code, links, escapes, tags, comments,
                character references, KaTeX style commands and groups, and
-               the math delimiters): any other renderer, over-approximated.
+               the math delimiters): defense in depth for renderers the app
+               does not use, best effort, not a complete CommonMark model.
 A match in a view is reported against the scanned text: the excerpt is cut
 around the characters that produced it. --strict's style debt is judged on the
-scanned text only.
+scanned text only. The threat model assumes the app's renderer, MathText, which
+shows Markdown and HTML as plain text (PR #370 round 8, bead hpf-4xvy;
+LAYER2-RENDERING.md, pinned by tests/test_lint_renderer_assumption_round8.py).
 
 Inputs fail closed (PR #370 round 2, bead hpf-oy2w): a path that does not
 exist, a directory holding no lintable file (.json/.md/.txt, not _-prefixed),
@@ -157,10 +160,12 @@ _TIER1 = frozenset(_fold(x) for x in _TAXONOMY_STEMS + _TAXONOMY_LABELS)
 # ---------------------------------------- the text as a learner sees it
 # PR #370 round 7 (bead hpf-klv6). The store's strings are rendered by the
 # app's MathText (app/src/components/MathText.tsx): plain text, except what
-# sits between U+E000 and the next U+E001, which KaTeX typesets. A .md file
-# goes through a Markdown (CommonMark/GFM) renderer, raw HTML included. The
-# app view models MathText; the markup view over-approximates every other
-# renderer. A label any of them could show is in the scanned text or a view.
+# sits between U+E000 and the next U+E001, which KaTeX typesets. That is the
+# learner renderer the threat model assumes (round 8, bead hpf-4xvy; pinned by
+# tests/test_lint_renderer_assumption_round8.py): the app renders no Markdown
+# and no HTML, so the scanned text, the plain view and the app view cover what
+# a learner sees. The markup view interprets Markdown and HTML as a CommonMark
+# renderer would, as defense in depth: best effort, not a completeness claim.
 _MATH_OPEN, _MATH_CLOSE = chr(0xE000), chr(0xE001)
 _RLO, _PDF = chr(0x202E), chr(0x202C)
 # where the bidirectional algorithm ends an override: its PDF, or the paragraph
