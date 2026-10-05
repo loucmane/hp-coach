@@ -6,13 +6,18 @@ row the assembly named a cross-batch name proximity with the words
 "disposition owed" and G-REGISTER answered with a bare pass — which is
 indistinguishable from "never looked". This check closes the loop:
 
-  Every occurrence of the marker "disposition owed" (case-insensitive, also
-  when markdown wraps it across two lines) must name at least one unit id
-  (elf-*/las-*) in its OWN SENTENCE, and for each named unit the
+  Every occurrence of the marker "disposition owed" must name at least one
+  unit id (elf-*/las-*) in its OWN SENTENCE, and for each named unit the
   G-REGISTER verdict stream must carry an explicit disposition of at least
   20 characters: a "disposition" field, or a finding note that starts with
   "disposition:" or says "not-applicable"/"not applicable". A bare pass, or
   merely non-empty findings, does NOT discharge the marker.
+
+  Marker (PR #370 round 4, bead hpf-wu46): "disposition" or "dispositions",
+  then "owed", in any case, with whitespace (a line wrap included) or inline
+  emphasis/code markers (*, _, `) between or around the words, so
+  "dispositions owed", "disposition **owed**" and "`disposition owed`" all
+  count. Any other word or punctuation between the two words makes no marker.
 
   Scope (PR #370 review, bead hpf-qo10): a marker's units are looked up
   only inside its markdown block — the list item or paragraph holding it,
@@ -42,6 +47,14 @@ indistinguishable from "never looked". This check closes the loop:
   two adjacent lines of different blocks (two rows; a heading and the line
   below it) is in neither block: it still counts, and names no unit.
 
+  Blockquotes (PR #370 round 4, bead hpf-wu46): every rule above reads a
+  line's text after its blockquote markers (">" and one optional space, any
+  nesting depth), so a quoted list item, heading or table row is one, and a
+  marker wrapped across two lines of one quote is found. A quote-only line
+  (">", "> >") is a blank line, and a change of quote depth ends the block,
+  also where GFM would read a lazy continuation line: a quote never lends a
+  unit to the text around it, nor borrows one from it.
+
 Exit 0 = all markers discharged (or no markers). Exit 1 = any undischarged
 marker, printed as "DISPOSITION-OWED <unit>: line <n>: <sentence excerpt>",
 with "<no unit named>" in place of the unit when the sentence names none and
@@ -55,12 +68,16 @@ import re
 from pathlib import Path
 
 UNIT_RE = re.compile(r"\b(?:elf|las)-b\d+-\d+\b")
-MARKER_RE = re.compile(r"disposition\s+owed", re.IGNORECASE)
+# "disposition(s)" then "owed" across whitespace and emphasis/code markers (bead
+# hpf-wu46). Blocks are joined with single spaces, so a line wrap is whitespace.
+MARKER_RE = re.compile(r"dispositions?[\s*_`]+owed", re.IGNORECASE)
 
-# Markdown blocks: a blank line closes the open block; a list item (bullet or
-# ordered, any nesting depth) opens a new one; a heading, table row, thematic
-# break or code fence is a block of its own line; any other line continues the
-# open block (wrapped continuation) or opens a paragraph.
+# Markdown blocks, read on each line's text after its blockquote markers
+# (_QUOTE): a blank or quote-only line closes the open block, and so does a
+# change of quote depth; a list item (bullet or ordered, any nesting depth)
+# opens a new one; a heading, table row, thematic break or code fence is a
+# block of its own line; any other line continues the open block (wrapped
+# continuation) or opens a paragraph.
 _LIST_ITEM = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s+")
 _OPENER = r"#{1,6}(?:\s|$)|(?:[-*_]\s*){3,}$|```|~~~"  # heading, thematic break, fence
 _ONE_LINE_BLOCK = re.compile(r"^\s{0,3}(?:" + _OPENER + r"|\|)")
@@ -74,7 +91,9 @@ _ONE_LINE_BLOCK = re.compile(r"^\s{0,3}(?:" + _OPENER + r"|\|)")
 # that could join the next one.
 _TABLE_DELIMITER = re.compile(r"^(?=.*[|:])\s*\|?\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)*\|?\s*$")
 _TABLE_END = re.compile(r"^\s{0,3}(?:" + _OPENER + ")")
-_QUOTE = re.compile(r"^(?:\s*>)*")
+# Blockquote markers, any nesting depth: ">" and one optional space (GFM), with
+# indentation allowed before each ">" (a quote inside a list item).
+_QUOTE = re.compile(r"^(?:\s*>[ \t]?)*")
 # A sentence ends at . ; ! or ? (plus closing quotes/brackets/emphasis) when
 # whitespace follows — never on the case of the next word (bead hpf-oy2w).
 # "8.7", "ASSEMBLY.md" and unit ids have no whitespace after the dot; a full
@@ -154,14 +173,16 @@ def _blocks(lines: list[str]) -> list[list[int]]:
     table = _table_rows(lines)
     blocks: list[list[int]] = []
     open_block: list[int] | None = None
+    open_depth = 0
     for i, raw in enumerate(lines):
-        if not raw.strip():
+        depth, text = _quoted(raw)
+        if not text.strip():
             open_block = None
-        elif i in table or _ONE_LINE_BLOCK.match(raw):
+        elif i in table or _ONE_LINE_BLOCK.match(text):
             blocks.append([i])
             open_block = None
-        elif open_block is None or _LIST_ITEM.match(raw):
-            open_block = [i]
+        elif open_block is None or depth != open_depth or _LIST_ITEM.match(text):
+            open_block, open_depth = [i], depth
             blocks.append(open_block)
         else:
             open_block.append(i)
@@ -190,19 +211,21 @@ def _sentence_spans(text: str) -> list[tuple[int, int]]:
 def find_markers(lines: list[str]) -> list[tuple[int, list[str], str]]:
     """Every marker as (1-based line, unit ids in its sentence, that sentence).
 
-    Each block is joined into one whitespace-normalised string, so a marker
-    phrase wrapped across two lines is still found (and reported on the line
-    where it starts) and a unit id on a wrapped continuation line is still in
-    scope — but nothing outside the block ever is. A marker wrapped from one
-    block's last line into the next block's first line is in neither block:
-    it is found all the same, naming no unit.
+    Each block is joined into one whitespace-normalised string of its lines'
+    text after their quote markers, so a marker phrase wrapped across two
+    lines is still found (and reported on the line where it starts) and a
+    unit id on a wrapped continuation line is still in scope — but nothing
+    outside the block ever is. A marker wrapped from one block's last line
+    into the next block's first line is in neither block: it is found all the
+    same, naming no unit.
     """
     found = []
+    dequoted = [_quoted(raw)[1] for raw in lines]
     blocks = _blocks(lines)
     for block in blocks:
         parts, starts, pos = [], [], 0
         for k, i in enumerate(block):
-            text = _LIST_ITEM.sub("", lines[i], count=1) if k == 0 else lines[i]
+            text = _LIST_ITEM.sub("", dequoted[i], count=1) if k == 0 else dequoted[i]
             text = " ".join(text.split())
             starts.append((pos, i))
             parts.append(text)
@@ -215,9 +238,9 @@ def find_markers(lines: list[str]) -> list[tuple[int, list[str], str]]:
             sentence = joined[s:e].strip()
             found.append((line, list(dict.fromkeys(UNIT_RE.findall(sentence))), sentence))
     for first in (block[0] for block in blocks):
-        if not first or not lines[first - 1].strip():
+        if not first or not dequoted[first - 1].strip():
             continue
-        tail, head = (" ".join(lines[k].split()) for k in (first - 1, first))
+        tail, head = (" ".join(dequoted[k].split()) for k in (first - 1, first))
         pair = f"{tail} {head}"
         for m in MARKER_RE.finditer(pair):
             if m.start() < len(tail) < m.end():
