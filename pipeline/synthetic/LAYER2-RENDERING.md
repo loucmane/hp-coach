@@ -61,7 +61,10 @@ Skikt 1 (default) jämför token och vokabulär i **normaliserad form**: gemener
 utan diakritiska tecken och utan understreck. `WORLD_KNOWLEDGE` träffar därför
 stammen `worldknowledge`, och `författarens_hållning` träffar etiketten
 `forfattarens_hallning`. En token fäller när dess normaliserade form
-innehåller en normaliserad vokabulärpost.
+innehåller en normaliserad vokabulärpost. All text normaliseras till NFC innan
+någon regel körs (PR #370 rond 6, bead hpf-pvkp): ett `å` skrivet som `a` plus
+kombinerande ring behandlas därför precis som ett förkomponerat `å`, och en
+token får innehålla vilken bokstav som helst, så `idé_skifte` är en hel token.
 
 Vokabulären är stammarna plus **varje snake_case-etikett som pipelinen
 faktiskt använder** (inventering 2026-10-05):

@@ -20,6 +20,11 @@ Checks, per JSON string value (or raw text line):
              G-DISTRACTOR/G-REGISTER/G-ENG, absolutiser/absolutizer list,
              "round-N version" / "runda N-versionen" pipeline talk
 
+Every scanned text is normalized to NFC once, before any check runs (PR #370
+round 6, bead hpf-pvkp): a canonically equivalent spelling — å written as
+a + U+030A, as NFD text has it — lints exactly like the precomposed one, and
+excerpts show the normalized text.
+
 Inputs fail closed (PR #370 round 2, bead hpf-oy2w): a path that does not
 exist, a directory holding no lintable file (.json/.md/.txt, not _-prefixed),
 a file that is not UTF-8, and a .json file that does not parse are input
@@ -45,7 +50,11 @@ from pathlib import Path
 # while math subscript notation stays protected by the store's
 # math-preservation contract: v_r, a_n, b_m (total < 5) and K_2007 /
 # a_1 (no segment with two letters) never flag.
-_SNAKE_TOKEN = re.compile(r"\b[0-9A-Za-zÅÄÖåäö]+(?:_[0-9A-Za-zÅÄÖåäö]+)+\b")
+# A segment is any run of Unicode letters and digits, i.e. word characters
+# other than the `_` separator (PR #370 round 6, bead hpf-pvkp): idé_skifte
+# is one token, where a class narrower than \w found no match at all, and
+# scan_text has already normalized to NFC, so a decomposed å cannot split one.
+_SNAKE_TOKEN = re.compile(r"\b[^\W_]+(?:_[^\W_]+)+\b")
 
 
 def _fold(s: str) -> str:
@@ -127,7 +136,8 @@ class _Snake:
     non-blocking, inspect-before-replace), not gate-internal leakage, and
     the store's math-preservation contract protects them from blind
     rewriting. Pure subscript notation (v_r, a_n, K_2007) never flags in
-    either tier.
+    either tier. search() expects canonical text: scan_text, its only
+    caller, normalizes to NFC before any rule runs.
     """
 
     def __init__(self, strict: bool = False):
@@ -176,6 +186,11 @@ RULES = (("L2-SNAKE", SNAKE), ("L2-HEDGAT", HEDGAT), ("L2-GATEREF", GATEREF))
 
 
 def scan_text(text: str) -> list[tuple[str, str]]:
+    # The one entry point every rule shares: NFC here, once, before any regex
+    # runs (PR #370 round 6, bead hpf-pvkp). NFC, not NFKC: compatibility
+    # folding would rewrite learner math in the excerpts (x² as x2, aₙ as an),
+    # and tier 1 folds compatibility letters inside a token anyway (_fold).
+    text = unicodedata.normalize("NFC", text)
     hits = []
     for name, rx in RULES:
         m = rx.search(text)
