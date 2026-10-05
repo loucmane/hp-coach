@@ -66,31 +66,35 @@ def _write(tmp_path, name, records):
 def test_merge_collapses_stamped_and_unstamped_twin(tmp_path):
     raw = _write(tmp_path, "raw.jsonl", [_v()])
     stamped = _write(tmp_path, "stamped.jsonl", [_v(vote=2)])
-    records, dropped = merge([raw, stamped])
-    assert len(records) == 1 and dropped == 1
+    records, stats = merge([raw, stamped])
+    assert len(records) == 1 and stats.twins == 1 and stats.superseded == 0
     assert records[0]["vote"] == 2  # vote-bearing copy wins
 
 
 def test_merge_collapses_unstamped_arriving_after_stamped(tmp_path):
     stamped = _write(tmp_path, "stamped.jsonl", [_v(vote=2)])
     raw = _write(tmp_path, "raw.jsonl", [_v()])
-    records, dropped = merge([stamped, raw])
-    assert len(records) == 1 and dropped == 1 and records[0]["vote"] == 2
+    records, stats = merge([stamped, raw])
+    assert len(records) == 1 and stats.twins == 1 and records[0]["vote"] == 2
 
 
 def test_merge_keeps_distinct_votes(tmp_path):
     a = _write(tmp_path, "a.jsonl", [_v(vote=1)])
     b = _write(tmp_path, "b.jsonl", [_v(vote=2)])
-    records, dropped = merge([a, b])
-    assert len(records) == 2 and dropped == 0
+    records, stats = merge([a, b])
+    assert len(records) == 2
+    assert (stats.superseded, stats.duplicates, stats.twins) == (0, 0, 0)
     assert {r["vote"] for r in records} == {1, 2}
 
 
-def test_merge_keeps_different_evidence(tmp_path):
+def test_merge_later_file_supersedes_different_evidence(tmp_path):
+    # hpf-qo10: different evidence for the same (candidate_id, gate, target,
+    # vote) from a LATER file is a repair re-gate — it replaces, never doubles
     a = _write(tmp_path, "a.jsonl", [_v(just="reason A")])
     b = _write(tmp_path, "b.jsonl", [_v(just="reason B")])
-    records, dropped = merge([a, b])
-    assert len(records) == 2 and dropped == 0
+    records, stats = merge([a, b])
+    assert [r["justification"] for r in records] == ["reason B"]
+    assert stats.superseded == 1 and stats.duplicates == 0
 
 
 def test_merge_batch16_regression_shape(tmp_path):
@@ -98,8 +102,8 @@ def test_merge_batch16_regression_shape(tmp_path):
     legs = [_v(target=f"q:{i}", just=f"j{i}") for i in (1, 2)]
     raw = _write(tmp_path, "raw.jsonl", legs)
     stamped = _write(tmp_path, "st.jsonl", [dict(v, vote=2) for v in legs])
-    records, dropped = merge([raw, stamped])
-    assert len(records) == 2 and dropped == 2
+    records, stats = merge([raw, stamped])
+    assert len(records) == 2 and stats.twins == 2
     assert all(r.get("vote") == 2 for r in records)
 
 

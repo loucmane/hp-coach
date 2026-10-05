@@ -1,33 +1,66 @@
 #!/usr/bin/env python3
-"""Canonical verdict merge with a vote-source contract.
+"""Canonical verdict merge: vote-source contract + repair supersession.
 
 Ägardom 2026-08-31 (bead hpf-y1p4, batch16 ÄGARBLICK 8b): batch16's merged
 verdicts.jsonl carried the same G-KEY leg twice — once from the raw leg file
 (no `vote` field) and once from its vote-stamped `-v` twin — so the raw
-record count overstated blind coverage by seven answers. The merge contract
-below makes that impossible:
+record count overstated blind coverage by seven answers. PR #370 review
+(bead hpf-qo10): a repaired verdict usually carries a new executed_by and/or
+justification, so merging on evidence identity alone kept the obsolete
+verdict beside its repair, and an obsolete kill reads as DEAD. The contract:
 
+  SLOT      = (candidate_id, gate, target, vote)       — one ballot position
   IDENTITY  = (candidate_id, gate, target, executed_by, justification, run)
-  Two records with the same IDENTITY are the SAME evidence. They are merged
-  to one output record; a vote-bearing copy wins over an unstamped copy.
-  Two same-IDENTITY records carrying DIFFERENT votes are distinct ballots
-  and are both kept (a solver may legitimately sit in both fleet votes).
-  Records with different IDENTITY are always both kept (last file wins on
-  full-key collisions, preserving the established last-wins repair flow).
+                                                       — one piece of evidence
 
-Deterministic: output order is first-seen order over inputs in argv order.
-Exit 0 on success; prints a one-line summary with the dedup count so a
-silent no-op is visible in logs.
+  1. Twins. An unstamped record (no `vote`) whose IDENTITY also occurs
+     vote-stamped is the same evidence: it folds into the stamped copy,
+     whichever file or order either arrives in.
+  2. Same input file. Records sharing a SLOT must be the same evidence
+     restated (same IDENTITY: the later line wins) or numbered ballots
+     (every one carries an integer `run` and the runs differ: all are kept,
+     e.g. a unit-level G-SPRAK re-gate run x3). Anything else FAILS CLOSED.
+     In the real batch verdict files an appended re-gate (kill, then a
+     `-regate` pass) and a second unstamped ballot (leg 1 and leg 2 of a
+     G-KEY resolve) have the same shape — both differ only in executed_by /
+     justification — so keeping both resurrects obsolete kills and last-wins
+     silently deletes a ballot. Put a re-gate in its own later input file;
+     stamp distinct ballots with `vote` or `run`.
+  3. Repair supersession across files (BATCH-RUNBOOK "Repair re-gates must
+     flow into the batch merge"). For each SLOT the LAST input file in argv
+     order that carries it wins: its records replace every record for that
+     SLOT from earlier files, whatever their executed_by/justification/run.
+
+Accounting, printed so a silent no-op stays visible: `superseded` counts
+records replaced by different content (a repair took effect, or a same-
+IDENTITY restatement changed something), `duplicates` counts byte-identical
+copies collapsed (no-ops), `twins` counts unstamped copies folded into their
+vote-stamped twin.
+
+Deterministic: output keeps first-seen order, and replacing records take
+the places of the records they replace, in order (repairs land in place, as
+the batch16/17 hand merges laid them out). Exit 0 on success; a contract
+violation prints MERGE CONTRACT VIOLATION, writes nothing, and exits 1.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import sys
+from collections import defaultdict
+from dataclasses import dataclass
 from pathlib import Path
 
 
 class MergeContractError(ValueError):
     """A record violates the merge contract; the merge fails closed."""
+
+
+@dataclass
+class MergeStats:
+    superseded: int = 0  # replaced by different content
+    duplicates: int = 0  # byte-identical copies collapsed
+    twins: int = 0       # unstamped copies folded into their vote-stamped twin
 
 
 def _validate(v: dict, source: str) -> None:
@@ -43,11 +76,14 @@ def _validate(v: dict, source: str) -> None:
             f"{source}: record carries neither executed_by nor "
             f"justification — identity too weak to dedup safely: "
             f"{json.dumps(v, ensure_ascii=False)[:120]}")
-    if "vote" in v and (isinstance(v["vote"], bool)
-                       or not isinstance(v["vote"], int) or v["vote"] < 1):
-        raise MergeContractError(
-            f"{source}: vote must be a positive integer, got "
-            f"{v['vote']!r}")
+    # `run` numbers same-file ballots (rule 2), so it is held to the same
+    # standard as `vote`: "1" and 1 must not pass as two different ballots.
+    for field in ("vote", "run"):
+        if field in v and (isinstance(v[field], bool)
+                           or not isinstance(v[field], int) or v[field] < 1):
+            raise MergeContractError(
+                f"{source}: {field} must be a positive integer, got "
+                f"{v[field]!r}")
 
 
 def identity(v: dict) -> tuple:
@@ -55,54 +91,118 @@ def identity(v: dict) -> tuple:
             v.get("executed_by"), v.get("justification"), v.get("run"))
 
 
-def merge(files: list[Path]) -> tuple[list[dict], int]:
-    kept: dict[tuple, dict] = {}
-    order: list[tuple] = []
-    dropped = 0
-    for fp in files:
-        for line in fp.read_text(encoding="utf-8").splitlines():
+def slot(v: dict) -> tuple:
+    return (v.get("candidate_id"), v.get("gate"), v.get("target"), v.get("vote"))
+
+
+def merge(files: list[Path]) -> tuple[list[dict], MergeStats]:
+    recs: list[tuple[int, int, dict]] = []  # (input file index, line no, record)
+    for fi, fp in enumerate(files):
+        for n, line in enumerate(fp.read_text(encoding="utf-8").splitlines(), 1):
             line = line.strip()
             if not line:
                 continue
             v = json.loads(line)
-            _validate(v, fp.name)
-            base = identity(v)
-            key = base + (v.get("vote"),)
-            unstamped = base + (None,)
-            if v.get("vote") is not None and unstamped in kept:
-                # vote-stamped twin of an unstamped copy: upgrade in place
-                kept.pop(unstamped)
-                idx = order.index(unstamped)
-                order[idx] = key
-                kept[key] = v
-                dropped += 1
-                continue
-            if v.get("vote") is None:
-                # is any stamped twin already present? then this copy is a dup
-                if any(k[:-1] == base and k[-1] is not None for k in kept):
-                    dropped += 1
-                    continue
-            if key in kept:
-                dropped += 1  # exact same evidence again — last wins
+            _validate(v, str(fp))
+            recs.append((fi, n, v))
+
+    stats = MergeStats()
+    alive = set(range(len(recs)))
+    anchor = list(range(len(recs)))  # output position: earliest record absorbed
+
+    def absorb(loser: int, winner: int) -> None:
+        alive.discard(loser)
+        anchor[winner] = min(anchor[winner], anchor[loser])
+
+    # 1. twins: the stamped copy wins, in whichever order the two arrive
+    stamped: dict[tuple, int] = {}
+    for i, (_, _, v) in enumerate(recs):
+        if v.get("vote") is not None:
+            stamped.setdefault(identity(v), i)
+    for i, (_, _, v) in enumerate(recs):
+        if v.get("vote") is None and identity(v) in stamped:
+            absorb(i, stamped[identity(v)])
+            stats.twins += 1
+
+    # 2. same input file: restatements collapse, numbered ballots stay,
+    #    any other collision on a SLOT is ambiguous and fails closed
+    per_file_slot: dict[tuple, list[int]] = defaultdict(list)
+    for i in sorted(alive):
+        fi, _, v = recs[i]
+        per_file_slot[(fi, slot(v))].append(i)
+    for (fi, key), members in per_file_slot.items():
+        by_identity: dict[tuple, list[int]] = defaultdict(list)
+        for i in members:
+            by_identity[identity(recs[i][2])].append(i)
+        runs = [ident[-1] for ident in by_identity]
+        if len(by_identity) > 1 and (None in runs or len(set(runs)) != len(runs)):
+            seen = ", ".join(
+                f"line {recs[same[-1]][1]} executed_by={ident[3]!r} run={ident[-1]!r}"
+                for ident, same in by_identity.items())
+            raise MergeContractError(
+                f"{files[fi]}: same file carries {len(by_identity)} different records "
+                f"for (candidate_id, gate, target, vote)={key!r} without distinct "
+                f"integer `run` numbers ({seen}) — an appended re-gate and a second "
+                f"ballot are indistinguishable here; put the re-gate in its own "
+                f"later input file, or stamp the ballots with `vote`/`run`")
+        for same in by_identity.values():
+            last = same[-1]
+            for i in same[:-1]:
+                absorb(i, last)
+                if recs[i][2] == recs[last][2]:
+                    stats.duplicates += 1
+                else:
+                    stats.superseded += 1
+
+    # 3. repair supersession: the last input file carrying a SLOT wins it
+    last_file: dict[tuple, int] = {}
+    for i in sorted(alive):
+        fi, _, v = recs[i]
+        last_file[slot(v)] = fi  # positions run in argv order, so this ends at the max
+    winners: dict[tuple, list[int]] = defaultdict(list)
+    replaced: dict[tuple, list[int]] = defaultdict(list)
+    for i in sorted(alive):
+        fi, _, v = recs[i]
+        (winners if fi == last_file[slot(v)] else replaced)[slot(v)].append(i)
+    for key, old in replaced.items():
+        ws = winners[key]
+        for i in old:
+            alive.discard(i)
+            if any(recs[w][2] == recs[i][2] for w in ws):
+                stats.duplicates += 1
             else:
-                order.append(key)
-            kept[key] = v
-    return [kept[k] for k in order], dropped
+                stats.superseded += 1
+        # the k-th replacing record takes the k-th replaced record's place
+        # (extras line up behind the last), so a re-run set lands where the
+        # set it replaces stood, interleaving with other units intact
+        old.sort(key=lambda i: anchor[i])
+        for k, w in enumerate(ws):
+            anchor[w] = min(anchor[w], anchor[old[min(k, len(old) - 1)]])
+
+    order = sorted(alive, key=lambda i: (anchor[i], i))
+    return [recs[i][2] for i in order], stats
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("inputs", nargs="+", type=Path,
-                    help="verdict jsonl files, base first, legs after (argv order wins)")
+                    help="verdict jsonl files, base first, re-gate legs after "
+                         "(a later file supersedes earlier ones per slot)")
     ap.add_argument("--out", type=Path, required=True)
     args = ap.parse_args()
-    records, dropped = merge(args.inputs)
+    try:
+        records, stats = merge(args.inputs)
+    except MergeContractError as exc:
+        print(f"merge_verdicts: MERGE CONTRACT VIOLATION — {exc}", file=sys.stderr)
+        return 1
     with args.out.open("w", encoding="utf-8") as fh:
         for v in records:
             fh.write(json.dumps(v, ensure_ascii=False) + "\n")
     votes = sum(1 for v in records if v.get("vote") is not None)
-    print(f"merge_verdicts: {len(records)} record(s) ({votes} vote-bearing), "
-          f"{dropped} duplicate copy/copies collapsed -> {args.out}")
+    print(f"merge_verdicts: {len(records)} record(s) ({votes} vote-bearing); "
+          f"{stats.superseded} superseded by later input, "
+          f"{stats.duplicates} exact duplicate(s), "
+          f"{stats.twins} unstamped twin(s) collapsed -> {args.out}")
     return 0
 
 
