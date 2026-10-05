@@ -33,9 +33,19 @@ indistinguishable from "never looked". This check closes the loop:
   text is split: a split can only narrow a marker's sentence towards
   "<no unit named>" (fail closed), never lend it a unit from another one.
 
+  Tables (PR #370 round 3, bead hpf-96rj): every GFM pipe-table row is a
+  block of its own, with or without leading/trailing pipes, so a marker row
+  names only its own unit(s) — "Other | disposition owed" names none, whatever
+  the other rows say. A table is found by its delimiter row (cells of "-",
+  optional ":" alignment); a "|" in prose with no delimiter row is no table.
+  The delimiter row names no unit and is no marker. A marker wrapped across
+  two adjacent lines of different blocks (two rows; a heading and the line
+  below it) is in neither block: it still counts, and names no unit.
+
 Exit 0 = all markers discharged (or no markers). Exit 1 = any undischarged
 marker, printed as "DISPOSITION-OWED <unit>: line <n>: <sentence excerpt>",
-with "<no unit named>" in place of the unit when the sentence names none.
+with "<no unit named>" in place of the unit when the sentence names none and
+"(split across two blocks)" opening the excerpt of a marker in neither block.
 """
 from __future__ import annotations
 
@@ -52,7 +62,19 @@ MARKER_RE = re.compile(r"disposition\s+owed", re.IGNORECASE)
 # break or code fence is a block of its own line; any other line continues the
 # open block (wrapped continuation) or opens a paragraph.
 _LIST_ITEM = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s+")
-_ONE_LINE_BLOCK = re.compile(r"^\s{0,3}(?:#{1,6}(?:\s|$)|\||(?:[-*_]\s*){3,}$|```|~~~)")
+_OPENER = r"#{1,6}(?:\s|$)|(?:[-*_]\s*){3,}$|```|~~~"  # heading, thematic break, fence
+_ONE_LINE_BLOCK = re.compile(r"^\s{0,3}(?:" + _OPENER + r"|\|)")
+# A table row is a line starting with "|" or any line of a GFM pipe table (bead
+# hpf-96rj). The table is found by its delimiter row — cells of "-" with
+# optional ":" alignment, outer pipes optional, holding a "|" or a ":" (a bare
+# "---" is a thematic break or setext underline) — and runs from the header row
+# above it to the next blank line, line opening another block (_LIST_ITEM,
+# _TABLE_END) or change of blockquote depth. As in GFM (spec example 202), a
+# line without "|" inside that run is a one-cell row, never a paragraph line
+# that could join the next one.
+_TABLE_DELIMITER = re.compile(r"^(?=.*[|:])\s*\|?\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)*\|?\s*$")
+_TABLE_END = re.compile(r"^\s{0,3}(?:" + _OPENER + ")")
+_QUOTE = re.compile(r"^(?:\s*>)*")
 # A sentence ends at . ; ! or ? (plus closing quotes/brackets/emphasis) when
 # whitespace follows — never on the case of the next word (bead hpf-oy2w).
 # "8.7", "ASSEMBLY.md" and unit ids have no whitespace after the dot; a full
@@ -102,14 +124,40 @@ def discharged(unit: str, verdict_files: list[Path]) -> bool:
     return False
 
 
+def _quoted(raw: str) -> tuple[int, str]:
+    """A line's blockquote depth and its text after the quote markers."""
+    quote = _QUOTE.match(raw).group()
+    return quote.count(">"), raw[len(quote):]
+
+
+def _table_rows(lines: list[str]) -> set[int]:
+    """Indices of every line of every GFM pipe table (rules above _TABLE_DELIMITER)."""
+    rows: set[int] = set()
+    for i, raw in enumerate(lines):
+        depth, text = _quoted(raw)
+        if not _TABLE_DELIMITER.match(text):
+            continue
+        if i and _quoted(lines[i - 1])[1].strip():
+            rows.add(i - 1)  # the header row
+        rows.add(i)
+        for j in range(i + 1, len(lines)):
+            row_depth, text = _quoted(lines[j])
+            if (row_depth != depth or not text.strip()
+                    or _LIST_ITEM.match(text) or _TABLE_END.match(text)):
+                break
+            rows.add(j)
+    return rows
+
+
 def _blocks(lines: list[str]) -> list[list[int]]:
     """Group line indices into markdown blocks (rules above _LIST_ITEM)."""
+    table = _table_rows(lines)
     blocks: list[list[int]] = []
     open_block: list[int] | None = None
     for i, raw in enumerate(lines):
         if not raw.strip():
             open_block = None
-        elif _ONE_LINE_BLOCK.match(raw):
+        elif i in table or _ONE_LINE_BLOCK.match(raw):
             blocks.append([i])
             open_block = None
         elif open_block is None or _LIST_ITEM.match(raw):
@@ -145,10 +193,13 @@ def find_markers(lines: list[str]) -> list[tuple[int, list[str], str]]:
     Each block is joined into one whitespace-normalised string, so a marker
     phrase wrapped across two lines is still found (and reported on the line
     where it starts) and a unit id on a wrapped continuation line is still in
-    scope — but nothing outside the block ever is.
+    scope — but nothing outside the block ever is. A marker wrapped from one
+    block's last line into the next block's first line is in neither block:
+    it is found all the same, naming no unit.
     """
     found = []
-    for block in _blocks(lines):
+    blocks = _blocks(lines)
+    for block in blocks:
         parts, starts, pos = [], [], 0
         for k, i in enumerate(block):
             text = _LIST_ITEM.sub("", lines[i], count=1) if k == 0 else lines[i]
@@ -163,7 +214,16 @@ def find_markers(lines: list[str]) -> list[tuple[int, list[str], str]]:
             s, e = next(sp for sp in spans if sp[0] <= m.start() < sp[1])
             sentence = joined[s:e].strip()
             found.append((line, list(dict.fromkeys(UNIT_RE.findall(sentence))), sentence))
-    return found
+    for first in (block[0] for block in blocks):
+        if not first or not lines[first - 1].strip():
+            continue
+        tail, head = (" ".join(lines[k].split()) for k in (first - 1, first))
+        pair = f"{tail} {head}"
+        for m in MARKER_RE.finditer(pair):
+            if m.start() < len(tail) < m.end():
+                s, e = next(sp for sp in _sentence_spans(pair) if sp[0] <= m.start() < sp[1])
+                found.append((first, [], "(split across two blocks) " + pair[s:e].strip()))
+    return sorted(found, key=lambda f: f[0])
 
 
 def main() -> int:
