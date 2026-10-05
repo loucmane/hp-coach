@@ -91,3 +91,64 @@ vanligt ord: `trap` skulle till exempel träffa formelnamnet `A_trap`.
 Uppmätt på `data/explanations/` (27 filer, 1 331 snake_case-förekomster, 236
 distinkta token): default ger samma 2 äkta *hedgning*-fynd som före ronden
 och `--strict` samma 74 fynd. Ingen token flaggas nytt och ingen tappas.
+
+## Renderad text (PR #370 rond 7, bead hpf-klv6)
+
+Linten granskar det eleven faktiskt ser, inte bara den lagrade stavningen.
+Hotmodellen, med varje stavningsvariant och hur den hanteras, finns i
+`docs/worklog/hpf-klv6.md`.
+
+- **Ordgränser.** En token avgränsas av allt som inte är en bokstav eller en
+  siffra, och dess segment skiljs åt av ett eller flera understreck.
+  `_WORLD_KNOWLEDGE_` (Markdown-kursiv), `__WORLD_KNOWLEDGE__` och
+  `WORLD__KNOWLEDGE` är därför tokens. Samma gräns gäller orden i L2-HEDGAT
+  och grindnamnen i L2-GATEREF (`_hedgat_`, `__G-STEM__`).
+- **Tre renderade vyer.** Varje regel läser den skannade texten och dessutom
+  tre vyer av den:
+  - *Ren vy.* Osynliga tecken tas bort: allmän kategori Cf och övriga
+    default-ignorable, till exempel U+200B, U+00AD, U+2060, U+FEFF,
+    variantväljare och hangul-fyllnadstecken. En högerriktad överstyrning
+    (RLO) vänds som den visas. Kompatibilitetstecken skrivs i NFKC-form:
+    fullbreddsunderstrecket U+FF3F och de andra understrecksvarianterna blir
+    `_`, och inringade och matematiska bokstäver blir vanliga bokstäver. Lösa
+    kombinerande diakriter tas bort. Den skannade texten och utdragen förblir
+    NFC, så elevmatematik som `x²` skrivs aldrig om.
+  - *App-vy.* Samma behandling, efter att KaTeX har tolkats mellan
+    MathText-avgränsarna U+E000 och U+E001 och bara där. Det är appens egen
+    rendering: resten av strängen visas som den står, Markdown och HTML
+    inräknade.
+  - *Markup-vy.* Samma behandling, efter att Markdown, HTML och KaTeX har
+    tolkats i hela texten. Markdown omfattar emfas, kod, genomstrykning,
+    länkar och `\`-escape. HTML omfattar taggar, kommentarer och
+    teckenreferenser som `&#95;` och `&lowbar;`. KaTeX omfattar stilkommandon
+    som `\text` och `\mathrm`, grupper `{}`, `\_`, `\textunderscore`,
+    färgargument och matematikavgränsarna.
+
+  Appen visar strängvärden som ren text och sätter bara matematiken med
+  KaTeX; app-vyn efterliknar den. En `.md`-fil går i stället genom en
+  Markdown-renderare, och markup-vyn tar med allt som en sådan kan dölja.
+  En etikett som någon renderare visar finns därför i texten eller i en vy.
+- **Skikt 2 bedömer den lagrade stavningen.** `--strict` läser bara den
+  skannade texten. En LaTeX-subskript som `V_{\text{gammal}}` är korrekt
+  notation, inte stilskuld.
+- **Fynd pekar på källtexten.** En träff i en vy rapporteras mot den skannade
+  texten, och utdraget skärs ut kring de tecken som gav träffen. CLI:t skriver
+  osynliga tecken som `<U+XXXX>`. Då syns var de sitter, och ett
+  riktningstecken kan inte kasta om raden.
+- **Medvetet lämnat:**
+  - stavningar som ser annorlunda ut: bindestreck, mellanslag eller andra
+    tecken som avgränsare, förväxlingsbara bokstäver från andra skript,
+    synligt skräp inne i token, översättning och omskrivning;
+  - blanksteg inne i KaTeX-matematik;
+  - mellanrums- och fantomkommandon i KaTeX;
+  - Markdown-tillägg utanför CommonMark/GFM.
+
+Matbevarandekontraktet gäller oförändrat. Subskriptnotation och formelnamn
+fäller aldrig i default-läge, inte heller när de står i Markdown-emfas, HTML
+eller KaTeX.
+
+Uppmätt på `data/explanations/` (27 filer, 169 988 strängar): default ger
+samma 2 *hedgning*-fynd och `--strict` samma 74 fynd, rad för rad. 11 145
+strängar får minst en vy. Vyerna innehåller 283 snake-token som inte finns i
+den skannade texten. Alla är matematiska subskript (`L_1`, `x_2`), och ingen
+av dem är en etikett.

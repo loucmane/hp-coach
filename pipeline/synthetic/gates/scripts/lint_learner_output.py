@@ -9,7 +9,7 @@ store (data/explanations/) is clean today — this lint makes that property
 enforced instead of accidental. Run it on RENDERED learner text only;
 it must NOT be pointed at the bank's internal adjudication metadata.
 
-Checks, per JSON string value (or raw text line):
+Checks, per JSON string value (or raw text file):
   L2-SNAKE   snake_case token carrying a pipeline taxonomy stem or label,
              compared with case, diacritics and underscores folded
              (WORLD_KNOWLEDGE, tone_misread, författarens_hållning); with
@@ -25,18 +25,42 @@ round 6, bead hpf-pvkp): a canonically equivalent spelling — å written as
 a + U+030A, as NFD text has it — lints exactly like the precomposed one, and
 excerpts show the normalized text.
 
+Every rule also holds on the text as a learner sees it (PR #370 round 7, bead
+hpf-klv6; threat model in docs/worklog/hpf-klv6.md). A word or token is
+bounded by anything that is not a letter or digit, so an underscore beside it
+cannot hide it (_WORLD_KNOWLEDGE_ is Markdown emphasis). Besides the scanned
+text, each rule reads three rendered views of it:
+  plain view   invisible characters dropped, right-to-left overrides undone,
+               compatibility characters in NFKC form (a fullwidth low line is
+               an underscore), stray combining marks dropped;
+  app view     the same after KaTeX markup is interpreted between MathText's
+               delimiters U+E000 and U+E001, and only there: the app's own
+               rendering of a store string, where everything else is shown
+               as it stands;
+  markup view  the same after Markdown, HTML and KaTeX markup is interpreted
+               everywhere (emphasis, code, links, escapes, tags, comments,
+               character references, KaTeX style commands and groups, and
+               the math delimiters): any other renderer, over-approximated.
+A match in a view is reported against the scanned text: the excerpt is cut
+around the characters that produced it. --strict's style debt is judged on the
+scanned text only.
+
 Inputs fail closed (PR #370 round 2, bead hpf-oy2w): a path that does not
 exist, a directory holding no lintable file (.json/.md/.txt, not _-prefixed),
 a file that is not UTF-8, and a .json file that does not parse are input
 failures, printed "INPUT-FAIL <path>: reason" — never scanned as raw text,
 never reported clean. Zero files examined is an input failure too.
 
-Exit 0 = clean. Exit 1 = findings, printed "L2-<RULE> <file>:<jsonpath-or-line>: excerpt".
+Exit 0 = clean. Exit 1 = findings, printed "L2-<RULE> <file>:<jsonpath>: excerpt"
+(the path is "-" for a .md/.txt file; an invisible character anywhere in the
+line is printed as <U+XXXX>).
 Exit 2 = any input failure (findings, if any, are printed as well).
 """
 from __future__ import annotations
 
 import argparse
+import functools
+import html
 import json
 import re
 import sys
@@ -54,15 +78,21 @@ from pathlib import Path
 # other than the `_` separator (PR #370 round 6, bead hpf-pvkp): idé_skifte
 # is one token, where a class narrower than \w found no match at all, and
 # scan_text has already normalized to NFC, so a decomposed å cannot split one.
-_SNAKE_TOKEN = re.compile(r"\b[^\W_]+(?:_[^\W_]+)+\b")
+# A token is bounded by anything that is not a letter or digit, and runs of
+# underscores separate its segments (PR #370 round 7, bead hpf-klv6): \b never
+# holds between `_` and a letter, so _WORLD_KNOWLEDGE_ was no token at all.
+_SNAKE_TOKEN = re.compile(r"(?<![^\W_])[^\W_]+(?:_+[^\W_]+)+(?![^\W_])")
 
 
 def _fold(s: str) -> str:
     """Case, diacritics and underscores removed (PR #370 round 5, bead
     hpf-6fkm): WORLD_KNOWLEDGE folds onto the stem worldknowledge, and
-    författarens_hållning onto the label forfattarens_hallning."""
-    return "".join(c for c in unicodedata.normalize("NFKD", s.casefold())
-                   if c != "_" and not unicodedata.combining(c))
+    författarens_hållning onto the label forfattarens_hallning. Case is folded
+    on both sides of the compatibility decomposition, as in Unicode's
+    compatibility caseless match (round 7): a mathematical bold or circled
+    capital only becomes a plain capital in NFKD."""
+    t = unicodedata.normalize("NFKD", unicodedata.normalize("NFKD", s.casefold()).casefold())
+    return "".join(c for c in t if c != "_" and not unicodedata.combining(c))
 
 
 # Tier 1 vocabulary: a snake token flags when its folded form contains the
@@ -124,20 +154,236 @@ _TAXONOMY_LABELS = (
 _TIER1 = frozenset(_fold(x) for x in _TAXONOMY_STEMS + _TAXONOMY_LABELS)
 
 
+# ---------------------------------------- the text as a learner sees it
+# PR #370 round 7 (bead hpf-klv6). The store's strings are rendered by the
+# app's MathText (app/src/components/MathText.tsx): plain text, except what
+# sits between U+E000 and the next U+E001, which KaTeX typesets. A .md file
+# goes through a Markdown (CommonMark/GFM) renderer, raw HTML included. The
+# app view models MathText; the markup view over-approximates every other
+# renderer. A label any of them could show is in the scanned text or a view.
+_MATH_OPEN, _MATH_CLOSE = chr(0xE000), chr(0xE001)
+_RLO, _PDF = chr(0x202E), chr(0x202C)
+# where the bidirectional algorithm ends an override: its PDF, or the paragraph
+_PARAGRAPH_END = frozenset("\n\r\x1c\x1d\x1e\x85" + chr(0x2029))
+
+
+def _char_class(ranges) -> str:
+    return "[" + "".join(re.escape(chr(a)) if a == b else f"{re.escape(chr(a))}-{re.escape(chr(b))}"
+                         for a, b in ranges) + "]"
+
+
+# Characters no renderer draws: general category Cf (Unicode 15.0, the
+# Python 3.12 database CI runs) and the other Default_Ignorable_Code_Points
+# (combining grapheme joiner, variation selectors, Hangul fillers, …).
+# tests/test_lint_rendered_view_round7.py checks the Cf part against the
+# running unicodedata.
+_INVISIBLE_RANGES = (
+    (0x00AD, 0x00AD), (0x034F, 0x034F), (0x0600, 0x0605), (0x061C, 0x061C), (0x06DD, 0x06DD),
+    (0x070F, 0x070F), (0x0890, 0x0891), (0x08E2, 0x08E2), (0x115F, 0x1160), (0x17B4, 0x17B5),
+    (0x180B, 0x180F), (0x200B, 0x200F), (0x202A, 0x202E), (0x2060, 0x206F), (0x3164, 0x3164),
+    (0xFE00, 0xFE0F), (0xFEFF, 0xFEFF), (0xFFA0, 0xFFA0), (0xFFF0, 0xFFFB), (0x110BD, 0x110BD),
+    (0x110CD, 0x110CD), (0x13430, 0x1343F), (0x1BCA0, 0x1BCA3), (0x1D173, 0x1D17A),
+    (0xE0000, 0xE0FFF))
+# Combining marks of the generic diacritic blocks: a mark NFC cannot compose
+# with its letter (K + U+0308) would otherwise end a token.
+_MARK_RANGES = ((0x0300, 0x036F), (0x0483, 0x0489), (0x1AB0, 0x1AFF), (0x1DC0, 0x1DFF),
+                (0x20D0, 0x20FF), (0xFE20, 0xFE2F))
+_INVISIBLE = re.compile(_char_class(_INVISIBLE_RANGES))
+_DROPPED = re.compile(_char_class(_INVISIBLE_RANGES + _MARK_RANGES))
+
+# KaTeX commands that restyle their argument and leave it visible
+_KATEX_STYLE = (
+    "text", "textrm", "textit", "textbf", "textsf", "texttt", "textup", "textmd", "textnormal",
+    "emph", "mathrm", "mathit", "mathbf", "mathsf", "mathtt", "mathnormal", "mathbb", "mathcal",
+    "mathfrak", "mathscr", "Bbb", "bold", "boldsymbol", "bm", "pmb", "operatorname", "mbox",
+    "hbox", "rm", "it", "bf", "sf", "tt", "cal", "frak", "displaystyle", "textstyle",
+    "scriptstyle", "scriptscriptstyle", "underline", "overline", "boxed", "fbox", "cancel",
+    "bcancel", "xcancel", "sout", "mathord", "mathop", "mathbin", "mathrel", "mathopen",
+    "mathclose", "mathpunct", "mathinner")
+# KaTeX markup that renders as nothing: a colour command with its colour
+# argument, a style command (its argument stays)
+_KATEX_DROP = (r"\\(?:textcolor|colorbox|color)\s*\{[^{}]*\}|\\fcolorbox\s*\{[^{}]*\}\s*\{[^{}]*\}"
+               r"|\\(?:" + "|".join(sorted(_KATEX_STYLE, key=len, reverse=True)) + r")(?![A-Za-z])")
+_UNDERSCORE = r"(?P<underscore>\\textunderscore(?![A-Za-z]))"
+_ESCAPE = r"\\(?P<escaped>[!-/:-@\[-`{-~])"           # Markdown or TeX backslash escape
+# what KaTeX interprets: the app view applies it between the math delimiters
+_KATEX = re.compile(r"(?P<drop>" + _KATEX_DROP + r"|[{}])|" + _UNDERSCORE + "|" + _ESCAPE)
+# what any renderer may interpret: the markup view applies it everywhere
+_MARKUP = re.compile(
+    # markup that renders as nothing; an unterminated comment, CDATA section
+    # or processing instruction stops at the next opener, so the scan stays
+    # linear in the text
+    r"(?P<drop><!--(?:(?!<!--).)*?-->|<!\[CDATA\[(?:(?!<!\[CDATA\[).)*?\]\]>"  # HTML comment, CDATA
+    r"|<\?(?:(?!<\?).)*?\?>|<![A-Za-z][^<>]*>"                            # processing instruction, declaration
+    r"|</?[A-Za-z][A-Za-z0-9-]*(?:\s[^<>]*)?/?>"                          # HTML tag
+    r"|\]\((?:<[^<>\n]*>|(?:[^()\s]|\([^()\s]*\))*)"                      # Markdown link target …
+    r"(?:\s+(?:\"[^\"\n]*\"|'[^'\n]*'|\([^()\n]*\)))?\s*\)"               # … and its title
+    r"|\]\[[^\[\]]*\]"                                                     # Markdown reference
+    r"|" + _KATEX_DROP +
+    r"|[*~`\[\]{}" + _MATH_OPEN + _MATH_CLOSE + r"])"  # Markdown delimiters, TeX groups, math delimiters
+    r"|" + _UNDERSCORE + "|" + _ESCAPE +
+    r"|(?P<reference>&(?:#[0-9]{1,7}|#[xX][0-9A-Fa-f]{1,6}|[A-Za-z][A-Za-z0-9]{1,31});?)",  # HTML reference
+    re.DOTALL)
+_MARKUP_START = re.compile(r"[<&\\*~`\[\]{}" + _MATH_OPEN + _MATH_CLOSE + "]")
+
+
+class _Hit:
+    """A match found in a view, located in the scanned text: start(), end()
+    and group(0) answer like an re.Match on the scanned text."""
+
+    __slots__ = ("string", "_start", "_end")
+
+    def __init__(self, string: str, start: int, end: int):
+        self.string, self._start, self._end = string, start, end
+
+    def start(self) -> int:
+        return self._start
+
+    def end(self) -> int:
+        return self._end
+
+    def group(self, *groups) -> str:
+        if groups not in ((), (0,)):
+            raise IndexError("a view match has no groups")
+        return self.string[self._start:self._end]
+
+
+class _View:
+    """A rendered view of a scanned text: .text, and for each of its
+    characters the span of the scanned text that produced it."""
+
+    __slots__ = ("text", "_starts", "_ends")
+
+    def __init__(self, pieces):
+        """pieces: (string, start, end, literal). A literal string is the
+        scanned text from start on; any other string replaces [start, end).
+        Invisible characters and stray combining marks are dropped, every
+        other character is replaced by its NFKC form, and an RLO run is
+        reversed, as the bidirectional algorithm displays it."""
+        chars, starts, ends = [], [], []
+        rlo = None
+        for s, start, end, literal in pieces:
+            if (literal and rlo is None and not _DROPPED.search(s)
+                    and unicodedata.is_normalized("NFKC", s)):
+                chars.extend(s)
+                starts.extend(range(start, start + len(s)))
+                ends.extend(range(start + 1, start + len(s) + 1))
+                continue
+            for i, c in enumerate(s):
+                a, b = (start + i, start + i + 1) if literal else (start, end)
+                if rlo is not None and (c == _PDF or c in _PARAGRAPH_END):
+                    self._reverse(chars, starts, ends, rlo)
+                    rlo = None
+                elif c == _RLO and rlo is None:
+                    rlo = len(chars)
+                if _DROPPED.match(c):
+                    continue
+                for d in c if c.isascii() else unicodedata.normalize("NFKC", c):
+                    if not _DROPPED.match(d):
+                        chars.append(d)
+                        starts.append(a)
+                        ends.append(b)
+        if rlo is not None:
+            self._reverse(chars, starts, ends, rlo)
+        self.text, self._starts, self._ends = "".join(chars), starts, ends
+
+    @staticmethod
+    def _reverse(*lists_and_start):
+        *lists, k = lists_and_start
+        for lst in lists:
+            lst[k:] = lst[k:][::-1]
+
+    def hit(self, source: str, m) -> _Hit:
+        """m, a match in this view, as a match in the scanned text."""
+        a, b = m.start(), m.end()
+        return _Hit(source, min(self._starts[a:b]), max(self._ends[a:b]))
+
+
+def _pieces(rx, text: str, start: int, end: int) -> list:
+    """text[start:end] as _View pieces, with rx's markup interpreted."""
+    out, pos = [], start
+    for m in rx.finditer(text, start, end):
+        if m.start() > pos:
+            out.append((text[pos:m.start()], pos, m.start(), True))
+        pos = m.end()
+        if m.lastgroup == "underscore":
+            out.append(("_", m.start(), m.end(), False))
+        elif m.lastgroup == "escaped":
+            out.append((m.group("escaped"), m.start(), m.end(), False))
+        elif m.lastgroup == "reference":
+            decoded = html.unescape(m.group(0))
+            out.append((decoded, m.start(), m.end(), decoded == m.group(0)))
+    if pos < end:
+        out.append((text[pos:end], pos, end, True))
+    return out
+
+
+def _app_pieces(text: str) -> list:
+    """MathText's rendering as _View pieces: KaTeX between U+E000 and the next
+    U+E001, everything else as it stands (also after an unmatched U+E000)."""
+    out, i = [], 0
+    while i < len(text):
+        a = text.find(_MATH_OPEN, i)
+        if a == -1:
+            out.append((text[i:], i, len(text), True))
+            break
+        if a > i:
+            out.append((text[i:a], i, a, True))
+        b = text.find(_MATH_CLOSE, a + 1)
+        if b == -1:
+            out.append((text[a + 1:], a + 1, len(text), True))
+            break
+        out += _pieces(_KATEX, text, a + 1, b)
+        i = b + 1
+    return out
+
+
+@functools.lru_cache(maxsize=16)
+def _views(text: str) -> tuple:
+    """The plain, app and markup views of a scanned text, each only when it
+    differs from the text and from the views before it."""
+    pieces = []
+    if _DROPPED.search(text) or not unicodedata.is_normalized("NFKC", text):
+        pieces.append([(text, 0, len(text), True)])
+    if _MATH_OPEN in text:
+        pieces.append(_app_pieces(text))
+    if _MARKUP_START.search(text):
+        pieces.append(_pieces(_MARKUP, text, 0, len(text)))
+    seen, out = {text}, []
+    for p in pieces:
+        view = _View(p)
+        if view.text not in seen:
+            seen.add(view.text)
+            out.append(view)
+    return tuple(out)
+
+
+def _is_label(token: str) -> bool:
+    folded = _fold(token)
+    return any(entry in folded for entry in _TIER1)
+
+
+def _is_style_token(token: str) -> bool:
+    return len(token) >= 5 and any(sum(c.isalpha() for c in seg) >= 2 for seg in token.split("_"))
+
+
 class _Snake:
     """Two-tier snake_case detector.
 
     Tier 1 (always fails): snake tokens whose folded form (_fold: case,
     diacritics and underscores removed) contains a taxonomy stem or label —
-    these are internal join keys and must never reach learner prose.
+    these are internal join keys and must never reach learner prose. Tier 1
+    reads the scanned text and then its rendered views (_views, round 7).
     Tier 2 (only with --strict): any other snake token of length >= 5 with
     a >=2-letter segment — improvised formula variable names (värde_B,
     antal_A, K_diff). Those are a bounded STYLE debt (bead hpf-gyo5,
     non-blocking, inspect-before-replace), not gate-internal leakage, and
     the store's math-preservation contract protects them from blind
-    rewriting. Pure subscript notation (v_r, a_n, K_2007) never flags in
-    either tier. search() expects canonical text: scan_text, its only
-    caller, normalizes to NFC before any rule runs.
+    rewriting. Tier 2 judges the stored spelling, so it reads the scanned text
+    only: a LaTeX subscript such as V_{\\text{ny}} is notation, not debt.
+    Pure subscript notation (v_r, a_n, K_2007) never flags in either tier.
+    search() expects canonical text: scan_text, its only caller, normalizes
+    to NFC before any rule runs.
     """
 
     def __init__(self, strict: bool = False):
@@ -146,27 +392,48 @@ class _Snake:
     def search(self, text):
         fallback = None
         for m in _SNAKE_TOKEN.finditer(text):
-            tok = m.group(0)
-            folded = _fold(tok)
-            if any(entry in folded for entry in _TIER1):
+            if _is_label(m.group(0)):
                 return m
-            if (self.strict and fallback is None and len(tok) >= 5
-                    and any(sum(c.isalpha() for c in seg) >= 2
-                            for seg in tok.split("_"))):
+            if self.strict and fallback is None and _is_style_token(m.group(0)):
                 fallback = m
+        for view in _views(text):
+            for m in _SNAKE_TOKEN.finditer(view.text):
+                if _is_label(m.group(0)):
+                    return view.hit(text, m)
         return fallback
 
 
+class _Rendered:
+    """A rule that holds on the scanned text and on each rendered view of it."""
+
+    def __init__(self, *patterns):
+        self.patterns = patterns
+
+    def search(self, text):
+        for rx in self.patterns:
+            m = rx.search(text)
+            if m:
+                return m
+        for view in _views(text):
+            for rx in self.patterns:
+                m = rx.search(view.text)
+                if m:
+                    return view.hit(text, m)
+        return None
+
+
 SNAKE = _Snake()
-HEDGAT = re.compile(r"\bhedg(?:at|ad|ar|ade|ning)\b", re.IGNORECASE)
+# Word bounds are "no letter or digit beside it" rather than \b, so an
+# underscore beside the word cannot hide it (_hedgat_, round 7).
+HEDGAT = _Rendered(re.compile(r"(?<![^\W_])hedg(?:at|ad|ar|ade|ning)(?![^\W_])", re.IGNORECASE))
 # Gate names — hardened per the 2026-08-31 GC review: case-INSENSITIVE for
 # G-* gates and mech.py (no Swedish collision), and for M-* gates with a
 # guard that exempts math prose like "k-m-form" / "kx + m-form" (a gate
 # name preceded by <alnum>- or by "+ "/"= " is arithmetic, not a gate).
 GATEREF_GATES = re.compile(
     r"mech\.py"
-    r"|(?<![0-9A-Za-z-])(?<![+=] )[mM]-(?:form|echo|tell|schema|bands|plagiarism)\b"
-    r"|\b[gG]-(?:key|stem|sprak|språk|distractor|register|eng)\b",
+    r"|(?<![0-9A-Za-z-])(?<![+=] )[mM]-(?:form|echo|tell|schema|bands|plagiarism)(?![^\W_])"
+    r"|(?<![^\W_])[gG]-(?:key|stem|sprak|språk|distractor|register|eng)(?![^\W_])",
     re.IGNORECASE,
 )
 GATEREF_PHRASES = re.compile(
@@ -174,14 +441,7 @@ GATEREF_PHRASES = re.compile(
     r"|version(?:en)? från runda \d+",
     re.IGNORECASE,
 )
-
-
-class _GateRef:
-    def search(self, text):
-        return GATEREF_GATES.search(text) or GATEREF_PHRASES.search(text)
-
-
-GATEREF = _GateRef()
+GATEREF = _Rendered(GATEREF_GATES, GATEREF_PHRASES)
 RULES = (("L2-SNAKE", SNAKE), ("L2-HEDGAT", HEDGAT), ("L2-GATEREF", GATEREF))
 
 
@@ -190,6 +450,9 @@ def scan_text(text: str) -> list[tuple[str, str]]:
     # runs (PR #370 round 6, bead hpf-pvkp). NFC, not NFKC: compatibility
     # folding would rewrite learner math in the excerpts (x² as x2, aₙ as an),
     # and tier 1 folds compatibility letters inside a token anyway (_fold).
+    # Each rule also reads the rendered views of this NFC text, where NFKC does
+    # apply, and reports a match there as a span of this text (round 7), so the
+    # excerpt is always cut from the scanned text.
     text = unicodedata.normalize("NFC", text)
     hits = []
     for name, rx in RULES:
@@ -198,6 +461,12 @@ def scan_text(text: str) -> list[tuple[str, str]]:
             start = max(0, m.start() - 30)
             hits.append((name, text[start:m.end() + 30].replace("\n", " ")))
     return hits
+
+
+def _shown(line: str) -> str:
+    """A finding line for the terminal: each invisible character as <U+XXXX>,
+    so the line shows where it sits and a bidi control cannot reorder it."""
+    return _INVISIBLE.sub(lambda m: f"<U+{ord(m.group()):04X}>", line)
 
 
 def walk_json(obj, path, out):
@@ -278,7 +547,7 @@ def main() -> int:
                 out.append((r, "-", e))
         examined += 1
         for rule, path, excerpt in out:
-            print(f"{rule} {fp}:{path}: …{excerpt}…")
+            print(_shown(f"{rule} {fp}:{path}: …{excerpt}…"))
             findings += 1
     if not examined and not failures:
         failures.append("INPUT-FAIL -: zero files examined")
