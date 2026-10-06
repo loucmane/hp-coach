@@ -34,6 +34,7 @@ import { dailyPlansRoute } from './routes/dailyPlans'
 import { devLoginRoute } from './routes/devLogin'
 import { exportRoute, importRoute } from './routes/export'
 import { fitRoute, itemStatsRoute } from './routes/fit'
+import { frameworkProgressRoute } from './routes/frameworkProgress'
 import { healthRoute } from './routes/health'
 import { lessonProgressRoute } from './routes/lessonProgress'
 import { lessonReadsRoute } from './routes/lessonReads'
@@ -101,6 +102,7 @@ const authed = new Hono<{ Bindings: Env; Variables: Vars }>()
   .route('/sessions', sessionsRoute)
   .route('/lesson-progress', lessonProgressRoute)
   .route('/lesson-reads', lessonReadsRoute)
+  .route('/framework-progress', frameworkProgressRoute)
   .route('/daily-plans', dailyPlansRoute)
   .route('/attempts', attemptsRoute)
   .route('/mistakes', mistakesRoute)
