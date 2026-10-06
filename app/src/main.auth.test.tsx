@@ -1,9 +1,10 @@
 import { useAuth } from '@clerk/clerk-react'
 import { type QueryClient, useQueryClient } from '@tanstack/react-query'
-import { act, cleanup, render, waitFor } from '@testing-library/react'
-import type { ReactElement, ReactNode } from 'react'
+import { act, cleanup, fireEvent, render, waitFor } from '@testing-library/react'
+import { type ReactElement, type ReactNode, useEffect, useState } from 'react'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { AuthQueryProvider } from './api/AuthQueryProvider'
 import { FRAMEWORK_PROGRESS_KEY, useFrameworkProgress } from './api/hooks/useFrameworkProgress'
 import { STATS_KEY, useStats } from './api/hooks/useStats'
 import { useUpdateUserPrefs } from './api/hooks/useUserPrefs'
@@ -153,6 +154,46 @@ afterEach(() => {
 })
 
 describe('the app query provider across Clerk identities', () => {
+  it.each([
+    'user-A',
+    null,
+  ])('preserves mounted children and local state when Clerk first resolves to %s', (userId) => {
+    clerk.current = clerk.identity(undefined)
+    const onMount = vi.fn()
+    const onUnmount = vi.fn()
+
+    function StatefulChild() {
+      const [count, setCount] = useState(0)
+      activeClient = useQueryClient()
+      useEffect(() => {
+        onMount()
+        return onUnmount
+      }, [])
+      return (
+        <button type="button" onClick={() => setCount((value) => value + 1)}>
+          Count: {count}
+        </button>
+      )
+    }
+
+    const view = render(
+      <AuthQueryProvider>
+        <StatefulChild />
+      </AuthQueryProvider>,
+    )
+    const initialClient = activeClient
+    fireEvent.click(view.getByRole('button', { name: 'Count: 0' }))
+    const button = view.getByRole('button', { name: 'Count: 1' })
+    expect(onMount).toHaveBeenCalledTimes(1)
+
+    switchUser(userId)
+
+    expect(onMount).toHaveBeenCalledTimes(1)
+    expect(onUnmount).not.toHaveBeenCalled()
+    expect(view.getByRole('button', { name: 'Count: 1' })).toBe(button)
+    expect(activeClient).toBe(initialClient)
+  })
+
   it.each([
     'remount',
     'in-place rerender',

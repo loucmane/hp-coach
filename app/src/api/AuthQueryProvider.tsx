@@ -10,13 +10,14 @@ import { createQueryClient } from './queryClient'
 export function AuthQueryProvider({ children }: { children: ReactNode }) {
   const { userId } = useAuth()
   const [cache, setCache] = useState(() => ({ userId, client: createQueryClient() }))
+  const needsSwap = cache.userId !== undefined && cache.userId !== userId
 
   useLayoutEffect(() => {
     if (cache.userId === userId) return
     // undefined is Clerk's initial loading state, not a previous identity.
     // Keep the initial cache; reset for sign-out and subsequent account changes.
     let client = cache.client
-    if (cache.userId !== undefined) {
+    if (needsSwap) {
       // clear() destroys queries and cancels their retryers, so even a transport
       // that ignores AbortSignal cannot put the previous user's response back.
       client.clear()
@@ -26,10 +27,11 @@ export function AuthQueryProvider({ children }: { children: ReactNode }) {
       client = createQueryClient()
     }
     setCache({ userId, client })
-  }, [cache, userId])
+  }, [cache, needsSwap, userId])
 
   // Clearing in an effect alone lets children render once with the old cache.
-  // Unmount observers/local derived state until the reset finishes, before paint.
-  if (cache.userId !== userId) return null
+  // Withhold children only during a client swap; initial Clerk resolution must
+  // preserve the mounted tree and its local state along with the initial cache.
+  if (needsSwap) return null
   return <QueryClientProvider client={cache.client}>{children}</QueryClientProvider>
 }
