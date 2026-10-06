@@ -190,20 +190,22 @@ faktiskt möter. Omklassningen rad för rad finns i `docs/worklog/hpf-4xvy.md`;
   `MathText` visar markupen. De tre och syskon av samma mekanismer står som
   strikta xfail-test med skälet "not a learner-visible rendering under
   MathText": luckan är bokförd, inte dold.
-- **Antagandet är fastnålat.** `test_lint_renderer_assumption_round8.py` (i
-  `gates/scripts/tests/`) fäller med "learner renderer changed — revisit the
-  Layer-2 threat model in LAYER2-RENDERING.md" om `app/package.json`
-  deklarerar en Markdown- eller HTML-renderare (react-markdown, markdown-it,
-  marked, remark\*, rehype\*, micromark, mdx med flera), eller om
-  `MathText.tsx` slutar visa text utanför matematiken som React-text: andra
-  avgränsare, ett andra `dangerouslySetInnerHTML`, ett som matas med annat än
-  KaTeX:s utdata (sedan rond 9 även via reservvägen, se nedan), eller ett
-  KaTeX som får kasta parsningsfel i stället för att sätta dem själv
-  (`throwOnError`).
-- **När testet fäller** gäller antagandet inte längre. Hotmodellen ska då ses
-  över, och markup-vyn räcker inte som den är. Detsamma gäller om en `.md`-fil
-  görs elevvänd genom en Markdown-renderare: linten läser `.md` och `.txt`
-  som bokstavlig text, på samma sätt som strängvärdena.
+- **Antagandet är bevakat.** Sedan rond 10 är beteendevakten i
+  `app/src/components/MathText.test.tsx` auktoriteten för vad `MathText`
+  lägger in som HTML (se "Beteendevakten" nedan).
+  `test_lint_renderer_assumption_round8.py` (i `gates/scripts/tests/`) är en
+  snubbeltråd. Den fäller med "learner renderer changed — revisit the Layer-2
+  threat model in LAYER2-RENDERING.md" om `app/package.json` deklarerar en
+  Markdown- eller HTML-renderare (react-markdown, markdown-it, marked,
+  remark\*, rehype\*, micromark, mdx med flera), eller om `MathText.tsx`
+  försvinner, byter avgränsare, får ett annat antal `dangerouslySetInnerHTML`
+  än ett eller låter KaTeX kasta parsningsfel i stället för att sätta dem
+  själv (`throwOnError`).
+- **När vakten eller snubbeltråden fäller** kan antagandet inte längre tas för
+  givet. Hotmodellen ska då ses över, och markup-vyn räcker inte som den är.
+  Detsamma gäller om en `.md`-fil görs elevvänd genom en Markdown-renderare:
+  linten läser `.md` och `.txt` som bokstavlig text, på samma sätt som
+  strängvärdena.
 
 Linten är oförändrad: samma regler, vyer och fynd. Uppmätt på
 `data/explanations/`: default 2 fynd i 27 filer och `--strict` 74, som före
@@ -227,11 +229,57 @@ släppte igenom det.
   därför reservvägen.
 - **Parsningsfel är oförändrade.** Med `throwOnError: false` sätter KaTeX
   ett parsningsfel själv, som escapad källtext. Även det är bokstavlig text.
-- **Fastnålat.** `test_lint_renderer_assumption_round8.py` fäller nu också om
-  reservvägen eller någon annan väg kan föra segmenttext till
-  `dangerouslySetInnerHTML`. Den enda råa HTML-sänkan ska ta `html`-fältet ur
-  `renderMath`s resultat, och det fältet får bara `katex.renderToString`
-  fylla. `catch` ska lämna tillbaka segmentet som `text`, och det visas som
-  React-text.
+- **Bevakat sedan rond 10.** Rond 9 nålade reservvägen med reguljära uttryck
+  över `MathText.tsx`, och Codex-granskning R10 visade att det inte räcker
+  (nästa avsnitt). Att reservvägen visar segmentet som text håller nu
+  beteendevaktens test `KaTeX throws on a math segment: it is a text node`.
 
 Linten är oförändrad.
+
+## Beteendevakten (PR #370 rond 10, bead hpf-sn6u)
+
+Codex-granskning R10 (hpf-xg9u) visade att en kontroll av källtexten inte kan
+bära garantin. Rond 9:s nål läste bara att `html`-fältet *börjar* med
+`katex.renderToString(`. Mutationen `html: katex.renderToString(…) + latex`
+passerade nålen, och då blev R8-H1-segmentet
+(`WORLD_<span title=">">KNOWLEDGE</span>`) levande HTML som visar
+WORLD_KNOWLEDGE, medan linten släppte igenom det. Varje reguljärt uttryck
+över källkod har samma klass av kryphål.
+
+- **Garantin.** `MathText` lägger bara in KaTeX:s utdata som HTML.
+  Segmenttext och prosa är alltid textnoder.
+- **Auktoriteten är beteendevakten**, `MathText HTML-sink guard` i
+  `app/src/components/MathText.test.tsx`. CI:s app-jobb kör den med Vitest
+  (`pnpm test`). Vakten renderar `MathText` med fientlig markup: R8-H1, en
+  `<img>` med `onerror`, en etikett i `<b>`, en numerisk och en namngiven
+  teckenreferens (`&#95;`, `&lowbar;`), en `<span>` som lånar KaTeX:s klass,
+  R8-M6:s Markdown-länk och KaTeX:s `\href` mot `javascript:`. Varje sträng
+  går genom fyra test, ett per väg:
+  - `KaTeX renders a math segment: only its output is HTML`. Sänkan håller
+    exakt det `katex.renderToString` returnerade. Inget element kommer från
+    segmentets markup, och markupens `<`, `>`, `&` och `"` syns som tecken.
+  - `KaTeX throws on a math segment: it is a text node`. När KaTeX tvingas
+    kasta visas segmentet som en textnod, tecken för tecken.
+  - `prose without math: the string is a text node`. En sträng utan
+    avgränsare visas som en textnod.
+  - `prose beside math: each prose segment is a text node`. Prosan runt ett
+    matematiksegment visas som textnoder.
+- **Python-nålen är en snubbeltråd.** `test_lint_renderer_assumption_round8.py`
+  kontrollerar grovt att `app/package.json` saknar Markdown- och
+  HTML-renderare och att `MathText.tsx` finns, har avgränsarna U+E000 och
+  U+E001, exakt ett `dangerouslySetInnerHTML` och KaTeX med
+  `throwOnError: false`. Hur sänkans `html` skrivs kontrolleras bara
+  heuristiskt. Inget av det bevisar vad som når sänkan: R10:s mutation
+  passerar snubbeltråden och står där som ett strikt xfail-test. Filen fäller
+  också om vaktens test saknas i Vitest-filen eller stängs av (`.skip`,
+  `.todo`, `.fails`, `.skipIf`, `.runIf`).
+- **Mutationsbevis.** Vakten fäller på R10:s mutation, på rond 9:s
+  ursprungliga reservväg, på `html: latex` och på prosa som läggs in som HTML
+  (`docs/worklog/hpf-sn6u.md`).
+- **Gränser.** Vakten prövar beteendet på sina egna strängar. En
+  förbikoppling som bara slår till för andra indata, till exempel mycket långa
+  segment, fångas inte av den. Den längdgräns på 4 096 tecken som provades
+  fångas ändå av rond 9:s test med 20 000 nivåer och av snubbeltrådens
+  heuristik.
+
+`MathText.tsx` och linten är oförändrade.

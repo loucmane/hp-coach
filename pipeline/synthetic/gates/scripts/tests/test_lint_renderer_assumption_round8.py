@@ -1,6 +1,8 @@
 """PR #370 fix round 8 (bead hpf-4xvy): the Layer-2 threat model, aligned with
 the app's actual learner renderer (operator decision 2026-10-05, option A).
-Fix round 9 (bead hpf-dhjn) closes MathText's KaTeX fallback.
+Fix round 9 (bead hpf-dhjn) closes MathText's KaTeX fallback. Fix round 10
+(bead hpf-sn6u) makes a behavioural Vitest guard the authority for MathText
+and leaves this file a tripwire.
 
 The app shows every learner string through MathText
 (app/src/components/MathText.tsx): as React text, character for character,
@@ -13,14 +15,22 @@ are therefore the real exposure. The markup view, which interprets Markdown
 and HTML everywhere, stays as defense in depth: best effort, not a complete
 model of CommonMark.
 
-1. The renderer assumption, pinned. The two pins fail with "learner renderer
-   changed — revisit the Layer-2 threat model in LAYER2-RENDERING.md" when
-   app/package.json declares a Markdown or HTML renderer, or when MathText.tsx
-   stops showing text outside math as React text with KaTeX's output as its
-   only raw HTML. Since round 9 that includes the KaTeX fallback: Codex
-   review R9 (hpf-wov1) made KaTeX throw past throwOnError: false, and the
-   fallback put the raw segment into the page as HTML. The checkers also run
-   on mutants of both files, so a pin that stops detecting fails as well.
+1. The renderer assumption. Its authority is the behavioural guard
+   "MathText HTML-sink guard" in app/src/components/MathText.test.tsx, which
+   CI's app job runs. It renders hostile markup through every MathText path
+   and checks that KaTeX's output is the only HTML inserted and that segment
+   and prose text are text nodes. Codex review R10 (hpf-xg9u) showed why a
+   check of the source cannot be the authority: round 9's pin passed
+   `html: katex.renderToString(…) + latex`, which makes markup in a segment
+   live. What this file checks is a tripwire, and passing it proves nothing
+   about what reaches the HTML sink. It fails with "learner renderer changed
+   — revisit the Layer-2 threat model in LAYER2-RENDERING.md" when
+   app/package.json declares a Markdown or HTML renderer; when MathText.tsx
+   is gone, or changes its delimiters, its number of dangerouslySetInnerHTML
+   or its KaTeX options, or, heuristically, how its sink's html is written;
+   and when the guard's tests are no longer in the Vitest file. The checkers
+   also run on mutants of the files they read, so one that stops detecting
+   fails as well.
 2. The inputs of Codex review R8 (hpf-vqbz, HOLD at 9d1fd11), with siblings of
    the same mechanisms: valid CommonMark that a Markdown renderer shows as
    WORLD_KNOWLEDGE and the markup view does not model. MathText shows each as
@@ -30,7 +40,8 @@ model of CommonMark.
    and the lint reads a label in it from the scanned text.
 
 Red-first, and the CommonMark check of the R8 inputs (markdown-it-py), are in
-docs/worklog/hpf-4xvy.md; round 9's red-first is in docs/worklog/hpf-dhjn.md.
+docs/worklog/hpf-4xvy.md; round 9's red-first is in docs/worklog/hpf-dhjn.md;
+round 10's mutation proof of the guard is in docs/worklog/hpf-sn6u.md.
 Every exotic character below is built with chr().
 """
 from __future__ import annotations
@@ -55,6 +66,19 @@ MATHTEXT = REPO / "app/src/components/MathText.tsx"
 CONTRACT = REPO / "pipeline/synthetic/LAYER2-RENDERING.md"
 CHANGED = "learner renderer changed — revisit the Layer-2 threat model in LAYER2-RENDERING.md"
 BS = "\\"
+# The authority for MathText's guarantee (round 10): the behavioural Vitest
+# guard, which CI's app job runs. Its describe block and its test titles, as
+# the test file spells them; this file only checks that they are still there.
+GUARD = REPO / "app/src/components/MathText.test.tsx"
+GUARD_SUITE = "MathText HTML-sink guard"
+GUARD_TESTS = (
+    "KaTeX renders a math segment: only its output is HTML — %s",
+    "KaTeX throws on a math segment: it is a text node — %s",
+    "prose without math: the string is a text node — %s",
+    "prose beside math: each prose segment is a text node — %s",
+)
+AUTHORITY = ("this check is a tripwire; the authority for what reaches MathText's HTML sink is the "
+             f'behavioural Vitest guard "{GUARD_SUITE}" in app/src/components/MathText.test.tsx')
 
 
 # ============================================ 1. the renderer assumption
@@ -62,8 +86,8 @@ BS = "\\"
 # A tripwire on package names, not a census: the bead's list (react-markdown,
 # markdown-it, marked, remark*, rehype*, micromark, mdx), other Markdown
 # renderers, and libraries that turn an HTML string into elements. A scoped
-# name is tested on its scope and on its name. MathText's check below is the
-# structural one.
+# name is tested on its scope and on its name. What MathText renders is the
+# behavioural guard's to check (GUARD).
 _RENDERER_NAME = re.compile(
     r"markdown|mdx|commonmark|showdown|snarkdown"
     r"|(?:^|-)marked(?:$|-)|(?:^|-)(?:remark|rehype|micromark)"
@@ -82,7 +106,13 @@ def test_app_declares_no_markdown_or_html_renderer():
     assert not found, f"{CHANGED} (app/package.json declares {', '.join(found)})"
 
 
-# ---- MathText.tsx shows text outside math as React text, KaTeX's HTML inside
+# ---- MathText.tsx: a tripwire on its source (round 10)
+# Coarse: the delimiters the lint's app view assumes, exactly one
+# dangerouslySetInnerHTML, and KaTeX with throwOnError: false. Heuristic: how
+# the sink's html is written (below). A regex reads how the source is
+# written, not what reaches the sink, so none of this is the authority: Codex
+# review R10's `html: katex.renderToString(…) + latex` passes it all (recorded
+# below as a strict xfail). The behavioural guard (GUARD) catches it.
 def _code(src: str) -> str:
     """TSX without its comments. String and template literals are kept whole,
     and a backslash escapes the next character, so neither starts a comment."""
@@ -115,14 +145,18 @@ def _code(src: str) -> str:
 _JS_ESCAPE = re.compile(re.escape(BS) + "u" + r"(?:\{([0-9A-Fa-f]{1,6})\}|([0-9A-Fa-f]{4}))")
 _DELIMITER = re.compile(r"\bconst\s+(MATH_OPEN|MATH_CLOSE)\s*=\s*(['\"])(.*?)\2")
 _SINK = re.compile(r"\bdangerouslySetInnerHTML\b")
-# the one raw-HTML sink takes the html field of a renderMath result, by name
+_KATEX_CALL = re.compile(r"\bkatex\.renderToString\(")
+_THROW_OPTION = re.compile(r"\bthrowOnError\s*:\s*(\w+)")
+# Heuristic, how the sink's html is written: the one sink takes the html field
+# of a renderMath result, by name, and katex.renderToString( is the only value
+# an html key is written with. A key follows {, a comma or ; (an object or a
+# type member); types may declare it; a shorthand, a computed key or an
+# assignment counts as another write. It trips on the plain rewrites (the
+# segment as the field, a second writer, a sink that reads something else) and
+# misses the rest: whatever follows `katex.renderToString(` is not read.
 _KATEX_SINK = re.compile(
     r"\bdangerouslySetInnerHTML\s*=\s*\{\s*\{\s*__html\s*:\s*(\w+)\.html\s*,?\s*\}\s*\}")
 _RENDERED = re.compile(r"\bconst\s+(\w+)\s*=\s*renderMath\(")
-# Round 9: what fills an html field. A key follows {, a comma or ; (an object
-# or a type member). KaTeX's call fills it exactly once, types may declare it,
-# and nothing else may write it: no other key, shorthand, computed key or
-# assignment. So no path, the KaTeX fallback included, reaches the sink.
 _HTML_KEY = re.compile(r"[{,;]\s*html\s*\??\s*:")
 _HTML_FROM_KATEX = re.compile(r"[{,;]\s*html\s*:\s*katex\.renderToString\(")
 _HTML_TYPE = re.compile(r"[{,;]\s*html\s*\??\s*:\s*string\b")
@@ -130,78 +164,81 @@ _HTML_OTHER_WRITE = re.compile(
     r"[{,]\s*html\s*[,}]"                          # shorthand { html }
     r"|\[\s*(['\"`])html\1\s*\]"                   # computed ['html']
     r"|\.html\s*(?:\+|\?\?|\|\||&&)?=(?![=>])")    # assignment .html = …
-# Round 9: the fallback. The file's one catch hands the segment back as
-# { text } and holds no html, and the result's text is shown as React text.
-_CATCH = re.compile(r"\bcatch\b")
-_CATCH_BLOCK = re.compile(r"\bcatch\s*(?:\([^()]*\)\s*)?\{((?:[^{}]|\{[^{}]*\})*)\}")
-_RETURN_TEXT = re.compile(r"\breturn\s*\{\s*text\s*:")
-_HTML_WORD = re.compile(r"\bhtml\b")
-_SEGMENTS = re.compile(
-    r"(?:=>|[({]|\breturn)\s*seg\.math\s*\?\s*\("
-    r"\s*<MathSegment\b[^<>]*\blatex\s*=\s*\{\s*seg\.text\s*\}[^<>]*/>\s*\)"
-    r"\s*:\s*\(\s*<span\b[^<>]*>\s*\{\s*seg\.text\s*\}\s*</span>\s*\)")
-_FAST_PATH = re.compile(r"\breturn\s*\(?\s*<>\s*\{\s*children\s*\}\s*</>")
-_KATEX_CALL = re.compile(r"\bkatex\.renderToString\(")
-_THROW_OPTION = re.compile(r"\bthrowOnError\s*:\s*(\w+)")
 
 
 def _js_value(body: str) -> str:
     return _JS_ESCAPE.sub(lambda m: chr(int(m.group(1) or m.group(2), 16)), body)
 
 
-def _text_span(name: str) -> re.Pattern:
-    """<span …>{name.text}</span>: the text of a renderMath result, as React text."""
-    return re.compile(r"<span\b[^<>]*>\s*\{\s*" + re.escape(name) + r"\.text\s*\}\s*</span>")
-
-
 def mathtext_problems(src: str) -> list[str]:
-    """How MathText.tsx's source breaks the renderer assumption; empty when it holds."""
+    """What trips the tripwire in MathText.tsx's source; empty when nothing does.
+    Empty proves nothing about what reaches the HTML sink: the behavioural
+    Vitest guard (GUARD) is the authority for that."""
     code = _code(src)
     problems = []
     delimiters = {m.group(1): _js_value(m.group(3)) for m in _DELIMITER.finditer(code)}
     if delimiters != {"MATH_OPEN": lint._MATH_OPEN, "MATH_CLOSE": lint._MATH_CLOSE}:
         problems.append("its math delimiters are no longer U+E000 and U+E001, the lint's app view")
-    sinks = _SINK.findall(code)
-    katex_sink = _KATEX_SINK.search(code)
-    rendered = _RENDERED.findall(code)
-    if len(sinks) != 1 or not katex_sink or katex_sink.group(1) not in rendered:
-        problems.append(f"{len(sinks)} dangerouslySetInnerHTML, where exactly one is allowed, "
-                        f"fed by the html of a renderMath result ({{ __html: math.html }}, "
-                        f"const math = renderMath(…))")
-    if (len(_HTML_FROM_KATEX.findall(code)) != 1 or _HTML_OTHER_WRITE.search(code)
-            or len(_HTML_KEY.findall(code)) != 1 + len(_HTML_TYPE.findall(code))):
-        problems.append("the html the raw-HTML sink takes is no longer filled by katex.renderToString "
-                        "alone, so the KaTeX fallback or another path can feed segment text to "
-                        "dangerouslySetInnerHTML (round 9)")
-    catch = _CATCH_BLOCK.search(code)
-    if (len(_CATCH.findall(code)) != 1 or not catch or not _RETURN_TEXT.search(catch.group(1))
-            or _HTML_WORD.search(catch.group(1)) or not any(_text_span(r).search(code) for r in rendered)):
-        problems.append("when KaTeX throws, renderMath's catch no longer hands the segment back as "
-                        "{ text } for MathText to show as React text, <span>{math.text}</span> (round 9)")
-    if not _SEGMENTS.search(code):
-        problems.append("the segments are no longer rendered as seg.math ? "
-                        "(<MathSegment latex={seg.text} />) : (<span>{seg.text}</span>)")
-    if not _FAST_PATH.search(code):
-        problems.append("a string without math is no longer returned as React text, <>{children}</>")
+    sinks = len(_SINK.findall(code))
+    if sinks != 1:
+        problems.append(f"{sinks} dangerouslySetInnerHTML, where MathText has exactly one, for KaTeX's output")
     if not _KATEX_CALL.search(code) or set(_THROW_OPTION.findall(code)) != {"false"}:
         problems.append("renderMath no longer calls katex.renderToString with throwOnError: false, "
                         "which keeps a parse error in KaTeX's own escaped rendering")
+    katex_sink = _KATEX_SINK.search(code)
+    if (not katex_sink or katex_sink.group(1) not in _RENDERED.findall(code)
+            or len(_HTML_FROM_KATEX.findall(code)) != 1 or _HTML_OTHER_WRITE.search(code)
+            or len(_HTML_KEY.findall(code)) != 1 + len(_HTML_TYPE.findall(code))):
+        problems.append("heuristic: the sink is no longer written {{ __html: math.html }} with "
+                        "const math = renderMath(…), and html: katex.renderToString( as the only "
+                        "html key written")
     return problems
 
 
-def test_mathtext_shows_text_outside_math_as_react_text():
+def test_mathtext_source_tripwire():
+    assert MATHTEXT.is_file(), f"{CHANGED} (app/src/components/MathText.tsx is gone; {AUTHORITY})"
     problems = mathtext_problems(MATHTEXT.read_text(encoding="utf-8"))
-    assert not problems, f"{CHANGED} (app/src/components/MathText.tsx: {'; '.join(problems)})"
+    assert not problems, f"{CHANGED} (app/src/components/MathText.tsx: {'; '.join(problems)}; {AUTHORITY})"
+
+
+# ---- the behavioural guard is still in the Vitest file (round 10)
+# Each title is a string literal outside comments, and nothing in the file
+# switches a test off or inverts it. A test the file no longer runs is a guard
+# that no longer guards.
+_VITEST_OFF = re.compile(r"\.(?:skip|todo|fails|skipIf|runIf)\b")
+
+
+def guard_problems(src: str) -> list[str]:
+    """How the Vitest file no longer holds the behavioural guard; empty when it does."""
+    code = _code(src)
+    problems = [f"no {title!r}" for title in (GUARD_SUITE, *GUARD_TESTS)
+                if not any(q + title + q in code for q in "'\"`")]
+    off = sorted(set(_VITEST_OFF.findall(code)))
+    if off:
+        problems.append(f"{', '.join(off)} switches a test off or inverts it")
+    return problems
+
+
+def test_the_behavioural_guard_is_still_in_the_vitest_file():
+    where = "app/src/components/MathText.test.tsx"
+    assert GUARD.is_file(), f"{CHANGED} ({where} is gone, and with it the behavioural guard)"
+    problems = guard_problems(GUARD.read_text(encoding="utf-8"))
+    assert not problems, (f"{CHANGED} ({where} no longer holds the behavioural guard, the authority for "
+                          f"MathText's HTML sink: {'; '.join(problems)})")
 
 
 def test_the_pin_and_the_contract_name_each_other():
     # the failure message sends the reader to the contract, and the contract
-    # names this file as the pin of its renderer assumption
+    # names this file as the tripwire of its renderer assumption and the
+    # behavioural guard, with each of its tests, as its authority
     assert "LAYER2-RENDERING.md" in CHANGED
-    assert Path(__file__).name in CONTRACT.read_text(encoding="utf-8")
+    contract = CONTRACT.read_text(encoding="utf-8")
+    assert Path(__file__).name in contract
+    for name in (GUARD_SUITE, *(title.removesuffix(" — %s") for title in GUARD_TESTS)):
+        assert name in contract, f"LAYER2-RENDERING.md does not name the behavioural guard's {name!r}"
 
 
-# ---- the pins detect what they pin
+# ---- the checks detect what they check
 RENDERER_PACKAGES = (
     "react-markdown", "markdown-it", "markdown-it-katex", "marked", "marked-react", "@types/marked",
     "remark", "remark-gfm", "remarkable", "rehype-raw", "rehype-katex", "micromark",
@@ -228,14 +265,14 @@ _TEXT_SPAN = "<span key={idx}>{seg.text}</span>"
 _FAST = "return <>{children}</>"
 _FALLBACK = "return { text: latex }"
 _SINK_HTML = "__html: math.html"
-# [(anchor in today's MathText.tsx, its replacement), …]
+# [(anchor in today's MathText.tsx, its replacement), …]. Round 10 dropped the
+# mutants that only the prose's source shape gave away (a <Markdown> text
+# branch or fast path, swapped branches): what prose renders as is the
+# behavioural guard's to check, and a Markdown library trips the package check.
 MATHTEXT_MUTANTS = {
     "text-branch-raw-html": [(_TEXT_SPAN, "<span key={idx} dangerouslySetInnerHTML={{ __html: seg.text }} />")],
-    "text-branch-markdown": [(_TEXT_SPAN, "<Markdown key={idx}>{seg.text}</Markdown>")],
     "fast-path-raw-html": [(_FAST, "return <span dangerouslySetInnerHTML={{ __html: children }} />")],
-    "fast-path-markdown": [(_FAST, "return <Markdown>{children}</Markdown>")],
     "math-branch-raw-text": [(_SINK_HTML, "__html: latex")],
-    "branches-swapped": [("seg.math ? (", "!seg.math ? (")],
     "katex-throws-into-the-fallback": [("throwOnError: false", "throwOnError: true")],
     "dollar-delimiter": [("'" + chr(0xE000) + "'", "'$'")],
     # round 9: segment text reaching the sink, through the fallback or otherwise.
@@ -248,7 +285,7 @@ MATHTEXT_MUTANTS = {
     "html-not-only-katex": [("html: katex.renderToString(",
                              "html: latex.length > 4096 ? latex : katex.renderToString(")],
 }
-# changes that keep the assumption and must not trip the pin
+# changes that must not trip the tripwire
 MATHTEXT_COSMETIC = {
     "a-comment-naming-the-sink": [(
         "export function MathText",
@@ -267,31 +304,94 @@ MATHTEXT_COSMETIC = {
 }
 
 
-def _mutated(changes) -> str:
-    """Today's MathText.tsx with each (anchor, replacement) applied. A self-test
-    needs a base that keeps the assumption: when the file itself breaks it, the
-    pin above fails, and the self-tests skip rather than fail a second time
-    without its reason."""
-    src = MATHTEXT.read_text(encoding="utf-8")
-    if mathtext_problems(src):
-        pytest.skip(f"{CHANGED} (MathText.tsx already breaks the assumption, "
-                    f"see test_mathtext_shows_text_outside_math_as_react_text)")
+def _apply(src: str, name: str, changes) -> str:
+    """src with each (anchor, replacement) applied; a None replacement cuts the
+    file at the anchor. A missing anchor fails outright (pytest.fail, not an
+    AssertionError, so a strict xfail cannot absorb it)."""
     for anchor, replacement in changes:
-        assert src.count(anchor) == 1, (
-            f"{CHANGED} (MathText.tsx no longer holds this self-test's anchor {anchor!r} once: "
-            f"re-check the assumption, then move the anchor)")
-        src = src.replace(anchor, replacement)
+        if src.count(anchor) != 1:
+            pytest.fail(f"{CHANGED} ({name} no longer holds this self-test's anchor {anchor!r} once: "
+                        f"re-check the assumption, then move the anchor)")
+        src = src.partition(anchor)[0] if replacement is None else src.replace(anchor, replacement)
     return src
 
 
+def _mutated(changes) -> str:
+    """Today's MathText.tsx with each (anchor, replacement) applied. A self-test
+    needs a base that passes the tripwire: when the file itself trips it,
+    test_mathtext_source_tripwire fails, and the self-tests skip rather than
+    fail a second time without its reason."""
+    src = MATHTEXT.read_text(encoding="utf-8")
+    if mathtext_problems(src):
+        pytest.skip(f"{CHANGED} (MathText.tsx already trips the tripwire, see test_mathtext_source_tripwire)")
+    return _apply(src, "MathText.tsx", changes)
+
+
 @pytest.mark.parametrize("mutant", MATHTEXT_MUTANTS)
-def test_the_mathtext_pin_flags_a_renderer_change(mutant):
+def test_the_mathtext_tripwire_flags_a_renderer_change(mutant):
     assert mathtext_problems(_mutated(MATHTEXT_MUTANTS[mutant]))
 
 
 @pytest.mark.parametrize("change", MATHTEXT_COSMETIC)
-def test_the_mathtext_pin_ignores_a_cosmetic_change(change):
+def test_the_mathtext_tripwire_ignores_a_cosmetic_change(change):
     assert mathtext_problems(_mutated(MATHTEXT_COSMETIC[change])) == []
+
+
+# Codex review R10 (hpf-xg9u): KaTeX's output with the raw segment appended,
+# which makes markup in a segment live. The source keeps every shape the
+# tripwire reads, so the tripwire passes it; the behavioural guard fails it
+# (docs/worklog/hpf-sn6u.md, mutation i). A strict xfail, like the R8 record
+# below: the gap is on record, and if the tripwire learns this one shape, the
+# record has to move. The guard stays the authority either way.
+R10_MUTANT = [("      }),\n    }\n  } catch {", "      }) + latex,\n    }\n  } catch {")]
+
+
+@pytest.mark.xfail(strict=True, raises=AssertionError,
+                   reason="a tripwire, not a proof: only the behavioural guard catches R10's mutation")
+def test_the_mathtext_tripwire_flags_codex_r10s_mutation():
+    assert mathtext_problems(_mutated(R10_MUTANT))
+
+
+# ---- the guard check detects what it checks
+_GUARD_DESCRIBE = "describe('" + GUARD_SUITE + "'"
+# [(anchor in today's MathText.test.tsx, its replacement or None to cut), …]
+GUARD_MUTANTS = {
+    "the-guard-deleted": [("// The HTML-sink guard (PR #370 round 10", None)],
+    "the-suite-renamed": [(_GUARD_DESCRIBE, "describe('MathText sink checks'")],
+    "a-test-renamed": [("'" + GUARD_TESTS[0] + "'", "'KaTeX renders a math segment — %s'")],
+    "a-test-commented-out": [("  it.each(HOSTILE)('KaTeX throws on", "  // it.each(HOSTILE)('KaTeX throws on")],
+    "the-suite-skipped": [(_GUARD_DESCRIBE, "describe.skip('" + GUARD_SUITE + "'")],
+    "a-test-skipped": [("it.each(HOSTILE)('prose without math", "it.skip.each(HOSTILE)('prose without math")],
+    "a-test-marked-todo": [("it.each(HOSTILE)('prose beside math", "it.todo('prose beside math")],
+    "a-test-inverted": [("it.each(HOSTILE)('KaTeX renders", "it.fails.each(HOSTILE)('KaTeX renders")],
+}
+# changes that must not trip the guard check
+GUARD_COSMETIC = {
+    "a-title-on-its-own-line": [("it.each(HOSTILE)('prose without math",
+                                 "it.each(HOSTILE)(\n    'prose without math")],
+    "a-double-quoted-title": [("'" + GUARD_TESTS[1] + "'", '"' + GUARD_TESTS[1] + '"')],
+    "a-comment-naming-skip": [(_GUARD_DESCRIBE, "// never describe.skip or it.todo here\n" + _GUARD_DESCRIBE)],
+}
+
+
+def _guard_mutated(changes) -> str:
+    """Today's MathText.test.tsx with each change applied; skips, like
+    _mutated, when the file itself no longer holds the guard."""
+    src = GUARD.read_text(encoding="utf-8")
+    if guard_problems(src):
+        pytest.skip(f"{CHANGED} (MathText.test.tsx no longer holds the behavioural guard, "
+                    f"see test_the_behavioural_guard_is_still_in_the_vitest_file)")
+    return _apply(src, "MathText.test.tsx", changes)
+
+
+@pytest.mark.parametrize("mutant", GUARD_MUTANTS)
+def test_the_guard_check_flags_a_guard_that_no_longer_runs(mutant):
+    assert guard_problems(_guard_mutated(GUARD_MUTANTS[mutant]))
+
+
+@pytest.mark.parametrize("change", GUARD_COSMETIC)
+def test_the_guard_check_ignores_a_cosmetic_change(change):
+    assert guard_problems(_guard_mutated(GUARD_COSMETIC[change])) == []
 
 
 # ============================================ 2. the R8 inputs, recorded
