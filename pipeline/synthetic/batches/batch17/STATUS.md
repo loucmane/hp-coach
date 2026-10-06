@@ -146,3 +146,54 @@ pairs**, plus RULE 8's new near-duplicate-surname clause.
    question, still open.
 
 **On owner approval**, the 7 units enter the product-bank import.
+
+
+## Paketdom — 2026-08-31 (hpf-y8ra, 10:19 +0200)
+
+> **Paketdom 2026-08-31 (bead hpf-y8ra):** ägaren dömde »GODKÄNN PAKETET as 7/7 GODKÄNN_NOTED«. Båda verkställda enhetsdomarna (Q2/D motsagd-ej-medgiven, hpf-y75e; »komma ifrån«, hpf-hzks) accepterade. G-STEM PARTIALLY_ANSWERABLE bevaras som kalibreringsevidens — ingen ny redigeringsloop. Historisk statusrad före domen: »PIPELINE COMPLETE — 7/7 promote PASS 2026-08-26 (round 2), awaiting owner adjudication«.
+
+
+# Batch 17 — status: PACKAGE REOPENED (append-forward) — 3 stale-stems G-STEM re-reviews pending, ruling 2026-08-31
+
+> **Återöppnad 2026-08-31 (append-forward, ägardom):** den nya arkssynk-grinden fann att stems-arken för elf-b17-003, las-b17-001 och las-b17-002 bar för-reparationslydelser — G-STEM-benen läste inaktuella byten för de tre enheterna. Arken är regenererade ur slutliga kandidatbyten; tre oberoende G-STEM-granskningar routas genom Gas City. Paketgodkännandet kvarhålls INTE förrän alla tre är dispositionerade. Historisk rad före återöppningen: »Batch 17 — status: COMPLETE — 7/7 units (20q) shipped, promote CLEAN«.
+
+
+## Current status — 2026-10-06 (hpf-frjd)
+
+**PACKAGE HOLD — las-b17-001 repaired; separate blind G-STEM re-check pending.**
+The q3/q4 option repair implements the owner's ÄNDRA ruling, preserving
+keys B/D/A/C, passage and stems. Approval stays suspended until the later
+independent re-check passes. All seven units now have synchronized
+blind/stems/distractor sheets from final bytes.
+
+The las-b17-002 PARTIALLY_ANSWERABLE result is accepted as calibration under
+the 1-in-2 policy, with no editing loop. ASSEMBLY.md item 6 is clarified as a
+standing process rule, not a per-unit obligation. Details and verification:
+`ADJUDICATION.md` §ÄGARDOMAR 2026-10-06 and
+[the hpf-frjd worklog](../../../../docs/worklog/hpf-frjd.md).
+Earlier status lines are historical; this dated entry is the current status.
+
+
+## Current status — 2026-10-06 (hpf-rixl, repair round 2 after hpf-tii9)
+
+**PACKAGE HOLD — las-b17-001 repaired again; fresh independent blind re-check pending.**
+The hpf-tii9 review of the first repair returned G-STEM HOLD because q3/A and
+q4/C were both partially answerable with matching keys; G-KEY and G-SPRÅK passed.
+Round 2 balances q3's lengths and concrete practical reasons, and gives all q4
+options material/machine claims. Q4/C now requires the specific output gain
+from the machine replacement, preventing q3's practical-reason premise from
+establishing the old general summary.
+
+Only q3/q4 option texts, their affected rationales and one appended repair-log
+entry changed in the candidate. Keys B/D/A/C, passage, title, stems and q1/q2
+are preserved. The unit's three sheets are rebuilt; final **sheet-sync OK
+(7 units), mech 6/6 PASS, learner-output lint clean**. All edits remain
+uncommitted. Evidence: `ADJUDICATION.md` §Repair round 2 and
+[the hpf-rixl lane worklog](../../../../docs/worklog/hpf-rixl.md).
+
+This author self-check does not clear the independent blind gate. Earlier
+status entries remain historical; the other units' dispositions are unchanged.
+
+## Aktuell status — 2026-10-06 (hpf-41yh)
+
+**PAKETDOM ÅTERSTÄLLD — GODKÄNN PAKETET, 7/7 GODKÄNN_NOTED (`dd106de`).** Blind omgranskning #2 av las-b17-001 (hpf-xjps, huvud `ab4022b`) gav PASS: G-STEM inom 1-på-2-policyn med en partiell nyckelträff (q4), G-KEY 4/4 och G-SPRÅK utan blockerande fynd. Villkoren för ÅTERÖPPNING 2026-08-31 är uppfyllda; las-b17-002 är accepterad inom policyn och elf-b17-003 dispositionerad. Se [slutbokföringen i ADJUDICATION.md](ADJUDICATION.md#återställd-paketdom-2026-10-06-godkänn-paketet--77-godkänn_noted). Tidigare HOLD-poster är historiska. Bankimport sker först i den senare infoldnings-PR:en tillsammans med batch 16.
