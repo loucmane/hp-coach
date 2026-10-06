@@ -189,3 +189,7 @@ uncommitted. Evidence: `ADJUDICATION.md` §Repair round 2 and
 
 This author self-check does not clear the independent blind gate. Earlier
 status entries remain historical; the other units' dispositions are unchanged.
+
+## Aktuell status — 2026-10-06 (hpf-41yh)
+
+**PAKETDOM ÅTERSTÄLLD — GODKÄNN PAKETET, 7/7 GODKÄNN_NOTED (`dd106de`).** Blind omgranskning #2 av las-b17-001 (hpf-xjps, huvud `ab4022b`) gav PASS: G-STEM inom 1-på-2-policyn med en partiell nyckelträff (q4), G-KEY 4/4 och G-SPRÅK utan blockerande fynd. Villkoren för ÅTERÖPPNING 2026-08-31 är uppfyllda; las-b17-002 är accepterad inom policyn och elf-b17-003 dispositionerad. Se [slutbokföringen i ADJUDICATION.md](ADJUDICATION.md#återställd-paketdom-2026-10-06-godkänn-paketet--77-godkänn_noted). Tidigare HOLD-poster är historiska. Bankimport sker först i den senare infoldnings-PR:en tillsammans med batch 16.

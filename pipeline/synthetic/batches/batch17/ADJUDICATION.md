@@ -1500,3 +1500,45 @@ implementation evidence, not an independent G-STEM verdict. A fresh blind
 re-check must assess the repaired bytes before package approval can be restored.
 The changes are uncommitted; no Beads or PR state was changed. This append does
 not revise the settled las-b17-002 or elf-b17-003 dispositions.
+
+---
+
+## ÅTERSTÄLLD PAKETDOM (2026-10-06): GODKÄNN PAKETET — 7/7 GODKÄNN_NOTED
+
+Slutbokföring under bead **hpf-41yh**, enligt ägardomarna 2026-10-06 och
+de två oberoende blinda omgranskningarna av **las-b17-001**. Tidigare
+protokoll, HOLD-utslag och reparationsposter bevaras som historisk evidens.
+
+1. **Blind omgranskning #1 — hpf-tii9, huvud `a333b5f`.** G-KEY **PASS 4/4**
+   och G-SPRÅK **PASS**, men G-STEM **HOLD**: både q3/A och q4/C var
+   PARTIALLY_ANSWERABLE med blindval = nyckel, över den tillåtna gränsen
+   på en sådan fråga per enhet. Utfallet ledde till **reparationsrunda 2**
+   under **hpf-rixl**, commit **`ab4022b`**, dokumenterad ovan.
+2. **Blind omgranskning #2 — hpf-xjps, huvud `ab4022b`: PASS.**
+   G-STEM utföll enligt de låsta blindbedömningarna nedan. G-KEY **PASS 4/4**
+   (B/D/A/C), utan något andra försvarbart svar. G-SPRÅK **PASS** för
+   q3/q4-alternativen: inga blockerande fynd, endast mindre stilnoter.
+
+| Fråga | G-STEM | Blindval | Nyckel | Utfall |
+|---|---|---|---|---|
+| q1 | NOT_ANSWERABLE | B | B | Spekulativ träff, inte blindlösbarhet |
+| q2 | PARTIALLY_ANSWERABLE | A | D | Blindval ≠ nyckel |
+| q3 | NOT_ANSWERABLE | A | A | Spekulativ träff, inte blindlösbarhet |
+| q4 | PARTIALLY_ANSWERABLE | C | C | Blindval = nyckel; en sådan fråga per enhet |
+
+Ingen fråga är ANSWERABLE. Endast q4 har både partiell blindlösbarhet och
+rätt blindval; detta ligger inom **1-på-2-policyns tillåtna gräns**.
+Den kvarvarande q4-bryggan bevaras som kalibreringsevidens; PASS innebär
+inte att alla ledtrådar är borta. Evidens:
+[hpf-tii9:s granskningslogg](/home/loucmane/vaults/main/GasCity/hpfetcher/Docs/worklogs/hpf-tii9.md)
+och [hpf-xjps:s granskningslogg](/home/loucmane/vaults/main/GasCity/hpfetcher/Docs/worklogs/hpf-xjps.md).
+
+**Villkoren för ÅTERÖPPNING 2026-08-31 är därmed uppfyllda:** las-b17-001
+är reparerad och oberoende blindgranskad med PASS; las-b17-002 är accepterad
+inom policyn enligt ägardomen 2026-10-06; elf-b17-003 är dispositionerad
+som missfyrning på note-nivå. Paketdomen **GODKÄNN PAKETET — 7/7
+GODKÄNN_NOTED (`dd106de`) är ÅTERSTÄLLD**. Denna post ersätter de tidigare
+HOLD-statusarna som aktuellt paketläge utan att ändra deras historik.
+
+**Bankimporten sker först i den senare infoldnings-PR:en tillsammans med
+batch 16.** Den återställda paketdomen verkställer ingen bankimport.
