@@ -52,5 +52,15 @@ neighbour in a related field).
    0/1, 0/1 — all at or below half.
 5. **Audit severity contract** (standing): findings[].severity ONLY from
    {minor, note, info}; history in resolved_findings/cleared.
-6. Written dispositions owed for any named adjacency per the 2026-08-26
-   process rule.
+6. Written dispositions are required for any named adjacency per the 2026-08-26
+   process rule. (2026-10-06 ägardom: stående processregel, ingen enhetsförpliktelse.)
+
+## Owner clarification — 2026-10-06 (hpf-frjd)
+
+Item 6 is a standing process rule, not an obligation attached to an unnamed
+unit. The requirement for an explicit disposition whenever a named adjacency
+is carried remains in force. Only the ambiguous statement of that rule has
+been clarified; no per-unit marker or gate code has been removed or relaxed.
+The original wording is quoted verbatim in the
+[hpf-frjd worklog](../../../../docs/worklog/hpf-frjd.md#assembly-rule-clarification),
+along with the reason it is preserved outside this gate's input.

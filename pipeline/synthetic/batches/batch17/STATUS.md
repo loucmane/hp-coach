@@ -152,3 +152,19 @@ pairs**, plus RULE 8's new near-duplicate-surname clause.
    question, still open.
 
 **On owner approval**, the 7 units enter the product-bank import.
+
+
+## Current status — 2026-10-06 (hpf-frjd)
+
+**PACKAGE HOLD — las-b17-001 repaired; separate blind G-STEM re-check pending.**
+The q3/q4 option repair implements the owner's ÄNDRA ruling, preserving
+keys B/D/A/C, passage and stems. Approval stays suspended until the later
+independent re-check passes. All seven units now have synchronized
+blind/stems/distractor sheets from final bytes.
+
+The las-b17-002 PARTIALLY_ANSWERABLE result is accepted as calibration under
+the 1-in-2 policy, with no editing loop. ASSEMBLY.md item 6 is clarified as a
+standing process rule, not a per-unit obligation. Details and verification:
+`ADJUDICATION.md` §ÄGARDOMAR 2026-10-06 and
+[the hpf-frjd worklog](../../../../docs/worklog/hpf-frjd.md).
+Earlier status lines are historical; this dated entry is the current status.

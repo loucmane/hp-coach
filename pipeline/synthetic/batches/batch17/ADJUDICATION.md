@@ -1419,3 +1419,44 @@ controller-post):
 
 Batch 17-paketet vilar därmed på två ägarbeslut: las-b17-001 (kritisk) och
 las-b17-002 (gränsfall). elf-b17-003 är färdigdispositionerad.
+
+
+---
+
+## ÄGARDOMAR 2026-10-06
+
+Owner rulings executed by implementation bead **hpf-frjd**, following the
+2026-08-31 reopening above. Earlier protocol and verdicts remain historical
+evidence; this section records the subsequent decisions.
+
+1. **las-b17-001 — ÄNDRA; repair implemented, blind re-check pending.**
+   The prior stems-only picks B/D/A/C matched all four keys. The owner
+   accepted the q2↔q3↔q4 vocabulary bridge and the q4 form tell as repair
+   grounds. Only q3/q4 options and the affected q4 explanation have changed
+   in `candidates-final/las-b17-001.json`, with a dated `repair_log` entry.
+   Q3 now contrasts results and practical implementation without the glow
+   wording; q4 removes the afterglow cue and gives distractors comparable
+   qualifications and multi-clause structure. Keys **B/D/A/C**, passage,
+   title and all stems are unchanged, as are q1/q2 in full. The full
+   before/after table and mechanical evidence are in
+   [the lane worklog](../../../../docs/worklog/hpf-frjd.md).
+   All seven units now have blind/stems/distractor sheets derived from
+   final bytes. **Package approval remains suspended until a separate,
+   independent blind G-STEM re-check of las-b17-001 passes.** This
+   implementation is not that review and supplies no new blind verdict.
+2. **las-b17-002 — accepted as at-policy calibration evidence.** The q2
+   PARTIALLY_ANSWERABLE result, whose blind pick B matched the key through
+   the q1→q2 bridge, is accepted under the **1-in-2 policy**. Preserve the
+   evidence; no further editing loop or change to this unit is authorized.
+   The batch16 half of the calibration bundle is recorded in its own
+   adjudication append below the historical debt-closeout section.
+3. **ASSEMBLY.md item 6 (former line-55 wording) — standing process rule.**
+   The owner ruled that the general requirement for written dispositions
+   is not a per-unit obligation. The statement is clarified and its
+   original wording is preserved verbatim in the linked worklog. Gate
+   code and the requirement for actual named adjacencies are unchanged.
+
+Current package status: **HOLD — las-b17-001 blind G-STEM re-check pending**.
+The las-b17-002 owner decision is resolved; elf-b17-003's earlier misfire
+calibration disposition stands. Earlier approval and gate results do not
+constitute approval of the newly repaired options.

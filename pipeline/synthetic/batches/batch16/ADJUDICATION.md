@@ -1424,3 +1424,32 @@ samma våg:** båda blinda benen valde D och refuterade B aktivt; counsel-
 B-fallet dog på den reparerade styckesgränsen. Ägardom krävs — mekaniken
 avgör inte tvisten. Paketet går INTE till godkännande/infoldning förrän
 ägaren dömt (villkoret »7/7 GODKÄNN_NOTED« är inte uppfyllt).
+
+
+---
+
+## ÄGARDOMAR 2026-10-06
+
+Owner rulings recorded by implementation bead **hpf-frjd**. These decisions
+supersede the outstanding owner decisions in the 2026-08-31 closeout above;
+all earlier findings, reports and provenance remain preserved.
+
+1. **las-b16-003 — GODKÄNN_NOTED.** The owner accepts the current unit
+   without edits, with both the adversarial q2/B double-answer claim and
+   the q1 “grannbyns form” referent observation retained as noted evidence.
+   Both independent blind G-KEY legs selected **D** for q2 and actively
+   rejected B; their q1 picks were **B**, also the key. The owner rules on
+   that conflict in favor of acceptance rather than another repair loop.
+   This is an owner disposition, not a claim that the adversarial evidence
+   never existed or that a new review has run.
+2. **Calibration bundle — accepted under the 1-in-2 policy.** The batch16
+   G-STEM **PARTIALLY_ANSWERABLE ×2**, with blind picks matching the keys,
+   is accepted as at-policy calibration evidence. Preserve those records;
+   no content editing loop. The las-b17-002 half of the same ruling is
+   recorded in batch17's dated owner section.
+
+Current owner adjudication: **7/7 GODKÄNN_NOTED**, including las-b16-003.
+`adjudication-flags.json` carries historical findings and provenance, not
+per-unit status; it is left intact. The earlier automated fold (6 accepted
+plus one owner escalation) remains a record of the pre-ruling state.
+No new import, publication, or review verdict is claimed by this entry.
