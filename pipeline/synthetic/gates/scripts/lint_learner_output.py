@@ -153,6 +153,9 @@ _TAXONOMY_LABELS = (
     "short_text_1q", "society_commentary", "stance_inversion", "stem_lexis_note",
     "too_far", "too_literal", "true_but_distorted", "two_step_leap", "umbrella_decoy",
     "whole_text_gist", "wrong_logic", "wrong_transfer", "zero_sum_displacement",
+    # Batch18/19 labels retained in internal adjudication metadata.
+    "misplaced_evidence_limit", "omkastad_ordning", "reversed_inversion",
+    "reversed_order_timing", "stem_entailment_audit", "unsupported_condition",
 )
 _TIER1 = frozenset(_fold(x) for x in _TAXONOMY_STEMS + _TAXONOMY_LABELS)
 

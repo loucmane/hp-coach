@@ -1,0 +1,348 @@
+{
+  "candidate_id": "las-b18-001",
+  "date": "2026-09-01",
+  "auditor": "vfinal-adversarial-audit/claude-opus-5[1m]",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "verdict": "CONFIRMED_NOTES",
+  "severity_contract": "findings[].severity is drawn ONLY from {minor, note, info}. A ship-blocker is expressed as verdict REFUTED, never as a custom severity. This audit found 0 blockers: 2 minors (both metadata-only, neither gates ship), 6 notes, 3 info. Resolution history lives in resolved_findings/cleared.",
+  "scope": "V-FINAL adversarial double-answer audit of the shipping bytes at batches/batch18/candidates/las-b18-001.json (mtime 2026-09-01 13:14), read in full including repair_log, against batches/batch18/gen-las-long.NOTES.md, gen-las-long.json (pre-repair provenance), verdicts.jsonl / verdicts/*.jsonl (26 records for this unit) and report-final.json (status SURVIVED_FLAGGED). Prime directive: REFUTE. Ship-readiness is NOT refuted: 0 blockers, 0 key moves, 4 keys survive an independent solve in which every non-key was actively defended before the key was accepted.",
+  "independent_solve": {
+    "method": "Passage read first and solved question by question from the passage alone, arguing FOR every option before rejecting it and requiring a cited passage span for each rejection. Honesty caveat: the candidate JSON was dumped in full before solving, so keys and rationales were visible; this is therefore a re-derivation under adversarial discipline, not a key-blind solve. The key-blind channel is covered independently by the two G-KEY legs (r2A/r2B) and by the G-STEM blind sheet, all of which ran on these same repaired bytes.",
+    "answers": {
+      "q1": "A",
+      "q2": "D",
+      "q3": "B",
+      "q4": "C"
+    },
+    "shipped_key_spread": [
+      "A",
+      "D",
+      "B",
+      "C"
+    ],
+    "match": "4/4",
+    "single_defensible": "Exactly one option survives per question.",
+    "per_question": {
+      "q1": "Stem window = the moment of slaking. A: paragraph 2 states it — 'Möter den brända stenen sedan vatten börjar den sjuda, spricker och faller sönder till ett fint vitt mjöl'. 'Fräsa' is in fact the idiomatic Swedish verb for slaking lime, so the synonym shift sjuda→fräste is a lexical improvement, not a stretch, and 'föll sönder till ett … vitt …' tracks the passage's own predicate. B (heat strong enough to ignite dry wood): true of real slaking, which is strongly exothermic, but the passage's only 'hetta' is the thousand-degree BURNING in the sentence before ('När kalksten hettas upp till omkring tusen grader'); nothing about heat, let alone ignition, is predicated of the slaking. Refuted on an 'enligt texten' stem. C (slaked mass laid in pits to mature): lime-putty pit maturation is real practice, and paragraph 6's 'ofta med en grop i mitten' supplies a lexical lure, but that grop is the depression in an overgrown röse, and paragraph 3 fixes the storage stage on the other side of the slaking — 'den brända stenen förvarades torr till dess den skulle släckas och blandas till bruk'. No pit and no maturation stage exists anywhere in the passage. D (mixed with sand while still seething): hot-mixing is real practice, but paragraph 2 orders the events — seethe, crack, fall apart to mjöl, and it is THAT product, 'den släckta kalk som blandad med sand ger murbruk', that meets the sand; paragraph 3 repeats the order in a bare coordination, 'släckas och blandas till bruk'. The simultaneity is the option's own addition. Only A survives.",
+      "q2": "A: contradicted head-on by 'En ugn var för stor för ett enskilt hushåll', and nothing licenses the 'efter hand' trajectory. B (a well-off farm owned the kiln and charged): the same sentence pair kills it — 'Den restes och brändes av ett ugnslag – en handfull grannar som sköt till var sin andel ved, turades om vid elden och delade den färdiga kalken efter insats'. Erection is collective, input is per-share, output is divided by insats; no owner and no payer exists. The strongest counsel for B is that 'delade … efter insats' is a kind of settling-up, but that is division among contributors, not purchase from a proprietor. C: contradicted by 'Det mesta av kalken gick till avsalu', and it also answers a different question from the stem. D: stated. Only D survives.",
+      "q3": "A: the ranking is inverted in the passage — 'Framför allt var det dit kalken gick: till murningen av stenhus, broar och kyrktorn', while the fields got only 'något hamnade på åkrarna som jordförbättring'; paragraph 1's own list puts murbruk first. C: 'binäring' is glossed in the sheet as 'sysselsättning vid sidan av jordbruket', the burning was scheduled around farming ('bränningen låg om försommaren, när vårbruket var undanstökat') and any one kiln fired 'bara vartannat eller vart tredje år'. The best counsel for C is 'för många hushåll var ugnen den binäring som över huvud taget gav kontanter', but 'the only thing that gave cash' is not 'set farming aside'. D: doubly refuted — 'Berget var däremot sällan något bekymmer, för i de här trakterna gick kalkstenen i dagen', and abandonment in paragraph 6 is caused by the FOREST being cut out. B: carried by paragraph 4 (binäring, kontanter) plus paragraph 7 (kalkverk, cement, 'priset föll under vad ett lag av grannar kunde möta' — outcompeted). Only B survives.",
+      "q4": "A (röse positions map old parish boundaries): the lure is the word 'gränsen' in paragraph 6, but the glossary pins the referent — inägor = 'gårdens åkrar och ängar närmast byn', utmark = 'markerna längre bort' — so the boundary is a farm/village-level one INSIDE a parish, and the count itself spans 'Klyvinge med grannsocknar'. Refuted by the unit's own glossary. B: 1924 is given as Klyvinge's last attestable firing and the text makes no comparison of any kind with the neighbouring parishes; the stem's own 'Klyvingetrakten' arguably already includes them, which makes the comparison incoherent as well as unsupported. D: contradicted verbatim — 'Hur gamla de äldsta lämningarna är går inte att avgöra utan utgrävning' — and the negation for the oldest covers the set a fortiori. C: licensed by an explicit succession clause, 'inte sällan flera i rad utmed samma sluttning, äldre ugnar som övergivits när skogen omkring dem huggits ut och ersatts av en yngre ugn längre bort', reinforced by 'Ändå brändes en och samma ugn som regel bara vartannat eller vart tredje år' against the 'sjuttiotal ugnsrester' count. Any degree of succession makes the count overstate simultaneity, so C does not need the strong reading. Only C survives.",
+      "rebuilt_option_stress_test": "The brief asked specifically whether q1's three rebuilt world-plausible distractors are each refutable from the text alone. They are, but through two different channels, and the audit records the difference honestly: D is refuted by a stated ORDER (paragraph 2's appositive chain plus paragraph 3's 'släckas och blandas'), i.e. by contradiction; B and C are refuted by SILENCE — the passage predicates no heat of the slaking and contains no pit and no maturation stage. On an 'enligt texten' stem silence is the correct and sufficient refutation channel, and it is what the pre-repair set could not offer (those distractors were chemically absurd and strippable without the passage). The trade fleet-repair-2 made — recall-only defect exchanged for two silence-refuted distractors — is the right one, and neither B nor C acquires textual support under adversarial reading. q3's de-absolutised set was attacked the same way: A, C and D each retain an identifiable, citable defect after softening (inverted ranking; the glossed word 'binäring' plus the försommar scheduling; the explicit 'Berget var däremot sällan något bekymmer'). No second defensible answer was found in any question."
+    },
+    "agrees_with_gkey_legs": "Yes. Both G-KEY legs (claude-opus-5/G-KEY-r2A and /G-KEY-r2B) ran on the repaired option set — their justifications name the rebuilt Q1 B/C/D and the rebuilt Q4 A — and both returned A/D/B/C across 8 pass records with zero findings."
+  },
+  "law16_reverification": {
+    "run_by": "this audit, 2026-09-01, direct HTTPS to the two endpoints (urllib, UA identifying the audit), not WebFetch",
+    "positive_controls_first": [
+      {
+        "endpoint": "sv.wikipedia CirrusSearch",
+        "query": "action=query&list=search&srsearch=%22Flarken%22&srwhat=text&srinfo=totalhits",
+        "totalhits": 56,
+        "top_titles": [
+          "Flarken, Luleå kommun",
+          "Flarken, Robertsfors kommun",
+          "Flarken",
+          "Flarken (Ytterhogdals socken, Hälsingland)",
+          "Flarken, Härjedalen",
+          "Rutvik"
+        ],
+        "result": "PASS — reproduces the generator's logged 56 exactly. A zero below therefore means something."
+      },
+      {
+        "endpoint": "Nominatim",
+        "query": "q=Flarken&countrycodes=se&format=jsonv2&limit=20",
+        "results": 20,
+        "sample": [
+          "Flarken, Rutvik, Luleå kommun (hamlet)",
+          "Flarken, Ängersjö distrikt, Härjedalens kommun (lake)",
+          "Flarken, Bodens kommun (hamlet)",
+          "Flarken, Kalix kommun (lake)",
+          "Flarken, Vindelns kommun (hamlet)",
+          "Flarken, Norsjö kommun (hamlet)"
+        ],
+        "result": "PASS — the generator logged 10 at the default limit=10; this run raised limit to 20 and got 20, i.e. the same non-empty control, saturated at the cap."
+      }
+    ],
+    "candidates": [
+      {
+        "entity": "Torun Gillervall",
+        "role": "researcher (¶6, ¶8)",
+        "wiki_exact_totalhits": 0,
+        "nominatim_se_results": 0,
+        "result": "CLEAR"
+      },
+      {
+        "entity": "Gillervall",
+        "role": "surname alone",
+        "wiki_exact_totalhits": 0,
+        "nominatim_se_results": 0,
+        "result": "CLEAR"
+      },
+      {
+        "entity": "Edvin Grynfors",
+        "role": "byline (¶8)",
+        "wiki_exact_totalhits": 0,
+        "nominatim_se_results": 0,
+        "result": "CLEAR"
+      },
+      {
+        "entity": "Grynfors",
+        "role": "surname alone",
+        "wiki_exact_totalhits": 0,
+        "nominatim_se_results": 0,
+        "result": "CLEAR"
+      },
+      {
+        "entity": "Klyvinge",
+        "role": "toponym / parish (¶6, ¶7, q4 stem)",
+        "wiki_exact_totalhits": 0,
+        "nominatim_se_results": 0,
+        "result": "CLEAR"
+      },
+      {
+        "entity": "Klövinge",
+        "role": "one-diacritic variant probe",
+        "wiki_exact_totalhits": 0,
+        "nominatim_se_results": 0,
+        "result": "CLEAR"
+      },
+      {
+        "entity": "Klävinge",
+        "role": "one-diacritic variant probe",
+        "wiki_exact_totalhits": 0,
+        "nominatim_se_results": 0,
+        "result": "CLEAR"
+      },
+      {
+        "entity": "Kalkugnarnas landskap",
+        "role": "unit title (extra probe, not in the generator's log)",
+        "wiki_exact_totalhits": 0,
+        "nominatim_se_results": "n/a",
+        "result": "CLEAR"
+      }
+    ],
+    "generator_claims_audited": [
+      {
+        "claim": "\"Edvin Skarelius\" rejected because \"Skarelius\" sv.wiki returns 1 real bearer (Mimmi Lille Skarelius, article 'Laga skifte i Dalarna')",
+        "reproduced": true,
+        "detail": "sv.wiki exact \"Skarelius\" -> totalhits=1, title 'Laga skifte i Dalarna'. The rejection was correct and the byline was correctly re-coined; recording it because it is the one positive hit in the whole log and it verifies that the generator's zeroes are informative."
+      },
+      {
+        "claim": "given names Torun and Edvin are unproblematic",
+        "reproduced": "partially",
+        "detail": "sv.wiki exact \"Torun\" -> totalhits=554 (Toruń the city, Torun Bülow-Hübe, Torun Lian, Torun Munthe). Torun is a live Swedish given name with real bearers, but law 16 governs full-name and toponym collisions, and the full pair \"Torun Gillervall\" is at 0 on both endpoints. No charge; recorded so the 554 is on the record rather than absent from it."
+      }
+    ],
+    "verdict": "PASS — every retained entity re-verified at zero on both endpoints with a live, same-session positive control at each endpoint. The generator's search log is reproducible in full, including its one rejection. No unreproducible originality claim found."
+  },
+  "verification_performed": {
+    "rationale_quote_verification": "All quote-marked spans and all unmarked near-quotes in the four rationales were extracted and matched against the passage bytes, exactly and again after Unicode/punctuation/case normalisation (NFC, curly quotes and dashes folded, punctuation stripped, casefolded). 24 unmarked passage claims: 24/24 exact. Quote-marked spans: 'sjuda' exact in passage; 'något' exact in passage; 'framför allt' matches the passage's sentence-initial 'Framför allt' — case-fold only, passes the punctuation-insensitive check; 'var sin ugn' is NOT in the passage and correctly is not claimed to be — it quotes Q2's own option A ('skaffade sig var sin ugn'), which is the right referent (the passage's nearest string is 'sköt till var sin andel ved'). Zero misquotes.",
+    "repair_log_vs_bytes": "Every ticket in the repair_log was diffed against gen-las-long.json (pre-repair provenance) and candidates/las-b18-001.json (shipping bytes). fleet-repair-1: gen passage carries 'bränndes' x2 and 'brändes' x0; shipping passage carries 'brändes' x2 and 'bränndes' x0, at the same two sites (¶4 'Den restes och brändes av ett ugnslag', ¶5 'Ändå brändes en och samma ugn'). The claimed rationale sync x2 is real and exact: gen rationales for Q2 and Q4 each carried one 'bränndes'; the shipping rationales for Q2 and Q4 each carry one 'brändes', and no other rationale carries either form. The claim 'No option carried the form' is true in both states. The three residual 'bränndes' strings in the shipping file are all inside the repair_log ticket and edit records themselves — correct history-keeping, not a live defect. fleet-repair-2: all nine listed option edits reproduce exactly as gen->shipping diffs, with no unlisted option edit anywhere; the passage is byte-identical between gen and shipping apart from the two fleet-repair-1 sites, confirming 'passage untouched'; keys and key letters are unchanged at A/D/B/C.",
+    "fleet_repair_3_check": "The brief asked for verification of 'fleet-repair-3 discarded-draft claims'. No such ticket exists for this unit: the repair_log has exactly two rounds (fleet-repair-1, fleet-repair-2), and a grep for 'fleet-repair-3' across batch18 returns elf-b18-001, las-b18-002, las-b18-003 and three gen-*.NOTES.md files only. Zero round-3 gate records name las-b18-001 as a subject; the single string hit in verdicts/verdicts-gregister-r3.jsonl is inside a sibling's note and reads \"...las-b18-001's 'agnat tio ar at att inventera'. Untouched by round 3\". Nothing to verify; the absence is recorded as info rather than passed over silently.",
+    "mech_rerun_on_shipping_bytes": "python3 gates/scripts/run_mech.py batches/batch18/candidates/las-b18-001.json --parsed-dir /home/loucmane/dev/hpfetcher/data/parsed --p5-corpus-dir auto -> M-SCHEMA pass, M-BANDS pass, M-TELL pass, M-FORM pass, M-ECHO pass (114 shipped units indexed), M-PLAGIARISM pass; zero findings, exit 0.",
+    "numeric_metadata_rederived": "Option lengths recomputed with the gate's own mech.tokenize: Q1 A9/B9/C9/D8, Q2 A9/B9/C8/D9, Q3 A9/B10/C9/D11, Q4 A12/B8/C12/D8 — identical to the post-repair table in gen-las-long.NOTES.md. Key is the SOLE longest option in 0 of 4 questions (Q1 tied max, Q2 tied max, Q3 not longest, Q4 tied max). Ratios 1.12 / 1.12 / 1.22 / 1.50, all far under the bands.json cap of 5.25. key_spread in generator_meta (A, D, B, C) matches the questions' actual keys. Passage measures 867 mech tokens against the NOTES' 866 — a one-token drift with no gate consequence (M-BANDS long band is 215-1260).",
+    "near_verbatim_recheck": "G-REGISTER's copied-option note was written on the SUPERSEDED Q1 key string, so its threshold judgement was re-derived on the shipping bytes. Max contiguous shared n-gram between the shipping key ('Stenen fräste och föll sönder till ett vitt pulver.') and the passage is 3 tokens ('sönder till ett') — exactly the same as for the pre-repair string ('Stenen fräste sönder till ett vitt pulver.'). fleet-repair-2's added 'och föll' matches the passage's 'och faller' only across an inflectional difference and does not extend the contiguous run. G-REGISTER's disposition therefore still holds on the shipping bytes.",
+    "sheet_hygiene": "blind/las-b18-001.json and stems/las-b18-001.json carry no key field and no rationale text; prompts and all sixteen option strings are byte-identical to the repaired candidate; the passages in blind/ and distractor/ are byte-identical to the candidate's. distractor/ carries the key, which is correct for that gate. The repair-2 claim that all three sheets were regenerated from the repaired candidate is verified."
+  },
+  "carried_items_weighed": {
+    "policy": "Each item the brief named was re-derived on the shipping bytes rather than inherited. UPHELD = I reproduce it independently. RESOLVED = the bytes no longer carry it. MOOT = the quoted string no longer exists.",
+    "g_stem_q1": "UPHELD, and slightly worse than the record states. The r2 finding says the field narrows 4->2 (A vs B, both true of real slaking). I agree and add that the narrowing is stable rather than soft: C and D are both off-scope for the stem's window ('när kalken släcktes') for a genre-wise solver, so the blind field really is {A, B}. The passage then decides genuinely, which is the point of the rebuild. Held.",
+    "g_stem_q2": "UPHELD. Three ownership models remain (per-farm / proprietor-with-payers / communal) and communal burning by an ugnslag is the standard account of Swedish peasant lime burning, so a domain-informed solver lands on D without the passage; a naive solver is near 1-in-3 as repair-2 claims. C also drops on topic alone (it answers Q3's territory). Real residual, family-typical, held.",
+    "g_stem_q3": "UPHELD as the batch recorded it, and held per the calibration policy for huvudbudskap items — but the audit declines to call it merely a 'moderation tell'. Two independent blind channels land on B: (i) form — B is the only self-limiting claim among a ranking claim, a behavioural claim and a monocausal claim; (ii) domain history — lime burning being outcompeted by mechanised kilns and cement is the textbook outcome, while 'lime went mainly to the fields', 'farmers set farming aside' and 'the limestone ran out' are all historically false. A third, intra-item channel exists that the record does not name: B's own word 'binäring' is glossed in the sheet as 'sysselsättning vid sidan av jordbruket', which strikes C from B's wording alone. Not a blocker — the huvudbudskap family carries this in the shipped corpus too — but the residual is larger than 'moderation heuristic' suggests, and that is recorded in F8.",
+    "g_stem_q4": "UPHELD. General evidential reasoning separates the set without lime expertise: A, B and D each assert a positive capability or comparison that a scatter of undated remains cannot support, and C is exactly what such a scatter licenses. Note the interaction with the unit's own hedge_map, charged as F1: the epistemically modest option in Q4 is the KEY, not a distractor.",
+    "g_sprak_pabörjade": "UPHELD (3/3 votes, minor). '...ugnarna påbörjade sin långsamma förvandling till rösen i ett skogsbryn' is present in the shipping bytes. 'Påbörja' presupposes a deliberate agent; kilns begin nothing. 'Inledde' is the native form. Carried minor, not a blocker.",
+    "g_sprak_garden_path_para6": "UPHELD (3/3 votes, minor) and escalated in KIND but not in severity — see F4. The clause is present verbatim and is the sole textual licence for Q4's key, so the missing comma is an item-integrity matter as well as a style one. Still not a blocker: the competing parse (a forest replaced by a kiln) is semantically incoherent, so the intended coordination is forced.",
+    "g_sprak_fraste_sonder": "RESOLVED, and the batch record is stale. The G-SPRÅK minor quoted 'Stenen fräste sönder till ett vitt pulver.' and proposed exactly 'fräste och föll sönder till ett vitt pulver'. fleet-repair-2 applied that native alternative verbatim. The string the finding quotes no longer exists anywhere in the shipping bytes, yet report-final.json still lists the minor as open in all three G-SPRÅK votes. Charged as F3 (record hygiene, not content).",
+    "g_sprak_kunde_mota": "UPHELD (3/3 votes, minor). 'priset föll under vad ett lag av grannar kunde möta' is present. 'Möta ett pris' leans on business English 'meet the price', and the av-genitive sits where a compound is idiomatic ('ett grannlag'). Defensible via 'möta konkurrensen', so it stays minor. Carried.",
+    "g_sprak_single_vote_minors": "All re-checked against the bytes. PRESENT and upheld as minors: 'Möter den brända stenen sedan vatten börjar den sjuda' (missing comma after a fronted V1 conditional — and this is Q1's key evidence sentence, so the same clause type as F4, though here no ambiguity survives); 'Att antalet rester överdriver hur många ugnar som var i gång samtidigt.' ('överdriva' wants a nominal object; sits in a KEY); 'Att flera hushåll gick samman kring en gemensam ugn.' ('gå samman om' is the collocation, plus the mild pleonasm samman/gemensam; sits in a KEY); 'Handboken, som annars har råd om det mesta' ('ha råd' collocates first with affordability); 'Resterna är alltså avlagringar av en följd av generationer' (stacked av-genitives, Q4 rationale — student-facing, since rationales are the teaching payload); 'för mycket av det som handboken tar för givet' (2/3 votes; fixed 'för mycket' read before the causal 'för'). MOOT: 'gjutning i formar hör hemma hos gips och betong' — that string was in the PRE-repair Q1 rationale, which fleet-repair-2 rewrote wholesale; charged with F3.",
+    "aggregate": "0 kills, 0 language kill votes, 4 open G-STEM flags (all upheld), 9 live G-SPRÅK minors + 2 stale entries, 4 G-DISTRACTOR CLEAN notes, 3 G-REGISTER notes with a standing disposition. Nothing in the carried set rises to a blocker on my own re-derivation."
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "minor",
+      "stage_challenged": "generator_meta / hedge_map (rule 13, rule 10)",
+      "disposition": "FIX ORDERED (metadata only, one clause; does not gate ship)",
+      "claim": "The unit's hedge_map asserts that Q4 D is 'en försiktighetsklingande inversion som är fel' and concludes that \"'Välj det garderade' träffar nyckeln i 0 av 4 frågor\". Both halves are wrong on Q4, and the unit's own open G-STEM record says the opposite.",
+      "evidence": "Q4 D reads 'Att deras ålder går att fastställa utan utgrävning.' — a confident positive capability claim, the least cautious statement in the set. Q4 C, the KEY, reads 'Att antalet rester överdriver hur många ugnar som var i gång samtidigt.' — the only deflationary, evidence-limiting statement among A ('går att använda för att kartlägga'), B ('upphörde tidigare där än i grannsocknarna') and D. The batch's own G-STEM r2 record for q:4 states it plainly: 'General evidential reasoning, not lime expertise, separates these: ... C is exactly the inference such a scatter does license. The stem asks for a conclusion and only one option is a defensible one, so the field narrows to C passage-blind.'",
+      "why": "A 'pick the careful option' solver scores on Q4, not zero of four. The hedge_map's underlying token-level claim ('noll absolutizer-token i någon option') is separately TRUE and I verified it via M-FORM; the defect is that the metadata generalises a token-level result into a heuristic-level acquittal that the same file's flag set contradicts. The bytes that students see are unaffected — no key, option, stem or rationale is implicated — so this is a metadata correction, not a ship gate. Recommended replacement clause: state that Q4's key is the sole epistemically modest option and that the careful-option heuristic therefore lands on it, cross-referencing the open G-STEM q:4 flag."
+    },
+    {
+      "id": "F2",
+      "severity": "minor",
+      "stage_challenged": "generator_meta / rule11_lemma_audit",
+      "disposition": "FIX ORDERED (metadata only; conclusion unaffected)",
+      "claim": "The post-repair rule-11 audit states: \"'bränn-' förekommer i alternativen endast i Q3B/C (Kalkbränningen/kalkbränningens)\". Against the bytes the stem occurs in exactly ONE option, Q3 B, and the form 'kalkbränningens' appears in no option in either the pre-repair or the post-repair set.",
+      "evidence": "Mechanical sweep of all sixteen option strings for 'bränn'/'bränd' returns a single hit: Q3 B, 'Kalkbränningen var en viktig binäring som till sist konkurrerades ut.' Pre-repair Q3 C was 'Utan kalkugnarna hade landsbygdens penninghushållning brutit samman.' and post-repair Q3 C is 'Många bönder lade jordbruket åt sidan för kalkens skull.' — neither contains the stem.",
+      "why": "The audit's CONCLUSION ('alltså inom en och samma fråga', therefore no cross-question bridge) is correct and in fact stronger than claimed, so nothing downstream is misled about leakage. But a rule-11 audit is a mechanical artefact whose value is that it can be replayed, and this line cannot be: it cites a form that never existed. Same class as F1 — a metadata assertion that does not survive a byte check. Fix: 'endast i Q3B (Kalkbränningen)'."
+    },
+    {
+      "id": "F3",
+      "severity": "note",
+      "stage_challenged": "batch record / report-final.json aggregation",
+      "disposition": "RECORDED (record hygiene; no content change)",
+      "claim": "report-final.json carries two G-SPRÅK minors for this unit whose quoted strings no longer exist in the shipping bytes, so the unit's open carried-minor count is overstated by two.",
+      "evidence": "Every quote in report-final.json's las-b18-001 flag set was matched against the shipping bytes exactly and after normalisation. Thirteen of fifteen entries match. Two do not: (a) 'Stenen fräste sönder till ett vitt pulver.' — fleet-repair-2 applied the finding's own proposed native alternative and the option now reads 'Stenen fräste och föll sönder till ett vitt pulver.'; the minor is RESOLVED, not carried. (b) 'gjutning i formar hör hemma hos gips och betong' — a fragment of the PRE-repair Q1 rationale, which fleet-repair-2 rewrote wholesale when the Q1 distractors were rebuilt; the finding is MOOT. The G-SPRÅK releg run is timestamped 12:45/13:00 and the repaired candidate 13:14, so the ordering explains it.",
+      "why": "The unit ships as SURVIVED_FLAGGED and the flag list is what a downstream reader uses to decide what still needs work. Carrying a resolved minor makes the repair look unapplied, and carrying a moot one attributes a defect to prose that no longer exists. Neither affects a student-facing byte. Fix: mark both entries superseded-by-fleet-repair-2 in the report, or re-run G-SPRÅK on the repaired bytes so the record and the bytes are the same generation. Note that this unit received no round-3 gate re-runs at all (see F10), which is why the mismatch was never swept up."
+    },
+    {
+      "id": "F4",
+      "severity": "note",
+      "stage_challenged": "G-SPRÅK carried minor / item integrity interaction",
+      "disposition": "RECORDED with a recommendation; not a blocker",
+      "claim": "The carried garden-path minor in paragraph 6 is not purely cosmetic in this unit: the clause it flags is the sole textual licence for Q4's key, so the comma the gate proposed is worth applying on item-integrity grounds even though the style charge alone would not compel it.",
+      "evidence": "Passage ¶6: 'inte sällan flera i rad utmed samma sluttning, äldre ugnar som övergivits när skogen omkring dem huggits ut och ersatts av en yngre ugn längre bort.' G-SPRÅK (3/3 votes, minor): \"'ersatts' läses först som samordnat med 'huggits ut' inne i när-satsen (skogen ersatt av en ugn); avsedd samordning är 'övergivits ... och ersatts'.\" Q4's key C ('Att antalet rester överdriver hur många ugnar som var i gång samtidigt.') is licensed by exactly this succession reading, and both G-KEY legs quote this clause and nothing else as the licence.",
+      "why": "Under the unintended parse the sentence says a forest was replaced by a younger kiln, which is incoherent, so every solver recovers the intended coordination and the key is not actually at risk — that is why this stays a note and not a blocker. But a first-pass reader under exam time-pressure pays a re-parse on the one sentence the item turns on, which is a worse place to pay it than anywhere else in the passage. Recommendation: comma before 'och ersatts', exactly as the gate proposed."
+    },
+    {
+      "id": "F5",
+      "severity": "note",
+      "stage_challenged": "passage content / world plausibility",
+      "disposition": "RECORDED, not charged; no key at risk",
+      "claim": "The wood arithmetic between paragraph 5 and paragraph 8 sits in tension for a domain-informed reader: one firing is said to have consumed more wood than a household used in a whole year, while the reconstruction firing is provisioned with thirteen cubic metres.",
+      "evidence": "¶5: 'En enda bränning slukade mer ved än ett hushåll annars gjorde av med på ett år.' ¶8: 'Veden ligger redan travad på platsen: tretton kubikmeter björk, skänkt av markägarna, i väntan på att torka.' A nineteenth-century Swedish farm household's annual firewood ran well above thirteen cubic metres (commonly cited at roughly ten to fifteen famnar, i.e. some 23-35 m3), and a three-to-four-day continuous lime burn of a full charge consumed considerably more than thirteen.",
+      "why": "This is a friction, not an internal contradiction: the passage never states household consumption in cubic metres, so nothing inside the text is self-refuting, and the museum's kiln may reasonably be smaller than a working one with more wood to follow ('i väntan på att torka'). No option, key or rationale depends on either figure, and no gate tests it. Recorded because an integrated read is exactly where such a seam should surface, and because a reader who knows the domain is the reader this passage is written for. If it is ever touched, raising the coda's figure is cheaper than softening ¶5's comparison, which is doing real rhetorical work."
+    },
+    {
+      "id": "F6",
+      "severity": "note",
+      "stage_challenged": "passage content / internal consistency",
+      "disposition": "RECORDED, not charged; no key at risk",
+      "claim": "Paragraph 8's list of what can no longer be asked of anyone includes 'hur länge', which paragraph 3 has already answered.",
+      "evidence": "¶3: 'I tre eller fyra dygn hölls elden sedan vid makt utan uppehåll' and 'Först när lågan slog klar och nästan färglös ur toppen var stenen genombränd.' ¶8: 'mycket av det som handboken tar för givet – hur elden ska föras, hur länge, med vilken ved – går i dag inte längre att fråga någon om.'",
+      "why": "Recoverable, and probably intended: ¶8 is scoped to 'det som handboken TAR FÖR GIVET', i.e. the tacit judgement behind the coarse band, and ¶3 itself shows that judgement at work (when to stop is read off the flame, not off a clock). But the two sentences are eleven hundred words apart and the second uses the same words as the first, so a close reader feels the seam before resolving it. No question touches firing duration and no key is exposed. If touched: narrowing ¶8 to 'hur elden ska föras, med vilken ved' would cost the sentence nothing."
+    },
+    {
+      "id": "F7",
+      "severity": "note",
+      "stage_challenged": "passage content / lexical precision",
+      "disposition": "RECORDED, not charged; no key at risk",
+      "claim": "'ingen av de ugnar som undersökts visar spår av kol' relies on an anaphora that the archaeological default reading fights: in a kiln context bare 'kol' is charcoal, which every wood-fired kiln must show.",
+      "evidence": "¶5: 'förordar för övrigt stenkol som bränsle där sådant fanns att köpa – ett råd som inte tycks ha vunnit gehör, för ingen av de ugnar som undersökts visar spår av kol.' The intended referent is stenkol, supplied fourteen words earlier in the same sentence.",
+      "why": "The anaphora does license the reading, so this is a precision wobble rather than an error, and it is untested by any question. It is worth recording because the sentence is one of the passage's two law-9 residues (the unheeded coal advice) and residues earn their keep by being crisp. 'visar spår av stenkol' closes it at zero cost."
+    },
+    {
+      "id": "F8",
+      "severity": "note",
+      "stage_challenged": "generator_meta / NOTES blind-floor claim; G-STEM disposition",
+      "disposition": "HELD per the batch calibration policy, with the floor restated honestly",
+      "claim": "The declared options-only blind floor ('no question better than 1-in-2'; 'Q4 ~ 1-in-3') is optimistic on the shipping bytes for Q3 and Q4, in a way the four open G-STEM flags already record but the unit's own metadata does not.",
+      "evidence": "My own re-derivation, passage withheld: Q1 narrows to {A, B} and stops there — the passage genuinely decides, so ~1-in-2 as declared. Q2 narrows to three ownership models with the communal one being the standard historical account, so ~1-in-2 for a domain-informed solver and ~1-in-3 for a naive one, as repair-2 claims. Q3 is reachable by three independent channels (form-moderation; lime history, where all three distractor claims are historically false; and B's own glossed word 'binäring' striking C), so materially better than 1-in-2 for a domain-informed solver. Q4's key is the only epistemically modest option after repair-2 rebuilt A into a second evidence-reasoning option that still overclaims, so nearer 1-in-2 than the declared 1-in-3. G-STEM r2 independently blind-picked the key on q:2, q:3 and q:4 and narrowed q:1 to two.",
+      "why": "Not a blocker, and the audit does not propose moving it into one. Q3 is a huvudbudskap item and Q4 an inference item; both families carry this property in the shipped HP corpus, the batch policy holds them, and repair-2 already spent a round de-absolutising Q3's A and C and rebuilding Q4's A to reduce exactly this. The charge is narrower: the unit's declared floor should match the unit's own flag set. Fix belongs with F1 in the same metadata pass — restate Q3 and Q4 at their true floors and cross-reference the G-STEM records rather than leaving the two artefacts saying different things."
+    },
+    {
+      "id": "F9",
+      "severity": "info",
+      "stage_challenged": "gen-las-long.NOTES.md / provenance hygiene",
+      "disposition": "RECORDED, no action required",
+      "claim": "The NOTES file's pre-repair sections describe the superseded option set and are silently contradicted by the post-repair sections later in the same file.",
+      "evidence": "The 'Trap architecture per question' table still describes Q1 B as molding, Q1 C as the water-drives-out-CO2 swap and Q1 D as 'hårdnade genast'; the first rule-11 table lists 'ugn' in Q3C, which the repaired Q3 C no longer contains; the rule-13 section reports 'Q3 tie 11=11' and 'Q4 key 12 < A's 13' against the repaired 9/10/9/11 and 12/8/12/8; the mech self-check reports Q1 'options 5-7' against the repaired 8-9. Each is superseded by the explicit REPARATIONSRUNDA section further down, which I verified is correct in every number.",
+      "why": "The file is append-forward by design and the later sections govern, so nothing is actually wrong. Recorded only so that a future reader who greps rather than reads does not quote a superseded table. The same applies to gen-las-long.json itself, which still carries 'bränndes' x2 and the pre-repair options — that is correct provenance-keeping, since candidates/ is the shipping path, and it is what made the repair_log verifiable at all."
+    },
+    {
+      "id": "F10",
+      "severity": "info",
+      "stage_challenged": "audit brief premise",
+      "disposition": "RECORDED so the absence is on the record",
+      "claim": "The brief asked this audit to verify 'fleet-repair-3 discarded-draft claims' in this unit. No fleet-repair-3 ticket exists for las-b18-001 and the unit received no round-3 gate re-runs.",
+      "evidence": "repair_log contains exactly two rounds. A grep for 'fleet-repair-3' across batches/batch18 hits only elf-b18-001, las-b18-002, las-b18-003, gen-las-essa.NOTES.md, gen-las-debatt.NOTES.md and gen-elf-long.NOTES.md. Of the eight verdicts/*r3*.jsonl files, none contains a record whose candidate_id is las-b18-001; the single string occurrence is inside a sibling's G-REGISTER note reading \"...las-b18-001's 'agnat tio ar at att inventera'. Untouched by round 3\".",
+      "why": "Reported rather than quietly skipped, because 'I could not find what you asked me to check' and 'I checked it and it was fine' are different results. The practical consequence is F3: because round 3 never revisited this unit, its G-SPRÅK record was never regenerated against the repaired bytes and still carries two entries the repair had already resolved."
+    },
+    {
+      "id": "F11",
+      "severity": "info",
+      "stage_challenged": "q3 key scope",
+      "disposition": "RECORDED, within huvudbudskap latitude",
+      "claim": "Q3's key states the industry's importance without the scope qualifier the passage attaches to it.",
+      "evidence": "Key B: 'Kalkbränningen var en viktig binäring som till sist konkurrerades ut.' The passage scopes the claim twice — '...i socknar med kalksten i backarna hade bränningen sedan länge varit böndernas sak' (¶1) and 'för många hushåll var ugnen den binäring som över huvud taget gav kontanter' (¶4).",
+      "why": "Standard latitude for a 'överensstämmer bäst' key, which is supposed to generalise, and ¶1's 'Kalken var seklets murbruk, vitfärg och jordförbättring på en gång' independently supports the importance half. Recorded only because de-scoping is precisely what fleet-repair-2 charged against the old Q3 C ('landsbygdens penninghushållning'), and the key does a milder version of the same move. No action proposed."
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "R1",
+      "from": "G-SPRÅK releg, 3/3 votes, minor",
+      "was": "'Stenen fräste sönder till ett vitt pulver.' — resultative 'fräsa sönder' is not established; the defect sat in a KEY option, which the gate weighted more heavily.",
+      "now": "RESOLVED in the bytes. fleet-repair-2 applied the gate's own proposed native alternative verbatim; the shipping option reads 'Stenen fräste och föll sönder till ett vitt pulver.' I re-derived the consequence for near-verbatim exposure: the max contiguous shared n-gram with the passage is unchanged at 3 tokens ('sönder till ett'), so the repair did not buy idiomatic Swedish at the cost of a lift. Separately confirmed that 'fräsa' is the idiomatic Swedish verb for slaking lime, so the key's synonym shift away from the passage's 'sjuda' is a gain in register, not a stretch. The report record is stale — see F3."
+    },
+    {
+      "id": "R2",
+      "from": "G-SPRÅK releg, 1/3 votes, minor",
+      "was": "'gjutning i formar hör hemma hos gips och betong' — 'höra hemma hos' takes a person or institution, not a material (Q1 rationale).",
+      "now": "MOOT. The clause belonged to the pre-repair Q1 rationale, which fleet-repair-2 rewrote in full when the Q1 distractors were rebuilt; molding no longer appears anywhere in the unit. Verified absent from the shipping bytes. The report record is stale — see F3."
+    },
+    {
+      "id": "R3",
+      "from": "fleet-repair-2 ticket, G-STEM q:1 KILL (recall-only)",
+      "was": "Q1's three distractors were chemically absurd (molding in forms; water driving out the CO2; the stone hardening at once into finished mortar), so the key was selectable textblind by anyone with school chemistry.",
+      "now": "RESOLVED and independently stress-tested. All three rebuilds (exothermic ignition; post-slaking pit maturation; hot-mixing with sand) are true or standard in real lime practice and each is refutable from the passage alone — D by a stated order, B and C by silence on an 'enligt texten' stem. G-STEM r2 re-ran on the repaired set and downgraded to a flag with a 4->2 narrowing. The recall channel is closed; see independent_solve.rebuilt_option_stress_test for the channel-by-channel argument."
+    },
+    {
+      "id": "R4",
+      "from": "fleet-repair-2 ticket, G-STEM q:3 KILL (overclaims + cross-question corroboration)",
+      "was": "Q3 A and C carried an evaluative superlative and a counterfactual absolute that a blind solver strips on style, and key B's clause 'vars spår ännu syns i landskapet' was confirmed verbatim by Q4's option set (ugnsrester, deras ålder).",
+      "now": "RESOLVED in the bytes and re-verified. The clause is gone from B and its content sits in the rationale instead; A and C are flat, checkable and still identifiably wrong. The cross-question bridge is closed: no key's mechanism vocabulary recurs in another question's option set, and the residual decline-field overlap (Q3B 'konkurrerades ut', Q3D 'övergavs', Q4B 'upphörde tidigare') points at a DISTRACTOR, so it cannot improve a blind floor. I additionally checked the reverse direction the notes do not mention — whether Q3 D's presupposition that old kilns were abandoned feeds Q4 C — and it does not: Q4's own stem ('ugnsresterna') already supplies abandonment, while Q4 C needs succession, which Q3 D does not carry. What the repair did NOT close is the moderation/domain channel on Q3 itself; that survives as the open G-STEM q:3 flag and is weighed in carried_items_weighed and F8."
+    },
+    {
+      "id": "R5",
+      "from": "fleet-repair-1 ticket, G-SPRÅK kill 3/3 (unanimous, both passage sites)",
+      "was": "'bränndes' is a non-form; geminate stems simplify before the dental suffix (bränna -> brändes).",
+      "now": "RESOLVED and fully verified against both generations of bytes. gen-las-long.json: passage 'bränndes' x2 / 'brändes' x0, rationales Q2 x1 and Q4 x1. candidates/las-b18-001.json: passage 'brändes' x2 / 'bränndes' x0 at the same two sites, rationales Q2 x1 and Q4 x1 with the corrected form. The ticket's claim that no option carried the form is true in both generations. The three residual 'bränndes' strings in the shipping file are all inside the repair_log's own ticket and edit records."
+    },
+    {
+      "id": "R6",
+      "from": "fleet-repair-2 ticket, G-STEM q:2 and q:4 flags (cheap softening / key alone in kind)",
+      "was": "Q2's A/D formed a lone polar pair (a kiln each vs a shared kiln), giving a genre-wise solver 1-in-2; Q4's C was the only option reasoning about what the remains can bear, which rewarded the meta-claim.",
+      "now": "PARTIALLY RESOLVED. Both rebuilds are in the bytes and both do what they claim: Q2 now carries three distinct ownership models, and Q4 now carries two evidence-reasoning options. The flags survive re-running for a different reason than the one repaired — Q2 to domain knowledge about Swedish peasant lime burning rather than to the polar pair, Q4 to the fact that the key is the only epistemically MODEST option rather than the only evidential one. Held, and recorded honestly in F1 and F8 rather than presented as closed."
+    }
+  ],
+  "cleared": [
+    "Independent solve 4/4 against the shipped keys A/D/B/C, with every non-key actively defended and then refuted against a cited passage span. Exactly one defensible option per question; no MULTIPLE_DEFENSIBLE candidate found, including under the brief's targeted stress on q1's rebuilt world-plausible set and q3's de-absolutised set.",
+    "Rationale quotes: 24/24 unmarked passage claims match the bytes exactly; 3 of 4 quote-marked spans match exactly and the fourth ('framför allt') differs only in sentence-initial case from the passage's 'Framför allt', passing the punctuation- and case-insensitive check. 'var sin ugn' correctly quotes Q2's option A rather than the passage. Zero misquotes.",
+    "repair_log fleet-repair-1 verified against both generations of bytes, including the specific claim the brief singled out: the rationale sync is exactly x2 (Q2 and Q4), at the two sites where the pre-repair file carried 'bränndes'.",
+    "repair_log fleet-repair-2 verified: all nine listed option edits reproduce exactly as gen->shipping diffs, no unlisted option edit exists, the passage is byte-identical to gen apart from the two fleet-repair-1 sites (so 'passage untouched' holds), and keys and key letters are unchanged at A/D/B/C.",
+    "Law 16 re-run in full on both endpoints with same-session positive controls first: sv.wikipedia exact phrase 'Flarken' totalhits=56 (reproducing the generator's logged 56 to the digit) and Nominatim countrycodes=se 'Flarken' non-empty; all retained entities — Torun Gillervall, Gillervall, Edvin Grynfors, Grynfors, Klyvinge, Klövinge, Klävinge — return 0 on both endpoints. The generator's one rejection ('Skarelius' -> 1 real bearer, 'Laga skifte i Dalarna') also reproduces, which is what makes its zeroes informative.",
+    "All six mechanical gates re-run on the shipping bytes: M-SCHEMA, M-BANDS, M-TELL, M-FORM, M-ECHO (114 shipped units indexed), M-PLAGIARISM — pass, zero findings, exit 0.",
+    "Post-repair option-length table re-derived with the gate's own tokenizer and matches the NOTES exactly (9/9/9/8, 9/9/8/9, 9/10/9/11, 12/8/12/8). Key is the sole longest option in 0 of 4 questions; ratios 1.12/1.12/1.22/1.50 against a 5.25 cap. key_spread metadata matches the actual keys.",
+    "Near-verbatim exposure of Q1's key re-derived on the shipping bytes after the repair changed the string: max contiguous shared n-gram with the passage is 3 tokens ('sönder till ett'), identical to the pre-repair form, so G-REGISTER's copied-option disposition — written on the superseded string — still holds.",
+    "Cross-question corroboration swept in both directions. The bridge that killed the unit at repair-2 (Q3 B's 'vars spår ännu syns i landskapet' against Q4's rester/ålder set) is verifiably gone from the bytes. No key's mechanism vocabulary recurs in another question's option set. The remaining decline-field overlap runs to a distractor (Q4 B), not to a key. Q3 D's abandonment presupposition adds nothing to Q4 that Q4's own stem does not already supply.",
+    "Sheet hygiene: blind/ and stems/ carry no key field and no rationale text; all four prompts and all sixteen option strings are byte-identical to the repaired candidate; blind/ and distractor/ passages are byte-identical to the candidate's. distractor/ carries the key, which is correct for that gate.",
+    "G-KEY: both independent legs (r2A English, r2B Swedish) ran on the repaired option set — their justifications name the rebuilt Q1 B/C/D and the rebuilt Q4 A — and both returned A/D/B/C across 8 pass records with zero findings.",
+    "Internal chronology reconciles with no residue: 1874 handbook, written attestation from 'the middle of the 1600s', last attestable firing 1924, rebuilt kiln to be fired 'för första gången på hundra år' — consistent with an undated present of roughly 2024. The passage names no present-day year, so nothing can drift.",
+    "Glossary discipline: all four glossed terms (karvstock, binäring, inägor, utmark) occur in the passage body, each exactly once. Two of them are load-bearing for refutations a student must make — 'binäring' strikes Q3 C, and 'inägor'/'utmark' strike Q4 A — and both glosses are supplied, so neither refutation depends on outside knowledge.",
+    "Q3's key was checked for the failure it was rebuilt out of: 'konkurrerades ut' is carried by ¶7 in full (kalkverk whose kilns never had to cool, cement taking a growing share, and the price falling below what a neighbours' team could meet), not by the single word 'marknad'."
+  ],
+  "tallies": {
+    "blockers": 0,
+    "key_moves": 0,
+    "findings_total": 11,
+    "by_severity": {
+      "minor": 2,
+      "note": 6,
+      "info": 3
+    },
+    "by_stage": {
+      "generator_meta": 3,
+      "passage_content": 3,
+      "batch_record_hygiene": 2,
+      "language_carried": 1,
+      "notes_provenance": 1,
+      "audit_brief_premise": 1
+    },
+    "resolved_findings": 6,
+    "cleared_checks": 14,
+    "independent_solve_match": "4/4",
+    "law16_entities_reverified": 8,
+    "law16_controls_passed": "2/2",
+    "rationale_quotes_verified": "28/28 (24 unmarked + 4 quote-marked; 1 case-fold only)",
+    "repair_log_edits_verified": "11/11 (2 fleet-repair-1 paths, 9 fleet-repair-2 option edits) plus the rationale-sync claim on both rounds",
+    "mech_gates_rerun": "6/6 pass"
+  },
+  "boundaries_observed": [
+    "Read-only audit. No byte of candidates/las-b18-001.json, gen-las-long.json, gen-las-long.NOTES.md, verdicts.jsonl, verdicts/*.jsonl or report-final.json was modified; the only file written is this audit at batches/batch18/audits/las-b18-001.json.",
+    "The two metadata fixes ordered in F1 and F2 are recommendations recorded here, not applied. Applying them touches generator_meta on a unit whose gate record is already closed, which is a repairer's call, not an auditor's.",
+    "No key was moved and none was proposed for moving.",
+    "Law 16 re-verification used direct read-only HTTPS GETs to sv.wikipedia.org/w/api.php and nominatim.openstreetmap.org with an identifying User-Agent and rate limiting; no writes, no authenticated calls."
+  ],
+  "ship_recommendation": "SHIP AS IS on the student-facing bytes. Ship-readiness is not refuted: keys A/D/B/C each survive an adversarial solve as the single defensible option, the repair_log is true to the bytes in every ticket, law 16 re-verifies clean on both endpoints against live positive controls, and all six mechanical gates pass on the shipping file. The two minors are metadata-only (hedge_map's Q4 claim, the rule-11 'bränn-' parenthetical) and one record-hygiene note asks the batch report to stop carrying two G-SPRÅK minors that fleet-repair-2 already resolved. The four open G-STEM flags are all real and all reproduce, and they are held under the batch calibration policy for the huvudbudskap and inference families rather than dismissed — with the honest correction, recorded in F8, that the unit's declared blind floor is optimistic on Q3 and Q4 relative to its own flag set. If a cheap editorial pass is available, the single highest-value change is the comma in ¶6 (F4), because that clause is the sole licence for Q4's key."
+}

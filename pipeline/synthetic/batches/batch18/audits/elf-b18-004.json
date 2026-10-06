@@ -1,0 +1,267 @@
+{
+  "candidate_id": "elf-b18-004",
+  "date": "2026-09-01",
+  "auditor": "vfinal-adversarial-audit/opus",
+  "audit_verdict": "CONFIRMED_NOTES",
+  "verdict": "CONFIRMED_NOTES",
+  "severity_contract": "findings[].severity is drawn ONLY from {minor, note, info}. A ship-blocker is expressed as verdict REFUTED, never as a custom severity. Resolution history lives in resolved_findings/cleared.",
+  "scope": "Unit elf-b18-004 ('Sittings to Let', ELF-TYPE-002 short_text, 1q, key B). Prime directive REFUTE. Read in full: candidates/elf-b18-004.json, gen-elf-short-2.json, gen-elf-short-2.NOTES.md, BRIEF-ADDENDUM.md, every gate record naming this unit (M-SCHEMA/M-BANDS/M-TELL/M-FORM/M-ECHO/M-PLAGIARISM, G-KEY x2, G-ENG x3, G-REGISTER, G-STEM r1+r2, G-DISTRACTOR), report-final.json, batch16/candidates-final/elf-b16-004.json, batch17/candidates-final/elf-b17-004.json, batch4/candidates/elf-b4-004.json, gates/bands.json, gates/scripts/mech.py.",
+
+  "cold_solve": {
+    "answer": "B",
+    "agrees_with_key": true,
+    "solved_before_reading_rationale": false,
+    "contamination_disclosure": "This auditor read the full candidate file (rationale included) before solving, per the task instruction to read the unit in FULL. A self-blind-solve by this auditor would therefore be contaminated and is NOT offered as evidence. Instead two independent uncontaminated reads were commissioned, each given ONLY the passage, stem and four options with no key, no rationale, no generator_meta and no gate history, and no web access.",
+    "independent_read_1": {
+      "role": "skeptical test-wise cold solver",
+      "answer": "B",
+      "confidence": "high",
+      "second_best": "A",
+      "jointly_defensible_pair": "none",
+      "decisive_evidence_cited": "'Six pews in the middle aisle are marked vacant that year, and four the year after' set against 'In the plan of 1851 the vacant marks are gone. Thin ruled lines now cut the boxes into single sittings.'",
+      "self_reported_friction_against_the_key": "B asserts purpose ('the wardens' way of'), and 'The wardens' minutes record the new lettings without a word of explanation' states that no purpose is recorded; B is therefore inference-to-best-explanation, not a stated fact. Held to be exactly what a one_inch_inference stem licenses."
+    },
+    "independent_read_2": {
+      "role": "adversarial counsel instructed to build the strongest case for A, for D and for C in turn, then rule honestly",
+      "court_verdict": "single-answerable; B survives",
+      "strongest_threat": "A",
+      "best_move_found_for_A": "The vacant pews are in the middle aisle only - a single band of a ranked 18s-to-3s scale with free benches at the far end - so empty seats there are a PRICING failure, not a capacity failure; and the 1851 plan shows the vacant marks gone and the ruled lines present simultaneously, so the passage never dates the filling relative to the ruling and B's causal arrow is inferred, not shown.",
+      "why_A_still_dies": "A's own wording asserts a capacity ceiling ('more parishioners wanted seats than the church could hold'), and four documented empty pews plus free benches refute a full room. Every version of A that absorbs the vacancy data does so by retreating from capacity to affordability, which is a different proposition and is not on the ballot. A's best exhibit also convicts it: the 1861 rise proves these wardens answered strong demand by RAISING price, so cutting the unit to 2s - below their own 1848 floor of 3s - reads as a concession to weakness.",
+      "why_C_dies": "C asserts intent ('meant chiefly for'), which the minutes-sentence is placed there to block; it inverts an incentive (free-bench sitters already had seats for nothing); and its second half is a biographical claim about the new sitters for which the passage supplies nothing.",
+      "why_D_dies": "'apiece' is a distributive attaching to 'single sittings', the nearest countable plural, and the whole point of the clause is that the unit of letting changed; D also smuggles in a middle-aisle restriction the text does not carry, since the worked example (Pew 9) is an eighteen-shilling box at the pulpit end."
+    },
+    "auditors_own_adjudication": "Key B CONFIRMED and uniquely defensible. Both uncontaminated reads land on B, neither finds a jointly defensible pair, and each independently reaches B through the same single sentence pair (vacancy marks -> their disappearance in the plan that first shows the ruled lines). A is the designed near-miss and the only serious threat; it fails on the word 'hold', not on its reasoning. The item's discrimination lives entirely in the A/B contrast and is untouched by every defect recorded below."
+  },
+
+  "law16_reverification": {
+    "mandate": "generator_meta.originality_note flagged all three coinages for V-FINAL re-verification rather than certifying them (rule 14). Re-run here independently, controls first, same session, queries logged.",
+    "en_wikipedia_cirrussearch_exact_phrase": {
+      "endpoint": "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=%22NAME%22&format=json&srlimit=5",
+      "positive_control": "\"Pellew\" -> totalhits 701, top hits Edward Pellew 1st Viscount Exmouth / Viscount Exmouth / Sir Edward Pellew Group of Islands. CONTROL PASS. Matches the generator's logged figure of 701 exactly.",
+      "results": {
+        "\"Stintbury\"": "totalhits 0, no suggestion",
+        "\"Fetterlow\"": "totalhits 0, no suggestion",
+        "\"Dorothea Fetterlow\"": "totalhits 0, no suggestion",
+        "\"Tebbenholt\"": "totalhits 0, no suggestion (bonus check, not required by the task)"
+      },
+      "verdict": "PASS on all four. Generator's logged zeros reproduced."
+    },
+    "osm_nominatim": {
+      "endpoint": "https://nominatim.openstreetmap.org/search?q=NAME&countrycodes=gb&format=json&limit=5, UA header set, >=2s between calls",
+      "positive_control": "\"Nether Stowey\" countrycodes=gb -> 2 results, both 'Nether Stowey, Somerset, England, United Kingdom'. CONTROL PASS.",
+      "results": {
+        "Stintbury countrycodes=gb": "0 results",
+        "Stintbury worldwide (no countrycodes)": "0 results"
+      },
+      "verdict": "PASS on the exact name. But see finding LAW16-1: a one-letter variant probe run by this audit returns a REAL Gloucestershire village and civil parish."
+    },
+    "exact_quoted_web_search": {
+      "positive_control": "\"Syd Dernley\" -> real bearer returned as top hit (en.wikipedia.org/wiki/Syd_Dernley, plus IMDb, Find a Grave, Executed Today). CONTROL PASS - index is live and exact-phrase-capable. This is the same supplementary control the generator used after the 'Robert Brindlow' recipe control proved the index fuzzy rather than exact-strict.",
+      "results": {
+        "\"Dorothea Fetterlow\"": "no exact bearer. Fuzzy neighbours only: Judith Fetterley, Ellen Fetter, and unrelated Dorotheas (Foulger, Gerard, Macnee, Deakin, Brown, Brooking). PASS.",
+        "\"Fetterlow\" surname": "no exact bearer. Neighbours: Fetter, Fetters, Fetterolf (German origin, ~1501 US bearers, 49% Pennsylvania), Fetterman. PASS.",
+        "\"Fetterlow\" (bare)": "no exact bearer. Neighbours: Fetterman, Fetterolf Corporation, Fetterangus, Fetter Lane, Fetteresso Forest. PASS.",
+        "\"Stintbury\" parish": "no exact bearer. Index itself surfaces Saintbury FIRST (Wikidata Q20972991, en.wikipedia Saintbury, willersey.org 'Saintbury Village and St Nicholas' Church in the Cotswolds', Wikishire), then Stanbury, Stantonbury, Kintbury. See finding LAW16-1.",
+        "\"Tebbenholt\"": "no exact bearer. Nearest are the living Dutch surname Tebbenhof (Arjen Tebbenhof, Isabel Tebbenhof) and the US surname Tebbenkamp; unrelated domains. Matches the generator's log. PASS."
+      }
+    },
+    "supplementary_fuzzy_sweep_run_by_this_audit": {
+      "endpoint": "en.wikipedia CirrusSearch with the ~ fuzzy operator (edit distance <=2), not part of the rule-14 recipe",
+      "results": {
+        "Stintbury~": "totalhits 3072, returns Stansbury / Stanbury / Stansbury (surname) family. Notably it does NOT surface Saintbury - the analyzer-based fuzzy leg would have missed the real collision, which is why the one-letter substitution probe has to be enumerated by hand.",
+        "Fetterlow~": "totalhits 200, returns Judith Fetterley, Margaret Fetterolf, Fetterlock, Walter Fetterly, Morton Fetterolf. Computed Levenshtein: Fetterley 2, Fetterly 2, Fetterlock 2, Fetterolf 3, Fetterman 3. None within one letter - generator's claim CONFIRMED.",
+        "Tebbenholt~": "totalhits 10, top real bearer Zier Tebbenhoff. Computed Levenshtein Tebbenholt/Tebbenhoff = 2, Tebbenholt/Tebbenhof = 2. Generator's 'edit distance 2, noted not rejected' CONFIRMED."
+      }
+    },
+    "net": "Two of three flagged names (Dorothea Fetterlow / bare Fetterlow, and the bonus Tebbenholt) re-verify CLEAN on all three legs with passing controls. The toponym Stintbury passes the exact-name blocking test on all three legs, but the originality_note's one-letter-variant disclosure is factually wrong - see LAW16-1."
+  },
+
+  "verification_performed": {
+    "repair_free_status": "CONFIRMED. candidates/elf-b18-004.json has no repair_log key (top-level keys: candidate_id, section, family, title, passage, questions, generator_meta; generator_meta keys: origin, model, date, block_format, genre, spelling_variety, topic, fictional_source, fictional_entities, key_derivation, question_families, engineered_traps, hedge_balance_note, length_tell_note, residue_note, law_12_divergence, spelling_note, originality_note, given_name_check, rule_11_note, rule_12_note). A repository grep for repair_log across batch18 shows five of the seven units carry one (elf-b18-001, elf-b18-002, las-b18-001, las-b18-002, las-b18-003); elf-b18-003 and elf-b18-004 do not. This unit was never repaired.",
+    "byte_stability_since_generation": "CONFIRMED. json.dumps(sort_keys=True, indent=1) diff between gen-elf-short-2.json (with candidate_id 'PLACEHOLDER' substituted to 'elf-b18-004') and candidates/elf-b18-004.json is ZERO lines. Field-level equality checks: passage identical True, questions identical True, generator_meta identical True. The raw byte diff is non-empty but consists solely of indentation (2-space source re-emitted at 1-space) - no character of passage, prompt, option, key, rationale or metadata text changed. The unit is byte-stable since generation apart from the candidate_id renumbering and the re-indent.",
+    "mech_rerun_on_shipping_bytes": "mech.tokenize() / mech.sentences() re-run by this audit directly over candidates/elf-b18-004.json: passage 152 tokens; 8 sentences; sentence_token_lengths [23, 33, 16, 10, 26, 16, 12, 16]; mean 19.0; prompt 11 tokens; options A 15 / B 16 / C 18 / D 17; option_length_ratio 18/15 = 1.20; key B is second-shortest. Every figure declared in length_tell_note, in the rationale's Length paragraph and in the NOTES Bands section is EXACT. mech verdict records in verdicts-mech.jsonl (M-SCHEMA, M-BANDS, M-TELL, M-FORM, M-ECHO, M-PLAGIARISM) are all pass and all six are present.",
+    "bands_source_check": "gates/bands.json ELF verified at source: passage_words short_text [101, 368] -> 152 OK; paragraph_count short_text [0, 8] -> 1 OK; mean_sentence_words short_text [12.0, 47.2] -> 19.0 OK; prompt_words reading [3, 30] -> 11 OK; option_words reading [0, 31] -> 15-18 OK; option_length_ratio_max value 2.36 (_observed_max 2.25, _n 364) -> 1.20 OK. Every _band_check citation in the unit verifies.",
+    "absolutizer_check_at_source": "gates/scripts/mech.py lines 333-340. _ABSOLUTIZERS = {alltid, aldrig, samtliga, alla, allt, varje, enbart, endast, ingen, inget, inga, helt, omojligt, garanterat, always, never, every, all, only, none, entirely, impossible, proves, guarantees, certainly}. Per-option mech._has_absolutizer over the shipping bytes: A False, B False, C False, D False. Re-run against the FULL list the batch18 addendum declares binding (mech's list plus nothing, nobody, 'no one', ingenting, ingenstans, uteslutande, nowhere, everyone, everybody, everything): still zero hits in every option. hedge_balance_note's substantive claim is TRUE under both lists, and M-FORM's key-sole-measured shape is genuinely absent. See finding INFRA-1 for the list-membership discrepancy.",
+    "rationale_quote_verification": "All nine passage strings the rationale relies on verified verbatim against the shipping passage: \"and names crowd where one household's name used to stand\"; \"The wardens' minutes record the new lettings without a word of explanation.\"; \"let at two shillings apiece\"; \"apiece\"; \"names crowd\" (reprinted sentence-initially as 'Names crowd', capitalisation-adjusted only); \"Six pews in the middle aisle are marked vacant that year, and four the year after.\"; \"In the plan of 1851 the vacant marks are gone.\"; \"where the benches were free\"; \"In 1861 the wardens raised the price of the front boxes to a pound.\" Option-text quotes 'mainly' (A) and 'meant chiefly' / 'chiefly' (C) verified in situ. NO desync of the elf-b18-001 kind (rationale quoting a pre-repair string) exists here - unsurprising, since the unit was never repaired.",
+    "documentary_logic_check": "The 1848 -> 1849 -> 1851 -> 1856 -> 1861 chain is internally consistent and the rationale's date resolution is correct. 'that year' in 'Six pews ... are marked vacant that year' resolves to 1848 (the immediately preceding subject is 'The plan of 1848'), and 'the year after' to 1849 - the rationale's '(i) six middle-aisle pews are marked vacant in the 1848 plan and four in 1849' is right. The 1851 plan carries BOTH the disappearance of the vacant marks and the first appearance of the subdividing lines, which is what makes the inference one inch rather than two. Pew 9 is coherent as a static plan entry (an 18s box in 1848 carrying three surnames by 1856) and requires no arithmetic. 1861 sits after every other datum and is not used by any option. No date is out of order, no figure contradicts another, and no arithmetic reconciliation is demanded anywhere.",
+    "stem_corpus_attestation": "Verified against /home/loucmane/dev/hpfetcher/data/. 'What can be concluded' occurs 22 times in data/parsed/. The bare form 'What can be concluded here?' and the referential form 'What can be concluded here in relation to the 17th century silver coins?' are both attested. The exact preposition 'about' is NOT attested ('What can be concluded here about' returns zero hits) - see INFO-3. The shipped Layer-2 corpus also carries the bank's own gloss on this stem type: \"The prompt is 'What can be concluded here?' - a 'conclude' question, which means a claim that fits the FULL paragraph, not just one half. Watch for options that capture only the 'known causes' half or only the 'unknown causes' half.\" That gloss cuts both ways on the standing G-STEM finding against D and is weighed in GSTEM-1.",
+    "stem_lexis_tilt_derived_independently": "Stem content words on BARE FORMS = {letting, single, sittings}. Overlap: A 0, B 1 ('letting'), C 2 ('single', 'sittings'), D 0. 'Pick the option with the most stem lexis' therefore returns C, a DISTRACTOR - the tilt misfires away from the key. Under a generous morphological-family count B leads (letting + singly + let = 3 against C's 2), a weak tilt toward the key. Net: no free pick from either form, but the check is undisclosed - see DISC-2.",
+    "heuristic_sweep_rederived": "Re-derived over the shipping option set, and independently corroborated by the uncontaminated cold solver. (1) Pick-the-hedged: A 'mainly', C 'chiefly' are the only hedged options -> returns {A, C}, both distractors. FAILS toward wrong answers, as hedge_balance_note claims. (2) Pick-the-longest: C at 18 tokens -> a distractor. FAILS. (3) Strip-the-absolutes: no option carries a listed absolutizer under either list, so the heuristic gets no purchase and returns nothing. (4) Odd-one-out: A, B and C are causal/purposive claims, D is a price datum -> isolates D as the discard but does not choose among the remaining three. NO selective power for the key. (5) Stem-lexis: returns C on bare forms (see above). (6) Contradictory-pair (NOT on the generator's list, surfaced by adversarial counsel): A and B are converses - demand exceeded supply versus fell short of it - and the key of a contrary pair is usually one of the pair, returning {A, B}. This is the sharpest blind channel available and it is undisclosed; see DISC-1. Net: five of six heuristics miss or misfire to a distractor; the sixth halves the field without resolving it.",
+    "law12_neighbour_spotcheck": "Every move-level claim in law_12_divergence checked at source. Against batch16/candidates-final/elf-b16-004.json ('Sixpence a Night'): 'unwaged officer paid in fees' VERIFIED ('The pinder's office carried no wage: Jabez Skellorne had the fees instead'); 'vestry fee table' VERIFIED ('The vestry's table of 1846 charged a shilling for taking up a beast and sixpence a night for its keep'); 'Sunday crying mechanism' VERIFIED ('Skellorne was to cry what he held at the church door each Sunday after service, and nowhere else'); 'two paired micro-cases from one week with worked sums' VERIFIED ('In 1851 a heifer taken up on a Monday cost its owner four shillings; another, taken up on the Saturday of that same week, cost one and sixpence'); 'artefact-persists-until-demolition coda' VERIFIED ('The table hung on the pound door until the wall came down in 1903'). The claimed absences in THIS unit all hold: no named individual actor (Tebbenholt is a surname on a plan, the wardens are collective), the string 'vestry' does not occur, the string 'sixpence' does not occur, there is no notice mechanism, no worked sum and no arithmetic reconciliation, and the coda is a forward price fact. Against batch17/candidates-final/elf-b17-004.json: title CONFIRMED 'Selling the Doorstep', family milk-round-sale-thirteen-week-deduction, flat past-tense trade-convention narration with a transaction and a career coda - the present-tense document-reading register here is genuinely a new move for the lane. batch4/candidates/elf-b4-004.json CONFIRMED 'Take a Seat', family ELF-TYPE-002 / urban-design-movable-seating-plaza-inference - shares only the word 'seats'. 'ELF-TYPE-002 / archival-silence-local-history-inference' CONFIRMED present in the addendum's 107-family exclusion list. Residual caveat recorded at REG-1.",
+    "rule_8_9_recheck": "'Dorothea' verified absent from the 231-name USED GIVEN NAMES list and from the 14 batch17 additions. 'Dorothea Fetterlow' verified absent from the 274 FULL-NAME PAIRS. 'Fetterlow' is not a one-letter variant of any listed surname (nearest listed: Fewtrell, Feltrin, Marlow, Mallow - all >=2). 'Stintbury' is not a one-letter variant of any listed toponym (Thelbury shares only the -bury tail). Bank-wide grep for Stintbury / Fetterlow / Tebbenholt across every batch's candidates and candidates-final returns exactly two files: this unit, and batch19/candidates/elf-b19-004.json where 'Stintbury' appears ONLY inside that unit's own originality_note prose as a back-reference, not in its passage - no reuse. Downstream propagation confirmed working: batch19's given_name_check lists 'Dorothea' among the batch18 additions it must avoid. Sibling declaration confirmed: gen-elf-short-1.json ('Hair and Lime') declares Edith Gimberfold, building surveyor - no shared given name, surname, toponym or domain."
+  },
+
+  "findings": [
+    {
+      "id": "LAW16-1",
+      "severity": "minor",
+      "stage_challenged": "originality / law 16 / rule 14",
+      "claim": "originality_note states as verified fact that no real place sits one letter from the invented toponym 'Stintbury', and names Saintbury as one of the neighbours it clears. Saintbury is a real Gloucestershire village and civil parish, it is at Levenshtein distance EXACTLY 1 from Stintbury, and it has its own parish church - the same domain as this unit. The rule-14 disclosure the note produced is the reverse of the truth.",
+      "evidence": "originality_note, verbatim: \"'\\\"Stintbury\\\"' no exact match; nearest real places surfaced are Stanbury (West Yorkshire), Kintbury (Berkshire), Saintbury (Gloucestershire), Stantonbury - each at edit distance 2 or more from Stintbury, none a one-letter variant.\" Levenshtein computed by this audit: saintbury/stintbury = 1; stanbury = 2; kintbury = 2; stantonbury = 3. Alignment: S-a-i-n-t-b-u-r-y against S-t-i-n-t-b-u-r-y differs at position 2 only (a<->t), a single substitution. Existence verified on two independent legs with passing controls: Nominatim countrycodes=gb returned 2 records, 'Saintbury, Cotswold, Gloucestershire, England, United Kingdom' as boundary=administrative and 'Saintbury, Cotswold, Gloucestershire, England, WR12 7PX' as place=village; en.wikipedia CirrusSearch \"Saintbury\" totalhits 25 with top hits 'Saintbury' and 'Church of St Nicholas, Saintbury'. The generator's own exact-quoted WebSearch surfaced it - reproduced here, where '\\\"Stintbury\\\" parish' returns Saintbury as the FIRST result (Wikidata Q20972991, en.wikipedia Saintbury, willersey.org 'Saintbury Village and St Nicholas' Church in the Cotswolds', Wikishire). The note's own one-letter probe set was also incomplete: it enumerated Stinbury, Sintbury and Stantbury (all distance 1, all correctly zero) but omitted the position-2 a<->t substitution, which is the one that lands on a real place.",
+      "why": "Rule 14 is binding for batch18 and says in terms: 'Exact real place names are collisions even for tiny hamlets ... Probe one-letter variants too (real \"Rossmala\" sits one diacritic from batch16's \"Rossmala\").' The generator ran the right probe, surfaced the right neighbour, and then mis-measured it, producing a false all-clear in the shipping metadata. The exact-name blocking test still PASSES on all three legs (en.wiki 0, Nominatim gb 0, Nominatim worldwide 0, no exact web bearer), and the standing bank precedent tolerates distance-1 variance when disclosed - batch16's Rossmala shipped at one diacritic from the real Rossmala and sits in the do-not-reuse toponym list - so this is NOT a collision under the rule that blocks, and the verdict is not REFUTED on it. But the note is factually wrong on a rule-14 measurement, the domain overlap is tighter than the Rossmala precedent (Saintbury's St Nicholas is itself a parish church, and this unit is about a parish church's seating plans), and the comparable exact-match case, batch16's 'Skarpbo', was renamed to Vrantebo by OWNER ruling. ESCALATE to the owner for a keep-or-rename decision rather than closing it at this gate. Cheapest repair if the owner wants distance restored: any toponym whose second letter is not a vowel-or-t alternation of the -intbury frame; the passage carries the name exactly twice (once in the passage, once in generator_meta) and nothing in the item's logic depends on it. Minimum repair if the owner keeps the name: correct the false sentence in originality_note so the disclosure states the distance-1 neighbour honestly.",
+      "escalate_to_owner": true
+    },
+    {
+      "id": "INT-1",
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "generator_meta.residue_note contradicts the Q1 rationale on two counts: it declares the free benches and the three surnames in pew 9 to be 'concrete residue the question does not test', and the rationale then uses both as its explicit defeaters for distractors A and C. This is a repeat, one batch later and in the same ELF-TYPE-002 short lane, of the exact defect V-FINAL charged against elf-b17-004.",
+      "evidence": "residue_note: 'Concrete residue the question does not test: the spring redrawing of the plan, the row-by-row gradient from pulpit to west door, the free benches, the ink and the ruled lines as physical marks, the three surnames in pew 9, and the 1861 rise of the front boxes to a pound.' Rationale, defeating A: 'and the benches at the door were free the whole time - anyone merely wanting a seat had one.' Rationale, defeating C: 'and the free benches stayed in the plan throughout, so nothing pushed bench-sitters into paying.' Rationale, supporting the key: 'Pew 9 - an eighteen-shilling box in 1848, three surnames by 1856 - shows the mechanism at pew level.' Rationale, defeating C again: 'the one named example sits in pew 9, formerly an eighteen-shilling box in the dearest class, which is the wrong direction for C.' The prior charge: batches/batch17/audits/elf-b17-004.json finding 1, 'generator_meta.residue_note contradicts the Q1 rationale: two details it declares to be untested concrete residue are the rationale's own explicit defeaters for distractors B and D.'",
+      "why": "Integrated review's remit expressly covers self-contradiction inside the unit, and the same file both declares these details untested and rests two of its three distractor defeats on them. Consequential beyond bookkeeping: residue_note exists to evidence law 9 (the passage must not resolve into a parable where every clause serves the answer), and once the benches, pew 9 and the ruled lines are subtracted, the genuinely untested residue reduces to the spring redrawing of the plan, the ink, and the deliberately-loose 1861 coda. Law 9 still holds - that residue is real and non-zero - but the declared slack is roughly twice the actual slack. Metadata-only and not student-facing, so it does not move the verdict; recorded loudly because it is the SECOND consecutive batch in which this lane has shipped the same contradiction, which means the batch17 audit finding was not fed back into the generator brief."
+    },
+    {
+      "id": "INT-2",
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The rationale's price-coherence gloss contains one invalid inferential step and one unstated quantitative assumption. Both are in student-facing teaching payload.",
+      "evidence": "Rationale: 'The prices cohere without being load-bearing (an eighteen-shilling box against back pews at three shillings suggests several sittings per box; two shillings a sitting undercuts the old per-seat rate of the dear boxes) - no arithmetic is needed to answer.' Step 1 does not follow: the passage states the 18s-to-3s spread is a PROXIMITY gradient - 'eighteen shillings for the boxes nearest the pulpit, falling row by row to three shillings at the west door' - so it carries no information whatever about seats per box. The real textual evidence for several sittings per box is elsewhere and is perfectly good: 'Thin ruled lines now cut the boxes into single sittings' (plural per box) and 'Pew 9 ... carries three surnames by 1856'. Step 2 holds only conditionally: 2s a sitting undercuts an 18s box's per-seat rate iff the box held fewer than nine sittings (18/N > 2), which the passage nowhere states; and it is inapplicable to the boxes that actually stood vacant, which were middle-aisle boxes priced somewhere on the gradient between 18s and 3s, not 'the dear boxes'.",
+      "why": "The rationale is the teaching payload a learner reads after answering, and an invalid inference presented as a worked observation teaches the wrong move even when it is flagged non-load-bearing. Severity held at minor because the rationale itself brackets the whole gloss as not load-bearing and states 'no arithmetic is needed to answer', which is true - the key is reachable, and was reached twice independently, with no price reasoning at all. Cheap repair: attribute the several-sittings-per-box observation to the ruled-lines sentence and pew 9 rather than to the price spread, and drop or condition the per-seat clause."
+    },
+    {
+      "id": "INT-3",
+      "severity": "minor",
+      "stage_challenged": "integrated",
+      "claim": "The rationale asserts a documentary fact the passage does not license: that the free benches 'stayed in the plan throughout'. The benches are never placed in any plan, and the passage never restates them after the 1848 sentence.",
+      "evidence": "The passage's only bench mention is inside the 1848-plan sentence: 'The plan of 1848 prices every pew in ink: eighteen shillings for the boxes nearest the pulpit, falling row by row to three shillings at the west door, where the benches were free.' The plan is said to price PEWS; benches are not pews and are never said to appear in any plan. Rationale: 'and the free benches stayed in the plan throughout, so nothing pushed bench-sitters into paying'; and 'the benches at the door were free the whole time'.",
+      "why": "Charged narrowly, on the wording rather than the reasoning. The substance survives: 'where the benches were free' is a past-tense relative clause on a place, sitting in the passage's general narrative frame rather than in the document-present used for the plans ('prices', 'are marked', 'carries'), so it reads as a standing property of the church and the C-defeat and A-defeat both hold. But 'stayed in the plan throughout' converts a standing property into a claim about what successive documents show, which is exactly the kind of claim this passage is otherwise scrupulous about, and a learner told to check the plans for benches will not find them. Cheap repair: 'the benches at the west door were free' without the plan attribution or the temporal quantifier."
+    },
+    {
+      "id": "INT-4",
+      "severity": "minor",
+      "stage_challenged": "blind / integrated",
+      "claim": "The vacancy series the key rests on is FALLING - six in 1848, four in 1849 - and the rationale reads it as evidence that whole boxes 'had stopped finding takers'. A two-point declining series trending toward zero is a materially weaker premise than the rationale states, and it is the single best move available to counsel for A. It is disclosed nowhere in generator_meta, the NOTES, or any of the eleven gate records.",
+      "evidence": "Passage: 'Six pews in the middle aisle are marked vacant that year, and four the year after.' Rationale: 'The only reading that carries all four facts is B: whole boxes at whole-box prices had stopped finding takers (the vacant marks), the wardens changed the unit of sale to something smaller and cheaper per seat, and the vacancies disappeared in the same plan in which the lines appear.' Adversarial counsel's brief for A, independently: 'Six vacant in 1848; four the year after. That is not a hole opening - it is a hole closing, by a third in one year. Extrapolate the trend and vacancy reaches zero around 1850-51, which is exactly when the vacant marks disappear.' Counsel's second move on the same evidence: the 1851 plan shows the vacant marks gone AND the ruled lines present simultaneously, so the passage never dates the filling relative to the ruling and B's causal arrow is inferred rather than shown.",
+      "why": "Recorded as the strongest surviving threat to the key, and then dismissed on the merits. B survives three ways: (i) four vacant middle-aisle pews at the last observation is itself, directly, pews that 'would no longer let whole', which is all B claims; (ii) B is the only option that uses the vacancy data at all, so on an inference-to-best-explanation stem it wins by default over options that must ignore it; (iii) the alternative reading rescues nothing, since A asserts a capacity ceiling that four documented empty pews refute regardless of trend. The unshown causal arrow is not a defect but the definition of the declared key_derivation ('one_inch_inference - the reader supplies the connection the documents withhold'). What IS chargeable is that the rationale overstates its premise: a series of 6 then 4 does not show that whole boxes 'had stopped' finding takers, it shows that some had not found takers and that the shortfall was narrowing. Cheap repair: state the premise as the passage does ('pews still stood unlet in the two plans before the change') instead of as a terminated process."
+    },
+    {
+      "id": "GSTEM-1",
+      "severity": "minor",
+      "stage_challenged": "G-STEM record integrity",
+      "claim": "G-STEM r1 recorded a distinct leak channel that r2 silently dropped while rewriting the note on the same quote, and report-final carries only r2. The dropped claim - that D corroborates the key from inside the option set - is therefore unadjudicated anywhere in the record.",
+      "evidence": "verdicts/verdicts-gstem.jsonl (r1), on quote D: 'D is a bare datum, not a conclusion, so it fails the stem's What can be concluded frame and drops on form; WORSE, THE DATUM IT SUPPLIES (a whole prime middle-aisle box for two shillings a year, after 1851) READS AS COLLAPSED DEMAND AND CORROBORATES OPTION B FROM INSIDE THE OPTION SET.' verdicts/verdicts-gstem-r2.jsonl (r2), on the same quote: 'Form mismatch, no expertise needed: the stem asks what can be concluded about the letting of single sittings, but D is a bare price datum and is about whole boxes rather than single sittings, so it is eliminable on shape and topic alone.' The corroboration clause is gone and no disposition explains its removal; report-final.json's flags array reproduces r2 verbatim. The two runs also disagree on WHY D drops - r1 says form, r2 says form AND topic - with the topic argument appearing only in r2.",
+      "why": "A gate record should not lose a substantive finding between rounds without a disposition line saying why. Adjudicated here on the merits so it does not travel further: the r1 claim is REAL BUT WEAK. D taken at face value (a formerly prime box now going for 2s) does plant the collapsed-demand frame that B names, so a blind solver who reads D as true has been handed B's premise for free. But the channel is self-limiting - a solver who accepts D cannot also pick B, and a solver who rejects D as false has by then read 'apiece' in the passage, at which point the item has done its work. Net effect on the blind floor: none beyond what DISC-1 already records. r2's addition (topic mismatch: the stem names 'single sittings' and D's subject is 'a whole box') is the stronger of the two arguments and was correctly promoted."
+    },
+    {
+      "id": "GSTEM-2",
+      "severity": "note",
+      "stage_challenged": "G-STEM finding, standing major",
+      "claim": "The standing G-STEM major 'BLIND=WORLD_KNOWLEDGE; PICK=B' does not survive an independent uncontaminated cold read, and the world-knowledge channel appears to point at DISTRACTORS rather than at the key.",
+      "evidence": "G-STEM r1 and r2 both assert: 'Knowledge of nineteenth-century pew-rent economics (falling demand for whole pews, wardens subdividing boxes to protect income) points to B.' An uncontaminated cold solver commissioned by this audit - passage-only, no key, no rationale, no gate history, no web - was asked in terms whether general knowledge alone would answer the item, and reported: 'General knowledge alone: no, and it would have actively misled me. The textbook Victorian pew-rent story is urban overcrowding, church-building to meet population growth, and the free-and-open-church campaign against renting seats over the heads of the poor. Run on that prior, general knowledge points to A first and C second - both wrong. This passage is a declining or static country parish where seats went unlet, the inverse of the standard narrative, and the item is built precisely to punish importing the narrative.'",
+      "why": "This is the finding that carried into report-final as one of two majors on the unit, and it is the weaker of the two. The canonical mid-Victorian pew-rent narratives are the 1851 accommodation shortage (which is A) and pew rents excluding the poor plus the free-seat movement (which is C); 'wardens subdivided because whole boxes stopped letting' is not a famous thesis, which is precisely what law 1 requires and what key_derivation claims. Recorded at note rather than minor because it does not identify a defect in the unit at all - it identifies a gate finding that over-charged. It should be read alongside DISC-1 before the flag is carried into any downstream ship decision: the residual blind risk in this item is the A/B contradictory-pair narrowing, not the world-knowledge channel, and the world-knowledge channel if anything pushes the blind solver onto A."
+    },
+    {
+      "id": "DISC-1",
+      "severity": "note",
+      "stage_challenged": "blind / disclosure",
+      "claim": "The adversarial blind floor is 1-in-2 and is stated nowhere in generator_meta or the NOTES. Two eliminations are available without reading the passage, and the generator's disclosed heuristic sweep covers neither.",
+      "evidence": "Channel 1, form and topic: D is a bare price datum under a 'conclude' stem, and its subject ('a whole box') contradicts the topic the stem names ('single sittings') - the standing G-STEM finding, which this audit accepts. Field narrows to {A, B, C}. Channel 2, contradictory pair: A and B are exact converses (demand exceeded what the church could hold, versus demand fell short of whole boxes), and on a four-option set with one converse pair the key is usually in the pair. Field narrows to {A, B}. Surfaced independently by both commissioned reads; the cold solver named it 'the one that actually works' and scored every other heuristic as a miss or a misfire. Neither channel appears in hedge_balance_note, length_tell_note, rule_11_note or rule_12_note, and the NOTES self-blind-solve section reports only 'B survives alone; no pair jointly defensible'.",
+      "why": "Reported, not charged as a defect. A 1-in-2 floor is inside the bank's stated tolerance (efterhandstillagg 1 fixes the bar at 'no better than 1-in-2'), and this floor does not resolve to the key: the pair is broken only by the vacancy sentence, and the world-knowledge prior available to a blind solver pushes toward A (see GSTEM-2), so the residual channel lands on a distractor. The chargeable part is the silence - the addendum's tolerance is conditional on the floor being 'stated explicitly', and here it is neither stated nor computed. Cheap repair: add the floor and the two channels to generator_meta, which changes no student-facing text."
+    },
+    {
+      "id": "DISC-2",
+      "severity": "note",
+      "stage_challenged": "disclosure",
+      "claim": "No stem-lexis tilt check is disclosed. rule_11_note covers cross-question option bridges and rule_12_note covers stem entailment; neither covers stem-to-option lexical overlap, which is a standard derivation in this project's V-FINAL practice.",
+      "evidence": "rule_11_note: 'Content lemmas appearing in >=2 questions' options: none (vacuous)' - correct, the unit has one question, so the rule-11 check is genuinely empty. rule_12_note establishes that the stem entails no option - independently verified here and correct. Neither addresses overlap. Precedent for the check: batches/batch16/audits/elf-b16-003.json, 'Stem lexis on BARE WORD FORMS of the stem's content words'. Derived here: stem content bare forms {letting, single, sittings}; overlap A 0, B 1 ('letting'), C 2 ('single', 'sittings'), D 0.",
+      "why": "Favourable result, undisclosed. 'Pick the option carrying the most stem lexis' returns C, a distractor - the tilt misfires away from the key, which is what a well-built set wants. Under a generous morphological-family count B edges ahead (letting + singly + let against C's single + sittings), a weak tilt toward the key; a solver would have to choose the generous counting rule and would still be reading a set where the verbatim stem phrase 'single sittings' sits on a wrong answer. Net: no free pick either way. Recorded so the derivation exists in the record rather than being assumed."
+    },
+    {
+      "id": "REG-1",
+      "severity": "note",
+      "stage_challenged": "G-REGISTER / law 12",
+      "claim": "law_12_divergence verifies move by move against elf-b16-004, but it enumerates differences without crediting the shared frame, so the declared architectural distance from the unit this topic was once dropped against reads larger than it is.",
+      "evidence": "Every individual difference claim checks out at source (see verification_performed.law12_neighbour_spotcheck): no officer, no vestry, no fee-table recitation, no notice mechanism, no worked sum, a forward-price coda rather than an artefact-until-demolition coda, and 'sixpence' deliberately avoided. What the note does not list, and what the two units share: an English parish-administration institution; an invented toponym in the opening clause ('Owlerby's pound was...' / 'The parish church at Stintbury let...'); a dated 1840s fee schedule (the vestry's table of 1846 / the plan of 1848); prices reckoned in shillings; an invented surname attached to a document; a bare invented byline after a spaced en dash; a dated terminal coda; and the year 1851 in both.",
+      "why": "Not reopened, and no action asked. G-REGISTER saw the 1851 collision, named it, and wrote an explicit disposition ('a shared mid-Victorian hinge year is period-inevitable and carries no answer-relevant pattern ... no action on this unit'), which is exactly the process boundary check_assembly_dispositions enforces, so the gate did its job on the item it was pointed at. Recorded so the AGGREGATE rhyme is visible in one place for whoever sets the next lane brief: the two units differ on every move and agree on nearly every frame element, and a third TYPE-002 English-parish-institution short with an 1840s fee schedule and a shillings gradient would start to look like a template rather than a lane."
+    },
+    {
+      "id": "INFRA-1",
+      "severity": "note",
+      "stage_challenged": "gate infrastructure",
+      "claim": "gates/scripts/mech.py's _ABSOLUTIZERS does not contain the additions the batch18 BRIEF-ADDENDUM declares binding and describes as already documented in mech.py. hedge_balance_note's parenthetical implies membership that does not exist at source in this worktree.",
+      "evidence": "gates/scripts/mech.py lines 333-340, read at source, defines exactly 25 tokens: alltid, aldrig, samtliga, alla, allt, varje, enbart, endast, ingen, inget, inga, helt, omojligt, garanterat, always, never, every, all, only, none, entirely, impossible, proves, guarantees, certainly. Membership probe returns False for every one of: nothing, nobody, 'no one', ingenting, ingenstans, uteslutande, nowhere, everyone, everybody, everything. BRIEF-ADDENDUM efterhandstillagg 2: 'M-FORM _ABSOLUTIZERS - familjen fullbordad (agardom, bead hpf-y1p4): tillagda nothing, nobody, no one (bigram), ingenting, ingenstans, uteslutande ... semantik dokumenterad i mech.py.' RULE 13 extends further: 'the M-FORM absolutizer family is now COMPLETE (... + EN counterparts incl. nothing, nobody, \"no one\", nowhere, everyone, everybody, everything)'. hedge_balance_note: 'No option contains a hard absolutizer from mech.py's list (always/never/every/all/only/none/entirely/impossible/proves/guarantees/certainly, nor the batch17 efterhandstillagg additions nothing/nobody/no one).'",
+      "why": "ZERO impact on this unit and the unit's substantive claim is TRUE: re-run over the shipping bytes against BOTH the actual 25-token list and the full declared list, every option returns no hits, so M-FORM's key-sole-measured shape is genuinely absent and 'strip the absolutes' genuinely gets no purchase. Recorded because a downstream reader takes hedge_balance_note as evidence that the extended list was applied by the tool, and in this worktree it was not - any future unit that does carry 'nothing' or 'everything' in its options would pass M-FORM silently while the addendum believes it is caught. Belongs to the toolchain, not to elf-b18-004; routed here only because this audit is where it surfaced. Worth confirming whether the hpf-y1p4 change landed on a different checkout than p5-batch14-15."
+    },
+    {
+      "id": "INFO-1",
+      "severity": "info",
+      "stage_challenged": "provenance",
+      "claim": "Repair-free and byte-stable status CONFIRMED, as the task required.",
+      "evidence": "No repair_log key anywhere in the unit. Five of batch18's seven units carry one (elf-b18-001, elf-b18-002, las-b18-001, las-b18-002, las-b18-003); elf-b18-003 and elf-b18-004 do not. Normalised JSON diff between gen-elf-short-2.json with candidate_id substituted PLACEHOLDER -> elf-b18-004 and candidates/elf-b18-004.json: ZERO lines; passage, questions and generator_meta each byte-identical under field-level comparison. The raw file diff is non-empty and consists solely of a 2-space to 1-space re-indent. Consequence for GSTEM-1 and for the elf-b18-001 failure mode: no rationale can be desynced from a repaired passage here, because nothing was repaired."
+    },
+    {
+      "id": "INFO-2",
+      "severity": "info",
+      "stage_challenged": "measured statistics",
+      "claim": "Every declared statistic re-derived exactly on the shipping bytes.",
+      "evidence": "mech.tokenize/sentences: passage 152 tokens, 8 sentences, [23, 33, 16, 10, 26, 16, 12, 16], mean 19.0, prompt 11, options A 15 / B 16 / C 18 / D 17, ratio 1.20, key second-shortest. bands.json ELF: short_text passage_words [101, 368], paragraph_count [0, 8], mean_sentence_words [12.0, 47.2], prompt_words reading [3, 30], option_words reading [0, 31], option_length_ratio_max 2.36. Every number in length_tell_note, in the rationale's Length sentence and in the NOTES Bands section matches to the digit. All six mech gates present and passing in verdicts-mech.jsonl."
+    },
+    {
+      "id": "INFO-3",
+      "severity": "info",
+      "stage_challenged": "rule 12 / stem form",
+      "claim": "The stem's FORM is corpus-attested; the exact preposition is an adaptation, which rule_12_note half-discloses.",
+      "evidence": "'What can be concluded' occurs 22 times in data/parsed/. Attested: 'What can be concluded here?' and 'What can be concluded here in relation to the 17th century silver coins?'. NOT attested: 'What can be concluded here about' - zero corpus hits. rule_12_note claims the stem is 'in the corpus-attested What can be concluded here about X? form' while citing the 'in relation to' exemplar as its cf., so it points at the right evidence and slightly oversells the wording. Independently confirmed here: the stem entails nothing - it presupposes only the verbatim fact that single sittings were let, and predicates no cause, clientele or price unit, so rule_12_note's substantive conclusion is correct. Also recovered from the shipped Layer-2 corpus, the bank's own gloss on this stem type: \"a 'conclude' question, which means a claim that fits the FULL paragraph, not just one half. Watch for options that capture only the ... half.\" That gloss cuts BOTH ways on the standing G-STEM finding against D - it confirms that a partial-capture option is off-form for a conclude stem, and it simultaneously establishes that a partial-capture option is a corpus-attested TRAP shape for this stem type, which is what D is."
+    },
+    {
+      "id": "INFO-4",
+      "severity": "info",
+      "stage_challenged": "law 16 residual",
+      "claim": "Coverage limits of this law-16 re-run, stated so no false completeness is claimed.",
+      "evidence": "Not consulted: forebears.io (the generator recorded HTTP 403 on its own control; not retried here, and no surname-incidence claim is made from it), Companies House, the Ordnance Survey gazetteer, and census indexes. The one-letter variant space around 'Stintbury' was probed by targeted enumeration plus two index sweeps (exact-quoted web search, which returned Saintbury first, and en.wikipedia fuzzy, which did NOT return Saintbury and would have produced a false all-clear on its own) - it was NOT exhaustively enumerated across all 9 positions x 26 substitutions plus insertions and deletions against Nominatim. LAW16-1 establishes that at least one real distance-1 place exists; it does not establish that Saintbury is the only one."
+    }
+  ],
+
+  "tallies": {
+    "findings_total": 15,
+    "by_severity": {
+      "minor": 6,
+      "note": 5,
+      "info": 4
+    },
+    "by_stage_challenged": {
+      "originality_law16": 1,
+      "integrated": 3,
+      "blind_or_disclosure": 3,
+      "gate_record_integrity": 2,
+      "register_law12": 1,
+      "gate_infrastructure": 1,
+      "provenance_and_statistics": 4
+    },
+    "escalated_to_owner": 1,
+    "gate_records_reviewed": 17,
+    "gate_kills": 0,
+    "gate_flags_standing": 2,
+    "independent_cold_reads_commissioned": 2,
+    "cold_reads_agreeing_with_key": 2,
+    "key_flips_proposed": 0,
+    "student_facing_text_defects": 0,
+    "rationale_defects": 3,
+    "metadata_defects": 4
+  },
+
+  "resolved_findings": [],
+
+  "cleared": [
+    "Key B is correct and uniquely defensible. Two independent uncontaminated reads, one solving cold and one instructed to break the item, both land on B and both report no jointly defensible pair.",
+    "Distractor A does not survive. Its refined form (empty seats in one dear price band are a pricing failure, not a room failure) is a genuine piece of reasoning, but A as written asserts a capacity ceiling that four documented empty pews and free benches refute, and the wardens' own 1861 price rise shows what these wardens did when demand was strong.",
+    "Distractor C does not survive. The passage is silent on who took the sittings, the one named example is in the dearest class, and 'meant chiefly for' is exactly the stated intent the minutes-sentence forecloses.",
+    "Distractor D does not survive. 'apiece' attaches to 'single sittings'.",
+    "Documentary logic internally consistent: 1848 -> 1849 -> 1851 -> 1856 -> 1861 in order, 'that year' and 'the year after' correctly resolved, no figure contradicting another, no arithmetic demanded.",
+    "All nine rationale passage quotes verbatim; no repair desync possible, the unit having no repair_log.",
+    "Repair-free and byte-stable since generation apart from candidate_id renumbering and a re-indent.",
+    "Every declared statistic and every bands citation exact.",
+    "Law 16 exact-name test PASSES on all three legs with passing controls (Pellew 701, Nether Stowey Somerset, Syd Dernley) for Stintbury, Fetterlow, Dorothea Fetterlow and Tebbenholt.",
+    "Rules 8, 9, 11 and 12 re-verified independently and hold. Bank-wide grep confirms no name reuse.",
+    "Hedge balance holds: the key is flat and unhedged, both hedged options are wrong, and no option carries an absolutizer under either the actual or the declared list.",
+    "M-FORM's key-sole-measured shape genuinely absent; 'strip the absolutes' returns nothing.",
+    "Length tell absent: the key is second-shortest and the longest option is a distractor."
+  ],
+
+  "boundaries_observed": [
+    "No file outside batches/batch18/audits/ was created or modified. The candidate, its gen file, the NOTES, all verdict files and report-final.json were read only.",
+    "No repair was applied and none is applied by this audit. LAW16-1 is escalated to the owner for a keep-or-rename ruling rather than actioned, following the batch16 Skarpbo/Vrantebo precedent in which the rename was an owner decision.",
+    "No Beads, Taskmaster or Aegis state was touched; no branch, commit, merge or push."
+  ],
+
+  "audit_note": "Verdict CONFIRMED_NOTES, not REFUTED. The prime directive was to refute, and the refutation attempt failed where it counts: the key is right, the item is single-answerable, the documentary chain is sound, every declared number is exact, the quotes are verbatim, and the unit is provably unrepaired and unchanged since generation. Six minor findings are recorded, of which one is materially more serious than the rest and is escalated: originality_note certifies that no real place sits one letter from 'Stintbury' while naming Saintbury among the neighbours it clears, and Saintbury is a real Gloucestershire village and civil parish at Levenshtein distance exactly 1, with its own parish church - the same domain as the passage. The exact-name blocking test still passes and the bank's Rossmala precedent tolerates distance-1 variance when disclosed, so this does not block on its own terms; but the disclosure rule 14 exists to produce was inverted, and the comparable case was resolved by owner rename. The second-most serious finding is a repeat: residue_note declares the free benches and pew 9 untested while the rationale uses both as its distractor defeaters - the identical defect V-FINAL charged against elf-b17-004 one batch earlier, which means that finding did not reach the generator brief. Working the other way, the standing G-STEM major 'BLIND=WORLD_KNOWLEDGE; PICK=B' does not survive an independent cold read: asked what the prior alone would return, the uncontaminated solver answered A first and C second and said the standard Victorian narrative 'would have actively misled me', which is precisely the law-1 behaviour the unit claims. The real residual blind channel is not world knowledge but the undisclosed A/B contradictory pair, which halves the field to 1-in-2, does not resolve, and tips toward a distractor."
+}
