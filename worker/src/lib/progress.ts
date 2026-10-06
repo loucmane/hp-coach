@@ -37,7 +37,7 @@
 // Seeding from the outcome instead (score = 1 on a first correct) would
 // have been simpler and would have been a lie.
 
-import { and, eq } from 'drizzle-orm'
+import { and, desc, eq } from 'drizzle-orm'
 
 import type { Db } from '../db/client'
 import { frameworkProgress, mastery } from '../db/schema'
@@ -63,6 +63,36 @@ export type FrameworkStatus = (typeof FRAMEWORK_STATUSES)[number]
 
 /** Rungs reachable once the user has actually practised the framework. */
 export type PractisedStatus = Extract<FrameworkStatus, 'practicing' | 'retaining' | 'mastered'>
+
+/**
+ * Read one row per Layer 1 entry for this user. Until the natural key is
+ * unique, newest transition wins, then highest id. SQLite sorts null
+ * timestamps last in descending order; two undated rows still use id.
+ * Unknown stored statuses become untaught silently (no logging or repair).
+ * Dates remain Date/null here and serialize to ISO strings/null at the API.
+ */
+export async function readFrameworkProgress(
+  db: Db,
+  userId: number,
+): Promise<{ layer1Id: string; status: FrameworkStatus; lastTransitionAt: Date | null }[]> {
+  const rows = await db
+    .select({
+      layer1Id: frameworkProgress.layer1Id,
+      status: frameworkProgress.status,
+      lastTransitionAt: frameworkProgress.lastTransitionAt,
+    })
+    .from(frameworkProgress)
+    .where(eq(frameworkProgress.userId, userId))
+    .orderBy(desc(frameworkProgress.lastTransitionAt), desc(frameworkProgress.id))
+
+  const seen = new Set<string>()
+  return rows.flatMap((row) => {
+    if (seen.has(row.layer1Id)) return []
+    seen.add(row.layer1Id)
+    const status = FRAMEWORK_STATUSES.find((known) => known === row.status) ?? 'untaught'
+    return [{ ...row, status }]
+  })
+}
 
 /**
  * Next EWMA score after one graded exposure.

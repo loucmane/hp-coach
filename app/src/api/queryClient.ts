@@ -1,4 +1,4 @@
-// Singleton QueryClient for the SPA.
+// QueryClient defaults shared by each Clerk identity's provider lifetime.
 //
 // Defaults tuned for HP-Coach's profile:
 //   - 5 min staleTime: most reads are progress / mastery state that
@@ -11,15 +11,17 @@
 
 import { QueryClient } from '@tanstack/react-query'
 
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000,
-      retry: 1,
-      refetchOnWindowFocus: true,
+export function createQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 5 * 60 * 1000,
+        retry: 1,
+        refetchOnWindowFocus: true,
+      },
+      mutations: {
+        retry: 0,
+      },
     },
-    mutations: {
-      retry: 0,
-    },
-  },
-})
+  })
+}

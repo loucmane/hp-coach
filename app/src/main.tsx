@@ -1,12 +1,11 @@
 import { registerSW } from 'virtual:pwa-register'
 import { ClerkProvider, useAuth } from '@clerk/clerk-react'
 import { svSE } from '@clerk/localizations'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { MotionConfig } from 'motion/react'
 import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
-import { queryClient } from './api/queryClient'
+import { AuthQueryProvider } from './api/AuthQueryProvider'
 import { AppErrorBoundary } from './components/AppErrorBoundary'
 import { contentFromApi, registerContentAuth } from './data/contentSource'
 import { loadBank, type Question } from './data/questions'
@@ -137,7 +136,7 @@ createRoot(rootEl).render(
         signInFallbackRedirectUrl="/"
         signUpFallbackRedirectUrl="/"
       >
-        <QueryClientProvider client={queryClient}>
+        <AuthQueryProvider>
           <ContentAuthBridge />
           {/* A2 "Arket" motion root: reducedMotion="user" makes every
            *  framer-motion consumer below honour prefers-reduced-motion
@@ -147,7 +146,7 @@ createRoot(rootEl).render(
           <MotionConfig reducedMotion="user">
             <RouterProvider router={router} />
           </MotionConfig>
-        </QueryClientProvider>
+        </AuthQueryProvider>
       </ClerkProvider>
     </AppErrorBoundary>
   </StrictMode>,
