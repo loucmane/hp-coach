@@ -134,3 +134,65 @@ rationales (all GATEREF hits are ELF), and the anglicism *hedgat* in Swedish. Ke
 stems and passages are untouched; no re-gate needed. Recorded in ADJUDICATION.md as a new
 ledger item with the recommendation ÄNDRA (mechanical rationale scrub before infold).
 Reproduce: `lint_learner_output.py candidates | grep '$.questions'`.
+
+
+## ÄGARDOM/PAKETDOM 2026-10-06
+
+Owner ruling 6, executed in **hpf-jnkq**, supersedes the
+pending-owner state in the historical heading and body above. Earlier lines,
+including old counts and tooling availability statements, are preserved verbatim.
+
+**6 GODKÄNN_NOTED / 19 questions; elf-b19-004 RETIRED.** Approved:
+elf-b19-001, elf-b19-002, elf-b19-003, las-b19-001, las-b19-002, las-b19-003.
+`RETIRED.json` now excludes elf-b19-004 mechanically: blind key D=62%, above
+1-in-2, worsened by repair. Its original candidate, sheets, audits and verdicts
+remain unchanged; no replacement has been generated. Historical seven-unit
+promote/fold totals above cannot override this retirement.
+
+Accept las-b19-003's paired blind route and Margit~Marit proximity as notes;
+retain Vässlingsbadet and fix the inherited Vässlinge registry in both briefs.
+Accept the historical corrected key count A4/B13/C11/D5=33 and the coined-name
+cluster note. Apply elf-b19-003's `fillet` → `flaunching` and `Behind` → `Under`
+passage correction; its key A and height/draught anchor remain unchanged.
+The implementer reread confirms A, without claiming a new independent G-KEY leg.
+
+`fleet-repair-6` scrubs 16 rationale strings across the six kept units.
+Keys, options, prompts and titles are unchanged. Default learner lint:
+17 findings before, zero after (6 kept files); the retired file's 2 findings
+remain historical and excluded. Mech: 36/36 passes, including M-ECHO against
+121 units (114 existing finals plus seven approved batch18 candidates).
+
+**Standing rules adopted:** ban kiln/firing/combustion crafts and experimental
+reconstruction frames in the next LÄS-long brief; never combine las-b18-001
+and las-b19-001 in a test pass or adaptive session. No further Mar-* given name
+or -ius surname in batch20/21. Carry forward Vässlinge/Vässling- exclusions,
+future name distance >=2, the LÄS mechanism/stance-pair prohibition, cloze
+credential-frame/motif bans, TYPE-001 voice/domain/-by constraints, ordinary-name
+texture, complete repair-path lists and mechanical recounting of review figures.
+`BRIEF-ADDENDUM.md` records the binding next-brief handoff; later briefs and
+application assembly code were not edited in this lane.
+
+**Sheet check:** the hardening tool is now present. It has no source-directory
+override and the batch still ships from `candidates/`. The direct invocation
+fails on missing `candidates-final/`; the same tool passes on a temporary view
+mapping that name to the unchanged shipping directory, with the documented
+`--allow-missing-dirs` historical-batch option. All seven existing `stems/`
+sheets match the current candidates, including the retired historical sheet in
+batch19. `blind/` and `distractor/` are absent in this checkout despite the old
+package text; no absent sheet is claimed checked. No `ASSEMBLY.md` exists here,
+so there is no assembly artifact to run through the assembly gate.
+
+**Bank import remains a later infold PR.** No import, merge or deployment was
+performed. Historical audits/flags and their coverage limitations remain intact.
+The full ledger dispositions, per-string edits and CI result are recorded in
+`ADJUDICATION.md` and `docs/worklog/hpf-jnkq.md`.
+
+
+**Acceptance boundary (hpf-jnkq):** the required CI selection is not yet green:
+187 failed, 1,291 passed, 7 xfailed. All failures concern six pre-existing labels
+missing from `gates/scripts/lint_learner_output.py`'s vocabulary; candidate-level
+lint, mech and sheet checks above pass. The three-line vocabulary fix is prepared
+in `docs/worklog/hpf-jnkq.md` but not applied because that file is outside the
+assigned implementation scope and the operator's scope decision is pending.
+Do not treat this lane as CI-approved or begin the later infold before resolving
+that gate. No historical label or test was removed to conceal the failure.

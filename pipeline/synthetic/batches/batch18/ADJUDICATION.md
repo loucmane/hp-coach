@@ -330,3 +330,53 @@ rättar dem i sin fleet-repair-1; batch21:s brief förbjuder dem uttryckligen.
 > loggade som `fleet-repair-7` (append-forward). Paketdomen i övrigt påverkas inte.
 > Fyndet är dessutom **konkret stöd för att merga PR #370**: defekten skeppade därför att
 > verktyget som ser den inte finns i trädet.
+
+
+## ÄGARDOM/PAKETDOM 2026-10-06
+
+Owner ruling **5**, implemented in bead **hpf-jnkq**, supersedes the pending
+request above: **GODKÄNN PAKETET**. All seven batch18 units (20 questions) are
+**GODKÄNN_NOTED**: elf-b18-001, elf-b18-002, elf-b18-003, elf-b18-004,
+las-b18-001, las-b18-002 and las-b18-003. Earlier findings, headings, verdicts
+and flags remain historical evidence; approval does not erase those notes.
+
+| Ledger item | Owner disposition and implementation |
+|---|---|
+| 1 — Stintbury~Saintbury; Tebbenholt | **GODKÄNN_NOTED**, retain Stintbury. `generator_meta.originality_note` now explicitly corrects its false clearance: Saintbury is a real Gloucestershire village/civil parish with a parish church, exactly one letter away. Historical exact-name zero results are not one-letter clearance. No new search or rename; Tebbenholt's texture remains a note. |
+| 2 — VF-19 residual | **GODKÄNN**, accept the four deleted law-15 subclaims as a recorded residual; do not reconstruct unverifiable original wording. Future repair `edits` must enumerate every changed field. |
+| 3 — rural kiln/fire-craft pair | Adopt **(a) + (b)**. Ban kiln/firing/combustion crafts and experimental reconstruction frames in the next LÄS-long generation brief. Never assemble las-b18-001 and las-b19-001 in one test pass or adaptive session. No thematic or passage rewrite. |
+| 4 — absolutizer habit | Retain and monitor per batch, including a declared strip-the-absolutes statistic. Do not claim unverified gate-code changes. No gate-rule change is made by this disposition. |
+| 5 — elf-b18-001 q1/C | **GODKÄNN**, retain the narrow, arguable-but-wrong distractor and its documented `almost` margin. |
+| 6 — Fearnbeck sand/mortar seam | **ANTECKNING ENDAST**; retain the passage, record the recoverable rhetorical seam and unexplored follow-up as residuals. |
+| 7 — Layer-2 rendering leak | **ÄNDRA**, completed through `fleet-repair-7` repair tickets. Swedish LÄS explanations use Swedish prose; ELF explanations remain English. Remove taxonomy labels and heuristic/gate/design commentary from the learner projection, including cloze labels missed by the old tally. Preserve internal taxonomy and every earlier repair entry. |
+
+**Changes:** 17 rationale strings across all seven units, plus elf-b18-004's
+originality correction. Keys, options, prompts, titles and passages are
+unchanged. The current default learner lint records **18 findings before,
+zero after** for batch18; the earlier 11-hit count remains a historical result.
+Per-string before/after evidence and exact commands: `docs/worklog/hpf-jnkq.md`.
+Mechanical gates pass **42/42** with M-ECHO against 114 prior shipping units.
+
+**Standing rules:** the dated carry-forward section in `BRIEF-ADDENDUM.md`
+records the fire-craft ban and pairwise assembly exclusion, Vässlinge registry
+correction, minimum future name distance 2, no new Mar-* given name or -ius
+surname in batch20/21, the LÄS mechanism/stance-pair prohibition, the cloze
+credential-frame/motif bans, TYPE-001's quoted-voice/domain/-by constraints,
+ordinary-name texture, exhaustive repair paths and mechanical recounting of
+review figures. These are binding inputs to the next brief and later assembly;
+this lane does not claim to have edited batch20/21 or application assembly code.
+
+**Import boundary:** approved shipping input remains `candidates/`. Bank import
+belongs to a **later infold PR**; this ruling performs no import, merge or deploy.
+Historical adversarial audits were not rerun; the new prose and metadata edits
+are recorded explicitly rather than represented as newly independent reviews.
+
+
+**Acceptance boundary (hpf-jnkq):** the required CI selection is not yet green:
+187 failed, 1,291 passed, 7 xfailed. All failures concern six pre-existing labels
+missing from `gates/scripts/lint_learner_output.py`'s vocabulary; candidate-level
+lint, mech and sheet checks above pass. The three-line vocabulary fix is prepared
+in `docs/worklog/hpf-jnkq.md` but not applied because that file is outside the
+assigned implementation scope and the operator's scope decision is pending.
+Do not treat this lane as CI-approved or begin the later infold before resolving
+that gate. No historical label or test was removed to conceal the failure.

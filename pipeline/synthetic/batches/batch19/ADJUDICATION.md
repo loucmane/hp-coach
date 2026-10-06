@@ -426,3 +426,56 @@ rättar dem i sin fleet-repair-1; batch21:s brief förbjuder dem uttryckligen.
 > loggade som en egen reparationsrunda (append-forward). Paketdomen i övrigt påverkas
 > inte. Fyndet är dessutom **konkret stöd för att merga PR #370**: defekten skeppade
 > därför att verktyget som ser den inte finns i trädet.
+
+
+## ÄGARDOM/PAKETDOM 2026-10-06
+
+Owner ruling **6**, implemented in bead **hpf-jnkq**, supersedes the pending
+request above. **RETIRE elf-b19-004**; **GODKÄNN_NOTED** for elf-b19-001,
+elf-b19-002, elf-b19-003, las-b19-001, las-b19-002 and las-b19-003: six kept
+units, 19 questions. The original seven-unit/20-question package and all its
+candidate, sheet, audit, verdict and flag history remain readable.
+
+| Ledger item | Owner disposition and implementation |
+|---|---|
+| 1 — BLIND-1, elf-b19-004 | **RETIRE**. Key D received 62% in the independent blind distribution, above the 1-in-2 ceiling, and the attempted repair worsened the channel. Added the unit to `pipeline/synthetic/RETIRED.json`; every later import must skip it. No replacement is supplied. Candidate/history bytes are retained unchanged, including its unsanitized rationale; it is excluded from the kept learner projection. |
+| 2 — BLIND-2, las-b19-003 | **GODKÄNN**, accept the documented paired blind route (~80%) as the package's noted residual. No question redesign. Future two-question LÄS sets must not pair a mechanism inventory with a stance question over the same hypothesis space. |
+| 3 — rural kiln/fire-craft pair | Adopt **(a) + (b)** jointly with batch18: the next LÄS-long brief excludes kiln/firing/combustion crafts and experimental reconstruction frames; las-b18-001 and las-b19-001 never share a test pass or adaptive session. No thematic or passage rewrite. |
+| 4 — Vässlinge registry gap | **GODKÄNN** las-b19-002 and fix the inherited registry. The dated additions in both batch18/19 `BRIEF-ADDENDUM.md` copies reserve Vässlinge and the Vässling- stem. Vässlingsbadet is retained. Future lists must be populated from every shipping unit's originality note. |
+| 5 — Margit~Marit | **GODKÄNN**, no rename. Standing rule: no further Mar-* given name or -ius surname in batch20 and batch21; retain the compound proximity to Marit Sundelius as a note. |
+| 6 — key-distribution recount | Accept **A 4 / B 13 / C 11 / D 5 = 33** as the corrected historical batch1–18 record, with the review's bad sum preserved. Retirement does not rewrite that historical count. Future reviewers' figures must be recomputed mechanically. |
+| 7 — elf-b19-003 trade terms | Apply the package's exact two-word correction: `fillet` → `flaunching`, `Behind` → `Under`. Key A, its height/draught anchor, prompt and options are unchanged; rationale-only scrub is separate. Local answerability reread confirms A; it is an implementer check, not a new independent G-KEY leg. |
+| 8 — coined-name cluster | **ANTECKNING**, retain Calverend, Grendisham, Steadgrove and Ockendale; require an ordinary, unremarkable name among future named casts subject to the existing uniqueness/real-entity rules. |
+| 9 — Layer-2 rendering leak | **ÄNDRA** for all six kept units through `fleet-repair-6` tickets. Replace learner-visible labels with natural prose in the unit's language and remove heuristic/gate/design commentary. Internal taxonomy, old findings and old repair entries remain intact. |
+
+**Changes:** 16 rationale strings across the six kept units and the two exact
+passage words in elf-b19-003. All titles, keys, prompts and options are unchanged.
+The current default learner lint records **19 findings across all seven original
+units**, of which **17 are in the six kept units; zero remain in those six**.
+The retired unit's two findings are retained in its historical bytes, excluded
+from import by the manifest, and never presented as clean.
+Mechanical gates pass **36/36** on the six changed units, with M-ECHO against
+121 prior/approved shipping units (114 existing finals plus batch18's seven).
+
+**Standing rules:** the dated section in `BRIEF-ADDENDUM.md` binds the next brief
+and later assembly: the fire-craft ban and pairwise separation, corrected toponym
+registry, name distance and Mar-*/-ius restrictions, LÄS question-pair prohibition,
+cloze frame/motif bans, TYPE-001 voice/domain/-by constraints, ordinary-name texture,
+exhaustive repair paths, batch-level absolutizer monitoring and mechanical recounts.
+These records do not claim that a later brief or application code has been edited.
+
+**Import boundary:** shipping input is still `candidates/`, filtered through
+`RETIRED.json`. Bank import belongs to a **later infold PR**, six units only;
+no import, merge, replacement generation or deploy occurs here. The historical
+fold's seven GODKANN_NOTED records and earlier promote passes are not permission
+to import the retired unit. Full diffs and verification: `docs/worklog/hpf-jnkq.md`.
+
+
+**Acceptance boundary (hpf-jnkq):** the required CI selection is not yet green:
+187 failed, 1,291 passed, 7 xfailed. All failures concern six pre-existing labels
+missing from `gates/scripts/lint_learner_output.py`'s vocabulary; candidate-level
+lint, mech and sheet checks above pass. The three-line vocabulary fix is prepared
+in `docs/worklog/hpf-jnkq.md` but not applied because that file is outside the
+assigned implementation scope and the operator's scope decision is pending.
+Do not treat this lane as CI-approved or begin the later infold before resolving
+that gate. No historical label or test was removed to conceal the failure.

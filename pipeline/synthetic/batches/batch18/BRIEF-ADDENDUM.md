@@ -242,3 +242,42 @@ Hyllemåla, Rossmåla, Sölvinge, Flarkbro, Brantmyr(-), Näversved(-).
 
 ## Meta
 generator_meta.origin = "batch18-generator", date = "2026-09-01".
+
+
+## Standing rules for the next generation brief — owner rulings 2026-10-06
+
+This dated addendum is binding carry-forward from the batch18/19 owner package
+(bead hpf-jnkq). It supplements the inherited RULE 8/9 lists and dispositions.
+It does not claim that a later batch brief has already been edited.
+
+- **Toponym registry correction:** add **Vässlinge** (batch15,
+  `las-b15-002`, invented municipality) to the excluded toponyms/streets above.
+  Reserve the **Vässling-** stem, including Vässlingen and Vässlingsbadet;
+  `las-b19-002` keeps its approved name. Populate the inherited registry from
+  every shipping unit's `originality_note`, not only adjudicated names, and
+  carry this correction into every subsequent copy of the shared brief.
+- **LÄS long:** the next generation brief must exclude all kiln, firing and
+  combustion crafts and experimental reconstruction frames. Do not regenerate
+  or retheme las-b18-001 or las-b19-001 for this ruling.
+- **Assembly:** never place las-b18-001 and las-b19-001 in the same test pass
+  or adaptive session. This pairwise exclusion survives both package approvals
+  and must be enforced when the later infold/assembly work consumes these units.
+- **Names:** no further `Mar-*` given name or `-ius` surname in the two batches
+  after batch19 (batch20 and batch21). Margit Torpenius remains approved; the
+  compound proximity to Marit Sundelius is recorded, not renamed.
+- Require edit distance at least 2 for future invented names against both the
+  bank and real name/gazetteer neighbours; enumerate one-letter variants by hand.
+  Stintbury~Saintbury is an explicit retained exception, not a clearance precedent.
+- A two-question LÄS set must not pair a mechanism inventory with a stance
+  question over the same hypothesis space (the las-b19-003 paired blind route).
+- Retain absolutizer distractors, but record the batch-wide strip-the-absolutes
+  result and monitor whether it identifies keys. Do not claim a code change
+  without verifying the implementation; no gate code changes belong to this ruling.
+- Preserve the cloze ban on the credential frame `[Name] + writes + on/about +
+  subject + for a + modifier + periodical` and on the motif of a written instrument
+  failing to govern behaviour. The next TYPE-001 short must have a quoted voice,
+  leave the domestic building envelope, and avoid a `-by` surname for two batches.
+- Include at least one ordinary, unremarkable name in a named cast while obeying
+  uniqueness and real-entity checks; retain the existing coined-name texture notes.
+- Repair `edits` must enumerate every changed field. Recompute reviewers' figures
+  mechanically instead of copying them, including the sum of category counts.
