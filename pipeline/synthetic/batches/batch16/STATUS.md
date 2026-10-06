@@ -161,3 +161,20 @@ las-b16-003 q:2 A/B/C/D and q:1 A/B (round 2).
    package recommends **changing**.
 
 **On owner approval**, the 7 units enter the product-bank import.
+
+
+## Current status — 2026-10-06 (hpf-frjd)
+
+**Owner adjudication: 7/7 GODKÄNN_NOTED.** The owner accepts las-b16-003
+with the q2/B double-answer claim and q1 referent observation noted; both
+blind G-KEY legs chose D for q2 and rejected B. The G-STEM PARTIALLY ×2
+results with picks matching the keys are accepted calibration evidence
+under the 1-in-2 policy. No unit edits or further calibration editing loop.
+
+The historical flags and automated fold remain intact; the owner decision
+is recorded append-forward in `ADJUDICATION.md` §ÄGARDOMAR 2026-10-06.
+The assembly gate still reports the pre-existing unscoped markers at lines
+48 and 50; they are not introduced by this ruling, and ASSEMBLY.md is unchanged.
+Gate evidence is in [the hpf-frjd worklog](../../../../docs/worklog/hpf-frjd.md).
+This entry updates owner adjudication only; the combined batch16/batch17
+package still awaits batch17's las-b17-001 blind re-check before approval.

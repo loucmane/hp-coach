@@ -1419,3 +1419,126 @@ controller-post):
 
 Batch 17-paketet vilar därmed på två ägarbeslut: las-b17-001 (kritisk) och
 las-b17-002 (gränsfall). elf-b17-003 är färdigdispositionerad.
+
+
+---
+
+## ÄGARDOMAR 2026-10-06
+
+Owner rulings executed by implementation bead **hpf-frjd**, following the
+2026-08-31 reopening above. Earlier protocol and verdicts remain historical
+evidence; this section records the subsequent decisions.
+
+1. **las-b17-001 — ÄNDRA; repair implemented, blind re-check pending.**
+   The prior stems-only picks B/D/A/C matched all four keys. The owner
+   accepted the q2↔q3↔q4 vocabulary bridge and the q4 form tell as repair
+   grounds. Only q3/q4 options and the affected q4 explanation have changed
+   in `candidates-final/las-b17-001.json`, with a dated `repair_log` entry.
+   Q3 now contrasts results and practical implementation without the glow
+   wording; q4 removes the afterglow cue and gives distractors comparable
+   qualifications and multi-clause structure. Keys **B/D/A/C**, passage,
+   title and all stems are unchanged, as are q1/q2 in full. The full
+   before/after table and mechanical evidence are in
+   [the lane worklog](../../../../docs/worklog/hpf-frjd.md).
+   All seven units now have blind/stems/distractor sheets derived from
+   final bytes. **Package approval remains suspended until a separate,
+   independent blind G-STEM re-check of las-b17-001 passes.** This
+   implementation is not that review and supplies no new blind verdict.
+2. **las-b17-002 — accepted as at-policy calibration evidence.** The q2
+   PARTIALLY_ANSWERABLE result, whose blind pick B matched the key through
+   the q1→q2 bridge, is accepted under the **1-in-2 policy**. Preserve the
+   evidence; no further editing loop or change to this unit is authorized.
+   The batch16 half of the calibration bundle is recorded in its own
+   adjudication append below the historical debt-closeout section.
+3. **ASSEMBLY.md item 6 (former line-55 wording) — standing process rule.**
+   The owner ruled that the general requirement for written dispositions
+   is not a per-unit obligation. The statement is clarified and its
+   original wording is preserved verbatim in the linked worklog. Gate
+   code and the requirement for actual named adjacencies are unchanged.
+
+Current package status: **HOLD — las-b17-001 blind G-STEM re-check pending**.
+The las-b17-002 owner decision is resolved; elf-b17-003's earlier misfire
+calibration disposition stands. Earlier approval and gate results do not
+constitute approval of the newly repaired options.
+
+
+---
+
+## Repair round 2 — 2026-10-06 (hpf-rixl), after blind HOLD hpf-tii9
+
+The independent hpf-tii9 re-check at `a333b5ff0ce96f9021eb7f61098c0757e530a346`
+returned **G-STEM HOLD**: q3/A and q4/C were both PARTIALLY_ANSWERABLE and
+matched the keys. G-KEY passed 4/4 and G-SPRÅK passed. This entry records the
+second targeted implementation repair; the earlier verdicts and option
+renderings above remain historical evidence.
+
+All four q3 options now pair the same small-effect-difference premise with
+a concrete practical claim. A retains the available room and already-employed
+staff; B supplies equally concrete vessel/boiler details that are unsupported,
+C incorrectly substitutes a prior bath, and D asserts an unsupported drying-time
+advantage. Lengths A/B/C/D are **101/106/97/99** characters.
+
+All four q4 options now coordinate material and machine claims. B shares C's
+supported purchase-quality premise, with a false/unsupported box-rejection
+outcome. C also requires the passage's increased output per log after the
+machine replacement; q3's practical reasons cannot establish that fact. A's
+customer/assortment explanation and D's price/maintenance account are not
+supported. Lengths are **102/101/101/99** characters. This additional specificity
+fixes a route found during the author's self-check: simply balancing the old
+broad constraints summary against distractors still let q3 imply that summary.
+
+Only q3/q4 option texts, their affected rationales and an appended unit
+`repair_log` entry changed in the final candidate. Passage, title, all stems,
+q1/q2 and keys **B/D/A/C** are unchanged. The unit's stems and gitignored
+blind/distractor sheets were rebuilt. Final checks: **sheet-sync OK, 7 units;
+mech 6/6 PASS; learner-output lint clean**. The before/after table, exact lengths,
+stems-only author self-check, support checks and artifact digests are in
+[the hpf-rixl lane worklog](../../../../docs/worklog/hpf-rixl.md).
+
+**PACKAGE HOLD remains.** The author has seen the passage and keys; this is
+implementation evidence, not an independent G-STEM verdict. A fresh blind
+re-check must assess the repaired bytes before package approval can be restored.
+The changes are uncommitted; no Beads or PR state was changed. This append does
+not revise the settled las-b17-002 or elf-b17-003 dispositions.
+
+---
+
+## ÅTERSTÄLLD PAKETDOM (2026-10-06): GODKÄNN PAKETET — 7/7 GODKÄNN_NOTED
+
+Slutbokföring under bead **hpf-41yh**, enligt ägardomarna 2026-10-06 och
+de två oberoende blinda omgranskningarna av **las-b17-001**. Tidigare
+protokoll, HOLD-utslag och reparationsposter bevaras som historisk evidens.
+
+1. **Blind omgranskning #1 — hpf-tii9, huvud `a333b5f`.** G-KEY **PASS 4/4**
+   och G-SPRÅK **PASS**, men G-STEM **HOLD**: både q3/A och q4/C var
+   PARTIALLY_ANSWERABLE med blindval = nyckel, över den tillåtna gränsen
+   på en sådan fråga per enhet. Utfallet ledde till **reparationsrunda 2**
+   under **hpf-rixl**, commit **`ab4022b`**, dokumenterad ovan.
+2. **Blind omgranskning #2 — hpf-xjps, huvud `ab4022b`: PASS.**
+   G-STEM utföll enligt de låsta blindbedömningarna nedan. G-KEY **PASS 4/4**
+   (B/D/A/C), utan något andra försvarbart svar. G-SPRÅK **PASS** för
+   q3/q4-alternativen: inga blockerande fynd, endast mindre stilnoter.
+
+| Fråga | G-STEM | Blindval | Nyckel | Utfall |
+|---|---|---|---|---|
+| q1 | NOT_ANSWERABLE | B | B | Spekulativ träff, inte blindlösbarhet |
+| q2 | PARTIALLY_ANSWERABLE | A | D | Blindval ≠ nyckel |
+| q3 | NOT_ANSWERABLE | A | A | Spekulativ träff, inte blindlösbarhet |
+| q4 | PARTIALLY_ANSWERABLE | C | C | Blindval = nyckel; en sådan fråga per enhet |
+
+Ingen fråga är ANSWERABLE. Endast q4 har både partiell blindlösbarhet och
+rätt blindval; detta ligger inom **1-på-2-policyns tillåtna gräns**.
+Den kvarvarande q4-bryggan bevaras som kalibreringsevidens; PASS innebär
+inte att alla ledtrådar är borta. Evidens:
+[hpf-tii9:s granskningslogg](/home/loucmane/vaults/main/GasCity/hpfetcher/Docs/worklogs/hpf-tii9.md)
+och [hpf-xjps:s granskningslogg](/home/loucmane/vaults/main/GasCity/hpfetcher/Docs/worklogs/hpf-xjps.md).
+
+**Villkoren för ÅTERÖPPNING 2026-08-31 är därmed uppfyllda:** las-b17-001
+är reparerad och oberoende blindgranskad med PASS; las-b17-002 är accepterad
+inom policyn enligt ägardomen 2026-10-06; elf-b17-003 är dispositionerad
+som missfyrning på note-nivå. Paketdomen **GODKÄNN PAKETET — 7/7
+GODKÄNN_NOTED (`dd106de`) är ÅTERSTÄLLD**. Denna post ersätter de tidigare
+HOLD-statusarna som aktuellt paketläge utan att ändra deras historik.
+
+**Bankimporten sker först i den senare infoldnings-PR:en tillsammans med
+batch 16.** Den återställda paketdomen verkställer ingen bankimport.

@@ -1424,3 +1424,94 @@ samma våg:** båda blinda benen valde D och refuterade B aktivt; counsel-
 B-fallet dog på den reparerade styckesgränsen. Ägardom krävs — mekaniken
 avgör inte tvisten. Paketet går INTE till godkännande/infoldning förrän
 ägaren dömt (villkoret »7/7 GODKÄNN_NOTED« är inte uppfyllt).
+
+
+---
+
+## ÄGARDOMAR 2026-10-06
+
+Owner rulings recorded by implementation bead **hpf-frjd**. These decisions
+supersede the outstanding owner decisions in the 2026-08-31 closeout above;
+all earlier findings, reports and provenance remain preserved.
+
+1. **las-b16-003 — GODKÄNN_NOTED.** The owner accepts the current unit
+   without edits, with both the adversarial q2/B double-answer claim and
+   the q1 “grannbyns form” referent observation retained as noted evidence.
+   Both independent blind G-KEY legs selected **D** for q2 and actively
+   rejected B; their q1 picks were **B**, also the key. The owner rules on
+   that conflict in favor of acceptance rather than another repair loop.
+   This is an owner disposition, not a claim that the adversarial evidence
+   never existed or that a new review has run.
+2. **Calibration bundle — accepted under the 1-in-2 policy.** The batch16
+   G-STEM **PARTIALLY_ANSWERABLE ×2**, with blind picks matching the keys,
+   is accepted as at-policy calibration evidence. Preserve those records;
+   no content editing loop. The las-b17-002 half of the same ruling is
+   recorded in batch17's dated owner section.
+
+Current owner adjudication: **7/7 GODKÄNN_NOTED**, including las-b16-003.
+`adjudication-flags.json` carries historical findings and provenance, not
+per-unit status; it is left intact. The earlier automated fold (6 accepted
+plus one owner escalation) remains a record of the pre-ruling state.
+No new import, publication, or review verdict is claimed by this entry.
+
+## Merge-input repair — 2026-10-06 (hpf-e05m)
+
+R1 in the hpf-2nug review identified eight conflicting ballot slots in the
+172-record aggregate: the 2026-08-31 GC round had been appended alongside
+older G-KEY, G-DISTRACTOR and G-STEM records in the same input file. The
+current merge contract requires each re-gate round as a separate later input.
+
+`verdicts.jsonl` is now restored byte-for-byte to the 154-record version at
+`96a6b50`, before `79e5ebf` applied the GC round. This preserves the earlier
+157→150 twin dedup and four written G-REGISTER dispositions. All 53 GC-round
+records are preserved verbatim in `verdicts-gc-legs.jsonl`: the 35 replacement
+mechanical passes plus 18 previously appended records (11 judge records and
+seven M-ECHO passes). The existing `verdicts-agardom-b16/` leg files remain
+unchanged. No review has been rerun and no ballot content has been rewritten.
+
+**Merge order: canonical historical base first, GC re-gate round second.**
+Use the merged output for aggregation and promotion; the restored base alone
+does not include the later round. From the repository root:
+
+```sh
+python3 pipeline/synthetic/gates/scripts/merge_verdicts.py \
+  pipeline/synthetic/batches/batch16/verdicts.jsonl \
+  pipeline/synthetic/batches/batch16/verdicts-gc-legs.jsonl \
+  --out /tmp/hpf-e05m-merged.jsonl
+python3 pipeline/synthetic/gates/scripts/aggregate.py \
+  /tmp/hpf-e05m-merged.jsonl \
+  --candidates-dir pipeline/synthetic/batches/batch16/candidates-final \
+  --json /tmp/hpf-e05m-report.json
+python3 pipeline/synthetic/gates/scripts/promote.py \
+  --batch-dir pipeline/synthetic/batches/batch16 \
+  --verdicts /tmp/hpf-e05m-merged.jsonl \
+  --candidates-dir pipeline/synthetic/batches/batch16/candidates-final \
+  --require-clean
+```
+
+The merge yields **164 records, 61 vote-bearing**, with 43 supersessions
+(35 mechanical and eight judge records), zero exact duplicates and zero
+unstamped twins. All 53 later records survive, including all 42 mechanical
+passes. Aggregation retains **5 SURVIVED_FLAGGED + 2 SURVIVED_CLEAN** and
+zero DEAD/INCOMPLETE; promotion remains **7 PASS / 0 HOLD**. The preserved
+cross-batch G-REGISTER disposition for elf-b15-002 produces the existing
+orphan warning when aggregating only batch16; it is unchanged evidence.
+
+`report-final.json` is regenerated from the ordered merge. Its only content
+change removes the superseded las-b16-003 q2 G-STEM flag (the old null blind
+pick leaning D); the later GC q2 flag remains. The old flag remains in the
+base input. The retained GC q1/q2 flags now precede the language flags, in
+the merger's original-slot order. All other report fields and the seven
+per-unit statuses match the prior report. Rerunning `adjudicate_fold.py` with unchanged
+evidence, flags and final candidates reproduces `reviews/adjudication.jsonl`
+byte-for-byte: **6× GODKÄNN_NOTED + las-b16-003 ÄGARBLICK**. That fold does
+not consume the gate aggregate and remains the historical pre-owner-ruling
+recommendation; the October 6 owner disposition stays **7/7 GODKÄNN_NOTED**.
+
+`DIGESTS-agardom-2026-10-06-hpf-e05m.json` adds the current base/re-gate/report
+hashes, the reproducible merged-output hash and unchanged fold hash. It
+supersedes only the `verdicts.jsonl` and `report-final.json` bindings in
+`DIGESTS-agardom-hpf-gehr.json`; the earlier manifest is preserved verbatim
+as a historical snapshot at `79e5ebf`, where its original verdict/report
+hashes remain verifiable. No historical manifest or owner ruling is rewritten.
+Verification and scope evidence: [hpf-e05m worklog](../../../../docs/worklog/hpf-e05m.md).
