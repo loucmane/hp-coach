@@ -196,19 +196,22 @@ _MARK_RANGES = ((0x0300, 0x036F), (0x0483, 0x0489), (0x1AB0, 0x1AFF), (0x1DC0, 0
 _INVISIBLE = re.compile(_char_class(_INVISIBLE_RANGES))
 _DROPPED = re.compile(_char_class(_INVISIBLE_RANGES + _MARK_RANGES))
 
-# KaTeX commands that restyle their argument and leave it visible
-_KATEX_STYLE = (
-    "text", "textrm", "textit", "textbf", "textsf", "texttt", "textup", "textmd", "textnormal",
-    "emph", "mathrm", "mathit", "mathbf", "mathsf", "mathtt", "mathnormal", "mathbb", "mathcal",
-    "mathfrak", "mathscr", "Bbb", "bold", "boldsymbol", "bm", "pmb", "operatorname", "mbox",
-    "hbox", "rm", "it", "bf", "sf", "tt", "cal", "frak", "displaystyle", "textstyle",
-    "scriptstyle", "scriptscriptstyle", "underline", "overline", "boxed", "fbox", "cancel",
+# KaTeX's font/style registrations, generated offline by katex_inventory.py.
+# Ship the JSON beside this script: linting and Python-only CI need no Node
+# or node_modules. The installed-source test detects inventory/version drift.
+_KATEX_STYLE = tuple(json.loads(
+    Path(__file__).with_name("katex_style_commands.json").read_text(encoding="utf-8"))["commands"])
+# Existing non-font wrappers retain their handling independently of the font
+# inventory (PR #370 round 11); these are not font/style registrations.
+_KATEX_WRAPPERS = (
+    "operatorname", "mbox", "hbox", "underline", "overline", "boxed", "fbox", "cancel",
     "bcancel", "xcancel", "sout", "mathord", "mathop", "mathbin", "mathrel", "mathopen",
     "mathclose", "mathpunct", "mathinner")
 # KaTeX markup that renders as nothing: a colour command with its colour
 # argument, a style command (its argument stays)
 _KATEX_DROP = (r"\\(?:textcolor|colorbox|color)\s*\{[^{}]*\}|\\fcolorbox\s*\{[^{}]*\}\s*\{[^{}]*\}"
-               r"|\\(?:" + "|".join(sorted(_KATEX_STYLE, key=len, reverse=True)) + r")(?![A-Za-z])")
+               r"|\\(?:" + "|".join(sorted(_KATEX_STYLE + _KATEX_WRAPPERS, key=len, reverse=True))
+               + r")(?![A-Za-z])")
 _UNDERSCORE = r"(?P<underscore>\\textunderscore(?![A-Za-z]))"
 _ESCAPE = r"\\(?P<escaped>[!-/:-@\[-`{-~])"           # Markdown or TeX backslash escape
 # what KaTeX interprets: the app view applies it between the math delimiters

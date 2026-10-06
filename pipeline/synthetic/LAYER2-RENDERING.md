@@ -156,6 +156,28 @@ strängar får minst en vy. Vyerna innehåller 283 snake-token som inte finns i
 den skannade texten. Alla är matematiska subskript (`L_1`, `x_2`), och ingen
 av dem är en etikett.
 
+### K2: KaTeX-stilar (PR #370 rond 11, bead hpf-f4ig)
+
+| Rad | Hantering |
+|---|---|
+| K2 — font- och stilkommandon | Listan genereras från den installerade KaTeX-versionens egna registreringar i `font.ts`, `text.ts`, `pmb.ts`, `styling.ts` och `sizing.ts`, inklusive alias, äldre fontkommandon, `\mathsfit` och fontstorlekar. Linten tar bort kommandot och behåller innehållets bokstäver. |
+
+`gates/scripts/katex_inventory.py` läser källorna lokalt och skriver
+`gates/scripts/katex_style_commands.json`, som versionshanteras tillsammans
+med linten. Regenerera efter en KaTeX-uppgradering med
+`python3 pipeline/synthetic/gates/scripts/katex_inventory.py`. Linten laddar
+JSON-filen relativt sin egen sökväg; varken Node eller `node_modules` behövs
+vid lintning eller i CI:s Python-jobb. Övriga befintliga omslutningar, såsom
+ramar och genomstrykning, hanteras oförändrat.
+
+`test_katex_style_inventory_round11.py` kontrollerar varje genererat kommando
+via `scan_text` och standard-CLI:t: etiketter både delade mellan prosa och
+stilens innehåll och helt inne i stilen, samt de sju matematikvakterna
+`v_r`, `a_n`, `K_2007`, `a_1`, `värde_B`, `antal_A` och `K_diff`. När
+`app/node_modules/katex` finns regenererar testet inventeringen och kräver
+exakt samma fil, inklusive KaTeX-version. Bara denna jämförelse hoppas över
+med ett uttryckligt skäl när paketet saknas; alla lintregressioner körs ändå.
+
 ## Elevens renderare (PR #370 rond 8, bead hpf-4xvy)
 
 Ägarbeslut 2026-10-05 (alternativ A): hotmodellen gäller den renderare eleven
