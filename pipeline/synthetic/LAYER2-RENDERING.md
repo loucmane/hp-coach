@@ -197,8 +197,9 @@ faktiskt möter. Omklassningen rad för rad finns i `docs/worklog/hpf-4xvy.md`;
   marked, remark\*, rehype\*, micromark, mdx med flera), eller om
   `MathText.tsx` slutar visa text utanför matematiken som React-text: andra
   avgränsare, ett andra `dangerouslySetInnerHTML`, ett som matas med annat än
-  KaTeX:s utdata, eller ett KaTeX som får kasta fel in i reservvägen som
-  lägger in segmentets råtext som HTML.
+  KaTeX:s utdata (sedan rond 9 även via reservvägen, se nedan), eller ett
+  KaTeX som får kasta parsningsfel i stället för att sätta dem själv
+  (`throwOnError`).
 - **När testet fäller** gäller antagandet inte längre. Hotmodellen ska då ses
   över, och markup-vyn räcker inte som den är. Detsamma gäller om en `.md`-fil
   görs elevvänd genom en Markdown-renderare: linten läser `.md` och `.txt`
@@ -207,3 +208,30 @@ faktiskt möter. Omklassningen rad för rad finns i `docs/worklog/hpf-4xvy.md`;
 Linten är oförändrad: samma regler, vyer och fynd. Uppmätt på
 `data/explanations/`: default 2 fynd i 27 filer och `--strict` 74, som före
 ronden.
+
+## KaTeX-reservvägen (PR #370 rond 9, bead hpf-dhjn)
+
+Codex-granskning R9 (hpf-wov1) visade att `throwOnError: false` inte räcker.
+KaTeX sätter bara *parsningsfel* själv och kastar andra undantag vidare, till
+exempel `RangeError` när ett tillräckligt djupt nästlat segment (`\frac{` i
+hundratals till tusentals nivåer, beroende på stackens storlek) spräcker
+stacken. `MathText` fångade felet och lade in segmentets råtext som HTML. Då
+blev markup i segmentet levande element: ett segment med
+`WORLD_<span title=">">KNOWLEDGE</span>` visade etiketten, och linten
+släppte igenom det.
+
+- **Reservvägen är text.** Om KaTeX kastar ett fel visar `MathText` segmentet
+  som React-text, tecken för tecken, utan avgränsarna U+E000 och U+E001.
+  Eleven ser segmentets källtext, och den står i den skannade texten. Den
+  bokstavliga linten, alltså den skannade texten och den rena vyn, täcker
+  därför reservvägen.
+- **Parsningsfel är oförändrade.** Med `throwOnError: false` sätter KaTeX
+  ett parsningsfel själv, som escapad källtext. Även det är bokstavlig text.
+- **Fastnålat.** `test_lint_renderer_assumption_round8.py` fäller nu också om
+  reservvägen eller någon annan väg kan föra segmenttext till
+  `dangerouslySetInnerHTML`. Den enda råa HTML-sänkan ska ta `html`-fältet ur
+  `renderMath`s resultat, och det fältet får bara `katex.renderToString`
+  fylla. `catch` ska lämna tillbaka segmentet som `text`, och det visas som
+  React-text.
+
+Linten är oförändrad.

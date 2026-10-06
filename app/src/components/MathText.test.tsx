@@ -2,9 +2,14 @@
 // strings for attribute contexts (alt, aria-label) where KaTeX HTML
 // can't render. The contract: never leak the U+E000/U+E001 sentinels
 // or raw LaTeX control sequences into a plain string.
+//
+// MathText itself: a math segment is KaTeX's HTML, and when KaTeX
+// throws, the segment is shown as text — never inserted as HTML
+// (PR #370 round 9, bead hpf-dhjn).
 
 import { render } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import katex, { type KatexOptions } from 'katex'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { flattenLatex, flattenMathText, MathText } from './MathText'
 
@@ -61,5 +66,87 @@ describe('MathText aria-label', () => {
     const { container } = render(<MathText>{`f ${M('L_{1}')}`}</MathText>)
     const math = container.querySelector('[role="math"]')
     expect(math?.getAttribute('aria-label')).toBe('L1')
+  })
+})
+
+// MathText's KaTeX options, for building the expected output.
+const KATEX_OPTIONS: KatexOptions = { output: 'html', throwOnError: false, strict: 'ignore' }
+
+// Codex review R9 (hpf-wov1): label markup that only an HTML parser
+// hides. Shown as text, it is a visibly different string; inserted as
+// HTML, it reads WORLD_KNOWLEDGE.
+const MARKUP = 'WORLD_<span title=">">KNOWLEDGE</span>'
+
+describe('MathText when KaTeX throws', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  // No element is made from the segment's markup, and its characters
+  // are on screen as they stand.
+  function expectShownAsText(container: HTMLElement, segment: string) {
+    const math = container.querySelector('[role="math"]')
+    expect(math).not.toBeNull()
+    expect(math?.childElementCount).toBe(0)
+    expect(container.querySelector('[title]')).toBeNull()
+    expect(math?.textContent).toBe(segment)
+    expect(math?.getAttribute('aria-label')).toBe(flattenLatex(segment))
+  }
+
+  it('shows the segment as text, not HTML', () => {
+    const renderToString = vi.spyOn(katex, 'renderToString').mockImplementation(() => {
+      throw new RangeError('Maximum call stack size exceeded')
+    })
+    const { container } = render(<MathText>{`f ${M(MARKUP)} g`}</MathText>)
+    expect(renderToString).toHaveBeenCalled()
+    expectShownAsText(container, MARKUP)
+    expect(container.textContent).toBe(`f ${MARKUP} g`)
+  })
+
+  // 30 s: forcing KaTeX's RangeError takes deep recursion, slow on a cold start or loaded CI.
+  it('shows the R9 deep-nesting segment as text, with the real KaTeX', () => {
+    // R9 used 835 levels, which sits on the stack limit (plain Node 22
+    // renders it as a parse error); 20 000 overflows any default stack.
+    const depth = 20_000
+    const segment = '\\frac{'.repeat(depth) + MARKUP + '}'.repeat(depth)
+    // precondition: the locked KaTeX throws past throwOnError: false
+    expect(() => katex.renderToString(segment, KATEX_OPTIONS)).toThrow(RangeError)
+    const { container } = render(<MathText>{M(segment)}</MathText>)
+    expectShownAsText(container, segment)
+  }, 30_000)
+})
+
+describe('MathText with KaTeX', () => {
+  // KaTeX's HTML for latex, as the DOM serializes it
+  function katexHtml(latex: string) {
+    const span = document.createElement('span')
+    span.innerHTML = katex.renderToString(latex, KATEX_OPTIONS)
+    return span.innerHTML
+  }
+
+  it('typesets a math segment as KaTeX HTML, without MathML', () => {
+    const { container } = render(<MathText>{`a ${M('x^{2} - 15')} b`}</MathText>)
+    const math = container.querySelector('[role="math"]')
+    expect(math?.innerHTML).toBe(katexHtml('x^{2} - 15'))
+    expect(math?.querySelector('.katex-html')).not.toBeNull()
+    expect(math?.querySelector('.katex-mathml')).toBeNull()
+    expect(math?.getAttribute('aria-label')).toBe('x^2 - 15')
+    expect(container.textContent?.startsWith('a ')).toBe(true)
+    expect(container.textContent?.endsWith(' b')).toBe(true)
+  })
+
+  it('sets multi-letter units upright', () => {
+    const { container } = render(<MathText>{M('12 dm^{3}')}</MathText>)
+    const math = container.querySelector('[role="math"]')
+    expect(math?.innerHTML).toBe(katexHtml('12 \\mathrm{dm}^{3}'))
+  })
+
+  it("leaves a parse error to KaTeX's own error rendering, as text", () => {
+    const segment = `\\frac{${MARKUP}`
+    const { container } = render(<MathText>{M(segment)}</MathText>)
+    const math = container.querySelector('[role="math"]')
+    expect(math?.innerHTML).toBe(katexHtml(segment))
+    expect(math?.querySelector('.katex-error')?.textContent).toBe(segment)
+    expect(math?.querySelector('[title=">"]')).toBeNull()
   })
 })
