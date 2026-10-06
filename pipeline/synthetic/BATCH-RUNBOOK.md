@@ -377,9 +377,24 @@ those feed the next batch's generation prompt as negative examples.
 - **Repair re-gates must flow into the batch merge.** When a redesigned unit is
   re-judged, its fresh FLEET-gate lines (G-STEM/G-KEY/G-DISTRACTOR/…) must be
   merged into `<batch>/verdicts.jsonl` with last-wins per
-  (candidate_id,gate,target,vote) BEFORE promote — `vfinal_fold.py` only reads
-  the V-FINAL legs, and promote's gate-fleet status comes from the merge, so an
-  unmerged regate kill is INVISIBLE to both. (Learned 2026-07-22: a repair's
+  (candidate_id,gate,target,vote) BEFORE promote, via
+  `gates/scripts/merge_verdicts.py` with base first and each re-gate round as
+  its OWN later input file (vote-stamped `-v` legs): a later file supersedes
+  every earlier record for that key whatever its executed_by/justification/run,
+  and the summary counts superseded records apart from no-op duplicates. A
+  re-gate appended into an existing leg file is refused (inside one file it is
+  indistinguishable from a second ballot); `run`-numbered ballots in one file
+  are kept. (PR #370 review, bead hpf-qo10.) A raw leg record folds into its
+  `-v` twin only when the two are identical apart from `vote`; a raw and a
+  stamped record with the same evidence identity that differ in anything else
+  (e.g. the verdict) are refused, never collapsed (bead hpf-oy2w). Every
+  record's `verdict` and `gate` must be exactly one of the verdict schema's
+  enum values (`gates/schemas/verdict.schema.json`); anything else (`PASS`,
+  an unknown string, a missing verdict, a misspelt gate) is refused with its
+  file and line before any supersession (bead hpf-6fkm).
+  `vfinal_fold.py` only reads the V-FINAL legs, and promote's gate-fleet
+  status comes from the merge, so an unmerged regate kill is INVISIBLE to
+  both. (Learned 2026-07-22: a repair's
   G-STEM kill on las-b3-003 was ignored by a clean-looking promote until the
   merge was rebuilt.) Corollary: a repair that fixes one tell can create
   another — the las-b3-003 fix for a verbatim-true distractor (law 11)
