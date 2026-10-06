@@ -102,19 +102,47 @@ export function flattenMathText(text: string | null | undefined): string {
   return out
 }
 
-function renderMath(latex: string): string {
+// What a math segment renders as: KaTeX's HTML, or the segment's own
+// text when KaTeX throws. Only `html` is ever inserted as HTML.
+type RenderedMath = { html: string } | { text: string }
+
+function renderMath(latex: string): RenderedMath {
   try {
-    return katex.renderToString(wrapUnits(latex), {
-      output: 'html',
-      throwOnError: false,
-      strict: 'ignore',
-    })
+    return {
+      html: katex.renderToString(wrapUnits(latex), {
+        output: 'html',
+        throwOnError: false,
+        strict: 'ignore',
+      }),
+    }
   } catch {
-    // throwOnError:false should cover this, but belt-and-braces in
-    // case a future KaTeX version starts throwing through a different
-    // path (e.g. macro expansion).
-    return latex
+    // throwOnError:false makes KaTeX render a parse error itself, as
+    // escaped source text. Other exceptions still get through: a deeply
+    // nested segment overflows the stack (RangeError). The fallback is
+    // the raw segment, so it goes back as text for React to escape —
+    // inserted as HTML, any markup in it would go live (PR #370 round 9).
+    return { text: latex }
   }
+}
+
+// One math segment. KaTeX's output is the only HTML MathText inserts;
+// everything else, this fallback included, is React text. The Layer-2
+// learner-output lint relies on that (pipeline/synthetic/LAYER2-RENDERING.md),
+// and test_lint_renderer_assumption_round8.py pins this file's shape.
+function MathSegment({ latex }: { latex: string }) {
+  const math = renderMath(latex)
+  return 'html' in math ? (
+    <span
+      role="math"
+      aria-label={flattenLatex(latex)}
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: KaTeX's output, never segment text
+      dangerouslySetInnerHTML={{ __html: math.html }}
+    />
+  ) : (
+    <span role="math" aria-label={flattenLatex(latex)}>
+      {math.text}
+    </span>
+  )
 }
 
 export function MathText({ children }: Props) {
@@ -153,16 +181,8 @@ export function MathText({ children }: Props) {
     <>
       {segments.map((seg, idx) =>
         seg.math ? (
-          <span
-            // biome-ignore lint/suspicious/noArrayIndexKey: stable order, no reordering
-            key={idx}
-            role="math"
-            aria-label={flattenLatex(seg.text)}
-            // KaTeX-emitted HTML on parser-controlled input — no user
-            // text ever reaches `seg.text`.
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: trusted parser output
-            dangerouslySetInnerHTML={{ __html: renderMath(seg.text) }}
-          />
+          // biome-ignore lint/suspicious/noArrayIndexKey: stable order, no reordering
+          <MathSegment key={idx} latex={seg.text} />
         ) : (
           // biome-ignore lint/suspicious/noArrayIndexKey: stable order, no reordering
           <span key={idx}>{seg.text}</span>
