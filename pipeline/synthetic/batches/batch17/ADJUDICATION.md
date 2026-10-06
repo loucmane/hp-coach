@@ -1460,3 +1460,43 @@ Current package status: **HOLD — las-b17-001 blind G-STEM re-check pending**.
 The las-b17-002 owner decision is resolved; elf-b17-003's earlier misfire
 calibration disposition stands. Earlier approval and gate results do not
 constitute approval of the newly repaired options.
+
+
+---
+
+## Repair round 2 — 2026-10-06 (hpf-rixl), after blind HOLD hpf-tii9
+
+The independent hpf-tii9 re-check at `a333b5ff0ce96f9021eb7f61098c0757e530a346`
+returned **G-STEM HOLD**: q3/A and q4/C were both PARTIALLY_ANSWERABLE and
+matched the keys. G-KEY passed 4/4 and G-SPRÅK passed. This entry records the
+second targeted implementation repair; the earlier verdicts and option
+renderings above remain historical evidence.
+
+All four q3 options now pair the same small-effect-difference premise with
+a concrete practical claim. A retains the available room and already-employed
+staff; B supplies equally concrete vessel/boiler details that are unsupported,
+C incorrectly substitutes a prior bath, and D asserts an unsupported drying-time
+advantage. Lengths A/B/C/D are **101/106/97/99** characters.
+
+All four q4 options now coordinate material and machine claims. B shares C's
+supported purchase-quality premise, with a false/unsupported box-rejection
+outcome. C also requires the passage's increased output per log after the
+machine replacement; q3's practical reasons cannot establish that fact. A's
+customer/assortment explanation and D's price/maintenance account are not
+supported. Lengths are **102/101/101/99** characters. This additional specificity
+fixes a route found during the author's self-check: simply balancing the old
+broad constraints summary against distractors still let q3 imply that summary.
+
+Only q3/q4 option texts, their affected rationales and an appended unit
+`repair_log` entry changed in the final candidate. Passage, title, all stems,
+q1/q2 and keys **B/D/A/C** are unchanged. The unit's stems and gitignored
+blind/distractor sheets were rebuilt. Final checks: **sheet-sync OK, 7 units;
+mech 6/6 PASS; learner-output lint clean**. The before/after table, exact lengths,
+stems-only author self-check, support checks and artifact digests are in
+[the hpf-rixl lane worklog](../../../../docs/worklog/hpf-rixl.md).
+
+**PACKAGE HOLD remains.** The author has seen the passage and keys; this is
+implementation evidence, not an independent G-STEM verdict. A fresh blind
+re-check must assess the repaired bytes before package approval can be restored.
+The changes are uncommitted; no Beads or PR state was changed. This append does
+not revise the settled las-b17-002 or elf-b17-003 dispositions.

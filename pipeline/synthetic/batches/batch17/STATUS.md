@@ -168,3 +168,24 @@ standing process rule, not a per-unit obligation. Details and verification:
 `ADJUDICATION.md` §ÄGARDOMAR 2026-10-06 and
 [the hpf-frjd worklog](../../../../docs/worklog/hpf-frjd.md).
 Earlier status lines are historical; this dated entry is the current status.
+
+
+## Current status — 2026-10-06 (hpf-rixl, repair round 2 after hpf-tii9)
+
+**PACKAGE HOLD — las-b17-001 repaired again; fresh independent blind re-check pending.**
+The hpf-tii9 review of the first repair returned G-STEM HOLD because q3/A and
+q4/C were both partially answerable with matching keys; G-KEY and G-SPRÅK passed.
+Round 2 balances q3's lengths and concrete practical reasons, and gives all q4
+options material/machine claims. Q4/C now requires the specific output gain
+from the machine replacement, preventing q3's practical-reason premise from
+establishing the old general summary.
+
+Only q3/q4 option texts, their affected rationales and one appended repair-log
+entry changed in the candidate. Keys B/D/A/C, passage, title, stems and q1/q2
+are preserved. The unit's three sheets are rebuilt; final **sheet-sync OK
+(7 units), mech 6/6 PASS, learner-output lint clean**. All edits remain
+uncommitted. Evidence: `ADJUDICATION.md` §Repair round 2 and
+[the hpf-rixl lane worklog](../../../../docs/worklog/hpf-rixl.md).
+
+This author self-check does not clear the independent blind gate. Earlier
+status entries remain historical; the other units' dispositions are unchanged.
