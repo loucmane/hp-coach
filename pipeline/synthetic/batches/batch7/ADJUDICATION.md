@@ -326,3 +326,15 @@ The owner ratified batches 1–13 on 2026-10-07: »ratify them, make sure they a
 
 The package text above is revision 1 as adjudicated on 2026-07-24; it stays as historical evidence. Evidence for this entry: [the hpf-jsnf worklog](../../../../docs/worklog/hpf-jsnf.md).
 
+### 2026-10-07 — RULE-14 web check of »Frida Ullbrink« (coordinator, outside the sandbox; append-forward)
+
+The repair above recorded an offline screen only and flagged the new name for a RULE-14 web check before release. Run by the hpfetcher coordinator on 2026-10-07 with network access, per RULE 14 (`batches/batch19/BRIEF-ADDENDUM.md`): sv.wikipedia CirrusSearch and Nominatim, each with a positive control.
+
+| Query | Index | Hits | Positive control | Control hits |
+|---|---|---:|---|---:|
+| `"Ullbrink"` | sv.wikipedia CirrusSearch | 0 | `"Sundqvist"` | 849 |
+| `"Frida Ullbrink"` | sv.wikipedia CirrusSearch | 0 | `"Sundqvist"` | 849 |
+| `Ullbrink` | Nominatim (OSM) | 0 | `Sandviken` | 3 |
+
+A general web search for the exact name also returned no real bearer (nearest: Frida Ulfung, Frida Uhl). Result: **PASS** — no real person or place named Ullbrink is indexed; the flag is discharged for this release.
+
