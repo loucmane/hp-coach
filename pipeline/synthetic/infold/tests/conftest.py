@@ -63,7 +63,8 @@ def rehash():
 @pytest.fixture
 def make_tree(tmp_path, committed_roster):
     """A throwaway repo root holding copies of the named units' candidate
-    files, RETIRED.json and a roster restricted to those units."""
+    files, RETIRED.json, the Layer-1 frameworks (the internal-label gate
+    derives its id series from them) and a roster restricted to those units."""
 
     def _make(unit_ids, *, retired=None):
         entries = [dict(e) for e in committed_roster["units"] if e["unit_id"] in unit_ids]
@@ -73,6 +74,7 @@ def make_tree(tmp_path, committed_roster):
             target = root / entry["source"]
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(REPO_ROOT / entry["source"], target)
+        shutil.copytree(REPO_ROOT / export_product.FRAMEWORKS_REL, root / export_product.FRAMEWORKS_REL)
         registry = root / build_roster.RETIRED_REL
         registry.parent.mkdir(parents=True, exist_ok=True)
         if retired is None:
