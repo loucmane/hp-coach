@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "status": "approved",
+  "authored_at": "2026-10-07",
+  "catalog_commit": "6a4511431652d0b66fd1ea2523807f286f3d772d",
+  "notes": "Nodes are implicit: every entry id in frameworks/*.json is a node, and an id with no incoming edge has no prerequisites. Edge = { from: prerequisite id, to: dependent id, reason, strength }. hard: the scheduler must not introduce `to` while `from` is still untaught. soft: ordering preference only, never blocks. The union of hard and soft edges must stay acyclic. Evidence, semantics and open owner questions: docs/framework-prereqs-proposal.md.",
+  "edges": [
+    {
+      "from": "XYZ-TRAP-020",
+      "to": "XYZ-TRAP-021",
+      "reason": "A percent change multiplies by (1 ± p/100); that factor presupposes 'p% = p/100', which XYZ-TRAP-020 teaches.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-021",
+      "to": "XYZ-TRAP-022",
+      "reason": "Successive changes multiply the change factors (1,5 · 0,5); the change factor itself is taught in XYZ-TRAP-021.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-002",
+      "to": "XYZ-TRAP-005",
+      "reason": "The inequality trap is 'solved like an equation': it assumes the linear-equation routine of XYZ-TRAP-002 and adds only the sign flip.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-003",
+      "to": "XYZ-TRAP-012",
+      "reason": "The conjugate rule is a special case of binomial multiplication and falls back to 'full FOIL' (XYZ-TRAP-003) when it does not apply.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-003",
+      "to": "XYZ-TRAP-013",
+      "reason": "The square rule's missing cross term 2ab is checked by expanding (a+b)(a+b) with FOIL (XYZ-TRAP-003).",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-040",
+      "to": "XYZ-TRAP-044",
+      "reason": "The diagonal d = s√2 is Pythagoras on the sides; the entry says the formula is forgotten 'when not derived via Pythagoras'.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-001",
+      "to": "KVA-TRAP-039",
+      "reason": "Authored KVA twin of minus-distribution: the XYZ entry teaches the simplification, the KVA entry how the slip flips an I-vs-II verdict.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-006",
+      "to": "KVA-TRAP-040",
+      "reason": "Authored KVA twin of order of operations: same mechanic, here deciding an I-vs-II verdict instead of a chosen value.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-033",
+      "to": "KVA-TRAP-041",
+      "reason": "Authored KVA twin: a root does not distribute over + or −; the XYZ entry computes the value, the KVA entry judges the comparison.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-032",
+      "to": "KVA-TRAP-042",
+      "reason": "Authored KVA twin of root simplification (extract perfect squares) before comparing quantities that contain the root.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-034",
+      "to": "KVA-TRAP-043",
+      "reason": "Authored KVA twin of a⁰ = 1 before comparing quantities that contain it.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-026",
+      "to": "KVA-TRAP-044",
+      "reason": "Authored KVA twin of power of a power (multiply the exponents) before comparing the resulting expressions.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-007",
+      "to": "KVA-TRAP-045",
+      "reason": "Authored KVA twin of negative substitution: keep the parentheses so (−a)² is not read as −a² before comparing.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-037",
+      "to": "KVA-TRAP-051",
+      "reason": "Authored KVA twin: choose the right angle relation between parallel lines before judging the comparison.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-041",
+      "to": "KVA-TRAP-052",
+      "reason": "Authored KVA twin: decompose a composite figure into basic shapes before comparing its area against a fixed value.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-042",
+      "to": "KVA-TRAP-053",
+      "reason": "Authored KVA twin: radius versus diameter in circle formulas before comparing against a fixed value.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-052",
+      "to": "KVA-TRAP-054",
+      "reason": "Authored KVA twin: f(b) − f(a) = k(b − a) for linear f; the KVA entry adds how a sign slip flips the verdict.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-005",
+      "to": "KVA-TRAP-014",
+      "reason": "Authored overlap: KVA's unknown-sign case (→ D) generalises the negative-coefficient flip that XYZ-TRAP-005 teaches.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-009",
+      "to": "KVA-TRAP-032",
+      "reason": "Authored overlap: KVA uses the ±√k two-root mechanic for its verdict; XYZ-TRAP-009 teaches the computation itself.",
+      "strength": "hard"
+    },
+    {
+      "from": "XYZ-TRAP-029",
+      "to": "KVA-TRAP-013",
+      "reason": "Authored overlap: the KVA verdict turns on the sign of (−a)ⁿ by exponent parity, which XYZ-TRAP-029 teaches.",
+      "strength": "hard"
+    },
+    {
+      "from": "NOG-TRAP-002",
+      "to": "NOG-TRAP-024",
+      "reason": "'Ratio + sum = two equations in two unknowns = solvable' applies the unknowns-vs-independent-equations count, authored as the foundational rule.",
+      "strength": "hard"
+    },
+    {
+      "from": "NOG-TRAP-002",
+      "to": "NOG-TRAP-008",
+      "reason": "Equivalent statements are the dependent-equation case of the counting rule; the trap is miscounting them as two equations.",
+      "strength": "soft"
+    },
+    {
+      "from": "NOG-TRAP-002",
+      "to": "NOG-TRAP-015",
+      "reason": "Exception to the counting rule: a combination target such as x + y can be fixed by one equation; teach the rule first.",
+      "strength": "soft"
+    },
+    {
+      "from": "NOG-TRAP-003",
+      "to": "NOG-TRAP-024",
+      "reason": "Rule, then over-correction: a ratio alone never fixes absolute values; a ratio plus a sum always does.",
+      "strength": "soft"
+    },
+    {
+      "from": "NOG-TRAP-006",
+      "to": "NOG-TRAP-016",
+      "reason": "Rule, then its authored exception ('se NOG-TRAP-016'): inequalities never fix a value but can fix a sign.",
+      "strength": "soft"
+    },
+    {
+      "from": "LAS-TYPE-001",
+      "to": "LAS-TYPE-002",
+      "reason": "Inference is defined against retrieval ('svaret står INTE ordagrant i texten'); anchor answers in the text before reading between the lines.",
+      "strength": "soft"
+    },
+    {
+      "from": "ELF-TYPE-001",
+      "to": "ELF-TYPE-002",
+      "reason": "The inference protocol rejects literal restatements as 'retrieval, inte inferens'; learn targeted retrieval first.",
+      "strength": "soft"
+    },
+    {
+      "from": "ELF-TYPE-001",
+      "to": "ELF-TYPE-007",
+      "reason": "Statement–text agreement is retrieval without a named target (authored note); learn targeted retrieval first.",
+      "strength": "soft"
+    },
+    {
+      "from": "MEK-RULE-004",
+      "to": "MEK-RULE-016",
+      "reason": "Authored complement: 004 tests every blank together; 016 adds subject-field coherence across the same blanks.",
+      "strength": "soft"
+    }
+  ],
+  "approved": {
+    "by": "owner",
+    "at": "2026-10-07",
+    "bead": "hpf-yv5e",
+    "decisions": "ok prereqs: all recommendations accepted (hard threshold = not untaught; blocked candidate pulls the prereq forward; XYZ->KVA twins hard; section basics deferred to authored entries; unauthored candidates after author cross-reference; data fixes separate bead; ORD->LÄS dropped)"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "DRAFT for owner approval (hpf-yv5e). Not loaded by any code; hpf-0026.2 consumes the approved version.",
+  "status": "approved",
   "authored_at": "2026-10-07",
   "catalog_commit": "6a4511431652d0b66fd1ea2523807f286f3d772d",
   "notes": "Nodes are implicit: every entry id in frameworks/*.json is a node, and an id with no incoming edge has no prerequisites. Edge = { from: prerequisite id, to: dependent id, reason, strength }. hard: the scheduler must not introduce `to` while `from` is still untaught. soft: ordering preference only, never blocks. The union of hard and soft edges must stay acyclic. Evidence, semantics and open owner questions: docs/framework-prereqs-proposal.md.",
@@ -179,5 +179,11 @@
       "reason": "Authored complement: 004 tests every blank together; 016 adds subject-field coherence across the same blanks.",
       "strength": "soft"
     }
-  ]
+  ],
+  "approved": {
+    "by": "owner",
+    "at": "2026-10-07",
+    "bead": "hpf-yv5e",
+    "decisions": "ok prereqs: all recommendations accepted (hard threshold = not untaught; blocked candidate pulls the prereq forward; XYZ->KVA twins hard; section basics deferred to authored entries; unauthored candidates after author cross-reference; data fixes separate bead; ORD->LÄS dropped)"
+  }
 }

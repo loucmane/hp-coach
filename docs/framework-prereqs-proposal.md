@@ -1,7 +1,6 @@
 # Framework prerequisite graph: proposal
 
-**Status:** draft for owner approval (hpf-yv5e). No code. hpf-0026.2 implements the
-approved version. Data: `frameworks/framework_prereqs.draft.json`. Evidence and
+**Status: APPROVED by the owner 2026-10-07 ("ok prereqs").** All recommendations accepted: hard threshold = not `untaught`; a blocked candidate pulls its unmet prerequisite forward (copy as proposed in Q2); XYZ→KVA twins hard; section basics later as authored entries (separate bead); unauthored candidate edges only after authors cross-reference them; data fixes in a separate bead; "ORD before LÄS" dropped and 26.2's test replaced. hpf-0026.2 implements this version. Data: `frameworks/framework_prereqs.json` (mirrored to `app/public/frameworks/`). *(Original status: draft for owner approval, hpf-yv5e, file `frameworks/framework_prereqs.draft.json`.)* Evidence and
 validator output: `docs/worklog/hpf-yv5e.md`.
 
 ## What it is for
