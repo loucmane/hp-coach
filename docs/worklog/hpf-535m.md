@@ -180,3 +180,178 @@ There is nothing to list for PR 2 from the student strings. The rationale-field 
 
 PR1 export contract implemented, uncommitted. `build_roster.py` → `approval-roster.json` (128 rows; census 120/340 = LÄS 52/136 + ELF 68/204, 8/33 retired; approved 39/121; batches 1–13 pending owner ratification 81/219) + `ROSTER.md`. `export_product.py`: whitelist bank, qid `p5-<unit>-r1-<SECTION>-nnn` with the `LÄS` token (deviation from the design's `LAS`, justified in the worklog); refuses on hash/retired/approval/field/dup-qid/leak/pair/lint/non-determinism. Committed 4-unit sample; full preview gitignored. 62 new tests in CI; 1540 passed, 7 xfailed; lint clean on all 120 units. Evidence: `docs/worklog/hpf-535m.md`.
 LANE DONE: hpf-535m
+
+## Review fix round 1
+
+Bead `hpf-c30u` fixes the two blocking findings of the Codex exact-head review of PR #375 (bead `hpf-iycl`, `VERDICT: HOLD` at `ad12bc2`): R1, malformed `revision` values reach the learner bank; R2, output writing follows symlinks out of `infold/preview/`. The fix is uncommitted on top of `ad12bc2`.
+
+### Snapshot and boundaries
+
+- Claimed with `gc hook --claim --json` (`hpf-c30u`, assignee `gc__implementation-worker-ci-pznzr`, route `hpfetcher/gc.implementation-worker`). `bd show hpf-c30u --json` matched the id, status `in_progress`, the assignee and `gc.routed_to`.
+- `git rev-parse HEAD` → `ad12bc277f270d2f212dadbe3591944506e22ab8` on `codex/hpf-535m-infold-export-contract` (tracking origin), with no tracked changes at start.
+- **The review worklog could not be read.** This session's sandbox denies `/home/loucmane/vaults/main/GasCity/hpfetcher/Docs/worklogs/hpf-iycl.md` to both the Read tool and Bash. The repro classes come instead from the bead description and the `hpf-iycl` bead note ("R1 P2 malformed revisions leak nested data and invalid qids; R2 P2 output-file symlinks escape preview confinement"). Both repros were rebuilt independently (see the before/after section).
+- No git writes and no network. The tracked changes are the five files below plus this worklog. Nothing changed in the candidates, rulings, `RETIRED.json`, `approval-roster.json`, `ROSTER.md`, `app/`, `worker/` or CI.
+- Untracked paths were left alone:
+  - The `.agents`/`.claude` skill directories, `.codex/` and `.gc/` are untouched.
+  - The `.bash_profile` … `.zshrc`, `.idea` and `.vscode` entries that `git status` shows inside the sandbox are `/dev/null` character-device mounts (`c 1,3`) that the sandbox creates. They are not files.
+- `gc.check_path` is the same post-close dispatcher check as for `hpf-535m`. This bead names no validator, so this worker did not run it.
+
+| Path | Change |
+|---|---|
+| `pipeline/synthetic/infold/build_roster.py` | `MAX_REVISION = 99` and `is_revision()`; the build and the continuity check refuse malformed revisions |
+| `pipeline/synthetic/infold/export_product.py` | Roster-row validation, a strict `make_qid`, the final `check_schema` gate, and the symlink-safe atomic writer and `--check` reader |
+| `pipeline/synthetic/infold/preview/sample/_export-manifest.json` | Regenerated; 4 lines changed: the exporter sha256 and two new gate names |
+| `pipeline/synthetic/infold/tests/test_infold_export.py` | 62 new tests |
+| `pipeline/synthetic/infold/tests/test_infold_roster.py` | 12 new tests |
+
+### R1: revision and qid integrity
+
+- **Documented bound.**
+  - A revision is a plain `int` from 1 to `MAX_REVISION = 99`. `is_revision()` checks `type(value) is int`, so a bool is refused.
+  - The bound is documented in the `build_roster.py` docstring and in the exporter's row-field docs.
+  - `build_roster()` raises `RosterError` for any `REVISIONS` value outside it. `check_revision_continuity()` refuses a malformed revision on either side instead of comparing it. It used to raise `TypeError` for a string or dict, and silently accept `True` or `0`.
+- **Roster validation, where the exporter reads the roster** (`_load_roster`, the finding's `:140`). Each of these raises `ExportError` before selection, so nothing is written:
+  - unreadable JSON, including an integer past Python's 4300-digit limit (`ValueError` before);
+  - a non-object roster or non-object rows;
+  - any row whose fields the exporter reads are missing or have a different exact JSON type (`ROSTER_ROW`): `unit_id`/`section`/`source`/`sha256`/`content_sha256`/`approval` must be str, `question_count`/`revision` int, `retired` bool;
+  - any revision outside 1–99.
+- **qid at construction.** `make_qid` takes only a valid revision and a number from 1 to 999. It then requires a full match of `QID`:
+
+  ```
+  p5-(?:las-b[0-9]+-[0-9]{3}-r[1-9][0-9]*-LÄS|elf-b[0-9]+-[0-9]{3}-r[1-9][0-9]*-ELF)-[0-9]{3}
+  ```
+
+  That is ASCII digits only, no leading zero in the revision, and the section literal implied by the unit's prefix. The qid must also fit in `QID_MAX = 60` UTF-16 units (`worker/src/routes/attempts.ts:40`). Anything else raises an `ExportError` that names the qid.
+- **Final whole-output schema check.** `check_schema(bank)` is a new gate that runs after the lint, immediately before rendering.
+  - The bank must be exactly `BANK_SHAPE`:
+    - an object is its exact field list, in order;
+    - `[x]` is an array of x;
+    - a scalar is its exact JSON type, so a bool is never a number and an object or array never stands where a scalar belongs.
+  - `ROW_FIELDS`, `OPTION_FIELDS` and `BANK_FIELDS` are now derived from the shapes, with unchanged values.
+  - Value checks on top of the shape:
+    - format, source and release;
+    - stamp ⇔ preview;
+    - every exclusion pair has exactly two ids;
+    - per row: `qid` and `exam_id` must equal what `make_qid`/`exam_id` build from the row's own `unit_id`, `revision`, `section` and `number`;
+    - per row: answer and option letters are A–D, source is `synthetic`, and the shard belongs to this release.
+- **Adjacent fix.** The candidate field gate now requires `q_index` to be an `int`. A JSON `true` used to pass `True == 1` and export `"number": true`.
+- `GATES` gains `qid-format` and `bank-schema` (manifest only).
+
+### R2: output confinement
+
+- **Root and path.** `check_out_dir` resolves `PREVIEW_DIR` once and returns `(root, parts)`. `out_dir`, made absolute without resolving (`absolute()`), must lie inside that root with at least one component and no `..`.
+- **Directory walk.** `_open_out_dir` opens the root with `O_DIRECTORY | O_NOFOLLOW`, then walks the parts one by one through directory descriptors:
+  - each component is lstat-ed: a symlink is refused (`… is a symlink; no export path below pipeline/synthetic/infold/preview/ may be one`), and so is anything that is not a directory;
+  - missing components are created, in write mode only;
+  - each component is opened with `O_NOFOLLOW`, so a link swapped in after the lstat fails the open.
+- **Write.** `write_export` checks everything before the first write:
+  - export names must be plain names;
+  - the stray-file check is unchanged;
+  - every expected output name that exists must lstat as a regular file.
+
+  Each file then goes through `_replace`:
+  - create a fresh `.<name>.<random>.tmp` in the same directory with `O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW` and mode `0o666`, so only the umask applies and there is no chmod anywhere;
+  - write it and fsync it;
+  - `os.replace` it relative to the directory descriptor.
+
+  A rename replaces the directory entry, so neither a symlink nor a hard link at that name is ever written through.
+- **`--check`** reads through `read_export`: the same walk, lstat checks and `O_NOFOLLOW` opens. A symlinked output file is refused instead of compared through.
+
+### Tests, red first
+
+- **74 new tests:** 62 in `test_infold_export.py`, 12 in `test_infold_roster.py`.
+  - R1:
+    - malformed roster revisions `0, -1, True, False, 1.0, 2.5, "1", "r1", None, [1], {"note": "internal"}, 100, 10**30`;
+    - a missing revision, and a 5000-digit revision;
+    - mistyped roster fields;
+    - 12 malformed `make_qid` inputs, including a 63-character qid and non-ASCII digits;
+    - the inclusive bounds (`r99`, `nnn` 999, a 60-unit qid);
+    - an end-to-end export whose qid would reach 63 characters;
+    - 16 schema mutations (nested revision, bool number, array title, nested option text and others);
+    - every real export conforming to the schema;
+    - the schema gate running on every export;
+    - a bool `q_index`;
+    - malformed `REVISIONS` failing the roster build, and malformed revisions in the continuity check.
+  - R2:
+    - a symlinked output file pointing outside the root, dangling, or inside the root (no write at all, outside file unchanged);
+    - a symlinked parent directory pointing outside or inside, for both `out` and `out/nested` (nothing written in the target);
+    - a hard-linked output file is replaced, not written through;
+    - a fresh export consists of regular files with umask-only modes and no temp files left;
+    - a `..` escape is refused;
+    - `--check` refuses a symlinked sample.
+  - Each refusal test matches its own layer's message, for example `roster .*revision`, `is a symlink` and `mistyped field`.
+- **First red run in the lane** (tests written, code untouched): 70 failed, 65 passed. One match had passed by accident because pytest's tmp path contains the test name (`…symlinked…`). After tightening it to `is a symlink`: 71 failed, 64 passed.
+- **Final suite against the exact `ad12bc2` code:** 72 failed, 64 passed. The setup was `git archive ad12bc2 pipeline/synthetic docs/p5-infold-design.md worker/src app/src`, extracted into the scratchpad with the final test files copied over.
+  - The 64 that pass are the 62 original tests plus 2 regression guards that hold on both trees: fresh regular files, and the `..` escape, which `ad12bc2` already refused by resolution.
+  - Failure modes on `ad12bc2`:
+    - `DID NOT RAISE` for every malformed revision (the bank was exported);
+    - `KeyError: 'revision'` for a missing revision;
+    - `TypeError: unhashable type` for a dict or list roster field;
+    - `ValueError` for the 5000-digit revision;
+    - `DID NOT RAISE` for the symlinked-output and hard-link cases.
+- **After the fix:**
+  - infold: 136 passed;
+  - bead VERIFICATION command: **1614 passed, 7 xfailed** (21.69 s), which is the baseline 1540 plus the 74 new tests;
+  - baseline before any change: 1540 passed, 7 xfailed (21.54 s).
+
+### Mutation check
+
+Each mutation was applied to the scratch copy of the fixed tree, never the lane, with the infold suite run excluding the three committed-sample tests (any exporter edit changes the pinned sha256). The unmutated scratch tree passes all 136 tests, and every mutation is caught.
+
+| Mutation | Failing tests |
+|---|---|
+| M1 `_load_roster` without the row-type and revision checks | 19 |
+| M2 `make_qid` without validation | 13 |
+| M3 `check_schema` call removed from `_build` | 1 |
+| M4 `check_schema` emptied | 17 |
+| M5 `write_export` without the output-file lstat check | 3 |
+| M6 `_open_out_dir` without `O_NOFOLLOW` and without the directory lstat check | 2 |
+| M7 `_replace` writing in place (`O_TRUNC`, no temp + rename) | 1 (hard link written through) |
+| M8 `read_export` following links | 1 |
+| M9 candidate gate accepting a bool `q_index` | 1 |
+| M10 build-time `is_revision` check removed | 8 |
+| M11 continuity `is_revision` check removed | 4 |
+| M12 `..` allowed in `check_out_dir` | 1 (the descriptor walk then really escapes) |
+
+### Before and after, through the real CLI
+
+Both runs used the scratch trees: `ad12bc2`, and the fixed copy with sha256s identical to the lane's.
+
+- **R1.** A roster copy with `las-b19-002` `"revision": {"note": "internal"}`, run with `--roster … --units las-b19-002 --out preview/r1probe`.
+  - `ad12bc2` exported 1 unit / 2 questions with qid `p5-las-b19-002-r{'note': 'internal'}-LÄS-001`, exam_id `p5-las-b19-002-r{'note': 'internal'}`, and the nested object as the row's `revision` in the learner bank.
+  - The fix printed `REFUSED: roster rows with a missing or mistyped field: ['las-b19-002.revision']` and created no output directory.
+- **R2.** `preview/probe/_export-manifest.json` was a symlink to a file outside the tree containing `keep`.
+  - `ad12bc2` wrote the bank and then overwrote that outside file with the manifest.
+  - The fix printed `REFUSED: …/preview/probe/_export-manifest.json is a symlink; no export path below pipeline/synthetic/infold/preview/ may be one` and exited 1. The outside file still reads `keep`, and the probe directory holds only the link: the bank was not written either.
+
+### Byte identity
+
+| Output | sha256, `ad12bc2` | After the fix |
+|---|---|---|
+| `preview/sample/p5-bank-sample.json` (committed) | `08938291…6d28` | identical, not in `git diff` |
+| `preview/full/p5-bank-preview.json` (local, gitignored, 120 / 340 [PREVIEW]) | `c5938104…9ea2` | identical |
+| `preview/approved/p5-bank-preview.json` (local, gitignored, 39 / 121) | `33d9df3b…5a6f` | identical |
+
+- `--check` against the pre-fix local full and approved exports reported only `_export-manifest.json` as differing. Both were then rewritten through the new writer, and the bank hashes above are the rewritten files.
+- **Committed sample manifest.** Exactly 4 lines changed: the exporter sha256 `e92b6e37…1e73` → `b370f30c64e87088be1dea89644bda027c4abd94f451d85b9efe7c522210a97e` (the lane's `export_product.py`), plus `qid-format` and `bank-schema` in `gates`. It was regenerated with `export_product.py --sample`, which now goes through the atomic writer. File modes stay `0664`, and no temp file remains.
+- **Roster.** `build_roster.py --check` reports it current, with the same summary line as before. The `approval-roster.json` sha256 is unchanged (`9ccfe9a4…dc65`) and `ROSTER.md` is untouched. `build_roster.py` is now `7d44860d…d312`, which no artifact pins.
+- **Lint.** `lint_learner_output.py` over `preview/full`, `preview/approved` and `preview/sample` → `learner-output lint: clean — 3 file(s)`.
+
+### Notes for review
+
+- **Defense in depth.** A malformed revision is refused at roster load, and `make_qid` and `check_schema` would refuse it again. The tests pin each layer on its own (M1, M2, M4). Likewise, the rename makes a planted symlink harmless, but the export is still refused (M5).
+- **Symlinked prefix.** An output path spelled through a symlinked prefix that resolves to the preview root, such as an absolute path through a symlinked checkout, is now refused. The CLI defaults are built from the resolved `INFOLD_DIR`, and relative paths start from the physical cwd, so neither is affected.
+- **Untested race guard.** `O_NOFOLLOW` on the directory walk and on the temp file guards against a race with the lstat checks. Without a race it cannot be tested on its own; M6 removes it together with the lstat check.
+- **Not claimed:** anything beyond R1 and R2. There is no commit, push or PR update. Release readiness is as stated in the Handoff above.
+
+### Progress
+
+- 2026-10-07 [S:ci-pznzr|W:hpf-c30u|H:research|E:ad12bc277f270d2f212dadbe3591944506e22ab8] Confirmed the head and read the exporter, the roster builder and the tests. The review worklog is denied by the sandbox, so the repro classes come from the bead and the `hpf-iycl` note. Baseline: 1540 passed, 7 xfailed.
+- 2026-10-07 [S:ci-pznzr|W:hpf-c30u|H:red|E:pipeline/synthetic/infold/tests] Wrote the R1 and R2 tests first. Red against untouched `ad12bc2` code: 71 failed (final suite against an exact `ad12bc2` archive: 72 failed, 64 passed).
+- 2026-10-07 [S:ci-pznzr|W:hpf-c30u|H:green|E:pipeline/synthetic/infold] Implemented the revision bound, roster-row validation, strict `make_qid`, `check_schema`, the descriptor-walk writer and reader, and the atomic replace. Regenerated the sample manifest. Result: 1614 passed, 7 xfailed.
+- 2026-10-07 [S:ci-pznzr|W:hpf-c30u|H:verify|E:scratchpad] Ran 12 mutations (all caught), the CLI before/after for R1 and R2, byte identity of all three banks, `build_roster --check`, and the lint (clean).
+
+### Bead note
+
+Review fix round 1 for PR #375 (hpf-iycl HOLD), uncommitted on ad12bc2. R1: a revision must be an int from 1 to 99 (bool refused), checked in build_roster and where the exporter reads the roster, along with typed roster rows. The qid must match the documented pattern and fit 60 UTF-16 units when built. A final bank-schema gate stops nested or mistyped fields. R2: the preview root is resolved once and walked with O_NOFOLLOW; symlinked files or directories and `..` are refused before any write; each file is written to a temp file and renamed (no chmod, no write through a link), and `--check` reads the same way. 74 red-first tests (72 fail on ad12bc2). 1614 passed, 7 xfailed. All 12 mutations caught. All three banks are byte-identical; the sample manifest changed only in the exporter sha256 and 2 gate names. Evidence: `docs/worklog/hpf-535m.md`.
+LANE DONE: hpf-c30u

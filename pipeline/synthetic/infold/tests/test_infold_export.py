@@ -14,6 +14,7 @@ import itertools
 import json
 import os
 import re
+import stat
 import subprocess
 import sys
 
@@ -170,6 +171,7 @@ def test_duplicate_qids_are_refused(approved_export):
     lambda u: u["questions"][0]["options"][0].update(letter="E"),
     lambda u: u["questions"][0]["options"].pop(),                # three options
     lambda u: u["questions"][1].update(q_index=3),               # numbering gap
+    lambda u: u["questions"][0].update(q_index=True),            # a bool is not a q_index
     lambda u: u["questions"][0].update(key="E"),
     lambda u: u.update(section="ELF"),                           # disagrees with the roster
     lambda u: u.update(candidate_id="las-b19-003"),              # disagrees with the roster
@@ -352,6 +354,139 @@ def test_content_keys_fit_the_worker_whitelist(pending_export):
         export_product.export_bank(REPO_ROOT, ROSTER, release="pilot.1")
 
 
+# ------------------------------------------- revision and qid integrity
+
+# The malformed-revision classes of the hpf-iycl review (R1): zero, negative,
+# bool, float, string, null, array, nested object, past the bound of 99, huge.
+MALFORMED_REVISIONS = [0, -1, True, False, 1.0, 2.5, "1", "r1", None, [1], {"note": "internal"}, 100, 10 ** 30]
+
+
+def _edit_roster_row(roster_path, save_roster, edit) -> None:
+    roster = json.loads(roster_path.read_text(encoding="utf-8"))
+    edit(roster["units"][0])
+    save_roster(roster_path, roster)
+
+
+@pytest.mark.parametrize("revision", MALFORMED_REVISIONS, ids=repr)
+def test_a_malformed_roster_revision_is_refused(make_tree, save_roster, revision):
+    root, roster_path = make_tree(["las-b19-002"])
+    _edit_roster_row(roster_path, save_roster, lambda row: row.update(revision=revision))
+    with pytest.raises(ExportError, match="roster .*revision"):  # refused where the roster is read
+        export_product.export_bank(root, roster_path)
+
+
+def test_a_roster_row_without_a_revision_is_refused(make_tree, save_roster):
+    root, roster_path = make_tree(["las-b19-002"])
+    _edit_roster_row(roster_path, save_roster, lambda row: row.pop("revision"))
+    with pytest.raises(ExportError, match="roster .*revision"):
+        export_product.export_bank(root, roster_path)
+
+
+def test_a_revision_too_long_to_parse_is_refused(make_tree):
+    root, roster_path = make_tree(["las-b19-002"])
+    text = roster_path.read_text(encoding="utf-8")
+    roster_path.write_text(text.replace('"revision": 1,', '"revision": ' + "9" * 5000 + ",", 1), encoding="utf-8")
+    with pytest.raises(ExportError, match="roster is not readable JSON"):
+        export_product.export_bank(root, roster_path)
+
+
+@pytest.mark.parametrize("field,value", [
+    ("unit_id", {"id": "las-b19-002"}),
+    ("approval", ["approved"]),
+    ("retired", 0),
+    ("question_count", True),
+    ("sha256", None),
+])
+def test_a_mistyped_roster_field_is_refused(make_tree, save_roster, field, value):
+    root, roster_path = make_tree(["las-b19-002"])
+    _edit_roster_row(roster_path, save_roster, lambda row: row.update({field: value}))
+    with pytest.raises(ExportError, match="mistyped field"):
+        export_product.export_bank(root, roster_path)
+
+
+@pytest.mark.parametrize("unit_id,revision,section,number", [
+    ("las-b" + "9" * 40 + "-002", 1, "LÄS", 1),   # 63 characters: over the API's 60
+    ("las-b19-002", 100, "LÄS", 1),               # past the revision bound
+    ("las-b19-002", True, "LÄS", 1),
+    ("las-b19-002", "1", "LÄS", 1),
+    ("las-b19-002", 1, "LAS", 1),                 # not the app's section literal
+    ("las-b19-002", 1, "ELF", 1),                 # not the section of a las- unit
+    ("las-b19-002", 1, "LÄS", 0),
+    ("las-b19-002", 1, "LÄS", 1000),
+    ("las-b19-002", 1, "LÄS", True),
+    ("las-b19-002-r1", 1, "LÄS", 1),
+    ("LAS-b19-002", 1, "LÄS", 1),
+    ("las-b١٩-002", 1, "LÄS", 1),       # non-ASCII digits
+])
+def test_make_qid_refuses_anything_but_the_documented_shape(unit_id, revision, section, number):
+    with pytest.raises(ExportError, match="qid"):
+        export_product.make_qid(unit_id, revision, section, number)
+
+
+def test_the_qid_bounds_are_inclusive():
+    assert build_roster.MAX_REVISION == 99
+    assert export_product.make_qid("las-b19-002", 99, "LÄS", 999) == "p5-las-b19-002-r99-LÄS-999"
+    assert len(export_product.make_qid("las-b" + "9" * 37 + "-002", 1, "LÄS", 1)) == export_product.QID_MAX == 60
+
+
+def test_an_export_whose_qid_would_pass_60_characters_is_refused(make_tree, save_roster, rehash):
+    root, roster_path = make_tree(["las-b19-002"])
+    long_id = "las-b" + "9" * 40 + "-002"
+    path = root / B19
+    unit = json.loads(path.read_text(encoding="utf-8"))
+    unit["candidate_id"] = long_id
+    path.write_text(json.dumps(unit, ensure_ascii=False, indent=2), encoding="utf-8")
+    _edit_roster_row(roster_path, save_roster, lambda row: row.update(unit_id=long_id))
+    rehash(root, roster_path, long_id)
+    with pytest.raises(ExportError, match="60"):
+        export_product.export_bank(root, roster_path)
+
+
+# ------------------------------------------------------------ bank schema
+
+@pytest.mark.parametrize("mutate", [
+    lambda bank: bank["questions"][0].update(revision={"note": "internal"}),
+    lambda bank: bank["questions"][0].update(revision=True),
+    lambda bank: bank["questions"][0].update(number=True),
+    lambda bank: bank["questions"][0].update(number="1"),
+    lambda bank: bank["questions"][0].update(title=[bank["questions"][0]["title"]]),
+    lambda bank: bank["questions"][0].update(unit_id={"id": bank["questions"][0]["unit_id"]}),
+    lambda bank: bank["questions"][0]["options"][0].update(text={"text": "x"}),
+    lambda bank: bank["questions"][0].update(provpass={}),
+    lambda bank: bank["questions"][0].update(answer=["A"]),
+    lambda bank: bank["questions"][0].update(qid=bank["questions"][0]["qid"] + "-x"),
+    lambda bank: bank["questions"][0].update(exam_id=bank["questions"][0]["exam_id"] + "0"),
+    lambda bank: bank.update(preview="false"),
+    lambda bank: bank.update(stamp=["PREVIEW"]),
+    lambda bank: bank.update(exclusion_pairs=[["las-b18-001", {"unit": "las-b19-001"}]]),
+    lambda bank: bank.update(exclusion_pairs=[["las-b18-001"]]),
+    lambda bank: bank.update(questions={"0": bank["questions"][0]}),
+])
+def test_the_bank_schema_refuses_nested_or_mistyped_fields(approved_export, mutate):
+    bank = copy.deepcopy(_bank(approved_export))
+    mutate(bank)
+    with pytest.raises(ExportError, match="bank schema"):
+        export_product.check_schema(bank)
+
+
+def test_every_export_conforms_to_the_bank_schema(approved_export, pending_export):
+    for files in (approved_export, pending_export):
+        export_product.check_schema(_bank(files))
+
+
+def test_the_bank_schema_is_checked_on_every_export(monkeypatch):
+    build = export_product.build_rows
+
+    def nested(entry, unit, release):
+        rows = build(entry, unit, release)
+        rows[0]["revision"] = {"note": "internal"}  # no denylisted key: only the schema can catch it
+        return rows
+
+    monkeypatch.setattr(export_product, "build_rows", nested)
+    with pytest.raises(ExportError, match="bank schema"):
+        export_product.export_bank(REPO_ROOT, ROSTER, units=["las-b19-002"])
+
+
 # ---------------------------------------------------------- determinism
 
 def test_reruns_are_byte_identical():
@@ -455,3 +590,93 @@ def test_the_committed_sample_is_current_and_balanced():
     assert {k: len(v) for k, v in sections.items()} == {"LÄS": 2, "ELF": 2}
     assert any(row["prompt"] == "Gap (1)" for row in rows)
     assert bank["preview"] is False
+
+
+# ----------------------------------------------------- output confinement
+
+EXPORT = {"p5-bank-preview.json": b'{"bank": true}\n', export_product.MANIFEST_NAME: b'{"manifest": true}\n'}
+
+
+@pytest.fixture
+def preview_root(tmp_path, monkeypatch):
+    """A throwaway stand-in for pipeline/synthetic/infold/preview."""
+    root = tmp_path / "preview"
+    root.mkdir()
+    monkeypatch.setattr(export_product, "PREVIEW_DIR", root)
+    return root
+
+
+def _names(directory) -> list[str]:
+    return sorted(p.name for p in directory.iterdir())
+
+
+def test_an_export_is_written_as_fresh_regular_files(preview_root, tmp_path):
+    out = preview_root / "full" / "nested"
+    export_product.write_export(EXPORT, out)  # creates the directories
+    export_product.write_export(EXPORT, out)  # replaces its own files
+    assert {p.name: p.read_bytes() for p in out.iterdir()} == EXPORT  # no temporary file left behind
+    control = tmp_path / "control"
+    control.write_bytes(b"")
+    for path in out.iterdir():
+        assert stat.S_ISREG(path.lstat().st_mode)
+        assert stat.S_IMODE(path.lstat().st_mode) == stat.S_IMODE(control.lstat().st_mode)  # umask only
+
+
+def test_a_hard_linked_output_file_is_replaced_not_written_through(preview_root, tmp_path):
+    out = preview_root / "full"
+    out.mkdir()
+    outside = tmp_path / "outside.json"
+    outside.write_bytes(b"keep")
+    os.link(outside, out / "p5-bank-preview.json")
+    export_product.write_export(EXPORT, out)
+    assert outside.read_bytes() == b"keep"
+    assert (out / "p5-bank-preview.json").read_bytes() == EXPORT["p5-bank-preview.json"]
+
+
+@pytest.mark.parametrize("target", ["outside", "dangling", "inside"])
+def test_a_symlinked_output_file_is_refused(preview_root, tmp_path, target):
+    out = preview_root / "full"
+    out.mkdir()
+    victim = {"outside": tmp_path / "outside.json", "dangling": tmp_path / "absent.json",
+              "inside": preview_root / "sample" / "p5-bank-sample.json"}[target]
+    if target != "dangling":
+        victim.parent.mkdir(exist_ok=True)
+        victim.write_bytes(b"keep")
+    # The second file of the export: the first must not be written either.
+    (out / export_product.MANIFEST_NAME).symlink_to(victim)
+    with pytest.raises(ExportError, match="is a symlink"):
+        export_product.write_export(EXPORT, out)
+    if target == "dangling":
+        assert not victim.exists()
+    else:
+        assert victim.read_bytes() == b"keep"
+    assert _names(out) == [export_product.MANIFEST_NAME]
+
+
+@pytest.mark.parametrize("target", ["outside", "inside"])
+def test_a_symlinked_parent_directory_is_refused(preview_root, tmp_path, target):
+    real = tmp_path / "elsewhere" if target == "outside" else preview_root / "real"
+    real.mkdir()
+    (preview_root / "full").symlink_to(real, target_is_directory=True)
+    for out in (preview_root / "full", preview_root / "full" / "nested"):
+        with pytest.raises(ExportError, match="is a symlink"):
+            export_product.write_export(EXPORT, out)
+    assert _names(real) == []
+
+
+def test_a_dot_dot_output_path_is_refused(preview_root, tmp_path):
+    with pytest.raises(ExportError, match="inside"):
+        export_product.write_export(EXPORT, preview_root / "full" / ".." / ".." / "escape")
+    assert not (tmp_path / "escape").exists()
+
+
+def test_check_mode_never_reads_through_a_symlink(preview_root, tmp_path, monkeypatch, capsys):
+    sample = preview_root / "sample"
+    sample.mkdir()
+    for path in (build_roster.INFOLD_DIR / "preview" / "sample").iterdir():
+        twin = tmp_path / path.name  # identical bytes, outside the preview root
+        twin.write_bytes(path.read_bytes())
+        (sample / path.name).symlink_to(twin)
+    monkeypatch.setattr(export_product, "SAMPLE_DIR", sample)
+    assert export_product.main(["--sample", "--check"]) == 1
+    assert "is a symlink" in capsys.readouterr().err

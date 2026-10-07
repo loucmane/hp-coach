@@ -10,7 +10,9 @@ pipeline/synthetic/infold/preview/. PR 1 ships nothing to the app, R2,
 app/public or data/explanations.
 
 Every exported question row carries exactly ROW_FIELDS:
-  qid               p5-<unit>-r<revision>-<SECTION>-<nnn>, nnn = q_index
+  qid               p5-<unit>-r<revision>-<SECTION>-<nnn>, nnn = q_index in
+                    three digits; built only if it matches QID and fits the
+                    60 UTF-16 units of worker/src/routes/attempts.ts:40
   exam_id           p5-<unit>-r<revision>: a synthetic namespace, never an
                     authentic sitting
   provpass          null
@@ -21,7 +23,8 @@ Every exported question row carries exactly ROW_FIELDS:
   prompt, options   as authored, options in their A–D order
   answer            the key
   source            "synthetic"
-  unit_id, revision from the roster
+  unit_id, revision from the roster; a revision is a plain integer from 1
+                    to build_roster.MAX_REVISION (99)
   explanation_shard explanations/p5-<release>.json, the Layer 2 shard paired
                     with this release (PR 2 / PR 5)
 and nothing else: no generator_meta, rationale, family or question-family map,
@@ -34,6 +37,9 @@ worker/src/routes/fit.ts:55 only match the literal that all 27 authentic exam
 files use.
 
 The export refuses, writing nothing, on:
+  - a roster row with a missing or mistyped field, or a revision that is not
+    an integer from 1 to 99 (0, a negative, a bool, a float, a string or
+    nested data);
   - candidate bytes that no longer match the roster's sha256 (or a content
     digest that disagrees with it);
   - a retired id: RETIRED.json is read here and wins over the roster, and a
@@ -43,12 +49,23 @@ The export refuses, writing nothing, on:
   - candidate fields outside the authoring contract (GENERATION.md "Output
     format"; options exactly A–D), or a cloze unit whose "Gap (n)" questions
     and ___(n)___ markers disagree;
+  - a qid outside the documented pattern or over 60 characters;
   - a duplicate qid, a bank or row field missing or extra, a denylisted or
     _-prefixed key anywhere, or rationale text inside any bank string;
   - both members of an exclusion pair inside a --single-session export;
   - a default-mode learner-output lint finding (gates/scripts/
     lint_learner_output.py) in an exported title, passage, prompt or option;
+  - a bank that is not exactly BANK_SHAPE, checked last over the whole
+    output: no object or array where a scalar belongs, no bool for a number;
   - output that differs between two builds from the same inputs.
+
+Writing resolves the preview root once and reaches the output directory from
+it one component at a time with O_NOFOLLOW. A path spelled outside the root
+or through '..', a symlink at any level below the root, and an output file
+that is a symlink or not a regular file are all refused before anything is
+written. Each file then goes to a fresh temporary file beside it and is
+renamed over the old one: nothing is written through a link, and no mode is
+changed. --check reads the same way.
 
 Exclusion pairs: a bank may hold both members of a pair; the session pickers
 keep them apart (design §A, PR 4), and the bank lists the complete pairs it
@@ -62,15 +79,19 @@ must not hold both members of any pair.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import importlib.util
 import json
+import os
 import re
+import secrets
+import stat
 import sys
 from collections import Counter
 from pathlib import Path
 
-from build_roster import (APPROVED, FORMAT as ROSTER_FORMAT, INFOLD_DIR, PENDING, REPO_ROOT, RETIRED,
-                          RETIRED_REL, ROSTER_PATH, content_digest, load_retired, sha256_bytes)
+from build_roster import (APPROVED, FORMAT as ROSTER_FORMAT, INFOLD_DIR, MAX_REVISION, PENDING, REPO_ROOT, RETIRED,
+                          RETIRED_REL, ROSTER_PATH, content_digest, is_revision, load_retired, sha256_bytes)
 
 EXPORTER_REL = "pipeline/synthetic/infold/export_product.py"
 LINT_REL = "pipeline/synthetic/gates/scripts/lint_learner_output.py"
@@ -85,10 +106,19 @@ BANK_FORMAT = "p5-bank-v1"
 MANIFEST_FORMAT = "p5-export-manifest-v1"
 PREVIEW_STAMP = "PREVIEW: includes units pending owner ratification; not releasable"
 
-ROW_FIELDS = ("qid", "exam_id", "provpass", "section", "number", "title", "context", "prompt", "options",
-              "answer", "source", "unit_id", "revision", "explanation_shard")
-OPTION_FIELDS = ("letter", "text")
-BANK_FIELDS = ("format", "release", "preview", "stamp", "source", "exclusion_pairs", "questions")
+# The bank's documented shape: an object is its exact fields in order, [x] an
+# array of x, a scalar its exact JSON type(s): a bool is never a number, and no
+# field holds an object or array where a scalar belongs.
+OPTION_SHAPE = {"letter": str, "text": str}
+ROW_SHAPE = {"qid": str, "exam_id": str, "provpass": type(None), "section": str, "number": int, "title": str,
+             "context": str, "prompt": str, "options": [OPTION_SHAPE], "answer": str, "source": str,
+             "unit_id": str, "revision": int, "explanation_shard": str}
+BANK_SHAPE = {"format": str, "release": str, "preview": bool, "stamp": (str, type(None)), "source": str,
+              "exclusion_pairs": [[str]], "questions": [ROW_SHAPE]}
+ROW_FIELDS, OPTION_FIELDS, BANK_FIELDS = tuple(ROW_SHAPE), tuple(OPTION_SHAPE), tuple(BANK_SHAPE)
+# Roster row fields the exporter reads, with their exact JSON types.
+ROSTER_ROW = {"unit_id": str, "section": str, "source": str, "sha256": str, "content_sha256": str,
+              "question_count": int, "revision": int, "approval": str, "retired": bool}
 # Candidate and roster fields that must never appear in a bank, at any depth;
 # any _-prefixed key is refused as well (no hidden _meta in shipped JSON).
 DENYLIST = frozenset({
@@ -103,10 +133,16 @@ LETTERS = ("A", "B", "C", "D")
 GAP_PROMPT = re.compile(r"Gap \((\d+)\)")
 GAP_MARKER = re.compile(r"___\((\d+)\)___")
 RELEASE = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
+# The documented qid: a build_roster unit id, r<revision> without a leading
+# zero, the section literal of the unit's prefix and q_index in three digits,
+# ASCII digits only. QID_MAX is the questionId limit in UTF-16 code units
+# (worker/src/routes/attempts.ts:40).
+QID = re.compile(r"p5-(?:las-b[0-9]+-[0-9]{3}-r[1-9][0-9]*-LÄS|elf-b[0-9]+-[0-9]{3}-r[1-9][0-9]*-ELF)-[0-9]{3}")
+QID_MAX = 60
 LEAK_MIN_CHARS = 40
 GATES = ("roster-format", "retired-registry", "approval", "candidate-sha256", "candidate-fields",
-         "cloze-numbering", "duplicate-qid", "bank-whitelist", "internal-metadata", "exclusion-pairs",
-         "learner-lint", "deterministic-rerun")
+         "cloze-numbering", "qid-format", "duplicate-qid", "bank-whitelist", "internal-metadata", "exclusion-pairs",
+         "learner-lint", "bank-schema", "deterministic-rerun")
 
 
 def _load_lint():
@@ -130,7 +166,16 @@ def exam_id(unit_id: str, revision: int) -> str:
 
 
 def make_qid(unit_id: str, revision: int, section: str, number: int) -> str:
-    return f"{exam_id(unit_id, revision)}-{section}-{number:03d}"
+    """The documented qid, or ExportError: never a malformed or over-long one."""
+    if not is_revision(revision) or type(number) is not int or not 1 <= number <= 999:
+        raise ExportError(f"{unit_id}: no qid for revision {revision!r}, number {number!r}: a revision is an "
+                          f"integer from 1 to {MAX_REVISION}, a number from 1 to 999")
+    qid = f"{exam_id(unit_id, revision)}-{section}-{number:03d}"
+    if not QID.fullmatch(qid):
+        raise ExportError(f"qid {qid!r} does not match p5-<unit>-r<revision>-<LÄS|ELF>-<nnn>")
+    if len(qid.encode("utf-16-le")) // 2 > QID_MAX:
+        raise ExportError(f"qid {qid!r} is longer than the API's {QID_MAX} characters")
+    return qid
 
 
 def render_json(obj) -> bytes:
@@ -138,10 +183,24 @@ def render_json(obj) -> bytes:
 
 
 def _load_roster(raw: bytes) -> dict:
-    roster = json.loads(raw)
-    if roster.get("format") != ROSTER_FORMAT:
-        raise ExportError(f"roster format {roster.get('format')!r} is not {ROSTER_FORMAT!r}")
-    dups = sorted(uid for uid, n in Counter(u["unit_id"] for u in roster["units"]).items() if n > 1)
+    try:
+        roster = json.loads(raw)
+    except ValueError as exc:  # malformed JSON, or an integer past Python's digit limit
+        raise ExportError(f"roster is not readable JSON: {exc}") from None
+    form = roster.get("format") if type(roster) is dict else None
+    if form != ROSTER_FORMAT:
+        raise ExportError(f"roster format {form!r} is not {ROSTER_FORMAT!r}")
+    units = roster.get("units")
+    if type(units) is not list or any(type(u) is not dict for u in units):
+        raise ExportError("roster units must be an array of objects")
+    mistyped = [f"{u.get('unit_id')}.{field}" for u in units for field, kind in ROSTER_ROW.items()
+                if type(u.get(field)) is not kind]
+    if mistyped:
+        raise ExportError(f"roster rows with a missing or mistyped field: {mistyped}")
+    revisions = [f"{u['unit_id']} r{u['revision']}" for u in units if not is_revision(u["revision"])]
+    if revisions:
+        raise ExportError(f"roster revisions outside 1 to {MAX_REVISION}: {revisions}")
+    dups = sorted(uid for uid, n in Counter(u["unit_id"] for u in units).items() if n > 1)
     if dups:
         raise ExportError(f"duplicate roster rows: {dups}")
     return roster
@@ -213,7 +272,7 @@ def _check_candidate_fields(uid: str, unit: dict, entry: dict) -> None:
             got = sorted(q) if isinstance(q, dict) else type(q).__name__
             problems.append(f"{where}: fields {got}, expected {sorted(QUESTION_FIELDS)}")
             continue
-        if q["q_index"] != n:
+        if type(q["q_index"]) is not int or q["q_index"] != n:
             problems.append(f"{where}: q_index {q['q_index']!r}")
         if not isinstance(q["prompt"], str) or not q["prompt"].strip():
             problems.append(f"{where}: empty prompt")
@@ -339,6 +398,50 @@ def check_bank(bank: dict, candidates: dict[str, dict]) -> None:
         raise ExportError("bank contract: " + "; ".join(problems))
 
 
+def _shape_problems(value, shape, where: str) -> list[str]:
+    if isinstance(shape, dict):
+        if type(value) is not dict or list(value) != list(shape):
+            return [f"{where} is not an object with fields {list(shape)}"]
+        return [p for key, inner in shape.items() for p in _shape_problems(value[key], inner, f"{where}.{key}")]
+    if isinstance(shape, list):
+        if type(value) is not list:
+            return [f"{where} is not an array"]
+        return [p for n, item in enumerate(value) for p in _shape_problems(item, shape[0], f"{where}[{n}]")]
+    kinds = shape if isinstance(shape, tuple) else (shape,)
+    if type(value) not in kinds:
+        return [f"{where} is {type(value).__name__}, not {' or '.join(k.__name__ for k in kinds)}"]
+    return []
+
+
+def check_schema(bank) -> None:
+    """The final whole-output check: the bank is exactly BANK_SHAPE, and each
+    row's qid and exam_id are the documented ones for its unit, revision,
+    section and number."""
+    problems = _shape_problems(bank, BANK_SHAPE, "bank")
+    if not problems:
+        if bank["format"] != BANK_FORMAT or bank["source"] != "synthetic" or not RELEASE.fullmatch(bank["release"]):
+            problems.append("bank format, source or release")
+        if bank["stamp"] != (PREVIEW_STAMP if bank["preview"] else None):
+            problems.append("bank stamp disagrees with preview")
+        problems += [f"exclusion pair {pair} is not two unit ids" for pair in bank["exclusion_pairs"] if len(pair) != 2]
+        shard = f"explanations/p5-{bank['release']}.json"
+        for n, row in enumerate(bank["questions"]):
+            where = f"bank.questions[{n}]"
+            try:
+                qid = make_qid(row["unit_id"], row["revision"], row["section"], row["number"])
+            except ExportError as exc:
+                problems.append(f"{where}: {exc}")
+                continue
+            if row["qid"] != qid or row["exam_id"] != exam_id(row["unit_id"], row["revision"]):
+                problems.append(f"{where}: qid {row['qid']!r} / exam_id {row['exam_id']!r}, expected {qid!r}")
+            if row["answer"] not in LETTERS or [o["letter"] for o in row["options"]] != list(LETTERS):
+                problems.append(f"{where}: options and answer must use the letters A–D")
+            if row["source"] != "synthetic" or row["explanation_shard"] != shard:
+                problems.append(f"{where}: source or explanation_shard")
+    if problems:
+        raise ExportError(f"bank schema: {len(problems)} problem(s): " + "; ".join(problems[:10]))
+
+
 def check_exclusion_pairs(roster: dict, unit_ids, single_session: bool) -> list[list[str]]:
     held = sorted(list(p["units"]) for p in roster["exclusion_pairs"] if set(p["units"]) <= set(unit_ids))
     if single_session and held:
@@ -391,6 +494,7 @@ def _build(root: Path, roster_path: Path, *, release: str, include_pending: bool
     if findings:
         listed = "; ".join(f"{f['rule']} {f['unit_id']} {f['field']}: …{f['excerpt']}…" for f in findings)
         raise ExportError(f"learner-output lint: {len(findings)} finding(s): {listed}")
+    check_schema(bank)
     bank_name = f"p5-bank-{release}.json"
     bank_bytes = render_json(bank)
     manifest = {
@@ -428,19 +532,116 @@ def export_bank(root: Path, roster_path: Path, *, release: str = "preview", incl
     return first
 
 
-def check_out_dir(out_dir: Path) -> None:
-    if PREVIEW_DIR.resolve() not in out_dir.resolve().parents:
+def check_out_dir(out_dir: Path) -> tuple[Path, tuple[str, ...]]:
+    """The preview root, resolved once, and out_dir's components below it:
+    out_dir must be spelled inside the root, without '..'."""
+    root = PREVIEW_DIR.resolve()
+    try:
+        parts = out_dir.absolute().relative_to(root).parts
+    except ValueError:
+        parts = ()
+    if not parts or ".." in parts:
         raise ExportError(f"output must be a directory inside {PREVIEW_REL}/, got {out_dir}")
+    return root, parts
+
+
+def _lstat(dir_fd: int, name: str):
+    try:
+        return os.stat(name, dir_fd=dir_fd, follow_symlinks=False)
+    except FileNotFoundError:
+        return None
+
+
+def _require(path: Path, st, is_kind, kind: str) -> None:
+    if stat.S_ISLNK(st.st_mode):
+        raise ExportError(f"{path} is a symlink; no export path below {PREVIEW_REL}/ may be one")
+    if not is_kind(st.st_mode):
+        raise ExportError(f"{path} is not a {kind}")
+
+
+def _open_out_dir(out_dir: Path, *, create: bool) -> int | None:
+    """A descriptor for out_dir, reached from the preview root one component
+    at a time with O_NOFOLLOW; missing directories are created when asked,
+    otherwise None is returned."""
+    root, parts = check_out_dir(out_dir)
+    flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+    try:
+        fd = os.open(root, flags)
+    except OSError as exc:
+        raise ExportError(f"cannot open the preview root {root}: {exc.strerror}") from None
+    try:
+        path = root
+        for part in parts:
+            path /= part
+            st = _lstat(fd, part)
+            if st is None and not create:
+                os.close(fd)
+                return None
+            if st is None:
+                os.mkdir(part, dir_fd=fd)
+            else:
+                _require(path, st, stat.S_ISDIR, "directory")
+            child = os.open(part, flags, dir_fd=fd)  # O_NOFOLLOW: a link swapped in since the lstat fails here
+            os.close(fd)
+            fd = child
+    except BaseException:
+        os.close(fd)
+        raise
+    return fd
+
+
+def _replace(dir_fd: int, name: str, data: bytes) -> None:
+    """Write data to a fresh temporary file beside name, then rename it over
+    name: the old entry, a hard link included, is replaced, never written to."""
+    tmp = f".{name}.{secrets.token_hex(8)}.tmp"
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o666, dir_fd=dir_fd)
+    try:
+        with open(fd, "wb") as handle:
+            handle.write(data)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(tmp, name, src_dir_fd=dir_fd, dst_dir_fd=dir_fd)
+    except BaseException:
+        with contextlib.suppress(OSError):
+            os.unlink(tmp, dir_fd=dir_fd)
+        raise
 
 
 def write_export(files: dict[str, bytes], out_dir: Path) -> None:
-    check_out_dir(out_dir)
-    out_dir.mkdir(parents=True, exist_ok=True)
-    stray = sorted(p.name for p in out_dir.iterdir() if p.name not in files)
-    if stray:
-        raise ExportError(f"{out_dir} holds other files {stray}; export into an empty or dedicated directory")
-    for name, data in files.items():
-        (out_dir / name).write_bytes(data)
+    """Write files into out_dir below the preview root, checking every path
+    before anything is written."""
+    if any(name in ("", ".", "..") or "/" in name for name in files):
+        raise ExportError(f"export file names must be plain names, got {sorted(files)}")
+    fd = _open_out_dir(out_dir, create=True)
+    try:
+        stray = sorted(set(os.listdir(fd)) - set(files))
+        if stray:
+            raise ExportError(f"{out_dir} holds other files {stray}; export into an empty or dedicated directory")
+        for name in files:
+            st = _lstat(fd, name)
+            if st is not None:
+                _require(out_dir / name, st, stat.S_ISREG, "regular file")
+        for name, data in files.items():
+            _replace(fd, name, data)
+    finally:
+        os.close(fd)
+
+
+def read_export(out_dir: Path) -> dict[str, bytes]:
+    """The files in out_dir, read without following any symlink; {} when
+    out_dir does not exist yet."""
+    fd = _open_out_dir(out_dir, create=False)
+    if fd is None:
+        return {}
+    try:
+        found = {}
+        for name in sorted(os.listdir(fd)):
+            _require(out_dir / name, os.stat(name, dir_fd=fd, follow_symlinks=False), stat.S_ISREG, "regular file")
+            with open(os.open(name, os.O_RDONLY | os.O_NOFOLLOW, dir_fd=fd), "rb") as handle:
+                found[name] = handle.read()
+        return found
+    finally:
+        os.close(fd)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -470,8 +671,9 @@ def main(argv: list[str] | None = None) -> int:
         files = export_bank(REPO_ROOT, args.roster, release=release, include_pending=args.include_pending,
                             units=units, single_session=args.single_session)
         if args.check:
-            stale = [n for n, data in files.items() if not (out / n).is_file() or (out / n).read_bytes() != data]
-            stray = sorted(p.name for p in out.iterdir() if p.name not in files) if out.is_dir() else []
+            current = read_export(out)
+            stale = [n for n, data in files.items() if current.get(n) != data]
+            stray = sorted(set(current) - set(files))
             if stale or stray:
                 print(f"STALE {_rel(out, REPO_ROOT)}: differs in {stale}, unexpected {stray}; rerun without --check")
                 return 1

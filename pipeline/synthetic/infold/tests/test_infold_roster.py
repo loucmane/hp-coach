@@ -190,3 +190,17 @@ def test_a_bumped_revision_does_not_inherit_the_old_approval():
     unit = next(u for u in roster["units"] if u["unit_id"] == "las-b19-002")
     assert unit["revision"] == 2
     assert unit["approval"] == "pending-owner-ratification"
+
+
+@pytest.mark.parametrize("revision", [0, -1, True, 1.0, "2", None, {"r": 2}, 100], ids=repr)
+def test_a_malformed_revision_fails_the_build(revision):
+    with pytest.raises(build_roster.RosterError, match="revision"):
+        build_roster.build_roster(revisions={"las-b19-002": revision})
+
+
+@pytest.mark.parametrize("revision", [True, 0, "1", {"r": 1}], ids=repr)
+def test_revision_continuity_refuses_a_malformed_revision(committed_roster, revision):
+    previous = copy.deepcopy(committed_roster)
+    previous["units"][5]["revision"] = revision
+    with pytest.raises(build_roster.RosterError, match="revision"):
+        build_roster.check_revision_continuity(previous, committed_roster)

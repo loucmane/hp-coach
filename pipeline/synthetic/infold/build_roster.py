@@ -27,7 +27,10 @@ a moved line updates the roster, a vanished or ambiguous one fails the build.
 Revisions: every unit is r1. A unit whose student-facing content (title,
 passage, prompts, options, keys) changes needs a higher revision in REVISIONS
 — the build refuses to reuse a revision for different content — and a bumped
-revision stays pending until a ruling is recorded for it. Stdlib only.
+revision stays pending until a ruling is recorded for it. A revision is a
+plain integer from 1 to MAX_REVISION (99), the r<revision> segment of every
+qid: this build and the exporter refuse anything else (0, a negative, a bool,
+a float, a string, nested data). Stdlib only.
 """
 from __future__ import annotations
 
@@ -85,6 +88,7 @@ EXPECTED_TOTALS = {"retained": (120, 340), "LÄS": (52, 136), "ELF": (68, 204), 
 # Units whose student-facing content changed after their evidence was
 # recorded: unit_id -> revision. Empty — every unit is revision 1.
 REVISIONS: dict[str, int] = {}
+MAX_REVISION = 99
 
 
 def _b(batch: int, name: str) -> str:
@@ -170,6 +174,11 @@ class RosterError(Exception):
 
 def sha256_bytes(raw: bytes) -> str:
     return hashlib.sha256(raw).hexdigest()
+
+
+def is_revision(value) -> bool:
+    """A plain int from 1 to MAX_REVISION; a bool is not a revision."""
+    return type(value) is int and 1 <= value <= MAX_REVISION
 
 
 def content_digest(unit: dict) -> str:
@@ -300,6 +309,8 @@ def build_roster(root: Path = REPO_ROOT, *, expected_census: dict = EXPECTED_CEN
             if unit.get("section") != SECTION_OF_PREFIX[m.group(1)]:
                 raise RosterError(f"{uid}: section {unit.get('section')!r} does not match its id")
             revision = revisions.get(uid, 1)
+            if not is_revision(revision):
+                raise RosterError(f"{uid}: revision {revision!r} is not an integer from 1 to {MAX_REVISION}")
             approval, basis, evidence = _approval(uid, batch, revision, registry, anchors)
             units.append({
                 "unit_id": uid, "batch": batch, "section": unit["section"], "title": unit["title"],
@@ -346,15 +357,17 @@ def build_roster(root: Path = REPO_ROOT, *, expected_census: dict = EXPECTED_CEN
 
 def check_revision_continuity(previous: dict, roster: dict) -> None:
     """Refuse to reuse a revision for different student-facing content, and
-    refuse a revision that goes backwards."""
+    refuse a revision that goes backwards or is not a revision at all."""
     old = {u["unit_id"]: u for u in previous.get("units", [])}
     problems = []
     for unit in roster["units"]:
         before = old.get(unit["unit_id"])
         if before is None:
             continue
-        uid, rev, was = unit["unit_id"], unit["revision"], before["revision"]
-        if rev < was:
+        uid, rev, was = unit["unit_id"], unit.get("revision"), before.get("revision")
+        if not (is_revision(rev) and is_revision(was)):
+            problems.append(f"{uid}: revision {was!r} -> {rev!r} is not an integer from 1 to {MAX_REVISION}")
+        elif rev < was:
             problems.append(f"{uid}: revision went back from r{was} to r{rev}")
         elif rev == was and unit["content_sha256"] != before["content_sha256"]:
             problems.append(f"{uid}: student-facing content changed under r{rev}; bump REVISIONS[{uid!r}] "
