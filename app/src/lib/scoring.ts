@@ -22,7 +22,9 @@ export const QUANT_SECTIONS: ReadonlyArray<Section> = ['XYZ', 'KVA', 'NOG', 'DTK
  *  tie-break, never as a ranking signal on its own. */
 const SECTION_ORDER: ReadonlyArray<Section> = [...VERBAL_SECTIONS, ...QUANT_SECTIONS]
 
-/** Raw per-section aggregates from the worker. */
+/** Raw per-section aggregates from the worker. Every field but
+ *  `attemptsToday` reads authentic answers only, so P5 practice never moves
+ *  a section score (P5 infold PR 3, docs/p5-infold-design.md §E). */
 export type SectionStats = {
   attempts7d: number
   correct7d: number
@@ -34,7 +36,8 @@ export type SectionStats = {
   lastAttemptedAt: number | null
   /** Same-UTC-day monotonic count — grows only within the current UTC
    *  day, never drops the way the rolling `attempts7d` window can.
-   *  Backs the section-drill completion gate in useDailyPlan. */
+   *  Backs the section-drill completion gate in useDailyPlan. Practice
+   *  effort: counts every answer, P5 practice included. */
   attemptsToday: number
 }
 

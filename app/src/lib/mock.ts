@@ -20,6 +20,8 @@
 import type { ExposureMap, MockBreakdown, MockHalf } from '@/api/hooks/useMockResults'
 import type { Provpass, Question, Section } from '@/data/questions'
 
+import { isP5Qid } from './provenance'
+
 export type PassOption = {
   examId: string
   provpass: Provpass
@@ -290,14 +292,22 @@ export type MockSummary = {
  * counted as answered. `correct` compares the sheet's letter against
  * `q.answer`. `missedQids` is answered-and-wrong only (blanks are
  * excluded — you can't "miss" a question you never touched).
+ *
+ * Authentic questions only (P5 infold PR 3, docs/p5-infold-design.md §E):
+ * a Provpass result and the normering read from it never take a P5
+ * practice question — one that reached the plan counts as nothing, not
+ * even as presented.
  */
 export function computeMockSummary(plan: Question[], sheet: MockSheetLike): MockSummary {
   const perSection: MockBreakdown['perSection'] = {}
+  let presented = 0
   let answered = 0
   let correct = 0
   const missedQids: string[] = []
 
   for (const q of plan) {
+    if (isP5Qid(q.qid)) continue
+    presented += 1
     const entry = sheet.get(q.qid)
     const timeMs = entry?.timeMs ?? 0
     const bucket = perSection[q.section] ?? { presented: 0, correct: 0, timeMs: 0 }
@@ -318,7 +328,7 @@ export function computeMockSummary(plan: Question[], sheet: MockSheetLike): Mock
   }
 
   return {
-    presented: plan.length,
+    presented,
     answered,
     correct,
     breakdown: { perSection, missedQids, version: 1 },

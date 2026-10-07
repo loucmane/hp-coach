@@ -19,6 +19,7 @@ import { z } from 'zod'
 import { getDb } from '../db/client'
 import { itemStats } from '../db/schema'
 import { runFit } from '../lib/fit'
+import { isAuthenticQid } from '../lib/provenance'
 import { SECTIONS } from '../lib/section'
 import type { Env, Vars } from '../types'
 
@@ -54,8 +55,13 @@ export const itemStatsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       .from(itemStats)
       .where(and(gte(itemStats.attempts, 1), sql`${itemStats.questionId} LIKE ${`%-${section}-%`}`))
       .limit(ITEM_STATS_LIMIT)
+    // Authentic items only (P5 infold PR 3): the fit rates nothing else,
+    // and a P5 qid also matches the LIKE above (`p5-…-LÄS-001`), so any row
+    // written before provenance existed is filtered out here, fail closed.
     const difficulties: Record<string, number> = {}
-    for (const r of rows) difficulties[r.questionId] = r.difficulty
+    for (const r of rows) {
+      if (isAuthenticQid(r.questionId)) difficulties[r.questionId] = r.difficulty
+    }
     return c.json({ difficulties })
   })
 

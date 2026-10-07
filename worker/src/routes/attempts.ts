@@ -21,6 +21,12 @@
 // framework_id map lives in the Layer 2 explanation corpus, which is R2
 // content the SPA loads and the API only proxies. Untagged attempts are
 // still recorded in full — they just don't move any aggregate.
+//
+// PROVENANCE is the server's call, never the client's (P5 infold PR 3,
+// docs/p5-infold-design.md §E): `source` is classified from the qid alone
+// (lib/provenance.ts) and stored on the row. Only an authentic answer folds
+// into mastery; a synthetic (P5 practice) or unknown one is recorded in
+// full and moves nothing.
 
 import { zValidator } from '@hono/zod-validator'
 import { and, eq, sql } from 'drizzle-orm'
@@ -31,6 +37,7 @@ import { getDb } from '../db/client'
 import { attempts, sessions, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
 import { applyMasteryOutcome } from '../lib/progress'
+import { classifyAttemptSource } from '../lib/provenance'
 import { extractSection } from '../lib/section'
 import type { Env, Vars } from '../types'
 
@@ -50,6 +57,12 @@ const AttemptBody = z
     // field /api/mistakes takes. Absent/empty means "untagged": the
     // attempt lands, the mastery aggregate simply isn't moved.
     layer1Ids: z.array(z.string().min(1).max(40)).max(8).optional(),
+    // Provenance-looking fields a client may send (e.g. a question row's
+    // `source: "synthetic"` spread into the body). Accepted so the answer
+    // still lands, and never read: the stored source comes from the qid.
+    source: z.unknown().optional(),
+    provenance: z.unknown().optional(),
+    official: z.unknown().optional(),
   })
   .strict()
 
@@ -71,9 +84,14 @@ export const attemptsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       return c.json({ error: { code: 'not_found', message: 'Session not found' } }, 404)
     }
 
+    // Provenance from the qid alone; body.source/provenance/official are
+    // deliberately ignored.
+    const source = classifyAttemptSource(body.questionId)
+
     // Insert the attempt AND bump the user's lifetime counter atomically
     // (one D1 transaction), so the all-time total stays correct even after
-    // the retention cron prunes old attempts rows.
+    // the retention cron prunes old attempts rows. The counter is practice
+    // effort, so it counts every source.
     const [inserted] = await db.batch([
       db
         .insert(attempts)
@@ -84,6 +102,7 @@ export const attemptsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
           selectedAnswer: body.selectedAnswer,
           correct: body.correct,
           timeTakenMs: body.timeTakenMs ?? null,
+          source,
         })
         .returning(),
       db
@@ -113,8 +132,11 @@ export const attemptsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     // a JSON blob rather than folding them, so duplicates are inert
     // there.) Set iteration is insertion-ordered, so the first occurrence
     // of each id keeps its position.
+    //
+    // AUTHENTIC ONLY: a P5 practice answer (or an unknown qid) never moves
+    // the shared mastery / framework_progress ladder, even when tagged.
     const section = extractSection(body.questionId)
-    if (section && body.layer1Ids?.length) {
+    if (source === 'authentic' && section && body.layer1Ids?.length) {
       for (const layer1Id of new Set(body.layer1Ids)) {
         await applyMasteryOutcome(db, userId, section, layer1Id, body.correct)
       }

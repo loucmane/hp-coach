@@ -130,6 +130,15 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // Time windows are SERVER-clock UTC. Mismatched device clocks would
   // otherwise let a user "today" twice by jumping timezones. The
   // streak helper documents the same calendar choice in stats.ts.
+  //
+  // PROVENANCE (P5 infold PR 3, docs/p5-infold-design.md §E): every
+  // ASSESSMENT number reads authentic attempts only — accuracy7d, the
+  // bySection score/trend/confidence/recency/time fields and the weekly
+  // score trend. Practice EFFORT counts every attempt, as before: the
+  // attempt counts, timeMsToday, the streak, the consistency heatmap and
+  // bySection.attemptsToday (the drill-completion signal). P5 accuracy is
+  // reported apart, in practiceSynthetic, never merged into accuracy7d.
+  // Unknown attempts are effort only.
   .get('/stats', async (c) => {
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
@@ -167,7 +176,14 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         correct: sql<number>`coalesce(sum(${attempts.correct}), 0)`,
       })
       .from(attempts)
-      .where(and(eq(attempts.userId, userId), gte(attempts.createdAt, weekStart)))
+      .where(
+        and(
+          eq(attempts.userId, userId),
+          gte(attempts.createdAt, weekStart),
+          // Authentic accuracy only; P5 accuracy is practiceSynthetic.
+          eq(attempts.source, 'authentic'),
+        ),
+      )
 
     // Drills: this-week (windowed). The all-time total is the counter
     // above (drillsTotal), so this no longer scans every drill row.
@@ -234,6 +250,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         correct: attempts.correct,
         timeTakenMs: attempts.timeTakenMs,
         createdAt: attempts.createdAt,
+        source: attempts.source,
       })
       .from(attempts)
       .where(and(eq(attempts.userId, userId), gte(attempts.createdAt, ninetyDayStart)))
@@ -266,23 +283,49 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       SECTIONS.map((s) => [s, seed()]),
     ) as Record<Section, SectionAgg>
 
+    // P5 practice accuracy, apart from every authentic number: registered
+    // P5 answers over the same rolling windows as bySection (90d) and
+    // accuracy7d (7d).
+    const practiceSynthetic = { attempts90d: 0, correct90d: 0, attempts7d: 0, correct7d: 0 }
+
     // Actual practice time today (UTC-anchored, same calendar as
     // attemptsToday). Backs the Home "minuter idag" stat — an ELAPSED
     // counter, not the plan estimate — so it starts at 0 on a fresh day
     // and only ever grows as attempts land. Summed over ALL of today's
-    // attempts (before the section guard below: an unparseable
-    // question id is still real practice time).
+    // attempts, whatever their source (before the section guard below: an
+    // unparseable question id is still real practice time).
     let timeMsToday = 0
     for (const a of recentAttempts) {
       const attemptTs = a.createdAt instanceof Date ? a.createdAt.getTime() : 0
       if (attemptTs >= todayStart.getTime() && a.timeTakenMs != null && a.timeTakenMs > 0) {
         timeMsToday += a.timeTakenMs
       }
+      if (a.source === 'synthetic') {
+        practiceSynthetic.attempts90d += 1
+        if (a.correct) practiceSynthetic.correct90d += 1
+        if (attemptTs >= weekStart.getTime()) {
+          practiceSynthetic.attempts7d += 1
+          if (a.correct) practiceSynthetic.correct7d += 1
+        }
+      }
       const section = extractSection(a.questionId)
       if (!section) continue
       const ts = attemptTs
-      const correct = a.correct ? 1 : 0
       const agg = bySectionAgg[section]
+      // Same-UTC-day monotonic counter — backs the section-drill
+      // completion gate. Unlike attempts7d (a rolling window that can
+      // DROP overnight as old attempts age out, flipping a finished
+      // drill back to incomplete intraday), this only grows across the
+      // UTC day and resets cleanly at the next UTC midnight. See
+      // startOfUtcDay's docstring for the UTC-anchoring tradeoff.
+      // Completion is practice effort, so it counts every source.
+      if (ts >= todayStart.getTime()) {
+        agg.attemptsToday += 1
+      }
+      // Everything below feeds the section score, trend, confidence,
+      // recency and pace: authentic answers only.
+      if (a.source !== 'authentic') continue
+      const correct = a.correct ? 1 : 0
       agg.attempts90d += 1
       agg.correct90d += correct
       if (a.timeTakenMs != null && a.timeTakenMs > 0) {
@@ -298,15 +341,6 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       } else if (ts >= prevWeekStart.getTime()) {
         agg.attempts7to14d += 1
         agg.correct7to14d += correct
-      }
-      // Same-UTC-day monotonic counter — backs the section-drill
-      // completion gate. Unlike attempts7d (a rolling window that can
-      // DROP overnight as old attempts age out, flipping a finished
-      // drill back to incomplete intraday), this only grows across the
-      // UTC day and resets cleanly at the next UTC midnight. See
-      // startOfUtcDay's docstring for the UTC-anchoring tradeoff.
-      if (ts >= todayStart.getTime()) {
-        agg.attemptsToday += 1
       }
     }
 
@@ -346,7 +380,8 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     // Weekly time-series for the trend chart. 12 weeks back, indexed
     // 0 = oldest, 11 = current. Each bucket is a Sunday-anchored ISO
     // week boundary (UTC). When a week has zero attempts, score is
-    // null and the SVG renderer skips the point.
+    // null and the SVG renderer skips the point. A score trend, so
+    // authentic answers only.
     const WEEK_MS = 7 * 24 * 60 * 60_000
     const WEEKS = 12
     type WeeklyBucket = { weekStart: number; attempts: number; correct: number }
@@ -356,6 +391,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       weekly.push({ weekStart: start.getTime(), attempts: 0, correct: 0 })
     }
     for (const a of recentAttempts) {
+      if (a.source !== 'authentic') continue
       const ts = a.createdAt instanceof Date ? a.createdAt.getTime() : 0
       // Find bucket index. weekly[0] starts WEEKS weeks ago. Anything
       // older falls outside the 12w window — skip.
@@ -370,7 +406,8 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     // 84 days back (12 weeks × 7), keyed by UTC YYYY-MM-DD. Each entry
     // splits the count along the verbal/quant exam axis so the
     // heatmap can render two stacked strips — the HP-specific move
-    // that flattens to one ramp would otherwise.
+    // that flattens to one ramp would otherwise. Consistency is practice
+    // effort, so every source counts.
     const DAY_MS = 24 * 60 * 60_000
     const DAYS = 84
     const VERBAL = new Set<Section>(['ORD', 'LÄS', 'MEK', 'ELF'])
@@ -421,6 +458,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         bySection,
         weekly,
         attemptsDaily,
+        practiceSynthetic,
       },
     })
   })

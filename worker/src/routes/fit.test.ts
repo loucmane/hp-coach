@@ -12,7 +12,8 @@ import { Hono } from 'hono'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { getDb } from '../db/client'
-import { attempts, sessions, users } from '../db/schema'
+import { attempts, itemStats, sessions, users } from '../db/schema'
+import { classifyAttemptSource } from '../lib/provenance'
 import { makeTestD1, type ShimD1 } from '../lib/testD1'
 import type { Env, Vars } from '../types'
 import { fitRoute, itemStatsRoute } from './fit'
@@ -57,7 +58,13 @@ async function seedAttempt(clerkUserId: string, questionId: string, correct: boo
     .insert(sessions)
     .values({ userId: user.id, kind: 'drill', endedAt: new Date() })
     .returning()
-  await db.insert(attempts).values({ userId: user.id, sessionId: session.id, questionId, correct })
+  await db.insert(attempts).values({
+    userId: user.id,
+    sessionId: session.id,
+    questionId,
+    correct,
+    source: classifyAttemptSource(questionId),
+  })
 }
 
 async function runFitVia(asUser = 'u1') {
@@ -129,6 +136,24 @@ describe('GET /api/item-stats', () => {
     const { app, env } = appFor('u1')
     const res = await app.request('/item-stats?section=NOPE', {}, env)
     expect(res.status).toBe(400)
+  })
+
+  // P5 infold PR 3: useItemStats feeds the smart picker authentic difficulty
+  // only. The fit never rates a P5 or unknown qid; a row that exists anyway
+  // (written before provenance existed) is not served.
+  it('serves authentic items only, whatever item_stats holds', async () => {
+    await seedAttempt('u1', 'var-2026-verb1-LÄS-011', false)
+    await seedAttempt('u1', 'p5-las-b19-002-r1-LÄS-001', false)
+    await runFitVia()
+    const db = getDb(d1 as unknown as D1Database)
+    for (const questionId of ['p5-las-b7-002-r1-LÄS-001', 'var-2099-verb1-LÄS-011']) {
+      await db.insert(itemStats).values({ questionId, difficulty: 50, attempts: 3 })
+    }
+
+    const { app, env } = appFor('u1')
+    const res = await app.request('/item-stats?section=LÄS', {}, env)
+    const body = (await res.json()) as { difficulties: Record<string, number> }
+    expect(Object.keys(body.difficulties)).toEqual(['var-2026-verb1-LÄS-011'])
   })
 
   it('requires the section param', async () => {

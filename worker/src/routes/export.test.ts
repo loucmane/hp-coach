@@ -201,6 +201,54 @@ describe('round-trip: export → wipe → import', () => {
   })
 })
 
+// P5 infold PR 3: provenance is the server's call on every write path. An
+// import restores the attempt rows but re-derives each one's source from
+// its qid; a source in the payload is ignored.
+describe('import — attempt provenance', () => {
+  it('ignores a payload source and classifies every restored attempt from its qid', async () => {
+    const { userId } = await seedUserData('user_a')
+    const { body: exported } = await getExport('user_a')
+    const envelope = exported as Record<string, unknown> & {
+      tables: Record<string, unknown> & { attempts: Array<Record<string, unknown>> }
+    }
+    const template = envelope.tables.attempts[0]
+    expect(template).toHaveProperty('source')
+    const claims: Array<[string, string]> = [
+      ['var-2024-verb1-ORD-001', 'synthetic'],
+      ['p5-las-b19-002-r1-LÄS-001', 'authentic'],
+      ['p5-las-b7-002-r1-LÄS-001', 'synthetic'],
+      ['q1', 'authentic'],
+    ]
+    const payload = {
+      ...envelope,
+      tables: {
+        ...envelope.tables,
+        attempts: claims.map(([questionId, source], i) => ({
+          ...template,
+          id: i + 1,
+          questionId,
+          source,
+        })),
+      },
+    }
+    const { res } = await postImport('user_a', payload)
+    expect(res.status).toBe(200)
+
+    const db = getDb(d1 as unknown as D1Database)
+    const rows = await db
+      .select()
+      .from(attempts)
+      .where(eq(attempts.userId, userId))
+      .orderBy(attempts.id)
+    expect(rows.map((r) => [r.questionId, r.source])).toEqual([
+      ['var-2024-verb1-ORD-001', 'authentic'],
+      ['p5-las-b19-002-r1-LÄS-001', 'synthetic'],
+      ['p5-las-b7-002-r1-LÄS-001', 'unknown'],
+      ['q1', 'unknown'],
+    ])
+  })
+})
+
 describe('cross-user isolation on import', () => {
   it('importing user A’s export as user B never writes A’s rows to B, and does not touch A', async () => {
     const a = await seedUserData('user_a')

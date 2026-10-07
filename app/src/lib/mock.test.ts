@@ -16,6 +16,7 @@ import {
   pickSynthetic,
   resolveAuthentic,
 } from './mock'
+import { normedScore } from './normering'
 
 // ── Fixture builder ─────────────────────────────────────────────────
 
@@ -451,6 +452,92 @@ describe('computeMockSummary', () => {
     expect(summary.answered).toBe(0)
     // dwell time still accrues even for an eventually-blanked entry.
     expect(summary.breakdown.perSection.ORD.timeMs).toBe(4000)
+  })
+})
+
+// P5 infold PR 3 (docs/p5-infold-design.md §E): a Provpass result, and the
+// normering read from it, are scored from authentic questions only. A P5
+// practice question that reached a plan counts as nothing: not presented,
+// answered, correct, timed or missed.
+describe('computeMockSummary — P5 questions never score', () => {
+  const AUTHENTIC: Question[] = [
+    q({ qid: 'var-2024-verb1-ORD-001', section: 'ORD', number: 1, answer: 'A' }),
+    q({ qid: 'var-2024-verb1-ORD-002', section: 'ORD', number: 2, answer: 'B' }),
+    q({ qid: 'var-2024-verb1-LÄS-011', section: 'LÄS', number: 11, answer: 'A' }),
+    q({ qid: 'var-2024-verb1-LÄS-012', section: 'LÄS', number: 12, answer: 'B' }),
+    q({ qid: 'var-2024-verb2-ELF-031', section: 'ELF', number: 31, answer: 'A' }),
+    q({ qid: 'var-2024-verb1-MEK-021', section: 'MEK', number: 21, answer: 'B' }),
+  ]
+  // P5 rows as the exporter ships them: a p5- exam id and no provpass.
+  const p5 = (qid: string, section: 'LÄS' | 'ELF', number: number): Question =>
+    q({
+      qid,
+      section,
+      number,
+      exam_id: qid.slice(0, qid.lastIndexOf(`-${section}-`)),
+      provpass: null as unknown as Question['provpass'],
+      answer: 'C',
+    })
+  const P5: Question[] = [
+    p5('p5-las-b19-002-r1-LÄS-001', 'LÄS', 1),
+    p5('p5-las-b19-002-r1-LÄS-002', 'LÄS', 2),
+    p5('p5-elf-b18-002-r1-ELF-001', 'ELF', 1),
+    p5('p5-las-b7-002-r1-LÄS-001', 'LÄS', 1), // revoked revision
+  ]
+  const SITTING = {
+    exam_id: 'var-2024',
+    source_url: 'test',
+    verbal: {
+      source_pdf: 'test',
+      bands: [],
+      table: Array.from({ length: 81 }, (_, raw) => Math.round((raw / 80) * 200) / 100),
+    },
+  }
+  const LETTERS = ['A', 'B', 'C', 'D', null] as const
+
+  for (const seed of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
+    it(`seed ${seed}: the summary and its normed score ignore every injected P5 question`, () => {
+      const rng = seededRng(seed)
+      const pickLetter = () => LETTERS[Math.floor(rng() * LETTERS.length)]
+      const sheet: MockSheetLike = new Map()
+      for (const question of AUTHENTIC) {
+        if (rng() < 0.85)
+          sheet.set(question.qid, { letter: pickLetter(), timeMs: Math.floor(rng() * 9e4) })
+      }
+      const authenticOnly = computeMockSummary(AUTHENTIC, sheet)
+
+      const mixedPlan = [...AUTHENTIC]
+      const mixedSheet: MockSheetLike = new Map(sheet)
+      for (const question of P5) {
+        mixedPlan.splice(Math.floor(rng() * (mixedPlan.length + 1)), 0, question)
+        // Answered right, wrong or blank — none of it may count.
+        mixedSheet.set(question.qid, { letter: pickLetter(), timeMs: Math.floor(rng() * 9e4) })
+      }
+      const mixed = computeMockSummary(mixedPlan, mixedSheet)
+
+      expect(JSON.stringify(mixed)).toBe(
+        JSON.stringify(
+          computeMockSummary(
+            mixedPlan.filter((x) => !x.qid.startsWith('p5-')),
+            sheet,
+          ),
+        ),
+      )
+      expect(mixed).toEqual(authenticOnly)
+      expect(normedScore(SITTING, 'verbal', mixed.correct, mixed.presented)).toEqual(
+        normedScore(SITTING, 'verbal', authenticOnly.correct, authenticOnly.presented),
+      )
+    })
+  }
+
+  it('a plan of nothing but P5 questions presents nothing', () => {
+    const sheet: MockSheetLike = new Map(P5.map((x) => [x.qid, { letter: 'C', timeMs: 1000 }]))
+    expect(computeMockSummary(P5, sheet)).toEqual({
+      presented: 0,
+      answered: 0,
+      correct: 0,
+      breakdown: { perSection: {}, missedQids: [], version: 1 },
+    })
   })
 })
 

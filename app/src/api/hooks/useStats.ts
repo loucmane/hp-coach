@@ -22,11 +22,25 @@ export type WeeklyBucket = {
   correct: number
 }
 
+/** P5 practice accuracy, reported apart from every authentic number:
+ *  registered P5 answers over the last 90 and 7 days. */
+export type PracticeSynthetic = {
+  attempts90d: number
+  correct90d: number
+  attempts7d: number
+  correct7d: number
+}
+
+// Provenance (P5 infold PR 3, docs/p5-infold-design.md §E): the worker
+// classifies every attempt authentic / synthetic (P5 practice) / unknown.
+// accuracy7d, the bySection score inputs and `weekly` read authentic answers
+// only; attempts, timeMsToday, streakDays, attemptsDaily and
+// bySection.attemptsToday are practice effort and count every answer.
 export type Stats = {
   attempts: { total: number; today: number; thisWeek: number }
   drills: { total: number; thisWeek: number }
   mistakes: { active: number; due: number; resolved: number }
-  /** 0–1 ratio over attempts in the last 7 days; null if zero attempts. */
+  /** 0–1 ratio over AUTHENTIC attempts in the last 7 days; null if none. */
   accuracy7d: number | null
   streakDays: number
   /** Exact sum of timeTakenMs over today's (UTC) attempts — backs the
@@ -48,6 +62,9 @@ export type Stats = {
    *  worker rollout window — components fall back to an empty grid
    *  when missing. */
   attemptsDaily?: AttemptsDailyBucket[]
+  /** P5 practice accuracy, never merged into accuracy7d or a score.
+   *  Optional: a worker without P5 provenance does not send it. */
+  practiceSynthetic?: PracticeSynthetic
 }
 
 export type AttemptsDailyBucket = {

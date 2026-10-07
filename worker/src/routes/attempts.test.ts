@@ -43,7 +43,7 @@ type AttemptPayload = {
   layer1Ids?: string[]
 }
 
-async function post(payload: AttemptPayload, asUser = 'user_a') {
+async function post(payload: AttemptPayload & Record<string, unknown>, asUser = 'user_a') {
   const { app, env } = appFor(asUser)
   return app.request(
     '/',
@@ -338,5 +338,133 @@ describe('POST /api/attempts — framework_progress writer', () => {
       layer1Ids: ['KVA-NEG-001'],
     })
     expect((await progressRow(userId, 'KVA-NEG-001'))?.status).toBe('practicing')
+  })
+})
+
+// P5 infold PR 3 (docs/p5-infold-design.md §E): the server classifies every
+// attempt from its qid alone. Synthetic and unknown attempts are recorded in
+// full but never fold into mastery / framework_progress.
+describe('POST /api/attempts — provenance', () => {
+  // Registered in worker/data/p5-qid-registry.json (las-b19-002 is approved at r1).
+  const P5_QID = 'p5-las-b19-002-r1-LÄS-001'
+  // las-b7-002 is at revision 2, so its r1 qids are revoked.
+  const REVOKED_QID = 'p5-las-b7-002-r1-LÄS-001'
+  // elf-b14-002 is retired (pipeline/synthetic/RETIRED.json).
+  const RETIRED_QID = 'p5-elf-b14-002-r1-ELF-001'
+  const LAS_QID = 'var-2024-verb1-LÄS-011'
+
+  async function storedSource(userId: number) {
+    const rows = await db().select().from(attempts).where(eq(attempts.userId, userId))
+    return rows.map((r) => r.source)
+  }
+
+  it.each([
+    [KVA_QID, 'authentic'],
+    [LAS_QID, 'authentic'],
+    [P5_QID, 'synthetic'],
+    [REVOKED_QID, 'unknown'],
+    [RETIRED_QID, 'unknown'],
+    ['not-a-real-qid', 'unknown'],
+  ])('stores %s as %s and returns it on the row', async (questionId, source) => {
+    const { userId, sessionId } = await seedSession('user_a')
+    const res = await post({ sessionId, questionId, selectedAnswer: 'B', correct: true })
+    expect(res.status).toBe(201)
+    const body = (await res.json()) as { attempt: { source: string } }
+    expect(body.attempt.source).toBe(source)
+    expect(await storedSource(userId)).toEqual([source])
+  })
+
+  it('ignores a client-sent provenance flag in either direction', async () => {
+    const { userId, sessionId } = await seedSession('user_a')
+    const claimsAuthentic = await post({
+      sessionId,
+      questionId: P5_QID,
+      selectedAnswer: 'B',
+      correct: true,
+      layer1Ids: ['LAS-TYPE-001'],
+      source: 'authentic',
+      provenance: 'authentic',
+      official: true,
+    })
+    expect(claimsAuthentic.status).toBe(201)
+    const claimsSynthetic = await post({
+      sessionId,
+      questionId: KVA_QID,
+      selectedAnswer: 'B',
+      correct: true,
+      source: 'synthetic',
+      provenance: 'synthetic',
+      official: false,
+    })
+    expect(claimsSynthetic.status).toBe(201)
+    expect(await storedSource(userId)).toEqual(['synthetic', 'authentic'])
+    // The P5 answer's tag moved nothing, whatever the body claimed.
+    expect(await masteryRows(userId)).toHaveLength(0)
+    expect(await progressRow(userId, 'LAS-TYPE-001')).toBeNull()
+  })
+
+  it.each([
+    ['a synthetic', P5_QID],
+    ['a revoked P5', REVOKED_QID],
+    ['a retired P5', RETIRED_QID],
+  ])('%s attempt never moves mastery or framework_progress, even tagged', async (_l, qid) => {
+    const { userId, sessionId } = await seedSession('user_a')
+    for (let i = 0; i < 5; i++) {
+      const res = await post({
+        sessionId,
+        questionId: qid,
+        selectedAnswer: 'B',
+        correct: true,
+        layer1Ids: ['LAS-TYPE-001'],
+      })
+      expect(res.status).toBe(201)
+    }
+    expect(await masteryRows(userId)).toHaveLength(0)
+    expect(await progressRow(userId, 'LAS-TYPE-001')).toBeNull()
+  })
+
+  it('leaves a framework the user had already practised exactly where it was', async () => {
+    const { userId, sessionId } = await seedSession('user_a')
+    await post({
+      sessionId,
+      questionId: LAS_QID,
+      selectedAnswer: 'B',
+      correct: true,
+      layer1Ids: ['LAS-TYPE-001'],
+    })
+    const [before] = await masteryRows(userId)
+    const progressBefore = await progressRow(userId, 'LAS-TYPE-001')
+    for (const correct of [false, false, true]) {
+      await post({
+        sessionId,
+        questionId: P5_QID,
+        selectedAnswer: 'B',
+        correct,
+        layer1Ids: ['LAS-TYPE-001'],
+      })
+    }
+    expect(await masteryRows(userId)).toEqual([before])
+    expect(await progressRow(userId, 'LAS-TYPE-001')).toEqual(progressBefore)
+  })
+
+  it('an authentic LÄS answer still folds in: the filter is provenance, not section', async () => {
+    const { userId, sessionId } = await seedSession('user_a')
+    await post({
+      sessionId,
+      questionId: LAS_QID,
+      selectedAnswer: 'B',
+      correct: true,
+      layer1Ids: ['LAS-TYPE-001'],
+    })
+    const rows = await masteryRows(userId)
+    expect(rows.map((r) => [r.section, r.layer1Id])).toEqual([['LÄS', 'LAS-TYPE-001']])
+  })
+
+  it('a synthetic answer is still practice: the lifetime counter grows', async () => {
+    const { userId, sessionId } = await seedSession('user_a')
+    await post({ sessionId, questionId: P5_QID, selectedAnswer: 'B', correct: false })
+    await post({ sessionId, questionId: REVOKED_QID, selectedAnswer: 'B', correct: false })
+    const [user] = await db().select().from(users).where(eq(users.id, userId))
+    expect(user.attemptsTotal).toBe(2)
   })
 })

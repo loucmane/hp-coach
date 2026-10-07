@@ -212,6 +212,19 @@ export const dailyPlans = sqliteTable(
 )
 
 // ── attempts — one row per question answered ──────────────────────────
+//
+// `source` is the attempt's provenance, classified ON THE SERVER from the
+// qid alone (lib/provenance.ts) and never taken from the client:
+//   authentic — a question of a real högskoleprov sitting in the bank;
+//   synthetic — an approved P5 practice question (the bundled qid registry);
+//   unknown   — anything else. Fails closed: kept for history, never assessed.
+// Authentic assessment (section scores, trends, accuracy, the Elo fit,
+// mastery) reads `authentic` rows only; practice effort may count every row
+// (docs/p5-infold-design.md §E). The default is the fail-closed value, so a
+// write path that forgot to classify can never inflate an authentic number.
+export const ATTEMPT_SOURCES = ['authentic', 'synthetic', 'unknown'] as const
+export type AttemptSource = (typeof ATTEMPT_SOURCES)[number]
+
 export const attempts = sqliteTable(
   'attempts',
   {
@@ -227,6 +240,7 @@ export const attempts = sqliteTable(
     correct: integer('correct', { mode: 'boolean' }),
     timeTakenMs: integer('time_taken_ms'),
     createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+    source: text('source', { enum: ATTEMPT_SOURCES }).notNull().default('unknown'),
   },
   (t) => ({
     // Every stats read filters by user and (usually) a created_at window

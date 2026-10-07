@@ -65,6 +65,7 @@ import {
   users,
 } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
+import { classifyAttemptSource } from '../lib/provenance'
 import type { Env, Vars } from '../types'
 
 export const SCHEMA_VERSION = 1 as const
@@ -462,6 +463,8 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
   const attemptsToInsert = body.tables.attempts.filter((a) => sessionIdMap.has(a.sessionId))
   const mockResultsToInsert = body.tables.mockResults.filter((mr) => sessionIdMap.has(mr.sessionId))
 
+  // Provenance is re-derived from each qid on the server (P5 infold PR 3);
+  // a `source` in the payload (exports carry one) is never trusted.
   await insertChunked(db, attemptsToInsert, (a) =>
     db.insert(attempts).values({
       userId,
@@ -471,6 +474,7 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
       correct: a.correct ?? null,
       timeTakenMs: a.timeTakenMs ?? null,
       createdAt: toDateOrUndefined(a.createdAt),
+      source: classifyAttemptSource(a.questionId),
     }),
   )
   await insertChunked(db, body.tables.mistakes, (m) =>

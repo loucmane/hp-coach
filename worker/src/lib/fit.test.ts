@@ -7,11 +7,12 @@
 //      watermark idempotency contract, chronological-order sensitivity,
 //      per-user isolation, and the clamp holding through many updates.
 
-import { eq } from 'drizzle-orm'
+import { asc, eq } from 'drizzle-orm'
 import { beforeEach, describe, expect, it } from 'vitest'
 
+import registry from '../../data/p5-qid-registry.json'
 import { getDb } from '../db/client'
-import { attempts, itemStats, sessions, userAbility, users } from '../db/schema'
+import { type AttemptSource, attempts, itemStats, sessions, userAbility, users } from '../db/schema'
 import {
   CLAMP,
   clampRating,
@@ -24,6 +25,7 @@ import {
   REPLAY_ITEM_K_FACTOR,
   runFit,
 } from './fit'
+import { classifyAttemptSource } from './provenance'
 import { makeTestD1, type ShimD1 } from './testD1'
 
 let d1: ShimD1
@@ -55,21 +57,47 @@ async function ensureSession(userId: number, kind: string): Promise<number> {
 }
 
 /** Insert one attempt (default kind 'drill'). Returns its row id. Insertion
- *  order == id order == the chronological order runFit folds them in. */
+ *  order == id order == the chronological order runFit folds them in. The
+ *  source is classified from the qid, as POST /api/attempts stores it,
+ *  unless a test pins it. */
 async function seedAttempt(
   clerkUserId: string,
   questionId: string,
   correct: boolean,
   kind = 'drill',
+  source: AttemptSource = classifyAttemptSource(questionId),
 ): Promise<number> {
   const db = getDb(d1 as unknown as D1Database)
   const userId = await ensureUser(clerkUserId)
   const sessionId = await ensureSession(userId, kind)
   const [row] = await db
     .insert(attempts)
-    .values({ userId, sessionId, questionId, correct })
+    .values({ userId, sessionId, questionId, correct, source })
     .returning()
   return row.id
+}
+
+/** Both rating tables, ordered, as plain rows — for byte-identity checks. */
+async function ratings() {
+  const db = getDb(d1 as unknown as D1Database)
+  const items = await db
+    .select({
+      questionId: itemStats.questionId,
+      difficulty: itemStats.difficulty,
+      attempts: itemStats.attempts,
+    })
+    .from(itemStats)
+    .orderBy(asc(itemStats.questionId))
+  const abilities = await db
+    .select({
+      userId: userAbility.userId,
+      section: userAbility.section,
+      ability: userAbility.ability,
+      attempts: userAbility.attempts,
+    })
+    .from(userAbility)
+    .orderBy(asc(userAbility.userId), asc(userAbility.section))
+  return { items, abilities }
 }
 
 async function itemDifficulty(
@@ -392,4 +420,139 @@ describe('runFit — session-kind weighting', () => {
     // ...but the watermark still advanced past the skipped row.
     expect(res.watermark).toBeGreaterThan(0)
   })
+})
+
+// P5 infold PR 3 (docs/p5-infold-design.md §E): only authentic attempts move
+// item difficulty or user ability. Synthetic (P5) and unknown attempts are
+// consumed — the watermark passes them so no run re-scans them — and fold
+// into nothing.
+describe('runFit — provenance', () => {
+  const P5 = registry.units.flatMap((u) => u.qids)
+  const LAS_P5 = P5.find((q) => q.includes('-LÄS-')) as string
+  const ELF_P5 = P5.find((q) => q.includes('-ELF-')) as string
+  const UNKNOWN = ['p5-las-b7-002-r1-LÄS-001', 'var-2099-verb2-ELF-031', 'not-a-real-qid']
+
+  it('a synthetic or unknown attempt moves no rating, in any graded kind', async () => {
+    for (const kind of ['drill', 'adaptive_review', 'mock', 'mock_diagnostic']) {
+      await seedAttempt('u1', LAS_P5, false, kind)
+      await seedAttempt('u1', ELF_P5, true, kind)
+      for (const qid of UNKNOWN) await seedAttempt('u1', qid, false, kind)
+    }
+    const res = await runFit(getDb(d1 as unknown as D1Database))
+    expect(res.processed).toBe(0)
+    expect(await ratings()).toEqual({ items: [], abilities: [] })
+  })
+
+  it('advances the watermark past excluded rows, so a later run never re-scans them', async () => {
+    await seedAttempt('u1', 'var-2026-verb1-LÄS-011', true)
+    await seedAttempt('u1', LAS_P5, false)
+    await seedAttempt('u1', 'p5-las-b7-002-r1-LÄS-001', false)
+    const last = await seedAttempt('u1', ELF_P5, true)
+    const first = await runFit(getDb(d1 as unknown as D1Database))
+    expect(first).toEqual({ processed: 1, watermark: last })
+
+    const afterFirst = await ratings()
+    const second = await runFit(getDb(d1 as unknown as D1Database))
+    expect(second).toEqual({ processed: 0, watermark: last })
+    expect(await ratings()).toEqual(afterFirst)
+
+    // A tail of nothing but excluded rows still moves the watermark.
+    const tail = await seedAttempt('u1', LAS_P5, true)
+    const third = await runFit(getDb(d1 as unknown as D1Database))
+    expect(third).toEqual({ processed: 0, watermark: tail })
+    expect(await ratings()).toEqual(afterFirst)
+  })
+
+  it('trusts the stored source: an authentic qid stored unknown is skipped', async () => {
+    // What an attempt written by the pre-migration worker looks like until
+    // the backfill (drizzle/0013_attempt_source_backfill.sql) is re-run.
+    await seedAttempt('u1', 'var-2026-verb1-ORD-001', true, 'drill', 'unknown')
+    const res = await runFit(getDb(d1 as unknown as D1Database))
+    expect(res.processed).toBe(0)
+    expect(res.watermark).toBeGreaterThan(0)
+    expect(await ratings()).toEqual({ items: [], abilities: [] })
+  })
+
+  // Property-style: an authentic history fitted alone and the same history
+  // with synthetic/unknown attempts interleaved (in any kind, for the same
+  // and other users) land on byte-identical rating tables.
+  const AUTHENTIC = [
+    'var-2026-verb1-ORD-001',
+    'var-2026-verb1-ORD-002',
+    'var-2026-verb1-LÄS-011',
+    'var-2026-verb2-ELF-031',
+    'var-2026-kvant1-XYZ-001',
+    'host-2025-kvant2-DTK-030',
+  ]
+  const KINDS = ['drill', 'adaptive_review', 'mock', 'mock_diagnostic', 'lesson']
+  const USERS = ['u1', 'u2', 'u3']
+
+  function rng(seed: number): () => number {
+    let a = seed >>> 0
+    return () => {
+      a = (a + 0x6d2b79f5) >>> 0
+      let t = a
+      t = Math.imul(t ^ (t >>> 15), t | 1)
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+    }
+  }
+  const pick = <T>(r: () => number, xs: readonly T[]) => xs[Math.floor(r() * xs.length)]
+
+  for (const trial of [1, 2, 3, 4, 5, 6, 7, 8]) {
+    it(`trial ${trial}: interleaved P5/unknown attempts leave every rating byte-identical`, async () => {
+      const r = rng(trial)
+      const history = Array.from({ length: 40 + Math.floor(r() * 40) }, () => ({
+        user: pick(r, USERS),
+        qid: pick(r, AUTHENTIC),
+        correct: r() < 0.55,
+        kind: pick(r, KINDS),
+      }))
+      const injected = (at: number) =>
+        Array.from({ length: Math.floor(r() * 3) }, () => ({
+          user: pick(r, USERS),
+          qid: r() < 0.7 ? pick(r, P5) : pick(r, UNKNOWN),
+          correct: r() < 0.5,
+          kind: pick(r, KINDS),
+          at,
+        }))
+      // Extras go before history[i]; those at history.length trail the last row.
+      const extras = [...history.flatMap((_, i) => injected(i)), ...injected(history.length)]
+      const runs = 1 + Math.floor(r() * 3)
+      const split = (n: number) => Math.floor((history.length * n) / runs)
+
+      // Fit A: the authentic history alone, in `runs` incremental runs.
+      for (const user of USERS) await ensureUser(user)
+      for (let n = 0; n < runs; n++) {
+        for (const h of history.slice(split(n), split(n + 1))) {
+          await seedAttempt(h.user, h.qid, h.correct, h.kind)
+        }
+        await runFit(getDb(d1 as unknown as D1Database))
+      }
+      const alone = await ratings()
+
+      // Fit B (fresh DB, same user ids): the history with the extras interleaved.
+      d1 = makeTestD1()
+      sessionByUser.clear()
+      for (const user of USERS) await ensureUser(user)
+      let lastId = 0
+      const seedExtras = async (at: number) => {
+        for (const x of extras.filter((e) => e.at === at)) {
+          lastId = await seedAttempt(x.user, x.qid, x.correct, x.kind)
+        }
+      }
+      for (let n = 0; n < runs; n++) {
+        for (let i = split(n); i < split(n + 1); i++) {
+          await seedExtras(i)
+          const h = history[i]
+          lastId = await seedAttempt(h.user, h.qid, h.correct, h.kind)
+        }
+        if (n === runs - 1) await seedExtras(history.length)
+        const res = await runFit(getDb(d1 as unknown as D1Database))
+        expect(res.watermark).toBe(lastId)
+      }
+      expect(JSON.stringify(await ratings())).toBe(JSON.stringify(alone))
+      expect(alone.items.length).toBeGreaterThan(0)
+    })
+  }
 })

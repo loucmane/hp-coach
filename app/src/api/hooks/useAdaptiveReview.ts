@@ -15,6 +15,11 @@
 //
 // It does NOT gate the drill: while signals resolve, `hotTrap` is null and
 // the offer simply doesn't show — the drill starts normally.
+//
+// Authentic mistakes only (P5 infold PR 3, docs/p5-infold-design.md §E):
+// a P5 practice mistake stays in the replay queue but never counts toward,
+// or re-arms, an automatic hot-trap offer — not even once a P5 explanation
+// resolves its framework_id.
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -29,6 +34,7 @@ import {
   sectionFromFrameworkId,
   type TreatedTrap,
 } from '@/lib/adaptiveReview'
+import { withoutP5 } from '@/lib/provenance'
 
 import { useDueMistakes } from './useMistakes'
 import { useSessionHistory } from './useSessions'
@@ -175,7 +181,7 @@ export function useAdaptiveReview(now: Date = new Date()): AdaptiveReviewState {
   const [resolved, setResolved] = useState<Array<{ framework_id: string; at: number }>>([])
   useEffect(() => {
     let alive = true
-    const rows = mistakes ?? []
+    const rows = withoutP5(mistakes ?? [])
     if (rows.length === 0) {
       setResolved([])
       return

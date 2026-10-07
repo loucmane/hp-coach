@@ -15,11 +15,16 @@
 // Sections without rich-schema framework_id (MEK/DTK/LÄS/ELF/ORD)
 // won't cluster — that's correct: there's no trap entry to deep-link.
 // KVA/NOG/XYZ are backfilled.
+//
+// Authentic mistakes only (P5 infold PR 3, docs/p5-infold-design.md §E):
+// this is an automatic trap count, so P5 practice mistakes, which stay in
+// the replay queue, are left out of it.
 
 import { useEffect, useMemo, useState } from 'react'
 
 import { loadExplanation } from '@/data/explanations'
 import type { Section } from '@/data/questions'
+import { withoutP5 } from '@/lib/provenance'
 import { computeTrapTrend, recordTrapSnapshot, type TrapTrend } from '@/lib/trapHistory'
 
 import { useDueMistakes } from './useMistakes'
@@ -150,7 +155,7 @@ export function useTopTraps(opts: UseTopTrapsOptions = {}): TopTrap[] {
   // Memoize the qid array so we don't refetch on every parent re-render.
   // The TanStack Query background refetch (30s) is the right cadence —
   // we don't want to thrash the explanation loader cache.
-  const qids = useMemo(() => (mistakes ?? []).map((m) => m.questionId), [mistakes])
+  const qids = useMemo(() => withoutP5(mistakes ?? []).map((m) => m.questionId), [mistakes])
 
   useEffect(() => {
     let alive = true
