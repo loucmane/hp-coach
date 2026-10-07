@@ -77,8 +77,7 @@ def shard_tree(make_tree):
     entries rendered the way the exporter renders them, or raw bytes."""
 
     def _make(shard=None, *, raw=None, units=PILOT, release="pilot"):
-        root, roster_path = make_tree(list(units))
-        shutil.copytree(REPO_ROOT / export_product.FRAMEWORKS_REL, root / export_product.FRAMEWORKS_REL)
+        root, roster_path = make_tree(list(units))  # frameworks included
         target = root / export_product.EXPLANATIONS_REL / f"p5-{release}.json"
         target.parent.mkdir(parents=True, exist_ok=True)
         if raw is None:
@@ -132,7 +131,10 @@ def test_the_manifest_binds_the_shard_and_the_frameworks(pilot_export):
     assert block["lint"] == {"tool": export_product.LINT_REL, "mode": "default",
                              "strings_checked": block["lint"]["strings_checked"], "findings": []}
     assert block["lint"]["strings_checked"] > 19 * 10
-    frameworks = {f["path"]: f["sha256"] for f in block["frameworks"]}
+    # Every export reads the frameworks (the internal-label gate), so the
+    # manifest binds them once, beside the roster, not in this block.
+    assert "frameworks" not in block
+    frameworks = {f["path"]: f["sha256"] for f in manifest["frameworks"]}
     for name in ("las_taxonomy.json", "elf_taxonomy.json"):
         raw = (REPO_ROOT / "frameworks" / name).read_bytes()
         assert frameworks[f"frameworks/{name}"] == hashlib.sha256(raw).hexdigest()
@@ -323,6 +325,137 @@ def test_a_leaked_internal_label_is_refused(shard_tree, edit, message):
     root, roster_path, _ = shard_tree(_edited(LAS_Q1, edit))
     with pytest.raises(ExportError, match=message):
         _export(root, roster_path)
+
+
+# ------------------------------------- internal ids as a learner sees them
+
+ZWSP, RLO, PDF = "\N{ZERO WIDTH SPACE}", "\N{RIGHT-TO-LEFT OVERRIDE}", "\N{POP DIRECTIONAL FORMATTING}"
+# The label probes of the hpf-c8k8 review (/tmp/hpf-c8k8-probes.py), payloads
+# verbatim: each went into the first entry's technique as "Se <payload>.".
+# The four marked "bypass" were accepted at 28b3702: an id split by a
+# zero-width space, or across two KaTeX \text groups, renders whole.
+REVIEW_PROBES = {
+    "plain-taxonomy-label": ("scope_shift", "L2-SNAKE"),
+    "invisible-taxonomy-label": (f"sco{ZWSP}pe_shift", "L2-SNAKE"),
+    "plain-gate-name": ("G-STEM", "L2-GATEREF"),
+    "plain-framework-id": ("LAS-TYPE-001", "internal label"),
+    "invisible-framework-id": (f"LAS-TY{ZWSP}PE-001", "internal label"),                                # bypass
+    "katex-framework-id": (MATH_OPEN + r"\text{LAS-TY}\text{PE-001}" + MATH_CLOSE, "internal label"),  # bypass
+    "plain-unit-id": ("las-b7-002", "internal label"),
+    "invisible-unit-id": (f"las-b{ZWSP}7-002", "internal label"),                                      # bypass
+    "katex-unit-id": (MATH_OPEN + r"\text{las-b}\text{7-002}" + MATH_CLOSE, "internal label"),         # bypass
+}
+
+
+@pytest.mark.parametrize("payload,message", list(REVIEW_PROBES.values()), ids=list(REVIEW_PROBES))
+def test_the_review_label_probes_are_refused(shard_tree, payload, message):
+    first = next(iter(_shard()))
+    root, roster_path, _ = shard_tree(_edited(first, lambda e: e.update(technique=f"Se {payload}.")))
+    with pytest.raises(ExportError, match=message):
+        _export(root, roster_path)
+
+
+# Near variants of the same leak: case and accents, Unicode dashes and minus
+# signs, invisible and compatibility characters, surrounding punctuation, ids
+# of the same series that no catalog lists, and unit ids and qids.
+NEAR_VARIANTS = {
+    "lower-case": "las-type-001",
+    "title-case": "Las-Type-001",
+    "accented-prefix": "LÄS-TYPE-001",
+    "hyphen": "LAS\N{HYPHEN}TYPE\N{HYPHEN}001",
+    "non-breaking-hyphen": "LAS\N{NON-BREAKING HYPHEN}TYPE\N{NON-BREAKING HYPHEN}001",
+    "en-dash": "LAS\N{EN DASH}TYPE\N{EN DASH}001",
+    "em-dash": "XYZ\N{EM DASH}TRAP\N{EM DASH}005",
+    "minus-sign": "XYZ\N{MINUS SIGN}TRAP\N{MINUS SIGN}005",
+    "fullwidth": "".join(chr(ord(c) + 0xFEE0) for c in "LAS-TYPE-001"),  # U+FF2C U+FF21 U+FF33 U+FF0D …
+    "soft-hyphen": "LAS-TY\N{SOFT HYPHEN}PE-001",
+    "word-joiner": "XYZ-TRAP\N{WORD JOINER}-005",
+    "combining-mark": "LA\N{COMBINING ACUTE ACCENT}S-TYPE-001",
+    "right-to-left-override": RLO + "100-EPYT-SAL" + PDF,
+    "parentheses": "(XYZ-TRAP-005)",
+    "quotation-marks": "”XYZ-TRAP-005”",
+    "emphasis-underscores": "_LAS-TYPE-001_",
+    "compound": "LAS-TYPE-001-frågan",
+    "glued-suffix": "LAS-TYPE-001s",
+    "glued-prefix": "seLAS-TYPE-001",
+    "underscore-separators": "LAS_TYPE_001",
+    "short-number": "LAS-TYPE-99",
+    "unlisted-entry": "ELF-TYPE-042",
+    "other-section": "DTK-TACTIC-010",
+    "generation-family": "ELF-CLOZE-001",
+    "unit-id-upper-case": "LAS-B19-002",
+    "unit-id-en-dash": "las\N{EN DASH}b19\N{EN DASH}002",
+    "unit-id-underscores": "las_b19_002",
+    "unit-outside-the-export": "elf-b3-004",
+    "retired-unit": "elf-b14-002",
+    "qid": "p5-las-b19-002-r1-LÄS-002",
+    "qid-hyphens": "\N{HYPHEN}".join(["P5", "LAS", "B19", "002", "R1", "LÄS", "002"]),
+    "exam-id": "p5-elf-b18-002-r1",
+    "katex-styles": MATH_OPEN + r"\mathrm{XYZ}\text{-}\mathrm{TRAP}\text{-}005" + MATH_CLOSE,
+    "katex-colour": MATH_OPEN + r"\textcolor{red}{las-b}\text{19-002}" + MATH_CLOSE,
+}
+# Every learner field of an entry, in turn.
+LEARNER_FIELDS = (
+    lambda e, v: e.update(solution_path=f"Se {v}. {e['solution_path']}"),
+    lambda e, v: e["steps"][0].update(title=v),
+    lambda e, v: e["steps"][1].update(text=f"{e['steps'][1]['text']} Se {v}."),
+    lambda e, v: e["distractors"][0].update(why_tempting=f"Se {v}. {e['distractors'][0]['why_tempting']}"),
+    lambda e, v: e["distractors"][2].update(why_wrong=f"{e['distractors'][2]['why_wrong']} ({v})"),
+    lambda e, v: e.update(technique=f"Se {v}."),
+    lambda e, v: e.update(pitfall=f"Se {v}."),
+)
+
+
+@pytest.mark.parametrize("n,variant", list(enumerate(NEAR_VARIANTS.values())), ids=list(NEAR_VARIANTS))
+def test_an_internal_id_is_refused_in_any_spelling_and_learner_field(shard_tree, n, variant):
+    put = LEARNER_FIELDS[n % len(LEARNER_FIELDS)]
+    root, roster_path, _ = shard_tree(_edited(LAS_Q1, lambda e: put(e, variant)))
+    with pytest.raises(ExportError, match="internal label"):
+        _export(root, roster_path)
+
+
+def test_ordinary_words_beside_a_section_name_are_not_internal_ids(shard_tree):
+    text = "Läs- och skrivförmåga, LÄS-delen, ELF-texten, ord-för-ord, self-help, 1960-talet, 2,3 kilometer."
+    root, roster_path, _ = shard_tree(_edited(LAS_Q1, lambda e: e.update(technique=text)))
+    assert SHARD in _export(root, roster_path)
+
+
+def test_the_id_series_come_from_the_catalogs_and_the_roster(shard_tree, save_roster):
+    text = "Se QQQ-NOTE-042 och ord-b20-001."
+    root, roster_path, _ = shard_tree(_edited(LAS_Q1, lambda e: e.update(technique=text)))
+    assert SHARD in _export(root, roster_path)  # no catalog or roster id has either shape yet
+    catalog = root / "frameworks" / "qqq_test.json"
+    catalog.write_text(json.dumps({"section": "QQQ", "entries": [{"id": "QQQ-NOTE-001"}]}), encoding="utf-8")
+    with pytest.raises(ExportError, match=re.escape("carries an internal label ['qqq-note-042']")):
+        _export(root, roster_path)
+    catalog.unlink()
+    roster = json.loads(roster_path.read_text(encoding="utf-8"))
+    roster["units"].append({"unit_id": "ord-b20-001", "section": "ORD", "source": "absent.json",
+                            "sha256": "0" * 64, "content_sha256": "0" * 64, "question_count": 1, "revision": 1,
+                            "approval": "pending-owner-ratification", "retired": False})
+    save_roster(roster_path, roster)  # a roster row, never exported here
+    with pytest.raises(ExportError, match=re.escape("carries an internal label ['ord-b20-001']")):
+        _export(root, roster_path)
+
+
+def test_every_catalog_entry_and_roster_unit_id_is_an_internal_id(committed_roster):
+    catalog, _ = export_product.load_frameworks(REPO_ROOT)
+    unit_ids = [u["unit_id"] for u in committed_roster["units"]]
+    ids = export_product.internal_ids(catalog, unit_ids)
+    assert {i.split("-")[0] for i in catalog} == {"DTK", "ELF", "KVA", "LAS", "MEK", "NOG", "ORD", "XYZ"}
+    for identifier in [*catalog, *unit_ids]:
+        assert ids.fullmatch(export_product.fold(identifier)), identifier
+
+
+def test_ids_in_metadata_fields_are_not_learner_text(pilot_export, committed_roster):
+    # framework_id, qid, exam_id and unit_id hold ids by design, and the pilot
+    # exports with every one of them: only rendered text is checked.
+    catalog, _ = export_product.load_frameworks(REPO_ROOT)
+    ids = export_product.internal_ids(catalog, [u["unit_id"] for u in committed_roster["units"]])
+    framework_ids = [e["framework_id"] for e in json.loads(pilot_export[SHARD]).values() if "framework_id" in e]
+    keys = [row[field] for row in _rows(pilot_export) for field in ("qid", "exam_id", "unit_id")]
+    assert len(framework_ids) == 14 and len(keys) == 57
+    assert all(ids.search(export_product.fold(value)) for value in framework_ids + keys)
 
 
 def test_rationale_text_copied_into_an_explanation_is_refused(shard_tree, committed_roster):

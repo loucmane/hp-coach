@@ -2,10 +2,11 @@
 """Export approved P5 units as a learner bank of whitelisted fields (preview only).
 
 docs/p5-infold-design.md §C (data path, identity, retirement), §F (export
-gates) and §4 rows 1–2; beads hpf-535m and hpf-no7l. Inputs: the ratified
-roster (approval-roster.json, from build_roster.py), RETIRED.json, the exact
-candidate bytes the roster pins and, with --explanations, the release's Layer 2
-shard data/explanations/p5-<release>.json. Output: p5-bank-<release>.json, the
+gates) and §4 rows 1–2; beads hpf-535m, hpf-no7l and hpf-gcrh. Inputs: the
+ratified roster (approval-roster.json, from build_roster.py), RETIRED.json, the
+exact candidate bytes the roster pins, the Layer-1 catalogs frameworks/*.json
+and, with --explanations, the release's Layer 2 shard
+data/explanations/p5-<release>.json. Output: p5-bank-<release>.json, the
 validated shard p5-<release>.json when one is included, and the internal
 _export-manifest.json, written only under pipeline/synthetic/infold/preview/.
 Nothing is written to the app, R2 or app/public.
@@ -55,6 +56,8 @@ The export refuses, writing nothing, on:
   - a qid outside the documented pattern or over 60 characters;
   - a duplicate qid, a bank or row field missing or extra, a denylisted or
     _-prefixed key anywhere, or rationale text inside any bank string;
+  - an internal id or label in an exported title, passage, prompt or option
+    (Internal labels, below);
   - both members of an exclusion pair inside a --single-session export;
   - a default-mode learner-output lint finding (gates/scripts/
     lint_learner_output.py) in an exported title, passage, prompt or option;
@@ -80,8 +83,7 @@ explanation_shard key names, and also refuses on (design §D):
   - a framework_id that is null or not a Layer-1 entry of the question's own
     section in frameworks/*.json (a generation family is not one; omit the
     field when no entry fits);
-  - an internal label in learner text: a Layer-1 or generation-family id, a
-    unit id or qid, or an exported unit's family or question-family label;
+  - an internal id or label in any learner field (Internal labels, below);
   - rationale text: a rationale, paragraph or sentence of 40+ characters that
     is not the unit's own student text;
   - a default-mode learner-output lint finding in any string of the shard;
@@ -89,8 +91,26 @@ explanation_shard key names, and also refuses on (design §D):
     bank order, fields in the order above, two-space JSON, UTF-8 without
     ASCII escapes, one final newline. The shipped p5-<release>.json is that
     rendering, so the reviewed bytes are the bytes that ship.
-The manifest binds the shard and every framework file it was checked against
-by sha256.
+The manifest binds the shard, and every framework file the export read, by
+sha256.
+
+Internal labels. Learner text (the bank's titles, passages, prompts and
+options; with --explanations every explanation field but framework_id) may
+not carry an internal id or label. The ids are derived, not listed: each
+Layer-1 entry id in frameworks/*.json and each unit id in the roster stands
+for its whole series, its section prefix kept and its letters, digits and
+separators generalized (internal_ids): LAS-TYPE-001 stands for every
+LAS-<letters>-<digits> (LAS-TYPE-99 too), ELF-TYPE-001 also for the generation
+family ELF-CLOZE-001, and las-b19-002 for every LÄS unit id and so for every
+qid. A new catalog or roster row is covered once it exists. The labels are each
+exported unit's family and question-family labels. Text is read as stored and
+as a learner sees it, in the learner-output lint's own rendered views:
+invisible characters dropped, right-to-left overrides undone, compatibility
+characters in NFKC form, KaTeX groups between MathText's delimiters joined;
+case, accents and every dash and minus sign are then folded. An id counts
+wherever it stands, also run into a word. framework_id and the bank's qid,
+exam_id, unit_id and explanation_shard are metadata the app keys on, not text
+it shows, and may hold an id.
 
 Writing resolves the preview root once and reaches the output directory from
 it one component at a time with O_NOFOLLOW. A path spelled outside the root
@@ -121,6 +141,7 @@ import re
 import secrets
 import stat
 import sys
+import unicodedata
 from collections import Counter
 from pathlib import Path
 
@@ -182,8 +203,8 @@ QID = re.compile(r"p5-(?:las-b[0-9]+-[0-9]{3}-r[1-9][0-9]*-LÄS|elf-b[0-9]+-[0-9
 QID_MAX = 60
 LEAK_MIN_CHARS = 40
 GATES = ("roster-format", "retired-registry", "approval", "candidate-sha256", "candidate-fields",
-         "cloze-numbering", "qid-format", "duplicate-qid", "bank-whitelist", "internal-metadata", "exclusion-pairs",
-         "learner-lint", "bank-schema", "deterministic-rerun")
+         "cloze-numbering", "qid-format", "duplicate-qid", "bank-whitelist", "internal-metadata",
+         "bank-internal-label", "exclusion-pairs", "learner-lint", "bank-schema", "deterministic-rerun")
 # A Layer 2 entry: the app's Explanation fields (app/src/data/explanations.ts)
 # that the P5 contract ships, in their canonical order. framework_id is the
 # only optional field; _meta and pregrade_tactic are not part of the contract.
@@ -196,11 +217,11 @@ EXPLANATION_GATES = ("explanation-shard", "explanation-coverage", "explanation-s
                      "framework-id", "internal-label", "rationale-leak", "explanation-lint", "explanation-canonical")
 # MathText's math delimiters (app/src/components/MathText.tsx).
 MATH_OPEN, MATH_CLOSE = chr(0xE000), chr(0xE001)
-# Identifiers that never belong in learner text: Layer-1 entry ids and
-# generation families (LAS-TYPE-001, ELF-CLOZE-001, XYZ-TRAP-001), and unit
-# ids, which every P5 qid contains.
-INTERNAL_ID = re.compile(r"(?<![\w-])[a-zåäö]{3}-[a-z]{4,6}-[0-9]{3}(?![\w-])"
-                         r"|(?<![a-zåäö])(?:las|elf)-b[0-9]+-[0-9]{3}(?![0-9])", re.IGNORECASE)
+# Minus signs, which render like the hyphen in an id but are symbols; dashes
+# (general category Pd: U+2010–U+2015, U+FE63, U+FF0D, …) are folded by category.
+MINUS_SIGNS = frozenset("\N{MINUS SIGN}\N{HEAVY MINUS SIGN}\N{MODIFIER LETTER MINUS SIGN}\N{HYPHEN BULLET}")
+# An id's runs: letters, digits, or any single other character.
+ID_RUN = re.compile(r"(?P<letters>[^\W\d_]+)|(?P<digits>\d+)|(?P<other>.)", re.DOTALL)
 SENTENCE_END = re.compile(r"(?<=[.!?])\s+")
 LABEL_MIN_CHARS = 6
 
@@ -523,9 +544,9 @@ def check_exclusion_pairs(roster: dict, unit_ids, single_session: bool) -> list[
     return held
 
 
-def lint_rows(rows: list[dict]) -> tuple[int, list[dict]]:
-    """Default-mode learner-output lint over every exported student string:
-    each unit's title and passage once, every prompt and option."""
+def _bank_strings(rows: list[dict]) -> list[tuple[str, str, str]]:
+    """Every exported student string as (unit_id, field, text): each unit's
+    title and passage once, every prompt and option."""
     strings, seen_units = [], set()
     for row in rows:
         if row["unit_id"] not in seen_units:
@@ -533,9 +554,99 @@ def lint_rows(rows: list[dict]) -> tuple[int, list[dict]]:
             strings += [(row["unit_id"], "title", row["title"]), (row["unit_id"], "context", row["context"])]
         strings.append((row["unit_id"], f"{row['qid']} prompt", row["prompt"]))
         strings += [(row["unit_id"], f"{row['qid']} option {o['letter']}", o["text"]) for o in row["options"]]
+    return strings
+
+
+def lint_rows(rows: list[dict]) -> tuple[int, list[dict]]:
+    """Default-mode learner-output lint over every exported student string:
+    each unit's title and passage once, every prompt and option."""
+    strings = _bank_strings(rows)
     findings = [{"unit_id": uid, "field": field, "rule": rule, "excerpt": excerpt}
                 for uid, field, text in strings for rule, excerpt in LINT.scan_text(text)]
     return len(strings), findings
+
+
+# ---------------------------------------- internal labels in learner text
+
+def fold(text: str) -> str:
+    """text as the internal-label gate compares it: compatibility characters
+    decomposed (NFKD: a full-width or mathematical letter is the plain one),
+    accents, other combining marks and invisible format characters dropped,
+    every dash or minus sign a hyphen, and case folded on both sides of the
+    decomposition, as the learner-output lint folds it."""
+    decomposed = unicodedata.normalize("NFKD", unicodedata.normalize("NFKD", text.casefold()).casefold())
+    return "".join("-" if unicodedata.category(c) == "Pd" or c in MINUS_SIGNS else c
+                   for c in decomposed if unicodedata.category(c) not in ("Mn", "Me", "Cf"))
+
+
+def internal_ids(catalog: dict[str, str], unit_ids) -> re.Pattern:
+    """The ids learner text may not carry, as a pattern over fold()ed text,
+    derived from the ids in use rather than listed by hand. Every Layer-1
+    entry id in the catalogs and every unit id in the roster stands for its
+    series: the id's first run (its section prefix) as it is, any letters for
+    each later run of letters, any digits for each run of digits, a hyphen or
+    an underscore for each separator. So LAS-TYPE-001 also stands for
+    LAS-TYPE-99, ELF-TYPE-001 for the generation family ELF-CLOZE-001, and
+    las-b19-002 for every unit id of its section and so for every qid. An id
+    counts wherever it stands, also run into the words around it."""
+    shapes = set()
+    for identifier in [*catalog, *unit_ids]:
+        runs = list(ID_RUN.finditer(fold(identifier)))
+        if not runs:
+            continue
+        shape = [re.escape(runs[0].group())]
+        for run in runs[1:]:
+            kind, text = run.lastgroup, run.group()
+            shape.append(r"[^\W\d_]+" if kind == "letters" else r"\d+" if kind == "digits"
+                         else "[-_]" if text in "-_" else re.escape(text))
+        shapes.add("".join(shape))
+    if not shapes:
+        raise ExportError("no Layer-1 entry id and no unit id to derive the internal-label gate's id series from")
+    return re.compile("|".join(sorted(shapes)))
+
+
+def _internal_labels(units: list[dict]) -> list[str]:
+    """Each exported unit's family label and its parts, and its question-family
+    labels, fold()ed."""
+    labels = set()
+    for unit in units:
+        family = unit["family"] if isinstance(unit.get("family"), str) else ""
+        labels.update([family, *(part.strip() for part in family.split("/"))])
+        meta = unit.get("generator_meta")
+        families = meta.get("question_families") if isinstance(meta, dict) else None
+        if isinstance(families, dict):
+            labels.update(label for label in families.values() if isinstance(label, str))
+    return sorted({fold(label) for label in labels if len(label) >= LABEL_MIN_CHARS})
+
+
+def learner_views(text: str) -> list[str]:
+    """text as stored and as a learner sees it, each fold()ed: the
+    learner-output lint's rendered views (invisible characters dropped,
+    right-to-left overrides undone, NFKC, KaTeX markup between MathText's
+    delimiters interpreted, so that \\text{LAS-TY}\\text{PE-001} reads
+    LAS-TYPE-001, and Markdown and HTML markup interpreted as defense in
+    depth). The views are the lint's own, so both gates read one rendering."""
+    text = unicodedata.normalize("NFC", text)
+    return list(dict.fromkeys(fold(view) for view in (text, *(v.text for v in LINT._views(text)))))
+
+
+def internal_labels_in(text: str, ids: re.Pattern, labels: list[str]) -> list[str]:
+    """The internal ids and labels that text carries in any of its views, fold()ed."""
+    found = set()
+    for view in learner_views(text):
+        found.update(m.group() for m in ids.finditer(view))
+        found.update(label for label in labels if label in view)
+    return sorted(found)
+
+
+def check_bank_labels(rows: list[dict], ids: re.Pattern, labels: list[str]) -> None:
+    """No title, passage, prompt or option carries an internal id or label, as
+    stored or as rendered. qid, exam_id, unit_id and explanation_shard hold a
+    unit id by design: they are keys the app reads, not text it shows."""
+    problems = [f"{uid} {field} carries an internal label {found}"
+                for uid, field, text in _bank_strings(rows) if (found := internal_labels_in(text, ids, labels))]
+    if problems:
+        raise ExportError(f"bank text: {len(problems)} problem(s): " + "; ".join(problems[:12]))
 
 
 # -------------------------------------------------------- Layer 2 shard
@@ -733,19 +844,6 @@ def _balanced(text: str) -> bool:
     return not inside
 
 
-def _internal_labels(units: list[dict]) -> list[str]:
-    """Each exported unit's family label and its parts, and its question-family labels."""
-    labels = set()
-    for unit in units:
-        family = unit["family"] if isinstance(unit.get("family"), str) else ""
-        labels.update([family, *(part.strip() for part in family.split("/"))])
-        meta = unit.get("generator_meta")
-        families = meta.get("question_families") if isinstance(meta, dict) else None
-        if isinstance(families, dict):
-            labels.update(label for label in families.values() if isinstance(label, str))
-    return sorted(label for label in labels if len(label) >= LABEL_MIN_CHARS)
-
-
 def _rationale_pieces(units: list[dict]) -> list[tuple[str, int, str]]:
     """Each rationale, paragraph and sentence of LEAK_MIN_CHARS or more that is
     not the unit's own student text, which an explanation may quote."""
@@ -762,13 +860,11 @@ def _rationale_pieces(units: list[dict]) -> list[tuple[str, int, str]]:
     return [(uid, n, piece) for piece, (uid, n) in pieces.items()]
 
 
-def _text_problems(qid: str, entry: dict, labels: list[str], pieces) -> list[str]:
-    """Internal labels, unbalanced math and rationale text in one entry's learner text."""
+def _text_problems(qid: str, entry: dict, ids: re.Pattern, labels: list[str], pieces) -> list[str]:
+    """Internal ids and labels, unbalanced math and rationale text in one entry's learner text."""
     problems = []
     for where, value in _entry_strings(entry):
-        folded = value.casefold()
-        found = sorted({m.group() for m in INTERNAL_ID.finditer(value)}
-                       | {label for label in labels if label.casefold() in folded})
+        found = internal_labels_in(value, ids, labels)
         if found:
             problems.append(f"{qid}: {where} carries an internal label {found}")
         if not _balanced(value):
@@ -792,8 +888,8 @@ def _canonical(entry: dict) -> dict:
     return canonical
 
 
-def check_explanations(shard: dict, rows: list[dict], units: list[dict],
-                       catalog: dict[str, str]) -> tuple[dict, int]:
+def check_explanations(shard: dict, rows: list[dict], units: list[dict], catalog: dict[str, str],
+                       ids: re.Pattern, labels: list[str]) -> tuple[dict, int]:
     """The shard's entries in canonical form and bank order, and the number of
     strings linted; ExportError on any gate (design §D)."""
     qids = [row["qid"] for row in rows]
@@ -805,8 +901,8 @@ def check_explanations(shard: dict, rows: list[dict], units: list[dict],
         raise ExportError(f"explanations: entries for key(s) not in this export: {extra}")
     problems = [p for row in rows for p in _entry_problems(row["qid"], shard[row["qid"]], row, catalog)]
     if not problems:
-        labels, pieces = _internal_labels(units), _rationale_pieces(units)
-        problems = [p for row in rows for p in _text_problems(row["qid"], shard[row["qid"]], labels, pieces)]
+        pieces = _rationale_pieces(units)
+        problems = [p for row in rows for p in _text_problems(row["qid"], shard[row["qid"]], ids, labels, pieces)]
     if problems:
         raise ExportError(f"explanations: {len(problems)} problem(s): " + "; ".join(problems[:12]))
     strings = [(qid, where, text) for qid in qids for where, text in _all_strings(shard[qid])]
@@ -832,13 +928,13 @@ def _rel(path: Path, root: Path) -> str:
         return path.name
 
 
-def _explain(root: Path, release: str, rows: list[dict], units: list[dict]) -> tuple[bytes, dict]:
+def _explain(root: Path, release: str, rows: list[dict], units: list[dict], catalog: dict[str, str],
+             ids: re.Pattern, labels: list[str]) -> tuple[bytes, dict]:
     """The release's shard, validated against the rows and in canonical bytes,
     and its manifest block."""
     path = root / EXPLANATIONS_REL / shard_name(release)
     raw, shard = read_shard(path, release)
-    catalog, frameworks = load_frameworks(root)
-    canonical, linted = check_explanations(shard, rows, units, catalog)
+    canonical, linted = check_explanations(shard, rows, units, catalog, ids, labels)
     rendered = render_json(canonical)
     if rendered != raw:
         raise ExportError(f"explanation shard {EXPLANATIONS_REL}/{path.name} is not in canonical form (first "
@@ -847,7 +943,7 @@ def _explain(root: Path, release: str, rows: list[dict], units: list[dict]) -> t
                           f"{list(STEP_FIELDS)} and distractors {list(DISTRACTOR_FIELDS)} in that order, two-space "
                           "JSON, UTF-8 without ASCII escapes and one final newline")
     block = {"path": shard_name(release), "key": shard_key(release), "source": _rel(path, root),
-             "sha256": sha256_bytes(rendered), "entries": len(canonical), "frameworks": frameworks,
+             "sha256": sha256_bytes(rendered), "entries": len(canonical),
              "lint": {"tool": LINT_REL, "mode": "default", "strings_checked": linted, "findings": []}}
     return rendered, block
 
@@ -865,6 +961,9 @@ def _build(root: Path, roster_path: Path, *, release: str, include_pending: bool
     _check_retirement(roster, registry)
     chosen, excluded = select_units(roster, registry, units=units, include_pending=include_pending)
     loaded = [(entry, load_candidate(root, entry)) for entry in chosen]
+    catalog, frameworks = load_frameworks(root)
+    ids = internal_ids(catalog, [entry["unit_id"] for entry in roster["units"]])
+    labels = _internal_labels([unit for _, unit in loaded])
     key = shard_key(release) if explanations else None
     rows = [row for entry, unit in loaded for row in build_rows(entry, unit, key)]
     check_unique_qids(rows)
@@ -873,6 +972,7 @@ def _build(root: Path, roster_path: Path, *, release: str, include_pending: bool
             "stamp": PREVIEW_STAMP if include_pending else None, "source": "synthetic",
             "exclusion_pairs": held, "questions": rows}
     check_bank(bank, {entry["unit_id"]: unit for entry, unit in loaded})
+    check_bank_labels(rows, ids, labels)
     checked, findings = lint_rows(rows)
     if findings:
         listed = "; ".join(f"{f['rule']} {f['unit_id']} {f['field']}: …{f['excerpt']}…" for f in findings)
@@ -887,7 +987,8 @@ def _build(root: Path, roster_path: Path, *, release: str, include_pending: bool
     files = {bank_name: bank_bytes}
     explained = None
     if explanations:
-        files[shard_name(release)], explained = _explain(root, release, rows, [unit for _, unit in loaded])
+        files[shard_name(release)], explained = _explain(root, release, rows, [unit for _, unit in loaded],
+                                                         catalog, ids, labels)
     manifest = {
         "format": MANIFEST_FORMAT,
         "release": release,
@@ -895,6 +996,7 @@ def _build(root: Path, roster_path: Path, *, release: str, include_pending: bool
         "bank": {"path": bank_name, "sha256": sha256_bytes(bank_bytes)},
         "roster": {"path": _rel(roster_path, root), "sha256": sha256_bytes(roster_bytes)},
         "retired_registry": {"path": RETIRED_REL, "sha256": sha256_bytes((root / RETIRED_REL).read_bytes())},
+        "frameworks": frameworks,
         "exporter": {"path": EXPORTER_REL, "sha256": sha256_bytes(Path(__file__).read_bytes())},
         "selection": {"include_pending": include_pending, "single_session": single_session,
                       "requested_units": sorted(units) if units is not None else None},

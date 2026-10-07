@@ -279,6 +279,46 @@ def test_internal_metadata_leaks_are_refused(approved_export, committed_roster, 
         export_product.check_bank(bank, {entry["unit_id"]: candidate})
 
 
+# Internal ids and labels in the bank's learner text (hpf-c8k8 review): a
+# Layer-1 entry id of any section, a unit id or qid, the unit's own family
+# label, also when the id renders whole only after an invisible character is
+# dropped or KaTeX groups are joined.
+MATH_OPEN, MATH_CLOSE = chr(0xE000), chr(0xE001)
+BANK_LEAKS = {
+    "framework-id": "LAS-TYPE-001",
+    "quant-framework-id": "XYZ-TRAP-005",
+    "unit-id": "las-b19-002",
+    "qid": "p5-las-b19-002-r1-LÄS-002",
+    "en-dashes": "ELF\N{EN DASH}TYPE\N{EN DASH}001",
+    "invisible": "las-b\N{ZERO WIDTH SPACE}7-002",
+    "katex": MATH_OPEN + r"\text{LAS-TY}\text{PE-001}" + MATH_CLOSE,
+    "family-label": "badbrygga-avgift-debatt-short",
+    # No catalog lists it and las-b19-002 does not carry it: only the series
+    # that ELF-TYPE-001 stands for can catch a generation-family id here.
+    "generation-family": "ELF-CLOZE-001",
+}
+LEARNER_TEXT = {
+    "title": lambda unit, v: unit.update(title=f"{unit['title']} {v}"),
+    "passage": lambda unit, v: unit.update(passage=f"{unit['passage']}\n\nSe {v}."),
+    "prompt": lambda unit, v: unit["questions"][1].update(prompt=f"{unit['questions'][1]['prompt']} ({v})"),
+    "option": lambda unit, v: unit["questions"][0]["options"][2].update(
+        text=f"{unit['questions'][0]['options'][2]['text']} ({v})"),
+}
+
+
+@pytest.mark.parametrize("field", list(LEARNER_TEXT))
+@pytest.mark.parametrize("leak", list(BANK_LEAKS.values()), ids=list(BANK_LEAKS))
+def test_an_internal_label_in_bank_text_is_refused(make_tree, rehash, field, leak):
+    root, roster_path = make_tree(["las-b19-002"])
+    path = root / B19
+    unit = json.loads(path.read_text(encoding="utf-8"))
+    LEARNER_TEXT[field](unit, leak)
+    path.write_text(json.dumps(unit, ensure_ascii=False, indent=2), encoding="utf-8")
+    rehash(root, roster_path, "las-b19-002")
+    with pytest.raises(ExportError, match=r"bank text: .*las-b19-002 .*carries an internal label"):
+        export_product.export_bank(root, roster_path)
+
+
 # ------------------------------------------------------ exact preservation
 
 def test_student_strings_are_preserved_exactly(pending_export, committed_roster):
@@ -578,6 +618,11 @@ def test_the_manifest_binds_roster_exporter_and_candidates(approved_export, comm
     for unit in manifest["units"]:
         assert unit["sha256"] == by_id[unit["unit_id"]]["sha256"]
         assert unit["revision"] == by_id[unit["unit_id"]]["revision"]
+    # The internal-label gate derives its id series from every Layer-1 catalog.
+    catalogs = sorted((REPO_ROOT / "frameworks").glob("*.json"))
+    assert manifest["frameworks"] == [
+        {"path": f"frameworks/{p.name}", "sha256": build_roster.sha256_bytes(p.read_bytes())} for p in catalogs]
+    assert "bank-internal-label" in manifest["gates"]
 
 
 def test_output_is_written_only_into_the_preview_directory(tmp_path, approved_export):
