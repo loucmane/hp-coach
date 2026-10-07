@@ -219,7 +219,7 @@ def test_exported_rows_are_exactly_the_whitelist(pending_export):
     for row in bank["questions"]:
         assert list(row) == list(export_product.ROW_FIELDS)
         assert row["source"] == "synthetic" and row["provpass"] is None
-        assert row["explanation_shard"] == "explanations/p5-preview.json"
+        assert row["explanation_shard"] is None  # no shard validated, none referenced (bead hpf-no7l)
         assert [list(o) for o in row["options"]] == [["letter", "text"]] * 4
 
     def keys(node):
@@ -359,8 +359,7 @@ def test_qids_are_compatible_with_every_current_consumer(pending_export):
 def test_content_keys_fit_the_worker_whitelist(pending_export):
     content_path = _regex_literal(_ts("worker/src/routes/content.ts"), "CONTENT_PATH")
     assert content_path.fullmatch("data/p5-bank-preview.json")
-    for row in _bank(pending_export)["questions"]:
-        assert content_path.fullmatch(row["explanation_shard"])
+    assert content_path.fullmatch(export_product.shard_key("preview"))
     with pytest.raises(ExportError, match="release"):
         export_product.export_bank(REPO_ROOT, ROSTER, release="pilot.1")
 
@@ -488,8 +487,8 @@ def test_every_export_conforms_to_the_bank_schema(approved_export, pending_expor
 def test_the_bank_schema_is_checked_on_every_export(monkeypatch):
     build = export_product.build_rows
 
-    def nested(entry, unit, release):
-        rows = build(entry, unit, release)
+    def nested(*args):
+        rows = build(*args)
         rows[0]["revision"] = {"note": "internal"}  # no denylisted key: only the schema can catch it
         return rows
 
