@@ -1,0 +1,100 @@
+{
+  "format": "p5-export-manifest-v1",
+  "release": "sample",
+  "preview": false,
+  "bank": {
+    "path": "p5-bank-sample.json",
+    "sha256": "08938291112545dc508930eaa8003e3f67127804279a967c6d3c97c7c8ab6d28"
+  },
+  "roster": {
+    "path": "pipeline/synthetic/infold/approval-roster.json",
+    "sha256": "e31eba3603de4053606e20d48c2d805f05fbb1e1b9b4009c0261cdb43078b58d"
+  },
+  "retired_registry": {
+    "path": "pipeline/synthetic/RETIRED.json",
+    "sha256": "5e7a1031d5eff5378f1eb42f64ad919e9231effc274cc0af700b5fb3769315d0"
+  },
+  "exporter": {
+    "path": "pipeline/synthetic/infold/export_product.py",
+    "sha256": "b370f30c64e87088be1dea89644bda027c4abd94f451d85b9efe7c522210a97e"
+  },
+  "selection": {
+    "include_pending": false,
+    "single_session": false,
+    "requested_units": [
+      "elf-b18-002",
+      "elf-b19-003",
+      "las-b14-002",
+      "las-b19-002"
+    ]
+  },
+  "units": [
+    {
+      "unit_id": "las-b14-002",
+      "revision": 1,
+      "approval": "approved",
+      "section": "LÄS",
+      "question_count": 4,
+      "source": "pipeline/synthetic/batches/batch14/candidates-final/las-b14-002.json",
+      "sha256": "efbf9147228dde230eeb29df2dbfc632b64f45aea4fd5dbef2f70a02fd5d8408",
+      "content_sha256": "31d612175458e76b9707bda611591ce7076e979166e3c6de498ff1584778d8e2"
+    },
+    {
+      "unit_id": "elf-b18-002",
+      "revision": 1,
+      "approval": "approved",
+      "section": "ELF",
+      "question_count": 5,
+      "source": "pipeline/synthetic/batches/batch18/candidates/elf-b18-002.json",
+      "sha256": "5f59bd3ffc517cda548464ca960be980250f88e7589bdadf8dca77401c984307",
+      "content_sha256": "c358dff6a16af6765381497878131cd97f27b9704a191af82e7f5332971eebd8"
+    },
+    {
+      "unit_id": "elf-b19-003",
+      "revision": 1,
+      "approval": "approved",
+      "section": "ELF",
+      "question_count": 1,
+      "source": "pipeline/synthetic/batches/batch19/candidates/elf-b19-003.json",
+      "sha256": "9a4915384c431b813f7c7af1b04bf9ae11f7b9c86ad3b11e09e1faa0c0ce08ac",
+      "content_sha256": "aafbaf4ad215777e94aeed2947db5af560b7902df62311897ad5390f8c9d2418"
+    },
+    {
+      "unit_id": "las-b19-002",
+      "revision": 1,
+      "approval": "approved",
+      "section": "LÄS",
+      "question_count": 2,
+      "source": "pipeline/synthetic/batches/batch19/candidates/las-b19-002.json",
+      "sha256": "eb2bae6edc771ecdaced5030f45bd2812bd727f5db33fe0a06f19ef368f63e70",
+      "content_sha256": "239350fa4d8d3f5831a9528ae7adbb430ed076d95befebca543c0e6454dd9741"
+    }
+  ],
+  "excluded": {
+    "retired": [],
+    "pending-owner-ratification": []
+  },
+  "exclusion_pairs": [],
+  "gates": [
+    "roster-format",
+    "retired-registry",
+    "approval",
+    "candidate-sha256",
+    "candidate-fields",
+    "cloze-numbering",
+    "qid-format",
+    "duplicate-qid",
+    "bank-whitelist",
+    "internal-metadata",
+    "exclusion-pairs",
+    "learner-lint",
+    "bank-schema",
+    "deterministic-rerun"
+  ],
+  "lint": {
+    "tool": "pipeline/synthetic/gates/scripts/lint_learner_output.py",
+    "mode": "default",
+    "strings_checked": 68,
+    "findings": []
+  }
+}

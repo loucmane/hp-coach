@@ -1,0 +1,577 @@
+{
+  "format": "p5-ratification-v1",
+  "ratified_by": "owner 2026-10-07",
+  "ruling": "»ratify them, make sure they are up to par« (the legacy P5 batches 1–13)",
+  "audit": "pipeline/synthetic/infold/AUDIT-batches-1-13.md",
+  "audited_roster_sha256": "9ccfe9a41b0942f50c68496160c2fa9c8e1e6e308be7814e416ca3c047dddc65",
+  "implemented_in": "bead hpf-jsnf: the re-audit's one fix (las-b7-002, renamed at revision 2) and its two conditions (las-b4-002, las-b6-003) were met before ratification; every other unit is ratified as audited. Each entry pins the revision and the student-facing content digest that were ratified.",
+  "units": [
+    {
+      "unit_id": "elf-b1-001",
+      "revision": 1,
+      "content_sha256": "65f5f45081edaf0ee139e01936921001ee837e003deb7c1ba833c41650e1e6c7",
+      "recommendation": "ratify-with-note",
+      "note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch1/verdicts-vfinal/verdicts-gkey-resolved.jsonl:1-5 and :10-14) were never mechanically resolved, because their targets q1…q5 are not the q:N form gkey_resolve.py parses. The re-audit compared them by hand: the answers C/A/D/B/A equal the roster keys. Vote 2 is resolved PASS on the renamed bytes, G-DISTRACTOR was re-run and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Fenwick Institute for Lifespan Research' was renamed and 'Merritt, Ohio' became 'Tessendale, Ohio'. Optional housekeeping: re-run gkey_resolve.py with q:N targets."
+    },
+    {
+      "unit_id": "elf-b1-002",
+      "revision": 1,
+      "content_sha256": "90ac5dd409a93c81080fb474fe1b9434e6ed8fa778e02b8c7b5f7e1b9ff2c4fa",
+      "recommendation": "ratify-with-note",
+      "note": "E1: batch 1's V-FINAL record (batches/batch1/reviews/final_verify.jsonl:2) was folded without this unit's blind legs. They are in batches/batch1/verdicts-final/ (G-KEY ×2 and G-DISTRACTOR, all PASS), no older than the unit's last content change (a0a91b5, PR #335), and re-folding against them reproduces the recorded verdict (VERIFIED_NOTES, gkey_records=10). Optional housekeeping: re-derive batch 1's final_verify.jsonl from a merged leg set."
+    },
+    {
+      "unit_id": "elf-b1-003",
+      "revision": 1,
+      "content_sha256": "e996777a0b66a175bdb18f6c40888ba049d80052369ee8ca54b25d43d9671a44",
+      "recommendation": "ratify-with-note",
+      "note": "E1: batch 1's V-FINAL record (batches/batch1/reviews/final_verify.jsonl:3) was folded without this unit's blind legs. They are in batches/batch1/verdicts-final/ (G-KEY ×2 and G-DISTRACTOR, all PASS), no older than the unit's last content change (7f3cea5, PR #332), and re-folding against them reproduces the recorded verdict (VERIFIED, gkey_records=2). Optional housekeeping: re-derive batch 1's final_verify.jsonl from a merged leg set."
+    },
+    {
+      "unit_id": "elf-b1-004",
+      "revision": 1,
+      "content_sha256": "aa452ae0d394925c10da4372ffff7affe4b5952981be6d5404e39516f1d6fc40",
+      "recommendation": "ratify-with-note",
+      "note": "E1: batch 1's V-FINAL record (batches/batch1/reviews/final_verify.jsonl:4) was folded without this unit's blind legs. They are in batches/batch1/verdicts-final/ (G-KEY ×2 and G-DISTRACTOR, all PASS; the post-redesign re-gate is the second line), no older than the unit's last content change (a0a91b5, PR #335), and re-folding against them reproduces the recorded verdict (VERIFIED_NOTES, gkey_records=2). Optional housekeeping: re-derive batch 1's final_verify.jsonl from a merged leg set."
+    },
+    {
+      "unit_id": "las-b1-001",
+      "revision": 1,
+      "content_sha256": "02b728ea5e551f4e2f08a074bd7c09697719f0f97baacb96f1958af435b38bc6",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b1-002",
+      "revision": 1,
+      "content_sha256": "c184ed214e14637e4cae8bc18007bab3e5ec81d405017dccf1297f85449d4797",
+      "recommendation": "ratify-with-note",
+      "note": "E1: batch 1's V-FINAL record (batches/batch1/reviews/final_verify.jsonl:6) was folded without this unit's blind legs. They are in batches/batch1/verdicts-final/ (G-KEY ×2 resolved PASS; G-DISTRACTOR PASS except a flag on q:2), no older than the unit's last content change (a0a91b5, PR #335), and re-folding against them reproduces the recorded verdict (VERIFIED_NOTES, gkey_records=4). Optional housekeeping: re-derive batch 1's final_verify.jsonl from a merged leg set."
+    },
+    {
+      "unit_id": "las-b1-003",
+      "revision": 1,
+      "content_sha256": "53f88a7a488b66484cae2a4bef40c889b77dec1c6053ffe115a145b6d1b2f6d8",
+      "recommendation": "ratify-with-note",
+      "note": "E1: batch 1's V-FINAL record (batches/batch1/reviews/final_verify.jsonl:7) was folded without this unit's blind legs. They are in batches/batch1/verdicts-final/ (G-KEY ×2 and G-DISTRACTOR, all PASS), no older than the unit's last content change (a0a91b5, PR #335), and re-folding against them reproduces the recorded verdict (VERIFIED_NOTES, gkey_records=4). Optional housekeeping: re-derive batch 1's final_verify.jsonl from a merged leg set."
+    },
+    {
+      "unit_id": "elf-b2-001",
+      "revision": 1,
+      "content_sha256": "917a0a47fd2a213d10f457b914980988a2d297fc4dec0fcaa948360fd395e361",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b2-002",
+      "revision": 1,
+      "content_sha256": "125e40c520c0c00d8cd4f3236be37472c79c8594aa77109020dd4911578949c1",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b2-003",
+      "revision": 1,
+      "content_sha256": "7f492003795123bfd274e4d845c6b9c5153863fa43a4c9ff9be400592361edea",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b2-004",
+      "revision": 1,
+      "content_sha256": "7de618049f2758623ba06d842afa4697c21fadcbf25cb6a9c8f8245428303d99",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b2-002",
+      "revision": 1,
+      "content_sha256": "3116f5503e21404804c0b6369a5e1c27334d3f768bca250c5463387fe55b70e3",
+      "recommendation": "ratify-with-note",
+      "note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch2/verdicts-vfinal/verdicts-gkey-resolved.jsonl:21-22) were never mechanically resolved. By hand, the answers B/D equal the roster keys; vote 2 is resolved PASS on the renamed bytes and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Sörgårdsskolan' became Klöverhagsskolan, and the reused 'Kvarnby' and 'Almvik' became Häggnora and Fagerhammar. Optional housekeeping: re-run gkey_resolve.py with q:N targets."
+    },
+    {
+      "unit_id": "las-b2-003",
+      "revision": 1,
+      "content_sha256": "055f89d747123977117d0d6c78a3458be74ba7aec1cd5cc39b4dd44d0e514eff",
+      "recommendation": "ratify",
+      "note": "Ratifying las-b2-003 also accepts its ÄGARBLICK D 'bäst' stem in q1 (third redesign, 4791084, PR #356), which the re-audit did not re-judge."
+    },
+    {
+      "unit_id": "elf-b3-002",
+      "revision": 1,
+      "content_sha256": "549d50e180ccc053f597d05a0bc318507ac1566a209ea8c6fa14e2bbf9951839",
+      "recommendation": "ratify-with-note",
+      "note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch3/verdicts-vfinal/verdicts-gkey-resolved.jsonl:20-24) were never mechanically resolved. By hand, the answers C/A/D/B/C equal the roster keys; vote 2 is resolved PASS on the renamed bytes and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Aurora' became Nattrand, with Vaneby Rail, Anneke Verholt and Miles Wrensham. Context: exclusion pair with las-b3-002, still awaiting the owner's confirmation. Optional housekeeping: re-run gkey_resolve.py with q:N targets."
+    },
+    {
+      "unit_id": "elf-b3-003",
+      "revision": 1,
+      "content_sha256": "7ae549607982891b2ecd13980a14b8ef71cf22481249eebe74a78b45b287f292",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b3-004",
+      "revision": 1,
+      "content_sha256": "70da3a5ba5fa3dada5d4e90bfad63e003526b0de3b554a2bf5beec9fbd5cd480",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b3-001",
+      "revision": 1,
+      "content_sha256": "3e00441f2c2e03d3210079198ce4b9e25ecc353f69ac3ecc29fa8eb2337e5e54",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO, cross-batch surname reuse: 'Ahlgren' is Karin Ahlgren here and Petter Ahlgren in las-b5-002. Also 'Ingrid Sahlberg' with elf-b6-001, which is retired (RETIRED.json:5): cross-batch F6's hard collision, resolved by that retirement. Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling."
+    },
+    {
+      "unit_id": "las-b3-002",
+      "revision": 1,
+      "content_sha256": "6cc07621b0852caa2365f589d485ebcf49387287456cca16368e04c964622de4",
+      "recommendation": "ratify",
+      "note": "ÄGARBLICK C: exclusion pair with elf-b3-002 on the same night-train argument axis. Ratifying it should come with the owner's word on that topic pair; until then the pair stays enforced conservatively (pending-owner-confirmation)."
+    },
+    {
+      "unit_id": "las-b3-003",
+      "revision": 1,
+      "content_sha256": "5453a27f530a186f8bdce1b74709fed4e70a40fe045cba42bbec84f243830f94",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO, cross-batch surname reuse: 'Lindqvist' is Harriet Lindqvist here, Petra Lindqvist in las-b4-002 and Vidar Lindqvist in las-b5-001, a family the 2026-07-30 scan listed (cross-batch-report.md:195). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling."
+    },
+    {
+      "unit_id": "elf-b4-001",
+      "revision": 1,
+      "content_sha256": "a74b79494256992cb65bd04ea6919d1c45d5a4506076fa1eeda15ba9a068d2cf",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO, cross-batch surname reuse: 'Frisk' is Elias Frisk here, Karl-Otto Frisk in las-b10-001 and Owen Frisk in elf-b12-001. Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling."
+    },
+    {
+      "unit_id": "elf-b4-002",
+      "revision": 1,
+      "content_sha256": "7ea1a3607f6f93972f13f4d9d8671fba56c6ada1706646ea68ef1ec40bb3f3bc",
+      "recommendation": "ratify-with-note",
+      "note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch4/verdicts-vfinal/verdicts-gkey-resolved.jsonl:16-20 and :21-25) were never mechanically resolved. By hand, the answers C/A/D/B/C equal the roster keys; vote 2 is resolved PASS on the renamed bytes and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Rundgång' was renamed. Optional housekeeping: re-run gkey_resolve.py with q:N targets."
+    },
+    {
+      "unit_id": "elf-b4-003",
+      "revision": 1,
+      "content_sha256": "bf298cd2a7b97b3bdd778da3ee7ad81d55889a35324fb2b14bb48f4b754ca32f",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b4-002",
+      "revision": 1,
+      "content_sha256": "d6793dc5be79f9cd8a1a86ce01aa22f40f554ab2883d4293c4965769ea711220",
+      "recommendation": "ratify-with-note",
+      "note": "Conditional ratify-with-note; condition met. M-ECHO: the full name 'Ellen Sundqvist' (the researcher here) also belonged to a different person in las-b7-002, and the surnames 'Lindqvist' (las-b3-003, las-b5-001) and 'Sundqvist' (las-b5-003) recur. The re-audit made ratification conditional on renaming las-b7-002, the later unit. Done 2026-10-07 (hpf-jsnf): las-b7-002 r2 calls its planner 'Frida Ullbrink', and a full-corpus mech run now gives this unit only the three surname-family findings, which are ratified with this note like the other cross-batch surname reuse (law 13 forbids it for new units only)."
+    },
+    {
+      "unit_id": "las-b4-003",
+      "revision": 1,
+      "content_sha256": "c673100ac167f59dd1e5b45385523cd292626001920111ded93862d6dcd1f9b4",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO, cross-batch surname reuse: 'Öberg' is Marika Öberg here and Marianne Öberg in las-b10-002; also las-b11-001, which is retired (RETIRED.json:29). The 2026-07-30 scan listed it (cross-batch-report.md:193). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling."
+    },
+    {
+      "unit_id": "elf-b5-001",
+      "revision": 1,
+      "content_sha256": "8c11cae084db0dddffb6f09b99c232f33890b5d8030906cc7135ed1685261996",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO, cross-batch surname reuse: 'Brandt' is Ottilie Brandt here and Ivar Brandt in elf-b10-003. Also phrase echoes with elf-b6-001 and elf-b7-001, the retired clones of this unit (RETIRED.json:5, :11; master ÄGARBLICK A). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling."
+    },
+    {
+      "unit_id": "elf-b5-002",
+      "revision": 1,
+      "content_sha256": "9ffd5b13070b42a7d37d7427853afaf284840b82547e35f3050d65db849b8a75",
+      "recommendation": "ratify-with-note",
+      "note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch5/verdicts-vfinal/verdicts-gkey-resolved.jsonl:21-25) were never mechanically resolved. By hand, the answers B/A/C/D/B equal the roster keys; vote 2 is resolved PASS on the renamed bytes and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Verran coast', 'Verran guild' and 'Halden' were renamed. Context: ÄGARBLICK B, the 'Ottilie Brandt' rename, landed in 4791084 (PR #356). Optional housekeeping: re-run gkey_resolve.py with q:N targets."
+    },
+    {
+      "unit_id": "elf-b5-003",
+      "revision": 1,
+      "content_sha256": "697aa02d73c579c9e4be8cede6edf08db7e8424ffd07be7075b38c3a9fa18312",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b5-004",
+      "revision": 1,
+      "content_sha256": "d93ca4c046750bc89761fd5c1100700f0f13b3fedb22c4a2282c63a126f141ca",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b5-001",
+      "revision": 1,
+      "content_sha256": "f26590bdc8470a925eec8594e898564eaca3cba2f12dc70ec3913bf7475c0f42",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO, cross-batch surname reuse: 'Lindqvist' is Vidar Lindqvist here, Harriet Lindqvist in las-b3-003 and Petra Lindqvist in las-b4-002. Also a phrase echo with las-b6-001, a retired clone (RETIRED.json:17). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling."
+    },
+    {
+      "unit_id": "las-b5-002",
+      "revision": 1,
+      "content_sha256": "5f8629f712af8288bd6546127fb7d8030bc331e6fc9c0aff1b36bd85b3fec947",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO, cross-batch surname reuse: 'Ahlgren' is Petter Ahlgren here and Karin Ahlgren in las-b3-001. Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling."
+    },
+    {
+      "unit_id": "las-b5-003",
+      "revision": 1,
+      "content_sha256": "3451a9f72e20d12a8d2b757a51bab07d530216b2324864cb872bab03f5a911b6",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO, cross-batch surname reuse: 'Sundqvist' is Märta Sundqvist here and Ellen Sundqvist in las-b4-002. The re-audit also found las-b7-002's Ellen Sundqvist; that echo is gone since las-b7-002's r2 rename (hpf-jsnf). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling."
+    },
+    {
+      "unit_id": "elf-b6-002",
+      "revision": 1,
+      "content_sha256": "ad7c25094e4bca6f547233eb1e60beab651ab1a2dd6a67769416ecfffbd81468",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b6-003",
+      "revision": 1,
+      "content_sha256": "4b605a0c2e77221a5ce17f4fe763962c1ee7d94de0da36b4dae82239a8b86887",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b6-004",
+      "revision": 1,
+      "content_sha256": "a03cdbda131f08201b6dd14188a3e22659dd20bf6d634da53f9fb1287c21091b",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b6-002",
+      "revision": 1,
+      "content_sha256": "044a136d635a4dd604ac907d3873b38757743ee7701f93c5da9cf0698665bcfc",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO, cross-batch surname reuse: 'Åkerlund' is Gunnel Åkerlund here and Ingrid Åkerlund in las-b8-002, a family the 2026-07-30 scan listed (cross-batch-report.md:194). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling."
+    },
+    {
+      "unit_id": "las-b6-003",
+      "revision": 1,
+      "content_sha256": "9350423a959dbd0f4172a8af908c7a5bbaa4bbc188fc667aa6fdf1bc645e8606",
+      "recommendation": "ratify-with-note",
+      "note": "Conditional ratify-with-note; condition met. R1: 'Sandviken', a real Swedish town, was never classified by the law-16 sweep. One-entity law-16 check 2026-10-07 (hpf-jsnf): PASS, a bare locator ('near'). The passage places an invented educator's small follow-up at an unnamed compulsory school in Sandviken; it attaches no fact to the town, its administration or any named school, and identifies no real person (Ellen Boström is swept clear). The sweep's own precedent: a real place used as a bare locator for invented work is 'near' (Norrköping, adjudication/real-entity/verdicts-b11-12.json:388-391; Kvarnby, verdicts-b7-8.json:152-155), and Sandviken in las-b12-002 was SHIP-BLOCKING only because that passage attached a fabricated fact about the town's own facilities and an identifiable private person (verdicts-b11-12.json:394-397). Evidence: docs/worklog/hpf-jsnf.md."
+    },
+    {
+      "unit_id": "elf-b7-002",
+      "revision": 1,
+      "content_sha256": "1118bf89d26dfcc00f2c28a10ebb2ef21bbed0db2ff2256c310b22ea09f5af26",
+      "recommendation": "ratify-with-note",
+      "note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch7/verdicts-vfinal/verdicts-gkey-resolved.jsonl:21-25 and :26-30) were never mechanically resolved. By hand, the answers C/B/D/A/B equal the roster keys; vote 2 is resolved PASS on the renamed bytes and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Northern Assurance Office' was renamed. Optional housekeeping: re-run gkey_resolve.py with q:N targets."
+    },
+    {
+      "unit_id": "elf-b7-003",
+      "revision": 1,
+      "content_sha256": "b17e1277278f608c3c852035e6064957996b44c99ea8dcf99a1bd7717419099d",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b7-004",
+      "revision": 1,
+      "content_sha256": "b1529c75ee24a4c6fa2602f8285b38ae8e5db4c719261cff2a62dce260eb3713",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b7-001",
+      "revision": 1,
+      "content_sha256": "3c95e4d58c9fb9bc8a385b44fc4048a6c68cd090abc88ce7e2158151a5ec9f7f",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO against a retired unit only: a phrase echo (30 shared 6-grams) with las-b8-001, the retired clone of this unit (RETIRED.json:23; master ÄGARBLICK A). Retired units are never exported or served."
+    },
+    {
+      "unit_id": "las-b7-002",
+      "revision": 2,
+      "content_sha256": "1378306dc4e752fb2ca2a7be312c42a5b4bc6254468cbaf21be41a39342dcec1",
+      "recommendation": "fix",
+      "note": "Fixed at revision 2, then ratified. M-ECHO full-name collision: 'Ellen Sundqvist' was also a different person, the urban-ecology researcher of las-b4-002 — the class the 2026-07-30 scan made a ship-blocker (cross-batch F6) but never escalated for this pair — plus 'Sundqvist' with las-b5-003. Renamed 2026-10-07 (hpf-jsnf) to 'Frida Ullbrink' in the passage (twice), the q1 prompt, the q1 rationale and self_blind_solve; keys, options and stem meaning are unchanged (generator_meta.repair_log). On the r2 bytes mech is 6/6 PASS with M-ECHO clean over the 128-unit roster corpus, and the learner-output lint is clean. Law 16 for the new name: an offline screen only, with no web index queried (the lane had no network); flagged for a RULE-14 web check before release (generator_meta.originality_note)."
+    },
+    {
+      "unit_id": "las-b7-003",
+      "revision": 1,
+      "content_sha256": "58d11f4585d052de8c18b4612f13e0d75fbff1a6e966f260cd309cc29af8aa28",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b8-002",
+      "revision": 1,
+      "content_sha256": "de8bba5b1f2cb7d1733d2ab667d67a0e5ecfc7ed4c454b000da15ac11ede6d8e",
+      "recommendation": "ratify-with-note",
+      "note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch8/verdicts-vfinal/verdicts-gkey-resolved.jsonl:21-25) were never mechanically resolved. By hand, the answers B/C/A/D/B equal the roster keys; vote 2 is resolved PASS on the renamed bytes and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Bellwether' was renamed. Optional housekeeping: re-run gkey_resolve.py with q:N targets."
+    },
+    {
+      "unit_id": "elf-b8-003",
+      "revision": 1,
+      "content_sha256": "6e621caee8fec9c8fc58301fe3d3cd413288ee6189bad052e88462b1cda2e6c9",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b8-004",
+      "revision": 1,
+      "content_sha256": "fd6a33851ae1d47ae48472a883757f7fb71eda9f107fe2f95cd2aa32f9d65f3a",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b8-002",
+      "revision": 1,
+      "content_sha256": "fef86c0d2251db6dbc7959a22952fb86a440322f4ef8b80ab7b3def002d05f41",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO, cross-batch surname reuse: 'Åkerlund' is Ingrid Åkerlund here and Gunnel Åkerlund in las-b6-002. Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling."
+    },
+    {
+      "unit_id": "las-b8-003",
+      "revision": 1,
+      "content_sha256": "4c171a669dc8d6e630fca610d6c50000eee551e8fed51f435e43a58598cc7933",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b9-001",
+      "revision": 1,
+      "content_sha256": "73f3e35961438087a41cea436137403843ae8b292c61909e5f1f47a658a6387f",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b9-002",
+      "revision": 1,
+      "content_sha256": "c77c9ba7fdd32c61f3a68a657616faefb95711aafbaaeda2013ca0102951c67c",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b9-003",
+      "revision": 1,
+      "content_sha256": "c8807fa7b102663d6f3dbea32cb48b619b59c127cf0b68233122312c5d171d8d",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b9-004",
+      "revision": 1,
+      "content_sha256": "3c141761e05d8e256b06bbf5f336dec95c05754bcf5b4dc05f546ef45b284985",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b9-001",
+      "revision": 1,
+      "content_sha256": "ccdb3d3b993d951e6d4d6f33a6ef1c23a74c570edb6e2af35dbf438cb6cfb4d2",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b9-002",
+      "revision": 1,
+      "content_sha256": "4650aba3a348e399b206c3c9d7c6e7fac109304a0f89accc487a570234be313f",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b9-003",
+      "revision": 1,
+      "content_sha256": "0854e0c7756b6b167e1c2cde2acabbb093593f6300c04f79ce493724df69d624",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO, cross-batch surname reuse: 'Sundelius' is Petra Sundelius here and Marit Sundelius in las-b10-001, a pair the 2026-07-30 scan listed (cross-batch-report.md:196). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling."
+    },
+    {
+      "unit_id": "elf-b10-001",
+      "revision": 1,
+      "content_sha256": "d5c48845099208ea3d1770339bddc52ce661cc2834861ed060c6af3226eae91f",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b10-002",
+      "revision": 1,
+      "content_sha256": "dbbe8f6f0666c509365e10cfc7e3d4162d2ba2a6894233e0ca9dc2bdab465a4c",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b10-003",
+      "revision": 1,
+      "content_sha256": "29f1eb91fd73ae5d0d964758c106414c0d01a31a4bdae1bb7ac599ef93f32314",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO, cross-batch surname reuse: 'Brandt' is Ivar Brandt here and Ottilie Brandt in elf-b5-001, a family the 2026-07-30 scan listed (cross-batch-report.md:197). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling."
+    },
+    {
+      "unit_id": "elf-b10-004",
+      "revision": 1,
+      "content_sha256": "c3831140baf210a2b98a7d386abb5caecc817a58519b4aef36bea4ee7677365a",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b10-001",
+      "revision": 1,
+      "content_sha256": "fb9b6264283d0b6067b971c6602c3a22742b284a2028a11fe3b71fdeed8ce1ea",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO, cross-batch surname reuse: Karl-Otto Frisk and Marit Sundelius here; 'Frisk' also in elf-b4-001 and elf-b12-001, 'Sundelius' in las-b9-003. Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling."
+    },
+    {
+      "unit_id": "las-b10-002",
+      "revision": 1,
+      "content_sha256": "9fb7a3f11d53ab844cedf1fdeb7b97c56acd0f3217df30060706c1d06169af26",
+      "recommendation": "ratify-with-note",
+      "note": "E3: V-FINAL is older than a name-only rename (4791084, PR #356, ÄGARBLICK B: 'Ingrid Salomonsson' became 'Ylva Tenglund' in the passage twice and in the q1 prompt). The rename was recorded with its reasoning (batches/batch10/reviews/pedagogy.jsonl:10) and no key, option or distractor changed; today's full mech run, the lint and the export are clean, and the sweep covers the new name. For strict exact-bytes V-FINAL, re-run G-KEY ×2 and the audit; this is cheap. M-ECHO: 'Öberg' is Marianne Öberg here and Marika Öberg in las-b4-003, also in the retired las-b11-001."
+    },
+    {
+      "unit_id": "las-b10-003",
+      "revision": 1,
+      "content_sha256": "2e6b17ba9260af1c916aa76dc8c1d8e14c060902e6ab6134131cf0d98cdecab9",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b11-001",
+      "revision": 1,
+      "content_sha256": "bc61a8982e606a5c6baa7946608029639b5e46bb62e622acc0d37b180ea32c06",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b11-002",
+      "revision": 1,
+      "content_sha256": "c3125193bbb2c45435255a7d519e709d88b8b909e6ccca99ec6488f7bc85058a",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b11-003",
+      "revision": 1,
+      "content_sha256": "af59f8f54ab2abeb24465a9ded112f2d7f10ae288f79b1905c5af4bcdbe6a110",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b11-004",
+      "revision": 1,
+      "content_sha256": "748127134066e843ae18289f94df5f2162d73745cae1dc1f23f27541931d2310",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b11-002",
+      "revision": 1,
+      "content_sha256": "d6e2cdf0881e8b165d2b32226e71e40556c83a1a9769f2b004021f7d50b7d670",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b11-003",
+      "revision": 1,
+      "content_sha256": "2378157d5fd4878667b481e707eb6e7cdd1f6e0c3df2a40288c4e7e54d22700f",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b12-001",
+      "revision": 1,
+      "content_sha256": "81bc720270e76d85d4f3cbb74984c0ea12a16f2b077c8527128823c3741b67b6",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO, cross-batch surname reuse: 'Frisk' is Owen Frisk here, Elias Frisk in elf-b4-001 and Karl-Otto Frisk in las-b10-001. Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling."
+    },
+    {
+      "unit_id": "elf-b12-002",
+      "revision": 1,
+      "content_sha256": "768ae10290039f84585d1a4c0f2be02a73722c85af1150655313f8c0a906377f",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b12-003",
+      "revision": 1,
+      "content_sha256": "9295cb2e79dff8039033287444d01c1703cc257f44c05df4f27e5cf73d2e981e",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b12-004",
+      "revision": 1,
+      "content_sha256": "b7593a5a85d5b89c256843e1cd4b46e5d19b49f29303e8c022fa17fa43816816",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b12-001",
+      "revision": 1,
+      "content_sha256": "558acda1be8f8d91f1332a2bc546a414a07b54b21c425488566b66fd371a5711",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b12-002",
+      "revision": 1,
+      "content_sha256": "32e88b437e832b32176e03f9b2fac0c45280d0ee4a7e8bbd2d88dfac763821e8",
+      "recommendation": "ratify-with-note",
+      "note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch12/verdicts-vfinal/verdicts-gkey-resolved.jsonl:30-31) were never mechanically resolved. By hand, the answers C/A equal the roster keys; vote 2 is resolved PASS on the renamed bytes and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Sandviken', ruled SHIP-BLOCKING here, became Tegelsund. Optional housekeeping: re-run gkey_resolve.py with q:N targets."
+    },
+    {
+      "unit_id": "las-b12-003",
+      "revision": 1,
+      "content_sha256": "66146780102653e2a06597959049a7e271f260e5e7e72f604fa55603690a7dd0",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b13-001",
+      "revision": 1,
+      "content_sha256": "933bc3e52b7ea185bd4831996007244e912a3fa236cc4f1ff78019dc79f7b871",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b13-002",
+      "revision": 1,
+      "content_sha256": "1f19bacfeccada8bc2ffc46e492e3310be4779e56bdee1b0f7b0cb31c67d3d57",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "elf-b13-003",
+      "revision": 1,
+      "content_sha256": "67d296cb78787654127640c93b6b473a763cceacf8d8e9379a5337781309193d",
+      "recommendation": "ratify-with-note",
+      "note": "M-ECHO against a retired unit only: 'Halloran' (Dev Halloran here) with elf-b8-001, which is retired (RETIRED.json:35). No retained unit uses Halloran; elf-b7-002 lost it in the #361 rename. Retired units are never exported or served."
+    },
+    {
+      "unit_id": "elf-b13-004",
+      "revision": 1,
+      "content_sha256": "6d594359ab686e577fd59682abd61a9e644988b9d464068e164e4b61ea6a0667",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b13-001",
+      "revision": 1,
+      "content_sha256": "69529b163919a7dc2ed907ab35595a474083873bd0dc69ee1884b389b5a9fed4",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b13-002",
+      "revision": 1,
+      "content_sha256": "8a7374c75c3bc9413feb937906f496c67379952aed024fa4a574174235a196a5",
+      "recommendation": "ratify",
+      "note": null
+    },
+    {
+      "unit_id": "las-b13-003",
+      "revision": 1,
+      "content_sha256": "b300c289cf150e4fd94ed9329f59dffe4dd1e6c1f1e7035b698880cb23d793a9",
+      "recommendation": "ratify",
+      "note": null
+    }
+  ]
+}
