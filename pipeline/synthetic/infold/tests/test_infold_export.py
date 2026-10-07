@@ -62,12 +62,20 @@ def test_default_export_holds_only_approved_units(approved_export, committed_ros
     bank = _bank(approved_export)
     approved = [u for u in committed_roster["units"] if u["approval"] == "approved"]
     assert sorted({r["unit_id"] for r in bank["questions"]}) == sorted(u["unit_id"] for u in approved)
-    assert len(bank["questions"]) == sum(u["question_count"] for u in approved) == 121
+    # Every kept unit since the owner's ratification of batches 1–13 (2026-10-07).
+    assert len(approved) == 120
+    assert len(bank["questions"]) == sum(u["question_count"] for u in approved) == 340
     assert bank["preview"] is False and bank["stamp"] is None
     excluded = _manifest(approved_export)["excluded"]
-    assert len(excluded["pending-owner-ratification"]) == 81
+    assert excluded["pending-owner-ratification"] == []
     assert sorted(excluded["retired"]) == sorted(
         json.loads((REPO_ROOT / build_roster.RETIRED_REL).read_text(encoding="utf-8"))["retired"])
+
+
+def test_a_bumped_revision_reaches_the_qids(approved_export):
+    rows = [r for r in _bank(approved_export)["questions"] if r["unit_id"] == "las-b7-002"]
+    assert [r["qid"] for r in rows] == ["p5-las-b7-002-r2-LÄS-001", "p5-las-b7-002-r2-LÄS-002"]
+    assert all(r["revision"] == 2 and r["exam_id"] == "p5-las-b7-002-r2" for r in rows)
 
 
 def test_include_pending_is_stamped_as_preview(pending_export):
@@ -84,13 +92,16 @@ def test_include_pending_requires_a_preview_release_name():
         export_product.export_bank(REPO_ROOT, ROSTER, release="pilot1", include_pending=True)
 
 
-def test_a_pending_unit_is_refused_without_the_preview_flag():
-    with pytest.raises(ExportError, match="pending-owner-ratification"):
-        export_product.export_bank(REPO_ROOT, ROSTER, units=["las-b2-003"])
-
-
-def test_an_empty_selection_is_refused(make_tree):
+def test_a_pending_unit_is_refused_without_the_preview_flag(make_tree, save_roster):
     root, roster_path = make_tree(["las-b2-003"])
+    _edit_roster_row(roster_path, save_roster, lambda row: row.update(approval="pending-owner-ratification"))
+    with pytest.raises(ExportError, match="pending-owner-ratification"):
+        export_product.export_bank(root, roster_path, units=["las-b2-003"])
+
+
+def test_an_empty_selection_is_refused(make_tree, save_roster):
+    root, roster_path = make_tree(["las-b2-003"])
+    _edit_roster_row(roster_path, save_roster, lambda row: row.update(approval="pending-owner-ratification"))
     with pytest.raises(ExportError, match="no units"):
         export_product.export_bank(root, roster_path)
 

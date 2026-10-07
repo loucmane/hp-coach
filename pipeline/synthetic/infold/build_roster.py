@@ -2,20 +2,27 @@
 """Build the P5 infold approval roster (approval-roster.json + ROSTER.md).
 
 docs/p5-infold-design.md §4 row 1 (export contract), using §2 (inventory),
-§C and §F; bead hpf-535m. One row per candidate unit in batches 1–19 —
-batches 1–17 from candidates-final/, 18–19 from candidates/ — carrying the
-SHA-256 of its exact bytes, a digest of its student-facing content, its
-revision, its approval status with the file:line evidence behind it, its
-RETIRED.json flag and its exclusion pairs.
+§C and §F; beads hpf-535m and hpf-jsnf. One row per candidate unit in
+batches 1–19 — batches 1–17 from candidates-final/, 18–19 from candidates/ —
+carrying the SHA-256 of its exact bytes, a digest of its student-facing
+content, its revision, its approval status with the file:line evidence
+behind it, its RETIRED.json flag and its exclusion pairs.
 
 Approval comes from recorded evidence, never from a directory name or an old
 promote PASS:
-  approved                    an explicit owner ruling (batches 14–19)
-  pending-owner-ratification  legacy shipped units (batches 1–13): the
-                              whole-bank master records recommendations, not
-                              an owner response; the owner ratifies the exact
-                              rows in the PR 1 review
+  approved                    an explicit owner ruling (batches 14–19), or
+                              the owner's ratification of batches 1–13
+                              (RATIFICATION_REL) for this revision
+  pending-owner-ratification  a kept unit that no ruling or ratification
+                              covers at its current revision
   retired                     listed in RETIRED.json; retirement always wins
+
+The ratification record lists each ratified legacy unit with the revision
+and the student-facing content digest the owner ratified, plus the re-audit's
+recommendation (AUDIT_REL, bead hpf-v2nd) and its note. The build refuses a
+record that is not that shape, names a unit outside batches 1–13 or twice,
+names a revision the unit has not reached, or pins other content than the
+unit has at that revision; a later revision is pending again.
 
 The census must equal the design's §2 table, batch by batch, or the build
 fails. Evidence line numbers are resolved from quoted anchors at build time:
@@ -24,13 +31,14 @@ a moved line updates the roster, a vanished or ambiguous one fails the build.
   python3 pipeline/synthetic/infold/build_roster.py          # write both files
   python3 pipeline/synthetic/infold/build_roster.py --check  # exit 1 if stale
 
-Revisions: every unit is r1. A unit whose student-facing content (title,
-passage, prompts, options, keys) changes needs a higher revision in REVISIONS
-— the build refuses to reuse a revision for different content — and a bumped
-revision stays pending until a ruling is recorded for it. A revision is a
-plain integer from 1 to MAX_REVISION (99), the r<revision> segment of every
-qid: this build and the exporter refuse anything else (0, a negative, a bool,
-a float, a string, nested data). Stdlib only.
+Revisions: a unit is r1 unless REVISIONS says otherwise. A unit whose
+student-facing content (title, passage, prompts, options, keys) changes needs
+a higher revision in REVISIONS — the build refuses to reuse a revision for
+different content — and a bumped revision stays pending until a ruling or a
+ratification is recorded for it. A revision is a plain integer from 1 to
+MAX_REVISION (99), the r<revision> segment of every qid: this build and the
+exporter refuse anything else (0, a negative, a bool, a float, a string,
+nested data). Stdlib only.
 """
 from __future__ import annotations
 
@@ -49,7 +57,10 @@ BUILDER_REL = "pipeline/synthetic/infold/build_roster.py"
 DESIGN_DOC_REL = "docs/p5-infold-design.md"
 RETIRED_REL = "pipeline/synthetic/RETIRED.json"
 MASTER_REL = "pipeline/synthetic/ADJUDICATION-MASTER.md"
+RATIFICATION_REL = "pipeline/synthetic/infold/ratification-2026-10-07.json"
+AUDIT_REL = "pipeline/synthetic/infold/AUDIT-batches-1-13.md"
 FORMAT = "p5-approval-roster-v1"
+RATIFICATION_FORMAT = "p5-ratification-v1"
 
 BATCHES = range(1, 20)
 LEGACY_BATCHES = range(1, 14)
@@ -86,8 +97,9 @@ EXPECTED_CENSUS = {
 EXPECTED_TOTALS = {"retained": (120, 340), "LÄS": (52, 136), "ELF": (68, 204), "retired": (8, 33)}
 
 # Units whose student-facing content changed after their evidence was
-# recorded: unit_id -> revision. Empty — every unit is revision 1.
-REVISIONS: dict[str, int] = {}
+# recorded: unit_id -> revision; every other unit is revision 1. las-b7-002
+# r2 is the law-13 full-name rename of 2026-10-07 (bead hpf-jsnf).
+REVISIONS: dict[str, int] = {"las-b7-002": 2}
 MAX_REVISION = 99
 
 
@@ -134,7 +146,20 @@ LEGACY_SHIPPED = {1: (_b(1, "ADJUDICATION.md"), "promote-grind (exit 0)",
 LEGACY_SHIPPED.update({n: (_b(n, "STATUS.md"), "— status: COMPLETE", f"batch{n} shipped final, promote clean")
                        for n in range(2, 14)})
 MASTER_NO_RESPONSE = (MASTER_REL, "## Svarsinstruktion",
-                      "the master suggests a reply; no owner response is recorded")
+                      "the master suggests a reply and records no owner response; the owner's "
+                      "ratification is recorded in " + RATIFICATION_REL)
+# The ratification record (owner 2026-10-07, bead hpf-jsnf): its top-level
+# fields and, per unit, exactly these fields, in this order.
+RATIFICATION_KEYS = ("format", "ratified_by", "ruling", "audit", "audited_roster_sha256", "implemented_in",
+                     "units")
+RATIFIED_FIELDS = ("unit_id", "revision", "content_sha256", "recommendation", "note")
+RECOMMENDATIONS = ("ratify", "ratify-with-note", "fix")
+SHA256_HEX = re.compile(r"[0-9a-f]{64}")
+# A ratified unit whose batch records the change the ratification covers.
+RATIFIED_EXTRA = {
+    "las-b7-002": [(_b(7, "ADJUDICATION.md"), "## Law-13 rename — 2026-10-07 (hpf-jsnf): las-b7-002 r2",
+                    "the revision-2 rename that the ratification covers")],
+}
 # Kept legacy units that were ÄGARBLICK items in the master rather than plain
 # approve-with-note rows; the other 77 kept units are table rows.
 LEGACY_NOTES = {
@@ -203,6 +228,70 @@ def load_retired(root: Path) -> dict:
     return json.loads((root / RETIRED_REL).read_text(encoding="utf-8"))["retired"]
 
 
+def load_ratification(root: Path):
+    return json.loads((root / RATIFICATION_REL).read_text(encoding="utf-8"))
+
+
+def check_ratification(record, units: list[dict]) -> dict[str, dict]:
+    """The ratification record's entries by unit id. A record is refused,
+    never repaired: other fields than RATIFICATION_KEYS / RATIFIED_FIELDS, a
+    unit outside batches 1–13 or listed twice, a revision the unit has not
+    reached, or other student-facing content than the unit has at that
+    revision. An entry for an earlier revision is kept and covers nothing."""
+    if type(record) is not dict or list(record) != list(RATIFICATION_KEYS):
+        got = list(record) if type(record) is dict else type(record).__name__
+        raise RosterError(f"ratification record {RATIFICATION_REL}: fields {got}, "
+                          f"expected {list(RATIFICATION_KEYS)}")
+    problems = []
+    if record["format"] != RATIFICATION_FORMAT:
+        problems.append(f"format {record['format']!r} is not {RATIFICATION_FORMAT!r}")
+    if record["audit"] != AUDIT_REL:
+        problems.append(f"audit {record['audit']!r} is not {AUDIT_REL!r}")
+    for key in ("ratified_by", "ruling", "implemented_in"):
+        if type(record[key]) is not str or not record[key].strip():
+            problems.append(f"{key} must be a non-empty string")
+    if type(record["audited_roster_sha256"]) is not str or not SHA256_HEX.fullmatch(record["audited_roster_sha256"]):
+        problems.append("audited_roster_sha256 is not a SHA-256 hex digest")
+    entries = record["units"]
+    if type(entries) is not list or not entries:
+        problems.append("units must be a non-empty array")
+        entries = []
+    by_id = {u["unit_id"]: u for u in units}
+    ratified: dict[str, dict] = {}
+    for n, entry in enumerate(entries):
+        if type(entry) is not dict or list(entry) != list(RATIFIED_FIELDS):
+            problems.append(f"units[{n}]: fields must be {list(RATIFIED_FIELDS)}")
+            continue
+        uid, revision, digest, note = entry["unit_id"], entry["revision"], entry["content_sha256"], entry["note"]
+        unit = by_id.get(uid) if type(uid) is str else None
+        if unit is None:
+            problems.append(f"units[{n}]: {uid!r} is not a selected candidate")
+            continue
+        if unit["batch"] not in LEGACY_BATCHES:
+            problems.append(f"{uid}: batch {unit['batch']} has its own owner ruling; the record ratifies batches 1–13")
+        if uid in ratified:
+            problems.append(f"{uid}: listed twice")
+        if type(digest) is not str or not SHA256_HEX.fullmatch(digest):
+            problems.append(f"{uid}: content_sha256 is not a SHA-256 hex digest")
+        if not is_revision(revision):
+            problems.append(f"{uid}: revision {revision!r} is not an integer from 1 to {MAX_REVISION}")
+        elif revision > unit["revision"]:
+            problems.append(f"{uid}: ratified at r{revision}, but the unit is r{unit['revision']}")
+        elif revision == unit["revision"] and digest != unit["content_sha256"]:
+            problems.append(f"{uid}: the record pins r{revision} content {str(digest)[:12]}…, the candidate's is "
+                            f"{unit['content_sha256'][:12]}…; changed content needs a new revision")
+        if entry["recommendation"] not in RECOMMENDATIONS:
+            problems.append(f"{uid}: recommendation {entry['recommendation']!r} is not one of {list(RECOMMENDATIONS)}")
+        elif note is None and entry["recommendation"] != "ratify":
+            problems.append(f"{uid}: a {entry['recommendation']} entry needs a note")
+        if note is not None and (type(note) is not str or not note.strip()):
+            problems.append(f"{uid}: note must be null or a non-empty string")
+        ratified[uid] = entry
+    if problems:
+        raise RosterError(f"ratification record {RATIFICATION_REL}: " + "; ".join(problems))
+    return ratified
+
+
 class _Anchors:
     def __init__(self, root: Path):
         self.root = root
@@ -228,27 +317,39 @@ class _Anchors:
         return self.cite(MASTER_REL, f"**{uid}**", "master: " + LEGACY_NOTES.get(uid, "ÄGARBLICK item"))
 
 
-def _approval(uid: str, batch: int, revision: int, registry: dict, anchors: _Anchors):
+def _approval(unit: dict, registry: dict, anchors: _Anchors, ratified: dict[str, dict], ratified_by: str) -> dict:
+    uid, batch, revision = unit["unit_id"], unit["batch"], unit["revision"]
     if uid in registry:
         evidence = [anchors.cite(RETIRED_REL, f'"{uid}": {{',
                                  f"RETIRED.json ({registry[uid]['date']}): excluded from every import")]
         evidence += [anchors.cite(*a) for a in RETIRED_EXTRA.get(uid, ())]
         if batch in LEGACY_BATCHES:
             evidence.append(anchors.master_row(uid))
-        return RETIRED, "RETIRED.json", evidence
+        return {"approval": RETIRED, "approval_basis": "RETIRED.json", "evidence": evidence}
     if batch in RULINGS:
         evidence = [anchors.cite(*a) for a in RULINGS[batch] + UNIT_RULINGS.get(uid, [])]
         approval, basis = APPROVED, f"owner ruling, batch {batch}"
     else:
-        master = anchors.master_row(uid)
-        evidence = [anchors.cite(*LEGACY_SHIPPED[batch]), master]
+        evidence = [anchors.cite(*LEGACY_SHIPPED[batch]), anchors.master_row(uid)]
+        entry = ratified.get(uid)
+        if entry is not None and entry["revision"] == revision:
+            recommendation = entry["recommendation"]
+            evidence += [anchors.cite(AUDIT_REL, f"| {uid} | {unit['section']} | {unit['question_count']} |",
+                                      f"re-audit row: {recommendation}"),
+                         anchors.cite(RATIFICATION_REL, f'"unit_id": "{uid}"',
+                                      f"ratified by {ratified_by} at r{revision}")]
+            evidence += [anchors.cite(*a) for a in RATIFIED_EXTRA.get(uid, ())]
+            return {"approval": APPROVED,
+                    "approval_basis": f"owner ratification of batches 1–13 at r{revision}; "
+                                      f"re-audit recommendation {recommendation}",
+                    "ratified_by": ratified_by, "ratification_note": entry["note"], "evidence": evidence}
         approval = PENDING
         basis = ("legacy shipped final; master " +
                  ("ÄGARBLICK item" if uid in LEGACY_NOTES else "GODKÄNN MED ANTECKNING"))
     if revision != 1:
         # The rulings above were given on revision 1's bytes (design §F).
         approval, basis = PENDING, f"revision {revision}: no ruling recorded for this revision"
-    return approval, basis, evidence
+    return {"approval": approval, "approval_basis": basis, "evidence": evidence}
 
 
 def _census(units: list[dict]) -> dict:
@@ -289,7 +390,9 @@ def _check_census(census: dict, expected: dict) -> None:
 
 
 def build_roster(root: Path = REPO_ROOT, *, expected_census: dict = EXPECTED_CENSUS,
-                 revisions: dict | None = None) -> dict:
+                 revisions: dict | None = None, ratification=None) -> dict:
+    """The roster from the files under root. revisions replaces REVISIONS
+    and ratification replaces the record at RATIFICATION_REL (tests)."""
     revisions = REVISIONS if revisions is None else revisions
     registry = load_retired(root)
     anchors = _Anchors(root)
@@ -311,14 +414,13 @@ def build_roster(root: Path = REPO_ROOT, *, expected_census: dict = EXPECTED_CEN
             revision = revisions.get(uid, 1)
             if not is_revision(revision):
                 raise RosterError(f"{uid}: revision {revision!r} is not an integer from 1 to {MAX_REVISION}")
-            approval, basis, evidence = _approval(uid, batch, revision, registry, anchors)
             units.append({
                 "unit_id": uid, "batch": batch, "section": unit["section"], "title": unit["title"],
                 "source": path.relative_to(root).as_posix(),
                 "sha256": sha256_bytes(raw), "content_sha256": content_digest(unit),
                 "question_count": len(unit["questions"]), "revision": revision,
-                "approval": approval, "approval_basis": basis, "evidence": evidence,
-                "retired": uid in registry, "exclusion_pairs": [],
+                "approval": None, "approval_basis": None, "ratified_by": None, "ratification_note": None,
+                "evidence": [], "retired": uid in registry, "exclusion_pairs": [],
             })
     ids = [u["unit_id"] for u in units]
     if len(ids) != len(set(ids)):
@@ -328,6 +430,10 @@ def build_roster(root: Path = REPO_ROOT, *, expected_census: dict = EXPECTED_CEN
         raise RosterError(f"RETIRED.json ids not found in the selected directories: {unresolved}")
     census = _census(units)
     _check_census(census, expected_census)
+    record = load_ratification(root) if ratification is None else ratification
+    ratified = check_ratification(record, units)
+    for unit in units:
+        unit.update(_approval(unit, registry, anchors, ratified, record["ratified_by"]))
 
     by_id = {u["unit_id"]: u for u in units}
     pairs = []
@@ -344,11 +450,18 @@ def build_roster(root: Path = REPO_ROOT, *, expected_census: dict = EXPECTED_CEN
         "generated_by": BUILDER_REL,
         "spec": f"{DESIGN_DOC_REL} §2, §4 row 1, §C, §F",
         "approval_values": {
-            APPROVED: "an explicit owner ruling covers this unit at these bytes",
-            PENDING: "legacy shipped unit; awaits the owner's ratification of this exact row",
+            APPROVED: "an explicit owner ruling (batches 14–19) or the owner's recorded ratification "
+                      "(batches 1–13) covers this unit at this revision",
+            PENDING: "a kept unit that no ruling or ratification covers at its current revision",
             RETIRED: "listed in RETIRED.json; never exported",
         },
         "legacy_basis": anchors.cite(*MASTER_NO_RESPONSE),
+        "ratification": {
+            "record": RATIFICATION_REL, "ratified_by": record["ratified_by"], "ruling": record["ruling"],
+            "audit": AUDIT_REL,
+            "recommendations": {name: [uid for uid, entry in ratified.items() if entry["recommendation"] == name]
+                                for name in RECOMMENDATIONS},
+        },
         "census": census,
         "exclusion_pairs": pairs,
         "units": units,
@@ -396,15 +509,17 @@ def _refs(units) -> str:
 
 
 def render_roster_md(roster: dict) -> str:
-    units, census = roster["units"], roster["census"]
+    units, census, ratification = roster["units"], roster["census"], roster["ratification"]
     by_status = {s: [u for u in units if u["approval"] == s] for s in (APPROVED, PENDING, RETIRED)}
     short = {APPROVED: "approved", PENDING: "pending", RETIRED: "retired"}
+    record, audit = (ratification[key].rpartition("/")[2] for key in ("record", "audit"))
     out = [
         "# P5 approval roster",
         "",
         f"Generated by `{BUILDER_REL}`; do not edit by hand. The rows, the SHA-256 of every candidate's "
         "exact bytes and every file:line reference are in [`approval-roster.json`](approval-roster.json). "
-        f"Spec: `{DESIGN_DOC_REL}` §2 and §4 row 1 (bead hpf-535m).",
+        f"Spec: `{DESIGN_DOC_REL}` §2 and §4 row 1 (bead hpf-535m); the ratification of batches 1–13 is bead "
+        "hpf-jsnf.",
         "",
         f"**Census, equal to the design's §2 table:** {census['selected'][0]} candidate units / "
         f"{census['selected'][1]} questions (batches 1–17 `candidates-final/`, 18–19 `candidates/`); "
@@ -414,9 +529,10 @@ def render_roster_md(roster: dict) -> str:
         "",
         "| Approval | Units / questions | Basis |",
         "|---|---:|---|",
-        f"| `{APPROVED}` | {_count(by_status[APPROVED])} | explicit owner rulings, batches 14–19 |",
-        f"| `{PENDING}` | {_count(by_status[PENDING])} | batches 1–13: shipped final; the whole-bank master "
-        "records recommendations, not an owner response |",
+        f"| `{APPROVED}` | {_count(by_status[APPROVED])} | explicit owner rulings, batches 14–19; the owner's "
+        f"ratification, batches 1–13 ([`{record}`]({record})) |",
+        f"| `{PENDING}` | {_count(by_status[PENDING])} | kept units that no ruling or ratification covers at their "
+        "current revision |",
         f"| `{RETIRED}` | {_count(by_status[RETIRED])} | `RETIRED.json`; never exported, whatever a ruling says |",
         "",
         "## Per batch (units / questions)",
@@ -432,18 +548,28 @@ def render_roster_md(roster: dict) -> str:
         cells = [f"{row[k][0]} / {row[k][1]}" for k in ("LÄS", "ELF", "retired")]
         out.append(f"| {row['batch']} | {' | '.join(cells)} | {status} | {_refs(batch_units)} |")
     legacy_ref = roster["legacy_basis"]["ref"].removeprefix("pipeline/synthetic/")
+    recommendations = ratification["recommendations"]
+    revision_of = {u["unit_id"]: u["revision"] for u in units}
+    fixed = ", ".join(f"`{uid}`, now revision {revision_of[uid]}" for uid in recommendations["fix"]) or "none"
+    pending = ", ".join(f"`{u['unit_id']}`" for u in by_status[PENDING]) or "none"
     out += [
         "",
-        "## For the owner: ratify batches 1–13",
+        "## Ratification of batches 1–13",
         "",
-        f"Ratifying approves exactly the {len(by_status[PENDING])} `{PENDING}` rows in `approval-roster.json`, "
-        "at the SHA-256 recorded for each. Their evidence is each batch's shipped-final record plus the unit's "
-        "row in the whole-bank master, which ends with a suggested reply and no recorded owner response "
-        f"(`{legacy_ref}`). Until ratified, the exporter leaves them out; `export_product.py --include-pending` "
-        "adds them to preview exports only, stamped PREVIEW. Reply, for example, **“ratify batches 1–13 as "
-        "listed”**, or name the units to hold back.",
+        f"**Ratified, {ratification['ratified_by']}:** {ratification['ruling']}. The whole-bank master ends on a "
+        f"suggested reply and records no owner response (`{legacy_ref}`); this ratification is the response. It was "
+        f"given on the read-only re-audit [`{audit}`]({audit}) (bead hpf-v2nd) and is recorded per unit in "
+        f"[`{record}`]({record}), by re-audit recommendation: "
+        + ", ".join(f"{name} {len(ids)}" for name, ids in recommendations.items()) + ".",
         "",
-        "Four kept units were ÄGARBLICK items rather than plain approve-with-note rows:",
+        "Each entry pins the revision and the digest of the student-facing content that were ratified. The build "
+        "refuses an entry that disagrees with the candidate at that revision, and a later revision is pending "
+        "again until a ruling covers it. Every ratify-with-note row carries its note in `ratification_note`, "
+        "the conditional ones with how their condition was met.",
+        "",
+        f"Fixed before ratification: {fixed}. Still pending: {pending}.",
+        "",
+        "Four kept units were ÄGARBLICK items in the master rather than plain approve-with-note rows:",
         "",
     ]
     for uid, note in LEGACY_NOTES.items():
@@ -465,13 +591,23 @@ def render_roster_md(roster: dict) -> str:
         "",
         "A bank export may hold both members of a pair; keeping them apart is the session pickers' job "
         "(design §A, PR 4). An export made for one session (`export_product.py --single-session`) is refused "
-        "if it holds both members of any pair. Please confirm the topic pair together with the ratification.",
+        "if it holds both members of any pair.",
+    ]
+    unconfirmed = [p for p in roster["exclusion_pairs"] if p["status"] == "pending-owner-confirmation"]
+    if unconfirmed:
+        listed = "; ".join(f"`{p['units'][0]}` · `{p['units'][1]}`" for p in unconfirmed)
+        out += ["", f"Still awaiting the owner's confirmation, and enforced conservatively until then: {listed}. "
+                    "The ratification of batches 1–13 ratified the units, not the pairing."]
+    bumped = ", ".join(f"`{u['unit_id']}`, revision {u['revision']} (qids `p5-{u['unit_id']}-r{u['revision']}-"
+                       f"{u['section']}-<nnn>`)" for u in units if u["revision"] != 1)
+    out += [
         "",
         "## Revisions",
         "",
-        "Every unit is revision 1 (qids `p5-<unit>-r1-<SECTION>-<nnn>`). A change to a unit's title, passage, "
-        "prompts, options or keys needs a higher revision in `REVISIONS` (the build refuses to reuse one), "
-        "and a bumped revision stays pending until a ruling is recorded for it.",
+        "Every unit is revision 1 (qids `p5-<unit>-r1-<SECTION>-<nnn>`)" + (f" except {bumped}" if bumped else "")
+        + ". A change to a unit's title, passage, prompts, options or keys needs a higher revision in "
+        "`REVISIONS` (the build refuses to reuse one), and a bumped revision stays pending until a ruling or a "
+        "ratification is recorded for it.",
         "",
     ]
     return "\n".join(out)

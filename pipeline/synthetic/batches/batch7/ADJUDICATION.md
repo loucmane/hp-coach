@@ -307,3 +307,22 @@ Vilket påstående överensstämmer bäst med texten?
 - **B.** Allemansrätten har i alla tider byggt på tydliga lagregler som varje plockare följer.
 - **C.** Allemansrätten vilar mindre på lagtext än på en tyst måtta, som storskaligt plockande hotar. **◀ NYCKEL**
 - **D.** Eftersom svamp alltid växer upp igen tar naturen ingen som helst skada av kommersiell plockning.
+
+---
+
+## Law-13 rename — 2026-10-07 (hpf-jsnf): las-b7-002 r2, »Ellen Sundqvist« → »Frida Ullbrink«
+
+The owner ratified batches 1–13 on 2026-10-07: »ratify them, make sure they are up to par«. The read-only re-audit `pipeline/synthetic/infold/AUDIT-batches-1-13.md` (bead hpf-v2nd) found one unit to fix first. This unit's traffic planner, »Ellen Sundqvist«, shared her full name with a different person, the urban-ecology researcher of `las-b4-002`. That is the law-13 full-name class the 2026-07-30 cross-batch scan made a ship-blocker (F6), and it was never escalated for this pair. As with `elf-b5-002` and `las-b10-002`, the later unit is renamed.
+
+- **The rename.** »Ellen Sundqvist« is now »Frida Ullbrink«:
+  - in the passage: »Trafikplaneraren Frida Ullbrink har följt flödena …« and »Ullbrinks slutsats är försiktig men tydlig …«;
+  - in the q1 prompt: »Vad visade, enligt texten, Frida Ullbrinks mätningar vid den nya cykelvägen?«;
+  - in q1's rationale and in `generator_meta.self_blind_solve`.
+- **Nothing else changed.** The title, the rest of the passage, q2, all eight options and both keys (C, B) are the same, and »säger hon« still agrees. The unit's `generator_meta.repair_log` lists every edit with its before and after text.
+- **Revision 2.** Student-facing content changed, so `build_roster.py` sets `las-b7-002` to revision 2. Its qids are now `p5-las-b7-002-r2-LÄS-001` and `-002`.
+- **Re-gate.** Mech on the r2 bytes passes 6/6. It ran with M-ECHO over all 128 roster units and M-PLAGIARISM against `data/parsed`, and M-ECHO reports no finding. The full-name finding is gone for both `las-b7-002` and `las-b4-002`; `las-b4-002` keeps only its cross-batch surname findings (Lindqvist ×2, Sundqvist). The learner-output lint, default and `--strict`, is clean on the exported r2 strings. No LLM gate was re-run, because no key, option or stem meaning changed.
+- **Law 16.** The new name has an offline screen only; the lane had no network. No Ullbrink and no Frida occur in the repository, the name registries, the real-entity sweep or the authentic corpus. The search log in `generator_meta.originality_note` flags the name for a RULE-14 web check before release.
+- **Ratification.** `pipeline/synthetic/infold/ratification-2026-10-07.json` ratifies `las-b7-002` at revision 2, with the digest of the renamed content.
+
+The package text above is revision 1 as adjudicated on 2026-07-24; it stays as historical evidence. Evidence for this entry: [the hpf-jsnf worklog](../../../../docs/worklog/hpf-jsnf.md).
+

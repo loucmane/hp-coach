@@ -3,14 +3,109 @@
   "generated_by": "pipeline/synthetic/infold/build_roster.py",
   "spec": "docs/p5-infold-design.md §2, §4 row 1, §C, §F",
   "approval_values": {
-    "approved": "an explicit owner ruling covers this unit at these bytes",
-    "pending-owner-ratification": "legacy shipped unit; awaits the owner's ratification of this exact row",
+    "approved": "an explicit owner ruling (batches 14–19) or the owner's recorded ratification (batches 1–13) covers this unit at this revision",
+    "pending-owner-ratification": "a kept unit that no ruling or ratification covers at its current revision",
     "retired": "listed in RETIRED.json; never exported"
   },
   "legacy_basis": {
     "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:45",
     "quote": "## Svarsinstruktion",
-    "note": "the master suggests a reply; no owner response is recorded"
+    "note": "the master suggests a reply and records no owner response; the owner's ratification is recorded in pipeline/synthetic/infold/ratification-2026-10-07.json"
+  },
+  "ratification": {
+    "record": "pipeline/synthetic/infold/ratification-2026-10-07.json",
+    "ratified_by": "owner 2026-10-07",
+    "ruling": "»ratify them, make sure they are up to par« (the legacy P5 batches 1–13)",
+    "audit": "pipeline/synthetic/infold/AUDIT-batches-1-13.md",
+    "recommendations": {
+      "ratify": [
+        "las-b1-001",
+        "elf-b2-001",
+        "elf-b2-002",
+        "elf-b2-003",
+        "elf-b2-004",
+        "las-b2-003",
+        "elf-b3-003",
+        "elf-b3-004",
+        "las-b3-002",
+        "elf-b4-003",
+        "elf-b5-003",
+        "elf-b5-004",
+        "elf-b6-002",
+        "elf-b6-003",
+        "elf-b6-004",
+        "elf-b7-003",
+        "elf-b7-004",
+        "las-b7-003",
+        "elf-b8-003",
+        "elf-b8-004",
+        "las-b8-003",
+        "elf-b9-001",
+        "elf-b9-002",
+        "elf-b9-003",
+        "elf-b9-004",
+        "las-b9-001",
+        "las-b9-002",
+        "elf-b10-001",
+        "elf-b10-002",
+        "elf-b10-004",
+        "las-b10-003",
+        "elf-b11-001",
+        "elf-b11-002",
+        "elf-b11-003",
+        "elf-b11-004",
+        "las-b11-002",
+        "las-b11-003",
+        "elf-b12-002",
+        "elf-b12-003",
+        "elf-b12-004",
+        "las-b12-001",
+        "las-b12-003",
+        "elf-b13-001",
+        "elf-b13-002",
+        "elf-b13-004",
+        "las-b13-001",
+        "las-b13-002",
+        "las-b13-003"
+      ],
+      "ratify-with-note": [
+        "elf-b1-001",
+        "elf-b1-002",
+        "elf-b1-003",
+        "elf-b1-004",
+        "las-b1-002",
+        "las-b1-003",
+        "las-b2-002",
+        "elf-b3-002",
+        "las-b3-001",
+        "las-b3-003",
+        "elf-b4-001",
+        "elf-b4-002",
+        "las-b4-002",
+        "las-b4-003",
+        "elf-b5-001",
+        "elf-b5-002",
+        "las-b5-001",
+        "las-b5-002",
+        "las-b5-003",
+        "las-b6-002",
+        "las-b6-003",
+        "elf-b7-002",
+        "las-b7-001",
+        "elf-b8-002",
+        "las-b8-002",
+        "las-b9-003",
+        "elf-b10-003",
+        "las-b10-001",
+        "las-b10-002",
+        "elf-b12-001",
+        "las-b12-002",
+        "elf-b13-003"
+      ],
+      "fix": [
+        "las-b7-002"
+      ]
+    }
   },
   "census": {
     "batches": [
@@ -393,8 +488,10 @@
       "content_sha256": "65f5f45081edaf0ee139e01936921001ee837e003deb7c1ba833c41650e1e6c7",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch1/verdicts-vfinal/verdicts-gkey-resolved.jsonl:1-5 and :10-14) were never mechanically resolved, because their targets q1…q5 are not the q:N form gkey_resolve.py parses. The re-audit compared them by hand: the answers C/A/D/B/A equal the roster keys. Vote 2 is resolved PASS on the renamed bytes, G-DISTRACTOR was re-run and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Fenwick Institute for Lifespan Research' was renamed and 'Merritt, Ohio' became 'Tessendale, Ohio'. Optional housekeeping: re-run gkey_resolve.py with q:N targets.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch1/ADJUDICATION.md:2",
@@ -405,6 +502,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:53",
           "quote": "| elf-b1-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:50",
+          "quote": "| elf-b1-001 | ELF | 5 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:10",
+          "quote": "\"unit_id\": \"elf-b1-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -420,8 +527,10 @@
       "content_sha256": "90ac5dd409a93c81080fb474fe1b9434e6ed8fa778e02b8c7b5f7e1b9ff2c4fa",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "E1: batch 1's V-FINAL record (batches/batch1/reviews/final_verify.jsonl:2) was folded without this unit's blind legs. They are in batches/batch1/verdicts-final/ (G-KEY ×2 and G-DISTRACTOR, all PASS), no older than the unit's last content change (a0a91b5, PR #335), and re-folding against them reproduces the recorded verdict (VERIFIED_NOTES, gkey_records=10). Optional housekeeping: re-derive batch 1's final_verify.jsonl from a merged leg set.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch1/ADJUDICATION.md:2",
@@ -432,6 +541,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:54",
           "quote": "| elf-b1-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:51",
+          "quote": "| elf-b1-002 | ELF | 5 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:17",
+          "quote": "\"unit_id\": \"elf-b1-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -447,8 +566,10 @@
       "content_sha256": "e996777a0b66a175bdb18f6c40888ba049d80052369ee8ca54b25d43d9671a44",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "E1: batch 1's V-FINAL record (batches/batch1/reviews/final_verify.jsonl:3) was folded without this unit's blind legs. They are in batches/batch1/verdicts-final/ (G-KEY ×2 and G-DISTRACTOR, all PASS), no older than the unit's last content change (7f3cea5, PR #332), and re-folding against them reproduces the recorded verdict (VERIFIED, gkey_records=2). Optional housekeeping: re-derive batch 1's final_verify.jsonl from a merged leg set.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch1/ADJUDICATION.md:2",
@@ -459,6 +580,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:55",
           "quote": "| elf-b1-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:52",
+          "quote": "| elf-b1-003 | ELF | 1 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:24",
+          "quote": "\"unit_id\": \"elf-b1-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -474,8 +605,10 @@
       "content_sha256": "aa452ae0d394925c10da4372ffff7affe4b5952981be6d5404e39516f1d6fc40",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "E1: batch 1's V-FINAL record (batches/batch1/reviews/final_verify.jsonl:4) was folded without this unit's blind legs. They are in batches/batch1/verdicts-final/ (G-KEY ×2 and G-DISTRACTOR, all PASS; the post-redesign re-gate is the second line), no older than the unit's last content change (a0a91b5, PR #335), and re-folding against them reproduces the recorded verdict (VERIFIED_NOTES, gkey_records=2). Optional housekeeping: re-derive batch 1's final_verify.jsonl from a merged leg set.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch1/ADJUDICATION.md:2",
@@ -486,6 +619,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:56",
           "quote": "| elf-b1-004 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:53",
+          "quote": "| elf-b1-004 | ELF | 1 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:31",
+          "quote": "\"unit_id\": \"elf-b1-004\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -501,8 +644,10 @@
       "content_sha256": "02b728ea5e551f4e2f08a074bd7c09697719f0f97baacb96f1958af435b38bc6",
       "question_count": 4,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch1/ADJUDICATION.md:2",
@@ -513,6 +658,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:99",
           "quote": "| las-b1-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:54",
+          "quote": "| las-b1-001 | LÄS | 4 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:38",
+          "quote": "\"unit_id\": \"las-b1-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -528,8 +683,10 @@
       "content_sha256": "c184ed214e14637e4cae8bc18007bab3e5ec81d405017dccf1297f85449d4797",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "E1: batch 1's V-FINAL record (batches/batch1/reviews/final_verify.jsonl:6) was folded without this unit's blind legs. They are in batches/batch1/verdicts-final/ (G-KEY ×2 resolved PASS; G-DISTRACTOR PASS except a flag on q:2), no older than the unit's last content change (a0a91b5, PR #335), and re-folding against them reproduces the recorded verdict (VERIFIED_NOTES, gkey_records=4). Optional housekeeping: re-derive batch 1's final_verify.jsonl from a merged leg set.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch1/ADJUDICATION.md:2",
@@ -540,6 +697,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:100",
           "quote": "| las-b1-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:55",
+          "quote": "| las-b1-002 | LÄS | 2 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:45",
+          "quote": "\"unit_id\": \"las-b1-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -555,8 +722,10 @@
       "content_sha256": "53f88a7a488b66484cae2a4bef40c889b77dec1c6053ffe115a145b6d1b2f6d8",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "E1: batch 1's V-FINAL record (batches/batch1/reviews/final_verify.jsonl:7) was folded without this unit's blind legs. They are in batches/batch1/verdicts-final/ (G-KEY ×2 and G-DISTRACTOR, all PASS), no older than the unit's last content change (a0a91b5, PR #335), and re-folding against them reproduces the recorded verdict (VERIFIED_NOTES, gkey_records=4). Optional housekeeping: re-derive batch 1's final_verify.jsonl from a merged leg set.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch1/ADJUDICATION.md:2",
@@ -567,6 +736,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:101",
           "quote": "| las-b1-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:56",
+          "quote": "| las-b1-003 | LÄS | 2 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:52",
+          "quote": "\"unit_id\": \"las-b1-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -582,8 +761,10 @@
       "content_sha256": "917a0a47fd2a213d10f457b914980988a2d297fc4dec0fcaa948360fd395e361",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch2/STATUS.md:1",
@@ -594,6 +775,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:73",
           "quote": "| elf-b2-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:57",
+          "quote": "| elf-b2-001 | ELF | 5 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:59",
+          "quote": "\"unit_id\": \"elf-b2-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -609,8 +800,10 @@
       "content_sha256": "125e40c520c0c00d8cd4f3236be37472c79c8594aa77109020dd4911578949c1",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch2/STATUS.md:1",
@@ -621,6 +814,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:74",
           "quote": "| elf-b2-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:58",
+          "quote": "| elf-b2-002 | ELF | 5 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:66",
+          "quote": "\"unit_id\": \"elf-b2-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -636,8 +839,10 @@
       "content_sha256": "7f492003795123bfd274e4d845c6b9c5153863fa43a4c9ff9be400592361edea",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch2/STATUS.md:1",
@@ -648,6 +853,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:75",
           "quote": "| elf-b2-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:59",
+          "quote": "| elf-b2-003 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:73",
+          "quote": "\"unit_id\": \"elf-b2-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -663,8 +878,10 @@
       "content_sha256": "7de618049f2758623ba06d842afa4697c21fadcbf25cb6a9c8f8245428303d99",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch2/STATUS.md:1",
@@ -675,6 +892,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:76",
           "quote": "| elf-b2-004 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:60",
+          "quote": "| elf-b2-004 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:80",
+          "quote": "\"unit_id\": \"elf-b2-004\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -690,8 +917,10 @@
       "content_sha256": "3116f5503e21404804c0b6369a5e1c27334d3f768bca250c5463387fe55b70e3",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch2/verdicts-vfinal/verdicts-gkey-resolved.jsonl:21-22) were never mechanically resolved. By hand, the answers B/D equal the roster keys; vote 2 is resolved PASS on the renamed bytes and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Sörgårdsskolan' became Klöverhagsskolan, and the reused 'Kvarnby' and 'Almvik' became Häggnora and Fagerhammar. Optional housekeeping: re-run gkey_resolve.py with q:N targets.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch2/STATUS.md:1",
@@ -702,6 +931,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:112",
           "quote": "| las-b2-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:61",
+          "quote": "| las-b2-002 | LÄS | 2 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:87",
+          "quote": "\"unit_id\": \"las-b2-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -717,8 +956,10 @@
       "content_sha256": "055f89d747123977117d0d6c78a3458be74ba7aec1cd5cc39b4dd44d0e514eff",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master ÄGARBLICK item",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "Ratifying las-b2-003 also accepts its ÄGARBLICK D 'bäst' stem in q1 (third redesign, 4791084, PR #356), which the re-audit did not re-judge.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch2/STATUS.md:1",
@@ -729,6 +970,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:36",
           "quote": "**las-b2-003**",
           "note": "master: ÄGARBLICK D: q1's 'bäst' stem was left to the owner's eye; a third q1 redesign landed in 4791084 (PR #356) and its audit returned CONFIRMED_NOTES"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:62",
+          "quote": "| las-b2-003 | LÄS | 2 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:94",
+          "quote": "\"unit_id\": \"las-b2-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -744,8 +995,10 @@
       "content_sha256": "549d50e180ccc053f597d05a0bc318507ac1566a209ea8c6fa14e2bbf9951839",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch3/verdicts-vfinal/verdicts-gkey-resolved.jsonl:20-24) were never mechanically resolved. By hand, the answers C/A/D/B/C equal the roster keys; vote 2 is resolved PASS on the renamed bytes and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Aurora' became Nattrand, with Vaneby Rail, Anneke Verholt and Miles Wrensham. Context: exclusion pair with las-b3-002, still awaiting the owner's confirmation. Optional housekeeping: re-run gkey_resolve.py with q:N targets.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch3/STATUS.md:1",
@@ -756,6 +1009,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:77",
           "quote": "| elf-b3-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:63",
+          "quote": "| elf-b3-002 | ELF | 5 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:101",
+          "quote": "\"unit_id\": \"elf-b3-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -773,8 +1036,10 @@
       "content_sha256": "7ae549607982891b2ecd13980a14b8ef71cf22481249eebe74a78b45b287f292",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch3/STATUS.md:1",
@@ -785,6 +1050,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:78",
           "quote": "| elf-b3-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:64",
+          "quote": "| elf-b3-003 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:108",
+          "quote": "\"unit_id\": \"elf-b3-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -800,8 +1075,10 @@
       "content_sha256": "70da3a5ba5fa3dada5d4e90bfad63e003526b0de3b554a2bf5beec9fbd5cd480",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch3/STATUS.md:1",
@@ -812,6 +1089,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:79",
           "quote": "| elf-b3-004 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:65",
+          "quote": "| elf-b3-004 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:115",
+          "quote": "\"unit_id\": \"elf-b3-004\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -827,8 +1114,10 @@
       "content_sha256": "3e00441f2c2e03d3210079198ce4b9e25ecc353f69ac3ecc29fa8eb2337e5e54",
       "question_count": 4,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO, cross-batch surname reuse: 'Ahlgren' is Karin Ahlgren here and Petter Ahlgren in las-b5-002. Also 'Ingrid Sahlberg' with elf-b6-001, which is retired (RETIRED.json:5): cross-batch F6's hard collision, resolved by that retirement. Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch3/STATUS.md:1",
@@ -839,6 +1128,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:113",
           "quote": "| las-b3-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:66",
+          "quote": "| las-b3-001 | LÄS | 4 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:122",
+          "quote": "\"unit_id\": \"las-b3-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -854,8 +1153,10 @@
       "content_sha256": "6cc07621b0852caa2365f589d485ebcf49387287456cca16368e04c964622de4",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master ÄGARBLICK item",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "ÄGARBLICK C: exclusion pair with elf-b3-002 on the same night-train argument axis. Ratifying it should come with the owner's word on that topic pair; until then the pair stays enforced conservatively (pending-owner-confirmation).",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch3/STATUS.md:1",
@@ -866,6 +1167,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:29",
           "quote": "**las-b3-002**",
           "note": "master: ÄGARBLICK C: approve with a scheduler rule; the unit carries the matching serving_constraint, kept here as the elf-b3-002 exclusion pair"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:67",
+          "quote": "| las-b3-002 | LÄS | 2 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:129",
+          "quote": "\"unit_id\": \"las-b3-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -883,8 +1194,10 @@
       "content_sha256": "5453a27f530a186f8bdce1b74709fed4e70a40fe045cba42bbec84f243830f94",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO, cross-batch surname reuse: 'Lindqvist' is Harriet Lindqvist here, Petra Lindqvist in las-b4-002 and Vidar Lindqvist in las-b5-001, a family the 2026-07-30 scan listed (cross-batch-report.md:195). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch3/STATUS.md:1",
@@ -895,6 +1208,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:114",
           "quote": "| las-b3-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:68",
+          "quote": "| las-b3-003 | LÄS | 2 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:136",
+          "quote": "\"unit_id\": \"las-b3-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -910,8 +1233,10 @@
       "content_sha256": "a74b79494256992cb65bd04ea6919d1c45d5a4506076fa1eeda15ba9a068d2cf",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO, cross-batch surname reuse: 'Frisk' is Elias Frisk here, Karl-Otto Frisk in las-b10-001 and Owen Frisk in elf-b12-001. Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch4/STATUS.md:1",
@@ -922,6 +1247,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:80",
           "quote": "| elf-b4-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:69",
+          "quote": "| elf-b4-001 | ELF | 5 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:143",
+          "quote": "\"unit_id\": \"elf-b4-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -937,8 +1272,10 @@
       "content_sha256": "7ea1a3607f6f93972f13f4d9d8671fba56c6ada1706646ea68ef1ec40bb3f3bc",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch4/verdicts-vfinal/verdicts-gkey-resolved.jsonl:16-20 and :21-25) were never mechanically resolved. By hand, the answers C/A/D/B/C equal the roster keys; vote 2 is resolved PASS on the renamed bytes and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Rundgång' was renamed. Optional housekeeping: re-run gkey_resolve.py with q:N targets.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch4/STATUS.md:1",
@@ -949,6 +1286,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:81",
           "quote": "| elf-b4-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:70",
+          "quote": "| elf-b4-002 | ELF | 5 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:150",
+          "quote": "\"unit_id\": \"elf-b4-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -964,8 +1311,10 @@
       "content_sha256": "bf298cd2a7b97b3bdd778da3ee7ad81d55889a35324fb2b14bb48f4b754ca32f",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch4/STATUS.md:1",
@@ -976,6 +1325,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:82",
           "quote": "| elf-b4-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:71",
+          "quote": "| elf-b4-003 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:157",
+          "quote": "\"unit_id\": \"elf-b4-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -991,8 +1350,10 @@
       "content_sha256": "d6793dc5be79f9cd8a1a86ce01aa22f40f554ab2883d4293c4965769ea711220",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "Conditional ratify-with-note; condition met. M-ECHO: the full name 'Ellen Sundqvist' (the researcher here) also belonged to a different person in las-b7-002, and the surnames 'Lindqvist' (las-b3-003, las-b5-001) and 'Sundqvist' (las-b5-003) recur. The re-audit made ratification conditional on renaming las-b7-002, the later unit. Done 2026-10-07 (hpf-jsnf): las-b7-002 r2 calls its planner 'Frida Ullbrink', and a full-corpus mech run now gives this unit only the three surname-family findings, which are ratified with this note like the other cross-batch surname reuse (law 13 forbids it for new units only).",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch4/STATUS.md:1",
@@ -1003,6 +1364,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:115",
           "quote": "| las-b4-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:72",
+          "quote": "| las-b4-002 | LÄS | 2 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:164",
+          "quote": "\"unit_id\": \"las-b4-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1018,8 +1389,10 @@
       "content_sha256": "c673100ac167f59dd1e5b45385523cd292626001920111ded93862d6dcd1f9b4",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO, cross-batch surname reuse: 'Öberg' is Marika Öberg here and Marianne Öberg in las-b10-002; also las-b11-001, which is retired (RETIRED.json:29). The 2026-07-30 scan listed it (cross-batch-report.md:193). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch4/STATUS.md:1",
@@ -1030,6 +1403,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:116",
           "quote": "| las-b4-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:73",
+          "quote": "| las-b4-003 | LÄS | 2 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:171",
+          "quote": "\"unit_id\": \"las-b4-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1045,8 +1428,10 @@
       "content_sha256": "8c11cae084db0dddffb6f09b99c232f33890b5d8030906cc7135ed1685261996",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO, cross-batch surname reuse: 'Brandt' is Ottilie Brandt here and Ivar Brandt in elf-b10-003. Also phrase echoes with elf-b6-001 and elf-b7-001, the retired clones of this unit (RETIRED.json:5, :11; master ÄGARBLICK A). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch5/STATUS.md:1",
@@ -1057,6 +1442,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:83",
           "quote": "| elf-b5-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:74",
+          "quote": "| elf-b5-001 | ELF | 5 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:178",
+          "quote": "\"unit_id\": \"elf-b5-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1072,8 +1467,10 @@
       "content_sha256": "9ffd5b13070b42a7d37d7427853afaf284840b82547e35f3050d65db849b8a75",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master ÄGARBLICK item",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch5/verdicts-vfinal/verdicts-gkey-resolved.jsonl:21-25) were never mechanically resolved. By hand, the answers B/A/C/D/B equal the roster keys; vote 2 is resolved PASS on the renamed bytes and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Verran coast', 'Verran guild' and 'Halden' were renamed. Context: ÄGARBLICK B, the 'Ottilie Brandt' rename, landed in 4791084 (PR #356). Optional housekeeping: re-run gkey_resolve.py with q:N targets.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch5/STATUS.md:1",
@@ -1084,6 +1481,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:24",
           "quote": "**elf-b5-002**",
           "note": "master: ÄGARBLICK B: ÄNDRA for the 'Ottilie Brandt' name collision with elf-b5-001; the rename landed in 4791084 (PR #356)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:75",
+          "quote": "| elf-b5-002 | ELF | 5 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:185",
+          "quote": "\"unit_id\": \"elf-b5-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1099,8 +1506,10 @@
       "content_sha256": "697aa02d73c579c9e4be8cede6edf08db7e8424ffd07be7075b38c3a9fa18312",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch5/STATUS.md:1",
@@ -1111,6 +1520,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:84",
           "quote": "| elf-b5-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:76",
+          "quote": "| elf-b5-003 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:192",
+          "quote": "\"unit_id\": \"elf-b5-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1126,8 +1545,10 @@
       "content_sha256": "d93ca4c046750bc89761fd5c1100700f0f13b3fedb22c4a2282c63a126f141ca",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch5/STATUS.md:1",
@@ -1138,6 +1559,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:85",
           "quote": "| elf-b5-004 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:77",
+          "quote": "| elf-b5-004 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:199",
+          "quote": "\"unit_id\": \"elf-b5-004\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1153,8 +1584,10 @@
       "content_sha256": "f26590bdc8470a925eec8594e898564eaca3cba2f12dc70ec3913bf7475c0f42",
       "question_count": 4,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO, cross-batch surname reuse: 'Lindqvist' is Vidar Lindqvist here, Harriet Lindqvist in las-b3-003 and Petra Lindqvist in las-b4-002. Also a phrase echo with las-b6-001, a retired clone (RETIRED.json:17). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch5/STATUS.md:1",
@@ -1165,6 +1598,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:117",
           "quote": "| las-b5-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:78",
+          "quote": "| las-b5-001 | LÄS | 4 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:206",
+          "quote": "\"unit_id\": \"las-b5-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1180,8 +1623,10 @@
       "content_sha256": "5f8629f712af8288bd6546127fb7d8030bc331e6fc9c0aff1b36bd85b3fec947",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO, cross-batch surname reuse: 'Ahlgren' is Petter Ahlgren here and Karin Ahlgren in las-b3-001. Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch5/STATUS.md:1",
@@ -1192,6 +1637,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:118",
           "quote": "| las-b5-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:79",
+          "quote": "| las-b5-002 | LÄS | 2 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:213",
+          "quote": "\"unit_id\": \"las-b5-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1207,8 +1662,10 @@
       "content_sha256": "3451a9f72e20d12a8d2b757a51bab07d530216b2324864cb872bab03f5a911b6",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO, cross-batch surname reuse: 'Sundqvist' is Märta Sundqvist here and Ellen Sundqvist in las-b4-002. The re-audit also found las-b7-002's Ellen Sundqvist; that echo is gone since las-b7-002's r2 rename (hpf-jsnf). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch5/STATUS.md:1",
@@ -1219,6 +1676,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:119",
           "quote": "| las-b5-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:80",
+          "quote": "| las-b5-003 | LÄS | 2 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:220",
+          "quote": "\"unit_id\": \"las-b5-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1236,6 +1703,8 @@
       "revision": 1,
       "approval": "retired",
       "approval_basis": "RETIRED.json",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/RETIRED.json:5",
@@ -1261,8 +1730,10 @@
       "content_sha256": "ad7c25094e4bca6f547233eb1e60beab651ab1a2dd6a67769416ecfffbd81468",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch6/STATUS.md:1",
@@ -1273,6 +1744,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:86",
           "quote": "| elf-b6-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:81",
+          "quote": "| elf-b6-002 | ELF | 5 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:227",
+          "quote": "\"unit_id\": \"elf-b6-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1288,8 +1769,10 @@
       "content_sha256": "4b605a0c2e77221a5ce17f4fe763962c1ee7d94de0da36b4dae82239a8b86887",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch6/STATUS.md:1",
@@ -1300,6 +1783,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:87",
           "quote": "| elf-b6-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:82",
+          "quote": "| elf-b6-003 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:234",
+          "quote": "\"unit_id\": \"elf-b6-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1315,8 +1808,10 @@
       "content_sha256": "a03cdbda131f08201b6dd14188a3e22659dd20bf6d634da53f9fb1287c21091b",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch6/STATUS.md:1",
@@ -1327,6 +1822,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:88",
           "quote": "| elf-b6-004 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:83",
+          "quote": "| elf-b6-004 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:241",
+          "quote": "\"unit_id\": \"elf-b6-004\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1344,6 +1849,8 @@
       "revision": 1,
       "approval": "retired",
       "approval_basis": "RETIRED.json",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/RETIRED.json:17",
@@ -1369,8 +1876,10 @@
       "content_sha256": "044a136d635a4dd604ac907d3873b38757743ee7701f93c5da9cf0698665bcfc",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO, cross-batch surname reuse: 'Åkerlund' is Gunnel Åkerlund here and Ingrid Åkerlund in las-b8-002, a family the 2026-07-30 scan listed (cross-batch-report.md:194). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch6/STATUS.md:1",
@@ -1381,6 +1890,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:120",
           "quote": "| las-b6-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:84",
+          "quote": "| las-b6-002 | LÄS | 2 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:248",
+          "quote": "\"unit_id\": \"las-b6-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1396,8 +1915,10 @@
       "content_sha256": "9350423a959dbd0f4172a8af908c7a5bbaa4bbc188fc667aa6fdf1bc645e8606",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "Conditional ratify-with-note; condition met. R1: 'Sandviken', a real Swedish town, was never classified by the law-16 sweep. One-entity law-16 check 2026-10-07 (hpf-jsnf): PASS, a bare locator ('near'). The passage places an invented educator's small follow-up at an unnamed compulsory school in Sandviken; it attaches no fact to the town, its administration or any named school, and identifies no real person (Ellen Boström is swept clear). The sweep's own precedent: a real place used as a bare locator for invented work is 'near' (Norrköping, adjudication/real-entity/verdicts-b11-12.json:388-391; Kvarnby, verdicts-b7-8.json:152-155), and Sandviken in las-b12-002 was SHIP-BLOCKING only because that passage attached a fabricated fact about the town's own facilities and an identifiable private person (verdicts-b11-12.json:394-397). Evidence: docs/worklog/hpf-jsnf.md.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch6/STATUS.md:1",
@@ -1408,6 +1929,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:121",
           "quote": "| las-b6-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:85",
+          "quote": "| las-b6-003 | LÄS | 2 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:255",
+          "quote": "\"unit_id\": \"las-b6-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1425,6 +1956,8 @@
       "revision": 1,
       "approval": "retired",
       "approval_basis": "RETIRED.json",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/RETIRED.json:11",
@@ -1450,8 +1983,10 @@
       "content_sha256": "1118bf89d26dfcc00f2c28a10ebb2ef21bbed0db2ff2256c310b22ea09f5af26",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch7/verdicts-vfinal/verdicts-gkey-resolved.jsonl:21-25 and :26-30) were never mechanically resolved. By hand, the answers C/B/D/A/B equal the roster keys; vote 2 is resolved PASS on the renamed bytes and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Northern Assurance Office' was renamed. Optional housekeeping: re-run gkey_resolve.py with q:N targets.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch7/STATUS.md:1",
@@ -1462,6 +1997,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:89",
           "quote": "| elf-b7-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:86",
+          "quote": "| elf-b7-002 | ELF | 5 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:262",
+          "quote": "\"unit_id\": \"elf-b7-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1477,8 +2022,10 @@
       "content_sha256": "b17e1277278f608c3c852035e6064957996b44c99ea8dcf99a1bd7717419099d",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch7/STATUS.md:1",
@@ -1489,6 +2036,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:90",
           "quote": "| elf-b7-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:87",
+          "quote": "| elf-b7-003 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:269",
+          "quote": "\"unit_id\": \"elf-b7-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1504,8 +2061,10 @@
       "content_sha256": "b1529c75ee24a4c6fa2602f8285b38ae8e5db4c719261cff2a62dce260eb3713",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch7/STATUS.md:1",
@@ -1516,6 +2075,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:91",
           "quote": "| elf-b7-004 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:88",
+          "quote": "| elf-b7-004 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:276",
+          "quote": "\"unit_id\": \"elf-b7-004\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1531,8 +2100,10 @@
       "content_sha256": "3c95e4d58c9fb9bc8a385b44fc4048a6c68cd090abc88ce7e2158151a5ec9f7f",
       "question_count": 4,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO against a retired unit only: a phrase echo (30 shared 6-grams) with las-b8-001, the retired clone of this unit (RETIRED.json:23; master ÄGARBLICK A). Retired units are never exported or served.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch7/STATUS.md:1",
@@ -1543,6 +2114,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:122",
           "quote": "| las-b7-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:89",
+          "quote": "| las-b7-001 | LÄS | 4 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:283",
+          "quote": "\"unit_id\": \"las-b7-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1554,12 +2135,14 @@
       "section": "LÄS",
       "title": "Fler kilometer räcker inte — cykelnätet måste hänga ihop",
       "source": "pipeline/synthetic/batches/batch7/candidates-final/las-b7-002.json",
-      "sha256": "859f7d888954d19941e3c44b36899892dd44d8f6452eaa916a488a21ee79eecc",
-      "content_sha256": "d18cd27254fa330d4ed47239653509d0d0deea0870935f685a58b9c2c9135e7c",
+      "sha256": "83e712a53bfa3b39afeed02fc16fdb9d239871e99fd696ac5caa4a81df99ebc1",
+      "content_sha256": "1378306dc4e752fb2ca2a7be312c42a5b4bc6254468cbaf21be41a39342dcec1",
       "question_count": 2,
-      "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "revision": 2,
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r2; re-audit recommendation fix",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "Fixed at revision 2, then ratified. M-ECHO full-name collision: 'Ellen Sundqvist' was also a different person, the urban-ecology researcher of las-b4-002 — the class the 2026-07-30 scan made a ship-blocker (cross-batch F6) but never escalated for this pair — plus 'Sundqvist' with las-b5-003. Renamed 2026-10-07 (hpf-jsnf) to 'Frida Ullbrink' in the passage (twice), the q1 prompt, the q1 rationale and self_blind_solve; keys, options and stem meaning are unchanged (generator_meta.repair_log). On the r2 bytes mech is 6/6 PASS with M-ECHO clean over the 128-unit roster corpus, and the learner-output lint is clean. Law 16 for the new name: an offline screen only, with no web index queried (the lane had no network); flagged for a RULE-14 web check before release (generator_meta.originality_note).",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch7/STATUS.md:1",
@@ -1570,6 +2153,21 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:123",
           "quote": "| las-b7-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:90",
+          "quote": "| las-b7-002 | LÄS | 2 |",
+          "note": "re-audit row: fix"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:290",
+          "quote": "\"unit_id\": \"las-b7-002\"",
+          "note": "ratified by owner 2026-10-07 at r2"
+        },
+        {
+          "ref": "pipeline/synthetic/batches/batch7/ADJUDICATION.md:313",
+          "quote": "## Law-13 rename — 2026-10-07 (hpf-jsnf): las-b7-002 r2",
+          "note": "the revision-2 rename that the ratification covers"
         }
       ],
       "retired": false,
@@ -1585,8 +2183,10 @@
       "content_sha256": "58d11f4585d052de8c18b4612f13e0d75fbff1a6e966f260cd309cc29af8aa28",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch7/STATUS.md:1",
@@ -1597,6 +2197,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:124",
           "quote": "| las-b7-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:91",
+          "quote": "| las-b7-003 | LÄS | 2 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:297",
+          "quote": "\"unit_id\": \"las-b7-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1614,6 +2224,8 @@
       "revision": 1,
       "approval": "retired",
       "approval_basis": "RETIRED.json",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/RETIRED.json:35",
@@ -1639,8 +2251,10 @@
       "content_sha256": "de8bba5b1f2cb7d1733d2ab667d67a0e5ecfc7ed4c454b000da15ac11ede6d8e",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch8/verdicts-vfinal/verdicts-gkey-resolved.jsonl:21-25) were never mechanically resolved. By hand, the answers B/C/A/D/B equal the roster keys; vote 2 is resolved PASS on the renamed bytes and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Bellwether' was renamed. Optional housekeeping: re-run gkey_resolve.py with q:N targets.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch8/STATUS.md:1",
@@ -1651,6 +2265,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:92",
           "quote": "| elf-b8-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:92",
+          "quote": "| elf-b8-002 | ELF | 5 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:304",
+          "quote": "\"unit_id\": \"elf-b8-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1666,8 +2290,10 @@
       "content_sha256": "6e621caee8fec9c8fc58301fe3d3cd413288ee6189bad052e88462b1cda2e6c9",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch8/STATUS.md:1",
@@ -1678,6 +2304,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:93",
           "quote": "| elf-b8-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:93",
+          "quote": "| elf-b8-003 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:311",
+          "quote": "\"unit_id\": \"elf-b8-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1693,8 +2329,10 @@
       "content_sha256": "fd6a33851ae1d47ae48472a883757f7fb71eda9f107fe2f95cd2aa32f9d65f3a",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch8/STATUS.md:1",
@@ -1705,6 +2343,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:94",
           "quote": "| elf-b8-004 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:94",
+          "quote": "| elf-b8-004 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:318",
+          "quote": "\"unit_id\": \"elf-b8-004\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1722,6 +2370,8 @@
       "revision": 1,
       "approval": "retired",
       "approval_basis": "RETIRED.json",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/RETIRED.json:23",
@@ -1747,8 +2397,10 @@
       "content_sha256": "fef86c0d2251db6dbc7959a22952fb86a440322f4ef8b80ab7b3def002d05f41",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO, cross-batch surname reuse: 'Åkerlund' is Ingrid Åkerlund here and Gunnel Åkerlund in las-b6-002. Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch8/STATUS.md:1",
@@ -1759,6 +2411,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:125",
           "quote": "| las-b8-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:95",
+          "quote": "| las-b8-002 | LÄS | 2 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:325",
+          "quote": "\"unit_id\": \"las-b8-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1774,8 +2436,10 @@
       "content_sha256": "4c171a669dc8d6e630fca610d6c50000eee551e8fed51f435e43a58598cc7933",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch8/STATUS.md:1",
@@ -1786,6 +2450,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:126",
           "quote": "| las-b8-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:96",
+          "quote": "| las-b8-003 | LÄS | 2 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:332",
+          "quote": "\"unit_id\": \"las-b8-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1801,8 +2475,10 @@
       "content_sha256": "73f3e35961438087a41cea436137403843ae8b292c61909e5f1f47a658a6387f",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch9/STATUS.md:1",
@@ -1813,6 +2489,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:95",
           "quote": "| elf-b9-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:97",
+          "quote": "| elf-b9-001 | ELF | 5 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:339",
+          "quote": "\"unit_id\": \"elf-b9-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1828,8 +2514,10 @@
       "content_sha256": "c77c9ba7fdd32c61f3a68a657616faefb95711aafbaaeda2013ca0102951c67c",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch9/STATUS.md:1",
@@ -1840,6 +2528,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:96",
           "quote": "| elf-b9-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:98",
+          "quote": "| elf-b9-002 | ELF | 5 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:346",
+          "quote": "\"unit_id\": \"elf-b9-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1855,8 +2553,10 @@
       "content_sha256": "c8807fa7b102663d6f3dbea32cb48b619b59c127cf0b68233122312c5d171d8d",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch9/STATUS.md:1",
@@ -1867,6 +2567,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:97",
           "quote": "| elf-b9-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:99",
+          "quote": "| elf-b9-003 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:353",
+          "quote": "\"unit_id\": \"elf-b9-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1882,8 +2592,10 @@
       "content_sha256": "3c141761e05d8e256b06bbf5f336dec95c05754bcf5b4dc05f546ef45b284985",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch9/STATUS.md:1",
@@ -1894,6 +2606,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:98",
           "quote": "| elf-b9-004 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:100",
+          "quote": "| elf-b9-004 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:360",
+          "quote": "\"unit_id\": \"elf-b9-004\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1909,8 +2631,10 @@
       "content_sha256": "ccdb3d3b993d951e6d4d6f33a6ef1c23a74c570edb6e2af35dbf438cb6cfb4d2",
       "question_count": 4,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch9/STATUS.md:1",
@@ -1921,6 +2645,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:127",
           "quote": "| las-b9-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:101",
+          "quote": "| las-b9-001 | LÄS | 4 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:367",
+          "quote": "\"unit_id\": \"las-b9-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1936,8 +2670,10 @@
       "content_sha256": "4650aba3a348e399b206c3c9d7c6e7fac109304a0f89accc487a570234be313f",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch9/STATUS.md:1",
@@ -1948,6 +2684,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:128",
           "quote": "| las-b9-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:102",
+          "quote": "| las-b9-002 | LÄS | 2 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:374",
+          "quote": "\"unit_id\": \"las-b9-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1963,8 +2709,10 @@
       "content_sha256": "0854e0c7756b6b167e1c2cde2acabbb093593f6300c04f79ce493724df69d624",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO, cross-batch surname reuse: 'Sundelius' is Petra Sundelius here and Marit Sundelius in las-b10-001, a pair the 2026-07-30 scan listed (cross-batch-report.md:196). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch9/STATUS.md:1",
@@ -1975,6 +2723,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:129",
           "quote": "| las-b9-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:103",
+          "quote": "| las-b9-003 | LÄS | 2 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:381",
+          "quote": "\"unit_id\": \"las-b9-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -1990,8 +2748,10 @@
       "content_sha256": "d5c48845099208ea3d1770339bddc52ce661cc2834861ed060c6af3226eae91f",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch10/STATUS.md:1",
@@ -2002,6 +2762,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:57",
           "quote": "| elf-b10-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:104",
+          "quote": "| elf-b10-001 | ELF | 5 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:388",
+          "quote": "\"unit_id\": \"elf-b10-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2017,8 +2787,10 @@
       "content_sha256": "dbbe8f6f0666c509365e10cfc7e3d4162d2ba2a6894233e0ca9dc2bdab465a4c",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch10/STATUS.md:1",
@@ -2029,6 +2801,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:58",
           "quote": "| elf-b10-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:105",
+          "quote": "| elf-b10-002 | ELF | 5 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:395",
+          "quote": "\"unit_id\": \"elf-b10-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2044,8 +2826,10 @@
       "content_sha256": "29f1eb91fd73ae5d0d964758c106414c0d01a31a4bdae1bb7ac599ef93f32314",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO, cross-batch surname reuse: 'Brandt' is Ivar Brandt here and Ottilie Brandt in elf-b5-001, a family the 2026-07-30 scan listed (cross-batch-report.md:197). Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch10/STATUS.md:1",
@@ -2056,6 +2840,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:59",
           "quote": "| elf-b10-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:106",
+          "quote": "| elf-b10-003 | ELF | 1 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:402",
+          "quote": "\"unit_id\": \"elf-b10-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2071,8 +2865,10 @@
       "content_sha256": "c3831140baf210a2b98a7d386abb5caecc817a58519b4aef36bea4ee7677365a",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch10/STATUS.md:1",
@@ -2083,6 +2879,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:60",
           "quote": "| elf-b10-004 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:107",
+          "quote": "| elf-b10-004 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:409",
+          "quote": "\"unit_id\": \"elf-b10-004\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2098,8 +2904,10 @@
       "content_sha256": "fb9b6264283d0b6067b971c6602c3a22742b284a2028a11fe3b71fdeed8ce1ea",
       "question_count": 4,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO, cross-batch surname reuse: Karl-Otto Frisk and Marit Sundelius here; 'Frisk' also in elf-b4-001 and elf-b12-001, 'Sundelius' in las-b9-003. Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch10/STATUS.md:1",
@@ -2110,6 +2918,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:102",
           "quote": "| las-b10-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:108",
+          "quote": "| las-b10-001 | LÄS | 4 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:416",
+          "quote": "\"unit_id\": \"las-b10-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2125,8 +2943,10 @@
       "content_sha256": "9fb7a3f11d53ab844cedf1fdeb7b97c56acd0f3217df30060706c1d06169af26",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master ÄGARBLICK item",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "E3: V-FINAL is older than a name-only rename (4791084, PR #356, ÄGARBLICK B: 'Ingrid Salomonsson' became 'Ylva Tenglund' in the passage twice and in the q1 prompt). The rename was recorded with its reasoning (batches/batch10/reviews/pedagogy.jsonl:10) and no key, option or distractor changed; today's full mech run, the lint and the export are clean, and the sweep covers the new name. For strict exact-bytes V-FINAL, re-run G-KEY ×2 and the audit; this is cheap. M-ECHO: 'Öberg' is Marianne Öberg here and Marika Öberg in las-b4-003, also in the retired las-b11-001.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch10/STATUS.md:1",
@@ -2137,6 +2957,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:24",
           "quote": "**las-b10-002**",
           "note": "master: ÄGARBLICK B: ÄNDRA for the Salomonsson name collision with las-b10-001; the rename landed in 4791084 (PR #356)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:109",
+          "quote": "| las-b10-002 | LÄS | 2 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:423",
+          "quote": "\"unit_id\": \"las-b10-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2152,8 +2982,10 @@
       "content_sha256": "2e6b17ba9260af1c916aa76dc8c1d8e14c060902e6ab6134131cf0d98cdecab9",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch10/STATUS.md:1",
@@ -2164,6 +2996,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:103",
           "quote": "| las-b10-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:110",
+          "quote": "| las-b10-003 | LÄS | 2 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:430",
+          "quote": "\"unit_id\": \"las-b10-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2179,8 +3021,10 @@
       "content_sha256": "bc61a8982e606a5c6baa7946608029639b5e46bb62e622acc0d37b180ea32c06",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch11/STATUS.md:1",
@@ -2191,6 +3035,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:61",
           "quote": "| elf-b11-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:111",
+          "quote": "| elf-b11-001 | ELF | 5 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:437",
+          "quote": "\"unit_id\": \"elf-b11-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2206,8 +3060,10 @@
       "content_sha256": "c3125193bbb2c45435255a7d519e709d88b8b909e6ccca99ec6488f7bc85058a",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch11/STATUS.md:1",
@@ -2218,6 +3074,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:62",
           "quote": "| elf-b11-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:112",
+          "quote": "| elf-b11-002 | ELF | 5 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:444",
+          "quote": "\"unit_id\": \"elf-b11-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2233,8 +3099,10 @@
       "content_sha256": "af59f8f54ab2abeb24465a9ded112f2d7f10ae288f79b1905c5af4bcdbe6a110",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch11/STATUS.md:1",
@@ -2245,6 +3113,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:63",
           "quote": "| elf-b11-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:113",
+          "quote": "| elf-b11-003 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:451",
+          "quote": "\"unit_id\": \"elf-b11-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2260,8 +3138,10 @@
       "content_sha256": "748127134066e843ae18289f94df5f2162d73745cae1dc1f23f27541931d2310",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch11/STATUS.md:1",
@@ -2272,6 +3152,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:64",
           "quote": "| elf-b11-004 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:114",
+          "quote": "| elf-b11-004 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:458",
+          "quote": "\"unit_id\": \"elf-b11-004\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2289,6 +3179,8 @@
       "revision": 1,
       "approval": "retired",
       "approval_basis": "RETIRED.json",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/RETIRED.json:29",
@@ -2314,8 +3206,10 @@
       "content_sha256": "d6e2cdf0881e8b165d2b32226e71e40556c83a1a9769f2b004021f7d50b7d670",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch11/STATUS.md:1",
@@ -2326,6 +3220,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:104",
           "quote": "| las-b11-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:115",
+          "quote": "| las-b11-002 | LÄS | 2 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:465",
+          "quote": "\"unit_id\": \"las-b11-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2341,8 +3245,10 @@
       "content_sha256": "2378157d5fd4878667b481e707eb6e7cdd1f6e0c3df2a40288c4e7e54d22700f",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch11/STATUS.md:1",
@@ -2353,6 +3259,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:105",
           "quote": "| las-b11-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:116",
+          "quote": "| las-b11-003 | LÄS | 2 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:472",
+          "quote": "\"unit_id\": \"las-b11-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2368,8 +3284,10 @@
       "content_sha256": "81bc720270e76d85d4f3cbb74984c0ea12a16f2b077c8527128823c3741b67b6",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO, cross-batch surname reuse: 'Frisk' is Owen Frisk here, Elias Frisk in elf-b4-001 and Karl-Otto Frisk in las-b10-001. Law 13 (GENERATION.md:156) forbids reuse for new units; this unit predates it, no key or answer depends on a name, and the batch15+ name registry stops new reuse. The cost is a mild synthetic tell; a rename would mean r2, a re-gate and a new ruling.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch12/STATUS.md:1",
@@ -2380,6 +3298,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:65",
           "quote": "| elf-b12-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:117",
+          "quote": "| elf-b12-001 | ELF | 5 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:479",
+          "quote": "\"unit_id\": \"elf-b12-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2395,8 +3323,10 @@
       "content_sha256": "768ae10290039f84585d1a4c0f2be02a73722c85af1150655313f8c0a906377f",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch12/STATUS.md:1",
@@ -2407,6 +3337,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:66",
           "quote": "| elf-b12-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:118",
+          "quote": "| elf-b12-002 | ELF | 5 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:486",
+          "quote": "\"unit_id\": \"elf-b12-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2422,8 +3362,10 @@
       "content_sha256": "9295cb2e79dff8039033287444d01c1703cc257f44c05df4f27e5cf73d2e981e",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch12/STATUS.md:1",
@@ -2434,6 +3376,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:67",
           "quote": "| elf-b12-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:119",
+          "quote": "| elf-b12-003 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:493",
+          "quote": "\"unit_id\": \"elf-b12-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2449,8 +3401,10 @@
       "content_sha256": "b7593a5a85d5b89c256843e1cd4b46e5d19b49f29303e8c022fa17fa43816816",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch12/STATUS.md:1",
@@ -2461,6 +3415,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:68",
           "quote": "| elf-b12-004 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:120",
+          "quote": "| elf-b12-004 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:500",
+          "quote": "\"unit_id\": \"elf-b12-004\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2476,8 +3440,10 @@
       "content_sha256": "558acda1be8f8d91f1332a2bc546a414a07b54b21c425488566b66fd371a5711",
       "question_count": 4,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch12/STATUS.md:1",
@@ -2488,6 +3454,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:106",
           "quote": "| las-b12-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:121",
+          "quote": "| las-b12-001 | LÄS | 4 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:507",
+          "quote": "\"unit_id\": \"las-b12-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2503,8 +3479,10 @@
       "content_sha256": "32e88b437e832b32176e03f9b2fac0c45280d0ee4a7e8bbd2d88dfac763821e8",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "E2 (collision repaired in #361): the post-rename G-KEY vote-1 records (batches/batch12/verdicts-vfinal/verdicts-gkey-resolved.jsonl:30-31) were never mechanically resolved. By hand, the answers C/A equal the roster keys; vote 2 is resolved PASS on the renamed bytes and the re-audit is CONFIRMED_NOTES. Collision repaired: 'Sandviken', ruled SHIP-BLOCKING here, became Tegelsund. Optional housekeeping: re-run gkey_resolve.py with q:N targets.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch12/STATUS.md:1",
@@ -2515,6 +3493,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:107",
           "quote": "| las-b12-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:122",
+          "quote": "| las-b12-002 | LÄS | 2 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:514",
+          "quote": "\"unit_id\": \"las-b12-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2530,8 +3518,10 @@
       "content_sha256": "66146780102653e2a06597959049a7e271f260e5e7e72f604fa55603690a7dd0",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch12/STATUS.md:1",
@@ -2542,6 +3532,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:108",
           "quote": "| las-b12-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:123",
+          "quote": "| las-b12-003 | LÄS | 2 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:521",
+          "quote": "\"unit_id\": \"las-b12-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2557,8 +3557,10 @@
       "content_sha256": "933bc3e52b7ea185bd4831996007244e912a3fa236cc4f1ff78019dc79f7b871",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch13/STATUS.md:1",
@@ -2569,6 +3571,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:69",
           "quote": "| elf-b13-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:124",
+          "quote": "| elf-b13-001 | ELF | 5 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:528",
+          "quote": "\"unit_id\": \"elf-b13-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2584,8 +3596,10 @@
       "content_sha256": "1f19bacfeccada8bc2ffc46e492e3310be4779e56bdee1b0f7b0cb31c67d3d57",
       "question_count": 5,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch13/STATUS.md:1",
@@ -2596,6 +3610,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:70",
           "quote": "| elf-b13-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:125",
+          "quote": "| elf-b13-002 | ELF | 5 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:535",
+          "quote": "\"unit_id\": \"elf-b13-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2611,8 +3635,10 @@
       "content_sha256": "67d296cb78787654127640c93b6b473a763cceacf8d8e9379a5337781309193d",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify-with-note",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": "M-ECHO against a retired unit only: 'Halloran' (Dev Halloran here) with elf-b8-001, which is retired (RETIRED.json:35). No retained unit uses Halloran; elf-b7-002 lost it in the #361 rename. Retired units are never exported or served.",
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch13/STATUS.md:1",
@@ -2623,6 +3649,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:71",
           "quote": "| elf-b13-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:126",
+          "quote": "| elf-b13-003 | ELF | 1 |",
+          "note": "re-audit row: ratify-with-note"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:542",
+          "quote": "\"unit_id\": \"elf-b13-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2638,8 +3674,10 @@
       "content_sha256": "6d594359ab686e577fd59682abd61a9e644988b9d464068e164e4b61ea6a0667",
       "question_count": 1,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch13/STATUS.md:1",
@@ -2650,6 +3688,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:72",
           "quote": "| elf-b13-004 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:127",
+          "quote": "| elf-b13-004 | ELF | 1 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:549",
+          "quote": "\"unit_id\": \"elf-b13-004\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2665,8 +3713,10 @@
       "content_sha256": "69529b163919a7dc2ed907ab35595a474083873bd0dc69ee1884b389b5a9fed4",
       "question_count": 4,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch13/STATUS.md:1",
@@ -2677,6 +3727,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:109",
           "quote": "| las-b13-001 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:128",
+          "quote": "| las-b13-001 | LÄS | 4 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:556",
+          "quote": "\"unit_id\": \"las-b13-001\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2692,8 +3752,10 @@
       "content_sha256": "8a7374c75c3bc9413feb937906f496c67379952aed024fa4a574174235a196a5",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch13/STATUS.md:1",
@@ -2704,6 +3766,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:110",
           "quote": "| las-b13-002 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:129",
+          "quote": "| las-b13-002 | LÄS | 2 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:563",
+          "quote": "\"unit_id\": \"las-b13-002\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2719,8 +3791,10 @@
       "content_sha256": "b300c289cf150e4fd94ed9329f59dffe4dd1e6c1f1e7035b698880cb23d793a9",
       "question_count": 2,
       "revision": 1,
-      "approval": "pending-owner-ratification",
-      "approval_basis": "legacy shipped final; master GODKÄNN MED ANTECKNING",
+      "approval": "approved",
+      "approval_basis": "owner ratification of batches 1–13 at r1; re-audit recommendation ratify",
+      "ratified_by": "owner 2026-10-07",
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch13/STATUS.md:1",
@@ -2731,6 +3805,16 @@
           "ref": "pipeline/synthetic/ADJUDICATION-MASTER.md:111",
           "quote": "| las-b13-003 |",
           "note": "master: GODKÄNN MED ANTECKNING (a recommendation; no owner response recorded)"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/AUDIT-batches-1-13.md:130",
+          "quote": "| las-b13-003 | LÄS | 2 |",
+          "note": "re-audit row: ratify"
+        },
+        {
+          "ref": "pipeline/synthetic/infold/ratification-2026-10-07.json:570",
+          "quote": "\"unit_id\": \"las-b13-003\"",
+          "note": "ratified by owner 2026-10-07 at r1"
         }
       ],
       "retired": false,
@@ -2748,6 +3832,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 14",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch14/ADJUDICATION.md:689",
@@ -2780,6 +3866,8 @@
       "revision": 1,
       "approval": "retired",
       "approval_basis": "RETIRED.json",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/RETIRED.json:41",
@@ -2807,6 +3895,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 14",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch14/ADJUDICATION.md:689",
@@ -2834,6 +3924,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 14",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch14/ADJUDICATION.md:689",
@@ -2866,6 +3958,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 14",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch14/ADJUDICATION.md:689",
@@ -2893,6 +3987,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 14",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch14/ADJUDICATION.md:689",
@@ -2920,6 +4016,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 15",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch15/ADJUDICATION.md:701",
@@ -2947,6 +4045,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 15",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch15/ADJUDICATION.md:701",
@@ -2974,6 +4074,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 15",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch15/ADJUDICATION.md:701",
@@ -3001,6 +4103,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 15",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch15/ADJUDICATION.md:701",
@@ -3028,6 +4132,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 15",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch15/ADJUDICATION.md:701",
@@ -3055,6 +4161,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 15",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch15/ADJUDICATION.md:701",
@@ -3082,6 +4190,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 15",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch15/ADJUDICATION.md:701",
@@ -3109,6 +4219,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 16",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch16/STATUS.md:168",
@@ -3136,6 +4248,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 16",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch16/STATUS.md:168",
@@ -3163,6 +4277,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 16",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch16/STATUS.md:168",
@@ -3190,6 +4306,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 16",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch16/STATUS.md:168",
@@ -3217,6 +4335,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 16",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch16/STATUS.md:168",
@@ -3244,6 +4364,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 16",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch16/STATUS.md:168",
@@ -3271,6 +4393,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 16",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch16/STATUS.md:168",
@@ -3298,6 +4422,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 17",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch17/STATUS.md:199",
@@ -3325,6 +4451,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 17",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch17/STATUS.md:199",
@@ -3352,6 +4480,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 17",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch17/STATUS.md:199",
@@ -3379,6 +4509,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 17",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch17/STATUS.md:199",
@@ -3406,6 +4538,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 17",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch17/STATUS.md:199",
@@ -3433,6 +4567,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 17",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch17/STATUS.md:199",
@@ -3460,6 +4596,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 17",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch17/STATUS.md:199",
@@ -3487,6 +4625,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 18",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch18/STATUS.md:127",
@@ -3514,6 +4654,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 18",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch18/STATUS.md:127",
@@ -3541,6 +4683,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 18",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch18/STATUS.md:127",
@@ -3568,6 +4712,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 18",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch18/STATUS.md:127",
@@ -3595,6 +4741,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 18",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch18/STATUS.md:127",
@@ -3624,6 +4772,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 18",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch18/STATUS.md:127",
@@ -3651,6 +4801,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 18",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch18/STATUS.md:127",
@@ -3678,6 +4830,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 19",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch19/STATUS.md:145",
@@ -3705,6 +4859,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 19",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch19/STATUS.md:145",
@@ -3732,6 +4888,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 19",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch19/STATUS.md:145",
@@ -3759,6 +4917,8 @@
       "revision": 1,
       "approval": "retired",
       "approval_basis": "RETIRED.json",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/RETIRED.json:47",
@@ -3786,6 +4946,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 19",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch19/STATUS.md:145",
@@ -3815,6 +4977,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 19",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch19/STATUS.md:145",
@@ -3842,6 +5006,8 @@
       "revision": 1,
       "approval": "approved",
       "approval_basis": "owner ruling, batch 19",
+      "ratified_by": null,
+      "ratification_note": null,
       "evidence": [
         {
           "ref": "pipeline/synthetic/batches/batch19/STATUS.md:145",

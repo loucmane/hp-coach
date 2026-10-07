@@ -1,15 +1,18 @@
-"""Approval-roster contract (docs/p5-infold-design.md §2, §4 row 1; bead hpf-535m).
+"""Approval-roster contract (docs/p5-infold-design.md §2, §4 row 1; beads hpf-535m, hpf-jsnf).
 
 The roster is the export's single source of truth: one row per candidate unit
 in batches 1–19, the SHA-256 of its exact bytes, its approval status with the
 file:line evidence behind it, its RETIRED.json flag and its exclusion pairs.
 It must reproduce the design's census exactly and be regenerable byte for byte.
+Batches 1–13 are approved through the owner's ratification record of
+2026-10-07, which pins each unit's revision and student-facing content.
 """
 from __future__ import annotations
 
 import copy
 import json
 import re
+from collections import Counter
 from pathlib import Path
 
 import pytest
@@ -119,11 +122,15 @@ def test_approval_statuses_follow_the_recorded_rulings(built_roster):
     assert len(approved) + len(pending) + len(retired) == len(units)
     assert {u["unit_id"] for u in retired} == retired_ids
     assert all(u["retired"] for u in retired) and not any(u["retired"] for u in approved + pending)
-    assert {u["batch"] for u in approved} == set(range(14, 20))
-    assert {u["batch"] for u in pending} == set(range(1, 14))
-    assert _sum(approved) == (39, 121)
-    assert _sum(pending) == (81, 219)
+    # Batches 14–19 by owner rulings, batches 1–13 by the owner's ratification of 2026-10-07.
+    assert {u["batch"] for u in approved} == set(range(1, 20))
+    assert pending == []
+    assert _sum(approved) == (120, 340)
+    assert _sum([u for u in approved if u["batch"] >= 14]) == (39, 121)
+    assert _sum([u for u in approved if u["batch"] <= 13]) == (81, 219)
     assert _sum(retired) == (8, 33)
+    assert all((u["ratified_by"] == "owner 2026-10-07") == (u["batch"] <= 13) for u in approved)
+    assert all(u["ratified_by"] is None and u["ratification_note"] is None for u in retired)
     # Retirement wins over the batch14 ruling text that lists elf-b14-002 as approved.
     b14 = next(u for u in units if u["unit_id"] == "elf-b14-002")
     assert b14["approval"] == "retired"
@@ -146,6 +153,9 @@ def test_evidence_kinds_match_the_approval(built_roster):
         if unit["approval"] == "approved":
             batch_dir = f"pipeline/synthetic/batches/batch{unit['batch']}/"
             assert any(r.startswith(batch_dir) for r in refs), unit["unit_id"]
+            if unit["batch"] <= 13:  # shipped record, master row, re-audit row and ratification entry
+                for source in (build_roster.MASTER_REL, build_roster.AUDIT_REL, build_roster.RATIFICATION_REL):
+                    assert any(r.startswith(source + ":") for r in refs), (unit["unit_id"], source)
         elif unit["approval"] == "pending-owner-ratification":
             assert any(r.startswith("pipeline/synthetic/ADJUDICATION-MASTER.md:") for r in refs), unit["unit_id"]
             assert any(r.startswith(f"pipeline/synthetic/batches/batch{unit['batch']}/") for r in refs)
@@ -186,7 +196,7 @@ def test_revisions_never_go_backwards(committed_roster):
 
 
 def test_a_bumped_revision_does_not_inherit_the_old_approval():
-    roster = build_roster.build_roster(revisions={"las-b19-002": 2})
+    roster = build_roster.build_roster(revisions={**build_roster.REVISIONS, "las-b19-002": 2})
     unit = next(u for u in roster["units"] if u["unit_id"] == "las-b19-002")
     assert unit["revision"] == 2
     assert unit["approval"] == "pending-owner-ratification"
@@ -194,8 +204,8 @@ def test_a_bumped_revision_does_not_inherit_the_old_approval():
 
 @pytest.mark.parametrize("revision", [0, -1, True, 1.0, "2", None, {"r": 2}, 100], ids=repr)
 def test_a_malformed_revision_fails_the_build(revision):
-    with pytest.raises(build_roster.RosterError, match="revision"):
-        build_roster.build_roster(revisions={"las-b19-002": revision})
+    with pytest.raises(build_roster.RosterError, match="las-b19-002: revision"):
+        build_roster.build_roster(revisions={**build_roster.REVISIONS, "las-b19-002": revision})
 
 
 @pytest.mark.parametrize("revision", [True, 0, "1", {"r": 1}], ids=repr)
@@ -204,3 +214,100 @@ def test_revision_continuity_refuses_a_malformed_revision(committed_roster, revi
     previous["units"][5]["revision"] = revision
     with pytest.raises(build_roster.RosterError, match="revision"):
         build_roster.check_revision_continuity(previous, committed_roster)
+
+
+# --------------------------------------------------------- ratification
+
+@pytest.fixture
+def record() -> dict:
+    return build_roster.load_ratification(REPO_ROOT)
+
+
+def _entry(record: dict, unit_id: str) -> dict:
+    return next(e for e in record["units"] if e["unit_id"] == unit_id)
+
+
+def _changed(record: dict, edit) -> dict:
+    changed = copy.deepcopy(record)
+    edit(changed)
+    return changed
+
+
+def test_the_ratification_covers_every_kept_legacy_unit(built_roster, record):
+    legacy = [u for u in built_roster["units"] if u["batch"] <= 13 and not u["retired"]]
+    assert _sum(legacy) == (81, 219)
+    assert [e["unit_id"] for e in record["units"]] == [u["unit_id"] for u in legacy]  # roster order
+    # AUDIT-batches-1-13.md: 48 pass, 32 ratify-with-note (two conditional), one fix.
+    assert Counter(e["recommendation"] for e in record["units"]) == {"ratify": 48, "ratify-with-note": 32, "fix": 1}
+    assert built_roster["ratification"]["recommendations"]["fix"] == ["las-b7-002"]
+    for unit in legacy:
+        entry = _entry(record, unit["unit_id"])
+        assert unit["approval"] == "approved" and unit["ratified_by"] == record["ratified_by"]
+        assert (entry["revision"], entry["content_sha256"]) == (unit["revision"], unit["content_sha256"])
+        assert unit["ratification_note"] == entry["note"]
+        assert entry["note"] or entry["recommendation"] == "ratify", unit["unit_id"]
+    for uid in ("las-b4-002", "las-b6-003"):  # the re-audit's two conditions, both met
+        assert _entry(record, uid)["note"].startswith("Conditional ratify-with-note; condition met.")
+
+
+def test_the_one_fix_is_ratified_at_its_new_revision(built_roster):
+    assert build_roster.REVISIONS == {"las-b7-002": 2}
+    unit = next(u for u in built_roster["units"] if u["unit_id"] == "las-b7-002")
+    assert (unit["revision"], unit["approval"]) == (2, "approved")
+    assert any(e["ref"].startswith("pipeline/synthetic/batches/batch7/ADJUDICATION.md:") for e in unit["evidence"])
+    candidate = json.loads((REPO_ROOT / unit["source"]).read_text(encoding="utf-8"))
+    student = [candidate["title"], candidate["passage"]] + [
+        text for q in candidate["questions"] for text in [q["prompt"], *(o["text"] for o in q["options"])]]
+    assert not any("Sundqvist" in text for text in student)  # law 13: las-b4-002's Ellen Sundqvist
+    assert "Frida Ullbrink" in candidate["passage"] and "Frida Ullbrinks" in candidate["questions"][0]["prompt"]
+
+
+def test_a_later_revision_is_pending_until_a_ruling_covers_it():
+    roster = build_roster.build_roster(revisions={**build_roster.REVISIONS, "las-b2-003": 2})
+    unit = next(u for u in roster["units"] if u["unit_id"] == "las-b2-003")
+    assert (unit["revision"], unit["approval"], unit["ratified_by"]) == (2, "pending-owner-ratification", None)
+    assert unit["approval_basis"] == "revision 2: no ruling recorded for this revision"
+
+
+def test_a_record_ahead_of_the_unit_fails_the_build():
+    with pytest.raises(build_roster.RosterError, match="las-b7-002: ratified at r2, but the unit is r1"):
+        build_roster.build_roster(revisions={})
+
+
+def test_retirement_wins_over_a_ratification(record):
+    source = REPO_ROOT / "pipeline/synthetic/batches/batch6/candidates-final/elf-b6-001.json"
+    digest = build_roster.content_digest(json.loads(source.read_text(encoding="utf-8")))
+    entry = {"unit_id": "elf-b6-001", "revision": 1, "content_sha256": digest, "recommendation": "ratify",
+             "note": None}
+    roster = build_roster.build_roster(ratification=_changed(record, lambda r: r["units"].append(entry)))
+    unit = next(u for u in roster["units"] if u["unit_id"] == "elf-b6-001")
+    assert (unit["approval"], unit["ratified_by"]) == ("retired", None)
+
+
+B19_ENTRY = {"unit_id": "las-b19-002", "revision": 1, "content_sha256": "0" * 64, "recommendation": "ratify",
+             "note": None}
+
+
+@pytest.mark.parametrize("edit,match", [
+    (lambda r: r.update(format="p5-ratification-v0"), "format 'p5-ratification-v0' is not"),
+    (lambda r: r.pop("ruling"), r"fields \['format'"),
+    (lambda r: r.update(approved_by="owner"), r"fields \['format'"),
+    (lambda r: r.update(ratified_by=" "), "ratified_by must be a non-empty string"),
+    (lambda r: r.update(audit="pipeline/synthetic/infold/OTHER.md"), "audit 'pipeline/synthetic/infold/OTHER.md'"),
+    (lambda r: r.update(audited_roster_sha256="9ccfe9a4"), "audited_roster_sha256 is not"),
+    (lambda r: r.update(units=[]), "units must be a non-empty array"),
+    (lambda r: r["units"].append(dict(r["units"][0])), "elf-b1-001: listed twice"),
+    (lambda r: r["units"][0].update(unit_id="las-b99-001"), "not a selected candidate"),
+    (lambda r: r["units"].append(dict(B19_ENTRY)), "las-b19-002: batch 19"),
+    (lambda r: r["units"][0].update(content_sha256="0" * 64), "changed content needs a new revision"),
+    (lambda r: r["units"][0].update(content_sha256="sha256"), "not a SHA-256"),
+    (lambda r: r["units"][0].update(revision=2), "ratified at r2, but the unit is r1"),
+    (lambda r: r["units"][0].update(revision=True), "elf-b1-001: revision True"),
+    (lambda r: r["units"][0].update(recommendation="approve"), "recommendation 'approve'"),
+    (lambda r: r["units"][0].update(note=None), "elf-b1-001: a ratify-with-note entry needs a note"),
+    (lambda r: r["units"][4].update(note=" "), "las-b1-001: note must be"),
+    (lambda r: r["units"][0].pop("note"), r"units\[0\]: fields must be"),
+])
+def test_a_bad_ratification_record_fails_the_build(record, edit, match):
+    with pytest.raises(build_roster.RosterError, match=match):
+        build_roster.build_roster(ratification=_changed(record, edit))
