@@ -1,7 +1,7 @@
 ---
 bead: "hpf-c5tb"
 project: "hpfetcher"
-status: "batch_freeze_implemented_uncommitted"
+status: "batch_x2_implemented_uncommitted"
 ---
 
 # Worklog — hpf-c5tb
@@ -599,3 +599,357 @@ LANE DONE: hpf-c5tb.4
 - 2026-10-08 [S:ci-vn2tn|W:hpf-c5tb.4|H:research|E:1cbbb84] Read the bead, the batch script and its tests, the conftest, the exporter's selection and this worklog; confirmed HEAD and hpf-c5tb.2's uncommitted files (sha256 as recorded). Baseline 1912 passed, 50 failed (the X1 gap), 7 xfailed.
 - 2026-10-08 [S:ci-vn2tn|W:hpf-c5tb.4|H:implement|E:pipeline/synthetic/infold/explanation_batches.py] Restored BATCHES.json to the 1cbbb84 bytes (`a7c69228…`); pinned the partition (`read_pin`, `assign`); `--check` named the two retired units; the generator dropped them from x1 and moved nothing; `--check-batch x1` passes on the untouched `x1-las.json`.
 - 2026-10-08 [S:ci-vn2tn|W:hpf-c5tb.4|H:verify|E:pipeline/synthetic/infold/tests/test_infold_explanation_batches.py] Tables and fixtures; 23 new tests (provenance, retire-never-moves, refusals); module 106 passed, suite 1985 passed and 7 xfailed; 9 mutations caught, script restored byte for byte; worker 395, typecheck and biome clean; reruns byte-identical.
+
+## Batch X2
+
+Bead `hpf-c5tb.5`: the 42 LÄS explanations of X2 (`las-b8-003` … `las-b14-001`, 16 units), as pinned in `BATCHES.json`.
+
+### Snapshot and boundaries
+
+- Claimed with `gc hook --claim --json` (`hpf-c5tb.5`, assignee `gc__implementation-worker-ci-vh54b`, route `hpfetcher/gc.implementation-worker`); `bd show hpf-c5tb.5 --json` matched the id, status `in_progress`, the assignee and `gc.routed_to`.
+- `git rev-parse HEAD` and `git rev-parse origin/main` → `2b1dabd3670847395be220bbf0139ab302ad39dc` for both (detached), the bead's snapshot. origin/main is the local ref, not fetched. No tracked change at start.
+- No git writes and no network; every change is uncommitted. No tooling, partition, test, unit, candidate, roster or framework file was edited: their sha256 (below) equal the values the Batch freeze section records. Nothing under `app/` or `worker/`. The untracked runtime, skill and sandbox paths present at start are untouched.
+- The bead names no validator, so none was run; `gc.check_path` is the post-close dispatcher check (`…/checks/build-artifact-valid.sh`).
+- Lane policy: `git -C <path>` was refused, so plain `git` ran in the worktree. As for X1, the audit script below ran from the session scratchpad (`python3 <file>`) and is not checked in.
+
+### Deliverables (uncommitted)
+
+| Path | Change |
+|---|---|
+| `pipeline/synthetic/infold/explanations/x2-las.json` | New: the 42 X2 entries, bank order, canonical bytes |
+| `docs/worklog/hpf-c5tb.md` | Status line and this section |
+
+No test was added or changed. The verbatim-quotation test (`test_every_las_quotation_is_verbatim_from_its_unit`) reads every batch file that exists, so it now covers X2 as well; the bead keeps the test module as merged.
+
+### X2 content
+
+42 entries, one per qid of X2, in bank order and canonical bytes. Written the way X1 was:
+- every question re-solved from the student-facing text before writing; all 42 keys hold;
+- the rationale used as source only, each claim checked against the passage;
+- the key argument as `solution_path` plus 5–6 ordered steps: what the question asks; the passage sentence it turns on, quoted verbatim; a paraphrase, or the limit that decides the question; a `detail` step where a glossary word needs it (bestånd, restyta, expropriation, borrmärke) or for the mechanism behind a kolmila; the options; the verdict, which ends "Svaret är X.";
+- each wrong option once, with its own `why_tempting` and `why_wrong`; then `technique` and `pitfall`.
+
+Persons are named by name or role (skribenten, textförfattaren: the word the question uses), never by a pronoun outside a verbatim quotation. Hedges are kept wherever the passage has them.
+
+| Unit | Size | qids | framework_id per question |
+|---|---|---|---|
+| `las-b8-003` | short | `p5-las-b8-003-r1-LÄS-001`, `-002` | LAS-TYPE-001, 003 |
+| `las-b9-001` | long | `p5-las-b9-001-r1-LÄS-001` … `-004` | LAS-TYPE-001, 001, 004, 001 |
+| `las-b9-002` | short | `p5-las-b9-002-r1-LÄS-001`, `-002` | LAS-TYPE-001, 003 |
+| `las-b9-003` | short | `p5-las-b9-003-r1-LÄS-001`, `-002` | LAS-TYPE-001, 001 |
+| `las-b10-001` | long | `p5-las-b10-001-r1-LÄS-001` … `-004` | LAS-TYPE-001, 001, 002, 001 |
+| `las-b10-002` | short | `p5-las-b10-002-r1-LÄS-001`, `-002` | LAS-TYPE-001, 003 |
+| `las-b10-003` | short | `p5-las-b10-003-r1-LÄS-001`, `-002` | LAS-TYPE-001, 001 |
+| `las-b11-002` | short | `p5-las-b11-002-r1-LÄS-001`, `-002` | LAS-TYPE-001, 003 |
+| `las-b11-003` | short | `p5-las-b11-003-r1-LÄS-001`, `-002` | LAS-TYPE-001, 004 |
+| `las-b12-001` | long | `p5-las-b12-001-r1-LÄS-001` … `-004` | LAS-TYPE-001, 001, 003, 001 |
+| `las-b12-002` | short | `p5-las-b12-002-r1-LÄS-001`, `-002` | LAS-TYPE-001, 003 |
+| `las-b12-003` | short | `p5-las-b12-003-r1-LÄS-001`, `-002` | LAS-TYPE-001, 001 |
+| `las-b13-001` | long | `p5-las-b13-001-r1-LÄS-001` … `-004` | LAS-TYPE-001, 001, 003, 001 |
+| `las-b13-002` | short | `p5-las-b13-002-r1-LÄS-001`, `-002` | LAS-TYPE-001, 003 |
+| `las-b13-003` | short | `p5-las-b13-003-r1-LÄS-001`, `-002` | LAS-TYPE-001, 003 |
+| `las-b14-001` | long | `p5-las-b14-001-r1-LÄS-001` … `-004` | LAS-TYPE-001, 001, 003, 002 |
+
+All 42 carry a framework_id, each checked against `frameworks/las_taxonomy.json` by the question's trigger, with X1's rules:
+- **TYPE-001 (28):** "enligt texten"; "vad visade / framkom / framgick / kom fram"; "vilka krav", "vilken skyldighet", "vilken omständighet", "vad händer", "varför … enligt texten". Also the stem "Vilket påstående överensstämmer bäst med texten?" (7 questions: b9-001 q4, b9-003 q2, b10-001 q4, b10-003 q2, b12-001 q4, b12-003 q2, b13-001 q4). The authentic corpus tags that stem TYPE-001 (`data/explanations/host-2014.json`, host-2014-verb2-LÄS-012, re-read for this batch), and so does X1.
+- **TYPE-002 (2):** "dra för slutsats" (b10-001 q3, b14-001 q4).
+- **TYPE-003 (10):** the writer's hållning, kritik or invändning (b8-003 q2, b9-002 q2, b10-002 q2, b11-002 q2, b12-002 q2, b13-002 q2, b13-003 q2), or a named critic's invändning (b12-001 q3 Sandell, b13-001 q3 Frejmark, b14-001 q3 Nyfeldt).
+- **TYPE-004 (2):** "Vilken funktion har berättelsen om …" (b9-001 q3) and "Vilken roll spelar exemplet …" (b11-003 q2): the entry's trigger "vilken funktion fyller …". The pilot uses TYPE-004 for a function question (`las-b14-002` q4); X1 had none.
+
+No generation family is used as a framework id.
+
+### Second-reader review (round 1)
+
+Three independent, read-only second readers (general-purpose subagents of this session) split the 16 units, 14 questions each:
+- A: b8-003 … b10-001;
+- B: b10-002 … b12-002;
+- C: b12-003 … b14-001.
+
+Each first solved every question from title, passage, prompt and options alone, arguing for every option, and only then read the key and the entry. They checked the entry against the passage for:
+- truth;
+- verbatim quotations;
+- paragraph and step references;
+- voices and hedges;
+- framework fit;
+- Swedish;
+- above all the main error class of the pilot and X1: a `why_wrong` whose argument does not exclude the option as worded.
+
+Rationales were given to them as unverified notes, not authority.
+
+**Keys.** All 42 keys hold for all three readers; no distractor is defensible.
+
+**Findings.** 16 errors and 77 minor issues (A 6 + 23, B 4 + 24, C 6 + 30). Each was checked against the passage before it was applied. All were accepted, a few with different wording. For example, b12-001 q3 step 3 paraphrases Sandell instead of repeating step 2's quotation, and b14-001 q2 C states the transport point as "Enligt texten var det transporterna som avgjorde …".
+
+- **Errors (16):**
+  - Five arguments that did not exclude their option as worded:
+    - b9-001 q4 D: the old argument denied what the key itself says ("ingen visshet"); the new one targets D's claim that uneven preservation is what makes the comparison uncertain;
+    - b9-003 q1 B: the torg clocks refute a claim B never makes;
+    - b10-002 q1 A: it refuted a causal "ledde till", where A claims only that hiring became more common;
+    - b13-002 q2 C, in its why_wrong and in step 4: the writer does not miss the duty, but C is about the curiosity behind it.
+  - Six false or contradictory statements:
+    - b9-001 q4 A: the grant was what the stadga's conditions qualified for, not one of them;
+    - b11-003 q1 D: "the only relation the text reports", which ignored the trained-teacher confound and contradicted the entry's own C;
+    - b12-001 q3 step 3: Sandell's argument restated as "a third factor behind both";
+    - b13-001 q4 pitfall: called the Ekelin–Frejmark dispute a side track, which the key needs;
+    - b13-002 q1 solution_path: added "bara";
+    - b13-003 q1 C: "kopplar aldrig" was false, since the text compares the private rise with the municipal loss; it now says the text never gives a causal link.
+  - Two dropped hedges or causal readings: b9-001 q1 step 5 ("gett mer uthålliga cirklar"), b10-002 q1 D ("hängde ihop" for "tycktes").
+  - Two wrong references or claims about the steps:
+    - b10-001 q4 A cited step 3 for the channel clearing;
+    - b10-001 q3 step 4 had "lagen" (read as "the law"), "värt något" for the text's "värt besväret", and stated the inference outright.
+  - One misread function word: b14-001 q4 step 4 treated "framför allt" as a hedge; it ranks.
+- **Minor, by kind:**
+  - dropped limits and quantifiers: "noterad", "sorterade dagar", "minst", "i praktiken", "anmälda inbrott", "lärarna i de samhällsorienterande ämnena", "per flottad kubikmeter", "nästan undantagslöst", the limit to small groups (b11-003 q1 A);
+  - attributions: "enligt Frejmark", "enligt Nyfeldt";
+  - claims slightly stronger than the text: "avvisar / underkänner" for "duger sämre … säger föga om ålder"; "förklarar konflikterna"; "de rikaste" for "den skattekraften";
+  - option wording misdescribed: C's "ungefär lika stor"; D's "ungefär lika stor", "det huvudsakliga betalningsmedlet";
+  - step references attached to the wrong step: b9-003 q2 D, b10-002 q2 D, b12-001 q3 A;
+  - idiom and grammar: "en vanlig klagan", "uppfattas som att tycka", "hur mycket de var", double negations, an over-long sentence, an antecedent-less "den siffran" inside a quotation, and the ambiguous "lagen".
+
+**Rationale claims that did not hold.** Four findings came from framings in the units' rationales:
+- b9-001 q4 A: "bokbidraget nämns som ett villkor i stadgan";
+- b9-003 q1 B: the torg clocks used against B;
+- b10-003 q2 C: the text "förklarar … konflikterna med hur ytorna fördelas";
+- b13-001 q2 C: the text "underkänner" the moss.
+
+As in the pilot and X1, rationale claims need checking against the passage.
+
+**Sweep.** Reader B's last finding was a quotation in main-clause word order inside an att-clause (b12-002 q2 step 3, `att invändningarna … ”är inte tomma”`), the class X1's round 2 swept for. The same sweep over all 42 entries found six more cases. Each now has the quotation introduced with a colon, or no quotation:
+- `betalades ”inte ut i pengar …”` (b9-001 q1 D);
+- `”samvarierade inte alls”` (b11-003 q1 A);
+- `”blev inte gjort alls”` (b12-003 q1 D);
+- `låg ”varken i formen …”` (b13-001 q2 B);
+- `”… skiljer dem inte åt”` (b13-001 q4 B);
+- the embedded V2 clause `att av dem … ”levererade …”` (b14-001 q4 step 2).
+
+After the fixes: batch check passes (970 strings), audit clean, 1985 passed, 7 xfailed.
+
+### Second-reader review (round 2)
+
+The same three-way split re-read the rewritten file. They reported only errors and clear language faults: false or added claims, non-verbatim quotations, non-excluding arguments, wrong step or paragraph references, wrong voice or dropped hedges, contradictions, rules that rule out the key, and Swedish grammar or idiom. They found 8 findings (A 4, B 3, C 1). All were checked against the passages and applied:
+
+- **Voice (3):**
+  - b9-002 q1 A gave a cause ("skälet var att gatorna ännu inte hunnit få någon muntlig historia"). The passage only places the new areas in a relative clause; the causal reading is the writer's conclusion, not Löwendahl's finding.
+  - b9-003 q1 pitfall gave Ekvall's explanation to "textens poäng".
+  - b11-003 q1 C gave Bergkvist's comparison to "texten".
+- **Added or dropped content (2):**
+  - b10-001 q3 C.why_tempting: "Flottningen skedde under vårfloden". The passage says only that the timber was thrown in during the spring flood, and the books show work in June and over summers.
+  - b12-001 q4 pitfall dropped "En hel del i" before "akterna".
+- **Language (3):**
+  - Two quotations in main-clause word order inside an att-clause: b10-001 q1 step 2 and b13-001 q3 step 2. Round 1's sweep missed the first because its pattern capped the quotation at 80 characters. Rerun uncapped, the sweep found the second before reader C reported it.
+  - b12-002 q2 pitfall: "kan tolkas som att vilja", the construction round 1 fixed in b8-003 q2. A sweep for "-s som att" finds none left.
+
+No key changed, and no reader found a new content concern.
+
+### Content concerns
+
+All 42 keys stand. Nothing below was papered over: each explanation states the best case for the keyed answer and, where a learner could stumble, says why. No passage needs a change for a key to hold. Any option or stem change would need a new revision (r2), a re-gate and a ruling, which is outside this bead.
+
+Low (an attentive learner may notice; the key holds):
+1. **`las-b9-001` q4, option D, is the closest distractor.** Its "inte säger något säkert" says much the same as the key's own "materialet medger ingen visshet". D fails for two reasons:
+   - it puts the uncertainty on uneven preservation, where the text names several sources and holds that the pattern "återkommer i för många orter för att avfärdas";
+   - it makes one caveat the whole message, while B also carries the pattern.
+
+   A strict reader may still find D partly true. The explanation says so in D's why_tempting and why_wrong.
+2. **`las-b13-001` q4, key C: "det som i dag gör dem värdefulla … är dessutom omtvistat".** What the text leaves disputed is why the richest walls are rich, not their value. Under Frejmark's reading (no one lifted a stone), a protection that keeps the stones in place would reach what matters. The key follows the writer's closing claim that the protection "inte ändrat något" for the walls Ekelin found richest. No distractor competes. The explanation glosses "värdefulla" as the species-rich edge (step 2).
+3. **`las-b14-001` q4, key C: "framför allt därför att" ranks seasonality as the main reason.** The text never ranks it. It follows from the seasons and from how the charcoal work bound the household, and no distractor competes. The explanation no longer calls "framför allt" a hedge.
+4. **`las-b12-001` q3, key D: "de rikaste" is stronger than Sandell's "en stad med den skattekraften".** The stem also calls Rahmqvist's claim a "förklaring", where Rahmqvist claims "ett mönster som tål att räknas om, inte en förklaring". The explanation paraphrases Sandell from the passage, not from the option.
+
+Minor (wording looser than the passage, harmless):
+5. `las-b9-003` q1 key C gives the 27-of-32 tendency without a quantifier ("De ur som fortfarande gick rätt stod vid …"); "snarare än" keeps it comparative.
+6. `las-b10-001` q2 key D says "senast den femtonde september"; the passage says "före den femtonde september".
+7. `las-b10-001` q4 key C: "bestod mest av" for the text's "nära hälften" of the sorted days. Efterrensning is still the largest share.
+8. `las-b10-002` q1 key C drops "tycktes" and the limits to the SO teachers and högstadiet. It contradicts nothing, and the explanation keeps all three.
+9. `las-b12-002` q1 key C: "angav ofta" for "återkom … oftare än väntat"; step 3 bridges the two.
+10. `las-b12-003` q2 key D: "lika mycket som elevens insats" is softer than "mäter vi inte elevens arbete utan hemmets"; step 4 says so.
+11. `las-b9-002` q1 key B: "oftast" is weaker than "nästan undantagslöst" but follows from it; step 4 says so.
+12. `las-b9-002` q2 key D: "fattar namnbeslut". The glossary has the namnberedning propose and examine names, and the criticism is addressed to the kommun and the beredning.
+13. `las-b8-003` q2 key A: "som en gemensam angelägenhet" is the key's gloss of "inte … åt marknaden ensam"; step 4 explains it.
+14. `las-b13-001` q3 key A drops Frejmark's "i regel".
+15. `las-b12-001` q1: the passage carries its own counter-case. Almstorp had no heights and no church tower, yet got a plain cylinder, and the text says the pattern is not clean. The key's "förefaller" covers it.
+
+### Verification (final tree)
+
+- **Batch check:** `python3 pipeline/synthetic/infold/explanation_batches.py --check-batch x2` → `batch x2: 16 units / 42 questions in pipeline/synthetic/infold/explanations/x2-las.json; every explanation gate passed, learner lint clean (970 strings)`. The gates are shard file, coverage (exactly X2's 42 qids), schema, distractor letters, framework ids, internal labels, rationale text, learner lint and canonical bytes. The check is fail-closed, so passing means zero findings.
+- **Learner-output lint on X2:** `lint_learner_output.py pipeline/synthetic/infold/explanations/x2-las.json` → `clean — 1 file(s)`, 0 findings; `--strict` also clean.
+- **Verbatim quotations:** `test_every_las_quotation_is_verbatim_from_its_unit` passes and now covers X2. The scratchpad audit (not checked in) applies the same rule. X2 has 512 quotation marks in 256 pairs, none unpaired:
+  - 236 exact;
+  - 19 that differ only in the first letter's case;
+  - 1 that marks left-out words with "…";
+  - 0 not in the unit's text.
+
+  If the review wants quotations byte for byte, these 20 are the complete list to settle:
+  - **First letter capitalized because the quotation opens a sentence or follows a colon (17):**
+    - b9-001 q1 B ”Oavsett om de samlades …”; q4 C ”Genomgående”;
+    - b10-001 q1 step 2 ”På de nedersta, flacka sträckorna …” and C ”Oberoende av hur brant fallet var”; q3 step 1 ”Dra för slutsats”; q4 D ”Entydigt”;
+    - b10-002 q1 D ”Både utlåningen”;
+    - b10-003 q1 step 3 ”Överblivna ytor” and B ”Ett stråk där folk ändå passerade”;
+    - b11-002 q1 A ”Oavsett”;
+    - b12-002 q1 pitfall ”Drygt en tredjedel”;
+    - b13-001 q1 C ”Varje mur”;
+    - b13-002 q1 D ”Lika kraftigt oavsett var på kroppen”;
+    - b13-003 q1 A ”Oavsett hur gammal bebyggelsen i området var”;
+    - b14-001 q3 C ”Aldrig”; q4 step 1 ”Dra för slutsats” and step 2 ”Av dem som sålde kol …”.
+  - **Lower case mid-sentence (2):** b10-001 q4 pitfall ”knappt sju procent”, ”var tionde”.
+  - **Marked omission (1):** b9-002 q2 technique ”Min invändning gäller inte … utan …”, whose pieces stand in order in one sentence of the passage.
+- **The same audit, otherwise:**
+  - every "(steg N)" points inside its entry;
+  - every solution_path and last step ends "Svaret är <key>.";
+  - every entry quotes its passage verbatim (15+ characters) in solution_path or steps, X1's content rule;
+  - no han, hon, hans, hennes, honom, henne or hen outside a quotation;
+  - every entry passes X1's Swedish-word ratio;
+  - all framework ids are LÄS entries.
+- **Partition:** `explanation_batches.py --check` → current: 8 batches, 118 units / 332 questions; x2 present.
+- **Across batches (nothing written):** `--assemble evidence-x2 --partial` → `partial: 97 explanations from x0-pilot, x1, x2 pass every gate; missing: x3, x4, x5, x6, x7. Nothing written: a partial set is not a release`; `data/explanations/p5-evidence-x2.json` does not exist.
+- **Test suite:** `python3 -m pytest .github/contract-tests pipeline/synthetic/evidence/tests pipeline/synthetic/gates/scripts/tests pipeline/synthetic/infold/tests -q -p no:cacheprovider` → **1985 passed, 7 xfailed** (40.4 s), the bead's baseline exactly; no test was added.
+- **Determinism:**
+  - the file is hand-written in canonical form, and the canonical-bytes gate compares it with `export_product.render_json` of its entries;
+  - every batch check runs `export_bank`'s double build and compares the bytes;
+  - two final runs of `--check-batch x2` gave identical output;
+  - the file's sha256 did not change across them.
+- **Changed files** (`git status`): `pipeline/synthetic/infold/explanations/x2-las.json` (new), `docs/worklog/hpf-c5tb.md` (modified). Nothing else.
+- **sha256:**
+  - `pipeline/synthetic/infold/explanations/x2-las.json` `1369803fa22b9b25d131beaa458b8c5618a4fcedff6c0832a6bf57853c81562d`
+  - unchanged:
+    - `BATCHES.json` `fd38ed33…`
+    - `explanation_batches.py` `34789ae1…`
+    - `export_product.py` `f627c815…`
+    - `x1-las.json` `6c72164b…`
+    - `data/explanations/p5-pilot.json` `fd96f43f…`
+    - `tests/test_infold_explanation_batches.py` `7c9f68cd…`
+    - `approval-roster.json` `9babcc8a…`
+    - `frameworks/las_taxonomy.json` `2096323e…`
+
+### Handoff
+
+- **Ready for review:**
+  - an independent correctness and language review of X2 (hpf-c5tb's plan: Codex);
+  - then the owner's look at content concerns 1–4.
+
+  Committing, pushing and opening the PR are outside this lane.
+- **For X3:**
+  - the same procedure, with two lessons from this batch:
+    - run the att-clause word-order sweep without a length cap;
+    - check rationale framings before reusing them (four of this batch's round-1 findings came from them);
+  - quotations that start a sentence or follow a colon may change only the first letter's case;
+  - "framför allt" ranks; it is not a hedge.
+- **Not claimed:**
+  - release readiness: no release shard was written, and nothing was synced or deployed;
+  - semantic certification beyond the reviews recorded here (lint is necessary, not sufficient);
+  - X3–X7.
+
+### Bead note
+
+P5 PR2b X2 implemented, uncommitted on 2b1dabd: pipeline/synthetic/infold/explanations/x2-las.json, 42 reviewed LÄS entries for las-b8-003…las-b14-001 (16 units). All keys hold. Framework ids: TYPE-001 28, -002 2, -003 10, -004 2. Two second-reader rounds (round 1: 16 errors and 77 minor; round 2: 8) plus an att-clause word-order sweep (6 more), all applied. 15 content concerns logged, 4 low, none needing a passage change. check-batch x2 clean (970 strings); lint default/strict clean; verbatim test passes (256 quotations); 1985 passed, 7 xfailed; reruns identical. Evidence: docs/worklog/hpf-c5tb.md, Batch X2.
+LANE DONE: hpf-c5tb.5
+
+### Progress
+
+- 2026-10-08 [S:ci-vh54b|W:hpf-c5tb.5|H:research|E:2b1dabd] Read the design (§C/§D, Amendment 1), LAYER2-RENDERING.md, the app's explanation type, the schema, the exporter's gates, the pilot, X1, this worklog, BATCHES.json and the LÄS catalog. Read and re-solved all 16 units, 42 questions, from the student text: all keys hold.
+- 2026-10-08 [S:ci-vh54b|W:hpf-c5tb.5|H:author|E:pipeline/synthetic/infold/explanations/x2-las.json] Wrote the 42 entries in canonical form, in four chunks. `--check-batch x2` passed on the first run (970 strings); lint clean; 1985 passed, 7 xfailed; the partial assembly of pilot + X1 + X2 passes.
+- 2026-10-08 [S:ci-vh54b|W:hpf-c5tb.5|H:review|E:pipeline/synthetic/infold/explanations/x2-las.json] Second-reader round 1 (three readers): 16 errors and 77 minor, all checked and applied, plus the att-clause sweep (6). Round 2: 8, applied; the uncapped sweep had already caught reader C's one. Final checks green, reruns identical.
+
+### X2 review fix
+
+Bead `hpf-c5tb.6`: review finding B1 on PR #381 (review bead `hpf-gj5p`). B1 is an explanation that gives the writer a position the passage does not state, in `las-b13-003` q2. The bead also asked for a sweep of all 42 X2 entries for the same defect class.
+
+**Snapshot and boundaries**
+- Claimed with `gc hook --claim --json` (`hpf-c5tb.6`, assignee `gc__implementation-worker-ci-bs7qz`, route `hpfetcher/gc.implementation-worker`); `bd show hpf-c5tb.6 --json` matched the id, status `in_progress`, the assignee and `gc.routed_to`.
+- Branch `codex/hpf-c5tb-x2` at `77064a5dceb47cc309a72d2e6003fab805e08a62`, as the bead states; no tracked change at start. `x2-las.json` sha256 was `1369803f…`, the value the Batch X2 section records.
+- No git writes and no network; the changes are uncommitted. The untracked runtime, skill and sandbox paths present at start are untouched.
+- The review worklog `hpf-gj5p.md` lives in the vault, which this lane's sandbox cannot read (the read was refused). B1 is taken from the bead text and from `hpf-gj5p`'s closing note. The reviewer's suggested Swedish was therefore not available. The new wording is this lane's own, checked against the passage, which the bead allows ("or equivalent wording").
+- The bead names no validator, so none was run (`gc.check_path` is the post-close dispatcher check, as for the earlier beads).
+
+**B1.** `p5-las-b13-003-r1-LÄS-002`, "Vilken invändning riktar textförfattaren mot förslaget att utöka flaggdagslistan?", key D. Option C: "Förslaget lägger ansvaret för att dagarna märks på fastighetsägarna i stället för på den myndighet som fastställer listan."
+- distractor C `why_wrong`
+  - before: "Textförfattaren klagar inte på att ansvaret läggs på fastighetsägarna. Tvärtom efterlyses en rad i driftbudgeten och ”en person som vet att raden gäller henne” – ansvaret ska alltså ligga där stängerna sköts, inte hos den som fastställer listan (steg 3)."
+  - after: "Texten säger aldrig att förslaget lägger ansvaret på fastighetsägarna, och textförfattaren klagar inte på något sådant. Invändningen gäller antagandet att seden bärs av almanackan: så länge ingen har uppgiften att sköta stängerna märks de nya dagarna inte (steg 2–3)."
+- step 4 ("Pröva alternativen"), its last clause
+  - before: "… och C vill lägga ansvaret hos den som fastställer listan, fast textförfattaren efterlyser någon som sköter stängerna."
+  - after: "… och C påstår att förslaget lägger ansvaret på fastighetsägarna, vilket texten aldrig säger."
+
+Why the old text was wrong:
+- The passage never mentions who sets the list, and never says responsibility must be kept from that authority. The contrast "där stängerna sköts, inte hos den som fastställer listan" was invented.
+- What the writer asks for, ”en rad i driftbudgeten, och en person som vet att raden gäller henne”, says nothing about which body provides it.
+- "Tvärtom" turned the writer's request into the opposite of a complaint about the property owners, which the passage does not say either.
+- "(steg 3)" pointed at a step that does not contain ”en person som vet att raden gäller henne”.
+
+What the new text does:
+- It rejects C on what C invents. The proposal in stycke 5 (”Nu föreslås att listan över allmänna flaggdagar ska utökas.”) says nothing about responsibility or property owners, and the writer complains about no such transfer.
+- It then states the real objection: the assumption (step 2) and the unnoticed days (step 3), hence "(steg 2–3)".
+- Origin: the framing came from the unit's rationale ("hela texten placerar ansvaret hos den som äger stången och betalar driften"). That makes five X2 rationale claims that did not hold, after the four of round 1.
+
+**The whole entry, re-verified against the passage.** One more sentence gave the writer a position the passage does not take, and is fixed. Reader C (below) had marked it borderline:
+- distractor B `why_wrong`, its last sentence
+  - before: "Textförfattaren vill inte skjuta upp förslaget utan peka på vad som saknas: någon som sköter stängerna (steg 2–3)."
+  - after: "Invändningen gäller inte när förslaget ska genomföras, utan vad som saknas: någon som sköter stängerna (steg 2–3)."
+  - The passage takes no stance on postponing. ”Mot dagarna i sig har jag ingenting” and ”jag skulle flagga för den utan invändning” are about the days, not about timing. The new sentence says what the objection is about (stycke 5–6) and still answers B's "bör vänta". The sentence before it, "Texten för aldrig fram den som ett skäl att vänta.", is unchanged.
+
+The rest holds and is unchanged:
+- solution_path and steps 1–3 and 5: the quotations are verbatim (stycke 5 and 6). "ger bara fler dagar som inte märks" paraphrases ”Fler dagar på en lista som ingen verkställer ger fler dagar som inte märks”, and the key's own "ändrar ingenting" says the same.
+- A: ”Mot dagarna i sig har jag ingenting.” and the "väl motiverad" concession are in the text, and the erosion argument is not.
+- B, first two sentences: the economy appears only in Hollstensson's hedged caveat (”kan ha drivit fram”), never as a reason to wait.
+- C `why_tempting`, "Texten handlar om vem som ska ansvara för flaggningen": a description of the lure. The passage is about who has the task: ”ingen längre har uppgiften” (stycke 2), entreprenad against egen regi (stycke 3), ”en person som vet att raden gäller henne” (stycke 6). Kept.
+- technique and pitfall: true of the passage.
+
+**Sweep.** The class, as the bead defines it: an explanation that gives the writer, a named person or "texten" a position, motive or contrast that the passage does not state. Every step text and every `why_wrong` of the 42 entries was re-read against the unit's student-facing text: title, passage with glossary and signature, prompts and options. So were solution_path, `why_tempting`, technique and pitfall. Two independent passes:
+- this lane's own read of all 16 units;
+- three read-only second readers (general-purpose subagents of this session), split as in the X2 rounds (b8-003 … b10-001; b10-002 … b12-002; b12-003 … b14-001). Each was given the class and B1 as the worked example, with the rationales marked as unverified notes. Each was asked to quote the passage for every finding and to classify it as a true instance or borderline. Their reports are not checked in.
+
+Readers: 0 true instances, 5 borderline (A 1, B 2, C 2). Four of the five were also on this lane's own list. The fifth, the label "vänder på orsak och verkan", this lane had checked and cleared in each entry. Each borderline item was decided against the passage:
+- fixed, if the explanation states a position or contrast that the passage does not draw;
+- kept, if the passage states or clearly implies it.
+
+Fixed (one, besides B1's entry):
+- `p5-las-b9-001-r1-LÄS-004`, distractor A `why_wrong` (reader A and this lane)
+  - before: "Texten säger aldrig att bokbidraget avgjorde vilka cirklar som fortsatte. Mönstret som träder fram gäller ansvaret, inte bidraget (steg 2)."
+  - after: "Texten säger aldrig att bokbidraget avgjorde vilka cirklar som fortsatte. Bidraget hör till stadgan i andra stycket, och mönstret som träder fram gäller ansvaret (steg 2)."
+  - The old sentence was the passage's own sentence, ”Mönstret som ändå träder fram gäller ansvaret snarare än stoffet”, with the contrast swapped from "stoffet" to "bidraget". It cited step 2, which quotes the original.
+  - The text contrasts responsibility with what was read, never with the grant. A learner who checks step 2 meets a different contrast from the one cited, and could take "stoffet" for the book grant, which was paid in books.
+  - The new sentence keeps the true content: the grant belongs to the stadga (stycke 2), as q1's D `why_wrong` already says, and the pattern concerns responsibility.
+
+Kept (the passage states or clearly implies them):
+- **"A vänder på orsak och verkan"** as the step-4 label of a reversed distractor in b8-003 q1, b9-001 q1, b10-001 q1, b10-002 q1 and b12-001 q1 (reader B marked b12-001 borderline). The same wording appears in b8-003 q1 A's `why_wrong` and as "D vänder på orsak och verkan" in b9-003 q2. Each passage gives the relation a direction:
+  - b8-003: ”vad som händer i en bygd när det sista bankkontoret stänger”;
+  - b9-001: ”där ledaren var hämtad ur den egna kretsen tycks …”, with the mechanism in stycke 4;
+  - b10-001: the channels were cleared in the 1920s and the days rose ”under de följande decennierna”;
+  - b10-002: ”tycktes undervisningen förändras … började”;
+  - b12-001: ”därför måste” for the forced location;
+  - b9-003: an explicit causal story.
+
+  The hedges stay in the same steps. Where the researcher calls the finding a tendency, not an explanation (b9-001, b10-001, b12-001), X1's label "vänder på sambandet" would be more exact. That is a consistency polish, not a false claim, and it is left for the review.
+- **b10-003 q2 step 2, "Skribenten drar samma slutsats"** (reader B): the writer ties the objection to Almstierna's point (”Här ligger min invändning.”), and both reject the count as the measure (”antalet anlagda rastgårdar”; ”inte för fler”).
+- **b13-003 q2 C `why_tempting`** (reader C, secondary): see the entry above.
+- **Cleared by the readers and by this lane:**
+  - b8-003 q1 A "…, inte varför kontoren försvann": the scope of the study as the text defines it;
+  - b9-003 q2 C "för att avvisa den": ”Den räcker inte.”, plus the counter-evidence;
+  - b10-001 q3 C "Rensningen fortsatte alltså efter själva flottningen": call-outs ”varje höst”, always after 15 September;
+  - b14-001 q2 C "…, inte var råvaran fanns": ”Den skillnaden avgjorde var hantverken kunde bedrivas” and ”trots att skogen längre bort var minst lika god”;
+  - b12-003 q2 step 3, "Elmeruds mätningar stöder tanken";
+  - b13-002 q2 D `why_wrong`;
+  - b14-001 q1 D and its pitfall;
+  - b14-001 q4 step 3, which step 4 marks as an inference.
+
+**Verification (final tree)**
+- `python3 pipeline/synthetic/infold/explanation_batches.py --check-batch x2` → `batch x2: 16 units / 42 questions in pipeline/synthetic/infold/explanations/x2-las.json; every explanation gate passed, learner lint clean (970 strings)`. The edits were in place, and the canonical-bytes gate passes, so no regeneration was needed.
+- `lint_learner_output.py pipeline/synthetic/infold/explanations/x2-las.json` → `clean — 1 file(s)`; `--strict` also clean.
+- `python3 -m pytest .github/contract-tests pipeline/synthetic/evidence/tests pipeline/synthetic/gates/scripts/tests pipeline/synthetic/infold/tests -q -p no:cacheprovider` → **1985 passed, 7 xfailed** (41 s), the Batch X2 numbers. `test_every_las_quotation_is_verbatim_from_its_unit` is among them. X2 now has 255 quotations: the old C `why_wrong`'s ”en person som vet att raden gäller henne” went with it (closing marks 512 → 510). No new quotation was added.
+- Diff: a scratchpad script (`python3 <file>`, not checked in) compared every learner field of the 42 entries with `git show HEAD:…/x2-las.json`. Exactly 4 fields in 2 entries changed, the four above:
+  - `p5-las-b13-003-r1-LÄS-002`: step 4, B `why_wrong`, C `why_wrong`;
+  - `p5-las-b9-001-r1-LÄS-004`: A `why_wrong`.
+
+  Qid order, field sets and framework ids are unchanged.
+- Changed files (`git status`): `pipeline/synthetic/infold/explanations/x2-las.json`, this worklog.
+- sha256:
+  - `pipeline/synthetic/infold/explanations/x2-las.json` `9071320aeb310356102cbbace8f9beaa4cff107e7235f349818e68da110081c5` (HEAD `1369803f…`);
+  - unchanged: `BATCHES.json` `fd38ed33…`, `explanation_batches.py` `34789ae1…`, `x1-las.json` `6c72164b…`, `data/explanations/p5-pilot.json` `fd96f43f…`, `tests/test_infold_explanation_batches.py` `7c9f68cd…`, and the unit `batch13/candidates-final/las-b13-003.json` `4121c6ce…`, the roster's value.
+
+**Handoff**
+- Ready for an exact-head re-review of the four changed fields.
+- Left for the review: the "orsak och verkan" label (a polish; see Kept).
+- Committing, pushing and updating PR #381 are outside this lane.
+
+**Bead note**
+
+X2 review fix on 77064a5, uncommitted: B1 fixed in p5-las-b13-003-r1-LÄS-002 (C why_wrong and step 4 no longer give the writer a contrast between whoever runs the poles and the authority that sets the list; C is rejected on what it invents, a proposal moving responsibility to property owners); class sweep of all 42 entries (own read plus three second readers: 0 true instances, 5 borderline) fixed two more, the B why_wrong of that entry (a stance on postponing that the passage never takes) and b9-001 q4 A why_wrong (the contrast of the passage itself swapped from stoffet to bidraget under a step citation), and kept three with reasons (the orsak och verkan label left as a polish); 4 fields in 2 entries; check-batch x2 clean (970 strings), lint default and strict clean, 1985 passed, 7 xfailed. Evidence: docs/worklog/hpf-c5tb.md, section X2 review fix.
+LANE DONE: hpf-c5tb.6
