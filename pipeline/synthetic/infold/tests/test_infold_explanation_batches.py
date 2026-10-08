@@ -693,8 +693,9 @@ def test_a_quotation_may_change_only_its_first_letter_case_and_mark_left_out_wor
 
 
 def test_every_las_quotation_is_verbatim_from_its_unit(manifest, approved_rows):
-    # ELF is left out: its cloze explanations quote fixed expressions and wrong
-    # collocations that are not in the text by design ("take its toll on").
+    # ELF has its own rule (below): its cloze explanations also quote fixed
+    # expressions and wrong collocations that are not in the text by design
+    # ("take its toll on").
     student: dict[str, list[str]] = {}
     for row in approved_rows:
         student.setdefault(row["unit_id"], [row["title"], row["context"]])
@@ -720,6 +721,140 @@ def test_every_las_quotation_is_verbatim_from_its_unit(manifest, approved_rows):
                         bad.append(f"{qid}: ”{match.group(1)}” is not the unit's text")
     assert not bad, bad
     assert checked > 100
+
+
+# ELF quotations (bead hpf-c5tb.8). “…” is read as for LÄS, and ‘…’ wherever it
+# quotes: a ’ between two letters is an apostrophe, never a closing mark. A
+# straight " is refused, since a quotation in it would go unread. Every
+# quotation is the unit's own text under the LÄS rule, apostrophes as the text
+# spells them, with two allowances for how English is quoted:
+#   - ___ stands for a gap marker ___(n)___, and gap n may be shown filled with
+#     one of question n's options, the frame as a learner reads it;
+#   - a full stop may close a quoted sentence that the source continues.
+# In a gap question's entry, a quotation that is not the unit's text is a
+# language example: a fixed expression, a wrong collocation or a false friend
+# (“take its toll on”, “eventuellt”). It cannot be checked against the text,
+# so it may share no run of four words with it, whatever its apostrophes: a
+# misquoted frame is still caught. Other entries have no such allowance.
+ELF_SINGLE = re.compile(r"‘((?:[^‘’]|’(?=[^\W\d_]))+)’(?![^\W\d_])")
+WORD = re.compile(r"\w+(?:'\w+)*")
+LANGUAGE_RUN = 4
+
+
+def _apostrophes(text: str) -> str:
+    return text.replace("’", "'").replace("‘", "'")
+
+
+def _learner_strings(entry: dict) -> list[str]:
+    parts = [entry["solution_path"], entry["technique"], entry["pitfall"] or ""]
+    parts += [value for s in entry["steps"] for value in (s["title"], s["text"])]
+    return parts + [value for d in entry["distractors"] for value in (d["why_tempting"], d["why_wrong"])]
+
+
+def _elf_texts(rows: list[dict]) -> list[str]:
+    """A unit's student text with every gap shown as ___; then the same with
+    each gap filled by each of its question's options."""
+    student = "\n".join([rows[0]["title"], rows[0]["context"],
+                         *(text for row in rows for text in (row["prompt"], *(o["text"] for o in row["options"])))])
+    texts = [export_product.GAP_MARKER.sub("___", student)]
+    for row in rows:
+        gap = export_product.GAP_PROMPT.fullmatch(row["prompt"])
+        if gap:
+            texts += [export_product.GAP_MARKER.sub("___", student.replace(f"___({gap.group(1)})___", o["text"]))
+                      for o in row["options"]]
+    return texts
+
+
+def _runs(text: str) -> set[tuple[str, ...]]:
+    words = [word.casefold() for word in WORD.findall(_apostrophes(text))]
+    return {tuple(words[i:i + LANGUAGE_RUN]) for i in range(len(words) - LANGUAGE_RUN + 1)}
+
+
+def _elf_quotation_problems(parts: list[str], texts: list[str], gap_question: bool) -> tuple[int, list[str]]:
+    """How many quotations the learner strings hold, and those that break the ELF rule."""
+    checked, bad = 0, []
+    for part in parts:
+        rest = ELF_SINGLE.sub("", QUOTED.sub("", part))
+        bad += [f"an unpaired quotation mark {mark} in {part!r}" for mark in "“”‘" if mark in rest]
+        if '"' in part:
+            bad.append(f'a straight quotation mark " in {part!r}')
+        for match in [*QUOTED.finditer(part), *ELF_SINGLE.finditer(part)]:
+            checked += 1
+            quote = match.group(1)
+            closed = [quote, quote[:-1]] if quote.endswith(".") else [quote]
+            if any(_verbatim(q, text) for q in closed for text in texts):
+                continue
+            if gap_question and not _runs(quote) & set().union(*map(_runs, texts)):
+                continue  # a language example
+            bad.append(f"{match.group(0)} is not the unit's text")
+    return checked, bad
+
+
+def _elf_entry_problems(qid: str, entry: dict, units: dict[str, list[dict]], rows: dict[str, dict]) -> tuple[int, list[str]]:
+    row = rows[qid]
+    gap_question = bool(export_product.GAP_PROMPT.fullmatch(row["prompt"]))
+    count, problems = _elf_quotation_problems(_learner_strings(entry), _elf_texts(units[row["unit_id"]]), gap_question)
+    return count, [f"{qid}: {problem}" for problem in problems]
+
+
+def _by_unit(approved_rows: list[dict]) -> dict[str, list[dict]]:
+    units: dict[str, list[dict]] = {}
+    for row in approved_rows:
+        units.setdefault(row["unit_id"], []).append(row)
+    return units
+
+
+def test_every_elf_quotation_is_its_units_text_or_a_language_example(manifest, approved_rows):
+    units, rows = _by_unit(approved_rows), {row["qid"]: row for row in approved_rows}
+    checked, bad = 0, []
+    for batch in manifest["batches"]:
+        path = REPO_ROOT / batch["file"]
+        if not path.exists():
+            continue
+        shard = json.loads(path.read_text(encoding="utf-8"))
+        for qid in (q for q in batch["qids"] if rows[q]["section"] == "ELF"):
+            count, problems = _elf_entry_problems(qid, shard[qid], units, rows)
+            checked, bad = checked + count, bad + problems
+    assert not bad, bad
+    assert checked > 100
+
+
+def test_an_elf_quotation_may_show_a_gap_or_an_option_in_it_and_close_on_a_full_stop():
+    rows = [{"title": "Kitchens", "context": "It quietly takes its ___(1)___ on the general mood, she says. The cook’s tone is light.",
+             "prompt": "Gap (1)", "options": [{"letter": "A", "text": "toll"}, {"letter": "B", "text": "price"}]}]
+    texts = _elf_texts(rows)
+
+    def flagged(quote: str, gap_question: bool = False) -> bool:
+        return bool(_elf_quotation_problems([f"See {quote} here."], texts, gap_question)[1])
+
+    for quote in ("“the cook’s tone is light”", "“It quietly takes its ___ on the general mood.”",
+                  "“Takes its price on the general mood”", "‘the cook’s tone’", "“Gap (1)”"):
+        assert not flagged(quote) and not flagged(quote, gap_question=True), quote
+    assert not flagged("“take its toll on”", gap_question=True)  # a language example
+    for quote, gap_question in (("“take its toll on”", False),  # outside a gap question: not the unit's text
+                                ("“the cook's tone is light”", False),  # not the text's own apostrophe
+                                ("“the cook’s tone is heavy”", False), ("‘the cook’s tone is heavy’", False),
+                                ("“It quietly takes its ___ on the general mood!”", False),  # only a full stop closes
+                                ("“quietly takes its ___ on the mood”", True),  # a misquoted frame shares a run
+                                ("“takes its cost on the general mood”", True),  # a word that is no option of the gap
+                                ("“the cook's tone", False), ("‘the cook’s tone", True),  # unpaired, unclosed
+                                ('"the cook\'s tone is light"', False)):  # a straight quotation mark
+        assert flagged(quote, gap_question), quote
+
+
+def test_a_non_verbatim_quotation_in_an_elf_pilot_entry_is_flagged(approved_rows):
+    # Red-first proof on real entries: the LÄS rule never read these.
+    units, rows, pilot = _by_unit(approved_rows), {row["qid"]: row for row in approved_rows}, _pilot()
+    reading, gap = "p5-elf-b18-001-r1-ELF-001", "p5-elf-b18-002-r1-ELF-001"
+    assert _elf_entry_problems(reading, pilot[reading], units, rows)[1] == []
+    assert _elf_entry_problems(gap, pilot[gap], units, rows)[1] == []
+    for qid, old, new in ((reading, "“there was almost nothing alive”", "“there was nothing alive”"),  # B1's form
+                          (reading, "“we think”", "“we believe”"),
+                          (gap, "“it quietly takes its ___ on the general mood”", "“it quietly takes its ___ on the mood”")):
+        entry = json.loads(json.dumps(pilot[qid], ensure_ascii=False).replace(old, new))
+        assert entry != pilot[qid], (qid, old)
+        problems = _elf_entry_problems(qid, entry, units, rows)[1]
+        assert any(new in problem for problem in problems), (qid, new, problems)
 
 
 SWEDISH = (" och ", " att ", " det ", " är ", " inte ", " som ")
