@@ -36,6 +36,7 @@ PILOT = export_product.PILOT_UNITS
 PILOT_REL = "data/explanations/p5-pilot.json"
 X1_REL = "pipeline/synthetic/infold/explanations/x1-las.json"
 X1_FILE = REPO_ROOT / X1_REL
+X4_FILE = REPO_ROOT / "pipeline/synthetic/infold/explanations/x4-elf.json"
 SCRIPT = build_roster.INFOLD_DIR / "explanation_batches.py"
 LINTER = REPO_ROOT / "pipeline/synthetic/gates/scripts/lint_learner_output.py"
 # The pinned partition (bead hpf-c5tb.4): the initial cut of bead hpf-c5tb.1
@@ -80,6 +81,10 @@ def _subset(manifest: dict, *names: str) -> dict:
 
 def _x1() -> dict:
     return json.loads(X1_FILE.read_text(encoding="utf-8"))
+
+
+def _x4() -> dict:
+    return json.loads(X4_FILE.read_text(encoding="utf-8"))
 
 
 def _pilot() -> dict:
@@ -693,8 +698,9 @@ def test_a_quotation_may_change_only_its_first_letter_case_and_mark_left_out_wor
 
 
 def test_every_las_quotation_is_verbatim_from_its_unit(manifest, approved_rows):
-    # ELF is left out: its cloze explanations quote fixed expressions and wrong
-    # collocations that are not in the text by design ("take its toll on").
+    # ELF has its own rule (below): its cloze explanations also quote fixed
+    # expressions and wrong collocations that are not in the text by design
+    # ("take its toll on").
     student: dict[str, list[str]] = {}
     for row in approved_rows:
         student.setdefault(row["unit_id"], [row["title"], row["context"]])
@@ -720,6 +726,333 @@ def test_every_las_quotation_is_verbatim_from_its_unit(manifest, approved_rows):
                         bad.append(f"{qid}: ”{match.group(1)}” is not the unit's text")
     assert not bad, bad
     assert checked > 100
+
+
+# ELF quotations (beads hpf-c5tb.8 and hpf-c5tb.9). “…” is read as for LÄS, and
+# ‘…’ wherever it quotes: a ’ between two letters is an apostrophe, never a
+# closing mark. A straight " is refused, since a quotation in it would go
+# unread. Every quotation is the unit's own text under the LÄS rule,
+# apostrophes as the text spells them, with two allowances for how English is
+# quoted:
+#   - ___ stands for a gap marker ___(n)___, and gap n may be shown filled with
+#     one of question n's options, the frame as a learner reads it;
+#   - a full stop may close a quoted sentence that the source continues.
+# The one exception is a reviewed language example in a gap question's entry:
+# a fixed expression, a wrong collocation, a gloss or a false friend (“take its
+# toll on”, “eventuellt”), not in the text by design. LANGUAGE-EXAMPLES.json
+# lists each one by qid, field and exact words, and it holds only there.
+# Sharing no run of four words with the text proves nothing (review finding B1
+# on PR #383): a frame with one word changed, or a short claim reversed, shares
+# none. A listed example may share no such run either, which keeps a longer
+# misquoted frame off the list; the review of each listing covers the rest.
+ELF_SINGLE = re.compile(r"‘((?:[^‘’]|’(?=[^\W\d_]))+)’(?![^\W\d_])")
+WORD = re.compile(r"\w+(?:'\w+)*")
+LANGUAGE_RUN = 4
+LANGUAGE_EXAMPLES = REPO_ROOT / "pipeline/synthetic/infold/explanations/LANGUAGE-EXAMPLES.json"
+LANGUAGE_EXAMPLES_FORMAT = "p5-elf-language-examples-v1"
+LANGUAGE_EXAMPLE_KINDS = ("expression", "wrong collocation", "gloss", "false friend", "word")
+
+
+def _apostrophes(text: str) -> str:
+    return text.replace("’", "'").replace("‘", "'")
+
+
+def _learner_fields(entry: dict) -> list[tuple[str, str]]:
+    """Every learner field of an entry as (field, text), in the entry's order."""
+    fields = [("solution_path", entry["solution_path"])]
+    for i, s in enumerate(entry["steps"]):
+        fields += [(f"steps[{i}].title", s["title"]), (f"steps[{i}].text", s["text"])]
+    for i, d in enumerate(entry["distractors"]):
+        fields += [(f"distractors[{i}].why_tempting", d["why_tempting"]),
+                   (f"distractors[{i}].why_wrong", d["why_wrong"])]
+    return fields + [("technique", entry["technique"]), ("pitfall", entry["pitfall"] or "")]
+
+
+def _elf_texts(rows: list[dict]) -> list[str]:
+    """A unit's student text with every gap shown as ___; then the same with
+    each gap filled by each of its question's options."""
+    student = "\n".join([rows[0]["title"], rows[0]["context"],
+                         *(text for row in rows for text in (row["prompt"], *(o["text"] for o in row["options"])))])
+    texts = [export_product.GAP_MARKER.sub("___", student)]
+    for row in rows:
+        gap = export_product.GAP_PROMPT.fullmatch(row["prompt"])
+        if gap:
+            texts += [export_product.GAP_MARKER.sub("___", student.replace(f"___({gap.group(1)})___", o["text"]))
+                      for o in row["options"]]
+    return texts
+
+
+def _runs(text: str) -> set[tuple[str, ...]]:
+    words = [word.casefold() for word in WORD.findall(_apostrophes(text))]
+    return {tuple(words[i:i + LANGUAGE_RUN]) for i in range(len(words) - LANGUAGE_RUN + 1)}
+
+
+def _quotations(part: str) -> list[re.Match]:
+    return [*QUOTED.finditer(part), *ELF_SINGLE.finditer(part)]
+
+
+def _is_units_text(quote: str, texts: list[str]) -> bool:
+    closed = [quote, quote[:-1]] if quote.endswith(".") else [quote]
+    return any(_verbatim(q, text) for q in closed for text in texts)
+
+
+def _elf_quotation_problems(fields: list[tuple[str, str]], texts: list[str],
+                            examples: frozenset[tuple[str, str]] = frozenset()) -> tuple[int, list[str]]:
+    """How many quotations the learner fields hold, and those that break the ELF
+    rule. examples holds the (field, words) of the entry's listed language examples."""
+    checked, bad = 0, []
+    for field, part in fields:
+        rest = ELF_SINGLE.sub("", QUOTED.sub("", part))
+        bad += [f"an unpaired quotation mark {mark} in {part!r}" for mark in "“”‘" if mark in rest]
+        if '"' in part:
+            bad.append(f'a straight quotation mark " in {part!r}')
+        for match in _quotations(part):
+            checked += 1
+            if not _is_units_text(match.group(1), texts) and (field, match.group(1)) not in examples:
+                bad.append(f"{field}: {match.group(0)} is not the unit's text or a listed language example")
+    return checked, bad
+
+
+def _elf_entry_problems(qid: str, entry: dict, units: dict[str, list[dict]], rows: dict[str, dict],
+                        examples: frozenset[tuple[str, str, str]] = frozenset()) -> tuple[int, list[str]]:
+    """The ELF rule on one entry. examples holds listed (qid, field, words): an
+    entry may use those of its own qid, and only if it is a gap question's."""
+    row = rows[qid]
+    gap_question = bool(export_product.GAP_PROMPT.fullmatch(row["prompt"]))
+    own = frozenset((field, words) for q, field, words in examples if gap_question and q == qid)
+    count, problems = _elf_quotation_problems(_learner_fields(entry), _elf_texts(units[row["unit_id"]]), own)
+    return count, [f"{qid}: {problem}" for problem in problems]
+
+
+def _by_unit(approved_rows: list[dict]) -> dict[str, list[dict]]:
+    units: dict[str, list[dict]] = {}
+    for row in approved_rows:
+        units.setdefault(row["unit_id"], []).append(row)
+    return units
+
+
+def _elf_entries(manifest: dict, rows: dict[str, dict]) -> dict[str, dict]:
+    """Every ELF entry of every batch file present, by qid."""
+    entries: dict[str, dict] = {}
+    for batch in manifest["batches"]:
+        path = REPO_ROOT / batch["file"]
+        if path.exists():
+            shard = json.loads(path.read_text(encoding="utf-8"))
+            entries.update((qid, shard[qid]) for qid in batch["qids"] if rows[qid]["section"] == "ELF")
+    return entries
+
+
+def _language_examples(path=LANGUAGE_EXAMPLES) -> list[dict]:
+    """The listed language examples, each {qid, field, text, kind}. The file
+    must be in this form and in canonical bytes."""
+    raw = path.read_bytes()
+    doc = json.loads(raw)
+    assert raw == export_product.render_json(doc), f"{path.name} is not in canonical form"
+    assert list(doc) == ["format", "checked_by", "rule", "examples"], list(doc)
+    assert doc["format"] == LANGUAGE_EXAMPLES_FORMAT, doc["format"]
+    for example in doc["examples"]:
+        assert list(example) == ["qid", "field", "text", "kind"], example
+        assert all(type(value) is str and value for value in example.values()), example
+        assert example["kind"] in LANGUAGE_EXAMPLE_KINDS, example
+    return doc["examples"]
+
+
+def _keys(examples: list[dict]) -> frozenset[tuple[str, str, str]]:
+    return frozenset((e["qid"], e["field"], e["text"]) for e in examples)
+
+
+@pytest.fixture(scope="module")
+def language_examples() -> frozenset[tuple[str, str, str]]:
+    return _keys(_language_examples())
+
+
+def _listing_problems(examples: list[dict], entries: dict[str, dict], units: dict[str, list[dict]],
+                      rows: dict[str, dict]) -> list[str]:
+    """Why a listed example is no language example in place: it is listed twice,
+    no gap question's entry of a batch file present has its qid, its words are no
+    quotation of its field, they are the unit's text (which needs no listing), or
+    they share a run of four words with that text, as a misquoted frame does."""
+    bad, seen = [], set()
+    for key in ((e["qid"], e["field"], e["text"]) for e in examples):
+        qid, field, words = key
+        if key in seen:
+            bad.append(f"{key} is listed twice")
+        seen.add(key)
+        if qid not in entries or not export_product.GAP_PROMPT.fullmatch(rows[qid]["prompt"]):
+            bad.append(f"{key}: no gap question's entry in a batch file present has this qid")
+            continue
+        texts = _elf_texts(units[rows[qid]["unit_id"]])
+        if words not in {m.group(1) for m in _quotations(dict(_learner_fields(entries[qid])).get(field, ""))}:
+            bad.append(f"{key}: no such quotation in this field")
+        elif _is_units_text(words, texts):
+            bad.append(f"{key}: the unit's text, which needs no listing")
+        elif _runs(words) & set().union(*map(_runs, texts)):
+            bad.append(f"{key}: shares a run of four words with the unit's text")
+    return bad
+
+
+def test_every_elf_quotation_is_its_units_text_or_a_language_example(manifest, approved_rows, language_examples):
+    units, rows = _by_unit(approved_rows), {row["qid"]: row for row in approved_rows}
+    checked, bad = 0, []
+    for qid, entry in _elf_entries(manifest, rows).items():
+        count, problems = _elf_entry_problems(qid, entry, units, rows, language_examples)
+        checked, bad = checked + count, bad + problems
+    assert not bad, bad
+    assert checked > 100
+
+
+def test_every_listed_language_example_is_a_quotation_of_its_gap_entry(manifest, approved_rows):
+    # With the test above, the list is exactly the language examples of the
+    # batch files present: each of those is listed, and nothing else is.
+    units, rows = _by_unit(approved_rows), {row["qid"]: row for row in approved_rows}
+    examples = _language_examples()
+    assert _listing_problems(examples, _elf_entries(manifest, rows), units, rows) == []
+    assert {e["qid"] for e in examples} >= {"p5-elf-b18-002-r1-ELF-001", "p5-elf-b4-002-r1-ELF-005"}  # pilot, X4
+
+
+@pytest.mark.parametrize("edit,message", [
+    (lambda doc: (json.dumps(doc, ensure_ascii=False, indent=1) + "\n").encode(), "canonical form"),
+    (lambda doc: doc.update(format="p5-elf-language-examples-v0"), "p5-elf-language-examples-v0"),
+    (lambda doc: doc.pop("rule"), "['format', 'checked_by', 'examples']"),
+    (lambda doc: doc["examples"][0].update(kind="idiom"), "idiom"),
+    (lambda doc: doc["examples"][0].update(note="a fixed expression"), "note"),
+    (lambda doc: doc["examples"][0].update(text=""), "'text': ''"),
+], ids=["not-canonical", "format", "missing-key", "unknown-kind", "extra-key", "empty-words"])
+def test_a_malformed_language_example_file_is_refused(tmp_path, edit, message):
+    doc = json.loads(LANGUAGE_EXAMPLES.read_bytes())
+    raw = edit(doc)  # bytes are written as they are; any other edit changed the document
+    path = tmp_path / LANGUAGE_EXAMPLES.name
+    path.write_bytes(raw if isinstance(raw, bytes) else export_product.render_json(doc))
+    with pytest.raises(AssertionError, match=re.escape(message)):
+        _language_examples(path)
+
+
+def test_an_elf_quotation_may_show_a_gap_or_an_option_in_it_and_close_on_a_full_stop():
+    rows = [{"title": "Kitchens", "context": "It quietly takes its ___(1)___ on the general mood, she says. The cook’s tone is light.",
+             "prompt": "Gap (1)", "options": [{"letter": "A", "text": "toll"}, {"letter": "B", "text": "price"}]}]
+    texts = _elf_texts(rows)
+    listed = frozenset({("technique", "take its toll on")})
+
+    def flagged(quote: str, examples: frozenset = listed) -> bool:
+        return bool(_elf_quotation_problems([("technique", f"See {quote} here.")], texts, examples)[1])
+
+    for quote in ("“the cook’s tone is light”", "“It quietly takes its ___ on the general mood.”",
+                  "“Takes its price on the general mood”", "‘the cook’s tone’", "“Gap (1)”"):
+        assert not flagged(quote) and not flagged(quote, frozenset()), quote
+    assert not flagged("“take its toll on”") and not flagged("‘take its toll on’")  # a listed language example
+    for quote, examples in (("“take its toll on”", frozenset()),  # not listed: not the unit's text
+                            ("“take its toll on”", frozenset({("pitfall", "take its toll on")})),  # another field's
+                            ("“take its toll”", listed),  # not the listed words
+                            ("“the cook's tone is light”", listed),  # not the text's own apostrophe
+                            ("“the cook’s tone is heavy”", listed), ("‘the cook’s tone is heavy’", listed),
+                            ("“It quietly takes its ___ on the general mood!”", listed),  # only a full stop closes
+                            ("“quietly takes its ___ on the mood”", listed),  # a misquoted frame
+                            ("“takes its cost on the general mood”", listed),  # a word that is no option of the gap
+                            ("“the cook's tone", listed), ("‘the cook’s tone", listed),  # unpaired, unclosed
+                            ('"the cook\'s tone is light"', listed)):  # a straight quotation mark
+        assert flagged(quote, examples), quote
+
+
+def test_a_non_verbatim_quotation_in_an_elf_pilot_entry_is_flagged(approved_rows, language_examples):
+    # Red-first proof on real entries: the LÄS rule never read these.
+    units, rows, pilot = _by_unit(approved_rows), {row["qid"]: row for row in approved_rows}, _pilot()
+    reading, gap = "p5-elf-b18-001-r1-ELF-001", "p5-elf-b18-002-r1-ELF-001"
+    assert _elf_entry_problems(reading, pilot[reading], units, rows, language_examples)[1] == []
+    assert _elf_entry_problems(gap, pilot[gap], units, rows, language_examples)[1] == []
+    for qid, old, new in ((reading, "“there was almost nothing alive”", "“there was nothing alive”"),  # B1's form
+                          (reading, "“we think”", "“we believe”"),
+                          (gap, "“it quietly takes its ___ on the general mood”", "“it quietly takes its ___ on the mood”")):
+        entry = json.loads(json.dumps(pilot[qid], ensure_ascii=False).replace(old, new))
+        assert entry != pilot[qid], (qid, old)
+        problems = _elf_entry_problems(qid, entry, units, rows, language_examples)[1]
+        assert any(new in problem for problem in problems), (qid, new, problems)
+
+
+# Review finding B1 on PR #383 (bead hpf-c5tb.9): three corruptions of a real
+# X4 cloze entry that passed while a quotation sharing no run of four words
+# with the text counted as a language example, and the review's reading control.
+@pytest.mark.parametrize("qid,old,new", [
+    ("p5-elf-b1-002-r1-ELF-002", "“Margins are narrow”", "“Margins are wide”"),
+    ("p5-elf-b1-002-r1-ELF-002", "“Their popularity has quietly deepened”", "“Their popularity has never deepened”"),
+    ("p5-elf-b1-002-r1-ELF-002", "“If anything, their ___ has quietly deepened.”",
+     "“If anything, our ___ has never deepened.”"),
+    ("p5-elf-b1-001-r1-ELF-002", "“modest ones, on the order of a few percent”",
+     "“enormous ones, on the order of ninety percent”"),
+], ids=["reversed-source-quotation", "fabricated-filled-frame", "fabricated-blank-frame", "reading-control"])
+def test_a_fabricated_quotation_in_an_x4_entry_is_flagged(approved_rows, language_examples, qid, old, new):
+    units, rows, x4 = _by_unit(approved_rows), {row["qid"]: row for row in approved_rows}, _x4()
+    assert _elf_entry_problems(qid, x4[qid], units, rows, language_examples)[1] == []
+    entry = json.loads(json.dumps(x4[qid], ensure_ascii=False).replace(old, new))
+    assert entry != x4[qid], old
+    problems = _elf_entry_problems(qid, entry, units, rows, language_examples)[1]
+    assert any(new in problem for problem in problems), (qid, new, problems)
+
+
+def test_a_language_example_holds_only_where_it_is_listed(approved_rows, language_examples):
+    # elf-b4-002 gap 5 lists “Come apart at the seams” and “slip through the
+    # seams” for its distractors[1].why_wrong. Other words there are flagged,
+    # and so are the listed words anywhere else: in another field, in that field
+    # of another gap entry, or in a reading entry, even one they are listed for.
+    units, rows, x4 = _by_unit(approved_rows), {row["qid"]: row for row in approved_rows}, _x4()
+    gap, other_gap, reading = "p5-elf-b4-002-r1-ELF-005", "p5-elf-b4-002-r1-ELF-004", "p5-elf-b4-001-r1-ELF-001"
+    seams = "“Come apart at the seams”"
+
+    def changed(entry):
+        entry["distractors"][1]["why_wrong"] = entry["distractors"][1]["why_wrong"].replace(
+            "“slip through the seams”", "“slip through the gaps”")
+
+    def in_technique(entry):
+        entry["technique"] += f" Compare {seams}."
+
+    def in_the_listed_field(entry):
+        entry["distractors"][1]["why_wrong"] += f" Compare {seams}."
+
+    reading_listed = language_examples | {(reading, "technique", "Come apart at the seams")}
+    for qid, edit, examples, quote in ((gap, changed, language_examples, "“slip through the gaps”"),
+                                       (gap, in_technique, language_examples, seams),
+                                       (other_gap, in_the_listed_field, language_examples, seams),
+                                       (reading, in_technique, reading_listed, seams)):
+        assert _elf_entry_problems(qid, x4[qid], units, rows, examples)[1] == []
+        entry = copy.deepcopy(x4[qid])
+        edit(entry)
+        problems = _elf_entry_problems(qid, entry, units, rows, examples)[1]
+        assert any(quote in problem for problem in problems), (qid, quote, problems)
+
+
+def _seams(examples: list[dict]) -> dict:
+    """The listing of “slip through the seams”: elf-b4-002 gap 5, option B's why_wrong."""
+    return next(e for e in examples if e["text"] == "slip through the seams")
+
+
+def _misquoted_frame(examples: list[dict], entries: dict[str, dict]) -> None:
+    """elf-b1-002 gap 2's frame with one word changed, and listed."""
+    step = entries["p5-elf-b1-002-r1-ELF-002"]["steps"][0]
+    step["text"] = step["text"].replace("has quietly deepened.”", "has never deepened.”")
+    examples.append({"qid": "p5-elf-b1-002-r1-ELF-002", "field": "steps[0].text",
+                     "text": "If anything, their ___ has never deepened.", "kind": "expression"})
+
+
+@pytest.mark.parametrize("edit,message", [
+    (lambda examples, entries: examples.append(dict(examples[0])), "is listed twice"),
+    (lambda examples, entries: _seams(examples).update(text="slip through the gaps"),
+     "no such quotation in this field"),
+    (lambda examples, entries: _seams(examples).update(field="technique"), "no such quotation in this field"),
+    (lambda examples, entries: _seams(examples).update(qid="p5-elf-b4-002-r1-ELF-004"),
+     "no such quotation in this field"),
+    (lambda examples, entries: _seams(examples).update(qid="p5-elf-b4-001-r1-ELF-001"), "no gap question's entry"),
+    (lambda examples, entries: _seams(examples).update(qid="p5-elf-b4-002-r2-ELF-005"), "no gap question's entry"),
+    (lambda examples, entries: examples.append({"qid": "p5-elf-b1-002-r1-ELF-002", "field": "steps[2].text",
+                                                "text": "Margins are narrow", "kind": "expression"}),
+     "the unit's text"),
+    (_misquoted_frame, "shares a run of four words"),
+], ids=["twice", "other-words", "other-field", "other-gap-entry", "reading-entry", "no-batch-file", "units-text",
+        "misquoted-frame"])
+def test_a_listing_that_is_no_language_example_in_place_is_refused(manifest, approved_rows, edit, message):
+    units, rows = _by_unit(approved_rows), {row["qid"]: row for row in approved_rows}
+    examples, entries = _language_examples(), _elf_entries(manifest, rows)
+    edit(examples, entries)
+    problems = _listing_problems(examples, entries, units, rows)
+    assert len(problems) == 1 and message in problems[0], problems
 
 
 SWEDISH = (" och ", " att ", " det ", " är ", " inte ", " som ")
