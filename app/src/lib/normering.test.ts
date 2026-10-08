@@ -131,6 +131,7 @@ describe('normedEstimate — the same conversion, flagged when P5 contributes', 
     authentic: 20,
     synthetic: 20,
     unknown: 0,
+    unclassified: 0,
     calibrated: false,
     perSection: {},
   }
@@ -159,11 +160,18 @@ describe('normedEstimate — the same conversion, flagged when P5 contributes', 
       authentic: 40,
       synthetic: 0,
       unknown: 0,
+      unclassified: 0,
       calibrated: true,
       perSection: {},
     }
     expect(normedEstimate(SITTING, 'kvant', 30, 40, authenticOnly).calibrated).toBe(true)
     expect(normedEstimate(SITTING, 'verbal', 30, 40, P5_BASIS).calibrated).toBe(false)
+    // Questions the worker could not identify make it uncalibrated too; unknown
+    // ones are already out of the stored result and do not.
+    const unclassified = { ...authenticOnly, authentic: 30, unclassified: 10, calibrated: false }
+    expect(normedEstimate(SITTING, 'kvant', 20, 30, unclassified).calibrated).toBe(false)
+    const withUnknown = { ...authenticOnly, authentic: 39, unknown: 1 }
+    expect(normedEstimate(SITTING, 'kvant', 30, 39, withUnknown).calibrated).toBe(true)
     // A result row from before P5 has no basis: it rests on authentic questions.
     expect(normedEstimate(SITTING, 'verbal', 30, 40, undefined).calibrated).toBe(true)
   })

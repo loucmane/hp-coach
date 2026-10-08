@@ -360,12 +360,17 @@ export const frameworkProgress = sqliteTable('framework_progress', {
 // (like daily_plans.plan) so the summary shape can evolve without a
 // migration — bump `version` in the blob when the shape changes.
 //
-// `estimateBasis` is what the result rests on, derived ON THE SERVER from
-// the session's stored plan when the result is posted (never from the
-// client): { authentic, synthetic, unknown, calibrated, perSection } —
-// see lib/provenance.ts planEstimateBasis. A snapshot like `seenBefore`, so a
-// later registry change (a retired P5 unit) never rewrites a past result.
-// Null when the session has no stored plan (rows from before P5 provenance).
+// The scored fields (presented, answered, correct, seenBefore, breakdown) and
+// `estimateBasis` are decided ON THE SERVER when the result is posted
+// (lib/mockScore.ts scoreMockResult): the client's summary is kept only when
+// it can rest on nothing but authentic and synthetic questions of the
+// session, else the server scores the pass from the session's plan and
+// stored attempts. Unknown questions never count in them. `estimateBasis` is
+// { authentic, synthetic, unknown, unclassified, calibrated, perSection },
+// classified on the server, never taken from the client. A snapshot like
+// `seenBefore`, so a later registry change (a retired P5 unit) never rewrites
+// a past result. Null only on rows posted before P5 provenance existed, when
+// no P5 question could be served.
 export const mockResults = sqliteTable(
   'mock_results',
   {
@@ -419,8 +424,12 @@ export const mockResults = sqliteTable(
 // `source` is the item's provenance (ATTEMPT_SOURCES). A `synthetic` row is a
 // P5 item's UNCALIBRATED difficulty: learned from answers like any other but
 // kept apart — it never feeds the authentic anchor a synthetic answer is
-// fitted against (lib/fit.ts). `unknown` marks legacy rows whose qid is
-// neither authentic nor registered (the backfill); the fit never moves them.
+// fitted against (lib/fit.ts). The provenance fit never writes an `unknown`
+// row. One left by the fit from before provenance (a qid neither authentic
+// nor registered) is proof that the fitted state holds an unknown answer's
+// contribution. The backfill migration (drizzle/0013) then resets
+// item_stats, user_ability and the fit watermark, so the fit is rebuilt
+// without it.
 export const itemStats = sqliteTable('item_stats', {
   questionId: text('question_id').primaryKey(),
   difficulty: real('difficulty').notNull().default(0),
@@ -442,7 +451,9 @@ export const itemStats = sqliteTable('item_stats', {
 //
 // `syntheticAttempts` is how many of `attempts` were synthetic (P5) answers.
 // Any value above 0 makes the ability an UNCALIBRATED estimate (/api/me/ability
-// reports it as estimateBasis).
+// reports it as estimateBasis). The rest are authentic. Unknown answers are
+// never fitted, and fitted state from before provenance that held one is
+// reset by drizzle/0013 (see item_stats).
 export const userAbility = sqliteTable(
   'user_ability',
   {

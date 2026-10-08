@@ -221,3 +221,150 @@ Kept as written. That attempt implemented the original §E premise, "exclude syn
 > - **Deploy gap:** rows the old worker writes between `migrations apply` and the deploy get `unknown`. Re-run 0013 once after the deploy; it is idempotent.
 > - **No refit:** existing item_stats and user_ability rows are left as they are.
 > - **Import:** a revoked P5 qid is restored as `unknown`.
+
+---
+
+## Review fix round 1 (session ci-17ldn, 2026-10-08)
+
+Bead `hpf-0jyp` fixes the review findings B1–B4 of `hpf-aaqr`, the Codex exact-head review of PR #378 at `74e41c9` (VERDICT HOLD). B5 is the automatic staging migrations in `.github/workflows/deploy.yml`. It is the coordinator's operator decision, so no workflow file changed.
+
+This section supersedes these earlier statements in this worklog:
+- the shape-based authentic rule and the GLOB backfill;
+- "No refit";
+- the plan-only Provpass basis, including "calibrated only when the plan has no synthetic and no unknown qid" and the `null` basis for a session without a plan.
+
+### Snapshot and boundaries
+
+- **Claim.** `gc hook --claim --json` returned `hpf-0jyp`, assignee `gc__implementation-worker-ci-17ldn`, route `hpfetcher/gc.implementation-worker`. `bd show` matched the id, the status (`in_progress`), the assignee and `gc.routed_to`.
+- **Checkout.** `git rev-parse HEAD` returned `74e41c941f27ed1466b636f0ed46a8971671f23d`, on `codex/hpf-94i5-provenance-assessment`. The tracked tree was clean at the start.
+- **The reviewer's worklog was not readable.** `GasCity/hpfetcher/Docs/worklogs/hpf-aaqr.md` lives in the vault, and this session's sandbox denies reads under `~/vaults`. The findings were taken from the `hpf-0jyp` brief and the `hpf-aaqr` close note. Each was then reproduced from the code, using the repro shapes the brief names.
+- **Constraints kept.**
+  - No git writes: no commit, stash, index or ref change.
+  - No network.
+  - **No migration was applied to any database.** The SQL ran only inside the in-memory `node:sqlite` test shim.
+  - `.github/workflows/*`, `app/public/` and the untracked runtime paths are untouched.
+- **Check script.** `gc.check_path` is `build-artifact-valid.sh`, sha256 `71f17450e127055c8304a3cb44ce87b2439abe04ba41f225c7b386be3dc73911`. The bead names no validator, so it was not run.
+
+### Findings and fixes
+
+| Finding | Root cause at `74e41c9` | Fix |
+|---|---|---|
+| **B1** (P1): unknown qids still count in Provpass scores | `POST /api/mock-results` stored the client's summary as posted. Only the basis counted unknown qids. | New `worker/src/lib/mockScore.ts`, `scoreMockResult`. The posted summary is stored only when it can rest on nothing but classified, assessed questions of the session. Otherwise the server scores the pass from its own records, the session's plan and stored attempts with the last answer per qid counting, and scores only authentic and synthetic questions. An unknown question never enters `presented`, `answered`, `correct`, the per-section rows or `missedQids`; `estimateBasis.unknown` counts it for the record. |
+| **B2** (P1): a missing or inconsistent plan lets a P5 Provpass read calibrated | The basis came from `planEstimateBasis(session.plan)`. It was `null` without a plan, and the app reads `null` as calibrated. It was also blind to attempts outside the plan. | The basis counts every question of the session the server knows, planned or answered. An answered question counts by the source its attempt was stored with (classified on the server at answer time); a blank one by its classification now. `unclassified` counts the questions the client reported beyond those. `calibrated = synthetic === 0 && unclassified === 0`. A newly posted row never has a `null` basis. |
+| **B3** (P2): fabricated bank-shaped qids classify authentic | `isAuthenticQid` was a regex shape plus the exam list, and 0013's GLOB rule was the same. | New `worker/data/authentic-qids.json`, exported from `app/public/data` by the new `pipeline/synthetic/infold/export_authentic_qids.py`, which runs strict bank-grammar checks and has `--check`. `isAuthenticQid` is now membership, or the legacy LAS spelling of a member. 0013 is rendered from the same set (details below). |
+| **B4** (P2): legacy fitted unknown answers stay in ability, labelled authentic | There was no refit. `user_ability` and `item_stats` kept contributions of answers that are now unknown, and `/me/ability` labelled them authentic (`attempts − synthetic`). | 0013, step 2, the conditional fit reset (details below). |
+
+**0013 for B3.**
+- A helper table `tmp_0013_authentic_qid` is filled by `INSERT OR IGNORE` in 9 chunks of at most 500 qids. Every statement stays under 100 KB, D1's statement limit.
+- Rows still `unknown` are promoted when their qid, or its `replace('-LAS-', '-LÄS-')`, is in the helper table.
+- The helper table is dropped at the end, so no schema change is left behind.
+- No comment line holds a semicolon, since wrangler splits migration files on them. A test pins this.
+
+**0013 for B4.**
+- Every answer the old fit folded left an `item_stats` row for its qid.
+- So an `item_stats` row still `unknown` after the promotion is exact evidence that the fitted state holds a now-unknown answer's contribution. That holds even when the attempt itself has since been pruned.
+- When such a row exists, the migration:
+  - deletes every `user_ability` row;
+  - rewinds `fit_state.last_attempt_id` to 0;
+  - deletes every `item_stats` row, last, because those rows are the evidence the first two statements test.
+- The next fit run refits every retained attempt with unknown answers skipped, so labels again reflect real provenance.
+- Without such a row, nothing is reset.
+
+### Design notes
+
+1. **When the posted Provpass summary is kept.** All of these must hold:
+   - the session has a plan;
+   - every planned and every answered question is authentic or synthetic;
+   - no attempt lies outside the plan;
+   - the summary fits the plan:
+     - presented ≤ planned, overall and per section;
+     - the per-section rows sum to the totals;
+     - correct ≤ answered ≤ presented;
+     - seenBefore ≤ presented;
+     - every missed qid is planned.
+
+   For the app as it works today, that is every authentic or P5 pass. Those passes are stored byte-for-byte as before, even when an attempt POST was lost or lands after the result. Rescoring only happens when unknown or unattributable content is present.
+2. **What counts against calibration.** Unknown questions no longer make a stored Provpass result uncalibrated, because they are not in it. Synthetic and unclassified questions do.
+3. **Timing fields in a server-scored result.**
+   - Per-section `timeMs` is the client's reported dwell. That is practice effort, not assessment.
+   - `seenBefore` is capped at `presented`.
+4. **Import.** `POST /api/me/import` stores mock results through the same scorer. The payload row is the reported summary, read against the imported session's plan and attempts. A breakdown that cannot be read is never stored as it came.
+5. **The B4 reset is global and conditional.**
+   - It is global because item difficulties are shared across users and Elo is path-dependent. A full refit is the only exact removal: it removes direct and indirect contributions alike.
+   - It is conditional: an authentic-only database is never reset.
+   - Cost: attempts already pruned by retention (older than 120 days) cannot be refitted. That cost applies only when a now-unknown contribution has to go.
+6. **App.**
+   - Types: `MockEstimateBasis.unclassified`.
+   - Docs: `app/src/lib/provenance.ts`, `useMockResults.ts`, `normering.ts`.
+   - No UI change.
+   - The app's `tsc` walks the worker source with an older `lib`, so `isAuthenticQid` uses `split`/`join` rather than `replaceAll`. The semantics are the same, and match SQL `replace()`.
+
+### Tests (red-first)
+
+The new and updated tests were first run against HEAD's implementation:
+- `git show HEAD:<path>` restored `worker/src/lib/provenance.ts`, `worker/src/routes/mockResults.ts`, `worker/src/routes/export.ts` and `worker/drizzle/0013_attempt_provenance_backfill.sql` into the working tree, and `worker/src/lib/mockScore.ts` was removed.
+- Copies of the fixed versions were kept in the session scratchpad. They were restored afterwards and sha256-verified.
+- **Result: 41 tests failed, and `mockScore.test.ts` failed to import** because the module was absent.
+
+| Finding | Red, then green |
+|---|---|
+| **B1** | **Route** (`routes/mockResults.test.ts`), with the answers posted through the real `POST /api/attempts`: an unknown question the client counted is left out of the stored result, for a revised-away P5 revision and for a bank-shaped qid the bank does not hold; an unknown blank is not presented. **Unit** (`lib/mockScore.test.ts`): <ul><li>a revised-away revision, a retired unit and a fabricated qid, each answered right, wrong or left blank;</li><li>unknown answers outside the plan, and a sectionless qid;</li><li>an attempt stored `unknown` on a bank qid;</li><li>reported dwell and the `seenBefore` cap.</li></ul> |
+| **B2** | **Route:** <ul><li>no plan with P5 answers: uncalibrated;</li><li>no plan with blanks: `unclassified`;</li><li>an authentic plan with P5 answers outside it: uncalibrated, whether or not the client counts them;</li><li>a summary larger than its plan.</li></ul> **Unit:** an unreadable breakdown; summaries that do not fit their plan; rescoring counts the last answer. |
+| **B3** | <ul><li>`lib/provenance.test.ts`: 7 fabricated bank-shaped qids. Each case asserts the premise, that the old shape rule accepted the qid and the bank does not hold it. Also: the LAS spelling of all 540 bank LÄS qids and of no non-member, and the bundled set equals the bank.</li><li>`routes/attempts.test.ts`: `var-2024-kvant1-KVA-002` is stored `unknown` and moves no mastery.</li><li>`lib/fit.test.ts`: `var-2026-verb1-ORD-015` joins the fit's unknown property tests.</li><li>`db/migrations.test.ts`: 0013 loads exactly the bundled set; attempts and item rows backfill exactly as `provenance.ts` classifies; a fabricated item row is never promoted.</li></ul> |
+| **B4** | `db/migrations.test.ts`, 3 seeded histories (90 answers, 3 users, 4 kinds, bank and now-unknown qids). Each gets a pre-0012 database with the legacy fitted state, simulated exactly as the provenance fit with every answer forced authentic (its authentic arithmetic is the one the golden pins). <ul><li>Right after 0013: no fitted state, watermark 0.</li><li>The next run lands byte-identical on a from-scratch provenance fit, and the fitted counts equal the graded bank answers.</li><li>Re-running 0013 changes nothing.</li></ul> Near-variants: <ul><li>an authentic-only legacy state is left exactly as it was;</li><li>unknown answers the old fit skipped (sectionless, lesson kind) reset nothing;</li><li>a re-run after the deploy catches a now-unknown answer the old worker fitted in between.</li></ul> |
+
+- **Fixtures corrected.** These had relied on the shape rule or on unattributable summaries:
+  - `attempts.test.ts`: `KVA_QID` went from `var-2024-kvant1-KVA-002` (bank-shaped, not a bank question) to `-KVA-013`.
+  - `fit.test.ts`: `var-2026-verb1-ORD-100`/`-200` became `-009`/`-010`.
+  - `mockResults.test.ts`: sessions now carry a var-2024 kvant1 plan, and summaries fit it.
+  - `export.test.ts`: the mock-result import expectations.
+- **Golden.** `assessmentGolden.test.ts.snap` is unchanged, sha256 `2ec42900caf266511dbd3b9fd1e43ddb2856b57a54f0e794dfbc7fb17563d5c0`, the value recorded at `6adb990`. All 18 golden qids are bank members, so B3 and B4 change nothing for it.
+
+### Verification (final runs)
+
+- **Worker.** `pnpm --dir worker exec vitest run` (= `cd worker && npx vitest run`): **24 files, 362 tests passed**. The PR head had 23 files and 313 tests.
+- **App.** `pnpm --dir app exec vitest run --reporter=default`: **81 files, 837 tests passed**.
+- **CI Python selection.** `python3 -m pytest .github/contract-tests pipeline/synthetic/evidence/tests pipeline/synthetic/gates/scripts/tests pipeline/synthetic/infold/tests -q -p no:cacheprovider`: **1879 passed, 7 xfailed**. The PR head had 1859 passed and 7 xfailed; the difference is the 20 new exporter tests.
+- **Typecheck.** Worker `tsc --noEmit` is clean. App `tsc -b --noEmit` and `tsc -p tsconfig.app.json --noEmit` are clean.
+- **Biome.**
+  - Worker `biome check src` is clean.
+  - App `biome check src` reports only the 4 pre-existing devbake infos.
+  - The changed worker files were formatted with `biome format --write`, with `fit.ts` excluded. Its NUL map-key separators are intact: `grep -c -aP '\x00'` still reports 3.
+- **Exporters.** `export_authentic_qids.py --check` is clean, also under `PYTHONHASHSEED` 0 and 4242 via the tests. `export_qid_registry.py --check` is clean.
+- **Drizzle.** `schema.ts` changed in comments only. drizzle-kit's differ finds nothing; the snapshots and the journal are unchanged.
+- **sha256.**
+  - `worker/data/authentic-qids.json`: `1970c41db54cbe7aa9cb3e4a5c4327519e8a1536a341eb5d3366568234e5304b`
+  - 0013: `b73739a2466cf475135c7aaf986d70ade381d287ecc6279534283dec6fe38515`
+  - `export_authentic_qids.py`: `875fa7465413d8cbe7cc47f3121d46145dcad1beed749fb85a97fe4b80f39441`
+- **Not run.** Playwright e2e (it needs Clerk secrets and network) and `wrangler d1 migrations apply` (operator-authorized).
+
+### Files (uncommitted)
+
+| Path | Change |
+|---|---|
+| `pipeline/synthetic/infold/export_authentic_qids.py` | New. Exports the bank's qid set and refuses any bank that breaks the grammar. Has `--check`. `--backfill-migration` renders 0013. |
+| `pipeline/synthetic/infold/tests/test_infold_authentic_qids.py` | New, 20 tests, inside the CI selection. |
+| `worker/data/authentic-qids.json` | New, generated: 27 sittings / 4320 qids. |
+| `worker/drizzle/0013_attempt_provenance_backfill.sql` | Re-rendered: membership promotion and the conditional fit reset. |
+| `worker/src/lib/provenance.ts` | Membership classifier; `isAssessedSource`; `planEstimateBasis` removed. |
+| `worker/src/lib/mockScore.ts` | New: `scoreMockResult`, `MockBreakdownSchema` and the basis types. |
+| `worker/src/routes/mockResults.ts` | Stores `scoreMockResult` of the session's plan and attempts. |
+| `worker/src/routes/export.ts` | Import stores mock results through the same scorer. |
+| `worker/src/db/schema.ts`, `worker/src/lib/fit.ts` | Comments only. |
+| `worker/src/lib/mockScore.test.ts` | New. |
+| `worker/src/lib/provenance.test.ts`, `worker/src/db/migrations.test.ts`, `worker/src/routes/{mockResults,export,attempts}.test.ts`, `worker/src/lib/fit.test.ts` | Updated, as above. |
+| `app/src/lib/provenance.ts`, `app/src/api/hooks/useMockResults.ts`, `app/src/lib/normering.ts` | `MockEstimateBasis.unclassified`; docs. |
+| `app/src/lib/normering.test.ts` | Fixtures in the new shape, plus the unclassified and unknown cases. |
+
+### Operator notes (supersede "Deploy gap" and "No refit" above)
+
+- **Order of operations.**
+  1. Apply the migrations.
+  2. Deploy the worker right after.
+  3. Re-run `0013_attempt_provenance_backfill.sql` once.
+  4. Run the fit with `POST /api/fit/run`, or wait for the nightly cron.
+- **If 0013 reset the fit,** `/me/ability` and `/item-stats` stay empty until that fit run. Smart drill falls back to random in the meantime.
+- **If the old worker's nightly fit runs between steps 1 and 2,** it refits with the old rules and writes `item_stats` rows that take the `unknown` default. Step 3 then promotes the bank ones, and resets again if any non-bank row is left.
+  - Automatic staging migrations (B5) interact with this order; that is the coordinator's call.
+- **0013 is frozen once it has been applied anywhere.** Regenerate `worker/data/authentic-qids.json` whenever the bank changes; CI fails until it is. Never re-render 0013 after it has been applied. The migrations test notes how to relax its set assertion to a subset then.
+- **Retention.** A reset can refit only attempts from the last 120 days.

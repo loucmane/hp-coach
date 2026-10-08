@@ -12,36 +12,24 @@
 //   - GET  /  → this user's rows, newest-first, capped at 50.
 //
 // P5 infold PR 3 (docs/p5-infold-design.md Amendment 1 E): a pass's P5
-// questions count in its result like any other. What the result rests on,
-// `estimateBasis`, is derived HERE from the session's stored plan by each
-// qid's server-side provenance (lib/provenance.ts planEstimateBasis) and
-// stored with the row; a basis in the body is accepted and ignored.
+// questions count in its result like any other; unknown questions never do.
+// The stored result and what it rests on, `estimateBasis`, are decided HERE
+// from the session's stored plan and the attempts it stored, each classified
+// on the server (lib/mockScore.ts scoreMockResult): the posted summary is
+// kept as it came only when it can rest on nothing but authentic and synthetic
+// questions of the session; otherwise the server scores the pass from its own
+// records. A basis in the body is accepted and ignored.
 
 import { zValidator } from '@hono/zod-validator'
-import { and, desc, eq } from 'drizzle-orm'
+import { and, asc, desc, eq } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { getDb } from '../db/client'
-import { mockResults, sessions } from '../db/schema'
+import { attempts, mockResults, sessions } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
-import { planEstimateBasis } from '../lib/provenance'
+import { MockBreakdownSchema, scoreMockResult } from '../lib/mockScore'
 import type { Env, Vars } from '../types'
-
-const BreakdownSchema = z
-  .object({
-    perSection: z.record(
-      z.string(),
-      z.object({
-        presented: z.number().int().min(0),
-        correct: z.number().int().min(0),
-        timeMs: z.number().int().min(0),
-      }),
-    ),
-    missedQids: z.array(z.string()),
-    version: z.literal(1),
-  })
-  .strict()
 
 const PostBody = z
   .object({
@@ -55,7 +43,7 @@ const PostBody = z
     correct: z.number().int().min(0),
     seenBefore: z.number().int().min(0),
     durationMs: z.number().int().min(0),
-    breakdown: BreakdownSchema,
+    breakdown: MockBreakdownSchema,
     // A client echoing a stored row may send the server's own basis back.
     // Accepted so the result still lands, and never read.
     estimateBasis: z.unknown().optional(),
@@ -106,43 +94,43 @@ export const mockResultsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       )
     }
 
-    // From the plan the session stored at start, never from the body. Null
-    // for a session without one (rows from before plan storage).
-    const estimateBasis = session.plan ? planEstimateBasis(session.plan) : null
+    // From the session's own records — the plan it stored at start and the
+    // attempts it stored, oldest first — never from the body's say-so.
+    const sessionAttempts = await db
+      .select({
+        questionId: attempts.questionId,
+        selectedAnswer: attempts.selectedAnswer,
+        correct: attempts.correct,
+        source: attempts.source,
+      })
+      .from(attempts)
+      .where(and(eq(attempts.sessionId, session.id), eq(attempts.userId, userId)))
+      .orderBy(asc(attempts.id))
+    const scored = scoreMockResult(session.plan ?? null, sessionAttempts, {
+      presented: body.presented,
+      answered: body.answered,
+      correct: body.correct,
+      seenBefore: body.seenBefore,
+      breakdown: body.breakdown,
+    })
+    const stored = {
+      mode: body.mode,
+      half: body.half,
+      examId: body.examId ?? null,
+      provpass: body.provpass ?? null,
+      presented: scored.presented,
+      answered: scored.answered,
+      correct: scored.correct,
+      seenBefore: scored.seenBefore,
+      durationMs: body.durationMs,
+      breakdown: scored.breakdown,
+      estimateBasis: scored.estimateBasis,
+    }
 
     const [row] = await db
       .insert(mockResults)
-      .values({
-        userId,
-        sessionId: body.sessionId,
-        mode: body.mode,
-        half: body.half,
-        examId: body.examId ?? null,
-        provpass: body.provpass ?? null,
-        presented: body.presented,
-        answered: body.answered,
-        correct: body.correct,
-        seenBefore: body.seenBefore,
-        durationMs: body.durationMs,
-        breakdown: body.breakdown,
-        estimateBasis,
-      })
-      .onConflictDoUpdate({
-        target: mockResults.sessionId,
-        set: {
-          mode: body.mode,
-          half: body.half,
-          examId: body.examId ?? null,
-          provpass: body.provpass ?? null,
-          presented: body.presented,
-          answered: body.answered,
-          correct: body.correct,
-          seenBefore: body.seenBefore,
-          durationMs: body.durationMs,
-          breakdown: body.breakdown,
-          estimateBasis,
-        },
-      })
+      .values({ userId, sessionId: body.sessionId, ...stored })
+      .onConflictDoUpdate({ target: mockResults.sessionId, set: stored })
       .returning()
     return c.json({ result: row })
   })

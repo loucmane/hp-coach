@@ -10,6 +10,7 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 
+import authenticSet from '../../data/authentic-qids.json'
 import registry from '../../data/p5-qid-registry.json'
 import {
   ASSESSED_SOURCES,
@@ -18,11 +19,11 @@ import {
   classifyAttempt,
   classifyAttemptSource,
   estimateBasis,
+  isAssessedSource,
   isAuthenticQid,
   isRegisteredP5Qid,
   masteryLayer1Ids,
   p5FrameworkId,
-  planEstimateBasis,
 } from './provenance'
 import { extractSection } from './section'
 
@@ -39,13 +40,17 @@ function readJson<T>(path: string): T {
   return JSON.parse(readFileSync(path, 'utf8')) as T
 }
 
+let bankCache: string[] | null = null
+
 /** Every qid of the authentic bank the app serves (27 sittings × 160). */
 function bankQids(): string[] {
+  if (bankCache) return bankCache
   const out: string[] = []
   for (const file of readdirSync(BANK_DIR).sort()) {
     if (!file.endsWith('.json') || file.startsWith('_')) continue
     for (const row of readJson<Array<{ qid: string }>>(join(BANK_DIR, file))) out.push(row.qid)
   }
+  bankCache = out
   return out
 }
 
@@ -56,13 +61,31 @@ describe('ATTEMPT_SOURCES', () => {
   it('is exactly authentic | synthetic | unknown, and only the first two are assessed', () => {
     expect([...ATTEMPT_SOURCES]).toEqual(['authentic', 'synthetic', 'unknown'])
     expect([...ASSESSED_SOURCES]).toEqual(['authentic', 'synthetic'])
+    expect(ATTEMPT_SOURCES.filter(isAssessedSource)).toEqual(['authentic', 'synthetic'])
+    expect(isAssessedSource('Authentic')).toBe(false)
+    expect(isAssessedSource('')).toBe(false)
   })
 })
 
-describe('authentic — the bank roster and its qid grammar', () => {
+// The bank's qid grammar — the old, shape-only authentic rule. A qid matching
+// it while naming a question the bank does not hold is the review finding B3
+// of hpf-aaqr: it must still be unknown.
+const BANK_SHAPE =
+  /^(.+)-(?:verb[12]-(?:ORD|LÄS|LAS|MEK|ELF)|kvant[12]-(?:XYZ|KVA|NOG|DTK))-[0-9]{3}$/
+
+describe('authentic — membership in the bank', () => {
   it('the sitting roster is exactly the exams of app/public/data/_index.json', () => {
     const index = readJson<{ exams: Array<{ exam_id: string }> }>(join(BANK_DIR, '_index.json'))
     expect([...AUTHENTIC_EXAM_IDS].sort()).toEqual(index.exams.map((e) => e.exam_id).sort())
+  })
+
+  it('the bundled set is exactly the bank: every qid of app/public/data, nothing else', () => {
+    // Regenerate with python3 pipeline/synthetic/infold/export_authentic_qids.py
+    // whenever the bank changes.
+    expect(authenticSet.format).toBe('authentic-qid-set-v1')
+    expect(authenticSet.qids).toEqual([...bankQids()].sort())
+    expect(authenticSet.qid_count).toBe(4320)
+    expect(authenticSet.exam_count).toBe(AUTHENTIC_EXAM_IDS.size)
   })
 
   it('classifies every one of the 4320 bank qids authentic, with no item revision', () => {
@@ -78,6 +101,33 @@ describe('authentic — the bank roster and its qid grammar', () => {
   it('accepts the legacy LAS spelling that lib/section.ts already normalises to LÄS', () => {
     expect(extractSection('var-2024-verb1-LAS-011')).toBe('LÄS')
     expect(isAuthenticQid('var-2024-verb1-LAS-011')).toBe(true)
+    // The LAS spelling of every LÄS question of the bank, and of nothing else.
+    const las = bankQids().filter((qid) => qid.includes('-LÄS-'))
+    expect(las).toHaveLength(540)
+    expect(
+      las.map((qid) => qid.replace('-LÄS-', '-LAS-')).filter((q) => !isAuthenticQid(q)),
+    ).toEqual([])
+    expect(isAuthenticQid('var-2024-verb1-LAS-001')).toBe(false) // verb1's LÄS is 011-020
+    expect(isAuthenticQid('var-2024-verb1-LAS-LAS-011')).toBe(false)
+  })
+
+  // Review finding B3 (hpf-aaqr): a bank-shaped qid of a sitting the bank
+  // holds is not authentic unless the bank holds that very question.
+  it.each([
+    ['a number past its section (verb1 ORD is 001-010)', 'var-2024-verb1-ORD-015'],
+    ['a LÄS number the pass does not hold', 'var-2024-verb1-LÄS-001'],
+    ['a KVA number of the XYZ range (kvant1 KVA is 013-022)', 'var-2024-kvant1-KVA-002'],
+    ['a DTK number before the section starts (DTK is 029-040)', 'var-2026-kvant2-DTK-001'],
+    ['a number past the pass', 'host-2013-kvant1-XYZ-041'],
+    ['the LAS spelling of a LÄS number the pass does not hold', 'var-2024-verb1-LAS-001'],
+    ['a number no pass reaches', 'var-2024-verb2-MEK-999'],
+  ])('rejects a fabricated bank-shaped qid: %s', (_label, qid) => {
+    const shape = BANK_SHAPE.exec(qid)
+    // The premise: the shape-only rule accepted it.
+    expect(shape !== null && AUTHENTIC_EXAM_IDS.has(shape[1])).toBe(true)
+    expect(bankQids()).not.toContain(qid)
+    expect(isAuthenticQid(qid)).toBe(false)
+    expect(classifyAttempt(qid)).toEqual({ source: 'unknown', itemRevision: null })
   })
 
   it.each([
@@ -228,46 +278,5 @@ describe('estimate bases', () => {
     expect(estimateBasis(0, 0)).toEqual({ authentic: 0, synthetic: 0, calibrated: true })
   })
 
-  it('a Provpass plan basis counts each presented qid by its server-side source', () => {
-    const basis = planEstimateBasis([
-      'var-2024-verb1-ORD-001',
-      'var-2024-verb1-ORD-002',
-      'p5-las-b19-002-r1-LÄS-001',
-      'p5-las-b19-002-r1-LÄS-002',
-      'var-2024-verb2-MEK-021',
-      'p5-elf-b19-003-r1-ELF-001',
-    ])
-    expect(basis).toEqual({
-      authentic: 3,
-      synthetic: 3,
-      unknown: 0,
-      calibrated: false,
-      perSection: {
-        ORD: { authentic: 2, synthetic: 0, unknown: 0, calibrated: true },
-        LÄS: { authentic: 0, synthetic: 2, unknown: 0, calibrated: false },
-        MEK: { authentic: 1, synthetic: 0, unknown: 0, calibrated: true },
-        ELF: { authentic: 0, synthetic: 1, unknown: 0, calibrated: false },
-      },
-    })
-  })
-
-  it('an authentic-only plan is calibrated; an unknown qid in a plan is not', () => {
-    expect(planEstimateBasis(['var-2024-kvant1-XYZ-001']).calibrated).toBe(true)
-    const withUnknown = planEstimateBasis(['var-2024-kvant1-XYZ-001', 'p5-las-b7-002-r1-LÄS-001'])
-    expect(withUnknown).toMatchObject({ authentic: 1, synthetic: 0, unknown: 1, calibrated: false })
-    expect(withUnknown.perSection.LÄS).toEqual({
-      authentic: 0,
-      synthetic: 0,
-      unknown: 1,
-      calibrated: false,
-    })
-    // A qid without a section counts as unknown overall, under no section.
-    expect(planEstimateBasis(['q1'])).toEqual({
-      authentic: 0,
-      synthetic: 0,
-      unknown: 1,
-      calibrated: false,
-      perSection: {},
-    })
-  })
+  // A Provpass result's basis: lib/mockScore.test.ts.
 })

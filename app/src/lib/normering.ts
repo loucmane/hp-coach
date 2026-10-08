@@ -28,7 +28,8 @@
 // questions count in its raw score, and the conversion reads that raw
 // performance whatever the questions' source. normedEstimate adds whether
 // the result is calibrated: the tables were normed on real sittings, so a
-// result a P5 question (or an unknown one) fed is not.
+// result a P5 question fed is not. (Unknown questions never reach the raw
+// score: the worker leaves them out of the stored result.)
 
 import { type EstimateBasis, isCalibrated } from './provenance'
 
@@ -118,15 +119,17 @@ export function normedScore(
 }
 
 export type NormedEstimate = NormedResult & {
-  /** False when the pass's basis says a synthetic (P5) or unknown question
-   *  counted in it; a pass without a basis (from before P5) is calibrated. */
+  /** False when the pass's basis says a synthetic (P5) question, or one the
+   *  worker could not identify, counted in it; a pass without a basis (from
+   *  before P5) is calibrated. */
   calibrated: boolean
 }
 
 /**
  * normedScore for a pass whose provenance is known: the same conversion of
  * the same raw performance, plus whether it is calibrated. `basis` is the
- * stored result's estimateBasis (worker-derived from the session plan).
+ * stored result's estimateBasis (decided by the worker from the session's
+ * plan and attempts).
  */
 export function normedEstimate(
   sitting: NormeringSitting | null | undefined,

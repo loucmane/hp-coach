@@ -397,12 +397,12 @@ describe('runFit — session-kind weighting', () => {
   it('an adaptive_review attempt damps the ITEM update to K/4 but not the USER', async () => {
     // Same fresh 0/0 matchup, correct answer, via two different session
     // kinds and distinct users/items so they don't interact.
-    await seedAttempt('uD', 'var-2026-verb1-ORD-100', true, 'drill')
-    await seedAttempt('uR', 'var-2026-verb1-ORD-200', true, 'adaptive_review')
+    await seedAttempt('uD', 'var-2026-verb1-ORD-009', true, 'drill')
+    await seedAttempt('uR', 'var-2026-verb1-ORD-010', true, 'adaptive_review')
     await runFit(getDb(d1 as unknown as D1Database))
 
-    const drillItem = (await itemDifficulty('var-2026-verb1-ORD-100'))?.difficulty ?? NaN
-    const replayItem = (await itemDifficulty('var-2026-verb1-ORD-200'))?.difficulty ?? NaN
+    const drillItem = (await itemDifficulty('var-2026-verb1-ORD-009'))?.difficulty ?? NaN
+    const replayItem = (await itemDifficulty('var-2026-verb1-ORD-010'))?.difficulty ?? NaN
     // Drill item moved -12.8; replay item moved a QUARTER of that.
     expect(drillItem).toBeCloseTo(-12.8, 6)
     expect(replayItem).toBeCloseTo(-12.8 * REPLAY_ITEM_K_FACTOR, 6)
@@ -444,7 +444,14 @@ const P5 = registry.units.flatMap((u) => u.qids)
 const LAS_P5 = 'p5-las-b19-002-r1-LÄS-001'
 const LAS_P5_2 = 'p5-las-b14-002-r1-LÄS-001'
 const ELF_P5 = 'p5-elf-b19-003-r1-ELF-001'
-const UNKNOWN = ['p5-las-b7-002-r1-LÄS-001', 'var-2099-verb2-ELF-031', 'not-a-real-qid']
+const UNKNOWN = [
+  'p5-las-b7-002-r1-LÄS-001',
+  'var-2099-verb2-ELF-031',
+  'not-a-real-qid',
+  // Bank-shaped, of a sitting the bank holds, but not one of its questions
+  // (verb1's ORD questions are 001-010): unknown by bank membership.
+  'var-2026-verb1-ORD-015',
+]
 
 async function syntheticAttempts(clerkUserId: string, section: string): Promise<number | null> {
   const db = getDb(d1 as unknown as D1Database)

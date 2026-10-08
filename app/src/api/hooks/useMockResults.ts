@@ -41,10 +41,12 @@ export type MockResultRow = {
   durationMs: number
   breakdown: MockBreakdown
   createdAt: number | string | null
-  /** What the result rests on, derived by the worker from the session's
-   *  stored plan (P5 infold PR 3): uncalibrated when a P5 or unknown question
-   *  counted. Null for a session without a stored plan; absent from an older
-   *  worker. Never sent by the client. */
+  /** What the result rests on, decided by the worker from the session's
+   *  stored plan and attempts (P5 infold PR 3, worker/src/lib/mockScore.ts):
+   *  uncalibrated when a P5 question counted or the summary held questions
+   *  the worker could not identify. Unknown questions are never in the
+   *  stored result. Null only on rows from before P5 provenance; absent from
+   *  an older worker. Never sent by the client. */
   estimateBasis?: MockEstimateBasis | null
 }
 

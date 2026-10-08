@@ -59,7 +59,12 @@
 //     rests on any is identifiable as uncalibrated, and the attempt rows keep
 //     their source and item revision, so a recalibration can replay them.
 //   · unknown — fails closed: consumed (the watermark passes it), folded into
-//     nothing.
+//     nothing. So this fit never writes an `unknown` item_stats row. The fit
+//     from before provenance folded every graded answer. Where it folded one
+//     that is now unknown, its item row is still `unknown` after the
+//     backfill. The backfill migration (drizzle/0013) then deletes every
+//     user_ability and item_stats row and rewinds the watermark to 0, and the
+//     next run refits every retained attempt under these rules.
 // The anchor is read from the current ratings (summed in qid order) and
 // recomputed whenever an authentic item of its section moves; it is never
 // carried between runs, so a history split across runs still lands on

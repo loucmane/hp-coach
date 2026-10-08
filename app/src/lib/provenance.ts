@@ -24,10 +24,18 @@ import { sectionOfQid } from './dueBySection'
  *  EstimateBasis. `calibrated` is false whenever any synthetic answer counts. */
 export type EstimateBasis = { authentic: number; synthetic: number; calibrated: boolean }
 
-/** A Provpass result's basis also counts the plan's unknown qids, which make
- *  it uncalibrated too (the worker's planEstimateBasis). */
+/** A Provpass result's questions by provenance; mirrors the worker's
+ *  MockBasisCounts (worker/src/lib/mockScore.ts). `unknown` questions are
+ *  counted for the record only: the worker leaves them out of the stored
+ *  result, so they never make it uncalibrated. */
 export type PlanBasis = EstimateBasis & { unknown: number }
-export type MockEstimateBasis = PlanBasis & { perSection: Record<string, PlanBasis> }
+/** What a stored Provpass result rests on. `unclassified` counts questions
+ *  the client reported that the worker could not identify; any of them, like
+ *  any synthetic question, makes the result uncalibrated. */
+export type MockEstimateBasis = PlanBasis & {
+  unclassified: number
+  perSection: Record<string, PlanBasis>
+}
 
 /** The synthetic qid namespace the exporter mints,
  *  `p5-<unit>-r<revision>-<SECTION>-<nnn>` (pipeline/synthetic/infold/

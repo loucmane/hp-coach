@@ -86,7 +86,11 @@ async function progressRow(userId: number, layer1Id: string) {
   return row ?? null
 }
 
-const KVA_QID = 'var-2024-kvant1-KVA-002'
+// A question of the authentic bank (kvant1's KVA questions are 013-022).
+const KVA_QID = 'var-2024-kvant1-KVA-013'
+// Bank-shaped but not a bank question: authentic is bank membership, so this
+// is unknown (review finding B3 of hpf-aaqr).
+const FABRICATED_KVA_QID = 'var-2024-kvant1-KVA-002'
 
 beforeEach(() => {
   d1 = makeTestD1()
@@ -363,7 +367,8 @@ describe('POST /api/attempts — provenance', () => {
 
   it('stores the source and item revision the server derives from the qid', async () => {
     const { userId, sessionId } = await seedSession('user_a')
-    for (const questionId of [KVA_QID, P5_REV2, P5_TAGGED, REVOKED, 'not-a-real-qid']) {
+    const qids = [KVA_QID, P5_REV2, P5_TAGGED, REVOKED, 'not-a-real-qid', FABRICATED_KVA_QID]
+    for (const questionId of qids) {
       const res = await post({ sessionId, questionId, selectedAnswer: 'B', correct: true })
       expect(res.status).toBe(201)
     }
@@ -373,10 +378,11 @@ describe('POST /api/attempts — provenance', () => {
       { questionId: P5_TAGGED, source: 'synthetic', rev: 1 },
       { questionId: REVOKED, source: 'unknown', rev: null },
       { questionId: 'not-a-real-qid', source: 'unknown', rev: null },
+      { questionId: FABRICATED_KVA_QID, source: 'unknown', rev: null },
     ])
     // Every source is practice effort: the lifetime counter takes them all.
     const [user] = await db().select().from(users).where(eq(users.id, userId))
-    expect(user.attemptsTotal).toBe(5)
+    expect(user.attemptsTotal).toBe(6)
   })
 
   it('ignores a client-sent provenance flag; the answer still lands', async () => {
@@ -464,10 +470,20 @@ describe('POST /api/attempts — provenance', () => {
       correct: true,
       layer1Ids: ['KVA-NEG-001'],
     })
+    // A sitting the bank holds, in the bank's grammar, but not one of its
+    // questions: unknown, so it moves nothing either.
+    await post({
+      sessionId,
+      questionId: FABRICATED_KVA_QID,
+      selectedAnswer: 'B',
+      correct: true,
+      layer1Ids: ['KVA-NEG-001'],
+    })
     expect(await masteryRows(userId)).toHaveLength(0)
     expect(await stored(userId)).toEqual([
       { questionId: REVOKED, source: 'unknown', rev: null },
       { questionId: 'var-2099-kvant1-KVA-002', source: 'unknown', rev: null },
+      { questionId: FABRICATED_KVA_QID, source: 'unknown', rev: null },
     ])
   })
 })

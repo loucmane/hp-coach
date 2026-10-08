@@ -2,34 +2,32 @@
 // the server from the qid alone (P5 infold PR 3, docs/p5-infold-design.md
 // Amendment 1 E).
 //
-//   authentic — a question of a real högskoleprov sitting the bank holds. The
-//               qid grammar of the authentic bank, `{exam}-{provpass}-{SECTION}-{nnn}`:
-//                 · exam      one of AUTHENTIC_EXAM_IDS, the sittings of
-//                             app/public/data/_index.json (pinned by a test);
-//                 · provpass  verb1 / verb2 / kvant1 / kvant2, the tokens the app
-//                             keys exams by (app/src/data/explanations.ts:131);
-//                 · SECTION   a section of that pass's half — verb holds ORD, LÄS,
-//                             MEK, ELF and kvant XYZ, KVA, NOG, DTK
-//                             (app/src/lib/mock.ts:35) — in lib/section.ts's
-//                             spelling, which also accepts the legacy LAS;
-//                 · nnn       three ASCII digits, as every bank qid has.
+//   authentic — a question of the authentic bank the app serves: the qid is in
+//               worker/data/authentic-qids.json, exported deterministically from
+//               app/public/data (one file per sitting of _index.json) by
+//               pipeline/synthetic/infold/export_authentic_qids.py and pinned to
+//               the bank by a test. Membership, not shape: a qid in the bank's
+//               grammar that names a question the bank does not hold
+//               (var-2024-verb1-ORD-015) is unknown. The legacy LAS spelling of a
+//               bank LÄS qid, which lib/section.ts normalises, is authentic too.
 //   synthetic — a qid of the approved P5 registry, worker/data/p5-qid-registry.json,
 //               exported deterministically from the approval roster by
 //               pipeline/synthetic/infold/export_qid_registry.py. It counts
 //               toward the assessment like an authentic answer, and every number
 //               it feeds is marked uncalibrated (estimateBasis).
-//   unknown   — anything else: a seed or test id, a malformed qid, a sitting the
-//               bank does not hold, or a P5 qid whose unit is retired, revised
-//               away or unapproved. Fails closed: stored for history, never assessed.
+//   unknown   — anything else: a seed or test id, a malformed qid, a question
+//               the bank does not hold, or a P5 qid whose unit is retired,
+//               revised away or unapproved. Fails closed: stored for history,
+//               never assessed.
 //
 // The client never chooses. POST /api/attempts, the mock-result route and the
 // import route derive the value here and ignore anything provenance-like in a
 // payload. This is a provenance rule, not an anti-cheat one: an answer's
 // correctness is still client-reported, as it always was.
 
+import authenticSet from '../../data/authentic-qids.json'
 import registry from '../../data/p5-qid-registry.json'
 import { ATTEMPT_SOURCES, type AttemptSource } from '../db/schema'
-import { extractSection } from './section'
 
 export { ATTEMPT_SOURCES, type AttemptSource }
 
@@ -40,42 +38,26 @@ export const ASSESSED_SOURCES = [
   'synthetic',
 ] as const satisfies readonly AttemptSource[]
 
-/** The sittings of the authentic bank — the exam ids of
- *  app/public/data/_index.json. A test fails when the bank gains or loses a
- *  sitting and this list does not follow; until it does, the new sitting's
- *  answers stay `unknown` (fail closed), never authentic by accident. */
-export const AUTHENTIC_EXAM_IDS: ReadonlySet<string> = new Set([
-  'host-2013',
-  'host-2014',
-  'host-2015',
-  'host-2016',
-  'host-2017',
-  'host-2018',
-  'host-ver1-2019',
-  'host-ver2-2019',
-  'host-2020',
-  'host-2021',
-  'host-2022',
-  'host-2023',
-  'host-2024',
-  'host-2025',
-  'var-2013',
-  'var-2014',
-  'var-2015',
-  'var-2016',
-  'var-2017',
-  'var-2018-1',
-  'var-2019',
-  'var-2022-1',
-  'var-2022-2',
-  'var-2023',
-  'var-2024',
-  'var-2025',
-  'var-2026',
-])
+/** Whether answers of `source` feed the assessment. */
+export function isAssessedSource(source: string): source is (typeof ASSESSED_SOURCES)[number] {
+  return source === 'authentic' || source === 'synthetic'
+}
 
-const AUTHENTIC_VERBAL_QID = /^(.+)-verb[12]-(?:ORD|LÄS|LAS|MEK|ELF)-[0-9]{3}$/
-const AUTHENTIC_QUANT_QID = /^(.+)-kvant[12]-(?:XYZ|KVA|NOG|DTK)-[0-9]{3}$/
+// The authentic bank's qids. A set in any other format is read as empty, so
+// every answer is then unknown (fail closed), never authentic by accident.
+const AUTHENTIC_QIDS: ReadonlySet<string> =
+  authenticSet.format === 'authentic-qid-set-v1' ? new Set(authenticSet.qids) : new Set()
+
+/** The sittings of the authentic bank — the exam ids of
+ *  app/public/data/_index.json, as the bundled set records them. */
+export const AUTHENTIC_EXAM_IDS: ReadonlySet<string> =
+  authenticSet.format === 'authentic-qid-set-v1' ? new Set(authenticSet.exams) : new Set()
+
+// The legacy spelling of the LÄS section token: a corpus-import quirk where the
+// Ä got dropped (lib/section.ts). Replaced everywhere, as the backfill
+// migration's SQL replace() does.
+const LEGACY_LAS = '-LAS-'
+const LAS = '-LÄS-'
 
 // The P5 qid the exporter mints (export_product.QID): the unit id, its
 // revision, the unit's section and the question number.
@@ -123,10 +105,11 @@ export type Provenance = {
   itemRevision: number | null
 }
 
-/** A qid of a real sitting the bank holds, in the bank's qid grammar. */
+/** A question of the authentic bank: its qid, or the legacy LAS spelling of
+ *  one, is in the bundled set. */
 export function isAuthenticQid(qid: string): boolean {
-  const m = AUTHENTIC_VERBAL_QID.exec(qid) ?? AUTHENTIC_QUANT_QID.exec(qid)
-  return m != null && AUTHENTIC_EXAM_IDS.has(m[1])
+  if (AUTHENTIC_QIDS.has(qid)) return true
+  return qid.includes(LEGACY_LAS) && AUTHENTIC_QIDS.has(qid.split(LEGACY_LAS).join(LAS))
 }
 
 /** A qid of the approved P5 registry: approved, not retired, current revision. */
@@ -186,36 +169,5 @@ export function estimateBasis(authentic: number, synthetic: number): EstimateBas
   return { authentic, synthetic, calibrated: synthetic === 0 }
 }
 
-/** A Provpass result's basis also counts the plan's unknown qids: the
- *  client-computed score includes them and the server cannot take them out,
- *  so they make the result uncalibrated too. */
-export type PlanBasis = {
-  authentic: number
-  synthetic: number
-  unknown: number
-  calibrated: boolean
-}
-export type MockEstimateBasis = PlanBasis & { perSection: Record<string, PlanBasis> }
-
-/** The basis of a Provpass result, from the qids its session presented, by
- *  their server-side source, overall and per section (sections in first-seen
- *  order; a qid without a section counts overall only). */
-export function planEstimateBasis(plan: readonly string[]): MockEstimateBasis {
-  const seed = (): PlanBasis => ({ authentic: 0, synthetic: 0, unknown: 0, calibrated: true })
-  const total = seed()
-  const perSection: Record<string, PlanBasis> = {}
-  for (const qid of plan) {
-    const { source } = classifyAttempt(qid)
-    const section = extractSection(qid)
-    const buckets = [total]
-    if (section !== null) {
-      perSection[section] ??= seed()
-      buckets.push(perSection[section])
-    }
-    for (const bucket of buckets) {
-      bucket[source] += 1
-      bucket.calibrated = bucket.synthetic === 0 && bucket.unknown === 0
-    }
-  }
-  return { ...total, perSection }
-}
+// A Provpass result's basis, and the result itself, are decided in
+// lib/mockScore.ts.
