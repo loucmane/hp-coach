@@ -15,6 +15,11 @@
 //
 // It does NOT gate the drill: while signals resolve, `hotTrap` is null and
 // the offer simply doesn't show — the drill starts normally.
+//
+// P5 mistakes (P5 infold PR 3, docs/p5-infold-design.md Amendment 1 E) count
+// toward a hot trap only when their explanation names a framework of the
+// question's own section (lib/provenance.ts frameworkSignal); otherwise they
+// are skipped for the count and stay in the replay queue.
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -29,6 +34,7 @@ import {
   sectionFromFrameworkId,
   type TreatedTrap,
 } from '@/lib/adaptiveReview'
+import { frameworkSignal } from '@/lib/provenance'
 
 import { useDueMistakes } from './useMistakes'
 import { useSessionHistory } from './useSessions'
@@ -184,7 +190,7 @@ export function useAdaptiveReview(now: Date = new Date()): AdaptiveReviewState {
       if (!alive) return
       const out: Array<{ framework_id: string; at: number }> = []
       for (let i = 0; i < entries.length; i++) {
-        const fid = entries[i]?.framework_id
+        const fid = frameworkSignal(rows[i].questionId, entries[i]?.framework_id)
         const at = toMs(rows[i].lastErrorAt)
         if (fid && at != null) out.push({ framework_id: fid, at })
       }

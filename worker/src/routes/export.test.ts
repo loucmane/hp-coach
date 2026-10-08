@@ -382,3 +382,108 @@ describe('validation', () => {
     expect(sessionRows).toHaveLength(sessionCount)
   })
 })
+
+// P5 infold PR 3 (docs/p5-infold-design.md Amendment 1 E): provenance is the
+// server's call on import too. A payload's source, itemRevision or
+// estimateBasis (exports carry them) is never trusted: every attempt is
+// re-classified from its qid and a mock result's basis re-derived from its
+// imported session's plan.
+describe('import — provenance is re-derived on the server', () => {
+  const PLAN = ['var-2024-verb1-ORD-001', 'p5-las-b19-002-r1-LÄS-001', 'p5-las-b7-002-r1-LÄS-001']
+
+  function payload() {
+    return {
+      schemaVersion: SCHEMA_VERSION,
+      exportedAt: new Date().toISOString(),
+      user: {},
+      tables: {
+        sessions: [
+          { id: 7, kind: 'drill', endedAt: Date.now() },
+          { id: 8, kind: 'mock', endedAt: Date.now(), plan: PLAN },
+          { id: 9, kind: 'mock', endedAt: Date.now() },
+        ],
+        attempts: [
+          // Forged: an authentic qid exported as synthetic, a revoked P5 qid
+          // exported as authentic, a registered P5 qid with a wrong revision.
+          {
+            id: 1,
+            sessionId: 7,
+            questionId: 'var-2024-verb1-ORD-001',
+            correct: true,
+            source: 'synthetic',
+            itemRevision: 3,
+          },
+          {
+            id: 2,
+            sessionId: 7,
+            questionId: 'p5-las-b7-002-r1-LÄS-001',
+            correct: true,
+            source: 'authentic',
+          },
+          {
+            id: 3,
+            sessionId: 7,
+            questionId: 'p5-las-b7-002-r2-LÄS-001',
+            correct: false,
+            source: 'unknown',
+            itemRevision: 9,
+          },
+        ],
+        mistakes: [],
+        lessonProgress: [],
+        lessonReads: [],
+        dailyPlans: [],
+        mockResults: [8, 9].map((sessionId, i) => ({
+          id: i + 1,
+          sessionId,
+          mode: 'synthetic',
+          half: 'verbal',
+          presented: 3,
+          answered: 3,
+          correct: 2,
+          seenBefore: 0,
+          durationMs: 60_000,
+          breakdown: { perSection: {}, missedQids: [], version: 1 },
+          estimateBasis: {
+            authentic: 3,
+            synthetic: 0,
+            unknown: 0,
+            calibrated: true,
+            perSection: {},
+          },
+        })),
+      },
+    }
+  }
+
+  it('re-classifies every imported attempt from its qid', async () => {
+    const { res } = await postImport('user_a', payload())
+    expect(res.status).toBe(200)
+    const db = getDb(d1 as unknown as D1Database)
+    const rows = await db.select().from(attempts).orderBy(attempts.id)
+    expect(rows.map((r) => [r.questionId, r.source, r.itemRevision])).toEqual([
+      ['var-2024-verb1-ORD-001', 'authentic', null],
+      ['p5-las-b7-002-r1-LÄS-001', 'unknown', null],
+      ['p5-las-b7-002-r2-LÄS-001', 'synthetic', 2],
+    ])
+  })
+
+  it('re-derives a mock result’s basis from its imported session plan, null without one', async () => {
+    await postImport('user_a', payload())
+    const db = getDb(d1 as unknown as D1Database)
+    const rows = await db.select().from(mockResults).orderBy(mockResults.id)
+    expect(rows.map((r) => r.estimateBasis)).toEqual([
+      {
+        authentic: 1,
+        synthetic: 1,
+        unknown: 1,
+        calibrated: false,
+        perSection: {
+          ORD: { authentic: 1, synthetic: 0, unknown: 0, calibrated: true },
+          LÄS: { authentic: 0, synthetic: 1, unknown: 1, calibrated: false },
+        },
+      },
+      null,
+    ])
+  })
+})

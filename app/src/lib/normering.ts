@@ -23,6 +23,14 @@
 // The dense `table` (index = raw 0..80) and the source `bands` are both
 // carried in the JSON under app/public/normering/{exam_id}.json; the
 // build pipeline (scripts) mirrors the UHR PDFs faithfully.
+//
+// P5 infold PR 3 (docs/p5-infold-design.md Amendment 1 E): a pass's P5
+// questions count in its raw score, and the conversion reads that raw
+// performance whatever the questions' source. normedEstimate adds whether
+// the result is calibrated: the tables were normed on real sittings, so a
+// result a P5 question (or an unknown one) fed is not.
+
+import { type EstimateBasis, isCalibrated } from './provenance'
 
 export type MockHalf = 'verbal' | 'kvant'
 
@@ -107,6 +115,27 @@ export function normedScore(
   const raw = readTable(halfTable, scaledRaw)
   const score = Math.max(0, Math.min(MAX_SCORE, Math.round(raw * 100) / 100))
   return { score, derived: 'official-derived' }
+}
+
+export type NormedEstimate = NormedResult & {
+  /** False when the pass's basis says a synthetic (P5) or unknown question
+   *  counted in it; a pass without a basis (from before P5) is calibrated. */
+  calibrated: boolean
+}
+
+/**
+ * normedScore for a pass whose provenance is known: the same conversion of
+ * the same raw performance, plus whether it is calibrated. `basis` is the
+ * stored result's estimateBasis (worker-derived from the session plan).
+ */
+export function normedEstimate(
+  sitting: NormeringSitting | null | undefined,
+  half: MockHalf,
+  correct: number,
+  presented: number,
+  basis: EstimateBasis | null | undefined,
+): NormedEstimate {
+  return { ...normedScore(sitting, half, correct, presented), calibrated: isCalibrated(basis) }
 }
 
 // ── Fetch loader (browser) ─────────────────────────────────────────────

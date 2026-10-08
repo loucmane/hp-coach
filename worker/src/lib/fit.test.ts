@@ -7,11 +7,12 @@
 //      watermark idempotency contract, chronological-order sensitivity,
 //      per-user isolation, and the clamp holding through many updates.
 
-import { eq } from 'drizzle-orm'
+import { asc, eq } from 'drizzle-orm'
 import { beforeEach, describe, expect, it } from 'vitest'
 
+import registry from '../../data/p5-qid-registry.json'
 import { getDb } from '../db/client'
-import { attempts, itemStats, sessions, userAbility, users } from '../db/schema'
+import { type AttemptSource, attempts, itemStats, sessions, userAbility, users } from '../db/schema'
 import {
   CLAMP,
   clampRating,
@@ -24,6 +25,7 @@ import {
   REPLAY_ITEM_K_FACTOR,
   runFit,
 } from './fit'
+import { classifyAttempt } from './provenance'
 import { makeTestD1, type ShimD1 } from './testD1'
 
 let d1: ShimD1
@@ -55,21 +57,57 @@ async function ensureSession(userId: number, kind: string): Promise<number> {
 }
 
 /** Insert one attempt (default kind 'drill'). Returns its row id. Insertion
- *  order == id order == the chronological order runFit folds them in. */
+ *  order == id order == the chronological order runFit folds them in. The
+ *  source is classified from the qid, as POST /api/attempts stores it,
+ *  unless a test pins it. */
 async function seedAttempt(
   clerkUserId: string,
   questionId: string,
   correct: boolean,
   kind = 'drill',
+  source?: AttemptSource,
 ): Promise<number> {
   const db = getDb(d1 as unknown as D1Database)
   const userId = await ensureUser(clerkUserId)
   const sessionId = await ensureSession(userId, kind)
+  const provenance = classifyAttempt(questionId)
   const [row] = await db
     .insert(attempts)
-    .values({ userId, sessionId, questionId, correct })
+    .values({
+      userId,
+      sessionId,
+      questionId,
+      correct,
+      source: source ?? provenance.source,
+      itemRevision: provenance.itemRevision,
+    })
     .returning()
   return row.id
+}
+
+/** Both rating tables, every column but updatedAt, ordered — for byte-identity checks. */
+async function ratings() {
+  const db = getDb(d1 as unknown as D1Database)
+  const items = await db
+    .select({
+      questionId: itemStats.questionId,
+      difficulty: itemStats.difficulty,
+      attempts: itemStats.attempts,
+      source: itemStats.source,
+    })
+    .from(itemStats)
+    .orderBy(asc(itemStats.questionId))
+  const abilities = await db
+    .select({
+      userId: userAbility.userId,
+      section: userAbility.section,
+      ability: userAbility.ability,
+      attempts: userAbility.attempts,
+      syntheticAttempts: userAbility.syntheticAttempts,
+    })
+    .from(userAbility)
+    .orderBy(asc(userAbility.userId), asc(userAbility.section))
+  return { items, abilities }
 }
 
 async function itemDifficulty(
@@ -392,4 +430,286 @@ describe('runFit — session-kind weighting', () => {
     // ...but the watermark still advanced past the skipped row.
     expect(res.watermark).toBeGreaterThan(0)
   })
+})
+
+// ── 3. provenance (P5 infold PR 3, docs/p5-infold-design.md Amendment 1 E) ──
+//
+// Authentic and synthetic answers both move the user's section ability; a
+// synthetic answer is fitted against the section's mean authentic difficulty
+// (the interim, UNCALIBRATED method) while its own item difficulty is learned
+// apart and never feeds that mean. Unknown answers move nothing; the
+// watermark still passes them.
+
+const P5 = registry.units.flatMap((u) => u.qids)
+const LAS_P5 = 'p5-las-b19-002-r1-LÄS-001'
+const LAS_P5_2 = 'p5-las-b14-002-r1-LÄS-001'
+const ELF_P5 = 'p5-elf-b19-003-r1-ELF-001'
+const UNKNOWN = ['p5-las-b7-002-r1-LÄS-001', 'var-2099-verb2-ELF-031', 'not-a-real-qid']
+
+async function syntheticAttempts(clerkUserId: string, section: string): Promise<number | null> {
+  const db = getDb(d1 as unknown as D1Database)
+  const userId = await ensureUser(clerkUserId)
+  const rows = await db.select().from(userAbility).where(eq(userAbility.userId, userId))
+  return rows.find((r) => r.section === section)?.syntheticAttempts ?? null
+}
+
+async function itemSource(qid: string): Promise<string | null> {
+  const db = getDb(d1 as unknown as D1Database)
+  const [row] = await db.select().from(itemStats).where(eq(itemStats.questionId, qid)).limit(1)
+  return row?.source ?? null
+}
+
+/** mulberry32: a small seeded PRNG for the property-style histories. */
+function rng(seed: number): () => number {
+  let a = seed >>> 0
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0
+    let t = a
+    t = Math.imul(t ^ (t >>> 15), t | 1)
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+const pick = <T>(r: () => number, xs: readonly T[]) => xs[Math.floor(r() * xs.length)]
+
+const AUTHENTIC = [
+  'var-2026-verb1-ORD-001',
+  'var-2026-verb1-ORD-002',
+  'var-2026-verb1-LÄS-011',
+  'var-2024-verb1-LAS-013',
+  'var-2026-verb2-ELF-031',
+  'var-2026-kvant1-XYZ-001',
+  'host-2025-kvant2-DTK-030',
+]
+const KINDS = ['drill', 'adaptive_review', 'mock', 'mock_diagnostic', 'lesson']
+const USERS = ['u1', 'u2', 'u3']
+
+describe('runFit — synthetic answers move ability (uncalibrated)', () => {
+  it('a synthetic answer in a section with no rated authentic item is fitted against 0', async () => {
+    await seedAttempt('u1', LAS_P5, true)
+    const res = await runFit(getDb(d1 as unknown as D1Database))
+    expect(res.processed).toBe(1)
+    // floored expected = 0.2 + 0.8 * 0.5 = 0.6 on both sides, K = 32.
+    expect((await ability('u1', 'LÄS'))?.ability).toBeCloseTo(12.8, 10)
+    expect((await ability('u1', 'LÄS'))?.attempts).toBe(1)
+    expect(await syntheticAttempts('u1', 'LÄS')).toBe(1)
+    expect((await itemDifficulty(LAS_P5))?.difficulty).toBeCloseTo(-12.8, 10)
+    expect((await itemDifficulty(LAS_P5))?.attempts).toBe(1)
+    expect(await itemSource(LAS_P5)).toBe('synthetic')
+  })
+
+  it.each([
+    ['in the same run', false],
+    ['after an earlier run', true],
+  ])('is fitted against the mean difficulty of the section’s rated authentic items (%s)', async (_label, split) => {
+    // Three authentic LÄS items rated by other users, one in the legacy LAS spelling.
+    await seedAttempt('u2', 'var-2026-verb1-LÄS-011', false)
+    await seedAttempt('u2', 'var-2026-verb1-LÄS-012', true)
+    await seedAttempt('u3', 'var-2024-verb1-LAS-013', false)
+    // An authentic item of another section must not enter the LÄS anchor.
+    await seedAttempt('u3', 'var-2026-verb2-ELF-031', true)
+    if (split) await runFit(getDb(d1 as unknown as D1Database))
+    await seedAttempt('u1', LAS_P5, true)
+    await runFit(getDb(d1 as unknown as D1Database))
+
+    const d = async (qid: string) => (await itemDifficulty(qid))?.difficulty ?? Number.NaN
+    // Summed in qid order, as the fit does.
+    const anchor =
+      ((await d('var-2024-verb1-LAS-013')) +
+        (await d('var-2026-verb1-LÄS-011')) +
+        (await d('var-2026-verb1-LÄS-012'))) /
+      3
+    expect(anchor).not.toBe(0)
+    expect((await ability('u1', 'LÄS'))?.ability).toBeCloseTo(
+      K_EARLY * (1 - flooredExpectedScore(anchor, 0)),
+      10,
+    )
+    // The item side learns the P5 item's own difficulty against u1's ability.
+    expect((await itemDifficulty(LAS_P5))?.difficulty).toBeCloseTo(
+      K_EARLY * (flooredExpectedScore(0, 0) - 1),
+      10,
+    )
+  })
+
+  it('keeps synthetic item difficulties out of the anchor', async () => {
+    // Twenty users miss one P5 item: its own (uncalibrated) difficulty climbs.
+    for (let i = 0; i < 20; i++) await seedAttempt(`miss-${i}`, LAS_P5, false)
+    await runFit(getDb(d1 as unknown as D1Database))
+    expect((await itemDifficulty(LAS_P5))?.difficulty).toBeGreaterThan(100)
+    expect(await itemSource(LAS_P5)).toBe('synthetic')
+    // A fresh solver on another P5 item is still fitted against the authentic
+    // anchor — 0 here, since LÄS has no rated authentic item.
+    await seedAttempt('fresh', LAS_P5_2, true)
+    await runFit(getDb(d1 as unknown as D1Database))
+    expect((await ability('fresh', 'LÄS'))?.ability).toBeCloseTo(12.8, 10)
+  })
+
+  it('counts synthetic answers per (user, section) and marks every item row with its source', async () => {
+    await seedAttempt('u1', 'var-2026-verb1-LÄS-011', true)
+    await seedAttempt('u1', LAS_P5, false)
+    await seedAttempt('u1', LAS_P5_2, true)
+    await seedAttempt('u1', ELF_P5, true)
+    await seedAttempt('u1', 'var-2026-verb1-ORD-001', true)
+    const res = await runFit(getDb(d1 as unknown as D1Database))
+    expect(res.processed).toBe(5)
+    expect(await ability('u1', 'LÄS')).toMatchObject({ attempts: 3 })
+    expect(await syntheticAttempts('u1', 'LÄS')).toBe(2)
+    expect(await syntheticAttempts('u1', 'ELF')).toBe(1)
+    expect(await syntheticAttempts('u1', 'ORD')).toBe(0)
+    expect(await itemSource('var-2026-verb1-LÄS-011')).toBe('authentic')
+    expect(await itemSource('var-2026-verb1-ORD-001')).toBe('authentic')
+    for (const qid of [LAS_P5, LAS_P5_2, ELF_P5]) expect(await itemSource(qid)).toBe('synthetic')
+  })
+
+  it('damps only the item side of a synthetic adaptive_review answer', async () => {
+    await seedAttempt('uR', LAS_P5, true, 'adaptive_review')
+    await runFit(getDb(d1 as unknown as D1Database))
+    expect((await ability('uR', 'LÄS'))?.ability).toBeCloseTo(12.8, 10)
+    expect((await itemDifficulty(LAS_P5))?.difficulty).toBeCloseTo(-12.8 * REPLAY_ITEM_K_FACTOR, 10)
+  })
+
+  it('stays finite and inside the clamp over a long synthetic-only history', async () => {
+    const r = rng(7)
+    const skill: Record<string, number> = { strong: 0.95, weak: 0.08, mid: 0.5 }
+    for (let i = 0; i < 600; i++) {
+      const user = pick(r, Object.keys(skill))
+      await seedAttempt(user, pick(r, P5), r() < skill[user], pick(r, KINDS))
+    }
+    await runFit(getDb(d1 as unknown as D1Database))
+    const { items, abilities } = await ratings()
+    expect(items.length).toBeGreaterThan(100)
+    for (const row of [...items.map((i) => i.difficulty), ...abilities.map((a) => a.ability)]) {
+      expect(Number.isFinite(row)).toBe(true)
+      expect(Math.abs(row)).toBeLessThanOrEqual(CLAMP)
+    }
+    expect(items.every((i) => i.source === 'synthetic')).toBe(true)
+    expect(abilities.every((a) => a.syntheticAttempts === a.attempts)).toBe(true)
+    expect((await ability('strong', 'LÄS'))?.ability).toBeGreaterThan(0)
+    expect((await ability('weak', 'ELF'))?.ability).toBeLessThan(0)
+  })
+})
+
+describe('runFit — unknown answers fail closed', () => {
+  it('an unknown answer moves no rating, in any graded kind', async () => {
+    for (const kind of ['drill', 'adaptive_review', 'mock', 'mock_diagnostic']) {
+      for (const qid of UNKNOWN) await seedAttempt('u1', qid, false, kind)
+    }
+    const res = await runFit(getDb(d1 as unknown as D1Database))
+    expect(res.processed).toBe(0)
+    expect(await ratings()).toEqual({ items: [], abilities: [] })
+  })
+
+  it('advances the watermark past unknown rows, so a later run never re-scans them', async () => {
+    await seedAttempt('u1', 'var-2026-verb1-LÄS-011', true)
+    await seedAttempt('u1', UNKNOWN[0], false)
+    const last = await seedAttempt('u1', UNKNOWN[1], true)
+    expect(await runFit(getDb(d1 as unknown as D1Database))).toEqual({
+      processed: 1,
+      watermark: last,
+    })
+    const afterFirst = await ratings()
+    expect(await runFit(getDb(d1 as unknown as D1Database))).toEqual({
+      processed: 0,
+      watermark: last,
+    })
+    expect(await ratings()).toEqual(afterFirst)
+    const tail = await seedAttempt('u1', UNKNOWN[2], true)
+    expect(await runFit(getDb(d1 as unknown as D1Database))).toEqual({
+      processed: 0,
+      watermark: tail,
+    })
+    expect(await ratings()).toEqual(afterFirst)
+  })
+
+  it('trusts the stored source: an authentic qid stored unknown is skipped', async () => {
+    // What an attempt the pre-migration worker wrote looks like until the
+    // backfill (drizzle/0013_attempt_provenance_backfill.sql) is re-run.
+    await seedAttempt('u1', 'var-2026-verb1-ORD-001', true, 'drill', 'unknown')
+    const res = await runFit(getDb(d1 as unknown as D1Database))
+    expect(res.processed).toBe(0)
+    expect(res.watermark).toBeGreaterThan(0)
+    expect(await ratings()).toEqual({ items: [], abilities: [] })
+  })
+
+  // Property-style: an authentic history fitted alone and the same history
+  // with unknown answers interleaved (any kind, any user) land on
+  // byte-identical rating tables.
+  for (const trial of [1, 2, 3, 4, 5]) {
+    it(`trial ${trial}: interleaved unknown answers leave every rating byte-identical`, async () => {
+      const r = rng(trial)
+      const history = Array.from({ length: 40 + Math.floor(r() * 40) }, () => ({
+        user: pick(r, USERS),
+        qid: pick(r, AUTHENTIC),
+        correct: r() < 0.55,
+        kind: pick(r, KINDS),
+      }))
+      const extras = history.map(() =>
+        Array.from({ length: Math.floor(r() * 3) }, () => ({
+          user: pick(r, USERS),
+          qid: pick(r, UNKNOWN),
+          correct: r() < 0.5,
+          kind: pick(r, KINDS),
+        })),
+      )
+
+      // Same user ids in both databases, whoever answers first.
+      for (const user of USERS) await ensureUser(user)
+      for (const h of history) await seedAttempt(h.user, h.qid, h.correct, h.kind)
+      await runFit(getDb(d1 as unknown as D1Database))
+      const alone = await ratings()
+
+      d1 = makeTestD1()
+      sessionByUser.clear()
+      for (const user of USERS) await ensureUser(user)
+      for (const [i, h] of history.entries()) {
+        for (const x of extras[i]) await seedAttempt(x.user, x.qid, x.correct, x.kind)
+        await seedAttempt(h.user, h.qid, h.correct, h.kind)
+      }
+      await runFit(getDb(d1 as unknown as D1Database))
+      expect(JSON.stringify(await ratings())).toBe(JSON.stringify(alone))
+      expect(alone.items.length).toBeGreaterThan(0)
+    })
+  }
+})
+
+describe('runFit — mixed histories stay incremental and idempotent', () => {
+  // Authentic, synthetic and unknown answers interleaved: fitting the history
+  // in several incremental runs lands on exactly the ratings of one run, bit
+  // for bit — the anchor is recomputed from persisted state, never carried.
+  for (const trial of [11, 12, 13, 14]) {
+    it(`trial ${trial}: incremental runs === one run, byte for byte`, async () => {
+      const r = rng(trial)
+      const history = Array.from({ length: 60 + Math.floor(r() * 60) }, () => {
+        const roll = r()
+        return {
+          user: pick(r, USERS),
+          qid: roll < 0.45 ? pick(r, AUTHENTIC) : roll < 0.9 ? pick(r, P5) : pick(r, UNKNOWN),
+          correct: r() < 0.6,
+          kind: pick(r, KINDS),
+        }
+      })
+      const runs = 2 + Math.floor(r() * 3)
+      const split = (n: number) => Math.floor((history.length * n) / runs)
+
+      for (const user of USERS) await ensureUser(user)
+      for (let n = 0; n < runs; n++) {
+        for (const h of history.slice(split(n), split(n + 1))) {
+          await seedAttempt(h.user, h.qid, h.correct, h.kind)
+        }
+        await runFit(getDb(d1 as unknown as D1Database))
+      }
+      const incremental = await ratings()
+      expect(await runFit(getDb(d1 as unknown as D1Database))).toMatchObject({ processed: 0 })
+      expect(await ratings()).toEqual(incremental)
+
+      d1 = makeTestD1()
+      sessionByUser.clear()
+      for (const user of USERS) await ensureUser(user)
+      for (const h of history) await seedAttempt(h.user, h.qid, h.correct, h.kind)
+      await runFit(getDb(d1 as unknown as D1Database))
+      expect(JSON.stringify(await ratings())).toBe(JSON.stringify(incremental))
+      expect(incremental.items.some((i) => i.source === 'synthetic')).toBe(true)
+      expect(incremental.abilities.some((a) => a.syntheticAttempts > 0)).toBe(true)
+    })
+  }
 })

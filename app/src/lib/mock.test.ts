@@ -452,6 +452,39 @@ describe('computeMockSummary', () => {
     // dwell time still accrues even for an eventually-blanked entry.
     expect(summary.breakdown.perSection.ORD.timeMs).toBe(4000)
   })
+
+  // P5 infold PR 3 (docs/p5-infold-design.md Amendment 1 E): a pass's P5
+  // questions count in its result like any other question. What the result
+  // rests on is the worker's call (estimateBasis on the stored row).
+  it('scores P5 questions like any other: presented, answered, correct and missed', () => {
+    const mixed: Question[] = [
+      q({ qid: 'var-2024-verb1-ORD-001', section: 'ORD', number: 1, answer: 'A' }),
+      q({ qid: 'p5-las-b19-002-r1-LÄS-001', section: 'LÄS', number: 1, answer: 'C' }),
+      q({ qid: 'p5-las-b19-002-r1-LÄS-002', section: 'LÄS', number: 2, answer: 'A' }),
+      q({ qid: 'p5-elf-b19-003-r1-ELF-001', section: 'ELF', number: 1, answer: 'B' }),
+    ]
+    const sheet: MockSheetLike = new Map([
+      ['var-2024-verb1-ORD-001', { letter: 'A', timeMs: 1000 }],
+      ['p5-las-b19-002-r1-LÄS-001', { letter: 'C', timeMs: 2000 }],
+      ['p5-las-b19-002-r1-LÄS-002', { letter: 'B', timeMs: 3000 }],
+      // p5-elf-b19-003-r1-ELF-001 left blank
+    ])
+    const summary = computeMockSummary(mixed, sheet)
+    expect(summary).toEqual({
+      presented: 4,
+      answered: 3,
+      correct: 2,
+      breakdown: {
+        perSection: {
+          ORD: { presented: 1, correct: 1, timeMs: 1000 },
+          LÄS: { presented: 2, correct: 1, timeMs: 5000 },
+          ELF: { presented: 1, correct: 0, timeMs: 0 },
+        },
+        missedQids: ['p5-las-b19-002-r1-LÄS-002'],
+        version: 1,
+      },
+    })
+  })
 })
 
 // ── Real-corpus sanity (mirrors drill.test.ts's pattern) ─────────────

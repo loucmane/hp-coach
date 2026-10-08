@@ -10,6 +10,12 @@
 //               exist, belong to this user, be kind='mock', and already
 //               be ended (end the session first, then post the summary).
 //   - GET  /  → this user's rows, newest-first, capped at 50.
+//
+// P5 infold PR 3 (docs/p5-infold-design.md Amendment 1 E): a pass's P5
+// questions count in its result like any other. What the result rests on,
+// `estimateBasis`, is derived HERE from the session's stored plan by each
+// qid's server-side provenance (lib/provenance.ts planEstimateBasis) and
+// stored with the row; a basis in the body is accepted and ignored.
 
 import { zValidator } from '@hono/zod-validator'
 import { and, desc, eq } from 'drizzle-orm'
@@ -19,6 +25,7 @@ import { z } from 'zod'
 import { getDb } from '../db/client'
 import { mockResults, sessions } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
+import { planEstimateBasis } from '../lib/provenance'
 import type { Env, Vars } from '../types'
 
 const BreakdownSchema = z
@@ -49,6 +56,9 @@ const PostBody = z
     seenBefore: z.number().int().min(0),
     durationMs: z.number().int().min(0),
     breakdown: BreakdownSchema,
+    // A client echoing a stored row may send the server's own basis back.
+    // Accepted so the result still lands, and never read.
+    estimateBasis: z.unknown().optional(),
   })
   .strict()
 
@@ -96,6 +106,10 @@ export const mockResultsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       )
     }
 
+    // From the plan the session stored at start, never from the body. Null
+    // for a session without one (rows from before plan storage).
+    const estimateBasis = session.plan ? planEstimateBasis(session.plan) : null
+
     const [row] = await db
       .insert(mockResults)
       .values({
@@ -111,6 +125,7 @@ export const mockResultsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         seenBefore: body.seenBefore,
         durationMs: body.durationMs,
         breakdown: body.breakdown,
+        estimateBasis,
       })
       .onConflictDoUpdate({
         target: mockResults.sessionId,
@@ -125,6 +140,7 @@ export const mockResultsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
           seenBefore: body.seenBefore,
           durationMs: body.durationMs,
           breakdown: body.breakdown,
+          estimateBasis,
         },
       })
       .returning()

@@ -9,6 +9,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import type { Section } from '@/data/questions'
+import type { EstimateBasis } from '@/lib/provenance'
 import type { SectionStats } from '@/lib/scoring'
 
 import { useApiClient } from '../useApiClient'
@@ -20,13 +21,25 @@ export type WeeklyBucket = {
   weekStart: number
   attempts: number
   correct: number
+  /** The bucket's answers by provenance (P5 infold PR 3). Optional: an
+   *  older worker does not send it. */
+  estimateBasis?: EstimateBasis
 }
 
+// Provenance (P5 infold PR 3, docs/p5-infold-design.md Amendment 1 E): the
+// worker classifies every answer authentic / synthetic (P5) / unknown on the
+// server. accuracy7d, the bySection score inputs and `weekly` read authentic
+// AND synthetic answers, each section and weekly bucket says in
+// estimateBasis how many were synthetic (calibrated only when none), and
+// unknown answers are never in them. attempts, timeMsToday, streakDays,
+// attemptsDaily and bySection.attemptsToday are practice effort and count
+// every answer.
 export type Stats = {
   attempts: { total: number; today: number; thisWeek: number }
   drills: { total: number; thisWeek: number }
   mistakes: { active: number; due: number; resolved: number }
-  /** 0–1 ratio over attempts in the last 7 days; null if zero attempts. */
+  /** 0–1 ratio over authentic and synthetic attempts in the last 7 days;
+   *  null if there are none. */
   accuracy7d: number | null
   streakDays: number
   /** Exact sum of timeTakenMs over today's (UTC) attempts — backs the

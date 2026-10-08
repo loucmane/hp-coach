@@ -198,3 +198,129 @@ describe('GET /api/mock-results', () => {
     expect(resB.body.results).toHaveLength(1)
   })
 })
+
+// P5 infold PR 3 (docs/p5-infold-design.md Amendment 1 E): a Provpass result
+// counts its P5 questions, and what it rests on is derived on the server from
+// the session's stored plan — never from the client — when it is posted.
+describe('POST /api/mock-results — estimate basis', () => {
+  const VERBAL_PLAN = [
+    'var-2024-verb1-ORD-001',
+    'var-2024-verb1-ORD-002',
+    'p5-las-b19-002-r1-LÄS-001',
+    'p5-las-b19-002-r1-LÄS-002',
+    'var-2024-verb1-MEK-021',
+    'p5-elf-b19-003-r1-ELF-001',
+  ]
+
+  async function seedPlanned(clerkUserId: string, plan: string[] | null) {
+    const db = getDb(d1 as unknown as D1Database)
+    const [user] = await db.insert(users).values({ clerkUserId }).returning()
+    const [session] = await db
+      .insert(sessions)
+      .values({ userId: user.id, kind: 'mock', endedAt: new Date(), plan })
+      .returning()
+    return session.id
+  }
+
+  function verbalBody(sessionId: number, overrides: Record<string, unknown> = {}) {
+    return postBody(sessionId, {
+      mode: 'synthetic',
+      half: 'verbal',
+      examId: null,
+      provpass: null,
+      presented: VERBAL_PLAN.length,
+      answered: 6,
+      correct: 4,
+      breakdown: {
+        perSection: {
+          ORD: { presented: 2, correct: 1, timeMs: 60_000 },
+          LÄS: { presented: 2, correct: 2, timeMs: 200_000 },
+          MEK: { presented: 1, correct: 1, timeMs: 30_000 },
+          ELF: { presented: 1, correct: 0, timeMs: 90_000 },
+        },
+        missedQids: ['var-2024-verb1-ORD-002', 'p5-elf-b19-003-r1-ELF-001'],
+        version: 1,
+      },
+      ...overrides,
+    })
+  }
+
+  const VERBAL_BASIS = {
+    authentic: 3,
+    synthetic: 3,
+    unknown: 0,
+    calibrated: false,
+    perSection: {
+      ORD: { authentic: 2, synthetic: 0, unknown: 0, calibrated: true },
+      LÄS: { authentic: 0, synthetic: 2, unknown: 0, calibrated: false },
+      MEK: { authentic: 1, synthetic: 0, unknown: 0, calibrated: true },
+      ELF: { authentic: 0, synthetic: 1, unknown: 0, calibrated: false },
+    },
+  }
+
+  it('stores the P5 questions in the result and a basis derived from the stored plan', async () => {
+    const sessionId = await seedPlanned('user_a', VERBAL_PLAN)
+    const res = await post('user_a', verbalBody(sessionId))
+    expect(res.status).toBe(200)
+    const { result } = (await res.json()) as { result: Record<string, unknown> }
+    expect(result).toMatchObject({ presented: 6, correct: 4, estimateBasis: VERBAL_BASIS })
+    const { body } = await get('user_a')
+    expect(body.results[0]).toMatchObject({ estimateBasis: VERBAL_BASIS })
+  })
+
+  it('ignores a client-sent basis, on the first post and on a retry', async () => {
+    const sessionId = await seedPlanned('user_a', VERBAL_PLAN)
+    const forged = { authentic: 6, synthetic: 0, unknown: 0, calibrated: true, perSection: {} }
+    const first = await post('user_a', verbalBody(sessionId, { estimateBasis: forged }))
+    expect(first.status).toBe(200)
+    expect(
+      ((await first.json()) as { result: { estimateBasis: unknown } }).result.estimateBasis,
+    ).toEqual(VERBAL_BASIS)
+    const retry = await post('user_a', verbalBody(sessionId, { estimateBasis: forged, correct: 5 }))
+    expect(((await retry.json()) as { result: { estimateBasis: unknown } }).result).toMatchObject({
+      correct: 5,
+      estimateBasis: VERBAL_BASIS,
+    })
+  })
+
+  it('an authentic-only plan is calibrated; a plan with an unknown qid is not', async () => {
+    const authentic = await seedPlanned('user_a', [
+      'var-2024-kvant1-XYZ-001',
+      'var-2024-kvant1-KVA-013',
+    ])
+    const res = await post('user_a', postBody(authentic))
+    expect(
+      ((await res.json()) as { result: { estimateBasis: unknown } }).result.estimateBasis,
+    ).toEqual({
+      authentic: 2,
+      synthetic: 0,
+      unknown: 0,
+      calibrated: true,
+      perSection: {
+        XYZ: { authentic: 1, synthetic: 0, unknown: 0, calibrated: true },
+        KVA: { authentic: 1, synthetic: 0, unknown: 0, calibrated: true },
+      },
+    })
+    const withRevoked = await seedPlanned('user_b', [
+      'var-2024-verb1-ORD-001',
+      'p5-las-b7-002-r1-LÄS-001',
+    ])
+    const res2 = await post('user_b', verbalBody(withRevoked, { presented: 2 }))
+    expect(
+      ((await res2.json()) as { result: { estimateBasis: unknown } }).result.estimateBasis,
+    ).toMatchObject({
+      authentic: 1,
+      synthetic: 0,
+      unknown: 1,
+      calibrated: false,
+    })
+  })
+
+  it('stores a null basis when the session has no stored plan', async () => {
+    const sessionId = await seedPlanned('user_a', null)
+    const res = await post('user_a', postBody(sessionId))
+    expect(
+      ((await res.json()) as { result: { estimateBasis: unknown } }).result.estimateBasis,
+    ).toBeNull()
+  })
+})

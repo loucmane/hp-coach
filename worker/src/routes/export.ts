@@ -65,6 +65,7 @@ import {
   users,
 } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
+import { classifyAttempt, planEstimateBasis } from '../lib/provenance'
 import type { Env, Vars } from '../types'
 
 export const SCHEMA_VERSION = 1 as const
@@ -461,6 +462,11 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
 
   const attemptsToInsert = body.tables.attempts.filter((a) => sessionIdMap.has(a.sessionId))
   const mockResultsToInsert = body.tables.mockResults.filter((mr) => sessionIdMap.has(mr.sessionId))
+  // Provenance is re-derived on the server (P5 infold PR 3): a payload's
+  // attempt source / itemRevision or mock-result estimateBasis (exports carry
+  // them) is never trusted. A mock result's basis comes from the plan of the
+  // session it was imported with, as POST /api/mock-results derives it.
+  const planBySession = new Map(body.tables.sessions.map((s) => [s.id, s.plan ?? null]))
 
   await insertChunked(db, attemptsToInsert, (a) =>
     db.insert(attempts).values({
@@ -471,6 +477,7 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
       correct: a.correct ?? null,
       timeTakenMs: a.timeTakenMs ?? null,
       createdAt: toDateOrUndefined(a.createdAt),
+      ...classifyAttempt(a.questionId),
     }),
   )
   await insertChunked(db, body.tables.mistakes, (m) =>
@@ -509,8 +516,9 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
       updatedAt: toDateOrUndefined(dp.updatedAt),
     }),
   )
-  await insertChunked(db, mockResultsToInsert, (mr) =>
-    db.insert(mockResults).values({
+  await insertChunked(db, mockResultsToInsert, (mr) => {
+    const plan = planBySession.get(mr.sessionId)
+    return db.insert(mockResults).values({
       userId,
       sessionId: sessionIdMap.get(mr.sessionId) as number,
       mode: mr.mode,
@@ -524,8 +532,9 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
       durationMs: mr.durationMs,
       breakdown: mr.breakdown,
       createdAt: toDateOrUndefined(mr.createdAt),
-    }),
-  )
+      estimateBasis: plan ? planEstimateBasis(plan) : null,
+    })
+  })
 
   // Restore prefs onto the (already-provisioned) user row. clerkUserId
   // and the lifetime counters are NEVER taken from the payload — they

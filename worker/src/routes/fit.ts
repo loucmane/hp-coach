@@ -2,7 +2,8 @@
 // item-difficulty layer (PL-L.1). The fit MATH lives in lib/fit.ts; this
 // file is the HTTP skin.
 //
-//   GET  /api/item-stats?section=X  → { [qid]: difficulty } for that section
+//   GET  /api/item-stats?section=X  → { difficulties: { [qid]: difficulty },
+//                                       uncalibrated: qid[] } for that section
 //   POST /api/fit/run               → run the fit now (dev/staging convenience)
 //
 // The per-user ability read lives on /api/me/ability (routes/me.ts) so it
@@ -12,13 +13,14 @@
 // this PR's scope. This PR only lands the fit + its read/trigger endpoints.
 
 import { zValidator } from '@hono/zod-validator'
-import { and, gte, sql } from 'drizzle-orm'
+import { and, gte, inArray, sql } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { getDb } from '../db/client'
 import { itemStats } from '../db/schema'
 import { runFit } from '../lib/fit'
+import { ASSESSED_SOURCES } from '../lib/provenance'
 import { SECTIONS } from '../lib/section'
 import type { Env, Vars } from '../types'
 
@@ -41,6 +43,11 @@ export const itemStatsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // the section that has absorbed ≥1 attempt. Global (not per-user):
   // difficulty is a property of the item. Shape is a plain object keyed by
   // qid for O(1) client lookup, mirroring /api/me/exposure.
+  //
+  // Provenance (P5 infold PR 3): authentic and synthetic items are both
+  // served; `uncalibrated` lists (sorted) the synthetic ones, whose
+  // difficulty is learned from answers but not calibrated against real HP
+  // results. A row the backfill marked `unknown` is never served (fail closed).
   .get('/', zValidator('query', ItemStatsQuery), async (c) => {
     const { section } = c.req.valid('query')
     const db = getDb(c.env.DB)
@@ -50,13 +57,27 @@ export const itemStatsRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     // somehow exists without a fitted attempt (defensive — the fit only
     // ever writes rows it has moved).
     const rows = await db
-      .select({ questionId: itemStats.questionId, difficulty: itemStats.difficulty })
+      .select({
+        questionId: itemStats.questionId,
+        difficulty: itemStats.difficulty,
+        source: itemStats.source,
+      })
       .from(itemStats)
-      .where(and(gte(itemStats.attempts, 1), sql`${itemStats.questionId} LIKE ${`%-${section}-%`}`))
+      .where(
+        and(
+          gte(itemStats.attempts, 1),
+          inArray(itemStats.source, ASSESSED_SOURCES),
+          sql`${itemStats.questionId} LIKE ${`%-${section}-%`}`,
+        ),
+      )
       .limit(ITEM_STATS_LIMIT)
     const difficulties: Record<string, number> = {}
-    for (const r of rows) difficulties[r.questionId] = r.difficulty
-    return c.json({ difficulties })
+    const uncalibrated: string[] = []
+    for (const r of rows) {
+      difficulties[r.questionId] = r.difficulty
+      if (r.source === 'synthetic') uncalibrated.push(r.questionId)
+    }
+    return c.json({ difficulties, uncalibrated: uncalibrated.sort() })
   })
 
 export const fitRoute = new Hono<{ Bindings: Env; Variables: Vars }>()

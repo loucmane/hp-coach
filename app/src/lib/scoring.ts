@@ -12,8 +12,17 @@
 //
 // All inputs come straight from /api/me/stats `bySection` — see the
 // type `Stats['bySection']` in app/src/api/hooks/useStats.ts.
+//
+// Provenance (P5 infold PR 3, docs/p5-infold-design.md Amendment 1 E): the
+// worker counts authentic AND synthetic (P5) answers into these aggregates,
+// so P5 answers move the scores and the projection like any other. Each
+// section's `estimateBasis` says how many were synthetic; sectionBasis /
+// projectionBasis / weeklyBasis read it so PR 4 can mark an uncalibrated
+// estimate. The score functions themselves are unchanged.
 
 import type { Section } from '@/data/questions'
+
+import { combineBases, type EstimateBasis } from './provenance'
 
 export const VERBAL_SECTIONS: ReadonlyArray<Section> = ['ORD', 'LÄS', 'MEK', 'ELF']
 export const QUANT_SECTIONS: ReadonlyArray<Section> = ['XYZ', 'KVA', 'NOG', 'DTK']
@@ -36,6 +45,9 @@ export type SectionStats = {
    *  day, never drops the way the rolling `attempts7d` window can.
    *  Backs the section-drill completion gate in useDailyPlan. */
   attemptsToday: number
+  /** The 90d score window's answers by provenance. Optional: an older
+   *  worker does not send it, and its numbers rest on authentic answers. */
+  estimateBasis?: EstimateBasis
 }
 
 export type Confidence = 'low' | 'medium' | 'high'
@@ -130,6 +142,36 @@ function meanIgnoringNull(values: (number | null)[]): number | null {
   const real = values.filter((v): v is number => v != null)
   if (real.length === 0) return null
   return real.reduce((a, b) => a + b, 0) / real.length
+}
+
+/** What a section's score rests on: the worker's estimateBasis, or — from an
+ *  older worker without it — every 90d answer, all authentic. */
+export function sectionBasis(stats: SectionStats): EstimateBasis {
+  return stats.estimateBasis ?? { authentic: stats.attempts90d, synthetic: 0, calibrated: true }
+}
+
+export type ProjectionBasis = {
+  verbal: EstimateBasis
+  quant: EstimateBasis
+  total: EstimateBasis
+}
+
+/** What computeProjected's halves and total rest on: the bases of the
+ *  sections with a score (≥1 answer in the 90d window). The HP-scale
+ *  projection is uncalibrated wherever a synthetic answer feeds it. */
+export function projectionBasis(
+  bySection: Partial<Record<Section, SectionStats>>,
+): ProjectionBasis {
+  const half = (sections: ReadonlyArray<Section>) =>
+    combineBases(
+      sections.map((s) => {
+        const st = bySection[s]
+        return st && st.attempts90d > 0 ? sectionBasis(st) : null
+      }),
+    )
+  const verbal = half(VERBAL_SECTIONS)
+  const quant = half(QUANT_SECTIONS)
+  return { verbal, quant, total: combineBases([verbal, quant]) }
 }
 
 /** Rank sections by "needs deliberate practice next". The signal blends:
@@ -334,4 +376,13 @@ export function formatSwedishDateShort(d: Date): string {
 export function weeklyScore(bucket: { attempts: number; correct: number }): number | null {
   if (bucket.attempts === 0) return null
   return scoreFromFraction(bucket.correct / bucket.attempts)
+}
+
+/** What a weekly trend point rests on: the bucket's estimateBasis, or — from
+ *  an older worker without it — every answer in it, all authentic. */
+export function weeklyBasis(bucket: {
+  attempts: number
+  estimateBasis?: EstimateBasis
+}): EstimateBasis {
+  return bucket.estimateBasis ?? { authentic: bucket.attempts, synthetic: 0, calibrated: true }
 }

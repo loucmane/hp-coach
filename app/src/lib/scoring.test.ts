@@ -6,9 +6,12 @@ import {
   formatScore,
   formatTrend,
   minutesPracticedToday,
+  projectionBasis,
   rankWeakness,
   type SectionStats,
   scoreFromFraction,
+  sectionBasis,
+  weeklyBasis,
 } from './scoring'
 
 const emptyStats: SectionStats = {
@@ -367,5 +370,73 @@ describe('minutesPracticedToday — the Home "minuter idag" elapsed counter', ()
         bySection: { ORD: weekStats({ attemptsToday: 3, avgTimeMs: null }) },
       }),
     ).toBe(0)
+  })
+})
+
+// P5 infold PR 3 (docs/p5-infold-design.md Amendment 1 E): synthetic answers
+// count toward the section scores and the projection like any other, and the
+// worker's estimateBasis says which estimates rest on them (uncalibrated).
+describe('estimate bases — synthetic answers count, marked uncalibrated', () => {
+  const LAS_WITH_P5 = stats({
+    attempts90d: 10,
+    correct90d: 8,
+    estimateBasis: { authentic: 4, synthetic: 6, calibrated: false },
+  })
+  const ORD_AUTHENTIC = stats({
+    attempts90d: 20,
+    correct90d: 10,
+    estimateBasis: { authentic: 20, synthetic: 0, calibrated: true },
+  })
+
+  it('a section score reads every answer the worker counted, synthetic ones included', () => {
+    expect(computeSectionScore('LÄS', LAS_WITH_P5).score).toBeCloseTo(1.6, 12)
+    expect(sectionBasis(LAS_WITH_P5)).toEqual({ authentic: 4, synthetic: 6, calibrated: false })
+  })
+
+  it('a basis-less section (an older worker) rests on authentic answers only', () => {
+    expect(sectionBasis(stats({ attempts90d: 7, correct90d: 3 }))).toEqual({
+      authentic: 7,
+      synthetic: 0,
+      calibrated: true,
+    })
+  })
+
+  it('the projection is uncalibrated exactly where a synthetic answer feeds it', () => {
+    const XYZ_AUTHENTIC = stats({ attempts90d: 5, correct90d: 5 })
+    // No answers: not part of the projection, so not part of its basis.
+    const ELF_EMPTY = stats({ estimateBasis: { authentic: 0, synthetic: 0, calibrated: true } })
+    const bySection = { ORD: ORD_AUTHENTIC, LÄS: LAS_WITH_P5, XYZ: XYZ_AUTHENTIC, ELF: ELF_EMPTY }
+    // The scores themselves are the plain linear projection of every counted answer.
+    const projected = computeProjected([
+      computeSectionScore('ORD', ORD_AUTHENTIC),
+      computeSectionScore('LÄS', LAS_WITH_P5),
+      computeSectionScore('XYZ', XYZ_AUTHENTIC),
+      computeSectionScore('ELF', ELF_EMPTY),
+    ])
+    expect(projected.verbal).toBeCloseTo(1.3, 12) // (1.0 + 1.6) / 2
+    expect(projected.quant).toBeCloseTo(2, 12)
+    expect(projected.total).toBeCloseTo(1.65, 12)
+    expect(projectionBasis(bySection)).toEqual({
+      verbal: { authentic: 24, synthetic: 6, calibrated: false },
+      quant: { authentic: 5, synthetic: 0, calibrated: true },
+      total: { authentic: 29, synthetic: 6, calibrated: false },
+    })
+    expect(
+      projectionBasis({ ORD: ORD_AUTHENTIC, XYZ: stats({ attempts90d: 5, correct90d: 5 }) }),
+    ).toEqual({
+      verbal: { authentic: 20, synthetic: 0, calibrated: true },
+      quant: { authentic: 5, synthetic: 0, calibrated: true },
+      total: { authentic: 25, synthetic: 0, calibrated: true },
+    })
+  })
+
+  it('a weekly trend point carries its bucket basis; an older worker’s bucket is authentic', () => {
+    expect(
+      weeklyBasis({
+        attempts: 9,
+        estimateBasis: { authentic: 5, synthetic: 4, calibrated: false },
+      }),
+    ).toEqual({ authentic: 5, synthetic: 4, calibrated: false })
+    expect(weeklyBasis({ attempts: 9 })).toEqual({ authentic: 9, synthetic: 0, calibrated: true })
   })
 })

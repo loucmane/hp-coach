@@ -17,13 +17,20 @@
 import { useQuery } from '@tanstack/react-query'
 
 import type { Section } from '@/data/questions'
+import type { EstimateBasis } from '@/lib/provenance'
 
 import { useApiClient } from '../useApiClient'
 
-/** qid → learned Elo difficulty. Only rated questions appear. */
+/** qid → learned Elo difficulty. Only rated questions appear (P5 items too:
+ *  /api/item-stats lists those as `uncalibrated`). */
 export type ItemDifficultyMap = Record<string, number>
-/** section → learned Elo ability + how many attempts fed it. */
-export type AbilityMap = Record<string, { ability: number; attempts: number }>
+/** section → learned Elo ability + how many attempts fed it. `estimateBasis`
+ *  (P5 infold PR 3) splits them into authentic and synthetic; optional, an
+ *  older worker does not send it. */
+export type AbilityMap = Record<
+  string,
+  { ability: number; attempts: number; estimateBasis?: EstimateBasis }
+>
 
 export const itemStatsKey = (section: Section) => ['item-stats', section] as const
 export const ABILITY_KEY = ['me', 'ability'] as const

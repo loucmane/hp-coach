@@ -12,7 +12,8 @@ import { Hono } from 'hono'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { getDb } from '../db/client'
-import { attempts, sessions, users } from '../db/schema'
+import { attempts, itemStats, sessions, users } from '../db/schema'
+import { classifyAttempt } from '../lib/provenance'
 import { makeTestD1, type ShimD1 } from '../lib/testD1'
 import type { Env, Vars } from '../types'
 import { fitRoute, itemStatsRoute } from './fit'
@@ -57,7 +58,14 @@ async function seedAttempt(clerkUserId: string, questionId: string, correct: boo
     .insert(sessions)
     .values({ userId: user.id, kind: 'drill', endedAt: new Date() })
     .returning()
-  await db.insert(attempts).values({ userId: user.id, sessionId: session.id, questionId, correct })
+  // Classified from the qid, as POST /api/attempts stores it.
+  await db.insert(attempts).values({
+    userId: user.id,
+    sessionId: session.id,
+    questionId,
+    correct,
+    ...classifyAttempt(questionId),
+  })
 }
 
 async function runFitVia(asUser = 'u1') {
@@ -176,6 +184,82 @@ describe('GET /api/me/ability', () => {
     const res = await app.request('/me/ability', {}, env)
     const body = (await res.json()) as { ability: Record<string, unknown> }
     expect(body.ability).toEqual({})
+  })
+})
+
+// P5 infold PR 3 (docs/p5-infold-design.md Amendment 1 E): synthetic answers
+// feed item stats and ability, and both reads say which numbers rest on them.
+describe('provenance on the rating reads', () => {
+  const LAS_P5 = 'p5-las-b19-002-r1-LÄS-001'
+  const LAS_P5_2 = 'p5-las-b19-002-r1-LÄS-002'
+
+  type ItemStatsBody = { difficulties: Record<string, number>; uncalibrated: string[] }
+  type AbilityBody = {
+    ability: Record<
+      string,
+      {
+        ability: number
+        attempts: number
+        estimateBasis: { authentic: number; synthetic: number; calibrated: boolean }
+      }
+    >
+  }
+
+  async function read<T>(path: string, asUser = 'u1'): Promise<T> {
+    const { app, env } = appFor(asUser)
+    const res = await app.request(path, {}, env)
+    expect(res.status).toBe(200)
+    return (await res.json()) as T
+  }
+
+  it('/item-stats serves synthetic difficulties, lists them as uncalibrated, and leaves unknown rows out', async () => {
+    await seedAttempt('u1', 'var-2026-verb1-LÄS-011', false)
+    await seedAttempt('u1', LAS_P5_2, true)
+    await seedAttempt('u1', LAS_P5, false)
+    // A legacy row the backfill marked unknown (its qid is no bank sitting).
+    await getDb(d1 as unknown as D1Database)
+      .insert(itemStats)
+      .values({
+        questionId: 'var-2099-verb1-LÄS-011',
+        difficulty: 99,
+        attempts: 4,
+        source: 'unknown',
+      })
+    await runFitVia()
+
+    const body = await read<ItemStatsBody>(`/item-stats?section=${encodeURIComponent('LÄS')}`)
+    expect(Object.keys(body.difficulties).sort()).toEqual(
+      ['var-2026-verb1-LÄS-011', LAS_P5, LAS_P5_2].sort(),
+    )
+    expect(body.uncalibrated).toEqual([LAS_P5, LAS_P5_2])
+  })
+
+  it('/item-stats lists nothing as uncalibrated for an authentic-only section', async () => {
+    await seedAttempt('u1', 'var-2026-verb1-ORD-001', false)
+    await runFitVia()
+    const body = await read<ItemStatsBody>('/item-stats?section=ORD')
+    expect(Object.keys(body.difficulties)).toEqual(['var-2026-verb1-ORD-001'])
+    expect(body.uncalibrated).toEqual([])
+  })
+
+  it('/me/ability reports how many fitted answers were synthetic, calibrated only when none', async () => {
+    await seedAttempt('u1', 'var-2026-verb1-LÄS-011', true)
+    await seedAttempt('u1', LAS_P5, true)
+    await seedAttempt('u1', LAS_P5_2, false)
+    await seedAttempt('u1', 'var-2026-verb1-ORD-001', true)
+    // An unknown answer is never fitted, so it is in no basis.
+    await seedAttempt('u1', 'p5-las-b7-002-r1-LÄS-001', true)
+    await runFitVia()
+
+    const body = await read<AbilityBody>('/me/ability')
+    expect(body.ability.LÄS).toMatchObject({
+      attempts: 3,
+      estimateBasis: { authentic: 1, synthetic: 2, calibrated: false },
+    })
+    expect(body.ability.ORD).toMatchObject({
+      attempts: 1,
+      estimateBasis: { authentic: 1, synthetic: 0, calibrated: true },
+    })
   })
 })
 

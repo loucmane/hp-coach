@@ -13,6 +13,8 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import type { MockEstimateBasis } from '@/lib/provenance'
+
 import { useApiClient } from '../useApiClient'
 
 export type MockMode = 'authentic' | 'synthetic'
@@ -39,6 +41,11 @@ export type MockResultRow = {
   durationMs: number
   breakdown: MockBreakdown
   createdAt: number | string | null
+  /** What the result rests on, derived by the worker from the session's
+   *  stored plan (P5 infold PR 3): uncalibrated when a P5 or unknown question
+   *  counted. Null for a session without a stored plan; absent from an older
+   *  worker. Never sent by the client. */
+  estimateBasis?: MockEstimateBasis | null
 }
 
 export type ExposureMap = Record<string, { n: number; last: number }>
