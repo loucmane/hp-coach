@@ -641,8 +641,8 @@ def test_a_shard_that_changes_between_the_two_builds_is_refused(monkeypatch):
     read = export_product.read_shard
     calls = []
 
-    def changing(path, release):
-        raw, shard = read(path, release)
+    def changing(path, release, *rest):
+        raw, shard = read(path, release, *rest)
         calls.append(path)
         if len(calls) > 1:  # the second build reads other, equally valid, canonical bytes
             shard = copy.deepcopy(shard)

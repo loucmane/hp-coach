@@ -92,7 +92,10 @@ explanation_shard key names, and also refuses on (design §D):
     ASCII escapes, one final newline. The shipped p5-<release>.json is that
     rendering, so the reviewed bytes are the bytes that ship.
 The manifest binds the shard, and every framework file the export read, by
-sha256.
+sha256. export_bank(shard_path=...) reads the entries from another file under
+the same gates; explanation_batches.py uses it to check one explanation batch
+against exactly its batch's qids, and to check an assembled release shard
+before it is written.
 
 Internal labels. Learner text (the bank's titles, passages, prompts and
 options; with --explanations every explanation field but framework_id) may
@@ -682,10 +685,11 @@ def load_frameworks(root: Path) -> tuple[dict[str, str], list[dict]]:
     return catalog, files
 
 
-def read_shard(path: Path, release: str) -> tuple[bytes, dict]:
+def read_shard(path: Path, release: str, shown: str | None = None) -> tuple[bytes, dict]:
     """The shard's exact bytes and its entries, read without following a
-    symlink; anything but a non-empty JSON object of unique keys is refused."""
-    shown = f"{EXPLANATIONS_REL}/{path.name}"
+    symlink; anything but a non-empty JSON object of unique keys is refused.
+    shown names the file in messages (default: the release shard's path)."""
+    shown = shown or f"{EXPLANATIONS_REL}/{path.name}"
     try:
         st = os.lstat(path)
     except FileNotFoundError:
@@ -928,16 +932,28 @@ def _rel(path: Path, root: Path) -> str:
         return path.name
 
 
+def _shown(path: Path, root: Path) -> str:
+    """path as messages name it: relative to root when it is spelled inside
+    it, never resolved through a symlink."""
+    try:
+        return path.absolute().relative_to(root.absolute()).as_posix()
+    except ValueError:
+        return str(path)
+
+
 def _explain(root: Path, release: str, rows: list[dict], units: list[dict], catalog: dict[str, str],
-             ids: re.Pattern, labels: list[str]) -> tuple[bytes, dict]:
-    """The release's shard, validated against the rows and in canonical bytes,
-    and its manifest block."""
-    path = root / EXPLANATIONS_REL / shard_name(release)
-    raw, shard = read_shard(path, release)
+             ids: re.Pattern, labels: list[str], shard_path: Path | None = None) -> tuple[bytes, dict]:
+    """The release's shard, or the file at shard_path, validated against the
+    rows and in canonical bytes, and its manifest block."""
+    if shard_path is None:
+        path, shown = root / EXPLANATIONS_REL / shard_name(release), f"{EXPLANATIONS_REL}/{shard_name(release)}"
+    else:
+        path, shown = Path(shard_path), _shown(Path(shard_path), root)
+    raw, shard = read_shard(path, release, shown)
     canonical, linted = check_explanations(shard, rows, units, catalog, ids, labels)
     rendered = render_json(canonical)
     if rendered != raw:
-        raise ExportError(f"explanation shard {EXPLANATIONS_REL}/{path.name} is not in canonical form (first "
+        raise ExportError(f"explanation shard {shown} is not in canonical form (first "
                           f"difference at line {_first_difference(raw, rendered)}): write it as the exporter "
                           f"renders it, entries in bank order with the fields {list(EXPLANATION_FIELDS)}, steps "
                           f"{list(STEP_FIELDS)} and distractors {list(DISTRACTOR_FIELDS)} in that order, two-space "
@@ -948,11 +964,16 @@ def _explain(root: Path, release: str, rows: list[dict], units: list[dict], cata
     return rendered, block
 
 
-def _build(root: Path, roster_path: Path, *, release: str, include_pending: bool, units, single_session: bool,
-           explanations: bool):
+def check_release(release: str) -> None:
+    """A release name the exporter accepts, or ExportError."""
     if not RELEASE.fullmatch(release) or len(release) > 40:
         raise ExportError(f"release {release!r}: use lowercase letters, digits and single hyphens (at most 40), "
                           "so the bank key fits the worker's content whitelist")
+
+
+def _build(root: Path, roster_path: Path, *, release: str, include_pending: bool, units, single_session: bool,
+           explanations: bool, shard_path: Path | None):
+    check_release(release)
     if include_pending and not release.startswith("preview"):
         raise ExportError("--include-pending makes a PREVIEW export: its release name must start with 'preview'")
     roster_bytes = roster_path.read_bytes()
@@ -988,7 +1009,7 @@ def _build(root: Path, roster_path: Path, *, release: str, include_pending: bool
     explained = None
     if explanations:
         files[shard_name(release)], explained = _explain(root, release, rows, [unit for _, unit in loaded],
-                                                         catalog, ids, labels)
+                                                         catalog, ids, labels, shard_path)
     manifest = {
         "format": MANIFEST_FORMAT,
         "release": release,
@@ -1014,13 +1035,18 @@ def _build(root: Path, roster_path: Path, *, release: str, include_pending: bool
 
 
 def export_bank(root: Path, roster_path: Path, *, release: str = "preview", include_pending: bool = False,
-                units=None, single_session: bool = False, explanations: bool = False) -> dict[str, bytes]:
+                units=None, single_session: bool = False, explanations: bool = False,
+                shard_path: Path | None = None) -> dict[str, bytes]:
     """Build the bank, and with explanations=True the release's validated
     Layer 2 shard, twice from the inputs on disk and return {name: bytes} only
-    when every gate passes and both builds agree byte for byte."""
+    when every gate passes and both builds agree byte for byte. shard_path
+    reads the entries from that file instead of the release's shard, under
+    the same gates; the returned shard keeps the release's name."""
+    if shard_path is not None and not explanations:
+        raise ExportError("shard_path names a shard to validate: it needs explanations=True")
     options = dict(release=release, include_pending=include_pending,
                    units=list(units) if units is not None else None, single_session=single_session,
-                   explanations=explanations)
+                   explanations=explanations, shard_path=shard_path)
     first = _build(root, roster_path, **options)
     second = _build(root, roster_path, **options)
     if first != second:
