@@ -437,6 +437,73 @@ def test_every_x1_explanation_quotes_its_passage(x1_rows):
         assert [q for q in quotes if len(q) >= 15 and q in passage], f"{row['qid']}: no verbatim passage quote"
 
 
+# A quotation is the unit's own words (review finding B1 on PR #379, bead
+# hpf-c5tb.3). Only its first letter's case may change to fit the sentence, and
+# "…" marks left-out words: the pieces around it stand in that order within one
+# sentence of the unit's student text.
+SENTENCE = re.compile(r"(?<=[.!?])\s+|\n+")
+
+
+def _in_order(pieces: list[str], sentence: str) -> bool:
+    at = 0
+    for piece in pieces:
+        at = sentence.find(piece, at)
+        if at < 0:
+            return False
+        at += len(piece)
+    return True
+
+
+def _verbatim(quote: str, student: str) -> bool:
+    for variant in (quote, quote[:1].swapcase() + quote[1:]):
+        if "…" not in variant:
+            if variant in student:
+                return True
+            continue
+        pieces = [piece.strip() for piece in variant.split("…") if piece.strip()]
+        if pieces and any(_in_order(pieces, sentence) for sentence in SENTENCE.split(student)):
+            return True
+    return False
+
+
+def test_a_quotation_may_change_only_its_first_letter_case_and_mark_left_out_words():
+    text = "På branta sträckor spelar trycket större roll. Det var inte bara räls som bar posten, utan en granne."
+    assert _verbatim("spelar trycket större roll", text) and _verbatim("på branta sträckor", text)
+    assert _verbatim("inte bara … utan en granne", text) and _verbatim("det var … som", text)
+    assert not _verbatim("spelar större roll", text)  # B1: a word left out without "…"
+    assert not _verbatim("SPELAR trycket", text) and not _verbatim("trycket … granne", text)
+
+
+def test_every_las_quotation_is_verbatim_from_its_unit(manifest, approved_rows):
+    # ELF is left out: its cloze explanations quote fixed expressions and wrong
+    # collocations that are not in the text by design ("take its toll on").
+    student: dict[str, list[str]] = {}
+    for row in approved_rows:
+        student.setdefault(row["unit_id"], [row["title"], row["context"]])
+        student[row["unit_id"]] += [row["prompt"], *(o["text"] for o in row["options"])]
+    rows = {row["qid"]: row for row in approved_rows}
+    checked, bad = 0, []
+    for batch in manifest["batches"]:
+        path = REPO_ROOT / batch["file"]
+        if not path.exists():
+            continue
+        shard = json.loads(path.read_text(encoding="utf-8"))
+        for qid in (q for q in batch["qids"] if rows[q]["section"] == "LÄS"):
+            entry, text = shard[qid], "\n".join(student[rows[qid]["unit_id"]])
+            parts = [entry["solution_path"], entry["technique"], entry["pitfall"] or ""]
+            parts += [value for s in entry["steps"] for value in (s["title"], s["text"])]
+            parts += [value for d in entry["distractors"] for value in (d["why_tempting"], d["why_wrong"])]
+            for part in parts:
+                if {"“", "”"} & set(QUOTED.sub("", part)):
+                    bad.append(f"{qid}: an unpaired quotation mark in {part!r}")
+                for match in QUOTED.finditer(part):
+                    checked += 1
+                    if not _verbatim(match.group(1), text):
+                        bad.append(f"{qid}: ”{match.group(1)}” is not the unit's text")
+    assert not bad, bad
+    assert checked > 100
+
+
 SWEDISH = (" och ", " att ", " det ", " är ", " inte ", " som ")
 ENGLISH = (" the ", " and ", " is ", " of ", " to ", " that ")
 
