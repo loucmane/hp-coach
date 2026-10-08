@@ -1,14 +1,16 @@
 """Layer-2 explanations for every exported P5 question, in batches
-(docs/p5-infold-design.md §4 row 2b and §D; beads hpf-c5tb and hpf-c5tb.1).
+(docs/p5-infold-design.md §4 row 2b and §D; beads hpf-c5tb, hpf-c5tb.1 and
+hpf-c5tb.4).
 
-explanation_batches.py partitions the 340 eligible questions: the Layer-2 pilot
-is batch x0-pilot, and each section's other units, in (batch number, unit id)
-order, are cut into contiguous batches, LÄS x1–x3 and ELF x4–x7
-(BATCHES.json). A batch file holds one reviewed entry per qid of its batch, in
-the shard's entry format and canonical bytes. The batch check runs every
-explanation gate of export_product on one batch file against exactly that
-batch's qids. The assembler combines the pilot and every batch into the release
-shard data/explanations/p5-<release>.json and refuses duplicates, gaps, any gate
+explanation_batches.py keeps the 332 eligible questions in pinned batches
+(BATCHES.json): the Layer-2 pilot is batch x0-pilot, LÄS x1–x3 and ELF x4–x7,
+each holding the units of the initial cut less those retired since. No unit
+ever moves between batches, and a new unit waits for an explicit assignment.
+A batch file holds one reviewed entry per qid of its batch, in the shard's
+entry format and canonical bytes. The batch check runs every explanation gate
+of export_product on one batch file against exactly that batch's qids. The
+assembler combines the pilot and every batch into the release shard
+data/explanations/p5-<release>.json and refuses duplicates, gaps, any gate
 failure and a partial set; a partial set is only ever validated, never written.
 """
 from __future__ import annotations
@@ -36,8 +38,23 @@ X1_REL = "pipeline/synthetic/infold/explanations/x1-las.json"
 X1_FILE = REPO_ROOT / X1_REL
 SCRIPT = build_roster.INFOLD_DIR / "explanation_batches.py"
 LINTER = REPO_ROOT / "pipeline/synthetic/gates/scripts/lint_learner_output.py"
-# The partition of bead hpf-c5tb.1: batch, first unit, last unit, units, questions.
+# The pinned partition (bead hpf-c5tb.4): the initial cut of bead hpf-c5tb.1
+# less las-b3-001 and las-b5-001, which the owner retired from x1 on
+# 2026-10-08 (bead hpf-c5tb.2). Batch, first unit, last unit, units, questions.
 EXPECTED_TABLE = [
+    ("x0-pilot", "las-b7-002", "las-b19-002", 6, 19),
+    ("x1", "las-b1-001", "las-b8-002", 16, 36),
+    ("x2", "las-b8-003", "las-b14-001", 16, 42),
+    ("x3", "las-b14-003", "las-b19-003", 15, 42),
+    ("x4", "elf-b1-001", "elf-b5-002", 16, 52),
+    ("x5", "elf-b5-003", "elf-b10-002", 17, 45),
+    ("x6", "elf-b10-003", "elf-b14-003", 16, 48),
+    ("x7", "elf-b15-001", "elf-b19-002", 16, 48),
+]
+# The initial cut, the provenance of the pin: the rule of bead hpf-c5tb.1 on
+# the roster at 1cbbb84 (120 units / 340 questions), which still held the
+# units retired since.
+INITIAL_TABLE = [
     ("x0-pilot", "las-b7-002", "las-b19-002", 6, 19),
     ("x1", "las-b1-001", "las-b8-002", 18, 44),
     ("x2", "las-b8-003", "las-b14-001", 16, 42),
@@ -47,6 +64,7 @@ EXPECTED_TABLE = [
     ("x6", "elf-b10-003", "elf-b14-003", 16, 48),
     ("x7", "elf-b15-001", "elf-b19-002", 16, 48),
 ]
+RETIRED_SINCE_THE_CUT = ("las-b3-001", "las-b5-001")
 # A sentence of a pilot unit's rationale (las-b19-002 question 1), not student text.
 PILOT_RATIONALE_SENTENCE = "Den uttalade alternativa finansieringen är driftsbudgeten."
 
@@ -125,14 +143,14 @@ def _table(manifest: dict) -> list[tuple]:
 
 def test_the_partition_reproduces_the_expected_table(manifest):
     assert _table(manifest) == EXPECTED_TABLE
-    assert manifest["eligible"] == {"units": 120, "questions": 340}
-    assert sum(b["question_count"] for b in manifest["batches"][1:]) == 321
+    assert manifest["eligible"] == {"units": 118, "questions": 332}
+    assert sum(b["question_count"] for b in manifest["batches"][1:]) == 313
     for b in manifest["batches"]:
         assert b["unit_count"] == len(b["units"]) and b["question_count"] == len(b["qids"]), b["batch"]
         assert (b["first"], b["last"]) == (b["units"][0], b["units"][-1]), b["batch"]
 
 
-def test_the_committed_manifest_is_the_partition_of_the_ratified_roster(manifest):
+def test_the_committed_manifest_is_the_pinned_partition_on_the_roster(manifest):
     assert batches.MANIFEST_PATH.read_bytes() == export_product.render_json(manifest)
     assert batches.main(["--check"]) == 0
 
@@ -146,10 +164,10 @@ def test_the_manifest_is_reproduced_in_another_process(seed):
 
 def test_every_eligible_qid_is_in_exactly_one_batch(manifest, approved_rows):
     qids = [q for b in manifest["batches"] for q in b["qids"]]
-    assert len(qids) == len(set(qids)) == 340
+    assert len(qids) == len(set(qids)) == 332
     assert sorted(qids) == sorted(row["qid"] for row in approved_rows)
     units = [u for b in manifest["batches"] for u in b["units"]]
-    assert len(units) == len(set(units)) == 120
+    assert len(units) == len(set(units)) == 118
 
 
 def test_each_batch_records_the_qids_its_units_export(manifest, approved_rows):
@@ -163,21 +181,42 @@ def test_each_batch_records_the_qids_its_units_export(manifest, approved_rows):
     assert pilot["qids"] == list(_pilot())
 
 
-def test_each_section_is_cut_in_order_into_contiguous_chunks(manifest, committed_roster):
+def test_each_section_is_held_in_order_by_contiguous_batches(manifest, committed_roster):
+    # Retirement only removes units, so the initial cut's chunks stay
+    # contiguous. Its boundary rule held on the roster it cut, and is checked
+    # there (test_the_initial_cut_is_its_rule_on_the_roster_at_1cbbb84).
     def order(unit_id):
         return int(unit_id.split("-")[1][1:]), unit_id
 
     eligible = [u for u in committed_roster["units"] if u["approval"] == "approved" and not u["retired"]]
-    count = {u["unit_id"]: u["question_count"] for u in eligible}
     for section, names, suffix in (("LÄS", ("x1", "x2", "x3"), "las"), ("ELF", ("x4", "x5", "x6", "x7"), "elf")):
         rest = sorted((u["unit_id"] for u in eligible if u["section"] == section and u["unit_id"] not in PILOT),
                       key=order)
         chunks = [_entry(manifest, name) for name in names]
         assert [u for chunk in chunks for u in chunk["units"]] == rest
-        total, running = sum(count[u] for u in rest), 0
-        for k, chunk in enumerate(chunks, 1):
+        for chunk in chunks:
             assert chunk["sections"] == [section], chunk["batch"]
             assert chunk["file"] == f"pipeline/synthetic/infold/explanations/{chunk['batch']}-{suffix}.json"
+
+
+def _eligible_at_the_cut(roster: dict) -> list[dict]:
+    """The eligible units of the roster at 1cbbb84, in roster order: today's,
+    and the units retired since the initial cut."""
+    return [u for u in roster["units"]
+            if (u["approval"] == "approved" and not u["retired"]) or u["unit_id"] in RETIRED_SINCE_THE_CUT]
+
+
+def test_the_initial_cut_is_its_rule_on_the_roster_at_1cbbb84(committed_roster):
+    assert set(RETIRED_SINCE_THE_CUT) <= {u["unit_id"] for u in committed_roster["units"] if u["retired"]}
+    units = _eligible_at_the_cut(committed_roster)
+    assert (len(units), sum(u["question_count"] for u in units)) == (120, 340)
+    initial = batches.initial_cut(units)
+    assert _table({"batches": initial}) == INITIAL_TABLE
+    count = {u["unit_id"]: u["question_count"] for u in units}
+    for names in (("x1", "x2", "x3"), ("x4", "x5", "x6", "x7")):
+        chunks = [b for b in initial if b["batch"] in names]
+        total, running = sum(count[u] for chunk in chunks for u in chunk["units"]), 0
+        for k, chunk in enumerate(chunks, 1):
             before_last = running + sum(count[u] for u in chunk["units"][:-1])
             running += sum(count[u] for u in chunk["units"])
             if k < len(chunks):
@@ -185,17 +224,195 @@ def test_each_section_is_cut_in_order_into_contiguous_chunks(manifest, committed
                 assert running * len(chunks) >= k * total > before_last * len(chunks), chunk["batch"]
 
 
-def test_a_partition_that_differs_from_the_expected_table_fails_loudly(tmp_path, committed_roster):
-    roster = dict(committed_roster, units=[u for u in committed_roster["units"] if u["unit_id"] != "las-b1-002"])
-    path = tmp_path / "roster.json"
-    path.write_text(json.dumps(roster, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+def test_the_pinned_partition_is_the_initial_cut_less_the_units_retired_since(manifest, committed_roster):
+    initial = batches.initial_cut(_eligible_at_the_cut(committed_roster))
+    assert [(b["batch"], b["file"]) for b in manifest["batches"]] == [(b["batch"], b["file"]) for b in initial]
+    for pinned, cut in zip(manifest["batches"], initial):
+        assert pinned["units"] == [u for u in cut["units"] if u not in RETIRED_SINCE_THE_CUT], cut["batch"]
+
+
+def test_the_merged_cut_read_as_the_pin_gives_the_committed_manifest(tmp_path, committed_roster):
+    # BATCHES.json as merged in 1cbbb84 held the initial cut. Read as the pin
+    # on today's roster, it loses las-b3-001 and las-b5-001 from x1 and nothing
+    # else changes: the result is the committed file, byte for byte. As a
+    # manifest it is refused, and the retired units are named.
+    pin = tmp_path / "BATCHES.json"
+    initial = batches.initial_cut(_eligible_at_the_cut(committed_roster))
+    pin.write_bytes(export_product.render_json({"format": batches.MANIFEST_FORMAT, "batches": initial}))
+    assert export_product.render_json(batches.build_manifest(pin_path=pin)) == batches.MANIFEST_PATH.read_bytes()
+    with pytest.raises(ExportError, match=r"still lists retired unit\(s\) \(x1: las-b3-001, las-b5-001\)"):
+        batches.current_manifest(path=pin)
+
+
+def _retired(roster: dict, registry: dict, unit_ids) -> tuple[dict, dict]:
+    """The roster and RETIRED.json's entries with these units retired too, the
+    way build_roster records a retirement."""
+    roster = copy.deepcopy(roster)
+    for unit in roster["units"]:
+        if unit["unit_id"] in unit_ids:
+            unit.update(approval=build_roster.RETIRED, retired=True)
+    return roster, {**registry, **{uid: {"reason": "a test retirement"} for uid in unit_ids}}
+
+
+def test_retiring_a_unit_from_a_batch_never_moves_another_unit_between_batches(manifest, committed_roster):
+    pin, registry = batches.read_pin(batches.MANIFEST_PATH), build_roster.load_retired(REPO_ROOT)
+    home = [(b["batch"], b["file"]) for b in manifest["batches"]]
+    cases = [{uid} for b in manifest["batches"] for uid in b["units"]]  # every unit on its own, the pilot's too
+    cases += [{"las-b1-001", "las-b8-002"}, {"las-b8-003", "las-b14-001", "las-b14-003"},
+              {"elf-b5-002", "elf-b5-003", "elf-b19-002"}, {"las-b7-002", "elf-b18-002", "las-b7-001"}]
+    for retire in cases:
+        roster, retired = _retired(committed_roster, registry, retire)
+        got, removed = batches.assign(pin, roster, retired)
+        assert [(b["batch"], b["file"]) for b in got] == home, sorted(retire)
+        for before, after in zip(manifest["batches"], got):
+            assert after["units"] == [u for u in before["units"] if u not in retire], (sorted(retire), before["batch"])
+        assert removed == {b["batch"]: [u for u in b["units"] if u in retire]
+                           for b in manifest["batches"] if retire & set(b["units"])}, sorted(retire)
+    # The initial cut's rule, re-run on today's roster, would move units: it
+    # puts las-b8-003 and las-b9-001, which have no explanation, into the merged x1.
+    recut = {b["batch"]: b["units"] for b in batches.initial_cut(batches.eligible_units(REPO_ROOT, ROSTER))}
+    assert recut["x1"] == _entry(manifest, "x1")["units"] + ["las-b8-003", "las-b9-001"]
+
+
+def _tree(tmp_path, roster: dict, save_roster, retire=frozenset()):
+    """A throwaway repo root with a roster file and RETIRED.json: the given
+    roster and the committed registry, with these units retired too."""
+    root = tmp_path / "repo"
+    registry = json.loads((REPO_ROOT / build_roster.RETIRED_REL).read_text(encoding="utf-8"))
+    roster, registry["retired"] = _retired(roster, registry["retired"], retire)
+    target = root / build_roster.RETIRED_REL
+    target.parent.mkdir(parents=True)
+    target.write_text(json.dumps(registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    save_roster(root / "roster.json", roster)
+    return root, root / "roster.json"
+
+
+def test_a_new_retirement_drops_the_unit_from_its_batch_and_nothing_else(tmp_path, manifest, committed_roster,
+                                                                        save_roster, monkeypatch, capsys):
+    root, roster_path = _tree(tmp_path, committed_roster, save_roster, retire={"las-b7-001"})
+    got = batches.build_manifest(root, roster_path, expected=None)
+    assert [b["units"] for b in got["batches"]] == [[u for u in b["units"] if u != "las-b7-001"]
+                                                    for b in manifest["batches"]]
+    assert _table(got) == [EXPECTED_TABLE[0], ("x1", "las-b1-001", "las-b8-002", 15, 32), *EXPECTED_TABLE[2:]]
+    with pytest.raises(ExportError, match="expected table"):  # the table is changed by hand, as for any retirement
+        batches.build_manifest(root, roster_path)
+    monkeypatch.setattr(batches, "EXPECTED", dict(batches.EXPECTED, x1=("las-b1-001", "las-b8-002", 15, 32)))
+    with pytest.raises(ExportError, match=r"still lists retired unit\(s\) \(x1: las-b7-001\)"):
+        batches.current_manifest(root, roster_path)
+    pin = tmp_path / "BATCHES.json"
+    pin.write_bytes(batches.MANIFEST_PATH.read_bytes())
+    for name, value in (("REPO_ROOT", root), ("ROSTER_PATH", roster_path), ("MANIFEST_PATH", pin)):
+        monkeypatch.setattr(batches, name, value)
+    assert batches.main(["--check"]) == 1
+    assert "it still lists retired unit(s) (x1: las-b7-001)" in capsys.readouterr().out
+    assert batches.main([]) == 0
+    assert "dropped retired unit(s) from their batch: x1: las-b7-001" in capsys.readouterr().out
+    assert pin.read_bytes() == export_product.render_json(got)
+    assert batches.main(["--check"]) == 0
+
+
+def _pin(tmp_path, manifest: dict, edit):
+    """BATCHES.json, edited by hand, as a pin file."""
+    data = copy.deepcopy(manifest)
+    edit(data)
+    path = tmp_path / "BATCHES.json"
+    path.write_bytes(export_product.render_json(data))
+    return path
+
+
+def _move(unit_id: str, source: str, target: str | None):
+    """An edit of the pin: the unit leaves one batch and, unless target is None, joins another."""
+
+    def edit(data):
+        _entry(data, source)["units"].remove(unit_id)
+        if target is not None:
+            _entry(data, target)["units"].append(unit_id)
+
+    return edit
+
+
+def test_a_partition_that_differs_from_the_expected_table_fails_loudly(tmp_path, manifest):
+    # A unit moved by hand from x2 to x1 is not a retirement: the table refuses it.
+    moved = _pin(tmp_path, manifest, _move("las-b8-003", "x2", "x1"))
     with pytest.raises(ExportError, match="expected table"):
-        batches.build_manifest(REPO_ROOT, path)
-    loose = batches.build_manifest(REPO_ROOT, path, expected=None)  # the rule itself still cuts
-    assert _table(loose)[1] == ("x1", "las-b1-001", "las-b8-002", 17, 42)
-    changed = dict(batches.EXPECTED, x1=("las-b1-001", "las-b8-002", 18, 45))
+        batches.build_manifest(pin_path=moved)
+    loose = batches.build_manifest(pin_path=moved, expected=None)  # the pin is kept as it is written
+    assert _table(loose)[1:3] == [("x1", "las-b1-001", "las-b8-003", 17, 38), ("x2", "las-b9-001", "las-b14-001", 15, 40)]
+    changed = dict(batches.EXPECTED, x1=("las-b1-001", "las-b8-002", 16, 37))
     with pytest.raises(ExportError, match="expected table"):
         batches.build_manifest(expected=changed)
+
+
+def test_an_eligible_unit_in_no_batch_is_refused_and_never_assigned(tmp_path, manifest, committed_roster, save_roster):
+    dropped = _pin(tmp_path, manifest, _move("las-b8-003", "x2", None))
+    with pytest.raises(ExportError, match=r"in no batch: \['las-b8-003'\]"):
+        batches.build_manifest(pin_path=dropped, expected=None)
+    # A new unit (batches 20+) waits for an explicit assignment, to a new batch.
+    new = dict(next(u for u in committed_roster["units"] if u["unit_id"] == "las-b19-003"), unit_id="las-b20-001",
+               batch=20)
+    root, roster_path = _tree(tmp_path, dict(committed_roster, units=[*committed_roster["units"], new]), save_roster)
+    with pytest.raises(ExportError, match=r"in no batch: \['las-b20-001'\]\. The partition is pinned"):
+        batches.build_manifest(root, roster_path, expected=None)
+
+
+def test_a_unit_pinned_in_two_batches_is_refused(tmp_path, manifest):
+    twice = _pin(tmp_path, manifest, lambda data: _entry(data, "x1")["units"].append("las-b8-003"))
+    with pytest.raises(ExportError, match=r"more than one batch: \{'las-b8-003': \['x1', 'x2'\]\}"):
+        batches.build_manifest(pin_path=twice, expected=None)
+
+
+@pytest.mark.parametrize("case", ["pending", "not-in-roster"])
+def test_a_listed_unit_that_is_not_eligible_for_a_reason_other_than_retirement_is_refused(
+        tmp_path, committed_roster, save_roster, case):
+    if case == "pending":
+        units = [dict(u, approval=build_roster.PENDING) if u["unit_id"] == "las-b8-003" else u
+                 for u in committed_roster["units"]]
+        message = r"not eligible for export: \['las-b8-003 \(pending-owner-ratification\)'\]"
+    else:
+        units = [u for u in committed_roster["units"] if u["unit_id"] != "las-b1-002"]
+        message = r"not in the roster: \['las-b1-002'\]"
+    root, roster_path = _tree(tmp_path, dict(committed_roster, units=units), save_roster)
+    with pytest.raises(ExportError, match=message):
+        batches.build_manifest(root, roster_path, expected=None)
+
+
+def test_a_batch_left_with_no_unit_is_refused(tmp_path, manifest, committed_roster, save_roster):
+    root, roster_path = _tree(tmp_path, committed_roster, save_roster, retire=set(_entry(manifest, "x1")["units"]))
+    with pytest.raises(ExportError, match="batch x1 has no unit left"):
+        batches.build_manifest(root, roster_path, expected=None)
+
+
+@pytest.mark.parametrize("edit,message", [
+    (_move("las-b7-002", "x0-pilot", "x1"), "the first batch must be x0-pilot, the exporter's pilot"),
+    (lambda data: data["batches"].append(data["batches"].pop(0)), "the first batch must be x0-pilot"),
+    (lambda data: _entry(data, "x1").update(file="pipeline/synthetic/infold/explanations/x2-las.json"),
+     "lists a file more than once"),
+    (lambda data: _entry(data, "x1").update(file="pipeline/synthetic/infold/explanations/x1-elf.json"),
+     "holds one section's units"),
+    (lambda data: _entry(data, "x2").update(batch="x2b", file="pipeline/synthetic/infold/explanations/x2b-las.json"),
+     "is named x<N>"),
+    (_move("elf-b5-003", "x5", "x1"), "holds one section's units"),
+    (lambda data: data["batches"].append(copy.deepcopy(_entry(data, "x7"))), "lists a batch more than once"),
+], ids=["pilot-unit-moved", "pilot-not-first", "file-twice", "wrong-file", "bad-name", "two-sections", "batch-twice"])
+def test_a_pin_whose_batches_are_not_their_own_is_refused(tmp_path, manifest, edit, message):
+    with pytest.raises(ExportError, match=re.escape(message)):
+        batches.build_manifest(pin_path=_pin(tmp_path, manifest, edit), expected=None)
+
+
+@pytest.mark.parametrize("raw,message", [
+    (b"{", "is not readable JSON"),
+    (b'{"format": "p5-explanation-batches-v0", "batches": []}\n', "format 'p5-explanation-batches-v0'"),
+    (b'{"format": "p5-explanation-batches-v1", "batches": []}\n', "lists no batch"),
+    (b'{"format": "p5-explanation-batches-v1", "batches": [{"batch": "x0-pilot", "file": "f"}]}\n',
+     "a list of unit ids"),
+    (b'{"format": "p5-explanation-batches-v1", "batches": [{"batch": "x1", "file": "f", "units": [1]}]}\n',
+     "a list of unit ids"),
+], ids=["json", "format", "empty", "no-units", "unit-not-a-string"])
+def test_a_malformed_pin_is_refused(tmp_path, raw, message):
+    path = tmp_path / "BATCHES.json"
+    path.write_bytes(raw)
+    with pytest.raises(ExportError, match=re.escape(message)):
+        batches.read_pin(path)
 
 
 def test_the_cut_needs_a_unit_for_every_chunk():
@@ -229,14 +446,14 @@ def test_x1_passes_every_explanation_gate(manifest):
     data, summary = batches.check_batch(REPO_ROOT, ROSTER, manifest, "x1")
     assert data == X1_FILE.read_bytes()  # the reviewed bytes are the canonical bytes
     assert list(json.loads(data)) == _entry(manifest, "x1")["qids"]
-    assert (summary["units"], summary["questions"]) == (18, 44)
-    assert summary["strings"] > 44 * 10
+    assert (summary["units"], summary["questions"]) == (16, 36)
+    assert summary["strings"] > 36 * 10
 
 
 def test_the_batch_check_cli(capsys):
     assert batches.main(["--check-batch", "x1"]) == 0
     out = capsys.readouterr().out
-    assert "x1" in out and "44 questions" in out
+    assert "x1" in out and "36 questions" in out
     assert batches.main(["--check-batch", "x9"]) == 1
     assert "REFUSED" in capsys.readouterr().err
 
@@ -262,9 +479,10 @@ def test_a_missing_qid_is_refused(batch_tree, manifest):
     "p5-las-b14-002-r1-LÄS-001",  # the pilot's: batch x0-pilot
     "p5-las-b8-003-r1-LÄS-001",   # the first question of batch x2
     "p5-elf-b1-001-r1-ELF-001",   # the first question of batch x4
+    "p5-las-b3-001-r1-LÄS-001",   # a unit retired from x1
     "host-2025-verb1-LÄS-011",    # an authentic qid
     "_meta",                      # bookkeeping beside the entries
-], ids=["no-such-question", "other-revision", "pilot", "x2", "x4", "authentic", "meta"])
+], ids=["no-such-question", "other-revision", "pilot", "x2", "x4", "retired", "authentic", "meta"])
 def test_an_entry_for_a_qid_outside_the_batch_is_refused(batch_tree, manifest, qid):
     shard = _x1()
     shard[qid] = copy.deepcopy(next(iter(shard.values())))
@@ -535,12 +753,12 @@ def test_pilot_and_x1_assemble_cleanly_only_as_a_partial(manifest):
     both = _subset(manifest, "x0-pilot", "x1")
     data, summary = batches.assemble(REPO_ROOT, ROSTER, both, release="x1-partial", partial=True)
     shard, pilot, x1 = json.loads(data), _pilot(), _x1()
-    assert len(shard) == 63 and set(shard) == set(pilot) | set(x1)
+    assert len(shard) == 55 and set(shard) == set(pilot) | set(x1)
     assert all(shard[q] == pilot[q] for q in pilot) and all(shard[q] == x1[q] for q in x1)
     files = export_product.export_bank(REPO_ROOT, ROSTER, release="o", units=list(PILOT) + _entry(manifest, "x1")["units"])
     assert list(shard) == [row["qid"] for row in json.loads(files["p5-bank-o.json"])["questions"]]  # bank order
     assert data == export_product.render_json(shard)
-    assert summary["partial"] is True and summary["entries"] == 63
+    assert summary["partial"] is True and summary["entries"] == 55
     with pytest.raises(ExportError, match="gap"):
         batches.assemble(REPO_ROOT, ROSTER, both, release="x1-partial")
 
@@ -549,7 +767,7 @@ def test_a_complete_set_assembles_into_a_release_shard_that_pairs_with_the_bank(
     root, roster_path, _ = batch_tree()  # in this tree the pilot and X1 are every eligible question
     both = _subset(manifest, "x0-pilot", "x1")
     data, summary = batches.assemble(root, roster_path, both, release="x1test")
-    assert summary["partial"] is False and summary["entries"] == 63
+    assert summary["partial"] is False and summary["entries"] == 55
     assert batches.assemble(root, roster_path, both, release="x1test")[0] == data  # reruns are byte-identical
     batches.write_release_shard(root, "x1test", data)
     assert (root / "data/explanations/p5-x1test.json").read_bytes() == data

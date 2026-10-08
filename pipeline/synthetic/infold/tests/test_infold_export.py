@@ -62,9 +62,10 @@ def test_default_export_holds_only_approved_units(approved_export, committed_ros
     bank = _bank(approved_export)
     approved = [u for u in committed_roster["units"] if u["approval"] == "approved"]
     assert sorted({r["unit_id"] for r in bank["questions"]}) == sorted(u["unit_id"] for u in approved)
-    # Every kept unit since the owner's ratification of batches 1–13 (2026-10-07).
-    assert len(approved) == 120
-    assert len(bank["questions"]) == sum(u["question_count"] for u in approved) == 340
+    # Every kept unit since the owner's ratification of batches 1–13 (2026-10-07), less the
+    # two units the owner retired on 2026-10-08.
+    assert len(approved) == 118
+    assert len(bank["questions"]) == sum(u["question_count"] for u in approved) == 332
     assert bank["preview"] is False and bank["stamp"] is None
     excluded = _manifest(approved_export)["excluded"]
     assert excluded["pending-owner-ratification"] == []
@@ -82,8 +83,8 @@ def test_include_pending_is_stamped_as_preview(pending_export):
     bank = _bank(pending_export)
     assert bank["preview"] is True and "PREVIEW" in bank["stamp"]
     rows = bank["questions"]
-    assert len({r["unit_id"] for r in rows}) == 120 and len(rows) == 340
-    assert sum(r["section"] == "LÄS" for r in rows) == 136
+    assert len({r["unit_id"] for r in rows}) == 118 and len(rows) == 332
+    assert sum(r["section"] == "LÄS" for r in rows) == 128
     assert sum(r["section"] == "ELF" for r in rows) == 204
 
 
@@ -584,7 +585,7 @@ def test_single_session_sets_refuse_exclusion_pairs():
 def test_learner_lint_is_clean_on_every_exported_string(pending_export, tmp_path):
     lint = _manifest(pending_export)["lint"]
     assert lint["findings"] == []
-    assert lint["strings_checked"] == 120 * 2 + 340 * 5
+    assert lint["strings_checked"] == 118 * 2 + 332 * 5
     bank_file = tmp_path / "p5-bank-preview.json"
     bank_file.write_bytes(pending_export["p5-bank-preview.json"])
     linter = REPO_ROOT / "pipeline/synthetic/gates/scripts/lint_learner_output.py"

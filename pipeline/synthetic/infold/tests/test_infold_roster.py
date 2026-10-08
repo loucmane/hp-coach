@@ -25,15 +25,26 @@ DESIGN_TOTAL = re.compile(
     r"^\| \*\*Total\*\* \| \*\*(\d+) / (\d+)\*\* \| \*\*(\d+) / (\d+)\*\* \| \*\*(\d+) / (\d+)\*\* \|$")
 
 
-def _design_table() -> tuple[dict, tuple]:
-    rows, total = {}, None
+def _design_tables() -> list[tuple[dict, tuple]]:
+    """Every census table of the design doc, in order, each closed by its Total row."""
+    tables, rows = [], {}
     for line in (REPO_ROOT / build_roster.DESIGN_DOC_REL).read_text(encoding="utf-8").splitlines():
         if m := DESIGN_ROW.match(line):
             n = [int(x) for x in m.groups()]
             rows[n[0]] = {"LÄS": (n[1], n[2]), "ELF": (n[3], n[4]), "retired": (n[5], n[6])}
         elif m := DESIGN_TOTAL.match(line):
-            total = tuple(int(x) for x in m.groups())
-    return rows, total
+            tables.append((rows, tuple(int(x) for x in m.groups())))
+            rows = {}
+    return tables
+
+
+def _design_table() -> tuple[dict, tuple]:
+    """The census the design states as current: §2's last table. Its census
+    update of 2026-10-08 (bead hpf-c5tb.2) follows the original table, which
+    stays as the record of 2026-10-07."""
+    tables = _design_tables()
+    assert len(tables) == 2, "design §2: the 2026-10-07 table and its 2026-10-08 census update"
+    return tables[-1]
 
 
 def _sum(units) -> tuple[int, int]:
@@ -50,10 +61,11 @@ def test_census_reproduces_the_design_doc(built_roster):
     got = {b["batch"]: {k: tuple(b[k]) for k in ("LÄS", "ELF", "retired")} for b in census["batches"]}
     assert got == rows
     assert tuple(census["LÄS"]) + tuple(census["ELF"]) + tuple(census["retired"]) == total
-    assert tuple(census["retained"]) == (120, 340)
+    # The owner retired las-b3-001 and las-b5-001 on 2026-10-08 (4 questions each).
+    assert tuple(census["retained"]) == (118, 332)
     assert tuple(census["selected"]) == (128, 373)
     assert (tuple(census["LÄS"]), tuple(census["ELF"]), tuple(census["retired"])) == (
-        (52, 136), (68, 204), (8, 33))
+        (50, 128), (68, 204), (10, 41))
 
 
 def test_census_drift_fails_loudly():
@@ -125,10 +137,10 @@ def test_approval_statuses_follow_the_recorded_rulings(built_roster):
     # Batches 14–19 by owner rulings, batches 1–13 by the owner's ratification of 2026-10-07.
     assert {u["batch"] for u in approved} == set(range(1, 20))
     assert pending == []
-    assert _sum(approved) == (120, 340)
+    assert _sum(approved) == (118, 332)
     assert _sum([u for u in approved if u["batch"] >= 14]) == (39, 121)
-    assert _sum([u for u in approved if u["batch"] <= 13]) == (81, 219)
-    assert _sum(retired) == (8, 33)
+    assert _sum([u for u in approved if u["batch"] <= 13]) == (79, 211)
+    assert _sum(retired) == (10, 41)
     assert all((u["ratified_by"] == "owner 2026-10-07") == (u["batch"] <= 13) for u in approved)
     assert all(u["ratified_by"] is None and u["ratification_note"] is None for u in retired)
     # Retirement wins over the batch14 ruling text that lists elf-b14-002 as approved.
@@ -235,8 +247,18 @@ def _changed(record: dict, edit) -> dict:
 
 def test_the_ratification_covers_every_kept_legacy_unit(built_roster, record):
     legacy = [u for u in built_roster["units"] if u["batch"] <= 13 and not u["retired"]]
-    assert _sum(legacy) == (81, 219)
-    assert [e["unit_id"] for e in record["units"]] == [u["unit_id"] for u in legacy]  # roster order
+    assert _sum(legacy) == (79, 211)
+    # The record ratified the 81 units kept on 2026-10-07. The owner retired two
+    # of them on 2026-10-08 (RETIRED.json, bead hpf-c5tb.2); the record stays as
+    # it was given, and retirement wins over it.
+    retired_since = ["las-b3-001", "las-b5-001"]
+    covered = [u for u in built_roster["units"]
+               if u["batch"] <= 13 and (not u["retired"] or u["unit_id"] in retired_since)]
+    assert [e["unit_id"] for e in record["units"]] == [u["unit_id"] for u in covered]  # roster order
+    assert [e["unit_id"] for e in record["units"] if e["unit_id"] not in retired_since] == [
+        u["unit_id"] for u in legacy]
+    for unit in (u for u in covered if u["unit_id"] in retired_since):
+        assert (unit["approval"], unit["ratified_by"], unit["ratification_note"]) == ("retired", None, None)
     # AUDIT-batches-1-13.md: 48 pass, 32 ratify-with-note (two conditional), one fix.
     assert Counter(e["recommendation"] for e in record["units"]) == {"ratify": 48, "ratify-with-note": 32, "fix": 1}
     assert built_roster["ratification"]["recommendations"]["fix"] == ["las-b7-002"]

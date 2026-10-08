@@ -16,6 +16,8 @@ Scope is importing existing P5 content, not implementing the frozen PRD's deferr
 
 **120 retained units / 340 questions: LÄS 52 / 136, ELF 68 / 204.** Counted from batches 1–17 `candidates-final/`, and batches 18/19 `candidates/`, excluding every `RETIRED.json` ID. Each cell is **units / questions**; cloze gaps count as questions. All row counts and individual file:line evidence are recorded at `docs/worklog/hpf-6afv.md:67`, `:92`.
 
+*Census update 2026-10-08: the owner has since retired `las-b3-001` and `las-b5-001`, so the current census is 118 retained units / 332 questions (LÄS 50 / 128, ELF 68 / 204). The table below is the census of 2026-10-07; the update follows at the end of this section.*
+
 | Batch | LÄS | ELF | Retired units / questions |
 |---|---:|---:|---:|
 | 1 | 3 / 8 | 4 / 12 | 0 / 0 |
@@ -42,6 +44,33 @@ Scope is importing existing P5 content, not implementing the frozen PRD's deferr
 This is the brief's approved-content inventory, **not a certification that 340 questions are export-ready**. Explicit later owner rulings cover the retained 39 units / 121 questions in batches 14–19; batch17's reopened approval was restored and batch19's seventh unit retired (`pipeline/synthetic/batches/batch14/ADJUDICATION.md:689`, `:711`; `pipeline/synthetic/batches/batch15/ADJUDICATION.md:701`, `:739`; `pipeline/synthetic/batches/batch16/STATUS.md:168`; `pipeline/synthetic/batches/batch17/STATUS.md:199`; `pipeline/synthetic/batches/batch18/STATUS.md:127`; `pipeline/synthetic/batches/batch19/STATUS.md:145`).
 
 The other 81 / 219 are legacy shipped inventory: batch13 says COMPLETE, while the whole-bank master records recommendations rather than an owner response (`pipeline/synthetic/batches/batch13/STATUS.md:1`; `pipeline/synthetic/ADJUDICATION-MASTER.md:45`; census at `docs/worklog/hpf-6afv.md:67`). Ratify an exact-file approval roster before export. Retirement wins even where later prose approves `elf-b14-002`; do not silently reinstate it (`pipeline/synthetic/RETIRED.json:2`, `:41`; `pipeline/synthetic/batches/batch14/ADJUDICATION.md:693`).
+
+**Census update 2026-10-08 (owner ruling; bead hpf-c5tb.2).** In reply to the content-concern sheet of the first explanation batch (X1), the owner retired `las-b3-001` and `las-b5-001` ("stop serving it"; no replacement). The `las-b3-001` passage contradicts itself on where the warm water lies, and the keys of q1, q2 and q4 each rest on one of the conflicting sentences; `las-b5-001` q3 rests on a non-standard "vare sig … eller" sentence without a negation (`pipeline/synthetic/RETIRED.json`; `docs/worklog/hpf-c5tb.md`, X1 content concerns 1 and 2). Both were ratified legacy units, so the kept legacy inventory of batches 1–13 is now 79 / 211; batches 14–19 are unchanged. The current census, which `pipeline/synthetic/infold/build_roster.py` asserts, differs from the table above only in batches 3 and 5 and the totals:
+
+| Batch | LÄS | ELF | Retired units / questions |
+|---|---:|---:|---:|
+| 1 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 2 | 2 / 4 | 4 / 12 | 0 / 0 |
+| 3 | 2 / 4 | 3 / 7 | 1 / 4 |
+| 4 | 2 / 4 | 3 / 11 | 0 / 0 |
+| 5 | 2 / 4 | 4 / 12 | 1 / 4 |
+| 6 | 2 / 4 | 3 / 7 | 2 / 9 |
+| 7 | 3 / 8 | 3 / 7 | 1 / 5 |
+| 8 | 2 / 4 | 3 / 7 | 2 / 9 |
+| 9 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 10 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 11 | 2 / 4 | 4 / 12 | 1 / 4 |
+| 12 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 13 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 14 | 3 / 12 | 2 / 10 | 1 / 5 |
+| 15 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 16 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 17 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 18 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 19 | 3 / 8 | 3 / 11 | 1 / 1 |
+| **Total** | **50 / 128** | **68 / 204** | **10 / 41** |
+
+**118 retained units / 332 questions: LÄS 50 / 128, ELF 68 / 204.**
 
 ## 3. Owner decisions
 
@@ -157,5 +186,7 @@ Approve A–G individually or with overrides. Confirm the exact disclosure wordi
 **Owner answers (2026-10-08):**
 1. *Provpass reuse with a smaller LÄS/ELF pool:* accepted for now — the remedy is more P5 batches, not reusing authentic content. Batches 20–23 (staged on `backup/p5-batch20-23-wip`, beads hpf-ldjj / hpf-mjml / hpf-l77g / hpf-be9e) therefore matter for pool size and come after the infold in the queue.
 2. *Removal scope:* **stop serving only.** Authentic LÄS/ELF questions, passages and explanations stay in the repository, `data/` and R2; the product simply no longer serves them to students. No deletion.
+
+**Retirement (owner ruling 2026-10-08, bead hpf-c5tb.2):** `las-b3-001` and `las-b5-001` are retired (§2, census update 2026-10-08). D's 340 questions and the 321 of PR 2b above are now 332 and 313: the pilot's 19 plus 313 in the batches. Batch membership is pinned (bead hpf-c5tb.4): the two units leave X1, now 16 units / 36 questions, and no other unit moves, so X2–X7 are unchanged. A batch never gains a unit; a new unit (batches 20–23) is refused until it is assigned by hand, to a new batch. The partition is `pipeline/synthetic/infold/explanations/BATCHES.json`.
 
 

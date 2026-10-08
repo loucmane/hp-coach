@@ -976,11 +976,14 @@ describe('runFit — authentic items play the authentic-only rating (R2-B1)', ()
   // Where no user answers an authentic question after a synthetic one of its
   // section, the fit at 782f9c2 was already right. Every rating there is what
   // it fitted, the estimates that count synthetic answers included. The
-  // digests were recorded against it. Only the new column differs.
+  // digests were recorded against it. Only the new column differs. The
+  // histories draw P5 qids from the registry, so a registry change moves them:
+  // these were re-recorded against 782f9c2's fit on the registry without
+  // las-b3-001 and las-b5-001 (retired 2026-10-08, bead hpf-c5tb.2).
   const HEAD_DIGESTS: Array<[number, string]> = [
-    [31, '45e20d673fafbea35ed4562a4b5974eea21e606b1a069c21be00c499c506e658'],
-    [32, 'f92c2134d7f725fc8fdd96b24654086ca6170cb44f70bd69cdf8a3f7c384434b'],
-    [33, 'c86b85157a8c0518096cf9ef169c2f1792ad23b5366b8b97a1b00490821bafc2'],
+    [31, '4bd59118ad9f9dae18e7a2e4572742cbb7c83d77766d2bd0d7eae59158eb885f'],
+    [32, 'b8ff6c932e4d0de7b0605ac49e3f975ed2c1339b46b1ec592295951c6f93cc7f'],
+    [33, '3d435b8a9a078f269aaa9634be5e64a9120870c16ae2105778a50966f532d798'],
   ]
   for (const [trial, digest] of HEAD_DIGESTS) {
     it(`trial ${trial}: without the R2-B1 case every rating is what 782f9c2 fitted`, async () => {
