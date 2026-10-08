@@ -4,7 +4,7 @@
 
 *Original status line:* **Draft for owner approval · hpf-6afv · 2026-10-07.** Recommendations below are proposals, not implementation authority. Research snapshot: detached `6a4511431652d0b66fd1ea2523807f286f3d772d`; evidence and reproducible census: `docs/worklog/hpf-6afv.md:13`.
 
-> **⚠ AMENDED 2026-10-08 — see [Amendment 1](#amendment-1-2026-10-08-läs-and-elf-switch-to-p5) at the end.** Decisions A, B, D, E and the phased plan below are superseded where the amendment says so; C, F and G stand.
+> **⚠ AMENDED 2026-10-08 — see [Amendment 1](#amendment-1-2026-10-08-läs-and-elf-switch-to-p5) at the end.** Decisions A, B, D, E, the loader/flow clauses of C, and the phased plan below are superseded where the amendment says so; the rest of C, and F and G, stand.
 
 ## 1. Goal and non-goals
 
@@ -140,7 +140,8 @@ Approve A–G individually or with overrides. Confirm the exact disclosure wordi
 | **B** Disclosure | Badge + inline note; "Dina svar räknas som träning men påverkar inte ditt uppskattade HP-resultat." | Keep the persistent **ÖVNINGSTEXT** badge and the authorship note (»Den här texten och frågorna är skapade för övning av HP-Coach. De kommer inte från ett tidigare högskoleprov. Personer, citat och händelser kan vara påhittade.«). Replace the results line with a caveat wherever an LÄS/ELF-based estimate is shown: **»Uppskattningen för LÄS och ELF bygger på HP-Coachs övningstexter, vars svårighetsgrad ännu inte är kalibrerad mot riktiga HP-resultat.«** |
 | **D** Explanations | 19-question pilot, the rest later | **Every exported P5 question needs a reviewed Layer-2 explanation before the switch** (340 questions; 19 done in PR #376). This is now on the critical path. Same format and export gate as the pilot. |
 | **E** Stats | P5 kept out of every authentic assessment input | **P5 answers feed section scores, the weekly trend, ability, Provpass scoring and the HP-scale projection now.** Provenance stays server-side (`authentic` / `synthetic` / `unknown`, never client-trusted) and every synthetic contribution is marked `uncalibrated` in the data so it can be recalibrated later (e.g. against users' real HP results or anchor items) without losing history. Unknown ids still fail closed. Mastery/framework progress and adaptive-review counts may take P5 answers where the item has a valid framework_id. |
-| C, F, G | — | Unchanged. |
+| **C** Data path | Separate P5 export; flow ending in `contentFetch → opted-in drill/replay`; "keep the authentic index unchanged; add P5 only to explicit practice loaders" | **Data path, ids, versioning, R2/manifest delivery and unit-level retirement unchanged** (separate deterministic P5 export, revisioned qids, synthetic `exam_id`, `provpass: null`). **Superseded:** the flow now ends in `contentFetch → LÄS/ELF drills, Provpass, diagnostic and replay`, and P5 is the **only** LÄS/ELF source for every picker, not an opt-in practice loader. The authentic index stays in the repository and R2 but its LÄS/ELF entries are no longer selected for students (ORD/MEK/quant entries unchanged). |
+| F, G | — | Unchanged. |
 
 **Revised phased plan** (replaces §4):
 
