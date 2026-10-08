@@ -18,6 +18,12 @@
 //     fit run lands exactly where the provenance fit lands on the same
 //     history. Otherwise the fitted state is left exactly as it was.
 //     Re-running the backfill is safe.
+//   · user_ability.authentic_ability (drizzle/0014, review finding R2-B1) is
+//     the user's rating over authentic answers alone, which the fit plays
+//     authentic items against. State the fit before it left with synthetic
+//     answers is reset by drizzle/0015, and the next run lands exactly where
+//     the current fit lands. Authentic-only state is left exactly as it was,
+//     and re-running 0015 after the current fit is safe.
 //
 // Everything here runs against the in-memory node:sqlite shim; no real
 // database is touched, and no migration is applied anywhere else.
@@ -42,6 +48,8 @@ const DRIZZLE = fileURLToPath(new URL('../../drizzle', import.meta.url))
 const BANK_DIR = fileURLToPath(new URL('../../../app/public/data', import.meta.url))
 const COLUMN_MIGRATION = '0012_attempt_provenance.sql'
 const BACKFILL_MIGRATION = '0013_attempt_provenance_backfill.sql'
+const TRACK_MIGRATION = '0014_user_ability_authentic_track.sql'
+const TRACK_RESET_MIGRATION = '0015_pre_r2b1_fit_reset.sql'
 
 type Journal = { entries: Array<{ idx: number; tag: string }> }
 type ColumnInfo = { name: string; type: string; notnull: number; dflt_value: string | null }
@@ -95,6 +103,11 @@ const UNKNOWN_QIDS = [
 async function columns(d1: ShimD1, table: string): Promise<ColumnInfo[]> {
   const { results } = await d1.prepare(`PRAGMA table_info(${table})`).all<ColumnInfo>()
   return results
+}
+
+/** Apply `file` and every migration after it, in order. */
+function applyFrom(d1: ShimD1, file: string): void {
+  for (const f of migrationFiles()) if (f >= file) d1.applyMigration(f)
 }
 
 /** Insert attempts with raw SQL, so the rows can predate the column. */
@@ -174,10 +187,22 @@ describe('provenance migrations — generated and matching the schema', () => {
     expect(await generateSQLiteMigration(snapshot as never, current)).toEqual([])
   })
 
-  it('journals every SQL file, the columns and their backfill last', () => {
+  it('journals every SQL file: the columns, their backfill, then the authentic rating and its reset', () => {
     const journal = readJson<Journal>(join(DRIZZLE, 'meta/_journal.json'))
     expect(journal.entries.map((e) => `${e.tag}.sql`)).toEqual(migrationFiles())
-    expect(migrationFiles().slice(-2)).toEqual([COLUMN_MIGRATION, BACKFILL_MIGRATION])
+    expect(migrationFiles().slice(-4)).toEqual([
+      COLUMN_MIGRATION,
+      BACKFILL_MIGRATION,
+      TRACK_MIGRATION,
+      TRACK_RESET_MIGRATION,
+    ])
+  })
+
+  it('the authentic-rating migration is exactly the generated DDL', () => {
+    const sql = readFileSync(join(DRIZZLE, TRACK_MIGRATION), 'utf8')
+      .split('--> statement-breakpoint')
+      .map((s) => s.trim())
+    expect(sql).toEqual(['ALTER TABLE `user_ability` ADD `authentic_ability` real;'])
   })
 
   it('the column migration is exactly the generated DDL', () => {
@@ -245,6 +270,14 @@ describe('provenance migrations — generated and matching the schema', () => {
     })
     expect(await pick('mock_results', 'estimate_basis')).toMatchObject({
       type: 'text',
+      notnull: 0,
+      dflt_value: null,
+    })
+    // Null means "no synthetic answer yet: `ability` is the authentic rating".
+    // A row with synthetic answers and a null here fails closed: the fit
+    // refuses it, and 0015 resets it.
+    expect(await pick('user_ability', 'authentic_ability')).toMatchObject({
+      type: 'real',
       notnull: 0,
       dflt_value: null,
     })
@@ -463,7 +496,7 @@ async function ratings(d1: ShimD1) {
     .all()
   const abilities = await d1
     .prepare(
-      'SELECT user_id, section, ability, attempts, synthetic_attempts FROM user_ability ORDER BY user_id, section',
+      'SELECT user_id, section, ability, attempts, synthetic_attempts, authentic_ability FROM user_ability ORDER BY user_id, section',
     )
     .all()
   return { items: items.results, abilities: abilities.results }
@@ -520,6 +553,7 @@ async function migratedLegacy(answers: readonly Answer[]) {
     .run()
   d1.applyMigration(COLUMN_MIGRATION)
   d1.applyMigration(BACKFILL_MIGRATION)
+  applyFrom(d1, TRACK_MIGRATION)
   return { d1, legacy }
 }
 
@@ -575,7 +609,9 @@ describe('provenance backfill — fitted state that rests on now-unknown answers
     const { d1, legacy } = await migratedLegacy(answers)
     const after = await ratings(d1)
     expect(after.items).toEqual(legacy.items.map((i) => ({ ...i, source: 'authentic' })))
-    expect(after.abilities).toEqual(legacy.abilities.map((a) => ({ ...a, synthetic_attempts: 0 })))
+    expect(after.abilities).toEqual(
+      legacy.abilities.map((a) => ({ ...a, synthetic_attempts: 0, authentic_ability: null })),
+    )
     expect(await watermark(d1)).toBe(legacy.watermark)
     // Nothing is left to fold, and it is where the provenance fit lands too.
     expect(await refit(d1)).toMatchObject({ processed: 0 })
@@ -631,5 +667,187 @@ describe('provenance backfill — fitted state that rests on now-unknown answers
     expect(JSON.stringify(await ratings(d1))).toBe(
       JSON.stringify(await provenanceFit([...answers, ...gap])),
     )
+  })
+})
+
+// ── R2-B1: fitted state from the fit before the authentic-only rating ─────
+
+describe('authentic-only rating — 0014, and 0015 resets the state the old fit left (R2-B1)', () => {
+  // Registry questions of the two sections P5 covers, which the bank
+  // questions above share.
+  const p5 = registry.units.flatMap((u) => u.qids)
+  const P5_SAMPLE = [
+    ...p5.filter((q) => q.includes('-LÄS-')).slice(0, 3),
+    ...p5.filter((q) => q.includes('-ELF-')).slice(0, 2),
+  ]
+  const MIXED = [...BANK, ...P5_SAMPLE]
+
+  /** A database from before 0014 holding a history and fitted state as the
+   *  fit before the authentic-only rating left it: synthetic answers counted,
+   *  synthetic item rows, and no authentic_ability column. The current fit's
+   *  numbers stand in for that fit's. 0015 tests only the evidence, which is
+   *  the same, and deletes every number. */
+  async function oldFitState(answers: readonly Answer[]) {
+    const sim = makeTestD1()
+    await seedHistory(sim, answers, classifyAttemptSource)
+    await refit(sim)
+    const fitted = await ratings(sim)
+    const fittedTo = await watermark(sim)
+    const d1 = makeTestD1({ before: TRACK_MIGRATION })
+    await seedHistory(d1, answers, classifyAttemptSource)
+    for (const i of fitted.items) {
+      await d1
+        .prepare(
+          'INSERT INTO item_stats (question_id, difficulty, attempts, source) VALUES (?, ?, ?, ?)',
+        )
+        .bind(i.question_id, i.difficulty, i.attempts, i.source)
+        .run()
+    }
+    for (const a of fitted.abilities) {
+      await d1
+        .prepare(
+          'INSERT INTO user_ability (user_id, section, ability, attempts, synthetic_attempts) VALUES (?, ?, ?, ?, ?)',
+        )
+        .bind(a.user_id, a.section, a.ability, a.attempts, a.synthetic_attempts)
+        .run()
+    }
+    await d1
+      .prepare('INSERT INTO fit_state (id, last_attempt_id) VALUES (1, ?)')
+      .bind(fittedTo)
+      .run()
+    return { d1, fitted, fittedTo }
+  }
+
+  for (const seed of [4, 5, 6]) {
+    it(`history ${seed}: state the old fit left with synthetic answers is reset, then refitted exactly`, async () => {
+      const answers = history(seed, 90, MIXED)
+      const { d1, fitted } = await oldFitState(answers)
+      expect(fitted.abilities.some((a) => Number(a.synthetic_attempts) > 0)).toBe(true)
+
+      applyFrom(d1, TRACK_MIGRATION)
+      expect(await ratings(d1)).toEqual({ items: [], abilities: [] })
+      expect(await watermark(d1)).toBe(0)
+
+      // The next run refits every attempt and lands bit for bit where the
+      // current fit lands from scratch, authentic-only ratings included.
+      const expected = await provenanceFit(answers)
+      expect((await refit(d1)).watermark).toBe(answers.length)
+      const refitted = await ratings(d1)
+      expect(JSON.stringify(refitted)).toBe(JSON.stringify(expected))
+      expect(refitted.abilities.some((a) => a.authentic_ability !== null)).toBe(true)
+
+      // Re-running 0015 afterwards changes nothing.
+      d1.applyMigration(TRACK_RESET_MIGRATION)
+      expect(await ratings(d1)).toEqual(refitted)
+      expect(await watermark(d1)).toBe(answers.length)
+    })
+  }
+
+  it('a synthetic item row whose users are gone still resets', async () => {
+    // User 3 answered a P5 question and then the authentic one after it, and
+    // deleted the account later. Its rows went with it, but the authentic
+    // item user 3 moved, and user 1's answer after it, remain.
+    const answers: Answer[] = [
+      ...history(5, 60, BANK).filter((a) => a.user !== 3),
+      { user: 3, kind: 'drill', qid: P5_SAMPLE[0], correct: true },
+      { user: 3, kind: 'drill', qid: 'var-2026-verb1-LÄS-011', correct: true },
+      { user: 1, kind: 'drill', qid: 'var-2026-verb1-LÄS-011', correct: false },
+    ]
+    const { d1 } = await oldFitState(answers)
+    await d1.prepare('DELETE FROM users WHERE id = 3').run()
+
+    applyFrom(d1, TRACK_MIGRATION)
+    expect(await ratings(d1)).toEqual({ items: [], abilities: [] })
+    expect(await watermark(d1)).toBe(0)
+    await refit(d1)
+    expect(JSON.stringify(await ratings(d1))).toBe(
+      JSON.stringify(await provenanceFit(answers.filter((a) => a.user !== 3))),
+    )
+  })
+
+  it('an authentic-only fitted state is left exactly as it was', async () => {
+    const answers = history(6, 90, BANK)
+    const { d1, fitted, fittedTo } = await oldFitState(answers)
+    applyFrom(d1, TRACK_MIGRATION)
+    expect(await ratings(d1)).toEqual(fitted)
+    expect(fitted.abilities.every((a) => a.authentic_ability === null)).toBe(true)
+    expect(await watermark(d1)).toBe(fittedTo)
+    expect(await refit(d1)).toMatchObject({ processed: 0 })
+  })
+
+  it('without the reset, the fit refuses the state rather than guess an authentic rating', async () => {
+    const answers: Answer[] = [
+      { user: 1, kind: 'drill', qid: P5_SAMPLE[0], correct: true },
+      { user: 1, kind: 'drill', qid: 'var-2026-verb1-LÄS-011', correct: true },
+    ]
+    const { d1 } = await oldFitState(answers)
+    d1.applyMigration(TRACK_MIGRATION)
+    const next: Answer = { user: 1, kind: 'drill', qid: 'var-2024-verb1-LAS-013', correct: true }
+    await d1
+      .prepare(
+        'INSERT INTO attempts (id, user_id, session_id, question_id, correct, source) VALUES (?, ?, ?, ?, ?, ?)',
+      )
+      .bind(answers.length + 1, next.user, sessionId(next), next.qid, 1, 'authentic')
+      .run()
+    const before = await ratings(d1)
+    await expect(refit(d1)).rejects.toThrow(/no authentic_ability/)
+    expect(await ratings(d1)).toEqual(before)
+    expect(await watermark(d1)).toBe(answers.length)
+  })
+
+  it('once the current fit has run, re-running 0015 changes nothing', async () => {
+    const answers = history(7, 90, MIXED)
+    const d1 = makeTestD1()
+    await seedHistory(d1, answers, classifyAttemptSource)
+    await refit(d1)
+    const fitted = await ratings(d1)
+    expect(fitted.abilities.some((a) => Number(a.synthetic_attempts) > 0)).toBe(true)
+    d1.applyMigration(TRACK_RESET_MIGRATION)
+    expect(await ratings(d1)).toEqual(fitted)
+    expect(await watermark(d1)).toBe(answers.length)
+  })
+
+  it('a reset by 0013 also clears the authentic-only ratings, and the refit lands exactly', async () => {
+    // Re-running 0013 after the deploy, once the current fit has run: an
+    // answer the old worker fitted before the deploy left an `unknown` item.
+    const answers = history(8, 90, MIXED)
+    const d1 = makeTestD1()
+    await seedHistory(d1, answers, classifyAttemptSource)
+    await refit(d1)
+    expect((await ratings(d1)).abilities.some((a) => a.authentic_ability !== null)).toBe(true)
+    const gap: Answer = { user: 1, kind: 'drill', qid: 'var-2024-verb1-ORD-015', correct: true }
+    await d1
+      .prepare(
+        'INSERT INTO attempts (id, user_id, session_id, question_id, correct) VALUES (?, ?, ?, ?, ?)',
+      )
+      .bind(answers.length + 1, gap.user, sessionId(gap), gap.qid, 1)
+      .run()
+    await d1
+      .prepare(
+        "INSERT INTO item_stats (question_id, difficulty, attempts) VALUES ('var-2024-verb1-ORD-015', -12.8, 1)",
+      )
+      .run()
+
+    d1.applyMigration(BACKFILL_MIGRATION)
+    expect(await ratings(d1)).toEqual({ items: [], abilities: [] })
+    expect(await watermark(d1)).toBe(0)
+    await refit(d1)
+    expect(JSON.stringify(await ratings(d1))).toBe(
+      JSON.stringify(await provenanceFit([...answers, gap])),
+    )
+  })
+
+  it('0015 is statements wrangler splits as drizzle does, and leaves no helper table', () => {
+    const raw = readFileSync(join(DRIZZLE, TRACK_RESET_MIGRATION), 'utf8')
+    // wrangler splits a migration file on semicolons: no comment may hold one.
+    expect(raw.split('\n').filter((line) => line.startsWith('--') && line.includes(';'))).toEqual(
+      [],
+    )
+    const statements = raw
+      .split('--> statement-breakpoint')
+      .map((s) => s.trim().replace(/^(?:--[^\n]*\n)+/, ''))
+      .filter(Boolean)
+    for (const statement of statements) expect(statement.indexOf(';')).toBe(statement.length - 1)
+    expect(statements[statements.length - 1]).toBe('DROP TABLE IF EXISTS `tmp_0015_refit`;')
   })
 })

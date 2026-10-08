@@ -454,6 +454,16 @@ export const itemStats = sqliteTable('item_stats', {
 // reports it as estimateBasis). The rest are authentic. Unknown answers are
 // never fitted, and fitted state from before provenance that held one is
 // reset by drizzle/0013 (see item_stats).
+//
+// `authenticAbility` is the user's rating over their authentic answers alone
+// (review finding R2-B1). The fit learns an authentic item's difficulty
+// against it, never against `ability`, so no synthetic answer reaches an
+// authentic item, or through one any other user's ability. It is null while
+// `syntheticAttempts` is 0, because `ability` then rests on authentic answers
+// only and IS that rating. The fit sets it at the user's first synthetic
+// answer in the section. Its count is `attempts − syntheticAttempts`. A row
+// with synthetic answers and no authentic rating can only come from the fit
+// before this column: drizzle/0015 resets that state, and the fit refuses it.
 export const userAbility = sqliteTable(
   'user_ability',
   {
@@ -465,6 +475,7 @@ export const userAbility = sqliteTable(
     attempts: integer('attempts').notNull().default(0),
     updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
     syntheticAttempts: integer('synthetic_attempts').notNull().default(0),
+    authenticAbility: real('authentic_ability'),
   },
   (t) => ({
     pk: primaryKey({ columns: [t.userId, t.section] }),

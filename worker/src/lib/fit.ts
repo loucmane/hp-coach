@@ -45,19 +45,35 @@
 // Provenance (P5 infold PR 3, docs/p5-infold-design.md Amendment 1 E) — each
 // attempt carries the source the server classified on insert
 // (lib/provenance.ts):
-//   · authentic — fitted exactly as above.
+//   · authentic — fitted as above, with one difference once the user has a
+//     synthetic answer in the section (review finding R2-B1). The item side
+//     then plays the user's AUTHENTIC-ONLY rating
+//     (user_ability.authentic_ability): the rating their authentic answers
+//     alone give, which moves on those answers only, with its own K from
+//     their count (attempts − synthetic_attempts). The user's section ability
+//     still moves against the item exactly as above. So authentic item
+//     difficulties, and with them every authentic-only user's ability, are
+//     exactly what the fit gives with every synthetic answer deleted. Until
+//     the user's first synthetic answer the section ability IS that rating,
+//     the column stays null, and the arithmetic is the one above.
 //   · synthetic — a P5 answer. It moves the user's section ability, but a P5
 //     item has no calibrated difficulty (no UHR normering, no real-HP
 //     evidence), so the INTERIM, UNCALIBRATED method plays the user side
 //     against the section's ANCHOR: the mean difficulty of the section's
 //     authentic items with ≥1 fitted attempt (0, the scale's neutral prior,
 //     while there are none). The item side still learns the P5 item's own
-//     difficulty against the user's ability — the evidence a later
+//     difficulty against the user's section ability — the evidence a later
 //     calibration starts from — but keeps it apart: the row is stored with
-//     source 'synthetic' and never enters an anchor. user_ability counts the
-//     synthetic answers it absorbed (synthetic_attempts), so an ability that
-//     rests on any is identifiable as uncalibrated, and the attempt rows keep
-//     their source and item revision, so a recalibration can replay them.
+//     source 'synthetic' and never enters an anchor. A synthetic answer moves
+//     no authentic item and no authentic-only rating. The first one in a
+//     section splits that rating off the section ability as it stands.
+//     user_ability counts the synthetic answers it absorbed
+//     (synthetic_attempts), so an ability that rests on any is identifiable
+//     as uncalibrated, and the attempt rows keep their source and item
+//     revision, so a recalibration can replay them. A row with synthetic
+//     answers but no authentic-only rating was written by the fit before
+//     that rating existed. drizzle/0015 resets such state, and this fit
+//     refuses to continue from it rather than guess the rating.
 //   · unknown — fails closed: consumed (the watermark passes it), folded into
 //     nothing. So this fit never writes an `unknown` item_stats row. The fit
 //     from before provenance folded every graded answer. Where it folded one
@@ -152,8 +168,9 @@ type EntityState = { rating: number; attempts: number; dirty: boolean }
 // An item knows its pole: authentic items form the anchor, synthetic items
 // are rated apart (see the provenance notes above).
 type ItemState = EntityState & { source: 'authentic' | 'synthetic' }
-// An ability knows how many of its fitted answers were synthetic.
-type AbilityState = EntityState & { syntheticAttempts: number }
+// An ability knows how many of its fitted answers were synthetic and, once
+// there is one, its authentic-only rating (null until then: `rating` is it).
+type AbilityState = EntityState & { syntheticAttempts: number; authenticRating: number | null }
 
 export type FitResult = {
   /** How many attempts this run folded in (0 on an idempotent no-op). */
@@ -205,11 +222,24 @@ export async function runFit(db: Db): Promise<FitResult> {
       .from(userAbility)
       .where(and(eq(userAbility.userId, userId), eq(userAbility.section, section)))
       .limit(1)
+    const syntheticAttempts = row?.syntheticAttempts ?? 0
+    // Without a synthetic answer the section ability is the authentic-only
+    // rating. With one, only the stored rating is. Guessing a missing one
+    // would let synthetic answers reach authentic items again, so the run
+    // stops before it writes anything more.
+    const authenticRating = syntheticAttempts > 0 ? (row?.authenticAbility ?? null) : null
+    if (syntheticAttempts > 0 && authenticRating === null) {
+      throw new Error(
+        `user_ability (${userId}, ${section}) has synthetic answers but no authentic_ability: ` +
+          'it was fitted before that column existed, and drizzle/0015 resets such state',
+      )
+    }
     const state: AbilityState = {
       rating: row?.ability ?? 0,
       attempts: row?.attempts ?? 0,
       dirty: false,
-      syntheticAttempts: row?.syntheticAttempts ?? 0,
+      syntheticAttempts,
+      authenticRating,
     }
     abilities.set(key, state)
     return state
@@ -341,22 +371,41 @@ export async function runFit(db: Db): Promise<FitResult> {
       const item = await loadItem(row.questionId, source)
       const ability = await loadAbility(row.userId, section)
 
-      // The item side always learns this item's own difficulty; the user side
-      // plays an authentic item at that difficulty and a synthetic one at the
-      // anchor (uncalibrated).
-      const expected = flooredExpectedScore(item.rating, ability.rating)
-      const expectedUser = anchor === null ? expected : flooredExpectedScore(anchor, ability.rating)
+      // The item side always learns this item's own difficulty: a synthetic
+      // item against the section ability, an authentic one against the
+      // authentic-only rating, so no synthetic answer reaches an authentic
+      // item. The user side plays an authentic item at its difficulty and a
+      // synthetic one at the anchor (uncalibrated).
+      const opponent =
+        source === 'authentic' ? (ability.authenticRating ?? ability.rating) : ability.rating
+      const expected = flooredExpectedScore(item.rating, opponent)
+      const expectedUser =
+        anchor === null
+          ? flooredExpectedScore(item.rating, ability.rating)
+          : flooredExpectedScore(anchor, ability.rating)
       const actual = row.correct ? 1 : 0
       const isReplay = row.kind === REPLAY_KIND
       const kUser = kFactor(ability.attempts)
       // Replay re-exposures barely inform the item → damp only the item side.
       const kItem = kFactor(item.attempts) * (isReplay ? REPLAY_ITEM_K_FACTOR : 1)
 
+      if (source === 'synthetic') {
+        // The first synthetic answer splits the authentic-only rating off the
+        // section ability as it stands. No synthetic answer moves it.
+        if (ability.authenticRating === null) ability.authenticRating = ability.rating
+        ability.syntheticAttempts += 1
+      } else if (ability.authenticRating !== null) {
+        // Moved as the section ability would be with every synthetic answer
+        // deleted: its own count of authentic answers sets its K.
+        const kAuthentic = kFactor(ability.attempts - ability.syntheticAttempts)
+        ability.authenticRating = clampRating(
+          ability.authenticRating + kAuthentic * (actual - expected),
+        )
+      }
       ability.rating = clampRating(ability.rating + kUser * (actual - expectedUser))
       item.rating = clampRating(item.rating + kItem * (expected - actual))
       ability.attempts += 1
       item.attempts += 1
-      if (source === 'synthetic') ability.syntheticAttempts += 1
       ability.dirty = true
       item.dirty = true
       if (source === 'authentic') authenticItemMoved(section, row.questionId, item)
@@ -425,6 +474,7 @@ async function flush(
         attempts: state.attempts,
         updatedAt: now,
         syntheticAttempts: state.syntheticAttempts,
+        authenticAbility: state.authenticRating,
       })
       .onConflictDoUpdate({
         target: [userAbility.userId, userAbility.section],
@@ -433,6 +483,7 @@ async function flush(
           attempts: state.attempts,
           updatedAt: now,
           syntheticAttempts: state.syntheticAttempts,
+          authenticAbility: state.authenticRating,
         },
       })
     state.dirty = false

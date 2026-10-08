@@ -261,6 +261,44 @@ describe('provenance on the rating reads', () => {
       estimateBasis: { authentic: 1, synthetic: 0, calibrated: true },
     })
   })
+
+  // Review finding R2-B1 of PR #378: user A answers a synthetic LÄS question
+  // and then an authentic one, and user B answers only the authentic one.
+  // Neither B's ability nor the authentic item may carry A's synthetic answer.
+  it('another user’s synthetic answer reaches no authentic-only ability and no authentic difficulty', async () => {
+    const qid = 'var-2024-verb1-LÄS-011'
+    const las = `/item-stats?section=${encodeURIComponent('LÄS')}`
+    // The control: the same authentic answers, without the synthetic one.
+    await seedAttempt('A', qid, true)
+    await seedAttempt('B', qid, true)
+    await runFitVia()
+    const control = await read<ItemStatsBody>(las)
+    expect(await read<AbilityBody>('/me/ability', 'B')).toEqual({
+      ability: {
+        LÄS: {
+          ability: 12.328643808700775,
+          attempts: 1,
+          estimateBasis: { authentic: 1, synthetic: 0, calibrated: true },
+        },
+      },
+    })
+    const controlB = await read<AbilityBody>('/me/ability', 'B')
+
+    d1 = makeTestD1()
+    await seedAttempt('A', LAS_P5, true)
+    await seedAttempt('A', qid, true)
+    await seedAttempt('B', qid, true)
+    await runFitVia()
+    expect(await read<AbilityBody>('/me/ability', 'B')).toEqual(controlB)
+    const items = await read<ItemStatsBody>(las)
+    expect(items.difficulties[qid]).toBe(control.difficulties[qid])
+    expect(items.uncalibrated).toEqual([LAS_P5])
+    // A's own estimate counts the synthetic answer and says so.
+    expect((await read<AbilityBody>('/me/ability', 'A')).ability.LÄS).toMatchObject({
+      attempts: 2,
+      estimateBasis: { authentic: 1, synthetic: 1, calibrated: false },
+    })
+  })
 })
 
 describe('auth dependency', () => {

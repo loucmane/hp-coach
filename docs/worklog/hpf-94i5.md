@@ -368,3 +368,154 @@ The new and updated tests were first run against HEAD's implementation:
   - Automatic staging migrations (B5) interact with this order; that is the coordinator's call.
 - **0013 is frozen once it has been applied anywhere.** Regenerate `worker/data/authentic-qids.json` whenever the bank changes; CI fails until it is. Never re-render 0013 after it has been applied. The migrations test notes how to relax its set assertion to a subset then.
 - **Retention.** A reset can refit only attempts from the last 120 days.
+
+---
+
+## Review fix round 2 (session ci-fmzvm, 2026-10-08)
+
+Bead `hpf-bojw` fixes review finding R2-B1 of `hpf-5xfc`, the second review of PR #378. B5 is the automatic staging migrations. It is still the coordinator's operator decision, so nothing under `.github/workflows/` changed.
+
+This section supersedes "Authentic answers: fitted exactly as before" in Design 6 above. Once a user has a synthetic answer in a section, the item side of their authentic answers in that section plays their authentic-only rating.
+
+### Snapshot and boundaries
+
+- **Claim.** `gc hook --claim --json` returned `hpf-bojw`, assignee `gc__implementation-worker-ci-fmzvm`, route `hpfetcher/gc.implementation-worker`. `bd show hpf-bojw --json` matched the id, the status (`in_progress`), the assignee and `gc.routed_to`.
+- **Checkout.** `git rev-parse HEAD` returned `782f9c20cfa6cb6be9f8cde1e0a7e831a8225455`, on `codex/hpf-94i5-provenance-assessment`, which tracks origin. The tracked tree was clean at the start.
+  - `git status` also lists untracked dotfile names (`.bashrc`, `.gitconfig`, `.mcp.json`, `.idea`, `.vscode` and others).
+  - They are character devices 1,3 (`/dev/null`), the way this session's sandbox masks those paths. They are not repository files and were left alone.
+- **The reviewer's worklog was not readable.** `GasCity/hpfetcher/Docs/worklogs/hpf-5xfc.md` lives in the vault, and this session's sandbox denies reads under `~/vaults`. The finding, its repro and its numbers come from the `hpf-bojw` brief. The repro was then reproduced on the unfixed code (below).
+- **Constraints kept.**
+  - No git writes: no commit, stash, index or ref change.
+  - No network.
+  - **No migration was applied to any database.** The SQL ran only inside the in-memory `node:sqlite` test shim.
+  - `.github/workflows/*`, `app/`, `pipeline/` and the untracked runtime paths are untouched.
+  - The golden snapshot was not re-recorded.
+- **Check script.** `gc.check_path` is `build-artifact-valid.sh`, sha256 `71f17450e127055c8304a3cb44ce87b2439abe04ba41f225c7b386be3dc73911`. The bead names no validator, so it was not run.
+
+### Finding and root cause
+
+**R2-B1** (P1): authentic calibration took in synthetic answers.
+- At `782f9c2`, `worker/src/lib/fit.ts` kept one rating per (user, section). That rating was both the user's estimate, which counts P5 answers (Amendment 1 E), and the opponent each authentic item was moved against.
+- After a synthetic answer, the user's next authentic answer moved that authentic item with a P5-influenced rating.
+- Any authentic-only user who answered the item later inherited it. `/me/ability` still reported them `calibrated: true`, and `/item-stats` left the item out of `uncalibrated`.
+- Reproduced on `782f9c2`:
+  1. User A answers `p5-las-b19-002-r1-LÄS-001`, then `var-2024-verb1-LÄS-011`.
+  2. User B answers only `var-2024-verb1-LÄS-011`.
+  3. B's LÄS ability came out `12.34598651981213`. The authentic-only control is `12.328643808700775`.
+
+### Fix
+
+**Invariant.** Authentic item difficulties are a function of authentic answers only, and so is every authentic-only user's ability. Both are byte-identical to the fit of the same history with every synthetic attempt deleted. The estimate that counts P5 answers (Amendment 1) keeps its behaviour and its `uncalibrated` labels.
+
+**`worker/src/lib/fit.ts`.** Each (user, section) has an **authentic-only rating**, stored in the new `user_ability.authentic_ability`.
+- **An authentic answer:**
+  - The item side plays the authentic-only rating: `expected = flooredExpectedScore(item, authenticRating)`, with K from `item.attempts`, damped for replay as before.
+  - The authentic-only rating moves against that same expected score. Its K comes from its own count, `attempts − synthetic_attempts`.
+  - The section ability, which is the estimate that counts P5 answers, moves exactly as before: against the item, with K from `attempts`.
+- **A synthetic answer:**
+  - The first one in a section splits the authentic-only rating off the section ability as it stands. No synthetic answer moves it.
+  - The user side still plays the anchor, and the P5 item still learns against the section ability. Both are unchanged.
+- **While `synthetic_attempts` is 0**, the column stays null. The section ability then IS the authentic-only rating, the code path is the one from before, and the arithmetic is unchanged. That is why the golden snapshot holds.
+- **Fail closed.** A row with synthetic answers and a null `authentic_ability` can only come from the fit at `782f9c2`.
+  - `loadAbility` throws on such a row before the page is flushed, so the run writes nothing more.
+  - Guessing the rating could let synthetic answers reach authentic items again.
+
+**Where this deviates from the brief's suggested design, and why.**
+1. **`authentic_ability` is nullable, and null means "no synthetic answer yet".** The brief suggested a NOT NULL column initialised from `ability`. The reason is the deploy gap that the operator notes already describe.
+   - Between `migrations apply` and the worker deploy, the old (`main`) worker's nightly fit still upserts `user_ability`. It sets only `ability`, `attempts` and `updated_at`.
+   - With a NOT NULL copy, rows the old worker creates would take the default 0, and rows it updates would keep a stale copy. The new fit would then silently play authentic items against a wrong rating, even for authentic-only users.
+   - With null semantics, everything the old worker writes is correct by construction. The new fit never reads the column while `synthetic_attempts` is 0, and writes null for those rows.
+   - The migration also needs no data step.
+2. **No `authentic_attempts` column.** The authentic count is `attempts − synthetic_attempts`.
+   - The fit bumps both counters in the same step, and `/me/ability` already derives `estimateBasis.authentic` that way.
+   - A third counter could only drift. The old worker in the deploy gap would bump `attempts` without it.
+3. **Fail-closed handling** is the reset migration below plus the refusal in the fit.
+
+**Migrations.**
+- **`0014_user_ability_authentic_track.sql`** was generated by `pnpm --dir worker exec drizzle-kit generate --name user_ability_authentic_track`. It holds one statement, ``ALTER TABLE `user_ability` ADD `authentic_ability` real;``. Snapshot: `meta/0014_snapshot.json`.
+- **`0015_pre_r2b1_fit_reset.sql`** was created by `drizzle-kit generate --custom --name pre_r2b1_fit_reset`, then filled in. Snapshot: `meta/0015_snapshot.json`.
+  - **What it does.** It is a one-off reset of the state the fit at `782f9c2` left. It looks for either of these:
+    - **(a)** a `user_ability` row with `synthetic_attempts > 0` and a null `authentic_ability`;
+    - **(b)** a `synthetic` `item_stats` row while no row holds an authentic-only rating. This catches the case where the users who answered P5 questions have since deleted their accounts, but the authentic items they moved remain.
+  - **The reset.** Elo ratings are path-dependent, so only a refit repairs this exactly. When either is found, the migration deletes every `user_ability` and `item_stats` row and rewinds the watermark to 0. This is the same mechanism as 0013's B4 reset.
+  - **One evaluation.** The condition is evaluated once, into the helper table `tmp_0015_refit`, which is dropped at the end. Otherwise the deletes would change the condition midway.
+  - **Re-running is safe.** After the new fit has run, (a) cannot hold. (b) can hold only once every user that fit fitted a synthetic answer for has been deleted, and then the reset only forces a refit.
+  - **Format.** No comment line holds a semicolon, and each statement holds exactly one.
+  - **Where it can match.** Only a database that ran this branch's earlier worker can hold such state.
+    - `deploy.yml` deploys automatically only from `main`. A manual `workflow_dispatch` run on this branch would also have deployed it, and without network access I could not check for one.
+    - Without such a run, 0015 finds nothing in staging or production and matters only for local databases. With one, it resets that state, which is what it is for.
+- **0013 stays consistent.** 0012 and 0013 are unchanged. 0013's reset deletes whole rows, so it clears the new column too. A test re-runs 0013 after the new fit has stored authentic-only ratings, and the refit lands byte for byte on a from-scratch fit.
+
+**Readers of `user_ability` / `item_stats`, checked for the new column.**
+
+| Reader | Effect |
+|---|---|
+| `routes/me.ts` `/me/ability` | Selects explicit columns. The response shape, the values for authentic-only users and `estimateBasis` (`attempts − synthetic_attempts`) are unchanged. The new column is not exposed. |
+| `routes/fit.ts` `/item-stats` | Reads `item_stats` only. Unchanged. |
+| `routes/export.ts` (export and import) | Neither touches the rating tables. The next fit run folds imported attempts. |
+| `routes/account.ts` (deletion) | `user_ability` rows cascade with the user. `item_stats` stays global, the case 0015's evidence (b) covers. |
+| `routes/testReset.ts`, `lib/retention.ts` | Do not touch the rating tables. |
+| `db/migrations.test.ts`, `routes/assessmentGolden.test.ts` | The migration helpers now apply 0014 and 0015. The golden test selects explicit columns. |
+| drizzle snapshots | 0014 holds the column as a nullable `real`. 0015 is the custom copy. The chain 0013 → 0014 → 0015 is intact. |
+| app | Nothing reads `user_ability`. The `/me/ability` types are unchanged. |
+
+### Tests (red-first)
+
+The tests were written first. They then ran against `782f9c2`'s `fit.ts`, which was not yet edited, with the schema change, 0014, 0015 and the test changes already in place.
+- **Red run 1:** 21 failures. The repro failed on user B: `12.34598651981213` against `12.328643808700775`.
+- **Values recorded on the unfixed fit.** The same unfixed code then gave user A's LÄS estimate, `25.128643808700772`, and three sha256 digests of mixed histories without the R2-B1 case.
+- **Red run 2:** 18 failed and 88 passed. The pinned values pass on `782f9c2`.
+
+| Test | Pins |
+|---|---|
+| `lib/fit.test.ts`: the reviewer's repro, in one run and with a run after each step | <ul><li>B's LÄS row is exactly the authentic-only control: `12.328643808700775`, 1 attempt, 0 synthetic, null rating.</li><li>`var-2024-verb1-LÄS-011` has the control's difficulty and count.</li><li>A's estimate is `25.128643808700772`, as `782f9c2` fitted it (also checked against the formula), from 1 authentic and 1 synthetic answer.</li><li>A's authentic-only rating equals A's ability in the control.</li></ul> |
+| `routes/fit.test.ts`: the same repro through the routes | <ul><li>B's `/me/ability` equals the control: `{ ability: 12.328643808700775, attempts: 1, estimateBasis: { authentic: 1, synthetic: 0, calibrated: true } }`.</li><li>`/item-stats?section=LÄS` gives `LÄS-011` the control's difficulty and lists only the P5 qid as `uncalibrated`.</li><li>A's basis is `{ authentic: 1, synthetic: 1, calibrated: false }`.</li></ul> |
+| `lib/fit.test.ts`: property trials 21–25 | <ul><li>Each history has 80–160 answers from 2 mixed and 2 authentic-only users across 5 session kinds, fitted in 1–3 incremental runs. Each is asserted to contain the R2-B1 case.</li><li>It is compared against the same history with every synthetic attempt deleted, fitted in one run.</li><li>Every authentic item is byte-identical, and so is every (user, section) without synthetic answers, which covers all authentic-only users.</li><li>Where there are synthetic answers, `authentic_ability` and `attempts − synthetic_attempts` equal that (user, section) of the control.</li></ul> |
+| `lib/fit.test.ts`: trials 31–33 | These are mixed histories without the R2-B1 case. Every rating hashes to the digest recorded on `782f9c2`, including the estimates that count P5 answers and the synthetic item rows. |
+| `lib/fit.test.ts`: arithmetic | <ul><li>The rating splits off at the first synthetic answer and moves on authentic answers only.</li><li>It has its own K. After 30 synthetic answers the section ability is settled (K 16), but an authentic item still moves exactly as for a fresh user (K 32).</li><li>It stays null for authentic-only users and 0 for synthetic-only users.</li></ul> |
+| `lib/fit.test.ts`: fail closed | A pre-fix row (synthetic answers, null rating) makes the run throw. No rating row and no watermark are written. |
+| `lib/fit.test.ts`: incremental trials 11–14 | The histories are unchanged. `ratings()` now includes `authenticAbility`, so the incremental runs must match one run on it too. Each trial is asserted to split a rating off and then move it. |
+| `db/migrations.test.ts` | <ul><li>0014 is exactly the generated DDL. The journal ends 0012, 0013, 0014, 0015. The column is a nullable `real` with no default.</li><li>0015 resets old-fit state with synthetic answers (3 seeded histories). The refit lands byte for byte on a from-scratch fit, ratings included, and a later re-run of 0015 changes nothing.</li><li>0015 also resets for a synthetic item whose users were deleted.</li><li>Authentic-only state is left exactly as it was, with null ratings.</li><li>Without 0015 the fit refuses the old state.</li><li>A 0013 reset clears the new column, and the refit is exact.</li><li>0015's statement and comment format.</li><li>The existing B4 histories now also pass through 0014 and 0015.</li></ul> |
+
+**Golden.** `assessmentGolden.test.ts.snap` is unchanged, sha256 `2ec42900caf266511dbd3b9fd1e43ddb2856b57a54f0e794dfbc7fb17563d5c0`.
+
+### Verification (final runs)
+
+- **Worker.** `pnpm --dir worker exec vitest run` (= `cd worker && npx vitest run`): **24 files, 387 tests passed**. Round 1 ended at 24 files and 362 tests.
+- **App.** `pnpm --dir app exec vitest run --reporter=default`: **81 files, 837 tests passed**.
+- **CI Python selection.** `python3 -m pytest .github/contract-tests pipeline/synthetic/evidence/tests pipeline/synthetic/gates/scripts/tests pipeline/synthetic/infold/tests -q -p no:cacheprovider`: **1879 passed, 7 xfailed**.
+- **Typecheck.** Worker `tsc --noEmit` is clean. App `tsc -b --noEmit` and `tsc -p tsconfig.app.json --noEmit` are clean.
+- **Biome.**
+  - Worker `biome check src` is clean.
+  - App `biome check src` reports only the 4 pre-existing devbake infos.
+  - The changed test files and `schema.ts` were formatted with `biome format --write`.
+  - `fit.ts` was edited by hand and passes the check. Its NUL map-key separators are intact: `grep -c -aP '\x00'` still reports 3.
+- **Drizzle.** The probe, `drizzle-kit generate --name drift_probe`, printed "No schema changes, nothing to migrate" and wrote no file, so there was nothing to delete. The migrations test's in-process differ agrees.
+- **sha256.**
+  - 0014: `0d5a164f976554158210d5382f4ec92b9d55ea129823312cc949242f6badfe6e`
+  - 0015: `04bc81144e7a003ee0893a98e57a11fc1b9b43d616e85e0c9b1f5ac32d01640f`
+  - `fit.ts`: `8f508b8ceac64baacc3ae746c75f84f579620ff9f9719b6665bd6d94cea079c0`
+- **Not run.** Playwright e2e, which needs Clerk secrets and network. `wrangler d1 migrations apply`, which is operator-authorized.
+
+### Files (uncommitted)
+
+| Path | Change |
+|---|---|
+| `worker/src/lib/fit.ts` | The authentic-only rating, the refusal of pre-fix rows, and the header docs. |
+| `worker/src/db/schema.ts` | `user_ability.authentic_ability` (nullable `real`), with its docs. |
+| `worker/drizzle/0014_user_ability_authentic_track.sql`, `meta/0014_snapshot.json` | New, generated. |
+| `worker/drizzle/0015_pre_r2b1_fit_reset.sql`, `meta/0015_snapshot.json` | New. Created as a custom migration, then filled in. |
+| `worker/drizzle/meta/_journal.json` | Journals 0014 and 0015. |
+| `worker/src/lib/fit.test.ts`, `worker/src/routes/fit.test.ts`, `worker/src/db/migrations.test.ts` | The tests above. |
+| `docs/worklog/hpf-94i5.md` | This section. |
+
+### Operator notes (in addition to round 1's)
+
+- **The order of operations is unchanged.**
+  1. Apply the migrations (now 0012–0015).
+  2. Deploy the worker right after.
+  3. Re-run 0013 once.
+  4. Run the fit.
+- **0015 needs no re-run.** The old worker's writes in the deploy gap are authentic-only, so a null `authentic_ability` is correct for them. Unless a manual `workflow_dispatch` deployed this branch's worker, 0015 finds nothing in staging or production.
+- **If the fit fails with "has synthetic answers but no authentic_ability",** the database holds state from the fit at `782f9c2`. Re-run `0015_pre_r2b1_fit_reset.sql` by hand to reset it (re-running is safe), then run the fit.
+- **Retention.** As with 0013, a reset can refit only attempts from the last 120 days.

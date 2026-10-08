@@ -7,18 +7,29 @@
 //      watermark idempotency contract, chronological-order sensitivity,
 //      per-user isolation, and the clamp holding through many updates.
 
-import { asc, eq } from 'drizzle-orm'
+import { createHash } from 'node:crypto'
+import { and, asc, eq } from 'drizzle-orm'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import registry from '../../data/p5-qid-registry.json'
 import { getDb } from '../db/client'
-import { type AttemptSource, attempts, itemStats, sessions, userAbility, users } from '../db/schema'
+import {
+  type AttemptSource,
+  attempts,
+  fitState,
+  itemStats,
+  sessions,
+  userAbility,
+  users,
+} from '../db/schema'
 import {
   CLAMP,
   clampRating,
   expectedScore,
+  FITTED_KINDS,
   flooredExpectedScore,
   GUESS_FLOOR,
+  K_DECAY_AFTER,
   K_EARLY,
   K_SETTLED,
   kFactor,
@@ -26,6 +37,7 @@ import {
   runFit,
 } from './fit'
 import { classifyAttempt } from './provenance'
+import { extractSection } from './section'
 import { makeTestD1, type ShimD1 } from './testD1'
 
 let d1: ShimD1
@@ -104,10 +116,27 @@ async function ratings() {
       ability: userAbility.ability,
       attempts: userAbility.attempts,
       syntheticAttempts: userAbility.syntheticAttempts,
+      authenticAbility: userAbility.authenticAbility,
     })
     .from(userAbility)
     .orderBy(asc(userAbility.userId), asc(userAbility.section))
   return { items, abilities }
+}
+
+/** One user's ability row for a section, every rating column, or null. */
+async function abilityRow(clerkUserId: string, section: string) {
+  const db = getDb(d1 as unknown as D1Database)
+  const userId = await ensureUser(clerkUserId)
+  const [row] = await db
+    .select({
+      ability: userAbility.ability,
+      attempts: userAbility.attempts,
+      syntheticAttempts: userAbility.syntheticAttempts,
+      authenticAbility: userAbility.authenticAbility,
+    })
+    .from(userAbility)
+    .where(and(eq(userAbility.userId, userId), eq(userAbility.section, section)))
+  return row ?? null
 }
 
 async function itemDifficulty(
@@ -491,6 +520,22 @@ const AUTHENTIC = [
 const KINDS = ['drill', 'adaptive_review', 'mock', 'mock_diagnostic', 'lesson']
 const USERS = ['u1', 'u2', 'u3']
 
+type Answer = { user: string; qid: string; correct: boolean; kind: string }
+
+/** Whether some user answers an authentic question, in a fitted kind, after a
+ *  synthetic one of the same section: the case review finding R2-B1 is about. */
+function syntheticThenAuthentic(history: readonly Answer[]): boolean {
+  const split = new Set<string>()
+  for (const h of history) {
+    if (!FITTED_KINDS.has(h.kind)) continue
+    const key = `${h.user}/${extractSection(h.qid)}`
+    const { source } = classifyAttempt(h.qid)
+    if (source === 'synthetic') split.add(key)
+    else if (source === 'authentic' && split.has(key)) return true
+  }
+  return false
+}
+
 describe('runFit — synthetic answers move ability (uncalibrated)', () => {
   it('a synthetic answer in a section with no rated authentic item is fitted against 0', async () => {
     await seedAttempt('u1', LAS_P5, true)
@@ -591,6 +636,8 @@ describe('runFit — synthetic answers move ability (uncalibrated)', () => {
     }
     expect(items.every((i) => i.source === 'synthetic')).toBe(true)
     expect(abilities.every((a) => a.syntheticAttempts === a.attempts)).toBe(true)
+    // No authentic answer: each authentic-only rating is the 0 it split off at.
+    expect(abilities.every((a) => a.authenticAbility === 0)).toBe(true)
     expect((await ability('strong', 'LÄS'))?.ability).toBeGreaterThan(0)
     expect((await ability('weak', 'ELF'))?.ability).toBeLessThan(0)
   })
@@ -717,6 +764,254 @@ describe('runFit — mixed histories stay incremental and idempotent', () => {
       expect(JSON.stringify(await ratings())).toBe(JSON.stringify(incremental))
       expect(incremental.items.some((i) => i.source === 'synthetic')).toBe(true)
       expect(incremental.abilities.some((a) => a.syntheticAttempts > 0)).toBe(true)
+      // The authentic-only ratings are compared too, and some moved after splitting off.
+      expect(syntheticThenAuthentic(history)).toBe(true)
+    })
+  }
+})
+
+// ── 4. authentic calibration ignores synthetic answers (review finding R2-B1) ──
+//
+// One rating per (user, section) used to be both the user's estimate, which
+// counts synthetic answers, and the opponent an authentic item's difficulty was
+// learned against. After a synthetic answer, the user's next authentic answer
+// moved that authentic item with a P5-influenced rating, and an authentic-only
+// user who answered the item later inherited it, while /me/ability called them
+// calibrated. Authentic item difficulties, and so every authentic-only user's
+// ability, must be exactly what the fit gives with every synthetic answer
+// deleted. The estimate that counts synthetic answers keeps its behaviour.
+
+describe('runFit — authentic items play the authentic-only rating (R2-B1)', () => {
+  const REPRO_QID = 'var-2024-verb1-LÄS-011'
+  // User B's LÄS ability from the authentic answers alone (the control).
+  const CONTROL_B = 12.328643808700775
+  // User A's LÄS ability, which counts A's synthetic answer, as 782f9c2 fitted it.
+  const HEAD_A = 25.128643808700772
+  const P5_LAS = P5.filter((q) => extractSection(q) === 'LÄS')
+
+  const refit = () => runFit(getDb(d1 as unknown as D1Database))
+
+  it.each([
+    ['in one run', false],
+    ['with a run after each step', true],
+  ])('the reviewer’s repro: user B gets exactly the authentic-only control (%s)', async (_label, stepwise) => {
+    // 1. A answers a synthetic LÄS question. 2. A answers the authentic one.
+    // 3. B answers only the authentic one.
+    await seedAttempt('A', LAS_P5, true)
+    if (stepwise) await refit()
+    await seedAttempt('A', REPRO_QID, true)
+    if (stepwise) await refit()
+    await seedAttempt('B', REPRO_QID, true)
+    await refit()
+    const a = await abilityRow('A', 'LÄS')
+    const b = await abilityRow('B', 'LÄS')
+    const item = await itemDifficulty(REPRO_QID)
+
+    // The control: the same authentic answers, without the synthetic one.
+    d1 = makeTestD1()
+    sessionByUser.clear()
+    await seedAttempt('A', REPRO_QID, true)
+    await seedAttempt('B', REPRO_QID, true)
+    await refit()
+    const control = { a: await abilityRow('A', 'LÄS'), b: await abilityRow('B', 'LÄS') }
+    expect(control.b).toEqual({
+      ability: CONTROL_B,
+      attempts: 1,
+      syntheticAttempts: 0,
+      authenticAbility: null,
+    })
+
+    // A's estimate still counts the synthetic answer, exactly as 782f9c2 fitted
+    // it, and stays uncalibrated (1 of its 2 answers is synthetic).
+    expect(a?.ability).toBe(HEAD_A)
+    const afterSynthetic = K_EARLY * (1 - flooredExpectedScore(0, 0))
+    expect(HEAD_A).toBe(afterSynthetic + K_EARLY * (1 - flooredExpectedScore(0, afterSynthetic)))
+    // B is the control exactly: no synthetic answer, so calibrated.
+    expect(b).toEqual(control.b)
+    // The authentic item is the control's, difficulty and count.
+    expect(item).toEqual(await itemDifficulty(REPRO_QID))
+    // A's authentic-only rating is A's ability in the control.
+    expect(a).toEqual({
+      ability: HEAD_A,
+      attempts: 2,
+      syntheticAttempts: 1,
+      authenticAbility: control.a?.ability,
+    })
+  })
+
+  it('keeps the authentic-only rating null for a user without synthetic answers', async () => {
+    await seedAttempt('u1', REPRO_QID, true)
+    await seedAttempt('u1', 'var-2026-verb1-ORD-001', false)
+    await refit()
+    expect((await ratings()).abilities.map((a) => a.authenticAbility)).toEqual([null, null])
+  })
+
+  it('splits the authentic-only rating off at the first synthetic answer and moves it on authentic answers only', async () => {
+    await seedAttempt('u1', REPRO_QID, true)
+    await seedAttempt('u1', LAS_P5, false)
+    await seedAttempt('u1', LAS_P5_2, true)
+    await seedAttempt('u1', 'var-2026-verb1-LÄS-012', true)
+    await refit()
+    // After the first, authentic, answer both ratings are r1. The synthetic
+    // answers move only the section ability. The fresh authentic item then
+    // plays r1, and r1 moves against it.
+    const r1 = K_EARLY * (1 - flooredExpectedScore(0, 0))
+    const row = await abilityRow('u1', 'LÄS')
+    expect(row).toMatchObject({
+      attempts: 4,
+      syntheticAttempts: 2,
+      authenticAbility: r1 + K_EARLY * (1 - flooredExpectedScore(0, r1)),
+    })
+    expect(row?.ability).not.toBe(row?.authenticAbility)
+    expect(await itemDifficulty('var-2026-verb1-LÄS-012')).toEqual({
+      difficulty: K_EARLY * (flooredExpectedScore(0, r1) - 1),
+      attempts: 1,
+    })
+  })
+
+  it('moves the authentic-only rating with its own K: 30 synthetic answers move no authentic item', async () => {
+    for (let i = 0; i < K_DECAY_AFTER; i++) {
+      await seedAttempt('u1', P5_LAS[i % P5_LAS.length], i % 3 !== 0)
+    }
+    await seedAttempt('u1', REPRO_QID, true)
+    await refit()
+    // The section ability is settled (K_SETTLED), but the authentic-only
+    // rating has no authentic answer yet (K_EARLY). The item moves exactly as
+    // for a user with no answer at all.
+    const fresh = K_EARLY * (1 - flooredExpectedScore(0, 0))
+    expect(await abilityRow('u1', 'LÄS')).toMatchObject({
+      attempts: K_DECAY_AFTER + 1,
+      syntheticAttempts: K_DECAY_AFTER,
+      authenticAbility: fresh,
+    })
+    expect(await itemDifficulty(REPRO_QID)).toEqual({ difficulty: -fresh, attempts: 1 })
+  })
+
+  it('refuses a row with synthetic answers and no authentic-only rating, and writes nothing', async () => {
+    // What the fit before the authentic-only rating left behind. drizzle/0015
+    // resets such state. Guessing the rating could put synthetic answers back
+    // into authentic items.
+    const userId = await ensureUser('old')
+    await getDb(d1 as unknown as D1Database)
+      .insert(userAbility)
+      .values({ userId, section: 'LÄS', ability: 30, attempts: 3, syntheticAttempts: 2 })
+    await seedAttempt('old', REPRO_QID, true)
+    const before = await ratings()
+    await expect(refit()).rejects.toThrow(/no authentic_ability/)
+    expect(await ratings()).toEqual(before)
+    expect(
+      await getDb(d1 as unknown as D1Database)
+        .select()
+        .from(fitState),
+    ).toEqual([])
+  })
+
+  // Property-style: a history mixing authentic, synthetic and unknown answers,
+  // fitted in one to three runs, against the same history with every synthetic
+  // answer deleted, fitted in one run.
+  const MIXED = ['m1', 'm2']
+  const PURE = ['p1', 'p2']
+
+  function mixedHistory(r: () => number): Answer[] {
+    return Array.from({ length: 80 + Math.floor(r() * 80) }, () => {
+      const user = pick(r, [...MIXED, ...PURE])
+      const roll = r()
+      const pool = PURE.includes(user) || roll < 0.45 ? AUTHENTIC : roll < 0.9 ? P5 : UNKNOWN
+      return { user, qid: pick(r, pool), correct: r() < 0.6, kind: pick(r, KINDS) }
+    })
+  }
+
+  for (const trial of [21, 22, 23, 24, 25]) {
+    it(`trial ${trial}: authentic ratings are exactly the fit with every synthetic answer deleted`, async () => {
+      const r = rng(trial)
+      const history = mixedHistory(r)
+      expect(syntheticThenAuthentic(history)).toBe(true)
+      const runs = 1 + Math.floor(r() * 3)
+      const split = (n: number) => Math.floor((history.length * n) / runs)
+
+      for (const user of [...MIXED, ...PURE]) await ensureUser(user)
+      for (let n = 0; n < runs; n++) {
+        for (const h of history.slice(split(n), split(n + 1))) {
+          await seedAttempt(h.user, h.qid, h.correct, h.kind)
+        }
+        await refit()
+      }
+      const mixed = await ratings()
+
+      d1 = makeTestD1()
+      sessionByUser.clear()
+      for (const user of [...MIXED, ...PURE]) await ensureUser(user)
+      for (const h of history) {
+        if (classifyAttempt(h.qid).source === 'synthetic') continue
+        await seedAttempt(h.user, h.qid, h.correct, h.kind)
+      }
+      await refit()
+      const control = await ratings()
+
+      // Every authentic item, byte for byte.
+      expect(JSON.stringify(mixed.items.filter((i) => i.source === 'authentic'))).toBe(
+        JSON.stringify(control.items),
+      )
+      // Every (user, section) without a synthetic answer, every pure user's
+      // among them, byte for byte. With synthetic answers, the authentic-only
+      // rating and its count are that (user, section) of the control, or the
+      // fresh 0 and 0 where the control has no row.
+      const key = (a: { userId: number; section: string }) => `${a.userId}/${a.section}`
+      const controlRows = new Map(control.abilities.map((a) => [key(a), a]))
+      for (const row of mixed.abilities) {
+        const without = controlRows.get(key(row))
+        if (row.syntheticAttempts === 0) {
+          expect(JSON.stringify(row)).toBe(JSON.stringify(without))
+        } else {
+          expect(row.authenticAbility).toBe(without?.ability ?? 0)
+          expect(row.attempts - row.syntheticAttempts).toBe(without?.attempts ?? 0)
+        }
+      }
+      const mixedKeys = new Set(mixed.abilities.map(key))
+      expect(control.abilities.filter((a) => !mixedKeys.has(key(a)))).toEqual([])
+      expect(mixed.abilities.some((a) => a.syntheticAttempts === 0 && a.attempts > 0)).toBe(true)
+    })
+  }
+
+  // Where no user answers an authentic question after a synthetic one of its
+  // section, the fit at 782f9c2 was already right. Every rating there is what
+  // it fitted, the estimates that count synthetic answers included. The
+  // digests were recorded against it. Only the new column differs.
+  const HEAD_DIGESTS: Array<[number, string]> = [
+    [31, '45e20d673fafbea35ed4562a4b5974eea21e606b1a069c21be00c499c506e658'],
+    [32, 'f92c2134d7f725fc8fdd96b24654086ca6170cb44f70bd69cdf8a3f7c384434b'],
+    [33, 'c86b85157a8c0518096cf9ef169c2f1792ad23b5366b8b97a1b00490821bafc2'],
+  ]
+  for (const [trial, digest] of HEAD_DIGESTS) {
+    it(`trial ${trial}: without the R2-B1 case every rating is what 782f9c2 fitted`, async () => {
+      const r = rng(trial)
+      const split = new Set<string>()
+      const history = mixedHistory(r).filter((h) => {
+        if (!FITTED_KINDS.has(h.kind)) return true
+        const key = `${h.user}/${extractSection(h.qid)}`
+        const { source } = classifyAttempt(h.qid)
+        if (source === 'synthetic') split.add(key)
+        return !(source === 'authentic' && split.has(key))
+      })
+      expect(syntheticThenAuthentic(history)).toBe(false)
+      for (const user of [...MIXED, ...PURE]) await ensureUser(user)
+      for (const h of history) await seedAttempt(h.user, h.qid, h.correct, h.kind)
+      await refit()
+      const { items, abilities } = await ratings()
+      expect(items.some((i) => i.source === 'synthetic')).toBe(true)
+      expect(abilities.some((a) => a.syntheticAttempts > 0)).toBe(true)
+      // The columns 782f9c2 had, in its order.
+      const atHead = {
+        items,
+        abilities: abilities.map((a) => ({
+          userId: a.userId,
+          section: a.section,
+          ability: a.ability,
+          attempts: a.attempts,
+          syntheticAttempts: a.syntheticAttempts,
+        })),
+      }
+      expect(createHash('sha256').update(JSON.stringify(atHead)).digest('hex')).toBe(digest)
     })
   }
 })
