@@ -848,3 +848,108 @@ LANE DONE: hpf-c5tb.5
 - 2026-10-08 [S:ci-vh54b|W:hpf-c5tb.5|H:research|E:2b1dabd] Read the design (§C/§D, Amendment 1), LAYER2-RENDERING.md, the app's explanation type, the schema, the exporter's gates, the pilot, X1, this worklog, BATCHES.json and the LÄS catalog. Read and re-solved all 16 units, 42 questions, from the student text: all keys hold.
 - 2026-10-08 [S:ci-vh54b|W:hpf-c5tb.5|H:author|E:pipeline/synthetic/infold/explanations/x2-las.json] Wrote the 42 entries in canonical form, in four chunks. `--check-batch x2` passed on the first run (970 strings); lint clean; 1985 passed, 7 xfailed; the partial assembly of pilot + X1 + X2 passes.
 - 2026-10-08 [S:ci-vh54b|W:hpf-c5tb.5|H:review|E:pipeline/synthetic/infold/explanations/x2-las.json] Second-reader round 1 (three readers): 16 errors and 77 minor, all checked and applied, plus the att-clause sweep (6). Round 2: 8, applied; the uncapped sweep had already caught reader C's one. Final checks green, reruns identical.
+
+### X2 review fix
+
+Bead `hpf-c5tb.6`: review finding B1 on PR #381 (review bead `hpf-gj5p`). B1 is an explanation that gives the writer a position the passage does not state, in `las-b13-003` q2. The bead also asked for a sweep of all 42 X2 entries for the same defect class.
+
+**Snapshot and boundaries**
+- Claimed with `gc hook --claim --json` (`hpf-c5tb.6`, assignee `gc__implementation-worker-ci-bs7qz`, route `hpfetcher/gc.implementation-worker`); `bd show hpf-c5tb.6 --json` matched the id, status `in_progress`, the assignee and `gc.routed_to`.
+- Branch `codex/hpf-c5tb-x2` at `77064a5dceb47cc309a72d2e6003fab805e08a62`, as the bead states; no tracked change at start. `x2-las.json` sha256 was `1369803f…`, the value the Batch X2 section records.
+- No git writes and no network; the changes are uncommitted. The untracked runtime, skill and sandbox paths present at start are untouched.
+- The review worklog `hpf-gj5p.md` lives in the vault, which this lane's sandbox cannot read (the read was refused). B1 is taken from the bead text and from `hpf-gj5p`'s closing note. The reviewer's suggested Swedish was therefore not available. The new wording is this lane's own, checked against the passage, which the bead allows ("or equivalent wording").
+- The bead names no validator, so none was run (`gc.check_path` is the post-close dispatcher check, as for the earlier beads).
+
+**B1.** `p5-las-b13-003-r1-LÄS-002`, "Vilken invändning riktar textförfattaren mot förslaget att utöka flaggdagslistan?", key D. Option C: "Förslaget lägger ansvaret för att dagarna märks på fastighetsägarna i stället för på den myndighet som fastställer listan."
+- distractor C `why_wrong`
+  - before: "Textförfattaren klagar inte på att ansvaret läggs på fastighetsägarna. Tvärtom efterlyses en rad i driftbudgeten och ”en person som vet att raden gäller henne” – ansvaret ska alltså ligga där stängerna sköts, inte hos den som fastställer listan (steg 3)."
+  - after: "Texten säger aldrig att förslaget lägger ansvaret på fastighetsägarna, och textförfattaren klagar inte på något sådant. Invändningen gäller antagandet att seden bärs av almanackan: så länge ingen har uppgiften att sköta stängerna märks de nya dagarna inte (steg 2–3)."
+- step 4 ("Pröva alternativen"), its last clause
+  - before: "… och C vill lägga ansvaret hos den som fastställer listan, fast textförfattaren efterlyser någon som sköter stängerna."
+  - after: "… och C påstår att förslaget lägger ansvaret på fastighetsägarna, vilket texten aldrig säger."
+
+Why the old text was wrong:
+- The passage never mentions who sets the list, and never says responsibility must be kept from that authority. The contrast "där stängerna sköts, inte hos den som fastställer listan" was invented.
+- What the writer asks for, ”en rad i driftbudgeten, och en person som vet att raden gäller henne”, says nothing about which body provides it.
+- "Tvärtom" turned the writer's request into the opposite of a complaint about the property owners, which the passage does not say either.
+- "(steg 3)" pointed at a step that does not contain ”en person som vet att raden gäller henne”.
+
+What the new text does:
+- It rejects C on what C invents. The proposal in stycke 5 (”Nu föreslås att listan över allmänna flaggdagar ska utökas.”) says nothing about responsibility or property owners, and the writer complains about no such transfer.
+- It then states the real objection: the assumption (step 2) and the unnoticed days (step 3), hence "(steg 2–3)".
+- Origin: the framing came from the unit's rationale ("hela texten placerar ansvaret hos den som äger stången och betalar driften"). That makes five X2 rationale claims that did not hold, after the four of round 1.
+
+**The whole entry, re-verified against the passage.** One more sentence gave the writer a position the passage does not take, and is fixed. Reader C (below) had marked it borderline:
+- distractor B `why_wrong`, its last sentence
+  - before: "Textförfattaren vill inte skjuta upp förslaget utan peka på vad som saknas: någon som sköter stängerna (steg 2–3)."
+  - after: "Invändningen gäller inte när förslaget ska genomföras, utan vad som saknas: någon som sköter stängerna (steg 2–3)."
+  - The passage takes no stance on postponing. ”Mot dagarna i sig har jag ingenting” and ”jag skulle flagga för den utan invändning” are about the days, not about timing. The new sentence says what the objection is about (stycke 5–6) and still answers B's "bör vänta". The sentence before it, "Texten för aldrig fram den som ett skäl att vänta.", is unchanged.
+
+The rest holds and is unchanged:
+- solution_path and steps 1–3 and 5: the quotations are verbatim (stycke 5 and 6). "ger bara fler dagar som inte märks" paraphrases ”Fler dagar på en lista som ingen verkställer ger fler dagar som inte märks”, and the key's own "ändrar ingenting" says the same.
+- A: ”Mot dagarna i sig har jag ingenting.” and the "väl motiverad" concession are in the text, and the erosion argument is not.
+- B, first two sentences: the economy appears only in Hollstensson's hedged caveat (”kan ha drivit fram”), never as a reason to wait.
+- C `why_tempting`, "Texten handlar om vem som ska ansvara för flaggningen": a description of the lure. The passage is about who has the task: ”ingen längre har uppgiften” (stycke 2), entreprenad against egen regi (stycke 3), ”en person som vet att raden gäller henne” (stycke 6). Kept.
+- technique and pitfall: true of the passage.
+
+**Sweep.** The class, as the bead defines it: an explanation that gives the writer, a named person or "texten" a position, motive or contrast that the passage does not state. Every step text and every `why_wrong` of the 42 entries was re-read against the unit's student-facing text: title, passage with glossary and signature, prompts and options. So were solution_path, `why_tempting`, technique and pitfall. Two independent passes:
+- this lane's own read of all 16 units;
+- three read-only second readers (general-purpose subagents of this session), split as in the X2 rounds (b8-003 … b10-001; b10-002 … b12-002; b12-003 … b14-001). Each was given the class and B1 as the worked example, with the rationales marked as unverified notes. Each was asked to quote the passage for every finding and to classify it as a true instance or borderline. Their reports are not checked in.
+
+Readers: 0 true instances, 5 borderline (A 1, B 2, C 2). Four of the five were also on this lane's own list. The fifth, the label "vänder på orsak och verkan", this lane had checked and cleared in each entry. Each borderline item was decided against the passage:
+- fixed, if the explanation states a position or contrast that the passage does not draw;
+- kept, if the passage states or clearly implies it.
+
+Fixed (one, besides B1's entry):
+- `p5-las-b9-001-r1-LÄS-004`, distractor A `why_wrong` (reader A and this lane)
+  - before: "Texten säger aldrig att bokbidraget avgjorde vilka cirklar som fortsatte. Mönstret som träder fram gäller ansvaret, inte bidraget (steg 2)."
+  - after: "Texten säger aldrig att bokbidraget avgjorde vilka cirklar som fortsatte. Bidraget hör till stadgan i andra stycket, och mönstret som träder fram gäller ansvaret (steg 2)."
+  - The old sentence was the passage's own sentence, ”Mönstret som ändå träder fram gäller ansvaret snarare än stoffet”, with the contrast swapped from "stoffet" to "bidraget". It cited step 2, which quotes the original.
+  - The text contrasts responsibility with what was read, never with the grant. A learner who checks step 2 meets a different contrast from the one cited, and could take "stoffet" for the book grant, which was paid in books.
+  - The new sentence keeps the true content: the grant belongs to the stadga (stycke 2), as q1's D `why_wrong` already says, and the pattern concerns responsibility.
+
+Kept (the passage states or clearly implies them):
+- **"A vänder på orsak och verkan"** as the step-4 label of a reversed distractor in b8-003 q1, b9-001 q1, b10-001 q1, b10-002 q1 and b12-001 q1 (reader B marked b12-001 borderline). The same wording appears in b8-003 q1 A's `why_wrong` and as "D vänder på orsak och verkan" in b9-003 q2. Each passage gives the relation a direction:
+  - b8-003: ”vad som händer i en bygd när det sista bankkontoret stänger”;
+  - b9-001: ”där ledaren var hämtad ur den egna kretsen tycks …”, with the mechanism in stycke 4;
+  - b10-001: the channels were cleared in the 1920s and the days rose ”under de följande decennierna”;
+  - b10-002: ”tycktes undervisningen förändras … började”;
+  - b12-001: ”därför måste” for the forced location;
+  - b9-003: an explicit causal story.
+
+  The hedges stay in the same steps. Where the researcher calls the finding a tendency, not an explanation (b9-001, b10-001, b12-001), X1's label "vänder på sambandet" would be more exact. That is a consistency polish, not a false claim, and it is left for the review.
+- **b10-003 q2 step 2, "Skribenten drar samma slutsats"** (reader B): the writer ties the objection to Almstierna's point (”Här ligger min invändning.”), and both reject the count as the measure (”antalet anlagda rastgårdar”; ”inte för fler”).
+- **b13-003 q2 C `why_tempting`** (reader C, secondary): see the entry above.
+- **Cleared by the readers and by this lane:**
+  - b8-003 q1 A "…, inte varför kontoren försvann": the scope of the study as the text defines it;
+  - b9-003 q2 C "för att avvisa den": ”Den räcker inte.”, plus the counter-evidence;
+  - b10-001 q3 C "Rensningen fortsatte alltså efter själva flottningen": call-outs ”varje höst”, always after 15 September;
+  - b14-001 q2 C "…, inte var råvaran fanns": ”Den skillnaden avgjorde var hantverken kunde bedrivas” and ”trots att skogen längre bort var minst lika god”;
+  - b12-003 q2 step 3, "Elmeruds mätningar stöder tanken";
+  - b13-002 q2 D `why_wrong`;
+  - b14-001 q1 D and its pitfall;
+  - b14-001 q4 step 3, which step 4 marks as an inference.
+
+**Verification (final tree)**
+- `python3 pipeline/synthetic/infold/explanation_batches.py --check-batch x2` → `batch x2: 16 units / 42 questions in pipeline/synthetic/infold/explanations/x2-las.json; every explanation gate passed, learner lint clean (970 strings)`. The edits were in place, and the canonical-bytes gate passes, so no regeneration was needed.
+- `lint_learner_output.py pipeline/synthetic/infold/explanations/x2-las.json` → `clean — 1 file(s)`; `--strict` also clean.
+- `python3 -m pytest .github/contract-tests pipeline/synthetic/evidence/tests pipeline/synthetic/gates/scripts/tests pipeline/synthetic/infold/tests -q -p no:cacheprovider` → **1985 passed, 7 xfailed** (41 s), the Batch X2 numbers. `test_every_las_quotation_is_verbatim_from_its_unit` is among them. X2 now has 255 quotations: the old C `why_wrong`'s ”en person som vet att raden gäller henne” went with it (closing marks 512 → 510). No new quotation was added.
+- Diff: a scratchpad script (`python3 <file>`, not checked in) compared every learner field of the 42 entries with `git show HEAD:…/x2-las.json`. Exactly 4 fields in 2 entries changed, the four above:
+  - `p5-las-b13-003-r1-LÄS-002`: step 4, B `why_wrong`, C `why_wrong`;
+  - `p5-las-b9-001-r1-LÄS-004`: A `why_wrong`.
+
+  Qid order, field sets and framework ids are unchanged.
+- Changed files (`git status`): `pipeline/synthetic/infold/explanations/x2-las.json`, this worklog.
+- sha256:
+  - `pipeline/synthetic/infold/explanations/x2-las.json` `9071320aeb310356102cbbace8f9beaa4cff107e7235f349818e68da110081c5` (HEAD `1369803f…`);
+  - unchanged: `BATCHES.json` `fd38ed33…`, `explanation_batches.py` `34789ae1…`, `x1-las.json` `6c72164b…`, `data/explanations/p5-pilot.json` `fd96f43f…`, `tests/test_infold_explanation_batches.py` `7c9f68cd…`, and the unit `batch13/candidates-final/las-b13-003.json` `4121c6ce…`, the roster's value.
+
+**Handoff**
+- Ready for an exact-head re-review of the four changed fields.
+- Left for the review: the "orsak och verkan" label (a polish; see Kept).
+- Committing, pushing and updating PR #381 are outside this lane.
+
+**Bead note**
+
+X2 review fix on 77064a5, uncommitted: B1 fixed in p5-las-b13-003-r1-LÄS-002 (C why_wrong and step 4 no longer give the writer a contrast between whoever runs the poles and the authority that sets the list; C is rejected on what it invents, a proposal moving responsibility to property owners); class sweep of all 42 entries (own read plus three second readers: 0 true instances, 5 borderline) fixed two more, the B why_wrong of that entry (a stance on postponing that the passage never takes) and b9-001 q4 A why_wrong (the contrast of the passage itself swapped from stoffet to bidraget under a step citation), and kept three with reasons (the orsak och verkan label left as a polish); 4 fields in 2 entries; check-batch x2 clean (970 strings), lint default and strict clean, 1985 passed, 7 xfailed. Evidence: docs/worklog/hpf-c5tb.md, section X2 review fix.
+LANE DONE: hpf-c5tb.6
