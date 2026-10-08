@@ -4,6 +4,8 @@
 
 *Original status line:* **Draft for owner approval · hpf-6afv · 2026-10-07.** Recommendations below are proposals, not implementation authority. Research snapshot: detached `6a4511431652d0b66fd1ea2523807f286f3d772d`; evidence and reproducible census: `docs/worklog/hpf-6afv.md:13`.
 
+> **⚠ AMENDED 2026-10-08 — see [Amendment 1](#amendment-1-2026-10-08-läs-and-elf-switch-to-p5) at the end.** Decisions A, B, D, E, the loader/flow clauses of C, and the phased plan below are superseded where the amendment says so; the rest of C, and F and G, stand.
+
 ## 1. Goal and non-goals
 
 Deliver owner-approved LÄS/ELF reading units as clearly disclosed practice, with useful explanations and trustworthy progress. This implements runbook step 14, after owner adjudication (`pipeline/synthetic/BATCH-RUNBOOK.md:60`, `:72`). Preserve the product's zero-knowledge reading protocols, ambition of 2.0 and low-friction ADHD-PI experience: one next action, visible progress, optional explanatory depth (`.taskmaster/docs/prd.txt:46`, `:59`, `:63`, `:96`, `:113`, `:217`).
@@ -125,3 +127,35 @@ Treat these as our authored practice texts, not UHR questions or evidence of UHR
 ## 5. Open owner questions
 
 Approve A–G individually or with overrides. Confirm the exact disclosure wording, initial opt-in surface and exclusion from automatic adaptive/mastery signals. Ratify the legacy batch1–13 approval roster and preserve `elf-b14-002` retirement unless explicitly reversed in later work. Confirm the earlier topic-pair spacing recommendation when building the roster (`pipeline/synthetic/ADJUDICATION-MASTER.md:28`). Require evidence resolving the recorded batch18/19 CI hold before any infold implementation; gate success and content approval must remain distinct.
+
+---
+
+## Amendment 1 (2026-10-08): LÄS and ELF switch to P5
+
+**Owner direction 2026-10-08** (beads hpf-94i5 pause, this amendment): the product will not serve the authentic, copyrighted UHR reading questions. **LÄS and ELF switch to P5 synthetic units now**; ORD, MEK, XYZ, KVA, NOG and DTK keep their authentic questions until synthetic versions exist. **P5 answers count toward the projected score now**, clearly labelled as not yet calibrated. This supersedes the earlier framing of P5 as opt-in extra practice. The 2026-07-11 decision (PRD §9.2) that copyright is not a launch blocker is narrowed accordingly for LÄS/ELF; the other sections are unchanged for now.
+
+| | Original decision (2026-10-07) | Amended (2026-10-08) |
+|---|---|---|
+| **A** Where P5 appears | Opt-in inside LÄS/ELF drills, default off; diagnostic and Provpass authentic-only | **LÄS/ELF drills, Provpass and the diagnostic use P5 only.** Authentic LÄS/ELF questions, passages and explanations are no longer served to students. No opt-in setting. Whole passages, never split; exclusion pairs (e.g. las-b18-001 / las-b19-001) enforced in every picker. |
+| **B** Disclosure | Badge + inline note; "Dina svar räknas som träning men påverkar inte ditt uppskattade HP-resultat." | Keep the persistent **ÖVNINGSTEXT** badge and the authorship note (»Den här texten och frågorna är skapade för övning av HP-Coach. De kommer inte från ett tidigare högskoleprov. Personer, citat och händelser kan vara påhittade.«). Replace the results line with a caveat wherever an LÄS/ELF-based estimate is shown: **»Uppskattningen för LÄS och ELF bygger på HP-Coachs övningstexter, vars svårighetsgrad ännu inte är kalibrerad mot riktiga HP-resultat.«** |
+| **D** Explanations | 19-question pilot, the rest later | **Every exported P5 question needs a reviewed Layer-2 explanation before the switch** (340 questions; 19 done in PR #376). This is now on the critical path. Same format and export gate as the pilot. |
+| **E** Stats | P5 kept out of every authentic assessment input | **P5 answers feed section scores, the weekly trend, ability, Provpass scoring and the HP-scale projection now.** Provenance stays server-side (`authentic` / `synthetic` / `unknown`, never client-trusted) and every synthetic contribution is marked `uncalibrated` in the data so it can be recalibrated later (e.g. against users' real HP results or anchor items) without losing history. Unknown ids still fail closed. Mastery/framework progress and adaptive-review counts may take P5 answers where the item has a valid framework_id. |
+| **C** Data path | Separate P5 export; flow ending in `contentFetch → opted-in drill/replay`; "keep the authentic index unchanged; add P5 only to explicit practice loaders" | **Data path, ids, versioning, R2/manifest delivery and unit-level retirement unchanged** (separate deterministic P5 export, revisioned qids, synthetic `exam_id`, `provpass: null`). **Superseded:** the flow now ends in `contentFetch → LÄS/ELF drills, Provpass, diagnostic and replay`, and P5 is the **only** LÄS/ELF source for every picker, not an opt-in practice loader. The authentic index stays in the repository and R2 but its LÄS/ELF entries are no longer selected for students (ORD/MEK/quant entries unchanged). |
+| F, G | — | Unchanged. |
+
+**Revised phased plan** (replaces §4):
+
+| PR | Bead | Changes |
+|---|---|---|
+| 1 — Export contract | hpf-535m | Shipped (PR #375). |
+| 2 — Explanations pilot | hpf-no7l | Shipped (PR #376). |
+| 2b — Explanations for all P5 questions | new | Reviewed Layer-2 entries for the remaining 321 questions, in batches, each through the export gate and a language/correctness review. |
+| 3 — Provenance + uncalibrated scoring | hpf-94i5 (rescoped) | Server-side provenance; P5 counted in assessment with an `uncalibrated` marker; caveat data exposed to the app. Migration SQL committed, **not applied** (database application is operator-authorized). |
+| 4 — LÄS/ELF switch | hpf-8s3r (rescoped) | LÄS/ELF drills, Provpass and diagnostic serve P5 only; authentic LÄS/ELF removed from student delivery; ÖVNINGSTEXT badge, authorship note and estimate caveat; replay and retirement handling. |
+| 5 — Release packaging | hpf-itny | As before; activation and deployment separately authorized. |
+
+**Owner answers (2026-10-08):**
+1. *Provpass reuse with a smaller LÄS/ELF pool:* accepted for now — the remedy is more P5 batches, not reusing authentic content. Batches 20–23 (staged on `backup/p5-batch20-23-wip`, beads hpf-ldjj / hpf-mjml / hpf-l77g / hpf-be9e) therefore matter for pool size and come after the infold in the queue.
+2. *Removal scope:* **stop serving only.** Authentic LÄS/ELF questions, passages and explanations stay in the repository, `data/` and R2; the product simply no longer serves them to students. No deletion.
+
+
