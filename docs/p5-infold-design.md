@@ -153,5 +153,8 @@ Approve A–G individually or with overrides. Confirm the exact disclosure wordi
 | 4 — LÄS/ELF switch | hpf-8s3r (rescoped) | LÄS/ELF drills, Provpass and diagnostic serve P5 only; authentic LÄS/ELF removed from student delivery; ÖVNINGSTEXT badge, authorship note and estimate caveat; replay and retirement handling. |
 | 5 — Release packaging | hpf-itny | As before; activation and deployment separately authorized. |
 
-**Open points for the owner:** (1) Provpass's verbal half needs 20 LÄS + 20 ELF questions per pass; with 136 LÄS / 204 ELF P5 questions, repeated passes will reuse texts sooner than with the authentic bank — acceptable for now? (2) Whether authentic LÄS/ELF content should also be removed from the repository/R2 or only from what students are served (this amendment assumes served-only).
+**Owner answers (2026-10-08):**
+1. *Provpass reuse with a smaller LÄS/ELF pool:* accepted for now — the remedy is more P5 batches, not reusing authentic content. Batches 20–23 (staged on `backup/p5-batch20-23-wip`, beads hpf-ldjj / hpf-mjml / hpf-l77g / hpf-be9e) therefore matter for pool size and come after the infold in the queue.
+2. *Removal scope:* **stop serving only.** Authentic LÄS/ELF questions, passages and explanations stay in the repository, `data/` and R2; the product simply no longer serves them to students. No deletion.
+
 
