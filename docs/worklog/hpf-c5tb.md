@@ -1,7 +1,7 @@
 ---
 bead: "hpf-c5tb"
 project: "hpfetcher"
-status: "batch_x4_implemented_uncommitted"
+status: "batch_x4_review_fix_uncommitted"
 ---
 
 # Worklog — hpf-c5tb
@@ -1531,3 +1531,211 @@ LANE DONE: hpf-c5tb.8
 - 2026-10-08 [S:ci-0mh7o|W:hpf-c5tb.8|H:red|E:pipeline/synthetic/infold/tests/test_infold_explanation_batches.py] Prototyped the ELF rule on the pilot's 169 quotations (0 failures), wrote the 3 tests with a stub of the old behaviour: 3 failed, 1 passed. Rule in place: 4 passed; tightened to the text's own apostrophes.
 - 2026-10-09 [S:ci-0mh7o|W:hpf-c5tb.8|H:author|E:pipeline/synthetic/infold/explanations/x4-elf.json] Wrote the 52 entries in four scratchpad chunks; the audit and the new test caught one misquotation in the draft; `--check-batch x4` passed on the first run (1148 strings); 13 mutants caught; 1988 passed, 7 xfailed.
 - 2026-10-09 [S:ci-0mh7o|W:hpf-c5tb.8|H:review|E:pipeline/synthetic/infold/explanations/x4-elf.json] Stance self-check (15 fields), round 1 with four readers (110 findings, 35 errors), round 2 with four fresh readers (15), each checked against the passages and applied; final checks green; reruns byte-identical.
+
+### X4 review fix
+
+Bead `hpf-c5tb.9`: review finding B1 on PR #383 (review bead `hpf-cb38`). The ELF quotation test let fabricated cloze quotations through as "language examples". The fix names the permitted examples explicitly.
+
+**Snapshot and boundaries**
+- Claimed with `gc hook --claim --json` (`hpf-c5tb.9`, assignee `gc__implementation-worker-ci-sd10p`, route `hpfetcher/gc.implementation-worker`); `bd show hpf-c5tb.9 --json` matched the id, status `in_progress`, the assignee and `gc.routed_to`.
+- Branch `codex/hpf-c5tb-x4` at `3b13071de07f23119a29abe6cf3ef92cda66633e`, as the bead states, tracking the local `origin/codex/hpf-c5tb-x4` (not fetched). No tracked change at start. The test module's sha256 was `77563a40…` and `x4-elf.json`'s was `578e527c…`, the values the review and the Batch X4 section record.
+- No git writes and no network; the changes are uncommitted. The untracked runtime, skill and sandbox paths present at start are untouched.
+- The review worklog `hpf-cb38.md` lives in the vault, which this lane's sandbox cannot read (the read was refused). B1, its mutation table and its quotation classification were read from the review's scratch evidence in `/tmp/hpf-cb38-review/`: `report-append.md`, `probe_quotations.py`, `quotation-mutations.json` and `quote-results.json`.
+- The bead names no validator, so none was run (`gc.check_path` is the post-close dispatcher check, as for the earlier beads).
+- Lane policy refused `git -C`, `python3 -c`, chained commands and environment prefixes other than `PYTHONDONTWRITEBYTECODE`. The scripts named below ran from the session scratchpad as `python3 <file>` and are not checked in.
+
+**B1.** The old rule had an exception in `_elf_quotation_problems`. In a gap question's entry, a quotation that was not the unit's text passed whenever it shared no run of four words with that text. Missing overlap is no evidence of a language example. The review made three corruptions of `elf-b1-002` gap 2, and each one passed the full X4 test:
+- a reversed source claim, “Margins are wide”;
+- a filled frame with one word changed, “Their popularity has never deepened”;
+- a blank frame with two words changed, “If anything, our ___ has never deepened.”
+
+**The fix**
+- New file `pipeline/synthetic/infold/explanations/LANGUAGE-EXAMPLES.json`, in canonical bytes and format `p5-elf-language-examples-v1`. It lists the reviewed language examples. Each listing is `{qid, field, text, kind}`, keyed exactly by (qid, field path, words).
+  - The field path names a learner field of the entry: `solution_path`, `steps[i].title`, `steps[i].text`, `distractors[i].why_tempting`, `distractors[i].why_wrong`, `technique` or `pitfall`.
+  - `kind` is one of expression, wrong collocation, gloss, false friend and word.
+  - The file's `rule` states all this for the authors of X5–X7.
+- The rule in the test module: a quotation passes in two cases only.
+  - It is the unit's text. This is the unchanged LÄS rule, plus three ELF forms: the frame with `___`, a gap filled with one of its own question's options, and a closing full stop.
+  - Its exact words are listed for that field of that qid, and the qid is a gap question's.
+
+  Nothing is inferred from overlap. An unlisted quotation, the listed words in another field or entry, and a reading entry are all flagged.
+- The list itself is checked (`_listing_problems`). A listing is refused when:
+  - it is given twice;
+  - no gap question's entry in a batch file present has its qid;
+  - its words are no quotation in that field;
+  - its words are the unit's text, which needs no listing;
+  - its words share a run of four words with the text. This guard keeps a longer misquoted frame off the list. It cannot catch a shorter one, so the review of each listing covers those.
+
+  Together with the main test, this makes the list exactly the language examples of the batch files present.
+- Code changes:
+  - `_learner_strings` became `_learner_fields`, which returns (field, text) pairs in the entry's order.
+  - `_quotations` and `_is_units_text` were factored out of the loop.
+  - `_elf_quotation_problems(fields, texts, examples)` and `_elf_entry_problems(qid, entry, units, rows, examples)` take the listed examples. The default is none, so they fail closed.
+  - `_elf_entries` reads every ELF entry of every batch file present.
+  - `_language_examples` reads the list and checks its form: canonical bytes, key order, non-empty strings and a known kind. The `language_examples` fixture supplies it to the tests.
+- Unchanged byte for byte, in source text and AST, compared with HEAD (`las_unchanged.py`):
+  - the LÄS pieces: `QUOTED`, `_plain`, `SENTENCE`, `_in_order`, `_verbatim` and the two LÄS tests;
+  - the ELF pieces: `ELF_SINGLE`, `WORD`, `LANGUAGE_RUN`, `_apostrophes`, `_elf_texts`, `_runs` and `_by_unit`.
+
+  The gap-option substitution and the apostrophe handling live in these functions, so they are unchanged as well.
+
+**The list: 56 listings (57 quotations), each read in context**
+- **Source.** The list holds the quotations that are not the unit's text in every gap entry of the batch files present, which today means the ELF pilot and X4.
+  - Quotations read: 839 (pilot 169, X4 670).
+  - Not the unit's text: 57, all in gap entries. No reading entry has one.
+  - `find_examples.py` and `show_context.py` printed each of the 57 in its field, beside the gap sentence, the options and the key.
+  - `write_examples.py` wrote the file from this lane's classification. It refuses a text that was not reviewed, and its `--check` confirms that the committed bytes are a fresh build.
+- **Verdict.** All 56 listings are genuine examples. Each is presented as language ("the fixed expression", "English says", "there is no idiom", "means"), never as the passage's words.
+
+| kind | listings | examples |
+|---|---:|---|
+| expression | 32 | pilot: “Take its toll on”, “take its ___ on” (the expression's pattern), “pay the price”, “count the cost”, “Take charge”, “a pointed reminder”, “hold the floor”, “hold the field”, “strike a balance”, “cast a vote”, “cast a shadow”, “deal a blow”, “deal the cards”, “land a job”; X4: “amenable to change”, “far more”, “looks rosy”, “in use”, “slip through the cracks”, “Come apart at the seams” |
+| wrong collocation | 9 | pilot: “take its cost on”, “take its price on”, “a spirited message”, “cast a balance”, “deal a balance”, “Land a balance”; X4: “slip through the seams” |
+| gloss | 9 | pilot: “possibly”, “in the end, after a long time”; X4: “if not” and “in other respects”, the glosses of "Otherwise" |
+| false friend | 2 | pilot: “eventuellt” |
+| word | 4 | X4: “withdraw” (the base form of the key "withdrew"), “absorbing” (a form of the key "absorb"), “But” (a connective named as an example) |
+
+- By source:
+  - the pilot's `elf-b18-002` has 37 listings for 38 quotations, since “possibly” occurs twice in gap 4's step 3;
+  - X4 has 19: `elf-b2-002` gaps 3 and 5 (5), `elf-b3-002` gaps 1, 3 and 5 (7) and `elf-b4-002` gaps 1, 2 and 5 (7).
+  - These are the 38 pilot examples of the Batch X4 counts and the review's 19 "manually verified language examples or glosses".
+- Closest to a frame, and kept:
+  - “take its ___ on” (pilot gap 1, three fields) is the expression's citation form, presented as "the pattern". The passage's frame reads “takes its ___ on”.
+  - “slip through the cracks” and “slip through the seams” (X4 `elf-b4-002` gap 5) are the idiom in its citation form, under "The idiom … is" and "there is no idiom". The passage reads "slips through the ___ of".
+  - “looks rosy” (`elf-b3-002` gap 5) follows "English says that a situation “looks rosy” when …". The passage reads "look far less ___".
+  - “far more” (same entry, technique) belongs to a general rule: "When a gap follows “far less” or “far more” …". Only “far less” is the text's.
+
+**Re-run on X4 and the pilot.** The strengthened test flags nothing. No quotation in `x4-elf.json` needed a fix, and the file is unchanged (`578e527c…`). The pilot is merged and was only read. Its 37 listings cover every one of its examples.
+
+**Tests** (deterministic; they read only committed files; 20 new test items)
+- `test_every_elf_quotation_is_its_units_text_or_a_language_example` now reads the list. Each quotation must be the unit's text, or be listed for its field of its own gap entry.
+- `test_every_listed_language_example_is_a_quotation_of_its_gap_entry` (new) checks that every listing is in place.
+- `test_a_malformed_language_example_file_is_refused` (new, 6 cases): not canonical, wrong format, a missing key, an unknown kind, an extra key, empty words.
+- `test_an_elf_quotation_may_show_a_gap_or_an_option_in_it_and_close_on_a_full_stop` (the pin test, updated) keeps its accepted and flagged quotations.
+  - A language example now passes only when its exact words are listed for its field, as “take its toll on” in “…” and in ‘…’.
+  - The example is flagged when unlisted, when listed for another field, or with other words (“take its toll”).
+- `test_a_non_verbatim_quotation_in_an_elf_pilot_entry_is_flagged` (updated) uses the list and still flags the same three edits.
+- `test_a_fabricated_quotation_in_an_x4_entry_is_flagged` (new, 4 cases) applies the review's three corruptions and its reading control to the committed entries. Each is flagged.
+- `test_a_language_example_holds_only_where_it_is_listed` (new) works on the words listed for `elf-b4-002` gap 5. Each of these edits is flagged:
+  - the words changed in place;
+  - the words copied into another field;
+  - the words copied into the same field path of gap 4;
+  - the words copied into a reading entry (`elf-b4-001` q1), even with a listing for it.
+- `test_a_listing_that_is_no_language_example_in_place_is_refused` (new, 8 cases): listed twice, other words, another field, another gap entry, a reading entry, a qid in no batch file, the unit's own text (“Margins are narrow”), and a misquoted frame that shares four words with the text.
+
+**Red first.** The regression test was written first, against the helpers of 3b13071 unchanged. That version called `_elf_entry_problems` without a list, since the old helper takes none. `-k fabricated_quotation_in_an_x4` gave **3 failed, 1 passed**. The reading control passed, and each cloze corruption failed with no problem reported:
+- `('p5-elf-b1-002-r1-ELF-002', '“Margins are wide”', [])`
+- `('p5-elf-b1-002-r1-ELF-002', '“Their popularity has never deepened”', [])`
+- `('p5-elf-b1-002-r1-ELF-002', '“If anything, our ___ has never deepened.”', [])`
+
+With the list in place, 4 passed.
+
+**Mutation results: data.** Each mutation edits a real entry and runs it through the full ELF quotation test, under the rule of 3b13071 and under the new rule (`data_mutations.py`). As in the review, the batch file's read is intercepted, so no repo file is written. R rows are the review's, O rows this lane's corruptions, and P rows valid forms that must still pass.
+
+| # | Mutation | 3b13071 | New rule |
+|---|---|---|---|
+| R1 | `elf-b1-002` gap 2: “Margins are narrow” → “Margins are wide” | accepted | rejected |
+| R2 | `elf-b1-002` gap 2: “Their popularity has quietly deepened” → “… has never deepened” | accepted | rejected |
+| R3 | `elf-b1-002` gap 2: “If anything, their ___ has quietly deepened.” → “If anything, our ___ has never deepened.” | accepted | rejected |
+| R4 | `elf-b1-001` q2, the reading control: “modest ones, on the order of a few percent” → “enormous ones, on the order of ninety percent” | rejected | rejected |
+| O1 | `elf-b4-002` gap 5, a claim reversed: “recorded in neither wages nor national accounts” → “recorded in both wages and national accounts” | accepted | rejected |
+| O2 | `elf-b1-002` gap 2's frame filled with gap 1's option: “Their loyalty has quietly deepened” | accepted | rejected |
+| O3 | `elf-b2-002` gap 3, a listed gloss changed: “if not” → “if so” | accepted | rejected |
+| O4 | `elf-b4-002` gap 5, “slip through the seams” copied into `steps[2].text` | accepted | rejected |
+| O5 | `elf-b4-002` gap 4, “Come apart at the seams” (listed for gap 5 only) added | accepted | rejected |
+| O6 | `elf-b2-002` gap 3, “firm’s seven departments” added, with ’ where the text has ' | accepted | rejected |
+| O7 | pilot `elf-b18-002` gap 5, “cast a balance” copied into `steps[1].text` | accepted | rejected |
+| O8 | `elf-b4-001` q1, a reading entry, “slip through the cracks” added | rejected | rejected |
+| P1 | `elf-b1-002` gap 2's frame filled with its own option D: “Their familiarity has quietly deepened” | accepted | accepted |
+| P2 | `elf-b1-002` gap 2's blank frame filled with the key: “If anything, their popularity has quietly deepened.” | accepted | accepted |
+| P3 | `elf-b4-002` gap 5, a listed example quoted in ‘…’ instead of “…” in its own field | accepted | accepted |
+
+The review's five apostrophe controls give its results on the new helper. A curly apostrophe in a single quotation and a contraction are accepted. A wrong word, a changed apostrophe and an unclosed quotation are flagged.
+
+**Mutation results: code** (`code_mutants.py`, final tree)
+- Each mutant was applied to a scratchpad copy of the test module, with a scratch conftest that points at the real infold directory.
+- The 24 quotation and listing tests (`-k "elf or language or listing or verbatim or fabricated"`) ran against the copy.
+- The repo's module was only read: its sha256 was `012e7d79…` before and after.
+
+| Mutant | Failing tests (of 24) |
+|---|---:|
+| K0 control (unmutated copy) | 0 |
+| K1 B1's rule restored: a gap entry's quotation passes if it shares no run of four words with the text | 4 |
+| K2 the list ignored | 4 |
+| K3 a listing matched by its words alone (field ignored) | 2 |
+| K4 a listing matched by field and words (qid ignored) | 1 |
+| K5 a reading entry may use its listings | 1 |
+| K6 a listing with no such quotation in its field is kept | 3 |
+| K7 a listing of the unit's text is kept | 1 |
+| K8 no four-word-run guard on a listing | 1 |
+| K9 a listing given twice is kept | 1 |
+| K10 a listing outside a gap entry is kept | 1 |
+| K11 the list file need not be canonical | 1 |
+| K12 kinds not checked | 1 |
+| K13 field paths numbered from 1 | 11 |
+| M1 no ELF quotation read (the behaviour before `hpf-c5tb.8`) | 8 |
+| M2 no gap filled with an option | 7 |
+| M6 no full-stop allowance | 3 |
+| M7 any final punctuation may close a quotation | 1 |
+| M8 unpaired marks not flagged | 1 |
+| M9 straight quotation marks not flagged | 1 |
+| M10 apostrophes unified when comparing | 1 |
+| M11 gap markers not shown as `___` | 1 |
+| M12 single-quoted quotations not read | 1 |
+| M13 no question is a gap question | 3 |
+
+The M rows are the Batch X4 mutants that still apply, with their numbers kept. M3–M5 tested the overlap allowance this fix removes; K1, K2 and K5 take their place.
+
+**Known limits** (not changed here; for the review)
+- A listed example's usage claim is not checked for being correct English. The readers and the review check it, as before.
+- The four-word guard cannot keep a misquoted frame of fewer than four words off the list. The review of each listing covers it.
+- The LÄS rule, kept byte for byte, matches a quotation as a substring of the text, so a quotation may begin or end inside a word. It also allows "…" for words left out within one sentence. Both apply to ELF too.
+
+**For X5–X7.** Each language example in a gap entry is listed in `LANGUAGE-EXAMPLES.json` in the batch's own PR: its qid, field path, exact words and kind. The batch's review reads each new listing in context. Anything else in quotation marks must be the unit's text.
+
+**Verification (final tree)**
+- `python3 pipeline/synthetic/infold/explanation_batches.py --check-batch x4` → `batch x4: 16 units / 52 questions in pipeline/synthetic/infold/explanations/x4-elf.json; every explanation gate passed, learner lint clean (1150 strings)`.
+- `python3 -m pytest .github/contract-tests pipeline/synthetic/evidence/tests pipeline/synthetic/gates/scripts/tests pipeline/synthetic/infold/tests -q -p no:cacheprovider` → **2008 passed, 7 xfailed** (45.1 s). That is the 1988 recorded for 3b13071 plus 20 new test items: 1 listing check, 6 malformed files, 4 regression cases, 1 scoping test and 8 refused listings.
+- `-k "elf or language or listing or verbatim or fabricated"` → 24 passed.
+- `write_examples.py --check` → current.
+- A run under another `PYTHONHASHSEED` was refused by the lane policy. The rule uses sets only for membership, so no output depends on hash order.
+- Changed files (`git status`): the test module (modified), `LANGUAGE-EXAMPLES.json` (new) and this worklog. Nothing else; `x4-elf.json` is unchanged.
+- sha256:
+  - `pipeline/synthetic/infold/tests/test_infold_explanation_batches.py` `012e7d79b39f23c84c9c1559bb45d19b7a55716ac0b8e30bbe7966e7d38796e2` (HEAD `77563a40…`)
+  - `pipeline/synthetic/infold/explanations/LANGUAGE-EXAMPLES.json` `c2964b531e16d8959e1513f0541b0f1717e941afeca461cecd0df990437de941` (new)
+  - unchanged:
+    - `x4-elf.json` `578e527c…`
+    - `BATCHES.json` `fd38ed33…`
+    - `explanation_batches.py` `34789ae1…`
+    - `export_product.py` `f627c815…`
+    - `x1-las.json` `6c72164b…`
+    - `x2-las.json` `9071320a…`
+    - `x3-las.json` `37cdba02…`
+    - `data/explanations/p5-pilot.json` `fd96f43f…`
+    - `approval-roster.json` `9babcc8a…`
+    - `RETIRED.json` `fd3ab882…`
+    - `frameworks/elf_taxonomy.json` `84ab6524…`
+
+**Handoff**
+- Ready for an exact-head re-review of B1: the rule, the 56 listings and the tests.
+- The review's `probe_quotations.py` calls the old signatures, which take no list. `data_mutations.py` reruns its four mutations under both rules (R1–R4 above).
+- Committing, pushing and updating PR #383 are outside this lane.
+- Scratch evidence, not checked in, is in the session scratchpad (`/tmp/claude-1000/-home-loucmane-dev-hpfetcher-worktrees-hpfetcher-lane/bfb86e58-1321-4bbc-a37e-303c84bff4a6/scratchpad/`):
+  - `find_examples.py` and `show_context.py`;
+  - `write_examples.py`;
+  - `test_red_state.py` and `red.xml`;
+  - `data_mutations.py` and `data-mutations.json`;
+  - `code_mutants.py`;
+  - `las_unchanged.py`.
+
+**Bead note**
+
+X4 review fix on 3b13071, uncommitted: B1 fixed. ELF language examples are now a reviewed, committed list, pipeline/synthetic/infold/explanations/LANGUAGE-EXAMPLES.json: 56 listings keyed by qid, field path and exact words (pilot 37, X4 19), each read in context and kept as a genuine example. Permission is no longer inferred from missing four-word overlap; every other quotation and gap frame must be the unit's text or a gap filled with its own option. The list is checked too: in place, not the unit's text, no four-word run, canonical. The review's three corruptions and its reading control are regression tests, red first (3 failed, 1 passed), now green. Own mutations: 8 corruptions all rejected, 7 of them accepted by the old rule, and 3 valid forms kept; 23 code mutants caught. The LÄS rule and the ELF frame, option and apostrophe code are unchanged byte for byte. x4-elf.json is unchanged, since no real quotation was flagged. check-batch x4 clean (1150 strings); 2008 passed, 7 xfailed. Evidence: docs/worklog/hpf-c5tb.md, section X4 review fix.
+LANE DONE: hpf-c5tb.9
+
+**Progress**
+
+- 2026-10-09 [S:ci-sd10p|W:hpf-c5tb.9|H:research|E:/tmp/hpf-cb38-review/report-append.md] Read B1, the review's mutation table, its probe and its quotation classification. The vault worklog was refused. Listed the 57 quotations of pilot and X4 gap entries that are not the unit's text, and read each in context: all genuine examples.
+- 2026-10-09 [S:ci-sd10p|W:hpf-c5tb.9|H:red|E:pipeline/synthetic/infold/tests/test_infold_explanation_batches.py] Added the regression test for the review's three corruptions and its control, with the 3b13071 helpers unchanged: 3 failed, 1 passed.
+- 2026-10-09 [S:ci-sd10p|W:hpf-c5tb.9|H:fix|E:pipeline/synthetic/infold/explanations/LANGUAGE-EXAMPLES.json] Replaced the overlap inference with the explicit list (56 listings) and the listing checks; 24 quotation and listing tests pass; LÄS and ELF frame code unchanged byte for byte.
+- 2026-10-09 [S:ci-sd10p|W:hpf-c5tb.9|H:verify|E:012e7d79b39f23c84c9c1559bb45d19b7a55716ac0b8e30bbe7966e7d38796e2] 15 data mutations behave as expected under both rules; 23 code mutants caught; check-batch x4 clean; 2008 passed, 7 xfailed.
