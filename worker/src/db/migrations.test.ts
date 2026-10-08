@@ -20,10 +20,12 @@
 //     Re-running the backfill is safe.
 //   · user_ability.authentic_ability (drizzle/0014, review finding R2-B1) is
 //     the user's rating over authentic answers alone, which the fit plays
-//     authentic items against. State the fit before it left with synthetic
-//     answers is reset by drizzle/0015, and the next run lands exactly where
-//     the current fit lands. Authentic-only state is left exactly as it was,
-//     and re-running 0015 after the current fit is safe.
+//     authentic items against. drizzle/0015 resets the state the fit before
+//     it left while one of its rows with synthetic answers and no authentic
+//     rating is left, and the next run lands exactly where the current fit
+//     lands. Authentic-only state is left exactly as it was. Re-running 0015
+//     changes nothing the current fit wrote, whoever has deleted the account
+//     and whatever retention has pruned since (review finding R3-B1).
 //
 // Everything here runs against the in-memory node:sqlite shim; no real
 // database is touched, and no migration is applied anywhere else.
@@ -38,8 +40,10 @@ import { describe, expect, it } from 'vitest'
 
 import authenticSet from '../../data/authentic-qids.json'
 import registry from '../../data/p5-qid-registry.json'
+import { cascadeDeleteUser } from '../lib/cascade'
 import { runFit } from '../lib/fit'
 import { classifyAttemptSource, isAuthenticQid } from '../lib/provenance'
+import { RETENTION_DAYS, retentionCutoff, runRetention } from '../lib/retention'
 import { makeTestD1, migrationFiles, type ShimD1 } from '../lib/testD1'
 import { getDb } from './client'
 import * as schema from './schema'
@@ -672,16 +676,16 @@ describe('provenance backfill — fitted state that rests on now-unknown answers
 
 // ── R2-B1: fitted state from the fit before the authentic-only rating ─────
 
-describe('authentic-only rating — 0014, and 0015 resets the state the old fit left (R2-B1)', () => {
-  // Registry questions of the two sections P5 covers, which the bank
-  // questions above share.
-  const p5 = registry.units.flatMap((u) => u.qids)
-  const P5_SAMPLE = [
-    ...p5.filter((q) => q.includes('-LÄS-')).slice(0, 3),
-    ...p5.filter((q) => q.includes('-ELF-')).slice(0, 2),
-  ]
-  const MIXED = [...BANK, ...P5_SAMPLE]
+// Registry questions of the two sections P5 covers, which the bank questions
+// above share.
+const P5_QIDS = registry.units.flatMap((u) => u.qids)
+const P5_SAMPLE = [
+  ...P5_QIDS.filter((q) => q.includes('-LÄS-')).slice(0, 3),
+  ...P5_QIDS.filter((q) => q.includes('-ELF-')).slice(0, 2),
+]
+const MIXED = [...BANK, ...P5_SAMPLE]
 
+describe('authentic-only rating — 0014, and 0015 resets the state the old fit left (R2-B1)', () => {
   /** A database from before 0014 holding a history and fitted state as the
    *  fit before the authentic-only rating left it: synthetic answers counted,
    *  synthetic item rows, and no authentic_ability column. The current fit's
@@ -743,15 +747,21 @@ describe('authentic-only rating — 0014, and 0015 resets the state the old fit 
     })
   }
 
-  it('a synthetic item row whose users are gone still resets', async () => {
-    // User 3 answered a P5 question and then the authentic one after it, and
-    // deleted the account later. Its rows went with it, but the authentic
-    // item user 3 moved, and user 1's answer after it, remain.
+  // User 3 answers a P5 question and then the authentic one after it, and
+  // deletes the account later. Its rows go with it, but the authentic item
+  // user 3 moved, and user 1's answer after it, remain.
+  const USER_3_LEAVES: Answer[] = [
+    ...history(5, 60, BANK).filter((a) => a.user !== 3),
+    { user: 3, kind: 'drill', qid: P5_SAMPLE[0], correct: true },
+    { user: 3, kind: 'drill', qid: 'var-2026-verb1-LÄS-011', correct: true },
+    { user: 1, kind: 'drill', qid: 'var-2026-verb1-LÄS-011', correct: false },
+  ]
+
+  it('still resets while one row of it with synthetic answers is left, whoever deleted the account', async () => {
+    // User 1 has answered an ELF P5 question too, and is still here.
     const answers: Answer[] = [
-      ...history(5, 60, BANK).filter((a) => a.user !== 3),
-      { user: 3, kind: 'drill', qid: P5_SAMPLE[0], correct: true },
-      { user: 3, kind: 'drill', qid: 'var-2026-verb1-LÄS-011', correct: true },
-      { user: 1, kind: 'drill', qid: 'var-2026-verb1-LÄS-011', correct: false },
+      ...USER_3_LEAVES,
+      { user: 1, kind: 'drill', qid: P5_SAMPLE[3], correct: true },
     ]
     const { d1 } = await oldFitState(answers)
     await d1.prepare('DELETE FROM users WHERE id = 3').run()
@@ -763,6 +773,25 @@ describe('authentic-only rating — 0014, and 0015 resets the state the old fit 
     expect(JSON.stringify(await ratings(d1))).toBe(
       JSON.stringify(await provenanceFit(answers.filter((a) => a.user !== 3))),
     )
+  })
+
+  it('leaves it once no row of it with synthetic answers is left: the current fit leaves the same tables (R3-B1)', async () => {
+    // A synthetic item row and no authentic rating anywhere is also what the
+    // current fit leaves once its last user with synthetic answers deletes
+    // the account. A reset on it wiped every other user's ratings (review
+    // finding R3-B1), so 0015 no longer looks for it. The fit before the
+    // authentic-only rating never ran against staging or production, so this
+    // state cannot exist in a real database.
+    const { d1, fitted, fittedTo } = await oldFitState(USER_3_LEAVES)
+    await d1.prepare('DELETE FROM users WHERE id = 3').run()
+    const left = { items: fitted.items, abilities: fitted.abilities.filter((a) => a.user_id !== 3) }
+    expect(left.items.some((i) => i.source === 'synthetic')).toBe(true)
+    expect(left.abilities.every((a) => a.synthetic_attempts === 0)).toBe(true)
+
+    applyFrom(d1, TRACK_MIGRATION)
+    expect(await ratings(d1)).toEqual(left)
+    expect(await watermark(d1)).toBe(fittedTo)
+    expect(await refit(d1)).toMatchObject({ processed: 0 })
   })
 
   it('an authentic-only fitted state is left exactly as it was', async () => {
@@ -805,6 +834,27 @@ describe('authentic-only rating — 0014, and 0015 resets the state the old fit 
     d1.applyMigration(TRACK_RESET_MIGRATION)
     expect(await ratings(d1)).toEqual(fitted)
     expect(await watermark(d1)).toBe(answers.length)
+  })
+
+  it('one row with synthetic answers and no authentic rating resets everything, whatever the other rows hold', async () => {
+    // The current fit's state, authentic-only ratings included, with one row
+    // as the fit before them left it.
+    const answers = history(9, 90, MIXED)
+    const d1 = makeTestD1()
+    await seedHistory(d1, answers, classifyAttemptSource)
+    await refit(d1)
+    const mixedRows = (await ratings(d1)).abilities.filter((a) => a.authentic_ability !== null)
+    expect(mixedRows.length).toBeGreaterThan(1)
+    await d1
+      .prepare('UPDATE user_ability SET authentic_ability = NULL WHERE user_id = ? AND section = ?')
+      .bind(mixedRows[0].user_id, mixedRows[0].section)
+      .run()
+
+    d1.applyMigration(TRACK_RESET_MIGRATION)
+    expect(await ratings(d1)).toEqual({ items: [], abilities: [] })
+    expect(await watermark(d1)).toBe(0)
+    await refit(d1)
+    expect(JSON.stringify(await ratings(d1))).toBe(JSON.stringify(await provenanceFit(answers)))
   })
 
   it('a reset by 0013 also clears the authentic-only ratings, and the refit lands exactly', async () => {
@@ -850,4 +900,242 @@ describe('authentic-only rating — 0014, and 0015 resets the state the old fit 
     for (const statement of statements) expect(statement.indexOf(';')).toBe(statement.length - 1)
     expect(statements[statements.length - 1]).toBe('DROP TABLE IF EXISTS `tmp_0015_refit`;')
   })
+})
+
+// ── R3-B1: 0015 never resets state the current fit wrote ─────────────────
+//
+// 0015 also used to reset on a synthetic item_stats row while no user_ability
+// row held an authentic rating. The current fit leaves exactly that once its
+// last user with synthetic answers deletes the account. A re-run of 0015 then
+// deleted every other user's ratings, and what answers already pruned by
+// retention had contributed could never be refitted. The evidence is now only
+// a row with synthetic answers and no authentic rating, which the current fit
+// never writes.
+
+describe('0015 changes nothing the current fit wrote, whoever left and whatever was pruned (R3-B1)', () => {
+  const P5_LAS = 'p5-las-b19-002-r1-LÄS-001'
+  const LAS = 'var-2024-verb1-LÄS-011'
+  // B's LÄS ability after A's answers: the authentic-only control of the
+  // R2-B1 repro in lib/fit.test.ts.
+  const CONTROL_B = 12.328643808700775
+  const DAY = 24 * 60 * 60
+  const NOW = new Date('2026-10-08T03:00:00Z')
+  const seconds = (date: Date) => Math.floor(date.getTime() / 1000)
+
+  /** Every column of the fitted state, updated_at included. */
+  async function fittedRows(d1: ShimD1) {
+    const all = async (sql: string) => (await d1.prepare(sql).all()).results
+    return {
+      items: await all('SELECT * FROM item_stats ORDER BY question_id'),
+      abilities: await all('SELECT * FROM user_ability ORDER BY user_id, section'),
+      fit: await all('SELECT * FROM fit_state ORDER BY id'),
+    }
+  }
+
+  /** The state 0015 used to reset on: a synthetic item row while no ability
+   *  row holds an authentic rating. */
+  async function lastMixedUserLeft(d1: ShimD1): Promise<boolean> {
+    const found = await d1
+      .prepare(
+        `SELECT EXISTS (SELECT 1 FROM item_stats WHERE source = 'synthetic')
+           AND NOT EXISTS (SELECT 1 FROM user_ability WHERE authentic_ability IS NOT NULL) AS found`,
+      )
+      .first<number>('found')
+    return found === 1
+  }
+
+  async function helperTables(d1: ShimD1) {
+    const { results } = await d1
+      .prepare("SELECT name FROM sqlite_master WHERE name = 'tmp_0015_refit'")
+      .all()
+    return results
+  }
+
+  it('the reviewer’s repro: once A has left and B’s answer is pruned, a re-run keeps B, the items and the watermark', async () => {
+    const d1 = makeTestD1()
+    const db = getDb(d1 as unknown as D1Database)
+    // A (user 1) answers a synthetic LÄS question, then an authentic one. B
+    // (user 2) answers only the authentic one. The fit runs.
+    await seedHistory(
+      d1,
+      [
+        { user: 1, kind: 'drill', qid: P5_LAS, correct: true },
+        { user: 1, kind: 'drill', qid: LAS, correct: true },
+        { user: 2, kind: 'drill', qid: LAS, correct: true },
+      ],
+      classifyAttemptSource,
+    )
+    await refit(d1)
+    // A deletes the account. B's answer ages past the retention window, and
+    // the nightly prune takes it.
+    expect(await cascadeDeleteUser(db, 'u1')).toEqual({ deleted: true })
+    await d1
+      .prepare('UPDATE attempts SET created_at = ? WHERE user_id = 2')
+      .bind(seconds(NOW) - (RETENTION_DAYS + 1) * DAY)
+      .run()
+    await runRetention(db, NOW)
+    expect(await d1.prepare('SELECT COUNT(*) AS n FROM attempts').first('n')).toBe(0)
+
+    // What the re-run meets: a synthetic item row, no authentic rating
+    // anywhere, and B's ability, which no refit can rebuild now.
+    expect(await lastMixedUserLeft(d1)).toBe(true)
+    const kept = await fittedRows(d1)
+    expect(kept.abilities).toMatchObject([
+      {
+        user_id: 2,
+        section: 'LÄS',
+        ability: CONTROL_B,
+        attempts: 1,
+        synthetic_attempts: 0,
+        authentic_ability: null,
+      },
+    ])
+    expect(kept.items.map((i) => [i.question_id, i.source])).toEqual([
+      [P5_LAS, 'synthetic'],
+      [LAS, 'authentic'],
+    ])
+    expect(kept.fit).toMatchObject([{ id: 1, last_attempt_id: 3 }])
+
+    d1.applyMigration(TRACK_RESET_MIGRATION)
+    expect(await fittedRows(d1)).toEqual(kept)
+    expect(await helperTables(d1)).toEqual([])
+    // The next fit has nothing to fold, and B and the items stay as they were.
+    const before = await ratings(d1)
+    expect(await refit(d1)).toEqual({ processed: 0, watermark: 3 })
+    expect(await ratings(d1)).toEqual(before)
+    expect(await watermark(d1)).toBe(3)
+  })
+
+  it('is a no-op on a fresh database', async () => {
+    const d1 = makeTestD1()
+    d1.applyMigration(TRACK_RESET_MIGRATION)
+    expect(await fittedRows(d1)).toEqual({ items: [], abilities: [], fit: [] })
+    expect(await helperTables(d1)).toEqual([])
+  })
+
+  // Property-style: the life of the service. Accounts join, some answering
+  // authentic and P5 questions, the rest authentic ones only. The fit runs,
+  // time passes, retention prunes and accounts are deleted, in a seeded order.
+  // At the end a user with authentic answers only joins, every user with P5
+  // answers still here leaves, which is the R3-B1 case, and the rest of the
+  // history ages out of retention. 0015 runs after every step and must change
+  // no row, not even a timestamp.
+  type Step =
+    | { op: 'join'; user: number }
+    | { op: 'answer'; answer: Answer; at: number }
+    | { op: 'fit' }
+    | { op: 'prune'; at: number }
+    | { op: 'delete'; user: number }
+
+  function lifeOfTheService(seed: number): Step[] {
+    const r = rng(seed)
+    const steps: Step[] = []
+    // Each member, and whether they answer P5 questions too.
+    const members = new Map<number, boolean>()
+    let lastUser = 0
+    let clock = seconds(NOW) - 360 * DAY
+    const join = (mixed: boolean) => {
+      lastUser += 1
+      members.set(lastUser, mixed)
+      steps.push({ op: 'join', user: lastUser })
+    }
+    const leave = (user: number) => {
+      members.delete(user)
+      steps.push({ op: 'delete', user })
+    }
+    const answer = (user: number) => {
+      const pool = members.get(user) ? MIXED : BANK
+      clock += Math.floor(r() * 3 * DAY)
+      const a: Answer = {
+        user,
+        kind: KINDS[Math.floor(r() * KINDS.length)],
+        qid: pool[Math.floor(r() * pool.length)],
+        correct: r() < 0.6,
+      }
+      steps.push({ op: 'answer', answer: a, at: clock })
+    }
+    for (const mixed of [true, true, false, false]) join(mixed)
+    for (let n = 0; n < 150; n++) {
+      const roll = r()
+      const users = [...members.keys()]
+      if (roll < 0.7 && users.length > 0) answer(users[Math.floor(r() * users.length)])
+      else if (roll < 0.82) steps.push({ op: 'fit' })
+      else if (roll < 0.9) steps.push({ op: 'prune', at: clock })
+      else if (roll < 0.95 && users.length > 0) leave(users[Math.floor(r() * users.length)])
+      else join(r() < 0.5)
+    }
+    join(false)
+    for (let n = 0; n < 5; n++) answer(lastUser)
+    steps.push({ op: 'fit' })
+    for (const [user, mixed] of [...members]) if (mixed) leave(user)
+    steps.push({ op: 'fit' })
+    clock += (RETENTION_DAYS + 1) * DAY
+    steps.push({ op: 'prune', at: clock }, { op: 'fit' })
+    return steps
+  }
+
+  async function play(d1: ShimD1, step: Step): Promise<void> {
+    const db = getDb(d1 as unknown as D1Database)
+    if (step.op === 'join') {
+      await d1
+        .prepare('INSERT INTO users (id, clerk_user_id) VALUES (?, ?)')
+        .bind(step.user, `u${step.user}`)
+        .run()
+      for (const kind of KINDS) {
+        await d1
+          .prepare('INSERT INTO sessions (id, user_id, kind) VALUES (?, ?, ?)')
+          .bind(sessionId({ user: step.user, kind, qid: '', correct: false }), step.user, kind)
+          .run()
+      }
+    } else if (step.op === 'answer') {
+      const a = step.answer
+      await d1
+        .prepare(
+          'INSERT INTO attempts (user_id, session_id, question_id, correct, source, created_at) VALUES (?, ?, ?, ?, ?, ?)',
+        )
+        .bind(a.user, sessionId(a), a.qid, a.correct ? 1 : 0, classifyAttemptSource(a.qid), step.at)
+        .run()
+    } else if (step.op === 'fit') {
+      await refit(d1)
+    } else if (step.op === 'prune') {
+      await runRetention(db, new Date(step.at * 1000))
+    } else {
+      await cascadeDeleteUser(db, `u${step.user}`)
+    }
+  }
+
+  for (const seed of [41, 43, 44, 45]) {
+    it(`history ${seed}: re-running 0015 after any step changes nothing`, async () => {
+      const d1 = makeTestD1()
+      let atStake = 0
+      let prunedFitted = 0
+      for (const [i, step] of lifeOfTheService(seed).entries()) {
+        if (step.op === 'prune') {
+          // Answers the fit has folded that this prune takes.
+          const cutoff = seconds(retentionCutoff(new Date(step.at * 1000)))
+          prunedFitted += Number(
+            await d1
+              .prepare(
+                `SELECT COUNT(*) AS n FROM attempts JOIN sessions ON sessions.id = attempts.session_id
+                 WHERE attempts.created_at < ? AND sessions.kind <> 'lesson'
+                   AND attempts.id <= (SELECT last_attempt_id FROM fit_state)`,
+              )
+              .bind(cutoff)
+              .first('n'),
+          )
+        }
+        await play(d1, step)
+        const before = await fittedRows(d1)
+        d1.applyMigration(TRACK_RESET_MIGRATION)
+        expect(await fittedRows(d1), `0015 after step ${i} (${step.op})`).toEqual(before)
+        if (before.abilities.length > 0 && (await lastMixedUserLeft(d1))) atStake += 1
+      }
+      // The trial meets the R3-B1 state with other users' ratings at stake,
+      // and retention takes answers the fit has folded, which no refit can
+      // bring back.
+      expect(atStake).toBeGreaterThan(0)
+      expect(prunedFitted).toBeGreaterThan(0)
+      expect(await helperTables(d1)).toEqual([])
+    })
+  }
 })

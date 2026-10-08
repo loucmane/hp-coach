@@ -436,10 +436,10 @@ This section supersedes "Authentic answers: fitted exactly as before" in Design 
 - **`0015_pre_r2b1_fit_reset.sql`** was created by `drizzle-kit generate --custom --name pre_r2b1_fit_reset`, then filled in. Snapshot: `meta/0015_snapshot.json`.
   - **What it does.** It is a one-off reset of the state the fit at `782f9c2` left. It looks for either of these:
     - **(a)** a `user_ability` row with `synthetic_attempts > 0` and a null `authentic_ability`;
-    - **(b)** a `synthetic` `item_stats` row while no row holds an authentic-only rating. This catches the case where the users who answered P5 questions have since deleted their accounts, but the authentic items they moved remain.
+    - ~~**(b)** a `synthetic` `item_stats` row while no row holds an authentic-only rating. This catches the case where the users who answered P5 questions have since deleted their accounts, but the authentic items they moved remain.~~ **Removed in round 3 (R3-B1):** the new fit leaves the same state once its last user with synthetic answers deletes the account.
   - **The reset.** Elo ratings are path-dependent, so only a refit repairs this exactly. When either is found, the migration deletes every `user_ability` and `item_stats` row and rewinds the watermark to 0. This is the same mechanism as 0013's B4 reset.
   - **One evaluation.** The condition is evaluated once, into the helper table `tmp_0015_refit`, which is dropped at the end. Otherwise the deletes would change the condition midway.
-  - **Re-running is safe.** After the new fit has run, (a) cannot hold. (b) can hold only once every user that fit fitted a synthetic answer for has been deleted, and then the reset only forces a refit.
+  - ~~**Re-running is safe.** After the new fit has run, (a) cannot hold. (b) can hold only once every user that fit fitted a synthetic answer for has been deleted, and then the reset only forces a refit.~~ **Corrected in round 3 (R3-B1):** that reset was not harmless. It deleted every other user's ratings and every item difficulty, and the next fit can rebuild them only from retained attempts. What attempts already pruned by retention had contributed was lost for good. Round 3 removed (b), and only since then does a re-run change nothing.
   - **Format.** No comment line holds a semicolon, and each statement holds exactly one.
   - **Where it can match.** Only a database that ran this branch's earlier worker can hold such state.
     - `deploy.yml` deploys automatically only from `main`. A manual `workflow_dispatch` run on this branch would also have deployed it, and without network access I could not check for one.
@@ -453,7 +453,7 @@ This section supersedes "Authentic answers: fitted exactly as before" in Design 
 | `routes/me.ts` `/me/ability` | Selects explicit columns. The response shape, the values for authentic-only users and `estimateBasis` (`attempts − synthetic_attempts`) are unchanged. The new column is not exposed. |
 | `routes/fit.ts` `/item-stats` | Reads `item_stats` only. Unchanged. |
 | `routes/export.ts` (export and import) | Neither touches the rating tables. The next fit run folds imported attempts. |
-| `routes/account.ts` (deletion) | `user_ability` rows cascade with the user. `item_stats` stays global, the case 0015's evidence (b) covers. |
+| `routes/account.ts` (deletion) | `user_ability` rows cascade with the user. `item_stats` stays global, ~~the case 0015's evidence (b) covers~~ which is why round 3 removed (b): after the last user with synthetic answers leaves, the new fit's state looks exactly like it (R3-B1). |
 | `routes/testReset.ts`, `lib/retention.ts` | Do not touch the rating tables. |
 | `db/migrations.test.ts`, `routes/assessmentGolden.test.ts` | The migration helpers now apply 0014 and 0015. The golden test selects explicit columns. |
 | drizzle snapshots | 0014 holds the column as a nullable `real`. 0015 is the custom copy. The chain 0013 → 0014 → 0015 is intact. |
@@ -475,7 +475,7 @@ The tests were written first. They then ran against `782f9c2`'s `fit.ts`, which 
 | `lib/fit.test.ts`: arithmetic | <ul><li>The rating splits off at the first synthetic answer and moves on authentic answers only.</li><li>It has its own K. After 30 synthetic answers the section ability is settled (K 16), but an authentic item still moves exactly as for a fresh user (K 32).</li><li>It stays null for authentic-only users and 0 for synthetic-only users.</li></ul> |
 | `lib/fit.test.ts`: fail closed | A pre-fix row (synthetic answers, null rating) makes the run throw. No rating row and no watermark are written. |
 | `lib/fit.test.ts`: incremental trials 11–14 | The histories are unchanged. `ratings()` now includes `authenticAbility`, so the incremental runs must match one run on it too. Each trial is asserted to split a rating off and then move it. |
-| `db/migrations.test.ts` | <ul><li>0014 is exactly the generated DDL. The journal ends 0012, 0013, 0014, 0015. The column is a nullable `real` with no default.</li><li>0015 resets old-fit state with synthetic answers (3 seeded histories). The refit lands byte for byte on a from-scratch fit, ratings included, and a later re-run of 0015 changes nothing.</li><li>0015 also resets for a synthetic item whose users were deleted.</li><li>Authentic-only state is left exactly as it was, with null ratings.</li><li>Without 0015 the fit refuses the old state.</li><li>A 0013 reset clears the new column, and the refit is exact.</li><li>0015's statement and comment format.</li><li>The existing B4 histories now also pass through 0014 and 0015.</li></ul> |
+| `db/migrations.test.ts` | <ul><li>0014 is exactly the generated DDL. The journal ends 0012, 0013, 0014, 0015. The column is a nullable `real` with no default.</li><li>0015 resets old-fit state with synthetic answers (3 seeded histories). The refit lands byte for byte on a from-scratch fit, ratings included, and a later re-run of 0015 changes nothing.</li><li>~~0015 also resets for a synthetic item whose users were deleted.~~ Round 3 replaced this test (R3-B1).</li><li>Authentic-only state is left exactly as it was, with null ratings.</li><li>Without 0015 the fit refuses the old state.</li><li>A 0013 reset clears the new column, and the refit is exact.</li><li>0015's statement and comment format.</li><li>The existing B4 histories now also pass through 0014 and 0015.</li></ul> |
 
 **Golden.** `assessmentGolden.test.ts.snap` is unchanged, sha256 `2ec42900caf266511dbd3b9fd1e43ddb2856b57a54f0e794dfbc7fb17563d5c0`.
 
@@ -517,5 +517,104 @@ The tests were written first. They then ran against `782f9c2`'s `fit.ts`, which 
   3. Re-run 0013 once.
   4. Run the fit.
 - **0015 needs no re-run.** The old worker's writes in the deploy gap are authentic-only, so a null `authentic_ability` is correct for them. Unless a manual `workflow_dispatch` deployed this branch's worker, 0015 finds nothing in staging or production.
-- **If the fit fails with "has synthetic answers but no authentic_ability",** the database holds state from the fit at `782f9c2`. Re-run `0015_pre_r2b1_fit_reset.sql` by hand to reset it (re-running is safe), then run the fit.
+- **If the fit fails with "has synthetic answers but no authentic_ability",** the database holds state from the fit at `782f9c2`. Re-run `0015_pre_r2b1_fit_reset.sql` by hand to reset it (re-running is safe, as of round 3: R3-B1), then run the fit.
 - **Retention.** As with 0013, a reset can refit only attempts from the last 120 days.
+
+---
+
+## Review fix round 3 (session ci-0uskm, 2026-10-08)
+
+Bead `hpf-h38b` fixes review finding R3-B1 of PR #378 (the review in `hpf-mifm`). B5, the automatic staging migrations, is still the coordinator's operator decision, so nothing under `.github/workflows/` changed.
+
+This section supersedes these statements in round 2, which are struck through in place above:
+- 0015's evidence (b);
+- "Re-running is safe … the reset only forces a refit";
+- the test "0015 also resets for a synthetic item whose users were deleted".
+
+### Snapshot and boundaries
+
+- **Claim.** `gc hook --claim --json` returned `hpf-h38b`, assignee `gc__implementation-worker-ci-0uskm`, route `hpfetcher/gc.implementation-worker`. `bd show hpf-h38b --json` matched the id, the status (`in_progress`), the assignee and `gc.routed_to`.
+- **Checkout.** `git rev-parse HEAD` returned `f0ac331180d63dd0c0f9d8ebc4f42f27309af071`, on `codex/hpf-94i5-provenance-assessment`, which tracks origin. The tracked tree was clean at the start. The untracked dotfile names (`.bashrc`, `.gitconfig`, `.mcp.json` and others) are this sandbox's masks, as in round 2, and were left alone.
+- **The reviewer's worklog was not readable.** `GasCity/hpfetcher/Docs/worklogs/hpf-mifm.md` lives in the vault, and this session's permission settings deny reads under `~/vaults`. The finding and its repro come from the `hpf-h38b` brief. The repro was then reproduced on the unfixed 0015 (below).
+- **Constraints kept.**
+  - No git writes: no commit, stash, index or ref change.
+  - No network.
+  - **No migration was applied to any database.** The SQL ran only inside the in-memory `node:sqlite` test shim.
+  - `.github/workflows/*`, `app/`, `pipeline/`, `worker/src/lib/fit.ts`, `worker/src/db/schema.ts`, the drizzle journal and the drizzle snapshots are unchanged.
+  - The golden snapshot was not re-recorded.
+- **Check script.** `gc.check_path` is `build-artifact-valid.sh`, sha256 `71f17450e127055c8304a3cb44ce87b2439abe04ba41f225c7b386be3dc73911`. The bead names no validator, so it was not run.
+
+### Finding and root cause
+
+**R3-B1:** 0015 reset state the new fit wrote, once an account was deleted.
+- At `f0ac331`, 0015 reset on either of two kinds of evidence. Evidence (b) was a `synthetic` `item_stats` row while no `user_ability` row holds an authentic-only rating.
+- The new fit writes exactly that once the last user it fitted a synthetic answer for deletes the account. Account deletion cascades that user's `user_ability` rows, and every authentic-only rating goes with them. `item_stats` is global and keeps the synthetic item rows.
+- A re-run of 0015 then deleted every `user_ability` and `item_stats` row and rewound the watermark. The next fit can rebuild only from retained attempts, so what pruned attempts (older than 120 days) had contributed was lost for good. Round 2's header and this worklog called that reset harmless ("only forces a refit"). It was not.
+- Reproduced on `f0ac331`'s 0015, as the brief describes it:
+  1. A answers `p5-las-b19-002-r1-LÄS-001`, then `var-2024-verb1-LÄS-011`. B answers only `var-2024-verb1-LÄS-011`. The fit runs.
+  2. `cascadeDeleteUser(A)`. B's attempt ages past the retention window, and `runRetention` prunes it.
+  3. A re-run of 0015 empties `user_ability` and `item_stats` and sets the watermark to 0.
+  4. The fit finds no attempt left. B's LÄS ability, `12.328643808700775`, and both item rows are gone for good.
+
+### Fix (coordinator decision)
+
+- **0015 now looks for evidence (a) only.** That is a `user_ability` row with `synthetic_attempts > 0` and a null `authentic_ability`.
+  - The new fit never writes such a row. It sets the authentic-only rating at a user's first synthetic answer in a section, and it refuses to continue from such a row. The throw in `loadAbility` is unchanged.
+  - No later step can make one out of the new fit's state either. Account deletion removes a user's rows whole, and retention removes attempts only.
+  - Checked again: the fit is the only writer of `user_ability`. `routes/account.ts` and the Clerk webhook reach it only through the foreign-key cascade, and `lib/retention.ts` and `routes/testReset.ts` never touch it.
+- **(b) is removed entirely.** The coordinator's rationale, now in the 0015 header:
+  - 0015 has never been applied to any database.
+  - The pre-fix fit (this branch before `f0ac331`) never ran against staging or production, because staging deploys only from `main`.
+  - So the state (b) was meant to catch, old-fit state whose every user with synthetic answers has since deleted the account, cannot exist in a real database. A local database that ran the pre-fix worker keeps that state as it is. A test pins this.
+- **Edited in place.** 0015 was never applied anywhere, so its name, its journal entry (`idx` 15, tag `0015_pre_r2b1_fit_reset`) and `meta/0015_snapshot.json` are unchanged.
+  - The `INSERT … WHERE` lost its `OR (…)` arm. The helper table, the statement order and the format rules are unchanged.
+  - The header was rewritten. It says what the evidence is, why (b)'s state is not evidence (R3-B1), why that state cannot exist in a real database, and that a re-run after the current fit changes nothing.
+- **Comments elsewhere.** The `fit.ts` header and the `schema.ts` comments describe evidence (a) only, so they stay accurate unchanged.
+
+### Tests (red-first)
+
+The tests were written first, then run against `f0ac331`'s 0015, which was not yet edited.
+- **Red run:** `src/db/migrations.test.ts` had 6 failures and 36 passes.
+  - The repro: 0015 emptied both tables and rewound the watermark.
+  - The pinned residual, old-fit state with no row of synthetic answers left: it was reset.
+  - Property seeds 41, 43, 44 and 45: 0015 reset after a `delete` step (steps 79, 25, 164 and 162).
+- **Green run:** 42 passed.
+- **Mutation checks on the fixed file.** The file was restored afterwards and its sha256 re-verified.
+  - A 0015 that never fires gave 5 failures: the seeded old-fit histories 4–6, "still resets while one row of it with synthetic answers is left" and "one row with synthetic answers and no authentic rating resets everything".
+  - A 0015 that fires on `synthetic_attempts > 0` alone gave 8 failures: the 4 property seeds, "once the current fit has run, re-running 0015 changes nothing" and the re-run check of histories 4–6.
+
+| Test (`worker/src/db/migrations.test.ts`) | Pins |
+|---|---|
+| The reviewer's repro | <ul><li>Before the re-run: B's row is `{ ability: 12.328643808700775, attempts: 1, synthetic_attempts: 0, authentic_ability: null }`, the R2-B1 control. The P5 item row is `synthetic`, `LÄS-011` is `authentic`, the watermark is 3, and no attempt is left.</li><li>After the re-run, every row of `user_ability`, `item_stats` and `fit_state` is unchanged, `updated_at` included, and no helper table is left.</li><li>The next fit processes 0 attempts and changes no rating.</li></ul> |
+| Fresh database | Re-running 0015 on a database where every migration has just run leaves `user_ability`, `item_stats` and `fit_state` empty, and no helper table. |
+| Property, seeds 41, 43, 44, 45 | <ul><li>Each history starts with 4 accounts, 2 that answer P5 questions too and 2 that answer authentic ones only.</li><li>Then come 150 seeded steps: answers 0–3 days apart in 4 session kinds (lesson included), fit runs, retention prunes, account deletions through `cascadeDeleteUser`, and sign-ups.</li><li>At the end a new authentic-only member answers 5 questions and the fit runs. Every member with P5 answers still there deletes the account and the fit runs. 121 days later retention prunes and the fit runs again.</li><li>0015 runs after every step and must leave every row of the three tables byte-identical, `updated_at` included.</li><li>Each trial checks its premise: it reaches the R3-B1 state with other users' ratings at stake, and retention prunes attempts the fit had already folded.</li><li>Seed 42 was replaced by 45: it fits no P5 answer before its mixed members leave, so its premise check failed.</li></ul> |
+| Evidence (a) still resets | <ul><li>Histories 4–6 from round 2, unchanged.</li><li>New: "still resets while one row of it with synthetic answers is left, whoever deleted the account". User 3 is deleted, and user 1's ELF row with a synthetic answer remains.</li><li>New: "one row with synthetic answers and no authentic rating resets everything, whatever the other rows hold". This is the current fit's state with one row's `authentic_ability` nulled. Everything is reset, and the refit lands byte for byte on a from-scratch fit.</li></ul> |
+| The residual, pinned | "leaves it once no row of it with synthetic answers is left: the current fit leaves the same tables (R3-B1)". It replaces round 2's "a synthetic item row whose users are gone still resets". |
+
+The R3-B1 tests are in a new `describe` block at the end of the file. `P5_SAMPLE` and `MIXED` moved to module scope so that block can use them, with the same values.
+
+### Verification (final runs)
+
+- **Worker.** `pnpm --dir worker exec vitest run` (= `cd worker && npx vitest run`): **24 files, 395 tests passed**. Round 2 ended at 24 files and 387 tests.
+- **App.** `pnpm --dir app exec vitest run --reporter=default`: **81 files, 837 tests passed**.
+- **CI Python selection.** `python3 -m pytest .github/contract-tests pipeline/synthetic/evidence/tests pipeline/synthetic/gates/scripts/tests pipeline/synthetic/infold/tests -q -p no:cacheprovider`: **1879 passed, 7 xfailed**.
+- **Typecheck.** Worker `tsc --noEmit` is clean. App `tsc -b --noEmit` and `tsc -p tsconfig.app.json --noEmit` are clean.
+- **Biome.** Worker `biome check src` is clean. App `biome check src` reports only the 4 pre-existing devbake infos.
+- **Drizzle.** The probe, `pnpm --dir worker exec drizzle-kit generate --name drift_probe`, printed "No schema changes, nothing to migrate" and wrote no file, so there was nothing to delete. `git status` lists only 0015 as changed under `worker/drizzle/`. The migrations test's in-process differ agrees.
+- **Golden.** `assessmentGolden.test.ts.snap` is unchanged, sha256 `2ec42900caf266511dbd3b9fd1e43ddb2856b57a54f0e794dfbc7fb17563d5c0`.
+- **sha256.** 0015: `6de7faa61f3c76d1e418d667a80b4c69c819eb2d29ffb2e9f22d2c1486056275`.
+- **Not run.** Playwright e2e, which needs Clerk secrets and network. `wrangler d1 migrations apply`, which is operator-authorized.
+
+### Files (uncommitted)
+
+| Path | Change |
+|---|---|
+| `worker/drizzle/0015_pre_r2b1_fit_reset.sql` | Evidence (b) removed. The header was rewritten. |
+| `worker/src/db/migrations.test.ts` | The R3-B1 tests, the replaced (b) test, the hoisted P5 sample and the header comment. |
+| `docs/worklog/hpf-94i5.md` | Round 2's statements about (b) struck through in place, and this section. |
+
+### Operator notes (in addition to rounds 1 and 2)
+
+- **The order of operations is unchanged.**
+- **0015 is safe to re-run at any time.** On state the current fit wrote, it changes nothing, whatever accounts were deleted or attempts pruned since.
+- **A local database** that ran the pre-fix worker, and whose every user with synthetic answers has since been deleted, keeps the old authentic item difficulties. 0015 cannot tell that state from the current fit's (R3-B1). A full reset like 0013's, followed by a fit, rebuilds it from the retained attempts.
