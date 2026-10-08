@@ -211,7 +211,25 @@ export const dailyPlans = sqliteTable(
   }),
 )
 
+// ── attempt provenance (P5 infold PR 3, docs/p5-infold-design.md Amendment 1 E)
+//
+// Every answered question's source, classified ON THE SERVER from the qid
+// alone (lib/provenance.ts), never taken from the client:
+//   authentic — a question of a real högskoleprov sitting in the bank;
+//   synthetic — an approved P5 question (the bundled qid registry). It counts
+//               toward the assessment, and everything it feeds is marked
+//               uncalibrated so it can be recalibrated later;
+//   unknown   — anything else. Fails closed: kept for history, never assessed.
+// Columns default to the fail-closed value, so a write path that forgot to
+// classify can never put a row into an assessed number.
+export const ATTEMPT_SOURCES = ['authentic', 'synthetic', 'unknown'] as const
+export type AttemptSource = (typeof ATTEMPT_SOURCES)[number]
+
 // ── attempts — one row per question answered ──────────────────────────
+//
+// `source` is the provenance above; `itemRevision` is the P5 unit revision a
+// synthetic answer was given against (from the registry, also spelled in the
+// qid's `-r<n>-`), null for authentic and unknown rows.
 export const attempts = sqliteTable(
   'attempts',
   {
@@ -227,6 +245,8 @@ export const attempts = sqliteTable(
     correct: integer('correct', { mode: 'boolean' }),
     timeTakenMs: integer('time_taken_ms'),
     createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+    source: text('source', { enum: ATTEMPT_SOURCES }).notNull().default('unknown'),
+    itemRevision: integer('item_revision'),
   },
   (t) => ({
     // Every stats read filters by user and (usually) a created_at window
@@ -339,6 +359,18 @@ export const frameworkProgress = sqliteTable('framework_progress', {
 // correct, timeMs }>, missedQids: string[], version: 1 }. Kept opaque
 // (like daily_plans.plan) so the summary shape can evolve without a
 // migration — bump `version` in the blob when the shape changes.
+//
+// The scored fields (presented, answered, correct, seenBefore, breakdown) and
+// `estimateBasis` are decided ON THE SERVER when the result is posted
+// (lib/mockScore.ts scoreMockResult): the client's summary is kept only when
+// it can rest on nothing but authentic and synthetic questions of the
+// session, else the server scores the pass from the session's plan and
+// stored attempts. Unknown questions never count in them. `estimateBasis` is
+// { authentic, synthetic, unknown, unclassified, calibrated, perSection },
+// classified on the server, never taken from the client. A snapshot like
+// `seenBefore`, so a later registry change (a retired P5 unit) never rewrites
+// a past result. Null only on rows posted before P5 provenance existed, when
+// no P5 question could be served.
 export const mockResults = sqliteTable(
   'mock_results',
   {
@@ -366,6 +398,7 @@ export const mockResults = sqliteTable(
     durationMs: integer('duration_ms').notNull(),
     breakdown: text('breakdown', { mode: 'json' }).$type<unknown>().notNull(),
     createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+    estimateBasis: text('estimate_basis', { mode: 'json' }).$type<unknown>(),
   },
   (t) => ({
     // Newest-first per-user history read.
@@ -387,11 +420,22 @@ export const mockResults = sqliteTable(
 // difficulty (rolling a qid up to its Layer-1 cluster) is deliberately
 // FUTURE work — the qid→framework map lives client-side only, so the
 // worker can't resolve it without shipping that map server-side too.
+//
+// `source` is the item's provenance (ATTEMPT_SOURCES). A `synthetic` row is a
+// P5 item's UNCALIBRATED difficulty: learned from answers like any other but
+// kept apart — it never feeds the authentic anchor a synthetic answer is
+// fitted against (lib/fit.ts). The provenance fit never writes an `unknown`
+// row. One left by the fit from before provenance (a qid neither authentic
+// nor registered) is proof that the fitted state holds an unknown answer's
+// contribution. The backfill migration (drizzle/0013) then resets
+// item_stats, user_ability and the fit watermark, so the fit is rebuilt
+// without it.
 export const itemStats = sqliteTable('item_stats', {
   questionId: text('question_id').primaryKey(),
   difficulty: real('difficulty').notNull().default(0),
   attempts: integer('attempts').notNull().default(0),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+  source: text('source', { enum: ATTEMPT_SOURCES }).notNull().default('unknown'),
 })
 
 // ── user_ability — learned per-(user, section) ability (Elo user side) ─
@@ -404,6 +448,22 @@ export const itemStats = sqliteTable('item_stats', {
 //
 // `ability` clamps to ±800; `attempts` is the per-(user, section) fitted
 // count backing the K decay. PK is (user_id, section).
+//
+// `syntheticAttempts` is how many of `attempts` were synthetic (P5) answers.
+// Any value above 0 makes the ability an UNCALIBRATED estimate (/api/me/ability
+// reports it as estimateBasis). The rest are authentic. Unknown answers are
+// never fitted, and fitted state from before provenance that held one is
+// reset by drizzle/0013 (see item_stats).
+//
+// `authenticAbility` is the user's rating over their authentic answers alone
+// (review finding R2-B1). The fit learns an authentic item's difficulty
+// against it, never against `ability`, so no synthetic answer reaches an
+// authentic item, or through one any other user's ability. It is null while
+// `syntheticAttempts` is 0, because `ability` then rests on authentic answers
+// only and IS that rating. The fit sets it at the user's first synthetic
+// answer in the section. Its count is `attempts − syntheticAttempts`. A row
+// with synthetic answers and no authentic rating can only come from the fit
+// before this column: drizzle/0015 resets that state, and the fit refuses it.
 export const userAbility = sqliteTable(
   'user_ability',
   {
@@ -414,6 +474,8 @@ export const userAbility = sqliteTable(
     ability: real('ability').notNull().default(0),
     attempts: integer('attempts').notNull().default(0),
     updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+    syntheticAttempts: integer('synthetic_attempts').notNull().default(0),
+    authenticAbility: real('authentic_ability'),
   },
   (t) => ({
     pk: primaryKey({ columns: [t.userId, t.section] }),

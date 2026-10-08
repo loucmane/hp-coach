@@ -97,30 +97,45 @@ export type ShimD1 = {
   batch: <T = unknown>(stmts: ShimPreparedStatement[]) => Promise<T[]>
   exec: (sql: string) => Promise<{ count: number; duration: number }>
   dump: () => Promise<ArrayBuffer>
+  /** Test-only: apply one more generated migration file (see `before`). */
+  applyMigration: (file: string) => void
+}
+
+/** The generated migration files, in the order wrangler applies them. */
+export function migrationFiles(): string[] {
+  return readdirSync(MIGRATIONS_DIR)
+    .filter((f) => f.endsWith('.sql'))
+    .sort()
+}
+
+// drizzle emits statements separated by the `--> statement-breakpoint`
+// sentinel; split on it and run each.
+function applyMigrationFile(db: DatabaseSync, file: string): void {
+  const raw = readFileSync(join(MIGRATIONS_DIR, file), 'utf8')
+  for (const stmt of raw.split('--> statement-breakpoint')) {
+    const trimmed = stmt.trim()
+    if (trimmed) db.exec(trimmed)
+  }
 }
 
 /** Build a fresh in-memory D1-shaped database with every generated
- *  migration applied. Each call is an isolated DB — tests never share
- *  state. */
-export function makeTestD1(): ShimD1 {
+ *  migration applied — or, with `before`, only the files that sort before
+ *  that one, so a test can seed rows that predate a migration and then run
+ *  it with `applyMigration`. Each call is an isolated DB — tests never
+ *  share state. */
+export function makeTestD1(options: { before?: string } = {}): ShimD1 {
   const db = new DatabaseSync(':memory:')
   // Foreign keys on, matching D1's default behaviour for cascades.
   db.exec('PRAGMA foreign_keys = ON')
 
-  // Apply every migration in order. drizzle emits statements separated by
-  // the `--> statement-breakpoint` sentinel; split on it and run each.
-  const files = readdirSync(MIGRATIONS_DIR)
-    .filter((f) => f.endsWith('.sql'))
-    .sort()
-  for (const file of files) {
-    const raw = readFileSync(join(MIGRATIONS_DIR, file), 'utf8')
-    for (const stmt of raw.split('--> statement-breakpoint')) {
-      const trimmed = stmt.trim()
-      if (trimmed) db.exec(trimmed)
-    }
+  // Apply the migrations in order.
+  for (const file of migrationFiles()) {
+    if (options.before !== undefined && file >= options.before) break
+    applyMigrationFile(db, file)
   }
 
   return {
+    applyMigration: (file: string) => applyMigrationFile(db, file),
     prepare: (sql: string) => new ShimPreparedStatement(db, sql),
     // Real D1's batch() returns one D1Result per statement — the same
     // `{ results, success, meta }` shape as `.all()` (see D1's docs and

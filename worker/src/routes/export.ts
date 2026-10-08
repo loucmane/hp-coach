@@ -65,6 +65,8 @@ import {
   users,
 } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
+import { MockBreakdownSchema, type SessionAttempt, scoreMockResult } from '../lib/mockScore'
+import { classifyAttempt } from '../lib/provenance'
 import type { Env, Vars } from '../types'
 
 export const SCHEMA_VERSION = 1 as const
@@ -461,6 +463,24 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
 
   const attemptsToInsert = body.tables.attempts.filter((a) => sessionIdMap.has(a.sessionId))
   const mockResultsToInsert = body.tables.mockResults.filter((mr) => sessionIdMap.has(mr.sessionId))
+  // Provenance is re-derived on the server (P5 infold PR 3): a payload's
+  // attempt source / itemRevision or mock-result estimateBasis (exports carry
+  // them) is never trusted. A mock result is stored as POST /api/mock-results
+  // stores one (lib/mockScore.ts): from the plan of the session it was
+  // imported with and that session's imported attempts, oldest first, each
+  // classified here, with the payload row as the reported summary.
+  const planBySession = new Map(body.tables.sessions.map((s) => [s.id, s.plan ?? null]))
+  const attemptsBySession = new Map<number, SessionAttempt[]>()
+  for (const a of [...attemptsToInsert].sort((x, y) => x.id - y.id)) {
+    const list = attemptsBySession.get(a.sessionId) ?? []
+    list.push({
+      questionId: a.questionId,
+      selectedAnswer: a.selectedAnswer ?? null,
+      correct: a.correct ?? null,
+      source: classifyAttempt(a.questionId).source,
+    })
+    attemptsBySession.set(a.sessionId, list)
+  }
 
   await insertChunked(db, attemptsToInsert, (a) =>
     db.insert(attempts).values({
@@ -471,6 +491,7 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
       correct: a.correct ?? null,
       timeTakenMs: a.timeTakenMs ?? null,
       createdAt: toDateOrUndefined(a.createdAt),
+      ...classifyAttempt(a.questionId),
     }),
   )
   await insertChunked(db, body.tables.mistakes, (m) =>
@@ -509,23 +530,36 @@ export const importRoute = new Hono<{ Bindings: Env; Variables: Vars }>().post('
       updatedAt: toDateOrUndefined(dp.updatedAt),
     }),
   )
-  await insertChunked(db, mockResultsToInsert, (mr) =>
-    db.insert(mockResults).values({
+  await insertChunked(db, mockResultsToInsert, (mr) => {
+    const breakdown = MockBreakdownSchema.safeParse(mr.breakdown)
+    const scored = scoreMockResult(
+      planBySession.get(mr.sessionId) ?? null,
+      attemptsBySession.get(mr.sessionId) ?? [],
+      {
+        presented: mr.presented,
+        answered: mr.answered,
+        correct: mr.correct,
+        seenBefore: mr.seenBefore,
+        breakdown: breakdown.success ? breakdown.data : null,
+      },
+    )
+    return db.insert(mockResults).values({
       userId,
       sessionId: sessionIdMap.get(mr.sessionId) as number,
       mode: mr.mode,
       half: mr.half,
       examId: mr.examId ?? null,
       provpass: mr.provpass ?? null,
-      presented: mr.presented,
-      answered: mr.answered,
-      correct: mr.correct,
-      seenBefore: mr.seenBefore,
+      presented: scored.presented,
+      answered: scored.answered,
+      correct: scored.correct,
+      seenBefore: scored.seenBefore,
       durationMs: mr.durationMs,
-      breakdown: mr.breakdown,
+      breakdown: scored.breakdown,
       createdAt: toDateOrUndefined(mr.createdAt),
-    }),
-  )
+      estimateBasis: scored.estimateBasis,
+    })
+  })
 
   // Restore prefs onto the (already-provisioned) user row. clerkUserId
   // and the lifetime counters are NEVER taken from the payload — they

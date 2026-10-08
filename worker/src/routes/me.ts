@@ -9,13 +9,14 @@
 // through to the SPA's typed client.
 
 import { zValidator } from '@hono/zod-validator'
-import { and, count, eq, gte, isNull, lte, or, sql } from 'drizzle-orm'
+import { and, count, eq, gte, inArray, isNull, lte, or, sql } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { getDb } from '../db/client'
 import { attempts, mistakes, sessions, userAbility, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
+import { ASSESSED_SOURCES, type EstimateBasis, estimateBasis } from '../lib/provenance'
 import { extractSection, SECTIONS, type Section } from '../lib/section'
 import { currentStreak, formatDayUTC, startOfUtcDay } from '../lib/stats'
 import type { Env, Vars } from '../types'
@@ -82,9 +83,12 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
 
   // GET /api/me/ability — this user's learned per-section ability (the user
   // pole of the PL-L.1 Elo fit; the item pole is /api/item-stats). Shape:
-  // { [section]: { ability, attempts } }, only sections the fit has moved.
-  // Feeds PL-L.3 (adaptive picker) and Framsteg later. The fit itself runs
-  // nightly (cron) or via POST /api/fit/run.
+  // { [section]: { ability, attempts, estimateBasis } }, only sections the
+  // fit has moved. Feeds PL-L.3 (adaptive picker) and Framsteg later. The fit
+  // itself runs nightly (cron) or via POST /api/fit/run.
+  //
+  // estimateBasis (P5 infold PR 3) splits `attempts` into authentic and
+  // synthetic answers; any synthetic one makes the ability uncalibrated.
   .get('/ability', async (c) => {
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
@@ -93,11 +97,21 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         section: userAbility.section,
         ability: userAbility.ability,
         attempts: userAbility.attempts,
+        syntheticAttempts: userAbility.syntheticAttempts,
       })
       .from(userAbility)
       .where(eq(userAbility.userId, userId))
-    const ability: Record<string, { ability: number; attempts: number }> = {}
-    for (const r of rows) ability[r.section] = { ability: r.ability, attempts: r.attempts }
+    const ability: Record<
+      string,
+      { ability: number; attempts: number; estimateBasis: EstimateBasis }
+    > = {}
+    for (const r of rows) {
+      ability[r.section] = {
+        ability: r.ability,
+        attempts: r.attempts,
+        estimateBasis: estimateBasis(r.attempts - r.syntheticAttempts, r.syntheticAttempts),
+      }
+    }
     return c.json({ ability })
   })
 
@@ -130,6 +144,16 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // Time windows are SERVER-clock UTC. Mismatched device clocks would
   // otherwise let a user "today" twice by jumping timezones. The
   // streak helper documents the same calendar choice in stats.ts.
+  //
+  // PROVENANCE (P5 infold PR 3, docs/p5-infold-design.md Amendment 1 E):
+  // every ASSESSMENT number reads authentic AND synthetic (P5) answers —
+  // accuracy7d, the bySection score / trend / confidence / recency / pace
+  // fields and the weekly score trend — and each section and weekly bucket
+  // carries an estimateBasis saying how many of its answers were synthetic
+  // (calibrated only when none). Unknown answers never feed an assessment
+  // number. Practice EFFORT counts every answer, as before: the attempt
+  // counts, timeMsToday, the streak, the consistency heatmap and
+  // bySection.attemptsToday (the drill-completion signal).
   .get('/stats', async (c) => {
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
@@ -167,7 +191,14 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         correct: sql<number>`coalesce(sum(${attempts.correct}), 0)`,
       })
       .from(attempts)
-      .where(and(eq(attempts.userId, userId), gte(attempts.createdAt, weekStart)))
+      .where(
+        and(
+          eq(attempts.userId, userId),
+          gte(attempts.createdAt, weekStart),
+          // An accuracy is assessment: authentic and synthetic answers only.
+          inArray(attempts.source, ASSESSED_SOURCES),
+        ),
+      )
 
     // Drills: this-week (windowed). The all-time total is the counter
     // above (drillsTotal), so this no longer scans every drill row.
@@ -234,6 +265,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         correct: attempts.correct,
         timeTakenMs: attempts.timeTakenMs,
         createdAt: attempts.createdAt,
+        source: attempts.source,
       })
       .from(attempts)
       .where(and(eq(attempts.userId, userId), gte(attempts.createdAt, ninetyDayStart)))
@@ -245,6 +277,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       correct7to14d: number
       attempts90d: number
       correct90d: number
+      synthetic90d: number
       timeMsSum: number
       timeMsCount: number
       lastAttemptedAt: number | null
@@ -257,6 +290,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       correct7to14d: 0,
       attempts90d: 0,
       correct90d: 0,
+      synthetic90d: 0,
       timeMsSum: 0,
       timeMsCount: 0,
       lastAttemptedAt: null,
@@ -281,10 +315,24 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       const section = extractSection(a.questionId)
       if (!section) continue
       const ts = attemptTs
-      const correct = a.correct ? 1 : 0
       const agg = bySectionAgg[section]
+      // Same-UTC-day monotonic counter — backs the section-drill
+      // completion gate. Unlike attempts7d (a rolling window that can
+      // DROP overnight as old attempts age out, flipping a finished
+      // drill back to incomplete intraday), this only grows across the
+      // UTC day and resets cleanly at the next UTC midnight. See
+      // startOfUtcDay's docstring for the UTC-anchoring tradeoff.
+      // Completion is practice effort, so it counts every source.
+      if (ts >= todayStart.getTime()) {
+        agg.attemptsToday += 1
+      }
+      // Everything below feeds the section score, trend, confidence,
+      // recency and pace: authentic and synthetic answers, never unknown.
+      if (a.source === 'unknown') continue
+      const correct = a.correct ? 1 : 0
       agg.attempts90d += 1
       agg.correct90d += correct
+      if (a.source === 'synthetic') agg.synthetic90d += 1
       if (a.timeTakenMs != null && a.timeTakenMs > 0) {
         agg.timeMsSum += a.timeTakenMs
         agg.timeMsCount += 1
@@ -298,15 +346,6 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       } else if (ts >= prevWeekStart.getTime()) {
         agg.attempts7to14d += 1
         agg.correct7to14d += correct
-      }
-      // Same-UTC-day monotonic counter — backs the section-drill
-      // completion gate. Unlike attempts7d (a rolling window that can
-      // DROP overnight as old attempts age out, flipping a finished
-      // drill back to incomplete intraday), this only grows across the
-      // UTC day and resets cleanly at the next UTC midnight. See
-      // startOfUtcDay's docstring for the UTC-anchoring tradeoff.
-      if (ts >= todayStart.getTime()) {
-        agg.attemptsToday += 1
       }
     }
 
@@ -322,6 +361,8 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         avgTimeMs: number | null
         lastAttemptedAt: number | null
         attemptsToday: number
+        /** The 90d score window's answers by provenance. */
+        estimateBasis: EstimateBasis
       }
     > = Object.fromEntries(
       SECTIONS.map((s) => {
@@ -338,6 +379,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
             avgTimeMs: agg.timeMsCount > 0 ? Math.round(agg.timeMsSum / agg.timeMsCount) : null,
             lastAttemptedAt: agg.lastAttemptedAt,
             attemptsToday: agg.attemptsToday,
+            estimateBasis: estimateBasis(agg.attempts90d - agg.synthetic90d, agg.synthetic90d),
           },
         ]
       }),
@@ -346,16 +388,31 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
     // Weekly time-series for the trend chart. 12 weeks back, indexed
     // 0 = oldest, 11 = current. Each bucket is a Sunday-anchored ISO
     // week boundary (UTC). When a week has zero attempts, score is
-    // null and the SVG renderer skips the point.
+    // null and the SVG renderer skips the point. A score trend, so it
+    // reads authentic and synthetic answers, never unknown; each bucket's
+    // estimateBasis says how many were synthetic.
     const WEEK_MS = 7 * 24 * 60 * 60_000
     const WEEKS = 12
-    type WeeklyBucket = { weekStart: number; attempts: number; correct: number }
+    type WeeklyBucket = {
+      weekStart: number
+      attempts: number
+      correct: number
+      estimateBasis: EstimateBasis
+    }
     const weekly: WeeklyBucket[] = []
+    const weeklySynthetic: number[] = []
     for (let i = WEEKS - 1; i >= 0; i--) {
       const start = new Date(now.getTime() - (i + 1) * WEEK_MS)
-      weekly.push({ weekStart: start.getTime(), attempts: 0, correct: 0 })
+      weekly.push({
+        weekStart: start.getTime(),
+        attempts: 0,
+        correct: 0,
+        estimateBasis: estimateBasis(0, 0),
+      })
+      weeklySynthetic.push(0)
     }
     for (const a of recentAttempts) {
+      if (a.source === 'unknown') continue
       const ts = a.createdAt instanceof Date ? a.createdAt.getTime() : 0
       // Find bucket index. weekly[0] starts WEEKS weeks ago. Anything
       // older falls outside the 12w window — skip.
@@ -364,6 +421,13 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       const idx = WEEKS - 1 - weeksAgo
       weekly[idx].attempts += 1
       if (a.correct) weekly[idx].correct += 1
+      if (a.source === 'synthetic') weeklySynthetic[idx] += 1
+    }
+    for (const [idx, bucket] of weekly.entries()) {
+      bucket.estimateBasis = estimateBasis(
+        bucket.attempts - weeklySynthetic[idx],
+        weeklySynthetic[idx],
+      )
     }
 
     // Daily attempt counts for the /progress consistency heatmap.

@@ -15,11 +15,16 @@
 // Sections without rich-schema framework_id (MEK/DTK/LÄS/ELF/ORD)
 // won't cluster — that's correct: there's no trap entry to deep-link.
 // KVA/NOG/XYZ are backfilled.
+//
+// P5 mistakes (P5 infold PR 3, docs/p5-infold-design.md Amendment 1 E) count
+// only when their explanation names a framework of the question's own
+// section (lib/provenance.ts frameworkSignal); otherwise they are skipped.
 
 import { useEffect, useMemo, useState } from 'react'
 
 import { loadExplanation } from '@/data/explanations'
 import type { Section } from '@/data/questions'
+import { frameworkSignal } from '@/lib/provenance'
 import { computeTrapTrend, recordTrapSnapshot, type TrapTrend } from '@/lib/trapHistory'
 
 import { useDueMistakes } from './useMistakes'
@@ -162,9 +167,10 @@ export function useTopTraps(opts: UseTopTrapsOptions = {}): TopTrap[] {
       if (!alive) return
       // Count by framework_id.
       const counts = new Map<string, number>()
-      for (const e of entries) {
-        if (!e?.framework_id) continue
-        counts.set(e.framework_id, (counts.get(e.framework_id) ?? 0) + 1)
+      for (const [i, e] of entries.entries()) {
+        const fid = frameworkSignal(qids[i], e?.framework_id)
+        if (!fid) continue
+        counts.set(fid, (counts.get(fid) ?? 0) + 1)
       }
       // Build candidate list — filter by minCount, pair with section.
       const candidates: { framework_id: string; section: Section; count: number }[] = []

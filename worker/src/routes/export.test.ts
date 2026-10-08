@@ -382,3 +382,167 @@ describe('validation', () => {
     expect(sessionRows).toHaveLength(sessionCount)
   })
 })
+
+// P5 infold PR 3 (docs/p5-infold-design.md Amendment 1 E): provenance is the
+// server's call on import too. A payload's source, itemRevision or
+// estimateBasis (exports carry them) is never trusted: every attempt is
+// re-classified from its qid, and a mock result is stored as POST
+// /api/mock-results stores one, from its imported session's plan and
+// attempts (lib/mockScore.ts).
+describe('import — provenance is re-derived on the server', () => {
+  const PLAN = ['var-2024-verb1-ORD-001', 'p5-las-b19-002-r1-LÄS-001', 'p5-las-b7-002-r1-LÄS-001']
+
+  function payload() {
+    return {
+      schemaVersion: SCHEMA_VERSION,
+      exportedAt: new Date().toISOString(),
+      user: {},
+      tables: {
+        sessions: [
+          { id: 7, kind: 'drill', endedAt: Date.now() },
+          { id: 8, kind: 'mock', endedAt: Date.now(), plan: PLAN },
+          { id: 9, kind: 'mock', endedAt: Date.now() },
+        ],
+        attempts: [
+          // Forged: an authentic qid exported as synthetic, a revoked P5 qid
+          // exported as authentic, a registered P5 qid with a wrong revision.
+          {
+            id: 1,
+            sessionId: 7,
+            questionId: 'var-2024-verb1-ORD-001',
+            correct: true,
+            source: 'synthetic',
+            itemRevision: 3,
+          },
+          {
+            id: 2,
+            sessionId: 7,
+            questionId: 'p5-las-b7-002-r1-LÄS-001',
+            correct: true,
+            source: 'authentic',
+          },
+          {
+            id: 3,
+            sessionId: 7,
+            questionId: 'p5-las-b7-002-r2-LÄS-001',
+            correct: false,
+            source: 'unknown',
+            itemRevision: 9,
+          },
+        ],
+        mistakes: [],
+        lessonProgress: [],
+        lessonReads: [],
+        dailyPlans: [],
+        mockResults: [8, 9].map((sessionId, i) => ({
+          id: i + 1,
+          sessionId,
+          mode: 'synthetic',
+          half: 'verbal',
+          presented: 3,
+          answered: 3,
+          correct: 2,
+          seenBefore: 0,
+          durationMs: 60_000,
+          breakdown: { perSection: {}, missedQids: [], version: 1 },
+          estimateBasis: {
+            authentic: 3,
+            synthetic: 0,
+            unknown: 0,
+            calibrated: true,
+            perSection: {},
+          },
+        })),
+      },
+    }
+  }
+
+  it('re-classifies every imported attempt from its qid', async () => {
+    const { res } = await postImport('user_a', payload())
+    expect(res.status).toBe(200)
+    const db = getDb(d1 as unknown as D1Database)
+    const rows = await db.select().from(attempts).orderBy(attempts.id)
+    expect(rows.map((r) => [r.questionId, r.source, r.itemRevision])).toEqual([
+      ['var-2024-verb1-ORD-001', 'authentic', null],
+      ['p5-las-b7-002-r1-LÄS-001', 'unknown', null],
+      ['p5-las-b7-002-r2-LÄS-001', 'synthetic', 2],
+    ])
+  })
+
+  it('stores each imported mock result as POST /api/mock-results would, ignoring its basis', async () => {
+    await postImport('user_a', payload())
+    const db = getDb(d1 as unknown as D1Database)
+    const rows = await db.select().from(mockResults).orderBy(mockResults.id)
+    expect(
+      rows.map(({ presented, answered, correct }) => ({ presented, answered, correct })),
+    ).toEqual([
+      // Session 8 answered nothing: its two scored questions are blanks, and
+      // the revoked P5 qid is never scored.
+      { presented: 2, answered: 0, correct: 0 },
+      // Session 9 has no plan and no attempt: nothing the server can score.
+      { presented: 0, answered: 0, correct: 0 },
+    ])
+    expect(rows.map((r) => r.estimateBasis)).toEqual([
+      {
+        authentic: 1,
+        synthetic: 1,
+        unknown: 1,
+        unclassified: 0,
+        calibrated: false,
+        perSection: {
+          ORD: { authentic: 1, synthetic: 0, unknown: 0, calibrated: true },
+          LÄS: { authentic: 0, synthetic: 1, unknown: 1, calibrated: false },
+        },
+      },
+      {
+        authentic: 0,
+        synthetic: 0,
+        unknown: 0,
+        unclassified: 3,
+        calibrated: false,
+        perSection: {},
+      },
+    ])
+  })
+
+  it('an exported authentic result round-trips unchanged', async () => {
+    const plan = ['var-2024-verb1-ORD-001', 'var-2024-verb1-ORD-002']
+    const result = {
+      id: 1,
+      sessionId: 10,
+      mode: 'authentic',
+      half: 'verbal',
+      examId: 'var-2024',
+      provpass: 'verb1',
+      presented: 2,
+      answered: 2,
+      correct: 1,
+      seenBefore: 1,
+      durationMs: 60_000,
+      breakdown: {
+        perSection: { ORD: { presented: 2, correct: 1, timeMs: 50_000 } },
+        missedQids: ['var-2024-verb1-ORD-002'],
+        version: 1,
+      },
+    }
+    const body = payload()
+    body.tables.sessions.push({ id: 10, kind: 'mock', endedAt: Date.now(), plan })
+    body.tables.attempts.push(
+      { id: 4, sessionId: 10, questionId: plan[0], correct: true, source: 'authentic' },
+      { id: 5, sessionId: 10, questionId: plan[1], correct: false, source: 'authentic' },
+    )
+    const withResult = { ...body, tables: { ...body.tables, mockResults: [result] } }
+    const { res } = await postImport('user_a', withResult)
+    expect(res.status).toBe(200)
+    const db = getDb(d1 as unknown as D1Database)
+    const [row] = await db.select().from(mockResults)
+    expect(row).toMatchObject({
+      presented: 2,
+      answered: 2,
+      correct: 1,
+      seenBefore: 1,
+      breakdown: result.breakdown,
+      estimateBasis: { authentic: 2, synthetic: 0, unknown: 0, unclassified: 0, calibrated: true },
+    })
+  })
+})

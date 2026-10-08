@@ -1,0 +1,1 @@
+ALTER TABLE `user_ability` ADD `authentic_ability` real;

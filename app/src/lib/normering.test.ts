@@ -1,6 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { NormeringSitting } from './normering'
-import { __resetNormeringCacheForTests, loadNormeringTable, normedScore } from './normering'
+import {
+  __resetNormeringCacheForTests,
+  loadNormeringTable,
+  normedEstimate,
+  normedScore,
+} from './normering'
 
 // A tiny hand-built sitting whose 80q verbal table we can reason about
 // exactly. Bands: only what the tests below touch matter; the dense
@@ -115,5 +120,59 @@ describe('loadNormeringTable (fetch loader)', () => {
     await loadNormeringTable('test-2099')
     await loadNormeringTable('test-2099')
     expect(fetchMock).toHaveBeenCalledOnce()
+  })
+})
+
+// P5 infold PR 3 (docs/p5-infold-design.md Amendment 1 E): the HP-scale
+// conversion reads a pass's raw performance whatever its questions' source,
+// and the result says whether it is calibrated.
+describe('normedEstimate — the same conversion, flagged when P5 contributes', () => {
+  const P5_BASIS = {
+    authentic: 20,
+    synthetic: 20,
+    unknown: 0,
+    unclassified: 0,
+    calibrated: false,
+    perSection: {},
+  }
+
+  it('converts exactly as normedScore does, whatever the basis', () => {
+    for (const [sitting, correct, presented] of [
+      [SITTING, 20, 40],
+      [SITTING, 15, 39],
+      [null, 31, 40],
+      [SITTING, 0, 0],
+    ] as const) {
+      const plain = normedScore(sitting, 'verbal', correct, presented)
+      expect(normedEstimate(sitting, 'verbal', correct, presented, P5_BASIS)).toEqual({
+        ...plain,
+        calibrated: false,
+      })
+      expect(normedEstimate(sitting, 'verbal', correct, presented, null)).toEqual({
+        ...plain,
+        calibrated: true,
+      })
+    }
+  })
+
+  it('is calibrated for an authentic-only pass and uncalibrated when a P5 question counted', () => {
+    const authenticOnly = {
+      authentic: 40,
+      synthetic: 0,
+      unknown: 0,
+      unclassified: 0,
+      calibrated: true,
+      perSection: {},
+    }
+    expect(normedEstimate(SITTING, 'kvant', 30, 40, authenticOnly).calibrated).toBe(true)
+    expect(normedEstimate(SITTING, 'verbal', 30, 40, P5_BASIS).calibrated).toBe(false)
+    // Questions the worker could not identify make it uncalibrated too; unknown
+    // ones are already out of the stored result and do not.
+    const unclassified = { ...authenticOnly, authentic: 30, unclassified: 10, calibrated: false }
+    expect(normedEstimate(SITTING, 'kvant', 20, 30, unclassified).calibrated).toBe(false)
+    const withUnknown = { ...authenticOnly, authentic: 39, unknown: 1 }
+    expect(normedEstimate(SITTING, 'kvant', 30, 39, withUnknown).calibrated).toBe(true)
+    // A result row from before P5 has no basis: it rests on authentic questions.
+    expect(normedEstimate(SITTING, 'verbal', 30, 40, undefined).calibrated).toBe(true)
   })
 })
