@@ -72,13 +72,15 @@ PENDING = "pending-owner-ratification"
 RETIRED = "retired"
 
 # docs/p5-infold-design.md §2, per batch: retained units / questions per
-# section, and retired units / questions.
+# section, and retired units / questions. Since the owner's ruling of
+# 2026-10-08 (bead hpf-c5tb.2) las-b3-001 and las-b5-001 are retired: §2's
+# census update of that date, which supersedes its original table.
 EXPECTED_CENSUS = {
     1: {"LÄS": (3, 8), "ELF": (4, 12), "retired": (0, 0)},
     2: {"LÄS": (2, 4), "ELF": (4, 12), "retired": (0, 0)},
-    3: {"LÄS": (3, 8), "ELF": (3, 7), "retired": (0, 0)},
+    3: {"LÄS": (2, 4), "ELF": (3, 7), "retired": (1, 4)},
     4: {"LÄS": (2, 4), "ELF": (3, 11), "retired": (0, 0)},
-    5: {"LÄS": (3, 8), "ELF": (4, 12), "retired": (0, 0)},
+    5: {"LÄS": (2, 4), "ELF": (4, 12), "retired": (1, 4)},
     6: {"LÄS": (2, 4), "ELF": (3, 7), "retired": (2, 9)},
     7: {"LÄS": (3, 8), "ELF": (3, 7), "retired": (1, 5)},
     8: {"LÄS": (2, 4), "ELF": (3, 7), "retired": (2, 9)},
@@ -94,7 +96,7 @@ EXPECTED_CENSUS = {
     18: {"LÄS": (3, 8), "ELF": (4, 12), "retired": (0, 0)},
     19: {"LÄS": (3, 8), "ELF": (3, 11), "retired": (1, 1)},
 }
-EXPECTED_TOTALS = {"retained": (120, 340), "LÄS": (52, 136), "ELF": (68, 204), "retired": (8, 33)}
+EXPECTED_TOTALS = {"retained": (118, 332), "LÄS": (50, 128), "ELF": (68, 204), "retired": (10, 41)}
 
 # Units whose student-facing content changed after their evidence was
 # recorded: unit_id -> revision; every other unit is revision 1. las-b7-002
@@ -161,7 +163,7 @@ RATIFIED_EXTRA = {
                     "the revision-2 rename that the ratification covers")],
 }
 # Kept legacy units that were ÄGARBLICK items in the master rather than plain
-# approve-with-note rows; the other 77 kept units are table rows.
+# approve-with-note rows; the other 75 kept units are table rows.
 LEGACY_NOTES = {
     "las-b2-003": "ÄGARBLICK D: q1's 'bäst' stem was left to the owner's eye; a third q1 redesign "
                   "landed in 4791084 (PR #356) and its audit returned CONFIRMED_NOTES",

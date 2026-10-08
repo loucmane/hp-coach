@@ -1,21 +1,45 @@
 #!/usr/bin/env python3
 """Partition, check and assemble the P5 Layer 2 explanation batches.
 
-docs/p5-infold-design.md §4 row 2b (Amendment 1) and §D; beads hpf-c5tb and
-hpf-c5tb.1. Every exported P5 question needs a reviewed Layer 2 explanation
-before LÄS and ELF switch to P5. The pilot (data/explanations/p5-pilot.json,
-bead hpf-no7l) is batch x0-pilot. The other 321 questions are written and
-reviewed in seven batch files, one PR each, and are combined into the release
-shard data/explanations/p5-<release>.json only when every batch is in.
+docs/p5-infold-design.md §4 row 2b (Amendment 1) and §D; beads hpf-c5tb,
+hpf-c5tb.1 and hpf-c5tb.4. Every exported P5 question needs a reviewed Layer 2
+explanation before LÄS and ELF switch to P5. The pilot
+(data/explanations/p5-pilot.json, bead hpf-no7l) is batch x0-pilot. The other
+313 questions are written and reviewed in seven batch files, one PR each, and
+are combined into the release shard data/explanations/p5-<release>.json only
+when every batch is in.
 
-The partition, BATCHES.json beside the batch files: the eligible units are the
-roster's approved, unretired units, selected the way export_product selects
-them (120 units / 340 questions). The pilot's units are batch x0-pilot. Each
-section's other units, sorted by (batch number, unit id), are cut into
-contiguous chunks, LÄS into three (x1–x3) and ELF into four (x4–x7): a new
-chunk starts once the running question total reaches k × (section total /
-chunks). The partition must equal EXPECTED, or the build fails. Each batch
-records its units and the qids they export.
+The partition, BATCHES.json beside the batch files, is pinned (bead
+hpf-c5tb.4): the committed file is the record of which batch holds which unit,
+and nothing re-derives it. The generator reads each batch's name, file and
+units from it, keeps every batch's units, in roster order, drops each unit
+that has been retired (RETIRED.json) from its batch, and records each batch's
+qids at its units' current revisions. A shipped or in-flight batch therefore
+never gains a unit and no unit moves between batches: retirement only
+removes. The eligible units are the roster's approved, unretired units,
+selected the way export_product selects them (118 units / 332 questions since
+the owner retired las-b3-001 and las-b5-001 on 2026-10-08, bead hpf-c5tb.2).
+The generator refuses, writing nothing, an eligible unit in no batch, a unit
+in two batches, a listed unit that is not eligible for a reason other than
+retirement (not in the roster, or pending owner ratification), a batch with
+no unit left, a batch whose name or file is not its own, and a first batch
+that is not the exporter's pilot; --check, the batch check and the assembler
+also refuse a file that still lists a retired unit, and name it. A new unit
+(batches 20+) is never assigned automatically: it is refused until it is
+added by hand to a new batch in BATCHES.json (its name, file and units) and
+in EXPECTED. The table must equal EXPECTED, or the build fails, so a
+retirement also needs EXPECTED changed by hand. Each batch records its units
+and the qids they export.
+
+The initial cut (bead hpf-c5tb.1, on the roster at 1cbbb84: 120 units / 340
+questions) is the assignment's provenance, kept as initial_cut() and tested
+against that roster's eligible units; nothing else runs it. The pilot's units
+were batch x0-pilot. Each section's other units, sorted by (batch number,
+unit id), were cut into contiguous chunks, LÄS into three (x1–x3) and ELF into
+four (x4–x7): a new chunk started once the running question total reached
+k × (section total / chunks). Re-run after a retirement, that rule moves units
+between batches (it would have moved las-b8-003 and las-b9-001, which have no
+explanation, into the merged x1), which is why the generator never runs it.
 
 A batch file, x<N>-<las|elf>.json, holds one entry per qid of its batch, in
 exactly the shard's entry format and canonical bytes; the pilot's file is the
@@ -38,7 +62,7 @@ goes to a fresh temporary file renamed over the old one, never through a
 symlink, and a release whose shard would overwrite a batch file (the pilot's)
 is refused.
 
-  python3 pipeline/synthetic/infold/explanation_batches.py                    # write BATCHES.json
+  python3 pipeline/synthetic/infold/explanation_batches.py                    # rewrite BATCHES.json
   python3 pipeline/synthetic/infold/explanation_batches.py --check            # exit 1 when stale
   python3 pipeline/synthetic/infold/explanation_batches.py --check-batch x1   # one batch's gates
   python3 pipeline/synthetic/infold/explanation_batches.py --assemble <release> --partial
@@ -49,6 +73,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import stat
 import sys
 import tempfile
@@ -68,17 +93,28 @@ MANIFEST_FORMAT = "p5-explanation-batches-v1"
 SPEC = "docs/p5-infold-design.md §4 row 2b (Amendment 1) and §D"
 PILOT_BATCH = "x0-pilot"
 PILOT_FILE = f"{EXPLANATIONS_REL}/{shard_name(PILOT_RELEASE)}"
-# Per section, in batch-number order: its number of chunks and the batch files' suffix.
+# Per section, in batch-number order: its number of chunks in the initial cut
+# and the batch files' suffix.
 CHUNKS = (("LÄS", 3, "las"), ("ELF", 4, "elf"))
-RULE = ("Eligible: the roster's approved, unretired units. The pilot's units are batch x0-pilot. Each section's "
-        "other units, sorted by (batch number, unit id), are cut into contiguous chunks, LÄS into 3 (x1–x3) and "
-        "ELF into 4 (x4–x7): a new chunk starts once the running question total reaches k × (section total / "
-        "chunks).")
-# The partition on the ratified roster (bead hpf-c5tb.1): batch -> (first
-# unit, last unit, units, questions). build_manifest fails when it differs.
+SUFFIX = {section: suffix for section, _, suffix in CHUNKS}
+BATCH_NAME = re.compile(r"x[1-9][0-9]*")
+RULE = ("Pinned (bead hpf-c5tb.4): this file records which batch holds which unit, and it is never re-cut. Each "
+        "batch keeps its units, in roster order; a retired unit (RETIRED.json) leaves its batch; no unit moves "
+        "between batches and no batch gains one. Eligible: the roster's approved, unretired units. Refused: an "
+        "eligible unit in no batch (a new unit waits for an explicit assignment, to a new batch), a unit in two "
+        "batches, a listed unit that is not eligible for a reason other than retirement, a batch with no unit "
+        "left, a retired unit still listed. Provenance, the initial cut (bead hpf-c5tb.1, on the roster at "
+        "1cbbb84: 120 units / 340 questions): the pilot's units are batch x0-pilot; each section's other units, "
+        "sorted by (batch number, unit id), were cut into contiguous chunks, LÄS into 3 (x1–x3) and ELF into 4 "
+        "(x4–x7), a new chunk starting once the running question total reached k × (section total / chunks).")
+# The pinned partition (bead hpf-c5tb.4): the initial cut of bead hpf-c5tb.1
+# less las-b3-001 and las-b5-001, which the owner retired from x1 on
+# 2026-10-08 (bead hpf-c5tb.2; x1 was 18 units / 44 questions): batch ->
+# (first unit, last unit, units, questions). build_manifest fails when it
+# differs.
 EXPECTED = {
     PILOT_BATCH: ("las-b7-002", "las-b19-002", 6, 19),
-    "x1": ("las-b1-001", "las-b8-002", 18, 44),
+    "x1": ("las-b1-001", "las-b8-002", 16, 36),
     "x2": ("las-b8-003", "las-b14-001", 16, 42),
     "x3": ("las-b14-003", "las-b19-003", 15, 42),
     "x4": ("elf-b1-001", "elf-b5-002", 16, 52),
@@ -103,6 +139,10 @@ def _read(path: Path, what: str) -> bytes:
         raise BatchError(f"{what} {_shown(path)} cannot be read: {exc.strerror}") from None
 
 
+def _repeated(values) -> list:
+    return sorted(value for value, n in Counter(values).items() if n > 1)
+
+
 # ------------------------------------------------------------ the partition
 
 def _batch_number(unit_id: str) -> int:
@@ -112,12 +152,19 @@ def _batch_number(unit_id: str) -> int:
     return int(match.group(2))
 
 
-def eligible_units(root: Path, roster_path: Path) -> list[dict]:
-    """The roster's approved, unretired units in roster order, selected the way
-    the exporter selects them, after its roster and RETIRED.json checks."""
+def _roster_and_registry(root: Path, roster_path: Path) -> tuple[dict, dict]:
+    """The roster and RETIRED.json's entries, after the exporter's roster and
+    retirement checks."""
     roster = export_product._load_roster(_read(roster_path, "the roster"))
     registry = load_retired(root)
     export_product._check_retirement(roster, registry)
+    return roster, registry
+
+
+def eligible_units(root: Path, roster_path: Path) -> list[dict]:
+    """The roster's approved, unretired units in roster order, selected the way
+    the exporter selects them, after its roster and RETIRED.json checks."""
+    roster, registry = _roster_and_registry(root, roster_path)
     chosen, _ = export_product.select_units(roster, registry)
     return chosen
 
@@ -130,7 +177,8 @@ def unit_qids(entry: dict) -> list[str]:
 
 def cut(units: list[dict], chunks: int) -> list[list[dict]]:
     """units, in order, cut into `chunks` contiguous chunks: chunk k closes on
-    the unit that takes the running question total to k × total / chunks."""
+    the unit that takes the running question total to k × total / chunks. The
+    rule of the initial cut (initial_cut)."""
     total = sum(unit["question_count"] for unit in units)
     parts: list[list[dict]] = []
     part: list[dict] = []
@@ -157,9 +205,12 @@ def _batch(name: str, units: list[dict], file: str) -> dict:
             "question_count": len(qids), "units": [unit["unit_id"] for unit in units], "qids": qids}
 
 
-def partition(units: list[dict]) -> list[dict]:
-    """The batches of the eligible units (in roster order): the pilot, then
-    each section's chunks."""
+def initial_cut(units: list[dict]) -> list[dict]:
+    """The initial cut (bead hpf-c5tb.1) of the eligible units, in roster
+    order: the pilot, then each section's chunks. It is the provenance of the
+    pinned partition, not its source: on the roster at 1cbbb84 (120 units / 340
+    questions) it gives the batches that BATCHES.json pins, and only its test
+    runs it. Re-run after a retirement, it moves units between batches."""
     ids = [unit["unit_id"] for unit in units]
     absent = [uid for uid in PILOT_UNITS if uid not in ids]
     if absent:
@@ -178,36 +229,140 @@ def partition(units: list[dict]) -> list[dict]:
     return batches
 
 
-def build_manifest(root: Path = REPO_ROOT, roster_path: Path = ROSTER_PATH, *, expected=EXPECTED) -> dict:
-    """The partition of the roster's eligible units; BatchError when it differs
-    from `expected` (None skips that comparison)."""
-    units = eligible_units(root, roster_path)
-    batches = partition(units)
+def read_pin(path: Path) -> list[dict]:
+    """The pinned partition as BATCHES.json records it: each batch's name, file
+    and units, in file order. The file's other fields are derived from these
+    and the roster, and the generator rebuilds them."""
+    shown = _shown(path)
+    try:
+        data = json.loads(_read(path, "the batch manifest"))
+    except ValueError as exc:
+        raise BatchError(f"{shown} is not readable JSON: {exc}") from None
+    form = data.get("format") if type(data) is dict else None
+    if form != MANIFEST_FORMAT:
+        raise BatchError(f"{shown}: format {form!r} is not {MANIFEST_FORMAT!r}")
+    if type(data.get("batches")) is not list or not data["batches"]:
+        raise BatchError(f"{shown} lists no batch")
+    pin = []
+    for batch in data["batches"]:
+        batch = batch if type(batch) is dict else {}
+        name, file, units = batch.get("batch"), batch.get("file"), batch.get("units")
+        if (type(name) is not str or type(file) is not str or type(units) is not list
+                or any(type(uid) is not str for uid in units)):
+            raise BatchError(f"{shown}: batch {name!r} needs a name, a file and a list of unit ids")
+        pin.append({"batch": name, "file": file, "units": list(units)})
+    return pin
+
+
+def assign(pin: list[dict], roster: dict, registry: dict) -> tuple[list[dict], dict[str, list[str]]]:
+    """The pinned batches on this roster and RETIRED.json: each batch keeps the
+    units it lists, in roster order, less the retired ones, with their qids at
+    their current revisions. Returns the batches and, by batch, the retired
+    units it dropped. Nothing is ever re-cut: BatchError when the pin lists a
+    batch, file or unit twice, a unit that is not in the roster or is not
+    eligible for a reason other than retirement, a batch left with no unit, a
+    batch whose name or file is not its own or a first batch that is not the
+    exporter's pilot, and when an eligible unit is in no batch."""
+    eligible, _ = export_product.select_units(roster, registry)
+    by_id = {unit["unit_id"]: unit for unit in roster["units"]}
+    order = {uid: n for n, uid in enumerate(by_id)}
+    for label in ("batch", "file"):
+        repeated = _repeated(batch[label] for batch in pin)
+        if repeated:
+            raise BatchError(f"the pinned partition lists a {label} more than once: {repeated}")
+    holders: dict[str, list[str]] = {}
+    for batch in pin:
+        for uid in batch["units"]:
+            holders.setdefault(uid, []).append(batch["batch"])
+    twice = {uid: names for uid, names in holders.items() if len(names) > 1}
+    if twice:
+        raise BatchError(f"unit(s) in more than one batch: {twice}; a unit belongs to one batch only")
+    unknown = [uid for uid in holders if uid not in by_id]
+    if unknown:
+        raise BatchError(f"the pinned partition lists unit(s) that are not in the roster: {unknown}")
+    chosen = {unit["unit_id"] for unit in eligible}
+    barred = [f"{uid} ({by_id[uid]['approval']})" for uid in holders if uid not in chosen and uid not in registry]
+    if barred:
+        raise BatchError(f"the pinned partition lists unit(s) that are not eligible for export: {barred}; only a "
+                         "retirement (RETIRED.json) takes a unit out of its batch")
+    unassigned = [unit["unit_id"] for unit in eligible if unit["unit_id"] not in holders]
+    if unassigned:
+        raise BatchError(f"eligible unit(s) in no batch: {unassigned}. The partition is pinned and never re-cut: "
+                         f"assign a new unit by hand, to a new batch in {MANIFEST_REL} and in EXPECTED; a shipped "
+                         "or in-flight batch never gains a unit")
+    batches: list[dict] = []
+    removed: dict[str, list[str]] = {}
+    for pinned in pin:
+        name, file = pinned["batch"], pinned["file"]
+        listed = sorted(pinned["units"], key=order.__getitem__)
+        kept = [uid for uid in listed if uid not in registry]
+        if len(kept) < len(listed):
+            removed[name] = [uid for uid in listed if uid in registry]
+        if not kept:
+            raise BatchError(f"batch {name} has no unit left: {listed or 'it lists none'}")
+        batch = _batch(name, [by_id[uid] for uid in kept], file)
+        if not batches:
+            pilot = [uid for uid in PILOT_UNITS if uid not in registry]
+            if (name, file, kept) != (PILOT_BATCH, PILOT_FILE, pilot):
+                raise BatchError(f"the first batch must be {PILOT_BATCH}, the exporter's pilot {pilot} in "
+                                 f"{PILOT_FILE}; the pin has {name} {kept} in {file}")
+        else:
+            sections = batch["sections"]
+            own = f"{BATCH_DIR_REL}/{name}-{SUFFIX[sections[0]]}.json" if len(sections) == 1 else None
+            if not BATCH_NAME.fullmatch(name) or file != own:
+                raise BatchError(f"batch {name!r} ({file}): a batch after the pilot is named x<N>, holds one "
+                                 f"section's units and is the file {BATCH_DIR_REL}/x<N>-<las|elf>.json")
+        batches.append(batch)
+    return batches, removed
+
+
+def _named(removed: dict[str, list[str]]) -> str:
+    return "; ".join(f"{name}: {', '.join(units)}" for name, units in removed.items())
+
+
+def _build(root: Path, roster_path: Path, pin_path: Path, expected) -> tuple[dict, dict[str, list[str]]]:
+    """build_manifest, and the retired units it dropped from the pin, by batch."""
+    roster, registry = _roster_and_registry(root, roster_path)
+    batches, removed = assign(read_pin(pin_path), roster, registry)
     if expected is not None:
         got = {b["batch"]: (b["first"], b["last"], b["unit_count"], b["question_count"]) for b in batches}
         problems = [f"{name} is {got.get(name)}, expected {tuple(want)}" for name, want in expected.items()
                     if got.get(name) != tuple(want)]
         problems += [f"{name} is not expected" for name in got if name not in expected]
         if problems:
-            raise BatchError("the partition differs from the expected table (bead hpf-c5tb.1): " + "; ".join(problems))
+            raise BatchError("the partition differs from the expected table (beads hpf-c5tb.1, hpf-c5tb.4): "
+                             + "; ".join(problems))
+    # assign() puts every eligible unit in exactly one batch, and no other unit.
     return {
         "format": MANIFEST_FORMAT,
         "generated_by": SCRIPT_REL,
         "spec": SPEC,
         "rule": RULE,
-        "eligible": {"units": len(units), "questions": sum(unit["question_count"] for unit in units)},
+        "eligible": {"units": sum(b["unit_count"] for b in batches),
+                     "questions": sum(b["question_count"] for b in batches)},
         "batches": batches,
-    }
+    }, removed
+
+
+def build_manifest(root: Path = REPO_ROOT, roster_path: Path = ROSTER_PATH, *, pin_path: Path = MANIFEST_PATH,
+                   expected=EXPECTED) -> dict:
+    """The pinned partition (pin_path, BATCHES.json) on the roster as it
+    stands; BatchError when assign() refuses it or the table differs from
+    `expected` (None skips that comparison)."""
+    return _build(root, roster_path, pin_path, expected)[0]
 
 
 def current_manifest(root: Path | None = None, roster_path: Path | None = None, path: Path | None = None) -> dict:
-    """BATCHES.json, refused unless it is byte for byte the partition of the
-    roster as it stands."""
+    """BATCHES.json, refused unless it is byte for byte the pinned partition on
+    the roster as it stands; a retired unit it still lists is named."""
     root = REPO_ROOT if root is None else root
     roster_path = ROSTER_PATH if roster_path is None else roster_path
     path = MANIFEST_PATH if path is None else path
     raw = _read(path, "the batch manifest")
-    manifest = build_manifest(root, roster_path)
+    manifest, removed = _build(root, roster_path, path, EXPECTED)
+    if removed:
+        raise BatchError(f"{_shown(path)} still lists retired unit(s) ({_named(removed)}): rerun {SCRIPT_REL} to "
+                         "drop them from their batch")
     if raw != render_json(manifest):
         raise BatchError(f"{_shown(path)} is stale: rerun {SCRIPT_REL} and review the diff")
     return manifest
@@ -259,10 +414,6 @@ def check_batch(root: Path, roster_path: Path, manifest: dict, name: str) -> tup
 
 
 # ------------------------------------------------------------ the assembler
-
-def _repeated(values) -> list:
-    return sorted(value for value, n in Counter(values).items() if n > 1)
-
 
 def assemble(root: Path, roster_path: Path, manifest: dict, *, release: str,
              partial: bool = False) -> tuple[bytes, dict]:
@@ -418,16 +569,19 @@ def main(argv: list[str] | None = None) -> int:
             print(f"assembled {summary['entries']} explanations from {len(summary['batches'])} batches -> {shown} "
                   f"(sha256 {summary['sha256']})")
             return 0
-        manifest = build_manifest(root, roster_path)
+        manifest, removed = _build(root, roster_path, MANIFEST_PATH, EXPECTED)
         data = render_json(manifest)
         if args.check:
             current = MANIFEST_PATH.read_bytes() if MANIFEST_PATH.is_file() else None
             if current != data:
-                print(f"STALE {MANIFEST_REL}: rerun {SCRIPT_REL} and review the diff")
+                listed = f"it still lists retired unit(s) ({_named(removed)}); " if removed else ""
+                print(f"STALE {MANIFEST_REL}: {listed}rerun {SCRIPT_REL} and review the diff")
                 return 1
         else:
             MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
             MANIFEST_PATH.write_bytes(data)
+            if removed:
+                print(f"dropped retired unit(s) from their batch: {_named(removed)}")
     except ExportError as exc:
         print(f"REFUSED: {exc}", file=sys.stderr)
         return 1

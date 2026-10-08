@@ -97,10 +97,11 @@ def test_the_registry_lists_exactly_the_approved_exports_qids(registry):
         units.setdefault(row["unit_id"], row)
     assert [(u["unit_id"], u["revision"], u["section"]) for u in registry["units"]] == [
         (uid, row["revision"], row["section"]) for uid, row in units.items()]
-    # The census of the approved roster (docs/p5-infold-design.md §2; owner ratification 2026-10-07).
-    assert registry["unit_count"] == len(registry["units"]) == 120
-    assert registry["qid_count"] == len(rows) == 340
-    assert sum(len(u["qids"]) for u in registry["units"] if u["section"] == "LÄS") == 136
+    # The census of the approved roster (docs/p5-infold-design.md §2; owner ratification 2026-10-07,
+    # less las-b3-001 and las-b5-001, retired by the owner 2026-10-08).
+    assert registry["unit_count"] == len(registry["units"]) == 118
+    assert registry["qid_count"] == len(rows) == 332
+    assert sum(len(u["qids"]) for u in registry["units"] if u["section"] == "LÄS") == 128
     assert sum(len(u["qids"]) for u in registry["units"] if u["section"] == "ELF") == 204
 
 
@@ -124,7 +125,7 @@ def test_the_registry_binds_its_inputs(registry):
 def test_retired_units_and_superseded_revisions_are_absent(registry):
     qids = set(_qids(registry))
     retired = json.loads((REPO_ROOT / build_roster.RETIRED_REL).read_text(encoding="utf-8"))["retired"]
-    assert len(retired) == 8
+    assert len(retired) == 10
     assert not {u["unit_id"] for u in registry["units"]} & set(retired)
     assert not [qid for qid in qids for uid in retired if qid.startswith(f"p5-{uid}-")]
     # las-b7-002 is at revision 2 (roster), so its revision-1 qids are revoked.
@@ -267,7 +268,7 @@ def test_the_cli_checks_and_writes(tmp_path, built):
     written = subprocess.run(run, capture_output=True, text=True)
     assert written.returncode == 0, written.stderr
     assert out.read_bytes() == built
-    assert "120 units / 340 qids / 14 framework ids" in written.stdout
+    assert "118 units / 332 qids / 14 framework ids" in written.stdout
     out.write_bytes(built.replace(b'"p5-las-b19-002-r1-L', b'"p5-las-b19-002-r2-L', 1))
     assert subprocess.run([*run, "--check"], capture_output=True, text=True).returncode == 1
 
