@@ -1,7 +1,7 @@
 ---
 bead: "hpf-c5tb"
 project: "hpfetcher"
-status: "batch_x5_review_fix_uncommitted"
+status: "batch_x6_uncommitted"
 ---
 
 # Worklog — hpf-c5tb
@@ -2093,3 +2093,262 @@ LANE DONE: hpf-c5tb.11
 - 2026-10-09 [S:ci-gxr92|W:hpf-c5tb.11|H:fix|E:pipeline/synthetic/infold/explanations/x5-elf.json] Rewrote B1 (A why_wrong) and B2 (D why_wrong, step 5); check-batch x5 clean; 24 quotation tests passed; 2008 passed, 7 xfailed.
 - 2026-10-09 [S:ci-gxr92|W:hpf-c5tb.11|H:sweep|E:pipeline/synthetic/infold/explanations/x5-elf.json] This lane's pass over all 45 entries and three second readers (R1 0, R2 1, R3 8 findings); all 9 checked against the passages and applied as S1–S9.
 - 2026-10-09 [S:ci-gxr92|W:hpf-c5tb.11|H:verify|E:f977020623797016c2b91b95098d67b88a702c85409dd3f1807f9c68fbe25377] A fresh verifier on the 12 rewritten fields: 11 correct, 1 fixed (B1's "one person"). Field diff: 12 fields in 6 entries. check-batch x5 clean (1012 strings), lint clean, partial assembly 236, 2008 passed, 7 xfailed.
+
+## Batch X6
+
+Bead `hpf-c5tb.12`: the 48 ELF explanations of X6 (`elf-b10-003` … `elf-b14-003`, 16 units), as pinned in `BATCHES.json`. Content only: no tooling or test change, and no new language example.
+
+### Snapshot and boundaries
+
+- Claimed with `gc hook --claim --json` (`hpf-c5tb.12`, assignee `gc__implementation-worker-ci-i20kc`, route `hpfetcher/gc.implementation-worker`); `bd show hpf-c5tb.12 --json` matched the id, status `in_progress`, the assignee and `gc.routed_to`.
+- `git rev-parse HEAD` and `git rev-parse origin/main` → `deb6a965cf4682dddc3a22adb1085328876e6469` for both (detached), the bead's snapshot. origin/main is the local ref, not fetched. No tracked change at start.
+- No git writes and no network; every change is uncommitted. No tooling, test, partition, unit, candidate, roster, framework or language-example file was edited: their sha256 (below) equal the values the earlier sections record. Nothing under `app/` or `worker/`. The untracked runtime and skill paths and the empty sandbox placeholders present at start are untouched.
+- The bead names no validator, so none was run; `gc.check_path` is the post-close dispatcher check (`…/checks/build-artifact-valid.sh`).
+- Lane policy: `git -C` was refused, so plain `git` ran in the worktree. The printing, drafting, assembly, audit, diff and statistics scripts ran from the session scratchpad (`python3 <file>`) and are not checked in.
+- Baseline: the bead's **2008 passed, 7 xfailed**; this lane's first full run, with the first draft of `x6-elf.json` present, gave the same.
+
+### Deliverables (uncommitted)
+
+| Path | Change |
+|---|---|
+| `pipeline/synthetic/infold/explanations/x6-elf.json` | New: the 48 X6 entries, bank order, canonical bytes |
+| `docs/worklog/hpf-c5tb.md` | Status line and this section |
+
+No test was added or changed: the ELF quotation tests read every batch file present, so they cover X6 as committed. `LANGUAGE-EXAMPLES.json` is unchanged (below).
+
+### The ELF quotation rule on X6
+
+- `test_every_elf_quotation_is_its_units_text_or_a_language_example` reads every ELF entry of every batch file present, so it now checks X6. The scratchpad audit ran the same helpers (`_elf_entry_problems`, `_elf_texts`) on every draft and classified each quotation.
+- X6 has 592 quotations: 506 exact (17 of them show a gap as `___`), 40 that change only the first letter's case, 11 that mark left-out words with "…", 35 gaps filled with one of their own options, none closed by an added full stop, and **0 language examples**. The file holds 592 “ and 592 ”, no ‘ and no straight `"`. Its 11 straight apostrophes all stand inside quotations of passages that spell them so (“Kelvain's list”, “the laundry's”); the explanations' own prose uses ’.
+- **No language example was needed, so none was listed.** The cloze entries quote each frame as the learner reads it, with `___` or with the gap filled by one of its own options (“gave away the imitator”, “give any account of”, “consigned the handshake to the past”). Usage is explained in plain words, without quotation marks (to pull your weight, to give someone up, to owe someone an explanation). `LANGUAGE-EXAMPLES.json` keeps its 56 listings and its sha256 (`c2964b53…`), and `test_every_listed_language_example_is_a_quotation_of_its_gap_entry` still passes.
+- **No entry quotes another gap's key.** The rule allows a gap to be shown filled with any of its own options in any entry of its unit, so gap 3 of `elf-b11-002` first quoted gap 2's frame filled with its key (“gave away the imitator”). Round-1 reader R1 noted that this gives gap 2 away when the gaps are worked one by one; gap 3 now says "exposed the imitator".
+- Two round-1 readers listed quotations that change only the first letter's case. The rule allows that change, as every batch since X1 uses it, so those quotations stand.
+
+### X6 content
+
+48 entries, one per qid of X6, in bank order and canonical bytes. The entries were drafted in six scratchpad chunks; an assembly script writes them in `BATCHES.json` order with `export_product.render_json`, and its `--check` confirms that the committed bytes are a fresh assembly.
+- **Blind solve first.** A scratchpad printer shows only the student text: title, passage with byline and glossary, prompts and options. Every question was solved from it, and the answers were saved to a file, before the keys were read: **48 of 48 matched**.
+- **Source only.** The rationales served as notes, and every claim taken from them was checked against the passage. Ten of their claims still reached the first draft and were caught by the readers; several more were never used (see "Rationale claims that did not hold").
+- **Structure,** as in the pilot, X4 and X5:
+  - the 33 reading entries have 5 steps (19) or 6 (14): understand the question; find the passage sentence, quoted verbatim; the paraphrase, the limit or the inference; a gloss, arithmetic or supporting-detail step where needed; test the options; conclusion;
+  - the 15 cloze entries have 4 steps: read the frame; the clue (a fixed expression, a two-way frame such as "whether … or", the logic of a connective, a polarity word such as "far from" or "seldom", or the explanation after a dash); check the other options (`detail`); conclusion;
+  - the first and last steps are `essential`; 20 steps are `detail` (the 15 cloze checks and 5 reading steps: a cause, two pieces of arithmetic, a wording match and a supporting detail);
+  - solution_path and the last step end "The answer is X.", and no other field says "The answer is" (the audit caught three step-1 sentences that opened "The answer is in …");
+  - each wrong option appears once, with its own why_tempting and why_wrong; then technique and pitfall (every entry has a pitfall).
+- **English.** Plain English in short sentences, never Swedish. The explanations' own prose uses British spelling (colour, colonised, armoured, pressurised, labour, programme, nanometres, kilometres, metres); quotations keep the passages' spelling and characters ("color", "colonized", "armored", "pressurized", "labor", "program", "nanometers", "kilometers", "meters", "millimeter", straight apostrophes, em and en dashes). `elf-b12-001`'s entries write "percent", as its passage and options do, as X4 and X5 did.
+- **Glosses** for every word that a key or an exclusion depends on, each in one clause: taper, tiling, liner, ratchet, strandline, tenant, stack (of rock), shoal, uncemented, downstream of, manuring, mockery, perjury, trickery, tremor, imitator, straightforward, vouch for, impoverishment, endorsement, entrenchment, illegible, unexamined, carry, shift, gain and pull (one's) weight, front of the house, enrichment, foraging, labour, full cutoff, uplight, zenith reading, photometer, recalibrate, band (of light), dominant term, photon, accord, discount, recount, brevity, far from, dismissive, strike a bargain, accede, concede, precede, recede, considered agreement, formality, finality, neutrality, banality, checkable, dimple, micron, drift (of a mould), lath, saltern, crust, dwell, etiquette, consign, assign, resign, seldom, stakes, encounter, fatigue rig, tolerance, shop floor, crumb, swivel, sinker, condemned (chain), scope, slack, bearing, dispose of, gable, roof void, ridge, eaves, gradient, flue, aggregate and roost.
+- **Persons** are named, and the writer is "the writer". No he, she, him, her, his, hers, himself or herself appears outside a quotation (audit); the lightship is "the ship", never "she". Several option texts call a person "he" or "her"; the explanations never repeat those pronouns.
+
+| Unit | Shape | qids | framework_id per question |
+|---|---|---|---|
+| `elf-b10-003` | short text | `p5-elf-b10-003-r1-ELF-001` | ELF-TYPE-001 |
+| `elf-b10-004` | short text | `p5-elf-b10-004-r1-ELF-001` | ELF-TYPE-006 |
+| `elf-b11-001` | long passage | `p5-elf-b11-001-r1-ELF-001` … `-005` | ELF-TYPE-004, 001, 001, 002, 005 |
+| `elf-b11-002` | cloze, 5 gaps | `p5-elf-b11-002-r1-ELF-001` … `-005` | none |
+| `elf-b11-003` | short text | `p5-elf-b11-003-r1-ELF-001` | ELF-TYPE-006 |
+| `elf-b11-004` | short text | `p5-elf-b11-004-r1-ELF-001` | ELF-TYPE-002 |
+| `elf-b12-001` | long passage | `p5-elf-b12-001-r1-ELF-001` … `-005` | ELF-TYPE-001, 001, 002, 005, 004 |
+| `elf-b12-002` | cloze, 5 gaps | `p5-elf-b12-002-r1-ELF-001` … `-005` | none |
+| `elf-b12-003` | short text | `p5-elf-b12-003-r1-ELF-001` | ELF-TYPE-001 |
+| `elf-b12-004` | short text | `p5-elf-b12-004-r1-ELF-001` | ELF-TYPE-002 |
+| `elf-b13-001` | long passage | `p5-elf-b13-001-r1-ELF-001` … `-005` | ELF-TYPE-001, 001, 002, 005, 004 |
+| `elf-b13-002` | cloze, 5 gaps | `p5-elf-b13-002-r1-ELF-001` … `-005` | none |
+| `elf-b13-003` | short text | `p5-elf-b13-003-r1-ELF-001` | ELF-TYPE-002 |
+| `elf-b13-004` | short text | `p5-elf-b13-004-r1-ELF-001` | ELF-TYPE-004 |
+| `elf-b14-001` | long passage | `p5-elf-b14-001-r1-ELF-001` … `-005` | ELF-TYPE-001, 002, 006, 001, 004 |
+| `elf-b14-003` | long passage | `p5-elf-b14-003-r1-ELF-001` … `-005` | ELF-TYPE-001, 001, 002, 005, 004 |
+
+33 reading questions carry a framework_id. Each was checked against `frameworks/elf_taxonomy.json` by the stem's cue words, the catalog's own recognition notes, as X4 and X5 did:
+- **ELF-TYPE-001 (12):** "What are we told about …" (5), "What does the text say about …" (6) and "According to the text, what made the round vault door hard to force?" (`elf-b10-003`). The last asks for a cause that the text names but carries no TYPE-006 cue word; it follows X5 (`elf-b6-002` q3, "What does the text say made …", TYPE-001) and X4 (`elf-b1-003`, "According to the text, what prompts …", TYPE-001).
+- **ELF-TYPE-002 (8):** "imply" or "implied" (5) and "suggest" (3).
+- **ELF-TYPE-004 (6):** "What is this text mainly about?" (6).
+- **ELF-TYPE-005 (4):** "What is the writer's attitude to …" (4).
+- **ELF-TYPE-006 (3):** "Why does the writer mention …" (`elf-b10-004`, `elf-b14-001` q3) and "According to the text, why must stage rain be lit from the side or from behind?" (`elf-b11-003`). The catalog names "why is X mentioned" as TYPE-006's rhetorical-purpose case, and the authentic corpus tags both of its "Why is … mentioned" stems TYPE-006 (host-ver1-2019-verb2-ELF-038, "Why is Leo Tolstoy mentioned?"; var-2022-2-verb2-ELF-040, "Why is Triumph of the Will mentioned by the reviewer?"), as it does all five of its "why" stems. `elf-b11-003` follows X5's `elf-b9-003` ("According to the text, why does …", TYPE-006); its question family says ELF-TYPE-001 (content concern 14).
+
+The 15 gap questions carry no framework_id, as in the pilot, X4 and X5. No generation family is used as a framework id.
+
+### Self-check for invented stances and the five lesson classes
+
+The bead asks for a self-check of every why_wrong, technique and pitfall against the five lesson classes (non-verbatim quotations; a stance or contrast given to the writer that the passage never states; a false categorical usage rule in a cloze entry; a why_wrong that rebuts a paraphrase rather than the option as written; dropped scope words when a finding is restated), and of every why_wrong and step for invented writer stances. This lane ran it on the first full draft, before any reader, and again on every field that the rounds changed.
+- **During drafting,** the audit caught three step-1 sentences that opened "The answer is in …", one "She" outside a quotation, and two fields that gave an action to the text ("the text calls", "the text rejects").
+- **Before round 1,** every field of the 48 entries was read against its passage and against its option's exact wording, together with every sentence that carries an absolute word outside a quotation (234 sentences: never, always, every, all, only, nobody, nothing, none, opposite, reverse and others). 30 fields changed, the last 2 while the round-1 readers were already reading:
+  - dropped scope words and hedges (17): "almost all" of Kelvain's surviving plants (6 fields in `elf-b11-001` q4 and q5), "through the spring tides" (3, `elf-b14-001`), "within two summers" (3, `elf-b14-003`), "can" and "By four in the afternoon" and "in the warm hours" (`elf-b14-003` q2), "at an ordinary pace" (`elf-b12-002` gap 2), Talbourne's own hedged words for the account (`elf-b14-003` q5), and "No private person" for "Nobody" (`elf-b12-002` gap 4);
+  - claims stronger than the passage or rebuttals of a paraphrase (8): D "is the guidebooks' explanation" (`elf-b10-003`, now "argues from the strength of a round shape" and answered as written); Ruhe's view "fills one paragraph" (2 fields); "the only comparisons in the text" (`elf-b11-004`); "the paragraph's point" (`elf-b12-001` q4); "the rest of the text" and "always uncertain" (`elf-b14-001` q3 and q5); "the text says the opposite" against q3 B (`elf-b14-001`);
+  - a false usage claim (2): "dismissive" described only a person, "not a quality of a text", but a text or a remark can be dismissive (`elf-b12-002` gap 3);
+  - glosses and precision (3): "straightforward", "vouch for", and the keepers' twenty minutes per device (`elf-b11-004`).
+- **The readers still found voice and stance faults** that this pass had missed: a "regretful mood" given to the column (`elf-b11-002` gap 4), Feltrin's concession presented as the writer's (`elf-b12-001` q4 C), "she argues" dropped from Hallenbeck's claim (`elf-b12-002` gap 5), option A's claim given to Oyelaran (`elf-b14-003` q4), an untagged sentence called "Ojala's own explanation" (`elf-b13-003`), and the explanation of staling placed inside "what the institute found" (`elf-b13-004`, round 2). As X5 noted, this class needs a check of every field, not only the quoted steps.
+- **After each round,** the audit and the absolute-word list ran again on the changed fields.
+
+### Second-reader review (round 1)
+
+Four independent, read-only second readers (general-purpose subagents of this session) split the 16 units:
+- R1: `elf-b10-003`, `-b10-004`, `-b11-001`, `-b11-002` (12 questions);
+- R2: `elf-b11-003`, `-b11-004`, `-b12-001`, `-b12-002` (12);
+- R3: `elf-b12-003`, `-b12-004`, `-b13-001`, `-b13-002` (12);
+- R4: `elf-b13-003`, `-b13-004`, `-b14-001`, `-b14-003` (12).
+
+Each ran three read-only scratchpad printers: the student text first (a blind solve, arguing for and against every option), then the keys and rationales (as unverified notes), then the entries. They checked every field: the five lesson classes first, then false statements, voices, quotations and their fairness, step references, contradictions between fields, rules that rule out the key, usage claims and glosses, framework fit, English, spelling and pronouns. Three of them reported that the combined entries printout was too long to display and re-ran the same printer one unit at a time; nothing else was run and nothing was written.
+
+**Keys.** All 48 hold for all four readers, as for this lane. The closest distractors they named: `elf-b13-002` gap 1 A "assigned" and gap 4 C "uneventful", `elf-b12-001` q3 B, `elf-b12-002` gap 2 C "Conversely", and the looser wording of `elf-b11-001` q5's key (content concerns 1, 2, 6–8).
+
+**Findings.** 72 in all (R1 17, R2 19, R3 18, R4 18): 13 errors and 59 minor. Each was checked against the passage before it was applied, and all were accepted but two, both the first-letter-case note above. Where a reader's own wording overreached, the fix is this lane's (for example, "pull your weight" is argued from meaning, without a claim that the idiom needs a possessive).
+- **Errors (13):**
+  - Arguments that did not exclude their option as written (3):
+    - `elf-b11-001` q1 B: "Draeven grants only “the half of it she thinks is his”" was used against B, but B is the half that Draeven grants; B is now excluded on scope alone (a rationale framing);
+    - `elf-b11-002` gap 1 A: the why_wrong answered only the ridicule sense of "mockery", not the "absurd imitation" sense that its own why_tempting named;
+    - `elf-b13-001` q1 C: "It reports only when the mark was registered, what it sets out and what the salt fetches" was false, and it left Panek's "an instrument against fraud" unanswered (a rationale claim).
+  - False statements (4):
+    - `elf-b11-002` gap 2 step 3, "None of them means revealed": "give up" can mean disclose and "give out" announce; the step now says that none fits a sign that exposes someone without their meaning it;
+    - `elf-b12-002` gap 2: the turn with "But" was placed in "the next sentence" (why_wrong, technique and pitfall); it comes two sentences later (a rationale claim);
+    - `elf-b12-001` q1 step 4 and pitfall: "D tells the story of Ashcombe", although only the rising uplight is Ashcombe's, which contradicted the entry's own why_wrong (a rationale framing);
+    - `elf-b13-004` solution_path: "it still goes stale, because water moves from the crumb to the crust" misstated the mechanism; the crumb stiffens as its starch settles, and the water it gives up moves outwards.
+  - Dropped hedges and limits (5): "few" (`elf-b12-002` gap 1, "The volunteers could not say"); "nearly" and a "cheaply" that suggested money (`elf-b12-001` q2); "No private person" (`elf-b12-002` gap 4, also caught by this lane's sweep); "in five seasons" (`elf-b13-001` q4 A and q5 step 2, "the lath that no panel can taste"); "on two other south-facing walls" (`elf-b14-003` q3 technique, which had spread the insulation to every empty cast box).
+  - An invented stance for a named person (1): `elf-b14-003` q4 A's why_wrong called option A's "what a box is made of hardly matters at all" Oyelaran's view, but Oyelaran's line is about a box hung “in the middle of July”, and Oyelaran “accepts the second series” (a rationale claim).
+- **Minor, by kind (59):**
+  - dropped scope and hedges: "On the question of arrival" and "in the first decade" (`elf-b11-001` q2), "on one narrow question" (`elf-b11-002` gap 4, 2 fields), "Solberg expects" (gap 5), "a pool of water" (`elf-b10-004`), "drift toward" (`elf-b12-003`), "most people" (`elf-b13-002` gap 4, 3 fields), "in the final pond" (`elf-b13-001`), "evenly" (`elf-b14-001` q1), "Salt that carries the mark" for "Aveste salt" (2 fields);
+  - voices: the column's "regretful mood"; "The concession is made “without hedging”", now Feltrin's, with the writer's own next sentence; "Hallenbeck argues"; "in Steinvik's view"; "the text also gives a reason" for a time ("when the young grow fastest", 2 fields); "Ojala's own explanation" for an untagged sentence;
+  - arguments sharpened to exclude the option as written: `elf-b10-003` D (corners count against the square door only because a tool can find a gap there), `elf-b11-001` q3 B and C, `elf-b11-002` gap 5 D, `elf-b12-001` q3 B (now Feltrin's refusal and B's unsupported comparison), `elf-b12-002` gap 5 A, `elf-b12-003` A ("as long as" many versions), `elf-b13-001` q5 step 4, `elf-b14-003` q1 D (the order of events), `elf-b14-001` q4 A (a sentence about buoy 43 that proved nothing was removed);
+  - false or unsupported statements: "showed who had copied it" (it showed that the signature was copied), "the council's reason is never given" (the change came with the shielding code), "the crust forms on the brine", "dwell, a judgement" (dwell is a number of days, set by a judgement), "the guides were planned and illustrated" (only the cards were), "the workers misread the new floors" (the pair misread the crust), "Solbes does reply" beside "Solbes does not answer", "usually just before the claim", "one of the two causes", and `elf-b14-001` q4 C's "when or why", which contradicted its own step 2;
+  - glosses: banality (something dull and unoriginal, often a remark), checkable, dispose of, crust, dwell;
+  - a step reference: `elf-b13-003` B pointed at a step without the hand-cut panels, which step 3 now names;
+  - language: "The word it here …", a gloss that read as defining "the cost", "them" in `elf-b12-003`'s pitfall, "an explanation spreads the load", "Less tidy is not unconfirmed", a keyword-shortcut technique in `elf-b13-003`, "describes and argues" for a text that reports a debate, and quoted "it" without an antecedent (2 fields).
+- **Added content:** in `elf-b11-001` q5, that D's first half is a simpler form of the concession (made "looser" in round 2); in `elf-b13-001` q1, the inference that the mark can only cover the cooperative's 212 pans; in `elf-b13-003` step 3, the hand-cut panels; in `elf-b14-001` q3 D, the crews' estimates set in their place.
+- **Reader notes, applied:** gap 3 of `elf-b11-002` no longer quotes gap 2's key; the Odren colony is no longer called a petrel colony, but "the example of birds as tenants", right after “Petrels are also tenants”; `elf-b12-001` q3 C no longer leans on the Ashcombe sentence, which sits uneasily with the ridge's improved zenith reading (content concern 1).
+
+### Second-reader review (round 2)
+
+Four fresh read-only readers (new subagents, same split) re-read the revised file, one unit at a time. Each solved blind again and reported only errors and clear language faults. All 48 keys hold for all four. There were 19 findings (R1 8, R2 3, R3 2, R4 6), all checked against the passages and applied, with R1's note on `elf-b11-001` q5 D (23 fields in 17 entries):
+- **Arguments that did not exclude their option as written (2):**
+  - `elf-b11-002` gap 2 B glossed "give someone up" as "hand them over or betray them", and "betray" can itself mean reveal without meaning to ("his accent betrayed him"), the very sense the gap needs; now "hand them over or inform on them on purpose";
+  - `elf-b14-001` q3 D: the closing sentence set the crews' estimates beside the keepers' bearings and dismissed that as "about measuring", which half supports D's "watched … more closely"; D is now answered on the paragraph's own reason for the bearings and on what paragraph 4 is doing.
+- **False statements (2):**
+  - `elf-b14-001` q4 C and step 5 said that the text "never links the practice to a storm", but Cadell argues from gales and the last paragraph asks whether "a long mooring saves buoys" after the storm; now the text never says that a storm made Cadell start;
+  - `elf-b13-001` q3 C: "The text never links them to the mark" was ambiguous and, read as the floors, false (paragraph 2 counts clay against concrete among what "the mark regulates").
+- **Usage and meaning (2):** `elf-b12-002` gap 1, "None of them means a description" overstated the case against "recount", which can also name a retelling; step 3 and D's why_wrong now argue from the usual sense and the frame. `elf-b11-002` gap 2 step 3 listed only heat, light and a smell for "give off", while the entry's own D fields use an air of confidence.
+- **Dropped scope and limits (5):** "single" (`elf-b12-001` q4), "for a long time" (`elf-b14-003` q5), "towards" the cooler eaves (`elf-b14-003` q2), "by half" and "the plants its colony had fed" (`elf-b11-001` q1 step 3), and "the rest of the text" (`elf-b11-001` q1 pitfall).
+- **Voice, logic and language (8):** `elf-b13-004` put the explanation of staling inside "what the institute found"; `elf-b11-002` gap 2's conclusion gave "without meaning to" to the evenness; `elf-b10-004`'s pitfall ("only because they remove …") clashed with the liner's second role in step 4; gap 4's technique ("refuses only to call … simply"); "Losing half the plants is not costing an island very little"; `elf-b13-001` q5 A (a passage sentence with clauses hung on it); "Cost is mentioned once" (the passage also says "What scope costs is a circle"); two closing full stops placed inside the quotation marks where the passage goes on.
+
+A fresh read-only verifier then read all 23 rewritten fields in their final wording: 22 correct. The twenty-third, `elf-b12-002` gap 1 D's "The usual way to say that someone describes what they agreed to is …", overclaimed English usage; it now says only which noun fits and what "give an account of" means.
+
+From the round-1 input to the final file, the reviews changed 123 fields in 45 entries; the qids, their order, every entry's keys, step numbers, tiers, letters and framework ids are unchanged (scratchpad `field_diff.py`).
+
+**Rationale claims that did not hold.**
+- Ten reached the first draft and were caught by the readers: the use against `elf-b11-001` q1 B of the half that Draeven grants; the "absurd imitation" sense of "mockery", left out (`elf-b11-002` gap 1); "the paragraph's real reversal arrives one sentence later" (`elf-b12-002` gap 2); D's second half "true at Ashcombe" (`elf-b12-001` q1); "the council's reason for the switch" never mentioned (q2); "the concession is made in the text's own voice" (q4); "it only reports what the mark contains and what the salt sells for" (`elf-b13-001` q1); option A as "Oyelaran's own quoted claim" (`elf-b14-003` q4); "the reason, that the young grow fastest" (q2; the passage gives a time); "Ojala's own explanation" for an untagged sentence (`elf-b13-003`).
+- Never used: "'was a trickery' is not English" and "perjury … not used with 'a'"; "resign … demands a reflexive object" and "assign … not 'to the past'"; "uneventful only grades a stretch of time"; "a recount … never a retelling"; "the passage calls the act routine"; "bark … a narrow crevice … are found, not bought"; "the passage subordinates the starch clause as the cause of the water release".
+
+As in every earlier batch, rationale claims need checking against the passage.
+
+### Content concerns
+
+The keys stand, and nothing below was papered over. Each explanation states the best case for the keyed answer and, where a learner could stumble, says why. Any option, stem or passage change would need a new revision (r2), a re-gate and a ruling, which is outside this bead.
+
+Worth an owner decision:
+1. **`elf-b12-001`: two tensions in the passage around the ridge's numbers.**
+   - Paragraph 2: Feltrin "will not credit" the three percent zenith improvement to Brackwell, since a recalibration or two dry autumns could each explain it. Yet paragraph 3, in the writer's voice, ends: "Fewer photons now arrive at the dome than in the sodium years, and a smaller share of the sky can be kept clear of them, which is how a slightly better zenith number and twenty-three lost nights ended up describing the same ten seasons", which reads as crediting the better number to the new lighting. This gives q3's option B some pull (R2 in both rounds).
+   - Paragraph 4: at Ashcombe "every number the ridge keeps got worse together" over "the same decade", while paragraph 2 says that the ridge's zenith reading improved. The two fit only if the ridge keeps separate numbers for Ashcombe's part of the sky, which the text never says.
+   - No key changes, and q3's explanation no longer cites the Ashcombe sentence. Suggested fix: in paragraph 3, "which is how fewer photons and twenty-three lost nights ended up describing the same ten seasons"; in paragraph 4, "every number the ridge keeps for that part of the sky got worse together".
+2. **Writer's-attitude items that rest on a named person's concession: `elf-b11-001` q5 and `elf-b12-001` q4.**
+   - In both, the concession is a named scientist's ("Draeven grants him the half of it she thinks is his"; "Feltrin grants him the half she thinks is his", the same template phrase). The writer's stance comes from the next, unattributed sentence ("But cementation is a fact about the shore rather than the surface"; "Where the fixtures are unshielded the fixtures are the story"), which a reader could take as the scientist's argument continued.
+   - The keys hold under the house reading (unattributed narration is the writer's voice), and both explanations say so explicitly. A learner who applies the catalog's TYPE-005 rule, to keep the writer and named persons apart, may still hesitate.
+   - `elf-b11-001` q5's key D ("allows that nothing lives on an uncemented island") is also looser than the concession, since Vessa "had eleven species" before it became a depth sounding; the explanation calls D's first half "a simpler, looser form of the concession".
+   - Suggested: make the writer's agreement explicit in each passage (for example "Draeven is right to grant him that half"), or ask for Draeven's and Feltrin's attitudes.
+
+Low (an attentive learner may notice; the key holds):
+
+3. Template echo: `elf-b11-001` and `elf-b12-001` share a template: a published count that cannot show what matters (a cumulative species list; a compliance percentage), a field scientist who "grants him the half she thinks is his" (verbatim in both), and a closing request to print two more things beside the published figure. `elf-b13-001` repeats the closing request ("one more line on the certificate"). Doing one unit cues the others (X4 recorded the same kind of echo, its concern 15).
+4. `elf-b13-001` q1, key D: "covers about two thirds of the pans". 212 of 340 is 62 percent (two thirds would be about 227), and "covers" rests on an inference (the cooperative registered the mark; the other pans sell under no name). The explanation does the arithmetic and states the inference. Suggested: "nearly two thirds".
+5. `elf-b13-001`, passage: paragraph 1's list of what the mark regulates has no floor, but paragraph 2 counts clay against concrete among "nothing the mark regulates". No key depends on it; q3's option C brushes against it, and its explanation relies on neither reading.
+6. `elf-b13-002` gap 1: "assigned … to the past" has a marginal reading (to assign something to a period), and "resign X to Y" (to hand over) exists in formal or old-fashioned English. "Consigned … to the past" is the fixed phrase and fits the campaign that follows; every solver chose C.
+7. `elf-b13-002` gap 4: "uneventful" also survives the "seldom" inversion; "untroubled" wins through "not the language of a comfortable ritual". Every solver chose B.
+8. `elf-b12-002` gap 2: "Conversely" in loose use means "on the other hand", which gives it some pull; "Naturally" is clearly better.
+9. `elf-b12-002` gap 1: a recount can also be a retelling (a school text type); "account" is clearly best in "give any ___ of".
+10. `elf-b14-003` q4, key C: "but not about the later series" reads as if Oyelaran were wrong about that series; Oyelaran "accepts the second series", and the objection simply does not reach it. C is still clearly best.
+11. `elf-b14-001` q2, key C: "riding the edge of the circle" is more specific than "somewhere inside that circle"; "may" softens it, and the explanation bridges it.
+12. `elf-b11-004`, key B: "rather than in anything the zoo buys" sits beside "what it mostly buys is labor"; the intended sense (goods) is clear.
+13. `elf-b12-001` q5, key C: "the valley's lighting is judged by a count of fixtures", although only Brackwell counts its poles; q1's key C reads "The installed output" as the town's. Neither changes a key.
+14. Generation metadata (internal, not shipped): the question family of `elf-b11-003` is ELF-TYPE-001; this lane chose ELF-TYPE-006 for its "why" stem, as X5 did for `elf-b9-003`. A generation family is not a framework id; noted for whoever maintains the metadata.
+
+Minor (harmless):
+
+15. `elf-b10-003`, key B: "at the rim" adds a detail to "rather than opening one".
+16. `elf-b11-001` q3, key A: "showed up in the three most recent surveys" must be read as "in each of them", the natural reading.
+17. `elf-b11-001` q2, key D drops "in the first decade" for the totals; the explanation keeps it.
+18. `elf-b11-001`, passage: the Odren colony is never called a petrel colony; it is the example that follows "Petrels are also tenants". The explanation says "a colony" and ties it to that sentence.
+19. `elf-b14-003`, passage: "two other south-facing walls" suggests that the chimney breast also faced south; q3's B fails on either reading, and the explanation does not say how many boxes those walls held.
+20. `elf-b14-001` q3, option D gets a little pull from paragraph 4 ("something the crews had only estimated", beside the keepers' bearings "watch after watch"); the explanation answers it.
+
+### Verification (final tree)
+
+- **Batch check:** `python3 pipeline/synthetic/infold/explanation_batches.py --check-batch x6` → `batch x6: 16 units / 48 questions in pipeline/synthetic/infold/explanations/x6-elf.json; every explanation gate passed, learner lint clean (1087 strings)`.
+  - The gates: shard file, coverage (exactly X6's 48 qids), schema, distractor letters, framework ids, internal labels, rationale text, learner lint and canonical bytes.
+  - The check is fail-closed, so passing means zero findings. It passed on the first draft and after each round.
+- **Learner-output lint on X6:** `lint_learner_output.py pipeline/synthetic/infold/explanations/x6-elf.json` → `clean — 1 file(s)`, 0 findings; `--strict` also clean.
+- **Quotations:** `-k "elf or language or listing or verbatim or fabricated"` → 24 passed, X6 included; the counts are above.
+- **The scratchpad audit, otherwise** (every draft and the final file):
+  - every solution_path and last step ends "The answer is <key>.", and no other field says "The answer is";
+  - 4 steps in gap entries and 5 or 6 in reading entries, numbered 1 to k, the first and last `essential`; distractor letters are exactly the wrong options;
+  - every "(step N)" lies inside its entry and never points at its own step (126 references);
+  - every reading entry quotes its passage verbatim (15+ characters) in solution_path or steps;
+  - no gendered pronoun outside a quotation, no straight quotation mark, no doubled space, no American spelling in the explanations' own prose, and no action given to "the text" from a list of verbs (tests, finds, compares, argues, calls, rejects and others);
+  - the English-word ratio holds for every entry;
+  - the framework ids are the planned ELF entries on the 33 reading questions and absent on the 15 gap questions.
+- **The five lesson classes and invented stances:** the self-check and the two rounds above; every why_wrong, technique and pitfall was read against its option's exact wording, and every field that names the writer, a person or "the text" against the passage.
+- **Partition:** `explanation_batches.py --check` → current: 8 batches, 118 units / 332 questions; x6 present.
+- **Across batches (nothing written):** `--assemble evidence-x6 --partial` → `partial: 284 explanations from x0-pilot, x1, x2, x3, x4, x5, x6 pass every gate; missing: x7. Nothing written: a partial set is not a release`. `data/explanations/` holds no `p5-evidence-x6.json`.
+- **Test suite:** `python3 -m pytest .github/contract-tests pipeline/synthetic/evidence/tests pipeline/synthetic/gates/scripts/tests pipeline/synthetic/infold/tests -q -p no:cacheprovider` → **2008 passed, 7 xfailed** (76.1 s), the bead's baseline; no test was added.
+- **Determinism:**
+  - the canonical-bytes gate compares the file with `export_product.render_json` of its entries;
+  - every batch check runs `export_bank`'s double build and compares the bytes;
+  - two final runs of `--check-batch x6` gave identical output;
+  - a fresh assembly of the chunks reproduces the file byte for byte (`--check` → current).
+- **Changed files** (`git status`): `pipeline/synthetic/infold/explanations/x6-elf.json` (new) and this worklog (modified). Nothing else.
+- **sha256:**
+  - `pipeline/synthetic/infold/explanations/x6-elf.json` `1a16b87f06511eb5a48bc02a81bad2d4dad3c632a6d478631951f5deced3905f`
+  - unchanged:
+    - `BATCHES.json` `fd38ed33…`
+    - `LANGUAGE-EXAMPLES.json` `c2964b53…`
+    - `explanation_batches.py` `34789ae1…`
+    - `export_product.py` `f627c815…`
+    - `tests/test_infold_explanation_batches.py` `012e7d79…`
+    - `x1-las.json` `6c72164b…`
+    - `x2-las.json` `9071320a…`
+    - `x3-las.json` `37cdba02…`
+    - `x4-elf.json` `578e527c…`
+    - `x5-elf.json` `f9770206…`
+    - `data/explanations/p5-pilot.json` `fd96f43f…`
+    - `approval-roster.json` `9babcc8a…`
+    - `RETIRED.json` `fd3ab882…`
+    - `frameworks/elf_taxonomy.json` `84ab6524…`
+
+### Handoff
+
+- **Ready for review:**
+  - an independent correctness and language review of X6 (hpf-c5tb's plan: Codex);
+  - then the owner's look at content concerns 1–2.
+
+  Committing, pushing and opening the PR are outside this lane.
+- **For X7:**
+  - Dropped scope words and hedges were again the largest class: 17 of the self-check's 30 fields, and 5 of round 1's 13 errors ("few", "nearly", "in five seasons", "on two other south-facing walls"). Read every quantifier and every limit of place or time in every field, not only in the quoted step.
+  - In cloze entries, a categorical "None of them means …" was false twice (give up, recount). Argue from the frame's meaning and logic, and make positive claims ("only X fits the frame"). A gloss can bring in a second sense that fits the gap ("betray").
+  - A gap entry may legally quote another gap filled with its key; do not, since it gives that gap away.
+  - Voices: a named person's concession followed by an unattributed sentence needs care (`elf-b11-001` q5, `elf-b12-001` q4); say which sentence is the writer's and why. An untagged sentence after a quoted person is not that person's unless the text says so.
+  - Units can share a template (`elf-b11-001`, `elf-b12-001`); check X7's units for the same phrases.
+- **Not claimed:**
+  - release readiness: no release shard was written, and nothing was synced or deployed;
+  - semantic certification beyond the reviews recorded here (lint is necessary, not sufficient);
+  - X7.
+- Scratch evidence, not checked in, is in the session scratchpad (`/tmp/claude-1000/-home-loucmane-dev-hpfetcher-worktrees-hpfetcher-lane/d8485a60-4fc6-41ca-914b-0b1b965a32a7/scratchpad/`): `blind_answers.json`, the printers (`print_student.py`, `print_keys.py`, `print_entries.py`, `reader_print.py`), `chunks/`, `assemble_x6.py`, `audit_x6.py`, `absolutes.py`, `field_diff.py` with `diff_round1.txt`, `diff_round2.txt` and `diff_all_reviews.txt`, and `stats_x6.py`.
+
+### Bead note
+
+P5 PR2b X6 implemented, uncommitted on deb6a96: pipeline/synthetic/infold/explanations/x6-elf.json, 48 reviewed ELF entries (English) for elf-b10-003…elf-b14-003 (16 units; 15 cloze gaps without framework_id; ELF-TYPE-001 12, -002 8, -004 6, -005 4, -006 3); blind solve 48/48; a five-class and stance self-check (30 fields) and two rounds of four second readers (round 1: 13 errors and 59 minor, all applied but 2 first-letter-case notes; round 2: 19 findings, all applied) plus a verifier on the 23 round-2 rewrites (22 correct, 1 fixed), every key holding for every reader; 20 content concerns, 2 for an owner decision (elf-b12-001 paragraph tensions around the zenith figure, attitude items that rest on a concession made by a named person); 592 quotations pass the ELF rule with no new language example (LANGUAGE-EXAMPLES.json unchanged); check-batch x6 clean (1087 strings); lint default/strict clean; pilot+X1–X6 partial passes (284); 2008 passed, 7 xfailed; reruns byte-identical. Evidence: docs/worklog/hpf-c5tb.md, Batch X6.
+LANE DONE: hpf-c5tb.12
+
+### Progress
+
+- 2026-10-09 [S:ci-i20kc|W:hpf-c5tb.12|H:research|E:deb6a96] Read the design (§C/§D, Amendment 1), LAYER2-RENDERING.md, the app's explanation type, the schema, the exporter's gates, the pilot's ELF entries, X5 and its review fix, this worklog (X1–X5 lessons), BATCHES.json, LANGUAGE-EXAMPLES.json, the ELF catalog and the quotation test. Solved all 48 questions blind from the student text: 48 match the keys. Checked how the authentic corpus tags "why" and "mentioned" stems before choosing ELF-TYPE-006 for three questions.
+- 2026-10-09 [S:ci-i20kc|W:hpf-c5tb.12|H:author|E:pipeline/synthetic/infold/explanations/x6-elf.json] Wrote the 48 entries in six scratchpad chunks; the audit caught three "The answer is in …" step-1 sentences, one pronoun and two actions given to the text; `--check-batch x6` passed on the first run (1087 strings); 2008 passed, 7 xfailed.
+- 2026-10-09 [S:ci-i20kc|W:hpf-c5tb.12|H:review|E:pipeline/synthetic/infold/explanations/x6-elf.json] Five-class and stance self-check (30 fields, 2 of them from the absolute-word sweep), round 1 with four readers (72 findings, 13 errors), round 2 with four fresh readers (19 findings) and a verifier on the 23 rewritten fields (1 fixed); each finding checked against the passages; 123 fields in 45 entries changed by the reviews.
+- 2026-10-09 [S:ci-i20kc|W:hpf-c5tb.12|H:verify|E:1a16b87f06511eb5a48bc02a81bad2d4dad3c632a6d478631951f5deced3905f] Final tree: check-batch x6 clean twice (1087 strings), lint default/strict clean, 24 quotation tests passed, partition current, partial assembly 284, 2008 passed, 7 xfailed, fresh assembly byte-identical.
+
+LANE DONE: hpf-c5tb.12
