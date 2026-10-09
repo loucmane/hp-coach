@@ -40,11 +40,12 @@ def _design_tables() -> list[tuple[dict, tuple]]:
 
 def _design_table() -> tuple[dict, tuple]:
     """The census the design states as current: §2's last table. Its census
-    updates of 2026-10-08 (bead hpf-c5tb.2) and 2026-10-09 (bead hpf-c5tb.13)
-    follow the original table, which stays as the record of 2026-10-07; each
-    update stays as the record of its date."""
+    updates of 2026-10-08 (bead hpf-c5tb.2) and 2026-10-09 (beads hpf-c5tb.13
+    and hpf-c5tb.17) follow the original table, which stays as the record of
+    2026-10-07; each update stays as the record of its ruling."""
     tables = _design_tables()
-    assert len(tables) == 3, "design §2: the 2026-10-07 table and its census updates of 2026-10-08 and 2026-10-09"
+    assert len(tables) == 4, ("design §2: the 2026-10-07 table, its census update of 2026-10-08 and its two "
+                              "updates of 2026-10-09")
     return tables[-1]
 
 
@@ -64,11 +65,12 @@ def test_census_reproduces_the_design_doc(built_roster):
     assert tuple(census["LÄS"]) + tuple(census["ELF"]) + tuple(census["retired"]) == total
     # The owner retired las-b3-001 and las-b5-001 on 2026-10-08 (4 questions each), and
     # elf-b1-002, elf-b3-004, elf-b4-001, elf-b5-002, elf-b7-002 and elf-b8-002 on 2026-10-09
-    # (26 questions: one short text and five units of five).
-    assert tuple(census["retained"]) == (112, 306)
+    # (26 questions: one short text and five units of five), then, by a second ruling that
+    # day, elf-b12-001 (5 questions).
+    assert tuple(census["retained"]) == (111, 301)
     assert tuple(census["selected"]) == (128, 373)
     assert (tuple(census["LÄS"]), tuple(census["ELF"]), tuple(census["retired"])) == (
-        (50, 128), (62, 178), (16, 67))
+        (50, 128), (61, 173), (17, 72))
 
 
 def test_census_drift_fails_loudly():
@@ -140,10 +142,10 @@ def test_approval_statuses_follow_the_recorded_rulings(built_roster):
     # Batches 14–19 by owner rulings, batches 1–13 by the owner's ratification of 2026-10-07.
     assert {u["batch"] for u in approved} == set(range(1, 20))
     assert pending == []
-    assert _sum(approved) == (112, 306)
+    assert _sum(approved) == (111, 301)
     assert _sum([u for u in approved if u["batch"] >= 14]) == (39, 121)
-    assert _sum([u for u in approved if u["batch"] <= 13]) == (73, 185)
-    assert _sum(retired) == (16, 67)
+    assert _sum([u for u in approved if u["batch"] <= 13]) == (72, 180)
+    assert _sum(retired) == (17, 72)
     assert all((u["ratified_by"] == "owner 2026-10-07") == (u["batch"] <= 13) for u in approved)
     assert all(u["ratified_by"] is None and u["ratification_note"] is None for u in retired)
     # Retirement wins over the batch14 ruling text that lists elf-b14-002 as approved.
@@ -250,13 +252,14 @@ def _changed(record: dict, edit) -> dict:
 
 def test_the_ratification_covers_every_kept_legacy_unit(built_roster, record):
     legacy = [u for u in built_roster["units"] if u["batch"] <= 13 and not u["retired"]]
-    assert _sum(legacy) == (73, 185)
+    assert _sum(legacy) == (72, 180)
     # The record ratified the 81 units kept on 2026-10-07. The owner retired two
-    # of them on 2026-10-08 (RETIRED.json, bead hpf-c5tb.2) and six more on
-    # 2026-10-09 (bead hpf-c5tb.13); the record stays as it was given, and
-    # retirement wins over it.
+    # of them on 2026-10-08 (RETIRED.json, bead hpf-c5tb.2), six more on
+    # 2026-10-09 (bead hpf-c5tb.13) and one more that day (bead hpf-c5tb.17);
+    # the record stays as it was given, and retirement wins over it.
     retired_since = ["las-b3-001", "las-b5-001",
-                     "elf-b1-002", "elf-b3-004", "elf-b4-001", "elf-b5-002", "elf-b7-002", "elf-b8-002"]
+                     "elf-b1-002", "elf-b3-004", "elf-b4-001", "elf-b5-002", "elf-b7-002", "elf-b8-002",
+                     "elf-b12-001"]
     covered = [u for u in built_roster["units"]
                if u["batch"] <= 13 and (not u["retired"] or u["unit_id"] in retired_since)]
     assert [e["unit_id"] for e in record["units"]] == [u["unit_id"] for u in covered]  # roster order

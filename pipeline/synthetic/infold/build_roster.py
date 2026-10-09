@@ -73,10 +73,11 @@ RETIRED = "retired"
 
 # docs/p5-infold-design.md §2, per batch: retained units / questions per
 # section, and retired units / questions. Since the owner's ruling of
-# 2026-10-08 (bead hpf-c5tb.2) las-b3-001 and las-b5-001 are retired, and
-# since the ruling of 2026-10-09 (bead hpf-c5tb.13) elf-b1-002, elf-b3-004,
-# elf-b4-001, elf-b5-002, elf-b7-002 and elf-b8-002: §2's census update of
-# 2026-10-09, which supersedes its earlier tables.
+# 2026-10-08 (bead hpf-c5tb.2) las-b3-001 and las-b5-001 are retired, since
+# the ruling of 2026-10-09 (bead hpf-c5tb.13) elf-b1-002, elf-b3-004,
+# elf-b4-001, elf-b5-002, elf-b7-002 and elf-b8-002, and since a second ruling
+# that day (bead hpf-c5tb.17) elf-b12-001: §2's census update for
+# elf-b12-001, which supersedes its earlier tables.
 EXPECTED_CENSUS = {
     1: {"LÄS": (3, 8), "ELF": (3, 7), "retired": (1, 5)},
     2: {"LÄS": (2, 4), "ELF": (4, 12), "retired": (0, 0)},
@@ -89,7 +90,7 @@ EXPECTED_CENSUS = {
     9: {"LÄS": (3, 8), "ELF": (4, 12), "retired": (0, 0)},
     10: {"LÄS": (3, 8), "ELF": (4, 12), "retired": (0, 0)},
     11: {"LÄS": (2, 4), "ELF": (4, 12), "retired": (1, 4)},
-    12: {"LÄS": (3, 8), "ELF": (4, 12), "retired": (0, 0)},
+    12: {"LÄS": (3, 8), "ELF": (3, 7), "retired": (1, 5)},
     13: {"LÄS": (3, 8), "ELF": (4, 12), "retired": (0, 0)},
     14: {"LÄS": (3, 12), "ELF": (2, 10), "retired": (1, 5)},
     15: {"LÄS": (3, 8), "ELF": (4, 12), "retired": (0, 0)},
@@ -98,7 +99,7 @@ EXPECTED_CENSUS = {
     18: {"LÄS": (3, 8), "ELF": (4, 12), "retired": (0, 0)},
     19: {"LÄS": (3, 8), "ELF": (3, 11), "retired": (1, 1)},
 }
-EXPECTED_TOTALS = {"retained": (112, 306), "LÄS": (50, 128), "ELF": (62, 178), "retired": (16, 67)}
+EXPECTED_TOTALS = {"retained": (111, 301), "LÄS": (50, 128), "ELF": (61, 173), "retired": (17, 72)}
 
 # Units whose student-facing content changed after their evidence was
 # recorded: unit_id -> revision; every other unit is revision 1. las-b7-002
@@ -165,7 +166,7 @@ RATIFIED_EXTRA = {
                     "the revision-2 rename that the ratification covers")],
 }
 # Legacy units that were ÄGARBLICK items in the master rather than plain
-# approve-with-note rows. Three are kept, and the other 70 kept units are
+# approve-with-note rows. Three are kept, and the other 69 kept units are
 # table rows; elf-b5-002 is retired (2026-10-09, bead hpf-c5tb.13), and its
 # retired row still cites the master with its note.
 LEGACY_NOTES = {

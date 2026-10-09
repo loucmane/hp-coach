@@ -979,13 +979,14 @@ describe('runFit — authentic items play the authentic-only rating (R2-B1)', ()
   // digests were recorded against it. Only the new column differs. The
   // histories draw P5 qids from the registry, so a registry change moves them:
   // these were re-recorded against 782f9c2's fit on the registry without
-  // las-b3-001 and las-b5-001 (retired 2026-10-08, bead hpf-c5tb.2) and
-  // without elf-b1-002, elf-b3-004, elf-b4-001, elf-b5-002, elf-b7-002 and
-  // elf-b8-002 (retired 2026-10-09, bead hpf-c5tb.13).
+  // las-b3-001 and las-b5-001 (retired 2026-10-08, bead hpf-c5tb.2), without
+  // elf-b1-002, elf-b3-004, elf-b4-001, elf-b5-002, elf-b7-002 and
+  // elf-b8-002 (retired 2026-10-09, bead hpf-c5tb.13) and without elf-b12-001
+  // (retired the same day, bead hpf-c5tb.17).
   const HEAD_DIGESTS: Array<[number, string]> = [
-    [31, '729b6e4df18a47249366b9ef7bbfd76ff51c202c3b14d0669ab0a5c55b93a693'],
-    [32, 'd92aa96a8a7ec98e8a36e8de9ed63c83ac783cbd234e5581cc79b3fa232c333b'],
-    [33, 'bb2c4a7b025e2bacf3a54a32ba0cdacb80c4bf6b7363ed5b9f6aa9fdfc1e5d51'],
+    [31, '157fdef26d2a85cfdcdce950ab038d85490b312b638dc6c5f658c2b8326fac64'],
+    [32, '14ac9d848db8b9536ac4fbfc824ad937d7b49408f27a18c1acc4bb9acb234c90'],
+    [33, '61784f26b1fc7b849387b04967ace41b7ac5e78236cf7bd7db5aa077b37ef56c'],
   ]
   for (const [trial, digest] of HEAD_DIGESTS) {
     it(`trial ${trial}: without the R2-B1 case every rating is what 782f9c2 fitted`, async () => {

@@ -2,7 +2,7 @@
 (docs/p5-infold-design.md §4 row 2b and §D; beads hpf-c5tb, hpf-c5tb.1 and
 hpf-c5tb.4).
 
-explanation_batches.py keeps the 306 eligible questions in pinned batches
+explanation_batches.py keeps the 301 eligible questions in pinned batches
 (BATCHES.json): the Layer-2 pilot is batch x0-pilot, LÄS x1–x3 and ELF x4–x7,
 each holding the units of the initial cut less those retired since. No unit
 ever moves between batches, and a new unit waits for an explicit assignment.
@@ -41,9 +41,10 @@ SCRIPT = build_roster.INFOLD_DIR / "explanation_batches.py"
 LINTER = REPO_ROOT / "pipeline/synthetic/gates/scripts/lint_learner_output.py"
 # The pinned partition (bead hpf-c5tb.4): the initial cut of bead hpf-c5tb.1
 # less las-b3-001 and las-b5-001, which the owner retired from x1 on
-# 2026-10-08 (bead hpf-c5tb.2), and less elf-b1-002, elf-b3-004, elf-b4-001
-# and elf-b5-002 from x4 and elf-b7-002 and elf-b8-002 from x5, retired on
-# 2026-10-09 (bead hpf-c5tb.13). Batch, first unit, last unit, units, questions.
+# 2026-10-08 (bead hpf-c5tb.2), less elf-b1-002, elf-b3-004, elf-b4-001 and
+# elf-b5-002 from x4 and elf-b7-002 and elf-b8-002 from x5, retired on
+# 2026-10-09 (bead hpf-c5tb.13), and less elf-b12-001 from x6, retired the
+# same day (bead hpf-c5tb.17). Batch, first unit, last unit, units, questions.
 EXPECTED_TABLE = [
     ("x0-pilot", "las-b7-002", "las-b19-002", 6, 19),
     ("x1", "las-b1-001", "las-b8-002", 16, 36),
@@ -51,7 +52,7 @@ EXPECTED_TABLE = [
     ("x3", "las-b14-003", "las-b19-003", 15, 42),
     ("x4", "elf-b1-001", "elf-b5-001", 12, 36),
     ("x5", "elf-b5-003", "elf-b10-002", 15, 35),
-    ("x6", "elf-b10-003", "elf-b14-003", 16, 48),
+    ("x6", "elf-b10-003", "elf-b14-003", 15, 43),
     ("x7", "elf-b15-001", "elf-b19-002", 16, 48),
 ]
 # The initial cut, the provenance of the pin: the rule of bead hpf-c5tb.1 on
@@ -68,7 +69,8 @@ INITIAL_TABLE = [
     ("x7", "elf-b15-001", "elf-b19-002", 16, 48),
 ]
 RETIRED_SINCE_THE_CUT = ("las-b3-001", "las-b5-001",
-                         "elf-b1-002", "elf-b3-004", "elf-b4-001", "elf-b5-002", "elf-b7-002", "elf-b8-002")
+                         "elf-b1-002", "elf-b3-004", "elf-b4-001", "elf-b5-002", "elf-b7-002", "elf-b8-002",
+                         "elf-b12-001")
 # A sentence of a pilot unit's rationale (las-b19-002 question 1), not student text.
 PILOT_RATIONALE_SENTENCE = "Den uttalade alternativa finansieringen är driftsbudgeten."
 
@@ -151,8 +153,8 @@ def _table(manifest: dict) -> list[tuple]:
 
 def test_the_partition_reproduces_the_expected_table(manifest):
     assert _table(manifest) == EXPECTED_TABLE
-    assert manifest["eligible"] == {"units": 112, "questions": 306}
-    assert sum(b["question_count"] for b in manifest["batches"][1:]) == 287
+    assert manifest["eligible"] == {"units": 111, "questions": 301}
+    assert sum(b["question_count"] for b in manifest["batches"][1:]) == 282
     for b in manifest["batches"]:
         assert b["unit_count"] == len(b["units"]) and b["question_count"] == len(b["qids"]), b["batch"]
         assert (b["first"], b["last"]) == (b["units"][0], b["units"][-1]), b["batch"]
@@ -172,10 +174,10 @@ def test_the_manifest_is_reproduced_in_another_process(seed):
 
 def test_every_eligible_qid_is_in_exactly_one_batch(manifest, approved_rows):
     qids = [q for b in manifest["batches"] for q in b["qids"]]
-    assert len(qids) == len(set(qids)) == 306
+    assert len(qids) == len(set(qids)) == 301
     assert sorted(qids) == sorted(row["qid"] for row in approved_rows)
     units = [u for b in manifest["batches"] for u in b["units"]]
-    assert len(units) == len(set(units)) == 112
+    assert len(units) == len(set(units)) == 111
 
 
 def test_each_batch_records_the_qids_its_units_export(manifest, approved_rows):
@@ -242,16 +244,16 @@ def test_the_pinned_partition_is_the_initial_cut_less_the_units_retired_since(ma
 def test_the_merged_cut_read_as_the_pin_gives_the_committed_manifest(tmp_path, committed_roster):
     # BATCHES.json as merged in 1cbbb84 held the initial cut. Read as the pin
     # on today's roster, it loses las-b3-001 and las-b5-001 from x1, four units
-    # from x4 and two from x5, and nothing else changes: the result is the
-    # committed file, byte for byte. As a manifest it is refused, and the
-    # retired units are named.
+    # from x4, two from x5 and one from x6, and nothing else changes: the
+    # result is the committed file, byte for byte. As a manifest it is
+    # refused, and the retired units are named.
     pin = tmp_path / "BATCHES.json"
     initial = batches.initial_cut(_eligible_at_the_cut(committed_roster))
     pin.write_bytes(export_product.render_json({"format": batches.MANIFEST_FORMAT, "batches": initial}))
     assert export_product.render_json(batches.build_manifest(pin_path=pin)) == batches.MANIFEST_PATH.read_bytes()
     with pytest.raises(ExportError, match=re.escape(
             "still lists retired unit(s) (x1: las-b3-001, las-b5-001; "
-            "x4: elf-b1-002, elf-b3-004, elf-b4-001, elf-b5-002; x5: elf-b7-002, elf-b8-002)")):
+            "x4: elf-b1-002, elf-b3-004, elf-b4-001, elf-b5-002; x5: elf-b7-002, elf-b8-002; x6: elf-b12-001)")):
         batches.current_manifest(path=pin)
 
 
