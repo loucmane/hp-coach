@@ -1,7 +1,7 @@
 ---
 bead: "hpf-c5tb"
 project: "hpfetcher"
-status: "batch_x6_uncommitted"
+status: "batch_x6_review_fix_uncommitted"
 ---
 
 # Worklog — hpf-c5tb
@@ -2352,3 +2352,151 @@ LANE DONE: hpf-c5tb.12
 - 2026-10-09 [S:ci-i20kc|W:hpf-c5tb.12|H:verify|E:1a16b87f06511eb5a48bc02a81bad2d4dad3c632a6d478631951f5deced3905f] Final tree: check-batch x6 clean twice (1087 strings), lint default/strict clean, 24 quotation tests passed, partition current, partial assembly 284, 2008 passed, 7 xfailed, fresh assembly byte-identical.
 
 LANE DONE: hpf-c5tb.12
+
+### X6 review fix
+
+Bead `hpf-c5tb.15`: review finding B1 on PR #385 (review bead `hpf-uwqv`), and a sweep of all 48 X6 entries for its defect class: a categorical claim about English usage, meaning or collocation ("cannot", "is never", "only X fits", "none of them means", "is not used for", or a one-sense gloss on which an exclusion rests) that is not true without exception. This is the third review hold on this class (X5 B1, X6 B1), so the sweep kept a claim only when it is true English usage without exception, truthfully hedged, or argued from the meaning of its own sentence.
+
+**Snapshot and boundaries**
+- Claimed with `gc hook --claim --json` (`hpf-c5tb.15`, assignee `gc__implementation-worker-ci-vouiu`, route `hpfetcher/gc.implementation-worker`); `bd show hpf-c5tb.15 --json` matched the id, status `in_progress`, the assignee and `gc.routed_to`.
+- Branch `codex/hpf-c5tb-x6` at `aa3e41e3981c4ffba3244a455102eb712e78b7d0`, as the bead states (`git rev-parse HEAD`, `git branch --show-current`). No tracked change at start; `x6-elf.json` was `1a16b87f…`, the value the Batch X6 section records.
+- No git writes and no network; the changes are uncommitted. The untracked runtime, skill and sandbox paths present at start are untouched.
+- The review worklog `hpf-uwqv.md` lives in the vault, which this lane cannot read (the read was refused). B1 was taken from this bead's text. The review's own wording was not seen, so every rewrite below is this lane's or a second reader's.
+- The bead names no validator, so none was run (`gc.check_path` is the post-close dispatcher check).
+- Lane policy refused `git -C`, so plain `git` ran in the worktree. The printing, scanning, diff and audit scripts ran from the session scratchpad as `python3 <file>` and are not checked in.
+
+**B1.** `p5-elf-b12-002-r1-ELF-001`, gap 1 (accord / discount / account / recount, key C).
+- `steps[2].text` (step 3) was: "An accord is a formal agreement between two sides. A discount is a cut in price. As a noun, a recount is usually a second count, for example of the votes in an election. Only “account” fits the frame: “give any account of” means describe or report."
+- now: "An accord is a formal agreement, for example between countries. A discount is a cut in price. As a noun, a recount is usually a second count, for example of the votes in an election, and nothing is counted again here. A recount can also be a retelling, but that use is less common. The sentence is about whether the volunteers could say what the terms contained, and in formal writing like this a common phrase for that is to give an account of something: to describe or report it. So “account” fits best."
+- D `why_wrong` was: "After “any” the gap needs a noun. As a noun, a recount is usually a second count, for example of votes. The noun that fits is “account”: to give an account of something is to describe or report it (step 2)."
+- now: "After “any” the gap needs a noun. As a noun, a recount is usually a second count, for example of votes, and nothing is counted again here. A recount can also be a retelling, but that use is less common. The sentence is about whether the volunteers could say what the terms contained, and in formal writing like this a common phrase for that is to give an account of something. So “account” fits better (step 3)."
+- The exclusion is gone: both fields grant that a recount can be a retelling. The case for "account" now rests on this sentence. Its usual noun sense makes no sense here, and its retelling sense is less common. The sentence needs a way to say what the terms contained, and "give an account of" is a common phrase for that in formal writing like this column. D's why_wrong makes the same case and points to step 3, which carries it in full.
+- B1's only other change to this entry is the sweep's S13 (A's why_wrong: "two sides"), which also took "two sides" out of step 3. Every other field of the entry is unchanged.
+
+**The sweep**
+- **This lane** read all 48 entries in full beside their units' student text, every field (`print_x6.py`). It listed every sentence with a categorical or usage marker outside a quotation (`categorical.py`: 370 sentences; cannot, never, only, none, means, fits, must, usually and others) and reread every one with a hard marker (only, none, cannot, must, always, nobody, no one). Only the three cloze units (`elf-b11-002`, `elf-b12-002`, `elf-b13-002`) had exclusions resting on usage claims. In the 13 reading units, the "only", "never" and "cannot" sentences are about the passage, not about English. This pass changed 14 fields besides B1's two before the readers reported, most of them "None of them means …" and "Only …" sentences.
+- **Four independent read-only second readers** (general-purpose subagents of this session), split by unit as in the X6 rounds, swept this class only. The earlier holds served as examples: X5 B1, X6 B1, and the X6 rounds' give up, recount and dismissive.
+  - R1: `elf-b10-003`, `-b10-004`, `-b11-001`, `-b11-002` (12 questions): about 73 claims checked, 11 findings;
+  - R2: `elf-b11-003`, `-b11-004`, `-b12-001`, `-b12-002` (12): 75 claims, 5 findings (B1's two fields were left to this lane);
+  - R3: `elf-b12-003`, `-b12-004`, `-b13-001`, `-b13-002` (12): 83 claims, 6 findings and one optional note;
+  - R4: `elf-b13-003`, `-b13-004`, `-b14-001`, `-b14-003` (12): 44 claims, 1 finding and two optional notes.
+
+  They read the HEAD entries through the printer and wrote nothing. R3's report arrived cut off and was resent on request.
+- **Findings:** each was checked against the passage before it was applied, and all 23 were applied, with R3's optional note and one of R4's two. 10 of the 23 fell on fields this lane had already changed. There, the final text takes the reader's wording where it was stronger (S2, S3, S10, S22–S25) and keeps the lane's where the two were equivalent (S4, S12).
+- **A fresh read-only verifier** then read all 31 changed fields in their final wording beside their passages. All 31 were correct:
+  - no new categorical claim;
+  - every added hedge or sense true;
+  - every why_wrong still rejects its option as written;
+  - every quotation is verbatim.
+
+  Of its three non-blocking notes, one was applied (S16: "a matter" left out people). The other two are under "Considered and kept".
+
+| # | Entry, field | Was → now | Why |
+|---|---|---|---|
+| S1 | `p5-elf-b11-001-r1-ELF-004`, step 1 | "“Suggest” means that the answer is not stated in one sentence; you must join facts." → "“Suggest” means that the answer is not stated outright; here you must join facts." | The meaning was overstated: one sentence can suggest something. Joining facts is this item's method, now marked "here". R1. |
+| S2 | `p5-elf-b11-002-r1-ELF-001` (gap 1), step 3 | "A mockery is ridicule, …" → "A mockery is most often ridicule, …"; "Perjury is lying in court after promising to tell the truth." → "Perjury is lying under oath, for example in court."; "None of them names one signature written by someone else." → "None of them fits as well as “forgery”: a signature that someone else wrote to pass as the customer’s." | A mockery can also be an imitation or sham, and an imitation of a signature is written by someone else, so "none of them names" failed against the entry's own gloss. Perjury also covers sworn statements outside court. Lane and R1. |
+| S3 | same, A why_wrong | "Only “forgery” names a signature written by someone else" → "“Forgery” fits better: a forgery is a signature that someone else wrote to pass as the customer’s"; the gloss "most often" as in S2 | B1's shape: "only" against an attested, weaker option. Lane and R1. |
+| S4 | same, C why_wrong | "Perjury is lying in court after promising to tell the truth. A signature on a cheque is not evidence given in court" → "Perjury is lying under oath, for example in court. A signature on a cheque is not sworn evidence" | The exclusion rested on "in court", which is narrower than the word (affidavits, sworn declarations). A cheque is not sworn at all. Lane and R1. |
+| S5 | `p5-elf-b11-002-r1-ELF-002` (gap 2), step 3 | "announced" added to gave out; "None of them fits here: …" → "None of them fits as well as “gave away”: …" | Give out can mean announce. "Gave up the imitator" is grammatical (hand over, inform on), only worse in meaning. R1. |
+| S6 | same, A why_wrong | "To give something out is to hand it out or send it out, …" → "… is most often to hand it out or send it out, …; it can also mean to announce something. None of these fits as well as “gave away”, which says what the sentence needs: a sign that exposed the copyist without the copyist meaning it" | The gloss was stated as complete and left out the sense nearest to revealing. R1. |
+| S7 | same, B why_wrong | "To give someone up is to hand them over …" → "To give someone up usually means to hand them over …"; "That is what “gave away” says" → "…, so it fits better" | With a thing as subject, give up can mean yield (the sea gives up its dead). "On purpose" is the usual sense, not the only one. R1. |
+| S8 | `p5-elf-b11-002-r1-ELF-003` (gap 3), step 3 | "… but it does not say that something holds in spite of what came before." → "But this sentence is not a second matter set beside the method: it is a verdict on the method itself, and it holds in spite of the method’s success, which “Nevertheless” says directly." | Contrastive meanwhile can set a fact against what came before (a firm loses money; meanwhile its executives draw bonuses). B is now answered from this sentence, as its why_wrong already was. R1. |
+| S9 | `p5-elf-b11-002-r1-ELF-004` (gap 4), B why_wrong | "“Yet” must turn against the sentence before" → "Here “Yet” must turn against the sentence before" | False as a general rule: yet can turn against an expectation built over several sentences, or work inside a phrase (simple yet effective). It is true of this frame. Lane. |
+| S10 | `p5-elf-b11-002-r1-ELF-005` (gap 5), step 3 | "To gain weight is to get heavier. … None of them means counting for something." → "To gain weight is usually to get heavier, though an argument can also gain weight, that is, become more convincing. … The sentence says that the scrawl no longer counts for anything, not that it has stopped moving, growing or doing its share, and to carry weight is to count for something. So “carrying” fits best." | An argument gains weight when it becomes more convincing, which is close to counting for something. Lane and R1. |
+| S11 | same, C why_wrong | "To gain weight is to get heavier. … not one that is growing" → "To gain weight is usually to get heavier, and when an argument gains weight it becomes more convincing. Either way, gaining is growing. … not one that has only stopped growing" | The same one-sense gloss under the exclusion. The old last clause also did not answer C as written in the slot ("stopped gaining"). R1. |
+| S12 | same, technique | "Only one phrase means having influence, which is what the sentence needs." → "Here the sentence needs a phrase that means having influence, which is what carrying weight means." | The "only" held only on a fine line between having influence and gaining it. Lane and R1. |
+| S13 | `p5-elf-b12-002-r1-ELF-001` (gap 1), A why_wrong | "An accord is an agreement between two sides, such as two countries." → "An accord is a formal agreement, for example between countries." | Accords can bind many parties (Paris, Helsinki, Dayton). The same "two sides" also left B1's step 3. R2. |
+| S14 | `p5-elf-b12-002-r1-ELF-002` (gap 2), step 3 | "“Ultimately” means in the end, but length is where the argument starts, not its final point." → "“Ultimately” would present the sentence as the final point, or as the point that matters most, but length is where the argument starts, and the paragraph goes on to question it." | Ultimately also marks the most basic or important point (at bottom), and the exclusion rested on "in the end" alone. R2. |
+| S15 | same, D why_wrong | "“Ultimately” marks a final point." → "“Ultimately” would present the sentence as the final point, or as the point that matters most. But …" | The same. R2. |
+| S16 | `p5-elf-b12-002-r1-ELF-003` (gap 3), A why_wrong | "Dismissive describes someone, or something they say, that treats a matter as unimportant." → "To be dismissive is to treat someone or something as unimportant." | A gesture, a look, a tone or an attitude can be dismissive: the round-1 repair still limited the word. The verifier noted that R2's "a matter" left out people. Lane, R2 and the verifier. |
+| S17 | same, technique | "When a gap follows “far from”, the gap names …" → "When “far from” means not at all, as here, the gap after it names …" | The rule fails for the distance sense (far from the sea). R2. |
+| S18 | `p5-elf-b12-002-r1-ELF-004` (gap 4), step 3 | "None of them means admitting a fact." → "What follows the gap is not a request but a fact that the click admits – that there was never a bargain to strike – and to admit a fact is to concede it." | Accede can also mean to assent to a view or to give way, which is close to conceding, so "none of them means" was not safe without exception. R2 judged the old sentence true, since no sense of accede takes a that-clause. The positive form was kept as the safer one. Lane. |
+| S19 | same, technique | "Here only one means admitting a fact." → "Here the sentence needs a verb for admitting a fact, and “concede” is such a verb." | The same. Lane. |
+| S20 | `p5-elf-b12-002-r1-ELF-005` (gap 5), step 3 | "None of them is an empty gesture that keeps only the form of something." → "The words after the dash are not about being final, neutral or dull: they describe something done only for the sake of form, which is what a formality is." | A banality can be an empty, formulaic remark (people exchange banalities), so the "none" claim was arguable. It is now argued from the dash. R2 judged the old sentence true. Lane. |
+| S21 | `p5-elf-b13-001-r1-ELF-003`, step 1 | "“Implied” means that you must put facts together." → "“Implied” means that the answer is not stated outright; you must work it out, here by putting facts together." | It gave a method as the word's meaning. R3. |
+| S22 | `p5-elf-b13-002-r1-ELF-001` (gap 1), step 3 | "To resign is to give up a job, and to be resigned to something is to accept it unwillingly. None of them means putting the handshake away as finished." → "To resign is to give something up, such as a job, or to hand something over. To be resigned to something is to accept something unwelcome that you cannot change. The guides did not make the handshake or accept its loss, and they did more than place it or let it go: the next sentence shows them setting out to get rid of it. So “consigned … to the past” fits that best." | Resign can mean hand over (to resign a child to someone's care), the slot's own pattern, close to the key. The step's own gloss of assign (to say where something belongs) brought "assigned … to the past" close too, and "unwillingly" was loose. Lane and R3; the final wording is R3's, with a positive last sentence. |
+| S23 | same, D why_wrong | "To resign is to give up a job, … The guides were not accepting anything; …" → "To resign is to give something up, such as a job, or to hand something over. … The guides were not accepting a loss, and they did more than let the handshake go: they set out to get rid of it, with cards in the lobbies and new greetings drilled into staff (step 2). So “consigned … to the past” fits better." | The old rejection answered only the "accept" sense, which does not fit the slot, and never the hand-over sense, which does. Lane and R3. |
+| S24 | `p5-elf-b13-002-r1-ELF-003` (gap 3), solution_path | "What you owe someone after acting in a way they did not expect is an explanation." → "…, and a reason given for what you have done is an explanation." | You may owe an apology, or nothing. This lane's first fix only hedged it ("you often owe them an explanation"); R3's wording argues from the passage instead. Lane and R3. |
+| S25 | same, technique | "After refusing something that is offered, people owe a reason." → "Here, someone who refuses an offered hand owes a reason." | Turning down a second cup of tea leaves no one owing a reason, and the passage calls this debt "a strange burden to hang on a greeting". This lane's first fix ("often owe") still generalised. Lane and R3. |
+| S26 | `p5-elf-b13-002-r1-ELF-004` (gap 4), step 2 | "A test that you are glad to have passed causes a little worry." → "Being glad to have passed a test suggests that it caused a little worry." | Gladness at passing an easy test needs no worry: the phrase suggests worry but does not entail it. R3. |
+| S27 | `p5-elf-b13-002-r1-ELF-005` (gap 5), step 3 | "None of them means an end" → "None of them means an ending" | A cause, an aim, is an end in the sense of a goal. R3 (optional note). |
+| S28 | `p5-elf-b14-003-r1-ELF-003`, step 5 | "D says that their mix was thinner, although all the trial’s cast boxes used the laundry’s aggregate." → "D brings in a thinner mix, which the text never mentions." | In builders' use, aggregate is the stone in a mix, so the same aggregate does not rule out a thinner mix. D's why_wrong already argued from what the text never says. R4 (optional hardening). |
+| S29 | `p5-elf-b14-003-r1-ELF-004`, D why_wrong | "A writer who says that Oyelaran was “plainly right” about the early boxes is not dismissive (step 3)." → "The writer is not dismissive of the objection: the writer says that on the early boxes Oyelaran was “plainly right” (step 3)." | The old sentence made a rule out of "dismissive", but granting one narrow point does not by itself rule it out. It is now a statement about this writer, backed by the next sentence. R4. |
+
+**Considered and kept** (true as stated, truthfully hedged, or argued from the sentence):
+- **"Conversely":** it "would present the sentence as the reverse of the one before" (`elf-b12-002` gap 2, step 3 and C). This is the standard dictionary sense (Cambridge, Collins, Oxford), and R2 kept it. Its loose "on the other hand" pull is Batch X6 content concern 8.
+- **"None" and "only" claims that hold:**
+  - "None of them fits “Yet” after “plainly the better test”" (`elf-b11-002` gap 4): a claim about this sentence's logic;
+  - "None of them shows that the handshake’s return goes against the drill’s success" (`elf-b13-002` gap 2): likewise, besides and thus are not contrast words;
+  - "None of them is something you owe after refusing a hand" and "Nobody owes a search" (gap 3);
+  - "None of them means an ending" (gap 5, after S27);
+  - "Only one goes with “brings … to a” and means an end" (gap 5 pitfall): close is the only option that does both.
+- **Glosses whose exclusion holds:**
+  - accede, "to agree to a request or a demand" (`elf-b12-002` gap 4 A): all its senses take "to", and A is answered on what follows the gap;
+  - "After “any” the gap needs a noun" (B1's D);
+  - "Trickery is deceit in general", with "a ___" naming one signature (`elf-b11-002` gap 1 D);
+  - "What is given off is sent out" (gap 2 D);
+  - pull and shift your weight (gap 5 A and D);
+  - the glosses of seldom; of far from (not at all, the only sense that fits "brevity alone is far from ___"); and of Naturally, Consequently, Incidentally, Nevertheless, Likewise, Besides and Thus.
+- **One-sense glosses on which no exclusion rests:**
+  - every passage gloss: taper, tiling, liner, front of the house, enrichment, foraging, labour, ratchet, strandline, tenant, stack, shoal, uncemented, downstream of, full cutoff, band, photometer, uplight, dominant term, photon, checkable, dimple, micron, drift, lath, saltern, crust, dwell, fatigue rig, tolerance, shop floor, crumb, swivel, sinker, condemned, bearing, dispose of, slack, gable, ridge, eaves, gradient, flue, aggregate (as the passage uses it) and roost;
+  - every remaining option gloss: straightforward, vouch for, impoverishment, entrenchment, discount, finality, neutrality, banality, formality, exclamation, exploration, expectation, clause, course and cause;
+  - concede, "to admit that the other side is right on a point" (`elf-b14-001` q4): its other sense, to yield, also points to D, so R4's optional "Here," was not needed;
+  - endorsement (`elf-b11-002` gap 4 C): the cheque sense fits nothing in "call the change a ___", so R1's optional polish was not needed.
+- **Question-word glosses:**
+  - "“Imply” means that the answer is not stated outright; you must put sentences together" (`elf-b11-004`);
+  - "“Suggest” means that the answer is not stated outright; you must put facts together" (`elf-b14-003` q3);
+  - "“Implied” means that the answer is not stated word for word; you must work it out" (`elf-b12-004`);
+  - "“Implied” means that you must work the answer out from what the text says" (`elf-b13-003`);
+  - the plain "not stated outright" glosses in `elf-b12-001` q3 and `elf-b14-001` q2.
+
+  Each gives the meaning, or its direct consequence, and the method fits its item. R2 and R4 kept them, and X4 and X5 passed review with the same convention. Only the two whose meaning clause was missing (S21) or wrong (S1) changed.
+- **The verifier's other two notes:**
+  - "the next sentence shows them setting out to get rid of it" (S22, S23) is an inference that the unchanged step 2 and A why_wrong already draw;
+  - the forgery gloss is tied to this case by "the customer’s".
+
+**Verification (final tree)**
+- `python3 pipeline/synthetic/infold/explanation_batches.py --check-batch x6` → `batch x6: 16 units / 48 questions in pipeline/synthetic/infold/explanations/x6-elf.json; every explanation gate passed, learner lint clean (1087 strings)`. The canonical-bytes gate is among them; the in-place edits kept the file canonical.
+- `python3 -m pytest .github/contract-tests pipeline/synthetic/evidence/tests pipeline/synthetic/gates/scripts/tests pipeline/synthetic/infold/tests -q -p no:cacheprovider` → **2008 passed, 7 xfailed**, the baseline; no test was added or changed.
+- The same command with `-k "elf or language or listing or verbatim or fabricated"` → 46 passed. Every quotation in the changed fields is the unit's own text or a gap filled with its own option (“consigned … to the past”, “gave away”), so `LANGUAGE-EXAMPLES.json` needed no listing.
+- `lint_learner_output.py` on `x6-elf.json`, default and `--strict` → `clean — 1 file(s)`.
+- `explanation_batches.py --check` → current (8 batches, 118 units / 332 questions). `--assemble evidence-x6 --partial` → `partial: 284 explanations from x0-pilot, x1, x2, x3, x4, x5, x6 pass every gate; missing: x7. Nothing written: a partial set is not a release`; `data/explanations/` holds no `p5-evidence-x6.json`.
+- **Field diff against HEAD** (scratchpad `field_diff.py`): the qids and their order, each entry's keys, step numbers, tiers, titles, letters and framework ids are unchanged. **31 fields changed in 18 entries**, exactly B1's two and S1–S29.
+- **House-rule audit** (scratchpad `audit_x6.py --final`): 0 problems. It checks:
+  - answer sentences, step shape and distractor letters;
+  - 126 step references, all in range and none pointing at its own step;
+  - no straight quotation mark, doubled space or gendered pronoun outside a quotation;
+  - no American spelling in the explanations' own prose;
+  - the English-word ratio and the framework ids.
+
+  It counts 599 quotations (592 before), all within the ELF rule: 511 exact, 41 with only the first letter's case changed, 36 gaps filled with one of their own options and 11 marked omissions.
+- Changed files (`git status`): `pipeline/synthetic/infold/explanations/x6-elf.json` and this worklog (status line and this section). Nothing else.
+- sha256:
+  - `pipeline/synthetic/infold/explanations/x6-elf.json` `511a4581eb59e73bb6ffbc39c2711fb0aa034a2c0d7972c44405d29d6018a1c6` (HEAD `1a16b87f…`)
+  - unchanged: `LANGUAGE-EXAMPLES.json` `c2964b53…`, `BATCHES.json` `fd38ed33…`, `explanation_batches.py` `34789ae1…`, `export_product.py` `f627c815…`, `tests/test_infold_explanation_batches.py` `012e7d79…`, `x4-elf.json` `578e527c…`, `x5-elf.json` `f9770206…`, `data/explanations/p5-pilot.json` `fd96f43f…`
+
+**Handoff**
+- Ready for an exact-head re-review of B1 and S1–S29.
+- Committing, pushing and updating PR #385 are outside this lane.
+- For X7, the third hold on this class:
+  - In cloze entries, never write "None of them means …", "Only X fits" or a bare one-sense gloss under an exclusion. Give the usual sense with "usually" or "most often", name any other sense that could fit the slot, and close with "X fits best", or better, with a reason from the sentence.
+  - Check every gloss against the slot's own pattern, for example resign X to Y, give out meaning announce, and an argument that gains weight.
+  - A question-word gloss gives the meaning ("not stated outright") and marks the item's method with "here".
+- Scratch evidence, not checked in, is in the session scratchpad (`/tmp/claude-1000/-home-loucmane-dev-hpfetcher-worktrees-hpfetcher-lane/f8d28168-09c3-4db8-a836-425de1865b0b/scratchpad/`):
+  - `x6_head.json` (HEAD as swept);
+  - `print_x6.py` with `head_units/` (the 16 units as the readers read them);
+  - `categorical.py` with `x6_categorical_head.txt` (the 370 marker sentences);
+  - `verify_print.py` with `verify_input.txt` (the verifier's input);
+  - `field_diff.py` with `diff_final.txt`;
+  - `audit_x6.py`.
+
+**Progress**
+
+- 2026-10-09 [S:ci-vouiu|W:hpf-c5tb.15|H:research|E:aa3e41e] Read this bead (the vault worklog was refused), the Batch X6 and X5 review fix sections and the batch tooling; printed all 48 entries beside their units' student text; confirmed B1 against the passage.
+- 2026-10-09 [S:ci-vouiu|W:hpf-c5tb.15|H:fix|E:pipeline/synthetic/infold/explanations/x6-elf.json] Rewrote B1 (step 3, D why_wrong). This lane's own sweep of all 48 entries changed 14 more fields. check-batch x6 clean; 2008 passed, 7 xfailed.
+- 2026-10-09 [S:ci-vouiu|W:hpf-c5tb.15|H:sweep|E:pipeline/synthetic/infold/explanations/x6-elf.json] Four second readers (findings: R1 11, R2 5, R3 6, R4 1); all checked against the passages and applied, with R3's and one of R4's optional notes: 31 fields in 18 entries in all.
+- 2026-10-09 [S:ci-vouiu|W:hpf-c5tb.15|H:verify|E:511a4581eb59e73bb6ffbc39c2711fb0aa034a2c0d7972c44405d29d6018a1c6] A fresh verifier on the 31 final fields: 31 correct, one note applied. check-batch x6 clean (1087 strings), lint default/strict clean, 46 quotation tests passed, partition current, partial assembly 284, 2008 passed, 7 xfailed.
+
+**Bead note**
+
+LANE DONE: hpf-c5tb.15
