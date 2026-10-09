@@ -1,0 +1,3370 @@
+/* D · Lager — spatial depth, glass done right.
+ *
+ * Three z-levels, never mixed up:
+ *   1  the FIELD   — a soft, static ambient light behind everything, tinted
+ *                    by the section in play (LÄS: apricot), drained to a
+ *                    neutral warm grey the moment reading starts and warmed
+ *                    back when the text is done. Short text may sit on it.
+ *   2  SHEETS      — opaque surfaces that carry every word of content
+ *                    (resume, plan, reading, question, explanation), lifted
+ *                    by layered soft shadows and a lit top edge.
+ *   3  GLASS       — only navigation and controls (the dock, the drill's
+ *                    control pills, menus): backdrop blur over a
+ *                    translucent fill, a light rim and an inner highlight.
+ *                    Glass carries short labels only, never body text, and
+ *                    turns opaque without backdrop-filter or under
+ *                    prefers-reduced-transparency. A glass element is never
+ *                    nested in another glass element or in anything that
+ *                    animates its opacity (that would cut it off from the
+ *                    page behind).
+ *
+ * Accent (the lagoon) on Home: only the primary button and the current
+ * nav item. Evidence in feedback: the exact quoted sentences are underlined
+ * in the passage (teal for the solution's evidence, dashed red for the
+ * trap), the evidence paragraph gets a 3 px gutter rule.
+ *
+ * Newsreader (opsz) sets passages, the system UI stack (SF, Inter as the
+ * reserve) sets the interface, Fraunces with its SOFT axis is kept for the
+ * rare display line. Radii: --la-r-sheet 28, --la-r-ctl 16, pills; a nested
+ * radius is the outer radius minus the padding.
+ *
+ * Everything is scoped under [data-rd='lager']; nothing touches :root. */
+
+[data-rd='lager'] {
+  /* Field (z1) */
+  --la-field: oklch(95.6% 0.011 72);
+  --la-warm-1: oklch(88.5% 0.072 58);
+  --la-warm-2: oklch(90.5% 0.06 28);
+  --la-warm-3: oklch(93.5% 0.05 88);
+  --la-calm-1: oklch(92% 0.006 80);
+  --la-calm-2: oklch(93.4% 0.005 80);
+  /* Reading light: a soft pool behind the passage sheet, the room's edges
+   * falling off around it. */
+  --la-pool: oklch(98.6% 0.004 85);
+  --la-vignette: oklch(87% 0.012 76 / 0.5);
+
+  /* Sheets (z2) */
+  --la-sheet: oklch(99.3% 0.003 80);
+  --la-sheet-2: oklch(96.7% 0.005 78);
+  --la-sheet-3: oklch(94.4% 0.007 76);
+  /* Lifted sheets: white in light (the shadow lifts them), a step lighter
+   * in dark (where elevation reads by lightness). */
+  --la-sheet-up: oklch(99.3% 0.003 80);
+  --la-sheet-up-2: oklch(99.3% 0.003 80);
+  /* A recessed well inside a sheet (the options and the answer pair sit in
+   * one), and the small sheet a chosen row lifts into. */
+  --la-well: oklch(95.8% 0.006 78);
+  --la-lift: oklch(100% 0 0);
+  /* The lifted layer's lit rim: a top highlight and a crisp edge. */
+  --la-rim-top: oklch(100% 0 0 / 0.95);
+  --la-rim: oklch(30% 0.02 60 / 0.07);
+  /* The primary button: a lit, solid lagoon — a top-lit gradient between
+   * these stops, light text (≥ 4.5:1 against the lightest stop). */
+  --la-btn: oklch(49% 0.105 214);
+  --la-btn-hi: oklch(54% 0.1 212);
+  --la-btn-lo: oklch(45% 0.1 216);
+  --la-btn-ink: oklch(99% 0.004 210);
+  --la-sheet-hi: oklch(100% 0 0 / 0.9);
+  --la-hair: oklch(30% 0.02 60 / 0.09);
+  --la-hair-2: oklch(30% 0.02 60 / 0.2);
+  --la-sh-0:
+    0 0 0 1px var(--la-hair), 0 1px 2px oklch(30% 0.03 60 / 0.05),
+    0 10px 24px -14px oklch(32% 0.04 60 / 0.22);
+  --la-sh-1:
+    0 0 0 1px var(--la-hair), 0 1px 2px oklch(30% 0.03 60 / 0.06),
+    0 16px 36px -18px oklch(32% 0.05 55 / 0.3), 0 4px 10px -6px oklch(32% 0.04 60 / 0.1);
+  --la-sh-2:
+    0 0 0 1px var(--la-hair), 0 2px 4px oklch(30% 0.03 60 / 0.06),
+    0 30px 60px -24px oklch(32% 0.06 50 / 0.38), 0 10px 22px -12px oklch(32% 0.04 60 / 0.16);
+  --la-sh-3:
+    0 0 0 1px var(--la-hair), 0 3px 6px oklch(30% 0.03 60 / 0.07),
+    0 44px 80px -28px oklch(28% 0.05 50 / 0.45), 0 16px 32px -16px oklch(30% 0.04 60 / 0.2);
+
+  /* Ink */
+  --la-ink: oklch(21.5% 0.014 255);
+  --la-ink-2: oklch(39% 0.014 255);
+  --la-ink-3: oklch(48.5% 0.012 255);
+
+  /* One accent: a deep lagoon */
+  --la-accent: oklch(49% 0.105 214);
+  --la-accent-2: oklch(43% 0.1 214);
+  --la-accent-ink: oklch(44% 0.1 214);
+  --la-accent-soft: oklch(94.6% 0.026 210);
+  --la-on-accent: oklch(99% 0.004 210);
+
+  /* Verdicts, notes and evidence */
+  --la-ok: oklch(46% 0.11 155);
+  --la-ok-soft: oklch(94.6% 0.035 155);
+  --la-bad: oklch(49% 0.155 28);
+  --la-bad-soft: oklch(95% 0.028 28);
+  --la-tip-soft: oklch(95.4% 0.024 214);
+  --la-warn-soft: oklch(95.6% 0.04 78);
+  --la-warn-ink: oklch(42% 0.09 70);
+  --la-mark: oklch(90.5% 0.07 214);
+  --la-mark-soft: oklch(95.8% 0.03 214);
+
+  /* Section chips (matched lightness and chroma) */
+  --la-sec-las: oklch(92.5% 0.045 55);
+  --la-sec-las-ink: oklch(40% 0.09 50);
+  --la-sec-elf: oklch(92.5% 0.04 210);
+  --la-sec-elf-ink: oklch(40% 0.08 214);
+  --la-sec-xyz: oklch(92.5% 0.04 290);
+  --la-sec-xyz-ink: oklch(40% 0.09 290);
+  --la-sec-ord: oklch(93% 0.05 90);
+  --la-sec-ord-ink: oklch(40% 0.08 80);
+  --la-sec-nog: oklch(92.5% 0.04 350);
+  --la-sec-nog-ink: oklch(40% 0.09 350);
+
+  /* Glass (z3) */
+  --la-glass: oklch(99.4% 0.004 80 / 0.7);
+  --la-glass-thick: oklch(99.4% 0.004 80 / 0.88);
+  --la-glass-solid: oklch(98.6% 0.004 80);
+  --la-glass-rim: oklch(100% 0 0 / 0.75);
+  --la-glass-hi: oklch(100% 0 0 / 0.9);
+  --la-glass-press: oklch(30% 0.02 60 / 0.06);
+  --la-glass-on: oklch(100% 0 0);
+  --la-glass-shadow:
+    0 1px 2px oklch(30% 0.03 60 / 0.1), 0 14px 34px -14px oklch(30% 0.04 55 / 0.34);
+  --la-blur: blur(28px) saturate(1.25);
+  --la-blur-menu: blur(34px) saturate(1.05);
+  --la-scrim: oklch(25% 0.02 60 / 0.28);
+
+  --la-focus: oklch(50% 0.13 214);
+
+  --la-ui:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro', 'Inter', 'Segoe UI Variable Text',
+    'Segoe UI', 'Ubuntu Sans', system-ui, sans-serif;
+  --la-read:
+    'Newsreader', 'Iowan Old Style', 'Charter', 'Bitstream Charter', Georgia, 'DejaVu Serif', serif;
+  --la-display: 'Fraunces', 'Newsreader', Georgia, 'DejaVu Serif', serif;
+
+  --la-r-sheet: 28px;
+  --la-r-ctl: 16px;
+  --la-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --la-t1: 140ms;
+  --la-t2: 240ms;
+  --la-t3: 320ms;
+  --la-t-out: 160ms;
+  --la-reading: 19.5px;
+
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--la-field);
+  color: var(--la-ink);
+  font-family: var(--la-ui);
+  font-size: 15px;
+  line-height: 1.5;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+  color-scheme: light;
+  /* Lets a sheet animate to and from its content height where supported. */
+  interpolate-size: allow-keywords;
+}
+
+/* Dark is dusk, not brown paper: one cool family. The field is a deep
+ * blue-slate (chroma ≤ 0.03) with the section's light left only as a
+ * muted apricot glow in one corner; reading drains it to a cool
+ * near-neutral. Sheets are cool slate and lift by lightness as well as by
+ * shadow (elevation reads in the dark), each with its lit rim. */
+[data-rd='lager'][data-theme='dark'] {
+  --la-field: oklch(16.5% 0.022 262);
+  --la-warm-1: oklch(33% 0.056 50);
+  --la-warm-2: oklch(25% 0.05 292);
+  --la-warm-3: oklch(26% 0.05 222);
+  --la-calm-1: oklch(21.5% 0.016 256);
+  --la-calm-2: oklch(19% 0.014 252);
+  --la-pool: oklch(34% 0.036 254);
+  --la-vignette: oklch(10% 0.026 262 / 0.66);
+
+  --la-sheet: oklch(23.5% 0.012 256);
+  --la-sheet-2: oklch(27.5% 0.012 256);
+  --la-sheet-3: oklch(31% 0.013 256);
+  --la-sheet-up: oklch(27.5% 0.013 256);
+  --la-sheet-up-2: oklch(29% 0.013 256);
+  --la-well: oklch(22% 0.014 256);
+  --la-lift: oklch(33% 0.015 256);
+  --la-rim-top: oklch(100% 0 0 / 0.17);
+  --la-rim: oklch(100% 0 0 / 0.09);
+  /* Dark keeps the button deep — never a pastel cyan pill. */
+  --la-btn: oklch(50% 0.094 212);
+  --la-btn-hi: oklch(54.5% 0.09 210);
+  --la-btn-lo: oklch(45.5% 0.09 214);
+  --la-btn-ink: oklch(98.5% 0.005 210);
+  --la-sheet-hi: oklch(100% 0 0 / 0.08);
+  --la-hair: oklch(100% 0 0 / 0.075);
+  --la-hair-2: oklch(100% 0 0 / 0.16);
+  /* Shadows are blue-black, the colour of the dusk they fall on. */
+  --la-sh-0: 0 0 0 1px var(--la-hair), 0 12px 28px -16px oklch(6% 0.025 262 / 0.62);
+  --la-sh-1:
+    0 0 0 1px var(--la-hair), 0 2px 4px oklch(6% 0.025 262 / 0.28),
+    0 20px 40px -18px oklch(6% 0.025 262 / 0.68);
+  --la-sh-2:
+    0 0 0 1px oklch(100% 0 0 / 0.085), 0 2px 6px oklch(6% 0.025 262 / 0.32),
+    0 34px 64px -24px oklch(6% 0.025 262 / 0.75);
+  --la-sh-3:
+    0 0 0 1px oklch(100% 0 0 / 0.1), 0 3px 8px oklch(6% 0.025 262 / 0.36),
+    0 48px 90px -28px oklch(6% 0.025 262 / 0.82);
+
+  --la-ink: oklch(94.5% 0.006 250);
+  --la-ink-2: oklch(83% 0.009 250);
+  --la-ink-3: oklch(72% 0.011 250);
+
+  --la-accent: oklch(76% 0.095 208);
+  --la-accent-2: oklch(82% 0.08 208);
+  --la-accent-ink: oklch(80% 0.085 208);
+  --la-accent-soft: oklch(33% 0.035 214);
+  --la-on-accent: oklch(19% 0.025 220);
+
+  --la-ok: oklch(79% 0.11 155);
+  --la-ok-soft: oklch(31% 0.04 155);
+  --la-bad: oklch(76% 0.12 28);
+  --la-bad-soft: oklch(31.5% 0.045 28);
+  --la-tip-soft: oklch(30% 0.03 214);
+  --la-warn-soft: oklch(31% 0.035 78);
+  --la-warn-ink: oklch(84% 0.08 80);
+  --la-mark: oklch(40% 0.07 214);
+  --la-mark-soft: oklch(30% 0.03 214);
+
+  --la-sec-las: oklch(33% 0.045 55);
+  --la-sec-las-ink: oklch(87% 0.06 60);
+  --la-sec-elf: oklch(33% 0.04 210);
+  --la-sec-elf-ink: oklch(87% 0.05 210);
+  --la-sec-xyz: oklch(33% 0.04 290);
+  --la-sec-xyz-ink: oklch(87% 0.05 290);
+  --la-sec-ord: oklch(33% 0.045 90);
+  --la-sec-ord-ink: oklch(88% 0.06 90);
+  --la-sec-nog: oklch(33% 0.04 350);
+  --la-sec-nog-ink: oklch(87% 0.05 350);
+
+  --la-glass: oklch(27% 0.016 256 / 0.8);
+  --la-glass-thick: oklch(25.5% 0.016 256 / 0.9);
+  --la-glass-solid: oklch(27% 0.016 256);
+  --la-glass-rim: oklch(100% 0 0 / 0.13);
+  --la-glass-hi: oklch(100% 0 0 / 0.11);
+  --la-glass-press: oklch(100% 0 0 / 0.08);
+  --la-glass-on: oklch(39% 0.02 256);
+  --la-glass-shadow: 0 1px 2px oklch(5% 0.02 260 / 0.4), 0 18px 40px -14px oklch(5% 0.02 260 / 0.75);
+  --la-scrim: oklch(8% 0.02 260 / 0.55);
+
+  --la-focus: oklch(80% 0.1 208);
+  color-scheme: dark;
+}
+
+[data-rd='lager'] *,
+[data-rd='lager'] *::before,
+[data-rd='lager'] *::after {
+  box-sizing: border-box;
+}
+
+[data-rd='lager'] :where(button) {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+[data-rd='lager'] :where(h1, h2, h3, h4, p, ol, ul, dl, dd, figure, fieldset) {
+  margin: 0;
+}
+
+[data-rd='lager'] :where(ol, ul) {
+  padding: 0;
+  list-style: none;
+}
+
+[data-rd='lager'] :focus-visible {
+  outline: 2px solid var(--la-focus);
+  outline-offset: 2px;
+}
+
+[data-rd='lager'] ::selection {
+  background: var(--la-mark);
+}
+
+.la-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ── z1: the field ───────────────────────────────────────────────── */
+
+.la-field,
+.la-field i {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.la-field {
+  z-index: 0;
+  background: var(--la-field);
+}
+
+/* Section light: three soft pools, fixed in place (static, never animated). */
+.la-field-warm {
+  background:
+    radial-gradient(60% 55% at 12% 6%, var(--la-warm-1), transparent 70%),
+    radial-gradient(48% 50% at 92% 18%, var(--la-warm-2), transparent 72%),
+    radial-gradient(70% 55% at 62% 104%, var(--la-warm-3), transparent 70%);
+  transition: opacity 720ms var(--la-ease);
+}
+
+/* Dusk: LÄS is only a muted apricot glow low in one corner; violet and
+ * lagoon-blue lights hold the rest of the sky. */
+[data-theme='dark'] .la-field-warm {
+  background:
+    radial-gradient(44% 46% at 4% 0%, var(--la-warm-1), transparent 72%),
+    radial-gradient(56% 52% at 96% 8%, var(--la-warm-2), transparent 72%),
+    radial-gradient(84% 62% at 58% 108%, var(--la-warm-3), transparent 72%);
+}
+
+/* Reading light: the colour drains away to a calm near-neutral, and a soft
+ * pool of light stays behind the passage sheet, so the sheet sits in a
+ * room rather than on a flat grey. */
+/* The pools are wide enough to spill past the sheets' edges: the light
+ * reads in the gaps between and around them, falling off into the
+ * vignette. */
+.la-field-calm {
+  opacity: 0;
+  background:
+    radial-gradient(120% 110% at 44% 48%, transparent 56%, var(--la-vignette) 100%),
+    radial-gradient(50% 80% at 34% 54%, var(--la-pool), transparent),
+    radial-gradient(30% 62% at 76% 48%, var(--la-pool), transparent),
+    radial-gradient(70% 60% at 20% 0%, var(--la-calm-1), transparent 72%),
+    radial-gradient(60% 60% at 100% 100%, var(--la-calm-2), transparent 70%);
+  transition: opacity 720ms var(--la-ease);
+}
+
+[data-width='phone'] .la-field-calm {
+  background:
+    radial-gradient(130% 100% at 50% 40%, transparent 60%, var(--la-vignette) 100%),
+    radial-gradient(120% 64% at 50% 42%, var(--la-pool), transparent),
+    radial-gradient(90% 50% at 10% 0%, var(--la-calm-1), transparent 72%),
+    radial-gradient(80% 50% at 100% 100%, var(--la-calm-2), transparent 70%);
+}
+
+/* A static grain, barely there (2 %): the field is a material, not a flat
+ * fill. */
+.la-field-grain {
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+[data-rd='lager'][data-mood='calm'] .la-field-warm {
+  opacity: 0;
+}
+
+[data-rd='lager'][data-mood='calm'] .la-field-calm {
+  opacity: 1;
+}
+
+/* ── z2: sheets ──────────────────────────────────────────────────── */
+
+/* Every sheet has a lit top edge: the light catching its rim. */
+.la-sheet {
+  position: relative;
+  border-radius: var(--la-r-sheet);
+  background: var(--la-sheet);
+  box-shadow:
+    inset 0 1px 0 var(--la-sheet-hi),
+    var(--la-sh-1);
+}
+
+.la-sheet[data-depth='0'] {
+  box-shadow:
+    inset 0 1px 0 var(--la-sheet-hi),
+    var(--la-sh-0);
+}
+
+.la-sheet[data-depth='2'] {
+  box-shadow:
+    inset 0 1px 0 var(--la-sheet-hi),
+    var(--la-sh-2);
+}
+
+.la-sheet[data-depth='3'] {
+  box-shadow:
+    inset 0 1px 0 var(--la-sheet-hi),
+    var(--la-sh-3);
+}
+
+/* Dark: a lifted sheet is also a step lighter — its whole subtree takes the
+ * lifted tone, so keys and wells inside it stay relative to it. */
+[data-theme='dark'] .la-sheet[data-depth='2'] {
+  --la-sheet: var(--la-sheet-up);
+}
+
+[data-theme='dark'] .la-sheet[data-depth='3'] {
+  --la-sheet: var(--la-sheet-up-2);
+}
+
+/* Sheets rise into place one after another. Only sheets animate their
+ * opacity — never anything that holds glass. */
+.la-rise {
+  animation: la-rise var(--la-t3) var(--la-ease) both;
+}
+
+.la-grid > .la-rise:nth-child(2),
+.la-pstack > .la-rise:nth-child(2) {
+  animation-delay: 60ms;
+}
+
+@keyframes la-rise {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+    scale: 0.985;
+  }
+}
+
+/* ── z3: glass ───────────────────────────────────────────────────── */
+
+.la-glass {
+  background: var(--la-glass);
+  -webkit-backdrop-filter: var(--la-blur);
+  backdrop-filter: var(--la-blur);
+  box-shadow:
+    inset 0 1px 0 var(--la-glass-hi),
+    inset 0 0 0 1px var(--la-glass-rim),
+    var(--la-glass-shadow);
+}
+
+/* Menus: denser and almost unsaturated, so a coloured control under them
+ * does not smear into the labels. */
+.la-glass-thick {
+  background: var(--la-glass-thick);
+  -webkit-backdrop-filter: var(--la-blur-menu);
+  backdrop-filter: var(--la-blur-menu);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  [data-rd='lager'] .la-glass {
+    background: var(--la-glass-solid);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  [data-rd='lager'] .la-glass {
+    background: var(--la-glass-solid);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* ── Type ────────────────────────────────────────────────────────── */
+
+.la-eyebrow {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--la-ink-3);
+}
+
+.la-h {
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.012em;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.la-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--la-sheet-2);
+  color: var(--la-ink-2);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.la-badge {
+  height: 26px;
+  padding: 0 11px;
+  background: var(--la-sheet-2);
+  color: var(--la-ink);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 1px var(--la-hair);
+}
+
+.la-badge-sm {
+  height: 22px;
+  padding: 0 8px;
+  font-size: 10.5px;
+}
+
+.la-sec {
+  height: 22px;
+  padding: 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.la-sec[data-sec='LÄS'] {
+  background: var(--la-sec-las);
+  color: var(--la-sec-las-ink);
+}
+
+.la-sec[data-sec='ELF'] {
+  background: var(--la-sec-elf);
+  color: var(--la-sec-elf-ink);
+}
+
+.la-sec[data-sec='XYZ'] {
+  background: var(--la-sec-xyz);
+  color: var(--la-sec-xyz-ink);
+}
+
+.la-sec[data-sec='ORD'] {
+  background: var(--la-sec-ord);
+  color: var(--la-sec-ord-ink);
+}
+
+.la-sec[data-sec='NOG'] {
+  background: var(--la-sec-nog);
+  color: var(--la-sec-nog-ink);
+}
+
+.la-kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 7px;
+  background: var(--la-sheet-2);
+  box-shadow:
+    inset 0 -1px 0 var(--la-hair),
+    inset 0 0 0 1px var(--la-hair);
+  color: var(--la-ink-2);
+  font-size: 11.5px;
+  font-weight: 650;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Controls ────────────────────────────────────────────────────── */
+
+/* Small controls keep their look but get a 44 px hit area. */
+.la-cite,
+.la-pn,
+.la-more,
+.la-link,
+.la-quiet,
+.la-pill-btn,
+.la-opt-x,
+.la-grab {
+  position: relative;
+}
+
+.la-cite::after,
+.la-pn::after,
+.la-more::after,
+.la-link::after,
+.la-quiet::after,
+.la-pill-btn::after,
+.la-opt-x::after,
+.la-grab::after {
+  content: '';
+  position: absolute;
+  inset: calc((100% - 44px) / 2) min(0px, calc((100% - 44px) / 2));
+}
+
+/* The primary button is a lit, solid lagoon (the OS 26 "prominent" control):
+ * opaque, so its text never depends on the backdrop, but lit like glass —
+ * a top-lit gradient, a bright top rim, a soft inner highlight, a darker
+ * base edge. Deep in both themes: never a flat pastel pill. */
+.la-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(to bottom, var(--la-btn-hi), var(--la-btn) 55%, var(--la-btn-lo));
+  color: var(--la-btn-ink);
+  font-size: 15.5px;
+  font-weight: 650;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 oklch(100% 0 0 / 0.36),
+    inset 0 0 0 1px oklch(100% 0 0 / 0.1),
+    inset 0 10px 16px -10px oklch(100% 0 0 / 0.26),
+    inset 0 -1px 0 oklch(12% 0.03 230 / 0.2),
+    0 1px 2px oklch(25% 0.05 214 / 0.25),
+    0 10px 22px -12px oklch(35% 0.1 214 / 0.55);
+  transition: scale var(--la-t1) var(--la-ease);
+}
+
+.la-btn:hover {
+  background: linear-gradient(to bottom, var(--la-btn-hi), var(--la-btn-hi) 30%, var(--la-btn));
+}
+
+.la-btn:active {
+  scale: 0.98;
+}
+
+.la-btn:disabled {
+  background: var(--la-sheet-3);
+  color: var(--la-ink-3);
+  box-shadow: inset 0 0 0 1px var(--la-hair);
+  cursor: not-allowed;
+}
+
+.la-btn .la-kbd {
+  background: oklch(100% 0 0 / 0.16);
+  box-shadow: inset 0 0 0 1px oklch(100% 0 0 / 0.3);
+  color: inherit;
+}
+
+.la-btn:disabled .la-kbd {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--la-hair);
+}
+
+/* Keycaps belong to keyboards: none on phone or a touch screen. */
+[data-width='phone'] .la-kbd {
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  [data-rd='lager'] .la-kbd {
+    display: none;
+  }
+}
+
+.la-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--la-sheet-2);
+  color: var(--la-ink-2);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background var(--la-t1) var(--la-ease),
+    color var(--la-t1) var(--la-ease);
+}
+
+.la-quiet:hover {
+  background: var(--la-sheet-3);
+  color: var(--la-ink);
+}
+
+.la-quiet[aria-expanded='true'],
+.la-quiet[aria-pressed='true'] {
+  background: var(--la-accent-soft);
+  color: var(--la-accent-ink);
+}
+
+.la-quiet-ico {
+  width: 40px;
+  padding: 0;
+  justify-content: center;
+}
+
+.la-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--la-ink);
+  font-size: 13.5px;
+  font-weight: 650;
+  text-decoration: underline;
+  text-decoration-color: var(--la-hair-2);
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.la-link:hover {
+  text-decoration-color: currentColor;
+}
+
+.la-link svg {
+  flex: none;
+}
+
+/* ── Glass controls: pills that float on the field ───────────────── */
+
+.la-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 48px;
+  min-width: 0;
+  margin: 0;
+  padding: 4px;
+  border: 0;
+  border-radius: 999px;
+}
+
+.la-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 44px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--la-ink);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--la-t1) var(--la-ease);
+}
+
+.la-pill-btn svg {
+  flex: none;
+}
+
+.la-pill-btn:hover {
+  background: var(--la-glass-press);
+}
+
+.la-pill-btn[aria-pressed='true'] {
+  background: var(--la-glass-on);
+  color: var(--la-accent-ink);
+  box-shadow:
+    0 1px 2px oklch(30% 0.03 60 / 0.12),
+    0 0 0 1px var(--la-hair);
+}
+
+.la-pill-ico {
+  width: 44px;
+  height: 40px;
+  padding: 0;
+}
+
+.la-pill-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  color: var(--la-ink);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.la-pill-text svg {
+  flex: none;
+}
+
+.la-pill-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--la-hair-2);
+}
+
+.la-segs {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.la-segs i {
+  width: 22px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--la-glass-press);
+  box-shadow: inset 0 0 0 1px var(--la-hair-2);
+}
+
+.la-segs[data-size='s'] {
+  gap: 3px;
+}
+
+.la-segs[data-size='s'] i {
+  width: 12px;
+  height: 5px;
+}
+
+.la-segs i[data-state='done'] {
+  background: var(--la-ink-3);
+  box-shadow: none;
+}
+
+.la-segs i[data-state='now'] {
+  background: var(--la-accent);
+  box-shadow: none;
+}
+
+.la-round {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: var(--la-ink);
+  cursor: pointer;
+}
+
+.la-round svg {
+  flex: none;
+}
+
+/* ── The dock (desktop) ──────────────────────────────────────────── */
+
+/* The dock's menu is its sibling, not its child: glass inside glass
+ * would blur only its parent, never the page. */
+.la-dock-wrap {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.la-dock-anchor {
+  position: relative;
+  pointer-events: auto;
+}
+
+.la-dock {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px;
+  border-radius: 28px;
+  transition: padding var(--la-t2) var(--la-ease);
+}
+
+.la-dock-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 78px;
+  height: 58px;
+  padding: 0;
+  border: 0;
+  border-radius: 22px;
+  background: transparent;
+  color: var(--la-ink-2);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    height var(--la-t2) var(--la-ease),
+    background var(--la-t1) var(--la-ease),
+    color var(--la-t1) var(--la-ease);
+}
+
+.la-dock-item svg {
+  flex: none;
+}
+
+.la-dock-item:hover {
+  background: var(--la-glass-press);
+  color: var(--la-ink);
+}
+
+.la-dock-item[aria-current='page'] {
+  background: var(--la-glass-on);
+  color: var(--la-accent-ink);
+  box-shadow:
+    0 1px 2px oklch(30% 0.03 60 / 0.12),
+    0 0 0 1px var(--la-hair);
+}
+
+/* Compact (while the page is scrolled): the dock loses height, never its
+ * labels — the label moves beside the icon. */
+.la-dock[data-compact='true'] {
+  padding: 4px;
+  border-radius: 26px;
+}
+
+.la-dock[data-compact='true'] .la-dock-item {
+  flex-direction: row;
+  gap: 8px;
+  width: auto;
+  height: 44px;
+  padding: 0 14px 0 12px;
+  font-size: 13px;
+}
+
+.la-dock-sep {
+  width: 1px;
+  height: 32px;
+  margin: 0 6px;
+  background: var(--la-hair-2);
+}
+
+.la-dock[data-compact='true'] .la-dock-sep {
+  height: 26px;
+}
+
+.la-badge-n {
+  position: absolute;
+  top: 5px;
+  left: calc(50% + 6px);
+  min-width: 19px;
+  height: 17px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--la-ink);
+  color: var(--la-sheet);
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.la-dock[data-compact='true'] .la-badge-n {
+  position: static;
+  margin-left: -2px;
+}
+
+.la-avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: linear-gradient(160deg, var(--la-sheet), var(--la-sheet-2));
+  color: var(--la-ink-2);
+  box-shadow:
+    0 0 0 1px var(--la-hair),
+    0 1px 2px oklch(30% 0.03 60 / 0.1);
+  cursor: pointer;
+}
+
+.la-avatar.la-glass {
+  background: var(--la-glass);
+  color: var(--la-ink);
+}
+
+.la-avatar[aria-expanded='true'] {
+  box-shadow:
+    0 0 0 2px var(--la-sheet),
+    0 0 0 4px var(--la-accent);
+}
+
+/* Desktop account panel: glass (it is a control), short labels only — a
+ * compact title line, the theme as a segmented control, plain rows with
+ * trailing chevrons. Nested radius: 22 − 6 = 16. */
+.la-menu {
+  position: absolute;
+  z-index: 40;
+  width: 268px;
+  padding: 6px;
+  border-radius: 22px;
+  animation: la-menu-in var(--la-t2) var(--la-ease);
+}
+
+.la-menu[data-anchor='dock'] {
+  right: 0;
+  bottom: calc(100% + 12px);
+}
+
+@keyframes la-menu-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+    translate: 0 6px;
+  }
+}
+
+.la-menu-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px 8px;
+  font-size: 12.5px;
+  color: var(--la-ink-2);
+}
+
+.la-menu-title b {
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--la-ink);
+}
+
+/* The theme: three parts in a recessed track; the chosen one is a small
+ * lifted lens with a lit rim. No backdrop filter of its own — glass is
+ * never nested in glass. Nested radius: 14 − 3 = 11. */
+.la-seg {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2px;
+  min-width: 0;
+  margin: 0 0 6px;
+  padding: 3px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--la-glass-press);
+  box-shadow:
+    inset 0 1px 2px oklch(20% 0.03 250 / 0.12),
+    inset 0 0 0 1px var(--la-hair);
+}
+
+.la-seg button {
+  min-height: 44px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--la-ink-2);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background var(--la-t1) var(--la-ease),
+    color var(--la-t1) var(--la-ease);
+}
+
+.la-seg button:hover {
+  color: var(--la-ink);
+}
+
+.la-seg button[aria-pressed='true'] {
+  background: var(--la-glass-on);
+  color: var(--la-ink);
+  box-shadow:
+    inset 0 1px 0 var(--la-rim-top),
+    0 0 0 1px var(--la-hair),
+    0 2px 6px -2px oklch(20% 0.03 250 / 0.3);
+}
+
+.la-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 10px 0 12px;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--la-ink);
+  font-size: 14.5px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.la-menu-item:hover {
+  background: var(--la-glass-press);
+}
+
+.la-menu-item svg {
+  flex: none;
+  color: var(--la-ink-3);
+}
+
+.la-menu-sep {
+  height: 1px;
+  margin: 6px 12px;
+  border: 0;
+  background: var(--la-hair-2);
+}
+
+/* Phone account menu: a detached glass panel above the tab bar. The page
+ * dims under a scrim that stops below the tab bar's layer, so the bar
+ * stays lit and usable. */
+.la-scrim {
+  position: absolute;
+  z-index: 19;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  background: var(--la-scrim);
+  cursor: default;
+  animation: la-fade var(--la-t2) var(--la-ease) both;
+}
+
+@keyframes la-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.la-acct {
+  position: absolute;
+  z-index: 31;
+  left: 12px;
+  right: 12px;
+  /* Just above the floating tab bar (14 px off the edge, 66 px tall). */
+  bottom: 90px;
+  padding: 6px;
+  border-radius: 26px;
+  transform-origin: 50% 100%;
+  animation: la-panel-in var(--la-t3) var(--la-ease) both;
+}
+
+@keyframes la-panel-in {
+  from {
+    translate: 0 12px;
+    scale: 0.97;
+    opacity: 0;
+  }
+}
+
+.la-acct .la-menu-title {
+  padding: 10px 14px 10px;
+  font-size: 13px;
+}
+
+.la-acct .la-menu-title b {
+  font-size: 16px;
+}
+
+/* Nested radius: 26 − 6. */
+.la-acct .la-menu-item {
+  min-height: 50px;
+  padding: 0 12px 0 14px;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+.la-acct .la-seg {
+  border-radius: 18px;
+}
+
+.la-acct .la-seg button {
+  min-height: 46px;
+  border-radius: 15px;
+  font-size: 14.5px;
+}
+
+/* ── Phone: the floating tab bar ─────────────────────────────────── */
+
+.la-tabbar {
+  position: absolute;
+  z-index: 20;
+  left: 12px;
+  right: 12px;
+  bottom: 14px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px;
+  padding: 6px;
+  border-radius: 28px;
+}
+
+.la-tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 54px;
+  padding: 0;
+  border: 0;
+  border-radius: 22px;
+  background: transparent;
+  color: var(--la-ink-2);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.la-tab svg {
+  flex: none;
+}
+
+.la-tab[aria-current='page'] {
+  background: var(--la-glass-on);
+  color: var(--la-accent-ink);
+  box-shadow:
+    0 1px 2px oklch(30% 0.03 60 / 0.12),
+    0 0 0 1px var(--la-hair);
+}
+
+.la-tab .la-badge-n {
+  top: 3px;
+}
+
+/* Scroll edge: once content moves under the dock it softens into the field
+ * (the OS 26 scroll-edge effect). Never shown at rest. */
+.la-edge {
+  position: absolute;
+  z-index: 15;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 132px;
+  pointer-events: none;
+  background: linear-gradient(to top, color-mix(in oklch, var(--la-field) 72%, transparent), transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  -webkit-mask-image: linear-gradient(to top, #000 30%, transparent);
+  mask-image: linear-gradient(to top, #000 30%, transparent);
+}
+
+[data-width='phone'] .la-edge {
+  height: 104px;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  [data-rd='lager'] .la-edge {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* ── Frame: the scroll area over the field ───────────────────────── */
+
+.la-scroll {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: oklch(50% 0.01 70 / 0.35) transparent;
+}
+
+.la-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 40px;
+}
+
+.la-mark-word {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--la-ink);
+  white-space: nowrap;
+}
+
+.la-mark-word i {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  background:
+    linear-gradient(135deg, oklch(100% 0 0 / 0.8), transparent 60%),
+    linear-gradient(160deg, var(--la-warm-1), var(--la-ink-3));
+  box-shadow: 0 0 0 1px var(--la-hair);
+}
+
+/* The countdown is information, not a control: plain text on the field. */
+.la-count {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 550;
+  color: var(--la-ink);
+  white-space: nowrap;
+}
+
+.la-count b {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Idag (desktop) ──────────────────────────────────────────────── */
+
+.la-home {
+  max-width: 1200px;
+  margin: 0 auto;
+  /* The dock never rests on live text: the page ends above it. */
+  padding: 22px 48px 160px;
+}
+
+.la-hello {
+  margin: 20px 0 28px;
+  max-width: 760px;
+}
+
+.la-date {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--la-ink-2);
+}
+
+.la-greet {
+  margin-top: 4px;
+  font-family: var(--la-display);
+  font-size: 40px;
+  line-height: 1.08;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  font-variation-settings:
+    'SOFT' 100,
+    'WONK' 0;
+  color: var(--la-ink);
+  text-wrap: balance;
+}
+
+.la-sub {
+  margin-top: 8px;
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--la-ink);
+  text-wrap: pretty;
+}
+
+/* Areas, so the focus order runs resume → plan → the notes while the
+ * notes still sit under the resume. */
+.la-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'resume side'
+    'notes side';
+  column-gap: 28px;
+  row-gap: 30px;
+  align-items: start;
+}
+
+.la-grid > .la-resume {
+  grid-area: resume;
+}
+
+.la-grid > .la-side {
+  grid-area: side;
+}
+
+.la-grid > .la-notes {
+  grid-area: notes;
+}
+
+.la-resume {
+  padding: 28px 32px 26px;
+  overflow: hidden;
+}
+
+.la-resume-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.la-resume-when {
+  font-size: 13px;
+  color: var(--la-ink-3);
+}
+
+/* The resume title is the largest type on the page. */
+.la-resume-title {
+  margin-top: 16px;
+  font-family: var(--la-read);
+  font-size: 54px;
+  line-height: 1.02;
+  font-weight: 500;
+  letter-spacing: -0.026em;
+  text-wrap: balance;
+  hyphens: manual;
+}
+
+.la-resume-sub {
+  margin-top: 8px;
+  font-family: var(--la-read);
+  font-size: 21px;
+  font-style: italic;
+  color: var(--la-ink-2);
+}
+
+/* A window onto the reading sheet the reader returns to. */
+.la-peek {
+  position: relative;
+  margin: 22px -32px 0;
+  padding: 16px 32px 0 64px;
+  max-height: 120px;
+  overflow: hidden;
+  border-top: 1px solid var(--la-hair);
+  background: var(--la-sheet-2);
+  font-family: var(--la-read);
+  font-size: 16.5px;
+  line-height: 1.6;
+  color: var(--la-ink-2);
+  -webkit-mask-image: linear-gradient(180deg, #000 45%, transparent 98%);
+  mask-image: linear-gradient(180deg, #000 45%, transparent 98%);
+}
+
+.la-peek .la-pn {
+  position: absolute;
+  left: 22px;
+  top: 19px;
+}
+
+.la-resume-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.la-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--la-ink-2);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.la-dots {
+  display: inline-flex;
+  gap: 5px;
+}
+
+.la-dots i {
+  width: 26px;
+  height: 7px;
+  border-radius: 4px;
+  background: var(--la-sheet-3);
+  box-shadow: inset 0 0 0 1px var(--la-hair);
+}
+
+.la-dots i[data-state='done'] {
+  background: var(--la-ink-3);
+  box-shadow: none;
+}
+
+.la-dots i[data-state='now'] {
+  background: var(--la-ink);
+  box-shadow: none;
+}
+
+/* The side sheet: what comes next, then where it is heading. */
+.la-side {
+  padding: 22px 14px 20px;
+}
+
+.la-side-sec + .la-side-sec {
+  margin-top: 16px;
+  padding-top: 18px;
+  border-top: 1px solid var(--la-hair);
+}
+
+.la-side-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 10px;
+  margin-bottom: 8px;
+}
+
+.la-side-head .la-meta {
+  font-size: 13px;
+  color: var(--la-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.la-row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 12px;
+  width: 100%;
+  min-height: 60px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--la-t1) var(--la-ease);
+}
+
+.la-row:hover {
+  background: var(--la-sheet-2);
+}
+
+.la-row-n {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: var(--la-ink-2);
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1.5px var(--la-hair-2);
+}
+
+.la-row-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--la-ink);
+}
+
+.la-row-title span {
+  font-weight: 450;
+  color: var(--la-ink-2);
+}
+
+.la-row-why {
+  display: block;
+  margin-top: 2px;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--la-ink-2);
+  text-wrap: pretty;
+}
+
+.la-row-min {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--la-ink-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.la-row-min svg {
+  flex: none;
+}
+
+.la-prog {
+  padding: 0 10px;
+}
+
+.la-prog-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.la-prog-n {
+  font-size: 44px;
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.la-prog-n small {
+  margin-left: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--la-ink-3);
+}
+
+.la-prog-n sup {
+  margin-left: 1px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--la-ink-3);
+  vertical-align: 1.6em;
+}
+
+.la-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 11px;
+  border-radius: 999px;
+  background: var(--la-ok-soft);
+  color: var(--la-ok);
+  font-size: 13px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.la-delta svg {
+  flex: none;
+}
+
+/* A scale with a tick for the estimate and a soft band for its range. */
+.la-range {
+  position: relative;
+  height: 36px;
+  margin-top: 14px;
+}
+
+.la-range-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 9px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--la-sheet-3);
+}
+
+.la-range-band {
+  position: absolute;
+  top: 6px;
+  height: 10px;
+  border-radius: 5px;
+  background: color-mix(in oklch, var(--la-ink-3) 22%, transparent);
+}
+
+.la-range-tick {
+  position: absolute;
+  top: 1px;
+  width: 2px;
+  height: 20px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: var(--la-ink);
+}
+
+.la-range-label {
+  position: absolute;
+  top: 22px;
+  translate: -50% 0;
+  font-size: 11.5px;
+  color: var(--la-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.la-halves {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--la-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.la-caveat {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr);
+  margin-top: 12px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--la-ink-3);
+  text-wrap: pretty;
+}
+
+/* Notes on the field: traps, recent passes and the week are plain text on
+ * the ambient light, below the sheets — the third layer, not more cards. */
+.la-notes {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
+  padding: 0 6px;
+}
+
+.la-note-h {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--la-hair-2);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--la-ink);
+}
+
+.la-note-h span {
+  font-weight: 550;
+  color: var(--la-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.la-trap {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0 8px;
+}
+
+.la-trap-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.la-trap-name {
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.35;
+  color: var(--la-ink);
+}
+
+.la-trap-pattern {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--la-ink-2);
+  text-wrap: pretty;
+}
+
+.la-trap-n {
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--la-ink-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.la-pass {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: 12px;
+  padding: 7px 0;
+}
+
+.la-pass dt {
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--la-ink);
+}
+
+.la-pass dt span {
+  margin-left: 6px;
+  font-weight: 450;
+  color: var(--la-ink-2);
+  font-size: 12.5px;
+}
+
+.la-pass dd {
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--la-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.la-notes .la-link {
+  margin-top: 4px;
+}
+
+.la-week-days {
+  display: flex;
+  gap: 4px;
+  margin: 12px 0 10px;
+}
+
+.la-week-days i {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-style: normal;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--la-ink-2);
+  box-shadow: inset 0 0 0 1.5px var(--la-hair-2);
+}
+
+.la-week-days i[data-on='true'] {
+  background: var(--la-ink);
+  color: var(--la-sheet);
+  box-shadow: none;
+}
+
+.la-week-days i[data-today='true'] {
+  outline: 2px solid var(--la-ink);
+  outline-offset: 2px;
+}
+
+.la-week p {
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--la-ink-2);
+  text-wrap: pretty;
+}
+
+/* ── Stub pages ──────────────────────────────────────────────────── */
+
+.la-stub {
+  max-width: 640px;
+  margin: 15vh auto 0;
+  padding: 40px 44px 36px;
+}
+
+.la-stub h1 {
+  margin-top: 8px;
+  font-size: 40px;
+  line-height: 1.1;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+}
+
+.la-stub p {
+  margin-top: 12px;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--la-ink-2);
+}
+
+.la-stub .la-stub-note {
+  margin-top: 26px;
+  padding-top: 16px;
+  border-top: 1px solid var(--la-hair);
+  font-size: 14px;
+  color: var(--la-ink-3);
+}
+
+/* ── Drill: glass controls over a calm field ─────────────────────── */
+
+.la-drill {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.la-controls {
+  position: absolute;
+  z-index: 10;
+  left: 20px;
+  right: 20px;
+  top: 16px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.la-controls > * {
+  pointer-events: auto;
+}
+
+.la-controls > :first-child {
+  justify-self: start;
+}
+
+.la-controls > :last-child {
+  justify-self: end;
+}
+
+/* Two layers, not two panes: the passage sheet on the field, the question
+ * sheet beside it a level up — staggered lower, with air between them, so
+ * the lit field shows between and around the sheets. */
+.la-desk {
+  position: absolute;
+  inset: 84px 0 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 680px) 460px;
+  justify-content: center;
+  gap: 48px;
+  padding: 0 40px;
+}
+
+/* The reading sheet. */
+.la-read {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: oklch(50% 0.01 70 / 0.35) transparent;
+}
+
+.la-read-inner {
+  padding: 40px 52px 72px 76px;
+  font-family: var(--la-read);
+  font-size: var(--la-reading);
+  line-height: 1.62;
+  color: var(--la-ink);
+  hyphens: auto;
+  -webkit-hyphenate-limit-before: 3;
+  -webkit-hyphenate-limit-after: 3;
+  hyphenate-limit-chars: 7 3 3;
+}
+
+.la-read[data-size='large'] {
+  --la-reading: 21.5px;
+}
+
+.la-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin-bottom: 18px;
+  font-family: var(--la-ui);
+}
+
+.la-note {
+  max-width: 58ch;
+  margin: 0 0 22px;
+  padding: 14px 18px;
+  border-radius: var(--la-r-ctl);
+  background: var(--la-sheet-2);
+  font-family: var(--la-ui);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--la-ink-2);
+}
+
+.la-ptitle {
+  font-family: var(--la-read);
+  font-size: 36px;
+  line-height: 1.1;
+  font-weight: 520;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  hyphens: manual;
+}
+
+.la-ptitle span {
+  display: block;
+  margin-top: 6px;
+  font-size: 21px;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  color: var(--la-ink-2);
+}
+
+.la-pbody {
+  margin-top: 30px;
+}
+
+.la-para {
+  position: relative;
+  max-width: 64ch;
+  margin: 0 0 0.9em;
+  border-radius: 12px;
+  text-wrap: pretty;
+  transition:
+    opacity var(--la-t2) var(--la-ease),
+    background-color 900ms var(--la-ease),
+    box-shadow 900ms var(--la-ease);
+}
+
+/* A paragraph number is a small pill in the sheet's margin. */
+.la-pn {
+  position: absolute;
+  left: -52px;
+  top: 0.3em;
+  display: inline-grid;
+  place-items: center;
+  min-width: 30px;
+  height: 22px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--la-ink-3);
+  font-family: var(--la-ui);
+  font-size: 11.5px;
+  font-weight: 650;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition:
+    background var(--la-t1) var(--la-ease),
+    color var(--la-t1) var(--la-ease);
+}
+
+.la-pn:hover,
+.la-pn[aria-pressed='true'] {
+  background: var(--la-sheet-2);
+  color: var(--la-ink);
+}
+
+/* Evidence: the paragraph the solution stands on gets a filled number and
+ * a 3 px gutter rule; a trap's paragraph an outlined number in the error
+ * hue. The exact quoted sentences are underlined (.la-q). */
+.la-para[data-evidence='true'] .la-pn {
+  background: var(--la-accent);
+  color: var(--la-on-accent);
+}
+
+.la-para[data-evidence='true']::before {
+  content: '';
+  position: absolute;
+  left: -15px;
+  top: 0.35em;
+  bottom: 0.35em;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--la-accent);
+}
+
+.la-para[data-trap='true'] .la-pn {
+  color: var(--la-bad);
+  box-shadow: inset 0 0 0 1.5px var(--la-bad);
+}
+
+.la-q {
+  border-radius: 3px;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+  text-decoration-skip-ink: none;
+  transition:
+    background-color 900ms var(--la-ease),
+    box-shadow 900ms var(--la-ease);
+}
+
+.la-q[data-kind='evidence'] {
+  text-decoration-color: var(--la-accent);
+}
+
+.la-q[data-kind='trap'] {
+  text-decoration-color: var(--la-bad);
+  text-decoration-style: dashed;
+}
+
+/* A followed ¶ link: the paragraph takes a soft tint with a wide bleed for
+ * a moment, the quoted sentence a stronger mark. */
+.la-para[data-flash='true'] {
+  background: var(--la-mark-soft);
+  box-shadow: 0 0 0 15px var(--la-mark-soft);
+  transition: none;
+}
+
+.la-q[data-flash='true'] {
+  background: var(--la-mark);
+  box-shadow: 0 0 0 2px var(--la-mark);
+  transition: none;
+}
+
+/* Paragraph focus: the rest steps back by opacity only. */
+.la-pbody[data-focus='true'] .la-para:not([data-focused='true']) {
+  opacity: 0.32;
+}
+
+.la-byline {
+  margin-top: 1.2em;
+  text-align: right;
+  font-style: italic;
+  color: var(--la-ink-2);
+}
+
+/* ── Desktop question column: one sheet, then a stack of two ─────── */
+
+.la-qcol {
+  position: relative;
+  min-height: 0;
+  margin: 30px 0 4px;
+}
+
+/* The lifted layer: the question and explanation sheets take the deepest
+ * shadow and a crisp lit rim — and in dark a clearly lighter slate (set
+ * by their depth), so they never read as flat panes. */
+.la-desk .la-stack.la-sheet {
+  box-shadow:
+    inset 0 1px 0 var(--la-rim-top),
+    inset 0 0 0 1px var(--la-rim),
+    var(--la-sh-3);
+}
+
+.la-stack {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  transition: top var(--la-t3) var(--la-ease);
+}
+
+/* Before the answer the question sheet is sized to its content. */
+.la-stack[data-pos='solo'] {
+  position: relative;
+  max-height: 100%;
+}
+
+/* After it, the sheets stack: the one behind shows only its top strip,
+ * sharp, as the way back to it. */
+.la-stack[data-pos='back'] {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.la-stack[data-pos='front'] {
+  position: absolute;
+  z-index: 3;
+  top: 56px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.la-explain[data-pos='front'] {
+  animation: la-stack-in var(--la-t3) var(--la-ease) both;
+}
+
+@keyframes la-stack-in {
+  from {
+    opacity: 0;
+    translate: 0 28px;
+  }
+}
+
+.la-stack-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.la-stack[data-pos='solo'] .la-stack-body {
+  flex: 0 1 auto;
+}
+
+.la-strip {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  height: 56px;
+  padding: 0 22px 0 26px;
+  border: 0;
+  border-radius: var(--la-r-sheet) var(--la-r-sheet) 0 0;
+  background: transparent;
+  color: var(--la-ink-2);
+  font-size: 13.5px;
+  font-weight: 650;
+  text-align: left;
+  cursor: pointer;
+}
+
+.la-strip:hover {
+  color: var(--la-ink);
+}
+
+.la-strip:focus-visible {
+  outline-offset: -4px;
+}
+
+.la-strip-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--la-accent-ink);
+}
+
+.la-strip-go svg {
+  flex: none;
+}
+
+.la-q-scroll {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 28px 28px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: oklch(50% 0.01 70 / 0.35) transparent;
+}
+
+.la-prompt {
+  margin-top: 10px;
+  font-size: 22px;
+  line-height: 1.32;
+  font-weight: 650;
+  letter-spacing: -0.016em;
+  text-wrap: balance;
+  hyphens: manual;
+}
+
+/* The options are ONE recessed well, the four as divided rows inside it
+ * (inset-grouped), each with a rimmed letter badge. A chosen row lifts out
+ * of the well as a small raised sheet with a lit rim; after the answer the
+ * graded pair lifts the same way and the rest stay in the well. Nested
+ * radius: 22 − 6 = 16. */
+.la-opts {
+  display: flex;
+  flex-direction: column;
+  margin-top: 22px;
+  padding: 6px;
+  border-radius: 22px;
+  background: var(--la-well);
+  box-shadow:
+    inset 0 1px 3px oklch(20% 0.03 250 / 0.14),
+    inset 0 0 0 1px var(--la-hair);
+}
+
+.la-opt {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 48px;
+  align-items: start;
+  border-radius: 16px;
+  background: transparent;
+  transition:
+    background var(--la-t1) var(--la-ease),
+    box-shadow var(--la-t1) var(--la-ease),
+    translate var(--la-t2) var(--la-ease);
+}
+
+/* Dividers between rows, from the text's edge; none beside a lifted row. */
+.la-opt + .la-opt::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 56px;
+  right: 16px;
+  height: 1px;
+  background: var(--la-hair-2);
+  pointer-events: none;
+}
+
+.la-opt[data-state='on']::before,
+.la-opt[data-state='on'] + .la-opt::before,
+.la-opt[data-grade='right']::before,
+.la-opt[data-grade='right'] + .la-opt::before,
+.la-opt[data-grade='wrong']::before,
+.la-opt[data-grade='wrong'] + .la-opt::before {
+  opacity: 0;
+}
+
+.la-opt:hover {
+  background: color-mix(in oklch, var(--la-lift) 50%, transparent);
+}
+
+/* In the well the letters are rimmed lenses, not filled keys. */
+.la-opts .la-key {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--la-hair-2);
+}
+
+.la-opt-main {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  column-gap: 12px;
+  align-items: start;
+  min-height: 52px;
+  padding: 13px 0 13px 14px;
+  border: 0;
+  border-radius: var(--la-r-ctl);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.la-key {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: var(--la-sheet);
+  color: var(--la-ink-2);
+  font-size: 13.5px;
+  font-weight: 700;
+  box-shadow:
+    inset 0 -1px 0 var(--la-hair),
+    0 0 0 1px var(--la-hair);
+  transition:
+    background var(--la-t1) var(--la-ease),
+    color var(--la-t1) var(--la-ease);
+}
+
+/* Verdict keys ("A → D"): the letter in its state's colour inside a rim,
+ * on the sheet — the same language as the answer pair. */
+.la-key[data-kind='mine'] {
+  color: var(--la-bad);
+  box-shadow: inset 0 0 0 1.5px var(--la-bad);
+}
+
+.la-key[data-kind='right'] {
+  color: var(--la-ok);
+  box-shadow: inset 0 0 0 1.5px var(--la-ok);
+}
+
+.la-opt-text {
+  padding-top: 4px;
+  font-size: 15.5px;
+  line-height: 1.45;
+  color: var(--la-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+/* Strike: always there, quiet until it is wanted. */
+.la-opt-x {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin: 8px 6px 0 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--la-ink-2);
+  opacity: 0.4;
+  cursor: pointer;
+  transition:
+    opacity var(--la-t1) var(--la-ease),
+    background var(--la-t1) var(--la-ease);
+}
+
+.la-opt:hover .la-opt-x,
+.la-opt:focus-within .la-opt-x,
+.la-opt[data-state='out'] .la-opt-x {
+  opacity: 1;
+}
+
+.la-opt-x:hover {
+  background: var(--la-sheet);
+  color: var(--la-ink);
+}
+
+/* The chosen row lifts out of the well: a small raised sheet with a lit
+ * top rim, the accent ring and a short shadow — and its letter fills. */
+.la-opt[data-state='on'] {
+  z-index: 1;
+  background: var(--la-lift);
+  translate: 0 -1px;
+  box-shadow:
+    inset 0 1px 0 var(--la-rim-top),
+    0 0 0 2px var(--la-accent),
+    0 2px 4px oklch(20% 0.03 250 / 0.1),
+    0 14px 26px -14px oklch(20% 0.03 250 / 0.5);
+}
+
+.la-opt[data-state='on'] .la-key {
+  background: var(--la-accent);
+  color: var(--la-on-accent);
+  box-shadow: none;
+}
+
+.la-opt[data-state='out'] {
+  background: transparent;
+}
+
+.la-opt[data-state='out'] .la-opt-text {
+  color: var(--la-ink-3);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.la-opt[data-state='out'] .la-key {
+  color: var(--la-ink-3);
+  box-shadow: none;
+  border: 1.5px dashed var(--la-hair-2);
+}
+
+/* Graded options (the question sheet after the answer). */
+.la-opt[data-grade] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.la-opt[data-grade='other']:hover {
+  background: transparent;
+}
+
+.la-opt[data-grade] .la-opt-main {
+  cursor: default;
+  padding-right: 14px;
+}
+
+/* Graded: the pair lifts out of the well like a chosen row — rimmed in its
+ * state's colour, with a ringed letter and a worded tag; never a tinted
+ * tile. */
+.la-opt[data-grade='right'],
+.la-opt[data-grade='wrong'],
+.la-opt[data-grade='right']:hover,
+.la-opt[data-grade='wrong']:hover {
+  z-index: 1;
+  background: var(--la-lift);
+  box-shadow:
+    inset 0 1px 0 var(--la-rim-top),
+    inset 0 0 0 1.5px var(--la-opt-rim),
+    0 2px 4px oklch(20% 0.03 250 / 0.08),
+    0 12px 22px -14px oklch(20% 0.03 250 / 0.45);
+}
+
+.la-opt[data-grade='right'] {
+  --la-opt-rim: color-mix(in oklch, var(--la-ok) 62%, transparent);
+}
+
+.la-opt[data-grade='wrong'] {
+  --la-opt-rim: color-mix(in oklch, var(--la-bad) 58%, transparent);
+}
+
+.la-opt[data-grade='right'] .la-key {
+  color: var(--la-ok);
+  box-shadow: inset 0 0 0 1.5px var(--la-ok);
+}
+
+.la-opt[data-grade='wrong'] .la-key {
+  color: var(--la-bad);
+  box-shadow: inset 0 0 0 1.5px var(--la-bad);
+}
+
+.la-opt[data-grade='other'] {
+  background: transparent;
+}
+
+.la-opt[data-grade='other'] .la-opt-text {
+  color: var(--la-ink-2);
+}
+
+.la-grade-tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.la-grade-tag svg {
+  flex: none;
+}
+
+.la-opt[data-grade='right'] .la-grade-tag {
+  color: var(--la-ok);
+}
+
+.la-opt[data-grade='wrong'] .la-grade-tag {
+  color: var(--la-bad);
+}
+
+.la-keys {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin-top: 16px;
+  font-size: 12.5px;
+  color: var(--la-ink-3);
+}
+
+.la-keys span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.la-actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px 18px 22px;
+  border-top: 1px solid var(--la-hair);
+}
+
+.la-actions .la-echo {
+  font-size: 13.5px;
+  color: var(--la-ink-2);
+}
+
+/* ── The explanation (desktop sheet and phone sheet share it) ────── */
+
+.la-ex-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 24px 28px 28px;
+  scrollbar-width: thin;
+  scrollbar-color: oklch(50% 0.01 70 / 0.4) transparent;
+}
+
+.la-verdict-block {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.la-verdict {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 23px;
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -0.016em;
+}
+
+/* The verdict glyph is a small lifted lens — a ringed disc on the sheet,
+ * not a filled tile. */
+.la-verdict-glyph {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--la-sheet);
+  box-shadow:
+    inset 0 0 0 2px currentColor,
+    inset 0 1px 0 var(--la-sheet-hi),
+    0 6px 14px -8px oklch(20% 0.03 250 / 0.45);
+}
+
+.la-verdict-glyph svg {
+  flex: none;
+}
+
+.la-verdict[data-correct='false'] .la-verdict-glyph {
+  color: var(--la-bad);
+}
+
+.la-verdict[data-correct='true'] .la-verdict-glyph {
+  color: var(--la-ok);
+}
+
+/* "A → D": the pick and the answer, once. */
+.la-pair {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.la-pair-vis {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.la-pair .la-key {
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+}
+
+.la-arrow {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--la-ink-3);
+}
+
+/* The answer pair: two small sheets lifted out of a recessed well — the
+ * depth language of the whole direction, at the size of a card. Each
+ * carries its state three ways: a coloured rim, a ringed glyph and words.
+ * No tinted fills. Nested radius: 22 − 8 = 14. */
+.la-anspair {
+  display: grid;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 22px;
+  background: var(--la-well);
+  box-shadow:
+    inset 0 1px 3px oklch(20% 0.03 250 / 0.14),
+    inset 0 0 0 1px var(--la-hair);
+}
+
+.la-ans {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  column-gap: 10px;
+  row-gap: 3px;
+  align-items: center;
+  padding: 11px 14px 13px 12px;
+  border-radius: 14px;
+  background: var(--la-lift);
+  box-shadow:
+    inset 0 1px 0 var(--la-rim-top),
+    inset 0 0 0 1.5px var(--la-ans-rim),
+    0 2px 4px oklch(20% 0.03 250 / 0.08),
+    0 12px 22px -14px oklch(20% 0.03 250 / 0.45);
+}
+
+.la-ans[data-kind='right'] {
+  --la-ans-rim: color-mix(in oklch, var(--la-ok) 62%, transparent);
+  --la-ans-ink: var(--la-ok);
+}
+
+.la-ans[data-kind='mine'] {
+  --la-ans-rim: color-mix(in oklch, var(--la-bad) 58%, transparent);
+  --la-ans-ink: var(--la-bad);
+}
+
+.la-ans-badge {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: var(--la-ans-ink);
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+
+.la-ans-label {
+  font-size: 12.5px;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  color: var(--la-ans-ink);
+}
+
+.la-ans-text {
+  grid-column: 2;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--la-ink);
+  hyphens: manual;
+  text-wrap: pretty;
+}
+
+.la-ex-prompt {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.45;
+  font-weight: 600;
+  color: var(--la-ink-2);
+  hyphens: manual;
+}
+
+.la-ex-sec {
+  margin-top: 26px;
+}
+
+.la-ex-hrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.la-ex-h {
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  color: var(--la-ink);
+}
+
+.la-ex-hrow .la-ex-h {
+  margin-bottom: 0;
+}
+
+.la-why {
+  margin-top: 14px;
+}
+
+.la-why h4 {
+  margin-bottom: 3px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--la-ink-2);
+}
+
+.la-why p,
+.la-dis-body p {
+  font-family: var(--la-read);
+  font-size: 16.5px;
+  line-height: 1.55;
+  color: var(--la-ink);
+  text-wrap: pretty;
+  hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+}
+
+.la-cites {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.la-step-head .la-cites {
+  margin: 0 0 0 auto;
+}
+
+/* Two chip kinds: evidence filled; a trap's source outlined in the error
+ * hue, with its letter. */
+.la-cite {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition:
+    background var(--la-t1) var(--la-ease),
+    color var(--la-t1) var(--la-ease);
+}
+
+.la-cite[data-kind='evidence'] {
+  background: var(--la-accent);
+  color: var(--la-on-accent);
+}
+
+.la-cite[data-kind='evidence']:hover {
+  background: var(--la-accent-2);
+}
+
+.la-cite[data-kind='trap'] {
+  background: transparent;
+  color: var(--la-bad);
+  box-shadow: inset 0 0 0 1.5px var(--la-bad);
+}
+
+.la-cite[data-kind='trap']:hover {
+  background: var(--la-bad-soft);
+}
+
+.la-cite b {
+  font-weight: 800;
+}
+
+.la-solution {
+  font-family: var(--la-read);
+  font-size: 18px;
+  line-height: 1.58;
+  text-wrap: pretty;
+  hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+}
+
+.la-callouts {
+  display: grid;
+  gap: 10px;
+}
+
+.la-callout {
+  padding: 14px 16px 16px;
+  border-radius: var(--la-r-ctl);
+}
+
+.la-callout[data-kind='technique'] {
+  background: var(--la-tip-soft);
+}
+
+.la-callout[data-kind='pitfall'] {
+  background: var(--la-warn-soft);
+}
+
+.la-callout h4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.la-callout h4 svg {
+  flex: none;
+}
+
+.la-callout[data-kind='technique'] h4 {
+  color: var(--la-accent-ink);
+}
+
+.la-callout[data-kind='pitfall'] h4 {
+  color: var(--la-warn-ink);
+}
+
+.la-callout p {
+  margin-top: 6px;
+  font-family: var(--la-read);
+  font-size: 16.5px;
+  line-height: 1.55;
+  color: var(--la-ink);
+  text-wrap: pretty;
+  hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+}
+
+.la-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.la-step {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: 12px;
+  padding: 14px 14px 14px 12px;
+  border-radius: var(--la-r-ctl);
+  background: var(--la-sheet-2);
+}
+
+.la-step[data-tier='detail'] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--la-hair);
+}
+
+.la-step-n {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: var(--la-sheet);
+  color: var(--la-ink-2);
+  font-size: 13px;
+  font-weight: 750;
+  box-shadow: 0 0 0 1px var(--la-hair);
+}
+
+.la-step-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  min-height: 28px;
+}
+
+.la-step-title {
+  font-size: 14.5px;
+  font-weight: 650;
+}
+
+.la-step-text {
+  margin-top: 6px;
+  font-family: var(--la-read);
+  font-size: 16.5px;
+  line-height: 1.58;
+  color: var(--la-ink-2);
+  text-wrap: pretty;
+  hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+}
+
+.la-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--la-sheet-2);
+  color: var(--la-ink-2);
+  font-size: 12.5px;
+  font-weight: 650;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--la-hair-2);
+}
+
+.la-more svg {
+  flex: none;
+}
+
+.la-more:hover {
+  color: var(--la-ink);
+  background: var(--la-sheet-3);
+}
+
+.la-stepref {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--la-accent-ink);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--la-accent-ink) 40%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* The other options: collapsed rows with their full text. */
+.la-dis {
+  margin-top: 8px;
+  border-radius: var(--la-r-ctl);
+  background: var(--la-sheet-2);
+  overflow: hidden;
+}
+
+.la-dis-head {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) 20px;
+  column-gap: 12px;
+  align-items: start;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.la-dis-head .la-key {
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+}
+
+.la-dis-opt {
+  padding-top: 4px;
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--la-ink);
+  hyphens: manual;
+  text-wrap: pretty;
+}
+
+.la-dis-chev {
+  flex: none;
+  margin-top: 6px;
+  color: var(--la-ink-3);
+  transition: rotate var(--la-t2) var(--la-ease);
+}
+
+.la-dis-body {
+  display: grid;
+  gap: 12px;
+  padding: 0 14px 14px 54px;
+}
+
+.la-dis-body h4 {
+  margin-bottom: 3px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--la-ink-2);
+}
+
+.la-framework {
+  margin-top: 22px;
+  font-size: 13px;
+  color: var(--la-ink-3);
+}
+
+.la-framework b {
+  color: var(--la-ink-2);
+  font-weight: 650;
+}
+
+/* ── Done: a calm sheet as the field warms back ──────────────────── */
+
+.la-done-wrap {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.la-done {
+  width: min(520px, 100%);
+  padding: 44px 44px 36px;
+  text-align: center;
+}
+
+.la-done-line {
+  margin-top: 6px;
+  font-family: var(--la-display);
+  font-size: 44px;
+  line-height: 1.05;
+  font-weight: 360;
+  letter-spacing: -0.025em;
+  font-variation-settings:
+    'SOFT' 100,
+    'WONK' 0;
+  text-wrap: balance;
+}
+
+.la-done-stats {
+  margin-top: 16px;
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--la-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.la-done-copy {
+  margin: 14px auto 26px;
+  max-width: 34ch;
+  font-size: 15px;
+  color: var(--la-ink-2);
+  text-wrap: pretty;
+}
+
+/* ── Phone: Idag ─────────────────────────────────────────────────── */
+
+.la-phome {
+  padding: 10px 12px 124px;
+}
+
+.la-ptop {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 2px 0 8px;
+}
+
+.la-ptop .la-mark-word {
+  flex: 1;
+}
+
+.la-ptop .la-count {
+  font-size: 13px;
+}
+
+.la-ptop .la-count b {
+  font-size: 16px;
+}
+
+.la-phome .la-hello {
+  margin: 18px 8px 18px;
+}
+
+.la-phome .la-greet {
+  font-size: 29px;
+}
+
+.la-phome .la-sub {
+  margin-top: 6px;
+  font-size: 16px;
+}
+
+.la-pstack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.la-phome .la-resume {
+  padding: 22px 22px 22px;
+}
+
+.la-phome .la-resume-title {
+  margin-top: 14px;
+  font-size: 38px;
+}
+
+.la-phome .la-resume-sub {
+  font-size: 18px;
+}
+
+.la-phome .la-peek {
+  margin: 16px -22px 0;
+  padding: 14px 22px 0 52px;
+  max-height: 86px;
+  font-size: 15.5px;
+}
+
+.la-phome .la-peek .la-pn {
+  left: 12px;
+  top: 17px;
+}
+
+.la-phome .la-resume-foot {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+}
+
+.la-phome .la-resume-foot .la-btn {
+  min-height: 52px;
+}
+
+.la-phome .la-side {
+  padding: 18px 8px 16px;
+}
+
+.la-phome .la-notes {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 26px;
+  padding: 14px 10px 0;
+}
+
+/* ── Phone: the drill ────────────────────────────────────────────── */
+
+.la-pdrill {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* The head never leaves: exit, place and time, reading aids. */
+.la-phead {
+  position: absolute;
+  z-index: 10;
+  left: 10px;
+  right: 10px;
+  top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.la-pill-mid .la-pill-text {
+  gap: 8px;
+  padding: 0 12px;
+  font-size: 13.5px;
+}
+
+.la-dot {
+  color: var(--la-ink-3);
+}
+
+/* The passage floats too: its scroller takes the floating sheet's
+ * footprint (8 px in from the sides and bottom, the bottom corners
+ * rounded like the sheet's), so the field frames both sheets and no line
+ * of text shows below or beside the question sheet. A 32 px gutter for
+ * the ¶ pills leaves about 324 px of text. */
+.la-pscroll {
+  position: absolute;
+  inset: 0 8px max(8px, env(safe-area-inset-bottom));
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  padding: 68px 0 0;
+  border-radius: 0 0 var(--la-r-sheet) var(--la-r-sheet);
+}
+
+.la-pread {
+  border-radius: var(--la-r-sheet);
+}
+
+.la-pdrill .la-read-inner {
+  padding: 26px 18px 30px 34px;
+  font-size: 17.5px;
+  line-height: 1.6;
+}
+
+.la-pdrill .la-read[data-size='large'] .la-read-inner {
+  font-size: 19.5px;
+}
+
+.la-pdrill .la-pn {
+  left: -32px;
+  min-width: 26px;
+  height: 20px;
+  font-size: 10.5px;
+}
+
+.la-pdrill .la-para[data-evidence='true']::before {
+  left: -5px;
+}
+
+.la-pdrill .la-ptitle {
+  font-size: 29px;
+}
+
+.la-pdrill .la-ptitle span {
+  font-size: 18.5px;
+}
+
+.la-pdrill .la-para[data-flash='true'] {
+  box-shadow: 0 0 0 10px var(--la-mark-soft);
+}
+
+/* The question (and, after the answer, the facit) is a floating sheet: inset
+ * 8 px from the edges, rounded on every corner, the field showing around it
+ * — the same object as the floating tab bar and the account panel. In dark
+ * it is the lifted, lighter slate. */
+.la-psheet {
+  position: absolute;
+  z-index: 12;
+  left: 8px;
+  right: 8px;
+  bottom: max(8px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--la-r-sheet);
+  background: var(--la-sheet);
+  box-shadow:
+    inset 0 1px 0 var(--la-rim-top),
+    inset 0 0 0 1px var(--la-rim),
+    var(--la-sh-3);
+  transition: height var(--la-t3) var(--la-ease);
+}
+
+[data-theme='dark'] .la-psheet {
+  --la-sheet: var(--la-sheet-up);
+}
+
+/* Peek: as tall as the whole question needs, never more than 40 %. */
+.la-psheet[data-state='peek'] {
+  height: auto;
+  max-height: 40%;
+}
+
+.la-psheet[data-state='open'] {
+  height: 76%;
+}
+
+/* Full: clear of the head's pills (they end at 54 px). */
+.la-psheet[data-state='full'] {
+  height: calc(100% - 80px);
+}
+
+.la-grab {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+
+.la-grab::before {
+  content: '';
+  width: 40px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--la-sheet-3);
+  box-shadow: inset 0 0 0 1px var(--la-hair);
+}
+
+/* Half open, the text still shows above the sheet: a glass button floats
+ * there to fold it away. */
+.la-sheet-fab {
+  position: absolute;
+  right: 14px;
+  top: -58px;
+  width: 44px;
+  height: 44px;
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: var(--la-ink);
+  cursor: pointer;
+}
+
+.la-psheet-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 16px 4px 20px;
+}
+
+.la-eyebrow-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.la-psheet-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 2px 20px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: oklch(50% 0.01 70 / 0.4) transparent;
+}
+
+.la-psheet .la-prompt {
+  margin-top: 2px;
+  font-size: 19px;
+}
+
+.la-psheet .la-opts {
+  margin-top: 16px;
+}
+
+.la-psheet .la-opt-main {
+  padding: 12px 0 12px 12px;
+}
+
+.la-psheet .la-opt-text {
+  font-size: 15px;
+}
+
+.la-psheet .la-actions {
+  padding: 12px 14px 14px;
+}
+
+.la-psheet .la-actions .la-btn {
+  flex: 1;
+  min-height: 52px;
+}
+
+.la-psheet .la-verdict-block {
+  margin-top: 4px;
+}
+
+.la-psheet .la-verdict {
+  font-size: 21px;
+}
+
+.la-peekline {
+  margin-top: 8px;
+}
+
+/* ── Motion preferences ──────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-rd='lager'] *,
+  [data-rd='lager'] *::before,
+  [data-rd='lager'] *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Thumbnails are still pictures. */
+[data-rd='lager'][data-live='false'] *,
+[data-rd='lager'][data-live='false'] *::before,
+[data-rd='lager'][data-live='false'] *::after {
+  animation: none !important;
+  transition: none !important;
+}

@@ -1,0 +1,3401 @@
+/* B · Instrument — precision pro tool.
+ *
+ * A cockpit, not a dashboard template: a grey CHASSIS — the sidebar, a
+ * readout strip and a status bar — holds the work in inset PANELS. A panel
+ * is ruled into cells by 1 px grid lines, each with a mono caps head and a
+ * right-aligned readout or keycaps; layering comes from the tone step and
+ * a 1 px edge, never from soft shadows. Corners stay hard: 8 px panels,
+ * 2–4 px inside, no pills. Labelled readouts in tabular mono, keycaps that
+ * match real shortcuts, and one signal-orange accent reserved for the
+ * single primary action, focus rings and the one live signal (the current
+ * question, the selected row). Warm-neutral greys kept near-achromatic
+ * (chroma ≤ 0.004): nothing reads cream. Geist for the interface; Geist
+ * Mono for numbers, timers, keys and heads; Atkinson Hyperlegible Next for
+ * the passage, the options and the explanation. Motion stays under 100 ms,
+ * ease-out; exits are faster.
+ *
+ * Type scale: 12 / 13 / 14 / 16 / 18.5 / 22 / 28 / 40. Readable text is
+ * 13 px or more in --in-text-2 (≥ 7:1 on every surface); --in-text-3 is
+ * for what nobody has to read. Radii: 4 (keys, chips, inner boxes), 6
+ * (controls, menus), 8 (panels); a nested radius is the outer radius minus
+ * the padding. 4 px grid.
+ *
+ * Everything is scoped under [data-rd='instrument']; nothing touches :root. */
+
+[data-rd='instrument'] {
+  /* The chassis: the grey frame that holds the panels, a clear step below
+   * the panel's L 99. */
+  --in-chassis: oklch(91.6% 0.0035 85);
+  --in-chassis-2: oklch(88.8% 0.0035 85);
+  --in-sunk: oklch(88.2% 0.0035 85);
+  /* The panels, and the steps inside them. */
+  --in-bg-1: oklch(99.3% 0.0015 85);
+  --in-bg-2: oklch(96.9% 0.002 85);
+  --in-bg-3: oklch(93.4% 0.003 85);
+  --in-stroke: oklch(89.8% 0.003 85);
+  --in-stroke-2: oklch(83.2% 0.0035 85);
+  --in-track: oklch(88.4% 0.003 85);
+  --in-edge: oklch(20% 0.004 85 / 0.16);
+  --in-text: oklch(21% 0.004 85);
+  --in-text-2: oklch(37.5% 0.004 85);
+  --in-text-3: oklch(48.5% 0.004 85);
+  --in-accent: oklch(69.5% 0.172 46);
+  --in-accent-2: oklch(65% 0.178 44);
+  --in-accent-ui: oklch(58.5% 0.172 42);
+  --in-accent-text: oklch(50.5% 0.155 40);
+  --in-accent-soft: oklch(95.6% 0.032 52);
+  --in-accent-line: oklch(75% 0.12 48);
+  --in-on-accent: oklch(18.5% 0.035 45);
+  --in-ok: oklch(45.5% 0.115 155);
+  --in-ok-soft: oklch(97.4% 0.016 155);
+  --in-ok-line: oklch(70% 0.1 155);
+  --in-bad: oklch(47% 0.185 18);
+  --in-bad-soft: oklch(97.5% 0.013 18);
+  --in-bad-line: oklch(72% 0.12 18);
+  --in-warn: oklch(49% 0.11 70);
+  --in-flash: oklch(92% 0.06 80);
+  --in-mark: oklch(68% 0.004 85);
+  --in-inset:
+    inset 0 1px 2px oklch(20% 0.004 85 / 0.1), inset 0 0 0 1px oklch(20% 0.004 85 / 0.08);
+  /* Layers: an edge and the tone step. A raised key adds a 1 px bevel; a
+   * floating menu a short, crisp drop — no soft halos. */
+  --in-panel: 0 0 0 1px var(--in-edge);
+  --in-chip:
+    0 0 0 1px var(--in-edge),
+    inset 0 -1px 0 var(--in-stroke-2);
+  --in-pop:
+    0 0 0 1px oklch(20% 0.004 85 / 0.2),
+    0 3px 8px -3px oklch(20% 0.004 85 / 0.22);
+  --in-lift: 0 1px 1px oklch(20% 0.004 85 / 0.12);
+
+  --in-ui:
+    'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Ubuntu Sans', Roboto,
+    sans-serif;
+  --in-mono:
+    'Geist Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', 'Ubuntu Sans Mono', Menlo, monospace;
+  --in-read:
+    'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', 'Ubuntu Sans', sans-serif;
+
+  --in-f12: 12px;
+  --in-f13: 13px;
+  --in-f14: 14px;
+  --in-f16: 16px;
+  --in-f18: 18.5px;
+  --in-f22: 22px;
+  --in-f28: 28px;
+  --in-f40: 40px;
+
+  --in-r1: 4px;
+  --in-r2: 6px;
+  --in-r3: 8px;
+  --in-ease: cubic-bezier(0.2, 0, 0, 1);
+  --in-t-in: 90ms;
+  --in-t-out: 60ms;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--in-chassis);
+  color: var(--in-text);
+  font-family: var(--in-ui);
+  font-size: var(--in-f14);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  color-scheme: light;
+}
+
+/* Dark: a graphite chassis, panels one step lighter, edges as white
+ * hairlines — never pure black, never inverted. */
+[data-rd='instrument'][data-theme='dark'] {
+  --in-chassis: oklch(13.8% 0.003 85);
+  --in-chassis-2: oklch(17.8% 0.003 85);
+  --in-sunk: oklch(11.2% 0.003 85);
+  --in-bg-1: oklch(21.4% 0.003 85);
+  --in-bg-2: oklch(24.4% 0.0035 85);
+  --in-bg-3: oklch(28% 0.004 85);
+  --in-stroke: oklch(100% 0 0 / 0.08);
+  --in-stroke-2: oklch(100% 0 0 / 0.15);
+  --in-track: oklch(33% 0.004 85);
+  --in-edge: oklch(100% 0 0 / 0.1);
+  --in-text: oklch(94.5% 0.002 85);
+  --in-text-2: oklch(80.5% 0.003 85);
+  --in-text-3: oklch(68.5% 0.003 85);
+  --in-accent: oklch(74% 0.158 52);
+  --in-accent-2: oklch(79% 0.145 55);
+  --in-accent-ui: oklch(73% 0.15 52);
+  --in-accent-text: oklch(80% 0.12 58);
+  --in-accent-soft: oklch(27.5% 0.045 50);
+  --in-accent-line: oklch(52% 0.12 50);
+  --in-on-accent: oklch(18% 0.03 50);
+  --in-ok: oklch(78% 0.12 155);
+  --in-ok-soft: oklch(22.4% 0.012 155);
+  --in-ok-line: oklch(55% 0.1 155);
+  --in-bad: oklch(74% 0.14 18);
+  --in-bad-soft: oklch(22.6% 0.012 18);
+  --in-bad-line: oklch(56% 0.13 18);
+  --in-warn: oklch(80% 0.11 75);
+  --in-flash: oklch(33% 0.05 75);
+  --in-mark: oklch(55% 0.004 85);
+  --in-inset: inset 0 1px 2px oklch(0% 0 0 / 0.5), inset 0 0 0 1px oklch(100% 0 0 / 0.06);
+  --in-panel: 0 0 0 1px var(--in-edge);
+  --in-chip:
+    0 0 0 1px var(--in-edge),
+    inset 0 1px 0 oklch(100% 0 0 / 0.05);
+  --in-pop:
+    0 0 0 1px oklch(100% 0 0 / 0.14),
+    0 4px 10px -3px oklch(0% 0 0 / 0.6);
+  --in-lift: 0 1px 1px oklch(0% 0 0 / 0.5);
+  color-scheme: dark;
+}
+
+[data-rd='instrument'] *,
+[data-rd='instrument'] *::before,
+[data-rd='instrument'] *::after {
+  box-sizing: border-box;
+}
+
+[data-rd='instrument'] :where(button, input) {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+[data-rd='instrument'] :where(h1, h2, h3, h4, p, ol, ul, dl, dd, figure, table) {
+  margin: 0;
+}
+
+[data-rd='instrument'] :where(ol, ul) {
+  padding: 0;
+  list-style: none;
+}
+
+/* The app's preflight makes every svg a block; icons inside text runs
+ * stay inline here. */
+[data-rd='instrument'] :where(p, dd, td, b, kbd, span) > svg {
+  display: inline-block;
+  vertical-align: -0.15em;
+}
+
+[data-rd='instrument'] :focus-visible {
+  outline: 2px solid var(--in-accent-ui);
+  outline-offset: 2px;
+  border-radius: var(--in-r2);
+}
+
+[data-rd='instrument'] ::selection {
+  background: var(--in-flash);
+}
+
+.in-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.in-num {
+  font-family: var(--in-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.in-sub {
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+}
+
+.in-spacer {
+  flex: 1;
+}
+
+/* Key hints mean nothing without a keyboard. */
+[data-width='phone'] .in-hint {
+  display: none !important;
+}
+
+@media (hover: none) {
+  .in-hint {
+    display: none !important;
+  }
+}
+
+/* ── Keycaps, codes, tags, buttons ───────────────────────────────── */
+
+.in-kc {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: var(--in-r1);
+  background: var(--in-bg-1);
+  box-shadow:
+    inset 0 0 0 1px var(--in-stroke-2),
+    inset 0 -1.5px 0 var(--in-stroke-2);
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f12);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.in-kc-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* The segmented progress meter: answered, the current one, the rest. */
+.in-segs {
+  display: inline-flex;
+  gap: 3px;
+  width: 100%;
+}
+
+.in-segs i {
+  flex: 1;
+  min-width: 14px;
+  height: 6px;
+  border-radius: 1px;
+  background: var(--in-track);
+}
+
+.in-segs i[data-s='done'] {
+  background: var(--in-text-2);
+}
+
+.in-segs i[data-s='now'] {
+  background: var(--in-text);
+  box-shadow:
+    0 0 0 2px var(--in-ring-bg, var(--in-bg-1)),
+    0 0 0 3px var(--in-text);
+}
+
+/* On the chassis the rest of the meter needs a darker track. */
+:is(.in-bar, .in-pdhead) .in-segs i[data-s='todo'] {
+  background: var(--in-stroke-2);
+}
+
+/* In the drill the current question is where you are: it takes the tick. */
+.in-dbar .in-segs i[data-s='now'],
+.in-pdhead .in-segs i[data-s='now'],
+.in-focusline .in-segs i[data-s='now'] {
+  background: var(--in-accent-ui);
+  box-shadow: none;
+}
+
+/* The mark: a keycap with a signal cursor under the letters. */
+.in-mark {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  padding-bottom: 4px;
+  border-radius: var(--in-r2);
+  background: var(--in-bg-1);
+  box-shadow:
+    inset 0 0 0 1px var(--in-stroke-2),
+    inset 0 -2px 0 var(--in-stroke-2);
+  color: var(--in-text);
+  font-family: var(--in-mono);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.in-mark::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 6px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--in-accent);
+}
+
+/* A section code (LÄS, ORD …): a quiet tag, never a button. */
+.in-code {
+  display: inline-grid;
+  place-items: center;
+  min-width: 36px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--in-r1);
+  background: var(--in-bg-3);
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f12);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* A state tag (NÄSTA): stroked, never filled. */
+.in-tag {
+  display: inline-grid;
+  place-items: center;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--in-r1);
+  box-shadow: inset 0 0 0 1px var(--in-stroke-2);
+  color: var(--in-text);
+  font-family: var(--in-mono);
+  font-size: var(--in-f12);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* »ÖVNINGSTEXT« — stored title-case, set in capitals. */
+.in-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: var(--in-r1);
+  box-shadow: inset 0 0 0 1px var(--in-stroke-2);
+  color: var(--in-text);
+  font-size: var(--in-f12);
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.in-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: var(--in-r2);
+  background: var(--in-accent);
+  color: var(--in-on-accent);
+  font-size: var(--in-f14);
+  font-weight: 650;
+  letter-spacing: -0.005em;
+  box-shadow:
+    inset 0 1px 0 oklch(100% 0 0 / 0.22),
+    inset 0 -1px 0 oklch(30% 0.1 40 / 0.18);
+  cursor: pointer;
+  transition: background var(--in-t-out) var(--in-ease);
+}
+
+.in-btn:hover {
+  background: var(--in-accent-2);
+  transition-duration: var(--in-t-in);
+}
+
+.in-btn:disabled {
+  background: var(--in-bg-3);
+  color: var(--in-text-2);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.in-btn .in-kc {
+  background: oklch(100% 0 0 / 0.25);
+  box-shadow: inset 0 0 0 1px oklch(20% 0.04 45 / 0.3);
+  color: var(--in-on-accent);
+}
+
+.in-btn:disabled .in-kc {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--in-stroke-2);
+  color: var(--in-text-2);
+}
+
+/* The quiet partner of .in-btn: same size, a raised key with a stroke. */
+.in-btn2 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--in-r2);
+  background: var(--in-bg-1);
+  box-shadow:
+    inset 0 0 0 1px var(--in-stroke-2),
+    inset 0 -1.5px 0 var(--in-stroke-2);
+  color: var(--in-text);
+  font-size: var(--in-f14);
+  font-weight: 550;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--in-t-out) var(--in-ease);
+}
+
+.in-btn2:hover {
+  background: var(--in-bg-2);
+  transition-duration: var(--in-t-in);
+}
+
+.in-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--in-r2);
+  background: transparent;
+  color: var(--in-text-2);
+  font-size: var(--in-f14);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background var(--in-t-out) var(--in-ease),
+    color var(--in-t-out) var(--in-ease);
+}
+
+.in-ghost:hover {
+  background: var(--in-bg-2);
+  color: var(--in-text);
+  transition-duration: var(--in-t-in);
+}
+
+.in-ghost[aria-pressed='true'] {
+  background: var(--in-bg-3);
+  color: var(--in-text);
+  font-weight: 600;
+}
+
+/* On the chassis a hover is a step darker, a pressed state a raised key. */
+:is(.in-bar, .in-pdhead, .in-rail, .in-side) .in-ghost:hover,
+:is(.in-bar, .in-pdhead, .in-rail, .in-side) .in-icon-btn:hover {
+  background: var(--in-chassis-2);
+}
+
+:is(.in-bar, .in-pdhead) .in-ghost[aria-pressed='true'] {
+  background: var(--in-bg-1);
+  box-shadow: var(--in-chip);
+}
+
+.in-icon-btn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--in-r2);
+  background: transparent;
+  color: var(--in-text-2);
+  cursor: pointer;
+  transition:
+    background var(--in-t-out) var(--in-ease),
+    color var(--in-t-out) var(--in-ease);
+}
+
+.in-icon-btn:hover {
+  background: var(--in-bg-2);
+  color: var(--in-text);
+  transition-duration: var(--in-t-in);
+}
+
+.in-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--in-text);
+  font-size: var(--in-f13);
+  font-weight: 550;
+  text-decoration: underline;
+  text-decoration-color: var(--in-stroke-2);
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.in-link:hover {
+  text-decoration-color: currentColor;
+}
+
+/* Tooltip: [data-tip] on the control. */
+.in-tip {
+  position: relative;
+}
+
+.in-tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  z-index: 40;
+  left: calc(100% + 8px);
+  top: 50%;
+  translate: -2px -50%;
+  padding: 5px 8px;
+  border-radius: var(--in-r2);
+  background: var(--in-text);
+  color: var(--in-bg-1);
+  font-family: var(--in-ui);
+  font-size: var(--in-f13);
+  font-weight: 500;
+  white-space: pre;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--in-t-out) var(--in-ease),
+    translate var(--in-t-out) var(--in-ease);
+}
+
+.in-tip:hover::after,
+.in-tip:focus-visible::after {
+  opacity: 1;
+  translate: 0 -50%;
+  transition-duration: var(--in-t-in);
+  transition-delay: 300ms;
+}
+
+.in-tip[data-tip-side='top']::after {
+  left: 50%;
+  top: auto;
+  bottom: calc(100% + 4px);
+  translate: -50% 2px;
+}
+
+.in-tip[data-tip-side='top']:hover::after,
+.in-tip[data-tip-side='top']:focus-visible::after {
+  translate: -50% 0;
+}
+
+[data-width='phone'] .in-tip::after {
+  display: none;
+}
+
+/* ── Readouts ────────────────────────────────────────────────────── */
+
+.in-ros {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.in-ro {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 0 14px;
+  white-space: nowrap;
+}
+
+.in-ro + .in-ro {
+  box-shadow: -1px 0 0 var(--in-stroke-2);
+}
+
+.in-ro-l {
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+}
+
+.in-ro-v {
+  color: var(--in-text);
+  font-family: var(--in-mono);
+  font-size: var(--in-f14);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.in-ro-u {
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+}
+
+/* ── Desktop chassis: sidebar, strip, panel, status bar ──────────── */
+
+.in-app {
+  display: grid;
+  grid-template-columns: var(--in-side, 232px) minmax(0, 1fr);
+  height: 100%;
+  background: var(--in-chassis);
+  transition: grid-template-columns var(--in-t-in) var(--in-ease);
+}
+
+.in-app[data-collapsed='true'] {
+  --in-side: 64px;
+}
+
+.in-side {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0 10px 8px;
+}
+
+.in-ws {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 0 0 6px;
+}
+
+.in-ws-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: var(--in-f14);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.in-nav {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+
+/* A 44 px row; the visible chip is drawn 36 px tall inside it. The current
+ * page is a raised panel-colour key with an edge — a layer, not a tint. */
+.in-nav-item {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 8px 0 12px;
+  border: 0;
+  border-radius: var(--in-r2);
+  background: transparent;
+  color: var(--in-text-2);
+  font-size: var(--in-f14);
+  font-weight: 450;
+  text-align: left;
+  cursor: pointer;
+}
+
+.in-nav-item::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 4px 0;
+  border-radius: var(--in-r2);
+  transition:
+    background var(--in-t-out) var(--in-ease),
+    box-shadow var(--in-t-out) var(--in-ease);
+}
+
+.in-nav-item:hover::before {
+  background: var(--in-chassis-2);
+  transition-duration: var(--in-t-in);
+}
+
+.in-nav-item[aria-current='page'] {
+  color: var(--in-text);
+  font-weight: 600;
+}
+
+.in-nav-item[aria-current='page']::before {
+  background: var(--in-bg-1);
+  box-shadow: var(--in-chip);
+}
+
+.in-nav-item svg {
+  flex: none;
+  color: var(--in-text-3);
+}
+
+.in-nav-item[aria-current='page'] svg {
+  color: var(--in-text);
+}
+
+.in-nav-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.in-nav-hint {
+  display: inline-flex;
+  gap: 3px;
+  opacity: 0;
+  transition: opacity var(--in-t-out) var(--in-ease);
+}
+
+.in-nav-item:hover .in-nav-hint,
+.in-nav-item:focus-visible .in-nav-hint {
+  opacity: 1;
+  transition-duration: var(--in-t-in);
+  transition-delay: 200ms;
+}
+
+.in-nav-item:hover .in-count,
+.in-nav-item:focus-visible .in-count {
+  display: none;
+}
+
+/* Counts are neutral: a number, never an alarm. */
+.in-count {
+  min-width: 22px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--in-r1);
+  background: var(--in-bg-1);
+  box-shadow: inset 0 0 0 1px var(--in-stroke-2);
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f12);
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.in-app[data-collapsed='true'] .in-ws {
+  flex-direction: column;
+  height: auto;
+  gap: 6px;
+  padding: 12px 0 0;
+}
+
+.in-app[data-collapsed='true']
+  :is(.in-ws-name, .in-nav-name, .in-nav-hint, .in-count, .in-acc-text, .in-acc-chev) {
+  display: none;
+}
+
+.in-app[data-collapsed='true'] .in-nav-item {
+  justify-content: center;
+  padding: 0;
+}
+
+.in-dot {
+  display: none;
+}
+
+.in-app[data-collapsed='true'] .in-dot,
+.in-rail .in-dot {
+  display: block;
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--in-text-2);
+  box-shadow: 0 0 0 2px var(--in-chassis);
+}
+
+.in-side-foot {
+  position: relative;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.in-acc {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--in-r2);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.in-acc:hover,
+.in-acc[aria-expanded='true'] {
+  background: var(--in-chassis-2);
+}
+
+.in-app[data-collapsed='true'] .in-acc {
+  justify-content: center;
+  padding: 0;
+}
+
+.in-avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--in-r1);
+  background: var(--in-bg-1);
+  box-shadow: inset 0 0 0 1px var(--in-stroke-2);
+  color: var(--in-text-2);
+}
+
+.in-acc-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.in-acc-text b {
+  font-size: var(--in-f14);
+  font-weight: 600;
+}
+
+.in-acc-text span {
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+}
+
+.in-acc-chev {
+  color: var(--in-text-2);
+}
+
+.in-main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* A strip of the chassis: no fill of its own, no rule — the panel's edge
+ * below it is the line. */
+.in-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 0 8px 0 0;
+}
+
+/* The command field: a recessed well in the chassis (36 px drawn, a 44 px
+ * hit area). */
+.in-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(360px, 40%);
+  min-height: 36px;
+  padding: 0 6px 0 10px;
+  border: 0;
+  border-radius: var(--in-r2);
+  background: var(--in-sunk);
+  box-shadow: var(--in-inset);
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+  text-align: left;
+  cursor: pointer;
+}
+
+.in-search::after {
+  content: '';
+  position: absolute;
+  inset: -4px 0;
+}
+
+.in-search > span:first-of-type {
+  flex: 1;
+}
+
+.in-search:hover {
+  color: var(--in-text);
+}
+
+/* The panel: the one lit surface, inset in the chassis. */
+.in-panel {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  margin-right: 8px;
+  border-radius: var(--in-r3);
+  background: var(--in-bg-1);
+  box-shadow: var(--in-panel);
+}
+
+.in-panel > .in-scroll {
+  border-radius: 0 0 var(--in-r3) var(--in-r3);
+}
+
+.in-panel-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--in-stroke);
+}
+
+.in-crumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--in-text-2);
+  font-size: var(--in-f14);
+  white-space: nowrap;
+}
+
+.in-crumbs b {
+  color: var(--in-text);
+  font-weight: 650;
+}
+
+.in-crumbs i {
+  font-style: normal;
+  color: var(--in-text-3);
+}
+
+.in-crumbs span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* A panel head speaks the instrument's label voice: mono capitals. */
+.in-panel-head .in-crumbs {
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f12);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.in-panel-head .in-crumbs b {
+  font-weight: 600;
+}
+
+.in-panel-head .in-crumbs svg {
+  color: var(--in-text-2);
+}
+
+.in-scroll {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--in-stroke-2) transparent;
+}
+
+.in-enter {
+  animation: in-in var(--in-t-in) var(--in-ease);
+}
+
+@keyframes in-in {
+  from {
+    opacity: 0;
+    translate: 0 3px;
+  }
+}
+
+.in-statusbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 36px;
+  padding: 0 14px 0 4px;
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.in-statusbar > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+@media (hover: none) {
+  .in-statusbar {
+    display: none;
+  }
+}
+
+/* ── Menus ───────────────────────────────────────────────────────── */
+
+.in-menu {
+  position: absolute;
+  z-index: 50;
+  width: 300px;
+  padding: 4px;
+  border-radius: var(--in-r2);
+  background: var(--in-bg-1);
+  box-shadow: var(--in-pop);
+  animation: in-pop var(--in-t-in) var(--in-ease);
+}
+
+@keyframes in-pop {
+  from {
+    opacity: 0;
+    scale: 0.98;
+  }
+}
+
+.in-menu[data-anchor='side'] {
+  left: 0;
+  bottom: calc(100% + 6px);
+}
+
+.in-app[data-collapsed='true'] .in-menu[data-anchor='side'] {
+  left: calc(100% + 12px);
+  bottom: 0;
+}
+
+.in-menu[data-anchor='top'] {
+  right: 6px;
+  top: calc(100% + 4px);
+}
+
+.in-menu-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 10px;
+  margin-bottom: 2px;
+  border-bottom: 1px solid var(--in-stroke);
+}
+
+.in-menu-head b {
+  display: block;
+  font-size: var(--in-f14);
+  font-weight: 600;
+}
+
+.in-menu-head span {
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+}
+
+/* Section labels: mono capitals, like a command menu's groups. */
+.in-menu-label {
+  padding: 10px 8px 4px;
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f12);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.in-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: calc(var(--in-r2) - 4px);
+  background: transparent;
+  color: var(--in-text);
+  font-size: var(--in-f14);
+  text-align: left;
+  cursor: pointer;
+}
+
+.in-menu-item svg {
+  color: var(--in-text-2);
+}
+
+.in-menu-item:hover {
+  background: var(--in-bg-2);
+}
+
+.in-menu-item > span:not([aria-hidden]):not(.in-kc-row) {
+  flex: 1;
+  min-width: 0;
+}
+
+.in-menu-item small {
+  display: block;
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+}
+
+.in-menu-item .in-kc-row + .in-switch {
+  margin-left: 4px;
+}
+
+.in-menu-sep {
+  height: 1px;
+  margin: 4px 8px;
+  border: 0;
+  background: var(--in-stroke);
+}
+
+/* A rocker, not a pill: hard corners like every other control here. */
+.in-switch {
+  position: relative;
+  flex: none;
+  width: 32px;
+  height: 20px;
+  border-radius: var(--in-r1);
+  background: var(--in-bg-3);
+  box-shadow: inset 0 0 0 1px var(--in-stroke-2);
+  transition: background var(--in-t-in) var(--in-ease);
+}
+
+.in-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  background: var(--in-bg-1);
+  box-shadow: var(--in-lift), inset 0 0 0 1px var(--in-stroke-2);
+  transition: translate var(--in-t-in) var(--in-ease);
+}
+
+[aria-checked='true'] > .in-switch {
+  background: var(--in-text);
+  box-shadow: none;
+}
+
+[aria-checked='true'] > .in-switch::after {
+  translate: 12px 0;
+  box-shadow: none;
+}
+
+/* ── Command menu (Ctrl/⌘ K) ─────────────────────────────────────── */
+
+.in-pal-scrim {
+  position: absolute;
+  z-index: 60;
+  inset: 0;
+  display: grid;
+  justify-items: center;
+  align-items: start;
+  padding-top: 14vh;
+  background: oklch(20% 0.004 85 / 0.2);
+  animation: in-fade var(--in-t-in) var(--in-ease);
+}
+
+[data-theme='dark'] .in-pal-scrim {
+  background: oklch(0% 0 0 / 0.45);
+}
+
+@keyframes in-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.in-pal {
+  width: min(600px, calc(100% - 32px));
+  border-radius: var(--in-r2);
+  background: var(--in-bg-1);
+  box-shadow: var(--in-pop);
+  overflow: hidden;
+  animation: in-pop var(--in-t-in) var(--in-ease);
+}
+
+.in-pal-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--in-stroke);
+  color: var(--in-text-2);
+}
+
+.in-pal-input input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--in-text);
+  font-size: var(--in-f16);
+}
+
+.in-pal-input input::placeholder {
+  color: var(--in-text-2);
+}
+
+/* The open menu is the focus context: the field keeps the caret and the
+ * row's rule takes the accent instead of a second ring. */
+.in-pal-input input:focus-visible {
+  outline: none;
+}
+
+.in-pal-input:focus-within {
+  box-shadow: inset 0 -2px 0 var(--in-accent-ui);
+}
+
+.in-pal-list {
+  max-height: 360px;
+  padding: 4px;
+  overflow: auto;
+}
+
+.in-pal-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 10px;
+  border-radius: calc(var(--in-r2) - 4px);
+  color: var(--in-text);
+  font-size: var(--in-f14);
+  cursor: pointer;
+}
+
+.in-pal-item > span:nth-child(2) {
+  flex: 1;
+}
+
+.in-pal-item[aria-selected='true'] {
+  background: var(--in-bg-3);
+}
+
+.in-pal-item[aria-selected='true']::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--in-accent-ui);
+}
+
+.in-pal-icon {
+  display: inline-flex;
+  color: var(--in-text-2);
+}
+
+.in-pal-empty {
+  padding: 14px 10px;
+  color: var(--in-text-2);
+  font-size: var(--in-f14);
+}
+
+/* ── Idag: a panel ruled into cells ──────────────────────────────── */
+
+.in-home {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.in-greet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  padding: 20px 24px 0;
+}
+
+.in-greet h1 {
+  font-size: var(--in-f22);
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -0.022em;
+}
+
+.in-greet p {
+  color: var(--in-text-2);
+  font-size: var(--in-f14);
+  text-wrap: pretty;
+}
+
+/* The day: a mono head with its readout, then the time bar. */
+.in-day {
+  padding: 16px 24px 14px;
+}
+
+.in-day-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f12);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.in-day-head h2 {
+  color: var(--in-text);
+  font: inherit;
+  font-weight: 600;
+}
+
+.in-day-total {
+  color: var(--in-text);
+  font-weight: 600;
+}
+
+.in-daybar-wrap {
+  margin-top: 10px;
+}
+
+.in-daybar {
+  display: flex;
+  gap: 3px;
+}
+
+.in-daybar i {
+  height: 8px;
+  border-radius: 1px;
+  background: var(--in-track);
+}
+
+/* The selected part of the day, in ink: it follows the list's selection. */
+.in-daybar i[data-on='true'] {
+  background: var(--in-text);
+}
+
+.in-ticks {
+  position: relative;
+  height: 18px;
+  margin-top: 6px;
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f12);
+  font-variant-numeric: tabular-nums;
+}
+
+.in-ticks span {
+  position: absolute;
+  top: 0;
+  translate: -50% 0;
+  white-space: nowrap;
+}
+
+.in-ticks span:first-child {
+  translate: 0 0;
+}
+
+.in-ticks span:last-child {
+  translate: -100% 0;
+}
+
+/* Page-local keys, right-aligned in a head. */
+.in-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--in-text-2);
+  font-family: var(--in-ui);
+  font-size: var(--in-f13);
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.in-legend .in-kc + .in-kc {
+  margin-left: -1px;
+}
+
+/* The command list: rows ruled edge to edge. */
+.in-cmds ol {
+  border-top: 1px solid var(--in-stroke);
+}
+
+.in-cmd {
+  position: relative;
+  border-bottom: 1px solid var(--in-stroke);
+}
+
+/* The selected row: a step of fill and the one live signal, a 2 px tick. */
+.in-cmd[data-active='true'] {
+  --in-ring-bg: var(--in-bg-2);
+  background: var(--in-bg-2);
+}
+
+.in-cmd[data-active='true']::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: -1px;
+  bottom: -1px;
+  width: 2px;
+  background: var(--in-accent-ui);
+}
+
+.in-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  column-gap: 28px;
+  padding: 16px 24px 18px;
+}
+
+.in-lead-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+}
+
+.in-lead-kind {
+  font-size: var(--in-f13);
+  font-weight: 600;
+}
+
+.in-lead-when {
+  margin-left: -4px;
+}
+
+.in-lead-title {
+  margin-top: 12px;
+  font-size: var(--in-f28);
+  line-height: 1.12;
+  font-weight: 650;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+}
+
+.in-lead-sub {
+  margin-top: 4px;
+  color: var(--in-text-2);
+  font-size: var(--in-f16);
+}
+
+.in-lead-meter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin-top: 16px;
+}
+
+.in-lead-meter .in-segs {
+  width: 168px;
+}
+
+.in-lead-q {
+  font-size: var(--in-f14);
+  font-weight: 600;
+}
+
+.in-lead-btn {
+  min-width: 172px;
+  min-height: 48px;
+  font-size: var(--in-f16);
+}
+
+.in-cmd-row {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 96px 24px;
+  align-items: center;
+  column-gap: 14px;
+  width: 100%;
+  min-height: 60px;
+  padding: 10px 20px 10px 24px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--in-t-out) var(--in-ease);
+}
+
+.in-cmd-row:hover {
+  background: var(--in-bg-2);
+  transition-duration: var(--in-t-in);
+}
+
+.in-cmd-row:focus-visible {
+  outline-offset: -2px;
+  border-radius: var(--in-r1);
+}
+
+.in-cmd-main {
+  min-width: 0;
+}
+
+.in-cmd-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 8px;
+  color: var(--in-text);
+  font-size: var(--in-f14);
+  font-weight: 600;
+}
+
+.in-cmd-title > span:not(.in-tag) {
+  font-weight: 400;
+  color: var(--in-text-2);
+}
+
+.in-cmd-why {
+  display: block;
+  margin-top: 2px;
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+  text-wrap: pretty;
+}
+
+.in-cmd-min {
+  color: var(--in-text);
+  font-family: var(--in-mono);
+  font-size: var(--in-f13);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.in-cmd-unit {
+  color: var(--in-text-2);
+}
+
+.in-cmd-go {
+  display: inline-grid;
+  place-items: center;
+  color: var(--in-text-2);
+}
+
+/* The readout band, docked at the panel's foot: three cells ruled by 1 px
+ * grid lines, each with a mono head and its readout. */
+.in-band {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
+  margin-top: auto;
+  border-top: 1px solid var(--in-stroke);
+}
+
+.in-home .in-cmds {
+  margin-bottom: 20px;
+}
+
+.in-cell {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.in-cell + .in-cell {
+  border-left: 1px solid var(--in-stroke);
+}
+
+.in-cell-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  padding: 0 16px 0 20px;
+  border-bottom: 1px solid var(--in-stroke);
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f12);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.in-cell-head > span:first-child {
+  flex: 1;
+  color: var(--in-text);
+  font-weight: 600;
+}
+
+.in-cell:first-child .in-cell-head,
+.in-cell:first-child .in-cell-body {
+  padding-left: 24px;
+}
+
+.in-cell-body {
+  padding: 12px 16px 14px 20px;
+}
+
+.in-prog-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+}
+
+.in-prog-n {
+  font-family: var(--in-mono);
+  font-size: var(--in-f28);
+  line-height: 1;
+  font-weight: 550;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+
+.in-prog-n sup {
+  margin-left: 1px;
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+  vertical-align: 1.1em;
+}
+
+.in-prog-of {
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f14);
+}
+
+.in-delta {
+  color: var(--in-ok);
+  font-size: var(--in-f13);
+  font-weight: 550;
+}
+
+.in-chart {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin-top: 10px;
+  overflow: visible;
+}
+
+.in-chart .in-chart-grid {
+  stroke: var(--in-stroke);
+  stroke-width: 1;
+}
+
+.in-chart .in-chart-band {
+  fill: var(--in-bg-3);
+}
+
+.in-chart .in-chart-line {
+  fill: none;
+  stroke: var(--in-text);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.in-chart .in-chart-dot {
+  fill: var(--in-text);
+  stroke: var(--in-bg-1);
+  stroke-width: 2;
+}
+
+.in-chart text {
+  fill: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: 12px;
+}
+
+.in-caveat {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr);
+  margin-top: 10px;
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.in-trap-name {
+  font-size: var(--in-f16);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.in-trap-pattern {
+  margin-top: 4px;
+  color: var(--in-text-2);
+  font-size: var(--in-f14);
+  text-wrap: pretty;
+}
+
+.in-trap-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 12px;
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+}
+
+.in-trap-meta .in-num {
+  color: var(--in-text);
+  font-size: var(--in-f16);
+  font-weight: 600;
+}
+
+.in-mini {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--in-f13);
+}
+
+.in-mini th {
+  padding: 6px 0;
+  color: var(--in-text);
+  font-weight: 550;
+  text-align: left;
+}
+
+.in-mini td {
+  padding: 6px 0 6px 12px;
+  color: var(--in-text-2);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.in-mini td.in-num {
+  color: var(--in-text);
+  font-size: var(--in-f13);
+}
+
+.in-mini tr + tr > * {
+  border-top: 1px solid var(--in-stroke);
+}
+
+.in-cell-body .in-link {
+  margin-top: 8px;
+}
+
+/* ── Stubs ───────────────────────────────────────────────────────── */
+
+.in-stub {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 72px 48px;
+}
+
+.in-stub h1 {
+  margin-top: 14px;
+  font-size: var(--in-f28);
+  font-weight: 650;
+  letter-spacing: -0.028em;
+}
+
+.in-stub p {
+  margin-top: 8px;
+  color: var(--in-text-2);
+  font-size: var(--in-f16);
+}
+
+.in-stub-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.in-stub-grid span {
+  height: 64px;
+  border-radius: var(--in-r1);
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0 6px,
+      color-mix(in oklch, var(--in-stroke-2) 60%, transparent) 6px 7px
+    ),
+    var(--in-bg-1);
+  box-shadow: inset 0 0 0 1px var(--in-stroke-2);
+}
+
+/* ── Drill: the chassis around two panels ────────────────────────── */
+
+.in-drill {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  height: 100%;
+  background: var(--in-chassis);
+}
+
+.in-drill[data-focus='true'] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.in-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 12px 0;
+  opacity: 0.55;
+  transition: opacity var(--in-t-out) var(--in-ease);
+}
+
+.in-rail:hover,
+.in-rail:focus-within {
+  opacity: 1;
+  transition-duration: var(--in-t-in);
+}
+
+.in-drill[data-focus='true'] .in-rail {
+  display: none;
+}
+
+.in-rail .in-mark {
+  margin: 0 0 14px;
+}
+
+.in-work {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.in-dbar {
+  gap: 14px;
+  padding: 0 8px 0 4px;
+}
+
+.in-dbar .in-segs {
+  width: 132px;
+}
+
+.in-drill[data-focus='true'] .in-dbar,
+.in-drill[data-focus='true'] .in-statusbar,
+.in-drill[data-focus='true'] .in-pane-head {
+  display: none;
+}
+
+.in-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 64px;
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f14);
+  font-variant-numeric: tabular-nums;
+}
+
+.in-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--in-stroke-2);
+}
+
+/* Focus mode: a hairline of progress across the top and one corner
+ * cluster — the clock, Avsluta and the way back. */
+.in-focusline {
+  position: absolute;
+  z-index: 5;
+  inset: 0 0 auto;
+  display: flex;
+  padding: 0;
+}
+
+.in-focusline .in-segs {
+  gap: 2px;
+}
+
+.in-focusline .in-segs i {
+  height: 3px;
+  border-radius: 0;
+}
+
+.in-corner {
+  position: absolute;
+  z-index: 6;
+  top: 18px;
+  right: 22px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 4px 4px 12px;
+  border-radius: var(--in-r2);
+  background: var(--in-bg-1);
+  box-shadow: var(--in-pop);
+}
+
+.in-split {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 8px var(--in-q-w, 460px) var(--in-insp-w, 0px);
+  padding-right: 8px;
+  transition: grid-template-columns var(--in-t-in) var(--in-ease);
+}
+
+.in-split[data-inspector='true'] {
+  --in-insp-w: 468px;
+}
+
+.in-drill[data-focus='true'] .in-split {
+  padding: 8px;
+}
+
+/* The corner cluster sits over the question panel: give it room. */
+.in-drill[data-focus='true'] .in-qbody {
+  padding-top: 80px;
+}
+
+/* A panel: lit, inset, a 1 px edge, a mono head. */
+.in-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  border-radius: var(--in-r3);
+  background: var(--in-bg-1);
+  box-shadow: var(--in-panel);
+}
+
+.in-pane > .in-scroll:last-child {
+  border-radius: 0 0 var(--in-r3) var(--in-r3);
+}
+
+.in-pane > .in-scroll:first-child {
+  border-radius: var(--in-r3) var(--in-r3) 0 0;
+}
+
+.in-pane > .in-scroll:only-child {
+  border-radius: var(--in-r3);
+}
+
+.in-pane-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 10px 0 16px;
+  border-bottom: 1px solid var(--in-stroke);
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+  font-weight: 500;
+}
+
+.in-pane-label {
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f12);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.in-pane-label + .in-badge {
+  margin-left: 6px;
+}
+
+/* The gap between the panels is the separator: a grip at rest, the full
+ * accent line under the pointer or the keyboard. Drawn in the 8 px gap,
+ * hit-tested 24 px wide (it reaches 8 px over each panel's edge). */
+.in-handle {
+  position: relative;
+  z-index: 2;
+  margin: 0 -8px;
+  border-radius: var(--in-r1);
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.in-handle::before,
+.in-handle::after {
+  content: '';
+  position: absolute;
+  left: 11px;
+  width: 2px;
+  border-radius: 1px;
+  transition: background var(--in-t-out) var(--in-ease);
+}
+
+.in-handle::before {
+  top: 10px;
+  bottom: 10px;
+  background: transparent;
+}
+
+.in-handle::after {
+  top: 50%;
+  height: 32px;
+  margin-top: -16px;
+  background: var(--in-stroke-2);
+}
+
+.in-handle:hover::before,
+.in-handle:focus-visible::before,
+.in-handle[data-dragging='true']::before {
+  background: var(--in-accent-ui);
+  transition-duration: var(--in-t-in);
+}
+
+/* The ring hugs the gap, not the wider hit area. */
+.in-handle:focus-visible {
+  outline: 2px solid var(--in-accent-ui);
+  outline-offset: -7px;
+}
+
+.in-handle:hover::after,
+.in-handle:focus-visible::after,
+.in-handle[data-dragging='true']::after {
+  background: transparent;
+}
+
+/* ── Passage ─────────────────────────────────────────────────────── */
+
+/* ~34 em of 18.5 px text (≈ 60 Swedish characters) plus the ¶ gutter,
+ * centred in whatever width the split gives it. */
+.in-passage-wrap {
+  width: min(100%, 680px);
+  margin: 0 auto;
+  padding: 32px 28px 80px 4px;
+}
+
+.in-passage-head {
+  margin-left: 44px;
+}
+
+.in-passage-head .in-badge {
+  margin-bottom: 14px;
+}
+
+.in-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 12px;
+}
+
+.in-ptitle {
+  font-size: var(--in-f22);
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+}
+
+.in-psub {
+  margin-top: 4px;
+  color: var(--in-text-2);
+  font-size: var(--in-f16);
+}
+
+.in-note {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: var(--in-r1);
+  background: var(--in-bg-2);
+  box-shadow: inset 0 0 0 1px var(--in-stroke);
+  color: var(--in-text-2);
+  font-size: var(--in-f14);
+  line-height: 1.5;
+}
+
+.in-pbody {
+  margin-top: 28px;
+  font-family: var(--in-read);
+  font-size: var(--in-f18);
+  line-height: 28px;
+  color: var(--in-text);
+  hyphens: auto;
+  hyphenate-limit-chars: 8 4 4;
+}
+
+.in-para {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: baseline;
+  padding: 2px 0;
+  border-radius: var(--in-r1);
+  transition:
+    opacity var(--in-t-in) var(--in-ease),
+    background-color 1200ms var(--in-ease);
+}
+
+.in-para + .in-para {
+  margin-top: 14px;
+}
+
+.in-para p {
+  text-wrap: pretty;
+}
+
+/* ¶ numbers: 13 px on the paragraph's first baseline, in a 28 px box (a
+ * 44 px hit area with the extension below). */
+.in-pnum {
+  position: relative;
+  justify-self: end;
+  min-width: 28px;
+  margin-right: 14px;
+  padding: 0 2px;
+  text-align: right;
+  border: 0;
+  border-radius: var(--in-r1);
+  background: transparent;
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f13);
+  line-height: 28px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.in-pnum:hover {
+  color: var(--in-text);
+}
+
+.in-para[data-cited='true'] .in-pnum {
+  color: var(--in-text);
+  font-weight: 650;
+}
+
+.in-para[data-cited='true']::before {
+  content: '';
+  position: absolute;
+  left: 37px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--in-text-2);
+}
+
+.in-para[data-flash='true'] {
+  background-color: var(--in-flash);
+  transition: none;
+}
+
+.in-pbody[data-focus='true'] .in-para:not([data-focused='true']) {
+  opacity: 0.5;
+}
+
+/* Sentence-level evidence: what the explanation quotes. */
+.in-ev {
+  background: none;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--in-mark);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  transition: background-color 1200ms var(--in-ease);
+}
+
+.in-ev[data-kind='wrong'] {
+  text-decoration-style: dotted;
+  text-decoration-color: var(--in-bad-line);
+}
+
+.in-ev[data-flash='true'] {
+  background-color: var(--in-flash);
+  transition: none;
+}
+
+.in-byline {
+  margin: 20px 0 0 44px;
+  color: var(--in-text-2);
+  font-family: var(--in-read);
+  font-size: var(--in-f16);
+  font-style: italic;
+}
+
+/* ── Question panel ──────────────────────────────────────────────── */
+
+.in-qbody {
+  padding: 24px 20px 28px;
+}
+
+.in-prompt {
+  font-family: var(--in-read);
+  font-size: var(--in-f18);
+  line-height: 1.4;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  hyphens: manual;
+}
+
+.in-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+/* An option: a hard box with a square key for its letter. */
+.in-opt {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  align-items: start;
+  border-radius: var(--in-r1);
+  background: var(--in-bg-1);
+  box-shadow: inset 0 0 0 1px var(--in-stroke-2);
+  transition:
+    background var(--in-t-out) var(--in-ease),
+    box-shadow var(--in-t-out) var(--in-ease);
+}
+
+.in-opt:hover {
+  background: var(--in-bg-2);
+  transition-duration: var(--in-t-in);
+}
+
+.in-opt-main {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: 12px;
+  align-items: start;
+  min-height: 48px;
+  padding: 12px 0 12px 12px;
+  border: 0;
+  border-radius: var(--in-r1);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* The option letter: a key on desktop, a plain tile without a keyboard. */
+.in-letter {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--in-r1);
+  background: var(--in-bg-1);
+  box-shadow:
+    inset 0 0 0 1px var(--in-stroke-2),
+    inset 0 -2px 0 var(--in-stroke-2);
+  color: var(--in-text);
+  font-family: var(--in-mono);
+  font-size: var(--in-f13);
+  font-weight: 600;
+}
+
+[data-width='phone'] .in-letter {
+  box-shadow: inset 0 0 0 1px var(--in-stroke-2);
+}
+
+.in-opt-text {
+  padding-top: 2px;
+  font-family: var(--in-read);
+  font-size: var(--in-f16);
+  line-height: 1.5;
+  color: var(--in-text);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+.in-opt[data-state='selected'] {
+  background: var(--in-accent-soft);
+  box-shadow: inset 0 0 0 2px var(--in-accent-ui);
+}
+
+.in-opt[data-state='selected'] .in-letter {
+  background: var(--in-accent);
+  box-shadow: none;
+  color: var(--in-on-accent);
+}
+
+.in-opt[data-state='eliminated'] .in-opt-text {
+  color: var(--in-text-2);
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+
+.in-opt[data-state='eliminated'] .in-letter {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--in-stroke-2);
+  color: var(--in-text-2);
+}
+
+/* Striking an option is always on offer: 44 × 48, readable, labelled. */
+.in-opt-x {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--in-r1);
+  background: transparent;
+  color: var(--in-text-3);
+  cursor: pointer;
+}
+
+.in-opt-x:hover,
+.in-opt-x[aria-pressed='true'] {
+  color: var(--in-text);
+}
+
+/* ── Facit: the answer strip ─────────────────────────────────────── */
+
+.in-verdict {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-size: var(--in-f16);
+  font-weight: 650;
+}
+
+.in-verdict-glyph {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--in-r1);
+}
+
+.in-verdict[data-correct='false'] .in-verdict-glyph {
+  background: var(--in-bad);
+  color: var(--in-bg-1);
+}
+
+.in-verdict[data-correct='true'] .in-verdict-glyph {
+  background: var(--in-ok);
+  color: var(--in-bg-1);
+}
+
+.in-verdict[data-correct='false'] b {
+  color: var(--in-bad);
+}
+
+.in-verdict[data-correct='true'] b {
+  color: var(--in-ok);
+}
+
+.in-verdict span:last-child {
+  color: var(--in-text);
+  font-weight: 500;
+}
+
+.in-q-after {
+  margin-top: 10px;
+  color: var(--in-text-2);
+  font-family: var(--in-read);
+  font-size: var(--in-f16);
+  line-height: 1.45;
+  font-weight: 700;
+  text-wrap: balance;
+  hyphens: manual;
+}
+
+.in-ans {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.in-ans-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: 12px;
+  padding: 12px 14px 12px 12px;
+  border-radius: var(--in-r1);
+  box-shadow: inset 0 0 0 1px var(--in-stroke-2);
+}
+
+.in-ans-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+  font-family: var(--in-mono);
+  font-size: var(--in-f12);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.in-ans-text {
+  font-family: var(--in-read);
+  font-size: var(--in-f16);
+  line-height: 1.5;
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+.in-ans-row[data-kind='mine'] {
+  background: var(--in-bad-soft);
+  box-shadow:
+    inset 0 0 0 1.5px var(--in-bad-line),
+    inset 3px 0 0 var(--in-bad);
+}
+
+.in-ans-row[data-kind='mine'] .in-letter {
+  background: var(--in-bad);
+  box-shadow: none;
+  color: var(--in-bg-1);
+}
+
+.in-ans-row[data-kind='mine'] .in-ans-tag {
+  color: var(--in-bad);
+}
+
+.in-ans-row[data-kind='right'] {
+  background: var(--in-ok-soft);
+  box-shadow:
+    inset 0 0 0 1.5px var(--in-ok-line),
+    inset 3px 0 0 var(--in-ok);
+}
+
+.in-ans-row[data-kind='right'] .in-letter {
+  background: var(--in-ok);
+  box-shadow: none;
+  color: var(--in-bg-1);
+}
+
+.in-ans-row[data-kind='right'] .in-ans-tag {
+  color: var(--in-ok);
+}
+
+.in-ans-row[data-kind='other'] {
+  box-shadow: inset 0 0 0 1px var(--in-stroke);
+}
+
+.in-ans-row[data-kind='other'] .in-ans-text {
+  color: var(--in-text-2);
+}
+
+.in-disclose {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--in-text);
+  font-size: var(--in-f14);
+  font-weight: 550;
+  cursor: pointer;
+}
+
+.in-disclose svg {
+  color: var(--in-text-2);
+  transition: rotate var(--in-t-in) var(--in-ease);
+}
+
+.in-disclose[aria-expanded='true'] svg {
+  rotate: 180deg;
+}
+
+.in-disclose:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--in-stroke-2);
+}
+
+.in-show-ex {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 16px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--in-r1);
+  background: var(--in-bg-2);
+  box-shadow: inset 0 0 0 1px var(--in-stroke);
+  color: var(--in-text);
+  font-size: var(--in-f14);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.in-show-ex .in-key-note {
+  margin-left: auto;
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f13);
+  font-weight: 500;
+}
+
+.in-show-ex:hover {
+  background: var(--in-bg-3);
+}
+
+/* ── Facit: the explanation ──────────────────────────────────────── */
+
+.in-ex {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--in-stroke);
+}
+
+.in-insp .in-ex {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.in-ex-h {
+  margin-bottom: 8px;
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f12);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.in-ex > section + section {
+  margin-top: 24px;
+}
+
+.in-trapbox {
+  padding: 14px 16px 16px;
+  border-radius: var(--in-r1);
+  background: var(--in-bad-soft);
+  box-shadow:
+    inset 0 0 0 1px var(--in-bad-line),
+    inset 3px 0 0 var(--in-bad);
+}
+
+.in-trapbox h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--in-bad);
+  font-size: var(--in-f14);
+  font-weight: 700;
+}
+
+.in-trapbox h4 {
+  margin-top: 12px;
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+  font-weight: 650;
+}
+
+.in-trapbox p,
+.in-tipbox p,
+.in-sol,
+.in-step-text,
+.in-dis-body p {
+  font-family: var(--in-read);
+  font-size: var(--in-f16);
+  line-height: 1.55;
+  color: var(--in-text);
+  text-wrap: pretty;
+  hyphens: auto;
+  hyphenate-limit-chars: 8 4 4;
+}
+
+.in-trapbox p {
+  margin-top: 3px;
+}
+
+.in-cites {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.in-cite {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--in-r1);
+  background: var(--in-bg-1);
+  box-shadow:
+    inset 0 0 0 1px var(--in-stroke-2),
+    inset 0 -1.5px 0 var(--in-stroke-2);
+  color: var(--in-text);
+  font-family: var(--in-mono);
+  font-size: var(--in-f13);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.in-cite:hover {
+  background: var(--in-text);
+  box-shadow: none;
+  color: var(--in-bg-1);
+}
+
+.in-tips {
+  display: grid;
+  gap: 10px;
+}
+
+.in-tipbox {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  column-gap: 10px;
+  padding: 14px 16px 16px 14px;
+  border-radius: var(--in-r1);
+  background: var(--in-bg-2);
+  box-shadow: inset 0 0 0 1px var(--in-stroke);
+}
+
+.in-tipbox svg {
+  margin-top: 1px;
+  color: var(--in-text);
+}
+
+.in-tipbox[data-kind='pitfall'] svg {
+  color: var(--in-warn);
+}
+
+.in-tipbox h3 {
+  font-size: var(--in-f14);
+  font-weight: 700;
+}
+
+.in-tipbox p {
+  margin-top: 4px;
+}
+
+.in-evidence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-top: 10px;
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+}
+
+.in-evidence .in-cites {
+  margin-top: 0;
+}
+
+.in-step {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: 8px;
+  padding: 12px 0;
+}
+
+.in-step + .in-step {
+  border-top: 1px solid var(--in-stroke);
+}
+
+.in-step-n {
+  color: var(--in-text-2);
+  font-family: var(--in-mono);
+  font-size: var(--in-f13);
+  line-height: 22px;
+  font-variant-numeric: tabular-nums;
+}
+
+.in-step-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  min-height: 22px;
+}
+
+.in-step-title {
+  font-size: var(--in-f14);
+  font-weight: 650;
+}
+
+.in-step-text {
+  margin-top: 4px;
+}
+
+.in-step-head .in-cites {
+  margin-top: 0;
+}
+
+.in-more {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--in-r1);
+  background: var(--in-bg-2);
+  box-shadow: inset 0 0 0 1px var(--in-stroke-2);
+  color: var(--in-text);
+  font-size: var(--in-f13);
+  font-weight: 550;
+  cursor: pointer;
+}
+
+.in-more:hover {
+  background: var(--in-bg-3);
+}
+
+.in-stepref {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--in-text);
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--in-stroke-2);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.in-stepref:hover {
+  text-decoration-color: currentColor;
+}
+
+.in-dis {
+  padding: 4px 0;
+}
+
+.in-dis + .in-dis {
+  border-top: 1px solid var(--in-stroke);
+}
+
+.in-dis-head {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: 10px;
+  align-items: start;
+  padding-top: 8px;
+}
+
+.in-dis-opt {
+  color: var(--in-text-2);
+  font-family: var(--in-read);
+  font-size: var(--in-f14);
+  line-height: 1.5;
+  hyphens: manual;
+}
+
+.in-dis-body {
+  display: grid;
+  gap: 12px;
+  margin: 10px 0 8px 38px;
+}
+
+.in-dis-body h4 {
+  margin-bottom: 2px;
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+  font-weight: 650;
+}
+
+.in-fw {
+  margin-top: 20px;
+  color: var(--in-text-2);
+  font-size: var(--in-f13);
+}
+
+.in-fw b {
+  color: var(--in-text);
+  font-weight: 600;
+}
+
+/* Small inline controls keep their compact look but get a 44 px tall hit
+ * area (an invisible extension), so the dense views stay easy to hit. */
+.in-cite::after,
+.in-more::after,
+.in-link::after,
+.in-pnum::after {
+  content: '';
+  position: absolute;
+  inset: -9px -3px;
+}
+
+.in-more::after {
+  inset: -8px -2px;
+}
+
+.in-link::after {
+  inset: -6px -2px;
+}
+
+.in-pnum::after {
+  inset: -8px -10px;
+}
+
+/* ── Inspector (wide screens only) ───────────────────────────────── */
+
+.in-insp {
+  margin-left: 8px;
+  animation: in-slide var(--in-t-in) var(--in-ease);
+}
+
+@keyframes in-slide {
+  from {
+    opacity: 0;
+    translate: 12px 0;
+  }
+}
+
+.in-insp-body {
+  padding: 20px 22px 44px;
+}
+
+/* ── Panel foot ──────────────────────────────────────────────────── */
+
+.in-qfoot {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px 14px;
+  border-top: 1px solid var(--in-stroke);
+}
+
+.in-qfoot .in-btn {
+  flex: 1;
+}
+
+/* ── End of the unit ─────────────────────────────────────────────── */
+
+/* On desktop the end screen is one panel in the chassis. */
+.in-work > .in-done-scroll {
+  margin-right: 8px;
+  border-radius: var(--in-r3);
+  background: var(--in-bg-1);
+  box-shadow: var(--in-panel);
+}
+
+.in-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 32px 24px 40px;
+  text-align: center;
+  animation: in-in var(--in-t-in) var(--in-ease);
+}
+
+/* At least ~45 % of the panel: the picture is the reward, not a badge. */
+.in-art {
+  display: block;
+  flex: none;
+  width: min(940px, 94%);
+  height: max(240px, 48cqh);
+  color: var(--in-text-2);
+}
+
+.in-done-scroll {
+  container-type: size;
+}
+
+.in-done h2 {
+  margin-top: 24px;
+  font-size: var(--in-f28);
+  font-weight: 650;
+  letter-spacing: -0.028em;
+}
+
+.in-done-facts {
+  margin-top: 8px;
+  color: var(--in-text-2);
+  font-size: var(--in-f16);
+}
+
+.in-done-facts .in-num {
+  color: var(--in-text);
+}
+
+.in-done p {
+  max-width: 44ch;
+  margin-top: 6px;
+  color: var(--in-text-2);
+  font-size: var(--in-f14);
+  text-wrap: pretty;
+}
+
+.in-done-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+/* ── Phone: the chassis around inset boxes ───────────────────────── */
+
+.in-phone {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--in-chassis);
+}
+
+.in-ptop {
+  position: relative;
+  z-index: 6;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 6px 0 12px;
+}
+
+.in-ptop-title {
+  flex: 1;
+  font-size: var(--in-f16);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.in-ptop .in-ro {
+  flex: 1;
+  padding: 0;
+}
+
+.in-avatar-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--in-r2);
+  background: transparent;
+  cursor: pointer;
+}
+
+.in-avatar-btn[aria-expanded='true'] .in-avatar {
+  box-shadow:
+    0 0 0 2px var(--in-chassis),
+    0 0 0 4px var(--in-accent-ui);
+}
+
+.in-pscroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.in-phome {
+  padding: 4px 8px 24px;
+}
+
+.in-phome .in-greet {
+  display: block;
+  padding: 6px 6px 14px;
+}
+
+.in-phome .in-greet p {
+  margin-top: 2px;
+}
+
+/* On the phone the list and the band are the panels: lit, an edge, the
+ * panel corner. */
+.in-phome :is(.in-cmds, .in-band) {
+  border-radius: var(--in-r3);
+  background: var(--in-bg-1);
+  box-shadow: var(--in-panel);
+}
+
+.in-phome .in-day {
+  padding: 14px 14px 12px 16px;
+}
+
+.in-phome .in-cmd:last-child {
+  border-bottom: 0;
+}
+
+.in-phome .in-cmd:last-child,
+.in-phome .in-cmd:last-child .in-cmd-row {
+  border-radius: 0 0 var(--in-r3) var(--in-r3);
+}
+
+.in-phome .in-lead {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 18px;
+  padding: 16px 14px 16px 16px;
+}
+
+.in-phome .in-lead-when {
+  display: none;
+}
+
+.in-phome .in-lead-btn {
+  width: 100%;
+}
+
+.in-phome .in-lead-meter .in-segs {
+  width: 120px;
+}
+
+/* No code column on the phone: the title already names the kind. */
+.in-phome .in-cmd-row {
+  grid-template-columns: minmax(0, 1fr) auto 16px;
+  column-gap: 10px;
+  padding: 12px 10px 12px 16px;
+}
+
+.in-phome .in-cmd-row > .in-code {
+  display: none;
+}
+
+.in-phome .in-band {
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: 10px;
+  border-top: 0;
+}
+
+.in-phome .in-cell + .in-cell {
+  border-left: 0;
+  border-top: 1px solid var(--in-stroke);
+}
+
+.in-phome .in-cell:first-child .in-cell-head,
+.in-phome .in-cell:first-child .in-cell-body,
+.in-phome .in-cell-head,
+.in-phome .in-cell-body {
+  padding-left: 16px;
+}
+
+.in-tabs {
+  position: relative;
+  z-index: 6;
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px;
+  padding: 4px 6px 18px;
+  border-top: 1px solid var(--in-stroke);
+  background: var(--in-chassis);
+}
+
+.in-tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 54px;
+  border: 0;
+  border-radius: var(--in-r2);
+  background: transparent;
+  color: var(--in-text-2);
+  font-size: var(--in-f12);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.in-tab[aria-current='page'] {
+  background: var(--in-bg-1);
+  box-shadow: var(--in-chip);
+  color: var(--in-text);
+  font-weight: 650;
+}
+
+.in-tab .in-count {
+  position: absolute;
+  top: 3px;
+  left: calc(50% + 6px);
+  min-width: 22px;
+  height: 18px;
+  padding: 0 4px;
+  line-height: 18px;
+  font-size: var(--in-f12);
+}
+
+/* ── Phone drill ─────────────────────────────────────────────────── */
+
+.in-pdrill {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: var(--in-bg-1);
+}
+
+.in-pdhead {
+  position: absolute;
+  z-index: 6;
+  inset: 0 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 14px 0 4px;
+  border-bottom: 1px solid var(--in-stroke);
+  background: var(--in-chassis);
+  transition: height var(--in-t-in) var(--in-ease);
+}
+
+.in-pdhead-mid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.in-pdhead-mid .in-segs {
+  width: 104px;
+}
+
+/* Folded while reading: a 44 px strip that keeps the way out. */
+.in-pdhead[data-folded='true'] {
+  height: 44px;
+}
+
+.in-pdhead[data-folded='true'] .in-exit-word,
+.in-pdhead[data-folded='true'] .in-pdhead-mid .in-num {
+  display: none;
+}
+
+.in-pdhead .in-ghost {
+  min-width: 44px;
+  padding: 0 10px;
+}
+
+.in-pdscroll {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.in-pdscroll .in-passage-wrap {
+  padding: 76px 18px 0 0;
+}
+
+.in-pdscroll .in-passage-head {
+  margin-left: 32px;
+}
+
+.in-pdscroll .in-pbody {
+  font-size: 17.5px;
+  line-height: 27px;
+}
+
+.in-pdscroll .in-para {
+  grid-template-columns: 32px minmax(0, 1fr);
+}
+
+.in-pdscroll .in-pnum {
+  min-width: 22px;
+  margin-right: 8px;
+  line-height: 27px;
+  font-size: var(--in-f12);
+}
+
+.in-pdscroll .in-para[data-cited='true']::before {
+  left: 27px;
+}
+
+.in-pdscroll .in-byline {
+  margin-left: 32px;
+}
+
+.in-pdscroll .in-ptitle {
+  font-size: var(--in-f22);
+}
+
+.in-sheet-spacer {
+  height: 46%;
+}
+
+/* The question sheet is a panel: a chassis head strip (the grab, the
+ * mono label, the badge) over a lit body. */
+.in-sheet {
+  position: absolute;
+  z-index: 8;
+  inset: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--in-r3) var(--in-r3) 0 0;
+  background: var(--in-bg-1);
+  box-shadow:
+    0 0 0 1px var(--in-edge),
+    0 -3px 8px -3px oklch(20% 0.004 85 / 0.18);
+  interpolate-size: allow-keywords;
+  transition: height var(--in-t-in) var(--in-ease);
+}
+
+[data-theme='dark'] .in-sheet {
+  box-shadow:
+    0 0 0 1px var(--in-edge),
+    0 -4px 10px -3px oklch(0% 0 0 / 0.6);
+}
+
+/* The peek shows the whole question and the way to the options. */
+.in-sheet[data-state='peek'] {
+  height: auto;
+  max-height: 45%;
+}
+
+.in-sheet[data-state='open'] {
+  height: 78%;
+}
+
+.in-sheet[data-state='full'] {
+  height: calc(100% - 56px);
+}
+
+.in-sheet-top {
+  flex: none;
+  border-bottom: 1px solid var(--in-stroke);
+  border-radius: var(--in-r3) var(--in-r3) 0 0;
+  background: var(--in-chassis);
+}
+
+.in-grab {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--in-r3) var(--in-r3) 0 0;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+
+.in-grab::before {
+  content: '';
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--in-stroke-2);
+}
+
+/* The whole head strip under the grip takes the press (a 44 px target). */
+.in-grab {
+  position: relative;
+}
+
+.in-grab::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 -24px;
+}
+
+.in-sheet-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 14px 8px 16px;
+}
+
+.in-sheet-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 14px 16px 20px;
+  scrollbar-width: none;
+}
+
+.in-sheet[data-state='peek'] .in-sheet-body {
+  flex: none;
+  padding-bottom: 18px;
+}
+
+.in-sheet .in-prompt {
+  font-size: var(--in-f18);
+}
+
+.in-sheet .in-opts {
+  margin-top: 14px;
+}
+
+/* The way to the options: an inverse key with the count in a cap. */
+.in-peekctl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 14px;
+  padding: 0 12px 0 16px;
+  border: 0;
+  border-radius: var(--in-r2);
+  background: var(--in-text);
+  color: var(--in-bg-1);
+  font-size: var(--in-f14);
+  font-weight: 650;
+  text-align: left;
+  cursor: pointer;
+}
+
+.in-peekctl > span:first-child {
+  flex: 1;
+}
+
+.in-peekctl-n {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: var(--in-r1);
+  background: color-mix(in oklch, var(--in-bg-1) 16%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--in-bg-1) 32%, transparent);
+  font-family: var(--in-mono);
+  font-size: var(--in-f13);
+  font-weight: 600;
+}
+
+.in-sheet .in-qfoot {
+  padding: 10px 16px 18px;
+  background: inherit;
+}
+
+/* ── Dark: state rides on the border, the letter and the word ────── */
+
+[data-theme='dark'] .in-ans-row[data-kind='mine'],
+[data-theme='dark'] .in-ans-row[data-kind='right'] {
+  background: var(--in-bg-2);
+}
+
+[data-theme='dark'] .in-trapbox {
+  background: var(--in-bg-2);
+}
+
+/* ── Reduced motion and still thumbnails ─────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-rd='instrument'] *,
+  [data-rd='instrument'] *::before,
+  [data-rd='instrument'] *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+[data-rd='instrument'][data-live='false'] *,
+[data-rd='instrument'][data-live='false'] *::before,
+[data-rd='instrument'][data-live='false'] *::after {
+  animation: none !important;
+  transition: none !important;
+}

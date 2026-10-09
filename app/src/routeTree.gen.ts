@@ -56,6 +56,7 @@ import { Route as AdaptiveVerifyRouteImport } from './routes/adaptive-verify'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SignUpSplatRouteImport } from './routes/sign-up.$'
 import { Route as SignInSplatRouteImport } from './routes/sign-in.$'
+import { Route as DevRedesign2026BakeoffRouteImport } from './routes/dev_.redesign-2026-bakeoff'
 import { Route as DevProvpassPickerBakeoffRouteImport } from './routes/dev_.provpass-picker-bakeoff'
 import { Route as DevOvningstextBakeoffRouteImport } from './routes/dev_.ovningstext-bakeoff'
 import { Route as DevNavRailBakeoffRouteImport } from './routes/dev_.nav-rail-bakeoff'
@@ -302,6 +303,11 @@ const SignInSplatRoute = SignInSplatRouteImport.update({
   path: '/$',
   getParentRoute: () => SignInRoute,
 } as any)
+const DevRedesign2026BakeoffRoute = DevRedesign2026BakeoffRouteImport.update({
+  id: '/dev_/redesign-2026-bakeoff',
+  path: '/dev/redesign-2026-bakeoff',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DevProvpassPickerBakeoffRoute =
   DevProvpassPickerBakeoffRouteImport.update({
     id: '/dev_/provpass-picker-bakeoff',
@@ -404,6 +410,7 @@ export interface FileRoutesByFullPath {
   '/dev/nav-rail-bakeoff': typeof DevNavRailBakeoffRoute
   '/dev/ovningstext-bakeoff': typeof DevOvningstextBakeoffRoute
   '/dev/provpass-picker-bakeoff': typeof DevProvpassPickerBakeoffRoute
+  '/dev/redesign-2026-bakeoff': typeof DevRedesign2026BakeoffRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
 }
@@ -462,6 +469,7 @@ export interface FileRoutesByTo {
   '/dev/nav-rail-bakeoff': typeof DevNavRailBakeoffRoute
   '/dev/ovningstext-bakeoff': typeof DevOvningstextBakeoffRoute
   '/dev/provpass-picker-bakeoff': typeof DevProvpassPickerBakeoffRoute
+  '/dev/redesign-2026-bakeoff': typeof DevRedesign2026BakeoffRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
 }
@@ -521,6 +529,7 @@ export interface FileRoutesById {
   '/dev_/nav-rail-bakeoff': typeof DevNavRailBakeoffRoute
   '/dev_/ovningstext-bakeoff': typeof DevOvningstextBakeoffRoute
   '/dev_/provpass-picker-bakeoff': typeof DevProvpassPickerBakeoffRoute
+  '/dev_/redesign-2026-bakeoff': typeof DevRedesign2026BakeoffRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
 }
@@ -581,6 +590,7 @@ export interface FileRouteTypes {
     | '/dev/nav-rail-bakeoff'
     | '/dev/ovningstext-bakeoff'
     | '/dev/provpass-picker-bakeoff'
+    | '/dev/redesign-2026-bakeoff'
     | '/sign-in/$'
     | '/sign-up/$'
   fileRoutesByTo: FileRoutesByTo
@@ -639,6 +649,7 @@ export interface FileRouteTypes {
     | '/dev/nav-rail-bakeoff'
     | '/dev/ovningstext-bakeoff'
     | '/dev/provpass-picker-bakeoff'
+    | '/dev/redesign-2026-bakeoff'
     | '/sign-in/$'
     | '/sign-up/$'
   id:
@@ -697,6 +708,7 @@ export interface FileRouteTypes {
     | '/dev_/nav-rail-bakeoff'
     | '/dev_/ovningstext-bakeoff'
     | '/dev_/provpass-picker-bakeoff'
+    | '/dev_/redesign-2026-bakeoff'
     | '/sign-in/$'
     | '/sign-up/$'
   fileRoutesById: FileRoutesById
@@ -756,6 +768,7 @@ export interface RootRouteChildren {
   DevNavRailBakeoffRoute: typeof DevNavRailBakeoffRoute
   DevOvningstextBakeoffRoute: typeof DevOvningstextBakeoffRoute
   DevProvpassPickerBakeoffRoute: typeof DevProvpassPickerBakeoffRoute
+  DevRedesign2026BakeoffRoute: typeof DevRedesign2026BakeoffRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1089,6 +1102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignInSplatRouteImport
       parentRoute: typeof SignInRoute
     }
+    '/dev_/redesign-2026-bakeoff': {
+      id: '/dev_/redesign-2026-bakeoff'
+      path: '/dev/redesign-2026-bakeoff'
+      fullPath: '/dev/redesign-2026-bakeoff'
+      preLoaderRoute: typeof DevRedesign2026BakeoffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dev_/provpass-picker-bakeoff': {
       id: '/dev_/provpass-picker-bakeoff'
       path: '/dev/provpass-picker-bakeoff'
@@ -1232,6 +1252,7 @@ const rootRouteChildren: RootRouteChildren = {
   DevNavRailBakeoffRoute: DevNavRailBakeoffRoute,
   DevOvningstextBakeoffRoute: DevOvningstextBakeoffRoute,
   DevProvpassPickerBakeoffRoute: DevProvpassPickerBakeoffRoute,
+  DevRedesign2026BakeoffRoute: DevRedesign2026BakeoffRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
