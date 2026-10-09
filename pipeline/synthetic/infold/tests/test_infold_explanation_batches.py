@@ -2,7 +2,7 @@
 (docs/p5-infold-design.md §4 row 2b and §D; beads hpf-c5tb, hpf-c5tb.1 and
 hpf-c5tb.4).
 
-explanation_batches.py keeps the 332 eligible questions in pinned batches
+explanation_batches.py keeps the 306 eligible questions in pinned batches
 (BATCHES.json): the Layer-2 pilot is batch x0-pilot, LÄS x1–x3 and ELF x4–x7,
 each holding the units of the initial cut less those retired since. No unit
 ever moves between batches, and a new unit waits for an explicit assignment.
@@ -41,14 +41,16 @@ SCRIPT = build_roster.INFOLD_DIR / "explanation_batches.py"
 LINTER = REPO_ROOT / "pipeline/synthetic/gates/scripts/lint_learner_output.py"
 # The pinned partition (bead hpf-c5tb.4): the initial cut of bead hpf-c5tb.1
 # less las-b3-001 and las-b5-001, which the owner retired from x1 on
-# 2026-10-08 (bead hpf-c5tb.2). Batch, first unit, last unit, units, questions.
+# 2026-10-08 (bead hpf-c5tb.2), and less elf-b1-002, elf-b3-004, elf-b4-001
+# and elf-b5-002 from x4 and elf-b7-002 and elf-b8-002 from x5, retired on
+# 2026-10-09 (bead hpf-c5tb.13). Batch, first unit, last unit, units, questions.
 EXPECTED_TABLE = [
     ("x0-pilot", "las-b7-002", "las-b19-002", 6, 19),
     ("x1", "las-b1-001", "las-b8-002", 16, 36),
     ("x2", "las-b8-003", "las-b14-001", 16, 42),
     ("x3", "las-b14-003", "las-b19-003", 15, 42),
-    ("x4", "elf-b1-001", "elf-b5-002", 16, 52),
-    ("x5", "elf-b5-003", "elf-b10-002", 17, 45),
+    ("x4", "elf-b1-001", "elf-b5-001", 12, 36),
+    ("x5", "elf-b5-003", "elf-b10-002", 15, 35),
     ("x6", "elf-b10-003", "elf-b14-003", 16, 48),
     ("x7", "elf-b15-001", "elf-b19-002", 16, 48),
 ]
@@ -65,7 +67,8 @@ INITIAL_TABLE = [
     ("x6", "elf-b10-003", "elf-b14-003", 16, 48),
     ("x7", "elf-b15-001", "elf-b19-002", 16, 48),
 ]
-RETIRED_SINCE_THE_CUT = ("las-b3-001", "las-b5-001")
+RETIRED_SINCE_THE_CUT = ("las-b3-001", "las-b5-001",
+                         "elf-b1-002", "elf-b3-004", "elf-b4-001", "elf-b5-002", "elf-b7-002", "elf-b8-002")
 # A sentence of a pilot unit's rationale (las-b19-002 question 1), not student text.
 PILOT_RATIONALE_SENTENCE = "Den uttalade alternativa finansieringen är driftsbudgeten."
 
@@ -148,8 +151,8 @@ def _table(manifest: dict) -> list[tuple]:
 
 def test_the_partition_reproduces_the_expected_table(manifest):
     assert _table(manifest) == EXPECTED_TABLE
-    assert manifest["eligible"] == {"units": 118, "questions": 332}
-    assert sum(b["question_count"] for b in manifest["batches"][1:]) == 313
+    assert manifest["eligible"] == {"units": 112, "questions": 306}
+    assert sum(b["question_count"] for b in manifest["batches"][1:]) == 287
     for b in manifest["batches"]:
         assert b["unit_count"] == len(b["units"]) and b["question_count"] == len(b["qids"]), b["batch"]
         assert (b["first"], b["last"]) == (b["units"][0], b["units"][-1]), b["batch"]
@@ -169,10 +172,10 @@ def test_the_manifest_is_reproduced_in_another_process(seed):
 
 def test_every_eligible_qid_is_in_exactly_one_batch(manifest, approved_rows):
     qids = [q for b in manifest["batches"] for q in b["qids"]]
-    assert len(qids) == len(set(qids)) == 332
+    assert len(qids) == len(set(qids)) == 306
     assert sorted(qids) == sorted(row["qid"] for row in approved_rows)
     units = [u for b in manifest["batches"] for u in b["units"]]
-    assert len(units) == len(set(units)) == 118
+    assert len(units) == len(set(units)) == 112
 
 
 def test_each_batch_records_the_qids_its_units_export(manifest, approved_rows):
@@ -238,14 +241,17 @@ def test_the_pinned_partition_is_the_initial_cut_less_the_units_retired_since(ma
 
 def test_the_merged_cut_read_as_the_pin_gives_the_committed_manifest(tmp_path, committed_roster):
     # BATCHES.json as merged in 1cbbb84 held the initial cut. Read as the pin
-    # on today's roster, it loses las-b3-001 and las-b5-001 from x1 and nothing
-    # else changes: the result is the committed file, byte for byte. As a
-    # manifest it is refused, and the retired units are named.
+    # on today's roster, it loses las-b3-001 and las-b5-001 from x1, four units
+    # from x4 and two from x5, and nothing else changes: the result is the
+    # committed file, byte for byte. As a manifest it is refused, and the
+    # retired units are named.
     pin = tmp_path / "BATCHES.json"
     initial = batches.initial_cut(_eligible_at_the_cut(committed_roster))
     pin.write_bytes(export_product.render_json({"format": batches.MANIFEST_FORMAT, "batches": initial}))
     assert export_product.render_json(batches.build_manifest(pin_path=pin)) == batches.MANIFEST_PATH.read_bytes()
-    with pytest.raises(ExportError, match=r"still lists retired unit\(s\) \(x1: las-b3-001, las-b5-001\)"):
+    with pytest.raises(ExportError, match=re.escape(
+            "still lists retired unit(s) (x1: las-b3-001, las-b5-001; "
+            "x4: elf-b1-002, elf-b3-004, elf-b4-001, elf-b5-002; x5: elf-b7-002, elf-b8-002)")):
         batches.current_manifest(path=pin)
 
 
@@ -264,7 +270,7 @@ def test_retiring_a_unit_from_a_batch_never_moves_another_unit_between_batches(m
     home = [(b["batch"], b["file"]) for b in manifest["batches"]]
     cases = [{uid} for b in manifest["batches"] for uid in b["units"]]  # every unit on its own, the pilot's too
     cases += [{"las-b1-001", "las-b8-002"}, {"las-b8-003", "las-b14-001", "las-b14-003"},
-              {"elf-b5-002", "elf-b5-003", "elf-b19-002"}, {"las-b7-002", "elf-b18-002", "las-b7-001"}]
+              {"elf-b5-001", "elf-b5-003", "elf-b19-002"}, {"las-b7-002", "elf-b18-002", "las-b7-001"}]
     for retire in cases:
         roster, retired = _retired(committed_roster, registry, retire)
         got, removed = batches.assign(pin, roster, retired)
@@ -971,11 +977,15 @@ def test_a_non_verbatim_quotation_in_an_elf_pilot_entry_is_flagged(approved_rows
 # Review finding B1 on PR #383 (bead hpf-c5tb.9): three corruptions of a real
 # X4 cloze entry that passed while a quotation sharing no run of four words
 # with the text counted as a language example, and the review's reading control.
+# The review corrupted elf-b1-002 gap 2, retired on 2026-10-09 (bead
+# hpf-c5tb.13); the same three kinds of corruption now apply to elf-b2-002 gap
+# 2, and each of them, too, shares no run of four words with the text.
 @pytest.mark.parametrize("qid,old,new", [
-    ("p5-elf-b1-002-r1-ELF-002", "“Margins are narrow”", "“Margins are wide”"),
-    ("p5-elf-b1-002-r1-ELF-002", "“Their popularity has quietly deepened”", "“Their popularity has never deepened”"),
-    ("p5-elf-b1-002-r1-ELF-002", "“If anything, their ___ has quietly deepened.”",
-     "“If anything, our ___ has never deepened.”"),
+    ("p5-elf-b2-002-r1-ELF-002", "“output per employee did not fall at all”", "“output per employee fell sharply”"),
+    ("p5-elf-b2-002-r1-ELF-002", "“Output would slump within a single quarter”",
+     "“Output would slump after a single quarter”"),
+    ("p5-elf-b2-002-r1-ELF-002", "“They predicted that output would ___ within a single quarter”",
+     "“They predicted that profits would ___ after a single quarter”"),
     ("p5-elf-b1-001-r1-ELF-002", "“modest ones, on the order of a few percent”",
      "“enormous ones, on the order of ninety percent”"),
 ], ids=["reversed-source-quotation", "fabricated-filled-frame", "fabricated-blank-frame", "reading-control"])
@@ -994,7 +1004,7 @@ def test_a_language_example_holds_only_where_it_is_listed(approved_rows, languag
     # and so are the listed words anywhere else: in another field, in that field
     # of another gap entry, or in a reading entry, even one they are listed for.
     units, rows, x4 = _by_unit(approved_rows), {row["qid"]: row for row in approved_rows}, _x4()
-    gap, other_gap, reading = "p5-elf-b4-002-r1-ELF-005", "p5-elf-b4-002-r1-ELF-004", "p5-elf-b4-001-r1-ELF-001"
+    gap, other_gap, reading = "p5-elf-b4-002-r1-ELF-005", "p5-elf-b4-002-r1-ELF-004", "p5-elf-b4-003-r1-ELF-001"
     seams = "“Come apart at the seams”"
 
     def changed(entry):
@@ -1025,11 +1035,11 @@ def _seams(examples: list[dict]) -> dict:
 
 
 def _misquoted_frame(examples: list[dict], entries: dict[str, dict]) -> None:
-    """elf-b1-002 gap 2's frame with one word changed, and listed."""
-    step = entries["p5-elf-b1-002-r1-ELF-002"]["steps"][0]
-    step["text"] = step["text"].replace("has quietly deepened.”", "has never deepened.”")
-    examples.append({"qid": "p5-elf-b1-002-r1-ELF-002", "field": "steps[0].text",
-                     "text": "If anything, their ___ has never deepened.", "kind": "expression"})
+    """elf-b2-002 gap 2's frame with one word changed, and listed."""
+    step = entries["p5-elf-b2-002-r1-ELF-002"]["steps"][0]
+    step["text"] = step["text"].replace("within a single quarter”", "within a single month”")
+    examples.append({"qid": "p5-elf-b2-002-r1-ELF-002", "field": "steps[0].text",
+                     "text": "They predicted that output would ___ within a single month", "kind": "expression"})
 
 
 @pytest.mark.parametrize("edit,message", [
@@ -1039,10 +1049,11 @@ def _misquoted_frame(examples: list[dict], entries: dict[str, dict]) -> None:
     (lambda examples, entries: _seams(examples).update(field="technique"), "no such quotation in this field"),
     (lambda examples, entries: _seams(examples).update(qid="p5-elf-b4-002-r1-ELF-004"),
      "no such quotation in this field"),
-    (lambda examples, entries: _seams(examples).update(qid="p5-elf-b4-001-r1-ELF-001"), "no gap question's entry"),
+    (lambda examples, entries: _seams(examples).update(qid="p5-elf-b4-003-r1-ELF-001"), "no gap question's entry"),
     (lambda examples, entries: _seams(examples).update(qid="p5-elf-b4-002-r2-ELF-005"), "no gap question's entry"),
-    (lambda examples, entries: examples.append({"qid": "p5-elf-b1-002-r1-ELF-002", "field": "steps[2].text",
-                                                "text": "Margins are narrow", "kind": "expression"}),
+    # Under four words, so that only the unit's-text check can refuse it.
+    (lambda examples, entries: examples.append({"qid": "p5-elf-b4-002-r1-ELF-002", "field": "steps[0].text",
+                                                "text": "a repair bill", "kind": "expression"}),
      "the unit's text"),
     (_misquoted_frame, "shares a run of four words"),
 ], ids=["twice", "other-words", "other-field", "other-gap-entry", "reading-entry", "no-batch-file", "units-text",

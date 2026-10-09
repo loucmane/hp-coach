@@ -18,6 +18,8 @@ Scope is importing existing P5 content, not implementing the frozen PRD's deferr
 
 *Census update 2026-10-08: the owner has since retired `las-b3-001` and `las-b5-001`, so the current census is 118 retained units / 332 questions (LÄS 50 / 128, ELF 68 / 204). The table below is the census of 2026-10-07; the update follows at the end of this section.*
 
+*Census update 2026-10-09: the owner has since retired six ELF units (`elf-b1-002`, `elf-b3-004`, `elf-b4-001`, `elf-b5-002`, `elf-b7-002`, `elf-b8-002`), so the current census is 112 retained units / 306 questions (LÄS 50 / 128, ELF 62 / 178). That update follows the one of 2026-10-08, at the end of this section.*
+
 | Batch | LÄS | ELF | Retired units / questions |
 |---|---:|---:|---:|
 | 1 | 3 / 8 | 4 / 12 | 0 / 0 |
@@ -71,6 +73,41 @@ The other 81 / 219 are legacy shipped inventory: batch13 says COMPLETE, while th
 | **Total** | **50 / 128** | **68 / 204** | **10 / 41** |
 
 **118 retained units / 332 questions: LÄS 50 / 128, ELF 68 / 204.**
+
+**Census update 2026-10-09 (owner ruling; bead hpf-c5tb.13).** In reply to the coordinator's recommendation on the content concerns of explanation batches X4 and X5, the owner retired six ELF units, with no replacement now. Each is a repair candidate for an r2 attempt in the next generation cycle, which needs the full gate (bead hpf-c5tb.14). The reasons (`pipeline/synthetic/RETIRED.json`; `docs/worklog/hpf-c5tb.md`, X4 content concerns 1–4 and X5 content concerns 1–2):
+- `elf-b1-002`: gap 4's key "erode" is contested. Three independent solvers chose "squander", since "overnight" clashes with the gradual sense of "erode".
+- `elf-b3-004`: option A is true and arguably implied, so the question has two defensible answers.
+- `elf-b5-002`: q4's option A is true, nearly verbatim one half of Teale's distinction.
+- `elf-b4-001`: the passage's timeline contradicts itself (a wreck mapped "two winters ago", then a trial that runs for years), and q3's stem relies on it.
+- `elf-b7-002`: paragraph 4's clause after the dash undercuts "necessary", and q5's key gives Talvenny's concession to the writer.
+- `elf-b8-002`: gap 5's option "collapsed" is acceptable English ("quietly collapsed"), so a distractor is defensible.
+
+All six were ratified legacy units, so the kept legacy inventory of batches 1–13 is now 73 / 185; batches 14–19 are unchanged. The current census, which `pipeline/synthetic/infold/build_roster.py` asserts, differs from the 2026-10-08 table above only in batches 1, 3, 4, 5, 7 and 8 and the totals:
+
+| Batch | LÄS | ELF | Retired units / questions |
+|---|---:|---:|---:|
+| 1 | 3 / 8 | 3 / 7 | 1 / 5 |
+| 2 | 2 / 4 | 4 / 12 | 0 / 0 |
+| 3 | 2 / 4 | 2 / 6 | 2 / 5 |
+| 4 | 2 / 4 | 2 / 6 | 1 / 5 |
+| 5 | 2 / 4 | 3 / 7 | 2 / 9 |
+| 6 | 2 / 4 | 3 / 7 | 2 / 9 |
+| 7 | 3 / 8 | 2 / 2 | 2 / 10 |
+| 8 | 2 / 4 | 2 / 2 | 3 / 14 |
+| 9 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 10 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 11 | 2 / 4 | 4 / 12 | 1 / 4 |
+| 12 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 13 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 14 | 3 / 12 | 2 / 10 | 1 / 5 |
+| 15 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 16 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 17 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 18 | 3 / 8 | 4 / 12 | 0 / 0 |
+| 19 | 3 / 8 | 3 / 11 | 1 / 1 |
+| **Total** | **50 / 128** | **62 / 178** | **16 / 67** |
+
+**112 retained units / 306 questions: LÄS 50 / 128, ELF 62 / 178.**
 
 ## 3. Owner decisions
 
@@ -188,5 +225,7 @@ Approve A–G individually or with overrides. Confirm the exact disclosure wordi
 2. *Removal scope:* **stop serving only.** Authentic LÄS/ELF questions, passages and explanations stay in the repository, `data/` and R2; the product simply no longer serves them to students. No deletion.
 
 **Retirement (owner ruling 2026-10-08, bead hpf-c5tb.2):** `las-b3-001` and `las-b5-001` are retired (§2, census update 2026-10-08). D's 340 questions and the 321 of PR 2b above are now 332 and 313: the pilot's 19 plus 313 in the batches. Batch membership is pinned (bead hpf-c5tb.4): the two units leave X1, now 16 units / 36 questions, and no other unit moves, so X2–X7 are unchanged. A batch never gains a unit; a new unit (batches 20–23) is refused until it is assigned by hand, to a new batch. The partition is `pipeline/synthetic/infold/explanations/BATCHES.json`.
+
+**Retirement (owner ruling 2026-10-09, bead hpf-c5tb.13):** `elf-b1-002`, `elf-b3-004`, `elf-b4-001`, `elf-b5-002`, `elf-b7-002` and `elf-b8-002` are retired (§2, census update 2026-10-09). D's questions are now 306 and PR 2b's 287: the pilot's 19 plus 287 in the batches. Batch membership stays pinned: X4 loses four units, now 12 units / 36 questions, and X5 two, now 15 / 35; no other unit moves, and their 26 explanations leave the batch files. No replacement now: each unit is a repair candidate for an r2 attempt in the next generation cycle, which needs the full gate (bead hpf-c5tb.14).
 
 
