@@ -1,0 +1,516 @@
+/* /dev/redesign-2026-bakeoff — the switcher and stage around the four
+ * directions. A deliberately neutral "lab" chrome: system type, grey
+ * tokens, no accent hue, so it never competes with the candidates.
+ * Everything is scoped under .rb26; nothing touches :root. */
+
+.rb26 {
+  --rb-bg: oklch(94.5% 0.003 260);
+  --rb-bar: oklch(99.4% 0.001 260);
+  --rb-chip: oklch(96.2% 0.002 260);
+  --rb-raised: oklch(100% 0 0);
+  --rb-ink: oklch(23% 0.008 260);
+  --rb-ink-2: oklch(42% 0.008 260);
+  --rb-ink-3: oklch(52% 0.008 260);
+  --rb-line: oklch(89% 0.004 260);
+  --rb-line-2: oklch(82% 0.005 260);
+  --rb-focus: oklch(55% 0.16 255);
+  --rb-shadow: 0 1px 2px oklch(20% 0.01 260 / 0.08), 0 0 0 0.5px oklch(20% 0.01 260 / 0.06);
+  --rb-pop: 0 12px 32px -8px oklch(20% 0.02 260 / 0.22), 0 0 0 1px oklch(20% 0.01 260 / 0.07);
+  --rb-device: oklch(18% 0.004 260);
+  --rb-ui: system-ui, -apple-system, 'Segoe UI', 'Ubuntu Sans', Roboto, sans-serif;
+  --rb-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Ubuntu Sans Mono', monospace;
+
+  /* The bake-off is the whole window, over the app frame. */
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background: var(--rb-bg);
+  color: var(--rb-ink);
+  font-family: var(--rb-ui);
+  font-size: 13px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  color-scheme: light;
+}
+
+.rb26[data-theme='dark'] {
+  --rb-bg: oklch(15% 0.004 260);
+  --rb-bar: oklch(19.5% 0.004 260);
+  --rb-chip: oklch(23% 0.005 260);
+  --rb-raised: oklch(30% 0.006 260);
+  --rb-ink: oklch(93% 0.004 260);
+  --rb-ink-2: oklch(78% 0.006 260);
+  --rb-ink-3: oklch(68% 0.006 260);
+  --rb-line: oklch(29% 0.005 260);
+  --rb-line-2: oklch(36% 0.006 260);
+  --rb-focus: oklch(72% 0.13 255);
+  --rb-shadow: 0 1px 2px oklch(0% 0 0 / 0.4), 0 0 0 0.5px oklch(100% 0 0 / 0.06);
+  --rb-pop: 0 16px 40px -10px oklch(0% 0 0 / 0.6), 0 0 0 1px oklch(100% 0 0 / 0.08);
+  --rb-device: oklch(8% 0.003 260);
+  color-scheme: dark;
+}
+
+.rb26 *,
+.rb26 *::before,
+.rb26 *::after {
+  box-sizing: border-box;
+}
+
+.rb26 :where(button) {
+  font: inherit;
+  color: inherit;
+}
+
+.rb26-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Bar ─────────────────────────────────────────────────────────── */
+
+.rb26-bar {
+  position: relative;
+  z-index: 10;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 8px 12px 8px 16px;
+  background: var(--rb-bar);
+  border-bottom: 1px solid var(--rb-line);
+}
+
+.rb26-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 6px;
+  white-space: nowrap;
+}
+
+.rb26-brand-mark {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background:
+    linear-gradient(var(--rb-ink), var(--rb-ink)) 0 0 / 6px 6px no-repeat,
+    linear-gradient(var(--rb-ink-3), var(--rb-ink-3)) 8px 0 / 6px 6px no-repeat,
+    linear-gradient(var(--rb-ink-3), var(--rb-ink-3)) 0 8px / 6px 6px no-repeat,
+    linear-gradient(var(--rb-ink-2), var(--rb-ink-2)) 8px 8px / 6px 6px no-repeat;
+}
+
+.rb26-brand-name {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.rb26-pill {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--rb-chip);
+  border: 1px solid var(--rb-line);
+  color: var(--rb-ink-2);
+  font-size: 11px;
+}
+
+.rb26-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rb26-spacer {
+  flex: 1;
+}
+
+.rb26-seg {
+  display: inline-flex;
+  margin: 0;
+  padding: 2px;
+  min-width: 0;
+  border: 1px solid var(--rb-line);
+  border-radius: 9px;
+  background: var(--rb-chip);
+}
+
+.rb26-seg button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--rb-ink-2);
+  font-weight: 520;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 120ms ease-out,
+    color 120ms ease-out;
+}
+
+.rb26-seg button:hover {
+  color: var(--rb-ink);
+}
+
+.rb26-seg button[aria-pressed='true'] {
+  background: var(--rb-raised);
+  color: var(--rb-ink);
+  box-shadow: var(--rb-shadow);
+}
+
+.rb26-seg button > span[aria-hidden] {
+  display: inline-flex;
+}
+
+.rb26 kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border: 1px solid var(--rb-line-2);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  font-family: var(--rb-mono);
+  font-size: 10.5px;
+  line-height: 1;
+  color: var(--rb-ink-3);
+  background: var(--rb-bar);
+}
+
+.rb26-toggle,
+.rb26-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--rb-line);
+  border-radius: 9px;
+  background: var(--rb-chip);
+  color: var(--rb-ink-2);
+  font-weight: 520;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.rb26-icon-btn {
+  width: 34px;
+  padding: 0;
+  justify-content: center;
+  background: transparent;
+  border-color: transparent;
+}
+
+.rb26-toggle:hover,
+.rb26-icon-btn:hover {
+  color: var(--rb-ink);
+  border-color: var(--rb-line-2);
+}
+
+.rb26-toggle[aria-pressed='true'],
+.rb26-toggle[aria-expanded='true'] {
+  background: var(--rb-ink);
+  border-color: var(--rb-ink);
+  color: var(--rb-bar);
+}
+
+.rb26-toggle[aria-pressed='true'] kbd {
+  background: transparent;
+  color: inherit;
+  border-color: color-mix(in oklch, var(--rb-bar) 45%, transparent);
+}
+
+.rb26 :focus-visible {
+  outline: 2px solid var(--rb-focus);
+  outline-offset: 2px;
+}
+
+.rb26-restore {
+  position: fixed;
+  z-index: 20;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--rb-line);
+  border-radius: 999px;
+  background: var(--rb-bar);
+  color: var(--rb-ink-2);
+  box-shadow: var(--rb-pop);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* ── "Om" panel ──────────────────────────────────────────────────── */
+
+.rb26-info-wrap {
+  position: relative;
+}
+
+.rb26-info {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: min(480px, calc(100vw - 24px));
+  max-height: calc(100dvh - 90px);
+  overflow: auto;
+  padding: 20px 22px 18px;
+  border-radius: 14px;
+  background: var(--rb-bar);
+  box-shadow: var(--rb-pop);
+  color: var(--rb-ink);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.rb26-info-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.rb26-info h2 {
+  margin: 0 32px 10px 0;
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.rb26-info-key {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-right: 4px;
+  border-radius: 6px;
+  background: var(--rb-ink);
+  color: var(--rb-bar);
+  font-size: 12px;
+  vertical-align: 1px;
+}
+
+.rb26-info-tag {
+  font-weight: 450;
+  color: var(--rb-ink-2);
+}
+
+.rb26-info ul {
+  margin: 0 0 10px;
+  padding-left: 18px;
+}
+
+.rb26-info li + li {
+  margin-top: 6px;
+}
+
+.rb26-info-dir + .rb26-info-dir {
+  margin-top: 16px;
+}
+
+.rb26-info-risk {
+  margin: 0 0 6px;
+  color: var(--rb-ink-2);
+  font-style: italic;
+}
+
+.rb26-info-refs {
+  margin: 0;
+  color: var(--rb-ink-2);
+  font-size: 12.5px;
+}
+
+.rb26-info-screen {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rb-line);
+}
+
+.rb26-info-screen h3 {
+  margin: 0 0 4px;
+  font-size: 13.5px;
+  font-weight: 650;
+}
+
+.rb26-info-screen p {
+  margin: 0 0 8px;
+  color: var(--rb-ink-2);
+}
+
+.rb26-info-keys {
+  font-size: 12.5px;
+}
+
+/* ── Stage ───────────────────────────────────────────────────────── */
+
+.rb26-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.rb26-stage[data-width='desktop'] {
+  place-items: stretch;
+}
+
+.rb26-desk,
+.rb26-fill {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.rb26-device {
+  padding: 10px;
+  border-radius: 58px;
+  background: var(--rb-device);
+  box-shadow:
+    0 0 0 1px oklch(40% 0.005 260 / 0.5),
+    0 30px 60px -20px oklch(10% 0.01 260 / 0.45);
+}
+
+.rb26-device-screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: 48px;
+  /* Contain fixed-position descendants to the device screen. */
+  transform: translateZ(0);
+}
+
+.rb26-loading {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  color: var(--rb-ink-3);
+  font-size: 12px;
+}
+
+/* ── Side by side ────────────────────────────────────────────────── */
+
+.rb26-sbs {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: repeat(var(--rb26-cols), minmax(0, 1fr));
+  align-content: center;
+  justify-items: center;
+}
+
+.rb26-thumb {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.rb26-thumb figcaption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.rb26-thumb figcaption strong {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.rb26-thumb figcaption span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--rb-ink-2);
+}
+
+.rb26-thumb-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: var(--rb-pop);
+  transform: translateZ(0);
+}
+
+.rb26-thumb-frame[data-width='phone'] {
+  border-radius: 22px;
+}
+
+.rb26-thumb-open {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.rb26-thumb-open:hover {
+  box-shadow: inset 0 0 0 2px var(--rb-focus);
+}
+
+.rb26-thumb-open:focus-visible {
+  outline-offset: -2px;
+}
+
+/* ── Narrow screens: the bar wraps into scrollable rows ──────────── */
+
+@media (max-width: 1180px) {
+  .rb26-label {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .rb26-bar {
+    flex-wrap: wrap;
+    row-gap: 8px;
+    padding: 8px 10px;
+  }
+  .rb26-brand {
+    flex: 1 0 auto;
+  }
+  .rb26-spacer {
+    display: none;
+  }
+  .rb26-seg {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .rb26-seg kbd {
+    display: none;
+  }
+}
+
+/* The chrome only — each direction honours reduced motion on its own. */
+@media (prefers-reduced-motion: reduce) {
+  .rb26-bar *,
+  .rb26-info,
+  .rb26-restore {
+    transition-duration: 0.01ms !important;
+  }
+}

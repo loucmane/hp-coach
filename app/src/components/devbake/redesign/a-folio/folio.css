@@ -1,0 +1,3027 @@
+/* A · Folio — editorial paper, next generation.
+ *
+ * HP-Coach as a beautifully set book: warm paper, warm charcoal ink and
+ * one ink-blue accent. Literata (variable, opsz) for passages and
+ * headings, Inter (opsz 14–32) for the interface, tabular figures for
+ * data. Flat — one continuous sheet of paper: no panels, no cards, no
+ * tinted sidebar. Rules (a heavy one for the lead, hairlines elsewhere,
+ * a double rule before Logga ut) and spacing make the structure; nothing
+ * floats except the account slip. Motion is 120–180 ms ease-out,
+ * page-like, never springy.
+ *
+ * Everything is scoped under [data-rd='folio']; nothing touches :root.
+ * Type: nine sizes (--fo-t12 … --fo-t56, the last for the lead's headline
+ * only). Space: a 4 px scale (--fo-s1 … --fo-s16). Radii: --fo-r1
+ * (controls) and --fo-r2 (the phone's account sheet); paper slips are
+ * square-cut (2 px). Italic is kept for subtitles, marginalia headings
+ * and the colophon. */
+
+[data-rd='folio'] {
+  --fo-paper: oklch(97% 0.012 85);
+  --fo-paper-2: oklch(95.2% 0.014 83);
+  --fo-paper-3: oklch(92.4% 0.016 81);
+  --fo-leaf: oklch(98.8% 0.007 88);
+  --fo-menu: oklch(99.2% 0.005 88);
+  --fo-ink: oklch(21% 0.01 60);
+  --fo-ink-2: oklch(37% 0.012 62);
+  --fo-ink-3: oklch(47.5% 0.012 65);
+  --fo-rule: oklch(86.5% 0.013 78);
+  --fo-rule-2: oklch(74% 0.014 72);
+  --fo-accent: oklch(43% 0.12 258);
+  --fo-accent-2: oklch(36% 0.115 258);
+  --fo-accent-ink: oklch(41% 0.12 258);
+  --fo-accent-soft: oklch(93.6% 0.024 255);
+  /* Filled controls: the same ink-blue in light; a deeper, quieter blue
+   * in dark, so a button never turns pastel. */
+  --fo-accent-fill: oklch(43% 0.12 258);
+  --fo-accent-fill-2: oklch(36% 0.115 258);
+  --fo-on-accent: oklch(98.6% 0.006 85);
+  /* The heavy rule (the lead, the account slip's head). */
+  --fo-rule-strong: oklch(21% 0.01 60);
+  --fo-ok: oklch(44% 0.095 152);
+  --fo-ok-soft: oklch(94% 0.03 150);
+  --fo-bad: oklch(46.5% 0.135 30);
+  --fo-bad-soft: oklch(94.6% 0.024 35);
+  --fo-mark: oklch(91.5% 0.075 92);
+  --fo-focus: oklch(50% 0.16 258);
+  /* The spread's fold: a soft shade either side of the spine. */
+  --fo-fold: oklch(40% 0.02 70 / 0.05);
+  --fo-fold-2: oklch(40% 0.02 70 / 0.12);
+  --fo-scrim: oklch(21% 0.01 60 / 0.32);
+  --fo-pop:
+    0 1px 0 oklch(30% 0.02 60 / 0.04), 0 18px 40px -16px oklch(28% 0.03 60 / 0.3),
+    0 0 0 1px oklch(30% 0.02 60 / 0.07);
+
+  --fo-serif:
+    'Literata', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Liberation Serif',
+    serif;
+  --fo-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Ubuntu Sans', sans-serif;
+
+  /* Type scale — eight sizes, nothing in between. */
+  --fo-t12: 12px;
+  --fo-t13: 13px;
+  --fo-t15: 15px;
+  --fo-t17: 17px;
+  --fo-t19: 19px;
+  --fo-t24: 24px;
+  --fo-t32: 32px;
+  --fo-t44: 44px;
+  --fo-t56: 56px;
+
+  /* Space — a 4 px scale. */
+  --fo-s1: 4px;
+  --fo-s2: 8px;
+  --fo-s3: 12px;
+  --fo-s4: 16px;
+  --fo-s6: 24px;
+  --fo-s8: 32px;
+  --fo-s12: 48px;
+  --fo-s16: 64px;
+
+  --fo-r1: 6px;
+  --fo-r2: 12px;
+  --fo-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --fo-d1: 120ms;
+  --fo-d2: 180ms;
+  --fo-d-out: 100ms;
+  /* A followed ¶ link: hold the mark, then let it go. */
+  --fo-flash: 700ms;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: clip;
+  background: var(--fo-paper);
+  color: var(--fo-ink);
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t15);
+  line-height: 1.5;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  interpolate-size: allow-keywords;
+  color-scheme: light;
+}
+
+[data-rd='folio'][data-theme='dark'] {
+  --fo-paper: oklch(21.5% 0.009 62);
+  --fo-paper-2: oklch(19% 0.008 62);
+  --fo-paper-3: oklch(26.5% 0.01 64);
+  --fo-leaf: oklch(24.2% 0.01 64);
+  --fo-menu: oklch(28% 0.011 64);
+  /* Ink a step under white, so the page does not glow. */
+  --fo-ink: oklch(88% 0.012 85);
+  --fo-ink-2: oklch(79% 0.012 82);
+  --fo-ink-3: oklch(68% 0.012 78);
+  --fo-rule: oklch(33.5% 0.01 66);
+  --fo-rule-2: oklch(46% 0.012 68);
+  --fo-rule-strong: oklch(64% 0.012 70);
+  /* A quiet accent on warm charcoal: low chroma, never a glow. Marks and
+   * links keep the light accent; filled controls take the deep one. */
+  --fo-accent: oklch(69% 0.07 255);
+  --fo-accent-2: oklch(74% 0.065 255);
+  --fo-accent-ink: oklch(79% 0.07 255);
+  --fo-accent-soft: oklch(30% 0.03 255);
+  --fo-accent-fill: oklch(50% 0.09 256);
+  --fo-accent-fill-2: oklch(46% 0.09 256);
+  --fo-on-accent: oklch(97% 0.008 85);
+  --fo-ok: oklch(79% 0.09 152);
+  --fo-ok-soft: oklch(29% 0.035 152);
+  --fo-bad: oklch(77% 0.1 32);
+  --fo-bad-soft: oklch(30.5% 0.04 32);
+  --fo-mark: oklch(37% 0.06 92);
+  --fo-focus: oklch(77% 0.11 255);
+  --fo-fold: oklch(0% 0 0 / 0.08);
+  --fo-fold-2: oklch(0% 0 0 / 0.2);
+  --fo-scrim: oklch(8% 0.01 60 / 0.55);
+  --fo-pop: 0 18px 44px -14px oklch(5% 0.01 60 / 0.7), 0 0 0 1px var(--fo-rule-2);
+  color-scheme: dark;
+}
+
+[data-rd='folio'] *,
+[data-rd='folio'] *::before,
+[data-rd='folio'] *::after {
+  box-sizing: border-box;
+}
+
+[data-rd='folio'] :where(button) {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+[data-rd='folio'] :where(h1, h2, h3, h4, p, ol, ul, figure, blockquote, dl, dd) {
+  margin: 0;
+}
+
+[data-rd='folio'] :where(ol, ul) {
+  padding: 0;
+  list-style: none;
+}
+
+[data-rd='folio'] :focus-visible {
+  outline: 2px solid var(--fo-focus);
+  outline-offset: 2px;
+  border-radius: var(--fo-r1);
+}
+
+[data-rd='folio'] ::selection {
+  background: var(--fo-accent-soft);
+}
+
+.fo-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ── Type ────────────────────────────────────────────────────────── */
+
+.fo-label {
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t12);
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fo-ink-3);
+}
+
+.fo-h2 {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t24);
+  line-height: 1.25;
+  font-weight: 450;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+}
+
+.fo-h3 {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  line-height: 1.3;
+  font-weight: 560;
+  color: var(--fo-ink);
+}
+
+.fo-meta {
+  font-size: var(--fo-t13);
+  color: var(--fo-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Controls ────────────────────────────────────────────────────── */
+
+.fo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fo-s3);
+  min-height: 44px;
+  padding: 0 var(--fo-s6);
+  border: 0;
+  border-radius: var(--fo-r1);
+  background: var(--fo-accent-fill);
+  color: var(--fo-on-accent);
+  font-size: var(--fo-t15);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  transition: background var(--fo-d1) var(--fo-ease);
+}
+
+.fo-btn:hover {
+  background: var(--fo-accent-fill-2);
+}
+
+.fo-btn:disabled {
+  background: var(--fo-paper-3);
+  color: var(--fo-ink-3);
+  cursor: not-allowed;
+}
+
+.fo-btn--big {
+  min-height: 52px;
+  padding: 0 var(--fo-s8);
+  font-size: var(--fo-t17);
+}
+
+.fo-btn .fo-kbd {
+  border-color: color-mix(in oklch, var(--fo-on-accent) 40%, transparent);
+  background: transparent;
+  color: color-mix(in oklch, var(--fo-on-accent) 82%, transparent);
+}
+
+.fo-btn:disabled .fo-kbd {
+  color: var(--fo-ink-3);
+  border-color: var(--fo-rule-2);
+}
+
+.fo-quiet-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fo-s2);
+  min-height: 44px;
+  padding: 0 var(--fo-s4);
+  border: 1px solid var(--fo-rule-2);
+  border-radius: var(--fo-r1);
+  background: transparent;
+  color: var(--fo-ink);
+  font-size: var(--fo-t15);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--fo-d1) var(--fo-ease);
+}
+
+.fo-quiet-btn:hover {
+  background: var(--fo-paper-3);
+}
+
+.fo-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fo-s2);
+  min-height: 44px;
+  padding: 0 var(--fo-s3);
+  border: 0;
+  border-radius: var(--fo-r1);
+  background: transparent;
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t15);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background var(--fo-d1) var(--fo-ease),
+    color var(--fo-d1) var(--fo-ease);
+}
+
+.fo-ghost:hover {
+  background: var(--fo-paper-3);
+  color: var(--fo-ink);
+}
+
+.fo-ghost[aria-pressed='true'] {
+  color: var(--fo-accent-ink);
+  background: var(--fo-accent-soft);
+}
+
+.fo-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fo-s1);
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fo-accent-ink);
+  font-size: var(--fo-t13);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--fo-accent-ink) 35%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.fo-link:hover {
+  text-decoration-color: currentColor;
+}
+
+.fo-kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border: 1px solid var(--fo-rule-2);
+  border-radius: 4px;
+  background: var(--fo-leaf);
+  color: var(--fo-ink-2);
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t12);
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* No keyboard hints on a touch screen. */
+[data-width='phone'] .fo-kbd {
+  display: none;
+}
+
+.fo-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fo-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--fo-rule-2);
+}
+
+.fo-dots i[data-state='done'] {
+  background: var(--fo-ink-2);
+  border-color: var(--fo-ink-2);
+}
+
+.fo-dots i[data-state='now'] {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--fo-accent);
+}
+
+/* Tooltip for the collapsed rail: [data-tip] on the control. */
+.fo-tip {
+  position: relative;
+}
+
+.fo-tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: calc(100% + var(--fo-s3));
+  top: 50%;
+  translate: -4px -50%;
+  z-index: 30;
+  padding: 6px 10px;
+  border-radius: var(--fo-r1);
+  background: var(--fo-ink);
+  color: var(--fo-paper);
+  font-size: var(--fo-t13);
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--fo-d-out) var(--fo-ease),
+    translate var(--fo-d-out) var(--fo-ease);
+}
+
+.fo-tip:hover::after,
+.fo-tip:focus-visible::after {
+  opacity: 1;
+  translate: 0 -50%;
+  transition-duration: var(--fo-d2);
+  transition-delay: 240ms;
+}
+
+/* ── Desktop app frame: contents + page, one sheet ───────────────── */
+
+.fo-app {
+  display: grid;
+  grid-template-columns: var(--fo-side-w, 248px) minmax(0, 1fr);
+  height: 100%;
+  transition: grid-template-columns var(--fo-d2) var(--fo-ease);
+}
+
+.fo-app[data-collapsed='true'] {
+  --fo-side-w: 76px;
+}
+
+/* The contents sit on the same paper as the page: a column rule, not a
+ * panel. */
+.fo-side {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--fo-s6) var(--fo-s3) var(--fo-s3);
+  background: var(--fo-paper);
+  border-right: 1px solid var(--fo-rule);
+}
+
+.fo-side-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fo-s2);
+  height: 44px;
+  padding: 0 0 0 var(--fo-s3);
+  margin-bottom: var(--fo-s6);
+}
+
+.fo-app[data-collapsed='true'] .fo-side-head {
+  flex-direction: column;
+  height: auto;
+  padding: 0;
+  gap: var(--fo-s3);
+}
+
+.fo-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t19);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  white-space: nowrap;
+  color: var(--fo-ink);
+}
+
+.fo-wordmark em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--fo-ink-2);
+}
+
+.fo-wordmark b {
+  color: var(--fo-accent);
+  font-weight: 700;
+}
+
+/* The rail's monogram: the wordmark's first letters, set — not a badge. */
+.fo-monogram {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t19);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--fo-ink);
+}
+
+.fo-icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fo-r1);
+  background: transparent;
+  color: var(--fo-ink-3);
+  cursor: pointer;
+  transition:
+    background var(--fo-d1) var(--fo-ease),
+    color var(--fo-d1) var(--fo-ease);
+}
+
+.fo-icon-btn:hover {
+  background: var(--fo-paper-3);
+  color: var(--fo-ink);
+}
+
+.fo-icon-btn[aria-pressed='true'] {
+  color: var(--fo-accent-ink);
+  background: var(--fo-accent-soft);
+}
+
+/* The destinations as a typeset contents list: words, no pictures. */
+.fo-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fo-nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--fo-s3);
+  width: 100%;
+  min-height: 44px;
+  padding: 0 var(--fo-s3) 0 var(--fo-s4);
+  border: 0;
+  border-radius: var(--fo-r1);
+  background: transparent;
+  color: var(--fo-ink-2);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+  transition: color var(--fo-d1) var(--fo-ease);
+}
+
+.fo-nav-item:hover {
+  color: var(--fo-ink);
+}
+
+.fo-nav-item:hover .fo-nav-label {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fo-rule-2);
+  text-underline-offset: 5px;
+}
+
+/* One indicator: the accent rule beside the entry, the word in ink. */
+.fo-nav-item[aria-current='page'] {
+  color: var(--fo-ink);
+  font-weight: 600;
+}
+
+.fo-nav-item[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--fo-accent);
+}
+
+.fo-nav-label {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.fo-nav-count {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t15);
+  font-weight: 400;
+  color: var(--fo-ink-3);
+  font-variant-numeric: oldstyle-nums proportional-nums;
+}
+
+.fo-app[data-collapsed='true'] .fo-nav-item {
+  justify-content: center;
+  padding: 0;
+}
+
+/* The thumb index: one letter a destination, in the rail's centre. */
+.fo-thumb {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t19);
+  line-height: 1;
+}
+
+.fo-app[data-collapsed='true'] .fo-nav-item[aria-current='page']::before {
+  left: 6px;
+}
+
+.fo-app[data-collapsed='true'] .fo-nav-label,
+.fo-app[data-collapsed='true'] .fo-nav-count {
+  display: none;
+}
+
+/* Folded, the rail's tooltips become pulled tabs: the full word slides out
+ * of the rail's edge on paper, the way a thumb-index tab is pulled. */
+.fo-app[data-collapsed='true'] .fo-nav-item.fo-tip::after {
+  left: calc(100% + var(--fo-s3));
+  translate: -6px -50%;
+  padding: 9px 16px 9px 14px;
+  border: 1px solid var(--fo-rule-2);
+  border-left: 0;
+  border-radius: 0 2px 2px 0;
+  background: var(--fo-menu);
+  color: var(--fo-ink);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-weight: 400;
+  box-shadow: 4px 6px 16px -10px oklch(28% 0.03 60 / 0.35);
+}
+
+.fo-app[data-collapsed='true'] .fo-nav-item.fo-tip:hover::after,
+.fo-app[data-collapsed='true'] .fo-nav-item.fo-tip:focus-visible::after {
+  translate: 0 -50%;
+  transition-duration: 140ms;
+  transition-delay: 60ms;
+}
+
+.fo-nav-dot {
+  display: none;
+}
+
+/* Something due in Öva: a notch in the rail's edge, not a dot that could
+ * pass for a third umlaut point. */
+.fo-app[data-collapsed='true'] .fo-nav-dot {
+  display: block;
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  right: calc(-1 * var(--fo-s3));
+  width: 3px;
+  border-radius: 2px 0 0 2px;
+  background: var(--fo-ink-3);
+}
+
+/* The account is the contents' last entry, under its own hairline. */
+.fo-side-foot {
+  position: relative;
+  margin-top: auto;
+  padding-top: var(--fo-s2);
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-account {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1px;
+  width: 100%;
+  min-height: 52px;
+  padding: 6px var(--fo-s3) 6px var(--fo-s4);
+  border: 0;
+  border-radius: var(--fo-r1);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  line-height: 1.3;
+}
+
+.fo-account b {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-weight: 400;
+  color: var(--fo-ink-2);
+  transition: color var(--fo-d1) var(--fo-ease);
+}
+
+.fo-account span {
+  font-size: var(--fo-t13);
+  color: var(--fo-ink-3);
+}
+
+.fo-account:hover b {
+  color: var(--fo-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fo-rule-2);
+  text-underline-offset: 5px;
+}
+
+.fo-account[aria-expanded='true'] b {
+  color: var(--fo-ink);
+  font-weight: 600;
+}
+
+.fo-app[data-collapsed='true'] .fo-account {
+  align-items: center;
+  padding: 6px 0;
+}
+
+.fo-app[data-collapsed='true'] .fo-account b {
+  font-size: var(--fo-t13);
+}
+
+.fo-avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--fo-leaf);
+  color: var(--fo-ink-2);
+  box-shadow: inset 0 0 0 1px var(--fo-rule-2);
+}
+
+/* The account slip: a square-cut card of lighter paper, its entries set
+ * as words between hairlines (a double rule before Logga ut). A popover
+ * on desktop, a bottom sheet on phone. */
+.fo-menu {
+  position: absolute;
+  z-index: 40;
+  width: 288px;
+  padding: 0 0 var(--fo-s1);
+  border-radius: 2px;
+  background: var(--fo-menu);
+  box-shadow: var(--fo-pop);
+  animation: fo-menu-in var(--fo-d2) var(--fo-ease);
+}
+
+.fo-menu[data-anchor='side'] {
+  left: 0;
+  bottom: calc(100% + var(--fo-s2));
+}
+
+.fo-app[data-collapsed='true'] .fo-menu[data-anchor='side'] {
+  left: calc(100% + var(--fo-s6));
+  bottom: 0;
+}
+
+.fo-menu-head {
+  padding: var(--fo-s4) 20px var(--fo-s3);
+  border-bottom: 2px solid var(--fo-rule-strong);
+}
+
+.fo-menu-head b {
+  display: block;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t19);
+  font-weight: 500;
+  letter-spacing: -0.008em;
+}
+
+.fo-menu-head span {
+  font-size: var(--fo-t13);
+  color: var(--fo-ink-3);
+}
+
+.fo-menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1px;
+  width: 100%;
+  min-height: 48px;
+  padding: var(--fo-s2) 20px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--fo-ink);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--fo-d1) var(--fo-ease);
+}
+
+.fo-menu-head + .fo-menu-item {
+  border-top: 0;
+}
+
+.fo-menu-item,
+.fo-theme {
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-menu-item:hover {
+  background: var(--fo-paper-2);
+}
+
+.fo-menu-hint {
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t13);
+  line-height: 1.35;
+  color: var(--fo-ink-3);
+}
+
+/* With the next entry's own hairline: a double rule. */
+.fo-menu-sep {
+  height: 0;
+  margin: 3px 0 0;
+  border: 0;
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-theme {
+  padding: var(--fo-s2) 20px var(--fo-s3);
+}
+
+.fo-theme-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: var(--fo-t13);
+  color: var(--fo-ink-3);
+}
+
+/* Theme: three words, the chosen one underlined in the accent — a
+ * typeset choice rather than a toggle box. */
+.fo-seg {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  border: 0;
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-seg button {
+  position: relative;
+  min-height: 44px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t15);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.fo-seg button:hover {
+  color: var(--fo-ink);
+}
+
+.fo-seg button[aria-pressed='true'] {
+  color: var(--fo-ink);
+  font-weight: 650;
+}
+
+.fo-seg button[aria-pressed='true']::after {
+  content: '';
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: -1px;
+  height: 2px;
+  background: var(--fo-accent);
+}
+
+@keyframes fo-menu-in {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+}
+
+.fo-main {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fo-rule-2) transparent;
+}
+
+.fo-enter {
+  animation: fo-page-in var(--fo-d2) var(--fo-ease);
+}
+
+@keyframes fo-page-in {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
+}
+
+/* ── Idag ────────────────────────────────────────────────────────── */
+
+.fo-home {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 288px;
+  column-gap: clamp(40px, 4vw, 64px);
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: var(--fo-s8) clamp(40px, 5vw, 72px) var(--fo-s16);
+}
+
+.fo-masthead {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--fo-s6);
+  padding-bottom: var(--fo-s3);
+  margin-bottom: var(--fo-s8);
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-count {
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t15);
+}
+
+.fo-count strong {
+  font-weight: 650;
+  color: var(--fo-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-greet {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t32);
+  line-height: 1.15;
+  font-weight: 400;
+  letter-spacing: -0.016em;
+  text-wrap: balance;
+}
+
+.fo-day {
+  margin-top: var(--fo-s2);
+  max-width: 36em;
+  font-size: var(--fo-t17);
+  line-height: 1.5;
+  color: var(--fo-ink-2);
+  text-wrap: pretty;
+}
+
+/* The lead: no box. A heavy rule opens it, a ribbon bookmark hangs from
+ * the rule, the headline is the largest type on the page. */
+.fo-resume {
+  position: relative;
+  margin-top: var(--fo-s8);
+  padding: var(--fo-s6) 0 var(--fo-s8);
+  border-top: 2px solid var(--fo-rule-strong);
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-ribbon {
+  position: absolute;
+  top: -2px;
+  right: var(--fo-s4);
+  width: 14px;
+  height: 36px;
+  background: var(--fo-accent);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%);
+}
+
+.fo-resume-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--fo-s4);
+  margin-bottom: var(--fo-s3);
+  padding-right: var(--fo-s12);
+}
+
+.fo-resume-when {
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+}
+
+.fo-resume-title {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t56);
+  line-height: 1.04;
+  font-weight: 400;
+  letter-spacing: -0.024em;
+  text-wrap: balance;
+}
+
+.fo-resume-sub {
+  margin-top: var(--fo-s2);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t24);
+  line-height: 1.3;
+  font-style: italic;
+  color: var(--fo-ink-2);
+}
+
+.fo-resume-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--fo-s3);
+  margin-top: var(--fo-s6);
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t15);
+}
+
+.fo-resume-foot {
+  display: flex;
+  align-items: center;
+  gap: var(--fo-s4);
+  margin-top: var(--fo-s6);
+}
+
+.fo-resume-foot .fo-hint {
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+}
+
+.fo-section {
+  margin-top: var(--fo-s12);
+}
+
+.fo-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--fo-s4);
+  padding-bottom: var(--fo-s3);
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+/* The rest of the day as a contents list: number, entry, leader dots,
+ * the minutes where a book puts its page numbers. */
+.fo-plan-row {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: start;
+  column-gap: var(--fo-s3);
+  width: 100%;
+  padding: var(--fo-s4) 0;
+  border: 0;
+  border-bottom: 1px solid var(--fo-rule);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fo-plan-row:hover .fo-plan-title {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fo-rule-2);
+  text-underline-offset: 5px;
+}
+
+.fo-plan-row:hover .fo-plan-min {
+  color: var(--fo-ink);
+}
+
+.fo-plan-body {
+  min-width: 0;
+}
+
+.fo-plan-line {
+  display: flex;
+  align-items: baseline;
+}
+
+.fo-leader {
+  flex: 1;
+  min-width: var(--fo-s6);
+  height: 4px;
+  margin: 0 var(--fo-s2);
+  background-image: radial-gradient(circle, var(--fo-ink-3) 0.8px, transparent 1.2px);
+  background-size: 6px 4px;
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  opacity: 0.7;
+}
+
+.fo-plan-n {
+  padding-top: 1px;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t24);
+  line-height: 1;
+  font-weight: 400;
+  color: var(--fo-ink-3);
+  font-variant-numeric: oldstyle-nums;
+}
+
+.fo-plan-title {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-size: var(--fo-t17);
+  font-weight: 600;
+  color: var(--fo-ink);
+}
+
+.fo-plan-title > span {
+  margin-left: var(--fo-s2);
+}
+
+.fo-plan-title span {
+  font-weight: 400;
+  color: var(--fo-ink-2);
+}
+
+.fo-plan-why {
+  display: block;
+  margin-top: var(--fo-s1);
+  font-size: var(--fo-t15);
+  line-height: 1.5;
+  color: var(--fo-ink-2);
+  text-wrap: pretty;
+}
+
+.fo-plan-min {
+  flex: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--fo-s2);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  color: var(--fo-ink-2);
+  font-variant-numeric: oldstyle-nums tabular-nums;
+  white-space: nowrap;
+  transition: color var(--fo-d1) var(--fo-ease);
+}
+
+.fo-plan-min svg {
+  align-self: center;
+  color: var(--fo-ink-3);
+}
+
+.fo-week {
+  margin-top: var(--fo-s4);
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+}
+
+/* Marginalia: behind a column rule, headed in italic, quieter by size. */
+.fo-aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fo-s8);
+  padding-top: var(--fo-s1);
+  padding-left: var(--fo-s8);
+  border-left: 1px solid var(--fo-rule);
+}
+
+/* A margin head outweighs its note: ink and 500, the note at ≤ 500. */
+.fo-aside-block > .fo-h3 {
+  margin-bottom: var(--fo-s3);
+  font-size: var(--fo-t19);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--fo-ink);
+}
+
+.fo-prog-figure {
+  display: flex;
+  align-items: baseline;
+  gap: var(--fo-s2);
+}
+
+.fo-prog-n {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t44);
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fo-prog-n sup {
+  margin-left: 2px;
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t13);
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--fo-accent-ink);
+  vertical-align: 1.9em;
+}
+
+.fo-prog-of {
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t15);
+}
+
+/* The week's change, said in words — not a green dashboard ticker. */
+.fo-delta {
+  margin-top: var(--fo-s2);
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t15);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-halves {
+  margin-top: var(--fo-s1);
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t13);
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-scale {
+  position: relative;
+  height: 32px;
+  margin-top: var(--fo-s4);
+}
+
+.fo-scale-axis {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 10px;
+  height: 1px;
+  background: var(--fo-rule-2);
+}
+
+.fo-scale-range {
+  position: absolute;
+  top: 6px;
+  height: 9px;
+  border-radius: 2px;
+  background: var(--fo-accent-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--fo-accent) 30%, transparent);
+}
+
+.fo-scale-mark {
+  position: absolute;
+  top: 2px;
+  width: 2px;
+  height: 17px;
+  margin-left: -1px;
+  background: var(--fo-accent);
+}
+
+.fo-scale-tick {
+  position: absolute;
+  top: 18px;
+  translate: -50% 0;
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t12);
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-scale-tick::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  width: 1px;
+  height: 5px;
+  background: var(--fo-rule-2);
+}
+
+.fo-footnote {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr);
+  margin-top: var(--fo-s4);
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t12);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.fo-footnote b {
+  color: var(--fo-accent-ink);
+  font-weight: 600;
+}
+
+.fo-trap-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--fo-s3);
+  margin-bottom: 2px;
+  font-size: var(--fo-t13);
+  color: var(--fo-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-trap-meta b {
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+.fo-trap-name {
+  display: block;
+  font-size: var(--fo-t15);
+  font-weight: 500;
+  color: var(--fo-ink);
+}
+
+.fo-trap-pattern {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--fo-t15);
+  line-height: 1.45;
+  color: var(--fo-ink-2);
+  text-wrap: pretty;
+}
+
+.fo-recent {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  column-gap: var(--fo-s4);
+  align-items: baseline;
+  padding: 6px 0;
+  font-size: var(--fo-t15);
+}
+
+.fo-recent dt {
+  font-weight: 500;
+}
+
+.fo-recent .fo-score {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fo-recent .fo-when {
+  min-width: 56px;
+  text-align: right;
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+}
+
+.fo-aside .fo-link {
+  margin-top: var(--fo-s2);
+}
+
+/* ── Stub pages (round 2) ────────────────────────────────────────── */
+
+.fo-stub {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 96px var(--fo-s16);
+}
+
+.fo-stub h1 {
+  margin-top: var(--fo-s3);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t44);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.fo-stub p {
+  margin-top: var(--fo-s4);
+  font-size: var(--fo-t17);
+  color: var(--fo-ink-2);
+}
+
+.fo-stub .fo-stub-note {
+  margin-top: var(--fo-s12);
+  padding-top: var(--fo-s4);
+  border-top: 1px solid var(--fo-rule);
+  font-size: var(--fo-t13);
+  color: var(--fo-ink-3);
+}
+
+/* ── Drill: running heads ────────────────────────────────────────── */
+/* No app bar: each page carries its own running head, sticky at the top
+ * of its scroll, ruled within the page's margins. */
+
+.fo-drill {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.fo-drill > .fo-spread,
+.fo-drill > .fo-done {
+  flex: 1;
+  min-height: 0;
+}
+
+.fo-runhead {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  flex: none;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--fo-s3);
+  height: 56px;
+  padding: 0 var(--fo-s3);
+  /* The page's own paper and fold, so the head is part of the page. */
+  background: inherit;
+}
+
+.fo-runhead::after {
+  content: '';
+  position: absolute;
+  left: var(--fo-s4);
+  right: var(--fo-s4);
+  bottom: 0;
+  height: 1px;
+  background: var(--fo-rule);
+}
+
+/* Text passing under the head fades out rather than being cut in half. */
+.fo-runhead::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 20px;
+  background: linear-gradient(to bottom, var(--fo-paper), transparent);
+  pointer-events: none;
+}
+
+.fo-runhead > :last-child {
+  justify-self: end;
+}
+
+.fo-runhead-title {
+  justify-self: center;
+  white-space: nowrap;
+}
+
+/* The recto keeps one measure: head, question, options and action share
+ * the same left (44 px) and right (48 px) edges. */
+.fo-runhead--recto {
+  grid-template-columns: 1fr auto;
+  max-width: 640px;
+  padding: 0 var(--fo-s12) 0 44px;
+}
+
+.fo-runhead--recto::after {
+  left: 44px;
+  right: var(--fo-s12);
+}
+
+.fo-runhead--recto .fo-clock {
+  margin-right: calc(-1 * var(--fo-s2));
+}
+
+.fo-runhead--solo {
+  position: relative;
+  flex: none;
+  background: var(--fo-paper);
+}
+
+.fo-runhead-pos {
+  display: flex;
+  align-items: center;
+  gap: var(--fo-s3);
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t15);
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-head-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--fo-s1);
+}
+
+.fo-clock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--fo-s2);
+  min-width: 88px;
+  min-height: 44px;
+  padding: 0 var(--fo-s2);
+  border: 0;
+  border-radius: var(--fo-r1);
+  background: transparent;
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t15);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.fo-clock:hover {
+  background: var(--fo-paper-3);
+}
+
+/* The clock folded away: a thin line of elapsed time under the head. */
+.fo-timeline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: transparent;
+}
+
+.fo-timeline i {
+  display: block;
+  height: 100%;
+  background: var(--fo-accent);
+  opacity: 0.6;
+}
+
+/* ── Drill: the spread ───────────────────────────────────────────── */
+
+/* Two facing pages: the shade deepens toward the spine, as paper curves
+ * into a binding. */
+.fo-spread {
+  display: grid;
+  grid-template-columns: minmax(0, var(--fo-split, 56%)) 20px minmax(0, 1fr);
+  min-height: 0;
+}
+
+.fo-page {
+  position: relative;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fo-rule-2) transparent;
+}
+
+.fo-page--verso {
+  background: linear-gradient(270deg, var(--fo-fold), transparent 64px) var(--fo-paper);
+}
+
+.fo-page--recto {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(90deg, var(--fo-fold), transparent 40px) var(--fo-paper);
+}
+
+.fo-gutter {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  cursor: col-resize;
+  touch-action: none;
+  background:
+    linear-gradient(90deg, var(--fo-fold), var(--fo-fold-2) 50%, var(--fo-fold)) var(--fo-paper);
+}
+
+.fo-gutter::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: var(--fo-rule);
+}
+
+/* At rest the spine is just a spine; the grip shows when it is touched
+ * (the col-resize cursor says so first). */
+.fo-gutter-grip {
+  position: relative;
+  width: 6px;
+  height: 36px;
+  border-radius: 3px;
+  background: var(--fo-accent);
+  opacity: 0;
+  transition: opacity var(--fo-d1) var(--fo-ease);
+}
+
+.fo-gutter:hover .fo-gutter-grip,
+.fo-gutter:focus-visible .fo-gutter-grip,
+.fo-gutter[data-dragging='true'] .fo-gutter-grip {
+  opacity: 1;
+}
+
+.fo-gutter:focus-visible {
+  outline-offset: -2px;
+}
+
+/* ── Drill: the passage (verso) ──────────────────────────────────── */
+
+.fo-passage {
+  max-width: calc(29em + 56px);
+  margin: 0 auto;
+  padding: var(--fo-s6) var(--fo-s12) 96px 56px;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t19);
+  line-height: 1.62;
+  color: var(--fo-ink);
+  font-variant-numeric: oldstyle-nums proportional-nums;
+}
+
+.fo-ptools {
+  display: flex;
+  align-items: center;
+  gap: var(--fo-s4);
+  margin-bottom: var(--fo-s3);
+  font-family: var(--fo-sans);
+}
+
+.fo-badge {
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t12);
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fo-ink-2);
+}
+
+.fo-badge-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+  cursor: pointer;
+}
+
+.fo-badge-toggle:hover {
+  color: var(--fo-ink);
+}
+
+.fo-note {
+  max-width: 34em;
+  margin: 0 0 var(--fo-s6);
+  padding: 2px 0 2px var(--fo-s4);
+  border-left: 1px solid var(--fo-rule-2);
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t15);
+  line-height: 1.55;
+  color: var(--fo-ink-2);
+}
+
+.fo-ptitle {
+  font-size: var(--fo-t32);
+  line-height: 1.12;
+  font-weight: 440;
+  letter-spacing: -0.016em;
+  text-wrap: balance;
+}
+
+.fo-ptitle span {
+  display: block;
+  margin-top: 6px;
+  font-size: var(--fo-t19);
+  line-height: 1.3;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0;
+  color: var(--fo-ink-2);
+}
+
+.fo-pbody {
+  margin-top: var(--fo-s8);
+}
+
+/* Spaced paragraphs, no indent: a study text, not a novel. */
+.fo-para {
+  position: relative;
+  max-width: 29em;
+  text-wrap: pretty;
+  hyphens: auto;
+  hyphenate-limit-chars: 8 4 4;
+  border-radius: 2px;
+  transition: opacity var(--fo-d2) var(--fo-ease);
+}
+
+.fo-para + .fo-para {
+  margin-top: 0.75em;
+}
+
+/* The ¶ number sits on the paragraph's first baseline, in the margin:
+ * an inline-block that the negative margin pulls out of the measure. */
+.fo-pnum {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  margin: 0 8px 0 -44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: right;
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t13);
+  line-height: 1;
+  font-weight: 600;
+  color: var(--fo-ink-3);
+  font-variant-numeric: tabular-nums lining-nums;
+  vertical-align: baseline;
+  cursor: pointer;
+}
+
+.fo-pnum:hover {
+  color: var(--fo-ink);
+}
+
+.fo-para[data-cited='true'] .fo-pnum {
+  color: var(--fo-accent-ink);
+  font-weight: 700;
+}
+
+.fo-para[data-cited='true']::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 0.4em;
+  bottom: 0.4em;
+  width: 2px;
+  background: color-mix(in oklch, var(--fo-accent) 55%, transparent);
+  border-radius: 1px;
+}
+
+.fo-para[data-flash='true'] {
+  animation: fo-flash var(--fo-flash) var(--fo-ease);
+}
+
+@keyframes fo-flash {
+  0%,
+  57% {
+    background-color: var(--fo-mark);
+    box-shadow: 0 0 0 6px var(--fo-mark);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+
+.fo-pbody[data-focus='true'] .fo-para:not([data-focused='true']) {
+  opacity: 0.32;
+}
+
+/* Sentence-level evidence: what the explanation quotes, underlined. */
+.fo-ev {
+  background: transparent;
+  color: inherit;
+  text-decoration: underline 2px color-mix(in oklch, var(--fo-accent) 70%, transparent);
+  text-underline-offset: 4px;
+  text-decoration-skip-ink: none;
+  border-radius: 2px;
+  transition: background var(--fo-d1) var(--fo-ease);
+}
+
+.fo-ev[data-kind='wrong'] {
+  text-decoration: underline 2px dotted var(--fo-bad);
+}
+
+.fo-ev[data-active='true'] {
+  background: var(--fo-accent-soft);
+}
+
+.fo-ev[data-flash='true'] {
+  animation: fo-flash var(--fo-flash) var(--fo-ease);
+}
+
+.fo-byline {
+  margin-top: 1.4em;
+  text-align: right;
+  font-style: italic;
+  color: var(--fo-ink-2);
+}
+
+/* ── Drill: the question (recto) ─────────────────────────────────── */
+
+.fo-recto-body {
+  flex: 1;
+  width: 100%;
+  max-width: 640px;
+  padding: var(--fo-s8) var(--fo-s12) 0 44px;
+}
+
+.fo-prompt {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t24);
+  line-height: 1.34;
+  font-weight: 450;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+  hyphens: manual;
+}
+
+.fo-prompt[data-after='true'] {
+  margin-top: var(--fo-s4);
+  font-size: var(--fo-t17);
+  line-height: 1.45;
+  font-weight: 400;
+  color: var(--fo-ink-2);
+}
+
+/* Options as an indented list between hairlines — no boxes. The state
+ * lives in the letter (outlined → filled) and a mark in the margin. */
+.fo-opts {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--fo-s6);
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-opt {
+  position: relative;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 40px;
+  align-items: start;
+  column-gap: var(--fo-s3);
+  padding: var(--fo-s4) 0;
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-opt::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: var(--fo-s4);
+  bottom: var(--fo-s4);
+  width: 2px;
+  border-radius: 1px;
+  background: transparent;
+  transition: background var(--fo-d1) var(--fo-ease);
+}
+
+.fo-opt:not([data-grade]):hover .fo-letter {
+  border-color: var(--fo-ink-2);
+  color: var(--fo-ink);
+}
+
+.fo-opt-main {
+  grid-column: 1 / 3;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: var(--fo-s3);
+  align-items: start;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fo-opt-main:focus-visible {
+  outline-offset: 6px;
+}
+
+.fo-letter {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--fo-rule-2);
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t13);
+  font-weight: 650;
+  color: var(--fo-ink-2);
+  transition:
+    background var(--fo-d1) var(--fo-ease),
+    color var(--fo-d1) var(--fo-ease),
+    border-color var(--fo-d1) var(--fo-ease);
+}
+
+.fo-opt-text {
+  padding-top: 3px;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  line-height: 1.5;
+  color: var(--fo-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+.fo-opt[data-state='selected']::before {
+  background: var(--fo-accent);
+}
+
+.fo-opt[data-state='selected'] .fo-letter,
+.fo-opt[data-state='selected']:hover .fo-letter {
+  background: var(--fo-accent-fill);
+  border-color: var(--fo-accent-fill);
+  color: var(--fo-on-accent);
+}
+
+.fo-opt[data-state='eliminated'] .fo-opt-text {
+  color: var(--fo-ink-3);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fo-ink-3);
+}
+
+.fo-opt[data-state='eliminated'] .fo-letter {
+  border-style: dashed;
+  color: var(--fo-ink-3);
+}
+
+/* The strike-out stays in view, quietly: no hidden affordance. */
+.fo-opt-x {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fo-r1);
+  background: transparent;
+  color: var(--fo-ink-3);
+  opacity: 0.55;
+  cursor: pointer;
+  transition:
+    opacity var(--fo-d1) var(--fo-ease),
+    background var(--fo-d1) var(--fo-ease);
+}
+
+.fo-opt:hover .fo-opt-x,
+.fo-opt:focus-within .fo-opt-x,
+.fo-opt[data-state='eliminated'] .fo-opt-x {
+  opacity: 1;
+}
+
+.fo-opt-x:hover {
+  background: var(--fo-paper-3);
+  color: var(--fo-ink);
+}
+
+/* Graded options: the same size as before the answer — a filled letter, a
+ * worded tag and the margin mark set them apart; the list does not move. */
+.fo-opt[data-grade] {
+  cursor: default;
+}
+
+.fo-opt[data-grade='right']::before {
+  background: var(--fo-ok);
+}
+
+.fo-opt[data-grade='right'] .fo-letter {
+  background: var(--fo-ok);
+  border-color: var(--fo-ok);
+  color: var(--fo-on-accent);
+}
+
+.fo-opt[data-grade='wrong']::before {
+  background: var(--fo-bad);
+}
+
+.fo-opt[data-grade='wrong'] .fo-letter {
+  background: var(--fo-bad);
+  border-color: var(--fo-bad);
+  color: var(--fo-on-accent);
+}
+
+/* Dark: the graded letters are rings, not pastel discs. */
+[data-theme='dark'] .fo-opt[data-grade='right'] .fo-letter,
+[data-theme='dark'] .fo-opt[data-grade='wrong'] .fo-letter {
+  background: transparent;
+  border-width: 2px;
+}
+
+[data-theme='dark'] .fo-opt[data-grade='right'] .fo-letter {
+  color: var(--fo-ok);
+}
+
+[data-theme='dark'] .fo-opt[data-grade='wrong'] .fo-letter {
+  color: var(--fo-bad);
+}
+
+.fo-opt[data-grade='other'] .fo-opt-text {
+  color: var(--fo-ink-2);
+}
+
+.fo-opt-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t13);
+  font-weight: 650;
+}
+
+.fo-opt[data-grade='right'] .fo-opt-tag {
+  color: var(--fo-ok);
+}
+
+.fo-opt[data-grade='wrong'] .fo-opt-tag {
+  color: var(--fo-bad);
+}
+
+.fo-more-opts {
+  align-self: flex-start;
+  margin: var(--fo-s1) 0 0;
+}
+
+.fo-keys {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px var(--fo-s4);
+  margin-top: var(--fo-s4);
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+}
+
+.fo-keys span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fo-actionbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--fo-s4);
+  padding: var(--fo-s3) var(--fo-s12) var(--fo-s4) 44px;
+  border-top: 1px solid var(--fo-rule);
+  background: var(--fo-paper);
+}
+
+.fo-actionbar .fo-echo {
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t13);
+}
+
+/* Desktop: the action follows the options in the recto's flow, bled to the
+ * page's edges with the fold carried through; once the facit outgrows the
+ * page it sticks to the foot, and the text fades out above it. */
+.fo-recto-body > .fo-actionbar {
+  margin: var(--fo-s6) calc(-1 * var(--fo-s12)) 0 -44px;
+  border-top: 0;
+  /* The bar's rule spans the recto's measure only (44 px in, 48 px from
+   * the edge), over the page's paper and fold. */
+  background:
+    linear-gradient(var(--fo-rule), var(--fo-rule)) 44px 0 / calc(100% - 92px) 1px no-repeat,
+    linear-gradient(90deg, var(--fo-fold), transparent 40px) var(--fo-paper);
+}
+
+.fo-recto-body > .fo-actionbar::before {
+  content: '';
+  position: absolute;
+  left: 40px;
+  right: 0;
+  bottom: 100%;
+  height: 20px;
+  background: linear-gradient(to top, var(--fo-paper), transparent);
+  pointer-events: none;
+}
+
+.fo-page--verso .fo-runhead::before {
+  right: 64px;
+}
+
+.fo-runhead--recto::before {
+  left: 40px;
+}
+
+/* ── Feedback: the facit ─────────────────────────────────────────── */
+
+.fo-verdict {
+  display: flex;
+  align-items: center;
+  gap: var(--fo-s3);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t24);
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.fo-verdict b {
+  font-weight: 600;
+}
+
+/* The verdict speaks in ink — glyph in a ring, then the word. The colour
+ * stays on the chosen and the right option, where it means something. */
+.fo-verdict-glyph {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  color: var(--fo-ink);
+}
+
+.fo-facit {
+  animation: fo-unfold var(--fo-d2) var(--fo-ease);
+}
+
+/* The explanation opens like a book's footnotes: a short rule, then the
+ * notes, separated by space rather than lines. */
+.fo-facit::before {
+  content: '';
+  display: block;
+  width: 6rem;
+  margin-top: var(--fo-s8);
+  border-top: 1px solid var(--fo-rule-2);
+}
+
+@keyframes fo-unfold {
+  from {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+}
+
+.fo-fsec {
+  margin-top: var(--fo-s8);
+}
+
+.fo-facit > .fo-fsec:first-child {
+  margin-top: var(--fo-s6);
+}
+
+.fo-fsec > .fo-h3 {
+  margin-bottom: var(--fo-s3);
+}
+
+.fo-h3--next {
+  margin-top: var(--fo-s6);
+}
+
+.fo-prose {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  line-height: 1.6;
+  color: var(--fo-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+.fo-prose + .fo-prose,
+.fo-sub + .fo-prose {
+  margin-top: var(--fo-s2);
+}
+
+.fo-sub {
+  display: block;
+  margin-top: var(--fo-s4);
+  font-size: var(--fo-t13);
+  font-weight: 650;
+  color: var(--fo-ink-3);
+}
+
+/* Citations as a footnote's "Se ¶7, ¶8": italic "Se", then plain
+ * underlined references. */
+.fo-cites {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-top: var(--fo-s2);
+}
+
+.fo-cites-see {
+  margin-right: -4px;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t15);
+  font-style: italic;
+  color: var(--fo-ink-3);
+}
+
+.fo-cite {
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--fo-accent-ink);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t15);
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in oklch, var(--fo-accent-ink) 40%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: background var(--fo-d1) var(--fo-ease);
+}
+
+.fo-cite:hover {
+  text-decoration-color: currentColor;
+}
+
+.fo-stepref {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fo-accent-ink);
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--fo-accent-ink) 35%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.fo-step {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: var(--fo-s2);
+  padding: var(--fo-s3) 0;
+}
+
+.fo-step + .fo-step {
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-step-n {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t19);
+  line-height: 1.15;
+  color: var(--fo-accent-ink);
+  font-variant-numeric: oldstyle-nums;
+}
+
+.fo-step[data-tier='detail'] .fo-step-n {
+  color: var(--fo-ink-3);
+}
+
+.fo-step-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px var(--fo-s3);
+}
+
+.fo-step-title {
+  font-size: var(--fo-t15);
+  font-weight: 650;
+  color: var(--fo-ink);
+}
+
+.fo-step-head .fo-cites {
+  margin-top: 0;
+}
+
+.fo-step-text {
+  margin-top: var(--fo-s1);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  line-height: 1.6;
+  color: var(--fo-ink-2);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+/* Disclosure links: a quiet text link with a chevron, no dashed pills. */
+.fo-more {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fo-accent-ink);
+  font-size: var(--fo-t13);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.fo-more:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.fo-more svg {
+  transition: rotate var(--fo-d1) var(--fo-ease);
+}
+
+.fo-more[aria-expanded='true'] svg {
+  rotate: 90deg;
+}
+
+.fo-dis {
+  padding: var(--fo-s3) 0;
+}
+
+.fo-dis + .fo-dis {
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-dis-head {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: var(--fo-s3);
+  align-items: start;
+}
+
+.fo-dis-head .fo-letter {
+  width: 28px;
+  height: 28px;
+  font-size: var(--fo-t12);
+}
+
+.fo-dis-opt {
+  padding-top: 2px;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  line-height: 1.5;
+  color: var(--fo-ink-2);
+  hyphens: manual;
+}
+
+.fo-dis-body {
+  margin: var(--fo-s2) 0 0 40px;
+}
+
+.fo-notes .fo-note-item + .fo-note-item {
+  margin-top: var(--fo-s4);
+}
+
+.fo-framework {
+  margin-top: var(--fo-s6);
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+}
+
+.fo-framework b {
+  color: var(--fo-ink-2);
+  font-weight: 600;
+}
+
+/* ── Colophon (end of the unit) ──────────────────────────────────── */
+
+.fo-done {
+  display: grid;
+  place-items: center;
+}
+
+.fo-colophon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: var(--fo-s12) var(--fo-s6) 10vh;
+  animation: fo-page-in var(--fo-d2) var(--fo-ease);
+}
+
+.fo-colophon-mark {
+  margin-left: 0.3em;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t24);
+  letter-spacing: 0.3em;
+  color: var(--fo-accent);
+}
+
+.fo-colophon h2 {
+  margin-top: var(--fo-s6);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t32);
+  font-weight: 420;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+.fo-colophon h2 span {
+  display: block;
+  margin-top: var(--fo-s1);
+  font-size: var(--fo-t17);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--fo-ink-2);
+}
+
+.fo-colophon .fo-colophon-facts {
+  margin: var(--fo-s6) 0 0;
+  padding: var(--fo-s3) var(--fo-s1);
+  border-top: 1px solid var(--fo-rule);
+  border-bottom: 1px solid var(--fo-rule);
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t12);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fo-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-colophon p {
+  margin: var(--fo-s4) 0 var(--fo-s6);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-style: italic;
+  color: var(--fo-ink-2);
+  text-wrap: pretty;
+}
+
+.fo-colophon-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* The way on: the plan's next part, filled; Idag as a quiet link. */
+.fo-colophon-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fo-s1);
+}
+
+.fo-colophon-home {
+  min-height: 44px;
+}
+
+/* ── Phone ───────────────────────────────────────────────────────── */
+
+.fo-phone {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.fo-ptop {
+  position: relative;
+  z-index: 5;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fo-s3);
+  height: 56px;
+  padding: 0 var(--fo-s2) 0 var(--fo-s6);
+  background: var(--fo-paper);
+}
+
+.fo-pscroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.fo-phome {
+  padding: var(--fo-s2) 20px var(--fo-s12);
+}
+
+.fo-phome .fo-masthead {
+  display: block;
+  padding-bottom: 0;
+  margin-bottom: var(--fo-s4);
+  border: 0;
+}
+
+.fo-phome .fo-count {
+  margin-top: var(--fo-s1);
+}
+
+.fo-phome .fo-greet {
+  font-size: var(--fo-t24);
+}
+
+.fo-phome .fo-day {
+  font-size: var(--fo-t15);
+}
+
+.fo-phome .fo-resume {
+  margin-top: var(--fo-s6);
+  padding: var(--fo-s4) 0 var(--fo-s6);
+}
+
+.fo-phome .fo-ribbon {
+  right: var(--fo-s1);
+  height: 30px;
+  width: 12px;
+}
+
+.fo-phome .fo-resume-title {
+  font-size: var(--fo-t44);
+}
+
+.fo-phome .fo-resume-sub {
+  font-size: var(--fo-t19);
+}
+
+.fo-phome .fo-resume-top {
+  flex-direction: column;
+  gap: var(--fo-s1);
+  margin-bottom: var(--fo-s3);
+}
+
+.fo-phome .fo-resume-foot {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--fo-s2);
+}
+
+.fo-phome .fo-resume-foot .fo-btn {
+  width: 100%;
+}
+
+.fo-phome .fo-resume-foot .fo-hint {
+  text-align: center;
+}
+
+.fo-phome .fo-section {
+  margin-top: var(--fo-s8);
+}
+
+.fo-phome .fo-plan-row {
+  grid-template-columns: 28px minmax(0, 1fr);
+  padding: var(--fo-s4) 0;
+}
+
+.fo-phome .fo-plan-n {
+  font-size: var(--fo-t19);
+}
+
+/* A narrow line wraps the entry: no dots, just the minutes at the right. */
+.fo-phome .fo-leader {
+  min-width: var(--fo-s3);
+  background: none;
+}
+
+/* On a phone the marginalia follow the text, under a rule of their own. */
+.fo-phome .fo-aside {
+  margin-top: var(--fo-s12);
+  padding: var(--fo-s6) 0 0;
+  border-left: 0;
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-tabs {
+  position: relative;
+  z-index: 5;
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: var(--fo-s1) var(--fo-s1) max(20px, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--fo-rule);
+  background: var(--fo-paper);
+}
+
+/* Tabs as words — a magazine's section bar. */
+.fo-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fo-ink-2);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t15);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+}
+
+.fo-tab[aria-current='page'] {
+  color: var(--fo-ink);
+  font-weight: 600;
+}
+
+/* The active marker sits inside the bar, under its top rule. */
+.fo-tab[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 22%;
+  right: 22%;
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background: var(--fo-accent);
+}
+
+.fo-tab-word {
+  position: relative;
+}
+
+/* A quiet "something is due" dot — not a notification count. */
+.fo-tab-dot {
+  position: absolute;
+  top: 1px;
+  right: -8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--fo-ink-3);
+}
+
+.fo-avatar-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.fo-avatar-btn[aria-expanded='true'] .fo-avatar {
+  box-shadow:
+    0 0 0 2px var(--fo-paper),
+    0 0 0 4px var(--fo-accent);
+}
+
+/* Phone account: a bottom sheet over a scrim. */
+.fo-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 38;
+  border: 0;
+  background: var(--fo-scrim);
+  animation: fo-fade-in var(--fo-d2) var(--fo-ease);
+}
+
+@keyframes fo-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.fo-menu[data-anchor='sheet'] {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  padding: var(--fo-s1) 0 max(var(--fo-s6), env(safe-area-inset-bottom));
+  border-radius: 2px 2px 0 0;
+  animation: fo-sheet-in var(--fo-d2) var(--fo-ease);
+}
+
+@keyframes fo-sheet-in {
+  from {
+    translate: 0 24px;
+    opacity: 0;
+  }
+}
+
+/* ── Phone drill ─────────────────────────────────────────────────── */
+
+.fo-pdrill {
+  position: relative;
+  height: 100%;
+  overflow: clip;
+}
+
+.fo-pdrill-head {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--fo-s1);
+  height: 56px;
+  padding: 0 var(--fo-s1);
+  background: var(--fo-paper);
+  border-bottom: 1px solid var(--fo-rule);
+  transition: height var(--fo-d2) var(--fo-ease);
+}
+
+.fo-pdrill-head .fo-clock {
+  min-width: 0;
+  font-size: var(--fo-t13);
+}
+
+.fo-focus-btn {
+  padding: 0 var(--fo-s2);
+  font-size: var(--fo-t13);
+}
+
+/* While reading, the head folds to a strip: the exit stays in reach. */
+.fo-pdrill-head[data-compact='true'] {
+  height: 40px;
+}
+
+.fo-pdrill-head[data-compact='true'] .fo-exit-label,
+.fo-pdrill-head[data-compact='true'] .fo-focus-btn span,
+.fo-pdrill-head[data-compact='true'] .fo-clock-icon {
+  display: none;
+}
+
+.fo-pdrill-head[data-compact='true'] .fo-ghost {
+  min-height: 40px;
+}
+
+.fo-head-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+}
+
+.fo-head-progress i {
+  display: block;
+  height: 100%;
+  background: var(--fo-accent);
+}
+
+.fo-pdrill-scroll {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+/* A narrower ¶ margin on phone: 44 px left, 24 px right. */
+.fo-pdrill .fo-passage {
+  max-width: none;
+  padding: 76px 24px 0 44px;
+  font-size: var(--fo-t17);
+  line-height: 1.6;
+}
+
+.fo-pdrill .fo-pnum {
+  width: 26px;
+  margin: 0 8px 0 -34px;
+  font-size: var(--fo-t12);
+}
+
+.fo-pdrill .fo-pnum::after {
+  inset: -16px -6px -16px -12px;
+}
+
+.fo-pdrill .fo-para[data-cited='true']::before {
+  left: -4px;
+}
+
+/* Phone end of the unit: the colophon centred, the way on anchored at the
+ * foot like every other phone action. */
+.fo-pdrill .fo-done {
+  display: flex;
+  flex-direction: column;
+}
+
+.fo-pdrill .fo-colophon {
+  flex: 1;
+  width: 100%;
+  max-width: none;
+  padding: var(--fo-s12) var(--fo-s6) 0;
+}
+
+.fo-pdrill .fo-colophon-text {
+  margin: auto 0;
+}
+
+.fo-pdrill .fo-colophon-actions {
+  position: sticky;
+  bottom: 0;
+  align-self: stretch;
+  margin: var(--fo-s8) calc(-1 * var(--fo-s6)) 0;
+  padding: var(--fo-s3) 20px max(var(--fo-s4), env(safe-area-inset-bottom));
+  border-top: 1px solid var(--fo-rule);
+  background: var(--fo-paper);
+}
+
+.fo-pdrill .fo-colophon-actions .fo-btn {
+  width: 100%;
+  min-height: 52px;
+}
+
+.fo-pdrill .fo-ptitle {
+  font-size: var(--fo-t24);
+}
+
+.fo-pdrill .fo-ptitle span {
+  font-size: var(--fo-t17);
+}
+
+/* The question on a slip of paper laid over the page: square-cut, a
+ * hairline edge and only the faintest lift. */
+.fo-sheet {
+  position: absolute;
+  z-index: 8;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  height: var(--fo-sheet-h);
+  border-radius: 2px 2px 0 0;
+  background: var(--fo-leaf);
+  box-shadow:
+    0 -1px 0 var(--fo-rule-2),
+    0 -10px 28px -22px oklch(25% 0.03 60 / 0.45);
+  transition: height var(--fo-d2) var(--fo-ease);
+}
+
+[data-theme='dark'] .fo-sheet {
+  box-shadow:
+    0 -1px 0 var(--fo-rule-2),
+    0 -12px 32px -18px oklch(0% 0 0 / 0.6);
+}
+
+/* The peek fits the whole question: it is what the reader reads for. */
+.fo-sheet[data-state='peek'] {
+  --fo-sheet-h: auto;
+  max-height: 48%;
+}
+
+.fo-sheet[data-state='open'] {
+  --fo-sheet-h: 78%;
+}
+
+.fo-sheet[data-state='full'] {
+  --fo-sheet-h: calc(100% - 48px);
+}
+
+.fo-sheet-grab {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+
+.fo-sheet-grab::before {
+  content: '';
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--fo-rule-2);
+}
+
+.fo-sheet-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fo-s3);
+  min-height: 24px;
+  padding: 0 20px 6px;
+}
+
+.fo-sheet-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 2px 20px var(--fo-s6);
+  scrollbar-width: none;
+}
+
+.fo-sheet .fo-prompt {
+  font-size: var(--fo-t19);
+  line-height: 1.38;
+}
+
+.fo-sheet .fo-prompt[data-after='true'] {
+  font-size: var(--fo-t15);
+}
+
+.fo-sheet .fo-opts {
+  margin-top: var(--fo-s4);
+}
+
+.fo-sheet .fo-opt {
+  grid-template-columns: 30px minmax(0, 1fr) 36px;
+  column-gap: 10px;
+  padding: var(--fo-s3) 0;
+}
+
+.fo-sheet .fo-opt::before {
+  left: -12px;
+  top: var(--fo-s3);
+  bottom: var(--fo-s3);
+}
+
+.fo-sheet .fo-opt-main {
+  grid-template-columns: 30px minmax(0, 1fr);
+  column-gap: 10px;
+}
+
+.fo-sheet .fo-letter {
+  width: 30px;
+  height: 30px;
+}
+
+.fo-sheet .fo-actionbar {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: var(--fo-s3) 20px max(var(--fo-s6), env(safe-area-inset-bottom));
+  background: var(--fo-leaf);
+}
+
+.fo-sheet .fo-actionbar .fo-btn {
+  width: 100%;
+  min-height: 52px;
+}
+
+.fo-sheet .fo-actionbar .fo-echo {
+  text-align: center;
+}
+
+.fo-sheet .fo-verdict {
+  margin-bottom: var(--fo-s1);
+  font-size: var(--fo-t24);
+}
+
+.fo-sheet .fo-dis-body {
+  margin-left: 0;
+}
+
+/* The peek's one action — the screen's filled button, clear of the home
+ * indicator. */
+.fo-sheet .fo-peek-btn {
+  width: 100%;
+  min-height: 48px;
+  margin-top: var(--fo-s4);
+}
+
+.fo-sheet[data-state='peek'] .fo-sheet-body {
+  padding-bottom: max(var(--fo-s4), env(safe-area-inset-bottom));
+}
+
+/* The slip's head: the question's place (and ÖVNINGSTEXT once the passage
+ * is covered) on the left, the way back to the text on the right. */
+.fo-sheet-badge {
+  white-space: nowrap;
+}
+
+.fo-sheet-back {
+  flex: none;
+}
+
+/* Text passing under the slip's action fades out, never cut in half. */
+.fo-sheet .fo-actionbar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 1px);
+  height: 20px;
+  background: linear-gradient(to top, var(--fo-leaf), transparent);
+  pointer-events: none;
+}
+
+/* ── Hit areas ───────────────────────────────────────────────────── */
+/* Small controls keep their quiet size on the page but take a ≥ 44 px
+ * hit area through an invisible extension (it hit-tests as the control). */
+
+.fo-pnum::after,
+.fo-cite::after,
+.fo-more::after,
+.fo-stepref::after,
+.fo-opt-x::after,
+.fo-badge-toggle::after,
+.fo-link::after,
+.fo-gutter::after,
+.fo-sheet-grab::after {
+  content: '';
+  position: absolute;
+}
+
+.fo-pnum::after {
+  inset: -16px -4px;
+}
+
+/* Inline ¶ references: 44 px tall, reaching halfway into the 12 px gaps. */
+.fo-cite::after {
+  inset: -11px -6px;
+}
+
+.fo-more::after,
+.fo-badge-toggle::after,
+.fo-link::after,
+.fo-opt-x::after {
+  inset: -6px -2px;
+}
+
+.fo-stepref::after {
+  inset: -10px -2px;
+}
+
+/* 44 px to grab, reaching into the recto's wide inner margin only — the
+ * verso's scrollbar stays uncovered. */
+.fo-gutter::after {
+  inset: 0 -24px 0 0;
+}
+
+.fo-sheet-grab::after {
+  inset: -4px 0 -16px;
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-rd='folio'] *,
+  [data-rd='folio'] *::before,
+  [data-rd='folio'] *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Thumbnails are still pictures. */
+[data-rd='folio'][data-live='false'] *,
+[data-rd='folio'][data-live='false'] *::before,
+[data-rd='folio'][data-live='false'] *::after {
+  animation: none !important;
+  transition: none !important;
+}
