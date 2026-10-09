@@ -1,12 +1,12 @@
 ---
 bead: "hpf-c5tb"
 project: "hpfetcher"
-status: "retirement_2026_10_09_uncommitted"
+status: "retirement_2026_10_09_elf_b12_001_uncommitted"
 ---
 
 # Worklog — hpf-c5tb
 
-P5 infold PR 2b: reviewed Layer-2 explanations for the 321 P5 questions outside the pilot, in seven batches (X1–X7), each its own PR with an independent correctness and language review. Spec: `docs/p5-infold-design.md` §4 row 2b (Amendment 1) and §D. One section per batch below. *2026-10-08: 313 questions since the owner retired `las-b3-001` and `las-b5-001`; see [Retirement 2026-10-08](#retirement-2026-10-08). Batch membership is pinned: X1 lost those two units and no other unit moved; see [Batch freeze](#batch-freeze).* *2026-10-09: 287 questions since the owner retired six ELF units; X4 and X5 lost them and no other unit moved; see [Retirement 2026-10-09 (ELF)](#retirement-2026-10-09-elf).*
+P5 infold PR 2b: reviewed Layer-2 explanations for the 321 P5 questions outside the pilot, in seven batches (X1–X7), each its own PR with an independent correctness and language review. Spec: `docs/p5-infold-design.md` §4 row 2b (Amendment 1) and §D. One section per batch below. *2026-10-08: 313 questions since the owner retired `las-b3-001` and `las-b5-001`; see [Retirement 2026-10-08](#retirement-2026-10-08). Batch membership is pinned: X1 lost those two units and no other unit moved; see [Batch freeze](#batch-freeze).* *2026-10-09: 287 questions since the owner retired six ELF units; X4 and X5 lost them and no other unit moved; see [Retirement 2026-10-09 (ELF)](#retirement-2026-10-09-elf).* *2026-10-09, second ruling: 282 questions since the owner also retired `elf-b12-001`; X6 lost it and no other unit moved; see [Retirement 2026-10-09 (elf-b12-001)](#retirement-2026-10-09-elf-b12-001).*
 
 ## Batch X1
 
@@ -3014,3 +3014,243 @@ LANE DONE: hpf-c5tb.13
 - 2026-10-09 [S:ci-qgy8d|W:hpf-c5tb.13|H:verify|E:worker/src/lib/fit.test.ts] Worker: registry size and three registry-coupled fit digests, re-recorded against 782f9c2 in a scratch copy (control reproduces the old pins); 26 retired qids unknown in a scratch provenance test; 395 passed, typecheck and biome clean; reruns byte-identical.
 
 LANE DONE: hpf-c5tb.13
+
+## Retirement 2026-10-09 (elf-b12-001)
+
+Bead `hpf-c5tb.17`: retire `elf-b12-001` per the owner's ruling of 2026-10-09, given as "ok" to the coordinator's recommendation on Batch X6 content concerns 1 and 2. `elf-b11-001` is kept as it is: its writer's-attitude item holds under the house reading, and its explanation says so.
+
+No replacement now. `elf-b12-001` joins the repair list (bead `hpf-c5tb.14`) for an r2 attempt in the next generation cycle, which needs the full gate. The procedure is that of `hpf-c5tb.13` (PR #387), with batch membership pinned.
+
+### Snapshot and boundaries
+
+- Claimed with `gc hook --claim --json` (`hpf-c5tb.17`, assignee `gc__implementation-worker-ci-nlws1`, route `hpfetcher/gc.implementation-worker`); `bd show hpf-c5tb.17 --json` matched the id, status `in_progress`, the assignee and `gc.routed_to`.
+- `git rev-parse HEAD` and `git rev-parse origin/main` → `f965a3ca8f49469f1358c8fa5a0ae432f1b085c0` for both (detached), the squash merge of PR #388 (PR4a, the ÖVNINGSTEXT bake-off route), so PR4a has left the lane. origin/main is the local ref, not fetched (no network). No tracked change at start.
+- No git writes and no network; every change is uncommitted. No candidate, sheet, audit, verdict, ratification or adjudication file was edited, and nothing under `app/`: `git diff --exit-code` is clean on `pipeline/synthetic/batches`, `pipeline/synthetic/adjudication`, `ADJUDICATION-MASTER.md`, `AUDIT-batches-1-13.md`, `ratification-2026-10-07.json` (`4964c297…`) and `app`. The untracked runtime, skill and sandbox paths present at start are untouched.
+- The bead names no validator, so none was run; `gc.check_path` is the post-close dispatcher check (`…/checks/build-artifact-valid.sh`).
+- Lane policy refused an inline `python3 -c`, so the scripts named below ran from the session scratchpad as `python3 <file>`; they are not checked in. Plain `git` ran in the worktree.
+- Baseline on HEAD: **2008 passed, 7 xfailed** (47.5 s); worker 395 passed (24 files).
+
+### Census
+
+| | Before (HEAD) | After |
+|---|---:|---:|
+| Selected candidates | 128 / 373 | 128 / 373 |
+| Retired | 16 / 67 | **17 / 72** |
+| Retained = approved | 112 / 306 | **111 / 301** |
+| LÄS | 50 / 128 | 50 / 128 |
+| ELF | 62 / 178 | **61 / 173** |
+| Batches 1–13 kept (ratified) | 73 / 185 | **72 / 180** |
+| Batches 14–19 approved | 39 / 121 | 39 / 121 |
+| Batch 12: ELF · retired | 4 / 12 · 0 / 0 | 3 / 7 · 1 / 5 |
+| qid registry (units / qids / framework ids) | 112 / 306 / 14 | **111 / 301 / 14** |
+| Eligible for Layer 2 (pilot + batches) | 306 (19 + 287) | **301 (19 + 282)** |
+
+The numbers are the generator's, not a hand count. With the new entry in `RETIRED.json` and the old constants, `build_roster.py --check` refused with `census differs from docs/p5-infold-design.md §2: batch 12 ELF expected 4 / 12, found 3 / 7; batch 12 retired expected 0 / 0, found 1 / 5; total retained expected 112 / 306, found 111 / 301; total ELF expected 62 / 178, found 61 / 173; total retired expected 16 / 67, found 17 / 72`. That matched the count worked out by hand: the unit has 5 questions. Pending stays 0 / 0. The framework-id count stays 14: the registry reads only `data/explanations/p5-*.json`, and the pilot does not hold the unit. A scratchpad count (`roster_counts.py`) confirms the kept legacy units: 72 / 180, of which 69 cite a master table row and 3 an ÄGARBLICK mention. `elf-b12-001` was a table row (`ADJUDICATION-MASTER.md:65`).
+
+### Changes (uncommitted)
+
+| Path | Change | How |
+|---|---|---|
+| `pipeline/synthetic/RETIRED.json` | One entry in the existing format (reason, found_by, date `2026-10-09`, replacement `none now — repair candidate, bead hpf-c5tb.14`), after `elf-b8-002`. It opens at `:101`. The file is HEAD's lines plus 6 inserted ones (ndiff), so the evidence refs `:5` … `:95` hold. The reason quotes the passage and q3's option B (below) | by hand: it is the input |
+| `pipeline/synthetic/infold/build_roster.py` | `EXPECTED_CENSUS` row 12, `EXPECTED_TOTALS` and their comment; the `LEGACY_NOTES` comment (70 → 69 kept table rows) | by hand: the census assertion |
+| `approval-roster.json`, `ROSTER.md` | The unit `retired` (basis `RETIRED.json`, evidence `RETIRED.json:101` plus its master row `ADJUDICATION-MASTER.md:65`; the shipped-record, re-audit and ratification refs drop off); census; batch row 12; the retired list (17 / 72). The ÄGARBLICK list is unchanged (3), since the unit is not in `LEGACY_NOTES` | `build_roster.py` |
+| `worker/data/p5-qid-registry.json` | The unit's row (5 qids) removed; counts; the roster and RETIRED.json hashes | `export_qid_registry.py` |
+| `pipeline/synthetic/infold/explanation_batches.py` | `EXPECTED` x6 and its comment; docstring 287 → 282 and 112 / 306 → 111 / 301 | by hand: the expected-table assertion |
+| `pipeline/synthetic/infold/explanations/BATCHES.json` | The unit and its 5 qids dropped from x6; `eligible` and x6's counts; nothing else | `explanation_batches.py` |
+| `x6-elf.json` | The 5 entries removed; the 43 kept entries byte-identical | whole-entry deletion (below) |
+| `pipeline/synthetic/infold/preview/sample/_export-manifest.json` | The roster and RETIRED.json sha256 only; the sample bank is unchanged (`393ad817…`) | `export_product.py --sample` |
+| `tests/test_infold_{roster,qid_registry,export,explanation_batches}.py` | Census and partition numbers, the retired-since lists and the design-table count (Tests) | by hand |
+| `worker/src/lib/provenance.test.ts` | Registry size 306 → 301 | by hand |
+| `worker/src/lib/fit.test.ts` | Three `HEAD_DIGESTS` re-recorded against 782f9c2's fit on the new registry, and their comment (Worker) | values from 782f9c2's fit |
+| `docs/p5-infold-design.md` | Three dated additions (Design doc) | by hand |
+| `docs/worklog/hpf-c5tb.md` | Status, a dated note in the intro, this section | by hand |
+
+**The reason's quotations.** It quotes the passage five times ("improved by about three percent", "Feltrin will not credit that to Brackwell", paragraph 3's closing clause, "the same decade", "every number the ridge keeps got worse together") and q3's option B in full. `check_retired_entry.py` confirmed that each is verbatim student text of the candidate (`af1fe6f2…`), that the entry has exactly the fields of the existing ones, and that every earlier entry is unchanged. `elf-b11-001` is not named in `RETIRED.json`, since the file lists only retired units.
+
+Checked and unchanged: `LANGUAGE-EXAMPLES.json` (`c2964b53…`). None of its 56 listings is keyed to a qid of the unit: they are in `elf-b18-002`, `elf-b2-002`, `elf-b3-002` and `elf-b4-002`.
+
+The local, gitignored pilot preview (`export_product.py --pilot`) was refreshed: 6 units / 19 questions, 107 strings; 19 explanations, 421 strings. The other local previews (`preview/approved`, `preview/full`) were built from older rosters (`e31eba36…`, `9ccfe9a4…`) and are untouched.
+
+Not changed, as history: the ratification notes of `las-b10-001` and of the retired `elf-b4-001` (`ratification-2026-10-07.json:420`, `:147`) and `AUDIT-batches-1-13.md` still list `elf-b12-001` among the units that reuse the surname Frisk. The record stays as it was given.
+
+### The partition
+
+- With the old `EXPECTED`, `explanation_batches.py --check` → `the partition differs from the expected table (…): x6 is ('elf-b10-003', 'elf-b14-003', 15, 43), expected ('elf-b10-003', 'elf-b14-003', 16, 48)`. Only x6 differed, by the hand count.
+- With the new `EXPECTED` and the old file → `STALE …: it still lists retired unit(s) (x6: elf-b12-001)`.
+- The generator → `dropped retired unit(s) from their batch: x6: elf-b12-001`, then `wrote …: 8 batches, 111 units / 301 questions`.
+- `git diff` of `BATCHES.json`: `eligible`, and x6's counts, units and qids. Nothing else.
+
+| Batch | First … last | Units | Questions | Before | File |
+|---|---|---:|---:|---|---|
+| x0-pilot | las-b7-002 … las-b19-002 | 6 | 19 | unchanged | `data/explanations/p5-pilot.json` |
+| x1 | las-b1-001 … las-b8-002 | 16 | 36 | unchanged | `…/explanations/x1-las.json` |
+| x2 | las-b8-003 … las-b14-001 | 16 | 42 | unchanged | `…/explanations/x2-las.json` |
+| x3 | las-b14-003 … las-b19-003 | 15 | 42 | unchanged | `…/explanations/x3-las.json` |
+| x4 | elf-b1-001 … elf-b5-001 | 12 | 36 | unchanged | `…/explanations/x4-elf.json` |
+| x5 | elf-b5-003 … elf-b10-002 | 15 | 35 | unchanged | `…/explanations/x5-elf.json` |
+| x6 | elf-b10-003 … elf-b14-003 | **15** | **43** | 16 / 48 | `…/explanations/x6-elf.json` |
+| x7 | elf-b15-001 … elf-b19-002 | 16 | 48 | unchanged | `…/explanations/x7-elf.json` |
+
+Total 19 + 36 + 42 + 42 + 36 + 35 + 43 + 48 = 301. No unit moved. x6's first and last units are unchanged, since `elf-b12-001` sat in the middle.
+
+### The X6 file
+
+`drop_entries.py --write` read HEAD's file (a copy in the scratchpad), removed the unit's entries and wrote `export_product.render_json` of the rest. Its verification, also run on its own on the final tree, checks:
+- canonical bytes;
+- the kept qids are the manifest's, in order;
+- each kept entry equals HEAD's, and its rendered block, from its key to its closing brace, is byte for byte HEAD's block;
+- the removed qids are exactly the unit's qids HEAD held;
+- the file is HEAD's lines less one contiguous run of whole entry blocks;
+- no `LANGUAGE-EXAMPLES.json` listing is keyed to a removed qid.
+
+Results: 48 → 43 entries; removed `p5-elf-b12-001-r1-ELF-001` … `-005`, HEAD lines 755–1041. The unit sat between `elf-b11-004` and `elf-b12-002`, so no comma changed. `git diff --numstat` → 0 added, 287 deleted. Batch check: x6 968 strings (1087 before). `lint_learner_output.py --strict` on the file → clean.
+
+Batch X6 content concerns, after the retirement:
+- 1 (the two passage tensions) and 13 (q5's key C) lapse.
+- 2 (writer's-attitude items that rest on a named person's concession) loses its `elf-b12-001` q4 half. The `elf-b11-001` q5 half stands as a note: the ruling keeps that unit as it is.
+- 3 (template echo) narrows. The verbatim "grants him the half … she thinks is his" occurs only in `elf-b11-001` and `elf-b12-001`, so that echo goes. `elf-b13-001`'s closing request ("one more line on the certificate") still echoes `elf-b11-001`'s.
+- The X6 round findings and "Rationale claims that did not hold" items about the unit's entries are history. No row of the X6 review fix (B1, S1–S29) touched the unit.
+
+The other concerns (4–12, 14–20) stand as notes.
+
+### Tests
+
+Numbers follow the derived census and partition. No assertion was dropped or loosened, and no test was added or removed.
+- `test_infold_roster.py`:
+  - the census (111 / 301; ELF 61 / 173; retired 17 / 72);
+  - the approval sums (72 / 180 for batches 1–13; 39 / 121 for batches 14–19);
+  - `_design_table()` asserts that §2 now has four tables and reads the last, the second update of 2026-10-09;
+  - the ratification test: the record still lists the 81 units kept on 2026-10-07, in roster order. The 72 still kept are the legacy units, and the nine retired since (`retired_since`, now with `elf-b12-001`) are `retired`, with no `ratified_by` or note.
+- `test_infold_qid_registry.py`: 111 units / 301 qids / ELF 173; 17 retired units, none with a registered qid; the CLI summary string.
+- `test_infold_export.py`: 111 / 301, ELF 173, and the lint string count `111 × 2 + 301 × 5` (1727).
+- `test_infold_explanation_batches.py`:
+  - the expected table (x6 15 / 43);
+  - eligible 111 / 301, of which 282 are outside the pilot;
+  - `RETIRED_SINCE_THE_CUT` gains `elf-b12-001`, so the provenance tests still rebuild the 120 / 340 roster at 1cbbb84;
+  - the merged-cut test names all nine retired units in the refusal (`…; x6: elf-b12-001`).
+
+**No fixture drew the retired unit,** so nothing was re-targeted:
+- no test names `elf-b12-001` or its qids (`grep` over the four test directories, `worker/src` and `app/src`);
+- the tests that pick an entry by property read x1, x4 or the pilot;
+- the positional picks land on batch-1 units (`elf-b1-001`, `las-b1-001`, `las-b1-002`).
+
+The ELF quotation tests read every batch file present, so they cover x6's 43 kept entries as before.
+
+HEAD's four test modules, run unchanged on the regenerated tree → **15 failed, 1993 passed, 7 xfailed**. Every failure is a number, the table or the retired-since list:
+- 6 in the batch module: the table; 306 → 301; the 1cbbb84 rebuild (119 / 335 without the unit); x6 of the pinned cut; the merged-cut test, where the cut of a roster without the unit shifts the x6/x7 boundary; the new-retirement test's table;
+- 3 each in the export, registry and roster modules.
+
+Result: **2008 passed, 7 xfailed** (50.0 s), the baseline count.
+
+### Worker
+
+- **Provenance.** The regenerated registry no longer lists the 5 qids, and `worker/src/lib/provenance.ts` classifies by registry membership. A scratch-only vitest file, `retired.scratch.test.ts` (13 checks), ran in a copy of `worker/` under the scratchpad, never in the repo, with HEAD's `provenance.ts`:
+  - on the new registry, 13 passed. The registry lists no row for the unit. Each of the 5 qids is unlisted: `isRegisteredP5Qid` and `isAuthenticQid` are false, `classifyAttempt` returns `{source: 'unknown', itemRevision: null}` and `p5FrameworkId` returns null. Seven kept neighbours (`elf-b10-003`, `elf-b11-001` q5, `elf-b11-004`, `elf-b12-002` q1 and q5, `elf-b12-003`, `elf-b14-003` q5) stay synthetic at revision 1;
+  - on HEAD's registry, 6 failed (the registry check and the 5 qids) and 7 passed.
+
+  In the repo, the existing case "a retired unit (RETIRED.json)" covers the mechanism, and the Python registry test covers all 17 retired units.
+- **`provenance.test.ts`:** only the registry size, 306 → 301.
+- **`fit.test.ts`.** After the registry change, `trial 31/32/33: without the R2-B1 case every rating is what 782f9c2 fitted` failed. Their histories draw P5 qids from the registry (`fit.test.ts:472`), as in `hpf-c5tb.2` and `hpf-c5tb.13`. The digests were re-recorded, not assumed. `swap.py` builds the scratch copy of `worker/` (src, data, drizzle, package.json and tsconfig.json; `node_modules` linked) and swaps files in by `git show`. Each run was filtered to the three trials (`-t "without the R2-B1 case"`):
+  - control: 782f9c2's `fit.ts` (`e9e042f4…`) with HEAD's registry and test → the three pinned digests pass, so the harness runs the old fit faithfully;
+  - 782f9c2's fit with the new registry (`d57be163…`) → `157fdef2…ac64`, `14ac9d84…4c90`, `61784f26…f56c`;
+  - HEAD's fit with the new registry (the real tree, before the edit) → the same three;
+  - the edited test passes against 782f9c2's fit in the scratch copy, and against HEAD's fit in the repo.
+
+  The test's claim therefore holds on the new histories. The comment now names all three retirements. Any later registry change moves these digests again.
+- **Results:** `npm --prefix worker run test` (`vitest run` in `worker/`) → **395 passed** (24 files); `npm --prefix worker run typecheck` → clean; `npm --prefix worker run lint` → clean (biome, 60 files).
+
+### App
+
+`app/src/components/devbake/ovningstextFixtures.test.ts` (PR #388) reads `RETIRED.json` (its retired-unit scene is `las-b5-001`), the design doc (the four disclosure strings) and the sample bank. This lane changes the first two, so the bake-off tests were run: `npm --prefix app run test -- src/components/devbake` → 3 files, **74 passed**. Nothing under `app/` changed.
+
+### Design doc
+
+Additions only, each dated; no earlier sentence or table row changed (bead scope 5). `git diff --numstat` → 34 added, 0 deleted.
+1. Under §2's headline, after the two earlier pointers: a pointer for the second ruling of 2026-10-09, with the current census (111 / 301; ELF 61 / 173).
+2. At the end of §2: **Census update 2026-10-09, second ruling**, with:
+   - the ruling, `elf-b11-001` kept, and the reason;
+   - the kept legacy inventory, now 72 / 180;
+   - the full current table, which the roster test reads.
+3. At the end of Amendment 1:
+   - D's questions are now 301 and PR 2b's 282;
+   - X6 is 15 / 43, with no unit moved;
+   - the 5 explanations leave the batch file;
+   - the unit is a repair candidate (bead `hpf-c5tb.14`).
+
+Not changed, as history: the 2026-10-08 and first 2026-10-09 pointers and updates, each dated. The additions move §3 onward by 32 lines (line 112 → 144), so older line citations of the design doc in earlier worklogs point further off. They are history.
+
+### Verification (final tree)
+
+- `python3 -m pytest .github/contract-tests pipeline/synthetic/evidence/tests pipeline/synthetic/gates/scripts/tests pipeline/synthetic/infold/tests -q -p no:cacheprovider` → **2008 passed, 7 xfailed** (44.3 s, after the last edit).
+- `build_roster.py --check` → `roster: 128 units / 373 questions; retained 111 / 301 (LÄS 50 / 128, ELF 61 / 173); retired 17 / 72; approved 111 / 301; pending owner ratification 0 / 0`.
+- `export_qid_registry.py --check` → `checked 111 units / 301 qids / 14 framework ids`.
+- `explanation_batches.py --check` → current: 8 batches, 111 units / 301 questions, the table above, every batch file present.
+- `--check-batch` for every batch, each `every explanation gate passed, learner lint clean`:
+
+  | Batch | Units / questions | Strings |
+  |---|---:|---:|
+  | x0-pilot | 6 / 19 | 421 |
+  | x1 | 16 / 36 | 846 |
+  | x2 | 16 / 42 | 970 |
+  | x3 | 15 / 42 | 984 |
+  | x4 | 12 / 36 | 791 |
+  | x5 | 15 / 35 | 795 |
+  | x6 | 15 / 43 | 968 |
+  | x7 | 16 / 48 | 1076 |
+- `--assemble evidence-retire-b12 --partial` → `partial: 301 explanations from x0-pilot, x1, x2, x3, x4, x5, x6, x7 pass every gate; missing: none. Nothing written: a partial set is not a release`. `data/explanations/p5-evidence-retire-b12.json` does not exist.
+- `export_product.py --sample --check` → current (4 units / 12 questions, 68 strings); `--pilot --check` → current.
+- `lint_learner_output.py --strict` on `x6-elf.json` → clean.
+- Determinism (`determinism.py`):
+  - `build_roster.py`, `export_qid_registry.py`, `explanation_batches.py` and `export_product.py --sample` were each rerun, and every output's sha256 below stayed the same;
+  - `drop_entries.py` verifies the batch file without writing, and passed again on the final tree;
+  - the suite's subprocess runs under `PYTHONHASHSEED` 0 and 4242 pass: the manifest `--check`, the x1 batch check and the registry `--check`;
+  - every batch check runs `export_bank`'s double build.
+- Worker: 395 passed; typecheck and biome clean. App bake-off tests: 74 passed.
+- sha256 (final):
+  - `pipeline/synthetic/RETIRED.json` `797a0a5c5fcc8cc4e713dc34e7b2b1871792931790625bcfc93a27f017565b6c` (HEAD `59857c8e…`)
+  - `pipeline/synthetic/infold/approval-roster.json` `46517699553410bc457f11f66a5ec71732ec3b02466f006a716bf345202e0da8` (HEAD `a64d9f26…`)
+  - `pipeline/synthetic/infold/ROSTER.md` `e414ab98dccf2d5d73528953a5d5b4537bf0875777e865f85db1213d8da797ae` (HEAD `990f5fc9…`)
+  - `worker/data/p5-qid-registry.json` `d57be16365d451837f79e2d086a176b7e1342542152e3ac5d3398af73a37b38d` (HEAD `0a98c119…`)
+  - `pipeline/synthetic/infold/explanations/BATCHES.json` `db49bb93ba8ad65a334d9267c0b5d52ac01f293498e9dfd1c89edc0cfd4724b8` (HEAD `bdfe2a3f…`)
+  - `pipeline/synthetic/infold/explanations/x6-elf.json` `df5291c64816dec51b1af0776b432628e1296964e1b6e917958360084efc0325` (HEAD `511a4581…`)
+  - `pipeline/synthetic/infold/preview/sample/_export-manifest.json` `f1bf996b9c4a1fe44dd8b79866449077c7958289ff09c0d675bd95d547d2b44f` (HEAD `4f2baff6…`)
+  - `build_roster.py` `a0138736…2118`; `explanation_batches.py` `92942b3e…03ee`; `tests/test_infold_explanation_batches.py` `b7d844c6…3b2a`; `tests/test_infold_roster.py` `dc9d578c…d983`; `tests/test_infold_qid_registry.py` `c24c175c…a5db`; `tests/test_infold_export.py` `3a89f8e5…4606`; `worker/src/lib/fit.test.ts` `05924732…10d8`; `worker/src/lib/provenance.test.ts` `a4f79fb2…f5c7`; `docs/p5-infold-design.md` `7b38b29b…6a1d`
+  - unchanged: `LANGUAGE-EXAMPLES.json` `c2964b53…`, `preview/sample/p5-bank-sample.json` `393ad817…`, `export_product.py` `f627c815…`, `export_qid_registry.py` `875b10a9…`, `ratification-2026-10-07.json` `4964c297…`, `data/explanations/p5-pilot.json` `fd96f43f…`, `x1-las.json` `6c72164b…`, `x2-las.json` `9071320a…`, `x3-las.json` `37cdba02…`, `x4-elf.json` `bab184a9…`, `x5-elf.json` `aae9c80d…`, `x7-elf.json` `cb5c3327…`, `frameworks/elf_taxonomy.json` `84ab6524…`, `worker/src/lib/fit.ts` `8f508b8c…`, `worker/src/lib/provenance.ts` `377648e1…`, the candidate `batch12/candidates-final/elf-b12-001.json` `af1fe6f2…`
+
+### Handoff
+
+- **For review:**
+  - the `RETIRED.json` entry: its wording and quotations;
+  - the `fit.test.ts` digest re-recording;
+  - the design doc's second 2026-10-09 update, which the roster test now reads as §2's fourth table.
+- **For the repair cycle (bead `hpf-c5tb.14`).** An r2 of `elf-b12-001` needs:
+  - an explicit decision to lift its `RETIRED.json` entry, since retirement wins over every ruling;
+  - a `REVISIONS` bump, which gives new r2 qids;
+  - the full gate and a ruling;
+  - the census constants and the design table changed again.
+
+  The partition will then refuse the unit as "an eligible unit in no batch" until someone assigns it by hand to a new batch (x8 …) in `BATCHES.json` and `EXPECTED`. Its explanations are new work for that batch. Batch X6 content concern 1 suggests two passage edits as a starting point.
+- **For PR 5 (release packaging):** 301 eligible qids, every batch file present; `--assemble <release> --partial` passes with "missing: none".
+- **Not claimed:**
+  - release readiness;
+  - any new review of the kept entries, which are byte-identical;
+  - anything about the unit beyond the ruling.
+- **Scratch evidence**, not checked in, is in the session scratchpad (`/tmp/claude-1000/-home-loucmane-dev-hpfetcher-worktrees-hpfetcher-lane/7cf017fa-57e1-4cda-95e5-298704b1e2cf/scratchpad/`):
+  - `head/` (HEAD copies of every touched file) and `snapshot_head.py`;
+  - `check_retired_entry.py` and `roster_counts.py`;
+  - `drop_entries.py`;
+  - `swap.py`, `retired.scratch.test.ts` and `worker782/` (the scratch worker copy);
+  - `determinism.py`.
+
+### Bead note
+
+LANE DONE: hpf-c5tb.17
+
+### Progress
+
+- 2026-10-09 [S:ci-nlws1|W:hpf-c5tb.17|H:research|E:f965a3c] Read the ruling, this worklog (both Retirement sections, Batch freeze, X6 and its review fix), RETIRED.json, the candidate, the three generators, their tests, the worker tests, PR4a's fixture test and the design doc. Baseline 2008 passed, 7 xfailed; worker 395.
+- 2026-10-09 [S:ci-nlws1|W:hpf-c5tb.17|H:implement|E:pipeline/synthetic/RETIRED.json] One entry, its quotations checked against the candidate; the roster check derived the census (111 / 301), equal to the hand count; roster, ROSTER.md, registry, BATCHES.json (x6 15 / 43, no unit moved) and the sample manifest regenerated; x6 trimmed by whole-entry deletion and verified against HEAD; every batch check passes, partial assembly 301, missing: none.
+- 2026-10-09 [S:ci-nlws1|W:hpf-c5tb.17|H:verify|E:pipeline/synthetic/infold/tests] HEAD's tests on the new tree: 15 failed, each a number, the table or the retired-since list; no fixture drew the unit; numbers updated in four modules; 2008 passed, 7 xfailed.
+- 2026-10-09 [S:ci-nlws1|W:hpf-c5tb.17|H:verify|E:worker/src/lib/fit.test.ts] Worker: registry size and three registry-coupled fit digests, re-recorded against 782f9c2 in a scratch copy (control reproduces the old pins); 5 retired qids unknown in a scratch provenance test; 395 passed, typecheck and biome clean; app bake-off tests 74 passed; reruns byte-identical.
+
+LANE DONE: hpf-c5tb.17
