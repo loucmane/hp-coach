@@ -124,6 +124,7 @@ export function CaveatMarker() {
   return (
     <sup
       aria-hidden
+      data-testid="ovn-caveat-marker"
       style={{
         fontFamily: 'var(--font-mono)',
         fontSize: 'max(0.5em, 11px)',

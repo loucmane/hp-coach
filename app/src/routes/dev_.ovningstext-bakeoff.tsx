@@ -23,28 +23,35 @@
 // `&frame=1` renders the bare stage (the scene-3 phone preview).
 //
 // Dev-gated. Kept forever per the keep-bake-offs rule.
+//
+// Bundling: routeTree.gen imports this module eagerly and autoCodeSplitting
+// splits off `component` only, so whatever validateSearch touches ships in
+// the entry bundle. This file therefore has no static import from
+// components/devbake: the search keys are inline (pinned to the page's
+// VARIANTS and SCENES by -ovningstext-bakeoff.test.ts) and the page, its
+// scenes and the P5 fixture load through import() once the dev gate lets
+// the page render.
 
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { lazy, Suspense } from 'react'
 
-import {
-  type BakeoffSelection,
-  OvningstextBakeoff,
-  SCENES,
-  type SceneKey,
-} from '@/components/devbake/OvningstextBakeoff'
-import { VARIANTS, type VariantKey } from '@/components/devbake/OvningstextKit'
 import { isDevSurface } from '@/lib/devSurface'
+
+export const VARIANT_KEYS = ['a', 'b', 'c'] as const
+export const SCENE_KEYS = ['1', '2', '3', '4', '5', '6', '7'] as const
+type VariantKey = (typeof VARIANT_KEYS)[number]
+type SceneKey = (typeof SCENE_KEYS)[number]
 
 // The scene travels as a number (`s=3`): a numeric-looking string would be
 // JSON-quoted into the URL by the router's search serialiser.
 type BakeoffSearch = { v?: VariantKey; s?: number; frame?: true }
 
-function validateSearch(input: Record<string, unknown>): BakeoffSearch {
+export function validateSearch(input: Record<string, unknown>): BakeoffSearch {
   const out: BakeoffSearch = {}
   const v = String(input.v ?? '')
-  if (VARIANTS.some((x) => x.key === v)) out.v = v as VariantKey
+  if ((VARIANT_KEYS as readonly string[]).includes(v)) out.v = v as VariantKey
   const s = String(input.s ?? '')
-  if (SCENES.some((x) => x.key === s)) out.s = Number(s)
+  if ((SCENE_KEYS as readonly string[]).includes(s)) out.s = Number(s)
   if (input.frame === '1' || input.frame === 1 || input.frame === true) out.frame = true
   return out
 }
@@ -53,6 +60,12 @@ export const Route = createFileRoute('/dev_/ovningstext-bakeoff')({
   validateSearch,
   component: OvningstextBakeoffPage,
 })
+
+const OvningstextBakeoff = lazy(() =>
+  import('@/components/devbake/OvningstextBakeoff').then((m) => ({
+    default: m.OvningstextBakeoff,
+  })),
+)
 
 function OvningstextBakeoffPage() {
   const { v, s, frame } = Route.useSearch()
@@ -67,20 +80,22 @@ function OvningstextBakeoffPage() {
   }
 
   return (
-    <OvningstextBakeoff
-      variant={v ?? 'a'}
-      scene={(s != null ? String(s) : '1') as SceneKey}
-      frame={frame === true}
-      onSelect={(next: BakeoffSelection) =>
-        navigate({
-          search: (prev) => ({
-            ...prev,
-            ...(next.v ? { v: next.v } : {}),
-            ...(next.s ? { s: Number(next.s) } : {}),
-          }),
-          replace: true,
-        })
-      }
-    />
+    <Suspense fallback={null}>
+      <OvningstextBakeoff
+        variant={v ?? 'a'}
+        scene={(s != null ? String(s) : '1') as SceneKey}
+        frame={frame === true}
+        onSelect={(next) =>
+          navigate({
+            search: (prev) => ({
+              ...prev,
+              ...(next.v ? { v: next.v } : {}),
+              ...(next.s ? { s: Number(next.s) } : {}),
+            }),
+            replace: true,
+          })
+        }
+      />
+    </Suspense>
   )
 }

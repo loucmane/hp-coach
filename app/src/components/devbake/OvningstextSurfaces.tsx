@@ -6,7 +6,8 @@
 //                  Framsteg's hero + section ledger (ProgressMobile)
 //   RetiredScene   a completed pass's facit (DrillResult) where one unit
 //                  has since been retired: the answers stay, the text is
-//                  not served, the notice stands in its place
+//                  not served, the notice stands in its place; the pass's
+//                  LÄS-based score carries the caveat as on scene 6
 //
 // Each surface is re-composed from its live markup and .hpc-m3-* classes
 // with fixture numbers (the live screens read the account's stats, which a
@@ -311,6 +312,7 @@ function entryAnswer(e: FacitEntry): AnswerLetter {
 }
 
 export function RetiredScene({ variant, layout }: { variant: VariantKey; layout: DrillLayout }) {
+  const footnoteId = useId()
   const [open, setOpen] = useState<number | null>(null)
   const right = FACIT.filter((e) => e.picked === entryAnswer(e)).length
   // A retired unit's misses leave the repetition queue (design §3 C), so
@@ -359,9 +361,11 @@ export function RetiredScene({ variant, layout }: { variant: VariantKey; layout:
               </div>
               <div className="hpc-m3-stat-l">rätt</div>
             </div>
-            <div>
+            {/* A LÄS-based estimate: it carries the caveat as on scene 6. */}
+            <div aria-describedby={variant === 'a' ? footnoteId : undefined}>
               <div className="hpc-m3-stat-n">
                 {((right / FACIT.length) * 2).toFixed(2).replace('.', ',')}
+                {variant === 'a' && <CaveatMarker />}
               </div>
               <div className="hpc-m3-stat-l">detta pass</div>
             </div>
@@ -370,6 +374,9 @@ export function RetiredScene({ variant, layout }: { variant: VariantKey; layout:
               <div className="hpc-m3-stat-l">till repetition</div>
             </div>
           </div>
+          {variant === 'a' && <CaveatFootnote id={footnoteId} />}
+          {variant === 'b' && <CaveatBox />}
+          {variant === 'c' && <CaveatLine />}
         </DrillRailSection>
 
         <DrillRailSection meta="Facit">
