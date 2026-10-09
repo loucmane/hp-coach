@@ -73,17 +73,19 @@ RETIRED = "retired"
 
 # docs/p5-infold-design.md §2, per batch: retained units / questions per
 # section, and retired units / questions. Since the owner's ruling of
-# 2026-10-08 (bead hpf-c5tb.2) las-b3-001 and las-b5-001 are retired: §2's
-# census update of that date, which supersedes its original table.
+# 2026-10-08 (bead hpf-c5tb.2) las-b3-001 and las-b5-001 are retired, and
+# since the ruling of 2026-10-09 (bead hpf-c5tb.13) elf-b1-002, elf-b3-004,
+# elf-b4-001, elf-b5-002, elf-b7-002 and elf-b8-002: §2's census update of
+# 2026-10-09, which supersedes its earlier tables.
 EXPECTED_CENSUS = {
-    1: {"LÄS": (3, 8), "ELF": (4, 12), "retired": (0, 0)},
+    1: {"LÄS": (3, 8), "ELF": (3, 7), "retired": (1, 5)},
     2: {"LÄS": (2, 4), "ELF": (4, 12), "retired": (0, 0)},
-    3: {"LÄS": (2, 4), "ELF": (3, 7), "retired": (1, 4)},
-    4: {"LÄS": (2, 4), "ELF": (3, 11), "retired": (0, 0)},
-    5: {"LÄS": (2, 4), "ELF": (4, 12), "retired": (1, 4)},
+    3: {"LÄS": (2, 4), "ELF": (2, 6), "retired": (2, 5)},
+    4: {"LÄS": (2, 4), "ELF": (2, 6), "retired": (1, 5)},
+    5: {"LÄS": (2, 4), "ELF": (3, 7), "retired": (2, 9)},
     6: {"LÄS": (2, 4), "ELF": (3, 7), "retired": (2, 9)},
-    7: {"LÄS": (3, 8), "ELF": (3, 7), "retired": (1, 5)},
-    8: {"LÄS": (2, 4), "ELF": (3, 7), "retired": (2, 9)},
+    7: {"LÄS": (3, 8), "ELF": (2, 2), "retired": (2, 10)},
+    8: {"LÄS": (2, 4), "ELF": (2, 2), "retired": (3, 14)},
     9: {"LÄS": (3, 8), "ELF": (4, 12), "retired": (0, 0)},
     10: {"LÄS": (3, 8), "ELF": (4, 12), "retired": (0, 0)},
     11: {"LÄS": (2, 4), "ELF": (4, 12), "retired": (1, 4)},
@@ -96,7 +98,7 @@ EXPECTED_CENSUS = {
     18: {"LÄS": (3, 8), "ELF": (4, 12), "retired": (0, 0)},
     19: {"LÄS": (3, 8), "ELF": (3, 11), "retired": (1, 1)},
 }
-EXPECTED_TOTALS = {"retained": (118, 332), "LÄS": (50, 128), "ELF": (68, 204), "retired": (10, 41)}
+EXPECTED_TOTALS = {"retained": (112, 306), "LÄS": (50, 128), "ELF": (62, 178), "retired": (16, 67)}
 
 # Units whose student-facing content changed after their evidence was
 # recorded: unit_id -> revision; every other unit is revision 1. las-b7-002
@@ -162,8 +164,10 @@ RATIFIED_EXTRA = {
     "las-b7-002": [(_b(7, "ADJUDICATION.md"), "## Law-13 rename — 2026-10-07 (hpf-jsnf): las-b7-002 r2",
                     "the revision-2 rename that the ratification covers")],
 }
-# Kept legacy units that were ÄGARBLICK items in the master rather than plain
-# approve-with-note rows; the other 75 kept units are table rows.
+# Legacy units that were ÄGARBLICK items in the master rather than plain
+# approve-with-note rows. Three are kept, and the other 70 kept units are
+# table rows; elf-b5-002 is retired (2026-10-09, bead hpf-c5tb.13), and its
+# retired row still cites the master with its note.
 LEGACY_NOTES = {
     "las-b2-003": "ÄGARBLICK D: q1's 'bäst' stem was left to the owner's eye; a third q1 redesign "
                   "landed in 4791084 (PR #356) and its audit returned CONFIRMED_NOTES",
@@ -571,10 +575,12 @@ def render_roster_md(roster: dict) -> str:
         "",
         f"Fixed before ratification: {fixed}. Still pending: {pending}.",
         "",
-        "Four kept units were ÄGARBLICK items in the master rather than plain approve-with-note rows:",
-        "",
     ]
-    for uid, note in LEGACY_NOTES.items():
+    retired_units = {u["unit_id"] for u in by_status[RETIRED]}
+    kept_notes = {uid: note for uid, note in LEGACY_NOTES.items() if uid not in retired_units}
+    out += ["Kept units that were ÄGARBLICK items in the master rather than plain approve-with-note rows "
+            f"({len(kept_notes)}):", ""]
+    for uid, note in kept_notes.items():
         out.append(f"- `{uid}` — {note}.")
     retired_ids = ", ".join(f"`{u['unit_id']}`" for u in by_status[RETIRED])
     out += [

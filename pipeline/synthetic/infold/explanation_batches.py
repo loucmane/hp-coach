@@ -5,7 +5,7 @@ docs/p5-infold-design.md §4 row 2b (Amendment 1) and §D; beads hpf-c5tb,
 hpf-c5tb.1 and hpf-c5tb.4. Every exported P5 question needs a reviewed Layer 2
 explanation before LÄS and ELF switch to P5. The pilot
 (data/explanations/p5-pilot.json, bead hpf-no7l) is batch x0-pilot. The other
-313 questions are written and reviewed in seven batch files, one PR each, and
+287 questions are written and reviewed in seven batch files, one PR each, and
 are combined into the release shard data/explanations/p5-<release>.json only
 when every batch is in.
 
@@ -17,8 +17,9 @@ that has been retired (RETIRED.json) from its batch, and records each batch's
 qids at its units' current revisions. A shipped or in-flight batch therefore
 never gains a unit and no unit moves between batches: retirement only
 removes. The eligible units are the roster's approved, unretired units,
-selected the way export_product selects them (118 units / 332 questions since
-the owner retired las-b3-001 and las-b5-001 on 2026-10-08, bead hpf-c5tb.2).
+selected the way export_product selects them (112 units / 306 questions since
+the owner retired las-b3-001 and las-b5-001 on 2026-10-08, bead hpf-c5tb.2,
+and six ELF units on 2026-10-09, bead hpf-c5tb.13).
 The generator refuses, writing nothing, an eligible unit in no batch, a unit
 in two batches, a listed unit that is not eligible for a reason other than
 retirement (not in the roster, or pending owner ratification), a batch with
@@ -109,16 +110,18 @@ RULE = ("Pinned (bead hpf-c5tb.4): this file records which batch holds which uni
         "(x4–x7), a new chunk starting once the running question total reached k × (section total / chunks).")
 # The pinned partition (bead hpf-c5tb.4): the initial cut of bead hpf-c5tb.1
 # less las-b3-001 and las-b5-001, which the owner retired from x1 on
-# 2026-10-08 (bead hpf-c5tb.2; x1 was 18 units / 44 questions): batch ->
-# (first unit, last unit, units, questions). build_manifest fails when it
-# differs.
+# 2026-10-08 (bead hpf-c5tb.2; x1 was 18 units / 44 questions), and less
+# elf-b1-002, elf-b3-004, elf-b4-001 and elf-b5-002 from x4 and elf-b7-002
+# and elf-b8-002 from x5, retired on 2026-10-09 (bead hpf-c5tb.13; x4 was 16
+# units / 52 questions, x5 17 / 45): batch -> (first unit, last unit, units,
+# questions). build_manifest fails when it differs.
 EXPECTED = {
     PILOT_BATCH: ("las-b7-002", "las-b19-002", 6, 19),
     "x1": ("las-b1-001", "las-b8-002", 16, 36),
     "x2": ("las-b8-003", "las-b14-001", 16, 42),
     "x3": ("las-b14-003", "las-b19-003", 15, 42),
-    "x4": ("elf-b1-001", "elf-b5-002", 16, 52),
-    "x5": ("elf-b5-003", "elf-b10-002", 17, 45),
+    "x4": ("elf-b1-001", "elf-b5-001", 12, 36),
+    "x5": ("elf-b5-003", "elf-b10-002", 15, 35),
     "x6": ("elf-b10-003", "elf-b14-003", 16, 48),
     "x7": ("elf-b15-001", "elf-b19-002", 16, 48),
 }

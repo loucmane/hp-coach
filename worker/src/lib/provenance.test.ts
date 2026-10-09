@@ -156,7 +156,7 @@ describe('synthetic — the committed P5 qid registry', () => {
     expect(registry.format).toBe('p5-qid-registry-v1')
     expect(registry.unit_count).toBe(registry.units.length)
     expect(registry.qid_count).toBe(registryQids.length)
-    expect(registryQids).toHaveLength(332)
+    expect(registryQids).toHaveLength(306)
     expect(new Set(registryQids).size).toBe(registryQids.length)
     expect(registry.framework_id_count).toBe(Object.keys(frameworkIds).length)
   })
