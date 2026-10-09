@@ -1,7 +1,7 @@
 ---
 bead: "hpf-c5tb"
 project: "hpfetcher"
-status: "batch_x5_uncommitted"
+status: "batch_x5_review_fix_uncommitted"
 ---
 
 # Worklog — hpf-c5tb
@@ -1986,3 +1986,110 @@ LANE DONE: hpf-c5tb.10
 - 2026-10-09 [S:ci-2voty|W:hpf-c5tb.10|H:review|E:pipeline/synthetic/infold/explanations/x5-elf.json] Stance self-check (18 fields), round 1 with four readers (75 findings, 6 errors), round 2 with four fresh readers (9), a final full read (2); each checked against the passages and applied; final checks green; reruns byte-identical.
 - 2026-10-09 [S:ci-2voty|W:hpf-c5tb.10|H:blocked-close|E:127.0.0.1:53381] Setting the bead note and `gc.outcome=pass` failed twice: the beads Dolt server refused connections, and `gc status` showed the supervisor down (0/31 agents). The bead stays `in_progress`; the exact update and close commands are under Handoff.
 - 2026-10-09 [S:ci-2voty|W:hpf-c5tb.10|H:blocked-close|E:needs/operator] Rechecked: `bd ping` still refused; `gc hook --claim --json` returned the existing assignment `hpf-c5tb.10`; `bd show` now carries the controller's `progress_stall` flag and `needs/operator` label (01:11:30Z). A retry with the backend declared as the command's host failed the same way. The bead was not drained or closed.
+
+### X5 review fix
+
+Bead `hpf-c5tb.11`: review findings B1 and B2 on PR #384 (review bead `hpf-bye6`), and a sweep of all 45 X5 entries for the two defect classes behind them: (a) a categorical claim about English usage or meaning that is not true; (b) a why_wrong that does not rebut its option as written.
+
+**Snapshot and boundaries**
+- Claimed with `gc hook --claim --json` (`hpf-c5tb.11`, assignee `gc__implementation-worker-ci-gxr92`, route `hpfetcher/gc.implementation-worker`); `bd show hpf-c5tb.11 --json` matched the id, status `in_progress`, the assignee and `gc.routed_to`.
+- Branch `codex/hpf-c5tb-x5` at `ba6588f746267f7831ce29333ea947fa223ed770`, as the bead states, tracking the local `origin/codex/hpf-c5tb-x5` (not fetched). No tracked change at start; `x5-elf.json` was `3e009fd8…`, the value the Batch X5 section records.
+- No git writes and no network; the changes are uncommitted. The untracked runtime, skill and sandbox paths present at start are untouched.
+- The review worklog `hpf-bye6.md` lives in the vault, which this lane's sandbox cannot read (the read was refused). B1 and B2 were taken from this bead's text and the review bead's note (`bd show hpf-bye6`). The review's suggested replacements were not seen, so the wording below is this lane's own.
+- The bead names no validator, so none was run (`gc.check_path` is the post-close dispatcher check, as for the earlier beads).
+- Lane policy refused `git -C`, so plain `git` ran in the worktree. The printing, diff and audit scripts ran from the session scratchpad as `python3 <file>` and are not checked in.
+
+**B1.** `p5-elf-b9-002-r1-ELF-001`, gap 1 (key D "conventions"), distractor A ("convictions"), `why_wrong`:
+- was: "A conviction is a person’s own firm belief. You hold a conviction; you do not obey one, and the queue is a shared rule, not a private belief (step 2)."
+- now: "A conviction is a firmly held belief. The sentence says what a queue itself is: one of “the most reliably obeyed ___ in public life”. A queue is not a belief at all; it is a custom that everyone present shares and follows (step 2)."
+- The usage prohibition is gone: English does speak of obeying one's convictions. A is now rejected on meaning in this sentence: the gap names what a queue is, and a queue is a shared public custom, not a belief.
+- The first rewrite said "one person’s own firm belief … not a belief that one person holds". The verifier (below) flagged it, since convictions can be shared ("a shared conviction", "our firm conviction that …"). The final text contrasts a custom with a belief and says nothing about who holds the belief.
+
+**B2.** `p5-elf-b9-001-r1-ELF-004` (key B), distractor D: "Water from the higher tributaries arrives too late to be counted in the peak that the gauge records."
+- `why_wrong` was: "Nothing in the text says that late water escapes the gauge. Arriving at different times spreads the flood out; it does not hide water from the gauge (step 4)."
+- now: "The text never says that water from the higher tributaries arrives too late to count in the peak the gauge records. It mentions the longer travel time as part of Sorrel’s cautious explanation of a result about the dams: where colonies had spread across several tributaries, the peak was blunted “more often than not” (steps 2–4). D leaves the dams out."
+- step 5 was "… and D says that late water is not counted, which the text never says."; now "… and D says that water from the higher tributaries arrives too late to count in the recorded peak, which the text never says."
+- D is now answered as written, "in the peak" included. The passage's hedges stay: "more often than not" and Sorrel's caution in the field itself; step 4 keeps "will not push the explanation far" and "On the Ferrow, at least".
+
+**The sweep**
+- **This lane** read all 45 entries: every why_wrong against its option's exact wording, every usage or meaning claim in every field.
+- **Three independent read-only second readers** (general-purpose subagents of this session) swept the same two classes, split by unit:
+  - R1: `elf-b5-003` … `elf-b7-002`, 14 questions;
+  - R2: `elf-b7-003` … `elf-b9-001`, 14 questions;
+  - R3: `elf-b9-002` … `elf-b10-002`, 17 questions.
+
+  They also checked the one-line option summaries in "Test the options" steps and every technique and pitfall that describes an option. B1's and B2's fields were left to this lane.
+- **Coverage:** all 135 why_wrong fields. R1 counted 38 usage and meaning claims, R2 46 and R3 about 100.
+- **Findings:** R1 0, R2 1, R3 8. This lane's own pass had raised 2 of these 9 (S1, S9) before the readers reported. Each was checked against the passage and applied, in this lane's wording; where that wording departs from the reader's suggestion in substance, the row says why (S6, S9).
+- **A fresh read-only verifier** then read all 12 rewritten fields in their final wording: 11 correct; the twelfth was B1's first rewrite (above), now fixed.
+
+| # | Entry, field | Class | Was → now | Why |
+|---|---|---|---|---|
+| S1 | `p5-elf-b9-002-r1-ELF-001` (gap 1), technique | a | "Something people obey although no law or official enforces it is a convention." → "A shared rule that people obey although no law or official enforces it is a convention." | People obey their convictions or their conscience with no law behind them, and those are not conventions: B1's rule in another form. This lane and R3. |
+| S2 | same, pitfall | a | "only one names a rule that can be obeyed" → "only one names a shared rule of behaviour" | Every rule can be obeyed, so the clause implied that the other three cannot be: B1's rule again. R3. |
+| S3 | `p5-elf-b9-002-r1-ELF-002` (gap 2), C why_wrong | a | "It is a quality of one person, not something shared about what everybody will do" → "It is a quality that people have, not a belief about what everybody will do" | A whole team can show gumption. What C lacks is a belief whose content the that-clause could give. R3. |
+| S4 | `p5-elf-b9-003-r1-ELF-001`, B why_wrong, second sentence | b | "And no half is “always” darker: the bands swap when you change sides (step 3)." → "And the text never says that the far half looks darker: the pattern runs in stripes, not halves, and a spectator down at pitch level “may find almost no pattern there at all”." | B's "the far half … than the near half" is relative to the viewer, so B itself predicts a swap when you change sides. The old sentence rebutted a fixed half, which B does not claim: B2's shape. The first sentence (the bands are pressed in different directions) stays. R3. |
+| S5 | same, step 4 | b | "B makes one half of the pitch always darker," → "B makes the far half always look darker, which the text never says;" | The same misreading. R3. |
+| S6 | same, pitfall | b | "– a half that is always darker, rows cut to two heights – or that blame the lighting" → "– rows cut to two heights – or that bring in something the text never says – the lighting, a far half that always looks darker –" | The same misreading: B's far half is not a fixed feature of the pitch. R3 suggested "blame … distance", but B's stated cause is the roller's lean, so the final text says only what the text lacks. |
+| S7 | `p5-elf-b10-002-r1-ELF-004` (gap 4), A why_wrong | a | "“Not risen … but soared” contradicts itself: soaring is rising fast. The frame needs something other than a rise (step 2)." → "Soaring is rising fast. Takings that had soared would not fit what happened next: “by the spring the old prices were quietly back” (step 2)." | "Not X but Y" with a stronger Y is normal English ("prices didn't rise, they soared"), and "had not risen with them" can mean "did not merely keep pace with admissions". What rules "soared" out is the context, which step 2 already uses. R3. |
+| S8 | same, step 3 | a | "which the frame rules out with “had not risen”" → "and rising takings would not fit the old prices coming back by the spring" | The same overclaim. R3. |
+| S9 | `p5-elf-b8-002-r1-ELF-003` (gap 3), C why_wrong | a | "“Meanwhile” means at the same time and introduces a separate event. The sentence is not about another event; it grants a point …" → "“Meanwhile” brings in something happening at the same time, or another side of the situation; it does not grant a point. This sentence grants one, …" | "Meanwhile" also compares two sides of a situation, with no separate event ("Exercise, meanwhile, can reduce its effects", Oxford Learner's). C fails because "Meanwhile" does not concede a point, and the gapped sentence concedes one before "But". This lane and R2; R2's wording kept the time sense alone. |
+
+**Considered and kept** (true as stated, or the option is still rebutted as written):
+- **Usage claims that are true:**
+  - "nobody obeys a concession" and connections "cannot be obeyed" (`elf-b9-002` gap 1): English obeys neither;
+  - "Elapse is used for periods of time, not for beliefs" (`elf-b8-002` gap 5);
+  - "“sprouted” is not used for takings" (`elf-b10-002` gap 4);
+  - "income does not cover overtures" and an overhang "is not a running cost" (`elf-b10-002` gap 1);
+  - "Suspension … is not a feeling" (`elf-b8-002` gap 1);
+  - "To collapse is to fail suddenly and completely" (`elf-b8-002` gap 5): the dictionary sense, and the conclusion is only comparative ("less well", "better said");
+  - "Unaffordable is about the buyer": the payer, here the customer;
+  - the glosses of "Ostensibly", "Admittedly", "Incidentally", "Conversely", "Nevertheless", "far from" and "not … but".
+- **Glosses that give one sense, with no exclusion resting on a false claim:**
+  - "“Meanwhile” means at the same time" in `elf-b8-002` gap 3 step 3; C's why_wrong now carries the full argument;
+  - "To relapse is to fall back into an illness or a bad habit" (`elf-b8-002` gap 5): the exclusion rests on "an earlier state";
+  - "“Convictions” are firm personal beliefs" (`elf-b9-002` gap 1 step 3): "personal convictions" is normal English, and the step's exclusion ("None of them is a shared rule") holds;
+  - "a utility is a company that supplies electricity" and "A credential is something that proves you may enter – here the card": both are tied to their passages;
+  - "All four nouns are formal words ending in -ion" (`elf-b8-002` gap 2 pitfall): a loose remark on register that no argument rests on.
+- **Paraphrases that still exclude the option as written:**
+  - `elf-b9-001` q5 B: "does not conclude that the record bears the leaflets out", where B says "broadly". "More divided than either side's leaflet" and a storage figure that "predicts very little" exclude "broadly" too.
+  - `elf-b7-002` q3 A: "did not continue at the earlier pace", where A says "roughly". More than six hundred firms against fewer than thirty excludes it.
+  - `elf-b7-003` step 4: "B says that all three were equally hard" omits B's "right up until …". B's why_wrong answers that time limit.
+  - `elf-b9-002` gap 2 A: "It is not a belief, so it cannot be followed by …". Not every noun that is not a belief refuses such a clause ("a promise that …"), but "resumption" does, and the technique states the rule correctly.
+  - `elf-b10-002` gap 4: the B and D why_wrongs, step 2 and the solution_path still argue from "had not risen". "Sprouted" and "swelled" are not stronger forms of "rise", so the contrast holds for them, and step 2 and the solution_path also cite the old prices coming back.
+  - `elf-b7-003` D ("genuinely"): content concern 4 above stands.
+
+**Verification (final tree)**
+- `python3 pipeline/synthetic/infold/explanation_batches.py --check-batch x5` → `batch x5: 17 units / 45 questions in pipeline/synthetic/infold/explanations/x5-elf.json; every explanation gate passed, learner lint clean (1012 strings)`. The canonical-bytes gate is among them; the in-place edits kept the file canonical.
+- `python3 -m pytest .github/contract-tests pipeline/synthetic/evidence/tests pipeline/synthetic/gates/scripts/tests pipeline/synthetic/infold/tests -q -p no:cacheprovider` → **2008 passed, 7 xfailed** (43.0 s), the baseline; no test was added or changed.
+- `-k "elf or language or listing or verbatim or fabricated"` → 24 passed. Every quotation in the changed fields is the unit's text (B1's is gap 1's frame as the learner reads it, “the most reliably obeyed ___ in public life”), so `LANGUAGE-EXAMPLES.json` needed no listing.
+- `lint_learner_output.py` on `x5-elf.json`, default and `--strict` → clean.
+- `explanation_batches.py --check` → current (8 batches, 118 units / 332 questions). `--assemble evidence-x5 --partial` → `partial: 236 explanations from x0-pilot, x1, x2, x3, x4, x5 pass every gate; missing: x6, x7. Nothing written: a partial set is not a release`.
+- **Field diff against HEAD** (scratchpad `field_diff.py`): the qids and their order, each entry's keys, step numbers, tiers, titles, letters and framework ids are unchanged. **12 fields changed in 6 entries**, exactly B1, B2 and S1–S9 above.
+- **House-rule audit** (scratchpad `audit_x5.py`):
+  - clean on every rule: answer sentences, step shape, distractor letters, step references (in range, never the step itself), no straight quotation mark or doubled space, no gendered pronoun outside a quotation;
+  - its spelling pattern flagged only unchanged fields: "percent" in `elf-b10-001`, as its passage spells it (see Batch X5), and "maize".
+- Changed files (`git status`): `pipeline/synthetic/infold/explanations/x5-elf.json` and this worklog (status line and this section). Nothing else.
+- sha256:
+  - `pipeline/synthetic/infold/explanations/x5-elf.json` `f977020623797016c2b91b95098d67b88a702c85409dd3f1807f9c68fbe25377` (HEAD `3e009fd8…`)
+  - unchanged: `LANGUAGE-EXAMPLES.json` `c2964b53…`, `BATCHES.json` `fd38ed33…`, `explanation_batches.py` `34789ae1…`, `tests/test_infold_explanation_batches.py` `012e7d79…`
+
+**Handoff**
+- Ready for an exact-head re-review of B1, B2 and S1–S9.
+- Committing, pushing and updating PR #384 are outside this lane.
+- Scratch evidence, not checked in, is in the session scratchpad (`/tmp/claude-1000/-home-loucmane-dev-hpfetcher-worktrees-hpfetcher-lane/12134a95-b6cd-4e7c-aa11-99ed134aad84/scratchpad/`):
+  - `print_x5.py`, with `x5_all.txt` (HEAD as swept) and `x5_final_affected.txt` (the five changed units, final);
+  - `field_diff.py`;
+  - `audit_x5.py`.
+
+**Bead note**
+
+X5 review fix on ba6588f, uncommitted: B1 fixed (elf-b9-002 gap 1 A now rejects convictions on meaning: a queue is a shared custom, not a belief; no usage rule); B2 fixed (elf-b9-001 q4 D why_wrong and step 5 now answer D as written, too late to count in the recorded peak, keeping more often than not and the caution of Sorrel); the sweep of all 45 entries (this lane plus three second readers) found 9 more true instances, all fixed: 6 fields with false or overstated usage claims (convention technique and pitfall, gumption, not risen but soared twice, Meanwhile) and 3 fields misreading the viewer-relative far half of elf-b9-003 B; a verifier caught one overstatement in the B1 rewrite, fixed; 12 fields in 6 entries, nothing else; check-batch x5 clean (1012 strings), lint clean, 2008 passed, 7 xfailed. Evidence: docs/worklog/hpf-c5tb.md, section X5 review fix.
+LANE DONE: hpf-c5tb.11
+
+**Progress**
+
+- 2026-10-09 [S:ci-gxr92|W:hpf-c5tb.11|H:research|E:ba6588f] Read this bead, the review bead's note (the vault worklog was refused), and the Batch X5 and X4 review fix sections; printed all 45 entries beside their units' student text; confirmed B1 and B2 against the passages.
+- 2026-10-09 [S:ci-gxr92|W:hpf-c5tb.11|H:fix|E:pipeline/synthetic/infold/explanations/x5-elf.json] Rewrote B1 (A why_wrong) and B2 (D why_wrong, step 5); check-batch x5 clean; 24 quotation tests passed; 2008 passed, 7 xfailed.
+- 2026-10-09 [S:ci-gxr92|W:hpf-c5tb.11|H:sweep|E:pipeline/synthetic/infold/explanations/x5-elf.json] This lane's pass over all 45 entries and three second readers (R1 0, R2 1, R3 8 findings); all 9 checked against the passages and applied as S1–S9.
+- 2026-10-09 [S:ci-gxr92|W:hpf-c5tb.11|H:verify|E:f977020623797016c2b91b95098d67b88a702c85409dd3f1807f9c68fbe25377] A fresh verifier on the 12 rewritten fields: 11 correct, 1 fixed (B1's "one person"). Field diff: 12 fields in 6 entries. check-batch x5 clean (1012 strings), lint clean, partial assembly 236, 2008 passed, 7 xfailed.
