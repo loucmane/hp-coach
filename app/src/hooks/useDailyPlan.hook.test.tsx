@@ -148,9 +148,17 @@ vi.mock('@/api/hooks/useLessonReadsApi', () => ({
   useLessonReadsQuery: () => ({ data: emptyReads, isLoading: false }),
 }))
 
+// framework_progress feeds the prerequisite gate (hpf-0026.2). No rows here:
+// with no catalogs loaded below there is no lesson hint to gate anyway.
+const emptyProgress: unknown[] = []
+vi.mock('@/api/hooks/useFrameworkProgress', () => ({
+  useFrameworkProgress: () => ({ data: emptyProgress, isLoading: false, isError: false }),
+}))
+
 vi.mock('@/data/frameworks', () => ({
   loadFramework: async () => null,
   entryHeadword: () => null,
+  loadPrereqGraph: async () => ({ version: 1, edges: [] }),
 }))
 
 // Synced prefs — the "Inte idag" defer reads `mockDeferredDate` here and

@@ -5,7 +5,8 @@ docs/p5-infold-design.md §C (data path, identity, retirement), §F (export
 gates) and §4 rows 1–2; beads hpf-535m, hpf-no7l and hpf-gcrh. Inputs: the
 ratified roster (approval-roster.json, from build_roster.py), RETIRED.json, the
 exact candidate bytes the roster pins, the Layer-1 catalogs frameworks/*.json
-and, with --explanations, the release's Layer 2 shard
+(all but frameworks/framework_prereqs.json, the prerequisite graph, which is
+not a catalog) and, with --explanations, the release's Layer 2 shard
 data/explanations/p5-<release>.json. Output: p5-bank-<release>.json, the
 validated shard p5-<release>.json when one is included, and the internal
 _export-manifest.json, written only under pipeline/synthetic/infold/preview/.
@@ -155,6 +156,10 @@ EXPORTER_REL = "pipeline/synthetic/infold/export_product.py"
 LINT_REL = "pipeline/synthetic/gates/scripts/lint_learner_output.py"
 EXPLANATIONS_REL = "data/explanations"
 FRAMEWORKS_REL = "frameworks"
+# The one file under frameworks/ that is not a Layer-1 catalog: the scheduler's
+# prerequisite graph (hpf-0026.2). layer1_catalog_paths leaves it out; any other
+# *.json there is read as a catalog and refused when it is not one.
+PREREQ_GRAPH_NAME = "framework_prereqs.json"
 PREVIEW_REL = "pipeline/synthetic/infold/preview"
 PREVIEW_DIR = INFOLD_DIR / "preview"
 SAMPLE_DIR = PREVIEW_DIR / "sample"
@@ -658,11 +663,21 @@ def _type(value) -> str:
     return "null" if value is None else type(value).__name__
 
 
-def load_frameworks(root: Path) -> tuple[dict[str, str], list[dict]]:
-    """Every Layer-1 entry id in frameworks/*.json with its section, and the
-    files read as {path, sha256}; a missing or unreadable catalog is refused."""
+def layer1_catalog_paths(root: Path) -> list[Path]:
+    """The Layer-1 catalogs under root, sorted: every frameworks/*.json but the
+    prerequisite graph PREREQ_GRAPH_NAME. Nothing else is left out, so any other
+    file there that is not a catalog is refused by load_frameworks."""
     folder = root / FRAMEWORKS_REL
-    paths = sorted(folder.glob("*.json")) if folder.is_dir() else []
+    if not folder.is_dir():
+        return []
+    return sorted(path for path in folder.glob("*.json") if path.name != PREREQ_GRAPH_NAME)
+
+
+def load_frameworks(root: Path) -> tuple[dict[str, str], list[dict]]:
+    """Every Layer-1 entry id in the catalogs layer1_catalog_paths names, with
+    its section, and the files read as {path, sha256}; a missing or unreadable
+    catalog is refused."""
+    paths = layer1_catalog_paths(root)
     if not paths:
         raise ExportError(f"no Layer-1 framework file under {FRAMEWORKS_REL}/: framework ids cannot be checked")
     catalog: dict[str, str] = {}

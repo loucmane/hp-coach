@@ -178,6 +178,31 @@ export async function loadFramework(section: Section): Promise<Framework | null>
   return entry
 }
 
+/** Framework prerequisite graph (hpf-0026.2), served next to the catalogs
+ *  (canonical source: repo-root `frameworks/framework_prereqs.json`). */
+const PREREQS_FILENAME = 'framework_prereqs.json'
+
+let prereqsCache: Promise<unknown> | null = null
+
+/**
+ * Load the raw prerequisite graph. Returns null when the file isn't served
+ * (404). Validation — which needs every catalog's ids — and the fail-open
+ * policy live in `lib/prereqs.ts`. Memoised like `loadFramework`.
+ */
+export async function loadPrereqGraph(): Promise<unknown> {
+  if (prereqsCache) return prereqsCache
+  const entry = (async () => {
+    const res = await fetch(`/frameworks/${PREREQS_FILENAME}`)
+    if (!res.ok) {
+      if (res.status === 404) return null
+      throw new Error(`failed to load framework prerequisites: HTTP ${res.status}`)
+    }
+    return (await res.json()) as unknown
+  })()
+  prereqsCache = entry
+  return entry
+}
+
 /** Sections wired with a framework today. Drives the section picker. */
 export function wiredSections(): Section[] {
   return Object.keys(FILENAMES) as Section[]
@@ -211,4 +236,5 @@ export function entryHeadword(
 /** Test-only: clear the cache. */
 export function __resetFrameworkCache(): void {
   cache.clear()
+  prereqsCache = null
 }

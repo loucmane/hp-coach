@@ -85,8 +85,13 @@ export type PlanItem = {
  *    instead of the baseline Provpass anchor, and the cold-start item
  *    became "Börja här" with a direct-start href. Plans cached before
  *    this could hold a 55-min mock summons as a stranger's first
- *    action. */
-export const PLAN_SCHEMA_VERSION = 9
+ *    action.
+ *  - v10: framework prerequisite gate (hpf-0026.2). A blocked lesson
+ *    candidate now pulls its untaught hard prerequisite into the lesson
+ *    slot (possibly another section's, "Grunden först: …"); plans cached
+ *    before this could still introduce KVA-TRAP-014 ahead of
+ *    XYZ-TRAP-005. */
+export const PLAN_SCHEMA_VERSION = 10
 
 export type DailyPlan = {
   /** Schema version — see `PLAN_SCHEMA_VERSION`. Older plans are
@@ -120,11 +125,29 @@ export type DailyPlan = {
  *  (`"NOG-lektion · 2×2-tabellen"`) and whose `framework` field
  *  deep-links the eventual Home card. Three states:
  *   - `{ id, headword }` — entry to recommend
- *   - `null`             — user has read everything in this framework;
- *                          skip the lesson item
+ *   - `null`             — nothing left to introduce (every entry read, or
+ *                          every unread one blocked); skip the lesson item
  *   - `undefined`        — no hint resolved (fall back to generic lesson)
+ *
+ *  With `pulledForward` set (hpf-0026.2), the section's next entry is
+ *  blocked by an untaught hard prerequisite and the hint names that
+ *  prerequisite instead — see `PrereqPullForward`.
  */
-export type FrameworkHint = { id: string; headword: string } | null
+export type FrameworkHint = {
+  id: string
+  headword: string
+  pulledForward?: PrereqPullForward
+} | null
+
+/** A hard prerequisite pulled into the lesson slot (lib/prereqs.ts). The
+ *  lesson item follows the prerequisite — its section, deep link and
+ *  headline — and its rationale names the slot section's trap it unlocks. */
+export type PrereqPullForward = {
+  /** Section of the prerequisite entry the hint names. */
+  section: Section
+  /** The blocked entry, in the lesson slot's own section. */
+  blockedId: string
+}
 
 export type SchedulerSignals = {
   /** Drives the plan's `date` field and the staleness comparisons in
@@ -427,13 +450,16 @@ export function generateDailyPlan(signals: SchedulerSignals): DailyPlan {
 
   const ranked = rankWeakness(sectionScores)
 
-  // Rule 2 — weakest section needs a lesson.
+  // Rule 2 — weakest section needs a lesson. The hint is already gated by
+  // the framework prerequisite graph (hpf-0026.2): a blocked candidate
+  // arrives as its pulled-forward prerequisite, which still fills this slot.
   const weakest = ranked[0]
   let weakestLessonEmitted = false
   if (weakest && items.length < MAX_ITEMS && needsLesson(weakest)) {
     const hint = firstUnreadEntry?.[weakest.section]
-    // `null` hint means the user has already read every entry in
-    // this section's framework — skip the lesson rather than nag.
+    // `null` hint means nothing in this section's framework is left to
+    // introduce (all read, or every unread entry blocked) — skip the
+    // lesson rather than nag.
     // `undefined` means no hint resolved → emit a generic lesson item.
     if (hint !== null) {
       items.push(lessonItem(weakest, hint, date))
@@ -488,11 +514,13 @@ export function generateDailyPlan(signals: SchedulerSignals): DailyPlan {
 /** Move the hot trap's own drill item to position 0, in place. A trap
  *  drill item carries `framework: <id>` (see `trapDrillItem`); when one
  *  matches the hot trap we already prescribed it via the trap-aware rules,
- *  so this is a pure reorder — no new item, no duplication. No-op when no
- *  hot trap, or when none of the assembled items targets it. */
+ *  so this is a pure reorder — no new item, no duplication. Only drill
+ *  items match: a lesson can carry the same framework (a pulled-forward
+ *  prerequisite, hpf-0026.2) and is never lifted. No-op when no hot trap,
+ *  or when no assembled drill targets it. */
 function applyHotTrapBoost(items: PlanItem[], hotTrap: SchedulerSignals['hotTrap']): void {
   if (!hotTrap) return
-  const idx = items.findIndex((i) => i.framework === hotTrap.framework_id)
+  const idx = items.findIndex((i) => i.kind === 'drill' && i.framework === hotTrap.framework_id)
   if (idx <= 0) return // already first, or absent
   const [item] = items.splice(idx, 1)
   items.unshift(item)
@@ -608,27 +636,37 @@ function repetitionItem(count: number, date: string): PlanItem {
 }
 
 function lessonItem(score: SectionScore, hint: FrameworkHint | undefined, date: string): PlanItem {
+  // A pulled-forward prerequisite (hpf-0026.2) is a lesson in ITS OWN
+  // section: section, deep link and headline follow the prerequisite, and
+  // only the rationale speaks for the weakest section whose trap it unlocks.
+  const pulled = hint?.pulledForward
+  const section = pulled?.section ?? score.section
   // Trap-catalog headwords are full sentences (the `pattern_description`
   // field IS the canonical name; there's no short label). Truncate so
   // the plan-card row stays one or two lines on phone.
   const headword = hint?.headword ? truncateHeadword(hint.headword, 48) : null
-  const headline = headword ? `${score.section}-lektion · ${headword}` : `${score.section}-lektion`
+  const headline = headword ? `${section}-lektion · ${headword}` : `${section}-lektion`
   return {
-    id: `lesson-${score.section}-${date}`,
+    id: `lesson-${section}-${date}`,
     kind: 'lesson',
-    section: score.section,
+    section,
     framework: hint?.id,
     headline,
-    rationale: lessonRationale(score),
+    rationale: pulled ? prereqRationale(pulled.section, score.section) : lessonRationale(score),
     estimatedMinutes: 5,
     // When the item names a specific trap, land ON it — LessonReader
     // opens + scrolls #hash anchors (the R1 deep-link). A bare section
     // href would drop the user at the top of a 25–55-entry catalog.
-    href: hint?.id
-      ? `/lektion?section=${score.section}#${hint.id}`
-      : `/lektion?section=${score.section}`,
+    href: hint?.id ? `/lektion?section=${section}#${hint.id}` : `/lektion?section=${section}`,
     completed: false,
   }
+}
+
+/** Owner-approved copy (docs/framework-prereqs-proposal.md, question 2):
+ *  "Grunden först: läs XYZ-regeln som den här KVA-fällan bygger på." — the
+ *  same template, with both section codes, for every hard edge. */
+function prereqRationale(prereqSection: Section, slotSection: Section): string {
+  return `Grunden först: läs ${prereqSection}-regeln som den här ${slotSection}-fällan bygger på.`
 }
 
 function truncateHeadword(s: string, max: number): string {

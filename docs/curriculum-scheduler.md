@@ -105,6 +105,20 @@ is >7 **or** its score is <1.4, prescribe a lesson in that section.
 Use the framework's first non-mastered entry (initially: first entry
 in the array). Rationale: *"Svagast i 14 dagar — börja med lektionen."*
 
+*Prerequisite gate (hpf-0026.2).* The entry is gated by the approved
+framework prerequisite graph (`frameworks/framework_prereqs.json`; rules
+in `docs/framework-prereqs-proposal.md`, "Semantics proposal"). For a hard
+edge A → B, the plan does not *introduce* B while A is untaught. Taught
+means a `framework_progress` status past `untaught`, or a lesson read; a
+fresh local read counts before it syncs. If the weakest section's candidate
+is blocked, the lesson slot pulls forward the deepest untaught hard
+prerequisite instead. That lesson uses the prerequisite's own section,
+link and headline, with the rationale *"Grunden först: läs XYZ-regeln som
+den här KVA-fällan bygger på."* An entry already past `untaught` is never
+re-blocked. Soft edges only reorder. An invalid or missing graph fails open.
+Repetition, trap drills, the hot-trap boost, Provpass, free drills and
+self-opened lessons are never gated.
+
 **Rule 3 — Next-weakest section needs a drill.** Find the second-
 weakest section by B2 ranking. Prescribe a 10-question random drill.
 Rationale: *"KVA-resultat har trendat nedåt senaste veckan."* If the

@@ -2,7 +2,8 @@
 //
 // Wires the pure `generateDailyPlan()` from lib/scheduler.ts to the
 // resolved async signals (per-section stats from `useStats`, due count
-// from `useDueMistakes`, framework first-entry hints, lesson-read
+// from `useDueMistakes`, framework first-entry hints gated by the
+// prerequisite graph and `useFrameworkProgress` (hpf-0026.2), lesson-read
 // flags from localStorage). Caches the plan in localStorage keyed by
 // local-date so refreshing Home doesn't churn it. Provides:
 //
@@ -46,6 +47,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useAdaptiveReview } from '@/api/hooks/useAdaptiveReview'
 import { useDailyPlanQuery, usePutDailyPlan } from '@/api/hooks/useDailyPlanApi'
+import { useFrameworkProgress } from '@/api/hooks/useFrameworkProgress'
 import { useLessonReadsQuery } from '@/api/hooks/useLessonReadsApi'
 import { useDueMistakes } from '@/api/hooks/useMistakes'
 import { type MockResultRow, useMockResults } from '@/api/hooks/useMockResults'
@@ -53,8 +55,10 @@ import { useActiveSessions } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
 import { type TopTrap, useTopTraps } from '@/api/hooks/useTopTraps'
 import { useUpdateUserPrefs, useUserPrefs } from '@/api/hooks/useUserPrefs'
-import { entryHeadword, loadFramework } from '@/data/frameworks'
+import { entryHeadword, loadFramework, loadPrereqGraph } from '@/data/frameworks'
 import { SECTION_KEYS, type Section } from '@/data/questions'
+import type { FrameworkProgressRow } from '@/lib/frameworkProgress'
+import { pickLessonEntry, prereqGraphOrNull, taughtEntryIds } from '@/lib/prereqs'
 import {
   type DailyPlan,
   type FrameworkHint,
@@ -141,6 +145,14 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   // localStorage cache so an offline mark is honoured before it flushes.
   const serverReads = useLessonReadsQuery()
 
+  // framework_progress statuses — with the merged read set, they decide which
+  // prerequisites count as taught for the lesson gate (hpf-0026.2,
+  // lib/prereqs.ts). Hint resolution waits for this query to settle, so the
+  // plan is never generated from a half-loaded taught set. An errored query
+  // settles too (no data) and the gate then runs on the read set alone.
+  const frameworkProgress = useFrameworkProgress()
+  const progressSettled = !frameworkProgress.isLoading
+
   // Server plan mutation — used to PUT a freshly-generated plan so the
   // other device adopts the identical baseline (first-generator-wins).
   const putServerPlan = usePutDailyPlan()
@@ -195,20 +207,22 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
     return merged
   }, [serverReads.data])
 
-  // Resolve framework first-unread-entry hints. Re-runs when the merged
-  // read set changes (a read on the other device should advance the hint),
-  // so the "next unread entry" is cross-device, not device-local. The
-  // framework JSON is small (<10KB each, 8 sections); the loader memoises
-  // so re-resolves are cheap.
+  // Resolve framework first-unread-entry hints, gated by the prerequisite
+  // graph. Re-runs when the merged read set or the progress rows change (a
+  // read on the other device should advance the hint), so the "next unread
+  // entry" is cross-device, not device-local. The framework JSON is small
+  // (<10KB each, 8 sections); the loaders memoise so re-resolves are cheap.
+  // `hints` stays null — and so the plan unbuilt — until progress settles.
   useEffect(() => {
+    if (!progressSettled) return
     let alive = true
-    resolveFrameworkHints(mergedReads).then((h) => {
+    resolveFrameworkHints(mergedReads, frameworkProgress.data).then((h) => {
       if (alive) setHints(h)
     })
     return () => {
       alive = false
     }
-  }, [mergedReads])
+  }, [mergedReads, frameworkProgress.data, progressSettled])
 
   // Day-boundary recompute: re-check the local date on `focus` and
   // `visibilitychange` (becoming visible) — the two events that fire
@@ -555,32 +569,73 @@ function toMockHistory(rows: MockResultRow[] | undefined): MockHistoryEntry[] {
   return rows.map((r) => ({ half: r.half, createdAt: r.createdAt }))
 }
 
-/** Resolve the first-unread framework entry for every wired section.
- *  Returns a map suitable for the scheduler's `firstUnreadEntry`
- *  field. Sections whose framework can't be loaded are omitted (the
- *  scheduler treats absent keys as "no hint", same as undefined).
+/** Resolve the lesson hint for every wired section, gated by the framework
+ *  prerequisite graph (hpf-0026.2, see lib/prereqs.ts for the rules).
+ *  Returns a map suitable for the scheduler's `firstUnreadEntry` field.
+ *  Sections whose framework can't be loaded — not served, or a load error
+ *  — are omitted (the scheduler treats absent keys as "no hint", same as
+ *  undefined).
  *
  *  `reads` is the MERGED (server ∪ localStorage) read set so the
  *  "next unread entry" is cross-device — an entry read on the phone
- *  advances the hint on the desktop. */
+ *  advances the hint on the desktop. `progress` is the framework_progress
+ *  rows (undefined when unavailable); with `reads` it decides which
+ *  prerequisites count as taught.
+ *
+ *  A section's hint is its first unread entry, soft prerequisites taught
+ *  first. When that entry is blocked by an untaught hard prerequisite, the
+ *  hint names the deepest such prerequisite instead (`pulledForward`, maybe
+ *  from another section); if that one can't be shown, the next unblocked
+ *  entry, else null. A missing or invalid graph fails open: first unread
+ *  entry in catalog order, exactly as before the gate. */
 export async function resolveFrameworkHints(
   reads: Set<string> = loadLessonReads(),
+  progress?: readonly FrameworkProgressRow[],
 ): Promise<FrameworkHints> {
+  const [loaded, rawGraph] = await Promise.all([
+    Promise.all(
+      SECTION_KEYS.map(async (section) => ({
+        section,
+        fw: await loadFramework(section).catch(() => null),
+      })),
+    ),
+    loadPrereqGraph().catch(() => null),
+  ])
+
+  // Every loaded entry, so a prerequisite from another section resolves to
+  // its own section and headword.
+  const index = new Map<string, { section: Section; headword: string | null }>()
+  for (const { section, fw } of loaded) {
+    if (!fw) continue
+    for (const entry of fw.entries) {
+      index.set(entry.id, { section, headword: entryHeadword(entry, fw) })
+    }
+  }
+  // Unknown ids can only be judged against the full catalog set; while one is
+  // missing, validatePrereqGraph defers that one check.
+  const allLoaded = loaded.every(({ fw }) => fw !== null)
+  const graph = prereqGraphOrNull(rawGraph, allLoaded ? new Set(index.keys()) : null)
+  const taught = taughtEntryIds(progress, reads)
+  const canShow = (id: string) => index.get(id)?.headword != null
+
   const out: FrameworkHints = {}
-  await Promise.all(
-    SECTION_KEYS.map(async (section) => {
-      const fw = await loadFramework(section)
-      if (!fw || fw.entries.length === 0) return
-      const firstUnread = fw.entries.find((e) => !reads.has(e.id))
-      if (!firstUnread) {
-        out[section] = null // all read
-        return
-      }
-      const headword = entryHeadword(firstUnread, fw)
-      if (!headword) return // shouldn't happen, but bail rather than emit a half-hint
-      out[section] = { id: firstUnread.id, headword }
-    }),
-  )
+  for (const { section, fw } of loaded) {
+    if (!fw || fw.entries.length === 0) continue
+    const pick = pickLessonEntry({ entries: fw.entries, reads, taught, graph, canShow })
+    if (!pick) {
+      out[section] = null // nothing left to introduce
+      continue
+    }
+    const target = index.get(pick.id)
+    if (!target?.headword) continue // shouldn't happen, but bail rather than emit a half-hint
+    out[section] = pick.blockedId
+      ? {
+          id: pick.id,
+          headword: target.headword,
+          pulledForward: { section: target.section, blockedId: pick.blockedId },
+        }
+      : { id: pick.id, headword: target.headword }
+  }
   return out
 }
 
