@@ -9,6 +9,8 @@ Before persistent mutation, Claude must be in a READY state:
 bash .claude/scripts/readiness.sh --quick
 ```
 
+(Stale since 2026-10: this script is not in the checkout and Aegis is frozen; check readiness through Beads per Active Project Coordination below.)
+
 If this project is not initialized yet, run:
 
 ```bash

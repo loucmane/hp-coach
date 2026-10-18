@@ -88,6 +88,8 @@ import {
 } from './LandingBakeoffR4A.content'
 import {
   daysUntilProv,
+  PROV_DATE_DAY_MONTH,
+  PROV_DATE_LABEL,
   PROV_DATE_SHORT,
   SCHED_CADENCE,
   type SchedEntry,
@@ -1011,7 +1013,7 @@ function TitleHero({
           headword (opacity + tracking, zero travel) */}
       <Ink go={go} delay={0.14}>
         <p className="lr5a-dateline">
-          Högskoleprovet · söndag 18 oktober
+          Högskoleprovet · {PROV_DATE_LABEL}
           <motion.span
             className="count"
             initial={false}
@@ -1226,8 +1228,8 @@ export function LandV5A() {
             <h2 className="lr5a-thesis">Det här är inte en broschyr. Det är appen.</h2>
             <p className="lr2-body" style={{ marginTop: 14, maxWidth: '50ch' }}>
               Frågan du just mötte rättas som appen rättar — hela vägen, fälla för fälla. Två
-              uppgifter till väntar på vägen mot den 18 oktober, och varje fel bokförs i ett schema
-              som slutar på provdagen.
+              uppgifter till väntar på vägen mot den {PROV_DATE_DAY_MONTH}, och varje fel bokförs i
+              ett schema som slutar på provdagen.
             </p>
             {/* station 1 — the early door: reachable without answering */}
             <QuietCta />

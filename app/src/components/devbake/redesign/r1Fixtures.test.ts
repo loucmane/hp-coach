@@ -26,6 +26,7 @@ import {
   UNIT,
 } from '@/components/devbake/redesign/r1Fixtures'
 import { EXAM_SITTINGS } from '@/lib/dates'
+import { getProvdatum } from '@/lib/provdatum'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const REPO = path.resolve(HERE, '..', '..', '..', '..', '..')
@@ -131,6 +132,12 @@ describe('redesign round-1 fixture', () => {
       ((sitting as { date: Date }).date.getTime() - startOfToday.getTime()) / 86_400_000,
     )
     expect(days).toBe(EXAM.daysLeft)
+    // It is the next sitting from the fixture day, and its date strings are
+    // the calendar's own, in the landing's registers.
+    const prov = getProvdatum(today)
+    expect(prov?.date).toEqual(sitting?.date)
+    expect(prov?.label).toBe(EXAM.dateLabel)
+    expect(prov?.short).toBe(EXAM.shortDate)
     expect(PLAN.items.reduce((n, item) => n + item.minutes, 0)).toBe(PLAN.minutes)
     expect(PLAN.items.filter((item) => item.primary)).toHaveLength(1)
   })

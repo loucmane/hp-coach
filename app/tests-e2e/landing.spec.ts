@@ -13,6 +13,15 @@ import { expect, test } from '@playwright/test'
 
 import { STORAGE_STATE } from './storage-state'
 
+// The dateline reads the shared exam calendar (lib/dates EXAM_SITTINGS:
+// Höstprov 26 on Sunday 18 October 2026, Vårprov 27 on Saturday 10 April
+// 2027), so the dated tests freeze the browser clock before the page loads.
+// Noon UTC is the same calendar day from UTC−11 to UTC+11, so a UTC CI
+// runner and a Stockholm laptop agree.
+const BEFORE_EXAM = new Date('2026-10-01T12:00:00Z')
+const EXAM_DAY = new Date('2026-10-18T12:00:00Z')
+const AFTER_EXAM = new Date('2026-10-19T12:00:00Z')
+
 // ── Logged out — the public landing ────────────────────────────────────
 test.describe('public landing (logged out)', () => {
   // The chromium/mobile projects apply the signed-in storageState by
@@ -20,16 +29,35 @@ test.describe('public landing (logged out)', () => {
   test.use({ storageState: { cookies: [], origins: [] } })
 
   test('renders at / with the hero title page', async ({ page }) => {
+    await page.clock.setFixedTime(BEFORE_EXAM)
     await page.goto('/')
     await expect(page.getByTestId('public-landing')).toBeVisible({ timeout: 10_000 })
     // No redirect: the landing IS the front door.
     await expect(page).not.toHaveURL(/sign-in/)
     // The poster-scale headword (the hero question).
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('vederhäftig')
-    // The dateline countdown (config-driven; PROV_DATE is set).
+    // The dateline: the next sitting's date and the countdown to it.
+    await expect(page.locator('.hpl-dateline')).toContainText('söndag 18 oktober')
     await expect(page.getByText(/om \d+ dagar/)).toBeVisible()
     // The struck facit's caption.
     await expect(page.getByText('vilka du hade fel på, aldrig varför')).toBeVisible()
+  })
+
+  test('on the exam day the dateline keeps the date and drops the count', async ({ page }) => {
+    await page.clock.setFixedTime(EXAM_DAY)
+    await page.goto('/')
+    await expect(page.getByTestId('public-landing')).toBeVisible({ timeout: 10_000 })
+    await expect(page.locator('.hpl-dateline')).toHaveText('Högskoleprovet · söndag 18 oktober')
+    await expect(page.getByText(/om \d+ dagar/)).toHaveCount(0)
+  })
+
+  test('after the exam day the dateline counts down to the next sitting', async ({ page }) => {
+    await page.clock.setFixedTime(AFTER_EXAM)
+    await page.goto('/')
+    await expect(page.getByTestId('public-landing')).toBeVisible({ timeout: 10_000 })
+    const dateline = page.locator('.hpl-dateline')
+    await expect(dateline).toContainText('lördag 10 april')
+    await expect(dateline.getByText(/om \d+ dagar/)).toBeVisible()
   })
 
   test('answering the hero plays the genomgång and collapses to a receipt', async ({ page }) => {

@@ -1,17 +1,18 @@
-// provdatum — the ONE place the exam date lives.
+// provdatum — the landing's dated strings.
 //
 // The public landing derives every dated string (dateline, countdown,
-// timeline destination, ledger footer) from here. Per exam cycle the
-// owner updates PROV_DATE and nothing else.
+// timeline destination, ledger footer) from here. The date itself is not
+// kept here: it is the next sitting not yet over in the app's one exam
+// calendar (lib/dates EXAM_SITTINGS). Per exam cycle the owner adds UHR's
+// next sitting there and nothing else.
 //
-// Graceful degradation: if PROV_DATE is null (not yet announced) or in
-// the past (stale config after an exam), `getProvdatum` returns null and
-// the landing hides its dated pieces — it never shows a negative
-// countdown or last cycle's date.
+// Graceful degradation: through the exam day itself the date stands with
+// days = 0 (the landing hides the count); from the midnight after it the
+// next sitting takes over. Only once every configured sitting is over does
+// `getProvdatum` return null, and the landing hides its dated pieces — it
+// never shows a negative countdown or last cycle's date.
 
-// TODO(owner): update per exam cycle. Next HP sitting: 18 oktober 2026.
-// Set to null between cycles if the next date is not yet announced.
-export const PROV_DATE: Date | null = new Date(2026, 9, 18)
+import { daysUntil, nextSitting } from './dates'
 
 export type Provdatum = {
   date: Date
@@ -29,27 +30,26 @@ const WEEKDAY = new Intl.DateTimeFormat('sv-SE', { weekday: 'long' })
 const DAY_MONTH = new Intl.DateTimeFormat('sv-SE', { day: 'numeric', month: 'long' })
 const DAY_MONTH_SHORT = new Intl.DateTimeFormat('sv-SE', { day: 'numeric', month: 'short' })
 
-/**
- * The current exam date, formatted for the landing — or null when no
- * future (or today's) exam date is configured.
- */
-export function getProvdatum(now: Date = new Date()): Provdatum | null {
-  if (!PROV_DATE) return null
-  // PROV_DATE is local midnight; ceil keeps days=0 through exam day
-  // itself and goes negative only once the day is fully over.
-  const raw = Math.ceil((PROV_DATE.getTime() - now.getTime()) / 86_400_000)
-  if (raw < 0) return null
-  // Math.ceil of a negative fraction (an exam-day afternoon) is -0;
-  // normalize so displays never print "-0".
-  const days = Math.max(0, raw)
-  const dayMonth = DAY_MONTH.format(PROV_DATE)
+/** The landing's strings for an exam on `date`, counted from `now`. */
+export function formatProvdatum(date: Date, now: Date = new Date()): Provdatum {
+  const dayMonth = DAY_MONTH.format(date)
   return {
-    date: PROV_DATE,
-    days,
-    label: `${WEEKDAY.format(PROV_DATE)} ${dayMonth}`,
+    date,
+    // Local calendar days, the same count as every in-app countdown.
+    days: Math.max(0, daysUntil(date, now)),
+    label: `${WEEKDAY.format(date)} ${dayMonth}`,
     dayMonth,
     // sv-SE short months carry a trailing period ('okt.') — the landing's
     // mono register sets them bare ('18 okt').
-    short: DAY_MONTH_SHORT.format(PROV_DATE).replace(/\.$/, ''),
+    short: DAY_MONTH_SHORT.format(date).replace(/\.$/, ''),
   }
+}
+
+/**
+ * The next exam date, formatted for the landing — or null once every
+ * configured sitting is over.
+ */
+export function getProvdatum(now: Date = new Date()): Provdatum | null {
+  const sitting = nextSitting(now)
+  return sitting ? formatProvdatum(sitting.date, now) : null
 }

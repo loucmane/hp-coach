@@ -18,6 +18,9 @@
 // a/c/d/e) can be REUSED unmodified — the page filters out the `e` beat
 // for four-option questions. See LandingBakeoffR4C.tsx.
 
+import { daysUntil, EXAM_SITTINGS, nextSitting } from '@/lib/dates'
+import { formatProvdatum } from '@/lib/provdatum'
+
 import type { DistractorLetter, OptionKey } from './LandingBakeoffR3.logic'
 import { DISTRACTOR_LETTERS, TRAP_TAGS, VEDERHAFTIG } from './LandingBakeoffR3.logic'
 
@@ -187,16 +190,20 @@ export const Q3_MEK: R4CQuestion = {
 
 /* ── provdagen — the page's destination ───────────────────────────────── */
 
-/** Next HP sitting (hösten 2026). Placeholder-precision is fine for the
- *  bake-off; the real launch reads this from config. */
-export const PROV_DATE = new Date(2026, 9, 18) // 18 oktober 2026
-export const PROV_DATE_LABEL = 'söndag 18 oktober'
-export const PROV_DATE_SHORT = '18 okt'
+/** Next HP sitting, read from the app's one exam calendar (lib/dates
+ *  EXAM_SITTINGS) when the module loads, in the landing's registers
+ *  (lib/provdatum); the bake-offs keep no date of their own. They have no
+ *  dateless state, so once every configured sitting is over they hold on
+ *  the last one with the count at 0. */
+export const PROV_DATE = (nextSitting() ?? EXAM_SITTINGS[EXAM_SITTINGS.length - 1]).date
+const PROV = formatProvdatum(PROV_DATE)
+export const PROV_DATE_LABEL = PROV.label // 'söndag 18 oktober'
+export const PROV_DATE_DAY_MONTH = PROV.dayMonth // '18 oktober'
+export const PROV_DATE_SHORT = PROV.short // '18 okt'
 
 /** Whole days from `now` until provdagen, never negative. */
 export function daysUntilProv(now: Date = new Date()): number {
-  const ms = PROV_DATE.getTime() - now.getTime()
-  return Math.max(0, Math.ceil(ms / 86_400_000))
+  return Math.max(0, daysUntil(PROV_DATE, now))
 }
 
 /* ── the schedule ledger (the signature moment's bookkeeping) ─────────── */

@@ -198,7 +198,7 @@ export function HomeMobile({
   const storeCoach = useCoachStore((s) => s.coach)
   void (coachProp ?? storeCoach)
 
-  const sitting = useSitting()
+  const sitting = useSitting(now)
   const days = useDaysRemaining(now)
   const today = now ?? new Date()
 

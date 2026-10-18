@@ -1,10 +1,10 @@
 import { act, renderHook } from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { DEFAULT_THEME } from '@/lib/tokens'
 
 import { useCoachStore } from './coachStore'
-import { useDaysRemaining, useExamStore } from './examStore'
+import { useDaysRemaining, useExamStore, useSitting } from './examStore'
 import { applyThemeToDocument, useUiStore } from './uiStore'
 
 beforeEach(() => {
@@ -14,9 +14,10 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+  vi.useRealTimers()
   // Reset every store so cross-test bleed never confuses state.
   useCoachStore.setState({ coach: 'taktiker' })
-  useExamStore.setState({ sittingId: 'host-2026' })
+  useExamStore.setState({ sittingId: null })
   useUiStore.setState({ ...DEFAULT_THEME })
   // Clear any inline vars or .dark class set during applyThemeToDocument.
   document.documentElement.removeAttribute('style')
@@ -33,21 +34,68 @@ describe('useCoachStore', () => {
   })
 })
 
-describe('useExamStore + useDaysRemaining', () => {
-  it('defaults to höstprov 26', () => {
-    expect(useExamStore.getState().sittingId).toBe('host-2026')
+describe('useExamStore + useSitting + useDaysRemaining', () => {
+  // Render, read, unmount: no hook stays subscribed when afterEach resets
+  // the store (a re-render outside act() would warn).
+  const read = <T>(hook: () => T): T => {
+    const { result, unmount } = renderHook(hook)
+    const value = result.current
+    unmount()
+    return value
+  }
+  const sittingAt = (now?: Date) => read(() => useSitting(now))
+  const daysAt = (now?: Date) => read(() => useDaysRemaining(now))
+
+  it('saves no target by default', () => {
+    expect(useExamStore.getInitialState().sittingId).toBeNull()
   })
   it('setSitting updates the active sitting', () => {
     useExamStore.getState().setSitting('var-2027')
     expect(useExamStore.getState().sittingId).toBe('var-2027')
   })
   it('setSitting ignores unknown ids', () => {
+    useExamStore.getState().setSitting('host-2026')
     useExamStore.getState().setSitting('host-9999' as 'host-2026')
     expect(useExamStore.getState().sittingId).toBe('host-2026')
   })
+  it('defaults to the next sitting not yet over', () => {
+    expect(sittingAt(new Date(2026, 9, 1, 12, 0)).id).toBe('host-2026')
+    expect(sittingAt(new Date(2026, 9, 18, 23, 30)).id).toBe('host-2026')
+    expect(sittingAt(new Date(2026, 9, 19, 0, 30)).id).toBe('var-2027')
+  })
   it('useDaysRemaining computes against today=fixed', () => {
-    const { result } = renderHook(() => useDaysRemaining(new Date(2026, 4, 6)))
-    expect(result.current).toBe(172)
+    expect(daysAt(new Date(2026, 4, 6))).toBe(165)
+  })
+  it('counts 0 through the exam day of a saved target', () => {
+    useExamStore.getState().setSitting('host-2026')
+    expect(sittingAt(new Date(2026, 9, 18, 9, 0)).id).toBe('host-2026')
+    expect(daysAt(new Date(2026, 9, 18, 9, 0))).toBe(0)
+    expect(daysAt(new Date(2026, 9, 18, 23, 30))).toBe(0)
+  })
+  it('rolls a saved höstprov 26 target to vårprov 27 on 19 October, read-side only', () => {
+    useExamStore.getState().setSitting('host-2026')
+    const now = new Date(2026, 9, 19, 0, 30)
+    expect(sittingAt(now).label).toBe('Vårprov 27')
+    expect(daysAt(now)).toBe(173)
+    // The saved id (and so the server row it mirrors) is never rewritten.
+    expect(useExamStore.getState().sittingId).toBe('host-2026')
+  })
+  it('keeps a saved vårprov 27 target while höstprov 26 is still ahead', () => {
+    useExamStore.getState().setSitting('var-2027')
+    expect(sittingAt(new Date(2026, 9, 1, 12, 0)).id).toBe('var-2027')
+  })
+  it('falls back to the last configured sitting once every sitting is over', () => {
+    useExamStore.getState().setSitting('host-2026')
+    const now = new Date(2027, 3, 11, 0, 30)
+    expect(sittingAt(now).id).toBe('var-2027')
+    expect(daysAt(now)).toBe(-1)
+  })
+  it('reads the system clock when no instant is passed', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 9, 19, 0, 30))
+    useExamStore.getState().setSitting('host-2026')
+    expect(sittingAt().id).toBe('var-2027')
+    expect(daysAt()).toBe(173)
   })
 })
 
