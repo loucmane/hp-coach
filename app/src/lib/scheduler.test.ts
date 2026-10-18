@@ -10,6 +10,7 @@ import type { Section } from '@/data/questions'
 import {
   __resetSchedulerStorage,
   type DailyPlan,
+  type FrameworkHint,
   generateDailyPlan,
   isAllMastered,
   loadLessonReads,
@@ -234,6 +235,132 @@ describe('generateDailyPlan — rule 2 (weakest needs a lesson)', () => {
       }),
     )
     expect(plan.items.find((i) => i.kind === 'lesson')).toBeUndefined()
+  })
+})
+
+// Framework prerequisite gate (hpf-0026.2). The hook resolves the gate into
+// the hint; a pulled-forward hint names the blocked entry's prerequisite,
+// which can live in another section.
+const PULLED_XYZ: FrameworkHint = {
+  id: 'XYZ-TRAP-002',
+  headword: 'Linjär ekvation löst steg för steg',
+  pulledForward: { section: 'XYZ', blockedId: 'KVA-TRAP-014' },
+}
+const UNGATED_KVA: FrameworkHint = { id: 'KVA-TRAP-014', headword: 'Okänt tecken' }
+
+describe('generateDailyPlan — rule 2 with a pulled-forward prerequisite (hpf-0026.2)', () => {
+  it('builds the lesson on the prerequisite: its section, deep link, headline and Grunden först line', () => {
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [score('KVA', { score: 1.1 })],
+        firstUnreadEntry: { KVA: PULLED_XYZ },
+      }),
+    )
+    expect(plan.items).toEqual([
+      {
+        id: `lesson-XYZ-${TODAY}`,
+        kind: 'lesson',
+        section: 'XYZ',
+        framework: 'XYZ-TRAP-002',
+        headline: 'XYZ-lektion · Linjär ekvation löst steg för steg',
+        rationale: 'Grunden först: läs XYZ-regeln som den här KVA-fällan bygger på.',
+        estimatedMinutes: 5,
+        href: '/lektion?section=XYZ#XYZ-TRAP-002',
+        completed: false,
+      },
+    ])
+  })
+
+  it('fills the same template with both section codes for any other hard edge', () => {
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [score('NOG', { score: 1.1 })],
+        firstUnreadEntry: {
+          NOG: {
+            id: 'NOG-TRAP-002',
+            headword: 'Räkna obekanta och ekvationer',
+            pulledForward: { section: 'NOG', blockedId: 'NOG-TRAP-024' },
+          },
+        },
+      }),
+    )
+    expect(plan.items[0].rationale).toBe(
+      'Grunden först: läs NOG-regeln som den här NOG-fällan bygger på.',
+    )
+    expect(plan.items[0].href).toBe('/lektion?section=NOG#NOG-TRAP-002')
+  })
+
+  it('keeps the ordinary rationale for an ungated lesson', () => {
+    const plan = generateDailyPlan(
+      signals({
+        sectionScores: [score('KVA', { score: 1.1 })],
+        firstUnreadEntry: { KVA: UNGATED_KVA },
+      }),
+    )
+    expect(plan.items[0]).toMatchObject({
+      section: 'KVA',
+      href: '/lektion?section=KVA#KVA-TRAP-014',
+      rationale: 'Svagaste sektionen — 1.1, börja med lektionen.',
+    })
+  })
+
+  it('bumps the stored plan schema to v10 so plans cached before the gate regenerate', () => {
+    expect(PLAN_SCHEMA_VERSION).toBe(10)
+  })
+})
+
+describe('generateDailyPlan — never gated: repetition, trap drills, hot trap, Provpass (hpf-0026.2)', () => {
+  const withoutLesson = (plan: DailyPlan) => plan.items.filter((i) => i.kind !== 'lesson')
+  const traps = [
+    { framework_id: 'NOG-TRAP-007', section: 'NOG' as const, count: 5, headline: 'Kvotjakten' },
+  ]
+  const day = {
+    dueMistakeCount: 4,
+    sectionScores: [score('KVA', { score: 1.1 }), score('NOG', { score: 1.5 })],
+    topTraps: traps,
+  }
+
+  it('keeps the repetition and trap-drill items identical when the lesson slot is gated', () => {
+    const gated = generateDailyPlan(signals({ ...day, firstUnreadEntry: { KVA: PULLED_XYZ } }))
+    const ungated = generateDailyPlan(signals({ ...day, firstUnreadEntry: { KVA: UNGATED_KVA } }))
+    expect(gated.items.map((i) => i.kind)).toEqual(['repetition', 'lesson', 'drill'])
+    expect(withoutLesson(gated)).toEqual(withoutLesson(ungated))
+    expect(gated.items[2]).toMatchObject({ framework: 'NOG-TRAP-007', section: 'NOG' })
+  })
+
+  it('still boosts the hot trap to the top over a gated lesson', () => {
+    const hot = { ...day, hotTrap: { framework_id: 'NOG-TRAP-007' } }
+    const gated = generateDailyPlan(signals({ ...hot, firstUnreadEntry: { KVA: PULLED_XYZ } }))
+    const ungated = generateDailyPlan(signals({ ...hot, firstUnreadEntry: { KVA: UNGATED_KVA } }))
+    expect(gated.items.map((i) => i.kind)).toEqual(['drill', 'repetition', 'lesson'])
+    expect(gated.items[0].framework).toBe('NOG-TRAP-007')
+    expect(withoutLesson(gated)).toEqual(withoutLesson(ungated))
+  })
+
+  it('gives the weakest section its trap drill when every lesson candidate is gated (null hint)', () => {
+    const plan = generateDailyPlan(
+      signals({
+        dueMistakeCount: 2,
+        sectionScores: [score('KVA', { score: 1.1 })],
+        topTraps: [{ framework_id: 'KVA-TRAP-024', section: 'KVA', count: 3, headline: 'x' }],
+        firstUnreadEntry: { KVA: null },
+      }),
+    )
+    expect(plan.items.map((i) => i.kind)).toEqual(['repetition', 'drill'])
+    expect(plan.items[1]).toMatchObject({
+      framework: 'KVA-TRAP-024',
+      href: '/drill?framework=KVA-TRAP-024',
+    })
+  })
+
+  it('leaves a Provpass anchor day unchanged', () => {
+    const anchor = { ...day, dueMistakeCount: 3, mockHistory: [], daysToExam: 100 }
+    const gated = generateDailyPlan(signals({ ...anchor, firstUnreadEntry: { KVA: PULLED_XYZ } }))
+    const ungated = generateDailyPlan(
+      signals({ ...anchor, firstUnreadEntry: { KVA: UNGATED_KVA } }),
+    )
+    expect(gated.items.map((i) => i.kind)).toEqual(['mock', 'repetition'])
+    expect(gated).toEqual(ungated)
   })
 })
 

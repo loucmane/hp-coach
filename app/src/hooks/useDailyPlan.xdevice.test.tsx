@@ -77,9 +77,18 @@ vi.mock('@/api/hooks/useAdaptiveReview', () => ({
     decline: () => {},
   }),
 }))
-vi.mock('@/data/frameworks', () => ({ loadFramework: async () => null, entryHeadword: () => null }))
+vi.mock('@/data/frameworks', () => ({
+  loadFramework: async () => null,
+  entryHeadword: () => null,
+  loadPrereqGraph: async () => ({ version: 1, edges: [] }),
+}))
 vi.mock('@/api/hooks/useLessonReadsApi', () => ({
   useLessonReadsQuery: () => ({ data: emptyReads, isLoading: false }),
+}))
+// framework_progress feeds the prerequisite gate (hpf-0026.2); no rows here.
+const emptyProgress: unknown[] = []
+vi.mock('@/api/hooks/useFrameworkProgress', () => ({
+  useFrameworkProgress: () => ({ data: emptyProgress, isLoading: false, isError: false }),
 }))
 // No "Inte idag" defer in this cross-device suite — an empty prefs row means
 // mockDeferredDate is undefined, so the anchor is never suppressed.

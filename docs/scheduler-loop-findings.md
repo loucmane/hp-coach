@@ -272,3 +272,19 @@ design doc deferred the server `daily_plans` table until divergence is real fric
   the design doc's bar — observed phone/desktop plan divergence. Relates to deferred #60 (Dexie
   queue) / #61 (Durable-Object sync). Subsumes any `plan_completions` table — don't build that
   separately.
+
+---
+
+## Note (2026-10-18) — data-block lines superseded
+
+Two lines under "Why #26 ranks last" no longer hold. They stay above as the 2026-06-25 record.
+
+- **"`framework_progress` / `mastery` / `srs_state` … write-dead":** superseded for
+  `framework_progress` and `mastery`. Their production writers shipped in hpf-f7t (PR #366):
+  `worker/src/lib/progress.ts:154` and `:238`. `srs_state` still has no production writer; only
+  tests insert rows.
+- **"No prerequisite graph (`framework_prereqs.json` does not exist)":** superseded. The graph
+  was approved in hpf-yv5e (`frameworks/framework_prereqs.json`,
+  `docs/framework-prereqs-proposal.md`).
+- **The gate:** hpf-0026.2 makes the daily plan's lesson introduction read that graph and
+  `framework_progress`; see Rule 2 in `docs/curriculum-scheduler.md`.
