@@ -464,14 +464,14 @@ export const TODAY = {
   greeting: 'God eftermiddag',
 }
 
-/** The next sitting (lib/dates EXAM_SITTINGS[0]): Höstprov 26, 25 Oct 2026. */
+/** The next sitting from TODAY (lib/dates EXAM_SITTINGS[0]): Höstprov 26, Sun 18 Oct 2026. */
 export const EXAM = {
   id: 'host-2026',
   label: 'Höstprov 26',
   name: 'Högskoleprovet',
-  dateLabel: 'söndag 25 oktober',
-  shortDate: '25 okt',
-  daysLeft: 16,
+  dateLabel: 'söndag 18 oktober',
+  shortDate: '18 okt',
+  daysLeft: 9,
 }
 
 /** The paused LÄS session — Home's one primary action. */
