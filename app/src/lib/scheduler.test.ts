@@ -337,6 +337,29 @@ describe('generateDailyPlan — never gated: repetition, trap drills, hot trap, 
     expect(withoutLesson(gated)).toEqual(withoutLesson(ungated))
   })
 
+  it('boosts the hot trap’s drill, not a pulled-forward lesson on the same framework', () => {
+    // XYZ-TRAP-002 is both KVA's pulled-forward prerequisite and XYZ's hot
+    // trap, so the lesson and the Rule 3 drill carry one framework id.
+    const plan = generateDailyPlan(
+      signals({
+        dueMistakeCount: 4,
+        sectionScores: [score('KVA', { score: 1.1 }), score('XYZ', { score: 1.5 })],
+        topTraps: [{ framework_id: 'XYZ-TRAP-002', section: 'XYZ', count: 4, headline: 'x' }],
+        hotTrap: { framework_id: 'XYZ-TRAP-002' },
+        firstUnreadEntry: { KVA: PULLED_XYZ },
+      }),
+    )
+    expect(plan.items.map((i) => i.kind)).toEqual(['drill', 'repetition', 'lesson'])
+    expect(plan.items[0]).toMatchObject({
+      framework: 'XYZ-TRAP-002',
+      href: '/drill?framework=XYZ-TRAP-002',
+    })
+    expect(plan.items[2]).toMatchObject({
+      framework: 'XYZ-TRAP-002',
+      href: '/lektion?section=XYZ#XYZ-TRAP-002',
+    })
+  })
+
   it('gives the weakest section its trap drill when every lesson candidate is gated (null hint)', () => {
     const plan = generateDailyPlan(
       signals({

@@ -620,10 +620,25 @@ def test_the_manifest_binds_roster_exporter_and_candidates(approved_export, comm
         assert unit["sha256"] == by_id[unit["unit_id"]]["sha256"]
         assert unit["revision"] == by_id[unit["unit_id"]]["revision"]
     # The internal-label gate derives its id series from every Layer-1 catalog.
-    catalogs = sorted((REPO_ROOT / "frameworks").glob("*.json"))
+    catalogs = export_product.layer1_catalog_paths(REPO_ROOT)
     assert manifest["frameworks"] == [
         {"path": f"frameworks/{p.name}", "sha256": build_roster.sha256_bytes(p.read_bytes())} for p in catalogs]
     assert "bank-internal-label" in manifest["gates"]
+
+
+def test_the_prerequisite_graph_is_the_one_framework_file_that_is_not_a_catalog(make_tree):
+    root, roster_path = make_tree(["las-b19-002"])  # frameworks/ copied whole, the graph included
+    folder = root / export_product.FRAMEWORKS_REL
+    graph = folder / export_product.PREREQ_GRAPH_NAME
+    assert json.loads(graph.read_text(encoding="utf-8"))["edges"]
+    read = _manifest(export_product.export_bank(root, roster_path))["frameworks"]
+    sample = json.loads((export_product.SAMPLE_DIR / export_product.MANIFEST_NAME).read_text(encoding="utf-8"))
+    assert read == sample["frameworks"]  # the same eight catalogs the committed sample was built from
+    # The exclusion is that one name, not a shape: the same graph under another name is refused.
+    (folder / "framework_prereqs.draft.json").write_bytes(graph.read_bytes())
+    refused = re.escape("framework file frameworks/framework_prereqs.draft.json is not readable: KeyError('section')")
+    with pytest.raises(ExportError, match=refused):
+        export_product.export_bank(root, roster_path)
 
 
 def test_output_is_written_only_into_the_preview_directory(tmp_path, approved_export):

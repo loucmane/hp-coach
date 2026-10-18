@@ -514,11 +514,13 @@ export function generateDailyPlan(signals: SchedulerSignals): DailyPlan {
 /** Move the hot trap's own drill item to position 0, in place. A trap
  *  drill item carries `framework: <id>` (see `trapDrillItem`); when one
  *  matches the hot trap we already prescribed it via the trap-aware rules,
- *  so this is a pure reorder — no new item, no duplication. No-op when no
- *  hot trap, or when none of the assembled items targets it. */
+ *  so this is a pure reorder — no new item, no duplication. Only drill
+ *  items match: a lesson can carry the same framework (a pulled-forward
+ *  prerequisite, hpf-0026.2) and is never lifted. No-op when no hot trap,
+ *  or when no assembled drill targets it. */
 function applyHotTrapBoost(items: PlanItem[], hotTrap: SchedulerSignals['hotTrap']): void {
   if (!hotTrap) return
-  const idx = items.findIndex((i) => i.framework === hotTrap.framework_id)
+  const idx = items.findIndex((i) => i.kind === 'drill' && i.framework === hotTrap.framework_id)
   if (idx <= 0) return // already first, or absent
   const [item] = items.splice(idx, 1)
   items.unshift(item)
