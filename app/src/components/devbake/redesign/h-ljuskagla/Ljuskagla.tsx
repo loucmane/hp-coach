@@ -1,12 +1,42 @@
-// H · Ljuskägla — "Mörkt läge, ljus på stycket du läser". Not built yet:
-// the stage is the bake-off's "Under arbete" placeholder. The direction's
-// builder replaces this file, keeping the `Ljuskagla` export the registry
-// (../directions.ts) imports.
-
-import { DirectionStub } from '@/components/devbake/redesign/DirectionStub'
-import type { DirectionProps } from '@/components/devbake/redesign/r1Kit'
-import { meta } from './meta'
+import { useState } from 'react'
+import {
+  type Destination,
+  type DirectionProps,
+  useWebFonts,
+} from '@/components/devbake/redesign/r1Kit'
+import { LjuskaglaDrill } from './LjuskaglaDrill'
+import { LjuskaglaFrame } from './LjuskaglaNav'
+import './ljuskagla.css'
 
 export function Ljuskagla(props: DirectionProps) {
-  return <DirectionStub meta={meta} {...props} />
+  useWebFonts(
+    'ljuskagla',
+    'https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap',
+  )
+  const [destination, setDestination] = useState<Destination>('idag')
+  const goHome = (dest: Destination) => {
+    setDestination(dest)
+    props.onScreen(1)
+  }
+  return (
+    <div
+      className="ljuskagla"
+      data-testid="rd-ljuskagla"
+      data-theme={props.theme}
+      data-width={props.width}
+      data-live={String(props.live)}
+      lang="sv"
+    >
+      {props.screen === 2 || props.screen === 3 ? (
+        <LjuskaglaDrill {...props} onGo={goHome} />
+      ) : (
+        <LjuskaglaFrame
+          key={props.screen}
+          {...props}
+          destination={destination}
+          onGo={setDestination}
+        />
+      )}
+    </div>
+  )
 }
