@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react'
 
 import {
-  type DrillActions,
-  type DrillRefs,
-  type DrillView,
+  type DrillCoreActions as DrillActions,
+  type DrillCoreRefs as DrillRefs,
+  type DrillCoreView as DrillView,
   splitStepRefs,
-} from '@/components/devbake/redesign/r1Kit'
+} from '@/components/devbake/redesign/drillCore'
+import { MathText } from '@/components/MathText'
 
 export type RasterDrillState = { view: DrillView; act: DrillActions; refs: DrillRefs }
 
@@ -46,7 +47,8 @@ export function Cites({
 export function RichText({ text, act }: { text: string; act: DrillActions }) {
   return splitStepRefs(text).map((part, i) =>
     part.kind === 'text' ? (
-      part.text
+      // biome-ignore lint/suspicious/noArrayIndexKey: immutable ordered text segments
+      <MathText key={i}>{part.text}</MathText>
     ) : (
       <button
         type="button"

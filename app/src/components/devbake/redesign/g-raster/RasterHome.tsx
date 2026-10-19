@@ -1,14 +1,4 @@
-import {
-  ESTIMATE_CAVEAT,
-  EXAM,
-  PLAN,
-  PROGNOSIS,
-  RECENT,
-  RESUME,
-  TODAY,
-  TRAPS,
-  WEEK,
-} from '@/components/devbake/redesign/r1Fixtures'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
   DESTINATIONS,
   type Destination,
@@ -27,7 +17,18 @@ export function RasterHome({
   onResume: () => void
   onGo: (d: Destination) => void
 }) {
-  useKeyMap({ Enter: onResume, ' ': onResume }, live)
+  const { data, actions } = useDirectionData()
+  const {
+    today: TODAY,
+    exam: EXAM,
+    plan: PLAN,
+    prognosis: PROGNOSIS,
+    recent: RECENT,
+    resume: RESUME,
+    traps: TRAPS,
+    week: WEEK,
+  } = data.home
+  useKeyMap({ Enter: onResume, ' ': onResume }, live && !!RESUME)
   const trap = TRAPS.find((t) => t.rising) ?? TRAPS[0]
   return (
     <div className="ra-home">
@@ -44,50 +45,69 @@ export function RasterHome({
           </p>
         </section>
         <section className="ra-prognosis" aria-label="Prognos">
-          <h2 className="ra-label">Din prognos / av {fmtScore(PROGNOSIS.target)}</h2>
-          <p className="ra-display">{fmtScore(PROGNOSIS.total)}</p>
-          <p className="ra-figure-caption">{fmtDelta(PROGNOSIS.delta)} sedan förra veckan</p>
+          <h2 className="ra-label">
+            Din prognos{PROGNOSIS.target != null ? ` / av ${fmtScore(PROGNOSIS.target)}` : ''}
+          </h2>
+          {PROGNOSIS.total != null ? (
+            <p className="ra-display">{fmtScore(PROGNOSIS.total)}</p>
+          ) : (
+            <p>Öva båda halvorna för en prognos.</p>
+          )}
+          {PROGNOSIS.delta != null ? (
+            <p className="ra-figure-caption">{fmtDelta(PROGNOSIS.delta)} sedan förra veckan</p>
+          ) : null}
         </section>
         <aside className="ra-calibration">
           <p className="ra-label">En riktning, inte ett facit</p>
-          <p>{ESTIMATE_CAVEAT}</p>
+          {PROGNOSIS.caveat ? <p>{PROGNOSIS.caveat}</p> : null}
           <dl>
             <div>
               <dt>Verbal</dt>
-              <dd>{fmtScore(PROGNOSIS.verbal)}</dd>
+              <dd>{PROGNOSIS.verbal != null ? fmtScore(PROGNOSIS.verbal) : 'Inte skattad'}</dd>
             </div>
             <div>
               <dt>Kvant</dt>
-              <dd>{fmtScore(PROGNOSIS.quant)}</dd>
+              <dd>{PROGNOSIS.quant != null ? fmtScore(PROGNOSIS.quant) : 'Inte skattad'}</dd>
             </div>
           </dl>
         </aside>
       </div>
-      <button
-        className="ra-resume"
-        type="button"
-        data-testid="rd-resume"
-        onClick={onResume}
-        aria-label={`Fortsätt: ${RESUME.section} · fråga ${RESUME.position} av ${RESUME.total}`}
-      >
-        <span className="ra-resume-position">
-          <span className="ra-label">{RESUME.section} / Påbörjat</span>
-          <b>
-            {String(RESUME.position).padStart(2, '0')}
-            <small>/{String(RESUME.total).padStart(2, '0')}</small>
-          </b>
-        </span>
-        <span className="ra-resume-title">
-          <strong>Fortsätt läsa.</strong>
-          <span>{RESUME.title}</span>
-          <small>
-            Fråga {RESUME.position} av {RESUME.total} · ca {RESUME.minutesLeft} min kvar
-          </small>
-        </span>
-        <span className="ra-resume-arrow" aria-hidden>
-          ↗
-        </span>
-      </button>
+      {RESUME ? (
+        <button
+          className="ra-resume"
+          type="button"
+          data-testid="rd-resume"
+          onClick={onResume}
+          aria-label={`Fortsätt: ${RESUME.section} · fråga ${RESUME.position} av ${RESUME.total}`}
+        >
+          <span className="ra-resume-position">
+            <span className="ra-label">{RESUME.section} / Påbörjat</span>
+            <b>
+              {String(RESUME.position).padStart(2, '0')}
+              <small>/{String(RESUME.total).padStart(2, '0')}</small>
+            </b>
+          </span>
+          <span className="ra-resume-title">
+            <strong>
+              {RESUME.section === 'LÄS' || RESUME.section === 'ELF'
+                ? 'Fortsätt läsa.'
+                : 'Fortsätt öva.'}
+            </strong>
+            <span>{RESUME.title}</span>
+            <small>
+              Fråga {RESUME.position} av {RESUME.total}
+              {RESUME.minutesLeft != null ? ` · ca ${RESUME.minutesLeft} min kvar` : ''}
+            </small>
+          </span>
+          <span className="ra-resume-arrow" aria-hidden>
+            ↗
+          </span>
+        </button>
+      ) : (
+        <button type="button" className="ra-primary ra-home-start" onClick={() => onGo('ova')}>
+          Välj en övning <span aria-hidden>↗</span>
+        </button>
+      )}
       <div className="ra-lower-grid">
         <section className="ra-plan" aria-labelledby="ra-plan-heading">
           <div className="ra-section-heading">
@@ -101,7 +121,7 @@ export function RasterHome({
                   type="button"
                   className="ra-plan-row"
                   data-primary={String(!!item.primary)}
-                  onClick={() => onGo(item.kind === 'lektion' ? 'uppslag' : 'ova')}
+                  onClick={() => actions.openPlanItem(item.id)}
                 >
                   <IndexNumber value={i + 1} />
                   <span>
@@ -118,27 +138,31 @@ export function RasterHome({
             ))}
           </ol>
           <p className="ra-week">
-            {WEEK.minutesToday} minuter idag. {WEEK.daysPractised} av {WEEK.goal} dagar den här
-            veckan.
+            {WEEK.minutesToday != null ? `${WEEK.minutesToday} minuter idag. ` : ''}
+            {WEEK.daysPractised != null
+              ? `${WEEK.daysPractised}${WEEK.goal != null ? ` av ${WEEK.goal}` : ''} dagar den här veckan.`
+              : ''}
           </p>
         </section>
         <div className="ra-records">
-          <section aria-labelledby="ra-trap-heading">
-            <div className="ra-section-heading">
-              <h2 id="ra-trap-heading">Mönstret att bryta</h2>
-              <span>{trap.section}</span>
-            </div>
-            <button type="button" className="ra-trap-row" onClick={() => onGo('framsteg')}>
-              <span>
-                <strong>{trap.pattern}</strong>
-                <small>{trap.name}</small>
-              </span>
-              <span className="ra-count">
-                {String(trap.count).padStart(2, '0')}
-                <small>gånger</small>
-              </span>
-            </button>
-          </section>
+          {trap ? (
+            <section aria-labelledby="ra-trap-heading">
+              <div className="ra-section-heading">
+                <h2 id="ra-trap-heading">Mönstret att bryta</h2>
+                <span>{trap.section}</span>
+              </div>
+              <button type="button" className="ra-trap-row" onClick={() => onGo('framsteg')}>
+                <span>
+                  <strong>{trap.pattern ?? trap.name}</strong>
+                  {trap.pattern ? <small>{trap.name}</small> : null}
+                </span>
+                <span className="ra-count">
+                  {String(trap.count).padStart(2, '0')}
+                  <small>gånger</small>
+                </span>
+              </button>
+            </section>
+          ) : null}
           <section aria-labelledby="ra-recent-heading">
             <div className="ra-section-heading">
               <h2 id="ra-recent-heading">Senaste passen</h2>
