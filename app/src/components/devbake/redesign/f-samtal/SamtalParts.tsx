@@ -7,17 +7,17 @@
 //                      will go; the coach proposes, you choose. Never a text
 //                      field.
 //   - Divider        — the centred, dated line a conversation opens with.
-//   - Cites, Rich    — ¶ links into the passage and "(steg N)" links.
+//   - Cites, Rich    — ¶ links into the passage and "(steg N)" links; Rich
+//                      renders the explanation's math (MathText) as it goes.
 //   - Dots, DoorIcon, Kbd, Mark — progress, the doors' icons, keys, the logo.
+//   - words, count   — numbers said the way the coach says them.
 
 import { BookOpen, PenLine, Sun, Timer, TrendingUp } from 'lucide-react'
 import type { HTMLAttributes, ReactNode, Ref } from 'react'
 
-import {
-  type Destination,
-  type DrillActions,
-  splitStepRefs,
-} from '@/components/devbake/redesign/r1Kit'
+import { splitStepRefs } from '@/components/devbake/redesign/drillCore'
+import type { Destination } from '@/components/devbake/redesign/r1Kit'
+import { MathText } from '@/components/MathText'
 
 // ── Turns ────────────────────────────────────────────────────────────
 
@@ -30,7 +30,7 @@ type TurnProps = HTMLAttributes<HTMLElement> & {
   ref?: Ref<HTMLElement>
 }
 
-function cx(...names: (string | false | null | undefined)[]): string {
+export function cx(...names: (string | false | null | undefined)[]): string {
   return names.filter(Boolean).join(' ')
 }
 
@@ -94,7 +94,7 @@ export function Cites({
 }: {
   list: number[]
   source: string
-  act: Pick<DrillActions, 'cite'>
+  act: { cite: (n: number, source?: string) => void }
 }) {
   if (list.length === 0) return null
   return (
@@ -117,8 +117,8 @@ export function Cites({
 }
 
 /** Explanation text, verbatim, with its "(steg 2)" references made into
- *  links to the step. */
-export function Rich({ text, act }: { text: string; act: Pick<DrillActions, 'goToStep'> }) {
+ *  links to the step and its math rendered. */
+export function Rich({ text, act }: { text: string; act: { goToStep: (n: number) => void } }) {
   let at = 0
   return (
     <>
@@ -126,7 +126,9 @@ export function Rich({ text, act }: { text: string; act: Pick<DrillActions, 'goT
         const key = at
         at += seg.text.length
         return seg.kind === 'text' ? (
-          <span key={key}>{seg.text}</span>
+          <span key={key}>
+            <MathText>{seg.text}</MathText>
+          </span>
         ) : (
           <button
             key={key}
@@ -187,4 +189,18 @@ export function Mark({ name = true }: { name?: boolean }) {
       ) : null}
     </span>
   )
+}
+
+// ── Numbers, said ────────────────────────────────────────────────────
+
+const WORDS = ['noll', 'en', 'två', 'tre', 'fyra', 'fem', 'sex', 'sju', 'åtta', 'nio', 'tio']
+
+/** 4 → "fyra"; past ten the digits. */
+export function words(n: number): string {
+  return WORDS[n] ?? String(n)
+}
+
+/** 1 → "1 fråga", 3 → "3 frågor". */
+export function count(n: number, one: string, many: string): string {
+  return `${n} ${n === 1 ? one : many}`
 }

@@ -10,32 +10,25 @@
 // Below a quiet line, the rest of the day arrives as compact cards: the
 // plan, the prognosis with its caveat as a footnote turn, the one trap that
 // matters now and the recent passes.
+//
+// Kit v2: everything comes from useDirectionData().data.home. What the real
+// app cannot fill (the pause time, minutes left and device of the paused
+// sitting, the prognosis range, the weekly goal, the plan's lead marker) is
+// simply left out when absent, never shown as a placeholder. Without a
+// paused sitting the coach offers the plan instead.
 
 import { ArrowRight, FileText } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
-import {
-  ESTIMATE_CAVEAT,
-  EXAM,
-  PLAN,
-  type PlanItem,
-  PROGNOSIS,
-  RECENT,
-  RESUME,
-  TODAY,
-  TRAPS,
-  WEEK,
-} from '@/components/devbake/redesign/r1Fixtures'
-import {
-  type Destination,
-  fmtDelta,
-  fmtScore,
-  useKeyMap,
-  type WidthKey,
-} from '@/components/devbake/redesign/r1Kit'
-import { Coach, Divider, Dots, Kbd, Replies, You } from './SamtalParts'
-
-const WORDS = ['noll', 'en', 'två', 'tre', 'fyra', 'fem', 'sex', 'sju', 'åtta', 'nio', 'tio']
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
+import { fmtDelta, fmtScore, useKeyMap, type WidthKey } from '@/components/devbake/redesign/r1Kit'
+import type {
+  PlanItemView,
+  PrognosisView,
+  ResumeView,
+  WeekView,
+} from '@/components/devbake/redesign/viewModel'
+import { Coach, count, Divider, Dots, Kbd, Replies, words, You } from './SamtalParts'
 
 const DEVICE_DEFINITE: Record<string, string> = {
   telefon: 'telefonen',
@@ -43,27 +36,24 @@ const DEVICE_DEFINITE: Record<string, string> = {
   surfplatta: 'surfplattan',
 }
 
-const PLAN_DEST: Record<PlanItem['kind'], Destination> = {
-  repetition: 'ova',
-  lektion: 'uppslag',
-  övning: 'ova',
-}
-
-/** The plan's first part: offered once the text is read. */
-const FIRST = PLAN.items.find((i) => i.primary) ?? PLAN.items[0]
+/** HP's scale runs from 0 to 2,0. */
+const SCALE_MAX = 2
 
 export function SamtalHome({
   width,
   live,
   onResume,
-  onGo,
 }: {
   width: WidthKey
   live: boolean
   onResume: () => void
-  onGo: (d: Destination) => void
 }) {
-  useKeyMap({ Enter: onResume }, live)
+  const { data, actions } = useDirectionData()
+  const { today, exam, resume, plan, prognosis, traps, recent, week } = data.home
+  /** The plan's first part: offered once the text is read. */
+  const first = plan.items.find((i) => i.primary) ?? plan.items.find((i) => !i.completed) ?? null
+  const startFirst = () => (first ? actions.openPlanItem(first.id) : actions.go('ova'))
+  useKeyMap({ Enter: resume ? onResume : startFirst }, live)
   // The reader has asked for the plan: it becomes their turn and the
   // coach's answer, and leaves the cards below.
   const [asked, setAsked] = useState(false)
@@ -71,45 +61,43 @@ export function SamtalHome({
   useEffect(() => {
     if (asked && live) planTurn.current?.focus({ preventScroll: true })
   }, [asked, live])
-  const trap = TRAPS.find((t) => t.rising) ?? TRAPS[0]
-  const paused = RESUME.pausedAt.replace('Idag · ', 'idag ')
+  const trap = traps.find((t) => t.rising) ?? traps[0] ?? null
+  const weekLine = weekSentence(week)
+  const things = plan.items.length === 1 ? 'en sak' : `${words(plan.items.length)} saker`
+  // "Fortsätt med texten" for a reading text, "med övningen" otherwise.
+  const what =
+    resume && (resume.section === 'LÄS' || resume.section === 'ELF') ? 'texten' : 'övningen'
 
   return (
     <div className="sa-home" data-width={width}>
       {/* The conversation opens with its date, as a messages thread does;
        *  the coach says the countdown. */}
-      <Divider>{TODAY.dateLabel}</Divider>
+      <Divider>{today.dateLabel}</Divider>
 
       <div className="sa-thread">
         <Coach as="section" kind="sa-turn--lead" aria-labelledby="sa-lead-q">
           <p className="sa-hello">
-            {TODAY.greeting}. <b>{EXAM.daysLeft}&nbsp;dagar</b> kvar till högskoleprovet.
+            {today.greeting}. <b>{count(exam.daysLeft, 'dag', 'dagar')}</b> kvar till
+            högskoleprovet.
           </p>
-          <h1 className="sa-lead-q" id="sa-lead-q">
-            {/* "fråga 3 av 4" never breaks. */}
-            Du var mitt i {RESUME.section}, fråga&nbsp;{RESUME.position}&nbsp;av&nbsp;
-            {RESUME.total}. Fortsätta?
-          </h1>
-          {/* The paused text, attached to the turn like a document. */}
-          <div className="sa-attach">
-            <span className="sa-attach-icon" aria-hidden>
-              <FileText size={20} strokeWidth={1.6} />
-            </span>
-            <span className="sa-attach-body">
-              <span className="sa-attach-title">
-                {RESUME.title}
-                <span className="sa-sr">: </span>
-                <span className="sa-attach-sub">{RESUME.subtitle}</span>
-              </span>
-              <span className="sa-attach-meta">
-                <Dots total={RESUME.total} done={RESUME.answered} />
-                <span>ca {RESUME.minutesLeft}&nbsp;min kvar</span>
-              </span>
-              <span className="sa-attach-when">
-                Pausad {paused} på {DEVICE_DEFINITE[RESUME.device] ?? RESUME.device}
-              </span>
-            </span>
-          </div>
+          {resume ? (
+            <>
+              <h1 className="sa-lead-q" id="sa-lead-q" tabIndex={-1}>
+                {/* "fråga 3 av 4" never breaks. */}
+                Du var mitt i {resume.section}, fråga&nbsp;{resume.position}&nbsp;av&nbsp;
+                {resume.total}. Fortsätta?
+              </h1>
+              <ResumeAttachment resume={resume} />
+            </>
+          ) : (
+            <h1 className="sa-lead-q" id="sa-lead-q" tabIndex={-1}>
+              {plan.allComplete
+                ? 'Dagens plan är klar. Vill du öva mer?'
+                : first
+                  ? `Idag väntar ${things}, ungefär ${plan.minutes} minuter. Ska vi börja?`
+                  : 'Vad vill du öva idag?'}
+            </h1>
+          )}
         </Coach>
 
         {asked ? (
@@ -119,156 +107,196 @@ export function SamtalHome({
             </You>
             <Coach as="section" aria-labelledby="sa-plan-said" tabIndex={-1} ref={planTurn}>
               <p className="sa-say" id="sa-plan-said">
-                Efter texten väntar {WORDS[PLAN.items.length]} saker, ungefär {PLAN.minutes}
+                {resume ? 'Efter texten väntar' : 'Idag väntar'} {things}, ungefär {plan.minutes}
                 &nbsp;minuter:
               </p>
-              <PlanList detailed onGo={onGo} />
-              <p className="sa-week">
-                {WEEK.minutesToday} minuter idag · {WORDS[WEEK.daysPractised]} av {WORDS[WEEK.goal]}{' '}
-                dagar den här veckan
-              </p>
+              <PlanList items={plan.items} detailed onOpen={actions.openPlanItem} />
+              {weekLine ? <p className="sa-week">{weekLine}</p> : null}
             </Coach>
           </>
         ) : null}
 
         <Replies>
-          <button
-            type="button"
-            className="sa-chip sa-chip--primary sa-chip--big"
-            onClick={onResume}
-            data-testid="rd-resume"
-          >
-            {asked ? 'Fortsätt med texten' : 'Fortsätt'}
-            <Kbd>↵</Kbd>
-          </button>
-          {asked ? (
+          {resume ? (
             <button
               type="button"
-              className="sa-chip sa-chip--big"
-              onClick={() => onGo(PLAN_DEST[FIRST.kind])}
+              className="sa-chip sa-chip--primary sa-chip--big"
+              onClick={onResume}
+              data-testid="rd-resume"
             >
-              Börja med {FIRST.title.toLowerCase()}
+              {asked ? `Fortsätt med ${what}` : 'Fortsätt'}
+              <Kbd>↵</Kbd>
             </button>
           ) : (
+            <button
+              type="button"
+              className="sa-chip sa-chip--primary sa-chip--big"
+              onClick={startFirst}
+            >
+              {first && !plan.allComplete ? `Börja med ${first.title.toLowerCase()}` : 'Till Öva'}
+              <Kbd>↵</Kbd>
+            </button>
+          )}
+          {asked ? (
+            resume && first ? (
+              <button type="button" className="sa-chip sa-chip--big" onClick={startFirst}>
+                Börja med {first.title.toLowerCase()}
+              </button>
+            ) : null
+          ) : plan.items.length ? (
             <button type="button" className="sa-chip sa-chip--big" onClick={() => setAsked(true)}>
               Visa dagens plan
             </button>
-          )}
+          ) : null}
         </Replies>
       </div>
 
       <div className="sa-later">
         <Divider quiet>Resten av dagen</Divider>
         <div className="sa-cards">
-          {asked ? null : (
+          {asked || !plan.items.length ? null : (
             <section className="sa-card sa-card--plan" aria-labelledby="sa-plan-h">
               <header className="sa-card-head">
                 <h2 id="sa-plan-h">Dagens plan</h2>
                 <span>
-                  {PLAN.items.length} delar · {PLAN.minutes}&nbsp;min
+                  {plan.items.length} delar · {plan.minutes}&nbsp;min
                 </span>
               </header>
-              <PlanList onGo={onGo} />
-              <p className="sa-week">
-                {WEEK.minutesToday} minuter idag · {WORDS[WEEK.daysPractised]} av {WORDS[WEEK.goal]}{' '}
-                dagar den här veckan
-              </p>
+              <PlanList items={plan.items} onOpen={actions.openPlanItem} />
+              {weekLine ? <p className="sa-week">{weekLine}</p> : null}
             </section>
           )}
 
-          <div className="sa-score-wrap">
-            <section className="sa-card sa-card--score" aria-labelledby="sa-score-h">
+          <ScoreCard p={prognosis} />
+
+          {trap ? (
+            <section className="sa-card sa-card--trap" aria-labelledby="sa-trap-h">
               <header className="sa-card-head">
-                <h2 id="sa-score-h">Prognos</h2>
+                <h2 id="sa-trap-h">Fällan just nu</h2>
                 <span>
-                  Verbal {fmtScore(PROGNOSIS.verbal)} · Kvant {fmtScore(PROGNOSIS.quant)}
+                  {trap.section} · {trap.count} {trap.count === 1 ? 'gång' : 'gånger'}
+                  {trap.rising ? (
+                    <>
+                      <span aria-hidden> ↑</span>
+                      <span className="sa-sr">, ökar</span>
+                    </>
+                  ) : null}
                 </span>
               </header>
-              <p className="sa-score">
-                <span className="sa-score-n" aria-describedby="sa-caveat">
-                  {fmtScore(PROGNOSIS.total)}
-                  <sup aria-hidden>*</sup>
-                </span>
-                <span className="sa-score-of">av 2,0</span>
-                <span className="sa-score-delta">
-                  {fmtDelta(PROGNOSIS.delta)} sedan förra veckan
-                </span>
-              </p>
-              <Scale />
+              <p className="sa-trap-name">{trap.name}</p>
+              {trap.pattern ? <p className="sa-trap-pattern">”{trap.pattern}”</p> : null}
+              <button type="button" className="sa-link" onClick={() => actions.go('framsteg')}>
+                Alla fällor i Framsteg
+                <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
+              </button>
             </section>
-            {/* The caveat is the coach's footnote to the card above. */}
-            <p className="sa-footnote" id="sa-caveat">
-              <b aria-hidden>*</b>
-              <span>{ESTIMATE_CAVEAT}</span>
-            </p>
-          </div>
-
-          <section className="sa-card sa-card--trap" aria-labelledby="sa-trap-h">
-            <header className="sa-card-head">
-              <h2 id="sa-trap-h">Fällan just nu</h2>
-              <span>
-                {trap.section} · {trap.count} gånger
-                {trap.rising ? (
-                  <>
-                    <span aria-hidden> ↑</span>
-                    <span className="sa-sr">, ökar</span>
-                  </>
-                ) : null}
-              </span>
-            </header>
-            <p className="sa-trap-name">{trap.name}</p>
-            <p className="sa-trap-pattern">”{trap.pattern}”</p>
-            <button type="button" className="sa-link" onClick={() => onGo('framsteg')}>
-              Alla fällor i Framsteg
-              <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
-            </button>
-          </section>
+          ) : null}
 
           {/* The recent passes are one line the coach says, not a card. */}
-          <Coach as="section" kind="sa-turn--line" aria-labelledby="sa-recent-h">
-            <h2 className="sa-line-h" id="sa-recent-h">
-              Senaste passen
-            </h2>
-            <ul className="sa-recent">
-              {RECENT.map((r) => (
-                <li key={r.id}>
-                  <b>{r.label}</b>{' '}
-                  <span className="sa-recent-score">
-                    {r.correct}/{r.total}
-                  </span>{' '}
-                  <span className="sa-recent-when">{r.when.toLocaleLowerCase('sv-SE')}</span>
-                </li>
-              ))}
-            </ul>
-            <button type="button" className="sa-link" onClick={() => onGo('framsteg')}>
-              Alla pass i Framsteg
-              <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
-            </button>
-          </Coach>
+          {recent.length ? (
+            <Coach as="section" kind="sa-turn--line" aria-labelledby="sa-recent-h">
+              <h2 className="sa-line-h" id="sa-recent-h">
+                Senaste passen
+              </h2>
+              <ul className="sa-recent">
+                {recent.map((r) => (
+                  <li key={r.id}>
+                    <b>{r.label}</b>{' '}
+                    <span className="sa-recent-score">
+                      {r.correct}/{r.total}
+                    </span>{' '}
+                    <span className="sa-recent-when">{r.when.toLocaleLowerCase('sv-SE')}</span>
+                  </li>
+                ))}
+              </ul>
+              <button type="button" className="sa-link" onClick={() => actions.go('framsteg')}>
+                Alla pass i Framsteg
+                <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
+              </button>
+            </Coach>
+          ) : null}
         </div>
       </div>
     </div>
   )
 }
 
-/** The plan's three parts. Compact on the card; in the coach's answer each
- *  part also says why it is there. */
+/** The paused text, attached to the turn like a document. Its pause time,
+ *  device and minutes left are said only when known. */
+function ResumeAttachment({ resume }: { resume: ResumeView }) {
+  const when = pausedLine(resume)
+  return (
+    <div className="sa-attach">
+      <span className="sa-attach-icon" aria-hidden>
+        <FileText size={20} strokeWidth={1.6} />
+      </span>
+      <span className="sa-attach-body">
+        <span className="sa-attach-title">
+          {resume.title}
+          {resume.subtitle ? (
+            <>
+              <span className="sa-sr">: </span>
+              <span className="sa-attach-sub">{resume.subtitle}</span>
+            </>
+          ) : null}
+        </span>
+        <span className="sa-attach-meta">
+          <Dots total={resume.total} done={resume.answered} />
+          {resume.minutesLeft != null ? <span>ca {resume.minutesLeft}&nbsp;min kvar</span> : null}
+        </span>
+        {when ? <span className="sa-attach-when">{when}</span> : null}
+      </span>
+    </div>
+  )
+}
+
+/** "Pausad idag 07:52 på telefonen", from what is known. */
+function pausedLine(r: ResumeView): string | null {
+  const at = r.pausedAt ? r.pausedAt.replace('Idag · ', 'idag ') : null
+  const device = r.device ? (DEVICE_DEFINITE[r.device] ?? r.device) : null
+  if (at && device) return `Pausad ${at} på ${device}`
+  if (at) return `Pausad ${at}`
+  if (device) return `Pausad på ${device}`
+  return r.stale ? 'Pausad för mer än en vecka sedan' : null
+}
+
+/** "14 minuter idag · fyra av fem dagar den här veckan", from what is
+ *  known: no goal, no "av fem". */
+function weekSentence(w: WeekView): string | null {
+  const parts: string[] = []
+  if (w.minutesToday != null) {
+    parts.push(`${w.minutesToday} ${w.minutesToday === 1 ? 'minut' : 'minuter'} idag`)
+  }
+  if (w.daysPractised != null) {
+    parts.push(
+      w.goal != null
+        ? `${words(w.daysPractised)} av ${words(w.goal)} dagar den här veckan`
+        : `${words(w.daysPractised)} ${w.daysPractised === 1 ? 'dag' : 'dagar'} den här veckan`,
+    )
+  }
+  return parts.length ? parts.join(' · ') : null
+}
+
+/** The plan's parts. Compact on the card; in the coach's answer each part
+ *  also says why it is there. */
 function PlanList({
+  items,
   detailed = false,
-  onGo,
+  onOpen,
 }: {
+  items: PlanItemView[]
   detailed?: boolean
-  onGo: (d: Destination) => void
+  onOpen: (id: string) => void
 }) {
   return (
     <ol className="sa-plan" data-detailed={String(detailed)}>
-      {PLAN.items.map((item, i) => (
+      {items.map((item, i) => (
         <li key={item.id}>
           <button
             type="button"
             className="sa-plan-row"
             data-primary={String(item.primary === true)}
-            onClick={() => onGo(PLAN_DEST[item.kind])}
+            onClick={() => onOpen(item.id)}
           >
             <span className="sa-plan-n" aria-hidden>
               {i + 1}
@@ -278,7 +306,7 @@ function PlanList({
                 {item.title}
                 {item.primary ? <span className="sa-plan-tag">Härnäst</span> : null}
               </span>
-              <span className="sa-plan-detail">{item.detail}</span>
+              {item.detail ? <span className="sa-plan-detail">{item.detail}</span> : null}
               {detailed ? <span className="sa-plan-why">{item.rationale}</span> : null}
             </span>
             <span className="sa-plan-min">{item.minutes}&nbsp;min</span>
@@ -289,23 +317,72 @@ function PlanList({
   )
 }
 
-/** The prognosis on its 0–2,0 scale: the likely range and the point. */
-function Scale() {
-  const pct = (v: number) => `${(v / PROGNOSIS.target) * 100}%`
+/** The prognosis and the caveat that goes with it, as its footnote. */
+function ScoreCard({ p }: { p: PrognosisView }) {
+  const halves = [
+    p.verbal != null ? `Verbal ${fmtScore(p.verbal)}` : null,
+    p.quant != null ? `Kvant ${fmtScore(p.quant)}` : null,
+  ]
+    .filter(Boolean)
+    .join(' · ')
+  return (
+    <div className="sa-score-wrap">
+      <section className="sa-card sa-card--score" aria-labelledby="sa-score-h">
+        <header className="sa-card-head">
+          <h2 id="sa-score-h">Prognos</h2>
+          {halves ? <span>{halves}</span> : null}
+        </header>
+        {p.total != null ? (
+          <>
+            <p className="sa-score">
+              <span className="sa-score-n" aria-describedby={p.caveat ? 'sa-caveat' : undefined}>
+                {fmtScore(p.total)}
+                {p.caveat ? <sup aria-hidden>*</sup> : null}
+              </span>
+              <span className="sa-score-of">av 2,0</span>
+              {p.delta != null ? (
+                <span className="sa-score-delta">{fmtDelta(p.delta)} sedan förra veckan</span>
+              ) : null}
+            </p>
+            <Scale total={p.total} low={p.low} high={p.high} />
+          </>
+        ) : (
+          <p className="sa-say sa-say--quiet">Prognosen visas när du har svarat i båda delarna.</p>
+        )}
+      </section>
+      {/* The caveat is the coach's footnote to the card above. */}
+      {p.caveat ? (
+        <p className="sa-footnote" id="sa-caveat">
+          <b aria-hidden>*</b>
+          <span>{p.caveat}</span>
+        </p>
+      ) : null}
+    </div>
+  )
+}
+
+/** The prognosis on its 0–2,0 scale: the likely range, when there is one,
+ *  and the point. */
+function Scale({ total, low, high }: { total: number; low?: number; high?: number }) {
+  const at = (v: number) => `${(Math.min(SCALE_MAX, Math.max(0, v)) / SCALE_MAX) * 100}%`
+  const range = low != null && high != null
   return (
     <div
       className="sa-scale"
       role="img"
-      aria-label={`Trolig nivå ${fmtScore(PROGNOSIS.low)} till ${fmtScore(PROGNOSIS.high)} på skalan 0 till 2,0`}
+      aria-label={
+        range
+          ? `Trolig nivå ${fmtScore(low)} till ${fmtScore(high)} på skalan 0 till 2,0`
+          : `Nivå ${fmtScore(total)} på skalan 0 till 2,0`
+      }
     >
       <span className="sa-scale-track" />
-      <span
-        className="sa-scale-range"
-        style={{ left: pct(PROGNOSIS.low), width: pct(PROGNOSIS.high - PROGNOSIS.low) }}
-      />
-      <span className="sa-scale-mark" style={{ left: pct(PROGNOSIS.total) }} />
+      {range ? (
+        <span className="sa-scale-range" style={{ left: at(low), width: at(high - low) }} />
+      ) : null}
+      <span className="sa-scale-mark" style={{ left: at(total) }} />
       {[0, 0.5, 1, 1.5, 2].map((v) => (
-        <span key={v} className="sa-scale-tick" style={{ left: pct(v) }}>
+        <span key={v} className="sa-scale-tick" style={{ left: at(v) }}>
           {v === 0 ? '0' : fmtScore(v)}
         </span>
       ))}
