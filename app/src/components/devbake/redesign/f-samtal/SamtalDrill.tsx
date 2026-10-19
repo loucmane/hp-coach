@@ -12,7 +12,8 @@
 // Phone: the passage first, the question in a reply tray docked to the
 // bottom. It peeks with the coach's question and one reply ("Välj ditt
 // svar"), opens over the passage without moving it, and goes full for the
-// coach's answer. A ¶ link folds it so the cited paragraph shows.
+// coach's answer. A ¶ link folds it so the cited paragraph shows; Facit
+// waits behind the peek, so the way back finds it as the reader left it.
 
 import { ChevronDown, ChevronUp, CircleSlash, Clock, Info, Pilcrow, Undo2, X } from 'lucide-react'
 import { type ReactNode, type Ref, useEffect, useRef, useState } from 'react'
@@ -596,6 +597,19 @@ function PhoneDrill(chrome: Chrome) {
   const { hidden: compact, onScroll } = useHideOnScroll()
   const turnRef = useRef<HTMLElement>(null)
   const bodyRef = useRef<HTMLDivElement>(null)
+  const mainRef = useRef<HTMLDivElement>(null)
+  /** The control the reader left Facit from: the way back focuses it. */
+  const leftFrom = useRef<HTMLElement | null>(null)
+  const feedback = view.phase === 'feedback'
+  const peek = tray === 'peek'
+
+  /** Folds the tray to its peek, remembering where in Facit the reader was. */
+  const fold = () => {
+    const at = document.activeElement
+    leftFrom.current =
+      feedback && at instanceof HTMLElement && mainRef.current?.contains(at) ? at : null
+    setTray('peek')
+  }
 
   // A ¶ link folds the tray to its peek so the cited paragraph shows.
   const trayChrome: Chrome = {
@@ -603,7 +617,7 @@ function PhoneDrill(chrome: Chrome) {
     act: {
       ...act,
       cite: (n, source) => {
-        setTray('peek')
+        fold()
         act.cite(n, source)
       },
     },
@@ -612,9 +626,18 @@ function PhoneDrill(chrome: Chrome) {
   // biome-ignore lint/correctness/useExhaustiveDependencies: on question/phase change only
   useEffect(() => {
     bodyRef.current?.scrollTo?.({ top: 0 })
+    leftFrom.current = null
     if (c.moved.current && c.live) turnRef.current?.focus({ preventScroll: true })
     c.moved.current = false
   }, [view.index, view.phase])
+
+  // Back from the peek, focus returns to the ¶ link (or "Visa texten") the
+  // reader left from, without scrolling Facit away from where it was.
+  useEffect(() => {
+    if (tray === 'peek' || !leftFrom.current) return
+    leftFrom.current.focus({ preventScroll: true })
+    leftFrom.current = null
+  }, [tray])
 
   if (view.phase === 'done') {
     return (
@@ -626,7 +649,6 @@ function PhoneDrill(chrome: Chrome) {
     )
   }
 
-  const feedback = view.phase === 'feedback'
   const progress = ((view.index + (feedback ? 1 : 0)) / view.total) * 100
   return (
     <div className="sa-pdrill">
@@ -657,7 +679,10 @@ function PhoneDrill(chrome: Chrome) {
        *  never lands on something covered. */}
       <div className="sa-pdoc" onScroll={onScroll} inert={tray === 'full'}>
         <DocPanel c={c} phone />
-        <div className="sa-pdoc-spacer" data-tray={tray} aria-hidden />
+        {/* Room for the last lines above the peek, the same whatever the
+         *  tray does: a shorter range would pull a reader at the end of the
+         *  text upward when it opens. */}
+        <div className="sa-pdoc-spacer" aria-hidden />
       </div>
       <section
         className="sa-tray"
@@ -675,7 +700,7 @@ function PhoneDrill(chrome: Chrome) {
           aria-expanded={tray !== 'peek'}
           {...grab}
         />
-        {tray === 'peek' ? (
+        {peek ? (
           <div className="sa-tray-peek">
             {feedback ? <Verdict view={view} compact /> : <QuestionTurn view={view} />}
             <Replies>
@@ -685,11 +710,17 @@ function PhoneDrill(chrome: Chrome) {
               </button>
             </Replies>
           </div>
-        ) : (
-          <>
+        ) : null}
+        {/* Facit stays mounted while the tray peeks, hidden and inert behind
+         *  the peek, so the way back finds it as the reader left it: the
+         *  reply to the coach, the open folds, the place in the text. A
+         *  question holds nothing of the reader's (the choice lives in the
+         *  drill), so its peek lets it go. */}
+        {peek && !feedback ? null : (
+          <div className="sa-tray-main" ref={mainRef} inert={peek}>
             <div className="sa-tray-head">
               <span className="sa-tray-title">{feedback ? 'Facit' : null}</span>
-              <button type="button" className="sa-quiet" onClick={() => setTray('peek')}>
+              <button type="button" className="sa-quiet" onClick={fold}>
                 Visa texten
                 <ChevronDown size={16} strokeWidth={1.75} aria-hidden />
               </button>
@@ -700,7 +731,7 @@ function PhoneDrill(chrome: Chrome) {
               </div>
             </div>
             <Dock c={trayChrome} phone />
-          </>
+          </div>
         )}
       </section>
     </div>

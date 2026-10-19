@@ -74,7 +74,8 @@ export function YourAnswer({ view }: { view: DrillView }) {
 
 /** The coach's verdict: a ringed glyph and a word, never colour alone, and
  *  the right answer in full. The compact form sits in the phone tray's
- *  peek. */
+ *  peek, a summary of the verdict that waits behind it, so only the full
+ *  one carries rd-verdict. */
 export function Verdict({
   view,
   compact = false,
@@ -90,7 +91,7 @@ export function Verdict({
     <Coach
       kind={compact ? 'sa-verdict sa-verdict--compact' : 'sa-verdict'}
       data-correct={String(correct)}
-      data-testid="rd-verdict"
+      data-testid={compact ? undefined : 'rd-verdict'}
       tabIndex={-1}
       ref={ref}
     >

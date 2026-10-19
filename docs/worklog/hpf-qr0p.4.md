@@ -1,8 +1,8 @@
 ---
 bead: "hpf-qr0p.4"
 project: "hpfetcher"
-session: "ci-wisp-zwcxfxg"
-status: "implemented_uncommitted"
+session: "ci-wisp-p0hvocf"
+status: "round2_implemented_uncommitted"
 ---
 
 # Worklog — hpf-qr0p.4 · Direction F · Samtal
@@ -312,3 +312,93 @@ Every round was shot with the harness below — all screens at both widths and i
 ## Beads hand-off
 
 - Planned write: one note, `bd update hpf-qr0p.4 --append-notes "…SAMTAL1 DONE: hpf-qr0p.4"`. The bead is **not** closed and no metadata is set, as the bead's delivery section asks.
+
+## Round 2
+
+Codex review hpf-xt77 returned **HOLD** at `7714239` (round 1 committed with main merged in) with two defects, R1 and R2. Both are fixed on top of round 1, red first. Round 1's session was `ci-wisp-zwcxfxg`.
+
+### Snapshot and boundaries
+
+- **Claim.** `gc hook --claim --json` returned `hpf-qr0p.4` (assignee `ci-wisp-p0hvocf`, route `hpfetcher/gc.implementation-worker`). `bd show hpf-qr0p.4 --json` matched the id, the status (`in_progress`), the assignee and `gc.routed_to`.
+- **Checkout.** HEAD `7714239`, clean apart from the sandbox's untracked dotfile placeholders (see round 1).
+- **Write set kept.** Only four files changed: `Samtal.test.tsx`, `SamtalDrill.tsx`, `SamtalFeedback.tsx` and `samtal.css`, plus this worklog. Everything is uncommitted, with no dependency changes and no shared file touched.
+- **Check script.** `gc.check_path` still has sha256 `71f17450e127055c8304a3cb44ce87b2439abe04ba41f225c7b386be3dc73911`. The bead names no validator, so it was not run.
+
+### R1 · the phone tray clamped the passage
+
+- **Cause.** The spacer under the passage (`.sa-pdoc-spacer`) was 300 px at peek and 140 px while the tray was open or full (`samtal.css`, former :2645). Opening the tray therefore shortened the passage's scroll range by 160 px, and a reader in its last 160 px was pulled upward.
+- **Fix.** The spacer now has one height, 300 px, in every tray state:
+  - the tray-dependent rule is gone;
+  - the spacer no longer carries `data-tray`.
+
+  Nothing else in the passage's box depends on the tray: the tray is absolutely positioned over the passage, and `inert` under the full tray changes no layout.
+
+### R2 · a ¶ link lost Facit's state
+
+- **Cause.** `PhoneDrill` rendered *either* the peek *or* the tray's head, conversation and action bar. Every ¶ link folds the tray to its peek, so Facit unmounted. Two things went with it:
+  - `Lure`'s local reply/skip state ("Vad lockade dig med A?");
+  - the explanation's scroll container, so the way back opened at the top.
+- **Fix: the first option in the brief, keeping the branch mounted, hidden and inert.**
+  - The head, conversation and action bar now sit in one `.sa-tray-main`. In Facit it stays mounted while the tray peeks, with `inert` set.
+  - CSS folds it to 0 height with `visibility: hidden`. It is still laid out (no `display: none`), so its scroll offset holds in any engine.
+  - The question phase keeps round 1's behaviour: its peek lets the options go, because the choice lives in `useDrill`.
+- **Focus.** The way back puts focus on the ¶ link (or "Visa texten") the reader left from, with `preventScroll`. Chromium shows the ring only after keyboard use.
+- **One verdict.** The peek's compact verdict no longer carries `rd-verdict`. With Facit mounted behind it, the page would otherwise have two.
+- **Why not lift the state.** Lifting `said` and the scroll position would have fixed the two named symptoms, but each return would remount Facit, with three costs:
+  - the 120 ms entrance fade would replay;
+  - the followed link would be lost as a focus target;
+  - any later local state would be dropped.
+
+  Keeping the branch mounted removes the cause instead.
+
+### Red first
+
+Five tests were added to `Samtal.test.tsx` (62 in all). The first two cover R1; jsdom has no layout, so they rely on two stand-ins:
+- **The real stylesheet.** Vitest runs with `css: false`, so these tests load `samtal.css` into the document. jsdom 29 cascades it by specificity, and the test reads the spacer's computed height.
+- **A model of the browser's clamp.** The range is text + spacer − view, and `scrollTop` is clamped to it after each tray change.
+
+| # | Test | What it checks |
+|---|---|---|
+| 1 | R1, Läsfråga | At the very end of the text, peek → open → peek leaves `scrollTop` and the spacer's height unchanged. |
+| 2 | R1, Facit | The same for peek → full → peek. |
+| 3–4 | R2, the exact repro (reply "Orden liknade texten", then skip "Hoppa över") | Answer or skip, scroll the explanation to 640, follow ¶6, return via "Tillbaka till förklaringen". After the return there are no reply chips, the reply stands as your turn (or nothing, for the skip), `scrollTop` is 640, and focus is on the followed link. |
+| 5 | R2, while peeking | Facit is still in the DOM inside `[inert]`, with exactly one `rd-verdict`. |
+
+**On `7714239`** (the tests only, source untouched): **5 failed, 57 passed (62)**.
+- R1 Läsfråga: `expected 1752 to be 1912`, the reader pulled up 160 px.
+- R1 Facit: `expected 1752 to be 1912`.
+- R2 reply and R2 skip: the reply chips are back (`expected <button …>Orden liknade texten</button> to be null`).
+- R2 peek: `Unable to find an element by: [data-testid="rd-distractor-A"]`, because Facit was unmounted.
+
+**After the fix:** 62/62.
+
+**Tooling note.** Importing the meta as `meta` while the file also uses `import.meta` breaks Vite's SSR transform: it rewrites the `meta` of `import.meta` too ("Cannot split a chunk that has already been edited"). The test imports it as `entry`.
+
+### Verification
+
+**From `app/`, on the final tree:**
+- `pnpm typecheck`: clean.
+- `pnpm lint`: 0 errors and 0 warnings; the same 4 pre-existing infos.
+- `pnpm test`: 97 files, **1241 passed**. That is the 1236 at `7714239` plus the 5 new tests.
+  - One run made while typecheck and lint ran alongside failed one test outside this change: `src/components/drill/PedagogyPanel.test.tsx` ("wrong answer → verdict-sub states the correct answer"). It was still showing the "Tänker igenom uppgiften…" loading state, a timing flake.
+  - Re-run on its own, the suite passed 1241/1241, as did the run before it.
+
+**Browser.** Chromium via Playwright on 127.0.0.1, with fallback fonts. Round 1's harness was copied to this session's scratchpad, plus a round-2 script, `harness/tray.mjs`.
+
+| Check | Result |
+|---|---|
+| R1, light and dark | At the very bottom (`scrollTop` 3151 of 3151), Läsfråga peek → open → peek and Facit peek → full → peek keep the scroll position, the range and the paragraph under the reader (¶8 at −193 px). |
+| R1 control: round 1's 140 px rule injected | Opening clamps to 2991, and ¶8 moves to −33 px, so the check catches the defect. In this Chromium run, scroll anchoring put the reader back on fold. jsdom has no anchoring, and the review reports that folding does not restore the position. |
+| R2: pointer and keyboard, reply and skip, both themes (6 runs) | **While peeking:** Facit stays mounted, `inert`, `visibility: hidden` and 0 px tall, and the explanation keeps its scroll (2132 / 2071 px). **On the way back:** the scroll is the same, the reply or skip stands with no chips, and focus is on the followed ¶ link (`:focus-visible` after keyboard only). **Throughout:** one `rd-verdict`, 0 axe findings on the peek and no console errors. |
+| Regression, 16 base screens | 0 flagged (overflow, text outside, clipping, axe, console). Byte-identical to round 1's final shots (`shots-v7`). |
+| Regression, 8 phone tray interactions × 2 themes | Byte-identical to round 1, with 0 axe findings and 0 console errors. The interactions: a reply, an option chosen and struck, a ¶ link followed, "Visa allt", Facit scrolled, the unit's end, the tray open and reading. |
+
+**Not re-run.** Round 1's option sweep (`shoot.mjs … extras=1 focus=1`) was not re-run, because the session's permission policy denied that command form. The plain 16-screen form and the targeted checks above did run. The coordinator's screenshot pass covers the rest: desktop interactions, the focus walk, text spacing and motion. Desktop code is unchanged.
+
+### Left as is
+
+- **Focus on fold.** When the tray folds, Chromium moves focus to the body, as in round 1. From there, Enter means "Nästa" to the drill's key map. If keyboard use on phone matters, focusing the peek's "Tillbaka till förklaringen" on fold would be a small follow-up.
+
+### Beads hand-off
+
+- One note, ending `SAMTAL2 DONE: hpf-qr0p.4`. The bead is **not** closed and no metadata is set.

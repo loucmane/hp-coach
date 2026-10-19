@@ -7,10 +7,17 @@
 // distractor and ¶ links; Nästa moves on; Navigering opens the account
 // with a working theme switch. Plus what is Samtal's own: the plan as a
 // reply on Idag, "Visa allt" opening every fold at once, the phone reply
-// tray, the keys, and the unit's end proposing the plan's next part.
+// tray, the keys, and the unit's end proposing the plan's next part. And
+// the phone tray keeps the reader's place: opening and folding it never
+// moves the passage, and a ¶ link's way back finds the explanation as it
+// was left (round 2, review hpf-xt77 R1 and R2).
+
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
-import { beforeAll, describe, expect, it, vi } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 
 import {
   ESTIMATE_CAVEAT,
@@ -26,7 +33,9 @@ import {
   type ThemeKey,
   type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
-import { meta } from './meta'
+// Not imported as `meta`: Vite's SSR transform would then rewrite the
+// `meta` of `import.meta` (used below) as well, and fail.
+import { meta as entry } from './meta'
 import { Samtal } from './Samtal'
 
 beforeAll(() => {
@@ -94,13 +103,13 @@ function key(k: string, init: KeyboardEventInit = {}) {
 
 describe('F · Samtal meta', () => {
   it('is built: no stub flag, Swedish traits, risk and references', () => {
-    expect(meta.key).toBe('f')
-    expect(meta.slug).toBe('f-samtal')
-    expect(meta.name).toBe('Samtal')
-    expect(meta.stub).toBeUndefined()
-    expect(meta.traits.length).toBeGreaterThanOrEqual(4)
-    expect(meta.risk).toMatch(/^Risk: /)
-    expect(meta.references).not.toBe('')
+    expect(entry.key).toBe('f')
+    expect(entry.slug).toBe('f-samtal')
+    expect(entry.name).toBe('Samtal')
+    expect(entry.stub).toBeUndefined()
+    expect(entry.traits.length).toBeGreaterThanOrEqual(4)
+    expect(entry.risk).toMatch(/^Risk: /)
+    expect(entry.references).not.toBe('')
   })
 })
 
@@ -427,5 +436,135 @@ describe('F · Samtal, phone only', () => {
     mount(3, 'phone')
     expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'full')
     expect(screen.getByTestId('rd-passage').closest('[inert]')).not.toBeNull()
+  })
+})
+
+// ── The phone tray keeps the reader's place ──────────────────────────
+
+const HERE = path.dirname(fileURLToPath(import.meta.url))
+/** The reply chips under "Vad lockade dig med A?". */
+const LURE_REPLIES = ['Orden liknade texten', 'Det lät rimligt', 'Jag chansade']
+
+/**
+ * The phone passage's scroll range. jsdom lays nothing out, so this stands
+ * in for the one browser rule at stake: the passage scrolls over its text
+ * plus the spacer under it (its height from samtal.css), and when that
+ * range shrinks, a reader near its end is pulled back inside it.
+ */
+function passageScroll() {
+  const pdoc = screen.getByTestId('rd-passage').closest<HTMLElement>('.sa-pdoc')
+  const spacer = pdoc?.querySelector<HTMLElement>('.sa-pdoc-spacer')
+  if (!pdoc || !spacer) throw new Error('no scrolling passage on the phone')
+  // The passage's own height, and the phone's view of it (844 less the head).
+  const TEXT = 2400
+  const VIEW = 788
+  const extent = () => getComputedStyle(spacer).height
+  /** Lays the passage out: the end of its range, the reader kept inside. */
+  const settle = () => {
+    const end = TEXT + Number.parseFloat(extent()) - VIEW
+    pdoc.scrollTop = Math.min(pdoc.scrollTop, end)
+    return end
+  }
+  return { pdoc, extent, settle }
+}
+
+describe('F · Samtal, phone: the reply tray never moves the passage', () => {
+  // Vitest leaves CSS out (css: false): load Samtal's own sheet so the
+  // spacer under the passage has the height a browser gives it.
+  const sheet = document.createElement('style')
+  beforeAll(() => {
+    sheet.textContent = readFileSync(path.join(HERE, 'samtal.css'), 'utf8')
+    document.head.appendChild(sheet)
+  })
+  afterAll(() => sheet.remove())
+
+  it('Läsfråga: at the end of the text, opening the tray and folding it leaves the reader there', () => {
+    mount(2, 'phone')
+    const tray = screen.getByTestId('rd-sheet')
+    const p = passageScroll()
+    const peek = p.extent()
+    expect(Number.parseFloat(peek)).toBeGreaterThan(0)
+    p.pdoc.scrollTop = p.settle()
+    const end = p.pdoc.scrollTop
+    fireEvent.click(within(tray).getByRole('button', { name: /Välj ett svar/ }))
+    expect(tray).toHaveAttribute('data-state', 'open')
+    p.settle()
+    const open = p.extent()
+    fireEvent.click(within(tray).getByText('Visa texten'))
+    expect(tray).toHaveAttribute('data-state', 'peek')
+    p.settle()
+    expect(p.pdoc.scrollTop).toBe(end)
+    expect(open).toBe(peek)
+  })
+
+  it('Facit: at the end of the text, the way back to the explanation and out again leaves the reader there', () => {
+    mount(3, 'phone')
+    const tray = screen.getByTestId('rd-sheet')
+    const p = passageScroll()
+    const full = p.extent()
+    fireEvent.click(within(tray).getByText('Visa texten'))
+    expect(tray).toHaveAttribute('data-state', 'peek')
+    const peek = p.extent()
+    expect(Number.parseFloat(peek)).toBeGreaterThan(0)
+    p.pdoc.scrollTop = p.settle()
+    const end = p.pdoc.scrollTop
+    fireEvent.click(within(tray).getByRole('button', { name: /Tillbaka till förklaringen/ }))
+    expect(tray).toHaveAttribute('data-state', 'full')
+    p.settle()
+    fireEvent.click(within(tray).getByText('Visa texten'))
+    expect(tray).toHaveAttribute('data-state', 'peek')
+    p.settle()
+    expect(p.pdoc.scrollTop).toBe(end)
+    expect(full).toBe(peek)
+  })
+})
+
+describe('F · Samtal, phone: a ¶ link and the way back find the explanation as it was', () => {
+  /** How far the reader had scrolled the explanation (jsdom keeps it). */
+  const PLACE = 640
+
+  it.each([
+    'Orden liknade texten',
+    'Hoppa över',
+  ])('after "%s" on the coach’s question, a ¶ link, then "Tillbaka till förklaringen"', (choice) => {
+    mount(3, 'phone')
+    const tray = screen.getByTestId('rd-sheet')
+    const lure = () => within(screen.getByTestId('rd-distractor-A'))
+    fireEvent.click(lure().getByRole('button', { name: choice }))
+    const body = tray.querySelector<HTMLElement>('.sa-tray-body')
+    if (!body) throw new Error('no explanation in the tray')
+    body.scrollTop = PLACE
+    // The reader follows a ¶ link: the tray folds so the paragraph shows…
+    const link = within(tray).getAllByTestId('rd-cite-6')[0]
+    link.focus()
+    fireEvent.click(link)
+    expect(tray).toHaveAttribute('data-state', 'peek')
+    // …and comes back.
+    const back = within(tray).getByRole('button', { name: /Tillbaka till förklaringen/ })
+    back.focus()
+    fireEvent.click(back)
+    expect(tray).toHaveAttribute('data-state', 'full')
+    // The reply or the skip stands: the coach does not ask again.
+    for (const l of [...LURE_REPLIES, 'Hoppa över']) {
+      expect(lure().queryByRole('button', { name: l })).toBeNull()
+    }
+    if (choice === 'Hoppa över') {
+      for (const l of LURE_REPLIES) expect(lure().queryByText(l)).toBeNull()
+    } else {
+      expect(lure().getByText(choice, { selector: 'p' })).toBeInTheDocument()
+    }
+    // The explanation is where the reader left it, the link they followed in focus.
+    expect(tray.querySelector('.sa-tray-body')?.scrollTop).toBe(PLACE)
+    expect(document.activeElement).toBe(link)
+  })
+
+  it('while the tray peeks at the passage, the explanation waits behind it, out of reach', () => {
+    mount(3, 'phone')
+    const tray = screen.getByTestId('rd-sheet')
+    fireEvent.click(within(tray).getAllByTestId('rd-cite-6')[0])
+    expect(tray).toHaveAttribute('data-state', 'peek')
+    expect(screen.getByTestId('rd-distractor-A').closest('[inert]')).not.toBeNull()
+    // The peek's compact verdict is a summary: one rd-verdict on the page.
+    expect(screen.getAllByTestId('rd-verdict')).toHaveLength(1)
   })
 })

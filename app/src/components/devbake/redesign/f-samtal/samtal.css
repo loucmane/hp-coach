@@ -2638,13 +2638,11 @@
   margin-left: 36px;
 }
 
+/* Room under the passage, so its last lines scroll clear of the peek. It is
+ * the same in every tray state: a shorter range would pull a reader at the
+ * end of the text upward as the tray opens. */
 [data-rd='samtal'] .sa-pdoc-spacer {
   height: 300px;
-}
-
-[data-rd='samtal'] .sa-pdoc-spacer[data-tray='open'],
-[data-rd='samtal'] .sa-pdoc-spacer[data-tray='full'] {
-  height: 140px;
 }
 
 /* The reply tray, docked to the bottom. It never moves the passage. */
@@ -2722,6 +2720,24 @@
 
 [data-rd='samtal'] .sa-tray-peek .sa-chip {
   min-height: 48px;
+}
+
+/* The tray's own part: its head, the conversation and the action bar. */
+[data-rd='samtal'] .sa-tray-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* While Facit's tray peeks, the explanation waits behind the peek: still
+ * laid out, so its scroll position holds, but folded to nothing, unseen and
+ * (inert) out of reach. */
+[data-rd='samtal'] .sa-tray[data-state='peek'] .sa-tray-main {
+  flex: none;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
 }
 
 [data-rd='samtal'] .sa-tray-head {
