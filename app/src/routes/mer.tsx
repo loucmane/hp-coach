@@ -19,10 +19,12 @@ import { useSyncedPrefs } from '@/api/useSyncedPrefs'
 import { DrillRailSection } from '@/components/drill/DrillRailSection'
 import { MobileFrame } from '@/components/MobileFrame'
 import { Page } from '@/components/Page'
+import { isDevSurface } from '@/lib/devSurface'
 import { LEGAL_LINK_STYLE, LEGAL_LINKS } from '@/lib/legal'
 import { PALETTES, type PaletteKey } from '@/lib/tokens'
 import { COACH_BLURBS, COACH_LABELS, type CoachKey } from '@/lib/voice'
 import { useCoachStore } from '@/stores/coachStore'
+import { DESIGN_DIRECTIONS, useDesignDirection, useDesignStore } from '@/stores/designStore'
 import { useDaysRemaining, useSitting } from '@/stores/examStore'
 import { useUiStore } from '@/stores/uiStore'
 
@@ -96,6 +98,15 @@ function MerRoute() {
               <SmartDrillWords />
             </SettingRow>
           </DrillRailSection>
+
+          {isDevSurface() && (
+            <DrillRailSection meta="Dev" delay={180}>
+              <h2 className="hpc-m3-h">Designriktning</h2>
+              <SettingRow label="Riktning">
+                <DirectionWords />
+              </SettingRow>
+            </DrillRailSection>
+          )}
 
           <DrillRailSection meta="Verktyg" delay={240}>
             <h2 className="hpc-m3-h">Verktyg</h2>
@@ -262,6 +273,26 @@ function PaletteWords() {
           ariaLabel={`Palett: ${p}${p === palette ? ' (aktiv)' : ''}`}
         >
           {p}
+        </Word>
+      ))}
+    </>
+  )
+}
+
+// Device-only preference; never passes through useSyncedPrefs.
+function DirectionWords() {
+  const direction = useDesignDirection()
+  const setDirection = useDesignStore((s) => s.setDirection)
+  return (
+    <>
+      {[...DESIGN_DIRECTIONS, { key: null, name: 'vanliga appen' }].map(({ key, name }) => (
+        <Word
+          key={key ?? 'normal'}
+          active={direction === key}
+          onClick={() => setDirection(key)}
+          ariaLabel={`Riktning: ${name}`}
+        >
+          {name}
         </Word>
       ))}
     </>
