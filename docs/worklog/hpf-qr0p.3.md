@@ -265,6 +265,7 @@ All paths are under `app/src/components/devbake/redesign/e-svep/` unless shown i
 ## Beads hand-off
 
 - The bead asks for the changes to stay uncommitted and the bead to stay open (not closed), and for one one-line note ending `SVEP1 DONE: hpf-qr0p.3`.
-- Planned write: `/home/loucmane/gascity/bin/bd update hpf-qr0p.3 --append-notes "…"` (one line).
+- Written: `/home/loucmane/gascity/bin/bd update hpf-qr0p.3 --append-notes "…"` (one line), succeeded on the first attempt. Read back with `bd show hpf-qr0p.3`: the note is present, the status is still `in_progress`, and no metadata was changed.
+- **HANDOFF.** Nothing is pending on this bead. The session was recycled afterwards at 86% context, as the runtime asked. A fresh session that claims `hpf-qr0p.3` again should treat it as done: the work is in this worktree (uncommitted, inside the write set) and the bead waits open for the coordinator, by its own instruction. The scratch harness and shots live in this session's scratchpad (`$SCRATCHPAD/harness/`, `$SCRATCHPAD/shots/final/`) and may not survive the reset. Re-run `harness/run.mjs` if the shots are needed again.
 
 SVEP1 DONE: hpf-qr0p.3
