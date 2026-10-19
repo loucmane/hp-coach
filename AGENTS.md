@@ -50,12 +50,17 @@ continuation instruction above.
 - Never use a cross-rig bare `bd`. Every native work bead receives a worklog at
   `GasCity/hpfetcher/Docs/worklogs/<bead-id>.md` in the classified vault.
 - **Merge delegation (operator, 2026-08-09).** Ordinary pull requests may merge
-  without a further operator prompt once an independent exact-head Codex review
-  returns PASS *and* the required mechanical gates are green at that same head.
-  Confirm before merging: reviewed head unchanged, checks bound to that head,
-  mergeability clean, zero unresolved review threads; after merging, prove the
-  merged tree equals the reviewed head. The operator is not expected to repeat
-  the technical review.
+  without a further operator prompt once an independent exact-head
+  cross-vendor review returns PASS *and* the required mechanical gates are
+  green at that same head. Confirm before merging: reviewed head unchanged,
+  checks bound to that head, mergeability clean, zero unresolved review
+  threads; after merging, prove the merged tree equals the reviewed head. The
+  operator is not expected to repeat the technical review.
+- **Cross-vendor review (operator, 2026-10-19).** A Codex review is the merge
+  review for Claude-authored PRs, and an independent Claude review counts the
+  same way for Codex-authored PRs. The reviewer is never the author, reviews
+  read-only at the exact head SHA, and `VERDICT: PASS` with that SHA is
+  recorded on the bead before the merge. All other gates above are unchanged.
 - Stop and return to the operator for: unresolved product intent, credential
   actions, publishing/deployment, destructive cleanup, and authority changes the
   operator has not already approved. A formula, worker result, review verdict, or
