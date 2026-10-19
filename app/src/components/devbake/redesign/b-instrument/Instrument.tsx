@@ -40,7 +40,7 @@ import {
 } from 'react'
 
 import './instrument.css'
-import { EXAM, OVA_DUE, RESUME, TODAY, WEEK } from '@/components/devbake/redesign/r1Fixtures'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
   DESTINATIONS,
   type Destination,
@@ -52,6 +52,9 @@ import {
 } from '@/components/devbake/redesign/r1Kit'
 import { InstrumentDrill } from './InstrumentDrill'
 import { InstrumentHome } from './InstrumentHome'
+import { InstrumentOva } from './InstrumentOva'
+import { InstrumentQuant } from './InstrumentQuant'
+import { InstrumentRepetera } from './InstrumentRepetera'
 import { DEST_ICONS, G_KEYS, Kc, Mark, MOD, Readout } from './parts'
 
 const FONTS =
@@ -72,6 +75,7 @@ function systemTheme(): ThemeKey | null {
 
 export function Instrument(props: DirectionProps) {
   useWebFonts('instrument', FONTS)
+  const { data, actions } = useDirectionData()
   // The destination lives at the root so the drill's rail and its end-of-
   // unit screen can send the reader straight to one.
   const [dest, setDest] = useState<Destination>('idag')
@@ -109,16 +113,27 @@ export function Instrument(props: DirectionProps) {
       data-testid="rd-instrument"
       lang="sv"
     >
-      {drill ? (
+      {props.screen === 6 || props.screen === 7 ? (
+        <InstrumentQuant
+          key={`${props.screen}-${props.screen === 7 ? data.drills.dtk.id : data.drills.quant.id}`}
+          {...props}
+        />
+      ) : drill ? (
         <InstrumentDrill
+          key={data.drills.reading.id}
           {...props}
           onGo={(d) => {
             setDest(d)
-            props.onScreen(1)
+            actions.go(d)
           }}
         />
       ) : (
-        <InstrumentFrame {...props} theming={theming} dest={dest} setDest={setDest} />
+        <InstrumentFrame
+          {...props}
+          theming={theming}
+          dest={props.screen === 5 || props.screen === 8 ? 'ova' : dest}
+          setDest={setDest}
+        />
       )}
     </div>
   )
@@ -137,11 +152,23 @@ function InstrumentFrame({
   dest: Destination
   setDest: (d: Destination) => void
 }) {
+  const { data, actions } = useDirectionData()
+  const { exam: EXAM, today: TODAY, week: WEEK, ovaDue: OVA_DUE, resume: RESUME } = data.home
   // Screen 4 shows the frame's other state, screen 1 the default. A switch
   // made in the bake-off's own switcher also returns to Idag.
   const [collapsed, setCollapsed] = useState(screen === 4)
   const [menu, setMenu] = useState(screen === 4)
   const [palette, setPalette] = useState(false)
+  const pageRef = useRef<HTMLDivElement>(null)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: destination changes move focus to the page heading
+  useEffect(() => {
+    if (!live || screen === 4) return
+    const heading = pageRef.current?.querySelector('h1')
+    if (heading) {
+      heading.tabIndex = -1
+      heading.focus({ preventScroll: true })
+    }
+  }, [dest, screen, live])
   const mounted = useRef(false)
   // biome-ignore lint/correctness/useExhaustiveDependencies: reset only when the switcher changes screen
   useEffect(() => {
@@ -158,8 +185,9 @@ function InstrumentFrame({
     (d: Destination) => {
       setMenu(false)
       setDest(d)
+      actions.go(d)
     },
-    [setDest],
+    [setDest, actions],
   )
   const closeMenu = useCallback(() => setMenu(false), [])
   const openPalette = useCallback(() => {
@@ -217,14 +245,22 @@ function InstrumentFrame({
   keys.o = keys[G_KEYS.ova]
   useKeyMap(keys, live && !palette)
 
+  const resume = () => {
+    actions.resume()
+    onScreen(2)
+  }
   const commands: Command[] = [
-    {
-      id: 'resume',
-      label: `Fortsätt: ${RESUME.section} · ${RESUME.title}`,
-      hint: '↵',
-      icon: <CornerDownLeft size={15} strokeWidth={1.5} aria-hidden />,
-      run: () => onScreen(2),
-    },
+    ...(RESUME
+      ? [
+          {
+            id: 'resume',
+            label: `Fortsätt: ${RESUME.section} · ${RESUME.title}`,
+            hint: '↵',
+            icon: <CornerDownLeft size={15} strokeWidth={1.5} aria-hidden />,
+            run: resume,
+          },
+        ]
+      : []),
     ...DESTINATIONS.map((d) => ({
       id: `go-${d.id}`,
       label: `Gå till ${d.label}`,
@@ -247,13 +283,12 @@ function InstrumentFrame({
   ]
 
   const page =
-    dest === 'idag' ? (
-      <InstrumentHome
-        width={width}
-        live={live && !palette}
-        onResume={() => onScreen(2)}
-        onGo={go}
-      />
+    screen === 8 ? (
+      <InstrumentRepetera />
+    ) : dest === 'ova' ? (
+      <InstrumentOva />
+    ) : dest === 'idag' ? (
+      <InstrumentHome width={width} live={live && !palette} onResume={resume} onGo={go} />
     ) : (
       <InstrumentStub dest={dest} />
     )
@@ -290,7 +325,7 @@ function InstrumentFrame({
           )}
           {account('top', true, false)}
         </header>
-        <div className="in-pscroll" key={dest}>
+        <div className="in-pscroll" key={`${dest}-${screen}`} ref={pageRef}>
           <div className={live ? 'in-enter' : undefined}>{page}</div>
         </div>
         <nav className="in-tabs" aria-label="Huvudmeny">
@@ -396,8 +431,16 @@ function InstrumentFrame({
               unit={`dagar · ${EXAM.dateLabel}`}
               title={`${EXAM.name}, ${EXAM.dateLabel}`}
             />
-            <Readout label="Veckan" value={`${WEEK.daysPractised}/${WEEK.goal}`} unit="dagar" />
-            <Readout label="Idag" value={`${WEEK.minutesToday}`} unit="min" />
+            {WEEK.daysPractised != null ? (
+              <Readout
+                label="Veckan"
+                value={`${WEEK.daysPractised}${WEEK.goal != null ? `/${WEEK.goal}` : ''}`}
+                unit="dagar"
+              />
+            ) : null}
+            {WEEK.minutesToday != null ? (
+              <Readout label="Idag" value={`${WEEK.minutesToday}`} unit="min" />
+            ) : null}
           </div>
         </header>
         <main className="in-panel">
@@ -420,7 +463,7 @@ function InstrumentFrame({
               </span>
             ) : null}
           </div>
-          <div className="in-scroll" key={dest}>
+          <div className="in-scroll" key={`${dest}-${screen}`} ref={pageRef}>
             <div className={live ? 'in-enter' : undefined}>{page}</div>
           </div>
         </main>
@@ -441,7 +484,7 @@ function InstrumentFrame({
           </span>
           <span className="in-spacer" />
           <span>
-            <Check size={14} strokeWidth={1.75} aria-hidden /> Allt sparat
+            <Check size={14} strokeWidth={1.75} aria-hidden /> Dagens översikt
           </span>
         </footer>
       </div>
@@ -473,6 +516,7 @@ function AccountTrigger({
   compact: boolean
   tip: boolean
 }) {
+  const { data, actions } = useDirectionData()
   const ref = useRef<HTMLDivElement>(null)
   useDismiss(open, close, ref)
   const { theme, onTheme, followSystem, setFollowSystem } = theming
@@ -525,8 +569,8 @@ function AccountTrigger({
           <div className="in-menu-head">
             {avatar}
             <div>
-              <b>Ditt konto</b>
-              <span>Gratisplan</span>
+              <b>{data.konto.identity.name}</b>
+              {data.konto.identity.plan ? <span>{data.konto.identity.plan}</span> : null}
             </div>
           </div>
           <p className="in-menu-label" aria-hidden>
@@ -535,12 +579,18 @@ function AccountTrigger({
           <MenuItem
             icon={<UserRound size={15} strokeWidth={1.5} />}
             label="Konto"
-            onClick={close}
+            onClick={() => {
+              close()
+              actions.openKonto()
+            }}
           />
           <MenuItem
             icon={<Settings size={15} strokeWidth={1.5} />}
             label="Inställningar"
-            onClick={close}
+            onClick={() => {
+              close()
+              actions.openKonto()
+            }}
           />
           <p className="in-menu-label" aria-hidden>
             Utseende
@@ -586,7 +636,10 @@ function AccountTrigger({
           <MenuItem
             icon={<LogOut size={15} strokeWidth={1.5} />}
             label="Logga ut"
-            onClick={close}
+            onClick={() => {
+              close()
+              actions.signOut()
+            }}
           />
         </div>
       ) : null}

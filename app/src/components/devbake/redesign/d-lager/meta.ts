@@ -6,6 +6,7 @@ export const meta: DirectionMeta = {
   key: 'd',
   slug: 'd-lager',
   name: 'Lager',
+  screens: [1, 2, 3, 4, 5, 6, 7, 8],
   tagline: 'Rumsligt djup, glas på rätt sätt',
   traits: [
     'Ett ogenomskinligt läsark svävar över ett stilla, delprovsfärgat fält som tonas ned när läsningen börjar.',

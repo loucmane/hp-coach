@@ -36,38 +36,34 @@ import {
   type ReactNode,
   type PointerEvent as ReactPointerEvent,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from 'react'
-
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
-  FRAMEWORK_NAMES,
-  OVNINGSTEXT_BADGE,
-  OVNINGSTEXT_NOTE,
-  PLAN,
-  UNIT,
-} from '@/components/devbake/redesign/r1Fixtures'
+  type DrillCoreActions as DrillActions,
+  type DrillCoreRefs as DrillRefs,
+  type DrillCoreView as DrillView,
+  useDrillCore,
+} from '@/components/devbake/redesign/drillCore'
 import {
   DESTINATIONS,
   type Destination,
   type DirectionProps,
-  type DrillActions,
-  type DrillRefs,
-  type DrillView,
   fmtClock,
   prefersReducedMotion,
   type QuoteMark,
   splitStepRefs,
-  useDrill,
   useHideOnScroll,
   useKeyMap,
   useSheet,
 } from '@/components/devbake/redesign/r1Kit'
+import { MathText } from '@/components/MathText'
 import type { DistractorExplanation, ExplanationStep } from '@/data/explanations'
 import type { AnswerLetter } from '@/data/questions'
+import type { DrillOptionFigure } from '../viewModel'
 import { DEST_ICONS, Kc, Mark, Segs, useWidth } from './parts'
-
-const [TITLE, SUBTITLE] = UNIT.title.split(': ')
 
 /** From here on the explanation may take a pane of its own. */
 const WIDE = 1680
@@ -84,14 +80,74 @@ type NoteState = { note: boolean; setNote: (open: boolean) => void }
 
 type ExState = { exOpen: boolean; setExOpen: (open: boolean) => void }
 
-export function InstrumentDrill({
+export function InstrumentDrill(props: DirectionProps & { onGo: (d: Destination) => void }) {
+  const { data, actions } = useDirectionData()
+  if (!data.drills.reading.questions.length)
+    return (
+      <div className="in-done">
+        <h1>Frågan är inte tillgänglig</h1>
+        <button
+          type="button"
+          className="in-btn2"
+          data-testid="rd-exit"
+          onClick={actions.drill.exit}
+        >
+          Till Öva
+        </button>
+      </div>
+    )
+  return <ReadingSession {...props} />
+}
+
+function ReadingSession({
   screen,
   width,
   live,
   onScreen,
   onGo,
 }: DirectionProps & { onGo: (d: Destination) => void }) {
-  const { view, act, refs } = useDrill({ screen, onScreen, live })
+  const { data, actions } = useDirectionData()
+  const session = data.drills.reading
+  const [start] = useState(() => ({
+    ...session.start,
+    graded:
+      screen === 3
+        ? session.wrongPick?.[session.questions[session.start.index ?? 0].qid]
+        : session.start.graded,
+  }))
+  const core = useDrillCore({
+    questions: session.questions,
+    explanations: session.explanations,
+    start,
+    elapsed: session.elapsedSeconds,
+    controller: actions.drill,
+    live,
+  })
+  const { view, refs } = core
+  const { gradeAs, reopen, reset } = core.act
+  // biome-ignore lint/correctness/useExhaustiveDependencies: display sync follows only the external screen selector
+  useLayoutEffect(() => {
+    if (screen === 3 && view.phase === 'question') gradeAs((q) => session.wrongPick?.[q.qid])
+    else if (screen === 2 && view.phase === 'feedback') reopen()
+    else if (screen === 2 && view.phase === 'done') reset()
+  }, [screen])
+  const act: DrillActions = {
+    ...core.act,
+    lock: () => {
+      const locked = core.act.lock()
+      if (locked) onScreen(3)
+      return locked
+    },
+    next: () => {
+      const next = core.act.next()
+      if (next === 'next') onScreen(2)
+      return next
+    },
+    exit: () => {
+      core.act.exit()
+      onScreen(1)
+    },
+  }
   const [note, setNote] = useState(false)
   const [focus, setFocus] = useState(false)
   const feedback = view.phase === 'feedback'
@@ -105,8 +161,9 @@ export function InstrumentDrill({
 
   const rootRef = useRef<HTMLDivElement>(null)
   const wide = useWidth(rootRef) >= WIDE
-  const nextInPlan = PLAN.items.find((i) => i.primary) ?? PLAN.items[0]
-  const goNextInPlan = () => onGo('ova')
+  const nextInPlan = data.home.plan.items.find((i) => i.primary) ?? data.home.plan.items[0]
+  const goNextInPlan = () => (nextInPlan ? actions.openPlanItem(nextInPlan.id) : onGo('ova'))
+  const nextLabel = nextInPlan ? `${nextInPlan.title} · ${nextInPlan.minutes} min` : 'Till Öva'
 
   const paraOn = view.focusPara != null
   const keys: Record<string, () => void> = {
@@ -126,7 +183,8 @@ export function InstrumentDrill({
       else if (focus) setFocus(false)
     },
   }
-  for (const o of view.question.options) {
+  keys[' '] = keys.Enter
+  for (const o of view.question.options ?? []) {
     const l = o.letter.toLowerCase()
     keys[l] = () => act.select(o.letter)
     keys[`Shift+${l}`] = () => act.toggleEliminate(o.letter)
@@ -144,7 +202,7 @@ export function InstrumentDrill({
         setExOpen={setExOpen}
         onHome={() => onScreen(1)}
         onNextInPlan={goNextInPlan}
-        nextLabel={`${nextInPlan.title} · ${nextInPlan.minutes} min`}
+        nextLabel={nextLabel}
       />
     )
   }
@@ -183,7 +241,7 @@ export function InstrumentDrill({
               view={view}
               onHome={() => onScreen(1)}
               onNextInPlan={goNextInPlan}
-              nextLabel={`${nextInPlan.title} · ${nextInPlan.minutes} min`}
+              nextLabel={nextLabel}
             />
           </div>
         ) : (
@@ -204,6 +262,8 @@ export function InstrumentDrill({
 }
 
 function Timer({ seconds }: { seconds: number }) {
+  const { data } = useDirectionData()
+  if (data.drills.reading.elapsedSeconds == null) return null
   return (
     <span className="in-timer" role="timer" aria-label={`Tid ${fmtClock(seconds)}`}>
       <Clock size={14} strokeWidth={1.5} aria-hidden />
@@ -224,9 +284,9 @@ function TopBar({
       <nav className="in-crumbs" aria-label="Plats">
         <span>Öva</span>
         <i aria-hidden>/</i>
-        <span>LÄS</span>
+        <span>{view.question.section}</span>
         <i aria-hidden>/</i>
-        <span>{TITLE}</span>
+        <span>{view.question.passage?.title?.split(': ')[0] ?? view.question.source.label}</span>
         <i aria-hidden>/</i>
         <b aria-current="page">{done ? 'Klar' : `Fråga ${view.index + 1}`}</b>
       </nav>
@@ -260,13 +320,7 @@ function TopBar({
             Fokus
             <Kc>F</Kc>
           </button>
-          <button
-            type="button"
-            className="in-btn2"
-            data-testid="rd-exit"
-            onClick={act.exit}
-            title="Dina svar är sparade"
-          >
+          <button type="button" className="in-btn2" data-testid="rd-exit" onClick={act.exit}>
             Avsluta
           </button>
         </>
@@ -293,13 +347,7 @@ function FocusChrome({
       </div>
       <div className="in-corner">
         <Timer seconds={view.elapsed} />
-        <button
-          type="button"
-          className="in-btn2"
-          data-testid="rd-exit"
-          onClick={act.exit}
-          title="Dina svar är sparade"
-        >
+        <button type="button" className="in-btn2" data-testid="rd-exit" onClick={act.exit}>
           Avsluta
         </button>
         <button
@@ -368,7 +416,7 @@ function StatusBar({ view }: { view: DrillView }) {
         </span>
       ))}
       <span className="in-spacer" />
-      <span>{view.phase === 'done' ? 'Sparat' : 'Sparas automatiskt'}</span>
+      <span>{view.results.length} besvarade</span>
     </footer>
   )
 }
@@ -376,7 +424,7 @@ function StatusBar({ view }: { view: DrillView }) {
 // ── Desktop split ────────────────────────────────────────────────────
 
 function evidencePara(view: DrillView): number | undefined {
-  for (const s of view.explanation.steps ?? []) {
+  for (const s of view.explanation?.steps ?? []) {
     const cites = view.stepCites[s.n]
     if (s.tier !== 'detail' && cites?.length) return cites[0]
   }
@@ -400,6 +448,7 @@ function Split({
     focus: boolean
   }) {
   const feedback = view.phase === 'feedback'
+  const { data } = useDirectionData()
   const inspector = feedback && wide && exOpen
   const [qW, setQW] = useState<number | null>(null)
   const [dragging, setDragging] = useState(false)
@@ -466,11 +515,17 @@ function Split({
       <section className="in-pane" aria-label="Texten">
         {focus ? null : (
           <div className="in-pane-head">
-            <span className="in-pane-label">Text · {view.passage.paragraphs.length} stycken</span>
-            <span className="in-badge" data-testid="rd-badge">
-              {OVNINGSTEXT_BADGE}
+            <span className="in-pane-label">
+              Text · {view.passage?.paragraphs.length ?? 0} stycken
             </span>
-            <NoteToggle note={note} setNote={setNote} />
+            {view.question.passage?.synthetic ? (
+              <>
+                <span className="in-badge" data-testid="rd-badge">
+                  {data.copy.ovningstextBadge}
+                </span>
+                <NoteToggle note={note} setNote={setNote} />
+              </>
+            ) : null}
             <span className="in-spacer" />
             <button
               type="button"
@@ -664,27 +719,29 @@ function PassageBody({
   setNote,
   badge,
 }: Shared & NoteState & { badge: boolean }) {
-  const { paragraphs, byline } = view.passage
+  const { data } = useDirectionData()
+  const { paragraphs, byline } = view.passage ?? { paragraphs: [], byline: null }
+  const [title, subtitle] = (view.question.passage?.title ?? view.question.source.label).split(': ')
   const graded = view.phase === 'feedback'
   const marks = shownMarks(view)
   return (
     <div className="in-passage-wrap">
       <div className="in-passage-head">
-        {badge ? (
+        {badge && view.question.passage?.synthetic ? (
           <div className="in-badge-row">
             <span className="in-badge" data-testid="rd-badge">
-              {OVNINGSTEXT_BADGE}
+              {data.copy.ovningstextBadge}
             </span>
             <NoteToggle note={note} setNote={setNote} />
           </div>
         ) : null}
         <p className="in-note" id="in-note" data-testid="rd-note" hidden={!note}>
-          {OVNINGSTEXT_NOTE}
+          {data.copy.ovningstextNote}
         </p>
         <h1 className="in-ptitle" style={{ marginTop: note ? 16 : 0 }}>
-          {TITLE}
+          {title}
         </h1>
-        <p className="in-psub">{SUBTITLE}</p>
+        {subtitle ? <p className="in-psub">{subtitle}</p> : null}
       </div>
       <div
         className="in-pbody"
@@ -732,10 +789,20 @@ function PassageBody({
 
 // ── Options (question phase) ─────────────────────────────────────────
 
-function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
+export function Options({
+  view,
+  act,
+  quant = false,
+  disabled = false,
+  onFigureStatus,
+}: Pick<Shared, 'view' | 'act'> & {
+  quant?: boolean
+  disabled?: boolean
+  onFigureStatus?: (src: string, state: 'ready' | 'error') => void
+}) {
   return (
     <ol className="in-opts" aria-label="Svarsalternativ">
-      {view.question.options.map((o) => {
+      {(view.question.options ?? []).map((o) => {
         const selected = view.selected === o.letter
         const out = view.eliminated.has(o.letter)
         return (
@@ -747,7 +814,8 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
             <button
               type="button"
               className="in-opt-main"
-              data-testid={`rd-option-${o.letter}`}
+              data-testid={`rd-${quant ? 'quant-' : ''}option-${o.letter}`}
+              disabled={disabled}
               aria-pressed={selected}
               onClick={() => act.select(o.letter)}
             >
@@ -759,7 +827,10 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
                   Alternativ {o.letter}
                   {out ? ', struket' : ''}:{' '}
                 </span>
-                {o.text}
+                <MathText>{o.text}</MathText>
+                {o.figure ? (
+                  <OptionFigure key={o.figure.src} figure={o.figure} onStatus={onFigureStatus} />
+                ) : null}
               </span>
             </button>
             <button
@@ -769,6 +840,7 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
               data-tip-side="top"
               data-testid={`rd-eliminate-${o.letter}`}
               aria-pressed={out}
+              disabled={disabled}
               aria-label={out ? `Ångra strykningen av ${o.letter}` : `Stryk ${o.letter}`}
               onClick={() => act.toggleEliminate(o.letter)}
             >
@@ -782,6 +854,34 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
         )
       })}
     </ol>
+  )
+}
+
+function OptionFigure({
+  figure,
+  onStatus,
+}: {
+  figure: DrillOptionFigure
+  onStatus?: (src: string, state: 'ready' | 'error') => void
+}) {
+  const ref = useRef<HTMLImageElement>(null)
+  const callback = useRef(onStatus)
+  callback.current = onStatus
+  useLayoutEffect(() => {
+    if (ref.current?.complete && ref.current.naturalWidth > 0)
+      callback.current?.(figure.src, 'ready')
+  }, [figure.src])
+  return (
+    <img
+      ref={ref}
+      className="in-option-figure"
+      src={`/${figure.src}`}
+      alt={figure.alt}
+      width={figure.width}
+      height={figure.height}
+      onLoad={() => callback.current?.(figure.src, 'ready')}
+      onError={() => callback.current?.(figure.src, 'error')}
+    />
   )
 }
 
@@ -804,12 +904,13 @@ function Verdict({ view }: { view: DrillView }) {
 
 /** Verdict, the question, your answer and the right one in full; the
  *  options that played no part wait behind a disclosure. */
-function AnswerSummary({ view }: { view: DrillView }) {
+export function AnswerSummary({ view }: { view: DrillView }) {
   const [others, setOthers] = useState(false)
   const q = view.question
-  const text = (l: AnswerLetter) => q.options.find((o) => o.letter === l)?.text ?? ''
+  const text = (l: AnswerLetter) => q.options?.find((o) => o.letter === l)?.text ?? ''
+  const figure = (l: AnswerLetter) => q.options?.find((o) => o.letter === l)?.figure
   const correct = view.correct === true
-  const rest = q.options.filter((o) => o.letter !== q.answer && o.letter !== view.picked)
+  const rest = (q.options ?? []).filter((o) => o.letter !== q.answer && o.letter !== view.picked)
   const letters = rest.map((o) => o.letter)
   // "B och C", "A, B och C".
   const restLabel =
@@ -819,15 +920,34 @@ function AnswerSummary({ view }: { view: DrillView }) {
   return (
     <>
       <Verdict view={view} />
-      <h2 className="in-q-after">{q.prompt}</h2>
+      <h2 className="in-q-after">
+        <MathText>{q.prompt}</MathText>
+      </h2>
       <div className="in-ans">
         {correct ? null : view.picked ? (
-          <AnswerRow kind="mine" letter={view.picked} text={text(view.picked)} />
+          <AnswerRow
+            kind="mine"
+            letter={view.picked}
+            text={text(view.picked)}
+            figure={figure(view.picked)}
+          />
         ) : null}
-        <AnswerRow kind="right" letter={q.answer} text={text(q.answer)} mine={correct} />
+        <AnswerRow
+          kind="right"
+          letter={q.answer}
+          text={text(q.answer)}
+          figure={figure(q.answer)}
+          mine={correct}
+        />
         {others
           ? rest.map((o) => (
-              <AnswerRow key={o.letter} kind="other" letter={o.letter} text={o.text} />
+              <AnswerRow
+                key={o.letter}
+                kind="other"
+                letter={o.letter}
+                text={o.text}
+                figure={o.figure}
+              />
             ))
           : null}
       </div>
@@ -850,11 +970,13 @@ function AnswerRow({
   kind,
   letter,
   text,
+  figure,
   mine = false,
 }: {
   kind: 'mine' | 'right' | 'other'
   letter: AnswerLetter
   text: string
+  figure?: DrillOptionFigure | null
   mine?: boolean
 }) {
   const tag =
@@ -876,8 +998,9 @@ function AnswerRow({
         {tag ? <p className="in-ans-tag">{tag}</p> : null}
         <p className="in-ans-text">
           <span className="in-sr">Alternativ {letter}: </span>
-          {text}
+          <MathText>{text}</MathText>
         </p>
+        {figure ? <OptionFigure figure={figure} /> : null}
       </div>
     </div>
   )
@@ -887,13 +1010,15 @@ function AnswerRow({
 // Wrong: Din fälla → Teknik + Fallgrop → Lösningen → Steg → Övriga.
 // Right: Teknik + Fallgrop → Lösningen → Steg → Övriga.
 
-function Explanation({ view, act, refs }: Shared) {
+export function Explanation({ view, act, refs }: Shared) {
+  const { data } = useDirectionData()
   const e = view.explanation
+  if (!e) return <p className="in-ex">Förklaring saknas för den här frågan.</p>
   const q = view.question
-  const optionText = (letter: string) => q.options.find((o) => o.letter === letter)?.text ?? ''
+  const optionText = (letter: string) => q.options?.find((o) => o.letter === letter)?.text ?? ''
   const mine = view.correct ? undefined : e.distractors.find((d) => d.letter === view.picked)
   const others = e.distractors.filter((d) => d.letter !== mine?.letter)
-  const framework = e.framework_id ? FRAMEWORK_NAMES[e.framework_id] : undefined
+  const framework = e.framework_id ? data.frameworks[e.framework_id] : undefined
   return (
     <div className="in-ex">
       {mine ? (
@@ -933,7 +1058,9 @@ function Explanation({ view, act, refs }: Shared) {
             <Lightbulb size={17} strokeWidth={1.75} aria-hidden />
             <div>
               <h3>Teknik</h3>
-              <p>{e.technique}</p>
+              <p>
+                <MathText>{e.technique}</MathText>
+              </p>
             </div>
           </div>
           {e.pitfall ? (
@@ -941,7 +1068,9 @@ function Explanation({ view, act, refs }: Shared) {
               <TriangleAlert size={17} strokeWidth={1.75} aria-hidden />
               <div>
                 <h3>Fallgrop</h3>
-                <p>{e.pitfall}</p>
+                <p>
+                  <MathText>{e.pitfall}</MathText>
+                </p>
               </div>
             </div>
           ) : null}
@@ -952,7 +1081,9 @@ function Explanation({ view, act, refs }: Shared) {
         <h3 className="in-ex-h" id="in-sol-h">
           Lösningen
         </h3>
-        <p className="in-sol">{e.solution_path}</p>
+        <p className="in-sol">
+          <MathText>{e.solution_path}</MathText>
+        </p>
         {view.cited.length > 0 ? (
           <div className="in-evidence">
             <span>Belägg i texten</span>
@@ -1015,7 +1146,7 @@ function Step({ step, view, act, refs }: Shared & { step: ExplanationStep }) {
         <div className="in-step-head">
           <h4 className="in-step-title">
             <span className="in-sr">Steg {step.n}: </span>
-            {step.title}
+            <MathText>{step.title}</MathText>
           </h4>
           {detail ? (
             <button
@@ -1068,7 +1199,7 @@ function Distractor({
         <div>
           <p className="in-dis-opt">
             <span className="in-sr">Alternativ {d.letter}: </span>
-            {text}
+            <MathText>{text}</MathText>
           </p>
           <button
             type="button"
@@ -1134,7 +1265,9 @@ function Rich({ text, act }: { text: string; act: DrillActions }) {
         const key = at
         at += seg.text.length
         return seg.kind === 'text' ? (
-          <span key={key}>{seg.text}</span>
+          <span key={key}>
+            <MathText>{seg.text}</MathText>
+          </span>
         ) : (
           <button
             key={key}
@@ -1163,6 +1296,7 @@ function Done({
   onNextInPlan: () => void
   nextLabel: string
 }) {
+  const { data } = useDirectionData()
   const right = view.results.filter((r) => r.correct).length
   return (
     <div className="in-done" data-testid="rd-done">
@@ -1172,15 +1306,18 @@ function Done({
         <span className="in-num">
           {right}/{view.total}
         </span>{' '}
-        rätt · <span className="in-num">{Math.max(1, Math.round(view.elapsed / 60))}</span> min
+        rätt
+        {data.drills.reading.elapsedSeconds != null ? (
+          <>
+            {' '}
+            · <span className="in-num">{Math.max(1, Math.round(view.elapsed / 60))}</span> min
+          </>
+        ) : null}
       </p>
-      <p>
-        {TITLE} är genomläst. Missarna ligger i Repetera, de äldsta först – nästa del av planen
-        börjar där.
-      </p>
+      <p>{view.question.passage?.title ?? view.question.source.label} är genomläst.</p>
       <div className="in-done-actions">
         <button type="button" className="in-btn" onClick={onNextInPlan}>
-          Nästa i planen: {nextLabel}
+          {nextLabel === 'Till Öva' ? nextLabel : `Nästa i planen: ${nextLabel}`}
           <Kc>↵</Kc>
         </button>
         <button type="button" className="in-btn2" onClick={onHome}>
@@ -1247,6 +1384,7 @@ function PhoneDrill({
     onNextInPlan: () => void
     nextLabel: string
   }) {
+  const { data } = useDirectionData()
   const { state: sheet, setState: setSheet, toggle, grab } = useSheet(view)
   const { hidden: folded, onScroll } = useHideOnScroll()
   const feedback = view.phase === 'feedback'
@@ -1278,7 +1416,6 @@ function PhoneDrill({
           data-testid="rd-exit"
           onClick={act.exit}
           aria-label="Avsluta"
-          title="Dina svar är sparade"
         >
           <X size={18} strokeWidth={1.75} aria-hidden />
           <span className="in-exit-word" aria-hidden>
@@ -1324,7 +1461,9 @@ function PhoneDrill({
             <span className="in-spacer" />
             {/* At the peek the passage shows its own badge; over the
              *  passage the sheet carries it. */}
-            {sheet === 'peek' ? null : <span className="in-badge">{OVNINGSTEXT_BADGE}</span>}
+            {sheet === 'peek' || !view.question.passage?.synthetic ? null : (
+              <span className="in-badge">{data.copy.ovningstextBadge}</span>
+            )}
           </div>
         </div>
         <div className="in-sheet-body">
@@ -1355,7 +1494,7 @@ function PhoneDrill({
                   <span>Visa alternativen</span>
                   <span className="in-peekctl-n">
                     <span className="in-sr">(</span>
-                    {view.question.options.length}
+                    {view.question.options?.length ?? 0}
                     <span className="in-sr">)</span>
                   </span>
                   <ChevronUp size={16} strokeWidth={1.75} aria-hidden />
