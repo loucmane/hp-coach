@@ -6,8 +6,9 @@
 // The stage is a box the direction fills as if it were the browser window:
 // desktop takes the room under the switcher (zoomed to fit below 1024 px),
 // phone is a 390 × 844 device frame on a wide screen and full-bleed on a
-// narrow one. Each direction is its own lazy chunk, so a direction's code,
-// CSS and fonts load only when it is first shown.
+// narrow one. The directions come from the registry (directions.ts): each
+// is its own lazy chunk, so a direction's code, CSS and fonts load only
+// when it is first shown.
 
 import {
   ChevronLeft,
@@ -22,9 +23,7 @@ import {
   X,
 } from 'lucide-react'
 import {
-  type ComponentType,
   type CSSProperties,
-  lazy,
   type ReactNode,
   Suspense,
   useCallback,
@@ -35,8 +34,8 @@ import {
 } from 'react'
 
 import './redesign2026.css'
+import { DIRECTIONS, STAGES } from '@/components/devbake/redesign/directions'
 import {
-  DIRECTIONS,
   type DirectionKey,
   type DirectionProps,
   isForeignKey,
@@ -55,13 +54,6 @@ export type Selection = {
   t: ThemeKey
   sbs: boolean
   bare: boolean
-}
-
-const STAGES: Record<DirectionKey, ComponentType<DirectionProps>> = {
-  a: lazy(() => import('./a-folio/Folio').then((m) => ({ default: m.Folio }))),
-  b: lazy(() => import('./b-instrument/Instrument').then((m) => ({ default: m.Instrument }))),
-  c: lazy(() => import('./c-spar/Spar').then((m) => ({ default: m.Spar }))),
-  d: lazy(() => import('./d-lager/Lager').then((m) => ({ default: m.Lager }))),
 }
 
 const DESKTOP = { w: 1440, h: 900 }
@@ -101,7 +93,7 @@ export function Redesign2026Bakeoff({
   const onScreen = useCallback((s: ScreenKey) => selectRef.current({ s }), [])
   const onTheme = useCallback((t: ThemeKey) => selectRef.current({ t }), [])
 
-  // 1–4 direction, ←/→ screen, 0 side by side. Directions see keys first
+  // 1–8 direction, ←/→ screen, 0 side by side. Directions see keys first
   // (capture phase) and mark the ones they use.
   const selNow = useRef(sel)
   selNow.current = sel
@@ -109,9 +101,10 @@ export function Redesign2026Bakeoff({
     const onKey = (e: KeyboardEvent) => {
       if (e.defaultPrevented || isForeignKey(e)) return
       const cur = selNow.current
-      if (e.key >= '1' && e.key <= '4') {
+      const pick = DIRECTIONS.findIndex((_, i) => e.key === String(i + 1))
+      if (pick !== -1) {
         e.preventDefault()
-        selectRef.current({ d: DIRECTIONS[Number(e.key) - 1].key, sbs: false })
+        selectRef.current({ d: DIRECTIONS[pick].key, sbs: false })
       } else if (e.key === '0') {
         e.preventDefault()
         selectRef.current({ sbs: !cur.sbs })
@@ -183,151 +176,158 @@ function Bar({
   const close = useCallback(() => setInfo(false), [setInfo])
   useDismiss(info, close, panelRef)
 
+  // Two rows: the brand and the eight directions; then the screen, the
+  // width, the theme and the view toggles.
   return (
     <header className="rb26-bar" data-testid="rb26-bar">
-      <div className="rb26-brand">
-        <span className="rb26-brand-mark" aria-hidden />
-        <span className="rb26-brand-name">Redesign 2026</span>
-        <span className="rb26-pill">omgång 1</span>
+      <div className="rb26-row">
+        <div className="rb26-brand">
+          <span className="rb26-brand-mark" aria-hidden />
+          <span className="rb26-brand-name">Redesign 2026</span>
+          <span className="rb26-pill">omgång 1</span>
+        </div>
+
+        <Seg
+          label="Riktning"
+          testid="rb26-direction"
+          className="rb26-dirs"
+          items={DIRECTIONS.map((d, i) => ({ key: d.key, label: d.name, kbd: String(i + 1) }))}
+          active={sel.sbs ? null : sel.d}
+          onPick={(d) => onSelect({ d, sbs: false })}
+        />
       </div>
 
-      <Seg
-        label="Riktning"
-        testid="rb26-direction"
-        items={DIRECTIONS.map((d, i) => ({ key: d.key, label: d.name, kbd: String(i + 1) }))}
-        active={sel.sbs ? null : sel.d}
-        onPick={(d) => onSelect({ d, sbs: false })}
-      />
+      <div className="rb26-row">
+        <div className="rb26-group">
+          <button
+            type="button"
+            className="rb26-icon-btn"
+            onClick={() => step(-1)}
+            aria-label="Föregående skärm"
+            title="Föregående skärm (←)"
+          >
+            <ChevronLeft size={16} strokeWidth={1.75} aria-hidden />
+          </button>
+          <Seg
+            label="Skärm"
+            testid="rb26-screen"
+            items={SCREENS.map((s) => ({ key: s.key, label: s.label }))}
+            active={sel.s}
+            onPick={(s) => onSelect({ s })}
+          />
+          <button
+            type="button"
+            className="rb26-icon-btn"
+            onClick={() => step(1)}
+            aria-label="Nästa skärm"
+            title="Nästa skärm (→)"
+          >
+            <ChevronRight size={16} strokeWidth={1.75} aria-hidden />
+          </button>
+        </div>
 
-      <div className="rb26-group">
-        <button
-          type="button"
-          className="rb26-icon-btn"
-          onClick={() => step(-1)}
-          aria-label="Föregående skärm"
-          title="Föregående skärm (←)"
-        >
-          <ChevronLeft size={16} strokeWidth={1.75} aria-hidden />
-        </button>
+        <span className="rb26-spacer" />
+
         <Seg
-          label="Skärm"
-          testid="rb26-screen"
-          items={SCREENS.map((s) => ({ key: s.key, label: s.label }))}
-          active={sel.s}
-          onPick={(s) => onSelect({ s })}
+          label="Bredd"
+          testid="rb26-width"
+          items={[
+            {
+              key: 'desktop' as const,
+              label: 'Dator',
+              icon: <Monitor size={14} strokeWidth={1.75} />,
+            },
+            {
+              key: 'phone' as const,
+              label: 'Telefon',
+              icon: <Smartphone size={14} strokeWidth={1.75} />,
+            },
+          ]}
+          active={sel.w}
+          onPick={(w) => onSelect({ w })}
+        />
+        <Seg
+          label="Tema"
+          testid="rb26-theme"
+          items={[
+            { key: 'light' as const, label: 'Ljust', icon: <Sun size={14} strokeWidth={1.75} /> },
+            { key: 'dark' as const, label: 'Mörkt', icon: <Moon size={14} strokeWidth={1.75} /> },
+          ]}
+          active={sel.t}
+          onPick={(t) => onSelect({ t })}
         />
         <button
           type="button"
-          className="rb26-icon-btn"
-          onClick={() => step(1)}
-          aria-label="Nästa skärm"
-          title="Nästa skärm (→)"
+          className="rb26-toggle"
+          aria-pressed={sel.sbs}
+          data-testid="rb26-sbs"
+          onClick={() => onSelect({ sbs: !sel.sbs })}
         >
-          <ChevronRight size={16} strokeWidth={1.75} aria-hidden />
+          <LayoutGrid size={14} strokeWidth={1.75} aria-hidden />
+          <span className="rb26-label">Sida vid sida</span>
+          <kbd>0</kbd>
         </button>
-      </div>
-
-      <span className="rb26-spacer" />
-
-      <Seg
-        label="Bredd"
-        testid="rb26-width"
-        items={[
-          {
-            key: 'desktop' as const,
-            label: 'Dator',
-            icon: <Monitor size={14} strokeWidth={1.75} />,
-          },
-          {
-            key: 'phone' as const,
-            label: 'Telefon',
-            icon: <Smartphone size={14} strokeWidth={1.75} />,
-          },
-        ]}
-        active={sel.w}
-        onPick={(w) => onSelect({ w })}
-      />
-      <Seg
-        label="Tema"
-        testid="rb26-theme"
-        items={[
-          { key: 'light' as const, label: 'Ljust', icon: <Sun size={14} strokeWidth={1.75} /> },
-          { key: 'dark' as const, label: 'Mörkt', icon: <Moon size={14} strokeWidth={1.75} /> },
-        ]}
-        active={sel.t}
-        onPick={(t) => onSelect({ t })}
-      />
-      <button
-        type="button"
-        className="rb26-toggle"
-        aria-pressed={sel.sbs}
-        data-testid="rb26-sbs"
-        onClick={() => onSelect({ sbs: !sel.sbs })}
-      >
-        <LayoutGrid size={14} strokeWidth={1.75} aria-hidden />
-        <span className="rb26-label">Sida vid sida</span>
-        <kbd>0</kbd>
-      </button>
-      <div className="rb26-info-wrap" ref={panelRef}>
+        <div className="rb26-info-wrap" ref={panelRef}>
+          <button
+            type="button"
+            className="rb26-toggle"
+            aria-expanded={info}
+            aria-controls="rb26-info"
+            onClick={() => setInfo(!info)}
+          >
+            <Info size={14} strokeWidth={1.75} aria-hidden />
+            <span className="rb26-label">Om {sel.sbs ? 'riktningarna' : dir.name}</span>
+          </button>
+          {info ? (
+            <div className="rb26-info" id="rb26-info" data-testid="rb26-info">
+              <button
+                type="button"
+                className="rb26-icon-btn rb26-info-close"
+                onClick={close}
+                aria-label="Stäng"
+              >
+                <X size={15} strokeWidth={1.75} aria-hidden />
+              </button>
+              {(sel.sbs ? DIRECTIONS : [dir]).map((d) => (
+                <section key={d.key} className="rb26-info-dir">
+                  <h2>
+                    <span className="rb26-info-key">{d.key.toUpperCase()}</span> {d.name}
+                    <span className="rb26-info-tag"> — {d.tagline}</span>
+                  </h2>
+                  {sel.sbs ? null : (
+                    <ul>
+                      {d.traits.map((t) => (
+                        <li key={t}>{t}</li>
+                      ))}
+                    </ul>
+                  )}
+                  <p className="rb26-info-risk">{d.risk}</p>
+                  {sel.sbs ? null : <p className="rb26-info-refs">Förebilder: {d.references}</p>}
+                </section>
+              ))}
+              <section className="rb26-info-screen">
+                <h3>
+                  Skärm {screen.key} · {screen.label}
+                </h3>
+                <p>{screen.blurb}</p>
+                <p className="rb26-info-keys">
+                  Tangenter: <kbd>1</kbd>–<kbd>{DIRECTIONS.length}</kbd> riktning · <kbd>←</kbd>
+                  <kbd>→</kbd> skärm · <kbd>0</kbd> sida vid sida
+                </p>
+              </section>
+            </div>
+          ) : null}
+        </div>
         <button
           type="button"
-          className="rb26-toggle"
-          aria-expanded={info}
-          aria-controls="rb26-info"
-          onClick={() => setInfo(!info)}
+          className="rb26-icon-btn"
+          onClick={onHide}
+          aria-label="Dölj bake-off-menyn"
+          title="Dölj menyn"
         >
-          <Info size={14} strokeWidth={1.75} aria-hidden />
-          <span className="rb26-label">Om {sel.sbs ? 'riktningarna' : dir.name}</span>
+          <ChevronUp size={16} strokeWidth={1.75} aria-hidden />
         </button>
-        {info ? (
-          <div className="rb26-info" id="rb26-info" data-testid="rb26-info">
-            <button
-              type="button"
-              className="rb26-icon-btn rb26-info-close"
-              onClick={close}
-              aria-label="Stäng"
-            >
-              <X size={15} strokeWidth={1.75} aria-hidden />
-            </button>
-            {(sel.sbs ? DIRECTIONS : [dir]).map((d) => (
-              <section key={d.key} className="rb26-info-dir">
-                <h2>
-                  <span className="rb26-info-key">{d.key.toUpperCase()}</span> {d.name}
-                  <span className="rb26-info-tag"> — {d.tagline}</span>
-                </h2>
-                {sel.sbs ? null : (
-                  <ul>
-                    {d.traits.map((t) => (
-                      <li key={t}>{t}</li>
-                    ))}
-                  </ul>
-                )}
-                <p className="rb26-info-risk">{d.risk}</p>
-                {sel.sbs ? null : <p className="rb26-info-refs">Förebilder: {d.references}</p>}
-              </section>
-            ))}
-            <section className="rb26-info-screen">
-              <h3>
-                Skärm {screen.key} · {screen.label}
-              </h3>
-              <p>{screen.blurb}</p>
-              <p className="rb26-info-keys">
-                Tangenter: <kbd>1</kbd>–<kbd>4</kbd> riktning · <kbd>←</kbd>
-                <kbd>→</kbd> skärm · <kbd>0</kbd> sida vid sida
-              </p>
-            </section>
-          </div>
-        ) : null}
       </div>
-      <button
-        type="button"
-        className="rb26-icon-btn"
-        onClick={onHide}
-        aria-label="Dölj bake-off-menyn"
-        title="Dölj menyn"
-      >
-        <ChevronUp size={16} strokeWidth={1.75} aria-hidden />
-      </button>
     </header>
   )
 }
@@ -338,15 +338,17 @@ function Seg<K extends string | number>({
   active,
   onPick,
   testid,
+  className,
 }: {
   label: string
   items: { key: K; label: string; kbd?: string; icon?: ReactNode }[]
   active: K | null
   onPick: (key: K) => void
   testid: string
+  className?: string
 }) {
   return (
-    <fieldset className="rb26-seg" data-testid={testid}>
+    <fieldset className={className ? `rb26-seg ${className}` : 'rb26-seg'} data-testid={testid}>
       <legend className="rb26-sr">{label}</legend>
       {items.map((item) => {
         const on = item.key === active
@@ -453,11 +455,12 @@ function SideBySide({
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const box = useBoxSize(ref)
-  const desktop = sel.w === 'desktop'
-  const base = desktop ? DESKTOP : PHONE
+  const base = sel.w === 'desktop' ? DESKTOP : PHONE
   const narrow = box.w < 720
-  const cols = narrow ? 1 : desktop ? 2 : 4
-  const rows = narrow ? 4 : desktop ? 2 : 1
+  // Two rows of four at either width (round 1 above, round 1b below); a
+  // narrow window scrolls one column.
+  const cols = narrow ? 1 : 4
+  const rows = Math.ceil(DIRECTIONS.length / cols)
   const pad = narrow ? 12 : 24
   const gap = narrow ? 20 : 24
   const caption = 44

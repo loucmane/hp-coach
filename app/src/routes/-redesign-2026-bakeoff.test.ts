@@ -1,6 +1,6 @@
 // /dev/redesign-2026-bakeoff — the bundle boundary. The route module is in
 // the entry bundle (routeTree.gen imports it eagerly; autoCodeSplitting
-// splits off `component` only), so it reaches the page, the four directions,
+// splits off `component` only), so it reaches the page, the eight directions,
 // their fixtures and fonts through import() alone. Three guards:
 //   1. KEYS — validateSearch's inline keys match the page's metadata, the
 //      price of not importing it.
@@ -50,7 +50,8 @@ describe('/dev/redesign-2026-bakeoff route', () => {
       sbs: true,
       bare: true,
     })
-    expect(validateSearch({ d: 'e', s: '5', w: 'tablet', t: 'sepia', sbs: '0' })).toEqual({})
+    expect(validateSearch({ d: 'h', s: 1 })).toEqual({ d: 'h', s: 1 })
+    expect(validateSearch({ d: 'i', s: '5', w: 'tablet', t: 'sepia', sbs: '0' })).toEqual({})
   })
 
   it('reaches the page only through import()', () => {
