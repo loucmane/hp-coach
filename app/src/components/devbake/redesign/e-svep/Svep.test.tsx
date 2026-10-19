@@ -1,29 +1,26 @@
-// E · Svep's own checks. First the bake-off's shared contract — the same
-// rd-* ids and moves Redesign2026Bakeoff.test.tsx drives for A–D — at both
-// widths; then every screen at both widths and both themes; then what is
-// Svep's own: the deck on Idag (counter, arrows, index, keys that hand back
-// to the switcher at the deck's ends, Enter on the card in front, the
-// table's tint), the facit run, the keys in the drill, the phone question
-// card, the account card and the end of the unit.
+// E · Svep's own checks. First the bake-off's shared contract
+// (describeDirectionContract: the rd-* ids and moves for every screen Svep
+// declares, at both widths); then every screen at both widths and both
+// themes; then what is Svep's own: the deck on Idag (counter, arrows,
+// index, keys that hand back to the switcher at the deck's ends, Enter on
+// the card in front, the table's tint), the frame's doors and account, the
+// reading drill's facit run and keys, Öva's three cards and section doors,
+// the quant problem card, the DTK page's lens and viewer, Repetera's batch,
+// and every screen rendered without the fields the real app cannot fill.
 
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 
+import { describeDirectionContract, mountDirection } from '@/components/devbake/redesign/contract'
+import { DirectionDataProvider, FIXTURE_DATA } from '@/components/devbake/redesign/directionData'
 import {
-  ESTIMATE_CAVEAT,
-  EXPLANATIONS,
-  OVNINGSTEXT_NOTE,
-  UNIT,
-} from '@/components/devbake/redesign/r1Fixtures'
-import {
-  DESTINATIONS,
+  type AppScreenKey,
   type DirectionProps,
-  SCREENS,
-  type ScreenKey,
   THEMES,
   type ThemeKey,
   type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
+import type { DirectionData } from '@/components/devbake/redesign/viewModel'
 import { meta } from './meta'
 import { Svep } from './Svep'
 
@@ -39,34 +36,23 @@ beforeAll(() => {
 })
 
 const WIDTHS: WidthKey[] = ['desktop', 'phone']
-const Q3 = UNIT.questions[2]
-const Q4 = UNIT.questions[3]
-const E3 = EXPLANATIONS[Q3.qid]
-const DETAIL = (E3.steps ?? []).find((s) => s.tier === 'detail')
-if (!DETAIL) throw new Error('fixture question 3 must have a detail-tier step')
+const D = FIXTURE_DATA
+const READING = D.drills.reading
+const Q3 = READING.questions[2]
+const Q4 = READING.questions[3]
+const E3 = READING.explanations[Q3.qid]
+const DETAIL = (E3?.steps ?? []).find((s) => s.tier === 'detail')
+if (!E3 || !DETAIL)
+  throw new Error('fixture question 3 must have an explanation with a detail step')
+const [XYZ, KVA, NOG] = D.drills.quant.questions
+const [DTK] = D.drills.dtk.questions
 
-function mount(screenKey: ScreenKey, width: WidthKey, theme: ThemeKey = 'light') {
-  const onScreen = vi.fn()
-  const onTheme = vi.fn()
-  const props = (s: ScreenKey): DirectionProps => ({
-    screen: s,
-    width,
-    theme,
-    live: true,
-    onScreen,
-    onTheme,
-  })
-  const utils = render(<Svep {...props(screenKey)} />)
-  return {
-    onScreen,
-    onTheme,
-    /** What the bake-off stage does when a direction asks for a screen. */
-    goTo: (s: ScreenKey) => utils.rerender(<Svep {...props(s)} />),
-  }
-}
+/** The stage's mount: Svep inside a provider with spied actions. */
+const mount = (s: AppScreenKey, width: WidthKey, theme: ThemeKey = 'light') =>
+  mountDirection(Svep, s, width, theme)
 
-/** The card in front of a deck ("home" on Idag, "run" in Facit). */
-function front(kind: 'home' | 'run'): string | null {
+/** The card in front of a deck ("home" on Idag, "ova" on Öva, "run" in Facit). */
+function front(kind: 'home' | 'ova' | 'run'): string | null {
   return (
     document
       .querySelector(`.sv-deck[data-kind="${kind}"] [data-pos="front"]`)
@@ -74,123 +60,36 @@ function front(kind: 'home' | 'run'): string | null {
   )
 }
 
-function visible(el: HTMLElement | null): boolean {
-  return el != null && !el.hidden && el.closest('[hidden]') == null
-}
-
 /** fireEvent's result: false when a handler took the key (preventDefault). */
 const press = (key: string, target: Window | Element = window) => fireEvent.keyDown(target, { key })
 
-describe.each(WIDTHS)('Svep, the shared contract (%s)', (width) => {
-  it('Idag: one resume action, the five destinations, the account entry and the caveat', () => {
-    const { onScreen } = mount(1, width)
-    expect(screen.getByTestId('rd-svep')).toBeInTheDocument()
-    for (const d of DESTINATIONS) expect(screen.getByTestId(`rd-nav-${d.id}`)).toBeInTheDocument()
-    expect(screen.getByTestId('rd-account')).toBeInTheDocument()
-    expect(screen.getAllByText(ESTIMATE_CAVEAT).length).toBeGreaterThan(0)
-    expect(screen.getAllByTestId('rd-resume')).toHaveLength(1)
-    fireEvent.click(screen.getByTestId('rd-resume'))
-    expect(onScreen).toHaveBeenCalledWith(2)
-  })
+/** Locks `letter` on the open quant question. */
+function answer(letter: string) {
+  fireEvent.click(screen.getByTestId(`rd-quant-option-${letter}`))
+  fireEvent.click(screen.getByTestId('rd-lock'))
+}
 
-  it('Läsfråga: the badge outside the passage, nine numbered paragraphs, the note on demand', () => {
-    mount(2, width)
-    const passage = screen.getByTestId('rd-passage')
-    const badge = screen.getByTestId('rd-badge')
-    expect(badge).toHaveTextContent(/övningstext/i)
-    expect(passage).not.toContainElement(badge)
-    for (let n = 1; n <= 9; n++) expect(screen.getByTestId(`rd-para-${n}`)).toBeInTheDocument()
-    expect(screen.queryByRole('dialog')).toBeNull()
-    expect(visible(screen.queryByTestId('rd-note'))).toBe(false)
-    fireEvent.click(screen.getByTestId('rd-note-toggle'))
-    expect(screen.getByTestId('rd-note')).toHaveTextContent(OVNINGSTEXT_NOTE)
-    expect(visible(screen.getByTestId('rd-note'))).toBe(true)
-    if (width === 'phone') {
-      expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'peek')
-    }
-  })
-
-  it('Läsfråga: choosing, striking and answering grades the question', () => {
-    const { onScreen, goTo } = mount(2, width)
-    for (const l of ['A', 'B', 'C', 'D']) {
-      expect(screen.getByTestId(`rd-option-${l}`)).toBeInTheDocument()
-    }
-    fireEvent.click(screen.getByTestId('rd-eliminate-B'))
-    expect(screen.getByTestId('rd-eliminate-B')).toHaveAttribute('aria-pressed', 'true')
-    fireEvent.click(screen.getByTestId('rd-option-A'))
-    fireEvent.click(screen.getByTestId('rd-lock'))
-    expect(onScreen).toHaveBeenCalledWith(3)
-    goTo(3)
-    expect(screen.getByTestId('rd-verdict')).toHaveAttribute('data-correct', 'false')
-  })
-
-  it('Facit: verdict, a detail step on demand, technique, pitfall, distractors and ¶ links', () => {
-    mount(3, width)
-    const verdict = screen.getByTestId('rd-verdict')
-    expect(verdict).toHaveAttribute('data-correct', 'false')
-    expect(verdict).toHaveTextContent(Q3.answer)
-    expect(screen.getByTestId(`rd-step-${DETAIL.n}`)).toBeInTheDocument()
-    expect(screen.queryByText(DETAIL.text)).toBeNull()
-    fireEvent.click(screen.getByTestId(`rd-step-toggle-${DETAIL.n}`))
-    expect(screen.getByText(DETAIL.text)).toBeInTheDocument()
-    expect(screen.getByTestId('rd-technique')).toHaveTextContent(E3.technique)
-    expect(screen.getByTestId('rd-pitfall')).toHaveTextContent(E3.pitfall ?? '')
-    for (const d of E3.distractors) {
-      expect(screen.getByTestId(`rd-distractor-${d.letter}`)).toBeInTheDocument()
-    }
-    // The picked distractor's reasons are shown without a click.
-    const picked = within(screen.getByTestId('rd-distractor-A'))
-    expect(picked.getByText(E3.distractors[0].why_tempting)).toBeInTheDocument()
-    expect(screen.getAllByTestId('rd-cite-6').length).toBeGreaterThan(0)
-  })
-
-  it('Facit: Nästa moves on to question 4', () => {
-    const { onScreen, goTo } = mount(3, width)
-    fireEvent.click(screen.getByTestId('rd-next'))
-    expect(onScreen).toHaveBeenCalledWith(2)
-    goTo(2)
-    expect(screen.getAllByText(Q4.prompt).length).toBeGreaterThan(0)
-  })
-
-  it('Läsfråga: Avsluta leaves the drill for Idag', () => {
-    const { onScreen } = mount(2, width)
-    fireEvent.click(screen.getByTestId('rd-exit'))
-    expect(onScreen).toHaveBeenCalledWith(1)
-  })
-
-  it('Navigering: the account menu is open and switches the theme', () => {
-    const { onTheme } = mount(4, width)
-    expect(screen.getByTestId('rd-account-menu')).toBeInTheDocument()
-    for (const d of DESTINATIONS) expect(screen.getByTestId(`rd-nav-${d.id}`)).toBeInTheDocument()
-    fireEvent.click(screen.getByTestId('rd-theme-toggle'))
-    expect(onTheme).toHaveBeenCalledWith('dark')
-  })
-})
+describeDirectionContract(meta, Svep)
 
 describe('Svep, every screen', () => {
-  const KEY_IDS: Record<ScreenKey, string[]> = {
-    1: ['rd-resume', 'rd-account', ...DESTINATIONS.map((d) => `rd-nav-${d.id}`)],
-    2: ['rd-exit', 'rd-badge', 'rd-note-toggle', 'rd-passage', 'rd-lock', 'rd-option-A'],
-    3: ['rd-exit', 'rd-verdict', 'rd-next', 'rd-technique', 'rd-pitfall', 'rd-distractor-A'],
-    4: ['rd-account', 'rd-account-menu', 'rd-theme-toggle'],
-  }
   for (const w of WIDTHS) {
     for (const t of THEMES) {
-      it.each(SCREENS)(`renders $label at ${w}, ${t.label.toLowerCase()}`, ({ key }) => {
+      it.each(
+        meta.screens ?? [],
+      )(`renders screen %s at ${w}, ${t.label.toLowerCase()}, without a console error`, (s) => {
         const errors = vi.spyOn(console, 'error').mockImplementation(() => {})
-        mount(key, w, t.key)
+        mount(s, w, t.key)
         const root = screen.getByTestId('rd-svep')
         expect(root).toHaveAttribute('data-theme', t.key)
         expect(root).toHaveAttribute('data-width', w)
         expect(root).toHaveAttribute('lang', 'sv')
-        for (const id of KEY_IDS[key]) expect(screen.getByTestId(id)).toBeInTheDocument()
-        if (key === 4 && w === 'desktop') {
+        if (s === 4 && w === 'desktop') {
           expect(screen.getByTestId('rd-collapse')).toHaveAttribute('aria-expanded', 'false')
         }
-        if ((key === 2 || key === 3) && w === 'phone') {
+        if ((s === 2 || s === 3) && w === 'phone') {
           expect(screen.getByTestId('rd-sheet')).toHaveAttribute(
             'data-state',
-            key === 2 ? 'peek' : 'full',
+            s === 2 ? 'peek' : 'full',
           )
         }
         expect(errors).not.toHaveBeenCalled()
@@ -199,12 +98,37 @@ describe('Svep, every screen', () => {
     }
   }
 
-  it('is built: the registry entry is no longer a stub', () => {
+  it('is built: screens 1–8, the registry entry no longer a stub', () => {
     expect(meta.stub).toBeUndefined()
+    expect(meta.screens).toEqual([1, 2, 3, 4, 5, 6, 7, 8])
     expect(meta.name).toBe('Svep')
     expect(meta.tagline).toBe('Ett kort i taget')
     expect(meta.traits.length).toBeGreaterThanOrEqual(4)
     expect(meta.risk).toMatch(/^Risk: /)
+  })
+
+  it('lays every non-drill screen on a quiet table: Repetera lilac, quant neutral', () => {
+    const tint = (s: AppScreenKey) => {
+      const { unmount } = render(
+        <Svep
+          screen={s}
+          width="desktop"
+          theme="light"
+          live
+          onScreen={() => {}}
+          onTheme={() => {}}
+        />,
+      )
+      const value = screen.getByTestId('rd-svep').getAttribute('data-tint')
+      unmount()
+      return value
+    }
+    expect(tint(1)).toBe('las')
+    expect(tint(2)).toBe('las')
+    expect(tint(5)).toBe('none')
+    expect(tint(6)).toBe('none')
+    expect(tint(7)).toBe('none')
+    expect(tint(8)).toBe('rep')
   })
 })
 
@@ -246,14 +170,28 @@ describe('Svep, the deck on Idag', () => {
     expect(document.querySelector('[data-pos="front"]')).not.toHaveAttribute('inert')
   })
 
-  it('takes the card in front on Enter: Fortsätt opens the drill, a plan card its door', () => {
-    const { onScreen } = mount(1, 'desktop')
+  it('reads the day from the view model: the sentence, the countdown and the caveat', () => {
+    mount(1, 'desktop')
+    expect(
+      screen.getByText('Fyra saker idag, ungefär 25 minuter. Börja med kortet överst.'),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'God eftermiddag.' })).toBeInTheDocument()
+    expect(screen.getAllByText(D.home.prognosis.caveat ?? '').length).toBeGreaterThan(0)
+    expect(document.querySelector('.sv-countdown-n')).toHaveTextContent(
+      String(D.home.exam.daysLeft),
+    )
+  })
+
+  it('takes the card in front on Enter: Fortsätt opens the drill, a plan card its item', () => {
+    const { onScreen, actions } = mount(1, 'desktop')
     press('Enter')
     expect(onScreen).toHaveBeenCalledWith(2)
     press('ArrowRight')
     press('Enter')
+    expect(actions.openPlanItem).toHaveBeenCalledWith('rep')
+    // The frame opens the page at once: Repetera, inside Öva's door.
     expect(screen.getByTestId('rd-nav-ova')).toHaveAttribute('aria-current', 'page')
-    expect(screen.getByRole('heading', { level: 1, name: 'Öva' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'Repetera' })).toBeInTheDocument()
   })
 
   it('tints the table with the section of the card in front (phone index)', () => {
@@ -267,6 +205,27 @@ describe('Svep, the deck on Idag', () => {
     fireEvent.click(ticks.getByRole('button', { name: 'Kort 5: Prognos' }))
     expect(root).toHaveAttribute('data-tint', 'none')
   })
+})
+
+describe('Svep, the frame', () => {
+  it('asks the host for a door and opens its page at once', () => {
+    const { actions } = mount(1, 'desktop')
+    fireEvent.click(screen.getByTestId('rd-nav-ova'))
+    expect(actions.go).toHaveBeenCalledWith('ova')
+    expect(screen.getByTestId('rd-nav-ova')).toHaveAttribute('aria-current', 'page')
+    expect(screen.getByRole('heading', { level: 1, name: 'Öva' })).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-nav-provpass'))
+    expect(actions.go).toHaveBeenCalledWith('provpass')
+  })
+
+  it('re-seats on the switcher: screen 8 is Repetera inside Öva, screen 1 Idag again', () => {
+    const { goTo } = mount(8, 'desktop')
+    expect(screen.getByRole('heading', { level: 1, name: 'Repetera' })).toBeInTheDocument()
+    expect(screen.getByTestId('rd-nav-ova')).toHaveAttribute('aria-current', 'page')
+    goTo(1)
+    expect(screen.getByTestId('rd-nav-idag')).toHaveAttribute('aria-current', 'page')
+    expect(front('home')).toBe('resume')
+  })
 
   it('opens the account card and puts it back on Esc', () => {
     mount(1, 'phone')
@@ -277,19 +236,33 @@ describe('Svep, the deck on Idag', () => {
     expect(screen.queryByTestId('rd-account-menu')).toBeNull()
   })
 
+  it('shows who is signed in, and asks for Konto and the sign-out through the context', () => {
+    const { actions } = mount(4, 'desktop')
+    const card = within(screen.getByTestId('rd-account-menu'))
+    expect(card.getByText(D.konto.identity.name)).toBeInTheDocument()
+    expect(card.getByText(D.konto.identity.email)).toBeInTheDocument()
+    fireEvent.click(card.getByRole('button', { name: /^Konto/ }))
+    expect(actions.openKonto).toHaveBeenCalled()
+    fireEvent.click(screen.getByTestId('rd-account'))
+    fireEvent.click(within(screen.getByTestId('rd-account-menu')).getByText('Logga ut'))
+    expect(actions.signOut).toHaveBeenCalled()
+  })
+
   it('folds the desktop doors into a hand and back', () => {
     mount(1, 'desktop')
     const fold = screen.getByTestId('rd-collapse')
     expect(fold).toHaveAttribute('aria-expanded', 'true')
     fireEvent.click(fold)
     expect(fold).toHaveAttribute('aria-expanded', 'false')
-    expect(screen.getByTestId('rd-nav-ova')).toHaveAccessibleName('Öva, 23 att repetera')
+    expect(screen.getByTestId('rd-nav-ova')).toHaveAccessibleName(
+      `Öva, ${D.home.ovaDue} att repetera`,
+    )
     fireEvent.keyDown(window, { key: 'b', ctrlKey: true })
     expect(fold).toHaveAttribute('aria-expanded', 'true')
   })
 })
 
-describe('Svep, the drill', () => {
+describe('Svep, the reading drill', () => {
   it('answers on a–d and Space, but Space inside the text scrolls it', () => {
     const { onScreen } = mount(2, 'desktop')
     const text = screen.getByRole('region', { name: /Magasinet i Hökaryd/ })
@@ -303,11 +276,14 @@ describe('Svep, the drill', () => {
     expect(onScreen).toHaveBeenCalledWith(3)
   })
 
-  it('never leaves on Esc', () => {
-    const { onScreen } = mount(2, 'desktop')
+  it('grades through the context’s controller and never leaves on Esc', () => {
+    const { onScreen, actions } = mount(2, 'desktop')
     press('f')
     press('Escape')
     expect(onScreen).not.toHaveBeenCalled()
+    press('b')
+    press('Enter')
+    expect(actions.drill.lock).toHaveBeenCalledWith(expect.objectContaining({ qid: Q3.qid }), 'B')
   })
 
   it('deals the next question on Space in Facit, but not from inside a facit card', () => {
@@ -373,7 +349,7 @@ describe('Svep, the drill', () => {
   })
 
   it.each(WIDTHS)('ends the unit in the hand turned face up, then deals the plan (%s)', (w) => {
-    const { onScreen, goTo } = mount(3, w)
+    const { onScreen, goTo, actions } = mount(3, w)
     fireEvent.click(screen.getByTestId('rd-next'))
     goTo(2)
     fireEvent.click(screen.getByTestId(`rd-option-${Q4.answer}`))
@@ -384,8 +360,380 @@ describe('Svep, the drill', () => {
     const done = screen.getByTestId('rd-done')
     expect(within(done).getAllByRole('listitem')).toHaveLength(4)
     expect(done).toHaveTextContent('Hela leken är vänd.')
-    onScreen.mockClear()
+    expect(done).toHaveTextContent('Magasinet i Hökaryd · 4 frågor')
     fireEvent.click(screen.getByTestId('rd-done-next'))
-    expect(onScreen).toHaveBeenCalledWith(1)
+    expect(actions.openPlanItem).toHaveBeenCalledWith(D.home.plan.items[0].id)
+    fireEvent.click(within(done).getByRole('button', { name: 'Till Idag' }))
+    expect(onScreen).toHaveBeenLastCalledWith(1)
+  })
+})
+
+describe('Svep, Öva', () => {
+  it('leads with the suggestion: the weakest section, its one filled action and its tab', () => {
+    mount(5, 'desktop')
+    expect(front('ova')).toBe('forslag')
+    const suggestion = document.querySelector('[data-card="forslag"]') as HTMLElement
+    expect(suggestion).toHaveTextContent('ditt svagaste delprov just nu')
+    expect(within(suggestion).getByRole('heading', { level: 2 })).toHaveTextContent(
+      'Matematisk problemlösning',
+    )
+    // One raspberry action on the screen, and the weakest door's tab.
+    const filled = document.querySelectorAll('.sv-btn--primary')
+    expect(filled).toHaveLength(1)
+    expect(filled[0]).toHaveTextContent('Öva XYZ')
+    expect(screen.getByTestId('rd-ova-section-xyz')).toHaveTextContent('Svagast')
+    expect(document.querySelectorAll('.sv-sdoor-tab')).toHaveLength(1)
+  })
+
+  it('takes the card in front on Enter, and hands → back at the deck’s end', () => {
+    const { actions } = mount(5, 'desktop')
+    press('Enter')
+    expect(actions.startDrill).toHaveBeenLastCalledWith({ kind: 'section', section: 'XYZ' })
+    press('ArrowRight')
+    expect(front('ova')).toBe('blandat')
+    press('Enter')
+    expect(actions.startDrill).toHaveBeenLastCalledWith({ kind: 'mixed' })
+    press('ArrowRight')
+    expect(front('ova')).toBe('repetera')
+    expect(press('ArrowRight')).toBe(true)
+    press('Enter')
+    expect(actions.openRepetera).toHaveBeenCalled()
+  })
+
+  it('tints the table lilac only while Repetera is in front', () => {
+    mount(5, 'desktop')
+    const root = screen.getByTestId('rd-svep')
+    expect(root).toHaveAttribute('data-tint', 'none')
+    const index = within(screen.getByRole('navigation', { name: 'Kortregister' }))
+    fireEvent.click(index.getByRole('button', { name: /Repetera/ }))
+    expect(root).toHaveAttribute('data-tint', 'rep')
+    fireEvent.click(index.getByRole('button', { name: /Blandat/ }))
+    expect(root).toHaveAttribute('data-tint', 'none')
+  })
+
+  it('lists the eight sections in the exam’s order, each with its full name', () => {
+    mount(5, 'desktop')
+    const doors = screen.getAllByTestId(/^rd-ova-section-/)
+    expect(doors.map((d) => d.dataset.testid)).toEqual(
+      ['ord', 'las', 'mek', 'elf', 'xyz', 'kva', 'nog', 'dtk'].map((s) => `rd-ova-section-${s}`),
+    )
+    expect(screen.getByTestId('rd-ova-section-dtk')).toHaveAccessibleName(
+      /Diagram, tabeller och kartor/,
+    )
+    expect(screen.getByTestId('rd-ova-repetera')).toHaveTextContent(
+      `${D.ova.repetera.pile} i dagens hög`,
+    )
+  })
+
+  it('opens practice on a common trap', () => {
+    const { actions } = mount(5, 'desktop')
+    const trap = D.ova.weakTraps[0]
+    fireEvent.click(screen.getByRole('button', { name: new RegExp(trap.pattern ?? trap.name) }))
+    expect(actions.startDrill).toHaveBeenCalledWith({
+      kind: 'framework',
+      frameworkId: trap.frameworkId,
+      section: trap.section,
+    })
+  })
+
+  it('on phone keeps the doors above the deck and its index as small cards', () => {
+    mount(5, 'phone')
+    const ticks = within(screen.getByRole('list', { name: 'Kortregister' }))
+    expect(ticks.getAllByRole('button')).toHaveLength(3)
+    fireEvent.click(ticks.getByRole('button', { name: 'Kort 2: Blandat' }))
+    expect(front('ova')).toBe('blandat')
+  })
+})
+
+describe('Svep, Kvantfråga', () => {
+  it('keeps KVA’s condition and both quantities on the one card, above the four comparisons', () => {
+    mount(6, 'desktop')
+    answer(XYZ.answer)
+    fireEvent.click(screen.getByTestId('rd-next'))
+    const prompt = screen.getByTestId('rd-quant-prompt')
+    expect(prompt).toHaveTextContent('y > 0')
+    const quantities = prompt.querySelectorAll('.sv-kva-q')
+    expect(quantities).toHaveLength(2)
+    expect(quantities[0]).toHaveTextContent('Kvantitet I')
+    expect(quantities[1]).toHaveTextContent('Kvantitet II')
+    expect(screen.getAllByTestId(/^rd-quant-option-/)).toHaveLength(KVA.options?.length ?? 0)
+  })
+
+  it('sets NOG’s stem, statements (1) and (2) and the coda together with five choices', () => {
+    mount(6, 'desktop')
+    answer(XYZ.answer)
+    fireEvent.click(screen.getByTestId('rd-next'))
+    answer(KVA.answer)
+    fireEvent.click(screen.getByTestId('rd-next'))
+    const prompt = screen.getByTestId('rd-quant-prompt')
+    expect(prompt.querySelectorAll('.sv-nog-st')).toHaveLength(2)
+    expect(prompt).toHaveTextContent('Tillräcklig information för lösningen erhålls')
+    expect(screen.getAllByTestId(/^rd-quant-option-/)).toHaveLength(NOG.options?.length ?? 0)
+    expect(screen.getByText('E', { selector: '.sv-kbd' })).toBeInTheDocument()
+  })
+
+  it('chooses on the question’s own letters, answers on Enter and never leaves on Esc', () => {
+    const { actions } = mount(6, 'desktop')
+    expect(press('e')).toBe(true)
+    press('d')
+    expect(screen.getByTestId('rd-quant-option-D')).toHaveAttribute('aria-pressed', 'true')
+    press('Escape')
+    expect(actions.drill.exit).not.toHaveBeenCalled()
+    press('Enter')
+    expect(actions.drill.lock).toHaveBeenCalledWith(expect.objectContaining({ qid: XYZ.qid }), 'D')
+  })
+
+  it('turns into the facit run with the problem set again above the solution, no ¶ links', () => {
+    mount(6, 'desktop')
+    const wrong = (XYZ.options ?? []).find((o) => o.letter !== XYZ.answer)?.letter ?? 'A'
+    answer(wrong)
+    const run = document.querySelectorAll('.sv-deck[data-kind="run"] .sv-dcard')
+    expect([...run].map((c) => c.getAttribute('data-card'))).toEqual([
+      'svar',
+      'lockade',
+      'tamed',
+      'losning',
+      'andra',
+    ])
+    expect(screen.queryAllByTestId(/^rd-cite-/)).toHaveLength(0)
+    const problem = document.querySelector('[data-card="losning"] .sv-rc-problem')
+    expect(problem).not.toBeNull()
+    expect(problem?.textContent).not.toMatch(/\\dfrac|\\tfrac/)
+    expect(document.querySelector('[data-card="losning"] .katex')).not.toBeNull()
+  })
+
+  it('ends in the hand turned face up: Stäng leaves through the controller', () => {
+    const { actions } = mount(6, 'desktop')
+    for (const q of [XYZ, KVA, NOG]) {
+      answer(q.answer)
+      fireEvent.click(screen.getByTestId('rd-next'))
+    }
+    const done = screen.getByTestId('rd-done')
+    expect(done).toHaveTextContent('Hela leken är vänd.')
+    expect(done).toHaveTextContent('3 frågor · 3 rätt')
+    expect(within(done).getAllByRole('listitem')).toHaveLength(3)
+    fireEvent.click(screen.getByTestId('rd-done-close'))
+    expect(actions.drill.exit).toHaveBeenCalled()
+    fireEvent.click(within(done).getByRole('button', { name: 'Öva igen' }))
+    expect(screen.getByTestId('rd-quant-prompt')).toBeInTheDocument()
+    expect(screen.queryByTestId('rd-done')).toBeNull()
+  })
+
+  it('keeps the card alone on the phone table, the run on the table after the answer', () => {
+    mount(6, 'phone')
+    expect(screen.queryByTestId('rd-sheet')).toBeNull()
+    answer(XYZ.answer)
+    expect(screen.getByTestId('rd-verdict')).toHaveAttribute('data-correct', 'true')
+    expect(screen.getByRole('list', { name: 'Facitkorten' })).toBeInTheDocument()
+  })
+})
+
+describe('Svep, DTK', () => {
+  it('zooms the page, turns it a quarter and fits it again', () => {
+    mount(7, 'desktop')
+    const figure = within(screen.getByTestId('rd-figure'))
+    const page = () => document.querySelector('.sv-fig-page') as HTMLElement
+    expect(figure.getByRole('status')).toHaveTextContent('Hela sidan')
+    expect(figure.getByRole('button', { name: 'Zooma ut' })).toBeDisabled()
+    fireEvent.click(figure.getByRole('button', { name: 'Zooma in' }))
+    expect(figure.getByRole('status')).toHaveTextContent('150 %')
+    fireEvent.click(figure.getByRole('button', { name: 'Vrid ett kvarts varv' }))
+    expect(page()).toHaveAttribute('data-turned', 'true')
+    fireEvent.click(figure.getByRole('button', { name: 'Anpassa' }))
+    expect(figure.getByRole('status')).toHaveTextContent('Hela sidan')
+    expect(page()).toHaveAttribute('data-turned', 'false')
+  })
+
+  it('opens the page enlarged in a dialog that holds the keys, and Esc closes it', () => {
+    mount(7, 'desktop')
+    fireEvent.click(screen.getByRole('button', { name: /Förstora/ }))
+    const dialog = screen.getByRole('dialog', { name: `Underlaget · uppgift ${DTK.number}` })
+    expect(dialog).toHaveAttribute('aria-modal', 'true')
+    expect(screen.getByRole('button', { name: 'Stäng förstoringen' })).toHaveFocus()
+    // The question behind does not hear the letters while the viewer is open.
+    press('c')
+    expect(screen.getByTestId('rd-quant-option-C')).toHaveAttribute('aria-pressed', 'false')
+    fireEvent.keyDown(dialog, { key: 'Escape' })
+    expect(screen.queryByRole('dialog')).toBeNull()
+    press('c')
+    expect(screen.getByTestId('rd-quant-option-C')).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('leaves the arrows to the page while it has the focus', () => {
+    mount(7, 'desktop')
+    answer(DTK.answer)
+    expect(front('run')).toBe('svar')
+    const region = screen.getByRole('region', { name: `Underlaget till uppgift ${DTK.number}` })
+    act(() => region.focus())
+    expect(press('ArrowRight', region)).toBe(true)
+    expect(front('run')).toBe('svar')
+    act(() => region.blur())
+    press('ArrowRight')
+    expect(front('run')).not.toBe('svar')
+  })
+
+  it('on phone lays the page under the question card, which peeks and rises', () => {
+    mount(7, 'phone')
+    const sheet = screen.getByTestId('rd-sheet')
+    expect(sheet).toHaveAttribute('data-state', 'peek')
+    expect(within(sheet).getByTestId('rd-quant-prompt')).toHaveTextContent(DTK.prompt ?? '')
+    fireEvent.click(within(sheet).getByText('Till frågan').closest('button') as HTMLElement)
+    expect(sheet).toHaveAttribute('data-state', 'open')
+    fireEvent.click(within(sheet).getByText('Till figuren').closest('button') as HTMLElement)
+    expect(sheet).toHaveAttribute('data-state', 'peek')
+  })
+})
+
+describe('Svep, Repetera', () => {
+  it('counts the batch on its one card and starts it on Enter', () => {
+    const { actions } = mount(8, 'desktop')
+    expect(document.querySelector('.sv-rep-n')).toHaveTextContent(String(D.repetera.dueNow))
+    expect(screen.getByTestId('rd-repetera-start')).toHaveTextContent(
+      `Repetera ${D.repetera.dueNow}`,
+    )
+    press('Enter')
+    expect(actions.startDrill).toHaveBeenCalledWith({ kind: 'repetition' })
+  })
+
+  it('narrows the batch to a section and widens it again', () => {
+    const { actions } = mount(8, 'desktop')
+    const kva = D.repetera.items.filter((i) => i.dueNow && i.section === 'KVA')
+    const other = D.repetera.items.find((i) => i.dueNow && i.section !== 'KVA')
+    if (!other) throw new Error('the fixture pile has more than KVA ready')
+    fireEvent.click(screen.getByRole('button', { name: `KVA ${kva.length}` }))
+    expect(screen.getByTestId('rd-repetera-start')).toHaveTextContent(`Repetera ${kva.length}`)
+    expect(screen.queryByTestId(`rd-repetera-item-${other.n}`)).toBeNull()
+    fireEvent.click(screen.getByTestId('rd-repetera-start'))
+    expect(actions.startDrill).toHaveBeenCalledWith({ kind: 'repetition', section: 'KVA' })
+    fireEvent.click(screen.getByRole('button', { name: /^Alla/ }))
+    expect(screen.getByTestId(`rd-repetera-item-${other.n}`)).toBeInTheDocument()
+  })
+
+  it('keeps the rest of today’s pile folded under the batch', () => {
+    mount(8, 'desktop')
+    const later = D.repetera.items.filter((i) => !i.dueNow)
+    const toggle = screen.getByRole('button', { name: `${later.length} till blir redo senare` })
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(screen.queryByTestId(`rd-repetera-item-${later[0].n}`)).toBeNull()
+    fireEvent.click(toggle)
+    expect(screen.getByTestId(`rd-repetera-item-${later[0].n}`)).toHaveTextContent(later[0].section)
+  })
+
+  it('names each card’s question and trap, the English ones marked English', () => {
+    mount(8, 'desktop')
+    const elf = D.repetera.items.find((i) => i.section === 'ELF')
+    const trap = D.repetera.items.find((i) => i.dueNow && i.frameworkName)
+    if (!elf || !trap) throw new Error('the fixture pile has an ELF miss and a named trap')
+    const elfItem = screen.getByTestId(`rd-repetera-item-${elf.n}`)
+    expect(elfItem.querySelector('[lang="en"]')).not.toBeNull()
+    expect(screen.getByTestId(`rd-repetera-item-${trap.n}`)).toHaveTextContent(
+      trap.frameworkName ?? '',
+    )
+  })
+
+  it('goes back to Öva through the door', () => {
+    const { actions } = mount(8, 'desktop')
+    fireEvent.click(screen.getByRole('button', { name: 'Till Öva' }))
+    expect(actions.go).toHaveBeenCalledWith('ova')
+  })
+})
+
+// ── Without what the real app cannot fill ────────────────────────────
+
+/** The fixtures without the view model's optional fields: no range, target
+ *  or weekly series for the prognosis, no rising trap, no weekly goal, no
+ *  pause time, minutes or device on the resume, no plan marker, no drill
+ *  clock and no wrong pick. */
+function withoutOptional(data: DirectionData): DirectionData {
+  const { low: _l, high: _h, target: _t, weeks: _w, ...prognosis } = data.home.prognosis
+  const paused = data.home.resume
+  const resume = paused
+    ? (({ pausedAt: _p, minutesLeft: _m, device: _d, ...rest }: typeof paused) => rest)(paused)
+    : null
+  const { goal: _g, ...week } = data.home.week
+  const drill = (s: DirectionData['drills']['reading']) => {
+    const { elapsedSeconds: _e, wrongPick: _wp, ...rest } = s
+    return rest
+  }
+  return {
+    ...data,
+    home: {
+      ...data.home,
+      prognosis,
+      resume,
+      week,
+      traps: data.home.traps.map(({ rising: _r, ...t }) => t),
+      plan: {
+        ...data.home.plan,
+        items: data.home.plan.items.map(({ primary: _pr, ...i }) => i),
+      },
+    },
+    drills: {
+      reading: drill(data.drills.reading),
+      quant: drill(data.drills.quant),
+      dtk: drill(data.drills.dtk),
+      elf: drill(data.drills.elf),
+    },
+  }
+}
+
+describe('Svep, without the fields the real app cannot fill', () => {
+  const props = (s: AppScreenKey, width: WidthKey): DirectionProps => ({
+    screen: s,
+    width,
+    theme: 'light',
+    live: true,
+    onScreen: vi.fn(),
+    onTheme: vi.fn(),
+  })
+
+  it.each(
+    WIDTHS.flatMap((w) => (meta.screens ?? []).map((s) => [s, w] as const)),
+  )('renders screen %s (%s) with no hole where a field is missing', (s, w) => {
+    const errors = vi.spyOn(console, 'error').mockImplementation(() => {})
+    render(
+      <DirectionDataProvider data={withoutOptional(D)}>
+        <Svep {...props(s, w)} />
+      </DirectionDataProvider>,
+    )
+    const text = screen.getByTestId('rd-svep').textContent ?? ''
+    expect(text).not.toMatch(/undefined|NaN|null/)
+    expect(errors).not.toHaveBeenCalled()
+    errors.mockRestore()
+  })
+
+  it('leaves the minutes out of the day rather than sum a part it lacks', () => {
+    render(
+      <DirectionDataProvider data={withoutOptional(D)}>
+        <Svep {...props(1, 'desktop')} />
+      </DirectionDataProvider>,
+    )
+    expect(screen.getByText('Fyra saker idag. Börja med kortet överst.')).toBeInTheDocument()
+    expect(screen.queryByText(/Mål/)).toBeNull()
+    expect(screen.queryByText(/Troligt/)).toBeNull()
+    // The plan's order is its priority: its first item leads.
+    expect(document.querySelector('[data-card="rep"]')).toHaveTextContent('först i planen')
+  })
+
+  it('shows the verdict without an explanation that is not there yet', () => {
+    const data: DirectionData = {
+      ...D,
+      drills: {
+        ...D.drills,
+        quant: {
+          ...D.drills.quant,
+          explanations: Object.fromEntries(D.drills.quant.questions.map((q) => [q.qid, null])),
+        },
+      },
+    }
+    render(
+      <DirectionDataProvider data={data}>
+        <Svep {...props(6, 'desktop')} />
+      </DirectionDataProvider>,
+    )
+    answer('A')
+    expect(screen.getByTestId('rd-verdict')).toHaveAttribute('data-correct', 'false')
+    expect(screen.getByText('Förklaringen saknas just nu.')).toBeInTheDocument()
+    expect(document.querySelectorAll('.sv-deck[data-kind="run"] .sv-dcard')).toHaveLength(1)
   })
 })
