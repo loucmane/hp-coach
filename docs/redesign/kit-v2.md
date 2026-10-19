@@ -233,7 +233,7 @@ The ids per screen are listed in `CONTRACT`:
 | 6 | `rd-quant-prompt` (math rendered), `rd-quant-option-<L>`, feedback ids |
 | 7 | `rd-figure` (an image named by the figure's alt), `rd-quant-prompt`, `rd-quant-option-<L>`, feedback ids |
 | 8 | `rd-repetera-item-<n>` (shows its section), `rd-repetera-start` (exactly one; starts a repetition) |
-| 9 | `rd-prov-half-verbal`, `rd-prov-half-kvant`, `rd-prov-pass-<pass>` (shows what was seen), `rd-prov-start` (starts the suggested pass of the hub's half), then `rd-prov-running`, `rd-prov-timer`, `rd-prov-grid`, `rd-prov-cell-<n>` (`data-answered`, `data-current`), `rd-prov-flag` (`aria-pressed`), `rd-prov-submit` |
+| 9 | `rd-prov-half-verbal`, `rd-prov-half-kvant`, `rd-prov-pass-<pass>` (shows what was seen), `rd-prov-start` (starts the suggested pass of the hub's half), then `rd-prov-running`, `rd-prov-timer`, `rd-prov-grid`, `rd-prov-cell-<n>` (`data-answered`, `data-current`), `rd-prov-flag` (`aria-pressed`), `rd-prov-submit`; a start gate or hand-in confirmation gives its accept button `rd-confirm` (the contract checks the action waits for it) |
 | 10 | `rd-prov-result`, `rd-prov-score`, `rd-prov-section-<sektion>`, `rd-prov-history`, `rd-prov-history-item-<n>` |
 | 11 | `rd-framsteg-prognosis` (+ the caveat on screen), `rd-framsteg-section-<sektion>`, `rd-framsteg-week`, `rd-framsteg-history`, `rd-framsteg-history-item-<n>` |
 | 12 | `rd-uppslag-section-<sektion>`, `rd-uppslag-entry-<id>` (at least the open lesson's section; opens a lesson), `rd-lesson` (the open lesson's title), `rd-lesson-read`, `rd-lesson-practice` |
@@ -436,3 +436,7 @@ The builders in `directionData.tsx` derive the view model from that state with t
 - **`DIRECTIONS`, `STAGES` and `DirectionKey` are unchanged.**
 - **`useDrill`'s behaviour is unchanged.** It keeps its signature (its `screen` accepts `AppScreenKey`) and returns the same view. The passage helpers moved into `drillCore.ts` and are re-exported from `r1Kit.ts` under the same names.
 - **The route** accepts `s=1…14`. Its `SCREEN_KEYS` stay inline (bundle boundary) and are pinned to `APP_SCREENS` by its test.
+
+### Keys inside a figure or dialog
+
+The bake-off switcher answers 1–8, 0 and ←/→ on the window. It leaves alone any key pressed inside an open `dialog` (a figure viewer, a gate) or inside an element marked `data-rd-keyscope` (a figure's pan or scroll region), so the arrows pan or scroll there and never change the screen. Mark an inline pan region with `data-rd-keyscope`; a native dialog needs nothing.
