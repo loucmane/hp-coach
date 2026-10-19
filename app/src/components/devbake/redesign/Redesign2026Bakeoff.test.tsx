@@ -254,6 +254,15 @@ describe('bake-off stage', () => {
   const base: Selection = { d: 'a', s: 1, w: 'desktop', t: 'light', sbs: false, bare: false }
   const stageRoot = (d: DirectionMeta) => `rd-${d.slug.slice(2)}`
   const lazyWait = { timeout: 5000 }
+  // A direction and a screen it has not built yet, from the registry, so
+  // these tests keep working as round-2 batches add screens.
+  const unbuilt = () => {
+    for (const d of DIRECTIONS) {
+      const s = APP_SCREENS.find((x) => !builds(d, x.key))
+      if (s) return { d, s: s.key }
+    }
+    return null
+  }
   const ROUND_2 = APP_SCREENS.filter((s) => s.round === 2)
 
   // jsdom has no layout: give every box the room under the bar of a
@@ -329,26 +338,32 @@ describe('bake-off stage', () => {
   })
 
   it('takes a step from "Inte byggd än" to a screen the direction has built', () => {
+    const pair = unbuilt()
+    if (!pair) return // every direction builds every screen: no card to step from
     const onSelect = vi.fn()
-    render(<Redesign2026Bakeoff sel={{ ...base, d: 'f', s: 8 }} onSelect={onSelect} />)
+    render(<Redesign2026Bakeoff sel={{ ...base, d: pair.d.key, s: pair.s }} onSelect={onSelect} />)
     const card = screen.getByTestId('rd-not-built')
     const built = within(card).getAllByRole('button')
     expect(built.map((b) => b.dataset.testid)).toEqual(
-      screensOf(DIRECTIONS[5]).map((s) => `rd-not-built-go-${s}`),
+      screensOf(pair.d).map((s) => `rd-not-built-go-${s}`),
     )
     fireEvent.click(within(card).getByTestId('rd-not-built-go-2'))
     expect(onSelect).toHaveBeenLastCalledWith({ s: 2 })
   })
 
   it('remounts a direction fresh when it comes back from a screen it lacks', async () => {
-    const { rerender } = render(<Redesign2026Bakeoff sel={{ ...base, s: 2 }} onSelect={() => {}} />)
+    const pair = unbuilt()
+    if (!pair) return // every direction builds every screen: nothing to leave
+    const at = (s: Selection['s']) => ({ ...base, d: pair.d.key, s })
+    const root = stageRoot(pair.d)
+    const { rerender } = render(<Redesign2026Bakeoff sel={at(2)} onSelect={() => {}} />)
     const stage = screen.getByTestId('rb26-stage')
-    expect(await within(stage).findByTestId('rd-folio', {}, lazyWait)).toBeInTheDocument()
-    rerender(<Redesign2026Bakeoff sel={{ ...base, s: 5 }} onSelect={() => {}} />)
-    expect(within(stage).queryByTestId('rd-folio')).toBeNull()
+    expect(await within(stage).findByTestId(root, {}, lazyWait)).toBeInTheDocument()
+    rerender(<Redesign2026Bakeoff sel={at(pair.s)} onSelect={() => {}} />)
+    expect(within(stage).queryByTestId(root)).toBeNull()
     expect(within(stage).getByTestId('rd-not-built')).toBeInTheDocument()
-    rerender(<Redesign2026Bakeoff sel={{ ...base, s: 2 }} onSelect={() => {}} />)
-    expect(await within(stage).findByTestId('rd-folio', {}, lazyWait)).toBeInTheDocument()
+    rerender(<Redesign2026Bakeoff sel={at(2)} onSelect={() => {}} />)
+    expect(await within(stage).findByTestId(root, {}, lazyWait)).toBeInTheDocument()
   })
 
   it.each(WIDTHS)('side by side shows all eight directions, two rows of four (%s)', async (w) => {
