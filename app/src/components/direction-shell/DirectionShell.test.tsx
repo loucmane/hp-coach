@@ -3,12 +3,24 @@ import { lazy, type ReactNode, Suspense, useEffect } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const registry = vi.hoisted(() => ({ loads: 0, fail: false }))
-vi.mock('@/components/devbake/redesign/directions', () => {
+vi.mock('@/components/devbake/redesign/directions', async (importActual) => {
   registry.loads++
+  const actual = await importActual<typeof import('@/components/devbake/redesign/directions')>()
+  const { useDirectionData } = await import('@/components/devbake/redesign/directionData')
   const Stage = (props: import('@/components/devbake/redesign/r1Kit').DirectionProps) => {
     if (registry.fail) throw new Error('stage failed')
+    const { actions } = useDirectionData()
     return (
       <div data-testid="stage">
+        <button type="button" onClick={() => actions.openRepetera()}>
+          Host Repetera
+        </button>
+        <button type="button" onClick={() => actions.setTheme('dark')}>
+          Host dark theme
+        </button>
+        <button type="button" onClick={() => actions.go('framsteg')}>
+          Host Framsteg
+        </button>
         <span>{`${props.screen}:${props.width}:${props.theme}:${props.live}`}</span>
         <button type="button" onClick={() => props.onScreen(3)}>
           Local feedback
@@ -20,6 +32,7 @@ vi.mock('@/components/devbake/redesign/directions', () => {
     )
   }
   return {
+    ...actual,
     STAGES: { a: Stage, b: Stage, c: Stage, d: Stage, e: Stage, f: Stage, g: Stage, h: Stage },
   }
 })
@@ -123,6 +136,27 @@ describe('dev direction takeover', () => {
     expect(screen.getByText('Normal routed content')).toBeInTheDocument()
     expect(screen.queryByTestId('direction-shell')).toBeNull()
     expect(useDesignStore.getState().direction).toBe('b')
+  })
+
+  it('gives the stage the bake-off data and actions, so host actions move its screen and theme', async () => {
+    // Instrument builds screens 1–8 (its meta.ts): Repetera is screen 8.
+    useDesignStore.setState({ direction: 'b' })
+    render(content())
+    expect(await screen.findByTestId('stage')).toHaveTextContent('1:phone:light:true')
+    fireEvent.click(screen.getByRole('button', { name: 'Host Repetera' }))
+    expect(screen.getByTestId('stage')).toHaveTextContent('8:phone:light:true')
+    fireEvent.click(screen.getByRole('button', { name: 'Host dark theme' }))
+    expect(useUiStore.getState().mode).toBe('dark')
+    expect(screen.getByTestId('stage')).toHaveTextContent('8:phone:dark:true')
+  })
+
+  it('shows the shared card, not a direction fallback, for a screen the direction has not built', async () => {
+    useDesignStore.setState({ direction: 'b' })
+    render(content())
+    await screen.findByTestId('stage')
+    fireEvent.click(screen.getByRole('button', { name: 'Host Framsteg' }))
+    expect(screen.queryByTestId('stage')).toBeNull()
+    expect(screen.getByTestId('rd-not-built')).toHaveTextContent('Inte byggd än i Instrument.')
   })
 
   it('opens the chip switcher, marks the current choice and switches directions', async () => {
