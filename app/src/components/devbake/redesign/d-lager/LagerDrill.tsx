@@ -30,42 +30,102 @@ import {
   X,
 } from 'lucide-react'
 import { Fragment, type ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react'
-
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
-  FRAMEWORK_NAMES,
-  OVNINGSTEXT_BADGE,
-  OVNINGSTEXT_NOTE,
-  UNIT,
-} from '@/components/devbake/redesign/r1Fixtures'
+  type DrillCoreActions as DrillActions,
+  type DrillCoreRefs as DrillRefs,
+  type DrillCoreView as DrillView,
+  useDrillCore,
+} from '@/components/devbake/redesign/drillCore'
 import {
   type DirectionProps,
-  type DrillActions,
-  type DrillRefs,
-  type DrillView,
   fmtClock,
   prefersReducedMotion,
   type QuoteMark,
   splitStepRefs,
-  useDrill,
   useKeyMap,
   useSheet,
 } from '@/components/devbake/redesign/r1Kit'
+import { MathText } from '@/components/MathText'
 import type { DistractorExplanation, ExplanationStep } from '@/data/explanations'
-
-const [TITLE, SUBTITLE] = UNIT.title.split(': ')
 
 type Shared = { view: DrillView; act: DrillActions; refs: DrillRefs }
 type NoteState = { note: boolean; setNote: (open: boolean) => void }
 type Front = 'explain' | 'question'
 
-export function LagerDrill({
+export function LagerDrill({ ...props }: DirectionProps & { onDone: (done: boolean) => void }) {
+  const { data, actions } = useDirectionData()
+  if (!data.drills.reading.questions.length)
+    return (
+      <div className="la-done-wrap">
+        <section className="la-sheet la-done" data-depth="2">
+          <h1>Ingen fråga att visa</h1>
+          <button
+            type="button"
+            className="la-btn"
+            data-testid="rd-exit"
+            onClick={() => actions.go('ova')}
+          >
+            Till Öva
+          </button>
+        </section>
+      </div>
+    )
+  return <ReadingSession key={data.drills.reading.id} {...props} />
+}
+
+function ReadingSession({
   screen,
   width,
   live,
   onScreen,
   onDone,
 }: DirectionProps & { onDone: (done: boolean) => void }) {
-  const { view, act, refs } = useDrill({ screen, onScreen, live })
+  const { data, actions } = useDirectionData()
+  const session = data.drills.reading
+  const [start] = useState(() => ({
+    ...session.start,
+    graded:
+      screen === 3
+        ? session.wrongPick?.[session.questions[session.start.index ?? 0].qid]
+        : session.start.graded,
+  }))
+  const {
+    view,
+    act: core,
+    refs,
+  } = useDrillCore({
+    questions: session.questions,
+    explanations: session.explanations,
+    start,
+    elapsed: session.elapsedSeconds,
+    controller: actions.drill,
+    live,
+  })
+  // Only switcher transitions synchronize the preview phase; controller results remain authoritative.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: switcher changes only
+  useLayoutEffect(() => {
+    if (screen === 3 && view.phase === 'question') core.gradeAs((q) => session.wrongPick?.[q.qid])
+    else if (screen === 2 && view.phase === 'feedback') core.reopen()
+    else if (screen === 2 && view.phase === 'done') core.reset()
+  }, [screen])
+  const act: DrillActions = {
+    ...core,
+    lock: () => {
+      const locked = core.lock()
+      if (locked) onScreen(3)
+      return locked
+    },
+    next: () => {
+      const next = core.next()
+      if (next === 'next') onScreen(2)
+      return next
+    },
+    exit: () => {
+      core.exit()
+      onScreen(1)
+    },
+  }
   const [note, setNote] = useState(false)
   const [large, setLarge] = useState(false)
   // Which sheet of the feedback stack is in front; every verdict starts with
@@ -93,12 +153,16 @@ export function LagerDrill({
       else if (view.phase === 'feedback') act.next()
       else onScreen(1)
     },
+    ' ': () => {
+      if (view.phase === 'question') act.lock()
+      else if (view.phase === 'feedback') act.next()
+    },
     j: () => act.moveFocusPara(1),
     k: () => act.moveFocusPara(-1),
     f: toggleFocus,
     Escape: () => act.setFocusPara(null),
   }
-  for (const o of view.question.options) {
+  for (const o of view.question.options ?? []) {
     const l = o.letter.toLowerCase()
     keys[l] = () => act.select(o.letter)
     keys[`Shift+${l}`] = () => act.toggleEliminate(o.letter)
@@ -127,13 +191,7 @@ export function LagerDrill({
       {done ? null : (
         <div className="la-controls">
           <div className="la-pill la-glass">
-            <button
-              type="button"
-              className="la-pill-btn"
-              onClick={act.exit}
-              data-testid="rd-exit"
-              title="Dina svar är sparade"
-            >
+            <button type="button" className="la-pill-btn" onClick={act.exit} data-testid="rd-exit">
               <X size={20} strokeWidth={2} aria-hidden />
               Avsluta
             </button>
@@ -144,7 +202,7 @@ export function LagerDrill({
               Fråga {view.index + 1} av {view.total}
             </span>
             <span className="la-pill-sep" aria-hidden />
-            <ClockText seconds={view.elapsed} />
+            {session.elapsedSeconds != null ? <ClockText seconds={view.elapsed} /> : null}
           </div>
           <fieldset className="la-pill la-glass">
             <legend className="la-sr">Läshjälp</legend>
@@ -232,7 +290,7 @@ function ClockText({ seconds }: { seconds: number }) {
 // ── Evidence ─────────────────────────────────────────────────────────
 
 function essentialSteps(view: DrillView): ExplanationStep[] {
-  return (view.explanation.steps ?? []).filter((s) => s.tier !== 'detail')
+  return (view.explanation?.steps ?? []).filter((s) => s.tier !== 'detail')
 }
 
 /** Paragraphs the essential solution steps stand on. */
@@ -376,7 +434,7 @@ function Desk({
           <div className="la-stack-body" inert={qPos === 'back'}>
             <div className="la-q-scroll">
               <span className="la-eyebrow">
-                Fråga {n} av {view.total} · {view.question.options.length} alternativ
+                Fråga {n} av {view.total} · {view.question.options?.length ?? 0} alternativ
               </span>
               <h2 className="la-prompt">{view.question.prompt}</h2>
               <Options view={view} act={act} />
@@ -433,7 +491,13 @@ function KeyHints() {
   )
 }
 
-function Actions({ view, act }: Pick<Shared, 'view' | 'act'>) {
+export function Actions({
+  view,
+  act,
+  blocked = false,
+  lastLabel = 'Avsluta texten',
+  unit = 'texten',
+}: Pick<Shared, 'view' | 'act'> & { blocked?: boolean; lastLabel?: string; unit?: string }) {
   const last = view.index + 1 >= view.total
   if (view.phase === 'question') {
     return (
@@ -441,7 +505,7 @@ function Actions({ view, act }: Pick<Shared, 'view' | 'act'>) {
         <button
           type="button"
           className="la-btn"
-          disabled={!view.selected}
+          disabled={!view.selected || blocked || !view.letters.length}
           onClick={act.lock}
           data-testid="rd-lock"
         >
@@ -459,13 +523,13 @@ function Actions({ view, act }: Pick<Shared, 'view' | 'act'>) {
   return (
     <div className="la-actions">
       <button type="button" className="la-btn" onClick={act.next} data-testid="rd-next">
-        {last ? 'Avsluta texten' : 'Nästa fråga'}
+        {last ? lastLabel : 'Nästa fråga'}
         <kbd className="la-kbd" aria-hidden>
           ↵
         </kbd>
       </button>
       <span className="la-echo">
-        {last ? 'Sista frågan i texten' : `Fråga ${view.index + 2} av ${view.total} väntar`}
+        {last ? `Sista frågan i ${unit}` : `Fråga ${view.index + 2} av ${view.total} väntar`}
       </span>
     </div>
   )
@@ -474,35 +538,41 @@ function Actions({ view, act }: Pick<Shared, 'view' | 'act'>) {
 // ── The reading sheet ────────────────────────────────────────────────
 
 function PassageBody({ view, act, refs, note, setNote }: Shared & NoteState) {
-  const { paragraphs, byline } = view.passage
+  const { data } = useDirectionData()
+  const { paragraphs, byline } = view.passage ?? { paragraphs: [], byline: null }
+  const [title, subtitle] = (view.question.passage?.title ?? view.question.source.label).split(': ')
   const graded = view.phase === 'feedback'
   const evidence = graded ? evidenceParas(view) : new Set<number>()
   const traps = graded ? trapParas(view) : new Set<number>()
   const shown = graded ? shownSources(view) : new Set<string>()
   return (
     <div className="la-read-inner">
-      <div className="la-badge-row">
-        <span className="la-chip la-badge" data-testid="rd-badge">
-          {OVNINGSTEXT_BADGE}
-        </span>
-        <button
-          type="button"
-          className="la-quiet"
-          aria-expanded={note}
-          aria-controls="la-note"
-          onClick={() => setNote(!note)}
-          data-testid="rd-note-toggle"
-        >
-          <Info size={15} strokeWidth={1.75} aria-hidden />
-          {note ? 'Dölj noten' : 'Om texten'}
-        </button>
-      </div>
-      <p className="la-note" id="la-note" hidden={!note} data-testid="rd-note">
-        {OVNINGSTEXT_NOTE}
-      </p>
+      {view.question.passage?.synthetic ? (
+        <>
+          <div className="la-badge-row">
+            <span className="la-chip la-badge" data-testid="rd-badge">
+              {data.copy.ovningstextBadge}
+            </span>
+            <button
+              type="button"
+              className="la-quiet"
+              aria-expanded={note}
+              aria-controls="la-note"
+              onClick={() => setNote(!note)}
+              data-testid="rd-note-toggle"
+            >
+              <Info size={15} strokeWidth={1.75} aria-hidden />
+              {note ? 'Dölj noten' : 'Om texten'}
+            </button>
+          </div>
+          <p className="la-note" id="la-note" hidden={!note} data-testid="rd-note">
+            {data.copy.ovningstextNote}
+          </p>
+        </>
+      ) : null}
       <h1 className="la-ptitle" id="la-ptitle">
-        {TITLE}
-        <span>{SUBTITLE}</span>
+        {title}
+        <span>{subtitle}</span>
       </h1>
       <div
         className="la-pbody"
@@ -553,11 +623,15 @@ function PassageBody({ view, act, refs, note, setNote }: Shared & NoteState) {
 
 // ── Options ──────────────────────────────────────────────────────────
 
-function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
+export function Options({
+  view,
+  act,
+  quant = false,
+}: Pick<Shared, 'view' | 'act'> & { quant?: boolean }) {
   const graded = view.phase !== 'question'
   return (
     <ol className="la-opts" aria-label="Svarsalternativ">
-      {view.question.options.map((o) => {
+      {(view.question.options ?? []).map((o) => {
         if (graded) {
           const right = o.letter === view.question.answer
           const mine = o.letter === view.picked
@@ -573,7 +647,16 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
                 </span>
                 <span className="la-opt-text">
                   <span className="la-sr">Alternativ {o.letter}: </span>
-                  {o.text}
+                  <MathText>{o.text}</MathText>
+                  {o.figure ? (
+                    <img
+                      className="la-option-figure"
+                      src={`/${o.figure.src}`}
+                      alt={o.figure.alt}
+                      width={o.figure.width}
+                      height={o.figure.height}
+                    />
+                  ) : null}
                   {right || mine ? (
                     <span className="la-grade-tag">
                       {right ? (
@@ -602,7 +685,7 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
               className="la-opt-main"
               aria-pressed={selected}
               onClick={() => act.select(o.letter)}
-              data-testid={`rd-option-${o.letter}`}
+              data-testid={`rd-${quant ? 'quant-' : ''}option-${o.letter}`}
             >
               <span className="la-key" aria-hidden>
                 {o.letter}
@@ -612,7 +695,16 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
                   Alternativ {o.letter}
                   {out ? ', struket' : ''}:{' '}
                 </span>
-                {o.text}
+                <MathText>{o.text}</MathText>
+                {o.figure ? (
+                  <img
+                    className="la-option-figure"
+                    src={`/${o.figure.src}`}
+                    alt={o.figure.alt}
+                    width={o.figure.width}
+                    height={o.figure.height}
+                  />
+                ) : null}
               </span>
             </button>
             <button
@@ -646,7 +738,7 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
 function Verdict({ view, answer = true }: { view: DrillView; answer?: boolean }) {
   const q = view.question
   const correct = view.correct === true
-  const text = (letter: string) => q.options.find((o) => o.letter === letter)?.text ?? ''
+  const text = (letter: string) => q.options?.find((o) => o.letter === letter)?.text ?? ''
   return (
     <div className="la-verdict-block">
       <p className="la-verdict" data-correct={String(correct)} data-testid="rd-verdict">
@@ -710,13 +802,13 @@ function AnswerSheet({
       </span>
       <span className="la-ans-text">
         <span className="la-sr">Alternativ {letter}: </span>
-        {text}
+        <MathText>{text}</MathText>
       </span>
     </div>
   )
 }
 
-function Explanation({
+export function Explanation({
   view,
   act,
   refs,
@@ -729,20 +821,35 @@ function Explanation({
   /** Phone: the question again under the verdict, for context. */
   prompt?: boolean
 }) {
+  const { data, actions } = useDirectionData()
   const e = view.explanation
   const q = view.question
   const correct = view.correct === true
-  const optionText = (letter: string) => q.options.find((o) => o.letter === letter)?.text ?? ''
+  const optionText = (letter: string) => q.options?.find((o) => o.letter === letter)?.text ?? ''
+  if (!e)
+    return (
+      <>
+        <Verdict view={view} />
+        <p className="la-solution">Förklaringen kunde inte hämtas.</p>
+      </>
+    )
   const lure = correct ? undefined : e.distractors.find((d) => d.letter === view.picked)
   const others = e.distractors.filter((d) => d.letter !== lure?.letter)
   const ev = evidencePara(view)
-  const framework = e.framework_id ? FRAMEWORK_NAMES[e.framework_id] : undefined
+  const frameworkId = e.framework_id
+  const framework = frameworkId ? data.frameworks[frameworkId] : undefined
   const none = { tempting: [] as number[], wrong: [] as number[] }
   return (
     <>
-      {badge ? <span className="la-chip la-badge">{OVNINGSTEXT_BADGE}</span> : null}
+      {badge && q.passage?.synthetic ? (
+        <span className="la-chip la-badge">{data.copy.ovningstextBadge}</span>
+      ) : null}
       <Verdict view={view} />
-      {prompt ? <p className="la-ex-prompt">{q.prompt}</p> : null}
+      {prompt ? (
+        <p className="la-ex-prompt">
+          <MathText>{q.prompt}</MathText>
+        </p>
+      ) : null}
 
       {lure ? (
         <section
@@ -782,7 +889,9 @@ function Explanation({
                 <TriangleAlert size={16} strokeWidth={1.75} aria-hidden />
                 Fallgrop
               </h4>
-              <p>{e.pitfall}</p>
+              <p>
+                <MathText>{e.pitfall}</MathText>
+              </p>
             </div>
           ) : null}
           <div className="la-callout" data-kind="technique" data-testid="rd-technique">
@@ -790,7 +899,9 @@ function Explanation({
               <Lightbulb size={16} strokeWidth={1.75} aria-hidden />
               Teknik
             </h4>
-            <p>{e.technique}</p>
+            <p>
+              <MathText>{e.technique}</MathText>
+            </p>
           </div>
         </div>
       </section>
@@ -813,7 +924,9 @@ function Explanation({
             </button>
           ) : null}
         </div>
-        <p className="la-solution">{e.solution_path}</p>
+        <p className="la-solution">
+          <MathText>{e.solution_path}</MathText>
+        </p>
       </section>
 
       <section className="la-ex-sec" aria-labelledby="la-steps-h">
@@ -844,7 +957,19 @@ function Explanation({
 
       {framework ? (
         <p className="la-framework">
-          Ramverk: <b>{framework}</b> · finns att slå upp i Uppslag
+          {q.section === 'LÄS' ? (
+            <>
+              Ramverk: <b>{framework}</b> · finns att slå upp i Uppslag
+            </>
+          ) : (
+            <button
+              type="button"
+              className="la-link"
+              onClick={() => frameworkId && actions.openLesson(frameworkId)}
+            >
+              Slå upp {framework}
+            </button>
+          )}
         </p>
       ) : null}
     </>
@@ -909,7 +1034,7 @@ function Step({ step, view, act, refs }: Shared & { step: ExplanationStep }) {
         <div className="la-step-head">
           <h4 className="la-step-title">
             <span className="la-sr">Steg {step.n}: </span>
-            {step.title}
+            <MathText>{step.title}</MathText>
           </h4>
           {detail ? (
             <button
@@ -984,7 +1109,7 @@ function Other({
         </span>
         <span className="la-dis-opt">
           <span className="la-sr">Alternativ {d.letter}: </span>
-          {text}
+          <MathText>{text}</MathText>
         </span>
         <ChevronDown
           className="la-dis-chev"
@@ -1026,7 +1151,9 @@ function Rich({ text, act }: { text: string; act: DrillActions }) {
         const key = at
         at += seg.text.length
         return seg.kind === 'text' ? (
-          <span key={key}>{seg.text}</span>
+          <span key={key}>
+            <MathText>{seg.text}</MathText>
+          </span>
         ) : (
           <button
             key={key}
@@ -1045,6 +1172,7 @@ function Rich({ text, act }: { text: string; act: DrillActions }) {
 // ── Done: a calm sheet as the field warms back ───────────────────────
 
 function Done({ view, onHome, live }: { view: DrillView; onHome: () => void; live: boolean }) {
+  const { data } = useDirectionData()
   const right = view.results.filter((r) => r.correct).length
   const minutes = Math.max(1, Math.round(view.elapsed / 60))
   return (
@@ -1055,16 +1183,17 @@ function Done({ view, onHome, live }: { view: DrillView; onHome: () => void; liv
         data-testid="rd-done"
         aria-labelledby="la-done-h"
       >
-        <p className="la-eyebrow">LÄS · {TITLE}</p>
+        <p className="la-eyebrow">
+          LÄS · {view.question.passage?.title ?? view.question.source.label}
+        </p>
         <h2 className="la-done-line" id="la-done-h">
           Texten är läst.
         </h2>
         <p className="la-done-stats">
-          {view.total} frågor · {right} rätt · {minutes} min
+          {view.results.length} frågor · {right} rätt
+          {data.drills.reading.elapsedSeconds != null ? ` · ${minutes} min` : ''}
         </p>
-        <p className="la-done-copy">
-          Missarna ligger nu i Repetera, de äldsta först. Resten av dagens plan väntar på Idag.
-        </p>
+        <p className="la-done-copy">Resten av dagens plan väntar på Idag.</p>
         <button type="button" className="la-btn" onClick={onHome}>
           Till Idag
         </button>
@@ -1094,6 +1223,7 @@ function PhoneDrill({
     onHome: () => void
     live: boolean
   }) {
+  const { data } = useDirectionData()
   const { state: sheet, setState: setSheet, toggle, grab } = useSheet(view)
   // The passage scrolls clear of the sheet, whatever its height.
   const sheetRef = useRef<HTMLElement>(null)
@@ -1136,7 +1266,6 @@ function PhoneDrill({
           onClick={act.exit}
           data-testid="rd-exit"
           aria-label="Avsluta"
-          title="Avsluta – dina svar är sparade"
         >
           <X size={20} strokeWidth={2} aria-hidden />
         </button>
@@ -1150,9 +1279,11 @@ function PhoneDrill({
             <span className="la-dot" aria-hidden>
               ·
             </span>
-            <span role="timer" aria-label={`Tid ${fmtClock(view.elapsed)}`}>
-              <span aria-hidden>{fmtClock(view.elapsed)}</span>
-            </span>
+            {data.drills.reading.elapsedSeconds != null ? (
+              <span role="timer" aria-label={`Tid ${fmtClock(view.elapsed)}`}>
+                <span aria-hidden>{fmtClock(view.elapsed)}</span>
+              </span>
+            ) : null}
           </span>
         </div>
         <fieldset className="la-pill la-glass">
@@ -1226,7 +1357,9 @@ function PhoneDrill({
             <span className="la-eyebrow">
               Fråga {n} av {view.total}
             </span>
-            <span className="la-chip la-badge la-badge-sm">{OVNINGSTEXT_BADGE}</span>
+            {view.question.passage?.synthetic ? (
+              <span className="la-chip la-badge la-badge-sm">{data.copy.ovningstextBadge}</span>
+            ) : null}
           </span>
           {sheet === 'full' ? (
             <button
