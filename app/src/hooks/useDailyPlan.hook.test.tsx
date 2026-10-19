@@ -161,6 +161,8 @@ vi.mock('@/data/frameworks', () => ({
   loadPrereqGraph: async () => ({ version: 1, edges: [] }),
 }))
 
+vi.mock('@/data/leverage', () => ({ loadFrameworkLeverage: async () => null }))
+
 // Synced prefs — the "Inte idag" defer reads `mockDeferredDate` here and
 // writes it via the update mutation. Mutable so the defer suite can flip the
 // stored date without a fresh module mock per test (mirrors `activeSessions`).
