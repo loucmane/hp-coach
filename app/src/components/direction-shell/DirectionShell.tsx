@@ -16,18 +16,20 @@ type AppScreenKey = import('@/components/devbake/redesign/r1Kit').AppScreenKey
 // sits in the bake-off's data provider (kit v2): the same fixture data, and
 // actions mapped onto this shell's screen and theme. Without it a
 // direction's host actions (go, openRepetera, the drill controller …) are
-// no-ops here.
+// no-ops here. A screen the direction has not built shows the shared card.
 const DirectionStage = lazy(() =>
   Promise.all([
     import('@/components/devbake/redesign/directions'),
     import('@/components/devbake/redesign/directionData'),
-  ]).then(([{ STAGES }, { DirectionDataProvider, useBakeoffDirectionData }]) => ({
+    import('@/components/devbake/redesign/DirectionStub'),
+  ]).then(([registry, { DirectionDataProvider, useBakeoffDirectionData }, { NotBuilt }]) => ({
     default: function StagedDirection({
       direction,
       onAppScreen,
       ...props
     }: DirectionProps & { direction: DirectionKey; onAppScreen: (screen: AppScreenKey) => void }) {
-      const Stage = STAGES[direction]
+      const meta = registry.DIRECTIONS.find((d) => d.key === direction)
+      const Stage = registry.STAGES[direction]
       const { data, actions } = useBakeoffDirectionData({
         screen: props.screen,
         theme: props.theme,
@@ -36,7 +38,21 @@ const DirectionStage = lazy(() =>
       })
       return (
         <DirectionDataProvider data={data} actions={actions}>
-          <Stage {...props} />
+          {/* A host action can ask for any screen; one the direction has not
+              built gets the bake-off's shared card, as there. */}
+          {!meta || registry.builds(meta, props.screen) ? (
+            <Stage {...props} />
+          ) : (
+            <NotBuilt
+              meta={meta}
+              built={registry.screensOf(meta)}
+              screen={props.screen}
+              width={props.width}
+              theme={props.theme}
+              live={props.live}
+              onScreen={onAppScreen}
+            />
+          )}
         </DirectionDataProvider>
       )
     },
