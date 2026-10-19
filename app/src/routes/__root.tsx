@@ -14,7 +14,7 @@
 
 import { SignedIn, SignedOut, useAuth } from '@clerk/clerk-react'
 import { createRootRoute, Outlet, useLocation, useNavigate } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { Component, lazy, type ReactNode, Suspense, useEffect, useState } from 'react'
 
 import { useHydratePrefs } from '@/api/useSyncedPrefs'
 import { CommandPalette } from '@/components/CommandPalette'
@@ -24,6 +24,7 @@ import { RouteScene } from '@/components/motion/RouteScene'
 import { Btn, Mono } from '@/components/primitives'
 import { hasFirstContentFired } from '@/lib/motion'
 import { isWelcomed } from '@/lib/welcome'
+import { useDesignDirection, useDesignStore } from '@/stores/designStore'
 import { applyThemeToDocument, useUiStore } from '@/stores/uiStore'
 
 export const Route = createRootRoute({
@@ -247,10 +248,97 @@ function SignedInTree() {
   // A2 scene handoff: door changes re-ink the reading window (opacity
   // only, exits lead) instead of sliding. See RouteScene.
   return (
-    <RouteScene>
-      <Outlet />
-    </RouteScene>
+    <DirectionContent pathname={location.pathname}>
+      <RouteScene>
+        <Outlet />
+      </RouteScene>
+    </DirectionContent>
   )
+}
+
+const DirectionShell = lazy(() =>
+  import('@/components/direction-shell/DirectionShell').then((m) => ({
+    default: m.DirectionShell,
+  })),
+)
+
+/** Only signed-in, dev-enabled covered routes may reach the lazy shell. */
+export function DirectionContent({
+  pathname,
+  children,
+}: {
+  pathname: string
+  children: ReactNode
+}) {
+  const direction = useDesignDirection()
+  const screen = pathname === '/' ? 1 : pathname === '/drill' ? 2 : null
+  if (!direction || !screen) return children
+  return (
+    <DirectionBoundary key={`${direction}:${pathname}`} fallback={children}>
+      <Suspense fallback={<DirectionLoading />}>
+        <DirectionShell direction={direction} screen={screen} />
+      </Suspense>
+    </DirectionBoundary>
+  )
+}
+
+function DirectionLoading() {
+  // Do not mount the real route while loading: /drill?start=1 has effects
+  // that start a real session, even if it is only mounted for one frame.
+  return (
+    <div style={{ padding: 24 }}>
+      <p role="status">Laddar designriktningen…</p>
+      <button type="button" onClick={() => useDesignStore.getState().setDirection(null)}>
+        Vanliga appen
+      </button>
+    </div>
+  )
+}
+
+// Must live OUTSIDE the lazy module: a failed shell chunk is recoverable too.
+export class DirectionBoundary extends Component<
+  { children: ReactNode; fallback: ReactNode },
+  { failed: boolean; dismissed: boolean }
+> {
+  state = { failed: false, dismissed: false }
+
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+
+  render() {
+    if (!this.state.failed) return this.props.children
+    return (
+      <>
+        {this.props.fallback}
+        {!this.state.dismissed && (
+          <div
+            role="alert"
+            style={{
+              position: 'fixed',
+              bottom: 12,
+              right: 12,
+              zIndex: 51,
+              maxWidth: 'min(420px, calc(100vw - 24px))',
+              padding: 16,
+              background: 'var(--panel)',
+              color: 'var(--ink)',
+              border: '1px solid var(--hairline)',
+              borderRadius: 'var(--radius)',
+            }}
+          >
+            <p>Designriktningen kunde inte visas. Du är tillbaka i vanliga appen.</p>
+            <button type="button" onClick={() => useDesignStore.getState().setDirection(null)}>
+              Stäng av designriktningen
+            </button>{' '}
+            <button type="button" onClick={() => this.setState({ dismissed: true })}>
+              Dölj meddelandet
+            </button>
+          </div>
+        )}
+      </>
+    )
+  }
 }
 
 // Tiny redirect helper — client-side, not Clerk's <RedirectToSignIn />, so

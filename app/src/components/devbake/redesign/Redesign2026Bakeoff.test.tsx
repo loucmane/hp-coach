@@ -1,194 +1,56 @@
-// The round-1 redesign bake-off's shared contract, checked for all four
-// directions at both widths through the rd-* test ids every direction
-// carries: Idag has one resume action, the five destinations, the account
-// entry and the estimate caveat; the drill shows the ÖVNINGSTEXT badge
-// outside the passage, nine numbered paragraphs and the authorship note on
-// demand; answering grades the question; Facit shows the verdict, a detail
-// step on demand, technique, pitfall, every distractor and ¶ links; Nästa
-// moves on; Navigering opens the account menu with a working theme switch.
-// Plus the switcher's buttons and keys, and the registry's eight
-// directions: every key mounts its folder's stage, and a direction that is
-// still a stub shows its "Under arbete" card on every screen, width and
-// theme.
+// The redesign bake-off: the shared rd-* contract for round 1's four
+// directions (contract.ts describeDirectionContract, on the screens each
+// declares — today round 1's four), the switcher's buttons and keys over
+// all fourteen screens, the registry's eight directions and their declared
+// screens, and the stage: every key mounts its folder's stage on a screen
+// it has built, the shared "Inte byggd än" card on every other screen at
+// both widths and themes, and side by side, and its data context keeps one
+// theme with the switcher. Directions E–H run the same contract from their
+// own tests as they adopt it.
 
 import { fireEvent, render, screen, within } from '@testing-library/react'
-import type { ComponentType } from 'react'
+import { useState } from 'react'
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { Folio } from '@/components/devbake/redesign/a-folio/Folio'
+import { meta as folioMeta } from '@/components/devbake/redesign/a-folio/meta'
 import { Instrument } from '@/components/devbake/redesign/b-instrument/Instrument'
+import { meta as instrumentMeta } from '@/components/devbake/redesign/b-instrument/meta'
+import { meta as sparMeta } from '@/components/devbake/redesign/c-spar/meta'
 import { Spar } from '@/components/devbake/redesign/c-spar/Spar'
+import { describeDirectionContract, stubLayout } from '@/components/devbake/redesign/contract'
 import { Lager } from '@/components/devbake/redesign/d-lager/Lager'
-import { DIRECTIONS, STAGES } from '@/components/devbake/redesign/directions'
+import { meta as lagerMeta } from '@/components/devbake/redesign/d-lager/meta'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
+import {
+  builds,
+  DEFAULT_SCREENS,
+  DIRECTIONS,
+  STAGES,
+  screensOf,
+} from '@/components/devbake/redesign/directions'
 import {
   Redesign2026Bakeoff,
   type Selection,
 } from '@/components/devbake/redesign/Redesign2026Bakeoff'
 import {
-  ESTIMATE_CAVEAT,
-  EXPLANATIONS,
-  OVNINGSTEXT_NOTE,
-  UNIT,
-} from '@/components/devbake/redesign/r1Fixtures'
-import {
-  DESTINATIONS,
+  APP_SCREENS,
   type DirectionMeta,
   type DirectionProps,
   DIRECTIONS as KIT_DIRECTIONS,
   SCREENS,
-  type ScreenKey,
   THEMES,
   WIDTHS as WIDTH_OPTIONS,
   type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
 
-beforeAll(() => {
-  // jsdom has no layout: give the scroll and resize APIs inert stand-ins.
-  Element.prototype.scrollTo ??= () => {}
-  Element.prototype.scrollIntoView ??= () => {}
-  globalThis.ResizeObserver ??= class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  }
-})
+beforeAll(stubLayout)
 
-const DIRECTION_COMPONENTS: [string, ComponentType<DirectionProps>][] = [
-  ['folio', Folio],
-  ['instrument', Instrument],
-  ['spar', Spar],
-  ['lager', Lager],
-]
 const WIDTHS: WidthKey[] = ['desktop', 'phone']
 
-const Q3 = UNIT.questions[2]
-const Q4 = UNIT.questions[3]
-const E3 = EXPLANATIONS[Q3.qid]
-const DETAIL = (E3.steps ?? []).find((s) => s.tier === 'detail')
-if (!DETAIL) throw new Error('fixture question 3 must have a detail-tier step')
-
-function mount(Direction: ComponentType<DirectionProps>, screenKey: ScreenKey, width: WidthKey) {
-  const onScreen = vi.fn()
-  const onTheme = vi.fn()
-  const props = (s: ScreenKey): DirectionProps => ({
-    screen: s,
-    width,
-    theme: 'light',
-    live: true,
-    onScreen,
-    onTheme,
-  })
-  const utils = render(<Direction {...props(screenKey)} />)
-  return {
-    onScreen,
-    onTheme,
-    /** What the bake-off stage does when a direction asks for a screen. */
-    goTo: (s: ScreenKey) => utils.rerender(<Direction {...props(s)} />),
-  }
-}
-
-/** The phone question sheet starts at its peek: open it if the options
- *  are not on screen yet (the first collapsed toggle inside the sheet). */
-function revealOptions() {
-  if (screen.queryByTestId('rd-option-A')) return
-  const sheet = screen.getByTestId('rd-sheet')
-  const toggle = sheet.querySelector<HTMLElement>('[aria-expanded="false"]')
-  if (!toggle) throw new Error('no way to open the question sheet')
-  fireEvent.click(toggle)
-}
-
-function visible(el: HTMLElement | null): boolean {
-  return el != null && !el.hidden && el.closest('[hidden]') == null
-}
-
-describe.each(DIRECTION_COMPONENTS)('redesign direction %s', (slug, Direction) => {
-  describe.each(WIDTHS)('%s', (width) => {
-    it('Idag: one resume action, the five destinations, the account entry and the caveat', () => {
-      const { onScreen } = mount(Direction, 1, width)
-      expect(screen.getByTestId(`rd-${slug}`)).toBeInTheDocument()
-      for (const d of DESTINATIONS) expect(screen.getByTestId(`rd-nav-${d.id}`)).toBeInTheDocument()
-      expect(screen.getByTestId('rd-account')).toBeInTheDocument()
-      expect(screen.getAllByText(ESTIMATE_CAVEAT).length).toBeGreaterThan(0)
-      expect(screen.getAllByTestId('rd-resume')).toHaveLength(1)
-      fireEvent.click(screen.getByTestId('rd-resume'))
-      expect(onScreen).toHaveBeenCalledWith(2)
-    })
-
-    it('Läsfråga: the badge outside the passage, nine numbered paragraphs, the note on demand', () => {
-      mount(Direction, 2, width)
-      const passage = screen.getByTestId('rd-passage')
-      const badge = screen.getByTestId('rd-badge')
-      expect(badge).toHaveTextContent(/övningstext/i)
-      expect(passage).not.toContainElement(badge)
-      for (let n = 1; n <= 9; n++) expect(screen.getByTestId(`rd-para-${n}`)).toBeInTheDocument()
-      expect(screen.queryByRole('dialog')).toBeNull()
-      expect(visible(screen.queryByTestId('rd-note'))).toBe(false)
-      fireEvent.click(screen.getByTestId('rd-note-toggle'))
-      expect(screen.getByTestId('rd-note')).toHaveTextContent(OVNINGSTEXT_NOTE)
-      expect(visible(screen.getByTestId('rd-note'))).toBe(true)
-      if (width === 'phone') {
-        expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'peek')
-      }
-    })
-
-    it('Läsfråga: choosing, striking and answering grades the question', () => {
-      const { onScreen, goTo } = mount(Direction, 2, width)
-      revealOptions()
-      for (const l of ['A', 'B', 'C', 'D']) {
-        expect(screen.getByTestId(`rd-option-${l}`)).toBeInTheDocument()
-      }
-      fireEvent.click(screen.getByTestId('rd-eliminate-B'))
-      expect(screen.getByTestId('rd-eliminate-B')).toHaveAttribute('aria-pressed', 'true')
-      fireEvent.click(screen.getByTestId('rd-option-A'))
-      fireEvent.click(screen.getByTestId('rd-lock'))
-      expect(onScreen).toHaveBeenCalledWith(3)
-      goTo(3)
-      expect(screen.getByTestId('rd-verdict')).toHaveAttribute('data-correct', 'false')
-    })
-
-    it('Facit: verdict, a detail step on demand, technique, pitfall, distractors and ¶ links', () => {
-      mount(Direction, 3, width)
-      const verdict = screen.getByTestId('rd-verdict')
-      expect(verdict).toHaveAttribute('data-correct', 'false')
-      expect(verdict).toHaveTextContent(Q3.answer)
-      expect(screen.getByTestId(`rd-step-${DETAIL.n}`)).toBeInTheDocument()
-      expect(screen.queryByText(DETAIL.text)).toBeNull()
-      fireEvent.click(screen.getByTestId(`rd-step-toggle-${DETAIL.n}`))
-      expect(screen.getByText(DETAIL.text)).toBeInTheDocument()
-      expect(screen.getByTestId('rd-technique')).toHaveTextContent(E3.technique)
-      expect(screen.getByTestId('rd-pitfall')).toHaveTextContent(E3.pitfall ?? '')
-      for (const d of E3.distractors) {
-        expect(screen.getByTestId(`rd-distractor-${d.letter}`)).toBeInTheDocument()
-      }
-      // The picked distractor's reasons are shown without a click.
-      const picked = within(screen.getByTestId('rd-distractor-A'))
-      expect(picked.getByText(E3.distractors[0].why_tempting)).toBeInTheDocument()
-      expect(screen.getAllByTestId('rd-cite-6').length).toBeGreaterThan(0)
-    })
-
-    it('Facit: Nästa moves on to question 4', () => {
-      const { onScreen, goTo } = mount(Direction, 3, width)
-      fireEvent.click(screen.getByTestId('rd-next'))
-      expect(onScreen).toHaveBeenCalledWith(2)
-      goTo(2)
-      expect(screen.getAllByText(Q4.prompt).length).toBeGreaterThan(0)
-    })
-
-    it('Läsfråga: Avsluta leaves the drill for Idag', () => {
-      const { onScreen } = mount(Direction, 2, width)
-      fireEvent.click(screen.getByTestId('rd-exit'))
-      expect(onScreen).toHaveBeenCalledWith(1)
-    })
-
-    it('Navigering: the account menu is open and switches the theme', () => {
-      const { onTheme } = mount(Direction, 4, width)
-      expect(screen.getByTestId('rd-account-menu')).toBeInTheDocument()
-      for (const d of DESTINATIONS) expect(screen.getByTestId(`rd-nav-${d.id}`)).toBeInTheDocument()
-      fireEvent.click(screen.getByTestId('rd-theme-toggle'))
-      expect(onTheme).toHaveBeenCalledWith('dark')
-    })
-  })
-})
+describeDirectionContract(folioMeta, Folio)
+describeDirectionContract(instrumentMeta, Instrument)
+describeDirectionContract(sparMeta, Spar)
+describeDirectionContract(lagerMeta, Lager)
 
 describe('bake-off switcher', () => {
   const base: Selection = { d: 'a', s: 1, w: 'desktop', t: 'light', sbs: false, bare: false }
@@ -200,6 +62,8 @@ describe('bake-off switcher', () => {
     expect(onSelect).toHaveBeenLastCalledWith({ d: 'c', sbs: false })
     fireEvent.click(screen.getByTestId('rb26-screen-3'))
     expect(onSelect).toHaveBeenLastCalledWith({ s: 3 })
+    fireEvent.click(screen.getByTestId('rb26-screen-12'))
+    expect(onSelect).toHaveBeenLastCalledWith({ s: 12 })
     fireEvent.click(screen.getByTestId('rb26-width-phone'))
     expect(onSelect).toHaveBeenLastCalledWith({ w: 'phone' })
     fireEvent.click(screen.getByTestId('rb26-theme-dark'))
@@ -208,20 +72,50 @@ describe('bake-off switcher', () => {
     expect(onSelect).toHaveBeenLastCalledWith({ sbs: true })
   })
 
-  it('answers 1–4, ←/→ and 0 on the keyboard', () => {
+  it('offers the fourteen screens in order, in two rounds, the picked one pressed', () => {
+    render(<Redesign2026Bakeoff sel={{ ...base, s: 9 }} onSelect={() => {}} />)
+    const bar = screen.getByTestId('rb26-screen')
+    const buttons = within(bar).getAllByRole('button')
+    expect(buttons.map((b) => b.dataset.testid)).toEqual(
+      APP_SCREENS.map((s) => `rb26-screen-${s.key}`),
+    )
+    expect(buttons.map((b) => b.getAttribute('aria-pressed'))).toEqual(
+      APP_SCREENS.map((s) => String(s.key === 9)),
+    )
+    const rounds = bar.querySelectorAll('[data-round]')
+    expect([...rounds].map((r) => r.querySelectorAll('button').length)).toEqual([4, 10])
+    expect(within(bar).getByTestId('rb26-screen-13')).toHaveTextContent('13Konto')
+  })
+
+  it('answers 1–8, ←/→ across all fourteen screens and 0 on the keyboard', () => {
     const onSelect = vi.fn()
-    render(<Redesign2026Bakeoff sel={{ ...base, s: 4 }} onSelect={onSelect} />)
+    const { rerender } = render(<Redesign2026Bakeoff sel={{ ...base, s: 4 }} onSelect={onSelect} />)
     fireEvent.keyDown(window, { key: '2' })
     expect(onSelect).toHaveBeenLastCalledWith({ d: 'b', sbs: false })
     fireEvent.keyDown(window, { key: 'ArrowRight' })
-    expect(onSelect).toHaveBeenLastCalledWith({ s: 1 })
+    expect(onSelect).toHaveBeenLastCalledWith({ s: 5 })
     fireEvent.keyDown(window, { key: 'ArrowLeft' })
     expect(onSelect).toHaveBeenLastCalledWith({ s: 3 })
+    rerender(<Redesign2026Bakeoff sel={{ ...base, s: 14 }} onSelect={onSelect} />)
+    fireEvent.keyDown(window, { key: 'ArrowRight' })
+    expect(onSelect).toHaveBeenLastCalledWith({ s: 1 })
+    rerender(<Redesign2026Bakeoff sel={{ ...base, s: 1 }} onSelect={onSelect} />)
+    fireEvent.keyDown(window, { key: 'ArrowLeft' })
+    expect(onSelect).toHaveBeenLastCalledWith({ s: 14 })
     fireEvent.keyDown(window, { key: '0' })
     expect(onSelect).toHaveBeenLastCalledWith({ sbs: true })
   })
 
-  it('hides the bar with bare=1 and shows four thumbnails side by side', () => {
+  it('steps the screens with the bar’s arrows too', () => {
+    const onSelect = vi.fn()
+    render(<Redesign2026Bakeoff sel={{ ...base, s: 14 }} onSelect={onSelect} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Nästa skärm' }))
+    expect(onSelect).toHaveBeenLastCalledWith({ s: 1 })
+    fireEvent.click(screen.getByRole('button', { name: 'Föregående skärm' }))
+    expect(onSelect).toHaveBeenLastCalledWith({ s: 13 })
+  })
+
+  it('hides the bar with bare=1 and shows the thumbnails side by side', () => {
     const { rerender } = render(
       <Redesign2026Bakeoff sel={{ ...base, bare: true }} onSelect={() => {}} />,
     )
@@ -257,6 +151,31 @@ describe('bake-off switcher', () => {
     expect(within(info).getAllByRole('heading', { level: 2 })).toHaveLength(DIRECTIONS.length)
     expect(info).toHaveTextContent('Tangenter: 1–8 riktning')
   })
+
+  it('says in the "Om" panel which directions have built the screen', () => {
+    const { rerender } = render(<Redesign2026Bakeoff sel={base} onSelect={() => {}} />)
+    fireEvent.click(screen.getByRole('button', { name: `Om ${DIRECTIONS[0].name}` }))
+    expect(screen.getByTestId('rb26-info-built')).toHaveTextContent(
+      `Byggd i ${DIRECTIONS.map((d) => d.name).join(', ')}.`,
+    )
+    // Round-2 batches add screens one direction at a time, so the expected
+    // list comes from the registry rather than a fixed snapshot.
+    rerender(<Redesign2026Bakeoff sel={{ ...base, s: 7 }} onSelect={() => {}} />)
+    expect(screen.getByTestId('rb26-info')).toHaveTextContent('Skärm 7 · DTK')
+    const dtkBuilders = DIRECTIONS.filter((d) => builds(d, 7))
+    expect(screen.getByTestId('rb26-info-built')).toHaveTextContent(
+      dtkBuilders.length === 0
+        ? 'Ingen riktning har byggt den här skärmen än.'
+        : `Byggd i ${dtkBuilders.map((d) => d.name).join(', ')}.`,
+    )
+    const unbuilt = APP_SCREENS.find((s) => !DIRECTIONS.some((d) => builds(d, s.key)))
+    if (unbuilt) {
+      rerender(<Redesign2026Bakeoff sel={{ ...base, s: unbuilt.key }} onSelect={() => {}} />)
+      expect(screen.getByTestId('rb26-info-built')).toHaveTextContent(
+        'Ingen riktning har byggt den här skärmen än.',
+      )
+    }
+  })
 })
 
 describe('direction registry', () => {
@@ -288,12 +207,54 @@ describe('direction registry', () => {
   it('keeps round 1 built: only E–H may still be stubs', () => {
     for (const d of DIRECTIONS.slice(0, 4)) expect(d.stub).toBeUndefined()
   })
+
+  it('gives a direction round 1’s four screens until its meta declares more', () => {
+    expect(DEFAULT_SCREENS).toEqual(SCREENS.map((s) => s.key))
+    for (const d of DIRECTIONS) {
+      expect(screensOf(d)).toEqual(d.screens ?? [1, 2, 3, 4])
+      for (const s of screensOf(d)) expect(APP_SCREENS.map((x) => x.key)).toContain(s)
+    }
+    const declared: DirectionMeta = { ...DIRECTIONS[0], screens: [1, 2, 3, 4, 5, 11] }
+    expect(screensOf(declared)).toEqual([1, 2, 3, 4, 5, 11])
+    expect(builds(declared, 11)).toBe(true)
+    expect(builds(declared, 12)).toBe(false)
+  })
+
+  it('names the fourteen screens with Swedish labels and blurbs, round 1 first', () => {
+    expect(APP_SCREENS.map((s) => s.key)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14])
+    expect(APP_SCREENS.map((s) => s.label)).toEqual([
+      'Idag',
+      'Läsfråga',
+      'Facit',
+      'Navigering',
+      'Öva',
+      'Kvantfråga',
+      'DTK',
+      'Repetera',
+      'Provpass',
+      'Provpassresultat',
+      'Framsteg',
+      'Uppslag & lektion',
+      'Konto & inställningar',
+      'ELF-läsfråga',
+    ])
+    // Round 1's four are SCREENS, unchanged.
+    expect(APP_SCREENS.slice(0, 4).map(({ key, label, blurb }) => ({ key, label, blurb }))).toEqual(
+      SCREENS,
+    )
+    for (const s of APP_SCREENS) {
+      expect(s.round).toBe(s.key <= 4 ? 1 : 2)
+      expect(s.blurb.length).toBeGreaterThan(60)
+      expect(s.short.length).toBeLessThanOrEqual(s.label.length)
+    }
+  })
 })
 
 describe('bake-off stage', () => {
   const base: Selection = { d: 'a', s: 1, w: 'desktop', t: 'light', sbs: false, bare: false }
   const stageRoot = (d: DirectionMeta) => `rd-${d.slug.slice(2)}`
   const lazyWait = { timeout: 5000 }
+  const ROUND_2 = APP_SCREENS.filter((s) => s.round === 2)
 
   // jsdom has no layout: give every box the room under the bar of a
   // 1440 × 900 window, so the stage mounts its directions.
@@ -307,10 +268,11 @@ describe('bake-off stage', () => {
     render(<Redesign2026Bakeoff sel={{ ...base, d: d.key }} onSelect={() => {}} />)
     const stage = screen.getByTestId('rb26-stage')
     expect(stage).toHaveAttribute('data-direction', d.key)
+    expect(stage).toHaveAttribute('data-built', 'true')
     expect(await within(stage).findByTestId(stageRoot(d), {}, lazyWait)).toBeInTheDocument()
   })
 
-  it.each(WIDTHS)('a stub shows "Under arbete" on every screen and theme (%s)', async (w) => {
+  it.each(WIDTHS)('a stub shows "Under arbete" on every screen it declares (%s)', async (w) => {
     const width = WIDTH_OPTIONS.find((o) => o.key === w)?.label
     for (const d of DIRECTIONS.filter((x) => x.stub)) {
       const sel = { ...base, d: d.key, w }
@@ -319,7 +281,7 @@ describe('bake-off stage', () => {
       expect(card).toHaveTextContent('Under arbete')
       expect(card).toHaveTextContent(d.name)
       expect(card).toHaveTextContent(d.tagline)
-      for (const s of SCREENS) {
+      for (const s of APP_SCREENS.filter((x) => builds(d, x.key))) {
         for (const t of THEMES) {
           rerender(<Redesign2026Bakeoff sel={{ ...sel, s: s.key, t: t.key }} onSelect={() => {}} />)
           expect(screen.getByTestId(stageRoot(d))).toHaveAttribute('data-theme', t.key)
@@ -330,6 +292,63 @@ describe('bake-off stage', () => {
       }
       unmount()
     }
+  })
+
+  it.each(
+    WIDTHS,
+  )('shows "Inte byggd än" on every screen a direction has not built, both themes (%s)', (w) => {
+    const width = WIDTH_OPTIONS.find((o) => o.key === w)?.label
+    for (const d of DIRECTIONS) {
+      const sel = { ...base, d: d.key, w }
+      const { rerender, unmount } = render(
+        <Redesign2026Bakeoff sel={{ ...sel, s: ROUND_2[0].key }} onSelect={() => {}} />,
+      )
+      for (const s of ROUND_2.filter((x) => !builds(d, x.key))) {
+        for (const t of THEMES) {
+          rerender(<Redesign2026Bakeoff sel={{ ...sel, s: s.key, t: t.key }} onSelect={() => {}} />)
+          const stage = screen.getByTestId('rb26-stage')
+          expect(stage).toHaveAttribute('data-screen', String(s.key))
+          expect(stage).toHaveAttribute('data-built', 'false')
+          const card = within(stage).getByTestId('rd-not-built')
+          expect(card).toHaveTextContent(`Inte byggd än i ${d.name}.`)
+          expect(within(card).getByRole('heading', { level: 1 })).toHaveTextContent(s.label)
+          expect(card).toHaveTextContent(s.blurb)
+          expect(within(stage).getByTestId('rd-not-built-stage')).toHaveAttribute(
+            'data-theme',
+            t.key,
+          )
+          expect(within(stage).getByTestId('rd-stub-where')).toHaveTextContent(
+            `Skärm ${s.key} · ${s.label} · ${width} · ${t.label}`,
+          )
+          // The direction itself is not mounted on a screen it lacks.
+          expect(within(stage).queryByTestId(stageRoot(d))).toBeNull()
+        }
+      }
+      unmount()
+    }
+  })
+
+  it('takes a step from "Inte byggd än" to a screen the direction has built', () => {
+    const onSelect = vi.fn()
+    render(<Redesign2026Bakeoff sel={{ ...base, d: 'f', s: 8 }} onSelect={onSelect} />)
+    const card = screen.getByTestId('rd-not-built')
+    const built = within(card).getAllByRole('button')
+    expect(built.map((b) => b.dataset.testid)).toEqual(
+      screensOf(DIRECTIONS[5]).map((s) => `rd-not-built-go-${s}`),
+    )
+    fireEvent.click(within(card).getByTestId('rd-not-built-go-2'))
+    expect(onSelect).toHaveBeenLastCalledWith({ s: 2 })
+  })
+
+  it('remounts a direction fresh when it comes back from a screen it lacks', async () => {
+    const { rerender } = render(<Redesign2026Bakeoff sel={{ ...base, s: 2 }} onSelect={() => {}} />)
+    const stage = screen.getByTestId('rb26-stage')
+    expect(await within(stage).findByTestId('rd-folio', {}, lazyWait)).toBeInTheDocument()
+    rerender(<Redesign2026Bakeoff sel={{ ...base, s: 5 }} onSelect={() => {}} />)
+    expect(within(stage).queryByTestId('rd-folio')).toBeNull()
+    expect(within(stage).getByTestId('rd-not-built')).toBeInTheDocument()
+    rerender(<Redesign2026Bakeoff sel={{ ...base, s: 2 }} onSelect={() => {}} />)
+    expect(await within(stage).findByTestId('rd-folio', {}, lazyWait)).toBeInTheDocument()
   })
 
   it.each(WIDTHS)('side by side shows all eight directions, two rows of four (%s)', async (w) => {
@@ -346,5 +365,73 @@ describe('bake-off stage', () => {
     }
     fireEvent.click(screen.getByRole('button', { name: 'Öppna Ljuskägla i full storlek' }))
     expect(onSelect).toHaveBeenLastCalledWith({ d: 'h', sbs: false })
+  })
+
+  it.each(WIDTHS)('side by side works on a round-2 screen: eight calm cards (%s)', (w) => {
+    render(<Redesign2026Bakeoff sel={{ ...base, w, s: 11, sbs: true }} onSelect={() => {}} />)
+    const grid = screen.getByTestId('rb26-sbs-grid')
+    expect(grid).toHaveAttribute('data-screen', '11')
+    const thumbs = within(grid).getAllByTestId(/^rb26-thumb-[a-z]$/)
+    expect(thumbs).toHaveLength(DIRECTIONS.length)
+    for (const [i, d] of DIRECTIONS.entries()) {
+      const card = within(thumbs[i]).getByTestId('rd-not-built')
+      expect(card).toHaveTextContent(`Inte byggd än i ${d.name}.`)
+      expect(card).toHaveTextContent('Framsteg')
+    }
+  })
+
+  it('keeps one theme: prefs.mode is the switcher’s t from ?t= on, however it changes', () => {
+    // A probe in Folio's place on screen 4 (Folio builds it) reads the
+    // stage's data context and themes by each path a screen may take.
+    function Probe({ theme, onTheme }: DirectionProps) {
+      const { data, actions } = useDirectionData()
+      const other = theme === 'dark' ? 'light' : 'dark'
+      return (
+        <div data-testid="probe" data-theme={theme} data-mode={data.konto.prefs.mode}>
+          <button
+            type="button"
+            data-testid="probe-set-theme"
+            onClick={() => actions.setTheme(other)}
+          />
+          <button
+            type="button"
+            data-testid="probe-set-prefs"
+            onClick={() => actions.setPrefs({ mode: other })}
+          />
+          <button type="button" data-testid="probe-on-theme" onClick={() => onTheme(other)} />
+        </div>
+      )
+    }
+    /** The route: the selection is the URL's, onSelect merges into it. */
+    function Page({ initial }: { initial: Selection }) {
+      const [sel, setSel] = useState(initial)
+      return (
+        <Redesign2026Bakeoff sel={sel} onSelect={(next) => setSel((s) => ({ ...s, ...next }))} />
+      )
+    }
+    const folio = STAGES.a
+    STAGES.a = Probe
+    try {
+      render(<Page initial={{ ...base, s: 4, t: 'dark' }} />)
+      /** The page's theme, the one the stage hands the direction, and the
+       *  mode in its data context. */
+      const shown = () => {
+        const probe = screen.getByTestId('probe')
+        return [screen.getByTestId('rb26').dataset.theme, probe.dataset.theme, probe.dataset.mode]
+      }
+      expect(shown()).toEqual(['dark', 'dark', 'dark'])
+      fireEvent.click(screen.getByTestId('rb26-theme-light'))
+      expect(shown()).toEqual(['light', 'light', 'light'])
+      // setPrefs then setTheme, onTheme, setTheme then setPrefs: each flips
+      // all three together.
+      let now = 'light'
+      for (const path of ['set-prefs', 'set-theme', 'on-theme', 'set-theme', 'set-prefs']) {
+        fireEvent.click(screen.getByTestId(`probe-${path}`))
+        now = now === 'dark' ? 'light' : 'dark'
+        expect(shown()).toEqual([now, now, now])
+      }
+    } finally {
+      STAGES.a = folio
+    }
   })
 })
