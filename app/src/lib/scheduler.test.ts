@@ -304,8 +304,8 @@ describe('generateDailyPlan — rule 2 with a pulled-forward prerequisite (hpf-0
     })
   })
 
-  it('bumps the stored plan schema to v10 so plans cached before the gate regenerate', () => {
-    expect(PLAN_SCHEMA_VERSION).toBe(10)
+  it('bumps the stored plan schema to v11 so plans cached before leverage ordering regenerate', () => {
+    expect(PLAN_SCHEMA_VERSION).toBe(11)
   })
 })
 
