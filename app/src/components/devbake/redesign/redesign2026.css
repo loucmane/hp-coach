@@ -90,7 +90,7 @@
 }
 
 /* Two rows: the brand and the eight directions (too many to share a row
- * with the rest), then the screen, width, theme and view toggles. */
+ * with the rest), then the screens, width, theme and view toggles. */
 .rb26-row {
   display: flex;
   align-items: center;
@@ -137,8 +137,58 @@
   gap: 4px;
 }
 
-.rb26-spacer {
-  flex: 1;
+/* The fourteen screens: two rounds in one row that takes the room the
+ * other controls leave (a zero basis, so it never squeezes them) and
+ * scrolls sideways when it does not fit. */
+.rb26-screens-wrap {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.rb26-screens {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  border-radius: 9px;
+}
+
+.rb26-screen-seg {
+  flex-wrap: nowrap;
+}
+
+.rb26-seg-round {
+  display: inline-flex;
+  align-items: center;
+}
+
+.rb26-seg-round + .rb26-seg-round {
+  margin-left: 4px;
+  padding-left: 4px;
+  border-left: 1px solid var(--rb-line-2);
+}
+
+.rb26-seg-caption {
+  padding: 0 8px 0 7px;
+  color: var(--rb-ink-3);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.rb26-num {
+  font-family: var(--rb-mono);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--rb-ink-3);
+}
+
+.rb26-seg button[aria-pressed='true'] .rb26-num {
+  color: var(--rb-ink-2);
 }
 
 .rb26-seg {
@@ -363,6 +413,10 @@
   color: var(--rb-ink-2);
 }
 
+.rb26-info-built {
+  font-size: 12.5px;
+}
+
 .rb26-info-keys {
   font-size: 12.5px;
 }
@@ -508,13 +562,21 @@
   .rb26-brand {
     flex: 1 0 auto;
   }
-  .rb26-spacer {
-    display: none;
-  }
   .rb26-seg {
     max-width: 100%;
     overflow-x: auto;
     scrollbar-width: none;
+  }
+  /* The screens take a row of their own; their row scrolls, not the seg. */
+  .rb26-screens-wrap {
+    flex-basis: 100%;
+  }
+  .rb26-screen-seg {
+    max-width: none;
+    overflow: visible;
+  }
+  .rb26-seg-caption {
+    display: none;
   }
   .rb26-seg kbd {
     display: none;
@@ -550,5 +612,84 @@
   .rb26-info,
   .rb26-restore {
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── "Inte byggd än" (DirectionStub.tsx NotBuilt) ───────────────────
+ * The stub's card (directionStub.css) plus the screens the direction has
+ * built, as quiet pills. Scoped like the stub: nothing touches :root. */
+
+[data-rd='stub'] {
+  --rs-focus: oklch(55% 0.16 255);
+}
+
+[data-rd='stub'][data-theme='dark'] {
+  --rs-focus: oklch(72% 0.13 255);
+}
+
+[data-rd='stub'] .rs-built {
+  margin-top: 18px;
+}
+
+[data-rd='stub'] .rs-built-label {
+  margin: 0 0 8px;
+  color: var(--rs-ink-2);
+  font-size: 13px;
+}
+
+[data-rd='stub'] .rs-built ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-rd='stub'] .rs-built button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--rs-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--rs-ink);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 120ms ease-out;
+}
+
+[data-rd='stub'] .rs-built button:hover {
+  border-color: var(--rs-ink-3);
+}
+
+[data-rd='stub'] .rs-built button:focus-visible {
+  outline: 2px solid var(--rs-focus);
+  outline-offset: 2px;
+}
+
+[data-rd='stub'] .rs-built-num {
+  color: var(--rs-ink-3);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The side-by-side stills show a desktop card at about a quarter of its
+ * size: there it keeps its name and status only, set large enough to read. */
+[data-rd='stub'][data-live='false'] .rs-card > .rs-note,
+[data-rd='stub'][data-live='false'] .rs-built {
+  display: none;
+}
+
+[data-rd='stub'][data-live='false'][data-width='desktop'] .rs-card {
+  zoom: 2.2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-rd='stub'] .rs-built button {
+    transition: none;
   }
 }

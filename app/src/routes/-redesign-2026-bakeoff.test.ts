@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url'
 
 import { describe, expect, it } from 'vitest'
 
-import { DIRECTIONS, SCREENS, THEMES, WIDTHS } from '@/components/devbake/redesign/r1Kit'
+import { APP_SCREENS, DIRECTIONS, THEMES, WIDTHS } from '@/components/devbake/redesign/r1Kit'
 import {
   DIRECTION_KEYS,
   SCREEN_KEYS,
@@ -32,7 +32,8 @@ const STATIC_IMPORT_RE = /^import\s+(?!type\s)(?:[^'"]*?\sfrom\s+)?'([^']+)'/gm
 describe('/dev/redesign-2026-bakeoff route', () => {
   it('accepts exactly the page’s directions, screens, widths and themes', () => {
     expect([...DIRECTION_KEYS]).toEqual(DIRECTIONS.map((d) => d.key))
-    expect([...SCREEN_KEYS]).toEqual(SCREENS.map((s) => s.key))
+    expect([...SCREEN_KEYS]).toEqual(APP_SCREENS.map((s) => s.key))
+    expect([...SCREEN_KEYS]).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14])
     expect([...WIDTH_KEYS]).toEqual(WIDTHS.map((w) => w.key))
     expect([...THEME_KEYS]).toEqual(THEMES.map((t) => t.key))
   })
@@ -51,7 +52,11 @@ describe('/dev/redesign-2026-bakeoff route', () => {
       bare: true,
     })
     expect(validateSearch({ d: 'h', s: 1 })).toEqual({ d: 'h', s: 1 })
-    expect(validateSearch({ d: 'i', s: '5', w: 'tablet', t: 'sepia', sbs: '0' })).toEqual({})
+    // Round 2's screens, 5–14, as numbers or strings.
+    expect(validateSearch({ d: 'c', s: '5' })).toEqual({ d: 'c', s: 5 })
+    expect(validateSearch({ s: 14, w: 'phone' })).toEqual({ s: 14, w: 'phone' })
+    expect(validateSearch({ d: 'i', s: '15', w: 'tablet', t: 'sepia', sbs: '0' })).toEqual({})
+    expect(validateSearch({ s: '0' })).toEqual({})
   })
 
   it('reaches the page only through import()', () => {

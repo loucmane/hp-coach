@@ -1,6 +1,6 @@
-// /dev/redesign-2026-bakeoff — the whole-app redesign, round 1 (epic
-// hpf-qr0p, beads hpf-qr0p.1 and hpf-qr0p.2; brief
-// docs/redesign/2026-10-round1-brief.md).
+// /dev/redesign-2026-bakeoff — the whole-app redesign (epic hpf-qr0p; round
+// 1 beads hpf-qr0p.1 and hpf-qr0p.2, brief docs/redesign/2026-10-round1-brief.md;
+// round 2's shared kit hpf-qr0p.7, docs/redesign/kit-v2.md).
 //
 // Eight candidate design directions, each a self-contained design system,
 // shown on HP-Coach's own screens so the owner can react to real things.
@@ -9,16 +9,19 @@
 //   B Instrument — precision pro tool
 //   C Spår       — expressive learning path
 //   D Lager      — spatial depth, glass done right
-// Round 1b ("Under arbete" placeholders until each is built):
+// Round 1b:
 //   E Svep       — one card at a time
 //   F Samtal     — a calm coach in dialogue
 //   G Raster     — Swiss grid, big numbers
 //   H Ljuskägla  — dark mode, light on the paragraph you read
-// Screens: 1 Idag · 2 Läsfråga · 3 Facit · 4 Navigering, at desktop or
-// phone width, light or dark. `?d=b&s=2&w=phone&t=dark` selects; `&sbs=1`
-// shows the same screen in all eight directions side by side; `&bare=1`
-// hides the switcher (screenshots). Keys: 1–8 direction, ←/→ screen,
-// 0 side by side.
+// Screens: round 1's 1 Idag · 2 Läsfråga · 3 Facit · 4 Navigering, and
+// round 2's 5 Öva · 6 Kvantfråga · 7 DTK · 8 Repetera · 9 Provpass ·
+// 10 Provpassresultat · 11 Framsteg · 12 Uppslag & lektion · 13 Konto &
+// inställningar · 14 ELF-läsfråga ("Inte byggd än" in a direction until it
+// builds them), at desktop or phone width, light or dark.
+// `?d=b&s=2&w=phone&t=dark` selects; `&sbs=1` shows the same screen in all
+// eight directions side by side; `&bare=1` hides the switcher
+// (screenshots). Keys: 1–8 direction, ←/→ screen, 0 side by side.
 //
 // Dev-gated. Kept forever per the keep-bake-offs rule.
 //
@@ -36,7 +39,7 @@ import { lazy, Suspense } from 'react'
 import { isDevSurface } from '@/lib/devSurface'
 
 export const DIRECTION_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const
-export const SCREEN_KEYS = [1, 2, 3, 4] as const
+export const SCREEN_KEYS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] as const
 export const WIDTH_KEYS = ['desktop', 'phone'] as const
 export const THEME_KEYS = ['light', 'dark'] as const
 

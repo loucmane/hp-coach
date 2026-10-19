@@ -8,7 +8,11 @@
 // phone is a 390 × 844 device frame on a wide screen and full-bleed on a
 // narrow one. The directions come from the registry (directions.ts): each
 // is its own lazy chunk, so a direction's code, CSS and fonts load only
-// when it is first shown.
+// when it is first shown. A direction is mounted only on the screens it has
+// built (screensOf); on the others the stage shows the shared "Inte byggd
+// än" card, so all fourteen screens work in every direction today. Kit v2:
+// the stage sits in a DirectionDataProvider fed by the fixtures, its
+// actions mapped onto the switcher (directionData.tsx).
 
 import {
   ChevronLeft,
@@ -34,13 +38,19 @@ import {
 } from 'react'
 
 import './redesign2026.css'
-import { DIRECTIONS, STAGES } from '@/components/devbake/redesign/directions'
+import { NotBuilt } from '@/components/devbake/redesign/DirectionStub'
 import {
+  DirectionDataProvider,
+  useBakeoffDirectionData,
+} from '@/components/devbake/redesign/directionData'
+import { builds, DIRECTIONS, STAGES, screensOf } from '@/components/devbake/redesign/directions'
+import {
+  APP_SCREENS,
+  type AppScreenKey,
   type DirectionKey,
+  type DirectionMeta,
   type DirectionProps,
   isForeignKey,
-  SCREENS,
-  type ScreenKey,
   type ThemeKey,
   useDismiss,
   type WidthKey,
@@ -49,7 +59,7 @@ import { useFirstContentSignal } from '@/lib/motion'
 
 export type Selection = {
   d: DirectionKey
-  s: ScreenKey
+  s: AppScreenKey
   w: WidthKey
   t: ThemeKey
   sbs: boolean
@@ -75,6 +85,11 @@ function useBoxSize(ref: { current: HTMLElement | null }) {
   return size
 }
 
+function stepScreen(s: AppScreenKey, delta: 1 | -1): AppScreenKey {
+  const i = APP_SCREENS.findIndex((x) => x.key === s)
+  return APP_SCREENS[(i + delta + APP_SCREENS.length) % APP_SCREENS.length].key
+}
+
 export function Redesign2026Bakeoff({
   sel,
   onSelect,
@@ -90,8 +105,9 @@ export function Redesign2026Bakeoff({
   // Stable callbacks for the directions (their drill state keys off them).
   const selectRef = useRef(onSelect)
   selectRef.current = onSelect
-  const onScreen = useCallback((s: ScreenKey) => selectRef.current({ s }), [])
+  const onScreen = useCallback((s: AppScreenKey) => selectRef.current({ s }), [])
   const onTheme = useCallback((t: ThemeKey) => selectRef.current({ t }), [])
+  const direction = useBakeoffDirectionData({ screen: sel.s, onScreen, onTheme })
 
   // 1–8 direction, ←/→ screen, 0 side by side. Directions see keys first
   // (capture phase) and mark the ones they use.
@@ -110,9 +126,7 @@ export function Redesign2026Bakeoff({
         selectRef.current({ sbs: !cur.sbs })
       } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
         e.preventDefault()
-        const i = SCREENS.findIndex((x) => x.key === cur.s)
-        const n = (i + (e.key === 'ArrowRight' ? 1 : -1) + SCREENS.length) % SCREENS.length
-        selectRef.current({ s: SCREENS[n].key })
+        selectRef.current({ s: stepScreen(cur.s, e.key === 'ArrowRight' ? 1 : -1) })
       }
     }
     window.addEventListener('keydown', onKey)
@@ -142,11 +156,13 @@ export function Redesign2026Bakeoff({
           Bake-off
         </button>
       ) : null}
-      {sel.sbs ? (
-        <SideBySide sel={sel} onSelect={onSelect} onScreen={onScreen} onTheme={onTheme} />
-      ) : (
-        <Single sel={sel} onScreen={onScreen} onTheme={onTheme} />
-      )}
+      <DirectionDataProvider data={direction.data} actions={direction.actions}>
+        {sel.sbs ? (
+          <SideBySide sel={sel} onSelect={onSelect} onScreen={onScreen} onTheme={onTheme} />
+        ) : (
+          <Single sel={sel} onScreen={onScreen} onTheme={onTheme} />
+        )}
+      </DirectionDataProvider>
     </div>
   )
 }
@@ -167,24 +183,22 @@ function Bar({
   onHide: () => void
 }) {
   const dir = DIRECTIONS.find((d) => d.key === sel.d) ?? DIRECTIONS[0]
-  const screen = SCREENS.find((s) => s.key === sel.s) ?? SCREENS[0]
-  const step = (delta: 1 | -1) => {
-    const i = SCREENS.findIndex((x) => x.key === sel.s)
-    onSelect({ s: SCREENS[(i + delta + SCREENS.length) % SCREENS.length].key })
-  }
+  const screen = APP_SCREENS.find((s) => s.key === sel.s) ?? APP_SCREENS[0]
   const panelRef = useRef<HTMLDivElement>(null)
   const close = useCallback(() => setInfo(false), [setInfo])
   useDismiss(info, close, panelRef)
+  const builtBy = DIRECTIONS.filter((d) => builds(d, sel.s))
 
-  // Two rows: the brand and the eight directions; then the screen, the
-  // width, the theme and the view toggles.
+  // Two rows: the brand and the eight directions; then the screens (two
+  // rounds, scrolling when they do not fit), the width, the theme and the
+  // view toggles.
   return (
     <header className="rb26-bar" data-testid="rb26-bar">
       <div className="rb26-row">
         <div className="rb26-brand">
           <span className="rb26-brand-mark" aria-hidden />
           <span className="rb26-brand-name">Redesign 2026</span>
-          <span className="rb26-pill">omgång 1</span>
+          <span className="rb26-pill">omgång 2</span>
         </div>
 
         <Seg
@@ -198,35 +212,27 @@ function Bar({
       </div>
 
       <div className="rb26-row">
-        <div className="rb26-group">
+        <div className="rb26-group rb26-screens-wrap">
           <button
             type="button"
             className="rb26-icon-btn"
-            onClick={() => step(-1)}
+            onClick={() => onSelect({ s: stepScreen(sel.s, -1) })}
             aria-label="Föregående skärm"
             title="Föregående skärm (←)"
           >
             <ChevronLeft size={16} strokeWidth={1.75} aria-hidden />
           </button>
-          <Seg
-            label="Skärm"
-            testid="rb26-screen"
-            items={SCREENS.map((s) => ({ key: s.key, label: s.label }))}
-            active={sel.s}
-            onPick={(s) => onSelect({ s })}
-          />
+          <ScreenSeg active={sel.s} onPick={(s) => onSelect({ s })} />
           <button
             type="button"
             className="rb26-icon-btn"
-            onClick={() => step(1)}
+            onClick={() => onSelect({ s: stepScreen(sel.s, 1) })}
             aria-label="Nästa skärm"
             title="Nästa skärm (→)"
           >
             <ChevronRight size={16} strokeWidth={1.75} aria-hidden />
           </button>
         </div>
-
-        <span className="rb26-spacer" />
 
         <Seg
           label="Bredd"
@@ -310,6 +316,11 @@ function Bar({
                   Skärm {screen.key} · {screen.label}
                 </h3>
                 <p>{screen.blurb}</p>
+                <p className="rb26-info-built" data-testid="rb26-info-built">
+                  {builtBy.length === 0
+                    ? 'Ingen riktning har byggt den här skärmen än.'
+                    : `Byggd i ${builtBy.map((d) => d.name).join(', ')}.`}
+                </p>
                 <p className="rb26-info-keys">
                   Tangenter: <kbd>1</kbd>–<kbd>{DIRECTIONS.length}</kbd> riktning · <kbd>←</kbd>
                   <kbd>→</kbd> skärm · <kbd>0</kbd> sida vid sida
@@ -370,7 +381,93 @@ function Seg<K extends string | number>({
   )
 }
 
+const SCREEN_ROUNDS = [
+  { round: 1, label: 'Omgång 1' },
+  { round: 2, label: 'Omgång 2' },
+] as const
+
+/** The fourteen screens in two rounds, in a row that scrolls sideways when
+ *  it does not fit and keeps the picked screen in view. */
+function ScreenSeg({
+  active,
+  onPick,
+}: {
+  active: AppScreenKey
+  onPick: (s: AppScreenKey) => void
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: re-runs when the picked screen changes
+  useLayoutEffect(() => {
+    const box = ref.current
+    const btn = box?.querySelector<HTMLElement>('button[aria-pressed="true"]')
+    if (!box || !btn) return
+    const left = btn.offsetLeft
+    const right = left + btn.offsetWidth
+    if (left < box.scrollLeft) box.scrollLeft = Math.max(0, left - 12)
+    else if (right > box.scrollLeft + box.clientWidth) {
+      box.scrollLeft = right - box.clientWidth + 12
+    }
+  }, [active])
+  return (
+    <div className="rb26-screens" ref={ref}>
+      <fieldset className="rb26-seg rb26-screen-seg" data-testid="rb26-screen">
+        <legend className="rb26-sr">Skärm</legend>
+        {SCREEN_ROUNDS.map((r) => (
+          <span key={r.round} className="rb26-seg-round" data-round={r.round}>
+            <span className="rb26-seg-caption" aria-hidden>
+              {r.label}
+            </span>
+            {APP_SCREENS.filter((s) => s.round === r.round).map((s) => (
+              <button
+                type="button"
+                key={s.key}
+                aria-pressed={s.key === active}
+                data-testid={`rb26-screen-${s.key}`}
+                title={`${s.key} · ${s.label}`}
+                onClick={() => onPick(s.key)}
+              >
+                <span className="rb26-num" aria-hidden>
+                  {s.key}
+                </span>
+                <span>{s.short}</span>
+              </button>
+            ))}
+          </span>
+        ))}
+      </fieldset>
+    </div>
+  )
+}
+
 // ── Stage ────────────────────────────────────────────────────────────
+
+/** What the stage mounts for a direction on a screen: the direction, or
+ *  the shared card for a screen it has not built. */
+function StageFor({
+  meta,
+  props,
+  onScreen,
+}: {
+  meta: DirectionMeta
+  props: DirectionProps
+  onScreen: (s: AppScreenKey) => void
+}) {
+  if (!builds(meta, props.screen)) {
+    return (
+      <NotBuilt
+        meta={meta}
+        built={screensOf(meta)}
+        screen={props.screen}
+        width={props.width}
+        theme={props.theme}
+        live={props.live}
+        onScreen={onScreen}
+      />
+    )
+  }
+  const Stage = STAGES[meta.key]
+  return <Stage {...props} />
+}
 
 function Single({
   sel,
@@ -378,12 +475,12 @@ function Single({
   onTheme,
 }: {
   sel: Selection
-  onScreen: (s: ScreenKey) => void
+  onScreen: (s: AppScreenKey) => void
   onTheme: (t: ThemeKey) => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const box = useBoxSize(ref)
-  const Stage = STAGES[sel.d]
+  const meta = DIRECTIONS.find((d) => d.key === sel.d) ?? DIRECTIONS[0]
   const props: DirectionProps = {
     screen: sel.s,
     width: sel.w,
@@ -393,19 +490,21 @@ function Single({
     onTheme,
   }
   // Remount on direction or width only: a screen or theme change keeps the
-  // drill's state (an answer given on Läsfråga carries into Facit).
+  // drill's state (an answer given on Läsfråga carries into Facit). A
+  // screen the direction has not built unmounts it until the next one.
   const key = `${sel.d}-${sel.w}`
+  const stage = <StageFor key={key} meta={meta} props={props} onScreen={onScreen} />
 
   let inner: ReactNode = null
   if (box.w > 0) {
     if (sel.w === 'phone' && box.w < 560) {
-      inner = <Fill>{<Stage key={key} {...props} />}</Fill>
+      inner = <Fill>{stage}</Fill>
     } else if (sel.w === 'phone') {
       const zoom = Math.min(1, (box.h - 40) / (PHONE.h + 20))
       inner = (
         <div className="rb26-device" style={{ zoom }} data-testid="rb26-device">
           <div className="rb26-device-screen" style={{ width: PHONE.w, height: PHONE.h }}>
-            <Stage key={key} {...props} />
+            {stage}
           </div>
         </div>
       )
@@ -416,7 +515,7 @@ function Single({
           className="rb26-desk"
           style={{ width: box.w / zoom, height: box.h / zoom, zoom } as CSSProperties}
         >
-          <Stage key={key} {...props} />
+          {stage}
         </div>
       )
     }
@@ -430,6 +529,7 @@ function Single({
       data-testid="rb26-stage"
       data-direction={sel.d}
       data-screen={sel.s}
+      data-built={String(builds(meta, sel.s))}
     >
       <Suspense fallback={<div className="rb26-loading">Laddar {sel.d.toUpperCase()}…</div>}>
         {inner}
@@ -450,7 +550,7 @@ function SideBySide({
 }: {
   sel: Selection
   onSelect: (next: Partial<Selection>) => void
-  onScreen: (s: ScreenKey) => void
+  onScreen: (s: AppScreenKey) => void
   onTheme: (t: ThemeKey) => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -480,42 +580,44 @@ function SideBySide({
       style={{ '--rb26-cols': cols, padding: pad, gap } as CSSProperties}
     >
       {box.w > 0
-        ? DIRECTIONS.map((d, i) => {
-            const Stage = STAGES[d.key]
-            return (
-              <figure key={d.key} className="rb26-thumb" data-testid={`rb26-thumb-${d.key}`}>
-                <figcaption>
-                  <kbd>{i + 1}</kbd>
-                  <strong>{d.name}</strong>
-                  <span>{d.tagline}</span>
-                </figcaption>
-                <div
-                  className="rb26-thumb-frame"
-                  style={{ width: base.w * zoom, height: base.h * zoom }}
-                  data-width={sel.w}
-                >
-                  <div inert style={{ width: base.w, height: base.h, zoom }}>
-                    <Suspense fallback={<div className="rb26-loading" />}>
-                      <Stage
-                        screen={sel.s}
-                        width={sel.w}
-                        theme={sel.t}
-                        live={false}
-                        onScreen={onScreen}
-                        onTheme={onTheme}
-                      />
-                    </Suspense>
-                  </div>
-                  <button
-                    type="button"
-                    className="rb26-thumb-open"
-                    onClick={() => onSelect({ d: d.key, sbs: false })}
-                    aria-label={`Öppna ${d.name} i full storlek`}
-                  />
+        ? DIRECTIONS.map((d, i) => (
+            <figure key={d.key} className="rb26-thumb" data-testid={`rb26-thumb-${d.key}`}>
+              <figcaption>
+                <kbd>{i + 1}</kbd>
+                <strong>{d.name}</strong>
+                <span>{d.tagline}</span>
+              </figcaption>
+              <div
+                className="rb26-thumb-frame"
+                style={{ width: base.w * zoom, height: base.h * zoom }}
+                data-width={sel.w}
+                data-built={String(builds(d, sel.s))}
+              >
+                <div inert style={{ width: base.w, height: base.h, zoom }}>
+                  <Suspense fallback={<div className="rb26-loading" />}>
+                    <StageFor
+                      meta={d}
+                      props={{
+                        screen: sel.s,
+                        width: sel.w,
+                        theme: sel.t,
+                        live: false,
+                        onScreen,
+                        onTheme,
+                      }}
+                      onScreen={onScreen}
+                    />
+                  </Suspense>
                 </div>
-              </figure>
-            )
-          })
+                <button
+                  type="button"
+                  className="rb26-thumb-open"
+                  onClick={() => onSelect({ d: d.key, sbs: false })}
+                  aria-label={`Öppna ${d.name} i full storlek`}
+                />
+              </div>
+            </figure>
+          ))
         : null}
     </main>
   )
