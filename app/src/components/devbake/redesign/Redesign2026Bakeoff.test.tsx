@@ -158,11 +158,23 @@ describe('bake-off switcher', () => {
     expect(screen.getByTestId('rb26-info-built')).toHaveTextContent(
       `Byggd i ${DIRECTIONS.map((d) => d.name).join(', ')}.`,
     )
+    // Round-2 batches add screens one direction at a time, so the expected
+    // list comes from the registry rather than a fixed snapshot.
     rerender(<Redesign2026Bakeoff sel={{ ...base, s: 7 }} onSelect={() => {}} />)
     expect(screen.getByTestId('rb26-info')).toHaveTextContent('Skärm 7 · DTK')
+    const dtkBuilders = DIRECTIONS.filter((d) => builds(d, 7))
     expect(screen.getByTestId('rb26-info-built')).toHaveTextContent(
-      'Ingen riktning har byggt den här skärmen än.',
+      dtkBuilders.length === 0
+        ? 'Ingen riktning har byggt den här skärmen än.'
+        : `Byggd i ${dtkBuilders.map((d) => d.name).join(', ')}.`,
     )
+    const unbuilt = APP_SCREENS.find((s) => !DIRECTIONS.some((d) => builds(d, s.key)))
+    if (unbuilt) {
+      rerender(<Redesign2026Bakeoff sel={{ ...base, s: unbuilt.key }} onSelect={() => {}} />)
+      expect(screen.getByTestId('rb26-info-built')).toHaveTextContent(
+        'Ingen riktning har byggt den här skärmen än.',
+      )
+    }
   })
 })
 
