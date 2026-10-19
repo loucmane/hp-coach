@@ -17,7 +17,13 @@
 //     `daily-plan-skeleton` testid are the load indicators.
 
 import { expect, test } from '@playwright/test'
-import { clearMistakes, expect as authedExpect, seedMockResults, test as authedTest } from './fixtures'
+import {
+  clearMistakes,
+  expect as authedExpect,
+  seedMockResults,
+  test as authedTest,
+  waitForHomeReady,
+} from './fixtures'
 
 // ── Unauthenticated ────────────────────────────────────────────────────
 // The chromium/mobile projects apply the signed-in storageState by default
@@ -92,6 +98,10 @@ authedTest('Bottom tabs route between sections', async ({ page }, testInfo) => {
     testInfo.project.name !== 'mobile',
     'BottomTabs render only at phone viewport (EDITION dropped them on desktop)',
   )
+  // The fixture's goto('/') resolves on `load`, before Home is usable: the
+  // boot veil can still cover the bar, and the forced taps below skip the
+  // hit-target check that would otherwise wait it out.
+  await waitForHomeReady(page)
   // BottomTabs share aria-current="page" with the active tab and there
   // are multiple Hem renders during a route transition (the active tab
   // briefly overlaps the new route's chrome). Filter the locator down
@@ -137,6 +147,10 @@ authedTest('palette swatch click applies the new palette to <html>', async ({ pa
 
 authedTest('dev affordances live in the palette — no floating pills', async ({ page }) => {
   await page.goto('/?dev=1')
+  // ⌘K is a window keydown listener that can mount after `load`, so a press
+  // right after goto can be dropped. Waiting here also makes the no-pills
+  // checks below assert against a rendered Home.
+  await waitForHomeReady(page)
   // The floating pills are retired (owner call 2026-07-12): nothing
   // fixed to the viewport corner anymore.
   await authedExpect(page.getByRole('link', { name: /öppna design-tweaks/i })).toHaveCount(0)

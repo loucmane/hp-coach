@@ -24,6 +24,12 @@ export function LexiconCard({
   read?: boolean
   onToggleRead?: () => void
 }) {
+  // Both öva links open /drill?framework=<id>, which plays only this entry's
+  // example_questions; with none it would be an empty drill, so practice is
+  // offered only when there are questions to play. The read pill stays either
+  // way (alone, it sits at the start of the footer row).
+  const hasExampleQuestions = entry.example_questions && entry.example_questions.length > 0
+
   return (
     <details
       style={{
@@ -89,11 +95,13 @@ export function LexiconCard({
         >
           {entry.meaning}
         </p>
-        <PracticeLink
-          section={'ORD' as const}
-          frameworkId={entry.id}
-          label="Öva ord med denna rot"
-        />
+        {hasExampleQuestions && (
+          <PracticeLink
+            section={'ORD' as const}
+            frameworkId={entry.id}
+            label="Öva ord med denna rot"
+          />
+        )}
       </summary>
 
       <div style={{ marginTop: 20 }}>
@@ -125,9 +133,7 @@ export function LexiconCard({
             </li>
           ))}
         </ul>
-        {entry.example_questions && entry.example_questions.length > 0 && (
-          <ExampleQuestions qids={entry.example_questions} />
-        )}
+        {hasExampleQuestions && <ExampleQuestions qids={entry.example_questions} />}
         <div
           style={{
             marginTop: 24,
@@ -138,21 +144,23 @@ export function LexiconCard({
             flexWrap: 'wrap',
           }}
         >
-          <Link
-            to="/drill"
-            search={{ section: 'ORD' as const, framework: entry.id }}
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 15,
-              lineHeight: 1.4,
-              color: 'var(--ink)',
-              textDecoration: 'none',
-              borderBottom: '1px solid var(--ink)',
-              paddingBottom: 2,
-            }}
-          >
-            Öva ord med denna rot →
-          </Link>
+          {hasExampleQuestions && (
+            <Link
+              to="/drill"
+              search={{ section: 'ORD' as const, framework: entry.id }}
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 15,
+                lineHeight: 1.4,
+                color: 'var(--ink)',
+                textDecoration: 'none',
+                borderBottom: '1px solid var(--ink)',
+                paddingBottom: 2,
+              }}
+            >
+              Öva ord med denna rot →
+            </Link>
+          )}
           {onToggleRead && <MarkAsReadPill read={read} onToggle={onToggleRead} />}
         </div>
       </div>
