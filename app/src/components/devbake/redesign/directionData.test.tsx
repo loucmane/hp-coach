@@ -2,14 +2,17 @@
 // (the same prognosis, minutes, week, pile and passes, now derived with the
 // app's own functions from hook-shaped state), every screen's data, the
 // provider and its defaults, the bake-off's mapping of actions onto the
-// switcher — and a reference direction built on useDirectionData() and
-// useDrillCore alone, which passes the shared contract for screens 5–14.
+// switcher with its one theme — and a reference direction built on
+// useDirectionData() and useDrillCore alone, which passes the shared
+// contract for screens 5–14 (its Konto themes through each of the three
+// paths a screen may take).
 
 import { act, fireEvent, render, renderHook, screen } from '@testing-library/react'
-import { useState } from 'react'
+import { type ComponentType, useCallback, useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import {
   describeDirectionContract,
+  mountDirection,
   passSlug,
   sectionSlug,
 } from '@/components/devbake/redesign/contract'
@@ -38,6 +41,7 @@ import {
   type DirectionProps,
   fmtClock,
   fmtScore,
+  type ThemeKey,
 } from '@/components/devbake/redesign/r1Kit'
 import {
   MOCK_RESULTS,
@@ -47,7 +51,11 @@ import {
   PASS_RESULT,
   PILE,
 } from '@/components/devbake/redesign/r2Fixtures'
-import type { DrillSessionView, PrefsView } from '@/components/devbake/redesign/viewModel'
+import type {
+  DirectionData,
+  DrillSessionView,
+  PrefsView,
+} from '@/components/devbake/redesign/viewModel'
 import { MathText } from '@/components/MathText'
 import { normedScore } from '@/lib/normering'
 
@@ -268,10 +276,20 @@ function Provpass() {
   )
 }
 
-function Konto({ onTheme }: Pick<DirectionProps, 'onTheme'>) {
+/** How a Konto's mode buttons reach the theme: the documented action, the
+ *  preference, or round 1's prop. The reference direction takes setTheme;
+ *  the contract must pass all three. */
+type ThemeVia = 'setTheme' | 'setPrefs' | 'onTheme'
+
+function Konto({ via, onTheme }: { via: ThemeVia } & Pick<DirectionProps, 'onTheme'>) {
   const { data, actions } = useDirectionData()
   const k = data.konto
   const [ask, setAsk] = useState(false)
+  const pickMode = (mode: ThemeKey) => {
+    if (via === 'setTheme') actions.setTheme(mode)
+    else if (via === 'setPrefs') actions.setPrefs({ mode })
+    else onTheme(mode)
+  }
   return (
     <section>
       <Nav />
@@ -283,7 +301,8 @@ function Konto({ onTheme }: Pick<DirectionProps, 'onTheme'>) {
           type="button"
           key={o.key}
           data-testid={`rd-konto-mode-${o.key}`}
-          onClick={() => onTheme(o.key)}
+          aria-pressed={k.prefs.mode === o.key}
+          onClick={() => pickMode(o.key)}
         >
           {o.label}
         </button>
@@ -319,7 +338,7 @@ function Konto({ onTheme }: Pick<DirectionProps, 'onTheme'>) {
   )
 }
 
-function Reference(props: DirectionProps) {
+function Reference({ themeVia = 'setTheme', ...props }: DirectionProps & { themeVia?: ThemeVia }) {
   const { data, actions } = useDirectionData()
   const { screen: s, live } = props
   let body = null
@@ -469,7 +488,7 @@ function Reference(props: DirectionProps) {
         </article>
       </section>
     )
-  } else if (s === 13) body = <Konto onTheme={props.onTheme} />
+  } else if (s === 13) body = <Konto via={themeVia} onTheme={props.onTheme} />
   else if (s === 14) body = <Drill session={data.drills.elf} live={live} reading />
   return (
     <div data-testid="rd-referens" data-theme={props.theme} data-width={props.width} lang="sv">
@@ -478,12 +497,91 @@ function Reference(props: DirectionProps) {
   )
 }
 
+function ReferenceViaPrefs(props: DirectionProps) {
+  return <Reference {...props} themeVia="setPrefs" />
+}
+
+function ReferenceViaOnTheme(props: DirectionProps) {
+  return <Reference {...props} themeVia="onTheme" />
+}
+
+/** The reference direction, its Konto theming through each path. */
+const REFERENCE_VIA: Record<ThemeVia, ComponentType<DirectionProps>> = {
+  setTheme: Reference,
+  setPrefs: ReferenceViaPrefs,
+  onTheme: ReferenceViaOnTheme,
+}
+
 const REFERENCE_SCREENS: AppScreenKey[] = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
 describeDirectionContract(
   { name: 'The kit’s reference direction', root: 'rd-referens', screens: REFERENCE_SCREENS },
   Reference,
 )
+
+// Its Konto themes through actions.setTheme. The contract passes a Konto
+// that takes either of the other two paths as well.
+describeDirectionContract(
+  { name: 'A Konto that themes through setPrefs({ mode })', root: 'rd-referens', screens: [13] },
+  ReferenceViaPrefs,
+)
+describeDirectionContract(
+  { name: 'A Konto that themes through round 1’s onTheme', root: 'rd-referens', screens: [13] },
+  ReferenceViaOnTheme,
+)
+
+// ── The contract's stage ─────────────────────────────────────────────
+
+describe('the contract’s stage', () => {
+  it.each([
+    'setTheme',
+    'setPrefs',
+    'onTheme',
+  ] as const)('takes Konto’s mode through %s to the one theme on display', (via) => {
+    mountDirection(REFERENCE_VIA[via], 13, 'desktop')
+    const root = screen.getByTestId('rd-referens')
+    for (const mode of ['dark', 'light', 'dark'] as const) {
+      fireEvent.click(screen.getByTestId(`rd-konto-mode-${mode}`))
+      expect(root).toHaveAttribute('data-theme', mode)
+      expect(screen.getByTestId(`rd-konto-mode-${mode}`)).toHaveAttribute('aria-pressed', 'true')
+    }
+  })
+
+  it('opens on the theme it mounts in, prefs.mode with it, and reports both', () => {
+    const { stage } = mountDirection(Reference, 13, 'phone', 'dark')
+    expect(screen.getByTestId('rd-referens')).toHaveAttribute('data-theme', 'dark')
+    expect(screen.getByTestId('rd-konto-mode-dark')).toHaveAttribute('aria-pressed', 'true')
+    expect(stage().theme).toBe('dark')
+    expect(stage().data.konto.prefs.mode).toBe('dark')
+  })
+
+  it('keeps the theme when a click reaches none of the paths, so the check can fail', () => {
+    function Inert(props: DirectionProps) {
+      return (
+        <div data-testid="rd-referens" data-theme={props.theme} data-width={props.width} lang="sv">
+          <button type="button" data-testid="rd-konto-mode-dark">
+            Mörkt
+          </button>
+        </div>
+      )
+    }
+    const { stage, onTheme, actions } = mountDirection(Inert, 13, 'desktop')
+    fireEvent.click(screen.getByTestId('rd-konto-mode-dark'))
+    expect(screen.getByTestId('rd-referens')).toHaveAttribute('data-theme', 'light')
+    expect(stage().theme).toBe('light')
+    expect(onTheme).not.toHaveBeenCalled()
+    expect(actions.setTheme).not.toHaveBeenCalled()
+    expect(actions.setPrefs).not.toHaveBeenCalled()
+  })
+
+  it('keeps the theme across goTo, as the stage does on a screen change', () => {
+    const { goTo, stage } = mountDirection(Reference, 13, 'desktop')
+    fireEvent.click(screen.getByTestId('rd-konto-mode-dark'))
+    goTo(5)
+    expect(screen.getByTestId('rd-referens')).toHaveAttribute('data-theme', 'dark')
+    expect(stage().theme).toBe('dark')
+  })
+})
 
 // ── The fixture view model ───────────────────────────────────────────
 
@@ -618,15 +716,35 @@ describe('DirectionDataProvider', () => {
 })
 
 describe('the bake-off’s actions', () => {
-  function setup(screen: AppScreenKey = 1) {
+  /** The hook under the route's selection: `theme` is the switcher's `t`
+   *  (?t= on the first render), which onTheme sets as the route does and
+   *  the bar's Tema sets too (`bar`). */
+  function setup(screen: AppScreenKey = 1, initialTheme: ThemeKey = 'light') {
     const onScreen = vi.fn()
     const onTheme = vi.fn()
     const hook = renderHook(
-      (props: { screen: AppScreenKey }) =>
-        useBakeoffDirectionData({ screen: props.screen, onScreen, onTheme }),
+      (props: { screen: AppScreenKey }) => {
+        const [theme, setTheme] = useState(initialTheme)
+        const select = useCallback((t: ThemeKey) => {
+          onTheme(t)
+          setTheme(t)
+        }, [])
+        const value = useBakeoffDirectionData({
+          screen: props.screen,
+          theme,
+          onScreen,
+          onTheme: select,
+        })
+        return { ...value, theme, bar: setTheme }
+      },
       { initialProps: { screen } },
     )
     return { ...hook, onScreen, onTheme }
+  }
+
+  /** The theme on display and the data's mode: one mode, so always equal. */
+  function modes(result: { current: { theme: ThemeKey; data: DirectionData } }) {
+    return [result.current.theme, result.current.data.konto.prefs.mode]
   }
 
   it('opens each destination on its screen', () => {
@@ -680,19 +798,67 @@ describe('the bake-off’s actions', () => {
     expect(onScreen).toHaveBeenLastCalledWith(13)
   })
 
-  it('keeps the reader’s preferences and read lessons, and the theme with the switcher', () => {
-    const { result, onTheme } = setup(13)
+  it('keeps the reader’s preferences and read lessons for the session', () => {
+    const { result } = setup(13)
     act(() => result.current.actions.setPrefs({ coach: 'kompis' }))
     expect(result.current.data.konto.prefs.coach).toBe('kompis')
-    act(() => result.current.actions.setPrefs({ mode: 'dark' }))
-    expect(onTheme).toHaveBeenLastCalledWith('dark')
-    result.current.actions.setTheme('light')
-    expect(onTheme).toHaveBeenLastCalledWith('light')
     expect(result.current.data.uppslag.open.read).toBe(false)
     act(() => result.current.actions.toggleLessonRead(OPEN_LESSON_ID))
     expect(result.current.data.uppslag.open.read).toBe(true)
     act(() => result.current.actions.toggleLessonRead(OPEN_LESSON_ID))
     expect(result.current.data.uppslag.open.read).toBe(false)
+  })
+
+  it('opens with prefs.mode on the switcher’s theme: a dark ?t= is a dark Konto', () => {
+    expect(modes(setup(13).result)).toEqual(['light', 'light'])
+    expect(modes(setup(13, 'dark').result)).toEqual(['dark', 'dark'])
+  })
+
+  it('keeps one mode when setPrefs({ mode }) comes before setTheme', () => {
+    const { result, onTheme } = setup(13)
+    act(() => result.current.actions.setPrefs({ mode: 'dark' }))
+    expect(modes(result)).toEqual(['dark', 'dark'])
+    act(() => result.current.actions.setTheme('light'))
+    expect(modes(result)).toEqual(['light', 'light'])
+    expect(onTheme.mock.calls).toEqual([['dark'], ['light']])
+  })
+
+  it('keeps one mode when setTheme comes before setPrefs({ mode })', () => {
+    const { result, onTheme } = setup(13)
+    act(() => result.current.actions.setTheme('dark'))
+    expect(modes(result)).toEqual(['dark', 'dark'])
+    act(() => result.current.actions.setPrefs({ mode: 'light' }))
+    expect(modes(result)).toEqual(['light', 'light'])
+    expect(onTheme.mock.calls).toEqual([['dark'], ['light']])
+  })
+
+  it('follows the bar’s Tema, and the other preferences leave the mode alone', () => {
+    const { result, onTheme } = setup(13)
+    act(() => result.current.bar('dark'))
+    expect(modes(result)).toEqual(['dark', 'dark'])
+    act(() => result.current.actions.setPrefs({ coach: 'kompis', density: 'compact' }))
+    expect(result.current.data.konto.prefs).toMatchObject({
+      coach: 'kompis',
+      density: 'compact',
+      mode: 'dark',
+    })
+    // A patch with the mode and more: the mode goes to the switcher, the
+    // rest is kept.
+    act(() => result.current.actions.setPrefs({ mode: 'light', palette: 'sage' }))
+    expect(modes(result)).toEqual(['light', 'light'])
+    expect(result.current.data.konto.prefs).toMatchObject({ palette: 'sage', coach: 'kompis' })
+    expect(onTheme.mock.calls).toEqual([['light']])
+  })
+
+  it('changes only Konto when the theme changes: the drills and actions keep their objects', () => {
+    const { result } = setup(6)
+    const before = result.current
+    act(() => result.current.actions.setTheme('dark'))
+    expect(result.current.data.konto.prefs.mode).toBe('dark')
+    expect(result.current.data.drills).toBe(before.data.drills)
+    expect(result.current.data.home).toBe(before.data.home)
+    expect(result.current.data.provpass).toBe(before.data.provpass)
+    expect(result.current.actions).toBe(before.actions)
   })
 
   it('leaves a drill for the screen it was started from', () => {
@@ -711,10 +877,57 @@ describe('the bake-off’s actions', () => {
 })
 
 describe('the reference direction inside the bake-off’s provider', () => {
+  it('keeps Konto’s pressed mode on the theme on display, by each path', () => {
+    function Stage({ via }: { via: ThemeVia }) {
+      // A dark ?t=; the route sets `t` from whatever the screen calls.
+      const [theme, setTheme] = useState<ThemeKey>('dark')
+      const value = useBakeoffDirectionData({
+        screen: 13,
+        theme,
+        onScreen: () => {},
+        onTheme: setTheme,
+      })
+      return (
+        <DirectionDataProvider data={value.data} actions={value.actions}>
+          <Reference
+            screen={13}
+            width="desktop"
+            theme={theme}
+            live={false}
+            onScreen={() => {}}
+            onTheme={setTheme}
+            themeVia={via}
+          />
+        </DirectionDataProvider>
+      )
+    }
+    const shown = () => [
+      screen.getByTestId('rd-referens').dataset.theme,
+      screen
+        .getAllByRole('button', { pressed: true })
+        .map((b) => b.dataset.testid)
+        .filter((id) => id?.startsWith('rd-konto-mode-')),
+    ]
+    for (const via of ['setTheme', 'setPrefs', 'onTheme'] as const) {
+      const { unmount } = render(<Stage via={via} />)
+      expect(shown()).toEqual(['dark', ['rd-konto-mode-dark']])
+      fireEvent.click(screen.getByTestId('rd-konto-mode-light'))
+      expect(shown()).toEqual(['light', ['rd-konto-mode-light']])
+      fireEvent.click(screen.getByTestId('rd-konto-mode-dark'))
+      expect(shown()).toEqual(['dark', ['rd-konto-mode-dark']])
+      unmount()
+    }
+  })
+
   it('starts a KVA drill from Öva and lands on Kvantfråga', () => {
     const onSelect = vi.fn()
     function Stage() {
-      const value = useBakeoffDirectionData({ screen: 5, onScreen: onSelect, onTheme: () => {} })
+      const value = useBakeoffDirectionData({
+        screen: 5,
+        theme: 'light',
+        onScreen: onSelect,
+        onTheme: () => {},
+      })
       return (
         <DirectionDataProvider data={value.data} actions={value.actions}>
           <Reference

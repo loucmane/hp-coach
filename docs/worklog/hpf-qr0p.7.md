@@ -3,7 +3,7 @@
 Epic hpf-qr0p (whole-app redesign bake-off). This bead builds the shared foundation the eight directions and the real-app switcher build on in round 2. Design and reference: `docs/redesign/kit-v2.md`.
 
 - **Where.** Worktree `/home/loucmane/dev/hpfetcher-worktrees/hpf-qr0p.7`, branch `codex/hpf-qr0p.7-redesign-round-2-kit-v2-view-model-data-context-drill-core-s`, base `b777074` (origin/main).
-- **State.** All changes are UNCOMMITTED. The bead is not closed. No dependency changes, and nothing inside the eight direction folders changed.
+- **State.** Round 1 was committed by the coordinator as `27aa4d7`. Round 2's review fix (last section) is UNCOMMITTED on top of it. The bead is not closed. No dependency changes, and nothing inside the eight direction folders changed.
 
 ## Outcome
 
@@ -143,3 +143,79 @@ Epic hpf-qr0p (whole-app redesign bake-off). This bead builds the shared foundat
 - **E–H.** They can now replace their copies of the round-1 contract with `describeDirectionContract(meta, Component)` and declare screens as they build them. The reference direction in `directionData.test.tsx` shows the minimum for each of 5–14.
 - **Untracked sandbox masks.** `git status` inside the command sandbox lists `.bashrc`, `.gitconfig`, `.gitmodules`, `.mcp.json`, `app/.claude/*`, `app/.mcp.json` and others as untracked. They are the sandbox's `/dev/null` mount masks (character devices 1,3), not files of this change. Do not commit them.
 - **Docs written through `cp`.** The Write tool was refused for `docs/` in this session (both files of the write set), so the two docs were written in the scratchpad and copied in with `cp`.
+
+## Round 2 — review fix (Codex review hpf-xt7p: HOLD, two P2 theme-path defects)
+
+The review covered head `27aa4d7`. I worked from the bead's DESIGN field, which names both defects with their file and line. The full review file is under `/home/loucmane/vaults/`, which is outside this session's sandbox read boundary, so I did not open it.
+
+### The defects
+
+1. **Two copies of the mode** (`directionData.tsx:1047-1050`, `Redesign2026Bakeoff.tsx:110`). The bake-off hook kept its own `prefs.mode` beside the switcher's `t`: it started at `PREFS` and only `setPrefs` changed it. The hook also received no theme. As a result:
+   - `setPrefs({ mode: 'dark' })` followed by `setTheme('light')` showed light while `prefs.mode` said dark;
+   - a dark `?t=` and the bar's Tema left `prefs.mode` light.
+2. **The contract accepted only `onTheme`** (`contract.ts:668-669`). Screen 13 asserted the legacy callback. Meanwhile `mountDirection` handed the direction a separate `actions.setTheme` spy and a fixed theme. So a Konto that uses the documented `actions.setTheme`, or `setPrefs({ mode })`, failed the contract.
+
+### Red first
+
+I wrote the tests first and ran them on the unfixed head. The two suites had 247 tests, and **17 failed**, each on the defect's own assertion. The JSON report is in the session scratchpad.
+
+**Defect 1: 7 failures.**
+- **The page.** `Redesign2026Bakeoff.test.tsx` mounts the real `Redesign2026Bakeoff` under the route's state, with a probe in Folio's place on screen 4. With `?t=dark`, `[page, stage, prefs.mode]` was `['dark', 'dark', 'light']`.
+- **The hook under the route's state.** Each pair is `[theme, prefs.mode]`:
+  - a dark `?t=` gave `['dark', 'light']`;
+  - `setPrefs({ mode: 'dark' })` then `setTheme('light')` gave `['light', 'dark']`;
+  - `setTheme('dark')` then `setPrefs({ mode: 'light' })` gave `['dark', 'light']` after its first step;
+  - the bar's Tema gave `['dark', 'light']`;
+  - a theme change on Kvantfråga left `prefs.mode` at `'light'`.
+- **The reference Konto in the bake-off's provider.** Under a dark page, the pressed mode was `rd-konto-mode-light`.
+
+**Defect 2: 10 failures.**
+- **The contract on the reference direction**, whose Konto now themes through `actions.setTheme`. Screen 13 failed at both widths with `expected "vi.fn()" to be called with arguments: [ 'dark' ]`.
+- **The same contract on a Konto that themes through `setPrefs({ mode })`.** It failed at both widths. A Konto using `onTheme` passed, because that was the only path the old contract accepted.
+- **The contract's stage.**
+  - `setTheme`, `setPrefs` and even `onTheme` left the root at `data-theme="light"`, because the mount's theme was fixed.
+  - A dark mount's Konto showed light as pressed.
+  - The theme was lost across `goTo`.
+  - The read-back did not exist yet (`stage is not a function`).
+
+### The fix
+
+- **`useSessionPrefs({ theme, onTheme })`** (new, `directionData.tsx`). This is the one mode:
+  - the other preferences are kept in state, and `prefs.mode` is `theme`, never stored;
+  - `setTheme(t)` and `setPrefs({ mode })` both call `onTheme`, and the rest of a patch is kept;
+  - `withPrefs(data, prefs)` swaps Konto's prefs and leaves every other screen's objects as they are.
+- **`useBakeoffDirectionData` now requires `theme`**, and `Redesign2026Bakeoff` passes `sel.t`. Every way to change the theme now ends in `t`: `?t=`, the bar, `setTheme`, `setPrefs({ mode })`, and a direction's `onTheme`. `prefs.mode` is read from `t`.
+- **The data is built from the read lessons only.** A theme or preference change makes a new top-level object and a new Konto. The drills, Home and the other screens keep their objects, so a theme toggle on a drill screen does not churn a direction's drill inputs. `openPlanItem` reads that base data, so the actions also keep their identity on a toggle. A test pins this.
+- **`contract.ts`: the stage keeps one theme.**
+  - `mountDirection` mounts a stage host that keeps one theme through the same `useSessionPrefs`.
+  - `onTheme`, `actions.setTheme` and `actions.setPrefs` are spies that also reach that theme (`spyActions(theme?)`).
+  - `mountDirection` returns `stage()`, which gives `{ theme, data }`, and `goTo` keeps the theme.
+  - `expectTheme(root, stage, t)` checks three things: the stage's theme, `prefs.mode`, and the root's `data-theme`.
+  - Screen 13 switches the mode to dark and back to light. Screen 4's toggle (to dark) is checked the same way.
+- **The reference direction.** Its Konto themes through `actions.setTheme` and marks the pressed mode from `prefs.mode`. Two variants of it run screen 13 of the contract, through `setPrefs({ mode })` and through `onTheme`.
+
+### Decisions
+
+- **Screen 4's check changed as well.** It asserted that `onTheme` was called. That is the same defect: a correct screen-4 toggle through `actions.setTheme` would have failed. It now asserts the theme the stage shows. A–D (Folio, Instrument, Spår, Lager) pass it unchanged at both widths. The contract's header and `kit-v2.md` §5 record the change.
+- **Directions outside a provider** still get the fixtures' `light` and a no-op `setTheme`. `kit-v2.md` §3 now says so, and points theme tests to `mountDirection`.
+- **No direction folder changed.** E–H's own copies of the round-1 contract are untouched and pass.
+
+### Files (round 2)
+
+| File | Change |
+|---|---|
+| `app/src/components/devbake/redesign/directionData.tsx` | `useSessionPrefs` and `withPrefs`; `useBakeoffDirectionData` takes `theme`; the data is built from the read lessons, with Konto swapped on prefs |
+| `app/src/components/devbake/redesign/Redesign2026Bakeoff.tsx` | passes `theme: sel.t` |
+| `app/src/components/devbake/redesign/contract.ts` | the one-theme stage in `mountDirection` (with `stage()`), `spyActions(theme?)`, `ContractStage` and `expectTheme`; screens 4 and 13 assert the theme shown |
+| `app/src/components/devbake/redesign/directionData.test.tsx` | +24 tests: the contract on the two Konto variants (12); the contract's stage (6); one mode in the hook (5); the reference Konto in the bake-off's provider (1). The Konto takes a `themeVia` |
+| `app/src/components/devbake/redesign/Redesign2026Bakeoff.test.tsx` | +1 test: one theme through the real page |
+| `docs/redesign/kit-v2.md` | §3: "One mode" and the action table; §5: the stage's one theme, the ids for screens 4 and 13, the round-1 note; §6: step 3 |
+| `docs/worklog/hpf-qr0p.7.md` | this section |
+
+### Verification (from `app/`, run as `pnpm -C app exec …`)
+
+- **`vitest run`:** **101 files, 1493 tests passed**: round 1's 1468 plus these 25. The two suites alone run 247.
+- **`tsc -b --noEmit`:** clean.
+- **`biome check src`:** passes, with the same 4 pre-existing infos in files outside this bead.
+- **`node scripts/redesign-fixtures.mjs --check`:** up to date.
+- **No new screenshots.** The fix changes state wiring only. No direction draws Konto yet, and the bar, the stage and the not-built card render as before.

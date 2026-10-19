@@ -12,7 +12,8 @@
 // built (screensOf); on the others the stage shows the shared "Inte byggd
 // än" card, so all fourteen screens work in every direction today. Kit v2:
 // the stage sits in a DirectionDataProvider fed by the fixtures, its
-// actions mapped onto the switcher (directionData.tsx).
+// actions mapped onto the switcher and its prefs.mode the switcher's theme
+// (directionData.tsx).
 
 import {
   ChevronLeft,
@@ -107,7 +108,10 @@ export function Redesign2026Bakeoff({
   selectRef.current = onSelect
   const onScreen = useCallback((s: AppScreenKey) => selectRef.current({ s }), [])
   const onTheme = useCallback((t: ThemeKey) => selectRef.current({ t }), [])
-  const direction = useBakeoffDirectionData({ screen: sel.s, onScreen, onTheme })
+  // One theme: `t` is shown, handed to the direction and is prefs.mode in
+  // its data, and every way to change it (the bar, onTheme, setTheme,
+  // setPrefs({ mode })) sets `t`.
+  const direction = useBakeoffDirectionData({ screen: sel.s, theme: sel.t, onScreen, onTheme })
 
   // 1–8 direction, ←/→ screen, 0 side by side. Directions see keys first
   // (capture phase) and mark the ones they use.

@@ -8,17 +8,25 @@
 //
 //   describeDirectionContract(meta, Folio)
 //
-// Screens 1–4 keep round 1's checks exactly. Screens 5–14 check what
-// docs/redesign/kit-v2.md asks each to show, through the ids below and the
-// actions a screen requests (useDirectionData().actions, spied here): the
-// suite mounts the direction inside a DirectionDataProvider fed by the
-// fixtures.
+// Screens 1–4 keep round 1's checks except the theme switch's. Screens
+// 5–14 check what docs/redesign/kit-v2.md asks each to show, through the
+// ids below and the actions a screen requests (useDirectionData().actions,
+// spied here): the suite mounts the direction inside a
+// DirectionDataProvider fed by the fixtures, on a stage with one theme.
+// A theme switch (4, and Konto's mode on 13) is checked by the theme the
+// stage then shows, whichever of onTheme, actions.setTheme or
+// actions.setPrefs({ mode }) the direction took: all three reach it.
 
 import { fireEvent, render, screen, within } from '@testing-library/react'
-import { type ComponentType, createElement } from 'react'
-import { beforeAll, describe, expect, it, vi } from 'vitest'
+import { type ComponentType, createElement, useMemo, useState } from 'react'
+import { beforeAll, describe, expect, it, type Mock, vi } from 'vitest'
 
-import { DirectionDataProvider, FIXTURE_DATA } from '@/components/devbake/redesign/directionData'
+import {
+  DirectionDataProvider,
+  FIXTURE_DATA,
+  useSessionPrefs,
+  withPrefs,
+} from '@/components/devbake/redesign/directionData'
 import { screensOf } from '@/components/devbake/redesign/directions'
 import { LOCAL_CONTROLLER } from '@/components/devbake/redesign/drillCore'
 import {
@@ -35,7 +43,7 @@ import {
   type ThemeKey,
   type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
-import type { DirectionActions } from '@/components/devbake/redesign/viewModel'
+import type { DirectionActions, DirectionData } from '@/components/devbake/redesign/viewModel'
 import type { Section } from '@/data/questions'
 
 // ── The ids ──────────────────────────────────────────────────────────
@@ -223,8 +231,11 @@ function subjectOf(meta: DirectionMeta | ContractSubject): ContractSubject {
   return { name: meta.name, root: `rd-${meta.slug.slice(2)}`, screens: screensOf(meta) }
 }
 
-/** Actions that record their calls; the drill still grades. */
-export function spyActions(): DirectionActions {
+type ThemeActions = Pick<DirectionActions, 'setTheme' | 'setPrefs'>
+
+/** Actions that record their calls; the drill still grades. `theme` is
+ *  what setTheme and setPrefs do besides (the stage's one theme). */
+export function spyActions(theme?: ThemeActions): DirectionActions {
   return {
     go: vi.fn(),
     resume: vi.fn(),
@@ -237,8 +248,8 @@ export function spyActions(): DirectionActions {
     startProvpass: vi.fn(),
     submitProvpass: vi.fn(),
     openProvResult: vi.fn(),
-    setTheme: vi.fn(),
-    setPrefs: vi.fn(),
+    setTheme: vi.fn(theme?.setTheme),
+    setPrefs: vi.fn(theme?.setPrefs),
     exportData: vi.fn(),
     deleteAccount: vi.fn(),
     signOut: vi.fn(),
@@ -251,26 +262,99 @@ export function spyActions(): DirectionActions {
   }
 }
 
-/** Mounts a direction the way the stage does, inside a provider with
- *  spied actions. `goTo` is what the stage does when a direction asks for
- *  a screen. */
+/** What the contract's stage shows now: its one theme, and the data its
+ *  provider serves (prefs.mode is that theme). */
+export type ContractStage = { theme: ThemeKey; data: DirectionData }
+
+/** The stage's theme, bound to the mounted stage once it renders. */
+type StageLink = ThemeActions & { shown: ContractStage }
+
+/**
+ * The contract's stage: the fixtures, with ONE theme on display that the
+ * direction's `onTheme` and its context's `setTheme` and
+ * `setPrefs({ mode })` all reach — useSessionPrefs, as in the bake-off.
+ */
+function ContractStageHost({
+  Component,
+  screen: s,
+  width,
+  initialTheme,
+  link,
+  onScreen,
+  onTheme,
+  actions,
+}: {
+  Component: ComponentType<DirectionProps>
+  screen: AppScreenKey
+  width: WidthKey
+  initialTheme: ThemeKey
+  link: StageLink
+  onScreen: DirectionProps['onScreen']
+  onTheme: DirectionProps['onTheme']
+  actions: DirectionActions
+}) {
+  const [theme, setTheme] = useState(initialTheme)
+  const session = useSessionPrefs({ theme, onTheme: setTheme })
+  const data = useMemo(() => withPrefs(FIXTURE_DATA, session.prefs), [session.prefs])
+  link.setTheme = session.setTheme
+  link.setPrefs = session.setPrefs
+  link.shown = { theme, data }
+  return createElement(
+    DirectionDataProvider,
+    { data, actions },
+    createElement(Component, { screen: s, width, theme, live: true, onScreen, onTheme }),
+  )
+}
+
+/**
+ * Mounts a direction the way the stage does: inside a provider with spied
+ * actions, on a stage with one theme (`theme` to start). `onTheme`,
+ * `actions.setTheme` and `actions.setPrefs({ mode })` are spies that also
+ * change that theme; `stage()` reads back what it shows. `goTo` is what
+ * the stage does when a direction asks for a screen (the theme stays).
+ */
 export function mountDirection(
   Component: ComponentType<DirectionProps>,
   screenKey: AppScreenKey,
   width: WidthKey,
   theme: ThemeKey = 'light',
-) {
-  const onScreen = vi.fn()
-  const onTheme = vi.fn()
-  const actions = spyActions()
+): {
+  onScreen: Mock<DirectionProps['onScreen']>
+  onTheme: Mock<DirectionProps['onTheme']>
+  actions: DirectionActions
+  goTo: (s: AppScreenKey) => void
+  stage: () => ContractStage
+} {
+  const link: StageLink = {
+    setTheme: () => {},
+    setPrefs: () => {},
+    shown: { theme, data: FIXTURE_DATA },
+  }
+  const onScreen = vi.fn<DirectionProps['onScreen']>()
+  const onTheme = vi.fn<DirectionProps['onTheme']>((t) => link.setTheme(t))
+  const actions = spyActions({
+    setTheme: (t) => link.setTheme(t),
+    setPrefs: (patch) => link.setPrefs(patch),
+  })
   const tree = (s: AppScreenKey) =>
-    createElement(
-      DirectionDataProvider,
-      { actions },
-      createElement(Component, { screen: s, width, theme, live: true, onScreen, onTheme }),
-    )
+    createElement(ContractStageHost, {
+      Component,
+      screen: s,
+      width,
+      initialTheme: theme,
+      link,
+      onScreen,
+      onTheme,
+      actions,
+    })
   const utils = render(tree(screenKey))
-  return { onScreen, onTheme, actions, goTo: (s: AppScreenKey) => utils.rerender(tree(s)) }
+  return {
+    onScreen,
+    onTheme,
+    actions,
+    goTo: (s: AppScreenKey) => utils.rerender(tree(s)),
+    stage: () => link.shown,
+  }
 }
 
 /** jsdom has no layout: give the scroll and resize APIs inert stand-ins. */
@@ -303,6 +387,14 @@ export function visible(el: HTMLElement | null): boolean {
 function expectNav(): void {
   for (const d of DESTINATIONS) expect(screen.getByTestId(`rd-nav-${d.id}`)).toBeInTheDocument()
   expect(screen.getByTestId('rd-account')).toBeInTheDocument()
+}
+
+/** The stage shows `theme`: its one theme, the direction's root and
+ *  prefs.mode in the data agree on it. */
+function expectTheme(root: string, stage: () => ContractStage, theme: ThemeKey): void {
+  expect(stage().theme).toBe(theme)
+  expect(stage().data.konto.prefs.mode).toBe(theme)
+  expect(screen.getByTestId(root)).toHaveAttribute('data-theme', theme)
 }
 
 /** Math is rendered, never shown raw: no U+E000/U+E001 markers and no
@@ -454,13 +546,13 @@ export function describeDirectionContract(
 
       if (has(4)) {
         it('Navigering: the account menu is open and switches the theme', () => {
-          const { onTheme } = mount(4)
+          const { stage } = mount(4)
           expect(screen.getByTestId('rd-account-menu')).toBeInTheDocument()
           for (const d of DESTINATIONS) {
             expect(screen.getByTestId(`rd-nav-${d.id}`)).toBeInTheDocument()
           }
           fireEvent.click(screen.getByTestId('rd-theme-toggle'))
-          expect(onTheme).toHaveBeenCalledWith('dark')
+          expectTheme(subject.root, stage, 'dark')
         })
       }
 
@@ -659,14 +751,17 @@ export function describeDirectionContract(
 
       if (has(13)) {
         it('Konto & inställningar: identity, every preference, export, and a delete that asks first', () => {
-          const { actions, onTheme } = mount(13)
+          const { actions, stage } = mount(13)
           expectNav()
           const k = D.konto
           const identity = screen.getByTestId('rd-konto-identity')
           expect(identity).toHaveTextContent(k.identity.name)
           expect(identity).toHaveTextContent(k.identity.email)
-          fireEvent.click(screen.getByTestId('rd-konto-mode-dark'))
-          expect(onTheme).toHaveBeenCalledWith('dark')
+          // The mode themes the stage, both ways, by any of the three paths.
+          for (const mode of ['dark', 'light'] as const) {
+            fireEvent.click(screen.getByTestId(`rd-konto-mode-${mode}`))
+            expectTheme(subject.root, stage, mode)
+          }
           for (const pref of ['palette', 'font', 'density', 'coach'] as const) {
             const other = k.options[pref].find((o) => o.key !== k.prefs[pref])
             if (!other) continue

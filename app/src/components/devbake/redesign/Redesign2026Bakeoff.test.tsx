@@ -4,10 +4,12 @@
 // all fourteen screens, the registry's eight directions and their declared
 // screens, and the stage: every key mounts its folder's stage on a screen
 // it has built, the shared "Inte byggd än" card on every other screen at
-// both widths and themes, and side by side. Directions E–H run the same
-// contract from their own tests as they adopt it.
+// both widths and themes, and side by side, and its data context keeps one
+// theme with the switcher. Directions E–H run the same contract from their
+// own tests as they adopt it.
 
 import { fireEvent, render, screen, within } from '@testing-library/react'
+import { useState } from 'react'
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { Folio } from '@/components/devbake/redesign/a-folio/Folio'
 import { meta as folioMeta } from '@/components/devbake/redesign/a-folio/meta'
@@ -18,6 +20,7 @@ import { Spar } from '@/components/devbake/redesign/c-spar/Spar'
 import { describeDirectionContract, stubLayout } from '@/components/devbake/redesign/contract'
 import { Lager } from '@/components/devbake/redesign/d-lager/Lager'
 import { meta as lagerMeta } from '@/components/devbake/redesign/d-lager/meta'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
   builds,
   DEFAULT_SCREENS,
@@ -32,6 +35,7 @@ import {
 import {
   APP_SCREENS,
   type DirectionMeta,
+  type DirectionProps,
   DIRECTIONS as KIT_DIRECTIONS,
   SCREENS,
   THEMES,
@@ -361,6 +365,61 @@ describe('bake-off stage', () => {
       const card = within(thumbs[i]).getByTestId('rd-not-built')
       expect(card).toHaveTextContent(`Inte byggd än i ${d.name}.`)
       expect(card).toHaveTextContent('Framsteg')
+    }
+  })
+
+  it('keeps one theme: prefs.mode is the switcher’s t from ?t= on, however it changes', () => {
+    // A probe in Folio's place on screen 4 (Folio builds it) reads the
+    // stage's data context and themes by each path a screen may take.
+    function Probe({ theme, onTheme }: DirectionProps) {
+      const { data, actions } = useDirectionData()
+      const other = theme === 'dark' ? 'light' : 'dark'
+      return (
+        <div data-testid="probe" data-theme={theme} data-mode={data.konto.prefs.mode}>
+          <button
+            type="button"
+            data-testid="probe-set-theme"
+            onClick={() => actions.setTheme(other)}
+          />
+          <button
+            type="button"
+            data-testid="probe-set-prefs"
+            onClick={() => actions.setPrefs({ mode: other })}
+          />
+          <button type="button" data-testid="probe-on-theme" onClick={() => onTheme(other)} />
+        </div>
+      )
+    }
+    /** The route: the selection is the URL's, onSelect merges into it. */
+    function Page({ initial }: { initial: Selection }) {
+      const [sel, setSel] = useState(initial)
+      return (
+        <Redesign2026Bakeoff sel={sel} onSelect={(next) => setSel((s) => ({ ...s, ...next }))} />
+      )
+    }
+    const folio = STAGES.a
+    STAGES.a = Probe
+    try {
+      render(<Page initial={{ ...base, s: 4, t: 'dark' }} />)
+      /** The page's theme, the one the stage hands the direction, and the
+       *  mode in its data context. */
+      const shown = () => {
+        const probe = screen.getByTestId('probe')
+        return [screen.getByTestId('rb26').dataset.theme, probe.dataset.theme, probe.dataset.mode]
+      }
+      expect(shown()).toEqual(['dark', 'dark', 'dark'])
+      fireEvent.click(screen.getByTestId('rb26-theme-light'))
+      expect(shown()).toEqual(['light', 'light', 'light'])
+      // setPrefs then setTheme, onTheme, setTheme then setPrefs: each flips
+      // all three together.
+      let now = 'light'
+      for (const path of ['set-prefs', 'set-theme', 'on-theme', 'set-theme', 'set-prefs']) {
+        fireEvent.click(screen.getByTestId(`probe-${path}`))
+        now = now === 'dark' ? 'light' : 'dark'
+        expect(shown()).toEqual([now, now, now])
+      }
+    } finally {
+      STAGES.a = folio
     }
   })
 })

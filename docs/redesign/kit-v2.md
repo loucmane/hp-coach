@@ -5,7 +5,7 @@ Bead hpf-qr0p.7, epic hpf-qr0p. Round 1 (docs/redesign/2026-10-round1-brief.md) 
 | File (`app/src/components/devbake/redesign/`) | What it holds |
 |---|---|
 | `viewModel.ts` | The view model: TypeScript types for every screen, shaped so the real hooks can fill them. |
-| `directionData.tsx` | `DirectionDataProvider` / `useDirectionData()`: `{ data, actions }`; the builders that derive the view model from hook-shaped data; the bake-off's mapping of actions onto its switcher. |
+| `directionData.tsx` | `DirectionDataProvider` / `useDirectionData()`: `{ data, actions }`; the builders that derive the view model from hook-shaped data; the bake-off's mapping of actions onto its switcher, with one theme (`useSessionPrefs`). |
 | `drillCore.ts` | `useDrillCore`: the drill's interaction state for any question shape, graded by a `DrillController`; passage parsing and ¶ citations. |
 | `r1Kit.ts` | The bake-off's metadata, the 14 screens (`APP_SCREENS`), round 1's `useDrill` (now a thin wrapper over the core) and the small hooks. |
 | `directions.ts` | The registry: `DIRECTIONS`, `STAGES`, and `screensOf(meta)` / `builds(meta, screen)`. |
@@ -136,14 +136,26 @@ The bake-off wraps its stage, single or side by side, in `<DirectionDataProvider
 | `startProvpass(passId)` | start a pass | 9 (the screen shows it running) | `/prov?run=1` after the ConfirmSheet; `useStartSession` |
 | `submitProvpass()` | hand in | 10 | MockRunner's settle → `useSubmitMockResult` |
 | `openProvResult(id)` | a result | 10 | `/prov?result=ID` |
-| `setTheme(t)` | light/dark | `onTheme` | `useSyncedPrefs().setMode` |
-| `setPrefs(patch)` | palette, font, density, coach, smart drills | kept for the session (mode also themes the page) | `useSyncedPrefs()` setters |
+| `setTheme(t)` | light/dark | sets the switcher's `t` (through `onTheme`) | `useSyncedPrefs().setMode` |
+| `setPrefs(patch)` | palette, font, density, coach, smart drills; `mode` is `setTheme(mode)` | kept for the session; `mode` sets `t` like `setTheme` | `useSyncedPrefs()` setters |
 | `exportData()` | export | nothing | `useExportData()` → `downloadExport` |
 | `deleteAccount()` | delete (after the screen's own confirm) | nothing | `useDeleteAccount()` → Clerk `signOut()` |
 | `signOut()` | sign out | nothing | Clerk `signOut()` → `/sign-in` |
 | `drill` | the `DrillController` for `useDrillCore` | grades against the answer; `exit` returns to the screen the drill was started from | wraps SessionPlayer: lock → `onPick`, next → `onNext` (§4) |
 
 Round 1's `DirectionProps.onScreen` keeps moving the switcher between screens 1–4 (lock → Facit, Nästa → Läsfråga, Avsluta → Idag). Round-2 screens ask through `actions` instead: they express intent, never a screen number, so the same screen works in the real app.
+
+**One mode.** There is one theme state, and `data.konto.prefs.mode` is it, never a copy. The host derives `prefs.mode` from the same state that drives `DirectionProps.theme`, so the theme on display, `theme` and `prefs.mode` always agree:
+
+- on the first render, including from `?t=dark`;
+- after the bar's Tema;
+- after any of a screen's three ways to change the mode: `actions.setTheme(t)`, `actions.setPrefs({ mode: t })`, or round 1's `DirectionProps.onTheme(t)`. All three set that one state.
+
+A direction may use any of them. New screens should use `actions.setTheme`, and read the mode from `theme` or `prefs.mode`, which are the same value.
+
+- **The bake-off.** The state is the switcher's `t`. `useBakeoffDirectionData({ screen, theme: sel.t, onScreen, onTheme })` builds on `useSessionPrefs({ theme, onTheme })`, which holds the other preferences for the session and returns `prefs` with `mode: theme`.
+- **The real app.** The state is `useUiStore().mode`, written through `useSyncedPrefs().setMode`. A real provider reads `prefs.mode` from the store, not from a second copy.
+- **Outside a provider.** The fixtures say `light` and `setTheme` does nothing. Test theme behaviour through `mountDirection` (§5), whose stage keeps one theme.
 
 ## 4. The drill core (`drillCore.ts`)
 
@@ -184,7 +196,17 @@ import { describeDirectionContract } from '@/components/devbake/redesign/contrac
 describeDirectionContract(meta, Svep)
 ```
 
-The suite checks only the screens the direction declares (`screensOf(meta)`), at both widths. It mounts the direction inside a `DirectionDataProvider` with spied actions, so it can assert that a section starts its drill or a delete asks first. Round 1's checks for screens 1–4 are unchanged (they were the hand-written A–D loop). Every declared screen must also render in both themes with its root carrying `data-theme`, `data-width` and `lang="sv"`, and focus screens must carry `rd-exit`.
+The suite checks only the screens the direction declares (`screensOf(meta)`), at both widths. It mounts the direction inside a `DirectionDataProvider` with spied actions, so it can assert that a section starts its drill or a delete asks first. Every declared screen must also render in both themes with its root carrying `data-theme`, `data-width` and `lang="sv"`, and focus screens must carry `rd-exit`.
+
+**The stage's one theme.** The mount (`mountDirection(Component, screen, width, theme?)`) holds one theme, with `useSessionPrefs` as in the bake-off. The direction's `onTheme` and its context's `setTheme` and `setPrefs({ mode })` are spies that also set that theme, and `stage()` reads back `{ theme, data }`. A theme switch is checked by what the stage then shows, whichever path the direction took:
+
+- the stage's theme;
+- the root's `data-theme`;
+- `prefs.mode`.
+
+This covers screen 4's toggle (to dark) and Konto's mode on 13 (to dark and back).
+
+**Round 1's checks.** They are the hand-written A–D loop for screens 1–4, kept as they were, except the theme switch: screen 4 asserted that `onTheme` was called, and now asserts the theme shown. A–D pass it unchanged.
 
 The ids per screen are listed in `CONTRACT`:
 
@@ -206,7 +228,7 @@ The ids per screen are listed in `CONTRACT`:
 | 1 | `rd-<riktning>` root, `rd-resume` (exactly one) |
 | 2 | `rd-exit`, `rd-badge` (outside `rd-passage`), `rd-note-toggle`, `rd-note`, `rd-passage`, `rd-para-<n>`, `rd-option-<L>`, `rd-eliminate-<L>`, `rd-lock`, `rd-sheet` (phone, `data-state` peek/open/full) |
 | 3 | feedback ids, `rd-cite-<n>` |
-| 4 | `rd-account-menu`, `rd-theme-toggle`, `rd-collapse` (desktop) |
+| 4 | `rd-account-menu`, `rd-theme-toggle` (themes the stage dark, by any of the three paths), `rd-collapse` (desktop) |
 | 5 | `rd-ova-section-<sektion>` (each shows its waiting count), `rd-ova-repetera` (due-now count; opens Repetera), `rd-ova-mixed` |
 | 6 | `rd-quant-prompt` (math rendered), `rd-quant-option-<L>`, feedback ids |
 | 7 | `rd-figure` (an image named by the figure's alt), `rd-quant-prompt`, `rd-quant-option-<L>`, feedback ids |
@@ -215,10 +237,10 @@ The ids per screen are listed in `CONTRACT`:
 | 10 | `rd-prov-result`, `rd-prov-score`, `rd-prov-section-<sektion>`, `rd-prov-history`, `rd-prov-history-item-<n>` |
 | 11 | `rd-framsteg-prognosis` (+ the caveat on screen), `rd-framsteg-section-<sektion>`, `rd-framsteg-week`, `rd-framsteg-history`, `rd-framsteg-history-item-<n>` |
 | 12 | `rd-uppslag-section-<sektion>`, `rd-uppslag-entry-<id>` (at least the open lesson's section; opens a lesson), `rd-lesson` (the open lesson's title), `rd-lesson-read`, `rd-lesson-practice` |
-| 13 | `rd-konto-identity` (name and e-mail), `rd-konto-mode-<light\|dark>` (calls `onTheme`), `rd-konto-<palette\|font\|density\|coach>-<id>` (calls `setPrefs`), `rd-konto-export`, `rd-konto-delete` → `rd-konto-delete-confirm`, `rd-konto-signout` |
+| 13 | `rd-konto-identity` (name and e-mail), `rd-konto-mode-<light\|dark>` (themes the stage: `actions.setTheme`, `actions.setPrefs({ mode })` or `onTheme`), `rd-konto-<palette\|font\|density\|coach>-<id>` (calls `setPrefs`), `rd-konto-export`, `rd-konto-delete` → `rd-konto-delete-confirm`, `rd-konto-signout` |
 | 14 | `rd-elf-passage` (inside `lang="en"`), `rd-para-<n>`, `rd-badge` (outside the passage), `rd-note-toggle`, `rd-note`, `rd-option-<L>`, `rd-lock`, `rd-verdict`, `rd-exit` |
 
-`directionData.test.tsx` holds a minimal reference direction built on `useDirectionData()` and `useDrillCore` alone. It passes the contract for screens 5–14, so it shows both that the contract can be met and how to meet it.
+`directionData.test.tsx` holds a minimal reference direction built on `useDirectionData()` and `useDrillCore` alone. It passes the contract for screens 5–14, so it shows both that the contract can be met and how to meet it. Its Konto themes through `actions.setTheme`, and two variants of it pass screen 13 through `setPrefs({ mode })` and through `onTheme`.
 
 ## 6. Migrating a direction
 
@@ -238,7 +260,7 @@ The ids per screen are listed in `CONTRACT`:
    | `FRAMEWORK_NAMES` | `data.frameworks` |
 
    Migrate one screen at a time; nothing else has to move with it.
-3. **Ask for side effects through `actions`** (`actions.go('ova')`, `actions.startDrill({ kind: 'section', section: 'KVA' })`), never by computing a screen number. Keep `onScreen` for round 1's 1–4 transitions.
+3. **Ask for side effects through `actions`** (`actions.go('ova')`, `actions.startDrill({ kind: 'section', section: 'KVA' })`), never by computing a screen number. Keep `onScreen` for round 1's 1–4 transitions. Change the theme with `actions.setTheme` (`onTheme` keeps working; §3 "One mode").
 4. **New drill screens** (6, 7, 14) use `useDrillCore({ ...data.drills.quant, controller: actions.drill, live })`. Screens 2–3 may keep `useDrill` until you move them.
 5. **Tests.** Add `describeDirectionContract(meta, YourDirection)` to your folder's test and drop your copy of the round-1 contract. The suite covers your declared screens.
 

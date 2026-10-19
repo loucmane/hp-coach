@@ -6,7 +6,8 @@
 //   const { data, actions } = useDirectionData()
 //
 // The bake-off wraps its stage in a DirectionDataProvider fed by the
-// fixtures (useBakeoffDirectionData maps every action onto its switcher).
+// fixtures (useBakeoffDirectionData maps every action onto its switcher,
+// and prefs.mode is always the switcher's theme: useSessionPrefs).
 // Outside a provider useDirectionData returns the same fixture data with
 // actions that do nothing, so a direction's own tests can mount it bare.
 // The real app will mount the provider with data from its hooks: the
@@ -947,6 +948,53 @@ export function useDirectionData(): DirectionDataValue {
   return useContext(DirectionDataContext) ?? DEFAULT_VALUE
 }
 
+// ── Preferences and the theme ────────────────────────────────────────
+
+/** `data` with Konto showing `prefs`; every other screen keeps its objects. */
+export function withPrefs(data: DirectionData, prefs: PrefsView): DirectionData {
+  if (data.konto.prefs === prefs) return data
+  return { ...data, konto: { ...data.konto, prefs } }
+}
+
+function withoutMode({ mode: _mode, ...rest }: PrefsView): Omit<PrefsView, 'mode'> {
+  return rest
+}
+
+/**
+ * The reader's preferences, kept for the session, with ONE authoritative
+ * mode: `prefs.mode` is always `theme`, the theme on display, never a copy
+ * of it. Every path that changes the mode — `setTheme(t)`,
+ * `setPrefs({ mode })`, and a direction's own `onTheme`, which the host
+ * wires to the same `onTheme` — asks the one owner of `theme` and comes
+ * back as the next `theme`. So the displayed theme and `prefs.mode` agree
+ * from the first render (a dark `?t=`) and after any change, whoever made
+ * it. The bake-off's owner is its switcher; the contract's stage keeps its
+ * own. The other preferences are kept here.
+ */
+export function useSessionPrefs({
+  theme,
+  onTheme,
+  initial = PREFS,
+}: {
+  /** The theme on display. */
+  theme: ThemeKey
+  /** Asks the owner of `theme` for another. */
+  onTheme: (theme: ThemeKey) => void
+  initial?: PrefsView
+}): { prefs: PrefsView } & Pick<DirectionActions, 'setTheme' | 'setPrefs'> {
+  const [kept, setKept] = useState(() => withoutMode(initial))
+  const prefs = useMemo<PrefsView>(() => ({ ...kept, mode: theme }), [kept, theme])
+  const setTheme = useCallback((t: ThemeKey) => onTheme(t), [onTheme])
+  const setPrefs = useCallback(
+    ({ mode, ...rest }: Partial<PrefsView>) => {
+      if (Object.keys(rest).length > 0) setKept((p) => ({ ...p, ...rest }))
+      if (mode) onTheme(mode)
+    },
+    [onTheme],
+  )
+  return { prefs, setTheme, setPrefs }
+}
+
 // ── The bake-off's provider ──────────────────────────────────────────
 
 /** The screen each destination opens in the bake-off. */
@@ -988,19 +1036,26 @@ const PLAN_SCREEN: Record<PlanItemKind, AppScreenKey | null> = {
 /**
  * The bake-off's provider value: the fixtures, with the reader's own
  * preferences and read lessons kept for the session, and every action
- * mapped onto the switcher. A drill's Avsluta returns to the screen it was
+ * mapped onto the switcher. `prefs.mode` is the switcher's theme
+ * (useSessionPrefs): setTheme and setPrefs({ mode }) ask the switcher
+ * through `onTheme`, the callback the stage also hands a direction as
+ * DirectionProps.onTheme. A drill's Avsluta returns to the screen it was
  * started from.
  */
 export function useBakeoffDirectionData({
   screen,
+  theme,
   onScreen,
   onTheme,
 }: {
   screen: AppScreenKey
+  /** The theme on display: the switcher's `t` (`?t=`, the bar's Tema). */
+  theme: ThemeKey
   onScreen: (screen: AppScreenKey) => void
+  /** Sets the switcher's `t`. */
   onTheme: (theme: ThemeKey) => void
 }): DirectionDataValue {
-  const [prefs, setPrefsState] = useState<PrefsView>(PREFS)
+  const { prefs, setTheme, setPrefs } = useSessionPrefs({ theme, onTheme })
   const [reads, setReads] = useState<ReadonlySet<string>>(() => new Set(LESSON_READS))
   const hub = useRef<AppScreenKey>(1)
   if (!DRILL_SCREENS.includes(screen)) hub.current = screen
@@ -1012,7 +1067,10 @@ export function useBakeoffDirectionData({
     [onScreen],
   )
 
-  const data = useMemo(() => fixtureDirectionData({ prefs, reads }), [prefs, reads])
+  // A theme or preference change touches Konto only: the drills and every
+  // other screen keep their objects.
+  const base = useMemo(() => fixtureDirectionData({ reads }), [reads])
+  const data = useMemo(() => withPrefs(base, prefs), [base, prefs])
   const actions = useMemo<DirectionActions>(() => {
     const drill: DrillController = {
       lock: LOCAL_CONTROLLER.lock,
@@ -1022,7 +1080,7 @@ export function useBakeoffDirectionData({
       go: (to) => show(DESTINATION_SCREEN[to]),
       resume: () => show(2),
       openPlanItem: (id) => {
-        const item = data.home.plan.items.find((i) => i.id === id)
+        const item = base.home.plan.items.find((i) => i.id === id)
         if (!item) return
         show(
           item.kind === 'drill' && item.section
@@ -1044,17 +1102,14 @@ export function useBakeoffDirectionData({
       startProvpass: () => show(9),
       submitProvpass: () => show(10),
       openProvResult: () => show(10),
-      setTheme: (t) => onTheme(t),
-      setPrefs: (patch) => {
-        setPrefsState((p) => ({ ...p, ...patch }))
-        if (patch.mode) onTheme(patch.mode)
-      },
+      setTheme,
+      setPrefs,
       exportData: noop,
       deleteAccount: noop,
       signOut: noop,
       drill,
     }
-  }, [data, show, onTheme])
+  }, [base, show, setTheme, setPrefs])
 
   return useMemo(() => ({ data, actions }), [data, actions])
 }
