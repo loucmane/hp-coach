@@ -308,3 +308,136 @@ Received: Byggd i Svep.
 - **Not touched:** real routes, stores, loaders, the worker, data, the kit, the registry, the spec, other directions, `index.css` and `app/index.html`. No bake-off was deleted.
 
 SVEP1 DONE: hpf-qr0p.21
+
+## Round 2 — the review's three P2 fixes
+
+The cross-vendor Codex review (review bead hpf-7mm0) of `d01c43e` returned **HOLD** with three P2 defects. All three are fixed inside the round-1 write set. The changes are uncommitted.
+
+### Snapshot
+
+- **Claim.** `gc hook --claim --json` returned `hpf-qr0p.21` (assignee `ci-wisp-ztnefpf`, route `hpfetcher/gc.implementation-worker`). `bd show hpf-qr0p.21 --json` matched the id, the status (`in_progress`), the assignee and `gc.routed_to`.
+- **Checkout.** HEAD is `6c968f5` (round 1 with `origin/main` 85255f6 merged in), on the bead's branch.
+  - No tracked file was modified at the start. The untracked root dotfiles are the sandbox's, as in round 1.
+  - `git status` reports the branch 6 behind `origin/main`: main has moved on since the coordinator's merge. No git writes were made.
+- **Review evidence.** The full evidence file (`…/vaults/main/GasCity/hpfetcher/Docs/worklogs/hpf-7mm0.md`) could not be read: the sandbox denies reads under `/home/loucmane/vaults`. The work follows the three findings as the bead's DESIGN states them.
+- **Constraints kept.**
+  - Writes stayed inside the write set: `deck.ts`, `Svep.test.tsx`, `SvepDrill.tsx`, `SvepHome.tsx`, `SvepOva.tsx`, `SvepQuant.tsx`, `svep.css` and this worklog.
+  - No change to the shared drill core, the kit, the registry, the bake-off page or its test, or any other direction.
+  - No git writes and no dependency changes.
+
+### The fixes
+
+All paths are under `app/src/components/devbake/redesign/e-svep/`.
+
+**1. The DTK page's arrows no longer leak to the bake-off's switcher.**
+
+- **Before.** `arrows: false` only removed the drill's own arrow handlers while the page had the focus. The switcher's window listener (`Redesign2026Bakeoff.tsx:131`) then took ← and →: → on DTK requested screen 8 and left the drill. The viewer's key handler handled only Esc and Tab, so arrows leaked from it too.
+- **Fix.** `panKey` (`SvepQuant.tsx:102`) handles the four arrows and marks each one used (`preventDefault`), the codebase's protocol for a key a direction takes. The switcher skips marked keys, the drill's run does not see them, and nothing around the page scrolls instead.
+  - Each press pans the page's region one `PAN_STEP` (48 px, `SvepQuant.tsx:86`), instantly.
+  - The page's region uses it on its own keys (`SvepQuant.tsx:742`).
+  - In the viewer, an arrow pans the enlarged page wherever the focus is in the dialog (`SvepQuant.tsx:968`). The viewer opens with the focus on Stäng, and the arrows still pan.
+  - Outside the page, the keys behave as before. In the question phase, ←/→ still go to the switcher; in Facit, they still move the run.
+- **Red-first tests**, through the real host (`Redesign2026Bakeoff` on Svep's screen 7, its selection kept as the route keeps it):
+  - `Svep.test.tsx:831`, "keeps the arrows in the focused page: it pans, and the screen stays DTK". It checks the question phase and Facit.
+  - `Svep.test.tsx:859`, "keeps the arrows in the enlarged page, wherever the focus is in it".
+  - `Svep.test.tsx:848`, "gives → back to the switcher once the page lets go of the focus". This is the control.
+  - On the unfixed tree they failed with `onSelect` called with `{ s: 8 }`.
+  - The round-1 unit test at `Svep.test.tsx:604` now expects the page to mark the key used (`press(…)` → `false`). It was red on the unfixed tree too.
+
+**2. A failed or missing required picture keeps the question shut.**
+
+- **Before.** The failed state lived inside `FigureSheet` and its `onError` never gated `act.lock`. Svara, Enter and Space graded a guess with the page failed or missing.
+- **Fix.** Picture readiness is lifted into the drill.
+  - **Where the state lives.** `usePictures` (`SvepQuant.tsx:115`) keeps each required picture's load by **src**: the question's page and every picture option. A page shared by consecutive questions therefore stays loaded.
+  - **Who reports.** The page's image and each picture option (`OptionPicture`, `SvepDrill.tsx:593`) report their load. A picture the browser already holds counts at once, through `complete && naturalWidth > 0` at mount (`SvepQuant.tsx:730`, and the same check in `OptionPicture`).
+  - **Retry.** It restarts only the failed srcs; each try mounts a fresh image.
+  - **The gate.** `gateFor` (`SvepQuant.tsx:150`) decides; a DTK question without a page (`SvepQuant.tsx:206`) is never answerable. The drill wraps `act.lock` (`SvepQuant.tsx:210`), and every submit path goes through it:
+    - Svara: the button is also disabled (`SvepDrill.tsx:1165`);
+    - Enter: through the drill's key map;
+    - Space: it now returns the lock's result, so a refused answer leaves Space alone (`SvepDrill.tsx:367`).
+  - **What Svara's line says.** `LockBar` takes a `wait` (`SvepDrill.tsx:1148`):
+    - a failure is said at once;
+    - a picture still on its way is said only once a choice would otherwise be answered, so a quick load says nothing.
+  - **Where the retries are.** A failed page keeps its own card's "Försök igen". A failed picture option says "Bilden kunde inte laddas." in place of its picture, and the lock bar offers "Försök igen".
+  - **A DTK question without its page** shows "Underlaget saknas just nu." and Tillbaka (the controller's exit) in the figure card's place, with no lens (`MissingPage`, `SvepQuant.tsx:787`). This follows spec §7: "do not grade a guess caused by missing content".
+  - **Phone.** The echo is otherwise hidden there; while waiting it shows, with its retry on the row under Svara (`svep.css:4966`).
+  - No change to the shared drill core.
+- **Tests** (`Svep.test.tsx:892` onwards):
+  - Red-first: "cannot be answered before its page has loaded: not by Svara, Enter or Space" (desktop and phone, `:895`); "says when the page failed, stays shut and answers after another try" (the retry, `:913`); "waits for picture options too, says when one failed and tries it again" (`:967`); "says when a DTK page is missing and offers the way back, never a guess" (desktop and phone, `:1012`). All failed on the unfixed tree: Svara was enabled, or the card was absent.
+  - Guards: "counts a page the browser already holds (a cached load) at once" (`:934`) and "keeps a page shared by consecutive questions loaded: one load serves both" (`:948`, DTK-029 and DTK-030 on page 16). They pass on the old code, which had no gate. They exist to catch a naive gate, one keyed per question or without the cached-load check.
+
+**3. The data-driven decks hold when their data shrinks, and Idag has an empty state.**
+
+- **Before.** `homeCards` could be empty (no resume, an empty plan, no score, no traps, no passes), and `front.tint` then threw. `useDeck` kept a bare index and never reconciled a shrinking count. Removing the resume while Idag's last card was in front, or the suggestion on Öva while Repetera was in front, left an out-of-range index and crashed.
+- **Fix.**
+  - **`useDeck` takes the cards** (`deck.ts:73`; only their ids count) and keeps the front card by place and by id. It settles while rendering (`deck.ts:80`), so no caller ever reads past the end:
+    - when the cards change, the card in front stays in front if it is still dealt;
+    - if it is gone, the deck keeps its place, at most the last card;
+    - the re-seat does not animate.
+  - **The callers.** Idag (`SvepHome.tsx:121`), Öva (`SvepOva.tsx:74`) and the facit run (`SvepDrill.tsx:457`) pass their cards.
+  - **The empty day.** Idag gets one calm card, "Öva fritt" (`SvepHome.tsx:338`, `FreeCard` at `:666`): "Alla delprov och dina missar finns i Öva." Its one filled action is Till Öva, which Enter takes too.
+  - **The day sentence.** It says "Inget inplanerat idag." on an empty day (`SvepHome.tsx:81`). The register's "Att göra" drops a "0 min" (`:220`).
+  - **Also fixed here:** the sentence read "En saker idag" with one item, and now says "En sak idag". Shrinking data surfaces that case.
+- **Red-first tests**, with provider rerenders that shrink the data (`Svep.test.tsx:1047` onwards):
+  - "keeps the last card in front on Idag when the resume goes from under it" (`:1048`);
+  - "lays one calm card on a day with nothing on it" (desktop and phone, `:1070`);
+  - "shrinks to that card when the day empties under its last card, and grows back" (`:1083`);
+  - "keeps Repetera in front on Öva when the suggestion goes" (`:1093`).
+  - On the unfixed tree, all crashed with `TypeError: Cannot read properties of undefined (reading 'tint')`.
+  - "keeps the card in front when a card before it goes" (`:1060`) failed by showing Fälla where Prognos had been.
+
+### Red run on the unfixed tree
+
+The new tests were run against `6c968f5` before any fix. **16 failed**:
+
+- the 4 key tests above (3 through the host, plus the updated unit test);
+- 6 picture tests: the two-width loading test, the failed page, the picture options, and the two-width missing page;
+- 6 deck tests.
+
+The cached-load and shared-page guards passed on that tree, as expected.
+
+### Verification (from `app/`)
+
+| Check | Result |
+|---|---|
+| `pnpm typecheck` | Clean. |
+| `pnpm lint` | 487 files, 0 errors, 0 warnings. The 4 infos are the same pre-existing ones as round 1, none in this change. |
+| `pnpm test` | 107 files, **1825 passed, 0 failed**. Svep's own file has 162 tests (145 + 17). The shared `Redesign2026Bakeoff.test.tsx` failure noted in round 1 is fixed on main (c47d87b, now merged in). No shared test fails. |
+
+### Visual and in-browser check
+
+- **Harness.** A scratch harness, outside the repo: Vite on 127.0.0.1 with Playwright Chromium in the same process. It mounts Svep with custom data, and the real bake-off page for the keys.
+- **Shots.** 40 in all: 10 cases × 2 widths × 2 themes.
+  - The new states: the empty day; DTK loading, failed, missing, and with picture options (one failed).
+  - The unchanged screens: Idag, Öva, Kvantfråga, DTK and Repetera.
+  - No horizontal overflow and no page errors. The only console error is the aborted Google Fonts request (offline), so the shots use fallback faces.
+- **Bugs the browser found, fixed before the final run:**
+  1. **Pan steps did not add up.** Eight quick presses panned 48 px: each smooth `scrollBy` cut the one before short. The steps are now instant, and they accumulate: 4 presses → 192 px, and back.
+  2. **The phone lock bar's "Försök igen" wrapped onto a third row.** It now shares the reason's row.
+- **Results in the real bake-off:**
+  - the screen stays on 7 while the page or the viewer has the focus;
+  - the run stays on its verdict;
+  - the focus returns to Förstora after the viewer;
+  - → outside the page moves the switcher to 8;
+  - the page answers once it has really loaded.
+- **Left as is.** On phone with four tall picture options, the reason and its retry sit at the end of the sheet's scrolling area, a short scroll down. That is the sheet's existing round-1 scrolling. The failed option's own "Bilden kunde inte laddas." is in view at once.
+
+### Proposed UI copy (new in round 2; none is approved yet)
+
+- **The image gate:**
+  - "Väntar på underlaget.", "Väntar på bilderna."
+  - "Underlaget behövs för att svara."
+  - "En bild kunde inte laddas." / "‹Två› bilder kunde inte laddas."
+  - "Bilden kunde inte laddas."
+  - "Underlaget saknas just nu.", "Frågan kan inte besvaras utan underlaget."
+  - "Försök igen" and "Tillbaka" are reused.
+- **Idag:**
+  - "Inget inplanerat idag.", "Öva fritt", "Alla delprov och dina missar finns i Öva."
+  - "En sak idag" (the singular).
+  - "Till Öva" is reused.
+
+### Spec gap closed
+
+Round 1's gap 8, "§7 — disable Svara until the required diagram is usable", is closed for the page and for picture options.
+
+SVEP1R2 DONE: hpf-qr0p.21

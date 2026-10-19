@@ -69,7 +69,11 @@ import {
   useKeyMap,
   useSheet,
 } from '@/components/devbake/redesign/r1Kit'
-import type { DrillOption, DrillSessionView } from '@/components/devbake/redesign/viewModel'
+import type {
+  DrillOption,
+  DrillOptionFigure,
+  DrillSessionView,
+} from '@/components/devbake/redesign/viewModel'
 import { MathText } from '@/components/MathText'
 import type { DistractorExplanation, ExplanationStep } from '@/data/explanations'
 import { type Deck, useDeck } from './deck'
@@ -94,6 +98,24 @@ export type RunId = 'svar' | 'lockade' | 'tamed' | 'losning' | 'andra'
 export type Run = { cards: (DeckCard & { id: RunId })[]; deck: Deck }
 
 export type Motion = { turning: boolean; dealt: boolean }
+
+/** How far a picture a question needs has come. */
+export type PictureState = 'loading' | 'ready' | 'error'
+
+/**
+ * The pictures a question needs before it can be answered (its DTK page,
+ * its picture options), as the drill tracks them: by src, so a page shared
+ * by consecutive questions stays loaded. A src not in `state` is loading;
+ * `attempt` counts its retries (each mounts a fresh image).
+ */
+export type Pictures = {
+  state: Readonly<Record<string, PictureState>>
+  attempt: Readonly<Record<string, number>>
+  report: (src: string, state: 'ready' | 'error') => void
+}
+
+/** Why Svara waits, and another try when one may help. */
+export type Wait = { text: string; retry?: () => void }
 
 export function SvepDrill({ screen, width, live, onScreen }: DirectionProps) {
   const { data, actions } = useDirectionData()
@@ -341,10 +363,9 @@ export function useDrillKeys({
   }
   useKeyMap(keys, live)
   useSpaceAdvance(live, () => {
-    if (view.phase === 'question') {
-      if (!view.selected) return false
-      act.lock()
-    } else if (view.phase === 'feedback') act.next()
+    // An answer refused (a picture still missing) leaves Space alone.
+    if (view.phase === 'question') return view.selected ? act.lock() : false
+    if (view.phase === 'feedback') act.next()
     else onDone()
     return true
   })
@@ -433,7 +454,7 @@ export function useFacitRun(
   options: RunOptions,
 ): Run {
   const plan = runPlan(view)
-  const deck = useDeck(Math.max(1, plan.length), `${view.index}-${view.phase}`)
+  const deck = useDeck(plan, `${view.index}-${view.phase}`)
   const runAct: DrillCoreActions = {
     ...act,
     cite: (n, source) => {
@@ -549,20 +570,54 @@ function runBody(
 }
 
 /** An option's face: its text (math rendered), or its picture with the
- *  text as the picture's name. */
-export function OptionText({ option }: { option: DrillOption }) {
-  if (option.figure) {
+ *  text as the picture's name. With `pictures` the picture is one the
+ *  question needs: it reports its load, and a failed one says so. */
+export function OptionText({ option, pictures }: { option: DrillOption; pictures?: Pictures }) {
+  const figure = option.figure
+  if (figure) {
+    if (pictures?.state[figure.src] === 'error') {
+      return <span className="sv-opt-img-failed">Bilden kunde inte laddas.</span>
+    }
     return (
-      <img
-        className="sv-opt-img"
-        src={`/${option.figure.src}`}
-        alt={option.figure.alt || option.text}
-        width={option.figure.width}
-        height={option.figure.height}
+      <OptionPicture
+        key={pictures?.attempt[figure.src] ?? 0}
+        figure={figure}
+        alt={figure.alt || option.text}
+        report={pictures?.report}
       />
     )
   }
   return <MathText>{option.text}</MathText>
+}
+
+function OptionPicture({
+  figure,
+  alt,
+  report,
+}: {
+  figure: DrillOptionFigure
+  alt: string
+  report?: Pictures['report']
+}) {
+  const ref = useRef<HTMLImageElement>(null)
+  // A picture the browser already holds may have loaded before anyone
+  // listened: it counts at once.
+  useLayoutEffect(() => {
+    const img = ref.current
+    if (report && img?.complete && img.naturalWidth > 0) report(figure.src, 'ready')
+  }, [figure.src, report])
+  return (
+    <img
+      ref={ref}
+      className="sv-opt-img"
+      src={`/${figure.src}`}
+      alt={alt}
+      width={figure.width}
+      height={figure.height}
+      onLoad={report ? () => report(figure.src, 'ready') : undefined}
+      onError={report ? () => report(figure.src, 'error') : undefined}
+    />
+  )
 }
 
 /** The back of the question card, set like a card's face: the verdict in a
@@ -1026,11 +1081,14 @@ export function Options({
   act,
   still,
   prefix = 'rd-option',
+  pictures,
 }: {
   view: DrillCoreView
   act: DrillCoreActions
   still: boolean
   prefix?: 'rd-option' | 'rd-quant-option'
+  /** The drill's pictures, for options that are pictures. */
+  pictures?: Pictures
 }) {
   const strikeIds = prefix === 'rd-option'
   return (
@@ -1061,7 +1119,7 @@ export function Options({
                   Alternativ {o.letter}
                   {out ? ', struket' : ''}:{' '}
                 </span>
-                <OptionText option={o} />
+                <OptionText option={o} pictures={still ? undefined : pictures} />
               </span>
             </button>
             <button
@@ -1091,17 +1149,20 @@ export function LockBar({
   view,
   act,
   still,
+  wait,
 }: {
   view: DrillCoreView
   act: DrillCoreActions
   still: boolean
+  /** Why Svara waits (a picture the question needs), or nothing. */
+  wait?: Wait | null
 }) {
   return (
     <div className="sv-lockbar">
       <button
         type="button"
         className="sv-btn sv-btn--primary sv-btn--wide"
-        disabled={!view.selected}
+        disabled={!view.selected || wait != null}
         onClick={still ? undefined : act.lock}
         data-testid={still ? undefined : 'rd-lock'}
         tabIndex={still ? -1 : undefined}
@@ -1109,9 +1170,22 @@ export function LockBar({
         {view.selected ? `Svara ${view.selected}` : 'Svara'}
         <Kbd>↵</Kbd>
       </button>
-      <span className="sv-echo" aria-live={still ? undefined : 'polite'}>
-        {view.selected ? 'Du kan ändra dig tills du svarar.' : 'Välj ett alternativ först.'}
+      <span
+        className="sv-echo"
+        data-wait={wait ? 'true' : undefined}
+        aria-live={still ? undefined : 'polite'}
+      >
+        {wait
+          ? wait.text
+          : view.selected
+            ? 'Du kan ändra dig tills du svarar.'
+            : 'Välj ett alternativ först.'}
       </span>
+      {wait?.retry && !still ? (
+        <button type="button" className="sv-link" onClick={wait.retry}>
+          Försök igen
+        </button>
+      ) : null}
     </div>
   )
 }
@@ -1411,6 +1485,8 @@ export function SheetDrill({
   toReference,
   prompt,
   prefix,
+  pictures,
+  wait,
   finish,
   exitHint,
   done,
@@ -1431,6 +1507,10 @@ export function SheetDrill({
   toReference: () => void
   prompt: ReactNode
   prefix?: 'rd-option' | 'rd-quant-option'
+  /** The drill's pictures, for options that are pictures. */
+  pictures?: Pictures
+  /** Why Svara waits, or nothing. */
+  wait?: Wait | null
   /** Nästa's words on the last question. */
   finish: string
   exitHint?: string
@@ -1531,6 +1611,8 @@ export function SheetDrill({
                 refLabel={refLabel}
                 prompt={prompt}
                 prefix={prefix}
+                pictures={pictures}
+                wait={wait}
               />
             )}
             back={() => (
@@ -1643,6 +1725,8 @@ export function PhoneQuestion({
   refLabel,
   prompt,
   prefix,
+  pictures,
+  wait,
 }: {
   view: DrillCoreView
   act: DrillCoreActions
@@ -1653,6 +1737,8 @@ export function PhoneQuestion({
   refLabel: string
   prompt: ReactNode
   prefix?: 'rd-option' | 'rd-quant-option'
+  pictures?: Pictures
+  wait?: Wait | null
 }) {
   const up = state !== 'peek'
   return (
@@ -1684,8 +1770,8 @@ export function PhoneQuestion({
         {prompt}
       </div>
       <div className="sv-qs-rest" inert={!up}>
-        <Options view={view} act={act} still={still} prefix={prefix} />
-        <LockBar view={view} act={act} still={still} />
+        <Options view={view} act={act} still={still} prefix={prefix} pictures={pictures} />
+        <LockBar view={view} act={act} still={still} wait={wait} />
       </div>
     </div>
   )

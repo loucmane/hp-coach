@@ -4553,6 +4553,13 @@
   background: var(--sv-paper);
 }
 
+/* A picture option that did not load says so in words, quietly. */
+.sv-root .sv-opt-img-failed {
+  color: var(--sv-ink-2);
+  font-size: 14.5px;
+  font-weight: 650;
+}
+
 /* The problem again above its solution (quant and DTK). */
 .sv-root .sv-rc-problem {
   margin: 0 0 18px;
@@ -4951,6 +4958,18 @@
 
 .sv-root .sv-psolo .sv-echo {
   display: none;
+}
+
+/* A question waiting for a picture it needs says why Svara is off, on a
+ * phone too (where the echo otherwise gives way to the button): Svara
+ * keeps its row, the reason and its try again share the next. */
+.sv-root :is(.sv-qs, .sv-psolo) .sv-lockbar:has(.sv-echo[data-wait]) .sv-btn {
+  flex-basis: 100%;
+}
+
+.sv-root :is(.sv-qs, .sv-psolo) .sv-echo[data-wait] {
+  display: block;
+  flex: 1;
 }
 
 .sv-root .sv-psolo .sv-qs--facit {

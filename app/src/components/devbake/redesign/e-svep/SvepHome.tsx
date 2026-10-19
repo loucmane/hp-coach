@@ -14,7 +14,8 @@
 // Kit v2: the day is the view model's (useDirectionData().data.home). The
 // fields the real app has no source for (when and where the sitting was
 // paused, its minutes left, the plan's primary marker, the prognosis range,
-// target and weekly series, the weekly goal) are left out when absent.
+// target and weekly series, the weekly goal) are left out when absent. A
+// day with nothing on it at all is one calm card, the way to Öva.
 
 import { ArrowRight } from 'lucide-react'
 import { type CSSProperties, type ReactNode, useId, useLayoutEffect, useMemo } from 'react'
@@ -71,12 +72,18 @@ function dayMinutes(home: HomeView): number | null {
   return home.resume.minutesLeft == null ? null : home.plan.minutes + home.resume.minutesLeft
 }
 
+/** The day's to-dos: the sitting to resume and the plan's parts. */
+function dayCount(home: HomeView): number {
+  return (home.resume ? 1 : 0) + home.plan.items.length
+}
+
 /** The day in one line: how many things and how long, then where to start. */
 function daySentence(home: HomeView): string {
-  const things = (home.resume ? 1 : 0) + home.plan.items.length
+  const things = dayCount(home)
+  if (things === 0) return 'Inget inplanerat idag.'
   const minutes = dayMinutes(home)
   const long = minutes == null ? '' : `, ungefär ${minutes} minuter`
-  return `${cap(word(things))} saker idag${long}. Börja med kortet överst.`
+  return `${cap(word(things))} ${things === 1 ? 'sak' : 'saker'} idag${long}. Börja med kortet överst.`
 }
 
 type HomeCard = DeckCard & {
@@ -109,7 +116,9 @@ export function SvepHome({
     () => homeCards({ home, reading, onResume, nav, caveatId }),
     [home, reading, onResume, nav, caveatId],
   )
-  const deck = useDeck(cards.length)
+  // Never empty (an empty day has its own card), and the deck keeps its
+  // place inside the cards as the data changes.
+  const deck = useDeck(cards)
   const front = cards[deck.index]
 
   const tint = front.tint ?? 'none'
@@ -207,7 +216,9 @@ export function SvepHome({
         <p className="sv-index-head">
           I leken <span>· {cards.length} kort</span>
         </p>
-        <p className="sv-index-group">Att göra{minutes == null ? '' : ` · ${minutes} min`}</p>
+        <p className="sv-index-group">
+          Att göra{minutes == null || dayCount(home) === 0 ? '' : ` · ${minutes} min`}
+        </p>
         <ol>{todo.map(indexRow)}</ol>
         {status.length ? (
           <>
@@ -322,6 +333,18 @@ function homeCards({
       meta: `${home.recent.length} pass`,
       action: () => nav.go('framsteg'),
       body: <RecentCard recent={home.recent} week={home.week} onMore={() => nav.go('framsteg')} />,
+    })
+  }
+  if (out.length === 0) {
+    // Nothing to resume, plan or tell: the deck still has its one card.
+    out.push({
+      id: 'empty',
+      label: 'Öva fritt',
+      tint: 'none',
+      group: 'todo',
+      meta: '',
+      action: () => nav.go('ova'),
+      body: <FreeCard onOva={() => nav.go('ova')} />,
     })
   }
   return out
@@ -635,6 +658,30 @@ function Scale({ total, low, high }: { total: number; low?: number; high?: numbe
         </span>
       ))}
     </div>
+  )
+}
+
+/** The day with nothing on it: no placeholder figures, one way on — the
+ *  screen's one filled action. */
+function FreeCard({ onOva }: { onOva: () => void }) {
+  return (
+    <>
+      <CardTop eyebrow="Idag" />
+      <div className="sv-hc-body">
+        <h2 className="sv-hc-title">Öva fritt</h2>
+        <p className="sv-hc-detail">Alla delprov och dina missar finns i Öva.</p>
+      </div>
+      <div className="sv-hc-foot">
+        <button
+          type="button"
+          className="sv-btn sv-btn--primary sv-btn--block sv-btn--lg"
+          onClick={onOva}
+        >
+          Till Öva
+          <Kbd>↵</Kbd>
+        </button>
+      </div>
+    </>
   )
 }
 

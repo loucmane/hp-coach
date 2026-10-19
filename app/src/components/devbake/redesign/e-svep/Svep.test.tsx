@@ -7,12 +7,30 @@
 // reading drill's facit run and keys, Öva's three cards and section doors,
 // the quant problem card, the DTK page's lens and viewer, Repetera's batch,
 // and every screen rendered without the fields the real app cannot fill.
+// Round 2's review fixes: the DTK page keeps its arrows inside the real
+// bake-off, a question waits for the pictures it needs, and the decks on
+// Idag and Öva hold when their data changes under them.
 
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
-import { beforeAll, describe, expect, it, vi } from 'vitest'
+import { useState } from 'react'
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { describeDirectionContract, mountDirection } from '@/components/devbake/redesign/contract'
-import { DirectionDataProvider, FIXTURE_DATA } from '@/components/devbake/redesign/directionData'
+import {
+  describeDirectionContract,
+  loadImages,
+  mountDirection,
+  reveal,
+  spyActions,
+} from '@/components/devbake/redesign/contract'
+import {
+  DirectionDataProvider,
+  drillQuestion,
+  FIXTURE_DATA,
+} from '@/components/devbake/redesign/directionData'
+import {
+  Redesign2026Bakeoff,
+  type Selection,
+} from '@/components/devbake/redesign/Redesign2026Bakeoff'
 import {
   type AppScreenKey,
   type DirectionProps,
@@ -20,13 +38,16 @@ import {
   type ThemeKey,
   type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
-import type { DirectionData } from '@/components/devbake/redesign/viewModel'
+import { DTK_PAGES, PASS_QUESTIONS } from '@/components/devbake/redesign/r2Fixtures'
+import type { DirectionData, DrillQuestion } from '@/components/devbake/redesign/viewModel'
+import type { Question } from '@/data/questions'
 import { meta } from './meta'
 import { Svep } from './Svep'
 
 beforeAll(() => {
   // jsdom has no layout: give the scroll and resize APIs inert stand-ins.
   Element.prototype.scrollTo ??= () => {}
+  Element.prototype.scrollBy ??= () => {}
   Element.prototype.scrollIntoView ??= () => {}
   globalThis.ResizeObserver ??= class {
     observe() {}
@@ -67,6 +88,27 @@ const press = (key: string, target: Window | Element = window) => fireEvent.keyD
 function answer(letter: string) {
   fireEvent.click(screen.getByTestId(`rd-quant-option-${letter}`))
   fireEvent.click(screen.getByTestId('rd-lock'))
+}
+
+/** Svep on screen `s` inside a provider fed `data`, with spied actions;
+ *  `rerender` hands the screens already mounted new data. */
+function host(data: DirectionData, s: AppScreenKey, width: WidthKey = 'desktop') {
+  const actions = spyActions()
+  const props: DirectionProps = {
+    screen: s,
+    width,
+    theme: 'light',
+    live: true,
+    onScreen: vi.fn(),
+    onTheme: vi.fn(),
+  }
+  const tree = (d: DirectionData) => (
+    <DirectionDataProvider data={d} actions={actions}>
+      <Svep {...props} />
+    </DirectionDataProvider>
+  )
+  const utils = render(tree(data))
+  return { actions, rerender: (d: DirectionData) => utils.rerender(tree(d)) }
 }
 
 describeDirectionContract(meta, Svep)
@@ -561,11 +603,13 @@ describe('Svep, DTK', () => {
 
   it('leaves the arrows to the page while it has the focus', () => {
     mount(7, 'desktop')
+    loadImages()
     answer(DTK.answer)
     expect(front('run')).toBe('svar')
     const region = screen.getByRole('region', { name: `Underlaget till uppgift ${DTK.number}` })
     act(() => region.focus())
-    expect(press('ArrowRight', region)).toBe(true)
+    // The page takes the key (it pans) and marks it used.
+    expect(press('ArrowRight', region)).toBe(false)
     expect(front('run')).toBe('svar')
     act(() => region.blur())
     press('ArrowRight')
@@ -735,5 +779,325 @@ describe('Svep, without the fields the real app cannot fill', () => {
     expect(screen.getByTestId('rd-verdict')).toHaveAttribute('data-correct', 'false')
     expect(screen.getByText('Förklaringen saknas just nu.')).toBeInTheDocument()
     expect(document.querySelectorAll('.sv-deck[data-kind="run"] .sv-dcard')).toHaveLength(1)
+  })
+})
+
+// ── Round 2: the DTK page's keys, inside the bake-off itself ─────────
+
+const ARROWS = ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp']
+
+describe('Svep, the DTK page inside the bake-off', () => {
+  // jsdom has no layout: give every box the room under the bar of a
+  // 1440 × 900 window, so the stage mounts the direction.
+  beforeEach(() => {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(848)
+  })
+  afterEach(() => vi.restoreAllMocks())
+
+  /** The bake-off page on Svep's DTK screen, its selection kept as the
+   *  route keeps it, every change recorded. `pan` spies on the scrolls. */
+  async function bakeoff() {
+    const onSelect = vi.fn<(next: Partial<Selection>) => void>()
+    function Page() {
+      const [sel, setSel] = useState<Selection>({
+        d: 'e',
+        s: 7,
+        w: 'desktop',
+        t: 'light',
+        sbs: false,
+        bare: false,
+      })
+      return (
+        <Redesign2026Bakeoff
+          sel={sel}
+          onSelect={(next) => {
+            onSelect(next)
+            setSel((s) => ({ ...s, ...next }))
+          }}
+        />
+      )
+    }
+    render(<Page />)
+    const stage = screen.getByTestId('rb26-stage')
+    await within(stage).findByTestId('rd-svep', {}, { timeout: 5000 })
+    const pan = vi.spyOn(Element.prototype, 'scrollBy')
+    const region = within(stage).getByRole('region', {
+      name: `Underlaget till uppgift ${DTK.number}`,
+    })
+    return { onSelect, stage, pan, region }
+  }
+
+  it('keeps the arrows in the focused page: it pans, and the screen stays DTK', async () => {
+    const { onSelect, stage, pan, region } = await bakeoff()
+    act(() => region.focus())
+    for (const key of ARROWS) fireEvent.keyDown(region, { key })
+    expect(onSelect).not.toHaveBeenCalled()
+    expect(stage).toHaveAttribute('data-screen', '7')
+    expect(pan).toHaveBeenCalledTimes(ARROWS.length)
+    // In Facit too: the run stays on its verdict and the screen on DTK.
+    loadImages()
+    answer(DTK.answer)
+    act(() => region.focus())
+    for (const key of ARROWS) fireEvent.keyDown(region, { key })
+    expect(onSelect).not.toHaveBeenCalled()
+    expect(front('run')).toBe('svar')
+    expect(stage).toHaveAttribute('data-screen', '7')
+  })
+
+  it('gives → back to the switcher once the page lets go of the focus', async () => {
+    const { onSelect, stage, region } = await bakeoff()
+    act(() => region.focus())
+    fireEvent.keyDown(region, { key: 'ArrowRight' })
+    act(() => region.blur())
+    fireEvent.keyDown(window, { key: 'ArrowRight' })
+    expect(onSelect).toHaveBeenCalledTimes(1)
+    expect(onSelect).toHaveBeenLastCalledWith({ s: 8 })
+    expect(stage).toHaveAttribute('data-screen', '8')
+  })
+
+  it('keeps the arrows in the enlarged page, wherever the focus is in it', async () => {
+    const { onSelect, stage, pan } = await bakeoff()
+    fireEvent.click(within(stage).getByRole('button', { name: /Förstora/ }))
+    const dialog = screen.getByRole('dialog', { name: `Underlaget · uppgift ${DTK.number}` })
+    const close = within(dialog).getByRole('button', { name: 'Stäng förstoringen' })
+    expect(close).toHaveFocus()
+    for (const key of ARROWS) fireEvent.keyDown(close, { key })
+    const region = within(dialog).getByRole('region', {
+      name: `Underlaget förstorat, uppgift ${DTK.number}`,
+    })
+    act(() => region.focus())
+    for (const key of ARROWS) fireEvent.keyDown(region, { key })
+    expect(onSelect).not.toHaveBeenCalled()
+    expect(stage).toHaveAttribute('data-screen', '7')
+    expect(screen.getByRole('dialog')).toBe(dialog)
+    expect(pan).toHaveBeenCalledTimes(2 * ARROWS.length)
+  })
+})
+
+// ── Round 2: a question waits for the pictures it needs ─────────────
+
+/** The fixtures with `questions` as the DTK sitting. */
+function dtkWith(questions: DrillQuestion[]): DirectionData {
+  return { ...D, drills: { ...D.drills, dtk: { ...D.drills.dtk, questions } } }
+}
+
+/** The DTK page on screen (the figure card's, not the viewer's). */
+const page = () =>
+  within(screen.getByTestId('rd-figure')).getByRole('img', { name: DTK.figure?.alt })
+const lockButton = () => screen.getByTestId('rd-lock')
+/** Svara's line: why it waits, when it does. */
+const echo = () => document.querySelector('.sv-lockbar .sv-echo')
+
+describe('Svep, a question that needs its pictures', () => {
+  it.each(
+    WIDTHS,
+  )('cannot be answered before its page has loaded: not by Svara, Enter or Space (%s)', (w) => {
+    const { actions } = mount(7, w)
+    fireEvent.click(reveal(`rd-quant-option-${DTK.answer}`))
+    expect(lockButton()).toBeDisabled()
+    expect(echo()).toHaveTextContent('Väntar på underlaget.')
+    press('Enter')
+    press(' ')
+    fireEvent.click(lockButton())
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    fireEvent.load(page())
+    expect(lockButton()).toBeEnabled()
+    press('Enter')
+    expect(actions.drill.lock).toHaveBeenCalledWith(
+      expect.objectContaining({ qid: DTK.qid }),
+      DTK.answer,
+    )
+  })
+
+  it('says when the page failed, stays shut and answers after another try', () => {
+    const { actions } = mount(7, 'desktop')
+    fireEvent.error(page())
+    expect(screen.getByRole('alert')).toHaveTextContent('Underlaget kunde inte laddas.')
+    press(DTK.answer.toLowerCase())
+    expect(lockButton()).toBeDisabled()
+    expect(echo()).toHaveTextContent('Underlaget behövs för att svara.')
+    press('Enter')
+    press(' ')
+    fireEvent.click(lockButton())
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: 'Försök igen' }))
+    expect(screen.queryByRole('alert')).toBeNull()
+    // The new try has not loaded yet.
+    expect(lockButton()).toBeDisabled()
+    fireEvent.load(page())
+    expect(lockButton()).toBeEnabled()
+    fireEvent.click(lockButton())
+    expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+  })
+
+  it('counts a page the browser already holds (a cached load) at once', () => {
+    vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(true)
+    vi.spyOn(HTMLImageElement.prototype, 'naturalWidth', 'get').mockReturnValue(2316)
+    try {
+      const { actions } = mount(7, 'desktop')
+      press(DTK.answer.toLowerCase())
+      expect(lockButton()).toBeEnabled()
+      press('Enter')
+      expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+    } finally {
+      vi.restoreAllMocks()
+    }
+  })
+
+  it('keeps a page shared by consecutive questions loaded: one load serves both', () => {
+    const [first, second] = ['host-2025-kvant1-DTK-029', 'host-2025-kvant1-DTK-030'].map((qid) =>
+      drillQuestion(PASS_QUESTIONS.find((q) => q.qid === qid) as Question, DTK_PAGES),
+    )
+    expect(second.figure?.src).toBe(first.figure?.src)
+    const { actions } = host(dtkWith([first, second]), 7)
+    fireEvent.load(page())
+    answer(first.answer)
+    fireEvent.click(screen.getByTestId('rd-next'))
+    // The same page is still on screen: no new load comes, and none is needed.
+    fireEvent.click(screen.getByTestId(`rd-quant-option-${second.answer}`))
+    expect(lockButton()).toBeEnabled()
+    fireEvent.click(lockButton())
+    expect(actions.drill.lock).toHaveBeenLastCalledWith(
+      expect.objectContaining({ qid: second.qid }),
+      second.answer,
+    )
+  })
+
+  it('waits for picture options too, says when one failed and tries it again', () => {
+    const pictures: DrillQuestion = {
+      ...DTK,
+      options: (DTK.options ?? []).map((o) => ({
+        ...o,
+        figure: {
+          src: `figures/dtk/test-option-${o.letter}.png`,
+          alt: `Cirkeldiagram ${o.letter}`,
+          width: 400,
+          height: 400,
+        },
+      })),
+    }
+    const { actions } = host(dtkWith([pictures]), 7)
+    const picture = (l: string) =>
+      within(screen.getByTestId(`rd-quant-option-${l}`)).getByRole('img', {
+        name: `Cirkeldiagram ${l}`,
+      })
+    fireEvent.load(page())
+    press(pictures.answer.toLowerCase())
+    // The page is in, the pictures not yet.
+    expect(lockButton()).toBeDisabled()
+    expect(echo()).toHaveTextContent('Väntar på bilderna.')
+    for (const l of ['A', 'C', 'D']) fireEvent.load(picture(l))
+    fireEvent.error(picture('B'))
+    expect(screen.getByTestId('rd-quant-option-B')).toHaveTextContent('Bilden kunde inte laddas.')
+    expect(lockButton()).toBeDisabled()
+    expect(echo()).toHaveTextContent('En bild kunde inte laddas.')
+    press('Enter')
+    press(' ')
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    const lockbar = lockButton().closest('.sv-lockbar') as HTMLElement
+    fireEvent.click(within(lockbar).getByRole('button', { name: 'Försök igen' }))
+    expect(lockButton()).toBeDisabled()
+    fireEvent.load(picture('B'))
+    expect(lockButton()).toBeEnabled()
+    press('Enter')
+    expect(actions.drill.lock).toHaveBeenCalledWith(
+      expect.objectContaining({ qid: pictures.qid }),
+      pictures.answer,
+    )
+  })
+
+  it.each(
+    WIDTHS,
+  )('says when a DTK page is missing and offers the way back, never a guess (%s)', (w) => {
+    const { actions } = host(dtkWith([{ ...DTK, figure: null }]), 7, w)
+    const card = screen.getByTestId('rd-figure')
+    expect(card).toHaveTextContent('Underlaget saknas just nu.')
+    press(DTK.answer.toLowerCase())
+    expect(lockButton()).toBeDisabled()
+    press('Enter')
+    press(' ')
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    fireEvent.click(within(card).getByRole('button', { name: 'Tillbaka' }))
+    expect(actions.drill.exit).toHaveBeenCalled()
+  })
+})
+
+// ── Round 2: the decks hold when their data changes ──────────────────
+
+/** A day with nothing on it: no sitting to resume, an empty plan, no
+ *  estimate yet, no traps and no passes. */
+const EMPTY_DAY: DirectionData = {
+  ...D,
+  home: {
+    ...D.home,
+    resume: null,
+    plan: { ...D.home.plan, items: [], minutes: 0 },
+    prognosis: { ...D.home.prognosis, total: null },
+    traps: [],
+    recent: [],
+  },
+}
+
+const cardsOf = (kind: 'home' | 'ova') =>
+  [...document.querySelectorAll(`.sv-deck[data-kind="${kind}"] .sv-dcard`)].map((c) =>
+    c.getAttribute('data-card'),
+  )
+
+describe('Svep, decks on data that changes', () => {
+  it('keeps the last card in front on Idag when the resume goes from under it', () => {
+    const { rerender } = host(D, 1)
+    press('End')
+    expect(front('home')).toBe('recent')
+    rerender({ ...D, home: { ...D.home, resume: null } })
+    expect(cardsOf('home')).toHaveLength(6)
+    expect(front('home')).toBe('recent')
+    // The deck still moves from there.
+    press('ArrowLeft')
+    expect(front('home')).toBe('trap')
+  })
+
+  it('keeps the card in front when a card before it goes', () => {
+    const { rerender } = host(D, 1)
+    const index = within(screen.getByRole('navigation', { name: 'Kortregister' }))
+    fireEvent.click(index.getByRole('button', { name: /Prognos/ }))
+    expect(front('home')).toBe('prognos')
+    rerender({ ...D, home: { ...D.home, resume: null } })
+    expect(front('home')).toBe('prognos')
+    expect(screen.getByTestId('rd-svep')).toHaveAttribute('data-tint', 'none')
+  })
+
+  it.each(WIDTHS)('lays one calm card on a day with nothing on it (%s)', (w) => {
+    const errors = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const { actions } = host(EMPTY_DAY, 1, w)
+    expect(cardsOf('home')).toEqual(['empty'])
+    expect(screen.getByText('Inget inplanerat idag.')).toBeInTheDocument()
+    const card = document.querySelector('[data-card="empty"]') as HTMLElement
+    expect(within(card).getByRole('heading', { level: 2 })).toHaveTextContent('Öva fritt')
+    press('Enter')
+    expect(actions.go).toHaveBeenCalledWith('ova')
+    expect(errors).not.toHaveBeenCalled()
+    errors.mockRestore()
+  })
+
+  it('shrinks to that card when the day empties under its last card, and grows back', () => {
+    const { rerender } = host(D, 1)
+    press('End')
+    rerender(EMPTY_DAY)
+    expect(front('home')).toBe('empty')
+    rerender(D)
+    expect(cardsOf('home')).toHaveLength(7)
+    expect(front('home')).toBe('resume')
+  })
+
+  it('keeps Repetera in front on Öva when the suggestion goes', () => {
+    const { rerender } = host(D, 5)
+    const index = within(screen.getByRole('navigation', { name: 'Kortregister' }))
+    fireEvent.click(index.getByRole('button', { name: /Repetera/ }))
+    expect(front('ova')).toBe('repetera')
+    rerender({ ...D, ova: { ...D.ova, weakest: null } })
+    expect(cardsOf('ova')).toEqual(['blandat', 'repetera'])
+    expect(front('ova')).toBe('repetera')
+    expect(screen.getByTestId('rd-svep')).toHaveAttribute('data-tint', 'rep')
   })
 })

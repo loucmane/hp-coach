@@ -14,8 +14,16 @@
 // colours its own in dark mode — inside a scrollable region that zooms
 // (fit, 150, 200, 300 %), turns a quarter at a time and opens enlarged in
 // a viewer; arrows and drag pan it, and while it has the focus the arrows
-// belong to it. Phone: the page fills the screen with the question card
+// belong to it: they pan it and go no further (not to the facit run, not
+// to the bake-off's screen keys). In the viewer they pan the page wherever
+// the focus is. Phone: the page fills the screen with the question card
 // peeking below, as the reading drill's text does.
+//
+// A question that needs pictures — its page, its picture options — cannot
+// be answered until they have loaded: Svara, Enter and Space all wait. The
+// drill keeps each picture's load by src (a page shared by consecutive
+// questions stays loaded); a failed one says so and offers another try,
+// and a DTK question without its page says that and offers the way back.
 //
 // Both run on useDrillCore with the context's controller (actions.drill):
 // Avsluta and the end card's Stäng leave through the controller's exit.
@@ -29,6 +37,7 @@ import {
   useCallback,
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
 } from 'react'
@@ -39,7 +48,7 @@ import {
   type DrillCoreView,
   useDrillCore,
 } from '@/components/devbake/redesign/drillCore'
-import { useSheet, type WidthKey } from '@/components/devbake/redesign/r1Kit'
+import { isForeignKey, useSheet, type WidthKey } from '@/components/devbake/redesign/r1Kit'
 import type {
   DrillFigure,
   DrillQuestion,
@@ -48,7 +57,7 @@ import type {
 import { isProseCondition, splitKvaPrompt } from '@/components/drill/KvaPrompt'
 import { MathText } from '@/components/MathText'
 import { parseNogPrompt } from '@/lib/nogPrompt'
-import { Kbd, QuestionCards, SecChip } from './parts'
+import { cap, Kbd, QuestionCards, SecChip, word } from './parts'
 import {
   DoneCard,
   ExitButton,
@@ -59,6 +68,7 @@ import {
   Options,
   PhoneFacit,
   PhonePosition,
+  type Pictures,
   QuestionColumn,
   type Run,
   SheetDrill,
@@ -66,10 +76,105 @@ import {
   useCardMotion,
   useDrillKeys,
   useFacitRun,
+  type Wait,
 } from './SvepDrill'
 
 /** The zoom steps: 1 fits the whole page in its card. */
 const ZOOMS = [1, 1.5, 2, 3]
+
+/** How far one press of an arrow pans the page (px). */
+const PAN_STEP = 48
+
+const PAN: Partial<Record<string, readonly [number, number]>> = {
+  ArrowLeft: [-1, 0],
+  ArrowRight: [1, 0],
+  ArrowUp: [0, -1],
+  ArrowDown: [0, 1],
+}
+
+/**
+ * An arrow pans the page's region (`box`) one step and is marked used, so
+ * neither the drill's run nor the bake-off's screen keys take it and
+ * nothing around the page scrolls instead. The step is instant: quick
+ * presses add up (a smooth scroll would cut the one before it short).
+ * True when it was an arrow.
+ */
+function panKey(e: ReactKeyboardEvent<Element>, box: HTMLElement | null): boolean {
+  const step = PAN[e.key]
+  if (!step || e.defaultPrevented || isForeignKey(e.nativeEvent)) return false
+  e.preventDefault()
+  if (box && typeof box.scrollBy === 'function') {
+    box.scrollBy({ left: step[0] * PAN_STEP, top: step[1] * PAN_STEP, behavior: 'auto' })
+  }
+  return true
+}
+
+/** The drill's pictures (Pictures), and another try for the ones failed. */
+type DrillPictures = Pictures & { retry: (srcs: readonly string[]) => void }
+
+function usePictures(): DrillPictures {
+  const [pics, setPics] = useState<Pick<Pictures, 'state' | 'attempt'>>({
+    state: {},
+    attempt: {},
+  })
+  const report = useCallback(
+    (src: string, s: 'ready' | 'error') =>
+      setPics((p) => (p.state[src] === s ? p : { ...p, state: { ...p.state, [src]: s } })),
+    [],
+  )
+  const retry = useCallback(
+    (srcs: readonly string[]) =>
+      setPics((p) => {
+        const failed = srcs.filter((src) => p.state[src] === 'error')
+        if (failed.length === 0) return p
+        const state = { ...p.state }
+        const attempt = { ...p.attempt }
+        for (const src of failed) {
+          state[src] = 'loading'
+          attempt[src] = (attempt[src] ?? 0) + 1
+        }
+        return { state, attempt }
+      }),
+    [],
+  )
+  return { ...pics, report, retry }
+}
+
+/**
+ * Whether the open question can be answered, and what Svara's line says
+ * while it cannot. A DTK question without its page never can; any other
+ * waits until every picture it needs (its page, its picture options) has
+ * loaded. A failure is said at once; a picture on its way only once a
+ * choice would otherwise be answered, so a quick load says nothing.
+ */
+function gateFor(
+  q: DrillQuestion,
+  pictures: DrillPictures,
+  missing: boolean,
+  chosen: boolean,
+): { open: boolean; wait: Wait | null } {
+  if (missing) return { open: false, wait: { text: 'Frågan kan inte besvaras utan underlaget.' } }
+  const { state } = pictures
+  const page = q.figure?.src
+  const options = (q.options ?? []).flatMap((o) => (o.figure ? [o.figure.src] : []))
+  // A failed page says so on its own card, with its own try again.
+  if (page && state[page] === 'error') {
+    return { open: false, wait: { text: 'Underlaget behövs för att svara.' } }
+  }
+  const failed = options.filter((src) => state[src] === 'error').length
+  if (failed > 0) {
+    const text =
+      failed === 1 ? 'En bild kunde inte laddas.' : `${cap(word(failed))} bilder kunde inte laddas.`
+    return { open: false, wait: { text, retry: () => pictures.retry(options) } }
+  }
+  if (page && state[page] !== 'ready') {
+    return { open: false, wait: chosen ? { text: 'Väntar på underlaget.' } : null }
+  }
+  if (options.some((src) => state[src] !== 'ready')) {
+    return { open: false, wait: chosen ? { text: 'Väntar på bilderna.' } : null }
+  }
+  return { open: true, wait: null }
+}
 
 export function SvepQuant({
   kind,
@@ -82,7 +187,11 @@ export function SvepQuant({
 }) {
   const { data, actions } = useDirectionData()
   const session = kind === 'quant' ? data.drills.quant : data.drills.dtk
-  const { view, act, refs } = useDrillCore({
+  const {
+    view,
+    act: core,
+    refs,
+  } = useDrillCore({
     questions: session.questions,
     explanations: session.explanations,
     start: session.start,
@@ -93,6 +202,13 @@ export function SvepQuant({
   const phone = width === 'phone'
   const q = view.question
   const figure = q.figure ?? null
+  // A DTK question is read off its page: without one it is never graded.
+  const missing = !figure && q.section === 'DTK'
+  const pictures = usePictures()
+  const gate = gateFor(q, pictures, missing, view.selected != null)
+  // Every way to answer — Svara, Enter, Space — goes through the gate.
+  const act: DrillCoreActions = { ...core, lock: () => (gate.open ? core.lock() : false) }
+  const wait = view.phase === 'question' ? gate.wait : null
   const sheet = useSheet(view)
   const lens = useLens(figure?.src)
   const [viewer, setViewer] = useState(false)
@@ -109,6 +225,8 @@ export function SvepQuant({
     problem: <QuantPrompt question={q} />,
   })
   const motion = useCardMotion(view, live)
+  // The figure card: the page, or the word that it is missing.
+  const reference = figure != null || missing
   useDrillKeys({
     view,
     act,
@@ -116,7 +234,8 @@ export function SvepQuant({
     // The viewer owns the keys while it is open.
     live: live && !viewer,
     arrows: !panning,
-    onPick: figure && phone ? () => sheet.setState((s) => (s === 'peek' ? 'open' : s)) : undefined,
+    onPick:
+      reference && phone ? () => sheet.setState((s) => (s === 'peek' ? 'open' : s)) : undefined,
     onDone: act.exit,
   })
 
@@ -131,8 +250,11 @@ export function SvepQuant({
       secondary={{ label: 'Öva igen', onClick: act.restart }}
     />
   )
+  const retryPage = () => {
+    if (figure) pictures.retry([figure.src])
+  }
   const figureCard = (inert: boolean) =>
-    figure ? (
+    reference ? (
       <FigureCard
         question={q}
         figure={figure}
@@ -142,11 +264,17 @@ export function SvepQuant({
         openRef={openRef}
         onOpen={() => setViewer(true)}
         onPanFocus={setPanning}
+        pictures={pictures}
+        onRetry={retryPage}
+        onBack={act.exit}
       />
     ) : null
+  const face = (still: boolean) => (
+    <QuantFace view={view} act={act} still={still} pictures={pictures} wait={wait} />
+  )
 
   let layout: ReactNode
-  if (phone && figure) {
+  if (phone && reference) {
     layout = (
       <SheetDrill
         view={view}
@@ -160,12 +288,24 @@ export function SvepQuant({
         toReference={() => sheet.setState('peek')}
         prompt={<QuantPrompt question={q} testId="rd-quant-prompt" peek />}
         prefix="rd-quant-option"
+        pictures={pictures}
+        wait={wait}
         finish="Slutför övningen"
         done={done}
       />
     )
   } else if (phone) {
-    layout = <PhoneSolo view={view} act={act} run={run} motion={motion} live={live} done={done} />
+    layout = (
+      <PhoneSolo
+        view={view}
+        act={act}
+        run={run}
+        motion={motion}
+        live={live}
+        face={face}
+        done={done}
+      />
+    )
   } else {
     layout = (
       <DeskQuant
@@ -175,6 +315,7 @@ export function SvepQuant({
         motion={motion}
         live={live}
         label={label}
+        face={face}
         reference={figureCard(false)}
         done={done}
       />
@@ -187,7 +328,14 @@ export function SvepQuant({
         {layout}
       </div>
       {viewer && figure ? (
-        <FigureViewer question={q} figure={figure} lens={lens} onClose={closeViewer} />
+        <FigureViewer
+          question={q}
+          figure={figure}
+          lens={lens}
+          pictures={pictures}
+          onRetry={retryPage}
+          onClose={closeViewer}
+        />
       ) : null}
     </>
   )
@@ -289,15 +437,20 @@ function QuantPrompt({
 }
 
 /** The question card's face: the section and the position, the problem,
- *  the options and Svara. `still` is its picture during the turn. */
+ *  the options and Svara (which says why it waits, when it does). `still`
+ *  is its picture during the turn. */
 function QuantFace({
   view,
   act,
   still,
+  pictures,
+  wait,
 }: {
   view: DrillCoreView
   act: DrillCoreActions
   still: boolean
+  pictures: Pictures
+  wait: Wait | null
 }) {
   const q = view.question
   return (
@@ -311,13 +464,19 @@ function QuantFace({
         </div>
         <QuantPrompt question={q} testId={still ? undefined : 'rd-quant-prompt'} />
         {q.options ? (
-          <Options view={view} act={act} still={still} prefix="rd-quant-option" />
+          <Options
+            view={view}
+            act={act}
+            still={still}
+            prefix="rd-quant-option"
+            pictures={pictures}
+          />
         ) : (
           <p className="sv-qmissing">Frågan saknar svarsalternativ just nu.</p>
         )}
       </div>
       {q.options ? (
-        <LockBar view={view} act={act} still={still} />
+        <LockBar view={view} act={act} still={still} wait={wait} />
       ) : (
         <div className="sv-lockbar">
           <button type="button" className="sv-btn sv-btn--tonal" onClick={act.exit}>
@@ -338,6 +497,7 @@ function DeskQuant({
   motion,
   live,
   label,
+  face,
   reference,
   done,
 }: {
@@ -347,6 +507,8 @@ function DeskQuant({
   motion: Motion
   live: boolean
   label: string
+  /** The question card's face (QuantFace). */
+  face: (still: boolean) => ReactNode
   /** The figure card (DTK), or nothing: the problem card alone. */
   reference: ReactNode
   done: ReactNode
@@ -385,7 +547,7 @@ function DeskQuant({
       run={run}
       motion={motion}
       live={live}
-      face={(still) => <QuantFace view={view} act={act} still={still} />}
+      face={face}
       finish="Slutför övningen"
       keys={
         <p className="sv-keys">
@@ -423,6 +585,7 @@ function PhoneSolo({
   run,
   motion,
   live,
+  face,
   done,
 }: {
   view: DrillCoreView
@@ -430,6 +593,8 @@ function PhoneSolo({
   run: Run
   motion: Motion
   live: boolean
+  /** The question card's face (QuantFace). */
+  face: (still: boolean) => ReactNode
   done: ReactNode
 }) {
   if (view.phase === 'done') {
@@ -460,7 +625,7 @@ function PhoneSolo({
         <Faces
           feedback={feedback}
           motion={motion}
-          front={(still) => <QuantFace view={view} act={act} still={still} />}
+          front={face}
           back={() => (
             <PhoneFacit
               view={view}
@@ -514,18 +679,25 @@ function useLens(src: string | undefined): Lens {
  * The page on its light sheet, inside a scrollable region: at 1 it fits
  * the region whole, above 1 it scrolls (arrows when focused, a drag with
  * the mouse, the wheel or a finger). Turned a quarter, the page's box turns
- * with it, so the region keeps the whole page in view.
+ * with it, so the region keeps the whole page in view. Its load is the
+ * drill's (`pictures`): a page that fails says so and offers another try.
  */
 function FigureSheet({
   figure,
   lens,
   label,
+  pictures,
+  onRetry,
   onPanFocus,
+  boxRef,
 }: {
   figure: DrillFigure
   lens: Lens
   label: string
+  pictures: Pictures
+  onRetry: () => void
   onPanFocus?: (focused: boolean) => void
+  boxRef?: { current: HTMLElement | null }
 }) {
   const ratio = figure.width / figure.height
   const turned = lens.turn % 2 === 1
@@ -545,12 +717,21 @@ function FigureSheet({
   const end = () => {
     drag.current = null
   }
-  // A page that fails to load says so and offers another try; a new page
-  // (another src) starts afresh.
-  const [failed, setFailed] = useState<string | null>(null)
-  const [attempt, setAttempt] = useState(0)
+  const { report } = pictures
+  const failed = pictures.state[figure.src] === 'error'
+  // Each try mounts a fresh image.
+  const attempt = pictures.attempt[figure.src] ?? 0
+  const img = useRef<HTMLImageElement>(null)
+  // A page the browser already holds may have loaded before anyone
+  // listened: it counts at once.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: a retry mounts a fresh image
+  useLayoutEffect(() => {
+    const el = img.current
+    if (el?.complete && el.naturalWidth > 0) report(figure.src, 'ready')
+  }, [attempt, figure.src, report])
   return (
     <section
+      ref={boxRef}
       className="sv-fig-scroll"
       aria-label={label}
       data-zoom={lens.zoom === 1 ? 'fit' : 'in'}
@@ -558,22 +739,16 @@ function FigureSheet({
       tabIndex={0}
       onFocus={() => onPanFocus?.(true)}
       onBlur={() => onPanFocus?.(false)}
+      onKeyDown={(e) => panKey(e, e.currentTarget)}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={end}
       onPointerCancel={end}
     >
-      {failed === figure.src ? (
+      {failed ? (
         <div className="sv-fig-failed" role="alert">
           <p>Underlaget kunde inte laddas.</p>
-          <button
-            type="button"
-            className="sv-btn sv-btn--tonal"
-            onClick={() => {
-              setFailed(null)
-              setAttempt((a) => a + 1)
-            }}
-          >
+          <button type="button" className="sv-btn sv-btn--tonal" onClick={onRetry}>
             Försök igen
           </button>
         </div>
@@ -592,16 +767,33 @@ function FigureSheet({
         >
           <img
             key={attempt}
+            ref={img}
             src={`/${figure.src}`}
             alt={figure.alt}
             width={figure.width}
             height={figure.height}
             draggable={false}
-            onError={() => setFailed(figure.src)}
+            onLoad={() => report(figure.src, 'ready')}
+            onError={() => report(figure.src, 'error')}
           />
         </div>
       )}
     </section>
+  )
+}
+
+/** A DTK question without its page: said plainly, with the way back —
+ *  there is nothing to answer it from. */
+function MissingPage({ onBack }: { onBack: () => void }) {
+  return (
+    <div className="sv-fig-scroll" data-zoom="fit">
+      <div className="sv-fig-failed">
+        <p>Underlaget saknas just nu.</p>
+        <button type="button" className="sv-btn sv-btn--tonal" onClick={onBack}>
+          Tillbaka
+        </button>
+      </div>
+    </div>
   )
 }
 
@@ -688,15 +880,22 @@ function FigureCard({
   openRef,
   onOpen,
   onPanFocus,
+  pictures,
+  onRetry,
+  onBack,
 }: {
   question: DrillQuestion
-  figure: DrillFigure
+  /** Null: a DTK question without its page (no lens, the way back). */
+  figure: DrillFigure | null
   lens: Lens
   phone: boolean
   inert: boolean
   openRef: { current: HTMLButtonElement | null }
   onOpen: () => void
   onPanFocus: (focused: boolean) => void
+  pictures: Pictures
+  onRetry: () => void
+  onBack: () => void
 }) {
   return (
     <div className="sv-card sv-fcard" data-testid="rd-figure" inert={inert}>
@@ -704,15 +903,23 @@ function FigureCard({
         <SecChip section={question.section} />
         <h2 className="sv-fcard-title">Underlag</h2>
         {phone ? null : <span className="sv-fcard-src">{question.source.label}</span>}
-        {phone ? <LensTools lens={lens} onOpen={onOpen} openRef={openRef} compact /> : null}
+        {phone && figure ? (
+          <LensTools lens={lens} onOpen={onOpen} openRef={openRef} compact />
+        ) : null}
       </div>
-      <FigureSheet
-        figure={figure}
-        lens={lens}
-        label={`Underlaget till uppgift ${question.number}`}
-        onPanFocus={onPanFocus}
-      />
-      {phone ? null : (
+      {figure ? (
+        <FigureSheet
+          figure={figure}
+          lens={lens}
+          label={`Underlaget till uppgift ${question.number}`}
+          pictures={pictures}
+          onRetry={onRetry}
+          onPanFocus={onPanFocus}
+        />
+      ) : (
+        <MissingPage onBack={onBack} />
+      )}
+      {phone || !figure ? null : (
         <div className="sv-fcard-foot">
           <LensTools lens={lens} onOpen={onOpen} openRef={openRef} />
         </div>
@@ -725,20 +932,26 @@ function FigureCard({
  * The page enlarged over the whole stage: a labelled dialog that keeps the
  * focus inside, with the lens's controls and Stäng. Esc closes it (a local
  * aid — it never leaves the drill) and the focus goes back to Förstora.
+ * The arrows pan the page wherever the focus is in it, and go no further.
  */
 function FigureViewer({
   question,
   figure,
   lens,
+  pictures,
+  onRetry,
   onClose,
 }: {
   question: DrillQuestion
   figure: DrillFigure
   lens: Lens
+  pictures: Pictures
+  onRetry: () => void
   onClose: () => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
+  const sheetRef = useRef<HTMLElement>(null)
   const titleId = useId()
   useEffect(() => {
     closeRef.current?.focus({ preventScroll: true })
@@ -750,6 +963,9 @@ function FigureViewer({
       onClose()
       return
     }
+    // An arrow anywhere in the viewer pans the page (one pressed on the
+    // page itself, the page has taken already).
+    if (panKey(e, sheetRef.current)) return
     if (e.key !== 'Tab' || !ref.current) return
     const stops = [
       ...ref.current.querySelectorAll<HTMLElement>('button:not([disabled]), [tabindex="0"]'),
@@ -794,6 +1010,9 @@ function FigureViewer({
           figure={figure}
           lens={lens}
           label={`Underlaget förstorat, uppgift ${question.number}`}
+          pictures={pictures}
+          onRetry={onRetry}
+          boxRef={sheetRef}
         />
       </div>
     </div>

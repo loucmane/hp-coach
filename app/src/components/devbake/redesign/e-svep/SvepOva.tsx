@@ -69,7 +69,9 @@ export function SvepOva({
     () => ovaCards(ova, data.repetera.sessionSize, actions),
     [ova, data.repetera.sessionSize, actions],
   )
-  const deck = useDeck(cards.length)
+  // Blandat and Repetera are always dealt; the suggestion comes and goes
+  // with the estimates, and the card in front stays in front when it does.
+  const deck = useDeck(cards)
   const front = cards[deck.index]
 
   const tint = front.tint ?? 'none'
