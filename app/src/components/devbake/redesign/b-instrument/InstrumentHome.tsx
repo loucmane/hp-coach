@@ -11,16 +11,7 @@
 import { ArrowRight, ChevronRight, TrendingUp } from 'lucide-react'
 import { useState } from 'react'
 
-import {
-  ESTIMATE_CAVEAT,
-  PLAN,
-  type PlanItem,
-  PROGNOSIS,
-  RECENT,
-  RESUME,
-  TODAY,
-  TRAPS,
-} from '@/components/devbake/redesign/r1Fixtures'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
   type Destination,
   fmtDelta,
@@ -28,13 +19,8 @@ import {
   useKeyMap,
   type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
+import type { PrognosisView } from '@/components/devbake/redesign/viewModel'
 import { Kc, Segs } from './parts'
-
-const PLAN_DEST: Record<PlanItem['kind'], Destination> = {
-  repetition: 'ova',
-  lektion: 'uppslag',
-  övning: 'ova',
-}
 
 const DEVICE_DEFINITE: Record<string, string> = {
   telefon: 'telefonen',
@@ -59,8 +45,17 @@ export function InstrumentHome({
   onResume: () => void
   onGo: (d: Destination) => void
 }) {
+  const { data, actions } = useDirectionData()
+  const {
+    resume: RESUME,
+    plan: PLAN,
+    prognosis: PROGNOSIS,
+    recent: RECENT,
+    today: TODAY,
+    traps: TRAPS,
+  } = data.home
   const phone = width === 'phone'
-  const left = RESUME.total - RESUME.answered
+  const left = RESUME ? RESUME.total - RESUME.answered : 0
   const next = PLAN.items.find((i) => i.primary) ?? PLAN.items[0]
   const trap = TRAPS.find((t) => t.rising) ?? TRAPS[0]
   const right = RECENT.reduce((n, r) => n + r.correct, 0)
@@ -69,7 +64,9 @@ export function InstrumentHome({
   // The rest of the day on the clock: the text in progress, then the plan.
   let t = 0
   const slots: Slot[] = [
-    { id: 'resume', title: RESUME.title, minutes: RESUME.minutesLeft },
+    ...(RESUME?.minutesLeft != null
+      ? [{ id: 'resume', title: RESUME.title, minutes: RESUME.minutesLeft }]
+      : []),
     ...PLAN.items.map((i) => ({ id: i.id, title: i.title, minutes: i.minutes })),
   ].map(({ id, title, minutes }) => {
     const from = t
@@ -78,9 +75,14 @@ export function InstrumentHome({
   })
 
   // Row 0 resumes; rows 1… open the plan's parts.
-  const runs = [onResume, ...PLAN.items.map((item) => () => onGo(PLAN_DEST[item.kind]))]
+  const runs = [
+    ...(RESUME ? [onResume] : []),
+    ...PLAN.items.map((item) => () => actions.openPlanItem(item.id)),
+  ]
   const [active, setActive] = useState(0)
-  const move = (step: number) => setActive((a) => (a + step + runs.length) % runs.length)
+  const move = (step: number) => {
+    if (runs.length) setActive((a) => (a + step + runs.length) % runs.length)
+  }
   useKeyMap(
     {
       Enter: () => runs[active]?.(),
@@ -95,8 +97,12 @@ export function InstrumentHome({
       <div className="in-greet">
         <h1>{TODAY.greeting}</h1>
         <p>
-          {cap(WORDS[left])} frågor kvar i texten du läser. Sedan {next.title.toLowerCase()},{' '}
-          {next.minutes} min.
+          {RESUME
+            ? `${cap(WORDS[left] ?? String(left))} frågor kvar i texten du läser.`
+            : 'Din övning börjar här.'}
+          {next
+            ? ` ${RESUME ? 'Sedan' : 'Nästa:'} ${next.title.toLowerCase()}, ${next.minutes} min.`
+            : ''}
         </p>
       </div>
 
@@ -104,78 +110,92 @@ export function InstrumentHome({
         <header className="in-day">
           <div className="in-day-head">
             <h2 id="in-day-h">Dagen</h2>
-            <span>{slots.length} delar</span>
+            <span>{runs.length} delar</span>
             <span className="in-spacer" />
-            <span className="in-day-total">{t} min</span>
+            {(!RESUME || RESUME.minutesLeft != null) && t > 0 ? (
+              <span className="in-day-total">{t} min</span>
+            ) : null}
           </div>
-          <DayBar slots={slots} active={active} total={t} />
+          {(!RESUME || RESUME.minutesLeft != null) && t > 0 ? (
+            <DayBar slots={slots} active={active} total={t} />
+          ) : null}
         </header>
         <ol>
-          <li className="in-cmd in-lead" data-active={String(active === 0)}>
-            <div className="in-lead-main">
-              <p className="in-lead-top">
-                <span className="in-code">{RESUME.section}</span>
-                <span className="in-lead-kind">Påbörjad övning</span>
-                <span className="in-sub in-lead-when">
-                  · pausad {RESUME.pausedAt.replace('Idag · ', 'idag ')} på{' '}
-                  {DEVICE_DEFINITE[RESUME.device] ?? RESUME.device}
-                </span>
-              </p>
-              <h3 className="in-lead-title" id="in-resume-title">
-                {RESUME.title}
-              </h3>
-              <p className="in-lead-sub">{RESUME.subtitle}</p>
-              <div className="in-lead-meter">
-                <span className="in-lead-q">
-                  Fråga {RESUME.position} av {RESUME.total}
-                </span>
-                <Segs
-                  total={RESUME.total}
-                  done={RESUME.answered}
-                  now={RESUME.answered}
-                  label={`${RESUME.answered} av ${RESUME.total} besvarade, fråga ${RESUME.position} väntar`}
-                />
-                <span className="in-sub">
-                  {RESUME.answered} besvarade · ca {RESUME.minutesLeft} min kvar
-                </span>
+          {RESUME ? (
+            <li className="in-cmd in-lead" data-active={String(active === 0)}>
+              <div className="in-lead-main">
+                <p className="in-lead-top">
+                  <span className="in-code">{RESUME.section}</span>
+                  <span className="in-lead-kind">Påbörjad övning</span>
+                  {RESUME.pausedAt ? (
+                    <span className="in-sub in-lead-when">
+                      · pausad {RESUME.pausedAt.replace('Idag · ', 'idag ')}
+                      {RESUME.device
+                        ? ` på ${DEVICE_DEFINITE[RESUME.device] ?? RESUME.device}`
+                        : ''}
+                    </span>
+                  ) : null}
+                </p>
+                <h3 className="in-lead-title" id="in-resume-title">
+                  {RESUME.title}
+                </h3>
+                <p className="in-lead-sub">{RESUME.subtitle}</p>
+                <div className="in-lead-meter">
+                  <span className="in-lead-q">
+                    Fråga {RESUME.position} av {RESUME.total}
+                  </span>
+                  <Segs
+                    total={RESUME.total}
+                    done={RESUME.answered}
+                    now={RESUME.answered}
+                    label={`${RESUME.answered} av ${RESUME.total} besvarade, fråga ${RESUME.position} väntar`}
+                  />
+                  <span className="in-sub">
+                    {RESUME.answered} besvarade
+                    {RESUME.minutesLeft != null ? ` · ca ${RESUME.minutesLeft} min kvar` : ''}
+                  </span>
+                </div>
               </div>
-            </div>
-            <button
-              type="button"
-              className="in-btn in-lead-btn"
-              onClick={onResume}
-              onFocus={() => setActive(0)}
-              aria-describedby="in-resume-title"
-              data-testid="rd-resume"
-            >
-              Fortsätt
-              <Kc>↵</Kc>
-            </button>
-          </li>
+              <button
+                type="button"
+                className="in-btn in-lead-btn"
+                onClick={onResume}
+                onFocus={() => setActive(0)}
+                aria-describedby="in-resume-title"
+                data-testid="rd-resume"
+              >
+                Fortsätt
+                <Kc>↵</Kc>
+              </button>
+            </li>
+          ) : null}
           {PLAN.items.map((item, i) => {
-            const on = active === i + 1
-            const slot = slots[i + 1]
+            const row = i + (RESUME ? 1 : 0)
+            const on = active === row
+            const slot = slots.find((s) => s.id === item.id)
             return (
               <li key={item.id} className="in-cmd" data-active={String(on)}>
                 <button
                   type="button"
                   className="in-cmd-row"
-                  onClick={runs[i + 1]}
-                  onFocus={() => setActive(i + 1)}
+                  onClick={runs[row]}
+                  onFocus={() => setActive(row)}
                 >
                   <span className="in-code" aria-hidden>
                     {item.section ?? 'REP'}
                   </span>
                   <span className="in-cmd-main">
                     <span className="in-cmd-title">
-                      {item.title} <span>· {item.detail}</span>
+                      {item.title} {item.detail ? <span>· {item.detail}</span> : null}
                       {item.primary ? <span className="in-tag">Nästa</span> : null}
                     </span>
                     <span className="in-cmd-why">{item.rationale}</span>
                   </span>
                   <span className="in-cmd-min">
                     <span className="in-sr">Minut </span>
-                    {slot.from}–{slot.to}
+                    {slot && (!RESUME || RESUME.minutesLeft != null)
+                      ? `${slot.from}–${slot.to}`
+                      : item.minutes}
                     <span className="in-cmd-unit"> min</span>
                   </span>
                   <span className="in-cmd-go" aria-hidden>
@@ -196,42 +216,53 @@ export function InstrumentHome({
         <div className="in-cell">
           <h2 className="in-cell-head">
             <span>Prognos</span>
-            <span className="in-cell-ro">7 veckor · 0–2,0</span>
+            <span className="in-cell-ro">
+              {PROGNOSIS.weeks?.length ? `${PROGNOSIS.weeks.length} veckor · ` : ''}0–2,0
+            </span>
           </h2>
           <div className="in-cell-body">
             <p className="in-prog-line">
-              <span className="in-prog-n" aria-describedby="in-caveat">
-                {fmtScore(PROGNOSIS.total)}
-                <sup aria-hidden>*</sup>
+              <span
+                className="in-prog-n"
+                aria-describedby={PROGNOSIS.caveat ? 'in-caveat' : undefined}
+              >
+                {PROGNOSIS.total != null ? fmtScore(PROGNOSIS.total) : '—'}
+                {PROGNOSIS.caveat ? <sup aria-hidden>*</sup> : null}
               </span>
               <span className="in-prog-of">/ 2,0</span>
-              <span className="in-delta">
-                <TrendingUp size={14} strokeWidth={1.75} aria-hidden /> {fmtDelta(PROGNOSIS.delta)}{' '}
-                sedan förra veckan
-              </span>
+              {PROGNOSIS.delta != null ? (
+                <span className="in-delta">
+                  <TrendingUp size={14} strokeWidth={1.75} aria-hidden />{' '}
+                  {fmtDelta(PROGNOSIS.delta)} sedan förra veckan
+                </span>
+              ) : null}
             </p>
-            <Chart />
-            <p className="in-caveat" id="in-caveat">
-              <span aria-hidden>*</span>
-              <span>{ESTIMATE_CAVEAT}</span>
-            </p>
+            <Chart prognosis={PROGNOSIS} />
+            {PROGNOSIS.caveat ? (
+              <p className="in-caveat" id="in-caveat">
+                <span aria-hidden>*</span>
+                <span>{PROGNOSIS.caveat}</span>
+              </p>
+            ) : null}
           </div>
         </div>
 
-        <div className="in-cell">
-          <h2 className="in-cell-head">
-            <span>Fälla just nu</span>
-            <span className="in-cell-ro">{trap.section}</span>
-          </h2>
-          <div className="in-cell-body">
-            <p className="in-trap-name">{trap.name}</p>
-            <p className="in-trap-pattern">{trap.pattern}</p>
-            <p className="in-trap-meta">
-              <span className="in-num">{trap.count}</span>
-              <span>gånger{trap.rising ? ', fler än förra veckan' : ''}</span>
-            </p>
+        {trap ? (
+          <div className="in-cell">
+            <h2 className="in-cell-head">
+              <span>Fälla just nu</span>
+              <span className="in-cell-ro">{trap.section}</span>
+            </h2>
+            <div className="in-cell-body">
+              <p className="in-trap-name">{trap.name}</p>
+              <p className="in-trap-pattern">{trap.pattern}</p>
+              <p className="in-trap-meta">
+                <span className="in-num">{trap.count}</span>
+                <span>gånger{trap.rising ? ', fler än förra veckan' : ''}</span>
+              </p>
+            </div>
           </div>
-        </div>
+        ) : null}
 
         <div className="in-cell">
           <h2 className="in-cell-head">
@@ -291,23 +322,25 @@ function DayBar({ slots, active, total }: { slots: Slot[]; active: number; total
 
 /** The weekly prognosis on a fixed 0–2,0 scale (so a small rise looks
  *  small), with the likely range this week as a band at the end. */
-function Chart() {
+function Chart({ prognosis: PROGNOSIS }: { prognosis: PrognosisView }) {
+  const weeks = PROGNOSIS.weeks
+  if (!weeks?.length) return null
   const W = 296
   const H = 76
   const x0 = 30
   const top = 6
   const bottom = 66
   const y = (v: number) => bottom - (v / 2) * (bottom - top)
-  const n = PROGNOSIS.weeks.length
-  const x = (i: number) => x0 + (i / (n - 1)) * (W - x0 - 8)
-  const line = PROGNOSIS.weeks.map((v, i) => `${i === 0 ? 'M' : 'L'}${x(i)} ${y(v).toFixed(1)}`)
+  const n = weeks.length
+  const x = (i: number) => x0 + (i / Math.max(1, n - 1)) * (W - x0 - 8)
+  const line = weeks.map((v, i) => `${i === 0 ? 'M' : 'L'}${x(i)} ${y(v).toFixed(1)}`)
   const lx = x(n - 1)
   return (
     <svg
       className="in-chart"
       viewBox={`0 0 ${W} ${H}`}
       role="img"
-      aria-label={`Prognosen de senaste ${n} veckorna på skalan 0 till 2,0: ${PROGNOSIS.weeks.map(fmtScore).join(', ')}. Trolig nivå nu ${fmtScore(PROGNOSIS.low)} till ${fmtScore(PROGNOSIS.high)}.`}
+      aria-label={`Prognosen de senaste ${n} veckorna på skalan 0 till 2,0: ${weeks.map(fmtScore).join(', ')}.${PROGNOSIS.low != null && PROGNOSIS.high != null ? ` Trolig nivå nu ${fmtScore(PROGNOSIS.low)} till ${fmtScore(PROGNOSIS.high)}.` : ''}`}
     >
       {[0, 1, 2].map((v) => (
         <g key={v}>
@@ -317,16 +350,20 @@ function Chart() {
           </text>
         </g>
       ))}
-      <rect
-        className="in-chart-band"
-        x={lx - 5}
-        width={10}
-        y={y(PROGNOSIS.high)}
-        height={y(PROGNOSIS.low) - y(PROGNOSIS.high)}
-        rx={1}
-      />
+      {PROGNOSIS.low != null && PROGNOSIS.high != null ? (
+        <rect
+          className="in-chart-band"
+          x={lx - 5}
+          width={10}
+          y={y(PROGNOSIS.high)}
+          height={y(PROGNOSIS.low) - y(PROGNOSIS.high)}
+          rx={1}
+        />
+      ) : null}
       <path className="in-chart-line" d={line.join(' ')} />
-      <circle className="in-chart-dot" cx={lx} cy={y(PROGNOSIS.total)} r={3.5} />
+      {PROGNOSIS.total != null ? (
+        <circle className="in-chart-dot" cx={lx} cy={y(PROGNOSIS.total)} r={3.5} />
+      ) : null}
     </svg>
   )
 }
