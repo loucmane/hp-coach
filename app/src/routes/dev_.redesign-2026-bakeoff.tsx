@@ -1,16 +1,23 @@
 // /dev/redesign-2026-bakeoff — the whole-app redesign, round 1 (epic
-// hpf-qr0p, bead hpf-qr0p.1; brief docs/redesign/2026-10-round1-brief.md).
+// hpf-qr0p, beads hpf-qr0p.1 and hpf-qr0p.2; brief
+// docs/redesign/2026-10-round1-brief.md).
 //
-// Four candidate design directions, each a self-contained design system,
-// shown on HP-Coach's own screens so the owner can react to real things:
+// Eight candidate design directions, each a self-contained design system,
+// shown on HP-Coach's own screens so the owner can react to real things.
+// Round 1:
 //   A Folio      — editorial paper, next generation
 //   B Instrument — precision pro tool
 //   C Spår       — expressive learning path
 //   D Lager      — spatial depth, glass done right
+// Round 1b ("Under arbete" placeholders until each is built):
+//   E Svep       — one card at a time
+//   F Samtal     — a calm coach in dialogue
+//   G Raster     — Swiss grid, big numbers
+//   H Ljuskägla  — dark mode, light on the paragraph you read
 // Screens: 1 Idag · 2 Läsfråga · 3 Facit · 4 Navigering, at desktop or
 // phone width, light or dark. `?d=b&s=2&w=phone&t=dark` selects; `&sbs=1`
-// shows the same screen in all four directions side by side; `&bare=1`
-// hides the switcher (screenshots). Keys: 1–4 direction, ←/→ screen,
+// shows the same screen in all eight directions side by side; `&bare=1`
+// hides the switcher (screenshots). Keys: 1–8 direction, ←/→ screen,
 // 0 side by side.
 //
 // Dev-gated. Kept forever per the keep-bake-offs rule.
@@ -19,16 +26,16 @@
 // splits off `component` only, so whatever validateSearch touches ships in
 // the entry bundle. This file therefore has no static import from
 // components/devbake: the search keys are inline (pinned to the page's
-// metadata by -redesign-2026-bakeoff.test.ts) and the page, the four
-// directions, their fixtures and fonts load through import() once the dev
-// gate lets the page render.
+// registry, directions.ts, by -redesign-2026-bakeoff.test.ts) and the page,
+// the directions, their fixtures and fonts load through import() once the
+// dev gate lets the page render.
 
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { lazy, Suspense } from 'react'
 
 import { isDevSurface } from '@/lib/devSurface'
 
-export const DIRECTION_KEYS = ['a', 'b', 'c', 'd'] as const
+export const DIRECTION_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const
 export const SCREEN_KEYS = [1, 2, 3, 4] as const
 export const WIDTH_KEYS = ['desktop', 'phone'] as const
 export const THEME_KEYS = ['light', 'dark'] as const

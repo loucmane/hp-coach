@@ -6,16 +6,20 @@
 // demand; answering grades the question; Facit shows the verdict, a detail
 // step on demand, technique, pitfall, every distractor and ¶ links; Nästa
 // moves on; Navigering opens the account menu with a working theme switch.
-// Plus the switcher's buttons and keys.
+// Plus the switcher's buttons and keys, and the registry's eight
+// directions: every key mounts its folder's stage, and a direction that is
+// still a stub shows its "Under arbete" card on every screen, width and
+// theme.
 
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import type { ComponentType } from 'react'
-import { beforeAll, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { Folio } from '@/components/devbake/redesign/a-folio/Folio'
 import { Instrument } from '@/components/devbake/redesign/b-instrument/Instrument'
 import { Spar } from '@/components/devbake/redesign/c-spar/Spar'
 import { Lager } from '@/components/devbake/redesign/d-lager/Lager'
+import { DIRECTIONS, STAGES } from '@/components/devbake/redesign/directions'
 import {
   Redesign2026Bakeoff,
   type Selection,
@@ -28,8 +32,13 @@ import {
 } from '@/components/devbake/redesign/r1Fixtures'
 import {
   DESTINATIONS,
+  type DirectionMeta,
   type DirectionProps,
+  DIRECTIONS as KIT_DIRECTIONS,
+  SCREENS,
   type ScreenKey,
+  THEMES,
+  WIDTHS as WIDTH_OPTIONS,
   type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
 
@@ -220,5 +229,122 @@ describe('bake-off switcher', () => {
     rerender(<Redesign2026Bakeoff sel={{ ...base, sbs: true }} onSelect={() => {}} />)
     expect(screen.getByTestId('rb26-sbs-grid')).toBeInTheDocument()
     expect(screen.getByTestId('rb26-sbs')).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('offers all eight directions on the bar and answers 1–8 in that order', () => {
+    const onSelect = vi.fn()
+    render(<Redesign2026Bakeoff sel={base} onSelect={onSelect} />)
+    const items = within(screen.getByTestId('rb26-direction')).getAllByRole('button')
+    expect(items.map((b) => b.dataset.testid)).toEqual(
+      DIRECTIONS.map((d) => `rb26-direction-${d.key}`),
+    )
+    DIRECTIONS.forEach((d, i) => {
+      expect(items[i]).toHaveTextContent(`${i + 1}${d.name}`)
+      fireEvent.keyDown(window, { key: String(i + 1) })
+      expect(onSelect).toHaveBeenLastCalledWith({ d: d.key, sbs: false })
+    })
+    fireEvent.click(screen.getByTestId('rb26-direction-h'))
+    expect(onSelect).toHaveBeenLastCalledWith({ d: 'h', sbs: false })
+    onSelect.mockClear()
+    fireEvent.keyDown(window, { key: '9' })
+    expect(onSelect).not.toHaveBeenCalled()
+  })
+
+  it('lists every direction and the 1–8 keys in the side-by-side "Om" panel', () => {
+    render(<Redesign2026Bakeoff sel={{ ...base, sbs: true }} onSelect={() => {}} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Om riktningarna' }))
+    const info = screen.getByTestId('rb26-info')
+    expect(within(info).getAllByRole('heading', { level: 2 })).toHaveLength(DIRECTIONS.length)
+    expect(info).toHaveTextContent('Tangenter: 1–8 riktning')
+  })
+})
+
+describe('direction registry', () => {
+  it('registers eight directions a–h with unique keys, slugs and names, each with a stage', () => {
+    const keys = DIRECTIONS.map((d) => d.key)
+    expect(keys).toEqual(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'])
+    expect(new Set(keys).size).toBe(8)
+    expect(DIRECTIONS.map((d) => d.slug)).toEqual([
+      'a-folio',
+      'b-instrument',
+      'c-spar',
+      'd-lager',
+      'e-svep',
+      'f-samtal',
+      'g-raster',
+      'h-ljuskagla',
+    ])
+    expect(new Set(DIRECTIONS.map((d) => d.slug)).size).toBe(8)
+    expect(new Set(DIRECTIONS.map((d) => d.name)).size).toBe(8)
+    for (const d of DIRECTIONS) {
+      expect(d.tagline).not.toBe('')
+      expect(d.traits.length).toBeGreaterThan(0)
+    }
+    expect(Object.keys(STAGES)).toEqual(keys)
+    // The kit's older export is the registry's list, not a copy.
+    expect(KIT_DIRECTIONS).toBe(DIRECTIONS)
+  })
+
+  it('keeps round 1 built: only E–H may still be stubs', () => {
+    for (const d of DIRECTIONS.slice(0, 4)) expect(d.stub).toBeUndefined()
+  })
+})
+
+describe('bake-off stage', () => {
+  const base: Selection = { d: 'a', s: 1, w: 'desktop', t: 'light', sbs: false, bare: false }
+  const stageRoot = (d: DirectionMeta) => `rd-${d.slug.slice(2)}`
+  const lazyWait = { timeout: 5000 }
+
+  // jsdom has no layout: give every box the room under the bar of a
+  // 1440 × 900 window, so the stage mounts its directions.
+  beforeEach(() => {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(848)
+  })
+  afterEach(() => vi.restoreAllMocks())
+
+  it.each(DIRECTIONS)('?d=$key mounts the $name stage from its folder', async (d) => {
+    render(<Redesign2026Bakeoff sel={{ ...base, d: d.key }} onSelect={() => {}} />)
+    const stage = screen.getByTestId('rb26-stage')
+    expect(stage).toHaveAttribute('data-direction', d.key)
+    expect(await within(stage).findByTestId(stageRoot(d), {}, lazyWait)).toBeInTheDocument()
+  })
+
+  it.each(WIDTHS)('a stub shows "Under arbete" on every screen and theme (%s)', async (w) => {
+    const width = WIDTH_OPTIONS.find((o) => o.key === w)?.label
+    for (const d of DIRECTIONS.filter((x) => x.stub)) {
+      const sel = { ...base, d: d.key, w }
+      const { rerender, unmount } = render(<Redesign2026Bakeoff sel={sel} onSelect={() => {}} />)
+      const card = await screen.findByTestId('rd-stub', {}, lazyWait)
+      expect(card).toHaveTextContent('Under arbete')
+      expect(card).toHaveTextContent(d.name)
+      expect(card).toHaveTextContent(d.tagline)
+      for (const s of SCREENS) {
+        for (const t of THEMES) {
+          rerender(<Redesign2026Bakeoff sel={{ ...sel, s: s.key, t: t.key }} onSelect={() => {}} />)
+          expect(screen.getByTestId(stageRoot(d))).toHaveAttribute('data-theme', t.key)
+          expect(screen.getByTestId('rd-stub-where')).toHaveTextContent(
+            `Skärm ${s.key} · ${s.label} · ${width} · ${t.label}`,
+          )
+        }
+      }
+      unmount()
+    }
+  })
+
+  it.each(WIDTHS)('side by side shows all eight directions, two rows of four (%s)', async (w) => {
+    const onSelect = vi.fn()
+    render(<Redesign2026Bakeoff sel={{ ...base, w, sbs: true }} onSelect={onSelect} />)
+    const grid = screen.getByTestId('rb26-sbs-grid')
+    expect(grid.style.getPropertyValue('--rb26-cols')).toBe('4')
+    const thumbs = within(grid).getAllByTestId(/^rb26-thumb-[a-z]$/)
+    expect(thumbs.map((f) => f.dataset.testid)).toEqual(
+      DIRECTIONS.map((d) => `rb26-thumb-${d.key}`),
+    )
+    for (const [i, d] of DIRECTIONS.entries()) {
+      expect(await within(thumbs[i]).findByTestId(stageRoot(d), {}, lazyWait)).toBeInTheDocument()
+    }
+    fireEvent.click(screen.getByRole('button', { name: 'Öppna Ljuskägla i full storlek' }))
+    expect(onSelect).toHaveBeenLastCalledWith({ d: 'h', sbs: false })
   })
 })

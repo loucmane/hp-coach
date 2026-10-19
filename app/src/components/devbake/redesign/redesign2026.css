@@ -1,4 +1,4 @@
-/* /dev/redesign-2026-bakeoff — the switcher and stage around the four
+/* /dev/redesign-2026-bakeoff — the switcher and stage around the eight
  * directions. A deliberately neutral "lab" chrome: system type, grey
  * tokens, no accent hue, so it never competes with the candidates.
  * Everything is scoped under .rb26; nothing touches :root. */
@@ -82,12 +82,20 @@
   z-index: 10;
   flex: none;
   display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 52px;
+  flex-direction: column;
+  gap: 8px;
   padding: 8px 12px 8px 16px;
   background: var(--rb-bar);
   border-bottom: 1px solid var(--rb-line);
+}
+
+/* Two rows: the brand and the eight directions (too many to share a row
+ * with the rest), then the screen, width, theme and view toggles. */
+.rb26-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
 }
 
 .rb26-brand {
@@ -269,7 +277,8 @@
   top: calc(100% + 10px);
   right: 0;
   width: min(480px, calc(100vw - 24px));
-  max-height: calc(100dvh - 90px);
+  /* It opens under the bar's second row. */
+  max-height: calc(100dvh - 134px);
   overflow: auto;
   padding: 20px 22px 18px;
   border-radius: 14px;
@@ -425,6 +434,9 @@
   flex-direction: column;
   gap: 10px;
   min-width: 0;
+  /* A caption wider than its cell truncates its tagline instead of
+   * pushing the tile off centre. */
+  max-width: 100%;
 }
 
 .rb26-thumb figcaption {
@@ -476,7 +488,8 @@
   outline-offset: -2px;
 }
 
-/* ── Narrow screens: the bar wraps into scrollable rows ──────────── */
+/* ── Narrow screens: the rows wrap; the directions become a 4 × 2 grid
+ *    (round 1 above, round 1b below) and the other segments scroll ─── */
 
 @media (max-width: 1180px) {
   .rb26-label {
@@ -484,11 +497,13 @@
   }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 960px) {
   .rb26-bar {
+    padding: 8px 10px;
+  }
+  .rb26-row {
     flex-wrap: wrap;
     row-gap: 8px;
-    padding: 8px 10px;
   }
   .rb26-brand {
     flex: 1 0 auto;
@@ -503,6 +518,29 @@
   }
   .rb26-seg kbd {
     display: none;
+  }
+  .rb26-dirs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+  }
+  .rb26-dirs button {
+    justify-content: center;
+    padding: 0 6px;
+  }
+  /* The "Om" panel hangs from the whole bar, not from its button, so it
+   * stays on screen however the rows wrap. */
+  .rb26-info-wrap {
+    position: static;
+  }
+  .rb26-info {
+    top: calc(100% + 8px);
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-width: 480px;
+    margin-left: auto;
+    max-height: calc(100dvh - 100% - 24px);
   }
 }
 
