@@ -367,16 +367,23 @@ describe('bake-off stage', () => {
     expect(onSelect).toHaveBeenLastCalledWith({ d: 'h', sbs: false })
   })
 
-  it.each(WIDTHS)('side by side works on a round-2 screen: eight calm cards (%s)', (w) => {
+  it.each(WIDTHS)('side by side works on a round-2 screen: card or stage (%s)', async (w) => {
     render(<Redesign2026Bakeoff sel={{ ...base, w, s: 11, sbs: true }} onSelect={() => {}} />)
     const grid = screen.getByTestId('rb26-sbs-grid')
     expect(grid).toHaveAttribute('data-screen', '11')
     const thumbs = within(grid).getAllByTestId(/^rb26-thumb-[a-z]$/)
     expect(thumbs).toHaveLength(DIRECTIONS.length)
+    // Round-2 batches build screen 11 one direction at a time: the registry
+    // says which thumbnails show the direction and which the calm card.
     for (const [i, d] of DIRECTIONS.entries()) {
-      const card = within(thumbs[i]).getByTestId('rd-not-built')
-      expect(card).toHaveTextContent(`Inte byggd än i ${d.name}.`)
-      expect(card).toHaveTextContent('Framsteg')
+      if (builds(d, 11)) {
+        expect(await within(thumbs[i]).findByTestId(stageRoot(d), {}, lazyWait)).toBeInTheDocument()
+        expect(within(thumbs[i]).queryByTestId('rd-not-built')).toBeNull()
+      } else {
+        const card = within(thumbs[i]).getByTestId('rd-not-built')
+        expect(card).toHaveTextContent(`Inte byggd än i ${d.name}.`)
+        expect(card).toHaveTextContent('Framsteg')
+      }
     }
   })
 
