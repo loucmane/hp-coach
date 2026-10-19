@@ -1,7 +1,3 @@
-// H · Ljuskägla's entry in the bake-off's direction registry
-// (../directions.ts). A placeholder until the direction is built; its
-// builder rewrites this file.
-
 import type { DirectionMeta } from '@/components/devbake/redesign/r1Kit'
 
 export const meta: DirectionMeta = {
@@ -9,8 +5,15 @@ export const meta: DirectionMeta = {
   slug: 'h-ljuskagla',
   name: 'Ljuskägla',
   tagline: 'Mörkt läge, ljus på stycket du läser',
-  traits: ['Under arbete – egenskaperna fylls i när riktningen är byggd.'],
-  risk: 'Risk: beskrivs när riktningen är byggd.',
-  references: 'Fylls i när riktningen är byggd.',
-  stub: true,
+  traits: [
+    'Ett stilla läsrum i varm kolgrå. Ett enda upplyst fortsätt-kort på Idag; dagens plan, prognos och fällor väntar i skuggan.',
+    'Manrope i gränssnittet, Spectral i texten. Generös radrytm och en varm ljuslinje i marginalen håller kvar läsplatsen.',
+    'Ljuset följer klick, rullning och J/K eller piltangenter. En synlig strömbrytare låter hela texten få samma ljus.',
+    'Text och fråga har varsin ogenomskinlig yta på datorn. På telefonen börjar du med texten och öppnar frågan från nederkanten.',
+    'Facit följer en lugn ordning från felsvar till teknik. En hänvisning till ¶6 tänder stycket; på telefonen viker facit undan.',
+    'Ljust läge är solbelyst papper med mjuk skugga. Menyn träder fram vid hovring och tangentbordsfokus; kontot är alltid nära.',
+  ],
+  risk: 'Risk: skuggad text kan försvinna ur sammanhanget. Svar: läsbar text även i skuggan, tydlig avstängning av styckeljuset och ett fullvärdigt ljust tema.',
+  references:
+    'iA Writers fokusläge, Ulysses skrivmaskinsläge, Kindles och Apple Books nattlägen, teaterns ljussättning och Endels stillhet.',
 }

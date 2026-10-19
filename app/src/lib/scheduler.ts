@@ -90,8 +90,9 @@ export type PlanItem = {
  *    candidate now pulls its untaught hard prerequisite into the lesson
  *    slot (possibly another section's, "Grunden först: …"); plans cached
  *    before this could still introduce KVA-TRAP-014 ahead of
- *    XYZ-TRAP-005. */
-export const PLAN_SCHEMA_VERSION = 10
+ *    XYZ-TRAP-005.
+ *  - v11: coverage × learner misses orders new lessons (hpf-0026.3). */
+export const PLAN_SCHEMA_VERSION = 11
 
 export type DailyPlan = {
   /** Schema version — see `PLAN_SCHEMA_VERSION`. Older plans are
