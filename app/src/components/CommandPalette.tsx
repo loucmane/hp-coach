@@ -12,9 +12,11 @@
 
 import { useNavigate } from '@tanstack/react-router'
 import { type KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 import { copyDebugSnapshot } from '@/lib/debugSnapshot'
 import { isDevSurface } from '@/lib/devSurface'
+import { DESIGN_DIRECTIONS, useDesignStore } from '@/stores/designStore'
 import { Mono } from './primitives'
 
 type Command = {
@@ -171,6 +173,20 @@ const COMMANDS: Command[] = [
 // palette is the one home for dev affordances now.
 const DEV_ONLY_COMMAND_IDS = new Set(['dev', 'share-debug'])
 
+const DIRECTION_COMMANDS: Command[] = [
+  ...DESIGN_DIRECTIONS.map(({ key, name }) => ({
+    id: `direction-${key}`,
+    label: `Riktning: ${name}`,
+    keywords: ['design', 'riktning', key],
+    action: () => useDesignStore.getState().setDirection(key),
+  })),
+  {
+    id: 'direction-normal',
+    label: 'Riktning: vanliga appen',
+    action: () => useDesignStore.getState().setDirection(null),
+  },
+]
+
 export function CommandPalette() {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
@@ -212,7 +228,9 @@ export function CommandPalette() {
   // tracked as values rather than via direct call-in-deps.
   const dev = open && isDevSurface()
   const filtered = useMemo(() => {
-    const visible = dev ? COMMANDS : COMMANDS.filter((cmd) => !DEV_ONLY_COMMAND_IDS.has(cmd.id))
+    const visible = dev
+      ? [...COMMANDS, ...DIRECTION_COMMANDS]
+      : COMMANDS.filter((cmd) => !DEV_ONLY_COMMAND_IDS.has(cmd.id))
     const q = query.trim().toLowerCase()
     if (!q) return visible
     return visible.filter((cmd) => {
@@ -254,7 +272,9 @@ export function CommandPalette() {
 
   if (!open) return null
 
-  return (
+  // Share the body's stacking context with the full-viewport direction
+  // shell; #root creates a lower context for the normal app.
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
@@ -382,6 +402,7 @@ export function CommandPalette() {
           <Mono>esc stäng</Mono>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
