@@ -102,8 +102,22 @@ om de väntar för länge."*
 **Rule 2 — Weakest section needs a lesson.** Find the section with
 the lowest score (B2 weakness ranking). If its `daysSinceLastAttempt`
 is >7 **or** its score is <1.4, prescribe a lesson in that section.
-Use the framework's first non-mastered entry (initially: first entry
-in the array). Rationale: *"Svagast i 14 dagar — börja med lektionen."*
+Use the framework's first unread entry in the order below.
+Rationale: *"Svagast i 14 dagar — börja med lektionen."*
+
+*Leverage ordering (hpf-0026.3, owner decision 2026-10-19).* Within each
+section, rank unread lessons by `coverage × (1 + min(misses, 4) / 4)`.
+Coverage counts distinct tagged authentic exam questions (ORD uses root
+`corpus_frequency`); ties prefer lower mean question position (unknown last),
+then catalog order. Misses count distinct tagged questions in the currently
+due active mistake queue (`useDueMistakes`, up to 500, refreshed every 180s;
+no fixed calendar lookback), using the existing P5 framework-tag rules.
+Unknown tags or unavailable miss data contribute zero. The prerequisite gate
+below still applies: soft-satisfied candidates first, leverage order within
+each group, then the unchanged hard gate/pull-forward. Missing or invalid
+`/leverage/framework_leverage.json` falls back to catalog order under that gate.
+Regenerate the asset offline with `python3 pipeline/frameworks/leverage.py`;
+`--check` detects stale data. Plan schema v11 invalidates older cached plans.
 
 *Prerequisite gate (hpf-0026.2).* The entry is gated by the approved
 framework prerequisite graph (`frameworks/framework_prereqs.json`; rules

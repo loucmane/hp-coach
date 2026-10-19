@@ -55,10 +55,14 @@ import { useActiveSessions } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
 import { type TopTrap, useTopTraps } from '@/api/hooks/useTopTraps'
 import { useUpdateUserPrefs, useUserPrefs } from '@/api/hooks/useUserPrefs'
+import { loadExplanation } from '@/data/explanations'
 import { entryHeadword, loadFramework, loadPrereqGraph } from '@/data/frameworks'
+import { loadFrameworkLeverage } from '@/data/leverage'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import type { FrameworkProgressRow } from '@/lib/frameworkProgress'
+import { orderLessonEntries } from '@/lib/lessonOrder'
 import { pickLessonEntry, prereqGraphOrNull, taughtEntryIds } from '@/lib/prereqs'
+import { frameworkSignal } from '@/lib/provenance'
 import {
   type DailyPlan,
   type FrameworkHint,
@@ -208,21 +212,23 @@ export function useDailyPlan(initialNow: Date = new Date()): UseDailyPlan {
   }, [serverReads.data])
 
   // Resolve framework first-unread-entry hints, gated by the prerequisite
-  // graph. Re-runs when the merged read set or the progress rows change (a
+  // graph, with leverage and due-miss weights. Re-runs when reads, progress
+  // or the due queue change (a
   // read on the other device should advance the hint), so the "next unread
   // entry" is cross-device, not device-local. The framework JSON is small
   // (<10KB each, 8 sections); the loaders memoise so re-resolves are cheap.
-  // `hints` stays null — and so the plan unbuilt — until progress settles.
+  // `hints` stays null until progress and the due queue settle and their
+  // framework tags resolve, so the first plan includes available miss weights.
   useEffect(() => {
-    if (!progressSettled) return
+    if (!progressSettled || due.isLoading) return
     let alive = true
-    resolveFrameworkHints(mergedReads, frameworkProgress.data).then((h) => {
+    resolveFrameworkHints(mergedReads, frameworkProgress.data, due.data).then((h) => {
       if (alive) setHints(h)
     })
     return () => {
       alive = false
     }
-  }, [mergedReads, frameworkProgress.data, progressSettled])
+  }, [mergedReads, frameworkProgress.data, progressSettled, due.data, due.isLoading])
 
   // Day-boundary recompute: re-check the local date on `focus` and
   // `visibilitychange` (becoming visible) — the two events that fire
@@ -583,16 +589,24 @@ function toMockHistory(rows: MockResultRow[] | undefined): MockHistoryEntry[] {
  *  prerequisites count as taught.
  *
  *  A section's hint is its first unread entry, soft prerequisites taught
- *  first. When that entry is blocked by an untaught hard prerequisite, the
+ *  first, then coverage weighted by misses, then mean exam position and catalog
+ *  order. When that entry is blocked by an untaught hard prerequisite, the
  *  hint names the deepest such prerequisite instead (`pulledForward`, maybe
  *  from another section); if that one can't be shown, the next unblocked
- *  entry, else null. A missing or invalid graph fails open: first unread
- *  entry in catalog order, exactly as before the gate. */
+ *  entry, else null. Missing/invalid leverage retains catalog order; an invalid
+ *  graph disables only the gate, leaving the candidate order intact.
+ *
+ *  Misses: distinct questions in useDueMistakes' currently due active queue
+ *  (cap 500, refresh 180s), not a calendar lookback or lifetime count. Each
+ *  explanation tag counts once, including one-off misses (unlike topTraps'
+ *  default minCount=2/top-three list). Unknown/unavailable tags add no weight. */
 export async function resolveFrameworkHints(
   reads: Set<string> = loadLessonReads(),
   progress?: readonly FrameworkProgressRow[],
+  dueMistakes: readonly { questionId: string }[] = [],
 ): Promise<FrameworkHints> {
-  const [loaded, rawGraph] = await Promise.all([
+  const qids = [...new Set(dueMistakes.map(({ questionId }) => questionId))]
+  const [loaded, rawGraph, loadedLeverage, explanations] = await Promise.all([
     Promise.all(
       SECTION_KEYS.map(async (section) => ({
         section,
@@ -600,6 +614,8 @@ export async function resolveFrameworkHints(
       })),
     ),
     loadPrereqGraph().catch(() => null),
+    loadFrameworkLeverage(),
+    Promise.all(qids.map((qid) => loadExplanation(qid).catch(() => null))),
   ])
 
   // Every loaded entry, so a prerequisite from another section resolves to
@@ -615,13 +631,32 @@ export async function resolveFrameworkHints(
   // missing, validatePrereqGraph defers that one check.
   const allLoaded = loaded.every(({ fw }) => fw !== null)
   const graph = prereqGraphOrNull(rawGraph, allLoaded ? new Set(index.keys()) : null)
+  // Reject stale/mismatched inventories too. Unknown ids can only be checked
+  // when every catalog loaded; missing entries in loaded catalogs always fail.
+  let leverage = loadedLeverage
+  if (
+    loadedLeverage &&
+    ([...index.keys()].some((id) => !loadedLeverage.has(id)) ||
+      (allLoaded && [...loadedLeverage.keys()].some((id) => !index.has(id))))
+  ) {
+    console.warn(
+      '[leverage] framework_leverage.json does not match the catalogs — using catalog order (fail open)',
+    )
+    leverage = null
+  }
+  const misses = new Map<string, number>()
+  for (const [i, explanation] of explanations.entries()) {
+    const id = frameworkSignal(qids[i], explanation?.framework_id)
+    if (id && index.has(id)) misses.set(id, (misses.get(id) ?? 0) + 1)
+  }
   const taught = taughtEntryIds(progress, reads)
   const canShow = (id: string) => index.get(id)?.headword != null
 
   const out: FrameworkHints = {}
   for (const { section, fw } of loaded) {
     if (!fw || fw.entries.length === 0) continue
-    const pick = pickLessonEntry({ entries: fw.entries, reads, taught, graph, canShow })
+    const entries = orderLessonEntries<{ id: string }>(fw.entries, leverage, misses)
+    const pick = pickLessonEntry({ entries, reads, taught, graph, canShow })
     if (!pick) {
       out[section] = null // nothing left to introduce
       continue

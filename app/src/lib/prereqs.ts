@@ -12,7 +12,7 @@
 //     into the lesson slot rather than skipping, so a weak section is never
 //     starved of lessons.
 //   - soft A → B: never blocks. Among a section's unread entries, those whose
-//     soft prerequisites are taught come first; ties keep catalog order.
+//     soft prerequisites are taught come first; ties keep the supplied order.
 //   - taught = a framework_progress status past untaught OR a lesson read
 //     (server ∪ localStorage), so a fresh local read counts before it syncs.
 //   - An invalid or missing graph FAILS OPEN — no gating, a console warning —
@@ -197,14 +197,14 @@ export function taughtEntryIds(
 export type LessonPick = { id: string; blockedId?: string } | null
 
 export type LessonPickInput = {
-  /** The section's catalog entries, in catalog order. */
+  /** The section's entries in priority order (catalog order on fail-open). */
   entries: readonly { id: string }[]
   /** Merged lesson-read set (server ∪ localStorage). Read entries are never
    *  candidates. */
   reads: ReadonlySet<string>
   /** `taughtEntryIds` output, a superset of `reads`. */
   taught: ReadonlySet<string>
-  /** Null when the graph failed open: catalog order, nothing blocked. */
+  /** Null when the graph failed open: supplied order, nothing blocked. */
   graph: PrereqGraph | null
   /** Whether a prerequisite can be offered as a lesson (its catalog loaded). */
   canShow: (id: string) => boolean
@@ -214,7 +214,7 @@ export type LessonPickInput = {
  * Pick the lesson the plan introduces for one section.
  *
  *  1. Candidates are the unread entries: soft-satisfied ones first (every soft
- *     prerequisite taught), each group in catalog order.
+ *     prerequisite taught), each group in the supplied priority order.
  *  2. The first candidate is introduced unless it is BLOCKED: still untaught,
  *     with an untaught hard prerequisite.
  *  3. A blocked candidate pulls forward its deepest untaught hard
