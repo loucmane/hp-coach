@@ -303,3 +303,90 @@ The reviewer's list of what should not change was kept intact.
 - `git status` at hand-off: only the two write-set files are new and uncommitted, beside the untouched sandbox dotfiles.
 
 SPECA DONE: hpf-qr0p.33
+
+## Round 2: review fixes
+
+The cross-vendor Codex review (bead hpf-3y5n) of the committed spec at `ab9e91a` returned **HOLD**, with four P2 design-contract findings and a whitespace error. Round 2 fixes all five. The instructions are the bead's DESIGN field ("LATEST INSTRUCTION (round 2, review fix)").
+
+- **Claim.** `gc hook --claim --json` returned `hpf-qr0p.33` (assignee `ci-wisp-35jb8x8`, route `hpfetcher/gc.implementation-worker`). `bd show hpf-qr0p.33 --json` matched the id, the status (`in_progress`), the assignee and `gc.routed_to`.
+- **Start.** The branch at `ab9e91a`, clean apart from the sandbox dotfiles.
+- **Evidence.** The review's full evidence file (`/home/loucmane/vaults/main/GasCity/hpfetcher/Docs/worklogs/hpf-3y5n.md`) is outside this session's sandbox read boundary. I worked from the findings as the DESIGN field states them, and re-checked every claim against the repository.
+- **Scope.** Only the two write-set files changed. No source change, no git write, and the changes are uncommitted. The bead is parked, not closed. The bead names no validator, so the check script was not run.
+
+Line numbers: **was** is the committed spec at `ab9e91a`; **now** is the revised file.
+
+### Fix 1: the chapter's colophon needs every entry read (was :1930)
+
+- **Finding.** On the chapter's last entry the button claimed the whole chapter read, though entries open in any order (the contents, deep links, J/K).
+- **Now :1927–1937.** The foot's filled button goes to the next unread entry after the open one, in contents order, wrapping round. A four-row table gives its label and target:
+  - **Läst – nästa fälla ↵** on an unread entry while others are unread;
+  - **Läst – slutför kapitlet ↵** only on the one unread entry left, wherever it sits;
+  - **Nästa fälla ↵** on a read entry;
+  - **Till kapitlets slut ↵** once the whole chapter is read.
+
+  The old last-entry line (was :1930) is gone, and so is the already-read sentence the table replaces (was :1929).
+- **Now :1944.** "The chapter's end" states the gate: the colophon opens only once every entry is read, in whatever order.
+- **Now :1947.** "Ångra" on any entry makes the chapter unread again. The ⁂ line goes and the hub's count drops back.
+- **Now :1960.** The phone foot bar's label follows the same table.
+
+### Fix 2: practice only when eligible questions resolve (was :1926–1928)
+
+- **Finding.** Every entry had a practice link, but `ORD-ROOT-016` has an empty `example_questions`, so its link opened an empty drill.
+- **Verified.**
+  - `app/public/frameworks/ord_roots.json:239–244` is `ORD-ROOT-016`, the only empty list in `app/public/frameworks/`.
+  - The guard is `hasExampleQuestions` (`app/src/components/lesson/LexiconCard.tsx:27–31`, used at :98, :136, :147). TrapCard (:110) and ProtocolCard (:130) render their practice links unguarded.
+  - The framework drill's filter is `pickFrameworkQuestions` (`app/src/routes/drill.tsx:540–551`): in the bank, `parsing_status` complete, with options.
+- **Now :1928.** The practice link appears only when the entry has questions to play.
+- **Now :1939–1942.**
+  - The LexiconCard guard is kept, applied to every kind, and made exact with the drill's own test. The same test picks the listed example questions, and sättning holds the place while the bank loads.
+  - An entry with none shows its whole article without "Exempelfrågor" or a practice link. Its foot holds the filled button alone: no greyed link, no "inga frågor" line.
+  - The section's practice stays one quiet link away: the verso's ghost on desktop, and "Öva hela {section} →" in the link's place on phone.
+- **Now :1829 and :2029.** The hub's practice list and the example-questions state use the same test.
+- **Now :1960.** The phone foot bar names its fallback link.
+
+### Fix 3: the long ELF fixture is a needed addition (was :2400)
+
+- **Finding.** The spec implied the sample has a long ELF unit. It has none.
+- **Verified.** `pipeline/synthetic/infold/preview/sample/_export-manifest.json` selects four units. The two ELF ones are `elf-b18-002` "Left to Soak" (five questions) and `elf-b19-003` "Counting Pots from the Pavement" (one paragraph, one question; also `app/src/components/devbake/ovningstextFixtures.ts:253–263`).
+- **Now :2417–2420.**
+  - The sample's two ELF units are named, and the spec says that neither is long.
+  - The long unit is a needed shared-fixture addition, through hpf-qr0p.7.
+  - The proposed source is `elf-b18-001` "Under the Flags": approved by owner ruling, batch 18 (`approval-roster.json:4527–4537`); family `…-science-journalism-long`; five paragraphs and five questions.
+  - Until it lands, B3 uses no stand-in text, and the long-text checks wait.
+- **Why this unit.** It is the only long ELF unit whose explanations are already in `data/explanations/p5-pilot.json`. The pilot file's ELF entries cover only `elf-b18-001`, `elf-b18-002` and `elf-b19-003`. `elf-b19-001` "Sixty-One Fires" is also approved and long, but has no explanations there.
+- **Now :2479.** The addition is listed in §3's shared plumbing.
+
+### Fix 4: a saved, system-following theme is New work (was :2071, :2215)
+
+- **Finding.** "System" was described as reusable existing behaviour, while the page promises settings that follow to other devices.
+- **Verified.**
+  - `ThemeMode = 'light' | 'dark'` (`app/src/lib/tokens.ts:14`), and `UserPrefsPatch.mode` is light or dark (`app/src/api/hooks/useUserPrefs.ts:23`).
+  - The server accepts only light or dark (`worker/src/routes/me.ts:31`, `worker/src/db/schema.ts:40`, `worker/src/routes/export.ts:224`).
+  - Folio's slip keeps System in `AccountItems` state, mounted only while the slip is open, and reads `matchMedia` once (`a-folio/Folio.tsx:294–298`, `:337–347`).
+- **Now :2083.** The Utseende row says that Ljust and Mörkt are saved and synced, as today, and that System is New.
+- **Now :2090–2094.** These lines say:
+  - what exists;
+  - why round 1's System cannot be reused;
+  - what the New work is: a third saved value, synced, and a live `prefers-color-scheme` listener;
+  - the fallback if the owner declines: Ljust · Mörkt, on the page and in the slip.
+- **Now :2232.** `.fo-seg` is reused for its look only.
+- **Now :2472.** §3's list of New data gains "a saved System theme".
+- **Now :2559.** Open question 19. Recommended: add it. Alternative: Ljust · Mörkt only.
+- **Not changed.** The wireframe keeps the three words, which is the recommended state.
+
+### Fix 5: the trailing blank line (was :2537)
+
+Removed. The file now ends at :2559 with a single newline.
+
+### Left unchanged, for the coordinator
+
+The phone entry wireframe (now :1993, head "Läst ✓"; now :2004, foot "Läst – nästa fälla") shows a read entry with the unread label. This predates round 2 and is outside the five items, so it was not touched. The table at :1932–1937 is the rule.
+
+### Verification (round 2)
+
+- `git diff --check`, and `git diff --check b777074def8517fb7a3053fb103524a6eb57ba90`: both clean.
+- Every "open question N" reference resolves; §5 now runs 1–19. The § references added (§1.5, §1.7) exist.
+- No wireframe was edited, so round 1's width check still stands.
+- `git status --porcelain` lists only the two write-set files, beside the untouched sandbox dotfiles.
+
+SPECA2 DONE: hpf-qr0p.33

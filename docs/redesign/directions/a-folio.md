@@ -1826,7 +1826,7 @@ The tabs are back.
   - the section estimate;
   - **new:** read progress per section ("7 av 25 lästa");
   - the "practise directly" links.
-- **Per section, practice:** the whole section, its weakest traps (when the reader has missed one), each pattern's own set, and each example question.
+- **Per section, practice:** the whole section, its weakest traps (when the reader has missed one), each pattern's own set, and each example question. A pattern's set and its example questions appear only when the drill can play them (the foot of every entry, below).
 
 **Layout — desktop, hub.** The page grammar.
 - **Title and standfirst** are today's: "Läs först." / "Varje delprov har sitt eget mönsterbibliotek – fällor, motåtgärder och taktiker hämtade från 27 riktiga prov."
@@ -1924,15 +1924,27 @@ The tabs are back.
   - the meaning in italic;
   - "Exempel" as a run-in list of words separated by middots. These are not pills.
 - **The foot of every entry:**
-  - the filled **Läst – nästa fälla ↵** (or "nästa taktik", "nästa regel", "nästa frågetyp", "nästa rot");
-  - the quiet practice link, named for its kind as today: "Öva detta mönster →" (traps), "Öva denna taktik →", "Öva denna regel →", "Öva denna frågetyp →" (protocols), "Öva ord med denna rot →" (roots).
-  - Once the entry is read, the head's toggle reads "Läst ✓" with "Ångra" beside it. On an entry that was already read, the foot button is **Nästa fälla ↵**.
-  - On the chapter's last entry, the button becomes **Läst – slutför kapitlet ↵**.
+  - the filled **Läst – nästa fälla ↵** (or "nästa taktik", "nästa regel", "nästa frågetyp", "nästa rot"). Its label and where it leads follow the table below;
+  - the quiet practice link, named for its kind as today: "Öva detta mönster →" (traps), "Öva denna taktik →", "Öva denna regel →", "Öva denna frågetyp →" (protocols), "Öva ord med denna rot →" (roots). It appears only when the entry has questions to play (below).
+  - Once the entry is read, the head's toggle reads "Läst ✓" with "Ångra" beside it.
+- **The filled button goes to the next unread entry.** Entries open in any order (from the contents, by a deep link, with J/K), so the entry in last place is not always the last one read. "Nästa" means the next unread entry after the open one in the contents, wrapping round to the chapter's start.
 
-**The chapter's end.** Pressing **Läst – slutför kapitlet** turns the recto to the chapter's colophon:
+  | The open entry | The filled button | What it does |
+  |---|---|---|
+  | Unread, with other entries unread | **Läst – nästa fälla ↵** | Marks it read and opens the next unread entry |
+  | Unread, and the only unread entry left, wherever it sits | **Läst – slutför kapitlet ↵** | Marks it read and turns the recto to the chapter's colophon |
+  | Read, with entries still unread | **Nästa fälla ↵** | Opens the next unread entry |
+  | Read, and so is the whole chapter | **Till kapitlets slut ↵** | Opens the chapter's colophon. J and K still move between entries |
+
+- **Practice only when there are questions to play.** Today's LexiconCard shows its practice links and example questions only when the root has example questions (`app/src/components/lesson/LexiconCard.tsx:27–31`), because `/drill?framework=` would otherwise open an empty drill. Folio keeps that guard, applies it to every kind, and makes it exact: an entry offers practice only when at least one of its example questions resolves to a question the framework drill will play.
+  - **The test is the drill's own**, so the link and the drill never disagree. Today that is `pickFrameworkQuestions` (`app/src/routes/drill.tsx:540–551`): in the bank, fully parsed, with options. The same test decides which example questions are listed. While the bank loads, the link's place is held by sättning (§1.7).
+  - **An entry with none** shows its whole article, with no "Exempelfrågor" and no practice link. Its foot holds the filled button alone: no greyed-out link, no "inga frågor" line. Today this is `ORD-ROOT-016` ("med-"), whose `example_questions` is empty (`app/public/frameworks/ord_roots.json:244`).
+  - **The section's practice stays one quiet link away:** the verso head's ghost **Öva hela ORD** on desktop; on phone, "Öva hela ORD →" in the practice link's place above the foot bar.
+
+**The chapter's end.** The colophon is gated on the whole chapter: it opens only once **every** entry is read, in whatever order, never because the reader reached the last place in the contents. Pressing **Läst – slutför kapitlet** turns the recto to it:
 - ⁂, "Kapitlet är läst." and the facts row "25 FÄLLOR · LÄST 18 OKTOBER";
 - the filled **Öva hela NOG ↵**. The verso head's ghost "Öva hela NOG" hides while it shows, so the action appears once;
-- on later visits the verso's contents end with the same "⁂ Kapitlet är läst." line.
+- on later visits the verso's contents end with the same "⁂ Kapitlet är läst." line. If an entry is marked unread again ("Ångra"), the chapter is no longer read: the line goes, and the hub's count drops back ("24 av 25").
 
 Today there is no all-read state.
 
@@ -1945,7 +1957,7 @@ Today there is no all-read state.
 - **An entry** opens as its own page:
   - the head "← Innehåll · Fälla 12 av 25 · Markera som läst";
   - the article;
-  - a foot bar with **Läst – nästa fälla** (full width) and "Öva detta mönster →" above it.
+  - a foot bar with **Läst – nästa fälla** (full width; the label follows the desktop table) and "Öva detta mönster →" above it, or "Öva hela NOG →" when the entry has no questions to play.
 - The tabs work here. Today the phone tab bar on Uppslag does nothing, and the page's end hides under it.
 
 ```
@@ -2014,7 +2026,7 @@ Today there is no all-read state.
   - No "svagast" and no estimates.
 - **Partly read.** "7 av 25" in the register and "läst" in the contents.
 - **All read.** The chapter colophon above. The hub's entry reads "25 av 25 · läst".
-- **Example questions.** They come from the bank. An id the bank does not have is left out, never "(laddar…)" forever.
+- **Example questions.** They come from the bank. An id the drill cannot play (the test under the foot of every entry) is left out, never "(laddar…)" forever.
 - **Empty section.** "Inget innehåll här ännu." (the real copy, not reachable today).
 - **Deep links.** `#ID` opens that entry **for every kind**; today only traps carry ids. Idag's plan links land on the entry, not the hub. A LÄS framework link from a drill works; today "LAS" shows as locked.
 
@@ -2068,13 +2080,18 @@ Today there is no all-read state.
 | **Du** | Name, e-mail, how you sign in, the plan | — |
 | **Provet** | **Provdatum**: the sitting you aim for. **Mål**: the goal on 0–2,0 | Both **New**. Today the sitting is picked automatically, the goal is hard-coded to 1,8, and neither can be set. Round 1's slip already promised "Provdatum och mål". |
 | **Övningen** | **Frågeurval**: smart · slumpat, with "Frågor nära din nivå." / "Helt slumpade frågor." **Coach**: Kompis · Professor · Taktiker, with each voice's description now visible | Today the descriptions are screen-reader only |
-| **Utseende** | **Tema**: Ljust · Mörkt · System | The account slip's control, here in full |
+| **Utseende** | **Tema**: Ljust · Mörkt · System | Ljust and Mörkt are saved and follow to other devices, as today. **System is New** (below) |
 | **Din data** | Export, import, reset the diagnostic | Today import and reset live on Avancerat |
 | **Hjälp** | Help and support (a person answers within a day), privacy policy, terms of use, the app version. The keyboard shortcuts are in the margin, once. | Today shortcuts are listed nowhere |
 | *(after a double rule)* | **Logga ut**, **Radera kontot** | — |
 
 - The plan row: "Gratis". Today's copy is "Kommer när HP-Coach går från gratis dogfood till betald tjänst — inget att göra här ännu." The word "dogfood" is internal, so the proposed copy is "Betalning kommer när HP-Coach blir en betald tjänst – inget att göra här ännu."
 - Today's palette setting (sand, sage, ink, rose, spalt) is **not** carried into Folio. Folio is one palette (open question 7).
+- **Tema · System is New** (open question 19).
+  - Production saves only light or dark: `ThemeMode` (`app/src/lib/tokens.ts:14`), `UserPrefsPatch.mode` (`app/src/api/hooks/useUserPrefs.ts:23`) and the server's check (`worker/src/routes/me.ts:31`).
+  - Round 1's slip keeps System only while the slip is open, and reads the device's setting once (`a-folio/Folio.tsx:294–298`, `337–347`). It is neither saved nor followed.
+  - To keep the standfirst's promise, System needs a third saved value beside light and dark, synced like every other setting, and a live listener on `prefers-color-scheme`, so each device follows its own setting as it changes.
+  - If the owner declines, Tema is **Ljust · Mörkt**, here and in the slip.
 
 **Layout — desktop.** The page grammar, set like a book's imprint page.
 - **Title and standfirst:** "Ditt konto." (today's) / "Ändringar gäller direkt och följer med till dina andra enheter."
@@ -2212,7 +2229,7 @@ Today there is no all-read state.
 
 **Reuses.**
 - `FolioPage`, the masthead and `.fo-h2`.
-- `.fo-seg`: the account slip's three-word theme control as it is, and two-word rows through B2's column-count change (§1.5).
+- `.fo-seg`: the account slip's three-word theme control for its look only, since its System behaviour is not reusable (Tema · System above), and two-word rows through B2's column-count change (§1.5).
 - `.fo-menu-sep` (the double rule), `.fo-link`, `.fo-quiet-btn` (Logga ut), `FolioSlip` (screen 9) and `.fo-leader`.
 
 **New.**
@@ -2397,7 +2414,10 @@ Today there is no all-read state.
 - **English citation rules in the kit.** The kit's paragraph and quotation finders are Swedish-only today. They match "sjätte stycket" and ”…”, and miss "first paragraph", "opening/closing paragraph", "the first two paragraphs" and the 2000s years ELF texts use, and they mis-pair “…”. B3 needs an English mode: English ordinals, curly double and single quotes (nested), years 1500–2099, and the P5 "(step 2)" references (already matched).
   - **This is a shared-kit change:** coordinate it, or have it admitted to B3's write set.
   - **Until it lands, the ELF facit shows no ¶ links rather than wrong ones.**
-- **The fixture.** The committed P5 sample's gap text "Left to Soak" (the five gaps and their explanations), "Counting Pots from the Pavement" (one question, short), and one long unit from `pipeline/synthetic/infold/preview/sample/p5-bank-sample.json`.
+- **The fixture.** The committed P5 sample (`pipeline/synthetic/infold/preview/sample/p5-bank-sample.json`) holds two ELF units, and **neither is a long text**: the gap text `elf-b18-002` "Left to Soak" (five gaps, with their explanations) and the short `elf-b19-003` "Counting Pots from the Pavement" (one paragraph, one question).
+  - **A long unit is a needed shared-fixture addition.** The proposed source is `elf-b18-001` "Under the Flags": five paragraphs and five questions, approved by the owner's batch-18 ruling (`pipeline/synthetic/infold/approval-roster.json`). Its five explanations are already in `data/explanations/p5-pilot.json`.
+  - It comes in through the shared view model and its fixtures (hpf-qr0p.7), by re-exporting the sample with the unit added. The fixtures are copied by script and pinned by tests, so it is never retyped.
+  - **Until it lands,** B3 builds screen 14 on the two short units, with no invented or authentic long text as a stand-in. The long-text checks (several paragraphs at the measure, Styckefokus across them) wait for it.
 
 **States.**
 - **Loading.** The running heads are real at once. The passage is sättning bars at the English measure, with the ¶ numbers' margin kept, and the recto is bars as on screen 6.
@@ -2449,12 +2469,14 @@ Today there is no all-read state.
   - Every frame page is also reachable from Folio's own navigation, as round 1's stubs are now.
 - **Data.** Every screen reads the shared view model (hpf-qr0p.7). Where a screen needs something the live app does not have, this spec marks it **New**:
   - Provdatum and Mål;
+  - a saved System theme (screen 13, open question 19);
   - read progress per section;
   - the gap's sentence;
   - the ripening time of a miss;
   - an estimate range;
   - local calendar days;
   - the earlier wrong pick.
+- **Shared-fixture addition** (screen 14): a long ELF unit, which the committed P5 sample lacks. The proposed source is the approved `elf-b18-001` "Under the Flags", added through hpf-qr0p.7.
 - **The drill-view seam** (screen 6): `mode`, the running-head label, `Verdict.after`, the next label and the content's `lang`. B1 builds it and converts the round-1 reading drill to it; B2 and B3 use it.
 - **Shared-kit changes** (`r1Kit.ts`), both outside a direction's folder:
   - B1's NOG "(1)/(2)" citation rule (screen 6);
@@ -2534,4 +2556,4 @@ Today there is no all-read state.
 16. **ORD and MEK** have no screen of their own in 5–14. Confirm they ride on screen 6's single page.
 17. **After a pass, the review comes first** (screen 10). Or should the primary action be a new pass, or Repetera?
 18. **The Öva count in the navigation.** **Recommended:** the misses ready now, which is what its screen-reader text already says ("att repetera"). **Alternative:** today's pile, which includes misses ripening in the next ten minutes.
-
+19. **Tema · System** (screen 13). Production saves only light or dark. Add System, saved and synced like the other settings, so that each device follows its own setting live? It is New work: a third saved value, in the app and on the server, and a listener. **Recommended:** add it. Round 1's slip already offers it, and following the device spares a manual switch every evening. **Alternative:** Ljust · Mörkt only, both saved and synced as today.
