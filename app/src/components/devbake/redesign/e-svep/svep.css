@@ -1,0 +1,3817 @@
+/* E · Svep — "Ett kort i taget".
+ *
+ * HP-Coach as a deck of cards on a table. The table is a quiet, matte
+ * surface (a felt grain) that takes the tint of the section on the card in
+ * front: LÄS slate, ELF sea-grey, ORD sand, Repetition lilac, the rest warm
+ * stone. The cards are real stock: a fine paper grain, a soft inner light
+ * from the top and a stack of shadows that makes them lie on the table.
+ * One strong accent, a raspberry magenta, marks only what to do next.
+ *
+ * Type: Schibsted Grotesk for the interface and display (heavy, tight,
+ * newspaper-grotesk headlines), Source Serif 4 with optical sizing for the
+ * passages. Motion: physical card moves of 200–260 ms on one easing curve,
+ * exits faster than entries, nothing moves while reading; reduced motion
+ * turns every move into a crossfade.
+ *
+ * Everything is scoped under .sv-root (the direction's root, which also
+ * carries [data-rd='svep']); nothing touches :root. Keyframes are prefixed
+ * sv-. Radii: --sv-r1 10 px (chips, keys), --sv-r2 16 px (buttons, option
+ * rows — a card's radius less its 12 px inset), --sv-r3 28 px (cards).
+ * Space: a 4 px scale. */
+
+.sv-root {
+  /* The table, per section (quiet: chroma ≤ 0.026). */
+  --sv-table-las: oklch(90.6% 0.024 248);
+  --sv-table-elf: oklch(90.8% 0.022 196);
+  --sv-table-ord: oklch(91.4% 0.026 84);
+  --sv-table-rep: oklch(90.9% 0.022 318);
+  --sv-table-none: oklch(91.6% 0.008 70);
+  --sv-table: var(--sv-table-none);
+  --sv-table-ink: oklch(24% 0.018 262);
+  --sv-table-ink-2: oklch(35% 0.018 262);
+  --sv-table-ink-3: oklch(45% 0.016 262);
+  --sv-table-line: oklch(30% 0.02 262 / 0.14);
+
+  /* The cards. */
+  --sv-card: oklch(99.3% 0.0035 95);
+  --sv-card-2: oklch(97.1% 0.005 90);
+  --sv-card-3: oklch(94.4% 0.007 88);
+  --sv-ink: oklch(21.5% 0.014 265);
+  --sv-ink-2: oklch(37.5% 0.014 265);
+  --sv-ink-3: oklch(48.5% 0.012 265);
+  --sv-line: oklch(90.5% 0.006 265);
+  --sv-line-2: oklch(82% 0.008 265);
+
+  /* The one accent: raspberry magenta. */
+  --sv-accent: oklch(50% 0.2 352);
+  --sv-accent-2: oklch(44.5% 0.19 352);
+  --sv-on-accent: oklch(99% 0.004 352);
+  --sv-accent-ink: oklch(47% 0.19 352);
+  --sv-accent-soft: oklch(95.4% 0.026 352);
+  --sv-accent-line: oklch(80% 0.09 352);
+  --sv-accent-glow: oklch(50% 0.2 352 / 0.3);
+
+  /* Verdicts — always with a glyph and a word. */
+  --sv-ok: oklch(44.5% 0.11 152);
+  --sv-ok-soft: oklch(95.4% 0.032 152);
+  --sv-ok-line: oklch(76% 0.09 152);
+  --sv-bad: oklch(47% 0.14 32);
+  --sv-bad-soft: oklch(95.6% 0.024 32);
+  --sv-bad-line: oklch(79% 0.075 32);
+
+  /* The back of a turned card: the stock, faintly in the section's tint. */
+  --sv-back: oklch(96.4% 0.016 248);
+
+  /* Evidence: an ochre highlighter, never the accent. */
+  --sv-mark: oklch(92% 0.075 90);
+  --sv-mark-strong: oklch(87% 0.11 88);
+  --sv-mark-line: oklch(68% 0.13 78);
+
+  --sv-focus: oklch(50% 0.2 352);
+  --sv-scrim: oklch(22% 0.02 262 / 0.3);
+
+  /* Sections (chips only). */
+  --sv-sec-las: oklch(92.5% 0.035 248);
+  --sv-sec-las-ink: oklch(36% 0.09 250);
+  --sv-sec-elf: oklch(92.6% 0.033 196);
+  --sv-sec-elf-ink: oklch(36% 0.06 200);
+  --sv-sec-ord: oklch(93% 0.04 84);
+  --sv-sec-ord-ink: oklch(38% 0.07 70);
+  --sv-sec-rep: oklch(92.8% 0.032 318);
+  --sv-sec-rep-ink: oklch(38% 0.08 318);
+
+  /* Material. */
+  --sv-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.25 0 0 0 0 0.22 0 0 0 0 0.2 0 0 0 0.11 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+  --sv-felt: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.2 0 0 0 0 0.22 0 0 0 0.1 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23f)'/%3E%3C/svg%3E");
+  /* A soft inner light from the top-left, warm, like stock under a lamp. */
+  --sv-light: radial-gradient(130% 72% at 16% 0%, oklch(100% 0.01 90 / 0.9), oklch(100% 0 0 / 0) 62%);
+  /* The card's rim: a lit top edge, a hairline, and the stock's own
+   * thickness along the bottom. */
+  --sv-rim:
+    inset 0 1px 0 oklch(100% 0 0 / 0.95), inset 0 -1.5px 0 oklch(28% 0.02 265 / 0.06),
+    inset 0 0 0 1px oklch(28% 0.02 265 / 0.07);
+  --sv-lift:
+    0 1px 1px oklch(28% 0.02 265 / 0.07), 0 4px 10px -4px oklch(28% 0.03 265 / 0.14),
+    0 24px 48px -22px oklch(26% 0.04 265 / 0.34);
+  --sv-lift-low: 0 1px 1px oklch(28% 0.02 265 / 0.08), 0 3px 8px -3px oklch(28% 0.03 265 / 0.14);
+  --sv-chip: inset 0 1px 0 oklch(100% 0 0 / 0.9), 0 0 0 1px oklch(28% 0.02 265 / 0.08),
+    0 1px 2px oklch(28% 0.02 265 / 0.1), 0 4px 10px -6px oklch(28% 0.03 265 / 0.2);
+
+  --sv-ui:
+    'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', system-ui,
+    sans-serif;
+  --sv-serif:
+    'Source Serif 4', 'Source Serif Pro', 'Iowan Old Style', Charter, 'Bitstream Charter', Georgia,
+    'Liberation Serif', serif;
+
+  --sv-r1: 10px;
+  --sv-r2: 16px;
+  --sv-r3: 28px;
+
+  /* One easing family; card moves 240 ms, the turn 2 × 130 ms, exits faster. */
+  --sv-ease: cubic-bezier(0.22, 0.8, 0.24, 1);
+  --sv-ease-in: cubic-bezier(0.5, 0, 0.75, 0.3);
+  --sv-d-move: 240ms;
+  --sv-d-exit: 200ms;
+  --sv-d-half: 130ms;
+  --sv-d-ui: 120ms;
+
+  /* The stage, not the window, is the screen: narrow and short desktop
+   * layouts key off this container (the bake-off zooms only below 1024 px
+   * wide). The root's size never depends on its content. */
+  container: svep / size;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: clip;
+  background-color: var(--sv-table);
+  background-image: var(--sv-felt);
+  color: var(--sv-table-ink);
+  font-family: var(--sv-ui);
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: -0.003em;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  color-scheme: light;
+  transition: background-color 360ms var(--sv-ease);
+}
+
+.sv-root[data-tint='las'] {
+  --sv-table: var(--sv-table-las);
+}
+.sv-root[data-tint='elf'] {
+  --sv-table: var(--sv-table-elf);
+}
+.sv-root[data-tint='ord'] {
+  --sv-table: var(--sv-table-ord);
+}
+.sv-root[data-tint='rep'] {
+  --sv-table: var(--sv-table-rep);
+}
+
+/* Dark: a deep tinted table, cards a step lighter with a faint inner
+ * light, chroma lowered, ink a step under white. */
+.sv-root[data-theme='dark'] {
+  /* The table keeps its section's colour at low light; the cards are warm
+   * charcoal stock, not neutral zinc. */
+  --sv-table-las: oklch(19.5% 0.032 250);
+  --sv-table-elf: oklch(19.5% 0.03 200);
+  --sv-table-ord: oklch(20% 0.032 78);
+  --sv-table-rep: oklch(19.5% 0.032 318);
+  --sv-table-none: oklch(19% 0.012 70);
+  --sv-table-ink: oklch(92% 0.008 80);
+  --sv-table-ink-2: oklch(80% 0.01 80);
+  --sv-table-ink-3: oklch(69% 0.012 80);
+  --sv-table-line: oklch(100% 0 0 / 0.1);
+
+  --sv-card: oklch(27% 0.011 68);
+  --sv-card-2: oklch(23.8% 0.01 68);
+  --sv-card-3: oklch(31.5% 0.012 68);
+  --sv-ink: oklch(93% 0.008 80);
+  --sv-ink-2: oklch(81.5% 0.01 78);
+  --sv-ink-3: oklch(71% 0.012 76);
+  --sv-line: oklch(35% 0.011 70);
+  --sv-line-2: oklch(44% 0.013 70);
+
+  --sv-mark: oklch(36% 0.06 86);
+  --sv-mark-strong: oklch(43% 0.085 86);
+  --sv-mark-line: oklch(70% 0.11 84);
+  --sv-back: oklch(29.5% 0.026 250);
+
+  --sv-accent: oklch(52% 0.19 352);
+  --sv-accent-2: oklch(47.5% 0.18 352);
+  --sv-on-accent: oklch(98.5% 0.006 352);
+  --sv-accent-ink: oklch(80% 0.1 352);
+  --sv-accent-soft: oklch(33% 0.06 352);
+  --sv-accent-line: oklch(52% 0.11 352);
+  --sv-accent-glow: oklch(10% 0.05 352 / 0.6);
+
+  --sv-ok: oklch(80% 0.11 152);
+  --sv-ok-soft: oklch(30.5% 0.045 152);
+  --sv-ok-line: oklch(52% 0.08 152);
+  --sv-bad: oklch(79% 0.1 32);
+  --sv-bad-soft: oklch(31.5% 0.05 32);
+  --sv-bad-line: oklch(54% 0.09 32);
+
+  --sv-focus: oklch(80% 0.11 352);
+  --sv-scrim: oklch(8% 0.01 262 / 0.5);
+
+  --sv-sec-las: oklch(33% 0.05 250);
+  --sv-sec-las-ink: oklch(87% 0.05 250);
+  --sv-sec-elf: oklch(33% 0.04 200);
+  --sv-sec-elf-ink: oklch(87% 0.045 196);
+  --sv-sec-ord: oklch(34% 0.045 76);
+  --sv-sec-ord-ink: oklch(88% 0.05 84);
+  --sv-sec-rep: oklch(33% 0.045 318);
+  --sv-sec-rep-ink: oklch(87% 0.05 318);
+
+  --sv-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+  --sv-felt: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.22 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23f)'/%3E%3C/svg%3E");
+  --sv-light: radial-gradient(130% 72% at 16% 0%, oklch(100% 0 0 / 0.07), oklch(100% 0 0 / 0) 62%);
+  --sv-rim:
+    inset 0 1px 0 oklch(100% 0 0 / 0.1), inset 0 -1.5px 0 oklch(0% 0 0 / 0.25),
+    inset 0 0 0 1px oklch(100% 0 0 / 0.06);
+  --sv-lift:
+    0 1px 1px oklch(0% 0 0 / 0.35), 0 6px 14px -6px oklch(0% 0 0 / 0.5),
+    0 30px 56px -24px oklch(0% 0 0 / 0.66);
+  --sv-lift-low: 0 1px 1px oklch(0% 0 0 / 0.35), 0 4px 10px -4px oklch(0% 0 0 / 0.45);
+  --sv-chip: inset 0 1px 0 oklch(100% 0 0 / 0.07), 0 0 0 1px oklch(100% 0 0 / 0.06),
+    0 1px 2px oklch(0% 0 0 / 0.4), 0 4px 10px -6px oklch(0% 0 0 / 0.5);
+
+  color-scheme: dark;
+}
+
+.sv-root[data-theme='dark'][data-tint='las'] {
+  --sv-table: var(--sv-table-las);
+}
+.sv-root[data-theme='dark'][data-tint='elf'] {
+  --sv-table: var(--sv-table-elf);
+}
+.sv-root[data-theme='dark'][data-tint='ord'] {
+  --sv-table: var(--sv-table-ord);
+}
+.sv-root[data-theme='dark'][data-tint='rep'] {
+  --sv-table: var(--sv-table-rep);
+}
+.sv-root[data-theme='dark'][data-tint='none'] {
+  --sv-table: var(--sv-table-none);
+}
+
+/* ── Base ─────────────────────────────────────────────────────────── */
+
+.sv-root *,
+.sv-root *::before,
+.sv-root *::after {
+  box-sizing: border-box;
+}
+
+.sv-root :where(h1, h2, h3, h4, p, ol, ul, li, figure, fieldset, dl, dd) {
+  margin: 0;
+  padding: 0;
+}
+
+.sv-root :where(ol, ul) {
+  list-style: none;
+}
+
+.sv-root :where(h1, h2, h3, h4) {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.sv-root :where(button) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sv-root :where(svg) {
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+}
+
+.sv-root :where(fieldset) {
+  border: 0;
+  min-width: 0;
+}
+
+.sv-root :focus-visible {
+  outline: 2px solid var(--sv-focus);
+  outline-offset: 2px;
+}
+
+.sv-root ::selection {
+  background: var(--sv-accent-soft);
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── The card ─────────────────────────────────────────────────────── */
+
+.sv-root .sv-card {
+  position: relative;
+  border-radius: var(--sv-r3);
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain), var(--sv-light);
+  box-shadow: var(--sv-rim), var(--sv-lift);
+  color: var(--sv-ink);
+}
+
+/* ── Controls ─────────────────────────────────────────────────────── */
+
+.sv-root .sv-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: var(--sv-r2);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.006em;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition:
+    background-color var(--sv-d-ui) var(--sv-ease),
+    box-shadow var(--sv-d-ui) var(--sv-ease),
+    transform var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-btn--primary {
+  background: var(--sv-accent);
+  color: var(--sv-on-accent);
+  box-shadow:
+    inset 0 1px 0 oklch(100% 0 0 / 0.22),
+    0 1px 1px oklch(30% 0.1 352 / 0.3),
+    0 10px 20px -12px var(--sv-accent-glow);
+}
+
+.sv-root .sv-btn--primary:hover {
+  background: var(--sv-accent-2);
+}
+
+.sv-root .sv-btn--primary:active {
+  transform: translateY(1px);
+}
+
+.sv-root .sv-btn--primary:disabled {
+  background: var(--sv-card-3);
+  color: var(--sv-ink-3);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* A second action is ink on stock: the accent is kept for the one next
+ * action and the current position. */
+.sv-root .sv-btn--tonal {
+  background: var(--sv-card);
+  color: var(--sv-ink);
+  box-shadow:
+    inset 0 0 0 1.5px var(--sv-line-2),
+    inset 0 -2px 0 var(--sv-line);
+}
+
+.sv-root .sv-btn--tonal:hover {
+  box-shadow:
+    inset 0 0 0 1.5px var(--sv-ink-3),
+    inset 0 -2px 0 var(--sv-line-2);
+}
+
+.sv-root .sv-btn--quiet {
+  background: var(--sv-card-2);
+  color: var(--sv-ink);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+}
+
+.sv-root .sv-btn--quiet:hover {
+  background: var(--sv-card-3);
+}
+
+.sv-root .sv-btn--block {
+  display: flex;
+  width: 100%;
+}
+
+.sv-root .sv-btn--wide {
+  min-width: 168px;
+}
+
+.sv-root .sv-btn--lg {
+  min-height: 58px;
+  font-size: 17.5px;
+}
+
+.sv-root .sv-kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  border-radius: 6px;
+  background: var(--sv-card);
+  box-shadow:
+    inset 0 0 0 1px var(--sv-line-2),
+    inset 0 -2px 0 var(--sv-line);
+  color: var(--sv-ink-2);
+  font-family: var(--sv-ui);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.sv-root .sv-btn--primary .sv-kbd {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px oklch(100% 0 0 / 0.42);
+  color: var(--sv-on-accent);
+}
+
+.sv-root .sv-btn--primary:disabled .sv-kbd {
+  box-shadow: inset 0 0 0 1px var(--sv-line-2);
+  color: var(--sv-ink-3);
+}
+
+/* Phones have no keys to hint at. */
+.sv-root[data-width='phone'] .sv-kbd {
+  display: none;
+}
+
+.sv-root .sv-icon-btn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: var(--sv-table-ink-2);
+  transition: background-color var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-icon-btn:hover {
+  background: oklch(from var(--sv-table-ink) l c h / 0.07);
+  color: var(--sv-table-ink);
+}
+
+.sv-root .sv-icon-btn[aria-pressed='true'] {
+  background: oklch(from var(--sv-table-ink) l c h / 0.12);
+  color: var(--sv-table-ink);
+}
+
+.sv-root .sv-card .sv-icon-btn {
+  color: var(--sv-ink-2);
+}
+
+.sv-root .sv-card .sv-icon-btn:hover {
+  background: var(--sv-card-2);
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: var(--sv-ink);
+  font-size: 14.5px;
+  font-weight: 700;
+  text-decoration: underline 1px var(--sv-line-2);
+  text-underline-offset: 4px;
+  transition: text-decoration-color var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-link:hover {
+  text-decoration-color: currentColor;
+}
+
+.sv-root .sv-link[aria-expanded='true'] svg {
+  rotate: 180deg;
+}
+
+.sv-root .sv-link--center {
+  align-self: center;
+}
+
+.sv-root .sv-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: var(--sv-r1);
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* A 44 px hit area around a 34 px chip. */
+.sv-root .sv-chip::before,
+.sv-root .sv-cite::before {
+  content: '';
+  position: absolute;
+  inset: -5px -2px;
+}
+
+.sv-root .sv-chip:hover {
+  color: var(--sv-ink);
+  box-shadow: inset 0 0 0 1px var(--sv-line-2);
+}
+
+.sv-root .sv-chip[aria-pressed='true'],
+.sv-root .sv-chip[aria-expanded='true'] {
+  background: var(--sv-card-3);
+  box-shadow: inset 0 0 0 1.5px var(--sv-ink-3);
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-chip--end {
+  margin-left: auto;
+}
+
+/* The peeking card's way up: a quiet control in its head. */
+.sv-root .sv-chip--raise {
+  min-height: 36px;
+  color: var(--sv-ink);
+}
+
+/* Section chips and the disclosure badge. */
+.sv-root .sv-sec {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 7px;
+  background: var(--sv-sec-rep);
+  color: var(--sv-sec-rep-ink);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.sv-root .sv-sec[data-sec='las'] {
+  background: var(--sv-sec-las);
+  color: var(--sv-sec-las-ink);
+}
+.sv-root .sv-sec[data-sec='elf'] {
+  background: var(--sv-sec-elf);
+  color: var(--sv-sec-elf-ink);
+}
+.sv-root .sv-sec[data-sec='ord'] {
+  background: var(--sv-sec-ord);
+  color: var(--sv-sec-ord-ink);
+}
+
+.sv-root .sv-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 7px;
+  box-shadow: inset 0 0 0 1px var(--sv-line-2);
+  color: var(--sv-ink-2);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── The deck ─────────────────────────────────────────────────────── */
+
+.sv-root .sv-deck {
+  /* Desktop Idag: the next two cards stand out well clear of the front one. */
+  --sv-next: translateX(44px) scale(0.955) rotate(0.8deg);
+  --sv-after: translateX(84px) scale(0.91) rotate(1.6deg);
+  --sv-gone: translateX(-118%) rotate(-7deg);
+  position: relative;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.sv-root .sv-dcard {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform-origin: 50% 90%;
+  transition:
+    transform var(--sv-d-move) var(--sv-ease),
+    opacity var(--sv-d-move) var(--sv-ease),
+    box-shadow var(--sv-d-move) var(--sv-ease),
+    visibility 0s linear 0s;
+  user-select: text;
+}
+
+/* The face of a card coming to the front prints in once it has nearly
+ * arrived; a card leaving loses its face at once, so a move never reads
+ * as a double exposure. */
+.sv-root .sv-dcard > * {
+  transition: opacity 170ms var(--sv-ease) 70ms;
+}
+
+.sv-root .sv-dcard[data-pos='gone'] > * {
+  transition-duration: 70ms;
+}
+
+.sv-root .sv-dcard[data-pos='front'] {
+  z-index: 10;
+}
+
+.sv-root .sv-dcard[data-pos='next'] {
+  z-index: 9;
+  transform: var(--sv-next);
+  box-shadow: var(--sv-rim), var(--sv-lift-low);
+}
+
+.sv-root .sv-dcard[data-pos='after'] {
+  z-index: 8;
+  transform: var(--sv-after);
+  box-shadow: var(--sv-rim), var(--sv-lift-low);
+}
+
+.sv-root .sv-dcard[data-pos='deep'] {
+  z-index: 7;
+  transform: var(--sv-after);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    transform var(--sv-d-move) var(--sv-ease),
+    opacity var(--sv-d-move) var(--sv-ease),
+    visibility 0s linear var(--sv-d-move);
+}
+
+/* Dealt away: thrown off over the top of the deck, a little faster. */
+.sv-root .sv-dcard[data-pos='gone'] {
+  z-index: 11;
+  transform: var(--sv-gone);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    transform var(--sv-d-exit) var(--sv-ease-in),
+    opacity var(--sv-d-exit) var(--sv-ease-in),
+    visibility 0s linear var(--sv-d-exit);
+}
+
+/* The cards behind show their blank stock, not their faces. */
+.sv-root .sv-dcard:not([data-pos='front']) > * {
+  opacity: 0;
+  transition-delay: 0s;
+}
+
+.sv-root .sv-deck[data-held='true'] .sv-dcard,
+.sv-root .sv-deck[data-moved='false'] .sv-dcard {
+  transition: none;
+}
+
+.sv-root .sv-dcard:focus-visible {
+  outline-offset: 4px;
+  border-radius: var(--sv-r3);
+}
+
+/* "‹ 2 / 7 ›" */
+.sv-root .sv-counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.sv-root .sv-arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--sv-card);
+  box-shadow: var(--sv-chip);
+  color: var(--sv-ink);
+  transition:
+    transform var(--sv-d-ui) var(--sv-ease),
+    opacity var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-arrow:hover {
+  transform: translateY(-1px);
+}
+
+.sv-root .sv-arrow[aria-disabled='true'] {
+  opacity: 0.42;
+  cursor: default;
+  transform: none;
+}
+
+.sv-root .sv-count {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  min-width: 170px;
+  color: var(--sv-table-ink);
+  font-size: 14.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sv-root .sv-count-n {
+  font-variant-numeric: tabular-nums;
+  color: var(--sv-table-ink-2);
+}
+
+.sv-root .sv-count-n b {
+  color: var(--sv-table-ink);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.sv-root .sv-count-name {
+  color: var(--sv-table-ink);
+}
+
+/* The index as small cards: the one in front stands up. */
+.sv-root .sv-ticks {
+  display: flex;
+  justify-content: center;
+}
+
+.sv-root .sv-tick {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+}
+
+.sv-root .sv-tick i {
+  display: block;
+  width: 12px;
+  height: 16px;
+  border-radius: 3.5px;
+  box-shadow: inset 0 0 0 1.5px var(--sv-table-ink-3);
+  transition:
+    transform var(--sv-d-ui) var(--sv-ease),
+    background-color var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-tick:hover i {
+  background: oklch(from var(--sv-table-ink-3) l c h / 0.25);
+}
+
+.sv-root .sv-tick[aria-current='true'] i {
+  width: 14px;
+  height: 20px;
+  background: var(--sv-accent);
+  box-shadow: 0 2px 6px -2px var(--sv-accent-glow);
+  transform: translateY(-2px);
+}
+
+/* Cards that tell rather than ask: dots, after a gap. */
+.sv-root .sv-ticks li[data-gap='true'] {
+  margin-left: 10px;
+}
+
+.sv-root .sv-tick[data-dot='true'] i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.sv-root .sv-tick[data-dot='true'][aria-current='true'] i {
+  width: 12px;
+  height: 12px;
+  transform: none;
+}
+
+/* A unit's questions as small cards. */
+.sv-root .sv-qcards {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 18px;
+}
+
+.sv-root .sv-qcards i {
+  display: block;
+  width: 11px;
+  height: 15px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+  opacity: 0.6;
+}
+
+.sv-root .sv-qcards i[data-state='done'] {
+  background: currentColor;
+  opacity: 0.55;
+}
+
+.sv-root .sv-qcards i[data-state='now'] {
+  height: 18px;
+  background: var(--sv-accent);
+  box-shadow: none;
+  opacity: 1;
+}
+
+/* ── Desktop frame: the five doors laid straight on the table ─────── */
+
+.sv-root .sv-frame {
+  display: grid;
+  grid-template-rows: 68px minmax(0, 1fr);
+  height: 100%;
+}
+
+.sv-root .sv-bar {
+  position: relative;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 24px 0 32px;
+}
+
+.sv-root .sv-wordmark {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--sv-table-ink);
+}
+
+.sv-root .sv-wordmark-name {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+/* The mark: three small cards fanned, the front one in the accent. */
+.sv-root .sv-mark {
+  position: relative;
+  display: block;
+  width: 30px;
+  height: 26px;
+}
+
+.sv-root .sv-mark i {
+  position: absolute;
+  left: 8px;
+  top: 2px;
+  width: 15px;
+  height: 21px;
+  border-radius: 4px;
+  background: var(--sv-card);
+  box-shadow:
+    inset 0 0 0 1.5px var(--sv-table-ink-2),
+    0 1px 2px oklch(20% 0.02 262 / 0.2);
+  transform-origin: 50% 100%;
+}
+
+.sv-root .sv-mark i:nth-child(1) {
+  transform: rotate(-16deg);
+}
+
+.sv-root .sv-mark i:nth-child(2) {
+  transform: rotate(0deg);
+}
+
+.sv-root .sv-mark i:nth-child(3) {
+  transform: rotate(16deg);
+  background: var(--sv-accent);
+  box-shadow: 0 1px 3px var(--sv-accent-glow);
+}
+
+.sv-root .sv-doors {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.sv-root .sv-door {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  color: var(--sv-table-ink-2);
+  font-size: 15px;
+  font-weight: 650;
+  white-space: nowrap;
+  transition:
+    background-color var(--sv-d-ui) var(--sv-ease),
+    color var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-door:hover {
+  color: var(--sv-table-ink);
+  background: oklch(from var(--sv-table-ink) l c h / 0.06);
+}
+
+/* The current door is a small card lying on the table. */
+.sv-root .sv-door[aria-current='page'] {
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow: var(--sv-chip);
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-door-card {
+  display: none;
+}
+
+.sv-root .sv-door-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--sv-table-ink-2);
+}
+
+/* Folded: the doors become a hand of five small cards, fanned, the
+ * current one raised with an accent edge. Hover or focus names each. */
+.sv-root .sv-doors[data-folded='true'] {
+  gap: 0;
+}
+
+.sv-root .sv-doors[data-folded='true'] .sv-door {
+  justify-content: center;
+  width: 46px;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.sv-root .sv-doors[data-folded='true'] .sv-door-label {
+  display: none;
+}
+
+.sv-root .sv-doors[data-folded='true'] .sv-door-card {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 42px;
+  border-radius: 7px;
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow: var(--sv-chip);
+  color: var(--sv-ink-2);
+  transform-origin: 50% 140%;
+  transition: transform var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-doors[data-folded='true'] .sv-door:nth-child(1) .sv-door-card {
+  transform: rotate(-8deg) translateY(3px);
+}
+.sv-root .sv-doors[data-folded='true'] .sv-door:nth-child(2) .sv-door-card {
+  transform: rotate(-4deg) translateY(1px);
+}
+.sv-root .sv-doors[data-folded='true'] .sv-door:nth-child(4) .sv-door-card {
+  transform: rotate(4deg) translateY(1px);
+}
+.sv-root .sv-doors[data-folded='true'] .sv-door:nth-child(5) .sv-door-card {
+  transform: rotate(8deg) translateY(3px);
+}
+
+.sv-root .sv-doors[data-folded='true'] .sv-door:hover .sv-door-card,
+.sv-root .sv-doors[data-folded='true'] .sv-door:focus-visible .sv-door-card {
+  transform: translateY(-4px);
+}
+
+.sv-root .sv-doors[data-folded='true'] .sv-door[aria-current='page'] .sv-door-card {
+  color: var(--sv-accent-ink);
+  box-shadow:
+    var(--sv-chip),
+    inset 0 -3px 0 var(--sv-accent);
+  transform: translateY(-5px);
+}
+
+.sv-root .sv-doors[data-folded='true'] .sv-door-dot {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+}
+
+/* Tooltips for the folded doors and the bar's icon buttons. */
+.sv-root [data-tip]:hover::after,
+.sv-root [data-tip]:focus-visible::after {
+  content: attr(data-tip);
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 6px);
+  left: 50%;
+  translate: -50% 0;
+  padding: 5px 9px;
+  border-radius: 8px;
+  background: var(--sv-ink);
+  color: var(--sv-card);
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: pre;
+  pointer-events: none;
+}
+
+.sv-root .sv-bar-end {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sv-root .sv-main {
+  position: relative;
+  min-height: 0;
+}
+
+/* The account entry and its card. */
+.sv-root .sv-acct {
+  position: relative;
+}
+
+.sv-root .sv-avatar {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow: var(--sv-chip);
+  color: var(--sv-ink-2);
+}
+
+.sv-root .sv-avatar[aria-expanded='true'] {
+  color: var(--sv-ink);
+  box-shadow:
+    var(--sv-chip),
+    0 0 0 2px var(--sv-ink-2);
+}
+
+.sv-root .sv-avatar--still {
+  width: 40px;
+  height: 40px;
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+  background: var(--sv-card-2);
+}
+
+.sv-root .sv-acard {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 344px;
+  padding: 8px 8px 10px;
+  animation: sv-deal-down var(--sv-d-move) var(--sv-ease) both;
+}
+
+.sv-root .sv-acard-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px 12px 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--sv-line);
+}
+
+.sv-root .sv-acard-who {
+  display: grid;
+  line-height: 1.3;
+}
+
+.sv-root .sv-acard-who b {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.sv-root .sv-acard-who span {
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+}
+
+.sv-root .sv-arow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 6px 10px;
+  border-radius: 14px;
+  color: var(--sv-ink-3);
+  text-align: left;
+}
+
+.sv-root .sv-arow:hover {
+  background: var(--sv-card-2);
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-arow-text {
+  display: grid;
+  line-height: 1.3;
+}
+
+.sv-root .sv-arow-text b {
+  color: var(--sv-ink);
+  font-size: 15.5px;
+  font-weight: 700;
+}
+
+.sv-root .sv-arow-text span {
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+}
+
+.sv-root .sv-theme {
+  display: grid;
+  gap: 8px;
+  padding: 10px 10px 12px;
+}
+
+.sv-root .sv-theme-label {
+  color: var(--sv-ink);
+  font-size: 15.5px;
+  font-weight: 700;
+}
+
+.sv-root .sv-seg {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+}
+
+.sv-root .sv-seg button {
+  min-height: 44px;
+  border-radius: 10px;
+  color: var(--sv-ink-2);
+  font-size: 14.5px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.sv-root .sv-seg button:hover {
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-seg button[aria-pressed='true'] {
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow: var(--sv-chip);
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-acard-foot {
+  padding: 8px 2px 0;
+  margin-top: 4px;
+  border-top: 1px solid var(--sv-line);
+}
+
+/* ── Phone frame ──────────────────────────────────────────────────── */
+
+.sv-root .sv-pframe {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  height: 100%;
+}
+
+.sv-root .sv-pmain {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sv-root .sv-pframe-account {
+  position: absolute;
+  z-index: 40;
+  top: max(14px, env(safe-area-inset-top));
+  right: 16px;
+}
+
+.sv-root .sv-pframe-account .sv-acct {
+  position: static;
+}
+
+.sv-root[data-width='phone'] .sv-acard {
+  position: fixed;
+  top: 78px;
+  right: 12px;
+  left: 12px;
+  width: auto;
+}
+
+.sv-root .sv-ascrim {
+  display: none;
+}
+
+/* The avatar stays above the dimmed deck: it closes what it opened. */
+.sv-root[data-width='phone'] .sv-acct .sv-avatar {
+  position: relative;
+  z-index: 46;
+}
+
+.sv-root[data-width='phone'] .sv-ascrim {
+  position: fixed;
+  z-index: 45;
+  inset: 0;
+  display: block;
+  width: 100%;
+  background: var(--sv-scrim);
+  cursor: default;
+  animation: sv-fade var(--sv-d-move) var(--sv-ease) both;
+}
+
+.sv-root[data-width='phone'] .sv-doors {
+  position: relative;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+  padding: 6px 6px max(12px, env(safe-area-inset-bottom));
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow:
+    0 -1px 0 oklch(from var(--sv-ink) l c h / 0.08),
+    0 -10px 24px -18px oklch(20% 0.03 262 / 0.3);
+}
+
+.sv-root[data-width='phone'] .sv-door {
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  min-height: 58px;
+  padding: 4px 0;
+  border-radius: 14px;
+  color: var(--sv-ink-3);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.sv-root[data-width='phone'] .sv-door:hover {
+  background: none;
+}
+
+.sv-root[data-width='phone'] .sv-door[aria-current='page'] {
+  background: none;
+  box-shadow: none;
+  color: var(--sv-ink);
+}
+
+.sv-root[data-width='phone'] .sv-door-card {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 30px;
+  border-radius: 9px;
+  color: inherit;
+  transition:
+    transform var(--sv-d-ui) var(--sv-ease),
+    background-color var(--sv-d-ui) var(--sv-ease);
+}
+
+/* The current door's icon lies on a small raised card. */
+.sv-root[data-width='phone'] .sv-door[aria-current='page'] .sv-door-card {
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow:
+    var(--sv-chip),
+    inset 0 -2.5px 0 var(--sv-accent);
+  color: var(--sv-accent-ink);
+  transform: translateY(-1px);
+}
+
+.sv-root[data-width='phone'] .sv-door-dot {
+  position: absolute;
+  top: 8px;
+  left: calc(50% + 12px);
+}
+
+/* ── Idag ─────────────────────────────────────────────────────────── */
+
+.sv-root .sv-home {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 600px minmax(0, 1fr);
+  column-gap: 72px;
+  height: 100%;
+  padding: 36px 56px 28px;
+}
+
+.sv-root .sv-home-day {
+  justify-self: end;
+  align-self: center;
+  width: min(100%, 290px);
+  margin-bottom: 96px;
+  color: var(--sv-table-ink);
+}
+
+.sv-root .sv-date {
+  color: var(--sv-table-ink-2);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.sv-root .sv-greet {
+  margin: 6px 0 12px;
+  color: var(--sv-table-ink);
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.sv-root .sv-day {
+  color: var(--sv-table-ink-2);
+  font-size: 16.5px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-countdown {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 14px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--sv-table-line);
+  color: var(--sv-table-ink-2);
+  font-size: 14.5px;
+  line-height: 1.35;
+}
+
+.sv-root .sv-countdown-n {
+  color: var(--sv-table-ink);
+  font-size: 54px;
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-home-deck {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  min-height: 0;
+}
+
+.sv-root .sv-home .sv-deck {
+  flex: 0 1 600px;
+  width: 600px;
+  min-height: 440px;
+}
+
+.sv-root .sv-deck-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--sv-table-ink-3);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sv-root .sv-deck-hint .sv-kbd {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--sv-table-line);
+  color: var(--sv-table-ink-2);
+}
+
+/* The index: the overview of the deck. */
+.sv-root .sv-index {
+  justify-self: start;
+  align-self: center;
+  width: min(100%, 268px);
+  margin-bottom: 64px;
+}
+
+.sv-root .sv-index-head {
+  color: var(--sv-table-ink);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.sv-root .sv-index-head span {
+  color: var(--sv-table-ink-2);
+  font-weight: 600;
+}
+
+.sv-root .sv-index-group {
+  margin: 18px 0 4px 12px;
+  color: var(--sv-table-ink-3);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sv-root .sv-index-row {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 13px;
+  color: var(--sv-table-ink-2);
+  font-size: 15px;
+  font-weight: 650;
+  text-align: left;
+  transition:
+    background-color var(--sv-d-ui) var(--sv-ease),
+    color var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-index-row:hover {
+  color: var(--sv-table-ink);
+  background: oklch(from var(--sv-table-ink) l c h / 0.06);
+}
+
+.sv-root .sv-index-row[aria-current='true'] {
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow: var(--sv-chip);
+  color: var(--sv-ink);
+}
+
+/* The card's number in the deck; the one in front stands as a small
+ * magenta card (the current position). */
+.sv-root .sv-index-n {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 24px;
+  border-radius: 5px;
+  color: var(--sv-table-ink-3);
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-index-row[aria-current='true'] .sv-index-n {
+  background: var(--sv-accent);
+  color: var(--sv-on-accent);
+}
+
+.sv-root .sv-index-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sv-root .sv-index-meta {
+  color: var(--sv-table-ink-3);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-index-row[aria-current='true'] .sv-index-meta {
+  color: var(--sv-ink-3);
+}
+
+/* The Idag cards. Content that outgrows the card (larger text, the WCAG
+ * 1.4.12 spacing) scrolls inside it rather than overlapping. */
+.sv-root .sv-deck[data-kind='home'] .sv-dcard {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 36px 14px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sv-line-2) transparent;
+}
+
+.sv-root .sv-hc-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px;
+}
+
+.sv-root .sv-hc-eyebrow {
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 650;
+}
+
+.sv-root .sv-hc-meta {
+  margin-left: auto;
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.sv-root .sv-hc-body {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  padding-top: 36px;
+}
+
+.sv-root .sv-hc-kicker {
+  color: var(--sv-ink-2);
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.sv-root .sv-hc-title {
+  margin-top: 6px;
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.sv-root .sv-hc-title--lead {
+  font-size: 58px;
+}
+
+.sv-root .sv-hc-title--trap {
+  font-size: 46px;
+}
+
+.sv-root .sv-hc-sub {
+  margin-top: 10px;
+  color: var(--sv-ink-2);
+  font-family: var(--sv-serif);
+  font-size: 22px;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.sv-root .sv-hc-detail {
+  margin-top: 12px;
+  color: var(--sv-ink-2);
+  font-size: 19px;
+  font-weight: 600;
+}
+
+/* The text's questions as a small hand: answered ones face down, the one
+ * you stopped at standing up with an accent rim, the last one waiting. */
+.sv-root .sv-unit {
+  display: flex;
+  align-items: flex-end;
+  height: 82px;
+  margin: auto 0;
+  padding-left: 4px;
+}
+
+.sv-root .sv-unit i {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 64px;
+  margin-right: -5px;
+  border-radius: 9px;
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow:
+    inset 0 0 0 1px var(--sv-line-2),
+    0 2px 6px -2px oklch(25% 0.03 262 / 0.2);
+  color: var(--sv-ink-3);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  transform-origin: 50% 140%;
+  transform: rotate(calc(var(--i) * 5deg));
+}
+
+/* Face down: the back of a card, a fine cross-hatch inside a border. */
+.sv-root .sv-unit i[data-state='done'] {
+  background-color: var(--sv-card-2);
+  background-image:
+    repeating-linear-gradient(45deg, oklch(from var(--sv-ink-3) l c h / 0.2) 0 1.5px, transparent 1.5px 6px),
+    repeating-linear-gradient(-45deg, oklch(from var(--sv-ink-3) l c h / 0.2) 0 1.5px, transparent 1.5px 6px);
+  box-shadow:
+    inset 0 0 0 1px var(--sv-line-2),
+    inset 0 0 0 4px var(--sv-card-2),
+    inset 0 0 0 5px var(--sv-line),
+    0 2px 6px -2px oklch(25% 0.03 262 / 0.2);
+}
+
+.sv-root .sv-unit i[data-state='now'] {
+  z-index: 1;
+  color: var(--sv-accent-ink);
+  box-shadow:
+    inset 0 0 0 2px var(--sv-accent),
+    0 10px 18px -10px var(--sv-accent-glow);
+  transform: rotate(calc(var(--i) * 5deg)) translateY(-12px);
+}
+
+.sv-root .sv-unit i[data-state='todo'] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--sv-line-2);
+}
+
+/* Where you stopped: the next question itself, in the text's own face. */
+.sv-root .sv-hc-next {
+  padding: 14px 16px 15px;
+  border-radius: var(--sv-r2);
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+}
+
+.sv-root .sv-hc-next-label {
+  display: block;
+  color: var(--sv-ink-3);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.sv-root .sv-hc-next-q {
+  display: block;
+  margin-top: 3px;
+  color: var(--sv-ink);
+  font-family: var(--sv-serif);
+  font-size: 17px;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-hc-progress {
+  padding: 16px 0 0;
+  color: var(--sv-ink-2);
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-hc-why {
+  padding-top: 16px;
+  color: var(--sv-ink-2);
+  font-size: 16.5px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+/* The card's action sits 14 px in from its edges: radius 28 − 14. When the
+ * card's content outgrows it and scrolls, the action stays pinned to the
+ * card's foot on its own strip of stock. */
+.sv-root .sv-hc-foot {
+  position: sticky;
+  z-index: 1;
+  bottom: -13px;
+  /* 1 px inside the card's edges, so its rim stays unbroken. */
+  margin: 0 -35px -13px;
+  padding: 18px 13px 13px;
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+}
+
+.sv-root .sv-hc-foot .sv-btn {
+  border-radius: 14px;
+}
+
+/* The misses to repeat, as a fan of cards. */
+.sv-root .sv-fan {
+  position: relative;
+  display: block;
+  height: 96px;
+  margin: auto 0;
+}
+
+.sv-root .sv-fan i {
+  position: absolute;
+  left: calc(50% - 24px);
+  bottom: 0;
+  width: 48px;
+  height: 66px;
+  border-radius: 8px;
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow:
+    inset 0 0 0 1px var(--sv-line-2),
+    0 2px 6px -2px oklch(25% 0.03 262 / 0.2);
+  transform-origin: 50% 160%;
+  transform: rotate(calc(var(--i) * 9deg));
+}
+
+.sv-root .sv-fan i:nth-child(odd) {
+  background-color: var(--sv-sec-rep);
+}
+
+.sv-root .sv-marks {
+  display: flex;
+  gap: 6px;
+  margin: auto 0;
+}
+
+.sv-root .sv-marks i {
+  display: block;
+  width: 22px;
+  height: 30px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1.5px var(--sv-line-2);
+  background: var(--sv-card-2);
+}
+
+/* The prognosis: the figure, and beside it the weeks that led there. */
+.sv-root .sv-prog-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.sv-root .sv-prog {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.sv-root .sv-weeks {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.sv-root .sv-weeks-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 76px;
+  padding: 0 2px;
+  border-bottom: 1.5px solid var(--sv-line-2);
+}
+
+.sv-root .sv-weeks-bars i {
+  display: block;
+  width: 12px;
+  border-radius: 3px 3px 0 0;
+  background: var(--sv-card-3);
+  box-shadow: inset 0 0 0 1px var(--sv-line-2);
+}
+
+.sv-root .sv-weeks-bars i[data-last='true'] {
+  background: var(--sv-ink-2);
+  box-shadow: none;
+}
+
+.sv-root .sv-weeks figcaption {
+  color: var(--sv-ink-2);
+  font-size: 12.5px;
+  font-weight: 650;
+}
+
+.sv-root .sv-prog-n {
+  font-size: 104px;
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-prog-n sup {
+  margin-left: 2px;
+  color: var(--sv-ink-2);
+  font-size: 0.36em;
+  vertical-align: 1.35em;
+}
+
+.sv-root .sv-prog-of {
+  color: var(--sv-ink-2);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.sv-root .sv-prog-halves {
+  margin-top: 12px;
+  color: var(--sv-ink-2);
+  font-size: 16px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-prog-halves b {
+  color: var(--sv-ink);
+  font-weight: 800;
+}
+
+.sv-root .sv-scale {
+  position: relative;
+  height: 64px;
+  margin: 34px 4px 0;
+}
+
+/* The status cards hold one figure each: it sits mid-card. */
+.sv-root .sv-dcard[data-card='prognos'] .sv-hc-body,
+.sv-root .sv-dcard[data-card='trap'] .sv-hc-body {
+  justify-content: safe center;
+  padding-top: 0;
+}
+
+.sv-root .sv-dcard[data-card='trap'] .sv-trap-count {
+  margin-top: 22px;
+}
+
+.sv-root .sv-scale-label {
+  position: absolute;
+  top: 0;
+  translate: -100% 0;
+  color: var(--sv-ink-2);
+  font-size: 12.5px;
+  font-weight: 750;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-scale-axis {
+  position: absolute;
+  top: 24px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--sv-card-3);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+}
+
+.sv-root .sv-scale-range {
+  position: absolute;
+  top: 22px;
+  height: 10px;
+  border-radius: 5px;
+  background: repeating-linear-gradient(
+      -45deg,
+      oklch(from var(--sv-ink-3) l c h / 0.42) 0 3px,
+      oklch(from var(--sv-ink-3) l c h / 0.16) 3px 6px
+    );
+}
+
+.sv-root .sv-scale-mark {
+  position: absolute;
+  top: 16px;
+  width: 4px;
+  height: 22px;
+  border-radius: 2px;
+  background: var(--sv-ink);
+  translate: -2px 0;
+}
+
+.sv-root .sv-scale-tick {
+  position: absolute;
+  top: 42px;
+  color: var(--sv-ink-3);
+  font-size: 12px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  translate: -50% 0;
+}
+
+.sv-root .sv-scale-tick:first-of-type {
+  translate: 0 0;
+}
+
+.sv-root .sv-scale-tick:last-of-type {
+  translate: -100% 0;
+}
+
+.sv-root .sv-caveat {
+  display: flex;
+  gap: 6px;
+  padding-top: 14px;
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-caveat b {
+  color: var(--sv-ink);
+}
+
+/* The trap. */
+.sv-root .sv-trap-count {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  color: var(--sv-ink);
+  font-size: 17px;
+}
+
+.sv-root .sv-trap-count b {
+  font-weight: 800;
+}
+
+/* A rising count is news, not an alarm: ink, not the verdict red. */
+.sv-root .sv-trap-rise {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 26px;
+  padding: 0 9px;
+  border-radius: 8px;
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line-2);
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 750;
+}
+
+/* The recent passes. */
+.sv-root .sv-recent {
+  display: grid;
+  gap: 2px;
+}
+
+.sv-root .sv-recent li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px 48px 70px;
+  align-items: center;
+  gap: 14px;
+  min-height: 54px;
+  border-bottom: 1px solid var(--sv-line);
+}
+
+.sv-root .sv-recent-name {
+  font-size: 18px;
+  font-weight: 750;
+}
+
+.sv-root .sv-recent-bar {
+  position: relative;
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--sv-card-3);
+  overflow: hidden;
+}
+
+.sv-root .sv-recent-bar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 4px;
+  background: var(--sv-ink-2);
+}
+
+.sv-root .sv-recent-score {
+  font-size: 16px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.sv-root .sv-recent-when {
+  color: var(--sv-ink-2);
+  font-size: 14px;
+  text-align: right;
+}
+
+.sv-root .sv-week {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 16px;
+  color: var(--sv-ink-2);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.sv-root .sv-week-days {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.sv-root .sv-week-days i {
+  display: block;
+  width: 12px;
+  height: 16px;
+  border-radius: 3.5px;
+  box-shadow: inset 0 0 0 1.5px var(--sv-ink-3);
+}
+
+.sv-root .sv-week-days i[data-on='true'] {
+  background: var(--sv-ink-2);
+  box-shadow: none;
+}
+
+/* Phone Idag. */
+.sv-root .sv-phome {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100%;
+  padding: max(14px, env(safe-area-inset-top)) 16px 4px;
+}
+
+.sv-root .sv-phome-head {
+  padding: 4px 56px 14px 4px;
+}
+
+.sv-root .sv-phome-head .sv-date b {
+  color: var(--sv-table-ink);
+}
+
+.sv-root .sv-phome-head .sv-greet {
+  margin: 2px 0 4px;
+  font-size: 28px;
+}
+
+.sv-root .sv-phome-head .sv-day {
+  font-size: 14.5px;
+  line-height: 1.4;
+}
+
+.sv-root .sv-phome .sv-home-deck {
+  display: block;
+}
+
+.sv-root .sv-phome .sv-deck {
+  --sv-next: translateY(11px) scale(0.955);
+  --sv-after: translateY(22px) scale(0.91);
+  --sv-gone: translateX(-122%) rotate(-9deg);
+  height: calc(100% - 22px);
+}
+
+.sv-root .sv-phome .sv-deck[data-kind='home'] .sv-dcard {
+  padding: 22px 24px 12px;
+  border-radius: 24px;
+}
+
+.sv-root .sv-phome .sv-hc-body {
+  padding-top: 22px;
+}
+
+.sv-root .sv-phome .sv-hc-title {
+  font-size: 38px;
+}
+
+.sv-root .sv-phome .sv-hc-title--lead {
+  font-size: 40px;
+}
+
+.sv-root .sv-phome .sv-hc-title--trap {
+  font-size: 34px;
+}
+
+.sv-root .sv-phome .sv-hc-sub {
+  font-size: 18px;
+}
+
+.sv-root .sv-phome .sv-hc-detail {
+  font-size: 17px;
+}
+
+.sv-root .sv-phome .sv-hc-why {
+  font-size: 15px;
+}
+
+.sv-root .sv-phome .sv-hc-next-q {
+  font-size: 15.5px;
+}
+
+.sv-root .sv-phome .sv-unit {
+  height: 66px;
+}
+
+.sv-root .sv-phome .sv-unit i {
+  width: 36px;
+  height: 50px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.sv-root .sv-phome .sv-unit i[data-state='now'] {
+  transform: rotate(calc(var(--i) * 5deg)) translateY(-9px);
+}
+
+.sv-root .sv-phome .sv-hc-foot {
+  bottom: -11px;
+  margin: 0 -23px -11px;
+  padding: 18px 11px 11px;
+}
+
+.sv-root .sv-phome .sv-hc-foot .sv-btn {
+  border-radius: 12px;
+}
+
+.sv-root .sv-phome .sv-prog-n {
+  font-size: 84px;
+}
+
+.sv-root .sv-phome .sv-recent li {
+  grid-template-columns: minmax(0, 1fr) 64px 40px 58px;
+  gap: 10px;
+}
+
+.sv-root .sv-phome .sv-recent-name {
+  font-size: 16px;
+}
+
+.sv-root .sv-phome .sv-fan {
+  height: 84px;
+}
+
+.sv-root .sv-phome .sv-fan i {
+  width: 40px;
+  height: 56px;
+}
+
+.sv-root .sv-phome .sv-marks i {
+  width: 18px;
+  height: 25px;
+}
+
+.sv-root .sv-phome-foot {
+  display: grid;
+  justify-items: center;
+  gap: 0;
+  padding-top: 6px;
+}
+
+.sv-root .sv-phome-foot .sv-count {
+  min-height: 24px;
+  font-size: 14px;
+}
+
+/* ── A door round 2 builds ────────────────────────────────────────── */
+
+.sv-root .sv-stub-wrap {
+  display: grid;
+  place-items: safe center;
+  height: 100%;
+  overflow-y: auto;
+  padding: 24px 16px 48px;
+}
+
+.sv-root .sv-stub {
+  display: grid;
+  gap: 12px;
+  width: min(100%, 520px);
+  padding: 34px 36px 36px;
+  animation: sv-deal var(--sv-d-move) var(--sv-ease) both;
+}
+
+.sv-root .sv-stub-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+  color: var(--sv-ink-2);
+}
+
+.sv-root .sv-stub-title {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.sv-root .sv-stub-blurb {
+  color: var(--sv-ink);
+  font-size: 18px;
+}
+
+.sv-root .sv-stub-note {
+  color: var(--sv-ink-2);
+  font-size: 15px;
+}
+
+/* ── The drill ────────────────────────────────────────────────────── */
+
+.sv-root .sv-drill {
+  display: grid;
+  grid-template-rows: 80px minmax(0, 1fr);
+  height: 100%;
+}
+
+.sv-root .sv-drill-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(1236px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+/* The way out is always there but never the loudest thing: flat ink on the
+ * table, a quiet ground on hover. */
+.sv-root .sv-exit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px 0 10px;
+  border-radius: 12px;
+  color: var(--sv-table-ink);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sv-root .sv-exit:hover {
+  background: oklch(from var(--sv-table-ink) l c h / 0.08);
+}
+
+.sv-root .sv-drill-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--sv-table-ink-2);
+  font-size: 14.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-drill-pos {
+  color: var(--sv-table-ink);
+}
+
+.sv-root .sv-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: var(--sv-table-ink-2);
+  font-size: 14.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The pair: the text card and the question card, side by side. */
+.sv-root .sv-pair {
+  display: grid;
+  grid-template-columns: minmax(520px, 700px) 540px;
+  column-gap: 36px;
+  justify-content: center;
+  min-height: 0;
+  padding: 0 24px 24px;
+}
+
+.sv-root .sv-pcard {
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sv-root .sv-pcard-scroll {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 26px 48px 72px 76px;
+  border-radius: inherit;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sv-line-2) transparent;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18px, #000 calc(100% - 28px), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 18px, #000 calc(100% - 28px), transparent 100%);
+}
+
+.sv-root .sv-pcard-scroll:focus-visible {
+  outline-offset: -4px;
+}
+
+.sv-root .sv-pcard-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.sv-root .sv-note {
+  max-width: 36em;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+  color: var(--sv-ink-2);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.sv-root .sv-ptitle {
+  max-width: 17em;
+  margin: 26px 0 30px;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.sv-root .sv-ptitle span {
+  display: block;
+  margin-top: 8px;
+  color: var(--sv-ink-2);
+  font-family: var(--sv-serif);
+  font-size: 21px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.sv-root .sv-pbody {
+  max-width: 34em;
+  color: var(--sv-ink);
+  font-family: var(--sv-serif);
+  font-size: 19px;
+  line-height: 1.62;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-para {
+  position: relative;
+  margin-bottom: 1em;
+  border-radius: 6px;
+  transition:
+    background-color 600ms var(--sv-ease),
+    box-shadow 600ms var(--sv-ease),
+    opacity var(--sv-d-move) var(--sv-ease);
+}
+
+/* The ¶ number on the paragraph's first baseline, in the margin. */
+.sv-root .sv-pnum {
+  position: absolute;
+  top: 0.06em;
+  left: -56px;
+  width: 40px;
+  height: 30px;
+  padding-right: 6px;
+  border-radius: 8px;
+  color: var(--sv-ink-3);
+  font-family: var(--sv-ui);
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 30px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A 44 px target in the empty margin around the 30 px number. */
+.sv-root .sv-pnum::before {
+  content: '';
+  position: absolute;
+  inset: -7px -2px;
+}
+
+.sv-root .sv-pnum:hover {
+  color: var(--sv-ink);
+}
+
+/* Cited after the answer: the number in ink, a short ochre rule. */
+.sv-root .sv-para[data-cited='true'] .sv-pnum {
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-para[data-cited='true'] .sv-pnum::after {
+  content: '';
+  position: absolute;
+  top: 7px;
+  right: -6px;
+  width: 3px;
+  height: 16px;
+  border-radius: 2px;
+  background: var(--sv-mark-line);
+}
+
+.sv-root .sv-para[data-lit='true'] .sv-pnum::after {
+  width: 4px;
+  background: var(--sv-ink-2);
+}
+
+.sv-root .sv-para[data-flash='true'] {
+  background: var(--sv-mark);
+  box-shadow: 0 0 0 6px var(--sv-mark);
+  transition-duration: 0s;
+}
+
+.sv-root .sv-pbody[data-focus='true'] .sv-para:not([data-focused='true']) {
+  opacity: 0.4;
+}
+
+.sv-root .sv-byline {
+  margin-top: 1.4em;
+  color: var(--sv-ink-2);
+  font-style: italic;
+}
+
+/* Evidence: what the explanation quotes, underlined in ochre in the text;
+ * the card in front lays the highlighter over what it leans on. The lure's
+ * answer is dashed ink — no red in the text. */
+.sv-root .sv-ev {
+  border-radius: 3px;
+  background: transparent;
+  color: inherit;
+  text-decoration: underline 2px var(--sv-mark-line);
+  text-underline-offset: 4px;
+  text-decoration-skip-ink: none;
+  transition: background-color 400ms var(--sv-ease);
+}
+
+.sv-root .sv-ev[data-kind='wrong'] {
+  text-decoration: underline 1.5px dashed var(--sv-ink-3);
+}
+
+.sv-root .sv-ev[data-lean='true'] {
+  background: var(--sv-mark);
+}
+
+.sv-root .sv-ev[data-flash='true'] {
+  background: var(--sv-mark-strong);
+  transition-duration: 0s;
+}
+
+/* The question column: a card of the deck's own size (shorter than the
+ * tall text card beside it), its waiting edges and the foot. */
+.sv-root .sv-qcol {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 664px) 76px;
+  align-content: start;
+  min-height: 0;
+  padding-right: 40px;
+}
+
+.sv-root .sv-qslot {
+  position: relative;
+  min-height: 0;
+}
+
+.sv-root .sv-qedge {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--sv-r3);
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow: var(--sv-rim), var(--sv-lift-low);
+  transform-origin: 50% 90%;
+}
+
+.sv-root .sv-qedge[data-n='1'] {
+  transform: translateX(16px) scale(0.965) rotate(0.8deg);
+}
+
+.sv-root .sv-qedge[data-n='2'] {
+  transform: translateX(32px) scale(0.93) rotate(1.6deg);
+}
+
+.sv-root .sv-faces {
+  position: relative;
+  display: grid;
+  height: 100%;
+  perspective: 1800px;
+}
+
+.sv-root .sv-face {
+  grid-area: 1 / 1;
+  min-height: 0;
+  height: 100%;
+}
+
+.sv-root .sv-qslot .sv-deck {
+  --sv-next: translateX(16px) scale(0.965) rotate(0.8deg);
+  --sv-after: translateX(32px) scale(0.93) rotate(1.6deg);
+  --sv-gone: translateX(-56px) rotate(-3deg) scale(0.98);
+  height: 100%;
+}
+
+.sv-root .sv-qcard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sv-root .sv-qcard-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 28px 30px 12px;
+}
+
+.sv-root .sv-qlabel {
+  color: var(--sv-ink);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.sv-root .sv-qlabel span {
+  color: var(--sv-ink-3);
+  font-weight: 650;
+}
+
+.sv-root .sv-prompt {
+  margin: 10px 0 22px;
+  font-size: 23px;
+  font-weight: 750;
+  line-height: 1.27;
+  letter-spacing: -0.015em;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-opts {
+  display: grid;
+  gap: 10px;
+}
+
+/* Each option is a slip of the same stock: a hairline and a little
+ * thickness along its foot. The chosen one lifts with an accent rim. */
+.sv-root .sv-opt {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 48px;
+  border-radius: var(--sv-r2);
+  background: var(--sv-card);
+  box-shadow:
+    inset 0 0 0 1px var(--sv-line),
+    inset 0 -2px 0 var(--sv-line),
+    0 1px 2px oklch(28% 0.02 265 / 0.05);
+  transition:
+    box-shadow var(--sv-d-ui) var(--sv-ease),
+    background-color var(--sv-d-ui) var(--sv-ease),
+    transform var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-opt:hover {
+  box-shadow:
+    inset 0 0 0 1px var(--sv-line-2),
+    inset 0 -2px 0 var(--sv-line-2),
+    0 2px 6px -2px oklch(28% 0.02 265 / 0.12);
+}
+
+.sv-root .sv-opt-main {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+  min-height: 56px;
+  padding: 13px 4px 13px 12px;
+  border-radius: var(--sv-r2) 0 0 var(--sv-r2);
+  font-size: 16px;
+  line-height: 1.45;
+  text-align: left;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-opt-key {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-top: -5px;
+  border-radius: var(--sv-r1);
+  background: var(--sv-card-2);
+  box-shadow:
+    inset 0 0 0 1px var(--sv-line-2),
+    inset 0 -2px 0 var(--sv-line);
+  color: var(--sv-ink);
+  font-size: 14.5px;
+  font-weight: 800;
+  transition:
+    background-color var(--sv-d-ui) var(--sv-ease),
+    color var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-opt-x {
+  display: grid;
+  place-items: center;
+  border-radius: 0 var(--sv-r2) var(--sv-r2) 0;
+  color: var(--sv-ink-3);
+}
+
+.sv-root .sv-opt-x:hover {
+  color: var(--sv-ink);
+}
+
+/* Chosen: the slip lifts with an ink rim and an inked key (the accent
+ * stays on Svara, the next action). */
+.sv-root .sv-opt[data-state='selected'] {
+  background-color: var(--sv-card);
+  box-shadow:
+    0 0 0 2px var(--sv-ink),
+    0 10px 22px -14px oklch(20% 0.02 262 / 0.35);
+  transform: translateY(-1px);
+}
+
+.sv-root .sv-opt[data-state='selected'] .sv-opt-key {
+  background: var(--sv-ink);
+  box-shadow: none;
+  color: var(--sv-card);
+}
+
+/* Struck: the slip lies flat, still legible (≥ 7:1), crossed through,
+ * its key hollow. */
+.sv-root .sv-opt[data-state='out'] {
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+}
+
+.sv-root .sv-opt[data-state='out'] .sv-opt-text {
+  color: var(--sv-ink-2);
+  text-decoration: line-through 1.5px;
+  text-decoration-color: var(--sv-ink-3);
+}
+
+.sv-root .sv-opt[data-state='out'] .sv-opt-key {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--sv-line-2);
+  color: var(--sv-ink-3);
+}
+
+.sv-root .sv-opt[data-state='out'] .sv-opt-x {
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-lockbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 14px 14px 14px;
+  border-top: 1px solid var(--sv-line);
+}
+
+.sv-root .sv-lockbar .sv-btn {
+  border-radius: 14px;
+}
+
+.sv-root .sv-echo {
+  color: var(--sv-ink-2);
+  font-size: 14px;
+}
+
+.sv-root .sv-qfoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 14px;
+}
+
+.sv-root .sv-qfoot[data-phase='question'] {
+  justify-content: center;
+}
+
+/* While the card turns, its controls wait until the back has come round. */
+.sv-root .sv-qfoot[data-turning='true'] {
+  animation: sv-fade 140ms linear 130ms both;
+}
+
+.sv-root .sv-qfoot .sv-btn {
+  min-height: 52px;
+  padding: 0 24px;
+}
+
+.sv-root .sv-keys {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 16px;
+  color: var(--sv-table-ink-2);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sv-root .sv-keys span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sv-root .sv-keys .sv-kbd {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--sv-table-line);
+  color: var(--sv-table-ink-2);
+}
+
+/* ── The run of facit cards ───────────────────────────────────────── */
+
+.sv-root .sv-deck[data-kind='run'] .sv-dcard {
+  display: flex;
+  flex-direction: column;
+}
+
+.sv-root .sv-rc {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 30px 34px 28px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sv-line-2) transparent;
+  /* A long card fades under its edges instead of being cut. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 24px), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 24px), transparent 100%);
+}
+
+/* One idea per card: it sits in the middle, like a flash card. */
+.sv-root .sv-rc--center {
+  justify-content: safe center;
+}
+
+.sv-root .sv-rc-eyebrow {
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.sv-root .sv-rc-title {
+  margin: 4px 0 16px;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.sv-root .sv-rc-title--next {
+  margin-top: 26px;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+
+.sv-root .sv-rc-text {
+  color: var(--sv-ink);
+  font-size: 17px;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+/* One idea per card: set large. */
+.sv-root .sv-rc-text--lead {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+.sv-root .sv-rc-note {
+  margin-top: auto;
+  padding-top: 20px;
+  color: var(--sv-ink-2);
+  font-size: 14.5px;
+}
+
+.sv-root .sv-rc-note b {
+  color: var(--sv-ink);
+}
+
+/* The verdict: the back of the question card. A miss says so twice, no
+ * more — the ringed glyph and your answer's slip; the word stays ink. */
+.sv-root .sv-verdict {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.028em;
+}
+
+.sv-root .sv-verdict-glyph {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--sv-card);
+  box-shadow: inset 0 0 0 2px var(--sv-bad);
+  color: var(--sv-bad);
+}
+
+.sv-root .sv-verdict[data-correct='true'] .sv-verdict-glyph,
+.sv-root .sv-miniverdict[data-correct='true'] .sv-verdict-glyph {
+  box-shadow: inset 0 0 0 2px var(--sv-ok);
+  color: var(--sv-ok);
+}
+
+.sv-root .sv-verdict-words b {
+  color: var(--sv-ink);
+}
+
+/* The turned card's back is tinted stock, so even a still frame shows the
+ * card has turned. */
+.sv-root .sv-dcard[data-card='svar'] {
+  background-color: var(--sv-back);
+}
+
+/* The right answer as the card's rank: one large letter, its text in the
+ * passage's serif beside it. */
+.sv-root .sv-rank {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 4px 20px;
+  margin-top: 26px;
+}
+
+.sv-root .sv-rank-letter {
+  color: var(--sv-ink);
+  font-size: 112px;
+  font-weight: 800;
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+}
+
+.sv-root .sv-rank-label {
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 750;
+}
+
+.sv-root .sv-rank-text {
+  margin-top: 4px;
+  color: var(--sv-ink);
+  font-family: var(--sv-serif);
+  font-size: 20px;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+/* Your pick: quieter ink under one thin red rule — the miss's only red
+ * besides the glyph. */
+.sv-root .sv-chose {
+  margin-top: 24px;
+  padding-left: 14px;
+  border-left: 3px solid var(--sv-bad);
+  color: var(--sv-ink-2);
+  font-family: var(--sv-serif);
+  font-size: 16.5px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-chose-label {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--sv-ink-2);
+  font-family: var(--sv-ui);
+  font-size: 13.5px;
+  font-weight: 750;
+}
+
+.sv-root .sv-btn.sv-onward {
+  align-self: stretch;
+  margin-top: 28px;
+}
+
+.sv-root .sv-rc--verdict .sv-verdict {
+  font-size: 26px;
+}
+
+.sv-root .sv-rc--verdict .sv-verdict-glyph {
+  width: 40px;
+  height: 40px;
+}
+
+.sv-root .sv-qs--facit .sv-rank-letter {
+  font-size: 88px;
+}
+
+.sv-root .sv-qs--facit .sv-rank-text {
+  font-size: 18px;
+}
+
+/* What to take away: two short halves of one idea. */
+.sv-root .sv-take + .sv-take {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid var(--sv-line);
+}
+
+.sv-root .sv-take .sv-rc-title {
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+
+.sv-root .sv-steps-head {
+  margin: 28px 0 14px;
+  padding-top: 20px;
+  border-top: 1px solid var(--sv-line);
+  color: var(--sv-ink);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.sv-root .sv-rc-prompt {
+  margin: 20px 0 14px;
+  color: var(--sv-ink-2);
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-answers {
+  display: grid;
+  gap: 10px;
+}
+
+.sv-root .sv-answer {
+  padding: 12px 16px 14px;
+  border-radius: var(--sv-r2);
+  background: var(--sv-bad-soft);
+  box-shadow: inset 0 0 0 1px var(--sv-bad-line);
+}
+
+.sv-root .sv-answer[data-kind='right'] {
+  background: var(--sv-ok-soft);
+  box-shadow: inset 0 0 0 1px var(--sv-ok-line);
+}
+
+.sv-root .sv-answer-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--sv-bad);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.sv-root .sv-answer[data-kind='right'] .sv-answer-tag {
+  color: var(--sv-ok);
+}
+
+.sv-root .sv-answer-glyph {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+
+.sv-root .sv-answer-text {
+  margin-top: 4px;
+  color: var(--sv-ink);
+  font-size: 16px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+
+/* Steps. */
+.sv-root .sv-steps {
+  display: grid;
+  gap: 18px;
+}
+
+.sv-root .sv-step {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.sv-root .sv-step-n {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line-2);
+  font-size: 13.5px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-step[data-tier='detail'] .sv-step-n {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--sv-line-2);
+  outline: 1.5px dashed var(--sv-line-2);
+  outline-offset: -1.5px;
+}
+
+.sv-root .sv-step-title {
+  padding-top: 3px;
+  font-size: 16.5px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.sv-root .sv-step-tier {
+  color: var(--sv-ink-3);
+  font-weight: 600;
+}
+
+.sv-root .sv-step-text {
+  margin-top: 4px;
+  color: var(--sv-ink);
+  font-size: 15.5px;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-step-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 14px;
+}
+
+/* ¶ links. */
+.sv-root .sv-cites {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.sv-root .sv-cites-label {
+  color: var(--sv-ink-3);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+/* ¶ chips carry the highlighter's colour: they point into the text. */
+.sv-root .sv-cite {
+  position: relative;
+  min-width: 42px;
+  height: 34px;
+  padding: 0 9px;
+  border-radius: var(--sv-r1);
+  background: var(--sv-mark);
+  box-shadow: inset 0 0 0 1px var(--sv-mark-line);
+  color: var(--sv-ink);
+  font-size: 13.5px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-cite:hover {
+  box-shadow: inset 0 0 0 1.5px var(--sv-ink-2);
+}
+
+.sv-root .sv-stepref {
+  display: inline;
+  color: var(--sv-ink);
+  font-weight: 700;
+  text-decoration: underline 1px;
+  text-underline-offset: 3px;
+}
+
+/* The other options. */
+.sv-root .sv-dis-list {
+  display: grid;
+}
+
+.sv-root .sv-dis {
+  padding: 14px 0 6px;
+  border-top: 1px solid var(--sv-line);
+}
+
+.sv-root .sv-dis-head {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 14px;
+}
+
+.sv-root .sv-dis-opt {
+  padding-top: 5px;
+  font-size: 16px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-dis .sv-link {
+  margin-left: 48px;
+}
+
+.sv-root .sv-dis-body {
+  display: grid;
+  gap: 4px;
+  margin: 0 0 8px 48px;
+}
+
+.sv-root .sv-dis-sub {
+  margin-top: 8px;
+  color: var(--sv-ink-2);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* ── The end of a unit ────────────────────────────────────────────── */
+
+.sv-root .sv-drill--done {
+  grid-template-rows: 80px minmax(0, 1fr);
+}
+
+.sv-root .sv-done-wrap {
+  display: grid;
+  place-items: safe center;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 16px 48px;
+}
+
+.sv-root .sv-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 540px);
+  padding: 34px 36px 22px;
+  text-align: center;
+  animation: sv-deal var(--sv-d-move) var(--sv-ease) both;
+}
+
+.sv-root .sv-done-title {
+  margin-top: 6px;
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+}
+
+.sv-root .sv-done-sub {
+  margin-top: 10px;
+  color: var(--sv-ink-2);
+  font-size: 15.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-wrap: balance;
+}
+
+/* The unit's hand, turned face up. */
+.sv-root .sv-hand {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  height: 150px;
+  margin: 26px 0 20px;
+}
+
+.sv-root .sv-hand li {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  width: 82px;
+  height: 116px;
+  margin: 0 -9px;
+  padding: 8px 0 9px;
+  border-radius: 12px;
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain), var(--sv-light);
+  box-shadow: var(--sv-rim), var(--sv-lift-low);
+  transform-origin: 50% 130%;
+  transform: rotate(calc(var(--i) * 7deg)) translateY(calc(var(--i) * var(--i) * 6px));
+}
+
+.sv-root .sv-done[data-live='true'] .sv-hand li {
+  animation: sv-fan 420ms var(--sv-ease) both;
+  animation-delay: calc(120ms + (var(--i) + 2) * 50ms);
+}
+
+.sv-root .sv-hand-n {
+  justify-self: start;
+  margin-left: 10px;
+  color: var(--sv-ink-3);
+  font-size: 12.5px;
+  font-weight: 800;
+}
+
+.sv-root .sv-hand-glyph {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px var(--sv-bad);
+  color: var(--sv-bad);
+}
+
+.sv-root .sv-hand li[data-correct='true'] .sv-hand-glyph {
+  box-shadow: inset 0 0 0 2px var(--sv-ok);
+  color: var(--sv-ok);
+}
+
+.sv-root .sv-hand-pick {
+  color: var(--sv-ink-2);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.sv-root .sv-done-note {
+  color: var(--sv-ink-2);
+  font-size: 15.5px;
+  text-wrap: balance;
+}
+
+.sv-root .sv-done-actions {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  width: calc(100% + 22px);
+  margin-top: 20px;
+}
+
+/* ── Phone drill ──────────────────────────────────────────────────── */
+
+.sv-root .sv-pdrill {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100%;
+}
+
+.sv-root .sv-pdhead {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 2px;
+  padding: max(10px, env(safe-area-inset-top)) 14px 6px 16px;
+}
+
+.sv-root .sv-pdhead .sv-exit {
+  padding: 0 14px 0 10px;
+}
+
+.sv-root .sv-pdhead-pos {
+  display: inline-flex;
+  align-items: center;
+  justify-self: center;
+  gap: 8px;
+  color: var(--sv-table-ink-2);
+  font-size: 14px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-pdhead .sv-timer {
+  padding: 0 2px 0 6px;
+}
+
+.sv-root .sv-pdbody {
+  position: relative;
+  min-height: 0;
+}
+
+.sv-root .sv-pdbody > .sv-pcard {
+  position: absolute;
+  inset: 2px 8px 8px;
+  height: auto;
+  border-radius: 24px;
+}
+
+.sv-root .sv-pdbody .sv-pcard-scroll {
+  padding: 20px 18px calc(var(--sv-peek, 190px) + 28px) 42px;
+}
+
+.sv-root .sv-pdbody .sv-ptitle {
+  margin: 20px 0 22px;
+  font-size: 27px;
+}
+
+.sv-root .sv-pdbody .sv-ptitle span {
+  font-size: 18px;
+}
+
+.sv-root .sv-pdbody .sv-pbody {
+  font-size: 17.5px;
+  line-height: 1.6;
+}
+
+.sv-root .sv-pdbody .sv-pnum {
+  left: -38px;
+  width: 30px;
+  padding-right: 4px;
+  font-size: 11.5px;
+}
+
+.sv-root .sv-pdbody .sv-para[data-cited='true'] .sv-pnum::after {
+  right: -4px;
+}
+
+.sv-root .sv-pdscrim {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  width: 100%;
+  background: var(--sv-scrim);
+  cursor: default;
+  animation: sv-fade var(--sv-d-move) var(--sv-ease) both;
+}
+
+/* The question card under the text: it peeks with its prompt, rises to
+ * the options, and its facit side covers the text. */
+.sv-root .sv-qsheet {
+  position: absolute;
+  z-index: 5;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  max-height: calc(100% - 10px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  background: none;
+  box-shadow: none;
+  transition: transform var(--sv-d-move) var(--sv-ease);
+}
+
+/* At the peek only the card's head shows: the card sits 8 px off the
+ * bottom, so it travels those 8 px further. */
+.sv-root .sv-qsheet[data-state='peek'] {
+  transform: translateY(calc(100% - var(--sv-peek, 190px) + 8px));
+}
+
+.sv-root .sv-qsheet[data-phase='feedback'][data-state='full'] {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: none;
+  border-radius: 0;
+}
+
+.sv-root .sv-qsheet[data-phase='feedback'] {
+  top: 0;
+}
+
+.sv-root .sv-grab {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 50%;
+  width: 112px;
+  height: 44px;
+  translate: -50% 0;
+  touch-action: none;
+}
+
+.sv-root .sv-grab i {
+  display: block;
+  width: 40px;
+  height: 5px;
+  margin: 9px auto 0;
+  border-radius: 3px;
+  background: var(--sv-line-2);
+}
+
+.sv-root .sv-qsheet .sv-faces {
+  flex: 1;
+  min-height: 0;
+  perspective: 1400px;
+}
+
+.sv-root .sv-qs {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  border-radius: 24px;
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain), var(--sv-light);
+  box-shadow:
+    var(--sv-rim),
+    0 -2px 6px -2px oklch(25% 0.03 262 / 0.12),
+    0 -18px 40px -20px oklch(25% 0.04 262 / 0.4);
+}
+
+.sv-root[data-theme='dark'] .sv-qs {
+  box-shadow:
+    var(--sv-rim),
+    0 -2px 6px -2px oklch(0% 0 0 / 0.4),
+    0 -20px 44px -18px oklch(0% 0 0 / 0.7);
+}
+
+.sv-root .sv-qs-peek {
+  flex: none;
+  padding: 22px 18px 14px;
+}
+
+.sv-root .sv-qs-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 40px;
+}
+
+.sv-root .sv-qs .sv-prompt {
+  margin: 4px 0 14px;
+  font-size: 19.5px;
+  line-height: 1.3;
+}
+
+.sv-root .sv-qs-rest {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* Room for a chosen option's 2 px rim at the top of the scroller. */
+  padding: 4px 10px 10px;
+}
+
+.sv-root .sv-qs .sv-opt-main {
+  padding: 12px 2px 12px 10px;
+  gap: 12px;
+  font-size: 15.5px;
+}
+
+.sv-root .sv-qs .sv-lockbar {
+  margin: 12px -10px -10px;
+  padding: 12px 12px 14px;
+}
+
+.sv-root .sv-qs .sv-lockbar .sv-btn {
+  flex: 1;
+}
+
+.sv-root .sv-qs .sv-echo {
+  display: none;
+}
+
+/* The facit side: the run of cards on the table. */
+.sv-root .sv-qs--facit {
+  height: 100%;
+}
+
+.sv-root .sv-qsheet[data-state='full'] .sv-qs--facit {
+  border-radius: 0;
+  background-color: var(--sv-table);
+  background-image: var(--sv-felt);
+  box-shadow: none;
+}
+
+.sv-root .sv-qsheet[data-state='full'] .sv-qs--facit .sv-qs-peek {
+  padding: 6px 18px 4px;
+}
+
+.sv-root .sv-qsheet[data-state='full'] .sv-qs--facit .sv-qlabel {
+  color: var(--sv-table-ink);
+}
+
+.sv-root .sv-qsheet[data-state='full'] .sv-qs--facit .sv-qlabel span {
+  color: var(--sv-table-ink-2);
+}
+
+.sv-root .sv-qsheet[data-state='full'] .sv-qs--facit .sv-link {
+  color: var(--sv-table-ink);
+}
+
+.sv-root .sv-qsheet[data-state='full'][data-phase='feedback'] .sv-grab {
+  display: none;
+}
+
+.sv-root .sv-qs--facit .sv-qs-rest {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  gap: 4px;
+  overflow: hidden;
+  padding: 2px 8px 8px;
+}
+
+.sv-root .sv-qs--facit .sv-deck {
+  --sv-next: translateY(8px) scale(0.965);
+  --sv-after: translateY(16px) scale(0.93);
+  --sv-gone: translateX(-118%) rotate(-8deg);
+  height: calc(100% - 16px);
+}
+
+.sv-root .sv-qs--facit .sv-dcard {
+  border-radius: 24px;
+}
+
+.sv-root .sv-qs--facit .sv-rc {
+  padding: 22px 22px 18px;
+}
+
+.sv-root .sv-qs--facit .sv-rc-title {
+  font-size: 27px;
+}
+
+.sv-root .sv-qs--facit .sv-rc-text--lead {
+  font-size: 19.5px;
+}
+
+.sv-root .sv-qs--facit .sv-verdict {
+  font-size: 25px;
+}
+
+.sv-root .sv-runfoot {
+  display: grid;
+  justify-items: center;
+}
+
+.sv-root .sv-runfoot .sv-count {
+  min-height: 22px;
+  font-size: 13.5px;
+}
+
+.sv-root .sv-qs--facit > .sv-qs-rest > .sv-btn {
+  margin-top: 2px;
+}
+
+.sv-root .sv-miniverdict {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.sv-root .sv-miniverdict .sv-verdict-glyph {
+  width: 32px;
+  height: 32px;
+}
+
+.sv-root .sv-miniverdict b {
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-pdrill--done .sv-done-wrap {
+  padding: 8px 10px 16px;
+}
+
+.sv-root .sv-pdrill--done .sv-done {
+  padding: 26px 20px 16px;
+}
+
+.sv-root .sv-pdrill--done .sv-done-title {
+  font-size: 32px;
+}
+
+.sv-root .sv-pdrill--done .sv-done-actions {
+  width: calc(100% + 8px);
+}
+
+/* ── Motion ───────────────────────────────────────────────────────── */
+
+/* The question card turns over: away to the edge, then its back in. */
+.sv-root .sv-face[data-turn='out'] {
+  z-index: 2;
+  backface-visibility: hidden;
+  animation: sv-turn-out var(--sv-d-half) var(--sv-ease-in) both;
+}
+
+.sv-root .sv-face[data-turn='in'] {
+  backface-visibility: hidden;
+  animation: sv-turn-in var(--sv-d-half) var(--sv-ease) var(--sv-d-half) both;
+}
+
+/* The next question is dealt from the deck behind. */
+.sv-root .sv-face[data-deal='in'] {
+  animation: sv-deal var(--sv-d-move) var(--sv-ease) both;
+}
+
+@keyframes sv-turn-out {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(90deg);
+  }
+}
+
+@keyframes sv-turn-in {
+  from {
+    transform: rotateY(-90deg);
+  }
+  to {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes sv-deal {
+  from {
+    opacity: 0;
+    transform: translate(30px, 10px) rotate(2.5deg) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sv-deal-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) rotate(-1.5deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sv-fan {
+  from {
+    transform: rotate(0deg) translateY(10px);
+    opacity: 0.4;
+  }
+}
+
+@keyframes sv-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes sv-crossfade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes sv-crossfade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Reduced motion: nothing travels, every move is a crossfade. The app's
+ * global guard (index.css) zeroes every duration with !important; these
+ * opacity-only fades are what the direction specifies instead, so they
+ * are !important too (and more specific). */
+@media (prefers-reduced-motion: reduce) {
+  .sv-root .sv-deck .sv-dcard {
+    transition:
+      opacity 180ms linear,
+      visibility 0s linear 0s !important;
+  }
+
+  .sv-root .sv-deck .sv-dcard[data-pos='gone'],
+  .sv-root .sv-deck .sv-dcard[data-pos='deep'] {
+    transition:
+      opacity 180ms linear,
+      visibility 0s linear 180ms !important;
+  }
+
+  .sv-root .sv-deck .sv-dcard > * {
+    transition: opacity 180ms linear !important;
+  }
+
+  .sv-root .sv-deck .sv-dcard[data-pos='gone'] {
+    transform: none;
+  }
+
+  .sv-root .sv-faces .sv-face[data-turn='out'] {
+    animation: sv-crossfade-out 180ms linear both !important;
+  }
+
+  .sv-root .sv-faces .sv-face[data-turn='in'] {
+    animation: sv-crossfade-in 180ms linear both !important;
+  }
+
+  .sv-root .sv-faces .sv-face[data-deal='in'],
+  .sv-root .sv-stub-wrap .sv-stub,
+  .sv-root .sv-done-wrap .sv-done,
+  .sv-root .sv-acct .sv-acard {
+    animation: sv-crossfade-in 180ms linear both !important;
+  }
+
+  .sv-root .sv-done[data-live='true'] .sv-hand li {
+    animation: none;
+  }
+
+  .sv-root .sv-qsheet {
+    transition: none;
+  }
+
+  .sv-root .sv-btn,
+  .sv-root .sv-arrow,
+  .sv-root .sv-opt,
+  .sv-root .sv-tick i,
+  .sv-root .sv-door-card {
+    transform: none !important;
+  }
+
+  .sv-root,
+  .sv-root .sv-para,
+  .sv-root .sv-ev {
+    transition-duration: 1ms;
+  }
+}
+
+/* A still picture: the side-by-side thumbnails never move. */
+.sv-root[data-live='false'] *,
+.sv-root[data-live='false'] *::before,
+.sv-root[data-live='false'] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* ── Narrower desktops (1024–1320 px of stage) ────────────────────── */
+
+@container svep (max-width: 1320px) {
+  .sv-root[data-width='desktop'] .sv-home {
+    grid-template-columns: minmax(0, 1fr) 540px minmax(0, 1fr);
+    column-gap: 56px;
+    padding: 32px 32px 24px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-home .sv-deck {
+    --sv-next: translateX(22px) scale(0.96) rotate(0.5deg);
+    --sv-after: translateX(44px) scale(0.92) rotate(1deg);
+    width: 540px;
+  }
+}
+
+/* Shorter desktop stages: the Idag cards tighten their rhythm. */
+@container svep (max-height: 820px) {
+  .sv-root[data-width='desktop'] .sv-home {
+    padding-top: 24px;
+    padding-bottom: 16px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-home-deck {
+    gap: 12px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-hc-body {
+    padding-top: 22px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-hc-title--lead {
+    font-size: 48px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-unit {
+    height: 68px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-unit i {
+    width: 38px;
+    height: 52px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-hc-next {
+    padding: 10px 14px 11px;
+  }
+}
+
+@container svep (max-width: 1120px) {
+  .sv-root[data-width='desktop'] .sv-home {
+    grid-template-columns: minmax(0, 1fr) 500px minmax(0, 1fr);
+    column-gap: 30px;
+    padding: 28px 24px 20px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-home .sv-deck {
+    width: 500px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-greet {
+    font-size: 32px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-hc-title--lead {
+    font-size: 50px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-index-row {
+    padding: 0 8px;
+    font-size: 14px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-pair {
+    grid-template-columns: minmax(0, 1fr) 456px;
+    column-gap: 24px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-qcol {
+    padding-right: 28px;
+  }
+
+  /* The run card names itself; the foot keeps only "n / 7". */
+  .sv-root[data-width='desktop'] .sv-qfoot .sv-count {
+    min-width: 64px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-qfoot .sv-count-name {
+    display: none;
+  }
+
+  .sv-root[data-width='desktop'] .sv-pcard-scroll {
+    padding: 24px 32px 64px 66px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-pnum {
+    left: -50px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-drill-top {
+    width: calc(100% - 48px);
+  }
+}
