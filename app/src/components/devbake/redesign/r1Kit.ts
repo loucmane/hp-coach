@@ -1,40 +1,67 @@
-// Shared, headless pieces of the round-1 redesign bake-off
-// (/dev/redesign-2026-bakeoff, beads hpf-qr0p.1 and hpf-qr0p.2).
+// Shared, headless pieces of the redesign bake-off
+// (/dev/redesign-2026-bakeoff, beads hpf-qr0p.1, hpf-qr0p.2 and, for kit
+// v2, hpf-qr0p.7 — docs/redesign/kit-v2.md).
 //
 // The eight directions (a-folio … h-ljuskagla) are each a self-contained
 // design system: own tokens, type, components and motion. Each folder owns
 // its metadata (meta.ts) and its stage; the registry (directions.ts)
 // collects them. What they share lives here and has no look of its own:
-//   - the bake-off's metadata types, its screens and the five destinations
-//   - passage parsing and the ¶ citations explanations point at
-//   - useDrill: the reading drill's state machine (select → lock → feedback
-//     → next), kept in step with the switcher's screen
+//   - the bake-off's metadata types, its fourteen screens and the five
+//     destinations
+//   - passage parsing and the ¶ citations explanations point at (from
+//     drillCore.ts, re-exported here)
+//   - useDrill: round 1's reading drill — drillCore's state machine fed
+//     with the round-1 unit and kept in step with the switcher's screen
 //   - small hooks: keyboard map, web-font injection, reduced motion
 //   - Swedish number formatting
+// Round 2 adds the view model (viewModel.ts), its data context
+// (directionData.tsx), the drill core (drillCore.ts) and the rd-* contract
+// (contract.ts).
+
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import {
-  type RefCallback,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
-
+  type DrillCoreActions,
+  type DrillCoreRefs,
+  type DrillPhase,
+  type DrillResult,
+  type Passage,
+  parsePassage,
+  type QuoteMark,
+  useDrillCore,
+} from '@/components/devbake/redesign/drillCore'
 import {
   EXPLANATIONS,
   type R1Question,
   SESSION,
   UNIT,
 } from '@/components/devbake/redesign/r1Fixtures'
+import type { DrillQuestion } from '@/components/devbake/redesign/viewModel'
 import type { Explanation } from '@/data/explanations'
 import type { AnswerLetter } from '@/data/questions'
+
+export {
+  citeParagraphs,
+  type DrillPhase,
+  type DrillResult,
+  findQuotes,
+  type Passage,
+  parsePassage,
+  prefersReducedMotion,
+  type QuoteMark,
+  type QuoteSpan,
+  type StepRefSegment,
+  splitStepRefs,
+} from '@/components/devbake/redesign/drillCore'
 
 // ── Bake-off metadata ────────────────────────────────────────────────
 
 export type DirectionKey = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h'
+/** Round 1's four screens. Kept as it was: the round-1 directions' own
+ *  tests key records and loops on exactly these. */
 export type ScreenKey = 1 | 2 | 3 | 4
+/** Every screen of the bake-off, 1–14 (APP_SCREENS). */
+export type AppScreenKey = ScreenKey | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14
 export type WidthKey = 'desktop' | 'phone'
 export type ThemeKey = 'light' | 'dark'
 
@@ -61,6 +88,10 @@ export type DirectionMeta = {
   /** The folder's stage is still the "Under arbete" placeholder
    *  (DirectionStub). Drop it when the direction is built. */
   stub?: true
+  /** The screens the direction has built. Absent: round 1's four
+   *  (directions.ts DEFAULT_SCREENS). On any other screen the stage shows
+   *  the shared "Inte byggd än" card instead of the direction. */
+  screens?: AppScreenKey[]
 }
 
 // The directions in key order. They live in the registry; this re-export
@@ -69,6 +100,7 @@ export { DIRECTIONS } from '@/components/devbake/redesign/directions'
 
 export type ScreenMeta = { key: ScreenKey; label: string; blurb: string }
 
+/** Round 1's four screens (APP_SCREENS starts with them). */
 export const SCREENS: ScreenMeta[] = [
   {
     key: 1,
@@ -96,6 +128,101 @@ export const SCREENS: ScreenMeta[] = [
   },
 ]
 
+export type AppScreenMeta = {
+  key: AppScreenKey
+  label: string
+  /** The switcher's button text. */
+  short: string
+  blurb: string
+  /** 1: round 1's screens; 2: the rest of the app, added in round 2. */
+  round: 1 | 2
+}
+
+/** Every screen of the bake-off, in the switcher's order. */
+export const APP_SCREENS: AppScreenMeta[] = [
+  ...SCREENS.map((s) => ({ ...s, short: s.label, round: 1 as const })),
+  {
+    key: 5,
+    label: 'Öva',
+    short: 'Öva',
+    round: 2,
+    blurb:
+      'Alla åtta delprov på en sida: poäng, väntande missar och det svagaste utpekat, Repetera med det som är redo nu, blandad övning och de vanligaste fällorna. Ett delprov startar dess övning.',
+  },
+  {
+    key: 6,
+    label: 'Kvantfråga',
+    short: 'Kvantfråga',
+    round: 2,
+    blurb:
+      'Kvantövning i fokusläge med tre riktiga provfrågor: XYZ med matematik, KVA med Kvantitet I och II och de fyra fasta alternativen, NOG med två påståenden och fem alternativ. Välj, stryk och svara; facit med steg.',
+  },
+  {
+    key: 7,
+    label: 'DTK',
+    short: 'DTK',
+    round: 2,
+    blurb:
+      'Ett DTK-underlag från ett riktigt prov – en tabell – bredvid frågan, att förstora och vrida, med alternativen inom räckhåll. Svara för att se facit.',
+  },
+  {
+    key: 8,
+    label: 'Repetera',
+    short: 'Repetera',
+    round: 2,
+    blurb:
+      'Missarna som väntar: de som är redo nu först, sedan resten av dagens hög, var och en med delprov, fråga och fälla. En tydlig start för dagens repetition.',
+  },
+  {
+    key: 9,
+    label: 'Provpass',
+    short: 'Provpass',
+    round: 2,
+    blurb:
+      'Provpassets nav: verbal och kvantitativ halva, riktiga pass med hur mycket du redan sett, tidigare resultat och reglerna. Starta ett pass för att se det pågå: klocka, frågerutnät och markeringar.',
+  },
+  {
+    key: 10,
+    label: 'Provpassresultat',
+    short: 'Resultat',
+    round: 2,
+    blurb:
+      'Det inlämnade passet: rätt av presenterade, den normerade poängen, varje delprov med sin tid mot sin andel av 55 minuter, hur mycket du sett förut och tidigare pass.',
+  },
+  {
+    key: 11,
+    label: 'Framsteg',
+    short: 'Framsteg',
+    round: 2,
+    blurb:
+      'Prognos med förbehåll och veckokurva, alla åtta delprov med poäng och osäkerhet, veckans rytm utan något att förlora och Historik över passen.',
+  },
+  {
+    key: 12,
+    label: 'Uppslag & lektion',
+    short: 'Uppslag',
+    round: 2,
+    blurb:
+      'Ramverken per delprov med vad du har läst, och en öppen lektion: angreppssätt, typiska fällor och övning på just den frågetypen.',
+  },
+  {
+    key: 13,
+    label: 'Konto & inställningar',
+    short: 'Konto',
+    round: 2,
+    blurb:
+      'Konto och inställningar: namn och e-post, palett, läge, typsnitt, täthet och coachens röst, export av din data och en radering som kräver bekräftelse.',
+  },
+  {
+    key: 14,
+    label: 'ELF-läsfråga',
+    short: 'ELF',
+    round: 2,
+    blurb:
+      'Engelsk läsförståelse: en riktig P5-text på engelska med ÖVNINGSTEXT-märkning, frågan och fyra alternativ. Svara för att se facit.',
+  },
+]
+
 export const WIDTHS: { key: WidthKey; label: string }[] = [
   { key: 'desktop', label: 'Dator' },
   { key: 'phone', label: 'Telefon' },
@@ -108,12 +235,17 @@ export const THEMES: { key: ThemeKey; label: string }[] = [
 
 /** What every direction component receives from the bake-off stage. */
 export type DirectionProps = {
-  screen: ScreenKey
+  /** The screen on stage — always one the direction declares
+   *  (DirectionMeta.screens); round-1 directions only ever see 1–4. */
+  screen: AppScreenKey
   width: WidthKey
   theme: ThemeKey
   /** False in the side-by-side thumbnails: no clock, no key handlers, no
    *  focus moves and no entrance motion — a still picture of the screen. */
   live: boolean
+  /** Moves the switcher between round 1's screens (a lock opens Facit,
+   *  Nästa Läsfråga, Avsluta Idag). Round-2 screens ask for a destination,
+   *  drill or lesson through useDirectionData().actions instead. */
   onScreen: (screen: ScreenKey) => void
   onTheme: (theme: ThemeKey) => void
 }
@@ -153,153 +285,7 @@ export function fmtClock(seconds: number): string {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
-// ── Passage ──────────────────────────────────────────────────────────
-
-export type Passage = { paragraphs: string[]; byline: string | null }
-
-/** Splits an exported P5 context into paragraphs and the trailing byline
- *  ("– Name, role" on its own line after the last paragraph). */
-export function parsePassage(context: string): Passage {
-  const paragraphs = context.split(/\n\n+/)
-  let byline: string | null = null
-  const last = paragraphs[paragraphs.length - 1]
-  const cut = last.lastIndexOf('\n')
-  if (cut !== -1 && /^[–-]\s/.test(last.slice(cut + 1))) {
-    byline = last.slice(cut + 1)
-    paragraphs[paragraphs.length - 1] = last.slice(0, cut)
-  }
-  return { paragraphs, byline }
-}
-
-const ORDINALS: Record<string, number> = {
-  första: 1,
-  andra: 2,
-  tredje: 3,
-  fjärde: 4,
-  femte: 5,
-  sjätte: 6,
-  sjunde: 7,
-  åttonde: 8,
-  nionde: 9,
-  tionde: 10,
-}
-
-const ORDINAL_RE = new RegExp(`(${Object.keys(ORDINALS).join('|')})\\s+stycket`, 'giu')
-
-/** The quotations in a text. Swedish typography opens and closes with the
- *  same ”, so quotes are the odd-numbered pieces between them — a regex
- *  would happily take the gap between two quotations for a third. Only
- *  quotes of 12+ characters count (single words are too ambiguous). */
-function quotations(text: string): string[] {
-  return text
-    .split('”')
-    .filter((_, i, all) => i % 2 === 1 && i < all.length - 1)
-    .filter((q) => q.trim().length >= 12)
-}
-// Years and proper names: kept only when exactly one paragraph has them.
-const RARE_RE = /\b(1[5-9]\d\d)\b|(?<=[\p{Ll},;:]\s)(\p{Lu}\p{Ll}{4,})/gu
-
-function normalise(s: string): string {
-  return s
-    .replace(/\s+/g, ' ')
-    .replace(/[.,;:…]+$/u, '')
-    .trim()
-    .toLocaleLowerCase('sv-SE')
-}
-
-/**
- * The paragraph numbers (1-based) an explanation sentence points at:
- * "sjätte stycket", a quotation that occurs in the passage, or a year or
- * name that occurs in exactly one paragraph. The text itself is never
- * changed — the numbers become ¶ links beside it.
- */
-export function citeParagraphs(text: string, paragraphs: string[]): number[] {
-  const hay = paragraphs.map(normalise)
-  const found = new Set<number>()
-  for (const m of text.matchAll(ORDINAL_RE)) {
-    const n = ORDINALS[m[1].toLocaleLowerCase('sv-SE')]
-    if (n && n <= paragraphs.length) found.add(n)
-  }
-  for (const q of quotations(text)) {
-    const needle = normalise(q)
-    hay.forEach((p, i) => {
-      if (p.includes(needle)) found.add(i + 1)
-    })
-  }
-  for (const m of text.matchAll(RARE_RE)) {
-    const token = (m[1] ?? m[2]).toLocaleLowerCase('sv-SE')
-    // A genitive ("Grimlunds") counts as its name: the name must be rare.
-    const stem = m[2] && token.endsWith('s') ? token.slice(0, -1) : token
-    const hits = hay.flatMap((p, i) => (p.includes(stem) ? [i + 1] : []))
-    if (hits.length === 1) found.add(hits[0])
-  }
-  return [...found].sort((a, b) => a - b)
-}
-
-/** A verbatim quotation from the passage, located: paragraph number and
- *  the character range inside that paragraph's text. */
-export type QuoteSpan = { para: number; start: number; end: number }
-
-/** A quotation an explanation part makes, for sentence-level evidence marks.
- *  `source` names the part: "step-2", or "why-A" for a distractor's why_wrong. */
-export type QuoteMark = QuoteSpan & { source: string }
-
-/**
- * Where a piece of explanation quotes the passage verbatim (”…” of 12+
- * characters): each match's paragraph and character range. A quote's own
- * closing punctuation may or may not be in the passage; case may differ at
- * the start. Nothing is rewritten — callers mark the ranges.
- */
-export function findQuotes(text: string, paragraphs: string[]): QuoteSpan[] {
-  const out: QuoteSpan[] = []
-  const lower = paragraphs.map((p) => p.toLocaleLowerCase('sv-SE'))
-  for (const q of quotations(text)) {
-    const quote = q.replace(/\s+/g, ' ').trim()
-    for (const needle of [quote, quote.replace(/[.,;:…]+$/u, '')]) {
-      const n = needle.toLocaleLowerCase('sv-SE')
-      const hits = lower.flatMap((p, i) => {
-        const at = p.indexOf(n)
-        return at === -1 ? [] : [{ para: i + 1, start: at, end: at + needle.length }]
-      })
-      if (hits.length) {
-        out.push(...hits)
-        break
-      }
-    }
-  }
-  return out
-}
-
-export type StepRefSegment =
-  | { kind: 'text'; text: string }
-  | { kind: 'ref'; text: string; steps: number[] }
-
-const STEP_REF_RE = /\((?:steg|steps?)\s+(\d+)(?:\s*(?:–|-|och|and)\s*(\d+))?\)/gu
-
-/** Splits text around its "(steg 2)" / "(steg 2–3)" / "(steps 2 and 3)"
- *  references so a renderer can make them jump to the step. Verbatim. */
-export function splitStepRefs(text: string): StepRefSegment[] {
-  const out: StepRefSegment[] = []
-  let last = 0
-  for (const m of text.matchAll(STEP_REF_RE)) {
-    const at = m.index ?? 0
-    if (at > last) out.push({ kind: 'text', text: text.slice(last, at) })
-    const from = Number(m[1])
-    const to = m[2] ? Number(m[2]) : from
-    const steps: number[] = []
-    for (let n = from; n <= to; n++) steps.push(n)
-    out.push({ kind: 'ref', text: m[0], steps })
-    last = at + m[0].length
-  }
-  if (last < text.length) out.push({ kind: 'text', text: text.slice(last) })
-  return out
-}
-
-// ── Drill state ──────────────────────────────────────────────────────
-
-export type DrillPhase = 'question' | 'feedback' | 'done'
-
-export type DrillResult = { qid: string; pick: AnswerLetter; correct: boolean }
+// ── Round 1's reading drill ──────────────────────────────────────────
 
 export type DrillView = {
   index: number
@@ -336,58 +322,45 @@ export type DrillView = {
   marks: QuoteMark[]
 }
 
-export type DrillActions = {
-  select: (letter: AnswerLetter) => void
+export type DrillActions = Pick<
+  DrillCoreActions,
+  | 'select'
+  | 'toggleEliminate'
+  | 'setFocusPara'
+  | 'moveFocusPara'
+  | 'cite'
+  | 'toggleStep'
+  | 'goToStep'
+> & {
   lock: () => void
-  toggleEliminate: (letter: AnswerLetter) => void
   next: () => void
   exit: () => void
-  setFocusPara: (n: number | null) => void
-  moveFocusPara: (delta: 1 | -1) => void
-  /** Scrolls the passage to paragraph n and marks it for a moment; with a
-   *  `source`, that part's quotations are marked too (flashSource). */
-  cite: (n: number, source?: string) => void
-  toggleStep: (n: number) => void
-  /** Opens (if detail) and scrolls to step n of the explanation. */
-  goToStep: (n: number) => void
   restart: () => void
 }
 
-export type DrillRefs = {
-  /** Attach to each paragraph element (1-based number). */
-  para: (n: number) => RefCallback<HTMLElement>
-  /** Attach to each explanation step element. */
-  step: (n: number) => RefCallback<HTMLElement>
-}
+export type DrillRefs = DrillCoreRefs
 
 const PASSAGE = parsePassage(UNIT.context)
 
-function citesFor(e: Explanation) {
-  const stepCites: Record<number, number[]> = {}
-  for (const s of e.steps ?? []) stepCites[s.n] = citeParagraphs(s.text, PASSAGE.paragraphs)
-  const distractorCites: Record<string, { tempting: number[]; wrong: number[] }> = {}
-  for (const d of e.distractors) {
-    distractorCites[d.letter] = {
-      tempting: citeParagraphs(d.why_tempting, PASSAGE.paragraphs),
-      wrong: citeParagraphs(d.why_wrong, PASSAGE.paragraphs),
-    }
-  }
-  const marks: QuoteMark[] = []
-  for (const s of e.steps ?? []) {
-    for (const q of findQuotes(s.text, PASSAGE.paragraphs))
-      marks.push({ ...q, source: `step-${s.n}` })
-  }
-  for (const d of e.distractors) {
-    for (const q of findQuotes(d.why_wrong, PASSAGE.paragraphs)) {
-      marks.push({ ...q, source: `why-${d.letter}` })
-    }
-  }
-  const all = new Set<number>()
-  for (const list of Object.values(stepCites)) for (const n of list) all.add(n)
-  for (const c of Object.values(distractorCites))
-    for (const n of [...c.tempting, ...c.wrong]) all.add(n)
-  return { stepCites, distractorCites, cited: [...all].sort((a, b) => a - b), marks }
-}
+/** The round-1 unit as drill-core questions (built once, so the core sees
+ *  the same objects every render). */
+const R1_DRILL: DrillQuestion[] = UNIT.questions.map((q) => ({
+  qid: q.qid,
+  section: UNIT.section,
+  number: q.number,
+  prompt: q.prompt,
+  options: q.options.map(({ letter, text }) => ({ letter, text })),
+  answer: q.answer,
+  passage: { ...PASSAGE, title: UNIT.title, lang: 'sv', synthetic: true, unitId: UNIT.unitId },
+  figure: null,
+  math: false,
+  source: {
+    examId: `p5-${UNIT.unitId}-r${UNIT.revision}`,
+    provpass: null,
+    authentic: false,
+    label: UNIT.title,
+  },
+}))
 
 function earlierResults(): DrillResult[] {
   return SESSION.earlier.map(({ qid, pick }) => {
@@ -396,312 +369,103 @@ function earlierResults(): DrillResult[] {
   })
 }
 
-export function prefersReducedMotion(): boolean {
-  return (
-    typeof window !== 'undefined' &&
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  )
-}
-
-/** The nearest ancestor that scrolls vertically (overflow auto/scroll). */
-function scroller(el: HTMLElement): HTMLElement | null {
-  for (let n = el.parentElement; n; n = n.parentElement) {
-    const y = getComputedStyle(n).overflowY
-    if (y === 'auto' || y === 'scroll') return n
-  }
-  return null
-}
-
 /**
- * Scrolls an element into view inside its own scroller only — never the
- * clipping ancestors around it (scrollIntoView would shift an overflow:
- * hidden stage or frame too). `center` centres it; `nearest` scrolls the
- * least; `start` puts it a little below the scroller's top. Instant under
- * reduced motion; a no-op without layout (jsdom).
- */
-function reveal(el: HTMLElement | undefined, block: 'center' | 'nearest' | 'start'): void {
-  if (!el) return
-  const box = scroller(el)
-  if (!box || typeof box.scrollTo !== 'function') return
-  const b = box.getBoundingClientRect()
-  const r = el.getBoundingClientRect()
-  const top = r.top - b.top + box.scrollTop
-  let target = box.scrollTop
-  if (block === 'center') target = top - (b.height - Math.min(r.height, b.height)) / 2
-  else if (block === 'start') target = top - 56
-  else if (r.top < b.top + 16) target = top - 16
-  else if (r.bottom > b.bottom - 16) target = top + r.height - b.height + 16
-  box.scrollTo({ top: Math.max(0, target), behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
-}
-
-type Core = {
-  index: number
-  phase: DrillPhase
-  selected: AnswerLetter | null
-  picked: AnswerLetter | null
-  eliminated: AnswerLetter[]
-  results: DrillResult[]
-}
-
-function startCore(screen: ScreenKey): Core {
-  const index = SESSION.startIndex
-  const q = UNIT.questions[index]
-  if (screen === 3) {
-    const pick = SESSION.wrongPick[q.qid]
-    return {
-      index,
-      phase: 'feedback',
-      selected: pick,
-      picked: pick,
-      eliminated: [],
-      results: [...earlierResults(), { qid: q.qid, pick, correct: pick === q.answer }],
-    }
-  }
-  return {
-    index,
-    phase: 'question',
-    selected: null,
-    picked: null,
-    eliminated: [],
-    results: earlierResults(),
-  }
-}
-
-/**
- * The reading drill's state, shared by every direction. Screen 2 opens
- * question 3 of the unit unanswered; screen 3 opens it graded with the
- * fixture's wrong pick. Answering on screen 2 moves the switcher to 3 (and
- * "Nästa" back to 2) without a remount, so the reader's own answer stays.
+ * The reading drill's state, shared by every round-1 direction. Screen 2
+ * opens question 3 of the unit unanswered; screen 3 opens it graded with
+ * the fixture's wrong pick. Answering on screen 2 moves the switcher to 3
+ * (and "Nästa" back to 2) without a remount, so the reader's own answer
+ * stays. drillCore holds the state; this keeps it in step with the
+ * switcher.
  */
 export function useDrill({
   screen,
   onScreen,
   live,
 }: {
-  screen: ScreenKey
+  screen: AppScreenKey
   onScreen: (s: ScreenKey) => void
   live: boolean
 }): { view: DrillView; act: DrillActions; refs: DrillRefs } {
-  const [core, setCore] = useState<Core>(() => startCore(screen))
-  // The latest state for event handlers that must decide synchronously
-  // (lock and next also move the switcher).
-  const coreRef = useRef(core)
-  coreRef.current = core
-  const [elapsed, setElapsed] = useState(SESSION.elapsedSeconds)
-  const [focusPara, setFocusPara] = useState<number | null>(null)
-  const focusRef = useRef(focusPara)
-  focusRef.current = focusPara
-  const [flashPara, setFlashPara] = useState<number | null>(null)
-  const [flashSource, setFlashSource] = useState<string | null>(null)
-  const [openSteps, setOpenSteps] = useState<number[]>([])
-  const paraEls = useRef(new Map<number, HTMLElement>())
-  const stepEls = useRef(new Map<number, HTMLElement>())
-  const flashTimer = useRef<number | undefined>(undefined)
+  const [start] = useState(() => ({
+    index: SESSION.startIndex,
+    results: earlierResults(),
+    graded: screen === 3 ? SESSION.wrongPick[UNIT.questions[SESSION.startIndex].qid] : undefined,
+  }))
+  const core = useDrillCore({
+    questions: R1_DRILL,
+    explanations: EXPLANATIONS,
+    start,
+    elapsed: SESSION.elapsedSeconds,
+    live,
+  })
+  // The core's actions are stable; its `act` object is not.
+  const c = core.act
+  const { gradeAs, reopen, reset, lock: coreLock, next: coreNext, restart: coreRestart } = c
+  const phase = core.view.phase
 
   // Keep in step with the switcher: a click on "Facit" while a question is
   // open grades it with the fixture's wrong pick; "Läsfråga" while graded
-  // reopens the same question.
+  // reopens the same question, and after the last one starts over.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: follows the switcher's screen only
   useLayoutEffect(() => {
-    setCore((c) => {
-      const q = UNIT.questions[c.index]
-      if (screen === 3 && c.phase === 'question') {
-        const pick = c.selected ?? SESSION.wrongPick[q.qid] ?? q.options[0].letter
-        return {
-          ...c,
-          phase: 'feedback',
-          selected: pick,
-          picked: pick,
-          results: [...c.results, { qid: q.qid, pick, correct: pick === q.answer }],
-        }
-      }
-      if (screen === 2 && c.phase === 'feedback') {
-        return {
-          ...c,
-          phase: 'question',
-          selected: null,
-          picked: null,
-          eliminated: [],
-          results: c.results.filter((r) => r.qid !== q.qid),
-        }
-      }
-      if (screen === 2 && c.phase === 'done') return startCore(2)
-      return c
-    })
+    if (screen === 3 && phase === 'question') gradeAs((q) => SESSION.wrongPick[q.qid])
+    else if (screen === 2 && phase === 'feedback') reopen()
+    else if (screen === 2 && phase === 'done') reset()
   }, [screen])
 
-  // The session clock: ticks while live and not finished.
-  const ticking = live && core.phase !== 'done'
-  useEffect(() => {
-    if (!ticking) return
-    const id = window.setInterval(() => setElapsed((s) => s + 1), 1000)
-    return () => window.clearInterval(id)
-  }, [ticking])
-
-  useEffect(() => () => window.clearTimeout(flashTimer.current), [])
-
-  const clearFlash = useCallback(() => {
-    window.clearTimeout(flashTimer.current)
-    setFlashPara(null)
-    setFlashSource(null)
-  }, [])
-
-  const question = UNIT.questions[core.index]
-  const explanation = EXPLANATIONS[question.qid]
-  const cites = useMemo(() => citesFor(explanation), [explanation])
-
-  const select = useCallback((letter: AnswerLetter) => {
-    setCore((c) =>
-      c.phase === 'question'
-        ? { ...c, selected: letter, eliminated: c.eliminated.filter((l) => l !== letter) }
-        : c,
-    )
-  }, [])
-
   const lock = useCallback(() => {
-    const c = coreRef.current
-    if (c.phase !== 'question' || !c.selected) return
-    const q = UNIT.questions[c.index]
-    const next: Core = {
-      ...c,
-      phase: 'feedback',
-      picked: c.selected,
-      results: [...c.results, { qid: q.qid, pick: c.selected, correct: c.selected === q.answer }],
-    }
-    coreRef.current = next
-    setCore(next)
-    setOpenSteps([])
-    clearFlash()
-    onScreen(3)
-  }, [onScreen, clearFlash])
-
-  const toggleEliminate = useCallback((letter: AnswerLetter) => {
-    setCore((c) => {
-      if (c.phase !== 'question') return c
-      const on = c.eliminated.includes(letter)
-      return {
-        ...c,
-        eliminated: on ? c.eliminated.filter((l) => l !== letter) : [...c.eliminated, letter],
-        selected: !on && c.selected === letter ? null : c.selected,
-      }
-    })
-  }, [])
-
+    if (coreLock()) onScreen(3)
+  }, [coreLock, onScreen])
   const next = useCallback(() => {
-    const c = coreRef.current
-    if (c.phase !== 'feedback') return
-    const more = c.index + 1 < UNIT.questions.length
-    const following: Core = more
-      ? {
-          ...c,
-          index: c.index + 1,
-          phase: 'question',
-          selected: null,
-          picked: null,
-          eliminated: [],
-        }
-      : { ...c, phase: 'done' }
-    coreRef.current = following
-    setCore(following)
-    setOpenSteps([])
-    setFocusPara(null)
-    // A mark from this question's explanation must not hint at the next.
-    clearFlash()
-    if (more) onScreen(2)
-  }, [onScreen, clearFlash])
-
+    if (coreNext() === 'next') onScreen(2)
+  }, [coreNext, onScreen])
   const exit = useCallback(() => onScreen(1), [onScreen])
-
   const restart = useCallback(() => {
-    setCore(startCore(2))
-    setElapsed(SESSION.elapsedSeconds)
-    setOpenSteps([])
+    coreRestart()
     onScreen(2)
-  }, [onScreen])
+  }, [coreRestart, onScreen])
 
-  const moveFocusPara = useCallback((delta: 1 | -1) => {
-    const count = PASSAGE.paragraphs.length
-    const n = focusRef.current
-    const nextN = n == null ? (delta > 0 ? 1 : count) : Math.min(count, Math.max(1, n + delta))
-    setFocusPara(nextN)
-    reveal(paraEls.current.get(nextN), 'center')
-  }, [])
-
-  const cite = useCallback((n: number, source?: string) => {
-    // A frame later, so a phone sheet can fold away before the scroll.
-    window.requestAnimationFrame(() => reveal(paraEls.current.get(n), 'center'))
-    setFlashPara(n)
-    setFlashSource(source ?? null)
-    window.clearTimeout(flashTimer.current)
-    flashTimer.current = window.setTimeout(() => {
-      setFlashPara(null)
-      setFlashSource(null)
-    }, 2400)
-  }, [])
-
-  const toggleStep = useCallback((n: number) => {
-    setOpenSteps((open) => (open.includes(n) ? open.filter((x) => x !== n) : [...open, n]))
-  }, [])
-
-  const goToStep = useCallback((n: number) => {
-    setOpenSteps((open) => (open.includes(n) ? open : [...open, n]))
-    // Let the step expand before scrolling to it.
-    window.requestAnimationFrame(() => reveal(stepEls.current.get(n), 'nearest'))
-  }, [])
-
-  const paraRef = useCallback(
-    (n: number): RefCallback<HTMLElement> =>
-      (el) => {
-        if (el) paraEls.current.set(n, el)
-        else paraEls.current.delete(n)
-      },
-    [],
-  )
-  const stepRef = useCallback(
-    (n: number): RefCallback<HTMLElement> =>
-      (el) => {
-        if (el) stepEls.current.set(n, el)
-        else stepEls.current.delete(n)
-      },
-    [],
-  )
-
+  const v = core.view
+  const question = UNIT.questions[v.index]
   const view: DrillView = {
-    index: core.index,
+    index: v.index,
     question,
-    explanation,
-    phase: core.phase,
-    selected: core.selected,
-    picked: core.picked,
-    correct: core.picked ? core.picked === question.answer : null,
-    eliminated: new Set(core.eliminated),
-    results: core.results,
+    explanation: EXPLANATIONS[question.qid],
+    phase: v.phase,
+    selected: v.selected,
+    picked: v.picked,
+    correct: v.picked ? v.picked === question.answer : null,
+    eliminated: v.eliminated,
+    results: v.results,
     total: UNIT.questions.length,
-    elapsed,
-    focusPara,
-    flashPara,
-    flashSource,
-    openSteps: new Set(openSteps),
+    elapsed: v.elapsed,
+    focusPara: v.focusPara,
+    flashPara: v.flashPara,
+    flashSource: v.flashSource,
+    openSteps: v.openSteps,
     passage: PASSAGE,
-    ...cites,
+    stepCites: v.stepCites,
+    distractorCites: v.distractorCites,
+    cited: v.cited,
+    marks: v.marks,
   }
 
   return {
     view,
     act: {
-      select,
+      select: c.select,
       lock,
-      toggleEliminate,
+      toggleEliminate: c.toggleEliminate,
       next,
       exit,
-      setFocusPara,
-      moveFocusPara,
-      cite,
-      toggleStep,
-      goToStep,
+      setFocusPara: c.setFocusPara,
+      moveFocusPara: c.moveFocusPara,
+      cite: c.cite,
+      toggleStep: c.toggleStep,
+      goToStep: c.goToStep,
       restart,
     },
-    refs: { para: paraRef, step: stepRef },
+    refs: core.refs,
   }
 }
 

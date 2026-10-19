@@ -1,18 +1,23 @@
 // The redesign bake-off's shared kit: passage parsing, the ¶ citations the
 // explanations point at (derived, never rewritten), "(steg N)" links,
-// Swedish number formatting and the drill's state machine.
+// Swedish number formatting and round 1's drill — drillCore fed with the
+// round-1 unit and kept in step with the switcher, behaving as it always
+// has.
 
 import { act, renderHook } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-import { EXPLANATIONS, UNIT } from '@/components/devbake/redesign/r1Fixtures'
+import * as core from '@/components/devbake/redesign/drillCore'
+import { EXPLANATIONS, SESSION, UNIT } from '@/components/devbake/redesign/r1Fixtures'
 import {
+  type AppScreenKey,
   citeParagraphs,
   findQuotes,
   fmtClock,
   fmtDelta,
   fmtScore,
   parsePassage,
+  prefersReducedMotion,
   type ScreenKey,
   splitStepRefs,
   useDrill,
@@ -121,15 +126,71 @@ describe('Swedish number formatting', () => {
   })
 })
 
+describe('the kit’s re-exports', () => {
+  it('are the drill core’s own passage helpers', () => {
+    expect(parsePassage).toBe(core.parsePassage)
+    expect(citeParagraphs).toBe(core.citeParagraphs)
+    expect(findQuotes).toBe(core.findQuotes)
+    expect(splitStepRefs).toBe(core.splitStepRefs)
+    expect(prefersReducedMotion).toBe(core.prefersReducedMotion)
+  })
+})
+
 describe('useDrill', () => {
   function setup(screen: ScreenKey) {
     const onScreen = vi.fn()
     const hook = renderHook(
-      (props: { screen: ScreenKey }) => useDrill({ screen: props.screen, onScreen, live: false }),
-      { initialProps: { screen } },
+      (props: { screen: AppScreenKey }) =>
+        useDrill({ screen: props.screen, onScreen, live: false }),
+      { initialProps: { screen: screen as AppScreenKey } },
     )
     return { ...hook, onScreen }
   }
+
+  it('hands out the round-1 unit’s own objects, and stable ones every render', () => {
+    const { result, rerender } = setup(2)
+    const first = result.current
+    expect(first.view.question).toBe(UNIT.questions[2])
+    expect(first.view.explanation).toBe(EXPLANATIONS[UNIT.questions[2].qid])
+    expect(first.view.elapsed).toBe(SESSION.elapsedSeconds)
+    rerender({ screen: 2 })
+    expect(result.current.view.passage).toBe(first.view.passage)
+    expect(result.current.act.select).toBe(first.act.select)
+    expect(result.current.act.lock).toBe(first.act.lock)
+    expect(result.current.act.next).toBe(first.act.next)
+  })
+
+  it('restarts at question 3 with the clock reset, moving the switcher to Läsfråga', () => {
+    const { result, onScreen } = setup(3)
+    act(() => result.current.act.next())
+    act(() => result.current.act.select('B'))
+    act(() => result.current.act.lock())
+    act(() => result.current.act.next())
+    expect(result.current.view.phase).toBe('done')
+    act(() => result.current.act.restart())
+    expect(result.current.view).toMatchObject({ index: 2, phase: 'question', picked: null })
+    expect(result.current.view.results).toHaveLength(2)
+    expect(result.current.view.elapsed).toBe(SESSION.elapsedSeconds)
+    expect(onScreen).toHaveBeenLastCalledWith(2)
+  })
+
+  it('starts over when the switcher opens Läsfråga after the last question', () => {
+    const { result, rerender } = setup(3)
+    act(() => result.current.act.next())
+    act(() => result.current.act.select('B'))
+    act(() => result.current.act.lock())
+    act(() => result.current.act.next())
+    expect(result.current.view.phase).toBe('done')
+    rerender({ screen: 2 })
+    expect(result.current.view).toMatchObject({ index: 2, phase: 'question' })
+    expect(result.current.view.results).toHaveLength(2)
+  })
+
+  it('leaves the drill for Idag on Avsluta', () => {
+    const { result, onScreen } = setup(2)
+    act(() => result.current.act.exit())
+    expect(onScreen).toHaveBeenLastCalledWith(1)
+  })
 
   it('opens question 3 unanswered on Läsfråga, after two earlier answers', () => {
     const { result } = setup(2)
