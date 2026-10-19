@@ -21,7 +21,7 @@ import { BookOpen, ChartLine, ChevronRight, PenLine, Sun, Timer, UserRound } fro
 import { type ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import './lager.css'
-import { OVA_DUE } from '@/components/devbake/redesign/r1Fixtures'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
   DESTINATIONS,
   type Destination,
@@ -33,6 +33,9 @@ import {
 } from '@/components/devbake/redesign/r1Kit'
 import { LagerDrill } from './LagerDrill'
 import { LagerHome } from './LagerHome'
+import { LagerOva } from './LagerOva'
+import { LagerQuant } from './LagerQuant'
+import { LagerRepetera } from './LagerRepetera'
 
 const FONTS =
   'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,100..900,0..100;1,9..144,100..900,0..100&family=Inter:opsz,wght@14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap'
@@ -50,9 +53,10 @@ const NAV_SCROLL = 150
 
 export function Lager(props: DirectionProps) {
   useWebFonts('lager', FONTS)
+  const scrollPositions = useRef(new Map<string, number>())
   // The field drains while reading and warms back when the text is done.
   const [doneWarm, setDoneWarm] = useState(false)
-  const drill = props.screen === 2 || props.screen === 3
+  const drill = [2, 3, 6, 7].includes(props.screen)
   return (
     <div
       data-rd="lager"
@@ -70,7 +74,13 @@ export function Lager(props: DirectionProps) {
         <i className="la-field-calm" />
         <i className="la-field-grain" />
       </div>
-      {drill ? <LagerDrill {...props} onDone={setDoneWarm} /> : <LagerFrame {...props} />}
+      {props.screen === 6 || props.screen === 7 ? (
+        <LagerQuant key={props.screen} {...props} onDone={setDoneWarm} />
+      ) : drill ? (
+        <LagerDrill {...props} onDone={setDoneWarm} />
+      ) : (
+        <LagerFrame {...props} scrollPositions={scrollPositions.current} />
+      )}
     </div>
   )
 }
@@ -83,35 +93,59 @@ type AccountProps = {
   onTheme: (t: ThemeKey) => void
 }
 
-function LagerFrame({ screen, width, theme, live, onScreen, onTheme }: DirectionProps) {
+function LagerFrame({
+  screen,
+  width,
+  theme,
+  live,
+  onScreen,
+  onTheme,
+  scrollPositions,
+}: DirectionProps & { scrollPositions: Map<string, number> }) {
+  const { actions } = useDirectionData()
   // Screen 4 shows the chrome's other state: menu open, and on desktop the
   // page scrolled a little, which is what shrinks the dock.
   const [menu, setMenu] = useState(screen === 4)
   const [scrolled, setScrolled] = useState(false)
-  const [dest, setDest] = useState<Destination>('idag')
+  const [dest, setDest] = useState<Destination>(screen === 5 || screen === 8 ? 'ova' : 'idag')
   const scrollRef = useRef<HTMLDivElement>(null)
+  const scrollKey = screen === 8 && dest === 'ova' ? 'repetera' : dest
   useEffect(() => {
     setMenu(screen === 4)
-    setDest('idag')
+    setDest(screen === 5 || screen === 8 ? 'ova' : 'idag')
   }, [screen])
   useLayoutEffect(() => {
     const el = scrollRef.current
     if (!el) return
-    const y = screen === 4 && width === 'desktop' && dest === 'idag' ? NAV_SCROLL : 0
+    const y =
+      screen === 4 && width === 'desktop' && dest === 'idag'
+        ? NAV_SCROLL
+        : (scrollPositions.get(scrollKey) ?? 0)
     el.scrollTop = y
     setScrolled(y > 32)
-  }, [screen, width, dest])
+    if (screen !== 4) {
+      const heading = el.querySelector<HTMLElement>('h1')
+      heading?.setAttribute('tabindex', '-1')
+      heading?.focus({ preventScroll: true })
+    }
+  }, [screen, width, dest, scrollKey, scrollPositions])
 
-  const go = useCallback((d: Destination) => {
-    setMenu(false)
-    setDest(d)
-  }, [])
+  const go = useCallback(
+    (d: Destination) => {
+      setMenu(false)
+      setDest(d)
+      actions.go(d)
+    },
+    [actions],
+  )
   const closeMenu = useCallback(() => setMenu(false), [])
   const account: AccountProps = { open: menu, setOpen: setMenu, close: closeMenu, theme, onTheme }
   const phone = width === 'phone'
 
-  const onScroll = (e: { currentTarget: HTMLElement }) =>
+  const onScroll = (e: { currentTarget: HTMLElement }) => {
+    scrollPositions.set(scrollKey, e.currentTarget.scrollTop)
     setScrolled(e.currentTarget.scrollTop > 32)
+  }
 
   const corner = phone ? <AccountTrigger {...account} glass /> : null
   const page =
@@ -119,10 +153,19 @@ function LagerFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
       <LagerHome
         width={width}
         live={live}
-        onResume={() => onScreen(2)}
+        onResume={() => {
+          actions.resume()
+          onScreen(2)
+        }}
         onGo={go}
         account={corner}
       />
+    ) : dest === 'ova' ? (
+      screen === 8 ? (
+        <LagerRepetera width={width} live={live} account={corner} />
+      ) : (
+        <LagerOva width={width} live={live} account={corner} />
+      )
     ) : (
       <Stub dest={dest} width={width} live={live} account={corner} />
     )
@@ -208,10 +251,11 @@ function Dock({
 }
 
 function DueBadge() {
+  const { data } = useDirectionData()
   return (
     <span className="la-badge-n">
-      {OVA_DUE}
-      <span className="la-sr"> att repetera</span>
+      {data.ova.repetera.pile}
+      <span className="la-sr"> i dagens hög</span>
     </span>
   )
 }
@@ -242,6 +286,7 @@ type ThemeChoice = ThemeKey | 'system'
  * menu role: there is no arrow-key model to promise.
  */
 function MenuItems({ close, theme, onTheme }: AccountProps) {
+  const { data, actions } = useDirectionData()
   // "System" follows the device; the bake-off itself keeps light/dark.
   const [choice, setChoice] = useState<ThemeChoice>(theme)
   const pick = (c: ThemeChoice) => {
@@ -257,7 +302,7 @@ function MenuItems({ close, theme, onTheme }: AccountProps) {
     <>
       <p className="la-menu-title">
         <b>Ditt konto</b>
-        <span>Gratisplan</span>
+        <span>{data.konto.identity.plan}</span>
       </p>
       <fieldset className="la-seg">
         <legend className="la-sr">Tema</legend>
@@ -276,11 +321,36 @@ function MenuItems({ close, theme, onTheme }: AccountProps) {
           System
         </button>
       </fieldset>
-      <MenuItem label="Konto" onClick={close} />
-      <MenuItem label="Inställningar" onClick={close} />
-      <MenuItem label="Hjälp" onClick={close} />
+      <MenuItem
+        label="Konto"
+        onClick={() => {
+          close()
+          actions.openKonto()
+        }}
+      />
+      <MenuItem
+        label="Inställningar"
+        onClick={() => {
+          close()
+          actions.openKonto()
+        }}
+      />
+      <MenuItem
+        label="Hjälp"
+        onClick={() => {
+          close()
+          actions.openKonto()
+        }}
+      />
       <hr className="la-menu-sep" />
-      <MenuItem label="Logga ut" onClick={close} chevron={false} />
+      <MenuItem
+        label="Logga ut"
+        onClick={() => {
+          close()
+          actions.signOut()
+        }}
+        chevron={false}
+      />
     </>
   )
 }
@@ -379,8 +449,7 @@ function Stub({
         <h1 id="la-stub-h">{d.label}</h1>
         <p>{d.blurb}</p>
         <p className="la-stub-note">
-          Den här sidan byggs i omgång 2, när en riktning är vald. Dockan och kontot fungerar redan
-          härifrån.
+          Den här sidan byggs i nästa omgång. Dockan och kontot fungerar redan härifrån.
         </p>
       </section>
     </div>
