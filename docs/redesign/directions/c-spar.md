@@ -187,7 +187,7 @@ Each destination page has the same head, **`SparPageHead`**, lifted from `.sp-ho
 Framsteg's two views, Översikt and Historik, are siblings switched by a `SparSegmented` in the page head, not a sub-page.
 
 **Focus screens (every question screen and a running Provpass).** A lesson is not one: it is reading you dip in and out of, so it keeps the frame (screen 12).
-- The navigation recedes into the built top bar (`.sp-top`, 72 px desktop; `.sp-ptop`, 60 px phone): "Avsluta" (or "Avbryt" in a Provpass, where leaving voids the pass) at the left, the section chip + the stig + "Fråga n av N" in the middle, and the tools at the right (calm switch, Fokus, clock).
+- The navigation recedes into the built top bar (`.sp-top`, 72 px desktop; `.sp-ptop`, 60 px phone): "Avsluta" (or "Avbryt" in a Provpass, where leaving voids the pass, and "Stäng" in a review, screen 10) at the left, the section chip + the stig + "Fråga n av N" in the middle, and the tools at the right (calm switch, Fokus, clock).
 - On phone the bar has room for neither the calm switch nor the words "Fråga n av N", as built in round 1:
   - the compact stig is the count, and each stop speaks "Fråga 3 av 4, pågår";
   - Lugnt läge is set from Idag or the account menu, and it persists into every focus screen.
@@ -203,8 +203,20 @@ Framsteg's two views, Översikt and Historik, are siblings switched by a `SparSe
   - a short problem (quant, a one-paragraph ELF text) puts its options in the flow under it, with a sticky answer bar, **`SparAnswerBar`** ("Ditt val: C · Svara").
 - T folds and unfolds the tray on desktop in every case.
 
-**Sheets.**
-- On phone, every secondary surface is a bottom sheet attached to the bottom edge: full width, 28 px top corners only, a grab handle, a scrim, Esc and scrim-tap to close. This covers per-section choices, filters, confirmations, the Provpass overview, the account menu, the question tray and Facit. Spår's sheets never float inset; floating panels are Lager's language.
+**Sheets: persistent or modal.** Spår has two kinds of layer, and no surface is both.
+- **Persistent reading surfaces are never modal.** These are the question tray (desktop), the phone question sheet and `SparAnswerBar`, and Facit (the desktop sheet, the phone sheet, and the review's Facit on screens 10 and 11). They stay open while the learner still needs the passage, the figure, the tools and the always-visible exit, so they are siblings of the reading column, as built (`SparDrill.tsx`: on phone the reader's scroll at :1330 and the sheet at :1341; on desktop the tray and Facit sheet beside the reader's scroll in `DeskBody`, :423–458).
+  - No scrim, no focus trap and no `aria-modal`. Each is a labelled region ("Fråga 3", or the verdict for Facit).
+  - The passage, the problem, the figure and its "Förstora", and the top bar's exit, tools and clock stay reachable by pointer and keyboard. Tab and Shift+Tab move through the top bar, the reading column and the surface in visual order.
+  - Nothing outside closes them: scrolling or tapping the passage leaves them as they are. They change height only through their own controls (the grab handle, "Visa alternativen", "Visa texten", "Visa mer av facit", T, choosing an option, a ¶ or "Visa uppgiften" chip), never by Esc.
+  - The column's keys keep working while they are open: F/J/K, Z, R, G.
+- **Modal layers are for short tasks that end when you choose, confirm or close:**
+  - menus (the account menu);
+  - choices and filters: on phone "Bara ett delprov", "Innehåll", a leg's stops on the result and search; on both, the Provpass overview;
+  - dialogs: confirmations (abort, hand-in, the phone's Provpass rules, import) and a glossary term;
+  - the full-screen figure viewer, which covers the screen and carries its own question strip and "Stäng".
+
+  Only these trap focus and close on a press outside them (the scrim, on a sheet or a dialog). They also close on Esc and return focus to their opener, as an in-place card does (§1.9).
+- On phone, sheets of both kinds attach to the bottom edge: full width, 28 px top corners only, a grab handle. Only the modal ones have a scrim. Spår's sheets never float inset; floating panels are Lager's language.
 - On desktop, a choice that belongs to a card opens **in place** (§1.9). A confirmation that guards something irreversible uses a centred dialog with the same 28 px corners.
 
 ### 1.9 Container transform — Spår's desktop "open"
@@ -248,7 +260,7 @@ Each screen below lists its calm-mode delta.
 ### 1.12 Accessibility baseline (inherited by every screen)
 
 - **Landmarks:** `nav aria-label="Huvudmeny"`, one `main`, `aria-current="page"` on the destination. One `h1` per page (the display title, or the reading card's title on a focus screen).
-- **Focus:** 2 px `--sp-focus` outline with a 2 px offset everywhere. The focus order follows the visual order. Sheets and dialogs trap focus and return it to their opener. ¶ numbers stay out of the tab order (J/K/F drive the same aid).
+- **Focus:** 2 px `--sp-focus` outline with a 2 px offset everywhere. The focus order follows the visual order. Modal layers (menus, choice and filter sheets, dialogs, the figure viewer) trap focus and return it to their opener. The persistent reading surfaces (the tray, the phone question sheet and answer bar, Facit) never trap it, so the passage stays reachable (§1.8). ¶ numbers stay out of the tab order (J/K/F drive the same aid).
 - **Targets:** ≥ 44 × 44 px. Small pills (¶ chips, "Fördjupning", strike) keep invisible ≥ 44 px hit areas, as built.
 - **Never colour alone:** every state has a glyph and a word (✓ "rätt", ↻ "lagd i Repetera", ⚑ "markerad"), and every section has its code as text.
 - **Contrast:** body text ≥ 7:1, UI ≥ 4.5:1 (AA), and non-text marks ≥ 3:1 (switch tracks, stop rings, chart lines).
@@ -290,7 +302,7 @@ Each screen below lists its calm-mode delta.
 
 Every screen sits in one of two frames:
 - **Destination pages** (5, 8's queue, 9's hub, 10, 11, 12, 13) keep the rail or the navbar and the account entry.
-- **Focus screens** (6, 7, 8's round, 9's running pass, 14, and round 1's 2–3) have the top bar with its always-visible exit.
+- **Focus screens** (6, 7, 8's round, 9's running pass, the review opened from 10 and 11, 14, and round 1's 2–3) have the top bar with its always-visible exit.
 
 ```
             frame: rail (desktop) · navbar (phone) · account menu on every destination page
@@ -302,7 +314,7 @@ Every screen sits in one of two frames:
  │   │                 │              └─ Repetera ───────► Repetera (8): queue ─► round        │
  │   │                 │                                                                       │
  │   │                 ├──► Provpass (9): hub ─► rules ─► running pass ─► Provpassresultat (10)│
- │   │                 │                                                    └─► review sheet   │
+ │   │                 │                                                    └─► review         │
  │   │                 ├──► Uppslag (12): library ─► lesson ─► "Öva detta mönster" ─► drill ─┐ │
  │   │                 │                                            ▲                        │ │
  │   │                 │                                            └──── back to the entry ─┘ │
@@ -322,7 +334,7 @@ Every screen sits in one of two frames:
 | 7 | DTK | B1 | `/drill?section=DTK` | as 6 | as 6 | as 6 |
 | 8 | Repetera | B1 | `/repetition` (queue), `?start=1` (round), `?done=<id>` (end) | Öva's station; Idag's plan; a paused round; a unit's end; Framsteg | the round; the plan's next step; Öva | "Starta repetition · 8 frågor" |
 | 9 | Provpass | B2 | `/prov` | rail / navbar; Idag's plan; the palette | the running pass; the result | "Starta provpasset" → "Starta nu"; running: "Nästa fråga" → "Granska och lämna in" |
-| 10 | Provpassresultat | B2 | `/prov?result=<id>` | hand-in or timeout; the hub's last passes; Historik | the review sheet; the hub; Uppslag | "Gå igenom missarna · 9" |
+| 10 | Provpassresultat | B2 | `/prov?result=<id>` | hand-in or timeout; the hub's last passes; Historik | the review; the hub; Uppslag | "Gå igenom missarna · 9" |
 | 11 | Framsteg + Historik | B2 | `/progress`, `/historik`, `/historik?pass=<id>` (a past pass) | rail / navbar; Idag's "Alla pass", and the "Prognosen i Framsteg" link B2 adds to Idag | drills, lessons, Repetera, pass pages, results | Översikt: "Öva LÄS · ca 10 min" (the first "Nästa steg"); the Historik list has none |
 | 12 | Uppslag & lektion | B3 | `/lektion`, `/lektion?section=X#ID` | rail / navbar; Idag's lesson step; Facit's framework link; the adaptive review; Framsteg | the pattern drill (and back), the section drill | "Fortsätt läsa"; in a lesson "Nästa" |
 | 13 | Konto & inställningar | B3 | `/konto`, `/mer` | the account menu on every page; the palette | the frame; sign-in | none |
@@ -1207,7 +1219,7 @@ On phone the rules card opens as a `SparDialog` bottom sheet. The register's pas
 
 **Purpose.** The end of the stretch: how the pass went, what it means on the 0–2,0 scale, where time went, and the misses to learn from. Today's result screen has **no action at all** (on phone it is a dead end). Spår gives it one.
 
-**The one action:** "Gå igenom missarna · 9 ↵". It opens the first missed question's Facit, with "Nästa miss" through all of them. A miss here is a wrong answer or a blank: 7 + 2 in the example. The wrong answers are already in Repetera, and the screen says so ("Dina 7 fel ligger redan i Repetera.").
+**The one action:** "Gå igenom missarna · 9 ↵". It opens the first missed question in review (below), its Facit beside its own text, problem or page, with "Nästa miss" through all of them. A miss here is a wrong answer or a blank: 7 + 2 in the example. The wrong answers are already in Repetera, and the screen says so ("Dina 7 fel ligger redan i Repetera.").
 
 **What it shows.**
 - **Which pass:** the half; riktigt or genererat; the sitting and pass number ("Hösten 2025 · Provpass 2"); and when it was taken ("idag 14:10" right after handing in; "onsdag 14:10" when reopened later, as in the wireframes). The sitting and the date are not shown today.
@@ -1217,7 +1229,7 @@ On phone the rules card opens as a `SparDialog` bottom sheet. The register's pas
   - **Genererat pass:** "skattad poäng", with "Linjär skattning — indikativ, inte UHR-normerad."
   - When the pass contains P5 practice texts (LÄS or ELF), add the approved caveat verbatim: "Uppskattningen för LÄS och ELF bygger på HP-Coachs övningstexter, vars svårighetsgrad ännu inte är kalibrerad mot riktiga HP-resultat."
 - **Per section, in exam order** (today alphabetical): right of presented, the time spent against the section's budget (55 min × its share: 13:45 for ten questions, 16:30 for XYZ and DTK, 8:15 for NOG), and "över budget" when over.
-- **Every question:** right, missed or blank, in order. Each opens its Facit. The data for this is open question 4: today's result keeps only question ids.
+- **Every question:** right, missed or blank, in order. Each opens in review (below). The data for this is open question 4: today's result keeps only question ids.
 - **The trap behind several misses** (today kvant-only; any section in Spår when the data has it): "3 av dina missar föll i samma fälla: …".
 - **Exposure:** "Du hade sett 3 av 40 frågor innan. 2 lämnades obesvarade."
 - **Earlier passes of the same kind**, each with the **same** score treatment as the headline (today's history is linear while the headline is normed).
@@ -1257,7 +1269,7 @@ On phone the rules card opens as a `SparDialog` bottom sheet. The register's pas
   - ○ dashed, "obesvarad".
 
   Each leg's line ends in its numbers and tempo in words. "Över budget" is a word in ink-2, never red.
-- **Choosing a stop opens that question's Facit** in the feedback sheet (screen 3's sheet over this page), with "‹ Föregående miss · Nästa miss ›" in its foot. The green pill does the same, starting at the first miss.
+- **Choosing a stop opens that question in review** (`SparReview`, below): its Facit beside its own text, problem or page, with "‹ Föregående miss · Nästa miss ›" in its foot. The green pill does the same, starting at the first miss.
 
 **Layout — phone.**
 ```
@@ -1282,22 +1294,87 @@ On phone the rules card opens as a `SparDialog` bottom sheet. The register's pas
 │ (⌁)Idag (▣)Öva (⌛•)Prov (💡) (⛰)    │
 └──────────────────────────────────────┘
 ```
-The navbar is back, fixing today's tab-less dead end. A leg row opens a sheet with that leg's ten stops; a stop opens its Facit.
+The navbar is back, fixing today's tab-less dead end. A leg row opens a sheet with that leg's ten stops; a stop opens that question in review.
+
+**Review (`SparReview`): the question again, with what its Facit refers to.** Facit cannot be lifted out on its own. `FeedbackBody` renders the prompt and the explanation only (`SparDrill.tsx:820`), and a ¶ chip only scrolls a paragraph that a mounted reading column has registered (`r1Kit.ts:630`). Over the result page, or inside Historik, no passage, problem or figure is mounted, so its citations would point at nothing. The review is therefore the question's own screen in its graded state, read-only. B2 builds it once; this screen and screen 11's pass page open it.
+- **The frame.** A focus screen (§1.8), entered from a destination page. Its always-visible exit is "✕ Stäng", which returns to where the review was opened and puts focus back on the stop or green pill that opened it. The top bar holds the section chip, the stig of what is being reviewed with its count, and its tools: the calm switch (desktop only) and Fokus on a text. There is no clock, no "Svara", no strike and no "Taktik".
+  - From the result, the stig is the misses as ↻ and ○ stops: "Miss 3 av 9". A right answer opened from its stop reads "Fråga 12 av 40", and the foot still steps between the misses.
+  - From a pass page in Historik, it is every question of the pass with its verdict: "Fråga 3 av 6".
+- **The question's context, read-only.** The layout of screen 2, 6, 7 or 14 as it is after "Svara":
+  - **LÄS and ELF:** the whole reading card (band, ÖVNINGSTEXT and "Om texten", title, ¶-numbered paragraphs, byline), with the question's cited paragraphs marked. In a gap-fill text the gap slots show their graded states.
+  - **Quant, ORD and MEK:** the problem card (band and sitting, the figure with "Förstora", the stem, KVA's quantities, NOG's statements).
+  - **DTK:** the page card on its white mat, with "Bredd · Hela sidan", "Förstora" and "Rotera". Facit opens at 40 %, as in practice.
+  - **No tray.** The picks are in Facit, as after any answer: the "Ditt svar" and "Rätt svar" cards and the other options. A blank gets the verdict "Obesvarad" with the dashed `blank` stop, and only the "Rätt svar" card.
+- **Facit** is the practice sheet, non-modal (§1.8), with a review foot: "‹ Föregående miss" (quiet) and "Nästa miss ↵" (the green pill), which becomes "Tillbaka till resultatet ↵" at the last miss. From a pass page the foot is "‹ Föregående" (quiet) and "Nästa ↵" (the green pill), which becomes "Tillbaka till passet ↵" at the last question.
+- **Citations that land.** The reading column and Facit are mounted together on this screen and share one set of citation targets, so every chip lands on this screen, never on the page behind it:
+  - a ¶ chip lowers Facit (to 40 % on desktop, to half on phone), then scrolls to and flashes its paragraph above it, as in practice;
+  - "Visa uppgiften" scrolls to the stem and the figure;
+  - a "(steg 2)" link opens its step.
+
+  While the context is loading, or if it fails ("Texten gick inte att hämta. Försök igen" in the column, or the problem's and page's own failure copy from screens 6 and 7), these chips show as plain text ("¶ 3"), never as buttons that do nothing. Facit itself always shows.
+- **Figures and the viewer.** "Förstora" on a figure or page, and "Visa figuren" in Facit's head, open `SparFigureViewer` as in practice. In review its answer strip becomes a verdict strip: the question with "Ditt svar: C · Rätt svar: B", and nothing to choose.
+- **The URL keeps the place** (`/prov?result=<id>&q=15`, `/historik?pass=<id>&q=3`). A reload stays on the question, and browser back returns to the result or the pass page.
+
+**Layout — desktop review (miss 3 of 9: question 15, LÄS).**
+```
+┌───────────────────────────────────────────────────────────────────────────────────────────────┐
+│ ✕ Stäng            [LÄS]  ↻━━↻━━③━━○━━↻━━↻━━○━━↻━━↻   Miss 3 av 9         🍃 Lugnt ○   ◎ Fokus │
+│                                                                                               │
+│                 ╭─────────────────────────────────────────────────────────────╮               │
+│                 │ (ÖVNINGSTEXT)                                  ⓘ Om texten  │ ← LÄS band    │
+│                 │ the title of question 15's text                             │               │
+│                 ├─────────────────────────────────────────────────────────────┤               │
+│                 │  ¶1  …                                                      │               │
+│                 │  ¶2  … the paragraph "¶ 2" points at, flashing …            │ ← read-only,  │
+│                 │  ¶3  …                                                      │   no tray     │
+│                 ░░░░░░░░░░░░░░░░░ text fades over 20 px under Facit ░░░░░░░░░░░               │
+│                 ╭─────────────────────────────────────────────────────────────╮               │
+│                 │ [✕]  Fel   Rätt svar är B.            (↻ Lagd i Repetera)   │ ← Facit,      │
+│                 │ Ditt svar · C …            Rätt svar · B …                  │   non-modal   │
+│                 │ Varför C lockade … ¶ 2 · Att ta med dig … · Lösningen …     │               │
+│                 │ Visa mer av texten  T   ‹ Föregående miss  [ Nästa miss ↵ ] │               │
+│                 ╰─────────────────────────────────────────────────────────────╯               │
+└───────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Layout — phone review.**
+```
+┌──────────────────────────────────────┐
+│ ✕ Stäng  [LÄS] ↻━↻━③━○━↻━↻━○━↻━↻   ◎ │ ← each stop speaks "Miss 3 av 9,
+│ ╭──────────────────────────────────╮ │   fråga 15, fel"
+│ │ (ÖVNINGSTEXT)        ⓘ Om texten │ │
+│ │ the title of question 15's text  │ │
+│ │ ¶1 …                             │ │
+│ │ ¶2 … flashing after "¶ 2" …      │ │ ← the text scrolls and stays
+│ │ ¶3 …                             │ │   tappable above Facit
+│ ╭──────────────────────────────────╮ │
+│ │               ━━━                │ │
+│ │ [✕] Fel · Rätt svar är B.        │ │ ← Facit at half height, non-modal
+│ │ Ditt svar · C …                  │ │
+│ │ Rätt svar · B …                  │ │
+│ │ Varför C lockade … ¶ 2           │ │
+│ │ (‹)             [[ Nästa miss ]] │ │
+│ ╰──────────────────────────────────╯ │
+└──────────────────────────────────────┘
+```
+- On phone a stop in a leg's sheet closes the sheet and opens the review. "Stäng" returns to the result with focus on that leg's row.
+- The head hides on scroll, as on any phone focus screen, leaving the pinned exit.
 
 **Components.**
-- *Reused:* the frame, `SparPageHead` (the eyebrow carries pass, half and time), `.sp-display`, `sp-scale` (from Idag's Prognosis), `.sp-trap`, the feedback sheet and `FeedbackBody` (with the ¶ citations of reading questions intact).
+- *Reused:* the frame, `SparPageHead` (the eyebrow carries pass, half and time), `.sp-display`, `sp-scale` (from Idag's Prognosis), `.sp-trap`. For the review: the question layouts of screens 2, 6, 7 and 14 in their graded state (`Reader`, `SparProblemCard`, `SparPageCard`, `SparFigure`, `SparFigureViewer`), the feedback sheet, and `FeedbackBody`, whose ¶ citations land in the review's own reading column.
 - *New (B2):*
   - **`SparSwitchback`** verdict mode;
   - **`SparLegRow`** (phone);
   - **`SparScoreCard`** (normed or estimated score, scale, disclaimers);
-  - a **review mode** for the feedback sheet: previous and next miss, no "Nästa fråga", and "Stäng" back to the result.
+  - **`SparReview`** (above): the read-only question screen with its context, the review foot (previous and next, no "Nästa fråga"), the viewer's verdict strip, and "Stäng" back to where it opened. Screen 11's pass page reuses it.
 
 **States.**
 
 | State | What the result shows |
 |---|---|
 | Loading | Skeleton in the final layout: headline bar, score card, four switchback rows. Today's "Hittar inte resultatet." flash right after handing in is a bug: the result must open from the hand-in's own data while the list refreshes. |
-| Not found | "Det här provpasset finns inte längre." with "Till Provpass" as the green pill. Only the 50 most recent results are kept. |
+| Not found | Only on confirmed absence. A result is kept as long as its pass, 120 days after hand-in, but the list of results returns only the newest 50, so a full list alone never decides that a result is gone. A result opens from data already in hand (the hand-in, a Historik row) or is looked up by its id (open question 4). When the lookup, or a complete list fetched as the page opens (below), confirms there is no such result: "Det här provpasset finns inte längre. Provpass sparas i 120 dagar." with "Till Provpass" as the green pill. |
+| Not in the current list | Until the lookup by id exists, a result that is missing from a full list (50 rows) cannot be told apart from a deleted one, so it is never called gone. A list with fewer than 50 rows is complete, so a result missing from it is confirmed absent ("Not found"), but only when that list was fetched as the page opened: a cached list can predate the result. For a full list: "Det här provpasset finns inte bland dina 50 senaste, så det kan inte visas här än." with "Till Provpass" as the green pill. |
 | Fetch error | "Det gick inte att hämta resultatet. Försök igen", with the retry as the green pill. Today the same failure shows "Hittar inte resultatet.", as if the pass did not exist. |
 | Normering table still loading | The score card shows a skeleton number. It never shows the linear value first and then swaps. |
 | Timed out | "Tiden tog slut, så passet lämnades in automatiskt." under the headline. |
@@ -1308,7 +1385,7 @@ The navbar is back, fixing today's tab-less dead end. A leg row opens a sheet wi
 **Navigation.**
 - In: handing in (or the timeout); "Dina senaste pass" on the Provpass hub; Historik rows for passes (screen 11).
 - Out:
-  - "Gå igenom missarna" → the review sheet;
+  - "Gå igenom missarna" → the review (`/prov?result=<id>&q=<n>`);
   - "Till Provpass" (quiet);
   - the trap's "Läs i Uppslag →";
   - the frame's navigation.
@@ -1324,7 +1401,7 @@ The navbar is back, fixing today's tab-less dead end. A leg row opens a sheet wi
 **Accessibility.**
 - The switchback in verdict mode is a list grouped by leg (`h3` per leg). Each stop is a button named "Fråga 15, LÄS, fel, lagd i Repetera, visa facit".
 - The score card's bar is `role="img"` with "Normerat ungefär 1,25 på skalan 0 till 2,0". The disclaimers are real text, not tooltips. The glossary terms ("härlett", "indikativ") open as small dialogs with focus management.
-- The review sheet traps focus and returns it to the stop it came from.
+- The review is a focus screen whose Facit is non-modal (§1.8): nothing traps focus, and the text, problem or page stays reachable. "Stäng" returns focus to the stop or green pill that opened it (on phone, to the leg's row).
 
 **Unmistakably Spår.**
 - The pass drawn as the switchback trail it was walked on, every stop wearing its verdict glyph.
@@ -1365,7 +1442,11 @@ The navbar is back, fixing today's tab-less dead end. A leg row opens a sheet wi
 - **Historik:** the count of passes, and the way in (the segmented control and a link at the foot).
 
 **What it shows — Historik (`/historik`).**
-- Every finished pass, newest first, **grouped by day** ("Idag", "Igår", "Onsdag 7 okt"). The list holds the last 120 days; at most 50 are fetched at a time, then "Visa äldre".
+- Every finished pass, newest first, **grouped by day** ("Idag", "Igår", "Onsdag 7 okt"). Passes are kept for 120 days.
+  - **"Visa äldre pass" needs paging.** Today each list (practice passes, Provpass results) returns only its newest 50 and cannot be asked for older ones. The button fetches the next passes from both lists, older than the last one shown (open question 4).
+  - **The merged list has no holes.** Each list is complete down to its oldest row, so the merged list stops at the newer of the two lists' oldest rows; a list known to hold everything sets no limit. Every pass newer than the stop is shown. When the stop falls inside a day, that day's group ends at the stop and the list's end (the button, or the line below) follows at once, so part of a day never looks like the whole day.
+  - **Until paging exists**, the list ends with a quiet line instead of the button unless both lists are known to hold everything: "Har du äldre pass än de här kan de inte visas ännu." It is worded as a condition because the list cannot know whether older passes exist. A results list under 50 rows holds everything, but the practice list cannot tell by its length, because the server cuts it from the newest 200 finished sessions. So paging must say whether more exist.
+  - **An older pass or result opened from here** opens from its row's data or by its id, not by searching the newest 50, so it is never reported as gone just because it is old (screen 10's states, the pass page's states).
 - **Per pass:**
   - kind and section ("LÄS-övning", "Repetition", "Blandad övning", "Riktad repetition · LÄS", "Provpass · Verbal");
   - for a text, its title;
@@ -1373,7 +1454,7 @@ The navbar is back, fixing today's tab-less dead end. A leg row opens a sheet wi
   - how long it took and when it ended (today's rows show neither).
 
   Provpass results join the list (today they are excluded); see open question 4.
-- **A pass opened:** its questions in order, each with its verdict and its full Facit. **Present-tense numbers never appear on an old pass**: no today's prognosis, no "dina nya missar".
+- **A pass opened:** its questions in order, each with its verdict. Each opens in review (screen 10's `SparReview`), with its full Facit beside its text, problem or page. **Present-tense numbers never appear on an old pass**: no today's prognosis, no "dina nya missar".
 
 **Layout — desktop Översikt (1440 × 900).** Idag's composition: a main column and a 332 px side column.
 ```
@@ -1447,11 +1528,12 @@ The navbar is back, fixing today's tab-less dead end. A leg row opens a sheet wi
 - A row **opens in place**: the row grows into the pass's question stops (✓/↻, or ✓/↻/○ for a Provpass), with "Visa hela facit". That opens the pass page. A Provpass opens its result (screen 10).
 - **The pass page** is a sub-page of Historik at `/historik?pass=<id>`. The search parameter keeps it inside Historik's route, and the live `?done=<id>` permalinks redirect there when the pass is not the one just finished.
   - The head reads: eyebrow "Historik · onsdag 7 okt 19:30", title "NOG-övning", lede "4 av 6 rätt · 12 min".
-  - The body is the questions as a vertical stig, each folding open into its `FeedbackBody`, with "← Historik".
+  - The body is the questions as a vertical stig, each stop with its verdict and the question's first line, with "← Historik".
+  - Choosing a question opens it in review (`SparReview`, screen 10) at `/historik?pass=<id>&q=<n>`, on desktop and phone alike: its text, problem or page read-only, its Facit with working citations, and "‹ Föregående · Nästa ›" through the pass. "Stäng" comes back to that stop. Facit never unfolds inside the list, where it would have no text to cite.
   - It reads in the past tense only, with no celebration replay.
   - States:
     - loading: skeleton stops and rows;
-    - not found: "Passet finns inte längre. Pass sparas i 120 dagar." with "Till Historik" as the green pill;
+    - not found, only when the lookup by the pass's id confirms it is gone (never because it is older than the loaded list): "Passet finns inte längre. Pass sparas i 120 dagar." with "Till Historik" as the green pill;
     - error: "Det gick inte att hämta passet. Försök igen", with the retry as the pill.
   - Otherwise its green pill is "Öva NOG igen · ca 12 min".
 - The filter is a `SparSegmented`. It never hides the day headings of the groups it keeps.
@@ -1504,13 +1586,13 @@ Historik on phone is the same day-grouped path, one row per pass. A row opens th
 - On desktop the rail highlights Framsteg on both views (today Historik highlights nothing).
 
 **Components.**
-- *Reused:* the frame, `SparPageHead`, `.sp-display`, `.sp-lede`, the `sp-scale` family, `.sp-caveat`, `SparStop` / `SparPath`, `SparSegmented` and `SparDisclosureCard` (both B1), `FeedbackBody`, `.sp-link`, and Idag's `.sp-home-grid` proportions.
+- *Reused:* the frame, `SparPageHead`, `.sp-display`, `.sp-lede`, the `sp-scale` family, `.sp-caveat`, `SparStop` / `SparPath`, `SparSegmented` and `SparDisclosureCard` (both B1), `SparReview` (B2, screen 10), `.sp-link`, and Idag's `.sp-home-grid` proportions.
 - *New (B2):*
   - **`SparClimb`** (the elevation chart, with a table alternative);
   - **`SparSectionLine`**;
   - **`SparWeeks`**;
   - **`SparHistoryPath`** (a day-grouped vertical path with in-place growth);
-  - the **pass page** (question stops plus folding facit).
+  - the **pass page** (question stops, each opening `SparReview`).
 
 **States.**
 
@@ -2103,15 +2185,15 @@ The `rd-*` contract tests must keep passing. B1 re-shoots screens 1–4 to show 
 | | **`SparSkeleton`** (the loading pattern of §1.11: sunk shapes in the final layout), **`SparAnswerBar`** (the phone's sticky "Ditt val · Svara" under a short problem) | everything / 14 |
 | | **The persisted Lugnt läge**: one setting behind the switches on Idag, in the desktop top bar and in the account menu, so every batch's calm delta has a source. Screen 13 only adds its row | every screen |
 | **B1 — screens** | Öva (5); Repetera's queue, its schedule `VerdictChip` and the REP chip (8) | — |
-| | **`SparProblemCard`**, **`SparFigure`**, **`SparFigureViewer`** (zoom, pan, rotate, answer strip), **`SparPageCard`** (DTK page on a mat, fit, stable per page) | 6, 7, 9, 10 |
-| | **`SparKvaPair` / `SparKvaOption`**, **`SparNogStatements` / `SparNogGlyph`**, the `MathText` wrapper | 9, 10 (in exam and review) |
+| | **`SparProblemCard`**, **`SparFigure`**, **`SparFigureViewer`** (zoom, pan, rotate, answer strip), **`SparPageCard`** (DTK page on a mat, fit, stable per page) | 6, 7, 9, 10, 11 |
+| | **`SparKvaPair` / `SparKvaOption`**, **`SparNogStatements` / `SparNogGlyph`**, the `MathText` wrapper | 9, 10, 11 (in exam and review) |
 | | **`Options` layouts:** `row` when every option is ≤ 14 characters rendered, and `images`. Letter keys are validated against the item's options. The tray gets its **follow** mode (open, sticky, under a short problem) | 9, 14 |
 | | **`SparTacticHint`** (folded `pregrade_tactic`) | 14 |
 | | **Facit additions:** the "Visa uppgiften" / "Visa figuren" chip, DTK's 40 % sheet, the framework line as a link, "Hjälpte förklaringen?" (Ja / Nej, then "Tack"), and the page-grouped `Progress`. Folding the detail steps is already built in round 1 | 8, 10, 14 |
 | **B2** | **`SparDialog`** (centred on desktop, edge sheet on phone; focus trap, Esc): abort, hand-in, the phone's start | 10, 13 |
 | | **`SparRouteRibbon`** (legs, position tick, fill), **`SparPassStop`** (seen-share ring), **`SparClock`** (count-down, inverse thresholds, announcements) | 12 (the ring) |
 | | **`SparSwitchback`** (answered mode, verdict mode, filter, compact). **Exam mode** on the question layouts (`data-exam`): no hint, verdict or facit, and Lugnt läge enforced. The ⚑ marking (open question 5) | — |
-| | **`SparScoreCard`**, **`SparLegRow`**, the feedback sheet's **review mode** (previous / next miss) | 11 (pass pages) |
+| | **`SparScoreCard`**, **`SparLegRow`**, **`SparReview`** (a question's graded screen, read-only: its text, problem or page, Facit with working ¶ citations, the viewer's verdict strip, previous / next) | 11 (pass pages) |
 | | **`SparClimb`** (with its table), **`SparSectionLine`**, **`SparScaleMini`**, **`SparWeeks`**, **`SparHistoryPath`**, the pass page (`/historik?pass=<id>`), and Idag's "Prognosen i Framsteg →" link | — |
 | **B3** | **`SparContents`** (+ phone sheet), **`SparEntryCard`** (trap, protocol, root), **`SparWorkedExample`**, **`SparCallout`**, **`SparSearch`** | — |
 | | **`SparSettingRow`**, **`SparStepper`**, **`SparPageIndex`**, **`SparDangerCard`**, and the Lugnt läge row on the settings page | — |
@@ -2123,7 +2205,7 @@ The `rd-*` contract tests must keep passing. B1 re-shoots screens 1–4 to show 
 3. At most one tinted band in view, and no section hue behind text.
 4. Every state in the screen's table is built, with its copy. Loading never shows empty-state copy.
 5. The Lugnt läge delta from the screen's table works, and reduced motion moves nothing.
-6. ≥ 44 px targets; 2 px focus rings with a 2 px offset; the focus order follows the visual order; dialogs trap and return focus.
+6. ≥ 44 px targets; 2 px focus rings with a 2 px offset; the focus order follows the visual order; modal layers trap and return focus, and the tray and Facit never trap it (§1.8).
 7. Never colour alone: a glyph and a word for every state.
 8. `lang="en"` on every English block.
 9. Light and dark at 1440 × 900 and 390 × 844, with body text ≥ 7:1 and UI ≥ 4.5:1.
@@ -2140,6 +2222,7 @@ Each question names the screens it affects. Where the spec had to choose, the de
 4. **Data the redesign needs that the app does not hand out yet.**
    - Per-question picks for a Provpass result, so its review can show each Facit (today the result keeps only ids).
    - Provpass results and their time in Historik.
+   - Paging and lookup by id: older practice passes and Provpass results page by page (older than a given pass, saying whether more exist); one Provpass result by its id; and a practice pass's kind, section and times by its id (its questions and picks can already be read by its id, as the `?done=<id>` page does). Today both lists return only their newest 50, and a result is found only by searching that list.
    - A description for each figure and DTK page, for alt text.
    - The sitting's name on authentic questions.
    *Default:* each is drawn as specified, with its stated fallback. (6, 7, 9, 10, 11)
