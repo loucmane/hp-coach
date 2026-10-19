@@ -1,0 +1,2897 @@
+/* F · Samtal — a calm coach in dialogue.
+ *
+ * Every screen is a short exchange. The coach's turns sit on a faint oat
+ * tint, left, with a small "speaker" corner top left; your turns and the
+ * replies you can give are plum, right. The replies are buttons — never a
+ * text field — and the drill's send bar (the reply dock) is the one place
+ * the screen's action lives. The passage is a calm, opaque document beside
+ * the conversation, set in Lora; everything else is Hanken Grotesk.
+ * Warm and human, not a chatbot: no avatars, no typing dots, no bubble
+ * tails; a turn is there at once with a 120 ms fade.
+ *
+ * Everything is scoped under [data-rd='samtal'] with the sa- prefix;
+ * nothing touches :root. Type: nine sizes (--sa-t12 … --sa-t32). Space: a
+ * 4 px scale. Radii: --sa-r1 (inner pieces), --sa-r2 (cards, options, the
+ * document), --sa-r3 (turns), pills; plus the turns' speaker corner
+ * (--sa-r0). Motion: one ease-out, 120 ms in, 90 ms out, 200 ms for the
+ * phone tray. Dark lowers chroma and never goes black. */
+
+[data-rd='samtal'] {
+  --sa-page: oklch(97.4% 0.005 315);
+  --sa-side: oklch(95.1% 0.007 315);
+  --sa-card: oklch(99.4% 0.002 315);
+  --sa-doc: oklch(99.4% 0.003 85);
+  --sa-coach: oklch(94.6% 0.018 78);
+  --sa-coach-2: oklch(90% 0.03 78);
+  --sa-ink: oklch(23% 0.02 318);
+  --sa-ink-2: oklch(38.5% 0.018 318);
+  --sa-ink-3: oklch(47.5% 0.016 318);
+  --sa-line: oklch(88.5% 0.009 315);
+  /* Lines that carry state (a struck option, a ring still to answer): ≥ 3:1. */
+  --sa-line-2: oklch(63.5% 0.012 315);
+  /* Your colour: plum. Solid plum is kept for the one action; your turns
+   * and the chosen option take a plum tint; the replies on offer, a line. */
+  --sa-plum: oklch(43.5% 0.13 340);
+  --sa-plum-2: oklch(38% 0.125 340);
+  --sa-plum-ink: oklch(43% 0.13 340);
+  --sa-plum-line: oklch(61% 0.1 340);
+  --sa-plum-soft: oklch(94.4% 0.026 340);
+  --sa-on-plum: oklch(98.8% 0.006 340);
+  --sa-you: oklch(94% 0.024 340);
+  /* The one action's fill (the same plum in light; a step lighter in dark,
+   * so the primary outweighs every outlined reply). */
+  --sa-plum-fill: oklch(43.5% 0.13 340);
+  --sa-plum-fill-2: oklch(38% 0.125 340);
+  /* The prognosis' likely range. */
+  --sa-range: oklch(86.5% 0.045 340);
+  --sa-tip-bg: oklch(23% 0.02 318);
+  --sa-tip-ink: oklch(97.4% 0.005 315);
+  --sa-ok: oklch(45% 0.105 152);
+  --sa-ok-soft: oklch(94.6% 0.03 152);
+  --sa-bad: oklch(49% 0.15 30);
+  --sa-bad-soft: oklch(95.2% 0.024 30);
+  /* The coach pointing into the text: a honey light. */
+  --sa-mark: oklch(91.5% 0.06 86);
+  --sa-mark-2: oklch(86% 0.095 84);
+  --sa-focus: oklch(50% 0.17 262);
+  --sa-scrim: oklch(23% 0.02 318 / 0.34);
+  --sa-lift: 0 1px 2px oklch(25% 0.02 318 / 0.06), 0 0 0 1px var(--sa-line);
+  --sa-pop:
+    0 18px 44px -16px oklch(25% 0.03 318 / 0.3), 0 2px 6px -2px oklch(25% 0.03 318 / 0.08),
+    0 0 0 1px oklch(25% 0.02 318 / 0.08);
+  --sa-tray-shadow: 0 -12px 32px -14px oklch(25% 0.03 318 / 0.28), 0 -1px 0 var(--sa-line);
+
+  --sa-ui:
+    'Hanken Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Ubuntu Sans',
+    sans-serif;
+  --sa-read: 'Lora', 'Iowan Old Style', Georgia, 'Liberation Serif', 'DejaVu Serif', serif;
+
+  --sa-t12: 12px;
+  --sa-t13: 13px;
+  --sa-t15: 15px;
+  --sa-t16: 16px;
+  --sa-t17: 17px;
+  --sa-t19: 19px;
+  --sa-t22: 22px;
+  --sa-t26: 26px;
+  --sa-t32: 32px;
+
+  --sa-s1: 4px;
+  --sa-s2: 8px;
+  --sa-s3: 12px;
+  --sa-s4: 16px;
+  --sa-s5: 20px;
+  --sa-s6: 24px;
+  --sa-s8: 32px;
+  --sa-s10: 40px;
+  --sa-s12: 48px;
+
+  --sa-r0: 6px;
+  --sa-r1: 10px;
+  --sa-r2: 18px;
+  --sa-r3: 24px;
+  --sa-pill: 999px;
+  /* The coach's lane: turns and cards leave the right edge to you. */
+  --sa-lane: calc(100% - 48px);
+
+  --sa-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --sa-d-in: 120ms;
+  --sa-d-out: 90ms;
+  --sa-d-tray: 200ms;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: clip;
+  background: var(--sa-page);
+  color: var(--sa-ink);
+  font-family: var(--sa-ui);
+  font-size: var(--sa-t15);
+  line-height: 1.5;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  interpolate-size: allow-keywords;
+  color-scheme: light;
+}
+
+[data-rd='samtal'][data-theme='dark'] {
+  --sa-page: oklch(19.5% 0.013 318);
+  --sa-side: oklch(17.2% 0.012 318);
+  --sa-card: oklch(23.6% 0.012 318);
+  --sa-doc: oklch(22.4% 0.008 318);
+  /* The coach in the dark: a warm grey one step above the page, so a run
+   * of turns never turns into a brown wall. */
+  --sa-coach: oklch(26.4% 0.009 60);
+  --sa-coach-2: oklch(33% 0.012 60);
+  /* Ink a step under white, so nothing glows. */
+  --sa-ink: oklch(91.5% 0.008 318);
+  --sa-ink-2: oklch(81% 0.01 318);
+  --sa-ink-3: oklch(71% 0.012 318);
+  --sa-line: oklch(31% 0.012 318);
+  --sa-line-2: oklch(53% 0.014 318);
+  /* A deep berry, never a pastel pill. */
+  --sa-plum: oklch(42.5% 0.105 340);
+  --sa-plum-2: oklch(47.5% 0.11 340);
+  --sa-plum-ink: oklch(80.5% 0.075 340);
+  --sa-plum-line: oklch(60% 0.09 340);
+  --sa-plum-soft: oklch(29% 0.04 340);
+  --sa-on-plum: oklch(97.6% 0.008 340);
+  --sa-you: oklch(30.5% 0.05 340);
+  --sa-plum-fill: oklch(50.5% 0.125 340);
+  --sa-plum-fill-2: oklch(54.5% 0.125 340);
+  --sa-range: oklch(41% 0.07 340);
+  --sa-tip-bg: oklch(34% 0.014 318);
+  --sa-tip-ink: oklch(94% 0.006 318);
+  --sa-ok: oklch(79% 0.1 152);
+  --sa-ok-soft: oklch(29% 0.035 152);
+  --sa-bad: oklch(77% 0.11 30);
+  --sa-bad-soft: oklch(30% 0.04 30);
+  /* In the dark the coach points with a plum tint (honey turns olive on
+   * aubergine); the stronger light is more saturated, not lighter, so the
+   * ink keeps 7:1 on it. */
+  --sa-mark: oklch(31.5% 0.045 340);
+  --sa-mark-2: oklch(36.5% 0.075 340);
+  --sa-focus: oklch(78% 0.11 262);
+  --sa-scrim: oklch(9% 0.01 318 / 0.58);
+  --sa-lift: 0 0 0 1px var(--sa-line);
+  --sa-pop: 0 20px 48px -14px oklch(6% 0.01 318 / 0.72), 0 0 0 1px var(--sa-line-2);
+  --sa-tray-shadow: 0 -14px 36px -12px oklch(6% 0.01 318 / 0.6), 0 -1px 0 var(--sa-line-2);
+  color-scheme: dark;
+}
+
+[data-rd='samtal'] *,
+[data-rd='samtal'] *::before,
+[data-rd='samtal'] *::after {
+  box-sizing: border-box;
+}
+
+[data-rd='samtal'] :where(button) {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+[data-rd='samtal'] :where(h1, h2, h3, h4, p, ol, ul, figure, blockquote, dl, dd) {
+  margin: 0;
+}
+
+[data-rd='samtal'] :where(ol, ul) {
+  padding: 0;
+  list-style: none;
+}
+
+[data-rd='samtal'] :where(fieldset) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+[data-rd='samtal'] :focus-visible {
+  outline: 2px solid var(--sa-focus);
+  outline-offset: 2px;
+}
+
+/* Programmatic focus on a turn (after an answer) shows no ring; the
+ * keyboard's next Tab does. */
+[data-rd='samtal'] [tabindex='-1']:focus:not(:focus-visible) {
+  outline: none;
+}
+
+[data-rd='samtal'] ::selection {
+  background: var(--sa-plum-soft);
+}
+
+.sa-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Turns ───────────────────────────────────────────────────────── */
+
+[data-rd='samtal'] .sa-thread {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-turn {
+  max-width: var(--sa-lane);
+  padding: 14px 20px 16px;
+  border-radius: var(--sa-r0) var(--sa-r3) var(--sa-r3) var(--sa-r3);
+  overflow-wrap: break-word;
+  animation: sa-in var(--sa-d-in) var(--sa-ease) both;
+}
+
+[data-rd='samtal'] .sa-turn--coach {
+  align-self: flex-start;
+  background: var(--sa-coach);
+  color: var(--sa-ink);
+}
+
+/* Consecutive turns from one speaker sit closer, as one voice. */
+[data-rd='samtal'] .sa-turn--coach + .sa-turn--coach,
+[data-rd='samtal'] .sa-group + .sa-turn--coach,
+[data-rd='samtal'] .sa-turn--coach + .sa-group,
+[data-rd='samtal'] .sa-group > .sa-turn--coach + .sa-turn--coach {
+  margin-top: calc(var(--sa-s1) - var(--sa-s3) + 2px);
+}
+
+[data-rd='samtal'] .sa-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Your turn: a plum tint and a plum hairline, right — solid plum is kept
+ * for the one action, so your words never outshout it. */
+[data-rd='samtal'] .sa-turn--you {
+  align-self: flex-end;
+  background: var(--sa-you);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--sa-plum-line) 55%, transparent);
+  color: var(--sa-ink);
+  border-radius: var(--sa-r3) var(--sa-r0) var(--sa-r3) var(--sa-r3);
+  font-weight: 540;
+}
+
+@keyframes sa-in {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+}
+
+/* The coach's voice. */
+[data-rd='samtal'] .sa-say {
+  font-size: var(--sa-t16);
+  line-height: 1.58;
+  text-wrap: pretty;
+  hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+}
+
+[data-rd='samtal'] .sa-say--quiet {
+  margin-top: var(--sa-s2);
+  color: var(--sa-ink-2);
+  font-size: var(--sa-t15);
+}
+
+[data-rd='samtal'] .sa-ask {
+  margin-bottom: 6px;
+  font-size: var(--sa-t16);
+  line-height: 1.35;
+  font-weight: 680;
+  letter-spacing: -0.005em;
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-turn-label {
+  margin-bottom: 2px;
+  font-size: var(--sa-t13);
+  font-weight: 600;
+  color: var(--sa-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* A centred, dated line: where a conversation starts. */
+[data-rd='samtal'] .sa-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-s3);
+  margin: 0 0 var(--sa-s5);
+  color: var(--sa-ink-3);
+  font-size: var(--sa-t13);
+  font-weight: 560;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-divider::before,
+[data-rd='samtal'] .sa-divider::after {
+  content: '';
+  flex: 1 1 24px;
+  height: 1px;
+  background: var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-divider span {
+  text-wrap: balance;
+}
+
+/* ── Replies ─────────────────────────────────────────────────────── */
+
+[data-rd='samtal'] .sa-replies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--sa-s2);
+  margin-top: var(--sa-s1);
+}
+
+[data-rd='samtal'] .sa-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sa-s3);
+  min-height: 44px;
+  padding: 0 var(--sa-s5);
+  border: 1.5px solid var(--sa-plum-line);
+  border-radius: var(--sa-pill);
+  background: var(--sa-card);
+  color: var(--sa-plum-ink);
+  font-size: var(--sa-t15);
+  font-weight: 640;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background var(--sa-d-in) var(--sa-ease),
+    border-color var(--sa-d-in) var(--sa-ease);
+}
+
+[data-rd='samtal'] .sa-chip:hover {
+  background: var(--sa-plum-soft);
+}
+
+[data-rd='samtal'] .sa-chip--primary {
+  border-color: var(--sa-plum-fill);
+  background: var(--sa-plum-fill);
+  color: var(--sa-on-plum);
+}
+
+[data-rd='samtal'] .sa-chip--primary:hover {
+  border-color: var(--sa-plum-fill-2);
+  background: var(--sa-plum-fill-2);
+}
+
+[data-rd='samtal'] .sa-chip--big {
+  min-height: 52px;
+  padding: 0 var(--sa-s6);
+  font-size: var(--sa-t17);
+}
+
+[data-rd='samtal'] .sa-kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  border: 1px solid var(--sa-line-2);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--sa-card);
+  color: var(--sa-ink-2);
+  font-family: var(--sa-ui);
+  font-size: var(--sa-t12);
+  font-weight: 600;
+  line-height: 1;
+}
+
+[data-rd='samtal'] .sa-chip--primary .sa-kbd,
+[data-rd='samtal'] .sa-send .sa-kbd {
+  border-color: color-mix(in oklch, var(--sa-on-plum) 42%, transparent);
+  background: transparent;
+  color: var(--sa-on-plum);
+}
+
+/* A reply you can ask in the middle of a turn ("Berätta mer"). */
+[data-rd='samtal'] .sa-ask-more {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 14px;
+  border: 1.5px solid var(--sa-plum-line);
+  border-radius: var(--sa-pill);
+  background: var(--sa-card);
+  color: var(--sa-plum-ink);
+  font-size: var(--sa-t13);
+  font-weight: 640;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-ask-more::before {
+  content: '';
+  position: absolute;
+  inset: -6px -2px;
+}
+
+[data-rd='samtal'] .sa-ask-more:hover {
+  background: var(--sa-plum-soft);
+}
+
+[data-rd='samtal'] .sa-ask-more[aria-expanded='true'] {
+  border-color: var(--sa-line-2);
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  margin-bottom: -10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--sa-plum-ink);
+  font-size: var(--sa-t15);
+  font-weight: 620;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+[data-rd='samtal'] .sa-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 var(--sa-s3);
+  border: 0;
+  border-radius: var(--sa-pill);
+  background: transparent;
+  color: var(--sa-ink-2);
+  font-size: var(--sa-t15);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-quiet:hover {
+  background: color-mix(in oklch, var(--sa-ink) 6%, transparent);
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sa-s2);
+  min-height: 44px;
+  padding: 0 var(--sa-s3);
+  border: 0;
+  border-radius: var(--sa-pill);
+  background: transparent;
+  color: var(--sa-ink-2);
+  font-size: var(--sa-t15);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-ghost:hover {
+  background: color-mix(in oklch, var(--sa-ink) 6%, transparent);
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-ghost[aria-pressed='true'] {
+  background: var(--sa-coach);
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-icon-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--sa-ink-3);
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-icon-btn:hover {
+  background: color-mix(in oklch, var(--sa-ink) 6%, transparent);
+  color: var(--sa-ink);
+}
+
+/* ── The logo ────────────────────────────────────────────────────── */
+
+[data-rd='samtal'] .sa-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* Two speech marks: the coach's (oat) behind, yours (plum) in front. */
+[data-rd='samtal'] .sa-mark-glyph {
+  position: relative;
+  flex: none;
+  width: 30px;
+  height: 26px;
+}
+
+[data-rd='samtal'] .sa-mark-glyph i {
+  position: absolute;
+  width: 20px;
+  height: 16px;
+}
+
+[data-rd='samtal'] .sa-mark-glyph i:first-child {
+  top: 0;
+  left: 0;
+  border-radius: 3px 9px 9px 9px;
+  background: var(--sa-coach-2);
+}
+
+[data-rd='samtal'] .sa-mark-glyph i:last-child {
+  right: 0;
+  bottom: 0;
+  border-radius: 9px 3px 9px 9px;
+  background: var(--sa-plum);
+}
+
+[data-rd='samtal'] .sa-mark-name {
+  font-size: var(--sa-t17);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+/* ── Desktop frame: the doors as a list of conversations ─────────── */
+
+[data-rd='samtal'] .sa-app {
+  display: grid;
+  grid-template-columns: 296px minmax(0, 1fr);
+  height: 100%;
+}
+
+[data-rd='samtal'] .sa-app[data-collapsed='true'] {
+  grid-template-columns: 84px minmax(0, 1fr);
+}
+
+[data-rd='samtal'] .sa-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-s2);
+  min-height: 0;
+  padding: var(--sa-s4) var(--sa-s3);
+  background: var(--sa-side);
+}
+
+[data-rd='samtal'] .sa-side-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 0 0 0 var(--sa-s2);
+}
+
+[data-rd='samtal'] .sa-doors {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-door {
+  position: relative;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sa-s3);
+  min-height: 64px;
+  padding: var(--sa-s2) var(--sa-s3) var(--sa-s2) var(--sa-s2);
+  border: 0;
+  border-radius: var(--sa-r2);
+  background: transparent;
+  color: var(--sa-ink);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--sa-d-in) var(--sa-ease);
+}
+
+[data-rd='samtal'] .sa-door:hover {
+  background: color-mix(in oklch, var(--sa-ink) 5%, transparent);
+}
+
+[data-rd='samtal'] .sa-door[aria-current='page'] {
+  background: var(--sa-card);
+  box-shadow: var(--sa-lift);
+}
+
+[data-rd='samtal'] .sa-door-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--sa-coach);
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-door[aria-current='page'] .sa-door-icon {
+  background: var(--sa-plum);
+  color: var(--sa-on-plum);
+}
+
+[data-rd='samtal'] .sa-door-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+[data-rd='samtal'] .sa-door-label {
+  font-size: var(--sa-t15);
+  font-weight: 660;
+  line-height: 1.3;
+}
+
+[data-rd='samtal'] .sa-door-preview {
+  font-size: var(--sa-t13);
+  line-height: 1.35;
+  color: var(--sa-ink-3);
+}
+
+[data-rd='samtal'] .sa-door[aria-current='page'] .sa-door-preview {
+  color: var(--sa-ink-2);
+}
+
+/* Something waits behind Öva: a quiet plum dot, no alarm count. */
+[data-rd='samtal'] .sa-door-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--sa-plum);
+}
+
+[data-rd='samtal'] .sa-side-foot {
+  margin-top: auto;
+}
+
+[data-rd='samtal'] .sa-account-wrap {
+  position: relative;
+}
+
+[data-rd='samtal'] .sa-account {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-s3);
+  width: 100%;
+  min-height: 60px;
+  padding: var(--sa-s2) var(--sa-s3) var(--sa-s2) var(--sa-s2);
+  border: 0;
+  border-radius: var(--sa-r2);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-account:hover,
+[data-rd='samtal'] .sa-account[aria-expanded='true'] {
+  background: color-mix(in oklch, var(--sa-ink) 5%, transparent);
+}
+
+[data-rd='samtal'] .sa-avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--sa-card);
+  box-shadow: 0 0 0 1px var(--sa-line-2);
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-avatar--lg {
+  width: 44px;
+  height: 44px;
+}
+
+[data-rd='samtal'] .sa-account-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+[data-rd='samtal'] .sa-account-text b {
+  font-size: var(--sa-t15);
+  font-weight: 660;
+}
+
+[data-rd='samtal'] .sa-account-text span {
+  font-size: var(--sa-t13);
+  color: var(--sa-ink-3);
+}
+
+/* Folded: a rail of round doors, the names as tooltips. */
+[data-rd='samtal'] .sa-app[data-collapsed='true'] .sa-side {
+  align-items: center;
+  padding: var(--sa-s4) 0;
+}
+
+[data-rd='samtal'] .sa-app[data-collapsed='true'] .sa-side-head {
+  flex-direction: column;
+  gap: var(--sa-s3);
+  padding: 0;
+}
+
+[data-rd='samtal'] .sa-app[data-collapsed='true'] .sa-door {
+  grid-template-columns: 44px;
+  justify-items: center;
+  width: 60px;
+  min-height: 60px;
+  padding: 8px;
+}
+
+[data-rd='samtal'] .sa-app[data-collapsed='true'] .sa-door-icon {
+  width: 44px;
+  height: 44px;
+}
+
+[data-rd='samtal'] .sa-app[data-collapsed='true'] .sa-door[aria-current='page'] {
+  background: transparent;
+  box-shadow: none;
+}
+
+[data-rd='samtal'] .sa-app[data-collapsed='true'] .sa-door-dot {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  box-shadow: 0 0 0 2px var(--sa-side);
+}
+
+[data-rd='samtal'] .sa-app[data-collapsed='true'] .sa-account {
+  justify-content: center;
+  width: 60px;
+  padding: 8px;
+}
+
+[data-rd='samtal'] .sa-tip {
+  position: relative;
+}
+
+[data-rd='samtal'] .sa-tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  z-index: 40;
+  top: 50%;
+  left: calc(100% + 10px);
+  padding: 6px 10px;
+  border-radius: var(--sa-r1);
+  background: var(--sa-tip-bg);
+  color: var(--sa-tip-ink);
+  font-size: var(--sa-t13);
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: pre;
+  pointer-events: none;
+  opacity: 0;
+  translate: -4px -50%;
+  transition:
+    opacity var(--sa-d-out) var(--sa-ease),
+    translate var(--sa-d-out) var(--sa-ease);
+}
+
+[data-rd='samtal'] .sa-tip:hover::after,
+[data-rd='samtal'] .sa-tip:focus-visible::after {
+  opacity: 1;
+  translate: 0 -50%;
+  transition-duration: var(--sa-d-in);
+}
+
+/* The account card's own tooltip would sit under the open card. */
+[data-rd='samtal'] .sa-account[aria-expanded='true']::after {
+  display: none;
+}
+
+[data-rd='samtal'] .sa-main {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+[data-rd='samtal'] .sa-col {
+  width: min(100% - 48px, 680px);
+  margin: 0 auto;
+  padding: var(--sa-s10) 0 72px;
+}
+
+/* ── Account card and sheet ──────────────────────────────────────── */
+
+[data-rd='samtal'] .sa-menu {
+  position: absolute;
+  z-index: 30;
+  width: 312px;
+  padding: var(--sa-s2);
+  border-radius: var(--sa-r2);
+  background: var(--sa-card);
+  box-shadow: var(--sa-pop);
+  animation: sa-in var(--sa-d-in) var(--sa-ease) both;
+}
+
+[data-rd='samtal'] .sa-menu[data-anchor='side'] {
+  left: 0;
+  bottom: calc(100% + var(--sa-s2));
+}
+
+[data-rd='samtal'] .sa-menu[data-anchor='rail'] {
+  left: calc(100% + var(--sa-s3));
+  bottom: 0;
+}
+
+[data-rd='samtal'] .sa-menu[data-anchor='sheet'] {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  padding: var(--sa-s2) var(--sa-s3) calc(var(--sa-s4) + env(safe-area-inset-bottom));
+  border-radius: var(--sa-r3) var(--sa-r3) 0 0;
+}
+
+[data-rd='samtal'] .sa-menu-grip {
+  display: block;
+  width: 40px;
+  height: 5px;
+  margin: 2px auto var(--sa-s2);
+  border-radius: var(--sa-pill);
+  background: var(--sa-line-2);
+}
+
+[data-rd='samtal'] .sa-menu-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-s3);
+  margin: 0 0 var(--sa-s1);
+  padding: var(--sa-s3) var(--sa-s3) var(--sa-s4);
+  border-bottom: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-menu-who {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+[data-rd='samtal'] .sa-menu-who b {
+  font-size: var(--sa-t15);
+  font-weight: 680;
+}
+
+[data-rd='samtal'] .sa-menu-who span {
+  font-size: var(--sa-t13);
+  color: var(--sa-ink-3);
+}
+
+[data-rd='samtal'] .sa-menu-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sa-s3);
+  width: 100%;
+  min-height: 44px;
+  padding: 10px var(--sa-s3);
+  border: 0;
+  border-radius: var(--sa-r1);
+  background: transparent;
+  text-align: left;
+  font-size: var(--sa-t15);
+  font-weight: 560;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-menu-item:hover {
+  background: color-mix(in oklch, var(--sa-ink) 5%, transparent);
+}
+
+[data-rd='samtal'] .sa-menu-hint {
+  font-size: var(--sa-t13);
+  font-weight: 450;
+  color: var(--sa-ink-3);
+  text-align: right;
+}
+
+[data-rd='samtal'] .sa-menu-theme {
+  padding: var(--sa-s2) var(--sa-s3) var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-menu-theme-label {
+  display: block;
+  margin-bottom: var(--sa-s2);
+  font-size: var(--sa-t13);
+  font-weight: 600;
+  color: var(--sa-ink-3);
+}
+
+/* The theme is chosen like everything else: with reply chips. */
+[data-rd='samtal'] .sa-theme-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+[data-rd='samtal'] .sa-pick {
+  min-height: 44px;
+  padding: 0 var(--sa-s4);
+  border: 1.5px solid var(--sa-plum-line);
+  border-radius: var(--sa-pill);
+  background: var(--sa-card);
+  color: var(--sa-plum-ink);
+  font-size: var(--sa-t15);
+  font-weight: 620;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-pick:hover {
+  background: var(--sa-plum-soft);
+}
+
+[data-rd='samtal'] .sa-pick[aria-pressed='true'] {
+  border-color: var(--sa-plum-fill);
+  background: var(--sa-plum-fill);
+  color: var(--sa-on-plum);
+}
+
+[data-rd='samtal'] .sa-menu-sep {
+  height: 1px;
+  margin: var(--sa-s1) var(--sa-s3);
+  border: 0;
+  background: var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-scrim {
+  position: absolute;
+  z-index: 25;
+  inset: 0;
+  background: var(--sa-scrim);
+  animation: sa-fade var(--sa-d-in) var(--sa-ease) both;
+}
+
+@keyframes sa-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ── Phone frame ─────────────────────────────────────────────────── */
+
+[data-rd='samtal'] .sa-phone {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100%;
+}
+
+[data-rd='samtal'] .sa-ptop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 60px;
+  padding: env(safe-area-inset-top) var(--sa-s2) 0 var(--sa-s4);
+}
+
+[data-rd='samtal'] .sa-avatar-btn {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-pscroll {
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--sa-s2) var(--sa-s4) var(--sa-s10);
+}
+
+[data-rd='samtal'] .sa-tabs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding: 6px var(--sa-s1) calc(6px + env(safe-area-inset-bottom));
+  background: var(--sa-side);
+  border-top: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-height: 56px;
+  padding: 4px 0 2px;
+  border: 0;
+  background: transparent;
+  color: var(--sa-ink-3);
+  font-size: var(--sa-t12);
+  font-weight: 620;
+  cursor: pointer;
+}
+
+/* The current door: a plum icon, its word in ink and a short plum bar
+ * hanging from the bar's top edge — no filled pill. */
+[data-rd='samtal'] .sa-tab[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  width: 28px;
+  height: 3px;
+  margin-left: -14px;
+  border-radius: 0 0 3px 3px;
+  background: var(--sa-plum-ink);
+}
+
+[data-rd='samtal'] .sa-tab-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+}
+
+[data-rd='samtal'] .sa-tab[aria-current='page'] {
+  color: var(--sa-ink);
+  font-weight: 720;
+}
+
+[data-rd='samtal'] .sa-tab[aria-current='page'] .sa-tab-icon {
+  color: var(--sa-plum-ink);
+}
+
+[data-rd='samtal'] .sa-tab[aria-current='page'] .sa-tab-dot {
+  display: none;
+}
+
+[data-rd='samtal'] .sa-tab-dot {
+  position: absolute;
+  top: 3px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sa-plum);
+  box-shadow: 0 0 0 2px var(--sa-side);
+}
+
+/* The account sheet floats above the bar, which stays in view. */
+[data-rd='samtal'] .sa-phone {
+  position: relative;
+  --sa-tabs-h: calc(69px + env(safe-area-inset-bottom));
+}
+
+[data-rd='samtal'] .sa-phone .sa-scrim {
+  bottom: var(--sa-tabs-h);
+}
+
+[data-rd='samtal'] .sa-phone .sa-menu[data-anchor='sheet'] {
+  bottom: var(--sa-tabs-h);
+  padding-bottom: var(--sa-s3);
+}
+
+/* ── Idag ────────────────────────────────────────────────────────── */
+
+/* The coach's content takes the column's full width; only your turns
+ * keep an offset — one left edge, one right edge. */
+[data-rd='samtal'] .sa-turn--lead {
+  max-width: 100%;
+  padding: var(--sa-s5) var(--sa-s6) var(--sa-s6);
+}
+
+[data-rd='samtal'] .sa-hello {
+  margin-bottom: var(--sa-s2);
+  font-size: var(--sa-t17);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--sa-ink-2);
+  text-wrap: pretty;
+}
+
+[data-rd='samtal'] .sa-hello b {
+  font-weight: 700;
+  color: var(--sa-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-lead-q {
+  font-size: var(--sa-t32);
+  line-height: 1.16;
+  font-weight: 640;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* The paused text, attached to the turn like a document in a message:
+ * nested radius = the turn's 24 − its 14 px inset. */
+[data-rd='samtal'] .sa-attach {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: var(--sa-s3);
+  margin-top: var(--sa-s5);
+  padding: 14px var(--sa-s4) var(--sa-s4) 14px;
+  border-radius: var(--sa-r1);
+  background: var(--sa-doc);
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--sa-coach-2) 70%, var(--sa-line));
+}
+
+[data-rd='samtal'] .sa-attach-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 52px;
+  border-radius: 6px;
+  background: var(--sa-coach);
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-attach-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+[data-rd='samtal'] .sa-attach-title {
+  font-family: var(--sa-read);
+  font-size: var(--sa-t19);
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+[data-rd='samtal'] .sa-attach-sub {
+  display: block;
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--sa-t16);
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-attach-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sa-s2) var(--sa-s3);
+  margin-top: var(--sa-s2);
+  font-size: var(--sa-t13);
+  font-weight: 560;
+  color: var(--sa-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-attach-when {
+  font-size: var(--sa-t13);
+  color: var(--sa-ink-3);
+}
+
+[data-rd='samtal'] .sa-dots {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+}
+
+[data-rd='samtal'] .sa-dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--sa-line-2);
+}
+
+[data-rd='samtal'] .sa-dots i[data-state='done'] {
+  border-color: var(--sa-plum-ink);
+  background: var(--sa-plum-ink);
+}
+
+[data-rd='samtal'] .sa-dots i[data-state='now'] {
+  border-color: var(--sa-plum-ink);
+  box-shadow: inset 0 0 0 2px var(--sa-doc);
+  background: var(--sa-plum-ink);
+}
+
+[data-rd='samtal'] .sa-home .sa-replies {
+  margin-top: var(--sa-s2);
+}
+
+[data-rd='samtal'] .sa-later {
+  margin-top: var(--sa-s12);
+}
+
+[data-rd='samtal'] .sa-divider--quiet {
+  font-weight: 500;
+}
+
+[data-rd='samtal'] .sa-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-s3);
+}
+
+/* A message card: an attachment from the coach — white, ruled by a
+ * hairline, a small head — across the column. */
+[data-rd='samtal'] .sa-card {
+  padding: var(--sa-s4) var(--sa-s5) var(--sa-s4);
+  border-radius: var(--sa-r2);
+  background: var(--sa-card);
+  box-shadow: var(--sa-lift);
+  animation: sa-in var(--sa-d-in) var(--sa-ease) both;
+}
+
+/* A line the coach says (the recent passes): no card, no head. */
+[data-rd='samtal'] .sa-turn--line {
+  max-width: 100%;
+  padding: 12px var(--sa-s5) 14px;
+}
+
+[data-rd='samtal'] .sa-line-h {
+  display: inline;
+  margin-right: var(--sa-s3);
+  font-size: var(--sa-t15);
+  font-weight: 700;
+}
+
+[data-rd='samtal'] .sa-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sa-s1) var(--sa-s3);
+  margin-bottom: var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-card-head h2 {
+  font-size: var(--sa-t15);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+
+[data-rd='samtal'] .sa-card-head > span {
+  font-size: var(--sa-t13);
+  font-weight: 520;
+  color: var(--sa-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The plan: three numbered rows. */
+[data-rd='samtal'] .sa-plan {
+  display: flex;
+  flex-direction: column;
+  margin: 0 calc(var(--sa-s2) * -1);
+}
+
+[data-rd='samtal'] .sa-plan-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--sa-s3);
+  width: 100%;
+  min-height: 52px;
+  padding: 10px var(--sa-s2);
+  border: 0;
+  border-radius: var(--sa-r1);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-plan-row:hover {
+  background: color-mix(in oklch, var(--sa-ink) 4.5%, transparent);
+}
+
+[data-rd='samtal'] .sa-plan-n {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--sa-line-2);
+  font-size: var(--sa-t13);
+  font-weight: 650;
+  color: var(--sa-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-plan-row[data-primary='true'] .sa-plan-n {
+  box-shadow: none;
+  background: var(--sa-coach);
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-plan-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+[data-rd='samtal'] .sa-plan-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sa-s2);
+  font-size: var(--sa-t15);
+  font-weight: 660;
+  line-height: 1.35;
+}
+
+[data-rd='samtal'] .sa-plan-tag {
+  padding: 1px 8px;
+  border-radius: var(--sa-pill);
+  background: var(--sa-coach);
+  font-size: var(--sa-t12);
+  font-weight: 650;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-turn .sa-plan-tag,
+[data-rd='samtal'] .sa-turn .sa-plan-row[data-primary='true'] .sa-plan-n {
+  background: var(--sa-card);
+}
+
+[data-rd='samtal'] .sa-plan-detail {
+  font-size: var(--sa-t13);
+  color: var(--sa-ink-3);
+  line-height: 1.4;
+}
+
+[data-rd='samtal'] .sa-plan-why {
+  margin-top: 2px;
+  font-size: var(--sa-t15);
+  line-height: 1.45;
+  color: var(--sa-ink-2);
+  text-wrap: pretty;
+}
+
+[data-rd='samtal'] .sa-plan-min {
+  padding-top: 4px;
+  font-size: var(--sa-t13);
+  font-weight: 600;
+  color: var(--sa-ink-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+[data-rd='samtal'] .sa-turn .sa-plan {
+  margin-top: var(--sa-s2);
+}
+
+[data-rd='samtal'] .sa-turn .sa-plan-row:hover {
+  background: color-mix(in oklch, var(--sa-ink) 5%, transparent);
+}
+
+[data-rd='samtal'] .sa-week {
+  margin-top: var(--sa-s2);
+  padding-top: var(--sa-s3);
+  border-top: 1px solid var(--sa-line);
+  font-size: var(--sa-t13);
+  color: var(--sa-ink-3);
+}
+
+[data-rd='samtal'] .sa-turn .sa-week {
+  border-top-color: color-mix(in oklch, var(--sa-coach-2) 80%, var(--sa-ink) 6%);
+  color: var(--sa-ink-2);
+}
+
+/* The prognosis and its footnote turn. */
+[data-rd='samtal'] .sa-score-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+[data-rd='samtal'] .sa-score {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-score-n {
+  font-size: var(--sa-t32);
+  line-height: 1;
+  font-weight: 680;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-score-n sup {
+  margin-left: 1px;
+  font-size: 0.5em;
+  font-weight: 600;
+  color: var(--sa-ink-3);
+}
+
+[data-rd='samtal'] .sa-score-of {
+  font-size: var(--sa-t15);
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-score-delta {
+  margin-left: auto;
+  font-size: var(--sa-t13);
+  color: var(--sa-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-scale {
+  position: relative;
+  height: 40px;
+  margin: var(--sa-s3) 6px 0;
+}
+
+[data-rd='samtal'] .sa-scale-track {
+  position: absolute;
+  top: 9px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: var(--sa-pill);
+  background: var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-scale-range {
+  position: absolute;
+  top: 5px;
+  height: 12px;
+  border-radius: var(--sa-pill);
+  background: var(--sa-range);
+}
+
+/* The score is a tick on the track, not a handle to drag. */
+[data-rd='samtal'] .sa-scale-mark {
+  position: absolute;
+  top: 0;
+  width: 3px;
+  height: 22px;
+  margin-left: -1.5px;
+  border-radius: 2px;
+  background: var(--sa-plum-ink);
+  box-shadow: 0 0 0 2px var(--sa-card);
+}
+
+[data-rd='samtal'] .sa-scale-tick {
+  position: absolute;
+  top: 24px;
+  translate: -50% 0;
+  font-size: var(--sa-t12);
+  color: var(--sa-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-footnote {
+  display: flex;
+  gap: 6px;
+  padding: 0 var(--sa-s5);
+  font-size: var(--sa-t13);
+  line-height: 1.5;
+  color: var(--sa-ink-2);
+  text-wrap: pretty;
+}
+
+[data-rd='samtal'] .sa-footnote b {
+  font-weight: 650;
+  color: var(--sa-ink-3);
+}
+
+/* The trap and the recent passes. */
+[data-rd='samtal'] .sa-trap-name {
+  font-size: var(--sa-t17);
+  font-weight: 660;
+  line-height: 1.3;
+}
+
+[data-rd='samtal'] .sa-trap-pattern {
+  margin-top: 2px;
+  font-size: var(--sa-t15);
+  color: var(--sa-ink-2);
+}
+
+/* The recent passes, said in one line: "ORD 9/10 igår · Repetition …". */
+[data-rd='samtal'] .sa-recent {
+  display: inline;
+  font-size: var(--sa-t15);
+}
+
+/* Each pass stays whole; the line wraps between passes. */
+[data-rd='samtal'] .sa-recent li {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+[data-rd='samtal'] .sa-recent li + li::before {
+  content: '·';
+  margin: 0 var(--sa-s2);
+  color: var(--sa-ink-3);
+}
+
+[data-rd='samtal'] .sa-recent b {
+  font-weight: 650;
+}
+
+[data-rd='samtal'] .sa-recent-score {
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-recent-when {
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-turn--line .sa-link {
+  display: flex;
+  margin-top: 2px;
+}
+
+[data-rd='samtal'] .sa-stub-h {
+  margin-bottom: var(--sa-s1);
+  font-size: var(--sa-t26);
+  line-height: 1.2;
+  font-weight: 660;
+  letter-spacing: -0.015em;
+}
+
+/* ── Drill, desktop ──────────────────────────────────────────────── */
+
+[data-rd='samtal'] .sa-drill {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100%;
+}
+
+[data-rd='samtal'] .sa-drill[data-phase='done'] {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+[data-rd='samtal'] .sa-done-scroll {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* The unit's end is anchored low, as a conversation's newest turns are. */
+[data-rd='samtal'] .sa-done-scroll .sa-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100%;
+  padding: var(--sa-s12) 0 72px;
+}
+
+[data-rd='samtal'] .sa-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-s4);
+  min-height: 64px;
+  padding: 0 var(--sa-s6) 0 var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-s3);
+  font-size: var(--sa-t15);
+  font-weight: 600;
+  color: var(--sa-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 64px;
+  padding-left: var(--sa-s3);
+  border-left: 1px solid var(--sa-line);
+  color: var(--sa-ink-3);
+  font-weight: 560;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-dbody {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 600px);
+  gap: var(--sa-s8);
+  min-height: 0;
+  padding: 0 var(--sa-s6) var(--sa-s6);
+}
+
+/* The document: opaque, calm, one hairline. */
+[data-rd='samtal'] .sa-doc {
+  position: relative;
+  min-height: 0;
+  overflow-y: auto;
+  border-radius: var(--sa-r2);
+  background: var(--sa-doc);
+  box-shadow: var(--sa-lift);
+  scrollbar-gutter: stable;
+}
+
+[data-rd='samtal'] .sa-doc-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-s3);
+  min-height: 56px;
+  padding: 0 var(--sa-s3) 0 var(--sa-s6);
+  background: var(--sa-doc);
+  border-bottom: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-doc-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sa-s2);
+  font-size: var(--sa-t13);
+  font-weight: 650;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-badge {
+  padding: 2px 8px;
+  border-radius: var(--sa-pill);
+  box-shadow: inset 0 0 0 1px var(--sa-line-2);
+  font-size: var(--sa-t12);
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-doc-tools {
+  display: inline-flex;
+  gap: 2px;
+}
+
+[data-rd='samtal'] .sa-tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 var(--sa-s3);
+  border: 0;
+  border-radius: var(--sa-pill);
+  background: transparent;
+  color: var(--sa-ink-2);
+  font-size: var(--sa-t13);
+  font-weight: 620;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-tool:hover {
+  background: color-mix(in oklch, var(--sa-ink) 6%, transparent);
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-tool[aria-pressed='true'],
+[data-rd='samtal'] .sa-tool[aria-expanded='true'] {
+  background: var(--sa-coach);
+  color: var(--sa-ink);
+}
+
+/* Text passing under the sticky head fades instead of being cut. */
+[data-rd='samtal'] .sa-doc-head::after {
+  content: '';
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(var(--sa-doc), transparent);
+  pointer-events: none;
+}
+
+[data-rd='samtal'] .sa-doc-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--sa-s8) var(--sa-s10) 96px var(--sa-s4);
+}
+
+/* The authorship note: a quiet aside, not a passage paragraph. */
+[data-rd='samtal'] .sa-note {
+  max-width: 34em;
+  margin: 0 0 var(--sa-s6) 52px;
+  padding: var(--sa-s3) var(--sa-s4);
+  border-radius: var(--sa-r1);
+  background: var(--sa-page);
+  box-shadow: inset 0 0 0 1px var(--sa-line);
+  font-size: var(--sa-t15);
+  line-height: 1.5;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-note[hidden] {
+  display: none;
+}
+
+[data-rd='samtal'] .sa-doc-title {
+  max-width: 22em;
+  margin: 0 0 var(--sa-s6) 52px;
+  font-family: var(--sa-read);
+  font-size: var(--sa-t26);
+  line-height: 1.22;
+  font-weight: 600;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+}
+
+[data-rd='samtal'] .sa-doc-title span {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--sa-t19);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--sa-ink-2);
+}
+
+/* The measure: about 60 characters of Lora at 19 px beside the margin. */
+[data-rd='samtal'] .sa-pbody {
+  max-width: calc(52px + 35rem);
+}
+
+[data-rd='samtal'] .sa-para {
+  position: relative;
+  margin: 0 0 0.9em;
+  padding: 0 0 0 52px;
+  border-radius: var(--sa-r1);
+  font-family: var(--sa-read);
+  font-size: var(--sa-t19);
+  line-height: 1.62;
+  color: var(--sa-ink);
+  hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  text-wrap: pretty;
+  transition:
+    opacity var(--sa-d-in) var(--sa-ease),
+    background var(--sa-d-out) var(--sa-ease);
+}
+
+/* The ¶ number, on the paragraph's first line in the margin. */
+[data-rd='samtal'] .sa-pnum {
+  position: absolute;
+  top: 0;
+  left: 6px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 1.62em;
+  padding: 0;
+  border: 0;
+  border-radius: var(--sa-pill);
+  background: transparent;
+  color: var(--sa-ink-3);
+  font-family: var(--sa-ui);
+  font-size: var(--sa-t13);
+  font-weight: 620;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-pnum::before {
+  content: '';
+  position: absolute;
+  inset: -6px -4px;
+}
+
+[data-rd='samtal'] .sa-pnum:hover {
+  color: var(--sa-ink);
+}
+
+/* After the answer the coach points at its evidence: the cited ¶ numbers
+ * take the coach's tint; the turn under the pointer lights its own. */
+[data-rd='samtal'] .sa-para[data-cited='true'] .sa-pnum {
+  background: var(--sa-coach);
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-para[data-pointed='true'] .sa-pnum {
+  background: var(--sa-plum);
+  color: var(--sa-on-plum);
+}
+
+[data-rd='samtal'] .sa-para[data-flash='true'] {
+  background: var(--sa-mark);
+  box-shadow: 0 0 0 6px var(--sa-mark);
+  transition-duration: 0ms;
+}
+
+[data-rd='samtal'] .sa-pbody[data-focus='true'] .sa-para:not([data-focused='true']) {
+  opacity: 0.38;
+}
+
+[data-rd='samtal'] .sa-para[data-focused='true'] .sa-pnum {
+  background: var(--sa-ink);
+  color: var(--sa-page);
+}
+
+[data-rd='samtal'] .sa-ev {
+  padding: 1px 0;
+  border-radius: 3px;
+  background: color-mix(in oklch, var(--sa-mark) 72%, transparent);
+  color: inherit;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background var(--sa-d-out) var(--sa-ease);
+}
+
+/* Why the chosen option is wrong: a dotted underline until pointed at. */
+[data-rd='samtal'] .sa-ev[data-kind='wrong'] {
+  background: transparent;
+  text-decoration: underline dotted var(--sa-bad);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+[data-rd='samtal'] .sa-ev[data-active='true'],
+[data-rd='samtal'] .sa-ev[data-flash='true'] {
+  background: var(--sa-mark-2);
+}
+
+[data-rd='samtal'] .sa-byline {
+  margin: var(--sa-s6) 0 0 52px;
+  font-family: var(--sa-read);
+  font-size: var(--sa-t17);
+  font-style: italic;
+  color: var(--sa-ink-2);
+}
+
+/* The conversation column. */
+[data-rd='samtal'] .sa-talk {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* The thread's top edge fades, so a turn scrolling away is never cut in
+ * half (the padding keeps the first turn clear of it); the action bar at
+ * the foot carries its own fade. */
+[data-rd='samtal'] .sa-thread--drill {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--sa-s4) var(--sa-s1) 0;
+  scrollbar-width: thin;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 var(--sa-s4));
+  mask-image: linear-gradient(to bottom, transparent, #000 var(--sa-s4));
+}
+
+[data-rd='samtal'] .sa-turn--q {
+  max-width: var(--sa-lane);
+}
+
+[data-rd='samtal'] .sa-q {
+  font-size: var(--sa-t22);
+  line-height: 1.32;
+  font-weight: 640;
+  letter-spacing: -0.012em;
+  text-wrap: pretty;
+}
+
+[data-rd='samtal'] .sa-turn--q[data-phase='feedback'] .sa-q {
+  font-size: var(--sa-t17);
+  font-weight: 600;
+}
+
+/* The options: replies in your lane, shaped like your turns (the speaker
+ * corner top right), each with its strike control inside the card. They
+ * share one right edge with the action bar. */
+[data-rd='samtal'] .sa-opts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-s2);
+  margin-top: var(--sa-s1);
+}
+
+[data-rd='samtal'] .sa-opt {
+  position: relative;
+  padding-left: var(--sa-s12);
+  animation: sa-in var(--sa-d-in) var(--sa-ease) both;
+}
+
+[data-rd='samtal'] .sa-opt-main {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--sa-s3);
+  width: 100%;
+  min-height: 56px;
+  padding: 12px 56px 12px var(--sa-s3);
+  /* Four outlines in a row would shout: the line is part plum, the
+   * letter carries the colour. */
+  border: 1.5px solid color-mix(in oklch, var(--sa-plum-line) 60%, var(--sa-line));
+  border-radius: var(--sa-r2) var(--sa-r0) var(--sa-r2) var(--sa-r2);
+  background: var(--sa-card);
+  color: var(--sa-ink);
+  font-size: var(--sa-t16);
+  line-height: 1.45;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background var(--sa-d-in) var(--sa-ease),
+    border-color var(--sa-d-in) var(--sa-ease),
+    color var(--sa-d-in) var(--sa-ease);
+}
+
+[data-rd='samtal'] .sa-opt-main:hover {
+  background: var(--sa-plum-soft);
+}
+
+[data-rd='samtal'] .sa-letter {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--sa-plum-line);
+  color: var(--sa-plum-ink);
+  font-size: var(--sa-t15);
+  font-weight: 700;
+  line-height: 1;
+}
+
+[data-rd='samtal'] .sa-opt-text {
+  padding-top: 2px;
+  text-wrap: pretty;
+}
+
+/* Chosen: the option becomes your turn — your tint, a solid plum line, a
+ * filled letter. Solid plum stays the action's alone. */
+[data-rd='samtal'] .sa-opt[data-state='selected'] .sa-opt-main {
+  border: 2px solid var(--sa-plum-ink);
+  background: var(--sa-you);
+}
+
+[data-rd='samtal'] .sa-opt[data-state='selected'] .sa-letter {
+  box-shadow: none;
+  background: var(--sa-plum-fill);
+  color: var(--sa-on-plum);
+}
+
+[data-rd='samtal'] .sa-opt[data-state='eliminated'] .sa-opt-main {
+  border-style: dashed;
+  border-color: var(--sa-line-2);
+  background: transparent;
+  color: var(--sa-ink-3);
+}
+
+[data-rd='samtal'] .sa-opt[data-state='eliminated'] .sa-opt-text {
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in oklch, var(--sa-ink-3) 70%, transparent);
+}
+
+[data-rd='samtal'] .sa-opt[data-state='eliminated'] .sa-letter {
+  box-shadow: inset 0 0 0 1.5px var(--sa-line-2);
+  color: var(--sa-ink-3);
+}
+
+/* The strike control, inside the card's top-right corner. */
+[data-rd='samtal'] .sa-opt-x {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--sa-ink-3);
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-opt-x:hover {
+  background: color-mix(in oklch, var(--sa-ink) 6%, transparent);
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-opt-x[aria-pressed='true'] {
+  color: var(--sa-ink-2);
+}
+
+/* The action bar: status and action on one flat line — nothing to type
+ * into. It follows the thread, and sticks to the column's foot over a
+ * fade once the thread is longer than the column. */
+[data-rd='samtal'] .sa-dock {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-s3);
+  margin-top: var(--sa-s1);
+  padding: var(--sa-s6) 0 var(--sa-s5) var(--sa-s12);
+  background: linear-gradient(to bottom, transparent, var(--sa-page) var(--sa-s6));
+}
+
+[data-rd='samtal'] .sa-dock-status {
+  min-width: 0;
+  font-size: var(--sa-t15);
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-dock-pick {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin: 0 var(--sa-s2) 0 4px;
+  border-radius: 50%;
+  background: var(--sa-you);
+  box-shadow: inset 0 0 0 2px var(--sa-plum-ink);
+  color: var(--sa-ink);
+  font-weight: 700;
+}
+
+/* "Visa allt": a quiet outlined chip — it never reads as typed text. */
+[data-rd='samtal'] .sa-chip--quiet {
+  border-color: var(--sa-line-2);
+  background: transparent;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-chip--quiet:hover {
+  background: color-mix(in oklch, var(--sa-ink) 5%, transparent);
+}
+
+[data-rd='samtal'] .sa-chip--quiet[aria-expanded='true'] {
+  border-color: var(--sa-plum-line);
+  background: var(--sa-plum-soft);
+  color: var(--sa-plum-ink);
+}
+
+[data-rd='samtal'] .sa-send {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sa-s3);
+  min-height: 48px;
+  padding: 0 var(--sa-s3) 0 var(--sa-s6);
+  border: 0;
+  border-radius: var(--sa-pill);
+  background: var(--sa-plum-fill);
+  color: var(--sa-on-plum);
+  font-size: var(--sa-t16);
+  font-weight: 680;
+  cursor: pointer;
+  transition: background var(--sa-d-in) var(--sa-ease);
+}
+
+[data-rd='samtal'] .sa-send:hover {
+  background: var(--sa-plum-fill-2);
+}
+
+[data-rd='samtal'] .sa-send:disabled {
+  background: var(--sa-side);
+  color: var(--sa-ink-3);
+  box-shadow: inset 0 0 0 1px var(--sa-line);
+  cursor: not-allowed;
+}
+
+[data-rd='samtal'] .sa-send:disabled .sa-kbd {
+  border-color: var(--sa-line-2);
+  color: var(--sa-ink-3);
+}
+
+/* The keys, said quietly in the status line. */
+[data-rd='samtal'] .sa-dock-keys {
+  font-size: var(--sa-t13);
+  line-height: 1.8;
+  color: var(--sa-ink-3);
+}
+
+[data-rd='samtal'] .sa-dock-keys .sa-kbd {
+  min-width: 20px;
+  height: 20px;
+  margin: 0 2px;
+  font-size: 11px;
+}
+
+/* ── Facit ───────────────────────────────────────────────────────── */
+
+/* Your answer: your turn, labelled inside like the coach's question. */
+[data-rd='samtal'] .sa-turn--answer {
+  padding: 10px var(--sa-s5) 14px var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-turn--answer .sa-turn-label {
+  margin: 0 0 4px 42px;
+  color: var(--sa-plum-ink);
+}
+
+[data-rd='samtal'] .sa-answer {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: var(--sa-s3);
+  font-size: var(--sa-t16);
+  line-height: 1.45;
+}
+
+[data-rd='samtal'] .sa-turn--answer .sa-letter {
+  box-shadow: none;
+  background: var(--sa-plum-fill);
+  color: var(--sa-on-plum);
+}
+
+[data-rd='samtal'] .sa-answer-text {
+  padding-top: 3px;
+  font-weight: 500;
+  text-wrap: pretty;
+}
+
+/* The verdict: a ringed glyph and a word. Red lives only in the ring. */
+[data-rd='samtal'] .sa-verdict-line {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-s3);
+  font-size: var(--sa-t19);
+  line-height: 1.3;
+}
+
+[data-rd='samtal'] .sa-verdict-line b {
+  font-weight: 720;
+}
+
+[data-rd='samtal'] .sa-verdict-glyph {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px currentColor;
+  color: var(--sa-bad);
+}
+
+[data-rd='samtal'] .sa-verdict[data-correct='true'] .sa-verdict-glyph {
+  color: var(--sa-ok);
+}
+
+[data-rd='samtal'] .sa-key {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 6px var(--sa-s3);
+  margin-top: var(--sa-s3);
+  padding: 12px var(--sa-s4) 12px var(--sa-s3);
+  border-radius: var(--sa-r1);
+  background: var(--sa-card);
+  box-shadow: inset 3px 0 0 var(--sa-ok);
+}
+
+[data-rd='samtal'] .sa-key .sa-letter {
+  box-shadow: inset 0 0 0 2px var(--sa-ok);
+  color: var(--sa-ok);
+}
+
+[data-rd='samtal'] .sa-key-text {
+  padding-top: 3px;
+  font-size: var(--sa-t16);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+[data-rd='samtal'] .sa-key-tag {
+  grid-column: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--sa-t13);
+  font-weight: 650;
+  color: var(--sa-ok);
+}
+
+[data-rd='samtal'] .sa-cites {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--sa-s2);
+}
+
+[data-rd='samtal'] .sa-cites-see {
+  margin-right: 2px;
+  font-size: var(--sa-t13);
+  font-weight: 560;
+  color: var(--sa-ink-3);
+}
+
+[data-rd='samtal'] .sa-cite {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  min-width: 40px;
+  height: 30px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--sa-pill);
+  background: var(--sa-card);
+  box-shadow: inset 0 0 0 1px var(--sa-coach-2);
+  color: var(--sa-ink);
+  font-size: var(--sa-t13);
+  font-weight: 680;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-cite::before {
+  content: '';
+  position: absolute;
+  inset: -7px -3px;
+}
+
+[data-rd='samtal'] .sa-cite:hover {
+  background: var(--sa-mark);
+}
+
+[data-rd='samtal'] .sa-stepref {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--sa-plum-ink);
+  font-weight: 620;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-group[data-active='true'] .sa-turn--coach,
+[data-rd='samtal'] .sa-step[data-active='true'] {
+  box-shadow: inset 0 0 0 1.5px var(--sa-coach-2);
+}
+
+/* The coach's one real question gets its reply chips right under it —
+ * compact, so the three replies and "Hoppa över" share a line. */
+[data-rd='samtal'] .sa-replies--ask {
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0 var(--sa-s1);
+}
+
+[data-rd='samtal'] .sa-replies--ask .sa-chip {
+  padding: 0 var(--sa-s4);
+  font-size: var(--sa-t15);
+}
+
+[data-rd='samtal'] .sa-replies--ask .sa-quiet {
+  padding: 0 var(--sa-s2);
+}
+
+/* The walk-through: the coach's notes, untinted, under a hairline — no
+ * more bubbles once the dialogue about your pick is done. */
+[data-rd='samtal'] .sa-notes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-s5);
+  margin-top: var(--sa-s5);
+  padding: 0 var(--sa-s1);
+}
+
+[data-rd='samtal'] .sa-notes-h {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-s3);
+  font-size: var(--sa-t13);
+  font-weight: 650;
+  color: var(--sa-ink-3);
+}
+
+[data-rd='samtal'] .sa-notes-h::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-notes-item-h {
+  margin-bottom: 4px;
+  font-size: var(--sa-t15);
+  font-weight: 720;
+  line-height: 1.35;
+  color: var(--sa-ink);
+}
+
+/* Step by step: a numbered list in the notes. */
+[data-rd='samtal'] .sa-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: var(--sa-s2) calc(var(--sa-s2) * -1) 0;
+}
+
+[data-rd='samtal'] .sa-step {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: var(--sa-s3);
+  padding: 10px var(--sa-s2);
+  border-radius: var(--sa-r1);
+  transition: box-shadow var(--sa-d-out) var(--sa-ease);
+}
+
+[data-rd='samtal'] .sa-step-n {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--sa-coach);
+  font-size: var(--sa-t13);
+  font-weight: 700;
+  color: var(--sa-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-step[data-tier='detail'] .sa-step-n {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--sa-coach-2);
+}
+
+[data-rd='samtal'] .sa-step-main {
+  min-width: 0;
+  padding-top: 3px;
+}
+
+[data-rd='samtal'] .sa-step-title {
+  font-size: var(--sa-t15);
+  font-weight: 680;
+  line-height: 1.35;
+}
+
+[data-rd='samtal'] .sa-step-text {
+  margin-top: 4px;
+  font-size: var(--sa-t16);
+  line-height: 1.58;
+  text-wrap: pretty;
+  hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+}
+
+[data-rd='samtal'] .sa-step-foot {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sa-s2) var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-step-foot:empty {
+  display: none;
+}
+
+[data-rd='samtal'] .sa-step-foot .sa-cites {
+  margin-top: var(--sa-s2);
+}
+
+[data-rd='samtal'] .sa-step-foot .sa-ask-more {
+  margin-top: var(--sa-s2);
+}
+
+/* The other options, folded: small white cards in the notes. */
+[data-rd='samtal'] .sa-other {
+  margin-top: var(--sa-s2);
+  padding: var(--sa-s3) var(--sa-s3) 14px;
+  border-radius: var(--sa-r1);
+  background: var(--sa-card);
+  box-shadow: var(--sa-lift);
+}
+
+[data-rd='samtal'] .sa-other-head {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: var(--sa-s3);
+  margin-bottom: var(--sa-s2);
+}
+
+[data-rd='samtal'] .sa-other .sa-letter {
+  box-shadow: inset 0 0 0 1.5px var(--sa-line-2);
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-other-text {
+  padding-top: 3px;
+  font-size: var(--sa-t15);
+  line-height: 1.45;
+  color: var(--sa-ink-2);
+  text-wrap: pretty;
+}
+
+[data-rd='samtal'] .sa-other > .sa-ask-more {
+  margin-left: 42px;
+}
+
+[data-rd='samtal'] .sa-other-body {
+  margin: var(--sa-s3) 0 0 42px;
+}
+
+[data-rd='samtal'] .sa-other-sub {
+  margin: var(--sa-s3) 0 2px;
+  font-size: var(--sa-t13);
+  font-weight: 680;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-other-sub:first-child {
+  margin-top: 0;
+}
+
+[data-rd='samtal'] .sa-other[data-active='true'] {
+  box-shadow: inset 0 0 0 1.5px var(--sa-coach-2);
+}
+
+/* A system line: no bubble, centred under the coach's turns. */
+[data-rd='samtal'] .sa-sysnote {
+  margin-top: var(--sa-s2);
+  font-size: var(--sa-t13);
+  color: var(--sa-ink-3);
+  text-align: center;
+}
+
+[data-rd='samtal'] .sa-sysnote b {
+  font-weight: 650;
+  color: var(--sa-ink-2);
+}
+
+/* The end of the unit. */
+[data-rd='samtal'] .sa-closing .sa-hello {
+  font-family: var(--sa-read);
+  font-style: italic;
+  font-weight: 500;
+}
+
+[data-rd='samtal'] .sa-tally {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sa-s2);
+  margin: var(--sa-s4) 0 var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-tally li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 12px 0 6px;
+  border-radius: var(--sa-pill);
+  background: var(--sa-card);
+  font-size: var(--sa-t13);
+  font-weight: 620;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-tally-glyph {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+  color: var(--sa-ok);
+}
+
+[data-rd='samtal'] .sa-tally li[data-correct='false'] .sa-tally-glyph {
+  color: var(--sa-ink-3);
+}
+
+/* ── Drill, phone ────────────────────────────────────────────────── */
+
+[data-rd='samtal'] .sa-pdrill {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: var(--sa-doc);
+}
+
+[data-rd='samtal'] .sa-phead {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sa-s2);
+  height: 56px;
+  padding: env(safe-area-inset-top) var(--sa-s2) 0 4px;
+  background: var(--sa-page);
+  transition: height var(--sa-d-tray) var(--sa-ease);
+}
+
+[data-rd='samtal'] .sa-phead-pos {
+  justify-self: center;
+  font-size: var(--sa-t15);
+  font-weight: 650;
+  color: var(--sa-ink-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+[data-rd='samtal'] .sa-phead-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+[data-rd='samtal'] .sa-icon-ghost {
+  justify-content: center;
+  width: 44px;
+  padding: 0;
+}
+
+[data-rd='samtal'] .sa-phead .sa-clock {
+  min-width: 0;
+  padding: 0 var(--sa-s2) 0 var(--sa-s2);
+  font-size: var(--sa-t15);
+}
+
+[data-rd='samtal'] .sa-phead-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-phead-line i {
+  display: block;
+  height: 100%;
+  background: var(--sa-plum);
+}
+
+/* While reading, the head folds to the exit and the progress line. */
+[data-rd='samtal'] .sa-phead[data-compact='true'] {
+  height: 44px;
+}
+
+[data-rd='samtal'] .sa-phead[data-compact='true'] .sa-phead-pos,
+[data-rd='samtal'] .sa-phead[data-compact='true'] .sa-phead-tools,
+[data-rd='samtal'] .sa-phead[data-compact='true'] .sa-exit-word {
+  display: none;
+}
+
+[data-rd='samtal'] .sa-pdoc {
+  position: absolute;
+  inset: 56px 0 0;
+  overflow-y: auto;
+}
+
+[data-rd='samtal'] .sa-pdrill .sa-doc {
+  overflow: visible;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+[data-rd='samtal'] .sa-pdrill .sa-doc-head {
+  position: static;
+  min-height: 52px;
+  padding: 0 var(--sa-s2) 0 var(--sa-s4);
+  border-bottom: 0;
+}
+
+[data-rd='samtal'] .sa-pdrill .sa-doc-head::after {
+  display: none;
+}
+
+[data-rd='samtal'] .sa-pdrill .sa-doc-inner {
+  padding: var(--sa-s2) var(--sa-s5) 0 var(--sa-s1);
+}
+
+[data-rd='samtal'] .sa-pdrill .sa-note {
+  margin: 0 0 var(--sa-s5) 36px;
+}
+
+[data-rd='samtal'] .sa-pdrill .sa-doc-title {
+  margin: 0 0 var(--sa-s5) 36px;
+  font-size: var(--sa-t22);
+}
+
+[data-rd='samtal'] .sa-pdrill .sa-doc-title span {
+  font-size: var(--sa-t17);
+}
+
+[data-rd='samtal'] .sa-pdrill .sa-para {
+  padding-left: 36px;
+  font-size: 17.5px;
+  line-height: 1.6;
+}
+
+[data-rd='samtal'] .sa-pdrill .sa-pnum {
+  left: 0;
+  width: 30px;
+  font-size: var(--sa-t12);
+}
+
+[data-rd='samtal'] .sa-pdrill .sa-byline {
+  margin-left: 36px;
+}
+
+/* Room under the passage, so its last lines scroll clear of the peek. It is
+ * the same in every tray state: a shorter range would pull a reader at the
+ * end of the text upward as the tray opens. */
+[data-rd='samtal'] .sa-pdoc-spacer {
+  height: 300px;
+}
+
+/* The reply tray, docked to the bottom. It never moves the passage. */
+[data-rd='samtal'] .sa-tray {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 52%;
+  padding: 0 var(--sa-s3) calc(var(--sa-s3) + env(safe-area-inset-bottom));
+  border-radius: var(--sa-r3) var(--sa-r3) 0 0;
+  background: var(--sa-page);
+  box-shadow: var(--sa-tray-shadow);
+  transition: max-height var(--sa-d-tray) var(--sa-ease);
+}
+
+[data-rd='samtal'] .sa-tray[data-state='open'] {
+  max-height: 80%;
+}
+
+[data-rd='samtal'] .sa-tray[data-state='full'] {
+  top: 56px;
+  max-height: none;
+  border-radius: var(--sa-r3) var(--sa-r3) 0 0;
+}
+
+[data-rd='samtal'] .sa-tray-grab {
+  position: relative;
+  flex: none;
+  height: 22px;
+  margin: 0 auto;
+  width: 96px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+
+[data-rd='samtal'] .sa-tray-grab::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 40px;
+  height: 5px;
+  margin-left: -20px;
+  border-radius: var(--sa-pill);
+  background: var(--sa-line-2);
+}
+
+[data-rd='samtal'] .sa-tray-peek {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-s3);
+  min-height: 0;
+  overflow-y: auto;
+  padding: 2px var(--sa-s1) var(--sa-s1);
+}
+
+[data-rd='samtal'] .sa-tray-peek .sa-turn {
+  max-width: 100%;
+}
+
+[data-rd='samtal'] .sa-tray-peek .sa-q {
+  font-size: var(--sa-t19);
+}
+
+[data-rd='samtal'] .sa-tray-peek .sa-replies {
+  margin-top: 0;
+}
+
+[data-rd='samtal'] .sa-tray-peek .sa-chip {
+  min-height: 48px;
+}
+
+/* The tray's own part: its head, the conversation and the action bar. */
+[data-rd='samtal'] .sa-tray-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* While Facit's tray peeks, the explanation waits behind the peek: still
+ * laid out, so its scroll position holds, but folded to nothing, unseen and
+ * (inert) out of reach. */
+[data-rd='samtal'] .sa-tray[data-state='peek'] .sa-tray-main {
+  flex: none;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+[data-rd='samtal'] .sa-tray-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: none;
+  padding: 0 0 var(--sa-s1) var(--sa-s2);
+}
+
+[data-rd='samtal'] .sa-tray-title {
+  font-size: var(--sa-t13);
+  font-weight: 650;
+  color: var(--sa-ink-3);
+}
+
+[data-rd='samtal'] .sa-tray-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px var(--sa-s1) var(--sa-s5);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 14px,
+    #000 calc(100% - 14px),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 14px,
+    #000 calc(100% - 14px),
+    transparent
+  );
+}
+
+/* In the tray the action bar sits at the bottom, where the thumb is. */
+[data-rd='samtal'] .sa-tray .sa-dock {
+  position: static;
+  margin: 0;
+  padding: var(--sa-s2) var(--sa-s1) 0;
+  background: none;
+  border-top: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-tray-body .sa-q {
+  font-size: 18px;
+  font-weight: 640;
+}
+
+/* Phone: the lanes narrow, the voice stays the same. */
+[data-rd='samtal'][data-width='phone'] {
+  --sa-lane: calc(100% - 28px);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-turn {
+  padding: 12px var(--sa-s4) 14px;
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-turn--lead {
+  padding: var(--sa-s4) var(--sa-s4) var(--sa-s4);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-lead-q {
+  font-size: var(--sa-t26);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-q {
+  font-size: var(--sa-t19);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-say,
+[data-rd='samtal'][data-width='phone'] .sa-step-text {
+  font-size: var(--sa-t15);
+}
+
+/* Phone: the options take the tray's full width (the strike control is
+ * inside each card), so they run three lines, not five. */
+[data-rd='samtal'][data-width='phone'] .sa-opt {
+  padding-left: 0;
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-opt-main {
+  padding: 10px 52px 10px 10px;
+  font-size: var(--sa-t15);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-card {
+  padding: 14px var(--sa-s4);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-footnote {
+  padding: 0 var(--sa-s3);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-replies .sa-chip--big {
+  min-height: 52px;
+  padding: 0 18px;
+  font-size: var(--sa-t16);
+}
+
+/* Phone Idag: the one action takes the full width, the other reply sits
+ * under it on your side. */
+[data-rd='samtal'][data-width='phone'] .sa-home .sa-replies {
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-home .sa-replies .sa-chip--primary {
+  align-self: stretch;
+}
+
+/* Touch has no keys to hint at. */
+[data-rd='samtal'][data-width='phone'] .sa-chip .sa-kbd,
+[data-rd='samtal'][data-width='phone'] .sa-send .sa-kbd {
+  display: none;
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-later {
+  margin-top: var(--sa-s8);
+}
+
+/* The unit's end is anchored low, as a conversation's newest turns are. */
+[data-rd='samtal'][data-width='phone'] .sa-pdone {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  overflow-y: auto;
+  padding: var(--sa-s12) var(--sa-s4) var(--sa-s6);
+  background: var(--sa-page);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-pdrill[data-phase='done'] {
+  background: var(--sa-page);
+}
+
+/* ── Stills and motion ───────────────────────────────────────────── */
+
+/* A side-by-side thumbnail is a still picture of the screen. */
+[data-rd='samtal'][data-live='false'] *,
+[data-rd='samtal'][data-live='false'] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-rd='samtal'] *,
+  [data-rd='samtal'] *::before,
+  [data-rd='samtal'] *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
