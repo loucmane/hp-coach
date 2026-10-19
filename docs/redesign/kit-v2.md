@@ -233,7 +233,7 @@ The ids per screen are listed in `CONTRACT`:
 | 6 | `rd-quant-prompt` (math rendered), `rd-quant-option-<L>`, feedback ids |
 | 7 | `rd-figure` (an image named by the figure's alt), `rd-quant-prompt`, `rd-quant-option-<L>`, feedback ids |
 | 8 | `rd-repetera-item-<n>` (shows its section), `rd-repetera-start` (exactly one; starts a repetition) |
-| 9 | `rd-prov-half-verbal`, `rd-prov-half-kvant`, `rd-prov-pass-<pass>` (shows what was seen), `rd-prov-start` (starts the suggested pass of the hub's half), then `rd-prov-running`, `rd-prov-timer`, `rd-prov-grid`, `rd-prov-cell-<n>` (`data-answered`, `data-current`), `rd-prov-flag` (`aria-pressed`), `rd-prov-submit` |
+| 9 | `rd-prov-half-verbal`, `rd-prov-half-kvant`, `rd-prov-pass-<pass>` (shows what was seen), `rd-prov-start` (starts the suggested pass of the hub's half), then `rd-prov-running`, `rd-prov-timer`, `rd-prov-grid`, `rd-prov-cell-<n>` (`data-answered`, `data-current`), `rd-prov-flag` (`aria-pressed`), `rd-prov-submit`; a start gate or hand-in confirmation gives its accept button `rd-confirm` (the contract checks the action waits for it) |
 | 10 | `rd-prov-result`, `rd-prov-score`, `rd-prov-section-<sektion>`, `rd-prov-history`, `rd-prov-history-item-<n>` |
 | 11 | `rd-framsteg-prognosis` (+ the caveat on screen), `rd-framsteg-section-<sektion>`, `rd-framsteg-week`, `rd-framsteg-history`, `rd-framsteg-history-item-<n>` |
 | 12 | `rd-uppslag-section-<sektion>`, `rd-uppslag-entry-<id>` (at least the open lesson's section; opens a lesson), `rd-lesson` (the open lesson's title), `rd-lesson-read`, `rd-lesson-practice` |

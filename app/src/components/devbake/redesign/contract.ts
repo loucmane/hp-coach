@@ -357,10 +357,18 @@ export function mountDirection(
   }
 }
 
-/** jsdom has no layout: give the scroll and resize APIs inert stand-ins. */
+/** jsdom has no layout: give the scroll and resize APIs inert stand-ins,
+ *  and the native dialog methods it lacks (showModal and close only toggle
+ *  `open`). */
 export function stubLayout(): void {
   Element.prototype.scrollTo ??= () => {}
   Element.prototype.scrollIntoView ??= () => {}
+  HTMLDialogElement.prototype.showModal ??= function (this: HTMLDialogElement) {
+    this.open = true
+  }
+  HTMLDialogElement.prototype.close ??= function (this: HTMLDialogElement) {
+    this.open = false
+  }
   globalThis.ResizeObserver ??= class {
     observe() {}
     unobserve() {}
@@ -413,6 +421,19 @@ function expectRenderedMath(el: HTMLElement): void {
  *  has loaded can be answered in a test. Harmless for the others. */
 export function loadImages(): void {
   for (const img of Array.from(document.querySelectorAll('img'))) fireEvent.load(img)
+}
+
+/** Presses `testId`; if the direction guards that step with a confirmation
+ *  (its accept button is `rd-confirm`), checks that `action` has not run
+ *  yet and accepts it. Then `action` must have run. */
+function pressThroughGate(testId: string, action: Mock): void {
+  fireEvent.click(screen.getByTestId(testId))
+  const accept = screen.queryByTestId('rd-confirm')
+  if (accept) {
+    expect(action).not.toHaveBeenCalled()
+    fireEvent.click(accept)
+  }
+  expect(action).toHaveBeenCalled()
 }
 
 /** Locks `letter` on the current quant question (rd-quant-option-<L>),
@@ -667,7 +688,7 @@ export function describeDirectionContract(
           expect(screen.getByTestId(`rd-prov-pass-${passSlug(suggested.id)}`)).toHaveTextContent(
             String(suggested.seenBefore),
           )
-          fireEvent.click(screen.getByTestId('rd-prov-start'))
+          pressThroughGate('rd-prov-start', vi.mocked(actions.startProvpass))
           expect(actions.startProvpass).toHaveBeenCalledWith(running.passId)
           expect(screen.getByTestId('rd-prov-running')).toBeInTheDocument()
           expect(screen.getByTestId('rd-prov-timer')).toHaveTextContent('31:12')
@@ -684,8 +705,7 @@ export function describeDirectionContract(
           const before = flag.getAttribute('aria-pressed')
           fireEvent.click(flag)
           expect(screen.getByTestId('rd-prov-flag')).not.toHaveAttribute('aria-pressed', before)
-          fireEvent.click(screen.getByTestId('rd-prov-submit'))
-          expect(actions.submitProvpass).toHaveBeenCalled()
+          pressThroughGate('rd-prov-submit', vi.mocked(actions.submitProvpass))
         })
       }
 
