@@ -408,9 +408,20 @@ function expectRenderedMath(el: HTMLElement): void {
   expect(el.textContent).not.toMatch(/\\(?:frac|dfrac|tfrac|sqrt|cdot)/)
 }
 
-/** Locks `letter` on the current quant question (rd-quant-option-<L>). */
+/** jsdom never loads images: fire `load` on every image on screen, so a
+ *  direction that keeps a figure question unanswerable until its figure
+ *  has loaded can be answered in a test. Harmless for the others. */
+export function loadImages(): void {
+  for (const img of Array.from(document.querySelectorAll('img'))) fireEvent.load(img)
+}
+
+/** Locks `letter` on the current quant question (rd-quant-option-<L>),
+ *  after its figures have "loaded". */
 function lockQuant(letter: string): void {
-  fireEvent.click(reveal(`rd-quant-option-${letter}`))
+  loadImages()
+  const option = reveal(`rd-quant-option-${letter}`)
+  loadImages() // a phone sheet may have just mounted option figures
+  fireEvent.click(option)
   fireEvent.click(screen.getByTestId('rd-lock'))
 }
 

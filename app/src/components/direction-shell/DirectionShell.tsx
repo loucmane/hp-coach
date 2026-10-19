@@ -9,14 +9,52 @@ import { DirectionSwitcher } from './DirectionSwitcher'
 import './directionShell.css'
 
 type DirectionProps = import('@/components/devbake/redesign/r1Kit').DirectionProps
+type AppScreenKey = import('@/components/devbake/redesign/r1Kit').AppScreenKey
 
 // This second boundary keeps even the registry behind import(). Its STAGES
-// entries in turn load only the chosen direction's code and CSS.
+// entries in turn load only the chosen direction's code and CSS. The stage
+// sits in the bake-off's data provider (kit v2): the same fixture data, and
+// actions mapped onto this shell's screen and theme. Without it a
+// direction's host actions (go, openRepetera, the drill controller …) are
+// no-ops here. A screen the direction has not built shows the shared card.
 const DirectionStage = lazy(() =>
-  import('@/components/devbake/redesign/directions').then(({ STAGES }) => ({
-    default: ({ direction, ...props }: DirectionProps & { direction: DirectionKey }) => {
-      const Stage = STAGES[direction]
-      return <Stage {...props} />
+  Promise.all([
+    import('@/components/devbake/redesign/directions'),
+    import('@/components/devbake/redesign/directionData'),
+    import('@/components/devbake/redesign/DirectionStub'),
+  ]).then(([registry, { DirectionDataProvider, useBakeoffDirectionData }, { NotBuilt }]) => ({
+    default: function StagedDirection({
+      direction,
+      onAppScreen,
+      ...props
+    }: DirectionProps & { direction: DirectionKey; onAppScreen: (screen: AppScreenKey) => void }) {
+      const meta = registry.DIRECTIONS.find((d) => d.key === direction)
+      const Stage = registry.STAGES[direction]
+      const { data, actions } = useBakeoffDirectionData({
+        screen: props.screen,
+        theme: props.theme,
+        onScreen: onAppScreen,
+        onTheme: props.onTheme,
+      })
+      return (
+        <DirectionDataProvider data={data} actions={actions}>
+          {/* A host action can ask for any screen; one the direction has not
+              built gets the bake-off's shared card, as there. */}
+          {!meta || registry.builds(meta, props.screen) ? (
+            <Stage {...props} />
+          ) : (
+            <NotBuilt
+              meta={meta}
+              built={registry.screensOf(meta)}
+              screen={props.screen}
+              width={props.width}
+              theme={props.theme}
+              live={props.live}
+              onScreen={onAppScreen}
+            />
+          )}
+        </DirectionDataProvider>
+      )
     },
   })),
 )
@@ -56,6 +94,7 @@ export function DirectionShell({
             theme={mode}
             live={!switcherOpen}
             onScreen={setScreen}
+            onAppScreen={setScreen}
             onTheme={setMode}
           />
         </Suspense>

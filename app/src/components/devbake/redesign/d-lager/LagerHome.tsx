@@ -12,24 +12,11 @@
 import { ArrowRight, ChevronRight, TrendingUp } from 'lucide-react'
 import type { ReactNode } from 'react'
 
-import {
-  ESTIMATE_CAVEAT,
-  EXAM,
-  PLAN,
-  type PlanItem,
-  PROGNOSIS,
-  RECENT,
-  RESUME,
-  TODAY,
-  TRAPS,
-  UNIT,
-  WEEK,
-} from '@/components/devbake/redesign/r1Fixtures'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
   type Destination,
   fmtDelta,
   fmtScore,
-  parsePassage,
   useKeyMap,
   type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
@@ -42,26 +29,9 @@ const DEVICE_DEFINITE: Record<string, string> = {
   surfplatta: 'surfplattan',
 }
 
-const PLAN_DEST: Record<PlanItem['kind'], Destination> = {
-  repetition: 'ova',
-  lektion: 'uppslag',
-  övning: 'ova',
-}
-
-/** Monday first; Friday 9 October is today. Four practised days this week. */
-const WEEK_DAYS = [
-  { d: 'M', name: 'måndag', on: true },
-  { d: 'T', name: 'tisdag', on: true },
-  { d: 'O', name: 'onsdag', on: false },
-  { d: 'T', name: 'torsdag', on: true },
-  { d: 'F', name: 'fredag', on: true, today: true },
-  { d: 'L', name: 'lördag', on: false },
-  { d: 'S', name: 'söndag', on: false },
-]
-
-const FIRST_PARAGRAPH = parsePassage(UNIT.context).paragraphs[0]
-
 const capital = (s: string) => s.replace(/^./, (c) => c.toUpperCase())
+const word = (n: number) => WORDS[n] ?? String(n)
+const score = (n: number | null) => (n == null ? 'Ännu ingen prognos' : fmtScore(n))
 
 export function LagerHome({
   width,
@@ -76,64 +46,108 @@ export function LagerHome({
   onGo: (d: Destination) => void
   account: ReactNode
 }) {
-  useKeyMap({ Enter: onResume }, live)
+  const { data, actions } = useDirectionData()
+  const {
+    today: TODAY,
+    exam: EXAM,
+    resume: RESUME,
+    plan: PLAN,
+    prognosis: PROGNOSIS,
+    traps: TRAPS,
+    recent: RECENT,
+    week: WEEK,
+  } = data.home
+  const firstParagraph =
+    data.drills.reading.questions[data.drills.reading.start.index ?? 0]?.passage?.paragraphs[0]
+  const today = new Date(`${TODAY.iso.slice(0, 10)}T12:00:00Z`)
+  const monday = new Date(today)
+  monday.setUTCDate(today.getUTCDate() - ((today.getUTCDay() + 6) % 7))
+  const weekDays = Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(monday)
+    date.setUTCDate(monday.getUTCDate() + i)
+    const iso = date.toISOString().slice(0, 10)
+    return {
+      iso,
+      d: ['M', 'T', 'O', 'T', 'F', 'L', 'S'][i],
+      name: date.toLocaleDateString('sv-SE', { weekday: 'long', timeZone: 'UTC' }),
+      on: data.framsteg.days.some((d) => d.date.slice(0, 10) === iso && d.n > 0),
+      today: iso === TODAY.iso.slice(0, 10),
+    }
+  })
+  useKeyMap({ Enter: onResume }, live && RESUME != null)
   const phone = width === 'phone'
-  const left = RESUME.total - RESUME.answered
+  const left = RESUME ? RESUME.total - RESUME.answered : 0
   const primary = PLAN.items.find((i) => i.primary) ?? PLAN.items[0]
   // Sheets rise into place one by one (the field and the glass stay still).
   const rise = live ? ' la-rise' : ''
-  const paused = RESUME.pausedAt.replace('Idag · ', 'idag ')
+  const paused = RESUME?.pausedAt?.replace('Idag · ', 'idag ')
 
   const hello = (
     <div className="la-hello">
       <p className="la-date">{TODAY.dateLabel}</p>
       <h1 className="la-greet">{TODAY.greeting}.</h1>
       <p className="la-sub">
-        Du är mitt i en LÄS-text – {WORDS[left]} frågor kvar. Sedan står{' '}
-        {primary.title.toLowerCase()} på tur.
+        {RESUME
+          ? `Du är mitt i ${RESUME.section === 'LÄS' ? 'en LÄS-text' : 'en övning'} – ${word(left)} frågor kvar.`
+          : 'Dagens övning väntar.'}
+        {primary ? ` Sedan står ${primary.title.toLowerCase()} på tur.` : ''}
       </p>
     </div>
   )
 
-  const resume = (
+  const resume = RESUME ? (
     <section
       className={`la-sheet la-resume${rise}`}
       data-depth="2"
       aria-labelledby="la-resume-title"
     >
       <div className="la-resume-top">
-        <span className="la-chip la-sec" data-sec="LÄS">
+        <span className="la-chip la-sec" data-sec={RESUME.section}>
           Påbörjad · {RESUME.kind}
         </span>
-        <span className="la-resume-when">
-          {/* On the phone, "on the phone" says nothing. */}
-          Pausad {paused}
-          {phone ? null : ` på ${DEVICE_DEFINITE[RESUME.device] ?? RESUME.device}`}
-        </span>
+        {paused ? (
+          <span className="la-resume-when">
+            {/* On the phone, "on the phone" says nothing. */}
+            Pausad {paused}
+            {phone || !RESUME.device
+              ? null
+              : ` på ${DEVICE_DEFINITE[RESUME.device] ?? RESUME.device}`}
+          </span>
+        ) : null}
       </div>
       <h2 className="la-resume-title" id="la-resume-title">
         {RESUME.title}
       </h2>
       <p className="la-resume-sub">{RESUME.subtitle}</p>
       {/* A window onto the reading sheet the reader will return to. */}
-      <div className="la-peek" aria-hidden>
-        <span className="la-pn">1</span>
-        {FIRST_PARAGRAPH}
-      </div>
+      {RESUME.section === 'LÄS' && firstParagraph ? (
+        <div className="la-peek" aria-hidden>
+          <span className="la-pn">1</span>
+          {firstParagraph}
+        </div>
+      ) : null}
       <div className="la-resume-foot">
         <div className="la-progress">
           <Bars total={RESUME.total} done={RESUME.answered} />
           <span>
-            Fråga {RESUME.position} av {RESUME.total} · ca {RESUME.minutesLeft} min kvar
+            Fråga {RESUME.position} av {RESUME.total}
+            {RESUME.minutesLeft != null ? ` · ca ${RESUME.minutesLeft} min kvar` : ''}
           </span>
         </div>
         <button type="button" className="la-btn" onClick={onResume} data-testid="rd-resume">
-          Fortsätt läsa
+          {RESUME.section === 'LÄS' ? 'Fortsätt läsa' : 'Fortsätt öva'}
           <kbd className="la-kbd" aria-hidden>
             ↵
           </kbd>
         </button>
       </div>
+    </section>
+  ) : (
+    <section className={`la-sheet la-resume${rise}`} data-depth="2">
+      <h2 className="la-resume-title">En stund för nästa steg.</h2>
+      <button type="button" className="la-btn" onClick={() => onGo('ova')}>
+        Till Öva
+      </button>
     </section>
   )
 
@@ -151,7 +165,11 @@ export function LagerHome({
         <ol>
           {PLAN.items.map((item, i) => (
             <li key={item.id}>
-              <button type="button" className="la-row" onClick={() => onGo(PLAN_DEST[item.kind])}>
+              <button
+                type="button"
+                className="la-row"
+                onClick={() => actions.openPlanItem(item.id)}
+              >
                 <span className="la-row-n" aria-hidden>
                   {i + 1}
                 </span>
@@ -176,24 +194,28 @@ export function LagerHome({
           <h2 className="la-h" id="la-prog-h">
             Prognos
           </h2>
-          <span className="la-delta">
-            <TrendingUp size={15} strokeWidth={2} aria-hidden />
-            {fmtDelta(PROGNOSIS.delta)} sedan förra veckan
-          </span>
+          {PROGNOSIS.delta != null ? (
+            <span className="la-delta">
+              <TrendingUp size={15} strokeWidth={2} aria-hidden />
+              {fmtDelta(PROGNOSIS.delta)} sedan förra veckan
+            </span>
+          ) : null}
         </div>
         <p className="la-prog-n" aria-describedby="la-caveat" style={{ marginTop: 10 }}>
-          {fmtScore(PROGNOSIS.total)}
-          <sup aria-hidden>*</sup>
-          <small>av 2,0</small>
+          {score(PROGNOSIS.total)}
+          {PROGNOSIS.caveat ? <sup aria-hidden>*</sup> : null}
+          {PROGNOSIS.total != null ? <small>av 2,0</small> : null}
         </p>
         <Range />
         <p className="la-halves">
-          Verbal {fmtScore(PROGNOSIS.verbal)} · Kvant {fmtScore(PROGNOSIS.quant)}
+          Verbal {score(PROGNOSIS.verbal)} · Kvant {score(PROGNOSIS.quant)}
         </p>
-        <p className="la-caveat" id="la-caveat">
-          <span aria-hidden>*</span>
-          <span>{ESTIMATE_CAVEAT}</span>
-        </p>
+        {PROGNOSIS.caveat ? (
+          <p className="la-caveat" id="la-caveat">
+            <span aria-hidden>*</span>
+            <span>{PROGNOSIS.caveat}</span>
+          </p>
+        ) : null}
       </section>
     </div>
   )
@@ -256,7 +278,7 @@ export function LagerHome({
           Den här veckan
         </h2>
         <div className="la-week-days">
-          {WEEK_DAYS.map((day) => (
+          {weekDays.map((day) => (
             <i
               key={day.name}
               data-on={String(day.on)}
@@ -268,8 +290,10 @@ export function LagerHome({
           ))}
         </div>
         <p>
-          {WEEK.minutesToday} minuter idag. {capital(WORDS[WEEK.daysPractised])} av{' '}
-          {WORDS[WEEK.goal]} dagar – en dag till i helgen räcker för veckans mål.
+          {WEEK.minutesToday != null ? `${WEEK.minutesToday} minuter idag. ` : ''}
+          {WEEK.daysPractised != null
+            ? `${capital(word(WEEK.daysPractised))}${WEEK.goal != null ? ` av ${word(WEEK.goal)}` : ''} dagar övade.`
+            : ''}
         </p>
       </section>
     </div>
@@ -335,7 +359,10 @@ export function Bars({ total, done }: { total: number; done: number }) {
 
 /** The 0–2,0 scale: a tick for the estimate, a soft band for its range. */
 function Range() {
-  const pct = (v: number) => `${(v / PROGNOSIS.target) * 100}%`
+  const { data } = useDirectionData()
+  const PROGNOSIS = data.home.prognosis
+  if (PROGNOSIS.low == null || PROGNOSIS.high == null || PROGNOSIS.total == null) return null
+  const pct = (v: number) => `${(v / 2) * 100}%`
   return (
     <div
       className="la-range"
