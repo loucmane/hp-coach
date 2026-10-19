@@ -1,6 +1,8 @@
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { useState } from 'react'
-import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import {
   describeDirectionContract,
   spyActions,
@@ -734,5 +736,84 @@ describe('Ljuskägla Repetera', () => {
     expect(screen.getByTestId('rd-exit')).toBeInTheDocument()
     fireEvent.click(screen.getByTestId('rd-exit'))
     expect(screen.getByTestId('rd-repetera-start')).toBeInTheDocument()
+  })
+})
+
+// ── Every named grid area has its cell ──────────────────────────────
+
+describe('Ljuskägla grids', () => {
+  // Vitest leaves CSS out (css: false): load the direction's own sheet, as
+  // Samtal's tests do. jsdom lays nothing out, so this reads the cascade,
+  // not the geometry; the coordinator's browser pass checks the geometry.
+  const sheet = document.createElement('style')
+  beforeAll(() => {
+    sheet.textContent = readFileSync(
+      path.resolve(process.cwd(), 'src/components/devbake/redesign/h-ljuskagla/ljuskagla.css'),
+      'utf8',
+    )
+    document.head.appendChild(sheet)
+  })
+  afterAll(() => sheet.remove())
+
+  /** A plain track list's tracks, with the arguments of minmax() and the
+   *  like folded away (a repeat() counts as one). */
+  function tracks(list: string) {
+    let flat = list
+    for (let last = ''; flat !== last; ) {
+      last = flat
+      flat = flat.replace(/\([^()]*\)/g, '')
+    }
+    return flat.split(/\s+/).filter(Boolean)
+  }
+
+  /**
+   * Every child that a grid places by an area name, as "grid › area", and
+   * the ones it cannot place. A name the grid's template does not declare,
+   * or a template row wider or narrower than the grid's columns, leaves the
+   * child to implicit tracks: Repetera's section and prompt once shared a
+   * single implicit cell that way (review hpf-n2ra).
+   */
+  function namedAreas(root: HTMLElement) {
+    const placed: string[] = []
+    const stray: string[] = []
+    for (const child of root.querySelectorAll('*')) {
+      const area = getComputedStyle(child).getPropertyValue('grid-area').trim()
+      const grid = child.parentElement
+      if (!grid || !/^[a-z][\w-]*$/i.test(area) || area === 'auto') continue
+      const style = getComputedStyle(grid)
+      if (!style.display.includes('grid')) continue
+      const label = `${grid.getAttribute('class')} › ${area}`
+      const rows = (style.getPropertyValue('grid-template-areas').match(/"[^"]*"/g) ?? []).map(
+        (row) => row.slice(1, -1).split(/\s+/).filter(Boolean),
+      )
+      const columns = tracks(style.getPropertyValue('grid-template-columns')).length
+      placed.push(label)
+      if (!rows.some((row) => row.includes(area)) || rows.some((row) => row.length !== columns))
+        stray.push(label)
+    }
+    return { placed, stray }
+  }
+
+  it.each(
+    (meta.screens ?? []).flatMap((s) =>
+      (['desktop', 'phone'] as const).map((w) => [s, w] as const),
+    ),
+  )('screen %i on %s gives every named grid area a declared cell', (s, width) => {
+    spied(s, { width })
+    expect(namedAreas(screen.getByTestId('rd-ljuskagla')).stray).toEqual([])
+  })
+
+  // Repetera's rows are the regression; Öva's, which always declared their
+  // five areas, show that the check sees a row grid and lets a sound one pass.
+  it.each<[WidthKey, AppScreenKey, string, string[]]>([
+    ['desktop', 8, 'lj-rep-item', ['code', 'main']],
+    ['phone', 8, 'lj-rep-item', ['code', 'main']],
+    ['desktop', 5, 'lj-row', ['code', 'main', 'score', 'count', 'arrow']],
+    ['phone', 5, 'lj-row', ['code', 'main', 'score', 'count', 'arrow']],
+  ])('on %s, screen %i sets each part of a .%s in its own declared area', (width, s, grid, areas) => {
+    spied(s, { width })
+    const { placed, stray } = namedAreas(screen.getByTestId('rd-ljuskagla'))
+    expect(stray).toEqual([])
+    expect(new Set(placed)).toEqual(new Set(areas.map((area) => `${grid} › ${area}`)))
   })
 })

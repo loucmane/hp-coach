@@ -165,3 +165,35 @@ The vocabulary is round 1's throughout:
   - The screenshot pass and browser accessibility checks.
   - The stray placeholder files.
 - **Next:** B2 (9–11) can reuse `DrillHead`, `AnswerRows`, the figure workspace and the hub vocabulary (`.lj-hub-*`, `.lj-rows`, `.lj-door`) in exam mode, without feedback.
+
+## Round 2
+
+The fix for the cross-vendor Codex review hpf-n2ra (VERDICT: HOLD at `36114f045cc31fb8d6f2eeacbf44f8d2c77dfaf3`, two P2 findings).
+
+- 2026-10-19 ~22:47 UTC: claimed through the managed hook (session `ci-wisp-505aget`). The worktree was clean at `5964a2e` (round 1 with origin/main merged in, PR 418 included).
+- The review's evidence file (`…/GasCity/hpfetcher/Docs/worklogs/hpf-n2ra.md`) could not be opened: this session's read policy denies the vault directory. I worked from the bead's relay of both findings (DESIGN and NOTES).
+- **Fix, finding 1: Repetera's rows overlapped.**
+  - `app/src/components/devbake/redesign/h-ljuskagla/ljuskagla.css:361`: `.lj-rep-item` now declares `grid-template-areas: "code main"`, matching its two columns.
+  - `.lj-row-code` (`grid-area: code`, :338) now sits in the section column and `.lj-row-main` (`grid-area: main`, :340) in the prompt column.
+  - The phone rule (:418) changes only the column widths and the gap, so it keeps the same two areas.
+  - Before, neither name existed in that grid. Both resolved to the first implicit grid lines, so the section and the prompt shared one implicit cell, at both widths.
+- **Every other grid in the sheet, checked:**
+  - Named areas: `.lj-row` declares five areas over five tracks (:336) and, on a phone, two rows of four over four tracks (:416). Each of its children names a declared area. No other rule uses `grid-area`.
+  - Line numbers: `.lj-hub-grid` (:318) places its lamp, door, rows and aside on lines 1–2 of its explicit 2 × 2 grid (:319–322). On a phone it is flex (:410).
+  - Auto-placed, no names: `.lj-home-grid` (:132), `.lj-recent li` (:166), `.lj-reading-layout` (:185), `.lj-quant-layout` (:366), `.lj-quantities` (:370), `.lj-statements` (:374) and `.lj-statements li` (:375; label and statement fill its two columns).
+  - `.lj-rep-item` was the only mismatch.
+- **Test: `Ljuskagla.test.tsx:742–819`, "Ljuskägla grids".**
+  - jsdom has no layout engine, so it cannot report a computed grid placement. The test reads what jsdom 29 does have: the specificity-aware cascade of the direction's own sheet. The sheet is loaded into the document as Samtal's tests load theirs (:750), because Vitest runs with `css: false`.
+  - `namedAreas()` (:776) lists every child that its grid places by an area name. It flags the child when the grid's `grid-template-areas` does not declare that name, or when a template row's width differs from the grid's column count. Either way the child would land in implicit tracks.
+  - :801 sweeps every built screen (1–8) at both widths and expects nothing flagged.
+  - :813 pins Repetera's rows (the regression) and Öva's rows (a sound grid, the positive control): each part sits in its own declared area, at both widths.
+  - Red, then green: with the CSS line reverted, exactly the four screen-8 cases fail, with 46 flagged placements each (23 rows × code and main), and the other 16 pass. With the fix, 20 of 20 pass.
+  - **The coordinator verifies the geometry in the browser pass:** screen 8 on desktop and phone, light and dark. Check that the section code sits in the 48 px column (40 px on a phone) and the two-line prompt and its meta in the second column, with nothing overlapping.
+- **Finding 2 (`nextPlan` inert in the real-app shell): no action.** PR 418 fixed it for every direction (hpf-qr0p.42, merged as `85255f6`). Plan rows still go through `actions.openPlanItem`, and none of that code changed.
+- **Verification** (from `app/`):
+  - `pnpm typecheck`: exit 0, no output.
+  - `pnpm lint`: exit 0, "Checked 487 files … Found 4 infos". These are round 1's four pre-existing infos: three `useIndexOf` in `LandingBakeoffR3/R4A/R4C.tsx` and one `noUselessFragments` in `l12/M3.tsx`.
+  - `pnpm test`: "Test Files 107 passed (107) · Tests 1797 passed (1797)". The direction's file now has 114 tests: round 1's 94 plus 20 new. Round 1's one failure (`Redesign2026Bakeoff.test.tsx:163`) no longer occurs on the merged main.
+- **Delivery:**
+  - Changes are uncommitted and inside the write set: `ljuskagla.css` (one declaration), `Ljuskagla.test.tsx` (three imports and the grid block) and this worklog.
+  - The eleven empty sandbox placeholder dotfiles at the worktree root are back. They are untracked, not part of this work, and still need deleting from outside the sandbox.
