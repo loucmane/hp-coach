@@ -82,6 +82,7 @@ vi.mock('@/data/frameworks', () => ({
   entryHeadword: () => null,
   loadPrereqGraph: async () => ({ version: 1, edges: [] }),
 }))
+vi.mock('@/data/leverage', () => ({ loadFrameworkLeverage: async () => null }))
 vi.mock('@/api/hooks/useLessonReadsApi', () => ({
   useLessonReadsQuery: () => ({ data: emptyReads, isLoading: false }),
 }))

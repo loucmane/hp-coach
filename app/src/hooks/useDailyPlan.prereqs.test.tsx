@@ -23,7 +23,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-
+import type { FrameworkLeverage } from '@/data/leverage'
 import type { Section } from '@/data/questions'
 import type { FrameworkProgressRow } from '@/lib/frameworkProgress'
 import { markLessonRead } from '@/lib/scheduler'
@@ -55,6 +55,20 @@ const knobs = vi.hoisted(() => ({
     isError: boolean
   },
   serverReads: [] as string[],
+  leverage: null as FrameworkLeverage | null,
+  explanations: {} as Record<string, { framework_id?: string } | null | 'throw'>,
+  explanationWait: null as Promise<void> | null,
+  due: { data: [] as { questionId: string }[] | undefined, isLoading: false },
+}))
+
+vi.mock('@/data/leverage', () => ({ loadFrameworkLeverage: async () => knobs.leverage }))
+vi.mock('@/data/explanations', () => ({
+  loadExplanation: async (qid: string) => {
+    await knobs.explanationWait
+    const entry = knobs.explanations[qid]
+    if (entry === 'throw') throw new Error('offline')
+    return entry ?? null
+  },
 }))
 
 vi.mock('@/data/frameworks', async (importOriginal) => {
@@ -106,7 +120,6 @@ const statsData = {
   },
   weekly: [],
 }
-const dueData: unknown[] = []
 const topTrapsData: unknown[] = []
 const mockResultsData = [
   { half: 'verbal', createdAt: new Date('2026-05-17T09:00:00').getTime() },
@@ -117,7 +130,7 @@ vi.mock('@/api/hooks/useStats', () => ({
   useStats: () => ({ data: statsData, isLoading: false, isError: false }),
 }))
 vi.mock('@/api/hooks/useMistakes', () => ({
-  useDueMistakes: () => ({ data: dueData, isLoading: false, isError: false }),
+  useDueMistakes: () => ({ ...knobs.due, isError: false }),
 }))
 vi.mock('@/api/hooks/useTopTraps', () => ({ useTopTraps: () => topTrapsData }))
 vi.mock('@/api/hooks/useMockResults', () => ({
@@ -193,6 +206,10 @@ beforeEach(() => {
   knobs.catalogs = {}
   knobs.progress = { data: [], isLoading: false, isError: false }
   knobs.serverReads = KVA_BEFORE_014
+  knobs.leverage = null
+  knobs.explanations = {}
+  knobs.explanationWait = null
+  knobs.due = { data: [], isLoading: false }
   vi.setSystemTime(new Date('2026-05-18T10:00:00'))
 })
 
@@ -418,5 +435,167 @@ describe('useDailyPlan — prerequisite gate wiring', () => {
     knobs.progress = { data: undefined, isLoading: false, isError: true }
     markLessonRead('XYZ-TRAP-002')
     expect((await planLesson())?.framework).toBe('XYZ-TRAP-005')
+  })
+})
+
+// Complete inventory, with controlled coverage: exercises ranking through the
+// real resolver and real prerequisite gate, without depending on corpus drift.
+function leverageWith(
+  overrides: Record<string, { coverage: number; position: number | null }>,
+): FrameworkLeverage {
+  const entries = SECTIONS.flatMap(
+    (section) => (readServed(FILES[section]) as { entries: { id: string }[] }).entries,
+  )
+  return new Map(entries.map(({ id }) => [id, overrides[id] ?? { coverage: 0, position: null }]))
+}
+
+describe('resolveFrameworkHints — leverage and learner misses', () => {
+  it('introduces the later high-coverage entry, skipping read entries', async () => {
+    knobs.leverage = leverageWith({
+      'NOG-TRAP-001': { coverage: 2, position: 1 },
+      'NOG-TRAP-004': { coverage: 20, position: 5 },
+      'NOG-TRAP-005': { coverage: 12, position: 2 },
+    })
+    expect((await resolveFrameworkHints(new Set(), [])).NOG?.id).toBe('NOG-TRAP-004')
+    expect((await resolveFrameworkHints(new Set(['NOG-TRAP-004']), [])).NOG?.id).toBe(
+      'NOG-TRAP-005',
+    )
+  })
+
+  it('keeps soft-satisfied lessons ahead, then leverage within each soft group', async () => {
+    knobs.leverage = leverageWith({
+      'NOG-TRAP-001': { coverage: 2, position: 1 },
+      'NOG-TRAP-004': { coverage: 20, position: 5 },
+      'NOG-TRAP-008': { coverage: 100, position: 1 },
+    })
+    expect((await resolveFrameworkHints(new Set(), [])).NOG?.id).toBe('NOG-TRAP-004')
+    expect((await resolveFrameworkHints(new Set(['NOG-TRAP-002']), [])).NOG?.id).toBe(
+      'NOG-TRAP-008',
+    )
+  })
+
+  it('pulls forward the hard prerequisite of a high-coverage candidate, then introduces it once taught', async () => {
+    knobs.leverage = leverageWith({ 'KVA-TRAP-014': { coverage: 100, position: 1 } })
+    expect((await resolveFrameworkHints(new Set(), [])).KVA).toMatchObject({
+      id: 'XYZ-TRAP-002',
+      pulledForward: { section: 'XYZ', blockedId: 'KVA-TRAP-014' },
+    })
+    expect(
+      (await resolveFrameworkHints(new Set(['XYZ-TRAP-002', 'XYZ-TRAP-005']), [])).KVA?.id,
+    ).toBe('KVA-TRAP-014')
+  })
+
+  it('weights a single miss and ignores duplicate questions, absent tags and failed explanations', async () => {
+    knobs.leverage = leverageWith({
+      'NOG-TRAP-001': { coverage: 10, position: 1 },
+      'NOG-TRAP-004': { coverage: 9, position: 5 },
+    })
+    const qid = 'host-2020-kvant1-NOG-025'
+    knobs.explanations = { [qid]: { framework_id: 'NOG-TRAP-004' } }
+    expect((await resolveFrameworkHints(new Set(), [])).NOG?.id).toBe('NOG-TRAP-001')
+    expect((await resolveFrameworkHints(new Set(), [], [{ questionId: qid }])).NOG?.id).toBe(
+      'NOG-TRAP-004',
+    )
+
+    knobs.leverage = leverageWith({
+      'NOG-TRAP-001': { coverage: 13, position: 1 },
+      'NOG-TRAP-004': { coverage: 9, position: 5 },
+    })
+    knobs.explanations.bad = 'throw'
+    knobs.explanations.unknown = { framework_id: 'not-a-catalog-entry' }
+    const mistakes = [qid, qid, qid, qid, 'bad', 'unknown', 'untagged'].map((questionId) => ({
+      questionId,
+    }))
+    expect((await resolveFrameworkHints(new Set(), [], mistakes)).NOG?.id).toBe('NOG-TRAP-001')
+  })
+
+  it('counts P5 misses only with a framework tag from their own section', async () => {
+    knobs.leverage = leverageWith({
+      'ELF-TYPE-001': { coverage: 10, position: 1 },
+      'ELF-TYPE-003': { coverage: 9, position: 2 },
+    })
+    knobs.explanations = {
+      'p5-unit-r1-LÄS-001': { framework_id: 'ELF-TYPE-003' },
+      'p5-unit-r1-ELF-001': { framework_id: 'ELF-TYPE-003' },
+    }
+    expect(
+      (await resolveFrameworkHints(new Set(), [], [{ questionId: 'p5-unit-r1-LÄS-001' }])).ELF?.id,
+    ).toBe('ELF-TYPE-001')
+    expect(
+      (await resolveFrameworkHints(new Set(), [], [{ questionId: 'p5-unit-r1-ELF-001' }])).ELF?.id,
+    ).toBe('ELF-TYPE-003')
+  })
+
+  it('uses leverage even if the prerequisite graph fails open', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+    knobs.graph = null
+    knobs.leverage = leverageWith({ 'KVA-TRAP-014': { coverage: 100, position: 1 } })
+    expect((await resolveFrameworkHints(new Set(), [])).KVA?.id).toBe('KVA-TRAP-014')
+  })
+
+  it('fails open to the previous gated catalog behavior for mismatched leverage inventories', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const partial = new Map([['KVA-TRAP-015', { coverage: 100, position: 1 }]])
+    const extra = new Map(leverageWith({ 'KVA-TRAP-015': { coverage: 100, position: 1 } }))
+    extra.set('unknown', { coverage: 1, position: 1 })
+    for (const leverage of [null, partial, extra]) {
+      knobs.leverage = leverage
+      expect((await resolveFrameworkHints(readsBefore014(), [])).KVA).toMatchObject({
+        id: 'XYZ-TRAP-002',
+        pulledForward: { blockedId: 'KVA-TRAP-014' },
+      })
+    }
+    expect(warn).toHaveBeenCalledTimes(2)
+  })
+
+  it('allows a missing catalog while ranking the catalogs that loaded', async () => {
+    knobs.catalogs = { XYZ: null }
+    knobs.leverage = leverageWith({ 'KVA-TRAP-015': { coverage: 100, position: 1 } })
+    expect((await resolveFrameworkHints(new Set(), [])).KVA?.id).toBe('KVA-TRAP-015')
+  })
+
+  it('uses the shipped asset for a fresh learner', async () => {
+    const asset = JSON.parse(
+      readFileSync(path.join(SERVED_DIR, '..', 'leverage', 'framework_leverage.json'), 'utf8'),
+    )
+    knobs.leverage = new Map(Object.entries(asset.entries)) as FrameworkLeverage
+    const hints = await resolveFrameworkHints(new Set(), [])
+    expect(hints.ORD?.id).toBe('ORD-ROOT-001')
+    expect(hints.KVA?.id).toBe('KVA-TRAP-024')
+    expect(Object.keys(hints)).toHaveLength(8)
+  })
+})
+
+describe('useDailyPlan — leverage miss wiring', () => {
+  it('waits for the due queue and its tags before creating the first weighted plan', async () => {
+    knobs.leverage = leverageWith({
+      'KVA-TRAP-015': { coverage: 10, position: 1 },
+      'KVA-TRAP-016': { coverage: 9, position: 2 },
+    })
+    const qid = 'host-2020-kvant1-KVA-013'
+    knobs.explanations[qid] = { framework_id: 'KVA-TRAP-016' }
+    knobs.due = { data: undefined, isLoading: true }
+    const { result, rerender } = renderHook(() => useDailyPlan(), { wrapper: wrapper() })
+    await act(async () => {
+      await Promise.resolve()
+    })
+    expect(result.current.plan).toBeNull()
+
+    let resolveTags: () => void = () => {}
+    knobs.explanationWait = new Promise<void>((resolve) => {
+      resolveTags = resolve
+    })
+    knobs.due = { data: [{ questionId: qid }], isLoading: false }
+    await act(async () => {
+      rerender()
+    })
+    expect(result.current.plan).toBeNull()
+    await act(async () => {
+      resolveTags()
+    })
+    await waitFor(() => expect(result.current.plan).not.toBeNull())
+    expect(result.current.plan?.items.find((i) => i.kind === 'lesson')?.framework).toBe(
+      'KVA-TRAP-016',
+    )
   })
 })
