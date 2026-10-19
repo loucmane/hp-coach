@@ -106,6 +106,30 @@ describe('bake-off switcher', () => {
     expect(onSelect).toHaveBeenLastCalledWith({ sbs: true })
   })
 
+  it('leaves keys pressed inside an open dialog or a data-rd-keyscope region alone', () => {
+    const onSelect = vi.fn()
+    render(<Redesign2026Bakeoff sel={{ ...base, s: 7 }} onSelect={onSelect} />)
+    const dialog = document.createElement('dialog')
+    dialog.setAttribute('open', '')
+    const inDialog = document.createElement('button')
+    dialog.appendChild(inDialog)
+    const pan = document.createElement('div')
+    pan.setAttribute('data-rd-keyscope', '')
+    pan.tabIndex = 0
+    document.body.appendChild(dialog)
+    document.body.appendChild(pan)
+    for (const target of [inDialog, pan]) {
+      for (const key of ['ArrowRight', 'ArrowLeft', '1', '0']) fireEvent.keyDown(target, { key })
+    }
+    expect(onSelect).not.toHaveBeenCalled()
+    // A closed dialog is no scope: the switcher answers again.
+    dialog.removeAttribute('open')
+    fireEvent.keyDown(inDialog, { key: 'ArrowRight' })
+    expect(onSelect).toHaveBeenLastCalledWith({ s: 8 })
+    dialog.remove()
+    pan.remove()
+  })
+
   it('steps the screens with the bar’s arrows too', () => {
     const onSelect = vi.fn()
     render(<Redesign2026Bakeoff sel={{ ...base, s: 14 }} onSelect={onSelect} />)
