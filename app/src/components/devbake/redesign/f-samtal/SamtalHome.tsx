@@ -50,8 +50,13 @@ export function SamtalHome({
 }) {
   const { data, actions } = useDirectionData()
   const { today, exam, resume, plan, prognosis, traps, recent, week } = data.home
-  /** The plan's first part: offered once the text is read. */
-  const first = plan.items.find((i) => i.primary) ?? plan.items.find((i) => !i.completed) ?? null
+  /** The plan's first part still to do (the lead marker's, unless it is
+   *  done): offered once the text is read. None once the plan is done. */
+  const first = plan.allComplete
+    ? null
+    : (plan.items.find((i) => i.primary && !i.completed) ??
+      plan.items.find((i) => !i.completed) ??
+      null)
   const startFirst = () => (first ? actions.openPlanItem(first.id) : actions.go('ova'))
   useKeyMap({ Enter: resume ? onResume : startFirst }, live)
   // The reader has asked for the plan: it becomes their turn and the
@@ -290,29 +295,33 @@ function PlanList({
 }) {
   return (
     <ol className="sa-plan" data-detailed={String(detailed)}>
-      {items.map((item, i) => (
-        <li key={item.id}>
-          <button
-            type="button"
-            className="sa-plan-row"
-            data-primary={String(item.primary === true)}
-            onClick={() => onOpen(item.id)}
-          >
-            <span className="sa-plan-n" aria-hidden>
-              {i + 1}
-            </span>
-            <span className="sa-plan-body">
-              <span className="sa-plan-title">
-                {item.title}
-                {item.primary ? <span className="sa-plan-tag">Härnäst</span> : null}
+      {items.map((item, i) => {
+        // A part already done is never "Härnäst".
+        const lead = item.primary === true && !item.completed
+        return (
+          <li key={item.id}>
+            <button
+              type="button"
+              className="sa-plan-row"
+              data-primary={String(lead)}
+              onClick={() => onOpen(item.id)}
+            >
+              <span className="sa-plan-n" aria-hidden>
+                {i + 1}
               </span>
-              {item.detail ? <span className="sa-plan-detail">{item.detail}</span> : null}
-              {detailed ? <span className="sa-plan-why">{item.rationale}</span> : null}
-            </span>
-            <span className="sa-plan-min">{item.minutes}&nbsp;min</span>
-          </button>
-        </li>
-      ))}
+              <span className="sa-plan-body">
+                <span className="sa-plan-title">
+                  {item.title}
+                  {lead ? <span className="sa-plan-tag">Härnäst</span> : null}
+                </span>
+                {item.detail ? <span className="sa-plan-detail">{item.detail}</span> : null}
+                {detailed ? <span className="sa-plan-why">{item.rationale}</span> : null}
+              </span>
+              <span className="sa-plan-min">{item.minutes}&nbsp;min</span>
+            </button>
+          </li>
+        )
+      })}
     </ol>
   )
 }

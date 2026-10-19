@@ -21,17 +21,21 @@
 // question on the same page.
 // DTK, phone: the page first, full width, and the question in the reply
 // tray ("Visa figuren" folds it).
-// A missing or broken DTK page blocks the answer and says why, as does a
-// question without options. A quant diagram that fails says so in place
-// and leaves the question open, as the app's own figure does.
+// A question that lacks what it needs — its stem, its options, its DTK page
+// or diagram, missing or failed to load — cannot be graded, by Svara or by
+// Enter. It says why, offers a real retry where a load failed, and "Till
+// Öva" as the way back. A sitting without questions says so, and its one
+// way on is Öva.
 
 import { Maximize2, Minus, Plus, RotateCw, X } from 'lucide-react'
 import {
+  createContext,
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
   type PointerEvent as ReactPointerEvent,
   type Ref,
   type RefObject,
+  useContext,
   useEffect,
   useId,
   useLayoutEffect,
@@ -41,8 +45,17 @@ import {
 
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import { type DrillCoreView, useDrillCore } from '@/components/devbake/redesign/drillCore'
-import { type DirectionProps, fmtClock, useKeyMap } from '@/components/devbake/redesign/r1Kit'
-import type { DrillFigure, DrillQuestion } from '@/components/devbake/redesign/viewModel'
+import {
+  type DirectionProps,
+  fmtClock,
+  useKeyMap,
+  type WidthKey,
+} from '@/components/devbake/redesign/r1Kit'
+import type {
+  DrillFigure,
+  DrillQuestion,
+  DrillSessionView,
+} from '@/components/devbake/redesign/viewModel'
 import { isProseCondition, splitKvaPrompt } from '@/components/drill/KvaPrompt'
 import { MathText } from '@/components/MathText'
 import { parseNogPrompt } from '@/lib/nogPrompt'
@@ -57,9 +70,42 @@ import {
   useFolds,
 } from './SamtalDrill'
 import { Closing, luresFor } from './SamtalFeedback'
-import { Coach } from './SamtalParts'
+import { Coach, Divider, Kbd, Replies } from './SamtalParts'
 
 type FigureStatus = 'loading' | 'ready' | 'error'
+
+/** Load status and retries, per figure source (a DTK page or a diagram):
+ *  a failure belongs to its own source and never follows the reader to the
+ *  next one. */
+type FigureLoads = {
+  status: (src: string) => FigureStatus
+  attempt: (src: string) => number
+  report: (src: string, s: FigureStatus) => void
+  retry: (src: string) => void
+}
+
+function useFigureLoadState(): FigureLoads {
+  const [status, setStatus] = useState<Record<string, FigureStatus>>({})
+  const [attempts, setAttempts] = useState<Record<string, number>>({})
+  return {
+    status: (src) => status[src] ?? 'loading',
+    attempt: (src) => attempts[src] ?? 0,
+    report: (src, s) => setStatus((m) => (m[src] === s ? m : { ...m, [src]: s })),
+    retry: (src) => {
+      setStatus((m) => ({ ...m, [src]: 'loading' }))
+      setAttempts((m) => ({ ...m, [src]: (m[src] ?? 0) + 1 }))
+    },
+  }
+}
+
+/** The drill's figure loads, for the diagram inside the coach's turn. */
+const FigureLoadsContext = createContext<FigureLoads | null>(null)
+
+function useFigureLoads(): FigureLoads {
+  const loads = useContext(FigureLoadsContext)
+  if (!loads) throw new Error('A quant diagram is drawn inside the quant drill only')
+  return loads
+}
 
 /** A page's zoom (an index into ZOOMS) and rotation, in degrees. */
 type FigureView = { zoom: number; rotation: number }
@@ -76,12 +122,18 @@ function pct(zoom: number): string {
   return `${Math.round(zoom * 100)} %`
 }
 
-/** Why the answer cannot be sent, or null: no options, or a DTK page the
- *  question needs that is missing or failed to load. */
-function blockedReason(q: DrillQuestion, page: FigureStatus): string | null {
+/** Why the answer cannot be sent, or null: no stem, no options, or a figure
+ *  the question needs (`figure` is its load status) that is missing or
+ *  failed to load — a DTK page or a diagram. */
+function blockedReason(q: DrillQuestion, figure: FigureStatus): string | null {
+  if (!q.prompt?.trim()) return 'Frågetexten saknas, så frågan kan inte besvaras.'
   if (!q.options?.length) return 'Frågan saknar svarsalternativ och kan inte besvaras här.'
   if (q.section === 'DTK' && !q.figure) return 'Underlaget saknas, så frågan kan inte besvaras.'
-  if (page === 'error') return 'Underlaget gick inte att ladda, så frågan kan inte besvaras.'
+  if (figure === 'error') {
+    return q.figure?.kind === 'raster'
+      ? 'Underlaget gick inte att ladda, så frågan kan inte besvaras.'
+      : 'Figuren gick inte att ladda, så frågan kan inte besvaras.'
+  }
   return null
 }
 
@@ -97,9 +149,72 @@ function pageRun(questions: readonly DrillQuestion[], index: number) {
   return last > first ? { at: index - first + 1, of: last - first + 1 } : null
 }
 
-export function SamtalQuant({ screen, width, live }: DirectionProps) {
+export function SamtalQuant(props: DirectionProps) {
   const { data, actions } = useDirectionData()
-  const session = screen === 7 ? data.drills.dtk : data.drills.quant
+  const session = props.screen === 7 ? data.drills.dtk : data.drills.quant
+  // The drill core needs a question: a sitting without one never reaches it.
+  if (!session.questions.length) {
+    return (
+      <NoQuestions
+        title={session.title}
+        width={props.width}
+        live={props.live}
+        onOut={() => actions.go('ova')}
+      />
+    )
+  }
+  return <QuantDrill {...props} session={session} />
+}
+
+/** A sitting without questions: the coach says so, and the one way on is
+ *  Öva — no drill, no fabricated problem (spec §6 States). */
+function NoQuestions({
+  title,
+  width,
+  live,
+  onOut,
+}: {
+  title: string
+  width: WidthKey
+  live: boolean
+  onOut: () => void
+}) {
+  const headingId = useId()
+  useKeyMap({ Enter: onOut }, live)
+  const turn = (
+    <div className="sa-closing">
+      <Divider>{title}</Divider>
+      <div className="sa-thread">
+        <Coach as="section" kind="sa-turn--lead" aria-labelledby={headingId}>
+          <h1 className="sa-lead-q" id={headingId}>
+            Det finns ingen fråga att visa här just nu.
+          </h1>
+          <p className="sa-say sa-say--quiet">Välj något annat att öva på i Öva.</p>
+        </Coach>
+        <Replies>
+          <button type="button" className="sa-chip sa-chip--primary sa-chip--big" onClick={onOut}>
+            Till Öva
+            <Kbd>↵</Kbd>
+          </button>
+        </Replies>
+      </div>
+    </div>
+  )
+  return width === 'phone' ? (
+    <div className="sa-pdrill" data-phase="done">
+      <div className="sa-pdone">{turn}</div>
+    </div>
+  ) : (
+    <div className="sa-drill" data-phase="done">
+      <div className="sa-done-scroll">
+        <div className="sa-col">{turn}</div>
+      </div>
+    </div>
+  )
+}
+
+function QuantDrill({ width, live, session }: DirectionProps & { session: DrillSessionView }) {
+  const { data, actions } = useDirectionData()
   const { view, act, refs } = useDrillCore({
     questions: session.questions,
     explanations: session.explanations,
@@ -118,26 +233,17 @@ export function SamtalQuant({ screen, width, live }: DirectionProps) {
 
   const q = view.question
   const page = q.figure?.kind === 'raster' ? q.figure : null
-  // Per page: zoom and rotation, load status and retries. A question on the
-  // same page finds it as the last one left it.
+  // Per page: zoom and rotation. A question on the same page finds it as
+  // the last one left it.
   const [views, setViews] = useState<Record<string, FigureView>>({})
-  const [status, setStatus] = useState<Record<string, FigureStatus>>({})
-  const [attempts, setAttempts] = useState<Record<string, number>>({})
   const fig = page ? (views[page.src] ?? FIGURE_START) : FIGURE_START
-  const pageStatus: FigureStatus = page ? (status[page.src] ?? 'loading') : 'ready'
   const setFig = (patch: Partial<FigureView>) => {
     if (!page) return
     setViews((m) => ({ ...m, [page.src]: { ...(m[page.src] ?? FIGURE_START), ...patch } }))
   }
-  const setPageStatus = (s: FigureStatus) => {
-    if (!page) return
-    setStatus((m) => (m[page.src] === s ? m : { ...m, [page.src]: s }))
-  }
-  const retry = () => {
-    if (!page) return
-    setStatus((m) => ({ ...m, [page.src]: 'loading' }))
-    setAttempts((m) => ({ ...m, [page.src]: (m[page.src] ?? 0) + 1 }))
-  }
+  // Per source, page or diagram: load status and retries.
+  const loads = useFigureLoadState()
+  const figureStatus: FigureStatus = q.figure ? loads.status(q.figure.src) : 'ready'
 
   // "Förstora figur": the page over the whole drill. Esc or "Stäng figur"
   // closes it, and focus goes back to the control that opened it.
@@ -158,9 +264,12 @@ export function SamtalQuant({ screen, width, live }: DirectionProps) {
     setInspecting(true)
   }
 
-  const blocked = blockedReason(q, pageStatus)
+  const blocked = blockedReason(q, figureStatus)
   const moved = useRef(false)
+  // Nothing is graded while the question cannot be answered: not by Svara,
+  // not by Enter.
   const lock = () => {
+    if (blocked) return false
     moved.current = true
     return act.lock()
   }
@@ -173,9 +282,8 @@ export function SamtalQuant({ screen, width, live }: DirectionProps) {
   const onNext = () => (nextItem ? actions.openPlanItem(nextItem.id) : out.onClick())
 
   const advance = () => {
-    if (view.phase === 'question') {
-      if (!blocked) lock()
-    } else if (view.phase === 'feedback') next()
+    if (view.phase === 'question') lock()
+    else if (view.phase === 'feedback') next()
     else onNext()
   }
   const keys: Record<string, () => void> = {
@@ -217,6 +325,7 @@ export function SamtalQuant({ screen, width, live }: DirectionProps) {
     frameworks: data.frameworks,
     optionId: 'rd-quant-option',
     blocked,
+    out,
     focusAid: false,
     lastLabel: 'Slutför övningen',
   }
@@ -225,14 +334,14 @@ export function SamtalQuant({ screen, width, live }: DirectionProps) {
     ? {
         figure: page,
         fig,
-        status: pageStatus,
-        attempt: attempts[page.src] ?? 0,
+        status: figureStatus,
+        attempt: loads.attempt(page.src),
         run: pageRun(session.questions, view.index),
         onZoom: (dir) => setFig({ zoom: Math.min(ZOOMS.length - 1, Math.max(0, fig.zoom + dir)) }),
         onRotate: () => setFig({ rotation: (fig.rotation + 90) % 360 }),
         onInspect: inspect,
-        onStatus: setPageStatus,
-        onRetry: retry,
+        onStatus: (s) => loads.report(page.src, s),
+        onRetry: () => loads.retry(page.src),
       }
     : null
 
@@ -287,7 +396,7 @@ export function SamtalQuant({ screen, width, live }: DirectionProps) {
   }
 
   return (
-    <>
+    <FigureLoadsContext.Provider value={loads}>
       {/* Under the enlarged page the drill is out of reach. */}
       <div className="sa-qroot" inert={inspecting}>
         {body}
@@ -296,13 +405,13 @@ export function SamtalQuant({ screen, width, live }: DirectionProps) {
         <FigureInspector
           figure={page}
           rotation={fig.rotation}
-          attempt={attempts[page.src] ?? 0}
+          attempt={loads.attempt(page.src)}
           onRotate={() => setFig({ rotation: (fig.rotation + 90) % 360 })}
-          onStatus={setPageStatus}
+          onStatus={(s) => loads.report(page.src, s)}
           onClose={() => setInspecting(false)}
         />
       ) : null}
-    </>
+    </FigureLoadsContext.Provider>
   )
 }
 
@@ -521,18 +630,32 @@ function Problem({ q, headingId }: { q: DrillQuestion; headingId: string }) {
 }
 
 /** A quant diagram (SVG) on a paper plate in both themes: its lines keep
- *  the colours of the printed page. If it fails, it says so in place. */
+ *  the colours of the printed page. If it fails, it says so in place with a
+ *  real retry, and the answer waits for it (blockedReason). */
 function Diagram({ figure }: { figure: DrillFigure }) {
-  const [failed, setFailed] = useState(false)
-  if (failed) return <p className="sa-problem-missing">Figuren gick inte att ladda.</p>
+  const loads = useFigureLoads()
+  const { src } = figure
+  if (loads.status(src) === 'error') {
+    return (
+      <div className="sa-problem-missing sa-problem-failed" role="alert">
+        <p>Figuren gick inte att ladda.</p>
+        <button type="button" className="sa-chip" onClick={() => loads.retry(src)}>
+          Försök igen
+        </button>
+      </div>
+    )
+  }
   return (
     <figure className="sa-problem-fig">
       <img
-        src={`/${figure.src}`}
+        // Another source, or a retry, is a new image: nothing carries over.
+        key={`${src}#${loads.attempt(src)}`}
+        src={`/${src}`}
         alt={figure.alt}
         width={figure.width}
         height={figure.height}
-        onError={() => setFailed(true)}
+        onLoad={() => loads.report(src, 'ready')}
+        onError={() => loads.report(src, 'error')}
       />
     </figure>
   )

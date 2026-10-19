@@ -13,7 +13,11 @@
 //     DTK's page that zooms, turns, enlarges and holds for every question on
 //     it; Repetera's one bounded round; the doors and drills moving the
 //     bake-off's switcher; and every screen without the fields the real app
-//     cannot fill (kit-v2.md §7).
+//     cannot fill (kit-v2.md §7);
+//   - round 2's review (hpf-nw6s): a question without its stem, or with a
+//     diagram that failed, is never graded and offers the way back; a
+//     sitting without questions says so; a finished plan part never leads
+//     Idag; a failed diagram stays with its own source.
 
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
@@ -667,6 +671,115 @@ describe.each(WIDTHS)('F · Samtal, %s', (width) => {
     expect(screen.getByText(/Frågan saknar svarsalternativ/)).toBeInTheDocument()
   })
 
+  it.each([
+    ['no', null],
+    ['an empty', ''],
+  ] as const)('Kvantfråga: a question with %s stem cannot be graded, by Svara or by Enter, and the way back is Öva', (_, prompt) => {
+    const base = fixtureDirectionData()
+    const [xyz, ...rest] = base.drills.quant.questions
+    const { actions } = mountWith(
+      {
+        ...base,
+        drills: {
+          ...base.drills,
+          quant: { ...base.drills.quant, questions: [{ ...xyz, prompt }, ...rest] },
+        },
+      },
+      6,
+      width,
+    )
+    expect(screen.getByTestId('rd-quant-prompt')).toHaveTextContent('Frågetexten saknas.')
+    fireEvent.click(screen.getByTestId('rd-quant-option-B'))
+    const send = screen.getByTestId('rd-lock')
+    expect(send).toBeDisabled()
+    fireEvent.click(send)
+    key('Enter')
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    expect(screen.queryByTestId('rd-verdict')).toBeNull()
+    expect(screen.getByText('Frågetexten saknas, så frågan kan inte besvaras.')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Till Öva' }))
+    expect(actions.go).toHaveBeenCalledWith('ova')
+  })
+
+  it('Kvantfråga: a diagram that fails to load blocks the answer until a real retry brings it back', () => {
+    const base = fixtureDirectionData()
+    const questions = PASS_QUESTIONS.filter((q) => q.qid === 'host-2025-kvant1-XYZ-002').map((q) =>
+      drillQuestion(q),
+    )
+    const { actions } = mountWith(
+      { ...base, drills: { ...base.drills, quant: { ...base.drills.quant, questions } } },
+      6,
+      width,
+    )
+    const prompt = () => within(screen.getByTestId('rd-quant-prompt'))
+    const img = prompt().getByRole('img', { name: 'Figur till uppgift 2' })
+    fireEvent.click(screen.getByTestId('rd-quant-option-B'))
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    fireEvent.error(img)
+    expect(prompt().getByRole('alert')).toHaveTextContent('Figuren gick inte att ladda.')
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    key('Enter')
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    expect(
+      screen.getByText('Figuren gick inte att ladda, så frågan kan inte besvaras.'),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Till Öva' })).toBeInTheDocument()
+    // The retry loads the diagram afresh, and the kept choice can be sent.
+    fireEvent.click(prompt().getByRole('button', { name: 'Försök igen' }))
+    expect(prompt().queryByRole('alert')).toBeNull()
+    expect(prompt().getByRole('img', { name: 'Figur till uppgift 2' })).not.toBe(img)
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    key('Enter')
+    expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+  })
+
+  it('Kvantfråga: a failed diagram stays with its own source — the next question’s diagram shows', () => {
+    const base = fixtureDirectionData()
+    const qids = ['host-2025-kvant1-XYZ-002', 'host-2025-kvant1-XYZ-005']
+    const questions = PASS_QUESTIONS.filter((q) => qids.includes(q.qid)).map((q) =>
+      drillQuestion(q),
+    )
+    mountWith(
+      { ...base, drills: { ...base.drills, quant: { ...base.drills.quant, questions } } },
+      6,
+      width,
+    )
+    const prompt = () => within(screen.getByTestId('rd-quant-prompt'))
+    answer(questions[0].answer)
+    // The first diagram fails late, once the answer is in.
+    fireEvent.error(prompt().getByRole('img', { name: 'Figur till uppgift 2' }))
+    expect(prompt().getByText('Figuren gick inte att ladda.')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-next'))
+    expect(prompt().getByRole('img', { name: 'Figur till uppgift 5' })).toBeInTheDocument()
+    expect(prompt().queryByText('Figuren gick inte att ladda.')).toBeNull()
+    fireEvent.click(screen.getByTestId('rd-quant-option-C'))
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+  })
+
+  it.each([
+    [6, 'quant'],
+    [7, 'dtk'],
+  ] as const)('screen %s without questions says so, and its one way on is Öva', (s, drill) => {
+    const errors = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const base = fixtureDirectionData()
+    const { actions } = mountWith(
+      { ...base, drills: { ...base.drills, [drill]: { ...base.drills[drill], questions: [] } } },
+      s,
+      width,
+    )
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Det finns ingen fråga att visa här just nu.',
+    )
+    expect(screen.queryByTestId('rd-quant-prompt')).toBeNull()
+    expect(screen.queryByTestId('rd-lock')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Till Öva' }))
+    expect(actions.go).toHaveBeenCalledWith('ova')
+    key('Enter')
+    expect(actions.go).toHaveBeenCalledTimes(2)
+    expect(errors).not.toHaveBeenCalled()
+    errors.mockRestore()
+  })
+
   // ── DTK ──
 
   it('DTK: "Förstora figur" lays the page over the drill; Esc closes it and focus returns', () => {
@@ -806,6 +919,48 @@ describe.each(WIDTHS)('F · Samtal, %s', (width) => {
     expect(start).toHaveClass('sa-chip--primary')
     key('Enter')
     expect(actions.openPlanItem).toHaveBeenCalledWith('rep')
+  })
+
+  it('Idag: a finished part never leads — the first part still to do does, by click and by Enter', () => {
+    const base = fixtureDirectionData()
+    // The lead marker sits on the part that is already done.
+    const items = base.home.plan.items.map((i) => (i.id === 'rep' ? { ...i, completed: true } : i))
+    const { actions } = mountWith(
+      { ...base, home: { ...base.home, resume: null, plan: { ...base.home.plan, items } } },
+      1,
+      width,
+    )
+    const start = screen.getByRole('button', { name: /Börja med elf-lektion/ })
+    expect(start).toHaveClass('sa-chip--primary')
+    key('Enter')
+    expect(actions.openPlanItem).toHaveBeenLastCalledWith('lektion')
+    fireEvent.click(start)
+    expect(actions.openPlanItem).toHaveBeenLastCalledWith('lektion')
+    expect(actions.openPlanItem).not.toHaveBeenCalledWith('rep')
+    // The finished part is not "Härnäst" either.
+    expect(screen.queryByText('Härnäst')).toBeNull()
+  })
+
+  it('Idag: with the whole plan done, the one way on is Öva, by click and by Enter', () => {
+    const base = fixtureDirectionData()
+    const items = base.home.plan.items.map((i) => ({ ...i, completed: true }))
+    const { actions } = mountWith(
+      {
+        ...base,
+        home: { ...base.home, resume: null, plan: { ...base.home.plan, items, allComplete: true } },
+      },
+      1,
+      width,
+    )
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Dagens plan är klar. Vill du öva mer?',
+    )
+    const out = screen.getByRole('button', { name: 'Till Öva' })
+    key('Enter')
+    expect(actions.go).toHaveBeenCalledWith('ova')
+    fireEvent.click(out)
+    expect(actions.go).toHaveBeenCalledTimes(2)
+    expect(actions.openPlanItem).not.toHaveBeenCalled()
   })
 
   it.each([5, 6, 7, 8] as const)('screen %s renders without the optional fields', (s) => {

@@ -88,8 +88,11 @@ export type DrillChrome = {
   frameworks: Record<string, string>
   /** The options' test ids: rd-option-<L> (reading) or rd-quant-option-<L>. */
   optionId: 'rd-option' | 'rd-quant-option'
-  /** Why the answer cannot be sent (a figure that is missing), or null. */
+  /** Why the answer cannot be sent (a stem, options or figure missing), or
+   *  null. */
   blocked: string | null
+  /** The way back while the answer cannot be sent ("Till Öva"). */
+  out?: { label: string; onClick: () => void }
   /** A passage beside the thread: the action bar names the focus key. */
   focusAid: boolean
   /** The last question's way on ("Slutför texten", "Slutför övningen"). */
@@ -281,13 +284,25 @@ export function Options({ c }: { c: DrillChrome }) {
 
 /** The action bar: a flat line of status and action — no field, nothing to
  *  type into. Before the answer it names your choice (or the keys, or why
- *  there is nothing to send); after it, it holds "Visa allt" and the one
- *  way on. */
+ *  there is nothing to send, with the way back); after it, it holds "Visa
+ *  allt" and the one way on. */
 export function Dock({ c, phone = false }: { c: DrillChrome; phone?: boolean }) {
   const { view, act, folds, blocked } = c
   if (view.phase === 'question') {
     const first = view.letters[0]
     const last = view.letters[view.letters.length - 1]
+    const send = (
+      <button
+        type="button"
+        className="sa-send"
+        disabled={!view.selected || blocked != null}
+        onClick={act.lock}
+        data-testid="rd-lock"
+      >
+        Svara
+        <Kbd>↵</Kbd>
+      </button>
+    )
     return (
       <div className="sa-dock" data-blocked={blocked ? 'true' : undefined}>
         <p className="sa-dock-status" aria-live="polite">
@@ -316,16 +331,18 @@ export function Dock({ c, phone = false }: { c: DrillChrome; phone?: boolean }) 
             </span>
           )}
         </p>
-        <button
-          type="button"
-          className="sa-send"
-          disabled={!view.selected || blocked != null}
-          onClick={act.lock}
-          data-testid="rd-lock"
-        >
-          Svara
-          <Kbd>↵</Kbd>
-        </button>
+        {/* Blocked, the way back stands beside the resting Svara, and the
+         *  two keep together when the line is too short for the reason. */}
+        {blocked && c.out ? (
+          <span className="sa-dock-acts">
+            <button type="button" className="sa-chip sa-chip--quiet" onClick={c.out.onClick}>
+              {c.out.label}
+            </button>
+            {send}
+          </span>
+        ) : (
+          send
+        )}
       </div>
     )
   }

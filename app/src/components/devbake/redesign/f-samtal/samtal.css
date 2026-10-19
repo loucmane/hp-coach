@@ -3417,6 +3417,24 @@
   line-height: 1.45;
 }
 
+/* A diagram that failed: the reason, and a real retry beside it. */
+[data-rd='samtal'] .sa-problem-failed {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sa-s2) var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-problem > .sa-problem-failed:first-child {
+  margin-top: 0;
+}
+
+[data-rd='samtal'] .sa-problem-failed + .sa-kva,
+[data-rd='samtal'] .sa-problem-failed + .sa-nog {
+  margin-top: var(--sa-s3);
+}
+
 /* An image option: the figure is the answer's words. */
 [data-rd='samtal'] .sa-opt-figure {
   display: block;
@@ -3434,9 +3452,24 @@
   height: auto;
 }
 
-/* The action bar when there is nothing to send: the reason, in ink. */
+/* The action bar when there is nothing to send: the reason, in ink, then
+ * the way back beside the resting Svara. On a short line the reason takes
+ * a line of its own and the two buttons keep together on the right. */
+[data-rd='samtal'] .sa-dock[data-blocked='true'] {
+  flex-wrap: wrap;
+}
+
 [data-rd='samtal'] .sa-dock[data-blocked='true'] .sa-dock-status {
+  flex: 1 1 16em;
   color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-dock-acts {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--sa-s2);
+  margin-left: auto;
 }
 
 /* Phone: one scroll, the head above it, the action bar sticking under the

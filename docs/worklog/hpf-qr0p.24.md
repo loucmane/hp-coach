@@ -280,3 +280,108 @@ The `aria-busy` and live regions were not checked with a reader.
 ## Beads hand-off
 
 - One note on the bead, ending `SAMTAL1 DONE: hpf-qr0p.24`. Then the bead is parked: status deferred, no assignee. It is not closed and no metadata is set, as the delivery rules ask.
+
+## Round 2
+
+Fixes for the cross-vendor Codex review hpf-nw6s (VERDICT: HOLD at `c8679d11`, four P2 findings), session `ci-wisp-tbbco19`.
+
+### Snapshot and boundaries
+
+- **Claim.** `gc hook --claim --json` returned `hpf-qr0p.24`, assignee `ci-wisp-tbbco19`, route `hpfetcher/gc.implementation-worker`. `bd show hpf-qr0p.24 --json` matched the id, the status (`in_progress`), the assignee (`gc.session_id`) and `gc.routed_to`.
+- **Checkout.** Started at `90a0bea` (round 1's `c8679d1` with `origin/main` `980c9b2` merged by the coordinator), clean.
+- **The review's evidence file.** The brief says to read `…/GasCity/hpfetcher/Docs/worklogs/hpf-nw6s.md` first. This session's sandbox denies reads under `/home/loucmane/vaults`, so it was not read. The four findings were taken from the bead's DESIGN text, which gives each one with its file:line.
+- **Write set kept.** Changed: `SamtalQuant.tsx`, `SamtalDrill.tsx`, `SamtalHome.tsx`, `samtal.css`, `Samtal.test.tsx`, and this worklog. No shared kit file was edited (`drillCore.ts` included), and no shared test.
+- **Delivery rules.** Uncommitted, no dependency changes, offline. Aegis ignored. The bead is parked, not closed.
+
+### The fixes
+
+Line numbers are on the final tree. Every test runs at both widths.
+
+**1. A question without its stem, or with a diagram that failed, is never graded** (`SamtalQuant.tsx`)
+
+- **The block.** `blockedReason` (:128) now blocks a null, empty or blank stem first (:129, "Frågetexten saknas, så frågan kan inte besvaras."). Then come the existing reasons: no options, and a DTK question without a page. Last is a figure that failed to load (:132): the DTK page as before, or now the diagram ("Figuren gick inte att ladda, så frågan kan inte besvaras.").
+- **The diagram's status reaches the block.** Load status and retries are now held per source, for pages and diagrams alike (`useFigureLoadState` :87, `figureStatus` :246). The diagram reads them through a context the drill provides (:102, :399).
+- **Both ways to answer pass one gate.** The drill's `lock` returns early while blocked (:272). Enter's `advance` goes through it (:285). Svara stays disabled.
+- **Recovery and the way back.**
+  - A failed diagram says so in place, with a real "Försök igen" (`Diagram` :635). The retry gives the image a new key, so it loads again.
+  - While the answer is blocked, the action bar holds "Till Öva" (`actions.go('ova')`) beside the resting Svara. See `SamtalDrill.tsx` (`DrillChrome.out` :95, the Dock's `sa-dock-acts` :337) and `samtal.css` (:3458–3473).
+  - The existing blocked states (no options, a DTK page missing or failed) get the same way back, as spec §7 asks ("with return or retry").
+- **Tests.**
+  - `Samtal.test.tsx:677`, with no stem and with an empty stem:
+    - Svara is disabled after a choice;
+    - neither a click nor Enter calls `drill.lock`, and no verdict appears;
+    - the reason is shown;
+    - "Till Öva" calls `go('ova')`.
+  - `Samtal.test.tsx:704`, a diagram (XYZ-002) whose SVG fails:
+    - the alert shows in place, Svara is disabled, and Enter does not lock;
+    - "Till Öva" is there;
+    - "Försök igen" mounts a new image, after which the kept choice is sent: Enter locks once.
+- **Red on `90a0bea`.** `:677` failed at `expect(send).toBeDisabled()`: Svara was enabled. `:704` found no alert.
+
+**2. A sitting without questions never reaches the drill core** (`SamtalQuant.tsx`)
+
+- **The guard.** `SamtalQuant` (:152) checks the sitting (:156) before the hook-bearing drill mounts. An empty one renders `NoQuestions` (:171). The drill itself moved, otherwise unchanged, into `QuantDrill` (:216). `drillCore.ts` is untouched.
+- **The unavailable state** has the closing turn's composition:
+  - the sitting's title as the divider;
+  - "Det finns ingen fråga att visa här just nu." (h1), then "Välj något annat att öva på i Öva.";
+  - "Till Öva" as the one action, which Enter also takes.
+- **Tests.** `Samtal.test.tsx:762`: screens 6 and 7 with `questions: []`. The heading shows, with no prompt and no Svara. "Till Öva", by click and by Enter, calls `go('ova')` twice. No console error.
+- **Red on `90a0bea`.** All four threw `TypeError: Cannot read properties of undefined (reading 'qid')` from `useDrillCore` (shared `drillCore.ts:482-483`).
+
+**3. A finished plan part never leads Idag** (`SamtalHome.tsx`)
+
+- **The lead.** `first` (:55) is null once `plan.allComplete` is set. Otherwise it is the lead marker's part, unless that part is finished, and else the first part not finished. `startFirst` (:60) opens it, or calls `go('ova')` when there is none. The button's "Till Öva" (:141) and Enter (:61) now do the same thing.
+- **The plan list had the same defect.** A finished part kept its "Härnäst" tag and its marked number. Both now follow `lead = primary && !completed` (:300, :306).
+- **Tests.**
+  - `Samtal.test.tsx:924`: no resume, and the lead marker sits on a finished part. "Börja med elf-lektion" is the primary, and Enter and a click open `'lektion'`, never `'rep'`. No "Härnäst" shows.
+  - `Samtal.test.tsx:944`: the whole plan is done. The heading reads "Dagens plan är klar. Vill du öva mer?". Enter and "Till Öva" each call `go('ova')`, and `openPlanItem` is never called.
+- **Red on `90a0bea`.** `:924` found no "Börja med elf-lektion": the finished repetition was offered. In `:944`, Enter called `openPlanItem('rep')`, not `go('ova')`.
+
+**4. A failed diagram stays with its own source** (`SamtalQuant.tsx`)
+
+- **The fix.** The failure is no longer `Diagram`'s own state, which lived at a fixed place in the tree and outlived its question. Status and retries are keyed by `src` (`useFigureLoadState` :87), and the image is keyed by source and attempt (:652). Another source therefore starts fresh.
+- **Test.** `Samtal.test.tsx:736`: two real XYZ questions with different SVGs (XYZ-002, then XYZ-005).
+  - The first diagram fails once its answer is in.
+  - After Nästa, the second question's own diagram shows, with no failure text.
+  - Its choice can be sent.
+- **Red on `90a0bea`.** The second question still said "Figuren gick inte att ladda.", and no image "Figur till uppgift 5" was found.
+
+**Red first.** The 16 new tests (8 per width) ran on the unfixed tree before any source change: all 16 failed, at the assertions above. After the fixes, all 16 pass.
+
+### Verification (from `app/`, on the final tree)
+
+- `pnpm typecheck`: clean.
+- `pnpm lint`: **0 errors, 0 warnings**; 487 files checked. The 4 infos are the pre-existing ones outside this folder.
+- `pnpm exec vitest run src/components/devbake/redesign/f-samtal`: **199 passed (199)**, round 1's 183 plus the 16 new.
+- `pnpm test`: **107 files, 1843 tests: 1842 passed, 1 failed.**
+  - The one failure is the shared `Redesign2026Bakeoff.test.tsx:331`, "takes a step from "Inte byggd än" to a screen the direction has built". It renders `d: 'f', s: 8` and expects the "Inte byggd än" card. Samtal has declared screen 8 since round 1, and `meta.ts` is not touched here.
+  - It is the second of round 1's two recorded failures (then at `:319`). The first (`:155`) now passes on main.
+  - It was not edited, as the brief asks.
+
+### Browser self-check
+
+- **The harness.** It lives in this session's scratchpad, outside the repo:
+  - Samtal alone, in a `DirectionDataProvider` on fixture data changed per case;
+  - Vite on 127.0.0.1;
+  - Playwright Chromium at 1440×900 and 390×844, with Google Fonts aborted (fallback faces);
+  - round 1's probes: overflow, text outside, clipping, leaked math, hit areas, axe-core WCAG A/AA and console errors.
+- **What was shot.** 44 shots, then 24 re-shots after the fixes below:
+  - a missing stem, a loaded diagram and a failed diagram;
+  - an empty quant sitting and an empty DTK sitting;
+  - DTK without a page, and a DTK page that failed (desktop, and the phone tray);
+  - Idag with part of the plan done, and with all of it done;
+  - screens 6 and 7 as a regression check.
+  - New states at both widths and in both themes.
+- **Result.** No overflow, text outside, clipping, leaked math or console errors, and **0 axe violations**. The only hit-area flag is the DTK phone tray's grab (96×22), round 1's documented exemption.
+- **Fixed from the shots.**
+  - On the phone, and in DTK's narrower desktop column, the reason, "Till Öva" and the disabled Svara wrapped one by one, which left Svara alone under the reason. The two buttons are now one group that wraps whole, on the right.
+  - The failed diagram's box had extra space above it inside the attachment. It now sits evenly.
+
+### Observations, not changed (outside the four findings)
+
+- **The lead line counts every plan part.** Idag says "Idag väntar tre saker, ungefär 19 minuter" even when some parts are finished. The plan list does not mark finished parts either.
+- **Section codes are lowercased.** "Börja med {del}" and the closing's "Nästa i planen är {del}" lowercase the whole title, so a section code reads "elf-lektion" or "ord-övning". With the fixture's lead the button said "repetition", so this never showed. It shows now when a finished part hands the lead to the ELF lesson.
+
+### Beads hand-off
+
+- One note on the bead, ending `SAMTAL1R2 DONE: hpf-qr0p.24`. Then the bead is parked: status deferred, no assignee. It is not closed. Uncommitted.
