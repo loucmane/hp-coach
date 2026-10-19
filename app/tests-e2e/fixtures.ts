@@ -149,6 +149,24 @@ export async function recordMistakeViaApi(page: Page, questionId: string): Promi
   }
 }
 
+/**
+ * Wait until signed-in Home is interactive, not just loaded. `page.goto`
+ * resolves on `load`, which can fire before the app is usable (hpf-l3ws):
+ *   - The ⌘K palette's window keydown listener mounts with the React shell;
+ *     a key pressed before that is dropped. Home's greeting renders inside
+ *     the shell once Clerk resolves, so when it is visible the listener is up.
+ *   - #boot-veil (index.html) covers the viewport at max z-index until first
+ *     content, a 1.2s grace after Clerk resolves, or a 1.5s failsafe.
+ *     `force: true` skips the hit-target check, so a forced tap lands on it.
+ * Both signals exist at every viewport, and the failsafe bounds the veil
+ * wait to 1.5s.
+ */
+export async function waitForHomeReady(page: Page): Promise<void> {
+  // Same budget the specs already give this load indicator.
+  await expect(page.getByTestId('home-greeting')).toBeVisible({ timeout: 10_000 })
+  await expect(page.locator('#boot-veil')).toHaveCount(0)
+}
+
 // Diagnostic-only: when HPC_E2E_COUNT_FAPI is set, every request to Clerk's
 // Frontend API is appended to this module-level counter and printed once at
 // process exit. Used to measure the before/after effect of the auth
