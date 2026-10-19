@@ -1,10 +1,11 @@
 // Shared, headless pieces of the round-1 redesign bake-off
-// (/dev/redesign-2026-bakeoff, bead hpf-qr0p.1).
+// (/dev/redesign-2026-bakeoff, beads hpf-qr0p.1 and hpf-qr0p.2).
 //
-// The four directions (a-folio, b-instrument, c-spar, d-lager) are each a
-// self-contained design system: own tokens, type, components and motion.
-// What they share lives here and has no look of its own:
-//   - the bake-off's metadata (directions, screens, the five destinations)
+// The eight directions (a-folio … h-ljuskagla) are each a self-contained
+// design system: own tokens, type, components and motion. Each folder owns
+// its metadata (meta.ts) and its stage; the registry (directions.ts)
+// collects them. What they share lives here and has no look of its own:
+//   - the bake-off's metadata types, its screens and the five destinations
 //   - passage parsing and the ¶ citations explanations point at
 //   - useDrill: the reading drill's state machine (select → lock → feedback
 //     → next), kept in step with the switcher's screen
@@ -32,15 +33,24 @@ import type { AnswerLetter } from '@/data/questions'
 
 // ── Bake-off metadata ────────────────────────────────────────────────
 
-export type DirectionKey = 'a' | 'b' | 'c' | 'd'
+export type DirectionKey = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h'
 export type ScreenKey = 1 | 2 | 3 | 4
 export type WidthKey = 'desktop' | 'phone'
 export type ThemeKey = 'light' | 'dark'
 
+/** A direction's entry in the registry, kept in its folder's meta.ts. */
 export type DirectionMeta = {
   key: DirectionKey
   /** Folder slug under components/devbake/redesign/. */
-  slug: 'a-folio' | 'b-instrument' | 'c-spar' | 'd-lager'
+  slug:
+    | 'a-folio'
+    | 'b-instrument'
+    | 'c-spar'
+    | 'd-lager'
+    | 'e-svep'
+    | 'f-samtal'
+    | 'g-raster'
+    | 'h-ljuskagla'
   name: string
   tagline: string
   /** What makes it distinct, for the switcher's "Om" panel. */
@@ -48,71 +58,14 @@ export type DirectionMeta = {
   /** The known risk and how the direction answers it. */
   risk: string
   references: string
+  /** The folder's stage is still the "Under arbete" placeholder
+   *  (DirectionStub). Drop it when the direction is built. */
+  stub?: true
 }
 
-export const DIRECTIONS: DirectionMeta[] = [
-  {
-    key: 'a',
-    slug: 'a-folio',
-    name: 'Folio',
-    tagline: 'Redaktionellt papper, nästa generation',
-    traits: [
-      'HP-Coach som en vackert satt bok: ett enda ark varmt papper, kolsvart bläck och en enda bläckblå accent – inga paneler, inga kort.',
-      'Literata för texter, rubriker och menyn, Inter med optisk storlek för gränssnittet, tabellsiffror.',
-      'Menyn är en innehållsförteckning i ord; hopfälld blir den ett tumregister med en bokstav per mål. Kontot öppnas som en papperslapp.',
-      'Idag är en förstasida: det du läser är ingressen under en kraftig linje med ett bokmärkesband, resten av dagen en innehållsförteckning med punktlinjer, prognosen i marginalen.',
-      'Läsfrågan är ett uppslag utan appfält: varje sida har sin egen sidhuvudrad, ryggen skuggas och kan flyttas. Facit börjar med varför ditt svar lockade; förklaringens citat stryks under i själva texten.',
-    ],
-    risk: 'Risk: för tyst. Svar: en enda fylld knapp per skärm och en ingress vars rubrik är sidans största föremål.',
-    references: 'Readwise Reader, Things 3, Craft, Khan Academys typografi, Linears varma grå.',
-  },
-  {
-    key: 'b',
-    slug: 'b-instrument',
-    name: 'Instrument',
-    tagline: 'Precisionsverktyg för proffs',
-    traits: [
-      'Ett grått chassi som håller ljusa paneler: lager av ton och 1 px kant, hårda hörn, inga mjuka skuggor – och en enda signalorange accent för huvudhandlingen.',
-      'Geist och Geist Mono för gränssnitt, siffror och tangenter; texten i Atkinson Hyperlegible Next. Rörelse under 100 ms.',
-      'Panelerna är indelade i celler med mono-rubriker, avläsningar och tangentchips; en statusrad på varje skärm.',
-      'Idag är en kommandolista: ↑/↓ väljer, ↵ öppnar, och dagens tidsaxel följer markeringen.',
-      'Övningen är två paneler i chassit med en flyttbar springa emellan; efter svaret blir frågepanelen en facitpanel, och F döljer allt utom text och fråga.',
-    ],
-    risk: 'Risk: kan läsas som ett utvecklarverktyg. Svar: Idag hålls glest, varje kortkommando är också en synlig knapp, och F tar bort allt utom text och fråga.',
-    references: 'Linear, Raycast, Superhuman, Notion Calendar, Vercel Geist.',
-  },
-  {
-    key: 'c',
-    slug: 'c-spar',
-    name: 'Spår',
-    tagline: 'En uttrycksfull lärstig',
-    traits: [
-      'Guidad, färgstark och motiverande men avgränsad: Material 3 Expressive-former och fjädrar.',
-      'Bricolage Grotesque för rubriker, Figtree för gränssnitt och texter (18–19 px).',
-      'Åtta delprovsfärger med samma ljushet och mättnad – bara i rubriker och etiketter, aldrig bakom brödtext och långt från rätt- och felfärgerna.',
-      'Idag är en lodrät stig genom dagens steg. Frågan ligger i en bricka under texten som öppnas när du vill svara, på alla skärmar.',
-      'Facit glider upp som ett ark som lämnar texten synlig, och varför fällan lockade kommer först.',
-    ],
-    risk: 'Risk: överlast och streak-ångest. Svar: ingen rörelse under läsning, ett lugnt läge och en förlåtande veckorytm utan förlust.',
-    references: 'Brilliant, Duolingo 2026, Speak, Material 3 Expressive.',
-  },
-  {
-    key: 'd',
-    slug: 'd-lager',
-    name: 'Lager',
-    tagline: 'Rumsligt djup, glas på rätt sätt',
-    traits: [
-      'Ett ogenomskinligt läsark svävar över ett stilla, delprovsfärgat fält som tonas ned när läsningen börjar.',
-      'Glas bara på navigering och kontroller – aldrig brödtext på glas.',
-      'Newsreader för texter, systemets typsnitt (SF) med Inter som reserv, Fraunces för sällsynta rubriker.',
-      'Tre nivåer: fält, ark och glaskontroller. En flytande docka med etiketter som krymper när sidan rullas men aldrig döljs.',
-      'Frågan är ett eget ark bredvid texten; förklaringen läggs ovanpå som ett tredje ark.',
-    ],
-    risk: 'Risk: kontrast. Svar: kontrollerna testas mot den sämsta bakgrunden och får ogenomskinlig reserv.',
-    references:
-      'Apple Liquid Glass och HIG Materials, Things för OS 26, Arc/Dia; NN/g ”Liquid Glass Is Cracked” som lista över fel.',
-  },
-]
+// The directions in key order. They live in the registry; this re-export
+// keeps the older imports from r1Kit working.
+export { DIRECTIONS } from '@/components/devbake/redesign/directions'
 
 export type ScreenMeta = { key: ScreenKey; label: string; blurb: string }
 
@@ -516,7 +469,7 @@ function startCore(screen: ScreenKey): Core {
 }
 
 /**
- * The reading drill's state, shared by all four directions. Screen 2 opens
+ * The reading drill's state, shared by every direction. Screen 2 opens
  * question 3 of the unit unanswered; screen 3 opens it graded with the
  * fixture's wrong pick. Answering on screen 2 moves the switcher to 3 (and
  * "Nästa" back to 2) without a remount, so the reader's own answer stays.
