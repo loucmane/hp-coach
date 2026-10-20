@@ -77,10 +77,12 @@ import {
   FeedbackBody,
   FeedbackSheet,
   NoQuestions,
-  nextPlanStep,
   Options,
   type OptionsLayout,
+  ParaText,
   Progress,
+  type RoundKind,
+  roundEnd,
   SHEET_PCT,
   showsClock,
   Timer,
@@ -319,7 +321,12 @@ function QuantSession({
   const rotate = () => setPageView({ rot: (pageView.rot + 90) % 360 })
 
   const image = useImage(q.figure?.src)
-  const blocked = dtk && (!q.figure || image.state === 'failed')
+  // A DTK question is read off its page: it takes an answer only once the
+  // page is on screen, never while it is missing, failed or still loading.
+  // A missing or failed page says why under the options; a loading one has
+  // the mat's "Hämtar sidan…".
+  const noPage = dtk && (!q.figure || image.state === 'failed')
+  const blocked = dtk && (!q.figure || image.state !== 'ok')
 
   const [tray, setTray] = useState<'open' | 'folded'>('open')
   const [fsheet, setFsheet] = useState<'tall' | 'half'>(dtk ? 'half' : 'tall')
@@ -376,7 +383,9 @@ function QuantSession({
   const back = framework
     ? { label: 'Tillbaka till mönstret', onClick: () => actions.openLesson(framework.frameworkId) }
     : { label: 'Tillbaka till Öva', onClick: () => actions.go('ova') }
-  const nextStep = nextPlanStep(data.home.plan.items)
+  // Enter at the end takes the step the end's green pill shows.
+  const kind: RoundKind = repetition ? 'repetition' : 'drill'
+  const { next: nextStep } = roundEnd(data.home.plan.items, kind)
   const onward = () => (nextStep ? actions.openPlanItem(nextStep.id) : back.onClick())
   const advance = () => {
     if (view.phase === 'question') act.lock()
@@ -420,7 +429,7 @@ function QuantSession({
     <Done
       view={view}
       questions={session.questions}
-      kind={repetition ? 'repetition' : 'drill'}
+      kind={kind}
       title={session.title}
       back={back}
       pages={pages}
@@ -432,6 +441,7 @@ function QuantSession({
     session,
     image,
     blocked,
+    noPage,
     pageNo,
     pageCount: pageKeys.length,
     posOnPage,
@@ -453,6 +463,7 @@ function QuantSession({
         onClose={() => setViewer(null)}
         view={view}
         act={act}
+        blocked={blocked}
       />
     ) : null
   const announcer = (
@@ -528,8 +539,11 @@ type SessionProps = {
   act: DrillAct
   session: DrillSessionView
   image: ReturnType<typeof useImage>
-  /** A DTK question whose page is missing or failed: not answerable. */
+  /** A DTK question whose page is not on screen (missing, failed or still
+   *  loading): not answerable. */
   blocked: boolean
+  /** Its page is missing or failed: the options say why. */
+  noPage: boolean
   pageNo: number
   pageCount: number
   posOnPage: number
@@ -550,6 +564,7 @@ function DeskQuant({
   refs,
   image,
   blocked,
+  noPage,
   pageNo,
   pageCount,
   posOnPage,
@@ -595,6 +610,12 @@ function DeskQuant({
     setFsheet('half')
     scrollRef.current?.scrollTo?.({ top: 0 })
   }
+  // A ¶ chip drops the sheet to below half and centres its paragraph above,
+  // as on Läsfråga.
+  const cite = (n: number, source?: string) => {
+    setFsheet('half')
+    act.cite(n, source)
+  }
   return (
     <div className="sp-body" data-phase={view.phase}>
       <div className="sp-scroll sp-qscroll" ref={scrollRef} style={{ bottom }}>
@@ -612,7 +633,7 @@ function DeskQuant({
               avail={{ w: box.w, h: box.h - dock.h }}
             />
           ) : (
-            <ProblemCard q={q} image={image} openViewer={openViewer} />
+            <ProblemCard view={view} refs={refs} image={image} openViewer={openViewer} />
           )}
           {view.phase === 'question' ? (
             <div className="sp-qdock" ref={dockRef} data-stuck={String(stuck)}>
@@ -647,7 +668,7 @@ function DeskQuant({
                   </button>
                 )}
                 <div className="sp-tray-body" id="sp-qtray-body" hidden={tray !== 'open'}>
-                  {blocked ? <p className="sp-qtray-why">Frågan behöver sidan.</p> : null}
+                  {noPage ? <p className="sp-qtray-why">Frågan behöver sidan.</p> : null}
                   <QuantOptions view={view} act={act} phone={false} blocked={blocked} />
                   <TacticHint view={view} />
                   <div className="sp-tray-foot">
@@ -725,7 +746,7 @@ function DeskQuant({
         >
           <FeedbackBody
             view={view}
-            act={act}
+            act={{ ...act, cite }}
             refs={refs}
             prompt={<PromptLine q={q} />}
             optionText={optionText(q)}
@@ -743,15 +764,18 @@ function DeskQuant({
  *  right), the figure, then the stem — KVA's pair, NOG's statements, an
  *  ORD headword, a MEK sentence with its gaps, or plain math. */
 function ProblemCard({
-  q,
+  view,
+  refs,
   image,
   openViewer,
 }: {
-  q: DrillQuestion
+  view: DrillCoreView
+  refs: DrillCoreRefs
   image: ReturnType<typeof useImage>
   openViewer: () => void
 }) {
   const { data } = useDirectionData()
+  const q = view.question
   return (
     <article className="sp-pcard" data-sec={q.section} aria-labelledby="sp-pcard-h">
       <header className="sp-pcard-band">
@@ -766,22 +790,43 @@ function ProblemCard({
       </header>
       <div className="sp-pcard-body">
         {q.figure ? <SparFigure figure={q.figure} image={image} openViewer={openViewer} /> : null}
-        {q.passage ? (
-          <div className="sp-qpassage" lang={q.passage.lang === 'en' ? 'en' : undefined}>
-            {q.passage.paragraphs.map((p, i) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: a passage's paragraphs never reorder
-              <p key={i} className="sp-qpara" data-n={i + 1}>
-                <span className="sp-qpnum" aria-hidden>
-                  {i + 1}
-                </span>
-                {p}
-              </p>
-            ))}
-          </div>
-        ) : null}
+        <ProblemPassage view={view} refs={refs} />
         <Stem q={q} />
       </div>
     </article>
+  )
+}
+
+/** A passage that comes with the question (a LÄS or ELF miss in a round
+ *  across sections). Its paragraphs are known to the drill core, as on
+ *  Läsfråga, so a ¶ link in Facit turns the column to its paragraph and
+ *  marks it for a moment, with the quotations of the part it came from. */
+function ProblemPassage({ view, refs }: { view: DrillCoreView; refs: DrillCoreRefs }) {
+  const passage = view.question.passage
+  if (!passage) return null
+  const graded = view.phase === 'feedback'
+  const marks = view.flashSource ? view.marks.filter((m) => m.source === view.flashSource) : []
+  return (
+    <div className="sp-qpassage" lang={passage.lang === 'en' ? 'en' : undefined}>
+      {passage.paragraphs.map((p, i) => {
+        const n = i + 1
+        return (
+          <p
+            key={n}
+            ref={refs.para(n)}
+            className="sp-qpara"
+            data-n={n}
+            data-cited={String(graded && view.cited.includes(n))}
+            data-flash={String(view.flashPara === n)}
+          >
+            <span className="sp-qpnum" aria-hidden>
+              {n}
+            </span>
+            <ParaText text={p} marks={marks.filter((m) => m.para === n)} />
+          </p>
+        )
+      })}
+    </div>
   )
 }
 
@@ -1324,6 +1369,7 @@ function FigureViewer({
   onClose,
   view,
   act,
+  blocked,
 }: {
   figure: DrillFigure
   page: boolean
@@ -1332,6 +1378,8 @@ function FigureViewer({
   onClose: () => void
   view: DrillCoreView
   act: DrillAct
+  /** The question takes no answer yet (its page is not on screen). */
+  blocked: boolean
 }) {
   const dialogRef = useRef<HTMLDivElement>(null)
   const portRef = useRef<HTMLDivElement>(null)
@@ -1397,7 +1445,7 @@ function FigureViewer({
       keys[`Shift+${key}`] = () => act.toggleEliminate(l)
     }
     keys.Enter = () => {
-      if (!view.selected) return
+      if (!view.selected || blocked) return
       act.lock()
       onClose()
     }
@@ -1586,6 +1634,7 @@ function FigureViewer({
                   type="button"
                   className="sp-viewer-opt"
                   aria-pressed={view.selected === o.letter}
+                  disabled={blocked}
                   onClick={() => act.select(o.letter)}
                 >
                   <span className="sp-blob sp-blob--sm" aria-hidden>
@@ -1599,7 +1648,7 @@ function FigureViewer({
             <button
               type="button"
               className="sp-btn sp-btn--primary"
-              disabled={!view.selected}
+              disabled={!view.selected || blocked}
               onClick={() => {
                 act.lock()
                 onClose()
@@ -1631,6 +1680,7 @@ function PhoneQuant({
   session,
   image,
   blocked,
+  noPage,
   pageNo,
   pageCount,
   posOnPage,
@@ -1698,6 +1748,11 @@ function PhoneQuant({
     setPsheet('peek')
     scrollRef.current?.scrollTo?.({ top: 0 })
   }
+  // A ¶ chip keeps Facit at half, with its paragraph centred above.
+  const cite = (n: number, source?: string) => {
+    setPsheet('open')
+    act.cite(n, source)
+  }
   return (
     <div
       className="sp-pdrill"
@@ -1756,7 +1811,7 @@ function PhoneQuant({
             phone
           />
         ) : (
-          <ProblemCard q={q} image={image} openViewer={openViewer} />
+          <ProblemCard view={view} refs={refs} image={image} openViewer={openViewer} />
         )}
         {!sheet ? (
           <div className="sp-qpopts">
@@ -1835,7 +1890,7 @@ function PhoneQuant({
               ) : (
                 <FeedbackBody
                   view={view}
-                  act={act}
+                  act={{ ...act, cite }}
                   refs={refs}
                   chip
                   prompt={<PromptLine q={q} />}
@@ -1853,7 +1908,7 @@ function PhoneQuant({
                 <h2 className="sp-prompt" data-testid="rd-quant-prompt">
                   <MathText>{q.prompt}</MathText>
                 </h2>
-                {blocked ? <p className="sp-qtray-why">Frågan behöver sidan.</p> : null}
+                {noPage ? <p className="sp-qtray-why">Frågan behöver sidan.</p> : null}
                 {psheet === 'peek' ? (
                   <button
                     type="button"

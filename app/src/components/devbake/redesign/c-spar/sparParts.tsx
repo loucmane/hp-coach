@@ -368,7 +368,9 @@ export function useInPlace() {
 }
 
 /** Keeps Tab inside a modal layer: from its last control to its first,
- *  and back with Shift. */
+ *  and back with Shift. Focus can also rest outside the controls: on the
+ *  heading the layer opens on (tabindex -1, before every control), from
+ *  where Shift + Tab goes round to the last control too. */
 export function trapTab(e: ReactKeyboardEvent, box: HTMLElement | null): void {
   if (e.key !== 'Tab' || !box) return
   const els = box.querySelectorAll<HTMLElement>(
@@ -377,13 +379,21 @@ export function trapTab(e: ReactKeyboardEvent, box: HTMLElement | null): void {
   if (els.length === 0) return
   const first = els[0]
   const last = els[els.length - 1]
-  if (e.shiftKey && document.activeElement === first) {
+  const at = document.activeElement
+  const atStart = at === first || (at != null && precedes(at, first))
+  const atEnd = at === last || (at != null && precedes(last, at))
+  if (e.shiftKey && atStart) {
     e.preventDefault()
     last.focus()
-  } else if (!e.shiftKey && document.activeElement === last) {
+  } else if (!e.shiftKey && atEnd) {
     e.preventDefault()
     first.focus()
   }
+}
+
+/** Whether `a` comes before `b` in the document. */
+function precedes(a: Node, b: Node): boolean {
+  return (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0
 }
 
 // ── "Bara ett delprov" ───────────────────────────────────────────────

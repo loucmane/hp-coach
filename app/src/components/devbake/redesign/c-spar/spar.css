@@ -2492,8 +2492,10 @@
   inset: -4px;
 }
 
-/* One highlight style: a 3 px bar, a light neutral tint while flashed. */
-.sp-para[data-cited='true']::after {
+/* One highlight style: a 3 px bar, a light neutral tint while flashed. A
+   passage on a problem card (.sp-qpara) is marked the same way. */
+.sp-para[data-cited='true']::after,
+.sp-qpara[data-cited='true']::after {
   content: '';
   position: absolute;
   left: -14px;
@@ -2504,13 +2506,15 @@
   background: var(--sp-hl-bar);
 }
 
-.sp-para[data-flash='true'] {
+.sp-para[data-flash='true'],
+.sp-qpara[data-flash='true'] {
   background-color: var(--sp-hl);
   box-shadow: 0 0 0 8px var(--sp-hl);
   transition: none;
 }
 
-.sp-para[data-flash='true']::after {
+.sp-para[data-flash='true']::after,
+.sp-qpara[data-flash='true']::after {
   background: var(--sp-ink);
 }
 
@@ -4860,6 +4864,8 @@
   position: relative;
   padding-left: 36px;
   text-wrap: pretty;
+  border-radius: 6px;
+  transition: background-color 1600ms var(--sp-ease);
 }
 
 .sp-qpara + .sp-qpara {
@@ -5534,6 +5540,10 @@
 
 .sp-qpscroll .sp-pagecard .sp-pcard-body {
   padding: 12px;
+}
+
+.sp-qpscroll .sp-qpara[data-cited='true']::after {
+  left: -8px;
 }
 
 .sp-qpscroll .sp-stem-text {

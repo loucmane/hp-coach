@@ -1,4 +1,5 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 
 import {
@@ -8,7 +9,11 @@ import {
 } from '@/components/devbake/redesign/contract'
 import { DirectionDataProvider, FIXTURE_DATA } from '@/components/devbake/redesign/directionData'
 import type { DirectionProps } from '@/components/devbake/redesign/r1Kit'
-import type { DirectionActions, DirectionData } from '@/components/devbake/redesign/viewModel'
+import type {
+  DirectionActions,
+  DirectionData,
+  DrillQuestion,
+} from '@/components/devbake/redesign/viewModel'
 import { meta } from './meta'
 import { Spar } from './Spar'
 
@@ -46,6 +51,65 @@ function greenPills(): HTMLElement[] {
 
 function key(k: string, init: KeyboardEventInit = {}) {
   fireEvent.keyDown(window, { key: k, ...init })
+}
+
+/** A box's place on screen, for the layout jsdom does not have. */
+function rect(top: number, height: number): DOMRect {
+  return {
+    top,
+    bottom: top + height,
+    height,
+    left: 0,
+    right: 0,
+    width: 0,
+    x: 0,
+    y: top,
+    toJSON: () => ({}),
+  }
+}
+
+/** Opens the phone's "Bara ett delprov" sheet on screen `s`, then checks
+ *  that Tab never leaves it: from the heading it opens on, from its last
+ *  control and from its first. Esc closes it with focus back on its
+ *  button. */
+async function expectScopeSheetKeepsFocus(s: DirectionProps['screen']) {
+  const user = userEvent.setup()
+  mount(s, { width: 'phone' })
+  const toggle = screen.getByRole('button', { name: 'Bara ett delprov' })
+  await user.click(toggle)
+  const sheet = screen.getByRole('dialog', { name: 'Bara ett delprov' })
+  expect(within(sheet).getByRole('heading', { name: 'Bara ett delprov' })).toHaveFocus()
+  const controls = within(sheet).getAllByRole('button')
+  const first = controls[0]
+  const last = controls[controls.length - 1]
+  expect(controls.length).toBeGreaterThan(1)
+  // Straight from the heading, before anything else: round to the end.
+  await user.tab({ shift: true })
+  expect(last).toHaveFocus()
+  await user.tab()
+  expect(first).toHaveFocus()
+  await user.tab({ shift: true })
+  expect(last).toHaveFocus()
+  await user.keyboard('{Escape}')
+  expect(screen.queryByRole('dialog', { name: 'Bara ett delprov' })).toBeNull()
+  expect(toggle).toHaveFocus()
+}
+
+/** A mixed round whose first question is a LÄS question with its passage
+ *  (Läsfråga's question 3, whose second step cites ¶ 6 with two
+ *  quotations), as a repetition of misses from several sections plays. */
+function passageRound(): { data: DirectionData; q: DrillQuestion } {
+  const data = clone()
+  const reading = data.drills.reading
+  const q = reading.questions[2]
+  data.drills.quant = {
+    ...data.drills.quant,
+    request: { kind: 'repetition' },
+    questions: [q, ...data.drills.quant.questions],
+    explanations: { ...data.drills.quant.explanations, [q.qid]: reading.explanations[q.qid] },
+    start: { index: 0, results: [] },
+  }
+  return { data, q }
 }
 
 describe('Spår: data, states and interaction', () => {
@@ -189,6 +253,10 @@ describe('Spår: data, states and interaction', () => {
       expect(screen.queryByRole('dialog', { name: 'Bara ett delprov' })).toBeNull()
     })
 
+    it('keeps Tab inside the phone sheet, from the heading it opens on', async () => {
+      await expectScopeSheetKeepsFocus(5)
+    })
+
     it('gives a recurring trap a quiet home, only from three misses', () => {
       const startDrill = vi.fn()
       const { unmount } = mount(5, { actions: { startDrill } })
@@ -245,6 +313,10 @@ describe('Spår: data, states and interaction', () => {
       expect(screen.getAllByTestId(/^rd-repetera-item-/)).toHaveLength(kva.length)
       fireEvent.click(screen.getByTestId('rd-repetera-start'))
       expect(startDrill).toHaveBeenLastCalledWith({ kind: 'repetition', section: 'KVA' })
+    })
+
+    it('keeps Tab inside the phone scope sheet, from the heading it opens on', async () => {
+      await expectScopeSheetKeepsFocus(8)
     })
 
     it('draws ten a round and says how many more wait', () => {
@@ -384,6 +456,94 @@ describe('Spår: data, states and interaction', () => {
       expect(go).toHaveBeenCalledWith('ova')
     })
 
+    it('takes the step its end shows with Enter too, past the repetition just done', () => {
+      const data = clone()
+      const [xyz] = data.drills.quant.questions
+      data.drills.quant.questions = [xyz]
+      data.drills.quant.request = { kind: 'repetition' }
+      const [rep, after] = data.home.plan.items
+      expect(rep).toMatchObject({ kind: 'repetition', completed: false })
+      expect(after.completed).toBe(false)
+      const openPlanItem = vi.fn()
+      mount(6, { data, actions: { openPlanItem } })
+      fireEvent.click(screen.getByTestId(`rd-quant-option-${xyz.answer}`))
+      fireEvent.click(screen.getByTestId('rd-lock'))
+      fireEvent.click(screen.getByTestId('rd-next'))
+      const done = screen.getByTestId('rd-done')
+      expect(done).toHaveTextContent('Repetition klar')
+      const pill = within(done).getByRole('button', {
+        name: `Fortsätt med ${after.title} · ${after.minutes} min`,
+      })
+      key('Enter')
+      expect(openPlanItem).toHaveBeenCalledTimes(1)
+      expect(openPlanItem).toHaveBeenLastCalledWith(after.id)
+      fireEvent.click(pill)
+      expect(openPlanItem).toHaveBeenLastCalledWith(after.id)
+      expect(openPlanItem).not.toHaveBeenCalledWith(rep.id)
+    })
+
+    it('goes back with Enter when the repetition just done was the plan’s only step', () => {
+      const data = clone()
+      const [xyz] = data.drills.quant.questions
+      data.drills.quant.questions = [xyz]
+      data.drills.quant.request = { kind: 'repetition' }
+      const rep = data.home.plan.items.find((i) => i.kind === 'repetition')
+      if (!rep) throw new Error('the fixture plan has a repetition step')
+      data.home.plan.items = [rep]
+      const openPlanItem = vi.fn()
+      const go = vi.fn()
+      mount(6, { data, actions: { openPlanItem, go } })
+      fireEvent.click(screen.getByTestId(`rd-quant-option-${xyz.answer}`))
+      fireEvent.click(screen.getByTestId('rd-lock'))
+      fireEvent.click(screen.getByTestId('rd-next'))
+      const pills = greenPills()
+      expect(pills).toHaveLength(1)
+      expect(pills[0]).toHaveAccessibleName('Tillbaka till Öva')
+      key('Enter')
+      expect(go).toHaveBeenCalledWith('ova')
+      expect(openPlanItem).not.toHaveBeenCalled()
+    })
+
+    const widths = ['desktop', 'phone'] as const
+    it.each(widths)('turns to a cited paragraph of a passage across sections (%s)', (width) => {
+      const { data, q } = passageRound()
+      mount(6, { data, width })
+      const wrong = q.options?.find((o) => o.letter !== q.answer)?.letter ?? 'A'
+      fireEvent.click(screen.getByTestId(`rd-quant-option-${wrong}`))
+      fireEvent.click(screen.getByTestId('rd-lock'))
+      const para = document.querySelector<HTMLElement>('.sp-qpara[data-n="6"]')
+      if (!para) throw new Error('the passage shows its sixth paragraph')
+      expect(para).toHaveAttribute('data-cited', 'true')
+      expect(para).toHaveAttribute('data-flash', 'false')
+      const column = para.closest<HTMLElement>(width === 'phone' ? '.sp-qpscroll' : '.sp-qscroll')
+      if (!column) throw new Error('the passage sits in the drill’s column')
+      // The layout jsdom lacks: the column scrolls and is 400 px tall,
+      // paragraph 6 lies 900 px down it.
+      column.style.overflowY = 'auto'
+      const scrollTo = vi.fn()
+      column.scrollTo = scrollTo
+      vi.spyOn(column, 'getBoundingClientRect').mockReturnValue(rect(0, 400))
+      vi.spyOn(para, 'getBoundingClientRect').mockReturnValue(rect(900, 60))
+      const frame = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+        cb(0)
+        return 0
+      })
+      try {
+        fireEvent.click(within(screen.getByTestId('rd-step-2')).getByTestId('rd-cite-6'))
+      } finally {
+        frame.mockRestore()
+      }
+      // Centred in the column: 900 − (400 − 60) / 2.
+      expect(scrollTo).toHaveBeenCalledWith({ top: 730, behavior: 'smooth' })
+      expect(para).toHaveAttribute('data-flash', 'true')
+      // The step's two quotations are marked where they stand.
+      expect(para.querySelectorAll('mark')).toHaveLength(2)
+      if (width === 'desktop') {
+        // As on Läsfråga, Facit drops below half to leave the text in view.
+        expect(document.querySelector('.sp-fsheet')).toHaveAttribute('data-state', 'half')
+      }
+    })
+
     it('marks a repetition: the REP chip, and the schedule in the verdict', () => {
       const data = clone()
       data.drills.quant.request = { kind: 'repetition' }
@@ -428,6 +588,70 @@ describe('Spår: data, states and interaction', () => {
       expect(lock).toHaveBeenCalledTimes(1)
     })
 
+    it('takes no answer before its page is on screen: loading, after a retry, then the same page', () => {
+      const lock = vi.fn(() => ({ correct: true }))
+      const data = clone()
+      const [q] = data.drills.dtk.questions
+      data.drills.dtk.questions = [q, { ...q, qid: `${q.qid}-2`, number: q.number + 1 }]
+      mount(7, { data, actions: { drill: { lock } } })
+      const option = () => screen.getByTestId('rd-quant-option-A')
+      // Still loading: nothing to choose or answer yet.
+      expect(option()).toBeDisabled()
+      key('a')
+      key('Enter')
+      expect(option()).toHaveAttribute('aria-pressed', 'false')
+      expect(lock).not.toHaveBeenCalled()
+      // Failed, then retried: loading again, and still closed.
+      fireEvent.error(within(screen.getByTestId('rd-figure')).getByRole('img'))
+      fireEvent.click(screen.getByRole('button', { name: 'Försök igen' }))
+      expect(screen.queryByText('Frågan behöver sidan.')).toBeNull()
+      expect(option()).toBeDisabled()
+      key('a')
+      key('Enter')
+      expect(lock).not.toHaveBeenCalled()
+      // On screen: answerable.
+      loadImages()
+      expect(option()).toBeEnabled()
+      key(q.answer.toLowerCase())
+      key('Enter')
+      expect(lock).toHaveBeenCalledTimes(1)
+      // The next question on the same page needs no new load.
+      key('Enter')
+      expect(screen.getByText('Fråga 2 av 2 på den här sidan')).toBeInTheDocument()
+      expect(option()).toBeEnabled()
+      key('a')
+      key('Enter')
+      expect(lock).toHaveBeenCalledTimes(2)
+    })
+
+    it('keeps the phone’s sheet and the viewer’s strip closed to answers until the page is on screen', () => {
+      const lock = vi.fn(() => ({ correct: true }))
+      const { unmount } = mount(7, { width: 'phone', actions: { drill: { lock } } })
+      fireEvent.click(screen.getByRole('button', { name: /Visa alternativen/ }))
+      expect(screen.getByTestId('rd-quant-option-A')).toBeDisabled()
+      key('a')
+      key('Enter')
+      expect(lock).not.toHaveBeenCalled()
+      loadImages()
+      fireEvent.click(screen.getByTestId('rd-quant-option-A'))
+      fireEvent.click(screen.getByTestId('rd-lock'))
+      expect(lock).toHaveBeenCalledTimes(1)
+      unmount()
+      mount(7, { actions: { drill: { lock } } })
+      fireEvent.click(screen.getByRole('button', { name: /^Förstora/ }))
+      const viewer = screen.getByRole('dialog', { name: 'Förstorad sida' })
+      expect(within(viewer).getByRole('button', { name: /Alternativ A/ })).toBeDisabled()
+      key('a')
+      key('Enter')
+      expect(lock).toHaveBeenCalledTimes(1)
+      expect(screen.getByRole('dialog', { name: 'Förstorad sida' })).toBeInTheDocument()
+      loadImages()
+      fireEvent.click(within(viewer).getByRole('button', { name: /Alternativ A/ }))
+      key('Enter')
+      expect(lock).toHaveBeenCalledTimes(2)
+      expect(screen.queryByRole('dialog', { name: 'Förstorad sida' })).toBeNull()
+    })
+
     it('says so when the page is missing', () => {
       const data = clone()
       data.drills.dtk.questions[0].figure = null
@@ -450,6 +674,8 @@ describe('Spår: data, states and interaction', () => {
     it('opens the viewer: zoom, keys kept from the switcher, the question at hand, focus back', () => {
       const lock = vi.fn(() => ({ correct: true }))
       mount(7, { actions: { drill: { lock } } })
+      // The page is on screen, so its question takes answers.
+      loadImages()
       const opener = screen.getByRole('button', { name: /^Förstora/ })
       opener.focus()
       fireEvent.click(opener)

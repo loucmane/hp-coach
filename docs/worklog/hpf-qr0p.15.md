@@ -275,3 +275,92 @@ The 29 Spår tests cover:
   - review, commit and PR;
   - deciding the spec gaps above (persisted calm, schedule data, adaptive-review request, skip, figure descriptions, the source of a sitting).
 - The bead is parked deferred and unassigned, not closed.
+
+## Round 2 — review fixes (review bead hpf-iz2k)
+
+- 2026-10-20: Claimed through `gc hook --claim --json` and checked with `bd show`: id, status `in_progress`, assignee `ci-wisp-lnpz018` and route all match. Start: `212fc6c1c4531ca1308d181c7c8afc91400bb0a8`, clean apart from the sandbox's mount points.
+- Read first: the review evidence `~/scratch/hpf-qr0p.15/review-hpf-iz2k.md`. Its addendum supersedes the three-finding count: **four P2 findings** at the same candidate. The bead's DESIGN lists three. The fourth (DTK answers while the page loads) is inside the write set and small, and the review says every fix needs a new exact-head review, so it is fixed here too and marked as from the addendum below. **Coordinator: revert that one hunk if it should wait.**
+- Each test below was written first and run red: the Spår suite went 8 failed / 83 passed before any component changed, then 91 / 91 after the fixes.
+
+### 1 · Enter after a repetition takes the step the end shows
+
+- **Cause:** Kvantfråga/DTK computed Enter's step from the whole plan (old `SparQuant.tsx:379`), while `Done` left out the repetition just done (old `SparDrill.tsx:1502`). Enter reopened the repetition while the pill showed the next step.
+- **Fix:** one calculation, `roundEnd(items, kind)` (`SparDrill.tsx:120`, `RoundKind` at `:112`). Used by:
+  - `Done`'s pill (`SparDrill.tsx:1518`);
+  - Kvantfråga/DTK's Enter (`SparQuant.tsx:387–389`), with the same `kind` handed to `Done` (`:432`);
+  - Läsfråga's Enter (`SparDrill.tsx:314`; same result as before for a text).
+- **Tests:**
+  - `Spar.test.tsx:459` "takes the step its end shows with Enter too, past the repetition just done": repetition, then the ELF lesson; Enter and the pill both open `lektion`, never `rep`.
+  - `:485` "goes back with Enter when the repetition just done was the plan's only step": one green pill, "Tillbaka till Öva"; Enter calls `go('ova')` and never `openPlanItem`.
+  - Red before the fix: Enter called `openPlanItem('rep')` in both.
+
+### 2 · Passage citations in rounds across sections reveal their paragraph
+
+- **Cause:** `ProblemCard` drew a passage without `refs.para` or the flash state (old `SparQuant.tsx:769–779`). `c.cite` looks up registered paragraphs only, so a ¶ link did nothing.
+- **Fix:**
+  - `ProblemPassage` (`SparQuant.tsx:804`) registers each paragraph with the core (`:816`). It renders `data-cited`, `data-flash` and the cited part's quotations, as Läsfråga's reader does. `ParaText` is now exported for it (`SparDrill.tsx:815`).
+  - As on Läsfråga, a ¶ chip drops the desktop sheet to half (`SparQuant.tsx:615`, wired at `:749`). On phone it keeps the sheet at half (`:1752`, wired at `:1893`).
+  - Styles: `.sp-qpara` joins the one highlight style (`spar.css:2495–2519`) and fades its tint like `.sp-para` (`:4863`). On phone its bar sits at −8 px, inside the card (`:5545`).
+- **Tests:**
+  - `Spar.test.tsx:508` "turns to a cited paragraph of a passage across sections (desktop | phone)": Läsfråga's question 3 is first in a repetition round, answered wrong.
+  - Step 2's "¶ 6" then centres ¶ 6 in the column: `scrollTo({ top: 730 })` for a 400 px column with the paragraph 900 px down. It sets `data-flash="true"`, marks the step's two quotations, and on desktop drops Facit to half.
+  - Red before the fix: no `data-cited`, no scroll.
+
+### 3 · The phone scope sheet keeps focus from its first heading
+
+- **Cause:** `trapTab` wrapped only from the first button (old `sparParts.tsx:374–385`). `useInPlace` first focuses the tabindex −1 heading before it, so an immediate Shift+Tab left the modal for the page behind.
+- **Fix:** `trapTab` (`sparParts.tsx:374`) also wraps when focus rests before the first control or after the last, by document order (`precedes`, `:395`).
+- **Tests:**
+  - `Spar.test.tsx:256` (Öva) and `:318` (Repetera), through `expectScopeSheetKeepsFocus` (`:75`) with user-event.
+  - Sequence: open the phone sheet (heading focused), Shift+Tab → the last choice, Tab → the first control, Shift+Tab → the last again. Esc closes the sheet with focus back on "Bara ett delprov".
+  - Red before the fix: Shift+Tab put focus on the navbar's "Framsteg" behind the sheet.
+
+### 4 · DTK takes no answer until its page is on screen (review addendum, not in DESIGN's list)
+
+- **Cause:** `blocked` covered only a missing or failed page (old `SparQuant.tsx:322`). While the page loaded, and again after "Försök igen", A + Enter or a click could grade an unseen page.
+- **Fix:**
+  - `blocked` holds until the page has loaded (`SparQuant.tsx:329`). It covers keys, options, every Svara, and the viewer's strip and Enter (`:466`, `:1448`, `:1637`, `:1651`).
+  - `noPage` (`:328`) keeps the reason "Frågan behöver sidan." for a missing or failed page only (`:671`, `:1911`), so no line comes and goes during a normal load.
+  - Cached pages and same-page questions are unchanged: `useImage` is keyed by the source.
+- **Tests:**
+  - `Spar.test.tsx:591`, the sequence: loading (keys and click do nothing), then failed → retried (still closed, no failure reason), then loaded (answerable), then the next question on the same page (answerable with no new load).
+  - `:627`: the phone sheet and the viewer's strip stay closed until the page loads, then answer.
+  - The viewer test (`:677`) now loads its page first, since it answers from the strip.
+  - Red before the fix: the options were enabled while loading.
+
+### Verification (from `app/`, final tree)
+
+| Check | Result |
+| --- | --- |
+| `pnpm typecheck` | PASS, no errors. |
+| `pnpm lint` | PASS: "Checked 488 files … No fixes applied. Found 4 infos." (the pre-existing four). |
+| `vitest run …/c-spar/Spar.test.tsx` | PASS **91/91** (83 + 8 new). |
+| `pnpm test` | PASS: **Test Files 108 passed (108), Tests 1824 passed (1824)**. |
+
+- **Shared test outside the write set:** one `pnpm test` run alongside typecheck and lint failed once in `src/components/direction-shell/DirectionShell.test.tsx`, "mounts 'Folio' on the home route and restores the real app". The lazy Folio chunk still showed "Laddar Folio…" when `findBy` gave up (1 s). The test passed alone (15/15) and in the full run above. It is not edited; it looks load-sensitive.
+
+### Browser check (scratch harness as in round 1; nothing in the repo)
+
+- Spår was mounted on its own with custom data, then driven in Vite + Chromium:
+  - ¶ 6 cited in a repetition round, desktop and phone, light and dark. The column turns to ¶ 6, the tint and the two quotation marks show, and Facit sits at half.
+  - DTK with its page request held back: option A is disabled; with the page let through, it is enabled (desktop and phone).
+  - The phone scope sheet on Öva and Repetera: heading → Shift+Tab → the last choice → Tab → Stäng → Shift+Tab → the last choice. Focus never leaves the sheet.
+- **Seen, not changed (outside the findings):**
+  - **The phone top bar overflows in a repetition round.** The REP chip, the section chip and four stops spill over "Avsluta" and the clock: `.sp-ptop-mid` is centred and nothing in it shrinks, and a ten-question round is wider still. This comes from batch 1. The bake-off cannot show it (its quant round is `mixed`, without the REP chip). Proposal: let the stops condense or scroll.
+  - Options have no disabled look (`.sp-opt-main:disabled` is unstyled). They look the same when blocked, as on a failed page before; the loading mat says "Hämtar sidan…".
+
+### Repo hygiene
+
+- Changes are uncommitted and inside the write set: `Spar.test.tsx`, `SparDrill.tsx`, `SparQuant.tsx`, `spar.css`, `sparParts.tsx` and this worklog.
+- `routeTree.gen.ts` is untouched. The harness's dev server runs the router plugin, so this was checked with `git status`.
+- `git status` shows the same sandbox mount points as round 1. They are not mine; do not commit them.
+
+### Handoff (round 2)
+
+- Done: the three DESIGN fixes and the addendum's fourth, each proven by a red-first test; all gates green.
+- Left for the coordinator:
+  - keep or revert fix 4;
+  - a new exact-head review;
+  - the visual pass on the real route;
+  - the phone top bar overflow in repetition rounds (above).
+- The bead is parked deferred and unassigned, not closed.

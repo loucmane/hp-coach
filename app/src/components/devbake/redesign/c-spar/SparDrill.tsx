@@ -107,6 +107,24 @@ export function nextPlanStep(items: readonly PlanItemView[]): PlanItemView | und
   return items.find((i) => !i.completed)
 }
 
+/** What ended: a text (round 1's LÄS unit, the day's first stop when a
+ *  resume leads Idag), a drill, or a repetition. */
+export type RoundKind = 'text' | 'drill' | 'repetition'
+
+/**
+ * Where a finished round leads, for the end's green pill and for Enter
+ * alike: the plan's first open step, where a repetition that was a plan
+ * step is done with this round (`doneStep`). Without a `next`, both take
+ * the way back.
+ */
+export function roundEnd(
+  items: readonly PlanItemView[],
+  kind: RoundKind,
+): { doneStep?: PlanItemView; next?: PlanItemView } {
+  const doneStep = kind === 'repetition' ? items.find((i) => i.kind === 'repetition') : undefined
+  return { doneStep, next: nextPlanStep(items.filter((i) => i !== doneStep)) }
+}
+
 /** The drill clock is optional in the kit (no real source): it counts up
  *  from a sitting's own seconds, or from zero on a sitting that starts
  *  fresh — never from zero on one already under way. */
@@ -293,7 +311,7 @@ function ReadingSession({
 
   const focusOn = view.focusPara != null
   const toggleFocus = () => c.setFocusPara(focusOn ? null : firstVisiblePara(scrollRef.current))
-  const nextStep = nextPlanStep(data.home.plan.items)
+  const { next: nextStep } = roundEnd(data.home.plan.items, 'text')
   const onward = () => (nextStep ? actions.openPlanItem(nextStep.id) : onScreen(1))
   const advance = () => {
     if (view.phase === 'question') act.lock()
@@ -794,7 +812,7 @@ function Reader({ view, act, refs, note, setNote, badgeRef, bandRef }: Shared & 
 
 /** A paragraph's text, verbatim, with the quotations a cited part makes
  *  marked in the one highlight style. */
-function ParaText({ text, marks }: { text: string; marks: QuoteSpan[] }) {
+export function ParaText({ text, marks }: { text: string; marks: QuoteSpan[] }) {
   if (marks.length === 0) return <>{text}</>
   const out: ReactNode[] = []
   let at = 0
@@ -1472,9 +1490,8 @@ function Rich({ text, act }: { text: string; act: DrillAct }) {
 /**
  * The end of a sitting: the chip, the result as a display line, the
  * answers as stops, one sentence about what happens to the misses, the
- * day's path one step further, then the plan's next step (green) and the
- * quiet way back. `kind` says what ended: a text (round 1's LÄS unit, the
- * day's first stop when a resume leads Idag), a drill, or a repetition.
+ * day's path one step further, then the plan's next step (green, as
+ * `roundEnd` finds it) and the quiet way back. `kind` says what ended.
  */
 export function Done({
   view,
@@ -1486,7 +1503,7 @@ export function Done({
 }: {
   view: DrillCoreView
   questions: readonly DrillQuestion[]
-  kind: 'text' | 'drill' | 'repetition'
+  kind: RoundKind
   /** "Magasinet i Hökaryd", "Kvantitativ övning". */
   title: string
   back: { label: string; onClick: () => void }
@@ -1498,10 +1515,7 @@ export function Done({
   const right = view.results.filter((r) => r.correct).length
   const missed = view.results.length - right
   const dayText = kind === 'text' && resume != null
-  // A repetition that was a plan step is done with this round.
-  const doneStep =
-    kind === 'repetition' ? plan.items.find((i) => i.kind === 'repetition') : undefined
-  const next = nextPlanStep(plan.items.filter((i) => i !== doneStep))
+  const { doneStep, next } = roundEnd(plan.items, kind)
   const chip = dayText
     ? `Dagens stig 1 av ${1 + plan.items.length}`
     : kind === 'repetition'
