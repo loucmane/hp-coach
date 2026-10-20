@@ -31,6 +31,11 @@
 // Swedish, also inside the English article. A gap text sets its gaps as
 // ruled blanks that take the chosen word in pencil, then the right one.
 //
+// A reading drill answers only a complete question (answerable): its
+// passage, its prompt, its options and every option picture on the page,
+// with the chosen option one of its own. Until then Svara is held, whether
+// clicked, ↵ or space, and the page says plainly what is missing.
+//
 // Keys: only Folio's dialogs carry data-rd-keyscope. The spread's pages and
 // the phone drill's scroll only scroll vertically, so the bake-off's
 // switcher keeps its digits and ←/→ from anywhere in a drill.
@@ -61,6 +66,7 @@ import {
   useContext,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -185,11 +191,6 @@ export function contentLang(q: Pick<DrillQuestion, 'passage' | 'section'>): 'sv'
 function langOf(q: Pick<DrillQuestion, 'passage' | 'section'>): 'en' | undefined {
   return contentLang(q) === 'en' ? 'en' : undefined
 }
-
-/** Who hears a facit's "Slå upp" before the host opens the lesson: Folio's
- *  root, so that Uppslag can say plainly which lesson was asked for while
- *  the open one stays. */
-export const LessonAskContext = createContext<(frameworkId: string) => void>(() => {})
 
 /** Content in another language than its container (`lang`), or as it is. */
 function InLang({ lang, children }: { lang: 'en' | undefined; children: ReactNode }) {
@@ -548,6 +549,114 @@ function PromptBlock({
   )
 }
 
+// ── A complete question ──────────────────────────────────────────────
+
+/** One option picture on the page: one mounted instance, by itself (never
+ *  "this source has loaded once, somewhere"). */
+type Picture = { letter: AnswerLetter; src: string; state: 'loading' | 'loaded' | 'failed' }
+type Pictures = ReadonlyMap<object, Picture>
+
+/** Where a reading drill hears its option pictures, and the try they are on
+ *  (its "Försök igen" tries every one afresh). Outside a reading drill
+ *  nobody listens, and an option's picture is as it always was. */
+const PictureGate = createContext<{
+  report: (token: object, picture: Picture | null) => void
+  attempt: number
+} | null>(null)
+
+/** What keeps the open question from being answered. */
+type Lack =
+  | { kind: 'passage' | 'prompt' | 'options' }
+  | { kind: 'wordless'; letter: AnswerLetter }
+  | { kind: 'picture'; letter: AnswerLetter; failed: boolean }
+
+/**
+ * What the open reading question lacks, or null when it is complete: its
+ * passage (a paragraph with words); its prompt, where a gap text's
+ * explicitly empty stem counts (the gap is its question; null is no
+ * prompt); its options, each with its words (an image option's label);
+ * and every option picture loaded on each of its instances on the page. A
+ * picture that is not on the page (a phone slip at its peek) has not
+ * loaded.
+ */
+function lackOf(q: DrillQuestion, pictures: Pictures): Lack | null {
+  const passage = q.passage
+  if (!passage?.paragraphs.some((p) => p.trim())) return { kind: 'passage' }
+  if (q.prompt == null || (!q.prompt.trim() && !hasGaps(passage.paragraphs))) {
+    return { kind: 'prompt' }
+  }
+  const options = q.options ?? []
+  if (options.length === 0) return { kind: 'options' }
+  const wordless = options.find((o) => !o.text.trim())
+  if (wordless) return { kind: 'wordless', letter: wordless.letter }
+  const drawn = options.flatMap((o) => {
+    const src = o.figure?.src
+    if (!src) return []
+    const shown = [...pictures.values()].filter((p) => p.letter === o.letter && p.src === src)
+    return [{ letter: o.letter, shown }]
+  })
+  const failed = drawn.find((d) => d.shown.some((p) => p.state === 'failed'))
+  if (failed) return { kind: 'picture', letter: failed.letter, failed: true }
+  const waiting = drawn.find(
+    (d) => d.shown.length === 0 || d.shown.some((p) => p.state !== 'loaded'),
+  )
+  if (waiting) return { kind: 'picture', letter: waiting.letter, failed: false }
+  return null
+}
+
+/** Svara's one gate, read by the button and by the lock alike (a click, ↵
+ *  or the button's own space): the open question complete, and the chosen
+ *  option one of its own. */
+function answerable(q: DrillQuestion, chosen: AnswerLetter | null, pictures: Pictures): boolean {
+  return (
+    chosen != null && (q.options ?? []).some((o) => o.letter === chosen) && !lackOf(q, pictures)
+  )
+}
+
+/** Svara's echo while it is held: a picture still loading, or a question
+ *  that cannot be answered yet (the note above says what is missing). */
+function holdOf(lack: Lack | null): string | null {
+  if (!lack) return null
+  return lack.kind === 'picture' && !lack.failed
+    ? 'Bilderna laddas …'
+    : 'Frågan går inte att besvara än.'
+}
+
+/** The plain words for what is missing; a picture still loading has none
+ *  (Svara's echo says it). */
+function lackText(lack: Lack): string | null {
+  switch (lack.kind) {
+    case 'passage':
+      return 'Texten till frågan saknas.'
+    case 'prompt':
+      return 'Frågetexten saknas.'
+    case 'options':
+      return 'Svarsalternativen saknas.'
+    case 'wordless':
+      return `Alternativ ${lack.letter} saknar sin text.`
+    case 'picture':
+      return lack.failed ? `Bilden till alternativ ${lack.letter} gick inte att visa.` : null
+  }
+}
+
+/** A question that cannot be answered says so (spec §1.7 "erratum"):
+ *  plain words behind a 1 px rule, announced as a status; a picture that
+ *  failed has one way to try again. */
+function LackNote({ lack, onRetry }: { lack: Lack | null; onRetry: () => void }) {
+  const text = lack ? lackText(lack) : null
+  if (!lack || !text) return null
+  return (
+    <div className="fo-erratum fo-lack" role="status" data-testid="rd-incomplete">
+      <p>{text}</p>
+      {lack.kind === 'picture' ? (
+        <button type="button" className="fo-link" onClick={onRetry}>
+          Försök igen
+        </button>
+      ) : null}
+    </div>
+  )
+}
+
 // ── The reading drills (screens 2, 3 and 14) ─────────────────────────
 
 /** A key that changes when a list shrinks: a sitting whose questions the
@@ -621,6 +730,25 @@ function ReadingDrill({
   const { refs } = core
   const phase = core.view.phase
 
+  // The option pictures on the page, each instance by itself, and the try
+  // they are on.
+  const [pictures, setPictures] = useState<Pictures>(() => new Map())
+  const [attempt, setAttempt] = useState(0)
+  const report = useCallback((token: object, picture: Picture | null) => {
+    setPictures((all) => {
+      const next = new Map(all)
+      if (picture) next.set(token, picture)
+      else next.delete(token)
+      return next
+    })
+  }, [])
+  const pictureGate = useMemo(() => ({ report, attempt }), [report, attempt])
+  const retry = useCallback(() => setAttempt((a) => a + 1), [])
+  // Svara's one gate: the button and the lock read the same answer.
+  const ready = answerable(core.view.question, core.view.selected, pictures)
+  const readyRef = useRef(ready)
+  readyRef.current = ready
+
   // Keep in step with the switcher: a click on "Facit" while a question is
   // open grades it with the fixture's wrong pick; "Läsfråga" while graded
   // reopens the same question, and after the last one starts over.
@@ -654,7 +782,7 @@ function ReadingDrill({
   }, [phase, core.view.index])
 
   const lock = useCallback(() => {
-    if (!coreLock()) return
+    if (!readyRef.current || !coreLock()) return
     focusAfter.current = 'verdict'
     if (switcher) onScreen(3)
   }, [coreLock, onScreen, switcher])
@@ -670,13 +798,19 @@ function ReadingDrill({
     coreExit()
   }, [switcher, origin.idag, onScreen, coreExit])
 
+  // A chosen option the host has taken away is no choice: none shows as
+  // chosen, and Svara waits for a new one.
+  const selected = core.view.selected
+  const chosen = selected != null && core.view.letters.includes(selected) ? selected : null
+  const current = chosen === selected ? core.view : { ...core.view, selected: chosen }
   // English content: the kit finds ¶ citations and quotations by Swedish
   // rules only, so the ELF facit shows none rather than wrong ones (spec
   // screen 14).
-  const english = contentLang(core.view.question) === 'en'
+  const english = contentLang(current.question) === 'en'
   const view: DrillCoreView = english
-    ? { ...core.view, stepCites: {}, distractorCites: {}, cited: [], marks: [] }
-    : core.view
+    ? { ...current, stepCites: {}, distractorCites: {}, cited: [], marks: [] }
+    : current
+  const lack = view.phase === 'question' ? lackOf(view.question, pictures) : null
   const gapOf = gapNumbers(session.questions)
   const gaps = gapModel(view, session.questions, gapOf)
   const act: DrillAct = {
@@ -743,9 +877,19 @@ function ReadingDrill({
     verdictRef,
     promptRef,
     doneRef,
+    lack,
+    gate: { ready, hold: holdOf(lack) },
+    onRetry: retry,
   }
-  return width === 'phone' ? <PhoneDrill {...chrome} /> : <DeskDrill {...chrome} />
+  return (
+    <PictureGate.Provider value={pictureGate}>
+      {width === 'phone' ? <PhoneDrill {...chrome} /> : <DeskDrill {...chrome} />}
+    </PictureGate.Provider>
+  )
 }
+
+/** Svara's gate as the action bar shows it: open or held, and why. */
+type Gate = { ready: boolean; hold: string | null }
 
 type DrillChrome = Shared & {
   seam: DrillSeam
@@ -769,6 +913,11 @@ type DrillChrome = Shared & {
   verdictRef: RefCallback<HTMLElement>
   promptRef: RefCallback<HTMLElement>
   doneRef: RefCallback<HTMLElement>
+  /** What keeps the open question from being answered, or null. */
+  lack: Lack | null
+  gate: Gate
+  /** Tries the option pictures afresh. */
+  onRetry: () => void
 }
 
 /** Scrolls `el` into view inside its own scroll box (`box`), clear of the
@@ -928,8 +1077,9 @@ function DeskDrill(chrome: DrillChrome) {
                 gaps={chrome.gaps}
                 verdictRef={chrome.verdictRef}
                 promptRef={chrome.promptRef}
+                note={<LackNote lack={chrome.lack} onRetry={chrome.onRetry} />}
               />
-              <ActionBar view={view} act={act} seam={seam} />
+              <ActionBar view={view} act={act} seam={seam} gate={chrome.gate} />
             </div>
           </>
         }
@@ -1129,12 +1279,18 @@ function QuestionColumn({
   gaps,
   verdictRef,
   promptRef,
+  note,
 }: Shared &
   Pointing &
-  Pick<DrillChrome, 'gap' | 'gaps' | 'verdictRef' | 'promptRef'> & { seam: DrillSeam }) {
+  Pick<DrillChrome, 'gap' | 'gaps' | 'verdictRef' | 'promptRef'> & {
+    seam: DrillSeam
+    /** Above the question: what keeps it from being answered (LackNote). */
+    note?: ReactNode
+  }) {
   if (view.phase === 'question') {
     return (
       <>
+        {note}
         <PromptBlock view={view} gap={gap} gaps={gaps} promptRef={promptRef} />
         <Options view={view} act={act} />
         <KeyHints letters={view.letters} focus />
@@ -1183,10 +1339,15 @@ export function ActionBar({
   view,
   act,
   seam,
+  gate,
 }: {
   view: DrillCoreView
   act: Pick<DrillAct, 'lock' | 'next'>
   seam: Pick<DrillSeam, 'unit' | 'next'>
+  /** Svara's gate where the drill keeps one (the reading drills): open
+   *  only when the question can be answered, and why it is held. Without
+   *  one, a choice opens it. */
+  gate?: Gate
 }) {
   const last = view.index + 1 >= view.total
   if (view.phase === 'question') {
@@ -1195,7 +1356,7 @@ export function ActionBar({
         <button
           type="button"
           className="fo-btn"
-          disabled={!view.selected}
+          disabled={gate ? !gate.ready : !view.selected}
           onClick={act.lock}
           data-testid="rd-lock"
         >
@@ -1205,7 +1366,7 @@ export function ActionBar({
           </kbd>
         </button>
         <span className="fo-echo" aria-live="polite">
-          {view.selected ? `Ditt val: ${view.selected}` : 'Välj ett alternativ'}
+          {gate?.hold ?? (view.selected ? `Ditt val: ${view.selected}` : 'Välj ett alternativ')}
         </span>
       </div>
     )
@@ -1415,20 +1576,36 @@ export function PassageView({
 
 /** An option's content: its text (math rendered), or its picture with the
  *  text as the name — the text stands in if the picture fails. A failure
- *  belongs to its source: a new source is tried afresh. */
+ *  belongs to its source and its try: a new source, or a reading drill's
+ *  "Försök igen", is tried afresh. Inside a reading drill each instance
+ *  tells the drill how its picture stands (PictureGate). */
 function OptionContent({ o }: { o: DrillOption }) {
-  const [failed, setFailed] = useState<string | null>(null)
+  const listening = useContext(PictureGate)
+  const report = listening?.report
   const figure = o.figure
-  if (!figure || figure.src === failed) return <MathText>{o.text}</MathText>
+  const key = figure ? `${figure.src}#${listening?.attempt ?? 0}` : null
+  const [outcome, setOutcome] = useState<{ key: string; loaded: boolean } | null>(null)
+  const state: Picture['state'] | null =
+    key == null ? null : outcome?.key !== key ? 'loading' : outcome.loaded ? 'loaded' : 'failed'
+  const src = figure?.src
+  const { letter } = o
+  useLayoutEffect(() => {
+    if (!report || !src || !state) return
+    const token = {}
+    report(token, { letter, src, state })
+    return () => report(token, null)
+  }, [report, letter, src, state])
+  if (!figure || !key || state === 'failed') return <MathText>{o.text}</MathText>
   return (
     <img
-      key={figure.src}
+      key={key}
       className="fo-opt-img"
       src={`/${figure.src}`}
       alt={o.text}
       width={figure.width}
       height={figure.height}
-      onError={() => setFailed(figure.src)}
+      onLoad={() => setOutcome({ key, loaded: true })}
+      onError={() => setOutcome({ key, loaded: false })}
     />
   )
 }
@@ -1649,7 +1826,6 @@ export function Facit({
   refs: Pick<DrillCoreRefs, 'step'>
 } & Pointing) {
   const { data, actions } = useDirectionData()
-  const askLesson = useContext(LessonAskContext)
   const e = view.explanation
   if (!e) {
     return (
@@ -1672,10 +1848,9 @@ export function Facit({
     onFocus: () => point(source),
     onBlur: () => point(null),
   })
+  // Folio records the request on its way to the host (Folio.tsx).
   const lookUp = () => {
-    if (!frameworkId) return
-    askLesson(frameworkId)
-    actions.openLesson(frameworkId)
+    if (frameworkId) actions.openLesson(frameworkId)
   }
   return (
     <div className="fo-facit">
@@ -2386,6 +2561,7 @@ function PhoneDrill(chrome: DrillChrome) {
           )}
         </div>
         <div className="fo-sheet-body">
+          {feedback ? null : <LackNote lack={chrome.lack} onRetry={chrome.onRetry} />}
           {sheet === 'peek' ? (
             <>
               {feedback ? <Verdict view={view} as="p" /> : null}
@@ -2417,7 +2593,9 @@ function PhoneDrill(chrome: DrillChrome) {
             </>
           )}
         </div>
-        {sheet === 'peek' ? null : <ActionBar view={view} act={act} seam={seam} />}
+        {sheet === 'peek' ? null : (
+          <ActionBar view={view} act={act} seam={seam} gate={chrome.gate} />
+        )}
       </section>
     </div>
   )

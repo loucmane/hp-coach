@@ -34,12 +34,17 @@
 // for a destination (actions.go). A modal slip on a frame page (the pass's
 // conditions) is set at the stage's level, over the whole frame, which goes
 // inert under it. The account slip's rows open Konto at their own places.
+// Folio hands its screens the host's actions with one change: a lesson
+// asked for anywhere is recorded on its way to the host (Folio, below).
 
 import { PanelLeftClose, PanelLeftOpen, UserRound } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import './folio.css'
-import { useDirectionData } from '@/components/devbake/redesign/directionData'
+import {
+  DirectionDataProvider,
+  useDirectionData,
+} from '@/components/devbake/redesign/directionData'
 import {
   type AppScreenKey,
   DESTINATIONS,
@@ -49,8 +54,12 @@ import {
   useDismiss,
   useWebFonts,
 } from '@/components/devbake/redesign/r1Kit'
-import type { PlanItemView, ProvHubView } from '@/components/devbake/redesign/viewModel'
-import { FolioDrill, LessonAskContext, ORIGIN_IDAG, type Origin } from './FolioDrill'
+import type {
+  DirectionActions,
+  PlanItemView,
+  ProvHubView,
+} from '@/components/devbake/redesign/viewModel'
+import { FolioDrill, ORIGIN_IDAG, type Origin } from './FolioDrill'
 import { FolioFramsteg, type FramstegSub } from './FolioFramsteg'
 import { FolioHome } from './FolioHome'
 import { FolioKonto, type KontoJump, type KontoPlace } from './FolioKonto'
@@ -150,16 +159,29 @@ type ProvState =
 
 export function Folio(props: DirectionProps) {
   useWebFonts('folio', FONTS)
+  const { data, actions } = useDirectionData()
   // Where a drill was opened from: the last frame page shown. The stage
   // keeps Folio mounted across the screens it builds, so this carries.
   const origin = useRef<Origin>(ORIGIN_IDAG)
   if (!FOCUS.includes(props.screen)) origin.current = ORIGINS[pageOf(props.screen)]
-  // A lesson asked for from a drill's facit or a plan row, carried to
-  // Uppslag across the switch from focus mode to the frame.
+  // The lesson last asked for, carried to Uppslag (across the switch from
+  // focus mode to the frame too), so that it can say which lesson was asked
+  // for while the open one stays.
   const asked = useRef<string | null>(null)
-  const askLesson = useCallback((id: string) => {
-    asked.current = id
-  }, [])
+  // Folio's action boundary: every screen below asks for a lesson through
+  // these actions — a facit's Slå upp, Fällor, a result's recurring trap,
+  // Uppslag's own contents — so each request is recorded, then sent to the
+  // host. A plan row's lesson goes as openPlanItem: the frame records it.
+  const recording = useMemo<DirectionActions>(
+    () => ({
+      ...actions,
+      openLesson: (id) => {
+        asked.current = id
+        actions.openLesson(id)
+      },
+    }),
+    [actions],
+  )
   const { screen } = props
   return (
     <div
@@ -170,7 +192,7 @@ export function Folio(props: DirectionProps) {
       data-testid="rd-folio"
       lang="sv"
     >
-      <LessonAskContext.Provider value={askLesson}>
+      <DirectionDataProvider data={data} actions={recording}>
         {screen === 6 || screen === 7 ? (
           <FolioQuant key={screen} {...props} origin={origin.current} />
         ) : screen === 2 || screen === 3 || screen === 14 ? (
@@ -178,7 +200,7 @@ export function Folio(props: DirectionProps) {
         ) : (
           <FolioFrame {...props} asked={asked} />
         )}
-      </LessonAskContext.Provider>
+      </DirectionDataProvider>
     </div>
   )
 }
@@ -235,9 +257,14 @@ function FolioFrame({
     if (screen === 9 && summoned) setConditions(summonsOf(data.provpass.hub))
   }, [screen])
 
-  // Uppslag has read the lesson it was asked for: the request is spent.
+  // Uppslag has read the lesson it was asked for: the request is spent. One
+  // asked for on Uppslag itself is Uppslag's own, so leaving forgets it.
   useEffect(() => {
-    if (page === 'uppslag') asked.current = null
+    if (page !== 'uppslag') return
+    asked.current = null
+    return () => {
+      asked.current = null
+    }
   }, [page, asked])
 
   const pageRef = useRef(page)

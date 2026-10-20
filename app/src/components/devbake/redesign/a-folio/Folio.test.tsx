@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
-import { useState } from 'react'
+import userEvent from '@testing-library/user-event'
+import { useMemo, useState } from 'react'
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
@@ -8,13 +9,22 @@ import {
   reveal,
   stubLayout,
 } from '@/components/devbake/redesign/contract'
-import { DirectionDataProvider, FIXTURE_DATA } from '@/components/devbake/redesign/directionData'
+import {
+  DirectionDataProvider,
+  FIXTURE_DATA,
+  useBakeoffDirectionData,
+} from '@/components/devbake/redesign/directionData'
 import type { DrillController } from '@/components/devbake/redesign/drillCore'
 import {
   Redesign2026Bakeoff,
   type Selection,
 } from '@/components/devbake/redesign/Redesign2026Bakeoff'
-import type { AppScreenKey, DirectionProps, WidthKey } from '@/components/devbake/redesign/r1Kit'
+import type {
+  AppScreenKey,
+  DirectionProps,
+  ThemeKey,
+  WidthKey,
+} from '@/components/devbake/redesign/r1Kit'
 import type {
   DirectionActions,
   DirectionData,
@@ -1296,6 +1306,44 @@ function mountHost(s: AppScreenKey, w: WidthKey = 'desktop') {
   return onSelect
 }
 
+/** The bake-off's own provider value (useBakeoffDirectionData: its fixtures
+ *  and its actions, which move a switcher of its own) around Folio, with
+ *  `edit` applied to the data: for what the bake-off's fixtures never show,
+ *  such as a handed-in pass's recurring trap. */
+function mountBakeoffWith(
+  s: AppScreenKey,
+  edit: (data: DirectionData) => DirectionData,
+  w: WidthKey = 'desktop',
+) {
+  function Host() {
+    const [shown, setShown] = useState<AppScreenKey>(s)
+    const [theme, setTheme] = useState<ThemeKey>('light')
+    const direction = useBakeoffDirectionData({
+      screen: shown,
+      theme,
+      onScreen: setShown,
+      onTheme: setTheme,
+    })
+    const data = useMemo(() => edit(direction.data), [direction.data])
+    return (
+      <DirectionDataProvider data={data} actions={direction.actions}>
+        <Folio screen={shown} width={w} theme={theme} live onScreen={setShown} onTheme={setTheme} />
+      </DirectionDataProvider>
+    )
+  }
+  render(<Host />)
+}
+
+/** Uppslag names `id` as the lesson asked for, in its chapter's contents,
+ *  while the provider's open lesson (the fixtures' own) stays on the page. */
+function expectAsked(id: string) {
+  expect(screen.getByRole('status')).toHaveTextContent(
+    'Lektion begärd. Den öppna texten ligger kvar tills den nya har laddats.',
+  )
+  expect(screen.getByTestId(`rd-uppslag-entry-${id}`)).toHaveTextContent('begärd')
+  expect(screen.getByTestId('rd-lesson')).toHaveTextContent(FIXTURE_DATA.uppslag.open.title)
+}
+
 describe('Folio · in the real bake-off', () => {
   // jsdom has no layout: give the stage the room of a 1440 × 900 window.
   beforeEach(() => {
@@ -1498,6 +1546,44 @@ describe('Folio · in the real bake-off', () => {
     expect(screen.queryByRole('dialog')).toBeNull()
     expect(document.activeElement).toBe(screen.getByTestId('rd-konto-delete'))
     expectSwitcherKeys(onSelect, 13)
+  })
+
+  // The bake-off's openLesson only shows screen 12: its open lesson stays
+  // the fixtures' own, so Uppslag must say which one was asked for.
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('names the lesson Fällor looks up on Uppslag, the open one kept, on %s', async (w) => {
+    const onSelect = mountHost(11, w)
+    fireEvent.click(await screen.findByRole('button', { name: /^Alla fällor/ }, { timeout: 5000 }))
+    fireEvent.click(screen.getByRole('button', { name: 'Slå upp Bråkaddition' }))
+    expect(onSelect).toHaveBeenLastCalledWith({ s: 12 })
+    expectAsked('XYZ-TRAP-016')
+  })
+
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('names the lesson a result’s recurring trap looks up on Uppslag, on %s', (w) => {
+    // The fixtures' result has no recurring trap (directionData.tsx,
+    // provResultView): the bake-off's provider value carries one here.
+    mountBakeoffWith(
+      10,
+      (data) => {
+        const next = structuredClone(data)
+        next.provpass.result.trap = {
+          frameworkId: 'NOG-TRAP-001',
+          section: 'NOG',
+          count: 3,
+          headline: null,
+        }
+        return next
+      },
+      w,
+    )
+    const trap = screen.getByRole('region', { name: 'Återkommande fälla' })
+    fireEvent.click(within(trap).getByRole('button', { name: /^Slå upp/ }))
+    expectAsked('NOG-TRAP-001')
   })
 })
 
@@ -2200,6 +2286,19 @@ describe('Folio · Uppslag & lektion', () => {
     expect(screen.getByRole('status')).toHaveTextContent(/^Lektion begärd\./)
     expect(screen.getByTestId('rd-uppslag-entry-ELF-TYPE-001')).toHaveTextContent('begärd')
   })
+
+  it('forgets an entry asked for on Uppslag itself once the reader leaves it', () => {
+    const openLesson = vi.fn()
+    const { goTo } = mount(12, { actions: { openLesson } })
+    fireEvent.click(screen.getByTestId('rd-uppslag-entry-LAS-TYPE-002'))
+    expect(openLesson).toHaveBeenCalledWith('LAS-TYPE-002')
+    expect(screen.getByRole('status')).toHaveTextContent(/^Lektion begärd\./)
+    // The host never delivered it; a later visit opens plainly.
+    goTo(1)
+    goTo(12)
+    expect(screen.queryByText(/Lektion begärd/)).toBeNull()
+    expect(screen.getByTestId('rd-uppslag-entry-LAS-TYPE-002')).not.toHaveTextContent('begärd')
+  })
 })
 
 describe('Folio · Konto & inställningar', () => {
@@ -2540,5 +2639,156 @@ describe('Folio · ELF-läsfråga', () => {
     expect(
       within(sheet).getByRole('button', { name: /Visa de fyra alternativen/ }),
     ).toBeInTheDocument()
+  })
+})
+
+/** The fixture data with the ELF sitting's one question changed by `edit`:
+ *  the same sitting and question, as a host hands them down again. */
+function elfWith(edit: (q: DrillQuestion) => void): DirectionData {
+  const data = structuredClone(FIXTURE_DATA)
+  edit(data.drills.elf.questions[0])
+  return data
+}
+
+/** Gives every option of `q` a picture (test sources). */
+function withPictures(q: DrillQuestion): void {
+  for (const o of q.options ?? []) {
+    o.figure = { src: `figures/options/test-${o.letter}.png`, alt: o.text, width: 400, height: 300 }
+  }
+}
+
+describe('Folio · ELF answers only a complete question', () => {
+  const Q = FIXTURE_DATA.drills.elf.questions[0]
+  const svara = () => screen.getByTestId('rd-lock')
+  const pictures = () => Array.from(document.querySelectorAll<HTMLImageElement>('img.fo-opt-img'))
+
+  it.each([
+    ['desktop', 'passage'],
+    ['desktop', 'prompt'],
+    ['phone', 'passage'],
+    ['phone', 'prompt'],
+  ] as const)('on %s holds Svara while the %s is missing, the options intact', (width, part) => {
+    const lock = vi.fn(() => ({ correct: true }))
+    const { supply } = mount(14, { width, actions: { drill: { lock } } })
+    fireEvent.click(reveal('rd-option-A'))
+    expect(svara()).toBeEnabled()
+    supply(
+      elfWith((q) => {
+        if (part === 'passage') q.passage = null
+        else q.prompt = null
+      }),
+    )
+    expect(screen.getByTestId('rd-option-A')).toHaveAttribute('aria-pressed', 'true')
+    fireEvent.click(svara())
+    press('Enter')
+    expect(lock).not.toHaveBeenCalled()
+    expect(svara()).toBeDisabled()
+    expect(screen.getByTestId('rd-incomplete')).toHaveTextContent(
+      part === 'passage' ? 'Texten till frågan saknas.' : 'Frågetexten saknas.',
+    )
+    expect(svara().parentElement).toHaveTextContent('Frågan går inte att besvara än.')
+    // Handed down whole again: the choice stands and Svara answers.
+    supply(structuredClone(FIXTURE_DATA))
+    expect(screen.queryByTestId('rd-incomplete')).toBeNull()
+    press('Enter')
+    expect(lock).toHaveBeenCalledWith(expect.objectContaining({ qid: Q.qid }), 'A')
+  })
+
+  it('keeps a gap text’s empty stem answerable: the gap is its question', () => {
+    const lock = vi.fn(() => ({ correct: true }))
+    const data = gapData()
+    for (const q of data.drills.elf.questions) q.prompt = ''
+    mount(14, { data, actions: { drill: { lock } } })
+    expect(screen.getByRole('heading', { level: 2, name: 'Lucka 1' })).toBeInTheDocument()
+    press('a')
+    expect(svara()).toBeEnabled()
+    expect(screen.queryByTestId('rd-incomplete')).toBeNull()
+    press('Enter')
+    expect(lock).toHaveBeenCalledWith(expect.objectContaining({ qid: 'elf-test-gaps-1' }), 'A')
+  })
+
+  it.each([
+    ['desktop', 'click'],
+    ['desktop', 'Enter'],
+    ['desktop', 'Space'],
+    ['phone', 'click'],
+    ['phone', 'Enter'],
+    ['phone', 'Space'],
+  ] as const)('on %s never sends a choice the host has taken away (%s on Svara)', async (width, how) => {
+    const user = userEvent.setup()
+    const lock = vi.fn(() => ({ correct: true }))
+    const { supply } = mount(14, { width, actions: { drill: { lock } } })
+    fireEvent.click(reveal('rd-option-D'))
+    svara().focus()
+    expect(document.activeElement).toBe(svara())
+    // The same sitting and question, still one question long, without D.
+    supply(
+      elfWith((q) => {
+        q.options = q.options?.filter((o) => o.letter !== 'D') ?? null
+      }),
+    )
+    expect(screen.queryByTestId('rd-option-D')).toBeNull()
+    if (how === 'click') fireEvent.click(svara())
+    else if (how === 'Enter') {
+      await user.keyboard('{Enter}')
+      press('Enter')
+    } else await user.keyboard(' ')
+    expect(lock).not.toHaveBeenCalled()
+    expect(svara()).toBeDisabled()
+    expect(svara().parentElement).toHaveTextContent('Välj ett alternativ')
+    // A choice among the options left answers as before.
+    fireEvent.click(screen.getByTestId('rd-option-B'))
+    fireEvent.click(svara())
+    expect(lock).toHaveBeenCalledTimes(1)
+    expect(lock).toHaveBeenCalledWith(expect.objectContaining({ qid: Q.qid }), 'B')
+  })
+
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('on %s holds Svara until every option picture on the page has loaded', (width) => {
+    const lock = vi.fn(() => ({ correct: true }))
+    const { supply } = mount(14, { width, actions: { drill: { lock } } })
+    fireEvent.click(reveal('rd-option-A'))
+    // The same question, its options now pictures.
+    supply(elfWith(withPictures))
+    expect(pictures()).toHaveLength(4)
+    press('Enter')
+    expect(lock).not.toHaveBeenCalled()
+    expect(svara()).toBeDisabled()
+    expect(svara().parentElement).toHaveTextContent('Bilderna laddas …')
+    for (const img of pictures().slice(0, 3)) fireEvent.load(img)
+    fireEvent.click(svara())
+    press('Enter')
+    expect(lock).not.toHaveBeenCalled()
+    expect(svara()).toBeDisabled()
+    // One fails: the page says so plainly, with a way to try again.
+    fireEvent.error(pictures()[3])
+    const note = screen.getByTestId('rd-incomplete')
+    expect(note).toHaveTextContent('Bilden till alternativ D gick inte att visa.')
+    expect(svara()).toBeDisabled()
+    fireEvent.click(within(note).getByRole('button', { name: 'Försök igen' }))
+    // Every picture on the page is tried afresh; once loaded, Svara answers.
+    expect(pictures()).toHaveLength(4)
+    expect(svara()).toBeDisabled()
+    loadImages()
+    expect(svara()).toBeEnabled()
+    expect(svara().parentElement).toHaveTextContent('Ditt val: A')
+    press('Enter')
+    expect(lock).toHaveBeenCalledWith(expect.objectContaining({ qid: Q.qid }), 'A')
+  })
+
+  it('on phone waits for pictures the slip has not shown: ↵ at its peek answers nothing', () => {
+    const lock = vi.fn(() => ({ correct: true }))
+    mount(14, { width: 'phone', data: elfWith(withPictures), actions: { drill: { lock } } })
+    expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'peek')
+    press('a')
+    press('Enter')
+    expect(lock).not.toHaveBeenCalled()
+    reveal('rd-option-A')
+    loadImages()
+    expect(svara()).toBeEnabled()
+    press('Enter')
+    expect(lock).toHaveBeenCalledWith(expect.objectContaining({ qid: Q.qid }), 'A')
   })
 })

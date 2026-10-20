@@ -173,3 +173,84 @@ The 38 new tests:
 - `FolioProvpass.tsx` puts `lang="en"` on a whole ELF question in a pass, Swedish labels included. The shared `Options` now marks its own labels `lang="sv"`, which corrects most of it. Its `PassHeading` and bar are still inside the English container.
 - Kit: the English citation mode, and a long ELF unit plus a gap unit in `r2Fixtures` (spec 14 "The fixture").
 - Batch 2's note on lifting `FolioQuant` parts still stands.
+
+## Round 2 (review hpf-ku8j: HOLD, two P2)
+
+- 2026-10-20 · Claude worker, session `ci-wisp-fcbymoj`. Started from the worktree at `75aa0e1` (merge head of `de5f435`), clean; read `review-hpf-ku8j.md` first.
+- Changes are **uncommitted**, in admitted files only: `Folio.tsx`, `FolioDrill.tsx`, `folio.css`, `Folio.test.tsx` and this worklog. `FolioFramsteg.tsx` and `FolioProvpass.tsx` are untouched.
+
+### Fix 1 — Svara answers only a complete current question (`FolioDrill.tsx`)
+
+- **One predicate.** `answerable(question, selected, pictures)` (`FolioDrill.tsx:610`): the chosen option is one of the current question's own, and `lackOf(question, pictures)` (`:582`) finds nothing missing:
+  - a passage with at least one paragraph with words;
+  - a prompt. `null` is no prompt. An explicitly empty stem (`''`) is valid in a gap text, where the gap is the question (the bank's authentic ELF gap items 31–35 have `prompt: ""` and `31_____` gaps; P5 gap items have `''` or `Gap (n)`). The gap's number is not required to resolve, because `gapNumbers` numbers by order across a sitting;
+  - at least one option, each with its words (an image option's label is required text in the bank);
+  - every option picture loaded on each of its mounted instances. A picture that is not on the page (the phone slip at its peek) has not loaded, and a failed one is a lack too.
+- **Both sites read it.** `ReadingDrill` evaluates it once per render (`:748`). The lock handler refuses unless it holds (`:785`). `ActionBar`'s `disabled` is `!gate.ready` (`:1359`), passed by both layouts (`:1082`, `:2597`). So every way of pressing Svara goes through it:
+  - a click (a disabled button, and the handler);
+  - ↵ (the drill's keymap calls the handler; ↵ on the focused button is a native click);
+  - space on the button (a native click).
+
+  `ActionBar` without a `gate` (FolioQuant) behaves as before.
+- **A choice the host takes away is no choice** (`:801-805`). Nothing shows as chosen, the gap pencils nothing, the echo says "Välj ett alternativ" and Svara is held. The core keeps its own state (`drillCore.ts` is outside the write set); a new pick among the options left answers as before.
+- **Pictures per mounted instance.** `OptionContent` (`:1582`) reports each mounted picture's state (loading, loaded or failed, keyed by source and try) to its reading drill through `PictureGate` (`:562`). It does so in a layout effect, so Svara is held before paint. Outside a reading drill (quant, DTK, the pass) nobody listens and nothing changes.
+- **The honest missing-content state** (`LackNote`, `:645`). The spec's erratum (§1.7: a 1 px rule, `role="status"`, test id `rd-incomplete`) stands above the prompt on the recto (`:1080`) and at the top of the phone slip in each of its states while the question is open (`:2564`). It says one of:
+  - "Texten till frågan saknas."
+  - "Frågetexten saknas."
+  - "Svarsalternativen saknas."
+  - "Alternativ C saknar sin text."
+  - "Bilden till alternativ D gick inte att visa." with "Försök igen", which tries every picture on the page afresh.
+
+  Svara's echo says why it is held (`holdOf`, `:618`): "Frågan går inte att besvara än.", or "Bilderna laddas …" while pictures load. `folio.css:3491` spaces the note.
+- `LessonAskContext` is removed, since fix 2 supersedes it; the facit's Slå upp only calls `actions.openLesson` (`:1852`).
+- `ReadingDrill` is shared, so screens 2 and 3 (LÄS) get the gate too. The switcher's Facit (`gradeAs` on screen 3) is a display state and is not gated.
+
+### Fix 2 — every lesson request is recorded (`Folio.tsx`)
+
+- `Folio` wraps its subtree in a nested `DirectionDataProvider` (`Folio.tsx:195`) with the same data and the host's actions. The one change is `openLesson`, which records the id and then calls the host's own (`:175-185`). Every descendant asks through it, with no change to the batch-2 files: the facit, Framsteg's Fällor, the result's recurring trap, and Uppslag's contents, J/K and filled button.
+- A plan row's lesson goes as `openPlanItem`; the frame still records it (`:324`).
+- A request made on Uppslag itself is Uppslag's own. Leaving Uppslag forgets it (the effect's cleanup, `:262-268`), so a later visit opens plainly, as "asked once" did before.
+
+### Red-first tests (`Folio.test.tsx`)
+
+Each fix test was run on the unfixed source and failed for the reason it guards. For that run, HEAD's `Folio.tsx` and `FolioDrill.tsx` were restored for the run only, from verified scratch backups, then put back byte-identical (`cmp`). Every test passes with the fixes.
+
+| Test | Line | On the unfixed code |
+|---|---|---|
+| (a) "on desktop/phone holds Svara while the passage/prompt is missing, the options intact" (4) | 2670 | the controller's lock received A |
+| (b) "on desktop/phone never sends a choice the host has taken away (click/Enter/Space on Svara)" (6) | 2717 | the lock received the removed D, on every path |
+| (c) "on desktop/phone holds Svara until every option picture on the page has loaded" (2) | 2749 | the lock received A while the pictures loaded |
+| (c) "on phone waits for pictures the slip has not shown: ↵ at its peek answers nothing" | 2781 | the lock received A |
+| Real `Redesign2026Bakeoff`: "names the lesson Fällor looks up on Uppslag, the open one kept" (desktop, phone) | 1556 | no "Lektion begärd" on 12 |
+| Bake-off provider: "names the lesson a result's recurring trap looks up on Uppslag" (desktop, phone) | 1567 | no "Lektion begärd" on 12 |
+
+Both Uppslag tests also check the requested entry ("begärd" in its chapter's contents) and the provider's old lesson still open (`expectAsked`, `:1339`).
+
+Two guards were green before and after:
+- "keeps a gap text's empty stem answerable" (`:2697`);
+- "forgets an entry asked for on Uppslag itself once the reader leaves it" (`:2290`).
+
+Notes:
+- **Screen 10 cannot run in the real host.** The bake-off's fixtures never give a result a recurring trap (`directionData.tsx`, `provResultView`: `trap: null`), so the real `Redesign2026Bakeoff` never shows that link. That test mounts Folio in the bake-off's own provider value instead (`useBakeoffDirectionData`, whose `openLesson` only shows 12), with a trap supplied (`mountBakeoffWith`, `:1313`). The Fällor path runs in the real `Redesign2026Bakeoff`.
+- **How (b) presses Svara.** Space uses user-event (native button activation). ↵ is pressed both on the focused Svara (native) and on the window (the drill's keymap).
+
+### Verification (round 2)
+
+| Check | Result |
+|---|---|
+| `pnpm -C app typecheck` | PASS |
+| `pnpm -C app lint` | PASS: the same 4 informational notes in unrelated files |
+| `pnpm -C app test` | PASS: **3,820 / 3,820**, 109 files (3,801 at the merge head plus 19 new) |
+| `git status` | only the admitted files, plus the sandbox's placeholders (see State) |
+
+- Three existing host tests log React `act(...)` warnings from `DeskDrill`. They are "lets the switcher's keys through from every part of reading drill 2/14 on desktop" and "… from the Facit screen on desktop". The same warnings appear on the unfixed code (checked), and they are not failures.
+- Shared tests outside the write set: none failed.
+- **Visual check: not done** (the dev server is outside this worker's allowlist). Coordinator screenshots wanted, in both themes:
+  - the note on the recto and in the phone slip, with a passage missing and with a failed picture and its Försök igen;
+  - Svara held, with its echo.
+
+### Follow-ups (outside this write set)
+
+- `drillCore.ts`: a choice the host takes away stays in the core's state, and only Folio's view hides it. A core-level reconciliation would serve every direction.
+- `FolioQuant.tsx`: the DTK image options have no picture gate. `PictureGate` could be adopted there.
+- `gapNumbers` (pre-existing, display only): it numbers empty-stem gap questions by order across the whole sitting, so a sitting with two gap texts would show "Lucka 6" for the second text's first gap. The gate does not depend on it.
