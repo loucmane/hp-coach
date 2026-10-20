@@ -5653,6 +5653,1841 @@
   color: var(--sp-ink-2);
 }
 
+/* ── Round 2 · batch 2 ───────────────────────────────────────────── */
+
+/* Phone focus bar: a long round's chips and stops never spill over
+ * Avsluta or the clock. The middle scrolls sideways inside itself —
+ * centred while it fits (the auto margins give way when it does not) —
+ * and the stop on screen snaps into view. Chips take the small size. */
+.sp-ptop-mid {
+  justify-content: flex-start;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.sp-ptop-mid::-webkit-scrollbar {
+  display: none;
+}
+
+.sp-ptop-mid > * {
+  flex: none;
+}
+
+.sp-ptop-mid > :first-child {
+  margin-inline-start: auto;
+}
+
+.sp-ptop-mid > :last-child {
+  margin-inline-end: auto;
+}
+
+.sp-ptop-mid li[data-state='now'] {
+  scroll-snap-align: center;
+}
+
+.sp-ptop .sp-sec-chip {
+  height: 24px;
+  padding: 0 9px;
+  font-size: 12px;
+}
+
+/* Idag's way on to Framsteg, under the prognosis. */
+.sp-progn-link {
+  margin: 4px 0 0 -4px;
+}
+
+/* A modal layer for a short task: centred on desktop (or hung under a
+ * focus screen's bar), an edge sheet on phone; hidden while closed. */
+.sp-dialog {
+  position: absolute;
+  z-index: 61;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(520px, calc(100% - 48px));
+  max-height: calc(100% - 48px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 26px 28px 24px;
+  translate: -50% -50%;
+  border-radius: var(--sp-r-card);
+  background: var(--sp-card);
+  box-shadow:
+    var(--sp-shadow-2),
+    0 0 0 1px var(--sp-line);
+  animation: sp-menu-in var(--sp-t-spring) var(--sp-spring) both;
+}
+
+.sp-dialog[hidden] {
+  display: none;
+}
+
+.sp-dialog[data-placement='top'] {
+  top: 84px;
+  width: min(620px, calc(100% - 48px));
+  max-height: calc(100% - 108px);
+  translate: -50% 0;
+}
+
+.sp-dialog[data-phone='true'] {
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  max-height: calc(100% - 40px);
+  padding: 6px 18px 22px;
+  translate: none;
+  border-radius: var(--sp-r-card) var(--sp-r-card) 0 0;
+  box-shadow:
+    var(--sp-shadow-up),
+    0 0 0 1px var(--sp-line);
+  animation: sp-sheet-in var(--sp-t-spring) var(--sp-spring) both;
+}
+
+.sp-dialog-h {
+  font-family: var(--sp-display);
+  font-size: 30px;
+  line-height: 1.08;
+  font-weight: 800;
+  font-stretch: 90%;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.sp-dialog[data-phone='true'] .sp-dialog-h {
+  font-size: 26px;
+}
+
+.sp-dialog-p {
+  color: var(--sp-ink-2);
+  font-size: 16.5px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.sp-dialog-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 4px;
+}
+
+.sp-dialog[data-phone='true'] .sp-dialog-foot .sp-btn--primary {
+  flex: 1 0 100%;
+}
+
+/* Idag's scale as a part; the mini one sits in a row. */
+.sp-scale[data-size='mini'] {
+  width: 100%;
+  max-width: 160px;
+  height: 18px;
+  margin: 0;
+}
+
+.sp-scale[data-size='mini'] .sp-scale-track {
+  top: 7px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.sp-scale[data-size='mini'] .sp-scale-mark {
+  top: -4px;
+  width: 3px;
+  height: 12px;
+  margin-left: -1.5px;
+}
+
+/* ── Provpass: the hub ───────────────────────────────────────────── */
+
+.sp-prov-notice,
+.sp-res-note {
+  max-width: 44em;
+  padding: 11px 18px;
+  border-radius: 18px;
+  background: var(--sp-sunk);
+  color: var(--sp-ink);
+  font-size: 15px;
+  font-weight: 650;
+  text-wrap: pretty;
+}
+
+.sp-prov-notice {
+  margin-top: 24px;
+}
+
+.sp-prov-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 332px;
+  column-gap: clamp(40px, 4vw, 64px);
+  align-items: start;
+  margin-top: 36px;
+}
+
+.sp-prov-side {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding-top: 4px;
+}
+
+/* The station's band is the route — four legs, not one section's tint. */
+.sp-prov-route {
+  padding: 18px 26px 12px;
+  border-bottom: 1.5px solid var(--sp-line);
+}
+
+.sp-prov-kicker {
+  color: var(--sp-ink-2);
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.sp-prov-station .sp-now-title {
+  margin-top: 4px;
+}
+
+.sp-prov-station[data-empty='true'] .sp-now-title {
+  font-size: 30px;
+}
+
+.sp-prov-facts {
+  margin-top: 8px;
+  color: var(--sp-ink);
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.sp-prov-seen {
+  max-width: 34em;
+  margin-top: 4px;
+  color: var(--sp-ink-2);
+  font-size: 15.5px;
+  text-wrap: pretty;
+}
+
+.sp-prov-rhythm {
+  color: var(--sp-ink-2);
+  font-size: 15px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+/* The route ribbon: one rounded bar of legs, each as long as its
+ * questions, labelled under it. */
+.sp-ribbon {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.sp-ribbon-bar,
+.sp-ribbon-labels {
+  display: flex;
+  gap: 3px;
+}
+
+.sp-ribbon-bar {
+  height: 10px;
+}
+
+.sp-ribbon-leg {
+  position: relative;
+  flex-basis: 0;
+  min-width: 0;
+  border-radius: 999px;
+  background: oklch(var(--sp-l-strong) var(--sp-c-strong) var(--h));
+}
+
+/* Running: the legs fill in ink as questions are answered (never green:
+ * nothing is graded), and a tick stands where you are. */
+.sp-ribbon[data-run='true'] .sp-ribbon-leg {
+  background: oklch(var(--sp-l-tint) var(--sp-c-tint) var(--h));
+  box-shadow: inset 0 0 0 1px var(--sp-sunk-2);
+}
+
+[data-theme='dark'] .sp-ribbon[data-run='true'] .sp-ribbon-leg {
+  background: var(--sp-sunk);
+}
+
+.sp-ribbon-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: var(--sp-ink);
+  transition: width var(--sp-t-spring) var(--sp-spring);
+}
+
+.sp-ribbon-tick {
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  width: 3px;
+  height: 20px;
+  margin-left: -1.5px;
+  border-radius: 2px;
+  background: var(--sp-ink);
+  box-shadow: 0 0 0 2px var(--sp-canvas);
+}
+
+.sp-ribbon-label {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 0;
+  min-width: 0;
+  color: var(--sp-ink-2);
+  font-size: 12.5px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.sp-ribbon-label b {
+  color: var(--sp-ink);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+.sp-ribbon-label[data-here='true'] b {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* A pass in the register: a ring as full as what you have seen. */
+.sp-passring {
+  display: block;
+  flex: none;
+  width: 36px;
+  height: 36px;
+}
+
+.sp-passring-face {
+  fill: var(--sp-card);
+}
+
+.sp-passring-track {
+  fill: none;
+  stroke: var(--sp-sunk-2);
+  stroke-width: 5;
+}
+
+.sp-passring-value {
+  fill: none;
+  stroke: var(--sp-ink-2);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+[data-calm='true'] .sp-passring-value {
+  display: none;
+}
+
+.sp-prov-reg {
+  max-width: 880px;
+  margin-top: 44px;
+}
+
+.sp-prov-sitting {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 16px;
+  padding: 6px 0;
+  border-top: 1.5px solid var(--sp-line);
+}
+
+.sp-prov-sitting:last-child {
+  border-bottom: 1.5px solid var(--sp-line);
+}
+
+.sp-prov-sitting-name {
+  font-size: 15.5px;
+  font-weight: 750;
+}
+
+.sp-prov-passes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+
+.sp-prov-pass {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 6px 16px 6px 8px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--sp-ink);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color var(--sp-t1) var(--sp-ease),
+    border-radius var(--sp-t-spring) var(--sp-spring);
+}
+
+.sp-prov-pass:hover {
+  border-radius: 18px;
+  background: var(--sp-sunk);
+}
+
+/* The pass on the station: a neutral ink ring, like a chosen option. */
+.sp-prov-pass[aria-pressed='true'] {
+  border-radius: 18px;
+  background: var(--sp-card);
+  box-shadow: inset 0 0 0 2px var(--sp-ink);
+}
+
+.sp-prov-pass-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.sp-prov-pass-name {
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.sp-prov-pass-seen {
+  color: var(--sp-ink-2);
+  font-size: 13.5px;
+}
+
+.sp-prov-tiles > li {
+  display: flex;
+}
+
+.sp-prov-tile {
+  width: 100%;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: border-radius var(--sp-t-spring) var(--sp-spring);
+}
+
+.sp-prov-tile:hover {
+  border-radius: var(--sp-r-card);
+}
+
+.sp-prov-tile-norm {
+  color: var(--sp-ink-2);
+  font-size: 13.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The rules: the station grows into them (desktop), four sentences with
+ * a glyph each, then "Starta nu". */
+.sp-prov-rules {
+  animation: sp-grow var(--sp-t-spring) var(--sp-spring) both;
+}
+
+.sp-prov-rules-h {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: var(--sp-display);
+  font-size: 30px;
+  line-height: 1.08;
+  font-weight: 800;
+  font-stretch: 90%;
+  letter-spacing: -0.025em;
+}
+
+.sp-prov-rules-pass {
+  color: var(--sp-ink-2);
+  font-family: var(--sp-ui);
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.sp-prov-rules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.sp-prov-rule {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 12px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.sp-prov-rule-glyph {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: var(--sp-sunk);
+  color: var(--sp-ink);
+  rotate: -6deg;
+}
+
+.sp-prov-rule-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.sp-prov-rules-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 22px;
+}
+
+.sp-prov-rules-sheet .sp-prov-rules {
+  animation: none;
+}
+
+.sp-prov-rules-sheet .sp-prov-rules-h {
+  padding-top: 6px;
+  font-size: 26px;
+}
+
+.sp-prov-rules-sheet .sp-prov-rules-foot .sp-btn--primary {
+  flex: 1 0 100%;
+}
+
+.sp-prov[data-phone='true'] .sp-prov-top {
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: 18px;
+}
+
+.sp-prov[data-phone='true'] .sp-prov-route {
+  padding: 14px 16px 10px;
+}
+
+.sp-prov[data-phone='true'] .sp-now-body {
+  padding: 16px 16px 18px;
+}
+
+.sp-prov[data-phone='true'] .sp-now-title {
+  font-size: 29px;
+}
+
+.sp-prov[data-phone='true'] .sp-now-foot .sp-btn {
+  width: 100%;
+}
+
+.sp-prov[data-phone='true'] .sp-prov-reg {
+  margin-top: 32px;
+}
+
+.sp-prov[data-phone='true'] .sp-prov-sitting {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 2px;
+  padding: 8px 0 6px;
+}
+
+.sp-prov-after {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 28px;
+}
+
+/* ── Provpass: the running pass ──────────────────────────────────── */
+
+.sp-run {
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+.sp-run-top .sp-top-mid {
+  gap: 14px;
+}
+
+.sp-run-half {
+  color: var(--sp-ink-2);
+  font-size: 14.5px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.sp-run-top .sp-ribbon {
+  width: clamp(170px, 18vw, 300px);
+  padding-top: 15px;
+}
+
+.sp-run-top .sp-ribbon-label {
+  font-size: 11.5px;
+}
+
+.sp-run-scroll {
+  bottom: 0;
+}
+
+/* The clock: the largest thing in the bar, tabular, and inverse ink from
+ * ten minutes left — never red or amber. */
+.sp-clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--sp-sunk);
+  color: var(--sp-ink);
+  font-family: var(--sp-display);
+  font-size: 21px;
+  font-weight: 800;
+  font-variant-numeric: lining-nums tabular-nums;
+  white-space: nowrap;
+  transition:
+    background-color var(--sp-t2) var(--sp-ease),
+    color var(--sp-t2) var(--sp-ease);
+}
+
+.sp-clock svg {
+  color: var(--sp-ink-2);
+}
+
+.sp-clock[data-low='true'] {
+  background: var(--sp-ink);
+  color: var(--sp-card);
+}
+
+.sp-clock[data-low='true'] svg {
+  color: inherit;
+}
+
+.sp-clock[data-compact='true'] {
+  height: 36px;
+  padding: 0 12px;
+  font-size: 17px;
+}
+
+/* Five minutes left: one line, one concrete step. */
+.sp-run-note {
+  width: min(var(--sp-col), calc(100% - 48px));
+  margin: 0 auto 8px;
+  padding: 10px 16px;
+  border-radius: 16px;
+  background: var(--sp-ink);
+  color: var(--sp-card);
+  font-size: 15px;
+  font-weight: 650;
+  text-wrap: pretty;
+}
+
+.sp-run-note .sp-link,
+.sp-qtray-why .sp-link {
+  position: relative;
+  display: inline;
+  min-height: 0;
+  padding: 0 2px;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sp-run-note .sp-link::before,
+.sp-qtray-why .sp-link::before {
+  content: '';
+  position: absolute;
+  inset: -12px -6px;
+}
+
+.sp-run-tray-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 4px 4px 2px;
+}
+
+.sp-run-tray-q {
+  flex: 1;
+  padding-top: 10px;
+  color: var(--sp-ink-2);
+  font-size: 14.5px;
+  font-weight: 750;
+}
+
+.sp-run-flag {
+  flex: none;
+  margin-left: auto;
+}
+
+.sp-run-foot {
+  flex-wrap: wrap;
+}
+
+/* An option waiting for its figure looks it. */
+.sp-run .sp-opt:has(.sp-opt-main:disabled) {
+  opacity: 0.6;
+}
+
+.sp-run .sp-opt-main:disabled {
+  cursor: not-allowed;
+}
+
+/* A zoomed page pans in a region of its own. */
+.sp-run-pan {
+  width: 100%;
+}
+
+.sp-run-pan[data-zoom='true'] {
+  overflow: auto;
+  overscroll-behavior: contain;
+  border-radius: 8px;
+}
+
+.sp-run-pan[data-zoom='true'] > .sp-mat {
+  width: 200%;
+}
+
+.sp-run-ptitle {
+  margin-bottom: 14px;
+  font-family: var(--sp-display);
+  font-size: 26px;
+  line-height: 1.1;
+  font-weight: 800;
+  font-stretch: 90%;
+  letter-spacing: -0.02em;
+}
+
+/* Phone: the bar never hides in a pass; the ribbon is its second row. */
+.sp-run--phone {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  height: 100%;
+}
+
+.sp-run-ptop {
+  padding: 2px 12px 10px 4px;
+  background: var(--sp-canvas);
+}
+
+.sp-run-prow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  height: 52px;
+}
+
+.sp-run-pcount {
+  overflow: hidden;
+  color: var(--sp-ink);
+  font-size: 15px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.sp-run-ptop .sp-ribbon {
+  padding-left: 12px;
+}
+
+.sp-run-ptop .sp-ribbon-label {
+  font-size: 11px;
+}
+
+.sp-run--phone .sp-run-note {
+  width: auto;
+  margin: 0 12px 8px;
+}
+
+.sp-run-pscroll {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 2px 12px 20px;
+  scrollbar-width: none;
+}
+
+.sp-run-pscroll .sp-pcard {
+  border-radius: 24px;
+}
+
+.sp-run-pscroll .sp-pcard-band {
+  min-height: 48px;
+  padding: 8px 8px 8px 18px;
+}
+
+.sp-run-pscroll .sp-pcard-body {
+  padding: 18px 16px 20px;
+}
+
+.sp-run-pscroll .sp-pagecard .sp-pcard-body {
+  padding: 12px;
+}
+
+.sp-run-pscroll .sp-stem-text {
+  font-size: 18px;
+}
+
+.sp-run-pscroll .sp-stem-word {
+  font-size: 34px;
+}
+
+.sp-run-pscroll .sp-kva {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.sp-run-pscroll .sp-kva-val {
+  font-size: 21px;
+}
+
+.sp-run-popts {
+  padding: 14px 0 6px;
+}
+
+.sp-run-popts .sp-prompt {
+  margin: 0 4px 6px;
+  font-size: 18px;
+}
+
+.sp-run-popts .sp-opts {
+  gap: 6px;
+  margin: 6px -6px 0;
+  overflow: visible;
+}
+
+.sp-run-popts .sp-opt-main {
+  min-height: 60px;
+  padding: 10px 48px 10px 10px;
+}
+
+.sp-run-popts .sp-blob {
+  width: 36px;
+  height: 36px;
+}
+
+.sp-run-popts .sp-opt-text {
+  padding-top: 7px;
+  font-size: 16px;
+  line-height: 1.42;
+}
+
+.sp-run-popts .sp-opt-x {
+  top: 8px;
+}
+
+.sp-run--phone .sp-opts[data-layout='images'] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sp-run-pbar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 12px 14px;
+  border-radius: 22px 22px 0 0;
+  background: var(--sp-card);
+  box-shadow:
+    var(--sp-shadow-up),
+    0 0 0 1px var(--sp-line);
+}
+
+.sp-run-ptools {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.sp-run-ptools .sp-btn--sm {
+  padding: 0 10px;
+}
+
+.sp-run-pnav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* A hand-in the host could not take: the pass stays, read-only, and the
+ * frame's navigation comes back around it (the rail beside it on desktop,
+ * the navbar under it on phone). Running, the frame is no box at all. */
+.sp-run-frame:not([data-failed='true']) {
+  display: contents;
+}
+
+.sp-run--phone[data-failed='true'] {
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+}
+
+.sp-run-failed {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  width: min(var(--sp-col), calc(100% - 48px));
+  margin: 0 auto 10px;
+  padding: 14px 16px 14px 20px;
+  border-radius: var(--sp-r-inner);
+  background: var(--sp-card);
+  box-shadow:
+    var(--sp-shadow-1),
+    inset 4px 0 0 var(--sp-warn);
+}
+
+.sp-run-failed-text {
+  flex: 1 1 24em;
+  min-width: 0;
+  color: var(--sp-ink-2);
+  font-size: 15px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.sp-run-failed-text b {
+  display: block;
+  color: var(--sp-ink);
+  font-weight: 800;
+}
+
+.sp-run--phone .sp-run-failed {
+  width: auto;
+  margin: 0 12px 8px;
+}
+
+/* The overview: a filter, the switchback, its key. */
+.sp-run-ov-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sp-run-ov-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.sp-run-ov-chip {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--sp-card);
+  box-shadow: inset 0 0 0 1.5px var(--sp-sunk-2);
+  color: var(--sp-ink-2);
+  font-size: 14px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition:
+    border-radius var(--sp-t-spring) var(--sp-spring),
+    background-color var(--sp-t1) var(--sp-ease);
+}
+
+.sp-run-ov-chip[aria-pressed='true'] {
+  border-radius: 12px;
+  background: var(--sp-ink);
+  box-shadow: none;
+  color: var(--sp-card);
+}
+
+.sp-run-ov-foot {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ── The switchback: rows that turn back like a trail up a slope ──── */
+
+.sp-sw {
+  --sw-stop: 32px;
+  --sw-pitch: 48px;
+  --sw-row: 60px;
+  display: grid;
+  grid-template-columns: repeat(var(--sw-cols, 10), var(--sw-pitch));
+  grid-auto-rows: var(--sw-row);
+  justify-content: center;
+  margin: 2px 0;
+}
+
+.sp-sw[data-compact='true'] {
+  --sw-stop: 24px;
+  --sw-pitch: 32px;
+  --sw-row: 46px;
+}
+
+.sp-dialog[data-phone='true'] .sp-sw:not([data-compact='true']) {
+  --sw-pitch: 64px;
+  --sw-row: 58px;
+}
+
+.sp-sw-cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.sp-sw-cell::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.sp-sw-cell[data-link='right']::before,
+.sp-sw-cell[data-link='left']::before {
+  top: 50%;
+  width: var(--sw-pitch);
+  height: 2px;
+  margin-top: -1px;
+  background: var(--sp-sunk-2);
+}
+
+.sp-sw-cell[data-link='right']::before {
+  left: 50%;
+}
+
+.sp-sw-cell[data-link='left']::before {
+  right: 50%;
+}
+
+.sp-sw-cell[data-link='turn-right']::before,
+.sp-sw-cell[data-link='turn-left']::before {
+  top: 50%;
+  width: calc(var(--sw-pitch) / 2);
+  height: var(--sw-row);
+  border: 2px solid var(--sp-sunk-2);
+}
+
+.sp-sw-cell[data-link='turn-right']::before {
+  left: 50%;
+  border-left: 0;
+  border-radius: 0 999px 999px 0;
+}
+
+.sp-sw-cell[data-link='turn-left']::before {
+  right: 50%;
+  border-right: 0;
+  border-radius: 999px 0 0 999px;
+}
+
+.sp-sw-stop {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+}
+
+button.sp-sw-stop {
+  cursor: pointer;
+}
+
+button.sp-sw-stop:hover .sp-stop[data-state='todo'],
+button.sp-sw-stop:hover .sp-stop[data-state='flagged'] {
+  box-shadow: inset 0 0 0 2px var(--sp-ink-2);
+}
+
+/* Answered and marked: the ink disc keeps its flag. */
+.sp-sw-stop[data-answered='true'] .sp-stop[data-state='flagged'] {
+  background: var(--sp-ink);
+  color: var(--sp-card);
+}
+
+.sp-sw-badge {
+  position: absolute;
+  top: calc(50% - var(--sw-stop) / 2 - 5px);
+  left: calc(50% + var(--sw-stop) / 2 - 7px);
+  padding: 1px;
+  border-radius: 50%;
+  background: var(--sp-card);
+  color: var(--sp-ink);
+}
+
+.sp-sw-leg {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  color: var(--sp-ink-2);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+.sp-sw[data-compact='true'] .sp-sw-leg {
+  font-size: 10px;
+}
+
+.sp-sw-cell[data-dim='true'] .sp-stop {
+  opacity: 0.3;
+}
+
+.sp-sw-key {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 18px;
+  color: var(--sp-ink-2);
+  font-size: 13.5px;
+  font-weight: 650;
+}
+
+.sp-sw-key > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Provpassresultat ────────────────────────────────────────────── */
+
+.sp-res-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 18px;
+}
+
+.sp-res-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  column-gap: clamp(40px, 4vw, 64px);
+  align-items: start;
+  margin-top: 28px;
+}
+
+.sp-res-misses {
+  max-width: 34em;
+  color: var(--sp-ink-2);
+  font-size: 17px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.sp-res-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+  margin-top: 18px;
+}
+
+.sp-res-score {
+  padding: 20px 22px 18px;
+  border-radius: var(--sp-r-card);
+  background: var(--sp-card);
+  box-shadow: var(--sp-shadow-1);
+}
+
+.sp-res-score-h {
+  color: var(--sp-ink-2);
+}
+
+.sp-res-score .sp-progn-n {
+  margin-top: 8px;
+}
+
+.sp-res-basis {
+  margin-top: 10px;
+  color: var(--sp-ink-2);
+  font-size: 13.5px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.sp-res-score .sp-caveat {
+  margin-top: 8px;
+}
+
+.sp-res-route {
+  margin-top: 44px;
+}
+
+/* The legs in the test's order, two to a row: the result keeps their
+ * counts, not each question's verdict. */
+.sp-res-legs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 12px;
+}
+
+.sp-res-leg {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 12px;
+  padding: 10px 14px 10px 10px;
+  border-radius: var(--sp-r-inner);
+  background: var(--sp-card);
+  box-shadow: var(--sp-shadow-1);
+}
+
+.sp-res-leg-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sp-res-leg-name {
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.sp-res-leg-facts {
+  color: var(--sp-ink-2);
+  font-size: 14px;
+}
+
+.sp-res-leg-facts b {
+  color: var(--sp-ink);
+  font-weight: 800;
+}
+
+[data-calm='true'] .sp-res-leg-time {
+  display: none;
+}
+
+.sp-res-more {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  column-gap: clamp(28px, 3vw, 48px);
+  row-gap: 28px;
+  align-items: start;
+  margin-top: 44px;
+}
+
+.sp-res-more .sp-h3 {
+  margin-bottom: 12px;
+}
+
+.sp-res-exp-text {
+  color: var(--sp-ink-2);
+  font-size: 15.5px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.sp-res-hist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sp-res-hist-row {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: border-radius var(--sp-t-spring) var(--sp-spring);
+}
+
+.sp-res-hist-row:hover {
+  border-radius: var(--sp-r-inner);
+  background: var(--sp-card);
+  box-shadow: var(--sp-shadow-1);
+}
+
+.sp-res-hist-when {
+  color: var(--sp-ink-3);
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.sp-res-hist-name {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sp-res-hist-n {
+  color: var(--sp-ink-2);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sp-res[data-phone='true'] .sp-res-top {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 22px;
+  margin-top: 16px;
+}
+
+.sp-res[data-phone='true'] .sp-res-actions .sp-btn--primary {
+  flex: 1 0 100%;
+}
+
+.sp-res[data-phone='true'] .sp-res-route {
+  margin-top: 32px;
+}
+
+.sp-res[data-phone='true'] .sp-res-legs {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 8px;
+}
+
+.sp-res[data-phone='true'] .sp-res-more {
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: 32px;
+}
+
+/* ── Framsteg ────────────────────────────────────────────────────── */
+
+.sp-fs-title-of {
+  color: var(--sp-ink-2);
+  font-size: 0.42em;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+}
+
+.sp-fs-caveat {
+  max-width: 44em;
+  margin-top: 8px;
+}
+
+.sp-fs-panel[hidden] {
+  display: none;
+}
+
+.sp-fs-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 332px;
+  column-gap: clamp(40px, 4vw, 64px);
+  align-items: start;
+  margin-top: 36px;
+}
+
+.sp-fs-main,
+.sp-fs-side,
+.sp-fs-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  min-width: 0;
+}
+
+.sp-fs-stack {
+  gap: 32px;
+  margin-top: 24px;
+}
+
+/* Nästa steg uppåt: numbered stops ringed in their sections' hues. */
+.sp-fs-next .sp-h3 {
+  margin-bottom: 12px;
+}
+
+.sp-fs-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sp-fs-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  align-items: start;
+  column-gap: 12px;
+}
+
+.sp-fs-step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 17px;
+  top: 42px;
+  bottom: -14px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--sp-sunk-2);
+}
+
+.sp-fs-step-head {
+  padding-top: 7px;
+  color: var(--sp-ink-2);
+  font-size: 15.5px;
+  text-wrap: pretty;
+}
+
+.sp-fs-step-head b {
+  color: var(--sp-ink);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.sp-fs-step-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin-top: 8px;
+}
+
+.sp-fs-little {
+  color: var(--sp-ink-2);
+  font-size: 15px;
+}
+
+/* Klättringen: an elevation line toward the goal's flag. */
+.sp-climb {
+  margin: 0;
+}
+
+.sp-climb-plot {
+  position: relative;
+  height: 200px;
+  margin: 10px 72px 30px 40px;
+}
+
+.sp-climb-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.sp-climb-area {
+  fill: color-mix(in oklch, var(--sp-ink) 6%, transparent);
+}
+
+.sp-climb-line,
+.sp-climb-bridge,
+.sp-climb-goal {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.sp-climb-line {
+  stroke: var(--sp-ink);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.sp-climb-bridge {
+  stroke: var(--sp-ink-3);
+  stroke-width: 2.5;
+  stroke-dasharray: 1 6;
+  stroke-linecap: round;
+}
+
+.sp-climb-goal {
+  stroke: var(--sp-ink-3);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 5;
+}
+
+.sp-climb-tick {
+  position: absolute;
+  left: -40px;
+  width: 30px;
+  translate: 0 -50%;
+  color: var(--sp-ink-3);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.sp-climb-week {
+  position: absolute;
+  top: calc(100% + 8px);
+  color: var(--sp-ink-3);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.sp-climb-week[data-at='start'] {
+  left: 0;
+}
+
+.sp-climb-week[data-at='end'] {
+  right: 0;
+}
+
+.sp-climb-flag {
+  position: absolute;
+  left: 100%;
+  translate: 12px -50%;
+}
+
+.sp-climb-now {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  translate: -10px -50%;
+}
+
+.sp-climb-now-n {
+  font-family: var(--sp-display);
+  font-size: 17px;
+  font-weight: 800;
+  font-variant-numeric: lining-nums tabular-nums;
+  white-space: nowrap;
+}
+
+.sp-climb-range {
+  position: absolute;
+  width: 14px;
+  margin-left: -7px;
+  border-radius: 4px;
+  background: repeating-linear-gradient(
+    135deg,
+    color-mix(in oklch, var(--sp-ink) 34%, transparent) 0 2px,
+    transparent 2px 5px
+  );
+}
+
+.sp-climb-cap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 14px;
+  color: var(--sp-ink-2);
+  font-size: 14.5px;
+  text-wrap: pretty;
+}
+
+.sp-climb-toggle {
+  width: auto;
+  margin-top: 0;
+  font-size: 14px;
+}
+
+.sp-climb-start {
+  gap: 48px;
+  margin: 6px 0 12px;
+}
+
+.sp-climb-table {
+  margin-top: 12px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.sp-climb-table th,
+.sp-climb-table td {
+  padding: 6px 18px 6px 0;
+  border-bottom: 1px solid var(--sp-line);
+  text-align: left;
+}
+
+.sp-climb-table thead th {
+  color: var(--sp-ink-2);
+  font-weight: 750;
+}
+
+.sp-climb-table tbody th {
+  font-weight: 650;
+}
+
+[data-calm='true'] .sp-climb-plot {
+  display: none;
+}
+
+/* Delproven: rows that open in place to their two actions. */
+.sp-fs-group-h {
+  margin: 14px 0 6px;
+  color: var(--sp-ink-2);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.sp-fs-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sp-fs-line {
+  border-radius: var(--sp-r-inner);
+  transition:
+    background-color var(--sp-t1) var(--sp-ease),
+    border-radius var(--sp-t-spring) var(--sp-spring);
+}
+
+.sp-fs-line[data-open='true'] {
+  border-radius: var(--sp-r-card);
+  background: var(--sp-card);
+  box-shadow: var(--sp-shadow-1);
+}
+
+.sp-fs-line-main {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto 20px 140px 18px;
+  align-items: center;
+  column-gap: 14px;
+  width: 100%;
+  min-height: 60px;
+  padding: 8px 14px 8px 10px;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sp-fs-line-main:hover {
+  background: var(--sp-card);
+}
+
+.sp-fs-line-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sp-fs-line-name {
+  font-size: 15.5px;
+  font-weight: 750;
+}
+
+.sp-fs-line-facts {
+  color: var(--sp-ink-2);
+  font-size: 13.5px;
+}
+
+.sp-fs-line-score {
+  font-family: var(--sp-display);
+  font-size: 20px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.sp-fs-band {
+  color: var(--sp-ink-2);
+  font-family: var(--sp-ui);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.sp-fs-trend {
+  display: grid;
+  place-items: center;
+  color: var(--sp-ink-2);
+}
+
+.sp-fs-line[data-open='true'] .sp-chev {
+  rotate: 180deg;
+}
+
+.sp-fs-line[data-tried='false'] .sp-stop[data-state='section'] {
+  box-shadow: inset 0 0 0 2px var(--sp-sunk-2);
+  color: var(--sp-ink-2);
+}
+
+.sp-fs-line-more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  padding: 0 14px 12px 60px;
+  animation: sp-grow var(--sp-t-spring) var(--sp-spring) both;
+}
+
+[data-calm='true'] .sp-fs-band,
+[data-calm='true'] .sp-fs-trend svg {
+  display: none;
+}
+
+.sp-fs[data-phone='true'] .sp-fs-line-main {
+  grid-template-columns: 36px minmax(0, 1fr) auto 18px 18px;
+  column-gap: 10px;
+  padding: 8px 10px;
+}
+
+.sp-fs[data-phone='true'] .sp-fs-line-scale {
+  grid-row: 2;
+  grid-column: 2 / 4;
+}
+
+.sp-fs[data-phone='true'] .sp-fs-line-main > .sp-chev {
+  grid-row: 1;
+  grid-column: 5;
+}
+
+.sp-fs[data-phone='true'] .sp-fs-line-more {
+  padding-left: 56px;
+}
+
+/* Veckorna: earned dots per week; a week that met the goal gets a flag. */
+.sp-weeks {
+  --sp-dot: 10px;
+  --sp-dot-gap: 4px;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--sp-weeks, 12), minmax(0, 1fr));
+  align-items: end;
+  gap: 6px;
+  height: calc(7 * (var(--sp-dot) + var(--sp-dot-gap)) + 18px);
+}
+
+/* A week's dots stack up from the bottom; its flag sits on top. */
+.sp-weeks-col {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: var(--sp-dot-gap);
+}
+
+.sp-weeks-col i {
+  width: var(--sp-dot);
+  height: var(--sp-dot);
+  border-radius: 50%;
+  background: var(--sp-ink-2);
+}
+
+.sp-weeks-flag {
+  color: var(--sp-ink);
+}
+
+.sp-weeks-goal {
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  bottom: calc(var(--sp-weeks-goal) * (var(--sp-dot) + var(--sp-dot-gap)) - var(--sp-dot-gap) / 2);
+  border-top: 1.5px dashed var(--sp-ink-3);
+}
+
+.sp-fs-weeks .sp-goal-text {
+  margin-top: 12px;
+  white-space: normal;
+}
+
+[data-calm='true'] .sp-weeks {
+  display: none;
+}
+
+.sp-fs-rep-n {
+  color: var(--sp-ink-2);
+  font-size: 15px;
+}
+
+.sp-fs-rep-n b {
+  color: var(--sp-ink);
+  font-family: var(--sp-display);
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.sp-fs-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 16px;
+  margin: 6px 0 0 -4px;
+}
+
+/* Historik: the trail you have walked, day by day. */
+.sp-fs-hist {
+  max-width: var(--sp-col);
+  margin-top: 32px;
+}
+
+.sp-fs-hist-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.sp-hday + .sp-hday {
+  margin-top: 20px;
+}
+
+.sp-hday-h {
+  margin-bottom: 8px;
+  font-family: var(--sp-display);
+  font-size: 19px;
+  font-weight: 800;
+  font-stretch: 92%;
+  letter-spacing: -0.01em;
+}
+
+.sp-hlist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sp-hrow {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 14px;
+  min-height: 48px;
+}
+
+.sp-hrow:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 17px;
+  top: 42px;
+  bottom: -8px;
+  width: 2px;
+  background: repeating-linear-gradient(to bottom, var(--sp-sunk-2) 0 3px, transparent 3px 6px);
+}
+
+.sp-hrow-stop {
+  display: grid;
+}
+
+.sp-hrow-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sp-hrow-name {
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.sp-hrow-facts {
+  color: var(--sp-ink-2);
+  font-size: 14px;
+}
+
+.sp-fs-hist-end {
+  margin-top: 26px;
+  color: var(--sp-ink-3);
+  font-size: 14px;
+}
+
+.sp-fs-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
 /* ── Reduced motion, calm, thumbnails ────────────────────────────── */
 
 /* Reduced motion: nothing moves, springs included; colour may still fade. */

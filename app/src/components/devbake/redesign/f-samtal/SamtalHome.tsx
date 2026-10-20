@@ -15,20 +15,16 @@
 // app cannot fill (the pause time, minutes left and device of the paused
 // sitting, the prognosis range, the weekly goal, the plan's lead marker) is
 // simply left out when absent, never shown as a placeholder. Without a
-// paused sitting the coach offers the plan instead.
+// paused sitting the coach offers the plan instead. "Alla pass i Framsteg"
+// opens Framsteg on its Historik, where the finished passes are.
 
 import { ArrowRight, FileText } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
-import { fmtDelta, fmtScore, useKeyMap, type WidthKey } from '@/components/devbake/redesign/r1Kit'
-import type {
-  PlanItemView,
-  PrognosisView,
-  ResumeView,
-  WeekView,
-} from '@/components/devbake/redesign/viewModel'
-import { Coach, count, Divider, Dots, Kbd, Replies, words, You } from './SamtalParts'
+import { useKeyMap, type WidthKey } from '@/components/devbake/redesign/r1Kit'
+import type { PlanItemView, ResumeView, WeekView } from '@/components/devbake/redesign/viewModel'
+import { Coach, count, Divider, Dots, Kbd, Replies, ScoreCard, words, You } from './SamtalParts'
 
 const DEVICE_DEFINITE: Record<string, string> = {
   telefon: 'telefonen',
@@ -36,17 +32,17 @@ const DEVICE_DEFINITE: Record<string, string> = {
   surfplatta: 'surfplattan',
 }
 
-/** HP's scale runs from 0 to 2,0. */
-const SCALE_MAX = 2
-
 export function SamtalHome({
   width,
   live,
   onResume,
+  onHistory,
 }: {
   width: WidthKey
   live: boolean
   onResume: () => void
+  /** Framsteg's Historik (the frame opens it); Framsteg's door without. */
+  onHistory?: () => void
 }) {
   const { data, actions } = useDirectionData()
   const { today, exam, resume, plan, prognosis, traps, recent, week } = data.home
@@ -214,7 +210,11 @@ export function SamtalHome({
                   </li>
                 ))}
               </ul>
-              <button type="button" className="sa-link" onClick={() => actions.go('framsteg')}>
+              <button
+                type="button"
+                className="sa-link"
+                onClick={onHistory ?? (() => actions.go('framsteg'))}
+              >
                 Alla pass i Framsteg
                 <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
               </button>
@@ -323,78 +323,5 @@ function PlanList({
         )
       })}
     </ol>
-  )
-}
-
-/** The prognosis and the caveat that goes with it, as its footnote. */
-function ScoreCard({ p }: { p: PrognosisView }) {
-  const halves = [
-    p.verbal != null ? `Verbal ${fmtScore(p.verbal)}` : null,
-    p.quant != null ? `Kvant ${fmtScore(p.quant)}` : null,
-  ]
-    .filter(Boolean)
-    .join(' · ')
-  return (
-    <div className="sa-score-wrap">
-      <section className="sa-card sa-card--score" aria-labelledby="sa-score-h">
-        <header className="sa-card-head">
-          <h2 id="sa-score-h">Prognos</h2>
-          {halves ? <span>{halves}</span> : null}
-        </header>
-        {p.total != null ? (
-          <>
-            <p className="sa-score">
-              <span className="sa-score-n" aria-describedby={p.caveat ? 'sa-caveat' : undefined}>
-                {fmtScore(p.total)}
-                {p.caveat ? <sup aria-hidden>*</sup> : null}
-              </span>
-              <span className="sa-score-of">av 2,0</span>
-              {p.delta != null ? (
-                <span className="sa-score-delta">{fmtDelta(p.delta)} sedan förra veckan</span>
-              ) : null}
-            </p>
-            <Scale total={p.total} low={p.low} high={p.high} />
-          </>
-        ) : (
-          <p className="sa-say sa-say--quiet">Prognosen visas när du har svarat i båda delarna.</p>
-        )}
-      </section>
-      {/* The caveat is the coach's footnote to the card above. */}
-      {p.caveat ? (
-        <p className="sa-footnote" id="sa-caveat">
-          <b aria-hidden>*</b>
-          <span>{p.caveat}</span>
-        </p>
-      ) : null}
-    </div>
-  )
-}
-
-/** The prognosis on its 0–2,0 scale: the likely range, when there is one,
- *  and the point. */
-function Scale({ total, low, high }: { total: number; low?: number; high?: number }) {
-  const at = (v: number) => `${(Math.min(SCALE_MAX, Math.max(0, v)) / SCALE_MAX) * 100}%`
-  const range = low != null && high != null
-  return (
-    <div
-      className="sa-scale"
-      role="img"
-      aria-label={
-        range
-          ? `Trolig nivå ${fmtScore(low)} till ${fmtScore(high)} på skalan 0 till 2,0`
-          : `Nivå ${fmtScore(total)} på skalan 0 till 2,0`
-      }
-    >
-      <span className="sa-scale-track" />
-      {range ? (
-        <span className="sa-scale-range" style={{ left: at(low), width: at(high - low) }} />
-      ) : null}
-      <span className="sa-scale-mark" style={{ left: at(total) }} />
-      {[0, 0.5, 1, 1.5, 2].map((v) => (
-        <span key={v} className="sa-scale-tick" style={{ left: at(v) }}>
-          {v === 0 ? '0' : fmtScore(v)}
-        </span>
-      ))}
-    </div>
   )
 }

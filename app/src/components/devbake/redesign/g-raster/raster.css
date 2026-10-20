@@ -242,7 +242,7 @@
 .rd-raster[data-width='phone'] .ra-brand > span { font-size: 12px; margin: 0; }
 .rd-raster[data-width='phone'] .ra-account { padding-left: 12px; gap: 12px; font-size: 12px; }
 .rd-raster[data-width='phone'] .ra-account-menu { right: 0; width: 350px; max-width: calc(100vw - 40px); padding: 16px 20px; }
-.rd-raster[data-width='phone'] .ra-index { position: absolute; bottom: 0; left: 0; right: 0; background: var(--ra-paper); border-top: 2px solid var(--ra-ink); padding-bottom: env(safe-area-inset-bottom,0px); }
+.rd-raster[data-width='phone'] .ra-index { position: absolute; bottom: 0; left: 0; right: 0; background: var(--ra-paper); border-top: 2px solid var(--ra-ink); padding: 0 12px env(safe-area-inset-bottom,0px); }
 .rd-raster[data-width='phone'] .ra-index button { flex-direction: column; align-items: start; justify-content: center; gap: 4px; padding: 12px 8px; min-height: 70px; }
 .rd-raster[data-width='phone'] .ra-index button > .ra-index-number { font-size: 20px; }
 .rd-raster[data-width='phone'] .ra-index button > span:last-child { font-size: 11px; }
@@ -572,4 +572,102 @@
   .rd-raster .ra-inline-register { display: none; }
   .rd-raster .ra-section-register li { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
   .rd-raster .ra-section-register li > span:last-child { grid-column: 1 / -1; }
+}
+
+/* Batch 3: a contents margin, a settings ledger, the same reading paper. */
+.rd-raster .ra-library-sections { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); margin: 24px 0 32px; border-top: 2px solid var(--ra-ink); }
+.rd-raster .ra-library-sections button { display: grid; grid-template-columns: 48px minmax(0,1fr); gap: 4px 12px; padding: 16px 12px; border-bottom: 1px solid var(--ra-rule); }
+.rd-raster .ra-library-sections button small { grid-column: 2; color: var(--ra-secondary); }
+.rd-raster .ra-library-sections button[aria-pressed='true'] { background: var(--ra-ink); color: var(--ra-paper); }
+.rd-raster .ra-library-sections button[aria-pressed='true'] small { color: inherit; }
+.rd-raster .ra-library-grid { display: grid; grid-template-columns: minmax(0,3fr) minmax(0,9fr); gap: 32px; }
+.rd-raster .ra-contents { border-top: 2px solid var(--ra-ink); }
+.rd-raster :is(.ra-contents,.ra-lesson-example,.ra-account-data) summary { cursor: pointer; min-height: 48px; padding: 12px 0; font-family: var(--ra-ui); font-weight: 650; }
+.rd-raster .ra-contents button { display: grid; grid-template-columns: 32px minmax(0,1fr); gap: 12px; width: 100%; padding: 16px 8px; border-bottom: 1px solid var(--ra-rule); }
+.rd-raster .ra-contents button[aria-current='page'] { border-left: 4px solid var(--ra-ink); background: var(--ra-wash); }
+.rd-raster .ra-contents :is(strong,small) { display: block; }
+.rd-raster .ra-contents small { margin-top: 6px; color: var(--ra-secondary); }
+.rd-raster :is(.ra-lesson-column,.ra-settings,.ra-identity) { min-width: 0; }
+.rd-raster .ra-lesson { max-width: 70ch; padding-left: 24px; border-left: 1px solid var(--ra-rule); }
+.rd-raster .ra-lesson > h2 { font-size: 38px; letter-spacing: -0.035em; margin: 12px 0 20px; }
+.rd-raster .ra-lesson .ra-label { margin-top: 12px; }
+.rd-raster .ra-lesson-body { font: 19px/1.65 var(--ra-reading); hyphens: auto; }
+.rd-raster .ra-lesson-block { padding: 24px 0; border-bottom: 1px solid var(--ra-rule); }
+.rd-raster .ra-lesson-block :is(h3,h4) { font-size: 17px; margin-bottom: 12px; }
+.rd-raster .ra-lesson-summary { margin: 16px 0; font-size: 22px; }
+.rd-raster .ra-protocol li { display: grid; grid-template-columns: 44px minmax(0,1fr); gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--ra-rule); }
+.rd-raster .ra-protocol .ra-index-number { font: 28px var(--ra-ui); }
+.rd-raster .ra-lesson-distractor { margin-top: 20px; }
+.rd-raster .ra-lesson-example { border-bottom: 1px solid var(--ra-rule); padding: 12px 0; }
+.rd-raster .ra-lesson-block ul { list-style: disc; padding-left: 24px; }
+.rd-raster .ra-lesson-actions { display: flex; flex-wrap: wrap; gap: 16px; padding: 28px 0; align-items: center; }
+.rd-raster .ra-lesson-actions :is(p,.ra-text-link) { flex-basis: 100%; }
+.rd-raster .ra-text-link { padding-inline: 0; text-decoration: underline; text-underline-offset: 4px; }
+.rd-raster :is(.ra-request-status,.ra-library-intro) { padding: 20px; margin-bottom: 24px; background: var(--ra-wash); border-left: 4px solid var(--ra-ink); }
+.rd-raster .ra-library-intro p { margin: 16px 0; }
+.rd-raster .ra-account-grid { display: grid; grid-template-columns: minmax(0,4fr) minmax(0,8fr); gap: 40px; border-top: 2px solid var(--ra-ink); padding-top: 24px; }
+.rd-raster .ra-identity { overflow-wrap: anywhere; }
+.rd-raster .ra-identity h2 { font-size: 14px; }
+.rd-raster .ra-identity p { margin: 12px 0; }
+.rd-raster .ra-identity .ra-identity-name { font-size: 28px; font-weight: 650; }
+.rd-raster .ra-identity dl { border-top: 1px solid var(--ra-rule); margin-top: 24px; padding-top: 16px; }
+.rd-raster .ra-identity dt { font-size: 12px; }
+.rd-raster .ra-setting { min-width: 0; border: 0; border-bottom: 1px solid var(--ra-rule); padding: 12px 0 20px; margin-bottom: 12px; }
+.rd-raster .ra-setting legend { font-size: 17px; font-weight: 650; }
+.rd-raster .ra-setting > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.rd-raster .ra-setting button { flex: 1; min-width: min(120px,100%); padding: 12px 16px; border: 1px solid var(--ra-rule); }
+.rd-raster .ra-setting button[aria-pressed='true'] { color: var(--ra-paper); background: var(--ra-ink); border-color: var(--ra-ink); }
+.rd-raster .ra-setting small { display: block; font-size: 13px; margin-top: 8px; }
+.rd-raster .ra-setting-note { color: var(--ra-secondary); margin: 12px 0 24px; }
+.rd-raster .ra-account-status { min-height: 48px; padding-block: 12px; }
+.rd-raster .ra-account-links { display: flex; flex-wrap: wrap; gap: 8px 24px; border-top: 1px solid var(--ra-rule); }
+.rd-raster .ra-account-links a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; text-underline-offset: 4px; }
+.rd-raster .ra-account-return { margin: 32px 0; width: 100%; }
+.rd-raster .ra-account-data { border-top: 2px solid var(--ra-ink); padding-top: 8px; }
+.rd-raster .ra-account-data :is(h2,h3,p) { margin: 16px 0; }
+.rd-raster .ra-account-data > button { margin: 0 12px 12px 0; }
+.rd-raster .ra-account-danger { border-top: 1px solid var(--ra-rule); margin-top: 24px; }
+.rd-raster .ra-account-danger [aria-disabled='true'] { color: var(--ra-secondary); cursor: not-allowed; }
+.rd-raster .ra-modal input { display: block; width: 100%; min-height: 48px; padding: 12px; margin: 12px 0 24px; border: 1px solid var(--ra-ink); color: var(--ra-ink); background: var(--ra-paper); font: inherit; }
+.rd-raster .ra-modal-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.rd-raster .ra-citation-return { padding: 12px 20px; text-decoration: underline; text-underline-offset: 4px; border-bottom: 1px solid var(--ra-rule); }
+.rd-raster .ra-cloze-gap { display: inline-block; padding: 0 14px; margin: 0 2px; border-bottom: 2px solid currentColor; font: 0.85em var(--ra-ui); }
+.rd-raster .ra-cloze-gap[data-active='true'] { background: var(--ra-signal); color: var(--ra-signal-ink); font-weight: 700; }
+.rd-raster .ra-required-image img { display: block; width: 100%; height: auto; background: white; }
+.rd-raster .ra-reading-figure { margin: 0 24px 32px; }
+.rd-raster .ra-reading-figure figcaption { margin-top: 12px; }
+.rd-raster .ra-reading-option-image { flex-basis: 100%; padding: 12px; }
+.rd-raster [data-reading='true'] .ra-options li { flex-wrap: wrap; }
+.rd-raster[data-width='phone'] :is(.ra-library-grid,.ra-account-grid) { display: block; }
+.rd-raster[data-width='phone'] .ra-library-sections { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.rd-raster[data-width='phone'] .ra-library-sections button { grid-template-columns: minmax(0,1fr); }
+.rd-raster[data-width='phone'] .ra-library-sections button small { grid-column: 1; }
+.rd-raster[data-width='phone'] .ra-contents { margin-bottom: 28px; }
+.rd-raster[data-width='phone'] .ra-lesson { padding-left: 0; border-left: 0; }
+.rd-raster[data-width='phone'] .ra-lesson > h2 { font-size: 30px; }
+.rd-raster[data-width='phone'] .ra-lesson-body { font-size: 18px; }
+.rd-raster[data-width='phone'] .ra-settings { margin-top: 28px; }
+/* In-flow trays reserve their actual height: even a long prompt cannot cover
+   the last paragraph. Both the passage and expanded answer remain scrollable. */
+.rd-raster[data-width='phone'] [data-reading='true'] .ra-drill-grid { display: flex; flex-direction: column; }
+.rd-raster[data-width='phone'] [data-reading='true'] .ra-reading-scroll { flex: 1; height: auto; }
+.rd-raster[data-width='phone'] [data-reading='true'] .ra-passage { padding-bottom: 32px; }
+.rd-raster[data-width='phone'] [data-reading='true'] .ra-question-sheet { position: static; flex-shrink: 0; }
+.rd-raster[data-width='phone'] [data-reading='true'] .ra-question-sheet[data-state='peek'] { max-height: 45%; overflow: auto; }
+.rd-raster[data-width='phone'] [data-reading='true'] .ra-peek-prompt { overflow: visible; white-space: normal; text-overflow: clip; }
+.rd-raster [data-reading='true'] .ra-actionbar { flex-wrap: wrap; }
+@container (max-width: 700px) {
+  .rd-raster :is(.ra-library-grid,.ra-account-grid) { display: block; }
+  .rd-raster .ra-library-sections { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .rd-raster .ra-contents { margin-bottom: 24px; }
+  .rd-raster .ra-lesson { padding-left: 0; border-left: 0; }
+  .rd-raster .ra-settings { margin-top: 24px; }
+  .rd-raster[data-width='desktop'] [data-reading='true'] .ra-drill-grid { display: block; overflow: auto; }
+  .rd-raster[data-width='desktop'] [data-reading='true'] :is(.ra-reading-scroll,.ra-question-scroll) { overflow: visible; }
+  .rd-raster[data-width='desktop'] [data-reading='true'] .ra-question-sheet { border-left: 0; border-top: 2px solid var(--ra-ink); }
+}
+@container (max-width: 340px) {
+  .rd-raster[data-width='phone'] [data-reading='true'] .ra-drill-grid { display: block; overflow: auto; }
+  .rd-raster[data-width='phone'] [data-reading='true'] :is(.ra-reading-scroll,.ra-question-scroll) { overflow: visible; }
+  .rd-raster[data-width='phone'] [data-reading='true'] .ra-question-sheet[data-state] { height: auto; max-height: none; overflow: visible; }
 }

@@ -20,16 +20,29 @@
 //                   that zooms, turns and pans
 //   8 Repetera    — the frame around the repetition queue (SamtalRepetera):
 //                   what is ready now, one round, the rest folded
+//   9 Provpass    — the frame around the hub (SamtalProvpass): the coach's
+//                   one offer with the pass attached and the one gate before
+//                   the clock; started, the pass leaves the frame and runs
+//                   in focus mode, the coach gone quiet; handed in, the
+//                   frame comes back until the result opens — or says that
+//                   the hand-in failed, with the answers as they stood
+//  10 Resultat    — the frame around the handed-in pass: the result said
+//                   plainly, its basis beside the score, then the notes
+//  11 Framsteg    — the frame around Framsteg (SamtalFramsteg): one
+//                   observation and one reply, the evidence as attachments,
+//                   and Historik as its second view
 // Every screen reads its data and asks for its moves through
 // useDirectionData() (kit v2), so the same screens can run on real data.
 
-import type { ReactNode } from 'react'
+import { type ReactNode, useCallback, useEffect, useState } from 'react'
 
 import './samtal.css'
 import { type DirectionProps, useWebFonts } from '@/components/devbake/redesign/r1Kit'
 import { meta } from './meta'
 import { SamtalDrill } from './SamtalDrill'
 import { SamtalFrame } from './SamtalNav'
+import { SamtalRoot } from './SamtalParts'
+import { type HandedPass, SamtalPass } from './SamtalProvpass'
 import { SamtalQuant } from './SamtalQuant'
 
 const FONTS =
@@ -38,13 +51,71 @@ const FONTS =
 export function Samtal(props: DirectionProps) {
   useWebFonts(meta.slug, FONTS)
   const { screen } = props
+  const [root, setRoot] = useState<HTMLDivElement | null>(null)
+  // A pass runs on Provpass (9) only: started from its hub, it takes the
+  // whole screen until it is handed in or given up, and a move to another
+  // screen ends it — the hub opens fresh on the way back. Giving it up
+  // leaves a word on the hub. Handed in, the run ends at once: the frame
+  // holds the pass's answers as they stood until the result opens, or says
+  // the hand-in failed, until the reader goes on.
+  const [run, setRun] = useState<string | null>(null)
+  const [notice, setNotice] = useState<'void' | null>(null)
+  const [handed, setHanded] = useState<{ pass: HandedPass; failed: boolean } | null>(null)
+  useEffect(() => {
+    if (screen === 9) return
+    setRun(null)
+    setNotice(null)
+    setHanded(null)
+  }, [screen])
+  const start = useCallback((passId: string) => {
+    setNotice(null)
+    setHanded(null)
+    setRun(passId)
+  }, [])
+  const leave = useCallback((why: 'void' | 'back') => {
+    setRun(null)
+    setNotice(why === 'void' ? 'void' : null)
+  }, [])
+  const handIn = useCallback((pass: HandedPass) => {
+    setRun(null)
+    setHanded({ pass, failed: false })
+  }, [])
+  // Only the pass on show: a late answer for another one changes nothing.
+  const refused = useCallback((pass: HandedPass) => {
+    setHanded((h) => (h?.pass === pass ? { pass, failed: true } : h))
+  }, [])
+  const toHub = useCallback(() => setHanded(null), [])
+
   let stage: ReactNode
   if (screen === 2 || screen === 3) stage = <SamtalDrill {...props} />
   // Kvantfråga and DTK are two sittings: each opens fresh.
   else if (screen === 6 || screen === 7) stage = <SamtalQuant key={screen} {...props} />
-  else stage = <SamtalFrame {...props} />
+  else if (screen === 9 && run != null) {
+    stage = (
+      <SamtalPass
+        key={run}
+        passId={run}
+        width={props.width}
+        live={props.live}
+        onLeave={leave}
+        onHandIn={handIn}
+        onHandInFailed={refused}
+      />
+    )
+  } else {
+    stage = (
+      <SamtalFrame
+        {...props}
+        onStartPass={start}
+        passNotice={notice}
+        passHanded={handed}
+        onPassBack={toHub}
+      />
+    )
+  }
   return (
     <div
+      ref={setRoot}
       data-rd="samtal"
       data-theme={props.theme}
       data-width={props.width}
@@ -52,7 +123,7 @@ export function Samtal(props: DirectionProps) {
       data-testid="rd-samtal"
       lang="sv"
     >
-      {stage}
+      <SamtalRoot.Provider value={root}>{stage}</SamtalRoot.Provider>
     </div>
   )
 }
