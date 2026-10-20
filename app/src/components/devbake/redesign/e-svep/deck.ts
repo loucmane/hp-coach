@@ -1,11 +1,14 @@
 // E · Svep — the deck: one card in front, the rest stacked behind it.
 //
-// useDeck keeps the front card's index and turns a horizontal drag on the
-// deck into a move: a pull past SWIPE px (or a quick flick) deals the next
-// card, a pull the other way brings the previous one back. Vertical drags
-// are left to the page (touch-action: pan-y on the deck), and a drag never
-// ends in a click on the card it started on. Keys and buttons call the
-// same next/prev/go, so swiping is never the only way to move.
+// useDeck keeps the front card — its place and its name — and turns a
+// horizontal drag on the deck into a move: a pull past SWIPE px (or a
+// quick flick) deals the next card, a pull the other way brings the
+// previous one back. Vertical drags are left to the page (touch-action:
+// pan-y on the deck), and a drag never ends in a click on the card it
+// started on. Keys and buttons call the same next/prev/go, so swiping is
+// never the only way to move. The cards come from data that can change
+// under the deck: the card in front stays in front while it is dealt, and
+// the place never runs past the last card.
 //
 // cardPos names each card's place for the stylesheet: "gone" (dealt away
 // to the left), "front", "next" and "after" (the two edges that peek from
@@ -60,35 +63,51 @@ export type Deck = {
 }
 
 /**
- * The deck's state. `reset` (a string or number) re-seats it at the first
- * card, without a move, whenever it changes: a new verdict, a new question.
+ * The deck's state for `cards` (only their ids count). `reset` (a string
+ * or number) re-seats it at the first card, without a move, whenever it
+ * changes: a new verdict, a new question. When the cards change (the data
+ * behind them did), the card in front stays in front if it is still
+ * dealt; if it is gone, the deck keeps its place, at most the last card.
+ * Settled while rendering, so no one ever reads a card past the end.
  */
-export function useDeck(count: number, reset?: string | number): Deck {
-  const [index, setIndex] = useState(0)
+export function useDeck(cards: readonly { id: string }[], reset?: string | number): Deck {
+  const count = cards.length
+  const [front, setFront] = useState(() => ({ index: 0, id: cards[0]?.id }))
   const [moved, setMoved] = useState(false)
   const [drag, setDrag] = useState(0)
+
+  let index = front.index
+  if (cards[index]?.id !== front.id) {
+    const kept = cards.findIndex((c) => c.id === front.id)
+    index = kept === -1 ? Math.min(front.index, Math.max(0, count - 1)) : kept
+    setFront({ index, id: cards[index]?.id })
+    // A re-seat, not a move: no card flies.
+    setMoved(false)
+  }
   const indexRef = useRef(index)
   indexRef.current = index
+  const cardsRef = useRef(cards)
+  cardsRef.current = cards
 
   // Before paint, so the old position never shows for a frame.
   // biome-ignore lint/correctness/useExhaustiveDependencies: a new `reset` value re-seats the deck
   useLayoutEffect(() => {
     indexRef.current = 0
-    setIndex(0)
+    const id = cardsRef.current[0]?.id
+    setFront((f) => (f.index === 0 && f.id === id ? f : { index: 0, id }))
     setMoved(false)
     setDrag(0)
   }, [reset])
 
-  const go = useCallback(
-    (i: number) => {
-      const n = Math.min(count - 1, Math.max(0, i))
-      if (n === indexRef.current) return
-      indexRef.current = n
-      setMoved(true)
-      setIndex(n)
-    },
-    [count],
-  )
+  const go = useCallback((i: number) => {
+    const all = cardsRef.current
+    if (all.length === 0) return
+    const n = Math.min(all.length - 1, Math.max(0, i))
+    if (n === indexRef.current) return
+    indexRef.current = n
+    setMoved(true)
+    setFront({ index: n, id: all[n].id })
+  }, [])
   const next = useCallback(() => go(indexRef.current + 1), [go])
   const prev = useCallback(() => go(indexRef.current - 1), [go])
 
