@@ -11,7 +11,7 @@ import type { DrillSessionView } from '@/components/devbake/redesign/viewModel'
 import { MathText } from '@/components/MathText'
 import { LjuskaglaFeedback } from './LjuskaglaFeedback'
 import { DrillHead } from './LjuskaglaNav'
-import { AnswerRows } from './LjuskaglaParts'
+import { AnswerRows, PassageParagraphs } from './LjuskaglaParts'
 
 /**
  * The reading session on the bake-off's two round-1 screens. Läsfråga (2)
@@ -277,36 +277,15 @@ export function LjuskaglaDrill(props: DirectionProps) {
                 {heading?.[1] && <p>{heading[1]}</p>}
               </header>
               <article className="lj-passage" data-testid="rd-passage" aria-label={title}>
-                {paragraphs.map((text, index) => {
-                  const n = index + 1
-                  const lit = spotlight && active === n
-                  return (
-                    <div
-                      key={n}
-                      ref={refs.para(n)}
-                      className="lj-paragraph"
-                      data-testid={`rd-para-${n}`}
-                      data-paragraph={n}
-                      data-lit={String(lit)}
-                      data-cited={String(view.flashPara === n)}
-                    >
-                      <button
-                        type="button"
-                        className="lj-para-number"
-                        aria-label={`Lys upp stycke ${n}`}
-                        aria-pressed={lit}
-                        onClick={() => setFocusPara(n)}
-                      >
-                        {n}
-                      </button>
-                      {/* A paragraph remains readable/selectable prose. Its margin
-                          button provides the same action for keyboard users. */}
-                      {/* biome-ignore lint/a11y/useKeyWithClickEvents: the adjacent native paragraph-number button provides this same action to keyboard users. */}
-                      <p onClick={() => setFocusPara(n)}>{text}</p>
-                    </div>
-                  )
-                })}
-                {view.passage?.byline && <p className="lj-byline">{view.passage.byline}</p>}
+                <PassageParagraphs
+                  paragraphs={paragraphs}
+                  byline={view.passage?.byline}
+                  lit={(n) => spotlight && active === n}
+                  cited={(n) => view.flashPara === n}
+                  onLight={setFocusPara}
+                  paraRef={refs.para}
+                  ids
+                />
               </article>
               <p className="lj-text-end">Slut på texten</p>
             </div>
