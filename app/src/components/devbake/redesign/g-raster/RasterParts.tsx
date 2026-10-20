@@ -43,6 +43,7 @@ export function RasterDialog({
     }
   }, [])
   return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: Escape is handled by native dialog cancellation; click handles only the backdrop
     <dialog
       ref={ref}
       className="ra-modal"
@@ -51,6 +52,17 @@ export function RasterDialog({
       onCancel={(event) => {
         event.preventDefault()
         onClose()
+      }}
+      onClick={(event) => {
+        if (event.target !== event.currentTarget) return
+        const box = event.currentTarget.getBoundingClientRect()
+        if (
+          event.clientX < box.left ||
+          event.clientX > box.right ||
+          event.clientY < box.top ||
+          event.clientY > box.bottom
+        )
+          onClose()
       }}
     >
       <header className="ra-modal-heading">

@@ -1,6 +1,5 @@
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
-  DESTINATIONS,
   type Destination,
   fmtDelta,
   fmtScore,
@@ -200,25 +199,5 @@ export function RasterHome({
         </div>
       </div>
     </div>
-  )
-}
-
-export function RasterDestination({ dest, onHome }: { dest: Destination; onHome: () => void }) {
-  const index = DESTINATIONS.findIndex((d) => d.id === dest)
-  const item = DESTINATIONS[index]
-  return (
-    <section className="ra-destination">
-      <span className="ra-display">
-        <IndexNumber value={index + 1} />
-      </span>
-      <div>
-        <h1>{item.label}</h1>
-        <p>{item.blurb}</p>
-        <p>Den här sidan kommer i nästa omgång. Här kan du prova menyn och kontot.</p>
-        <button type="button" className="ra-outline" onClick={onHome}>
-          Tillbaka till Idag ↗
-        </button>
-      </div>
-    </section>
   )
 }
