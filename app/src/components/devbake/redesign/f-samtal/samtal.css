@@ -3435,6 +3435,16 @@
   margin-top: var(--sa-s3);
 }
 
+/* An option's image that failed: said under the options, in their lane
+ * (the thread's gap above it), with a real retry. */
+[data-rd='samtal'] .sa-opts-failed {
+  margin: 0 0 0 var(--sa-s12);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-opts-failed {
+  margin-left: 0;
+}
+
 /* An image option: the figure is the answer's words. */
 [data-rd='samtal'] .sa-opt-figure {
   display: block;
@@ -3445,11 +3455,15 @@
   background: var(--sa-paper);
 }
 
+/* Its own proportions, never stretched (a pie chart read wide misleads):
+ * the height is set and the width follows the image's ratio — the box is
+ * there before the image is. Too wide for the lane, it fits inside. */
 [data-rd='samtal'] .sa-opt-figure img {
   display: block;
+  width: auto;
   max-width: 100%;
-  max-height: 140px;
-  height: auto;
+  height: 140px;
+  object-fit: contain;
 }
 
 /* The action bar when there is nothing to send: the reason, in ink, then

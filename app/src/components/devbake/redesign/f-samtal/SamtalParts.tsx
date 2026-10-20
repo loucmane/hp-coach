@@ -10,10 +10,21 @@
 //   - Cites, Rich    — ¶ links into the passage and "(steg N)" links; Rich
 //                      renders the explanation's math (MathText) as it goes.
 //   - Dots, DoorIcon, Kbd, Mark — progress, the doors' icons, keys, the logo.
+//   - FigureImg      — a figure's image that says when it is there or has
+//                      failed, a cached one at once; the quant drill holds
+//                      the answer on it (FigureLoadsContext).
 //   - words, count   — numbers said the way the coach says them.
 
 import { BookOpen, PenLine, Sun, Timer, TrendingUp } from 'lucide-react'
-import type { HTMLAttributes, ReactNode, Ref } from 'react'
+import {
+  type ComponentProps,
+  createContext,
+  type HTMLAttributes,
+  type ReactNode,
+  type Ref,
+  useLayoutEffect,
+  useRef,
+} from 'react'
 
 import { splitStepRefs } from '@/components/devbake/redesign/drillCore'
 import type { Destination } from '@/components/devbake/redesign/r1Kit'
@@ -188,6 +199,53 @@ export function Mark({ name = true }: { name?: boolean }) {
         </span>
       ) : null}
     </span>
+  )
+}
+
+// ── Figures ──────────────────────────────────────────────────────────
+
+export type FigureStatus = 'loading' | 'ready' | 'error'
+
+/** Load status and retries, per figure source (a DTK page, a diagram or an
+ *  option's image): a failure belongs to its own source and never follows
+ *  the reader to the next one. A source not heard from yet is loading. */
+export type FigureLoads = {
+  status: (src: string) => FigureStatus
+  attempt: (src: string) => number
+  report: (src: string, s: FigureStatus) => void
+  retry: (src: string) => void
+}
+
+/** The quant drill's figure loads; null outside it (the reading drill has
+ *  no figure to wait for). */
+export const FigureLoadsContext = createContext<FigureLoads | null>(null)
+
+type FigureImgProps = Omit<ComponentProps<'img'>, 'ref' | 'onLoad' | 'onError'> & {
+  alt: string
+  onStatus: (s: FigureStatus) => void
+}
+
+/** A figure's image that reports when it is there or has failed — a cached
+ *  one too: an image already complete when it mounts reports at once, and
+ *  never waits for a load event that has come and gone. Key it by source
+ *  and attempt, so another source, or a retry, is a new image, checked
+ *  again. */
+export function FigureImg({ alt, onStatus, ...img }: FigureImgProps) {
+  const ref = useRef<HTMLImageElement>(null)
+  const report = useRef(onStatus)
+  report.current = onStatus
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (el?.complete && el.naturalWidth > 0) report.current('ready')
+  }, [])
+  return (
+    <img
+      ref={ref}
+      alt={alt}
+      {...img}
+      onLoad={() => report.current('ready')}
+      onError={() => report.current('error')}
+    />
   )
 }
 

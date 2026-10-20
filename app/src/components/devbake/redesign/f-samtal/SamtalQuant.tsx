@@ -21,15 +21,17 @@
 // question on the same page.
 // DTK, phone: the page first, full width, and the question in the reply
 // tray ("Visa figuren" folds it).
-// A question that lacks what it needs — its stem, its options, its DTK page
-// or diagram, missing or failed to load — cannot be graded, by Svara or by
-// Enter. It says why, offers a real retry where a load failed, and "Till
-// Öva" as the way back. A sitting without questions says so, and its one
-// way on is Öva.
+// A question that lacks what it needs — its stem, its options, its DTK page,
+// diagram or option images, missing or failed to load — cannot be graded,
+// by Svara or by Enter. It says why, offers a real retry where a load
+// failed, and "Till Öva" as the way back. While a figure it needs is still
+// loading (a retry is a new load), the answer waits: the action bar says so
+// calmly, with no way out, and the answer goes once the figure is there. A
+// figure the browser already holds is there at once. A sitting without
+// questions says so, and its one way on is Öva.
 
 import { Maximize2, Minus, Plus, RotateCw, X } from 'lucide-react'
 import {
-  createContext,
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
   type PointerEvent as ReactPointerEvent,
@@ -65,24 +67,22 @@ import {
   type DrillChrome,
   ExitButton,
   nextPlanItem,
+  optionImagesFailed,
   StripProgress,
   TrayDrill,
   useFolds,
 } from './SamtalDrill'
 import { Closing, luresFor } from './SamtalFeedback'
-import { Coach, Divider, Kbd, Replies } from './SamtalParts'
-
-type FigureStatus = 'loading' | 'ready' | 'error'
-
-/** Load status and retries, per figure source (a DTK page or a diagram):
- *  a failure belongs to its own source and never follows the reader to the
- *  next one. */
-type FigureLoads = {
-  status: (src: string) => FigureStatus
-  attempt: (src: string) => number
-  report: (src: string, s: FigureStatus) => void
-  retry: (src: string) => void
-}
+import {
+  Coach,
+  Divider,
+  FigureImg,
+  type FigureLoads,
+  FigureLoadsContext,
+  type FigureStatus,
+  Kbd,
+  Replies,
+} from './SamtalParts'
 
 function useFigureLoadState(): FigureLoads {
   const [status, setStatus] = useState<Record<string, FigureStatus>>({})
@@ -99,8 +99,6 @@ function useFigureLoadState(): FigureLoads {
 }
 
 /** The drill's figure loads, for the diagram inside the coach's turn. */
-const FigureLoadsContext = createContext<FigureLoads | null>(null)
-
 function useFigureLoads(): FigureLoads {
   const loads = useContext(FigureLoadsContext)
   if (!loads) throw new Error('A quant diagram is drawn inside the quant drill only')
@@ -122,17 +120,48 @@ function pct(zoom: number): string {
   return `${Math.round(zoom * 100)} %`
 }
 
-/** Why the answer cannot be sent, or null: no stem, no options, or a figure
- *  the question needs (`figure` is its load status) that is missing or
- *  failed to load — a DTK page or a diagram. */
-function blockedReason(q: DrillQuestion, figure: FigureStatus): string | null {
-  if (!q.prompt?.trim()) return 'Frågetexten saknas, så frågan kan inte besvaras.'
-  if (!q.options?.length) return 'Frågan saknar svarsalternativ och kan inte besvaras här.'
-  if (q.section === 'DTK' && !q.figure) return 'Underlaget saknas, så frågan kan inte besvaras.'
+/** Why the answer cannot be sent yet, or null. The figures a question needs
+ *  are its DTK page or diagram and its options' images. One still loading
+ *  is a wait (`wait`), said calmly, which passes by itself. No stem, no
+ *  options, no DTK page, or a figure that failed to load stops the answer
+ *  until a retry or the way back. */
+function blockedReason(
+  q: DrillQuestion,
+  loads: FigureLoads,
+): { reason: string; wait: boolean } | null {
+  const stop = (reason: string) => ({ reason, wait: false })
+  if (!q.prompt?.trim()) return stop('Frågetexten saknas, så frågan kan inte besvaras.')
+  if (!q.options?.length) return stop('Frågan saknar svarsalternativ och kan inte besvaras här.')
+  if (q.section === 'DTK' && !q.figure) {
+    return stop('Underlaget saknas, så frågan kan inte besvaras.')
+  }
+  const page = q.figure?.kind === 'raster'
+  const figure = q.figure ? loads.status(q.figure.src) : 'ready'
+  const images = q.options.flatMap((o) =>
+    o.figure ? [{ letter: o.letter, status: loads.status(o.figure.src) }] : [],
+  )
+  const failed = images.filter((i) => i.status === 'error').map((i) => i.letter)
   if (figure === 'error') {
-    return q.figure?.kind === 'raster'
-      ? 'Underlaget gick inte att ladda, så frågan kan inte besvaras.'
-      : 'Figuren gick inte att ladda, så frågan kan inte besvaras.'
+    return stop(
+      page
+        ? 'Underlaget gick inte att ladda, så frågan kan inte besvaras.'
+        : 'Figuren gick inte att ladda, så frågan kan inte besvaras.',
+    )
+  }
+  if (failed.length) return stop(`${optionImagesFailed(failed)}, så frågan kan inte besvaras.`)
+  if (figure === 'loading') {
+    return {
+      reason: page
+        ? 'Underlaget laddas – du kan svara när det syns.'
+        : 'Figuren laddas – du kan svara när den syns.',
+      wait: true,
+    }
+  }
+  if (images.some((i) => i.status === 'loading')) {
+    return {
+      reason: 'Bilderna till svarsalternativen laddas – du kan svara när de syns.',
+      wait: true,
+    }
   }
   return null
 }
@@ -241,7 +270,7 @@ function QuantDrill({ width, live, session }: DirectionProps & { session: DrillS
     if (!page) return
     setViews((m) => ({ ...m, [page.src]: { ...(m[page.src] ?? FIGURE_START), ...patch } }))
   }
-  // Per source, page or diagram: load status and retries.
+  // Per source — page, diagram or option image: load status and retries.
   const loads = useFigureLoadState()
   const figureStatus: FigureStatus = q.figure ? loads.status(q.figure.src) : 'ready'
 
@@ -264,12 +293,12 @@ function QuantDrill({ width, live, session }: DirectionProps & { session: DrillS
     setInspecting(true)
   }
 
-  const blocked = blockedReason(q, figureStatus)
+  const block = blockedReason(q, loads)
   const moved = useRef(false)
-  // Nothing is graded while the question cannot be answered: not by Svara,
-  // not by Enter.
+  // Nothing is graded while the question cannot be answered, or while a
+  // figure it needs is still loading: not by Svara, not by Enter.
   const lock = () => {
-    if (blocked) return false
+    if (block) return false
     moved.current = true
     return act.lock()
   }
@@ -324,7 +353,8 @@ function QuantDrill({ width, live, session }: DirectionProps & { session: DrillS
     lures: luresFor(q.section),
     frameworks: data.frameworks,
     optionId: 'rd-quant-option',
-    blocked,
+    blocked: block && !block.wait ? block.reason : null,
+    waiting: block?.wait ? block.reason : null,
     out,
     focusAid: false,
     lastLabel: 'Slutför övningen',
@@ -630,8 +660,8 @@ function Problem({ q, headingId }: { q: DrillQuestion; headingId: string }) {
 }
 
 /** A quant diagram (SVG) on a paper plate in both themes: its lines keep
- *  the colours of the printed page. If it fails, it says so in place with a
- *  real retry, and the answer waits for it (blockedReason). */
+ *  the colours of the printed page. The answer waits for it while it loads
+ *  (blockedReason); if it fails, it says so in place with a real retry. */
 function Diagram({ figure }: { figure: DrillFigure }) {
   const loads = useFigureLoads()
   const { src } = figure
@@ -647,15 +677,14 @@ function Diagram({ figure }: { figure: DrillFigure }) {
   }
   return (
     <figure className="sa-problem-fig">
-      <img
+      <FigureImg
         // Another source, or a retry, is a new image: nothing carries over.
         key={`${src}#${loads.attempt(src)}`}
         src={`/${src}`}
         alt={figure.alt}
         width={figure.width}
         height={figure.height}
-        onLoad={() => loads.report(src, 'ready')}
-        onError={() => loads.report(src, 'error')}
+        onStatus={(s) => loads.report(src, s)}
       />
     </figure>
   )
@@ -812,16 +841,16 @@ function FigurePage({
       aria-busy={status === 'loading'}
       style={{ width, aspectRatio: String(turned ? 1 / ratio : ratio) }}
     >
-      <img
-        key={attempt}
+      <FigureImg
+        // Another page, or a retry, is a new image: nothing carries over.
+        key={`${figure.src}#${attempt}`}
         className="sa-fig-img"
         src={`/${figure.src}`}
         alt={figure.alt}
         width={figure.width}
         height={figure.height}
         draggable={false}
-        onLoad={() => onStatus('ready')}
-        onError={() => onStatus('error')}
+        onStatus={onStatus}
         style={{
           width: turned ? `${100 * ratio}%` : '100%',
           height: turned ? `${100 / ratio}%` : '100%',

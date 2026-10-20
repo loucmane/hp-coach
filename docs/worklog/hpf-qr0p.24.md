@@ -385,3 +385,136 @@ Line numbers are on the final tree. Every test runs at both widths.
 ### Beads hand-off
 
 - One note on the bead, ending `SAMTAL1R2 DONE: hpf-qr0p.24`. Then the bead is parked: status deferred, no assignee. It is not closed. Uncommitted.
+
+## Round 3
+
+The fix for the lead the coordinator confirmed in the source at `5929777` after the void re-review hpf-hwfu. It is a P2 in the class of round 2's finding 1: a required figure that is still loading, or loading again after a retry, could be graded. Session `ci-wisp-8euyur7`.
+
+### Snapshot and boundaries
+
+- **Claim.** `gc hook --claim --json` returned `hpf-qr0p.24`, assignee `ci-wisp-8euyur7`, route `hpfetcher/gc.implementation-worker`. `bd show hpf-qr0p.24 --json` matched the id, the status (`in_progress`), the assignee and `gc.routed_to`. The full JSON was too large for the tool, which saved it where this sandbox cannot read, so the bead was read with `--brief-deps`.
+- **Checkout.** HEAD `5929777` (round 2's `2b7802f` with `origin/main` merged), clean apart from the sandbox's dotfile placeholders.
+- **Write set kept.** Changed: `SamtalQuant.tsx`, `SamtalDrill.tsx`, `SamtalFeedback.tsx`, `SamtalParts.tsx`, `samtal.css`, `Samtal.test.tsx`, and this worklog. No shared kit file and no shared test was edited.
+- **Delivery rules.** Uncommitted, no dependency changes, offline. Aegis ignored. The bead is parked, not closed.
+
+### The fixes
+
+Line numbers are on the final tree.
+
+**1. A figure the question needs is never graded while it loads, nor after a retry until the new load** (`SamtalQuant.tsx`)
+
+- **The rule.** `blockedReason` (:128–167) now reads the drill's loads and returns a reason with its kind. The figures a question needs are its DTK page or diagram, and now also its options' images (:140).
+  - Missing or failed is a **stop**, as before. An option's image that failed is new here (:151).
+  - Still loading is a **wait**, said calmly:
+    - "Underlaget laddas – du kan svara när det syns." (a DTK page);
+    - "Figuren laddas – du kan svara när den syns." (a diagram, :152–159);
+    - "Bilderna till svarsalternativen laddas – du kan svara när de syns." (:160–165).
+- **One gate, every way to answer.** The drill's `lock` refuses while anything holds the answer (:296, :300–301).
+  - Svara is disabled.
+  - Enter goes through `advance` and so through `lock`.
+  - Space cannot activate a disabled Svara, and the key map binds Space only after the answer.
+- **A wait is not an error.** The chrome carries a stop as `blocked` and a wait as `waiting` (:356–357, the new `DrillChrome.waiting` in `SamtalDrill.tsx` :95–97).
+  - The Dock disables Svara for either and gives the reason in its status line (`SamtalDrill.tsx` :330, :335, :346).
+  - Only a stop sets `data-blocked` (the reason in ink) and offers "Till Öva" (:373).
+  - A wait is the quiet status text: no alert and no way out.
+- **A cached image is ready at once.** The new shared `FigureImg` (`SamtalParts.tsx` :233) reports `ready` at mount when `img.complete && img.naturalWidth > 0` (:237–240). Otherwise it reports on its load event, and a failure on its error event. Every figure image now uses it, keyed by source and attempt, so a retry (or another source) mounts a new image and the check runs again:
+  - the diagram (`SamtalQuant.tsx` :680–688);
+  - the DTK page, in place and enlarged (:844–859). It is now keyed by page and attempt, so another page is a new image too;
+  - the options' images (`SamtalFeedback.tsx` `OptionBody` :92).
+  - The load types and the context moved to `SamtalParts.tsx` (:207–221) so the options can reach them. `useFigureLoadState` stays in `SamtalQuant.tsx` (:87).
+- **Option images** (`SamtalDrill.tsx` `Options` :244).
+  - The options pass the loads to `OptionBody`. Its tracked image loads eagerly (no `loading="lazy"`), since the answer waits for it. Facit's copies stay lazy.
+  - A failed one is said under the options, with one real retry for every failed image: "Bilden till alternativ A gick inte att ladda." / "Bilderna till alternativ A och C gick inte att ladda." (`optionImagesFailed` :233, the note :304–315).
+  - The note is styled like the diagram's failure note, in the options' lane (`samtal.css` :3438–3446). The dock's reason adds ", så frågan kan inte besvaras." and offers "Till Öva".
+- **Choosing stays free while a figure loads** (choosing grades nothing). Only sending waits.
+
+**2. Found in the browser check: image options were drawn stretched** (`samtal.css` :3458–3467)
+
+- **The defect (round 1's CSS).** `.sa-opt-figure img` had `max-width: 100%; max-height: 140px; height: auto` beside the image's `width` attribute. The width filled the lane while the height was capped, so the real pie charts of host-2021-kvant1-DTK-033 (293×308) were drawn as ellipses about 2.6 times as wide. A stretched pie chart misreads its shares, on exactly the images the answer now waits for.
+- **The fix.** `height: 140px; width: auto; object-fit: contain`. The width follows the image's ratio, and the box is reserved before the image arrives (from its width and height attributes). An image too wide for the lane fits inside.
+- **Checked in the shots:** the options and Facit's answer and key, both themes, both widths. jsdom lays nothing out, so there is no unit test for it.
+
+### Tests (red first)
+
+Every new test runs at both widths.
+
+- **Helpers.**
+  - `withQuant` (:163) and `passQuestions` (:169).
+  - `withOptionImages` (:175).
+  - `cachedImages` (:193): spies on `complete` and `naturalWidth`, as Instrument's tests do.
+  - `NEEDED_FIGURES` (:207): the DTK page, a diagram (XYZ-002), and the options' images.
+  - `answer()` (:254) now fires load on the images first: the shared contract's `loadImages`, as its `lockQuant` does.
+- **`:859`, still loading (three kinds).**
+  - With a choice made, Svara is disabled, and a click, Enter and Space are refused. No verdict appears.
+  - The wait is said; there is no alert and no "Till Öva".
+  - The answer waits for the last image (options), then Enter grades once.
+- **`:792`, a diagram (the brief's :728–733).** After "Försök igen" the new image is loading:
+  - Svara is disabled, a click and Enter are refused, and no verdict appears;
+  - the wait is said;
+  - only after its load event does Enter grade, once.
+- **`:1014`, a DTK page, extended the same way.** After the retry, Svara is disabled, Enter is refused and the wait is said. After the load, Enter grades once.
+- **`:893`, a cached image (three kinds).** The image is complete with `naturalWidth` 800, and no load event fires.
+  - It can be answered at once, and nothing says it is loading.
+  - After a failure and a retry, the new image can be answered at once again: the check on the retry's new key.
+- **`:923`, option images.**
+  - One fails: the alert in place says "Bilden till alternativ A gick inte att ladda.". Svara is disabled, Enter is refused, the dock gives its reason, and "Till Öva" is there.
+  - A second fails: the alert says "Bilderna till alternativ A och C …".
+  - One retry reloads both. The answer waits until both have loaded, then grades once.
+- **`:833`, adapted.** The second question's diagram gets its load event before its choice is sent. What the test checks is unchanged.
+- **Red on `5929777`: 16 failed, 8 per width.**
+  - `:820` and `:1028` (then `:1021`): Svara was enabled after the retry.
+  - `:869` (×3): Svara was enabled while loading.
+  - `:907`: the cached DTK page was stuck at "Hämtar underlaget …".
+  - `:910`: a failed option image did not block.
+  - The option-image test found no alert (`:933` in its first form). It was then reworded to name letters, before any source change. The second red run showed the same 16 failures at the same places, but its output was cut short of that test's line.
+- **The cached diagram case passes on `5929777` by construction:** the old code never waited.
+  - To show that the cached tests guard the fix, a mutant run disabled the mount check.
+  - All 6 cached cases then failed: Svara stayed disabled. The check was then restored.
+- **After the fixes, all pass.**
+
+### Verification (from `app/`, on the final tree)
+
+- `pnpm typecheck`: clean.
+- `pnpm lint`: **0 errors, 0 warnings**; 487 files checked. The 4 infos are the pre-existing ones outside this folder.
+- `pnpm exec vitest run src/components/devbake/redesign/f-samtal/Samtal.test.tsx`: **213 passed (213)**, round 2's 199 plus the 14 new.
+- `pnpm test`: **107 files, 1859 tests, all passed.**
+  - The shared `Redesign2026Bakeoff.test.tsx:331` failure recorded in round 2 now passes; it was fixed on main and merged in `5929777`.
+  - No shared test was edited.
+
+### Browser self-check
+
+- **The harness.** It lives in this session's scratchpad, outside the repo:
+  - Samtal alone, in a `DirectionDataProvider`;
+  - Vite on 127.0.0.1;
+  - Playwright Chromium at 1440×900 and 390×844, with reduced motion and Google Fonts aborted (fallback faces).
+- **How the states are made.** A figure is held loading by a route that never answers, and made to fail by an aborted route.
+- **The cases:**
+  - the fixture DTK page;
+  - XYZ-002's diagram;
+  - the fixture DTK question with the real pie-chart options of host-2021-kvant1-DTK-033.
+- **The probes:**
+  - document overflow;
+  - controls outside the viewport;
+  - clipped text;
+  - axe-core WCAG 2.x A/AA, scoped to the direction;
+  - console errors, beyond the deliberate aborts;
+  - the dock's state.
+- **What was shot.** 26 shots, after 22 taken before the ratio fix:
+  - loading (page, diagram and options) and failed options, in both themes at both widths;
+  - the options ready;
+  - Facit with image options, in both themes;
+  - DTK and the diagram ready.
+- **Result.** All clean, with **0 axe violations**.
+  - Loading: Svara is disabled, the wait is said, and there is no alert and no "Till Öva".
+  - Failed options: the note under the options with "Försök igen", the dock's reason, "Till Öva", and Svara disabled.
+  - Ready: "Ditt svar: …", and Svara is enabled.
+
+### Observations, not changed
+
+- **A failed option image** keeps its box and shows the browser's broken-image mark with its alt text. The note under the options says which one failed and retries it.
+- **On the phone, a DTK question's options mount only when the tray opens.** With image options, an answer typed on a keyboard from the peek therefore waits until the tray has shown them.
+- **The enlarged page reports to the same source as the page in place.** If its image fails after the page in place has loaded, the question blocks, as in round 2.
+
+### Beads hand-off
+
+- One note on the bead, ending `SAMTAL1R3 DONE: hpf-qr0p.24`. Then the bead is parked: status deferred, no assignee. It is not closed. Uncommitted.

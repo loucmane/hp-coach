@@ -28,6 +28,7 @@ import {
   type ReactNode,
   type Ref,
   useCallback,
+  useContext,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -65,7 +66,7 @@ import {
   Verdict,
   YourAnswer,
 } from './SamtalFeedback'
-import { Coach, Dots, Kbd, Replies } from './SamtalParts'
+import { Coach, Dots, FigureLoadsContext, Kbd, Replies } from './SamtalParts'
 
 /** The document head's height (samtal.css .sa-doc-head). */
 const DOC_HEAD = 56
@@ -91,6 +92,9 @@ export type DrillChrome = {
   /** Why the answer cannot be sent (a stem, options or figure missing), or
    *  null. */
   blocked: string | null
+  /** What the answer waits for (a figure it needs, still loading), or
+   *  null: said calmly, with no way out, since it passes by itself. */
+  waiting: string | null
   /** The way back while the answer cannot be sent ("Till Öva"). */
   out?: { label: string; onClick: () => void }
   /** A passage beside the thread: the action bar names the focus key. */
@@ -224,78 +228,111 @@ export function Conversation({
   )
 }
 
+/** "Bilden till alternativ A" / "Bilderna till alternativ A och C" … "gick
+ *  inte att ladda": the option images that failed, by letter. */
+export function optionImagesFailed(letters: readonly string[]): string {
+  if (letters.length === 1) return `Bilden till alternativ ${letters[0]} gick inte att ladda`
+  const listed = `${letters.slice(0, -1).join(', ')} och ${letters[letters.length - 1]}`
+  return `Bilderna till alternativ ${listed} gick inte att ladda`
+}
+
 /** The options as replies in your lane, each with its strike control
  *  inside the card. Chosen, an option takes your turn's tint and corner.
- *  Only the letters the question has: four, five, or none. */
+ *  Only the letters the question has: four, five, or none. In the quant
+ *  drill an option's image reports its load, and one that failed says so
+ *  under the options, with a real retry. */
 export function Options({ c }: { c: DrillChrome }) {
   const { view, act, optionId } = c
+  const loads = useContext(FigureLoadsContext)
   const options = view.question.options ?? []
   if (!options.length) return null
+  const failed = options.flatMap((o) =>
+    loads && o.figure && loads.status(o.figure.src) === 'error'
+      ? [{ letter: o.letter, src: o.figure.src }]
+      : [],
+  )
   return (
-    <ol className="sa-opts" aria-label="Svarsalternativ">
-      {options.map((o) => {
-        const selected = view.selected === o.letter
-        const out = view.eliminated.has(o.letter)
-        return (
-          <li
-            key={o.letter}
-            className="sa-opt"
-            data-state={selected ? 'selected' : out ? 'eliminated' : undefined}
-          >
-            <button
-              type="button"
-              className="sa-opt-main"
-              data-testid={`${optionId}-${o.letter}`}
-              aria-pressed={selected}
-              onClick={() => act.select(o.letter)}
+    <>
+      <ol className="sa-opts" aria-label="Svarsalternativ">
+        {options.map((o) => {
+          const selected = view.selected === o.letter
+          const out = view.eliminated.has(o.letter)
+          return (
+            <li
+              key={o.letter}
+              className="sa-opt"
+              data-state={selected ? 'selected' : out ? 'eliminated' : undefined}
             >
-              <span className="sa-letter" aria-hidden>
-                {o.letter}
-              </span>
-              <span className="sa-opt-text">
-                <span className="sa-sr">
-                  Alternativ {o.letter}
-                  {out ? ', struket' : ''}:{' '}
+              <button
+                type="button"
+                className="sa-opt-main"
+                data-testid={`${optionId}-${o.letter}`}
+                aria-pressed={selected}
+                onClick={() => act.select(o.letter)}
+              >
+                <span className="sa-letter" aria-hidden>
+                  {o.letter}
                 </span>
-                <OptionBody option={o} />
-              </span>
-            </button>
-            <button
-              type="button"
-              className="sa-opt-x"
-              data-testid={`rd-eliminate-${o.letter}`}
-              aria-pressed={out}
-              aria-label={out ? `Ångra strykningen av ${o.letter}` : `Stryk ${o.letter}`}
-              title={out ? 'Ångra' : 'Stryk alternativet (⇧ + bokstav)'}
-              onClick={() => act.toggleEliminate(o.letter)}
-            >
-              {out ? (
-                <Undo2 size={17} strokeWidth={1.75} aria-hidden />
-              ) : (
-                <CircleSlash size={17} strokeWidth={1.75} aria-hidden />
-              )}
-            </button>
-          </li>
-        )
-      })}
-    </ol>
+                <span className="sa-opt-text">
+                  <span className="sa-sr">
+                    Alternativ {o.letter}
+                    {out ? ', struket' : ''}:{' '}
+                  </span>
+                  <OptionBody option={o} loads={loads} />
+                </span>
+              </button>
+              <button
+                type="button"
+                className="sa-opt-x"
+                data-testid={`rd-eliminate-${o.letter}`}
+                aria-pressed={out}
+                aria-label={out ? `Ångra strykningen av ${o.letter}` : `Stryk ${o.letter}`}
+                title={out ? 'Ångra' : 'Stryk alternativet (⇧ + bokstav)'}
+                onClick={() => act.toggleEliminate(o.letter)}
+              >
+                {out ? (
+                  <Undo2 size={17} strokeWidth={1.75} aria-hidden />
+                ) : (
+                  <CircleSlash size={17} strokeWidth={1.75} aria-hidden />
+                )}
+              </button>
+            </li>
+          )
+        })}
+      </ol>
+      {loads && failed.length ? (
+        <div className="sa-problem-missing sa-problem-failed sa-opts-failed" role="alert">
+          <p>{optionImagesFailed(failed.map((f) => f.letter))}.</p>
+          <button
+            type="button"
+            className="sa-chip"
+            onClick={() => {
+              for (const f of failed) loads.retry(f.src)
+            }}
+          >
+            Försök igen
+          </button>
+        </div>
+      ) : null}
+    </>
   )
 }
 
 /** The action bar: a flat line of status and action — no field, nothing to
  *  type into. Before the answer it names your choice (or the keys, or why
- *  there is nothing to send, with the way back); after it, it holds "Visa
- *  allt" and the one way on. */
+ *  there is nothing to send, with the way back, or what the answer waits
+ *  for); after it, it holds "Visa allt" and the one way on. */
 export function Dock({ c, phone = false }: { c: DrillChrome; phone?: boolean }) {
-  const { view, act, folds, blocked } = c
+  const { view, act, folds, blocked, waiting } = c
   if (view.phase === 'question') {
     const first = view.letters[0]
     const last = view.letters[view.letters.length - 1]
+    const held = blocked ?? waiting
     const send = (
       <button
         type="button"
         className="sa-send"
-        disabled={!view.selected || blocked != null}
+        disabled={!view.selected || held != null}
         onClick={act.lock}
         data-testid="rd-lock"
       >
@@ -306,8 +343,8 @@ export function Dock({ c, phone = false }: { c: DrillChrome; phone?: boolean }) 
     return (
       <div className="sa-dock" data-blocked={blocked ? 'true' : undefined}>
         <p className="sa-dock-status" aria-live="polite">
-          {blocked ? (
-            blocked
+          {held ? (
+            held
           ) : view.selected ? (
             <>
               Ditt svar: <b className="sa-dock-pick">{view.selected}</b>
@@ -673,6 +710,7 @@ export function SamtalDrill({ screen, width, live, onScreen }: DirectionProps) {
     frameworks: data.frameworks,
     optionId: 'rd-option',
     blocked: null,
+    waiting: null,
     focusAid: true,
     lastLabel: 'Slutför texten',
     note,

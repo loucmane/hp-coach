@@ -32,7 +32,19 @@ import type { DrillOption, PlanItemView } from '@/components/devbake/redesign/vi
 import { MathText } from '@/components/MathText'
 import type { DistractorExplanation, ExplanationStep } from '@/data/explanations'
 import type { Section } from '@/data/questions'
-import { Cites, Coach, count, Divider, Kbd, Replies, Rich, words, You } from './SamtalParts'
+import {
+  Cites,
+  Coach,
+  count,
+  Divider,
+  FigureImg,
+  type FigureLoads,
+  Kbd,
+  Replies,
+  Rich,
+  words,
+  You,
+} from './SamtalParts'
 
 type Act = Pick<DrillCoreActions, 'cite' | 'goToStep' | 'toggleStep'>
 
@@ -74,18 +86,39 @@ function optionOf(view: DrillCoreView, letter: string | null): DrillOption | und
 }
 
 /** An option's words, its math rendered; an image option shows its figure
- *  (its text is the image's name). */
-export function OptionBody({ option }: { option: DrillOption }) {
-  if (option.figure) {
+ *  (its text is the image's name). Among the options to choose from, the
+ *  image reports to the drill's `loads`: the answer waits for it, so it
+ *  loads at once, never lazily. */
+export function OptionBody({
+  option,
+  loads = null,
+}: {
+  option: DrillOption
+  loads?: FigureLoads | null
+}) {
+  const figure = option.figure
+  if (figure) {
     return (
       <span className="sa-opt-figure">
-        <img
-          src={`/${option.figure.src}`}
-          alt={option.figure.alt}
-          width={option.figure.width}
-          height={option.figure.height}
-          loading="lazy"
-        />
+        {loads ? (
+          <FigureImg
+            // Another source, or a retry, is a new image: nothing carries over.
+            key={`${figure.src}#${loads.attempt(figure.src)}`}
+            src={`/${figure.src}`}
+            alt={figure.alt}
+            width={figure.width}
+            height={figure.height}
+            onStatus={(s) => loads.report(figure.src, s)}
+          />
+        ) : (
+          <img
+            src={`/${figure.src}`}
+            alt={figure.alt}
+            width={figure.width}
+            height={figure.height}
+            loading="lazy"
+          />
+        )}
       </span>
     )
   }

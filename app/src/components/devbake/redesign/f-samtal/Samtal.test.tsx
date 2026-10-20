@@ -17,7 +17,11 @@
 //   - round 2's review (hpf-nw6s): a question without its stem, or with a
 //     diagram that failed, is never graded and offers the way back; a
 //     sitting without questions says so; a finished plan part never leads
-//     Idag; a failed diagram stays with its own source.
+//     Idag; a failed diagram stays with its own source;
+//   - round 3: a figure the question needs — the DTK page, a diagram, the
+//     options' images — that is still loading holds the answer with a calm
+//     word, and a retry is a new load the answer waits for; a figure the
+//     browser already holds is ready at once.
 
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
@@ -29,6 +33,7 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 
 import {
   describeDirectionContract,
+  loadImages,
   mountDirection,
   spyActions,
   stubLayout,
@@ -51,7 +56,11 @@ import {
   type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
 import { DTK_PAGES, PASS_QUESTIONS } from '@/components/devbake/redesign/r2Fixtures'
-import type { DirectionData, ResumeView } from '@/components/devbake/redesign/viewModel'
+import type {
+  DirectionData,
+  DrillQuestion,
+  ResumeView,
+} from '@/components/devbake/redesign/viewModel'
 // Not imported as `meta`: Vite's SSR transform would then rewrite the
 // `meta` of `import.meta` (used below) as well, and fail.
 import { meta as entry } from './meta'
@@ -150,6 +159,82 @@ function withoutOptional(): DirectionData {
   }
 }
 
+/** The fixtures, the quant sitting holding `questions`. */
+function withQuant(questions: DrillQuestion[]): DirectionData {
+  const base = fixtureDirectionData()
+  return { ...base, drills: { ...base.drills, quant: { ...base.drills.quant, questions } } }
+}
+
+/** The pass's real questions `qids`, as the drill core takes them. */
+function passQuestions(qids: string[]): DrillQuestion[] {
+  return PASS_QUESTIONS.filter((q) => qids.includes(q.qid)).map((q) => drillQuestion(q))
+}
+
+/** `q` with an image on every option, as the eleven DTK questions whose
+ *  choices are pie charts have. */
+function withOptionImages(q: DrillQuestion): DrillQuestion {
+  return {
+    ...q,
+    options: (q.options ?? []).map((o) => ({
+      ...o,
+      figure: {
+        src: `figures/test-option-${o.letter}.svg`,
+        alt: `Diagram ${o.letter}`,
+        width: 800,
+        height: 600,
+      },
+    })),
+  }
+}
+
+/** Images the browser already holds: complete, with their pixels, when they
+ *  mount. jsdom loads no image, so this stands in for the cache. Returns
+ *  the way back to jsdom's own. */
+function cachedImages(): () => void {
+  const complete = vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(true)
+  const width = vi.spyOn(HTMLImageElement.prototype, 'naturalWidth', 'get').mockReturnValue(800)
+  return () => {
+    complete.mockRestore()
+    width.mockRestore()
+  }
+}
+
+/** A figure the question needs, three ways: the DTK page beside it, a
+ *  diagram in its problem, an image on each option. `images` are what the
+ *  answer waits for (the first is the one made to fail); `waits` is the
+ *  action bar's calm word while they load, `stops` its reason once one has
+ *  failed. */
+const NEEDED_FIGURES = [
+  {
+    kind: 'the DTK page',
+    s: 7,
+    data: () => fixtureDirectionData(),
+    images: () => [within(screen.getByTestId('rd-figure')).getByRole('img')],
+    waits: 'Underlaget laddas – du kan svara när det syns.',
+    stops: 'Underlaget gick inte att ladda, så frågan kan inte besvaras.',
+  },
+  {
+    kind: 'a diagram',
+    s: 6,
+    data: () => withQuant(passQuestions(['host-2025-kvant1-XYZ-002'])),
+    images: () => [
+      within(screen.getByTestId('rd-quant-prompt')).getByRole('img', {
+        name: 'Figur till uppgift 2',
+      }),
+    ],
+    waits: 'Figuren laddas – du kan svara när den syns.',
+    stops: 'Figuren gick inte att ladda, så frågan kan inte besvaras.',
+  },
+  {
+    kind: 'the options’ images',
+    s: 6,
+    data: () => withQuant([withOptionImages(D.drills.quant.questions[0])]),
+    images: () => screen.getAllByRole('img', { name: /^Diagram [A-D]$/ }),
+    waits: 'Bilderna till svarsalternativen laddas – du kan svara när de syns.',
+    stops: 'Bilden till alternativ A gick inte att ladda, så frågan kan inte besvaras.',
+  },
+] as const
+
 /** The phone tray starts at its peek: open it if the options are not on
  *  screen yet (the first collapsed toggle inside the tray). */
 function revealOptions(prefix = 'rd-option') {
@@ -164,9 +249,12 @@ function key(k: string, init: KeyboardEventInit = {}) {
   fireEvent.keyDown(window, { key: k, ...init })
 }
 
-/** Locks `letter` on the current quant or DTK question. */
+/** Locks `letter` on the current quant or DTK question, once its figures
+ *  have "loaded": the answer waits for them, and jsdom loads no image. */
 function answer(letter: string) {
+  loadImages()
   revealOptions('rd-quant-option')
+  loadImages() // a phone tray may have just mounted option images
   fireEvent.click(screen.getByTestId(`rd-quant-option-${letter}`))
   fireEvent.click(screen.getByTestId('rd-lock'))
 }
@@ -714,7 +802,6 @@ describe.each(WIDTHS)('F · Samtal, %s', (width) => {
     const prompt = () => within(screen.getByTestId('rd-quant-prompt'))
     const img = prompt().getByRole('img', { name: 'Figur till uppgift 2' })
     fireEvent.click(screen.getByTestId('rd-quant-option-B'))
-    expect(screen.getByTestId('rd-lock')).toBeEnabled()
     fireEvent.error(img)
     expect(prompt().getByRole('alert')).toHaveTextContent('Figuren gick inte att ladda.')
     expect(screen.getByTestId('rd-lock')).toBeDisabled()
@@ -724,10 +811,20 @@ describe.each(WIDTHS)('F · Samtal, %s', (width) => {
       screen.getByText('Figuren gick inte att ladda, så frågan kan inte besvaras.'),
     ).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Till Öva' })).toBeInTheDocument()
-    // The retry loads the diagram afresh, and the kept choice can be sent.
+    // The retry loads the diagram afresh: a new load, which the answer
+    // waits for — Svara and Enter refuse until it is in…
     fireEvent.click(prompt().getByRole('button', { name: 'Försök igen' }))
     expect(prompt().queryByRole('alert')).toBeNull()
-    expect(prompt().getByRole('img', { name: 'Figur till uppgift 2' })).not.toBe(img)
+    const again = prompt().getByRole('img', { name: 'Figur till uppgift 2' })
+    expect(again).not.toBe(img)
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    key('Enter')
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    expect(screen.queryByTestId('rd-verdict')).toBeNull()
+    expect(screen.getByText('Figuren laddas – du kan svara när den syns.')).toBeInTheDocument()
+    // …and once it has loaded, the kept choice is sent.
+    fireEvent.load(again)
     expect(screen.getByTestId('rd-lock')).toBeEnabled()
     key('Enter')
     expect(actions.drill.lock).toHaveBeenCalledTimes(1)
@@ -750,10 +847,122 @@ describe.each(WIDTHS)('F · Samtal, %s', (width) => {
     fireEvent.error(prompt().getByRole('img', { name: 'Figur till uppgift 2' }))
     expect(prompt().getByText('Figuren gick inte att ladda.')).toBeInTheDocument()
     fireEvent.click(screen.getByTestId('rd-next'))
-    expect(prompt().getByRole('img', { name: 'Figur till uppgift 5' })).toBeInTheDocument()
+    const next = prompt().getByRole('img', { name: 'Figur till uppgift 5' })
     expect(prompt().queryByText('Figuren gick inte att ladda.')).toBeNull()
+    fireEvent.load(next)
     fireEvent.click(screen.getByTestId('rd-quant-option-C'))
     expect(screen.getByTestId('rd-lock')).toBeEnabled()
+  })
+
+  it.each(
+    NEEDED_FIGURES,
+  )('while $kind is still loading, the answer waits — Svara, Enter and Space refuse — with a calm word; once loaded, it goes', ({
+    s,
+    data,
+    images,
+    waits,
+  }) => {
+    const { actions } = mountWith(data(), s, width)
+    revealOptions('rd-quant-option')
+    fireEvent.click(screen.getByTestId('rd-quant-option-B'))
+    const send = screen.getByTestId('rd-lock')
+    expect(send).toBeDisabled()
+    fireEvent.click(send)
+    key('Enter')
+    key(' ')
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    expect(screen.queryByTestId('rd-verdict')).toBeNull()
+    // A wait, not a failure: the reason, calmly — no alert, no way out.
+    expect(screen.getByText(waits)).toBeInTheDocument()
+    expect(screen.queryByRole('alert')).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Till Öva' })).toBeNull()
+    // The answer waits for every image it needs, the last one included.
+    const all = images()
+    for (const img of all.slice(0, -1)) fireEvent.load(img)
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.load(all[all.length - 1])
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    expect(screen.queryByText(waits)).toBeNull()
+    key('Enter')
+    expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+    expect(screen.getByTestId('rd-verdict')).toBeInTheDocument()
+  })
+
+  it.each(
+    NEEDED_FIGURES,
+  )('$kind that the browser already holds can be answered at once, and at once again after a retry', ({
+    s,
+    data,
+    images,
+    stops,
+  }) => {
+    const restore = cachedImages()
+    try {
+      const { actions } = mountWith(data(), s, width)
+      revealOptions('rd-quant-option')
+      fireEvent.click(screen.getByTestId('rd-quant-option-B'))
+      // No load event: an image complete when it mounts is ready, and
+      // nothing says it is loading.
+      expect(screen.getByTestId('rd-lock')).toBeEnabled()
+      expect(screen.queryByText(/Hämtar underlaget|laddas/)).toBeNull()
+      const [first] = images()
+      fireEvent.error(first)
+      expect(screen.getByTestId('rd-lock')).toBeDisabled()
+      expect(screen.getByText(stops)).toBeInTheDocument()
+      // The retry mounts a new image, and that one is held too.
+      fireEvent.click(screen.getByRole('button', { name: 'Försök igen' }))
+      expect(images()[0]).not.toBe(first)
+      expect(screen.getByTestId('rd-lock')).toBeEnabled()
+      key('Enter')
+      expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+    } finally {
+      restore()
+    }
+  })
+
+  it('Kvantfråga: an option’s image that fails stops the answer and says which, in place with a real retry; the new images are waited for', () => {
+    const { actions } = mountWith(
+      withQuant([withOptionImages(D.drills.quant.questions[0])]),
+      6,
+      width,
+    )
+    const [a, b, c, d] = screen.getAllByRole('img', { name: /^Diagram [A-D]$/ })
+    fireEvent.load(b)
+    fireEvent.load(d)
+    fireEvent.click(screen.getByTestId('rd-quant-option-B'))
+    fireEvent.error(a)
+    const note = () => screen.getByRole('alert')
+    expect(note()).toHaveTextContent('Bilden till alternativ A gick inte att ladda.')
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    key('Enter')
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    expect(
+      screen.getByText(
+        'Bilden till alternativ A gick inte att ladda, så frågan kan inte besvaras.',
+      ),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Till Öva' })).toBeInTheDocument()
+    fireEvent.error(c)
+    expect(note()).toHaveTextContent('Bilderna till alternativ A och C gick inte att ladda.')
+    // One retry loads both afresh: a new load, which the answer waits for.
+    fireEvent.click(within(note()).getByRole('button', { name: 'Försök igen' }))
+    expect(screen.queryByRole('alert')).toBeNull()
+    const againA = screen.getByRole('img', { name: 'Diagram A' })
+    const againC = screen.getByRole('img', { name: 'Diagram C' })
+    expect(againA).not.toBe(a)
+    expect(againC).not.toBe(c)
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    key('Enter')
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    expect(
+      screen.getByText('Bilderna till svarsalternativen laddas – du kan svara när de syns.'),
+    ).toBeInTheDocument()
+    fireEvent.load(againA)
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.load(againC)
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    key('Enter')
+    expect(actions.drill.lock).toHaveBeenCalledTimes(1)
   })
 
   it.each([
@@ -802,8 +1011,8 @@ describe.each(WIDTHS)('F · Samtal, %s', (width) => {
     expect(screen.getByRole('button', { name: 'Förstora figur' })).toHaveFocus()
   })
 
-  it('DTK: a page that fails to load blocks the answer and offers a real retry', () => {
-    mount(7, width)
+  it('DTK: a page that fails to load blocks the answer and offers a real retry, whose new load the answer waits for', () => {
+    const { actions } = mountDirection(Samtal, 7, width)
     const img = within(screen.getByTestId('rd-figure')).getByRole('img')
     fireEvent.error(img)
     expect(screen.getByRole('alert')).toHaveTextContent('Underlaget gick inte att ladda.')
@@ -813,7 +1022,17 @@ describe.each(WIDTHS)('F · Samtal, %s', (width) => {
     expect(screen.getByText(/Underlaget gick inte att ladda, så frågan/)).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Försök igen' }))
     expect(screen.queryByRole('alert')).toBeNull()
-    expect(within(screen.getByTestId('rd-figure')).getByRole('img')).not.toBe(img)
+    const again = within(screen.getByTestId('rd-figure')).getByRole('img')
+    expect(again).not.toBe(img)
+    // Back to loading: Svara and Enter refuse until the new page is in.
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    key('Enter')
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    expect(screen.getByText('Underlaget laddas – du kan svara när det syns.')).toBeInTheDocument()
+    fireEvent.load(again)
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    key('Enter')
+    expect(actions.drill.lock).toHaveBeenCalledTimes(1)
   })
 
   // ── Repetera ──
