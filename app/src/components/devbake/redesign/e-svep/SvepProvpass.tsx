@@ -694,82 +694,146 @@ function StartGate({
 
 type PictureState = 'loading' | 'ready' | 'error'
 
+/** One place on screen that shows a picture: its src, what its own image
+ *  holds, its tries so far, and whether the question is answered from it. */
+type Place = { src: string; state: PictureState; attempt: number; need: boolean }
+
 /**
  * The pictures a pass's questions need — DTK pages, figures, picture
- * options — by src. Every mounted image reports what it holds, and a new
- * one starts at loading unless the browser already has it (a cached page
- * counts at once): readiness belongs to the image on screen. A page shared
- * by consecutive questions stays mounted, so it keeps its state; a new
- * page, or another try, mounts a fresh image.
+ * options — as the places on screen that show them. Every place reports
+ * what its own image holds and leaves when it unmounts, so no place ever
+ * speaks for another: a picture is in once every place the question is
+ * answered from holds it. A new place starts at loading unless the browser
+ * already has its picture (a cached page counts at once). A page shared by
+ * consecutive questions stays mounted, so it keeps its state; a new page,
+ * or another try, mounts a fresh image. The enlarged page is a place the
+ * question is not answered from: opening it, its load, its failure and
+ * closing it never change what the question waits for.
  */
 type RunPictures = {
-  state: Readonly<Record<string, PictureState>>
-  attempt: Readonly<Record<string, number>>
-  report: (src: string, state: PictureState) => void
+  places: Readonly<Record<string, Place>>
+  report: (place: string, src: string, state: PictureState, need: boolean) => void
+  leave: (place: string) => void
+  /** Another try for every place whose image of one of `srcs` failed. */
   retry: (srcs: readonly string[]) => void
 }
 
 function useRunPictures(): RunPictures {
-  const [pics, setPics] = useState<{
-    state: Record<string, PictureState>
-    attempt: Record<string, number>
-  }>({ state: {}, attempt: {} })
+  const [places, setPlaces] = useState<Record<string, Place>>({})
   const report = useCallback(
-    (src: string, s: PictureState) =>
-      setPics((p) => (p.state[src] === s ? p : { ...p, state: { ...p.state, [src]: s } })),
+    (place: string, src: string, state: PictureState, need: boolean) =>
+      setPlaces((p) => {
+        const was = p[place]
+        if (was?.src === src && was.state === state && was.need === need) return p
+        // A place that shows another picture starts its tries afresh.
+        const attempt = was?.src === src ? was.attempt : 0
+        return { ...p, [place]: { src, state, attempt, need } }
+      }),
+    [],
+  )
+  const leave = useCallback(
+    (place: string) =>
+      setPlaces((p) => {
+        if (!(place in p)) return p
+        const { [place]: _gone, ...rest } = p
+        return rest
+      }),
     [],
   )
   const retry = useCallback(
     (srcs: readonly string[]) =>
-      setPics((p) => {
-        const failed = srcs.filter((src) => p.state[src] === 'error')
+      setPlaces((p) => {
+        const failed = Object.keys(p).filter(
+          (place) => p[place].state === 'error' && srcs.includes(p[place].src),
+        )
         if (failed.length === 0) return p
-        const state = { ...p.state }
-        const attempt = { ...p.attempt }
-        for (const src of failed) {
-          state[src] = 'loading'
-          attempt[src] = (attempt[src] ?? 0) + 1
+        const next = { ...p }
+        for (const place of failed) {
+          next[place] = { ...p[place], state: 'loading', attempt: p[place].attempt + 1 }
         }
-        return { state, attempt }
+        return next
       }),
     [],
   )
-  return { ...pics, report, retry }
+  return { places, report, leave, retry }
 }
 
-/** One picture a question needs. Mount it under the key `src#attempt`. */
+/** What a question can count on for `src`: ready once every place it is
+ *  answered from holds it, error once one of them failed, else loading —
+ *  also while no such place is on screen. */
+function needed(pictures: RunPictures, src: string): PictureState {
+  const places = Object.values(pictures.places).filter((p) => p.need && p.src === src)
+  if (places.some((p) => p.state === 'error')) return 'error'
+  return places.length > 0 && places.every((p) => p.state === 'ready') ? 'ready' : 'loading'
+}
+
+/** One place's picture: what its own image holds, the key to mount the
+ *  image under (another picture or another try is a fresh image) and the
+ *  image's wiring. */
+type Shown = {
+  state: PictureState
+  key: string
+  ref: { current: HTMLImageElement | null }
+  onLoad: () => void
+  onError: () => void
+}
+
+/**
+ * Makes the component calling it a place that shows `src` (`need`: the
+ * question is answered from it). A failed image gives way to the place's
+ * message while the place stays, so the failure holds until another try.
+ */
+function usePicture(pictures: RunPictures, src: string, need = true): Shown {
+  const place = useId()
+  const ref = useRef<HTMLImageElement>(null)
+  const { report, leave } = pictures
+  const mine = pictures.places[place]
+  const own = mine?.src === src ? mine : undefined
+  const attempt = own?.attempt ?? 0
+  // Each image the place mounts — its first, another picture's, another
+  // try's — counts at once when the browser already holds it.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: another try mounts a fresh image
+  useLayoutEffect(() => {
+    const el = ref.current
+    report(place, src, el?.complete && el.naturalWidth > 0 ? 'ready' : 'loading', need)
+  }, [place, src, attempt, need, report])
+  useLayoutEffect(() => () => leave(place), [place, leave])
+  return {
+    state: own?.state ?? 'loading',
+    key: `${src}#${attempt}`,
+    ref,
+    onLoad: () => report(place, src, 'ready', need),
+    onError: () => report(place, src, 'error', need),
+  }
+}
+
+/** A place's image (usePicture). Mount it under `shown.key`. */
 function Picture({
+  shown,
   src,
   alt,
   width,
   height,
   className,
-  pictures,
 }: {
+  shown: Shown
   src: string
   alt: string
   width: number
   height: number
   className?: string
-  pictures: RunPictures
 }) {
-  const ref = useRef<HTMLImageElement>(null)
-  const { report } = pictures
-  useLayoutEffect(() => {
-    const el = ref.current
-    report(src, el?.complete && el.naturalWidth > 0 ? 'ready' : 'loading')
-  }, [src, report])
   return (
     <img
-      ref={ref}
+      ref={shown.ref}
       className={className}
       src={`/${src}`}
       alt={alt}
       width={width}
       height={height}
       draggable={false}
-      onLoad={() => report(src, 'ready')}
-      onError={() => report(src, 'error')}
+      onLoad={shown.onLoad}
+      onError={shown.onError}
     />
   )
 }
@@ -782,10 +846,10 @@ function gateFor(q: DrillQuestion, pictures: RunPictures): Gating {
   if (!q.figure && q.section === 'DTK') {
     return { open: false, text: 'Frågan kan inte besvaras utan underlaget.', failed: true }
   }
-  const { state } = pictures
+  const state = (src: string) => needed(pictures, src)
   const page = q.figure?.src
   const options = (q.options ?? []).flatMap((o) => (o.figure ? [o.figure.src] : []))
-  if (page && state[page] === 'error') {
+  if (page && state(page) === 'error') {
     return {
       open: false,
       text: 'Underlaget behövs för att svara.',
@@ -793,7 +857,7 @@ function gateFor(q: DrillQuestion, pictures: RunPictures): Gating {
       retry: () => pictures.retry([page]),
     }
   }
-  const failed = options.filter((src) => state[src] === 'error').length
+  const failed = options.filter((src) => state(src) === 'error').length
   if (failed > 0) {
     return {
       open: false,
@@ -805,10 +869,10 @@ function gateFor(q: DrillQuestion, pictures: RunPictures): Gating {
       retry: () => pictures.retry(options),
     }
   }
-  if (page && state[page] !== 'ready') {
+  if (page && state(page) !== 'ready') {
     return { open: false, text: 'Väntar på underlaget.', failed: false }
   }
-  if (options.some((src) => state[src] !== 'ready')) {
+  if (options.some((src) => state(src) !== 'ready')) {
     return { open: false, text: 'Väntar på bilderna.', failed: false }
   }
   return { open: true, text: null, failed: false }
@@ -994,8 +1058,9 @@ export function SvepPassRun({
 
   // Keys while the pass runs. The bake-off's own keys (the digits, 0 and
   // ←/→) never leave it, whatever has the focus: the digits do nothing, the
-  // arrows move between questions. Inside a page or a dialog the arrows are
-  // that region's (it pans). The question's own letters answer; Enter is
+  // arrows move between questions. Inside the text, a page or a dialog the
+  // arrows are that region's (data-rd-keyscope): the text scrolls, a page
+  // pans. The question's own letters answer, from the text too; Enter is
   // never a shortcut forward, and Esc never leaves.
   const keys = useRef({ pick, go, index, letters, modal, done: false })
   keys.current = { pick, go, index, letters, modal, done: handedIn != null }
@@ -1009,14 +1074,17 @@ export function SvepPassRun({
         return
       }
       const t = e.target
-      const scoped = t instanceof Element && t.closest('dialog[open], [data-rd-keyscope]') != null
+      const scope = t instanceof Element ? t.closest('dialog[open], [data-rd-keyscope]') : null
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-        if (scoped) return
+        if (scope) return
         e.preventDefault()
         if (!k.modal && !k.done) k.go(k.index + (e.key === 'ArrowRight' ? 1 : -1))
         return
       }
-      if (scoped || k.modal || k.done || isForeignKey(e) || e.key.length !== 1) return
+      // The text owns only its arrows: a reader who clicked into it still
+      // answers on the letters.
+      const owned = scope != null && scope.closest('.sv-run-text') == null
+      if (owned || k.modal || k.done || isForeignKey(e) || e.key.length !== 1) return
       const letter = e.key.toUpperCase() as AnswerLetter
       if (!k.letters.includes(letter)) return
       e.preventDefault()
@@ -1608,18 +1676,32 @@ function PassOptions({
 function OptionFace({ option, pictures }: { option: DrillOption; pictures: RunPictures }) {
   const f = option.figure
   if (!f) return <MathText>{option.text}</MathText>
-  if (pictures.state[f.src] === 'error') {
+  return <OptionPicture figure={f} alt={f.alt || option.text} pictures={pictures} />
+}
+
+/** A picture option's picture: a place of its own. */
+function OptionPicture({
+  figure: f,
+  alt,
+  pictures,
+}: {
+  figure: NonNullable<DrillOption['figure']>
+  alt: string
+  pictures: RunPictures
+}) {
+  const shown = usePicture(pictures, f.src)
+  if (shown.state === 'error') {
     return <span className="sv-opt-img-failed">Bilden kunde inte laddas.</span>
   }
   return (
     <Picture
-      key={`${f.src}#${pictures.attempt[f.src] ?? 0}`}
+      key={shown.key}
+      shown={shown}
       className="sv-opt-img"
       src={f.src}
-      alt={f.alt || option.text}
+      alt={alt}
       width={f.width}
       height={f.height}
-      pictures={pictures}
     />
   )
 }
@@ -1634,7 +1716,8 @@ function InlineFigure({
   figure: DrillFigure
   pictures: RunPictures
 }) {
-  const failed = pictures.state[figure.src] === 'error'
+  const shown = usePicture(pictures, figure.src)
+  const failed = shown.state === 'error'
   return (
     <div
       className="sv-pq-figure"
@@ -1653,12 +1736,12 @@ function InlineFigure({
         </div>
       ) : (
         <Picture
-          key={`${figure.src}#${pictures.attempt[figure.src] ?? 0}`}
+          key={shown.key}
+          shown={shown}
           src={figure.src}
           alt={figure.alt}
           width={figure.width}
           height={figure.height}
-          pictures={pictures}
         />
       )}
     </div>
@@ -1690,9 +1773,13 @@ function PassPassage({
   if (!p) return null
   return (
     <div className="sv-card sv-pcard sv-run-text" data-phone={phone ? 'true' : undefined}>
+      {/* The text scrolls on its own and owns its arrows (data-rd-keyscope):
+       *  inside it they scroll it, and neither the run nor the switcher
+       *  takes them. */}
       <section
         className="sv-pcard-scroll"
         aria-labelledby={titleId}
+        data-rd-keyscope
         // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable region must take the keyboard (WCAG 2.1.1)
         tabIndex={0}
       >
@@ -1797,19 +1884,22 @@ function useLens(src: string | undefined): Lens {
 }
 
 /** The page on its light sheet in a region that scrolls when zoomed. The
- *  region owns its arrows (data-rd-keyscope): they pan it. */
+ *  region owns its arrows (data-rd-keyscope): they pan it. `need`: whether
+ *  the question is answered from this page (the enlarged one is not). */
 function PageSheet({
   figure,
   lens,
   label,
   pictures,
   boxRef,
+  need = true,
 }: {
   figure: DrillFigure
   lens: Lens
   label: string
   pictures: RunPictures
   boxRef?: { current: HTMLElement | null }
+  need?: boolean
 }) {
   const ratio = figure.width / figure.height
   const turned = lens.turn % 2 === 1
@@ -1829,8 +1919,8 @@ function PageSheet({
   const end = () => {
     drag.current = null
   }
-  const failed = pictures.state[figure.src] === 'error'
-  const attempt = pictures.attempt[figure.src] ?? 0
+  const shown = usePicture(pictures, figure.src, need)
+  const failed = shown.state === 'error'
   return (
     <section
       ref={boxRef}
@@ -1871,12 +1961,12 @@ function PageSheet({
           }
         >
           <Picture
-            key={`${figure.src}#${attempt}`}
+            key={shown.key}
+            shown={shown}
             src={figure.src}
             alt={figure.alt}
             width={figure.width}
             height={figure.height}
-            pictures={pictures}
           />
         </div>
       )}
@@ -2030,7 +2120,9 @@ function PassFigureCard({
 
 /** The page enlarged over the whole stage: a labelled dialog that keeps the
  *  focus inside. Esc closes it (it never leaves the pass) and the focus
- *  goes back to Förstora; the arrows pan the page wherever the focus is. */
+ *  goes back to Förstora; the arrows pan the page wherever the focus is.
+ *  Its page is an image of its own, which the question is not answered
+ *  from: loading, loaded or failed, it says so here and only here. */
 function PassViewer({
   question,
   figure,
@@ -2106,6 +2198,7 @@ function PassViewer({
           label={`Underlaget förstorat, uppgift ${question.number}`}
           pictures={pictures}
           boxRef={sheetRef}
+          need={false}
         />
       </div>
     </div>

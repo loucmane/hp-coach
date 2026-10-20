@@ -132,3 +132,67 @@ No shared test outside the write set failed, so there is nothing to hand the coo
 - **In the bake-off:** whichever pass you start, the running fixture is host-2025 kvant1 at question 17 with 31:12 left; Lämna in moves the switcher to 10; any earlier result opens the one fixture result.
 
 SVEP2 DONE: hpf-qr0p.22
+
+## Round 2 — review fixes (cross-vendor Codex review hpf-irxd: HOLD, two P2)
+
+- **Claim.** `gc hook --claim --json` returned `hpf-qr0p.22` (assignee `ci-wisp-ni6xfxc`, route `hpfetcher/gc.implementation-worker`); `bd show` matched the id, the status (`in_progress`), the assignee and `gc.routed_to`. Start: `09344f8` (the reviewed merge head), clean apart from the sandbox's root dotfiles (character devices bound to `/dev/null`, not touched).
+- **Evidence read first:** `/home/loucmane/scratch/hpf-qr0p.22/review-hpf-irxd.md`.
+- **Write set kept.** Changed: `SvepProvpass.tsx`, `Svep.test.tsx` and this worklog. No shared file, other direction or dependency touched; no git writes; uncommitted.
+
+Paths below are under `app/src/components/devbake/redesign/e-svep/`; line numbers are the uncommitted tree's.
+
+### 1. Picture readiness belongs to the place that shows it
+
+**Finding.** `useRunPictures` kept one last-writer state per src, and the page on its card and the enlarged viewer both reported into it. A viewer mounting before its load overwrote the card's `ready` with `loading`, and nothing unregistered it on close, so the answers stayed blocked with no retry. The other way round, a viewer's load could open a question whose card page was still loading.
+
+**Fix.** I took both options the brief offers:
+
+- **Readiness is tracked per mounted place.** `Place`, `RunPictures` and `useRunPictures` are at `SvepProvpass.tsx:695–759`. Each place (`usePicture`, `:786`) registers its own state under a `useId`, keeps its own tries, and leaves on unmount (`:800`). A failed image gives way to its message while the place stays mounted, so the failure holds until another try.
+- **The enlarged page is excluded from the gate.** The gate (`gateFor`, `:844`) asks `needed()` (`:764`), which counts only the places the question is answered from. A src is ready once every one of those holds it, failed once one of them failed, and loading otherwise (also while no such place is mounted). The viewer's `PageSheet` passes `need={false}` (`:2201`), so it never opens or shuts a question.
+- **The three kinds of place** use the same hook: `OptionPicture` (`:1683`, split out of `OptionFace` so the hook is unconditional), `InlineFigure` (`:1719`) and `PageSheet` (`:1922`). `Picture` (`:811`) only renders the place's image under the place's key.
+
+**Red-first tests** (each failed at `09344f8`):
+
+| Test (`Svep.test.tsx`) | Red at `09344f8` |
+|---|---|
+| `:1638` "keeps the page on its card when the enlarged page is closed before it loads" (desktop, phone) | Card page loaded, viewer opened and closed before its load: the answer was refused (stuck at loading). |
+| `:1654` "never lets the enlarged page speak for the page on the card: each keeps its own state" | The viewer loaded first and the answer was taken while the card's page was still loading. Also covers the viewer failing alone: it says so inside the dialog, the card keeps its page and answers. |
+| `:1679` "does not let the enlarged page mend a failed page on the card" | The viewer showed the card's failure instead of trying its own image. Now the viewer's own load leaves the card failed until its own "Försök igen". |
+
+### 2. The running text owns its arrows
+
+**Finding.** The text's scroll region could take the focus but had no `data-rd-keyscope`. The run's capture handler therefore turned ←/→ (with or without Shift) pressed inside it into question changes, which swapped the text at a text boundary.
+
+**Fix.**
+
+- **The scroll region is a key scope.** `data-rd-keyscope` sits on the text's scroll region (`SvepProvpass.tsx:1782`). The run's handler (`:1077–1087`) leaves arrows pressed inside any scope alone, so the text scrolls natively, and the bake-off's switcher ignores them too (`inOwnKeyScope`).
+- **The run's other keys are unchanged.** The text owns only its arrows: the question's letters still answer from inside it (`:1086`), as they did before this fix and as the drill does. The digits and 0 are still taken everywhere. Outside the text, ←/→ still move between questions. The DTK page region and the dialogs behave as before.
+
+**Red-first test, through the real host:**
+
+- `Svep.test.tsx:1837` "leaves the arrows to the focused text: it scrolls, the question and the screen stay" (desktop, phone). It renders `Redesign2026Bakeoff` on Svep's screen 9, starts a verbal pass standing on the first text's last question (the boundary), focuses the text and presses ←/→ with and without Shift.
+  - Asserts: no handler takes the keys, the question and the text stay, `onSelect` is never called, and the screen stays 9.
+  - Red at `09344f8`: the run took the arrow (`preventDefault`).
+
+**Guard** (green before and after): `:1856` "answers on the letters from inside the text; outside it the arrows are the pass's". The letter answers from the focused text, the digits are taken, and after blur → deals the next text while the screen stays 9.
+
+**Test seam.** The bake-off's own running fixture (host-2025 kvant1) has no text. The test file therefore mocks `useBakeoffDirectionData` as a passthrough (`Svep.test.tsx:55–71`, `vi.hoisted` + `vi.mock` with `importOriginal`, as `useDailyPlan.prereqs.test.tsx` does). Its patch is null except in these two tests, which hand it a verbal run (`:1180–1209`); `afterEach` resets it. The real host, switcher, provider and Svep run unchanged.
+
+### Verification (from `app/`)
+
+| Check | Result |
+|---|---|
+| Red run (new tests on the unfixed source) | `Svep.test.tsx`: 6 failed, 251 passed (257) — exactly the six red-first cases above. |
+| `pnpm typecheck` | Clean. |
+| `pnpm lint` | 504 files, 0 errors, 0 warnings; the 4 infos are the pre-existing ones (`LandingBakeoffR3/R4A/R4C.tsx`, `l12/M3.tsx`). |
+| `pnpm test` | 108 files, **2409 passed, 0 failed**; `Svep.test.tsx` 257 (250 + 7). |
+| `git diff --check` | Clean. |
+
+No shared test outside the write set failed. Per the brief, no browser harness was run, so the checks above are jsdom only.
+
+### Notes
+
+- **Visible change.** Opening the enlarged page after the card's page failed now tries the viewer's own image, and shows the page if it loads. The question still waits for the card's own "Försök igen".
+- **Unchanged by brief.** Letters pressed while the DTK page region has the focus are still left alone, as in round 1. The drill answers from there, so a later batch could align the two.
+
+SVEP2R2 DONE: hpf-qr0p.22

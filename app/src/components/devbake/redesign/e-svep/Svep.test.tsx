@@ -12,7 +12,10 @@
 // Idag and Öva hold when their data changes under them. Batch 2: the
 // Provpass hub and its gate, the running pass (keys inside the real
 // bake-off, the clock, the hand-in and the void, pictures, data that
-// changes), the result and Framsteg with Historik.
+// changes), the result and Framsteg with Historik. Batch 2's round 2: a
+// picture's state belongs to the place that shows it (the enlarged page
+// never speaks for the page on the card), and a running pass's text keeps
+// its arrows inside the real bake-off.
 
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { useState } from 'react'
@@ -48,6 +51,24 @@ import type { DirectionData, DrillQuestion } from '@/components/devbake/redesign
 import type { Question } from '@/data/questions'
 import { meta } from './meta'
 import { Svep } from './Svep'
+
+// The bake-off's own data, changed for one test: the real hook, its data
+// passed through `bakeoffData.patch` while one is set.
+const bakeoffData = vi.hoisted(() => ({
+  patch: null as ((data: DirectionData) => DirectionData) | null,
+}))
+
+vi.mock('@/components/devbake/redesign/directionData', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('@/components/devbake/redesign/directionData')>()
+  const { useMemo } = await import('react')
+  function useBakeoffDirectionData(...args: Parameters<typeof actual.useBakeoffDirectionData>) {
+    const value = actual.useBakeoffDirectionData(...args)
+    const patch = bakeoffData.patch
+    return useMemo(() => (patch ? { ...value, data: patch(value.data) } : value), [value, patch])
+  }
+  return { ...actual, useBakeoffDirectionData }
+})
 
 beforeAll(() => {
   // jsdom has no layout: give the scroll and resize APIs inert stand-ins.
@@ -1156,6 +1177,37 @@ const running = (patch: Partial<typeof RUN>): DirectionData => ({
   provpass: { ...D.provpass, running: { ...RUN, ...patch } },
 })
 
+/** A verbal pass: the reading unit's text, then the ELF unit's, standing on
+ *  the first text's last question — where an arrow taken by the run deals
+ *  the next text in its place. */
+const TEXT_QUESTIONS = [...D.drills.reading.questions, ...D.drills.elf.questions]
+const TEXT_END = D.drills.reading.questions.length
+const VERBAL_RUN: typeof RUN = {
+  ...RUN,
+  half: 'verbal',
+  questions: TEXT_QUESTIONS,
+  grid: TEXT_QUESTIONS.map((q, i) => ({
+    n: i + 1,
+    qid: q.qid,
+    section: q.section,
+    answered: false,
+  })),
+  current: TEXT_END - 1,
+  answers: {},
+  flags: [],
+}
+const LAS_TEXT = D.drills.reading.questions[0]?.passage
+const ELF_TEXT = D.drills.elf.questions[0]?.passage
+if (!LAS_TEXT?.title || !ELF_TEXT) {
+  throw new Error('the fixture units must have their texts, the reading one a title')
+}
+/** The reading text's region is named by its title. */
+const LAS_TITLE = LAS_TEXT.title
+const withVerbalRun = (d: DirectionData): DirectionData => ({
+  ...d,
+  provpass: { ...d.provpass, running: VERBAL_RUN },
+})
+
 describe('Svep, the Provpass hub', () => {
   it('deals the half the rhythm says is next, its least-seen pass in front, one filled action', () => {
     mount(9, 'desktop')
@@ -1569,6 +1621,80 @@ describe('Svep, a pass question that needs its picture', () => {
     press('a')
     expect(choice('A')).toHaveAttribute('aria-pressed', 'true')
   })
+
+  // Round 2: the enlarged page is a second image of the same page, and the
+  // question is answered from the one on the card.
+
+  /** Opens the enlarged page from the page's card. */
+  function enlarge() {
+    fireEvent.click(screen.getByRole('button', { name: /^Förstora/ }))
+    return screen.getByRole('dialog', { name: /^Underlaget · uppgift/ })
+  }
+  const shut = (viewer: HTMLElement) =>
+    fireEvent.click(within(viewer).getByRole('button', { name: 'Stäng förstoringen' }))
+
+  it.each(
+    WIDTHS,
+  )('keeps the page on its card when the enlarged page is closed before it loads (%s)', (w) => {
+    mount(9, w)
+    startPass()
+    fireEvent.click(cell(29))
+    fireEvent.load(page())
+    // The enlarged page opens still on its way and is closed before it loads.
+    const viewer = enlarge()
+    expect(within(viewer).getByRole('img', { name: /^Underlag till uppgift/ })).toBeInTheDocument()
+    shut(viewer)
+    expect(screen.queryByRole('dialog')).toBeNull()
+    // The page on the card is in: the question answers at once.
+    press('a')
+    expect(choice('A')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.queryByText('Väntar på underlaget.')).toBeNull()
+  })
+
+  it('never lets the enlarged page speak for the page on the card: each keeps its own state', () => {
+    mount(9, 'desktop')
+    startPass()
+    fireEvent.click(cell(29))
+    // The enlarged page loads first; the card's page is still on its way.
+    let viewer = enlarge()
+    fireEvent.load(within(viewer).getByRole('img'))
+    shut(viewer)
+    press('a')
+    expect(choice('A')).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getByText('Väntar på underlaget.')).toBeInTheDocument()
+    fireEvent.load(page())
+    press('a')
+    expect(choice('A')).toHaveAttribute('aria-pressed', 'true')
+    // The enlarged page fails on its own: it says so there, and only there.
+    viewer = enlarge()
+    fireEvent.error(within(viewer).getByRole('img'))
+    expect(within(viewer).getByRole('alert')).toHaveTextContent('Underlaget kunde inte laddas.')
+    shut(viewer)
+    expect(screen.queryByRole('alert')).toBeNull()
+    expect(page()).toBeInTheDocument()
+    press('b')
+    expect(choice('B')).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('does not let the enlarged page mend a failed page on the card', () => {
+    mount(9, 'desktop')
+    startPass()
+    fireEvent.click(cell(29))
+    fireEvent.error(page())
+    // The enlarged page is a try of its own, and its load is its own.
+    const viewer = enlarge()
+    fireEvent.load(within(viewer).getByRole('img'))
+    shut(viewer)
+    const alert = screen.getByRole('alert')
+    expect(alert).toHaveTextContent('Underlaget kunde inte laddas.')
+    press('a')
+    expect(choice('A')).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getByText(/Underlaget behövs för att svara\./)).toBeInTheDocument()
+    fireEvent.click(within(alert).getByRole('button', { name: 'Försök igen' }))
+    fireEvent.load(page())
+    press('a')
+    expect(choice('A')).toHaveAttribute('aria-pressed', 'true')
+  })
 })
 
 describe('Svep, a pass on data that changes', () => {
@@ -1610,7 +1736,10 @@ describe('Svep, a running pass inside the bake-off', () => {
     vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
     vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(848)
   })
-  afterEach(() => vi.restoreAllMocks())
+  afterEach(() => {
+    bakeoffData.patch = null
+    vi.restoreAllMocks()
+  })
 
   /** The bake-off page on Svep's Provpass screen, its selection kept as the
    *  route keeps it, every change recorded. */
@@ -1688,6 +1817,54 @@ describe('Svep, a running pass inside the bake-off', () => {
       'true',
     )
     expect(onSelect).not.toHaveBeenCalled()
+  })
+
+  // Round 2: the text of a verbal pass is a scroll region of its own.
+
+  /** The bake-off on a running verbal pass, and its text. */
+  async function onText(w: WidthKey) {
+    bakeoffData.patch = withVerbalRun
+    const host = await bakeoff(w)
+    fireEvent.click(within(host.stage).getByTestId('rd-prov-start'))
+    fireEvent.click(within(host.stage).getByTestId('rd-confirm'))
+    host.onSelect.mockClear()
+    const text = within(host.stage).getByRole('region', { name: LAS_TITLE })
+    return { ...host, text }
+  }
+
+  it.each(
+    WIDTHS,
+  )('leaves the arrows to the focused text: it scrolls, the question and the screen stay (%s)', async (w) => {
+    const { onSelect, stage, text } = await onText(w)
+    expect(currentCell()).toBe(`rd-prov-cell-${TEXT_END}`)
+    act(() => text.focus())
+    for (const key of ['ArrowRight', 'ArrowLeft', 'ArrowRight']) {
+      for (const shiftKey of [false, true]) {
+        // Nobody takes it: the text scrolls as any scroll region does.
+        expect(fireEvent.keyDown(text, { key, shiftKey })).toBe(true)
+      }
+    }
+    // Still the first text's last question, its text still on the card.
+    expect(currentCell()).toBe(`rd-prov-cell-${TEXT_END}`)
+    expect(within(stage).getByText(LAS_TEXT.paragraphs[0])).toBeInTheDocument()
+    expect(within(stage).queryByText(ELF_TEXT.paragraphs[0])).toBeNull()
+    expect(onSelect).not.toHaveBeenCalled()
+    expect(stage).toHaveAttribute('data-screen', '9')
+    expect(within(stage).getByTestId('rd-prov-running')).toBeInTheDocument()
+  })
+
+  it('answers on the letters from inside the text; outside it the arrows are the pass’s', async () => {
+    const { onSelect, stage, text } = await onText('desktop')
+    act(() => text.focus())
+    fireEvent.keyDown(text, { key: 'b' })
+    expect(within(stage).getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'true')
+    for (const key of ['1', '0']) expect(fireEvent.keyDown(text, { key })).toBe(false)
+    act(() => text.blur())
+    fireEvent.keyDown(window, { key: 'ArrowRight' })
+    expect(currentCell()).toBe(`rd-prov-cell-${TEXT_END + 1}`)
+    expect(within(stage).getByText(ELF_TEXT.paragraphs[0])).toBeInTheDocument()
+    expect(onSelect).not.toHaveBeenCalled()
+    expect(stage).toHaveAttribute('data-screen', '9')
   })
 
   it('hands the screen to the result once the pass is handed in', async () => {
