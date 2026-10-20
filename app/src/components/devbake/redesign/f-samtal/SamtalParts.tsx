@@ -24,6 +24,12 @@
 //                      it up): two replies, over the whole screen.
 //   - ScoreCard, Scale — the prognosis on HP's scale and its caveat as the
 //                      card's footnote (Idag, Framsteg).
+//   - ContentLang, En — the language of a drill's content (ELF: English):
+//                      the passage, the question, the options and the
+//                      explanation are marked lang="en" in place, while the
+//                      coach's Swedish words around them stay Swedish.
+//   - bringIntoView  — a section the reader asked for, scrolled to the top
+//                      of its own scroller (Konto, Uppslag).
 //   - words, count   — numbers said the way the coach says them.
 
 import { BookOpen, Minus, PenLine, Plus, RotateCw, Sun, Timer, TrendingUp, X } from 'lucide-react'
@@ -45,7 +51,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 
-import { splitStepRefs } from '@/components/devbake/redesign/drillCore'
+import { prefersReducedMotion, splitStepRefs } from '@/components/devbake/redesign/drillCore'
 import {
   type Destination,
   fmtDelta,
@@ -118,6 +124,63 @@ export function Kbd({ children }: { children: ReactNode }) {
       {children}
     </kbd>
   )
+}
+
+// ── The content's language ───────────────────────────────────────────
+
+/** The language of a drill's content when it is not Swedish: an ELF text,
+ *  its question, options and explanation are English. Undefined: Swedish,
+ *  like the coach. */
+export type ContentLang = 'en' | undefined
+
+export const ContentLangContext = createContext<ContentLang>(undefined)
+
+/** A run of the drill's content in its own language (lang="en" for ELF);
+ *  the coach's Swedish labels stand outside it. In Swedish content it is a
+ *  plain span. */
+export function En({ children, className }: { children: ReactNode; className?: string }) {
+  const lang = useContext(ContentLangContext)
+  return (
+    <span className={className} lang={lang}>
+      {children}
+    </span>
+  )
+}
+
+// ── Actions that may answer later ────────────────────────────────────
+
+/** An action that answers with a promise (a real host may, though the kit
+ *  types it void): its refusal is heard, never left unhandled. */
+export function isPromise(value: unknown): value is Promise<unknown> {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    typeof (value as { then?: unknown }).then === 'function' &&
+    typeof (value as { catch?: unknown }).catch === 'function'
+  )
+}
+
+// ── Scrolling to what the reader asked for ───────────────────────────
+
+/** Scrolls `el` to just under the top of its own scroller (the page's), and
+ *  never the clipping stage around it; instant under reduced motion, a no-op
+ *  without layout. */
+export function bringIntoView(el: HTMLElement | null, offset = 24): void {
+  if (!el) return
+  let box: HTMLElement | null = null
+  for (let n = el.parentElement; n; n = n.parentElement) {
+    const y = getComputedStyle(n).overflowY
+    if (y === 'auto' || y === 'scroll') {
+      box = n
+      break
+    }
+  }
+  if (!box || typeof box.scrollTo !== 'function') return
+  const top = el.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop
+  box.scrollTo({
+    top: Math.max(0, top - offset),
+    behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+  })
 }
 
 // ── Citations ────────────────────────────────────────────────────────

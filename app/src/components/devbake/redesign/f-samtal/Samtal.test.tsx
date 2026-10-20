@@ -38,7 +38,18 @@
 //     switcher's keys back and nothing sent twice; a scroll pane with focus
 //     keeps its arrows; the enlarged page gives focus back to its opener;
 //     the weekly chart, the halves and the register keep to the
-//     collections the provider has now.
+//     collections the provider has now;
+//   - batch 3 (screens 12–14): Uppslag's open lesson as a document with
+//     practice as the reply, each family in its own order, a row that asks
+//     for its lesson honestly, the doors and a long catalog, an entry
+//     without questions; Konto's one way back, its sections reached from
+//     the account card and only then focused, every preference as its own
+//     request with a refusal said and retried, the export, the sign-out
+//     and the deep, typed, once-only deletion labelled a preview; ELF's
+//     English kept English and the coach Swedish, Facit in place, the end,
+//     gap items, missing content, figures that hold the answer and decks
+//     that change; and, through the real host, the switcher's keys from
+//     every focused part of 12, 13 and 14.
 
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
@@ -79,10 +90,19 @@ import { DTK_PAGES, PASS_QUESTIONS } from '@/components/devbake/redesign/r2Fixtu
 import type {
   DirectionData,
   DrillQuestion,
+  LessonView,
   ProvRunningView,
   ResumeView,
 } from '@/components/devbake/redesign/viewModel'
+import type {
+  ConstraintEntry,
+  LexiconEntry,
+  ProtocolEntry,
+  TacticEntry,
+  TrapEntry,
+} from '@/data/frameworks'
 import { formatSwedishDateShort } from '@/lib/scoring'
+import { COACH_BLURBS } from '@/lib/voice'
 // Not imported as `meta`: Vite's SSR transform would then rewrite the
 // `meta` of `import.meta` (used below) as well, and fail.
 import { meta as entry } from './meta'
@@ -96,9 +116,9 @@ describeDirectionContract(entry, Samtal)
 
 const WIDTHS: WidthKey[] = ['desktop', 'phone']
 const THEMES: ThemeKey[] = ['light', 'dark']
-const SCREENS: AppScreenKey[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+const SCREENS: AppScreenKey[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 /** The screens in the frame: the doors and the account are on them. */
-const FRAMED: AppScreenKey[] = [1, 4, 5, 8, 9, 10, 11]
+const FRAMED: AppScreenKey[] = [1, 4, 5, 8, 9, 10, 11, 12, 13]
 const D = FIXTURE_DATA
 
 const Q3 = UNIT.questions[2]
@@ -286,7 +306,7 @@ function answer(letter: string) {
 }
 
 describe('F · Samtal meta', () => {
-  it('is built, in Swedish, and declares screens 1–11', () => {
+  it('is built, in Swedish, and declares all fourteen screens, omitting no Konto control', () => {
     expect(entry.key).toBe('f')
     expect(entry.slug).toBe('f-samtal')
     expect(entry.name).toBe('Samtal')
@@ -295,6 +315,8 @@ describe('F · Samtal meta', () => {
     expect(entry.risk).toMatch(/^Risk: /)
     expect(entry.references).not.toBe('')
     expect(entry.screens).toEqual(SCREENS)
+    // Every Konto control is built (palette, font, density, coach, delete).
+    expect(entry.omits).toBeUndefined()
   })
 })
 
@@ -337,6 +359,9 @@ describe.each(WIDTHS)('F · Samtal, %s', (width) => {
       if (s === 4) expect(screen.getByTestId('rd-account-menu')).toBeInTheDocument()
       if (s === 6) expect(screen.getByTestId('rd-quant-prompt')).toBeInTheDocument()
       if (s === 7) expect(screen.getByTestId('rd-figure')).toBeInTheDocument()
+      if (s === 12) expect(screen.getByTestId('rd-lesson')).toBeInTheDocument()
+      if (s === 13) expect(screen.getByTestId('rd-konto-identity')).toBeInTheDocument()
+      if (s === 14) expect(screen.getByTestId('rd-elf-passage')).toBeInTheDocument()
       unmount()
     }
     expect(errors).not.toHaveBeenCalled()
@@ -1208,7 +1233,32 @@ describe.each(WIDTHS)('F · Samtal, %s', (width) => {
     expect(actions.openPlanItem).not.toHaveBeenCalled()
   })
 
-  it.each([5, 6, 7, 8] as const)('screen %s renders without the optional fields', (s) => {
+  it('Idag: every part done says the plan is done, also before the plan’s own flag says so', () => {
+    const base = fixtureDirectionData()
+    const items = base.home.plan.items.map((i) => ({ ...i, completed: true }))
+    const { actions } = mountWith(
+      {
+        ...base,
+        home: {
+          ...base.home,
+          resume: null,
+          plan: { ...base.home.plan, items, allComplete: false },
+        },
+      },
+      1,
+      width,
+    )
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Dagens plan är klar. Vill du öva mer?',
+    )
+    key('Enter')
+    expect(actions.go).toHaveBeenCalledWith('ova')
+    expect(actions.openPlanItem).not.toHaveBeenCalled()
+  })
+
+  it.each([
+    5, 6, 7, 8, 12, 13, 14,
+  ] as const)('screen %s renders without the optional fields', (s) => {
     const errors = vi.spyOn(console, 'error').mockImplementation(() => {})
     mountWith(withoutOptional(), s, width)
     expect(screen.getByTestId('rd-samtal').textContent).not.toMatch(/undefined|NaN/)
@@ -1364,7 +1414,7 @@ describe('F · Samtal in the bake-off', () => {
     )
   }
 
-  it('Idag → Öva → a section → Avsluta back to Öva → Repetera → its round and back; an unbuilt door shows the shared card', async () => {
+  it('Idag → Öva → a section → Avsluta back to Öva → Repetera → its round and back → Provpass → Uppslag, built', async () => {
     render(<Host />)
     await screen.findByTestId('rd-samtal', {}, { timeout: 5000 })
     const host = screen.getByTestId('host')
@@ -1395,7 +1445,11 @@ describe('F · Samtal in the bake-off', () => {
     )
     fireEvent.click(screen.getByTestId('rd-nav-uppslag'))
     expect(host).toHaveAttribute('data-screen', '12')
-    expect(screen.getByTestId('rd-not-built')).toHaveTextContent('Inte byggd än i Samtal.')
+    expect(screen.queryByTestId('rd-not-built')).toBeNull()
+    expect(screen.getByTestId('rd-nav-uppslag')).toHaveAttribute('aria-current', 'page')
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(D.uppslag.open.title)
+    // The door chosen: the page's question takes focus.
+    expect(document.activeElement).toBe(screen.getByRole('heading', { level: 1 }))
   })
 
   it('the reading drill’s Avsluta returns where it was started from', async () => {
@@ -2922,5 +2976,971 @@ describe.each(WIDTHS)('F · Samtal, %s: Framsteg', (width) => {
       'Här hamnar dina övningar när du har avslutat dem.',
     )
     expect(screen.getByText('Inga avslutade övningar än.')).toBeInTheDocument()
+  })
+})
+
+// ── Batch 3: Uppslag, Konto and ELF ──────────────────────────────────
+
+/** The fixtures with Uppslag's open lesson replaced. */
+function withLesson(open: LessonView): DirectionData {
+  const base = fixtureDirectionData()
+  return { ...base, uppslag: { ...base.uppslag, open } }
+}
+
+/** A lesson of any family, as the kit would hand it over. */
+function lesson(
+  entry: LessonView['entry'],
+  rest: Pick<LessonView, 'section' | 'family' | 'title'> & Partial<LessonView>,
+): LessonView {
+  return { id: entry.id, entry, read: false, practice: { questions: 2 }, ...rest }
+}
+
+const TRAP: TrapEntry = {
+  id: 'KVA-TRAP-001',
+  pattern_description: 'Eleven ser x² = y² och drar slutsatsen att x = y.',
+  why_it_occurs: 'Kvadreringen tar bort tecknet, och det glöms.',
+  common_distractor_signature: 'Alternativ A lockar den som har glömt tecknet.',
+  countermeasure: 'Pröva både x = y och x = −y innan du svarar.',
+  example_questions: ['q1', 'q2'],
+  tldr: 'Kvadratlikhet låser inte tecknet.',
+  recognition_cue: 'Två kvadrater sätts lika med varandra.',
+  worked_example: {
+    setup: 'x² = 9 och y² = 9.',
+    trap_thinking: 'Alltså är x = y.',
+    correct_thinking: 'x kan vara 3 och y −3.',
+    answer: 'D',
+  },
+  counter_example: 'Om både x och y är positiva gäller x = y.',
+}
+const ROOT: LexiconEntry = {
+  id: 'ORD-ROOT-001',
+  root: 'för-',
+  origin: 'Lågtyska',
+  meaning: 'Gör något till något annat, eller för långt.',
+  example_words: ['förstora', 'förvärra'],
+  example_questions: ['q1'],
+}
+const TACTIC: TacticEntry = {
+  id: 'DTK-TACTIC-003',
+  tactic: 'Läs axlarna först',
+  when_to_apply: 'När ett diagram har två skalor.',
+  example_questions: ['q1'],
+}
+const RULE: ConstraintEntry = {
+  id: 'MEK-RULE-002',
+  constraint_type: 'Prepositionsrektion',
+  rule: 'Vissa verb kräver en viss preposition.',
+  example_questions: ['q1'],
+}
+
+describe.each(WIDTHS)('F · Samtal, %s: Uppslag och lektion', (width) => {
+  const open = D.uppslag.open
+  const entry = open.entry as ProtocolEntry
+
+  it('the coach hands over the open lesson as a document; practising it is the one reply', () => {
+    const { actions } = mountOn(FIXTURE_DATA, 12, width)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Läs igenom den här frågetypen, så övar vi sedan på den.',
+    )
+    expect(screen.getAllByText(/2 av 8 frågetyper lästa/).length).toBeGreaterThan(0)
+    // The lesson, verbatim, in its family's order.
+    const doc = screen.getByRole('article', { name: open.title })
+    expect(within(doc).getByTestId('rd-lesson')).toHaveTextContent(open.title)
+    expect(within(doc).getByRole('heading', { name: 'Så angriper du frågan' })).toBeInTheDocument()
+    for (const step of entry.attack_protocol)
+      expect(within(doc).getByText(step)).toBeInTheDocument()
+    for (const d of entry.common_distractors) {
+      expect(within(doc).getByText(d.pattern)).toBeInTheDocument()
+      expect(within(doc).getByText(d.why_it_traps)).toBeInTheDocument()
+    }
+    expect(within(doc).getByText(/^ca \d+ min läsning$/)).toBeInTheDocument()
+    expect(within(doc).getByText('Inte läst')).toBeInTheDocument()
+    expect(within(doc).getByText('Du lär dig den')).toBeInTheDocument()
+    // One filled reply: practise this entry, with its count.
+    const practice = screen.getByTestId('rd-lesson-practice')
+    expect(practice).toHaveClass('sa-chip--primary')
+    expect(practice).toHaveTextContent(`Öva denna frågetyp · ${open.practice.questions} frågor`)
+    expect(document.querySelectorAll('.sa-chip--primary')).toHaveLength(1)
+    key('Enter')
+    expect(actions.startDrill).toHaveBeenLastCalledWith({
+      kind: 'framework',
+      frameworkId: open.id,
+      section: open.section,
+    })
+    fireEvent.click(screen.getByRole('button', { name: `Öva hela ${open.section}` }))
+    expect(actions.startDrill).toHaveBeenLastCalledWith({ kind: 'section', section: open.section })
+    // Uppslag is its door's page; arriving moves nothing.
+    expect(screen.getByTestId('rd-nav-uppslag')).toHaveAttribute('aria-current', 'page')
+    expect(document.activeElement).toBe(document.body)
+  })
+
+  it('a row asks for its lesson: the open text stays, the coach says so, and the lesson that comes takes focus', () => {
+    const base = fixtureDirectionData()
+    const { actions, update } = mountOn(base, 12, width)
+    const row = screen.getByTestId('rd-uppslag-entry-LAS-TYPE-001')
+    fireEvent.click(row)
+    expect(actions.openLesson).toHaveBeenCalledWith('LAS-TYPE-001')
+    expect(
+      screen.getByText('Lektion begärd. Den öppna texten ligger kvar tills den nya har laddats.'),
+    ).toHaveAttribute('role', 'status')
+    expect(within(row).getByText('Begärd')).toBeInTheDocument()
+    // Nothing made up: the open lesson is still the one shown.
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(open.title)
+    // The lesson comes: the notice goes and its title takes focus.
+    const next = lesson(
+      {
+        id: 'LAS-TYPE-001',
+        question_type: 'Direkt detalj',
+        attack_protocol: ['Hitta stället i texten.'],
+        common_distractors: [],
+        example_questions: ['q1'],
+      },
+      { section: 'LÄS', family: 'las_taxonomy', title: 'Direkt detalj', read: true },
+    )
+    update({ ...base, uppslag: { ...base.uppslag, open: next } })
+    expect(screen.queryByText(/Lektion begärd/)).toBeNull()
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent('Direkt detalj')
+    expect(document.activeElement).toBe(screen.getByTestId('rd-lesson'))
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Du har läst den här frågetypen. Ska vi öva på den?',
+    )
+    expect(screen.getByTestId('rd-uppslag-entry-LAS-TYPE-001')).toHaveAttribute(
+      'aria-current',
+      'true',
+    )
+  })
+
+  it('a lesson the host opens unasked is shown without taking focus', () => {
+    const base = fixtureDirectionData()
+    const { update } = mountOn(base, 12, width)
+    const other = lesson(TACTIC, { section: 'DTK', family: 'dtk_tactics', title: TACTIC.tactic })
+    update({ ...base, uppslag: { ...base.uppslag, open: other } })
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(TACTIC.tactic)
+    expect(document.activeElement).toBe(document.body)
+    // Its section is the one listed now.
+    expect(screen.getByTestId('rd-uppslag-section-dtk')).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('the open entry’s own row goes to the lesson and asks for nothing', () => {
+    const { actions } = mountOn(FIXTURE_DATA, 12, width)
+    const row = screen.getByTestId(`rd-uppslag-entry-${open.id}`)
+    expect(row).toHaveAttribute('aria-current', 'true')
+    expect(within(row).getByText('Öppen ovan')).toBeInTheDocument()
+    fireEvent.click(row)
+    expect(actions.openLesson).not.toHaveBeenCalled()
+    expect(document.activeElement).toBe(screen.getByTestId('rd-lesson'))
+  })
+
+  it('a door lists its section’s entries — a long catalog folds — and the open lesson stays', () => {
+    mountOn(FIXTURE_DATA, 12, width)
+    const long = D.uppslag.sections.find((s) => s.entries.length > 8)
+    if (!long) throw new Error('the fixtures need a catalog longer than eight entries')
+    expect(screen.getByTestId('rd-uppslag-section-las')).toHaveAttribute('aria-pressed', 'true')
+    const door = screen.getByTestId(`rd-uppslag-section-${slug(long.section)}`)
+    expect(door).toHaveAttribute('aria-pressed', 'false')
+    fireEvent.click(door)
+    expect(door).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.queryByTestId('rd-uppslag-entry-LAS-TYPE-001')).toBeNull()
+    long.entries.forEach((e, i) => {
+      expect(visible(screen.getByTestId(`rd-uppslag-entry-${e.id}`))).toBe(i < 8)
+    })
+    // The chosen section's list takes focus.
+    expect(document.activeElement).toBe(
+      screen.getByRole('heading', { level: 2, name: `${long.section} · ${long.name}` }),
+    )
+    fireEvent.click(
+      screen.getByRole('button', { name: new RegExp(`^Visa alla ${long.entries.length}`) }),
+    )
+    for (const e of long.entries) {
+      expect(visible(screen.getByTestId(`rd-uppslag-entry-${e.id}`))).toBe(true)
+    }
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(open.title)
+    // "Alla delprov" at the top goes to the doors.
+    fireEvent.click(screen.getByRole('button', { name: 'Alla delprov' }))
+    expect(document.activeElement).toBe(
+      screen.getByRole('heading', { level: 2, name: 'Alla delprov' }),
+    )
+  })
+
+  it('an entry without example questions cannot be practised: it says why, and the section’s practice leads', () => {
+    const { actions } = mountOn(withLesson({ ...open, practice: { questions: 0 } }), 12, width)
+    const practice = screen.getByTestId('rd-lesson-practice')
+    expect(practice).toBeDisabled()
+    expect(practice).toHaveAccessibleDescription('Det finns inga övningsfrågor till frågetypen än.')
+    fireEvent.click(practice)
+    expect(actions.startDrill).not.toHaveBeenCalled()
+    expect(screen.getByRole('button', { name: `Öva hela ${open.section}` })).toHaveClass(
+      'sa-chip--primary',
+    )
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Läs igenom den här frågetypen.',
+    )
+    key('Enter')
+    expect(actions.startDrill).toHaveBeenCalledWith({ kind: 'section', section: open.section })
+  })
+
+  it('a trap keeps its order — the rule in short, the pattern, why, recognition, countermeasure — the rest on request', () => {
+    mountOn(
+      withLesson(
+        lesson(TRAP, { section: 'KVA', family: 'kva_traps', title: TRAP.pattern_description }),
+      ),
+      12,
+      width,
+    )
+    const doc = screen.getByRole('article', { name: TRAP.pattern_description })
+    expect(within(doc).getByText(TRAP.tldr ?? '')).toBeInTheDocument()
+    // The pattern is the title: not said twice.
+    expect(within(doc).queryByRole('heading', { name: 'Mönstret' })).toBeNull()
+    const order = ['Varför det händer', 'Igenkänningstecken', 'Motåtgärd'].map((h) =>
+      within(doc).getByRole('heading', { name: h }),
+    )
+    for (let i = 1; i < order.length; i++) {
+      expect(order[i - 1].compareDocumentPosition(order[i])).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    }
+    const more = within(doc).getByRole('button', { name: /^Fler detaljer/ })
+    expect(more).toHaveAttribute('aria-expanded', 'false')
+    expect(visible(within(doc).getByText(TRAP.worked_example?.trap_thinking ?? ''))).toBe(false)
+    fireEvent.click(more)
+    expect(visible(within(doc).getByText(TRAP.worked_example?.trap_thinking ?? ''))).toBe(true)
+    expect(within(doc).getByText(TRAP.counter_example ?? '')).toBeInTheDocument()
+    expect(screen.getByTestId('rd-lesson-practice')).toHaveTextContent(
+      'Öva detta mönster · 2 frågor',
+    )
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Läs igenom den här fällan, så övar vi sedan på den.',
+    )
+  })
+
+  it.each([
+    [
+      'a root',
+      ROOT,
+      'ORD',
+      'ord_roots',
+      'Öva ord med denna rot',
+      ['Ursprung', 'Betydelse', 'Exempel'],
+    ],
+    ['a tactic', TACTIC, 'DTK', 'dtk_tactics', 'Öva denna taktik', ['Igenkänningstecken']],
+    ['a rule', RULE, 'MEK', 'mek_protocol', 'Öva denna regel', ['Mönsterregel']],
+  ] as const)('%s keeps its own fields and its own practice', (_kind, e, section, family, label, parts) => {
+    const title = 'root' in e ? e.root : 'tactic' in e ? e.tactic : e.constraint_type
+    mountOn(withLesson(lesson(e, { section, family, title })), 12, width)
+    const doc = screen.getByRole('article', { name: title })
+    for (const h of parts) expect(within(doc).getByRole('heading', { name: h })).toBeInTheDocument()
+    expect(screen.getByTestId('rd-lesson-practice')).toHaveTextContent(label)
+  })
+
+  it('on sparse data it says what is missing: no progress, no sections', () => {
+    const base = fixtureDirectionData()
+    mountOn(
+      { ...base, uppslag: { sections: [], open: { ...base.uppslag.open, status: undefined } } },
+      12,
+      width,
+    )
+    expect(screen.getByText('Uppslaget är tomt just nu.')).toBeInTheDocument()
+    expect(screen.queryByText('Du lär dig den')).toBeNull()
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(base.uppslag.open.title)
+    expect(screen.queryByText(/frågetyper lästa/)).toBeNull()
+  })
+})
+
+describe.each(WIDTHS)('F · Samtal, %s: Konto och inställningar', (width) => {
+  it('one coach line and one reply, back to the door the reader came from; no door is current; arriving moves nothing', () => {
+    const { actions, update } = mountOn(FIXTURE_DATA, 5, width)
+    update(FIXTURE_DATA, 13)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Här ställer du in hur du vill öva.',
+    )
+    for (const d of DESTINATIONS) {
+      expect(screen.getByTestId(`rd-nav-${d.id}`)).not.toHaveAttribute('aria-current')
+    }
+    const back = screen.getByRole('button', { name: /^Tillbaka till Öva/ })
+    expect(back).toHaveClass('sa-chip--primary')
+    expect(document.querySelectorAll('.sa-chip--primary')).toHaveLength(1)
+    expect(document.activeElement).toBe(document.body)
+    key('Enter')
+    expect(actions.go).toHaveBeenCalledWith('ova')
+  })
+
+  it('without a door before it, the way back is Idag’s', () => {
+    const { actions } = mountOn(FIXTURE_DATA, 13, width)
+    fireEvent.click(screen.getByRole('button', { name: /^Tillbaka till Idag/ }))
+    expect(actions.go).toHaveBeenCalledWith('idag')
+  })
+
+  it('the identity as the account says it: the whole e-mail, a plan only when there is one, nothing made up', () => {
+    const base = fixtureDirectionData()
+    const { unmount } = mountWith(base, 13, width)
+    const who = screen.getByTestId('rd-konto-identity')
+    expect(who).toHaveTextContent(base.konto.identity.name)
+    expect(who).toHaveTextContent(base.konto.identity.email)
+    expect(who).toHaveTextContent(
+      `${base.konto.exam.label} · ${base.konto.exam.daysLeft} dagar kvar`,
+    )
+    expect(within(who).queryByText('Plan')).toBeNull()
+    unmount()
+    mountWith(
+      {
+        ...base,
+        konto: { ...base.konto, identity: { name: '', email: '', initials: '', plan: 'Gratis' } },
+      },
+      13,
+      width,
+    )
+    const none = screen.getByTestId('rd-konto-identity')
+    expect(none).toHaveTextContent('Inget namn i kontot')
+    expect(none).toHaveTextContent('Ingen e-post i kontot')
+    expect(within(none).getByText('Plan')).toBeInTheDocument()
+    expect(none).toHaveTextContent('Gratis')
+    expect(screen.getByText('Konto och inställningar.')).toBeInTheDocument()
+  })
+
+  it('the mode themes the stage; every other choice sends its own patch; the chosen one is what the account says', () => {
+    const { actions, stage } = mountDirection(Samtal, 13, width)
+    fireEvent.click(screen.getByTestId('rd-konto-mode-dark'))
+    expect(actions.setTheme).toHaveBeenCalledWith('dark')
+    expect(stage().theme).toBe('dark')
+    expect(screen.getByTestId('rd-konto-mode-dark')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('rd-konto-mode-light')).toHaveAttribute('aria-pressed', 'false')
+    fireEvent.click(screen.getByTestId('rd-konto-palette-sage'))
+    expect(actions.setPrefs).toHaveBeenLastCalledWith({ palette: 'sage' })
+    expect(screen.getByTestId('rd-konto-palette-sage')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('rd-konto-palette-spalt')).toHaveAttribute('aria-pressed', 'false')
+    fireEvent.click(screen.getByTestId('rd-konto-coach-kompis'))
+    expect(screen.getByText(COACH_BLURBS.kompis)).toBeInTheDocument()
+    const drills = screen.getByRole('group', { name: 'Frågeurval' })
+    fireEvent.click(within(drills).getByRole('button', { name: 'Slumpat' }))
+    expect(actions.setPrefs).toHaveBeenLastCalledWith({ smartDrill: false })
+    expect(within(drills).getByRole('button', { name: 'Slumpat' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    expect(within(drills).getByText('Helt slumpade frågor.')).toBeInTheDocument()
+    // One preference per patch; the mode never through setPrefs.
+    for (const [patch] of vi.mocked(actions.setPrefs).mock.calls) {
+      expect(Object.keys(patch)).toHaveLength(1)
+      expect(patch).not.toHaveProperty('mode')
+    }
+    // Samtal keeps its own look, and says so; nothing claims a save.
+    expect(
+      screen.getByText(/Samtal behåller sina egna färger och typsnitt här\./),
+    ).toBeInTheDocument()
+    expect(screen.queryByText(/^(Sparat|Sparad)|är sparad/)).toBeNull()
+  })
+
+  it('a choice the host refuses is said in its own group, keeps what the account says, and a real retry sends it again', async () => {
+    const actions = spyActions()
+    vi.mocked(actions.setPrefs).mockImplementation(() => {
+      throw new Error('nej')
+    })
+    render(
+      <DirectionDataProvider data={FIXTURE_DATA} actions={actions}>
+        <Samtal
+          screen={13}
+          width={width}
+          theme="light"
+          live
+          onScreen={() => {}}
+          onTheme={() => {}}
+        />
+      </DirectionDataProvider>,
+    )
+    const fonts = screen.getByRole('group', { name: 'Typsnitt' })
+    fireEvent.click(within(fonts).getByTestId('rd-konto-font-geometric'))
+    expect(within(fonts).getByRole('alert')).toHaveTextContent('Kunde inte spara ändringen.')
+    expect(within(fonts).getByTestId('rd-konto-font-literary')).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    expect(within(screen.getByRole('group', { name: 'Palett' })).queryByRole('alert')).toBeNull()
+    vi.mocked(actions.setPrefs).mockImplementation(() => {})
+    fireEvent.click(within(fonts).getByRole('button', { name: 'Försök igen: Geometric' }))
+    expect(actions.setPrefs).toHaveBeenLastCalledWith({ font: 'geometric' })
+    expect(within(fonts).queryByRole('alert')).toBeNull()
+    // A refusal that comes later, as a rejected promise, is heard too.
+    vi.mocked(actions.setTheme).mockImplementation(
+      () => Promise.reject(new Error('nej')) as unknown as undefined,
+    )
+    fireEvent.click(screen.getByTestId('rd-konto-mode-dark'))
+    const modes = screen.getByRole('group', { name: 'Tema' })
+    expect(await within(modes).findByRole('alert')).toHaveTextContent('Kunde inte spara ändringen.')
+  })
+
+  it('the export and the sign-out say what was asked for, never that it is done', () => {
+    const { actions } = mountOn(FIXTURE_DATA, 13, width)
+    fireEvent.click(screen.getByTestId('rd-konto-export'))
+    expect(actions.exportData).toHaveBeenCalledTimes(1)
+    expect(screen.getByText('Export begärd.')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-konto-signout'))
+    expect(actions.signOut).toHaveBeenCalledTimes(1)
+    expect(screen.getByText('Utloggning begärd.')).toBeInTheDocument()
+    expect(screen.queryByText(/exporterad|utloggad|^(Sparat|Sparad)|är sparad/)).toBeNull()
+  })
+
+  it('a refused export says so', () => {
+    const actions = spyActions()
+    vi.mocked(actions.exportData).mockImplementation(() => {
+      throw new Error('nej')
+    })
+    render(
+      <DirectionDataProvider data={FIXTURE_DATA} actions={actions}>
+        <Samtal
+          screen={13}
+          width={width}
+          theme="light"
+          live
+          onScreen={() => {}}
+          onTheme={() => {}}
+        />
+      </DirectionDataProvider>,
+    )
+    fireEvent.click(screen.getByTestId('rd-konto-export'))
+    expect(
+      screen.getByText('Kunde inte exportera just nu. Försök igen om en stund.'),
+    ).toBeInTheDocument()
+  })
+
+  it('the deletion is deepest: its cost said first, the export before the word, the typed word, sent once, labelled a preview', () => {
+    const { actions } = mountOn(FIXTURE_DATA, 13, width)
+    const toggle = screen.getByTestId('rd-konto-delete')
+    const signout = screen.getByTestId('rd-konto-signout')
+    expect(signout.compareDocumentPosition(toggle)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(
+      screen.getByText(/^Allt raderas direkt — konto, försök, missar och resultat\./),
+    ).toBeInTheDocument()
+    expect(screen.queryByTestId('rd-konto-delete-word')).toBeNull()
+    fireEvent.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    const flow = document.getElementById(toggle.getAttribute('aria-controls') ?? '')
+    if (!flow) throw new Error('the deletion flow is not where its toggle says')
+    expect(within(flow).getByText('Förhandsvisning – här raderas ingenting.')).toBeInTheDocument()
+    const again = within(flow).getByRole('button', { name: 'Exportera mina data' })
+    const word = screen.getByTestId('rd-konto-delete-word')
+    expect(again.compareDocumentPosition(word)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    fireEvent.click(again)
+    expect(actions.exportData).toHaveBeenCalledTimes(1)
+    const confirm = screen.getByTestId('rd-konto-delete-confirm')
+    expect(confirm).toHaveAttribute('aria-disabled', 'true')
+    fireEvent.click(confirm)
+    expect(actions.deleteAccount).not.toHaveBeenCalled()
+    expect(within(flow).getByText('Skriv radera först.')).toBeInTheDocument()
+    fireEvent.change(word, { target: { value: 'Radera' } })
+    fireEvent.click(confirm)
+    expect(actions.deleteAccount).not.toHaveBeenCalled()
+    fireEvent.change(word, { target: { value: 'radera' } })
+    expect(confirm).toHaveAttribute('aria-disabled', 'false')
+    fireEvent.click(confirm)
+    fireEvent.click(confirm)
+    expect(actions.deleteAccount).toHaveBeenCalledTimes(1)
+    expect(confirm).toHaveAttribute('aria-disabled', 'true')
+    expect(
+      within(flow).getByText('Begäran om radering skickad. I förhandsvisningen raderas ingenting.'),
+    ).toBeInTheDocument()
+    expect(screen.queryByText(/Kontot är raderat|raderas nu/)).toBeNull()
+  })
+
+  it('a refused deletion says nothing was deleted and may be tried again; Avbryt gives focus back to the toggle', () => {
+    const actions = spyActions()
+    vi.mocked(actions.deleteAccount).mockImplementation(() => {
+      throw new Error('nej')
+    })
+    render(
+      <DirectionDataProvider data={FIXTURE_DATA} actions={actions}>
+        <Samtal
+          screen={13}
+          width={width}
+          theme="light"
+          live
+          onScreen={() => {}}
+          onTheme={() => {}}
+        />
+      </DirectionDataProvider>,
+    )
+    const toggle = screen.getByTestId('rd-konto-delete')
+    fireEvent.click(toggle)
+    fireEvent.change(screen.getByTestId('rd-konto-delete-word'), { target: { value: 'radera' } })
+    fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
+    expect(
+      screen.getByText('Kunde inte radera kontot. Inget raderades — försök igen.'),
+    ).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
+    expect(actions.deleteAccount).toHaveBeenCalledTimes(2)
+    fireEvent.click(screen.getByRole('button', { name: 'Avbryt' }))
+    expect(screen.queryByTestId('rd-konto-delete-word')).toBeNull()
+    expect(document.activeElement).toBe(toggle)
+  })
+
+  it('the account card: who is signed in, the two modes, rows that say where they lead, and a sign-out that says it asked', () => {
+    const { actions } = mountOn(FIXTURE_DATA, 4, width)
+    const menu = screen.getByTestId('rd-account-menu')
+    expect(menu).toHaveTextContent(D.konto.identity.name)
+    expect(menu).toHaveTextContent(D.konto.identity.email)
+    expect(menu).not.toHaveTextContent('gratisplan')
+    expect(within(menu).queryByRole('button', { name: 'System' })).toBeNull()
+    expect(within(menu).getByRole('button', { name: 'Ljust' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    expect(menu).toHaveTextContent('Tema och övningsval')
+    expect(menu).not.toHaveTextContent('Provdatum och mål')
+    fireEvent.click(within(menu).getByText('Logga ut'))
+    expect(actions.signOut).toHaveBeenCalledTimes(1)
+    expect(within(menu).getByText('Utloggning begärd.')).toBeInTheDocument()
+    fireEvent.click(within(menu).getByText('Inställningar'))
+    expect(actions.openKonto).toHaveBeenCalledTimes(1)
+    expect(screen.queryByTestId('rd-account-menu')).toBeNull()
+  })
+})
+
+describe.each(WIDTHS)('F · Samtal in the bake-off, %s: Uppslag and Konto', (width) => {
+  beforeEach(() => {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(848)
+  })
+  afterEach(() => vi.restoreAllMocks())
+
+  function Host({ s }: { s: AppScreenKey }) {
+    const [sel, setSel] = useState<Selection>({
+      d: 'f',
+      s,
+      w: width,
+      t: 'light',
+      sbs: false,
+      bare: true,
+    })
+    return (
+      <div data-testid="host" data-screen={sel.s} data-direction={sel.d}>
+        <Redesign2026Bakeoff sel={sel} onSelect={(next) => setSel((x) => ({ ...x, ...next }))} />
+      </div>
+    )
+  }
+
+  /** The account card's row named `name`. */
+  function row(name: string): HTMLElement {
+    fireEvent.click(screen.getByTestId('rd-account'))
+    const item = within(screen.getByTestId('rd-account-menu')).getByText(name).closest('button')
+    if (!item) throw new Error(`no row ${name} in the account card`)
+    return item
+  }
+
+  it('each row of the account card opens its own section of Konto, focused only then; the way back is the door', async () => {
+    render(<Host s={5} />)
+    await screen.findByTestId('rd-samtal', {}, { timeout: 5000 })
+    const host = screen.getByTestId('host')
+    fireEvent.click(row('Inställningar'))
+    expect(host).toHaveAttribute('data-screen', '13')
+    expect(screen.queryByTestId('rd-account-menu')).toBeNull()
+    expect(document.activeElement).toBe(
+      screen.getByRole('heading', { level: 2, name: 'Inställningar' }),
+    )
+    fireEvent.click(row('Konto'))
+    expect(document.activeElement).toBe(
+      screen.getByRole('heading', { level: 2, name: 'Ditt konto' }),
+    )
+    fireEvent.click(row('Hjälp'))
+    expect(document.activeElement).toBe(
+      screen.getByRole('heading', { level: 2, name: 'Hjälp och villkor' }),
+    )
+    for (const d of DESTINATIONS) {
+      expect(screen.getByTestId(`rd-nav-${d.id}`)).not.toHaveAttribute('aria-current')
+    }
+    fireEvent.click(screen.getByRole('button', { name: /^Tillbaka till Öva/ }))
+    expect(host).toHaveAttribute('data-screen', '5')
+    expect(screen.getByTestId('rd-nav-ova')).toHaveAttribute('aria-current', 'page')
+  })
+
+  it('arriving at Konto by the switcher moves nothing', async () => {
+    render(<Host s={12} />)
+    await screen.findByTestId('rd-samtal', {}, { timeout: 5000 })
+    fireEvent.keyDown(document.body, { key: 'ArrowRight' })
+    expect(screen.getByTestId('host')).toHaveAttribute('data-screen', '13')
+    expect(document.activeElement).toBe(document.body)
+  })
+
+  it('the light/dark choice on Konto themes the whole stage', async () => {
+    render(<Host s={13} />)
+    await screen.findByTestId('rd-samtal', {}, { timeout: 5000 })
+    fireEvent.click(screen.getByTestId('rd-konto-mode-dark'))
+    expect(screen.getByTestId('rb26')).toHaveAttribute('data-theme', 'dark')
+    expect(screen.getByTestId('rd-samtal')).toHaveAttribute('data-theme', 'dark')
+  })
+
+  it('Uppslag’s read mark holds: the lesson says Läst, the coach moves on to practice', async () => {
+    render(<Host s={12} />)
+    await screen.findByTestId('rd-samtal', {}, { timeout: 5000 })
+    const mark = screen.getByTestId('rd-lesson-read')
+    expect(mark).toHaveAttribute('aria-pressed', 'false')
+    fireEvent.click(mark)
+    expect(screen.getByTestId('rd-lesson-read')).toHaveAttribute('aria-pressed', 'true')
+    const doc = screen.getByRole('article', { name: D.uppslag.open.title })
+    expect(within(doc).getByText('Läst')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Du har läst den här frågetypen. Ska vi öva på den?',
+    )
+    expect(screen.getAllByText(/3 av 8 frågetyper lästa/).length).toBeGreaterThan(0)
+    fireEvent.click(screen.getByTestId('rd-lesson-read'))
+    expect(screen.getByTestId('rd-lesson-read')).toHaveAttribute('aria-pressed', 'false')
+  })
+
+  it('Uppslag’s practice opens the drill; a row asks the host, which keeps the open text', async () => {
+    render(<Host s={12} />)
+    await screen.findByTestId('rd-samtal', {}, { timeout: 5000 })
+    fireEvent.click(screen.getByTestId('rd-uppslag-entry-LAS-TYPE-004'))
+    expect(screen.getByTestId('host')).toHaveAttribute('data-screen', '12')
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(D.uppslag.open.title)
+    expect(screen.getByText(/^Lektion begärd\./)).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('rd-lesson-practice'))
+    expect(screen.getByTestId('host')).toHaveAttribute('data-screen', '2')
+  })
+})
+
+describe.each(WIDTHS)('F · Samtal, %s: ELF-läsfråga', (width) => {
+  const session = D.drills.elf
+  const [q] = session.questions
+  const e = session.explanations[q.qid]
+  if (!e) throw new Error('the ELF fixture must have its explanation')
+
+  /** The fixtures with the ELF sitting holding `questions`. */
+  function withElf(
+    questions: DrillQuestion[],
+    rest: Partial<DirectionData['drills']['elf']> = {},
+  ): DirectionData {
+    const base = fixtureDirectionData()
+    return {
+      ...base,
+      drills: { ...base.drills, elf: { ...base.drills.elf, questions, ...rest } },
+    }
+  }
+
+  function langOf(el: Element | null): string | null | undefined {
+    return el?.closest('[lang]')?.getAttribute('lang')
+  }
+
+  it('the English text, its question and its options stay English; the coach, the labels and the controls Swedish', () => {
+    mountOn(FIXTURE_DATA, 14, width)
+    const passage = screen.getByTestId('rd-elf-passage')
+    expect(passage).toHaveAttribute('lang', 'en')
+    expect(passage).toHaveTextContent(q.passage?.byline ?? '')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveAttribute('lang', 'en')
+    // The badge and the note are Swedish, outside the text.
+    expect(langOf(screen.getByTestId('rd-badge'))).toBe('sv')
+    fireEvent.click(screen.getByTestId('rd-note-toggle'))
+    expect(langOf(screen.getByTestId('rd-note'))).toBe('sv')
+    // The ¶ control speaks Swedish inside the English text.
+    expect(within(passage).getByRole('button', { name: 'Stycke 1' })).toHaveAttribute('lang', 'sv')
+    expect(screen.getByText(/ELF · Fråga 1 av 1/)).toBeInTheDocument()
+    revealOptions()
+    expect(langOf(screen.getAllByText(q.prompt ?? '')[0])).toBe('en')
+    expect(langOf(screen.getAllByText('Fråga 1')[0])).toBe('sv')
+    for (const o of q.options ?? []) {
+      const option = screen.getByTestId(`rd-option-${o.letter}`)
+      expect(langOf(within(option).getByText(o.text))).toBe('en')
+      expect(langOf(within(option).getByText(new RegExp(`^Alternativ ${o.letter}`)))).toBe('sv')
+    }
+  })
+
+  it('the answer opens Facit in place: the explanation English, its headings Swedish; no switcher steps', () => {
+    const { actions, onScreen } = mountWith(FIXTURE_DATA, 14, width)
+    revealOptions()
+    fireEvent.click(screen.getByTestId(`rd-option-${q.answer}`))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(actions.drill.lock).toHaveBeenCalledWith(
+      expect.objectContaining({ qid: q.qid }),
+      q.answer,
+    )
+    expect(onScreen).not.toHaveBeenCalled()
+    expect(screen.getByTestId('rd-verdict')).toHaveAttribute('data-correct', 'true')
+    const technique = screen.getByTestId('rd-technique')
+    expect(langOf(within(technique).getByText(e.technique))).toBe('en')
+    expect(langOf(within(technique).getByRole('heading', { name: 'Nästa gång' }))).toBe('sv')
+    expect(langOf(within(screen.getByTestId('rd-pitfall')).getByText(e.pitfall ?? ''))).toBe('en')
+    const first = screen.getByTestId('rd-step-1')
+    expect(langOf(within(first).getByText(e.steps?.[0]?.title ?? ''))).toBe('en')
+    expect(langOf(within(first).getByText(/^Steg 1:/))).toBe('sv')
+  })
+
+  it('a wrong answer: the coach asks in Swedish; why it tempts, in English', () => {
+    mountWith(FIXTURE_DATA, 14, width)
+    const wrong = e.distractors[0]
+    revealOptions()
+    fireEvent.click(screen.getByTestId(`rd-option-${wrong.letter}`))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    const lure = screen.getByTestId(`rd-distractor-${wrong.letter}`)
+    expect(langOf(within(lure).getByText(`Vad lockade dig med ${wrong.letter}?`))).toBe('sv')
+    expect(langOf(within(lure).getByText(wrong.why_tempting))).toBe('en')
+    expect(within(lure).getByRole('button', { name: 'Orden liknade texten' })).toBeInTheDocument()
+    // Your answer, its words English.
+    const mine = (q.options ?? []).find((o) => o.letter === wrong.letter)
+    const yours = document.querySelector('[data-anchor="answer"]')
+    expect(langOf(within(yours as HTMLElement).getByText(mine?.text ?? ''))).toBe('en')
+  })
+
+  it('Avsluta is the controller’s; the end offers the plan’s next part — never a done one — or Till Öva', () => {
+    const { actions, onScreen } = mountWith(FIXTURE_DATA, 14, width)
+    fireEvent.click(screen.getAllByTestId('rd-exit')[0])
+    expect(actions.drill.exit).toHaveBeenCalledTimes(1)
+    expect(onScreen).not.toHaveBeenCalled()
+    revealOptions()
+    fireEvent.click(screen.getByTestId(`rd-option-${q.answer}`))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    fireEvent.click(screen.getByTestId('rd-next'))
+    const done = screen.getByTestId('rd-done')
+    expect(done).toHaveTextContent('Texten är läst')
+    expect(done).toHaveTextContent('Klart. 1 fråga, 1 rätt.')
+    expect(within(done).getByText(q.passage?.title ?? '')).toHaveAttribute('lang', 'en')
+    const next = D.home.plan.items.find((i) => !i.completed)
+    fireEvent.click(screen.getByTestId('rd-done-next'))
+    expect(actions.openPlanItem).toHaveBeenCalledWith(next?.id)
+  })
+
+  it('with the whole plan done, the end’s one way on is Till Öva', () => {
+    const base = fixtureDirectionData()
+    const plan = {
+      ...base.home.plan,
+      allComplete: true,
+      items: base.home.plan.items.map((i) => ({ ...i, completed: true })),
+    }
+    const { actions } = mountWith({ ...base, home: { ...base.home, plan } }, 14, width)
+    revealOptions()
+    fireEvent.click(screen.getByTestId(`rd-option-${q.answer}`))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    fireEvent.click(screen.getByTestId('rd-next'))
+    expect(screen.queryByTestId('rd-done-next')).toBeNull()
+    const out = screen.getByRole('button', { name: /^Till Öva/ })
+    expect(out).toHaveClass('sa-chip--primary')
+    key('Enter')
+    expect(actions.go).toHaveBeenCalledWith('ova')
+  })
+
+  it('a gap item is "Lucka N": its gap is marked in the text, the real numbers stay text, and it can be answered', () => {
+    const gap: DrillQuestion = {
+      ...q,
+      qid: 'test-elf-gap-32',
+      number: 32,
+      prompt: '',
+      answer: 'B',
+      passage: {
+        ...(q.passage as NonNullable<DrillQuestion['passage']>),
+        paragraphs: [
+          'In 1961 the mill closed, 31 and the town shrank by 78% within a decade.',
+          'Its people stayed, 32 the work was gone; 33 they built a co-operative.',
+        ],
+        byline: null,
+      },
+    }
+    const { actions } = mountWith(withElf([gap]), 14, width)
+    revealOptions()
+    expect(screen.getAllByText('Lucka 32').length).toBeGreaterThan(0)
+    const passage = screen.getByTestId('rd-elf-passage')
+    expect(within(passage).getByTestId('sa-gap-32')).toHaveAttribute('data-current', 'true')
+    expect(within(passage).getByTestId('sa-gap-31')).toHaveAttribute('data-current', 'false')
+    expect(within(passage).getByTestId('sa-gap-33')).toBeInTheDocument()
+    expect(within(passage).queryByTestId('sa-gap-78')).toBeNull()
+    expect(within(passage).getByTestId('sa-gap-32')).toHaveAttribute('lang', 'sv')
+    expect(passage).toHaveTextContent('78%')
+    expect(passage).toHaveTextContent('1961')
+    fireEvent.click(screen.getByTestId('rd-option-B'))
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(actions.drill.lock).toHaveBeenCalledWith(expect.objectContaining({ qid: gap.qid }), 'B')
+    // No explanation yet: the verdict and the way on, nothing else.
+    expect(
+      screen.getByText('Förklaringen till den här frågan är inte klar än.'),
+    ).toBeInTheDocument()
+  })
+
+  it.each([
+    ['its text', { passage: null }, 'Texten saknas, så frågan kan inte besvaras.'],
+    ['its stem', { prompt: null }, 'Frågetexten saknas, så frågan kan inte besvaras.'],
+    ['its options', { options: null }, 'Frågan saknar svarsalternativ och kan inte besvaras här.'],
+  ] as const)('a question without %s cannot be answered: it says why, and Till Öva is the way out', (_what, patch, reason) => {
+    const { actions } = mountWith(withElf([{ ...q, ...patch }]), 14, width)
+    // The phone's tray opens to the replies (there may be none to choose).
+    if (width === 'phone') revealOptions()
+    const option = screen.queryByTestId(`rd-option-${q.answer}`)
+    if (option) fireEvent.click(option)
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    expect(screen.getByText(reason)).toBeInTheDocument()
+    key('Enter')
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: 'Till Öva' }))
+    expect(actions.go).toHaveBeenCalledWith('ova')
+  })
+
+  it('an option’s image holds the answer while it loads and stops it if it fails, with a real retry; a cached one is there at once', () => {
+    const { actions, unmount } = mountWith(withElf([withOptionImages(q)]), 14, width)
+    revealOptions()
+    fireEvent.click(screen.getByTestId(`rd-option-${q.answer}`))
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    expect(
+      screen.getByText('Bilderna till svarsalternativen laddas – du kan svara när de syns.'),
+    ).toBeInTheDocument()
+    key('Enter')
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    const [first, ...rest] = screen.getAllByRole('img', { name: /^Diagram [A-D]$/ })
+    fireEvent.error(first)
+    for (const img of rest) fireEvent.load(img)
+    expect(screen.getAllByText(/^Bilden till alternativ A gick inte att ladda/).length).toBe(2)
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.click(screen.getByRole('button', { name: 'Försök igen' }))
+    // The retry is a new load: still waited for.
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    loadImages()
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(actions.drill.lock).toHaveBeenCalledTimes(1)
+    unmount()
+    const restore = cachedImages()
+    mountWith(withElf([withOptionImages(q)]), 14, width)
+    revealOptions()
+    fireEvent.click(screen.getByTestId(`rd-option-${q.answer}`))
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    restore()
+  })
+
+  it('a shorter deck, or a new sitting, opens fresh — never out of range', () => {
+    const deck = [1, 2, 3].map((n) => ({ ...q, qid: `test-elf-${n}`, number: n }))
+    const three = withElf(deck, { start: { index: 2, results: [] } })
+    const { update } = mountOn(three, 14, width)
+    expect(screen.getByText(/ELF · Fråga 3 av 3/)).toBeInTheDocument()
+    update(withElf([deck[0]], { start: { index: 2, results: [] } }))
+    expect(screen.getByText(/ELF · Fråga 1 av 1/)).toBeInTheDocument()
+    update(withElf(deck, { id: 'elf-2', start: { index: 1, results: [] } }))
+    expect(screen.getByText(/ELF · Fråga 2 av 3/)).toBeInTheDocument()
+  })
+
+  it('a sitting without questions says so; Öva is the way on', () => {
+    const { actions } = mountWith(withElf([]), 14, width)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Det finns ingen text att läsa här just nu.',
+    )
+    key('Enter')
+    expect(actions.go).toHaveBeenCalledWith('ova')
+  })
+})
+
+describe('F · Samtal: paragraph focus keeps the other paragraphs readable', () => {
+  it('dims them no further than 0.7, which keeps their ink near 5:1 on the page', () => {
+    const css = readFileSync(path.join(HERE, 'samtal.css'), 'utf8')
+    const rule = css.match(
+      /\.sa-pbody\[data-focus='true'\] \.sa-para:not\(\[data-focused='true'\]\) \{\s*opacity: ([\d.]+);/,
+    )
+    expect(Number(rule?.[1])).toBeGreaterThanOrEqual(0.7)
+  })
+})
+
+// ── Batch 3 through the real host: the switcher's keys ───────────────
+
+describe.each(
+  WIDTHS,
+)('F · Samtal in the bake-off, %s: the switcher’s keys from 12, 13 and 14', (width) => {
+  beforeEach(() => {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(848)
+  })
+  afterEach(() => vi.restoreAllMocks())
+
+  function Host({ s }: { s: AppScreenKey }) {
+    const [sel, setSel] = useState<Selection>({
+      d: 'f',
+      s,
+      w: width,
+      t: 'light',
+      sbs: false,
+      bare: true,
+    })
+    return (
+      <div data-testid="host" data-screen={sel.s} data-direction={sel.d}>
+        <Redesign2026Bakeoff sel={sel} onSelect={(next) => setSel((x) => ({ ...x, ...next }))} />
+      </div>
+    )
+  }
+
+  /** Where focus can be on a screen, after its setup. */
+  type Spot = { setup?: () => void; at: () => HTMLElement | null }
+  const answered = (letter: string) => () => {
+    revealOptions()
+    fireEvent.click(screen.getByTestId(`rd-option-${letter}`))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+  }
+  const wrong =
+    D.drills.elf.explanations[D.drills.elf.questions[0].qid]?.distractors[0]?.letter ?? 'B'
+  const SPOTS: Record<12 | 13 | 14, Record<string, Spot>> = {
+    12: {
+      'the entry focus': { at: () => document.body },
+      'a section door': { at: () => screen.getByTestId('rd-uppslag-section-kva') },
+      'a catalog row': { at: () => screen.getByTestId('rd-uppslag-entry-LAS-TYPE-001') },
+      'the lesson': { at: () => screen.getByTestId('rd-lesson') },
+      'the read mark': { at: () => screen.getByTestId('rd-lesson-read') },
+      'the practice reply': { at: () => screen.getByTestId('rd-lesson-practice') },
+    },
+    13: {
+      'the entry focus': { at: () => document.body },
+      'a choice': { at: () => screen.getByTestId('rd-konto-palette-sage') },
+      'a section heading': {
+        at: () => screen.getByRole('heading', { level: 2, name: 'Inställningar' }),
+      },
+      'the deletion toggle': { at: () => screen.getByTestId('rd-konto-delete') },
+      'the way back': { at: () => screen.getByTestId('sa-konto-back') },
+    },
+    14: {
+      'the entry focus': { at: () => document.body },
+      'an option': {
+        setup: revealOptions,
+        at: () => screen.getByTestId('rd-option-A'),
+      },
+      'a strike control': {
+        setup: revealOptions,
+        at: () => screen.getByTestId('rd-eliminate-A'),
+      },
+      'the passage': { at: () => screen.getByTestId('rd-elf-passage') },
+      'a ¶ number': {
+        at: () =>
+          within(screen.getByTestId('rd-elf-passage')).getByRole('button', { name: /^Stycke 1/ }),
+      },
+      'the verdict': { setup: answered(wrong), at: () => screen.getByTestId('rd-verdict') },
+      'a reply to the coach': {
+        setup: answered(wrong),
+        at: () => screen.getByRole('button', { name: 'Orden liknade texten' }),
+      },
+      'Visa allt': {
+        setup: answered(wrong),
+        at: () => screen.getByRole('button', { name: /^Visa allt/ }),
+      },
+      Nästa: { setup: answered(wrong), at: () => screen.getByTestId('rd-next') },
+    },
+  }
+  const cases = ([12, 13, 14] as const).flatMap((s) =>
+    Object.keys(SPOTS[s]).flatMap((where) =>
+      (['3', 'ArrowRight'] as const).map((k) => [s, where, k] as const),
+    ),
+  )
+
+  it.each(cases)('screen %s, from %s: "%s" reaches the host', async (s, where, k) => {
+    render(<Host s={s} />)
+    await screen.findByTestId('rd-samtal', {}, { timeout: 5000 })
+    const spot = SPOTS[s][where]
+    spot.setup?.()
+    const el = spot.at()
+    if (!el) throw new Error(`nothing at ${where}`)
+    // Focus as the reader's Tab would (a part may light up on focus).
+    act(() => el.focus())
+    const target = (document.activeElement as HTMLElement | null) ?? el
+    fireEvent.keyDown(target === document.body ? el : target, { key: k })
+    const host = screen.getByTestId('host')
+    if (k === '3') expect(host).toHaveAttribute('data-direction', 'c')
+    else expect(host).toHaveAttribute('data-screen', String(s === 14 ? 1 : s + 1))
+  })
+
+  it('the typed word on Konto keeps its digits: typing never switches', async () => {
+    render(<Host s={13} />)
+    await screen.findByTestId('rd-samtal', {}, { timeout: 5000 })
+    fireEvent.click(screen.getByTestId('rd-konto-delete'))
+    const word = screen.getByTestId('rd-konto-delete-word')
+    word.focus()
+    fireEvent.keyDown(word, { key: '3' })
+    fireEvent.keyDown(word, { key: 'ArrowRight' })
+    expect(screen.getByTestId('host')).toHaveAttribute('data-screen', '13')
+    expect(screen.getByTestId('host')).toHaveAttribute('data-direction', 'f')
   })
 })

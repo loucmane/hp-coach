@@ -650,9 +650,14 @@
 }
 
 [data-rd='samtal'] .sa-door-preview {
+  overflow: hidden;
   font-size: var(--sa-t13);
   line-height: 1.35;
   color: var(--sa-ink-3);
+  /* One line, as a messages app keeps its previews: a long lesson title
+   * ends in an ellipsis rather than growing the door. */
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 [data-rd='samtal'] .sa-door[aria-current='page'] .sa-door-preview {
@@ -888,6 +893,27 @@
   color: var(--sa-ink-3);
 }
 
+/* A long address wraps; it is never cut. */
+[data-rd='samtal'] .sa-menu-who {
+  min-width: 0;
+}
+
+[data-rd='samtal'] .sa-menu-mail {
+  overflow-wrap: anywhere;
+}
+
+/* What the card's Logga ut has asked for: said under it, quietly. */
+[data-rd='samtal'] .sa-menu-status {
+  padding: 2px var(--sa-s3) var(--sa-s2);
+  font-size: var(--sa-t13);
+  color: var(--sa-ink-2);
+}
+
+/* Empty, it takes no room but stays a live region. */
+[data-rd='samtal'] .sa-menu-status:empty {
+  padding: 0;
+}
+
 [data-rd='samtal'] .sa-menu-item {
   display: flex;
   align-items: baseline;
@@ -951,10 +977,28 @@
   background: var(--sa-plum-soft);
 }
 
+/* Chosen: your tint, a solid plum line, the word in ink and a drawn check
+ * before it — the filled plum stays the screen's one reply, however many
+ * groups have a choice made. */
 [data-rd='samtal'] .sa-pick[aria-pressed='true'] {
-  border-color: var(--sa-plum-fill);
-  background: var(--sa-plum-fill);
-  color: var(--sa-on-plum);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sa-s2);
+  padding: 0 calc(var(--sa-s4) - 0.5px) 0 calc(var(--sa-s3) - 0.5px);
+  border: 2px solid var(--sa-plum-ink);
+  background: var(--sa-you);
+  color: var(--sa-ink);
+  font-weight: 700;
+}
+
+[data-rd='samtal'] .sa-pick[aria-pressed='true']::before {
+  content: '';
+  width: 5px;
+  height: 10px;
+  margin: -3px 2px 0 4px;
+  border: solid var(--sa-plum-ink);
+  border-width: 0 2px 2px 0;
+  rotate: 45deg;
 }
 
 [data-rd='samtal'] .sa-menu-sep {
@@ -1824,8 +1868,11 @@
   transition-duration: 0ms;
 }
 
+/* The other paragraphs step back but stay readable: at 0.7 their ink keeps
+ * about 5:1 on the page in light and 7:1 in dark (spec §14: the aid must
+ * leave the rest of the text inspectable). */
 [data-rd='samtal'] .sa-pbody[data-focus='true'] .sa-para:not([data-focused='true']) {
-  opacity: 0.38;
+  opacity: 0.7;
 }
 
 [data-rd='samtal'] .sa-para[data-focused='true'] .sa-pnum {
@@ -5045,6 +5092,759 @@
 }
 
 [data-rd='samtal'] .sa-hist-prov {
+  margin-top: var(--sa-s3);
+}
+
+/* ── Round 2, batch 3: shared ────────────────────────────────────── */
+
+/* Uppslag and Konto speak like Öva: the replies under the lead turn, and
+ * on the phone the one action across the width, the other reply above it
+ * on your side. */
+[data-rd='samtal'] :is(.sa-upp, .sa-konto) > .sa-thread > .sa-replies {
+  margin-top: var(--sa-s2);
+}
+
+[data-rd='samtal'][data-width='phone'] :is(.sa-upp, .sa-konto) > .sa-thread > .sa-replies {
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+[data-rd='samtal'][data-width='phone']
+  :is(.sa-upp, .sa-konto)
+  > .sa-thread
+  > .sa-replies
+  .sa-chip--primary {
+  align-self: stretch;
+}
+
+/* A reply that cannot be given (an entry without questions): visibly off,
+ * its reason under it. */
+[data-rd='samtal'] .sa-chip:disabled {
+  border-color: var(--sa-line-2);
+  background: transparent;
+  color: var(--sa-ink-3);
+  cursor: not-allowed;
+}
+
+/* A status line that has nothing to say takes no room, but stays in the
+ * page, so what it says next is announced (a live region that was
+ * display: none may not be). */
+[data-rd='samtal'] :is(.sa-upp-notice, .sa-data-status, .sa-delete-status):empty {
+  margin: 0;
+  padding: 0;
+  background: none;
+}
+
+/* ── Uppslag och lektion ─────────────────────────────────────────── */
+
+/* "Alla delprov": the way down to the eight sections, under the date. */
+[data-rd='samtal'] .sa-upp-nav {
+  margin: calc(var(--sa-s3) * -1) 0 var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-upp-nav .sa-quiet {
+  padding: 0 var(--sa-s3) 0 var(--sa-s2);
+}
+
+/* The lesson: an opaque, calm document the coach hands over — Lora for
+ * the teaching, one hairline, nothing on glass. */
+[data-rd='samtal'] .sa-lesson {
+  border-radius: var(--sa-r2);
+  background: var(--sa-doc);
+  box-shadow: var(--sa-lift);
+  animation: sa-in var(--sa-d-in) var(--sa-ease) both;
+}
+
+[data-rd='samtal'] .sa-lesson-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sa-s1) var(--sa-s3);
+  min-height: 52px;
+  padding: var(--sa-s2) var(--sa-s5) var(--sa-s2) var(--sa-s6);
+  border-bottom: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-lesson-time {
+  font-size: var(--sa-t13);
+  font-weight: 560;
+  color: var(--sa-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-lesson-inner {
+  padding: var(--sa-s6) var(--sa-s6) var(--sa-s5);
+}
+
+[data-rd='samtal'] .sa-lesson-kicker {
+  margin-bottom: var(--sa-s2);
+  font-size: var(--sa-t15);
+  font-weight: 620;
+  line-height: 1.45;
+  color: var(--sa-ink-2);
+  text-wrap: pretty;
+}
+
+[data-rd='samtal'] .sa-lesson-title {
+  font-family: var(--sa-read);
+  font-size: var(--sa-t26);
+  line-height: 1.22;
+  font-weight: 600;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+  hyphens: auto;
+}
+
+[data-rd='samtal'] .sa-lesson-state {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-lesson-state span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 26px;
+  padding: 2px 10px;
+  border-radius: var(--sa-pill);
+  background: var(--sa-coach);
+  font-size: var(--sa-t13);
+  font-weight: 620;
+  color: var(--sa-ink);
+}
+
+/* Read: your tint and line, the word and its check — never colour alone. */
+[data-rd='samtal'] .sa-lesson-state span[data-read='true'] {
+  background: var(--sa-you);
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklch, var(--sa-plum-line) 70%, transparent);
+}
+
+/* The parts: the coach's notes hierarchy, the teaching itself in Lora at a
+ * reading size and measure. */
+[data-rd='samtal'] .sa-lesson-part {
+  margin-top: var(--sa-s6);
+}
+
+[data-rd='samtal'] .sa-lesson-part h3 {
+  margin-bottom: var(--sa-s2);
+  font-size: var(--sa-t15);
+  font-weight: 720;
+  line-height: 1.35;
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-lesson-part > p,
+[data-rd='samtal'] .sa-lesson-steps p,
+[data-rd='samtal'] .sa-lesson-traps dd,
+[data-rd='samtal'] .sa-lesson-example dd {
+  max-width: 36em;
+  font-family: var(--sa-read);
+  font-size: var(--sa-t19);
+  line-height: 1.6;
+  color: var(--sa-ink);
+  text-wrap: pretty;
+  hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+}
+
+[data-rd='samtal'] .sa-lesson-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-lesson-steps li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: var(--sa-s3);
+  align-items: start;
+}
+
+[data-rd='samtal'] .sa-lesson-steps .sa-step-n {
+  margin-top: 3px;
+}
+
+[data-rd='samtal'] .sa-lesson-traps,
+[data-rd='samtal'] .sa-lesson-example {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-s4);
+}
+
+[data-rd='samtal'] .sa-lesson-traps > div,
+[data-rd='samtal'] .sa-lesson-example > div {
+  padding-left: var(--sa-s4);
+  box-shadow: inset 3px 0 0 var(--sa-coach-2);
+}
+
+[data-rd='samtal'] .sa-lesson-traps dt,
+[data-rd='samtal'] .sa-lesson-example dt {
+  font-size: var(--sa-t16);
+  font-weight: 680;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+[data-rd='samtal'] .sa-lesson-traps dd,
+[data-rd='samtal'] .sa-lesson-example dd {
+  margin: 2px 0 0;
+}
+
+[data-rd='samtal'] .sa-lesson-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+[data-rd='samtal'] .sa-lesson-words li {
+  padding: 4px 12px;
+  border-radius: var(--sa-pill);
+  box-shadow: inset 0 0 0 1px var(--sa-line-2);
+  font-family: var(--sa-read);
+  font-size: var(--sa-t17);
+}
+
+[data-rd='samtal'] .sa-lesson-more {
+  margin-top: var(--sa-s5);
+}
+
+[data-rd='samtal'] .sa-lesson-more .sa-ask-more {
+  gap: 4px;
+}
+
+/* The read mark: a box you tick, at the document's foot. */
+[data-rd='samtal'] .sa-lesson-foot {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sa-s2) var(--sa-s3);
+  padding: var(--sa-s3) var(--sa-s6) var(--sa-s4);
+  border-top: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-readmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sa-s2);
+  min-height: 44px;
+  padding: 0 var(--sa-s4) 0 var(--sa-s3);
+  border: 1.5px solid var(--sa-plum-line);
+  border-radius: var(--sa-pill);
+  background: var(--sa-card);
+  color: var(--sa-plum-ink);
+  font-size: var(--sa-t15);
+  font-weight: 640;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-readmark:hover {
+  background: var(--sa-plum-soft);
+}
+
+[data-rd='samtal'] .sa-readmark-box {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1.5px var(--sa-plum-line);
+}
+
+[data-rd='samtal'] .sa-readmark[aria-pressed='true'] {
+  border: 2px solid var(--sa-plum-ink);
+  background: var(--sa-you);
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-readmark[aria-pressed='true'] .sa-readmark-box {
+  background: var(--sa-plum-fill);
+  box-shadow: none;
+  color: var(--sa-on-plum);
+}
+
+[data-rd='samtal'] .sa-lesson-foot-say {
+  font-size: var(--sa-t13);
+  color: var(--sa-ink-2);
+}
+
+/* Why a reply is off: under the replies, on your side. */
+[data-rd='samtal'] .sa-upp-why {
+  align-self: flex-end;
+  max-width: var(--sa-lane);
+  font-size: var(--sa-t13);
+  line-height: 1.45;
+  color: var(--sa-ink-2);
+  text-align: right;
+}
+
+/* The sections in Uppslag: Öva's reply-shaped doors; the one listed is
+ * chosen like a filter — your tint and a solid line, never filled. */
+[data-rd='samtal'] .sa-upp-door[aria-pressed='true'] {
+  padding: 9.5px 11.5px 10.5px 13.5px;
+  border: 2px solid var(--sa-plum-ink);
+  background: var(--sa-you);
+}
+
+/* A lesson asked for that has not come: said where it was asked for. */
+[data-rd='samtal'] .sa-upp-notice {
+  margin: 0 0 var(--sa-s3);
+  padding: var(--sa-s2) var(--sa-s3);
+  border-radius: var(--sa-r1);
+  background: var(--sa-coach);
+  font-size: var(--sa-t15);
+  line-height: 1.45;
+  color: var(--sa-ink);
+}
+
+/* A section's entries: numbered rows, the open one in your tint. */
+[data-rd='samtal'] .sa-catalog {
+  display: flex;
+  flex-direction: column;
+  margin: 0 calc(var(--sa-s2) * -1);
+}
+
+[data-rd='samtal'] .sa-catalog li + li {
+  border-top: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-cat-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--sa-s3);
+  width: 100%;
+  min-height: 52px;
+  padding: 11px var(--sa-s2);
+  border: 0;
+  border-radius: var(--sa-r1);
+  background: transparent;
+  color: var(--sa-ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-cat-row:hover {
+  background: color-mix(in oklch, var(--sa-ink) 4.5%, transparent);
+}
+
+[data-rd='samtal'] .sa-cat-row[aria-current='true'] {
+  background: var(--sa-you);
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklch, var(--sa-plum-line) 70%, transparent);
+}
+
+[data-rd='samtal'] .sa-cat-n {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--sa-line-2);
+  font-size: var(--sa-t13);
+  font-weight: 650;
+  color: var(--sa-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-cat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-top: 3px;
+}
+
+[data-rd='samtal'] .sa-cat-title {
+  font-size: var(--sa-t15);
+  font-weight: 650;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+[data-rd='samtal'] .sa-cat-sum {
+  font-size: var(--sa-t15);
+  line-height: 1.45;
+  color: var(--sa-ink-2);
+  text-wrap: pretty;
+}
+
+[data-rd='samtal'] .sa-cat-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px var(--sa-s3);
+  margin-top: 3px;
+  font-size: var(--sa-t13);
+  color: var(--sa-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-cat-meta [data-read='true'] {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: 650;
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-cat-row[aria-current='true'] .sa-plan-tag {
+  background: var(--sa-card);
+}
+
+[data-rd='samtal'] .sa-card--catalog .sa-queue-fold {
+  margin-top: var(--sa-s1);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-lesson-head {
+  padding: var(--sa-s2) var(--sa-s3) var(--sa-s2) var(--sa-s4);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-lesson-inner {
+  padding: var(--sa-s5) var(--sa-s4) var(--sa-s4);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-lesson-title {
+  font-size: var(--sa-t22);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-lesson-part > p,
+[data-rd='samtal'][data-width='phone'] .sa-lesson-steps p,
+[data-rd='samtal'][data-width='phone'] .sa-lesson-traps dd,
+[data-rd='samtal'][data-width='phone'] .sa-lesson-example dd {
+  font-size: var(--sa-t17);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-lesson-foot {
+  padding: var(--sa-s3) var(--sa-s4) var(--sa-s4);
+}
+
+/* ── Konto och inställningar ─────────────────────────────────────── */
+
+/* Who is signed in: the initials, then the facts in a quiet list. */
+[data-rd='samtal'] .sa-who {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--sa-s4);
+}
+
+[data-rd='samtal'] .sa-avatar--xl {
+  width: 56px;
+  height: 56px;
+  font-size: var(--sa-t17);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-facts {
+  display: grid;
+  gap: var(--sa-s2);
+  min-width: 0;
+}
+
+[data-rd='samtal'] .sa-facts > div {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-facts dt {
+  font-size: var(--sa-t13);
+  font-weight: 600;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-facts dd {
+  margin: 0;
+  font-size: var(--sa-t16);
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The whole address, wrapped where it must be, never cut. */
+[data-rd='samtal'] .sa-mail {
+  overflow-wrap: anywhere;
+}
+
+[data-rd='samtal'] .sa-card-note {
+  margin-top: var(--sa-s4);
+  padding-top: var(--sa-s3);
+  border-top: 1px solid var(--sa-line);
+  font-size: var(--sa-t13);
+  line-height: 1.45;
+  color: var(--sa-ink-2);
+}
+
+/* The preferences: labelled groups, their choices as replies. */
+[data-rd='samtal'] .sa-pref-sub {
+  margin: var(--sa-s5) 0 var(--sa-s1);
+  font-size: var(--sa-t13);
+  font-weight: 700;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-card-head + .sa-pref-sub {
+  margin-top: 0;
+}
+
+[data-rd='samtal'] .sa-pref {
+  padding: var(--sa-s3) 0 var(--sa-s4);
+  border-top: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-pref-legend {
+  margin-bottom: var(--sa-s2);
+  padding: 0;
+  font-size: var(--sa-t15);
+  font-weight: 680;
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-pref-opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+[data-rd='samtal'] .sa-pref-note {
+  margin-top: var(--sa-s2);
+  font-size: var(--sa-t13);
+  line-height: 1.45;
+  color: var(--sa-ink-2);
+  text-wrap: pretty;
+}
+
+/* A choice the host refused: said in its own group, with a real retry. */
+[data-rd='samtal'] .sa-pref-fail {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0 var(--sa-s3);
+  margin-top: var(--sa-s2);
+  padding: 0 var(--sa-s3);
+  border-radius: var(--sa-r1);
+  background: var(--sa-bad-soft);
+  box-shadow: inset 3px 0 0 var(--sa-bad);
+  font-size: var(--sa-t15);
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-pref-fail .sa-link {
+  margin-bottom: 0;
+}
+
+[data-rd='samtal'] .sa-pref-aside {
+  padding: var(--sa-s3) 0 var(--sa-s1);
+  border-top: 1px solid var(--sa-line);
+  font-size: var(--sa-t13);
+  line-height: 1.45;
+  color: var(--sa-ink-2);
+  text-wrap: pretty;
+}
+
+[data-rd='samtal'] .sa-konto-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--sa-s5);
+}
+
+[data-rd='samtal'] .sa-konto-links .sa-link {
+  margin-bottom: 0;
+}
+
+/* Your data: an action per row, what it asked for said under it. */
+[data-rd='samtal'] .sa-data-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sa-s2) var(--sa-s3);
+  padding: var(--sa-s2) 0;
+}
+
+[data-rd='samtal'] .sa-data-row + .sa-data-status + .sa-data-row,
+[data-rd='samtal'] .sa-data-row + .sa-data-row {
+  border-top: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-data-say {
+  font-size: var(--sa-t15);
+  line-height: 1.45;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-data-status {
+  margin-bottom: var(--sa-s2);
+  font-size: var(--sa-t15);
+  color: var(--sa-ink);
+}
+
+/* The deletion, deepest and quietest: the red lives in the line and the
+ * word of its own controls, never across the page. */
+[data-rd='samtal'] .sa-delete {
+  margin-top: var(--sa-s3);
+  padding-top: var(--sa-s4);
+  border-top: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-delete-h {
+  font-size: var(--sa-t15);
+  font-weight: 700;
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-delete-say {
+  max-width: 52ch;
+  margin-top: var(--sa-s1);
+  font-size: var(--sa-t15);
+  line-height: 1.5;
+  color: var(--sa-ink-2);
+  text-wrap: pretty;
+}
+
+[data-rd='samtal'] .sa-delete-say .sa-link {
+  margin-bottom: 0;
+}
+
+[data-rd='samtal'] .sa-delete-done {
+  font-weight: 620;
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-danger {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--sa-s5);
+  border: 1.5px solid var(--sa-bad);
+  border-radius: var(--sa-pill);
+  background: transparent;
+  color: var(--sa-bad);
+  font-size: var(--sa-t15);
+  font-weight: 650;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-danger:hover {
+  background: var(--sa-bad-soft);
+}
+
+[data-rd='samtal'] .sa-danger--quiet {
+  margin-top: var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-danger[aria-disabled='true'] {
+  border-color: var(--sa-line-2);
+  background: transparent;
+  color: var(--sa-ink-3);
+  cursor: not-allowed;
+}
+
+[data-rd='samtal'] .sa-delete-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sa-s2);
+  margin-top: var(--sa-s3);
+  padding: var(--sa-s4);
+  border-radius: var(--sa-r1);
+  background: var(--sa-page);
+  box-shadow: inset 0 0 0 1px var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-preview-tag {
+  padding: 2px 10px;
+  border-radius: var(--sa-pill);
+  box-shadow: inset 0 0 0 1px var(--sa-line-2);
+  font-size: var(--sa-t13);
+  font-weight: 650;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-word-label {
+  margin-top: var(--sa-s2);
+  font-size: var(--sa-t15);
+}
+
+[data-rd='samtal'] .sa-word-label b {
+  font-weight: 700;
+}
+
+/* The typed word is a form field of the account, not a chat reply. */
+[data-rd='samtal'] .sa-word {
+  width: min(100%, 280px);
+  min-height: 44px;
+  padding: 0 var(--sa-s3);
+  border: 1.5px solid var(--sa-line-2);
+  border-radius: var(--sa-r1);
+  background: var(--sa-card);
+  color: var(--sa-ink);
+  font: inherit;
+  font-size: var(--sa-t16);
+}
+
+[data-rd='samtal'] .sa-delete-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sa-s2);
+  margin-top: var(--sa-s1);
+}
+
+[data-rd='samtal'] .sa-delete-status {
+  font-size: var(--sa-t15);
+  line-height: 1.45;
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-who {
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: var(--sa-s3);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-avatar--xl {
+  width: 48px;
+  height: 48px;
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-facts > div {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+/* ── ELF-läsfråga ────────────────────────────────────────────────── */
+
+/* A gap in the text, as the printed test draws it: its number on a line.
+ * The question's own gap stands out in your tint. */
+[data-rd='samtal'] .sa-gap {
+  display: inline-block;
+  min-width: 3.2em;
+  margin: 0 2px;
+  padding: 0 8px 1px;
+  border-bottom: 2px solid var(--sa-ink-2);
+  font-family: var(--sa-ui);
+  font-size: 0.8em;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--sa-ink-2);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-gap[data-current='true'] {
+  border-radius: 4px 4px 0 0;
+  border-bottom-color: var(--sa-plum-ink);
+  background: var(--sa-you);
+  color: var(--sa-plum-ink);
+  font-weight: 750;
+}
+
+/* A figure in the coach's question, on its paper plate. */
+[data-rd='samtal'] .sa-turn-fig {
   margin-top: var(--sa-s3);
 }
 
