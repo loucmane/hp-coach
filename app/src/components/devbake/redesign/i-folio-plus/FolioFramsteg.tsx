@@ -26,6 +26,13 @@
 // uppåt" gives every section one concrete step toward its next tenth —
 // a trap to practise, misses to repeat, or a round — in test order, verbal
 // and kvant as two columns.
+//
+// Folio+ round 2 (Ljuskägla's calm, fpCalm.css): the report shows what
+// happened first — the week in words, then the prognosis as a quiet figure
+// with no heavy rule — and only then the one most useful next action, lit
+// under the heavy rule with its one reason. "Nästa steg uppåt" follows in
+// the shade, and so does the rest of the evidence and the margin. Each chart
+// is said in a sentence, and the practice days carry a no-shame line.
 
 import { ArrowRight, ChevronRight } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
@@ -65,6 +72,7 @@ import {
 } from './FolioHome'
 import { fmtPassScore, passName } from './FolioProvpass'
 import './fpQuant.css'
+import './fpCalm.css'
 
 /** Framsteg's own pages: the report, its ledger and its index of traps. */
 export type FramstegSub = 'overview' | 'historik' | 'fallor'
@@ -346,11 +354,14 @@ function Overview({
   const top = f.sections.find((s) => s.section === f.focus[0]) ?? null
   const oneHalf = p.total == null && (p.verbal == null) !== (p.quant == null)
 
-  // The one thing that lifts the estimate most, or the way to an estimate.
-  let primary: { label: string; run: () => void }
+  // The one thing that lifts the estimate most, or the way to an estimate:
+  // its title, its one reason and its button.
+  let primary: { title: string; why?: string; label: string; run: () => void }
   if (p.total != null && top) {
     const s = top.section
     primary = {
+      title: top.name,
+      why: `Mest att vinna: ${s} – ${focusReason(top, f.sections)}.`,
       label: `Öva ${s}${size(s)}`,
       run: () => actions.startDrill({ kind: 'section', section: s }),
     }
@@ -358,16 +369,20 @@ function Overview({
     const half = p.verbal == null ? 'verbal' : 'kvant'
     const s = HALF_FIRST[half]
     primary = {
+      title: half === 'verbal' ? 'Verbal del' : 'Kvantitativ del',
+      why: `Svara på några frågor i ${half === 'verbal' ? 'verbaldelen' : 'kvantdelen'}, så visas totalen.`,
       label: `Börja med ${half}: ${s}${size(s)}`,
       run: () => actions.startDrill({ kind: 'section', section: s }),
     }
   } else if (p.total == null) {
     primary = {
+      title: 'Ett första underlag',
+      why: 'En blandad övning ger prognosen något att bygga på.',
       label: `Börja här · ${data.ova.mixed.questions} frågor`,
       run: () => actions.startDrill({ kind: 'mixed' }),
     }
   } else {
-    primary = { label: 'Till Öva', run: () => onGo('ova') }
+    primary = { title: 'Välj övning', label: 'Till Öva', run: () => onGo('ova') }
   }
   useKeyMap({ Enter: primary.run }, live)
 
@@ -402,12 +417,15 @@ function Overview({
       <h1 className="fp-greet">Framsteg</h1>
       <p className="fp-day">{weekSentence(f)}</p>
 
-      <Lead labelledBy="fp-fr-lead" testId="rd-framsteg-prognosis">
-        <div className="fp-resume-top">
-          <span className="fp-label" id="fp-fr-lead">
-            Prognos
-          </span>
-        </div>
+      {/* What happened: the figure and its basis, a quiet opening. */}
+      <section
+        className="fp-fr-report"
+        aria-labelledby="fp-fr-report-h"
+        data-testid="rd-framsteg-prognosis"
+      >
+        <h2 className="fp-label" id="fp-fr-report-h">
+          Prognos
+        </h2>
         <ResultFigure
           figure={p.total != null ? fmtScore(p.total) : '—'}
           mark={figureMark}
@@ -440,11 +458,17 @@ function Overview({
             </div>
           ) : null}
         </ResultFigure>
-        {p.total != null && top ? (
-          <p className="fp-lead-why">
-            Mest att vinna: {top.section} – {focusReason(top, f.sections)}.
-          </p>
-        ) : null}
+      </section>
+
+      {/* Then the one most useful next action: the page's lit thing. */}
+      <Lead labelledBy="fp-fr-lead" testId="fp-framsteg-next">
+        <div className="fp-resume-top">
+          <span className="fp-label">Nästa steg</span>
+        </div>
+        <h2 className="fp-lead-title" id="fp-fr-lead">
+          {primary.title}
+        </h2>
+        {primary.why ? <p className="fp-lead-why">{primary.why}</p> : null}
         <div className="fp-resume-foot">
           <button type="button" className="fp-btn fp-btn--big" onClick={primary.run}>
             {primary.label}
@@ -455,7 +479,43 @@ function Overview({
         </div>
       </Lead>
 
-      <section className="fp-section" aria-labelledby="fp-fr-chart-h">
+      <section className="fp-section" aria-labelledby="fp-fr-up-h" data-fp-shade>
+        <div className="fp-section-head">
+          <h2 className="fp-h2" id="fp-fr-up-h">
+            Nästa steg uppåt
+          </h2>
+          <span className="fp-meta">ett steg per delprov</span>
+        </div>
+        <ol className="fp-up">
+          {f.sections.map((s) => {
+            const u = upStep(s, data)
+            return (
+              <li key={s.section} className="fp-up-item" data-fp-sec={s.section}>
+                <p className="fp-up-head">
+                  <span className="fp-up-code">
+                    <span className="fp-sec-mark" aria-hidden />
+                    {s.section}
+                    <span className="fp-sr">, {s.name}</span>
+                  </span>
+                  {u.level ? <span className="fp-up-level">{u.level}</span> : null}
+                </p>
+                <p className="fp-up-text">{u.text}</p>
+                <button
+                  type="button"
+                  className="fp-link"
+                  onClick={() => actions.startDrill(u.request)}
+                  aria-label={`${u.action}, ${s.section}`}
+                >
+                  {u.action}
+                  <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
+                </button>
+              </li>
+            )
+          })}
+        </ol>
+      </section>
+
+      <section className="fp-section" aria-labelledby="fp-fr-chart-h" data-fp-shade>
         <div className="fp-section-head">
           <h2 className="fp-h2" id="fp-fr-chart-h">
             Poäng över tid
@@ -464,7 +524,7 @@ function Overview({
         <TrendChart weekly={f.weekly} goal={p.target} phone={width === 'phone'} />
       </section>
 
-      <section className="fp-section" aria-labelledby="fp-fr-sec-h">
+      <section className="fp-section" aria-labelledby="fp-fr-sec-h" data-fp-shade>
         <div className="fp-section-head">
           <h2 className="fp-h2" id="fp-fr-sec-h">
             Delproven
@@ -549,44 +609,8 @@ function Overview({
         </table>
       </section>
 
-      <section className="fp-section" aria-labelledby="fp-fr-up-h">
-        <div className="fp-section-head">
-          <h2 className="fp-h2" id="fp-fr-up-h">
-            Nästa steg uppåt
-          </h2>
-          <span className="fp-meta">ett steg per delprov</span>
-        </div>
-        <ol className="fp-up">
-          {f.sections.map((s) => {
-            const u = upStep(s, data)
-            return (
-              <li key={s.section} className="fp-up-item" data-fp-sec={s.section}>
-                <p className="fp-up-head">
-                  <span className="fp-up-code">
-                    <span className="fp-sec-mark" aria-hidden />
-                    {s.section}
-                    <span className="fp-sr">, {s.name}</span>
-                  </span>
-                  {u.level ? <span className="fp-up-level">{u.level}</span> : null}
-                </p>
-                <p className="fp-up-text">{u.text}</p>
-                <button
-                  type="button"
-                  className="fp-link"
-                  onClick={() => actions.startDrill(u.request)}
-                  aria-label={`${u.action}, ${s.section}`}
-                >
-                  {u.action}
-                  <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
-                </button>
-              </li>
-            )
-          })}
-        </ol>
-      </section>
-
       {p.total != null && rest.length ? (
-        <section className="fp-section" aria-labelledby="fp-fr-next-h">
+        <section className="fp-section" aria-labelledby="fp-fr-next-h" data-fp-shade>
           <div className="fp-section-head">
             <h2 className="fp-h2" id="fp-fr-next-h">
               Sedan
@@ -609,7 +633,7 @@ function Overview({
         </section>
       ) : null}
 
-      <section className="fp-section" aria-labelledby="fp-fr-hist-h">
+      <section className="fp-section" aria-labelledby="fp-fr-hist-h" data-fp-shade>
         <div className="fp-section-head">
           <h2 className="fp-h2" id="fp-fr-hist-h">
             Historik
@@ -691,6 +715,7 @@ function Overview({
       }
       aside={aside}
       asideLabelledBy={traps.length ? 'fp-fr-traps-h' : 'fp-fr-rep-h'}
+      shadeAside
     >
       {main}
     </FolioPage>
@@ -798,6 +823,14 @@ function TrendChart({
   const step = phone ? 3 : 2
   const gridlines = [1, 1.5, 2].filter((v) => v > lo)
   const weekCount = points.length
+  // The curve in one sentence, said on the figures as they are printed.
+  const tenths = (v: number) => Math.round(Number(fmtScore(v).replace(',', '.')) * 10)
+  const change = tenths(last.score) - tenths(first.score)
+  const summary = `Från ${fmtScore(first.score)}${
+    first.week != null ? ` i vecka ${first.week}` : ''
+  } till ${fmtScore(last.score)}${last.week != null ? ` i vecka ${last.week}` : ''} – ${
+    change === 0 ? 'samma nivå' : `${change > 0 ? 'upp' : 'ner'} ${fmtScore(Math.abs(change) / 10)}`
+  }.`
   const label = `Poäng per vecka de senaste ${inWords(weekCount)} veckorna, från ${fmtScore(
     first.score,
   )}${first.week != null ? ` i vecka ${first.week}` : ''} till ${fmtScore(last.score)}${
@@ -805,6 +838,7 @@ function TrendChart({
   }${goal != null ? `; mål ${fmtScore(goal)}` : ''}.`
   return (
     <figure className="fp-chart">
+      <p className="fp-chart-summary">{summary}</p>
       <svg
         className="fp-chart-svg"
         viewBox={`0 0 ${W} ${H}`}
@@ -902,12 +936,26 @@ function TrendChart({
 function WeekDots({ days, goal }: { days: FramstegView['days']; goal?: number }) {
   const [all, setAll] = useState(false)
   const weeks = calendarWeeks(days)
+  const calm = (
+    <p className="fp-calm-line">En dag utan övning tar inte bort något du har byggt upp.</p>
+  )
   if (weeks.length === 0) {
-    return <p className="fp-margin-note">Dagarna du övar samlas här, vecka för vecka.</p>
+    return (
+      <>
+        <p className="fp-margin-note">Dagarna du övar samlas här, vecka för vecka.</p>
+        {calm}
+      </>
+    )
   }
   const shown = all ? weeks : weeks.slice(-6)
+  // The dots in one sentence: the days practised, never the days missed.
+  const practised = shown.reduce((n, w) => n + w.count, 0)
+  const summary = `${capitalised(inWords(practised))} ${
+    practised === 1 ? 'övningsdag' : 'övningsdagar'
+  } ${shown.length === 1 ? 'den här veckan' : `de senaste ${inWords(shown.length)} veckorna`}.`
   return (
     <>
+      <p className="fp-margin-note fp-chart-summary">{summary}</p>
       <ol className="fp-weekdots">
         {shown.map((w) => {
           const words =
@@ -944,6 +992,7 @@ function WeekDots({ days, goal }: { days: FramstegView['days']; goal?: number })
           <ChevronRight size={14} strokeWidth={1.75} aria-hidden />
         </button>
       ) : null}
+      {calm}
     </>
   )
 }

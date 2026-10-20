@@ -11,6 +11,12 @@
 //
 // Every entry starts its drill at once (actions.startDrill); the host
 // opens it. Nothing here is a card, a chip or a tile.
+//
+// Folio+ round 2 (Ljuskägla's calm, fpCalm.css): the lead is the one lit
+// start. "Delproven" and the margin sit in the shade; the rows keep their
+// places in test order whatever is suggested, carry no urgency badge, and
+// the margin says what "väntar" and "redo nu" mean. The round is always
+// stated as a count and minutes before it starts.
 
 import { ArrowRight } from 'lucide-react'
 
@@ -30,6 +36,8 @@ import {
   scoreOrDash,
   slug,
 } from './FolioHome'
+import { roundMinutes } from './FolioRepetera'
+import './fpCalm.css'
 
 /** What each section asks, in one line (proposed copy). */
 export const GLOSS: Record<Section, string> = {
@@ -62,8 +70,8 @@ export function FolioOva({ width, live }: { width: WidthKey; live: boolean }) {
   const due = ova.repetera.dueNow
   const pile = ova.repetera.pile
   const round = Math.min(due, repetera.sessionSize)
-  // The plan's estimate for today's repetition is the round's time.
-  const minutes = data.home.plan.items.find((i) => i.kind === 'repetition')?.minutes
+  // The round's time: the plan's estimate, else derived from its size.
+  const minutes = roundMinutes(round, data.home.plan.items)
   const lead: 'repetera' | 'section' | 'mixed' =
     due > 0 ? 'repetera' : weakest ? 'section' : 'mixed'
   const relearned = pile === 0 && data.framsteg.totals.mistakesResolved > 0
@@ -101,7 +109,7 @@ export function FolioOva({ width, live }: { width: WidthKey; live: boolean }) {
           {due > round
             ? `${round} av ${due} missar`
             : `${capitalised(inWords(round))} ${round === 1 ? 'miss' : 'missar'}`}
-          {minutes != null ? `, ungefär ${minutes} minuter` : ''}
+          {`, ungefär ${minutes} ${minutes === 1 ? 'minut' : 'minuter'}`}
         </h2>
         {pile > due ? <p className="fp-lead-sub">{pile - due} till blir redo senare idag</p> : null}
         <div className="fp-resume-foot">
@@ -188,7 +196,7 @@ export function FolioOva({ width, live }: { width: WidthKey; live: boolean }) {
       <p className="fp-day">{standfirst}</p>
       {leadBlock}
 
-      <section className="fp-section" aria-labelledby="fp-ova-parts">
+      <section className="fp-section" aria-labelledby="fp-ova-parts" data-fp-shade>
         <div className="fp-section-head">
           <h2 className="fp-h2" id="fp-ova-parts">
             Delproven
@@ -270,6 +278,11 @@ export function FolioOva({ width, live }: { width: WidthKey; live: boolean }) {
         </MarginBlock>
       ) : null}
       <MarginBlock id="fp-ova-about-h" title="Om övningarna">
+        {pile > 0 || due > 0 ? (
+          <p className="fp-margin-note fp-count-words">
+            ”Väntar” är missar i dagens hög. ”Redo nu” är de som går att repetera just nu.
+          </p>
+        ) : null}
         <p className="fp-margin-note">
           {capitalised(inWords(questions))} frågor åt gången – DTK några fler, eftersom en figursida
           aldrig delas. Ingen klocka. Avsluta när du vill; svaren sparas.
@@ -291,6 +304,7 @@ export function FolioOva({ width, live }: { width: WidthKey; live: boolean }) {
       masthead={<Masthead label="Öva" />}
       aside={aside}
       asideLabelledBy={trap ? 'fp-ova-trap-h' : 'fp-ova-about-h'}
+      shadeAside
     >
       {main}
     </FolioPage>

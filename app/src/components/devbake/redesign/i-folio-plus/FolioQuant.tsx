@@ -103,6 +103,7 @@ import {
 } from './FolioDrill'
 import { capitalised, Dots, inWords } from './FolioHome'
 import './fpQuant.css'
+import './fpFocus.css'
 
 /** A practice pace for the folded clock's line: two minutes a problem. */
 const PACE_PER_QUESTION = 120
@@ -775,6 +776,10 @@ function PhoneDtk(c: QuantChrome) {
               ) : (
                 <QuantProblem q={q} n={view.index + 1} />
               )}
+              {/* The choice stays said while the figure is consulted. */}
+              {!feedback && view.selected ? (
+                <p className="fp-echo fp-peek-choice">Ditt val: {view.selected}</p>
+              ) : null}
               <button type="button" className="fp-btn fp-peek-btn" onClick={toggle}>
                 {feedback
                   ? 'Tillbaka till facit'
@@ -870,7 +875,8 @@ function QuantProblem({
         </div>
       ) : null}
       {kva ? (
-        <>
+        // The condition and its two quantities read as one: never parted.
+        <fieldset className="fp-qset" aria-label="Villkoret och kvantiteterna">
           <Head className={headClass} data-after={after ? 'true' : undefined}>
             {num}
             {kva.condition ? <MathText>{kva.condition}</MathText> : 'Jämför de två kvantiteterna.'}
@@ -893,9 +899,10 @@ function QuantProblem({
               </tr>
             </tbody>
           </table>
-        </>
+        </fieldset>
       ) : nog ? (
-        <>
+        // The question and both statements read as one, the lead-in with them.
+        <fieldset className="fp-qset" aria-label="Frågan och påståendena">
           <Head className={headClass} data-after={after ? 'true' : undefined}>
             {num}
             <MathText>{nog.question}</MathText>
@@ -919,7 +926,7 @@ function QuantProblem({
           <p className="fp-nog-tail">
             {nog.tail ?? 'Tillräcklig information för lösningen erhålls'}
           </p>
-        </>
+        </fieldset>
       ) : (
         <Head
           className={headClass}

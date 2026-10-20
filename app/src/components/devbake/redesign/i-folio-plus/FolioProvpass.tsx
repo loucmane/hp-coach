@@ -16,8 +16,8 @@
 // reading spread for LÄS and ELF — and is never graded: a choice is saved
 // and said so, and Nästa fråga works with nothing chosen. The running heads
 // keep Avbryt passet at the far left; the last head carries the position,
-// Översikt, the clock as time left (foldable to its line, said in words at
-// five minutes and at one) and Lämna in. Under it the pass index is cut
+// Översikt, the clock as time left (foldable to its line, said in words
+// once, at five minutes) and Lämna in. Under it the pass index is cut
 // into the page's edge like a booklet's thumb index: one segment a
 // question, a gap between sections, answered in ink, the current one in the
 // accent. Översikt, the hand-in and the abandon are slips; time running out
@@ -43,7 +43,10 @@
 // klart.", one light figure with its numbered footnote and the 0–2,0 scale,
 // "Per delprov" as a ruled table in test order with the tempo said in
 // words, the misses as an errata list, and the earlier passes of the same
-// kind, a recurring trap and the exposure in the margin. A pass known to
+// kind and the exposure in the margin. Folio+ (Ljuskägla's principle 4):
+// right after the figure, one pattern is lit — the recurring trap, or else
+// the section the pass missed most, with one way to practise it — and
+// nothing ranks the reader against anyone. A pass known to
 // rest on övningstexter (its own questions, or its misses, say so) adds the
 // calibration caveat as a second footnote; unknown provenance claims none.
 //
@@ -134,6 +137,7 @@ import {
   slug,
 } from './FolioHome'
 import './fpProvpass.css'
+import './fpFocus.css'
 
 const HALF_WORD: Record<Half, string> = { verbal: 'Verbal', kvant: 'Kvantitativ' }
 /** What UHR normerar: the whole half, two passes of 40. */
@@ -142,8 +146,9 @@ const HALF_PART: Record<Half, string> = {
   kvant: 'den kvantitativa delen',
 }
 const HALF_QUESTIONS = 80
-/** The clock's milestones, said once each: five minutes and one. */
-const MILESTONES = [300, 60] as const
+/** The clock's one warning, said once: five minutes left (Ljuskägla's
+ *  agreed threshold). No second warning, nothing said every second. */
+const MILESTONES = [300] as const
 const ORDINALS = ['Första', 'Andra', 'Tredje', 'Fjärde', 'Femte', 'Sjätte', 'Sjunde', 'Åttonde']
 /** Option counts in prose ("de fyra alternativen": neuter). */
 const OPTION_WORDS = ['noll', 'ett', 'två', 'tre', 'fyra', 'fem']
@@ -846,14 +851,14 @@ function PassRunner({
     if (remaining <= 0) submitRef.current()
   }, [remaining])
 
-  // Five minutes and one minute left: said once each, in words; at five
-  // the folded clock comes back in place.
+  // Five minutes left: said once, in words, and the folded clock comes
+  // back in place. Nothing more is said as the time runs on.
   useEffect(() => {
     for (const m of MILESTONES) {
       if (remaining > m || remaining <= 0 || spoken.has(m)) continue
       spoken.add(m)
-      setSaid(m === 300 ? 'Fem minuter kvar' : 'En minut kvar')
-      if (m === 300) setClockShown(true)
+      setSaid('Fem minuter kvar')
+      setClockShown(true)
     }
   }, [remaining, spoken])
 
@@ -2156,6 +2161,32 @@ function missesSentence(wrong: number, blank: number): string {
   return `${capitalised(b)} – de hamnar inte i Repetera.`
 }
 
+/** The result's one pattern to practise, when the pass has no recurring
+ *  trap: the section with the most misses (then the larger share, then the
+ *  one furthest over its budget, then the test's order). None for a pass
+ *  without misses. Derived from the result's own sections. */
+function missPattern(
+  sections: readonly ProvSectionResultView[],
+  budget: (s: ProvSectionResultView) => number,
+): { section: Section; misses: number; presented: number; over: number } | null {
+  const rows = sections
+    .filter((s) => s.presented > 0 && s.presented > s.correct)
+    .map((s) => ({
+      section: s.section,
+      misses: s.presented - s.correct,
+      presented: s.presented,
+      over: Math.max(0, s.timeSeconds - budget(s)),
+    }))
+  rows.sort(
+    (a, z) =>
+      z.misses - a.misses ||
+      z.misses / z.presented - a.misses / a.presented ||
+      z.over - a.over ||
+      SECTION_KEYS.indexOf(a.section) - SECTION_KEYS.indexOf(z.section),
+  )
+  return rows[0] ?? null
+}
+
 /** A section's share of the pass's time: the view model's quota, scaled to
  *  the questions a short pass really had. */
 function budgetOf(
@@ -2203,6 +2234,13 @@ export function FolioProvResult({
   const sections = [...r.sections].sort(
     (a, z) => SECTION_KEYS.indexOf(a.section) - SECTION_KEYS.indexOf(z.section),
   )
+  const budget = (s: ProvSectionResultView) =>
+    budgetOf(s, sections, minutes, nominal?.questions ?? r.presented)
+  // Principle 4 (Ljuskägla): first what happened, then one pattern lit —
+  // the recurring trap when the pass has one, else the section it missed
+  // most. Never a ranking against anyone else.
+  const trap = r.trap ?? null
+  const pattern = trap ? null : missPattern(sections, budget)
   const primary = wrong > 0 ? actions.openRepetera : onNewPass
   useKeyMap({ Enter: primary, Escape: onNewPass }, live)
   const what = `${HALF_WORD[r.half]}, ${r.mode === 'authentic' ? 'riktigt pass' : 'genererat pass'}.`
@@ -2266,6 +2304,67 @@ export function FolioProvResult({
         </div>
       </Lead>
 
+      {trap ? (
+        <section className="fp-section fp-res-pattern" aria-labelledby="fp-res-trap-h">
+          <div className="fp-section-head">
+            <h2 className="fp-h2" id="fp-res-trap-h">
+              Återkommande fälla
+            </h2>
+            <span className="fp-meta">
+              {trap.section} · {trap.count} missar
+            </span>
+          </div>
+          <div className="fp-res-pattern-body">
+            <p className="fp-res-pattern-name">
+              {data.frameworks[trap.frameworkId] ?? trap.headline ?? 'En fälla som återkommer'}
+            </p>
+            {trap.headline && data.frameworks[trap.frameworkId] ? (
+              <p className="fp-res-pattern-why">{trap.headline}</p>
+            ) : null}
+            <button
+              type="button"
+              className="fp-link"
+              onClick={() => actions.openLesson(trap.frameworkId)}
+            >
+              Slå upp
+              <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
+            </button>
+          </div>
+        </section>
+      ) : pattern ? (
+        <section
+          className="fp-section fp-res-pattern"
+          aria-labelledby="fp-res-pattern-h"
+          data-testid="fp-res-pattern"
+        >
+          <div className="fp-section-head">
+            <h2 className="fp-h2" id="fp-res-pattern-h">
+              Ett mönster att öva på
+            </h2>
+          </div>
+          <div className="fp-res-pattern-body">
+            <p className="fp-res-pattern-name">
+              Flest missar i {pattern.section}: {inWords(pattern.misses)} av{' '}
+              {inWords(pattern.presented)}.
+            </p>
+            <p className="fp-res-pattern-why">
+              {sectionLongLabel(pattern.section)}
+              {pattern.over >= 60
+                ? ` – delprovet tog också ${minutesUsed(pattern.over)} mer än sin budget.`
+                : '.'}
+            </p>
+            <button
+              type="button"
+              className="fp-link"
+              onClick={() => actions.startDrill({ kind: 'section', section: pattern.section })}
+            >
+              Öva {pattern.section}
+              <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
+            </button>
+          </div>
+        </section>
+      ) : null}
+
       <section className="fp-section" aria-labelledby="fp-res-sec-h">
         <div className="fp-section-head">
           <h2 className="fp-h2" id="fp-res-sec-h">
@@ -2290,8 +2389,8 @@ export function FolioProvResult({
           </thead>
           <tbody>
             {sections.map((s) => {
-              const budget = budgetOf(s, sections, minutes, nominal?.questions ?? r.presented)
-              const over = s.timeSeconds > budget
+              const quota = budget(s)
+              const over = s.timeSeconds > quota
               return (
                 <tr key={s.section} data-testid={`rd-prov-section-${slug(s.section)}`}>
                   <th scope="row">
@@ -2312,7 +2411,7 @@ export function FolioProvResult({
                      *  folded away there). */}
                     {over ? <span className="fp-table-sub fp-phone-only">över budget</span> : null}
                   </td>
-                  <td>{fmtClock(budget)}</td>
+                  <td>{fmtClock(quota)}</td>
                   <td className="fp-col-note">{over ? 'över budget' : ''}</td>
                 </tr>
               )
@@ -2385,28 +2484,6 @@ export function FolioProvResult({
           <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
         </button>
       </MarginBlock>
-      {r.trap ? (
-        <MarginBlock id="fp-res-trap-h" title="Återkommande fälla">
-          <p className="fp-trap-meta">
-            <b>{r.trap.section}</b>
-            <span>{r.trap.count} missar</span>
-          </p>
-          <span className="fp-trap-name">
-            {data.frameworks[r.trap.frameworkId] ?? r.trap.headline ?? 'En fälla som återkommer'}
-          </span>
-          {r.trap.headline && data.frameworks[r.trap.frameworkId] ? (
-            <span className="fp-trap-pattern">{r.trap.headline}</span>
-          ) : null}
-          <button
-            type="button"
-            className="fp-link"
-            onClick={() => actions.openLesson(r.trap?.frameworkId ?? '')}
-          >
-            Slå upp
-            <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
-          </button>
-        </MarginBlock>
-      ) : null}
       <MarginBlock id="fp-res-seen-h" title="Exponering">
         <p className="fp-margin-note">
           Du hade sett {r.seenBefore} av {r.presented} frågor innan.

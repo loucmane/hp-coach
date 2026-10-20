@@ -1,0 +1,157 @@
+/* Folio+ · Ljuskägla's ADHD-PI qualities, set in Folio's terms (bead
+ * hpf-qr0p.48, round 2): the reading place a ¶ link keeps, the facit's
+ * calm marks, the quant problem kept whole, the running pass's steady
+ * clock and the result's one lit pattern. Folio's type and tokens only: no
+ * dimmed small print, no dark-first surfaces. Scoped to Folio+; overrides
+ * of folioPlus.css win by the scope or a doubled class. */
+
+[data-rd='folio-plus'] {
+  /* A warm pencil line: Folio's highlighter ink taken down to a mark that
+   * reads against the paper in light and dark (at least 3:1). */
+  --fp-beam: color-mix(in oklch, var(--fp-mark) 40%, var(--fp-ink-2));
+}
+
+/* The reading drill's host is no box of its own: the drill keeps its
+ * stage's height. */
+[data-rd='folio-plus'] .fp-drill-host {
+  display: contents;
+}
+
+/* ── The reading place ──────────────────────────────────────────── */
+
+/* The lit paragraph keeps a quiet line in the outer margin, beyond its ¶
+ * number: where the reading is, even when the eye leaves the page. Still —
+ * it never moves or pulses. */
+[data-rd='folio-plus'] .fp-pbody[data-focus='true'] .fp-para[data-focused='true']::after {
+  content: '';
+  position: absolute;
+  left: -52px;
+  top: 0.3em;
+  bottom: 0.3em;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--fp-beam);
+  pointer-events: none;
+}
+
+[data-rd='folio-plus'] .fp-pdrill .fp-pbody[data-focus='true'] .fp-para[data-focused='true']::after {
+  left: -40px;
+}
+
+/* The evidence a ¶ link opened takes the focus: the light already marks
+ * it, so a pointer sees no ring; a keyboard reader sees Folio's. */
+[data-rd='folio-plus'] .fp-para[data-evidence='true']:focus {
+  outline: none;
+}
+
+[data-rd='folio-plus'] .fp-para[data-evidence='true']:focus-visible {
+  outline: 2px solid var(--fp-focus);
+  outline-offset: 12px;
+}
+
+/* The way back sits at the evidence's foot, in the chrome's own type. */
+[data-rd='folio-plus'] .fp-evidence-back {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-s2);
+  margin-top: var(--fp-s2);
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t15);
+  line-height: 1.3;
+}
+
+[data-rd='folio-plus'] .fp-evidence-back .fp-link {
+  min-height: 44px;
+  font-size: var(--fp-t15);
+}
+
+/* ── The facit's calm marks ─────────────────────────────────────── */
+
+/* Your wrong answer in a ring and words, never a filled red disc: the
+ * right answer is the one thing lit. */
+[data-rd='folio-plus'] .fp-opt[data-grade='wrong'] .fp-letter {
+  background: transparent;
+  border-width: 2px;
+  color: var(--fp-bad);
+}
+
+[data-rd='folio-plus'] .fp-opt[data-grade='wrong'] .fp-opt-tag {
+  color: var(--fp-ink-2);
+}
+
+[data-rd='folio-plus'] .fp-opt[data-grade='wrong'] .fp-opt-tag svg {
+  color: var(--fp-bad);
+}
+
+/* ── The quant problem kept whole ───────────────────────────────── */
+
+/* KVA's condition with its two quantities, NOG's question with its
+ * statements: one block that never breaks across a column or a page. */
+[data-rd='folio-plus'] .fp-qset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  break-inside: avoid;
+}
+
+/* Phone DTK: the choice said on the folded slip while the figure shows. */
+[data-rd='folio-plus'] .fp-peek-choice.fp-peek-choice {
+  margin: 0 0 var(--fp-s2);
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t15);
+  color: var(--fp-ink-2);
+}
+
+/* ── The running pass: a steady clock ───────────────────────────── */
+
+/* Figures of one width, so nothing jitters as the seconds turn; a fixed
+ * minimum, so the heavier figures from five minutes move nothing. */
+[data-rd='folio-plus'] .fp-countdown .fp-clock {
+  font-variant-numeric: tabular-nums lining-nums;
+  min-width: 112px;
+  transition: none;
+}
+
+/* ── The result: one pattern lit ────────────────────────────────── */
+
+/* Lit as Folio lights a place: the margin's warm line beside it, the text
+ * at full ink and normal size. */
+[data-rd='folio-plus'] .fp-res-pattern-body {
+  position: relative;
+  margin-top: var(--fp-s4);
+  padding-left: var(--fp-s4);
+}
+
+[data-rd='folio-plus'] .fp-res-pattern-body::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  bottom: 0.2em;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--fp-beam);
+}
+
+[data-rd='folio-plus'] .fp-res-pattern-name {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t19);
+  line-height: 1.4;
+  color: var(--fp-ink);
+}
+
+[data-rd='folio-plus'] .fp-res-pattern-why {
+  margin-top: var(--fp-s1);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.5;
+  color: var(--fp-ink-2);
+  text-wrap: pretty;
+}
+
+[data-rd='folio-plus'] .fp-res-pattern-body .fp-link {
+  margin-top: var(--fp-s2);
+  min-height: 44px;
+  font-size: var(--fp-t15);
+}

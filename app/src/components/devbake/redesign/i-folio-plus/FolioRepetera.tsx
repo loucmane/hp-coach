@@ -8,13 +8,18 @@
 // scheduling rule and the no-penalty note are marginalia.
 //
 // A miss is said as time — "blir redo senare idag", never "fel" in a list.
+//
+// Folio+ round 2 (Ljuskägla's calm, fpCalm.css): the round is a finite batch,
+// stated before entry as a count and minutes, and said to end; what does
+// not fit waits for the next round, never as debt. No overdue or red
+// counters. The queue, the misses and the margin sit in the shade.
 
 import { ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import { useKeyMap, type WidthKey } from '@/components/devbake/redesign/r1Kit'
-import type { RepeteraItemView } from '@/components/devbake/redesign/viewModel'
+import type { PlanItemView, RepeteraItemView } from '@/components/devbake/redesign/viewModel'
 import { entryName, GapText, questionStem } from './FolioDrill'
 import {
   ContentsEntry,
@@ -26,6 +31,19 @@ import {
   Masthead,
   PartHead,
 } from './FolioHome'
+import './fpCalm.css'
+
+/** A round's time in minutes: the plan's estimate for today's repetition,
+ *  scaled when the round is not the one the plan counted; without one,
+ *  about a minute a question. Always a number, so the round can be stated
+ *  before it starts. */
+export function roundMinutes(round: number, items: readonly PlanItemView[]): number {
+  const plan = items.find((i) => i.kind === 'repetition')
+  if (!plan) return Math.max(1, round)
+  const planned = Number.parseInt(plan.detail ?? '', 10)
+  if (Number.isNaN(planned) || planned <= 0 || planned === round) return plan.minutes
+  return Math.max(1, Math.round((plan.minutes * round) / planned))
+}
 
 export function FolioRepetera({ width, live }: { width: WidthKey; live: boolean }) {
   const { data, actions } = useDirectionData()
@@ -34,7 +52,12 @@ export function FolioRepetera({ width, live }: { width: WidthKey; live: boolean 
   const later = repetera.items.filter((i) => !i.dueNow)
   const ready = repetera.dueNow
   const round = Math.min(ready, repetera.sessionSize)
-  const minutes = data.home.plan.items.find((i) => i.kind === 'repetition')?.minutes
+  const minutes = roundMinutes(round, data.home.plan.items)
+  // The batch ends; what does not fit waits for the next round.
+  const rest = ready - round
+  const finite = `Sedan är omgången klar.${
+    rest > 0 ? ` ${capitalised(inWords(rest))} till väntar på nästa omgång.` : ''
+  }`
   const weakest = ova.weakest
   const relearned = repetera.pile === 0 && data.framsteg.totals.mistakesResolved > 0
 
@@ -92,7 +115,10 @@ export function FolioRepetera({ width, live }: { width: WidthKey; live: boolean 
               ? `${round} av ${ready} missar`
               : `${capitalised(inWords(round))} ${round === 1 ? 'miss' : 'missar'}`}
           </h2>
-          {minutes != null ? <p className="fp-lead-sub">ungefär {minutes} minuter</p> : null}
+          <p className="fp-lead-sub">
+            ungefär {minutes} {minutes === 1 ? 'minut' : 'minuter'}
+          </p>
+          <p className="fp-lead-sub">{finite}</p>
           <div className="fp-resume-foot">
             <button
               type="button"
@@ -111,7 +137,7 @@ export function FolioRepetera({ width, live }: { width: WidthKey; live: boolean 
       )}
 
       {queue.length ? (
-        <section className="fp-section" aria-labelledby="fp-rep-queue">
+        <section className="fp-section" aria-labelledby="fp-rep-queue" data-fp-shade>
           <div className="fp-section-head">
             <h2 className="fp-h2" id="fp-rep-queue">
               Kön per delprov
@@ -151,7 +177,7 @@ export function FolioRepetera({ width, live }: { width: WidthKey; live: boolean 
       ) : null}
 
       {repetera.items.length ? (
-        <section className="fp-section" aria-labelledby="fp-rep-misses">
+        <section className="fp-section" aria-labelledby="fp-rep-misses" data-fp-shade>
           <div className="fp-section-head">
             <h2 className="fp-h2" id="fp-rep-misses">
               Missarna
@@ -196,6 +222,7 @@ export function FolioRepetera({ width, live }: { width: WidthKey; live: boolean 
       masthead={<Masthead label="Öva · Repetera" />}
       aside={aside}
       asideLabelledBy="fp-rep-rule-h"
+      shadeAside
     >
       {main}
     </FolioPage>

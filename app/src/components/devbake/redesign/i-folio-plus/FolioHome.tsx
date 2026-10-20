@@ -24,6 +24,10 @@
 // screens 10 and 11 set their one figure with. The spec's parts.tsx is not
 // in batch 1's or batch 2's write set, so they live here, beside the page
 // they were drawn from.
+//
+// Folio+ round 2 (Ljuskägla's calm, fpCalm.css): the lead is the page's one
+// lit thing. "Dagens steg" past the step under way and the whole margin sit
+// in the shade — the second ink, neutral marks, lit again on hover or focus.
 
 import { ArrowRight } from 'lucide-react'
 import type { ReactNode } from 'react'
@@ -43,6 +47,7 @@ import type {
   ResumeView,
 } from '@/components/devbake/redesign/viewModel'
 import type { FramstegSub } from './FolioFramsteg'
+import './fpCalm.css'
 
 /** Counts in prose, spelled out up to ten (common gender: "en miss"). */
 export const WORDS = ['noll', 'en', 'två', 'tre', 'fyra', 'fem', 'sex', 'sju', 'åtta', 'nio', 'tio']
@@ -204,7 +209,14 @@ export function FolioHome({
         </Lead>
       ) : (
         // Folio+: every step of the day is done — the path's end card.
-        <section className="fp-resume fp-end" aria-labelledby="fp-end-title" data-fp-end>
+        // Round 2 (Ljuskägla's calm): kept as it was, only quieter — the
+        // flag's ring and the heavy rule go neutral.
+        <section
+          className="fp-resume fp-end"
+          aria-labelledby="fp-end-title"
+          data-fp-end
+          data-fp-quiet="true"
+        >
           <h2 className="fp-lead-title" id="fp-end-title">
             <span className="fp-end-mark" aria-hidden>
               <FlagMark />
@@ -226,7 +238,7 @@ export function FolioHome({
       {steps.length ? (
         <DayPath steps={steps} openItem={openItem} week={home.week} misses={misses} />
       ) : misses ? (
-        <MissesLine misses={misses} />
+        <MissesLine misses={misses} shade />
       ) : null}
     </>
   )
@@ -283,7 +295,13 @@ export function FolioHome({
   )
 
   return (
-    <FolioPage width={width} masthead={masthead} aside={aside} asideLabelledBy="fp-prog-h">
+    <FolioPage
+      width={width}
+      masthead={masthead}
+      aside={aside}
+      asideLabelledBy="fp-prog-h"
+      shadeAside
+    >
       {main}
     </FolioPage>
   )
@@ -405,9 +423,9 @@ function missesOf(today: number, active: number): Misses | null {
 }
 
 /** A miss is moved, not lost: "↺ Lagd i Repetera", in neutral ink. */
-function MissesLine({ misses }: { misses: Misses }) {
+function MissesLine({ misses, shade = false }: { misses: Misses; shade?: boolean }) {
   return (
-    <p className="fp-misses" data-fp-misses>
+    <p className="fp-misses" data-fp-misses data-fp-shade={shade ? true : undefined}>
       <span className="fp-misses-tag">
         <span aria-hidden>↺ </span>Lagd i Repetera
       </span>
@@ -437,7 +455,9 @@ function DayPath({
   const done = steps.filter((s) => s.state === 'done').length
   const finished = done === steps.length
   return (
-    <section className="fp-section fp-day-path" aria-labelledby="fp-plan-h">
+    // In the shade (round 2): the lead above is the one lit thing; the
+    // step under way keeps its ink and ring, as the lead's pointer.
+    <section className="fp-section fp-day-path" aria-labelledby="fp-plan-h" data-fp-shade>
       <div className="fp-section-head">
         <h2 className="fp-h2" id="fp-plan-h">
           Dagens steg
@@ -706,6 +726,7 @@ export function FolioPage({
   masthead,
   aside,
   asideLabelledBy,
+  shadeAside = false,
   children,
 }: {
   width: WidthKey
@@ -713,6 +734,9 @@ export function FolioPage({
   aside?: ReactNode
   /** The id of the margin's first head. */
   asideLabelledBy?: string
+  /** Round 2 (Ljuskägla's calm): the margin sits in the shade, so the
+   *  page's lead is its one lit thing (fpCalm.css). */
+  shadeAside?: boolean
   children: ReactNode
 }) {
   return (
@@ -720,7 +744,11 @@ export function FolioPage({
       {masthead}
       <div className="fp-page-main">{children}</div>
       {aside ? (
-        <aside className="fp-aside" aria-labelledby={asideLabelledBy}>
+        <aside
+          className="fp-aside"
+          aria-labelledby={asideLabelledBy}
+          data-fp-shade={shadeAside ? true : undefined}
+        >
           {aside}
         </aside>
       ) : null}

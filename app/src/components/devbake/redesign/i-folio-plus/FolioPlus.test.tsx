@@ -1778,8 +1778,10 @@ describe('Folio · Framsteg', () => {
     ).toBeInTheDocument()
     fireEvent.click(within(lead).getByRole('button', { name: /^mål 2,0/ }))
     expect(openKonto).toHaveBeenCalled()
-    expect(lead).toHaveTextContent(`Mest att vinna: ${TOP} –`)
-    fireEvent.click(within(lead).getByRole('button', { name: new RegExp(`^Öva ${TOP}`) }))
+    // Round 2: the action follows the report, lit on its own (Ljuskägla).
+    const next = screen.getByTestId('fp-framsteg-next')
+    expect(next).toHaveTextContent(`Mest att vinna: ${TOP} –`)
+    fireEvent.click(within(next).getByRole('button', { name: new RegExp(`^Öva ${TOP}`) }))
     expect(startDrill).toHaveBeenLastCalledWith({ kind: 'section', section: TOP })
     startDrill.mockClear()
     press('Enter')

@@ -6,6 +6,11 @@
 // Styckeljus (borrowed from Ljuskägla) is the optional reading light: off
 // by default and remembered for the session, it greys every paragraph but
 // the one being read, and follows J/K, a ¶ number, a ¶ link and the scroll.
+// A ¶ link in the facit keeps the reading place as Ljuskägla does: it turns
+// the light on its paragraph, moves the focus there and ends it with
+// "Tillbaka till facit" (or Esc), which puts the focus back on the link; a
+// quiet line in the outer margin marks the lit paragraph. The scroll moves
+// the light, never the focus.
 // The verso carries the passage with ¶ numbers on each first baseline in
 // the margin; the recto carries the question, its options set as an
 // indented list between hairlines (no boxes). After the answer the recto
@@ -79,6 +84,7 @@ import {
 } from 'react'
 
 import './fpDrill.css'
+import './fpFocus.css'
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
   type DrillCoreActions,
@@ -132,6 +138,10 @@ function readLight(): boolean {
   }
 }
 
+/** Everything showing the light's state right now (a drill's F, Konto's
+ *  switch): one change reaches them all. */
+const lightListeners = new Set<(on: boolean) => void>()
+
 function writeLight(on: boolean): void {
   lightMemory = on
   try {
@@ -139,11 +149,22 @@ function writeLight(on: boolean): void {
   } catch {
     // No storage: the page's memory holds it.
   }
+  for (const listener of lightListeners) listener(on)
 }
 
-/** Styckeljus on or off, remembered within the session across drills. */
-function useStyckeljus(): [boolean, (on: boolean) => void] {
+/** Styckeljus on or off, remembered within the session across drills, and
+ *  one state wherever it shows: the drill's F and button, and Konto's
+ *  "Styckeljus" under Utseende (FolioKonto). */
+export function useStyckeljus(): [boolean, (on: boolean) => void] {
   const [on, setOn] = useState(readLight)
+  useEffect(() => {
+    lightListeners.add(setOn)
+    // A change between the first render and this subscription.
+    setOn(readLight())
+    return () => {
+      lightListeners.delete(setOn)
+    }
+  }, [])
   const set = useCallback((next: boolean) => {
     writeLight(next)
     setOn(next)
@@ -151,9 +172,12 @@ function useStyckeljus(): [boolean, (on: boolean) => void] {
   return [on, set]
 }
 
-/** How long a move of the reader's own (J/K, a ¶ number, a ¶ link) keeps
- *  the light from following the scroll it causes. */
+/** How long a move of the reader's own (J/K, a ¶ number) keeps the light
+ *  from following the scroll it causes. */
 const LIGHT_QUIET_MS = 700
+/** A ¶ link's own scroll is a longer, centring one: the light waits for
+ *  it to settle on the evidence. */
+const CITE_QUIET_MS = 1400
 
 /**
  * The light follows the reading: while it is on, a scroll of the passage's
@@ -1031,14 +1055,66 @@ function ReadingDrill({
   // Styckeljus: on or off for the session; the lit paragraph is the core's
   // focus paragraph, and the last one lit while a new question has none.
   const [light, setLight] = useStyckeljus()
+  // A ¶ link lights its evidence for the visit only: the reader's setting
+  // (Konto, F) stays as it was.
+  const [citeLit, setCiteLit] = useState(false)
   const count = core.view.passage?.paragraphs.length ?? 0
   const lastLit = useRef(1)
   if (core.view.focusPara != null) lastLit.current = core.view.focusPara
-  const lit = light && count > 0 ? Math.min(count, core.view.focusPara ?? lastLit.current) : null
+  const lit =
+    (light || citeLit) && count > 0 ? Math.min(count, core.view.focusPara ?? lastLit.current) : null
   const quiet = useRef(0)
-  const hush = () => {
-    quiet.current = Date.now() + LIGHT_QUIET_MS
+  const hush = (ms = LIGHT_QUIET_MS) => {
+    quiet.current = Date.now() + ms
   }
+  // The reading place a ¶ link opened (Ljuskägla's principle 5): the light
+  // on its paragraph, the focus on it, and a way back to the very link —
+  // "Tillbaka till facit", or Esc. `seq` makes each move its own.
+  const [evidence, setEvidence] = useState<Evidence | null>(null)
+  const toEvidence = useRef<Evidence | null>(null)
+  const toLink = useRef<Evidence | null>(null)
+  const [moves, setMoves] = useState(0)
+  // The phone's sheet, which the way back opens again (PhoneDrill).
+  const openFacit = useRef<(() => void) | null>(null)
+  const drillRef = useRef<HTMLDivElement>(null)
+  // A new question or verdict leaves the evidence behind.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: on a new question or phase only
+  useEffect(() => {
+    setEvidence(null)
+    setCiteLit(false)
+  }, [core.view.index, phase])
+  // After the commit that lit it (and, on phone, folded the sheet so the
+  // passage is no longer inert): focus on the evidence — or back on the
+  // link, once the facit is on the page again. The scroll is the core's.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: on a move only
+  useLayoutEffect(() => {
+    const root = drillRef.current
+    const there = toEvidence.current
+    const back = toLink.current
+    toEvidence.current = null
+    toLink.current = null
+    if (!live || !root) return
+    if (there) {
+      root.querySelector<HTMLElement>(`[data-testid="rd-para-${there.n}"]`)?.focus({
+        preventScroll: true,
+      })
+    } else if (back) {
+      const link = Array.from(root.querySelectorAll<HTMLElement>('[data-fp-cite]')).find(
+        (el) => el.dataset.fpCite === `${back.source}:${back.n}`,
+      )
+      // Into view if the facit has moved on since (the phone's sheet opens
+      // at its top).
+      ;(link ?? targets.current.verdict)?.focus()
+    }
+  }, [moves])
+  const evidenceRef = useRef(evidence)
+  evidenceRef.current = evidence
+  const backToFacit = useCallback(() => {
+    toLink.current = evidenceRef.current
+    setEvidence(null)
+    openFacit.current?.()
+    setMoves((m) => m + 1)
+  }, [])
   const { setFocusPara: coreSetPara, moveFocusPara: coreMovePara, cite: coreCite } = core.act
   // The light on with no paragraph of its own (a new question): the core
   // takes the one lit, so J and K step on from it.
@@ -1061,6 +1137,7 @@ function ReadingDrill({
     setFocusPara: (n) => {
       if (n == null) {
         setLight(false)
+        setCiteLit(false)
         coreSetPara(null)
         return
       }
@@ -1074,11 +1151,17 @@ function ReadingDrill({
       if (!light) setLight(true)
       coreMovePara(delta)
     },
-    // A ¶ link is a move too: the light goes with it.
+    // A ¶ link lights its paragraph (for this visit, not the setting),
+    // takes the focus there and leaves the way back to itself.
     cite: (n, source) => {
-      hush()
-      if (light) coreSetPara(n)
+      hush(CITE_QUIET_MS)
+      if (!light) setCiteLit(true)
+      coreSetPara(n)
       coreCite(n, source)
+      const at = { n, source: source ?? '' }
+      toEvidence.current = at
+      setEvidence(at)
+      setMoves((m) => m + 1)
     },
     toggleStep: core.act.toggleStep,
     goToStep: core.act.goToStep,
@@ -1126,7 +1209,12 @@ function ReadingDrill({
     j: () => act.moveFocusPara(1),
     k: () => act.moveFocusPara(-1),
     f: toggleFocus,
-    Escape: () => act.setFocusPara(null),
+    // From the evidence a ¶ link opened, Esc goes back to the link first;
+    // otherwise it turns the light off, as before.
+    Escape: () => {
+      if (evidenceRef.current) backToFacit()
+      else act.setFocusPara(null)
+    },
   }
   for (const o of view.question.options ?? []) {
     const l = o.letter.toLowerCase()
@@ -1162,15 +1250,24 @@ function ReadingDrill({
     live,
     quiet,
     follow,
+    evidence: view.phase === 'feedback' ? evidence : null,
+    backToFacit,
+    openFacit,
   }
   return (
     <PictureGate.Provider value={pictureGate}>
       <ParkForLesson.Provider value={park}>
-        {width === 'phone' ? <PhoneDrill {...chrome} /> : <DeskDrill {...chrome} />}
+        <div className="fp-drill-host" ref={drillRef}>
+          {width === 'phone' ? <PhoneDrill {...chrome} /> : <DeskDrill {...chrome} />}
+        </div>
       </ParkForLesson.Provider>
     </PictureGate.Provider>
   )
 }
+
+/** The paragraph a ¶ link lit, and the link (its source and number) the
+ *  way back returns to. */
+type Evidence = { n: number; source: string }
 
 /** Svara's gate as the action bar shows it: open or held, and why. */
 type Gate = { ready: boolean; hold: string | null }
@@ -1207,6 +1304,12 @@ type DrillChrome = Shared & {
   quiet: RefObject<number>
   /** Lights a paragraph the scroll has brought to the reading line. */
   follow: (n: number) => void
+  /** The paragraph a ¶ link lit and focused, while the way back stands. */
+  evidence: Evidence | null
+  /** Tillbaka till facit (and Esc): focus back on the ¶ link. */
+  backToFacit: () => void
+  /** Set by the phone drill: opens its sheet on the facit again. */
+  openFacit: RefObject<(() => void) | null>
 }
 
 /** Scrolls `el` into view inside its own scroll box (`box`), clear of the
@@ -1347,6 +1450,9 @@ function DeskDrill(chrome: DrillChrome) {
               badgeText={chrome.badge}
               noteText={chrome.noteText}
               gaps={chrome.gaps}
+              evidence={
+                chrome.evidence ? { n: chrome.evidence.n, onBack: chrome.backToFacit } : null
+              }
             />
           </>
         }
@@ -1756,6 +1862,7 @@ export function PassageView({
   badgeText,
   noteText,
   gaps,
+  evidence = null,
 }: {
   view: PassageModel
   act: Pick<DrillAct, 'setFocusPara'>
@@ -1768,6 +1875,9 @@ export function PassageView({
   badgeText: string
   noteText: string
   gaps?: GapModel | null
+  /** The paragraph a ¶ link lit: it takes the focus, and ends on the way
+   *  back to the facit. */
+  evidence?: { n: number; onBack: () => void } | null
 }) {
   const paragraphs = view.passage?.paragraphs ?? []
   const byline = view.passage?.byline ?? null
@@ -1834,6 +1944,8 @@ export function PassageView({
               data-cited={String(graded && view.cited.includes(n))}
               data-flash={String(view.flashPara === n && !sentence)}
               data-focused={String(view.focusPara === n)}
+              data-evidence={evidence?.n === n ? 'true' : undefined}
+              tabIndex={evidence?.n === n ? -1 : undefined}
             >
               {/* Out of the tab order: nine of these must not stand between
                *  the reader and the options; F, J and K drive the same aid. */}
@@ -1855,6 +1967,17 @@ export function PassageView({
               ) : (
                 p
               )}
+              {evidence?.n === n ? (
+                <span className="fp-evidence-back" lang={sv}>
+                  <button type="button" className="fp-link" onClick={evidence.onBack}>
+                    <Undo2 size={14} strokeWidth={1.75} aria-hidden />
+                    Tillbaka till facit
+                  </button>
+                  <kbd className="fp-kbd" aria-hidden>
+                    Esc
+                  </kbd>
+                </span>
+              ) : null}
             </p>
           )
         })}
@@ -2410,6 +2533,7 @@ function Cites({
           type="button"
           className="fp-cite"
           data-testid={`rd-cite-${n}`}
+          data-fp-cite={`${source}:${n}`}
           onClick={() => act.cite(n, source)}
           aria-label={`Visa stycke ${n} i texten`}
         >
@@ -2779,11 +2903,19 @@ function PhoneDrill(chrome: DrillChrome) {
     if (!first && sheet === 'peek') scrollInto(box, questionRef.current, 72)
   }, [view.index, view.phase, sheet])
 
-  // A ¶ link folds the sheet to its peek so the cited paragraph shows.
+  // A ¶ link folds the sheet to its peek so the cited paragraph shows; the
+  // way back opens it on the facit again.
   const cite = (n: number, source?: string) => {
     setSheet('peek')
     act.cite(n, source)
   }
+  const { openFacit } = chrome
+  useEffect(() => {
+    openFacit.current = () => setSheet('full')
+    return () => {
+      openFacit.current = null
+    }
+  }, [openFacit, setSheet])
   const sheetAct: DrillAct = { ...act, cite }
   // The dock's jump: to the question, focus on its prompt.
   const toQuestion = () => {
@@ -2860,6 +2992,7 @@ function PhoneDrill(chrome: DrillChrome) {
           badgeText={chrome.badge}
           noteText={chrome.noteText}
           gaps={gaps}
+          evidence={chrome.evidence ? { n: chrome.evidence.n, onBack: chrome.backToFacit } : null}
         />
         {feedback ? null : (
           <section
@@ -2918,7 +3051,11 @@ function PhoneDrill(chrome: DrillChrome) {
               <>
                 <Verdict view={view} as="p" />
                 {/* The peek's one action: the screen's filled button. */}
-                <button type="button" className="fp-btn fp-peek-btn" onClick={toggle}>
+                <button
+                  type="button"
+                  className="fp-btn fp-peek-btn"
+                  onClick={chrome.evidence ? chrome.backToFacit : toggle}
+                >
                   Tillbaka till facit
                   <ChevronUp size={18} strokeWidth={1.75} aria-hidden />
                 </button>

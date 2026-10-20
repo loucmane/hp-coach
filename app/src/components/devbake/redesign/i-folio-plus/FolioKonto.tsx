@@ -32,6 +32,7 @@ import {
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import { useKeyMap, type WidthKey } from '@/components/devbake/redesign/r1Kit'
 import type { PrefsView } from '@/components/devbake/redesign/viewModel'
+import { useStyckeljus } from './FolioDrill'
 import { FolioPage, MarginBlock, Masthead } from './FolioHome'
 
 /** The page's sections, and the margin's shortcuts, as places to go to. */
@@ -76,7 +77,7 @@ const SHORTCUTS: { where: string; keys: [string, string][] }[] = [
       ['A–E', 'välj ett alternativ'],
       ['⇧ + bokstav', 'stryk ett alternativ'],
       ['↵', 'svara, sedan nästa fråga'],
-      ['F', 'styckefokus'],
+      ['F', 'styckeljus på eller av'],
       ['J / K', 'nästa och förra stycket'],
     ],
   },
@@ -144,6 +145,9 @@ export function FolioKonto({
   const [unsaved, setUnsaved] = useState<keyof PrefsView | null>(null)
   const pageRef = useRef<HTMLDivElement>(null)
   const phone = width === 'phone'
+  // Styckeljus: the drill's own state (its F and its button), shown here
+  // as a choice like Tema and Färg; a pick applies at once, focus stays.
+  const [light, setLight] = useStyckeljus()
 
   const go = (to: KontoPlace) => {
     const root = pageRef.current
@@ -255,6 +259,16 @@ export function FolioKonto({
           swatches
           testId={(key) => `rd-konto-palette-${key}`}
           onPick={(palette) => choose('palette', () => actions.setPrefs({ palette }))}
+        />
+        <Choice
+          legend="Styckeljus"
+          options={[
+            { key: 'av', label: 'Av' },
+            { key: 'pa', label: 'På' },
+          ]}
+          value={light ? 'pa' : 'av'}
+          hint="Lyser upp stycket du läser i en text. I övningen slår F på och av."
+          onPick={(v) => setLight(v === 'pa')}
         />
       </Part>
 

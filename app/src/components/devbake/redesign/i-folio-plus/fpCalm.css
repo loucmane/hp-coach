@@ -1,0 +1,155 @@
+/* Folio+ · Ljuskägla's calm on the hub pages (bead hpf-qr0p.48, round 2),
+ * set in Folio's own type and tokens.
+ *
+ * One lit thing per screen: the lead under the heavy rule keeps Folio's full
+ * ink, its filled button and its accent. Everything else on the page sits
+ * "in the shade" ([data-fp-shade]): its names and headings step down from
+ * full ink to the second ink, and its accents (links, marks, the current
+ * week's dots, the scale's mark) turn neutral, so nothing competes with the
+ * lead. The shade is colour only — never opacity, never a smaller size —
+ * and both inks keep full contrast on every palette's paper (ink-2 for
+ * prose, ink-3 only where Folio already sets meta in it). A shaded block
+ * lights fully again on hover or when focus moves into it.
+ *
+ * Every selector is scoped under [data-rd='folio-plus']; reduced motion and
+ * still thumbnails are handled by folioPlus.css's global rules. */
+
+/* ── The shade ───────────────────────────────────────────────────── */
+
+[data-rd='folio-plus'] [data-fp-shade] {
+  color: var(--fp-ink-2);
+  transition: color var(--fp-d2) var(--fp-ease);
+}
+
+[data-rd='folio-plus'] [data-fp-shade] .fp-h2,
+[data-rd='folio-plus'] [data-fp-shade] .fp-h3,
+[data-rd='folio-plus'] [data-fp-shade] .fp-head-link,
+[data-rd='folio-plus'] [data-fp-shade] .fp-plan-title,
+[data-rd='folio-plus'] [data-fp-shade] .fp-trap-name,
+[data-rd='folio-plus'] [data-fp-shade] .fp-prog-n,
+[data-rd='folio-plus'] [data-fp-shade] .fp-misses-tag,
+[data-rd='folio-plus'] [data-fp-shade] .fp-miss-stem,
+[data-rd='folio-plus'] [data-fp-shade] .fp-up-code,
+[data-rd='folio-plus'] [data-fp-shade] .fp-ledger-kind,
+[data-rd='folio-plus'] [data-fp-shade] .fp-ledger-score,
+[data-rd='folio-plus'] [data-fp-shade] .fp-recent dt,
+[data-rd='folio-plus'] [data-fp-shade] .fp-recent dd,
+[data-rd='folio-plus'] [data-fp-shade] .fp-margin-note b,
+[data-rd='folio-plus'] [data-fp-shade] .fp-weekdot-n,
+[data-rd='folio-plus'] [data-fp-shade] .fp-chart-summary,
+[data-rd='folio-plus'] [data-fp-shade] .fp-step-goal b {
+  color: var(--fp-ink-2);
+  transition: color var(--fp-d2) var(--fp-ease);
+}
+
+/* Links and disclosures: the second ink, a neutral underline. */
+[data-rd='folio-plus'] [data-fp-shade] .fp-link,
+[data-rd='folio-plus'] [data-fp-shade] .fp-more {
+  color: var(--fp-ink-2);
+  text-decoration-color: var(--fp-rule-2);
+  transition: color var(--fp-d2) var(--fp-ease);
+}
+
+/* Accent marks go neutral: the footnote's asterisk, the scale's mark and
+ * range, the curve's last point, this week's dots, the suggested section's
+ * margin rule and a goal reached on the day path. */
+[data-rd='folio-plus'] [data-fp-shade] .fp-prog-n sup,
+[data-rd='folio-plus'] [data-fp-shade] .fp-footnote b {
+  color: var(--fp-ink-3);
+}
+
+[data-rd='folio-plus'] [data-fp-shade] .fp-scale-mark,
+[data-rd='folio-plus'] [data-fp-shade] .fp-weekdot[data-current='true'] .fp-weekdot-dots i {
+  background: var(--fp-ink-2);
+}
+
+[data-rd='folio-plus'] [data-fp-shade] .fp-scale-range {
+  background: var(--fp-paper-3);
+  box-shadow: inset 0 0 0 1px var(--fp-rule-2);
+}
+
+[data-rd='folio-plus'] [data-fp-shade] .fp-chart-end {
+  fill: var(--fp-ink-2);
+}
+
+[data-rd='folio-plus'] [data-fp-shade] .fp-entry[data-suggested='true']::before {
+  background: var(--fp-rule-2);
+}
+
+[data-rd='folio-plus'] [data-fp-shade] .fp-step--goal[data-fp-goal='reached'] .fp-step-mark {
+  border-color: var(--fp-rule-2);
+  color: var(--fp-ink-2);
+}
+
+/* The step under way stays as it is: it is the lead, pointed at. */
+[data-rd='folio-plus'] [data-fp-shade] .fp-step[data-fp-step='now'] .fp-plan-title {
+  color: var(--fp-ink);
+}
+
+/* ── Lit again on hover and focus ────────────────────────────────── */
+
+/* A shaded block lights as a whole; in the margin each block lights on its
+ * own, so pointing at one never lights the others. */
+[data-rd='folio-plus'] [data-fp-shade]:not(.fp-aside):is(:hover, :focus-within),
+[data-rd='folio-plus'] .fp-aside[data-fp-shade] > :is(:hover, :focus-within) {
+  color: var(--fp-ink);
+}
+
+[data-rd='folio-plus'] [data-fp-shade]:not(.fp-aside):is(:hover, :focus-within) :is(.fp-h2, .fp-h3, .fp-head-link, .fp-plan-title, .fp-trap-name, .fp-prog-n, .fp-misses-tag, .fp-miss-stem, .fp-up-code, .fp-ledger-kind, .fp-ledger-score, .fp-weekdot-n, .fp-chart-summary),
+[data-rd='folio-plus'] .fp-aside[data-fp-shade] > :is(:hover, :focus-within) :is(.fp-h2, .fp-h3, .fp-head-link, .fp-plan-title, .fp-trap-name, .fp-prog-n, .fp-misses-tag, .fp-miss-stem, .fp-up-code, .fp-ledger-kind, .fp-ledger-score, .fp-weekdot-n, .fp-chart-summary) {
+  color: var(--fp-ink);
+}
+
+[data-rd='folio-plus'] [data-fp-shade]:not(.fp-aside):is(:hover, :focus-within) :is(.fp-link, .fp-more),
+[data-rd='folio-plus'] .fp-aside[data-fp-shade] > :is(:hover, :focus-within) :is(.fp-link, .fp-more) {
+  color: var(--fp-accent-ink);
+  text-decoration-color: currentColor;
+}
+
+/* ── Idag · the end card, quieter ────────────────────────────────── */
+
+/* Still the lead's grammar, but the flag's ring and the heavy rule go
+ * neutral: the day is done, nothing calls. */
+[data-rd='folio-plus'] .fp-end[data-fp-quiet='true'] {
+  border-top-color: var(--fp-rule-2);
+}
+
+[data-rd='folio-plus'] .fp-end[data-fp-quiet='true'] .fp-end-mark {
+  border-color: var(--fp-rule-2);
+  color: var(--fp-ink-2);
+}
+
+/* ── Framsteg · what happened, then the one action ───────────────── */
+
+/* The report: the figure and its basis as a quiet opening, no heavy rule —
+ * the rule belongs to the action that follows. */
+[data-rd='folio-plus'] .fp-fr-report {
+  margin-top: var(--fp-s8);
+}
+
+[data-rd='folio-plus'] .fp-fr-report > .fp-label {
+  display: block;
+  margin-bottom: var(--fp-s3);
+}
+
+/* A chart's words: what the figure shows, in one sentence. */
+[data-rd='folio-plus'] .fp-chart-summary {
+  margin-top: var(--fp-s2);
+  max-width: 36em;
+  color: var(--fp-ink-2);
+  text-wrap: pretty;
+}
+
+/* The practice days' sentence sits above their dots. */
+[data-rd='folio-plus'] .fp-aside-block .fp-chart-summary {
+  margin: 0 0 var(--fp-s2);
+}
+
+/* The no-shame line under the practice days. */
+[data-rd='folio-plus'] .fp-calm-line {
+  margin-top: var(--fp-s3);
+  font-family: var(--fp-serif);
+  font-style: italic;
+  color: var(--fp-ink-2);
+  text-wrap: pretty;
+}
