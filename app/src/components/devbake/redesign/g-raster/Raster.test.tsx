@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { useState } from 'react'
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
@@ -18,7 +18,11 @@ import {
   type Selection,
 } from '@/components/devbake/redesign/Redesign2026Bakeoff'
 import type { AppScreenKey, WidthKey } from '@/components/devbake/redesign/r1Kit'
-import type { DirectionActions, DirectionData } from '@/components/devbake/redesign/viewModel'
+import type {
+  DirectionActions,
+  DirectionData,
+  LessonView,
+} from '@/components/devbake/redesign/viewModel'
 import { meta } from './meta'
 import { Raster } from './Raster'
 
@@ -354,7 +358,8 @@ describe('Raster pass timing, content readiness and host boundaries', () => {
       key: '3',
     })
     expect(screen.getByTestId('rb26-stage')).toHaveAttribute('data-direction', 'c')
-    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+    // Raster's runner is gone once C's lazy stage replaces it; C may render its own pass.
+    await waitFor(() => expect(screen.queryByTestId('rd-raster')).toBeNull())
     expect(submitProvpass).toHaveBeenCalledOnce()
   })
 
@@ -604,6 +609,651 @@ function mountData(
 function fresh(): DirectionData {
   return structuredClone(FIXTURE_DATA)
 }
+
+describe.each(['desktop', 'phone'] as const)('Raster batch 3 at %s', (width) => {
+  it('keeps requested lessons distinct from the actual supplied body and read state', () => {
+    const data = fresh()
+    const openLesson = vi.fn()
+    const toggleLessonRead = vi.fn()
+    const mounted = mountData(12, data, { openLesson, toggleLessonRead }, width)
+    const open = data.uppslag.open
+    const next = data.uppslag.sections
+      .find((s) => s.section === open.section)!
+      .entries.find((e) => e.id !== open.id)!
+    expect(screen.getByTestId('rd-lesson-read')).toHaveAttribute('aria-pressed', String(open.read))
+    if (width === 'phone') {
+      const contents = screen.getByText(`Innehåll · ${open.section}`)
+      expect(contents.closest('details')).not.toHaveAttribute('open')
+      fireEvent.click(contents)
+    }
+    fireEvent.click(screen.getByTestId(`rd-uppslag-entry-${next.id}`))
+    expect(openLesson).toHaveBeenCalledExactlyOnceWith(next.id)
+    expect(toggleLessonRead).not.toHaveBeenCalled()
+    expect(screen.getByRole('status')).toHaveTextContent(`Lektion begärd: ${next.title}`)
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(open.title)
+    const changed = structuredClone(data)
+    changed.uppslag.open = { ...open, id: next.id, title: next.title, read: !open.read }
+    mounted.rerenderData(changed)
+    expect(screen.queryByRole('status')).toBeNull()
+    expect(screen.getByRole('heading', { name: next.title })).toHaveFocus()
+    fireEvent.click(screen.getByTestId('rd-lesson-read'))
+    expect(toggleLessonRead).toHaveBeenCalledWith(next.id)
+    expect(screen.getByTestId('rd-lesson-read')).toHaveAttribute('aria-pressed', String(!open.read))
+  })
+
+  it('disables lesson practice without examples and survives a shrinking contents list', () => {
+    const data = fresh()
+    data.uppslag.open.practice.questions = 0
+    data.uppslag.open.entry.example_questions = []
+    const startDrill = vi.fn()
+    const mounted = mountData(12, data, { startDrill }, width)
+    expect(screen.getByTestId('rd-lesson-practice')).toBeDisabled()
+    fireEvent.click(screen.getByTestId('rd-lesson-practice'))
+    expect(startDrill).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: `Öva hela ${data.uppslag.open.section} ↗` }))
+    expect(startDrill).toHaveBeenCalledExactlyOnceWith({
+      kind: 'section',
+      section: data.uppslag.open.section,
+    })
+    data.uppslag.sections = []
+    mounted.rerenderData(structuredClone(data))
+    expect(screen.getAllByText(/Inget innehåll här ännu/).length).toBeGreaterThan(0)
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(data.uppslag.open.title)
+  })
+
+  it('keeps every preference authoritative and reports rejected changes without claiming a save', async () => {
+    const data = fresh()
+    data.konto.identity = { name: '', email: '', initials: '' }
+    const setPrefs = vi.fn(() => Promise.reject(new Error('unavailable')))
+    mountData(13, data, { setPrefs }, width)
+    expect(
+      within(screen.getByTestId('rd-konto-identity')).getAllByText('Uppgift saknas'),
+    ).toHaveLength(2)
+    for (const group of ['palette', 'font', 'density']) {
+      expect(screen.queryAllByTestId(new RegExp(`^rd-konto-${group}-`))).toHaveLength(0)
+    }
+    const other = data.konto.options.coach.find((o) => o.key !== data.konto.prefs.coach)!
+    await act(async () => fireEvent.click(screen.getByTestId(`rd-konto-coach-${other.key}`)))
+    expect(setPrefs).toHaveBeenCalledExactlyOnceWith({ coach: other.key })
+    expect(screen.getByTestId(`rd-konto-coach-${data.konto.prefs.coach}`)).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    expect(screen.getByRole('status')).toHaveTextContent('Kunde inte spara ändringen.')
+    expect(screen.queryByText(/^Sparat$/)).toBeNull()
+  })
+
+  it('keeps deletion deep, typed, single-use and returns focus on cancellation', () => {
+    const deleteAccount = vi.fn()
+    mountData(13, fresh(), { deleteAccount }, width)
+    const details = screen.getByText('Kontodata och utloggning').closest('details')!
+    expect(details).not.toHaveAttribute('open')
+    fireEvent.click(screen.getByText('Kontodata och utloggning'))
+    const opener = screen.getByTestId('rd-konto-delete')
+    opener.focus()
+    fireEvent.click(opener)
+    fireEvent.click(screen.getByRole('button', { name: 'Avbryt' }))
+    expect(opener).toHaveFocus()
+    fireEvent.click(opener)
+    fireEvent.change(screen.getByTestId('rd-konto-delete-word'), { target: { value: 'Radera' } })
+    fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
+    expect(deleteAccount).not.toHaveBeenCalled()
+    fireEvent.change(screen.getByTestId('rd-konto-delete-word'), { target: { value: 'radera' } })
+    expect(deleteAccount).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
+    expect(deleteAccount).toHaveBeenCalledOnce()
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(opener).toHaveAttribute('aria-disabled', 'true')
+    expect(opener).toHaveFocus()
+    fireEvent.click(opener)
+    expect(deleteAccount).toHaveBeenCalledOnce()
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(screen.getByRole('status')).toHaveTextContent('Radering begärd')
+  })
+
+  it('routes Konto and Uppslag through its own navigation with a passive host', () => {
+    const openKonto = vi.fn()
+    const go = vi.fn()
+    mountData(1, fresh(), { openKonto, go }, width)
+    fireEvent.click(screen.getByTestId('rd-account'))
+    fireEvent.click(
+      within(screen.getByTestId('rd-account-menu')).getByRole('button', { name: /Inställningar/ }),
+    )
+    expect(openKonto).toHaveBeenCalledOnce()
+    expect(screen.getByTestId('rd-konto-identity')).toBeVisible()
+    fireEvent.click(screen.getByRole('button', { name: /Tillbaka till Öva/ }))
+    expect(go).toHaveBeenCalledWith('ova')
+    expect(screen.queryByTestId('rd-konto-identity')).toBeNull()
+    fireEvent.click(screen.getByTestId('rd-nav-uppslag'))
+    expect(screen.getByTestId('rd-lesson')).toBeVisible()
+  })
+
+  it('leaves every main navigation destination unselected on Konto', () => {
+    mountData(13, fresh(), {}, width)
+    expect(screen.getByTestId('rd-raster').querySelector('[aria-current="page"]')).toBeNull()
+  })
+
+  it.each([
+    2, 3, 6, 7, 14,
+  ] as const)('leaves drill %s for Konto with a passive provider and returns to Öva', (s) => {
+    const openKonto = vi.fn()
+    const exit = vi.fn()
+    const go = vi.fn()
+    mountData(s, fresh(), { openKonto, go, drill: { ...LOCAL_CONTROLLER, exit } }, width)
+    fireEvent.click(screen.getByTestId('rd-account'))
+    const menu = screen.getByTestId('rd-account-menu')
+    const entry = within(menu).getByRole('button', { name: /^Konto/ })
+    entry.focus()
+    fireEvent.click(entry)
+    expect(openKonto).toHaveBeenCalledOnce()
+    expect(exit).toHaveBeenCalledOnce()
+    expect(screen.getByTestId('rd-konto-identity')).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'Din studiemiljö.' })).toHaveFocus()
+    expect(screen.getByTestId('rd-raster')).toHaveAttribute('data-drill', 'false')
+    expect(screen.getByTestId('rd-raster').querySelector('[aria-current="page"]')).toBeNull()
+    expect(screen.queryByTestId('rd-exit')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: /Tillbaka till Öva/ }))
+    expect(go).toHaveBeenCalledExactlyOnceWith('ova')
+    expect(screen.queryByTestId('rd-konto-identity')).toBeNull()
+    expect(screen.queryByTestId('rd-exit')).toBeNull()
+    expect(screen.getByTestId('rd-nav-ova')).toHaveAttribute('aria-current', 'page')
+  })
+
+  it('marks only ELF content English and completes using its own controller', () => {
+    const data = fresh()
+    data.home.plan.items.forEach((item) => {
+      item.completed = true
+    })
+    const q = data.drills.elf.questions[0]
+    data.drills.elf.questions = [q]
+    data.drills.elf.start = {}
+    const go = vi.fn()
+    const lock = vi.fn(LOCAL_CONTROLLER.lock)
+    const exit = vi.fn()
+    const { onScreen } = mountData(14, data, { go, drill: { lock, exit } }, width)
+    if (width === 'phone') openSheet()
+    expect(screen.getByRole('heading', { name: q.prompt! }).closest('[lang]')).toHaveAttribute(
+      'lang',
+      'en',
+    )
+    expect(screen.getByText(q.options![0].text).closest('[lang]')).toHaveAttribute('lang', 'en')
+    expect(screen.getByTestId('rd-note-toggle').closest('[lang]')).toHaveAttribute('lang', 'sv')
+    expect(screen.getByTestId('rd-lock').closest('[lang]')).toHaveAttribute('lang', 'sv')
+    fireEvent.keyDown(window, { key: 'Escape' })
+    expect(exit).not.toHaveBeenCalled()
+    fireEvent.keyDown(window, { key: q.answer.toLowerCase() })
+    fireEvent.keyDown(window, { key: 'Enter' })
+    expect(lock).toHaveBeenCalledExactlyOnceWith(q, q.answer)
+    expect(onScreen).not.toHaveBeenCalled()
+    const explanation = data.drills.elf.explanations[q.qid]!
+    expect(screen.getByText(explanation.solution_path).closest('[lang]')).toHaveAttribute(
+      'lang',
+      'en',
+    )
+    expect(screen.getByRole('heading', { name: 'Lösningen' }).closest('[lang]')).toHaveAttribute(
+      'lang',
+      'sv',
+    )
+    fireEvent.click(screen.getByTestId('rd-next'))
+    expect(screen.getByTestId('rd-done')).toHaveTextContent('Texten klar')
+    expect(screen.getByTestId('rd-done-next')).toHaveTextContent('Till Öva')
+    fireEvent.click(screen.getByTestId('rd-done-next'))
+    expect(go).toHaveBeenCalledWith('ova')
+  })
+
+  it('renders cloze gaps using the actual number chain without marking real numbers', () => {
+    const data = fresh()
+    const q = data.drills.elf.questions[0]
+    q.prompt = ''
+    q.number = 32
+    q.passage = {
+      paragraphs: [
+        'People aged 35 read 31_____ texts. In 2020, 78% chose 32 examples from 25–34 pages. They 33 learned more.',
+      ],
+      byline: null,
+      lang: 'en',
+      synthetic: false,
+    }
+    data.drills.elf.questions = [q]
+    data.drills.elf.start = {}
+    mountData(14, data, {}, width)
+    if (width === 'phone') openSheet()
+    expect(screen.getByRole('heading', { name: 'Lucka 32' }).closest('[lang]')).toHaveAttribute(
+      'lang',
+      'sv',
+    )
+    expect(screen.getAllByTestId(/^cloze-gap-/).map((n) => n.textContent)).toEqual([
+      '31',
+      '32',
+      '33',
+    ])
+    expect(screen.getByTestId('cloze-gap-32')).toHaveAttribute('data-active', 'true')
+    expect(screen.getByTestId('rd-elf-passage')).toHaveTextContent('People aged 35')
+    expect(screen.queryByTestId('rd-note-toggle')).toBeNull()
+    fireEvent.click(screen.getByTestId('rd-option-A'))
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+  })
+
+  it('keeps a full phone prompt and returns from real paragraph citations with details intact', () => {
+    const data = fresh()
+    const q = data.drills.elf.questions[0]
+    q.prompt =
+      'Which conclusion is supported by the full account of the evidence, including the observations described at the very end of the passage?'
+    q.passage = {
+      paragraphs: ['The measurements reveal a stable pattern over time.'],
+      byline: null,
+      lang: 'en',
+      synthetic: true,
+    }
+    data.drills.elf.questions = [q]
+    data.drills.elf.start = {}
+    data.drills.elf.explanations[q.qid] = {
+      ...data.drills.elf.explanations[q.qid]!,
+      steps: [
+        {
+          n: 1,
+          title: 'Compare the evidence',
+          text: 'Compare ”The measurements reveal a stable pattern over time.”',
+          tier: 'detail',
+        },
+      ],
+    }
+    mountData(14, data, {}, width)
+    if (width === 'phone') {
+      expect(screen.getByText(q.prompt, { selector: '.ra-peek-prompt' })).toBeVisible()
+      openSheet()
+    }
+    fireEvent.click(screen.getByTestId('rd-option-A'))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    fireEvent.click(screen.getByTestId('rd-step-toggle-1'))
+    const detail = screen.getByTestId('rd-step-1')
+    fireEvent.click(within(detail).getByTestId('rd-cite-1'))
+    expect(screen.getByTestId('rd-para-1')).toHaveAttribute('data-flash', 'true')
+    if (width === 'phone') {
+      expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'peek')
+      fireEvent.click(screen.getByRole('button', { name: 'Till förklaringen ↑' }))
+      expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'full')
+    }
+    expect(screen.getByTestId('rd-step-toggle-1')).toHaveAttribute('aria-expanded', 'true')
+  })
+
+  it('resets shrinking and replaced ELF decks before the core dereferences an old question', () => {
+    const data = fresh()
+    const q = data.drills.elf.questions[0]
+    data.drills.elf.questions = [q, { ...q, qid: 'elf-second' }]
+    data.drills.elf.start = { index: 1 }
+    const mounted = mountData(14, data, {}, width)
+    data.drills.elf.questions = [q]
+    mounted.rerenderData(structuredClone(data))
+    if (width === 'phone') openSheet()
+    fireEvent.click(screen.getByTestId('rd-option-A'))
+    const next = structuredClone(data)
+    next.drills.elf.id = 'another-session'
+    mounted.rerenderData(next)
+    if (width === 'phone') openSheet()
+    expect(screen.getByTestId('rd-option-A')).toHaveAttribute('aria-pressed', 'false')
+    next.drills.elf.questions = []
+    mounted.rerenderData(structuredClone(next))
+    expect(screen.getByRole('heading', { name: 'Texten eller frågan saknas' })).toBeVisible()
+    expect(screen.queryByTestId('rd-lock')).toBeNull()
+  })
+
+  it('requires mounted ELF figures and option images before mouse or keyboard answers', () => {
+    vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false)
+    const data = fresh()
+    const q = data.drills.elf.questions[0]
+    q.figure = {
+      src: 'elf-figure.svg',
+      alt: 'Required diagram',
+      width: 100,
+      height: 100,
+      kind: 'svg',
+    }
+    q.options![0].figure = { src: 'elf-option.svg', alt: 'Answer diagram', width: 100, height: 100 }
+    data.drills.elf.questions = [q]
+    data.drills.elf.start = {}
+    const lock = vi.fn(LOCAL_CONTROLLER.lock)
+    const mounted = mountData(14, data, { drill: { lock } }, width)
+    if (width === 'phone') openSheet()
+    fireEvent.click(screen.getByTestId('rd-option-A'))
+    fireEvent.load(screen.getByAltText('Required diagram'))
+    fireEvent.keyDown(window, { key: 'Enter' })
+    expect(lock).not.toHaveBeenCalled()
+    fireEvent.error(screen.getByAltText('Answer diagram'))
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.click(screen.getByRole('button', { name: 'Försök igen' }))
+    fireEvent.keyDown(window, { key: ' ' })
+    expect(lock).not.toHaveBeenCalled()
+    fireEvent.load(screen.getByAltText('Answer diagram'))
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    const replacement = structuredClone(data)
+    replacement.drills.elf.questions[0].figure!.src = 'replacement.svg'
+    mounted.rerenderData(replacement)
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.load(screen.getByAltText('Required diagram'))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(lock).toHaveBeenCalledOnce()
+  })
+
+  it('never remounts a failed pass when navigation leaves and returns through a passive host', () => {
+    const submitProvpass = vi.fn(() => {
+      throw new Error('unavailable')
+    })
+    mountData(9, passData(), { go: vi.fn(), submitProvpass }, width)
+    startPass()
+    fireEvent.click(screen.getByTestId('rd-prov-submit'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    fireEvent.click(screen.getByTestId('rd-nav-ova'))
+    fireEvent.click(screen.getByTestId('rd-nav-provpass'))
+    expect(screen.getByTestId('rd-prov-start')).toBeVisible()
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+    expect(submitProvpass).toHaveBeenCalledOnce()
+  })
+
+  it('clears a failed pass even when its own Provpass tab is selected', () => {
+    const submitProvpass = vi.fn(() => {
+      throw new Error('unavailable')
+    })
+    mountData(9, passData(), { go: vi.fn(), submitProvpass }, width)
+    startPass()
+    fireEvent.click(screen.getByTestId('rd-prov-submit'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    fireEvent.click(screen.getByTestId('rd-nav-provpass'))
+    expect(screen.getByTestId('rd-prov-start')).toBeVisible()
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+    expect(submitProvpass).toHaveBeenCalledOnce()
+  })
+})
+
+it.each([
+  {
+    family: 'xyz_traps',
+    section: 'XYZ',
+    title: 'Teckenbyte',
+    entry: {
+      id: 'trap',
+      pattern_description: 'Fel tecken',
+      why_it_occurs: 'Snabb förenkling',
+      common_distractor_signature: 'Positivt resultat',
+      countermeasure: 'Kontrollera tecknet',
+      recognition_cue: 'En negativ faktor',
+      worked_example: {
+        setup: 'Beräkna \uE000-2\\cdot 3\uE001',
+        trap_thinking: 'Två positiva tal',
+        correct_thinking: 'En faktor är negativ',
+        answer: '−6',
+      },
+      example_questions: ['test'],
+    },
+    expected: 'Motåtgärd',
+    practice: 'Öva detta mönster',
+  },
+  {
+    family: 'ord_roots',
+    section: 'ORD',
+    title: 'bio',
+    entry: {
+      id: 'root',
+      root: 'bio',
+      origin: 'grekiska',
+      meaning: 'liv',
+      example_words: ['biologi', 'biograf'],
+      example_questions: ['test'],
+    },
+    expected: 'Ursprung',
+    practice: 'Öva ord med denna rot',
+  },
+  {
+    family: 'dtk_tactics',
+    section: 'DTK',
+    title: 'Läs enheten',
+    entry: {
+      id: 'tactic',
+      tactic: 'Kontrollera enheten',
+      when_to_apply: 'När tabeller jämförs',
+      example_questions: ['test'],
+    },
+    expected: 'När den används',
+    practice: 'Öva denna taktik',
+  },
+  {
+    family: 'mek_protocol',
+    section: 'MEK',
+    title: 'Samband',
+    entry: {
+      id: 'rule',
+      constraint_type: 'Motsats',
+      rule: 'Läs båda leden',
+      example_questions: ['test'],
+    },
+    expected: 'Regeln',
+    practice: 'Öva denna regel',
+  },
+] satisfies Array<{
+  family: LessonView['family']
+  section: LessonView['section']
+  title: string
+  entry: LessonView['entry']
+  expected: string
+  practice: string
+}>)('renders $family as its own lesson family', (fixture) => {
+  const data = fresh()
+  data.uppslag.open = {
+    id: fixture.entry.id,
+    family: fixture.family,
+    section: fixture.section,
+    title: fixture.title,
+    entry: structuredClone(fixture.entry),
+    read: false,
+    practice: { questions: 1 },
+  }
+  const startDrill = vi.fn()
+  mountData(12, data, { startDrill })
+  expect(screen.getByRole('heading', { name: fixture.expected })).toBeVisible()
+  expect(screen.getByTestId('rd-lesson-practice')).toHaveTextContent(fixture.practice)
+  fireEvent.click(screen.getByTestId('rd-lesson-practice'))
+  expect(startDrill).toHaveBeenCalledExactlyOnceWith({
+    kind: 'framework',
+    frameworkId: fixture.entry.id,
+    section: fixture.section,
+  })
+  if (fixture.family === 'ord_roots') expect(screen.queryByText('Motåtgärd')).toBeNull()
+  if (fixture.family === 'xyz_traps') {
+    fireEvent.click(screen.getByText('Genomräknat exempel'))
+    expect(screen.getByTestId('rd-lesson').querySelector('.katex')).not.toBeNull()
+  }
+})
+
+function RasterHost({ initial, width = 'phone' }: { initial: AppScreenKey; width?: WidthKey }) {
+  const [sel, setSel] = useState<Selection>({
+    d: 'g',
+    s: initial,
+    w: width,
+    t: 'light',
+    sbs: false,
+    bare: false,
+  })
+  return (
+    <Redesign2026Bakeoff sel={sel} onSelect={(next) => setSel((old) => ({ ...old, ...next }))} />
+  )
+}
+
+it('keeps a cached figure ready across consecutive ELF questions but resets a remounted option image', () => {
+  const data = fresh()
+  const q = data.drills.elf.questions[0]
+  q.figure = { src: 'shared.svg', alt: 'Shared diagram', width: 100, height: 100, kind: 'svg' }
+  q.options![0].figure = { src: 'option.svg', alt: 'Choice diagram', width: 100, height: 100 }
+  data.drills.elf.questions = [q, { ...q, qid: 'next-elf' }]
+  data.drills.elf.start = {}
+  mountData(14, data)
+  const figure = screen.getByAltText('Shared diagram')
+  const option = screen.getByAltText('Choice diagram')
+  fireEvent.click(screen.getByTestId('rd-option-A'))
+  expect(screen.getByTestId('rd-lock')).toBeEnabled()
+  fireEvent.click(screen.getByTestId('rd-lock'))
+  vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false)
+  fireEvent.click(screen.getByTestId('rd-next'))
+  expect(screen.getByAltText('Shared diagram')).toBe(figure)
+  expect(screen.getByAltText('Choice diagram')).not.toBe(option)
+  fireEvent.click(screen.getByTestId('rd-option-A'))
+  expect(screen.getByTestId('rd-lock')).toBeDisabled()
+  fireEvent.load(screen.getByAltText('Choice diagram'))
+  expect(screen.getByTestId('rd-lock')).toBeEnabled()
+})
+
+it.each([
+  'passage',
+  'options',
+] as const)('refuses an incomplete ELF %s without trapping the exit', (field) => {
+  const data = fresh()
+  const q = data.drills.elf.questions[0]
+  q[field] = null
+  data.drills.elf.questions = [q]
+  data.drills.elf.start = {}
+  const lock = vi.fn(LOCAL_CONTROLLER.lock)
+  const go = vi.fn()
+  mountData(14, data, { go, drill: { lock } })
+  fireEvent.keyDown(window, { key: 'a' })
+  fireEvent.keyDown(window, { key: 'Enter' })
+  expect(lock).not.toHaveBeenCalled()
+  expect(screen.queryByTestId('rd-lock')).toBeNull()
+  fireEvent.click(screen.getByRole('button', { name: 'Till Öva' }))
+  expect(go).toHaveBeenCalledWith('ova')
+})
+
+it('keeps an ELF verdict usable without an explanation or optional clock', () => {
+  const data = fresh()
+  const q = data.drills.elf.questions[0]
+  data.drills.elf.questions = [q]
+  data.drills.elf.start = {}
+  data.drills.elf.explanations = {}
+  data.drills.elf.elapsedSeconds = undefined
+  mountData(14, data)
+  expect(screen.queryByRole('button', { name: /tidtagningen/ })).toBeNull()
+  fireEvent.click(screen.getByTestId(`rd-option-${q.answer}`))
+  fireEvent.click(screen.getByTestId('rd-lock'))
+  expect(screen.getByTestId('rd-verdict')).toHaveAttribute('data-correct', 'true')
+  expect(screen.getByText('Förklaringen saknas för den här frågan.')).toBeVisible()
+  expect(screen.queryAllByTestId(/^rd-cite-/)).toHaveLength(0)
+  expect(screen.getByTestId('rd-next')).toBeEnabled()
+})
+
+it('closes a native account dialog only on an actual backdrop click and restores its opener', () => {
+  mountData(13, fresh())
+  fireEvent.click(screen.getByText('Kontodata och utloggning'))
+  const opener = screen.getByTestId('rd-konto-delete')
+  opener.focus()
+  fireEvent.click(opener)
+  const dialog = screen.getByRole('dialog')
+  vi.spyOn(dialog, 'getBoundingClientRect').mockReturnValue({
+    left: 100,
+    right: 500,
+    top: 100,
+    bottom: 500,
+    width: 400,
+    height: 400,
+    x: 100,
+    y: 100,
+    toJSON: () => ({}),
+  })
+  fireEvent.click(dialog, { clientX: 200, clientY: 200 })
+  expect(dialog).toBeInTheDocument()
+  fireEvent.click(dialog, { clientX: 20, clientY: 20 })
+  expect(screen.queryByRole('dialog')).toBeNull()
+  expect(opener).toHaveFocus()
+})
+
+describe.each(['desktop', 'phone'] as const)('Raster review regressions at %s', (width) => {
+  it.each([
+    2, 3, 14,
+  ] as const)('passes focused reading controls to the real host on screen %s, idle and in feedback', async (s) => {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(900)
+    const onSelect = vi.fn()
+    render(
+      <Redesign2026Bakeoff
+        sel={{ d: 'g', s, w: width, t: 'light', sbs: false, bare: false }}
+        onSelect={onSelect}
+      />,
+    )
+    await screen.findByTestId('rd-raster')
+    if (width === 'phone') openSheet()
+    // Screen 3 starts in feedback. Its next question exercises the idle state
+    // while the controlled host keeps the same screen selected.
+    if (s === 3) fireEvent.click(screen.getByTestId('rd-next'))
+    if (width === 'phone') openSheet()
+    const checkKeys = (target: HTMLElement) => {
+      expect(target).toBeVisible()
+      target.focus()
+      expect(target).toHaveFocus()
+      for (const key of ['3', 'ArrowRight']) {
+        onSelect.mockClear()
+        fireEvent.keyDown(document.activeElement!, { key })
+        const label = target.getAttribute('data-testid') ?? target.getAttribute('aria-label')
+        expect
+          .soft(onSelect, `${label ?? target.tagName}: ${key}`)
+          .toHaveBeenCalledExactlyOnceWith(
+            key === '3' ? { d: 'c', sbs: false } : { s: s === 14 ? 1 : s + 1 },
+          )
+      }
+    }
+    const checkPassage = () => {
+      checkKeys(screen.getByRole('region', { name: 'Lästext' }))
+      checkKeys(screen.getByTestId('rd-note-toggle'))
+      checkKeys(screen.getByRole('button', { name: '¶ Styckefokus' }))
+      checkKeys(
+        within(screen.getByTestId('rd-para-1')).getByRole('button', { name: 'Läs stycke 1' }),
+      )
+      checkKeys(screen.getByRole('region', { name: 'Fråga och förklaring' }))
+    }
+    checkPassage()
+    checkKeys(screen.getByTestId('rd-option-A'))
+    checkKeys(screen.getByTestId('rd-eliminate-A'))
+    fireEvent.click(screen.getByTestId('rd-option-A'))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(screen.getByTestId('rd-verdict')).toBeVisible()
+    if (width === 'phone') openSheet()
+    checkPassage()
+    checkKeys(screen.getAllByTestId(/^rd-cite-/).find((el) => !el.closest('[hidden]'))!)
+  })
+
+  it.each([
+    [1, 'Konto', 'Din studiemiljö.'],
+    [1, 'Inställningar', 'Inställningar'],
+    [14, 'Konto', 'Din studiemiljö.'],
+    [14, 'Inställningar', 'Inställningar'],
+  ] as const)('focuses the %s menu target %s through the real host', async (initial, entry, heading) => {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(900)
+    render(<RasterHost initial={initial} width={width} />)
+    await screen.findByTestId('rd-raster')
+    for (let visit = 0; visit < 2; visit += 1) {
+      fireEvent.click(screen.getByTestId('rd-account'))
+      const button = within(screen.getByTestId('rd-account-menu')).getByRole('button', {
+        name: new RegExp(`^${entry}`),
+      })
+      button.focus()
+      fireEvent.click(button)
+      await screen.findByTestId('rd-konto-identity')
+      expect(screen.getByTestId('rb26-stage')).toHaveAttribute('data-screen', '13')
+      expect(screen.getByRole('heading', { name: heading })).toHaveFocus()
+      expect(screen.getByTestId('rd-raster').querySelector('[aria-current="page"]')).toBeNull()
+    }
+  })
+})
+
+it('does not auto-focus the screen-4 account preview into a keyscope', async () => {
+  vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+  vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(900)
+  render(<RasterHost initial={4} />)
+  await screen.findByTestId('rd-account-menu')
+  expect(screen.getByTestId('rd-account-menu')).not.toContainElement(
+    document.activeElement as HTMLElement,
+  )
+  fireEvent.keyDown(window, { key: '3' })
+  expect(screen.getByTestId('rb26-direction-c')).toHaveAttribute('aria-pressed', 'true')
+  await waitFor(() => expect(screen.queryByTestId('rd-raster')).toBeNull())
+})
 function openSheet() {
   const toggle = screen
     .getByTestId('rd-sheet')
