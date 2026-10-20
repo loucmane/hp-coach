@@ -237,7 +237,7 @@ The ids per screen are listed in `CONTRACT`:
 | 10 | `rd-prov-result`, `rd-prov-score`, `rd-prov-section-<sektion>`, `rd-prov-history`, `rd-prov-history-item-<n>` |
 | 11 | `rd-framsteg-prognosis` (+ the caveat on screen), `rd-framsteg-section-<sektion>`, `rd-framsteg-week`, `rd-framsteg-history`, `rd-framsteg-history-item-<n>` |
 | 12 | `rd-uppslag-section-<sektion>`, `rd-uppslag-entry-<id>` (at least the open lesson's section; opens a lesson), `rd-lesson` (the open lesson's title), `rd-lesson-read`, `rd-lesson-practice` |
-| 13 | `rd-konto-identity` (name and e-mail), `rd-konto-mode-<light\|dark>` (themes the stage: `actions.setTheme`, `actions.setPrefs({ mode })` or `onTheme`), `rd-konto-<palette\|font\|density\|coach>-<id>` (calls `setPrefs`), `rd-konto-export`, `rd-konto-delete` → `rd-konto-delete-confirm`, `rd-konto-signout` |
+| 13 | `rd-konto-identity` (name and e-mail), `rd-konto-mode-<light\|dark>` (themes the stage: `actions.setTheme`, `actions.setPrefs({ mode })` or `onTheme`), `rd-konto-<palette\|font\|density\|coach>-<id>` (calls `setPrefs`), `rd-konto-export`, `rd-konto-delete` → `rd-konto-delete-confirm` (optionally with `rd-konto-delete-word`, the typed-word input), `rd-konto-signout` |
 | 14 | `rd-elf-passage` (inside `lang="en"`), `rd-para-<n>`, `rd-badge` (outside the passage), `rd-note-toggle`, `rd-note`, `rd-option-<L>`, `rd-lock`, `rd-verdict`, `rd-exit` |
 
 `directionData.test.tsx` holds a minimal reference direction built on `useDirectionData()` and `useDrillCore` alone. It passes the contract for screens 5–14, so it shows both that the contract can be met and how to meet it. Its Konto themes through `actions.setTheme`, and two variants of it pass screen 13 through `setPrefs({ mode })` and through `onTheme`.
@@ -444,3 +444,7 @@ The bake-off switcher answers 1–8, 0 and ←/→ on the window. It leaves alon
 ### Controls a direction's spec leaves out
 
 A direction's merged spec may deliberately leave out a Konto control (screen 13): a preference group (`palette`, `font`, `density`, `coach`) or the account-deletion flow (`delete`). Declare it in the direction's `meta.ts` as `omits: { konto: ['palette', 'delete'] }`. The shared contract then checks that each omitted control is absent or visibly disabled (`disabled` or `aria-disabled="true"`) and that pressing it changes nothing, never silently inert, and checks every other control as before. Name the spec section that decides the omission in a comment next to it.
+
+### A delete that asks for the typed word
+
+The real app confirms account deletion only after the user types the exact word `radera` (`routes/konto.tsx`). A direction may reproduce this: give the input `data-testid="rd-konto-delete-word"`. When that input is present, the shared contract first checks that `rd-konto-delete-confirm` does not call `deleteAccount` before the word is typed, then types `radera` and expects the confirm to call it. A direction without the input keeps the plain two-step check (`rd-konto-delete`, then `rd-konto-delete-confirm`).
