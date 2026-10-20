@@ -5,9 +5,9 @@ import {
   type DirectionProps,
   useWebFonts,
 } from '@/components/devbake/redesign/r1Kit'
-import { LjuskaglaDrill } from './LjuskaglaDrill'
-import { LjuskaglaFrame, type ProvFlow } from './LjuskaglaNav'
-import type { FramePage } from './LjuskaglaParts'
+import { LjuskaglaDrill, LjuskaglaElf, NoQuestions } from './LjuskaglaDrill'
+import { type KontoFlow, LjuskaglaFrame, type ProvFlow } from './LjuskaglaNav'
+import type { FramePage, KontoVisit, ReadingLight } from './LjuskaglaParts'
 import { LjuskaglaProvRunner } from './LjuskaglaProvpass'
 import { LjuskaglaQuant } from './LjuskaglaQuant'
 import './ljuskagla.css'
@@ -19,6 +19,8 @@ const FRAME_PAGE: Partial<Record<AppScreenKey, FramePage>> = {
   9: 'provpass',
   10: 'resultat',
   11: 'framsteg',
+  12: 'uppslag',
+  13: 'konto',
 }
 
 export function Ljuskagla(props: DirectionProps) {
@@ -37,9 +39,16 @@ export function Ljuskagla(props: DirectionProps) {
   const [requested, setRequested] = useState<string | null>(null)
   const [aborted, setAborted] = useState(false)
   const [leftFor, setLeftFor] = useState<FramePage | null>(null)
+  // The paragraph light, one switch for the drills and Konto while
+  // Ljuskägla is open (local to this preview: nothing saves it).
+  const [spotlight, setSpotlight] = useState(true)
+  // How Konto was reached through the account menu: kept across the host's
+  // move to Konto (13), forgotten on any other move.
+  const [visit, setVisit] = useState<KontoVisit | null>(null)
   if (flowScreen !== screen) {
     setFlowScreen(screen)
     setLeftFor(null)
+    if (screen !== 13) setVisit(null)
     if (screen !== 9) {
       setRequested(null)
       setAborted(false)
@@ -58,8 +67,21 @@ export function Ljuskagla(props: DirectionProps) {
     },
     onCancel: () => setRequested(null),
   }
+  const konto: KontoFlow = {
+    visit,
+    onVisit: (section, from) => {
+      setVisit((old) => ({
+        from: from === 'konto' ? (old?.from ?? null) : from,
+        section,
+        at: (old?.at ?? 0) + 1,
+      }))
+      actions.openKonto()
+    },
+  }
+  const light: ReadingLight = { spotlight, onSpotlight: setSpotlight }
   const page: FramePage =
     requested != null || aborted ? 'provpass' : (leftFor ?? FRAME_PAGE[screen] ?? 'idag')
+  const quant = screen === 7 ? data.drills.dtk : data.drills.quant
   return (
     <div
       className="ljuskagla"
@@ -81,15 +103,34 @@ export function Ljuskagla(props: DirectionProps) {
           }}
         />
       ) : screen === 2 || screen === 3 ? (
-        <LjuskaglaDrill {...props} />
+        <LjuskaglaDrill {...props} light={light} />
+      ) : screen === 14 ? (
+        <LjuskaglaElf {...props} light={light} />
       ) : screen === 6 || screen === 7 ? (
-        <LjuskaglaQuant
-          key={screen}
-          {...props}
-          session={screen === 7 ? data.drills.dtk : data.drills.quant}
-        />
+        quant.questions.length === 0 ? (
+          <NoQuestions
+            section={screen === 7 ? 'DTK' : 'Kvant'}
+            theme={props.theme}
+            onTheme={props.onTheme}
+          />
+        ) : (
+          // A new session, or one whose questions change in number, opens
+          // fresh: the drill's place never points past its questions.
+          <LjuskaglaQuant
+            key={`${screen}:${quant.id}:${quant.questions.length}`}
+            {...props}
+            session={quant}
+          />
+        )
       ) : (
-        <LjuskaglaFrame key={`${screen}-${page}`} {...props} page={page} prov={prov} />
+        <LjuskaglaFrame
+          key={`${screen}-${page}`}
+          {...props}
+          page={page}
+          prov={prov}
+          konto={konto}
+          light={light}
+        />
       )}
     </div>
   )

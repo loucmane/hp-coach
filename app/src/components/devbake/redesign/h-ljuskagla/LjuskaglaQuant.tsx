@@ -1,388 +1,22 @@
-import {
-  ArrowRight,
-  Check,
-  ChevronDown,
-  ChevronUp,
-  Maximize2,
-  RotateCw,
-  X,
-  ZoomIn,
-  ZoomOut,
-} from 'lucide-react'
-import {
-  type KeyboardEvent as ReactKeyboardEvent,
-  type ReactNode,
-  type RefObject,
-  useCallback,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from 'react'
+import { ArrowRight, Check, ChevronDown, ChevronUp } from 'lucide-react'
+import { type ReactNode, useCallback, useEffect, useId, useRef, useState } from 'react'
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import { useDrillCore } from '@/components/devbake/redesign/drillCore'
 import { type DirectionProps, useKeyMap, useSheet } from '@/components/devbake/redesign/r1Kit'
-import type {
-  DrillFigure,
-  DrillQuestion,
-  DrillSessionView,
-} from '@/components/devbake/redesign/viewModel'
-import { splitKvaPrompt } from '@/components/drill/KvaPrompt'
+import type { DrillSessionView } from '@/components/devbake/redesign/viewModel'
 import { MathText } from '@/components/MathText'
-import { parseNogPrompt } from '@/lib/nogPrompt'
 import { LjuskaglaFeedback } from './LjuskaglaFeedback'
 import { DrillHead } from './LjuskaglaNav'
-import { AnswerRows } from './LjuskaglaParts'
-
-const MIN_ZOOM = 1
-const MAX_ZOOM = 4
-const ZOOM_STEP = 1.25
-
-/** A quant prompt in its parts: KVA's condition and two quantities, NOG's
- *  question, two statements and the line that leads into its options, or
- *  the prompt whole when it does not split (never cut). */
-type ProblemParts =
-  | { kind: 'kva'; condition: string; first: string; second: string }
-  | { kind: 'nog'; question: string; first: string; second: string; lead: string | null }
-  | { kind: 'whole'; text: string }
-
-function problemParts(question: DrillQuestion): ProblemParts {
-  const prompt = question.prompt ?? ''
-  if (question.section === 'KVA') {
-    const kva = splitKvaPrompt(prompt)
-    if (kva) return { kind: 'kva', condition: kva.condition, first: kva.kvI, second: kva.kvII }
-  }
-  if (question.section === 'NOG') {
-    const nog = parseNogPrompt(prompt)
-    if (nog) {
-      return {
-        kind: 'nog',
-        question: nog.question,
-        first: nog.statement1,
-        second: nog.statement2,
-        lead: nog.tail,
-      }
-    }
-  }
-  return { kind: 'whole', text: prompt }
-}
-
-/** The problem in one pool of light: the quantities, or both statements,
- *  side by side or stacked but always read together. */
-function Problem({ parts }: { parts: ProblemParts }) {
-  return (
-    <div className="lj-problem" data-testid="rd-quant-prompt">
-      {parts.kind === 'kva' ? (
-        <>
-          {parts.condition && (
-            <p className="lj-problem-text">
-              <MathText>{parts.condition}</MathText>
-            </p>
-          )}
-          <dl className="lj-quantities">
-            <div>
-              <dt>Kvantitet I</dt>
-              <dd>
-                <MathText>{parts.first}</MathText>
-              </dd>
-            </div>
-            <div>
-              <dt>Kvantitet II</dt>
-              <dd>
-                <MathText>{parts.second}</MathText>
-              </dd>
-            </div>
-          </dl>
-        </>
-      ) : parts.kind === 'nog' ? (
-        <>
-          <p className="lj-problem-text">
-            <MathText>{parts.question}</MathText>
-          </p>
-          <ol className="lj-statements">
-            <li>
-              <span className="lj-statement-label">(1)</span>
-              <span>
-                <MathText>{parts.first}</MathText>
-              </span>
-            </li>
-            <li>
-              <span className="lj-statement-label">(2)</span>
-              <span>
-                <MathText>{parts.second}</MathText>
-              </span>
-            </li>
-          </ol>
-        </>
-      ) : (
-        <p className="lj-problem-text">
-          <MathText>{parts.text}</MathText>
-        </p>
-      )}
-    </div>
-  )
-}
-
-/** The figure page at `zoom` × the box's width, upright or in quarter
- *  turns. The box takes the turned page's shape, so nothing is clipped. */
-function FigurePage({
-  figure,
-  rotation,
-  zoom = 1,
-  alt,
-}: {
-  figure: DrillFigure
-  rotation: number
-  zoom?: number
-  alt: string
-}) {
-  const ratio = figure.width / figure.height
-  const turned = rotation % 180 !== 0
-  return (
-    <div
-      className="lj-figure-page"
-      data-kind={figure.kind}
-      style={{ width: `${zoom * 100}%`, aspectRatio: String(turned ? 1 / ratio : ratio) }}
-    >
-      <img
-        src={`/${figure.src}`}
-        alt={alt}
-        width={figure.width}
-        height={figure.height}
-        draggable={false}
-        style={{
-          width: turned ? `${ratio * 100}%` : '100%',
-          height: turned ? `${100 / ratio}%` : '100%',
-          transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
-        }}
-      />
-    </div>
-  )
-}
-
-type FigureView = { src: string; rotation: number; zoom: number }
-
-/** The figure's turn and zoom. Questions on the same page keep them; a new
- *  page starts upright and fitted. */
-function useFigureView(figure: DrillFigure | null | undefined) {
-  const [kept, setKept] = useState<FigureView | null>(null)
-  const current: FigureView | null = figure
-    ? kept?.src === figure.src
-      ? kept
-      : { src: figure.src, rotation: 0, zoom: 1 }
-    : null
-  const rotate = () => {
-    if (current) setKept({ ...current, rotation: (current.rotation + 90) % 360 })
-  }
-  const zoomBy = (factor: number) => {
-    if (current) {
-      const zoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, current.zoom * factor))
-      setKept({ ...current, zoom: Math.round(zoom * 100) / 100 })
-    }
-  }
-  const fit = () => {
-    if (current) setKept({ ...current, zoom: 1 })
-  }
-  return { view: current, rotate, zoomBy, fit }
-}
-
-function FigurePane({
-  figure,
-  source,
-  block,
-  rotation,
-  onRotate,
-  onEnlarge,
-  enlargeRef,
-}: {
-  figure: DrillFigure
-  source: string
-  block: { n: number; total: number } | null
-  rotation: number
-  onRotate: () => void
-  onEnlarge: () => void
-  enlargeRef: RefObject<HTMLButtonElement | null>
-}) {
-  return (
-    <div className="lj-figure" data-testid="rd-figure">
-      <div className="lj-figure-head">
-        <p className="lj-eyebrow">Underlag · {source}</p>
-        {block && (
-          <p className="lj-figure-block">
-            Samma sida · fråga {block.n} av {block.total}
-          </p>
-        )}
-      </div>
-      <section
-        className="lj-figure-scroll"
-        // Arrows scroll the page here: the bake-off switcher leaves them alone.
-        data-rd-keyscope=""
-        // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrolling page must be reachable to scroll it with the keyboard
-        tabIndex={0}
-        aria-label="Underlaget. Rulla för att se hela sidan."
-      >
-        <FigurePage figure={figure} rotation={rotation} alt={figure.alt} />
-      </section>
-      <div className="lj-figure-tools">
-        <button type="button" className="lj-tool" ref={enlargeRef} onClick={onEnlarge}>
-          <Maximize2 size={18} aria-hidden />
-          <span>Förstora figur</span>
-        </button>
-        <button
-          type="button"
-          className="lj-tool"
-          aria-label="Rotera figuren 90 grader"
-          onClick={onRotate}
-        >
-          <RotateCw size={18} aria-hidden />
-          <span>Rotera</span>
-        </button>
-      </div>
-    </div>
-  )
-}
-
-/**
- * The enlarged figure, inside the direction (so its theme reaches it) and
- * over the whole drill: a dialog with its own close, zoom and turn. Focus
- * starts on Stäng and stays inside; Escape closes it and never the drill.
- */
-function FigureViewer({
-  figure,
-  source,
-  view,
-  onZoom,
-  onRotate,
-  onFit,
-  onClose,
-}: {
-  figure: DrillFigure
-  source: string
-  view: FigureView
-  onZoom: (factor: number) => void
-  onRotate: () => void
-  onFit: () => void
-  onClose: () => void
-}) {
-  const dialog = useRef<HTMLDivElement>(null)
-  const close = useRef<HTMLButtonElement>(null)
-  useEffect(() => close.current?.focus(), [])
-  const keys = useRef({ onZoom, onRotate, onClose })
-  keys.current = { onZoom, onRotate, onClose }
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.metaKey || e.ctrlKey || e.altKey) return
-      const k = keys.current
-      const handled =
-        e.key === 'Escape'
-          ? k.onClose
-          : e.key === '+' || e.key === '='
-            ? () => k.onZoom(ZOOM_STEP)
-            : e.key === '-'
-              ? () => k.onZoom(1 / ZOOM_STEP)
-              : e.key === 'r' || e.key === 'R'
-                ? k.onRotate
-                : null
-      if (!handled) return
-      e.preventDefault()
-      e.stopImmediatePropagation()
-      handled()
-    }
-    window.addEventListener('keydown', onKey, true)
-    return () => window.removeEventListener('keydown', onKey, true)
-  }, [])
-  const trap = (e: ReactKeyboardEvent) => {
-    if (e.key !== 'Tab' || !dialog.current) return
-    // One selector over every element keeps document order (a selector list
-    // need not, in every engine).
-    const stops = [...dialog.current.querySelectorAll<HTMLElement>('*')].filter((el) =>
-      el.matches('button:not(:disabled), [tabindex="0"]'),
-    )
-    const first = stops[0]
-    const last = stops[stops.length - 1]
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault()
-      last?.focus()
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault()
-      first?.focus()
-    }
-  }
-  return (
-    <div
-      className="lj-viewer"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Förstorat underlag"
-      data-testid="rd-figure-viewer"
-      data-rd-keyscope=""
-      ref={dialog}
-      onKeyDown={trap}
-    >
-      <header className="lj-viewer-head">
-        <p className="lj-eyebrow">Underlag · {source}</p>
-        <button type="button" className="lj-tool" ref={close} onClick={onClose}>
-          <X size={18} aria-hidden />
-          <span>Stäng</span>
-        </button>
-      </header>
-      <section
-        className="lj-viewer-scroll"
-        // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrolling page must be reachable to pan it with the keyboard
-        tabIndex={0}
-        aria-label="Det förstorade underlaget. Rulla för att panorera."
-      >
-        <FigurePage
-          figure={figure}
-          rotation={view.rotation}
-          zoom={view.zoom}
-          alt={`${figure.alt}, förstorat`}
-        />
-      </section>
-      <fieldset className="lj-viewer-tools" aria-label="Förstoring och vridning">
-        <button
-          type="button"
-          className="lj-tool"
-          aria-label="Zooma ut"
-          disabled={view.zoom <= MIN_ZOOM}
-          onClick={() => onZoom(1 / ZOOM_STEP)}
-        >
-          <ZoomOut size={18} aria-hidden />
-        </button>
-        <span className="lj-zoom-level" aria-live="polite">
-          {Math.round(view.zoom * 100)} %
-        </span>
-        <button
-          type="button"
-          className="lj-tool"
-          aria-label="Zooma in"
-          disabled={view.zoom >= MAX_ZOOM}
-          onClick={() => onZoom(ZOOM_STEP)}
-        >
-          <ZoomIn size={18} aria-hidden />
-        </button>
-        <button
-          type="button"
-          className="lj-tool"
-          aria-label="Rotera figuren 90 grader"
-          onClick={onRotate}
-        >
-          <RotateCw size={18} aria-hidden />
-          <span>Rotera</span>
-        </button>
-        <button type="button" className="lj-tool" disabled={view.zoom === 1} onClick={onFit}>
-          Hela bredden
-        </button>
-      </fieldset>
-    </div>
-  )
-}
-
-function minutes(seconds: number): string {
-  if (seconds < 60) return 'under en minut'
-  const m = Math.round(seconds / 60)
-  return `${m} ${m === 1 ? 'minut' : 'minuter'}`
-}
+import {
+  AnswerRows,
+  FigurePane,
+  FigureViewer,
+  minutesSpent,
+  problemParts,
+  QuantProblem,
+  useFigureGate,
+  useFigureView,
+} from './LjuskaglaParts'
 
 /**
  * A quantitative drill in focus mode, any question shape: XYZ with its
@@ -392,6 +26,13 @@ function minutes(seconds: number): string {
  * wider column with the question beside it (on a phone: the page first and
  * the question in a sheet). Select, then confirm; feedback takes the answer
  * column, and the problem or page stays in view.
+ *
+ * A question waits for the figures it needs — its page or diagram and every
+ * image option — before it can be answered: the rows, the letters, Svara and
+ * Enter all hold until each image mounted now has loaded (LjuskaglaParts'
+ * useFigureGate, as in a running pass). A page shared by consecutive
+ * questions stays ready; a new page, an image mounted afresh or a retry
+ * starts over. The enlarged viewer has its own image, outside the gate.
  */
 export function LjuskaglaQuant({
   session,
@@ -410,6 +51,7 @@ export function LjuskaglaQuant({
   const [accountOpen, setAccountOpen] = useState(false)
   const [viewerOpen, setViewerOpen] = useState(false)
   const figureView = useFigureView(view.question.figure)
+  const figures = useFigureGate(view.question)
   const enlargeRef = useRef<HTMLButtonElement>(null)
   const returnFocus = useRef(false)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -430,6 +72,8 @@ export function LjuskaglaQuant({
   const sameFigure = figure ? session.questions.filter((x) => x.figure?.src === figure.src) : []
   const block =
     sameFigure.length > 1 ? { n: sameFigure.indexOf(q) + 1, total: sameFigure.length } : null
+  // Only an open question waits: feedback and the receipt answer nothing.
+  const waiting = !feedback && !done && figures.blocked
 
   // A new question starts at the top; a verdict on a phone scrolls into view.
   // biome-ignore lint/correctness/useExhaustiveDependencies: index and phase reset the pane
@@ -457,19 +101,29 @@ export function LjuskaglaQuant({
     if (done) toOva()
     else if (feedback) act.next()
     else if (sheetMode && sheet.state === 'peek') sheet.setState('open')
-    else act.lock()
+    else if (!figures.blocked) act.lock()
   }
   const keys: Record<string, () => void> = { Enter: advance, ' ': advance }
   if (!feedback && !done) {
     for (const letter of letters) {
       keys[letter.toLowerCase()] = () => {
         if (sheetMode) sheet.setState('open')
-        act.select(letter)
+        if (!figures.blocked) act.select(letter)
       }
-      keys[`Shift+${letter.toLowerCase()}`] = () => act.toggleEliminate(letter)
+      keys[`Shift+${letter.toLowerCase()}`] = () => {
+        if (!figures.blocked) act.toggleEliminate(letter)
+      }
     }
   }
   useKeyMap(keys, props.live && !accountOpen && !viewerOpen)
+
+  const wait = waiting && (
+    <p className="lj-run-wait" role="status">
+      {figures.failed
+        ? 'En bild som frågan behöver kunde inte visas. Svaren går att välja när den har laddats.'
+        : 'Svaren går att välja när underlaget har laddats.'}
+    </p>
+  )
 
   const answers =
     q.options == null ? (
@@ -495,7 +149,10 @@ export function LjuskaglaQuant({
           act={act}
           testId="rd-quant-option"
           label={figureLed ? 'Svarsalternativ' : lead}
+          figures={figures}
+          blocked={figures.blocked}
         />
+        {wait}
       </>
     )
 
@@ -506,7 +163,7 @@ export function LjuskaglaQuant({
         type="button"
         className="lj-primary"
         data-testid={feedback ? 'rd-next' : 'rd-lock'}
-        disabled={!feedback && !view.selected}
+        disabled={!feedback && (!view.selected || figures.blocked)}
         onClick={feedback ? () => act.next() : () => act.lock()}
       >
         <span>
@@ -526,6 +183,7 @@ export function LjuskaglaQuant({
 
   const figurePane = figure && figureView.view && (
     <FigurePane
+      key={figures.key('figure', figure.src)}
       figure={figure}
       source={q.source.label}
       block={block}
@@ -533,6 +191,9 @@ export function LjuskaglaQuant({
       onRotate={figureView.rotate}
       onEnlarge={() => setViewerOpen(true)}
       enlargeRef={enlargeRef}
+      img={figures.img('figure', figure.src)}
+      load={figures.status('figure', figure.src)}
+      onRetry={() => figures.retry('figure', figure.src)}
     />
   )
   const eyebrow = (
@@ -550,7 +211,7 @@ export function LjuskaglaQuant({
         <h1>En stund som räknas.</h1>
         <p>
           {view.results.filter((result) => result.correct).length} av {view.total} rätt ·{' '}
-          {minutes(view.elapsed)}
+          {minutesSpent(view.elapsed)}
         </p>
         <p>{session.title}</p>
         <button className="lj-primary" type="button" data-testid="rd-done-next" onClick={toOva}>
@@ -615,7 +276,7 @@ export function LjuskaglaQuant({
       <div className="lj-quant-phone">
         <div className="lj-quant-scroll" ref={scrollRef}>
           {eyebrow}
-          <Problem parts={parts} />
+          <QuantProblem parts={parts} testId="rd-quant-prompt" />
           {figurePane}
           <div className="lj-quant-answers" ref={answersRef}>
             {answers}
@@ -629,7 +290,7 @@ export function LjuskaglaQuant({
       <div className="lj-quant-layout">
         <div className="lj-problem-column" key={q.qid}>
           {eyebrow}
-          <Problem parts={parts} />
+          <QuantProblem parts={parts} testId="rd-quant-prompt" />
           <p className="lj-problem-source">{q.source.label}</p>
           {figurePane}
         </div>
