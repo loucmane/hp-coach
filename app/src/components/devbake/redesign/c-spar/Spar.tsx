@@ -1,19 +1,29 @@
 // C · Spår — an expressive learning path. The direction's root: it injects
 // Bricolage Grotesque + Figtree, scopes the token set (spar.css) to its own
-// data attribute, keeps the calm-mode switch and routes the four screens:
+// data attribute, keeps the calm-mode switch and routes the screens:
 //   1 Idag        — the M3 expandable rail (phone: navigation bar) around
 //                   Home, where the day is a vertical path of steps
 //   2 Läsfråga    — one reading column; the question in a tray docked below
 //   3 Facit       — the tray risen into a feedback sheet over half the page
 //   4 Navigering  — the rail expanded into a drawer with the account menu
 //                   open (phone: the account sheet open)
+//   5 Öva         — the practice hub: the ripe misses as a station, the
+//                   eight sections in their two halves
+//   6 Kvantfråga  — a short problem on its own card, the tray following it
+//   7 DTK         — the printed page on a white mat in the wide column
+//   8 Repetera    — Öva's sub-page: the misses as a vertical stig
 //
 // Guided and colourful, but bounded for a reader who loses focus easily:
 // colour tints headers, chips and path nodes only; nothing moves while
 // reading; "Lugnt läge" (a visible switch on Home and in the drill) turns
 // the springs, most of the colour and the extra numbers off.
+//
+// Kit v2: every screen reads useDirectionData() and asks the host through
+// its actions (a destination, a drill, Repetera, the account); round 1's
+// own moves between screens 1–4 keep using onScreen.
 
 import {
+  ArrowLeft,
   CircleQuestionMark,
   Leaf,
   LogOut,
@@ -23,10 +33,10 @@ import {
   Settings,
   UserRound,
 } from 'lucide-react'
-import { type ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 
 import './spar.css'
-import { OVA_DUE } from '@/components/devbake/redesign/r1Fixtures'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
   DESTINATIONS,
   type Destination,
@@ -35,38 +45,23 @@ import {
   useDismiss,
   useWebFonts,
 } from '@/components/devbake/redesign/r1Kit'
-import { SparDrill } from './SparDrill'
+import { type Calm, SparDrill } from './SparDrill'
 import { SparHome } from './SparHome'
+import { SparOva } from './SparOva'
+import { SparQuant } from './SparQuant'
+import { SparRepetera } from './SparRepetera'
 import { Mark, NAV_ICONS } from './sparParts'
 
 const FONTS =
   'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Figtree:ital,wght@0,300..900;1,300..900&display=swap'
 
-type Calm = { calm: boolean; setCalm: (calm: boolean) => void }
-
 export function Spar(props: DirectionProps) {
   useWebFonts('spar', FONTS)
+  // Lugnt läge lasts while the direction is mounted: every screen it
+  // routes shares it (the kit has no setting to keep it in yet).
   const [calm, setCalm] = useState(false)
-  // The destination lives here so the end of a unit can send the reader
-  // straight on (Repetition lives in Öva). A switch made in the bake-off's
-  // own switcher lands on Idag.
-  const [dest, setDest] = useState<Destination>('idag')
-  const pending = useRef<Destination | null>(null)
-  // biome-ignore lint/correctness/useExhaustiveDependencies: runs on every screen change, by design
-  useLayoutEffect(() => {
-    setDest(pending.current ?? 'idag')
-    pending.current = null
-  }, [props.screen])
-  const { onScreen } = props
-  const goFromDrill = useCallback(
-    (d: Destination) => {
-      pending.current = d
-      onScreen(1)
-    },
-    [onScreen],
-  )
-
-  const drill = props.screen === 2 || props.screen === 3
+  const reading = props.screen === 2 || props.screen === 3
+  const quant = props.screen === 6 || props.screen === 7
   return (
     <div
       data-rd="spar"
@@ -77,13 +72,26 @@ export function Spar(props: DirectionProps) {
       data-testid="rd-spar"
       lang="sv"
     >
-      {drill ? (
-        <SparDrill {...props} calm={calm} setCalm={setCalm} onGo={goFromDrill} />
+      {reading ? (
+        <SparDrill {...props} calm={calm} setCalm={setCalm} />
+      ) : quant ? (
+        <SparQuant key={props.screen} {...props} calm={calm} setCalm={setCalm} />
       ) : (
-        <SparFrame {...props} calm={calm} setCalm={setCalm} dest={dest} setDest={setDest} />
+        <SparFrame {...props} calm={calm} setCalm={setCalm} />
       )}
     </div>
   )
+}
+
+/** The destination a frame screen belongs to (Repetera lives in Öva). */
+function destOf(screen: DirectionProps['screen']): Destination {
+  return screen === 5 || screen === 8 ? 'ova' : 'idag'
+}
+
+const PAGE_NAMES: Record<string, string> = {
+  idag: 'Idag',
+  ova: 'Öva',
+  repetera: 'Repetition',
 }
 
 function SparFrame({
@@ -95,15 +103,18 @@ function SparFrame({
   onTheme,
   calm,
   setCalm,
-  dest,
-  setDest,
-}: DirectionProps & Calm & { dest: Destination; setDest: (d: Destination) => void }) {
+}: DirectionProps & Calm) {
+  const { data, actions } = useDirectionData()
   // Screen 4 shows the frame's other state: the rail expanded, menu open.
   const [expanded, setExpanded] = useState(screen === 4)
   const [menu, setMenu] = useState(screen === 4)
+  // The host decides the screen; the frame keeps its own destination too,
+  // so a host that does not navigate (a test, a preview) still moves.
+  const [dest, setDest] = useState<Destination>(() => destOf(screen))
   useEffect(() => {
     setExpanded(screen === 4)
     setMenu(screen === 4)
+    setDest(destOf(screen))
   }, [screen])
 
   // ⌘B / Ctrl+B expands and folds the rail, as in the live app.
@@ -123,21 +134,50 @@ function SparFrame({
     (d: Destination) => {
       setMenu(false)
       setDest(d)
+      actions.go(d)
     },
-    [setDest],
+    [actions],
   )
   const closeMenu = useCallback(() => setMenu(false), [])
 
+  const pageKey =
+    dest === 'idag' ? 'idag' : dest === 'ova' ? (screen === 8 ? 'repetera' : 'ova') : dest
+  // A new page puts focus on its title (not on the frame's first mount).
+  const scrollRef = useRef<HTMLElement>(null)
+  const firstPage = useRef(true)
+  // The phone's app bar takes the page's name once its title scrolls away.
+  const [titled, setTitled] = useState(false)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: a page change only
+  useEffect(() => {
+    setTitled(false)
+    if (firstPage.current) {
+      firstPage.current = false
+      return
+    }
+    if (!live) return
+    const title = scrollRef.current?.querySelector<HTMLElement>('h1')
+    if (!title) return
+    if (!title.hasAttribute('tabindex')) title.setAttribute('tabindex', '-1')
+    title.focus({ preventScroll: true })
+  }, [pageKey])
+
   const page =
-    dest === 'idag' ? (
+    pageKey === 'idag' ? (
       <SparHome
         width={width}
         live={live && !menu}
         calm={calm}
         setCalm={setCalm}
-        onResume={() => onScreen(2)}
+        onResume={() => {
+          actions.resume()
+          onScreen(2)
+        }}
         onGo={go}
       />
+    ) : pageKey === 'ova' ? (
+      <SparOva width={width} live={live && !menu} />
+    ) : pageKey === 'repetera' ? (
+      <SparRepetera width={width} live={live && !menu} />
     ) : (
       <SparStub dest={dest} />
     )
@@ -154,18 +194,38 @@ function SparFrame({
       labelled={anchor === 'rail' && expanded}
     />
   )
+  const due = data.home.ovaDue > 0
 
   if (width === 'phone') {
     return (
       <div className="sp-phone">
-        <header className="sp-appbar">
-          <span className="sp-brand">
-            <Mark size={32} />
-            <span className="sp-brand-name">HP-Coach</span>
-          </span>
+        <header className="sp-appbar" data-titled={String(titled)}>
+          {pageKey === 'repetera' ? (
+            <button type="button" className="sp-link sp-appbar-back" onClick={() => go('ova')}>
+              <ArrowLeft size={18} strokeWidth={2.25} aria-hidden />
+              Öva
+            </button>
+          ) : (
+            <span className="sp-brand">
+              <Mark size={32} />
+              <span className="sp-brand-name">HP-Coach</span>
+              {PAGE_NAMES[pageKey] ? (
+                <span className="sp-appbar-title" aria-hidden>
+                  {PAGE_NAMES[pageKey]}
+                </span>
+              ) : null}
+            </span>
+          )}
           {account('sheet')}
         </header>
-        <div className="sp-pscroll" key={dest}>
+        <div
+          className="sp-pscroll"
+          key={pageKey}
+          ref={(el) => {
+            scrollRef.current = el
+          }}
+          onScroll={(e) => setTitled(e.currentTarget.scrollTop > 88)}
+        >
           <div className={live ? 'sp-enter' : undefined}>{page}</div>
         </div>
         <nav className="sp-navbar" aria-label="Huvudmeny">
@@ -180,7 +240,7 @@ function SparFrame({
             >
               <span className="sp-ind">
                 {NAV_ICONS[d.id](22)}
-                {d.id === 'ova' ? <DueDot /> : null}
+                {d.id === 'ova' && due ? <DueDot /> : null}
               </span>
               <span className="sp-navbar-label">{d.label}</span>
             </button>
@@ -226,7 +286,7 @@ function SparFrame({
             >
               <span className="sp-ind">
                 {NAV_ICONS[d.id](22)}
-                {d.id === 'ova' ? <DueDot /> : null}
+                {d.id === 'ova' && due ? <DueDot /> : null}
               </span>
               <span className="sp-rail-label">{d.label}</span>
             </button>
@@ -234,7 +294,13 @@ function SparFrame({
         </div>
         <div className="sp-rail-foot">{account('rail')}</div>
       </nav>
-      <main className="sp-main" key={dest}>
+      <main
+        className="sp-main"
+        key={pageKey}
+        ref={(el) => {
+          scrollRef.current = el
+        }}
+      >
         <div className={live ? 'sp-enter' : undefined}>{page}</div>
       </main>
     </div>
@@ -271,15 +337,24 @@ function Account({
   anchor: 'rail' | 'sheet'
   labelled: boolean
 }) {
+  const { actions } = useDirectionData()
   const ref = useRef<HTMLDivElement>(null)
   useDismiss(open, close, ref)
+  const then = (action: () => void) => () => {
+    close()
+    action()
+  }
   const items = (
     <>
-      <MenuItem icon={<UserRound size={20} strokeWidth={2} />} label="Konto" onClick={close} />
+      <MenuItem
+        icon={<UserRound size={20} strokeWidth={2} />}
+        label="Konto"
+        onClick={then(actions.openKonto)}
+      />
       <MenuItem
         icon={<Settings size={20} strokeWidth={2} />}
         label="Inställningar"
-        onClick={close}
+        onClick={then(actions.openKonto)}
       />
       <MenuSwitch
         icon={<Moon size={20} strokeWidth={2} />}
@@ -302,7 +377,11 @@ function Account({
         onClick={close}
       />
       <hr className="sp-menu-sep" />
-      <MenuItem icon={<LogOut size={20} strokeWidth={2} />} label="Logga ut" onClick={close} />
+      <MenuItem
+        icon={<LogOut size={20} strokeWidth={2} />}
+        label="Logga ut"
+        onClick={then(actions.signOut)}
+      />
     </>
   )
   const head = (
@@ -426,6 +505,8 @@ function MenuSwitch({
   )
 }
 
+/** A destination this direction has not built yet. The bake-off shows its
+ *  own card for it; this page stands in for a host that does not move. */
 function SparStub({ dest }: { dest: Destination }) {
   const d = DESTINATIONS.find((x) => x.id === dest) ?? DESTINATIONS[0]
   return (
@@ -433,18 +514,12 @@ function SparStub({ dest }: { dest: Destination }) {
       <span className="sp-stub-blob" aria-hidden>
         {NAV_ICONS[dest](34)}
       </span>
-      <h1 className="sp-display" id="sp-stub-h">
+      <h1 className="sp-display" id="sp-stub-h" tabIndex={-1}>
         {d.label}
       </h1>
       <p className="sp-lede">{d.blurb}</p>
-      {dest === 'ova' ? (
-        <p className="sp-stub-due">
-          <b>{OVA_DUE} missar</b> väntar i Repetera, de äldsta först.
-        </p>
-      ) : null}
       <p className="sp-stub-note">
-        Den här sidan byggs i omgång 2, när en riktning är vald. Menyn och kontot fungerar redan
-        härifrån.
+        Den här sidan är inte byggd än i Spår. Menyn och kontot fungerar redan härifrån.
       </p>
     </section>
   )
