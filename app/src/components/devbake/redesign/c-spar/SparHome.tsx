@@ -67,7 +67,9 @@ export function SparHome({
   const date = today.dateLabel.toLocaleLowerCase('sv-SE')
   // Kept as round 1 wrote it (the same text pieces render the same).
   const lede =
-    resume && resume.minutesLeft == null ? (
+    !resume && !lead ? (
+      <>Dagens plan är klar. Välj själv om du vill öva mer.</>
+    ) : resume && resume.minutesLeft == null ? (
       <>
         {cap(inWords(steps))} steg. Planen tar ungefär {plan.minutes} minuter.
       </>
@@ -140,7 +142,12 @@ function Path({
           <span className="sp-node-mark" aria-hidden>
             {i + offset}
           </span>
-          <button type="button" className="sp-step" onClick={() => actions.openPlanItem(item.id)}>
+          <button
+            type="button"
+            className="sp-step"
+            disabled={item.completed}
+            onClick={() => actions.openPlanItem(item.id)}
+          >
             <span className="sp-step-main">
               <span className="sp-step-title">
                 {item.title}
@@ -149,8 +156,8 @@ function Path({
               <span className="sp-step-why">{item.rationale}</span>
             </span>
             <span className="sp-step-side">
-              {item.primary ? <span className="sp-next-chip">Nästa</span> : null}
-              <span className="sp-step-min">{item.minutes} min</span>
+              {item.primary && !item.completed ? <span className="sp-next-chip">Nästa</span> : null}
+              <span className="sp-step-min">{item.completed ? 'Klar' : `${item.minutes} min`}</span>
               <ChevronRight size={18} strokeWidth={2} aria-hidden />
             </span>
           </button>
@@ -163,7 +170,9 @@ function Path({
         <p className="sp-goal">
           <b>Klart för idag</b>
           <span>
-            {`Efter ${inWords(steps)} steg är dagen klar. Hinner du inte allt flyttas resten till imorgon.`}
+            {!resume && !lead
+              ? 'Dagens plan är klar.'
+              : `Efter ${inWords(steps)} steg är dagen klar. Hinner du inte allt flyttas resten till imorgon.`}
           </span>
         </p>
       </li>

@@ -21,6 +21,22 @@
 // Avsluta Idag), and the controller hears every move too. The conversation
 // pieces — the options, the action bar, the reply tray — are shared with
 // Kvantfråga and DTK (SamtalQuant).
+//
+// ELF-läsfråga (14, SamtalElf) is the same composition on drills.elf, with
+// no switcher steps: the answer opens its Facit in place, Avsluta is the
+// controller's, and the set ends with Till Öva or the plan's next part. The
+// English text stays a calm Lora document marked lang="en" (title, byline
+// and paragraphs), and the question, the options and the explanation's own
+// words are English in place (ContentLang) while the coach's turns, labels
+// and replies stay Swedish. A gap item (no stem) is "Lucka N", its gap
+// marked in the text. A question without its text, stem or options cannot
+// be answered and offers Till Öva; a figure or option image it needs holds
+// the answer while it loads and stops it if it fails, with a real retry.
+// Each image counts where it is mounted: one the phone's tray mounts anew
+// (the open tray after the peek, the tray folded and opened again) or a
+// later question shows again is waited for again, unless the browser
+// already holds it, while an image that stays on screen keeps its load.
+// A new sitting, or a deck that changes under the drill, opens fresh.
 
 import { ChevronDown, ChevronUp, CircleSlash, Clock, Info, Pilcrow, Undo2, X } from 'lucide-react'
 import {
@@ -30,6 +46,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useLayoutEffect,
   useRef,
   useState,
@@ -53,8 +70,14 @@ import {
   useHideOnScroll,
   useKeyMap,
   useSheet,
+  type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
-import type { DrillSessionView, PlanItemView } from '@/components/devbake/redesign/viewModel'
+import type {
+  DrillFigure,
+  DrillQuestion,
+  DrillSessionView,
+  PlanItemView,
+} from '@/components/devbake/redesign/viewModel'
 import { MathText } from '@/components/MathText'
 import {
   Closing,
@@ -66,7 +89,20 @@ import {
   Verdict,
   YourAnswer,
 } from './SamtalFeedback'
-import { Coach, Dots, FigureLoadsContext, Kbd, Replies } from './SamtalParts'
+import {
+  Coach,
+  type ContentLang,
+  ContentLangContext,
+  Divider,
+  Dots,
+  En,
+  FigureImg,
+  type FigureLoads,
+  FigureLoadsContext,
+  Kbd,
+  Replies,
+  useFigureLoadState,
+} from './SamtalParts'
 
 /** The document head's height (samtal.css .sa-doc-head). */
 const DOC_HEAD = 56
@@ -95,6 +131,10 @@ export type DrillChrome = {
   /** What the answer waits for (a figure it needs, still loading), or
    *  null: said calmly, with no way out, since it passes by itself. */
   waiting: string | null
+  /** Each mounted image is a load of its own (ELF): an option's image the
+   *  tray folds away, or the next question shows again, is waited for
+   *  again where it is mounted anew, unless the browser already holds it. */
+  fresh?: boolean
   /** The way back while the answer cannot be sent ("Till Öva"). */
   out?: { label: string; onClick: () => void }
   /** A passage beside the thread: the action bar names the focus key. */
@@ -239,8 +279,9 @@ export function optionImagesFailed(letters: readonly string[]): string {
 /** The options as replies in your lane, each with its strike control
  *  inside the card. Chosen, an option takes your turn's tint and corner.
  *  Only the letters the question has: four, five, or none. In the quant
- *  drill an option's image reports its load, and one that failed says so
- *  under the options, with a real retry. */
+ *  drill and ELF an option's image reports its load (in ELF each image as
+ *  it is mounted, c.fresh), and one that failed says so under the options,
+ *  with a real retry. */
 export function Options({ c }: { c: DrillChrome }) {
   const { view, act, optionId } = c
   const loads = useContext(FigureLoadsContext)
@@ -278,7 +319,7 @@ export function Options({ c }: { c: DrillChrome }) {
                     Alternativ {o.letter}
                     {out ? ', struket' : ''}:{' '}
                   </span>
-                  <OptionBody option={o} loads={loads} />
+                  <OptionBody option={o} loads={loads} fresh={c.fresh} />
                 </span>
               </button>
               <button
@@ -626,10 +667,18 @@ type ReadingChrome = DrillChrome & {
   setNote: (open: boolean) => void
   focusOn: boolean
   toggleFocus: () => void
+  /** The passage's test id: rd-passage (LÄS) or rd-elf-passage (ELF). */
+  passageId: 'rd-passage' | 'rd-elf-passage'
+  /** The section, said with the place ("ELF · Fråga 1 av 1"). */
+  prefix?: string
   /** The set's end: its name, the way out and the plan's next part. */
   title: string
+  /** 'en' when the set's name is an English text's own title. */
+  titleLang?: 'en'
   clock: boolean
   next: PlanItemView | null
+  /** The quiet way out at the set's end ("Till Idag", "Till Öva"). */
+  outLabel: string
   onOut: () => void
   onNext: () => void
 }
@@ -717,9 +766,11 @@ export function SamtalDrill({ screen, width, live, onScreen }: DirectionProps) {
     setNote,
     focusOn,
     toggleFocus,
+    passageId: 'rd-passage',
     title: splitTitle(view.question.passage?.title ?? session.title)[0],
     clock: session.elapsedSeconds != null,
     next,
+    outLabel: 'Till Idag',
     onOut,
     onNext,
   }
@@ -731,13 +782,241 @@ function ReadingClosing({ c, ref }: { c: ReadingChrome; ref?: Ref<HTMLElement> }
     <Closing
       view={c.view}
       title={c.title}
+      titleLang={c.titleLang}
       divider="Texten är läst"
       clock={c.clock}
-      out={{ label: 'Till Idag', onClick: c.onOut }}
+      out={{ label: c.outLabel, onClick: c.onOut }}
       next={c.next}
       onNext={c.onNext}
       ref={ref}
     />
+  )
+}
+
+// ── ELF-läsfråga ─────────────────────────────────────────────────────
+
+/** A gap item: an ELF question whose stem is empty (the kit's '') — the gap
+ *  in the text is the question. A missing stem (null) is not a gap. */
+export function isGap(q: DrillQuestion): boolean {
+  return q.section === 'ELF' && q.prompt != null && q.prompt.trim() === ''
+}
+
+/** Why a reading question cannot be answered yet, or null. Its text, its
+ *  stem (a gap item has none, rightly) and its options are needed; so are a
+ *  figure and option images it carries: one still loading is a wait, said
+ *  calmly, which passes by itself; one that failed stops the answer until a
+ *  retry brings it back. */
+function readingBlock(
+  q: DrillQuestion,
+  loads: FigureLoads,
+): { reason: string; wait: boolean } | null {
+  const stop = (reason: string) => ({ reason, wait: false })
+  if (!q.passage?.paragraphs.some((p) => p.trim())) {
+    return stop('Texten saknas, så frågan kan inte besvaras.')
+  }
+  if (!isGap(q) && !q.prompt?.trim())
+    return stop('Frågetexten saknas, så frågan kan inte besvaras.')
+  if (!q.options?.length) return stop('Frågan saknar svarsalternativ och kan inte besvaras här.')
+  const figure = q.figure ? loads.status(q.figure.src) : 'ready'
+  const images = q.options.flatMap((o) =>
+    o.figure ? [{ letter: o.letter, status: loads.status(o.figure.src) }] : [],
+  )
+  const failed = images.filter((i) => i.status === 'error').map((i) => i.letter)
+  if (figure === 'error') return stop('Figuren gick inte att ladda, så frågan kan inte besvaras.')
+  if (failed.length) return stop(`${optionImagesFailed(failed)}, så frågan kan inte besvaras.`)
+  if (figure === 'loading') {
+    return { reason: 'Figuren laddas – du kan svara när den syns.', wait: true }
+  }
+  if (images.some((i) => i.status === 'loading')) {
+    return {
+      reason: 'Bilderna till svarsalternativen laddas – du kan svara när de syns.',
+      wait: true,
+    }
+  }
+  return null
+}
+
+/** Screen 14: the ELF sitting. A sitting without questions says so, with
+ *  Öva as the way on. A new sitting, or another deck of questions under the
+ *  same screen, opens fresh: the drill core keeps its place only in the
+ *  questions it started with. */
+export function SamtalElf({ width, live }: DirectionProps) {
+  const { data, actions } = useDirectionData()
+  const session = data.drills.elf
+  if (!session.questions.length) {
+    return (
+      <NoReading title={session.title} width={width} live={live} onOut={() => actions.go('ova')} />
+    )
+  }
+  const deck = `${session.id}:${session.questions.map((q) => q.qid).join('|')}`
+  return <ElfDrill key={deck} width={width} live={live} session={session} />
+}
+
+/** A sitting without questions: the coach says so, and the one way on is
+ *  Öva — no drill, no made-up text. */
+function NoReading({
+  title,
+  width,
+  live,
+  onOut,
+}: {
+  title: string
+  width: WidthKey
+  live: boolean
+  onOut: () => void
+}) {
+  const headingId = useId()
+  useKeyMap({ Enter: onOut }, live)
+  const turn = (
+    <div className="sa-closing">
+      <Divider>{title}</Divider>
+      <div className="sa-thread">
+        <Coach as="section" kind="sa-turn--lead" aria-labelledby={headingId}>
+          <h1 className="sa-lead-q" id={headingId}>
+            Det finns ingen text att läsa här just nu.
+          </h1>
+          <p className="sa-say sa-say--quiet">Välj något annat att öva på i Öva.</p>
+        </Coach>
+        <Replies>
+          <button type="button" className="sa-chip sa-chip--primary sa-chip--big" onClick={onOut}>
+            Till Öva
+            <Kbd>↵</Kbd>
+          </button>
+        </Replies>
+      </div>
+    </div>
+  )
+  return width === 'phone' ? (
+    <div className="sa-pdrill" data-phase="done">
+      <div className="sa-pdone">{turn}</div>
+    </div>
+  ) : (
+    <div className="sa-drill" data-phase="done">
+      <div className="sa-done-scroll">
+        <div className="sa-col">{turn}</div>
+      </div>
+    </div>
+  )
+}
+
+/** The ELF drill: the reading composition with no switcher steps. The
+ *  answer opens its Facit in place, Nästa the next question, Avsluta is the
+ *  controller's way out; the end offers the plan's next part (never a done
+ *  one) or Till Öva. */
+function ElfDrill({
+  width,
+  live,
+  session,
+}: {
+  width: WidthKey
+  live: boolean
+  session: DrillSessionView
+}) {
+  const { data, actions } = useDirectionData()
+  const { view, act, refs } = useDrillCore({
+    questions: session.questions,
+    explanations: session.explanations,
+    start: session.start,
+    elapsed: session.elapsedSeconds,
+    controller: actions.drill,
+    live,
+  })
+  const [note, setNote] = useState(false)
+  const [active, point] = useState<string | null>(null)
+  const folds = useFolds(view, act)
+  // A new question starts with nothing pointed at.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: reset on a new question only
+  useEffect(() => {
+    point(null)
+  }, [view.index])
+  // Per source — a figure or an option's image: load status and retries.
+  const loads = useFigureLoadState()
+
+  const q = view.question
+  const block = readingBlock(q, loads)
+  const moved = useRef(false)
+  // Nothing is graded while the question cannot be answered, or while a
+  // figure it needs is still loading: not by Svara, not by Enter.
+  const lock = () => {
+    if (block) return false
+    moved.current = true
+    return act.lock()
+  }
+  const nextQuestion = () => {
+    moved.current = true
+    return act.next()
+  }
+  const focusOn = view.focusPara != null
+  const toggleFocus = () => act.setFocusPara(focusOn ? null : 1)
+  const plan = data.home.plan
+  const next = plan.allComplete ? null : nextPlanItem(plan.items)
+  const toOva = () => actions.go('ova')
+  const onNext = () => (next ? actions.openPlanItem(next.id) : toOva())
+
+  const advance = () => {
+    if (view.phase === 'question') lock()
+    else if (view.phase === 'feedback') nextQuestion()
+    else onNext()
+  }
+  const keys: Record<string, () => void> = {
+    Enter: advance,
+    j: () => act.moveFocusPara(1),
+    k: () => act.moveFocusPara(-1),
+    f: toggleFocus,
+    // Esc never leaves the drill: it only lets go of the paragraph focus.
+    Escape: () => act.setFocusPara(null),
+  }
+  // Space moves on once answered; while reading it scrolls the text.
+  if (view.phase !== 'question') keys[' '] = advance
+  for (const letter of view.letters) {
+    const l = letter.toLowerCase()
+    keys[l] = () => act.select(letter)
+    keys[`Shift+${l}`] = () => act.toggleEliminate(letter)
+  }
+  useKeyMap(keys, live)
+
+  const passage = q.passage
+  // ELF is English: the text, the question, the options and the
+  // explanation. The coach's words around them stay Swedish.
+  const lang: ContentLang = passage?.lang === 'en' || q.section === 'ELF' ? 'en' : undefined
+  const chrome: ReadingChrome = {
+    view,
+    act: { ...act, lock, next: nextQuestion },
+    refs,
+    live,
+    folds,
+    moved,
+    active,
+    point,
+    lures: luresFor(q.section),
+    frameworks: data.frameworks,
+    optionId: 'rd-option',
+    blocked: block && !block.wait ? block.reason : null,
+    waiting: block?.wait ? block.reason : null,
+    fresh: true,
+    out: { label: 'Till Öva', onClick: toOva },
+    focusAid: (passage?.paragraphs.length ?? 0) > 0,
+    lastLabel: 'Slutför texten',
+    note,
+    setNote,
+    focusOn,
+    toggleFocus,
+    passageId: 'rd-elf-passage',
+    prefix: q.section,
+    title: passage?.title ? splitTitle(passage.title)[0] : session.title,
+    titleLang: passage?.title && lang ? lang : undefined,
+    clock: session.elapsedSeconds != null,
+    next,
+    outLabel: 'Till Öva',
+    onOut: toOva,
+    onNext,
+  }
+  return (
+    <ContentLangContext.Provider value={lang}>
+      <FigureLoadsContext.Provider value={loads}>
+        {width === 'phone' ? <PhoneDrill {...chrome} /> : <DeskDrill {...chrome} />}
+      </FigureLoadsContext.Provider>
+    </ContentLangContext.Provider>
   )
 }
 
@@ -801,7 +1080,7 @@ function DeskDrill(c: ReadingChrome) {
     <div className="sa-drill">
       <header className="sa-strip">
         <ExitButton act={act} />
-        <StripProgress view={view} clock={c.clock} />
+        <StripProgress view={view} prefix={c.prefix} clock={c.clock} />
       </header>
       <div className="sa-dbody">
         <DocPanel c={c} ref={docRef} />
@@ -818,7 +1097,14 @@ function DeskDrill(c: ReadingChrome) {
   )
 }
 
+/** The coach's question: its place, then the question in the text's own
+ *  language (En), or — for a gap item, which has no stem — "Lucka N" and
+ *  what to do. A figure the question carries stands under it (only where
+ *  the drill waits for its figures). */
 function QuestionTurn({ view, ref }: { view: DrillCoreView; ref?: Ref<HTMLElement> }) {
+  const q = view.question
+  const loads = useContext(FigureLoadsContext)
+  const gap = isGap(q)
   return (
     <Coach
       as="section"
@@ -830,9 +1116,55 @@ function QuestionTurn({ view, ref }: { view: DrillCoreView; ref?: Ref<HTMLElemen
     >
       <p className="sa-turn-label">Fråga {view.index + 1}</p>
       <h2 className="sa-q" id="sa-q">
-        <MathText>{view.question.prompt}</MathText>
+        {gap ? (
+          `Lucka ${q.number}`
+        ) : q.prompt?.trim() ? (
+          <En>
+            <MathText>{q.prompt}</MathText>
+          </En>
+        ) : (
+          'Frågetexten saknas.'
+        )}
       </h2>
+      {gap && view.phase === 'question' ? (
+        <p className="sa-say sa-say--quiet">
+          Välj det alternativ som passar i lucka {q.number} i texten.
+        </p>
+      ) : null}
+      {q.figure && loads ? <TurnFigure figure={q.figure} loads={loads} /> : null}
     </Coach>
+  )
+}
+
+/** A figure in the coach's question, on its paper plate. The answer waits
+ *  for it while it loads (readingBlock); if it fails, it says so in place
+ *  with a real retry. Another source, or a retry, is a new image, and so is
+ *  each image mounted anew (fresh): the peek's figure is waited for again
+ *  in the open tray, unless the browser already holds it. */
+function TurnFigure({ figure, loads }: { figure: DrillFigure; loads: FigureLoads }) {
+  const { src } = figure
+  if (loads.status(src) === 'error') {
+    return (
+      <div className="sa-problem-missing sa-problem-failed" role="alert">
+        <p>Figuren gick inte att ladda.</p>
+        <button type="button" className="sa-chip" onClick={() => loads.retry(src)}>
+          Försök igen
+        </button>
+      </div>
+    )
+  }
+  return (
+    <figure className="sa-problem-fig sa-turn-fig">
+      <FigureImg
+        key={`${src}#${loads.attempt(src)}`}
+        src={`/${src}`}
+        alt={figure.alt}
+        width={figure.width}
+        height={figure.height}
+        fresh
+        onStatus={(s) => loads.report(src, s)}
+      />
+    </figure>
   )
 }
 
@@ -855,20 +1187,36 @@ function pointedParas(view: DrillCoreView, active: string | null): ReadonlySet<n
   return new Set([...(c?.tempting ?? []), ...(c?.wrong ?? [])])
 }
 
-/** A paragraph's text with its marks, overlaps dropped (first wins). */
-function marked(
+/** A run of a paragraph drawn as something else: a mark, a gap. */
+type Span = { start: number; end: number; node: ReactNode }
+
+/** A paragraph's text with its spans woven in, overlaps dropped (first
+ *  wins). */
+function weave(text: string, spans: Span[]): ReactNode[] {
+  const sorted = [...spans].sort((a, b) => a.start - b.start || b.end - a.end)
+  const out: ReactNode[] = []
+  let at = 0
+  for (const s of sorted) {
+    if (s.start < at) continue
+    if (s.start > at) out.push(text.slice(at, s.start))
+    out.push(s.node)
+    at = s.end
+  }
+  if (at < text.length) out.push(text.slice(at))
+  return out
+}
+
+/** A paragraph's evidence marks. */
+function markSpans(
   text: string,
   marks: QuoteMark[],
   view: DrillCoreView,
   active: string | null,
-): ReactNode[] {
-  const sorted = [...marks].sort((a, b) => a.start - b.start || b.end - a.end)
-  const out: ReactNode[] = []
-  let at = 0
-  for (const m of sorted) {
-    if (m.start < at) continue
-    if (m.start > at) out.push(text.slice(at, m.start))
-    out.push(
+): Span[] {
+  return marks.map((m) => ({
+    start: m.start,
+    end: m.end,
+    node: (
       <mark
         key={`${m.source}-${m.start}`}
         className="sa-ev"
@@ -877,11 +1225,66 @@ function marked(
         data-flash={String(view.flashSource === m.source && view.flashPara === m.para)}
       >
         {text.slice(m.start, m.end)}
-      </mark>,
-    )
-    at = m.end
+      </mark>
+    ),
+  }))
+}
+
+// A gap item's text keeps each gap as its bare two-digit number (sometimes
+// with the printed line's underscores), among the text's real numbers (an
+// age, a year, a percentage). A number counts as a gap only in the
+// ascending run of numbers near the question's own that holds it — the
+// reading the app's own drill makes of a gap text.
+const GAP_RE = /(?<![\w–-])_{0,14}(\d{2})_{0,14}(?![\w–\-%])/g
+
+/** The gaps of a gap item's text: the ascending run through `n` (else, for
+ *  a text that lost some gaps, the numbers near it). */
+function gapRun(paragraphs: readonly string[], n: number): ReadonlySet<number> {
+  const near: number[] = []
+  for (const p of paragraphs) {
+    for (const m of p.matchAll(GAP_RE)) {
+      const k = Number(m[1])
+      if (Math.abs(k - n) <= 6) near.push(k)
+    }
   }
-  if (at < text.length) out.push(text.slice(at))
+  let best: number[] = []
+  for (let i = 0; i < near.length; i++) {
+    const run = [near[i]]
+    for (let j = i + 1; j < near.length; j++) {
+      if (near[j] === run[run.length - 1] + 1) run.push(near[j])
+    }
+    if (run.includes(n) && run.length > best.length) best = run
+  }
+  return new Set(best.length ? best : near)
+}
+
+/** A paragraph's gaps, drawn as gaps: the question's own stands out. Said
+ *  in Swedish ("lucka 31") inside the English text. */
+function gapSpans(text: string, run: ReadonlySet<number> | null, current: number): Span[] {
+  if (!run?.size) return []
+  const out: Span[] = []
+  for (const m of text.matchAll(GAP_RE)) {
+    const k = Number(m[1])
+    if (!run.has(k)) continue
+    const at = m.index ?? 0
+    out.push({
+      start: at,
+      end: at + m[0].length,
+      node: (
+        <span
+          key={`gap-${k}-${at}`}
+          className="sa-gap"
+          lang="sv"
+          data-current={String(k === current)}
+          data-testid={`sa-gap-${k}`}
+        >
+          <span className="sa-sr">lucka </span>
+          {k}
+          {k === current ? <span className="sa-sr">, den här frågan</span> : null}
+        </span>
+      ),
+    })
+  }
   return out
 }
 
@@ -898,7 +1301,8 @@ function DocPanel({
   const { paragraphs, byline } = view.passage ?? { paragraphs: [], byline: null }
   const meta = view.question.passage
   // A practice text carries the ÖVNINGSTEXT badge and its note; an
-  // authentic passage has neither, and no title of its own.
+  // authentic passage has neither, and no title of its own (its source
+  // stands there instead, in Swedish).
   const synthetic = meta?.synthetic === true
   const [title, subtitle] = meta?.title
     ? splitTitle(meta.title)
@@ -907,7 +1311,10 @@ function DocPanel({
   const graded = view.phase === 'feedback'
   const marks = shownMarks(view)
   const pointed = pointedParas(view, active)
+  // An English text is English all through: its title, its paragraphs and
+  // its byline. The badge, the note and the tools around it stay Swedish.
   const lang = meta?.lang === 'en' ? 'en' : undefined
+  const gaps = isGap(view.question) ? gapRun(paragraphs, view.question.number) : null
   return (
     <article className="sa-doc" ref={ref} aria-labelledby="sa-doc-title">
       <header className="sa-doc-head">
@@ -953,14 +1360,14 @@ function DocPanel({
             {data.copy.ovningstextNote}
           </p>
         ) : null}
-        <h1 className="sa-doc-title" id="sa-doc-title" lang={lang}>
+        <h1 className="sa-doc-title" id="sa-doc-title" lang={meta?.title ? lang : undefined}>
           {title}
           {subtitle ? <span>{subtitle}</span> : null}
         </h1>
         <div
           className="sa-pbody"
           data-focus={String(view.focusPara != null)}
-          data-testid="rd-passage"
+          data-testid={c.passageId}
           lang={lang}
         >
           {paragraphs.map((p, i) => {
@@ -969,6 +1376,10 @@ function DocPanel({
             // A ¶ link whose part quotes this paragraph lights the
             // sentence; otherwise the whole paragraph takes the light.
             const sentence = own.some((m) => m.source === view.flashSource)
+            const spans = [
+              ...markSpans(p, own, view, active),
+              ...gapSpans(p, gaps, view.question.number),
+            ]
             return (
               <p
                 key={n}
@@ -988,13 +1399,16 @@ function DocPanel({
                   type="button"
                   className="sa-pnum"
                   tabIndex={-1}
+                  // The ¶ control speaks the coach's Swedish, also in an
+                  // English text.
+                  lang={lang ? 'sv' : undefined}
                   aria-label={`Stycke ${n}${view.focusPara === n ? ', i fokus' : ''}`}
                   aria-pressed={view.focusPara === n}
                   onClick={() => act.setFocusPara(view.focusPara === n ? null : n)}
                 >
                   {n}
                 </button>
-                {own.length ? marked(p, own, view, active) : p}
+                {spans.length ? weave(p, spans) : p}
               </p>
             )
           })}
@@ -1043,7 +1457,7 @@ function PhoneDrill(chrome: ReadingChrome) {
         <header className="sa-phead" data-compact={String(compact)}>
           <ExitButton act={act} icon />
           <span className="sa-phead-pos">
-            Fråga {view.index + 1} av {view.total}
+            {c.prefix ? `${c.prefix} · ` : null}Fråga {view.index + 1} av {view.total}
           </span>
           <span className="sa-phead-tools">
             <button

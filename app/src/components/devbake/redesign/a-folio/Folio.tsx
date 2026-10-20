@@ -14,10 +14,20 @@
 //   7 DTK         — the figure page as a plate tipped in beside its
 //                   questions (FolioQuant)
 //   8 Repetera    — the frame, Öva current, around today's misses
+//   9 Provpass    — the frame around the exam notice (FolioProvpass); a
+//                   started pass leaves the frame for focus mode, set in
+//                   each question's drill layout and never graded; once
+//                   its one hand-in is tried, the frame is back (around
+//                   the pass's closing page, if the host stays on 9)
+//  10 Resultat    — the frame, Provpass current, around the handed-in pass
+//  11 Framsteg    — the frame around the report, with Historik and Fällor
+//                   as its back matter (FolioFramsteg)
 //
 // Kit v2: every screen reads useDirectionData(); the contents ask the host
 // for a destination (actions.go), which shows the shared "Inte byggd än"
-// card for the ones Folio has not built yet.
+// card for the ones Folio has not built yet. A modal slip on a frame page
+// (the pass's conditions) is set at the stage's level, over the whole
+// frame, which goes inert under it.
 
 import { PanelLeftClose, PanelLeftOpen, UserRound } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -33,9 +43,20 @@ import {
   useDismiss,
   useWebFonts,
 } from '@/components/devbake/redesign/r1Kit'
+import type { PlanItemView, ProvHubView } from '@/components/devbake/redesign/viewModel'
 import { FolioDrill, ORIGIN_IDAG, type Origin } from './FolioDrill'
+import { FolioFramsteg, type FramstegSub } from './FolioFramsteg'
 import { FolioHome } from './FolioHome'
 import { FolioOva } from './FolioOva'
+import {
+  ConditionsSlip,
+  FolioPassEnded,
+  FolioPassRun,
+  FolioProvpass,
+  FolioProvResult,
+  type PassEnd,
+  type ProvNote,
+} from './FolioProvpass'
 import { FolioQuant } from './FolioQuant'
 import { FolioRepetera } from './FolioRepetera'
 
@@ -53,23 +74,63 @@ const THUMB: Record<Destination, string> = {
   framsteg: 'F',
 }
 
-/** Focus screens: drills, with Avsluta instead of the frame. */
+/** Focus screens: drills, with Avsluta instead of the frame. (A running
+ *  pass is focus mode too, on screen 9: the frame steps aside for it.) */
 const FOCUS: readonly AppScreenKey[] = [2, 3, 6, 7]
 
-/** A page of the frame. Repetera lives inside Öva: Öva stays current. */
-type Page = 'idag' | 'ova' | 'repetera'
+/** A page of the frame. Repetera lives inside Öva and the result inside
+ *  Provpass: Öva and Provpass stay current. */
+type Page = 'idag' | 'ova' | 'repetera' | 'provpass' | 'resultat' | 'framsteg'
 
 function pageOf(screen: AppScreenKey): Page {
-  if (screen === 5) return 'ova'
-  if (screen === 8) return 'repetera'
-  return 'idag'
+  switch (screen) {
+    case 5:
+      return 'ova'
+    case 8:
+      return 'repetera'
+    case 9:
+      return 'provpass'
+    case 10:
+      return 'resultat'
+    case 11:
+      return 'framsteg'
+    default:
+      return 'idag'
+  }
 }
 
 const ORIGINS: Record<Page, Origin> = {
   idag: ORIGIN_IDAG,
   ova: { label: 'Öva', idag: false },
   repetera: { label: 'Öva', idag: false },
+  provpass: { label: 'Provpass', idag: false },
+  resultat: { label: 'Provpass', idag: false },
+  framsteg: { label: 'Framsteg', idag: false },
 }
+
+/** The destination each page belongs to in the contents. */
+const CURRENT: Record<Page, Destination> = {
+  idag: 'idag',
+  ova: 'ova',
+  repetera: 'ova',
+  provpass: 'provpass',
+  resultat: 'provpass',
+  framsteg: 'framsteg',
+}
+
+/** The pass the hub summons for its half: the least seen one. */
+function summonsOf(hub: ProvHubView): string | null {
+  const passes = hub.passes.filter((p) => p.half === hub.half)
+  return (passes.find((p) => p.suggested) ?? passes[0])?.id ?? null
+}
+
+/** Screen 9's states: the hub (with what the last pass's end left to say),
+ *  a pass the reader has started, or one whose hand-in was tried while the
+ *  host stayed on screen 9. */
+type ProvState =
+  | { kind: 'hub'; note: ProvNote }
+  | { kind: 'run'; passId: string }
+  | { kind: 'ended'; end: PassEnd }
 
 type ThemeChoice = ThemeKey | 'system'
 
@@ -102,16 +163,34 @@ export function Folio(props: DirectionProps) {
 
 function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: DirectionProps) {
   const { data, actions } = useDirectionData()
-  // Screen 4 shows the frame's other state; screen 1 the default. Öva and
-  // Repetera keep whatever fold the reader chose.
+  // Screen 4 shows the frame's other state; screen 1 the default. The other
+  // pages keep whatever fold the reader chose.
   const [collapsed, setCollapsed] = useState(screen === 4)
   const [menu, setMenu] = useState(screen === 4)
   const [page, setPage] = useState<Page>(pageOf(screen))
+  // Framsteg's own pages: the report, Historik, Fällor.
+  const [sub, setSub] = useState<FramstegSub>('overview')
+  const [prov, setProv] = useState<ProvState>({ kind: 'hub', note: null })
+  // The pass whose conditions slip is open over the hub.
+  const [conditions, setConditions] = useState<string | null>(null)
+  // A plan item that suggests a pass: its conditions open on arrival.
+  const summons = useRef(false)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: follows the host's screen only
   useEffect(() => {
     setMenu(screen === 4)
     setPage(pageOf(screen))
     if (screen === 4) setCollapsed(true)
     else if (screen === 1) setCollapsed(false)
+    if (screen !== 11) setSub('overview')
+    // Leaving screen 9 ends what it was showing: a pass handed in opens the
+    // result, and the hub opens fresh next time.
+    if (screen !== 9) {
+      setProv({ kind: 'hub', note: null })
+      setConditions(null)
+    }
+    const asked = summons.current
+    summons.current = false
+    if (screen === 9 && asked) setConditions(summonsOf(data.provpass.hub))
   }, [screen])
 
   // ⌘B / Ctrl+B folds the sidebar, as in the live app.
@@ -128,11 +207,15 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
   }, [live, width])
 
   // A destination is the host's to open; the pages Folio has built turn at
-  // once, the others wait for the host's card.
+  // once (Framsteg on the page asked for), the others wait for the host's
+  // card.
   const go = useCallback(
-    (d: Destination) => {
+    (d: Destination, to: FramstegSub = 'overview') => {
       setMenu(false)
-      if (d === 'idag' || d === 'ova') setPage(d)
+      if (d !== 'uppslag') setPage(d)
+      if (d === 'framsteg') setSub(to)
+      // Provpass from the contents opens the hub, past an ended pass's page.
+      if (d === 'provpass') setProv((p) => (p.kind === 'ended' ? { kind: 'hub', note: null } : p))
       actions.go(d)
     },
     [actions],
@@ -142,141 +225,227 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
     actions.resume()
     onScreen(2)
   }, [actions, onScreen])
-  const current: Destination = page === 'repetera' ? 'ova' : page
+  const openItem = useCallback(
+    (item: PlanItemView) => {
+      if (item.kind === 'mock') summons.current = true
+      actions.openPlanItem(item.id)
+    },
+    [actions],
+  )
+  const startPass = useCallback(
+    (passId: string) => {
+      actions.startProvpass(passId)
+      setConditions(null)
+      setProv({ kind: 'run', passId })
+    },
+    [actions],
+  )
+  const leavePass = useCallback((note: ProvNote) => setProv({ kind: 'hub', note }), [])
+  // The hand-in was tried: the pass is over. A host that opens the result
+  // moves on (and the hub opens fresh next time); one that stays on screen 9
+  // shows the pass's closing page in the frame.
+  const endPass = useCallback(
+    (end: PassEnd) => setProv((p) => (p.kind === 'run' ? { kind: 'ended', end } : p)),
+    [],
+  )
+  const toHub = useCallback(() => setProv({ kind: 'hub', note: null }), [])
+  const toHistorik = useCallback(() => go('framsteg', 'historik'), [go])
+  const current = CURRENT[page]
   const due = data.home.ovaDue
+
+  // A started pass is focus mode: once the host's running view is that pass
+  // it takes the whole stage, with no frame.
+  if (page === 'provpass' && prov.kind === 'run' && data.provpass.running.passId === prov.passId) {
+    return (
+      <FolioPassRun
+        key={prov.passId}
+        width={width}
+        live={live}
+        onLeave={leavePass}
+        onEnd={endPass}
+      />
+    )
+  }
+  const slipPass =
+    page === 'provpass' &&
+    conditions != null &&
+    data.provpass.hub.passes.some((p) => p.id === conditions)
+      ? conditions
+      : null
+  // A page's keys rest while the account slip or a modal slip is open.
+  const keys = live && !menu && slipPass == null
 
   const content =
     page === 'ova' ? (
-      <FolioOva width={width} live={live} />
+      <FolioOva width={width} live={keys} />
     ) : page === 'repetera' ? (
-      <FolioRepetera width={width} live={live} />
+      <FolioRepetera width={width} live={keys} />
+    ) : page === 'provpass' ? (
+      prov.kind === 'ended' ? (
+        <FolioPassEnded width={width} live={keys} end={prov.end} onHub={toHub} />
+      ) : (
+        <FolioProvpass
+          width={width}
+          live={keys}
+          note={prov.kind === 'hub' ? prov.note : null}
+          pending={prov.kind === 'run' ? prov.passId : null}
+          onAsk={setConditions}
+          onCancel={toHub}
+          onHistorik={toHistorik}
+        />
+      )
+    ) : page === 'resultat' ? (
+      <FolioProvResult
+        width={width}
+        live={keys}
+        onNewPass={() => go('provpass')}
+        onHistorik={toHistorik}
+      />
+    ) : page === 'framsteg' ? (
+      <FolioFramsteg width={width} live={keys} sub={sub} onSub={setSub} onGo={go} />
     ) : (
-      <FolioHome width={width} live={live} onResume={resume} onGo={go} />
+      <FolioHome
+        width={width}
+        live={keys}
+        onResume={resume}
+        onGo={go}
+        onFramsteg={(to) => go('framsteg', to)}
+        onOpenItem={openItem}
+      />
     )
+  const slip = slipPass ? (
+    <ConditionsSlip passId={slipPass} onStart={startPass} onClose={() => setConditions(null)} />
+  ) : null
 
   if (width === 'phone') {
     return (
-      <div className="fo-phone">
-        <header className="fo-ptop">
-          <Wordmark />
-          <button
-            type="button"
-            className="fo-avatar-btn"
-            data-testid="rd-account"
-            aria-label="Konto och inställningar"
-            aria-expanded={menu}
-            aria-controls="fo-account-sheet"
-            onClick={() => setMenu(!menu)}
-          >
-            <span className="fo-avatar" aria-hidden>
-              <UserRound size={17} strokeWidth={1.6} />
-            </span>
-          </button>
-        </header>
-        <main className="fo-pscroll" key={page}>
-          <div className={live ? 'fo-enter' : undefined}>{content}</div>
-        </main>
-        {/* The tabs are words, as on the desktop contents list: a
-         *  magazine's section bar, not a row of stock pictograms. */}
-        <nav className="fo-tabs" aria-label="Huvudmeny">
-          {DESTINATIONS.map((d) => (
+      <>
+        <div className="fo-phone" inert={slip ? true : undefined}>
+          <header className="fo-ptop">
+            <Wordmark />
             <button
               type="button"
-              key={d.id}
-              className="fo-tab"
-              data-testid={`rd-nav-${d.id}`}
-              aria-current={current === d.id ? 'page' : undefined}
-              onClick={() => go(d.id)}
+              className="fo-avatar-btn"
+              data-testid="rd-account"
+              aria-label="Konto och inställningar"
+              aria-expanded={menu}
+              aria-controls="fo-account-sheet"
+              onClick={() => setMenu(!menu)}
             >
-              <span className="fo-tab-word">
-                {d.label}
-                {d.id === 'ova' && due > 0 ? (
-                  <>
-                    <span className="fo-tab-dot" aria-hidden />
-                    <span className="fo-sr">, {due} att repetera</span>
-                  </>
-                ) : null}
+              <span className="fo-avatar" aria-hidden>
+                <UserRound size={17} strokeWidth={1.6} />
               </span>
             </button>
-          ))}
-        </nav>
-        {menu ? <AccountSheet theme={theme} onTheme={onTheme} close={closeMenu} /> : null}
-      </div>
+          </header>
+          <main className="fo-pscroll" key={page}>
+            <div className={live ? 'fo-enter' : undefined}>{content}</div>
+          </main>
+          {/* The tabs are words, as on the desktop contents list: a
+           *  magazine's section bar, not a row of stock pictograms. */}
+          <nav className="fo-tabs" aria-label="Huvudmeny">
+            {DESTINATIONS.map((d) => (
+              <button
+                type="button"
+                key={d.id}
+                className="fo-tab"
+                data-testid={`rd-nav-${d.id}`}
+                aria-current={current === d.id ? 'page' : undefined}
+                onClick={() => go(d.id)}
+              >
+                <span className="fo-tab-word">
+                  {d.label}
+                  {d.id === 'ova' && due > 0 ? (
+                    <>
+                      <span className="fo-tab-dot" aria-hidden />
+                      <span className="fo-sr">, {due} att repetera</span>
+                    </>
+                  ) : null}
+                </span>
+              </button>
+            ))}
+          </nav>
+          {menu ? <AccountSheet theme={theme} onTheme={onTheme} close={closeMenu} /> : null}
+        </div>
+        {slip}
+      </>
     )
   }
 
   return (
-    <div className="fo-app" data-collapsed={String(collapsed)}>
-      <aside className="fo-side" aria-label="Huvudmeny">
-        <div className="fo-side-head">
-          {collapsed ? (
-            <span className="fo-monogram" role="img" aria-label="HP-Coach">
-              HP
-            </span>
-          ) : (
-            <Wordmark />
-          )}
-          <button
-            type="button"
-            className="fo-icon-btn fo-tip"
-            data-testid="rd-collapse"
-            data-tip={collapsed ? 'Fäll ut  ⌘B' : 'Fäll ihop  ⌘B'}
-            aria-label={collapsed ? 'Fäll ut menyn' : 'Fäll ihop menyn'}
-            aria-expanded={!collapsed}
-            onClick={() => setCollapsed((c) => !c)}
-          >
+    <>
+      <div className="fo-app" data-collapsed={String(collapsed)} inert={slip ? true : undefined}>
+        <aside className="fo-side" aria-label="Huvudmeny">
+          <div className="fo-side-head">
             {collapsed ? (
-              <PanelLeftOpen size={18} strokeWidth={1.5} aria-hidden />
+              <span className="fo-monogram" role="img" aria-label="HP-Coach">
+                HP
+              </span>
             ) : (
-              <PanelLeftClose size={18} strokeWidth={1.5} aria-hidden />
+              <Wordmark />
             )}
-          </button>
-        </div>
-        <nav className="fo-nav">
-          {DESTINATIONS.map((d) => (
             <button
               type="button"
-              key={d.id}
-              className={`fo-nav-item${collapsed ? ' fo-tip' : ''}`}
-              data-testid={`rd-nav-${d.id}`}
-              data-tip={collapsed ? d.label : undefined}
-              aria-current={current === d.id ? 'page' : undefined}
-              aria-label={collapsed ? d.label : undefined}
-              onClick={() => go(d.id)}
+              className="fo-icon-btn fo-tip"
+              data-testid="rd-collapse"
+              data-tip={collapsed ? 'Fäll ut  ⌘B' : 'Fäll ihop  ⌘B'}
+              aria-label={collapsed ? 'Fäll ut menyn' : 'Fäll ihop menyn'}
+              aria-expanded={!collapsed}
+              onClick={() => setCollapsed((c) => !c)}
             >
               {collapsed ? (
-                <span className="fo-thumb" aria-hidden>
-                  {THUMB[d.id]}
-                </span>
-              ) : null}
-              <span className="fo-nav-label">{d.label}</span>
-              {d.id === 'ova' && due > 0 ? (
-                <>
-                  <span className="fo-nav-count">
-                    {due}
-                    <span className="fo-sr"> att repetera</span>
-                  </span>
-                  <span className="fo-nav-dot" aria-hidden />
-                </>
-              ) : null}
+                <PanelLeftOpen size={18} strokeWidth={1.5} aria-hidden />
+              ) : (
+                <PanelLeftClose size={18} strokeWidth={1.5} aria-hidden />
+              )}
             </button>
-          ))}
-        </nav>
-        <div className="fo-side-foot">
-          <AccountPopover
-            open={menu}
-            setOpen={setMenu}
-            close={closeMenu}
-            theme={theme}
-            onTheme={onTheme}
-            tip={collapsed}
-          />
-        </div>
-      </aside>
-      <main className="fo-main" key={page}>
-        <div className={live ? 'fo-enter' : undefined}>{content}</div>
-      </main>
-    </div>
+          </div>
+          <nav className="fo-nav">
+            {DESTINATIONS.map((d) => (
+              <button
+                type="button"
+                key={d.id}
+                className={`fo-nav-item${collapsed ? ' fo-tip' : ''}`}
+                data-testid={`rd-nav-${d.id}`}
+                data-tip={collapsed ? d.label : undefined}
+                aria-current={current === d.id ? 'page' : undefined}
+                aria-label={collapsed ? d.label : undefined}
+                onClick={() => go(d.id)}
+              >
+                {collapsed ? (
+                  <span className="fo-thumb" aria-hidden>
+                    {THUMB[d.id]}
+                  </span>
+                ) : null}
+                <span className="fo-nav-label">{d.label}</span>
+                {d.id === 'ova' && due > 0 ? (
+                  <>
+                    <span className="fo-nav-count">
+                      {due}
+                      <span className="fo-sr"> att repetera</span>
+                    </span>
+                    <span className="fo-nav-dot" aria-hidden />
+                  </>
+                ) : null}
+              </button>
+            ))}
+          </nav>
+          <div className="fo-side-foot">
+            <AccountPopover
+              open={menu}
+              setOpen={setMenu}
+              close={closeMenu}
+              theme={theme}
+              onTheme={onTheme}
+              tip={collapsed}
+            />
+          </div>
+        </aside>
+        <main className="fo-main" key={page}>
+          <div className={live ? 'fo-enter' : undefined}>{content}</div>
+        </main>
+      </div>
+      {slip}
+    </>
   )
 }
 

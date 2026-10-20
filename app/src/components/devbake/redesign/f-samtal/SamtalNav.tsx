@@ -1,5 +1,5 @@
-// Samtal · the frame around Idag, Öva, Repetera, Provpass, its result and
-// Framsteg.
+// Samtal · the frame around Idag, Öva, Repetera, Provpass, its result,
+// Framsteg, Uppslag and Konto.
 //
 // Desktop: the five doors are a list of conversations, as in a messages
 // app — each door a round icon, its name and one line about what waits
@@ -23,6 +23,13 @@
 // in place of the hub, and its way back — or, once it has failed, the
 // Provpass door — returns to the hub. While a gate stands over the hub,
 // the frame under it is inert.
+// Uppslag (12) is the fourth door's page. Konto (13) is no door's: on it no
+// door is current, and its one reply goes back to the door the reader came
+// from (`origin`). The account card is the one way in, from every page: its
+// rows Konto, Inställningar and Hjälp each open their own section of Konto
+// — that section, and only then, takes focus — and Logga ut asks for the
+// sign-out and says it has asked. The card's theme is the two supported
+// modes, light and dark.
 
 import { PanelLeftClose, PanelLeftOpen, UserRound } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -36,15 +43,17 @@ import {
   type ThemeKey,
   useDismiss,
 } from '@/components/devbake/redesign/r1Kit'
-import type { HomeView } from '@/components/devbake/redesign/viewModel'
+import type { DirectionData } from '@/components/devbake/redesign/viewModel'
 import { type FramstegTab, SamtalFramsteg } from './SamtalFramsteg'
 import { SamtalHome } from './SamtalHome'
+import { type KontoAsk, type KontoSection, SamtalKonto } from './SamtalKonto'
 import { SamtalOva } from './SamtalOva'
-import { DoorIcon, Mark, words } from './SamtalParts'
+import { DoorIcon, isPromise, Mark, words } from './SamtalParts'
 import { type HandedPass, PassHanded, SamtalProvpassHub, SamtalResult } from './SamtalProvpass'
 import { SamtalRepetera } from './SamtalRepetera'
+import { SamtalUppslag } from './SamtalUppslag'
 
-type Page = 'idag' | 'ova' | 'repetera' | 'provpass' | 'resultat' | 'framsteg'
+type Page = 'idag' | 'ova' | 'repetera' | 'provpass' | 'resultat' | 'framsteg' | 'uppslag' | 'konto'
 
 /** The page a screen shows in the frame. */
 function pageOf(screen: DirectionProps['screen']): Page {
@@ -53,21 +62,25 @@ function pageOf(screen: DirectionProps['screen']): Page {
   if (screen === 9) return 'provpass'
   if (screen === 10) return 'resultat'
   if (screen === 11) return 'framsteg'
+  if (screen === 12) return 'uppslag'
+  if (screen === 13) return 'konto'
   return 'idag'
 }
 
-/** The door that is current on a page. */
-const PAGE_DOOR: Record<Page, Destination> = {
+/** The door that is current on a page; Konto is no door's. */
+const PAGE_DOOR: Record<Page, Destination | null> = {
   idag: 'idag',
   ova: 'ova',
   repetera: 'ova',
   provpass: 'provpass',
   resultat: 'provpass',
   framsteg: 'framsteg',
+  uppslag: 'uppslag',
+  konto: null,
 }
 
 /** "Nästa: kvant, om en dag", from the Provpass rhythm when there is one. */
-function provPreview(home: HomeView): string {
+function provPreview(home: DirectionData['home']): string {
   const p = home.provpass
   if (!p) return 'Ett helt pass, 55 minuter'
   const half = p.half === 'kvant' ? 'kvant' : 'verbal'
@@ -75,8 +88,9 @@ function provPreview(home: HomeView): string {
   return `Nästa: ${half}, om ${words(p.daysUntilNext)} ${p.daysUntilNext === 1 ? 'dag' : 'dagar'}`
 }
 
-/** What waits behind each door: the line under its name. */
-function previews(home: HomeView): Record<Destination, string> {
+/** What waits behind each door: the line under its name. Uppslag names the
+ *  lesson that is open there. */
+function previews({ home, uppslag }: DirectionData): Record<Destination, string> {
   const { resume, plan, ovaDue, prognosis } = home
   const first = plan.items.find((i) => !i.completed)
   return {
@@ -90,15 +104,15 @@ function previews(home: HomeView): Record<Destination, string> {
         ? `${ovaDue} ${ovaDue === 1 ? 'miss' : 'missar'} att repetera`
         : 'Alla delprov och Repetera',
     provpass: provPreview(home),
-    uppslag: 'Lektioner och ramverk',
+    uppslag: uppslag.open.title
+      ? `${uppslag.open.section} · ${uppslag.open.title}`
+      : 'Lektioner och ramverk',
     framsteg:
       prognosis.total != null
         ? `Prognos ${fmtScore(prognosis.total)} av 2,0`
         : 'Prognos och historik',
   }
 }
-
-type ThemeChoice = ThemeKey | 'system'
 
 export function SamtalFrame({
   screen,
@@ -111,6 +125,7 @@ export function SamtalFrame({
   passNotice = null,
   passHanded = null,
   onPassBack,
+  origin = 'idag',
 }: DirectionProps & {
   /** A pass was started from the hub: the screen runs it (Samtal.tsx). */
   onStartPass?: (passId: string) => void
@@ -121,13 +136,15 @@ export function SamtalFrame({
   passHanded?: { pass: HandedPass; failed: boolean } | null
   /** From the hand-in back to the hub. */
   onPassBack?: () => void
+  /** The door the reader came to Konto from: its way back. */
+  origin?: Destination
 }) {
   const { data, actions } = useDirectionData()
   const page = pageOf(screen)
   // What the page shows: Provpass shows a handed-in pass in place of its hub.
   const view = page === 'provpass' && passHanded ? 'handed' : page
   const current = PAGE_DOOR[page]
-  const preview = previews(data.home)
+  const preview = previews(data)
   const ovaDue = data.home.ovaDue
   // A gate stands over the hub: the frame under it is out of reach.
   const [modal, setModal] = useState(false)
@@ -184,6 +201,23 @@ export function SamtalFrame({
     [actions, page, passHanded, toHub],
   )
   const closeMenu = useCallback(() => setMenu(false), [])
+  // A Konto section the reader asked for from the account card: Konto
+  // brings it into view and focuses it once it shows, then lets the ask go.
+  // Moving to any other page drops an ask the host did not follow, so Konto
+  // never opens on a section nobody asked for.
+  const [ask, setAsk] = useState<KontoAsk | null>(null)
+  const openAccount = useCallback(
+    (section: KontoSection) => {
+      setMenu(false)
+      setAsk((a) => ({ section, n: (a?.n ?? 0) + 1 }))
+      actions.openKonto()
+    },
+    [actions],
+  )
+  const asked = useCallback(() => setAsk(null), [])
+  useEffect(() => {
+    if (page !== 'konto') setAsk(null)
+  }, [page])
   const pageRef = useRef<HTMLDivElement>(null)
   // biome-ignore lint/correctness/useExhaustiveDependencies: on a new page or view only
   useEffect(() => {
@@ -221,6 +255,17 @@ export function SamtalFrame({
       <SamtalResult width={width} live={live} />
     ) : page === 'framsteg' ? (
       <SamtalFramsteg width={width} live={live} tab={framstegTab} onTab={setFramstegTab} />
+    ) : page === 'uppslag' ? (
+      <SamtalUppslag width={width} live={live} />
+    ) : page === 'konto' ? (
+      <SamtalKonto
+        width={width}
+        live={live}
+        theme={theme}
+        origin={origin}
+        ask={ask}
+        onAsked={asked}
+      />
     ) : (
       <SamtalHome
         width={width}
@@ -283,7 +328,9 @@ export function SamtalFrame({
             </button>
           ))}
         </nav>
-        {menu ? <AccountSheet theme={theme} onTheme={onTheme} close={closeMenu} /> : null}
+        {menu ? (
+          <AccountSheet theme={theme} onTheme={onTheme} close={closeMenu} onOpen={openAccount} />
+        ) : null}
       </div>
     )
   }
@@ -349,6 +396,7 @@ export function SamtalFrame({
             theme={theme}
             onTheme={onTheme}
             folded={collapsed}
+            onOpen={openAccount}
           />
         </div>
       </aside>
@@ -361,6 +409,14 @@ export function SamtalFrame({
   )
 }
 
+type AccountProps = {
+  theme: ThemeKey
+  onTheme: (t: ThemeKey) => void
+  close: () => void
+  /** A row of the card: opens that section of Konto. */
+  onOpen: (section: KontoSection) => void
+}
+
 /** Desktop: the account entry at the foot of the list, and its card. */
 function AccountPopover({
   open,
@@ -369,12 +425,10 @@ function AccountPopover({
   theme,
   onTheme,
   folded,
-}: {
+  onOpen,
+}: AccountProps & {
   open: boolean
   setOpen: (open: boolean) => void
-  close: () => void
-  theme: ThemeKey
-  onTheme: (t: ThemeKey) => void
   folded: boolean
 }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -403,7 +457,7 @@ function AccountPopover({
       </button>
       {open ? (
         <div className="sa-menu" id="sa-account-menu" data-anchor={folded ? 'rail' : 'side'}>
-          <AccountItems theme={theme} onTheme={onTheme} close={close} />
+          <AccountItems theme={theme} onTheme={onTheme} close={close} onOpen={onOpen} />
         </div>
       ) : null}
     </div>
@@ -411,15 +465,7 @@ function AccountPopover({
 }
 
 /** Phone: the account entry opens a sheet over a scrim. */
-function AccountSheet({
-  theme,
-  onTheme,
-  close,
-}: {
-  theme: ThemeKey
-  onTheme: (t: ThemeKey) => void
-  close: () => void
-}) {
+function AccountSheet({ theme, onTheme, close, onOpen }: AccountProps) {
   const ref = useRef<HTMLDivElement>(null)
   useDismiss(true, close, ref)
   return (
@@ -427,34 +473,31 @@ function AccountSheet({
       <div className="sa-scrim" aria-hidden />
       <div className="sa-menu" id="sa-account-sheet" data-anchor="sheet" ref={ref}>
         <span className="sa-menu-grip" aria-hidden />
-        <AccountItems theme={theme} onTheme={onTheme} close={close} />
+        <AccountItems theme={theme} onTheme={onTheme} close={close} onOpen={onOpen} />
       </div>
     </>
   )
 }
 
 /** The account card: a disclosure of plain buttons (no menu role: there is
- *  no arrow-key model to promise). The theme is chosen the way everything
- *  in Samtal is — with reply chips. Esc or a press outside closes it. */
-function AccountItems({
-  theme,
-  onTheme,
-  close,
-}: {
-  theme: ThemeKey
-  onTheme: (t: ThemeKey) => void
-  close: () => void
-}) {
-  // "System" follows the device; the bake-off itself keeps light/dark.
-  const [choice, setChoice] = useState<ThemeChoice>(theme)
-  const pick = (c: ThemeChoice) => {
-    setChoice(c)
-    if (c === 'system') {
-      const dark =
-        typeof window.matchMedia === 'function' &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-      onTheme(dark ? 'dark' : 'light')
-    } else onTheme(c)
+ *  no arrow-key model to promise). Who is signed in, as the account says
+ *  it; Konto, Inställningar and Hjälp each open their own section of the
+ *  Konto page; the theme is chosen the way everything in Samtal is — with
+ *  reply chips, light or dark, the two modes the app keeps. Logga ut asks
+ *  for the sign-out and says that it has asked, nothing more. Esc or a
+ *  press outside closes it. */
+function AccountItems({ theme, onTheme, onOpen }: AccountProps) {
+  const { data, actions } = useDirectionData()
+  const { identity } = data.konto
+  const [signOut, setSignOut] = useState<'asked' | 'failed' | null>(null)
+  const askSignOut = () => {
+    setSignOut('asked')
+    try {
+      const done = actions.signOut() as unknown
+      if (isPromise(done)) done.catch(() => setSignOut('failed'))
+    } catch {
+      setSignOut('failed')
+    }
   }
   return (
     <div className="sa-menu-body" data-testid="rd-account-menu">
@@ -463,12 +506,16 @@ function AccountItems({
           <UserRound size={20} strokeWidth={1.75} />
         </span>
         <span className="sa-menu-who">
-          <b>Ditt konto</b>
-          <span>Inloggad · gratisplan</span>
+          <b>{identity.name || 'Ditt konto'}</b>
+          {identity.email ? <span className="sa-menu-mail">{identity.email}</span> : null}
         </span>
       </div>
-      <MenuItem label="Konto" hint="Namn, e-post och plan" onClick={close} />
-      <MenuItem label="Inställningar" hint="Provdatum och mål" onClick={close} />
+      <MenuItem label="Konto" hint="Namn, e-post och dina data" onClick={() => onOpen('konto')} />
+      <MenuItem
+        label="Inställningar"
+        hint="Tema och övningsval"
+        onClick={() => onOpen('installningar')}
+      />
       <div className="sa-menu-theme">
         <span className="sa-menu-theme-label" id="sa-theme-label">
           Tema
@@ -477,33 +524,32 @@ function AccountItems({
           <button
             type="button"
             className="sa-pick"
-            aria-pressed={choice === 'light'}
-            onClick={() => pick('light')}
+            aria-pressed={theme === 'light'}
+            onClick={() => onTheme('light')}
           >
             Ljust
           </button>
           <button
             type="button"
             className="sa-pick"
-            aria-pressed={choice === 'dark'}
-            onClick={() => pick('dark')}
+            aria-pressed={theme === 'dark'}
+            onClick={() => onTheme('dark')}
             data-testid="rd-theme-toggle"
           >
             Mörkt
           </button>
-          <button
-            type="button"
-            className="sa-pick"
-            aria-pressed={choice === 'system'}
-            onClick={() => pick('system')}
-          >
-            System
-          </button>
         </fieldset>
       </div>
-      <MenuItem label="Hjälp" hint="Kortkommandon och frågor" onClick={close} />
+      <MenuItem label="Hjälp" hint="Support och villkor" onClick={() => onOpen('hjalp')} />
       <hr className="sa-menu-sep" />
-      <MenuItem label="Logga ut" onClick={close} />
+      <MenuItem label="Logga ut" onClick={askSignOut} />
+      <p className="sa-menu-status" role="status">
+        {signOut === 'asked'
+          ? 'Utloggning begärd.'
+          : signOut === 'failed'
+            ? 'Kunde inte logga ut just nu.'
+            : null}
+      </p>
     </div>
   )
 }
@@ -512,7 +558,14 @@ function MenuItem({ label, hint, onClick }: { label: string; hint?: string; onCl
   return (
     <button type="button" className="sa-menu-item" onClick={onClick}>
       <span>{label}</span>
-      {hint ? <span className="sa-menu-hint">{hint}</span> : null}
+      {/* A space between the two, so the row reads "Konto, Namn …" whole;
+       *  flex drops it from the layout. */}
+      {hint ? (
+        <>
+          {' '}
+          <span className="sa-menu-hint">{hint}</span>
+        </>
+      ) : null}
     </button>
   )
 }

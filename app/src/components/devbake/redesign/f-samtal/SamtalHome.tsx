@@ -46,9 +46,11 @@ export function SamtalHome({
 }) {
   const { data, actions } = useDirectionData()
   const { today, exam, resume, plan, prognosis, traps, recent, week } = data.home
+  /** The plan is done when the plan says so, or when every part of it is. */
+  const done = plan.allComplete || (plan.items.length > 0 && plan.items.every((i) => i.completed))
   /** The plan's first part still to do (the lead marker's, unless it is
    *  done): offered once the text is read. None once the plan is done. */
-  const first = plan.allComplete
+  const first = done
     ? null
     : (plan.items.find((i) => i.primary && !i.completed) ??
       plan.items.find((i) => !i.completed) ??
@@ -92,7 +94,7 @@ export function SamtalHome({
             </>
           ) : (
             <h1 className="sa-lead-q" id="sa-lead-q" tabIndex={-1}>
-              {plan.allComplete
+              {done
                 ? 'Dagens plan är klar. Vill du öva mer?'
                 : first
                   ? `Idag väntar ${things}, ungefär ${plan.minutes} minuter. Ska vi börja?`
@@ -134,7 +136,7 @@ export function SamtalHome({
               className="sa-chip sa-chip--primary sa-chip--big"
               onClick={startFirst}
             >
-              {first && !plan.allComplete ? `Börja med ${first.title.toLowerCase()}` : 'Till Öva'}
+              {first ? `Börja med ${first.title.toLowerCase()}` : 'Till Öva'}
               <Kbd>↵</Kbd>
             </button>
           )}
