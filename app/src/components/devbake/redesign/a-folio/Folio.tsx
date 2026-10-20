@@ -1,6 +1,6 @@
 // A · Folio — editorial paper, next generation. The direction's root: it
 // injects Literata + Inter, scopes the token set (folio.css) to its own
-// data attribute and routes the four bake-off screens:
+// data attribute and routes the screens it has built:
 //   1 Idag        — the app frame (one sheet of paper: a typeset contents
 //                   list beside the page, no panel) around Home
 //   2 Läsfråga    — the drill as a book spread (FolioDrill)
@@ -8,13 +8,24 @@
 //   4 Navigering  — the frame in its other state: the contents folded to a
 //                   thumb index (the letter tabs on a dictionary's edge) and
 //                   the account slip open (phone: the account sheet)
+//   5 Öva         — the frame around the practice hub, a book's contents
+//   6 Kvantfråga  — a problem set like a textbook exercise, its page opening
+//                   to a spread on Svara (FolioQuant)
+//   7 DTK         — the figure page as a plate tipped in beside its
+//                   questions (FolioQuant)
+//   8 Repetera    — the frame, Öva current, around today's misses
+//
+// Kit v2: every screen reads useDirectionData(); the contents ask the host
+// for a destination (actions.go), which shows the shared "Inte byggd än"
+// card for the ones Folio has not built yet.
 
 import { PanelLeftClose, PanelLeftOpen, UserRound } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import './folio.css'
-import { OVA_DUE } from '@/components/devbake/redesign/r1Fixtures'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
+  type AppScreenKey,
   DESTINATIONS,
   type Destination,
   type DirectionProps,
@@ -22,8 +33,11 @@ import {
   useDismiss,
   useWebFonts,
 } from '@/components/devbake/redesign/r1Kit'
-import { FolioDrill } from './FolioDrill'
+import { FolioDrill, ORIGIN_IDAG, type Origin } from './FolioDrill'
 import { FolioHome } from './FolioHome'
+import { FolioOva } from './FolioOva'
+import { FolioQuant } from './FolioQuant'
+import { FolioRepetera } from './FolioRepetera'
 
 const FONTS =
   'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap'
@@ -39,23 +53,33 @@ const THUMB: Record<Destination, string> = {
   framsteg: 'F',
 }
 
+/** Focus screens: drills, with Avsluta instead of the frame. */
+const FOCUS: readonly AppScreenKey[] = [2, 3, 6, 7]
+
+/** A page of the frame. Repetera lives inside Öva: Öva stays current. */
+type Page = 'idag' | 'ova' | 'repetera'
+
+function pageOf(screen: AppScreenKey): Page {
+  if (screen === 5) return 'ova'
+  if (screen === 8) return 'repetera'
+  return 'idag'
+}
+
+const ORIGINS: Record<Page, Origin> = {
+  idag: ORIGIN_IDAG,
+  ova: { label: 'Öva', idag: false },
+  repetera: { label: 'Öva', idag: false },
+}
+
 type ThemeChoice = ThemeKey | 'system'
 
 export function Folio(props: DirectionProps) {
   useWebFonts('folio', FONTS)
-  const drill = props.screen === 2 || props.screen === 3
-  // A destination asked for at the end of a unit ("Nästa: Repetition"
-  // opens Öva): the frame opens there instead of on Idag.
-  const [wanted, setWanted] = useState<Destination | null>(null)
-  const { onScreen } = props
-  const goFromDrill = useCallback(
-    (d: Destination) => {
-      setWanted(d)
-      onScreen(1)
-    },
-    [onScreen],
-  )
-  const clearWanted = useCallback(() => setWanted(null), [])
+  // Where a drill was opened from: the last frame page shown. The stage
+  // keeps Folio mounted across the screens it builds, so this carries.
+  const origin = useRef<Origin>(ORIGIN_IDAG)
+  if (!FOCUS.includes(props.screen)) origin.current = ORIGINS[pageOf(props.screen)]
+  const { screen } = props
   return (
     <div
       data-rd="folio"
@@ -65,35 +89,29 @@ export function Folio(props: DirectionProps) {
       data-testid="rd-folio"
       lang="sv"
     >
-      {drill ? (
-        <FolioDrill {...props} onGo={goFromDrill} />
+      {screen === 6 || screen === 7 ? (
+        <FolioQuant key={screen} {...props} origin={origin.current} />
+      ) : screen === 2 || screen === 3 ? (
+        <FolioDrill {...props} origin={origin.current} />
       ) : (
-        <FolioFrame {...props} wanted={wanted} clearWanted={clearWanted} />
+        <FolioFrame {...props} />
       )}
     </div>
   )
 }
 
-function FolioFrame({
-  screen,
-  width,
-  theme,
-  live,
-  onScreen,
-  onTheme,
-  wanted,
-  clearWanted,
-}: DirectionProps & { wanted: Destination | null; clearWanted: () => void }) {
-  // Screen 4 shows the frame's other state; screen 1 the default.
+function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: DirectionProps) {
+  const { data, actions } = useDirectionData()
+  // Screen 4 shows the frame's other state; screen 1 the default. Öva and
+  // Repetera keep whatever fold the reader chose.
   const [collapsed, setCollapsed] = useState(screen === 4)
   const [menu, setMenu] = useState(screen === 4)
-  const [dest, setDest] = useState<Destination>(wanted ?? 'idag')
-  // biome-ignore lint/correctness/useExhaustiveDependencies: re-seat the frame when the screen changes only
+  const [page, setPage] = useState<Page>(pageOf(screen))
   useEffect(() => {
-    setCollapsed(screen === 4)
     setMenu(screen === 4)
-    setDest(wanted ?? 'idag')
-    clearWanted()
+    setPage(pageOf(screen))
+    if (screen === 4) setCollapsed(true)
+    else if (screen === 1) setCollapsed(false)
   }, [screen])
 
   // ⌘B / Ctrl+B folds the sidebar, as in the live app.
@@ -109,17 +127,31 @@ function FolioFrame({
     return () => window.removeEventListener('keydown', onKey, true)
   }, [live, width])
 
-  const go = useCallback((d: Destination) => {
-    setMenu(false)
-    setDest(d)
-  }, [])
+  // A destination is the host's to open; the pages Folio has built turn at
+  // once, the others wait for the host's card.
+  const go = useCallback(
+    (d: Destination) => {
+      setMenu(false)
+      if (d === 'idag' || d === 'ova') setPage(d)
+      actions.go(d)
+    },
+    [actions],
+  )
   const closeMenu = useCallback(() => setMenu(false), [])
+  const resume = useCallback(() => {
+    actions.resume()
+    onScreen(2)
+  }, [actions, onScreen])
+  const current: Destination = page === 'repetera' ? 'ova' : page
+  const due = data.home.ovaDue
 
-  const page =
-    dest === 'idag' ? (
-      <FolioHome width={width} live={live} onResume={() => onScreen(2)} onGo={go} />
+  const content =
+    page === 'ova' ? (
+      <FolioOva width={width} live={live} />
+    ) : page === 'repetera' ? (
+      <FolioRepetera width={width} live={live} />
     ) : (
-      <FolioStub dest={dest} />
+      <FolioHome width={width} live={live} onResume={resume} onGo={go} />
     )
 
   if (width === 'phone') {
@@ -141,9 +173,9 @@ function FolioFrame({
             </span>
           </button>
         </header>
-        <div className="fo-pscroll" key={dest}>
-          <div className={live ? 'fo-enter' : undefined}>{page}</div>
-        </div>
+        <main className="fo-pscroll" key={page}>
+          <div className={live ? 'fo-enter' : undefined}>{content}</div>
+        </main>
         {/* The tabs are words, as on the desktop contents list: a
          *  magazine's section bar, not a row of stock pictograms. */}
         <nav className="fo-tabs" aria-label="Huvudmeny">
@@ -153,15 +185,15 @@ function FolioFrame({
               key={d.id}
               className="fo-tab"
               data-testid={`rd-nav-${d.id}`}
-              aria-current={dest === d.id ? 'page' : undefined}
+              aria-current={current === d.id ? 'page' : undefined}
               onClick={() => go(d.id)}
             >
               <span className="fo-tab-word">
                 {d.label}
-                {d.id === 'ova' ? (
+                {d.id === 'ova' && due > 0 ? (
                   <>
                     <span className="fo-tab-dot" aria-hidden />
-                    <span className="fo-sr">, {OVA_DUE} att repetera</span>
+                    <span className="fo-sr">, {due} att repetera</span>
                   </>
                 ) : null}
               </span>
@@ -208,7 +240,7 @@ function FolioFrame({
               className={`fo-nav-item${collapsed ? ' fo-tip' : ''}`}
               data-testid={`rd-nav-${d.id}`}
               data-tip={collapsed ? d.label : undefined}
-              aria-current={dest === d.id ? 'page' : undefined}
+              aria-current={current === d.id ? 'page' : undefined}
               aria-label={collapsed ? d.label : undefined}
               onClick={() => go(d.id)}
             >
@@ -218,10 +250,10 @@ function FolioFrame({
                 </span>
               ) : null}
               <span className="fo-nav-label">{d.label}</span>
-              {d.id === 'ova' ? (
+              {d.id === 'ova' && due > 0 ? (
                 <>
                   <span className="fo-nav-count">
-                    {OVA_DUE}
+                    {due}
                     <span className="fo-sr"> att repetera</span>
                   </span>
                   <span className="fo-nav-dot" aria-hidden />
@@ -241,8 +273,8 @@ function FolioFrame({
           />
         </div>
       </aside>
-      <main className="fo-main" key={dest}>
-        <div className={live ? 'fo-enter' : undefined}>{page}</div>
+      <main className="fo-main" key={page}>
+        <div className={live ? 'fo-enter' : undefined}>{content}</div>
       </main>
     </div>
   )
@@ -334,7 +366,9 @@ function AccountItems({
   onTheme: (t: ThemeKey) => void
   close: () => void
 }) {
-  // "System" follows the device; the bake-off itself keeps light/dark.
+  const { data, actions } = useDirectionData()
+  const identity = data.konto.identity
+  // "System" follows the device once; production saves light or dark only.
   const [choice, setChoice] = useState<ThemeChoice>(theme)
   const pick = (c: ThemeChoice) => {
     setChoice(c)
@@ -349,7 +383,9 @@ function AccountItems({
     <div data-testid="rd-account-menu">
       <div className="fo-menu-head">
         <b>Ditt konto</b>
-        <span>Inloggad · gratisplan</span>
+        <span>
+          {identity.plan ? `Inloggad · ${identity.plan}` : `Inloggad som ${identity.name}`}
+        </span>
       </div>
       <MenuItem label="Konto" hint="Namn, e-post, plan" onClick={close} />
       <MenuItem label="Inställningar" hint="Provdatum och mål" onClick={close} />
@@ -376,7 +412,13 @@ function AccountItems({
       </div>
       <MenuItem label="Hjälp" hint="Kortkommandon, frågor" onClick={close} />
       <hr className="fo-menu-sep" />
-      <MenuItem label="Logga ut" onClick={close} />
+      <MenuItem
+        label="Logga ut"
+        onClick={() => {
+          close()
+          actions.signOut()
+        }}
+      />
     </div>
   )
 }
@@ -387,20 +429,5 @@ function MenuItem({ label, hint, onClick }: { label: string; hint?: string; onCl
       <span>{label}</span>
       {hint ? <span className="fo-menu-hint">{hint}</span> : null}
     </button>
-  )
-}
-
-function FolioStub({ dest }: { dest: Destination }) {
-  const d = DESTINATIONS.find((x) => x.id === dest) ?? DESTINATIONS[0]
-  return (
-    <section className="fo-stub" aria-labelledby="fo-stub-h">
-      <span className="fo-label">Kapitel · {d.label}</span>
-      <h1 id="fo-stub-h">{d.label}</h1>
-      <p>{d.blurb}</p>
-      <p className="fo-stub-note">
-        Den här sidan sätts i omgång 2, när en riktning är vald. Menyn och kontot fungerar redan
-        härifrån.
-      </p>
-    </section>
   )
 }
