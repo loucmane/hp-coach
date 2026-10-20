@@ -13,10 +13,17 @@
 // climbs the SRS ladder, wrong lapses it. A wrong answer on a new question
 // never becomes a mistake of its own.
 //
+// Only a question that repeats a due mistake is graded. A question the round
+// has already answered is history: a stale ?qid= never reopens it, and an
+// answer on any question without a live mapping records nothing.
+//
 // The links travel with the round. SessionPlayer stores the session's plan
 // as plain qids, so once that session exists the route rewrites each new
-// question's entry as "X~A" (PUT /api/mistakes/round/:sessionId). A resume,
-// here or on another device, answers against exactly those sources.
+// question's entry as "X~A" (PUT /api/mistakes/round/:sessionId). Until
+// that write lands, this device keeps the links too: a resume here reads
+// them back and writes them again. A resume, here or on another device,
+// answers against exactly those sources; one that finds them lost plays
+// the round's new questions on and grades none of them.
 
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -25,22 +32,26 @@ import {
   type Mistake,
   useDueMistakes,
   useLinkRound,
-  useRecordMistake,
-  useResolveMistakeByQuestion,
   useReviewMistake,
 } from '@/api/hooks/useMistakes'
 import { type ExposureMap, useExposure } from '@/api/hooks/useMockResults'
 import { useActiveSessionOfKind } from '@/api/hooks/useSessions'
+import { canAdoptActiveSession } from '@/components/session/canAdoptSession'
 import { SessionPlayer } from '@/components/session/SessionPlayer'
 import { SECTION_KEYS, type Section } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
+import { endedSessionIdsThisTab } from '@/lib/endedSessions'
 import {
-  parsePlanEntry,
+  dropPendingLinks,
+  pendingLinksFor,
   pickReplayQuestions,
   planEntry,
   REPETITION_SESSION_SIZE,
   type ReplayItem,
   resolveReplayPlan,
+  resumeQid,
+  samePlay,
+  savePendingLinks,
 } from '@/lib/replay'
 
 type RepetitionSearch = { qid?: string; done?: number; start?: true; section?: Section }
@@ -82,10 +93,9 @@ export const Route = createFileRoute('/repetition')({
 
 function RepetitionScreen() {
   const { qid: urlQid, done: doneSessionId, start, section } = Route.useSearch()
+  const sections = section ?? 'alla'
   const due = useDueMistakes(section)
   const exposure = useExposure()
-  const recordMistake = useRecordMistake()
-  const resolveMistake = useResolveMistakeByQuestion()
   const reviewMistake = useReviewMistake()
   const { mutate: linkRound } = useLinkRound()
   const roundSession = useActiveSessionOfKind('adaptive_review').data
@@ -95,32 +105,67 @@ function RepetitionScreen() {
   // repeats, and whether it is a new question with the missed one's trap.
   // Filled by both ways into a plan — a fresh pick, and a resumed stored
   // plan (resolveReplayPlan reads its stored links back) — and read by the
-  // answer handlers and the sibling label.
+  // answer handlers and the sibling label. It holds live items only: an
+  // answered question, or one whose link was lost, is never in it.
   const [round, setRound] = useState<ReadonlyMap<string, ReplayItem>>(() => new Map())
   const playRound = useCallback((items: readonly ReplayItem[]) => {
     setRound(new Map(items.map((item) => [item.question.qid, item])))
   }, [])
   const current = urlQid ? round.get(urlQid) : undefined
 
-  // The fresh round's plan with its links (lib/replay.ts planEntry); null
-  // when the round has none to store. SessionPlayer creates the session
-  // from plain qids right after the pick, so the links are written once
-  // that session shows up here, and again whenever it shows up without
-  // them: after a failed write, or when a slower response of SessionPlayer's
-  // own puts the plain plan back in the cache.
+  // The ?qid= the player may open. SessionPlayer prefers it over the round's
+  // own cursor when it adopts the open round, and a stale one (an old tab,
+  // a history entry, a copied link) can name a question the round has
+  // already answered. That question is history: answering it again would
+  // grade it twice. So for the round SessionPlayer is about to adopt, the
+  // qid is held to the questions still ahead of the cursor, and anything
+  // else opens the paused question instead (lib/replay.ts resumeQid).
+  // SessionPlayer reads it once it adopts the round; its own URL sync then
+  // rewrites the address.
+  const seekQid =
+    urlQid &&
+    roundSession &&
+    canAdoptActiveSession(
+      roundSession,
+      sections,
+      false,
+      endedSessionIdsThisTab.has(roundSession.id),
+    )
+      ? resumeQid(urlQid, roundSession.plan, roundSession.position, roundSession.currentQuestionId)
+      : (urlQid ?? null)
+
+  // The links of the round this device picked (lib/replay.ts planEntry)
+  // until the server stores them. SessionPlayer creates the session from
+  // plain qids right after the pick, so the links are written once that
+  // session shows up here, and again whenever it shows up without them:
+  // after a failed write, or when a slower response of SessionPlayer's own
+  // puts the plain plan back in the cache. They are also kept on this
+  // device (savePendingLinks), so a write that failed or has not landed
+  // when the student leaves is sent again on the next mount, and a resume
+  // meanwhile reads them back (resolvePlan below).
   const linkedPlan = useRef<string[] | null>(null)
   const linking = useRef(false)
   useEffect(() => {
-    const plan = linkedPlan.current
     const stored = roundSession?.plan
-    if (!plan || !roundSession || !stored || roundSession.endedAt != null) return
-    // Only this round's session, and only while it lacks the links.
-    if (!sameQuestions(stored, plan) || stored.every((entry, i) => entry === plan[i])) return
+    if (!roundSession || !stored || roundSession.endedAt != null) return
+    const sessionId = roundSession.id
+    // The links of this round, from this visit or kept from an earlier one;
+    // pendingLinksFor defers to a stored plan that has its links already.
+    const kept = linkedPlan.current
+    const plan = kept && samePlay(stored, kept) ? kept : pendingLinksFor(sessionId, stored)
+    // Only while the session lacks them. Once it has them (or this is not
+    // the round they belong to), nothing is left to keep here.
+    if (!plan || stored.every((entry, i) => entry === plan[i])) {
+      dropPendingLinks(sessionId, stored)
+      return
+    }
     if (linking.current) return
     linking.current = true
+    savePendingLinks(plan, sessionId)
     linkRound(
-      { sessionId: roundSession.id, plan },
+      { sessionId, plan },
       {
+        onSuccess: () => dropPendingLinks(sessionId),
         onSettled: () => {
           linking.current = false
         },
@@ -182,13 +227,27 @@ function RepetitionScreen() {
   )
 
   // On completion, stamp `?done=<sessionId>` so a refresh reconstructs
-  // the Klart. instead of cold-starting a new repetition pass.
+  // the Klart. instead of cold-starting a new repetition pass. A finished
+  // round has no links left to write.
   const onComplete = useCallback(
     (sessionId: number) => {
+      dropPendingLinks(sessionId)
       navigate({ to: '/repetition', search: { done: sessionId }, replace: true })
     },
     [navigate],
   )
+
+  // Only a question that repeats a due mistake is graded: its answer moves
+  // THAT mistake by row id, right or wrong — the question may be a new one
+  // with the missed one's trap. Anything else has no live mapping and
+  // records nothing: an answered question (history before the round's
+  // cursor), a new question whose link was lost, or one outside the round.
+  // A new question never becomes a mistake of its own.
+  const grade = (qid: string, correct: boolean) => {
+    noteAnswered(qid)
+    const item = round.get(qid)
+    if (item) reviewMistake.mutate({ id: item.mistakeId, correct })
+  }
 
   // Three button states. We gate on "do we actually have data yet?"
   // rather than `isPending` alone — the latter goes false on error
@@ -215,9 +274,9 @@ function RepetitionScreen() {
         // drill's cross-section guard. 'alla' = the unscoped whole-queue
         // pass. (Was a hardcoded "ORD" placeholder, which made every
         // repetition session adopt every other.)
-        sections={section ?? 'alla'}
+        sections={sections}
         activeTab="ova"
-        urlSyncedQid={{ qid: urlQid ?? null, setQid: setUrlQid }}
+        urlSyncedQid={{ qid: seekQid, setQid: setUrlQid }}
         completedSessionId={doneSessionId ?? null}
         // Hub-door direct start (?start=1). Gated on the due query having
         // resolved so the replay pick has its rows — begin() reads `due.data`
@@ -234,23 +293,28 @@ function RepetitionScreen() {
           // due list before replaying — otherwise the user replays a
           // question that's already "done". Each entry repeats the mistake
           // stored with it, never one re-derived from the due list; the
-          // answered questions before the saved cursor stay put, so the
-          // player still lands on the paused question; and from the cursor
-          // on a question whose mistake left the due list is skipped while
-          // the round goes on (prunePlan). A stale qid that no longer
-          // resolves in the bank is dropped rather than crashing the
-          // resume. Scoped to this route because only /repetition's
-          // sessions (kind=adaptive_review) are mistake-backed; /drill's
-          // resolvePlan doesn't prune.
-          const resumed = await resolveReplayPlan(entries, await dueNow(), position)
+          // answered questions before the saved cursor stay put as history,
+          // so the player still lands on the paused question, but are never
+          // graded; and from the cursor on a question whose mistake left the
+          // due list is skipped while the round goes on (prunePlan). A stale
+          // qid that no longer resolves in the bank is dropped rather than
+          // crashing the resume. Scoped to this route because only
+          // /repetition's sessions (kind=adaptive_review) are
+          // mistake-backed; /drill's resolvePlan doesn't prune.
+          //
+          // A stored plan still without the links this device keeps for the
+          // round (their write failed, or has not landed) is read with them;
+          // the effect above writes them again. Without them, on another
+          // device say, its new questions play on and are graded nothing.
+          const pending = roundSession ? pendingLinksFor(roundSession.id, entries) : null
+          linkedPlan.current = pending
+          const resumed = await resolveReplayPlan(pending ?? entries, await dueNow(), position)
           // Nothing left from the saved cursor on: the round is over. Treat
           // the session as complete rather than replaying an answered
           // question. Returning [] reuses the existing "stored plan no
           // longer resolves" path in SessionPlayer: it ends the dangling
           // session and falls through to a fresh pick.
           if (resumed.remaining === 0) return []
-          // An adopted round's stored plan is what it is: nothing to write.
-          linkedPlan.current = null
           playRound(resumed.items)
           return resumed.questions
         }}
@@ -264,8 +328,11 @@ function RepetitionScreen() {
           })
           playRound(items)
           // Only a new question carries a link; without one, the plain
-          // plan SessionPlayer stores is already exact.
-          linkedPlan.current = items.some((item) => item.sibling) ? items.map(planEntry) : null
+          // plan SessionPlayer stores is already exact. With one, the links
+          // are kept on this device until the server stores them.
+          const linked = items.some((item) => item.sibling) ? items.map(planEntry) : null
+          linkedPlan.current = linked
+          if (linked) savePendingLinks(linked)
           return items.map((item) => item.question)
         }}
         idleEyebrow="Repetition"
@@ -335,36 +402,11 @@ function RepetitionScreen() {
             </Link>
           ) : null
         }
-        onCorrect={(q) => {
-          noteAnswered(q.qid)
-          // A planned item reviews the mistake it repeats, by row id — the
-          // question answered may be a new one with the missed one's trap.
-          const item = round.get(q.qid)
-          if (item) reviewMistake.mutate({ id: item.mistakeId, correct: true })
-          // Outside the round (not expected): the server finds the
-          // question's own active row, as before.
-          else resolveMistake.mutate({ questionId: q.qid })
-        }}
-        onWrong={(q) => {
-          noteAnswered(q.qid)
-          // A wrong answer lapses the SOURCE mistake; a new question never
-          // becomes a mistake of its own.
-          const item = round.get(q.qid)
-          if (item) reviewMistake.mutate({ id: item.mistakeId, correct: false })
-          else recordMistake.mutate({ questionId: q.qid })
-        }}
+        onCorrect={(q) => grade(q.qid, true)}
+        onWrong={(q) => grade(q.qid, false)}
       />
       {current?.sibling && <SiblingLabel />}
     </>
-  )
-}
-
-/** Whether two stored plans play the same questions in the same order,
- *  whatever links their entries carry. */
-function sameQuestions(a: readonly string[], b: readonly string[]): boolean {
-  return (
-    a.length === b.length &&
-    a.every((entry, i) => parsePlanEntry(entry).qid === parsePlanEntry(b[i]).qid)
   )
 }
 

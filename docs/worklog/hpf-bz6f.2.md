@@ -612,3 +612,250 @@ red run.
   missing entries. The question ids in the bank are stable, so this is
   theoretical.
 - Not visually verified, as in round 1. Nothing visible changed in round 2.
+
+## Round 3
+
+Codex's narrow re-review of d19bccc (review bead hpf-wsmf) returned
+**HOLD** with two findings. Both are fixed. Every write is inside the
+admitted set, and `SessionPlayer.tsx` and `worker/src/routes/sessions.ts`
+are untouched. There is no worker change this round. Changes are staged and
+uncommitted.
+
+### P1: a stale `?qid=` could grade an answered question
+
+`SessionPlayer` seeks the URL qid before the session's own cursor
+(`SessionPlayer.tsx:372-377`). Take the plan X~A, Y~B at position 1, with
+`currentQuestionId` Y and a stale `?qid=X`. The player opened X, which
+round 2 kept as history. X had no mapping in the round, so a wrong answer
+took the question-keyed fallback and inserted a new mistake for X. If A was
+still due, X was even mapped to A and reviewed it a second time.
+
+**Fix:**
+- **The URL qid is held to the playable cursor** (`repetition.tsx`
+  `seekQid`, `lib/replay.ts` `resumeQid`). When the route renders with the
+  round `SessionPlayer` is about to adopt, it checks the qid against the
+  stored plan before passing it to `urlSyncedQid`:
+  - "About to adopt" is the same `canAdoptActiveSession` check, from the
+    same active-sessions snapshot that `begin()` reads.
+  - A qid at or after the stored cursor passes through.
+  - Anything else becomes the paused question (`currentQuestionId`) or the
+    entry at the cursor. That covers a qid before the cursor, or one the
+    round does not hold.
+
+  `begin()` reads the prop when it adopts, so it never seeks an answered
+  question. Its URL sync then rewrites the address to the opened question.
+- **History is never graded** (`prunePlan`). An entry before the cursor is
+  kept for the cursor and the Klart summary, but is never mapped to a
+  mistake, even while that mistake is still due. It never claims a mistake
+  either. `resolveReplayPlan` therefore never hands it over as an item, and
+  the route's round map holds only live items.
+- **No live mapping, nothing recorded** (`repetition.tsx` `grade`). An
+  answer on a question in the round map reviews that mistake by row id. Any
+  other answer records nothing and shows nothing. That includes history, a
+  new question whose link was lost, and a question outside the round. The
+  question-keyed fallbacks (`POST /api/mistakes`, `PATCH /by-question`) are
+  gone from the route, so a new question can never become a mistake of its
+  own.
+
+### P2: links that never landed ended the round
+
+`SessionPlayer` creates the session with plain qids, and the route's link
+PUT follows as an unawaited effect. A failed PUT followed by leaving, or a
+resume on another device before the PUT landed, left a plain plan. The next
+mount skipped every new question (none has a due mistake of its own), found
+nothing left, and returned `[]`. That is `SessionPlayer`'s stale-plan path
+(`SessionPlayer.tsx:346-355`): it ended the unfinished session and showed
+"Övningen är inte längre tillgänglig — starta en ny."
+
+**Persisting the links with the session's creation needs `SessionPlayer`.**
+The sessions API would accept them: `StartBody.plan` takes any 1–80
+character strings, and a link is at most 59 characters (29 + 1 + 29). But
+the create call is `SessionPlayer`'s own: `begin()` sends
+`plan: picked.map((q) => q.qid)`, and nothing the route passes changes it.
+The exact change, outside the write set:
+
+```ts
+// SessionPlayerProps
+/** The entries to store as a fresh pick's plan, in pick order; the plain
+ *  qids when omitted. /repetition stores each new question with its
+ *  source ("X~A"), so the links are durable from the session's creation. */
+planEntries?: (picked: Question[]) => string[]
+
+// begin(), fresh path
+const session = await startSession.mutateAsync({
+  kind: props.sessionKind,
+  sections: props.sections,
+  plan: props.planEntries?.(picked) ?? picked.map((q) => q.qid),
+  device: currentDevice(),
+})
+```
+
+`repetition.tsx` would pass
+`planEntries={(picked) => linkedPlan.current ?? picked.map((q) => q.qid)}`.
+New rounds would then never need the PUT, the copy kept on the device, or
+the lost-links path below.
+
+**Fix inside the write set: a recoverable pending-save state.**
+- **Kept on the device until stored** (`lib/replay.ts` `savePendingLinks`,
+  `pendingLinksFor`, `dropPendingLinks`):
+  - Key: `hpc-repetera-links`. The value is
+    `{ version: 1, sessionId | null, plan }`.
+  - There is one slot, since a user has at most one open round.
+  - The fresh pick saves the linked plan. The route binds the session id as
+    soon as the session shows up, right before each PUT.
+  - It is dropped when the PUT succeeds, when the session shows up with its
+    links, or when the round completes.
+  - Storage that is full or disabled fails silently. The links then last
+    for the visit, as in round 2.
+- **Retried on the next mount.** The link effect takes this visit's
+  in-memory plan, or else the kept copy for the open round (same session,
+  or not yet bound and the same questions in the same order). It sends the
+  PUT whenever the session lacks the links. It still retries on the
+  session's cache updates within a visit, as before.
+- **Resumability is gated on the kept copy.** A stored plan without links
+  is never resolved without the links this device still keeps for it.
+  `resolvePlan` reads the kept copy (`pendingLinksFor`) and resumes with
+  it. A stored plan that has links always wins over the copy.
+- **Links that cannot be recovered: the unlinked questions resume as plain
+  same-question repeats** (`prunePlan`'s `mayBeNew`, `resolveReplayPlan`).
+  This is the case on another device before the PUT lands, or with no copy
+  and no PUT.
+  - A plan with no link at all may hold such questions. The server stores a
+    round's links whole, so a plan with one link has them all.
+  - From the cursor on, a plain entry that has no due mistake of its own
+    but carries a trap (non-ORD, which is all a new question can be) stays
+    in the round, with no mapping.
+  - It is played. Its answer reviews its own mistake if one is due, and
+    otherwise records nothing.
+  - The round goes on and does not end as "done".
+  - Untrapped and ORD entries keep the #290 skip.
+
+**Why plain same-question repeats rather than a re-pick:**
+1. A re-pick would have to be decided before `SessionPlayer` adopts the
+   session. Its auto-resume calls `begin()` on mount, before the route
+   could load the trap index or a fresh due list. A decision made later,
+   inside `resolvePlan`, can only return `[]`, and that is the stale-plan
+   path above: the session ends with the "no longer available" copy. That
+   is the outcome this finding rejects.
+2. Repeating keeps the student's place. The paused question opens where
+   they left it, and no answer given so far is lost.
+3. It never guesses a source. Re-deriving one from the due list was round
+   2's P1. It also never records a mistake for a new question, which is
+   round 3's P1.
+4. Nothing is lost or double-counted. The unknown sources stay due and come
+   back in the next round with new questions. Only their relearning credit
+   waits until then.
+
+What it costs: on a device without the links, the round's new questions
+are practice that moves no mistake. A plan without links also loses the
+#290 skip for a trapped, non-ORD, same-question entry whose own mistake
+left the due list. That entry plays ungraded instead of being skipped. It
+can only happen in rounds stored before round 2, in rounds picked while the
+trap index failed to load, and with a trap that had no new question left.
+
+### Tests
+
+- `-repetition.test.tsx` now renders the **real `SessionPlayer`** where its
+  adopt and seek matter. `useSessions` and the router search are small
+  reactive stores, so the player's own `startSession`, `updateSession` and
+  URL writes land where the route reads them. `DrillQuestion` and the
+  chrome are stubbed: the stub shows which question is open and has a
+  button per letter. New tests:
+  - P1, real player: a stale `?qid=X` at position 1 opens Y, and its wrong
+    answer reviews 102 (B). Nothing is recorded, and the URL becomes Y.
+    The same holds while A is still due.
+  - P1, stubbed: an answered question, or a question outside the round,
+    grades nothing (no review, no record, no resolve). This replaces round
+    2's "falls back to the question-keyed routes" test, whose expectation
+    was this bug.
+  - P2, real player:
+    - **A failed PUT across a remount.** The round is started with Start, X
+      is answered right, Next is pressed, and the student leaves. The
+      remount opens Y with the kept links. Y's answer reviews 102, the
+      session is not ended, and the PUT is sent again with the linked
+      plan.
+    - **A delayed PUT across a remount.** The PUT stays in flight. The
+      remount opens X with the kept links, and its answer reviews 101.
+      When the write then lands, the kept copy is dropped and nothing is
+      sent again.
+    - **Links lost (another device).** A plain stored plan with no kept
+      copy opens Y. Its answer reviews and records nothing, and the
+      session is not ended.
+- `replay.test.ts`:
+  - `prunePlan`: never maps history, even while due; in a plan without
+    links, keeps a `mayBeNew` entry unmapped and still skips the rest; a
+    plain entry still reviews a due mistake of its own; any link turns
+    the lost-links path off.
+  - `resolveReplayPlan`: history is never an item; a lost-links plan plays
+    on, with ORD never counted as new; an untrapped entry is still
+    skipped (#290).
+  - `resumeQid` ×5, `samePlay`, and the pending store ×7: binding,
+    matching only its own round, deferring to stored links, dropping,
+    broken values, and storage that throws.
+
+### Red-first evidence
+
+The new tests ran against the round-2 code (d19bccc, unmodified) before
+any implementation change.
+
+- `app` `pnpm test src/routes/-repetition.test.tsx`: **`Tests 6 failed |
+  18 passed (24)`**.
+  - P1, real player, both cases: expected `var-2026-verb1-LÄS-014` (Y),
+    got `var-2026-verb1-LÄS-013` (X).
+  - P1, stubbed: `h.review` was called twice with `{ id: 101 }`. The
+    answered question was graded against A, which was still due.
+  - P2, failed PUT, delayed PUT, links lost: after the remount there was no
+    question. The player showed "Övningen är inte längre tillgänglig —
+    starta en ny.": the stale-plan path had ended the session. For the
+    delayed and lost cases this was confirmed in a separate filtered rerun.
+- `app` `pnpm test src/lib/replay.test.ts`: **`Tests 17 failed | 37 passed
+  (54)`**.
+  - The 4 behavioural cases failed on their diffs:
+    - `prunePlan` mapped history to mistake 50;
+    - `prunePlan` dropped the unlinked LÄS entry;
+    - `resolveReplayPlan` returned the answered question as an item
+      (`[LÄS-012, 59]`);
+    - `resolveReplayPlan` dropped the unlinked question.
+  - 13 failed with "is not a function": `resumeQid`, `samePlay` and the
+    pending store did not exist yet.
+  - The 3 guard cases passed, as they should on either code: a due own
+    mistake, links on, and the untrapped skip.
+
+Since the red runs, the tests are unchanged except for one formatter line
+wrap in the `ended()` helper.
+
+### Verify (round 3, final tree)
+
+| Check | Result |
+|---|---|
+| app `pnpm typecheck` | pass |
+| app `pnpm lint` | pass. The same 4 pre-existing infos in devbake files, none in this change. |
+| app `pnpm test` | **113 files, 4049 / 4049 pass** |
+| worker `pnpm test` | **24 files, 411 / 411 pass** (no worker change this round) |
+
+### Residuals
+
+- **The links still land after creation.** The copy kept on the device
+  covers that device. Another device in the gap gets the lost-links path.
+  The `planEntries` change above would close this gap.
+- **Cold-refresh resume (pre-existing, found by reading `SessionPlayer`).**
+  Its auto-resume effect does not wait for the active-sessions query; the
+  auto-start effect does. A hard refresh of `/repetition?qid=…` therefore
+  runs `begin()` before the open round is known, and takes a fresh pick
+  whose POST ends the paused round. Coming from Home's "Fortsätt här"
+  (warm cache) adopts as intended. P1 cannot happen on this path, because
+  a fresh pick has no history. The fix belongs in `SessionPlayer`:
+  `if (activeOfKind.isPending) return` in that effect. Not exercised by a
+  test.
+- **The cursor drifts after a pruned resume (pre-existing).**
+  `SessionPlayer` writes `position` as an index into the resolved list.
+  Once a resume has skipped entries ahead of the cursor, that index is
+  lower than the stored plan's. A stale `?qid=` on a question answered
+  after such a resume can then pass `resumeQid`. It is graded only if its
+  mistake is due again, which is a legitimate review, and never inserts a
+  mistake. Writing the stored-plan index from `SessionPlayer` would remove
+  the drift.
+- A kept copy whose PUT is refused for good is retried on each session
+  update and on each mount until the round ends, the same as round 2's
+  in-visit retry. That is at most one request per answer.
+- Not visually verified. Nothing visible changed in round 3.

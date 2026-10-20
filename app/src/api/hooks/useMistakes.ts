@@ -21,20 +21,23 @@
 // Each has its own query key so they never collide.
 //
 // useRecordMistake — POST /api/mistakes (upsert by questionId). Called
-//   from /drill AND /repetition on every wrong answer. Invalidates ALL
-//   keys so the pile numeral rolls and the due count stays honest.
+//   from /drill on every wrong answer (never from /repetition, whose
+//   answers review the mistake they repeat). Invalidates ALL keys so the
+//   pile numeral rolls and the due count stays honest.
 // useResolveMistake — PATCH /api/mistakes/:id { resolve: true }. Called
 //   from /repetition on every right answer. Also invalidates ALL keys so
 //   a correct repetition drops the pile numeral live.
 // useReviewMistake — PATCH /api/mistakes/:id/review { correct }. Called
-//   from /repetition for every answer on a planned item, which may be a
-//   NEW question with the missed one's trap (hpf-bz6f.2): the answer
-//   moves the SOURCE mistake's row, right or wrong. Invalidates ALL keys.
+//   from /repetition for every answer on a question that repeats a due
+//   mistake, which may be a NEW question with the missed one's trap
+//   (hpf-bz6f.2): the answer moves the SOURCE mistake's row, right or
+//   wrong. Any other answer there records nothing. Invalidates ALL keys.
 // useLinkRound — PUT /api/mistakes/round/:sessionId { plan }. Called from
-//   /repetition once a fresh round's session exists: stores each new
-//   question's source in the session plan ("X~A"), so a resume on any
-//   device answers it against that mistake. Writes the plan through to
-//   the active-sessions cache.
+//   /repetition once a fresh round's session exists, and again from the
+//   copy that device keeps until a write lands: stores each new question's
+//   source in the session plan ("X~A"), so a resume on any device answers
+//   it against that mistake. Writes the plan through to the
+//   active-sessions cache.
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 

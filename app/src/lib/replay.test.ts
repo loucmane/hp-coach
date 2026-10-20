@@ -12,8 +12,13 @@
 //   7) Resume (planEntry / prunePlan / resolveReplayPlan): a stored plan
 //      carries each new question's source ("X~A") and a resume uses exactly
 //      that link, never one re-derived from the due list; answered questions
-//      before the cursor stay put, and from the cursor on only questions
-//      whose mistakes are still due are played.
+//      before the cursor stay put as history, never graded, and from the
+//      cursor on only questions whose mistakes are still due are played —
+//      plus, in a plan whose links never landed, the trapped plain
+//      questions that may be new ones, graded nothing.
+//   8) resumeQid: a resume opens a ?qid= only at or after the cursor.
+//   9) Pending links: a fresh round's links kept on this device until the
+//      server stores them.
 
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
@@ -26,13 +31,19 @@ import { EXCLUDED_QUESTIONS } from '@/data/figureOverrides'
 import { loadBank, type Question } from '@/data/questions'
 
 import {
+  dropPendingLinks,
+  PENDING_LINKS_KEY,
   type PlanLink,
   parsePlanEntry,
+  pendingLinksFor,
   pickReplayQuestions,
   planEntry,
   prunePlan,
   type ReplayItem,
   resolveReplayPlan,
+  resumeQid,
+  samePlay,
+  savePendingLinks,
 } from './replay'
 import {
   __resetTrapIndexCache,
@@ -394,6 +405,45 @@ describe('prunePlan', () => {
     const stored = [link(lasQids[2], lasQids[0]), link(lasQids[3], lasQids[0])]
     expect(prunePlan(stored, [a]).map((l) => [l.qid, l.mistakeId])).toEqual([[lasQids[2], a.id]])
   })
+
+  it('never maps an answered question before the cursor, even while its mistake is still due', () => {
+    // X was answered but A is still due (its review never landed, say). X is
+    // history all the same: an answer there must never move A again.
+    const [a, b] = [mistake(lasQids[0]), mistake(lasQids[1])]
+    const stored = [link(lasQids[2], lasQids[0]), link(lasQids[3], lasQids[1])]
+    expect(prunePlan(stored, [a, b], 1)).toEqual([
+      { qid: lasQids[2], sourceQid: lasQids[0], sibling: true, mistakeId: null },
+      { qid: lasQids[3], sourceQid: lasQids[1], sibling: true, mistakeId: b.id },
+    ])
+  })
+
+  it('in a plan without links, keeps a plain question that may be a new one, graded nothing', () => {
+    // The round's links never reached the server and no copy is left: X and
+    // Y may be new questions whose sources are unknown. They play on; the
+    // ORD item whose mistake left the due list is still skipped (#290).
+    const mOrd = mistake(ordQids[0])
+    const mayBeNew = (qid: string) => qid === lasQids[2] || qid === lasQids[3]
+    const stored = [lasQids[2], lasQids[3], ordQids[0], ordQids[1]]
+    expect(prunePlan(stored, [mOrd], 1, mayBeNew)).toEqual([
+      { qid: lasQids[2], sourceQid: lasQids[2], sibling: false, mistakeId: null },
+      { qid: lasQids[3], sourceQid: lasQids[3], sibling: false, mistakeId: null },
+      { qid: ordQids[0], sourceQid: ordQids[0], sibling: false, mistakeId: mOrd.id },
+    ])
+  })
+
+  it('a plain question that may be new still reviews a due mistake of its own', () => {
+    const own = mistake(lasQids[3])
+    expect(prunePlan([lasQids[3]], [own], 0, () => true)).toEqual([
+      { qid: lasQids[3], sourceQid: lasQids[3], sibling: false, mistakeId: own.id },
+    ])
+  })
+
+  it('never keeps such a question once the plan stores a link', () => {
+    // The server stores a round's links whole: a plan with one link has all
+    // of them, so a plain entry there is a same-question repeat.
+    const stored = [link(lasQids[2], lasQids[0]), lasQids[3]]
+    expect(prunePlan(stored, [], 0, () => true)).toEqual([])
+  })
 })
 
 describe('resolveReplayPlan', () => {
@@ -429,5 +479,154 @@ describe('resolveReplayPlan', () => {
     const round = await resolveReplayPlan([ordQids[0], ordQids[1]], [mistake(ordQids[0])], 1)
     expect(round.questions.map((q) => q.qid)).toEqual([ordQids[0]])
     expect(round.remaining).toBe(0)
+  })
+
+  it('never hands an answered question over as an item, even while its mistake is due', async () => {
+    const [mLas, mOrd] = [mistake(lasQids[0]), mistake(ordQids[0])]
+    const round = await resolveReplayPlan(
+      [link(lasQids[1], lasQids[0]), ordQids[0]],
+      [mLas, mOrd],
+      1,
+    )
+    expect(round.questions.map((q) => q.qid)).toEqual([lasQids[1], ordQids[0]])
+    expect(round.items.map((i) => [i.question.qid, i.mistakeId])).toEqual([[ordQids[0], mOrd.id]])
+    expect(round.remaining).toBe(1)
+  })
+
+  it('plays on through a plan whose links never landed: its trapped questions are kept, graded nothing', async () => {
+    // A plain plan: the LÄS question carries a trap, so it may be a new
+    // question whose source is unknown. It stays in the round (so the round
+    // does not end), but it reviews nothing.
+    const traps = buildTrapIndex({
+      [lasQids[0]]: 'LAS-TYPE-T',
+      [lasQids[1]]: 'LAS-TYPE-T',
+      [ordQids[1]]: 'ORD-ROOT-T',
+    })
+    const mOrd = mistake(ordQids[0])
+    const round = await resolveReplayPlan([lasQids[1], ordQids[0], ordQids[1]], [mOrd], 0, traps)
+    // ORD is never a new question, even if it ever carries a trap id: its
+    // mistake left the due list, so it is skipped.
+    expect(round.questions.map((q) => q.qid)).toEqual([lasQids[1], ordQids[0]])
+    expect(round.items.map((i) => [i.question.qid, i.mistakeId])).toEqual([[ordQids[0], mOrd.id]])
+    expect(round.remaining).toBe(2)
+  })
+
+  it('skips an untrapped plain question whose mistake left the due list (#290)', async () => {
+    const traps = buildTrapIndex({ [lasQids[0]]: 'LAS-TYPE-T' })
+    const round = await resolveReplayPlan([lasQids[1]], [], 0, traps)
+    expect(round.questions).toEqual([])
+    expect(round.remaining).toBe(0)
+  })
+})
+
+// resumeQid — the ?qid= a resume may open. Only a question at or after the
+// stored cursor: an answered one is history, and an answer there would
+// grade it again.
+describe('resumeQid', () => {
+  const [x, y, z] = ['X-LÄS-1', 'Y-LÄS-2', 'Z-ORD-3']
+  const plan = [link(x, 'A-LÄS-0'), link(y, 'B-LÄS-9'), z]
+
+  it('opens a question at or after the cursor', () => {
+    expect(resumeQid(y, plan, 1, y)).toBe(y)
+    expect(resumeQid(z, plan, 1, y)).toBe(z)
+  })
+
+  it('opens the paused question instead of an answered one', () => {
+    expect(resumeQid(x, plan, 1, y)).toBe(y)
+  })
+
+  it('opens the paused question instead of one the round does not hold', () => {
+    expect(resumeQid('var-2026-verb1-LÄS-999', plan, 1, y)).toBe(y)
+  })
+
+  it('opens the question at the cursor when the paused one is not ahead of it', () => {
+    expect(resumeQid(x, plan, 1, x)).toBe(y)
+    expect(resumeQid(x, plan, 1, null)).toBe(y)
+  })
+
+  it('has nothing to open past the end of the round', () => {
+    expect(resumeQid(x, plan, 3, null)).toBeNull()
+  })
+})
+
+describe('samePlay', () => {
+  it('compares the questions two plans play, in order, whatever links they carry', () => {
+    expect(samePlay([link('X', 'A'), 'O'], ['X', 'O'])).toBe(true)
+    expect(samePlay(['O', 'X'], ['X', 'O'])).toBe(false)
+    expect(samePlay(['X'], ['X', 'O'])).toBe(false)
+  })
+})
+
+// Pending links — SessionPlayer creates a round's session with plain qids
+// and the route writes the links after it, so until the server has them
+// this device keeps a copy: one slot, bound to the round's session once it
+// exists.
+describe('pending round links', () => {
+  const linked = () => [link(lasQids[1], lasQids[0]), ordQids[0]]
+  const plain = () => [lasQids[1], ordQids[0]]
+
+  beforeEach(() => window.localStorage.clear())
+
+  it('hands back the links of the round this device picked, before and after it has a session', () => {
+    savePendingLinks(linked())
+    expect(pendingLinksFor(7, plain())).toEqual(linked())
+    savePendingLinks(linked(), 7)
+    expect(pendingLinksFor(7, plain())).toEqual(linked())
+  })
+
+  it('only for that round', () => {
+    savePendingLinks(linked(), 7)
+    expect(pendingLinksFor(8, plain())).toBeNull()
+    expect(pendingLinksFor(7, [ordQids[0], lasQids[1]])).toBeNull()
+    expect(pendingLinksFor(7, [lasQids[1]])).toBeNull()
+  })
+
+  it('defers to a stored plan that already carries the links', () => {
+    savePendingLinks(linked(), 7)
+    expect(pendingLinksFor(7, linked())).toBeNull()
+  })
+
+  it('drops them for their own round only', () => {
+    savePendingLinks(linked(), 7)
+    dropPendingLinks(8)
+    expect(pendingLinksFor(7, plain())).toEqual(linked())
+    dropPendingLinks(7)
+    expect(pendingLinksFor(7, plain())).toBeNull()
+  })
+
+  it('drops a copy not yet bound to a session by the questions it plays', () => {
+    savePendingLinks(linked())
+    dropPendingLinks(7, [ordQids[0]])
+    expect(pendingLinksFor(7, plain())).toEqual(linked())
+    dropPendingLinks(7, plain())
+    expect(pendingLinksFor(7, plain())).toBeNull()
+  })
+
+  it('reads a broken or foreign value as nothing kept', () => {
+    window.localStorage.setItem(PENDING_LINKS_KEY, 'not json')
+    expect(pendingLinksFor(7, plain())).toBeNull()
+    window.localStorage.setItem(
+      PENDING_LINKS_KEY,
+      JSON.stringify({ version: 2, sessionId: 7, plan: linked() }),
+    )
+    expect(pendingLinksFor(7, plain())).toBeNull()
+  })
+
+  it('never throws when storage is unavailable', () => {
+    const denied = () => {
+      throw new Error('storage denied')
+    }
+    const spies = [
+      vi.spyOn(Storage.prototype, 'getItem').mockImplementation(denied),
+      vi.spyOn(Storage.prototype, 'setItem').mockImplementation(denied),
+      vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(denied),
+    ]
+    try {
+      expect(() => savePendingLinks(linked(), 7)).not.toThrow()
+      expect(pendingLinksFor(7, plain())).toBeNull()
+      expect(() => dropPendingLinks(7)).not.toThrow()
+    } finally {
+      for (const spy of spies) spy.mockRestore()
+    }
   })
 })
