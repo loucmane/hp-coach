@@ -1,4 +1,4 @@
-// Samtal · the frame around Idag and the other doors.
+// Samtal · the frame around Idag, Öva and Repetera.
 //
 // Desktop: the five doors are a list of conversations, as in a messages
 // app — each door a round icon, its name and one line about what waits
@@ -8,11 +8,18 @@
 // list's foot; it opens a card whose theme choice is a row of reply chips.
 // Phone: a slim top bar with the account's round button, the page, and a
 // bottom bar of the five doors; the account opens as a sheet.
+//
+// Kit v2: the page follows the screen on stage (1 and 4 Idag, 5 Öva, 8
+// Repetera, which lives inside Öva: its door stays current there), and a
+// door asks for its destination through useDirectionData().actions.go —
+// in the bake-off the switcher moves, in the app the route changes. The
+// fold survives a move between doors; only Navigering (4) folds the list
+// and opens the account, and the way back to Idag (1) unfolds it again.
 
 import { PanelLeftClose, PanelLeftOpen, UserRound } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { OVA_DUE, PROGNOSIS, RESUME, TODAY } from '@/components/devbake/redesign/r1Fixtures'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
   DESTINATIONS,
   type Destination,
@@ -21,40 +28,71 @@ import {
   type ThemeKey,
   useDismiss,
 } from '@/components/devbake/redesign/r1Kit'
+import type { HomeView } from '@/components/devbake/redesign/viewModel'
 import { SamtalHome } from './SamtalHome'
-import { Coach, Divider, DoorIcon, Mark, Replies } from './SamtalParts'
+import { SamtalOva } from './SamtalOva'
+import { DoorIcon, Mark } from './SamtalParts'
+import { SamtalRepetera } from './SamtalRepetera'
+
+type Page = 'idag' | 'ova' | 'repetera'
+
+/** The page a screen shows in the frame. */
+function pageOf(screen: DirectionProps['screen']): Page {
+  if (screen === 5) return 'ova'
+  if (screen === 8) return 'repetera'
+  return 'idag'
+}
+
+/** The door that is current on a page. */
+const PAGE_DOOR: Record<Page, Destination> = { idag: 'idag', ova: 'ova', repetera: 'ova' }
 
 /** What waits behind each door: the line under its name. */
-const PREVIEW: Record<Destination, string> = {
-  idag: `Fortsätt ${RESUME.section}, fråga ${RESUME.position} av ${RESUME.total}`,
-  ova: `${OVA_DUE} missar att repetera`,
-  provpass: 'Ett helt pass, 55 minuter',
-  uppslag: 'Lektioner och ramverk',
-  framsteg: `Prognos ${fmtScore(PROGNOSIS.total)} av 2,0`,
+function previews(home: HomeView): Record<Destination, string> {
+  const { resume, plan, ovaDue, prognosis } = home
+  const first = plan.items.find((i) => !i.completed)
+  return {
+    idag: resume
+      ? `Fortsätt ${resume.section}, fråga ${resume.position} av ${resume.total}`
+      : first
+        ? `Dagens plan, ${plan.minutes} min`
+        : 'Dagens plan',
+    ova:
+      ovaDue > 0
+        ? `${ovaDue} ${ovaDue === 1 ? 'miss' : 'missar'} att repetera`
+        : 'Alla delprov och Repetera',
+    provpass: 'Ett helt pass, 55 minuter',
+    uppslag: 'Lektioner och ramverk',
+    framsteg:
+      prognosis.total != null
+        ? `Prognos ${fmtScore(prognosis.total)} av 2,0`
+        : 'Prognos och historik',
+  }
 }
 
 type ThemeChoice = ThemeKey | 'system'
 
-export function SamtalFrame({
-  screen,
-  width,
-  theme,
-  live,
-  onScreen,
-  onTheme,
-  wanted,
-  clearWanted,
-}: DirectionProps & { wanted: Destination | null; clearWanted: () => void }) {
+export function SamtalFrame({ screen, width, theme, live, onScreen, onTheme }: DirectionProps) {
+  const { data, actions } = useDirectionData()
+  const page = pageOf(screen)
+  const current = PAGE_DOOR[page]
+  const preview = previews(data.home)
+  const ovaDue = data.home.ovaDue
+
   // Screen 4 shows the frame's other state; screen 1 the default.
   const [collapsed, setCollapsed] = useState(screen === 4)
   const [menu, setMenu] = useState(screen === 4)
-  const [dest, setDest] = useState<Destination>(wanted ?? 'idag')
-  // biome-ignore lint/correctness/useExhaustiveDependencies: re-seat the frame when the screen changes only
+  const shown = useRef(screen)
   useEffect(() => {
-    setCollapsed(screen === 4)
-    setMenu(screen === 4)
-    setDest(wanted ?? 'idag')
-    clearWanted()
+    const was = shown.current
+    shown.current = screen
+    if (was === screen) return
+    if (screen === 4) {
+      setCollapsed(true)
+      setMenu(true)
+      return
+    }
+    setMenu(false)
+    if (was === 4 && screen === 1) setCollapsed(false)
   }, [screen])
 
   // ⌘B / Ctrl+B folds the list, as in the live app.
@@ -70,17 +108,40 @@ export function SamtalFrame({
     return () => window.removeEventListener('keydown', onKey, true)
   }, [live, width])
 
-  const go = useCallback((d: Destination) => {
-    setMenu(false)
-    setDest(d)
-  }, [])
+  // A door the reader chose: the new page's heading takes focus.
+  const chosen = useRef(false)
+  const go = useCallback(
+    (d: Destination) => {
+      setMenu(false)
+      chosen.current = d !== PAGE_DOOR[page] || page === 'repetera'
+      actions.go(d)
+    },
+    [actions, page],
+  )
   const closeMenu = useCallback(() => setMenu(false), [])
+  const pageRef = useRef<HTMLDivElement>(null)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: on a new page only
+  useEffect(() => {
+    if (!chosen.current) return
+    chosen.current = false
+    if (live) pageRef.current?.querySelector<HTMLElement>('h1')?.focus({ preventScroll: true })
+  }, [page])
 
-  const page =
-    dest === 'idag' ? (
-      <SamtalHome width={width} live={live} onResume={() => onScreen(2)} onGo={go} />
+  const body =
+    page === 'ova' ? (
+      <SamtalOva width={width} live={live} />
+    ) : page === 'repetera' ? (
+      <SamtalRepetera width={width} live={live} />
     ) : (
-      <SamtalStub dest={dest} onGo={go} />
+      <SamtalHome
+        width={width}
+        live={live}
+        onResume={() => {
+          // Round 1's step to Läsfråga, and the kit's resume.
+          onScreen(2)
+          actions.resume()
+        }}
+      />
     )
 
   if (width === 'phone') {
@@ -102,8 +163,8 @@ export function SamtalFrame({
             </span>
           </button>
         </header>
-        <div className="sa-pscroll" key={dest} inert={menu}>
-          {page}
+        <div className="sa-pscroll" key={page} inert={menu} ref={pageRef}>
+          {body}
         </div>
         <nav className="sa-tabs" aria-label="Huvudmeny" inert={menu}>
           {DESTINATIONS.map((d) => (
@@ -112,16 +173,18 @@ export function SamtalFrame({
               key={d.id}
               className="sa-tab"
               data-testid={`rd-nav-${d.id}`}
-              aria-current={dest === d.id ? 'page' : undefined}
+              aria-current={current === d.id ? 'page' : undefined}
               onClick={() => go(d.id)}
             >
               <span className="sa-tab-icon" aria-hidden>
                 <DoorIcon id={d.id} size={20} />
-                {d.id === 'ova' ? <span className="sa-tab-dot" /> : null}
+                {d.id === 'ova' && ovaDue > 0 ? <span className="sa-tab-dot" /> : null}
               </span>
               <span className="sa-tab-label">
                 {d.label}
-                {d.id === 'ova' ? <span className="sa-sr">, {OVA_DUE} att repetera</span> : null}
+                {d.id === 'ova' && ovaDue > 0 ? (
+                  <span className="sa-sr">, {ovaDue} att repetera</span>
+                ) : null}
               </span>
             </button>
           ))}
@@ -160,12 +223,12 @@ export function SamtalFrame({
               className={`sa-door${collapsed ? ' sa-tip' : ''}`}
               data-testid={`rd-nav-${d.id}`}
               data-tip={collapsed ? d.label : undefined}
-              aria-current={dest === d.id ? 'page' : undefined}
+              aria-current={current === d.id ? 'page' : undefined}
               // Folded, the name is the tooltip's; Öva keeps its count.
               aria-label={
                 collapsed
-                  ? d.id === 'ova'
-                    ? `${d.label}, ${OVA_DUE} att repetera`
+                  ? d.id === 'ova' && ovaDue > 0
+                    ? `${d.label}, ${ovaDue} att repetera`
                     : d.label
                   : undefined
               }
@@ -177,10 +240,10 @@ export function SamtalFrame({
               {collapsed ? null : (
                 <span className="sa-door-text">
                   <span className="sa-door-label">{d.label}</span>
-                  <span className="sa-door-preview">{PREVIEW[d.id]}</span>
+                  <span className="sa-door-preview">{preview[d.id]}</span>
                 </span>
               )}
-              {d.id === 'ova' ? <span className="sa-door-dot" aria-hidden /> : null}
+              {d.id === 'ova' && ovaDue > 0 ? <span className="sa-door-dot" aria-hidden /> : null}
             </button>
           ))}
         </nav>
@@ -195,8 +258,10 @@ export function SamtalFrame({
           />
         </div>
       </aside>
-      <main className="sa-main" key={dest}>
-        <div className="sa-col">{page}</div>
+      <main className="sa-main" key={page}>
+        <div className="sa-col" ref={pageRef}>
+          {body}
+        </div>
       </main>
     </div>
   )
@@ -355,32 +420,5 @@ function MenuItem({ label, hint, onClick }: { label: string; hint?: string; onCl
       <span>{label}</span>
       {hint ? <span className="sa-menu-hint">{hint}</span> : null}
     </button>
-  )
-}
-
-/** A door that round 2 builds: the coach says so, and offers the way back. */
-function SamtalStub({ dest, onGo }: { dest: Destination; onGo: (d: Destination) => void }) {
-  const d = DESTINATIONS.find((x) => x.id === dest) ?? DESTINATIONS[0]
-  return (
-    <div className="sa-stub">
-      <Divider>{TODAY.dateLabel}</Divider>
-      <div className="sa-thread">
-        <Coach as="section" aria-labelledby="sa-stub-h">
-          <h1 className="sa-stub-h" id="sa-stub-h">
-            {d.label}
-          </h1>
-          <p className="sa-say">{d.blurb}</p>
-          <p className="sa-say sa-say--quiet">
-            Den här sidan byggs i omgång 2, när en riktning är vald. Menyn och kontot fungerar redan
-            härifrån.
-          </p>
-        </Coach>
-        <Replies>
-          <button type="button" className="sa-chip" onClick={() => onGo('idag')}>
-            Tillbaka till Idag
-          </button>
-        </Replies>
-      </div>
-    </div>
   )
 }
