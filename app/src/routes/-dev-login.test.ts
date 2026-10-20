@@ -86,14 +86,27 @@ describe('the dev login screen', () => {
     expect(clerk.navigate).not.toHaveBeenCalled()
   })
 
-  it('signs out an existing session first and fetches no token', async () => {
+  it('goes home when already signed in, without signing out or fetching a token', async () => {
     clerk.isSignedIn = true
-    clerk.signOut.mockResolvedValue(undefined)
     await act(async () => {
       render(createElement(Screen))
     })
-    expect(clerk.signOut).toHaveBeenCalledWith({ redirectUrl: window.location.href })
+    expect(clerk.navigate).toHaveBeenCalledWith({ to: '/' })
+    expect(clerk.signOut).not.toHaveBeenCalled()
     expect(fetch).not.toHaveBeenCalled()
-    expect(clerk.create).not.toHaveBeenCalled()
+  })
+
+  it('signs out once on an explicit switch, returning without the switch flag', async () => {
+    clerk.isSignedIn = true
+    clerk.signOut.mockResolvedValue(undefined)
+    window.history.replaceState(null, '', '/dev-login?switch=1')
+    await act(async () => {
+      render(createElement(Screen))
+    })
+    expect(clerk.signOut).toHaveBeenCalledWith({
+      redirectUrl: `${window.location.origin}/dev-login`,
+    })
+    expect(fetch).not.toHaveBeenCalled()
+    window.history.replaceState(null, '', '/')
   })
 })

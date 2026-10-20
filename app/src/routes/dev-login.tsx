@@ -68,12 +68,22 @@ function DevLoginScreen() {
     started.current = true
     ;(async () => {
       try {
-        // A ticket sign-in is refused while a session is active (for
-        // example the owner's own account): sign out and come back here.
+        // A ticket sign-in is refused while a session is active. Never sign
+        // out on our own: Clerk can reload this page right after a sign-in,
+        // and an automatic sign-out would loop. Already signed in means done;
+        // /dev-login?switch=1 switches accounts explicitly, once.
+        const url = new URL(window.location.href)
         if (isSignedIn) {
-          setStatus('Loggar ut befintlig session...')
+          if (url.searchParams.has('switch')) {
+            setStatus('Loggar ut befintlig session...')
+            url.searchParams.delete('switch')
+            if (!alive.current) return
+            await signOut({ redirectUrl: url.toString() })
+            return
+          }
+          setStatus('Redan inloggad — omdirigerar...')
           if (!alive.current) return
-          await signOut({ redirectUrl: window.location.href })
+          navigate({ to: '/' })
           return
         }
         setStatus('Hämtar sign-in-token...')
