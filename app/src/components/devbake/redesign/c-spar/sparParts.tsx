@@ -8,6 +8,10 @@
 //     Esc closes and hands focus back to its button
 //   - the sections' facts: official names, halves, rough round lengths and
 //     Swedish counts
+// Batch 2 adds:
+//   - SparDialog: the modal layer for a short task (spec §1.8) — centred
+//     on desktop, an edge sheet on phone, focus kept inside
+//   - SparScale: Idag's 0–2,0 bar as a part, full size or mini
 
 import {
   Check,
@@ -25,15 +29,17 @@ import {
 import {
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
+  type RefObject,
   useCallback,
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
 } from 'react'
 import { createPortal } from 'react-dom'
 
-import type { Destination } from '@/components/devbake/redesign/r1Kit'
+import { type Destination, fmtScore } from '@/components/devbake/redesign/r1Kit'
 import type { Section } from '@/data/questions'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
 
@@ -315,7 +321,8 @@ export function SparSegmented<K extends string>({
   onChange,
 }: {
   label: string
-  options: readonly { key: K; label: ReactNode }[]
+  /** `testid` goes on the option's radio. */
+  options: readonly { key: K; label: ReactNode; testid?: string }[]
   value: K
   onChange: (key: K) => void
 }) {
@@ -331,12 +338,203 @@ export function SparSegmented<K extends string>({
             name={name}
             value={o.key}
             checked={value === o.key}
+            data-testid={o.testid}
             onChange={() => onChange(o.key)}
           />
           {o.label}
         </label>
       ))}
     </fieldset>
+  )
+}
+
+// ── Scale ────────────────────────────────────────────────────────────
+
+/** HP's scale tops out at 2,0. */
+const SCALE_TOP = 2
+
+/**
+ * A score on HP's 0–2,0 scale, Idag's prognosis bar as a part: the track,
+ * a hatched band for the uncertainty when there is one, the mark, and on
+ * the full size the ticks. A picture: `label` says it in words; without
+ * one it is decoration (its row says it). Lugnt läge hides it (the words
+ * beside it stay).
+ */
+export function SparScale({
+  value,
+  band,
+  label,
+  size = 'full',
+}: {
+  value: number
+  band?: { low: number; high: number } | null
+  label?: string
+  size?: 'full' | 'mini'
+}) {
+  const at = (v: number) => (Math.min(SCALE_TOP, Math.max(0, v)) / SCALE_TOP) * 100
+  const bar = (
+    <>
+      <span className="sp-scale-track">
+        {band ? (
+          <span
+            className="sp-scale-range"
+            style={{ left: `${at(band.low)}%`, width: `${at(band.high) - at(band.low)}%` }}
+          />
+        ) : null}
+        <span className="sp-scale-mark" style={{ left: `${at(value)}%` }} />
+      </span>
+      {size === 'full'
+        ? [0, 0.5, 1, 1.5, 2].map((v) => (
+            <span key={v} className="sp-scale-tick" style={{ left: `${at(v)}%` }}>
+              {v === 0 ? '0' : fmtScore(v)}
+            </span>
+          ))
+        : null}
+    </>
+  )
+  if (!label) {
+    return (
+      <div className="sp-scale" data-size={size} aria-hidden>
+        {bar}
+      </div>
+    )
+  }
+  return (
+    <div className="sp-scale" data-size={size} role="img" aria-label={label}>
+      {bar}
+    </div>
+  )
+}
+
+// ── Dialog ───────────────────────────────────────────────────────────
+
+/** Enter on one of these keeps its own meaning inside a dialog. */
+function ownsEnter(target: EventTarget | null): boolean {
+  return (
+    target instanceof Element &&
+    target.closest('button, a[href], input, select, textarea, summary') != null
+  )
+}
+
+/**
+ * The modal layer for a short task that ends when you choose, confirm or
+ * close (spec §1.8): a confirmation, the phone's Provpass rules, the
+ * Provpass overview. A layer of the direction's root, over everything:
+ * centred on desktop (`placement` 'top' hangs it under a focus screen's
+ * top bar), an edge sheet with its grab on phone, a scrim behind it.
+ *
+ * Focus moves in — to `initialFocus`, else the first heading (give it
+ * tabIndex -1) — and Tab stays inside. Esc, a press on the scrim or the
+ * caller's own button closes it, and focus goes back to where it was.
+ * Enter outside a control is `onEnter` (the green step). `keepMounted`
+ * keeps it in the document while closed, hidden. Its keys are its own:
+ * the bake-off's switcher leaves a data-rd-keyscope element alone.
+ */
+export function SparDialog({
+  open,
+  onClose,
+  phone,
+  labelledBy,
+  children,
+  initialFocus,
+  onEnter,
+  placement = 'center',
+  keepMounted = false,
+  className,
+  testid,
+}: {
+  open: boolean
+  onClose: () => void
+  phone: boolean
+  /** The id of the dialog's heading. */
+  labelledBy: string
+  children: ReactNode
+  initialFocus?: RefObject<HTMLElement | null>
+  onEnter?: () => void
+  placement?: 'center' | 'top'
+  keepMounted?: boolean
+  className?: string
+  testid?: string
+}) {
+  const anchorRef = useRef<HTMLSpanElement>(null)
+  const boxRef = useRef<HTMLDivElement>(null)
+  const [root, setRoot] = useState<HTMLElement | null>(null)
+  useLayoutEffect(() => {
+    setRoot(anchorRef.current?.closest<HTMLElement>("[data-rd='spar']") ?? null)
+  }, [])
+  // Focus moves in on opening and back on closing. Both happen in the
+  // effect itself, never in a cleanup: React puts focus back where it was
+  // after a commit's mutations, and a cleanup runs among them — a layer
+  // kept mounted would take focus straight back.
+  const opener = useRef<HTMLElement | null>(null)
+  const shown = useRef(false)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: moves focus when opening or closing only
+  useLayoutEffect(() => {
+    if (!root) return
+    if (open && !shown.current) {
+      opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
+      const target = initialFocus?.current ?? boxRef.current?.querySelector<HTMLElement>('h2, h3')
+      target?.focus({ preventScroll: true })
+    } else if (!open && shown.current && opener.current?.isConnected) {
+      opener.current.focus({ preventScroll: true })
+    }
+    shown.current = open
+  }, [open, root])
+  // Unmounted while open: focus goes back too.
+  useLayoutEffect(
+    () => () => {
+      if (shown.current && opener.current?.isConnected)
+        opener.current.focus({ preventScroll: true })
+    },
+    [],
+  )
+  const layer = (
+    <>
+      {open ? (
+        <button
+          type="button"
+          className="sp-scrim"
+          aria-label="Stäng"
+          tabIndex={-1}
+          onClick={onClose}
+        />
+      ) : null}
+      <div
+        ref={boxRef}
+        className={className ? `sp-dialog ${className}` : 'sp-dialog'}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={labelledBy}
+        data-phone={String(phone)}
+        data-placement={placement}
+        data-rd-keyscope=""
+        data-testid={testid}
+        hidden={!open}
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') {
+            e.preventDefault()
+            e.stopPropagation()
+            onClose()
+            return
+          }
+          if (e.key === 'Enter' && onEnter && !ownsEnter(e.target)) {
+            e.preventDefault()
+            onEnter()
+            return
+          }
+          trapTab(e, boxRef.current)
+        }}
+      >
+        {phone ? <span className="sp-menu-grab" aria-hidden /> : null}
+        {children}
+      </div>
+    </>
+  )
+  return (
+    <>
+      <span ref={anchorRef} hidden />
+      {root && (open || keepMounted) ? createPortal(layer, root) : null}
+    </>
   )
 }
 
