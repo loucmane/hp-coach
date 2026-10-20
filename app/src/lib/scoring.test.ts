@@ -656,7 +656,7 @@ describe('computeHonestDelta — a week-over-week change only beyond the noise',
     expect(computeHonestDelta(bySection)).toMatchObject({ kind: 'stable' })
   })
 
-  it('pools only sections where both weeks clear the floor; none → null', () => {
+  it('takes only sections where both weeks clear the floor; none → null', () => {
     expect(
       computeHonestDelta({
         ORD: stats({
@@ -668,7 +668,7 @@ describe('computeHonestDelta — a week-over-week change only beyond the noise',
       }),
     ).toBeNull()
     expect(computeHonestDelta({})).toBeNull()
-    // KVA (this week only) must not drag the pooled weeks.
+    // KVA (this week only) must not drag the estimate.
     expect(
       computeHonestDelta({
         ORD: stats({
@@ -680,5 +680,137 @@ describe('computeHonestDelta — a week-over-week change only beyond the noise',
         KVA: stats({ firstTry7d: 50, firstTryCorrect7d: 0, firstTry7to14d: 0 }),
       }),
     ).toMatchObject({ kind: 'change', delta: expect.closeTo(0.6, 12) })
+  })
+
+  // Round 2 (Codex review hpf-is2d): each week is estimated the way the
+  // projection is — section, then half, then total — on the sections that
+  // clear the floor in BOTH weeks, with the same weights for both weeks and
+  // both variances. Pooling the questions let a shift of practice between
+  // sections pass for a change.
+
+  it('a shift of volume between sections is not a change (swapped-volume regression)', () => {
+    // Both sections read the same in both weeks: ORD 0,90, KVA 0,10. Pooled,
+    // the questions read 91/110 against 19/110, a "+1,3" over a band of 0,20.
+    const d = computeHonestDelta({
+      ORD: stats({
+        firstTry7d: 100,
+        firstTryCorrect7d: 90,
+        firstTry7to14d: 10,
+        firstTryCorrect7to14d: 9,
+      }),
+      KVA: stats({
+        firstTry7d: 10,
+        firstTryCorrect7d: 1,
+        firstTry7to14d: 100,
+        firstTryCorrect7to14d: 10,
+      }),
+    })
+    // Each half is one section, so each weighs ½ in both weeks: 1,0 and 1,0.
+    const thisWeek = (scoreVar(0.9, 100) + scoreVar(0.1, 10)) / 4
+    const lastWeek = (scoreVar(0.9, 10) + scoreVar(0.1, 100)) / 4
+    expect(d).toEqual({
+      kind: 'stable',
+      band: expect.closeTo(1.96 * Math.sqrt(thisWeek + lastWeek), 12),
+    })
+  })
+
+  it('a true change at equal weights clears the band of the weighted estimates', () => {
+    // 100 first tries per section and week. ORD rises 0,50 → 0,80 and KVA
+    // holds at 0,30: the total rises (1,6 + 0,6)/2 − (1,0 + 0,6)/2 = +0,3.
+    const d = computeHonestDelta({
+      ORD: stats({
+        firstTry7d: 100,
+        firstTryCorrect7d: 80,
+        firstTry7to14d: 100,
+        firstTryCorrect7to14d: 50,
+      }),
+      KVA: stats({
+        firstTry7d: 100,
+        firstTryCorrect7d: 30,
+        firstTry7to14d: 100,
+        firstTryCorrect7to14d: 30,
+      }),
+    })
+    const thisWeek = (scoreVar(0.8, 100) + scoreVar(0.3, 100)) / 4
+    const lastWeek = (scoreVar(0.5, 100) + scoreVar(0.3, 100)) / 4
+    expect(d).toEqual({
+      kind: 'change',
+      delta: expect.closeTo(0.3, 12),
+      band: expect.closeTo(1.96 * Math.sqrt(thisWeek + lastWeek), 12),
+    })
+  })
+
+  it('a section eligible in only one week is excluded from both', () => {
+    const both = {
+      ORD: stats({
+        firstTry7d: 100,
+        firstTryCorrect7d: 80,
+        firstTry7to14d: 100,
+        firstTryCorrect7to14d: 50,
+      }),
+      KVA: stats({
+        firstTry7d: 50,
+        firstTryCorrect7d: 30,
+        firstTry7to14d: 50,
+        firstTryCorrect7to14d: 30,
+      }),
+    }
+    const d = computeHonestDelta({
+      ...both,
+      // LÄS clears the floor this week only, NOG last week only. Either one,
+      // counted in its half for a single week, would change that week's weights.
+      LÄS: stats({
+        firstTry7d: 30,
+        firstTryCorrect7d: 30,
+        firstTry7to14d: 2,
+        firstTryCorrect7to14d: 1,
+      }),
+      NOG: stats({
+        firstTry7d: 3,
+        firstTryCorrect7d: 0,
+        firstTry7to14d: 40,
+        firstTryCorrect7to14d: 0,
+      }),
+    })
+    expect(d).toEqual(computeHonestDelta(both))
+    // ORD and KVA weigh ½ each in both weeks: (1,6 + 1,2)/2 − (1,0 + 1,2)/2 = +0,3.
+    const thisWeek = (scoreVar(0.8, 100) + scoreVar(0.6, 50)) / 4
+    const lastWeek = (scoreVar(0.5, 100) + scoreVar(0.6, 50)) / 4
+    expect(d).toEqual({
+      kind: 'change',
+      delta: expect.closeTo(0.3, 12),
+      band: expect.closeTo(1.96 * Math.sqrt(thisWeek + lastWeek), 12),
+    })
+  })
+
+  it('weighs sections within their half, then the halves, as the projection does', () => {
+    // 20 first tries per section and week. Only KVA moves, 0,40 → 0,80, and
+    // KVA is the whole quant half: the total rises (1,6 − 0,8)/2 = +0,4. A
+    // flat mean over the three sections, or pooling the questions, would
+    // read +0,27, inside the noise.
+    const steady = stats({
+      firstTry7d: 20,
+      firstTryCorrect7d: 15,
+      firstTry7to14d: 20,
+      firstTryCorrect7to14d: 15,
+    })
+    const d = computeHonestDelta({
+      ORD: steady,
+      LÄS: steady,
+      KVA: stats({
+        firstTry7d: 20,
+        firstTryCorrect7d: 16,
+        firstTry7to14d: 20,
+        firstTryCorrect7to14d: 8,
+      }),
+    })
+    // wᵢ = 1/(m·kₕ): ORD and LÄS ¼ each, KVA ½.
+    const thisWeek = (2 * scoreVar(0.75, 20)) / 16 + scoreVar(0.8, 20) / 4
+    const lastWeek = (2 * scoreVar(0.75, 20)) / 16 + scoreVar(0.4, 20) / 4
+    expect(d).toEqual({
+      kind: 'change',
+      delta: expect.closeTo(0.4, 12),
+      band: expect.closeTo(1.96 * Math.sqrt(thisWeek + lastWeek), 12),
+    })
   })
 })

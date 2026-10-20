@@ -262,32 +262,20 @@ export function formatScoreSv(score: number | null): string {
  *  but untouched last week can't manufacture a swing. Returns null
  *  (render blank) when no section qualifies; a fake delta is worse
  *  than none. Computed from the raw week windows, not SectionScore
- *  (whose `score` is the 90d blend). */
+ *  (whose `score` is the 90d blend). The pool counts questions, so
+ *  practice moved from one pooled section to another still moves it;
+ *  computeHonestDelta weights the sections instead. */
 export function computeProjectedDelta(
   bySection: Partial<Record<Section, SectionStats>>,
   minAttempts = 5,
 ): number | null {
-  const weeks = pooledWeeks(bySection, minAttempts, (st) => st)
-  if (!weeks) return null
-  return scoreFromFraction(weeks.c7 / weeks.a7) - scoreFromFraction(weeks.c14 / weeks.a14)
-}
-
-/** The like-with-like week pool of the deltas: this week's and last week's
- *  windows summed over the sections where BOTH clear `minAttempts`, as `read`
- *  sees each section. Null when none qualifies. */
-function pooledWeeks(
-  bySection: Partial<Record<Section, SectionStats>>,
-  minAttempts: number,
-  read: (stats: SectionStats) => SectionStats,
-): { a7: number; c7: number; a14: number; c14: number } | null {
   let a7 = 0
   let c7 = 0
   let a14 = 0
   let c14 = 0
-  for (const section of SECTION_ORDER) {
-    const raw = bySection[section]
-    if (!raw) continue
-    const st = read(raw)
+  for (const section of [...VERBAL_SECTIONS, ...QUANT_SECTIONS]) {
+    const st = bySection[section]
+    if (!st) continue
     if (st.attempts7d >= minAttempts && st.attempts7to14d >= minAttempts) {
       a7 += st.attempts7d
       c7 += st.correct7d
@@ -296,7 +284,7 @@ function pooledWeeks(
     }
   }
   if (a7 === 0 || a14 === 0) return null
-  return { a7, c7, a14, c14 }
+  return scoreFromFraction(c7 / a7) - scoreFromFraction(c14 / a14)
 }
 
 // ── Honest prognosis (hpf-bz6f.4) ──────────────────────────────────
@@ -413,26 +401,63 @@ export type HonestDelta =
     }
 
 /** The honest week-over-week change (engagement review R7: show a delta
- *  only when it exceeds the noise). computeProjectedDelta's like-with-like
- *  pool, over first tries, against the combined uncertainty of the two
- *  weekly estimates:
+ *  only when it exceeds the noise). Each week's first tries are estimated
+ *  the way the projection is, section → half → total, on the sections E
+ *  that clear `minAttempts` in BOTH weeks. The weights depend on E alone,
+ *  never on how many first tries a section had, so both weeks and both
+ *  variances share them: practice moved from one section to another
+ *  changes the band, not the weights. For each week (7d, then 7–14d):
  *
- *    delta = 2·p₇ − 2·p₁₄                pooled first-try accuracy
- *    band  = 1.96 · √(Var₇ + Var₁₄)      Var = 4·p(1−p)/n, p floored as in scoreBand
+ *    sᵢ     = 2·cᵢ/nᵢ                  section i's first-try score that week
+ *    wᵢ     = 1/(m·kₕ)                 kₕ = sections of E in i's half,
+ *                                      m = halves with a section in E
+ *    T      = Σ wᵢ·sᵢ                   the mean of the half means
+ *    Var(T) = Σ wᵢ²·4·pᵢ(1−pᵢ)/nᵢ       pᵢ floored as in scoreBand
  *
- *  It is a `change` only when |delta| AND the one-decimal figure
- *  formatDeltaSv would print both exceed the band, so no figure on screen
- *  is ever smaller than the noise. Anything else is `stable`. Null when no
- *  section qualifies: the weeks are not comparable. */
+ *    delta  = T₇ − T₁₄
+ *    band   = 1.96 · √(Var(T₇) + Var(T₁₄))
+ *
+ *  A half without a section in E drops out (m = 1), so weeks compared on one
+ *  half give that half's change. It is a `change` only when |delta| AND the
+ *  one-decimal figure formatDeltaSv would print both exceed the band, so no
+ *  figure on screen is ever smaller than the noise. Anything else is
+ *  `stable`. Null when no section qualifies: the weeks are not comparable. */
 export function computeHonestDelta(
   bySection: Partial<Record<Section, SectionStats>>,
   minAttempts = 5,
 ): HonestDelta | null {
-  const weeks = pooledWeeks(bySection, minAttempts, firstTryStats)
-  if (!weeks) return null
-  const { a7, c7, a14, c14 } = weeks
-  const delta = scoreFromFraction(c7 / a7) - scoreFromFraction(c14 / a14)
-  const band = Z95 * Math.sqrt(scoreVariance(c7, a7) + scoreVariance(c14, a14))
+  // E, half by half, read as first tries. The floor is at least one first
+  // try a week, so no score divides by zero.
+  const floor = Math.max(1, minAttempts)
+  const halves = [VERBAL_SECTIONS, QUANT_SECTIONS]
+    .map((sections) =>
+      sections.flatMap((section) => {
+        const raw = bySection[section]
+        if (!raw) return []
+        const st = firstTryStats(raw)
+        return st.attempts7d >= floor && st.attempts7to14d >= floor ? [st] : []
+      }),
+    )
+    .filter((half) => half.length > 0)
+  if (halves.length === 0) return null
+  // One week's T and Var(T), from the shared weights wᵢ.
+  const week = (pick: (st: SectionStats) => [correct: number, n: number]) => {
+    let estimate = 0
+    let variance = 0
+    for (const half of halves) {
+      const w = 1 / (halves.length * half.length)
+      for (const st of half) {
+        const [correct, n] = pick(st)
+        estimate += w * scoreFromFraction(correct / n)
+        variance += w ** 2 * scoreVariance(correct, n)
+      }
+    }
+    return { estimate, variance }
+  }
+  const thisWeek = week((st) => [st.correct7d, st.attempts7d])
+  const lastWeek = week((st) => [st.correct7to14d, st.attempts7to14d])
+  const delta = thisWeek.estimate - lastWeek.estimate
+  const band = Z95 * Math.sqrt(thisWeek.variance + lastWeek.variance)
   return Math.abs(delta) > band && Math.abs(roundTenth(delta)) > band
     ? { kind: 'change', delta, band }
     : { kind: 'stable', band }

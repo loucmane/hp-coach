@@ -91,6 +91,8 @@ The input is the user's whole retained history, oldest first (`created_at`, then
 
 ### 3. The honest week delta (app, `computeHonestDelta`)
 
+> **Superseded in Round 2** (below): the pooled formula here let a shift of practice between sections pass for a change. The delta now weights sections, then halves, then the total.
+
 - It uses `computeProjectedDelta`'s like-with-like pool (sections where both weeks have ≥ 5 first tries), read through `firstTryStats`.
 - The formulas:
 
@@ -197,3 +199,68 @@ The input is the user's whole retained history, oldest first (`created_at`, then
 4. **The band on the total** is computed and tested but not shown. The error-budget PR ("för 2,0: högst N fel per halva") is the natural place to show it.
 5. **A user whose recent work in one half is only retries** now gets no total (the honest result) and Framsteg's existing "Ingen prognos än …" copy. That copy was written for a cold start; a retry-specific line may be wanted.
 6. **The rail on a stable week** shows no Framsteg folio: no change means no numeral, following "signals are real data or nothing".
+
+## Round 2 — the week delta weights sections and halves (Codex review hpf-is2d)
+
+### Snapshot
+
+- **Claim.** `gc hook --claim --json` returned `hpf-bz6f.4`, assignee `ci-wisp-ef7657a`, route `hpfetcher/gc.implementation-worker`. `bd show hpf-bz6f.4 --json` matched the id, the status (`in_progress`), the assignee and `gc.routed_to`. The design text was the "LATEST INSTRUCTION (round 2, fix round)" brief.
+- **Checkout.** `HEAD` = `e5dd5b1cea9bc2ffa87c59b999179844c526f4be` (round 1, committed by the coordinator), clean tracked tree.
+- **Constraints kept.** No commit, no dependency change, no network, no migration, no snapshot written. Only 3 write-set paths changed: `app/src/lib/scoring.ts`, `app/src/lib/scoring.test.ts` and this file.
+
+### The finding (P2, `scoring.ts:431-437` at e5dd5b1)
+
+`computeHonestDelta` pooled the questions of every eligible section into a single accuracy per week. A section's weight was therefore its share of that week's volume, so moving practice from one section to another moved the estimate. The review's example (first-try correct/attempts):
+
+| Section | This week | Last week |
+|---|---|---|
+| ORD | 90/100 | 9/10 |
+| KVA | 1/10 | 10/100 |
+
+Both sections read the same in both weeks, yet the pooled delta was 91/110 − 19/110 → **+1,309** against a band of 0,1998, so the page said "+1,3". Section → half → total reads 1,0 in both weeks.
+
+### The fix (`computeHonestDelta`)
+
+- **Eligibility.** E is the set of sections whose first tries clear `minAttempts` (5) in **both** weeks. A section eligible in only one week takes part in neither week's estimate.
+- **Weights.** Each week is estimated as the projection is: the mean of the sections within each half, then the mean of the halves. The weights depend on E alone, so both weeks and both variances use the same ones.
+- **Significance.** A `change` must clear the combined band of the two weighted estimates. The round 1 rule still holds: both |delta| and its printed one-decimal figure must exceed the band. Documented in the function's doc comment:
+
+  ```
+  For each week (7d, then 7–14d):
+    sᵢ     = 2·cᵢ/nᵢ                section i's first-try score that week
+    wᵢ     = 1/(m·kₕ)               kₕ = sections of E in i's half, m = halves with a section in E
+    T      = Σ wᵢ·sᵢ                 the mean of the half means
+    Var(T) = Σ wᵢ²·4·pᵢ(1−pᵢ)/nᵢ     pᵢ floored as in scoreBand
+  delta = T₇ − T₁₄
+  band  = 1.96 · √(Var(T₇) + Var(T₁₄))
+  ```
+
+- **One half only.** A half with no section in E drops out (m = 1), so weeks compared on one half give that half's change. For a single-section E this is exactly round 1's formula: every round 1 test and both `ProgressMobile.prognosis` delta fixtures (ORD only) are unchanged and still pass.
+- **`pooledWeeks` removed.** Round 1 had factored it out of `computeProjectedDelta` so the two deltas could share it; the honest delta no longer pools. `computeProjectedDelta` (read by the bake-offs only) is back to its exact body on `main`. Its doc now says it pools questions, and why the honest delta does not.
+- **Guard.** The floor is at least 1 first try a week (`Math.max(1, minAttempts)`), so no section score divides by zero. This replaces the old `a7 === 0` guard.
+- **Test rename.** The round 1 test "pools only sections where both weeks clear the floor" is now "takes only sections where both weeks clear the floor"; its assertions are unchanged.
+
+### Red first, against e5dd5b1's implementation
+
+Four new tests in `scoring.test.ts` were added before the fix. `pnpm --dir app test src/lib/scoring.test.ts` gave `Tests 4 failed | 56 passed (60)`:
+
+1. **Swapped-volume regression** (the review's example, expects `stable`). Received `{ kind: 'change', delta: 1.309090909090909, band: 0.19980646383496434 }`, the review's numbers. Expected `stable` with band 0,27580.
+2. **A true change at equal weights clears the band** (100 first tries per section and week; ORD 0,50 → 0,80, KVA steady at 0,30; expects +0,3). The delta matched (equal volumes make pooling agree on it), but the band was the pooled 0,19353 instead of the weighted 0,17856.
+3. **A section eligible in only one week is excluded from both** (ORD and KVA in both weeks; LÄS this week only, NOG last week only). The assertion that LÄS and NOG change nothing already held. The value did not: pooled +0,400 against 0,21338 where the weighted estimate is +0,300 against 0,22941. If LÄS or NOG counted in its half for its one week, the delta would read +0,4 or +0,6.
+4. **Sections are weighted within their half, then the halves** (ORD and LÄS steady at 0,75; KVA alone in quant, 0,40 → 0,80; 20 first tries each; expects +0,4). Received `stable` against the pooled band 0,32448. A flat mean over three sections, or pooling, reads +0,27, inside the noise; KVA is the whole quant half, so the total rises (1,6 − 0,8)/2 = +0,4 against 0,33593.
+
+### Green (final runs, after formatting)
+
+- **App.**
+  - `pnpm typecheck` (`tsc -b --noEmit`) is clean.
+  - `pnpm lint` (`biome check src`): only the 4 pre-existing devbake infos, exit 0. One format fix in the new test (two long `stats({…})` lines wrapped) came before every final run.
+  - `pnpm test`: **112 files, 4000 tests passed** (+4 over round 1).
+  - The three files that read the delta (`scoring.test.ts`, `ProgressMobile.prognosis.test.tsx`, `HomeMobile.test.tsx`): 101/101.
+- **Worker.** `pnpm test`: **24 files, 402 tests passed**. The worker is unchanged in round 2.
+- **Golden.** The snapshot sha256 is still `2ec42900caf266511dbd3b9fd1e43ddb2856b57a54f0e794dfbc7fb17563d5c0`.
+- **Not run.** The visual check and Playwright, for the same reasons as round 1. Round 2 changes no markup or copy.
+
+### Open edges added in round 2
+
+7. **Weeks compared on one half** report that half's change (m = 1), as every single-section pool did in round 1. The stricter reading is "no total without both halves", which would return `null` here. That would hide the line, and the "stabil" wording, for a student who practiced only one half in both weeks. Left as is to keep round 1's behavior; it is a one-line change if the coordinator prefers the strict reading.
+8. **`computeProjectedDelta`** (bake-offs only) still pools questions and keeps the same volume-mix sensitivity. It is documented, not fixed: no product surface reads it.
