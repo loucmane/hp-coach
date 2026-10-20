@@ -63,7 +63,17 @@ import { MathText } from '@/components/MathText'
 import type { DistractorExplanation, ExplanationStep } from '@/data/explanations'
 import type { AnswerLetter } from '@/data/questions'
 import type { DrillOptionFigure } from '../viewModel'
-import { DEST_ICONS, Kc, Mark, Segs, useWidth } from './parts'
+import {
+  DEST_ICONS,
+  type ImageReport,
+  Kc,
+  Mark,
+  nextPlanItem,
+  optionImageId,
+  Segs,
+  useImageReadiness,
+  useWidth,
+} from './parts'
 
 /** From here on the explanation may take a pane of its own. */
 const WIDE = 1680
@@ -74,6 +84,8 @@ type Shared = {
   view: DrillView
   act: DrillActions
   refs: DrillRefs
+  available?: boolean
+  onFigureStatus?: ImageReport
 }
 
 type NoteState = { note: boolean; setNote: (open: boolean) => void }
@@ -82,21 +94,27 @@ type ExState = { exOpen: boolean; setExOpen: (open: boolean) => void }
 
 export function InstrumentDrill(props: DirectionProps & { onGo: (d: Destination) => void }) {
   const { data, actions } = useDirectionData()
-  if (!data.drills.reading.questions.length)
+  const session = props.screen === 14 ? data.drills.elf : data.drills.reading
+  if (!session.questions.length)
     return (
       <div className="in-done">
-        <h1>Frågan är inte tillgänglig</h1>
+        <h1>{props.screen === 14 ? 'Texten är inte tillgänglig' : 'Frågan är inte tillgänglig'}</h1>
         <button
           type="button"
           className="in-btn2"
           data-testid="rd-exit"
-          onClick={actions.drill.exit}
+          onClick={() => actions.go('ova')}
         >
           Till Öva
         </button>
       </div>
     )
-  return <ReadingSession {...props} />
+  return (
+    <ReadingSession
+      key={`${session.id}:${session.questions.map((q) => q.qid).join('|')}`}
+      {...props}
+    />
+  )
 }
 
 function ReadingSession({
@@ -107,12 +125,17 @@ function ReadingSession({
   onGo,
 }: DirectionProps & { onGo: (d: Destination) => void }) {
   const { data, actions } = useDirectionData()
-  const session = data.drills.reading
+  const elf = screen === 14
+  const session = elf ? data.drills.elf : data.drills.reading
   const [start] = useState(() => ({
     ...session.start,
     graded:
       screen === 3
-        ? session.wrongPick?.[session.questions[session.start.index ?? 0].qid]
+        ? session.wrongPick?.[
+            session.questions[
+              Math.min(session.questions.length - 1, Math.max(0, session.start.index ?? 0))
+            ].qid
+          ]
         : session.start.graded,
   }))
   const core = useDrillCore({
@@ -124,6 +147,17 @@ function ReadingSession({
     live,
   })
   const { view, refs } = core
+  const images = useImageReadiness()
+  const q = view.question
+  const required = (q.options ?? []).flatMap((option) =>
+    option.figure ? [optionImageId(q, option.letter, option.figure.src)] : [],
+  )
+  if (q.figure) required.push(`source:${q.figure.src}`)
+  const available =
+    !!q.passage?.paragraphs.length &&
+    !!q.prompt?.trim() &&
+    !!q.options?.length &&
+    required.every((id) => images.state(id) === 'ready')
   const { gradeAs, reopen, reset } = core.act
   // biome-ignore lint/correctness/useExhaustiveDependencies: display sync follows only the external screen selector
   useLayoutEffect(() => {
@@ -134,18 +168,19 @@ function ReadingSession({
   const act: DrillActions = {
     ...core.act,
     lock: () => {
+      if (!available) return false
       const locked = core.act.lock()
-      if (locked) onScreen(3)
+      if (locked && !elf) onScreen(3)
       return locked
     },
     next: () => {
       const next = core.act.next()
-      if (next === 'next') onScreen(2)
+      if (next === 'next' && !elf) onScreen(2)
       return next
     },
     exit: () => {
       core.act.exit()
-      onScreen(1)
+      if (!elf) onScreen(1)
     },
   }
   const [note, setNote] = useState(false)
@@ -161,7 +196,7 @@ function ReadingSession({
 
   const rootRef = useRef<HTMLDivElement>(null)
   const wide = useWidth(rootRef) >= WIDE
-  const nextInPlan = data.home.plan.items.find((i) => i.primary) ?? data.home.plan.items[0]
+  const nextInPlan = nextPlanItem(data.home.plan)
   const goNextInPlan = () => (nextInPlan ? actions.openPlanItem(nextInPlan.id) : onGo('ova'))
   const nextLabel = nextInPlan ? `${nextInPlan.title} · ${nextInPlan.minutes} min` : 'Till Öva'
 
@@ -186,12 +221,16 @@ function ReadingSession({
   keys[' '] = keys.Enter
   for (const o of view.question.options ?? []) {
     const l = o.letter.toLowerCase()
-    keys[l] = () => act.select(o.letter)
-    keys[`Shift+${l}`] = () => act.toggleEliminate(o.letter)
+    keys[l] = () => {
+      if (available) act.select(o.letter)
+    }
+    keys[`Shift+${l}`] = () => {
+      if (available) act.toggleEliminate(o.letter)
+    }
   }
   useKeyMap(keys, live)
 
-  const shared = { view, act, refs }
+  const shared = { view, act, refs, available, onFigureStatus: images.report }
   if (width === 'phone') {
     return (
       <PhoneDrill
@@ -200,7 +239,7 @@ function ReadingSession({
         setNote={setNote}
         exOpen={exOpen}
         setExOpen={setExOpen}
-        onHome={() => onScreen(1)}
+        onHome={() => onGo('idag')}
         onNextInPlan={goNextInPlan}
         nextLabel={nextLabel}
       />
@@ -239,7 +278,7 @@ function ReadingSession({
           <div className="in-scroll in-done-scroll">
             <Done
               view={view}
-              onHome={() => onScreen(1)}
+              onHome={() => onGo('idag')}
               onNextInPlan={goNextInPlan}
               nextLabel={nextLabel}
             />
@@ -261,9 +300,9 @@ function ReadingSession({
   )
 }
 
-function Timer({ seconds }: { seconds: number }) {
+function Timer({ seconds, elf = false }: { seconds: number; elf?: boolean }) {
   const { data } = useDirectionData()
-  if (data.drills.reading.elapsedSeconds == null) return null
+  if (data.drills[elf ? 'elf' : 'reading'].elapsedSeconds == null) return null
   return (
     <span className="in-timer" role="timer" aria-label={`Tid ${fmtClock(seconds)}`}>
       <Clock size={14} strokeWidth={1.5} aria-hidden />
@@ -307,7 +346,7 @@ function TopBar({
             label={`Fråga ${view.index + 1} av ${view.total}`}
           />
           <span className="in-sep" aria-hidden />
-          <Timer seconds={view.elapsed} />
+          <Timer seconds={view.elapsed} elf={view.question.section === 'ELF'} />
           <span className="in-sep" aria-hidden />
           <button
             type="button"
@@ -346,7 +385,7 @@ function FocusChrome({
         />
       </div>
       <div className="in-corner">
-        <Timer seconds={view.elapsed} />
+        <Timer seconds={view.elapsed} elf={view.question.section === 'ELF'} />
         <button type="button" className="in-btn2" data-testid="rd-exit" onClick={act.exit}>
           Avsluta
         </button>
@@ -441,6 +480,8 @@ function Split({
   setExOpen,
   wide,
   focus,
+  available,
+  onFigureStatus,
 }: Shared &
   NoteState &
   ExState & {
@@ -551,6 +592,7 @@ function Split({
             note={note}
             setNote={setNote}
             badge={focus}
+            onFigureStatus={onFigureStatus}
           />
         </div>
       </section>
@@ -558,6 +600,7 @@ function Split({
       {/* biome-ignore lint/a11y/useSemanticElements: a focusable, valued separator is the WAI-ARIA splitter pattern; <hr> cannot take focus or a value */}
       <div
         className="in-handle"
+        data-rd-keyscope
         role="separator"
         aria-orientation="vertical"
         aria-label="Frågans bredd – dra eller använd piltangenterna"
@@ -598,8 +641,20 @@ function Split({
               </>
             ) : (
               <>
-                <h2 className="in-prompt">{view.question.prompt}</h2>
-                <Options view={view} act={act} />
+                <h2 className="in-prompt" lang={view.question.passage?.lang}>
+                  {view.question.prompt}
+                </h2>
+                {!view.question.passage?.paragraphs.length ||
+                !view.question.prompt?.trim() ||
+                !view.question.options?.length ? (
+                  <p>Texten eller frågan är inte tillgänglig.</p>
+                ) : null}
+                <Options
+                  view={view}
+                  act={act}
+                  disabled={!available}
+                  onFigureStatus={onFigureStatus}
+                />
               </>
             )}
           </div>
@@ -615,7 +670,7 @@ function Split({
               type="button"
               className="in-btn"
               data-testid="rd-lock"
-              disabled={!view.selected}
+              disabled={!available || !view.selected}
               onClick={act.lock}
             >
               {view.selected ? `Svara ${view.selected}` : 'Välj ett alternativ'}
@@ -718,6 +773,7 @@ function PassageBody({
   note,
   setNote,
   badge,
+  onFigureStatus,
 }: Shared & NoteState & { badge: boolean }) {
   const { data } = useDirectionData()
   const { paragraphs, byline } = view.passage ?? { paragraphs: [], byline: null }
@@ -735,17 +791,36 @@ function PassageBody({
             <NoteToggle note={note} setNote={setNote} />
           </div>
         ) : null}
-        <p className="in-note" id="in-note" data-testid="rd-note" hidden={!note}>
-          {data.copy.ovningstextNote}
-        </p>
-        <h1 className="in-ptitle" style={{ marginTop: note ? 16 : 0 }}>
+        {view.question.passage?.synthetic ? (
+          <p className="in-note" id="in-note" data-testid="rd-note" hidden={!note}>
+            {data.copy.ovningstextNote}
+          </p>
+        ) : null}
+        <h1
+          className="in-ptitle"
+          lang={view.question.passage?.title ? view.question.passage.lang : 'sv'}
+          style={{ marginTop: note ? 16 : 0 }}
+        >
           {title}
         </h1>
-        {subtitle ? <p className="in-psub">{subtitle}</p> : null}
+        {subtitle ? (
+          <p className="in-psub" lang={view.question.passage?.lang}>
+            {subtitle}
+          </p>
+        ) : null}
       </div>
+      {view.question.figure ? (
+        <OptionFigure
+          key={view.question.figure.src}
+          id={`source:${view.question.figure.src}`}
+          figure={view.question.figure}
+          onStatus={onFigureStatus}
+        />
+      ) : null}
       <div
         className="in-pbody"
-        data-testid="rd-passage"
+        lang={view.question.passage?.lang}
+        data-testid={view.question.section === 'ELF' ? 'rd-elf-passage' : 'rd-passage'}
         data-focus={String(view.focusPara != null)}
       >
         {paragraphs.map((p, i) => {
@@ -770,6 +845,7 @@ function PassageBody({
               <button
                 type="button"
                 className="in-pnum"
+                lang="sv"
                 tabIndex={-1}
                 aria-label={`Stycke ${n}${view.focusPara === n ? ', i fokus' : ''}`}
                 aria-pressed={view.focusPara === n}
@@ -798,7 +874,7 @@ export function Options({
 }: Pick<Shared, 'view' | 'act'> & {
   quant?: boolean
   disabled?: boolean
-  onFigureStatus?: (src: string, state: 'ready' | 'error') => void
+  onFigureStatus?: ImageReport
 }) {
   return (
     <ol className="in-opts" aria-label="Svarsalternativ">
@@ -827,9 +903,16 @@ export function Options({
                   Alternativ {o.letter}
                   {out ? ', struket' : ''}:{' '}
                 </span>
-                <MathText>{o.text}</MathText>
+                <span lang={view.question.passage?.lang}>
+                  <MathText>{o.text}</MathText>
+                </span>
                 {o.figure ? (
-                  <OptionFigure key={o.figure.src} figure={o.figure} onStatus={onFigureStatus} />
+                  <OptionFigure
+                    key={optionImageId(view.question, o.letter, o.figure.src)}
+                    id={optionImageId(view.question, o.letter, o.figure.src)}
+                    figure={o.figure}
+                    onStatus={onFigureStatus}
+                  />
                 ) : null}
               </span>
             </button>
@@ -860,28 +943,49 @@ export function Options({
 function OptionFigure({
   figure,
   onStatus,
+  id = figure.src,
 }: {
   figure: DrillOptionFigure
-  onStatus?: (src: string, state: 'ready' | 'error') => void
+  onStatus?: ImageReport
+  id?: string
 }) {
   const ref = useRef<HTMLImageElement>(null)
+  const [error, setError] = useState(false)
   const callback = useRef(onStatus)
   callback.current = onStatus
   useLayoutEffect(() => {
-    if (ref.current?.complete && ref.current.naturalWidth > 0)
-      callback.current?.(figure.src, 'ready')
-  }, [figure.src])
+    const node = ref.current
+    if (node)
+      callback.current?.(id, node, node.complete && node.naturalWidth > 0 ? 'ready' : 'loading')
+    setError(false)
+    return () => {
+      if (node) callback.current?.(id, node, 'loading')
+    }
+  }, [id])
   return (
-    <img
-      ref={ref}
-      className="in-option-figure"
-      src={`/${figure.src}`}
-      alt={figure.alt}
-      width={figure.width}
-      height={figure.height}
-      onLoad={() => callback.current?.(figure.src, 'ready')}
-      onError={() => callback.current?.(figure.src, 'error')}
-    />
+    <>
+      <img
+        ref={ref}
+        className="in-option-figure"
+        src={`/${figure.src}`}
+        alt={figure.alt}
+        width={figure.width}
+        height={figure.height}
+        onLoad={(event) => {
+          setError(false)
+          callback.current?.(id, event.currentTarget, 'ready')
+        }}
+        onError={(event) => {
+          setError(true)
+          callback.current?.(id, event.currentTarget, 'error')
+        }}
+      />
+      {error ? (
+        <span role="status" className="in-media-error">
+          Bilden kunde inte visas.
+        </span>
+      ) : null}
+    </>
   )
 }
 
@@ -920,7 +1024,7 @@ export function AnswerSummary({ view }: { view: DrillView }) {
   return (
     <>
       <Verdict view={view} />
-      <h2 className="in-q-after">
+      <h2 className="in-q-after" lang={q.passage?.lang}>
         <MathText>{q.prompt}</MathText>
       </h2>
       <div className="in-ans">
@@ -930,6 +1034,7 @@ export function AnswerSummary({ view }: { view: DrillView }) {
             letter={view.picked}
             text={text(view.picked)}
             figure={figure(view.picked)}
+            lang={q.passage?.lang}
           />
         ) : null}
         <AnswerRow
@@ -938,6 +1043,7 @@ export function AnswerSummary({ view }: { view: DrillView }) {
           text={text(q.answer)}
           figure={figure(q.answer)}
           mine={correct}
+          lang={q.passage?.lang}
         />
         {others
           ? rest.map((o) => (
@@ -947,6 +1053,7 @@ export function AnswerSummary({ view }: { view: DrillView }) {
                 letter={o.letter}
                 text={o.text}
                 figure={o.figure}
+                lang={q.passage?.lang}
               />
             ))
           : null}
@@ -972,12 +1079,14 @@ function AnswerRow({
   text,
   figure,
   mine = false,
+  lang,
 }: {
   kind: 'mine' | 'right' | 'other'
   letter: AnswerLetter
   text: string
   figure?: DrillOptionFigure | null
   mine?: boolean
+  lang?: string
 }) {
   const tag =
     kind === 'mine' ? (
@@ -998,7 +1107,9 @@ function AnswerRow({
         {tag ? <p className="in-ans-tag">{tag}</p> : null}
         <p className="in-ans-text">
           <span className="in-sr">Alternativ {letter}: </span>
-          <MathText>{text}</MathText>
+          <span lang={lang}>
+            <MathText>{text}</MathText>
+          </span>
         </p>
         {figure ? <OptionFigure figure={figure} /> : null}
       </div>
@@ -1011,10 +1122,11 @@ function AnswerRow({
 // Right: Teknik + Fallgrop → Lösningen → Steg → Övriga.
 
 export function Explanation({ view, act, refs }: Shared) {
-  const { data } = useDirectionData()
+  const { data, actions } = useDirectionData()
   const e = view.explanation
   if (!e) return <p className="in-ex">Förklaring saknas för den här frågan.</p>
   const q = view.question
+  const lang = q.section === 'ELF' ? 'en' : undefined
   const optionText = (letter: string) => q.options?.find((o) => o.letter === letter)?.text ?? ''
   const mine = view.correct ? undefined : e.distractors.find((d) => d.letter === view.picked)
   const others = e.distractors.filter((d) => d.letter !== mine?.letter)
@@ -1032,7 +1144,7 @@ export function Explanation({ view, act, refs }: Shared) {
             Din fälla: {mine.letter}
           </h3>
           <h4>Varför det lockar</h4>
-          <p>
+          <p lang={lang}>
             <Rich text={mine.why_tempting} act={act} />
           </p>
           <Cites
@@ -1041,7 +1153,7 @@ export function Explanation({ view, act, refs }: Shared) {
             act={act}
           />
           <h4>Varför det är fel</h4>
-          <p>
+          <p lang={lang}>
             <Rich text={mine.why_wrong} act={act} />
           </p>
           <Cites
@@ -1058,7 +1170,7 @@ export function Explanation({ view, act, refs }: Shared) {
             <Lightbulb size={17} strokeWidth={1.75} aria-hidden />
             <div>
               <h3>Teknik</h3>
-              <p>
+              <p lang={lang}>
                 <MathText>{e.technique}</MathText>
               </p>
             </div>
@@ -1068,7 +1180,7 @@ export function Explanation({ view, act, refs }: Shared) {
               <TriangleAlert size={17} strokeWidth={1.75} aria-hidden />
               <div>
                 <h3>Fallgrop</h3>
-                <p>
+                <p lang={lang}>
                   <MathText>{e.pitfall}</MathText>
                 </p>
               </div>
@@ -1081,7 +1193,7 @@ export function Explanation({ view, act, refs }: Shared) {
         <h3 className="in-ex-h" id="in-sol-h">
           Lösningen
         </h3>
-        <p className="in-sol">
+        <p className="in-sol" lang={lang}>
           <MathText>{e.solution_path}</MathText>
         </p>
         {view.cited.length > 0 ? (
@@ -1115,6 +1227,7 @@ export function Explanation({ view, act, refs }: Shared) {
               text={optionText(d.letter)}
               cites={view.distractorCites[d.letter] ?? { tempting: [], wrong: [] }}
               act={act}
+              lang={lang}
             />
           ))}
         </section>
@@ -1122,7 +1235,14 @@ export function Explanation({ view, act, refs }: Shared) {
 
       {framework ? (
         <p className="in-fw">
-          Ramverk: <b>{framework}</b> · finns i Uppslag
+          Ramverk:{' '}
+          <button
+            type="button"
+            className="in-btn2"
+            onClick={() => actions.openLesson(e.framework_id!)}
+          >
+            {framework} · Uppslag
+          </button>
         </p>
       ) : null}
     </div>
@@ -1146,7 +1266,9 @@ function Step({ step, view, act, refs }: Shared & { step: ExplanationStep }) {
         <div className="in-step-head">
           <h4 className="in-step-title">
             <span className="in-sr">Steg {step.n}: </span>
-            <MathText>{step.title}</MathText>
+            <span lang={view.question.section === 'ELF' ? 'en' : undefined}>
+              <MathText>{step.title}</MathText>
+            </span>
           </h4>
           {detail ? (
             <button
@@ -1168,7 +1290,7 @@ function Step({ step, view, act, refs }: Shared & { step: ExplanationStep }) {
           <Cites list={view.stepCites[step.n] ?? []} source={`step-${step.n}`} act={act} />
         </div>
         {open ? (
-          <p className="in-step-text">
+          <p className="in-step-text" lang={view.question.section === 'ELF' ? 'en' : undefined}>
             <Rich text={step.text} act={act} />
           </p>
         ) : null}
@@ -1182,11 +1304,13 @@ function Distractor({
   text,
   cites,
   act,
+  lang,
 }: {
   d: DistractorExplanation
   text: string
   cites: { tempting: number[]; wrong: number[] }
   act: DrillActions
+  lang?: string
 }) {
   const [open, setOpen] = useState(false)
   const bodyId = `in-dis-${d.letter}`
@@ -1199,7 +1323,9 @@ function Distractor({
         <div>
           <p className="in-dis-opt">
             <span className="in-sr">Alternativ {d.letter}: </span>
-            <MathText>{text}</MathText>
+            <span lang={lang}>
+              <MathText>{text}</MathText>
+            </span>
           </p>
           <button
             type="button"
@@ -1217,14 +1343,14 @@ function Distractor({
         <div className="in-dis-body" id={bodyId}>
           <div>
             <h4>Varför det lockar</h4>
-            <p>
+            <p lang={lang}>
               <Rich text={d.why_tempting} act={act} />
             </p>
             <Cites list={cites.tempting} source={`why-${d.letter}`} act={act} />
           </div>
           <div>
             <h4>Varför det är fel</h4>
-            <p>
+            <p lang={lang}>
               <Rich text={d.why_wrong} act={act} />
             </p>
             <Cites list={cites.wrong} source={`why-${d.letter}`} act={act} />
@@ -1307,7 +1433,7 @@ function Done({
           {right}/{view.total}
         </span>{' '}
         rätt
-        {data.drills.reading.elapsedSeconds != null ? (
+        {data.drills[view.question.section === 'ELF' ? 'elf' : 'reading'].elapsedSeconds != null ? (
           <>
             {' '}
             · <span className="in-num">{Math.max(1, Math.round(view.elapsed / 60))}</span> min
@@ -1377,6 +1503,8 @@ function PhoneDrill({
   onHome,
   onNextInPlan,
   nextLabel,
+  available,
+  onFigureStatus,
 }: Shared &
   NoteState &
   ExState & {
@@ -1388,6 +1516,23 @@ function PhoneDrill({
   const { state: sheet, setState: setSheet, toggle, grab } = useSheet(view)
   const { hidden: folded, onScroll } = useHideOnScroll()
   const feedback = view.phase === 'feedback'
+
+  const phoneRef = useRef<HTMLDivElement>(null)
+  const promptRef = useRef<HTMLHeadingElement>(null)
+  // A peek must contain the whole prompt, including enlarged-text layouts.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: new prompt content needs measurement even if the sheet stays at peek
+  useLayoutEffect(() => {
+    if (sheet !== 'peek' || feedback) return
+    const prompt = promptRef.current
+    const fitPeek = () => {
+      const height = phoneRef.current?.clientHeight ?? 0
+      if (height > 0 && (prompt?.scrollHeight ?? 0) + 128 > height * 0.45) setSheet('open')
+    }
+    fitPeek()
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(fitPeek)
+    if (prompt) observer?.observe(prompt)
+    return () => observer?.disconnect()
+  }, [sheet, feedback, setSheet, view.question.prompt])
 
   // A ¶ link folds the sheet to its peek so the cited paragraph shows.
   const cite = (n: number, source?: string) => {
@@ -1408,7 +1553,7 @@ function PhoneDrill({
 
   const last = view.index + 1 >= view.total
   return (
-    <div className="in-pdrill">
+    <div className="in-pdrill" ref={phoneRef}>
       <header className="in-pdhead" data-folded={String(folded)}>
         <button
           type="button"
@@ -1433,10 +1578,18 @@ function PhoneDrill({
             {view.index + 1}/{view.total}
           </span>
         </div>
-        <Timer seconds={view.elapsed} />
+        <Timer seconds={view.elapsed} elf={view.question.section === 'ELF'} />
       </header>
       <div className="in-pdscroll" onScroll={onScroll}>
-        <PassageBody view={view} act={act} refs={refs} note={note} setNote={setNote} badge />
+        <PassageBody
+          view={view}
+          act={act}
+          refs={refs}
+          note={note}
+          setNote={setNote}
+          badge
+          onFigureStatus={onFigureStatus}
+        />
         <div className="in-sheet-spacer" aria-hidden />
       </div>
       <section
@@ -1488,7 +1641,14 @@ function PhoneDrill({
             )
           ) : (
             <>
-              <h2 className="in-prompt">{view.question.prompt}</h2>
+              <h2 className="in-prompt" ref={promptRef} lang={view.question.passage?.lang}>
+                {view.question.prompt}
+              </h2>
+              {!view.question.passage?.paragraphs.length ||
+              !view.question.prompt?.trim() ||
+              !view.question.options?.length ? (
+                <p>Texten eller frågan är inte tillgänglig.</p>
+              ) : null}
               {sheet === 'peek' ? (
                 <button type="button" className="in-peekctl" aria-expanded={false} onClick={toggle}>
                   <span>Visa alternativen</span>
@@ -1500,7 +1660,12 @@ function PhoneDrill({
                   <ChevronUp size={16} strokeWidth={1.75} aria-hidden />
                 </button>
               ) : (
-                <Options view={view} act={act} />
+                <Options
+                  view={view}
+                  act={act}
+                  disabled={!available}
+                  onFigureStatus={onFigureStatus}
+                />
               )}
             </>
           )}
@@ -1516,7 +1681,7 @@ function PhoneDrill({
                 type="button"
                 className="in-btn"
                 data-testid="rd-lock"
-                disabled={!view.selected}
+                disabled={!available || !view.selected}
                 onClick={act.lock}
               >
                 {view.selected ? `Svara ${view.selected}` : 'Välj ett alternativ'}
