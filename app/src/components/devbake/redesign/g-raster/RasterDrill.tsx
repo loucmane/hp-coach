@@ -182,7 +182,7 @@ function ReadingSession({ screen, width, live, onScreen, onGo, returnToHome }: R
           >
             {nextItem ? `Nästa: ${nextItem.title}` : 'Till Öva'} <span aria-hidden>↗</span>
           </button>
-          <button type="button" className="ra-outline" onClick={act.exit}>
+          <button type="button" className="ra-outline" onClick={() => onGo('idag')}>
             Till Idag
           </button>
         </section>

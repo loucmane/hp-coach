@@ -1,13 +1,18 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { useState } from 'react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { describeDirectionContract, mountDirection } from '@/components/devbake/redesign/contract'
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import {
+  describeDirectionContract,
+  mountDirection,
+  stubLayout,
+} from '@/components/devbake/redesign/contract'
 import {
   DirectionDataProvider,
   FIXTURE_DATA,
   useBakeoffDirectionData,
 } from '@/components/devbake/redesign/directionData'
 import { LOCAL_CONTROLLER } from '@/components/devbake/redesign/drillCore'
+import { Redesign2026Bakeoff } from '@/components/devbake/redesign/Redesign2026Bakeoff'
 import type { AppScreenKey, WidthKey } from '@/components/devbake/redesign/r1Kit'
 import type { DirectionActions, DirectionData } from '@/components/devbake/redesign/viewModel'
 import { meta } from './meta'
@@ -15,10 +20,13 @@ import { Raster } from './Raster'
 
 // jsdom does not fetch images. Model a successful cached load for the shared
 // contract, then override it explicitly in loading and failure regressions.
+beforeAll(stubLayout)
 beforeEach(() => {
   vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(true)
   vi.spyOn(HTMLImageElement.prototype, 'naturalWidth', 'get').mockReturnValue(1200)
 })
+
+afterEach(() => vi.restoreAllMocks())
 
 describeDirectionContract(meta, Raster)
 
@@ -341,4 +349,217 @@ it.each(['figure', 'options'] as const)('does not grade DTK with missing %s', (m
   expect(screen.getByTestId('rd-lock')).toBeDisabled()
   expect(lock).not.toHaveBeenCalled()
   expect(screen.getByTestId('rd-exit')).toBeVisible()
+})
+
+describe('Raster round 2 audit regressions', () => {
+  it.each([
+    'mixed',
+    'repetition',
+  ] as const)('requires a DTK figure in a %s session on screen 6', (kind) => {
+    const data = fresh()
+    const q = { ...data.drills.dtk.questions[0], figure: null }
+    data.drills.quant = {
+      ...data.drills.quant,
+      request: { kind },
+      questions: [q],
+      start: { index: 0, results: [] },
+    }
+    const lock = vi.fn(LOCAL_CONTROLLER.lock)
+    mountData(6, data, { drill: { lock } })
+    fireEvent.click(screen.getByTestId('rd-quant-option-A'))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    fireEvent.keyDown(window, { key: 'Enter' })
+    fireEvent.keyDown(window, { key: ' ' })
+    expect(lock).not.toHaveBeenCalled()
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    expect(screen.getByText('Frågan saknar fullständigt innehåll.')).toBeVisible()
+  })
+
+  it.each([
+    false,
+    true,
+  ])('rechecks a remounted option image with the same URL (cached: %s)', (cached) => {
+    vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false)
+    const data = fresh()
+    const q = data.drills.quant.questions[0]
+    const figure = { ...data.drills.dtk.questions[0].figure!, alt: 'Alternativets figur' }
+    const options = q.options!.map((option, i) => ({
+      ...option,
+      figure: i === 0 ? figure : null,
+    }))
+    data.drills.quant = {
+      ...data.drills.quant,
+      questions: [
+        { ...q, figure: null, options },
+        { ...q, qid: 'second-option-image', figure: null, options },
+      ],
+      start: { index: 0, results: [] },
+    }
+    const lock = vi.fn(LOCAL_CONTROLLER.lock)
+    mountData(6, data, { drill: { lock } })
+    const firstImage = screen.getByRole('img', { name: figure.alt })
+    fireEvent.load(firstImage)
+    fireEvent.click(screen.getByTestId('rd-quant-option-A'))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(lock).toHaveBeenCalledTimes(1)
+    if (cached) vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(true)
+    fireEvent.click(screen.getByTestId('rd-next'))
+    const secondImage = screen.getByRole('img', { name: figure.alt })
+    expect(secondImage).not.toBe(firstImage)
+    fireEvent.click(screen.getByTestId('rd-quant-option-A'))
+    if (!cached) {
+      expect(secondImage).toHaveProperty('complete', false)
+      fireEvent.click(screen.getByTestId('rd-lock'))
+      fireEvent.keyDown(window, { key: 'Enter' })
+      fireEvent.keyDown(window, { key: ' ' })
+      expect(lock).toHaveBeenCalledTimes(1)
+      expect(screen.getByTestId('rd-lock')).toBeDisabled()
+      fireEvent.error(secondImage)
+      expect(screen.getByTestId('rd-lock')).toBeDisabled()
+      fireEvent.load(secondImage)
+    }
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    fireEvent.keyDown(window, { key: 'Enter' })
+    expect(lock).toHaveBeenCalledTimes(2)
+  })
+
+  it('requires each option image to load even when their URLs match', () => {
+    vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false)
+    const data = fresh()
+    const q = data.drills.quant.questions[0]
+    const figure = data.drills.dtk.questions[0].figure!
+    q.figure = null
+    q.options = q.options!.map((option, i) => ({ ...option, figure: i < 2 ? figure : null }))
+    mountData(6, data)
+    const first = within(screen.getByTestId('rd-quant-option-A')).getByRole('img')
+    const second = within(screen.getByTestId('rd-quant-option-B')).getByRole('img')
+    fireEvent.click(screen.getByTestId('rd-quant-option-A'))
+    fireEvent.load(first)
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.load(second)
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+  })
+
+  it('preserves readiness and rotation only while the shared main image stays mounted', () => {
+    vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(false)
+    const data = fresh()
+    const q = data.drills.dtk.questions[0]
+    data.drills.dtk.questions = [
+      q,
+      { ...q, qid: 'same-main-image' },
+      { ...q, qid: 'other-main-image', figure: { ...q.figure!, src: 'other.png' } },
+      { ...q, qid: 'returned-main-image' },
+    ]
+    mountData(7, data)
+    const first = within(screen.getByTestId('rd-figure')).getByRole('img')
+    fireEvent.load(first)
+    fireEvent.click(screen.getByRole('button', { name: /Rotera/ }))
+    for (const expectedImage of [first, first]) {
+      expect(within(screen.getByTestId('rd-figure')).getByRole('img')).toBe(expectedImage)
+      expect(expectedImage.parentElement).toHaveStyle('--ra-rotation: 90deg')
+      fireEvent.click(screen.getByTestId('rd-quant-option-A'))
+      expect(screen.getByTestId('rd-lock')).toBeEnabled()
+      fireEvent.click(screen.getByTestId('rd-lock'))
+      fireEvent.click(screen.getByTestId('rd-next'))
+    }
+    const other = within(screen.getByTestId('rd-figure')).getByRole('img')
+    fireEvent.load(other)
+    fireEvent.click(screen.getByTestId('rd-quant-option-A'))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    fireEvent.click(screen.getByTestId('rd-next'))
+    const returned = within(screen.getByTestId('rd-figure')).getByRole('img')
+    expect(returned).not.toBe(first)
+    expect(returned.parentElement).toHaveStyle('--ra-rotation: 0deg')
+    fireEvent.click(screen.getByTestId('rd-quant-option-A'))
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.load(returned)
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+  })
+
+  it('contains viewer keys through the real bake-off host and restores switcher keys on close', async () => {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(900)
+    const onSelect = vi.fn()
+    render(
+      <Redesign2026Bakeoff
+        sel={{ d: 'g', s: 7, w: 'desktop', t: 'light', sbs: false, bare: false }}
+        onSelect={onSelect}
+      />,
+    )
+    const opener = await screen.findByRole('button', { name: 'Förstora' })
+    fireEvent.click(opener)
+    const dialog = screen.getByRole('dialog', { name: 'Förstorad figur' })
+    const pan = within(dialog).getByRole('region', { name: /Förstorad figur, rulla/ })
+    pan.focus()
+    expect(pan).toHaveFocus()
+    // Arrows retain their native scrolling behavior; neither key reaches the switcher.
+    expect(fireEvent.keyDown(pan, { key: 'ArrowRight' })).toBe(true)
+    fireEvent.keyDown(pan, { key: '1' })
+    const zoom = within(dialog).getByRole('button', { name: 'Zooma in' })
+    zoom.focus()
+    fireEvent.keyDown(zoom, { key: 'ArrowRight' })
+    fireEvent.keyDown(zoom, { key: '1' })
+    expect(onSelect).not.toHaveBeenCalled()
+    expect(screen.getByTestId('rb26-stage')).toHaveAttribute('data-direction', 'g')
+    expect(screen.getByTestId('rb26-stage')).toHaveAttribute('data-screen', '7')
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Till frågan ×' }))
+    expect(opener).toHaveFocus()
+    fireEvent.keyDown(opener, { key: 'ArrowRight' })
+    expect(onSelect).toHaveBeenLastCalledWith({ s: 8 })
+    fireEvent.keyDown(opener, { key: '1' })
+    expect(onSelect).toHaveBeenLastCalledWith({ d: 'a', sbs: false })
+  })
+
+  it('omits completed plan rows and makes remaining work actionable', () => {
+    const data = fresh()
+    data.home.plan.items[0].completed = true
+    const pending = data.home.plan.items.slice(1)
+    const openPlanItem = vi.fn()
+    const { container } = mountData(1, data, { openPlanItem })
+    const plan = within(screen.getByRole('region', { name: 'Sedan, i tur och ordning.' }))
+    expect(
+      plan.queryByRole('button', { name: new RegExp(data.home.plan.items[0].title) }),
+    ).toBeNull()
+    expect(plan.getAllByRole('button')).toHaveLength(pending.length)
+    expect(
+      plan.getByText(`${pending.reduce((sum, item) => sum + item.minutes, 0)} min`),
+    ).toBeVisible()
+    expect(container.querySelector('.ra-plan-row')).toHaveAttribute('data-primary', 'true')
+    fireEvent.click(plan.getAllByRole('button')[0])
+    expect(openPlanItem).toHaveBeenCalledWith(pending[0].id)
+  })
+
+  it.each([
+    false,
+    true,
+  ])('shows completed Home plans without upcoming actions (allComplete: %s)', (allComplete) => {
+    const data = fresh()
+    data.home.plan.allComplete = allComplete
+    data.home.plan.items.forEach((item) => {
+      item.completed = true
+    })
+    const openPlanItem = vi.fn()
+    const { container } = mountData(1, data, { openPlanItem })
+    expect(screen.getByRole('heading', { name: 'Dagens plan är klar.' })).toBeVisible()
+    expect(screen.queryByRole('heading', { name: 'Sedan, i tur och ordning.' })).toBeNull()
+    expect(container.querySelectorAll('.ra-plan-row')).toHaveLength(0)
+    expect(openPlanItem).not.toHaveBeenCalled()
+  })
+
+  it('navigates Till Idag to Home after completing a reading drill started from Öva', () => {
+    render(<ConnectedRaster />)
+    fireEvent.click(screen.getByTestId('rd-ova-section-las'))
+    const session = FIXTURE_DATA.drills.reading
+    for (const q of session.questions.slice(session.start.index ?? 0)) {
+      fireEvent.click(screen.getByTestId(`rd-option-${q.answer}`))
+      fireEvent.click(screen.getByTestId('rd-lock'))
+      fireEvent.click(screen.getByTestId('rd-next'))
+    }
+    expect(screen.getByTestId('rd-done')).toBeVisible()
+    fireEvent.click(screen.getByRole('button', { name: 'Till Idag' }))
+    expect(screen.getByTestId('rd-nav-idag')).toHaveAttribute('aria-current', 'page')
+    expect(
+      screen.getByRole('heading', { name: `${FIXTURE_DATA.home.today.greeting}.` }),
+    ).toBeVisible()
+  })
 })

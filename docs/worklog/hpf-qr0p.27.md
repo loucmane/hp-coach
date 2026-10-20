@@ -1,7 +1,7 @@
 ---
 bead: "hpf-qr0p.27"
 project: "hpfetcher"
-session: "ci-wisp-xjuuzqn"
+session: "ci-wisp-uq96g5m"
 status: "implemented_uncommitted"
 ---
 
@@ -64,3 +64,30 @@ status: "implemented_uncommitted"
 - [S:ci-wisp-xjuuzqn|W:hpf-qr0p.27|H:handoff|E:80 Raster tests pass; full app 1575 pass/1 shared assertion failure; typecheck/lint pass] Source ready for coordinator integration and visual review.
 
 RASTER1 DONE: hpf-qr0p.27
+
+## Round 2 — 2026-10-20
+
+Accepted the five audit corrections in the current bead DESIGN. Starting and final HEAD remains `59b7be846d730e93465d962f79f2b947d0c2ea30` on `codex/hpf-qr0p.27-redesign-round-2-direction-g-raster-batch-1-va-kvantfr-ga-dt`. The tree was clean before this round. Source changes are uncommitted and unstaged, limited to `RasterQuant.tsx`, `RasterHome.tsx`, `RasterDrill.tsx`, `Raster.test.tsx`, and this worklog; paths below are under `app/src/components/devbake/redesign/g-raster/`.
+
+| Audit fix | Implementation | Regression evidence |
+| --- | --- | --- |
+| DTK content follows the question | `RasterQuant.tsx:77` requires a figure when the current question is DTK, including screen 6 mixed/repetition sessions. Both the button and keyboard share this readiness gate. | `Raster.test.tsx:358`: both request kinds graded incomplete DTK content before the fix; both now reject click, Enter and Space. |
+| Image readiness follows the mounted image | `RasterQuant.tsx:61` separates main/option slots, including question position, answer letter and source. `RasterQuant.tsx:364` reconciles cached success/failure/loading before paint and unregisters each image on unmount. A main figure that stays mounted keeps its readiness and rotation. The enlarged duplicate does not overwrite the original image slot. | `Raster.test.tsx:381`: an uncached remounted option previously graded immediately; now waits for its own load, stays blocked after error and recovers on load. Cached remount succeeds without another load event. `:426` catches duplicate option URLs sharing readiness; `:443` catches a main URL returning after unmount while proving consecutive questions preserve the original DOM image and rotation. These three uncached behavior cases failed before the fix. |
+| Viewer keys remain within the viewer | Existing native `dialog.showModal()` works with the merged shared switcher guard. `RasterQuant.tsx:558` also marks the pan region `data-rd-keyscope`; native arrow scrolling remains available. No new custom keyboard handlers were needed. | `Raster.test.tsx:479` renders the real `Redesign2026Bakeoff` with Raster on screen 7. ArrowRight and 1 from the focused pan region or zoom button leave selection unchanged. Closing restores opener focus and switcher shortcuts. The shared host fix was already on the starting head; no new pre-fix keyboard defect is claimed. |
+| Completed Home work is no longer actionable | `RasterHome.tsx:33` excludes completed rows and respects `allComplete`; the next remaining row becomes primary if needed. `:118` shows the all-complete heading and remaining minutes are computed from pending work. | `Raster.test.tsx:513` covers partial completion, primary selection, remaining duration and action ID. `:535` covers all rows completed with either value of `allComplete`. All three cases failed before implementation. |
+| “Till Idag” opens Idag | `RasterDrill.tsx:185` uses the explicit `onGo('idag')` navigation path, which exits the drill and calls `actions.go('idag')`. The separate Avsluta control retains origin navigation. | `Raster.test.tsx:549` completes a real connected Öva → LÄS session and checks the Idag nav state and Home heading. This failed before the fix; the existing Öva → Avsluta → Öva regression also still passes. |
+
+- **Red first:** before source changes, nine new behavioral cases failed. The first full run reported **10 failed / 1,764 passed**: nine expected regressions plus a host-test setup failure. The host test needed nonzero element dimensions and a suite-level `stubLayout` call; setup nested inside `describeDirectionContract` does not initialize independently filtered sibling tests. That setup failure is not counted as a product defect. The cached-option positive control already passed.
+- **Focused final:** `pnpm test src/components/devbake/redesign/g-raster/Raster.test.tsx --reporter=dot` — **91/91 PASS**.
+- **Required final checks from app/:** `pnpm typecheck` PASS; `pnpm lint` PASS (four existing informational diagnostics outside Raster, no errors or warnings); `pnpm test` — **107 files / 1,774 tests PASS**.
+- **Diff:** `git diff --check` PASS. No shared contract, switcher, metadata, dependencies or other direction files changed.
+- **Limits:** runtime tests use jsdom with explicit image and dialog lifecycle simulations. No browser/screenshots/native focus-trap verification was run in this round. Coordinator owns host browser QA and an independent Claude review of the eventual committed head, then signing and delivery. The earlier review does not cover this uncommitted delta; no merge readiness is claimed.
+- [S:ci-wisp-uq96g5m|W:hpf-qr0p.27|H:round2-handoff|E:9 red behavior cases; 91 Raster tests; 1774 full app tests; typecheck/lint/diff checks pass] Five audit items addressed, source ready for independent review. Worker will append the final evidence note, park deferred, verify the status, and drain without closing.
+
+### Playbook proposals — Round 2
+
+- **astra-relay / 2026-10-20:** `pnpm test -- <test-file>` unexpectedly ran the whole app suite because the literal `--` reached Vitest before its filters. Use `pnpm test <test-file> -t <pattern>` for focused runs and verify the reported file/test counts. The accidental full run supplied the red evidence above.
+- **gas-city-coordinator / 2026-10-20:** real bake-off-host tests initially failed before mounting Raster because jsdom gives the stage zero dimensions and shared layout stubs were scoped to a nested contract suite. Call `beforeAll(stubLayout)` at the regression suite root and mock nonzero `clientWidth`/`clientHeight` for host tests; run the host case alone once to prove it does not depend on earlier tests.
+- Proposals are retained here and in the classified worklog using the astra-relay fallback: `~/scratch/skill-gotchas/` is outside this managed session's writable roots. Coordinator should relay them to the permanent playbooks.
+
+RASTER1R2 DONE: hpf-qr0p.27

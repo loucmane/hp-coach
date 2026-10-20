@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import { useDrillCore } from '@/components/devbake/redesign/drillCore'
@@ -58,19 +58,28 @@ function QuantSession({
   const peek = tray && sheet.state === 'peek'
   const [clock, setClock] = useState(true)
   const [zoom, setZoom] = useState(false)
-  const [images, setImages] = useState<Record<string, 'ready' | 'error'>>({})
-  const imageStatus = useCallback(
-    (src: string, status: 'ready' | 'error') =>
-      setImages((old) => (old[src] === status ? old : { ...old, [src]: status })),
-    [],
-  )
-  const required = [question.figure, ...(question.options?.map((o) => o.figure) ?? [])].filter(
-    (f): f is DrillFigure | DrillOptionFigure => !!f,
-  )
+  const [images, setImages] = useState<Record<string, ImageState>>({})
+  const imageStatus = useCallback<ImageStatus>((key, status) => {
+    setImages((old) => {
+      if (old[key] === status || (status === null && !(key in old))) return old
+      const next = { ...old }
+      if (status === null) delete next[key]
+      else next[key] = status
+      return next
+    })
+  }, [])
+  const required = [
+    ...(question.figure ? [`figure:${question.figure.src}`] : []),
+    ...(question.options?.flatMap((o) =>
+      o.figure ? [optionImageKey(view.index, o.letter, o.figure.src)] : [],
+    ) ?? []),
+  ]
   const content =
-    !!question.prompt?.trim() && !!question.options?.length && (screen !== 7 || !!question.figure)
-  const ready = content && required.every((f) => images[f.src] === 'ready')
-  const failedImage = required.some((f) => images[f.src] === 'error')
+    !!question.prompt?.trim() &&
+    !!question.options?.length &&
+    (question.section !== 'DTK' || !!question.figure)
+  const ready = content && required.every((key) => images[key] === 'ready')
+  const failedImage = required.some((key) => images[key] === 'error')
   const advance = () => {
     if (view.phase === 'feedback') act.next()
     else if (view.phase === 'question' && ready) act.lock()
@@ -333,19 +342,31 @@ function QuantPrompt({ question }: { question: DrillQuestion }) {
   )
 }
 
-type ImageStatus = (src: string, status: 'ready' | 'error') => void
+type ImageState = 'loading' | 'ready' | 'error'
+type ImageStatus = (key: string, status: ImageState | null) => void
+
+function optionImageKey(index: number, letter: string, src: string) {
+  return `option:${index}:${letter}:${src}`
+}
 
 function ContentImage({
   figure,
   onStatus,
+  imageKey = `figure:${figure.src}`,
 }: {
   figure: DrillFigure | DrillOptionFigure
-  onStatus: ImageStatus
+  onStatus?: ImageStatus
+  imageKey?: string
 }) {
   const ref = useRef<HTMLImageElement>(null)
-  useEffect(() => {
-    if (ref.current?.complete && ref.current.naturalWidth > 0) onStatus(figure.src, 'ready')
-  }, [figure.src, onStatus])
+  // Readiness belongs to this mounted image, not a URL seen earlier in the
+  // session. Reconcile cached loads before paint and unregister on unmount.
+  useLayoutEffect(() => {
+    if (!onStatus) return
+    const img = ref.current
+    onStatus(imageKey, img?.complete ? (img.naturalWidth > 0 ? 'ready' : 'error') : 'loading')
+    return () => onStatus(imageKey, null)
+  }, [imageKey, onStatus])
   return (
     <img
       ref={ref}
@@ -354,8 +375,8 @@ function ContentImage({
       width={figure.width}
       height={figure.height}
       draggable={false}
-      onLoad={() => onStatus(figure.src, 'ready')}
-      onError={() => onStatus(figure.src, 'error')}
+      onLoad={() => onStatus?.(imageKey, 'ready')}
+      onError={() => onStatus?.(imageKey, 'error')}
     />
   )
 }
@@ -383,7 +404,14 @@ function QuantOptions({ view, act, onStatus }: RasterDrillState & { onStatus: Im
               <span>
                 <span className="ra-sr">{eliminated ? 'Struket alternativ: ' : ''}</span>
                 <MathText>{option.text}</MathText>
-                {option.figure ? <ContentImage figure={option.figure} onStatus={onStatus} /> : null}
+                {option.figure ? (
+                  <ContentImage
+                    key={option.figure.src}
+                    figure={option.figure}
+                    imageKey={optionImageKey(view.index, option.letter, option.figure.src)}
+                    onStatus={onStatus}
+                  />
+                ) : null}
               </span>
               <span className="ra-option-mark" aria-hidden>
                 {selected ? '●' : ''}
@@ -419,7 +447,7 @@ function FigureWorkspace({
   onZoom: (open: boolean) => void
   onExit: () => void
 }) {
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
+  const [status, setStatus] = useState<ImageState>('loading')
   const [open, setOpen] = useState(false)
   const [rotation, setRotation] = useState(0)
   const [scale, setScale] = useState(1)
@@ -427,10 +455,10 @@ function FigureWorkspace({
   const opener = useRef<HTMLButtonElement>(null)
   const pane = useRef<HTMLDivElement>(null)
   const drag = useRef<{ x: number; y: number; left: number; top: number } | null>(null)
-  const report = useCallback(
-    (src: string, next: 'ready' | 'error') => {
-      setStatus(next)
-      onStatus(src, next)
+  const report = useCallback<ImageStatus>(
+    (key, next) => {
+      setStatus(next ?? 'loading')
+      onStatus(key, next)
     },
     [onStatus],
   )
@@ -442,7 +470,7 @@ function FigureWorkspace({
     onZoom(false)
     opener.current?.focus()
   }
-  const image = (
+  const image = (trackReadiness = false) => (
     <div
       className="ra-figure-frame"
       style={
@@ -454,7 +482,7 @@ function FigureWorkspace({
         } as React.CSSProperties
       }
     >
-      <ContentImage figure={figure} onStatus={report} />
+      <ContentImage figure={figure} onStatus={trackReadiness ? report : undefined} />
     </div>
   )
   const rotate = () => setRotation((value) => (value + 90) % 360)
@@ -465,7 +493,7 @@ function FigureWorkspace({
   }
   return (
     <figure className="ra-figure-workspace" data-testid="rd-figure">
-      {image}
+      {image(true)}
       {status !== 'ready' ? (
         <p role="status">
           {status === 'error'
@@ -527,6 +555,7 @@ function FigureWorkspace({
             <section
               ref={pane}
               className="ra-figure-pan"
+              data-rd-keyscope
               aria-label="Förstorad figur, rulla för att läsa hela underlaget"
               // biome-ignore lint/a11y/noNoninteractiveTabindex: keyboard access to the image scroll region
               tabIndex={0}
@@ -553,7 +582,7 @@ function FigureWorkspace({
                 drag.current = null
               }}
             >
-              <div style={{ width: `${scale * 100}%` }}>{image}</div>
+              <div style={{ width: `${scale * 100}%` }}>{image()}</div>
             </section>
             <footer className="ra-figure-tools">
               <button

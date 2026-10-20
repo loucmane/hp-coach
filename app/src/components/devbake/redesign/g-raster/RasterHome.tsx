@@ -30,6 +30,9 @@ export function RasterHome({
   } = data.home
   useKeyMap({ Enter: onResume, ' ': onResume }, live && !!RESUME)
   const trap = TRAPS.find((t) => t.rising) ?? TRAPS[0]
+  const upcoming = PLAN.allComplete ? [] : PLAN.items.filter((item) => !item.completed)
+  const primary = upcoming.find((item) => item.primary) ?? upcoming[0]
+  const planComplete = PLAN.allComplete || (PLAN.items.length > 0 && upcoming.length === 0)
   return (
     <div className="ra-home">
       <div className="ra-greeting">
@@ -111,16 +114,18 @@ export function RasterHome({
       <div className="ra-lower-grid">
         <section className="ra-plan" aria-labelledby="ra-plan-heading">
           <div className="ra-section-heading">
-            <h2 id="ra-plan-heading">Sedan, i tur och ordning.</h2>
-            <span>{PLAN.minutes} min</span>
+            <h2 id="ra-plan-heading">
+              {planComplete ? 'Dagens plan är klar.' : 'Sedan, i tur och ordning.'}
+            </h2>
+            <span>{upcoming.reduce((sum, item) => sum + item.minutes, 0)} min</span>
           </div>
           <ol>
-            {PLAN.items.map((item, i) => (
+            {upcoming.map((item, i) => (
               <li key={item.id}>
                 <button
                   type="button"
                   className="ra-plan-row"
-                  data-primary={String(!!item.primary)}
+                  data-primary={String(item === primary)}
                   onClick={() => actions.openPlanItem(item.id)}
                 >
                   <IndexNumber value={i + 1} />
