@@ -10,7 +10,9 @@
 // Kit v2: everything comes from useDirectionData().data.home. A field the
 // real app cannot fill yet (the pause time, minutes left, the weekly goal,
 // the prognosis range) is left out when absent; without a sitting to
-// resume, the plan's first step becomes the dominant stop.
+// resume, the plan's first step becomes the dominant stop. Batch 2 adds
+// the way on to Framsteg: "Prognosen i Framsteg" under the prognosis, and
+// "Alla pass" opening its Historik.
 
 import { ArrowRight, Check, ChevronRight, Flag, TrendingDown, TrendingUp } from 'lucide-react'
 import type { ReactNode } from 'react'
@@ -25,7 +27,10 @@ import {
 } from '@/components/devbake/redesign/r1Kit'
 import type { PlanItemView, ResumeView } from '@/components/devbake/redesign/viewModel'
 import { nextPlanStep } from './SparDrill'
+import type { FramstegTab } from './SparFramsteg'
 import { CalmSwitch, cap, inWords, Kbd, SECTION_NAMES, secOf } from './sparParts'
+
+type Go = (d: Destination, view?: FramstegTab) => void
 
 /** HP's scale tops out at 2,0: the bar's end, whatever the goal. */
 const SCALE_MAX = 2
@@ -49,7 +54,7 @@ export function SparHome({
   calm: boolean
   setCalm: (calm: boolean) => void
   onResume: () => void
-  onGo: (d: Destination) => void
+  onGo: Go
 }) {
   const { data, actions } = useDirectionData()
   const { today, exam, plan, resume } = data.home
@@ -103,7 +108,7 @@ export function SparHome({
         <Path resume={resume} lead={lead} steps={steps} onResume={onResume} />
         <aside className="sp-side" aria-label="Läget just nu">
           <Week />
-          <Prognosis />
+          <Prognosis onGo={onGo} />
           <Traps />
           <Recent onGo={onGo} />
         </aside>
@@ -363,7 +368,7 @@ function Week() {
   )
 }
 
-function Prognosis() {
+function Prognosis({ onGo }: { onGo: Go }) {
   const { data } = useDirectionData()
   const p = data.home.prognosis
   const pct = (v: number) => `${(v / SCALE_MAX) * 100}%`
@@ -436,6 +441,10 @@ function Prognosis() {
           {halves.length > 0 ? <p className="sp-halves">{halves.join(' · ')}</p> : null}
         </>
       )}
+      <button type="button" className="sp-link sp-progn-link" onClick={() => onGo('framsteg')}>
+        Prognosen i Framsteg
+        <ArrowRight size={16} strokeWidth={2} aria-hidden />
+      </button>
     </section>
   )
 }
@@ -475,7 +484,7 @@ function Traps() {
   )
 }
 
-function Recent({ onGo }: { onGo: (d: Destination) => void }) {
+function Recent({ onGo }: { onGo: Go }) {
   const { data } = useDirectionData()
   const recent = data.home.recent
   if (recent.length === 0) return null
@@ -485,7 +494,7 @@ function Recent({ onGo }: { onGo: (d: Destination) => void }) {
         <h2 className="sp-h3" id="sp-recent-h">
           Senaste passen
         </h2>
-        <button type="button" className="sp-link" onClick={() => onGo('framsteg')}>
+        <button type="button" className="sp-link" onClick={() => onGo('framsteg', 'historik')}>
           Alla pass
           <ArrowRight size={16} strokeWidth={2} aria-hidden />
         </button>

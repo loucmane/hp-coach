@@ -18,14 +18,27 @@
 //                   question card (SvepQuant)
 //   8 Repetera    — today's misses as a finite hand and its register
 //                   (SvepRepetera)
+//   9 Provpass    — the passes of a half as a dealt deck beside the two
+//                   halves; a confirmation card before the clock, then the
+//                   running pass in focus mode with its register
+//                   (SvepProvpass)
+//  10 Provpassresultat — the handed-in pass turned over: one evidence card
+//                   at a time (SvepProvpass)
+//  11 Framsteg    — progress as a small indexed deck, Historik its last
+//                   card (SvepFramsteg)
 // Desktop navigation is a slim top bar of the five doors, laid straight on
-// the table; phone has a bottom bar. The drills hide both behind Avsluta.
+// the table; phone has a bottom bar. The drills and a running pass hide
+// both behind Avsluta.
 //
 // Kit v2: every screen reads the view model and asks for what it does
 // through useDirectionData(); round 1's switcher moves (Fortsätt, the
 // drill's lock, Nästa and Avsluta) stay on onScreen. A door also opens its
 // page in the frame at once, so the frame keeps working where nothing
-// follows the request (a stage mounted without a provider).
+// follows the request (a stage mounted without a provider). A started pass
+// runs here, on screen 9, until it is handed in (the host then shows the
+// result) or voided (back to the hub, which says so). A hand-in that fails,
+// or that the host does not follow with the result, ends the run too: the
+// frame comes back and Provpass shows what was handed in, read-only.
 
 import {
   BookOpen,
@@ -62,14 +75,17 @@ import {
   useWebFonts,
 } from '@/components/devbake/redesign/r1Kit'
 import type {
+  Half,
   IdentityView,
   PlanItemKind,
   PlanItemView,
 } from '@/components/devbake/redesign/viewModel'
 import { sectionTint, type Tint } from './parts'
 import { SvepDrill } from './SvepDrill'
+import { type FramstegCardId, SvepFramsteg } from './SvepFramsteg'
 import { SvepHome } from './SvepHome'
 import { SvepOva } from './SvepOva'
+import { type Handed, SvepPassHanded, SvepPassRun, SvepProvpass, SvepResult } from './SvepProvpass'
 import { SvepQuant } from './SvepQuant'
 import { SvepRepetera } from './SvepRepetera'
 
@@ -84,8 +100,9 @@ const DOOR_ICON: Record<Destination, LucideIcon> = {
   framsteg: TrendingUp,
 }
 
-/** What the frame shows: a destination, or Repetera inside Öva. */
-type Page = Destination | 'repetera'
+/** What the frame shows: a destination, Repetera inside Öva, or a pass's
+ *  result inside Provpass. */
+type Page = Destination | 'repetera' | 'resultat'
 
 /** The frame's page on each screen it is shown on. */
 const SCREEN_PAGE: Partial<Record<AppScreenKey, Page>> = {
@@ -93,6 +110,9 @@ const SCREEN_PAGE: Partial<Record<AppScreenKey, Page>> = {
   4: 'idag',
   5: 'ova',
   8: 'repetera',
+  9: 'provpass',
+  10: 'resultat',
+  11: 'framsteg',
 }
 
 /** Where a plan item leads in the frame while its request travels. */
@@ -103,13 +123,22 @@ const PLAN_PAGE: Record<PlanItemKind, Page> = {
   drill: 'ova',
 }
 
-/** The table under a door that is not built yet. */
-const DOOR_TINT: Record<Destination, Tint> = {
-  idag: 'las',
-  ova: 'rep',
+/** The table under a page without a deck that tints it. */
+const PAGE_TINT: Record<Exclude<Page, 'idag' | 'ova'>, Tint> = {
+  repetera: 'rep',
   provpass: 'none',
+  resultat: 'none',
   uppslag: 'ord',
   framsteg: 'none',
+}
+
+/** The table a screen opens on, before its page says otherwise. */
+const SCREEN_TINT: Partial<Record<AppScreenKey, Tint>> = {
+  5: 'none',
+  8: 'rep',
+  9: 'none',
+  10: 'none',
+  11: 'none',
 }
 
 type ThemeChoice = ThemeKey | 'system'
@@ -118,17 +147,60 @@ type ThemeChoice = ThemeKey | 'system'
 export type FrameNav = {
   go: (d: Destination) => void
   openPlanItem: (item: PlanItemView) => void
+  /** A handed-in pass's result. */
+  openResult: (id: string) => void
+  /** Framsteg, opened at one of its cards (Idag's estimate and passes). */
+  framsteg: (card: FramstegCardId) => void
 }
+
+/** The Provpass screen's state: the pass running on it, the half of the
+ *  pass just voided (the hub says so), or a hand-in that did not reach its
+ *  result (Provpass shows what was handed in). */
+type ProvState = { run: boolean; voided: Half | null; handed: Handed | null }
+
+const PROV_IDLE: ProvState = { run: false, voided: null, handed: null }
 
 export function Svep(props: DirectionProps) {
   useWebFonts('svep', FONTS)
   const { data } = useDirectionData()
   const { screen } = props
   // The table's tint follows the card in front (Idag, Öva) or the page.
-  const [tint, setTint] = useState<Tint>(screen === 8 ? 'rep' : screen === 5 ? 'none' : 'las')
+  const [tint, setTint] = useState<Tint>(SCREEN_TINT[screen] ?? 'las')
+  // A pass runs on screen 9 until it is handed in or voided; the switcher
+  // moving on ends it.
+  const [prov, setProv] = useState<ProvState>(PROV_IDLE)
+  const [provSeat, setProvSeat] = useState(screen)
+  if (provSeat !== screen) {
+    setProvSeat(screen)
+    setProv(PROV_IDLE)
+  }
+  // Away from what a hand-in left: the way back to the hub, or any door.
+  const leaveHanded = useCallback(() => setProv((p) => (p.handed ? { ...p, handed: null } : p)), [])
+  const provHub = useMemo(
+    () => ({
+      voided: prov.voided,
+      handed: prov.handed,
+      dismiss: () => setProv((p) => ({ ...p, voided: null })),
+      start: () => setProv({ run: true, voided: null, handed: null }),
+      leave: leaveHanded,
+    }),
+    [prov.voided, prov.handed, leaveHanded],
+  )
   let stage: ReactNode
   let table: Tint = tint
-  if (screen === 2 || screen === 3) {
+  if (screen === 9 && prov.run) {
+    // A new sitting starts the run afresh.
+    stage = (
+      <SvepPassRun
+        key={data.provpass.running.passId}
+        width={props.width}
+        live={props.live}
+        onAbandon={() => setProv({ run: false, voided: data.provpass.running.half, handed: null })}
+        onHanded={(handed) => setProv({ run: false, voided: null, handed })}
+      />
+    )
+    table = 'none'
+  } else if (screen === 2 || screen === 3) {
     stage = <SvepDrill {...props} />
     table = sectionTint(data.drills.reading.questions[0]?.section)
   } else if (screen === 6 || screen === 7) {
@@ -143,7 +215,7 @@ export function Svep(props: DirectionProps) {
     )
     table = 'none'
   } else {
-    stage = <SvepFrame {...props} onTint={setTint} />
+    stage = <SvepFrame {...props} onTint={setTint} prov={provHub} />
   }
   return (
     <div
@@ -169,12 +241,26 @@ function SvepFrame({
   onScreen,
   onTheme,
   onTint,
-}: DirectionProps & { onTint: (t: Tint) => void }) {
+  prov,
+}: DirectionProps & {
+  onTint: (t: Tint) => void
+  /** The Provpass hub's link to the stage: a voided pass, a start, and a
+   *  hand-in that did not reach its result, with the way away from it. */
+  prov: {
+    voided: Half | null
+    handed: Handed | null
+    dismiss: () => void
+    start: () => void
+    leave: () => void
+  }
+}) {
   const { data, actions } = useDirectionData()
   // Screen 4 shows the frame's other state; the others the default.
   const [folded, setFolded] = useState(screen === 4)
   const [account, setAccount] = useState(screen === 4)
   const [page, setPage] = useState<Page>(SCREEN_PAGE[screen] ?? 'idag')
+  // The card Framsteg opens at, when a link asked for one.
+  const [framstegCard, setFramstegCard] = useState<FramstegCardId | undefined>(undefined)
   // Re-seat the frame when the switcher moves, before it paints, so the old
   // page never shows for a frame.
   const [seated, setSeated] = useState(screen)
@@ -185,10 +271,9 @@ function SvepFrame({
     setPage(SCREEN_PAGE[screen] ?? 'idag')
   }
 
-  // The pages with a deck report their own tint; the rest have a fixed one.
+  // The pages with a deck of their own tint report it; the rest are fixed.
   useLayoutEffect(() => {
-    if (page === 'repetera') onTint('rep')
-    else if (page !== 'idag' && page !== 'ova') onTint(DOOR_TINT[page])
+    if (page !== 'idag' && page !== 'ova') onTint(PAGE_TINT[page])
   }, [page, onTint])
 
   // ⌘B / Ctrl+B folds the bar, as ⌘B folds the live app's rail.
@@ -204,10 +289,14 @@ function SvepFrame({
     return () => window.removeEventListener('keydown', onKey, true)
   }, [live, width])
 
+  const leaveHanded = prov.leave
   const nav = useMemo<FrameNav>(
     () => ({
       go: (d) => {
+        // A door, or Till Provpass, leaves what a hand-in left behind.
+        leaveHanded()
         setAccount(false)
+        setFramstegCard(undefined)
         setPage(d)
         actions.go(d)
       },
@@ -215,28 +304,57 @@ function SvepFrame({
         setPage(PLAN_PAGE[item.kind])
         actions.openPlanItem(item.id)
       },
+      openResult: (id) => {
+        setPage('resultat')
+        actions.openProvResult(id)
+      },
+      framsteg: (card) => {
+        setAccount(false)
+        setFramstegCard(card)
+        setPage('framsteg')
+        actions.go('framsteg')
+      },
     }),
-    [actions],
+    [actions, leaveHanded],
   )
 
   const phone = width === 'phone'
-  // Repetera lives inside Öva: its door stays the current one.
-  const current: Destination = page === 'repetera' ? 'ova' : page
+  // Repetera lives inside Öva and a result inside Provpass: their door
+  // stays the current one.
+  const current: Destination = page === 'repetera' ? 'ova' : page === 'resultat' ? 'provpass' : page
+  const pageLive = live && !account
   let body: ReactNode
   if (page === 'idag') {
     body = (
       <SvepHome
         width={width}
-        live={live && !account}
+        live={pageLive}
         onResume={() => onScreen(2)}
         nav={nav}
         onTint={onTint}
       />
     )
   } else if (page === 'ova') {
-    body = <SvepOva width={width} live={live && !account} onTint={onTint} />
+    body = <SvepOva width={width} live={pageLive} onTint={onTint} />
   } else if (page === 'repetera') {
-    body = <SvepRepetera width={width} live={live && !account} nav={nav} />
+    body = <SvepRepetera width={width} live={pageLive} nav={nav} />
+  } else if (page === 'provpass') {
+    body = prov.handed ? (
+      <SvepPassHanded width={width} live={pageLive} handed={prov.handed} nav={nav} />
+    ) : (
+      <SvepProvpass
+        width={width}
+        live={pageLive}
+        nav={nav}
+        voided={prov.voided}
+        onDismissVoid={prov.dismiss}
+        onStart={prov.start}
+      />
+    )
+  } else if (page === 'resultat') {
+    body = <SvepResult width={width} live={pageLive} nav={nav} />
+  } else if (page === 'framsteg') {
+    body = <SvepFramsteg width={width} live={pageLive} nav={nav} card={framstegCard} />
   } else {
     body = <SvepStub dest={page} />
   }
