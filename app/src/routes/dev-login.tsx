@@ -53,6 +53,15 @@ function DevLoginScreen() {
   // One attempt per page load: the hook identities can change and re-run
   // the effect, and each run would otherwise fetch a fresh token.
   const started = useRef(false)
+  // The attempt outlives effect replays (StrictMode) but must not act once
+  // the page is really gone: no sign-out, ticket exchange or redirect then.
+  const alive = useRef(true)
+  useEffect(() => {
+    alive.current = true
+    return () => {
+      alive.current = false
+    }
+  }, [])
 
   useEffect(() => {
     if (!isLoaded || !authLoaded || !signIn || !setActive || started.current) return
@@ -63,6 +72,7 @@ function DevLoginScreen() {
         // example the owner's own account): sign out and come back here.
         if (isSignedIn) {
           setStatus('Loggar ut befintlig session...')
+          if (!alive.current) return
           await signOut({ redirectUrl: window.location.href })
           return
         }
@@ -72,6 +82,7 @@ function DevLoginScreen() {
         if (!res.ok || !body.token) {
           throw new Error(body.error?.message ?? `HTTP ${res.status}`)
         }
+        if (!alive.current) return
         setStatus('Växlar in token mot session...')
         const result = await signIn.create({
           strategy: 'ticket',
@@ -80,11 +91,13 @@ function DevLoginScreen() {
         if (result.status !== 'complete' || !result.createdSessionId) {
           throw new Error(`signIn.create returned status=${result.status}`)
         }
+        if (!alive.current) return
         await setActive({ session: result.createdSessionId })
+        if (!alive.current) return
         setStatus('Klar — omdirigerar...')
         navigate({ to: '/' })
       } catch (err) {
-        setStatus(`Fel: ${devLoginErrorText(err)}`)
+        if (alive.current) setStatus(`Fel: ${devLoginErrorText(err)}`)
       }
     })()
   }, [isLoaded, authLoaded, isSignedIn, signIn, setActive, signOut, navigate])
