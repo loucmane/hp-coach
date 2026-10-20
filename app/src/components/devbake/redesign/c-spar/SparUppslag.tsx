@@ -66,6 +66,8 @@ export function SparUppslag({ width, live }: { width: WidthKey; live: boolean })
     sections.find((s) => s.section === open.section) ??
     sections[0]
   const own = sections.find((s) => s.section === open.section)
+  // The contents describe the displayed body until the provider replaces it.
+  const contentsSection = own ?? active
   const index = own?.entries.findIndex((e) => e.id === open.id) ?? -1
   const next = index >= 0 ? own?.entries[index + 1] : undefined
   const previous = index > 0 ? own?.entries[index - 1] : undefined
@@ -186,9 +188,9 @@ export function SparUppslag({ width, live }: { width: WidthKey; live: boolean })
     </div>
   )
   const path = (close?: () => void) =>
-    active ? (
+    contentsSection ? (
       <Contents
-        section={active}
+        section={contentsSection}
         current={open.id}
         onOpen={(id) => {
           close?.()
@@ -232,7 +234,9 @@ export function SparUppslag({ width, live }: { width: WidthKey; live: boolean })
       />
       {needle ? (
         <section className="sp-search-results" aria-label="Sökresultat">
-          <p role="status">{results.length} träffar</p>
+          <p role="status">
+            {results.length} {results.length === 1 ? 'träff' : 'träffar'}
+          </p>
           {results.map((e) => (
             <button
               type="button"
@@ -318,7 +322,7 @@ export function SparUppslag({ width, live }: { width: WidthKey; live: boolean })
             <aside className="sp-contents-panel">
               {phone ? (
                 <button type="button" className="sp-link" onClick={() => setContents(true)}>
-                  Innehåll · {active?.section}
+                  Innehåll · {contentsSection?.section}
                 </button>
               ) : (
                 path()

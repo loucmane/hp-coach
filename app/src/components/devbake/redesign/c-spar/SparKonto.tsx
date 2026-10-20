@@ -335,7 +335,10 @@ export function SparKonto({
                         setError(null)
                       } catch {
                         deleteSent.current = false
-                        setError({ row: 'delete', text: 'Kunde inte radera kontot. Försök igen.' })
+                        setError({
+                          row: 'delete',
+                          text: 'Kunde inte radera kontot. Inget raderades — försök igen.',
+                        })
                       }
                     }}
                   >

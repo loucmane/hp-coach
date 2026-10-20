@@ -177,6 +177,142 @@ describe('Spår batch 3', () => {
     expect(startDrill).not.toHaveBeenCalled()
   })
 
+  it('uses the singular search count for exactly one catalogue hit', () => {
+    const data = clone()
+    data.uppslag.sections[0].entries[0].title = 'Unik sökträff'
+    mount(12, { data })
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'Unik sökträff' } })
+    expect(
+      within(screen.getByRole('region', { name: 'Sökresultat' })).getByRole('status'),
+    ).toHaveTextContent(/^1 träff$/)
+  })
+
+  for (const width of ['desktop', 'phone'] as const) {
+    it(`keeps the contents stop on the displayed lesson while another section loads, ${width}`, () => {
+      const data = clone()
+      const open = data.uppslag.open
+      const other = data.uppslag.sections.find((s) => s.section !== open.section)
+      if (!other?.entries[0]) throw new Error('fixture needs another section')
+      const openLesson = vi.fn()
+      const tree = (value: DirectionData) => (
+        <DirectionDataProvider data={value} actions={{ openLesson }}>
+          <Spar screen={12} width={width} theme="light" live onScreen={vi.fn()} onTheme={vi.fn()} />
+        </DirectionDataProvider>
+      )
+      const { rerender } = render(tree(data))
+      fireEvent.click(screen.getByTestId(`rd-uppslag-section-${other.section.toLowerCase()}`))
+      expect(openLesson).toHaveBeenCalledWith(
+        (other.entries.find((e) => !e.read) ?? other.entries[0]).id,
+      )
+      expect(screen.getByRole('status')).toHaveTextContent('Lektion begärd')
+      expect(screen.getByTestId('rd-lesson')).toHaveTextContent(open.title)
+      if (width === 'phone') {
+        fireEvent.click(screen.getByRole('button', { name: /^Innehåll ·/ }))
+      }
+      expect(
+        within(screen.getByRole('navigation', { name: 'Innehåll' })).getByTestId(
+          `rd-uppslag-entry-${open.id}`,
+        ),
+      ).toHaveAttribute('aria-current', 'step')
+      if (width === 'phone') fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' })
+
+      const entry = other.entries.find((e) => !e.read) ?? other.entries[0]
+      const updated = clone()
+      updated.uppslag.open = { ...open, id: entry.id, title: entry.title, section: other.section }
+      rerender(tree(updated))
+      expect(screen.queryByText(/Lektion begärd/)).toBeNull()
+      if (width === 'phone') {
+        fireEvent.click(screen.getByRole('button', { name: /^Innehåll ·/ }))
+      }
+      expect(
+        within(screen.getByRole('navigation', { name: 'Innehåll' })).getByTestId(
+          `rd-uppslag-entry-${entry.id}`,
+        ),
+      ).toHaveAttribute('aria-current', 'step')
+    })
+
+    it(`consumes a menu Konto jump before a switcher return, ${width}`, async () => {
+      await onDesktopStage(async () => {
+        const scrolling = vi.spyOn(Element.prototype, 'scrollIntoView')
+        try {
+          render(<BakeoffPage initial={{ ...BAKEOFF_9, s: 1, w: width }} onSelect={vi.fn()} />)
+          await screen.findByTestId('rd-spar')
+          fireEvent.click(screen.getByTestId('rd-account'))
+          fireEvent.click(screen.getByRole('menuitem', { name: 'Inställningar' }))
+          expect(screen.getByRole('heading', { name: 'Utseende' })).toHaveFocus()
+          expect(scrolling).toHaveBeenCalled()
+          fireEvent.keyDown(document.activeElement ?? document.body, { key: 'ArrowLeft' })
+          expect(screen.getByTestId('rb26-stage')).toHaveAttribute('data-screen', '12')
+          scrolling.mockClear()
+          fireEvent.keyDown(document.activeElement ?? document.body, { key: 'ArrowRight' })
+          expect(screen.getByTestId('rb26-stage')).toHaveAttribute('data-screen', '13')
+          expect(screen.getByRole('heading', { name: 'Ditt konto' })).toHaveFocus()
+          expect(scrolling).not.toHaveBeenCalled()
+          // Another explicit request to the same section still works.
+          fireEvent.click(screen.getByTestId('rd-account'))
+          fireEvent.click(screen.getByRole('menuitem', { name: 'Inställningar' }))
+          expect(screen.getByRole('heading', { name: 'Utseende' })).toHaveFocus()
+          expect(scrolling).toHaveBeenCalledTimes(1)
+        } finally {
+          scrolling.mockRestore()
+        }
+      })
+    })
+
+    it(`starts ELF with Om texten closed while retaining its disclosure, ${width}`, () => {
+      mount(14, { width })
+      const toggle = screen.getByTestId('rd-note-toggle')
+      expect(toggle).toHaveTextContent('Om texten')
+      expect(toggle).toHaveAttribute('aria-expanded', 'false')
+      expect(screen.getByTestId('rd-note')).not.toBeVisible()
+      fireEvent.click(toggle)
+      expect(screen.getByTestId('rd-note')).toBeVisible()
+    })
+  }
+
+  it('places the short ELF tray after the whole passage in the same desktop scroller', () => {
+    const data = clone()
+    const q = data.drills.elf.questions[0]
+    q.passage = { ...q.passage!, paragraphs: ['A short English passage.'] }
+    const { unmount } = mount(14, { data })
+    const scroller = screen.getByTestId('rd-elf-passage').closest('.sp-scroll')
+    const tray = screen.getByTestId('rd-option-A').closest('.sp-tray')
+    expect(scroller).toContainElement(tray as HTMLElement)
+    expect(screen.getByTestId('rd-option-A')).toBeVisible()
+    expect(
+      screen.getByTestId('rd-elf-passage').compareDocumentPosition(tray as Node) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
+    fireEvent.click(screen.getByTestId(`rd-option-${q.answer}`))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(screen.getByTestId('rd-verdict')).toBeInTheDocument()
+    expect(scroller).not.toContainElement(screen.getByTestId('rd-verdict'))
+    unmount()
+    q.passage.paragraphs.push('A second paragraph makes this a longer text.')
+    mount(14, { data })
+    expect(screen.getByTestId('rd-elf-passage').closest('.sp-scroll')).not.toContainElement(
+      screen.getByTestId('rd-option-A').closest('.sp-tray') as HTMLElement,
+    )
+  })
+
+  it('uses distinct classes for ELF gap slots and the MEK underline blank', () => {
+    const data = clone()
+    const q = data.drills.elf.questions[0]
+    q.prompt = 'Gap (1)'
+    q.passage = { ...q.passage!, paragraphs: ['The ___(1)___ is clear.'] }
+    const { unmount } = mount(14, { data })
+    const gap = screen.getByTestId('rd-elf-passage').querySelector('[data-state]')
+    expect(gap).toHaveClass('sp-gapslot')
+    expect(gap).not.toHaveClass('sp-gap')
+    unmount()
+    const mek = { ...data.drills.quant.questions[0], section: 'MEK' as const, prompt: 'En ____.' }
+    data.drills.quant.questions = [mek]
+    data.drills.quant.start = { index: 0, results: [] }
+    mount(6, { data })
+    expect(screen.getByText('lucka 1').parentElement).toHaveClass('sp-gap')
+    expect(screen.getByText('lucka 1').parentElement).not.toHaveClass('sp-gapslot')
+  })
+
   it('renders trap, root, rule and tactic bodies from the supplied lesson', () => {
     const base = clone()
     const variants = [
@@ -329,7 +465,7 @@ describe('Spår batch 3', () => {
     expect(screen.getByTestId('rd-spar')).not.toHaveTextContent(/Sparat|Synkat/)
   })
 
-  it('handles export and deletion failures without asserting that nothing changed remotely', () => {
+  it('handles export failure and uses the specified deletion failure copy', () => {
     const fail = () => {
       throw new Error('unavailable')
     }
@@ -339,8 +475,10 @@ describe('Spår batch 3', () => {
     fireEvent.click(screen.getByTestId('rd-konto-delete'))
     fireEvent.change(screen.getByTestId('rd-konto-delete-word'), { target: { value: 'radera' } })
     fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
-    expect(screen.getByRole('alert')).toHaveTextContent('Kunde inte radera')
-    expect(screen.getByTestId('rd-spar')).not.toHaveTextContent(/Inget raderades|Kontot är raderat/)
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Kunde inte radera kontot. Inget raderades — försök igen.',
+    )
+    expect(screen.getByTestId('rd-spar')).not.toHaveTextContent('Kontot är raderat')
   })
 
   it('requires both question and option image instances, including failure, retry and keyboard submission', () => {
@@ -484,11 +622,11 @@ describe('Spår batch 3', () => {
     expect(screen.getByRole('heading', { name: 'Lucka 1' })).toBeInTheDocument()
     const passage = screen.getByTestId('rd-elf-passage')
     fireEvent.click(screen.getByTestId('rd-option-B'))
-    expect(passage.querySelector('.sp-gap[data-preview="true"]')).toHaveTextContent('cost')
+    expect(passage.querySelector('.sp-gapslot[data-preview="true"]')).toHaveTextContent('cost')
     fireEvent.click(screen.getByTestId('rd-lock'))
-    expect(passage.querySelector('.sp-gap[data-state="miss"] .sp-gap-visible')).toHaveTextContent(
-      'toll',
-    )
+    expect(
+      passage.querySelector('.sp-gapslot[data-state="miss"] .sp-gap-visible'),
+    ).toHaveTextContent('toll')
     expect(screen.getByTestId('rd-step-1')).toHaveTextContent('Read the sentence')
     expect(within(screen.getByTestId('rd-step-1')).getByTestId('rd-cite-1')).toBeInTheDocument()
     expect(
@@ -499,9 +637,9 @@ describe('Spår batch 3', () => {
     expect(screen.getByTestId('rd-cite-1').closest('[lang]')).toHaveAttribute('lang', 'sv')
     fireEvent.click(screen.getByTestId('rd-next'))
     expect(screen.getByRole('heading', { name: 'Lucka 2' })).toBeInTheDocument()
-    expect(passage.querySelector('.sp-gap[data-state="miss"] .sp-gap-visible')).toHaveTextContent(
-      'toll',
-    )
+    expect(
+      passage.querySelector('.sp-gapslot[data-state="miss"] .sp-gap-visible'),
+    ).toHaveTextContent('toll')
     key('g')
     expect(within(passage).getByTestId('rd-para-2')).toHaveAttribute('data-flash', 'true')
   })

@@ -84,3 +84,47 @@ All new UI text in this batch is proposed. In particular: “Öppen lektion”, 
 
 - Ready for the prescribed DONE note, deferred parking and drain. Browser validation remains outstanding because loopback listening is sandbox-blocked.
 - [S:hpfetcher/codex-1|W:hpf-qr0p.17|H:handoff|E:deferred-readback] DONE note recorded; native `bd show` confirms DEFERRED after clearing the assignee. Work remains uncommitted for the coordinator. No further work is claimed.
+
+## Round 2 — 2026-10-20
+
+### Review fixes
+
+The accepted review-fix contract starts from clean commit `a73b19aa2081dd449fc32eb9ee65b8081fadf709` (containing base `17dc2e1806928229911b4e45c27babc39d386b49`). The independent Claude review at `/home/loucmane/scratch/hpf-qr0p.17/review-r1.md` returned HOLD. No molecule controls this bead.
+
+Paths below are relative to `app/src/components/devbake/redesign/c-spar/`.
+
+| Finding | Fix | Red-first regression in `Spar.test.tsx` |
+| --- | --- | --- |
+| P2: stale Konto jump after a switcher return | `Spar.tsx:261` clears the jump when the host screen changes. Explicit menu jumps still land on their requested section. | `:234`, “consumes a menu Konto jump before a switcher return”, desktop and phone, through the real `Redesign2026Bakeoff`. Before: returning 12 → 13 focused Utseende. After: Ditt konto is focused, no `scrollIntoView` runs; another explicit Inställningar request still scrolls exactly once. |
+| P2: ELF gap CSS overrides MEK | `SparDrill.tsx:643` uses `sp-gapslot`; `spar.css:8099` gives it inline-grid and intrinsic sizing, with measure/visible children sharing `grid-area: 1 / 1`. `spar.css:4856` restores the MEK `.sp-gap` block exactly to the pre-batch rule. | `:298`, “uses distinct classes for ELF gap slots and the MEK underline blank”. Before: the ELF element had `sp-gap`. After: it has `sp-gapslot` only; a rendered MEK blank retains `sp-gap` only. Existing gap preview/correction tests now select the scoped class. |
+| P3: deletion failure copy | `SparKonto.tsx:340` uses “Kunde inte radera kontot. Inget raderades — försök igen.” verbatim. | `:468`, “handles export failure and uses the specified deletion failure copy”. Before: the required sentence was absent. After: the full specified copy appears, with no deletion-success claim. |
+| P3: singular hit count | `SparUppslag.tsx:238` renders “1 träff”; other counts retain “träffar”. | `:180`, “uses the singular search count for exactly one catalogue hit”. Before: “1 träffar”. After: exact “1 träff”. |
+| P3: contents path loses its current stop while a section request is pending | `SparUppslag.tsx:70`, `:191`, `:325` keep the path and phone contents label on the displayed lesson's section until the provider replaces it. | `:191`, “keeps the contents stop on the displayed lesson while another section loads”, desktop and phone. Before: the path switched to ORD while the displayed LÄS lesson had no current stop. After: the displayed lesson retains its stop, then the new provider lesson receives it. |
+| P3: short ELF passage covered by the open tray | `SparDrill.tsx:1055`, `:1110` place the tray after the complete short passage inside the same desktop scroller. `spar.css:2566` makes that tray participate in normal flow with no height cap. Longer texts and feedback retain their existing docked layouts. | `:273`, “places the short ELF tray after the whole passage in the same desktop scroller”. Before: the tray sat outside the scroller as an overlay. After: it follows the passage, options start visible, grading still works, and long text/feedback stay outside that flow. Browser geometry remains a host check. |
+| P3: Om texten starts open | `SparDrill.tsx:287` starts the disclosure closed while preserving its toggle and approved body text. This supersedes the initial delivery note describing an expanded first ELF question. | `:262`, “starts ELF with Om texten closed while retaining its disclosure”, desktop and phone. Before: toggle said Dölj and the note was expanded. After: Om texten starts collapsed and opens on request. |
+
+The “gratis dogfood” plan wording is unchanged as requested.
+
+### Verification
+
+- [S:hpfetcher/codex-1|W:hpf-qr0p.17|H:red|E:10-intended-regressions] Before source edits, `pnpm -C app exec vitest run src/components/devbake/redesign/c-spar/Spar.test.tsx -t 'singular search|contents stop|menu Konto|Om texten closed|short ELF tray|distinct classes|specified deletion'` failed all **10 selected tests**, each for the intended defect. After the fixes, the same selection passed **10/10**. Nine cases are new; the existing deletion-failure case was updated to the accepted copy.
+- [S:hpfetcher/codex-1|W:hpf-qr0p.17|H:verify|E:3090-tests-typecheck-lint] Final `pnpm -C app typecheck`: PASS. Final `pnpm -C app lint`: PASS, with the same four pre-existing informational findings in unrelated landing-bakeoff files. Final `pnpm -C app test`: **109 files / 3,090 tests PASS** (18.33 seconds); Spår contains 215 tests. `git --no-optional-locks diff --check`: PASS.
+- No browser layout PASS is claimed. The accepted contract assigns the browser check to the coordinator; the prior delivery recorded Vite loopback `listen EPERM` in this sandbox. Verify ELF with actual gaps, long option words, short text with the tray open, expanded disclosure, text-spacing overrides, and both themes; check MEK blanks remain underlines. Unit tests establish DOM/state behavior, not rendered geometry.
+- Only six admitted source/test files and this worklog changed. No dependencies, other direction, shared kit, frozen Aegis/Taskmaster files, or unrelated source were changed.
+
+### Source receipts and handoff
+
+All changes remain **uncommitted** on the assigned branch at `a73b19aa2081dd449fc32eb9ee65b8081fadf709`. Round-2 independent review, browser validation, signing and delivery belong to the coordinator. The bead is ready for its DONE note, deferred parking, confirmation and drain; it must not be closed by this worker.
+
+| File | SHA-256 |
+| --- | --- |
+| Spar.tsx | `01838cbf643e9f9b5496fe1e63f378de5997e380746470a0572be10105e1f0a8` |
+| SparDrill.tsx | `b74ebfe9811780934d5e5df934a521ae76c5115b21d7f761e24df291aa55c387` |
+| SparKonto.tsx | `a999ec2ec228f7717c12e9691c87a691f1537f6f0ea2438e3addfc0d636b0498` |
+| SparUppslag.tsx | `f0da21808a8588dcb1ef5f39128300754f53abdf35489aa53fcf46c56be08384` |
+| spar.css | `4f2469225f08dd58abf3c39e3b63cbec9d553cf8201a4d2683b091ef47decbf6` |
+| Spar.test.tsx | `9d05d5767f51c2bf1f7b80b8ef897d1fbaa40e5746bf01995a8d51ce9aaa2f08` |
+
+### Playbook-proposal
+
+- **gas-city-coordinator / 2026-10-20:** Symptom: ELF gap slots passed unit tests and screenshots while MEK's shared selector broke their layout and altered MEK blanks. Cause: jsdom ignores the stylesheet and the default screenshot fixture contains no ELF gap. Rule: give structurally different controls distinct classes, add DOM isolation coverage, and require browser fixtures for each content form (including gap-fill and short-text/open-tray states). Retained here and in the classified worklog for coordinator relay to `~/scratch/skill-gotchas/gas-city-coordinator.md`; that directory is outside this managed worker's writable roots, as documented in the astra-relay playbook.

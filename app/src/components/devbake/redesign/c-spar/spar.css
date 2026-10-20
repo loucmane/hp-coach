@@ -2562,6 +2562,18 @@
   animation: sp-rise var(--sp-t-spring) var(--sp-spring) both;
 }
 
+/* Short ELF: the complete passage precedes the open tray in one scroller. */
+.sp-scroll > .sp-tray {
+  position: relative;
+  left: auto;
+  bottom: auto;
+  translate: none;
+  width: min(var(--sp-col), 100%);
+  max-height: none;
+  margin: 0 auto;
+  animation: none;
+}
+
 .sp-tray .sp-prompt {
   padding-top: 2px;
   font-size: 17.5px;
@@ -4842,8 +4854,7 @@
 
 /* MEK's gap: a plain blank (B3 brings the gap slot). */
 .sp-gap {
-  display: inline-grid;
-  min-width: 7ch;
+  display: inline-block;
   width: 4em;
   height: 1.1em;
   margin: 0 0.2em;
@@ -8085,8 +8096,9 @@ button.sp-sw-stop:hover .sp-stop[data-state='flagged'] {
   padding: 8px;
 }
 
-.sp-gap {
-  display: inline-block;
+.sp-gapslot {
+  display: inline-grid;
+  min-width: 7ch;
   vertical-align: baseline;
   padding: 0 6px;
   margin-inline: 2px;
@@ -8111,11 +8123,11 @@ button.sp-sw-stop:hover .sp-stop[data-state='flagged'] {
   padding-inline-start: 30px;
 }
 
-.sp-gap[data-state='now'] {
+.sp-gapslot[data-state='now'] {
   border-color: var(--sp-ink);
 }
 
-.sp-gap[data-preview='true'] .sp-gap-visible > span:last-child {
+.sp-gapslot[data-preview='true'] .sp-gap-visible > span:last-child {
   font-style: italic;
   text-decoration: underline dotted;
   text-underline-offset: 3px;

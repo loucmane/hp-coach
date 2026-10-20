@@ -284,7 +284,7 @@ function ReadingSession({
     else if (screen === 2 && view.phase === 'done') reset()
   }, [screen])
 
-  const [note, setNote] = useState(elf && (session.start.index ?? 0) === 0)
+  const [note, setNote] = useState(false)
   const badgeRef = useRef<HTMLSpanElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   // Desktop: the tray folds to its question; the feedback sheet stands tall.
@@ -459,6 +459,7 @@ function ReadingSession({
       ) : (
         <DeskBody
           {...shared}
+          short={short}
           note={note}
           setNote={setNote}
           badgeRef={badgeRef}
@@ -639,7 +640,7 @@ function SparGap({ n }: { n: number }) {
   const picked = q?.options?.find((o) => o.letter === result?.pick)?.text
   return (
     <span
-      className="sp-gap"
+      className="sp-gapslot"
       data-state={state}
       data-preview={String(!!selected && !result)}
       lang="sv"
@@ -1015,6 +1016,7 @@ function DeskBody({
   view,
   act,
   refs,
+  short,
   note,
   setNote,
   badgeRef,
@@ -1026,6 +1028,7 @@ function DeskBody({
   ready,
 }: Shared &
   Note & {
+    short: boolean
     scrollRef: RefObject<HTMLDivElement | null>
     tray: 'peek' | 'open'
     setTray: (s: 'peek' | 'open') => void
@@ -1047,19 +1050,23 @@ function DeskBody({
   // rounded corners only): the tray is measured, the sheet's height is set.
   const dockRef = useRef<HTMLElement>(null)
   const [dockH, setDockH] = useState(0)
+  // Short texts and their tray share one flow, so the tray cannot cover
+  // the end of the passage, even with larger type or the note expanded.
+  const follow = short && view.phase === 'question'
   // biome-ignore lint/correctness/useExhaustiveDependencies: re-measure when the tray changes shape
   useLayoutEffect(() => {
     const el = dockRef.current
-    if (!el || view.phase !== 'question') return
+    if (!el || view.phase !== 'question' || follow) return
     const measure = () => setDockH(el.offsetHeight)
     measure()
     if (typeof ResizeObserver === 'undefined') return
     const ro = new ResizeObserver(measure)
     ro.observe(el)
     return () => ro.disconnect()
-  }, [view.phase, view.index, tray])
-  const bottom =
-    view.phase === 'feedback'
+  }, [view.phase, view.index, tray, follow])
+  const bottom = follow
+    ? '0px'
+    : view.phase === 'feedback'
       ? `calc(${SHEET_PCT[fsheet]}% - ${CORNER}px)`
       : `${Math.max(0, dockH - CORNER)}px`
 
@@ -1074,6 +1081,18 @@ function DeskBody({
   const dockBadge = synthetic && (condensed || !bandSeen)
   const [title, subtitle] = splitTitle(view.question)
   const last = view.index + 1 >= view.total
+  const questionTray =
+    view.phase === 'question' ? (
+      <Tray
+        view={view}
+        act={act}
+        state={tray}
+        setState={setTray}
+        dockRef={dockRef}
+        badge={dockBadge}
+        ready={ready}
+      />
+    ) : null
 
   return (
     <div className="sp-body" data-phase={view.phase}>
@@ -1087,7 +1106,8 @@ function DeskBody({
           badgeRef={badgeRef}
           bandRef={bandRef}
         />
-        <div aria-hidden style={{ height: CORNER + 32 }} />
+        <div aria-hidden style={{ height: follow ? 16 : CORNER + 32 }} />
+        {follow ? questionTray : null}
       </div>
       <div
         className="sp-strip"
@@ -1098,17 +1118,7 @@ function DeskBody({
         <span className="sp-strip-title">{title}</span>
         {subtitle ? <span className="sp-strip-sub">{subtitle}</span> : null}
       </div>
-      {view.phase === 'question' ? (
-        <Tray
-          view={view}
-          act={act}
-          state={tray}
-          setState={setTray}
-          dockRef={dockRef}
-          badge={dockBadge}
-          ready={ready}
-        />
-      ) : null}
+      {!follow ? questionTray : null}
       {view.phase === 'feedback' ? (
         <FeedbackSheet
           view={view}

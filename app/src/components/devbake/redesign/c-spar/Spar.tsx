@@ -258,6 +258,7 @@ function SparFrame({
     setExpanded(screen === 4)
     setMenu(screen === 4)
     setDest(destOf(screen))
+    setKontoJump(null)
   }, [screen])
 
   // ⌘B / Ctrl+B expands and folds the rail, as in the live app.
