@@ -115,6 +115,14 @@
 .ljuskagla .lj-account-menu > p { color: var(--lj-soft); font-size: 13px; }
 .ljuskagla .lj-account-menu h3 { font-size: 12px; margin-top: 24px; }
 .ljuskagla .lj-theme { display: flex; align-items: center; gap: 12px; margin: 8px 0 16px; width: 100%; border: 1px solid var(--lj-edge); text-align: left; }
+.ljuskagla .lj-menu-identity { margin-top: 4px; overflow-wrap: anywhere; }
+.ljuskagla .lj-menu-links { margin-top: 16px; border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-menu-links li { border-bottom: 1px solid var(--lj-line); }
+.ljuskagla .lj-menu-links button { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 10px 4px; text-align: left; border-radius: 0; }
+.ljuskagla .lj-menu-links button > span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ljuskagla .lj-menu-links strong { font-size: 14px; font-weight: 700; }
+.ljuskagla .lj-menu-links button > span > span { font-size: 12px; color: var(--lj-soft); }
+.ljuskagla .lj-menu-links svg { color: var(--lj-accent); }
 .ljuskagla details { border-bottom: 1px solid var(--lj-line); }
 .ljuskagla summary { padding: 14px 0; min-height: 44px; cursor: pointer; }
 .ljuskagla details > p { margin: 0 0 20px; }
@@ -147,11 +155,12 @@
 .ljuskagla .lj-plan { margin: 32px 0 0; }
 .ljuskagla .lj-plan ol { margin-top: 12px; }
 .ljuskagla .lj-plan li + li { border-top: 1px solid var(--lj-line); }
-.ljuskagla .lj-plan li button { display: flex; width: 100%; gap: 16px; align-items: center; padding: 16px 0; text-align: left; font-size: 12px; }
-.ljuskagla .lj-plan li button > span:nth-child(2) { flex: 1; min-width: 0; }
+.ljuskagla .lj-plan li :is(button, .lj-plan-done) { display: flex; width: 100%; gap: 16px; align-items: center; padding: 16px 0; text-align: left; font-size: 12px; }
+.ljuskagla .lj-plan li :is(button, .lj-plan-done) > span:nth-child(2) { flex: 1; min-width: 0; }
 .ljuskagla .lj-plan li strong { display: block; font-size: 14px; font-weight: 600; }
 .ljuskagla .lj-plan small { font-size: 10px; margin-left: 10px; font-weight: 500; }
-.ljuskagla .lj-plan button > span:last-child { white-space: nowrap; }
+.ljuskagla .lj-plan :is(button, .lj-plan-done) > span:last-child { white-space: nowrap; }
+.ljuskagla .lj-plan .lj-plan-done { min-height: 44px; }
 .ljuskagla .lj-home-aside { padding-top: 4px; }
 .ljuskagla .lj-prognosis { margin-bottom: 28px; }
 .ljuskagla .lj-score { display: flex; align-items: center; gap: 16px; margin: 16px 0; }
@@ -217,7 +226,7 @@
 .ljuskagla .lj-question-scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 36px 32px 24px; }
 .ljuskagla .lj-prompt { font: 500 26px/1.35 var(--lj-prose); margin: 20px 0 24px; letter-spacing: -.015em; }
 .ljuskagla .lj-options { border-top: 1px solid var(--lj-line); }
-.ljuskagla .lj-options li { display: flex; border-bottom: 1px solid var(--lj-line); padding: 8px 0; align-items: flex-start; }
+.ljuskagla .lj-options li { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--lj-line); padding: 8px 0; align-items: flex-start; }
 .ljuskagla .lj-option { display: flex; flex: 1; align-items: baseline; gap: 14px; text-align: left; padding: 12px 8px; font-size: 14px; line-height: 1.7; border-radius: 4px; }
 .ljuskagla .lj-option kbd { color: var(--lj-soft); flex-shrink: 0; }
 .ljuskagla .lj-options li[data-selected="true"] { border-left: 3px solid var(--lj-accent); background: var(--lj-lamp); }
@@ -503,7 +512,7 @@
 .ljuskagla .lj-frame > .lj-run { flex: 1; min-width: 0; min-height: 0; }
 .ljuskagla .lj-run-heading { margin-bottom: 4px; }
 .ljuskagla .lj-run-prompt { margin-top: 12px; }
-.ljuskagla .lj-option-retry { font-size: 12px; margin: 0 0 4px 30px; }
+.ljuskagla .lj-option-retry { flex-basis: 100%; font-size: 12px; margin: 0 0 4px 30px; }
 .ljuskagla .lj-run-wait { margin-top: 12px; font-size: 13px; color: var(--lj-soft); }
 .ljuskagla .lj-run-choice { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; font-size: 13px; color: var(--lj-soft); }
 .ljuskagla .lj-run-flag[aria-pressed="true"] { background: var(--lj-lamp); border-color: var(--lj-accent); color: var(--lj-ink); }
@@ -648,6 +657,132 @@
 .ljuskagla[data-width="phone"] .lj-fs-history { margin-top: 0; padding-top: 0; border-top: 0; }
 .ljuskagla[data-width="phone"] .lj-fs-days { grid-template-columns: minmax(0, 1fr); }
 
+/* Uppslag: the lesson is the one lit reading place; the directory waits in the shade beside it. */
+.ljuskagla .lj-ref-grid { display: grid; grid-template-columns: minmax(240px, 300px) minmax(0, 1fr); gap: 52px; align-items: start; }
+.ljuskagla .lj-ref-index .lj-ref-index-head { font: 600 11px/1.6 var(--lj-ui); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 4px; }
+.ljuskagla .lj-ref-sections > li + li { border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-ref-section { display: grid; grid-template-columns: 44px minmax(0, 1fr) 18px; grid-template-areas: "code main arrow"; align-items: center; gap: 12px; width: 100%; padding: 12px 4px 12px 0; text-align: left; border-radius: 0; }
+.ljuskagla .lj-ref-section:is(:hover, :focus-visible, [aria-expanded="true"]) { color: var(--lj-ink); }
+.ljuskagla .lj-ref-section-main { grid-area: main; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ljuskagla .lj-ref-section > svg { grid-area: arrow; }
+.ljuskagla .lj-ref-section-main strong { font-size: 14px; font-weight: 600; line-height: 1.4; }
+.ljuskagla .lj-ref-section-main > span { font-size: 12px; }
+.ljuskagla .lj-ref-entries { margin: 0 0 12px; padding-left: 14px; }
+.ljuskagla .lj-ref-entries > li { position: relative; }
+.ljuskagla .lj-ref-entries > li + li { border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-ref-entry { display: flex; flex-direction: column; align-items: stretch; gap: 2px; width: 100%; padding: 10px 10px 10px 14px; text-align: left; border-radius: 2px 10px 10px 2px; font-size: 13px; line-height: 1.5; }
+.ljuskagla .lj-ref-entry-title { font-weight: 600; overflow-wrap: anywhere; }
+.ljuskagla .lj-ref-entry-summary { font-size: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ljuskagla .lj-ref-entry-note { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; }
+.ljuskagla .lj-ref-entries > li[data-open="true"] .lj-ref-entry { background: var(--lj-lamp); color: var(--lj-ink); }
+.ljuskagla .lj-ref-entries > li[data-open="true"]::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 3px; border-radius: 3px; background: var(--lj-beam); }
+.ljuskagla .lj-ref-empty { font-size: 12px; padding: 0 0 12px 56px; }
+.ljuskagla .lj-ref-notice { margin-bottom: 20px; padding: 12px 16px; border-left: 2px solid var(--lj-beam); background: var(--lj-paper); font-size: 13px; }
+.ljuskagla :is(.lj-ref-notice, .lj-lesson-said):empty { display: none; }
+.ljuskagla .lj-lesson { position: relative; min-width: 0; max-width: 74ch; padding: 32px 40px 28px 44px; background: var(--lj-lamp); color: var(--lj-ink); border-left: 3px solid var(--lj-beam); border-radius: 4px 20px 20px 4px; }
+.ljuskagla .lj-lesson > .lj-eyebrow { margin-bottom: 10px; }
+.ljuskagla .lj-lesson h2 { font: 500 38px/1.15 var(--lj-prose); letter-spacing: -.03em; overflow-wrap: anywhere; }
+.ljuskagla .lj-lesson-meta { margin-top: 10px; font-size: 12px; color: var(--lj-soft); }
+.ljuskagla .lj-lesson-body { margin-top: 28px; max-width: 66ch; font: 400 18px/1.65 var(--lj-prose); }
+.ljuskagla .lj-lesson-body p { hyphens: auto; overflow-wrap: anywhere; }
+.ljuskagla .lj-lesson-block + .lj-lesson-block { margin-top: 28px; }
+.ljuskagla .lj-lesson-block h3 { font: 700 13px/1.6 var(--lj-ui); letter-spacing: .02em; margin-bottom: 8px; }
+.ljuskagla .lj-lesson-kicker { font: italic 400 20px/1.5 var(--lj-prose); color: var(--lj-soft); margin-bottom: 24px; }
+.ljuskagla .lj-lesson-steps li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px; padding: 10px 0; }
+.ljuskagla .lj-lesson-steps li + li { border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-lesson-steps .lj-step-number { padding-top: 5px; }
+.ljuskagla .lj-lesson-traps li { padding: 12px 0; }
+.ljuskagla .lj-lesson-traps li + li { border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-lesson-traps strong { display: block; font-weight: 600; }
+.ljuskagla .lj-lesson-traps p { color: var(--lj-soft); margin-top: 4px; }
+.ljuskagla .lj-lesson-example { padding: 20px 24px; background: var(--lj-paper); border-radius: 2px 14px 14px 2px; }
+.ljuskagla .lj-lesson-example dl { display: grid; gap: 14px; margin: 0; }
+.ljuskagla .lj-lesson-example dt { font: 600 11px/1.6 var(--lj-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--lj-soft); }
+.ljuskagla .lj-lesson-example dd { margin: 2px 0 0; }
+.ljuskagla .lj-lesson-root { font: 500 56px/1.1 var(--lj-prose); letter-spacing: -.02em; margin-bottom: 20px; }
+.ljuskagla .lj-lesson-words { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+.ljuskagla .lj-lesson-actions { display: grid; gap: 12px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-lesson-read { justify-self: start; }
+.ljuskagla .lj-lesson-read[data-read="true"] { color: var(--lj-ink); border-color: var(--lj-beam); }
+.ljuskagla .lj-lesson-said, .ljuskagla .lj-lesson-none { font-size: 12px; color: var(--lj-soft); }
+.ljuskagla .lj-lesson-count { font-weight: 500; }
+.ljuskagla .lj-ref-contents { margin-bottom: 24px; border-block: 1px solid var(--lj-line); }
+.ljuskagla .lj-ref-toggle { display: grid; grid-template-columns: minmax(0, 1fr) 18px; align-items: center; gap: 2px 12px; width: 100%; padding: 12px 0; text-align: left; border-radius: 0; }
+.ljuskagla .lj-ref-toggle .lj-eyebrow { grid-column: 1; }
+.ljuskagla .lj-ref-toggle-place { grid-column: 1; font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
+.ljuskagla .lj-ref-toggle > svg { grid-column: 2; grid-row: 1 / span 2; }
+.ljuskagla .lj-ref-contents .lj-ref-index { padding-bottom: 8px; }
+
+/* Konto: the reading room's settings in one modest lamp; the account below it, quiet. */
+.ljuskagla .lj-konto { max-width: 920px; }
+.ljuskagla .lj-konto-part + .lj-konto-part { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-konto-lamp .lj-resume-top { margin-bottom: 16px; }
+.ljuskagla .lj-konto-lamp h2 { font: 500 36px/1.15 var(--lj-prose); letter-spacing: -.03em; margin-bottom: 4px; }
+.ljuskagla .lj-konto-lamp .lj-primary { margin-top: 12px; }
+.ljuskagla .lj-pref { display: grid; grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); gap: 8px 28px; align-items: start; padding: 18px 0; }
+.ljuskagla .lj-pref + .lj-pref { border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-pref-label :is(h3, h4) { font-size: 14px; font-weight: 700; color: var(--lj-ink); }
+.ljuskagla .lj-pref-label p { font-size: 12px; color: var(--lj-soft); margin-top: 4px; }
+.ljuskagla .lj-pref-choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.ljuskagla .lj-choice { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 2px; border: 1px solid var(--lj-edge); border-radius: 12px; padding: 10px 16px; text-align: left; }
+.ljuskagla .lj-choice-label { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+.ljuskagla .lj-choice-blurb { font-size: 12px; color: var(--lj-soft); max-width: 30ch; }
+.ljuskagla .lj-choice[aria-pressed="true"] { background: var(--lj-lamp); border-color: var(--lj-beam); box-shadow: inset 0 0 0 1px var(--lj-beam); color: var(--lj-ink); }
+.ljuskagla .lj-choice[aria-pressed="true"] .lj-choice-label svg { color: var(--lj-beam); }
+.ljuskagla .lj-pref-fixed > p { font-size: 13px; line-height: 1.7; max-width: 60ch; }
+.ljuskagla .lj-konto-said { font-size: 12px; color: var(--lj-soft); }
+.ljuskagla .lj-konto-said:empty { display: none; }
+.ljuskagla .lj-konto-rows { margin-top: 28px; }
+.ljuskagla .lj-konto-rows > .lj-pref:first-child { padding-top: 0; }
+.ljuskagla .lj-konto-advanced { margin-top: 12px; padding-top: 20px; border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-konto-advanced .lj-section-head h3 { font-size: 14px; font-weight: 600; }
+.ljuskagla .lj-konto-advanced > .lj-hub-note { margin-top: 6px; max-width: 62ch; }
+.ljuskagla .lj-konto-links { margin-top: 12px; padding-top: 20px; border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-konto-links h3 { font-size: 14px; font-weight: 600; }
+.ljuskagla .lj-konto-links ul { display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: 4px; }
+.ljuskagla .lj-konto-links a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--lj-accent); font-size: 13px; font-weight: 600; text-decoration: none; }
+.ljuskagla .lj-konto-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.ljuskagla .lj-konto-account .lj-section-head h2 { font: 500 28px/1.2 var(--lj-prose); letter-spacing: -.02em; }
+.ljuskagla .lj-konto-identity { display: flex; align-items: center; gap: 16px; margin-top: 16px; padding-bottom: 20px; border-bottom: 1px solid var(--lj-line); }
+.ljuskagla .lj-konto-identity > div { min-width: 0; }
+.ljuskagla .lj-konto-initials { display: grid; place-items: center; flex: 0 0 48px; width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--lj-edge); font: 600 15px var(--lj-ui); letter-spacing: .04em; }
+.ljuskagla .lj-konto-name { font: 500 24px/1.25 var(--lj-prose); overflow-wrap: anywhere; }
+.ljuskagla .lj-konto-email { font-size: 14px; color: var(--lj-soft); overflow-wrap: anywhere; margin-top: 2px; }
+.ljuskagla .lj-konto-plan { font-size: 13px; margin-top: 4px; }
+.ljuskagla .lj-konto-facts { margin: 20px 0; }
+.ljuskagla .lj-konto-facts > div { grid-template-columns: 180px minmax(0, 1fr); }
+.ljuskagla .lj-konto-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.ljuskagla .lj-konto-actions > p { font-size: 12px; color: var(--lj-soft); }
+.ljuskagla :is(.lj-konto-actions, .lj-konto-delete) > p:empty { display: none; }
+.ljuskagla :is(.lj-konto-data, .lj-konto-delete) { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--lj-line); }
+.ljuskagla :is(.lj-konto-data, .lj-konto-delete) h3 { font-size: 14px; font-weight: 700; }
+.ljuskagla :is(.lj-konto-data, .lj-konto-delete) > p { font-size: 13px; line-height: 1.7; color: var(--lj-soft); margin: 6px 0 12px; max-width: 62ch; }
+.ljuskagla .lj-konto-preview { font-style: italic; }
+.ljuskagla .lj-konto-confirm { display: grid; gap: 10px; max-width: 380px; margin-top: 12px; padding: 16px 18px; border: 1px solid var(--lj-edge); border-radius: 12px; }
+.ljuskagla .lj-konto-confirm > .lj-text-button { justify-self: start; font-size: 13px; }
+.ljuskagla .lj-konto-confirm label { font-size: 13px; }
+.ljuskagla .lj-konto-confirm input { min-height: 44px; padding: 8px 12px; font: 15px var(--lj-ui); color: var(--lj-ink); background: var(--lj-room); border: 1px solid var(--lj-edge); border-radius: 8px; }
+.ljuskagla .lj-konto-confirm-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
+.ljuskagla .lj-konto-destroy:not(:disabled) { color: var(--lj-ink); border-color: var(--lj-ink); }
+.ljuskagla .lj-unavailable-text h1 { font-size: 36px; }
+
+/* Phone: the same order in one column; the directory folds above the lesson. */
+.ljuskagla[data-width="phone"] .lj-ref-grid { display: block; }
+.ljuskagla[data-width="phone"] .lj-lesson { padding: 22px 18px 20px 22px; border-radius: 3px 16px 16px 3px; }
+.ljuskagla[data-width="phone"] .lj-lesson h2 { font-size: 30px; }
+.ljuskagla[data-width="phone"] .lj-lesson-body { font-size: 17px; }
+.ljuskagla[data-width="phone"] .lj-lesson-root { font-size: 44px; }
+.ljuskagla[data-width="phone"] .lj-lesson-example { padding: 16px; }
+.ljuskagla[data-width="phone"] .lj-ref-entries { padding-left: 0; }
+.ljuskagla[data-width="phone"] .lj-ref-empty { padding-left: 0; }
+.ljuskagla[data-width="phone"] .lj-jump.lj-konto-jump { margin: -4px 0 24px; }
+.ljuskagla[data-width="phone"] .lj-konto-lamp h2 { font-size: 30px; }
+.ljuskagla[data-width="phone"] .lj-pref { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.ljuskagla[data-width="phone"] .lj-choice { flex: 1 1 140px; }
+.ljuskagla[data-width="phone"] .lj-konto-part + .lj-konto-part { margin-top: 40px; }
+.ljuskagla[data-width="phone"] .lj-konto-facts > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+.ljuskagla[data-width="phone"] .lj-unavailable-text h1 { font-size: 30px; }
+
 .ljuskagla[data-live="false"] *, .ljuskagla[data-live="false"] *::before { transition: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .ljuskagla *, .ljuskagla *::before, .ljuskagla *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
@@ -665,4 +800,7 @@
   .ljuskagla .lj-heat i:is([data-level="1"], [data-level="2"], [data-level="3"]) { forced-color-adjust: none; background: CanvasText; }
   .ljuskagla .lj-trend-line { stroke: CanvasText; }
   .ljuskagla .lj-trend-dot { fill: CanvasText; }
+  .ljuskagla :is(.lj-lesson, .lj-konto-lamp) { outline: 2px solid CanvasText; }
+  .ljuskagla :is(.lj-choice[aria-pressed="true"], .lj-ref-entry[aria-current], .lj-lesson-read[data-read="true"]) { outline: 2px solid Highlight; }
+  .ljuskagla .lj-ref-entries > li[data-open="true"]::before { forced-color-adjust: none; background: Highlight; }
 }

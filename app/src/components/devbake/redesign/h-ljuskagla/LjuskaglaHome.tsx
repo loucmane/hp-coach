@@ -1,6 +1,6 @@
 import { ArrowRight, CornerDownRight, LampDesk } from 'lucide-react'
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
-import { DESTINATIONS, fmtDelta, fmtScore } from '@/components/devbake/redesign/r1Kit'
+import { fmtDelta, fmtScore } from '@/components/devbake/redesign/r1Kit'
 import type {
   PlanItemKind,
   PlanItemView,
@@ -107,16 +107,19 @@ function weekLine(week: WeekView): string | null {
   return parts.length ? parts.join(' · ') : null
 }
 
-/** The one lit card: the paused session, else the plan's first step. */
+/** The one lit card: the paused session, else the plan's first open step,
+ *  else — every step done — the plan said to be done. */
 function Lamp({
   resume,
   first,
+  planDone,
   onResume,
   onPlan,
   onOva,
 }: {
   resume: ResumeView | null
   first: PlanItemView | undefined
+  planDone: boolean
   onResume: () => void
   onPlan: (item: PlanItemView) => void
   onOva: () => void
@@ -158,6 +161,24 @@ function Lamp({
       </section>
     )
   }
+  if (planDone) {
+    return (
+      <section className="lj-resume">
+        <div className="lj-resume-top">
+          <span className="lj-eyebrow">Dagens plan</span>
+          <LampDesk size={28} strokeWidth={1.3} aria-hidden />
+        </div>
+        <h2>Dagens plan är klar.</h2>
+        <p className="lj-resume-rationale">
+          Allt du planerade för idag är gjort. Vill du öva mer finns alla delprov under Öva.
+        </p>
+        <button className="lj-primary" type="button" data-testid="rd-resume" onClick={onOva}>
+          <span>Till Öva</span>
+          <ArrowRight size={20} aria-hidden />
+        </button>
+      </section>
+    )
+  }
   return (
     <section className="lj-resume">
       <div className="lj-resume-top">
@@ -188,8 +209,10 @@ export function LjuskaglaHome({ onResume, onOpen }: { onResume: () => void; onOp
   const openItem = (item: PlanItemView) =>
     onOpen(PLAN_PAGE[item.kind], () => actions.openPlanItem(item.id))
   const first = plan.items.find((item) => !item.completed)
+  // Every step done (or the plan says so): nothing is offered as next work.
+  const planDone = plan.allComplete || (plan.items.length > 0 && !first)
   // Without a resume the lamp takes the plan's first step; the rows go on from there.
-  const rows = resume ? plan.items : plan.items.filter((item) => item !== first)
+  const rows = resume || planDone ? plan.items : plan.items.filter((item) => item !== first)
   const trap = traps[0]
   const footer = weekLine(week)
   return (
@@ -213,6 +236,7 @@ export function LjuskaglaHome({ onResume, onOpen }: { onResume: () => void; onOp
           <Lamp
             resume={resume}
             first={first}
+            planDone={planDone}
             onResume={onResume}
             onPlan={openItem}
             onOva={() => onOpen('ova', () => actions.go('ova'))}
@@ -220,26 +244,40 @@ export function LjuskaglaHome({ onResume, onOpen }: { onResume: () => void; onOp
           {rows.length > 0 && (
             <section className="lj-plan lj-shade">
               <div className="lj-section-head">
-                <h2>{resume ? 'Sedan, i din takt' : 'Resten av dagen'}</h2>
+                <h2>
+                  {planDone ? 'Gjort idag' : resume ? 'Sedan, i din takt' : 'Resten av dagen'}
+                </h2>
                 <span>{plan.minutes} min</span>
               </div>
               <ol>
-                {rows.map((item) => (
-                  <li key={item.id} data-completed={String(item.completed)}>
-                    <button type="button" onClick={() => openItem(item)}>
+                {rows.map((item) => {
+                  const text = (
+                    <>
                       <CornerDownRight size={18} aria-hidden />
                       <span>
                         <strong>
                           {item.title}
-                          {item.primary && <small>näst på tur</small>}
+                          {item.primary && !item.completed && <small>näst på tur</small>}
                           {item.completed && <small>klar</small>}
                         </strong>
                         {item.detail && <span>{item.detail}</span>}
                       </span>
                       <span>{item.minutes} min</span>
-                    </button>
-                  </li>
-                ))}
+                    </>
+                  )
+                  // A finished step is a record of the day, never offered as next work.
+                  return (
+                    <li key={item.id} data-completed={String(item.completed)}>
+                      {item.completed ? (
+                        <div className="lj-plan-done">{text}</div>
+                      ) : (
+                        <button type="button" onClick={() => openItem(item)}>
+                          {text}
+                        </button>
+                      )}
+                    </li>
+                  )
+                })}
               </ol>
             </section>
           )}
@@ -268,37 +306,6 @@ export function LjuskaglaHome({ onResume, onOpen }: { onResume: () => void; onOp
         </aside>
       </div>
       {footer && <footer className="lj-home-foot">{footer}</footer>}
-    </div>
-  )
-}
-
-/**
- * The door this direction has not built yet (Uppslag), as round 1 left it:
- * a host that navigates opens its own screen instead, so this shows only
- * where a door cannot leave the frame (a bare test mount, the real-app
- * preview).
- */
-export function LjuskaglaDestination({ destination }: { destination: 'uppslag' }) {
-  const { data } = useDirectionData()
-  const d = DESTINATIONS.find((item) => item.id === destination) ?? DESTINATIONS[0]
-  const lesson = data.uppslag.open
-  const catalog = data.uppslag.sections.find((s) => s.section === lesson.section)
-  return (
-    <div className="lj-home lj-destination">
-      <p className="lj-eyebrow">HP-Coach</p>
-      <h1>{d.label}</h1>
-      <p>{d.blurb}</p>
-      {catalog && (
-        <section className="lj-shade">
-          <h2>Frågetyper att känna igen</h2>
-          {catalog.entries.map((entry) => (
-            <details key={entry.id}>
-              <summary>{entry.title}</summary>
-              <p>{entry.summary ?? 'Leta efter stöd i texten och jämför varje del av svaret.'}</p>
-            </details>
-          ))}
-        </section>
-      )}
     </div>
   )
 }
