@@ -15,8 +15,9 @@
 //   2. scoreFromFraction(correct/presented) + linear-approximation
 //      disclaimer.
 //   3. Per-section bars (correct/presented per section).
-//   4. Pacing table — per-section timeMs vs proportional budget
-//      (55min × sectionQuota/40), over-budget sections highlighted.
+//   4. Pacing table — per-section timeMs against UHR's recommended
+//      time for that delprov (lib/uhrPacing, as printed on every
+//      booklet), in the test's order and in neutral words.
 //   5. Trap clusters on breakdown.missedQids.
 //   6. Exposure line — "Du hade sett N/M frågor innan" from the
 //      row's OWN snapshot (seenBefore/presented), never recomputed.
@@ -32,6 +33,7 @@ import { TermHint } from '@/components/ui/TermHint'
 import { loadNormeringTable, type NormeringSitting, normedScore } from '@/lib/normering'
 import { formatScore, scoreFromFraction } from '@/lib/scoring'
 import { useTrapCluster } from '@/lib/trapCluster'
+import { paceNote, uhrRank, uhrTimeMs } from '@/lib/uhrPacing'
 
 // Load the sitting's official UHR normeringstabell for an authentic
 // pass (loadNormeringTable memoises per exam id, so re-renders and
@@ -63,27 +65,6 @@ function useNormedScore(result: MockResultRow) {
   )
 }
 
-// 55-minute pass budget, proportioned per section by its quota. Kept
-// local (mirrors the quota table in routes/prov.tsx) since PR 2's
-// lib/mock.ts, which will own the canonical quota table, hasn't
-// landed yet in this branch.
-const PASS_BUDGET_MS = 55 * 60_000
-const SECTION_QUOTA: Record<string, number> = {
-  ORD: 10,
-  LÄS: 10,
-  MEK: 10,
-  ELF: 10,
-  XYZ: 12,
-  KVA: 10,
-  NOG: 6,
-  DTK: 12,
-}
-
-function sectionBudgetMs(section: string): number {
-  const quota = SECTION_QUOTA[section] ?? 0
-  return (PASS_BUDGET_MS * quota) / 40
-}
-
 type Props = {
   result: MockResultRow
 }
@@ -98,8 +79,12 @@ export function MockResult({ result }: Props) {
   const missedQids = useMemo(() => breakdown.missedQids, [breakdown.missedQids])
   const cluster = useTrapCluster(missedQids)
 
+  // In the test's order (ORD, LÄS, MEK, ELF / XYZ, KVA, NOG, DTK).
   const sectionEntries = useMemo(
-    () => Object.entries(breakdown.perSection).sort((a, b) => a[0].localeCompare(b[0])),
+    () =>
+      Object.entries(breakdown.perSection).sort(
+        (a, b) => uhrRank(a[0]) - uhrRank(b[0]) || a[0].localeCompare(b[0]),
+      ),
     [breakdown.perSection],
   )
 
@@ -222,29 +207,25 @@ export function MockResult({ result }: Props) {
               <tr>
                 <th style={pacingHeadStyle}>Sektion</th>
                 <th style={pacingHeadStyle}>Tid</th>
-                <th style={pacingHeadStyle}>Budget</th>
+                <th style={pacingHeadStyle}>UHR:s tid</th>
+                <th style={pacingHeadStyle}>
+                  <span className="sr-only">Jämfört med UHR:s tid</span>
+                </th>
               </tr>
             </thead>
             <tbody>
               {sectionEntries.map(([section, s]) => {
-                const budget = sectionBudgetMs(section)
-                const over = s.timeMs > budget
+                // UHR's time, scaled when the pass presented fewer
+                // questions in this delprov than the booklet.
+                const uhr = uhrTimeMs(section, s.presented)
                 return (
                   <tr key={section} data-testid={`mock-result-pace-${section}`}>
                     <td style={pacingCellStyle}>{section}</td>
-                    <td
-                      style={{
-                        ...pacingCellStyle,
-                        color: over ? 'var(--bad)' : 'var(--ink-2)',
-                        fontWeight: over ? 700 : 400,
-                      }}
-                    >
-                      {formatMs(s.timeMs)}
-                      {over && (
-                        <span data-testid={`mock-result-pace-over-${section}`}> · över budget</span>
-                      )}
+                    <td style={pacingCellStyle}>{formatMs(s.timeMs)}</td>
+                    <td style={pacingCellStyle}>{uhr == null ? '–' : formatMs(uhr)}</td>
+                    <td style={pacingCellStyle} data-testid={`mock-result-pace-note-${section}`}>
+                      {uhr == null ? '' : paceNote(s.timeMs, uhr)}
                     </td>
-                    <td style={pacingCellStyle}>{formatMs(budget)}</td>
                   </tr>
                 )
               })}

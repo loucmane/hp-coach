@@ -159,14 +159,43 @@ describe('MockResult', () => {
     expect(screen.getByTestId('mock-result-section-ELF')).toHaveTextContent('6/10')
   })
 
-  it('renders the pacing table and flags the section over its proportional budget', () => {
+  it('paces each delprov against UHR’s recommended time, in the test’s order', () => {
     render(<MockResult result={row()} />)
-    // ORD budget: 55min * 10/40 = 13:45, actual 6:00 → under, no flag.
-    expect(screen.queryByTestId('mock-result-pace-over-ORD')).not.toBeInTheDocument()
-    // LÄS budget: 13:45, actual 15:00 → over, flagged.
-    expect(screen.getByTestId('mock-result-pace-over-LÄS')).toBeInTheDocument()
-    expect(screen.getByTestId('mock-result-pace-LÄS')).toHaveTextContent('15:00')
-    expect(screen.getByTestId('mock-result-pace-LÄS')).toHaveTextContent('13:45')
+    const rows = screen.getAllByTestId(/^mock-result-pace-[A-ZÅÄÖ]{3}$/)
+    expect(rows.map((r) => r.dataset.testid)).toEqual([
+      'mock-result-pace-ORD',
+      'mock-result-pace-LÄS',
+      'mock-result-pace-MEK',
+      'mock-result-pace-ELF',
+    ])
+    // UHR prints ORD 3, LÄS 22, MEK 8, ELF 22 minutes on every booklet.
+    expect(screen.getByTestId('mock-result-pace-ORD')).toHaveTextContent('6:00')
+    expect(screen.getByTestId('mock-result-pace-ORD')).toHaveTextContent('3:00')
+    expect(screen.getByTestId('mock-result-pace-note-ORD')).toHaveTextContent(
+      '3 min mer än UHR:s tid',
+    )
+    expect(screen.getByTestId('mock-result-pace-LÄS')).toHaveTextContent('22:00')
+    expect(screen.getByTestId('mock-result-pace-note-LÄS')).toHaveTextContent(
+      '7 min mindre än UHR:s tid',
+    )
+    expect(screen.getByRole('columnheader', { name: 'UHR:s tid' })).toBeInTheDocument()
+  })
+
+  it('states the pace without alarm: no "över budget", no warning colour', () => {
+    render(<MockResult result={row()} />)
+    const table = screen.getByTestId('mock-result-pacing')
+    expect(table).not.toHaveTextContent(/budget/i)
+    for (const cell of Array.from(table.querySelectorAll<HTMLElement>('td'))) {
+      expect(cell.style.color).not.toContain('--bad')
+    }
+  })
+
+  it('scales UHR’s time when a pass presented fewer questions in a delprov', () => {
+    const r = row()
+    r.breakdown.perSection.MEK = { presented: 5, correct: 5, timeMs: 4 * 60_000 }
+    render(<MockResult result={r} />)
+    expect(screen.getByTestId('mock-result-pace-MEK')).toHaveTextContent('4:00')
+    expect(screen.getByTestId('mock-result-pace-note-MEK')).toHaveTextContent('i takt')
   })
 
   it('renders the trap cluster callout when useTrapCluster returns one', () => {
