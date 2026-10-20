@@ -2876,6 +2876,865 @@
   background: var(--sa-page);
 }
 
+/* ── Round 2: shared ─────────────────────────────────────────────── */
+
+/* Figures keep the printed page's own colours: they sit on paper in both
+ * themes, as the page itself does. */
+[data-rd='samtal'] {
+  --sa-paper: oklch(99.5% 0.002 85);
+  --sa-paper-ink: oklch(38.5% 0.018 318);
+}
+
+/* KaTeX's glyphs, a step under its default size beside Hanken Grotesk. */
+[data-rd='samtal'] .katex {
+  font-size: 1.12em;
+}
+
+/* An icon-only tool (zoom): the same 44 px target as its labelled kin. */
+[data-rd='samtal'] .sa-tool--icon {
+  justify-content: center;
+  width: 44px;
+  padding: 0;
+}
+
+[data-rd='samtal'] .sa-tool:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-rd='samtal'] .sa-tool:disabled:hover {
+  background: transparent;
+  color: var(--sa-ink-2);
+}
+
+/* Öva and Repetera speak like Idag: the replies under the lead turn, and on
+ * the phone the one action across the width with the other reply below it
+ * on your side. */
+[data-rd='samtal'] :is(.sa-ova, .sa-rep) > .sa-thread > .sa-replies {
+  margin-top: var(--sa-s2);
+}
+
+[data-rd='samtal'][data-width='phone'] :is(.sa-ova, .sa-rep) > .sa-thread > .sa-replies {
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+[data-rd='samtal'][data-width='phone']
+  :is(.sa-ova, .sa-rep)
+  > .sa-thread
+  > .sa-replies
+  .sa-chip--primary {
+  align-self: stretch;
+}
+
+/* ── Öva ─────────────────────────────────────────────────────────── */
+
+/* The sections as replies you can give: reply-shaped doors (your corner
+ * top right), in two stable groups. The suggested one is tagged, never
+ * moved; the levels and counts are text. */
+[data-rd='samtal'] .sa-doorgroup + .sa-doorgroup {
+  margin-top: var(--sa-s4);
+}
+
+[data-rd='samtal'] .sa-doorgroup-h {
+  margin-bottom: var(--sa-s2);
+  font-size: var(--sa-t13);
+  font-weight: 650;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-practice {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sa-s2);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-practice {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+[data-rd='samtal'] .sa-practice-door {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+  min-height: 64px;
+  padding: 10px var(--sa-s3) 11px 14px;
+  border: 1.5px solid color-mix(in oklch, var(--sa-plum-line) 60%, var(--sa-line));
+  border-radius: var(--sa-r2) var(--sa-r0) var(--sa-r2) var(--sa-r2);
+  background: var(--sa-card);
+  color: var(--sa-ink);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background var(--sa-d-in) var(--sa-ease),
+    border-color var(--sa-d-in) var(--sa-ease);
+}
+
+[data-rd='samtal'] .sa-practice-door:hover,
+[data-rd='samtal'] .sa-practice-mixed:hover {
+  background: var(--sa-plum-soft);
+}
+
+/* The suggestion: a whole plum line and its tag — still a reply, never the
+ * screen's action. */
+[data-rd='samtal'] .sa-practice-door[data-suggested='true'] {
+  border-color: var(--sa-plum-line);
+}
+
+[data-rd='samtal'] .sa-practice-top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px var(--sa-s2);
+}
+
+[data-rd='samtal'] .sa-practice-code {
+  font-size: var(--sa-t17);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  color: var(--sa-plum-ink);
+}
+
+[data-rd='samtal'] .sa-practice-meta {
+  font-size: var(--sa-t13);
+  font-weight: 560;
+  line-height: 1.35;
+  color: var(--sa-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* A door's level and its waiting misses: two whole phrases, apart. */
+[data-rd='samtal'] .sa-practice-door .sa-practice-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 var(--sa-s2);
+  width: 100%;
+}
+
+[data-rd='samtal'] .sa-practice-mixed {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-s3);
+  width: 100%;
+  min-height: 52px;
+  margin-top: var(--sa-s4);
+  padding: 10px var(--sa-s4) 10px 14px;
+  border: 1.5px solid color-mix(in oklch, var(--sa-plum-line) 60%, var(--sa-line));
+  border-radius: var(--sa-r2) var(--sa-r0) var(--sa-r2) var(--sa-r2);
+  background: var(--sa-card);
+  color: var(--sa-ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-practice-mixed .sa-practice-meta {
+  flex: 1;
+}
+
+[data-rd='samtal'] .sa-practice-mixed svg,
+[data-rd='samtal'] .sa-rep-row .sa-chip svg {
+  flex: none;
+  color: var(--sa-plum-ink);
+}
+
+/* Repetera on Öva: what is ready now, and the way to it. */
+[data-rd='samtal'] .sa-rep-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-rep-now {
+  font-size: var(--sa-t16);
+  line-height: 1.45;
+}
+
+[data-rd='samtal'] .sa-rep-now b {
+  margin-right: 2px;
+  font-size: var(--sa-t22);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-rep-row .sa-chip {
+  gap: var(--sa-s2);
+}
+
+/* The traps that keep coming back: one line, each trap a small reply that
+ * starts practice on it. */
+[data-rd='samtal'] .sa-ova .sa-line-h {
+  display: block;
+  margin: 0 0 var(--sa-s2);
+}
+
+[data-rd='samtal'] .sa-traps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sa-s2);
+}
+
+[data-rd='samtal'] .sa-trap-chip {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px var(--sa-s2);
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1.5px solid color-mix(in oklch, var(--sa-plum-line) 60%, var(--sa-line));
+  border-radius: var(--sa-r2) var(--sa-r0) var(--sa-r2) var(--sa-r2);
+  background: var(--sa-card);
+  color: var(--sa-ink);
+  font-size: var(--sa-t15);
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-trap-chip:hover {
+  background: var(--sa-plum-soft);
+}
+
+[data-rd='samtal'] .sa-trap-chip b {
+  font-weight: 650;
+}
+
+[data-rd='samtal'] .sa-trap-chip-meta {
+  font-size: var(--sa-t13);
+  color: var(--sa-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Repetera ────────────────────────────────────────────────────── */
+
+/* What is ready, by section: small oat pills in the attachment. */
+[data-rd='samtal'] .sa-attach--rep {
+  display: block;
+  padding: var(--sa-s3) var(--sa-s4) 14px;
+}
+
+[data-rd='samtal'] .sa-rep-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+[data-rd='samtal'] .sa-rep-sections li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  min-height: 30px;
+  padding: 4px 12px;
+  border-radius: var(--sa-pill);
+  background: var(--sa-coach);
+  font-size: var(--sa-t15);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-rep-sections b {
+  font-weight: 700;
+}
+
+[data-rd='samtal'] .sa-rep-attach-note {
+  margin-top: var(--sa-s2);
+  font-size: var(--sa-t13);
+  line-height: 1.45;
+  color: var(--sa-ink-2);
+}
+
+/* The queue: one card of rows, the ready ones first; the rest folds. */
+[data-rd='samtal'] .sa-queue {
+  display: flex;
+  flex-direction: column;
+  margin: 0 calc(var(--sa-s2) * -1);
+}
+
+[data-rd='samtal'] .sa-qrow {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--sa-s3);
+  padding: 11px var(--sa-s2);
+}
+
+[data-rd='samtal'] .sa-qrow + .sa-qrow {
+  border-top: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-qrow-sec {
+  display: grid;
+  place-items: center;
+  height: 26px;
+  border-radius: var(--sa-pill);
+  background: var(--sa-coach);
+  font-size: var(--sa-t13);
+  font-weight: 700;
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-qrow-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+[data-rd='samtal'] .sa-qrow-q {
+  font-size: var(--sa-t15);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+[data-rd='samtal'] .sa-qrow-none {
+  color: var(--sa-ink-2);
+  font-style: italic;
+}
+
+/* The framework and the misses this week: two phrases that wrap whole. */
+[data-rd='samtal'] .sa-qrow-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--sa-s3);
+  font-size: var(--sa-t13);
+  line-height: 1.4;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-qrow-when {
+  padding-top: 4px;
+  font-size: var(--sa-t13);
+  font-weight: 600;
+  color: var(--sa-ink-2);
+  white-space: nowrap;
+}
+
+[data-rd='samtal'] .sa-queue-none {
+  font-size: var(--sa-t15);
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-queue-later {
+  margin-top: var(--sa-s1);
+  padding-top: var(--sa-s1);
+  border-top: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-queue-fold {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-s2);
+  width: calc(100% + var(--sa-s4));
+  min-height: 48px;
+  margin: 0 calc(var(--sa-s2) * -1);
+  padding: 0 var(--sa-s2);
+  border: 0;
+  border-radius: var(--sa-r1);
+  background: transparent;
+  color: var(--sa-ink);
+  font-size: var(--sa-t15);
+  font-weight: 650;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-rd='samtal'] .sa-queue-fold:hover {
+  background: color-mix(in oklch, var(--sa-ink) 4.5%, transparent);
+}
+
+[data-rd='samtal'] .sa-queue-fold-n {
+  padding: 1px 8px;
+  border-radius: var(--sa-pill);
+  background: var(--sa-coach);
+  font-size: var(--sa-t13);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-queue-fold svg {
+  margin-left: auto;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-rep-back {
+  margin-top: var(--sa-s4);
+}
+
+/* ── Kvantfråga ──────────────────────────────────────────────────── */
+
+/* Desktop: no passage, so no document pane — the conversation in one
+ * centred column under the strip. */
+[data-rd='samtal'] .sa-qbody {
+  display: flex;
+  justify-content: center;
+  min-height: 0;
+  padding: 0 var(--sa-s6) var(--sa-s6);
+}
+
+[data-rd='samtal'] .sa-talk--solo {
+  width: min(100%, 680px);
+}
+
+[data-rd='samtal'] .sa-qroot {
+  height: 100%;
+}
+
+/* The problem: an opaque attachment in the coach's turn, its math on the
+ * document's own surface. Nested radius = the turn's 24 − its 14 px inset.
+ * A long equation scrolls in place instead of shrinking the page. */
+[data-rd='samtal'] .sa-problem {
+  margin-top: var(--sa-s3);
+  padding: var(--sa-s3) var(--sa-s4) 14px;
+  border-radius: var(--sa-r1);
+  background: var(--sa-doc);
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--sa-coach-2) 70%, var(--sa-line));
+  overflow-x: auto;
+}
+
+[data-rd='samtal'] .sa-problem-label {
+  display: block;
+  margin-bottom: 2px;
+  font-size: var(--sa-t13);
+  font-weight: 650;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-problem-math {
+  font-size: var(--sa-t19);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+[data-rd='samtal'] .sa-problem-cond {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px var(--sa-s3);
+  margin-bottom: var(--sa-s3);
+  padding-bottom: var(--sa-s3);
+  border-bottom: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-problem-cond .sa-problem-label {
+  display: inline;
+  margin: 0;
+}
+
+[data-rd='samtal'] .sa-problem-setup {
+  margin-bottom: var(--sa-s3);
+  padding-bottom: var(--sa-s3);
+  border-bottom: 1px solid var(--sa-line);
+  font-size: var(--sa-t17);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+/* KVA: the two quantities side by side, a hairline between them, so the
+ * comparison is the shape of the attachment. */
+[data-rd='samtal'] .sa-kva {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+[data-rd='samtal'] .sa-kva-q {
+  min-width: 0;
+  padding: 2px var(--sa-s4) 2px 0;
+}
+
+[data-rd='samtal'] .sa-kva-q + .sa-kva-q {
+  padding: 2px 0 2px var(--sa-s4);
+  border-left: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-kva dd {
+  margin: 0;
+}
+
+/* NOG: (1) and (2) as numbered lines, the coda closing the attachment. */
+[data-rd='samtal'] .sa-nog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-s2);
+}
+
+[data-rd='samtal'] .sa-nog li {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--sa-s2);
+}
+
+[data-rd='samtal'] .sa-nog-n {
+  font-size: var(--sa-t15);
+  font-weight: 700;
+  color: var(--sa-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-problem-coda {
+  margin-top: var(--sa-s3);
+  padding-top: var(--sa-s3);
+  border-top: 1px solid var(--sa-line);
+  font-size: var(--sa-t16);
+  line-height: 1.45;
+  color: var(--sa-ink-2);
+}
+
+/* A diagram on its paper plate. */
+[data-rd='samtal'] .sa-problem-fig {
+  padding: var(--sa-s3);
+  border-radius: 6px;
+  background: var(--sa-paper);
+}
+
+[data-rd='samtal'] .sa-problem-fig + .sa-kva,
+[data-rd='samtal'] .sa-problem-fig + .sa-nog {
+  margin-top: var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-problem-fig img {
+  display: block;
+  max-width: 100%;
+  max-height: 260px;
+  height: auto;
+  margin: 0 auto;
+}
+
+/* Something the question needs is missing: said in place, locally. */
+[data-rd='samtal'] .sa-problem-missing {
+  margin-top: var(--sa-s3);
+  padding: var(--sa-s2) var(--sa-s3);
+  border-radius: var(--sa-r1);
+  background: var(--sa-bad-soft);
+  box-shadow: inset 3px 0 0 var(--sa-bad);
+  font-size: var(--sa-t15);
+  line-height: 1.45;
+}
+
+/* A diagram that failed: the reason, and a real retry beside it. */
+[data-rd='samtal'] .sa-problem-failed {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sa-s2) var(--sa-s3);
+}
+
+[data-rd='samtal'] .sa-problem > .sa-problem-failed:first-child {
+  margin-top: 0;
+}
+
+[data-rd='samtal'] .sa-problem-failed + .sa-kva,
+[data-rd='samtal'] .sa-problem-failed + .sa-nog {
+  margin-top: var(--sa-s3);
+}
+
+/* An option's image that failed: said under the options, in their lane
+ * (the thread's gap above it), with a real retry. */
+[data-rd='samtal'] .sa-opts-failed {
+  margin: 0 0 0 var(--sa-s12);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-opts-failed {
+  margin-left: 0;
+}
+
+/* An image option: the figure is the answer's words. */
+[data-rd='samtal'] .sa-opt-figure {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  padding: 6px;
+  border-radius: 6px;
+  background: var(--sa-paper);
+}
+
+/* Its own proportions, never stretched (a pie chart read wide misleads):
+ * the height is set and the width follows the image's ratio — the box is
+ * there before the image is. Too wide for the lane, it fits inside. */
+[data-rd='samtal'] .sa-opt-figure img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 140px;
+  object-fit: contain;
+}
+
+/* The action bar when there is nothing to send: the reason, in ink, then
+ * the way back beside the resting Svara. On a short line the reason takes
+ * a line of its own and the two buttons keep together on the right. */
+[data-rd='samtal'] .sa-dock[data-blocked='true'] {
+  flex-wrap: wrap;
+}
+
+[data-rd='samtal'] .sa-dock[data-blocked='true'] .sa-dock-status {
+  flex: 1 1 16em;
+  color: var(--sa-ink);
+}
+
+[data-rd='samtal'] .sa-dock-acts {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--sa-s2);
+  margin-left: auto;
+}
+
+/* Phone: one scroll, the head above it, the action bar sticking under the
+ * options with room for the last line. */
+[data-rd='samtal'] .sa-pquant {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100%;
+  background: var(--sa-page);
+}
+
+[data-rd='samtal'] .sa-pquant .sa-phead {
+  position: relative;
+}
+
+[data-rd='samtal'] .sa-pquant-scroll {
+  position: relative;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--sa-s4) var(--sa-s4) 0;
+}
+
+[data-rd='samtal'] .sa-pquant .sa-dock {
+  margin-top: 0;
+  padding: var(--sa-s5) 0 calc(var(--sa-s4) + env(safe-area-inset-bottom));
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-kva {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-kva-q + .sa-kva-q {
+  margin-top: var(--sa-s3);
+  padding: var(--sa-s3) 0 0;
+  border-top: 1px solid var(--sa-line);
+  border-left: 0;
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-problem {
+  padding: var(--sa-s3);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-problem-math {
+  font-size: var(--sa-t17);
+}
+
+/* ── DTK: the page as the document ───────────────────────────────── */
+
+/* About three fifths for the page, the rest for the conversation. */
+[data-rd='samtal'] .sa-dbody--figure {
+  grid-template-columns: minmax(0, 3fr) minmax(360px, 2fr);
+}
+
+/* The page pans inside its own region; the document itself holds still. */
+[data-rd='samtal'] .sa-figdoc {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+[data-rd='samtal'] .sa-doc-name {
+  font-weight: 560;
+}
+
+[data-rd='samtal'] .sa-zoomctl {
+  display: inline-flex;
+  align-items: center;
+}
+
+[data-rd='samtal'] .sa-zoom-n {
+  min-width: 52px;
+  font-size: var(--sa-t13);
+  font-weight: 620;
+  color: var(--sa-ink-2);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='samtal'] .sa-fig-run {
+  padding: var(--sa-s3) var(--sa-s6) 0;
+  font-size: var(--sa-t13);
+  font-weight: 600;
+  color: var(--sa-ink-2);
+}
+
+[data-rd='samtal'] .sa-fig-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: var(--sa-s4) var(--sa-s6) var(--sa-s6);
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  cursor: grab;
+}
+
+[data-rd='samtal'] :is(.sa-fig-scroll, .sa-inspect-scroll)[data-grabbing='true'] {
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* Inside the region, so the document's edge never clips the ring. */
+[data-rd='samtal'] :is(.sa-fig-scroll, .sa-inspect-scroll):focus-visible {
+  outline-offset: -4px;
+}
+
+/* The page in a box of its own shape (turned with it), on paper. */
+[data-rd='samtal'] .sa-fig-box {
+  position: relative;
+  flex: none;
+  margin: 0 auto;
+  border-radius: 6px;
+  background: var(--sa-paper);
+  box-shadow: 0 0 0 1px var(--sa-line);
+  overflow: hidden;
+}
+
+[data-rd='samtal'] .sa-fig-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  max-width: none;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: opacity var(--sa-d-in) var(--sa-ease);
+}
+
+[data-rd='samtal'] .sa-fig-box[data-status='loading'] .sa-fig-img {
+  opacity: 0;
+}
+
+[data-rd='samtal'] .sa-fig-wait {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: var(--sa-t13);
+  font-weight: 600;
+  color: var(--sa-paper-ink);
+}
+
+[data-rd='samtal'] .sa-fig-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sa-s3);
+  margin: 0 var(--sa-s6) var(--sa-s4);
+  padding: var(--sa-s3) var(--sa-s4);
+  border-radius: var(--sa-r1);
+  background: var(--sa-bad-soft);
+  box-shadow: inset 3px 0 0 var(--sa-bad);
+  font-size: var(--sa-t15);
+}
+
+/* Phone: the page full width in the page's own scroll. */
+[data-rd='samtal'] .sa-pdrill .sa-figdoc {
+  overflow: visible;
+}
+
+[data-rd='samtal'] .sa-fig-frame {
+  padding: var(--sa-s1) var(--sa-s3) 0;
+}
+
+[data-rd='samtal'] .sa-pdrill .sa-fig-run {
+  padding: 0 var(--sa-s4) var(--sa-s2);
+}
+
+[data-rd='samtal'] .sa-pdrill .sa-fig-error {
+  margin: var(--sa-s3);
+}
+
+/* "Förstora figur": the page over the whole drill — opaque, no glass. */
+[data-rd='samtal'] .sa-inspect {
+  position: absolute;
+  z-index: 50;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  background: var(--sa-page);
+  animation: sa-fade var(--sa-d-in) var(--sa-ease) both;
+}
+
+[data-rd='samtal'] .sa-inspect-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sa-s2) var(--sa-s4);
+  min-height: 64px;
+  padding: var(--sa-s2) var(--sa-s6);
+  border-bottom: 1px solid var(--sa-line);
+}
+
+[data-rd='samtal'] .sa-inspect-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--sa-t15);
+  font-weight: 680;
+  line-height: 1.3;
+}
+
+[data-rd='samtal'] .sa-inspect-tools {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+[data-rd='samtal'] .sa-inspect-close {
+  gap: var(--sa-s2);
+  padding: 0 var(--sa-s5) 0 var(--sa-s4);
+}
+
+[data-rd='samtal'] .sa-inspect-pane {
+  position: relative;
+  min-height: 0;
+}
+
+[data-rd='samtal'] .sa-inspect-scroll {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  overflow: auto;
+  padding: var(--sa-s6);
+  overscroll-behavior: contain;
+  cursor: grab;
+}
+
+[data-rd='samtal'] .sa-inspect-scroll .sa-fig-box {
+  margin: auto;
+}
+
+/* Phone: the title and "Stäng figur" on one line, the tools under them. */
+[data-rd='samtal'][data-width='phone'] .sa-inspect-head {
+  padding: var(--sa-s2) var(--sa-s3);
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-inspect-close {
+  order: 1;
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-inspect-tools {
+  order: 2;
+  flex-basis: 100%;
+}
+
+[data-rd='samtal'][data-width='phone'] .sa-inspect-scroll {
+  padding: var(--sa-s3);
+}
+
 /* ── Stills and motion ───────────────────────────────────────────── */
 
 /* A side-by-side thumbnail is a still picture of the screen. */
