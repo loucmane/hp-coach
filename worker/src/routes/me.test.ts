@@ -365,3 +365,242 @@ describe('GET /api/me/stats — provenance', () => {
     expect(s.accuracy7d).toBeNull()
   })
 })
+
+// hpf-bz6f.4: the honest prognosis counts each question's FIRST TRY only — not
+// a retry, not a Repetera replay, and a changed answer in a mock once.
+// GET /stats?firstTry=1 adds those aggregates per section. The default body
+// stays exactly as it was: assessmentGolden.test.ts pins it whole.
+describe('GET /api/me/stats?firstTry=1 — first tries only', () => {
+  const NOW = new Date('2026-10-08T12:00:00Z')
+  const MINUTE = 60_000
+  const DAY = 24 * 60 * MINUTE
+  /** `days` before NOW, then `minutes` later. */
+  const ago = (days: number, minutes = 0) => new Date(NOW.getTime() - days * DAY + minutes * MINUTE)
+  const ORD = ['var-2026-verb1-ORD-001', 'var-2026-verb1-ORD-002', 'host-2025-verb2-ORD-003']
+  const XYZ = ['var-2026-kvant1-XYZ-001', 'var-2022-1-kvant1-XYZ-002']
+  const KVA = ['host-2024-kvant1-KVA-013', 'host-2024-kvant2-KVA-014']
+  const NOG = 'var-2025-kvant2-NOG-023'
+  const FIRST_TRY_KEYS = [
+    'firstTry7d',
+    'firstTryCorrect7d',
+    'firstTry7to14d',
+    'firstTryCorrect7to14d',
+    'firstTry90d',
+    'firstTryCorrect90d',
+  ]
+
+  type StatsBody = { bySection: Record<string, Record<string, unknown>> } & Record<string, unknown>
+
+  async function userId(): Promise<number> {
+    const db = getDb(d1 as unknown as D1Database)
+    const [user] = await db
+      .insert(users)
+      .values({ clerkUserId: 'user_ft' })
+      .onConflictDoUpdate({ target: users.clerkUserId, set: { clerkUserId: 'user_ft' } })
+      .returning()
+    return user.id
+  }
+
+  async function session(kind: string): Promise<number> {
+    const db = getDb(d1 as unknown as D1Database)
+    const [row] = await db
+      .insert(sessions)
+      .values({ userId: await userId(), kind, endedAt: NOW })
+      .returning()
+    return row.id
+  }
+
+  async function answer(
+    sessionId: number,
+    questionId: string,
+    correct: boolean,
+    createdAt: Date,
+    source?: AttemptSource,
+  ) {
+    const db = getDb(d1 as unknown as D1Database)
+    const provenance = classifyAttempt(questionId)
+    await db.insert(attempts).values({
+      userId: await userId(),
+      sessionId,
+      questionId,
+      correct,
+      createdAt,
+      source: source ?? provenance.source,
+      itemRevision: provenance.itemRevision,
+    })
+  }
+
+  async function stats(path = '/stats?firstTry=1'): Promise<StatsBody> {
+    const { app, env } = appFor('user_ft')
+    const res = await app.request(path, {}, env)
+    expect(res.status).toBe(200)
+    return ((await res.json()) as { stats: StatsBody }).stats
+  }
+
+  function withoutFirstTry(s: StatsBody): StatsBody {
+    const bySection = Object.fromEntries(
+      Object.entries(s.bySection).map(([section, agg]) => [
+        section,
+        Object.fromEntries(Object.entries(agg).filter(([key]) => !FIRST_TRY_KEYS.includes(key))),
+      ]),
+    )
+    return { ...s, bySection }
+  }
+
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(NOW)
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('adds the first-try fields only when asked, and changes nothing else', async () => {
+    const drill = await session('drill')
+    await answer(drill, ORD[0], false, ago(10))
+    await answer(drill, ORD[0], true, ago(3))
+    const plain = await stats('/stats')
+    const honest = await stats()
+    for (const section of Object.values(plain.bySection)) {
+      for (const key of FIRST_TRY_KEYS) expect(section).not.toHaveProperty(key)
+    }
+    for (const section of Object.values(honest.bySection)) {
+      for (const key of FIRST_TRY_KEYS) expect(section).toHaveProperty(key)
+    }
+    // Every existing number means what it meant: opting in only adds.
+    expect(withoutFirstTry(honest)).toEqual(plain)
+    expect(honest.bySection.ORD).toMatchObject({ firstTry90d: 1, firstTryCorrect90d: 0 })
+  })
+
+  it('a retry is not a first try', async () => {
+    const first = await session('drill')
+    const later = await session('drill')
+    await answer(first, ORD[0], false, ago(10))
+    await answer(later, ORD[0], true, ago(3))
+    await answer(later, ORD[1], true, ago(2))
+    // The legacy LAS spelling names the same bank question as its LÄS qid.
+    await answer(first, 'var-2026-verb1-LAS-011', false, ago(30))
+    await answer(later, 'var-2026-verb1-LÄS-011', true, ago(1))
+    const s = await stats()
+    expect(s.bySection.ORD).toMatchObject({
+      // Every attempt, as before.
+      attempts7d: 2,
+      correct7d: 2,
+      attempts7to14d: 1,
+      correct7to14d: 0,
+      attempts90d: 3,
+      correct90d: 2,
+      // First tries: ORD-001 wrong 10 days ago, ORD-002 right 2 days ago.
+      firstTry7d: 1,
+      firstTryCorrect7d: 1,
+      firstTry7to14d: 1,
+      firstTryCorrect7to14d: 0,
+      firstTry90d: 2,
+      firstTryCorrect90d: 1,
+    })
+    expect(s.bySection.LÄS).toMatchObject({
+      attempts90d: 2,
+      correct90d: 1,
+      firstTry7d: 0,
+      firstTry90d: 1,
+      firstTryCorrect90d: 0,
+    })
+  })
+
+  it('a Repetera (adaptive_review) answer is never a first try', async () => {
+    const drill = await session('drill')
+    const repetera = await session('adaptive_review')
+    await answer(drill, KVA[0], false, ago(5))
+    await answer(repetera, KVA[0], true, ago(1))
+    // A question first met in Repetera (its original answer pruned) has no
+    // first try at all: the drill answer after it is a retry.
+    await answer(repetera, KVA[1], true, ago(4))
+    await answer(drill, KVA[1], true, ago(2))
+    const s = await stats()
+    expect(s.bySection.KVA).toMatchObject({
+      attempts7d: 4,
+      correct7d: 3,
+      firstTry7d: 1,
+      firstTryCorrect7d: 0,
+      firstTry90d: 1,
+      firstTryCorrect90d: 0,
+    })
+  })
+
+  it('a changed answer in a mock counts once, as its last pick', async () => {
+    const mock = await session('mock')
+    await answer(mock, XYZ[0], false, ago(2))
+    await answer(mock, XYZ[0], true, ago(2, 1))
+    await answer(mock, XYZ[1], true, ago(2, 2))
+    await answer(mock, XYZ[1], false, ago(2, 3))
+    const drill = await session('drill')
+    // A later drill answer on a mock question is a retry.
+    await answer(drill, XYZ[0], false, ago(1))
+    // Outside a mock the first answer stands: a second pass is a retry.
+    await answer(drill, NOG, false, ago(1))
+    await answer(drill, NOG, true, ago(1, 1))
+    const s = await stats()
+    expect(s.bySection.XYZ).toMatchObject({
+      attempts90d: 5,
+      correct90d: 2,
+      firstTry7d: 2,
+      firstTryCorrect7d: 1,
+      firstTry90d: 2,
+      firstTryCorrect90d: 1,
+    })
+    expect(s.bySection.NOG).toMatchObject({
+      attempts90d: 2,
+      correct90d: 1,
+      firstTry90d: 1,
+      firstTryCorrect90d: 0,
+    })
+  })
+
+  it('the 90-day edge: a question first answered before the window has no first try in it', async () => {
+    const drill = await session('drill')
+    await answer(drill, ORD[0], true, ago(95))
+    await answer(drill, ORD[0], false, ago(10))
+    await answer(drill, ORD[1], true, ago(89))
+    const s = await stats()
+    expect(s.bySection.ORD).toMatchObject({
+      attempts7to14d: 1,
+      attempts90d: 2,
+      correct90d: 1,
+      firstTry7to14d: 0,
+      firstTry90d: 1,
+      firstTryCorrect90d: 1,
+    })
+  })
+
+  it('an attempt whose session row is gone counts as an ordinary answer', async () => {
+    const uid = await userId()
+    // Only a database without the foreign key can hold one; the LEFT JOIN keeps it.
+    await d1.exec('PRAGMA foreign_keys = OFF')
+    const db = getDb(d1 as unknown as D1Database)
+    await db.insert(attempts).values({
+      userId: uid,
+      sessionId: 987_654,
+      questionId: ORD[2],
+      correct: true,
+      createdAt: ago(1),
+      ...classifyAttempt(ORD[2]),
+    })
+    const s = await stats()
+    expect(s.bySection.ORD).toMatchObject({
+      attempts90d: 1,
+      firstTry7d: 1,
+      firstTryCorrect7d: 1,
+      firstTry90d: 1,
+      firstTryCorrect90d: 1,
+    })
+  })
+
+  it('an unknown answer is never assessed, but the question was still seen', async () => {
+    const drill = await session('drill')
+    await answer(drill, ORD[0], true, ago(6), 'unknown')
+    await answer(drill, ORD[0], true, ago(2))
+    const s = await stats()
+    expect(s.bySection.ORD).toMatchObject({ attempts90d: 1, firstTry90d: 0, firstTry7d: 0 })
+  })
+})

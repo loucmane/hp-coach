@@ -9,14 +9,19 @@
 // through to the SPA's typed client.
 
 import { zValidator } from '@hono/zod-validator'
-import { and, count, eq, gte, inArray, isNull, lte, or, sql } from 'drizzle-orm'
+import { and, asc, count, eq, gte, inArray, isNull, lte, or, sql } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { getDb } from '../db/client'
 import { attempts, mistakes, sessions, userAbility, users } from '../db/schema'
 import { ensureUserRow } from '../lib/ensureUser'
-import { ASSESSED_SOURCES, type EstimateBasis, estimateBasis } from '../lib/provenance'
+import {
+  ASSESSED_SOURCES,
+  type AttemptSource,
+  type EstimateBasis,
+  estimateBasis,
+} from '../lib/provenance'
 import { extractSection, SECTIONS, type Section } from '../lib/section'
 import { currentStreak, formatDayUTC, startOfUtcDay } from '../lib/stats'
 import type { Env, Vars } from '../types'
@@ -44,6 +49,69 @@ const PrefsPatch = z
       .optional(),
   })
   .strict()
+
+// GET /stats?firstTry=1 adds each section's FIRST-TRY aggregates (hpf-bz6f.4,
+// see firstTries) — the honest prognosis's inputs. Opt-in, so the default
+// body stays byte-for-byte what assessmentGolden.test.ts pins: that snapshot
+// compares the whole body, so even a purely additive field would change it,
+// and it must never be re-recorded to absorb a change.
+const StatsQuery = z.object({ firstTry: z.literal('1').optional() })
+
+/** A section's first-try aggregates: the score windows of /stats, over each
+ *  question's first try only. */
+type FirstTryAgg = {
+  firstTry7d: number
+  firstTryCorrect7d: number
+  firstTry7to14d: number
+  firstTryCorrect7to14d: number
+  firstTry90d: number
+  firstTryCorrect90d: number
+}
+
+/** One stored answer with the kind of the session it was given in — null when
+ *  the session row is gone (LEFT JOIN), which counts as an ordinary answer. */
+type KindedAnswer = {
+  sessionId: number
+  questionId: string
+  correct: boolean | null
+  createdAt: Date | null
+  source: AttemptSource
+  kind: string | null
+}
+
+/**
+ * Each question's FIRST TRY, from the user's retained answers, oldest first.
+ *
+ *   - It is the EARLIEST answer the user gave the question. Every later one is
+ *     a retry, whatever the session kind.
+ *   - A Repetera (`adaptive_review`) answer is never a first try: Repetera
+ *     replays questions already missed. If one is the earliest answer held (the
+ *     original pruned), the question has no first try at all.
+ *   - In a mock, the LAST pick of the question in that session is its answer:
+ *     MockRunner posts one row per pick, so a changed answer is not a retry.
+ *   - An unknown answer still counts as having seen the question; the caller
+ *     never assesses it.
+ *   - The legacy LAS spelling of a LÄS qid (lib/section.ts) is the same bank
+ *     question.
+ *
+ * "Earliest" is within retention (lib/retention.ts, 120 days): a question first
+ * answered before that and retried inside the 90-day window reads as a first
+ * try. Telling those apart would need a stored first-seen record.
+ */
+function firstTries(answers: readonly KindedAnswer[]): KindedAnswer[] {
+  const byQuestion = new Map<string, { first: KindedAnswer; answer: KindedAnswer }>()
+  for (const a of answers) {
+    const question = a.questionId.split('-LAS-').join('-LÄS-')
+    const seen = byQuestion.get(question)
+    if (!seen) byQuestion.set(question, { first: a, answer: a })
+    else if (seen.first.kind === 'mock' && a.sessionId === seen.first.sessionId) seen.answer = a
+  }
+  const out: KindedAnswer[] = []
+  for (const { first, answer } of byQuestion.values()) {
+    if (first.kind !== 'adaptive_review') out.push(answer)
+  }
+  return out
+}
 
 export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // GET /api/me/exposure — per-question exposure map: how many times this
@@ -139,7 +207,8 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // user_id columns. We could fold them into one big SELECT with
   // CASE-when sums, but D1's HTTP cost dominates anyway and separate
   // queries read straightforwardly. Revisit only if /progress becomes
-  // a hot path.
+  // a hot path. `?firstTry=1` adds one more: the retained history, joined
+  // to its sessions (see StatsQuery).
   //
   // Time windows are SERVER-clock UTC. Mismatched device clocks would
   // otherwise let a user "today" twice by jumping timezones. The
@@ -153,8 +222,10 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
   // (calibrated only when none). Unknown answers never feed an assessment
   // number. Practice EFFORT counts every answer, as before: the attempt
   // counts, timeMsToday, the streak, the consistency heatmap and
-  // bySection.attemptsToday (the drill-completion signal).
-  .get('/stats', async (c) => {
+  // bySection.attemptsToday (the drill-completion signal). The opt-in
+  // first-try aggregates are assessment numbers too.
+  .get('/stats', zValidator('query', StatsQuery), async (c) => {
+    const { firstTry } = c.req.valid('query')
     const db = getDb(c.env.DB)
     const userId = await ensureUserRow(db, c.var.userId)
 
@@ -349,6 +420,61 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
       }
     }
 
+    // First tries (hpf-bz6f.4), only on ?firstTry=1: the same windows over
+    // each question's first try (see firstTries), read from the whole retained
+    // history so a question first answered before the 90-day window is not
+    // mistaken for new inside it. Assessment numbers: authentic and synthetic
+    // answers, never unknown. They are a subset of the 90d window, so when the
+    // section's estimateBasis is calibrated, so are its first tries.
+    let firstTryBySection: Record<Section, FirstTryAgg> | null = null
+    if (firstTry) {
+      const history = await db
+        .select({
+          sessionId: attempts.sessionId,
+          questionId: attempts.questionId,
+          correct: attempts.correct,
+          createdAt: attempts.createdAt,
+          source: attempts.source,
+          kind: sessions.kind,
+        })
+        .from(attempts)
+        .leftJoin(sessions, eq(attempts.sessionId, sessions.id))
+        .where(eq(attempts.userId, userId))
+        .orderBy(asc(attempts.createdAt), asc(attempts.id))
+      const bySectionFirst = Object.fromEntries(
+        SECTIONS.map((s) => [
+          s,
+          {
+            firstTry7d: 0,
+            firstTryCorrect7d: 0,
+            firstTry7to14d: 0,
+            firstTryCorrect7to14d: 0,
+            firstTry90d: 0,
+            firstTryCorrect90d: 0,
+          },
+        ]),
+      ) as Record<Section, FirstTryAgg>
+      for (const a of firstTries(history)) {
+        if (a.source === 'unknown') continue
+        const section = extractSection(a.questionId)
+        if (!section) continue
+        const ts = a.createdAt instanceof Date ? a.createdAt.getTime() : 0
+        if (ts < ninetyDayStart.getTime()) continue
+        const agg = bySectionFirst[section]
+        const correct = a.correct ? 1 : 0
+        agg.firstTry90d += 1
+        agg.firstTryCorrect90d += correct
+        if (ts >= weekStart.getTime()) {
+          agg.firstTry7d += 1
+          agg.firstTryCorrect7d += correct
+        } else if (ts >= prevWeekStart.getTime()) {
+          agg.firstTry7to14d += 1
+          agg.firstTryCorrect7to14d += correct
+        }
+      }
+      firstTryBySection = bySectionFirst
+    }
+
     const bySection: Record<
       Section,
       {
@@ -363,7 +489,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
         attemptsToday: number
         /** The 90d score window's answers by provenance. */
         estimateBasis: EstimateBasis
-      }
+      } & Partial<FirstTryAgg>
     > = Object.fromEntries(
       SECTIONS.map((s) => {
         const agg = bySectionAgg[s]
@@ -380,6 +506,7 @@ export const meRoute = new Hono<{ Bindings: Env; Variables: Vars }>()
             lastAttemptedAt: agg.lastAttemptedAt,
             attemptsToday: agg.attemptsToday,
             estimateBasis: estimateBasis(agg.attempts90d - agg.synthetic90d, agg.synthetic90d),
+            ...firstTryBySection?.[s],
           },
         ]
       }),

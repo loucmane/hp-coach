@@ -14,16 +14,10 @@ import { useSessionHistory } from '@/api/hooks/useSessions'
 import { useStats } from '@/api/hooks/useStats'
 import { useTopTraps } from '@/api/hooks/useTopTraps'
 import { AccountMenu } from '@/components/account/AccountMenu'
-import { SECTION_KEYS } from '@/data/questions'
 import { useDailyPlan } from '@/hooks/useDailyPlan'
 import { type DiagnosticMemory, loadDiagnosticMemory } from '@/lib/diagnosticMemory'
 import { TAB_ROUTE } from '@/lib/nav'
-import {
-  computeProjected,
-  computeProjectedDelta,
-  computeSectionScore,
-  minutesPracticedToday,
-} from '@/lib/scoring'
+import { computeHonestDelta, computeHonestProjected, minutesPracticedToday } from '@/lib/scoring'
 import { daysSinceVisit, loadPreviousVisit, markVisit } from '@/lib/visitMemory'
 import { HomeMobile } from '@/screens/HomeMobile'
 
@@ -63,24 +57,22 @@ function HomeRoute() {
   const topTraps = useTopTraps()
   const recentPasses = useSessionHistory()
 
-  // Projected total + verbal/quant halves for the Home score line.
+  // Projected total + verbal/quant halves for the Home score line — the
+  // honest prognosis, over each question's first try (hpf-bz6f.4).
   // Pure derivation from stats.data; route owns the computation so
   // HomeMobile stays a presentational component (and its tests don't
   // need a QueryClient wrapper). Returns null while stats are loading
   // so the score line stays hidden during the skeleton state.
-  const projected = useMemo(() => {
-    if (!stats.data) return null
-    const now = new Date()
-    const sectionScores = SECTION_KEYS.map((s) =>
-      computeSectionScore(s, stats.data.bySection[s], now),
-    )
-    return computeProjected(sectionScores)
-  }, [stats.data])
+  const projected = useMemo(
+    () => (stats.data ? computeHonestProjected(stats.data.bySection) : null),
+    [stats.data],
+  )
 
-  // Honest week-over-week delta for the stats row — null (blank) when
-  // the two weeks aren't comparable. See computeProjectedDelta.
+  // Week-over-week change for the stats row: a figure only when it clears
+  // the noise, else "stable"; null (blank) when the two weeks aren't
+  // comparable. See computeHonestDelta.
   const projectedDelta = useMemo(
-    () => (stats.data ? computeProjectedDelta(stats.data.bySection) : null),
+    () => (stats.data ? computeHonestDelta(stats.data.bySection) : null),
     [stats.data],
   )
 

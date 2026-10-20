@@ -48,6 +48,17 @@ export type SectionStats = {
   /** The 90d score window's answers by provenance. Optional: an older
    *  worker does not send it, and its numbers rest on authentic answers. */
   estimateBasis?: EstimateBasis
+  /** FIRST-TRY counterparts of the six window counts above (hpf-bz6f.4):
+   *  each question's first try only — no retry, no Repetera replay, a
+   *  changed mock answer once. The honest prognosis reads them (see
+   *  firstTryStats). Optional: only GET /api/me/stats?firstTry=1 sends
+   *  them, and an older worker never does. */
+  firstTry7d?: number
+  firstTryCorrect7d?: number
+  firstTry7to14d?: number
+  firstTryCorrect7to14d?: number
+  firstTry90d?: number
+  firstTryCorrect90d?: number
 }
 
 export type Confidence = 'low' | 'medium' | 'high'
@@ -243,14 +254,17 @@ export function formatScoreSv(score: number | null): string {
   return score == null ? '—' : score.toFixed(1).replace('.', ',')
 }
 
-/** Honest week-over-week projected delta for the home stats row (M3H).
+/** Week-over-week projected delta over EVERY attempt (M3H). Home, the rail
+ *  and Framsteg now read computeHonestDelta; the bake-offs still read this.
  *
  *  Pools ONLY sections where BOTH weeks clear `minAttempts`, so the
  *  comparison is like-with-like — a section drilled heavily this week
  *  but untouched last week can't manufacture a swing. Returns null
  *  (render blank) when no section qualifies; a fake delta is worse
  *  than none. Computed from the raw week windows, not SectionScore
- *  (whose `score` is the 90d blend). */
+ *  (whose `score` is the 90d blend). The pool counts questions, so
+ *  practice moved from one pooled section to another still moves it;
+ *  computeHonestDelta weights the sections instead. */
 export function computeProjectedDelta(
   bySection: Partial<Record<Section, SectionStats>>,
   minAttempts = 5,
@@ -271,6 +285,182 @@ export function computeProjectedDelta(
   }
   if (a7 === 0 || a14 === 0) return null
   return scoreFromFraction(c7 / a7) - scoreFromFraction(c14 / a14)
+}
+
+// ── Honest prognosis (hpf-bz6f.4) ──────────────────────────────────
+//
+// The prognosis used to count every attempt alike: Repetera retries of
+// questions already answered, each changed pick inside a mock. That
+// overstated the student's level, and the weekly "+0,1" was often smaller
+// than its own uncertainty. These functions read each question's FIRST TRY
+// (the worker's firstTry* fields) through the same section → half → total
+// structure, band the total, and name a week-over-week change only when it
+// clears the noise. Home, the rail and Framsteg's hero read them; the
+// scheduler (prescribeMock, rankWeakness) and the daily plan still read
+// every attempt — a follow-up.
+
+/** The two-sided 95% normal quantile — scoreBand's 1.96. */
+const Z95 = 1.96
+
+/** p(1−p) with p floored to [0.05, 0.95] — scoreBand's floor, so a perfect
+ *  or a zero streak never reads as certainty. */
+function flooredPq(fraction: number): number {
+  const p = Math.max(0.05, Math.min(0.95, fraction))
+  return p * (1 - p)
+}
+
+/** Var(2p̂) of a score on `n` answers, scoreBand's Wald model. Under two
+ *  answers there is no Wald interval (scoreBand returns null), so it takes
+ *  the worst case p(1−p) = 1/4. */
+function scoreVariance(correct: number, n: number): number {
+  return (4 * (n < 2 ? 0.25 : flooredPq(correct / n))) / n
+}
+
+/** A section's first tries in the SectionStats shape, so every score
+ *  function reads them unchanged. A field the worker did not send — an
+ *  older worker, or /stats without ?firstTry=1 — falls back to its
+ *  every-attempt counterpart: the number as it was before. */
+export function firstTryStats(stats: SectionStats): SectionStats {
+  return {
+    ...stats,
+    attempts7d: stats.firstTry7d ?? stats.attempts7d,
+    correct7d: stats.firstTryCorrect7d ?? stats.correct7d,
+    attempts7to14d: stats.firstTry7to14d ?? stats.attempts7to14d,
+    correct7to14d: stats.firstTryCorrect7to14d ?? stats.correct7to14d,
+    attempts90d: stats.firstTry90d ?? stats.attempts90d,
+    correct90d: stats.firstTryCorrect90d ?? stats.correct90d,
+  }
+}
+
+/** Each section's first-try score, in exam order — the sections the honest
+ *  prognosis is built from. */
+export function honestSectionScores(
+  bySection: Partial<Record<Section, SectionStats>>,
+  now: Date = new Date(),
+): SectionScore[] {
+  return SECTION_ORDER.flatMap((section) => {
+    const st = bySection[section]
+    return st ? [computeSectionScore(section, firstTryStats(st), now)] : []
+  })
+}
+
+export type HonestProjection = ProjectedTotal & {
+  /** Half-width of a 95% band on `total`, in score units — "± this much".
+   *  Null when there is no total. */
+  band: number | null
+}
+
+/** The honest prognosis: computeProjected over first tries, with a band on
+ *  the TOTAL that pools scoreBand's per-section Wald variances.
+ *
+ *    Var(sᵢ)    = 4·pᵢ(1−pᵢ)/nᵢ      section score sᵢ = 2·pᵢ on nᵢ first tries
+ *    Var(half)  = Σ Var(sᵢ) / k²      the mean of its k scored sections
+ *    Var(total) = (Var(verbal) + Var(quant)) / 4
+ *    band       = 1.96 · √Var(total)
+ *
+ *  Sections are independent samples, pᵢ is floored as in scoreBand, and a
+ *  section with a single first try pools at the worst case (scoreVariance):
+ *  one lucky answer widens the band instead of reading as certainty. */
+export function computeHonestProjected(
+  bySection: Partial<Record<Section, SectionStats>>,
+): HonestProjection {
+  const projected = computeProjected(honestSectionScores(bySection))
+  const halfVariance = (sections: ReadonlyArray<Section>): number | null => {
+    const variances = sections.flatMap((section) => {
+      const st = bySection[section]
+      if (!st) return []
+      const { attempts90d, correct90d } = firstTryStats(st)
+      return attempts90d > 0 ? [scoreVariance(correct90d, attempts90d)] : []
+    })
+    if (variances.length === 0) return null
+    return variances.reduce((a, b) => a + b, 0) / variances.length ** 2
+  }
+  const verbal = halfVariance(VERBAL_SECTIONS)
+  const quant = halfVariance(QUANT_SECTIONS)
+  const band =
+    projected.total != null && verbal != null && quant != null
+      ? Z95 * Math.sqrt((verbal + quant) / 4)
+      : null
+  return { ...projected, band }
+}
+
+/** A week-over-week change in the honest prognosis, or `stable`: inside the
+ *  noise, so there is no figure to show at all. */
+export type HonestDelta =
+  | {
+      kind: 'change'
+      /** Score units, never inside ±band. */
+      delta: number
+      /** Half-width of the 95% band the change cleared. */
+      band: number
+    }
+  | {
+      kind: 'stable'
+      /** Half-width of the 95% band the change sat inside. */
+      band: number
+    }
+
+/** The honest week-over-week change (engagement review R7: show a delta
+ *  only when it exceeds the noise). Each week's first tries are estimated
+ *  the way the projection is, section → half → total, on the sections E
+ *  that clear `minAttempts` in BOTH weeks. The weights depend on E alone,
+ *  never on how many first tries a section had, so both weeks and both
+ *  variances share them: practice moved from one section to another
+ *  changes the band, not the weights. For each week (7d, then 7–14d):
+ *
+ *    sᵢ     = 2·cᵢ/nᵢ                  section i's first-try score that week
+ *    wᵢ     = 1/(m·kₕ)                 kₕ = sections of E in i's half,
+ *                                      m = halves with a section in E
+ *    T      = Σ wᵢ·sᵢ                   the mean of the half means
+ *    Var(T) = Σ wᵢ²·4·pᵢ(1−pᵢ)/nᵢ       pᵢ floored as in scoreBand
+ *
+ *    delta  = T₇ − T₁₄
+ *    band   = 1.96 · √(Var(T₇) + Var(T₁₄))
+ *
+ *  A half without a section in E drops out (m = 1), so weeks compared on one
+ *  half give that half's change. It is a `change` only when |delta| AND the
+ *  one-decimal figure formatDeltaSv would print both exceed the band, so no
+ *  figure on screen is ever smaller than the noise. Anything else is
+ *  `stable`. Null when no section qualifies: the weeks are not comparable. */
+export function computeHonestDelta(
+  bySection: Partial<Record<Section, SectionStats>>,
+  minAttempts = 5,
+): HonestDelta | null {
+  // E, half by half, read as first tries. The floor is at least one first
+  // try a week, so no score divides by zero.
+  const floor = Math.max(1, minAttempts)
+  const halves = [VERBAL_SECTIONS, QUANT_SECTIONS]
+    .map((sections) =>
+      sections.flatMap((section) => {
+        const raw = bySection[section]
+        if (!raw) return []
+        const st = firstTryStats(raw)
+        return st.attempts7d >= floor && st.attempts7to14d >= floor ? [st] : []
+      }),
+    )
+    .filter((half) => half.length > 0)
+  if (halves.length === 0) return null
+  // One week's T and Var(T), from the shared weights wᵢ.
+  const week = (pick: (st: SectionStats) => [correct: number, n: number]) => {
+    let estimate = 0
+    let variance = 0
+    for (const half of halves) {
+      const w = 1 / (halves.length * half.length)
+      for (const st of half) {
+        const [correct, n] = pick(st)
+        estimate += w * scoreFromFraction(correct / n)
+        variance += w ** 2 * scoreVariance(correct, n)
+      }
+    }
+    return { estimate, variance }
+  }
+  const thisWeek = week((st) => [st.correct7d, st.attempts7d])
+  const lastWeek = week((st) => [st.correct7to14d, st.attempts7to14d])
+  const delta = thisWeek.estimate - lastWeek.estimate
+  const band = Z95 * Math.sqrt(thisWeek.variance + lastWeek.variance)
+  return Math.abs(delta) > band && Math.abs(roundTenth(delta)) > band
+    ? { kind: 'change', delta, band }
+    : { kind: 'stable', band }
 }
 
 /** Whole minutes ACTUALLY practiced today — the Home "minuter idag"
@@ -304,9 +494,14 @@ export function minutesPracticedToday(stats: {
 
 /** `+0,1` / `−0,2` / `±0,0` — the stats-row delta, Swedish comma. */
 export function formatDeltaSv(delta: number): string {
-  const rounded = Math.round(delta * 10) / 10
+  const rounded = roundTenth(delta)
   const sign = rounded > 0 ? '+' : rounded < 0 ? '−' : '±'
   return `${sign}${Math.abs(rounded).toFixed(1).replace('.', ',')}`
+}
+
+/** A delta as formatDeltaSv prints it: one decimal. */
+function roundTenth(delta: number): number {
+  return Math.round(delta * 10) / 10
 }
 
 /** Half-width of a 95% Wald confidence interval on the score, scaled to
@@ -325,10 +520,8 @@ export function formatDeltaSv(delta: number): string {
  *  uncertainty even on perfect or zero streaks until the sample grows. */
 export function scoreBand(score: number | null, attempts: number): number | null {
   if (score == null || attempts < 2) return null
-  const rawP = score / 2
-  const p = Math.max(0.05, Math.min(0.95, rawP))
-  const se = Math.sqrt((p * (1 - p)) / attempts)
-  return 1.96 * 2 * se
+  const se = Math.sqrt(flooredPq(score / 2) / attempts)
+  return Z95 * 2 * se
 }
 
 /** Format the band as `±0.31`. Returns the em-dash when band is null. */
