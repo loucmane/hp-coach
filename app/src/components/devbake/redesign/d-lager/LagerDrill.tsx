@@ -30,9 +30,12 @@ import {
   X,
 } from 'lucide-react'
 import {
+  createContext,
   Fragment,
+  type KeyboardEvent,
   type ReactNode,
   useCallback,
+  useContext,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -54,17 +57,24 @@ import {
   useKeyMap,
   useSheet,
 } from '@/components/devbake/redesign/r1Kit'
-import type { DrillQuestion } from '@/components/devbake/redesign/viewModel'
+import type { DrillQuestion, DrillSessionView } from '@/components/devbake/redesign/viewModel'
 import { MathText } from '@/components/MathText'
 import type { DistractorExplanation, ExplanationStep } from '@/data/explanations'
 
-type Shared = { view: DrillView; act: DrillActions; refs: DrillRefs }
+type Shared = {
+  view: DrillView
+  act: DrillActions
+  refs: DrillRefs
+  blocked?: boolean
+  images?: ImageReadiness
+}
 type NoteState = { note: boolean; setNote: (open: boolean) => void }
 type Front = 'explain' | 'question'
 
 export function LagerDrill({ ...props }: DirectionProps & { onDone: (done: boolean) => void }) {
   const { data, actions } = useDirectionData()
-  if (!data.drills.reading.questions.length)
+  const session = props.screen === 14 ? data.drills.elf : data.drills.reading
+  if (!session.questions.length)
     return (
       <div className="la-done-wrap">
         <section className="la-sheet la-done" data-depth="2">
@@ -80,7 +90,15 @@ export function LagerDrill({ ...props }: DirectionProps & { onDone: (done: boole
         </section>
       </div>
     )
-  return <ReadingSession key={data.drills.reading.id} {...props} />
+  // The core requires a stable deck. Remount on a changed sitting or deck
+  // topology before it can dereference a removed question.
+  return (
+    <ReadingSession
+      key={JSON.stringify([session.id, session.questions.map((q) => q.qid)])}
+      session={session}
+      {...props}
+    />
+  )
 }
 
 function ReadingSession({
@@ -89,15 +107,20 @@ function ReadingSession({
   live,
   onScreen,
   onDone,
-}: DirectionProps & { onDone: (done: boolean) => void }) {
-  const { data, actions } = useDirectionData()
-  const session = data.drills.reading
+  session,
+}: DirectionProps & { onDone: (done: boolean) => void; session: DrillSessionView }) {
+  const { actions } = useDirectionData()
+  const startIndex = Math.min(Math.max(0, session.start.index ?? 0), session.questions.length - 1)
   const [start] = useState(() => ({
     ...session.start,
+    index: startIndex,
+    results: session.start.results?.filter((r) => session.questions.some((q) => q.qid === r.qid)),
     graded:
       screen === 3
-        ? session.wrongPick?.[session.questions[session.start.index ?? 0].qid]
-        : session.start.graded,
+        ? session.wrongPick?.[session.questions[startIndex].qid]
+        : startIndex === (session.start.index ?? 0)
+          ? session.start.graded
+          : undefined,
   }))
   const {
     view,
@@ -111,6 +134,26 @@ function ReadingSession({
     controller: actions.drill,
     live,
   })
+  const images = useRequiredImages(view.question)
+  const blocked =
+    images.blocked || !view.passage?.paragraphs.some((p) => p.trim()) || !view.letters.length
+  const focus = useRef<HTMLDivElement>(null)
+  const previousFocus = useRef({ index: view.index, phase: view.phase })
+  // Only real transitions move focus, including when Strict Mode replays mount effects.
+  useEffect(() => {
+    const previous = previousFocus.current
+    if (previous.index === view.index && previous.phase === view.phase) return
+    previousFocus.current = { index: view.index, phase: view.phase }
+    const target = focus.current?.querySelector<HTMLElement>(
+      view.phase === 'done'
+        ? '.la-done-line'
+        : view.phase === 'feedback'
+          ? '.la-verdict'
+          : '.la-prompt',
+    )
+    target?.setAttribute('tabindex', '-1')
+    target?.focus({ preventScroll: true })
+  }, [view.index, view.phase])
   // Only switcher transitions synchronize the preview phase; controller results remain authoritative.
   // biome-ignore lint/correctness/useExhaustiveDependencies: switcher changes only
   useLayoutEffect(() => {
@@ -121,18 +164,19 @@ function ReadingSession({
   const act: DrillActions = {
     ...core,
     lock: () => {
+      if (blocked) return false
       const locked = core.lock()
-      if (locked) onScreen(3)
+      if (locked && screen !== 14) onScreen(3)
       return locked
     },
     next: () => {
       const next = core.next()
-      if (next === 'next') onScreen(2)
+      if (next === 'next' && screen !== 14) onScreen(2)
       return next
     },
     exit: () => {
       core.exit()
-      onScreen(1)
+      if (screen !== 14) onScreen(1)
     },
   }
   const [note, setNote] = useState(false)
@@ -160,7 +204,7 @@ function ReadingSession({
     Enter: () => {
       if (view.phase === 'question') act.lock()
       else if (view.phase === 'feedback') act.next()
-      else onScreen(1)
+      else actions.go('idag')
     },
     ' ': () => {
       if (view.phase === 'question') act.lock()
@@ -178,24 +222,27 @@ function ReadingSession({
   }
   useKeyMap(keys, live)
 
-  const shared = { view, act, refs }
+  const shared = { view, act, refs, blocked, images }
   if (width === 'phone') {
     return (
-      <PhoneDrill
-        {...shared}
-        note={note}
-        setNote={setNote}
-        large={large}
-        toggleLarge={toggleLarge}
-        toggleFocus={toggleFocus}
-        onHome={() => onScreen(1)}
-        live={live}
-      />
+      <div className="la-reading-root" ref={focus}>
+        <PhoneDrill
+          {...shared}
+          note={note}
+          setNote={setNote}
+          large={large}
+          toggleLarge={toggleLarge}
+          toggleFocus={toggleFocus}
+          onHome={() => actions.go('idag')}
+          live={live}
+          timed={session.elapsedSeconds != null}
+        />
+      </div>
     )
   }
   const feedback = view.phase === 'feedback'
   return (
-    <div className="la-drill">
+    <div className="la-drill" ref={focus}>
       {/* The done moment is quiet: no controls, no clock. */}
       {done ? null : (
         <div className="la-controls">
@@ -253,7 +300,12 @@ function ReadingSession({
         </div>
       )}
       {done ? (
-        <Done view={view} onHome={() => onScreen(1)} live={live} />
+        <Done
+          view={view}
+          onHome={() => actions.go('idag')}
+          live={live}
+          timed={session.elapsedSeconds != null}
+        />
       ) : (
         <Desk
           {...shared}
@@ -372,7 +424,60 @@ function Marked({
   return <>{parts}</>
 }
 
+/** Match the printed cloze run, keeping ordinary numbers as source text. */
+function ClozeText({
+  text,
+  paragraphs,
+  number,
+}: {
+  text: string
+  paragraphs: string[]
+  number: number
+}) {
+  const pattern = /(?<![\w–-])_{0,14}(\d{2})_{0,14}(?![\w–\-%])/g
+  const candidates = [...paragraphs.join('\n').matchAll(pattern)]
+    .map((m) => Number(m[1]))
+    .filter((n) => Math.abs(n - number) <= 6)
+  let chain: number[] = []
+  for (let i = 0; i < candidates.length; i++) {
+    const run = [candidates[i]]
+    for (let j = i + 1; j < candidates.length; j++)
+      if (candidates[j] === run[run.length - 1] + 1) run.push(candidates[j])
+    if (run.includes(number) && run.length > chain.length) chain = run
+  }
+  const parts: ReactNode[] = []
+  let at = 0
+  for (const match of text.matchAll(pattern)) {
+    const n = Number(match[1])
+    // No evidence for a run: identify the current gap only.
+    if (!(chain.length > 1 ? chain.includes(n) : n === number)) continue
+    parts.push(text.slice(at, match.index))
+    parts.push(
+      <span key={match.index} className="la-cloze-gap" data-active={String(n === number)}>
+        <span className="la-sr" lang="sv">
+          {`Lucka ${n}${n === number ? ', aktuell fråga' : ''}: `}
+        </span>
+        {match[0]}
+      </span>,
+    )
+    at = match.index + match[0].length
+  }
+  parts.push(text.slice(at))
+  return <>{parts}</>
+}
+
 // ── Desktop: the reading sheet beside a question sheet / stack ───────
+
+function scrollPassage(e: KeyboardEvent<HTMLElement>) {
+  if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return
+  if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
+  e.preventDefault()
+  const passage = e.currentTarget
+  passage.scrollTo({
+    top: Math.max(0, passage.scrollTop + (e.key === 'ArrowRight' ? 120 : -120)),
+    behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+  })
+}
 
 function Desk({
   view,
@@ -383,6 +488,8 @@ function Desk({
   large,
   front,
   setFront,
+  blocked,
+  images,
 }: Shared & NoteState & { large: boolean; front: Front; setFront: (front: Front) => void }) {
   const readRef = useRef<HTMLElement>(null)
   const exRef = useRef<HTMLDivElement>(null)
@@ -419,8 +526,18 @@ function Desk({
         data-size={large ? 'large' : 'normal'}
         ref={readRef}
         aria-labelledby="la-ptitle"
+        onKeyDown={scrollPassage}
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: keyboard users must be able to scroll the passage
+        tabIndex={0}
       >
-        <PassageBody view={view} act={act} refs={refs} note={note} setNote={setNote} />
+        <PassageBody
+          view={view}
+          act={act}
+          refs={refs}
+          note={note}
+          setNote={setNote}
+          images={images}
+        />
       </article>
       <div className="la-qcol">
         <section
@@ -445,11 +562,12 @@ function Desk({
               <span className="la-eyebrow">
                 Fråga {n} av {view.total} · {view.question.options?.length ?? 0} alternativ
               </span>
-              <h2 className="la-prompt">{view.question.prompt}</h2>
-              <Options view={view} act={act} />
-              {view.phase === 'question' ? <KeyHints /> : null}
+              <ReadingPrompt question={view.question} />
+              <ReadingAvailability view={view} images={images} />
+              <Options view={view} act={act} images={images} />
+              {view.phase === 'question' ? <KeyHints last={view.letters.at(-1) ?? 'D'} /> : null}
             </div>
-            {qPos === 'back' ? null : <Actions view={view} act={act} />}
+            {qPos === 'back' ? null : <Actions view={view} act={act} blocked={blocked} />}
           </div>
         </section>
         {feedback ? (
@@ -484,11 +602,44 @@ function Desk({
   )
 }
 
-function KeyHints() {
+function ReadingPrompt({ question }: { question: DrillQuestion }) {
+  const cloze = question.section === 'ELF' && !question.prompt
+  return (
+    <h2
+      className="la-prompt"
+      lang={cloze ? 'sv' : (question.passage?.lang ?? (question.section === 'ELF' ? 'en' : 'sv'))}
+    >
+      <MathText>{cloze ? `Lucka ${question.number}` : question.prompt}</MathText>
+    </h2>
+  )
+}
+
+function ReadingAvailability({ view, images }: Pick<Shared, 'view' | 'images'>) {
+  if (!view.letters.length)
+    return (
+      <p className="la-note" role="status">
+        Svarsalternativen kunde inte hämtas.
+      </p>
+    )
+  if (!images?.blocked || view.phase !== 'question') return null
+  const q = view.question
+  const failed =
+    (q.figure && images.failed(q.figure.src)) ||
+    q.options?.some((o) => o.figure && images.failed(o.figure.src, o.letter))
+  return (
+    <p className="la-note" role="status">
+      {failed
+        ? 'En bild kunde inte hämtas. Försök igen innan du svarar.'
+        : 'Hämtar bilderna innan du kan svara.'}
+    </p>
+  )
+}
+
+function KeyHints({ last }: { last: string }) {
   return (
     <p className="la-keys">
       <span>
-        <kbd className="la-kbd">A</kbd>–<kbd className="la-kbd">D</kbd> väljer
+        <kbd className="la-kbd">A</kbd>–<kbd className="la-kbd">{last}</kbd> väljer
       </span>
       <span>
         <kbd className="la-kbd">↵</kbd> svarar
@@ -546,10 +697,11 @@ export function Actions({
 
 // ── The reading sheet ────────────────────────────────────────────────
 
-function PassageBody({ view, act, refs, note, setNote }: Shared & NoteState) {
+function PassageBody({ view, act, refs, note, setNote, images }: Shared & NoteState) {
   const { data } = useDirectionData()
   const { paragraphs, byline } = view.passage ?? { paragraphs: [], byline: null }
-  const [title, subtitle] = (view.question.passage?.title ?? view.question.source.label).split(': ')
+  const passage = view.question.passage
+  const title = passage?.title
   const graded = view.phase === 'feedback'
   const evidence = graded ? evidenceParas(view) : new Set<number>()
   const traps = graded ? trapParas(view) : new Set<number>()
@@ -579,14 +731,43 @@ function PassageBody({ view, act, refs, note, setNote }: Shared & NoteState) {
           </p>
         </>
       ) : null}
-      <h1 className="la-ptitle" id="la-ptitle">
-        {title}
-        <span>{subtitle}</span>
+      <h1 className="la-ptitle" id="la-ptitle" lang={title ? passage?.lang : 'sv'}>
+        {title ?? view.question.source.label}
       </h1>
+      {title && view.question.source.authentic ? (
+        <p className="la-note">{view.question.source.label}</p>
+      ) : null}
+      {!paragraphs.some((p) => p.trim()) ? (
+        <p role="status" className="la-note">
+          Texten kunde inte hämtas.
+        </p>
+      ) : null}
+      {view.question.figure ? (
+        <div className="la-reading-figure">
+          <img
+            key={images?.key(view.question.figure.src)}
+            {...images?.props(view.question.figure.src)}
+            src={`/${view.question.figure.src}`}
+            alt={view.question.figure.alt}
+            width={view.question.figure.width}
+            height={view.question.figure.height}
+          />
+          {images?.failed(view.question.figure.src) ? (
+            <button
+              type="button"
+              className="la-quiet"
+              onClick={() => images.retry(view.question.figure!.src)}
+            >
+              Försök hämta bilden igen
+            </button>
+          ) : null}
+        </div>
+      ) : null}
       <div
         className="la-pbody"
+        lang={passage?.lang ?? (view.question.section === 'ELF' ? 'en' : 'sv')}
         data-focus={String(view.focusPara != null)}
-        data-testid="rd-passage"
+        data-testid={view.question.section === 'ELF' ? 'rd-elf-passage' : 'rd-passage'}
       >
         {paragraphs.map((p, i) => {
           const n = i + 1
@@ -613,6 +794,7 @@ function PassageBody({ view, act, refs, note, setNote }: Shared & NoteState) {
               <button
                 type="button"
                 className="la-pn"
+                lang="sv"
                 tabIndex={-1}
                 aria-label={`Stycke ${n}${view.focusPara === n ? ', i fokus' : ''}`}
                 aria-pressed={view.focusPara === n}
@@ -620,7 +802,11 @@ function PassageBody({ view, act, refs, note, setNote }: Shared & NoteState) {
               >
                 {n}
               </button>
-              <Marked text={p} marks={marks} flash={view.flashSource} />
+              {view.question.section === 'ELF' && !view.question.prompt ? (
+                <ClozeText text={p} paragraphs={paragraphs} number={view.question.number} />
+              ) : (
+                <Marked text={p} marks={marks} flash={view.flashSource} />
+              )}
             </p>
           )
         })}
@@ -713,7 +899,9 @@ export function Options({
                 </span>
                 <span className="la-opt-text">
                   <span className="la-sr">Alternativ {o.letter}: </span>
-                  <MathText>{o.text}</MathText>
+                  <span lang={view.question.section === 'ELF' ? 'en' : undefined}>
+                    <MathText>{o.text}</MathText>
+                  </span>
                   {o.figure ? (
                     <img
                       className="la-option-figure"
@@ -761,7 +949,9 @@ export function Options({
                   Alternativ {o.letter}
                   {out ? ', struket' : ''}:{' '}
                 </span>
-                <MathText>{o.text}</MathText>
+                <span lang={view.question.section === 'ELF' ? 'en' : undefined}>
+                  <MathText>{o.text}</MathText>
+                </span>
                 {o.figure ? (
                   <img
                     key={images?.key(o.figure.src, o.letter)}
@@ -847,9 +1037,20 @@ function Verdict({ view, answer = true }: { view: DrillView; answer?: boolean })
       {answer ? (
         <div className="la-anspair">
           {correct || !view.picked ? null : (
-            <AnswerSheet kind="mine" letter={view.picked} text={text(view.picked)} />
+            <AnswerSheet
+              kind="mine"
+              letter={view.picked}
+              text={text(view.picked)}
+              lang={q.section === 'ELF' ? 'en' : undefined}
+            />
           )}
-          <AnswerSheet kind="right" letter={q.answer} text={text(q.answer)} mine={correct} />
+          <AnswerSheet
+            kind="right"
+            letter={q.answer}
+            text={text(q.answer)}
+            mine={correct}
+            lang={q.section === 'ELF' ? 'en' : undefined}
+          />
         </div>
       ) : null}
     </div>
@@ -861,12 +1062,14 @@ function AnswerSheet({
   letter,
   text,
   mine = false,
+  lang,
 }: {
   kind: 'mine' | 'right'
   letter: string
   text: string
   /** The right answer was the reader's own. */
   mine?: boolean
+  lang?: string
 }) {
   const right = kind === 'right'
   return (
@@ -879,7 +1082,9 @@ function AnswerSheet({
       </span>
       <span className="la-ans-text">
         <span className="la-sr">Alternativ {letter}: </span>
-        <MathText>{text}</MathText>
+        <span lang={lang}>
+          <MathText>{text}</MathText>
+        </span>
       </span>
     </div>
   )
@@ -917,13 +1122,13 @@ export function Explanation({
   const framework = frameworkId ? data.frameworks[frameworkId] : undefined
   const none = { tempting: [] as number[], wrong: [] as number[] }
   return (
-    <>
+    <ExplanationLanguage.Provider value={q.passage?.lang === 'en' ? q.passage.paragraphs : []}>
       {badge && q.passage?.synthetic ? (
         <span className="la-chip la-badge">{data.copy.ovningstextBadge}</span>
       ) : null}
       <Verdict view={view} />
       {prompt ? (
-        <p className="la-ex-prompt">
+        <p className="la-ex-prompt" lang={q.section === 'ELF' ? 'en' : undefined}>
           <MathText>{q.prompt}</MathText>
         </p>
       ) : null}
@@ -967,7 +1172,7 @@ export function Explanation({
                 Fallgrop
               </h4>
               <p>
-                <MathText>{e.pitfall}</MathText>
+                <ExplanationText text={e.pitfall} />
               </p>
             </div>
           ) : null}
@@ -977,7 +1182,7 @@ export function Explanation({
               Teknik
             </h4>
             <p>
-              <MathText>{e.technique}</MathText>
+              <ExplanationText text={e.technique} />
             </p>
           </div>
         </div>
@@ -1002,7 +1207,7 @@ export function Explanation({
           ) : null}
         </div>
         <p className="la-solution">
-          <MathText>{e.solution_path}</MathText>
+          <ExplanationText text={e.solution_path} />
         </p>
       </section>
 
@@ -1028,6 +1233,7 @@ export function Explanation({
             text={optionText(d.letter)}
             cites={view.distractorCites[d.letter] ?? none}
             act={act}
+            lang={q.section === 'ELF' ? 'en' : undefined}
           />
         ))}
       </section>
@@ -1049,7 +1255,7 @@ export function Explanation({
           )}
         </p>
       ) : null}
-    </>
+    </ExplanationLanguage.Provider>
   )
 }
 
@@ -1111,7 +1317,7 @@ function Step({ step, view, act, refs }: Shared & { step: ExplanationStep }) {
         <div className="la-step-head">
           <h4 className="la-step-title">
             <span className="la-sr">Steg {step.n}: </span>
-            <MathText>{step.title}</MathText>
+            <ExplanationText text={step.title} />
           </h4>
           {detail ? (
             <button
@@ -1164,11 +1370,13 @@ function Other({
   text,
   cites,
   act,
+  lang,
 }: {
   d: DistractorExplanation
   text: string
   cites: { tempting: number[]; wrong: number[] }
   act: DrillActions
+  lang?: string
 }) {
   const [open, setOpen] = useState(false)
   const bodyId = `la-dis-${d.letter}`
@@ -1186,7 +1394,9 @@ function Other({
         </span>
         <span className="la-dis-opt">
           <span className="la-sr">Alternativ {d.letter}: </span>
-          <MathText>{text}</MathText>
+          <span lang={lang}>
+            <MathText>{text}</MathText>
+          </span>
         </span>
         <ChevronDown
           className="la-dis-chev"
@@ -1229,7 +1439,7 @@ function Rich({ text, act }: { text: string; act: DrillActions }) {
         at += seg.text.length
         return seg.kind === 'text' ? (
           <span key={key}>
-            <MathText>{seg.text}</MathText>
+            <ExplanationText text={seg.text} />
           </span>
         ) : (
           <button
@@ -1248,8 +1458,40 @@ function Rich({ text, act }: { text: string; act: DrillActions }) {
 
 // ── Done: a calm sheet as the field warms back ───────────────────────
 
-function Done({ view, onHome, live }: { view: DrillView; onHome: () => void; live: boolean }) {
-  const { data } = useDirectionData()
+const ExplanationLanguage = createContext<string[]>([])
+
+/** Only exact source quotations have a known English language. The kit
+ * does not declare the surrounding explanation's language. */
+function ExplanationText({ text = '' }: { text?: string }) {
+  const paragraphs = useContext(ExplanationLanguage)
+  if (!paragraphs.length) return <MathText>{text}</MathText>
+  const parts: ReactNode[] = []
+  let at = 0
+  for (const match of text.matchAll(/[“”"«]([^“”"«»]+)[“”"»]/g)) {
+    if (!paragraphs.some((p) => p.includes(match[1]))) continue
+    parts.push(<MathText key={`before-${match.index}`}>{text.slice(at, match.index)}</MathText>)
+    parts.push(
+      <span key={match.index} lang="en">
+        {match[0]}
+      </span>,
+    )
+    at = match.index + match[0].length
+  }
+  parts.push(<MathText key="after">{text.slice(at)}</MathText>)
+  return <>{parts}</>
+}
+
+function Done({
+  view,
+  onHome,
+  live,
+  timed,
+}: {
+  view: DrillView
+  onHome: () => void
+  live: boolean
+  timed: boolean
+}) {
   const right = view.results.filter((r) => r.correct).length
   const minutes = Math.max(1, Math.round(view.elapsed / 60))
   return (
@@ -1261,14 +1503,17 @@ function Done({ view, onHome, live }: { view: DrillView; onHome: () => void; liv
         aria-labelledby="la-done-h"
       >
         <p className="la-eyebrow">
-          LÄS · {view.question.passage?.title ?? view.question.source.label}
+          {view.question.section} ·{' '}
+          <span lang={view.question.passage?.title ? view.question.passage.lang : 'sv'}>
+            {view.question.passage?.title ?? view.question.source.label}
+          </span>
         </p>
         <h2 className="la-done-line" id="la-done-h">
           Texten är läst.
         </h2>
         <p className="la-done-stats">
           {view.results.length} frågor · {right} rätt
-          {data.drills.reading.elapsedSeconds != null ? ` · ${minutes} min` : ''}
+          {timed ? ` · ${minutes} min` : ''}
         </p>
         <p className="la-done-copy">Resten av dagens plan väntar på Idag.</p>
         <button type="button" className="la-btn" onClick={onHome}>
@@ -1292,6 +1537,9 @@ function PhoneDrill({
   toggleFocus,
   onHome,
   live,
+  timed,
+  blocked,
+  images,
 }: Shared &
   NoteState & {
     large: boolean
@@ -1299,6 +1547,7 @@ function PhoneDrill({
     toggleFocus: () => void
     onHome: () => void
     live: boolean
+    timed: boolean
   }) {
   const { data } = useDirectionData()
   const { state: sheet, setState: setSheet, toggle, grab } = useSheet(view)
@@ -1325,7 +1574,7 @@ function PhoneDrill({
   if (view.phase === 'done') {
     return (
       <div className="la-pdrill">
-        <Done view={view} onHome={onHome} live={live} />
+        <Done view={view} onHome={onHome} live={live} timed={timed} />
       </div>
     )
   }
@@ -1356,7 +1605,7 @@ function PhoneDrill({
             <span className="la-dot" aria-hidden>
               ·
             </span>
-            {data.drills.reading.elapsedSeconds != null ? (
+            {timed ? (
               <span role="timer" aria-label={`Tid ${fmtClock(view.elapsed)}`}>
                 <span aria-hidden>{fmtClock(view.elapsed)}</span>
               </span>
@@ -1386,18 +1635,26 @@ function PhoneDrill({
           </button>
         </fieldset>
       </div>
-      <div className="la-pscroll">
+      {/* biome-ignore lint/a11y/noNoninteractiveTabindex: keyboard-accessible scrolling region */}
+      <section className="la-pscroll" onKeyDown={scrollPassage} tabIndex={0} aria-label="Lästext">
         <article
           className="la-sheet la-read la-pread"
           data-depth="1"
           data-size={large ? 'large' : 'normal'}
           aria-labelledby="la-ptitle"
         >
-          <PassageBody view={view} act={act} refs={refs} note={note} setNote={setNote} />
+          <PassageBody
+            view={view}
+            act={act}
+            refs={refs}
+            note={note}
+            setNote={setNote}
+            images={images}
+          />
         </article>
         {/* Room to scroll the last lines clear of the floating sheet. */}
         <div style={{ height: sheetH + 24 }} aria-hidden />
-      </div>
+      </section>
       <section
         ref={sheetRef}
         className="la-psheet"
@@ -1465,19 +1722,22 @@ function PhoneDrill({
             )
           ) : (
             <>
-              <h2 className="la-prompt">{view.question.prompt}</h2>
+              <ReadingPrompt question={view.question} />
               {sheet === 'peek' ? (
                 <button type="button" className="la-link la-peekline" onClick={toggle}>
                   Visa alternativen
                   <ChevronUp size={16} strokeWidth={2} aria-hidden />
                 </button>
               ) : (
-                <Options view={view} act={act} />
+                <>
+                  <ReadingAvailability view={view} images={images} />
+                  <Options view={view} act={act} images={images} />
+                </>
               )}
             </>
           )}
         </div>
-        {sheet === 'peek' ? null : <Actions view={view} act={act} />}
+        {sheet === 'peek' ? null : <Actions view={view} act={act} blocked={blocked} />}
       </section>
     </div>
   )
