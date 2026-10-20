@@ -826,15 +826,18 @@ function TickingHost({ actions, from }: { actions: DirectionActions; from: numbe
 }
 
 /** The real bake-off page, its selection on show. `ask` sees each change
- *  the page asks its route for first, and may throw as a failing route does. */
+ *  the page asks its route for first, and may throw as a failing route does;
+ *  a change `stays` picks is never made, as a route that keeps its place. */
 function BakeoffHost({
   s = 9,
   w = 'desktop',
   ask,
+  stays,
 }: {
   s?: AppScreenKey
   w?: WidthKey
   ask?: (next: Partial<Selection>) => void
+  stays?: (next: Partial<Selection>) => boolean
 }) {
   const [sel, setSel] = useState<Selection>({ d: 'h', s, w, t: 'light', sbs: false, bare: false })
   return (
@@ -843,7 +846,7 @@ function BakeoffHost({
         sel={sel}
         onSelect={(next) => {
           ask?.(next)
-          setSel((old) => ({ ...old, ...next }))
+          if (!stays?.(next)) setSel((old) => ({ ...old, ...next }))
         }}
       />
       <output data-testid="host-selection">{`${sel.d}/${sel.s}/${sel.sbs}`}</output>
@@ -1037,9 +1040,10 @@ describe('Ljuskägla running pass', () => {
     fireEvent.click(submit)
     fireEvent.click(screen.getByTestId('rd-confirm'))
     expect(actions.submitProvpass).toHaveBeenCalledTimes(1)
-    expect(screen.getByRole('heading', { name: 'Provpasset lämnas in …' })).toHaveFocus()
+    // This host stays on Provpass: the pass is handed in, and ended (review hpf-hegb).
+    expect(screen.getByRole('heading', { name: 'Passet är inlämnat.' })).toHaveFocus()
     expect(screen.getByTestId('rd-prov-option-A')).toBeDisabled()
-    expect(screen.getByTestId('rd-prov-submit')).toBeDisabled()
+    expect(screen.queryByTestId('rd-prov-submit')).toBeNull()
     fireEvent.keyDown(window, { key: 'b' })
     expect(screen.getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'false')
   })
@@ -1079,10 +1083,9 @@ describe('Ljuskägla running pass', () => {
       act(() => vi.advanceTimersByTime(3500))
       expect(actions.submitProvpass).toHaveBeenCalledTimes(1)
       expect(screen.queryByRole('dialog')).toBeNull()
-      expect(
-        screen.getByRole('heading', { name: 'Tiden är ute. Provpasset lämnas in …' }),
-      ).toBeInTheDocument()
-      expect(screen.getByTestId('rd-prov-timer')).toHaveTextContent('00:00')
+      expect(screen.getByRole('heading', { name: 'Passet är inlämnat.' })).toBeInTheDocument()
+      expect(screen.getByText(/^Tiden tog slut\./)).toBeInTheDocument()
+      expect(screen.queryByTestId('rd-prov-timer')).toBeNull()
       act(() => vi.advanceTimersByTime(5000))
       expect(actions.submitProvpass).toHaveBeenCalledTimes(1)
     } finally {
@@ -1101,8 +1104,7 @@ describe('Ljuskägla running pass', () => {
       fireEvent.click(screen.getByTestId('rd-confirm'))
       act(() => vi.advanceTimersByTime(2600))
       expect(actions.submitProvpass).toHaveBeenCalledTimes(1)
-      expect(screen.getByTestId('rd-prov-timer')).toHaveTextContent('00:00')
-      expect(screen.getByTestId('rd-prov-running')).toBeInTheDocument()
+      expect(screen.getByTestId('rd-prov-running')).toHaveAttribute('data-settle', 'handed-in')
       expect(screen.queryByText('Tiden gick ut.')).toBeNull()
       act(() => vi.advanceTimersByTime(5000))
       expect(actions.submitProvpass).toHaveBeenCalledTimes(1)
@@ -1145,6 +1147,22 @@ describe('Ljuskägla running pass', () => {
     fireEvent.click(screen.getByTestId('rd-prov-submit'))
     fireEvent.click(screen.getByTestId('rd-confirm'))
     expect(screen.getByRole('heading', { name: 'Provpasset kunde inte lämnas in.' })).toHaveFocus()
+    fireEvent.click(screen.getByTestId('rd-nav-framsteg'))
+    expect(actions.go).toHaveBeenCalledWith('framsteg')
+    expect(screen.getByTestId('rd-framsteg-prognosis')).toBeInTheDocument()
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+    expect(actions.submitProvpass).toHaveBeenCalledTimes(1)
+  })
+
+  it.each<WidthKey>([
+    'desktop',
+    'phone',
+  ])('on %s, after a hand-in the host does not follow opens a door in the frame too', (width) => {
+    const { actions } = startPass({ width })
+    fireEvent.click(screen.getByTestId('rd-prov-submit'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    expect(screen.getByRole('heading', { name: 'Passet är inlämnat.' })).toHaveFocus()
+    expect(screen.getByTestId('rd-nav-provpass')).toHaveAttribute('aria-current', 'page')
     fireEvent.click(screen.getByTestId('rd-nav-framsteg'))
     expect(actions.go).toHaveBeenCalledWith('framsteg')
     expect(screen.getByTestId('rd-framsteg-prognosis')).toBeInTheDocument()
@@ -1470,44 +1488,46 @@ describe('Ljuskägla running pass, a focused scroll region through the real bake
   })
 })
 
+/**
+ * Runs the suggested pass in the real host until it is handed in, by the
+ * reader or by the clock. The host's submitProvpass asks its route for the
+ * result (screen 10). A route that `fails` throws there, as an offline one
+ * would; one that `stays` lets the hand-in return and keeps screen 9.
+ * Question 17 keeps the answer B. Then the clock runs far past the deadline,
+ * where a second hand-in would show. Returns how many hand-ins the host has
+ * seen.
+ */
+async function handInInHost(how: 'hand-in' | 'time', route: 'fails' | 'stays') {
+  const ask = vi.fn((next: Partial<Selection>) => {
+    if (route === 'fails' && next.s === 10) throw new Error('offline')
+  })
+  render(<BakeoffHost ask={ask} stays={(next) => route === 'stays' && next.s === 10} />)
+  fireEvent.click(await screen.findByTestId('rd-prov-start', {}, { timeout: 5000 }))
+  vi.useFakeTimers()
+  fireEvent.click(screen.getByTestId('rd-confirm'))
+  fireEvent.click(screen.getByTestId('rd-prov-option-B'))
+  if (how === 'hand-in') {
+    fireEvent.click(screen.getByTestId('rd-prov-submit'))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+  } else {
+    vi.setSystemTime(Date.now() + RUN.remainingSeconds * 1000)
+    act(() => vi.advanceTimersByTime(1000))
+  }
+  vi.setSystemTime(Date.now() + 2 * RUN.remainingSeconds * 1000)
+  act(() => vi.advanceTimersByTime(5000))
+  vi.useRealTimers()
+  return () => ask.mock.calls.filter(([next]) => next.s === 10).length
+}
+
 describe('Ljuskägla failed hand-in through the real bake-off host', () => {
   beforeEach(stageBox)
   afterEach(() => vi.useRealTimers())
-
-  /**
-   * Runs the suggested pass in the real host until its hand-in fails. The
-   * host's submitProvpass asks its route for the result (screen 10), and
-   * this route throws there, as an offline one would. Question 17 keeps the
-   * answer B. Then the clock runs far past the deadline, where a second
-   * hand-in would show. Returns how many hand-ins the host has seen.
-   */
-  async function failInHost(how: 'hand-in' | 'time') {
-    const ask = vi.fn((next: Partial<Selection>) => {
-      if (next.s === 10) throw new Error('offline')
-    })
-    render(<BakeoffHost ask={ask} />)
-    fireEvent.click(await screen.findByTestId('rd-prov-start', {}, { timeout: 5000 }))
-    vi.useFakeTimers()
-    fireEvent.click(screen.getByTestId('rd-confirm'))
-    fireEvent.click(screen.getByTestId('rd-prov-option-B'))
-    if (how === 'hand-in') {
-      fireEvent.click(screen.getByTestId('rd-prov-submit'))
-      fireEvent.click(screen.getByTestId('rd-confirm'))
-    } else {
-      vi.setSystemTime(Date.now() + RUN.remainingSeconds * 1000)
-      act(() => vi.advanceTimersByTime(1000))
-    }
-    vi.setSystemTime(Date.now() + 2 * RUN.remainingSeconds * 1000)
-    act(() => vi.advanceTimersByTime(5000))
-    vi.useRealTimers()
-    return () => ask.mock.calls.filter(([next]) => next.s === 10).length
-  }
 
   it.each([
     'hand-in',
     'time',
   ] as const)('after a failed %s shows the error over read-only answers, once, with a way back to the hub', async (how) => {
-    const handIns = await failInHost(how)
+    const handIns = await handInInHost(how, 'fails')
     expect(screen.getByRole('heading', { name: 'Provpasset kunde inte lämnas in.' })).toHaveFocus()
     expect(handIns()).toBe(1)
     const runner = screen.getByTestId('rd-prov-running')
@@ -1541,7 +1561,7 @@ describe('Ljuskägla failed hand-in through the real bake-off host', () => {
       ),
     ),
   )('after a failed %s gives the switcher its %s back on the %s', async (how, key, where, after) => {
-    const handIns = await failInHost(how)
+    const handIns = await handInInHost(how, 'fails')
     const heading = screen.getByRole('heading', { name: 'Provpasset kunde inte lämnas in.' })
     expect(heading).toHaveFocus()
     if (where === 'body') {
@@ -1554,7 +1574,81 @@ describe('Ljuskägla failed hand-in through the real bake-off host', () => {
   })
 
   it('after a failed hand-in leads through its doors as well', async () => {
-    const handIns = await failInHost('hand-in')
+    const handIns = await handInInHost('hand-in', 'fails')
+    fireEvent.click(screen.getByTestId('rd-nav-framsteg'))
+    expect(screen.getByTestId('host-selection')).toHaveTextContent('h/11/false')
+    expect(screen.getByTestId('rd-framsteg-prognosis')).toBeInTheDocument()
+    expect(handIns()).toBe(1)
+  })
+})
+
+// A hand-in that returns while the host stays on Provpass has ended the
+// attempt just the same (review hpf-hegb).
+describe('Ljuskägla hand-in the host does not follow, through the real bake-off host', () => {
+  beforeEach(stageBox)
+  afterEach(() => vi.useRealTimers())
+
+  it.each([
+    'hand-in',
+    'time',
+  ] as const)('after a %s that returns on screen 9 ends the pass calmly over read-only answers, once, with a way back to the hub', async (how) => {
+    const handIns = await handInInHost(how, 'stays')
+    expect(screen.getByTestId('host-selection')).toHaveTextContent('h/9/false')
+    expect(screen.getByRole('heading', { name: 'Passet är inlämnat.' })).toHaveFocus()
+    expect(handIns()).toBe(1)
+    const runner = screen.getByTestId('rd-prov-running')
+    expect(runner).toHaveAttribute('data-settle', 'handed-in')
+    expect(runner.closest('[data-rd-keyscope]')).toBeNull()
+    if (how === 'time') expect(runner).toHaveTextContent('Tiden tog slut.')
+    expect(screen.queryByTestId('rd-prov-result')).toBeNull()
+    expect(screen.getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'true')
+    for (const letter of ['A', 'B', 'C', 'D'])
+      expect(screen.getByTestId(`rd-prov-option-${letter}`)).toBeDisabled()
+    fireEvent.keyDown(document.body, { key: 'c' })
+    expect(screen.getByTestId('rd-prov-option-C')).toHaveAttribute('aria-pressed', 'false')
+    // Never a second hand-in, and no moving on.
+    expect(screen.queryByTestId('rd-prov-submit')).toBeNull()
+    expect(
+      screen.queryByRole('button', { name: /Lämna in|igen|Nästa fråga|Granska svar/ }),
+    ).toBeNull()
+    expect(screen.getByTestId('rd-nav-provpass')).toHaveAttribute('aria-current', 'page')
+    fireEvent.click(screen.getByRole('button', { name: /Till Provpass/ }))
+    expect(screen.getByTestId('host-selection')).toHaveTextContent('h/9/false')
+    expect(screen.getByTestId('rd-prov-start')).toBeInTheDocument()
+    expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+    expect(screen.queryByTestId('rd-prov-result')).toBeNull()
+    expect(handIns()).toBe(1)
+  })
+
+  it.each(
+    (['hand-in', 'time'] as const).flatMap((how) =>
+      (['focused heading', 'body'] as const).flatMap((where) =>
+        (
+          [
+            ['3', 'c/9/false'],
+            ['ArrowLeft', 'h/8/false'],
+          ] as const
+        ).map(([key, after]) => [how, key, where, after] as const),
+      ),
+    ),
+  )('after a %s that returns on screen 9 gives the switcher its %s back on the %s', async (how, key, where, after) => {
+    const handIns = await handInInHost(how, 'stays')
+    const heading = screen.getByRole('heading', { name: 'Passet är inlämnat.' })
+    expect(heading).toHaveFocus()
+    if (where === 'body') {
+      heading.blur()
+      expect(document.body).toHaveFocus()
+    }
+    fireEvent.keyDown(where === 'body' ? document.body : heading, { key })
+    expect(screen.getByTestId('host-selection')).toHaveTextContent(after)
+    expect(handIns()).toBe(1)
+  })
+
+  it.each([
+    'hand-in',
+    'time',
+  ] as const)('after a %s that returns on screen 9 leads through its doors as well', async (how) => {
+    const handIns = await handInInHost(how, 'stays')
     fireEvent.click(screen.getByTestId('rd-nav-framsteg'))
     expect(screen.getByTestId('host-selection')).toHaveTextContent('h/11/false')
     expect(screen.getByTestId('rd-framsteg-prognosis')).toBeInTheDocument()

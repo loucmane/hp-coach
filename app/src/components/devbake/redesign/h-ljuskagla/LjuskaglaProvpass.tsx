@@ -433,7 +433,9 @@ export function PassConfirmation({
 
 // ── 9 · The running pass ─────────────────────────────────────────────
 
-type Settle = 'active' | 'pending' | 'failed'
+/** A running pass, then its one hand-in: handed in to a host that has not
+ *  moved on to the result, or failed. */
+type Settle = 'active' | 'handed-in' | 'failed'
 
 /** Focus targets whose ←/→ are their own: a control (it is pressed, or it
  *  moves among its tabs, options or values) and a panning page. A text
@@ -497,10 +499,12 @@ function blanksLine(n: number): string {
  * page and a scroll region in focus keep their own arrows), and the
  * switcher's digits never leave a running pass.
  *
- * A hand-in that fails ends the attempt: there is no second one (kit v2
- * cannot tell a lost answer from a failed hand-in, so it could count
- * twice). The answers stay, read-only, in the normal shell with its doors,
- * a way back to the hub, and the switcher's keys returned.
+ * A hand-in ends the attempt, whether it fails or not: there is no second
+ * one (kit v2 cannot tell a lost answer from a failed hand-in, so it could
+ * count twice). A host that shows the result takes the pass away. One that
+ * stays here, or a hand-in that fails, leaves the answers read-only in the
+ * normal shell with its doors, a way back to the hub, and the switcher's
+ * keys returned.
  */
 export function LjuskaglaProvRunner({
   run,
@@ -559,8 +563,9 @@ export function LjuskaglaProvRunner({
   const sheet = useSheet({ phase: 'question', index })
 
   const active = live && !expiredOnEntry && settle === 'active'
+  // Handed in or failed, the attempt has ended: the answers lock and the
+  // pass gives up its keys.
   const locked = settle !== 'active'
-  // The attempt ended without a result: the pass gives up its keys.
   const failed = settle === 'failed'
   const covered = gate.gate != null || viewer
 
@@ -575,12 +580,13 @@ export function LjuskaglaProvRunner({
       }
       closeGate()
       setViewer(false)
-      setSettle('pending')
+      // One attempt, whatever it comes to: no second hand-in, by the reader
+      // or the clock (a lost answer would make it count twice). A host that
+      // shows the result takes the pass away; one that stays leaves it here.
       try {
         actions.submitProvpass()
+        setSettle('handed-in')
       } catch {
-        // The attempt has ended. No second hand-in, by the reader or the
-        // clock: a lost answer would make it count twice.
         setSettle('failed')
       }
     },
@@ -679,7 +685,7 @@ export function LjuskaglaProvRunner({
   }
   const pickRef = useRef(pick)
   pickRef.current = pick
-  const holdKeys = live && !expiredOnEntry && total > 0 && !failed
+  const holdKeys = live && !expiredOnEntry && total > 0 && !locked
   useEffect(() => {
     if (!holdKeys) return
     const onKey = (e: KeyboardEvent) => {
@@ -874,29 +880,25 @@ export function LjuskaglaProvRunner({
     </section>
   )
 
-  // A failed hand-in says so and leads back, never on to a result: the pass
-  // may still have reached the host, so the copy promises neither way.
+  // An attempt that has ended says how and leads back, never on to a result:
+  // a failed hand-in may still have reached the host, and a pass handed in
+  // may not be saved yet, so the copy promises neither.
   const status =
     settle === 'active' ? null : (
       <div className="lj-run-status" data-state={settle} role="status">
         <h2 ref={statusRef} tabIndex={-1}>
-          {failed
-            ? 'Provpasset kunde inte lämnas in.'
-            : timeUp
-              ? 'Tiden är ute. Provpasset lämnas in …'
-              : 'Provpasset lämnas in …'}
+          {failed ? 'Provpasset kunde inte lämnas in.' : 'Passet är inlämnat.'}
         </h2>
         <p>
+          {`${timeUp ? 'Tiden tog slut. ' : ''}Dina svar finns kvar här men går inte längre att ändra. `}
           {failed
-            ? `${timeUp ? 'Tiden tog slut. ' : ''}Dina svar finns kvar här men går inte längre att ändra. Om inlämningen ändå gick fram finns resultatet under Tidigare resultat.`
-            : 'Dina svar är låsta. Resultatet visas när det är sparat.'}
+            ? 'Om inlämningen ändå gick fram finns resultatet under Tidigare resultat.'
+            : 'När resultatet är sparat finns det under Tidigare resultat.'}
         </p>
-        {failed && (
-          <button className="lj-primary" type="button" onClick={leave}>
-            <span>Till Provpass</span>
-            <ArrowRight size={20} aria-hidden />
-          </button>
-        )}
+        <button className="lj-primary" type="button" onClick={leave}>
+          <span>Till Provpass</span>
+          <ArrowRight size={20} aria-hidden />
+        </button>
       </div>
     )
 
@@ -997,7 +999,7 @@ export function LjuskaglaProvRunner({
   )
 
   // Moving on, and its keys, end with the attempt.
-  const footer = failed ? null : (
+  const footer = locked ? null : (
     <footer className="lj-action-bar lj-run-foot">
       <div className="lj-run-steps">
         <button
@@ -1176,9 +1178,9 @@ export function LjuskaglaProvRunner({
     />
   )
 
-  // An attempt that ended without a result: its answers, read-only, in the
-  // normal shell, where the doors and the switcher's keys work again.
-  if (failed) {
+  // An attempt that has ended with no result shown: its answers, read-only,
+  // in the normal shell, where the doors and the switcher's keys work again.
+  if (locked) {
     return (
       <>
         <FrameShell
@@ -1226,7 +1228,6 @@ export function LjuskaglaProvRunner({
           </p>
         )}
         {map}
-        {status}
       </div>
       <div className="lj-drill-body" inert={covered}>
         {body}

@@ -362,3 +362,89 @@ Coordinator decision followed: no resubmit button and no automatic retry.
 - Still open from batch 2: `LjuskaglaQuant.tsx`'s private part copies and B1's ungated practice Svara (outside this write set), and the root dotfile placeholders (delete from outside the sandbox).
 
 LJUSKAGLA2R2 DONE: hpf-qr0p.31
+
+## Round 3 — review fix (Codex re-review hpf-hegb), 2026-10-20
+
+Session `ci-wisp-ytfhdi0`, claimed through the managed hook. Starting state: clean `4400c0244755a0261f55cdb5ab8c7d640f353483` on the assigned branch (only the eleven untracked root dotfile placeholders).
+
+I read:
+- the review report (`~/scratch/hpf-qr0p.31/review-hpf-hegb.md`, VERDICT: HOLD, one P2);
+- the Round 3 brief in the Bead DESIGN;
+- the kit's `submitProvpass` and how both hosts implement it;
+- Samtal's `PassHanded`, as precedent for the frame after a hand-in.
+
+All changes are uncommitted and inside the write set: two files plus this worklog. Paths below are under `app/src/components/devbake/redesign/h-ljuskagla/`.
+
+### Fix · A hand-in that returns while the host stays ends the attempt
+
+- `LjuskaglaProvpass.tsx:438`: `Settle` is now `'active' | 'handed-in' | 'failed'`, and `'pending'` is gone.
+  - Kit v2's `submitProvpass` is synchronous, so nothing could ever render between `'pending'` and the outcome. It was the state that trapped the reader.
+- `:583`–`:591`: `submit` keeps its one-shot `settled` guard.
+  - A normal return now sets `'handed-in'` (`:588`); a throw still sets `'failed'` (`:590`).
+  - A host that shows the result unmounts the pass in the same update, so neither state renders there and nothing flashes. The bake-off and the real-app `DirectionShell` both call `show(10)` inside `submitProvpass`.
+- `:566`–`:569`: `locked` (handed in or failed) is now the one switch for "the attempt has ended":
+  - `:688`: `holdKeys` is off once the pass is locked, so digits, 0 and the arrows reach the switcher from the focused element or the body.
+  - `:1002`: the footer (Föregående / Nästa fråga / Granska svar and its key hint) is left out.
+  - `:1183`: the read-only pass renders in `FrameShell` with Provpass lit and no `data-rd-keyscope`. The live root keeps its keyscope (`:1218`).
+  - As before, the clock stops (`active` needs `'active'`, `:565`) and `canAct` refuses input.
+- `:883`–`:903`: the status says how the attempt ended. It always offers an enabled **Till Provpass** (`leave`: `go('provpass')`, then `onLeave('ended')`), which submits nothing.
+  - Handed in: "Passet är inlämnat." (the brief's proposed copy), then "[Tiden tog slut. ]Dina svar finns kvar här men går inte längre att ändra. När resultatet är sparat finns det under Tidigare resultat." No saved result is claimed.
+  - Failed: the rendered copy is unchanged; it now shares its first sentence with the handed-in copy.
+- The live tree no longer renders `{status}`, since that tree shows only while the pass is active.
+- Comments updated at `:436`, `:502`–`:507`, `:566`, `:583`, `:883` and `:1181`.
+- `Ljuskagla.tsx` is unchanged: its `onLeave` and `leftFor` already serve both endings.
+
+### Red-first tests (`Ljuskagla.test.tsx`, written before the source change)
+
+- `:828`–`:855`: `BakeoffHost` gains `stays`, a change it never applies, like a route that keeps its place.
+- `:1491`–`:1520`: the failed block's helper is hoisted as `handInInHost(how, route)`.
+  - `'fails'` throws on the request for screen 10, as before.
+  - `'stays'` lets `submitProvpass` return and keeps screen 9.
+  - After the hand-in it moves the clock twice the pass's time past the deadline and lets five more ticks run.
+  - The failed block's tests call it with `'fails'` and are otherwise unchanged.
+- `:1585`–`:1657`: a new block, "hand-in the host does not follow", through the real `Redesign2026Bakeoff` on screen 9, for a manual and a clock-driven hand-in:
+  - `:1594` (2 tests):
+    - The host stays at `h/9`. "Passet är inlämnat." has focus, the runner has `data-settle="handed-in"`, and there is no keyscope and no result. "Tiden tog slut." shows after time-up.
+    - B stays pressed, A–D are disabled, and a letter changes nothing. There is no Lämna in, retry, Nästa fråga or Granska svar.
+    - Provpass is the lit door. Till Provpass lands on the hub at `h/9`, with no runner and no result.
+    - One hand-in throughout, after the extra ticks too.
+  - `:1634` (8 tests): manual or timed × the focused heading or the body × `3` or `ArrowLeft`. The switcher answers (`c/9`, `h/8`), with one hand-in.
+  - `:1650` (2 tests): the Framsteg door leads to `h/11`, with one hand-in.
+- `:1157`–`:1171` (2 tests): a spied host that does not navigate, on desktop and phone. After the hand-in the heading has focus and Provpass is lit. The Framsteg door calls `go('framsteg')` and opens Framsteg in the frame as well. One hand-in.
+- Three tests encoded the trap and are updated:
+  - `:1028`: a spied hand-in now expects "Passet är inlämnat." in focus and no Lämna in, instead of "Provpasset lämnas in …".
+  - `:1076`: the local clock expects the same, plus "Tiden tog slut.". The timer is gone with the focus head.
+  - `:1096`: the host's clock expects `data-settle="handed-in"` instead of the timer at 00:00.
+
+### Evidence
+
+- **Red first.** Against the untouched `4400c02` source: **17 failed | 201 passed (218)**, the 14 new tests and the 3 updated ones. Each failed at its intended assertion: the heading was missing, `data-settle` was `pending`, or the nav was absent.
+- **Green.** After the fix: **218/218** in `Ljuskagla.test.tsx`.
+- **Mutation checks** (each reverted; the source re-checked by grep):
+  - M1, `holdKeys` with `!failed`: the 8 normal-return switcher-key tests failed.
+  - M2, `data-rd-keyscope` on the handed-in shell: the 2 ended-state tests and the 4 focused-heading key tests failed. The body ones correctly passed.
+  - M3, the clock left running after the hand-in and the one-shot guard removed: 25 failed, including all 12 normal-return host tests, which saw more than one hand-in.
+  - M4, the footer kept once handed in: the 2 ended-state tests failed.
+  - Not mutation-sensitive on its own: the guard alone, since the stopped clock and `canAct` already prevent a second call. It is defence in depth.
+- **Verification** (from the worktree root, never `cd`):
+  - `pnpm -C app typecheck`: exit 0.
+  - `pnpm -C app lint`: 518 files, the same 4 pre-existing infos (three `useIndexOf` in `LandingBakeoffR3/R4A/R4C.tsx`, one `noUselessFragments` in `l12/M3.tsx`).
+  - `pnpm -C app test`: **109 files, 2955/2955**.
+  - `git diff --check`: clean.
+- **Shared tests:** none failed; no file outside the write set was edited.
+
+### Copy (Swedish, proposed)
+
+- Removed: "Provpasset lämnas in …", "Tiden är ute. Provpasset lämnas in …" and "Dina svar är låsta. Resultatet visas när det är sparat."
+- New, handed in: "Passet är inlämnat." and "[Tiden tog slut. ]Dina svar finns kvar här men går inte längre att ändra. När resultatet är sparat finns det under Tidigare resultat.", with **Till Provpass**.
+
+### Left for the coordinator
+
+- **Browser pass, not possible here:** the handed-in state on desktop and phone, light and dark, after a manual hand-in and after time-up, on a host that stays on screen 9. Check:
+  - the shell beside the read-only pass;
+  - the status lamp, and focus on its heading;
+  - the phone's head, map toggle and bottom bar.
+- Round 2's "unchanged kit gap" (a hand-in that does not throw stays pending) is resolved here. Kit v2 still has no settlement acknowledgement, so a host that navigates some time after the hand-in shows "Passet är inlämnat." until it does.
+- Still open: `LjuskaglaQuant.tsx`'s private part copies and B1's ungated practice Svara (outside this write set), and the root dotfile placeholders (delete from outside the sandbox).
+
+LJUSKAGLA2R3 DONE: hpf-qr0p.31
