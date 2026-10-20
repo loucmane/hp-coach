@@ -22,10 +22,15 @@
 // arrives the open one stays, and a notice says so plainly. Marking read is
 // actions.toggleLessonRead; the chapter's colophon opens only once the data
 // says that every entry of the chapter is read.
+//
+// From a facit: a lesson a drill's feedback looked up comes with `back`,
+// the way to the question it came from — "Tillbaka till frågan" at the top
+// left (where Avsluta stands in a drill), and Esc.
 
-import { ArrowDown, ArrowRight, Check } from 'lucide-react'
+import { ArrowDown, ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { type ReactNode, type RefObject, useEffect, useRef, useState } from 'react'
 
+import './fpDrill.css'
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import { useKeyMap, type WidthKey } from '@/components/devbake/redesign/r1Kit'
 import type {
@@ -179,16 +184,26 @@ function scrollToTop(el: HTMLElement | null): void {
   }
 }
 
+/** The way back to where a lesson was looked up from (a drill's facit). */
+export type UppslagBack = {
+  /** The button's words (default "Tillbaka till frågan"). */
+  label?: string
+  onBack: () => void
+}
+
 export function FolioUppslag({
   width,
   live,
   asked,
+  back: from = null,
 }: {
   width: WidthKey
   live: boolean
   /** A lesson the reader asked for elsewhere (a plan row, a facit's "Slå
    *  upp"), read once on arrival. */
   asked: string | null
+  /** Opened from a drill's feedback: the way back to that question. */
+  back?: UppslagBack | null
 }) {
   const { data, actions } = useDirectionData()
   const { sections, open } = data.uppslag
@@ -284,21 +299,31 @@ export function FolioUppslag({
     const to = list[list.findIndex((e) => e.id === cursor) + delta]
     if (to) request(to.id)
   }
+  // Esc goes back to the question the lesson was looked up from.
+  const backKeys: Record<string, () => void> = from ? { Escape: from.onBack } : {}
   useKeyMap(
     chapter
       ? {
           Enter: ending ? () => practiseChapter(open.section) : primary.run,
           j: () => step(1),
           k: () => step(-1),
+          ...backKeys,
         }
-      : {},
+      : backKeys,
     live,
   )
+  const returnBtn = from ? (
+    <button type="button" className="fp-ghost fp-up-return" onClick={from.onBack} title="Esc">
+      <ArrowLeft size={16} strokeWidth={1.5} aria-hidden />
+      {from.label ?? 'Tillbaka till frågan'}
+    </button>
+  ) : null
 
   // No catalog to show yet: a blank page that says so (spec §1.7 "Empty").
   if (!chapter) {
     return (
       <div className={phone ? 'fp-phome' : 'fp-home'}>
+        {returnBtn}
         <Masthead label="Uppslag" />
         <div className="fp-page-main">
           <h1 className="fp-greet">Läs först.</h1>
@@ -398,6 +423,7 @@ export function FolioUppslag({
   if (phone) {
     return (
       <div className="fp-phome fp-up">
+        {returnBtn}
         <Masthead label={`Uppslag · ${open.section}`}>
           <button
             type="button"
@@ -436,8 +462,17 @@ export function FolioUppslag({
         verso={
           <>
             <header className="fp-runhead fp-runhead--up">
-              <span className="fp-label">Uppslag · {chapter.section}</span>
-              <span />
+              {returnBtn ? (
+                <>
+                  {returnBtn}
+                  <span className="fp-label fp-runhead-title">Uppslag · {chapter.section}</span>
+                </>
+              ) : (
+                <>
+                  <span className="fp-label">Uppslag · {chapter.section}</span>
+                  <span />
+                </>
+              )}
               {whole ?? <span />}
             </header>
             <div className="fp-up-verso">

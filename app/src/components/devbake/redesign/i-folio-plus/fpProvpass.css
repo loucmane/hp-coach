@@ -1,0 +1,203 @@
+/* Folio+ · Provpass: what the pass borrowed (bead hpf-qr0p.48).
+ *
+ * Phone: the index as its own strip of tap targets under the head, and
+ * Spår's thumb row (Markera · Översikt · Lämna in) above Nästa. The
+ * hand-in slip's summary: the blanks as ranges, the marked as chips.
+ * Folio's type, tokens and rules throughout; overrides of folioPlus.css
+ * win by a doubled class or the scope, never by !important. */
+
+/* ── Phone: the index, a strip of 24 × 24 px tap targets ─────────── */
+
+/* The hit area: every segment at least 24 × 24 px, whatever its slim mark.
+ * Forty of them do not fit a phone's width, so the strip scrolls sideways
+ * and keeps the current question in view (FolioProvpass's PassIndex). */
+[data-rd='folio-plus'] .fp-passindex--strip .fp-passindex-cell {
+  flex: 1 0 24px;
+  min-width: 24px;
+  height: 24px;
+}
+
+[data-rd='folio-plus'] .fp-passindex.fp-passindex--strip {
+  grid-column: 1 / -1;
+  position: relative;
+  display: flex;
+  gap: 6px;
+  height: 28px;
+  margin: 0 calc(-1 * var(--fp-s1));
+  padding: 0 var(--fp-s3) 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  /* The strip runs on under the page's edges. */
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fp-s3),
+    #000 calc(100% - var(--fp-s3)),
+    transparent
+  );
+}
+
+[data-rd='folio-plus'] .fp-passindex--strip::-webkit-scrollbar {
+  display: none;
+}
+
+[data-rd='folio-plus'] .fp-passindex--strip .fp-passindex-run {
+  flex: 1 0 auto;
+  gap: 0;
+}
+
+/* The mark stays the thin thumb-index segment, centred in its target. */
+[data-rd='folio-plus'] .fp-passindex--strip .fp-passindex-cell::before {
+  left: 1px;
+  right: 1px;
+}
+
+[data-rd='folio-plus'] .fp-passindex--strip .fp-passindex-cell[data-flagged='true']::after {
+  display: block;
+  top: calc(50% - 10px);
+  right: 1px;
+  width: 6px;
+  height: 6px;
+  background: linear-gradient(to bottom left, var(--fp-ink-2) 50%, transparent 50%);
+}
+
+/* The head grows by the strip's line; the page under it moves down too. */
+[data-rd='folio-plus'] .fp-ppass-head.fp-ppass-head {
+  height: auto;
+  grid-template-rows: 56px 28px;
+  row-gap: 0;
+}
+
+[data-rd='folio-plus'] .fp-ppass-head.fp-ppass-head[data-compact='true'] {
+  height: auto;
+  grid-template-rows: 40px 28px;
+}
+
+[data-rd='folio-plus'] .fp-pdrill.fp-pass .fp-pdrill-scroll {
+  padding-top: 28px;
+}
+
+/* ── Phone: the thumb row above Nästa ────────────────────────────── */
+
+[data-rd='folio-plus'] .fp-pass-bar.fp-pass-bar--thumb {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--fp-s2);
+}
+
+[data-rd='folio-plus'] .fp-pass-bar--thumb .fp-echo {
+  text-align: left;
+}
+
+[data-rd='folio-plus'] .fp-thumbrow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid var(--fp-rule);
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+[data-rd='folio-plus'] .fp-thumbrow[data-tools='2'] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+[data-rd='folio-plus'] .fp-thumbrow .fp-ghost {
+  justify-content: center;
+  min-width: 0;
+  min-height: 48px;
+  margin: 0;
+  padding: 0 var(--fp-s2);
+  border-radius: 0;
+  font-size: var(--fp-t15);
+  white-space: nowrap;
+}
+
+[data-rd='folio-plus'] .fp-thumbrow .fp-ghost + .fp-ghost {
+  border-left: 1px solid var(--fp-rule);
+}
+
+/* A plate's or a passage's slip at its peek still has the row. */
+[data-rd='folio-plus'] .fp-sheet-thumb {
+  padding: var(--fp-s2) 20px max(var(--fp-s3), env(safe-area-inset-bottom));
+  background: var(--fp-leaf);
+}
+
+/* ── The hand-in slip: the blanks as ranges, the marked as chips ── */
+
+[data-rd='folio-plus'] .fp-handin-line {
+  display: block;
+  min-width: 0;
+  margin: var(--fp-s3) 0 0;
+  padding: 0;
+  border: 0;
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+  line-height: 2;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+[data-rd='folio-plus'] .fp-handin-key {
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+  font-weight: 600;
+}
+
+[data-rd='folio-plus'] .fp-handin-jump.fp-handin-jump {
+  justify-content: center;
+  min-width: 24px;
+  font-size: var(--fp-t15);
+  vertical-align: baseline;
+}
+
+[data-rd='folio-plus'] .fp-handin-chips {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--fp-s2);
+  vertical-align: middle;
+}
+
+[data-rd='folio-plus'] .fp-handin-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 44px;
+  min-height: 32px;
+  padding: 0 var(--fp-s3);
+  border: 1px solid var(--fp-rule-2);
+  border-radius: 2px;
+  background: var(--fp-leaf);
+  color: var(--fp-ink);
+  font-size: var(--fp-t15);
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background var(--fp-d1) var(--fp-ease);
+}
+
+[data-rd='folio-plus'] .fp-handin-chip:hover {
+  background: var(--fp-paper-3);
+}
+
+[data-rd='folio-plus'] .fp-handin-chip .fp-dogear {
+  color: var(--fp-ink-2);
+}
+
+[data-rd='folio-plus'] .fp-handin-chip .fp-dogear-fold {
+  fill: currentColor;
+}
+
+[data-rd='folio-plus'][data-width='phone'] .fp-handin-jump.fp-handin-jump {
+  min-width: 32px;
+  min-height: 44px;
+}
+
+[data-rd='folio-plus'][data-width='phone'] .fp-handin-chip {
+  min-height: 44px;
+}

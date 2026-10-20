@@ -1,0 +1,267 @@
+/* Folio+ · the shell's borrowings (bead hpf-qr0p.48), set in Folio's own
+ * type, rules and tokens:
+ *   - Idag's day path (from Spår): the plan as a stepper beside a hairline,
+ *     the step under way ringed in the accent, the end card;
+ *   - the desktop contents' live subtitles (from Samtal);
+ *   - line icons on the phone's tabs and the folded rail;
+ *   - Konto's visible way back.
+ * Every selector is scoped under [data-rd='folio-plus'] and only uses the
+ * theme tokens, so light and dark both follow. */
+
+/* ── Idag · the day path ─────────────────────────────────────────── */
+
+[data-rd='folio-plus'] .fp-path {
+  position: relative;
+}
+
+[data-rd='folio-plus'] .fp-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  column-gap: var(--fp-s3);
+  align-items: start;
+}
+
+/* The path's hairline, from one mark down to the next. A walked stretch is
+ * inked a step darker; the stretch still ahead stays a hairline. */
+[data-rd='folio-plus'] .fp-step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 19.5px;
+  top: calc(var(--fp-s4) + 30px);
+  bottom: calc(-1 * var(--fp-s4) + 2px);
+  width: 1px;
+  background: var(--fp-rule);
+}
+
+[data-rd='folio-plus'] .fp-step[data-fp-step='done']:not(:last-child)::before {
+  background: var(--fp-rule-2);
+}
+
+[data-rd='folio-plus'] .fp-step-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin: calc(var(--fp-s4) - 2px) 0 0 6px;
+  border: 1px solid var(--fp-rule-2);
+  border-radius: 50%;
+  background: var(--fp-paper);
+  color: var(--fp-ink-3);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  line-height: 1;
+  font-variant-numeric: oldstyle-nums;
+}
+
+[data-rd='folio-plus'] .fp-step[data-fp-step='done'] .fp-step-mark {
+  border-color: var(--fp-rule-2);
+  background: var(--fp-paper-2);
+  color: var(--fp-ink-2);
+}
+
+/* The step under way: the accent's one ring — the page's single "you are
+ * here", matching the lead's ribbon. */
+[data-rd='folio-plus'] .fp-step[data-fp-step='now'] .fp-step-mark {
+  border: 2px solid var(--fp-accent);
+  color: var(--fp-accent-ink);
+  font-weight: 600;
+}
+
+[data-rd='folio-plus'] .fp-step[data-fp-step='now'] .fp-plan-title {
+  color: var(--fp-ink);
+}
+
+[data-rd='folio-plus'] .fp-step[data-fp-step='done'] .fp-plan-title {
+  color: var(--fp-ink-2);
+  font-weight: 500;
+}
+
+/* The row inside a step: the contents entry without its number column
+ * (the mark is the number). */
+[data-rd='folio-plus'] .fp-step-row.fp-step-row {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* The path's end: a flag and the goal, never a streak. */
+[data-rd='folio-plus'] .fp-step--goal .fp-step-mark {
+  border-style: dashed;
+  background: var(--fp-paper);
+}
+
+[data-rd='folio-plus'] .fp-step--goal[data-fp-goal='reached'] .fp-step-mark {
+  border: 2px solid var(--fp-accent);
+  color: var(--fp-accent-ink);
+}
+
+[data-rd='folio-plus'] .fp-step-goal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--fp-s2);
+  padding: var(--fp-s4) 0;
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t15);
+}
+
+[data-rd='folio-plus'] .fp-step-goal b {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-weight: 600;
+  color: var(--fp-ink-2);
+}
+
+[data-rd='folio-plus'] .fp-step--goal[data-fp-goal='reached'] .fp-step-goal b {
+  color: var(--fp-ink);
+}
+
+/* Today's misses, moved, not lost: a quiet line in neutral ink. */
+[data-rd='folio-plus'] .fp-misses {
+  margin-top: var(--fp-s4);
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t13);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='folio-plus'] .fp-misses-tag {
+  font-weight: 600;
+  color: var(--fp-ink);
+}
+
+/* The end card: the lead's grammar (heavy rule, large serif headline),
+ * with the goal's flag beside the words. */
+[data-rd='folio-plus'] .fp-end .fp-lead-title {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-s3);
+}
+
+[data-rd='folio-plus'] .fp-end-mark {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--fp-accent);
+  border-radius: 50%;
+  color: var(--fp-accent-ink);
+}
+
+[data-rd='folio-plus'] .fp-end-mark svg {
+  width: 22px;
+  height: 22px;
+}
+
+[data-rd='folio-plus'] .fp-phome .fp-step {
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: var(--fp-s2);
+}
+
+[data-rd='folio-plus'] .fp-phome .fp-step:not(:last-child)::before {
+  left: 13.5px;
+}
+
+[data-rd='folio-plus'] .fp-phome .fp-step-mark {
+  width: 26px;
+  height: 26px;
+  margin-left: 1px;
+  font-size: var(--fp-t13);
+}
+
+[data-rd='folio-plus'] .fp-phome .fp-step-row.fp-step-row {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+[data-rd='folio-plus'] .fp-phome .fp-end-mark {
+  width: 36px;
+  height: 36px;
+}
+
+[data-rd='folio-plus'] .fp-phome .fp-end-mark svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── Desktop contents · live subtitles ───────────────────────────── */
+
+[data-rd='folio-plus'] .fp-nav-item.fp-nav-item {
+  min-height: 52px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+[data-rd='folio-plus'] .fp-nav-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  gap: 1px;
+}
+
+[data-rd='folio-plus'] .fp-nav-sub {
+  overflow: hidden;
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t12);
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--fp-ink-3);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='folio-plus'] .fp-nav-item[aria-current='page'] .fp-nav-sub {
+  color: var(--fp-ink-2);
+}
+
+/* The current entry's accent rule spans the two lines. */
+[data-rd='folio-plus'] .fp-app:not([data-collapsed='true']) .fp-nav-item[aria-current='page']::before {
+  top: 10px;
+  bottom: 10px;
+}
+
+/* Folded, the entries are the icons' square again. */
+[data-rd='folio-plus'] .fp-app[data-collapsed='true'] .fp-nav-item.fp-nav-item {
+  min-height: 44px;
+  padding: 0;
+}
+
+[data-rd='folio-plus'] .fp-thumb .fp-nav-icon {
+  width: 22px;
+  height: 22px;
+}
+
+/* ── Phone · icons above the tab words ───────────────────────────── */
+
+[data-rd='folio-plus'] .fp-tab.fp-tab {
+  flex-direction: column;
+  gap: 3px;
+  min-height: 56px;
+  padding-top: var(--fp-s1);
+  font-size: var(--fp-t13);
+}
+
+[data-rd='folio-plus'] .fp-tab-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--fp-ink-3);
+}
+
+[data-rd='folio-plus'] .fp-tab-icon .fp-nav-icon {
+  width: 22px;
+  height: 22px;
+}
+
+[data-rd='folio-plus'] .fp-tab[aria-current='page'] .fp-tab-icon {
+  color: var(--fp-accent-ink);
+}
+
+/* ── Konto · the way back ────────────────────────────────────────── */
+
+[data-rd='folio-plus'] .fp-kt-back.fp-kt-back {
+  min-height: 44px;
+  margin: calc(-1 * var(--fp-s3)) 0 var(--fp-s2);
+  font-size: var(--fp-t15);
+}

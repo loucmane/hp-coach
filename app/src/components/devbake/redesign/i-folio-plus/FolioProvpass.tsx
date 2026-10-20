@@ -1,14 +1,15 @@
 // Folio · Provpass (screen 9) and Provpassresultat (screen 10).
 //
-// The hub is a printed exam notice: the title "Anmälan.", the halves as a
-// pair of words, and the kallelse — the summons to one pass, the one the
-// reader has seen least — set as the lead under the heavy rule with the
-// screen's one filled button. The register of sittings is a ruled table,
-// leader dots running from each sitting to its two passes and what the
-// reader has already seen of them; choosing a cell moves the lead (and its
-// button) to that pass. Starta provpasset only opens the conditions, set as
-// a numbered note on a slip; the slip's Starta nu starts the clock. The
-// conditions, how a pass is scored and the latest passes are marginalia.
+// The hub is a timed practice pass under real conditions, set as a page of
+// the book: the title "Öva på tid.", the halves as a pair of words, and the
+// suggestion — the pass the reader has seen least — set as the lead under
+// the heavy rule with the screen's one filled button. "Alla pass" is a
+// ruled table, leader dots running from each sitting to its two passes and
+// what the reader has already seen of them; choosing a cell moves the lead
+// (and its button) to that pass. Starta provpasset only opens the
+// conditions, set as a numbered note on a slip; the slip's Starta nu starts
+// the clock. The conditions, how a pass is scored and the latest passes are
+// marginalia.
 //
 // The running pass is focus mode in its question's own drill layout — the
 // single page for XYZ, KVA, NOG, ORD and MEK, the plate spread for DTK, the
@@ -21,6 +22,15 @@
 // question, a gap between sections, answered in ink, the current one in the
 // accent. Översikt, the hand-in and the abandon are slips; time running out
 // hands the pass in. A marked question gets its page's corner folded.
+//
+// Folio+ (bead hpf-qr0p.48): on phone the head keeps Avbryt and the clock,
+// and Spår's thumb row — Markera · Översikt · Lämna in — sits above Nästa;
+// the index is its own strip of 24 px tap targets under the head. The
+// hand-in slip sums up as Samtal and Ljuskägla do: the blanks as ranges and
+// the marked as chips, each a way back to its question. Översikt and the
+// hand-in open on their safe button, so ↵ never hands in by default. A
+// press on Markera hands the focus back to the question (↵ is "nästa
+// fråga" again), and every mark is said as well as drawn.
 //
 // A pass is handed in once — by Lämna in or when the time is up — and is
 // then over, whatever the host answers: kit v2 has no way to say a second
@@ -62,6 +72,7 @@ import {
 } from 'lucide-react'
 import {
   type CSSProperties,
+  Fragment,
   type ReactNode,
   type PointerEvent as ReactPointerEvent,
   type RefObject,
@@ -122,6 +133,7 @@ import {
   Scale,
   slug,
 } from './FolioHome'
+import './fpProvpass.css'
 
 const HALF_WORD: Record<Half, string> = { verbal: 'Verbal', kvant: 'Kvantitativ' }
 /** What UHR normerar: the whole half, two passes of 40. */
@@ -286,7 +298,7 @@ export function FolioProvpass({
   const passes = hub.passes.filter((p) => p.half === half)
   const suggested = passes.find((p) => p.suggested) ?? passes[0] ?? null
   const chosen = passes.find((p) => p.id === picked) ?? suggested
-  // The lead follows a choice that is not the summons itself.
+  // The lead follows a choice that is not the suggestion itself.
   const own = chosen != null && chosen.id === picked && !chosen.suggested
   const halfView = hub.halves.find((h) => h.half === half)
   const sittings = register(passes)
@@ -319,7 +331,7 @@ export function FolioProvpass({
   ) : chosen ? (
     <Lead labelledBy="fp-prov-lead">
       <div className="fp-resume-top">
-        <span className="fp-label">{own ? 'Valt pass' : 'Kallelse · minst sett'}</span>
+        <span className="fp-label">{own ? 'Valt pass' : 'Förslag · minst sett'}</span>
       </div>
       <h2 className="fp-lead-title" id="fp-prov-lead">
         {passName(chosen.sitting, chosen.pass)}
@@ -328,8 +340,7 @@ export function FolioProvpass({
         {[HALF_WORD[half], composition(halfView)].filter(Boolean).join(' · ')}
       </p>
       <p className="fp-kallelse">
-        Du har sett {chosen.seenBefore} av {chosen.presented} frågor.{' '}
-        <span className="fp-kallelse-name">Inskriven: {data.konto.identity.name}</span>
+        Du har sett {chosen.seenBefore} av {chosen.presented} frågor.
       </p>
       {missing > 0 ? (
         <p className="fp-kallelse">
@@ -370,7 +381,7 @@ export function FolioProvpass({
     <section className="fp-section" aria-labelledby="fp-reg-h">
       <div className="fp-section-head">
         <h2 className="fp-h2" id="fp-reg-h">
-          Register
+          Alla pass
         </h2>
         <span className="fp-meta">
           {sittings.length} {sittings.length === 1 ? 'provtillfälle' : 'provtillfällen'}
@@ -425,7 +436,8 @@ export function FolioProvpass({
       ) : (
         <table className="fp-table fp-register">
           <caption className="fp-sr">
-            Register: varje provtillfälle med provpass 1 och 2 och hur många av frågorna du har sett
+            Alla pass: varje provtillfälle med provpass 1 och 2 och hur många av frågorna du har
+            sett
           </caption>
           <thead>
             <tr>
@@ -481,7 +493,7 @@ export function FolioProvpass({
       </MarginBlock>
       <MarginBlock id="fp-prov-score-h" title="Poängen">
         <p className="fp-margin-note">
-          Ett riktigt pass rättas mot provtillfällets normeringstabell.
+          Ett pass ur ett tidigare prov rättas mot det provets normeringstabell.
         </p>
       </MarginBlock>
       <MarginBlock id="fp-prov-last-h" title="Senaste passen">
@@ -511,11 +523,11 @@ export function FolioProvpass({
       aside={aside}
       asideLabelledBy="fp-prov-rules-h"
     >
-      <h1 className="fp-greet">Anmälan.</h1>
+      <h1 className="fp-greet">Öva på tid.</h1>
       {questions != null && minutes != null ? (
         <p className="fp-day">
-          {questions} frågor, {minutes} minuter, riktiga provvillkor – ingen feedback förrän du
-          lämnar in.
+          Ett övningspass under riktiga provvillkor: {questions} frågor på {minutes} minuter – ingen
+          feedback förrän du lämnar in.
         </p>
       ) : null}
       <div className="fp-choices">
@@ -732,12 +744,16 @@ type PassChrome = {
   badge: string
   noteText: string
   live: boolean
+  /** Touch first: no keyboard hint, the thumb row above Nästa. */
+  phone: boolean
   act: {
     goTo: (i: number) => void
     advance: () => void
     pick: (l: AnswerLetter) => void
     strike: (l: AnswerLetter) => void
-    toggleFlag: () => void
+    /** `pointer`: pressed by mouse or touch, so the focus goes back to the
+     *  question and ↵ is "nästa fråga" again. */
+    toggleFlag: (pointer: boolean) => void
     ask: (s: Exclude<Slip, null>) => void
     rotate: () => void
     zoom: (figure: DrillFigure) => void
@@ -895,10 +911,21 @@ function PassRunner({
       })
     }
   }
-  const toggleFlag = () => {
+  const toggleFlag = (pointer: boolean) => {
     if (!q || !flags || !canAct()) return
     const qid = q.qid
+    const on = !flags.includes(qid)
     setFlags((f) => (f ? (f.includes(qid) ? f.filter((x) => x !== qid) : [...f, qid]) : f))
+    // Never silent: the mark is said as well as drawn.
+    setSaid(
+      on
+        ? `Fråga ${index + 1} markerad för återkomst.`
+        : `Markeringen på fråga ${index + 1} är borttagen.`,
+    )
+    // A press leaves the focus on Markera, where ↵ would take the mark back
+    // instead of moving on: the question's heading takes it again. From the
+    // keyboard the focus stays where the reader put it.
+    if (pointer) headingRef.current?.focus({ preventScroll: true })
   }
   const ask = (s: Exclude<Slip, null>) => {
     if (canAct()) setSlip(s)
@@ -993,6 +1020,7 @@ function PassRunner({
     badge: data.copy.ovningstextBadge,
     noteText: data.copy.ovningstextNote,
     live,
+    phone: width === 'phone',
     act: { goTo, advance, pick, strike, toggleFlag, ask, rotate, zoom },
   }
   const modal = slip != null || viewing != null
@@ -1025,6 +1053,7 @@ function PassRunner({
         <HandinSlip
           questions={questions}
           answers={answers}
+          flags={flags}
           onGo={goTo}
           onSubmit={submit}
           onClose={() => setSlip(null)}
@@ -1058,10 +1087,10 @@ function PassEmpty({ width, onBack }: { width: WidthKey; onBack: () => void }) {
       <div className="fp-main fp-done">
         <div className="fp-colophon">
           <h2>Passets frågor gick inte att visa.</h2>
-          <p>Inget har räknats. Välj ett pass i anmälan igen.</p>
+          <p>Inget har räknats. Välj ett pass bland provpassen igen.</p>
           <div className="fp-colophon-actions">
             <button type="button" className="fp-btn" onClick={onBack}>
-              Till anmälan
+              Till provpassen
             </button>
           </div>
         </div>
@@ -1170,11 +1199,26 @@ function PassTools({ c, position = true }: { c: PassChrome; position?: boolean }
  * rule, the current one in the accent; a marked one has a folded corner.
  * A press goes there and a hover pulls its tab out. It stays out of the
  * tab order: the keyboard has ←/→ and Översikt.
+ *
+ * On phone (`strip`) it is its own line under the head: every segment a
+ * tap target of 24 × 24 px with the slim mark inside it, the strip
+ * scrolling sideways to keep the current question in view.
  */
-function PassIndex({ c, foot = false }: { c: PassChrome; foot?: boolean }) {
+function PassIndex({ c, strip = false }: { c: PassChrome; strip?: boolean }) {
+  const ref = useRef<HTMLFieldSetElement>(null)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: on a new question only
+  useLayoutEffect(() => {
+    const box = ref.current
+    if (!strip || !box) return
+    const here = box.querySelector<HTMLElement>('[data-current="true"]')
+    if (!here) return
+    const left = here.offsetLeft - (box.clientWidth - here.offsetWidth) / 2
+    box.scrollTo?.({ left: Math.max(0, left) })
+  }, [c.index, strip])
   return (
     <fieldset
-      className={`fp-passindex${foot ? ' fp-passindex--foot' : ''}`}
+      ref={ref}
+      className={`fp-passindex${strip ? ' fp-passindex--strip' : ''}`}
       data-testid="rd-prov-grid"
       aria-label="Passets frågor"
     >
@@ -1201,7 +1245,7 @@ function PassIndex({ c, foot = false }: { c: PassChrome; foot?: boolean }) {
                 }`}
                 onClick={() => c.act.goTo(i)}
               >
-                {foot ? null : (
+                {strip ? null : (
                   <span className="fp-passindex-tab" aria-hidden>
                     Fråga {i + 1} · {done ? 'besvarad' : 'obesvarad'}
                   </span>
@@ -1252,35 +1296,85 @@ function DogEar() {
   )
 }
 
+/** Markera: folds the page's corner. */
+function FlagButton({ c }: { c: PassChrome }) {
+  return (
+    <button
+      type="button"
+      className="fp-ghost fp-flag"
+      data-testid="rd-prov-flag"
+      aria-pressed={c.flagged}
+      disabled={c.locked}
+      title="Markera för återkomst"
+      onClick={(e) => c.act.toggleFlag(e.detail > 0)}
+    >
+      <DogEar />
+      Markera <span className="fp-sr">för återkomst</span>
+    </button>
+  )
+}
+
+/** Phone: Spår's thumb row — Markera · Översikt · Lämna in — above Nästa,
+ *  where the thumb reaches (Lämna in no longer sits top right). */
+function ThumbRow({ c }: { c: PassChrome }) {
+  return (
+    <fieldset className="fp-thumbrow" aria-label="Passets verktyg" data-tools={c.flags ? '3' : '2'}>
+      {c.flags ? <FlagButton c={c} /> : null}
+      <button
+        type="button"
+        className="fp-ghost"
+        aria-haspopup="dialog"
+        disabled={c.locked}
+        onClick={() => c.act.ask('overview')}
+      >
+        Översikt
+      </button>
+      <button
+        type="button"
+        className="fp-ghost"
+        data-testid="rd-prov-submit"
+        aria-haspopup="dialog"
+        disabled={c.locked}
+        onClick={() => c.act.ask('handin')}
+      >
+        Lämna in
+      </button>
+    </fieldset>
+  )
+}
+
 /** The pass's action line: Nästa fråga (↵), on the last question Lämna in;
- *  the saved choice said in words; Markera when the host has flags. */
+ *  the saved choice said in words; Markera when the host has flags. On
+ *  phone the thumb row stands between the saved choice and Nästa. */
 function PassBar({ c }: { c: PassChrome }) {
   const last = c.index + 1 >= c.total
+  const next = (
+    <button type="button" className="fp-btn" onClick={c.act.advance} disabled={c.locked}>
+      {last ? 'Lämna in' : 'Nästa fråga'}
+      <kbd className="fp-kbd" aria-hidden>
+        ↵
+      </kbd>
+    </button>
+  )
+  const echo = (
+    <span className="fp-echo" aria-live="polite">
+      {c.chosen ? `Ditt val: ${c.chosen} · sparat` : 'Inget svar än – du kan hoppa över frågan.'}
+    </span>
+  )
+  if (c.phone) {
+    return (
+      <div className="fp-actionbar fp-pass-bar fp-pass-bar--thumb">
+        {echo}
+        <ThumbRow c={c} />
+        {next}
+      </div>
+    )
+  }
   return (
     <div className="fp-actionbar fp-pass-bar">
-      <button type="button" className="fp-btn" onClick={c.act.advance} disabled={c.locked}>
-        {last ? 'Lämna in' : 'Nästa fråga'}
-        <kbd className="fp-kbd" aria-hidden>
-          ↵
-        </kbd>
-      </button>
-      <span className="fp-echo" aria-live="polite">
-        {c.chosen ? `Ditt val: ${c.chosen} · sparat` : 'Inget svar än – du kan hoppa över frågan.'}
-      </span>
-      {c.flags ? (
-        <button
-          type="button"
-          className="fp-ghost fp-flag"
-          data-testid="rd-prov-flag"
-          aria-pressed={c.flagged}
-          disabled={c.locked}
-          title="Markera för återkomst"
-          onClick={c.act.toggleFlag}
-        >
-          <DogEar />
-          Markera <span className="fp-sr">för återkomst</span>
-        </button>
-      ) : null}
+      {next}
+      {echo}
+      {c.flags ? <FlagButton c={c} /> : null}
     </div>
   )
 }
@@ -1383,7 +1477,8 @@ function PassQuestion({
         act={{ select: c.act.pick, toggleEliminate: c.act.strike }}
         testId="rd-prov-option"
       />
-      {c.showKeys ? <PassKeys letters={c.letters} /> : null}
+      {/* Touch has no keyboard: the key line is the desktop's. */}
+      {c.showKeys && !c.phone ? <PassKeys letters={c.letters} /> : null}
       {bar ? <PassBar c={c} /> : null}
     </div>
   )
@@ -1509,8 +1604,9 @@ function PhonePass({ c }: { c: PassChrome }) {
   return <PhonePassPage c={c} />
 }
 
-/** The phone pass's head: Avbryt, the clock, Översikt and Lämna in, the
- *  pass index along its foot; it folds to a strip while reading. */
+/** The phone pass's head: Avbryt and the clock, the pass index as its own
+ *  strip of tap targets under them; it folds while reading. Översikt and
+ *  Lämna in are in the thumb row at the foot. */
 function PhonePassHead({ c, compact }: { c: PassChrome; compact: boolean }) {
   return (
     <header className="fp-pdrill-head fp-ppass-head" data-compact={String(compact)}>
@@ -1518,27 +1614,8 @@ function PhonePassHead({ c, compact }: { c: PassChrome; compact: boolean }) {
       <span />
       <div className="fp-head-right">
         <Countdown c={c} />
-        <button
-          type="button"
-          className="fp-ghost fp-focus-btn"
-          aria-haspopup="dialog"
-          disabled={c.locked}
-          onClick={() => c.act.ask('overview')}
-        >
-          Översikt
-        </button>
-        <button
-          type="button"
-          className="fp-ghost fp-focus-btn"
-          data-testid="rd-prov-submit"
-          aria-haspopup="dialog"
-          disabled={c.locked}
-          onClick={() => c.act.ask('handin')}
-        >
-          Lämna in
-        </button>
       </div>
-      <PassIndex c={c} foot />
+      <PassIndex c={c} strip />
     </header>
   )
 }
@@ -1647,7 +1724,9 @@ function PhonePassSheet({ c, kind }: { c: PassChrome; kind: 'reading' | 'plate' 
             noteText={c.noteText}
           />
         )}
-        <div style={{ height: sheet === 'peek' ? 280 : 120 }} aria-hidden />
+        {/* Room to read the page's foot above the slip (its peek carries the
+         *  thumb row too). */}
+        <div style={{ height: sheet === 'peek' ? 340 : 120 }} aria-hidden />
       </div>
       <section
         className="fp-sheet"
@@ -1700,7 +1779,13 @@ function PhonePassSheet({ c, kind }: { c: PassChrome; kind: 'reading' | 'plate' 
             />
           )}
         </div>
-        {sheet === 'peek' ? null : <PassBar c={c} />}
+        {sheet === 'peek' ? (
+          <div className="fp-sheet-thumb">
+            <ThumbRow c={c} />
+          </div>
+        ) : (
+          <PassBar c={c} />
+        )}
       </section>
     </div>
   )
@@ -1710,7 +1795,8 @@ function PhonePassSheet({ c, kind }: { c: PassChrome; kind: 'reading' | 'plate' 
 
 /** Översikt: the pass's questions by section, each a numeral — underlined
  *  once answered, ringed where the reader is, a folded corner when marked —
- *  and Lämna in as the slip's one filled button. */
+ *  and Lämna in as the slip's one filled button. It opens on Tillbaka till
+ *  passet, so ↵ never starts a hand-in by default. */
 function OverviewSlip({
   run,
   index,
@@ -1774,13 +1860,10 @@ function OverviewSlip({
         Understruken: besvarad. Ring: här är du.{flags ? ' Vikt hörn: markerad.' : ''}
       </p>
       <div className="fp-slip-actions">
-        <button type="button" className="fp-btn" data-autofocus onClick={onHandin}>
+        <button type="button" className="fp-btn" onClick={onHandin}>
           Lämna in
-          <kbd className="fp-kbd" aria-hidden>
-            ↵
-          </kbd>
         </button>
-        <button type="button" className="fp-quiet-btn" onClick={onClose}>
+        <button type="button" className="fp-quiet-btn" data-autofocus onClick={onClose}>
           Tillbaka till passet
           <kbd className="fp-kbd" aria-hidden>
             Esc
@@ -1791,62 +1874,112 @@ function OverviewSlip({
   )
 }
 
-/** Lämna in: how many are left blank (fel ger inga avdrag) and links to
- *  them; handing in is not destructive, so Lämna in holds ↵. It is the
- *  pass's one hand-in: what follows is the result, or the pass's closing
- *  page (FolioPassEnded). */
+/** Question numbers as the slip prints them: a run of three or more as a
+ *  range ("4–6"), the rest one by one — [4, 5, 6, 11] → 4–6, 11. */
+function numberRuns(numbers: readonly number[]): { first: number; last: number }[] {
+  const runs: { first: number; last: number }[] = []
+  for (let i = 0; i < numbers.length; ) {
+    let j = i
+    while (j + 1 < numbers.length && numbers[j + 1] === numbers[j] + 1) j++
+    if (j - i >= 2) runs.push({ first: numbers[i], last: numbers[j] })
+    else for (let k = i; k <= j; k++) runs.push({ first: numbers[k], last: numbers[k] })
+    i = j + 1
+  }
+  return runs
+}
+
+/**
+ * Lämna in, summed up first (Samtal's and Ljuskägla's hand-in): how many
+ * are left blank (fel ger inga avdrag), the blanks as ranges and the
+ * marked as chips, each a way back to its question. It opens on Tillbaka
+ * till passet, so ↵ goes back and never hands in by default; Lämna in is
+ * the slip's one filled button and needs its own press. It is the pass's
+ * one hand-in: what follows is the result, or the pass's closing page
+ * (FolioPassEnded).
+ */
 function HandinSlip({
   questions,
   answers,
+  flags,
   onGo,
   onSubmit,
   onClose,
 }: {
   questions: readonly DrillQuestion[]
   answers: Partial<Record<string, AnswerLetter>>
+  flags: string[] | null
   onGo: (i: number) => void
   onSubmit: () => void
   onClose: () => void
 }) {
-  const blanks = questions.flatMap((q, i) => (answers[q.qid] == null ? [i] : []))
+  const blanks = questions.flatMap((q, i) => (answers[q.qid] == null ? [i + 1] : []))
+  const marked = flags ? questions.flatMap((q, i) => (flags.includes(q.qid) ? [i + 1] : [])) : []
   const n = blanks.length
   const body =
     n === 0
       ? `Alla ${questions.length} frågor är besvarade.`
       : `${n === 1 ? 'En fråga är obesvarad' : `${capitalised(inWords(n))} frågor är obesvarade`} – fel ger inga avdrag, så gissa hellre.`
   return (
-    <FolioSlip id="fp-handin" title="Lämna in provpasset?" onClose={onClose}>
+    <FolioSlip
+      id="fp-handin"
+      title="Lämna in provpasset?"
+      meta={`${questions.length - n} av ${questions.length} besvarade`}
+      onClose={onClose}
+    >
       <p className="fp-slip-lede">{body}</p>
-      {n > 0 && n <= 12 ? (
-        <p className="fp-slip-links">
-          {blanks.map((i, k) => (
-            <button
-              type="button"
-              key={i}
-              className="fp-link"
-              aria-label={`Gå till fråga ${i + 1}`}
-              onClick={() => onGo(i)}
-            >
-              {k === 0 ? `Fråga ${i + 1}` : i + 1}
-            </button>
+      {n > 0 ? (
+        <fieldset className="fp-handin-line" aria-label="Obesvarade frågor">
+          <span className="fp-handin-key">Obesvarade:</span>{' '}
+          {numberRuns(blanks).map((r, k) => (
+            <Fragment key={r.first}>
+              {k > 0 ? ', ' : null}
+              <button
+                type="button"
+                className="fp-link fp-handin-jump"
+                aria-label={
+                  r.first === r.last
+                    ? `Till fråga ${r.first}, obesvarad`
+                    : `Till fråga ${r.first}, första av de obesvarade ${r.first}–${r.last}`
+                }
+                onClick={() => onGo(r.first - 1)}
+              >
+                {r.first === r.last ? r.first : `${r.first}–${r.last}`}
+              </button>
+            </Fragment>
           ))}
-        </p>
+        </fieldset>
       ) : null}
+      {marked.length > 0 ? (
+        <fieldset className="fp-handin-line" aria-label="Markerade frågor">
+          <span className="fp-handin-key">Markerade:</span>{' '}
+          <span className="fp-handin-chips">
+            {marked.map((m) => (
+              <button
+                type="button"
+                key={m}
+                className="fp-handin-chip"
+                aria-label={`Till fråga ${m}, markerad`}
+                onClick={() => onGo(m - 1)}
+              >
+                <DogEar />
+                {m}
+              </button>
+            ))}
+          </span>
+        </fieldset>
+      ) : null}
+      <p className="fp-slip-key">
+        Klockan går medan du granskar. Efter inlämningen går svaren inte att ändra.
+      </p>
       <div className="fp-slip-actions">
-        <button
-          type="button"
-          className="fp-btn"
-          data-testid="rd-confirm"
-          data-autofocus
-          onClick={onSubmit}
-        >
+        <button type="button" className="fp-btn" data-testid="rd-confirm" onClick={onSubmit}>
           Lämna in
+        </button>
+        <button type="button" className="fp-quiet-btn" data-autofocus onClick={onClose}>
+          Tillbaka till passet
           <kbd className="fp-kbd" aria-hidden>
             ↵
           </kbd>
-        </button>
-        <button type="button" className="fp-quiet-btn" onClick={onClose}>
-          Tillbaka till passet
         </button>
       </div>
     </FolioSlip>
@@ -1886,7 +2019,7 @@ function AbortSlip({ onAbandon, onClose }: { onAbandon: () => void; onClose: () 
  * that opens the result never shows it). The frame is back around a closing
  * page: ⁂ over "Passet är inlämnat.", or, when the hand-in failed, its error
  * as a title and an erratum that stay; the pass named in the lead with the
- * screen's one filled button, Till anmälan ↵; and the answers as they stood,
+ * screen's one filled button, Till provpassen ↵; and the answers as they stood,
  * by section, read-only. Nothing here hands the pass in again.
  */
 export function FolioPassEnded({
@@ -1898,7 +2031,7 @@ export function FolioPassEnded({
   width: WidthKey
   live: boolean
   end: PassEnd
-  /** Till anmälan: the hub, with nothing more to say. */
+  /** Till provpassen: the hub, with nothing more to say. */
   onHub: () => void
 }) {
   const { run, answers } = end
@@ -1910,7 +2043,7 @@ export function FolioPassEnded({
   useEffect(() => {
     if (live) headingRef.current?.focus({ preventScroll: true })
   }, [])
-  // ↵ is Till anmälan's — pressed afresh: the repeat of a ↵ held down on
+  // ↵ is Till provpassen's — pressed afresh: the repeat of a ↵ held down on
   // the hand-in never skips this page (or its error).
   const hub = useRef(onHub)
   hub.current = onHub
@@ -1959,7 +2092,7 @@ export function FolioPassEnded({
         </p>
         <div className="fp-resume-foot">
           <button type="button" className="fp-btn fp-btn--big" onClick={onHub}>
-            Till anmälan
+            Till provpassen
             <kbd className="fp-kbd" aria-hidden>
               ↵
             </kbd>

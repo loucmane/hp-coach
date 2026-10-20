@@ -41,6 +41,7 @@ import { PanelLeftClose, PanelLeftOpen, UserRound } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import './folioPlus.css'
+import './fpShell.css'
 import {
   DirectionDataProvider,
   useDirectionData,
@@ -50,18 +51,21 @@ import {
   DESTINATIONS,
   type Destination,
   type DirectionProps,
+  fmtScore,
+  type ScreenKey,
   type ThemeKey,
   useDismiss,
   useWebFonts,
 } from '@/components/devbake/redesign/r1Kit'
 import type {
   DirectionActions,
+  DirectionData,
   PlanItemView,
   ProvHubView,
 } from '@/components/devbake/redesign/viewModel'
 import { FolioDrill, ORIGIN_IDAG, type Origin } from './FolioDrill'
 import { FolioFramsteg, type FramstegSub } from './FolioFramsteg'
-import { FolioHome } from './FolioHome'
+import { FolioHome, inWords } from './FolioHome'
 import { FolioKonto, type KontoJump, type KontoPlace } from './FolioKonto'
 import { FolioOva } from './FolioOva'
 import {
@@ -75,20 +79,91 @@ import {
 } from './FolioProvpass'
 import { FolioQuant } from './FolioQuant'
 import { FolioRepetera } from './FolioRepetera'
-import { FolioUppslag } from './FolioUppslag'
+import { FolioUppslag, type UppslagBack } from './FolioUppslag'
 
 const FONTS =
   'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap'
 
-/** The folded rail is a thumb index: each destination's initial, set in
- *  Literata like the tabs cut into a reference book's edge. Hover or focus
- *  pulls the tab out to its full word. */
-const THUMB: Record<Destination, string> = {
-  idag: 'I',
-  ova: 'Ö',
-  provpass: 'P',
-  uppslag: 'U',
-  framsteg: 'F',
+/** Folio+: the destinations' line icons (Folio's 1.5 stroke on a 24
+ *  grid), for the phone's tabs and the folded rail — where Folio set bare
+ *  initials (I Ö P U F) that told a new reader nothing. The full word stays
+ *  the accessible name and the rail's pulled tab. */
+const ICON_PATHS: Record<Destination, string[]> = {
+  // A day on the calendar.
+  idag: ['M4 6.5h16v13H4z', 'M4 10.5h16', 'M8.5 4v4', 'M15.5 4v4', 'M11 15h2'],
+  // A pencil at work.
+  ova: ['M5 19l1-4L16 5l3 3L9 18z', 'M14 7l3 3', 'M5 19l4-1'],
+  // A stopwatch: the timed pass.
+  provpass: ['M12 20.5a7 7 0 1 0 0-14 7 7 0 0 0 0 14z', 'M12 13.5V10', 'M10 3.5h4', 'M12 3.5v3'],
+  // An open book.
+  uppslag: [
+    'M12 7c-2.5-1.8-5.5-2.2-8.5-1.5v13c3-.7 6-.3 8.5 1.5',
+    'M12 7c2.5-1.8 5.5-2.2 8.5-1.5v13c-3-.7-6-.3-8.5 1.5',
+    'M12 7v13',
+  ],
+  // A rising line over its axis.
+  framsteg: ['M4 19.5h16', 'M5 15.5l4.5-4.5 3.5 3 6-6.5', 'M15 7.5h4v4'],
+}
+
+function NavIcon({ id }: { id: Destination }) {
+  return (
+    <svg
+      className="fp-nav-icon"
+      viewBox="0 0 24 24"
+      width="22"
+      height="22"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {ICON_PATHS[id].map((d) => (
+        <path key={d} d={d} />
+      ))}
+    </svg>
+  )
+}
+
+/** "Nästa: kvant, om en dag", from the Provpass rhythm when there is one. */
+function provLine(home: DirectionData['home']): string {
+  const p = home.provpass
+  if (!p) return 'Ett helt pass, 55 minuter'
+  const half = p.half === 'kvant' ? 'kvant' : 'verbal'
+  if (p.due || p.daysUntilNext <= 0) return `Dags för ett pass: ${half}`
+  return `Nästa: ${half}, om ${inWords(p.daysUntilNext)} ${p.daysUntilNext === 1 ? 'dag' : 'dagar'}`
+}
+
+/** Folio+ (Samtal's nav subtitles): one live line under each desktop
+ *  entry, from the data, about what waits there. Öva's count is today's
+ *  repetition pile, said as today's: Framsteg counts the whole queue. */
+function subtitles({ home, uppslag }: DirectionData): Record<Destination, string> {
+  const { resume, plan, ovaDue, prognosis } = home
+  const done = plan.items.filter((i) => i.completed).length
+  const steps = plan.items.length + (resume ? 1 : 0)
+  const first = plan.items.find((i) => !i.completed)
+  return {
+    idag: resume
+      ? `Fortsätt ${resume.section}, fråga ${resume.position} av ${resume.total}`
+      : first
+        ? done > 0
+          ? `${done} av ${steps} steg klara`
+          : `Först: ${first.title}`
+        : 'Klart för idag',
+    ova:
+      ovaDue > 0
+        ? `${ovaDue} ${ovaDue === 1 ? 'miss' : 'missar'} att repetera idag`
+        : 'Alla delprov och Repetera',
+    provpass: provLine(home),
+    uppslag: uppslag.open.title
+      ? `${uppslag.open.section} · ${uppslag.open.title}`
+      : 'Lektioner och ramverk',
+    framsteg:
+      prognosis.total != null
+        ? `Prognos ${fmtScore(prognosis.total)} av 2,0`
+        : 'Prognos och historik',
+  }
 }
 
 /** Focus screens: drills, with Avsluta instead of the frame. (A running
@@ -163,7 +238,17 @@ export function FolioPlus(props: DirectionProps) {
   // Where a drill was opened from: the last frame page shown. The stage
   // keeps Folio mounted across the screens it builds, so this carries.
   const origin = useRef<Origin>(ORIGIN_IDAG)
-  if (!FOCUS.includes(props.screen)) origin.current = ORIGINS[pageOf(props.screen)]
+  // A reading drill's facit that opened a lesson: Uppslag offers the way
+  // back to that feedback (Folio+), and the drill reopens where it was
+  // parked. Any other frame page forgets it.
+  const lessonFrom = useRef<ScreenKey | null>(null)
+  const returning = useRef(false)
+  const screenRef = useRef(props.screen)
+  screenRef.current = props.screen
+  if (!FOCUS.includes(props.screen) && props.screen !== 12) lessonFrom.current = null
+  // A lesson visit is a detour: Avsluta keeps the drill's own origin.
+  if (!FOCUS.includes(props.screen) && !(props.screen === 12 && lessonFrom.current != null))
+    origin.current = ORIGINS[pageOf(props.screen)]
   // The lesson last asked for, carried to Uppslag (across the switch from
   // focus mode to the frame too), so that it can say which lesson was asked
   // for while the open one stays.
@@ -177,12 +262,36 @@ export function FolioPlus(props: DirectionProps) {
       ...actions,
       openLesson: (id) => {
         asked.current = id
+        const from = screenRef.current
+        // LÄS only: the host's onScreen reaches 1–4, so ELF (14) has no way back.
+        if (from === 2 || from === 3) lessonFrom.current = 3
+        else if (from !== 12) lessonFrom.current = null
         actions.openLesson(id)
       },
     }),
     [actions],
   )
-  const { screen } = props
+  const { screen, onScreen } = props
+  // The returning flag is read once, when the drill mounts.
+  useEffect(() => {
+    if (FOCUS.includes(screen)) returning.current = false
+  }, [screen])
+  // biome-ignore lint/correctness/useExhaustiveDependencies: lessonFrom is a ref, re-read per screen
+  const back = useMemo<UppslagBack | null>(
+    () =>
+      lessonFrom.current == null
+        ? null
+        : {
+            onBack: () => {
+              const to = lessonFrom.current
+              if (to == null) return
+              lessonFrom.current = null
+              returning.current = true
+              onScreen(to)
+            },
+          },
+    [onScreen, screen],
+  )
   return (
     <div
       data-rd="folio-plus"
@@ -196,9 +305,14 @@ export function FolioPlus(props: DirectionProps) {
         {screen === 6 || screen === 7 ? (
           <FolioQuant key={screen} {...props} origin={origin.current} />
         ) : screen === 2 || screen === 3 || screen === 14 ? (
-          <FolioDrill key={screen === 14 ? 'elf' : 'las'} {...props} origin={origin.current} />
+          <FolioDrill
+            key={screen === 14 ? 'elf' : 'las'}
+            {...props}
+            origin={origin.current}
+            returning={returning.current}
+          />
         ) : (
-          <FolioFrame {...props} asked={asked} />
+          <FolioFrame {...props} asked={asked} back={back} />
         )}
       </DirectionDataProvider>
     </div>
@@ -213,7 +327,8 @@ function FolioFrame({
   onScreen,
   onTheme,
   asked,
-}: DirectionProps & { asked: { current: string | null } }) {
+  back,
+}: DirectionProps & { asked: { current: string | null }; back: UppslagBack | null }) {
   const { data, actions } = useDirectionData()
   // Screen 4 shows the frame's other state; screen 1 the default. The other
   // pages keep whatever fold the reader chose.
@@ -346,6 +461,10 @@ function FolioFrame({
   const toHistorik = useCallback(() => go('framsteg', 'historik'), [go])
   const current = CURRENT[page]
   const due = data.home.ovaDue
+  const subs = subtitles(data)
+  // Konto's visible way back names the destination it returns to.
+  const backTo =
+    DESTINATIONS.find((d) => d.id === (CURRENT[before.current] ?? 'idag'))?.label ?? 'Idag'
 
   // A started pass is focus mode: once the host's running view is that pass
   // it takes the whole stage, with no frame.
@@ -398,9 +517,15 @@ function FolioFrame({
     ) : page === 'framsteg' ? (
       <FolioFramsteg width={width} live={keys} sub={sub} onSub={setSub} onGo={go} />
     ) : page === 'uppslag' ? (
-      <FolioUppslag width={width} live={keys} asked={asked.current} />
+      <FolioUppslag width={width} live={keys} asked={asked.current} back={back} />
     ) : page === 'konto' ? (
-      <FolioKonto width={width} live={keys} jump={kontoJump} onBack={leaveKonto} />
+      <FolioKonto
+        width={width}
+        live={keys}
+        jump={kontoJump}
+        onBack={leaveKonto}
+        backLabel={backTo}
+      />
     ) : (
       <FolioHome
         width={width}
@@ -438,8 +563,8 @@ function FolioFrame({
           <main className="fp-pscroll" key={page} data-page={page}>
             <div className={live ? 'fp-enter' : undefined}>{content}</div>
           </main>
-          {/* The tabs are words, as on the desktop contents list: a
-           *  magazine's section bar, not a row of stock pictograms. */}
+          {/* Folio+: each tab's word under its line icon, the word still
+           *  the tab's name. */}
           <nav className="fp-tabs" aria-label="Huvudmeny">
             {DESTINATIONS.map((d) => (
               <button
@@ -450,6 +575,9 @@ function FolioFrame({
                 aria-current={current === d.id ? 'page' : undefined}
                 onClick={() => go(d.id)}
               >
+                <span className="fp-tab-icon" aria-hidden>
+                  <NavIcon id={d.id} />
+                </span>
                 <span className="fp-tab-word">
                   {d.label}
                   {d.id === 'ova' && due > 0 ? (
@@ -511,24 +639,30 @@ function FolioFrame({
                 data-testid={`rd-nav-${d.id}`}
                 data-tip={folded ? d.label : undefined}
                 aria-current={current === d.id ? 'page' : undefined}
-                aria-label={folded ? d.label : undefined}
+                aria-label={d.label}
+                aria-describedby={`fp-nav-sub-${d.id}`}
                 onClick={() => go(d.id)}
               >
                 {folded ? (
-                  <span className="fp-thumb" aria-hidden>
-                    {THUMB[d.id]}
-                  </span>
-                ) : null}
-                <span className="fp-nav-label">{d.label}</span>
-                {d.id === 'ova' && due > 0 ? (
                   <>
-                    <span className="fp-nav-count">
-                      {due}
-                      <span className="fp-sr"> att repetera</span>
+                    <span className="fp-thumb" aria-hidden>
+                      <NavIcon id={d.id} />
                     </span>
-                    <span className="fp-nav-dot" aria-hidden />
+                    <span className="fp-nav-label">{d.label}</span>
+                    {/* Folded, the live line is still read with the entry. */}
+                    <span className="fp-sr" id={`fp-nav-sub-${d.id}`}>
+                      {subs[d.id]}
+                    </span>
                   </>
-                ) : null}
+                ) : (
+                  <span className="fp-nav-text">
+                    <span className="fp-nav-label">{d.label}</span>
+                    <span className="fp-nav-sub" id={`fp-nav-sub-${d.id}`} data-fp-sub>
+                      {subs[d.id]}
+                    </span>
+                  </span>
+                )}
+                {d.id === 'ova' && due > 0 ? <span className="fp-nav-dot" aria-hidden /> : null}
               </button>
             ))}
           </nav>

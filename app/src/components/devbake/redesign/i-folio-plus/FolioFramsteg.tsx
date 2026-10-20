@@ -20,6 +20,12 @@
 // Kit v2: everything reads useDirectionData() — data.framsteg, the traps of
 // data.home and the finished passes of data.provpass.hub. What the view
 // model marks optional (a range, the goal) is left out when absent.
+//
+// Folio+ (borrowed from Spår): each section carries a muted colour of its
+// own (a thin ink mark beside its code, from theme tokens), and "Nästa steg
+// uppåt" gives every section one concrete step toward its next tenth —
+// a trap to practise, misses to repeat, or a round — in test order, verbal
+// and kvant as two columns.
 
 import { ArrowRight, ChevronRight } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
@@ -33,6 +39,8 @@ import {
   type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
 import type {
+  DirectionData,
+  DrillRequest,
   FramstegView,
   HistoryRowView,
   SectionScoreView,
@@ -56,6 +64,7 @@ import {
   slug,
 } from './FolioHome'
 import { fmtPassScore, passName } from './FolioProvpass'
+import './fpQuant.css'
 
 /** Framsteg's own pages: the report, its ledger and its index of traps. */
 export type FramstegSub = 'overview' | 'historik' | 'fallor'
@@ -154,6 +163,86 @@ function focusReason(s: SectionScoreView, all: readonly SectionScoreView[]): str
   if (trend?.word === 'ner') return `${rank} och på väg ner`
   if (trend?.word === 'upp') return `${rank} men på väg upp`
   return rank
+}
+
+/** One step up for a section: the next tenth above its estimate, one
+ *  concrete thing to do and how to start it. */
+type UpStep = {
+  section: Section
+  /** "1,6 → 1,7", "Håll 2,0", or null without an estimate. */
+  level: string | null
+  text: string
+  action: string
+  request: DrillRequest
+}
+
+/** The step, from what the data says, in this order: no estimate yet → a
+ *  first round; quiet for two weeks → a short round; a trap in the section
+ *  → that trap; misses ready now → repeat them; otherwise a round, said
+ *  with its trend. */
+function upStep(s: SectionScoreView, data: DirectionData): UpStep {
+  const code = s.section
+  const section: DrillRequest = { kind: 'section', section: code }
+  const top = s.score != null && s.score >= 2 - 0.001
+  const level =
+    s.score == null
+      ? null
+      : top
+        ? 'Håll 2,0'
+        : `${fmtScore(s.score)} → ${fmtScore(Math.min(2, Math.floor(s.score * 10 + 0.001) / 10 + 0.1))}`
+  if (s.score == null || s.attempts90d === 0) {
+    return {
+      section: code,
+      level,
+      text: `Gör en första ${code}-runda, så finns en nivå att bygga på.`,
+      action: `Öva ${code}`,
+      request: section,
+    }
+  }
+  if (s.daysSince != null && s.daysSince >= 14) {
+    return {
+      section: code,
+      level,
+      text: `En kort ${code}-runda – delprovet har vilat i ${s.daysSince} dagar.`,
+      action: `Öva ${code}`,
+      request: section,
+    }
+  }
+  const trap = data.home.traps
+    .filter((t) => t.section === code)
+    .sort((a, b) => Number(b.rising ?? false) - Number(a.rising ?? false) || b.count - a.count)[0]
+  if (trap) {
+    return {
+      section: code,
+      level,
+      text: `Öva fällan ${trap.name} – den har lurat dig ${inWords(trap.count)} ${
+        trap.count === 1 ? 'gång' : 'gånger'
+      }${trap.rising ? ' och ökar' : ''}.`,
+      action: 'Öva fällan',
+      request: { kind: 'framework', frameworkId: trap.frameworkId, section: code },
+    }
+  }
+  const due = data.ova.sections.find((x) => x.section === code)?.dueNow ?? 0
+  if (due > 0) {
+    return {
+      section: code,
+      level,
+      text: `Repetera ${inWords(due)} ${code}-${due === 1 ? 'miss' : 'missar'} som är redo nu.`,
+      action: 'Repetera',
+      request: { kind: 'repetition', section: code },
+    }
+  }
+  const trend = trendOf(s.trend)
+  const text = top
+    ? `Ett ${code}-pass i veckan håller nivån.`
+    : trend?.word === 'ner'
+      ? `Ett ${code}-pass med facit på varje miss – trenden pekar ner.`
+      : s.confidence === 'low'
+        ? `Fler ${code}-frågor – nivån är ännu osäker.`
+        : trend?.word === 'upp'
+          ? `Ett ${code}-pass till den här veckan – trenden pekar upp.`
+          : `Ett ${code}-pass med fokus på missarna – nivån står still.`
+  return { section: code, level, text, action: `Öva ${code}`, request: section }
 }
 
 /** A trend in words, the arrow beside it (the word carries it). */
@@ -407,10 +496,15 @@ function Overview({
               const basis = `${s.attempts90d} · ${CONFIDENCE[s.confidence]}`
               const marked = caveatMark != null && (s.section === 'LÄS' || s.section === 'ELF')
               return (
-                <tr key={s.section} data-testid={`rd-framsteg-section-${slug(s.section)}`}>
+                <tr
+                  key={s.section}
+                  data-testid={`rd-framsteg-section-${slug(s.section)}`}
+                  data-fp-sec={s.section}
+                >
                   <th scope="row">
                     <span className="fp-th-line">
                       <span className="fp-table-name">
+                        <span className="fp-sec-mark" aria-hidden />
                         {s.section}
                         <span className="fp-sr">, {s.name}</span>
                       </span>
@@ -453,6 +547,42 @@ function Overview({
             })}
           </tbody>
         </table>
+      </section>
+
+      <section className="fp-section" aria-labelledby="fp-fr-up-h">
+        <div className="fp-section-head">
+          <h2 className="fp-h2" id="fp-fr-up-h">
+            Nästa steg uppåt
+          </h2>
+          <span className="fp-meta">ett steg per delprov</span>
+        </div>
+        <ol className="fp-up">
+          {f.sections.map((s) => {
+            const u = upStep(s, data)
+            return (
+              <li key={s.section} className="fp-up-item" data-fp-sec={s.section}>
+                <p className="fp-up-head">
+                  <span className="fp-up-code">
+                    <span className="fp-sec-mark" aria-hidden />
+                    {s.section}
+                    <span className="fp-sr">, {s.name}</span>
+                  </span>
+                  {u.level ? <span className="fp-up-level">{u.level}</span> : null}
+                </p>
+                <p className="fp-up-text">{u.text}</p>
+                <button
+                  type="button"
+                  className="fp-link"
+                  onClick={() => actions.startDrill(u.request)}
+                  aria-label={`${u.action}, ${s.section}`}
+                >
+                  {u.action}
+                  <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
+                </button>
+              </li>
+            )
+          })}
+        </ol>
       </section>
 
       {p.total != null && rest.length ? (

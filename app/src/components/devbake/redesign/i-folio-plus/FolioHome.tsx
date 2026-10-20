@@ -149,7 +149,10 @@ export function FolioHome({
     onOpenItem ? onOpenItem(item) : actions.openPlanItem(item.id)
   // Without a paused sitting the lead is the plan's first open part.
   const leadItem = resume ? null : (plan.items.find((i) => !i.completed) ?? null)
-  const rows = leadItem ? plan.items.filter((i) => i !== leadItem) : plan.items
+  // Folio+ (Spår's day path): the day's steps, done first, then the one
+  // under way, then the ones to come.
+  const steps = daySteps(home)
+  const misses = missesOf(home.ovaDue, data.framsteg.totals.mistakesActive)
   const primary = resume ? onResume : leadItem ? () => openItem(leadItem) : null
   useKeyMap(primary ? { Enter: primary } : {}, live)
   const trap = home.traps.find((t) => t.rising) ?? home.traps[0]
@@ -200,46 +203,30 @@ export function FolioHome({
           </div>
         </Lead>
       ) : (
-        <Lead labelledBy="fp-resume-title">
-          <h2 className="fp-lead-title" id="fp-resume-title">
-            Dagens plan är klar.
+        // Folio+: every step of the day is done — the path's end card.
+        <section className="fp-resume fp-end" aria-labelledby="fp-end-title" data-fp-end>
+          <h2 className="fp-lead-title" id="fp-end-title">
+            <span className="fp-end-mark" aria-hidden>
+              <FlagMark />
+            </span>
+            Klart för idag
           </h2>
-          <p className="fp-empty">Öva gärna lite till – eller vila. Allt du gjort är sparat.</p>
+          <p className="fp-empty">
+            {steps.length ? `${allDone(steps.length)} ` : ''}
+            Öva gärna lite till – eller vila. Allt du gjort är sparat.
+          </p>
           <div className="fp-resume-foot">
             <button type="button" className="fp-btn" onClick={() => onGo('ova')}>
               Till Öva
             </button>
           </div>
-        </Lead>
+        </section>
       )}
 
-      {rows.length ? (
-        <section className="fp-section" aria-labelledby="fp-plan-h">
-          <div className="fp-section-head">
-            <h2 className="fp-h2" id="fp-plan-h">
-              Sedan
-            </h2>
-            <span className="fp-meta">
-              {plan.items.length} delar · {plan.minutes} min
-            </span>
-          </div>
-          <ol>
-            {rows.map((item, i) => (
-              <li key={item.id}>
-                {/* A finished part is a plain row: never offered as work. */}
-                <ContentsEntry
-                  code={i + 1}
-                  title={item.title}
-                  gloss={item.detail}
-                  page={item.completed ? 'klar' : `${item.minutes} min`}
-                  why={item.rationale}
-                  onClick={item.completed ? undefined : () => openItem(item)}
-                />
-              </li>
-            ))}
-          </ol>
-          <WeekLine week={home.week} />
-        </section>
+      {steps.length ? (
+        <DayPath steps={steps} openItem={openItem} week={home.week} misses={misses} />
+      ) : misses ? (
+        <MissesLine misses={misses} />
       ) : null}
     </>
   )
@@ -341,6 +328,221 @@ function ResumeLead({ resume, onResume }: { resume: ResumeView; onResume: () => 
         </span>
       </div>
     </Lead>
+  )
+}
+
+// ── Folio+ · the day path (Spår's stepper, set in Folio's type) ──────
+
+type StepState = 'done' | 'now' | 'next'
+
+/** One step of the day: a part of the plan, or the paused sitting. */
+type DayStep = {
+  key: string
+  state: StepState
+  title: string
+  gloss?: string
+  /** Where a contents list puts its page number: "klar", "nu", "6 min". */
+  page: string
+  why?: string
+  item?: PlanItemView
+}
+
+/** The day's steps in the order they are walked: the parts already done,
+ *  then the one under way (the paused sitting, else the plan's first open
+ *  part — the page's lead), then the ones to come. */
+function daySteps({ resume, plan }: HomeView): DayStep[] {
+  const steps: DayStep[] = plan.items
+    .filter((i) => i.completed)
+    .map((item) => ({
+      key: item.id,
+      state: 'done',
+      title: item.title,
+      gloss: item.detail,
+      page: 'klar',
+      why: item.rationale,
+      item,
+    }))
+  if (resume) {
+    steps.push({
+      key: 'resume',
+      state: 'now',
+      title: resume.title,
+      gloss: resume.section,
+      page: 'nu',
+      why: `Vid fråga ${resume.position} av ${resume.total} – fortsätt ovan.`,
+    })
+  }
+  plan.items
+    .filter((i) => !i.completed)
+    .forEach((item, i) => {
+      const now = !resume && i === 0
+      steps.push({
+        key: item.id,
+        state: now ? 'now' : 'next',
+        title: item.title,
+        gloss: item.detail,
+        page: now ? 'nu' : `${item.minutes} min`,
+        // The lead above already says why: the step only points at it.
+        why: now ? 'Börja ovan.' : item.rationale,
+        item,
+      })
+    })
+  return steps
+}
+
+/** "Alla tre stegen är gjorda." */
+function allDone(n: number): string {
+  return n === 1 ? 'Dagens steg är gjort.' : `Alla ${inWords(n)} stegen är gjorda.`
+}
+
+/** Today's repetition pile, and the whole queue when the data agrees it
+ *  holds at least that many (Framsteg counts the queue, Idag the day). */
+type Misses = { today: number; total: number | null }
+
+function missesOf(today: number, active: number): Misses | null {
+  if (today <= 0) return null
+  return { today, total: active >= today ? active : null }
+}
+
+/** A miss is moved, not lost: "↺ Lagd i Repetera", in neutral ink. */
+function MissesLine({ misses }: { misses: Misses }) {
+  return (
+    <p className="fp-misses" data-fp-misses>
+      <span className="fp-misses-tag">
+        <span aria-hidden>↺ </span>Lagd i Repetera
+      </span>
+      : {misses.today} {misses.today === 1 ? 'miss' : 'missar'} idag
+      {misses.total != null ? ` · ${misses.total} totalt` : ''}
+    </p>
+  )
+}
+
+const STATE_WORD: Record<StepState, string> = {
+  done: 'Klar: ',
+  now: 'Nu: ',
+  next: '',
+}
+
+function DayPath({
+  steps,
+  openItem,
+  week,
+  misses,
+}: {
+  steps: DayStep[]
+  openItem: (item: PlanItemView) => void
+  week: HomeView['week']
+  misses: Misses | null
+}) {
+  const done = steps.filter((s) => s.state === 'done').length
+  const finished = done === steps.length
+  return (
+    <section className="fp-section fp-day-path" aria-labelledby="fp-plan-h">
+      <div className="fp-section-head">
+        <h2 className="fp-h2" id="fp-plan-h">
+          Dagens steg
+        </h2>
+        <span className="fp-meta">
+          {done} av {steps.length} klara
+        </span>
+      </div>
+      <ol className="fp-path" aria-labelledby="fp-plan-h">
+        {steps.map((s, i) => {
+          const item = s.item
+          return (
+            <li key={s.key} className="fp-step" data-fp-step={s.state}>
+              <span className="fp-step-mark" aria-hidden>
+                {s.state === 'done' ? <CheckMark /> : i + 1}
+              </span>
+              <StepRow
+                step={s}
+                onClick={s.state === 'next' && item ? () => openItem(item) : undefined}
+              />
+            </li>
+          )
+        })}
+        <li className="fp-step fp-step--goal" data-fp-goal={finished ? 'reached' : 'ahead'}>
+          <span className="fp-step-mark" aria-hidden>
+            <FlagMark />
+          </span>
+          <p className="fp-step-goal">
+            <b>Klart för idag</b>
+            <span>
+              {finished
+                ? allDone(steps.length)
+                : `Efter ${inWords(steps.length)} steg är dagen klar.`}
+            </span>
+          </p>
+        </li>
+      </ol>
+      {misses ? <MissesLine misses={misses} /> : null}
+      <WeekLine week={week} />
+    </section>
+  )
+}
+
+/** A step as a contents entry: a plain row when done or under way (the
+ *  lead holds its action), a button for a step to come. */
+function StepRow({ step, onClick }: { step: DayStep; onClick?: () => void }) {
+  const body = (
+    <span className="fp-plan-body">
+      <span className="fp-plan-line">
+        <span className="fp-plan-title">
+          {STATE_WORD[step.state] ? <span className="fp-sr">{STATE_WORD[step.state]}</span> : null}
+          {step.title}
+          {step.gloss ? <span>{step.gloss}</span> : null}
+        </span>
+        <span className="fp-leader" aria-hidden />
+        <span className="fp-plan-min">
+          {step.page}
+          {onClick ? <ArrowRight size={15} strokeWidth={1.5} aria-hidden /> : null}
+        </span>
+      </span>
+      {step.why ? <span className="fp-plan-why">{step.why}</span> : null}
+    </span>
+  )
+  if (!onClick) {
+    return (
+      <div className="fp-plan-row fp-step-row" data-static="true">
+        {body}
+      </div>
+    )
+  }
+  return (
+    <button type="button" className="fp-plan-row fp-step-row" onClick={onClick}>
+      {body}
+    </button>
+  )
+}
+
+/** Folio's line weight (1.5 on a 24 grid), as the shell's icons. */
+function CheckMark() {
+  return (
+    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+      <path
+        d="M5 12.5l4.5 4.5L19 7.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+function FlagMark() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+      <path
+        d="M6 21V4m0 1h11l-2.5 4L17 13H6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   )
 }
 

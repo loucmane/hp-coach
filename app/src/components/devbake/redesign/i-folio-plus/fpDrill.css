@@ -1,0 +1,159 @@
+/* Folio+ · the reading drill's additions: Styckeljus (the paragraph light,
+ * borrowed from Ljuskägla), the ¶ numbers' hit areas, and the phone drill's
+ * inline question and its dock. Scoped to Folio+; folioPlus.css is left as
+ * it is and overridden here. */
+
+/* ── Styckeljus ─────────────────────────────────────────────────── */
+/* A gentle dim, in ink not opacity: the paragraphs out of the light step
+ * down to the page's third ink (still about 6:1 on the paper, light and
+ * dark); the lit one keeps full ink on a faint lamp-warm wash. */
+
+[data-rd='folio-plus'] {
+  --fp-light: color-mix(in oklch, var(--fp-mark) 34%, transparent);
+}
+
+[data-rd='folio-plus'] .fp-pbody .fp-para {
+  transition:
+    color var(--fp-d2) var(--fp-ease),
+    background-color var(--fp-d2) var(--fp-ease),
+    box-shadow var(--fp-d2) var(--fp-ease);
+}
+
+[data-rd='folio-plus'] .fp-pbody[data-focus='true'] .fp-para:not([data-focused='true']) {
+  opacity: 1;
+  color: var(--fp-ink-3);
+}
+
+[data-rd='folio-plus'] .fp-pbody[data-focus='true'] .fp-para[data-focused='true'] {
+  background-color: var(--fp-light);
+  box-shadow: 0 0 0 10px var(--fp-light);
+}
+
+[data-rd='folio-plus'] .fp-pbody[data-focus='true'] .fp-para[data-focused='true'] .fp-pnum {
+  color: var(--fp-accent-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-rd='folio-plus'] .fp-pbody .fp-para {
+    transition: none;
+  }
+}
+
+/* ── ¶ numbers: hit areas ───────────────────────────────────────── */
+/* The number stays small; its box grows to 24 px tall on the desktop and
+ * 44 × 44 px on phone. Negative margins keep the line box as it was, so
+ * the number still sits on the paragraph's first baseline. */
+
+[data-rd='folio-plus'] .fp-pnum.fp-pnum {
+  min-height: 24px;
+  padding-block: 6px;
+  margin-block: -6px;
+}
+
+[data-rd='folio-plus'] .fp-pnum.fp-pnum::after {
+  inset: -10px -4px;
+}
+
+/* Phone: the button fills the 44 px margin, the number right-aligned 8 px
+ * from the text as before. */
+[data-rd='folio-plus'] .fp-pdrill .fp-pnum.fp-pnum {
+  box-sizing: border-box;
+  width: 44px;
+  min-height: 44px;
+  margin: -16px 0 -16px -44px;
+  padding: 16px 8px 16px 0;
+}
+
+[data-rd='folio-plus'] .fp-pdrill .fp-pnum.fp-pnum::after {
+  inset: 0;
+}
+
+/* ── Phone: the question inline, under the passage ──────────────── */
+
+[data-rd='folio-plus'] .fp-pq {
+  margin-top: var(--fp-s8);
+  padding: var(--fp-s6) 20px 0;
+  border-top: 1px solid var(--fp-rule);
+}
+
+[data-rd='folio-plus'] .fp-pq .fp-prompt {
+  font-size: var(--fp-t19);
+  line-height: 1.38;
+}
+
+[data-rd='folio-plus'] .fp-pq .fp-opts {
+  margin-top: var(--fp-s4);
+}
+
+[data-rd='folio-plus'] .fp-pq .fp-opt {
+  grid-template-columns: 30px minmax(0, 1fr) 44px;
+  column-gap: 10px;
+  padding: var(--fp-s3) 0;
+}
+
+[data-rd='folio-plus'] .fp-pq .fp-opt::before {
+  left: -12px;
+  top: var(--fp-s3);
+  bottom: var(--fp-s3);
+}
+
+[data-rd='folio-plus'] .fp-pq .fp-opt-main {
+  grid-template-columns: 30px minmax(0, 1fr);
+  column-gap: 10px;
+  min-height: 44px;
+}
+
+[data-rd='folio-plus'] .fp-pq .fp-letter {
+  width: 30px;
+  height: 30px;
+}
+
+[data-rd='folio-plus'] .fp-pq .fp-opt-x {
+  height: 44px;
+}
+
+/* ── Phone: the dock ────────────────────────────────────────────── */
+/* The slip at its peek while a question is open: the place and a jump to
+ * the question on one line, then the echo beside Svara — low enough that
+ * the passage keeps the screen. */
+
+[data-rd='folio-plus'] .fp-sheet.fp-dock .fp-dock-head {
+  padding: var(--fp-s3) 20px 0;
+}
+
+[data-rd='folio-plus'] .fp-sheet.fp-dock .fp-actionbar {
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: var(--fp-s3);
+  padding: var(--fp-s2) 20px max(var(--fp-s4), env(safe-area-inset-bottom));
+}
+
+[data-rd='folio-plus'] .fp-sheet.fp-dock .fp-actionbar::before {
+  display: none;
+}
+
+[data-rd='folio-plus'] .fp-sheet.fp-dock .fp-actionbar .fp-btn {
+  flex: none;
+  width: auto;
+  min-width: 132px;
+  min-height: 48px;
+}
+
+[data-rd='folio-plus'] .fp-sheet.fp-dock .fp-actionbar .fp-echo {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+/* ── Uppslag: the way back to the question ──────────────────────── */
+
+[data-rd='folio-plus'] .fp-up-return {
+  justify-self: start;
+  white-space: nowrap;
+}
+
+/* Phone: above the masthead, at the page's left edge, where Avsluta is in
+ * a drill. */
+[data-rd='folio-plus'] .fp-up > .fp-up-return {
+  margin: 0 0 var(--fp-s3) calc(-1 * var(--fp-s3));
+}

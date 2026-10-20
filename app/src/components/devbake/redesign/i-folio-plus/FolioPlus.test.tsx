@@ -151,7 +151,7 @@ describe('Folio · Idag on the data context', () => {
     expect(screen.getByTestId('rd-nav-ova')).toHaveAttribute('aria-current', 'page')
     fireEvent.click(screen.getByTestId('rd-nav-provpass'))
     expect(go).toHaveBeenLastCalledWith('provpass')
-    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'Öva på tid.' })).toBeInTheDocument()
     fireEvent.click(screen.getByTestId('rd-nav-framsteg'))
     expect(go).toHaveBeenLastCalledWith('framsteg')
     expect(screen.getByRole('heading', { level: 1, name: 'Framsteg' })).toBeInTheDocument()
@@ -391,7 +391,8 @@ describe('Folio · Kvantfråga', () => {
     const exit = vi.fn()
     const next = vi.fn()
     mount(6, { actions: { drill: { lock, exit, next } } })
-    // XYZ: the tactic hangs in the margin until the answer.
+    // XYZ: the tactic waits in the margin behind "Visa taktik" until the answer.
+    fireEvent.click(screen.getByRole('button', { name: 'Visa taktik' }))
     expect(screen.getByRole('complementary', { name: 'Taktik' })).toHaveTextContent(
       'Stapelbråksreceptet',
     )
@@ -614,8 +615,8 @@ describe('Folio · DTK', () => {
     const viewer = screen.getByRole('dialog', { name: 'Förstorad figur' })
     expect(within(viewer).getByRole('button', { name: /Stäng/ })).toHaveFocus()
     expect(document.querySelector('.fp-qroot')).toHaveAttribute('inert')
-    press('b')
-    expect(screen.getByTestId('rd-quant-option-B')).toHaveAttribute('aria-pressed', 'false')
+    press('b') // Folio+: the viewer keeps the question; a letter chooses on the drill's state
+    expect(screen.getByTestId('rd-quant-option-B')).toHaveAttribute('aria-pressed', 'true')
     expect(within(viewer).getByText('100 %')).toBeInTheDocument()
     press('+')
     expect(within(viewer).getByText('150 %')).toBeInTheDocument()
@@ -629,7 +630,10 @@ describe('Folio · DTK', () => {
     window.removeEventListener('keydown', switcher)
     press('Escape')
     expect(screen.queryByRole('dialog')).toBeNull()
-    await vi.waitFor(() => expect(opener).toHaveFocus())
+    // Folio+: focus goes to the question, not back to Förstora (Enter would reopen it).
+    await vi.waitFor(() =>
+      expect(document.activeElement?.hasAttribute('data-fp-qregion')).toBe(true),
+    )
     fireEvent.click(opener)
     expect(within(screen.getByRole('dialog')).getByText('150 %')).toBeInTheDocument()
   })
@@ -675,7 +679,7 @@ const cell = (n: number) => screen.getByTestId(`rd-prov-cell-${n}`)
 function expectEnded(title: string) {
   expect(screen.queryByTestId('rd-prov-running')).toBeNull()
   expect(screen.getByRole('heading', { level: 1, name: title })).toBeInTheDocument()
-  expect(screen.getByRole('button', { name: /^Till anmälan/ })).toBeEnabled()
+  expect(screen.getByRole('button', { name: /^Till provpassen/ })).toBeEnabled()
   expect(screen.getByTestId('rd-nav-idag')).toBeEnabled()
   expect(screen.getByTestId('rd-nav-provpass')).toHaveAttribute('aria-current', 'page')
   expect(document.querySelector('[data-rd-keyscope]')).toBeNull()
@@ -689,20 +693,20 @@ describe('Folio · Provpass, the hub', () => {
     const startProvpass = vi.fn()
     const openProvResult = vi.fn()
     mount(9, { actions: { startProvpass, openProvResult } })
-    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'Öva på tid.' })).toBeInTheDocument()
     expect(
       screen.getByText(
-        '40 frågor, 55 minuter, riktiga provvillkor – ingen feedback förrän du lämnar in.',
+        'Ett övningspass under riktiga provvillkor: 40 frågor på 55 minuter – ingen feedback förrän du lämnar in.',
       ),
     ).toBeInTheDocument()
     expect(screen.getByTestId('rd-prov-half-kvant')).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByText('Kallelse · minst sett')).toBeInTheDocument()
+    expect(screen.getByText('Förslag · minst sett')).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { level: 2, name: 'Hösten 2025, provpass 1' }),
     ).toBeInTheDocument()
     expect(screen.getByText('Kvantitativ · XYZ 12 · KVA 10 · NOG 6 · DTK 12')).toBeInTheDocument()
     expect(screen.getByText(/^Du har sett 6 av 40 frågor\./)).toBeInTheDocument()
-    expect(screen.getByText(`Inskriven: ${FIXTURE_DATA.konto.identity.name}`)).toBeInTheDocument()
+    expect(screen.queryByText(/^Inskriven:/)).toBeNull()
     // The register: sittings newest first, leader dots to their two passes.
     const table = screen.getByRole('table')
     const sittings = within(table)
@@ -974,8 +978,8 @@ describe('Folio · Provpass, the running pass', () => {
     act(() => vi.advanceTimersByTime(5000))
     supply(structuredClone(next))
     expect(submitProvpass).toHaveBeenCalledTimes(1)
-    fireEvent.click(screen.getByRole('button', { name: /^Till anmälan/ }))
-    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /^Till provpassen/ }))
+    expect(screen.getByRole('heading', { level: 1, name: 'Öva på tid.' })).toBeInTheDocument()
   })
 
   it('hands in once on its own clock too, even with the abandon slip open', () => {
@@ -1014,7 +1018,7 @@ describe('Folio · Provpass, the running pass', () => {
       expect(screen.getByTestId('rd-account')).toBeEnabled()
       // The contents' Provpass opens the hub too.
       fireEvent.click(screen.getByTestId('rd-nav-provpass'))
-      expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+      expect(screen.getByRole('heading', { level: 1, name: 'Öva på tid.' })).toBeInTheDocument()
       view.unmount()
     }
   })
@@ -1046,7 +1050,7 @@ describe('Folio · Provpass, the running pass', () => {
     fireEvent.click(screen.getByTestId('rd-prov-submit'))
     const slip = screen.getByRole('dialog', { name: 'Lämna in provpasset?' })
     expect(slip).toHaveTextContent('En fråga är obesvarad – fel ger inga avdrag, så gissa hellre.')
-    fireEvent.click(within(slip).getByRole('button', { name: 'Gå till fråga 22' }))
+    fireEvent.click(within(slip).getByRole('button', { name: 'Till fråga 22, obesvarad' }))
     expect(screen.queryByRole('dialog')).toBeNull()
     expect(cell(22)).toHaveAttribute('data-current', 'true')
     press('c')
@@ -1064,7 +1068,7 @@ describe('Folio · Provpass, the running pass', () => {
     expectEnded('Passet är inlämnat.')
     expect(screen.getByTestId('rd-prov-ended')).toHaveTextContent('40 av 40 frågor besvarade')
     press('Enter')
-    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'Öva på tid.' })).toBeInTheDocument()
     expect(submitProvpass).toHaveBeenCalledTimes(1)
   })
 
@@ -1138,7 +1142,7 @@ describe('Folio · Provpass, the running pass', () => {
     ).toBeInTheDocument()
     press('Enter')
     expect(submitProvpass).toHaveBeenCalledTimes(1)
-    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'Öva på tid.' })).toBeInTheDocument()
     // Handed in, not voided or run out: the hub has no note to give.
     expect(screen.queryByText(/^Provet avbröts|^Passet hann ta slut/)).toBeNull()
   })
@@ -1223,7 +1227,7 @@ describe('Folio · Provpass, the running pass', () => {
     none.provpass.running.questions = []
     none.provpass.running.grid = []
     supply(none)
-    fireEvent.click(screen.getByRole('button', { name: 'Till anmälan' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Till provpassen' }))
     expect(
       screen.getByText('Passets frågor gick inte att visa. Inget har räknats.'),
     ).toBeInTheDocument()
@@ -1648,7 +1652,7 @@ describe('Folio · Provpassresultat', () => {
     expect(openRepetera).toHaveBeenCalledTimes(2)
     press('Escape')
     expect(go).toHaveBeenLastCalledWith('provpass')
-    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'Öva på tid.' })).toBeInTheDocument()
   })
 
   it('says a clean pass, a linear estimate, a time-out and a short pass plainly', () => {
@@ -2630,15 +2634,15 @@ describe('Folio · ELF-läsfråga', () => {
     expect(marks()[1].querySelector('s')).toHaveTextContent('cover')
   })
 
-  it('holds the gap and its sentence in the phone slip’s peek', () => {
+  it('holds the gap and its sentence beside the inline options on phone', () => {
     mount(14, { data: gapData(), width: 'phone' })
     const sheet = screen.getByTestId('rd-sheet')
     expect(sheet).toHaveAttribute('data-state', 'peek')
-    expect(within(sheet).getByRole('heading', { level: 2, name: 'Lucka 1' })).toBeInTheDocument()
-    expect(sheet.querySelector('.fp-gapquote')).toHaveTextContent('though nobody quite takes')
-    expect(
-      within(sheet).getByRole('button', { name: /Visa de fyra alternativen/ }),
-    ).toBeInTheDocument()
+    // Folio+: the question stands inline under the passage, options and all.
+    const question = document.querySelector('.fp-pq') as HTMLElement
+    expect(within(question).getByRole('heading', { level: 2, name: 'Lucka 1' })).toBeInTheDocument()
+    expect(question.querySelector('.fp-gapquote')).toHaveTextContent('though nobody quite takes')
+    expect(within(question).getByTestId('rd-option-A')).toBeInTheDocument()
   })
 })
 
@@ -2959,4 +2963,35 @@ describe('Folio · ELF answers only a complete question', () => {
     expect(lock).toHaveBeenCalledTimes(1)
     expect(lock).toHaveBeenCalledWith(expect.objectContaining({ qid: Q.qid }), 'A')
   })
+})
+
+describe('Folio+ · the way back from a lesson, through the host', () => {
+  // jsdom has no layout: give the stage the room of a 1440 × 900 window.
+  beforeEach(() => {
+    vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+    vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(848)
+  })
+  afterEach(() => vi.restoreAllMocks())
+
+  it('opens the facit’s lesson on Uppslag and brings the reader back to that feedback', async () => {
+    const Q3 = FIXTURE_DATA.drills.reading.questions[2]
+    const wrong = FIXTURE_DATA.drills.reading.wrongPick?.[Q3.qid]
+    const pick = (['A', 'B', 'C', 'D'] as const).find((l) => l !== Q3.answer && l !== wrong)
+    if (!pick) throw new Error('no other wrong option')
+    const onSelect = mountHost(2)
+    fireEvent.click(await screen.findByTestId(`rd-option-${pick}`, {}, { timeout: 5000 }))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    fireEvent.click(screen.getByRole('button', { name: /^Slå upp/ }))
+    expect(onSelect).toHaveBeenLastCalledWith(expect.objectContaining({ s: 12 }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Tillbaka till frågan' }))
+    expect(onSelect).toHaveBeenLastCalledWith(expect.objectContaining({ s: 3 }))
+    const mine = (await screen.findByText('Ditt svar')).closest('.fp-opt')
+    expect(mine).toHaveTextContent(new RegExp(`^${pick}`))
+  }, 15000)
+
+  it('offers no way back on a lesson reached from the contents', async () => {
+    mountHost(12)
+    await screen.findByTestId('rd-lesson', {}, { timeout: 5000 })
+    expect(screen.queryByRole('button', { name: 'Tillbaka till frågan' })).toBeNull()
+  }, 15000)
 })

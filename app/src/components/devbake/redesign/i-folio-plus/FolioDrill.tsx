@@ -2,7 +2,10 @@
 //
 // Desktop: two facing pages and no app bar. Each page carries its own
 // running head, as a book does: the verso's holds the exit, LÄS ·
-// ÖVNINGSTEXT and Styckefokus; the recto's the position and the clock.
+// ÖVNINGSTEXT and Styckeljus; the recto's the position and the clock.
+// Styckeljus (borrowed from Ljuskägla) is the optional reading light: off
+// by default and remembered for the session, it greys every paragraph but
+// the one being read, and follows J/K, a ¶ number, a ¶ link and the scroll.
 // The verso carries the passage with ¶ numbers on each first baseline in
 // the margin; the recto carries the question, its options set as an
 // indented list between hairlines (no boxes). After the answer the recto
@@ -12,9 +15,11 @@
 // passage itself, and a ¶ link marks the exact sentence it points at. The
 // fold between the pages is a resizable separator (drag, or ←/→ when
 // focused).
-// Phone: the passage first, the whole question in a sheet that peeks,
-// opens and goes full for the explanation; the head folds to a strip while
-// reading, so the exit, the ¶ aid and a thin progress line stay in reach.
+// Phone: one column — the passage, then the question with its options
+// inline (no sheet step to reach them); a dock at the foot holds the
+// question's place, a jump to it and Svara. The facit is a sheet that goes
+// full; the head folds to a strip while reading, so the exit, the ¶ aid and
+// a thin progress line stay in reach.
 //
 // Kit v2: the sitting is useDirectionData().data.drills.reading, its state
 // is useDrillCore graded by actions.drill; round 1's switcher moves (a lock
@@ -42,6 +47,7 @@
 // switcher keeps its digits and ←/→ from anywhere in a drill.
 
 import {
+  ArrowDown,
   ArrowRight,
   Check,
   ChevronDown,
@@ -72,6 +78,7 @@ import {
   useState,
 } from 'react'
 
+import './fpDrill.css'
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
   type DrillCoreActions,
@@ -105,8 +112,108 @@ import { Dots } from './FolioHome'
 
 /** A pace for the folded clock's line: about four minutes a question. */
 const PACE_SECONDS = 15 * 60
-/** Option counts in prose ("de fyra alternativen": neuter). */
-const WORDS = ['noll', 'ett', 'två', 'tre', 'fyra', 'fem']
+
+// ── Styckeljus: the paragraph light (from Ljuskägla) ─────────────────
+
+/** Where the light's on/off is kept for the browser session. */
+const LIGHT_KEY = 'fp-styckeljus'
+/** The session's choice when the browser keeps no storage. */
+let lightMemory = false
+
+/** Whether the reader turned Styckeljus on earlier this session (off by
+ *  default). Session storage when the browser has it, else this page's
+ *  memory. */
+function readLight(): boolean {
+  try {
+    const v = window.sessionStorage.getItem(LIGHT_KEY)
+    return v == null ? false : v === 'on'
+  } catch {
+    return lightMemory
+  }
+}
+
+function writeLight(on: boolean): void {
+  lightMemory = on
+  try {
+    window.sessionStorage.setItem(LIGHT_KEY, on ? 'on' : 'off')
+  } catch {
+    // No storage: the page's memory holds it.
+  }
+}
+
+/** Styckeljus on or off, remembered within the session across drills. */
+function useStyckeljus(): [boolean, (on: boolean) => void] {
+  const [on, setOn] = useState(readLight)
+  const set = useCallback((next: boolean) => {
+    writeLight(next)
+    setOn(next)
+  }, [])
+  return [on, set]
+}
+
+/** How long a move of the reader's own (J/K, a ¶ number, a ¶ link) keeps
+ *  the light from following the scroll it causes. */
+const LIGHT_QUIET_MS = 700
+
+/**
+ * The light follows the reading: while it is on, a scroll of the passage's
+ * box lights the paragraph nearest the reading line (a third down the box).
+ * Turning it on lights the paragraph in view. A move of the reader's own
+ * sets `quiet`, so its own scroll never moves the light again.
+ */
+function useLightFollow(
+  box: RefObject<HTMLElement | null>,
+  on: boolean,
+  live: boolean,
+  quiet: RefObject<number>,
+  follow: (n: number) => void,
+): void {
+  const followRef = useRef(follow)
+  followRef.current = follow
+  useEffect(() => {
+    const el = box.current
+    if (!el || !on || !live) return
+    const pick = () => {
+      if (Date.now() < (quiet.current ?? 0)) return
+      const r = el.getBoundingClientRect()
+      if (r.height === 0) return
+      const line = r.top + r.height / 3
+      let best: HTMLElement | null = null
+      let bestD = Number.POSITIVE_INFINITY
+      for (const p of el.querySelectorAll<HTMLElement>('.fp-pbody .fp-para[data-n]')) {
+        const b = p.getBoundingClientRect()
+        const d = line < b.top ? b.top - line : line > b.bottom ? line - b.bottom : 0
+        if (d < bestD) {
+          best = p
+          bestD = d
+        }
+      }
+      if (best) followRef.current(Number(best.dataset.n))
+    }
+    let frame = 0
+    const onScroll = () => {
+      window.cancelAnimationFrame(frame)
+      frame = window.requestAnimationFrame(pick)
+    }
+    pick()
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      el.removeEventListener('scroll', onScroll)
+      window.cancelAnimationFrame(frame)
+    }
+  }, [box, on, live, quiet])
+}
+
+// ── A drill parked for a lesson ──────────────────────────────────────
+
+/** Where a reading drill stood when its facit looked its pattern up in
+ *  Uppslag, by sitting: the shell brings the reader back to exactly that
+ *  feedback (FolioDrill's `returning`). */
+type Parked = { start: DrillStart; elapsed: number }
+const parked = new Map<string, Parked>()
+
+/** The facit's "Slå upp" parks its drill first, when a drill provides it. */
+const ParkForLesson = createContext<(() => void) | null>(null)
 
 // ── The drill-view seam ──────────────────────────────────────────────
 
@@ -752,7 +859,14 @@ function useShrinkKey(length: number): number {
   return epoch.current
 }
 
-export function FolioDrill(props: DirectionProps & { origin: Origin }) {
+export function FolioDrill(
+  props: DirectionProps & {
+    origin: Origin
+    /** The reader comes back from a lesson the facit looked up: the
+     *  sitting opens where it was parked, at that question's feedback. */
+    returning?: boolean
+  },
+) {
   const { data } = useDirectionData()
   const elf = props.screen === 14
   const session = elf ? data.drills.elf : data.drills.reading
@@ -784,17 +898,28 @@ function ReadingDrill({
   origin,
   session,
   switcher,
+  returning = false,
 }: DirectionProps & {
   origin: Origin
   session: DrillSessionView
   /** Round 1's Läsfråga and Facit (2 and 3): the switcher follows the
    *  drill. ELF (14) asks only through actions. */
   switcher: boolean
+  returning?: boolean
 }) {
   const { data, actions } = useDirectionData()
+  const parkKey = `${switcher ? 'las' : 'elf'}:${session.id}`
+  // Back from a lesson: the sitting as it was parked, taken once.
+  const [restored] = useState<Parked | null>(() => {
+    if (!returning) return null
+    const p = parked.get(parkKey) ?? null
+    parked.delete(parkKey)
+    return p && session.questions[p.start.index ?? 0] ? p : null
+  })
   // Screen 3 opens the sitting's question already graded with the bake-off's
   // wrong pick (a display state: the controller is not called).
   const [start] = useState<DrillStart>(() => {
+    if (restored) return restored.start
     const qid = session.questions[session.start.index ?? 0]?.qid
     return {
       ...session.start,
@@ -805,7 +930,7 @@ function ReadingDrill({
     questions: session.questions,
     explanations: session.explanations,
     start,
-    elapsed: session.elapsedSeconds,
+    elapsed: restored?.elapsed ?? session.elapsedSeconds,
     controller: actions.drill,
     live,
   })
@@ -845,23 +970,35 @@ function ReadingDrill({
 
   // Focus follows the reader's own moves only (never a mount or a switcher
   // jump): to the verdict on Svara, to the next question's prompt on
-  // Nästa, to the colophon at the end.
-  const focusAfter = useRef<FocusAfter | null>(null)
+  // Nästa, to the colophon at the end — and to the verdict again when the
+  // reader comes back from a lesson.
+  const focusAfter = useRef<FocusAfter | null>(restored ? 'verdict' : null)
   const targets = useRef<Partial<Record<FocusAfter, HTMLElement | null>>>({})
-  const verdictRef = useCallback((el: HTMLElement | null) => {
-    targets.current.verdict = el
-  }, [])
-  const promptRef = useCallback((el: HTMLElement | null) => {
-    targets.current.prompt = el
-  }, [])
-  const doneRef = useCallback((el: HTMLElement | null) => {
-    targets.current.done = el
-  }, [])
+  // A target not on the page yet (the phone's facit sheet opens a render
+  // later): focus waits for it, and lands as it mounts.
+  const pending = useRef<FocusAfter | null>(null)
+  const target = useCallback(
+    (name: FocusAfter) => (el: HTMLElement | null) => {
+      targets.current[name] = el
+      if (el && pending.current === name) {
+        pending.current = null
+        el.focus({ preventScroll: true })
+      }
+    },
+    [],
+  )
+  const verdictRef = useMemo(() => target('verdict'), [target])
+  const promptRef = useMemo(() => target('prompt'), [target])
+  const doneRef = useMemo(() => target('done'), [target])
   // biome-ignore lint/correctness/useExhaustiveDependencies: runs when the phase or question changes
   useLayoutEffect(() => {
     const to = focusAfter.current
     focusAfter.current = null
-    if (live && to) targets.current[to]?.focus({ preventScroll: true })
+    pending.current = null
+    if (!live || !to) return
+    const el = targets.current[to]
+    if (el) el.focus({ preventScroll: true })
+    else pending.current = to
   }, [phase, core.view.index])
 
   const lock = useCallback(() => {
@@ -890,29 +1027,88 @@ function ReadingDrill({
   // rules only, so the ELF facit shows none rather than wrong ones (spec
   // screen 14).
   const english = contentLang(current.question) === 'en'
+
+  // Styckeljus: on or off for the session; the lit paragraph is the core's
+  // focus paragraph, and the last one lit while a new question has none.
+  const [light, setLight] = useStyckeljus()
+  const count = core.view.passage?.paragraphs.length ?? 0
+  const lastLit = useRef(1)
+  if (core.view.focusPara != null) lastLit.current = core.view.focusPara
+  const lit = light && count > 0 ? Math.min(count, core.view.focusPara ?? lastLit.current) : null
+  const quiet = useRef(0)
+  const hush = () => {
+    quiet.current = Date.now() + LIGHT_QUIET_MS
+  }
+  const { setFocusPara: coreSetPara, moveFocusPara: coreMovePara, cite: coreCite } = core.act
+  // The light on with no paragraph of its own (a new question): the core
+  // takes the one lit, so J and K step on from it.
+  useEffect(() => {
+    if (lit != null && core.view.focusPara == null) coreSetPara(lit)
+  }, [lit, core.view.focusPara, coreSetPara])
+
+  const shown = lit === current.focusPara ? current : { ...current, focusPara: lit }
   const view: DrillCoreView = english
-    ? { ...current, stepCites: {}, distractorCites: {}, cited: [], marks: [] }
-    : current
+    ? { ...shown, stepCites: {}, distractorCites: {}, cited: [], marks: [] }
+    : shown
   const lack = view.phase === 'question' ? lackOf(view.question, pictures) : null
   const gapOf = gapNumbers(session.questions)
   const gaps = gapModel(view, session.questions, gapOf)
   const act: DrillAct = {
     select: core.act.select,
     toggleEliminate: core.act.toggleEliminate,
-    setFocusPara: core.act.setFocusPara,
-    moveFocusPara: core.act.moveFocusPara,
-    cite: core.act.cite,
+    // A ¶ number lights its paragraph (turning the light on); the lit one
+    // again, or Esc, turns it off.
+    setFocusPara: (n) => {
+      if (n == null) {
+        setLight(false)
+        coreSetPara(null)
+        return
+      }
+      hush()
+      setLight(true)
+      coreSetPara(n)
+    },
+    // J and K move the light, turning it on first.
+    moveFocusPara: (delta) => {
+      hush()
+      if (!light) setLight(true)
+      coreMovePara(delta)
+    },
+    // A ¶ link is a move too: the light goes with it.
+    cite: (n, source) => {
+      hush()
+      if (light) coreSetPara(n)
+      coreCite(n, source)
+    },
     toggleStep: core.act.toggleStep,
     goToStep: core.act.goToStep,
     lock,
     next,
     exit,
   }
+  // The scroll the light follows lights a paragraph without a move.
+  const follow = useCallback((n: number) => coreSetPara(n), [coreSetPara])
 
   const seam = drillSeam(session, view.question, 'Slutför texten')
   const [note, setNote] = useState(false)
-  const focusOn = view.focusPara != null
-  const toggleFocus = () => act.setFocusPara(focusOn ? null : 1)
+  const focusOn = lit != null
+  const toggleFocus = () => {
+    if (focusOn) act.setFocusPara(null)
+    else setLight(true)
+  }
+  // The facit's Slå upp parks the drill here, at this feedback.
+  const park = () => {
+    const v = core.view
+    if (v.phase !== 'feedback' || !v.picked) return
+    parked.set(parkKey, {
+      start: {
+        index: v.index,
+        results: v.results.filter((r) => r.qid !== v.question.qid),
+        graded: v.picked,
+      },
+      elapsed: v.elapsed,
+    })
+  }
   // The day goes on: the plan's next part is the colophon's one action.
   const nextItem = data.home.plan.items.find((i) => !i.completed)
   const onNext = nextItem ? () => actions.openPlanItem(nextItem.id) : undefined
@@ -963,10 +1159,15 @@ function ReadingDrill({
     lack,
     gate: { ready, hold: holdOf(lack) },
     onRetry: retry,
+    live,
+    quiet,
+    follow,
   }
   return (
     <PictureGate.Provider value={pictureGate}>
-      {width === 'phone' ? <PhoneDrill {...chrome} /> : <DeskDrill {...chrome} />}
+      <ParkForLesson.Provider value={park}>
+        {width === 'phone' ? <PhoneDrill {...chrome} /> : <DeskDrill {...chrome} />}
+      </ParkForLesson.Provider>
     </PictureGate.Provider>
   )
 }
@@ -1001,6 +1202,11 @@ type DrillChrome = Shared & {
   gate: Gate
   /** Tries the pictures afresh. */
   onRetry: () => void
+  live: boolean
+  /** Until when the light does not follow the scroll (a move's own). */
+  quiet: RefObject<number>
+  /** Lights a paragraph the scroll has brought to the reading line. */
+  follow: (n: number) => void
 }
 
 /** Scrolls `el` into view inside its own scroll box (`box`), clear of the
@@ -1030,6 +1236,7 @@ function DeskDrill(chrome: DrillChrome) {
   const versoRef = useRef<HTMLElement>(null)
   const firstTurn = useRef(true)
   const synthetic = view.question.passage?.synthetic ?? false
+  useLightFollow(versoRef, focusOn, chrome.live, chrome.quiet, chrome.follow)
 
   // A new question or a fresh verdict starts at the top of the recto; a
   // verdict also turns the verso to the evidence its steps cite (instantly
@@ -1091,13 +1298,13 @@ function DeskDrill(chrome: DrillChrome) {
       {badge}
       <button
         type="button"
-        className="fp-ghost"
+        className="fp-ghost fp-light-btn"
         aria-pressed={focusOn}
         onClick={toggleFocus}
-        title="Styckefokus: F slår på, J och K byter stycke"
+        title="Styckeljus: F slår på och av, J och K byter stycke"
       >
         <Pilcrow size={16} strokeWidth={1.5} aria-hidden />
-        Styckefokus
+        Styckeljus
       </button>
     </header>
   )
@@ -1413,7 +1620,7 @@ export function KeyHints({ letters, focus = false }: { letters: AnswerLetter[]; 
       </span>
       {focus ? (
         <span>
-          <kbd className="fp-kbd">F</kbd> styckefokus
+          <kbd className="fp-kbd">F</kbd> styckeljus
         </span>
       ) : null}
     </p>
@@ -1900,6 +2107,7 @@ export function Facit({
   refs: Pick<DrillCoreRefs, 'step'>
 } & Pointing) {
   const { data, actions } = useDirectionData()
+  const park = useContext(ParkForLesson)
   const e = view.explanation
   if (!e) {
     return (
@@ -1923,8 +2131,11 @@ export function Facit({
     onBlur: () => point(null),
   })
   // Folio records the request on its way to the host (Folio.tsx).
+  // A reading drill parks itself first, so the lesson can lead back here.
   const lookUp = () => {
-    if (frameworkId) actions.openLesson(frameworkId)
+    if (!frameworkId) return
+    park?.()
+    actions.openLesson(frameworkId)
   }
   return (
     <div className="fp-facit">
@@ -2134,15 +2345,18 @@ function Distractor({
               <MathText>{text}</MathText>
             </InLang>
           </p>
+          {/* Each disclosure is named by its own letter (one name for all
+           *  of them told a screen reader nothing); its state is
+           *  aria-expanded, and the chevron turns. */}
           {reasons ? (
             <button
               type="button"
-              className="fp-more"
+              className="fp-more fp-dis-more"
               aria-expanded={open}
               aria-controls={bodyId}
               onClick={() => setOpen(!open)}
             >
-              {open ? 'Dölj' : 'Varför det lockar – och varför det är fel'}
+              Varför inte {d.letter}
               <ChevronRight size={14} strokeWidth={1.75} aria-hidden />
             </button>
           ) : null}
@@ -2505,25 +2719,65 @@ export function FolioSlip({
 
 // ── Phone ────────────────────────────────────────────────────────────
 
+/** Room under the passage for what lies over it: the dock while a question
+ *  is open, the facit's peek or its fold after the answer. */
+const DOCK_ROOM = 152
+
+/**
+ * The phone drill. While a question is open the page is one column: the
+ * passage, then the question with its options inline, so an option is a
+ * scroll away and never a sheet step. The slip (rd-sheet) is a dock at its
+ * peek: the question's place, a jump to the question while it is out of
+ * view, and Svara. After the answer the slip goes full for the facit, as
+ * before, and folds to its peek for a ¶ link.
+ */
 function PhoneDrill(chrome: DrillChrome) {
   const { view, act, refs, seam, note, setNote, focusOn, toggleFocus, clocked, gap, gaps } = chrome
   const { state: sheet, setState: setSheet, toggle, grab } = useSheet(view)
   const { hidden: compact, onScroll: onHeadScroll } = useHideOnScroll()
   const synthetic = view.question.passage?.synthetic ?? false
+  const feedback = view.phase === 'feedback'
   // The passage's own badge has scrolled away: the sheet carries it.
   const [badgeGone, setBadgeGone] = useState(false)
+  // The inline question has come into view above the dock: the jump rests.
+  const [questionSeen, setQuestionSeen] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const questionRef = useRef<HTMLElement>(null)
+  const dockRef = useRef<HTMLElement>(null)
+  const seeQuestion = (box: HTMLElement) => {
+    const q = questionRef.current
+    if (!q) return
+    const r = box.getBoundingClientRect()
+    if (r.height === 0) return
+    const dock = dockRef.current?.getBoundingClientRect().height ?? DOCK_ROOM
+    setQuestionSeen(q.getBoundingClientRect().top < r.bottom - dock - 24)
+  }
   const onScroll = (e: { currentTarget: HTMLElement }) => {
     onHeadScroll(e)
     setBadgeGone(e.currentTarget.scrollTop > 120)
+    seeQuestion(e.currentTarget)
   }
-  const scrollRef = useRef<HTMLDivElement>(null)
-  // A gap text keeps the open gap in view, above the slip's top edge.
+  useLightFollow(scrollRef, focusOn, chrome.live, chrome.quiet, chrome.follow)
+
+  // A new question after the first: the passage is read, so the page turns
+  // to the new question (a gap text instead keeps its open gap in view,
+  // above the dock).
+  const firstQuestion = useRef(true)
   // biome-ignore lint/correctness/useExhaustiveDependencies: a new question or a sheet move only
   useEffect(() => {
-    if (view.phase !== 'question' || gap == null) return
+    if (view.phase !== 'question') {
+      firstQuestion.current = false
+      return
+    }
     const box = scrollRef.current
-    scrollInto(box, box?.querySelector(`[data-gap="${gap}"]`), 96)
-  }, [view.index, sheet])
+    const first = firstQuestion.current
+    firstQuestion.current = false
+    if (gap != null) {
+      scrollInto(box, box?.querySelector(`[data-gap="${gap}"]`), 96)
+      return
+    }
+    if (!first && sheet === 'peek') scrollInto(box, questionRef.current, 72)
+  }, [view.index, view.phase, sheet])
 
   // A ¶ link folds the sheet to its peek so the cited paragraph shows.
   const cite = (n: number, source?: string) => {
@@ -2531,6 +2785,13 @@ function PhoneDrill(chrome: DrillChrome) {
     act.cite(n, source)
   }
   const sheetAct: DrillAct = { ...act, cite }
+  // The dock's jump: to the question, focus on its prompt.
+  const toQuestion = () => {
+    const q = questionRef.current
+    scrollInto(scrollRef.current, q, 72)
+    q?.querySelector<HTMLElement>('.fp-prompt')?.focus({ preventScroll: true })
+    setQuestionSeen(true)
+  }
 
   if (view.phase === 'done') {
     return (
@@ -2542,9 +2803,12 @@ function PhoneDrill(chrome: DrillChrome) {
     )
   }
 
-  const progress = ((view.index + (view.phase === 'feedback' ? 1 : 0)) / view.total) * 100
-  const feedback = view.phase === 'feedback'
-  const count = view.question.options?.length ?? 0
+  const progress = ((view.index + (feedback ? 1 : 0)) / view.total) * 100
+  const position = `${seam.unit} ${view.index + 1} av ${view.total}`
+  const badge =
+    synthetic && (badgeGone || feedback) ? (
+      <span className="fp-sheet-badge"> · {chrome.badge}</span>
+    ) : null
   return (
     <div className="fp-pdrill">
       <header className="fp-pdrill-head" data-compact={String(compact)}>
@@ -2555,13 +2819,14 @@ function PhoneDrill(chrome: DrillChrome) {
         <div className="fp-head-right">
           <button
             type="button"
-            className="fp-ghost fp-focus-btn"
+            className="fp-ghost fp-focus-btn fp-light-btn"
             aria-pressed={focusOn}
-            aria-label="Styckefokus"
+            aria-label="Styckeljus"
             onClick={toggleFocus}
+            title="Styckeljus: lyser upp stycket du läser"
           >
             <Pilcrow size={16} strokeWidth={1.5} aria-hidden />
-            <span aria-hidden>Fokus</span>
+            <span aria-hidden>Styckeljus</span>
           </button>
           {clocked ? (
             <span className="fp-clock" role="timer" aria-label={`Tid ${fmtClock(view.elapsed)}`}>
@@ -2596,83 +2861,112 @@ function PhoneDrill(chrome: DrillChrome) {
           noteText={chrome.noteText}
           gaps={gaps}
         />
-        <div style={{ height: sheet === 'peek' ? 260 : 120 }} aria-hidden />
-      </div>
-      <section
-        className="fp-sheet"
-        data-state={sheet}
-        data-testid="rd-sheet"
-        aria-label={`${seam.unit} ${view.index + 1}`}
-      >
-        {/* The grab is for thumbs and pointers: the keyboard has the same
-         *  moves as labelled buttons (the peek's action, "Visa texten"),
-         *  so it stays out of the tab order. */}
-        <button
-          type="button"
-          className="fp-sheet-grab"
-          tabIndex={-1}
-          aria-label={sheet === 'peek' ? 'Visa frågan' : 'Visa texten'}
-          aria-expanded={sheet !== 'peek'}
-          {...grab}
-        />
-        <div className="fp-sheet-head">
-          <span className="fp-label">
-            {seam.unit} {view.index + 1} av {view.total}
-            {synthetic && (badgeGone || feedback) ? (
-              <span className="fp-sheet-badge"> · {chrome.badge}</span>
-            ) : null}
-          </span>
-          {/* The way back to the text, where the eye looks for it. */}
-          {sheet === 'peek' ? null : (
-            <button
-              type="button"
-              className="fp-more fp-sheet-back"
-              onClick={() => setSheet('peek')}
-            >
-              Visa texten
-              <ChevronDown size={14} strokeWidth={1.75} aria-hidden />
-            </button>
-          )}
-        </div>
-        <div className="fp-sheet-body">
-          {feedback ? null : <LackNote lack={chrome.lack} onRetry={chrome.onRetry} />}
-          {sheet === 'peek' ? (
-            <>
-              {feedback ? <Verdict view={view} as="p" /> : null}
-              {feedback ? null : (
-                <PromptBlock view={view} gap={gap} gaps={gaps} promptRef={chrome.promptRef} />
-              )}
-              {/* The peek's one action: the screen's filled button. */}
-              <button type="button" className="fp-btn fp-peek-btn" onClick={toggle}>
-                {feedback ? 'Tillbaka till facit' : `Visa de ${WORDS[count] ?? count} alternativen`}
-                <ChevronUp size={18} strokeWidth={1.75} aria-hidden />
-              </button>
-            </>
-          ) : feedback ? (
-            <>
-              <Verdict
-                view={view}
-                as="p"
-                after={view.correct == null ? null : seam.after(view.correct)}
-                focusRef={chrome.verdictRef}
-              />
-              <QuestionFigure q={view.question} />
-              <PromptBlock view={view} gap={gap} gaps={gaps} after />
-              <GradedOptions view={view} />
-              <Facit view={view} act={sheetAct} refs={refs} active={null} point={() => {}} />
-            </>
-          ) : (
-            <>
-              <QuestionFigure q={view.question} />
-              <PromptBlock view={view} gap={gap} gaps={gaps} />
-              <Options view={view} act={act} />
-            </>
-          )}
-        </div>
-        {sheet === 'peek' ? null : (
-          <ActionBar view={view} act={act} seam={seam} gate={chrome.gate} />
+        {feedback ? null : (
+          <section
+            className="fp-pq"
+            ref={questionRef}
+            aria-label={`${seam.unit} ${view.index + 1}`}
+          >
+            <LackNote lack={chrome.lack} onRetry={chrome.onRetry} />
+            <QuestionFigure q={view.question} />
+            <PromptBlock view={view} gap={gap} gaps={gaps} promptRef={chrome.promptRef} />
+            <Options view={view} act={act} />
+          </section>
         )}
-      </section>
+        <div
+          style={{ height: feedback ? (sheet === 'peek' ? 260 : 120) : DOCK_ROOM }}
+          aria-hidden
+        />
+      </div>
+      {feedback ? (
+        <section
+          className="fp-sheet"
+          data-state={sheet}
+          data-testid="rd-sheet"
+          aria-label={`${seam.unit} ${view.index + 1}`}
+        >
+          {/* The grab is for thumbs and pointers: the keyboard has the same
+           *  moves as labelled buttons (the peek's action, "Visa texten"),
+           *  so it stays out of the tab order. */}
+          <button
+            type="button"
+            className="fp-sheet-grab"
+            tabIndex={-1}
+            aria-label={sheet === 'peek' ? 'Visa frågan' : 'Visa texten'}
+            aria-expanded={sheet !== 'peek'}
+            {...grab}
+          />
+          <div className="fp-sheet-head">
+            <span className="fp-label">
+              {position}
+              {badge}
+            </span>
+            {/* The way back to the text, where the eye looks for it. */}
+            {sheet === 'peek' ? null : (
+              <button
+                type="button"
+                className="fp-more fp-sheet-back"
+                onClick={() => setSheet('peek')}
+              >
+                Visa texten
+                <ChevronDown size={14} strokeWidth={1.75} aria-hidden />
+              </button>
+            )}
+          </div>
+          <div className="fp-sheet-body">
+            {sheet === 'peek' ? (
+              <>
+                <Verdict view={view} as="p" />
+                {/* The peek's one action: the screen's filled button. */}
+                <button type="button" className="fp-btn fp-peek-btn" onClick={toggle}>
+                  Tillbaka till facit
+                  <ChevronUp size={18} strokeWidth={1.75} aria-hidden />
+                </button>
+              </>
+            ) : (
+              <>
+                <Verdict
+                  view={view}
+                  as="p"
+                  after={view.correct == null ? null : seam.after(view.correct)}
+                  focusRef={chrome.verdictRef}
+                />
+                <QuestionFigure q={view.question} />
+                <PromptBlock view={view} gap={gap} gaps={gaps} after />
+                <GradedOptions view={view} />
+                <Facit view={view} act={sheetAct} refs={refs} active={null} point={() => {}} />
+              </>
+            )}
+          </div>
+          {sheet === 'peek' ? null : (
+            <ActionBar view={view} act={act} seam={seam} gate={chrome.gate} />
+          )}
+        </section>
+      ) : (
+        // The dock: the slip at its peek, for good while the question is
+        // open — the options are on the page above it.
+        <section
+          className="fp-sheet fp-dock"
+          data-state="peek"
+          data-testid="rd-sheet"
+          aria-label={`Svar, ${seam.unit.toLowerCase()} ${view.index + 1}`}
+          ref={dockRef}
+        >
+          <div className="fp-sheet-head fp-dock-head">
+            <span className="fp-label">
+              {position}
+              {badge}
+            </span>
+            {questionSeen ? null : (
+              <button type="button" className="fp-more fp-dock-jump" onClick={toQuestion}>
+                Till frågan
+                <ArrowDown size={14} strokeWidth={1.75} aria-hidden />
+              </button>
+            )}
+          </div>
+          <ActionBar view={view} act={act} seam={seam} gate={chrome.gate} />
+        </section>
+      )}
     </div>
   )
 }

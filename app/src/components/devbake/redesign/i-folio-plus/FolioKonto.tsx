@@ -122,6 +122,7 @@ export function FolioKonto({
   live,
   jump,
   onBack,
+  backLabel,
 }: {
   width: WidthKey
   live: boolean
@@ -130,6 +131,9 @@ export function FolioKonto({
   jump: KontoJump | null
   /** Esc: back where the reader came from. */
   onBack: () => void
+  /** Folio+: the name of the page Esc returns to, for the visible way back
+   *  ("← Tillbaka till Öva"). Without it there is no button. */
+  backLabel?: string
 }) {
   const { data, actions } = useDirectionData()
   const k = data.konto
@@ -182,6 +186,11 @@ export function FolioKonto({
 
   const main = (
     <>
+      {backLabel ? (
+        <button type="button" className="fp-link fp-kt-back" data-fp-back onClick={onBack}>
+          <span aria-hidden>← </span>Tillbaka till {backLabel}
+        </button>
+      ) : null}
       <h1 className="fp-greet" tabIndex={-1}>
         Ditt konto.
       </h1>

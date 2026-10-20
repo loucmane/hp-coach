@@ -1,0 +1,343 @@
+/* Folio+ · the quant and DTK drill, and Framsteg's section colours.
+ *
+ * Borrowed behaviour, Folio's look: Förstora keeps the question beside the
+ * page (a column of lighter paper on desktop, a strip at the foot on
+ * phone), the options set as Folio sets them — between hairlines, the state
+ * in the letter. The tactic waits behind a quiet disclosure. Framsteg's
+ * sections each take a muted ink of their own, from tokens defined here
+ * for light and dark. Everything is scoped under [data-rd='folio-plus']. */
+
+/* ── Where focus lands after Förstora ────────────────────────────── */
+
+[data-rd='folio-plus'] [data-fp-qregion]:focus {
+  outline: none;
+}
+
+[data-rd='folio-plus'] [data-fp-qregion]:focus-visible {
+  outline: 1px dotted var(--fp-rule-2);
+  outline-offset: 6px;
+  border-radius: 2px;
+}
+
+/* ── Förstora with the question beside the page ──────────────────── */
+
+[data-rd='folio-plus'] .fp-viewer-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+[data-rd='folio-plus'] .fp-viewer-main > .fp-viewer-area {
+  flex: 1;
+  min-width: 0;
+}
+
+[data-rd='folio-plus'] .fp-viewer-q {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fp-s4);
+  width: min(380px, 36%);
+  min-width: 0;
+  margin: 0;
+  overflow: auto;
+  padding: var(--fp-s6);
+  border: 0;
+  border-left: 1px solid var(--fp-rule);
+  background: var(--fp-leaf);
+  scrollbar-width: thin;
+  scrollbar-color: var(--fp-rule-2) transparent;
+}
+
+[data-rd='folio-plus'] .fp-viewer-q:focus {
+  outline: none;
+}
+
+[data-rd='folio-plus'] .fp-viewer-q:focus-visible {
+  outline: 2px solid var(--fp-focus);
+  outline-offset: -4px;
+}
+
+[data-rd='folio-plus'] .fp-viewer-q .fp-prompt {
+  font-size: var(--fp-t19);
+  line-height: 1.4;
+}
+
+[data-rd='folio-plus'] .fp-viewer-q .fp-kva {
+  font-size: var(--fp-t15);
+}
+
+[data-rd='folio-plus'] .fp-vopts {
+  display: grid;
+}
+
+[data-rd='folio-plus'] .fp-vopts > li + li {
+  border-top: 1px solid var(--fp-rule);
+}
+
+[data-rd='folio-plus'] .fp-vopt {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: var(--fp-s3);
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  padding: var(--fp-s2) 0;
+  border: 0;
+  background: transparent;
+  color: var(--fp-ink);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-rd='folio-plus'] .fp-vopt:hover .fp-letter {
+  border-color: var(--fp-ink-2);
+  color: var(--fp-ink);
+}
+
+[data-rd='folio-plus'] .fp-vopt[aria-pressed='true'] .fp-letter {
+  background: var(--fp-accent-fill);
+  border-color: var(--fp-accent-fill);
+  color: var(--fp-on-accent);
+}
+
+[data-rd='folio-plus'] .fp-vopt[data-state='eliminated'] .fp-vopt-text {
+  color: var(--fp-ink-3);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+[data-rd='folio-plus'] .fp-vopt-img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  max-height: 120px;
+}
+
+[data-rd='folio-plus'] .fp-viewer-act {
+  margin-top: auto;
+  padding-top: var(--fp-s2);
+}
+
+[data-rd='folio-plus'] .fp-viewer-verdict {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.45;
+  color: var(--fp-ink);
+}
+
+[data-rd='folio-plus'] .fp-viewer-verdict[data-correct='true'] b {
+  color: var(--fp-ok);
+}
+
+[data-rd='folio-plus'] .fp-viewer-verdict[data-correct='false'] b {
+  color: var(--fp-bad);
+}
+
+/* Phone: the page on top, the question as a strip at the foot. */
+[data-rd='folio-plus'][data-width='phone'] .fp-viewer-main,
+[data-rd='folio-plus'] [data-width='phone'] .fp-viewer-main {
+  flex-direction: column;
+}
+
+[data-rd='folio-plus'][data-width='phone'] .fp-viewer-q,
+[data-rd='folio-plus'] [data-width='phone'] .fp-viewer-q {
+  width: auto;
+  max-height: 48%;
+  gap: var(--fp-s2);
+  padding: var(--fp-s3) var(--fp-s4) var(--fp-s4);
+  border-left: 0;
+  border-top: 1px solid var(--fp-rule);
+}
+
+[data-rd='folio-plus'][data-width='phone'] .fp-viewer-q .fp-prompt,
+[data-rd='folio-plus'] [data-width='phone'] .fp-viewer-q .fp-prompt {
+  font-size: var(--fp-t17);
+}
+
+[data-rd='folio-plus'][data-width='phone'] .fp-vopt,
+[data-rd='folio-plus'] [data-width='phone'] .fp-vopt {
+  min-height: 44px;
+  padding: var(--fp-s1) 0;
+  font-size: var(--fp-t15);
+}
+
+/* ── Förstora's bar on phone: the tools fit a 390 px frame ───────── */
+/* Row one: the title and Stäng; row two: the tools across the width,
+ * Mindre / Större / Rotera as icons (their words for screen readers),
+ * Hela sidan in words. */
+
+[data-rd='folio-plus'] .fp-viewer-bar.fp-viewer-bar[data-fp-compact] {
+  flex-wrap: wrap;
+  row-gap: 0;
+  column-gap: var(--fp-s2);
+  padding: var(--fp-s1) var(--fp-s1) var(--fp-s1) var(--fp-s4);
+}
+
+[data-rd='folio-plus'] .fp-viewer-bar[data-fp-compact] .fp-viewer-title {
+  flex: 1 1 0;
+  order: 0;
+  min-width: 0;
+  padding-top: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-rd='folio-plus'] .fp-viewer-bar[data-fp-compact] .fp-viewer-close {
+  order: 1;
+  padding: 0 var(--fp-s3);
+}
+
+[data-rd='folio-plus'] .fp-viewer-bar[data-fp-compact] .fp-viewer-close .fp-kbd {
+  display: none;
+}
+
+[data-rd='folio-plus'] .fp-viewer-tools[data-fp-compact='true'] {
+  order: 2;
+  flex: 1 0 100%;
+  justify-content: space-between;
+  gap: 0;
+  min-width: 0;
+}
+
+[data-rd='folio-plus'] .fp-viewer-tools[data-fp-compact='true'] .fp-ghost {
+  justify-content: center;
+  min-width: 44px;
+  padding: 0 var(--fp-s2);
+  white-space: nowrap;
+}
+
+[data-rd='folio-plus'] .fp-viewer-tools[data-fp-compact='true'] .fp-viewer-zoom {
+  min-width: 52px;
+}
+
+/* ── The tactic, on request ──────────────────────────────────────── */
+
+[data-rd='folio-plus'] .fp-tactic--ask > aside {
+  margin-top: var(--fp-s2);
+}
+
+[data-rd='folio-plus'] .fp-tactic--ask[data-open='false'] {
+  border-left-color: transparent;
+}
+
+[data-rd='folio-plus'] .fp-tactic-toggle {
+  color: var(--fp-ink-3);
+}
+
+[data-rd='folio-plus'] .fp-tactic-toggle:hover,
+[data-rd='folio-plus'] .fp-tactic-toggle[aria-expanded='true'] {
+  color: var(--fp-accent-ink);
+}
+
+/* ── Framsteg: a muted ink per section ───────────────────────────── */
+/* The hues follow Spår's order; lightness and chroma are Folio's — quiet
+ * on paper, a step lighter on charcoal. The code always says the section;
+ * the colour only helps the eye find it again. */
+
+[data-rd='folio-plus'] {
+  --fp-sec-l: 55%;
+  --fp-sec-c: 0.07;
+}
+
+[data-rd='folio-plus'][data-theme='dark'] {
+  --fp-sec-l: 72%;
+  --fp-sec-c: 0.055;
+}
+
+[data-rd='folio-plus'] [data-fp-sec] {
+  --fp-sec: oklch(var(--fp-sec-l) var(--fp-sec-c) var(--fp-sec-h, 70));
+}
+
+[data-rd='folio-plus'] [data-fp-sec='ORD'] {
+  --fp-sec-h: 110;
+}
+[data-rd='folio-plus'] [data-fp-sec='KVA'] {
+  --fp-sec-h: 45;
+}
+[data-rd='folio-plus'] [data-fp-sec='ELF'] {
+  --fp-sec-h: 190;
+}
+[data-rd='folio-plus'] [data-fp-sec='LÄS'] {
+  --fp-sec-h: 235;
+}
+[data-rd='folio-plus'] [data-fp-sec='DTK'] {
+  --fp-sec-h: 262;
+}
+[data-rd='folio-plus'] [data-fp-sec='XYZ'] {
+  --fp-sec-h: 290;
+}
+[data-rd='folio-plus'] [data-fp-sec='NOG'] {
+  --fp-sec-h: 315;
+}
+[data-rd='folio-plus'] [data-fp-sec='MEK'] {
+  --fp-sec-h: 340;
+}
+
+[data-rd='folio-plus'] .fp-sec-mark {
+  display: inline-block;
+  width: 3px;
+  height: 0.95em;
+  margin-right: var(--fp-s2);
+  border-radius: 1px;
+  background: var(--fp-sec, var(--fp-rule-2));
+  vertical-align: -0.1em;
+}
+
+/* "Nästa steg uppåt": verbal and kvant as two columns in test order. */
+[data-rd='folio-plus'] .fp-up {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(4, auto);
+  grid-auto-flow: column;
+  column-gap: var(--fp-s8);
+}
+
+[data-rd='folio-plus'][data-width='phone'] .fp-up,
+[data-rd='folio-plus'] [data-width='phone'] .fp-up {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: none;
+  grid-auto-flow: row;
+}
+
+[data-rd='folio-plus'] .fp-up-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: var(--fp-s3) 0;
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+[data-rd='folio-plus'] .fp-up-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--fp-s3);
+  width: 100%;
+}
+
+[data-rd='folio-plus'] .fp-up-code {
+  font-size: var(--fp-t13);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--fp-ink);
+}
+
+[data-rd='folio-plus'] .fp-up-level {
+  margin-left: auto;
+  font-size: var(--fp-t13);
+  font-variant-numeric: tabular-nums;
+  color: var(--fp-ink-3);
+}
+
+[data-rd='folio-plus'] .fp-up-text {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  line-height: 1.45;
+  color: var(--fp-ink-2);
+  text-wrap: pretty;
+}

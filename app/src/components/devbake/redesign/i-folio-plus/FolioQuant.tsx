@@ -20,6 +20,12 @@
 // Kit v2: the sittings are data.drills.quant and data.drills.dtk, graded by
 // actions.drill through useDrillCore. Math renders with MathText (KaTeX),
 // never as raw markers.
+//
+// Folio+ (borrowed from Spår): Förstora keeps the question, its options and
+// Svara beside the page (a column on desktop, a strip at the foot on
+// phone), on the drill's own state; answering there closes it on the
+// verdict. Closing it puts focus on the question, never back on Förstora,
+// so a letter and Enter answer. The tactic waits behind "Visa taktik".
 
 import {
   Check,
@@ -96,6 +102,7 @@ import {
   Verdict,
 } from './FolioDrill'
 import { capitalised, Dots, inWords } from './FolioHome'
+import './fpQuant.css'
 
 /** A practice pace for the folded clock's line: two minutes a problem. */
 const PACE_PER_QUESTION = 120
@@ -257,8 +264,27 @@ function QuantDrill({
     keys[l] = () => act.select(letter)
     keys[`Shift+${l}`] = () => act.toggleEliminate(letter)
   }
-  // Keys rest while Förstora is open.
+  // Keys rest while Förstora is open (it keeps its own).
   useKeyMap(keys, live && !viewer)
+
+  // Closing Förstora mid-drill puts focus on the question and its options
+  // (or the verdict, once answered) — never back on Förstora, where Enter
+  // would open it again. After FolioDialog's own hand-back, which is queued
+  // in its cleanup, before this.
+  const rootRef = useRef<HTMLDivElement>(null)
+  const refocus = useRef(false)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: when the viewer closes
+  useEffect(() => {
+    if (viewer || !refocus.current) return
+    refocus.current = false
+    if (view.phase === 'done') return
+    const answered = view.phase === 'feedback'
+    queueMicrotask(() => {
+      const region = rootRef.current?.querySelector<HTMLElement>('[data-fp-qregion]')
+      const target = (answered ? verdictEl.current : null) ?? region
+      target?.focus({ preventScroll: true })
+    })
+  }, [viewer])
 
   const shared: QuantChrome = {
     view,
@@ -302,7 +328,12 @@ function QuantDrill({
 
   return (
     <>
-      <div className="fp-qroot" data-kind={plate ? 'dtk' : 'quant'} inert={viewer || undefined}>
+      <div
+        className="fp-qroot"
+        data-kind={plate ? 'dtk' : 'quant'}
+        inert={viewer || undefined}
+        ref={rootRef}
+      >
         {page}
       </div>
       {viewing ? (
@@ -311,8 +342,13 @@ function QuantDrill({
           rot={rotations[viewing.src] ?? 0}
           rotate={rotateViewing}
           saved={viewerStates.current.get(viewing.src)}
+          compact={width === 'phone'}
+          drill={
+            view.phase !== 'done' && viewing.src === q.figure?.src ? { view, act, seam } : undefined
+          }
           onClose={(state) => {
             viewerStates.current.set(viewing.src, state)
+            refocus.current = true
             setViewing(null)
           }}
         />
@@ -320,6 +356,15 @@ function QuantDrill({
     </>
   )
 }
+
+/** Where focus goes when Förstora closes: the question and its options. Not
+ *  a control, so a letter chooses and Enter answers from there. */
+const QREGION = {
+  tabIndex: -1,
+  role: 'group',
+  'aria-label': 'Frågan och alternativen',
+  'data-fp-qregion': '',
+} as const
 
 type QuantChrome = {
   view: DrillCoreView
@@ -410,13 +455,13 @@ function DeskQuant(c: QuantChrome) {
         <div className="fp-qscroll">
           <div className={`fp-qsheet${live ? ' fp-enter' : ''}`} key={q.qid}>
             <PageHeading view={view} seam={seam} />
-            <div className="fp-qcol" ref={colRef}>
+            <div className="fp-qcol" ref={colRef} {...QREGION}>
               <QuantProblem q={q} n={n} hang figure={figure} />
               <Options view={view} act={act} testId="rd-quant-option" />
               <KeyHints letters={view.letters} />
               <ActionBar view={view} act={act} seam={seam} />
             </div>
-            <TacticNote explanation={view.explanation} variant="margin" />
+            <TacticNote key={q.qid} explanation={view.explanation} variant="margin" />
           </div>
         </div>
       </div>
@@ -523,7 +568,7 @@ function DeskDtk(c: QuantChrome) {
         recto={
           <>
             <RectoHead view={view} seam={seam} clocked={clocked} />
-            <div className="fp-recto-body">
+            <div className="fp-recto-body" {...QREGION}>
               <PageHeading view={view} seam={seam} />
               {view.phase === 'question' ? (
                 <>
@@ -596,7 +641,7 @@ function PhoneQuant(c: QuantChrome) {
         </span>
       </header>
       <div className="fp-pdrill-scroll" ref={scrollRef} onScroll={onScroll}>
-        <div className="fp-pquant-page" key={q.qid}>
+        <div className="fp-pquant-page" key={q.qid} {...QREGION}>
           <PageHeading view={view} seam={seam} />
           <span className="fp-label">{seam.label}</span>
           <QuantProblem q={q} n={view.index + 1} hang figure={figure} />
@@ -695,6 +740,8 @@ function PhoneDtk(c: QuantChrome) {
         data-state={sheet}
         data-testid="rd-sheet"
         aria-label={`${seam.unit} ${view.index + 1}`}
+        tabIndex={-1}
+        data-fp-qregion
       >
         <button
           type="button"
@@ -783,12 +830,16 @@ function QuantProblem({
   n,
   hang = false,
   after = false,
+  bare = false,
   figure,
 }: {
   q: DrillQuestion
   n: number
   hang?: boolean
   after?: boolean
+  /** Inside Förstora: a paragraph, not the page's heading, and no test id
+   *  (the page's own problem is still in the document under it). */
+  bare?: boolean
   figure?: ReactNode
 }) {
   const prompt = q.prompt ?? ''
@@ -800,14 +851,14 @@ function QuantProblem({
     </span>
   ) : null
   // The prompt is the page's h2; restated under a verdict it is a quiet line.
-  const Head = after ? 'p' : 'h2'
+  const Head = after || bare ? 'p' : 'h2'
   const headClass = 'fp-prompt fp-qprompt'
   return (
     <div
       className="fp-problem"
       data-section={q.section}
       data-after={after ? 'true' : undefined}
-      data-testid="rd-quant-prompt"
+      data-testid={bare ? undefined : 'rd-quant-prompt'}
     >
       {figure}
       {q.passage ? (
@@ -884,9 +935,10 @@ function QuantProblem({
 }
 
 /**
- * The pre-answer tactic (the explanation's pregrade_tactic): a printed hint
- * in the right margin before answering on the desktop quant page, a closed
- * "Taktik" disclosure on the DTK recto and on phone. It goes on answering.
+ * The pre-answer tactic (the explanation's pregrade_tactic), on request: a
+ * small "Visa taktik" disclosure, closed until asked — in the right margin
+ * on the desktop quant page (opening to the printed hint there), under the
+ * problem on the DTK recto and on phone. It goes on answering.
  */
 function TacticNote({
   explanation,
@@ -898,31 +950,39 @@ function TacticNote({
   const [open, setOpen] = useState(false)
   const tactic = explanation?.pregrade_tactic
   if (!tactic) return null
+  const toggle = (
+    <button
+      type="button"
+      className="fp-more fp-tactic-toggle"
+      aria-expanded={open}
+      aria-controls="fp-tactic-body"
+      onClick={() => setOpen(!open)}
+    >
+      {open ? 'Dölj taktik' : 'Visa taktik'}
+      <ChevronRight size={14} strokeWidth={1.75} aria-hidden />
+    </button>
+  )
   if (variant === 'margin') {
     return (
-      <aside className="fp-tactic" aria-labelledby="fp-tactic-h">
-        <h2 className="fp-h3" id="fp-tactic-h">
-          Taktik
-        </h2>
-        <p className="fp-tactic-handle">{tactic.handle}</p>
-        <p className="fp-margin-note">
-          <MathText>{tactic.move}</MathText>
-        </p>
-      </aside>
+      <div className="fp-tactic fp-tactic--ask" data-open={String(open)}>
+        {toggle}
+        {open ? (
+          <aside aria-labelledby="fp-tactic-h" id="fp-tactic-body">
+            <h2 className="fp-h3" id="fp-tactic-h">
+              Taktik
+            </h2>
+            <p className="fp-tactic-handle">{tactic.handle}</p>
+            <p className="fp-margin-note">
+              <MathText>{tactic.move}</MathText>
+            </p>
+          </aside>
+        ) : null}
+      </div>
     )
   }
   return (
-    <div className="fp-tactic-fold">
-      <button
-        type="button"
-        className="fp-more"
-        aria-expanded={open}
-        aria-controls="fp-tactic-body"
-        onClick={() => setOpen(!open)}
-      >
-        Taktik
-        <ChevronRight size={14} strokeWidth={1.75} aria-hidden />
-      </button>
+    <div className="fp-tactic-fold" data-open={String(open)}>
+      {toggle}
       {open ? (
         <div className="fp-tactic-body" id="fp-tactic-body">
           <p className="fp-tactic-handle">{tactic.handle}</p>
@@ -1139,24 +1199,35 @@ function useBox(ref: React.RefObject<HTMLElement | null>) {
   return box
 }
 
+/** The question Förstora keeps beside the page, on the drill's own state. */
+type ViewerDrill = { view: DrillCoreView; act: DrillAct; seam: DrillSeam }
+
 /**
  * Förstora: the figure full-stage on the page's own paper — not a black
  * lightbox. Fit to the stage, drag to pan, ⌘/Ctrl + wheel to zoom from 100
  * to 600 %, and a toolbar of words; + / − / R / Esc on the keyboard, the
- * arrows pan. The drill's keys rest while it is open; closing gives focus
- * back to Förstora and keeps the zoom and place for next time.
+ * arrows pan. Mid-drill (`drill`) the question, its options and Svara stay
+ * beside the page, so answering never means closing it: the letters choose,
+ * Enter answers, and answering closes it on the verdict. The drill's own
+ * keys rest while it is open; it keeps the zoom and place for next time.
+ * On phone (`compact`) Stäng shares the title's row and the tools take a
+ * row of their own, icons with their words for screen readers.
  */
 function FigureViewer({
   figure,
   rot,
   rotate,
   saved,
+  compact = false,
+  drill,
   onClose,
 }: {
   figure: DrillFigure
   rot: number
   rotate: () => void
   saved?: ViewerState
+  compact?: boolean
+  drill?: ViewerDrill
   onClose: (state: ViewerState) => void
 }) {
   const [zoom, setZoom] = useState(saved?.zoom ?? 1)
@@ -1181,6 +1252,30 @@ function FigureViewer({
     const el = areaRef.current
     onClose({ zoom, left: el?.scrollLeft ?? 0, top: el?.scrollTop ?? 0 })
   }, [onClose, zoom])
+
+  // The question beside the page: a letter chooses (and moves focus to the
+  // question, so Enter answers rather than pressing the focused button);
+  // Enter answers once there is a choice; answering closes on the verdict.
+  const questionRef = useRef<HTMLFieldSetElement>(null)
+  const asking = drill?.view.phase === 'question'
+  const answer = () => {
+    if (!drill?.view.selected) return
+    drill.act.lock()
+    close()
+  }
+  const drillKeys: Record<string, () => void> = {}
+  if (drill && asking) {
+    for (const letter of drill.view.letters) {
+      const l = letter.toLowerCase()
+      drillKeys[l] = () => {
+        drill.act.select(letter)
+        questionRef.current?.focus({ preventScroll: true })
+      }
+      drillKeys[`Shift+${l}`] = () => drill.act.toggleEliminate(letter)
+    }
+    drillKeys.Enter = answer
+  }
+  useKeyMap(drillKeys, asking)
 
   /** Zoom about the stage's centre, so the place being read stays put. */
   const zoomTo = useCallback((z: number) => {
@@ -1280,11 +1375,32 @@ function FigureViewer({
     height: imgH,
     transform: `translate(-50%, -50%) rotate(${rot}deg)`,
   }
+  const closeButton = (
+    <button type="button" className="fp-ghost fp-viewer-close" onClick={close} data-autofocus>
+      <X size={16} strokeWidth={1.5} aria-hidden />
+      Stäng
+      <kbd className="fp-kbd" aria-hidden>
+        Esc
+      </kbd>
+    </button>
+  )
+  // On phone the words go to screen readers and the icons stay.
+  const word = (w: string) => <span className={compact ? 'fp-sr' : undefined}>{w}</span>
   return (
-    <FolioDialog label="Förstorad figur" onClose={close} className="fp-viewer">
-      <div className="fp-viewer-bar">
+    <FolioDialog
+      label="Förstorad figur"
+      onClose={close}
+      className={`fp-viewer${drill ? ' fp-viewer--asks' : ''}`}
+    >
+      <div className="fp-viewer-bar" data-fp-compact={compact ? 'true' : undefined}>
         <span className="fp-viewer-title">{figure.alt}</span>
-        <div className="fp-viewer-tools">
+        {compact ? closeButton : null}
+        <div
+          className="fp-viewer-tools"
+          role="toolbar"
+          aria-label="Zoom och rotation"
+          data-fp-compact={String(compact)}
+        >
           <button
             type="button"
             className="fp-ghost"
@@ -1292,7 +1408,7 @@ function FigureViewer({
             disabled={zoom <= ZOOMS[0]}
           >
             <Minus size={15} strokeWidth={1.5} aria-hidden />
-            Mindre
+            {word('Mindre')}
           </button>
           <span className="fp-viewer-zoom" aria-live="polite">
             {percent}&nbsp;%
@@ -1304,7 +1420,7 @@ function FigureViewer({
             disabled={zoom >= ZOOMS[ZOOMS.length - 1]}
           >
             <Plus size={15} strokeWidth={1.5} aria-hidden />
-            Större
+            {word('Större')}
           </button>
           <button
             type="button"
@@ -1313,53 +1429,153 @@ function FigureViewer({
             aria-label="Rotera figuren 90 grader"
           >
             <RotateCw size={15} strokeWidth={1.5} aria-hidden />
-            Rotera
+            {word('Rotera')}
           </button>
           <button type="button" className="fp-ghost" onClick={() => zoomTo(1)}>
             Hela sidan
           </button>
         </div>
-        <button type="button" className="fp-ghost" onClick={close} data-autofocus>
-          <X size={16} strokeWidth={1.5} aria-hidden />
-          Stäng
-          <kbd className="fp-kbd" aria-hidden>
-            Esc
-          </kbd>
-        </button>
+        {compact ? null : closeButton}
       </div>
-      {/* A named region: a screen reader reaches it as a landmark, and the
-       *  arrows pan it from anywhere in the dialog (the key handler above). */}
-      <section
-        className="fp-viewer-area"
-        ref={areaRef}
-        aria-label="Figuren, förstorad – dra för att flytta"
-        onPointerDown={onDown}
-        onPointerMove={onMove}
-        onPointerUp={onUp}
-        onPointerCancel={onUp}
-      >
-        <div className="fp-viewer-canvas" style={{ width: canvasW, height: canvasH }}>
-          {figure.kind === 'svg' && svg ? (
-            <div
-              className="fp-viewer-img fp-viewer-svg"
-              role="img"
-              aria-label={figure.alt}
-              style={imageStyle}
-              // biome-ignore lint/security/noDangerouslySetInnerHtml: the bank's own parser-emitted SVG, no user input
-              dangerouslySetInnerHTML={{ __html: fitSvg(svg) }}
-            />
-          ) : (
-            <img
-              className="fp-viewer-img"
-              src={`/${figure.src}`}
-              alt={figure.alt}
-              draggable={false}
-              style={imageStyle}
-            />
-          )}
-        </div>
-      </section>
+      <div className="fp-viewer-main">
+        {/* A named region: a screen reader reaches it as a landmark, and the
+         *  arrows pan it from anywhere in the dialog (the key handler above). */}
+        <section
+          className="fp-viewer-area"
+          ref={areaRef}
+          aria-label="Figuren, förstorad – dra för att flytta"
+          onPointerDown={onDown}
+          onPointerMove={onMove}
+          onPointerUp={onUp}
+          onPointerCancel={onUp}
+        >
+          <div className="fp-viewer-canvas" style={{ width: canvasW, height: canvasH }}>
+            {figure.kind === 'svg' && svg ? (
+              <div
+                className="fp-viewer-img fp-viewer-svg"
+                role="img"
+                aria-label={figure.alt}
+                style={imageStyle}
+                // biome-ignore lint/security/noDangerouslySetInnerHtml: the bank's own parser-emitted SVG, no user input
+                dangerouslySetInnerHTML={{ __html: fitSvg(svg) }}
+              />
+            ) : (
+              <img
+                className="fp-viewer-img"
+                src={`/${figure.src}`}
+                alt={figure.alt}
+                draggable={false}
+                style={imageStyle}
+              />
+            )}
+          </div>
+        </section>
+        {drill ? (
+          <ViewerQuestion
+            drill={drill}
+            questionRef={questionRef}
+            onAnswer={answer}
+            onClose={close}
+          />
+        ) : null}
+      </div>
     </FolioDialog>
+  )
+}
+
+/**
+ * The question beside the enlarged page: where it is, the problem, its
+ * options as a compact list (pressed, struck) and Svara — on the drill's
+ * own choice, so what is chosen here is chosen under it too. Once answered
+ * it says the verdict in a line and leads back to the facit.
+ */
+function ViewerQuestion({
+  drill,
+  questionRef,
+  onAnswer,
+  onClose,
+}: {
+  drill: ViewerDrill
+  questionRef: RefObject<HTMLFieldSetElement | null>
+  onAnswer: () => void
+  onClose: () => void
+}) {
+  const { view, act, seam } = drill
+  const q = view.question
+  const asking = view.phase === 'question'
+  return (
+    <fieldset className="fp-viewer-q" aria-label="Frågan" tabIndex={-1} ref={questionRef}>
+      <p className="fp-label">
+        {seam.unit} {view.index + 1} av {view.total}
+      </p>
+      <QuantProblem q={q} n={view.index + 1} bare />
+      {asking ? (
+        <>
+          <ol className="fp-vopts" aria-label="Svarsalternativ">
+            {(q.options ?? []).map((o) => {
+              const selected = view.selected === o.letter
+              const out = view.eliminated.has(o.letter)
+              return (
+                <li key={o.letter}>
+                  <button
+                    type="button"
+                    className="fp-vopt"
+                    data-testid={`fp-viewer-option-${o.letter}`}
+                    data-state={selected ? 'selected' : out ? 'eliminated' : undefined}
+                    aria-pressed={selected}
+                    onClick={() => act.select(o.letter)}
+                  >
+                    <span className="fp-letter" aria-hidden>
+                      {o.letter}
+                    </span>
+                    <span className="fp-vopt-text">
+                      <span className="fp-sr">
+                        Alternativ {o.letter}
+                        {out ? ', struket' : ''}:{' '}
+                      </span>
+                      {o.figure ? (
+                        <img
+                          className="fp-vopt-img"
+                          src={`/${o.figure.src}`}
+                          alt={o.figure.alt}
+                          width={o.figure.width}
+                          height={o.figure.height}
+                        />
+                      ) : (
+                        <MathText>{o.text}</MathText>
+                      )}
+                    </span>
+                  </button>
+                </li>
+              )
+            })}
+          </ol>
+          <div className="fp-actionbar fp-viewer-act">
+            <button type="button" className="fp-btn" disabled={!view.selected} onClick={onAnswer}>
+              Svara
+              <kbd className="fp-kbd" aria-hidden>
+                ↵
+              </kbd>
+            </button>
+            <span className="fp-echo" aria-live="polite">
+              {view.selected ? `Ditt val: ${view.selected}` : 'Välj ett alternativ'}
+            </span>
+          </div>
+        </>
+      ) : (
+        <>
+          <p className="fp-viewer-verdict" data-correct={String(view.correct === true)}>
+            <b>{view.correct ? 'Rätt.' : 'Fel.'}</b>{' '}
+            {view.correct ? `Svaret är ${q.answer}.` : `Rätt svar är ${q.answer}.`}
+          </p>
+          <div className="fp-actionbar fp-viewer-act">
+            <button type="button" className="fp-btn" onClick={onClose}>
+              Till facit
+            </button>
+          </div>
+        </>
+      )}
+    </fieldset>
   )
 }
 
