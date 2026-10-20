@@ -1499,9 +1499,18 @@
   color: var(--sv-ink-3);
 }
 
-/* The Idag (and Öva) cards. Content that outgrows the card (larger text,
- * the WCAG 1.4.12 spacing) scrolls inside it rather than overlapping. */
-.sv-root .sv-deck:is([data-kind='home'], [data-kind='ova']) .sv-dcard {
+/* The Idag (and Öva, Provpass, result and Framsteg) cards. Content that
+ * outgrows the card (larger text, the WCAG 1.4.12 spacing) scrolls inside
+ * it rather than overlapping. */
+.sv-root
+  .sv-deck:is(
+    [data-kind='home'],
+    [data-kind='ova'],
+    [data-kind='prov'],
+    [data-kind='res'],
+    [data-kind='fs']
+  )
+  .sv-dcard {
   display: flex;
   flex-direction: column;
   padding: 30px 36px 14px;
@@ -2052,23 +2061,32 @@
   display: block;
 }
 
-.sv-root :is(.sv-phome, .sv-pova) .sv-deck {
+.sv-root :is(.sv-phome, .sv-pova, .sv-ptri) .sv-deck {
   --sv-next: translateY(11px) scale(0.955);
   --sv-after: translateY(22px) scale(0.91);
   --sv-gone: translateX(-122%) rotate(-9deg);
   height: calc(100% - 22px);
 }
 
-.sv-root :is(.sv-phome, .sv-pova) .sv-deck:is([data-kind='home'], [data-kind='ova']) .sv-dcard {
+.sv-root
+  :is(.sv-phome, .sv-pova, .sv-ptri)
+  .sv-deck:is(
+    [data-kind='home'],
+    [data-kind='ova'],
+    [data-kind='prov'],
+    [data-kind='res'],
+    [data-kind='fs']
+  )
+  .sv-dcard {
   padding: 22px 24px 12px;
   border-radius: 24px;
 }
 
-.sv-root :is(.sv-phome, .sv-pova) .sv-hc-body {
+.sv-root :is(.sv-phome, .sv-pova, .sv-ptri) .sv-hc-body {
   padding-top: 22px;
 }
 
-.sv-root :is(.sv-phome, .sv-pova) .sv-hc-title {
+.sv-root :is(.sv-phome, .sv-pova, .sv-ptri) .sv-hc-title {
   font-size: 38px;
 }
 
@@ -2084,11 +2102,11 @@
   font-size: 18px;
 }
 
-.sv-root :is(.sv-phome, .sv-pova) .sv-hc-detail {
+.sv-root :is(.sv-phome, .sv-pova, .sv-ptri) .sv-hc-detail {
   font-size: 17px;
 }
 
-.sv-root :is(.sv-phome, .sv-pova) .sv-hc-why {
+.sv-root :is(.sv-phome, .sv-pova, .sv-ptri) .sv-hc-why {
   font-size: 15px;
 }
 
@@ -2111,13 +2129,13 @@
   transform: rotate(calc(var(--i) * 5deg)) translateY(-9px);
 }
 
-.sv-root :is(.sv-phome, .sv-pova) .sv-hc-foot {
+.sv-root :is(.sv-phome, .sv-pova, .sv-ptri) .sv-hc-foot {
   bottom: -11px;
   margin: 0 -23px -11px;
   padding: 18px 11px 11px;
 }
 
-.sv-root :is(.sv-phome, .sv-pova) .sv-hc-foot .sv-btn {
+.sv-root :is(.sv-phome, .sv-pova, .sv-ptri) .sv-hc-foot .sv-btn {
   border-radius: 12px;
 }
 
@@ -5118,7 +5136,11 @@
   .sv-root .sv-done-wrap .sv-done,
   .sv-root .sv-acct .sv-acard,
   .sv-root .sv-viewer,
-  .sv-root .sv-viewer .sv-viewer-card {
+  .sv-root .sv-viewer .sv-viewer-card,
+  .sv-root .sv-gate .sv-gate-scrim,
+  .sv-root .sv-gate .sv-gate-card,
+  .sv-root .sv-regsheet .sv-gate-scrim,
+  .sv-root .sv-regsheet .sv-regsheet-card {
     animation: sv-crossfade-in 180ms linear both !important;
   }
 
@@ -5136,7 +5158,9 @@
   .sv-root .sv-tick i,
   .sv-root .sv-door-card,
   .sv-root .sv-sdoor,
-  .sv-root .sv-repdoor {
+  .sv-root .sv-repdoor,
+  .sv-root .sv-halfdoor,
+  .sv-root .sv-reg-cell {
     transform: none !important;
   }
 
@@ -5333,5 +5357,2069 @@
 
   .sv-root[data-width='desktop'] .sv-ova-score-n {
     font-size: 54px;
+  }
+}
+
+/* ── Round 2, batch 2: Provpass, its result, Framsteg ─────────────── */
+
+/* The three-column table of a hub: the orientation, the deck with the next
+ * cards' edges peeking right, the register (as Idag and Öva). */
+.sv-root .sv-tri {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 560px minmax(0, 1fr);
+  column-gap: 80px;
+  height: 100%;
+  padding: 36px 56px 28px;
+}
+
+.sv-root .sv-tri-side,
+.sv-root .sv-tri-end {
+  align-self: center;
+  min-height: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sv-table-line) transparent;
+}
+
+.sv-root .sv-tri-side {
+  justify-self: end;
+  width: min(100%, 300px);
+  padding: 4px 4px 8px;
+}
+
+.sv-root .sv-tri-end {
+  justify-self: start;
+  width: min(100%, 300px);
+  padding: 4px 4px 8px 0;
+}
+
+.sv-root .sv-tri .sv-deck {
+  flex: 0 1 600px;
+  width: 560px;
+  min-height: 440px;
+}
+
+.sv-root .sv-tri-register {
+  width: 100%;
+  margin: 0;
+}
+
+/* Phone: one column that scrolls, the deck a card of its own height. */
+.sv-root .sv-ptri {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: max(14px, env(safe-area-inset-top)) 16px 24px;
+  scrollbar-width: none;
+}
+
+.sv-root .sv-ptri-head {
+  padding: 4px 56px 8px 4px;
+}
+
+.sv-root .sv-ptri-head .sv-greet {
+  margin: 4px 0 0;
+  font-size: 28px;
+}
+
+.sv-root .sv-ptri-head .sv-date + .sv-greet {
+  margin-top: 2px;
+}
+
+.sv-root .sv-ptri-head .sv-day {
+  margin-top: 6px;
+  font-size: 14.5px;
+  line-height: 1.4;
+}
+
+.sv-root .sv-ptri-deck {
+  position: relative;
+  flex: none;
+  height: 452px;
+  margin-top: 12px;
+}
+
+.sv-root .sv-pres .sv-ptri-deck,
+.sv-root .sv-pfs .sv-ptri-deck {
+  height: 504px;
+}
+
+.sv-root .sv-ptri .sv-hc-title {
+  font-size: 32px;
+}
+
+.sv-root .sv-ptri .sv-hc-body {
+  padding-top: 16px;
+}
+
+.sv-root .sv-ptri .sv-hc-body--list {
+  padding-top: 12px;
+}
+
+.sv-root .sv-ptri > .sv-rep-back {
+  align-self: center;
+  margin-top: 8px;
+}
+
+/* A list card (sections, tempo, misses, earlier passes, history) starts
+ * nearer its head. */
+.sv-root .sv-hc-body--list {
+  padding-top: 22px;
+}
+
+/* ── Provpass: the hub ── */
+
+.sv-root .sv-prov-rhythm {
+  margin-top: 16px;
+  color: var(--sv-table-ink-2);
+  font-size: 14.5px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+/* The two halves as door cards: the chosen one raised with an ink rim. */
+.sv-root .sv-halfdoors {
+  margin-top: 26px;
+}
+
+.sv-root .sv-halfdoors .sv-index-group {
+  margin: 0 0 8px 2px;
+}
+
+.sv-root .sv-halfdoors-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 8px;
+  padding-top: 14px;
+}
+
+.sv-root .sv-halfdoor {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  min-height: 104px;
+  padding: 10px 10px 11px 12px;
+  border-radius: 14px;
+  background-color: var(--sv-card-2);
+  background-image: var(--sv-grain);
+  box-shadow: inset 0 0 0 1px var(--sv-line), 0 1px 2px oklch(28% 0.02 265 / 0.08);
+  color: var(--sv-ink);
+  text-align: left;
+  transition:
+    transform var(--sv-d-ui) var(--sv-ease),
+    box-shadow var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-halfdoor:hover {
+  box-shadow: inset 0 0 0 1px var(--sv-line-2), 0 6px 14px -10px oklch(25% 0.03 262 / 0.35);
+}
+
+.sv-root .sv-halfdoor[aria-pressed='true'] {
+  background-color: var(--sv-card);
+  box-shadow:
+    var(--sv-chip),
+    inset 0 0 0 2px var(--sv-ink);
+  transform: translateY(-2px);
+}
+
+.sv-root .sv-halfdoor-name {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.sv-root .sv-halfdoor-size {
+  color: var(--sv-ink-2);
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-halfdoor-secs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 8px;
+  margin-top: auto;
+  padding-top: 6px;
+  color: var(--sv-ink-2);
+  font-size: 11.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The pass's sections as a small hand of cards. */
+.sv-root .sv-passhand {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 112px;
+  margin: auto 0;
+  padding-top: 16px;
+}
+
+.sv-root .sv-passhand i {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  width: 60px;
+  height: 82px;
+  margin: 0 -3px;
+  padding: 7px 8px 6px;
+  border-radius: 9px;
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow:
+    inset 0 0 0 1px var(--sv-line-2),
+    0 2px 6px -2px oklch(25% 0.03 262 / 0.2);
+  color: var(--sv-ink);
+  font-style: normal;
+  transform-origin: 50% 160%;
+  transform: rotate(calc(var(--i) * 5deg)) translateY(calc(var(--i) * var(--i) * 2px));
+}
+
+.sv-root .sv-passhand i b {
+  color: var(--sv-ink-2);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.sv-root .sv-passhand i span {
+  align-self: end;
+  justify-self: end;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-passhand i[data-sec='las'] {
+  background-color: var(--sv-sec-las);
+}
+.sv-root .sv-passhand i[data-sec='elf'] {
+  background-color: var(--sv-sec-elf);
+}
+.sv-root .sv-passhand i[data-sec='ord'] {
+  background-color: var(--sv-sec-ord);
+}
+
+/* What you have met before: words, and the share as a thin bar. */
+.sv-root .sv-seen {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+  color: var(--sv-ink-2);
+  font-size: 15.5px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-seen b {
+  color: var(--sv-ink);
+  font-weight: 800;
+}
+
+.sv-root .sv-seen-bar {
+  position: relative;
+  flex: none;
+  width: 96px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--sv-card-3);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+  overflow: hidden;
+}
+
+.sv-root .sv-seen-bar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 4px;
+  background: var(--sv-ink-2);
+}
+
+/* The rules, as the source says them, as quiet rows on the table. */
+.sv-root .sv-prov-rules {
+  margin-top: 24px;
+}
+
+.sv-root .sv-prov-rules .sv-index-group {
+  margin: 0 0 8px 2px;
+}
+
+.sv-root .sv-prov-rules ul {
+  display: grid;
+  gap: 6px;
+}
+
+.sv-root .sv-prov-rules li,
+.sv-root .sv-gate-rules li {
+  position: relative;
+  padding-left: 18px;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-prov-rules li {
+  color: var(--sv-table-ink-2);
+  font-size: 14.5px;
+}
+
+/* Each rule's mark is a tiny card. */
+.sv-root .sv-prov-rules li::before,
+.sv-root .sv-gate-rules li::before {
+  content: '';
+  position: absolute;
+  top: 0.45em;
+  left: 4px;
+  width: 5px;
+  height: 7px;
+  border-radius: 1.5px;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+/* The earlier results: quiet rows on the table, each opening its result. */
+.sv-root .sv-prov-results {
+  margin-top: 26px;
+}
+
+.sv-root .sv-prov-results .sv-index-group {
+  margin: 0 0 6px 12px;
+}
+
+.sv-root .sv-resrow {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  min-height: 52px;
+  padding: 8px 12px;
+  border-radius: 13px;
+  color: var(--sv-table-ink);
+  text-align: left;
+  transition: background-color var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-resrow:hover {
+  background: oklch(from var(--sv-table-ink) l c h / 0.06);
+}
+
+.sv-root .sv-resrow-name {
+  font-size: 14.5px;
+  font-weight: 700;
+}
+
+.sv-root .sv-resrow-meta {
+  color: var(--sv-table-ink-2);
+  font-size: 13px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-resrow-meta b {
+  color: var(--sv-table-ink);
+  font-weight: 800;
+}
+
+.sv-root .sv-prov-empty {
+  padding: 2px 12px;
+  color: var(--sv-table-ink-2);
+  font-size: 14px;
+}
+
+/* A voided pass, said once: a small card lying on the table. */
+.sv-root .sv-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 18px;
+  padding: 6px 4px 6px 14px;
+  border-radius: 14px;
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow: var(--sv-chip);
+  color: var(--sv-ink);
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+.sv-root .sv-notice p {
+  flex: 1;
+  padding: 6px 0;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-notice b {
+  font-weight: 800;
+}
+
+/* Phone hub. */
+.sv-root .sv-pprov .sv-halfdoors {
+  margin-top: 8px;
+}
+
+.sv-root .sv-pprov .sv-halfdoors > .sv-index-group {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.sv-root .sv-pprov .sv-halfdoor {
+  min-height: 92px;
+}
+
+.sv-root .sv-pprov .sv-passhand {
+  height: 96px;
+}
+
+.sv-root .sv-pprov .sv-passhand i {
+  width: 52px;
+  height: 72px;
+}
+
+.sv-root .sv-pprov .sv-passhand i span {
+  font-size: 22px;
+}
+
+.sv-root .sv-pprov .sv-prov-results .sv-index-group {
+  margin-left: 4px;
+}
+
+.sv-root .sv-pprov .sv-prov-results,
+.sv-root .sv-pprov .sv-prov-rules {
+  margin-top: 18px;
+}
+
+.sv-root .sv-pprov .sv-resrow {
+  padding: 8px 4px;
+}
+
+/* ── A confirmation dealt over the table ── */
+
+.sv-root .sv-gate {
+  position: fixed;
+  z-index: 90;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.sv-root .sv-gate-scrim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  background: var(--sv-scrim);
+  cursor: default;
+  animation: sv-fade var(--sv-d-move) var(--sv-ease) both;
+}
+
+.sv-root .sv-gate-card {
+  position: relative;
+  width: min(100%, 464px);
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 26px 28px 22px;
+  animation: sv-deal var(--sv-d-move) var(--sv-ease) both;
+}
+
+.sv-root .sv-gate-title {
+  margin: 4px 0 8px;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.sv-root .sv-gate-title:focus-visible {
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.sv-root .sv-gate-sub {
+  color: var(--sv-ink-2);
+  font-size: 16px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-gate-note {
+  margin-top: 12px;
+  color: var(--sv-ink-2);
+  font-size: 15px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-gate-rules {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: var(--sv-r2);
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+}
+
+.sv-root .sv-gate-rules li {
+  color: var(--sv-ink);
+  font-size: 15.5px;
+}
+
+.sv-root .sv-gate-card > .sv-link {
+  margin-top: 6px;
+}
+
+.sv-root .sv-gate-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.sv-root .sv-gate-actions .sv-btn {
+  border-radius: 14px;
+}
+
+/* Phone: a full readable sheet from the bottom edge. */
+.sv-root[data-width='phone'] .sv-gate {
+  place-items: end stretch;
+  padding: 0;
+}
+
+.sv-root[data-width='phone'] .sv-gate-card {
+  width: 100%;
+  max-height: calc(100% - 24px);
+  padding: 24px 20px max(20px, env(safe-area-inset-bottom));
+  border-radius: 24px 24px 0 0;
+  animation: sv-sheet-up var(--sv-d-move) var(--sv-ease) both;
+}
+
+.sv-root[data-width='phone'] .sv-gate-title {
+  font-size: 28px;
+}
+
+@keyframes sv-sheet-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Provpass: the running pass, in focus mode ── */
+
+.sv-root .sv-run {
+  display: grid;
+  grid-template-rows: 80px minmax(0, 1fr);
+  height: 100%;
+}
+
+.sv-root .sv-run-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  width: min(1320px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.sv-root .sv-run-top > .sv-exit {
+  justify-self: start;
+}
+
+.sv-root .sv-run-title,
+.sv-root .sv-prun-title {
+  color: var(--sv-table-ink-2);
+  font-size: 15px;
+  font-weight: 750;
+  letter-spacing: -0.005em;
+}
+
+.sv-root .sv-run-title {
+  text-align: center;
+}
+
+.sv-root .sv-run-title:focus-visible,
+.sv-root .sv-prun-title:focus-visible {
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.sv-root .sv-run-status {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sv-root .sv-run-submit {
+  min-height: 44px;
+  padding: 0 18px;
+  font-size: 15px;
+}
+
+.sv-root .sv-run-pending {
+  color: var(--sv-table-ink);
+  font-size: 14px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+/* The clock: time left, steady; under five minutes in heavier ink. */
+.sv-root .sv-timer-unit {
+  color: var(--sv-table-ink-3);
+  font-weight: 650;
+}
+
+.sv-root .sv-timer--left[data-low='true'] {
+  color: var(--sv-table-ink);
+  font-weight: 850;
+}
+
+.sv-root .sv-run-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  column-gap: 36px;
+  width: min(1320px, calc(100% - 48px));
+  min-height: 0;
+  margin: 0 auto;
+  padding-bottom: 24px;
+}
+
+.sv-root .sv-run-main {
+  display: grid;
+  min-height: 0;
+}
+
+.sv-root .sv-run-solo {
+  display: grid;
+  grid-template-columns: minmax(0, 680px);
+  justify-content: center;
+  align-content: start;
+  min-height: 0;
+  padding-right: 32px;
+}
+
+.sv-root .sv-run-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(400px, 500px);
+  column-gap: 28px;
+  min-height: 0;
+  padding-right: 32px;
+}
+
+/* A text wants the reading measure (55–70 characters): its card the wider. */
+.sv-root .sv-run-pair[data-ref='passage'] {
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 440px);
+}
+
+/* The question card hugs its problem; the waiting questions' edges stand
+ * behind it. */
+.sv-root .sv-run-slot {
+  align-self: start;
+  min-height: 0;
+  max-height: 100%;
+  display: grid;
+}
+
+.sv-root .sv-run-slot > .sv-pq {
+  height: auto;
+  max-height: 100%;
+}
+
+.sv-root .sv-pq .sv-qcard-scroll {
+  padding-bottom: 16px;
+}
+
+.sv-root .sv-pq .sv-qhead .sv-flag {
+  margin-left: auto;
+}
+
+.sv-root .sv-pq-foot {
+  display: grid;
+  gap: 10px;
+  padding: 12px 14px 14px;
+  border-top: 1px solid var(--sv-line);
+}
+
+.sv-root .sv-pq-foot .sv-echo {
+  min-height: 21px;
+  line-height: 1.45;
+}
+
+.sv-root .sv-pq-foot .sv-echo .sv-link {
+  min-height: 0;
+}
+
+.sv-root .sv-pq-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sv-root .sv-pq-nav .sv-btn {
+  border-radius: 14px;
+}
+
+.sv-root .sv-pq-nav .sv-btn[aria-disabled='true'] {
+  color: var(--sv-ink-3);
+  cursor: default;
+}
+
+/* A pass's choices: slips without a strike; the chosen one lifts with an
+ * ink rim, as in practice — no colour says right or wrong. */
+.sv-root .sv-opt--exam {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.sv-root .sv-opt--exam .sv-opt-main {
+  padding-right: 14px;
+  border-radius: var(--sv-r2);
+}
+
+.sv-root .sv-opt--exam .sv-opt-main[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
+/* A quant question's own figure, on its light sheet. */
+.sv-root .sv-pq-figure {
+  display: grid;
+  place-items: center;
+  margin: 14px 0 2px;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--sv-paper);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+}
+
+.sv-root .sv-pq-figure img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 240px;
+}
+
+.sv-root .sv-fcard-block {
+  color: var(--sv-ink-2);
+  font-weight: 650;
+}
+
+/* The register: the pass's hand, every question a small card. */
+.sv-root .sv-run-end {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2px 4px 8px 2px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sv-table-line) transparent;
+}
+
+.sv-root .sv-reg .sv-index-head {
+  padding-left: 2px;
+}
+
+.sv-root .sv-reg-run {
+  margin-top: 16px;
+}
+
+.sv-root .sv-reg-run-head {
+  margin: 0 0 6px 2px;
+  color: var(--sv-table-ink-3);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-reg-run-head span {
+  color: var(--sv-table-ink-2);
+  font-weight: 800;
+}
+
+.sv-root .sv-reg-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 44px);
+  gap: 6px 8px;
+}
+
+/* Waiting: an empty outline. Answered: a card lying face down. The current
+ * one stands up with an accent rim. A flagged one has its corner turned. */
+.sv-root .sv-reg-cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 48px;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1.5px var(--sv-table-ink-3);
+  color: var(--sv-table-ink-2);
+  font-size: 14px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  transition:
+    transform var(--sv-d-ui) var(--sv-ease),
+    box-shadow var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-reg-cell:hover {
+  background: oklch(from var(--sv-table-ink) l c h / 0.06);
+}
+
+.sv-root .sv-reg-cell[data-answered='true'] {
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow:
+    inset 0 0 0 1px var(--sv-line-2),
+    0 2px 5px -2px oklch(25% 0.03 262 / 0.25);
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-reg-cell[aria-current='step'] {
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow:
+    inset 0 0 0 2px var(--sv-accent),
+    0 8px 14px -8px var(--sv-accent-glow);
+  color: var(--sv-accent-ink);
+  transform: translateY(-3px);
+}
+
+.sv-root .sv-reg-cell[aria-disabled='true'] {
+  cursor: default;
+}
+
+.sv-root .sv-reg-flag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 0 10px 0 4px;
+  background: linear-gradient(225deg, var(--sv-ink) 50%, transparent 50%);
+}
+
+.sv-root .sv-reg-cell:not([data-answered='true']):not([aria-current='step']) .sv-reg-flag {
+  background: linear-gradient(225deg, var(--sv-table-ink) 50%, transparent 50%);
+}
+
+.sv-root .sv-reg-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 18px;
+  color: var(--sv-table-ink-2);
+  font-size: 12.5px;
+  font-weight: 650;
+}
+
+.sv-root .sv-reg-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sv-root .sv-reg-legend i {
+  position: relative;
+  display: block;
+  width: 12px;
+  height: 15px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1.5px var(--sv-table-ink-3);
+}
+
+.sv-root .sv-reg-legend i[data-k='done'] {
+  background: var(--sv-card);
+  box-shadow: inset 0 0 0 1px var(--sv-line-2);
+}
+
+.sv-root .sv-reg-legend i[data-k='flag'] {
+  background: linear-gradient(225deg, var(--sv-table-ink) 6px, transparent 6px);
+}
+
+/* Phone run: the head, the pass's name, the question (its page or text
+ * above it) in one scrolling column, the register's button at the foot. */
+.sv-root .sv-prun {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  height: 100%;
+}
+
+.sv-root .sv-prun-head {
+  gap: 4px;
+}
+
+.sv-root .sv-prun-head .sv-exit {
+  padding: 0 10px 0 6px;
+}
+
+.sv-root .sv-prun-head .sv-timer-unit {
+  display: none;
+}
+
+.sv-root .sv-prun-head .sv-timer {
+  padding: 0 4px;
+}
+
+.sv-root .sv-prun-head .sv-run-submit {
+  padding: 0 12px;
+  font-size: 14.5px;
+}
+
+.sv-root .sv-prun-title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 10px;
+  padding: 0 20px 6px;
+  font-size: 13px;
+}
+
+.sv-root .sv-prun-body {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2px 8px 12px;
+}
+
+/* On a phone the column scrolls, not the card: the card is as tall as its
+ * question, and its way on stays pinned to the column's foot. */
+.sv-root .sv-prun-body .sv-pq {
+  height: auto;
+  overflow: visible;
+  border-radius: 24px;
+}
+
+.sv-root .sv-prun-body .sv-qcard-scroll {
+  flex: none;
+  overflow: visible;
+  padding: 20px 18px 14px;
+}
+
+.sv-root .sv-prun-body .sv-pq-foot {
+  position: sticky;
+  z-index: 1;
+  bottom: -12px;
+  border-radius: 0 0 24px 24px;
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+}
+
+.sv-root .sv-prun-body .sv-qprompt .sv-prompt {
+  font-size: 20px;
+}
+
+.sv-root .sv-prun-body .sv-kva-pair {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.sv-root .sv-prun-body .sv-kva-expr {
+  font-size: 22px;
+}
+
+.sv-root .sv-prun-body .sv-nog-text {
+  font-size: 17.5px;
+}
+
+.sv-root .sv-prun-body .sv-opt-main {
+  gap: 12px;
+  padding: 12px 10px 12px 10px;
+  font-size: 15.5px;
+}
+
+.sv-root .sv-prun-body .sv-pq-nav .sv-btn {
+  flex: 1;
+  padding: 0 14px;
+}
+
+.sv-root .sv-prun-body .sv-run-page {
+  height: 54cqh;
+  border-radius: 24px;
+}
+
+.sv-root .sv-prun-body .sv-run-page .sv-fcard-head {
+  gap: 8px;
+  min-height: 0;
+  padding: 8px 8px 8px 16px;
+}
+
+.sv-root .sv-prun-body .sv-run-page .sv-lens {
+  margin-left: auto;
+}
+
+.sv-root .sv-prun-body .sv-run-page :is(.sv-lens-zoom, .sv-fcard-title) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.sv-root .sv-prun-body .sv-run-page .sv-lens-btn {
+  padding: 0;
+}
+
+.sv-root .sv-prun-body .sv-run-page .sv-fig-scroll {
+  margin: 0 10px 12px;
+  border-radius: 12px;
+}
+
+.sv-root .sv-prun-body .sv-run-text {
+  height: 48cqh;
+  border-radius: 24px;
+}
+
+.sv-root .sv-prun-body .sv-run-text .sv-pcard-scroll {
+  padding: 18px 16px 24px 40px;
+}
+
+.sv-root .sv-prun-body .sv-run-text .sv-ptitle {
+  margin: 16px 0 18px;
+  font-size: 25px;
+}
+
+.sv-root .sv-prun-body .sv-run-text .sv-pbody {
+  font-size: 17.5px;
+  line-height: 1.6;
+}
+
+.sv-root .sv-prun-body .sv-run-text .sv-pnum {
+  left: -36px;
+  width: 28px;
+  padding-right: 4px;
+  font-size: 11.5px;
+}
+
+.sv-root .sv-prun-foot {
+  padding: 6px 8px max(10px, env(safe-area-inset-bottom));
+}
+
+.sv-root .sv-prun-regbtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 52px;
+  padding: 8px 14px;
+  border-radius: 16px;
+  background-color: var(--sv-card);
+  background-image: var(--sv-grain);
+  box-shadow: var(--sv-chip);
+  color: var(--sv-ink-2);
+  font-size: 14.5px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+}
+
+.sv-root .sv-prun-regbtn b {
+  color: var(--sv-ink);
+  font-weight: 800;
+}
+
+/* The pass as a thin hand on the register's button. */
+.sv-root .sv-qhand {
+  display: inline-flex;
+  flex: none;
+  align-items: flex-end;
+  gap: 2px;
+  height: 18px;
+}
+
+.sv-root .sv-qhand i {
+  display: block;
+  width: 3px;
+  height: 13px;
+  border-radius: 1px;
+  box-shadow: inset 0 0 0 1px var(--sv-ink-3);
+}
+
+.sv-root .sv-qhand i[data-state='done'] {
+  background: var(--sv-ink-2);
+  box-shadow: none;
+}
+
+.sv-root .sv-qhand i[data-state='now'] {
+  height: 18px;
+  background: var(--sv-accent);
+  box-shadow: none;
+}
+
+/* The phone register: a sheet dealt over the pass. */
+.sv-root .sv-regsheet {
+  position: fixed;
+  z-index: 85;
+  inset: 0;
+  display: grid;
+  align-items: end;
+}
+
+.sv-root .sv-regsheet[hidden] {
+  display: none;
+}
+
+.sv-root .sv-regsheet-card {
+  position: relative;
+  max-height: calc(100% - 40px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 12px 16px max(16px, env(safe-area-inset-bottom));
+  border-radius: 24px 24px 0 0;
+  animation: sv-sheet-up var(--sv-d-move) var(--sv-ease) both;
+}
+
+.sv-root .sv-regsheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sv-root .sv-regsheet-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/* On the card the register's words are card ink. */
+.sv-root .sv-regsheet-card .sv-reg :is(.sv-index-head, .sv-reg-legend) {
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-regsheet-card .sv-reg .sv-index-head span,
+.sv-root .sv-regsheet-card .sv-reg-legend {
+  color: var(--sv-ink-2);
+}
+
+.sv-root .sv-regsheet-card .sv-reg-run-head {
+  color: var(--sv-ink-3);
+}
+
+.sv-root .sv-regsheet-card .sv-reg-run-head span {
+  color: var(--sv-ink-2);
+}
+
+.sv-root .sv-regsheet-card .sv-reg-grid {
+  grid-template-columns: repeat(7, 44px);
+  gap: 6px;
+}
+
+.sv-root .sv-regsheet-card .sv-reg-cell {
+  box-shadow: inset 0 0 0 1.5px var(--sv-ink-3);
+  color: var(--sv-ink-2);
+}
+
+.sv-root .sv-regsheet-card .sv-reg-cell[data-answered='true'] {
+  background-color: var(--sv-card-3);
+  box-shadow: inset 0 0 0 1px var(--sv-line-2);
+  color: var(--sv-ink);
+}
+
+.sv-root .sv-regsheet-card .sv-reg-cell[aria-current='step'] {
+  background-color: var(--sv-card);
+  box-shadow:
+    inset 0 0 0 2px var(--sv-accent),
+    0 8px 14px -8px var(--sv-accent-glow);
+  color: var(--sv-accent-ink);
+}
+
+.sv-root .sv-regsheet-card .sv-reg-legend i {
+  box-shadow: inset 0 0 0 1.5px var(--sv-ink-3);
+}
+
+.sv-root .sv-regsheet-card .sv-reg-legend i[data-k='done'] {
+  background: var(--sv-card-3);
+  box-shadow: inset 0 0 0 1px var(--sv-line-2);
+}
+
+.sv-root .sv-regsheet-card :is(.sv-reg-legend i[data-k='flag'], .sv-reg-flag) {
+  background: linear-gradient(225deg, var(--sv-ink) 50%, transparent 50%);
+}
+
+/* ── Provpass: a hand-in that did not reach its result ── */
+
+/* The table again: what became of the hand-in where the hub's orientation
+ * lies, with the way back; the answers as handed in on one card; the
+ * register beside it. */
+.sv-root .sv-handed {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.sv-root .sv-handed .sv-handed-say .sv-greet {
+  font-size: 32px;
+}
+
+/* The heading takes the focus when the outcome is dealt, as a gate's does. */
+.sv-root .sv-handed-say .sv-greet:focus-visible {
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.sv-root .sv-handed-say .sv-btn {
+  margin-top: 22px;
+}
+
+/* The card is as tall as its question and never taller than the table:
+ * past that it scrolls inside. */
+.sv-root .sv-handed-q {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+}
+
+.sv-root .sv-handed-q > .sv-pq {
+  flex: 0 1 auto;
+  height: auto;
+  min-height: 0;
+}
+
+/* Phone: the outcome and its way back, the card, then the register, in the
+ * one column that scrolls; the card's way on stays at the column's foot. */
+.sv-root .sv-phanded {
+  gap: 14px;
+}
+
+/* Each part keeps its own height: the column scrolls, nothing in it does. */
+.sv-root .sv-phanded > * {
+  flex: none;
+}
+
+.sv-root .sv-phanded .sv-handed-say .sv-btn {
+  margin-top: 10px;
+}
+
+.sv-root .sv-phanded .sv-prun-body {
+  overflow: visible;
+  padding: 0;
+}
+
+/* ── Provpassresultat ── */
+
+.sv-root .sv-res-raw {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.sv-root .sv-res-n {
+  font-size: 96px;
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-res-of {
+  color: var(--sv-ink-2);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.sv-root .sv-res-line {
+  margin-top: 10px;
+  color: var(--sv-ink-2);
+  font-size: 16px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-res-score {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--sv-line);
+}
+
+.sv-root .sv-res-score-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+
+.sv-root .sv-res-score-n {
+  font-size: 44px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-res-score-label {
+  color: var(--sv-ink-2);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sv-root .sv-res-score .sv-caveat {
+  padding-top: 8px;
+}
+
+.sv-root .sv-res-facts {
+  margin-top: 14px;
+  color: var(--sv-ink-2);
+  font-size: 15px;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+  text-wrap: pretty;
+}
+
+/* Each section against its questions: labelled bars, real denominators. */
+.sv-root .sv-secbars {
+  display: grid;
+}
+
+.sv-root .sv-secbar {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  grid-template-areas:
+    'code name n'
+    'code bar n';
+  align-items: center;
+  column-gap: 14px;
+  row-gap: 6px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--sv-line);
+}
+
+.sv-root .sv-secbar-code {
+  grid-area: code;
+}
+
+.sv-root .sv-secbar-name {
+  grid-area: name;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sv-root .sv-secbar-bar,
+.sv-root .sv-tempo-bar {
+  position: relative;
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--sv-card-3);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+}
+
+.sv-root .sv-secbar-bar {
+  grid-area: bar;
+  overflow: hidden;
+}
+
+.sv-root :is(.sv-secbar-bar, .sv-tempo-bar) i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 4px;
+  background: var(--sv-ink-2);
+}
+
+.sv-root .sv-secbar-n {
+  grid-area: n;
+  justify-self: end;
+  color: var(--sv-ink-2);
+  font-size: 15px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-secbar-n b {
+  color: var(--sv-ink);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Tempo: the time used as a bar, the section's share of the 55 minutes as
+ * a mark on it. Over the share is said in words, never in red. */
+.sv-root .sv-tempo {
+  display: grid;
+}
+
+.sv-root .sv-tempo-row {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  grid-template-areas:
+    'code bar n'
+    'code bar d';
+  align-items: center;
+  column-gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--sv-line);
+}
+
+.sv-root .sv-tempo-code {
+  grid-area: code;
+}
+
+.sv-root .sv-tempo-bar {
+  grid-area: bar;
+}
+
+.sv-root .sv-tempo-bar b {
+  position: absolute;
+  top: -5px;
+  width: 3px;
+  height: 18px;
+  border-radius: 2px;
+  background: var(--sv-ink);
+  translate: -1.5px 0;
+}
+
+.sv-root .sv-tempo-n {
+  grid-area: n;
+  justify-self: end;
+  font-size: 16px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-tempo-n span {
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.sv-root .sv-tempo-d {
+  grid-area: d;
+  justify-self: end;
+  color: var(--sv-ink-2);
+  font-size: 13px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The misses, by section, as their places in the pass. */
+.sv-root .sv-res-trap {
+  margin: 14px 0 4px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+}
+
+.sv-root .sv-res-trap-k {
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.sv-root .sv-res-trap-h {
+  margin-top: 4px;
+  color: var(--sv-ink-2);
+  font-size: 15px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.sv-root .sv-missed {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.sv-root .sv-missed li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sv-root .sv-missed-n {
+  font-size: 16px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The earlier passes of the half, this one on top for comparison. */
+.sv-root .sv-res-hist {
+  display: grid;
+}
+
+.sv-root :is(.sv-res-hist-now, .sv-res-hist-row) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 80px 48px 92px;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 54px;
+  border-bottom: 1px solid var(--sv-line);
+  text-align: left;
+}
+
+.sv-root .sv-res-hist-now .sv-recent-name {
+  font-weight: 800;
+}
+
+.sv-root .sv-res-hist-row {
+  border-radius: 0;
+  transition: background-color var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-res-hist-row:hover {
+  background: var(--sv-card-2);
+}
+
+.sv-root .sv-res-hist .sv-recent-name {
+  font-size: 15.5px;
+}
+
+.sv-root .sv-res-hist .sv-recent-when {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Framsteg ── */
+
+.sv-root .sv-fs-totals {
+  margin-top: 16px;
+  color: var(--sv-table-ink-2);
+  font-size: 14.5px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-fs-histdoor {
+  margin-top: 22px;
+}
+
+.sv-root .sv-fs-histdoor-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+  color: var(--sv-ink-2);
+}
+
+.sv-root .sv-fs-prog .sv-prog-n {
+  font-size: 88px;
+}
+
+.sv-root .sv-fs-prog .sv-scale {
+  margin-top: 26px;
+}
+
+/* The weeks on the full 0–2,0 scale; a week without answers is a gap. */
+.sv-root .sv-wk {
+  margin-top: 22px;
+}
+
+.sv-root .sv-wk-plot {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 80px;
+  padding: 0 2px;
+  border-bottom: 1.5px solid var(--sv-line-2);
+}
+
+.sv-root .sv-wk-plot i {
+  display: block;
+  flex: 1;
+  max-width: 24px;
+  border-radius: 3px 3px 0 0;
+  background: var(--sv-card-3);
+  box-shadow: inset 0 0 0 1px var(--sv-line-2);
+}
+
+.sv-root .sv-wk-plot i[data-last='true'] {
+  background: var(--sv-ink-2);
+  box-shadow: none;
+}
+
+.sv-root .sv-wk-plot i[data-empty='true'] {
+  height: 3px;
+  background: none;
+  box-shadow: none;
+  border-bottom: 2px dotted var(--sv-ink-3);
+}
+
+.sv-root .sv-wk-goal {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 1.5px dashed var(--sv-ink-3);
+}
+
+.sv-root .sv-wk-goal span {
+  position: absolute;
+  right: 0;
+  bottom: 2px;
+  color: var(--sv-ink-2);
+  font-size: 11.5px;
+  font-weight: 750;
+}
+
+.sv-root .sv-wk figcaption,
+.sv-root .sv-wk-sparse {
+  margin-top: 6px;
+  color: var(--sv-ink-2);
+  font-size: 12.5px;
+  font-weight: 650;
+}
+
+.sv-root .sv-wk-sparse {
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+/* Every section on one card: estimate, band and answers in a row each. */
+.sv-root .sv-fs-secs {
+  display: grid;
+}
+
+.sv-root .sv-fs-sec {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  grid-template-areas:
+    'code name score'
+    'code track n';
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 5px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--sv-line);
+}
+
+.sv-root .sv-fs-sec-code {
+  grid-area: code;
+}
+
+.sv-root .sv-fs-sec-name {
+  grid-area: name;
+  overflow: hidden;
+  font-size: 14.5px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sv-root .sv-fs-sec-score {
+  grid-area: score;
+  justify-self: end;
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.sv-root .sv-fs-sec-score b {
+  color: var(--sv-ink);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.sv-root .sv-fs-sec-none {
+  grid-area: track;
+  color: var(--sv-ink-2);
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.sv-root .sv-fs-sec-n {
+  grid-area: n;
+  justify-self: end;
+  color: var(--sv-ink-2);
+  font-size: 12.5px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.sv-root .sv-fs-track {
+  grid-area: track;
+  position: relative;
+  display: block;
+  height: 8px;
+  margin: 0 2px;
+  border-radius: 4px;
+  background: var(--sv-card-3);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+}
+
+.sv-root .sv-fs-band {
+  position: absolute;
+  top: -2px;
+  height: 12px;
+  border-radius: 6px;
+  background: repeating-linear-gradient(
+    -45deg,
+    oklch(from var(--sv-ink-3) l c h / 0.42) 0 3px,
+    oklch(from var(--sv-ink-3) l c h / 0.16) 3px 6px
+  );
+}
+
+.sv-root .sv-fs-mark {
+  position: absolute;
+  top: -5px;
+  width: 4px;
+  height: 18px;
+  border-radius: 2px;
+  background: var(--sv-ink);
+  translate: -2px 0;
+}
+
+/* Presence: the week in plain numbers, the days as a heat of small cards. */
+.sv-root .sv-fs-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sv-root .sv-fs-stat {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+}
+
+.sv-root .sv-fs-stat b {
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-fs-stat span {
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.sv-root .sv-heat {
+  margin-top: 24px;
+}
+
+.sv-root .sv-heat-table {
+  border-collapse: separate;
+  border-spacing: 4px;
+  margin: 0 -4px;
+}
+
+.sv-root .sv-heat-table td {
+  width: 26px;
+  height: 22px;
+  padding: 0;
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+}
+
+.sv-root :is(.sv-heat-table td, .sv-heat-legend i)[data-level='1'] {
+  background: oklch(from var(--sv-ink-3) l c h / 0.22);
+  box-shadow: none;
+}
+
+.sv-root :is(.sv-heat-table td, .sv-heat-legend i)[data-level='2'] {
+  background: oklch(from var(--sv-ink-3) l c h / 0.45);
+  box-shadow: none;
+}
+
+.sv-root :is(.sv-heat-table td, .sv-heat-legend i)[data-level='3'] {
+  background: oklch(from var(--sv-ink-2) l c h / 0.7);
+  box-shadow: none;
+}
+
+.sv-root :is(.sv-heat-table td, .sv-heat-legend i)[data-level='4'] {
+  background: var(--sv-ink);
+  box-shadow: none;
+}
+
+.sv-root .sv-heat-day {
+  padding: 0 6px 0 0;
+  color: var(--sv-ink-2);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.sv-root .sv-heat-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  color: var(--sv-ink-2);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.sv-root .sv-heat-legend span:first-child {
+  margin-right: 4px;
+}
+
+.sv-root .sv-heat-legend span:last-child {
+  margin-left: 4px;
+}
+
+.sv-root .sv-heat-legend i {
+  display: block;
+  width: 14px;
+  height: 12px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+}
+
+.sv-root .sv-fs-note {
+  margin-top: 14px;
+  color: var(--sv-ink-2);
+  font-size: 14.5px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+/* The next focus: three rows, each a way into its practice. */
+.sv-root .sv-fs-focus {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.sv-root .sv-fs-focus-row {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 64px;
+  padding: 10px 12px;
+  border-radius: var(--sv-r2);
+  background: var(--sv-card-2);
+  box-shadow: inset 0 0 0 1px var(--sv-line);
+  text-align: left;
+  transition: box-shadow var(--sv-d-ui) var(--sv-ease);
+}
+
+.sv-root .sv-fs-focus-row:hover {
+  box-shadow: inset 0 0 0 1.5px var(--sv-ink-3);
+}
+
+.sv-root .sv-fs-focus-row .sv-index-n {
+  color: var(--sv-ink-2);
+}
+
+.sv-root .sv-fs-focus-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sv-root .sv-fs-focus-text b {
+  font-size: 15.5px;
+  font-weight: 800;
+}
+
+.sv-root .sv-fs-focus-text span {
+  color: var(--sv-ink-2);
+  font-size: 13.5px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-fs-focus-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+/* Historik: dated rows that scroll inside their card. */
+.sv-root .sv-hist {
+  display: grid;
+}
+
+.sv-root .sv-hist-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) 96px 48px;
+  align-items: center;
+  gap: 12px;
+  min-height: 50px;
+  border-bottom: 1px solid var(--sv-line);
+}
+
+.sv-root .sv-hist-when {
+  color: var(--sv-ink-2);
+  font-size: 14px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.sv-root .sv-hist-score {
+  font-size: 16px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* Phone Framsteg: Översikt and Historik as two tabs over the deck. */
+.sv-root .sv-seg--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sv-root .sv-fs-tabs {
+  margin: 8px 0 0;
+}
+
+.sv-root .sv-pfs .sv-fs-prog .sv-prog-n {
+  font-size: 72px;
+}
+
+.sv-root .sv-pfs .sv-fs-stat b {
+  font-size: 30px;
+}
+
+.sv-root .sv-pfs .sv-heat-table {
+  border-spacing: 3px;
+  margin: 0 -3px;
+}
+
+.sv-root .sv-pfs .sv-heat-table td {
+  width: 18px;
+  height: 17px;
+  border-radius: 4px;
+}
+
+.sv-root .sv-pfs .sv-hist-row {
+  grid-template-columns: 52px minmax(0, 1fr) 64px 42px;
+  gap: 8px;
+}
+
+.sv-root .sv-pres .sv-res-n {
+  font-size: 76px;
+}
+
+.sv-root .sv-pres .sv-res-score-n {
+  font-size: 36px;
+}
+
+.sv-root .sv-pres :is(.sv-res-hist-now, .sv-res-hist-row) {
+  grid-template-columns: minmax(0, 1fr) 56px 44px 64px;
+  gap: 8px;
+}
+
+/* ── Batch 2 on narrower and shorter desktops ── */
+
+@container svep (max-width: 1320px) {
+  .sv-root[data-width='desktop'] .sv-tri {
+    grid-template-columns: minmax(0, 1fr) 520px minmax(0, 1fr);
+    column-gap: 48px;
+    padding: 32px 32px 24px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-tri .sv-deck {
+    --sv-next: translateX(22px) scale(0.96) rotate(0.5deg);
+    --sv-after: translateX(44px) scale(0.92) rotate(1deg);
+    width: 520px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-run-body {
+    grid-template-columns: minmax(0, 1fr) 256px;
+    column-gap: 24px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-reg-grid {
+    grid-template-columns: repeat(5, 44px);
+    gap: 6px 4px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-run-pair {
+    grid-template-columns: minmax(0, 1fr) minmax(380px, 460px);
+    column-gap: 22px;
+    padding-right: 24px;
+  }
+}
+
+@container svep (max-width: 1120px) {
+  .sv-root[data-width='desktop'] .sv-tri {
+    grid-template-columns: minmax(0, 1fr) 480px minmax(0, 1fr);
+    column-gap: 28px;
+    padding: 28px 24px 20px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-tri .sv-deck {
+    width: 480px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-halfdoors-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sv-root[data-width='desktop'] .sv-halfdoor {
+    min-height: 0;
+  }
+
+  .sv-root[data-width='desktop'] .sv-run-body {
+    grid-template-columns: minmax(0, 1fr) 208px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-reg-grid {
+    grid-template-columns: repeat(4, 44px);
+    gap: 6px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-run-pair {
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 400px);
+    padding-right: 12px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-run-solo {
+    padding-right: 12px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-run-top {
+    width: calc(100% - 48px);
+  }
+}
+
+@container svep (max-height: 820px) {
+  .sv-root[data-width='desktop'] .sv-tri {
+    padding-top: 24px;
+    padding-bottom: 16px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-tri .sv-home-deck {
+    gap: 12px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-res-n {
+    font-size: 80px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-fs-prog .sv-prog-n {
+    font-size: 72px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-passhand {
+    height: 100px;
+  }
+
+  .sv-root[data-width='desktop'] .sv-run {
+    grid-template-rows: 68px minmax(0, 1fr);
   }
 }

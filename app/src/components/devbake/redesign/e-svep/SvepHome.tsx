@@ -42,6 +42,8 @@ import {
   DeckStage,
   DeckTicks,
   Kbd,
+  SCALE_MAX,
+  Scale,
   SecChip,
   sectionTint,
   type Tint,
@@ -49,20 +51,19 @@ import {
 } from './parts'
 import type { FrameNav } from './Svep'
 
-/** The top of HP's scale: the bars and the scale are drawn against it. */
-const SCALE_MAX = 2
-
 const DEVICE_DEFINITE: Record<string, string> = {
   telefon: 'telefonen',
   dator: 'datorn',
   surfplatta: 'surfplattan',
 }
 
+// A mock item opens the Provpass hub, where a pass is prepared and then
+// confirmed: its button says so (it never starts a clock by itself).
 const PLAN_VERB: Record<PlanItemKind, string> = {
   repetition: 'Starta repetitionen',
   lesson: 'Öppna lektionen',
   drill: 'Starta övningen',
-  mock: 'Starta provpasset',
+  mock: 'Förbered provpasset',
 }
 
 /** The minutes the day's to-dos take, or null when the resume's are not
@@ -299,13 +300,13 @@ function homeCards({
       group: 'status',
       dot: true,
       meta: fmtScore(p.total),
-      action: () => nav.go('framsteg'),
+      action: () => nav.framsteg('oversikt'),
       body: (
         <PrognosisCard
           p={p}
           total={p.total}
           caveatId={caveatId}
-          onMore={() => nav.go('framsteg')}
+          onMore={() => nav.framsteg('oversikt')}
         />
       ),
     })
@@ -331,8 +332,11 @@ function homeCards({
       group: 'status',
       dot: true,
       meta: `${home.recent.length} pass`,
-      action: () => nav.go('framsteg'),
-      body: <RecentCard recent={home.recent} week={home.week} onMore={() => nav.go('framsteg')} />,
+      // The passes live in Framsteg's Historik: the link opens that card.
+      action: () => nav.framsteg('historik'),
+      body: (
+        <RecentCard recent={home.recent} week={home.week} onMore={() => nav.framsteg('historik')} />
+      ),
     })
   }
   if (out.length === 0) {
@@ -615,49 +619,6 @@ function Weeks({ weeks }: { weeks: number[] }) {
         {n} veckor · {from} → {to}
       </figcaption>
     </figure>
-  )
-}
-
-/** 1.25 → "1,25": the range keeps its two decimals (one would round it). */
-const fmtRange = (v: number) => v.toFixed(2).replace('.', ',')
-
-/** The 0–2,0 scale: the estimate as a mark, and the likely range as a band
- *  when there is one. */
-function Scale({ total, low, high }: { total: number; low?: number; high?: number }) {
-  const pct = (v: number) => `${(v / SCALE_MAX) * 100}%`
-  const range = low != null && high != null ? `${fmtRange(low)}–${fmtRange(high)}` : null
-  return (
-    <div
-      className="sv-scale"
-      role="img"
-      aria-label={
-        range
-          ? `Trolig nivå ${range} på skalan 0 till ${fmtScore(SCALE_MAX)}.`
-          : `Prognos ${fmtScore(total)} på skalan 0 till ${fmtScore(SCALE_MAX)}.`
-      }
-    >
-      {range && high != null && low != null ? (
-        <>
-          <span className="sv-scale-label" aria-hidden style={{ left: pct(high) }}>
-            Troligt {range}
-          </span>
-          <span className="sv-scale-axis" aria-hidden />
-          <span
-            className="sv-scale-range"
-            aria-hidden
-            style={{ left: pct(low), width: pct(high - low) }}
-          />
-        </>
-      ) : (
-        <span className="sv-scale-axis" aria-hidden />
-      )}
-      <span className="sv-scale-mark" aria-hidden style={{ left: pct(total) }} />
-      {[0, 0.5, 1, 1.5, 2].map((v) => (
-        <span key={v} className="sv-scale-tick" aria-hidden style={{ left: pct(v) }}>
-          {v === 0 ? '0' : fmtScore(v)}
-        </span>
-      ))}
-    </div>
   )
 }
 
