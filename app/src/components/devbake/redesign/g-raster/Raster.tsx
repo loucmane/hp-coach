@@ -8,9 +8,11 @@ import {
   useWebFonts,
 } from '@/components/devbake/redesign/r1Kit'
 import { RasterDrill } from './RasterDrill'
+import { RasterFramsteg } from './RasterFramsteg'
 import { RasterDestination, RasterHome } from './RasterHome'
 import { RasterNav } from './RasterNav'
 import { RasterOva } from './RasterOva'
+import { RasterProvpass, RasterProvResult } from './RasterProvpass'
 import { RasterQuant } from './RasterQuant'
 import { RasterRepetera } from './RasterRepetera'
 
@@ -20,16 +22,27 @@ const FONTS =
 export function Raster(props: DirectionProps) {
   useWebFonts('raster', FONTS)
   const { data, actions } = useDirectionData()
-  const [dest, setDest] = useState<Destination>(props.screen >= 5 ? 'ova' : 'idag')
+  const screenDest: Destination =
+    props.screen === 9 || props.screen === 10
+      ? 'provpass'
+      : props.screen === 11
+        ? 'framsteg'
+        : props.screen >= 5
+          ? 'ova'
+          : 'idag'
+  const [dest, setDest] = useState<Destination>(screenDest)
+  const [activePass, setActivePass] = useState<string | null>(null)
+  const timedPass = dest === 'provpass' && props.screen !== 10 && activePass !== null
   const [menu, setMenu] = useState(props.screen === 4)
   const reading = props.screen === 2 || props.screen === 3
   const drill = reading || props.screen === 6 || props.screen === 7
   const returnToHome = useRef(true)
   if (!drill) returnToHome.current = props.screen === 1 || props.screen === 4
   useLayoutEffect(() => {
-    setDest(props.screen >= 5 ? 'ova' : 'idag')
+    setDest(screenDest)
     setMenu(props.screen === 4)
-  }, [props.screen])
+    if (props.screen !== 9) setActivePass(null)
+  }, [props.screen, screenDest])
   const go = useCallback(
     (next: Destination) => {
       setMenu(false)
@@ -48,11 +61,14 @@ export function Raster(props: DirectionProps) {
       data-width={props.width}
       data-live={String(props.live)}
       inert={!props.live}
-      data-drill={String(drill)}
+      data-drill={String(drill || timedPass)}
+      data-timed-pass={String(timedPass)}
       data-round-two={String(props.screen >= 5)}
       lang="sv"
     >
-      <RasterNav {...props} dest={drill ? 'ova' : dest} onGo={go} menu={menu} setMenu={setMenu} />
+      {!timedPass ? (
+        <RasterNav {...props} dest={drill ? 'ova' : dest} onGo={go} menu={menu} setMenu={setMenu} />
+      ) : null}
       {reading ? (
         <RasterDrill
           {...props}
@@ -64,7 +80,20 @@ export function Raster(props: DirectionProps) {
         <RasterQuant {...props} live={props.live && !menu} />
       ) : (
         <main className="ra-main" key={dest}>
-          {props.screen === 8 && dest === 'ova' ? (
+          {dest === 'provpass' ? (
+            props.screen === 10 ? (
+              <RasterProvResult />
+            ) : (
+              <RasterProvpass
+                live={props.live && !menu}
+                width={props.width}
+                activePass={activePass}
+                onActivePass={setActivePass}
+              />
+            )
+          ) : dest === 'framsteg' ? (
+            <RasterFramsteg />
+          ) : props.screen === 8 && dest === 'ova' ? (
             <RasterRepetera />
           ) : dest === 'ova' ? (
             <RasterOva />
