@@ -8,7 +8,7 @@ import { useDrillCore } from '../drillCore'
 import { type DirectionProps, fmtClock, useKeyMap, useSheet } from '../r1Kit'
 import type { DrillFigure, DrillQuestion, DrillSessionView } from '../viewModel'
 import { AnswerSummary, Explanation, Options } from './InstrumentDrill'
-import { Kc, Segs } from './parts'
+import { type ImageState, Kc, nextPlanItem, optionImageId, Segs, useImageReadiness } from './parts'
 
 export function InstrumentQuant(props: DirectionProps) {
   const { data, actions } = useDirectionData()
@@ -21,13 +21,19 @@ export function InstrumentQuant(props: DirectionProps) {
           type="button"
           className="in-btn2"
           data-testid="rd-exit"
-          onClick={actions.drill.exit}
+          onClick={() => actions.go('ova')}
         >
           Till Öva
         </button>
       </div>
     )
-  return <QuantSession {...props} session={session} />
+  return (
+    <QuantSession
+      key={`${session.id}:${session.questions.map((q) => q.qid).join('|')}`}
+      {...props}
+      session={session}
+    />
+  )
 }
 
 function QuantSession({
@@ -53,23 +59,21 @@ function QuantSession({
   const [focus, setFocus] = useState(false)
   const [expanded, setExpanded] = useState(false)
   const [exOpen, setExOpen] = useState(view.correct === false)
-  const [figureStates, setFigureStates] = useState<Record<string, 'ready' | 'error'>>({})
+  const images = useImageReadiness()
   const [answerWidth, setAnswerWidth] = useState(452)
   const workspace = useRef<HTMLDivElement>(null)
   const answerScroll = useRef<HTMLDivElement>(null)
   const peek = useRef<HTMLDivElement>(null)
   const { state: sheet, setState: setSheet, toggle, grab } = useSheet(view)
-  const missing = !q.prompt || !q.options?.length || (dtk && !q.figure)
-  const figureState = q.figure ? figureStates[q.figure.src] : 'ready'
+  const missing = !q.prompt || !q.options?.length || (q.section === 'DTK' && !q.figure)
+  const figureState = q.figure ? images.state(`source:${q.figure.src}`) : 'ready'
   const optionFigures = (q.options ?? []).flatMap((option) =>
-    option.figure ? [option.figure.src] : [],
+    option.figure ? [optionImageId(q, option.letter, option.figure.src)] : [],
   )
-  const optionError = optionFigures.some((src) => figureStates[src] === 'error')
+  const optionError = optionFigures.some((id) => images.state(id) === 'error')
   const available =
-    !missing &&
-    figureState === 'ready' &&
-    optionFigures.every((src) => figureStates[src] === 'ready')
-  const batchNext = data.home.plan.items.find((item) => item.primary) ?? data.home.plan.items[0]
+    !missing && figureState === 'ready' && optionFigures.every((id) => images.state(id) === 'ready')
+  const batchNext = nextPlanItem(data.home.plan)
   const continueAfter = () => (batchNext ? actions.openPlanItem(batchNext.id) : actions.go('ova'))
 
   useEffect(() => {
@@ -118,10 +122,8 @@ function QuantSession({
   }
   useKeyMap(keys, live && !expanded)
 
-  const assetStatus = (src: string, state: 'ready' | 'error') =>
-    setFigureStates((prev) => (prev[src] === state ? prev : { ...prev, [src]: state }))
-  const status = (state: 'ready' | 'error') => {
-    if (q.figure) assetStatus(q.figure.src, state)
+  const status = (node: HTMLImageElement, state: ImageState) => {
+    if (q.figure) images.report(`source:${q.figure.src}`, node, state)
   }
   const figureGroup = session.questions.filter(
     (question) => q.figure && question.figure?.src === q.figure.src,
@@ -166,7 +168,7 @@ function QuantSession({
           {dtk || phone ? prompt : null}
           {missing ? (
             <p className="in-quant-notice">
-              {dtk && !q.figure
+              {q.section === 'DTK' && !q.figure
                 ? 'Underlaget saknas. Frågan kan inte besvaras här.'
                 : 'Frågan är inte tillgänglig.'}
             </p>
@@ -176,7 +178,13 @@ function QuantSession({
               Ett svarsalternativ kunde inte visas. Frågan kan inte besvaras här.
             </p>
           ) : null}
-          <Options view={view} act={act} quant disabled={!available} onFigureStatus={assetStatus} />
+          <Options
+            view={view}
+            act={act}
+            quant
+            disabled={!available}
+            onFigureStatus={images.report}
+          />
         </>
       )}
     </>
@@ -194,7 +202,9 @@ function QuantSession({
           className="in-btn"
           data-testid="rd-lock"
           disabled={!available || !view.selected}
-          onClick={act.lock}
+          onClick={() => {
+            if (available) act.lock()
+          }}
         >
           {view.selected ? `Svara ${view.selected}` : 'Välj ett alternativ'}
           <Kc>↵</Kc>
@@ -472,7 +482,7 @@ function FigureWorkspace({
   setExpanded,
 }: {
   figure: DrillFigure
-  onStatus: (s: 'ready' | 'error') => void
+  onStatus: (node: HTMLImageElement, state: ImageState) => void
   expanded: boolean
   setExpanded: (on: boolean) => void
 }) {
@@ -486,16 +496,17 @@ function FigureWorkspace({
   const label = useId()
   const statusRef = useRef(onStatus)
   statusRef.current = onStatus
-  const loaded = () => {
+  const loaded = (node: HTMLImageElement) => {
     setState('ready')
-    statusRef.current('ready')
+    statusRef.current(node, 'ready')
   }
   // biome-ignore lint/correctness/useExhaustiveDependencies: a retry mounts a fresh image
   useLayoutEffect(() => {
-    if (img.current?.complete && img.current.naturalWidth > 0) {
-      setState('ready')
-      statusRef.current('ready')
-    }
+    const node = img.current
+    if (!node) return
+    const state = node.complete && node.naturalWidth > 0 ? 'ready' : 'loading'
+    setState(state)
+    statusRef.current(node, state)
   }, [attempt])
   useEffect(() => {
     if (expanded) dialog.current?.showModal()
@@ -549,6 +560,7 @@ function FigureWorkspace({
   const picture = (modal: boolean) => (
     <section
       className="in-figure-viewport"
+      data-rd-keyscope
       // biome-ignore lint/a11y/noNoninteractiveTabindex: the figure viewport must be keyboard-scrollable at zoom
       tabIndex={0}
       aria-label="Figur, rulla för att läsa hela underlaget"
@@ -564,11 +576,15 @@ function FigureWorkspace({
           alt={figure.alt}
           width={figure.width}
           height={figure.height}
-          onLoad={loaded}
-          onError={() => {
-            setState('error')
-            statusRef.current('error')
-          }}
+          onLoad={modal ? undefined : (event) => loaded(event.currentTarget)}
+          onError={
+            modal
+              ? undefined
+              : (event) => {
+                  setState('error')
+                  statusRef.current(event.currentTarget, 'error')
+                }
+          }
           style={{
             width: rotated ? `${100 * ratio}%` : '100%',
             transform: `translate(-50%, -50%) rotate(${rotation}deg)`,

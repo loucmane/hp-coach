@@ -3,9 +3,39 @@
 // labelled readouts, the segmented progress meter and a width hook.
 
 import { Activity, CalendarDays, Library, Target, Timer } from 'lucide-react'
-import { type ReactNode, type RefObject, useLayoutEffect, useState } from 'react'
+import { type ReactNode, type RefObject, useCallback, useLayoutEffect, useState } from 'react'
 
 import type { Destination } from '@/components/devbake/redesign/r1Kit'
+import type { DrillQuestion, PlanView } from '../viewModel'
+
+export function nextPlanItem(plan: PlanView) {
+  const remaining = plan.items.filter((item) => !item.completed)
+  return remaining.find((item) => item.primary) ?? remaining[0]
+}
+
+export type ImageState = 'loading' | 'ready' | 'error'
+export type ImageReport = (id: string, node: HTMLImageElement, state: ImageState) => void
+
+/** A loaded URL is insufficient: the currently mounted element must be ready.
+ * Disconnected nodes cannot unlock a remounted question or phone sheet. */
+export function useImageReadiness() {
+  const [images, setImages] = useState<
+    Record<string, { node: HTMLImageElement; state: ImageState }>
+  >({})
+  const report: ImageReport = useCallback((id, node, state) => {
+    setImages((previous) =>
+      previous[id]?.node === node && previous[id]?.state === state
+        ? previous
+        : { ...previous, [id]: { node, state } },
+    )
+  }, [])
+  const state = (id: string) => (images[id]?.node.isConnected ? images[id].state : 'loading')
+  return { report, state }
+}
+
+export function optionImageId(question: DrillQuestion, letter: string, src: string) {
+  return `${question.qid}:${letter}:${src}`
+}
 
 export const DEST_ICONS: Record<Destination, (size: number) => ReactNode> = {
   idag: (size) => <CalendarDays size={size} strokeWidth={1.5} aria-hidden />,
