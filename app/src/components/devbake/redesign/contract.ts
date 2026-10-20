@@ -224,11 +224,22 @@ export const CONTRACT: Record<AppScreenKey, ScreenContract> = {
 
 /** Who is under contract: a registry entry, or any component with a root
  *  test id (the kit's own reference direction). */
-export type ContractSubject = { name: string; root: string; screens: readonly AppScreenKey[] }
+export type ContractSubject = {
+  name: string
+  root: string
+  screens: readonly AppScreenKey[]
+  /** What the direction's spec leaves out (DirectionMeta.omits). */
+  omits?: DirectionMeta['omits']
+}
 
 function subjectOf(meta: DirectionMeta | ContractSubject): ContractSubject {
   if ('root' in meta) return meta
-  return { name: meta.name, root: `rd-${meta.slug.slice(2)}`, screens: screensOf(meta) }
+  return {
+    name: meta.name,
+    root: `rd-${meta.slug.slice(2)}`,
+    screens: screensOf(meta),
+    omits: meta.omits,
+  }
 }
 
 type ThemeActions = Pick<DirectionActions, 'setTheme' | 'setPrefs'>
@@ -793,7 +804,16 @@ export function describeDirectionContract(
             fireEvent.click(screen.getByTestId(`rd-konto-mode-${mode}`))
             expectTheme(subject.root, stage, mode)
           }
+          // A control the direction's spec leaves out (meta.omits.konto) must
+          // be absent, not present and inert; every other one must work.
+          const omitted = new Set(subject.omits?.konto ?? [])
           for (const pref of ['palette', 'font', 'density', 'coach'] as const) {
+            if (omitted.has(pref)) {
+              for (const o of k.options[pref]) {
+                expect(screen.queryByTestId(`rd-konto-${pref}-${o.key}`)).toBeNull()
+              }
+              continue
+            }
             const other = k.options[pref].find((o) => o.key !== k.prefs[pref])
             if (!other) continue
             fireEvent.click(screen.getByTestId(`rd-konto-${pref}-${other.key}`))
@@ -801,10 +821,16 @@ export function describeDirectionContract(
           }
           fireEvent.click(screen.getByTestId('rd-konto-export'))
           expect(actions.exportData).toHaveBeenCalled()
-          fireEvent.click(screen.getByTestId('rd-konto-delete'))
-          expect(actions.deleteAccount).not.toHaveBeenCalled()
-          fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
-          expect(actions.deleteAccount).toHaveBeenCalled()
+          if (omitted.has('delete')) {
+            expect(screen.queryByTestId('rd-konto-delete')).toBeNull()
+            expect(screen.queryByTestId('rd-konto-delete-confirm')).toBeNull()
+            expect(actions.deleteAccount).not.toHaveBeenCalled()
+          } else {
+            fireEvent.click(screen.getByTestId('rd-konto-delete'))
+            expect(actions.deleteAccount).not.toHaveBeenCalled()
+            fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
+            expect(actions.deleteAccount).toHaveBeenCalled()
+          }
           fireEvent.click(screen.getByTestId('rd-konto-signout'))
           expect(actions.signOut).toHaveBeenCalled()
         })
