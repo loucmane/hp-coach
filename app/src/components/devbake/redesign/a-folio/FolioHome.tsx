@@ -11,10 +11,17 @@
 // view model marks optional (the pause time and device, the minutes left,
 // the prognosis range, the weekly goal) is left out when it is absent.
 //
+// Batch 2 wires the margin into Framsteg (spec §3, B2): the prognosis head
+// opens Framsteg, "Alla fällor" its Fällor page and "Alla pass" Historik; a
+// plan item that suggests a pass goes through the frame (onOpenItem), which
+// opens the pass's conditions on arrival.
+//
 // This file also holds the page grammar every Folio hub page shares (spec
 // §1.4, "FolioPage"): the masthead, the lead, the contents entry, the part
-// head and the margin block. The spec's parts.tsx is not in batch 1's
-// write set, so they live here, beside the page they were drawn from.
+// head and the margin block, plus the 0–2,0 Scale and the ResultFigure that
+// screens 10 and 11 set their one figure with. The spec's parts.tsx is not
+// in batch 1's or batch 2's write set, so they live here, beside the page
+// they were drawn from.
 
 import { ArrowRight } from 'lucide-react'
 import type { ReactNode } from 'react'
@@ -33,6 +40,7 @@ import type {
   PrognosisView,
   ResumeView,
 } from '@/components/devbake/redesign/viewModel'
+import type { FramstegSub } from './FolioFramsteg'
 
 /** Counts in prose, spelled out up to ten (common gender: "en miss"). */
 export const WORDS = ['noll', 'en', 'två', 'tre', 'fyra', 'fem', 'sex', 'sju', 'åtta', 'nio', 'tio']
@@ -113,6 +121,8 @@ export function FolioHome({
   live,
   onResume,
   onGo,
+  onFramsteg,
+  onOpenItem,
 }: {
   width: WidthKey
   live: boolean
@@ -120,14 +130,21 @@ export function FolioHome({
   onResume: () => void
   /** A margin link to another destination. */
   onGo: (d: Destination) => void
+  /** A margin link into Framsteg: its overview, Historik or Fällor. */
+  onFramsteg?: (sub: FramstegSub) => void
+  /** A plan row (the frame opens a suggested pass's conditions). */
+  onOpenItem?: (item: PlanItemView) => void
 }) {
   const { data, actions } = useDirectionData()
   const home = data.home
   const { resume, plan, prognosis } = home
+  const toFramsteg = (sub: FramstegSub) => (onFramsteg ? onFramsteg(sub) : onGo('framsteg'))
+  const openItem = (item: PlanItemView) =>
+    onOpenItem ? onOpenItem(item) : actions.openPlanItem(item.id)
   // Without a paused sitting the lead is the plan's first open part.
   const leadItem = resume ? null : (plan.items.find((i) => !i.completed) ?? null)
   const rows = leadItem ? plan.items.filter((i) => i !== leadItem) : plan.items
-  const primary = resume ? onResume : leadItem ? () => actions.openPlanItem(leadItem.id) : null
+  const primary = resume ? onResume : leadItem ? () => openItem(leadItem) : null
   useKeyMap(primary ? { Enter: primary } : {}, live)
   const trap = home.traps.find((t) => t.rising) ?? home.traps[0]
   const sentence = daySentence(home)
@@ -167,11 +184,7 @@ export function FolioHome({
           </h2>
           {leadItem.detail ? <p className="fo-resume-sub">{leadItem.detail}</p> : null}
           <div className="fo-resume-foot">
-            <button
-              type="button"
-              className="fo-btn fo-btn--big"
-              onClick={() => actions.openPlanItem(leadItem.id)}
-            >
+            <button type="button" className="fo-btn fo-btn--big" onClick={() => openItem(leadItem)}>
               Börja · {leadItem.minutes} min
               <kbd className="fo-kbd" aria-hidden>
                 ↵
@@ -213,7 +226,7 @@ export function FolioHome({
                   gloss={item.detail}
                   page={item.completed ? 'klar' : `${item.minutes} min`}
                   why={item.rationale}
-                  onClick={() => actions.openPlanItem(item.id)}
+                  onClick={() => openItem(item)}
                 />
               </li>
             ))}
@@ -226,7 +239,7 @@ export function FolioHome({
 
   const aside = (
     <>
-      <MarginBlock id="fo-prog-h" title="Prognos">
+      <MarginBlock id="fo-prog-h" title="Prognos" onTitle={() => toFramsteg('overview')}>
         <PrognosisFigure p={prognosis} />
       </MarginBlock>
 
@@ -246,7 +259,7 @@ export function FolioHome({
           </p>
           <span className="fo-trap-name">{trap.name}</span>
           {trap.pattern ? <span className="fo-trap-pattern">{trap.pattern}</span> : null}
-          <button type="button" className="fo-link" onClick={() => onGo('framsteg')}>
+          <button type="button" className="fo-link" onClick={() => toFramsteg('fallor')}>
             Alla fällor i Framsteg
             <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
           </button>
@@ -266,7 +279,7 @@ export function FolioHome({
               </div>
             ))}
           </dl>
-          <button type="button" className="fo-link" onClick={() => onGo('framsteg')}>
+          <button type="button" className="fo-link" onClick={() => toFramsteg('historik')}>
             Alla pass i Framsteg
             <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
           </button>
@@ -362,7 +375,7 @@ function PrognosisFigure({ p }: { p: PrognosisView }) {
       <p className="fo-halves">
         Verbal {scoreOrDash(p.verbal)} · Kvant {scoreOrDash(p.quant)}
       </p>
-      <Scale total={p.total} low={p.low} high={p.high} />
+      <Scale mark={p.total} low={p.low} high={p.high} label={prognosisScaleLabel(p, p.total)} />
       {p.caveat ? (
         <p className="fo-footnote" id="fo-caveat">
           <b aria-hidden>*</b>
@@ -387,30 +400,86 @@ export function Dots({ total, done }: { total: number; done: number }) {
   )
 }
 
-/** HP's 0–2,0 scale: the mark, and the likely range when there is one. */
-function Scale({ total, low, high }: { total: number; low?: number; high?: number }) {
-  const pct = (v: number) => `${(v / 2) * 100}%`
+/** A prognosis scale's name: the likely range when there is one, else the
+ *  figure itself. */
+export function prognosisScaleLabel(p: Pick<PrognosisView, 'low' | 'high'>, total: number): string {
+  return p.low != null && p.high != null
+    ? `Trolig nivå ${fmtScore(p.low)} till ${fmtScore(p.high)} på skalan 0 till 2,0`
+    : `Prognos ${fmtScore(total)} på skalan 0 till 2,0`
+}
+
+/** HP's 0–2,0 scale: the mark, the likely range when there is one (a
+ *  forecast; never for one result) and a goal tick when the caller has a
+ *  goal. `label` names it as one sentence. */
+export function Scale({
+  mark,
+  low,
+  high,
+  goal,
+  label,
+}: {
+  mark: number
+  low?: number
+  high?: number
+  goal?: number
+  label: string
+}) {
+  const pct = (v: number) => `${(Math.max(0, Math.min(2, v)) / 2) * 100}%`
   const range = low != null && high != null
   return (
-    <div
-      className="fo-scale"
-      role="img"
-      aria-label={
-        range
-          ? `Trolig nivå ${fmtScore(low)} till ${fmtScore(high)} på skalan 0 till 2,0`
-          : `Prognos ${fmtScore(total)} på skalan 0 till 2,0`
-      }
-    >
+    <div className="fo-scale" role="img" aria-label={label}>
       <span className="fo-scale-axis" />
       {range ? (
         <span className="fo-scale-range" style={{ left: pct(low), width: pct(high - low) }} />
       ) : null}
-      <span className="fo-scale-mark" style={{ left: pct(total) }} />
+      {goal != null ? <span className="fo-scale-goal" style={{ left: pct(goal) }} /> : null}
+      <span className="fo-scale-mark" style={{ left: pct(mark) }} />
       {[0, 0.5, 1, 1.5, 2].map((v) => (
         <span key={v} className="fo-scale-tick" style={{ left: pct(v) }}>
           {v === 0 ? '0' : fmtScore(v)}
         </span>
       ))}
+    </div>
+  )
+}
+
+/**
+ * One figure and what it means (spec screen 10, "ResultFigure"; screen 11
+ * reuses it for the prognosis): the light t44 figure in lining numerals with
+ * its footnote mark, what it is ("normerat (härlett) · av 2,0"), the lines
+ * under it and the 0–2,0 scale (`children`). `sentence` is the one sentence
+ * a screen reader hears instead of the figure's parts.
+ */
+export function ResultFigure({
+  figure,
+  mark,
+  of,
+  sentence,
+  testId,
+  children,
+}: {
+  /** "1,40", or an em dash where there is none yet. */
+  figure: string
+  /** The footnote mark ("*") when a footnote qualifies the figure. */
+  mark?: string
+  of: ReactNode
+  sentence: string
+  testId?: string
+  children?: ReactNode
+}) {
+  return (
+    <div className="fo-result" data-testid={testId}>
+      <p className="fo-prog-figure">
+        <span className="fo-prog-n" aria-hidden>
+          {figure}
+          {mark ? <sup>{mark}</sup> : null}
+        </span>
+        <span className="fo-prog-of" aria-hidden>
+          {of}
+        </span>
+        <span className="fo-sr">{sentence}</span>
+      </p>
+      {children}
     </div>
   )
 }
@@ -450,11 +519,32 @@ export function FolioPage({
   )
 }
 
-/** The running label (caps, at most one per page) and one piece of meta. */
-export function Masthead({ label, children }: { label: string; children?: ReactNode }) {
+/** The running label (caps, at most one per page) and one piece of meta. A
+ *  sub-page's label starts with its parent as a link back ("Framsteg ·
+ *  Historik"). */
+export function Masthead({
+  label,
+  crumb,
+  children,
+}: {
+  label: string
+  crumb?: { label: string; onClick: () => void }
+  children?: ReactNode
+}) {
   return (
     <div className="fo-masthead">
-      <span className="fo-label">{label}</span>
+      <span className="fo-label">
+        {crumb ? (
+          <>
+            <button type="button" className="fo-crumb" onClick={crumb.onClick}>
+              {crumb.label}
+              <span className="fo-sr">, tillbaka</span>
+            </button>
+            {' · '}
+          </>
+        ) : null}
+        {label}
+      </span>
       {children}
     </div>
   )
@@ -464,14 +554,16 @@ export function Masthead({ label, children }: { label: string; children?: ReactN
 export function Lead({
   labelledBy,
   ribbon = false,
+  testId,
   children,
 }: {
   labelledBy: string
   ribbon?: boolean
+  testId?: string
   children: ReactNode
 }) {
   return (
-    <section className="fo-resume" aria-labelledby={labelledBy}>
+    <section className="fo-resume" aria-labelledby={labelledBy} data-testid={testId}>
       {ribbon ? <span className="fo-ribbon" aria-hidden /> : null}
       {children}
     </section>
@@ -561,20 +653,32 @@ export function PartHead({ id, children }: { id: string; children: ReactNode }) 
   )
 }
 
-/** A block of marginalia under its italic head. */
+/** A block of marginalia under its italic head; with `onTitle` the head is
+ *  itself a link to where the block's subject lives ("Prognos →"). */
 export function MarginBlock({
   id,
   title,
+  onTitle,
+  testId,
   children,
 }: {
   id: string
   title: string
+  onTitle?: () => void
+  testId?: string
   children: ReactNode
 }) {
   return (
-    <section className="fo-aside-block" aria-labelledby={id}>
+    <section className="fo-aside-block" aria-labelledby={id} data-testid={testId}>
       <h2 className="fo-h3" id={id}>
-        {title}
+        {onTitle ? (
+          <button type="button" className="fo-head-link" onClick={onTitle}>
+            {title}
+            <ArrowRight size={15} strokeWidth={1.75} aria-hidden />
+          </button>
+        ) : (
+          title
+        )}
       </h2>
       {children}
     </section>

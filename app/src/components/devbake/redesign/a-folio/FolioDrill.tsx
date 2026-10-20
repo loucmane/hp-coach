@@ -20,8 +20,14 @@
 // is useDrillCore graded by actions.drill; round 1's switcher moves (a lock
 // opens Facit, Nästa Läsfråga, Avsluta Idag) ride on DirectionProps.onScreen
 // as before. This file also exports the drill's parts — verdict, options,
-// facit, spread, colophon and the dialog primitive — and the drill-view
-// seam, which the quant and DTK drills (FolioQuant.tsx) are built from.
+// facit, spread, passage, colophon, the dialog primitive and the modal slip
+// on it — and the drill-view seam, which the quant and DTK drills
+// (FolioQuant.tsx) and the running provpass (FolioProvpass.tsx) are built
+// from.
+//
+// Keys: the spread's pages, the phone drill's scroll and every Folio dialog
+// carry data-rd-keyscope, so the arrows scroll there and the bake-off's
+// switcher never takes them for a change of screen.
 
 import {
   Check,
@@ -415,7 +421,7 @@ type DrillChrome = Shared & {
 }
 
 /** "Magasinet i Hökaryd: en handbok …" → the title and its subtitle. */
-function passageTitle(view: DrillCoreView): [string, string | undefined] {
+function passageTitle(view: Pick<DrillCoreView, 'question'>): [string, string | undefined] {
   const [title, ...rest] = (view.question.passage?.title ?? '').split(': ')
   return [title, rest.length ? rest.join(': ') : undefined]
 }
@@ -693,7 +699,16 @@ export function Spread({
       ref={spreadRef}
       style={{ '--fo-split': `${split * 100}%` } as CSSProperties}
     >
-      <section className="fo-page fo-page--verso" ref={versoRef} aria-label={versoLabel}>
+      {/* Each page is a scroll region: its arrows scroll it (data-rd-keyscope
+       *  keeps them from the bake-off's switcher; data-fo-region tells a
+       *  running pass they are not a move to another question). */}
+      <section
+        className="fo-page fo-page--verso"
+        ref={versoRef}
+        aria-label={versoLabel}
+        data-rd-keyscope
+        data-fo-region
+      >
         {verso}
       </section>
       {/* biome-ignore lint/a11y/useSemanticElements: a focusable, valued separator is the WAI-ARIA splitter pattern; <hr> cannot take focus or a value */}
@@ -716,7 +731,13 @@ export function Spread({
       >
         <span className="fo-gutter-grip" />
       </div>
-      <section className="fo-page fo-page--recto" aria-label={rectoLabel} ref={rectoRef}>
+      <section
+        className="fo-page fo-page--recto"
+        aria-label={rectoLabel}
+        ref={rectoRef}
+        data-rd-keyscope
+        data-fo-region
+      >
         {recto}
       </section>
     </div>
@@ -833,9 +854,28 @@ export function ActionBar({
 
 // ── The passage ──────────────────────────────────────────────────────
 
+/** What a passage page reads from a drill: the question with its passage,
+ *  the phase and the explanation's marks (a running pass hands it the same
+ *  shape, never graded). */
+export type PassageModel = Pick<
+  DrillCoreView,
+  | 'question'
+  | 'passage'
+  | 'phase'
+  | 'marks'
+  | 'correct'
+  | 'picked'
+  | 'cited'
+  | 'focusPara'
+  | 'flashPara'
+  | 'flashSource'
+>
+
 /** The quotations to underline: every step's, and — after a wrong answer —
  *  the ones that say why the chosen option is wrong. */
-function shownMarks(view: DrillCoreView): QuoteMark[] {
+function shownMarks(
+  view: Pick<DrillCoreView, 'phase' | 'marks' | 'correct' | 'picked'>,
+): QuoteMark[] {
   if (view.phase !== 'feedback') return []
   return view.marks.filter(
     (m) => m.source.startsWith('step-') || (!view.correct && m.source === `why-${view.picked}`),
@@ -846,7 +886,7 @@ function shownMarks(view: DrillCoreView): QuoteMark[] {
 function marked(
   text: string,
   marks: QuoteMark[],
-  view: DrillCoreView,
+  view: Pick<DrillCoreView, 'flashPara' | 'flashSource'>,
   active: string | null,
 ): ReactNode[] {
   const sorted = [...marks].sort((a, b) => a.start - b.start || b.end - a.end)
@@ -873,7 +913,10 @@ function marked(
   return out
 }
 
-function PassageView({
+/** The passage page: the ÖVNINGSTEXT tools and note, the title, the
+ *  paragraphs with their ¶ numbers in the margin and, after an answer, the
+ *  explanation's quotations underlined. */
+export function PassageView({
   view,
   act,
   refs,
@@ -883,7 +926,10 @@ function PassageView({
   badge = false,
   badgeText,
   noteText,
-}: Shared & {
+}: {
+  view: PassageModel
+  act: Pick<DrillAct, 'setFocusPara'>
+  refs: Pick<DrillCoreRefs, 'para'>
   note: boolean
   setNote: (open: boolean) => void
   active: string | null
@@ -1002,13 +1048,14 @@ function OptionContent({ o }: { o: DrillOption }) {
 
 /** The options before the answer: choose with the letter, strike with the
  *  quiet control at the row's end (always in view). `testId` names the
- *  option buttons (rd-option-<L>, or rd-quant-option-<L>). */
+ *  option buttons (rd-option-<L>, rd-quant-option-<L> or, in a running
+ *  pass, where the choice is saved and never graded, rd-prov-option-<L>). */
 export function Options({
   view,
   act,
   testId = 'rd-option',
 }: {
-  view: DrillCoreView
+  view: Pick<DrillCoreView, 'question' | 'selected' | 'eliminated'>
   act: Pick<DrillAct, 'select' | 'toggleEliminate'>
   testId?: string
 }) {
@@ -1601,20 +1648,26 @@ const FOCUSABLE =
   'button:not([disabled]), [href], input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])'
 
 /**
- * The focus-trap primitive Folio's modal views stand on (Förstora today,
- * batch 2's slips next): a dialog that takes focus when it opens (an
- * element marked data-autofocus, else itself), keeps Tab inside, closes on
- * Esc and gives focus back to whatever had it before. It sits inside the
- * direction's root, so it covers the stage — not the browser window; the
- * caller makes the page under it inert.
+ * The focus-trap primitive Folio's modal views stand on (Förstora and the
+ * slips): a dialog that takes focus when it opens (an element marked
+ * data-autofocus, else itself), keeps Tab inside, closes on Esc and gives
+ * focus back to whatever had it before. It sits inside the direction's
+ * root, so it covers the stage — not the browser window; the caller makes
+ * the page under it inert. It is not a native dialog, so it carries
+ * data-rd-keyscope: keys pressed inside it never reach the bake-off's
+ * switcher. A held-down ↵ or space presses its buttons once, never again on
+ * the key's repeat.
  */
 export function FolioDialog({
   label,
+  labelledBy,
   onClose,
   className,
   children,
 }: {
-  label: string
+  label?: string
+  /** The id of the heading that names it (instead of `label`). */
+  labelledBy?: string
   onClose: () => void
   className?: string
   children: ReactNode
@@ -1643,6 +1696,10 @@ export function FolioDialog({
     }
   }, [])
   const onKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (e.repeat && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault()
+      return
+    }
     if (e.key !== 'Tab' || !ref.current) return
     const items = Array.from(ref.current.querySelectorAll<HTMLElement>(FOCUSABLE))
     if (items.length === 0) return
@@ -1662,12 +1719,66 @@ export function FolioDialog({
       className={className}
       role="dialog"
       aria-modal="true"
-      aria-label={label}
+      aria-label={labelledBy ? undefined : label}
+      aria-labelledby={labelledBy}
       tabIndex={-1}
       onKeyDown={onKeyDown}
+      data-rd-keyscope
     >
       {children}
     </div>
+  )
+}
+
+/**
+ * A modal slip (spec §1.1 and screen 9 "FolioSlip"): a square-cut sheet of
+ * lighter paper over the scrim — centred in the top third on desktop, a
+ * bottom slip on phone — its caps heading underlined by the heavy rule,
+ * then its content. Built on FolioDialog (focus trap, Esc, focus back); a
+ * press outside it closes it too. The caller makes the page under it inert
+ * and renders it outside that page, at the stage's level.
+ */
+export function FolioSlip({
+  id,
+  title,
+  meta,
+  onClose,
+  children,
+}: {
+  /** Names the heading the dialog is labelled by. */
+  id: string
+  /** The caps heading ("Starta provpass"). */
+  title: string
+  /** One piece of meta at the heading's right ("13 av 40 besvarade"). */
+  meta?: ReactNode
+  onClose: () => void
+  children: ReactNode
+}) {
+  const closeRef = useRef(onClose)
+  closeRef.current = onClose
+  // A press on the scrim (anywhere outside the slip) closes it; Esc and the
+  // slip's own buttons are the keyboard's way out.
+  useEffect(() => {
+    const onDown = (e: PointerEvent) => {
+      if (e.target instanceof Element && e.target.closest('.fo-slip')) return
+      closeRef.current()
+    }
+    window.addEventListener('pointerdown', onDown, true)
+    return () => window.removeEventListener('pointerdown', onDown, true)
+  }, [])
+  return (
+    <>
+      <div className="fo-scrim fo-slip-scrim" aria-hidden />
+      <FolioDialog labelledBy={`${id}-h`} onClose={onClose} className="fo-slip">
+        <div className="fo-slip-head">
+          <h2 className="fo-label" id={`${id}-h`}>
+            {title}
+          </h2>
+          {meta ? <span className="fo-slip-meta">{meta}</span> : null}
+        </div>
+        {children}
+      </FolioDialog>
+    </>
   )
 }
 
@@ -1736,7 +1847,13 @@ function PhoneDrill(chrome: DrillChrome) {
       </header>
       {/* Under the full-height feedback sheet the passage is out of reach:
        *  inert, so focus never lands on something covered. */}
-      <div className="fo-pdrill-scroll" onScroll={onScroll} inert={sheet === 'full'}>
+      <div
+        className="fo-pdrill-scroll"
+        onScroll={onScroll}
+        inert={sheet === 'full'}
+        data-rd-keyscope
+        data-fo-region
+      >
         <PassageView
           view={view}
           act={act}

@@ -833,10 +833,12 @@
 }
 
 /* Theme: three words, the chosen one underlined in the accent — a
- * typeset choice rather than a toggle box. */
+ * typeset choice rather than a toggle box. As many columns as words (two
+ * for a pair, three for the theme). */
 .fo-seg {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
   margin: 0;
   padding: 0;
   min-width: 0;
@@ -2432,7 +2434,10 @@
   border: 0;
 }
 
+/* The masthead's meta on a line of its own, under the label: two lines, as
+ * on Idag (a span would run on into the label). */
 .fo-phome .fo-count {
+  display: block;
   margin-top: var(--fo-s1);
 }
 
@@ -2516,7 +2521,8 @@
   flex: none;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  padding: var(--fo-s1) var(--fo-s1) max(20px, env(safe-area-inset-bottom));
+  /* Side room, so the outer words keep off the screen's edges. */
+  padding: var(--fo-s1) var(--fo-s3) max(20px, env(safe-area-inset-bottom));
   border-top: 1px solid var(--fo-rule);
   background: var(--fo-paper);
 }
@@ -3861,6 +3867,1283 @@
   column-gap: 0;
 }
 
+/* ── Batch 2: links in heads, word pairs, ruled tables ───────────── */
+
+/* A sub-page's masthead starts with its parent, a link back. */
+.fo-crumb {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--fo-accent-ink);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--fo-accent-ink) 35%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.fo-crumb:hover {
+  text-decoration-color: currentColor;
+}
+
+/* A margin head that is itself the way to its subject ("Prognos →"). */
+.fo-head-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fo-s1);
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fo-head-link svg {
+  color: var(--fo-ink-3);
+}
+
+.fo-head-link:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fo-rule-2);
+  text-underline-offset: 4px;
+}
+
+/* A line of word pairs under a standfirst: "Halva  Verbal · Kvantitativ". */
+.fo-choices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--fo-s3);
+  margin-top: var(--fo-s4);
+}
+
+.fo-choice-label {
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+}
+
+.fo-seg--words {
+  display: inline-grid;
+  grid-auto-columns: auto;
+  column-gap: var(--fo-s1);
+  border-bottom: 0;
+}
+
+.fo-seg--words button {
+  padding: 0 var(--fo-s2);
+}
+
+.fo-seg--words button[aria-pressed='true']::after {
+  left: var(--fo-s2);
+  right: var(--fo-s2);
+  bottom: 8px;
+}
+
+/* A ruled table: hairline rows, the first column a name with leader dots
+ * to the figures, lining tabular numerals throughout. */
+.fo-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fo-table th,
+.fo-table td {
+  padding: var(--fo-s3) 0;
+  border-bottom: 1px solid var(--fo-rule);
+  font-size: var(--fo-t15);
+  font-weight: 400;
+  text-align: right;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.fo-table th + th,
+.fo-table th + td,
+.fo-table td + td {
+  padding-left: var(--fo-s6);
+}
+
+.fo-table thead th {
+  padding: var(--fo-s2) 0;
+  font-size: var(--fo-t13);
+  font-weight: 500;
+  color: var(--fo-ink-3);
+}
+
+.fo-table thead th + th {
+  padding-left: var(--fo-s6);
+}
+
+.fo-table th[scope='row'],
+.fo-table thead th:first-child {
+  width: 100%;
+  text-align: left;
+  white-space: normal;
+}
+
+.fo-th-line {
+  display: flex;
+  align-items: baseline;
+}
+
+.fo-table-name {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  color: var(--fo-ink);
+}
+
+/* Section codes, set as codes are everywhere in Folio. */
+.fo-res-table .fo-table-name,
+.fo-fr-table .fo-table-name {
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t13);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--fo-ink-2);
+}
+
+.fo-table-none {
+  color: var(--fo-ink-3);
+}
+
+.fo-table-sub {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t13);
+  font-style: italic;
+  color: var(--fo-ink-2);
+  white-space: nowrap;
+}
+
+.fo-table-mark {
+  margin-left: 1px;
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t12);
+  font-weight: 600;
+  color: var(--fo-accent-ink);
+}
+
+[data-rd='folio'] .fo-phone-only {
+  display: none;
+}
+
+[data-rd='folio'][data-width='phone'] .fo-phone-only {
+  display: block;
+}
+
+[data-rd='folio'][data-width='phone'] .fo-col-note,
+[data-rd='folio'][data-width='phone'] .fo-col-wide {
+  display: none;
+}
+
+/* Phone: the columns closer, a second line free to wrap — the tables
+ * reflow at 320 px without scrolling sideways. */
+[data-width='phone'] .fo-table th + th,
+[data-width='phone'] .fo-table th + td,
+[data-width='phone'] .fo-table td + td,
+[data-width='phone'] .fo-table thead th + th {
+  padding-left: var(--fo-s3);
+}
+
+[data-width='phone'] .fo-table-sub {
+  white-space: normal;
+}
+
+/* The footnotes close the main column under a 6 rem rule. */
+.fo-footnotes {
+  margin-top: var(--fo-s12);
+}
+
+.fo-footnotes::before {
+  content: '';
+  display: block;
+  width: 6rem;
+  border-top: 1px solid var(--fo-rule-2);
+}
+
+.fo-footnote--wide {
+  grid-template-columns: 20px minmax(0, 1fr);
+}
+
+/* ── Provpass: the hub ───────────────────────────────────────────── */
+
+.fo-kallelse {
+  margin-top: var(--fo-s2);
+  max-width: 36em;
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t15);
+  font-variant-numeric: lining-nums tabular-nums;
+  text-wrap: pretty;
+}
+
+.fo-kallelse-name {
+  color: var(--fo-ink-3);
+  white-space: nowrap;
+}
+
+.fo-prov-note {
+  margin-top: var(--fo-s6);
+}
+
+/* The register's cells: "sett 6/40", the chosen one with the 2 px accent
+ * rule of a current entry. */
+.fo-register td {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.fo-cell {
+  position: relative;
+  min-height: 44px;
+  padding: 0 var(--fo-s1);
+  border: 0;
+  background: transparent;
+  color: var(--fo-ink-2);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-variant-numeric: lining-nums tabular-nums;
+  cursor: pointer;
+}
+
+.fo-cell:hover {
+  color: var(--fo-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fo-rule-2);
+  text-underline-offset: 5px;
+}
+
+.fo-cell[aria-pressed='true'] {
+  color: var(--fo-ink);
+  font-weight: 600;
+}
+
+.fo-cell[aria-pressed='true']::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--fo-accent);
+}
+
+/* Phone: the register as entries by sitting, no code column (over the
+ * phone's code column for entries that carry one). */
+.fo-register-phone .fo-plan-row,
+.fo-phome .fo-register-phone .fo-plan-row:has(> .fo-entry-code) {
+  grid-template-columns: 0 minmax(0, 1fr);
+  column-gap: 0;
+}
+
+.fo-register-phone .fo-part {
+  margin-top: var(--fo-s4);
+}
+
+.fo-register-phone > .fo-more {
+  margin-top: var(--fo-s3);
+}
+
+/* A finished pass in a list: the half, the raw count, the score, when. */
+.fo-results li + li {
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-result-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto 52px;
+  column-gap: var(--fo-s3);
+  align-items: baseline;
+  width: 100%;
+  min-height: 44px;
+  padding: var(--fo-s2) 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fo-result-row-what {
+  font-size: var(--fo-t15);
+  font-weight: 500;
+  color: var(--fo-ink);
+}
+
+.fo-result-row:hover .fo-result-row-what {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fo-rule-2);
+  text-underline-offset: 4px;
+}
+
+.fo-result-row-raw,
+.fo-result-row-score {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  color: var(--fo-ink);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fo-result-row-raw {
+  color: var(--fo-ink-2);
+}
+
+.fo-result-row-when {
+  text-align: right;
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+}
+
+/* ── Modal slips ─────────────────────────────────────────────────── */
+/* Lighter paper over the scrim, square-cut, the caps head underlined by
+ * the heavy rule; desktop centres it in the top third, phone sets it at
+ * the foot. */
+
+.fo-slip {
+  position: absolute;
+  z-index: 40;
+  left: 50%;
+  top: 14%;
+  translate: -50% 0;
+  width: min(520px, calc(100% - 48px));
+  max-height: 80%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 0 0 var(--fo-s6);
+  border-radius: 2px;
+  background: var(--fo-menu);
+  box-shadow: var(--fo-pop);
+  animation: fo-menu-in var(--fo-d2) var(--fo-ease);
+}
+
+.fo-slip:focus-visible {
+  outline-offset: -2px;
+}
+
+[data-width='phone'] .fo-slip {
+  left: 0;
+  right: 0;
+  top: auto;
+  bottom: 0;
+  translate: none;
+  width: auto;
+  max-height: 88%;
+  border-radius: 2px 2px 0 0;
+  padding-bottom: max(var(--fo-s6), env(safe-area-inset-bottom));
+  animation: fo-sheet-in var(--fo-d2) var(--fo-ease);
+}
+
+.fo-slip > :not(.fo-slip-head) {
+  margin-left: var(--fo-s6);
+  margin-right: var(--fo-s6);
+}
+
+[data-width='phone'] .fo-slip > :not(.fo-slip-head) {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.fo-slip-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--fo-s4);
+  padding: var(--fo-s4) var(--fo-s6) var(--fo-s3);
+  border-bottom: 2px solid var(--fo-rule-strong);
+}
+
+[data-width='phone'] .fo-slip-head {
+  padding: var(--fo-s4) 20px var(--fo-s3);
+}
+
+.fo-slip-meta {
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t13);
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-slip-title {
+  margin-top: var(--fo-s4);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t24);
+  line-height: 1.25;
+  font-weight: 450;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+}
+
+.fo-slip-sub {
+  margin-top: var(--fo-s1);
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t15);
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-slip-lede {
+  margin-top: var(--fo-s4);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  line-height: 1.5;
+  color: var(--fo-ink);
+  text-wrap: pretty;
+}
+
+/* The conditions as a numbered note between hairlines. */
+.fo-slip-rules {
+  margin-top: var(--fo-s4);
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-slip-rules li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  padding: var(--fo-s2) 0;
+  border-bottom: 1px solid var(--fo-rule);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.fo-slip-n {
+  color: var(--fo-ink-3);
+  font-variant-numeric: oldstyle-nums;
+}
+
+.fo-slip-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fo-s3);
+  margin-top: var(--fo-s6);
+}
+
+[data-width='phone'] .fo-slip-actions {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+[data-width='phone'] .fo-slip-actions .fo-btn {
+  min-height: 52px;
+}
+
+/* Before the act that voids: a double rule (this and the next hairline). */
+.fo-slip-sep {
+  margin-top: var(--fo-s6);
+}
+
+.fo-slip-grave {
+  margin-top: 3px;
+  padding-top: var(--fo-s4);
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-slip-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--fo-s3);
+  margin-top: var(--fo-s2);
+}
+
+.fo-slip-links .fo-link {
+  font-size: var(--fo-t15);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fo-slip-key {
+  margin-top: var(--fo-s3);
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+}
+
+.fo-slip .fo-erratum {
+  margin-top: var(--fo-s4);
+}
+
+/* Översikt: the pass's numerals by section, underlined once answered,
+ * ringed where the reader is, a folded corner when marked. */
+.fo-overview {
+  margin-top: var(--fo-s3);
+}
+
+.fo-overview-run {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: baseline;
+  padding: var(--fo-s2) 0;
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-overview-run ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.fo-ov-n {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--fo-ink-3);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-variant-numeric: lining-nums tabular-nums;
+  cursor: pointer;
+}
+
+.fo-ov-n:hover {
+  background: var(--fo-paper-2);
+  color: var(--fo-ink);
+}
+
+.fo-ov-n[data-answered='true'] {
+  color: var(--fo-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 5px;
+}
+
+.fo-ov-n[data-current='true'] {
+  box-shadow: inset 0 0 0 2px var(--fo-accent);
+}
+
+.fo-ov-n[data-flagged='true']::before,
+.fo-passindex-cell[data-flagged='true']::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 7px;
+  height: 7px;
+  background: linear-gradient(to bottom left, transparent 50%, var(--fo-ink-2) 50%);
+  pointer-events: none;
+}
+
+/* ── Provpass: the running pass ──────────────────────────────────── */
+
+.fo-passroot {
+  position: relative;
+  height: 100%;
+}
+
+.fo-pass {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* The pass's heads sit over the index, not over scrolling text: no fade
+ * under the head itself (the recto's top block carries one). */
+.fo-runhead--pass::before {
+  display: none;
+}
+
+.fo-pass-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--fo-s1);
+}
+
+.fo-pass-pos {
+  margin-right: var(--fo-s2);
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t15);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.fo-runhead--recto .fo-pass-pos {
+  margin-right: 0;
+}
+
+.fo-countdown {
+  display: inline-flex;
+}
+
+.fo-countdown .fo-clock {
+  min-width: 0;
+}
+
+/* From five minutes: the figures heavier, in ink. Never red. */
+.fo-countdown[data-urgent='true'] .fo-clock span {
+  font-weight: 600;
+  color: var(--fo-ink);
+}
+
+/* The recto's top: its head and the pass index, sticky, the text fading
+ * out under them. */
+.fo-pass-rtop {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  flex: none;
+  background: inherit;
+}
+
+.fo-pass-rtop .fo-runhead {
+  position: relative;
+}
+
+.fo-pass-rtop::after {
+  content: '';
+  position: absolute;
+  left: 40px;
+  right: 0;
+  top: 100%;
+  height: 20px;
+  background: linear-gradient(to bottom, var(--fo-paper), transparent);
+  pointer-events: none;
+}
+
+/* The pass index: one segment a question, a gap between sections, cut
+ * into the page's edge like a booklet's thumb index. */
+.fo-passindex {
+  position: relative;
+  z-index: 3;
+  flex: none;
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+  height: 24px;
+  margin: 0;
+  padding: 0 var(--fo-s4);
+  border: 0;
+}
+
+.fo-pass-rtop .fo-passindex {
+  max-width: 640px;
+  padding: 0 var(--fo-s12) 0 44px;
+}
+
+.fo-passindex-run {
+  display: flex;
+  flex: 1 1 0;
+  gap: 2px;
+  min-width: 0;
+}
+
+.fo-passindex-cell {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.fo-passindex-cell::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  translate: 0 -50%;
+  border-radius: 1px;
+  background: var(--fo-rule-2);
+  transition: height var(--fo-d1) var(--fo-ease);
+}
+
+.fo-passindex-cell[data-answered='true']::before {
+  background: var(--fo-ink-2);
+}
+
+.fo-passindex-cell[data-current='true']::before {
+  height: 5px;
+  background: var(--fo-accent);
+}
+
+.fo-passindex-cell:hover::before {
+  height: 7px;
+}
+
+.fo-passindex-cell[data-flagged='true']::after {
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 5px;
+}
+
+/* A hover pulls the segment's tab out from under the strip. */
+.fo-passindex-tab {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: calc(100% + 1px);
+  translate: -50% -4px;
+  padding: 5px 10px;
+  border: 1px solid var(--fo-rule-2);
+  border-top: 0;
+  border-radius: 0 0 2px 2px;
+  background: var(--fo-menu);
+  color: var(--fo-ink);
+  font-size: var(--fo-t13);
+  white-space: nowrap;
+  box-shadow: 4px 6px 16px -10px oklch(28% 0.03 60 / 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--fo-d-out) var(--fo-ease),
+    translate var(--fo-d-out) var(--fo-ease);
+}
+
+.fo-passindex-run:first-child .fo-passindex-tab {
+  left: 0;
+  translate: 0 -4px;
+}
+
+.fo-passindex-run:last-child:not(:first-child) .fo-passindex-tab {
+  left: auto;
+  right: 0;
+  translate: 0 -4px;
+}
+
+.fo-passindex-cell:hover .fo-passindex-tab {
+  opacity: 1;
+  translate: -50% 0;
+  transition-duration: var(--fo-d2);
+  transition-delay: 120ms;
+}
+
+.fo-passindex-run:first-child .fo-passindex-cell:hover .fo-passindex-tab,
+.fo-passindex-run:last-child:not(:first-child) .fo-passindex-cell:hover .fo-passindex-tab {
+  translate: 0 0;
+}
+
+/* Phone: the index is the head's foot line. */
+.fo-passindex--foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  padding: 0;
+  gap: 3px;
+}
+
+.fo-passindex--foot .fo-passindex-run {
+  gap: 1px;
+}
+
+.fo-passindex--foot .fo-passindex-cell::before,
+.fo-passindex--foot .fo-passindex-cell[data-current='true']::before,
+.fo-passindex--foot .fo-passindex-cell:hover::before {
+  top: 0;
+  height: 100%;
+  translate: none;
+  border-radius: 0;
+}
+
+.fo-passindex--foot .fo-passindex-cell[data-flagged='true']::after {
+  display: none;
+}
+
+/* A marked question's page has its corner folded. */
+.fo-pass-q {
+  position: relative;
+}
+
+.fo-pass-q[data-dogear='true']::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(
+    to bottom left,
+    var(--fo-paper) calc(50% - 0.5px),
+    var(--fo-rule-2) calc(50% - 0.5px),
+    var(--fo-rule-2) calc(50% + 0.5px),
+    var(--fo-paper-3) calc(50% + 0.5px)
+  );
+  pointer-events: none;
+}
+
+.fo-pass-bar .fo-flag {
+  margin-left: auto;
+}
+
+.fo-dogear-fold {
+  fill: none;
+}
+
+.fo-flag[aria-pressed='true'] .fo-dogear-fold {
+  fill: currentColor;
+}
+
+/* Phone: the button across, the saved choice and Markera on one line. */
+.fo-pfoot .fo-pass-bar,
+.fo-sheet .fo-pass-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--fo-s3);
+}
+
+.fo-pfoot .fo-pass-bar .fo-btn,
+.fo-sheet .fo-pass-bar .fo-btn {
+  grid-column: 1 / -1;
+}
+
+.fo-pfoot .fo-pass-bar .fo-echo,
+.fo-sheet .fo-pass-bar .fo-echo {
+  text-align: left;
+}
+
+/* Phone: the page names the question once, where the slip would. */
+.fo-pass-where {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--fo-s1) var(--fo-s3);
+  margin-bottom: var(--fo-s3);
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t13);
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-ppass-page {
+  padding-bottom: 200px;
+}
+
+.fo-ppass-head .fo-head-right {
+  gap: 0;
+}
+
+/* ── Provpass: the pass, over ────────────────────────────────────── */
+
+/* The title takes the focus the pass had, to be heard; it is no control,
+ * so it draws no ring. */
+.fo-ended-title:focus-visible {
+  outline: none;
+}
+
+/* The answers as they stood: each section's numbers with the letter
+ * chosen, set like Översikt's numerals but read-only. */
+.fo-answers {
+  margin-top: var(--fo-s3);
+}
+
+.fo-answers-run {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: baseline;
+  padding: var(--fo-s2) 0;
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-answers-run ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fo-s1) var(--fo-s3);
+}
+
+.fo-answers-cell {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  min-width: 40px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fo-answers-n {
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+}
+
+.fo-answers-l {
+  color: var(--fo-ink);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+}
+
+.fo-answers-cell[data-answered='false'] .fo-answers-l {
+  color: var(--fo-ink-3);
+}
+
+/* ── Provpassresultat ────────────────────────────────────────────── */
+
+/* ⁂ over the title: the book's closing mark, small. */
+.fo-result-mark {
+  display: block;
+  margin: 0 0 var(--fo-s2);
+  font-size: var(--fo-t19);
+}
+
+.fo-result .fo-lead-sub {
+  margin-top: var(--fo-s2);
+}
+
+.fo-result .fo-scale {
+  max-width: 420px;
+}
+
+.fo-col-note {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t13);
+  font-style: italic;
+  color: var(--fo-ink-2);
+}
+
+.fo-table td.fo-col-note {
+  text-align: left;
+}
+
+.fo-res-note {
+  margin-top: var(--fo-s3);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-style: italic;
+  color: var(--fo-ink-2);
+  text-wrap: pretty;
+}
+
+/* The misses as an errata list: place, section, stem, the right answer. */
+.fo-errata {
+  margin-top: var(--fo-s3);
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-errata-row {
+  display: grid;
+  grid-template-columns: 28px 44px minmax(0, 1fr) auto;
+  column-gap: var(--fo-s3);
+  align-items: baseline;
+  padding: var(--fo-s3) 0;
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-errata-n {
+  text-align: right;
+  color: var(--fo-ink-3);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fo-errata-stem {
+  min-width: 0;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t15);
+  line-height: 1.45;
+  color: var(--fo-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+.fo-errata-key {
+  color: var(--fo-ok);
+  font-size: var(--fo-t13);
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+[data-width='phone'] .fo-errata-row {
+  grid-template-columns: 28px 40px minmax(0, 1fr);
+}
+
+[data-width='phone'] .fo-errata-key {
+  grid-column: 3;
+}
+
+/* ── Framsteg ────────────────────────────────────────────────────── */
+
+.fo-scale-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fo-s4);
+  max-width: 520px;
+}
+
+.fo-scale-row .fo-scale {
+  flex: 1;
+}
+
+.fo-goal-link {
+  margin-top: var(--fo-s4);
+  white-space: nowrap;
+}
+
+/* The goal on the scale: a dashed tick above the axis. */
+.fo-scale-goal {
+  position: absolute;
+  top: 0;
+  height: 21px;
+  margin-left: -0.5px;
+  border-left: 1px dashed var(--fo-ink-3);
+}
+
+.fo-lead-why {
+  margin-top: var(--fo-s4);
+  max-width: 34em;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t19);
+  line-height: 1.4;
+  color: var(--fo-ink);
+  text-wrap: pretty;
+}
+
+/* The weekly curve: a book figure with an italic caption. */
+.fo-chart {
+  margin-top: var(--fo-s4);
+}
+
+.fo-chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.fo-chart-axis {
+  stroke: var(--fo-rule-2);
+  stroke-width: 1;
+}
+
+.fo-chart-grid {
+  stroke: var(--fo-rule);
+  stroke-width: 1;
+}
+
+.fo-chart-goal {
+  stroke: var(--fo-rule-2);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.fo-chart-line {
+  fill: none;
+  stroke: var(--fo-ink);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.fo-chart-bridge {
+  fill: none;
+  stroke: var(--fo-ink-3);
+  stroke-width: 1.5;
+  stroke-dasharray: 1 4;
+  stroke-linecap: round;
+}
+
+.fo-chart-pt {
+  fill: var(--fo-ink);
+}
+
+.fo-chart-end {
+  fill: var(--fo-accent);
+}
+
+.fo-chart-value {
+  fill: var(--fo-ink);
+  font-family: var(--fo-sans);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fo-chart-tick {
+  fill: var(--fo-ink-3);
+  font-family: var(--fo-sans);
+  font-size: 12px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fo-chart-caption {
+  margin-top: var(--fo-s2);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t13);
+  font-style: italic;
+  color: var(--fo-ink-3);
+}
+
+.fo-chart > .fo-more {
+  margin-top: var(--fo-s1);
+}
+
+.fo-chart-table {
+  max-width: 320px;
+  margin-top: var(--fo-s2);
+}
+
+.fo-fr-table td:nth-child(2) {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+}
+
+/* The ledger: the day, the kind in words, leader dots to the result. */
+.fo-ledger-row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  column-gap: var(--fo-s4);
+  align-items: baseline;
+  width: 100%;
+  padding: var(--fo-s3) 0;
+  border: 0;
+  border-bottom: 1px solid var(--fo-rule);
+  background: transparent;
+  text-align: left;
+}
+
+button.fo-ledger-row {
+  min-height: 44px;
+  cursor: pointer;
+}
+
+button.fo-ledger-row:hover .fo-ledger-kind {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fo-rule-2);
+  text-underline-offset: 5px;
+}
+
+.fo-ledger-row svg {
+  align-self: center;
+  margin-left: var(--fo-s2);
+  color: var(--fo-ink-3);
+}
+
+.fo-ledger-day {
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+  font-variant-numeric: lining-nums tabular-nums;
+  white-space: nowrap;
+}
+
+.fo-ledger-kind {
+  min-width: 0;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  color: var(--fo-ink);
+}
+
+.fo-ledger-score {
+  color: var(--fo-ink-2);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-variant-numeric: lining-nums tabular-nums;
+  white-space: nowrap;
+}
+
+[data-width='phone'] .fo-ledger-row {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 2px;
+}
+
+.fo-historik .fo-section {
+  margin-top: var(--fo-s8);
+}
+
+.fo-historik + .fo-footnote {
+  margin-top: var(--fo-s8);
+}
+
+.fo-trap-list li + li {
+  margin-top: var(--fo-s4);
+}
+
+.fo-link--line {
+  font-size: var(--fo-t15);
+}
+
+/* Practice days: one row a week, a dot a day practised, no empty places. */
+.fo-weekdots {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fo-weekdot {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  column-gap: var(--fo-s3);
+  align-items: center;
+  min-height: 24px;
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t13);
+}
+
+.fo-weekdot-wk {
+  color: var(--fo-ink-3);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fo-weekdot-dots {
+  display: inline-flex;
+  gap: 5px;
+}
+
+.fo-weekdot-dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fo-ink-2);
+}
+
+.fo-weekdot[data-current='true'] .fo-weekdot-dots i {
+  background: var(--fo-accent);
+}
+
+.fo-weekdot[data-current='true'] .fo-weekdot-n {
+  color: var(--fo-ink);
+  font-weight: 600;
+}
+
+.fo-weekdots + .fo-more {
+  margin-top: var(--fo-s2);
+}
+
+/* Fällor: the traps by section, each with its pattern and two ways on. */
+.fo-trap-row {
+  padding: var(--fo-s3) 0;
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-trap-row-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--fo-s4);
+}
+
+.fo-trap-row .fo-trap-name {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+}
+
+.fo-trap-count {
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.fo-trap-links {
+  display: flex;
+  gap: var(--fo-s6);
+  margin-top: var(--fo-s1);
+}
+
 /* ── Hit areas ───────────────────────────────────────────────────── */
 /* Small controls keep their quiet size on the page but take a ≥ 44 px
  * hit area through an invisible extension (it hit-tests as the control). */
@@ -3873,9 +5156,24 @@
 .fo-badge-toggle::after,
 .fo-link::after,
 .fo-gutter::after,
-.fo-sheet-grab::after {
+.fo-sheet-grab::after,
+.fo-crumb::after,
+.fo-head-link::after,
+.fo-ov-n::after {
   content: '';
   position: absolute;
+}
+
+.fo-crumb::after {
+  inset: -16px -6px;
+}
+
+.fo-head-link::after {
+  inset: -6px -2px;
+}
+
+.fo-ov-n::after {
+  inset: -2px;
 }
 
 .fo-pnum::after {
