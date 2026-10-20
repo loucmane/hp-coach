@@ -236,7 +236,13 @@ export function FolioHome({
       )}
 
       {steps.length ? (
-        <DayPath steps={steps} openItem={openItem} week={home.week} misses={misses} />
+        <DayPath
+          steps={steps}
+          openItem={openItem}
+          onNow={primary}
+          week={home.week}
+          misses={misses}
+        />
       ) : misses ? (
         <MissesLine misses={misses} shade />
       ) : null}
@@ -387,7 +393,7 @@ function daySteps({ resume, plan }: HomeView): DayStep[] {
       title: resume.title,
       gloss: resume.section,
       page: 'nu',
-      why: `Vid fråga ${resume.position} av ${resume.total} – fortsätt ovan.`,
+      why: `Vid fråga ${resume.position} av ${resume.total}.`,
     })
   }
   plan.items
@@ -444,11 +450,15 @@ const STATE_WORD: Record<StepState, string> = {
 function DayPath({
   steps,
   openItem,
+  onNow,
   week,
   misses,
 }: {
   steps: DayStep[]
   openItem: (item: PlanItemView) => void
+  /** The step under way does what the lead does (owner, 2026-10-20): it
+   *  read as a dead row while the steps to come were buttons. */
+  onNow: (() => void) | null
   week: HomeView['week']
   misses: Misses | null
 }) {
@@ -476,7 +486,13 @@ function DayPath({
               </span>
               <StepRow
                 step={s}
-                onClick={s.state === 'next' && item ? () => openItem(item) : undefined}
+                onClick={
+                  s.state === 'next' && item
+                    ? () => openItem(item)
+                    : s.state === 'now'
+                      ? (onNow ?? undefined)
+                      : undefined
+                }
               />
             </li>
           )
@@ -501,8 +517,8 @@ function DayPath({
   )
 }
 
-/** A step as a contents entry: a plain row when done or under way (the
- *  lead holds its action), a button for a step to come. */
+/** A step as a contents entry: a plain row when done, a button for the
+ *  step under way (the lead's own action) and for a step to come. */
 function StepRow({ step, onClick }: { step: DayStep; onClick?: () => void }) {
   const body = (
     <span className="fp-plan-body">

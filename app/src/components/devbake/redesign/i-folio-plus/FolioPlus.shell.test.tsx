@@ -53,14 +53,18 @@ describe('Folio+ · Idag as a day path', () => {
     'desktop',
     'phone',
   ] as const)('sets the paused text as the current step and the plan as the steps to come (%s)', (width) => {
-    mount(1, { width })
+    const resume = vi.fn()
+    const { onScreen } = mount(1, { width, actions: { resume } })
     expect(steps()).toEqual(['now', 'next', 'next', 'next'])
     const path = screen.getByRole('list', { name: 'Dagens steg' })
     const now = path.querySelector('[data-fp-step="now"]') as HTMLElement
     expect(now).toHaveTextContent(FIXTURE_DATA.home.resume?.title ?? '')
-    // The current step points at the lead: the page keeps one action.
-    expect(within(now).queryByRole('button')).toBeNull()
+    // The current step is a way in too, to the lead's own action; the page
+    // keeps one filled button.
     expect(screen.getAllByTestId('rd-resume')).toHaveLength(1)
+    fireEvent.click(within(now).getByRole('button'))
+    expect(resume).toHaveBeenCalledTimes(1)
+    expect(onScreen).toHaveBeenLastCalledWith(2)
     expect(screen.queryByRole('region', { name: 'Klart för idag' })).toBeNull()
   })
 
@@ -79,6 +83,10 @@ describe('Folio+ · Idag as a day path', () => {
     const next = path.querySelector('[data-fp-step="next"]') as HTMLElement
     fireEvent.click(within(next).getByRole('button'))
     expect(openPlanItem).toHaveBeenLastCalledWith('ord')
+    // The current step opens its own item, as the lead does.
+    const now = path.querySelector('[data-fp-step="now"]') as HTMLElement
+    fireEvent.click(within(now).getByRole('button'))
+    expect(openPlanItem).toHaveBeenLastCalledWith(data.home.plan.items[1].id)
     // The lead is the current step: the lesson, the page's one filled button.
     expect(screen.getByRole('heading', { level: 2, name: 'ELF-lektion' })).toBeInTheDocument()
   })
