@@ -32,7 +32,6 @@ import {
   ChevronDown,
   ChevronRight,
   ChevronUp,
-  Clock,
   Maximize2,
   Minus,
   Plus,
@@ -59,7 +58,6 @@ import {
 } from '@/components/devbake/redesign/drillCore'
 import {
   type DirectionProps,
-  fmtClock,
   prefersReducedMotion,
   useHideOnScroll,
   useKeyMap,
@@ -79,9 +77,11 @@ import { parseNogPrompt } from '@/lib/nogPrompt'
 import { sectionLongLabel } from '@/lib/sectionRailLabel'
 import {
   ActionBar,
-  ClockButton,
   Colophon,
+  type Drift,
+  DriftLine,
   type DrillAct,
+  DrillClock,
   type DrillSeam,
   drillSeam,
   EmptyDrill,
@@ -96,16 +96,20 @@ import {
   Options,
   type Origin,
   questionStem,
+  ReturnCue,
   Spread,
   showsClock,
-  TimeLine,
+  sittingEstimate,
+  TimeLeft,
+  useDrift,
   Verdict,
 } from './FolioDrill'
 import { capitalised, Dots, inWords } from './FolioHome'
 import './fpQuant.css'
 import './fpFocus.css'
 
-/** A practice pace for the folded clock's line: two minutes a problem. */
+/** The time line's practice pace where Idag gives the sitting no
+ *  estimate: two minutes a problem. */
 const PACE_PER_QUESTION = 120
 /** Option counts in prose ("de fyra alternativen": neuter). */
 const OPTION_WORDS = ['noll', 'ett', 'två', 'tre', 'fyra', 'fem']
@@ -168,7 +172,28 @@ function QuantDrill({
     controller: actions.drill,
     live,
   })
-  const { view, refs } = core
+  const { refs } = core
+  // Drift: the clock counts active time only, and a return after a while
+  // away names the question. The view's time is the active time.
+  const [estimate] = useState(() => sittingEstimate(session, data.home))
+  const drift = useDrift({
+    elapsed: core.view.elapsed,
+    live,
+    estimate,
+    pace: PACE_PER_QUESTION * session.questions.length,
+    place: () => {
+      const v = core.view
+      if (v.phase === 'done') return null
+      const unit = session.request.kind === 'repetition' ? 'miss' : 'fråga'
+      return {
+        text:
+          v.phase === 'feedback'
+            ? `Du läste facit till ${unit} ${v.index + 1}`
+            : `Du var på ${unit} ${v.index + 1}`,
+      }
+    },
+  })
+  const view: DrillCoreView = { ...core.view, elapsed: drift.active }
   const { lock: coreLock, next: coreNext, exit: coreExit } = core.act
   const q = view.question
   const seam = drillSeam(session, q, 'Slutför övningen')
@@ -294,6 +319,7 @@ function QuantDrill({
     seam,
     session,
     clocked: showsClock(session),
+    drift,
     colRef,
     verdictRef,
     rot,
@@ -335,6 +361,7 @@ function QuantDrill({
         inert={viewer || undefined}
         ref={rootRef}
       >
+        <ReturnCue drift={drift} />
         {page}
       </div>
       {viewing ? (
@@ -374,6 +401,8 @@ type QuantChrome = {
   seam: DrillSeam
   session: DrillSessionView
   clocked: boolean
+  /** Active time, the estimate and the way back (useDrift). */
+  drift: Drift
   colRef: RefObject<HTMLDivElement | null>
   verdictRef: (el: HTMLElement | null) => void
   rot: number
@@ -393,8 +422,12 @@ function PageHeading({ view, seam }: { view: DrillCoreView; seam: DrillSeam }) {
   )
 }
 
-function RectoHead({ view, seam, clocked }: Pick<QuantChrome, 'view' | 'seam' | 'clocked'>) {
-  const [shown, setShown] = useState(true)
+function RectoHead({
+  view,
+  seam,
+  clocked,
+  drift,
+}: Pick<QuantChrome, 'view' | 'seam' | 'clocked' | 'drift'>) {
   return (
     <header className="fp-runhead fp-runhead--recto">
       <span className="fp-runhead-pos">
@@ -402,15 +435,10 @@ function RectoHead({ view, seam, clocked }: Pick<QuantChrome, 'view' | 'seam' | 
         <span>
           {seam.unit} {view.index + 1} av {view.total}
         </span>
+        {clocked ? <TimeLeft drift={drift} /> : null}
       </span>
-      {clocked ? (
-        <ClockButton seconds={view.elapsed} shown={shown} toggle={() => setShown((s) => !s)} />
-      ) : (
-        <span />
-      )}
-      {clocked && !shown ? (
-        <TimeLine seconds={view.elapsed} pace={PACE_PER_QUESTION * view.total} />
-      ) : null}
+      {clocked ? <DrillClock drift={drift} /> : <span />}
+      {clocked ? <DriftLine drift={drift} /> : null}
     </header>
   )
 }
@@ -418,8 +446,7 @@ function RectoHead({ view, seam, clocked }: Pick<QuantChrome, 'view' | 'seam' | 
 // ── Desktop: Kvantfråga ──────────────────────────────────────────────
 
 function DeskQuant(c: QuantChrome) {
-  const { view, act, refs, seam, clocked, colRef, verdictRef, live } = c
-  const [clockShown, setClockShown] = useState(true)
+  const { view, act, refs, seam, clocked, colRef, verdictRef, live, drift } = c
   const rectoRef = useRef<HTMLElement>(null)
   const q = view.question
   const n = view.index + 1
@@ -441,16 +468,9 @@ function DeskQuant(c: QuantChrome) {
             <span>
               {seam.unit} {n} av {view.total}
             </span>
-            {clocked ? (
-              <ClockButton
-                seconds={view.elapsed}
-                shown={clockShown}
-                toggle={() => setClockShown((s) => !s)}
-              />
-            ) : null}
-            {clocked && !clockShown ? (
-              <TimeLine seconds={view.elapsed} pace={PACE_PER_QUESTION * view.total} />
-            ) : null}
+            {clocked ? <TimeLeft drift={drift} /> : null}
+            {clocked ? <DrillClock drift={drift} /> : null}
+            {clocked ? <DriftLine drift={drift} /> : null}
           </span>
         </header>
         <div className="fp-qscroll">
@@ -494,7 +514,7 @@ function DeskQuant(c: QuantChrome) {
         }
         recto={
           <>
-            <RectoHead view={view} seam={seam} clocked={clocked} />
+            <RectoHead view={view} seam={seam} clocked={clocked} drift={c.drift} />
             <div className={`fp-recto-body${live ? ' fp-enter' : ''}`}>
               <Verdict
                 view={view}
@@ -568,7 +588,7 @@ function DeskDtk(c: QuantChrome) {
         }
         recto={
           <>
-            <RectoHead view={view} seam={seam} clocked={clocked} />
+            <RectoHead view={view} seam={seam} clocked={clocked} drift={c.drift} />
             <div className="fp-recto-body" {...QREGION}>
               <PageHeading view={view} seam={seam} />
               {view.phase === 'question' ? (
@@ -603,7 +623,7 @@ function DeskDtk(c: QuantChrome) {
 // ── Phone: Kvantfråga, one page ──────────────────────────────────────
 
 function PhoneQuant(c: QuantChrome) {
-  const { view, act, refs, seam, clocked, verdictRef } = c
+  const { view, act, refs, seam, clocked, verdictRef, drift } = c
   const scrollRef = useRef<HTMLDivElement>(null)
   const verdictBox = useRef<HTMLDivElement>(null)
   const { hidden: compact, onScroll } = useHideOnScroll()
@@ -630,12 +650,8 @@ function PhoneQuant(c: QuantChrome) {
           {seam.unit} {view.index + 1} av {view.total}
         </span>
         <div className="fp-head-right">
-          {clocked ? (
-            <span className="fp-clock" role="timer" aria-label={`Tid ${fmtClock(view.elapsed)}`}>
-              <Clock size={14} strokeWidth={1.5} aria-hidden className="fp-clock-icon" />
-              <span aria-hidden>{fmtClock(view.elapsed)}</span>
-            </span>
-          ) : null}
+          {clocked ? <TimeLeft drift={drift} /> : null}
+          {clocked ? <DrillClock drift={drift} mini /> : null}
         </div>
         <span className="fp-head-progress" aria-hidden>
           <i style={{ width: `${progress}%` }} />
@@ -686,7 +702,7 @@ function PhoneQuant(c: QuantChrome) {
 // ── Phone: DTK, the plate and the slip ───────────────────────────────
 
 function PhoneDtk(c: QuantChrome) {
-  const { view, act, refs, seam, clocked, verdictRef, session, rot, openViewer, live } = c
+  const { view, act, refs, seam, clocked, verdictRef, session, rot, openViewer, live, drift } = c
   const { state: sheet, setState: setSheet, toggle, grab } = useSheet(view)
   const { hidden: compact, onScroll } = useHideOnScroll()
   const q = view.question
@@ -699,15 +715,11 @@ function PhoneDtk(c: QuantChrome) {
     <div className="fp-pdrill fp-pdtk">
       <header className="fp-pdrill-head" data-compact={String(compact)}>
         <ExitButton onExit={act.exit} compact />
-        {/* The slip names the question; the head keeps the tools. */}
-        <span />
+        {/* The slip names the question; the head keeps the tools and
+         *  Idag's estimate. */}
+        <span className="fp-pdrill-pos">{clocked ? <TimeLeft drift={drift} /> : null}</span>
         <div className="fp-head-right">
-          {clocked ? (
-            <span className="fp-clock" role="timer" aria-label={`Tid ${fmtClock(view.elapsed)}`}>
-              <Clock size={14} strokeWidth={1.5} aria-hidden className="fp-clock-icon" />
-              <span aria-hidden>{fmtClock(view.elapsed)}</span>
-            </span>
-          ) : null}
+          {clocked ? <DrillClock drift={drift} mini /> : null}
           <button
             type="button"
             className="fp-ghost fp-focus-btn"

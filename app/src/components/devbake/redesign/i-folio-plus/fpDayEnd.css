@@ -1,0 +1,72 @@
+/* Folio+ · round 3, the day's end and the short way in (bead hpf-qr0p.48),
+ * set in Folio's own type and tokens.
+ *
+ * The end card keeps the lead's grammar and its quiet rule (fpCalm.css);
+ * its one filled button is the next useful thing. Under it, tomorrow's
+ * first step as a plain informational line. Under the Idag lead, "Kort om
+ * tid? 5 minuter" is a shaded secondary link (the shade is colour only,
+ * fpCalm.css), never a second filled button.
+ *
+ * Every selector is scoped under [data-rd='folio-plus']; reduced motion and
+ * still thumbnails are handled by folioPlus.css's global rules. */
+
+/* ── Idag · the end card ─────────────────────────────────────────── */
+
+/* Tomorrow: information, not a call — the second ink, the body's size. */
+[data-rd='folio-plus'] .fp-end .fp-tomorrow {
+  max-width: 36em;
+  margin-top: var(--fp-s4);
+  padding-top: var(--fp-s3);
+  border-top: 1px solid var(--fp-rule);
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  text-wrap: pretty;
+}
+
+/* A named next step can be long ("Öva XYZ · Matematisk problemlösning"):
+ * it wraps inside the button rather than pushing the hint off the page. */
+[data-rd='folio-plus'] .fp-end .fp-btn[data-fp-next] {
+  max-width: 100%;
+  white-space: normal;
+  text-align: left;
+}
+
+[data-rd='folio-plus'] .fp-phome .fp-end .fp-btn[data-fp-next] {
+  justify-content: center;
+  text-align: center;
+}
+
+/* ── Idag · "Kort om tid? 5 minuter" ─────────────────────────────── */
+
+[data-rd='folio-plus'] .fp-short {
+  margin-top: var(--fp-s3);
+}
+
+/* One link, wrapping as prose on a narrow page: the question first, then
+ * what it starts, in the lighter weight. */
+[data-rd='folio-plus'] .fp-short .fp-short-link.fp-short-link {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.35em;
+  row-gap: 0;
+  min-height: 44px;
+  max-width: 100%;
+  font-size: var(--fp-t15);
+  text-align: left;
+}
+
+[data-rd='folio-plus'] .fp-short .fp-short-what {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-rd='folio-plus'] .fp-short .fp-short-link svg {
+  flex: none;
+}
+
+[data-rd='folio-plus'] .fp-phome .fp-short {
+  margin-top: var(--fp-s2);
+}

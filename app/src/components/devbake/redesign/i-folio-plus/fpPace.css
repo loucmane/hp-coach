@@ -1,0 +1,186 @@
+/* Folio+ · the pacing pack (bead hpf-qr0p.48, round 3).
+ *
+ * The running pass: a ghost tick in the thumb index where UHR's
+ * recommended times put the reader now, and the quiet lines above the
+ * action bar (the blanks at five minutes left, a delprov seam). The
+ * result: errata rows that open their facit in place. Folio's type and
+ * tokens throughout, both themes by the tokens; the tick is ink-3, still,
+ * and never takes a warning colour. Overrides of folioPlus.css win by the
+ * scope or a doubled class, never by !important. */
+
+/* ── The pace tick ────────────────────────────────────────────────── */
+
+[data-rd='folio-plus'] .fp-passindex-run {
+  position: relative;
+}
+
+/* A hairline across the run's segments: present, never loud. It stands
+ * behind the segments, so a press still lands on a question. */
+[data-rd='folio-plus'] .fp-pace-tick {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  width: 1px;
+  margin-left: -1px;
+  background: var(--fp-ink-3);
+  pointer-events: none;
+}
+
+[data-rd='folio-plus'] .fp-passindex--strip .fp-pace-tick {
+  top: 4px;
+  bottom: 8px;
+}
+
+/* ── The quiet lines above the action bar ─────────────────────────── */
+
+[data-rd='folio-plus'] .fp-pace-notes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fp-s1);
+  margin: var(--fp-s6) 0 0;
+}
+
+[data-rd='folio-plus'][data-width='phone'] .fp-pace-notes {
+  margin: 0 0 var(--fp-s2);
+}
+
+[data-rd='folio-plus'] .fp-pace-note {
+  margin: 0;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--fp-ink-2);
+  text-wrap: pretty;
+}
+
+/* The five minutes: set in ink against a short accent rule, like a note
+ * in the margin of the booklet — words, not an alarm. */
+[data-rd='folio-plus'] .fp-pace-note.fp-pace-note--warn {
+  padding-left: var(--fp-s3);
+  border-left: 2px solid var(--fp-accent);
+  font-style: normal;
+  color: var(--fp-ink);
+}
+
+/* ── The errata: a row opens its facit in place ───────────────────── */
+
+[data-rd='folio-plus'] .fp-errata-item {
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+[data-rd='folio-plus'] .fp-errata-item > .fp-errata-row.fp-errata-toggle {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: var(--fp-r1);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-rd='folio-plus'] .fp-errata-toggle:hover {
+  background: var(--fp-paper-2);
+}
+
+[data-rd='folio-plus'] .fp-errata-toggle:focus-visible {
+  outline: 2px solid var(--fp-accent);
+  outline-offset: 2px;
+}
+
+[data-rd='folio-plus'] .fp-errata-chev {
+  margin-left: var(--fp-s1);
+  vertical-align: -2px;
+  color: var(--fp-ink-3);
+}
+
+[data-rd='folio-plus'] .fp-errata-item[data-open='true'] .fp-errata-chev {
+  rotate: 180deg;
+}
+
+/* The facit hangs under the stem's column, as a note under its entry. */
+[data-rd='folio-plus'] .fp-facit {
+  padding: 0 0 var(--fp-s4) calc(28px + 44px + 2 * var(--fp-s3));
+}
+
+[data-rd='folio-plus'][data-width='phone'] .fp-facit {
+  padding-left: calc(28px + var(--fp-s3));
+}
+
+[data-rd='folio-plus'] .fp-facit-problem p {
+  margin: 0 0 var(--fp-s2);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  line-height: 1.5;
+  color: var(--fp-ink);
+  text-wrap: pretty;
+}
+
+/* A DTK page stays a white printed page in both themes. */
+[data-rd='folio-plus'] .fp-facit-figure {
+  max-width: 360px;
+  margin: 0 0 var(--fp-s3);
+}
+
+[data-rd='folio-plus'] .fp-facit-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--fp-rule);
+  background: #fff;
+}
+
+[data-rd='folio-plus'] .fp-facit-opts {
+  margin: var(--fp-s2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-rd='folio-plus'] .fp-facit-opts li {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  column-gap: var(--fp-s2);
+  align-items: baseline;
+  padding: var(--fp-s1) 0;
+  font-size: var(--fp-t15);
+  color: var(--fp-ink-2);
+}
+
+[data-rd='folio-plus'] .fp-facit-opts li[data-right='true'] {
+  color: var(--fp-ink);
+}
+
+[data-rd='folio-plus'] .fp-facit-letter {
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t13);
+  font-weight: 650;
+  color: var(--fp-ink-3);
+}
+
+[data-rd='folio-plus'] .fp-facit-opts li[data-right='true'] .fp-facit-letter {
+  color: var(--fp-ok);
+}
+
+[data-rd='folio-plus'] .fp-facit-mark {
+  font-size: var(--fp-t13);
+  font-weight: 650;
+  color: var(--fp-ok);
+  white-space: nowrap;
+}
+
+[data-rd='folio-plus'] .fp-facit-mark.fp-facit-mark--yours {
+  font-family: var(--fp-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--fp-ink-2);
+}
+
+[data-rd='folio-plus'] .fp-facit-verdict {
+  margin: var(--fp-s2) 0 0;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  font-style: italic;
+  color: var(--fp-ink-2);
+}

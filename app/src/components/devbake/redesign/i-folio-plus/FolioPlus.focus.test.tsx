@@ -67,7 +67,10 @@ function rule(selector: string): string {
 }
 
 beforeAll(stubLayout)
-beforeEach(() => window.sessionStorage.clear())
+beforeEach(() => {
+  window.sessionStorage.clear()
+  window.localStorage.clear()
+})
 afterEach(() => {
   vi.useRealTimers()
   vi.restoreAllMocks()
@@ -96,7 +99,7 @@ describe('Folio+ · a ¶ link keeps the reading place', () => {
     fireEvent.click(screen.getAllByTestId(/^rd-cite-\d+$/)[0])
     expect(litParas()).toHaveLength(1)
     // Konto's switch and the next drill read the setting, not the visit.
-    expect(window.sessionStorage.getItem('fp-styckeljus')).not.toBe('on')
+    expect(window.localStorage.getItem('fp-styckeljus')).not.toBe('on')
     // The next question leaves the visit's light behind.
     fireEvent.click(screen.getByTestId('rd-next'))
     expect(litParas()).toEqual([])
@@ -452,7 +455,7 @@ describe('Folio+ · Konto: Styckeljus under Utseende', () => {
     expect(words[1]).toHaveAttribute('aria-pressed', 'true')
     expect(words[0]).toHaveAttribute('aria-pressed', 'false')
     expect(words[1]).toHaveFocus()
-    expect(window.sessionStorage.getItem('fp-styckeljus')).toBe('on')
+    expect(window.localStorage.getItem('fp-styckeljus')).toBe('on')
     // One quiet page: three choices in Utseende, no switch wall.
     expect(within(looks).getAllByRole('group')).toHaveLength(3)
     expect(document.querySelector('.fp-kt [role="switch"]')).toBeNull()

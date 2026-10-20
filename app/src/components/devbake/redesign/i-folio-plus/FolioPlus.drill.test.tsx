@@ -76,7 +76,10 @@ const litParas = () =>
   )
 
 beforeAll(stubLayout)
-beforeEach(() => window.sessionStorage.clear())
+beforeEach(() => {
+  window.sessionStorage.clear()
+  window.localStorage.clear()
+})
 afterEach(() => vi.restoreAllMocks())
 
 // ── 1. Styckeljus ────────────────────────────────────────────────────
@@ -176,7 +179,7 @@ describe('Folio+ · Styckeljus, the paragraph light', () => {
     expect(lightBtn()).toHaveAttribute('aria-pressed', 'true')
     expect(litParas()).toEqual([1])
     fireEvent.click(lightBtn())
-    expect(window.sessionStorage.getItem('fp-styckeljus')).toBe('off')
+    expect(window.localStorage.getItem('fp-styckeljus')).toBe('off')
   })
 
   it('keeps the light through to the next question of the text', () => {

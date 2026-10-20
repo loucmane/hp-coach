@@ -13,14 +13,22 @@
 // stated before entry as a count and minutes, and said to end; what does
 // not fit waits for the next round, never as debt. No overdue or red
 // counters. The queue, the misses and the margin sit in the shade.
+//
+// Round 3 (learning lens #4): a row shows the section and the question only.
+// Printing the trap before the retry turned recall into recognition; the
+// trap is named in the facit, after the answer.
 
 import { ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import { useKeyMap, type WidthKey } from '@/components/devbake/redesign/r1Kit'
-import type { PlanItemView, RepeteraItemView } from '@/components/devbake/redesign/viewModel'
-import { entryName, GapText, questionStem } from './FolioDrill'
+import type {
+  DirectionData,
+  PlanItemView,
+  RepeteraItemView,
+} from '@/components/devbake/redesign/viewModel'
+import { GapText, questionStem } from './FolioDrill'
 import {
   ContentsEntry,
   capitalised,
@@ -43,6 +51,18 @@ export function roundMinutes(round: number, items: readonly PlanItemView[]): num
   const planned = Number.parseInt(plan.detail ?? '', 10)
   if (Number.isNaN(planned) || planned <= 0 || planned === round) return plan.minutes
   return Math.max(1, Math.round((plan.minutes * round) / planned))
+}
+
+/** What waits in Repetera, said as what is ready now and how long it takes
+ *  ("8 redo · 9 min"), never as the whole pile; null when nothing is ready.
+ *  Idag's misses line and the nav's Öva subtitle say the same thing. */
+export function readyLine({
+  repetera,
+  home,
+}: Pick<DirectionData, 'repetera' | 'home'>): string | null {
+  const ready = repetera.dueNow
+  if (ready <= 0) return null
+  return `${ready} redo · ${roundMinutes(ready, home.plan.items)} min`
 }
 
 export function FolioRepetera({ width, live }: { width: WidthKey; live: boolean }) {
@@ -261,13 +281,12 @@ function LaterPart({ items, folded }: { items: RepeteraItemView[]; folded: boole
   )
 }
 
-/** One miss: its section in the margin, the question's stem, the trap
- *  behind it, and — for a later one — when it is ready. Not a button: the
- *  round is the one way in. */
+/** One miss: its section in the margin, the question's stem and — for a
+ *  later one — when it is ready. Never the trap: that would answer the
+ *  retry before it is tried (the facit names it). Not a button: the round
+ *  is the one way in. */
 function MissRow({ item }: { item: RepeteraItemView }) {
-  const { data } = useDirectionData()
   const stem = questionStem(item)
-  const trap = item.frameworkName ?? entryName(item.frameworkId ?? undefined, data.frameworks)
   return (
     <li className="fp-miss" data-testid={`rd-repetera-item-${item.n}`}>
       <span className="fp-entry-code">{item.section}</span>
@@ -277,7 +296,6 @@ function MissRow({ item }: { item: RepeteraItemView }) {
             <GapText text={stem} />
           </p>
         ) : null}
-        {trap ? <p className="fp-miss-trap">Fälla: {trap}</p> : null}
       </div>
       {item.dueNow ? null : <span className="fp-miss-when">{item.dueLabel}</span>}
     </li>

@@ -81,6 +81,7 @@ import {
   type RefObject,
   useCallback,
   useEffect,
+  useId,
   useLayoutEffect,
   useRef,
   useState,
@@ -102,6 +103,7 @@ import type {
   ProvHalfView,
   ProvPassOptionView,
   ProvResultSummaryView,
+  ProvResultView,
   ProvRunningView,
   ProvSectionResultView,
 } from '@/components/devbake/redesign/viewModel'
@@ -138,6 +140,7 @@ import {
 } from './FolioHome'
 import './fpProvpass.css'
 import './fpFocus.css'
+import './fpPace.css'
 
 const HALF_WORD: Record<Half, string> = { verbal: 'Verbal', kvant: 'Kvantitativ' }
 /** What UHR normerar: the whole half, two passes of 40. */
@@ -158,6 +161,103 @@ const ZOOMS = [1, 1.5, 2, 3, 4, 6]
 const CONTROL = 'button, a[href], summary, [role="button"], [role="menuitem"]'
 const NO_REF = () => {}
 const NO_REFS = { para: () => NO_REF }
+
+/**
+ * UHR's recommended time per delprov, as every HP booklet prints it on its
+ * cover under "Rekommenderad provtid" (hp_databas.json: the same table in
+ * all 108 booklets), with the booklet's own question count. The pacing a
+ * pass teaches is the booklet's own — not 55 minutes shared out by the
+ * number of questions, which puts LÄS and ELF "over" on every good pass and
+ * hides that a hurried DTK was short of time.
+ */
+export const UHR_TIME: Record<Section, { minutes: number; questions: number }> = {
+  ORD: { minutes: 3, questions: 10 },
+  LÄS: { minutes: 22, questions: 10 },
+  MEK: { minutes: 8, questions: 10 },
+  ELF: { minutes: 22, questions: 10 },
+  XYZ: { minutes: 12, questions: 12 },
+  KVA: { minutes: 10, questions: 10 },
+  NOG: { minutes: 10, questions: 6 },
+  DTK: { minutes: 23, questions: 12 },
+}
+/** A pass whose clock has run less than this when it opens is fresh: its
+ *  first delprov began when the pass did. */
+const FRESH_SECONDS = 5
+
+/** UHR's time for a delprov of `presented` questions: the booklet's, scaled
+ *  down (time × presented / the booklet's count) when the pass has fewer. */
+function uhrSeconds(section: Section, presented: number): { seconds: number; scaled: boolean } {
+  const t = UHR_TIME[section]
+  const full = t.minutes * 60
+  if (presented > 0 && presented < t.questions) {
+    return { seconds: Math.round((full * presented) / t.questions), scaled: true }
+  }
+  return { seconds: full, scaled: false }
+}
+
+/** Minutes to the half minute, as a page says them: 330 s → "5½". */
+function halfMinutes(seconds: number): string {
+  const halves = Math.round(Math.abs(seconds) / 30)
+  const whole = Math.floor(halves / 2)
+  return `${whole > 0 || halves % 2 === 0 ? whole : ''}${halves % 2 ? '½' : ''}`
+}
+
+/** A delprov's time against UHR's, said neutrally: the time a delprov took
+ *  came from the pass's last delprov, the time it left over went to it; the
+ *  last one simply got more or less. Within a minute it kept the pace. */
+function tempoNote(timeSeconds: number, uhr: number, section: Section, last: Section): string {
+  const diff = timeSeconds - uhr
+  if (Math.abs(diff) < 60) return 'i takt'
+  const m = halfMinutes(diff)
+  if (section === last) return `fick ${m} min ${diff > 0 ? 'mer' : 'mindre'}`
+  return diff > 0 ? `tog ${m} min från ${last}` : `${m} min kvar till ${last}`
+}
+
+/** Where UHR's times put the reader `elapsed` seconds in: the section run
+ *  and how far into it (0–1), and the question that is (0-based). Each run
+ *  gets its delprov's time, scaled to the questions it really has. */
+function paceAt(
+  questions: readonly DrillQuestion[],
+  elapsed: number,
+): { runStart: number; frac: number; at: number; section: Section } | null {
+  const runs = runsOf(questions)
+  let from = 0
+  for (const [k, r] of runs.entries()) {
+    const span = uhrSeconds(r.section, r.end - r.start).seconds
+    if (elapsed < from + span || k === runs.length - 1) {
+      const frac = span > 0 ? clamp((elapsed - from) / span, 0, 1) : 1
+      const at = Math.min(r.end - 1, r.start + Math.floor(frac * (r.end - r.start)))
+      return { runStart: r.start, frac, at, section: r.section }
+    }
+    from += span
+  }
+  return null
+}
+
+// ── What a pass run here leaves behind ──────────────────────────────
+
+/**
+ * The marks and answers of the last pass handed in during this session.
+ * The result view model carries neither (the real runner has no flags), so
+ * Folio+ keeps its own: only for that pass, and only for the first result
+ * opened after it (that result's id is bound on sight) — never for an older
+ * result of the same pass, and nothing survives a reload.
+ */
+type PassMemory = {
+  passId: string
+  flags: string[]
+  answers: Partial<Record<string, AnswerLetter>>
+  questions: DrillQuestion[]
+  resultId: string | null
+}
+let passMemory: PassMemory | null = null
+
+function memoryFor(r: ProvResultView): PassMemory | null {
+  const m = passMemory
+  if (!m || r.passId == null || m.passId !== r.passId) return null
+  if (m.resultId == null) m.resultId = r.id
+  return m.resultId === r.id ? m : null
+}
 
 // ── Words and numbers ────────────────────────────────────────────────
 
@@ -205,6 +305,14 @@ function clamp(n: number, lo: number, hi: number): number {
 function minutesUsed(seconds: number): string {
   const m = Math.floor(seconds / 60)
   return `${m} ${m === 1 ? 'minut' : 'minuter'}`
+}
+
+/** The blanks at five minutes left: "6 obesvarade – gissa på dem nu, fel
+ *  svar kostar inget." `standalone`: said on its own, after "Fem minuter
+ *  kvar"; else it follows it on the same line. */
+function blanksSentence(n: number, standalone: boolean): string {
+  if (n === 0) return standalone ? 'Alla frågor är besvarade.' : 'alla frågor besvarade.'
+  return `${n} ${n === 1 ? 'obesvarad – gissa på den' : 'obesvarade – gissa på dem'} nu, fel svar kostar inget.`
 }
 
 /** "31 minuter och 12 sekunder kvar": the clock as a sentence. */
@@ -734,6 +842,12 @@ type PassChrome = {
   flagged: boolean
   remaining: number
   urgent: boolean
+  /** Where UHR's times put the reader now (null: no plan to show). */
+  pace: ReturnType<typeof paceAt>
+  /** The quiet line at a delprov seam, while the reader is in the next one. */
+  seam: string | null
+  /** From five minutes left: the blanks, named. */
+  warn: string | null
   clockShown: boolean
   toggleClock: () => void
   /** No more answering: the time is up (the pass is being handed in). */
@@ -815,7 +929,28 @@ function PassRunner({
   )
   const [clockShown, setClockShown] = useState(true)
   const [said, setSaid] = useState('')
+  // The five-minute warning's second half — the blanks — said once, in
+  // its own status after "Fem minuter kvar".
+  const [saidBlanks, setSaidBlanks] = useState('')
   const [spoken] = useState(() => new Set<number>(MILESTONES.filter((m) => remaining <= m)))
+  const elapsed = Math.max(0, run.durationSeconds - remaining)
+
+  // The delprov seams: when the reader first came into each section run
+  // (by its start), known only for runs entered while the pass ran here —
+  // and for the first one when the pass opens fresh.
+  const runs = runsOf(questions)
+  const runOf = (i: number) => runs.find((r) => i >= r.start && i < r.end) ?? null
+  const [entered] = useState(() => {
+    const map = new Map<number, number>()
+    const first = runOf(clamp(run.current, 0, Math.max(0, total - 1)))
+    if (first && elapsed < FRESH_SECONDS) map.set(first.start, elapsed)
+    return map
+  })
+  const [seamSaid] = useState(() => new Set<number>())
+  const [seam, setSeam] = useState<{ runStart: number; text: string } | null>(null)
+  const lastIndex = useRef(index)
+  const clockShownRef = useRef(clockShown)
+  clockShownRef.current = clockShown
 
   useEffect(() => {
     if (!live) return
@@ -824,8 +959,8 @@ function PassRunner({
   }, [live])
 
   // What the hand-in takes with it: the answers as they stand.
-  const latest = useRef({ run, answers })
-  latest.current = { run, answers }
+  const latest = useRef({ run, answers, flags })
+  latest.current = { run, answers, flags }
   const endRef = useRef(onEnd)
   endRef.current = onEnd
   const submit = useCallback(() => {
@@ -839,6 +974,18 @@ function PassRunner({
     } catch {
       outcome = 'failed'
     }
+    // Handed in: the marks and answers stay for the result opened next
+    // (Markerade men rätt, and the reader's answer in each facit).
+    if (outcome === 'submitted') {
+      const l = latest.current
+      passMemory = {
+        passId: l.run.passId,
+        flags: [...(l.flags ?? [])],
+        answers: { ...l.answers },
+        questions: l.run.questions,
+        resultId: null,
+      }
+    }
     // Over either way. A host that opens the result leaves this behind; one
     // that stays on screen 9 shows the pass's closing page instead.
     endRef.current({ outcome, run: latest.current.run, answers: latest.current.answers })
@@ -851,16 +998,49 @@ function PassRunner({
     if (remaining <= 0) submitRef.current()
   }, [remaining])
 
-  // Five minutes left: said once, in words, and the folded clock comes
-  // back in place. Nothing more is said as the time runs on.
+  // Five minutes left: said once, in words, with the blanks named (a blank
+  // is a point given away; a wrong answer costs nothing), and the folded
+  // clock comes back in place. Nothing more is said as the time runs on.
   useEffect(() => {
     for (const m of MILESTONES) {
       if (remaining > m || remaining <= 0 || spoken.has(m)) continue
       spoken.add(m)
+      const { answers: a, run: r } = latest.current
       setSaid('Fem minuter kvar')
+      setSaidBlanks(blanksSentence(r.questions.filter((x) => a[x.qid] == null).length, true))
       setClockShown(true)
     }
   }, [remaining, spoken])
+
+  // A delprov seam: on first coming into a later section run, the one just
+  // left is said once — how long it took against UHR's time — while the
+  // clock is out. The line stays while the reader is in the new run.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: on a new question only
+  useEffect(() => {
+    const from = runOf(lastIndex.current)
+    const to = runOf(index)
+    lastIndex.current = index
+    if (!to) return
+    // Coming in from another run (the run a pass opens in, mid-way, was
+    // not seen begin).
+    const fresh = !entered.has(to.start) && from != null && from.start !== to.start
+    if (fresh) entered.set(to.start, elapsed)
+    const began = from ? entered.get(from.start) : undefined
+    if (from && fresh && to.start > from.start && began != null && !seamSaid.has(from.start)) {
+      seamSaid.add(from.start)
+      const took = Math.round((elapsed - began) / 60)
+      const uhr = Math.round(uhrSeconds(from.section, from.end - from.start).seconds / 60)
+      setSeam({
+        runStart: to.start,
+        text: `${from.section} klart på ${took} min · UHR:s tid ${uhr}`,
+      })
+      if (clockShownRef.current) {
+        setSaid(`${from.section} klart på ${took} minuter, UHR:s tid ${uhr} minuter.`)
+      }
+      return
+    }
+    setSeam((s) => (s && s.runStart !== to.start ? null : s))
+  }, [index])
 
   // A move lands on the question's heading, which is how a screen reader
   // hears where it is; the passage aids start over.
@@ -1012,6 +1192,15 @@ function PassRunner({
     flagged: flags?.includes(q.qid) ?? false,
     remaining,
     urgent: remaining <= 300,
+    pace: paceAt(questions, elapsed),
+    seam: seam && clockShown ? seam.text : null,
+    warn:
+      remaining <= MILESTONES[0] && remaining > 0
+        ? `Fem minuter kvar · ${blanksSentence(
+            questions.filter((x) => answers[x.qid] == null).length,
+            false,
+          )}`
+        : null,
     clockShown,
     toggleClock: () => setClockShown((s) => !s),
     locked: remaining <= 0,
@@ -1042,6 +1231,9 @@ function PassRunner({
       {/* Outside the page, so it is heard while a slip is open too. */}
       <span className="fp-sr" role="status">
         {said}
+      </span>
+      <span className="fp-sr" role="status">
+        {saidBlanks}
       </span>
       {slip === 'overview' ? (
         <OverviewSlip
@@ -1220,47 +1412,86 @@ function PassIndex({ c, strip = false }: { c: PassChrome; strip?: boolean }) {
     const left = here.offsetLeft - (box.clientWidth - here.offsetWidth) / 2
     box.scrollTo?.({ left: Math.max(0, left) })
   }, [c.index, strip])
+  // The pace tick: a ghost mark where UHR's times put the reader now. It
+  // folds away with the clock, and its legend with it.
+  const pace = c.clockShown ? c.pace : null
+  const legendId = 'fp-pace-legend'
   return (
-    <fieldset
-      ref={ref}
-      className={`fp-passindex${strip ? ' fp-passindex--strip' : ''}`}
-      data-testid="rd-prov-grid"
-      aria-label="Passets frågor"
-    >
-      {runsOf(c.run.questions).map((r) => (
-        <span className="fp-passindex-run" key={r.start} style={{ flexGrow: r.end - r.start }}>
-          {c.run.questions.slice(r.start, r.end).map((x, k) => {
-            const i = r.start + k
-            const done = c.answers[x.qid] != null
-            const marked = c.flags?.includes(x.qid) ?? false
-            const here = i === c.index
-            return (
-              <button
-                type="button"
-                key={x.qid}
-                className="fp-passindex-cell"
-                tabIndex={-1}
-                data-testid={`rd-prov-cell-${i + 1}`}
-                data-answered={String(done)}
-                data-current={String(here)}
-                data-flagged={marked ? 'true' : undefined}
-                aria-current={here ? 'step' : undefined}
-                aria-label={`Fråga ${i + 1}, ${x.section}, ${done ? 'besvarad' : 'obesvarad'}${
-                  marked ? ', markerad' : ''
-                }`}
-                onClick={() => c.act.goTo(i)}
-              >
-                {strip ? null : (
-                  <span className="fp-passindex-tab" aria-hidden>
-                    Fråga {i + 1} · {done ? 'besvarad' : 'obesvarad'}
-                  </span>
-                )}
-              </button>
-            )
-          })}
+    <>
+      <fieldset
+        ref={ref}
+        className={`fp-passindex${strip ? ' fp-passindex--strip' : ''}`}
+        data-testid="rd-prov-grid"
+        aria-label="Passets frågor"
+        aria-describedby={pace ? legendId : undefined}
+      >
+        {runsOf(c.run.questions).map((r) => (
+          <PassIndexRun key={r.start} c={c} r={r} strip={strip} pace={pace} />
+        ))}
+      </fieldset>
+      {pace ? (
+        <span className="fp-sr" id={legendId}>
+          Det tunna strecket i frågeraden visar var UHR:s rekommenderade tider sätter dig nu: vid
+          fråga {pace.at + 1}, {pace.section}.
         </span>
-      ))}
-    </fieldset>
+      ) : null}
+    </>
+  )
+}
+
+/** One section run of the index, with the pace tick when UHR's times put
+ *  the reader in it. */
+function PassIndexRun({
+  c,
+  r,
+  strip,
+  pace,
+}: {
+  c: PassChrome
+  r: { section: Section; start: number; end: number }
+  strip: boolean
+  pace: PassChrome['pace']
+}) {
+  return (
+    <span className="fp-passindex-run" style={{ flexGrow: r.end - r.start }}>
+      {pace && pace.runStart === r.start ? (
+        <span
+          className="fp-pace-tick"
+          data-testid="fp-pace-tick"
+          aria-hidden="true"
+          style={{ left: `${Math.round(pace.frac * 1000) / 10}%` }}
+        />
+      ) : null}
+      {c.run.questions.slice(r.start, r.end).map((x, k) => {
+        const i = r.start + k
+        const done = c.answers[x.qid] != null
+        const marked = c.flags?.includes(x.qid) ?? false
+        const here = i === c.index
+        return (
+          <button
+            type="button"
+            key={x.qid}
+            className="fp-passindex-cell"
+            tabIndex={-1}
+            data-testid={`rd-prov-cell-${i + 1}`}
+            data-answered={String(done)}
+            data-current={String(here)}
+            data-flagged={marked ? 'true' : undefined}
+            aria-current={here ? 'step' : undefined}
+            aria-label={`Fråga ${i + 1}, ${x.section}, ${done ? 'besvarad' : 'obesvarad'}${
+              marked ? ', markerad' : ''
+            }`}
+            onClick={() => c.act.goTo(i)}
+          >
+            {strip ? null : (
+              <span className="fp-passindex-tab" aria-hidden>
+                Fråga {i + 1} · {done ? 'besvarad' : 'obesvarad'}
+              </span>
+            )}
+          </button>
+        )
+      })}
+    </span>
   )
 }
 
@@ -1368,18 +1599,46 @@ function PassBar({ c }: { c: PassChrome }) {
   )
   if (c.phone) {
     return (
-      <div className="fp-actionbar fp-pass-bar fp-pass-bar--thumb">
-        {echo}
-        <ThumbRow c={c} />
-        {next}
-      </div>
+      <>
+        <PaceNote c={c} />
+        <div className="fp-actionbar fp-pass-bar fp-pass-bar--thumb">
+          {echo}
+          <ThumbRow c={c} />
+          {next}
+        </div>
+      </>
     )
   }
   return (
-    <div className="fp-actionbar fp-pass-bar">
-      {next}
-      {echo}
-      {c.flags ? <FlagButton c={c} /> : null}
+    <>
+      <PaceNote c={c} />
+      <div className="fp-actionbar fp-pass-bar">
+        {next}
+        {echo}
+        {c.flags ? <FlagButton c={c} /> : null}
+      </div>
+    </>
+  )
+}
+
+/** The pass's quiet lines above its action bar: from five minutes left the
+ *  blanks, named (counted as they are filled); at a delprov seam, how long
+ *  the last one took against UHR's time. Seen, not live: each was said once
+ *  in the pass's status when it came. Never red, never moving. */
+function PaceNote({ c }: { c: PassChrome }) {
+  if (!c.warn && !c.seam) return null
+  return (
+    <div className="fp-pace-notes" aria-hidden="true">
+      {c.warn ? (
+        <p className="fp-pace-note fp-pace-note--warn" data-testid="fp-pace-warn">
+          {c.warn}
+        </p>
+      ) : null}
+      {c.seam ? (
+        <p className="fp-pace-note" data-testid="fp-pace-seam">
+          {c.seam}
+        </p>
+      ) : null}
     </div>
   )
 }
@@ -1786,6 +2045,7 @@ function PhonePassSheet({ c, kind }: { c: PassChrome; kind: 'reading' | 'plate' 
         </div>
         {sheet === 'peek' ? (
           <div className="fp-sheet-thumb">
+            <PaceNote c={c} />
             <ThumbRow c={c} />
           </div>
         ) : (
@@ -2163,41 +2423,39 @@ function missesSentence(wrong: number, blank: number): string {
 
 /** The result's one pattern to practise, when the pass has no recurring
  *  trap: the section with the most misses (then the larger share, then the
- *  one furthest over its budget, then the test's order). None for a pass
- *  without misses. Derived from the result's own sections. */
+ *  one that took most time past UHR's, then the test's order). None for a
+ *  pass without misses. Derived from the result's own sections; `diff` is
+ *  the time past UHR's (negative: less than UHR's). */
 function missPattern(
   sections: readonly ProvSectionResultView[],
-  budget: (s: ProvSectionResultView) => number,
-): { section: Section; misses: number; presented: number; over: number } | null {
+  uhr: (s: ProvSectionResultView) => number,
+): { section: Section; misses: number; presented: number; diff: number } | null {
   const rows = sections
     .filter((s) => s.presented > 0 && s.presented > s.correct)
     .map((s) => ({
       section: s.section,
       misses: s.presented - s.correct,
       presented: s.presented,
-      over: Math.max(0, s.timeSeconds - budget(s)),
+      diff: s.timeSeconds - uhr(s),
     }))
   rows.sort(
     (a, z) =>
       z.misses - a.misses ||
       z.misses / z.presented - a.misses / a.presented ||
-      z.over - a.over ||
+      Math.max(0, z.diff) - Math.max(0, a.diff) ||
       SECTION_KEYS.indexOf(a.section) - SECTION_KEYS.indexOf(z.section),
   )
   return rows[0] ?? null
 }
 
-/** A section's share of the pass's time: the view model's quota, scaled to
- *  the questions a short pass really had. */
-function budgetOf(
-  s: ProvSectionResultView,
-  all: readonly ProvSectionResultView[],
-  minutes: number,
-  nominal: number,
-) {
-  const presented = all.reduce((n, x) => n + x.presented, 0)
-  if (presented >= nominal || presented === 0) return s.quotaSeconds
-  return Math.round((minutes * 60 * s.presented) / presented)
+/** What the pattern adds about time, against UHR's: more time than UHR's,
+ *  or — for the pass's last delprov — less, which can make misses that are
+ *  time look like skill. Nothing within a minute. */
+function patternTime(diff: number, last: boolean): string {
+  if (diff >= 60) return ` – delprovet tog också ${halfMinutes(diff)} min mer än UHR:s tid.`
+  if (last && diff <= -60)
+    return ` – delprovet fick också ${halfMinutes(diff)} min mindre än UHR:s tid.`
+  return '.'
 }
 
 export function FolioProvResult({
@@ -2224,9 +2482,11 @@ export function FolioProvResult({
   const timedOut = r.durationSeconds >= minutes * 60
   const official = r.score.derived === 'official-derived'
   const value = r.presented > 0 ? r.score.value : null
-  // The pass's own questions, while the host still has them: the misses
-  // can then be read by their stems.
-  const questions = running.passId === r.passId ? running.questions : []
+  // A pass handed in here, this session: its marks and answers.
+  const memory = memoryFor(r)
+  // The pass's own questions, while the host or this session still has
+  // them: the misses can then be read by their stems and opened.
+  const questions = memory?.questions ?? (running.passId === r.passId ? running.questions : [])
   // Whether the score rests on övningstexter, where the pass says so: a P5
   // text among its own questions, or a miss in the P5 namespace. A pass
   // whose provenance is not at hand claims nothing.
@@ -2234,13 +2494,27 @@ export function FolioProvResult({
   const sections = [...r.sections].sort(
     (a, z) => SECTION_KEYS.indexOf(a.section) - SECTION_KEYS.indexOf(z.section),
   )
-  const budget = (s: ProvSectionResultView) =>
-    budgetOf(s, sections, minutes, nominal?.questions ?? r.presented)
+  // UHR's recommended time per delprov, scaled to a short delprov's
+  // questions; the tempo is said against the pass's last delprov, where
+  // time taken earlier runs short.
+  const uhr = (s: ProvSectionResultView) => uhrSeconds(s.section, s.presented)
+  const lastSection = sections[sections.length - 1]?.section ?? null
+  const scaled = sections.filter((s) => uhr(s).scaled)
   // Principle 4 (Ljuskägla): first what happened, then one pattern lit —
   // the recurring trap when the pass has one, else the section it missed
   // most. Never a ranking against anyone else.
   const trap = r.trap ?? null
-  const pattern = trap ? null : missPattern(sections, budget)
+  const pattern = trap ? null : missPattern(sections, (s) => uhr(s).seconds)
+  // Markerade men rätt: marked in the pass, answered right — unsure, and
+  // worth a second look. Only from a pass run here (the result carries no
+  // marks), and never one the result counts as a miss.
+  const missedSet = new Set(r.missed)
+  const flaggedRight = memory
+    ? memory.flags.filter((qid) => {
+        const q = questions.find((x) => x.qid === qid)
+        return q != null && !missedSet.has(qid) && memory.answers[qid] === q.answer
+      })
+    : []
   const primary = wrong > 0 ? actions.openRepetera : onNewPass
   useKeyMap({ Enter: primary, Escape: onNewPass }, live)
   const what = `${HALF_WORD[r.half]}, ${r.mode === 'authentic' ? 'riktigt pass' : 'genererat pass'}.`
@@ -2349,9 +2623,7 @@ export function FolioProvResult({
             </p>
             <p className="fp-res-pattern-why">
               {sectionLongLabel(pattern.section)}
-              {pattern.over >= 60
-                ? ` – delprovet tog också ${minutesUsed(pattern.over)} mer än sin budget.`
-                : '.'}
+              {patternTime(pattern.diff, pattern.section === lastSection)}
             </p>
             <button
               type="button"
@@ -2373,7 +2645,7 @@ export function FolioProvResult({
           <span className="fp-meta">i provets ordning</span>
         </div>
         <table className="fp-table fp-res-table">
-          <caption className="fp-sr">Per delprov: rätt, tid och budget</caption>
+          <caption className="fp-sr">Per delprov: rätt, tid och UHR:s rekommenderade tid</caption>
           <thead>
             <tr>
               <th scope="col">
@@ -2381,7 +2653,7 @@ export function FolioProvResult({
               </th>
               <th scope="col">Rätt</th>
               <th scope="col">Tid</th>
-              <th scope="col">Budget</th>
+              <th scope="col">UHR:s tid</th>
               <th scope="col" className="fp-col-note">
                 <span className="fp-sr">Tempo</span>
               </th>
@@ -2389,8 +2661,10 @@ export function FolioProvResult({
           </thead>
           <tbody>
             {sections.map((s) => {
-              const quota = budget(s)
-              const over = s.timeSeconds > quota
+              const t = uhr(s)
+              const note = lastSection
+                ? tempoNote(s.timeSeconds, t.seconds, s.section, lastSection)
+                : ''
               return (
                 <tr key={s.section} data-testid={`rd-prov-section-${slug(s.section)}`}>
                   <th scope="row">
@@ -2409,10 +2683,17 @@ export function FolioProvResult({
                     {fmtClock(s.timeSeconds)}
                     {/* Phone: the tempo drops under its row (its column is
                      *  folded away there). */}
-                    {over ? <span className="fp-table-sub fp-phone-only">över budget</span> : null}
+                    {note ? <span className="fp-table-sub fp-phone-only">{note}</span> : null}
                   </td>
-                  <td>{fmtClock(quota)}</td>
-                  <td className="fp-col-note">{over ? 'över budget' : ''}</td>
+                  <td>
+                    {fmtClock(t.seconds)}
+                    {t.scaled ? (
+                      <span className="fp-table-mark" title="Skalad efter antalet frågor">
+                        †
+                      </span>
+                    ) : null}
+                  </td>
+                  <td className="fp-col-note">{note}</td>
                 </tr>
               )
             })}
@@ -2436,12 +2717,40 @@ export function FolioProvResult({
             <p className="fp-res-note">{missesSentence(wrong, blank)}</p>
             <ol className="fp-errata" aria-labelledby="fp-res-miss-h">
               {r.missed.map((qid) => (
-                <MissedRow key={qid} qid={qid} questions={questions} />
+                <MissedRow
+                  key={qid}
+                  qid={qid}
+                  questions={questions}
+                  answers={memory?.answers ?? null}
+                />
               ))}
             </ol>
           </>
         )}
       </section>
+
+      {flaggedRight.length > 0 && memory ? (
+        <section
+          className="fp-section"
+          aria-labelledby="fp-res-flag-h"
+          data-testid="fp-res-flagged"
+        >
+          <div className="fp-section-head">
+            <h2 className="fp-h2" id="fp-res-flag-h">
+              Markerade men rätt
+            </h2>
+            <span className="fp-meta">
+              {flaggedRight.length} av {memory.flags.length} markerade
+            </span>
+          </div>
+          <p className="fp-res-note">Du var osäker – värda en repris.</p>
+          <ol className="fp-errata" aria-labelledby="fp-res-flag-h">
+            {flaggedRight.map((qid) => (
+              <MissedRow key={qid} qid={qid} questions={questions} answers={memory.answers} />
+            ))}
+          </ol>
+        </section>
+      ) : null}
 
       <div className="fp-footnotes">
         <p className={`fp-footnote${p5 ? ' fp-footnote--wide' : ''}`} id="fp-res-fn">
@@ -2456,6 +2765,22 @@ export function FolioProvResult({
           <p className="fp-footnote fp-footnote--wide">
             <b aria-hidden>**</b>
             <span>{data.copy.estimateCaveat}</span>
+          </p>
+        ) : null}
+        {scaled.length ? (
+          <p className="fp-footnote fp-footnote--wide">
+            <b aria-hidden>†</b>
+            <span>
+              UHR:s tid gäller hela delprovet i provhäftet. Har passet färre frågor är tiden skalad
+              efter antalet frågor –{' '}
+              {scaled
+                .map(
+                  (s) =>
+                    `${s.section}: ${UHR_TIME[s.section].minutes} min × ${s.presented}/${UHR_TIME[s.section].questions}`,
+                )
+                .join(', ')}
+              .
+            </span>
           </p>
         ) : null}
       </div>
@@ -2510,24 +2835,165 @@ export function FolioProvResult({
   )
 }
 
-/** One miss in the errata: its place, section and stem, and the right
- *  answer — when the pass's questions are still at hand; else what its id
- *  says. */
-function MissedRow({ qid, questions }: { qid: string; questions: readonly DrillQuestion[] }) {
+/**
+ * One question in the errata (a miss, or one marked and answered right):
+ * its place, section and stem, and the right answer — when the pass's
+ * questions are still at hand; else what its id says. A row with its
+ * question at hand looks like a step and is one: a press opens its facit
+ * in place under it (the question, the options, the right answer and, from
+ * a pass run here, the reader's own), and a second press closes it.
+ */
+function MissedRow({
+  qid,
+  questions,
+  answers,
+}: {
+  qid: string
+  questions: readonly DrillQuestion[]
+  /** The reader's answers, from a pass run here; null: not at hand. */
+  answers: Partial<Record<string, AnswerLetter>> | null
+}) {
+  const [open, setOpen] = useState(false)
+  const facitId = useId()
   const i = questions.findIndex((x) => x.qid === qid)
   const q = i === -1 ? null : questions[i]
   const section = q?.section ?? sectionOfQid(qid)
   const printed = q ? i + 1 : Number(/(\d+)$/.exec(qid)?.[1] ?? Number.NaN)
   const stem = q ? questionStem(q) : null
-  return (
-    <li className="fp-errata-row">
+  const cells = (
+    <>
       <span className="fp-errata-n">{Number.isFinite(printed) ? printed : ''}</span>
       <span className="fp-entry-code">{section ?? ''}</span>
       <span className="fp-errata-stem">
         {stem ? <GapText text={stem} /> : section ? sectionLongLabel(section) : qid}
       </span>
-      {q ? <span className="fp-errata-key">rätt {q.answer}</span> : null}
+    </>
+  )
+  if (!q) return <li className="fp-errata-row">{cells}</li>
+  return (
+    <li className="fp-errata-item" data-open={open ? 'true' : undefined}>
+      <button
+        type="button"
+        className="fp-errata-row fp-errata-toggle"
+        aria-expanded={open}
+        aria-controls={facitId}
+        aria-label={`Fråga ${printed}, ${q.section}, rätt svar ${q.answer}. ${
+          open ? 'Dölj facit' : 'Visa frågan och facit'
+        }`}
+        onClick={() => setOpen((o) => !o)}
+      >
+        {cells}
+        <span className="fp-errata-key">
+          rätt {q.answer}
+          <ChevronDown size={14} strokeWidth={1.75} aria-hidden className="fp-errata-chev" />
+        </span>
+      </button>
+      <div className="fp-facit" id={facitId} hidden={!open}>
+        {open ? (
+          <Facit q={q} n={printed} yours={answers ? (answers[q.qid] ?? null) : undefined} />
+        ) : null}
+      </div>
     </li>
+  )
+}
+
+/** A question's facit, read-only, set in place under its errata row: the
+ *  problem as the pass printed it (a DTK page as a small plate), the
+ *  options with the right one named, and the reader's answer when this
+ *  session has it (`yours`: undefined when not at hand, null when blank). */
+function Facit({
+  q,
+  n,
+  yours,
+}: {
+  q: DrillQuestion
+  n: number
+  yours: AnswerLetter | null | undefined
+}) {
+  const en = q.passage?.lang === 'en' ? 'en' : undefined
+  const prompt = q.prompt ?? ''
+  const kva = q.section === 'KVA' ? splitKvaPrompt(prompt) : null
+  const nog = q.section === 'NOG' ? parseNogPrompt(prompt) : null
+  const verdict =
+    yours === undefined
+      ? null
+      : yours === null
+        ? `Obesvarad · rätt svar: ${q.answer}.`
+        : yours === q.answer
+          ? `Ditt svar: ${yours} – rätt.`
+          : `Ditt svar: ${yours} · rätt svar: ${q.answer}.`
+  return (
+    <>
+      {q.figure ? (
+        <figure className="fp-facit-figure">
+          <img src={`/${q.figure.src}`} alt={q.figure.alt} decoding="async" />
+          <figcaption className="fp-plate-caption">
+            {q.source.label} · uppgift {q.number}
+          </figcaption>
+        </figure>
+      ) : null}
+      <div className="fp-facit-problem" lang={en}>
+        {kva ? (
+          <>
+            <p>
+              {kva.condition ? (
+                <MathText>{kva.condition}</MathText>
+              ) : (
+                'Jämför de två kvantiteterna.'
+              )}
+            </p>
+            <p>
+              Kvantitet I: <MathText>{kva.kvI}</MathText> · Kvantitet II:{' '}
+              <MathText>{kva.kvII}</MathText>
+            </p>
+          </>
+        ) : nog ? (
+          <>
+            <p>
+              <MathText>{nog.question}</MathText>
+            </p>
+            <p>
+              (1) <MathText>{nog.statement1}</MathText>
+            </p>
+            <p>
+              (2) <MathText>{nog.statement2}</MathText>
+            </p>
+          </>
+        ) : prompt ? (
+          <p>{q.section === 'MEK' ? <GapText text={prompt} /> : <MathText>{prompt}</MathText>}</p>
+        ) : (
+          <p lang="sv">
+            {sectionLongLabel(q.section)}, fråga {n}
+          </p>
+        )}
+      </div>
+      <ol className="fp-facit-opts" aria-label="Svarsalternativen och facit">
+        {(q.options ?? []).map((o) => {
+          const right = o.letter === q.answer
+          const mine = yours != null && o.letter === yours && !right
+          return (
+            <li
+              key={o.letter}
+              data-right={right ? 'true' : undefined}
+              data-yours={mine ? 'true' : undefined}
+            >
+              <span className="fp-facit-letter" aria-hidden>
+                {o.letter}
+              </span>
+              <span className="fp-facit-opt-text">
+                <span className="fp-sr">Alternativ {o.letter}: </span>
+                <span lang={en}>
+                  <MathText>{o.text}</MathText>
+                </span>
+              </span>
+              {right ? <span className="fp-facit-mark">rätt svar</span> : null}
+              {mine ? <span className="fp-facit-mark fp-facit-mark--yours">ditt svar</span> : null}
+            </li>
+          )
+        })}
+      </ol>
+      {verdict ? <p className="fp-facit-verdict">{verdict}</p> : null}
+    </>
   )
 }
 

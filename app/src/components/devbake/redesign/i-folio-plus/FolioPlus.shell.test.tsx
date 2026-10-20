@@ -96,21 +96,23 @@ describe('Folio+ · Idag as a day path', () => {
     data.home.resume = null
     for (const item of data.home.plan.items) item.completed = true
     data.home.plan.allComplete = true
-    const go = vi.fn()
-    mount(1, { data, actions: { go } })
+    const startDrill = vi.fn()
+    mount(1, { data, actions: { startDrill } })
     expect(steps()).toEqual(['done', 'done', 'done'])
     const card = screen.getByRole('region', { name: 'Klart för idag' })
     expect(card).toHaveAttribute('data-fp-end')
-    fireEvent.click(within(card).getByRole('button', { name: 'Till Öva' }))
-    expect(go).toHaveBeenLastCalledWith('ova')
+    // Round 3: the card lights the next useful thing the data names.
+    fireEvent.click(within(card).getByRole('button', { name: /^Repetera 8 missar/ }))
+    expect(startDrill).toHaveBeenLastCalledWith({ kind: 'repetition' })
   })
 
   it('labels today’s misses “↺ Lagd i Repetera”, today’s pile apart from the whole queue', () => {
     mount(1)
     const line = document.querySelector('[data-fp-misses]')
     expect(line).toHaveTextContent('↺ Lagd i Repetera')
-    expect(line).toHaveTextContent(`${FIXTURE_DATA.home.ovaDue} missar idag`)
-    expect(line).toHaveTextContent(`${FIXTURE_DATA.framsteg.totals.mistakesActive} totalt`)
+    // Round 3: what is ready now, never the whole growing queue.
+    expect(line).toHaveTextContent(`${FIXTURE_DATA.repetera.dueNow} redo · 9 min`)
+    expect(line).not.toHaveTextContent(/totalt/)
     expect(line).not.toHaveTextContent(/fel|misslyck|tyvärr|dålig/i)
   })
 })
@@ -120,13 +122,13 @@ describe('Folio+ · nav subtitles', () => {
     mount(1)
     const sub = (id: string) => screen.getByTestId(`rd-nav-${id}`).querySelector('[data-fp-sub]')
     expect(sub('idag')).toHaveTextContent('Fortsätt LÄS, fråga 3 av 4')
-    expect(sub('ova')).toHaveTextContent('23 missar att repetera idag')
+    expect(sub('ova')).toHaveTextContent('8 redo · 9 min')
     expect(sub('provpass')).toHaveTextContent('Nästa: kvant, om en dag')
     expect(sub('uppslag')).toHaveTextContent(FIXTURE_DATA.uppslag.open.title ?? '')
     expect(sub('framsteg')).toHaveTextContent('Prognos 1,4 av 2,0')
     const ova = screen.getByTestId('rd-nav-ova')
     expect(ova).toHaveAccessibleName('Öva')
-    expect(ova).toHaveAccessibleDescription('23 missar att repetera idag')
+    expect(ova).toHaveAccessibleDescription('8 redo · 9 min')
   })
 
   it('leaves the subtitles off the phone and the folded rail', () => {

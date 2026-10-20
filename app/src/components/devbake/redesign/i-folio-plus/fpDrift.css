@@ -1,0 +1,145 @@
+/* Folio+ · drift recovery (round 3, ADHD lens R2–R4): the drill's time
+ * line, Idag's estimate in the head, and the quiet line on the way back.
+ * Scoped to Folio+; folioPlus.css is left as it is. Neutral inks only:
+ * the line is the accent as every data mark is, and it never changes
+ * colour once the estimate is spent. */
+
+/* ── The time line ─────────────────────────────────────────────── */
+/* The default view of the drill's time: a visible line along the running
+ * head's foot, its full length the sitting's estimate. */
+[data-rd='folio-plus'] .fp-dline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  background: var(--fp-rule);
+  pointer-events: none;
+}
+
+[data-rd='folio-plus'] .fp-dline i {
+  display: block;
+  height: 100%;
+  background: var(--fp-accent);
+  transition: width 1s linear;
+}
+
+/* The recto's head keeps its measure: the line runs with its hairline. */
+[data-rd='folio-plus'] .fp-runhead--recto .fp-dline {
+  left: 44px;
+  right: var(--fp-s12);
+}
+
+/* The phone's head carries the progress at its foot: the time line sits
+ * in the clock button instead. */
+[data-rd='folio-plus'] .fp-dline.fp-dline--mini {
+  position: relative;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  display: inline-block;
+  width: 36px;
+  height: 3px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+[data-rd='folio-plus'] .fp-dclock.fp-dclock {
+  min-width: 44px;
+}
+
+/* ── Idag's estimate ───────────────────────────────────────────── */
+
+[data-rd='folio-plus'] .fp-left {
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t13);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+[data-rd='folio-plus'] .fp-runhead-pos .fp-left::before {
+  content: '·' / '';
+  margin-right: var(--fp-s3);
+}
+
+[data-rd='folio-plus'] .fp-head-right .fp-left {
+  padding-right: var(--fp-s1);
+}
+
+/* While reading, the phone's head folds to a strip: the estimate rests
+ * with the other words. */
+[data-rd='folio-plus'] .fp-pdrill-head[data-compact='true'] .fp-left {
+  display: none;
+}
+
+/* ── The way back ──────────────────────────────────────────────── */
+/* One quiet slip under the running head, naming the place. It covers
+ * nothing that matters for long: the next action takes it away. */
+
+[data-rd='folio-plus'] .fp-drill:has(> .fp-drift) {
+  position: relative;
+}
+
+[data-rd='folio-plus'] .fp-drift {
+  position: absolute;
+  z-index: 7;
+  top: 64px;
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  gap: var(--fp-s2);
+  max-width: calc(100% - 32px);
+  padding: var(--fp-s1) var(--fp-s1) var(--fp-s1) var(--fp-s4);
+  border: 1px solid var(--fp-rule-strong);
+  border-radius: 2px;
+  background: var(--fp-paper);
+  color: var(--fp-ink);
+  animation: fp-drift-in var(--fp-d2) var(--fp-ease);
+}
+
+[data-rd='folio-plus'] .fp-drift-said {
+  margin: 0;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  font-style: italic;
+}
+
+[data-rd='folio-plus'] .fp-drift-close.fp-drift-close {
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
+  padding: 0;
+  color: var(--fp-ink-2);
+}
+
+/* Empty, the line keeps its status on the page (so the return is said
+ * once), out of sight. */
+[data-rd='folio-plus'] .fp-drift[data-open='false'] {
+  top: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+  white-space: nowrap;
+  animation: none;
+}
+
+@keyframes fp-drift-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-rd='folio-plus'] .fp-drift {
+    animation: none;
+  }
+
+  [data-rd='folio-plus'] .fp-dline i {
+    transition: none;
+  }
+}

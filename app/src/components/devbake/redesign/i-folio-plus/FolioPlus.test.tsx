@@ -105,7 +105,8 @@ describe('Folio · Idag on the data context', () => {
     expect(
       screen.getByRole('img', { name: 'Trolig nivå 1,3 till 1,6 på skalan 0 till 2,0' }),
     ).toBeInTheDocument()
-    expect(screen.getByTestId('rd-nav-ova')).toHaveTextContent('23')
+    // Folio+ round 3: Öva's line says what is ready now, not the pile.
+    expect(screen.getByTestId('rd-nav-ova')).toHaveTextContent('8 redo · 9 min')
   })
 
   it('reads changed data and leaves out every field the view model lacks', () => {
@@ -298,7 +299,8 @@ describe('Folio · Repetera', () => {
     expect(screen.getByTestId('rd-repetera-item-1')).toHaveTextContent(
       'y > 0 · I: x - y · II: 3x - 2y',
     )
-    expect(screen.getByTestId('rd-repetera-item-1')).toHaveTextContent(/Fälla: /)
+    // Round 3: the trap waits for the facit (recall, not recognition).
+    expect(screen.getByTestId('rd-repetera-item-1')).not.toHaveTextContent(/Fälla/)
   })
 
   it('says why the queue is empty and points at a drill instead', () => {
@@ -1612,8 +1614,11 @@ describe('Folio · Provpassresultat', () => {
     expect(
       within(score).getByRole('img', { name: `${fmtPassScore(value)} på skalan 0 till 2,0` }),
     ).toBeInTheDocument()
-    // Per delprov, in the test's order, the tempo in words.
-    const rows = within(screen.getByRole('table', { name: 'Per delprov: rätt, tid och budget' }))
+    // Per delprov, in the test's order, the tempo in words — against UHR's
+    // recommended times (Folio+ round 3), said neutrally.
+    const rows = within(
+      screen.getByRole('table', { name: 'Per delprov: rätt, tid och UHR:s rekommenderade tid' }),
+    )
       .getAllByRole('row')
       .slice(1)
     expect(rows.map((r) => r.dataset.testid)).toEqual([
@@ -1623,10 +1628,10 @@ describe('Folio · Provpassresultat', () => {
       'rd-prov-section-dtk',
     ])
     const xyz = screen.getByTestId('rd-prov-section-xyz')
-    for (const text of ['8/12', '17:30', '16:30', 'över budget']) {
+    for (const text of ['8/12', '17:30', '12:00', 'tog 5½ min från DTK']) {
       expect(xyz).toHaveTextContent(text)
     }
-    expect(screen.getByTestId('rd-prov-section-nog')).toHaveTextContent('över budget')
+    expect(screen.getByTestId('rd-prov-section-nog')).toHaveTextContent('i takt')
     expect(screen.getByTestId('rd-prov-section-kva')).not.toHaveTextContent('över budget')
     // The misses, and where they went.
     expect(

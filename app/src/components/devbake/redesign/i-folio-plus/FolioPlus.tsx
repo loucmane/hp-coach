@@ -79,7 +79,7 @@ import {
   type ProvNote,
 } from './FolioProvpass'
 import { FolioQuant } from './FolioQuant'
-import { FolioRepetera } from './FolioRepetera'
+import { FolioRepetera, readyLine } from './FolioRepetera'
 import { FolioUppslag, type UppslagBack } from './FolioUppslag'
 
 const FONTS =
@@ -139,7 +139,8 @@ function provLine(home: DirectionData['home']): string {
 /** Folio+ (Samtal's nav subtitles): one live line under each desktop
  *  entry, from the data, about what waits there. Öva's count is today's
  *  repetition pile, said as today's: Framsteg counts the whole queue. */
-function subtitles({ home, uppslag }: DirectionData): Record<Destination, string> {
+function subtitles(data: DirectionData): Record<Destination, string> {
+  const { home, uppslag } = data
   const { resume, plan, ovaDue, prognosis } = home
   const done = plan.items.filter((i) => i.completed).length
   const steps = plan.items.length + (resume ? 1 : 0)
@@ -152,10 +153,10 @@ function subtitles({ home, uppslag }: DirectionData): Record<Destination, string
           ? `${done} av ${steps} steg klara`
           : `Först: ${first.title}`
         : 'Klart för idag',
+    // What is ready now, never the growing pile (round 3, ADHD R10).
     ova:
-      ovaDue > 0
-        ? `${ovaDue} ${ovaDue === 1 ? 'miss' : 'missar'} att repetera idag`
-        : 'Alla delprov och Repetera',
+      readyLine(data) ??
+      (ovaDue > 0 ? 'Missar blir redo senare idag' : 'Alla delprov och Repetera'),
     provpass: provLine(home),
     uppslag: uppslag.open.title
       ? `${uppslag.open.section} · ${uppslag.open.title}`

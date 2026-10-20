@@ -28,6 +28,13 @@
 // Folio+ round 2 (Ljuskägla's calm, fpCalm.css): the lead is the page's one
 // lit thing. "Dagens steg" past the step under way and the whole margin sit
 // in the shade — the second ink, neutral marks, lit again on hover or focus.
+//
+// Round 3 (the expert reviews, fpDayEnd.css). The end card lights the most
+// useful next thing the data names ("Repetera 8 missar · 9 min") and never
+// nudges the student to stop; under it, what tomorrow starts with, only as
+// far as the queue knows. Under the lead, a shaded "Kort om tid? 5 minuter"
+// starts one short item and says which. Today's misses are said as what is
+// ready now ("8 redo · 9 min"), never as the whole growing pile.
 
 import { ArrowRight } from 'lucide-react'
 import type { ReactNode } from 'react'
@@ -41,13 +48,17 @@ import {
   type WidthKey,
 } from '@/components/devbake/redesign/r1Kit'
 import type {
+  DirectionActions,
+  DirectionData,
   HomeView,
   PlanItemView,
   PrognosisView,
   ResumeView,
 } from '@/components/devbake/redesign/viewModel'
 import type { FramstegSub } from './FolioFramsteg'
+import { readyLine, roundMinutes } from './FolioRepetera'
 import './fpCalm.css'
+import './fpDayEnd.css'
 
 /** Counts in prose, spelled out up to ten (common gender: "en miss"). */
 export const WORDS = ['noll', 'en', 'två', 'tre', 'fyra', 'fem', 'sex', 'sju', 'åtta', 'nio', 'tio']
@@ -157,8 +168,11 @@ export function FolioHome({
   // Folio+ (Spår's day path): the day's steps, done first, then the one
   // under way, then the ones to come.
   const steps = daySteps(home)
-  const misses = missesOf(home.ovaDue, data.framsteg.totals.mistakesActive)
-  const primary = resume ? onResume : leadItem ? () => openItem(leadItem) : null
+  const misses = missesOf(home.ovaDue, data)
+  // Round 3: the end card's one lit action, and the short way in.
+  const next = nextUp(data, actions, onGo)
+  const short = shortItem(data, leadItem, openItem, actions)
+  const primary = resume ? onResume : leadItem ? () => openItem(leadItem) : next.run
   useKeyMap(primary ? { Enter: primary } : {}, live)
   const trap = home.traps.find((t) => t.rising) ?? home.traps[0]
   const sentence = daySentence(home)
@@ -208,32 +222,10 @@ export function FolioHome({
           </div>
         </Lead>
       ) : (
-        // Folio+: every step of the day is done — the path's end card.
-        // Round 2 (Ljuskägla's calm): kept as it was, only quieter — the
-        // flag's ring and the heavy rule go neutral.
-        <section
-          className="fp-resume fp-end"
-          aria-labelledby="fp-end-title"
-          data-fp-end
-          data-fp-quiet="true"
-        >
-          <h2 className="fp-lead-title" id="fp-end-title">
-            <span className="fp-end-mark" aria-hidden>
-              <FlagMark />
-            </span>
-            Klart för idag
-          </h2>
-          <p className="fp-empty">
-            {steps.length ? `${allDone(steps.length)} ` : ''}
-            Öva gärna lite till – eller vila. Allt du gjort är sparat.
-          </p>
-          <div className="fp-resume-foot">
-            <button type="button" className="fp-btn" onClick={() => onGo('ova')}>
-              Till Öva
-            </button>
-          </div>
-        </section>
+        <EndCard steps={steps.length} next={next} tomorrow={tomorrowLine(data)} />
       )}
+
+      {short ? <ShortLink short={short} /> : null}
 
       {steps.length ? (
         <DayPath
@@ -419,13 +411,14 @@ function allDone(n: number): string {
   return n === 1 ? 'Dagens steg är gjort.' : `Alla ${inWords(n)} stegen är gjorda.`
 }
 
-/** Today's repetition pile, and the whole queue when the data agrees it
- *  holds at least that many (Framsteg counts the queue, Idag the day). */
-type Misses = { today: number; total: number | null }
+/** Today's misses as what Repetera has ready now ("8 redo · 9 min"), or
+ *  that they ripen later today. Round 3 (ADHD R10, engagement R4): never
+ *  the whole queue — a growing total feeds avoidance. */
+type Misses = string
 
-function missesOf(today: number, active: number): Misses | null {
+function missesOf(today: number, data: DirectionData): Misses | null {
   if (today <= 0) return null
-  return { today, total: active >= today ? active : null }
+  return readyLine(data) ?? 'blir redo senare idag'
 }
 
 /** A miss is moved, not lost: "↺ Lagd i Repetera", in neutral ink. */
@@ -435,8 +428,167 @@ function MissesLine({ misses, shade = false }: { misses: Misses; shade?: boolean
       <span className="fp-misses-tag">
         <span aria-hidden>↺ </span>Lagd i Repetera
       </span>
-      : {misses.today} {misses.today === 1 ? 'miss' : 'missar'} idag
-      {misses.total != null ? ` · ${misses.total} totalt` : ''}
+      : {misses}
+    </p>
+  )
+}
+
+// ── Folio+ round 3 · the day's end and the short way in ──────────────
+
+/** What a "Kort om tid" item may take, in minutes. */
+const SHORT_MINUTES = 5
+
+const missWord = (n: number) => (n === 1 ? 'miss' : 'missar')
+
+/** The end card's one lit action: the most useful next thing the data
+ *  names — the misses ready now, else a drill in the weakest section, else
+ *  Öva itself. Continuing stays the lit action (owner rule, round 3). */
+type NextUp = { label: string; why?: string; run: () => void }
+
+function nextUp(
+  { repetera, home, ova }: DirectionData,
+  actions: DirectionActions,
+  onGo: (d: Destination) => void,
+): NextUp {
+  const ready = repetera.dueNow
+  if (ready > 0) {
+    const round = Math.min(ready, repetera.sessionSize)
+    return {
+      label: `Repetera ${round} ${missWord(round)} · ${roundMinutes(round, home.plan.items)} min`,
+      why: 'Redo nu, de äldsta först – sedan är omgången klar.',
+      run: () => actions.startDrill({ kind: 'repetition' }),
+    }
+  }
+  const weakest = ova.weakest
+  if (weakest) {
+    const name = ova.sections.find((s) => s.section === weakest)?.name
+    return {
+      label: `Öva ${weakest}${name ? ` · ${name}` : ''}`,
+      why: `${weakest} är din svagaste del just nu.`,
+      run: () => actions.startDrill({ kind: 'section', section: weakest }),
+    }
+  }
+  return { label: 'Till Öva', run: () => onGo('ova') }
+}
+
+/** What tomorrow starts with, as far as the queue knows: the misses due
+ *  back tomorrow (the plan opens with the repetition), else that today's
+ *  misses come back; nothing when the queue is empty. Never invented. */
+function tomorrowLine({ repetera, home }: DirectionData): string | null {
+  const back = repetera.items.filter((i) => i.dueLabel === 'imorgon').length
+  if (back > 0) {
+    const round = Math.min(back, repetera.sessionSize)
+    const minutes = roundMinutes(round, home.plan.items)
+    return `I morgon börjar du med: Repetera ${round} ${missWord(round)} · ${minutes} min`
+  }
+  return repetera.pile > 0 ? 'I morgon: dina missar från idag kommer tillbaka.' : null
+}
+
+/** Every step of the day done: the path's end card. Round 2 made it quieter
+ *  (the flag's ring and the heavy rule go neutral); round 3 lights the
+ *  next useful thing and drops "eller vila": no nudge to stop. */
+function EndCard({
+  steps,
+  next,
+  tomorrow,
+}: {
+  steps: number
+  next: NextUp
+  tomorrow: string | null
+}) {
+  return (
+    <section
+      className="fp-resume fp-end"
+      aria-labelledby="fp-end-title"
+      data-fp-end
+      data-fp-quiet="true"
+    >
+      <h2 className="fp-lead-title" id="fp-end-title">
+        <span className="fp-end-mark" aria-hidden>
+          <FlagMark />
+        </span>
+        Klart för idag
+      </h2>
+      <p className="fp-empty">
+        {steps ? `${allDone(steps)} ` : ''}
+        Allt du gjort är sparat.
+      </p>
+      <div className="fp-resume-foot">
+        <button type="button" className="fp-btn fp-btn--big" onClick={next.run} data-fp-next>
+          {next.label}
+          <kbd className="fp-kbd" aria-hidden>
+            ↵
+          </kbd>
+        </button>
+        {next.why ? <span className="fp-hint">{next.why}</span> : null}
+      </div>
+      {tomorrow ? (
+        <p className="fp-tomorrow" data-fp-tomorrow>
+          {tomorrow}
+        </p>
+      ) : null}
+    </section>
+  )
+}
+
+/** One short item, said as what it starts ("ORD-övning, 10 frågor · 4 min"). */
+type Short = { what: string; minutes: number; run: () => void }
+
+/** "Kort om tid? 5 minuter" (engagement R4, ADHD R7): the lead's item cut
+ *  to about five minutes where the data can cut it — a repetition round of
+ *  the one section whose ready misses fit — else the shortest open part of
+ *  the plan that fits. Nothing when the lead already fits, when nothing
+ *  does, or once the day is done. */
+function shortItem(
+  { home, repetera, ova }: DirectionData,
+  leadItem: PlanItemView | null,
+  openItem: (item: PlanItemView) => void,
+  actions: DirectionActions,
+): Short | null {
+  const { resume, plan } = home
+  if (!resume && !leadItem) return null
+  const leadMinutes = resume ? resume.minutesLeft : leadItem?.minutes
+  if (leadMinutes != null && leadMinutes <= SHORT_MINUTES) return null
+  if (leadItem?.kind === 'repetition') {
+    // Most ready misses that still fit; ties keep the test's order.
+    const cut = ova.sections
+      .map((s) => {
+        const n = repetera.items.filter((i) => i.dueNow && i.section === s.section).length
+        return { section: s.section, n, minutes: roundMinutes(n, plan.items) }
+      })
+      .filter((s) => s.n > 0 && s.minutes <= SHORT_MINUTES)
+      .sort((a, b) => b.n - a.n)[0]
+    if (cut) {
+      return {
+        what: `repetera bara ${cut.section}, ${cut.n} ${missWord(cut.n)}`,
+        minutes: cut.minutes,
+        run: () => actions.startDrill({ kind: 'repetition', section: cut.section }),
+      }
+    }
+  }
+  const item = plan.items
+    .filter((i) => !i.completed && i !== leadItem && i.minutes <= SHORT_MINUTES)
+    .sort((a, b) => a.minutes - b.minutes)[0]
+  if (!item) return null
+  return {
+    what: `${item.title}${item.detail ? `, ${item.detail}` : ''}`,
+    minutes: item.minutes,
+    run: () => openItem(item),
+  }
+}
+
+/** The short way in: one shaded secondary link under the lead, never a
+ *  second filled button. */
+function ShortLink({ short }: { short: Short }) {
+  return (
+    <p className="fp-short" data-fp-short data-fp-shade>
+      <button type="button" className="fp-link fp-short-link" onClick={short.run}>
+        <span className="fp-short-q">Kort om tid? 5 minuter</span>{' '}
+        <span className="fp-short-what">
+          – {short.what} · {short.minutes} min
+        </span>
+        <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
+      </button>
     </p>
   )
 }

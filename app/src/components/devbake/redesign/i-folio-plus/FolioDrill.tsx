@@ -4,8 +4,13 @@
 // running head, as a book does: the verso's holds the exit, LÄS ·
 // ÖVNINGSTEXT and Styckeljus; the recto's the position and the clock.
 // Styckeljus (borrowed from Ljuskägla) is the optional reading light: off
-// by default and remembered for the session, it greys every paragraph but
-// the one being read, and follows J/K, a ¶ number, a ¶ link and the scroll.
+// by default and kept on this device across days, it greys every paragraph
+// but the one being read, and follows J/K, a ¶ number, a ¶ link and the
+// scroll; a resumed text opens it at the paragraph last lit there.
+// The clock counts active time: it stands still while the tab is hidden
+// (never the Provpass clock), and a return after a while away names the
+// place in one quiet line. The head says Idag's "ca N min kvar", and a
+// line shows the time against that estimate, the digits one click away.
 // A ¶ link in the facit keeps the reading place as Ljuskägla does: it turns
 // the light on its paragraph, moves the focus there and ends it with
 // "Tillbaka till facit" (or Esc), which puts the focus back on the link; a
@@ -85,6 +90,7 @@ import {
 
 import './fpDrill.css'
 import './fpFocus.css'
+import './fpDrift.css'
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
   type DrillCoreActions,
@@ -108,6 +114,8 @@ import type {
   DrillOption,
   DrillQuestion,
   DrillSessionView,
+  HomeView,
+  PlanItemView,
 } from '@/components/devbake/redesign/viewModel'
 import { splitKvaPrompt } from '@/components/drill/KvaPrompt'
 import { MathText } from '@/components/MathText'
@@ -116,22 +124,22 @@ import type { AnswerLetter, Section } from '@/data/questions'
 import { parseNogPrompt } from '@/lib/nogPrompt'
 import { Dots } from './FolioHome'
 
-/** A pace for the folded clock's line: about four minutes a question. */
-const PACE_SECONDS = 15 * 60
+/** The reading drill's own pace when Idag gives the sitting no estimate:
+ *  about four minutes a question (15 minutes for a text of four). */
+const PACE_PER_READING = 225
 
 // ── Styckeljus: the paragraph light (from Ljuskägla) ─────────────────
 
-/** Where the light's on/off is kept for the browser session. */
+/** Where the light's on/off is kept on this device, across days. */
 const LIGHT_KEY = 'fp-styckeljus'
-/** The session's choice when the browser keeps no storage. */
+/** The choice when the browser keeps no storage. */
 let lightMemory = false
 
-/** Whether the reader turned Styckeljus on earlier this session (off by
- *  default). Session storage when the browser has it, else this page's
- *  memory. */
+/** Whether the reader turned Styckeljus on (off by default). Local storage
+ *  when the browser has it, else this page's memory. */
 function readLight(): boolean {
   try {
-    const v = window.sessionStorage.getItem(LIGHT_KEY)
+    const v = window.localStorage.getItem(LIGHT_KEY)
     return v == null ? false : v === 'on'
   } catch {
     return lightMemory
@@ -145,14 +153,46 @@ const lightListeners = new Set<(on: boolean) => void>()
 function writeLight(on: boolean): void {
   lightMemory = on
   try {
-    window.sessionStorage.setItem(LIGHT_KEY, on ? 'on' : 'off')
+    window.localStorage.setItem(LIGHT_KEY, on ? 'on' : 'off')
   } catch {
     // No storage: the page's memory holds it.
   }
   for (const listener of lightListeners) listener(on)
 }
 
-/** Styckeljus on or off, remembered within the session across drills, and
+/** The bookmark: the last paragraph the light was on, per text. */
+const MARK_KEY = 'fp-styckeljus-at:'
+/** The marks when the browser keeps no storage. */
+const markMemory = new Map<string, number>()
+
+/** A text's id for its bookmark: its unit, else its title, else its
+ *  opening words. */
+function textId(q: Pick<DrillQuestion, 'passage'>): string | null {
+  const p = q.passage
+  if (!p) return null
+  return p.unitId ?? p.title ?? p.paragraphs[0]?.slice(0, 80) ?? null
+}
+
+function readMark(id: string | null): number | null {
+  if (!id) return null
+  try {
+    const n = Number(window.localStorage.getItem(MARK_KEY + id))
+    return Number.isInteger(n) && n > 0 ? n : null
+  } catch {
+    return markMemory.get(id) ?? null
+  }
+}
+
+function writeMark(id: string, n: number): void {
+  markMemory.set(id, n)
+  try {
+    window.localStorage.setItem(MARK_KEY + id, String(n))
+  } catch {
+    // No storage: the page's memory holds it.
+  }
+}
+
+/** Styckeljus on or off, kept on this device across drills and days, and
  *  one state wherever it shows: the drill's F and button, and Konto's
  *  "Styckeljus" under Utseende (FolioKonto). */
 export function useStyckeljus(): [boolean, (on: boolean) => void] {
@@ -199,20 +239,8 @@ function useLightFollow(
     if (!el || !on || !live) return
     const pick = () => {
       if (Date.now() < (quiet.current ?? 0)) return
-      const r = el.getBoundingClientRect()
-      if (r.height === 0) return
-      const line = r.top + r.height / 3
-      let best: HTMLElement | null = null
-      let bestD = Number.POSITIVE_INFINITY
-      for (const p of el.querySelectorAll<HTMLElement>('.fp-pbody .fp-para[data-n]')) {
-        const b = p.getBoundingClientRect()
-        const d = line < b.top ? b.top - line : line > b.bottom ? line - b.bottom : 0
-        if (d < bestD) {
-          best = p
-          bestD = d
-        }
-      }
-      if (best) followRef.current(Number(best.dataset.n))
+      const n = paraAtLine(el)
+      if (n != null) followRef.current(n)
     }
     let frame = 0
     const onScroll = () => {
@@ -226,6 +254,248 @@ function useLightFollow(
       window.cancelAnimationFrame(frame)
     }
   }, [box, on, live, quiet])
+}
+
+/** The paragraph nearest the reading line (a third down `box`), or null
+ *  while the box has no layout. */
+function paraAtLine(box: HTMLElement): number | null {
+  const r = box.getBoundingClientRect()
+  if (r.height === 0) return null
+  const line = r.top + r.height / 3
+  let best: HTMLElement | null = null
+  let bestD = Number.POSITIVE_INFINITY
+  for (const p of box.querySelectorAll<HTMLElement>('.fp-pbody .fp-para[data-n]')) {
+    const b = p.getBoundingClientRect()
+    const d = line < b.top ? b.top - line : line > b.bottom ? line - b.bottom : 0
+    if (d < bestD) {
+      best = p
+      bestD = d
+    }
+  }
+  return best ? Number(best.dataset.n) : null
+}
+
+// ── Drift: active time, the way back, the estimate ───────────────────
+
+/** Away at least this long, the return names the place. */
+const AWAY_CUE_MS = 20_000
+
+/** Keys that only move the focus or modify: they leave the return line. */
+const IDLE_KEYS = new Set(['Tab', 'Shift', 'Control', 'Alt', 'Meta', 'CapsLock'])
+
+/** Where the reader was when the tab was hidden: the line the return
+ *  shows, and the paragraph it lights for the visit. */
+export type Place = { text: string; para?: number }
+
+/** A drill's time as Folio+ shows it (never the Provpass clock). */
+export type Drift = {
+  /** Active seconds: the sitting's clock less the time the tab was hidden. */
+  active: number
+  /** The sitting's estimated seconds, Idag's own, or null when it has none. */
+  estimate: number | null
+  /** The time line's full length: the estimate, else the drill's pace. */
+  pace: number
+  /** The digits are shown (one click; the line is the default). */
+  digits: boolean
+  toggleDigits: () => void
+  /** The return line, until the next action or its close. */
+  cue: Place | null
+  closeCue: () => void
+}
+
+/**
+ * The drill's active time and the way back after drifting. The sitting's
+ * clock is the shared core's; Folio+ subtracts what it counted while the
+ * tab was hidden, and holds the figure still meanwhile. Back after
+ * AWAY_CUE_MS or more, `place` (read as the tab was hidden) becomes the
+ * return line, and `onReturn` hears it.
+ */
+export function useDrift({
+  elapsed,
+  live,
+  estimate,
+  pace,
+  place,
+  onReturn,
+}: {
+  elapsed: number
+  live: boolean
+  estimate: number | null
+  pace: number
+  place: () => Place | null
+  onReturn?: (place: Place) => void
+}): Drift {
+  const elapsedRef = useRef(elapsed)
+  elapsedRef.current = elapsed
+  const placeRef = useRef(place)
+  placeRef.current = place
+  const onReturnRef = useRef(onReturn)
+  onReturnRef.current = onReturn
+  // The seconds the core counted while the tab was hidden.
+  const hiddenFor = useRef(0)
+  const seen = useRef(elapsed)
+  // The core started the sitting over: no time away in it yet.
+  if (elapsed < seen.current) hiddenFor.current = 0
+  seen.current = elapsed
+  const awayRef = useRef<{ at: number; elapsed: number; place: Place | null } | null>(null)
+  const [frozen, setFrozen] = useState<number | null>(null)
+  const [cue, setCue] = useState<Place | null>(null)
+  const [digits, setDigits] = useState(false)
+
+  useEffect(() => {
+    if (!live) return
+    const onChange = () => {
+      if (document.hidden) {
+        if (awayRef.current) return
+        const at = elapsedRef.current
+        awayRef.current = { at: Date.now(), elapsed: at, place: placeRef.current() }
+        setFrozen(Math.max(0, at - hiddenFor.current))
+        return
+      }
+      const was = awayRef.current
+      if (!was) return
+      awayRef.current = null
+      hiddenFor.current += Math.max(0, elapsedRef.current - was.elapsed)
+      setFrozen(null)
+      if (Date.now() - was.at >= AWAY_CUE_MS && was.place) {
+        setCue(was.place)
+        onReturnRef.current?.(was.place)
+      }
+    }
+    document.addEventListener('visibilitychange', onChange)
+    return () => document.removeEventListener('visibilitychange', onChange)
+  }, [live])
+
+  // The line goes with the next action (a key that does something, a
+  // click or a touch), which keeps its own effect.
+  useEffect(() => {
+    if (!cue) return
+    const onKey = (e: KeyboardEvent) => {
+      if (!IDLE_KEYS.has(e.key)) setCue(null)
+    }
+    const onPointer = () => setCue(null)
+    window.addEventListener('keydown', onKey, true)
+    window.addEventListener('pointerdown', onPointer, true)
+    return () => {
+      window.removeEventListener('keydown', onKey, true)
+      window.removeEventListener('pointerdown', onPointer, true)
+    }
+  }, [cue])
+
+  const toggleDigits = useCallback(() => setDigits((d) => !d), [])
+  const closeCue = useCallback(() => setCue(null), [])
+  return {
+    active: frozen ?? Math.max(0, elapsed - hiddenFor.current),
+    estimate,
+    pace: Math.max(1, estimate ?? pace),
+    digits,
+    toggleDigits,
+    cue,
+    closeCue,
+  }
+}
+
+/**
+ * The sitting's estimated length in seconds, from the data Idag shows, or
+ * null. A resumed sitting is Idag's paused one when it opens where the
+ * resume card says ("Fråga 3 av 4 · ca 6 min kvar"): its clock at the
+ * pause plus the minutes left. A fresh one takes the minutes of the plan
+ * item of its kind ("ORD-övning · 4 min").
+ */
+export function sittingEstimate(
+  session: Pick<DrillSessionView, 'questions' | 'start' | 'request' | 'elapsedSeconds'>,
+  home: Pick<HomeView, 'resume' | 'plan'>,
+): number | null {
+  const at = session.start.index ?? 0
+  const q = session.questions[at]
+  const resumed = at > 0 || (session.start.results?.length ?? 0) > 0
+  if (resumed) {
+    const r = home.resume
+    if (!q || !r || r.minutesLeft == null) return null
+    const same =
+      r.section === q.section && r.total === session.questions.length && r.position === at + 1
+    return same ? (session.elapsedSeconds ?? 0) + r.minutesLeft * 60 : null
+  }
+  const req = session.request
+  const fits = (i: PlanItemView) => {
+    if (req.kind === 'repetition') return i.kind === 'repetition'
+    if (i.kind !== 'drill') return false
+    if (req.kind === 'framework') return i.framework === req.frameworkId
+    return req.kind === 'section' && !i.framework && i.section === req.section
+  }
+  const item = home.plan.items.find((i) => !i.completed && fits(i)) ?? home.plan.items.find(fits)
+  return item ? item.minutes * 60 : null
+}
+
+/** The drill's clock: the time line by default, the active minutes and
+ *  seconds one click away. `mini` sets the line inside the button (the
+ *  phone's head, whose foot carries the progress). */
+export function DrillClock({ drift, mini = false }: { drift: Drift; mini?: boolean }) {
+  const { active, digits, toggleDigits } = drift
+  return (
+    <button
+      type="button"
+      className="fp-clock fp-dclock"
+      onClick={toggleDigits}
+      aria-pressed={digits}
+      aria-label={digits ? `Aktiv tid ${fmtClock(active)}` : 'Visa aktiv tid'}
+      title={
+        digits
+          ? 'Aktiv tid: klockan står still när fliken är dold. Klicka för bara linjen.'
+          : 'Visa den aktiva tiden i siffror'
+      }
+    >
+      <Clock size={mini ? 14 : 15} strokeWidth={1.5} aria-hidden className="fp-clock-icon" />
+      {digits ? (
+        <span aria-hidden>{fmtClock(active)}</span>
+      ) : mini ? (
+        <DriftLine drift={drift} mini />
+      ) : null}
+    </button>
+  )
+}
+
+/** The visual time: the sitting's active time along its estimate (or the
+ *  drill's pace). Full once the estimate is spent — no other colour, no
+ *  "behind". */
+export function DriftLine({ drift, mini = false }: { drift: Drift; mini?: boolean }) {
+  return (
+    <span className={mini ? 'fp-dline fp-dline--mini' : 'fp-dline'} aria-hidden>
+      <i style={{ width: `${Math.min(1, drift.active / drift.pace) * 100}%` }} />
+    </span>
+  )
+}
+
+/** Idag's own estimate, counting down quietly: "ca 6 min kvar". Nothing
+ *  once it is spent, and nothing where Idag has none. */
+export function TimeLeft({ drift }: { drift: Drift }) {
+  if (drift.estimate == null) return null
+  const left = drift.estimate - drift.active
+  if (left <= 0) return null
+  return <span className="fp-left">ca {Math.ceil(left / 60)} min kvar</span>
+}
+
+/** The way back: one quiet line naming the place, never the time away,
+ *  said once to screen readers (the status is on the page before it). */
+export function ReturnCue({ drift }: { drift: Drift }) {
+  const { cue, closeCue } = drift
+  return (
+    <div className="fp-drift" data-open={cue ? 'true' : 'false'}>
+      <p className="fp-drift-said" role="status">
+        {cue?.text ?? ''}
+      </p>
+      {cue ? (
+        <button
+          type="button"
+          className="fp-ghost fp-drift-close"
+          onClick={closeCue}
+          aria-label="Stäng"
+        >
+          <X size={16} strokeWidth={1.5} aria-hidden />
+        </button>
+      ) : null}
+    </div>
+  )
 }
 
 // ── A drill parked for a lesson ──────────────────────────────────────
@@ -1059,14 +1329,55 @@ function ReadingDrill({
   // (Konto, F) stays as it was.
   const [citeLit, setCiteLit] = useState(false)
   const count = core.view.passage?.paragraphs.length ?? 0
+  // The light's bookmark: a resumed sitting opens its text where the light
+  // was last in it; a text the sitting moves on to starts at its top.
+  const text = textId(core.view.question)
   const lastLit = useRef(1)
+  const litText = useRef<string | null | undefined>(undefined)
+  if (litText.current !== text) {
+    const resumed = restored != null || (start.index ?? 0) > 0 || (start.results?.length ?? 0) > 0
+    const opening = litText.current === undefined && resumed
+    lastLit.current = (opening ? readMark(text) : null) ?? 1
+    litText.current = text
+  }
   if (core.view.focusPara != null) lastLit.current = core.view.focusPara
   const lit =
     (light || citeLit) && count > 0 ? Math.min(count, core.view.focusPara ?? lastLit.current) : null
+  // The reader's own light marks its place in the text (a ¶ link's or the
+  // return's visit does not).
+  useEffect(() => {
+    if (light && lit != null && text) writeMark(text, lit)
+  }, [light, lit, text])
   const quiet = useRef(0)
   const hush = (ms = LIGHT_QUIET_MS) => {
     quiet.current = Date.now() + ms
   }
+
+  // Drift: the clock counts active time only; back after a while away, one
+  // line names the place, and the paragraph lights for the visit.
+  const [estimate] = useState(() => sittingEstimate(session, data.home))
+  const drift = useDrift({
+    elapsed: core.view.elapsed,
+    live,
+    estimate,
+    pace: PACE_PER_READING * session.questions.length,
+    place: () => {
+      const v = core.view
+      if (v.phase === 'done') return null
+      const unit = session.request.kind === 'repetition' ? 'miss' : 'fråga'
+      if (v.phase === 'feedback') return { text: `Du läste facit till ${unit} ${v.index + 1}` }
+      if (count === 0) return { text: `Du var på ${unit} ${v.index + 1}` }
+      const box = drillRef.current?.querySelector<HTMLElement>('.fp-page--verso, .fp-pdrill-scroll')
+      const n = Math.min(count, lit ?? (box ? paraAtLine(box) : null) ?? lastLit.current)
+      return { text: `Du läste stycke ${n}`, para: n }
+    },
+    onReturn: (at) => {
+      if (at.para == null) return
+      hush(CITE_QUIET_MS)
+      if (!light) setCiteLit(true)
+      core.act.setFocusPara(at.para)
+    },
+  })
   // The reading place a ¶ link opened (Ljuskägla's principle 5): the light
   // on its paragraph, the focus on it, and a way back to the very link —
   // "Tillbaka till facit", or Esc. `seq` makes each move its own.
@@ -1122,7 +1433,8 @@ function ReadingDrill({
     if (lit != null && core.view.focusPara == null) coreSetPara(lit)
   }, [lit, core.view.focusPara, coreSetPara])
 
-  const shown = lit === current.focusPara ? current : { ...current, focusPara: lit }
+  // The view's time is the active time (useDrift).
+  const shown = { ...current, focusPara: lit, elapsed: drift.active }
   const view: DrillCoreView = english
     ? { ...shown, stepCites: {}, distractorCites: {}, cited: [], marks: [] }
     : shown
@@ -1189,7 +1501,7 @@ function ReadingDrill({
         results: v.results.filter((r) => r.qid !== v.question.qid),
         graded: v.picked,
       },
-      elapsed: v.elapsed,
+      elapsed: drift.active,
     })
   }
   // The day goes on: the plan's next part is the colophon's one action.
@@ -1233,6 +1545,7 @@ function ReadingDrill({
     focusOn,
     toggleFocus,
     clocked: showsClock(session),
+    drift,
     origin,
     onNext,
     nextLabel: nextItem ? `Nästa: ${nextItem.title} · ${nextItem.minutes} min` : null,
@@ -1280,6 +1593,8 @@ type DrillChrome = Shared & {
   toggleFocus: () => void
   /** The clock is shown (showsClock). */
   clocked: boolean
+  /** Active time, the estimate and the way back (useDrift). */
+  drift: Drift
   origin: Origin
   /** The end of the unit's way on: the plan's next part. */
   onNext?: () => void
@@ -1332,8 +1647,7 @@ function passageTitle(view: Pick<DrillCoreView, 'question'>): [string, string | 
 // ── Desktop ──────────────────────────────────────────────────────────
 
 function DeskDrill(chrome: DrillChrome) {
-  const { view, act, refs, seam, note, setNote, focusOn, toggleFocus, clocked } = chrome
-  const [clockShown, setClockShown] = useState(true)
+  const { view, act, refs, seam, note, setNote, focusOn, toggleFocus, clocked, drift } = chrome
   const [active, point] = useState<string | null>(null)
   const rectoRef = useRef<HTMLElement>(null)
   const versoRef = useRef<HTMLElement>(null)
@@ -1418,21 +1732,15 @@ function DeskDrill(chrome: DrillChrome) {
         <span>
           {seam.unit} {view.index + 1} av {view.total}
         </span>
+        {clocked ? <TimeLeft drift={drift} /> : null}
       </span>
-      {clocked ? (
-        <ClockButton
-          seconds={view.elapsed}
-          shown={clockShown}
-          toggle={() => setClockShown((s) => !s)}
-        />
-      ) : (
-        <span />
-      )}
-      {clocked && !clockShown ? <TimeLine seconds={view.elapsed} pace={PACE_SECONDS} /> : null}
+      {clocked ? <DrillClock drift={drift} /> : <span />}
+      {clocked ? <DriftLine drift={drift} /> : null}
     </header>
   )
   return (
     <div className="fp-drill">
+      <ReturnCue drift={drift} />
       <Spread
         versoRef={versoRef}
         rectoRef={rectoRef}
@@ -2856,7 +3164,8 @@ const DOCK_ROOM = 152
  * before, and folds to its peek for a ¶ link.
  */
 function PhoneDrill(chrome: DrillChrome) {
-  const { view, act, refs, seam, note, setNote, focusOn, toggleFocus, clocked, gap, gaps } = chrome
+  const { view, act, refs, seam, note, setNote, focusOn, toggleFocus, clocked, gap, gaps, drift } =
+    chrome
   const { state: sheet, setState: setSheet, toggle, grab } = useSheet(view)
   const { hidden: compact, onScroll: onHeadScroll } = useHideOnScroll()
   const synthetic = view.question.passage?.synthetic ?? false
@@ -2946,8 +3255,8 @@ function PhoneDrill(chrome: DrillChrome) {
       <header className="fp-pdrill-head" data-compact={String(compact)}>
         <ExitButton onExit={act.exit} compact />
         {/* Progress once here — the line along the head's foot; the slip
-         *  names the question. */}
-        <span />
+         *  names the question. The head says Idag's estimate. */}
+        <span className="fp-pdrill-pos">{clocked ? <TimeLeft drift={drift} /> : null}</span>
         <div className="fp-head-right">
           <button
             type="button"
@@ -2960,17 +3269,13 @@ function PhoneDrill(chrome: DrillChrome) {
             <Pilcrow size={16} strokeWidth={1.5} aria-hidden />
             <span aria-hidden>Styckeljus</span>
           </button>
-          {clocked ? (
-            <span className="fp-clock" role="timer" aria-label={`Tid ${fmtClock(view.elapsed)}`}>
-              <Clock size={14} strokeWidth={1.5} aria-hidden className="fp-clock-icon" />
-              <span aria-hidden>{fmtClock(view.elapsed)}</span>
-            </span>
-          ) : null}
+          {clocked ? <DrillClock drift={drift} mini /> : null}
         </div>
         <span className="fp-head-progress" aria-hidden>
           <i style={{ width: `${progress}%` }} />
         </span>
       </header>
+      <ReturnCue drift={drift} />
       {/* Under the full-height feedback sheet the passage is out of reach:
        *  inert, so focus never lands on something covered. It scrolls only
        *  vertically, so it is no keyscope: the switcher keeps its keys. */}
