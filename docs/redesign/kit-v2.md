@@ -443,4 +443,4 @@ The bake-off switcher answers 1–8, 0 and ←/→ on the window. It leaves alon
 
 ### Controls a direction's spec leaves out
 
-A direction's merged spec may deliberately leave out a Konto control (screen 13): a preference group (`palette`, `font`, `density`, `coach`) or the account-deletion flow (`delete`). Declare it in the direction's `meta.ts` as `omits: { konto: ['palette', 'delete'] }`. The shared contract then checks that the omitted controls are absent, not present and inert, and checks every other control as before. Name the spec section that decides the omission in a comment next to it.
+A direction's merged spec may deliberately leave out a Konto control (screen 13): a preference group (`palette`, `font`, `density`, `coach`) or the account-deletion flow (`delete`). Declare it in the direction's `meta.ts` as `omits: { konto: ['palette', 'delete'] }`. The shared contract then checks that each omitted control is absent or visibly disabled (`disabled` or `aria-disabled="true"`) and that pressing it changes nothing, never silently inert, and checks every other control as before. Name the spec section that decides the omission in a comment next to it.

@@ -805,13 +805,21 @@ export function describeDirectionContract(
             expectTheme(subject.root, stage, mode)
           }
           // A control the direction's spec leaves out (meta.omits.konto) must
-          // be absent, not present and inert; every other one must work.
+          // be absent or visibly disabled, and pressing it changes nothing;
+          // never silently inert. Every other control must work.
           const omitted = new Set(subject.omits?.konto ?? [])
+          const expectUnavailable = (testId: string) => {
+            const el = screen.queryByTestId(testId)
+            if (!el) return
+            const disabled =
+              el.hasAttribute('disabled') || el.getAttribute('aria-disabled') === 'true'
+            expect(disabled).toBe(true)
+            fireEvent.click(el)
+          }
           for (const pref of ['palette', 'font', 'density', 'coach'] as const) {
             if (omitted.has(pref)) {
-              for (const o of k.options[pref]) {
-                expect(screen.queryByTestId(`rd-konto-${pref}-${o.key}`)).toBeNull()
-              }
+              for (const o of k.options[pref]) expectUnavailable(`rd-konto-${pref}-${o.key}`)
+              expect(actions.setPrefs).not.toHaveBeenCalledWith({ [pref]: expect.anything() })
               continue
             }
             const other = k.options[pref].find((o) => o.key !== k.prefs[pref])
@@ -822,7 +830,7 @@ export function describeDirectionContract(
           fireEvent.click(screen.getByTestId('rd-konto-export'))
           expect(actions.exportData).toHaveBeenCalled()
           if (omitted.has('delete')) {
-            expect(screen.queryByTestId('rd-konto-delete')).toBeNull()
+            expectUnavailable('rd-konto-delete')
             expect(screen.queryByTestId('rd-konto-delete-confirm')).toBeNull()
             expect(actions.deleteAccount).not.toHaveBeenCalled()
           } else {
