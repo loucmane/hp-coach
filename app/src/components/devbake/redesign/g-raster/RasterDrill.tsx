@@ -1,31 +1,83 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 
-import {
-  OVNINGSTEXT_BADGE,
-  OVNINGSTEXT_NOTE,
-  PLAN,
-  UNIT,
-} from '@/components/devbake/redesign/r1Fixtures'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
+import { useDrillCore } from '@/components/devbake/redesign/drillCore'
 import {
   type Destination,
   type DirectionProps,
   fmtClock,
-  useDrill,
   useHideOnScroll,
   useKeyMap,
   useSheet,
 } from '@/components/devbake/redesign/r1Kit'
+import { MathText } from '@/components/MathText'
 import { RasterFeedback } from './RasterFeedback'
 import { PassageText, type RasterDrillState } from './RasterParts'
 
-export function RasterDrill({
-  screen,
-  width,
-  live,
-  onScreen,
-  onGo,
-}: DirectionProps & { onGo: (dest: Destination) => void }) {
-  const { view, act, refs } = useDrill({ screen, onScreen, live })
+type ReadingProps = DirectionProps & { onGo: (dest: Destination) => void; returnToHome: boolean }
+
+export function RasterDrill(props: ReadingProps) {
+  const { data } = useDirectionData()
+  const session = data.drills.reading
+  if (!session.questions.length)
+    return (
+      <main className="ra-done">
+        <button type="button" data-testid="rd-exit" onClick={() => props.onGo('ova')}>
+          ← Avsluta
+        </button>
+        <h1>Frågan saknar fullständigt innehåll</h1>
+        <button type="button" className="ra-primary" onClick={() => props.onGo('ova')}>
+          Till Öva
+        </button>
+      </main>
+    )
+  return <ReadingSession key={session.id} {...props} />
+}
+
+function ReadingSession({ screen, width, live, onScreen, onGo, returnToHome }: ReadingProps) {
+  const { data, actions } = useDirectionData()
+  const session = data.drills.reading
+  const [start] = useState(() => ({
+    ...session.start,
+    graded:
+      screen === 3
+        ? session.wrongPick?.[session.questions[session.start.index ?? 0].qid]
+        : session.start.graded,
+  }))
+  const {
+    view,
+    act: core,
+    refs,
+  } = useDrillCore({
+    ...session,
+    start,
+    elapsed: session.elapsedSeconds,
+    controller: actions.drill,
+    live,
+  })
+  // biome-ignore lint/correctness/useExhaustiveDependencies: only switcher moves resynchronize the display
+  useLayoutEffect(() => {
+    if (screen === 3 && view.phase === 'question') core.gradeAs((q) => session.wrongPick?.[q.qid])
+    else if (screen === 2 && view.phase === 'feedback') core.reopen()
+    else if (screen === 2 && view.phase === 'done') core.reset()
+  }, [screen])
+  const act = {
+    ...core,
+    lock: () => {
+      const locked = core.lock()
+      if (locked) onScreen(3)
+      return locked
+    },
+    next: () => {
+      const next = core.next()
+      if (next === 'next') onScreen(2)
+      return next
+    },
+    exit: () => {
+      core.exit()
+      if (returnToHome) onScreen(1)
+    },
+  }
   const sheet = useSheet(view)
   const phone = width === 'phone'
   const [note, setNote] = useState(false)
@@ -33,11 +85,13 @@ export function RasterDrill({
   const scrolling = useHideOnScroll()
   const questionScroll = useRef<HTMLDivElement>(null)
   const questionId = useId()
-  const nextPlan = () => onGo(PLAN.items[0]?.kind === 'lektion' ? 'uppslag' : 'ova')
+  const nextItem = data.home.plan.items.find((item) => !item.completed)
+  const nextPlan = () => (nextItem ? actions.openPlanItem(nextItem.id) : onGo('ova'))
+  const usable = !!view.question.prompt && !!view.question.options?.length && !!view.passage
   const advance = () => {
     if (view.phase === 'done') nextPlan()
     else if (view.phase === 'feedback') act.next()
-    else act.lock()
+    else if (usable) act.lock()
   }
   const keys: Record<string, () => void> = {
     Enter: advance,
@@ -47,7 +101,7 @@ export function RasterDrill({
     k: () => act.moveFocusPara(-1),
     Escape: () => act.setFocusPara(null),
   }
-  for (const option of view.question.options) {
+  for (const option of view.question.options ?? []) {
     const letter = option.letter.toLowerCase()
     keys[letter] = () => {
       act.select(option.letter)
@@ -76,7 +130,7 @@ export function RasterDrill({
           ← Avsluta
         </button>
         <span className="ra-badge" data-testid="rd-badge">
-          {OVNINGSTEXT_BADGE}
+          {view.question.passage?.synthetic ? data.copy.ovningstextBadge : view.question.section}
         </span>
         <span
           className="ra-drill-position"
@@ -86,14 +140,16 @@ export function RasterDrill({
           <b>{String(view.index + 1).padStart(2, '0')}</b>
           <span>/{String(view.total).padStart(2, '0')}</span>
         </span>
-        <button
-          type="button"
-          className="ra-clock"
-          onClick={() => setClock(!clock)}
-          aria-label={clock ? 'Dölj tidtagningen' : 'Visa tidtagningen'}
-        >
-          {clock ? fmtClock(view.elapsed) : 'Visa tid'}
-        </button>
+        {session.elapsedSeconds != null ? (
+          <button
+            type="button"
+            className="ra-clock"
+            onClick={() => setClock(!clock)}
+            aria-label={clock ? 'Dölj tidtagningen' : 'Visa tidtagningen'}
+          >
+            {clock ? fmtClock(view.elapsed) : 'Visa tid'}
+          </button>
+        ) : null}
       </header>
       <div
         className="ra-progress"
@@ -113,7 +169,10 @@ export function RasterDrill({
             {view.results.filter((r) => r.correct).length}
             <small>/{view.total}</small>
           </p>
-          <p>Rätt i den här texten · {fmtClock(view.elapsed)}</p>
+          <p>
+            Rätt i den här texten
+            {session.elapsedSeconds != null ? ` · ${fmtClock(view.elapsed)}` : ''}
+          </p>
           <p>Ta med dig tekniken till nästa text. Missarna finns kvar att repetera.</p>
           <button
             type="button"
@@ -121,9 +180,9 @@ export function RasterDrill({
             data-testid="rd-done-next"
             onClick={nextPlan}
           >
-            Nästa: {PLAN.items[0].title} <span aria-hidden>↗</span>
+            {nextItem ? `Nästa: ${nextItem.title}` : 'Till Öva'} <span aria-hidden>↗</span>
           </button>
-          <button type="button" className="ra-outline" onClick={act.exit}>
+          <button type="button" className="ra-outline" onClick={() => onGo('idag')}>
             Till Idag
           </button>
         </section>
@@ -166,8 +225,10 @@ export function RasterDrill({
               <div className="ra-question-scroll" ref={questionScroll}>
                 {view.phase === 'feedback' ? (
                   <RasterFeedback {...shared} />
-                ) : (
+                ) : usable ? (
                   <Question {...shared} />
+                ) : (
+                  <p className="ra-missing">Frågan saknar fullständigt innehåll.</p>
                 )}
               </div>
               <footer className="ra-actionbar">
@@ -180,7 +241,7 @@ export function RasterDrill({
                       type="button"
                       className="ra-primary"
                       data-testid="rd-lock"
-                      disabled={!view.selected}
+                      disabled={!view.selected || !usable}
                       onClick={act.lock}
                     >
                       Svara <kbd aria-hidden>↵</kbd>
@@ -220,21 +281,24 @@ function Passage({
   note,
   setNote,
 }: RasterDrillState & { note: boolean; setNote: (open: boolean) => void }) {
+  const { data } = useDirectionData()
   const noteId = useId()
   const titleId = useId()
-  const [title, subtitle] = UNIT.title.split(': ')
+  const [title, subtitle] = (view.question.passage?.title ?? view.question.source.label).split(': ')
   return (
     <article className="ra-passage" aria-labelledby={titleId} lang="sv">
       <div className="ra-reading-tools">
-        <button
-          type="button"
-          data-testid="rd-note-toggle"
-          aria-expanded={note}
-          aria-controls={noteId}
-          onClick={() => setNote(!note)}
-        >
-          {note ? 'Dölj textinformationen −' : 'Om texten ＋'}
-        </button>
+        {view.question.passage?.synthetic ? (
+          <button
+            type="button"
+            data-testid="rd-note-toggle"
+            aria-expanded={note}
+            aria-controls={noteId}
+            onClick={() => setNote(!note)}
+          >
+            {note ? 'Dölj textinformationen −' : 'Om texten ＋'}
+          </button>
+        ) : null}
         <button
           type="button"
           aria-pressed={view.focusPara != null}
@@ -243,16 +307,21 @@ function Passage({
           ¶ Styckefokus
         </button>
       </div>
-      <p className="ra-note" id={noteId} data-testid="rd-note" hidden={!note}>
-        {OVNINGSTEXT_NOTE}
+      <p
+        className="ra-note"
+        id={noteId}
+        data-testid="rd-note"
+        hidden={!note || !view.question.passage?.synthetic}
+      >
+        {data.copy.ovningstextNote}
       </p>
       <div className="ra-passage-heading">
-        <span className="ra-label">LÄS / Bokrecension</span>
+        <span className="ra-label">{view.question.section} / Läsförståelse</span>
         <h1 id={titleId}>{title}</h1>
         <p>{subtitle}</p>
       </div>
       <div className="ra-passage-body" data-testid="rd-passage">
-        {view.passage.paragraphs.map((text, i) => (
+        {view.passage?.paragraphs.map((text, i) => (
           <p
             className="ra-paragraph"
             key={text}
@@ -275,7 +344,7 @@ function Passage({
             <PassageText text={text} number={i + 1} view={view} />
           </p>
         ))}
-        {view.passage.byline ? <p className="ra-byline">{view.passage.byline}</p> : null}
+        {view.passage?.byline ? <p className="ra-byline">{view.passage.byline}</p> : null}
       </div>
     </article>
   )
@@ -284,11 +353,15 @@ function Passage({
 function Question({ view, act }: RasterDrillState) {
   return (
     <div className="ra-question">
-      <p className="ra-label">{UNIT.section} / Läsförståelse</p>
-      <h2>{view.question.prompt}</h2>
-      <p className="ra-key-hints">A–D väljer · ⇧ + bokstav stryker · ↵ svarar</p>
+      <p className="ra-label">{view.question.section} / Läsförståelse</p>
+      <h2>
+        <MathText>{view.question.prompt}</MathText>
+      </h2>
+      <p className="ra-key-hints">
+        {view.letters.join('–')} väljer · ⇧ + bokstav stryker · ↵ svarar
+      </p>
       <ol className="ra-options" aria-label="Svarsalternativ">
-        {view.question.options.map((option) => {
+        {view.question.options?.map((option) => {
           const eliminated = view.eliminated.has(option.letter)
           const selected = view.selected === option.letter
           return (
@@ -307,7 +380,7 @@ function Question({ view, act }: RasterDrillState) {
                 <kbd>{option.letter}</kbd>
                 <span>
                   <span className="ra-sr">{eliminated ? 'Struket alternativ: ' : ''}</span>
-                  {option.text}
+                  <MathText>{option.text}</MathText>
                 </span>
                 <span className="ra-option-mark" aria-hidden>
                   {selected ? '●' : ''}

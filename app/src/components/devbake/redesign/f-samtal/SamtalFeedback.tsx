@@ -13,35 +13,64 @@
 // action bar opens every fold together. Each ¶ link turns the passage to its
 // paragraph and lights it, and a part under the pointer lights its own
 // quotations in the text.
-// The unit ends the same way: the coach sums up and proposes the plan's next
+// Any question shape (kit v2's drill core): math renders wherever it stands
+// (the options, your answer, the right answer and every part of the
+// explanation), image options show their figure, and a question without an
+// explanation yet gets the verdict and the way on, nothing else.
+// The set ends the same way: the coach sums up and proposes the plan's next
 // part as a reply.
 
 import { Check, X } from 'lucide-react'
 import { type Ref, useState } from 'react'
 
-import { FRAMEWORK_NAMES, PLAN, UNIT } from '@/components/devbake/redesign/r1Fixtures'
-import type { DrillActions, DrillRefs, DrillView } from '@/components/devbake/redesign/r1Kit'
+import type {
+  DrillCoreActions,
+  DrillCoreRefs,
+  DrillCoreView,
+} from '@/components/devbake/redesign/drillCore'
+import type { DrillOption, PlanItemView } from '@/components/devbake/redesign/viewModel'
+import { MathText } from '@/components/MathText'
 import type { DistractorExplanation, ExplanationStep } from '@/data/explanations'
-import { Cites, Coach, Divider, Kbd, Replies, Rich, You } from './SamtalParts'
+import type { Section } from '@/data/questions'
+import {
+  Cites,
+  Coach,
+  count,
+  Divider,
+  FigureImg,
+  type FigureLoads,
+  Kbd,
+  Replies,
+  Rich,
+  words,
+  You,
+} from './SamtalParts'
 
-const TITLE = UNIT.title.split(': ')[0]
-/** The plan's next part, offered when the text is done. */
-const NEXT = PLAN.items[0]
-const WORDS = ['inga', 'en', 'två', 'tre', 'fyra', 'fem']
+type Act = Pick<DrillCoreActions, 'cite' | 'goToStep' | 'toggleStep'>
+
 /** The coach's one question after a wrong answer: what tempted you. The
- *  reply is yours to give or skip; the explanation never waits on it. */
-const LURES = ['Orden liknade texten', 'Det lät rimligt', 'Jag chansade']
+ *  reply is yours to give or skip; the explanation never waits on it. The
+ *  replies fit the kind of question. */
+export function luresFor(section: Section): readonly string[] {
+  if (section === 'DTK') return ['Jag läste fel i underlaget', 'Jag räknade fel', 'Jag chansade']
+  if (section === 'XYZ' || section === 'KVA' || section === 'NOG') {
+    return ['Jag räknade fel', 'Jag tolkade frågan fel', 'Jag chansade']
+  }
+  return ['Orden liknade texten', 'Det lät rimligt', 'Jag chansade']
+}
 
 /** The part the reader points at (hover or focus): its quotations and
  *  paragraph numbers light up in the passage. */
 export type Pointing = { active: string | null; point: (source: string | null) => void }
 
 /** The explanation's folds — the detail steps and the other options — and
- *  "Visa allt", which opens or closes them together. */
+ *  "Visa allt", which opens or closes them together. `any` is false when
+ *  there is nothing to fold (no explanation yet). */
 export type Folds = {
   others: ReadonlySet<string>
   toggleOther: (letter: string) => void
   allOpen: boolean
+  any: boolean
   showAll: () => void
 }
 
@@ -52,9 +81,53 @@ type Hover = (source: string) => {
   onBlur: () => void
 }
 
+function optionOf(view: DrillCoreView, letter: string | null): DrillOption | undefined {
+  return view.question.options?.find((o) => o.letter === letter)
+}
+
+/** An option's words, its math rendered; an image option shows its figure
+ *  (its text is the image's name). Among the options to choose from, the
+ *  image reports to the drill's `loads`: the answer waits for it, so it
+ *  loads at once, never lazily. */
+export function OptionBody({
+  option,
+  loads = null,
+}: {
+  option: DrillOption
+  loads?: FigureLoads | null
+}) {
+  const figure = option.figure
+  if (figure) {
+    return (
+      <span className="sa-opt-figure">
+        {loads ? (
+          <FigureImg
+            // Another source, or a retry, is a new image: nothing carries over.
+            key={`${figure.src}#${loads.attempt(figure.src)}`}
+            src={`/${figure.src}`}
+            alt={figure.alt}
+            width={figure.width}
+            height={figure.height}
+            onStatus={(s) => loads.report(figure.src, s)}
+          />
+        ) : (
+          <img
+            src={`/${figure.src}`}
+            alt={figure.alt}
+            width={figure.width}
+            height={figure.height}
+            loading="lazy"
+          />
+        )}
+      </span>
+    )
+  }
+  return <MathText>{option.text}</MathText>
+}
+
 /** Your answer, as your turn in the conversation. */
-export function YourAnswer({ view }: { view: DrillView }) {
-  const o = view.question.options.find((x) => x.letter === view.picked)
+export function YourAnswer({ view }: { view: DrillCoreView }) {
+  const o = optionOf(view, view.picked)
   if (!o) return null
   return (
     <You kind="sa-turn--answer" data-anchor="answer">
@@ -65,7 +138,7 @@ export function YourAnswer({ view }: { view: DrillView }) {
         </span>
         <span className="sa-answer-text">
           <span className="sa-sr">alternativ {o.letter}: </span>
-          {o.text}
+          <OptionBody option={o} />
         </span>
       </p>
     </You>
@@ -81,12 +154,12 @@ export function Verdict({
   compact = false,
   ref,
 }: {
-  view: DrillView
+  view: DrillCoreView
   compact?: boolean
   ref?: Ref<HTMLElement>
 }) {
   const correct = view.correct === true
-  const key = view.question.options.find((o) => o.letter === view.question.answer)
+  const key = optionOf(view, view.question.answer)
   return (
     <Coach
       kind={compact ? 'sa-verdict sa-verdict--compact' : 'sa-verdict'}
@@ -111,7 +184,7 @@ export function Verdict({
           </span>
           <p className="sa-key-text">
             <span className="sa-sr">Alternativ {key.letter}: </span>
-            {key.text}
+            <OptionBody option={key} />
           </p>
           <span className="sa-key-tag">
             <Check size={14} strokeWidth={2.4} aria-hidden />
@@ -124,7 +197,7 @@ export function Verdict({
 }
 
 /** The rest of the coach's answer, in the shared order: the dialogue about
- *  your pick, then the notes. */
+ *  your pick, then the notes. Without an explanation yet, one quiet line. */
 export function Explanation({
   view,
   act,
@@ -132,18 +205,28 @@ export function Explanation({
   active,
   point,
   folds,
+  lures,
+  frameworks,
 }: {
-  view: DrillView
-  act: DrillActions
-  refs: DrillRefs
+  view: DrillCoreView
+  act: Act
+  refs: DrillCoreRefs
   folds: Folds
+  lures: readonly string[]
+  frameworks: Record<string, string>
 } & Pointing) {
   const e = view.explanation
   const q = view.question
-  const optionText = (letter: string) => q.options.find((o) => o.letter === letter)?.text ?? ''
+  if (!e) {
+    return (
+      <Coach>
+        <p className="sa-say">Förklaringen till den här frågan är inte klar än.</p>
+      </Coach>
+    )
+  }
   const mine = view.correct ? null : (e.distractors.find((d) => d.letter === view.picked) ?? null)
   const others = e.distractors.filter((d) => d.letter !== mine?.letter)
-  const framework = e.framework_id ? FRAMEWORK_NAMES[e.framework_id] : undefined
+  const framework = e.framework_id ? frameworks[e.framework_id] : undefined
   const hover: Hover = (source) => ({
     onMouseEnter: () => point(source),
     onMouseLeave: () => point(null),
@@ -159,6 +242,7 @@ export function Explanation({
           d={mine}
           view={view}
           act={act}
+          lures={lures}
           active={active === `why-${mine.letter}`}
           hover={hover}
         />
@@ -173,36 +257,44 @@ export function Explanation({
         {e.pitfall ? (
           <div className="sa-notes-item" data-testid="rd-pitfall">
             <h4 className="sa-notes-item-h">Se upp för</h4>
-            <p className="sa-say">{e.pitfall}</p>
+            <p className="sa-say">
+              <MathText>{e.pitfall}</MathText>
+            </p>
           </div>
         ) : null}
 
         <div className="sa-notes-item" data-testid="rd-technique">
           <h4 className="sa-notes-item-h">Nästa gång</h4>
-          <p className="sa-say">{e.technique}</p>
+          <p className="sa-say">
+            <MathText>{e.technique}</MathText>
+          </p>
         </div>
 
         <div className="sa-notes-item">
           <h4 className="sa-notes-item-h">Så hittar du {q.answer}</h4>
-          <p className="sa-say">{e.solution_path}</p>
+          <p className="sa-say">
+            <MathText>{e.solution_path}</MathText>
+          </p>
         </div>
 
-        <div className="sa-notes-item">
-          <h4 className="sa-notes-item-h">Steg för steg</h4>
-          <ol className="sa-steps">
-            {(e.steps ?? []).map((s) => (
-              <Step
-                key={s.n}
-                step={s}
-                view={view}
-                act={act}
-                refs={refs}
-                hover={hover}
-                active={active}
-              />
-            ))}
-          </ol>
-        </div>
+        {e.steps?.length ? (
+          <div className="sa-notes-item">
+            <h4 className="sa-notes-item-h">Steg för steg</h4>
+            <ol className="sa-steps">
+              {e.steps.map((s) => (
+                <Step
+                  key={s.n}
+                  step={s}
+                  view={view}
+                  act={act}
+                  refs={refs}
+                  hover={hover}
+                  active={active}
+                />
+              ))}
+            </ol>
+          </div>
+        ) : null}
 
         {others.length ? (
           <div className="sa-notes-item">
@@ -213,7 +305,7 @@ export function Explanation({
               <Other
                 key={d.letter}
                 d={d}
-                text={optionText(d.letter)}
+                option={optionOf(view, d.letter)}
                 cites={view.distractorCites[d.letter] ?? { tempting: [], wrong: [] }}
                 act={act}
                 open={folds.others.has(d.letter)}
@@ -242,12 +334,14 @@ function Lure({
   d,
   view,
   act,
+  lures,
   active,
   hover,
 }: {
   d: DistractorExplanation
-  view: DrillView
-  act: DrillActions
+  view: DrillCoreView
+  act: Act
+  lures: readonly string[]
   active: boolean
   hover: Hover
 }) {
@@ -269,7 +363,7 @@ function Lure({
       </Coach>
       {said == null ? (
         <Replies className="sa-replies--ask">
-          {LURES.map((l) => (
+          {lures.map((l) => (
             <button key={l} type="button" className="sa-chip" onClick={() => setSaid(l)}>
               {l}
             </button>
@@ -314,9 +408,9 @@ function Step({
   active,
 }: {
   step: ExplanationStep
-  view: DrillView
-  act: DrillActions
-  refs: DrillRefs
+  view: DrillCoreView
+  act: Act
+  refs: DrillCoreRefs
   hover: Hover
   active: string | null
 }) {
@@ -338,7 +432,7 @@ function Step({
       <div className="sa-step-main">
         <h5 className="sa-step-title">
           <span className="sa-sr">Steg {step.n}: </span>
-          {step.title}
+          <MathText>{step.title}</MathText>
         </h5>
         {open ? (
           <p className="sa-step-text">
@@ -367,7 +461,7 @@ function Step({
 
 function Other({
   d,
-  text,
+  option,
   cites,
   act,
   open,
@@ -376,9 +470,9 @@ function Other({
   hover,
 }: {
   d: DistractorExplanation
-  text: string
+  option: DrillOption | undefined
   cites: { tempting: number[]; wrong: number[] }
-  act: DrillActions
+  act: Act
   open: boolean
   toggle: () => void
   active: string | null
@@ -400,7 +494,7 @@ function Other({
         </span>
         <p className="sa-other-text">
           <span className="sa-sr">Alternativ {d.letter}: </span>
-          {text}
+          {option ? <OptionBody option={option} /> : null}
         </p>
       </div>
       <button
@@ -430,26 +524,42 @@ function Other({
   )
 }
 
-/** The end of the unit: the coach sums up, then proposes the plan's next
- *  part as the one filled reply — anchored low, where the thumb is, as the
- *  newest turns of a conversation are. No confetti. */
+/** The end of a set: the coach sums up, then proposes the plan's next part
+ *  as the one filled reply — anchored low, where the thumb is, as the newest
+ *  turns of a conversation are. No confetti. Without a next part, the quiet
+ *  way out is the one action. */
 export function Closing({
   view,
-  onHome,
+  title,
+  divider,
+  repetition = false,
+  clock,
+  out,
+  next,
   onNext,
   ref,
 }: {
-  view: DrillView
-  onHome: () => void
+  view: DrillCoreView
+  /** The set's name, said first ("Magasinet i Hökaryd"). */
+  title: string
+  /** The line the closing opens with ("Texten är läst"). */
+  divider: string
+  /** A repetition round: its misses are already in the pile. */
+  repetition?: boolean
+  /** Whether the set kept a clock (then the coach says how long it took). */
+  clock: boolean
+  /** The quiet way out ("Till Idag", "Till Öva"). */
+  out: { label: string; onClick: () => void }
+  next: PlanItemView | null
   onNext: () => void
   ref?: Ref<HTMLElement>
 }) {
   const right = view.results.filter((r) => r.correct).length
-  const misses = view.total - right
+  const misses = view.results.length - right
   const minutes = Math.max(1, Math.round(view.elapsed / 60))
   return (
     <div className="sa-closing" data-testid="rd-done">
-      <Divider>Texten är läst</Divider>
+      <Divider>{divider}</Divider>
       <div className="sa-thread">
         <Coach
           as="section"
@@ -458,9 +568,9 @@ export function Closing({
           tabIndex={-1}
           ref={ref}
         >
-          <p className="sa-hello">{TITLE}</p>
+          <p className="sa-hello">{title}</p>
           <h2 className="sa-lead-q" id="sa-done-h">
-            Klart. {view.total}&nbsp;frågor, {right}&nbsp;rätt.
+            Klart. {count(view.results.length, 'fråga', 'frågor')}, {right}&nbsp;rätt.
           </h2>
           <ol className="sa-tally" aria-label="Dina svar">
             {view.results.map((r, i) => (
@@ -480,35 +590,42 @@ export function Closing({
             ))}
           </ol>
           <p className="sa-say">
-            {misses === 0
-              ? 'Inga missar att repetera.'
-              : misses === 1
-                ? 'Missen lägger jag i nästa repetition.'
-                : `De ${WORDS[misses] ?? misses} missarna lägger jag i nästa repetition.`}{' '}
-            Det tog {minutes} minuter.
+            {repetition
+              ? 'Klart för den här omgången.'
+              : misses === 0
+                ? 'Inga missar att repetera.'
+                : misses === 1
+                  ? 'Missen lägger jag i nästa repetition.'
+                  : `De ${words(misses)} missarna lägger jag i nästa repetition.`}
+            {clock ? ` Det tog ${minutes} minuter.` : null}
           </p>
         </Coach>
-        {NEXT ? (
+        {next ? (
           <Coach>
             <p className="sa-say">
-              Nästa i planen är {NEXT.title.toLowerCase()}, ungefär {NEXT.minutes} minuter. Ska vi
+              Nästa i planen är {next.title.toLowerCase()}, ungefär {next.minutes} minuter. Ska vi
               ta den nu?
             </p>
           </Coach>
         ) : null}
         {/* The quiet way out first, the one action last: on the thumb side. */}
         <Replies>
-          <button type="button" className="sa-chip sa-chip--big" onClick={onHome}>
-            Till Idag
+          <button
+            type="button"
+            className={next ? 'sa-chip sa-chip--big' : 'sa-chip sa-chip--primary sa-chip--big'}
+            onClick={out.onClick}
+          >
+            {out.label}
+            {next ? null : <Kbd>↵</Kbd>}
           </button>
-          {NEXT ? (
+          {next ? (
             <button
               type="button"
               className="sa-chip sa-chip--primary sa-chip--big"
               onClick={onNext}
               data-testid="rd-done-next"
             >
-              Ja, {NEXT.title.toLowerCase()} · {NEXT.minutes}&nbsp;min
+              Ja, {next.title.toLowerCase()} · {next.minutes}&nbsp;min
               <Kbd>↵</Kbd>
             </button>
           ) : null}
