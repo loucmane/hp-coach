@@ -4,7 +4,10 @@ import type { DirectionMeta } from '@/components/devbake/redesign/r1Kit'
 
 export const meta: DirectionMeta = {
   key: 'b',
-  screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+  screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  // b-instrument.md screen 13 product boundaries: the palette stays fixed during
+  // the comparison, and deep account deletion waits on an owner decision.
+  omits: { konto: ['palette', 'delete'] },
   slug: 'b-instrument',
   name: 'Instrument',
   tagline: 'Precisionsverktyg för proffs',

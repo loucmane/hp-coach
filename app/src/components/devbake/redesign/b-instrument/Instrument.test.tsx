@@ -1,6 +1,9 @@
+import { readFileSync } from 'node:fs'
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { useState } from 'react'
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { entryHeadword, type Framework } from '@/data/frameworks'
+import type { Question } from '@/data/questions'
 import {
   describeDirectionContract,
   mountDirection,
@@ -8,7 +11,7 @@ import {
   spyActions,
   stubLayout,
 } from '../contract'
-import { DirectionDataProvider, FIXTURE_DATA } from '../directionData'
+import { DirectionDataProvider, drillQuestion, FIXTURE_DATA } from '../directionData'
 import { Redesign2026Bakeoff, type Selection } from '../Redesign2026Bakeoff'
 import type { AppScreenKey, WidthKey } from '../r1Kit'
 import type { DirectionData } from '../viewModel'
@@ -52,6 +55,369 @@ afterAll(() => {
 })
 
 describeDirectionContract(meta, Instrument)
+
+describe('Instrument batch 3 regressions', () => {
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('reads a genuine long ELF passage without synthetic disclosure at %s width', (width) => {
+    const bank: Question[] = JSON.parse(readFileSync('public/data/host-2025.json', 'utf8'))
+    const raw = bank.find((q) => q.qid === 'host-2025-verb1-ELF-033')!
+    expect(raw.context!.length).toBeGreaterThan(4000)
+    const q = drillQuestion(raw)
+    const data = dataCopy()
+    data.drills.elf = { ...data.drills.elf, questions: [q], explanations: {}, start: {} }
+    delete data.drills.elf.elapsedSeconds
+    mountData(data, 14, width)
+    const passage = screen.getByTestId('rd-elf-passage')
+    for (const paragraph of q.passage!.paragraphs) expect(passage).toHaveTextContent(paragraph)
+    expect(screen.queryByTestId('rd-badge')).toBeNull()
+    expect(screen.queryByTestId('rd-note-toggle')).toBeNull()
+    expect(screen.queryByRole('timer')).toBeNull()
+    reveal(`rd-option-${q.answer}`)
+    fireEvent.click(screen.getByTestId(`rd-option-${q.answer}`))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    fireEvent.click(screen.getByRole('button', { name: /visa förklaringen/i }))
+    expect(screen.getByText('Förklaring saknas för den här frågan.')).toBeInTheDocument()
+    expect(screen.queryByTestId('rd-cite-1')).toBeNull()
+    fireEvent.click(screen.getByTestId('rd-next'))
+    expect(screen.getByText('Texten är klar')).toBeInTheDocument()
+  })
+
+  it.each([
+    'passage',
+    'prompt',
+    'options',
+  ] as const)('does not grade partial ELF content missing %s', (field) => {
+    const data = dataCopy()
+    data.drills.elf.questions[0][field] = null
+    const { actions } = mountData(data, 14)
+    fireEvent.keyDown(document.body, { key: 'a' })
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    fireEvent.keyDown(document.body, { key: ' ' })
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    expect(screen.getByTestId('rd-exit')).toBeEnabled()
+  })
+
+  it('keeps ELF explanation language, phone citations, and the passage position', () => {
+    mountData(dataCopy(), 14, 'phone')
+    reveal('rd-option-B')
+    const passage = screen.getByTestId('rd-elf-passage')
+    fireEvent.click(screen.getByTestId('rd-option-B'))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(screen.getByTestId('rd-verdict')).toHaveAttribute('data-correct', 'false')
+    const solution = screen.getByText(
+      FIXTURE_DATA.drills.elf.explanations[FIXTURE_DATA.drills.elf.questions[0].qid]!.solution_path,
+    )
+    expect(solution.closest('[lang]')).toHaveAttribute('lang', 'en')
+    expect(screen.getByRole('heading', { name: 'Lösningen' }).closest('[lang]')).toHaveAttribute(
+      'lang',
+      'sv',
+    )
+    const citations = screen.getAllByTestId('rd-cite-1')
+    expect(screen.queryByTestId('rd-cite-2')).toBeNull()
+    fireEvent.click(citations[0])
+    expect(screen.getByTestId('rd-sheet')).toHaveAttribute('data-state', 'peek')
+    expect(screen.getByTestId('rd-elf-passage')).toBe(passage)
+    fireEvent.click(screen.getByRole('button', { name: 'Tillbaka till facit' }))
+    expect(screen.getByTestId('rd-sheet')).not.toHaveAttribute('data-state', 'peek')
+  })
+
+  it.each([
+    2, 6, 14,
+  ] as const)('resets safely for shrinking decks and new sitting IDs on screen %s', (page) => {
+    const data = dataCopy()
+    const slot = page === 2 ? 'reading' : page === 6 ? 'quant' : 'elf'
+    const q = data.drills[slot].questions[0]
+    data.drills[slot].questions = [q, { ...q, qid: `${q.qid}-last` }]
+    data.drills[slot].start = { index: 1 }
+    const { actions, rerenderData } = mountData(data, page)
+    fireEvent.keyDown(document.body, { key: 'a' })
+    const next = structuredClone(data)
+    next.drills[slot].questions = [q]
+    expect(() => rerenderData(next)).not.toThrow()
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.keyDown(document.body, { key: 'a' })
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    next.drills[slot].id += '-new-sitting'
+    rerenderData(structuredClone(next))
+    expect(screen.queryByTestId('rd-verdict')).toBeNull()
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    expect(actions.drill.lock).toHaveBeenCalledOnce()
+  })
+
+  it.each([
+    'nog_traps',
+    'dtk_tactics',
+    'mek_protocol',
+    'las_taxonomy',
+    'ord_roots',
+  ])('renders the real %s lesson family and confirmed read changes', (name) => {
+    const framework: Framework = JSON.parse(readFileSync(`public/frameworks/${name}.json`, 'utf8'))
+    const entry = framework.entries[0]
+    const data = dataCopy()
+    data.uppslag.open = {
+      id: entry.id,
+      title: entryHeadword(entry, framework)!,
+      entry,
+      family: framework.family,
+      section: framework.section,
+      read: false,
+      practice: { questions: entry.example_questions.length },
+    }
+    const { actions, rerenderData } = mountData(data, 12)
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(data.uppslag.open.title)
+    expect(screen.getByTestId('rd-lesson')).not.toHaveTextContent(/[\uE000\uE001]/)
+    fireEvent.click(screen.getByTestId('rd-lesson-read'))
+    expect(actions.toggleLessonRead).toHaveBeenCalledWith(entry.id)
+    expect(screen.getByTestId('rd-lesson-read')).toHaveAttribute('aria-pressed', 'false')
+    const next = structuredClone(data)
+    next.uppslag.open.read = true
+    next.uppslag.sections
+      .find((s) => s.section === framework.section)!
+      .entries.find((e) => e.id === entry.id)!.read = true
+    rerenderData(next)
+    expect(screen.getByTestId('rd-lesson-read')).toHaveTextContent('Markera som oläst')
+  })
+
+  it('keeps catalog selections valid when sections disappear, including an empty catalog', () => {
+    const data = dataCopy()
+    const { rerenderData } = mountData(data, 12)
+    const next = structuredClone(data)
+    next.uppslag.sections = []
+    expect(() => rerenderData(next)).not.toThrow()
+    expect(screen.getByText('Innehåll saknas ännu.')).toBeInTheDocument()
+    expect(screen.queryByTestId('rd-lesson-practice')).toBeNull()
+  })
+
+  it('themes the actual host, updates supported preferences, and routes library/account navigation', async () => {
+    const onSelect = mountBakeoff(12)
+    await screen.findByTestId('rd-lesson')
+    fireEvent.click(screen.getByTestId('rd-account'))
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Inställningar' }))
+    await screen.findByTestId('rd-konto-identity')
+    expect(screen.getByTestId('rd-nav-uppslag')).toHaveAttribute('aria-current', 'page')
+    fireEvent.click(screen.getByTestId('rd-konto-mode-dark'))
+    expect(screen.getByTestId('rd-instrument')).toHaveAttribute('data-theme', 'dark')
+    for (const pref of ['font', 'density', 'coach'] as const) {
+      const other = FIXTURE_DATA.konto.options[pref].find(
+        (o) => o.key !== FIXTURE_DATA.konto.prefs[pref],
+      )!
+      fireEvent.click(screen.getByTestId(`rd-konto-${pref}-${other.key}`))
+      expect(screen.getByTestId(`rd-konto-${pref}-${other.key}`)).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      )
+    }
+    fireEvent.click(screen.getByRole('button', { name: 'Tillbaka till Öva' }))
+    expect(onSelect).toHaveBeenCalledWith({ s: 5 })
+    await screen.findByTestId('rd-ova-section-elf')
+    fireEvent.click(screen.getByTestId('rd-ova-section-elf'))
+    await screen.findByTestId('rd-elf-passage')
+    expect(screen.getByTestId('rd-instrument')).toHaveAttribute('data-theme', 'dark')
+    fireEvent.click(screen.getByTestId('rd-exit'))
+    await screen.findByTestId('rd-ova-section-elf')
+  })
+
+  it('keeps the command dialog and account menu keys inside the real host and restores focus', async () => {
+    const onSelect = mountBakeoff(12)
+    await screen.findByTestId('rd-lesson')
+    const trigger = screen.getByTestId('rd-account')
+    fireEvent.click(trigger)
+    const item = screen.getByRole('menuitem', { name: 'Konto' })
+    expect(item).toHaveFocus()
+    onSelect.mockClear()
+    for (const key of ['1', 'ArrowRight']) fireEvent.keyDown(item, { key })
+    expect(onSelect).not.toHaveBeenCalled()
+    fireEvent.keyDown(item, { key: 'ArrowDown' })
+    expect(screen.getByRole('menuitem', { name: 'Inställningar' })).toHaveFocus()
+    fireEvent.keyDown(document.activeElement!, { key: 'Escape' })
+    expect(trigger).toHaveFocus()
+    fireEvent.keyDown(document.body, { key: 'k', ctrlKey: true })
+    const dialog = screen.getByRole('dialog', { name: 'Kommandon' })
+    expect(dialog).toHaveAttribute('open')
+    fireEvent.keyDown(dialog, { key: '1' })
+    fireEvent.keyDown(dialog, { key: 'ArrowRight' })
+    expect(onSelect).not.toHaveBeenCalled()
+    fireEvent(dialog, new Event('cancel', { bubbles: false, cancelable: true }))
+    expect(screen.queryByRole('dialog', { name: 'Kommandon' })).toBeNull()
+  })
+
+  it.each([
+    2, 6,
+  ] as const)('resets failed option images when the source changes on screen %s', (page) => {
+    cachedImages = false
+    const data = dataCopy()
+    const slot = page === 2 ? 'reading' : 'quant'
+    data.drills[slot].start = {}
+    const q = data.drills[slot].questions[0]
+    q.figure = null
+    q.options![0].figure = { src: 'failed.svg', alt: 'Alternativbild', width: 100, height: 100 }
+    const { actions, rerenderData } = mountData(data, page)
+    fireEvent.error(screen.getByRole('img', { name: 'Alternativbild' }))
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    const next = structuredClone(data)
+    next.drills[slot].questions[0].options![0].figure!.src = 'replacement.svg'
+    rerenderData(next)
+    expect(screen.queryByText('Bilden kunde inte visas.')).toBeNull()
+    fireEvent.keyDown(document.body, { key: 'a' })
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    fireEvent.load(screen.getByRole('img', { name: 'Alternativbild' }))
+    fireEvent.keyDown(document.body, { key: 'a' })
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    expect(actions.drill.lock).toHaveBeenCalledOnce()
+  })
+  it('requires DTK evidence in a mixed session on screen 6', () => {
+    const data = dataCopy()
+    const q = { ...data.drills.dtk.questions[0], figure: null }
+    data.drills.quant = { ...data.drills.quant, questions: [q], start: {} }
+    const { actions } = mountData(data, 6)
+    fireEvent.keyDown(document.body, { key: 'a' })
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    fireEvent.keyDown(document.body, { key: ' ' })
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+  })
+
+  it.each([2, 6] as const)('waits for newly mounted reused option images on screen %s', (page) => {
+    cachedImages = false
+    const data = dataCopy()
+    const slot = page === 2 ? 'reading' : 'quant'
+    const q = structuredClone(data.drills[slot].questions[0])
+    q.figure = null
+    q.options![0].figure = { src: 'same.svg', alt: 'Samma alternativbild', width: 100, height: 100 }
+    data.drills[slot] = {
+      ...data.drills[slot],
+      questions: [q, { ...q, qid: `${q.qid}-two` }],
+      start: {},
+    }
+    const { actions } = mountData(data, page)
+    const first = screen.getByRole('img', { name: 'Samma alternativbild' })
+    fireEvent.load(first)
+    fireEvent.keyDown(document.body, { key: 'a' })
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    vi.mocked(actions.drill.lock).mockClear()
+    expect(screen.getByRole('img', { name: 'Samma alternativbild' })).not.toBe(first)
+    fireEvent.keyDown(document.body, { key: 'a' })
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    fireEvent.keyDown(document.body, { key: ' ' })
+    expect(actions.drill.lock).not.toHaveBeenCalled()
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.load(screen.getByRole('img', { name: 'Samma alternativbild' }))
+    fireEvent.keyDown(document.body, { key: 'a' })
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    expect(actions.drill.lock).toHaveBeenCalledOnce()
+  })
+
+  it('isolates quant figure panning and its dialog in the real host', async () => {
+    const onSelect = mountBakeoff(7)
+    await screen.findByTestId('rd-figure')
+    const pan = screen.getByRole('region', { name: 'Figur, rulla för att läsa hela underlaget' })
+    pan.focus()
+    onSelect.mockClear()
+    for (const key of ['1', 'ArrowRight', 'ArrowLeft']) fireEvent.keyDown(pan, { key })
+    expect(onSelect).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: 'Förstora figur' }))
+    const dialog = screen.getByRole('dialog', { name: 'Underlag' })
+    const close = within(dialog).getByRole('button', { name: 'Stäng figur' })
+    close.focus()
+    for (const key of ['1', 'ArrowRight']) fireEvent.keyDown(close, { key })
+    expect(onSelect).not.toHaveBeenCalled()
+  })
+
+  it('keeps Home command selection valid after removing resume', () => {
+    const data = dataCopy()
+    const { actions, rerenderData } = mountData(data, 1)
+    for (let i = 0; i < data.home.plan.items.length; i++)
+      fireEvent.keyDown(document.body, { key: 'ArrowDown' })
+    const next = structuredClone(data)
+    next.home.resume = null
+    rerenderData(next)
+    expect(document.querySelectorAll('.in-cmd[data-active="true"]')).toHaveLength(1)
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    expect(actions.openPlanItem).toHaveBeenCalledWith(next.home.plan.items.at(-1)!.id)
+  })
+
+  it.each([
+    1, 2, 6,
+  ] as const)('never offers completed plan items as next work on screen %s', (page) => {
+    const data = dataCopy()
+    data.home.plan.items.forEach((item) => {
+      item.completed = true
+    })
+    if (page !== 1) {
+      const slot = page === 2 ? 'reading' : 'quant'
+      data.drills[slot].questions = [data.drills[slot].questions[0]]
+      data.drills[slot].start = {}
+    }
+    const { actions } = mountData(data, page)
+    if (page === 1) {
+      expect(screen.queryByText(/Sedan repetition|Nästa: repetition/i)).toBeNull()
+      expect(screen.queryAllByRole('button', { name: /Repetition/ })).toHaveLength(0)
+    } else {
+      fireEvent.keyDown(document.body, { key: 'a' })
+      fireEvent.keyDown(document.body, { key: 'Enter' })
+      fireEvent.keyDown(document.body, { key: 'Enter' })
+      fireEvent.click(screen.getByRole('button', { name: /Till Öva/ }))
+      expect(actions.go).toHaveBeenCalledWith('ova')
+      expect(actions.openPlanItem).not.toHaveBeenCalled()
+    }
+  })
+
+  it.each([
+    2, 6, 7, 14,
+  ] as const)('routes the empty-session Öva control by its label on screen %s', (page) => {
+    const data = dataCopy()
+    data.drills[
+      page === 2 ? 'reading' : page === 6 ? 'quant' : page === 7 ? 'dtk' : 'elf'
+    ].questions = []
+    const { actions } = mountData(data, page)
+    fireEvent.click(screen.getByRole('button', { name: 'Till Öva' }))
+    expect(actions.go).toHaveBeenCalledWith('ova')
+    expect(actions.drill.exit).not.toHaveBeenCalled()
+  })
+
+  it('renders the supplied lesson and keeps practice unavailable without examples', () => {
+    const data = dataCopy()
+    data.uppslag.open.practice.questions = 0
+    const { actions } = mountData(data, 12)
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(data.uppslag.open.title)
+    expect(screen.getByTestId('rd-lesson-practice')).toBeDisabled()
+    fireEvent.click(screen.getByTestId('rd-lesson-read'))
+    expect(actions.toggleLessonRead).toHaveBeenCalledWith(data.uppslag.open.id)
+  })
+
+  it('keeps the account preview non-destructive and its settings truthful', () => {
+    const { actions } = mountData(dataCopy(), 13)
+    expect(screen.getByTestId('rd-konto-identity')).toHaveTextContent(
+      FIXTURE_DATA.konto.identity.email,
+    )
+    expect(screen.getByTestId('rd-konto-delete')).toBeDisabled()
+    fireEvent.click(screen.getByTestId('rd-konto-export'))
+    expect(actions.exportData).toHaveBeenCalledOnce()
+    expect(screen.queryByText(/Exporten är klar|Sparat/)).toBeNull()
+  })
+
+  it('uses the genuine ELF unit, language boundaries, and ends after its one question', () => {
+    const data = dataCopy()
+    data.home.plan.items = []
+    const { actions } = mountData(data, 14)
+    const q = data.drills.elf.questions[0]
+    expect(screen.getByTestId('rd-elf-passage')).toHaveAttribute('lang', 'en')
+    expect(screen.getByRole('heading', { name: q.passage!.title })).toHaveAttribute('lang', 'en')
+    expect(screen.getByText(q.prompt!)).toHaveAttribute('lang', 'en')
+    fireEvent.keyDown(document.body, { key: q.answer.toLowerCase() })
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    expect(actions.drill.lock).toHaveBeenCalledWith(q, q.answer)
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    expect(screen.getByTestId('rd-done')).toHaveTextContent('1/1')
+    fireEvent.click(screen.getByRole('button', { name: /Till Öva/ }))
+    expect(actions.go).toHaveBeenCalledWith('ova')
+  })
+})
 
 function mountData(data: DirectionData, page: AppScreenKey, width: WidthKey = 'desktop') {
   const actions = spyActions()
@@ -244,7 +610,7 @@ describe('Instrument data and interactions', () => {
     const { actions } = mountData(data, page)
     expect(screen.getByText('Frågan är inte tillgänglig')).toBeInTheDocument()
     fireEvent.click(screen.getByTestId('rd-exit'))
-    expect(actions.drill.exit).toHaveBeenCalledOnce()
+    expect(actions.go).toHaveBeenCalledWith('ova')
   })
 
   it('prevents grading a DTK question with loading or failed evidence and allows a successful retry', () => {

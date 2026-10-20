@@ -13,7 +13,9 @@ export const meta: DirectionMeta = {
     'Menyn är en innehållsförteckning i ord; hopfälld blir den ett tumregister med en bokstav per mål. Kontot öppnas som en papperslapp.',
     'Idag är en förstasida: det du läser är ingressen under en kraftig linje med ett bokmärkesband, resten av dagen en innehållsförteckning med punktlinjer, prognosen i marginalen.',
     'Läsfrågan är ett uppslag utan appfält: varje sida har sin egen sidhuvudrad, ryggen skuggas och kan flyttas. Facit börjar med varför ditt svar lockade; förklaringens citat stryks under i själva texten.',
+    'Öva och Repetera är innehållsförteckningar med punktlinjer fram till sidans siffror. Kvantfrågan är en sida som slås upp till ett uppslag när du svarar, och DTK-figuren är en inklistrad plansch som ligger kvar medan frågorna byts.',
   ],
   risk: 'Risk: för tyst. Svar: en enda fylld knapp per skärm och en ingress vars rubrik är sidans största föremål.',
   references: 'Readwise Reader, Things 3, Craft, Khan Academys typografi, Linears varma grå.',
+  screens: [1, 2, 3, 4, 5, 6, 7, 8],
 }

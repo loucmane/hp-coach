@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { type ReactNode, useId, useLayoutEffect, useRef } from 'react'
 
 import {
   type DrillCoreActions as DrillActions,
@@ -9,6 +9,60 @@ import {
 import { MathText } from '@/components/MathText'
 
 export type RasterDrillState = { view: DrillView; act: DrillActions; refs: DrillRefs }
+
+export function rasterSlug(value: string) {
+  return value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+}
+
+/** Native modal containment, with the opener restored after every dismissal. */
+export function RasterDialog({
+  title,
+  children,
+  onClose,
+}: {
+  title: string
+  children: ReactNode
+  onClose: () => void
+}) {
+  const ref = useRef<HTMLDialogElement>(null)
+  const titleId = useId()
+  useLayoutEffect(() => {
+    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    const dialog = ref.current
+    if (!dialog) return
+    if (typeof dialog.showModal === 'function') dialog.showModal()
+    else dialog.setAttribute('open', '')
+    dialog.querySelector<HTMLButtonElement>('button')?.focus()
+    return () => {
+      if (typeof dialog.close === 'function') dialog.close()
+      opener?.focus()
+    }
+  }, [])
+  return (
+    <dialog
+      ref={ref}
+      className="ra-modal"
+      aria-labelledby={titleId}
+      data-rd-keyscope
+      onCancel={(event) => {
+        event.preventDefault()
+        onClose()
+      }}
+    >
+      <header className="ra-modal-heading">
+        <h2 id={titleId}>{title}</h2>
+        <button type="button" onClick={onClose} aria-label="Stäng">
+          ×
+        </button>
+      </header>
+      {children}
+    </dialog>
+  )
+}
 
 export function IndexNumber({ value }: { value: number }) {
   return (
