@@ -45,7 +45,6 @@ import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import './spar.css'
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
-  DESTINATIONS,
   type Destination,
   type DirectionProps,
   type ThemeKey,
@@ -55,11 +54,13 @@ import {
 import { type Calm, SparDrill } from './SparDrill'
 import { type FramstegTab, SparFramsteg } from './SparFramsteg'
 import { SparHome } from './SparHome'
+import { type KontoJump, type KontoSection, SparKonto } from './SparKonto'
 import { SparOva } from './SparOva'
 import { SparProvHub, SparProvResult, SparProvRun } from './SparProvpass'
 import { SparQuant } from './SparQuant'
 import { SparRepetera } from './SparRepetera'
-import { Mark, NAV_ICONS, SparNavItems } from './sparParts'
+import { SparUppslag } from './SparUppslag'
+import { Mark, SparModal, SparNavItems } from './sparParts'
 
 const FONTS =
   'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Figtree:ital,wght@0,300..900;1,300..900&display=swap'
@@ -113,7 +114,7 @@ export function Spar(props: DirectionProps) {
   if (prov.view === 'result' && prov.timedOut?.result === null) {
     setProv((p) => (p.timedOut?.result === null ? { ...p, timedOut: { result: resultId } } : p))
   }
-  const reading = props.screen === 2 || props.screen === 3
+  const reading = props.screen === 2 || props.screen === 3 || props.screen === 14
   const quant = props.screen === 6 || props.screen === 7
   const running = props.screen === 9 && prov.view === 'running'
 
@@ -203,10 +204,12 @@ export function Spar(props: DirectionProps) {
 
 /** The destination a frame screen belongs to (Repetera lives in Öva, the
  *  result in Provpass). */
-function destOf(screen: DirectionProps['screen']): Destination {
+function destOf(screen: DirectionProps['screen']): Destination | 'konto' {
   if (screen === 5 || screen === 8) return 'ova'
   if (screen === 9 || screen === 10) return 'provpass'
   if (screen === 11) return 'framsteg'
+  if (screen === 12) return 'uppslag'
+  if (screen === 13) return 'konto'
   return 'idag'
 }
 
@@ -217,6 +220,8 @@ const PAGE_NAMES: Record<string, string> = {
   provpass: 'Provpass',
   resultat: 'Provpass',
   framsteg: 'Framsteg',
+  uppslag: 'Uppslag',
+  konto: 'Konto',
 }
 
 function SparFrame({
@@ -247,11 +252,13 @@ function SparFrame({
   const [menu, setMenu] = useState(screen === 4)
   // The host decides the screen; the frame keeps its own destination too,
   // so a host that does not navigate (a test, a preview) still moves.
-  const [dest, setDest] = useState<Destination>(() => destOf(screen))
+  const [dest, setDest] = useState<Destination | 'konto'>(() => destOf(screen))
+  const [kontoJump, setKontoJump] = useState<KontoJump>(null)
   useEffect(() => {
     setExpanded(screen === 4)
     setMenu(screen === 4)
     setDest(destOf(screen))
+    setKontoJump(null)
   }, [screen])
 
   // ⌘B / Ctrl+B expands and folds the rail, as in the live app.
@@ -271,6 +278,7 @@ function SparFrame({
     (d: Destination, view?: FramstegTab) => {
       setMenu(false)
       setDest(d)
+      setKontoJump(null)
       // Provpass opens on its hub; Framsteg on the view asked for.
       if (d === 'provpass') setProv((p) => ({ ...p, view: 'hub', voided: false }))
       if (d === 'framsteg') setFramsteg(view ?? 'oversikt')
@@ -279,6 +287,13 @@ function SparFrame({
     [actions, setProv, setFramsteg],
   )
   const closeMenu = useCallback(() => setMenu(false), [])
+  const openAccount = (section: KontoSection) => {
+    setMenu(false)
+    setDest('konto')
+    // A menu row explicitly asks for a part. Direct screen-13 entry does not.
+    setKontoJump((old) => ({ section, serial: (old?.serial ?? 0) + 1 }))
+    actions.openKonto()
+  }
 
   const pageKey =
     dest === 'idag'
@@ -306,6 +321,7 @@ function SparFrame({
     if (first && !prov.focus) return
     if (prov.focus) setProv((p) => ({ ...p, focus: false }))
     if (!live) return
+    if (pageKey === 'konto' && kontoJump) return
     const title = scrollRef.current?.querySelector<HTMLElement>('h1')
     if (!title) return
     if (!title.hasAttribute('tabindex')) title.setAttribute('tabindex', '-1')
@@ -339,8 +355,10 @@ function SparFrame({
       />
     ) : pageKey === 'framsteg' ? (
       <SparFramsteg width={width} live={live && !menu} initialView={framsteg} />
+    ) : pageKey === 'uppslag' ? (
+      <SparUppslag width={width} live={live && !menu} />
     ) : (
-      <SparStub dest={dest} />
+      <SparKonto width={width} calm={calm} setCalm={setCalm} jump={kontoJump} />
     )
   const account = (anchor: 'rail' | 'sheet') => (
     <Account
@@ -353,6 +371,8 @@ function SparFrame({
       setCalm={setCalm}
       anchor={anchor}
       labelled={anchor === 'rail' && expanded}
+      active={pageKey === 'konto'}
+      onOpen={openAccount}
     />
   )
   const due = data.home.ovaDue > 0
@@ -390,7 +410,7 @@ function SparFrame({
           <div className={live ? 'sp-enter' : undefined}>{page}</div>
         </div>
         <nav className="sp-navbar" aria-label="Huvudmeny">
-          <SparNavItems bar current={dest} due={due} onGo={go} />
+          <SparNavItems bar current={dest === 'konto' ? null : dest} due={due} onGo={go} />
         </nav>
       </div>
     )
@@ -421,7 +441,7 @@ function SparFrame({
           </span>
         </div>
         <div className="sp-rail-items">
-          <SparNavItems current={dest} due={due} onGo={go} />
+          <SparNavItems current={dest === 'konto' ? null : dest} due={due} onGo={go} />
         </div>
         <div className="sp-rail-foot">{account('rail')}</div>
       </nav>
@@ -448,6 +468,8 @@ function Account({
   setCalm,
   anchor,
   labelled,
+  active,
+  onOpen,
 }: Calm & {
   open: boolean
   setOpen: (open: boolean) => void
@@ -457,25 +479,27 @@ function Account({
   /** rail: a popover beside the rail; sheet: a modal bottom sheet (phone). */
   anchor: 'rail' | 'sheet'
   labelled: boolean
+  active: boolean
+  onOpen: (section: KontoSection) => void
 }) {
-  const { actions } = useDirectionData()
+  const { data, actions } = useDirectionData()
   const ref = useRef<HTMLDivElement>(null)
-  useDismiss(open, close, ref)
-  const then = (action: () => void) => () => {
-    close()
+  useDismiss(open && anchor === 'rail', close, ref)
+  const then = (closeLayer: () => void, action: () => void) => () => {
+    closeLayer()
     action()
   }
-  const items = (
+  const items = (closeLayer: () => void) => (
     <>
       <MenuItem
         icon={<UserRound size={20} strokeWidth={2} />}
         label="Konto"
-        onClick={then(actions.openKonto)}
+        onClick={then(closeLayer, () => onOpen('konto'))}
       />
       <MenuItem
         icon={<Settings size={20} strokeWidth={2} />}
         label="Inställningar"
-        onClick={then(actions.openKonto)}
+        onClick={then(closeLayer, () => onOpen('utseende'))}
       />
       <MenuSwitch
         icon={<Moon size={20} strokeWidth={2} />}
@@ -495,13 +519,13 @@ function Account({
       <MenuItem
         icon={<CircleQuestionMark size={20} strokeWidth={2} />}
         label="Hjälp"
-        onClick={close}
+        onClick={then(closeLayer, () => onOpen('hjalp'))}
       />
       <hr className="sp-menu-sep" />
       <MenuItem
         icon={<LogOut size={20} strokeWidth={2} />}
         label="Logga ut"
-        onClick={then(actions.signOut)}
+        onClick={then(closeLayer, actions.signOut)}
       />
     </>
   )
@@ -511,8 +535,8 @@ function Account({
         <UserRound size={24} strokeWidth={2} />
       </span>
       <span>
-        <b>Ditt konto</b>
-        <span>Gratisplan · inloggad</span>
+        <b>{data.konto.identity.name || data.konto.identity.email}</b>
+        {data.konto.identity.plan ? <span>{data.konto.identity.plan}</span> : null}
       </span>
     </div>
   )
@@ -524,6 +548,7 @@ function Account({
         data-testid="rd-account"
         aria-label={labelled ? undefined : 'Konto och inställningar'}
         aria-expanded={open}
+        aria-pressed={active}
         aria-haspopup={anchor === 'sheet' ? 'dialog' : 'menu'}
         onClick={() => setOpen(!open)}
       >
@@ -538,34 +563,28 @@ function Account({
         ) : null}
       </button>
       {open && anchor === 'rail' ? (
-        <div className="sp-menu" role="menu" aria-label="Konto" data-testid="rd-account-menu">
+        <div
+          className="sp-menu"
+          role="menu"
+          aria-label="Konto"
+          data-rd-keyscope=""
+          data-testid="rd-account-menu"
+        >
           {head}
-          {items}
+          {items(close)}
         </div>
       ) : null}
       {open && anchor === 'sheet' ? (
-        <>
-          <button
-            type="button"
-            className="sp-scrim"
-            aria-label="Stäng kontomenyn"
-            tabIndex={-1}
-            onClick={close}
-          />
-          <div
-            className="sp-menu sp-menu--sheet"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Konto"
-            data-testid="rd-account-menu"
-          >
-            <span className="sp-menu-grab" aria-hidden />
-            {head}
-            <div role="menu" aria-label="Konto och inställningar">
-              {items}
+        <SparModal title="Konto" phone onClose={close} className="sp-account-dialog">
+          {(closeLayer) => (
+            <div data-testid="rd-account-menu">
+              {head}
+              <div role="menu" aria-label="Konto och inställningar">
+                {items(closeLayer)}
+              </div>
             </div>
-          </div>
-        </>
+          )}
+        </SparModal>
       ) : null}
     </div>
   )
@@ -623,25 +642,5 @@ function MenuSwitch({
       </span>
       <i className="sp-switch" aria-hidden />
     </button>
-  )
-}
-
-/** A destination this direction has not built yet. The bake-off shows its
- *  own card for it; this page stands in for a host that does not move. */
-function SparStub({ dest }: { dest: Destination }) {
-  const d = DESTINATIONS.find((x) => x.id === dest) ?? DESTINATIONS[0]
-  return (
-    <section className="sp-stub" aria-labelledby="sp-stub-h">
-      <span className="sp-stub-blob" aria-hidden>
-        {NAV_ICONS[dest](34)}
-      </span>
-      <h1 className="sp-display" id="sp-stub-h" tabIndex={-1}>
-        {d.label}
-      </h1>
-      <p className="sp-lede">{d.blurb}</p>
-      <p className="sp-stub-note">
-        Den här sidan är inte byggd än i Spår. Menyn och kontot fungerar redan härifrån.
-      </p>
-    </section>
   )
 }
