@@ -20,9 +20,11 @@
 // The link is stored with the round (planEntry: "X~A" in the session's
 // plan), and a resume reads exactly that link back (prunePlan). It is never
 // re-derived from the due list, whose order and members change between a
-// pause and a resume. Until the server has stored it, the device that
-// picked the round keeps a copy (savePendingLinks). A round whose links are
-// lost plays its new questions on and grades none of them.
+// pause and a resume. It lasts once the server has stored it, and only then:
+// until that write lands, only the visit that picked the round knows it. A
+// round whose links are lost plays its new questions on as plain questions
+// and grades none of them; it never ends for want of its links or of the
+// trap index.
 //
 // Only a question that repeats a due mistake is ever graded. A question the
 // round has already answered (before its cursor) is history: kept for the
@@ -142,8 +144,8 @@ const PLAN_ENTRY_MAX = 80
 /** The entry a round stores for an item in its session plan: a new question
  *  as "<qid>~<sourceQid>", so a resume answers it against THAT mistake;
  *  any other question as its plain qid, which is all an older plan holds.
- *  A link too long to store is left out, and a resume then skips the
- *  question rather than guess its source. */
+ *  A link too long to store is left out, and a resume then never guesses
+ *  the question's source. */
 export function planEntry(item: ReplayItem): string {
   const qid = item.question.qid
   if (!item.sibling) return qid
@@ -213,10 +215,11 @@ export type PlanLink = {
  *  Lost links: a plan without any link may hold new questions whose links
  *  never reached the server, stored as plain qids. Their sources are
  *  unknown, so they are never guessed. From the cursor on, a plain entry
- *  without a due mistake of its own that `mayBeNew` admits (a trapped,
- *  non-ORD question: only those are ever picked as new ones) is kept but
- *  never mapped. It is played and graded nothing, its source stays due
- *  for a later round, and the round does not end for want of its links.
+ *  without a due mistake of its own that `mayBeNew` admits (for
+ *  resolveReplayPlan, any question outside ORD: a new question is never
+ *  ORD) is kept but never mapped. It is played and graded nothing, its
+ *  source stays due for a later round, and the round does not end for want
+ *  of its links.
  *
  *  Pure and synchronous: no bank/network access, so it's trivial to
  *  unit-test and safe to run on every adopt. Preserves the STORED plan's
@@ -273,74 +276,6 @@ export function resumeQid(
   return atCursor === undefined ? null : parsePlanEntry(atCursor).qid
 }
 
-/** Where this device keeps a fresh round's links until the server stores
- *  them (savePendingLinks). */
-export const PENDING_LINKS_KEY = 'hpc-repetera-links'
-
-/** Kept round links: the round's linked plan, and its session once that
- *  exists. One slot: a user has at most one open round. */
-type PendingLinks = { version: 1; sessionId: number | null; plan: string[] }
-
-function readPendingLinks(): PendingLinks | null {
-  if (typeof window === 'undefined') return null
-  try {
-    const raw = window.localStorage.getItem(PENDING_LINKS_KEY)
-    if (!raw) return null
-    const kept = JSON.parse(raw) as Partial<PendingLinks> | null
-    if (!kept || kept.version !== 1) return null
-    const { sessionId = null, plan } = kept
-    if (sessionId !== null && typeof sessionId !== 'number') return null
-    if (!Array.isArray(plan) || !plan.every((entry) => typeof entry === 'string')) return null
-    return { version: 1, sessionId, plan }
-  } catch {
-    return null
-  }
-}
-
-/** Keep a fresh round's links on this device until the server stores them.
- *  SessionPlayer creates the round's session with plain qids and /repetition
- *  writes the links after it, so a write that fails or has not landed when
- *  the student leaves would otherwise lose them. Called at the pick, then
- *  again with the session's id once it exists. */
-export function savePendingLinks(plan: readonly string[], sessionId: number | null = null): void {
-  if (typeof window === 'undefined') return
-  try {
-    const kept: PendingLinks = { version: 1, sessionId, plan: [...plan] }
-    window.localStorage.setItem(PENDING_LINKS_KEY, JSON.stringify(kept))
-  } catch {
-    // Storage full or disabled: the links then last only as long as the
-    // visit that picked the round.
-  }
-}
-
-/** The links kept on this device for the round stored as `stored` in
- *  session `sessionId`: the same questions in the same order, kept for that
- *  session or picked before it existed. Null when none are kept, or when
- *  `stored` carries links itself, since the server's copy wins. */
-export function pendingLinksFor(sessionId: number, stored: readonly string[]): string[] | null {
-  if (hasPlanLinks(stored)) return null
-  const kept = readPendingLinks()
-  if (!kept || (kept.sessionId !== null && kept.sessionId !== sessionId)) return null
-  return samePlay(kept.plan, stored) ? kept.plan : null
-}
-
-/** Forget the links kept for session `sessionId`, once the server has them
- *  or the round is over. A copy not yet bound to a session goes when it
- *  plays `stored`. */
-export function dropPendingLinks(sessionId: number, stored?: readonly string[]): void {
-  const kept = readPendingLinks()
-  if (!kept) return
-  const own =
-    kept.sessionId === sessionId ||
-    (kept.sessionId === null && stored !== undefined && samePlay(kept.plan, stored))
-  if (!own) return
-  try {
-    window.localStorage.removeItem(PENDING_LINKS_KEY)
-  } catch {
-    // Nothing to drop where storage is disabled.
-  }
-}
-
 /** A stored round, resolved to play on from its cursor. */
 export type ResumedRound = {
   /** The questions to hand the player, in stored order (see prunePlan). */
@@ -353,19 +288,19 @@ export type ResumedRound = {
 }
 
 /** prunePlan, resolved against the bank: a stored qid that no longer
- *  resolves is dropped, never thrown. The /repetition resume path. `traps`
- *  tells a plain question that may be a new one in a plan whose links were
- *  lost; it loads the static index when omitted. */
+ *  resolves is dropped, never thrown. The /repetition resume path. It never
+ *  reads the trap index: in a plan whose links were lost, any plain
+ *  question outside ORD may be a new one, so an index that fails to load,
+ *  is missing or has changed since the pick can never drop the round's new
+ *  questions and end it. */
 export async function resolveReplayPlan(
   entries: readonly string[],
   due: readonly Mistake[],
   position = 0,
-  traps?: TrapIndex,
 ): Promise<ResumedRound> {
-  const [bank, index] = await Promise.all([loadBank(), traps ?? loadTrapsOrNone()])
-  // Only a trapped question outside ORD is ever picked as a new one.
-  const mayBeNew = (qid: string) =>
-    index.trapOf(qid) !== null && findQuestion(bank, qid)?.section !== 'ORD'
+  const bank = await loadBank()
+  // A new question is never ORD: word knowledge belongs to the word.
+  const mayBeNew = (qid: string) => findQuestion(bank, qid)?.section !== 'ORD'
   // prunePlan keeps every entry before the cursor, so these lead its output.
   const answered = Math.min(position, entries.length)
   const round: ResumedRound = { questions: [], items: [], remaining: 0 }

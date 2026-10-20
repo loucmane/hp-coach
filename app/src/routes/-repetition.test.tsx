@@ -12,9 +12,10 @@
 //   - a fresh round's stored plan carries each new question's source, and a
 //     resume answers against exactly that source — never one re-derived
 //     from the due list, which changes between pause and resume;
-//   - until the server stores those links, this device keeps them: a
-//     remount after a failed or late write resumes with them and writes
-//     them again, and a round whose links are lost plays on, never ends;
+//   - the links last only once the server stores them: until then only the
+//     visit that picked the round has them, the device keeps none, and a
+//     round whose links are lost plays on as plain questions — whatever
+//     the trap index does — grading nothing, never ending;
 //   - a resume picks up at the saved cursor and skips a question whose
 //     mistake left the due list without ending the round;
 //   - a fresh round never treats the questions just answered as unseen;
@@ -35,7 +36,6 @@ import type { SessionPlayerProps } from '@/components/session/SessionPlayer'
 import { EXCLUDED_QUESTIONS } from '@/data/figureOverrides'
 import { ANSWER_LETTERS, type AnswerLetter, loadBank, type Question } from '@/data/questions'
 import { endedSessionIdsThisTab } from '@/lib/endedSessions'
-import { pendingLinksFor } from '@/lib/replay'
 import type * as TrapIndexModule from '@/lib/trapIndex'
 
 const h = vi.hoisted(() => ({
@@ -50,6 +50,8 @@ const h = vi.hoisted(() => ({
     refetch: vi.fn(),
   },
   traps: {} as Record<string, string>,
+  /** What the static trap-index fetch does: serves `traps`, fails, or 404s. */
+  trapLoad: 'served' as 'served' | 'failed' | 'missing',
   session: null as ActiveSession | null,
   /** Readers of `search` and `session`, re-rendered on a write. */
   listeners: new Set<() => void>(),
@@ -157,7 +159,15 @@ vi.mock('@/components/motion/QuestionPan', () => ({
 vi.mock('@/components/motion/DueNumeral', () => ({ DueHeaderStation: () => null }))
 vi.mock('@/lib/trapIndex', async (importOriginal) => {
   const actual = await importOriginal<typeof TrapIndexModule>()
-  return { ...actual, loadTrapIndex: async () => actual.buildTrapIndex(h.traps) }
+  return {
+    ...actual,
+    // As the real loader resolves: a failed fetch throws, a 404 is no traps.
+    loadTrapIndex: async () => {
+      if (h.trapLoad === 'failed') throw new Error('failed to load the trap index: HTTP 503')
+      if (h.trapLoad === 'missing') return actual.EMPTY_TRAP_INDEX
+      return actual.buildTrapIndex(h.traps)
+    },
+  }
 })
 
 import { Route } from './repetition'
@@ -320,6 +330,7 @@ beforeEach(() => {
   h.realPlayer = false
   h.exposure = { data: {}, isError: false, refetch: vi.fn(async () => ({ data: {} })) }
   h.traps = { [las[0].qid]: 'LAS-TYPE-T', [las[1].qid]: 'LAS-TYPE-T' }
+  h.trapLoad = 'served'
   h.due = [mistake(101, las[0].qid), mistake(102, ord.qid)]
   h.session = null
   for (const fn of [h.review, h.record, h.resolve, h.link, h.submitAttempt]) fn.mockReset()
@@ -470,6 +481,62 @@ describe('/repetition — a fresh round stores its links', () => {
     h.session = activeRound(7, plan)
     view.rerender(<Screen />)
     expect(h.link).not.toHaveBeenCalled()
+  })
+})
+
+describe('/repetition — the device keeps no round links', () => {
+  // Misses A and B share a trap, so a fresh round plays new questions X and
+  // Y. Its links reach the server, or nothing at all.
+  it('writes none, so an interrupted creation leaves nothing for another session to take', async () => {
+    const setItem = vi.spyOn(Storage.prototype, 'setItem')
+    try {
+      h.traps = oneTrap()
+      const [a, b] = las.map((q) => q.qid)
+      h.due = [mistake(101, a), mistake(102, b)]
+      // A fresh round is picked, but its session is never created.
+      const view = render(<Screen />)
+      const [x, y] = await pick()
+      const linked = [`${x}~${a}`, `${y}~${b}`]
+      // Another session then plays the same questions, without links of its
+      // own: another account on this device, say.
+      h.session = activeRound(8, [x, y])
+      remount(view)
+      expect(await resume([x, y], 0)).toEqual([x, y])
+      player().onWrong?.(question(x))
+      player().onCorrect?.(question(y))
+
+      // None of the first round's links reach it: nothing is stored with it
+      // or graded against them.
+      expect(h.link).not.toHaveBeenCalled()
+      expect(h.review).not.toHaveBeenCalled()
+      expect(h.record).not.toHaveBeenCalled()
+      expect(
+        setItem.mock.calls.filter(
+          ([key, value]) =>
+            key === 'hpc-repetera-links' || linked.some((entry) => value.includes(entry)),
+        ),
+      ).toEqual([])
+    } finally {
+      setItem.mockRestore()
+    }
+  })
+
+  it('never reads a links record left in storage, by an earlier build or another account', async () => {
+    h.traps = oneTrap()
+    const [a, b, x, y] = las.map((q) => q.qid)
+    h.due = [mistake(101, a), mistake(102, b)]
+    window.localStorage.setItem(
+      'hpc-repetera-links',
+      JSON.stringify({ version: 1, sessionId: null, plan: [`${x}~${a}`, `${y}~${b}`] }),
+    )
+    h.session = activeRound(8, [x, y])
+    render(<Screen />)
+    expect(await resume([x, y], 0)).toEqual([x, y])
+    player().onWrong?.(question(x))
+    player().onCorrect?.(question(y))
+    expect(h.link).not.toHaveBeenCalled()
+    expect(h.review).not.toHaveBeenCalled()
+    expect(h.record).not.toHaveBeenCalled()
   })
 })
 
@@ -664,86 +731,83 @@ describe('/repetition — a resume never reopens an answered question (real Sess
   })
 })
 
-describe('/repetition — a round whose link write failed, is late or was lost (real SessionPlayer)', () => {
-  // Misses A and B share a trap, so a round started in the real player plays
-  // new questions X and Y. SessionPlayer stores them as plain qids; only the
-  // route's later write adds the links.
+describe('/repetition — a round whose links never reached the server (real SessionPlayer)', () => {
+  // Misses A, B and C share a trap, so a round started in the real player
+  // plays new questions X, Y and Z. SessionPlayer stores them as plain qids,
+  // and only the route's later write adds the links: until it lands, only
+  // the visit that picked the round has them.
   async function startLiveRound() {
     h.traps = oneTrap()
-    const [a, b] = las.map((q) => q.qid)
-    h.due = [mistake(101, a), mistake(102, b)]
+    const [a, b, c] = las.map((q) => q.qid)
+    h.due = [mistake(101, a), mistake(102, b), mistake(103, c)]
     const view = renderLive()
     await act(async () => {
       fireEvent.click(screen.getByTestId('drill-start'))
     })
     const x = await shownQid()
-    const [, y] = h.session?.plan ?? []
-    if (!x || !y) throw new Error('the round did not start')
-    return { view, a, b, x, y, linked: [`${x}~${a}`, `${y}~${b}`] }
+    const [, y, z] = h.session?.plan ?? []
+    if (!x || !y || !z) throw new Error('the round did not start')
+    return { view, b, c, x, y, z }
   }
 
-  it('a failed write: a remount resumes with the links this device kept, writes them again, and plays on', async () => {
+  it('links lost across a remount: the round plays on as plain questions, grades nothing and does not end', async () => {
+    // The write fails, and nothing on this device keeps the links.
     h.link.mockImplementation((_vars: unknown, options?: { onSettled?: () => void }) =>
       options?.onSettled?.(),
     )
-    const { view, b, x, y, linked } = await startLiveRound()
-    expect(h.session?.plan).toEqual([x, y])
+    const { view, b, c, x, y, z } = await startLiveRound()
+    expect(h.session?.plan).toEqual([x, y, z])
     await answer(question(x), true)
     await next()
+    // The visit that picked the round still knows X's source.
+    expect(h.review.mock.calls).toEqual([[{ id: 101, correct: true }]])
 
     // X answered right moved A out of the due list. The student leaves on
-    // Y; the server still holds plain qids.
-    h.due = [mistake(102, b)]
+    // Y, and the server still holds plain qids.
+    h.due = [mistake(102, b), mistake(103, c)]
+    h.review.mockClear()
     h.link.mockClear()
     view.unmount()
     renderLive()
     expect(await shownQid()).toBe(y)
     await answer(question(y), false)
-
-    expect(h.review.mock.calls).toEqual([
-      [{ id: 101, correct: true }],
-      [{ id: 102, correct: false }],
-    ])
-    expect(h.record).not.toHaveBeenCalled()
-    expect(ended()).toBe(false)
-    expect(linkedPlans()).toContainEqual({ sessionId: 7, plan: linked })
-  })
-
-  it('a late write: a remount before it lands resumes with the links this device kept', async () => {
-    // The write stays in flight through the remount.
-    const { view, x, y, linked } = await startLiveRound()
-    view.unmount()
-    renderLive()
-    expect(await shownQid()).toBe(x)
-    await answer(question(x), false)
-    expect(h.review.mock.calls).toEqual([[{ id: 101, correct: false }]])
-
-    // Now it lands: the session stores the links, nothing is kept here any
-    // more, and nothing is written again.
-    act(() => {
-      if (h.session) setSession({ ...h.session, plan: linked })
-    })
-    h.link.mockClear()
     await next()
-    expect(await shownQid()).toBe(y)
+    expect(await shownQid()).toBe(z)
+    await answer(question(z), true)
+
+    // Y's and Z's sources are unknown on this mount: nothing is reviewed or
+    // recorded, so B and C stay due for a later round. Nothing is written
+    // either: the links went with the visit that picked them.
+    expect(h.review).not.toHaveBeenCalled()
+    expect(h.record).not.toHaveBeenCalled()
     expect(h.link).not.toHaveBeenCalled()
-    expect(pendingLinksFor(7, [x, y])).toBeNull()
     expect(ended()).toBe(false)
+    // Only Nästa on the last answered question ends the round.
+    await next()
+    expect(ended()).toBe(true)
   })
 
-  it('links lost (another device): the new questions play on, graded nothing, and the round does not end', async () => {
+  it.each([
+    ['is served', 'served'],
+    ['fails to load', 'failed'],
+    ['is missing (404)', 'missing'],
+  ] as const)('links lost while the trap index %s: the round plays on as plain questions and does not end', async (_label, load) => {
     h.traps = oneTrap()
-    const [, b, x, y] = las.map((q) => q.qid)
-    // No links stored, none kept on this device. X is answered; B is due.
-    h.session = { ...activeRound(7, [x, y]), position: 1, currentQuestionId: y }
-    h.due = [mistake(102, b)]
+    h.trapLoad = load
+    const [, b, c, x, y, z] = las.map((q) => q.qid)
+    // No links stored: another device, say. X is answered; B and C are due.
+    h.session = { ...activeRound(7, [x, y, z]), position: 1, currentQuestionId: y }
+    h.due = [mistake(102, b), mistake(103, c)]
     h.search = { qid: y }
     renderLive()
     expect(await shownQid()).toBe(y)
     await answer(question(y), false)
+    await next()
+    expect(await shownQid()).toBe(z)
+    await answer(question(z), true)
 
-    // Y's source is unknown here: nothing is reviewed, nothing recorded —
-    // B stays due for a later round.
+    // Their sources are unknown here: nothing is reviewed or recorded, and
+    // B and C stay due for a later round.
     expect(h.review).not.toHaveBeenCalled()
     expect(h.record).not.toHaveBeenCalled()
     expect(ended()).toBe(false)

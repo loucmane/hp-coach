@@ -19,11 +19,12 @@
 //
 // The links travel with the round. SessionPlayer stores the session's plan
 // as plain qids, so once that session exists the route rewrites each new
-// question's entry as "X~A" (PUT /api/mistakes/round/:sessionId). Until
-// that write lands, this device keeps the links too: a resume here reads
-// them back and writes them again. A resume, here or on another device,
-// answers against exactly those sources; one that finds them lost plays
-// the round's new questions on and grades none of them.
+// question's entry as "X~A" (PUT /api/mistakes/round/:sessionId), and again
+// whenever the session shows up without them. They last once that write
+// lands, and only then: nothing keeps them on the device. A resume, here or
+// on another device, answers against exactly those sources; one that finds
+// them lost plays the round's new questions on as plain questions, grades
+// none of them, and never ends the round for want of them.
 
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -42,8 +43,6 @@ import { SECTION_KEYS, type Section } from '@/data/questions'
 import { useViewport } from '@/hooks/useViewport'
 import { endedSessionIdsThisTab } from '@/lib/endedSessions'
 import {
-  dropPendingLinks,
-  pendingLinksFor,
   pickReplayQuestions,
   planEntry,
   REPETITION_SESSION_SIZE,
@@ -51,7 +50,6 @@ import {
   resolveReplayPlan,
   resumeQid,
   samePlay,
-  savePendingLinks,
 } from '@/lib/replay'
 
 type RepetitionSearch = { qid?: string; done?: number; start?: true; section?: Section }
@@ -134,38 +132,28 @@ function RepetitionScreen() {
       ? resumeQid(urlQid, roundSession.plan, roundSession.position, roundSession.currentQuestionId)
       : (urlQid ?? null)
 
-  // The links of the round this device picked (lib/replay.ts planEntry)
-  // until the server stores them. SessionPlayer creates the session from
-  // plain qids right after the pick, so the links are written once that
-  // session shows up here, and again whenever it shows up without them:
-  // after a failed write, or when a slower response of SessionPlayer's own
-  // puts the plain plan back in the cache. They are also kept on this
-  // device (savePendingLinks), so a write that failed or has not landed
-  // when the student leaves is sent again on the next mount, and a resume
-  // meanwhile reads them back (resolvePlan below).
+  // The links of the round this visit picked (lib/replay.ts planEntry);
+  // null when the round has none to store, or when this visit resumed a
+  // stored round. SessionPlayer creates the session from plain qids right
+  // after the pick, so the links are written once that session shows up
+  // here, and again whenever it shows up without them: after a failed
+  // write, or when a slower response of SessionPlayer's own puts the plain
+  // plan back in the cache. Nothing else keeps them. They last once the
+  // write lands; a visit that ends first takes them along, and a resume
+  // then plays those questions as plain ones (resolvePlan below).
   const linkedPlan = useRef<string[] | null>(null)
   const linking = useRef(false)
   useEffect(() => {
+    const plan = linkedPlan.current
     const stored = roundSession?.plan
-    if (!roundSession || !stored || roundSession.endedAt != null) return
-    const sessionId = roundSession.id
-    // The links of this round, from this visit or kept from an earlier one;
-    // pendingLinksFor defers to a stored plan that has its links already.
-    const kept = linkedPlan.current
-    const plan = kept && samePlay(stored, kept) ? kept : pendingLinksFor(sessionId, stored)
-    // Only while the session lacks them. Once it has them (or this is not
-    // the round they belong to), nothing is left to keep here.
-    if (!plan || stored.every((entry, i) => entry === plan[i])) {
-      dropPendingLinks(sessionId, stored)
-      return
-    }
+    if (!plan || !roundSession || !stored || roundSession.endedAt != null) return
+    // Only this round's session, and only while it lacks the links.
+    if (!samePlay(stored, plan) || stored.every((entry, i) => entry === plan[i])) return
     if (linking.current) return
     linking.current = true
-    savePendingLinks(plan, sessionId)
     linkRound(
-      { sessionId, plan },
+      { sessionId: roundSession.id, plan },
       {
-        onSuccess: () => dropPendingLinks(sessionId),
         onSettled: () => {
           linking.current = false
         },
@@ -231,7 +219,7 @@ function RepetitionScreen() {
   // round has no links left to write.
   const onComplete = useCallback(
     (sessionId: number) => {
-      dropPendingLinks(sessionId)
+      linkedPlan.current = null
       navigate({ to: '/repetition', search: { done: sessionId }, replace: true })
     },
     [navigate],
@@ -302,13 +290,13 @@ function RepetitionScreen() {
           // /repetition's sessions (kind=adaptive_review) are
           // mistake-backed; /drill's resolvePlan doesn't prune.
           //
-          // A stored plan still without the links this device keeps for the
-          // round (their write failed, or has not landed) is read with them;
-          // the effect above writes them again. Without them, on another
-          // device say, its new questions play on and are graded nothing.
-          const pending = roundSession ? pendingLinksFor(roundSession.id, entries) : null
-          linkedPlan.current = pending
-          const resumed = await resolveReplayPlan(pending ?? entries, await dueNow(), position)
+          // A stored plan whose links never landed (the write failed or is
+          // still in flight, or the visit that picked the round is gone) is
+          // read as it is: its new questions play on as plain questions and
+          // grade nothing, and neither that nor the trap index can end the
+          // round. A resumed round has no links of this visit's to write.
+          linkedPlan.current = null
+          const resumed = await resolveReplayPlan(entries, await dueNow(), position)
           // Nothing left from the saved cursor on: the round is over. Treat
           // the session as complete rather than replaying an answered
           // question. Returning [] reuses the existing "stored plan no
@@ -328,11 +316,8 @@ function RepetitionScreen() {
           })
           playRound(items)
           // Only a new question carries a link; without one, the plain
-          // plan SessionPlayer stores is already exact. With one, the links
-          // are kept on this device until the server stores them.
-          const linked = items.some((item) => item.sibling) ? items.map(planEntry) : null
-          linkedPlan.current = linked
-          if (linked) savePendingLinks(linked)
+          // plan SessionPlayer stores is already exact.
+          linkedPlan.current = items.some((item) => item.sibling) ? items.map(planEntry) : null
           return items.map((item) => item.question)
         }}
         idleEyebrow="Repetition"

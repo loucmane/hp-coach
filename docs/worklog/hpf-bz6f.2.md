@@ -859,3 +859,180 @@ wrap in the `ended()` helper.
   update and on each mount until the round ends, the same as round 2's
   in-visit retry. That is at most one request per answer.
 - Not visually verified. Nothing visible changed in round 3.
+
+## Round 4
+
+Codex's narrow re-review of 938f478 (review bead hpf-wsmf → hpf-zb3q)
+returned **HOLD** with two P2s, both from round 3's workarounds. This round
+fixes them by removing code. The round-3 stale-cursor fix (P1) is kept as
+accepted. Every write is inside the admitted set. There is no worker change,
+and `SessionPlayer.tsx` is untouched. Changes are staged and uncommitted.
+
+The harness refused the Edit to `docs/worklog/hpf-bz6f.2.md` (don't-ask
+mode), as in round 1. This complete file was saved in the worker's
+scratchpad for the operator to copy over.
+
+### P2-a: the device links store was unowned
+
+`savePendingLinks` kept a record under `hpc-repetera-links` with a null
+`sessionId` until the session existed. A failed creation left that record
+behind, and `pendingLinksFor` handed it to any later session, of any
+account, that played the same questions.
+
+**Fix: the store is gone.** `PENDING_LINKS_KEY`, `savePendingLinks`,
+`pendingLinksFor`, `dropPendingLinks`, their tests and every route call are
+removed. The app writes no links to `localStorage` and reads none. A record
+left there by an earlier build is inert.
+
+What remains is round 2's mechanism:
+- The links live only in the visit that picked the round (`linkedPlan`, a
+  ref).
+- The PUT is sent once the round's session shows up. It is sent again
+  whenever the session shows up without its links while it is open: each
+  Nästa's PATCH response, or any other change to the session in the cache,
+  such as a slower response that puts the plain plan back. One write is in
+  flight at a time.
+- The ref is cleared when this visit resumes a stored round and when the
+  round completes.
+- Nothing outlives the mount. A new mount has no links to send. A remount,
+  reload or other device before the PUT lands resumes on the lost-links
+  path below.
+
+### P2-b: a missing trap index ended a lost-links round
+
+`resolveReplayPlan` admitted an unlinked plain question only if the trap
+index tagged it. A failed or 404 load gave `EMPTY_TRAP_INDEX`, so every
+unlinked new question was dropped. `remaining` hit 0, and `SessionPlayer`'s
+stale-plan path sent `end: true` for the unfinished round.
+
+**Fix: a resume never reads the trap index** (`resolveReplayPlan`). In a
+plan without links, from the cursor on, any plain question outside ORD with
+no due mistake of its own is played as a plain question. It is shown and
+answerable, records nothing and moves no mistake. A new question is never
+ORD: the picker gives ORD no new question, and a new question shares its
+source's section. So a resume can no longer drop a round's new questions,
+whatever the index does: it can serve the question, fail, 404, or have
+changed since the pick. `remaining === 0` still means nothing is left to play
+from the cursor on.
+
+**Scope, on purpose.** Two kinds of plain entry keep the accepted #290 skip.
+Neither can be a new question whose link was lost, so skipping them never
+ends a round because links or the index are missing:
+1. **ORD**, for the reason above.
+2. **A plain entry in a plan that stores links.** The server stores a
+   round's links whole, so that entry is a same-question repeat, and its
+   mistake is done.
+
+Linked entries are unchanged too (round 2): a new question whose stored
+source left the due list is skipped.
+
+**Cost.** In a plan without links, a same-question repeat outside ORD whose
+mistake left the due list is now shown again, ungraded, instead of skipped.
+The usual case is a question answered at the cursor before Nästa. Round 3
+accepted this for trapped questions; without the index it covers untagged
+ones as well.
+
+### Tests
+
+`app/src/routes/-repetition.test.tsx`:
+- The trap-index mock can serve the index, fail like the real loader, or
+  return the 404 result (`h.trapLoad`).
+- **Lost links across a remount (real player).** A round of three new
+  questions X, Y and Z starts, and the PUT fails. X is answered, Next, leave.
+  After the remount, Y and Z are shown and answerable. Their answers review
+  and record nothing, no PUT is sent, and there is no end mutation. Only Nästa
+  after Z, the last question, ends the round.
+- **Lost links while the trap index is served, fails, or is missing (404),
+  real player, `it.each`.** A plain plan X, Y, Z sits at position 1. Y and
+  then Z play, nothing is graded, and there is no end mutation. The `served`
+  row replaces round 3's "links lost (another device)" test.
+- **The device keeps no round links.**
+  - An interrupted creation is followed by another session with the same
+    questions. Nothing is linked into it or graded, and no `setItem` call
+    carries the key or a link.
+  - A record seeded under the old key, unbound like the one in the finding,
+    is never read.
+- Removed: "a failed write …" and "a late write …". Both expected the device
+  copy.
+
+`app/src/lib/replay.test.ts`:
+- Removed: the pending store's 7 tests and their imports.
+- "Skips an untrapped plain question … (#290)" is replaced. Its
+  expectation was round 3's index rule.
+- The resolve-level "plays on through a plan whose links never landed" no
+  longer passes an index. It now keeps the LÄS question and still skips the
+  ORD one.
+- New, `it.each`: an unlinked plan plays on when the index fails (503), is
+  missing (404), or does not know the questions.
+- New guard: a plain entry beside a link is still skipped (#290).
+
+### Red-first evidence
+
+The new tests ran against 938f478, unmodified.
+
+- `app` `pnpm test src/routes/-repetition.test.tsx`: **`Tests 5 failed | 22
+  passed (27)`**.
+  - Interrupted creation: `h.link` was called once with session 8 and
+    `[LÄS-013~LÄS-011, LÄS-014~LÄS-012]`. The unbound copy was written into
+    another session.
+  - Leftover record: the same PUT, from the seeded record.
+  - Lost links across a remount: `h.review` got `{ id: 102, correct: false }`
+    and `{ id: 103, correct: true }`. The device copy had restored the links.
+  - Index fails, and index 404: no question was shown. The player showed
+    "Övningen är inte längre tillgänglig — starta en ny.", which is the
+    stale-plan path that ends the session.
+  - The `served` row passed, as it should on either code.
+- `app` `pnpm test src/lib/replay.test.ts`: **`Tests 4 failed | 46 passed
+  (50)`**.
+  - The resolve-level lost-links case expected `[LÄS-012, ORD-001]` and got
+    `[ORD-001]`. The default 404 index dropped the LÄS question.
+  - The three index cases each expected `[LÄS-013, LÄS-014, LÄS-015]` and got
+    `[LÄS-013]`: history only, and both questions ahead were dropped.
+  - The new #290 guard passed, as it should on either code.
+
+The tests have not changed since the red runs.
+
+### Verify (round 4, final tree)
+
+| Check | Result |
+|---|---|
+| app `pnpm typecheck` | pass |
+| app `pnpm lint` | pass. The same 4 pre-existing infos in devbake files, none in this change. |
+| app `pnpm test` | **113 files, 4048 / 4048 pass** |
+| worker `pnpm test` | **24 files, 411 / 411 pass** (no worker change) |
+
+The count is one lower than round 3's 4049. Ten tests were removed (7 store
+tests, the index-rule test, and the failed-write and late-write tests). Nine
+were added, and round 3's lost-links test became the `served` row.
+
+### Residuals
+
+- **The links still land after creation, and the device no longer covers
+  the gap.** A remount, reload or other device before the PUT lands plays the
+  round's new questions ungraded. Their sources stay due for the next round,
+  and nothing is double-counted. The `planEntries` change described in round
+  3 closes this gap.
+- **A late PUT does not re-map a visit that has already resumed.** That
+  visit's round is built at the resume. The next resume reads the links.
+- **Within the visit, the links still go to the open round that plays the
+  same questions** (round 2's rule, unchanged). Suppose this visit's session
+  creation failed, and another open round with the same questions, in the
+  same order, then shows up in its cache. That round would get these links.
+  The cache holds only the signed-in user's sessions, and the next pick,
+  resume or completion clears the ref. Nothing survives the mount. The
+  `planEntries` change removes this too.
+- **Theoretical.** A new question whose link would exceed 80 characters is
+  stored plain beside other links, and would then be skipped. This cannot
+  happen today: the longest qid in the index is 29 characters, so a link is
+  at most 59.
+- Unchanged from earlier rounds:
+  - a failed due read on a cold resume reads as "nothing due";
+  - the cold-refresh auto-resume;
+  - the pruned-cursor drift.
+- Not visually verified. Nothing visible changed in round 4.
+
+### Follow-up for the coordinator (not done here)
+
+Pass linked plan entries at session creation through `SessionPlayer`. Round
+3's worklog has the exact prop change. After that, the PUT and the
+plain-question fallback can go.
