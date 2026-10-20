@@ -12,13 +12,7 @@ import { ArrowRight, ChevronRight, TrendingUp } from 'lucide-react'
 import { useState } from 'react'
 
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
-import {
-  type Destination,
-  fmtDelta,
-  fmtScore,
-  useKeyMap,
-  type WidthKey,
-} from '@/components/devbake/redesign/r1Kit'
+import { fmtDelta, fmtScore, useKeyMap, type WidthKey } from '@/components/devbake/redesign/r1Kit'
 import type { PrognosisView } from '@/components/devbake/redesign/viewModel'
 import { Kc, Segs } from './parts'
 
@@ -38,12 +32,12 @@ export function InstrumentHome({
   width,
   live,
   onResume,
-  onGo,
+  onHistory,
 }: {
   width: WidthKey
   live: boolean
   onResume: () => void
-  onGo: (d: Destination) => void
+  onHistory: () => void
 }) {
   const { data, actions } = useDirectionData()
   const {
@@ -283,7 +277,7 @@ export function InstrumentHome({
                 ))}
               </tbody>
             </table>
-            <button type="button" className="in-link" onClick={() => onGo('framsteg')}>
+            <button type="button" className="in-link" onClick={onHistory}>
               Alla pass i Framsteg
               <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
             </button>

@@ -51,8 +51,14 @@ import {
   useWebFonts,
 } from '@/components/devbake/redesign/r1Kit'
 import { InstrumentDrill } from './InstrumentDrill'
+import { InstrumentFramsteg } from './InstrumentFramsteg'
 import { InstrumentHome } from './InstrumentHome'
 import { InstrumentOva } from './InstrumentOva'
+import {
+  InstrumentProvpass,
+  InstrumentProvResult,
+  InstrumentProvRunning,
+} from './InstrumentProvpass'
 import { InstrumentQuant } from './InstrumentQuant'
 import { InstrumentRepetera } from './InstrumentRepetera'
 import { DEST_ICONS, G_KEYS, Kc, Mark, MOD, Readout } from './parts'
@@ -79,6 +85,11 @@ export function Instrument(props: DirectionProps) {
   // The destination lives at the root so the drill's rail and its end-of-
   // unit screen can send the reader straight to one.
   const [dest, setDest] = useState<Destination>('idag')
+  const [passId, setPassId] = useState<string | null>(null)
+  const [passNotice, setPassNotice] = useState('')
+  useEffect(() => {
+    if (props.screen !== 9) setPassId(null)
+  }, [props.screen])
   const [followSystem, setFollowSystem] = useState(false)
   const { onTheme, theme } = props
 
@@ -113,7 +124,21 @@ export function Instrument(props: DirectionProps) {
       data-testid="rd-instrument"
       lang="sv"
     >
-      {props.screen === 6 || props.screen === 7 ? (
+      {props.screen === 9 && passId ? (
+        <InstrumentProvRunning
+          key={passId}
+          passId={passId}
+          live={props.live}
+          onExit={(abandoned) => {
+            setPassId(null)
+            setPassNotice(
+              abandoned
+                ? 'Provpasset avbröts och fick inget resultat.'
+                : 'Det valda passet kunde inte startas.',
+            )
+          }}
+        />
+      ) : props.screen === 6 || props.screen === 7 ? (
         <InstrumentQuant
           key={`${props.screen}-${props.screen === 7 ? data.drills.dtk.id : data.drills.quant.id}`}
           {...props}
@@ -131,8 +156,21 @@ export function Instrument(props: DirectionProps) {
         <InstrumentFrame
           {...props}
           theming={theming}
-          dest={props.screen === 5 || props.screen === 8 ? 'ova' : dest}
+          dest={
+            props.screen === 5 || props.screen === 8
+              ? 'ova'
+              : props.screen === 9 || props.screen === 10
+                ? 'provpass'
+                : props.screen === 11
+                  ? 'framsteg'
+                  : dest
+          }
           setDest={setDest}
+          onStartPass={(id) => {
+            setPassNotice('')
+            setPassId(id)
+          }}
+          passNotice={passNotice}
         />
       )}
     </div>
@@ -147,10 +185,14 @@ function InstrumentFrame({
   theming,
   dest,
   setDest,
+  onStartPass,
+  passNotice,
 }: DirectionProps & {
   theming: Theming
   dest: Destination
   setDest: (d: Destination) => void
+  onStartPass: (id: string) => void
+  passNotice: string
 }) {
   const { data, actions } = useDirectionData()
   const { exam: EXAM, today: TODAY, week: WEEK, ovaDue: OVA_DUE, resume: RESUME } = data.home
@@ -159,6 +201,7 @@ function InstrumentFrame({
   const [collapsed, setCollapsed] = useState(screen === 4)
   const [menu, setMenu] = useState(screen === 4)
   const [palette, setPalette] = useState(false)
+  const [historyFirst, setHistoryFirst] = useState(false)
   const pageRef = useRef<HTMLDivElement>(null)
   // biome-ignore lint/correctness/useExhaustiveDependencies: destination changes move focus to the page heading
   useEffect(() => {
@@ -184,6 +227,7 @@ function InstrumentFrame({
   const go = useCallback(
     (d: Destination) => {
       setMenu(false)
+      setHistoryFirst(false)
       setDest(d)
       actions.go(d)
     },
@@ -205,6 +249,7 @@ function InstrumentFrame({
   useEffect(() => {
     if (!live) return
     const onKey = (e: KeyboardEvent) => {
+      if (pageRef.current?.querySelector('dialog[open]')) return
       if (!(e.metaKey || e.ctrlKey)) return
       const k = e.key.toLowerCase()
       if (k === 'k') {
@@ -243,7 +288,17 @@ function InstrumentFrame({
   }
   // Keyboards without Ö reach Öva with G then O.
   keys.o = keys[G_KEYS.ova]
-  useKeyMap(keys, live && !palette)
+  useKeyMap(
+    Object.fromEntries(
+      Object.entries(keys).map(([key, run]) => [
+        key,
+        () => {
+          if (!pageRef.current?.querySelector('dialog[open]')) run()
+        },
+      ]),
+    ),
+    live && !palette,
+  )
 
   const resume = () => {
     actions.resume()
@@ -283,12 +338,26 @@ function InstrumentFrame({
   ]
 
   const page =
-    screen === 8 ? (
+    screen === 10 ? (
+      <InstrumentProvResult />
+    ) : dest === 'provpass' ? (
+      <InstrumentProvpass onStart={onStartPass} notice={passNotice} />
+    ) : dest === 'framsteg' ? (
+      <InstrumentFramsteg key={String(historyFirst)} initialHistory={historyFirst} />
+    ) : screen === 8 ? (
       <InstrumentRepetera />
     ) : dest === 'ova' ? (
       <InstrumentOva />
     ) : dest === 'idag' ? (
-      <InstrumentHome width={width} live={live && !palette} onResume={resume} onGo={go} />
+      <InstrumentHome
+        width={width}
+        live={live && !palette}
+        onResume={resume}
+        onHistory={() => {
+          go('framsteg')
+          setHistoryFirst(true)
+        }}
+      />
     ) : (
       <InstrumentStub dest={dest} />
     )
