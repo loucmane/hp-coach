@@ -16,5 +16,8 @@ export const meta: DirectionMeta = {
   ],
   risk: 'Risk: överlast och streak-ångest. Svar: ingen rörelse under läsning, ett lugnt läge och en förlåtande veckorytm utan förlust.',
   references: 'Brilliant, Duolingo 2026, Speak, Material 3 Expressive.',
-  screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+  screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  // c-spar.md screen 13 / §5 question 8: the direction owns its palette;
+  // coach voice stays hidden until it has an effect.
+  omits: { konto: ['palette', 'coach'] },
 }

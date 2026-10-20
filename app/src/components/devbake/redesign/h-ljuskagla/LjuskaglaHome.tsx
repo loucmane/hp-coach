@@ -1,11 +1,6 @@
 import { ArrowRight, CornerDownRight, LampDesk } from 'lucide-react'
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
-import {
-  DESTINATIONS,
-  type Destination,
-  fmtDelta,
-  fmtScore,
-} from '@/components/devbake/redesign/r1Kit'
+import { DESTINATIONS, fmtDelta, fmtScore } from '@/components/devbake/redesign/r1Kit'
 import type {
   PlanItemKind,
   PlanItemView,
@@ -278,17 +273,13 @@ export function LjuskaglaHome({ onResume, onOpen }: { onResume: () => void; onOp
 }
 
 /**
- * The doors this direction has not built yet, as round 1 left them: a host
- * that navigates opens its own screen instead, so these show only where a
- * door cannot leave the frame (a bare test mount, the real-app preview).
+ * The door this direction has not built yet (Uppslag), as round 1 left it:
+ * a host that navigates opens its own screen instead, so this shows only
+ * where a door cannot leave the frame (a bare test mount, the real-app
+ * preview).
  */
-export function LjuskaglaDestination({
-  destination,
-}: {
-  destination: Exclude<Destination, 'idag' | 'ova'>
-}) {
+export function LjuskaglaDestination({ destination }: { destination: 'uppslag' }) {
   const { data } = useDirectionData()
-  const { exam, prognosis, recent } = data.home
   const d = DESTINATIONS.find((item) => item.id === destination) ?? DESTINATIONS[0]
   const lesson = data.uppslag.open
   const catalog = data.uppslag.sections.find((s) => s.section === lesson.section)
@@ -297,13 +288,7 @@ export function LjuskaglaDestination({
       <p className="lj-eyebrow">HP-Coach</p>
       <h1>{d.label}</h1>
       <p>{d.blurb}</p>
-      {destination === 'framsteg' && (
-        <>
-          <Prognosis prognosis={prognosis} />
-          <Recent recent={recent} />
-        </>
-      )}
-      {destination === 'uppslag' && catalog && (
+      {catalog && (
         <section className="lj-shade">
           <h2>Frågetyper att känna igen</h2>
           {catalog.entries.map((entry) => (
@@ -312,18 +297,6 @@ export function LjuskaglaDestination({
               <p>{entry.summary ?? 'Leta efter stöd i texten och jämför varje del av svaret.'}</p>
             </details>
           ))}
-        </section>
-      )}
-      {destination === 'provpass' && (
-        <section className="lj-shade">
-          <h2>Inför {exam.label}</h2>
-          <p>
-            {exam.name} · {exam.dateLabel}
-          </p>
-          <p>
-            Ett provpass ger en sammanhängande stund med tidtagning. Här ser du dina senaste pass.
-          </p>
-          <Recent recent={recent} />
         </section>
       )}
     </div>

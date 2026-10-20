@@ -16,5 +16,5 @@ export const meta: DirectionMeta = {
   risk: 'Risk: skuggad text kan försvinna ur sammanhanget. Svar: läsbar text även i skuggan, tydlig avstängning av styckeljuset och ett fullvärdigt ljust tema.',
   references:
     'iA Writers fokusläge, Ulysses skrivmaskinsläge, Kindles och Apple Books nattlägen, teaterns ljussättning och Endels stillhet.',
-  screens: [1, 2, 3, 4, 5, 6, 7, 8],
+  screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
 }

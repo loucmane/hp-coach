@@ -56,6 +56,700 @@ function mount(
 
 const clone = () => structuredClone(FIXTURE_DATA)
 
+describe('Spår batch 3', () => {
+  beforeAll(stubLayout)
+
+  it('opens the supplied lesson and requests another without inventing its body', () => {
+    const openLesson = vi.fn()
+    mount(12, { actions: { openLesson } })
+    const open = FIXTURE_DATA.uppslag.open
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(open.title)
+    const other = FIXTURE_DATA.uppslag.sections
+      .find((s) => s.section === open.section)
+      ?.entries.find((e) => e.id !== open.id)
+    if (!other) throw new Error('fixture needs another entry')
+    fireEvent.click(screen.getByTestId(`rd-uppslag-entry-${other.id}`))
+    expect(openLesson).toHaveBeenCalledWith(other.id)
+    expect(screen.getByRole('status')).toHaveTextContent('Lektion begärd')
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(open.title)
+  })
+
+  it('disables practice when the supplied lesson has no examples', () => {
+    const data = clone()
+    data.uppslag.open.practice.questions = 0
+    mount(12, { data })
+    expect(screen.getByTestId('rd-lesson-practice')).toBeDisabled()
+  })
+
+  it('shows Konto with no current main destination and guards deletion by the exact word', () => {
+    const deleteAccount = vi.fn()
+    mount(13, { actions: { deleteAccount } })
+    expect(screen.getByTestId('rd-konto-identity')).toHaveTextContent(
+      FIXTURE_DATA.konto.identity.email,
+    )
+    expect(
+      screen.getByRole('navigation', { name: 'Huvudmeny' }).querySelector('[aria-current]'),
+    ).toBeNull()
+    fireEvent.click(screen.getByTestId('rd-konto-delete'))
+    expect(screen.getByTestId('rd-konto-delete-confirm')).toBeDisabled()
+    fireEvent.change(screen.getByTestId('rd-konto-delete-word'), { target: { value: 'radera ' } })
+    expect(screen.getByTestId('rd-konto-delete-confirm')).toBeDisabled()
+    fireEvent.change(screen.getByTestId('rd-konto-delete-word'), { target: { value: 'radera' } })
+    fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
+    expect(deleteAccount).toHaveBeenCalledTimes(1)
+    expect(screen.getByTestId('rd-spar')).not.toHaveTextContent(/Kontot är raderat|Raderar…|Sparat/)
+  })
+
+  it('grades ELF within screen 14, keeping English content and Swedish controls separate', () => {
+    const lock = vi.fn((q: DrillQuestion, letter: AnswerLetter) => ({
+      correct: q.answer === letter,
+    }))
+    const { onScreen } = mount(14, { actions: { drill: { lock } } })
+    const q = FIXTURE_DATA.drills.elf.questions[0]
+    expect(screen.getByTestId('rd-elf-passage')).toHaveAttribute('lang', 'en')
+    expect(screen.getByTestId('rd-badge').closest('[lang]')).toHaveAttribute('lang', 'sv')
+    fireEvent.click(screen.getByTestId(`rd-option-${q.answer}`))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(lock).toHaveBeenCalledTimes(1)
+    expect(screen.getByTestId('rd-verdict')).toHaveAttribute('data-correct', 'true')
+    expect(screen.getByTestId('rd-verdict').closest('[lang]')).toHaveAttribute('lang', 'sv')
+    expect(onScreen).not.toHaveBeenCalledWith(3)
+  })
+
+  it('says the plan is done when nothing is left to resume or start', () => {
+    const data = clone()
+    data.home.resume = null
+    data.home.plan.items.forEach((item) => {
+      item.completed = true
+    })
+    data.home.plan.allComplete = true
+    const openPlanItem = vi.fn()
+    mount(1, { data, actions: { openPlanItem } })
+    expect(screen.getByTestId('rd-spar')).toHaveTextContent('Dagens plan är klar')
+    for (const item of data.home.plan.items) {
+      const row = screen.getByRole('button', { name: new RegExp(item.title) })
+      expect(row).toBeDisabled()
+      fireEvent.click(row)
+    }
+    expect(openPlanItem).not.toHaveBeenCalled()
+  })
+
+  it('updates the lesson only when the provider delivers it, including an empty catalogue', () => {
+    const data = clone()
+    const open = data.uppslag.open
+    const other = data.uppslag.sections
+      .find((s) => s.section === open.section)
+      ?.entries.find((e) => e.id !== open.id)
+    if (!other) throw new Error('fixture needs another entry')
+    const tree = (value: DirectionData) => (
+      <DirectionDataProvider data={value}>
+        <Spar screen={12} width="desktop" theme="dark" live onScreen={vi.fn()} onTheme={vi.fn()} />
+      </DirectionDataProvider>
+    )
+    const { rerender } = render(tree(data))
+    fireEvent.click(screen.getByTestId(`rd-uppslag-entry-${other.id}`))
+    const updated = clone()
+    updated.uppslag.open = { ...open, id: other.id, title: 'Providerlevererad lektion' }
+    rerender(tree(updated))
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent('Providerlevererad lektion')
+    expect(screen.queryByText(/Lektion begärd/)).toBeNull()
+    expect(screen.getByRole('heading', { name: 'Providerlevererad lektion' })).toHaveFocus()
+    updated.uppslag.sections = []
+    rerender(tree({ ...updated }))
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent('Providerlevererad lektion')
+    expect(screen.getByText('Inget innehåll här ännu.')).toBeInTheDocument()
+  })
+
+  it('searches catalogue summaries and labels section tiles as reading actions', () => {
+    const openLesson = vi.fn()
+    const startDrill = vi.fn()
+    mount(12, { actions: { openLesson, startDrill } })
+    const other = FIXTURE_DATA.uppslag.sections.find(
+      (s) => s.section !== FIXTURE_DATA.uppslag.open.section,
+    )
+    if (!other?.entries[0]) throw new Error('fixture needs a section')
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: other.entries[0].title } })
+    const hits = screen.getByRole('region', { name: 'Sökresultat' })
+    fireEvent.click(within(hits).getAllByRole('button')[0])
+    expect(openLesson).toHaveBeenCalledWith(other.entries[0].id)
+    expect(startDrill).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByTestId('rd-uppslag-section-ord'))
+    expect(startDrill).not.toHaveBeenCalled()
+  })
+
+  it('uses the singular search count for exactly one catalogue hit', () => {
+    const data = clone()
+    data.uppslag.sections[0].entries[0].title = 'Unik sökträff'
+    mount(12, { data })
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'Unik sökträff' } })
+    expect(
+      within(screen.getByRole('region', { name: 'Sökresultat' })).getByRole('status'),
+    ).toHaveTextContent(/^1 träff$/)
+  })
+
+  for (const width of ['desktop', 'phone'] as const) {
+    it(`keeps the contents stop on the displayed lesson while another section loads, ${width}`, () => {
+      const data = clone()
+      const open = data.uppslag.open
+      const other = data.uppslag.sections.find((s) => s.section !== open.section)
+      if (!other?.entries[0]) throw new Error('fixture needs another section')
+      const openLesson = vi.fn()
+      const tree = (value: DirectionData) => (
+        <DirectionDataProvider data={value} actions={{ openLesson }}>
+          <Spar screen={12} width={width} theme="light" live onScreen={vi.fn()} onTheme={vi.fn()} />
+        </DirectionDataProvider>
+      )
+      const { rerender } = render(tree(data))
+      fireEvent.click(screen.getByTestId(`rd-uppslag-section-${other.section.toLowerCase()}`))
+      expect(openLesson).toHaveBeenCalledWith(
+        (other.entries.find((e) => !e.read) ?? other.entries[0]).id,
+      )
+      expect(screen.getByRole('status')).toHaveTextContent('Lektion begärd')
+      expect(screen.getByTestId('rd-lesson')).toHaveTextContent(open.title)
+      if (width === 'phone') {
+        fireEvent.click(screen.getByRole('button', { name: /^Innehåll ·/ }))
+      }
+      expect(
+        within(screen.getByRole('navigation', { name: 'Innehåll' })).getByTestId(
+          `rd-uppslag-entry-${open.id}`,
+        ),
+      ).toHaveAttribute('aria-current', 'step')
+      if (width === 'phone') fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' })
+
+      const entry = other.entries.find((e) => !e.read) ?? other.entries[0]
+      const updated = clone()
+      updated.uppslag.open = { ...open, id: entry.id, title: entry.title, section: other.section }
+      rerender(tree(updated))
+      expect(screen.queryByText(/Lektion begärd/)).toBeNull()
+      if (width === 'phone') {
+        fireEvent.click(screen.getByRole('button', { name: /^Innehåll ·/ }))
+      }
+      expect(
+        within(screen.getByRole('navigation', { name: 'Innehåll' })).getByTestId(
+          `rd-uppslag-entry-${entry.id}`,
+        ),
+      ).toHaveAttribute('aria-current', 'step')
+    })
+
+    it(`consumes a menu Konto jump before a switcher return, ${width}`, async () => {
+      await onDesktopStage(async () => {
+        const scrolling = vi.spyOn(Element.prototype, 'scrollIntoView')
+        try {
+          render(<BakeoffPage initial={{ ...BAKEOFF_9, s: 1, w: width }} onSelect={vi.fn()} />)
+          await screen.findByTestId('rd-spar')
+          fireEvent.click(screen.getByTestId('rd-account'))
+          fireEvent.click(screen.getByRole('menuitem', { name: 'Inställningar' }))
+          expect(screen.getByRole('heading', { name: 'Utseende' })).toHaveFocus()
+          expect(scrolling).toHaveBeenCalled()
+          fireEvent.keyDown(document.activeElement ?? document.body, { key: 'ArrowLeft' })
+          expect(screen.getByTestId('rb26-stage')).toHaveAttribute('data-screen', '12')
+          scrolling.mockClear()
+          fireEvent.keyDown(document.activeElement ?? document.body, { key: 'ArrowRight' })
+          expect(screen.getByTestId('rb26-stage')).toHaveAttribute('data-screen', '13')
+          expect(screen.getByRole('heading', { name: 'Ditt konto' })).toHaveFocus()
+          expect(scrolling).not.toHaveBeenCalled()
+          // Another explicit request to the same section still works.
+          fireEvent.click(screen.getByTestId('rd-account'))
+          fireEvent.click(screen.getByRole('menuitem', { name: 'Inställningar' }))
+          expect(screen.getByRole('heading', { name: 'Utseende' })).toHaveFocus()
+          expect(scrolling).toHaveBeenCalledTimes(1)
+        } finally {
+          scrolling.mockRestore()
+        }
+      })
+    })
+
+    it(`starts ELF with Om texten closed while retaining its disclosure, ${width}`, () => {
+      mount(14, { width })
+      const toggle = screen.getByTestId('rd-note-toggle')
+      expect(toggle).toHaveTextContent('Om texten')
+      expect(toggle).toHaveAttribute('aria-expanded', 'false')
+      expect(screen.getByTestId('rd-note')).not.toBeVisible()
+      fireEvent.click(toggle)
+      expect(screen.getByTestId('rd-note')).toBeVisible()
+    })
+  }
+
+  it('places the short ELF tray after the whole passage in the same desktop scroller', () => {
+    const data = clone()
+    const q = data.drills.elf.questions[0]
+    q.passage = { ...q.passage!, paragraphs: ['A short English passage.'] }
+    const { unmount } = mount(14, { data })
+    const scroller = screen.getByTestId('rd-elf-passage').closest('.sp-scroll')
+    const tray = screen.getByTestId('rd-option-A').closest('.sp-tray')
+    expect(scroller).toContainElement(tray as HTMLElement)
+    expect(screen.getByTestId('rd-option-A')).toBeVisible()
+    expect(
+      screen.getByTestId('rd-elf-passage').compareDocumentPosition(tray as Node) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
+    fireEvent.click(screen.getByTestId(`rd-option-${q.answer}`))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(screen.getByTestId('rd-verdict')).toBeInTheDocument()
+    expect(scroller).not.toContainElement(screen.getByTestId('rd-verdict'))
+    unmount()
+    q.passage.paragraphs.push('A second paragraph makes this a longer text.')
+    mount(14, { data })
+    expect(screen.getByTestId('rd-elf-passage').closest('.sp-scroll')).not.toContainElement(
+      screen.getByTestId('rd-option-A').closest('.sp-tray') as HTMLElement,
+    )
+  })
+
+  it('uses distinct classes for ELF gap slots and the MEK underline blank', () => {
+    const data = clone()
+    const q = data.drills.elf.questions[0]
+    q.prompt = 'Gap (1)'
+    q.passage = { ...q.passage!, paragraphs: ['The ___(1)___ is clear.'] }
+    const { unmount } = mount(14, { data })
+    const gap = screen.getByTestId('rd-elf-passage').querySelector('[data-state]')
+    expect(gap).toHaveClass('sp-gapslot')
+    expect(gap).not.toHaveClass('sp-gap')
+    unmount()
+    const mek = { ...data.drills.quant.questions[0], section: 'MEK' as const, prompt: 'En ____.' }
+    data.drills.quant.questions = [mek]
+    data.drills.quant.start = { index: 0, results: [] }
+    mount(6, { data })
+    expect(screen.getByText('lucka 1').parentElement).toHaveClass('sp-gap')
+    expect(screen.getByText('lucka 1').parentElement).not.toHaveClass('sp-gapslot')
+  })
+
+  it('renders trap, root, rule and tactic bodies from the supplied lesson', () => {
+    const base = clone()
+    const variants = [
+      {
+        ...base.uppslag.open,
+        id: 'trap',
+        family: 'nog_traps' as const,
+        section: 'NOG' as const,
+        title: 'Fällan',
+        entry: {
+          id: 'trap',
+          pattern_description: 'Mönstret',
+          why_it_occurs: 'Orsaken',
+          common_distractor_signature: 'Felsvaret',
+          countermeasure: 'Motåtgärden',
+          example_questions: [],
+          worked_example: {
+            setup: 'Premissen',
+            trap_thinking: 'Fel tanke',
+            correct_thinking: 'Rätt tanke',
+            answer: 'Svaret',
+          },
+        },
+      },
+      {
+        ...base.uppslag.open,
+        id: 'root',
+        family: 'ord_roots' as const,
+        section: 'ORD' as const,
+        title: 'för-',
+        entry: {
+          id: 'root',
+          root: 'för-',
+          origin: 'GERMANIC',
+          meaning: 'före',
+          example_words: ['förhistoria'],
+          example_questions: [],
+        },
+      },
+      {
+        ...base.uppslag.open,
+        id: 'rule',
+        family: 'mek_protocol' as const,
+        section: 'MEK' as const,
+        title: 'Regeln',
+        entry: {
+          id: 'rule',
+          constraint_type: 'Syftning',
+          rule: 'Kontrollera syftningen.',
+          example_questions: [],
+        },
+      },
+      {
+        ...base.uppslag.open,
+        id: 'tactic',
+        family: 'dtk_tactics' as const,
+        section: 'DTK' as const,
+        title: 'Taktiken',
+        entry: {
+          id: 'tactic',
+          tactic: 'Läs skalan.',
+          when_to_apply: 'Olika skalor.',
+          example_questions: [],
+        },
+      },
+    ]
+    const phrases = ['Fällans tanke', 'germanskt', 'Kontrollera syftningen.', 'Olika skalor.']
+    for (const [i, lesson] of variants.entries()) {
+      const data = { ...base, uppslag: { ...base.uppslag, open: lesson } }
+      const mounted = mount(12, { data })
+      expect(screen.getByTestId('rd-lesson')).toHaveTextContent(phrases[i])
+      mounted.unmount()
+    }
+  })
+
+  it('does not advance if marking the current lesson read throws', () => {
+    const data = clone()
+    const section = data.uppslag.sections.find((s) => s.section === data.uppslag.open.section)
+    if (!section?.entries[0]) throw new Error('fixture needs entries')
+    data.uppslag.open.id = section.entries[0].id
+    data.uppslag.open.read = false
+    const openLesson = vi.fn()
+    mount(12, {
+      data,
+      actions: {
+        openLesson,
+        toggleLessonRead: () => {
+          throw new Error('unavailable')
+        },
+      },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /^Nästa/ }))
+    expect(screen.getByRole('alert')).toHaveTextContent('Läsmarkeringen gick inte')
+    expect(openLesson).not.toHaveBeenCalled()
+  })
+
+  it('keeps direct Konto entry at the frame title and gives menu rows distinct targets', () => {
+    const scrolling = vi.spyOn(Element.prototype, 'scrollIntoView')
+    const { unmount } = mount(13)
+    expect(scrolling).not.toHaveBeenCalled()
+    unmount()
+    mount(1)
+    fireEvent.click(screen.getByTestId('rd-account'))
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Inställningar' }))
+    expect(screen.getByRole('heading', { name: 'Utseende' })).toHaveFocus()
+    fireEvent.click(screen.getByTestId('rd-account'))
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Hjälp' }))
+    expect(screen.getByRole('heading', { name: 'Hjälp och villkor' })).toHaveFocus()
+    fireEvent.click(screen.getByTestId('rd-account'))
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Konto' }))
+    expect(screen.getByRole('heading', { name: 'Konto' })).toHaveFocus()
+    scrolling.mockRestore()
+  })
+
+  it('keeps phone dialog focus, closes its backdrop, and restores the opener before unmount', () => {
+    mount(13, { width: 'phone' })
+    const opener = screen.getByTestId('rd-account')
+    opener.focus()
+    fireEvent.click(opener)
+    const dialog = screen.getByRole('dialog', { name: 'Konto' })
+    expect(dialog.tagName).toBe('DIALOG')
+    expect(dialog).toHaveAttribute('open')
+    const close = vi.spyOn(dialog as HTMLDialogElement, 'close')
+    fireEvent.click(dialog, { clientX: -10, clientY: -10 })
+    expect(close).toHaveBeenCalled()
+    expect(opener).toHaveFocus()
+    expect(screen.queryByRole('dialog')).toBeNull()
+    fireEvent.click(opener)
+    fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' })
+    expect(opener).toHaveFocus()
+  })
+
+  it('sends each preference patch separately, and does not claim a save on failure', () => {
+    const setPrefs = vi.fn()
+    const data = clone()
+    data.konto.identity.name = ''
+    delete data.konto.identity.plan
+    mount(13, { data, actions: { setPrefs } })
+    expect(screen.getByTestId('rd-konto-identity')).toHaveTextContent(data.konto.identity.email)
+    for (const pref of ['font', 'density'] as const) {
+      const option = data.konto.options[pref].find((o) => o.key !== data.konto.prefs[pref])
+      if (!option) throw new Error('fixture needs a preference alternative')
+      fireEvent.click(screen.getByTestId(`rd-konto-${pref}-${option.key}`))
+      expect(setPrefs).toHaveBeenLastCalledWith({ [pref]: option.key })
+    }
+    fireEvent.click(screen.getByLabelText(data.konto.prefs.smartDrill ? 'Slumpat' : 'Smart'))
+    expect(setPrefs).toHaveBeenLastCalledWith({ smartDrill: !data.konto.prefs.smartDrill })
+    expect(screen.queryByTestId(`rd-konto-palette-${data.konto.prefs.palette}`)).toBeNull()
+    expect(screen.queryByTestId(`rd-konto-coach-${data.konto.prefs.coach}`)).toBeNull()
+    expect(screen.getByTestId('rd-spar')).not.toHaveTextContent(/Sparat|Synkat/)
+  })
+
+  it('handles export failure and uses the specified deletion failure copy', () => {
+    const fail = () => {
+      throw new Error('unavailable')
+    }
+    mount(13, { actions: { exportData: fail, deleteAccount: fail } })
+    fireEvent.click(screen.getByTestId('rd-konto-export'))
+    expect(screen.getByRole('alert')).toHaveTextContent('Kunde inte exportera')
+    fireEvent.click(screen.getByTestId('rd-konto-delete'))
+    fireEvent.change(screen.getByTestId('rd-konto-delete-word'), { target: { value: 'radera' } })
+    fireEvent.click(screen.getByTestId('rd-konto-delete-confirm'))
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Kunde inte radera kontot. Inget raderades — försök igen.',
+    )
+    expect(screen.getByTestId('rd-spar')).not.toHaveTextContent('Kontot är raderat')
+  })
+
+  it('requires both question and option image instances, including failure, retry and keyboard submission', () => {
+    const data = clone()
+    const q = data.drills.elf.questions[0]
+    q.figure = { src: 'question.svg', alt: 'Question figure', width: 300, height: 200, kind: 'svg' }
+    if (!q.options) throw new Error('fixture needs options')
+    q.options[0].figure = { src: 'option.svg', alt: 'Option figure', width: 80, height: 80 }
+    const lock = vi.fn(() => ({ correct: true }))
+    mount(14, { data, actions: { drill: { lock } } })
+    fireEvent.click(screen.getByTestId(`rd-option-${q.answer}`))
+    const blocked = () => {
+      expect(screen.getByTestId('rd-lock')).toBeDisabled()
+      key('Enter')
+      key(' ')
+      expect(lock).not.toHaveBeenCalled()
+    }
+    blocked()
+    fireEvent.load(screen.getByAltText('Question figure'))
+    blocked()
+    fireEvent.error(screen.getByAltText('Option figure'))
+    blocked()
+    fireEvent.click(screen.getByRole('button', { name: 'Försök igen' }))
+    blocked()
+    fireEvent.load(screen.getByAltText('Option figure'))
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    key('Enter')
+    expect(lock).toHaveBeenCalledTimes(1)
+  })
+
+  it('accepts a cached image that is complete with a real natural width', () => {
+    const complete = vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(true)
+    const natural = vi.spyOn(HTMLImageElement.prototype, 'naturalWidth', 'get').mockReturnValue(100)
+    try {
+      const data = clone()
+      data.drills.elf.questions[0].figure = {
+        src: 'cached.svg',
+        alt: 'Cached figure',
+        width: 100,
+        height: 100,
+        kind: 'svg',
+      }
+      mount(14, { data })
+      fireEvent.click(screen.getByTestId('rd-option-A'))
+      expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    } finally {
+      complete.mockRestore()
+      natural.mockRestore()
+    }
+  })
+
+  it('keeps a shared figure ready across questions and resets when its source changes', () => {
+    const data = clone()
+    const q = data.drills.elf.questions[0]
+    q.figure = { src: 'shared.svg', alt: 'Shared figure', width: 100, height: 100, kind: 'svg' }
+    data.drills.elf.questions = [q, { ...structuredClone(q), qid: 'second', number: 2 }]
+    const tree = (value: DirectionData) => (
+      <DirectionDataProvider data={value}>
+        <Spar screen={14} width="desktop" theme="light" live onScreen={vi.fn()} onTheme={vi.fn()} />
+      </DirectionDataProvider>
+    )
+    const { rerender } = render(tree(data))
+    const image = screen.getByAltText('Shared figure')
+    fireEvent.load(image)
+    fireEvent.click(screen.getByTestId('rd-option-A'))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    fireEvent.click(screen.getByTestId('rd-next'))
+    expect(screen.getByAltText('Shared figure')).toBe(image)
+    fireEvent.click(screen.getByTestId('rd-option-A'))
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    const update = structuredClone(data)
+    const figure = update.drills.elf.questions[1].figure
+    if (!figure) throw new Error('figure')
+    figure.src = 'different.svg'
+    rerender(tree(update))
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.error(screen.getByAltText('Shared figure'))
+    figure.src = 'third.svg'
+    rerender(tree({ ...update }))
+    expect(screen.queryByRole('alert')).toBeNull()
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.load(screen.getByAltText('Shared figure'))
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+  })
+
+  it('resets a changed session and a shrinking or emptied provider deck safely', () => {
+    const data = clone()
+    const q = data.drills.elf.questions[0]
+    data.drills.elf.questions = [q, { ...q, qid: 'second' }]
+    const tree = (value: DirectionData) => (
+      <DirectionDataProvider data={value}>
+        <Spar screen={14} width="desktop" theme="light" live onScreen={vi.fn()} onTheme={vi.fn()} />
+      </DirectionDataProvider>
+    )
+    const { rerender } = render(tree(data))
+    fireEvent.click(screen.getByTestId('rd-option-A'))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    fireEvent.click(screen.getByTestId('rd-next'))
+    data.drills.elf.questions = [q]
+    rerender(tree({ ...data }))
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.click(screen.getByTestId('rd-option-A'))
+    data.drills.elf.id = 'new-sitting'
+    rerender(tree({ ...data }))
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    data.drills.elf.questions = []
+    rerender(tree({ ...data }))
+    expect(screen.getByRole('heading', { name: 'Inga frågor här' })).toBeInTheDocument()
+    expect(screen.getByTestId('rd-exit')).toBeInTheDocument()
+  })
+
+  it('renders gap sentences, previews a word, keeps the corrected word and cites English evidence', () => {
+    const data = clone()
+    const q = data.drills.elf.questions[0]
+    q.prompt = 'Gap (1)'
+    q.passage = {
+      ...q.passage!,
+      paragraphs: ['It takes its ___(1)___ on the mood.', 'The message is ___(2)___.'],
+    }
+    q.options = [
+      { letter: 'A', text: 'toll' },
+      { letter: 'B', text: 'cost' },
+      { letter: 'C', text: 'charge' },
+      { letter: 'D', text: 'price' },
+    ]
+    q.answer = 'A'
+    const second = { ...structuredClone(q), qid: 'gap-2', number: 2, prompt: '' }
+    data.drills.elf.questions = [q, second]
+    const e = data.drills.elf.explanations[q.qid]
+    if (!e) throw new Error('fixture needs explanation')
+    e.steps = [
+      {
+        n: 1,
+        title: 'Read the sentence',
+        text: 'The first paragraph says “It takes its ___ on the mood.”',
+        tier: 'essential',
+      },
+    ]
+    mount(14, { data })
+    expect(screen.queryByText('Gap (1)')).toBeNull()
+    expect(screen.getByRole('heading', { name: 'Lucka 1' })).toBeInTheDocument()
+    const passage = screen.getByTestId('rd-elf-passage')
+    fireEvent.click(screen.getByTestId('rd-option-B'))
+    expect(passage.querySelector('.sp-gapslot[data-preview="true"]')).toHaveTextContent('cost')
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(
+      passage.querySelector('.sp-gapslot[data-state="miss"] .sp-gap-visible'),
+    ).toHaveTextContent('toll')
+    expect(screen.getByTestId('rd-step-1')).toHaveTextContent('Read the sentence')
+    expect(within(screen.getByTestId('rd-step-1')).getByTestId('rd-cite-1')).toBeInTheDocument()
+    expect(
+      screen
+        .getByText('The first paragraph says “It takes its ___ on the mood.”')
+        .closest('[lang]'),
+    ).toHaveAttribute('lang', 'en')
+    expect(screen.getByTestId('rd-cite-1').closest('[lang]')).toHaveAttribute('lang', 'sv')
+    fireEvent.click(screen.getByTestId('rd-next'))
+    expect(screen.getByRole('heading', { name: 'Lucka 2' })).toBeInTheDocument()
+    expect(
+      passage.querySelector('.sp-gapslot[data-state="miss"] .sp-gap-visible'),
+    ).toHaveTextContent('toll')
+    key('g')
+    expect(within(passage).getByTestId('rd-para-2')).toHaveAttribute('data-flash', 'true')
+  })
+
+  for (const s of [2, 3, 12, 13, 14] as const) {
+    for (const width of ['desktop', 'phone'] as const) {
+      it(`lets host digits and arrows through focused content on screen ${s}, ${width}`, async () => {
+        await onDesktopStage(async () => {
+          const onSelect = vi.fn()
+          render(<Redesign2026Bakeoff sel={{ ...BAKEOFF_9, s, w: width }} onSelect={onSelect} />)
+          await screen.findByTestId('rd-spar')
+          const check = (element: HTMLElement) => {
+            element.focus()
+            expect(element).toHaveFocus()
+            onSelect.mockClear()
+            fireEvent.keyDown(document.activeElement ?? document.body, { key: '3' })
+            expect(onSelect).toHaveBeenLastCalledWith({ d: 'c', sbs: false })
+            fireEvent.keyDown(document.activeElement ?? document.body, { key: 'ArrowRight' })
+            expect(onSelect).toHaveBeenLastCalledWith({ s: s === 14 ? 1 : s + 1 })
+          }
+          fireEvent.keyDown(document.activeElement ?? document.body, { key: '3' })
+          expect(onSelect).toHaveBeenLastCalledWith({ d: 'c', sbs: false })
+          if (s === 12) check(screen.getByTestId('rd-lesson-read'))
+          else if (s === 13) check(screen.getByTestId('rd-konto-export'))
+          else {
+            check(screen.getByTestId('rd-para-1').querySelector('button') as HTMLElement)
+            if (s !== 3) {
+              const show = screen.queryByRole('button', { name: /Visa alternativen/ })
+              if (show) fireEvent.click(show)
+              check(screen.getByTestId('rd-option-A'))
+              fireEvent.click(screen.getByTestId('rd-option-A'))
+              fireEvent.click(screen.getByTestId('rd-lock'))
+            }
+            check(screen.getByTestId('rd-verdict').querySelector('h2') as HTMLElement)
+            check(screen.getByTestId('rd-next'))
+          }
+        })
+      })
+    }
+  }
+
+  it('updates the real host theme in both directions from Konto', async () => {
+    await onDesktopStage(async () => {
+      render(<BakeoffPage initial={{ ...BAKEOFF_9, s: 13 }} onSelect={vi.fn()} />)
+      await screen.findByTestId('rd-spar')
+      for (const mode of ['dark', 'light'] as const) {
+        fireEvent.click(screen.getByTestId(`rd-konto-mode-${mode}`))
+        expect(screen.getByTestId('rd-spar')).toHaveAttribute('data-theme', mode)
+        expect(screen.getByTestId('rb26')).toHaveAttribute('data-theme', mode)
+      }
+    })
+  })
+
+  it('blocks a replacement image instance when switching to the phone layout', () => {
+    const data = clone()
+    data.drills.elf.questions[0].figure = {
+      src: 'shared.svg',
+      alt: 'Responsive figure',
+      width: 100,
+      height: 100,
+      kind: 'svg',
+    }
+    const tree = (width: DirectionProps['width']) => (
+      <DirectionDataProvider data={data}>
+        <Spar screen={14} width={width} theme="light" live onScreen={vi.fn()} onTheme={vi.fn()} />
+      </DirectionDataProvider>
+    )
+    const { rerender } = render(tree('desktop'))
+    const old = screen.getByAltText('Responsive figure')
+    fireEvent.load(old)
+    fireEvent.click(screen.getByTestId('rd-option-A'))
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+    rerender(tree('phone'))
+    expect(screen.getByAltText('Responsive figure')).not.toBe(old)
+    expect(screen.getByTestId('rd-lock')).toBeDisabled()
+    fireEvent.load(screen.getByAltText('Responsive figure'))
+    expect(screen.getByTestId('rd-lock')).toBeEnabled()
+  })
+
+  it('shows a truthful way out when the passage is absent and submits no answer', () => {
+    const data = clone()
+    data.drills.elf.questions[0].passage = null
+    const go = vi.fn()
+    const lock = vi.fn(() => ({ correct: true }))
+    mount(14, { data, actions: { go, drill: { lock } } })
+    expect(screen.getByText(/Texten saknas just nu/)).toBeInTheDocument()
+    key('a')
+    key('Enter')
+    expect(lock).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: 'Till Öva' }))
+    expect(go).toHaveBeenCalledWith('ova')
+  })
+
+  it('opens phone lesson contents as a native modal and restores its opener on cancel', () => {
+    mount(12, { width: 'phone' })
+    expect(screen.queryByRole('dialog')).toBeNull()
+    const opener = screen.getByRole('button', { name: /^Innehåll ·/ })
+    opener.focus()
+    fireEvent.click(opener)
+    const dialog = screen.getByRole('dialog', { name: 'Innehåll' })
+    expect(dialog.tagName).toBe('DIALOG')
+    expect(
+      within(dialog).getByTestId(`rd-uppslag-entry-${FIXTURE_DATA.uppslag.open.id}`),
+    ).toHaveAttribute('aria-current', 'step')
+    fireEvent.keyDown(dialog, { key: 'Escape' })
+    expect(opener).toHaveFocus()
+    expect(screen.queryByRole('dialog')).toBeNull()
+  })
+})
+
 /** The screen's green pills: filled primary buttons on screen. */
 function greenPills(): HTMLElement[] {
   return Array.from(document.querySelectorAll<HTMLElement>('.sp-btn--primary')).filter(

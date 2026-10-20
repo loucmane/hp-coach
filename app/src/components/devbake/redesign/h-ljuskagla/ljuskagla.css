@@ -10,6 +10,8 @@
   --lj-accent: oklch(0.39054 0.05157 225.02); /* #234b5a */
   --lj-on-accent: #fcf9f2;
   --lj-beam: #826336;
+  /* The room with its lights down, behind a decision that asks first. */
+  --lj-dusk: oklch(0.82 0.018 82);
   --lj-ui: "Manrope", system-ui, sans-serif;
   --lj-prose: "Spectral", Georgia, serif;
   --lj-time: 160ms;
@@ -35,6 +37,7 @@
   --lj-accent: oklch(0.85587 0.03877 221.82); /* #b5d6e2 */
   --lj-on-accent: #23343b;
   --lj-beam: #e2c18a;
+  --lj-dusk: oklch(0.2 0.004 85);
   color-scheme: dark;
 }
 .ljuskagla *, .ljuskagla *::before, .ljuskagla *::after { box-sizing: border-box; }
@@ -430,6 +433,221 @@
 .ljuskagla[data-width="phone"] .lj-viewer-head { padding: 6px 12px 6px 20px; min-height: 60px; }
 .ljuskagla[data-width="phone"] .lj-viewer-scroll { padding: 16px; }
 .ljuskagla[data-width="phone"] .lj-viewer-tools { gap: 6px; padding-inline: 8px; }
+/* Provpass: one lit pass above an open register; the rest waits in the shade. */
+.ljuskagla .lj-prov-halves { margin: -12px 0 32px; }
+.ljuskagla .lj-prov-notice { margin: -12px 0 28px; padding: 12px 16px; border-left: 2px solid var(--lj-beam); background: var(--lj-paper); font-size: 13px; }
+.ljuskagla .lj-prov-lamp h2 { max-width: 24ch; margin-top: 0; }
+.ljuskagla .lj-prov-pass-name { display: block; font: italic 400 24px/1.3 var(--lj-prose); letter-spacing: 0; color: var(--lj-soft); margin-top: 6px; }
+.ljuskagla .lj-prov-partial { font-size: 14px; margin: -12px 0 20px; }
+.ljuskagla .lj-prov-facts { display: grid; gap: 8px; margin: 0 0 28px; font-size: 13px; }
+.ljuskagla .lj-prov-facts > div { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 12px; padding-top: 8px; border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-prov-facts dt { color: var(--lj-soft); }
+.ljuskagla .lj-prov-facts dd { margin: 0; }
+.ljuskagla .lj-prov-rhythm > p:not(.lj-eyebrow):not(.lj-door-count) { font-size: 13px; margin-top: 8px; }
+.ljuskagla .lj-prov-rhythm .lj-door-count { margin-bottom: 4px; }
+.ljuskagla .lj-pass-rows > li[data-chosen="true"]::before { content: ""; position: absolute; left: -14px; top: 16px; bottom: 16px; width: 3px; border-radius: 3px; background: var(--lj-beam); }
+.ljuskagla .lj-pass-row { display: grid; grid-template-columns: minmax(0, 1fr) auto 18px; align-items: center; gap: 16px; width: 100%; padding: 14px 8px 14px 0; text-align: left; border-radius: 0; }
+.ljuskagla .lj-pass-row:is(:hover, :focus-visible, [aria-pressed="true"]) { color: var(--lj-ink); }
+.ljuskagla .lj-pass-row-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ljuskagla .lj-pass-row-main strong { font-size: 15px; font-weight: 600; line-height: 1.4; }
+.ljuskagla :is(.lj-pass-row-main > span, .lj-pass-row-seen) { font-size: 12px; }
+.ljuskagla .lj-pass-row-seen { white-space: nowrap; }
+.ljuskagla .lj-hub-traps ol { margin-top: 6px; }
+.ljuskagla .lj-hub-traps ol > li + li { border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-prov-rules h2 { font-size: 14px; font-weight: 600; }
+.ljuskagla :is(.lj-prov-rules, .lj-gate-rules) li { position: relative; padding: 7px 0 7px 18px; font-size: 13px; line-height: 1.6; }
+.ljuskagla :is(.lj-prov-rules, .lj-gate-rules) li + li { border-top: 1px solid var(--lj-line); }
+.ljuskagla :is(.lj-prov-rules, .lj-gate-rules) li::before { content: "–"; position: absolute; left: 0; color: var(--lj-soft); }
+.ljuskagla .lj-prov-rules ul { margin-top: 6px; }
+
+/* A decision that asks first: the room's lights go down, the decision stays lit. */
+.ljuskagla .lj-gate { position: absolute; inset: 0; z-index: 50; display: grid; place-items: center; padding: 24px; background: var(--lj-dusk); }
+.ljuskagla .lj-gate-panel { width: min(560px, 100%); max-height: 100%; overflow-y: auto; overscroll-behavior: contain; padding: 28px 32px 24px; background: var(--lj-lamp); color: var(--lj-ink); border-left: 3px solid var(--lj-beam); border-radius: 4px 20px 20px 4px; box-shadow: 0 24px 64px #15130f33; }
+.ljuskagla .lj-gate-panel h2 { font: 500 32px/1.2 var(--lj-prose); letter-spacing: -.02em; margin: 10px 0 16px; }
+.ljuskagla .lj-gate-body { display: grid; gap: 12px; font-size: 14px; line-height: 1.65; }
+.ljuskagla .lj-gate-lead { font: italic 400 18px/1.5 var(--lj-prose); color: var(--lj-soft); }
+.ljuskagla .lj-gate-body h3 { font-size: 13px; font-weight: 700; margin-top: 4px; }
+.ljuskagla .lj-gate-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 24px; }
+.ljuskagla .lj-gate-actions .lj-primary { width: auto; min-width: 220px; }
+
+/* A running pass: the task stays lit; the clock and the map wait at the edge. */
+.ljuskagla .lj-run-head { gap: 20px; }
+.ljuskagla .lj-run-clock { font: 500 20px/1 var(--lj-prose); white-space: nowrap; }
+.ljuskagla .lj-run-clock > span { font: 12px var(--lj-ui); color: var(--lj-soft); }
+.ljuskagla .lj-run-clock[data-urgent="true"] { font-weight: 700; }
+.ljuskagla .lj-run-submit { white-space: nowrap; }
+.ljuskagla .lj-run-chrome { flex-shrink: 0; }
+.ljuskagla .lj-run-notice { padding: 10px 28px; font-size: 13px; border-bottom: 1px solid var(--lj-line); background: var(--lj-paper); }
+.ljuskagla .lj-map { padding: 10px 28px 12px; border-bottom: 1px solid var(--lj-line); }
+.ljuskagla .lj-map-head { display: flex; align-items: baseline; gap: 16px; font-size: 12px; color: var(--lj-soft); margin-bottom: 8px; }
+.ljuskagla .lj-map-grid { display: flex; flex-wrap: wrap; gap: 8px 28px; }
+.ljuskagla .lj-map-run { display: flex; align-items: center; gap: 10px; }
+.ljuskagla .lj-map-label { flex: 0 0 32px; font: 700 11px var(--lj-ui); letter-spacing: .08em; color: var(--lj-soft); }
+.ljuskagla .lj-map-run ol { display: flex; flex-wrap: wrap; gap: 4px; }
+.ljuskagla .lj-map-cell { position: relative; width: 44px; height: 44px; padding: 0; border: 1px dashed var(--lj-edge); border-radius: 6px; font-size: 13px; color: var(--lj-soft); }
+.ljuskagla .lj-map-cell[data-answered="true"] { border-style: solid; border-color: var(--lj-line); background: var(--lj-paper); color: var(--lj-ink); }
+.ljuskagla .lj-map-cell[data-current="true"] { border-style: solid; border-color: var(--lj-edge); background: var(--lj-lamp); color: var(--lj-ink); font-weight: 800; }
+.ljuskagla .lj-map-cell[data-current="true"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 4px; height: 3px; border-radius: 3px; background: var(--lj-beam); }
+.ljuskagla .lj-map-cell:hover:not(:disabled) { background: var(--lj-lamp); color: var(--lj-ink); }
+.ljuskagla .lj-map-cell > svg { position: absolute; top: 3px; right: 3px; color: var(--lj-accent); }
+.ljuskagla .lj-map-key { margin-top: 8px; font-size: 11px; color: var(--lj-soft); }
+.ljuskagla .lj-map-toggle { display: flex; width: 100%; align-items: center; gap: 12px; padding: 8px 0; font-size: 13px; text-align: left; border-radius: 0; }
+.ljuskagla .lj-map-toggle > span:first-child { font-weight: 700; }
+.ljuskagla .lj-map-toggle > span:nth-child(2) { color: var(--lj-soft); }
+.ljuskagla .lj-map-toggle > svg { margin-left: auto; }
+.ljuskagla .lj-run-status { padding: 16px 28px; border-bottom: 1px solid var(--lj-line); border-left: 3px solid var(--lj-beam); background: var(--lj-lamp); }
+.ljuskagla .lj-run-status h2 { font: 500 22px/1.3 var(--lj-prose); }
+.ljuskagla .lj-run-status p { font-size: 13px; margin-top: 4px; }
+.ljuskagla .lj-run-status .lj-primary { width: auto; margin-top: 12px; }
+/* A pass that ended without a result sits in the normal shell, beside its doors. */
+.ljuskagla .lj-frame > .lj-run { flex: 1; min-width: 0; min-height: 0; }
+.ljuskagla .lj-run-heading { margin-bottom: 4px; }
+.ljuskagla .lj-run-prompt { margin-top: 12px; }
+.ljuskagla .lj-option-retry { font-size: 12px; margin: 0 0 4px 30px; }
+.ljuskagla .lj-run-wait { margin-top: 12px; font-size: 13px; color: var(--lj-soft); }
+.ljuskagla .lj-run-choice { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; font-size: 13px; color: var(--lj-soft); }
+.ljuskagla .lj-run-flag[aria-pressed="true"] { background: var(--lj-lamp); border-color: var(--lj-accent); color: var(--lj-ink); }
+.ljuskagla .lj-run-steps { display: flex; align-items: center; gap: 16px; }
+.ljuskagla .lj-run-steps .lj-primary { flex: 1; }
+.ljuskagla .lj-run-steps .lj-text-button { flex-shrink: 0; }
+.ljuskagla .lj-run-passage-title { font: 500 30px/1.2 var(--lj-prose); letter-spacing: -.03em; }
+.ljuskagla .lj-run-peek-choice { font: 13px var(--lj-ui); color: var(--lj-soft); }
+.ljuskagla .lj-figure-status { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; padding: 4px 32px 8px 44px; font-size: 13px; color: var(--lj-soft); }
+.ljuskagla .lj-problem-column .lj-figure-status { padding-inline: 16px 0; }
+
+/* The result: one lit receipt; the ledger stays open below it. */
+.ljuskagla .lj-receipt-count { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; margin: 4px 0 12px; }
+.ljuskagla .lj-receipt-count strong { font: 400 72px/1 var(--lj-prose); letter-spacing: -.04em; }
+.ljuskagla .lj-receipt-count span { font: italic 400 22px/1.3 var(--lj-prose); color: var(--lj-soft); }
+.ljuskagla .lj-receipt-line { font-size: 14px; color: var(--lj-soft); }
+.ljuskagla .lj-receipt-line + .lj-receipt-line { margin-top: 4px; }
+.ljuskagla .lj-receipt-score { display: flex; align-items: center; gap: 16px; margin: 24px 0 8px; padding-top: 20px; border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-receipt-score strong { font: 400 42px/1 var(--lj-prose); letter-spacing: -.03em; }
+.ljuskagla .lj-receipt-score span { font-size: 12px; line-height: 1.5; }
+.ljuskagla .lj-receipt-method { font-size: 13px; line-height: 1.7; max-width: 62ch; }
+.ljuskagla .lj-receipt-limit { font-size: 13px; margin-top: 12px; color: var(--lj-soft); }
+.ljuskagla .lj-receipt .lj-primary { margin-top: 24px; }
+.ljuskagla .lj-receipt-about .lj-prov-facts { margin-top: 12px; }
+.ljuskagla .lj-ledger { width: 100%; border-collapse: collapse; margin-top: 4px; font-size: 14px; }
+.ljuskagla .lj-ledger caption { caption-side: top; text-align: left; font-size: 12px; padding: 4px 0 10px; }
+.ljuskagla .lj-ledger :is(th, td) { padding: 12px 12px 12px 0; border-top: 1px solid var(--lj-line); text-align: left; vertical-align: baseline; font-weight: 400; }
+.ljuskagla .lj-ledger thead th { border-top: 0; padding-block: 4px 8px; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.ljuskagla .lj-ledger-code { display: inline-block; min-width: 48px; font: 700 12px var(--lj-ui); letter-spacing: .08em; }
+.ljuskagla .lj-ledger td strong { font: 400 20px var(--lj-prose); }
+.ljuskagla .lj-ledger td > span { color: var(--lj-soft); }
+.ljuskagla .lj-ledger em { display: block; font-style: normal; font-size: 12px; }
+.ljuskagla .lj-receipt-trap { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-receipt-trap .lj-trap-pattern { display: block; margin: 8px 0 4px; }
+.ljuskagla .lj-receipt-trap p:not(.lj-eyebrow):not(.lj-trap-pattern) { font-size: 12px; }
+
+/* Framsteg: a quiet overview, one lit next step, the evidence in an open ledger. */
+.ljuskagla :is(.lj-jump, .lj-tabs) { display: flex; gap: 8px; }
+.ljuskagla .lj-jump { margin: -16px 0 32px; }
+.ljuskagla .lj-tabs { margin: -4px 0 24px; }
+.ljuskagla :is(.lj-jump button, .lj-tabs [role="tab"]) { border: 1px solid var(--lj-edge); border-radius: 22px; padding: 8px 18px; font-size: 13px; }
+.ljuskagla .lj-tabs [role="tab"] { flex: 1; }
+.ljuskagla .lj-tabs [role="tab"][aria-selected="true"] { background: var(--lj-lamp); border-color: var(--lj-beam); box-shadow: inset 0 0 0 1px var(--lj-beam); color: var(--lj-ink); font-weight: 700; }
+.ljuskagla .lj-fs-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(240px, 1fr); gap: 36px 52px; align-items: start; }
+.ljuskagla .lj-fs-col { display: flex; flex-direction: column; gap: 40px; min-width: 0; }
+.ljuskagla .lj-fs-col.lj-fs-side { gap: 32px; padding-top: 4px; }
+.ljuskagla .lj-fs-overview .lj-fs-score { margin: 10px 0 12px; }
+.ljuskagla .lj-fs-score strong { font-size: 64px; }
+.ljuskagla .lj-fs-score span { font-size: 13px; }
+.ljuskagla .lj-fs-track { position: relative; max-width: 420px; }
+.ljuskagla .lj-fs-track b { position: absolute; top: -4px; width: 2px; height: 11px; margin-left: -1px; background: var(--lj-ink); }
+.ljuskagla .lj-fs-halves { font: 400 18px/1.5 var(--lj-prose); }
+.ljuskagla .lj-fs-facts-line { font-size: 13px; color: var(--lj-soft); margin-top: 4px; }
+.ljuskagla .lj-fs-overview .lj-caveat { margin-top: 12px; max-width: 62ch; font-size: 13px; line-height: 1.7; color: var(--lj-soft); }
+.ljuskagla .lj-fs-empty { margin-top: 8px; font: italic 400 18px/1.5 var(--lj-prose); color: var(--lj-soft); }
+.ljuskagla .lj-fs-lamp h2 { font: 500 36px/1.15 var(--lj-prose); letter-spacing: -.03em; max-width: 20ch; }
+.ljuskagla .lj-fs-lamp .lj-hub-lamp-meta { margin: 10px 0 20px; }
+.ljuskagla .lj-fs-then { margin: -8px 0 24px; font-size: 13px; color: var(--lj-soft); }
+.ljuskagla .lj-fs-trend { margin: 0; }
+.ljuskagla .lj-trend { display: block; width: 100%; max-width: 560px; height: auto; margin-top: 12px; overflow: visible; }
+.ljuskagla .lj-trend-line { fill: none; stroke: var(--lj-accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.ljuskagla .lj-trend-dot { fill: var(--lj-accent); }
+.ljuskagla :is(.lj-trend-base, .lj-trend-tick) { stroke: var(--lj-line); stroke-width: 1; }
+.ljuskagla .lj-trend-target { stroke: var(--lj-edge); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.ljuskagla .lj-trend-label { fill: var(--lj-soft); font: 11px var(--lj-ui); }
+.ljuskagla .lj-trend-value { fill: var(--lj-ink); font: 600 12px var(--lj-ui); }
+.ljuskagla .lj-fs-summary { margin-top: 10px; font-size: 13px; }
+.ljuskagla .lj-fs-values { margin-top: 6px; border-bottom: 0; }
+.ljuskagla .lj-fs-values summary { padding: 10px 0; font-size: 13px; color: var(--lj-accent); }
+.ljuskagla .lj-fs-table { border-collapse: collapse; margin: 4px 0 8px; font-size: 12px; }
+.ljuskagla .lj-fs-table caption { caption-side: top; text-align: left; padding-bottom: 6px; }
+.ljuskagla .lj-fs-table :is(th, td) { padding: 6px 12px 6px 0; border-top: 1px solid var(--lj-line); text-align: left; font-weight: 400; }
+.ljuskagla .lj-fs-table thead th { border-top: 0; font-weight: 600; }
+.ljuskagla .lj-fs-days-table :is(td, thead th:not(:first-child)) { padding-inline: 6px; text-align: right; }
+.ljuskagla .lj-fs-rows > li { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; align-items: center; gap: 16px; padding: 14px 8px 14px 0; }
+.ljuskagla .lj-fs-code { font: 700 12px var(--lj-ui); letter-spacing: .08em; }
+.ljuskagla .lj-fs-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ljuskagla .lj-fs-main strong { font-size: 15px; font-weight: 600; line-height: 1.4; }
+.ljuskagla .lj-fs-main > span { font-size: 12px; }
+.ljuskagla .lj-fs-rows > li[data-known="false"] .lj-fs-main > span { font-style: italic; }
+.ljuskagla .lj-fs-figures { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; }
+.ljuskagla .lj-fs-figures b { font: 400 22px/1 var(--lj-prose); }
+.ljuskagla .lj-fs-figures span { font-size: 11px; white-space: nowrap; }
+.ljuskagla .lj-fs-sections .lj-hub-note { margin-top: 12px; }
+.ljuskagla .lj-fs-week .lj-door-count { margin: 8px 0 12px; }
+.ljuskagla .lj-fs-facts { display: grid; gap: 6px; font-size: 13px; }
+.ljuskagla .lj-fs-facts li + li { padding-top: 6px; border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-fs-week .lj-hub-note { margin-top: 12px; }
+.ljuskagla .lj-heat { display: flex; gap: 3px; margin-top: 12px; }
+.ljuskagla .lj-heat-week { display: grid; grid-template-rows: repeat(7, 12px); gap: 3px; }
+.ljuskagla .lj-heat i { display: block; width: 12px; height: 12px; border-radius: 2px; }
+.ljuskagla .lj-heat i[data-level="0"] { box-shadow: inset 0 0 0 1px var(--lj-line); }
+.ljuskagla .lj-heat i[data-level="1"] { background: color-mix(in oklch, var(--lj-accent) 28%, var(--lj-room)); }
+.ljuskagla .lj-heat i[data-level="2"] { background: color-mix(in oklch, var(--lj-accent) 58%, var(--lj-room)); }
+.ljuskagla .lj-heat i[data-level="3"] { background: var(--lj-accent); }
+.ljuskagla .lj-fs-rep h2 { margin-bottom: 8px; }
+.ljuskagla .lj-fs-rep p { font-size: 13px; }
+.ljuskagla .lj-fs-rep .lj-text-button { margin-top: 4px; font-size: 13px; font-weight: 600; }
+.ljuskagla .lj-fs-history { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-fs-days { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 8px 52px; margin-top: 12px; }
+.ljuskagla .lj-fs-day h3 { padding: 12px 0 4px; font-size: 12px; font-weight: 600; }
+.ljuskagla .lj-fs-pass { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; align-items: baseline; gap: 16px; padding: 12px 0; border-top: 1px solid var(--lj-line); }
+.ljuskagla .lj-fs-result { font: 400 17px var(--lj-prose); white-space: nowrap; }
+.ljuskagla .lj-fs-mock { margin-top: 32px; max-width: 560px; }
+.ljuskagla .lj-fs-mock h3 { font-size: 14px; font-weight: 600; }
+.ljuskagla .lj-fs-mock ul { margin-top: 6px; }
+.ljuskagla .lj-fs-mock li + li { border-top: 1px solid var(--lj-line); }
+
+/* Phone: the same order in one column; a pass keeps its clock and exit in view. */
+.ljuskagla[data-width="phone"] .lj-prov-halves { margin: -4px 0 24px; }
+.ljuskagla[data-width="phone"] .lj-prov-pass-name { font-size: 20px; }
+.ljuskagla[data-width="phone"] .lj-prov-facts > div { grid-template-columns: 96px minmax(0, 1fr); }
+.ljuskagla[data-width="phone"] .lj-pass-rows > li[data-chosen="true"]::before { left: -12px; }
+.ljuskagla[data-width="phone"] .lj-gate { padding: 12px; align-items: end; }
+.ljuskagla[data-width="phone"] .lj-gate-panel { padding: 24px 20px 20px; border-left: 0; border-top: 3px solid var(--lj-beam); border-radius: 16px 16px 6px 6px; }
+.ljuskagla[data-width="phone"] .lj-gate-panel h2 { font-size: 26px; }
+.ljuskagla[data-width="phone"] .lj-gate-actions { flex-direction: column-reverse; align-items: stretch; gap: 8px; }
+.ljuskagla[data-width="phone"] .lj-gate-actions .lj-primary { min-width: 0; }
+.ljuskagla[data-width="phone"] .lj-run-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "exit . account" "clock progress submit"; align-items: center; gap: 0 12px; padding: 4px 12px 6px; }
+.ljuskagla[data-width="phone"] .lj-run-head .lj-exit { grid-area: exit; }
+.ljuskagla[data-width="phone"] .lj-run-head .lj-account { grid-area: account; }
+.ljuskagla[data-width="phone"] .lj-run-head .lj-run-clock { grid-area: clock; }
+.ljuskagla[data-width="phone"] .lj-run-head .lj-drill-progress { grid-area: progress; margin: 0; }
+.ljuskagla[data-width="phone"] .lj-run-head .lj-run-submit { grid-area: submit; }
+.ljuskagla[data-width="phone"] :is(.lj-map, .lj-run-notice, .lj-run-status) { padding-inline: 16px; }
+.ljuskagla[data-width="phone"] .lj-map { padding-block: 0; }
+.ljuskagla[data-width="phone"] .lj-map-panel { max-height: 320px; overflow-y: auto; overscroll-behavior: contain; padding-bottom: 12px; }
+.ljuskagla[data-width="phone"] .lj-map-grid { flex-direction: column; gap: 10px; }
+.ljuskagla[data-width="phone"] .lj-map-run { align-items: flex-start; }
+.ljuskagla[data-width="phone"] .lj-map-label { padding-top: 14px; }
+.ljuskagla[data-width="phone"] .lj-run-steps { gap: 8px; }
+.ljuskagla[data-width="phone"] .lj-run-steps .lj-text-button { font-size: 13px; }
+.ljuskagla[data-width="phone"] .lj-receipt-count strong { font-size: 60px; }
+.ljuskagla[data-width="phone"] .lj-receipt-count span { font-size: 19px; }
+.ljuskagla[data-width="phone"] .lj-ledger :is(th, td) { padding-right: 8px; }
+.ljuskagla[data-width="phone"] .lj-ledger tbody th > span:last-child { display: block; font-size: 12px; }
+.ljuskagla[data-width="phone"] .lj-fs-grid { display: flex; flex-direction: column; gap: 32px; }
+.ljuskagla[data-width="phone"] .lj-fs-col { gap: 32px; }
+.ljuskagla[data-width="phone"] .lj-fs-score strong { font-size: 52px; }
+.ljuskagla[data-width="phone"] .lj-fs-lamp h2 { font-size: 30px; }
+.ljuskagla[data-width="phone"] :is(.lj-fs-rows > li, .lj-fs-pass) { grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; }
+.ljuskagla[data-width="phone"] .lj-fs-history { margin-top: 0; padding-top: 0; border-top: 0; }
+.ljuskagla[data-width="phone"] .lj-fs-days { grid-template-columns: minmax(0, 1fr); }
+
 .ljuskagla[data-live="false"] *, .ljuskagla[data-live="false"] *::before { transition: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .ljuskagla *, .ljuskagla *::before, .ljuskagla *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
@@ -440,4 +658,11 @@
   .ljuskagla :is(.lj-problem, .lj-figure-page, .lj-hub-lamp) { outline: 2px solid CanvasText; }
   .ljuskagla :is(.lj-problem, .lj-figure-page, .lj-rows > li[data-weakest="true"])::before { forced-color-adjust: none; background: Highlight; }
   .ljuskagla .lj-filters button[aria-pressed="true"] { outline: 2px solid Highlight; }
+  .ljuskagla :is(.lj-gate-panel, .lj-run-status) { outline: 2px solid CanvasText; }
+  .ljuskagla :is(.lj-map-cell[data-current="true"], .lj-pass-row[aria-pressed="true"], .lj-run-flag[aria-pressed="true"], .lj-tabs [role="tab"][aria-selected="true"]) { outline: 2px solid Highlight; }
+  .ljuskagla .lj-map-cell[data-current="true"]::after,
+  .ljuskagla .lj-pass-rows > li[data-chosen="true"]::before { forced-color-adjust: none; background: Highlight; }
+  .ljuskagla .lj-heat i:is([data-level="1"], [data-level="2"], [data-level="3"]) { forced-color-adjust: none; background: CanvasText; }
+  .ljuskagla .lj-trend-line { stroke: CanvasText; }
+  .ljuskagla .lj-trend-dot { fill: CanvasText; }
 }

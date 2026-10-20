@@ -143,7 +143,7 @@ export function SparNavItems({
   onGo,
 }: {
   bar?: boolean
-  current: Destination
+  current: Destination | null
   due: boolean
   onGo: (d: Destination) => void
 }) {
@@ -581,6 +581,99 @@ export function SparDialog({
     <>
       <span ref={anchorRef} hidden />
       {root && (open || keepMounted) ? createPortal(layer, root) : null}
+    </>
+  )
+}
+
+/** New B3 dialogs use the browser's modal layer. Closing happens before
+ *  React removes it, so the browser can return focus to its opener. */
+export function SparModal({
+  title,
+  phone,
+  open = true,
+  onClose,
+  children,
+  className = '',
+}: {
+  title: string
+  phone: boolean
+  open?: boolean
+  onClose: () => void
+  children: ReactNode | ((close: () => void) => ReactNode)
+  className?: string
+}) {
+  const dialog = useRef<HTMLDialogElement>(null)
+  const anchor = useRef<HTMLSpanElement>(null)
+  const opener = useRef<HTMLElement | null>(null)
+  const [root, setRoot] = useState<HTMLElement | null>(null)
+  const titleId = useId()
+  useLayoutEffect(() => {
+    setRoot(anchor.current?.closest<HTMLElement>('[data-rd="spar"]') ?? null)
+  }, [])
+  useLayoutEffect(() => {
+    if (!root || !dialog.current) return
+    if (open && !dialog.current.open) {
+      opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
+      dialog.current.showModal()
+    } else if (!open && dialog.current.open) dialog.current.close()
+  }, [root, open])
+  const close = () => {
+    dialog.current?.close()
+    opener.current?.focus({ preventScroll: true })
+    onClose()
+  }
+  return (
+    <>
+      <span hidden ref={anchor} />
+      {root
+        ? createPortal(
+            <dialog
+              ref={dialog}
+              className={`sp-native-dialog ${className}`}
+              data-phone={String(phone)}
+              hidden={!open}
+              aria-labelledby={titleId}
+              onCancel={(e) => {
+                e.preventDefault()
+                close()
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  close()
+                }
+              }}
+              onClick={(e) => {
+                if (e.target !== e.currentTarget) return
+                const r = e.currentTarget.getBoundingClientRect()
+                if (
+                  e.clientX < r.left ||
+                  e.clientX > r.right ||
+                  e.clientY < r.top ||
+                  e.clientY > r.bottom
+                )
+                  close()
+              }}
+            >
+              <div className="sp-native-head">
+                <h2 id={titleId} className="sp-h3">
+                  {title}
+                </h2>
+                <button
+                  type="button"
+                  className="sp-icon-btn"
+                  aria-label={`Stäng ${title.toLocaleLowerCase('sv-SE')}`}
+                  onClick={close}
+                >
+                  <X size={21} aria-hidden />
+                </button>
+              </div>
+              {typeof children === 'function' ? children(close) : children}
+            </dialog>,
+            root,
+          )
+        : null}
     </>
   )
 }

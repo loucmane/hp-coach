@@ -39,9 +39,11 @@ import {
 } from 'lucide-react'
 import {
   type CSSProperties,
+  createContext,
   type ReactNode,
   type RefObject,
   useCallback,
+  useContext,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -92,7 +94,7 @@ export type DrillAct = {
   goToStep: (n: number) => void
 }
 
-type Shared = { view: DrillCoreView; act: DrillAct; refs: DrillCoreRefs }
+type Shared = { view: DrillCoreView; act: DrillAct; refs: DrillCoreRefs; ready?: boolean }
 type Note = {
   note: boolean
   setNote: (open: boolean) => void
@@ -210,7 +212,7 @@ function firstVisiblePara(box: HTMLElement | null): number {
 
 export function SparDrill(props: DirectionProps & Calm) {
   const { data, actions } = useDirectionData()
-  const session = data.drills.reading
+  const session = props.screen === 14 ? data.drills.elf : data.drills.reading
   if (session.questions.length === 0) {
     return (
       <NoQuestions
@@ -224,7 +226,15 @@ export function SparDrill(props: DirectionProps & Calm) {
       />
     )
   }
-  return <ReadingSession key={session.id} {...props} session={session} />
+  // The core reads start only on mount and requires a stable deck. A changed
+  // identity/order (including a shrinking provider deck) starts a fresh core.
+  return (
+    <ReadingSession
+      key={JSON.stringify([session.id, session.questions.map((q) => q.qid)])}
+      {...props}
+      session={session}
+    />
+  )
 }
 
 function ReadingSession({
@@ -237,6 +247,7 @@ function ReadingSession({
   session,
 }: DirectionProps & Calm & { session: DrillSessionView }) {
   const { data, actions } = useDirectionData()
+  const elf = screen === 14
   // Screen 3 opens the question already graded with the fixture's pick.
   const [start] = useState<DrillStart>(() => {
     const at = Math.min(Math.max(0, session.start.index ?? 0), session.questions.length - 1)
@@ -254,7 +265,12 @@ function ReadingSession({
     controller: actions.drill,
     live,
   })
-  const { view, refs } = core
+  const { refs } = core
+  const view = englishCitations(core.view)
+  const media = useReadingMedia(view.question)
+  const readable = (view.passage?.paragraphs.length ?? 0) > 0
+  const short = elf && view.passage?.paragraphs.length === 1
+  const moved = useRef(false)
   const c = core.act
   const { gradeAs, reopen, reset } = c
   // Keep in step with the switcher: a click on "Facit" while a question is
@@ -272,12 +288,24 @@ function ReadingSession({
   const badgeRef = useRef<HTMLSpanElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   // Desktop: the tray folds to its question; the feedback sheet stands tall.
-  const [tray, setTray] = useState<'peek' | 'open'>('peek')
+  const [tray, setTray] = useState<'peek' | 'open'>(short ? 'open' : 'peek')
   const [fsheet, setFsheet] = useState<'tall' | 'half'>('tall')
   // biome-ignore lint/correctness/useExhaustiveDependencies: re-seat on a new question or verdict only
   useEffect(() => {
-    setTray('peek')
+    setTray(short ? 'open' : 'peek')
     setFsheet('tall')
+  }, [view.index, view.phase])
+  // Only a real answer/next action moves focus, never a switcher preview.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: follows real phase/question changes
+  useEffect(() => {
+    if (!moved.current) return
+    moved.current = false
+    const root = scrollRef.current?.closest('.sp-drill, .sp-pdrill')
+    const el = root?.querySelector<HTMLElement>(
+      view.phase === 'feedback' ? '.sp-verdict-word' : '.sp-prompt',
+    )
+    el?.setAttribute('tabindex', '-1')
+    el?.focus({ preventScroll: true })
   }, [view.index, view.phase])
 
   // Choosing an option opens the tray, so the choice is always in view.
@@ -292,14 +320,20 @@ function ReadingSession({
   const act: DrillAct = {
     select,
     lock: () => {
-      if (c.lock()) onScreen(3)
+      if (!readable || !media.canAnswer()) return
+      if (c.lock()) {
+        moved.current = true
+        if (!elf) onScreen(3)
+      }
     },
     next: () => {
-      if (c.next() === 'next') onScreen(2)
+      const result = c.next()
+      if (result) moved.current = true
+      if (result === 'next' && !elf) onScreen(2)
     },
     exit: () => {
       c.exit()
-      onScreen(1)
+      if (!elf) onScreen(1)
     },
     toggleEliminate: c.toggleEliminate,
     setFocusPara: c.setFocusPara,
@@ -312,7 +346,18 @@ function ReadingSession({
   const focusOn = view.focusPara != null
   const toggleFocus = () => c.setFocusPara(focusOn ? null : firstVisiblePara(scrollRef.current))
   const { next: nextStep } = roundEnd(data.home.plan.items, 'text')
-  const onward = () => (nextStep ? actions.openPlanItem(nextStep.id) : onScreen(1))
+  const back = elf
+    ? session.request.kind === 'framework'
+      ? {
+          label: 'Tillbaka till mönstret',
+          onClick: () => {
+            if (session.request.kind === 'framework')
+              actions.openLesson(session.request.frameworkId)
+          },
+        }
+      : { label: 'Till Öva', onClick: () => actions.go('ova') }
+    : { label: 'Till Idag', onClick: () => onScreen(1) }
+  const onward = () => (nextStep ? actions.openPlanItem(nextStep.id) : back.onClick())
   const advance = () => {
     if (view.phase === 'question') act.lock()
     else if (view.phase === 'feedback') act.next()
@@ -326,6 +371,7 @@ function ReadingSession({
     f: toggleFocus,
     Escape: () => c.setFocusPara(null),
   }
+  if (gapNumber(view.question) != null) keys.g = () => citeGap(view, c.cite)
   // Space advances too, once there is something to advance — until then
   // it keeps scrolling the passage.
   if (view.phase === 'feedback' || (view.phase === 'question' && view.selected)) {
@@ -342,37 +388,37 @@ function ReadingSession({
     keys[key] = () => select(l)
     keys[`Shift+${key}`] = () => c.toggleEliminate(l)
   }
-  useKeyMap(keys, live)
+  useKeyMap(keys, live && readable)
 
-  const shared = { view, act, refs }
+  const shared = { view, act, refs, ready: media.ready }
   const clock = showsClock(session)
   const [title] = splitTitle(view.question)
   const done = (
-    <Done
-      view={view}
-      questions={session.questions}
-      kind="text"
-      title={title}
-      back={{ label: 'Till Idag', onClick: () => onScreen(1) }}
-    />
+    <Done view={view} questions={session.questions} kind="text" title={title} back={back} />
   )
-  if (width === 'phone') {
-    return (
-      <PhoneDrill
-        {...shared}
-        questions={session.questions}
-        clock={clock}
-        note={note}
-        setNote={setNote}
-        badgeRef={badgeRef}
-        scrollRef={scrollRef}
-        focusOn={focusOn}
-        toggleFocus={toggleFocus}
-        done={done}
-      />
-    )
-  }
-  return (
+  const body = !readable ? (
+    <NoQuestions
+      width={width}
+      text="Texten saknas just nu. Välj en ny övning i Öva."
+      onExit={act.exit}
+      action={{ label: 'Till Öva', onClick: () => actions.go('ova') }}
+    />
+  ) : width === 'phone' ? (
+    <PhoneDrill
+      {...shared}
+      questions={session.questions}
+      clock={clock}
+      note={note}
+      setNote={setNote}
+      badgeRef={badgeRef}
+      scrollRef={scrollRef}
+      focusOn={focusOn}
+      toggleFocus={toggleFocus}
+      done={done}
+      short={short}
+      live={live}
+    />
+  ) : (
     <div className="sp-drill">
       <TopBar
         onExit={act.exit}
@@ -413,6 +459,7 @@ function ReadingSession({
       ) : (
         <DeskBody
           {...shared}
+          short={short}
           note={note}
           setNote={setNote}
           badgeRef={badgeRef}
@@ -425,6 +472,366 @@ function ReadingSession({
       )}
     </div>
   )
+  return (
+    <ReadingContext.Provider
+      value={{ view, questions: session.questions, report: media.report, calm }}
+    >
+      {body}
+    </ReadingContext.Provider>
+  )
+}
+
+type ImageReceipt = { element: HTMLImageElement | null; src: string; ready: boolean }
+type ImageReporter = (slot: string, receipt: ImageReceipt) => void
+const ReadingContext = createContext<{
+  view: DrillCoreView
+  questions: readonly DrillQuestion[]
+  report: ImageReporter
+  calm: boolean
+} | null>(null)
+
+function useReadingMedia(question: DrillQuestion) {
+  const [receipts, setReceipts] = useState<Record<string, ImageReceipt>>({})
+  const report: ImageReporter = useCallback((slot, receipt) => {
+    setReceipts((old) => {
+      const was = old[slot]
+      if (
+        was?.element === receipt.element &&
+        was?.src === receipt.src &&
+        was?.ready === receipt.ready
+      )
+        return old
+      return { ...old, [slot]: receipt }
+    })
+  }, [])
+  const required = [
+    ...(question.figure ? [{ slot: 'question', src: question.figure.src }] : []),
+    ...(question.options ?? []).flatMap((o) =>
+      o.figure ? [{ slot: `option-${o.letter}`, src: o.figure.src }] : [],
+    ),
+  ]
+  const canAnswer = () =>
+    !!question.options?.length &&
+    required.every(({ slot, src }) => {
+      const receipt = receipts[slot]
+      return receipt?.src === src && receipt.ready && receipt.element?.isConnected
+    })
+  return { report, canAnswer, ready: canAnswer() }
+}
+
+/** Readiness is a receipt from this mounted inline image, never its URL alone. */
+function ReadingImage({
+  slot,
+  figure,
+}: {
+  slot: string
+  figure: NonNullable<DrillOption['figure']>
+}) {
+  const context = useContext(ReadingContext)
+  const report = context?.report
+  const [state, setState] = useState<'loading' | 'ready' | 'failed'>('loading')
+  const [attempt, setAttempt] = useState(0)
+  const image = useRef<HTMLImageElement | null>(null)
+  const src = figure.src
+  const attach = useCallback(
+    (element: HTMLImageElement | null) => {
+      image.current = element
+      const ready = !!element?.complete && element.naturalWidth > 0
+      if (element) setState(ready ? 'ready' : 'loading')
+      report?.(slot, { element, src, ready })
+    },
+    [report, slot, src],
+  )
+  return (
+    <span className="sp-reading-image">
+      <img
+        key={attempt}
+        ref={attach}
+        src={src.startsWith('/') ? src : `/${src}`}
+        alt={figure.alt}
+        width={figure.width}
+        height={figure.height}
+        onLoad={(e) => {
+          setState('ready')
+          report?.(slot, { element: e.currentTarget, src, ready: true })
+        }}
+        onError={(e) => {
+          setState('failed')
+          report?.(slot, { element: e.currentTarget, src, ready: false })
+        }}
+      />
+      {state === 'failed' ? (
+        <span className="sp-image-error" role="alert" lang="sv">
+          Bilden gick inte att ladda.
+          {/* The retry lives beside the image; option callers render this outside their answer button. */}
+          <button
+            type="button"
+            className="sp-link"
+            onClick={() => {
+              report?.(slot, { element: image.current, src, ready: false })
+              setState('loading')
+              setAttempt((n) => n + 1)
+            }}
+          >
+            Försök igen
+          </button>
+        </span>
+      ) : state === 'loading' ? (
+        <span className="sp-sr" lang="sv">
+          Bilden laddas. Vänta med att svara.
+        </span>
+      ) : null}
+    </span>
+  )
+}
+
+function gapNumber(q: DrillQuestion): number | null {
+  if (q.section !== 'ELF') return null
+  const n = q.prompt?.match(/^(?:Gap|Lucka)\s*\(?(\d+)\)?$/iu)?.[1]
+  if (n) return Number(n)
+  if (!q.prompt?.trim() && q.passage?.paragraphs.some((p) => p.includes(`___(${q.number})___`)))
+    return q.number
+  return null
+}
+
+function citeGap(view: DrillCoreView, cite: DrillAct['cite']) {
+  const n = gapNumber(view.question)
+  const index = view.passage?.paragraphs.findIndex((p) => p.includes(`___(${n})___`)) ?? -1
+  if (index >= 0) cite(index + 1)
+}
+
+function gapSentence(q: DrillQuestion): string | null {
+  const n = gapNumber(q)
+  if (n == null) return null
+  const token = `___(${n})___`
+  const paragraph = q.passage?.paragraphs.find((p) => p.includes(token))
+  if (!paragraph) return null
+  const at = paragraph.indexOf(token)
+  const before = paragraph.slice(0, at)
+  const left = Math.max(
+    before.lastIndexOf('. '),
+    before.lastIndexOf('? '),
+    before.lastIndexOf('! '),
+  )
+  const after = paragraph.slice(at + token.length)
+  const right = after.search(/[.!?](?:\s|$)/u)
+  return paragraph
+    .slice(left < 0 ? 0 : left + 2, right < 0 ? undefined : at + token.length + right + 1)
+    .trim()
+}
+
+function samePassage(a: DrillQuestion, b: DrillQuestion) {
+  return a.passage?.unitId && b.passage?.unitId
+    ? a.passage.unitId === b.passage.unitId
+    : a.passage?.paragraphs.join('\n') === b.passage?.paragraphs.join('\n')
+}
+
+function SparGap({ n }: { n: number }) {
+  const context = useContext(ReadingContext)
+  if (!context) return <>___({n})___</>
+  const { view, questions } = context
+  const q = questions.find((item) => samePassage(item, view.question) && gapNumber(item) === n)
+  const current = q?.qid === view.question.qid
+  const result = view.results.find((r) => r.qid === q?.qid)
+  const selected = current ? view.selected : null
+  const answer = q?.options?.find((o) => o.letter === (result ? q.answer : selected))?.text
+  const word = answer
+  const state = result ? (result.correct ? 'right' : 'miss') : current ? 'now' : 'todo'
+  const picked = q?.options?.find((o) => o.letter === result?.pick)?.text
+  return (
+    <span
+      className="sp-gapslot"
+      data-state={state}
+      data-preview={String(!!selected && !result)}
+      lang="sv"
+    >
+      {(q?.options ?? []).map((o) => (
+        <span key={o.letter} className="sp-gap-measure" aria-hidden lang="en">
+          {o.text}
+        </span>
+      ))}
+      <span aria-hidden className="sp-gap-visible">
+        <SparStop size={24} state={state} label={n} />
+        <span lang="en">{word ?? '······'}</span>
+      </span>
+      <span className="sp-sr">
+        Lucka {n}
+        {result ? ': ' : selected ? ', ditt val: ' : current ? ', aktuell' : ', inte besvarad än'}
+        {word ? <span lang="en">{word}</span> : null}
+        {result ? (
+          result.correct ? (
+            ', rätt'
+          ) : (
+            <>
+              , ditt svar var <span lang="en">{picked}</span>, lagd i Repetera
+            </>
+          )
+        ) : null}
+      </span>
+    </span>
+  )
+}
+
+function GapText({
+  text,
+  marks = [],
+  replacement,
+}: {
+  text: string
+  marks?: QuoteSpan[]
+  replacement?: { n: number; word: string }
+}) {
+  const out: ReactNode[] = []
+  let at = 0
+  for (const match of text.matchAll(/___\((\d+)\)___/gu)) {
+    const start = match.index ?? 0
+    if (start > at)
+      out.push(
+        <ParaText
+          key={`text-${at}`}
+          text={text.slice(at, start)}
+          marks={marks
+            .filter((m) => m.start >= at && m.end <= start)
+            .map((m) => ({ ...m, start: m.start - at, end: m.end - at }))}
+        />,
+      )
+    const n = Number(match[1])
+    out.push(
+      replacement?.n === n ? (
+        <strong key={`gap-${start}`} lang="en">
+          {replacement.word}
+        </strong>
+      ) : (
+        <SparGap key={`gap-${start}`} n={n} />
+      ),
+    )
+    at = start + match[0].length
+  }
+  if (at < text.length)
+    out.push(
+      <ParaText
+        key={`text-${at}`}
+        text={text.slice(at)}
+        marks={marks
+          .filter((m) => m.start >= at)
+          .map((m) => ({ ...m, start: m.start - at, end: m.end - at }))}
+      />,
+    )
+  return <>{out}</>
+}
+
+function ReadingPrompt({ view, act }: Pick<Shared, 'view' | 'act'>) {
+  const n = gapNumber(view.question)
+  const sentence = gapSentence(view.question)
+  if (n == null)
+    return (
+      <h2 className="sp-prompt" lang={view.question.section === 'ELF' ? 'en' : undefined}>
+        <MathText>{view.question.prompt}</MathText>
+      </h2>
+    )
+  return (
+    <div className="sp-gap-prompt">
+      <div className="sp-gap-label">
+        <h2 className="sp-eyebrow">Lucka {n}</h2>
+        <button type="button" className="sp-link" onClick={() => citeGap(view, act.cite)}>
+          Visa i texten <Kbd>G</Kbd>
+        </button>
+      </div>
+      {sentence ? (
+        <p className="sp-prompt" lang="en">
+          <GapText text={sentence} />
+        </p>
+      ) : (
+        <p className="sp-prompt">Lucka {n}</p>
+      )}
+    </div>
+  )
+}
+
+function ReadingTactic({ view }: { view: DrillCoreView }) {
+  const context = useContext(ReadingContext)
+  const hint = view.explanation?.pregrade_tactic
+  if (context?.calm || !hint) return null
+  return (
+    <details className="sp-reading-tactic" key={view.question.qid}>
+      <summary>Taktik</summary>
+      <p lang={view.question.section === 'ELF' ? 'en' : undefined}>
+        <b>{hint.handle}</b> · <MathText>{hint.move}</MathText>
+      </p>
+    </details>
+  )
+}
+
+/** Extend the shared citations locally: English quotes/ordinals, and
+ *  gap-containing quotations. Never rewrite the displayed English text. */
+function englishCitations(view: DrillCoreView): DrillCoreView {
+  if (view.question.section !== 'ELF' || !view.passage || !view.explanation) return view
+  const paragraphs = view.passage.paragraphs
+  const ordinals = [
+    'first',
+    'second',
+    'third',
+    'fourth',
+    'fifth',
+    'sixth',
+    'seventh',
+    'eighth',
+    'ninth',
+  ]
+  const normal = (text: string) =>
+    text
+      .toLowerCase()
+      .replace(/___(?:\(\d+\))?___|___/gu, ' ')
+      .replace(/[“”"‘’]/gu, '')
+      .replace(/\s+/gu, ' ')
+      .trim()
+  const cite = (text: string, source: string) => {
+    const nums = new Set<number>()
+    const marks: DrillCoreView['marks'] = []
+    for (const m of text.matchAll(
+      /\b(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth)\s+paragraph\b/giu,
+    ))
+      nums.add(ordinals.indexOf(m[1].toLowerCase()) + 1)
+    for (const m of text.matchAll(/\bparagraph\s+(\d+)\b/giu)) nums.add(Number(m[1]))
+    for (const m of text.matchAll(/[“"]([^”"]+)[”"]/gu)) {
+      const quote = m[1]
+      if (quote.length < 8) continue
+      paragraphs.forEach((p, i) => {
+        if (!normal(p).includes(normal(quote))) return
+        nums.add(i + 1)
+        const start = p.toLowerCase().indexOf(quote.toLowerCase())
+        if (start >= 0) marks.push({ para: i + 1, start, end: start + quote.length, source })
+      })
+    }
+    return { list: [...nums].filter((n) => n > 0 && n <= paragraphs.length), marks }
+  }
+  const steps = { ...view.stepCites }
+  const distractors = { ...view.distractorCites }
+  const marks = [...view.marks]
+  const cited = new Set(view.cited)
+  for (const step of view.explanation.steps ?? []) {
+    const extra = cite(step.text, `step-${step.n}`)
+    steps[step.n] = [...new Set([...(steps[step.n] ?? []), ...extra.list])].sort((a, b) => a - b)
+    for (const n of extra.list) cited.add(n)
+    marks.push(...extra.marks)
+  }
+  for (const d of view.explanation.distractors) {
+    const tempting = cite(d.why_tempting, `tempting-${d.letter}`)
+    const wrong = cite(d.why_wrong, `why-${d.letter}`)
+    distractors[d.letter] = {
+      tempting: [...new Set([...(distractors[d.letter]?.tempting ?? []), ...tempting.list])],
+      wrong: [...new Set([...(distractors[d.letter]?.wrong ?? []), ...wrong.list])],
+    }
+    for (const n of [...tempting.list, ...wrong.list]) cited.add(n)
+    marks.push(...wrong.marks)
+  }
+  return {
+    ...view,
+    stepCites: steps,
+    distractorCites: distractors,
+    marks,
+    cited: [...cited].sort((a, b) => a - b),
+  }
 }
 
 /** A drill with nothing to play: say so, keep the way out, and offer the
@@ -609,6 +1016,7 @@ function DeskBody({
   view,
   act,
   refs,
+  short,
   note,
   setNote,
   badgeRef,
@@ -617,8 +1025,10 @@ function DeskBody({
   setTray,
   fsheet,
   setFsheet,
+  ready,
 }: Shared &
   Note & {
+    short: boolean
     scrollRef: RefObject<HTMLDivElement | null>
     tray: 'peek' | 'open'
     setTray: (s: 'peek' | 'open') => void
@@ -640,19 +1050,23 @@ function DeskBody({
   // rounded corners only): the tray is measured, the sheet's height is set.
   const dockRef = useRef<HTMLElement>(null)
   const [dockH, setDockH] = useState(0)
+  // Short texts and their tray share one flow, so the tray cannot cover
+  // the end of the passage, even with larger type or the note expanded.
+  const follow = short && view.phase === 'question'
   // biome-ignore lint/correctness/useExhaustiveDependencies: re-measure when the tray changes shape
   useLayoutEffect(() => {
     const el = dockRef.current
-    if (!el || view.phase !== 'question') return
+    if (!el || view.phase !== 'question' || follow) return
     const measure = () => setDockH(el.offsetHeight)
     measure()
     if (typeof ResizeObserver === 'undefined') return
     const ro = new ResizeObserver(measure)
     ro.observe(el)
     return () => ro.disconnect()
-  }, [view.phase, view.index, tray])
-  const bottom =
-    view.phase === 'feedback'
+  }, [view.phase, view.index, tray, follow])
+  const bottom = follow
+    ? '0px'
+    : view.phase === 'feedback'
       ? `calc(${SHEET_PCT[fsheet]}% - ${CORNER}px)`
       : `${Math.max(0, dockH - CORNER)}px`
 
@@ -667,6 +1081,18 @@ function DeskBody({
   const dockBadge = synthetic && (condensed || !bandSeen)
   const [title, subtitle] = splitTitle(view.question)
   const last = view.index + 1 >= view.total
+  const questionTray =
+    view.phase === 'question' ? (
+      <Tray
+        view={view}
+        act={act}
+        state={tray}
+        setState={setTray}
+        dockRef={dockRef}
+        badge={dockBadge}
+        ready={ready}
+      />
+    ) : null
 
   return (
     <div className="sp-body" data-phase={view.phase}>
@@ -680,7 +1106,8 @@ function DeskBody({
           badgeRef={badgeRef}
           bandRef={bandRef}
         />
-        <div aria-hidden style={{ height: CORNER + 32 }} />
+        <div aria-hidden style={{ height: follow ? 16 : CORNER + 32 }} />
+        {follow ? questionTray : null}
       </div>
       <div
         className="sp-strip"
@@ -691,16 +1118,7 @@ function DeskBody({
         <span className="sp-strip-title">{title}</span>
         {subtitle ? <span className="sp-strip-sub">{subtitle}</span> : null}
       </div>
-      {view.phase === 'question' ? (
-        <Tray
-          view={view}
-          act={act}
-          state={tray}
-          setState={setTray}
-          dockRef={dockRef}
-          badge={dockBadge}
-        />
-      ) : null}
+      {!follow ? questionTray : null}
       {view.phase === 'feedback' ? (
         <FeedbackSheet
           view={view}
@@ -759,10 +1177,14 @@ function Reader({ view, act, refs, note, setNote, badgeRef, bandRef }: Shared & 
             </button>
           </div>
         ) : null}
-        <h1 className="sp-title" id="sp-title">
+        <h1 className="sp-title" id="sp-title" lang={meta?.lang}>
           {title}
         </h1>
-        {subtitle ? <p className="sp-subtitle">{subtitle}</p> : null}
+        {subtitle ? (
+          <p className="sp-subtitle" lang={meta?.lang}>
+            {subtitle}
+          </p>
+        ) : null}
         {synthetic ? (
           <p className="sp-note" id="sp-note" data-testid="rd-note" hidden={!note}>
             {data.copy.ovningstextNote}
@@ -771,7 +1193,7 @@ function Reader({ view, act, refs, note, setNote, badgeRef, bandRef }: Shared & 
       </header>
       <div
         className="sp-passage"
-        data-testid="rd-passage"
+        data-testid={view.question.section === 'ELF' ? 'rd-elf-passage' : 'rd-passage'}
         data-focus={String(view.focusPara != null)}
         lang={meta?.lang === 'en' ? 'en' : undefined}
       >
@@ -796,16 +1218,30 @@ function Reader({ view, act, refs, note, setNote, badgeRef, bandRef }: Shared & 
                 tabIndex={-1}
                 aria-label={`Stycke ${n}${view.focusPara === n ? ', i fokus' : ''}`}
                 aria-pressed={view.focusPara === n}
+                lang="sv"
                 onClick={() => act.setFocusPara(view.focusPara === n ? null : n)}
               >
-                {n}
+                {view.question.section === 'ELF' ? `¶${n}` : n}
               </button>
-              <ParaText text={p} marks={marks.filter((m) => m.para === n)} />
+              {view.question.section === 'ELF' ? (
+                <GapText text={p} marks={marks.filter((m) => m.para === n)} />
+              ) : (
+                <ParaText text={p} marks={marks.filter((m) => m.para === n)} />
+              )}
             </p>
           )
         })}
         {byline ? <p className="sp-byline">{byline}</p> : null}
       </div>
+      {view.question.figure ? (
+        <div className="sp-reading-figure">
+          <ReadingImage
+            key={view.question.figure.src}
+            slot="question"
+            figure={view.question.figure}
+          />
+        </div>
+      ) : null}
     </article>
   )
 }
@@ -839,7 +1275,8 @@ function Tray({
   setState,
   dockRef,
   badge,
-}: Pick<Shared, 'view' | 'act'> & {
+  ready = true,
+}: Pick<Shared, 'view' | 'act' | 'ready'> & {
   state: 'peek' | 'open'
   setState: (s: 'peek' | 'open') => void
   dockRef: RefObject<HTMLElement | null>
@@ -856,9 +1293,7 @@ function Tray({
       aria-label={`Fråga ${view.index + 1}`}
     >
       <div className="sp-tray-head">
-        <h2 className="sp-prompt">
-          <MathText>{view.question.prompt}</MathText>
-        </h2>
+        <ReadingPrompt view={view} act={act} />
         {view.question.passage?.synthetic ? (
           <span
             className="sp-badge-chip sp-badge-chip--sm"
@@ -896,7 +1331,9 @@ function Tray({
         </button>
       )}
       <div className="sp-tray-body" id="sp-tray-body" hidden={!open}>
-        <Options view={view} act={act} />
+        {view.letters.length === 0 ? <p>Alternativen saknas för den här frågan.</p> : null}
+        <ReadingTactic view={view} />
+        <Options view={view} act={act} layout={readingOptionsLayout(view.question)} />
         <div className="sp-tray-foot">
           <p className="sp-keys">
             <span>
@@ -916,7 +1353,7 @@ function Tray({
             type="button"
             className="sp-btn sp-btn--primary"
             data-testid="rd-lock"
-            disabled={!view.selected}
+            disabled={!view.selected || !ready}
             onClick={act.lock}
           >
             Svara
@@ -930,6 +1367,11 @@ function Tray({
 
 export type OptionsLayout = 'column' | 'row' | 'grid' | 'images'
 
+function readingOptionsLayout(q: DrillQuestion): OptionsLayout {
+  return q.section === 'ELF' && (q.options ?? []).every((o) => o.text.length <= 14)
+    ? 'row'
+    : 'column'
+}
 /**
  * The options: a letter blob that morphs into a tilted ink squircle when
  * chosen, the text (math rendered), and a strike button. `content` gives
@@ -952,6 +1394,7 @@ export function Options({
   content?: (o: DrillOption) => ReactNode
   disabled?: boolean
 }) {
+  const reading = useContext(ReadingContext)
   return (
     <ol className="sp-opts" data-layout={layout} aria-label="Svarsalternativ">
       {(view.question.options ?? []).map((o) => {
@@ -963,6 +1406,9 @@ export function Options({
             className="sp-opt"
             data-state={selected ? 'selected' : out ? 'out' : undefined}
           >
+            {reading && o.figure ? (
+              <ReadingImage key={o.figure.src} slot={`option-${o.letter}`} figure={o.figure} />
+            ) : null}
             <button
               type="button"
               className="sp-opt-main"
@@ -979,7 +1425,9 @@ export function Options({
                   Alternativ {o.letter}
                   {out ? ', struket' : ''}:
                 </span>{' '}
-                {content ? content(o) : <MathText>{o.text}</MathText>}
+                <span lang={view.question.section === 'ELF' ? 'en' : undefined}>
+                  {content ? content(o) : <MathText>{o.text}</MathText>}
+                </span>
               </span>
             </button>
             <button
@@ -1109,7 +1557,7 @@ export function Verdict({
         )}
       </span>
       <div className="sp-verdict-text">
-        <h2 className="sp-verdict-word" id="sp-verdict">
+        <h2 className="sp-verdict-word" id="sp-verdict" tabIndex={-1}>
           {correct ? 'Rätt!' : 'Fel'}
         </h2>
         <p className="sp-verdict-sub">
@@ -1175,8 +1623,21 @@ export function FeedbackBody({
   const { data, actions } = useDirectionData()
   const e = view.explanation
   const q = view.question
+  const en = q.section === 'ELF' ? 'en' : undefined
+  const sentence = gapSentence(q)
+  const gap = gapNumber(q)
   const raw = (l: string) => q.options?.find((o) => o.letter === l)?.text ?? ''
-  const text = optionText ?? ((l: string) => <MathText>{raw(l)}</MathText>)
+  const text =
+    optionText ??
+    ((l: string) => (
+      <span lang={en}>
+        {sentence && gap != null ? (
+          <GapText text={sentence} replacement={{ n: gap, word: raw(l) }} />
+        ) : (
+          <MathText>{raw(l)}</MathText>
+        )}
+      </span>
+    ))
   const recap = (
     <div className="sp-recap">
       {view.picked && view.picked !== q.answer ? (
@@ -1188,7 +1649,9 @@ export function FeedbackBody({
   const head = (
     <>
       {chip ? <VerdictChip view={view} repetition={repetition} /> : null}
-      <p className="sp-fb-q">{prompt ?? <MathText>{q.prompt}</MathText>}</p>
+      <p className="sp-fb-q" lang={en}>
+        {prompt ?? (sentence ? <GapText text={sentence} /> : <MathText>{q.prompt}</MathText>)}
+      </p>
       {recap}
     </>
   )
@@ -1219,12 +1682,12 @@ export function FeedbackBody({
           <h3 className="sp-h4" id="sp-lure-h">
             Varför {picked.letter} lockade
           </h3>
-          <p className="sp-fb-p">
+          <p className="sp-fb-p" lang={en}>
             <Rich text={picked.why_tempting} act={act} />
             <Cites list={cites(picked.letter).tempting} act={act} />
           </p>
           <h3 className="sp-h4">Varför {picked.letter} är fel</h3>
-          <p className="sp-fb-p">
+          <p className="sp-fb-p" lang={en}>
             <Rich text={picked.why_wrong} act={act} />
             <Cites list={cites(picked.letter).wrong} act={act} source={`why-${picked.letter}`} />
           </p>
@@ -1242,7 +1705,7 @@ export function FeedbackBody({
                 <TriangleAlert size={17} strokeWidth={2.25} aria-hidden />
                 Fallgrop
               </h4>
-              <p className="sp-fb-p">
+              <p className="sp-fb-p" lang={en}>
                 <MathText>{e.pitfall}</MathText>
               </p>
             </div>
@@ -1252,7 +1715,7 @@ export function FeedbackBody({
               <Route size={17} strokeWidth={2.25} aria-hidden />
               Teknik
             </h4>
-            <p className="sp-fb-p">
+            <p className="sp-fb-p" lang={en}>
               <MathText>{e.technique}</MathText>
             </p>
           </div>
@@ -1263,7 +1726,7 @@ export function FeedbackBody({
         <h3 className="sp-h3" id="sp-sol-h">
           Lösningen
         </h3>
-        <p className="sp-fb-p">
+        <p className="sp-fb-p" lang={en}>
           <MathText>{e.solution_path}</MathText>
         </p>
       </section>
@@ -1288,7 +1751,14 @@ export function FeedbackBody({
           </h3>
           <div className="sp-others">
             {others.map((d) => (
-              <Other key={d.letter} d={d} text={text(d.letter)} cites={cites(d.letter)} act={act} />
+              <Other
+                key={`${q.qid}-${d.letter}`}
+                d={d}
+                text={text(d.letter)}
+                cites={cites(d.letter)}
+                act={act}
+                lang={en}
+              />
             ))}
           </div>
         </section>
@@ -1354,7 +1824,7 @@ function Step({ step, view, act, refs }: Shared & { step: ExplanationStep }) {
         <div className="sp-step-head">
           <h4 className="sp-step-name">
             <span className="sp-sr">Steg {step.n}: </span>
-            {step.title}
+            <span lang={view.question.section === 'ELF' ? 'en' : undefined}>{step.title}</span>
           </h4>
           {detail ? (
             <button
@@ -1375,7 +1845,10 @@ function Step({ step, view, act, refs }: Shared & { step: ExplanationStep }) {
           ) : null}
         </div>
         {open ? (
-          <p className="sp-fb-p sp-step-text">
+          <p
+            className="sp-fb-p sp-step-text"
+            lang={view.question.section === 'ELF' ? 'en' : undefined}
+          >
             <Rich text={step.text} act={act} />
             <Cites list={view.stepCites[step.n] ?? []} act={act} source={`step-${step.n}`} />
           </p>
@@ -1390,11 +1863,13 @@ function Other({
   text,
   cites,
   act,
+  lang,
 }: {
   d: DistractorExplanation
   text: ReactNode
   cites: { tempting: number[]; wrong: number[] }
   act: DrillAct
+  lang?: 'en'
 }) {
   const [open, setOpen] = useState(false)
   const bodyId = `sp-other-${d.letter}`
@@ -1423,12 +1898,12 @@ function Other({
       {open ? (
         <div className="sp-other-body" id={bodyId}>
           <h4 className="sp-h4">Varför det lockar</h4>
-          <p className="sp-fb-p">
+          <p className="sp-fb-p" lang={lang}>
             <Rich text={d.why_tempting} act={act} />
             <Cites list={cites.tempting} act={act} />
           </p>
           <h4 className="sp-h4">Varför det är fel</h4>
-          <p className="sp-fb-p">
+          <p className="sp-fb-p" lang={lang}>
             <Rich text={d.why_wrong} act={act} />
             <Cites list={cites.wrong} act={act} source={`why-${d.letter}`} />
           </p>
@@ -1442,7 +1917,7 @@ function Other({
 function Cites({ list, act, source }: { list: number[]; act: DrillAct; source?: string }) {
   if (list.length === 0) return null
   return (
-    <span className="sp-cites">
+    <span className="sp-cites" lang="sv">
       {list.map((n) => (
         <button
           key={n}
@@ -1548,7 +2023,9 @@ export function Done({
         <Check size={16} strokeWidth={2.75} aria-hidden />
         {chip}
       </span>
-      <p className="sp-eyebrow">{title} är klar</p>
+      <p className="sp-eyebrow">
+        <span lang={view.question.section === 'ELF' ? 'en' : undefined}>{title}</span> är klar
+      </p>
       <h2 className="sp-display" id="sp-done-h">
         {right} av {view.results.length} {kind === 'repetition' ? 'satt' : 'rätt'}
       </h2>
@@ -1582,7 +2059,7 @@ export function Done({
                 <Check size={16} strokeWidth={3} />
               </span>
               <span className="sp-mini-text">
-                <b>{title}</b>
+                <b lang={view.question.section === 'ELF' ? 'en' : undefined}>{title}</b>
                 <span>{resume.section} · klar</span>
               </span>
             </li>
@@ -1663,6 +2140,9 @@ function PhoneDrill({
   focusOn,
   toggleFocus,
   done,
+  ready = true,
+  short,
+  live,
 }: Shared &
   Note & {
     questions: readonly DrillQuestion[]
@@ -1671,9 +2151,16 @@ function PhoneDrill({
     focusOn: boolean
     toggleFocus: () => void
     done: ReactNode
+    short: boolean
+    live: boolean
   }) {
   const { data } = useDirectionData()
   const { state, setState, toggle, grab } = useSheet(view)
+  useKeyMap({ t: toggle }, live)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: seat each new short question under its text
+  useEffect(() => {
+    if (short && view.phase === 'question') setState('open')
+  }, [view.index, view.phase])
   const { hidden, onScroll: hideOnScroll } = useHideOnScroll()
   // The head hides when the reader scrolls, not when the app does.
   const quietUntil = useRef(0)
@@ -1837,9 +2324,7 @@ function PhoneDrill({
             )
           ) : (
             <>
-              <h2 className="sp-prompt">
-                <MathText>{view.question.prompt}</MathText>
-              </h2>
+              <ReadingPrompt view={view} act={sheetAct} />
               {state === 'peek' ? (
                 <button type="button" className="sp-show" onClick={toggle}>
                   Visa alternativen ({view.letters.length})
@@ -1847,7 +2332,9 @@ function PhoneDrill({
                 </button>
               ) : null}
               <div hidden={state === 'peek'}>
-                <Options view={view} act={sheetAct} />
+                {view.letters.length === 0 ? <p>Alternativen saknas för den här frågan.</p> : null}
+                <ReadingTactic view={view} />
+                <Options view={view} act={sheetAct} layout={readingOptionsLayout(view.question)} />
               </div>
             </>
           )}
@@ -1882,7 +2369,7 @@ function PhoneDrill({
                   type="button"
                   className="sp-btn sp-btn--primary sp-btn--lg"
                   data-testid="rd-lock"
-                  disabled={!view.selected}
+                  disabled={!view.selected || !ready}
                   onClick={act.lock}
                 >
                   Svara
