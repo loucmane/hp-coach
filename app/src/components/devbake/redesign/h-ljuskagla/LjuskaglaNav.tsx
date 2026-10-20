@@ -1,14 +1,17 @@
 import { Moon, PanelLeftClose, PanelLeftOpen, Sun, UserRound, X } from 'lucide-react'
 import { useCallback, useId, useRef, useState } from 'react'
-import { OVA_DUE } from '@/components/devbake/redesign/r1Fixtures'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
   DESTINATIONS,
   type Destination,
   type DirectionProps,
+  fmtClock,
   useDismiss,
 } from '@/components/devbake/redesign/r1Kit'
 import { LjuskaglaDestination, LjuskaglaHome } from './LjuskaglaHome'
-import { Mark, NAV_ICONS } from './LjuskaglaParts'
+import { LjuskaglaOva } from './LjuskaglaOva'
+import { type FramePage, Mark, NAV_ICONS, type OpenPage } from './LjuskaglaParts'
+import { LjuskaglaRepetera } from './LjuskaglaRepetera'
 
 export function Account({
   theme,
@@ -91,13 +94,96 @@ export function Account({
   )
 }
 
+/**
+ * The focus shell's head: an always-visible Avsluta, the section and the
+ * reader's place, the clock (when there is one to show), the account, and a
+ * warm line along the bottom for progress.
+ */
+export function DrillHead({
+  section,
+  position,
+  total,
+  elapsed,
+  progress,
+  onExit,
+  theme,
+  onTheme,
+  onAccountOpenChange,
+  inert = false,
+}: Pick<DirectionProps, 'theme' | 'onTheme'> & {
+  section: string
+  position: number
+  total: number
+  /** Seconds on the clock, or null to leave the clock out. */
+  elapsed: number | null
+  /** 0–1 */
+  progress: number
+  onExit: () => void
+  onAccountOpenChange: (open: boolean) => void
+  /** While a dialog covers the drill. */
+  inert?: boolean
+}) {
+  return (
+    <header className="lj-drill-head" inert={inert}>
+      <button
+        type="button"
+        className="lj-text-button lj-exit"
+        data-testid="rd-exit"
+        onClick={onExit}
+      >
+        <X size={18} aria-hidden />
+        <span>Avsluta</span>
+      </button>
+      <span className="lj-drill-progress">
+        {section}{' '}
+        <span>
+          · {position} av {total}
+        </span>
+      </span>
+      {elapsed != null && (
+        <span className="lj-clock" role="timer" aria-label={`Tid ${fmtClock(elapsed)}`}>
+          {fmtClock(elapsed)}
+        </span>
+      )}
+      <Account theme={theme} onTheme={onTheme} onOpenChange={onAccountOpenChange} />
+      <span className="lj-progress-line" aria-hidden>
+        <i style={{ width: `${progress * 100}%` }} />
+      </span>
+    </header>
+  )
+}
+
+/** The door a page belongs to: Repetera is part of Öva. */
+const PAGE_DOOR: Record<FramePage, Destination> = {
+  idag: 'idag',
+  ova: 'ova',
+  repetera: 'ova',
+  provpass: 'provpass',
+  uppslag: 'uppslag',
+  framsteg: 'framsteg',
+}
+
+/**
+ * The normal shell around Idag, Öva and Repetera: the five doors and the
+ * account, in a sidebar that gains light on approach (desktop) or a bottom
+ * bar (phone). A door asks the host to go there and opens the page here as
+ * well, so a host that does not navigate (a bare test mount, the real-app
+ * preview) still answers the click the way round 1's doors did. The stage
+ * remounts the frame for each screen, so a host's navigation always wins.
+ */
 export function LjuskaglaFrame({
-  destination,
-  onGo,
+  page: initialPage,
   ...props
-}: DirectionProps & { destination: Destination; onGo: (d: Destination) => void }) {
+}: DirectionProps & { page: FramePage }) {
+  const { data, actions } = useDirectionData()
+  const [page, setPage] = useState(initialPage)
   const [collapsed, setCollapsed] = useState(props.screen === 4)
   const phone = props.width === 'phone'
+  const open: OpenPage = (next, ask) => {
+    ask()
+    setPage(next)
+  }
+  const go = (door: Destination) => open(door, () => actions.go(door))
   const nav = (
     <nav className="lj-nav" aria-label="Huvudmeny">
       {DESTINATIONS.map((d) => {
@@ -107,16 +193,16 @@ export function LjuskaglaFrame({
             type="button"
             key={d.id}
             data-testid={`rd-nav-${d.id}`}
-            aria-current={destination === d.id ? 'page' : undefined}
+            aria-current={PAGE_DOOR[page] === d.id ? 'page' : undefined}
             aria-label={d.label}
             title={d.label}
-            onClick={() => onGo(d.id)}
+            onClick={() => go(d.id)}
           >
             <Icon size={20} strokeWidth={1.5} aria-hidden />
             <span className="lj-nav-label">{d.label}</span>
-            {!phone && d.id === 'ova' && (
-              <span className="lj-nav-count" title={`${OVA_DUE} att repetera`}>
-                {OVA_DUE}
+            {!phone && d.id === 'ova' && data.home.ovaDue > 0 && (
+              <span className="lj-nav-count" title={`${data.home.ovaDue} att repetera`}>
+                {data.home.ovaDue}
               </span>
             )}
           </button>
@@ -153,11 +239,15 @@ export function LjuskaglaFrame({
           <div className="lj-sidebar-foot">{account}</div>
         </aside>
       )}
-      <main className="lj-home-scroll" key={destination}>
-        {destination === 'idag' ? (
-          <LjuskaglaHome onResume={() => props.onScreen(2)} onGo={onGo} />
+      <main className="lj-home-scroll" key={page}>
+        {page === 'idag' ? (
+          <LjuskaglaHome onResume={() => props.onScreen(2)} onOpen={open} />
+        ) : page === 'ova' ? (
+          <LjuskaglaOva />
+        ) : page === 'repetera' ? (
+          <LjuskaglaRepetera onBack={() => go('ova')} />
         ) : (
-          <LjuskaglaDestination destination={destination} onResume={() => props.onScreen(2)} />
+          <LjuskaglaDestination destination={page} />
         )}
       </main>
       {phone && nav}

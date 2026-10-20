@@ -1,11 +1,8 @@
-import { useState } from 'react'
-import {
-  type Destination,
-  type DirectionProps,
-  useWebFonts,
-} from '@/components/devbake/redesign/r1Kit'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
+import { type DirectionProps, useWebFonts } from '@/components/devbake/redesign/r1Kit'
 import { LjuskaglaDrill } from './LjuskaglaDrill'
 import { LjuskaglaFrame } from './LjuskaglaNav'
+import { LjuskaglaQuant } from './LjuskaglaQuant'
 import './ljuskagla.css'
 
 export function Ljuskagla(props: DirectionProps) {
@@ -13,11 +10,8 @@ export function Ljuskagla(props: DirectionProps) {
     'ljuskagla',
     'https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap',
   )
-  const [destination, setDestination] = useState<Destination>('idag')
-  const goHome = (dest: Destination) => {
-    setDestination(dest)
-    props.onScreen(1)
-  }
+  const { data } = useDirectionData()
+  const { screen } = props
   return (
     <div
       className="ljuskagla"
@@ -27,14 +21,19 @@ export function Ljuskagla(props: DirectionProps) {
       data-live={String(props.live)}
       lang="sv"
     >
-      {props.screen === 2 || props.screen === 3 ? (
-        <LjuskaglaDrill {...props} onGo={goHome} />
+      {screen === 2 || screen === 3 ? (
+        <LjuskaglaDrill {...props} />
+      ) : screen === 6 || screen === 7 ? (
+        <LjuskaglaQuant
+          key={screen}
+          {...props}
+          session={screen === 7 ? data.drills.dtk : data.drills.quant}
+        />
       ) : (
         <LjuskaglaFrame
-          key={props.screen}
+          key={screen}
           {...props}
-          destination={destination}
-          onGo={setDestination}
+          page={screen === 5 ? 'ova' : screen === 8 ? 'repetera' : 'idag'}
         />
       )}
     </div>
