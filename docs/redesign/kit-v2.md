@@ -440,3 +440,7 @@ The builders in `directionData.tsx` derive the view model from that state with t
 ### Keys inside a figure or dialog
 
 The bake-off switcher answers 1–8, 0 and ←/→ on the window. It leaves alone any key pressed inside an open `dialog` (a figure viewer, a gate) or inside an element marked `data-rd-keyscope` (a figure's pan or scroll region), so the arrows pan or scroll there and never change the screen. Mark an inline pan region with `data-rd-keyscope`; a native dialog needs nothing.
+
+### Controls a direction's spec leaves out
+
+A direction's merged spec may deliberately leave out a Konto control (screen 13): a preference group (`palette`, `font`, `density`, `coach`) or the account-deletion flow (`delete`). Declare it in the direction's `meta.ts` as `omits: { konto: ['palette', 'delete'] }`. The shared contract then checks that each omitted control is absent or visibly disabled (`disabled` or `aria-disabled="true"`) and that pressing it changes nothing, never silently inert, and checks every other control as before. Name the spec section that decides the omission in a comment next to it.

@@ -11,7 +11,7 @@ import type {
 import { splitKvaPrompt } from '@/components/drill/KvaPrompt'
 import { MathText } from '@/components/MathText'
 import { parseNogPrompt } from '@/lib/nogPrompt'
-import { Actions, Explanation, Options } from './LagerDrill'
+import { Actions, Explanation, type ImageReadiness, Options, useRequiredImages } from './LagerDrill'
 
 type Props = DirectionProps & { onDone: (done: boolean) => void }
 
@@ -53,7 +53,7 @@ function QuantSession({ session, live, width, onDone }: Props & { session: Drill
   const [front, setFront] = useState<'question' | 'explain'>('explain')
   const [expanded, setExpanded] = useState(false)
   const [viewer, setViewer] = useState(false)
-  const [failedSource, setFailedSource] = useState<string | null>(null)
+  const images = useRequiredImages(q)
   const [narrow, setNarrow] = useState(width === 'phone')
   const root = useRef<HTMLDivElement>(null)
   const heading = useRef<HTMLHeadingElement>(null)
@@ -61,7 +61,7 @@ function QuantSession({ session, live, width, onDone }: Props & { session: Drill
   const dtk = q.section === 'DTK'
   const sourceKey = q.figure?.src ?? ''
   const invalid = !q.prompt?.trim() || !q.options?.length || (dtk && !q.figure)
-  const blocked = invalid || (sourceKey !== '' && failedSource === sourceKey)
+  const blocked = invalid || images.blocked
   const sourceGroup = sourceKey
     ? session.questions.filter((item) => item.figure?.src === sourceKey)
     : []
@@ -128,7 +128,7 @@ function QuantSession({ session, live, width, onDone }: Props & { session: Drill
           {dtk && !q.figure ? 'Underlaget saknas.' : 'Frågan saknar fullständig text.'}
         </p>
       ) : null}
-      <Options view={view} act={act} quant />
+      <Options view={view} act={act} quant images={images} />
       <p className="la-keys">
         {view.letters.join('–')} väljer · Enter svarar · Shift + bokstav stryker
       </p>
@@ -199,21 +199,15 @@ function QuantSession({ session, live, width, onDone }: Props & { session: Drill
             ) : null}
             {!dtk ? prompt : null}
             {q.figure ? (
-              <Figure
-                key={sourceKey}
-                figure={q.figure}
-                onError={() => setFailedSource(sourceKey)}
-                onLoad={() => setFailedSource(null)}
-                onViewer={setViewer}
-              />
+              <Figure key={sourceKey} figure={q.figure} images={images} onViewer={setViewer} />
             ) : dtk ? (
               <p>Underlaget saknas.</p>
             ) : null}
             {blocked ? (
               <p role="status">
-                {failedSource === sourceKey && sourceKey
-                  ? 'Figuren kunde inte hämtas. Försök igen nedan eller avsluta övningen.'
-                  : 'Du kan avsluta och välja en annan övning.'}
+                {invalid
+                  ? 'Du kan avsluta och välja en annan övning.'
+                  : 'Alla figurer behöver laddas innan du svarar. Om en figur saknas kan du försöka igen.'}
               </p>
             ) : null}
             {narrow && !dtk ? (
@@ -310,7 +304,7 @@ function QuantSession({ session, live, width, onDone }: Props & { session: Drill
   )
 }
 
-function QuantPrompt({ question: q }: { question: DrillQuestion }) {
+export function QuantPrompt({ question: q }: { question: DrillQuestion }) {
   const kva = q.section === 'KVA' ? splitKvaPrompt(q.prompt ?? '') : null
   const nog = q.section === 'NOG' ? parseNogPrompt(q.prompt ?? '') : null
   if (kva)
@@ -367,20 +361,17 @@ function QuantPrompt({ question: q }: { question: DrillQuestion }) {
   )
 }
 
-function Figure({
+export function Figure({
   figure,
-  onError,
-  onLoad,
+  images,
   onViewer,
 }: {
   figure: DrillFigure
-  onError: () => void
-  onLoad: () => void
+  images: ImageReadiness
   onViewer: (open: boolean) => void
 }) {
   const [open, setOpen] = useState(false)
-  const [failed, setFailed] = useState(false)
-  const [attempt, setAttempt] = useState(0)
+  const failed = images.failed(figure.src)
   const [scale, setScale] = useState(1)
   const [rotation, setRotation] = useState(0)
   const [fitWidth, setFitWidth] = useState(0)
@@ -418,23 +409,16 @@ function Figure({
     <>
       <div className="la-figure" data-testid="rd-figure">
         <img
-          key={attempt}
+          key={images.key(figure.src)}
+          {...images.props(figure.src)}
           src={`/${figure.src}`}
           alt={figure.alt}
           width={figure.width}
           height={figure.height}
-          onError={() => {
-            setFailed(true)
-            onError()
-          }}
-          onLoad={() => {
-            setFailed(false)
-            onLoad()
-          }}
         />
       </div>
       {failed ? (
-        <button type="button" className="la-link" onClick={() => setAttempt((n) => n + 1)}>
+        <button type="button" className="la-link" onClick={() => images.retry(figure.src)}>
           Försök hämta figuren igen
         </button>
       ) : null}
@@ -458,7 +442,7 @@ function Figure({
           aria-label="Förstorad figur"
           onKeyDown={(event) => {
             // Arrow keys pan the focused figure, rather than changing the bake-off screen.
-            if (event.key.startsWith('Arrow')) event.stopPropagation()
+            if (event.key.startsWith('Arrow') || /^[1-8]$/.test(event.key)) event.stopPropagation()
           }}
           onCancel={(event) => {
             event.preventDefault()
@@ -517,6 +501,7 @@ function Figure({
           </div>
           <section
             className="la-figure-viewport"
+            data-rd-keyscope
             ref={viewport}
             // biome-ignore lint/a11y/noNoninteractiveTabindex: a scroll region needs keyboard panning
             tabIndex={0}

@@ -92,7 +92,14 @@ export type DirectionMeta = {
    *  (directions.ts DEFAULT_SCREENS). On any other screen the stage shows
    *  the shared "Inte byggd än" card instead of the direction. */
   screens?: AppScreenKey[]
+  /** Controls the direction's merged spec deliberately leaves out, checked
+   *  by the shared contract as absent (an honest omission) instead of
+   *  working. Konto (screen 13): a preference group or the delete flow. */
+  omits?: { konto?: readonly KontoControl[] }
 }
+
+/** The Konto controls a direction may omit (DirectionMeta.omits.konto). */
+export type KontoControl = 'palette' | 'font' | 'density' | 'coach' | 'delete'
 
 // The directions in key order. They live in the registry; this re-export
 // keeps the older imports from r1Kit working.

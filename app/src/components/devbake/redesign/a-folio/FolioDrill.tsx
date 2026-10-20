@@ -15,6 +15,13 @@
 // Phone: the passage first, the whole question in a sheet that peeks,
 // opens and goes full for the explanation; the head folds to a strip while
 // reading, so the exit, the ¶ aid and a thin progress line stay in reach.
+//
+// Kit v2: the sitting is useDirectionData().data.drills.reading, its state
+// is useDrillCore graded by actions.drill; round 1's switcher moves (a lock
+// opens Facit, Nästa Läsfråga, Avsluta Idag) ride on DirectionProps.onScreen
+// as before. This file also exports the drill's parts — verdict, options,
+// facit, spread, colophon and the dialog primitive — and the drill-view
+// seam, which the quant and DTK drills (FolioQuant.tsx) are built from.
 
 import {
   Check,
@@ -30,155 +37,430 @@ import {
 } from 'lucide-react'
 import {
   type CSSProperties,
+  Fragment,
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
   type PointerEvent as ReactPointerEvent,
+  type RefCallback,
+  type RefObject,
+  useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from 'react'
 
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
-  FRAMEWORK_NAMES,
-  OVNINGSTEXT_BADGE,
-  OVNINGSTEXT_NOTE,
-  PLAN,
-  TODAY,
-  UNIT,
-} from '@/components/devbake/redesign/r1Fixtures'
-import {
-  type Destination,
-  type DirectionProps,
-  type DrillActions,
-  type DrillRefs,
-  type DrillView,
-  fmtClock,
-  prefersReducedMotion,
+  type DrillCoreActions,
+  type DrillCoreRefs,
+  type DrillCoreView,
+  type DrillStart,
   type QuoteMark,
   splitStepRefs,
-  useDrill,
+  useDrillCore,
+} from '@/components/devbake/redesign/drillCore'
+import {
+  type DirectionProps,
+  fmtClock,
+  prefersReducedMotion,
   useHideOnScroll,
   useKeyMap,
   useSheet,
 } from '@/components/devbake/redesign/r1Kit'
+import type {
+  DrillOption,
+  DrillQuestion,
+  DrillSessionView,
+} from '@/components/devbake/redesign/viewModel'
+import { splitKvaPrompt } from '@/components/drill/KvaPrompt'
+import { MathText } from '@/components/MathText'
 import type { DistractorExplanation, ExplanationStep } from '@/data/explanations'
+import type { AnswerLetter, Section } from '@/data/questions'
+import { parseNogPrompt } from '@/lib/nogPrompt'
 import { Dots } from './FolioHome'
 
-const [TITLE, SUBTITLE] = UNIT.title.split(': ')
 /** A pace for the folded clock's line: about four minutes a question. */
 const PACE_SECONDS = 15 * 60
+/** Option counts in prose ("de fyra alternativen": neuter). */
 const WORDS = ['noll', 'ett', 'två', 'tre', 'fyra', 'fem']
-/** The plan's next part, offered when the text is done. */
-const NEXT = PLAN.items[0]
-const NEXT_DEST: Destination = NEXT?.kind === 'lektion' ? 'uppslag' : 'ova'
+
+// ── The drill-view seam ──────────────────────────────────────────────
+
+/** Where the reader came from: Avsluta and the colophon go back there. */
+export type Origin = {
+  /** "Idag", "Öva" — the colophon's "Till …". */
+  label: string
+  /** The reader came from Idag, where round 1's switcher move (onScreen(1))
+   *  also leads. */
+  idag: boolean
+}
+
+export const ORIGIN_IDAG: Origin = { label: 'Idag', idag: true }
+
+export type DrillMode = 'drill' | 'repetition'
+
+/**
+ * The drill-view seam (spec, screen 6 "New"): what a drill layout changes
+ * between a plain drill and a repetition round — the running head's label,
+ * what a position is called, the next button's words, the verdict's second
+ * line and the content's language. Every Folio drill layout takes it; batch
+ * 2 adds the pass and review modes.
+ */
+export type DrillSeam = {
+  mode: DrillMode
+  /** The running head's label: "LÄS", "Kvant · NOG", "Repetition · KVA". */
+  label: string
+  /** What a position is called: "Fråga", or "Miss" in a repetition. */
+  unit: 'Fråga' | 'Miss'
+  /** The next button on a middle question, on the last, and the echo
+   *  beside it on the last. */
+  next: { more: string; last: string; lastNote: string }
+  /** The verdict's second line, or null. */
+  after: (correct: boolean) => string | null
+  /** The content's language: 'en' marks ELF. */
+  lang: 'sv' | 'en'
+}
+
+const KVANT = new Set(['XYZ', 'KVA', 'NOG', 'DTK'])
+
+/** The seam for a question of a sitting: a repetition round when the
+ *  sitting was started as one, a drill otherwise. `finish` names the last
+ *  button of a drill ("Slutför texten"). */
+export function drillSeam(
+  session: Pick<DrillSessionView, 'request'>,
+  question: DrillQuestion,
+  finish: string,
+): DrillSeam {
+  const repetition = session.request.kind === 'repetition'
+  const section = question.section
+  return {
+    mode: repetition ? 'repetition' : 'drill',
+    label: repetition
+      ? `Repetition · ${section}`
+      : KVANT.has(section)
+        ? `Kvant · ${section}`
+        : section,
+    unit: repetition ? 'Miss' : 'Fråga',
+    next: repetition
+      ? { more: 'Nästa miss', last: 'Slutför genomgången', lastNote: 'Sista missen i omgången' }
+      : {
+          more: 'Nästa fråga',
+          last: finish,
+          lastNote: question.passage ? 'Sista frågan i texten' : 'Sista frågan',
+        },
+    // A wrong answer comes back after the ten-minute relearning step; the
+    // view model does not say where a right one goes on the ladder.
+    after: (correct) => (repetition && !correct ? 'Frågan kommer tillbaka om tio minuter.' : null),
+    lang: question.passage?.lang ?? (section === 'ELF' ? 'en' : 'sv'),
+  }
+}
+
+/** The core's actions as the drill's parts use them: lock, next and exit
+ *  wrapped by the screen (switcher moves, focus, motion). */
+export type DrillAct = Pick<
+  DrillCoreActions,
+  | 'select'
+  | 'toggleEliminate'
+  | 'setFocusPara'
+  | 'moveFocusPara'
+  | 'cite'
+  | 'toggleStep'
+  | 'goToStep'
+> & {
+  lock: () => void
+  next: () => void
+  exit: () => void
+}
 
 type Shared = {
-  view: DrillView
-  act: DrillActions
-  refs: DrillRefs
+  view: DrillCoreView
+  act: DrillAct
+  refs: DrillCoreRefs
 }
 
 /** Which explanation part the reader is pointing at (hover or focus): its
  *  quotations are tinted in the passage. */
 type Pointing = { active: string | null; point: (source: string | null) => void }
 
-export function FolioDrill({
+/** A clock is shown when the sitting knows its time, or starts fresh (then
+ *  the time since it opened is the sitting's). A resumed sitting without
+ *  its time shows none: the drill clock has no real source yet. */
+export function showsClock(session: Pick<DrillSessionView, 'elapsedSeconds' | 'start'>): boolean {
+  return session.elapsedSeconds != null || !session.start.results?.length
+}
+
+const FAMILY_WORD: Record<string, string> = {
+  TRAP: 'fälla',
+  TACTIC: 'taktik',
+  TYPE: 'frågetyp',
+  ROOT: 'ordrot',
+  RULE: 'regel',
+}
+
+/** A framework's readable name: its headword, else its id said in words
+ *  ("XYZ · fälla 17"), never the raw id. */
+export function entryName(
+  id: string | undefined,
+  names: Readonly<Record<string, string>>,
+): string | null {
+  if (!id) return null
+  if (names[id]) return names[id]
+  const m = /^([A-Z]+)-([A-Z]+)-0*(\d+)$/.exec(id)
+  const word = m ? FAMILY_WORD[m[2]] : undefined
+  if (!m || !word) return null
+  return `${m[1] === 'LAS' ? 'LÄS' : m[1]} · ${word} ${m[3]}`
+}
+
+// ── Question text in lists and gaps ──────────────────────────────────
+
+/** The bank's math markers, U+E000 and U+E001 (built from their codes so
+ *  no editor can strip a private-use character from this file). */
+const MATH_OPEN = String.fromCharCode(0xe000)
+const MATH_CLOSE = String.fromCharCode(0xe001)
+const GAP_RE = /_{3,}/g
+
+/** Whether `at` falls inside a math run of `text`. */
+function inMath(text: string, at: number): boolean {
+  const before = text.slice(0, at)
+  return before.split(MATH_OPEN).length > before.split(MATH_CLOSE).length
+}
+
+/**
+ * A question's stem on one line, for lists (Repetera, a round's list):
+ * NOG's question without its statements, KVA's condition and quantities,
+ * any other prompt's first sentence when it runs on. Cut at a sentence's
+ * end, never mid-word and never with an ellipsis; math stays marked.
+ */
+export function questionStem(q: { prompt: string | null; section: Section }): string | null {
+  const prompt = q.prompt?.trim()
+  if (!prompt) return null
+  if (q.section === 'NOG') return parseNogPrompt(prompt)?.question ?? prompt
+  if (q.section === 'KVA') {
+    const kva = splitKvaPrompt(prompt)
+    if (!kva) return prompt
+    const pair = `I: ${kva.kvI} · II: ${kva.kvII}`
+    return kva.condition ? `${kva.condition} · ${pair}` : pair
+  }
+  for (const m of prompt.matchAll(/[.?!](?=\s)/g)) {
+    const at = m.index ?? 0
+    if (at >= 24 && at < prompt.length - 24 && !inMath(prompt, at)) return prompt.slice(0, at + 1)
+  }
+  return prompt
+}
+
+/** Text with MEK's blanks (_____) set as ruled gaps in the line, each named
+ *  "lucka N" for screen readers. Batch 3 adds the pencilled and graded
+ *  states. */
+export function GapText({ text }: { text: string }) {
+  const parts = text.split(GAP_RE)
+  if (parts.length === 1) return <MathText>{text}</MathText>
+  return (
+    <>
+      {parts.map((part, i) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: the gaps keep their order
+        <Fragment key={i}>
+          <MathText>{part}</MathText>
+          {i < parts.length - 1 ? (
+            <span className="fo-gap">
+              <span className="fo-sr">lucka {i + 1}</span>
+            </span>
+          ) : null}
+        </Fragment>
+      ))}
+    </>
+  )
+}
+
+// ── The reading drill (screens 2 and 3) ──────────────────────────────
+
+export function FolioDrill(props: DirectionProps & { origin: Origin }) {
+  const { data } = useDirectionData()
+  // The core needs a question to stand on; an empty sitting is a page.
+  if (data.drills.reading.questions.length === 0) {
+    return <EmptyDrill label="LÄS" width={props.width} />
+  }
+  // One core per sitting: a sitting the host replaces opens at its own
+  // start; an update of the same sitting keeps the reader's place.
+  return <ReadingDrill key={data.drills.reading.id} {...props} />
+}
+
+function ReadingDrill({
   screen,
   width,
   live,
   onScreen,
-  onGo,
-}: DirectionProps & { onGo: (d: Destination) => void }) {
-  const { view, act, refs } = useDrill({ screen, onScreen, live })
+  origin,
+}: DirectionProps & { origin: Origin }) {
+  const { data, actions } = useDirectionData()
+  const session = data.drills.reading
+  // Screen 3 opens the sitting's question already graded with the bake-off's
+  // wrong pick (a display state: the controller is not called).
+  const [start] = useState<DrillStart>(() => {
+    const qid = session.questions[session.start.index ?? 0]?.qid
+    return { ...session.start, graded: screen === 3 && qid ? session.wrongPick?.[qid] : undefined }
+  })
+  const core = useDrillCore({
+    questions: session.questions,
+    explanations: session.explanations,
+    start,
+    elapsed: session.elapsedSeconds,
+    controller: actions.drill,
+    live,
+  })
+  const { gradeAs, reopen, reset, lock: coreLock, next: coreNext, exit: coreExit } = core.act
+  const { view, refs } = core
+  const phase = view.phase
+
+  // Keep in step with the switcher: a click on "Facit" while a question is
+  // open grades it with the fixture's wrong pick; "Läsfråga" while graded
+  // reopens the same question, and after the last one starts over.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: follows the switcher's screen only
+  useLayoutEffect(() => {
+    if (screen === 3 && phase === 'question') gradeAs((q) => session.wrongPick?.[q.qid])
+    else if (screen === 2 && phase === 'feedback') reopen()
+    else if (screen === 2 && phase === 'done') reset()
+  }, [screen])
+
+  const lock = useCallback(() => {
+    if (coreLock()) onScreen(3)
+  }, [coreLock, onScreen])
+  const next = useCallback(() => {
+    if (coreNext() === 'next') onScreen(2)
+  }, [coreNext, onScreen])
+  // Avsluta: back where the reader came from. Round 1's move to Idag
+  // stays when that is where they came from; the controller hears it.
+  const exit = useCallback(() => {
+    if (origin.idag) onScreen(1)
+    coreExit()
+  }, [origin.idag, onScreen, coreExit])
+  const act: DrillAct = {
+    select: core.act.select,
+    toggleEliminate: core.act.toggleEliminate,
+    setFocusPara: core.act.setFocusPara,
+    moveFocusPara: core.act.moveFocusPara,
+    cite: core.act.cite,
+    toggleStep: core.act.toggleStep,
+    goToStep: core.act.goToStep,
+    lock,
+    next,
+    exit,
+  }
+
+  const seam = drillSeam(session, view.question, 'Slutför texten')
   const [note, setNote] = useState(false)
   const focusOn = view.focusPara != null
   const toggleFocus = () => act.setFocusPara(focusOn ? null : 1)
-  const onNext = () => onGo(NEXT_DEST)
+  // The day goes on: the plan's next part is the colophon's one action.
+  const nextItem = data.home.plan.items.find((i) => !i.completed)
+  const onNext = nextItem ? () => actions.openPlanItem(nextItem.id) : undefined
 
   const keys: Record<string, () => void> = {
     Enter: () => {
       if (view.phase === 'question') act.lock()
       else if (view.phase === 'feedback') act.next()
-      else onNext()
+      else onNext?.()
+    },
+    // Space moves on from the facit; it never answers.
+    ' ': () => {
+      if (view.phase === 'feedback') act.next()
     },
     j: () => act.moveFocusPara(1),
     k: () => act.moveFocusPara(-1),
     f: toggleFocus,
     Escape: () => act.setFocusPara(null),
   }
-  for (const o of view.question.options) {
+  for (const o of view.question.options ?? []) {
     const l = o.letter.toLowerCase()
     keys[l] = () => act.select(o.letter)
     keys[`Shift+${l}`] = () => act.toggleEliminate(o.letter)
   }
   useKeyMap(keys, live)
 
-  const shared = { view, act, refs }
-  if (width === 'phone') {
-    return (
-      <PhoneDrill
-        {...shared}
-        note={note}
-        setNote={setNote}
-        focusOn={focusOn}
-        toggleFocus={toggleFocus}
-        onHome={() => onScreen(1)}
-        onNext={onNext}
-      />
-    )
+  const chrome: DrillChrome = {
+    view,
+    act,
+    refs,
+    seam,
+    note,
+    setNote,
+    focusOn,
+    toggleFocus,
+    clocked: showsClock(session),
+    origin,
+    onNext,
+    nextLabel: nextItem ? `Nästa: ${nextItem.title} · ${nextItem.minutes} min` : null,
+    dateLabel: data.home.today.dateLabel,
+    badge: data.copy.ovningstextBadge,
+    noteText: data.copy.ovningstextNote,
   }
-  return (
-    <DeskDrill
-      {...shared}
-      note={note}
-      setNote={setNote}
-      focusOn={focusOn}
-      toggleFocus={toggleFocus}
-      onHome={() => onScreen(1)}
-      onNext={onNext}
-    />
-  )
+  return width === 'phone' ? <PhoneDrill {...chrome} /> : <DeskDrill {...chrome} />
 }
 
 type DrillChrome = Shared & {
+  seam: DrillSeam
   note: boolean
   setNote: (open: boolean) => void
   focusOn: boolean
   toggleFocus: () => void
-  onHome: () => void
+  /** The clock is shown (showsClock). */
+  clocked: boolean
+  origin: Origin
   /** The end of the unit's way on: the plan's next part. */
-  onNext: () => void
+  onNext?: () => void
+  nextLabel: string | null
+  dateLabel: string
+  badge: string
+  noteText: string
+}
+
+/** "Magasinet i Hökaryd: en handbok …" → the title and its subtitle. */
+function passageTitle(view: DrillCoreView): [string, string | undefined] {
+  const [title, ...rest] = (view.question.passage?.title ?? '').split(': ')
+  return [title, rest.length ? rest.join(': ') : undefined]
 }
 
 // ── Desktop ──────────────────────────────────────────────────────────
 
-function DeskDrill({
-  view,
-  act,
-  refs,
-  note,
-  setNote,
-  focusOn,
-  toggleFocus,
-  onHome,
-  onNext,
-}: DrillChrome) {
+function DeskDrill(chrome: DrillChrome) {
+  const { view, act, refs, seam, note, setNote, focusOn, toggleFocus, clocked } = chrome
   const [clockShown, setClockShown] = useState(true)
-  const exit = (
-    <button
-      type="button"
-      className="fo-ghost"
-      onClick={act.exit}
-      title="Dina svar är sparade"
-      data-testid="rd-exit"
-    >
-      <X size={18} strokeWidth={1.5} aria-hidden />
-      Avsluta
-    </button>
-  )
+  const [active, point] = useState<string | null>(null)
+  const rectoRef = useRef<HTMLElement>(null)
+  const versoRef = useRef<HTMLElement>(null)
+  const firstTurn = useRef(true)
+  const synthetic = view.question.passage?.synthetic ?? false
+
+  // A new question or a fresh verdict starts at the top of the recto; a
+  // verdict also turns the verso to the evidence its steps cite (instantly
+  // the first time, so a deep link lands there).
+  // biome-ignore lint/correctness/useExhaustiveDependencies: scroll on question/phase change only
+  useEffect(() => {
+    rectoRef.current?.scrollTo?.({ top: 0 })
+    const verso = versoRef.current
+    const n = view.phase === 'feedback' ? evidencePara(view) : undefined
+    const el = n ? verso?.querySelector<HTMLElement>(`[data-n="${n}"]`) : null
+    if (verso && el) {
+      const smooth = !firstTurn.current && !prefersReducedMotion()
+      // Clear of the sticky running head, with a line of air above.
+      verso.scrollTo?.({
+        top: Math.max(0, el.offsetTop - RUNHEAD - 28),
+        behavior: smooth ? 'smooth' : 'auto',
+      })
+    }
+    firstTurn.current = false
+  }, [view.index, view.phase])
+
+  const exit = <ExitButton onExit={act.exit} />
   const badge = (
     <span className="fo-label fo-runhead-title">
-      LÄS · <span data-testid="rd-badge">{OVNINGSTEXT_BADGE}</span>
+      {seam.label}
+      {synthetic ? (
+        <>
+          {' · '}
+          <span data-testid="rd-badge">{chrome.badge}</span>
+        </>
+      ) : null}
     </span>
   )
 
@@ -191,7 +473,7 @@ function DeskDrill({
           <span />
         </header>
         <div className="fo-main fo-done">
-          <Colophon view={view} onHome={onHome} onNext={onNext} />
+          <ReadingColophon {...chrome} />
         </div>
       </div>
     )
@@ -218,33 +500,99 @@ function DeskDrill({
       <span className="fo-runhead-pos">
         <Dots total={view.total} done={view.index} />
         <span>
-          Fråga {view.index + 1} av {view.total}
+          {seam.unit} {view.index + 1} av {view.total}
         </span>
       </span>
-      <ClockButton
-        seconds={view.elapsed}
-        shown={clockShown}
-        toggle={() => setClockShown((s) => !s)}
-      />
-      {clockShown ? null : <TimeLine seconds={view.elapsed} />}
+      {clocked ? (
+        <ClockButton
+          seconds={view.elapsed}
+          shown={clockShown}
+          toggle={() => setClockShown((s) => !s)}
+        />
+      ) : (
+        <span />
+      )}
+      {clocked && !clockShown ? <TimeLine seconds={view.elapsed} pace={PACE_SECONDS} /> : null}
     </header>
   )
   return (
     <div className="fo-drill">
       <Spread
-        view={view}
-        act={act}
-        refs={refs}
-        note={note}
-        setNote={setNote}
-        versoHead={versoHead}
-        rectoHead={rectoHead}
+        versoRef={versoRef}
+        rectoRef={rectoRef}
+        rectoLabel={`${seam.unit} ${view.index + 1}`}
+        verso={
+          <>
+            {versoHead}
+            <PassageView
+              view={view}
+              act={act}
+              refs={refs}
+              note={note}
+              setNote={setNote}
+              active={active}
+              badgeText={chrome.badge}
+              noteText={chrome.noteText}
+            />
+          </>
+        }
+        recto={
+          <>
+            {rectoHead}
+            {/* The action follows the options in the flow; it sticks to the
+             *  page foot only once the facit runs longer than the page. */}
+            <div className="fo-recto-body">
+              <QuestionColumn
+                view={view}
+                act={act}
+                refs={refs}
+                seam={seam}
+                active={active}
+                point={point}
+              />
+              <ActionBar view={view} act={act} seam={seam} />
+            </div>
+          </>
+        }
       />
     </div>
   )
 }
 
-function ClockButton({
+/** Avsluta: always visible, the far left of the first running head. */
+export function ExitButton({ onExit, compact = false }: { onExit: () => void; compact?: boolean }) {
+  if (compact) {
+    return (
+      <button
+        type="button"
+        className="fo-ghost"
+        onClick={onExit}
+        aria-label="Avsluta"
+        title="Dina svar är sparade"
+        data-testid="rd-exit"
+      >
+        <X size={18} strokeWidth={1.5} aria-hidden />
+        <span className="fo-exit-label" aria-hidden>
+          Avsluta
+        </span>
+      </button>
+    )
+  }
+  return (
+    <button
+      type="button"
+      className="fo-ghost"
+      onClick={onExit}
+      title="Dina svar är sparade"
+      data-testid="rd-exit"
+    >
+      <X size={18} strokeWidth={1.5} aria-hidden />
+      Avsluta
+    </button>
+  )
+}
+
+export function ClockButton({
   seconds,
   shown,
   toggle,
@@ -268,10 +616,10 @@ function ClockButton({
   )
 }
 
-function TimeLine({ seconds }: { seconds: number }) {
+export function TimeLine({ seconds, pace }: { seconds: number; pace: number }) {
   return (
     <span className="fo-timeline" aria-hidden>
-      <i style={{ width: `${Math.min(1, seconds / PACE_SECONDS) * 100}%` }} />
+      <i style={{ width: `${Math.min(1, seconds / pace) * 100}%` }} />
     </span>
   )
 }
@@ -283,55 +631,41 @@ const SPLIT_START = 0.56
 const RUNHEAD = 56
 
 /** The first paragraph the essential steps cite — where the evidence is. */
-function evidencePara(view: DrillView): number | undefined {
-  for (const s of view.explanation.steps ?? []) {
+function evidencePara(view: DrillCoreView): number | undefined {
+  for (const s of view.explanation?.steps ?? []) {
     const cites = view.stepCites[s.n]
     if (s.tier !== 'detail' && cites?.length) return cites[0]
   }
   return view.cited[0]
 }
 
-function Spread({
-  view,
-  act,
-  refs,
-  note,
-  setNote,
-  versoHead,
-  rectoHead,
-}: Shared & {
-  note: boolean
-  setNote: (open: boolean) => void
-  versoHead: ReactNode
-  rectoHead: ReactNode
+/**
+ * Two facing pages with a resizable spine: drag it, or ←/→ (⇧ for bigger
+ * steps), Home and End when it has focus; a double click resets it. `start`
+ * is where the spine stands when the spread opens.
+ */
+export function Spread({
+  verso,
+  recto,
+  start = SPLIT_START,
+  versoRef,
+  rectoRef,
+  rectoLabel,
+  versoLabel,
+}: {
+  verso: ReactNode
+  recto: ReactNode
+  start?: number
+  versoRef?: RefObject<HTMLElement | null>
+  rectoRef?: RefObject<HTMLElement | null>
+  rectoLabel: string
+  /** Names the verso as a region (the quant problem: "Uppgift 3"); without
+   *  a name the section is no landmark, as the reading verso is not. */
+  versoLabel?: string
 }) {
-  const [split, setSplit] = useState(SPLIT_START)
+  const [split, setSplit] = useState(start)
   const [dragging, setDragging] = useState(false)
-  const [active, point] = useState<string | null>(null)
   const spreadRef = useRef<HTMLDivElement>(null)
-  const rectoRef = useRef<HTMLElement>(null)
-  const versoRef = useRef<HTMLDivElement>(null)
-  const firstTurn = useRef(true)
-
-  // A new question or a fresh verdict starts at the top of the recto; a
-  // verdict also turns the verso to the evidence its steps cite (instantly
-  // the first time, so a deep link lands there).
-  // biome-ignore lint/correctness/useExhaustiveDependencies: scroll on question/phase change only
-  useEffect(() => {
-    rectoRef.current?.scrollTo?.({ top: 0 })
-    const verso = versoRef.current
-    const n = view.phase === 'feedback' ? evidencePara(view) : undefined
-    const el = n ? verso?.querySelector<HTMLElement>(`[data-n="${n}"]`) : null
-    if (verso && el) {
-      const smooth = !firstTurn.current && !prefersReducedMotion()
-      // Clear of the sticky running head, with a line of air above.
-      verso.scrollTo?.({
-        top: Math.max(0, el.offsetTop - RUNHEAD - 28),
-        behavior: smooth ? 'smooth' : 'auto',
-      })
-    }
-    firstTurn.current = false
-  }, [view.index, view.phase])
 
   const clamp = (v: number) => Math.min(SPLIT_MAX, Math.max(SPLIT_MIN, v))
   const onDown = (e: ReactPointerEvent<HTMLDivElement>) => {
@@ -359,17 +693,9 @@ function Spread({
       ref={spreadRef}
       style={{ '--fo-split': `${split * 100}%` } as CSSProperties}
     >
-      <div className="fo-page fo-page--verso" ref={versoRef}>
-        {versoHead}
-        <PassageView
-          view={view}
-          act={act}
-          refs={refs}
-          note={note}
-          setNote={setNote}
-          active={active}
-        />
-      </div>
+      <section className="fo-page fo-page--verso" ref={versoRef} aria-label={versoLabel}>
+        {verso}
+      </section>
       {/* biome-ignore lint/a11y/useSemanticElements: a focusable, valued separator is the WAI-ARIA splitter pattern; <hr> cannot take focus or a value */}
       <div
         className="fo-gutter"
@@ -385,23 +711,13 @@ function Spread({
         onPointerMove={onMove}
         onPointerUp={() => setDragging(false)}
         onPointerCancel={() => setDragging(false)}
-        onDoubleClick={() => setSplit(SPLIT_START)}
+        onDoubleClick={() => setSplit(start)}
         onKeyDown={onKey}
       >
         <span className="fo-gutter-grip" />
       </div>
-      <section
-        className="fo-page fo-page--recto"
-        aria-label={`Fråga ${view.index + 1}`}
-        ref={rectoRef}
-      >
-        {rectoHead}
-        {/* The action follows the options in the flow; it sticks to the
-         *  page foot only once the facit runs longer than the page. */}
-        <div className="fo-recto-body">
-          <QuestionColumn view={view} act={act} refs={refs} active={active} point={point} />
-          <ActionBar view={view} act={act} />
-        </div>
+      <section className="fo-page fo-page--recto" aria-label={rectoLabel} ref={rectoRef}>
+        {recto}
       </section>
     </div>
   )
@@ -409,33 +725,49 @@ function Spread({
 
 /** The recto's content in either phase (the running head above it carries
  *  the position). */
-function QuestionColumn({ view, act, refs, active, point }: Shared & Pointing) {
+function QuestionColumn({
+  view,
+  act,
+  refs,
+  seam,
+  active,
+  point,
+}: Shared & Pointing & { seam: DrillSeam }) {
   if (view.phase === 'question') {
     return (
       <>
-        <h2 className="fo-prompt">{view.question.prompt}</h2>
+        {view.question.prompt ? (
+          <h2 className="fo-prompt">
+            <MathText>{view.question.prompt}</MathText>
+          </h2>
+        ) : null}
         <Options view={view} act={act} />
-        <KeyHints />
+        <KeyHints letters={view.letters} focus />
       </>
     )
   }
   return (
     <>
-      <Verdict view={view} />
-      <p className="fo-prompt" data-after="true">
-        {view.question.prompt}
-      </p>
+      <Verdict view={view} after={view.correct == null ? null : seam.after(view.correct)} />
+      {view.question.prompt ? (
+        <p className="fo-prompt" data-after="true">
+          <MathText>{view.question.prompt}</MathText>
+        </p>
+      ) : null}
       <GradedOptions view={view} />
       <Facit view={view} act={act} refs={refs} active={active} point={point} />
     </>
   )
 }
 
-function KeyHints() {
+/** The keys a drill answers to, set as a quiet line under the options. */
+export function KeyHints({ letters, focus = false }: { letters: AnswerLetter[]; focus?: boolean }) {
+  if (letters.length === 0) return null
   return (
     <p className="fo-keys">
       <span>
-        <kbd className="fo-kbd">A</kbd>–<kbd className="fo-kbd">D</kbd> väljer
+        <kbd className="fo-kbd">{letters[0]}</kbd>–
+        <kbd className="fo-kbd">{letters[letters.length - 1]}</kbd> väljer
       </span>
       <span>
         <kbd className="fo-kbd">↵</kbd> svarar
@@ -443,14 +775,24 @@ function KeyHints() {
       <span>
         <kbd className="fo-kbd">⇧</kbd> + bokstav stryker
       </span>
-      <span>
-        <kbd className="fo-kbd">F</kbd> styckefokus
-      </span>
+      {focus ? (
+        <span>
+          <kbd className="fo-kbd">F</kbd> styckefokus
+        </span>
+      ) : null}
     </p>
   )
 }
 
-function ActionBar({ view, act }: Pick<Shared, 'view' | 'act'>) {
+export function ActionBar({
+  view,
+  act,
+  seam,
+}: {
+  view: DrillCoreView
+  act: Pick<DrillAct, 'lock' | 'next'>
+  seam: Pick<DrillSeam, 'unit' | 'next'>
+}) {
   const last = view.index + 1 >= view.total
   if (view.phase === 'question') {
     return (
@@ -477,13 +819,13 @@ function ActionBar({ view, act }: Pick<Shared, 'view' | 'act'>) {
     <div className="fo-actionbar">
       {/* "Slutför", not "Avsluta": Avsluta is the way out mid-text. */}
       <button type="button" className="fo-btn" onClick={act.next} data-testid="rd-next">
-        {last ? 'Slutför texten' : 'Nästa fråga'}
+        {last ? seam.next.last : seam.next.more}
         <kbd className="fo-kbd" aria-hidden>
           ↵
         </kbd>
       </button>
       <span className="fo-echo">
-        {last ? 'Sista frågan i texten' : `Fråga ${view.index + 2} av ${view.total} väntar`}
+        {last ? seam.next.lastNote : `${seam.unit} ${view.index + 2} av ${view.total} väntar`}
       </span>
     </div>
   )
@@ -493,7 +835,7 @@ function ActionBar({ view, act }: Pick<Shared, 'view' | 'act'>) {
 
 /** The quotations to underline: every step's, and — after a wrong answer —
  *  the ones that say why the chosen option is wrong. */
-function shownMarks(view: DrillView): QuoteMark[] {
+function shownMarks(view: DrillCoreView): QuoteMark[] {
   if (view.phase !== 'feedback') return []
   return view.marks.filter(
     (m) => m.source.startsWith('step-') || (!view.correct && m.source === `why-${view.picked}`),
@@ -504,7 +846,7 @@ function shownMarks(view: DrillView): QuoteMark[] {
 function marked(
   text: string,
   marks: QuoteMark[],
-  view: DrillView,
+  view: DrillCoreView,
   active: string | null,
 ): ReactNode[] {
   const sorted = [...marks].sort((a, b) => a.start - b.start || b.end - a.end)
@@ -539,42 +881,58 @@ function PassageView({
   setNote,
   active,
   badge = false,
+  badgeText,
+  noteText,
 }: Shared & {
   note: boolean
   setNote: (open: boolean) => void
   active: string | null
   /** Phone: the badge stands above the passage (desktop: in the head). */
   badge?: boolean
+  badgeText: string
+  noteText: string
 }) {
-  const { paragraphs, byline } = view.passage
+  const paragraphs = view.passage?.paragraphs ?? []
+  const byline = view.passage?.byline ?? null
+  const synthetic = view.question.passage?.synthetic ?? false
+  const lang = view.question.passage?.lang ?? 'sv'
+  const [title, subtitle] = passageTitle(view)
   const graded = view.phase === 'feedback'
   const marks = shownMarks(view)
   return (
-    <article className="fo-passage" aria-labelledby="fo-ptitle">
-      <div className="fo-ptools">
-        {badge ? (
-          <span className="fo-badge" data-testid="rd-badge">
-            {OVNINGSTEXT_BADGE}
-          </span>
-        ) : null}
-        <button
-          type="button"
-          className="fo-badge-toggle"
-          data-testid="rd-note-toggle"
-          aria-expanded={note}
-          aria-controls="fo-note"
-          onClick={() => setNote(!note)}
-        >
-          <Info size={14} strokeWidth={1.5} aria-hidden />
-          {note ? 'Dölj noten' : 'Om texten'}
-        </button>
-      </div>
-      <p className="fo-note" id="fo-note" hidden={!note} data-testid="rd-note">
-        {OVNINGSTEXT_NOTE}
-      </p>
+    <article
+      className="fo-passage"
+      aria-labelledby="fo-ptitle"
+      lang={lang === 'sv' ? undefined : lang}
+    >
+      {synthetic ? (
+        <>
+          <div className="fo-ptools">
+            {badge ? (
+              <span className="fo-badge" data-testid="rd-badge">
+                {badgeText}
+              </span>
+            ) : null}
+            <button
+              type="button"
+              className="fo-badge-toggle"
+              data-testid="rd-note-toggle"
+              aria-expanded={note}
+              aria-controls="fo-note"
+              onClick={() => setNote(!note)}
+            >
+              <Info size={14} strokeWidth={1.5} aria-hidden />
+              {note ? 'Dölj noten' : 'Om texten'}
+            </button>
+          </div>
+          <p className="fo-note" id="fo-note" hidden={!note} data-testid="rd-note">
+            {noteText}
+          </p>
+        </>
+      ) : null}
       <h1 className="fo-ptitle" id="fo-ptitle">
-        {TITLE}
-        <span>{SUBTITLE}</span>
+        {title || 'Texten'}
+        {subtitle ? <span>{subtitle}</span> : null}
       </h1>
       <div
         className="fo-pbody"
@@ -622,10 +980,41 @@ function PassageView({
 
 // ── Options ──────────────────────────────────────────────────────────
 
-function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
+/** An option's content: its text (math rendered), or its picture with the
+ *  text as the name — the text stands in if the picture fails. A failure
+ *  belongs to its source: a new source is tried afresh. */
+function OptionContent({ o }: { o: DrillOption }) {
+  const [failed, setFailed] = useState<string | null>(null)
+  const figure = o.figure
+  if (!figure || figure.src === failed) return <MathText>{o.text}</MathText>
+  return (
+    <img
+      key={figure.src}
+      className="fo-opt-img"
+      src={`/${figure.src}`}
+      alt={o.text}
+      width={figure.width}
+      height={figure.height}
+      onError={() => setFailed(figure.src)}
+    />
+  )
+}
+
+/** The options before the answer: choose with the letter, strike with the
+ *  quiet control at the row's end (always in view). `testId` names the
+ *  option buttons (rd-option-<L>, or rd-quant-option-<L>). */
+export function Options({
+  view,
+  act,
+  testId = 'rd-option',
+}: {
+  view: DrillCoreView
+  act: Pick<DrillAct, 'select' | 'toggleEliminate'>
+  testId?: string
+}) {
   return (
     <ol className="fo-opts" aria-label="Svarsalternativ">
-      {view.question.options.map((o) => {
+      {(view.question.options ?? []).map((o) => {
         const selected = view.selected === o.letter
         const out = view.eliminated.has(o.letter)
         return (
@@ -633,11 +1022,12 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
             key={o.letter}
             className="fo-opt"
             data-state={selected ? 'selected' : out ? 'eliminated' : undefined}
+            data-image={o.figure ? 'true' : undefined}
           >
             <button
               type="button"
               className="fo-opt-main"
-              data-testid={`rd-option-${o.letter}`}
+              data-testid={`${testId}-${o.letter}`}
               aria-pressed={selected}
               onClick={() => act.select(o.letter)}
             >
@@ -649,7 +1039,7 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
                   Alternativ {o.letter}
                   {out ? ', struket' : ''}:{' '}
                 </span>
-                {o.text}
+                <OptionContent o={o} />
               </span>
             </button>
             <button
@@ -675,14 +1065,21 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
 }
 
 /** After the answer: the chosen option and the right one, in full and at
- *  the same size as before; the rest wait behind one quiet link. */
-function GradedOptions({ view }: { view: DrillView }) {
-  const [all, setAll] = useState(false)
+ *  the same size as before; the rest wait behind one quiet link — or, with
+ *  `all` (short quant options), stay in view in ink-2. */
+export function GradedOptions({
+  view,
+  all: allShown = false,
+}: {
+  view: Pick<DrillCoreView, 'question' | 'picked'>
+  all?: boolean
+}) {
+  const [opened, setOpened] = useState(false)
+  const all = allShown || opened
   const key = view.question.answer
-  const shown = view.question.options.filter(
-    (o) => all || o.letter === key || o.letter === view.picked,
-  )
-  const rest = view.question.options.length - shown.length
+  const options = view.question.options ?? []
+  const shown = options.filter((o) => all || o.letter === key || o.letter === view.picked)
+  const rest = options.length - shown.length
   return (
     <>
       <ol className="fo-opts" aria-label="Svarsalternativ, rättade">
@@ -694,6 +1091,7 @@ function GradedOptions({ view }: { view: DrillView }) {
               key={o.letter}
               className="fo-opt"
               data-grade={right ? 'right' : mine ? 'wrong' : 'other'}
+              data-image={o.figure ? 'true' : undefined}
             >
               <div className="fo-opt-main">
                 <span className="fo-letter" aria-hidden>
@@ -701,7 +1099,7 @@ function GradedOptions({ view }: { view: DrillView }) {
                 </span>
                 <span className="fo-opt-text">
                   <span className="fo-sr">Alternativ {o.letter}: </span>
-                  {o.text}
+                  <OptionContent o={o} />
                   {right || mine ? (
                     <span className="fo-opt-tag">
                       {right ? (
@@ -718,14 +1116,14 @@ function GradedOptions({ view }: { view: DrillView }) {
           )
         })}
       </ol>
-      {rest > 0 || all ? (
+      {!allShown && (rest > 0 || opened) ? (
         <button
           type="button"
           className="fo-more fo-more-opts"
-          aria-expanded={all}
-          onClick={() => setAll(!all)}
+          aria-expanded={opened}
+          onClick={() => setOpened(!opened)}
         >
-          {all ? 'Visa bara ditt svar och det rätta' : 'Visa alla alternativ'}
+          {opened ? 'Visa bara ditt svar och det rätta' : 'Visa alla alternativ'}
           <ChevronRight size={14} strokeWidth={1.75} aria-hidden />
         </button>
       ) : null}
@@ -735,7 +1133,23 @@ function GradedOptions({ view }: { view: DrillView }) {
 
 // ── The facit ────────────────────────────────────────────────────────
 
-function Verdict({ view, as = 'h2' }: { view: DrillView; as?: 'h2' | 'p' }) {
+/**
+ * The verdict: a glyph in a ring, then the word and the right letter, in
+ * ink. `after` is the repetition's one new line ("kommer tillbaka om …"),
+ * inside the verdict so it is read with it. `focusRef` makes it a focus
+ * target (the quant drills move focus here on Svara).
+ */
+export function Verdict({
+  view,
+  as = 'h2',
+  after,
+  focusRef,
+}: {
+  view: Pick<DrillCoreView, 'correct' | 'question'>
+  as?: 'h2' | 'p'
+  after?: string | null
+  focusRef?: RefCallback<HTMLElement>
+}) {
   const correct = view.correct === true
   const Tag = as
   return (
@@ -744,6 +1158,8 @@ function Verdict({ view, as = 'h2' }: { view: DrillView; as?: 'h2' | 'p' }) {
       id="fo-verdict"
       data-correct={String(correct)}
       data-testid="rd-verdict"
+      ref={focusRef}
+      tabIndex={focusRef ? -1 : undefined}
     >
       <span className="fo-verdict-glyph" aria-hidden>
         {correct ? <Check size={18} strokeWidth={2.25} /> : <X size={18} strokeWidth={2.25} />}
@@ -751,23 +1167,52 @@ function Verdict({ view, as = 'h2' }: { view: DrillView; as?: 'h2' | 'p' }) {
       <span>
         <b>{correct ? 'Rätt.' : 'Fel.'}</b>{' '}
         {correct ? `Svaret är ${view.question.answer}.` : `Rätt svar är ${view.question.answer}.`}
+        {after ? <span className="fo-verdict-after">{after}</span> : null}
       </span>
     </Tag>
   )
 }
 
+/** What the facit needs from a drill (a review builds the same). */
+export type FacitView = Pick<
+  DrillCoreView,
+  'question' | 'explanation' | 'correct' | 'picked' | 'openSteps' | 'stepCites' | 'distractorCites'
+>
+
+type FacitAct = Pick<DrillAct, 'cite' | 'goToStep' | 'toggleStep'>
+
 /**
  * The explanation, ordered for learning: why the chosen option tempted
  * (and why it is wrong), what to take away (pitfall, technique), the
- * solution and its steps, and last the other options, folded.
+ * solution and its steps, and last the other options, folded. Without an
+ * explanation yet, a plain line says so; the verdict above still stands.
  */
-function Facit({ view, act, refs, active, point }: Shared & Pointing) {
+export function Facit({
+  view,
+  act,
+  refs,
+  active,
+  point,
+}: {
+  view: FacitView
+  act: FacitAct
+  refs: Pick<DrillCoreRefs, 'step'>
+} & Pointing) {
+  const { data } = useDirectionData()
   const e = view.explanation
+  if (!e) {
+    return (
+      <div className="fo-facit">
+        <p className="fo-empty fo-fsec">Förklaring saknas ännu för den här frågan.</p>
+      </div>
+    )
+  }
   const q = view.question
-  const optionText = (letter: string) => q.options.find((o) => o.letter === letter)?.text ?? ''
+  const optionText = (letter: string) => q.options?.find((o) => o.letter === letter)?.text ?? ''
   const mine = view.correct ? null : e.distractors.find((d) => d.letter === view.picked)
   const others = e.distractors.filter((d) => d.letter !== mine?.letter)
-  const framework = e.framework_id ? FRAMEWORK_NAMES[e.framework_id] : undefined
+  const framework = entryName(e.framework_id, data.frameworks)
+  const steps = e.steps ?? []
   const hover = (source: string) => ({
     onMouseEnter: () => point(source),
     onMouseLeave: () => point(null),
@@ -809,42 +1254,52 @@ function Facit({ view, act, refs, active, point }: Shared & Pointing) {
         {e.pitfall ? (
           <div className="fo-note-item" data-testid="rd-pitfall">
             <span className="fo-sub">Fallgropen</span>
-            <p className="fo-prose">{e.pitfall}</p>
+            <p className="fo-prose">
+              <MathText>{e.pitfall}</MathText>
+            </p>
           </div>
         ) : null}
         <div className="fo-note-item" data-testid="rd-technique">
           <span className="fo-sub">Tekniken</span>
-          <p className="fo-prose">{e.technique}</p>
+          <p className="fo-prose">
+            <MathText>{e.technique}</MathText>
+          </p>
         </div>
       </section>
 
       <section className="fo-fsec">
         <h3 className="fo-h3">Lösningen</h3>
-        <p className="fo-prose">{e.solution_path}</p>
+        <p className="fo-prose">
+          <MathText>{e.solution_path}</MathText>
+        </p>
       </section>
 
-      <section className="fo-fsec">
-        <h3 className="fo-h3">Steg för steg</h3>
-        <ol>
-          {(e.steps ?? []).map((s) => (
-            <Step key={s.n} step={s} view={view} act={act} refs={refs} hover={hover} />
+      {steps.length ? (
+        <section className="fo-fsec">
+          <h3 className="fo-h3">Steg för steg</h3>
+          <ol>
+            {steps.map((s) => (
+              <Step key={s.n} step={s} view={view} act={act} refs={refs} hover={hover} />
+            ))}
+          </ol>
+        </section>
+      ) : null}
+
+      {others.length ? (
+        <section className="fo-fsec">
+          <h3 className="fo-h3">{mine ? 'De andra alternativen' : 'Alternativen'}</h3>
+          {others.map((d) => (
+            <Distractor
+              key={d.letter}
+              d={d}
+              text={optionText(d.letter)}
+              cites={view.distractorCites[d.letter] ?? { tempting: [], wrong: [] }}
+              act={act}
+              active={active}
+            />
           ))}
-        </ol>
-      </section>
-
-      <section className="fo-fsec">
-        <h3 className="fo-h3">{mine ? 'De andra alternativen' : 'Alternativen'}</h3>
-        {others.map((d) => (
-          <Distractor
-            key={d.letter}
-            d={d}
-            text={optionText(d.letter)}
-            cites={view.distractorCites[d.letter] ?? { tempting: [], wrong: [] }}
-            act={act}
-            active={active}
-          />
-        ))}
-      </section>
+        </section>
+      ) : null}
 
       {framework ? (
         <p className="fo-framework">
@@ -861,8 +1316,11 @@ function Step({
   act,
   refs,
   hover,
-}: Shared & {
+}: {
   step: ExplanationStep
+  view: Pick<FacitView, 'openSteps' | 'stepCites'>
+  act: FacitAct
+  refs: Pick<DrillCoreRefs, 'step'>
   hover: (source: string) => Record<string, () => void>
 }) {
   const detail = step.tier === 'detail'
@@ -919,7 +1377,7 @@ function Distractor({
   d: DistractorExplanation
   text: string
   cites: { tempting: number[]; wrong: number[] }
-  act: DrillActions
+  act: FacitAct
   active: string | null
 }) {
   const [open, setOpen] = useState(false)
@@ -937,7 +1395,7 @@ function Distractor({
         <div>
           <p className="fo-dis-opt">
             <span className="fo-sr">Alternativ {d.letter}: </span>
-            {text}
+            <MathText>{text}</MathText>
           </p>
           <button
             type="button"
@@ -970,7 +1428,15 @@ function Distractor({
 }
 
 /** Citations as a footnote's "see": inline ¶ references, no pills. */
-function Cites({ list, source, act }: { list: number[]; source: string; act: DrillActions }) {
+function Cites({
+  list,
+  source,
+  act,
+}: {
+  list: number[]
+  source: string
+  act: Pick<DrillAct, 'cite'>
+}) {
   if (list.length === 0) return null
   return (
     <span className="fo-cites">
@@ -993,9 +1459,9 @@ function Cites({ list, source, act }: { list: number[]; source: string; act: Dri
   )
 }
 
-/** Explanation text, verbatim, with its "(steg 2)" references made into
- *  links to the step. */
-function Rich({ text, act }: { text: string; act: DrillActions }) {
+/** Explanation text, verbatim (math rendered), with its "(steg 2)"
+ *  references made into links to the step. */
+function Rich({ text, act }: { text: string; act: Pick<DrillAct, 'goToStep'> }) {
   let at = 0
   return (
     <>
@@ -1003,7 +1469,9 @@ function Rich({ text, act }: { text: string; act: DrillActions }) {
         const key = at
         at += seg.text.length
         return seg.kind === 'text' ? (
-          <span key={key}>{seg.text}</span>
+          <span key={key}>
+            <MathText>{seg.text}</MathText>
+          </span>
         ) : (
           <button
             key={key}
@@ -1019,19 +1487,31 @@ function Rich({ text, act }: { text: string; act: DrillActions }) {
   )
 }
 
-// ── End of the unit: a typographic colophon ──────────────────────────
+// ── End of a unit: a typographic colophon ────────────────────────────
 
-function Colophon({
-  view,
-  onHome,
-  onNext,
+/**
+ * The colophon (spec §1.7 "Done"): ⁂, the title, a caps facts row between
+ * hairlines, an italic line or two, `extra` (a disclosure such as the
+ * round's list), then the filled button — the plan's next part — and a
+ * quiet way back to where the reader came from.
+ */
+export function Colophon({
+  title,
+  subtitle,
+  facts,
+  lines,
+  next,
+  back,
+  extra,
 }: {
-  view: DrillView
-  onHome: () => void
-  onNext: () => void
+  title: string
+  subtitle?: string
+  facts: string
+  lines: ReactNode
+  next?: { label: string; onClick: () => void }
+  back: { label: string; onClick: () => void }
+  extra?: ReactNode
 }) {
-  const right = view.results.filter((r) => r.correct).length
-  const misses = view.total - right
   return (
     <div className="fo-colophon" data-testid="rd-done">
       <div className="fo-colophon-text">
@@ -1039,52 +1519,165 @@ function Colophon({
           ⁂
         </span>
         <h2>
-          {TITLE}
-          <span>{SUBTITLE}</span>
+          {title}
+          {subtitle ? <span>{subtitle}</span> : null}
         </h2>
-        <p className="fo-colophon-facts">
-          {view.total} frågor · {right} rätt · {Math.max(1, Math.round(view.elapsed / 60))} min
-        </p>
-        <p>
-          Läst och besvarad {TODAY.dateLabel.toLowerCase()}.{' '}
-          {misses > 0
-            ? `${misses === 1 ? 'Missen väntar' : 'Missarna väntar'} i nästa repetition, de äldsta först.`
-            : 'Inga missar att repetera.'}
-        </p>
+        <p className="fo-colophon-facts">{facts}</p>
+        <p>{lines}</p>
       </div>
+      {extra}
       {/* The day goes on: the plan's next part is the one action. */}
       <div className="fo-colophon-actions">
-        {NEXT ? (
-          <button type="button" className="fo-btn" onClick={onNext} data-testid="rd-done-next">
-            Nästa: {NEXT.title} · {NEXT.minutes} min
+        {next ? (
+          <button
+            type="button"
+            className="fo-btn"
+            onClick={next.onClick}
+            data-testid="rd-done-next"
+          >
+            {next.label}
             <kbd className="fo-kbd" aria-hidden>
               ↵
             </kbd>
           </button>
         ) : null}
-        <button type="button" className="fo-more fo-colophon-home" onClick={onHome}>
-          Till Idag
+        <button type="button" className="fo-more fo-colophon-home" onClick={back.onClick}>
+          {back.label}
         </button>
       </div>
     </div>
   )
 }
 
+function ReadingColophon({ view, act, origin, onNext, nextLabel, dateLabel }: DrillChrome) {
+  const [title, subtitle] = passageTitle(view)
+  const right = view.results.filter((r) => r.correct).length
+  const misses = view.total - right
+  return (
+    <Colophon
+      title={title || 'Texten'}
+      subtitle={subtitle}
+      facts={`${view.total} frågor · ${right} rätt · ${Math.max(1, Math.round(view.elapsed / 60))} min`}
+      lines={`Läst och besvarad ${dateLabel.toLowerCase()}. ${
+        misses > 0
+          ? `${misses === 1 ? 'Missen väntar' : 'Missarna väntar'} i nästa repetition, de äldsta först.`
+          : 'Inga missar att repetera.'
+      }`}
+      next={onNext && nextLabel ? { label: nextLabel, onClick: onNext } : undefined}
+      back={{ label: `Till ${origin.label}`, onClick: act.exit }}
+    />
+  )
+}
+
+/** A sitting without questions: a blank page that says so, and the way
+ *  back (spec §1.7 "Empty"). */
+export function EmptyDrill({ label, width }: { label: string; width: DirectionProps['width'] }) {
+  const { actions } = useDirectionData()
+  return (
+    <div className={width === 'phone' ? 'fo-pdrill' : 'fo-drill'}>
+      <header className="fo-runhead fo-runhead--solo">
+        <ExitButton onExit={() => actions.drill.exit?.()} />
+        <span className="fo-label fo-runhead-title">{label}</span>
+        <span />
+      </header>
+      <div className="fo-main fo-done">
+        <div className="fo-colophon">
+          <h2>Inga frågor att öva på just nu.</h2>
+          <p>När det finns frågor klara för övningen öppnas de här.</p>
+          <div className="fo-colophon-actions">
+            <button type="button" className="fo-btn" onClick={() => actions.go('ova')}>
+              Till Öva
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── A modal slip on the page (FolioDialog) ───────────────────────────
+
+const FOCUSABLE =
+  'button:not([disabled]), [href], input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])'
+
+/**
+ * The focus-trap primitive Folio's modal views stand on (Förstora today,
+ * batch 2's slips next): a dialog that takes focus when it opens (an
+ * element marked data-autofocus, else itself), keeps Tab inside, closes on
+ * Esc and gives focus back to whatever had it before. It sits inside the
+ * direction's root, so it covers the stage — not the browser window; the
+ * caller makes the page under it inert.
+ */
+export function FolioDialog({
+  label,
+  onClose,
+  className,
+  children,
+}: {
+  label: string
+  onClose: () => void
+  className?: string
+  children: ReactNode
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  const closeRef = useRef(onClose)
+  closeRef.current = onClose
+  useLayoutEffect(() => {
+    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    const box = ref.current
+    const first = box?.querySelector<HTMLElement>('[data-autofocus]') ?? box
+    first?.focus({ preventScroll: true })
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      e.preventDefault()
+      e.stopPropagation()
+      closeRef.current()
+    }
+    window.addEventListener('keydown', onKey, true)
+    return () => {
+      window.removeEventListener('keydown', onKey, true)
+      // After the commit: the page under the dialog stops being inert in
+      // the same commit that removes the dialog, and an inert opener
+      // cannot take focus.
+      queueMicrotask(() => opener?.focus({ preventScroll: true }))
+    }
+  }, [])
+  const onKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== 'Tab' || !ref.current) return
+    const items = Array.from(ref.current.querySelectorAll<HTMLElement>(FOCUSABLE))
+    if (items.length === 0) return
+    const first = items[0]
+    const last = items[items.length - 1]
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault()
+      last.focus()
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault()
+      first.focus()
+    }
+  }
+  return (
+    <div
+      ref={ref}
+      className={className}
+      role="dialog"
+      aria-modal="true"
+      aria-label={label}
+      tabIndex={-1}
+      onKeyDown={onKeyDown}
+    >
+      {children}
+    </div>
+  )
+}
+
 // ── Phone ────────────────────────────────────────────────────────────
 
-function PhoneDrill({
-  view,
-  act,
-  refs,
-  note,
-  setNote,
-  focusOn,
-  toggleFocus,
-  onHome,
-  onNext,
-}: DrillChrome) {
+function PhoneDrill(chrome: DrillChrome) {
+  const { view, act, refs, seam, note, setNote, focusOn, toggleFocus, clocked } = chrome
   const { state: sheet, setState: setSheet, toggle, grab } = useSheet(view)
   const { hidden: compact, onScroll: onHeadScroll } = useHideOnScroll()
+  const synthetic = view.question.passage?.synthetic ?? false
   // The passage's own badge has scrolled away: the sheet carries it.
   const [badgeGone, setBadgeGone] = useState(false)
   const onScroll = (e: { currentTarget: HTMLElement }) => {
@@ -1097,13 +1690,13 @@ function PhoneDrill({
     setSheet('peek')
     act.cite(n, source)
   }
-  const sheetAct: DrillActions = { ...act, cite }
+  const sheetAct: DrillAct = { ...act, cite }
 
   if (view.phase === 'done') {
     return (
       <div className="fo-pdrill">
         <div className="fo-pdrill-scroll fo-done">
-          <Colophon view={view} onHome={onHome} onNext={onNext} />
+          <ReadingColophon {...chrome} />
         </div>
       </div>
     )
@@ -1111,22 +1704,11 @@ function PhoneDrill({
 
   const progress = ((view.index + (view.phase === 'feedback' ? 1 : 0)) / view.total) * 100
   const feedback = view.phase === 'feedback'
+  const count = view.question.options?.length ?? 0
   return (
     <div className="fo-pdrill">
       <header className="fo-pdrill-head" data-compact={String(compact)}>
-        <button
-          type="button"
-          className="fo-ghost"
-          onClick={act.exit}
-          aria-label="Avsluta"
-          title="Dina svar är sparade"
-          data-testid="rd-exit"
-        >
-          <X size={18} strokeWidth={1.5} aria-hidden />
-          <span className="fo-exit-label" aria-hidden>
-            Avsluta
-          </span>
-        </button>
+        <ExitButton onExit={act.exit} compact />
         {/* Progress once here — the line along the head's foot; the slip
          *  names the question. */}
         <span />
@@ -1141,10 +1723,12 @@ function PhoneDrill({
             <Pilcrow size={16} strokeWidth={1.5} aria-hidden />
             <span aria-hidden>Fokus</span>
           </button>
-          <span className="fo-clock" role="timer" aria-label={`Tid ${fmtClock(view.elapsed)}`}>
-            <Clock size={14} strokeWidth={1.5} aria-hidden className="fo-clock-icon" />
-            <span aria-hidden>{fmtClock(view.elapsed)}</span>
-          </span>
+          {clocked ? (
+            <span className="fo-clock" role="timer" aria-label={`Tid ${fmtClock(view.elapsed)}`}>
+              <Clock size={14} strokeWidth={1.5} aria-hidden className="fo-clock-icon" />
+              <span aria-hidden>{fmtClock(view.elapsed)}</span>
+            </span>
+          ) : null}
         </div>
         <span className="fo-head-progress" aria-hidden>
           <i style={{ width: `${progress}%` }} />
@@ -1161,6 +1745,8 @@ function PhoneDrill({
           setNote={setNote}
           active={null}
           badge
+          badgeText={chrome.badge}
+          noteText={chrome.noteText}
         />
         <div style={{ height: sheet === 'peek' ? 260 : 120 }} aria-hidden />
       </div>
@@ -1168,7 +1754,7 @@ function PhoneDrill({
         className="fo-sheet"
         data-state={sheet}
         data-testid="rd-sheet"
-        aria-label={`Fråga ${view.index + 1}`}
+        aria-label={`${seam.unit} ${view.index + 1}`}
       >
         {/* The grab is for thumbs and pointers: the keyboard has the same
          *  moves as labelled buttons (the peek's action, "Visa texten"),
@@ -1183,9 +1769,9 @@ function PhoneDrill({
         />
         <div className="fo-sheet-head">
           <span className="fo-label">
-            Fråga {view.index + 1} av {view.total}
-            {badgeGone || feedback ? (
-              <span className="fo-sheet-badge"> · {OVNINGSTEXT_BADGE}</span>
+            {seam.unit} {view.index + 1} av {view.total}
+            {synthetic && (badgeGone || feedback) ? (
+              <span className="fo-sheet-badge"> · {chrome.badge}</span>
             ) : null}
           </span>
           {/* The way back to the text, where the eye looks for it. */}
@@ -1204,32 +1790,44 @@ function PhoneDrill({
           {sheet === 'peek' ? (
             <>
               {feedback ? <Verdict view={view} as="p" /> : null}
-              {feedback ? null : <h2 className="fo-prompt">{view.question.prompt}</h2>}
+              {feedback || !view.question.prompt ? null : (
+                <h2 className="fo-prompt">
+                  <MathText>{view.question.prompt}</MathText>
+                </h2>
+              )}
               {/* The peek's one action: the screen's filled button. */}
               <button type="button" className="fo-btn fo-peek-btn" onClick={toggle}>
-                {feedback
-                  ? 'Tillbaka till facit'
-                  : `Visa de ${WORDS[view.question.options.length] ?? view.question.options.length} alternativen`}
+                {feedback ? 'Tillbaka till facit' : `Visa de ${WORDS[count] ?? count} alternativen`}
                 <ChevronUp size={18} strokeWidth={1.75} aria-hidden />
               </button>
             </>
           ) : feedback ? (
             <>
-              <Verdict view={view} as="p" />
-              <p className="fo-prompt" data-after="true">
-                {view.question.prompt}
-              </p>
+              <Verdict
+                view={view}
+                as="p"
+                after={view.correct == null ? null : seam.after(view.correct)}
+              />
+              {view.question.prompt ? (
+                <p className="fo-prompt" data-after="true">
+                  <MathText>{view.question.prompt}</MathText>
+                </p>
+              ) : null}
               <GradedOptions view={view} />
               <Facit view={view} act={sheetAct} refs={refs} active={null} point={() => {}} />
             </>
           ) : (
             <>
-              <h2 className="fo-prompt">{view.question.prompt}</h2>
+              {view.question.prompt ? (
+                <h2 className="fo-prompt">
+                  <MathText>{view.question.prompt}</MathText>
+                </h2>
+              ) : null}
               <Options view={view} act={act} />
             </>
           )}
         </div>
-        {sheet === 'peek' ? null : <ActionBar view={view} act={act} />}
+        {sheet === 'peek' ? null : <ActionBar view={view} act={act} seam={seam} />}
       </section>
     </div>
   )
