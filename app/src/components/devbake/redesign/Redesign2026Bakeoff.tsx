@@ -568,9 +568,9 @@ function SideBySide({
   const box = useBoxSize(ref)
   const base = sel.w === 'desktop' ? DESKTOP : PHONE
   const narrow = box.w < 720
-  // Two rows of four at either width (round 1 above, round 1b below); a
+  // Four columns for the eight directions, three for nine (3 × 3); a
   // narrow window scrolls one column.
-  const cols = narrow ? 1 : 4
+  const cols = narrow ? 1 : DIRECTIONS.length > 8 ? 3 : 4
   const rows = Math.ceil(DIRECTIONS.length / cols)
   const pad = narrow ? 12 : 24
   const gap = narrow ? 20 : 24

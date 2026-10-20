@@ -39,7 +39,17 @@ vi.mock('@/components/devbake/redesign/directions', async (importActual) => {
   }
   return {
     ...actual,
-    STAGES: { a: Stage, b: Stage, c: Stage, d: Stage, e: Stage, f: Stage, g: Stage, h: Stage },
+    STAGES: {
+      a: Stage,
+      b: Stage,
+      c: Stage,
+      d: Stage,
+      e: Stage,
+      f: Stage,
+      g: Stage,
+      h: Stage,
+      i: Stage,
+    },
   }
 })
 vi.mock('@clerk/clerk-react', () => ({
@@ -198,7 +208,7 @@ describe('dev direction takeover', () => {
     await screen.findByTestId('stage')
     fireEvent.click(screen.getByText('Byt'))
     const choices = await screen.findByRole('group', { name: 'Designriktning' })
-    expect(within(choices).getAllByRole('button')).toHaveLength(9)
+    expect(within(choices).getAllByRole('button')).toHaveLength(10)
     expect(within(choices).getByRole('button', { name: 'Folio' })).toHaveAttribute(
       'aria-pressed',
       'true',

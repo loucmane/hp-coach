@@ -55,7 +55,7 @@ describe('/dev/redesign-2026-bakeoff route', () => {
     // Round 2's screens, 5–14, as numbers or strings.
     expect(validateSearch({ d: 'c', s: '5' })).toEqual({ d: 'c', s: 5 })
     expect(validateSearch({ s: 14, w: 'phone' })).toEqual({ s: 14, w: 'phone' })
-    expect(validateSearch({ d: 'i', s: '15', w: 'tablet', t: 'sepia', sbs: '0' })).toEqual({})
+    expect(validateSearch({ d: 'z', s: '15', w: 'tablet', t: 'sepia', sbs: '0' })).toEqual({})
     expect(validateSearch({ s: '0' })).toEqual({})
   })
 

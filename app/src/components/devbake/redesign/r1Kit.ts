@@ -56,7 +56,7 @@ export {
 
 // ── Bake-off metadata ────────────────────────────────────────────────
 
-export type DirectionKey = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h'
+export type DirectionKey = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i'
 /** Round 1's four screens. Kept as it was: the round-1 directions' own
  *  tests key records and loops on exactly these. */
 export type ScreenKey = 1 | 2 | 3 | 4
@@ -78,6 +78,7 @@ export type DirectionMeta = {
     | 'f-samtal'
     | 'g-raster'
     | 'h-ljuskagla'
+    | 'i-folio-plus'
   name: string
   tagline: string
   /** What makes it distinct, for the switcher's "Om" panel. */

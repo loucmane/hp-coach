@@ -48,7 +48,7 @@ describe('CommandPalette', () => {
     render(<CommandPalette />)
     for (const { key, name } of DESIGN_DIRECTIONS) {
       openPalette()
-      expect(screen.getAllByRole('button', { name: /^Riktning:/ })).toHaveLength(9)
+      expect(screen.getAllByRole('button', { name: /^Riktning:/ })).toHaveLength(10)
       fireEvent.click(screen.getByRole('button', { name: `Riktning: ${name}` }))
       expect(useDesignStore.getState().direction).toBe(key)
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument()

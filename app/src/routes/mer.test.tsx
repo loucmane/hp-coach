@@ -30,10 +30,10 @@ beforeEach(() => {
 })
 
 describe('/mer design direction', () => {
-  it('offers nine choices, marks the active one and writes only the device preference', () => {
+  it('offers ten choices, marks the active one and writes only the device preference', () => {
     render(<MerRoute />)
     expect(screen.getByRole('heading', { name: 'Designriktning' })).toBeInTheDocument()
-    expect(screen.getAllByRole('button', { name: /^Riktning:/ })).toHaveLength(9)
+    expect(screen.getAllByRole('button', { name: /^Riktning:/ })).toHaveLength(10)
     expect(screen.getByRole('button', { name: 'Riktning: vanliga appen' })).toHaveAttribute(
       'aria-pressed',
       'true',

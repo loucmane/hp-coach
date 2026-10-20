@@ -16,6 +16,7 @@ export const DESIGN_DIRECTIONS = [
   { key: 'f', name: 'Samtal' },
   { key: 'g', name: 'Raster' },
   { key: 'h', name: 'Ljuskägla' },
+  { key: 'i', name: 'Folio+' },
 ] as const satisfies readonly { key: DirectionKey; name: string }[]
 
 const STORAGE_KEY = 'hpc-design-direction'

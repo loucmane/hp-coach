@@ -38,7 +38,7 @@ import { lazy, Suspense } from 'react'
 
 import { isDevSurface } from '@/lib/devSurface'
 
-export const DIRECTION_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const
+export const DIRECTION_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'] as const
 export const SCREEN_KEYS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] as const
 export const WIDTH_KEYS = ['desktop', 'phone'] as const
 export const THEME_KEYS = ['light', 'dark'] as const

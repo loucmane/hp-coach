@@ -27,6 +27,7 @@ import { meta as svep } from './e-svep/meta'
 import { meta as samtal } from './f-samtal/meta'
 import { meta as raster } from './g-raster/meta'
 import { meta as ljuskagla } from './h-ljuskagla/meta'
+import { meta as folioPlus } from './i-folio-plus/meta'
 
 /** The directions in key order, a–h: the switcher's order and its keys 1–8. */
 export const DIRECTIONS: DirectionMeta[] = [
@@ -38,6 +39,7 @@ export const DIRECTIONS: DirectionMeta[] = [
   samtal,
   raster,
   ljuskagla,
+  folioPlus,
 ]
 
 export const STAGES: Record<DirectionKey, ComponentType<DirectionProps>> = {
@@ -49,6 +51,7 @@ export const STAGES: Record<DirectionKey, ComponentType<DirectionProps>> = {
   f: lazy(() => import('./f-samtal/Samtal').then((m) => ({ default: m.Samtal }))),
   g: lazy(() => import('./g-raster/Raster').then((m) => ({ default: m.Raster }))),
   h: lazy(() => import('./h-ljuskagla/Ljuskagla').then((m) => ({ default: m.Ljuskagla }))),
+  i: lazy(() => import('./i-folio-plus/FolioPlus').then((m) => ({ default: m.FolioPlus }))),
 }
 
 /** What a direction builds until its meta.ts says more: round 1's screens. */

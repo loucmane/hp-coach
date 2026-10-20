@@ -1,0 +1,6098 @@
+/* A · Folio — editorial paper, next generation.
+ *
+ * HP-Coach as a beautifully set book: warm paper, warm charcoal ink and
+ * one ink-blue accent. Literata (variable, opsz) for passages and
+ * headings, Inter (opsz 14–32) for the interface, tabular figures for
+ * data. Flat — one continuous sheet of paper: no panels, no cards, no
+ * tinted sidebar. Rules (a heavy one for the lead, hairlines elsewhere,
+ * a double rule before Logga ut) and spacing make the structure; nothing
+ * floats except the account slip. Motion is 120–180 ms ease-out,
+ * page-like, never springy.
+ *
+ * Everything is scoped under [data-rd='folio-plus']; nothing touches :root.
+ * Type: nine sizes (--fp-t12 … --fp-t56, the last for the lead's headline
+ * only). Space: a 4 px scale (--fp-s1 … --fp-s16). Radii: --fp-r1
+ * (controls) and --fp-r2 (the phone's account sheet); paper slips are
+ * square-cut (2 px). Italic is kept for subtitles, marginalia headings
+ * and the colophon. */
+
+[data-rd='folio-plus'] {
+  --fp-paper: oklch(97% 0.012 85);
+  --fp-paper-2: oklch(95.2% 0.014 83);
+  --fp-paper-3: oklch(92.4% 0.016 81);
+  --fp-leaf: oklch(98.8% 0.007 88);
+  --fp-menu: oklch(99.2% 0.005 88);
+  --fp-ink: oklch(21% 0.01 60);
+  --fp-ink-2: oklch(37% 0.012 62);
+  --fp-ink-3: oklch(47.5% 0.012 65);
+  --fp-rule: oklch(86.5% 0.013 78);
+  --fp-rule-2: oklch(74% 0.014 72);
+  --fp-accent: oklch(43% 0.12 258);
+  --fp-accent-2: oklch(36% 0.115 258);
+  --fp-accent-ink: oklch(41% 0.12 258);
+  --fp-accent-soft: oklch(93.6% 0.024 255);
+  /* Filled controls: the same ink-blue in light; a deeper, quieter blue
+   * in dark, so a button never turns pastel. */
+  --fp-accent-fill: oklch(43% 0.12 258);
+  --fp-accent-fill-2: oklch(36% 0.115 258);
+  --fp-on-accent: oklch(98.6% 0.006 85);
+  /* The heavy rule (the lead, the account slip's head). */
+  --fp-rule-strong: oklch(21% 0.01 60);
+  --fp-ok: oklch(44% 0.095 152);
+  --fp-ok-soft: oklch(94% 0.03 150);
+  --fp-bad: oklch(46.5% 0.135 30);
+  --fp-bad-soft: oklch(94.6% 0.024 35);
+  --fp-mark: oklch(91.5% 0.075 92);
+  --fp-focus: oklch(50% 0.16 258);
+  /* The spread's fold: a soft shade either side of the spine. */
+  --fp-fold: oklch(40% 0.02 70 / 0.05);
+  --fp-fold-2: oklch(40% 0.02 70 / 0.12);
+  --fp-scrim: oklch(21% 0.01 60 / 0.32);
+  --fp-pop:
+    0 1px 0 oklch(30% 0.02 60 / 0.04), 0 18px 40px -16px oklch(28% 0.03 60 / 0.3),
+    0 0 0 1px oklch(30% 0.02 60 / 0.07);
+
+  --fp-serif:
+    'Literata', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Liberation Serif',
+    serif;
+  --fp-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Ubuntu Sans', sans-serif;
+
+  /* Type scale — eight sizes, nothing in between. */
+  --fp-t12: 12px;
+  --fp-t13: 13px;
+  --fp-t15: 15px;
+  --fp-t17: 17px;
+  --fp-t19: 19px;
+  --fp-t24: 24px;
+  --fp-t32: 32px;
+  --fp-t44: 44px;
+  --fp-t56: 56px;
+
+  /* Space — a 4 px scale. */
+  --fp-s1: 4px;
+  --fp-s2: 8px;
+  --fp-s3: 12px;
+  --fp-s4: 16px;
+  --fp-s6: 24px;
+  --fp-s8: 32px;
+  --fp-s12: 48px;
+  --fp-s16: 64px;
+
+  --fp-r1: 6px;
+  --fp-r2: 12px;
+  --fp-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --fp-d1: 120ms;
+  --fp-d2: 180ms;
+  --fp-d-out: 100ms;
+  /* A followed ¶ link: hold the mark, then let it go. */
+  --fp-flash: 700ms;
+  /* KaTeX beside Literata: Computer Modern's x-height (0.431 em) scaled to
+   * Literata's, so math sits in the line rather than shrinking out of it.
+   * The only token batch 1 adds (spec §4); see the worklog for how it was
+   * set. */
+  --fp-math-scale: 1.14em;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: clip;
+  background: var(--fp-paper);
+  color: var(--fp-ink);
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t15);
+  line-height: 1.5;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  interpolate-size: allow-keywords;
+  color-scheme: light;
+}
+
+[data-rd='folio-plus'][data-theme='dark'] {
+  --fp-paper: oklch(21.5% 0.009 62);
+  --fp-paper-2: oklch(19% 0.008 62);
+  --fp-paper-3: oklch(26.5% 0.01 64);
+  --fp-leaf: oklch(24.2% 0.01 64);
+  --fp-menu: oklch(28% 0.011 64);
+  /* Ink a step under white, so the page does not glow. */
+  --fp-ink: oklch(88% 0.012 85);
+  --fp-ink-2: oklch(79% 0.012 82);
+  --fp-ink-3: oklch(68% 0.012 78);
+  --fp-rule: oklch(33.5% 0.01 66);
+  --fp-rule-2: oklch(46% 0.012 68);
+  --fp-rule-strong: oklch(64% 0.012 70);
+  /* A quiet accent on warm charcoal: low chroma, never a glow. Marks and
+   * links keep the light accent; filled controls take the deep one. */
+  --fp-accent: oklch(69% 0.07 255);
+  --fp-accent-2: oklch(74% 0.065 255);
+  --fp-accent-ink: oklch(79% 0.07 255);
+  --fp-accent-soft: oklch(30% 0.03 255);
+  --fp-accent-fill: oklch(50% 0.09 256);
+  --fp-accent-fill-2: oklch(46% 0.09 256);
+  --fp-on-accent: oklch(97% 0.008 85);
+  --fp-ok: oklch(79% 0.09 152);
+  --fp-ok-soft: oklch(29% 0.035 152);
+  --fp-bad: oklch(77% 0.1 32);
+  --fp-bad-soft: oklch(30.5% 0.04 32);
+  --fp-mark: oklch(37% 0.06 92);
+  --fp-focus: oklch(77% 0.11 255);
+  --fp-fold: oklch(0% 0 0 / 0.08);
+  --fp-fold-2: oklch(0% 0 0 / 0.2);
+  --fp-scrim: oklch(8% 0.01 60 / 0.55);
+  --fp-pop: 0 18px 44px -14px oklch(5% 0.01 60 / 0.7), 0 0 0 1px var(--fp-rule-2);
+  color-scheme: dark;
+}
+
+[data-rd='folio-plus'] *,
+[data-rd='folio-plus'] *::before,
+[data-rd='folio-plus'] *::after {
+  box-sizing: border-box;
+}
+
+[data-rd='folio-plus'] :where(button) {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+[data-rd='folio-plus'] :where(h1, h2, h3, h4, p, ol, ul, figure, blockquote, dl, dd) {
+  margin: 0;
+}
+
+[data-rd='folio-plus'] :where(ol, ul) {
+  padding: 0;
+  list-style: none;
+}
+
+[data-rd='folio-plus'] :focus-visible {
+  outline: 2px solid var(--fp-focus);
+  outline-offset: 2px;
+  border-radius: var(--fp-r1);
+}
+
+[data-rd='folio-plus'] ::selection {
+  background: var(--fp-accent-soft);
+}
+
+.fp-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ── Type ────────────────────────────────────────────────────────── */
+
+.fp-label {
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t12);
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fp-ink-3);
+}
+
+.fp-h2 {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t24);
+  line-height: 1.25;
+  font-weight: 450;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+}
+
+.fp-h3 {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.3;
+  font-weight: 560;
+  color: var(--fp-ink);
+}
+
+.fp-meta {
+  font-size: var(--fp-t13);
+  color: var(--fp-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Controls ────────────────────────────────────────────────────── */
+
+.fp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fp-s3);
+  min-height: 44px;
+  padding: 0 var(--fp-s6);
+  border: 0;
+  border-radius: var(--fp-r1);
+  background: var(--fp-accent-fill);
+  color: var(--fp-on-accent);
+  font-size: var(--fp-t15);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  transition: background var(--fp-d1) var(--fp-ease);
+}
+
+.fp-btn:hover {
+  background: var(--fp-accent-fill-2);
+}
+
+.fp-btn:disabled {
+  background: var(--fp-paper-3);
+  color: var(--fp-ink-3);
+  cursor: not-allowed;
+}
+
+.fp-btn--big {
+  min-height: 52px;
+  padding: 0 var(--fp-s8);
+  font-size: var(--fp-t17);
+}
+
+.fp-btn .fp-kbd {
+  border-color: color-mix(in oklch, var(--fp-on-accent) 40%, transparent);
+  background: transparent;
+  color: color-mix(in oklch, var(--fp-on-accent) 82%, transparent);
+}
+
+.fp-btn:disabled .fp-kbd {
+  color: var(--fp-ink-3);
+  border-color: var(--fp-rule-2);
+}
+
+.fp-quiet-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fp-s2);
+  min-height: 44px;
+  padding: 0 var(--fp-s4);
+  border: 1px solid var(--fp-rule-2);
+  border-radius: var(--fp-r1);
+  background: transparent;
+  color: var(--fp-ink);
+  font-size: var(--fp-t15);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--fp-d1) var(--fp-ease);
+}
+
+.fp-quiet-btn:hover {
+  background: var(--fp-paper-3);
+}
+
+.fp-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fp-s2);
+  min-height: 44px;
+  padding: 0 var(--fp-s3);
+  border: 0;
+  border-radius: var(--fp-r1);
+  background: transparent;
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background var(--fp-d1) var(--fp-ease),
+    color var(--fp-d1) var(--fp-ease);
+}
+
+.fp-ghost:hover {
+  background: var(--fp-paper-3);
+  color: var(--fp-ink);
+}
+
+.fp-ghost[aria-pressed='true'] {
+  color: var(--fp-accent-ink);
+  background: var(--fp-accent-soft);
+}
+
+.fp-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fp-s1);
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fp-accent-ink);
+  font-size: var(--fp-t13);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--fp-accent-ink) 35%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.fp-link:hover {
+  text-decoration-color: currentColor;
+}
+
+.fp-kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border: 1px solid var(--fp-rule-2);
+  border-radius: 4px;
+  background: var(--fp-leaf);
+  color: var(--fp-ink-2);
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t12);
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* No keyboard hints on a touch screen. */
+[data-width='phone'] .fp-kbd {
+  display: none;
+}
+
+.fp-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fp-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--fp-rule-2);
+}
+
+.fp-dots i[data-state='done'] {
+  background: var(--fp-ink-2);
+  border-color: var(--fp-ink-2);
+}
+
+.fp-dots i[data-state='now'] {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--fp-accent);
+}
+
+/* Tooltip for the collapsed rail: [data-tip] on the control. */
+.fp-tip {
+  position: relative;
+}
+
+.fp-tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: calc(100% + var(--fp-s3));
+  top: 50%;
+  translate: -4px -50%;
+  z-index: 30;
+  padding: 6px 10px;
+  border-radius: var(--fp-r1);
+  background: var(--fp-ink);
+  color: var(--fp-paper);
+  font-size: var(--fp-t13);
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--fp-d-out) var(--fp-ease),
+    translate var(--fp-d-out) var(--fp-ease);
+}
+
+.fp-tip:hover::after,
+.fp-tip:focus-visible::after {
+  opacity: 1;
+  translate: 0 -50%;
+  transition-duration: var(--fp-d2);
+  transition-delay: 240ms;
+}
+
+/* ── Desktop app frame: contents + page, one sheet ───────────────── */
+
+.fp-app {
+  display: grid;
+  grid-template-columns: var(--fp-side-w, 248px) minmax(0, 1fr);
+  height: 100%;
+  transition: grid-template-columns var(--fp-d2) var(--fp-ease);
+}
+
+.fp-app[data-collapsed='true'] {
+  --fp-side-w: 76px;
+}
+
+/* The contents sit on the same paper as the page: a column rule, not a
+ * panel. */
+.fp-side {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--fp-s6) var(--fp-s3) var(--fp-s3);
+  background: var(--fp-paper);
+  border-right: 1px solid var(--fp-rule);
+}
+
+.fp-side-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fp-s2);
+  height: 44px;
+  padding: 0 0 0 var(--fp-s3);
+  margin-bottom: var(--fp-s6);
+}
+
+.fp-app[data-collapsed='true'] .fp-side-head {
+  flex-direction: column;
+  height: auto;
+  padding: 0;
+  gap: var(--fp-s3);
+}
+
+.fp-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t19);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  white-space: nowrap;
+  color: var(--fp-ink);
+}
+
+.fp-wordmark em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--fp-ink-2);
+}
+
+.fp-wordmark b {
+  color: var(--fp-accent);
+  font-weight: 700;
+}
+
+/* The rail's monogram: the wordmark's first letters, set — not a badge. */
+.fp-monogram {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t19);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--fp-ink);
+}
+
+.fp-icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fp-r1);
+  background: transparent;
+  color: var(--fp-ink-3);
+  cursor: pointer;
+  transition:
+    background var(--fp-d1) var(--fp-ease),
+    color var(--fp-d1) var(--fp-ease);
+}
+
+.fp-icon-btn:hover {
+  background: var(--fp-paper-3);
+  color: var(--fp-ink);
+}
+
+.fp-icon-btn[aria-pressed='true'] {
+  color: var(--fp-accent-ink);
+  background: var(--fp-accent-soft);
+}
+
+/* The destinations as a typeset contents list: words, no pictures. */
+.fp-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fp-nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--fp-s3);
+  width: 100%;
+  min-height: 44px;
+  padding: 0 var(--fp-s3) 0 var(--fp-s4);
+  border: 0;
+  border-radius: var(--fp-r1);
+  background: transparent;
+  color: var(--fp-ink-2);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+  transition: color var(--fp-d1) var(--fp-ease);
+}
+
+.fp-nav-item:hover {
+  color: var(--fp-ink);
+}
+
+.fp-nav-item:hover .fp-nav-label {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fp-rule-2);
+  text-underline-offset: 5px;
+}
+
+/* One indicator: the accent rule beside the entry, the word in ink. */
+.fp-nav-item[aria-current='page'] {
+  color: var(--fp-ink);
+  font-weight: 600;
+}
+
+.fp-nav-item[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--fp-accent);
+}
+
+.fp-nav-label {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.fp-nav-count {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  font-weight: 400;
+  color: var(--fp-ink-3);
+  font-variant-numeric: oldstyle-nums proportional-nums;
+}
+
+.fp-app[data-collapsed='true'] .fp-nav-item {
+  justify-content: center;
+  padding: 0;
+}
+
+/* The thumb index: one letter a destination, in the rail's centre. */
+.fp-thumb {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t19);
+  line-height: 1;
+}
+
+.fp-app[data-collapsed='true'] .fp-nav-item[aria-current='page']::before {
+  left: 6px;
+}
+
+.fp-app[data-collapsed='true'] .fp-nav-label,
+.fp-app[data-collapsed='true'] .fp-nav-count {
+  display: none;
+}
+
+/* Folded, the rail's tooltips become pulled tabs: the full word slides out
+ * of the rail's edge on paper, the way a thumb-index tab is pulled. */
+.fp-app[data-collapsed='true'] .fp-nav-item.fp-tip::after {
+  left: calc(100% + var(--fp-s3));
+  translate: -6px -50%;
+  padding: 9px 16px 9px 14px;
+  border: 1px solid var(--fp-rule-2);
+  border-left: 0;
+  border-radius: 0 2px 2px 0;
+  background: var(--fp-menu);
+  color: var(--fp-ink);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-weight: 400;
+  box-shadow: 4px 6px 16px -10px oklch(28% 0.03 60 / 0.35);
+}
+
+.fp-app[data-collapsed='true'] .fp-nav-item.fp-tip:hover::after,
+.fp-app[data-collapsed='true'] .fp-nav-item.fp-tip:focus-visible::after {
+  translate: 0 -50%;
+  transition-duration: 140ms;
+  transition-delay: 60ms;
+}
+
+.fp-nav-dot {
+  display: none;
+}
+
+/* Something due in Öva: a notch in the rail's edge, not a dot that could
+ * pass for a third umlaut point. */
+.fp-app[data-collapsed='true'] .fp-nav-dot {
+  display: block;
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  right: calc(-1 * var(--fp-s3));
+  width: 3px;
+  border-radius: 2px 0 0 2px;
+  background: var(--fp-ink-3);
+}
+
+/* The account is the contents' last entry, under its own hairline. */
+.fp-side-foot {
+  position: relative;
+  margin-top: auto;
+  padding-top: var(--fp-s2);
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-account {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1px;
+  width: 100%;
+  min-height: 52px;
+  padding: 6px var(--fp-s3) 6px var(--fp-s4);
+  border: 0;
+  border-radius: var(--fp-r1);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  line-height: 1.3;
+}
+
+.fp-account b {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-weight: 400;
+  color: var(--fp-ink-2);
+  transition: color var(--fp-d1) var(--fp-ease);
+}
+
+.fp-account span {
+  font-size: var(--fp-t13);
+  color: var(--fp-ink-3);
+}
+
+.fp-account:hover b {
+  color: var(--fp-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fp-rule-2);
+  text-underline-offset: 5px;
+}
+
+.fp-account[aria-expanded='true'] b {
+  color: var(--fp-ink);
+  font-weight: 600;
+}
+
+.fp-app[data-collapsed='true'] .fp-account {
+  align-items: center;
+  padding: 6px 0;
+}
+
+.fp-app[data-collapsed='true'] .fp-account b {
+  font-size: var(--fp-t13);
+}
+
+.fp-avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--fp-leaf);
+  color: var(--fp-ink-2);
+  box-shadow: inset 0 0 0 1px var(--fp-rule-2);
+}
+
+/* The account slip: a square-cut card of lighter paper, its entries set
+ * as words between hairlines (a double rule before Logga ut). A popover
+ * on desktop, a bottom sheet on phone. */
+.fp-menu {
+  position: absolute;
+  z-index: 40;
+  width: 288px;
+  padding: 0 0 var(--fp-s1);
+  border-radius: 2px;
+  background: var(--fp-menu);
+  box-shadow: var(--fp-pop);
+  animation: fp-menu-in var(--fp-d2) var(--fp-ease);
+}
+
+.fp-menu[data-anchor='side'] {
+  left: 0;
+  bottom: calc(100% + var(--fp-s2));
+}
+
+.fp-app[data-collapsed='true'] .fp-menu[data-anchor='side'] {
+  left: calc(100% + var(--fp-s6));
+  bottom: 0;
+}
+
+.fp-menu-head {
+  padding: var(--fp-s4) 20px var(--fp-s3);
+  border-bottom: 2px solid var(--fp-rule-strong);
+}
+
+.fp-menu-head b {
+  display: block;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t19);
+  font-weight: 500;
+  letter-spacing: -0.008em;
+}
+
+.fp-menu-head span {
+  font-size: var(--fp-t13);
+  color: var(--fp-ink-3);
+}
+
+.fp-menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1px;
+  width: 100%;
+  min-height: 48px;
+  padding: var(--fp-s2) 20px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--fp-ink);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--fp-d1) var(--fp-ease);
+}
+
+.fp-menu-head + .fp-menu-item {
+  border-top: 0;
+}
+
+.fp-menu-item,
+.fp-theme {
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-menu-item:hover {
+  background: var(--fp-paper-2);
+}
+
+.fp-menu-hint {
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t13);
+  line-height: 1.35;
+  color: var(--fp-ink-3);
+}
+
+/* With the next entry's own hairline: a double rule. */
+.fp-menu-sep {
+  height: 0;
+  margin: 3px 0 0;
+  border: 0;
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-theme {
+  padding: var(--fp-s2) 20px var(--fp-s3);
+}
+
+.fp-theme-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: var(--fp-t13);
+  color: var(--fp-ink-3);
+}
+
+/* Theme: three words, the chosen one underlined in the accent — a
+ * typeset choice rather than a toggle box. As many columns as words (two
+ * for a pair, three for the theme). */
+.fp-seg {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  border: 0;
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-seg button {
+  position: relative;
+  min-height: 44px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.fp-seg button:hover {
+  color: var(--fp-ink);
+}
+
+.fp-seg button[aria-pressed='true'] {
+  color: var(--fp-ink);
+  font-weight: 650;
+}
+
+.fp-seg button[aria-pressed='true']::after {
+  content: '';
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: -1px;
+  height: 2px;
+  background: var(--fp-accent);
+}
+
+@keyframes fp-menu-in {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+}
+
+.fp-main {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fp-rule-2) transparent;
+}
+
+.fp-enter {
+  animation: fp-page-in var(--fp-d2) var(--fp-ease);
+}
+
+@keyframes fp-page-in {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
+}
+
+/* ── Idag ────────────────────────────────────────────────────────── */
+
+.fp-home {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 288px;
+  column-gap: clamp(40px, 4vw, 64px);
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: var(--fp-s8) clamp(40px, 5vw, 72px) var(--fp-s16);
+}
+
+.fp-masthead {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--fp-s6);
+  padding-bottom: var(--fp-s3);
+  margin-bottom: var(--fp-s8);
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-count {
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+}
+
+.fp-count strong {
+  font-weight: 650;
+  color: var(--fp-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-greet {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t32);
+  line-height: 1.15;
+  font-weight: 400;
+  letter-spacing: -0.016em;
+  text-wrap: balance;
+}
+
+.fp-day {
+  margin-top: var(--fp-s2);
+  max-width: 36em;
+  font-size: var(--fp-t17);
+  line-height: 1.5;
+  color: var(--fp-ink-2);
+  text-wrap: pretty;
+}
+
+/* The lead: no box. A heavy rule opens it, a ribbon bookmark hangs from
+ * the rule, the headline is the largest type on the page. */
+.fp-resume {
+  position: relative;
+  margin-top: var(--fp-s8);
+  padding: var(--fp-s6) 0 var(--fp-s8);
+  border-top: 2px solid var(--fp-rule-strong);
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-ribbon {
+  position: absolute;
+  top: -2px;
+  right: var(--fp-s4);
+  width: 14px;
+  height: 36px;
+  background: var(--fp-accent);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%);
+}
+
+.fp-resume-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--fp-s4);
+  margin-bottom: var(--fp-s3);
+  padding-right: var(--fp-s12);
+}
+
+.fp-resume-when {
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+}
+
+.fp-resume-title {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t56);
+  line-height: 1.04;
+  font-weight: 400;
+  letter-spacing: -0.024em;
+  text-wrap: balance;
+}
+
+.fp-resume-sub {
+  margin-top: var(--fp-s2);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t24);
+  line-height: 1.3;
+  font-style: italic;
+  color: var(--fp-ink-2);
+}
+
+.fp-resume-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-s3);
+  margin-top: var(--fp-s6);
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+}
+
+.fp-resume-foot {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-s4);
+  margin-top: var(--fp-s6);
+}
+
+.fp-resume-foot .fp-hint {
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+}
+
+.fp-section {
+  margin-top: var(--fp-s12);
+}
+
+.fp-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--fp-s4);
+  padding-bottom: var(--fp-s3);
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+/* The rest of the day as a contents list: number, entry, leader dots,
+ * the minutes where a book puts its page numbers. */
+.fp-plan-row {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: start;
+  column-gap: var(--fp-s3);
+  width: 100%;
+  padding: var(--fp-s4) 0;
+  border: 0;
+  border-bottom: 1px solid var(--fp-rule);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fp-plan-row:hover .fp-plan-title {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fp-rule-2);
+  text-underline-offset: 5px;
+}
+
+.fp-plan-row:hover .fp-plan-min {
+  color: var(--fp-ink);
+}
+
+.fp-plan-body {
+  min-width: 0;
+}
+
+.fp-plan-line {
+  display: flex;
+  align-items: baseline;
+}
+
+.fp-leader {
+  flex: 1;
+  min-width: var(--fp-s6);
+  height: 4px;
+  margin: 0 var(--fp-s2);
+  background-image: radial-gradient(circle, var(--fp-ink-3) 0.8px, transparent 1.2px);
+  background-size: 6px 4px;
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  opacity: 0.7;
+}
+
+.fp-plan-n {
+  padding-top: 1px;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t24);
+  line-height: 1;
+  font-weight: 400;
+  color: var(--fp-ink-3);
+  font-variant-numeric: oldstyle-nums;
+}
+
+.fp-plan-title {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-size: var(--fp-t17);
+  font-weight: 600;
+  color: var(--fp-ink);
+}
+
+.fp-plan-title > span {
+  margin-left: var(--fp-s2);
+}
+
+.fp-plan-title span {
+  font-weight: 400;
+  color: var(--fp-ink-2);
+}
+
+.fp-plan-why {
+  display: block;
+  margin-top: var(--fp-s1);
+  font-size: var(--fp-t15);
+  line-height: 1.5;
+  color: var(--fp-ink-2);
+  text-wrap: pretty;
+}
+
+.fp-plan-min {
+  flex: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--fp-s2);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  color: var(--fp-ink-2);
+  font-variant-numeric: oldstyle-nums tabular-nums;
+  white-space: nowrap;
+  transition: color var(--fp-d1) var(--fp-ease);
+}
+
+.fp-plan-min svg {
+  align-self: center;
+  color: var(--fp-ink-3);
+}
+
+.fp-week {
+  margin-top: var(--fp-s4);
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+}
+
+/* Marginalia: behind a column rule, headed in italic, quieter by size. */
+.fp-aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fp-s8);
+  padding-top: var(--fp-s1);
+  padding-left: var(--fp-s8);
+  border-left: 1px solid var(--fp-rule);
+}
+
+/* A margin head outweighs its note: ink and 500, the note at ≤ 500. */
+.fp-aside-block > .fp-h3 {
+  margin-bottom: var(--fp-s3);
+  font-size: var(--fp-t19);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--fp-ink);
+}
+
+.fp-prog-figure {
+  display: flex;
+  align-items: baseline;
+  gap: var(--fp-s2);
+}
+
+.fp-prog-n {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t44);
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fp-prog-n sup {
+  margin-left: 2px;
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t13);
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--fp-accent-ink);
+  vertical-align: 1.9em;
+}
+
+.fp-prog-of {
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t15);
+}
+
+/* The week's change, said in words — not a green dashboard ticker. */
+.fp-delta {
+  margin-top: var(--fp-s2);
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-halves {
+  margin-top: var(--fp-s1);
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t13);
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-scale {
+  position: relative;
+  height: 32px;
+  margin-top: var(--fp-s4);
+}
+
+.fp-scale-axis {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 10px;
+  height: 1px;
+  background: var(--fp-rule-2);
+}
+
+.fp-scale-range {
+  position: absolute;
+  top: 6px;
+  height: 9px;
+  border-radius: 2px;
+  background: var(--fp-accent-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--fp-accent) 30%, transparent);
+}
+
+.fp-scale-mark {
+  position: absolute;
+  top: 2px;
+  width: 2px;
+  height: 17px;
+  margin-left: -1px;
+  background: var(--fp-accent);
+}
+
+.fp-scale-tick {
+  position: absolute;
+  top: 18px;
+  translate: -50% 0;
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t12);
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-scale-tick::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  width: 1px;
+  height: 5px;
+  background: var(--fp-rule-2);
+}
+
+.fp-footnote {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr);
+  margin-top: var(--fp-s4);
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t12);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.fp-footnote b {
+  color: var(--fp-accent-ink);
+  font-weight: 600;
+}
+
+.fp-trap-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--fp-s3);
+  margin-bottom: 2px;
+  font-size: var(--fp-t13);
+  color: var(--fp-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-trap-meta b {
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+.fp-trap-name {
+  display: block;
+  font-size: var(--fp-t15);
+  font-weight: 500;
+  color: var(--fp-ink);
+}
+
+.fp-trap-pattern {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--fp-t15);
+  line-height: 1.45;
+  color: var(--fp-ink-2);
+  text-wrap: pretty;
+}
+
+.fp-recent {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  column-gap: var(--fp-s4);
+  align-items: baseline;
+  padding: 6px 0;
+  font-size: var(--fp-t15);
+}
+
+.fp-recent dt {
+  font-weight: 500;
+}
+
+.fp-recent .fp-score {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fp-recent .fp-when {
+  min-width: 56px;
+  text-align: right;
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+}
+
+.fp-aside .fp-link {
+  margin-top: var(--fp-s2);
+}
+
+/* ── Drill: running heads ────────────────────────────────────────── */
+/* No app bar: each page carries its own running head, sticky at the top
+ * of its scroll, ruled within the page's margins. */
+
+.fp-drill {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.fp-drill > .fp-spread,
+.fp-drill > .fp-done {
+  flex: 1;
+  min-height: 0;
+}
+
+.fp-runhead {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  flex: none;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--fp-s3);
+  height: 56px;
+  padding: 0 var(--fp-s3);
+  /* The page's own paper and fold, so the head is part of the page. */
+  background: inherit;
+}
+
+.fp-runhead::after {
+  content: '';
+  position: absolute;
+  left: var(--fp-s4);
+  right: var(--fp-s4);
+  bottom: 0;
+  height: 1px;
+  background: var(--fp-rule);
+}
+
+/* Text passing under the head fades out rather than being cut in half. */
+.fp-runhead::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 20px;
+  background: linear-gradient(to bottom, var(--fp-paper), transparent);
+  pointer-events: none;
+}
+
+.fp-runhead > :last-child {
+  justify-self: end;
+}
+
+.fp-runhead-title {
+  justify-self: center;
+  white-space: nowrap;
+}
+
+/* The recto keeps one measure: head, question, options and action share
+ * the same left (44 px) and right (48 px) edges. */
+.fp-runhead--recto {
+  grid-template-columns: 1fr auto;
+  max-width: 640px;
+  padding: 0 var(--fp-s12) 0 44px;
+}
+
+.fp-runhead--recto::after {
+  left: 44px;
+  right: var(--fp-s12);
+}
+
+.fp-runhead--recto .fp-clock {
+  margin-right: calc(-1 * var(--fp-s2));
+}
+
+.fp-runhead--solo {
+  position: relative;
+  flex: none;
+  background: var(--fp-paper);
+}
+
+.fp-runhead-pos {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-s3);
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-head-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--fp-s1);
+}
+
+.fp-clock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--fp-s2);
+  min-width: 88px;
+  min-height: 44px;
+  padding: 0 var(--fp-s2);
+  border: 0;
+  border-radius: var(--fp-r1);
+  background: transparent;
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.fp-clock:hover {
+  background: var(--fp-paper-3);
+}
+
+/* The clock folded away: a thin line of elapsed time under the head. */
+.fp-timeline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: transparent;
+}
+
+.fp-timeline i {
+  display: block;
+  height: 100%;
+  background: var(--fp-accent);
+  opacity: 0.6;
+}
+
+/* ── Drill: the spread ───────────────────────────────────────────── */
+
+/* Two facing pages: the shade deepens toward the spine, as paper curves
+ * into a binding. */
+.fp-spread {
+  display: grid;
+  grid-template-columns: minmax(0, var(--fp-split, 56%)) 20px minmax(0, 1fr);
+  min-height: 0;
+}
+
+.fp-page {
+  position: relative;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fp-rule-2) transparent;
+}
+
+.fp-page--verso {
+  background: linear-gradient(270deg, var(--fp-fold), transparent 64px) var(--fp-paper);
+}
+
+.fp-page--recto {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(90deg, var(--fp-fold), transparent 40px) var(--fp-paper);
+}
+
+.fp-gutter {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  cursor: col-resize;
+  touch-action: none;
+  background:
+    linear-gradient(90deg, var(--fp-fold), var(--fp-fold-2) 50%, var(--fp-fold)) var(--fp-paper);
+}
+
+.fp-gutter::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: var(--fp-rule);
+}
+
+/* At rest the spine is just a spine; the grip shows when it is touched
+ * (the col-resize cursor says so first). */
+.fp-gutter-grip {
+  position: relative;
+  width: 6px;
+  height: 36px;
+  border-radius: 3px;
+  background: var(--fp-accent);
+  opacity: 0;
+  transition: opacity var(--fp-d1) var(--fp-ease);
+}
+
+.fp-gutter:hover .fp-gutter-grip,
+.fp-gutter:focus-visible .fp-gutter-grip,
+.fp-gutter[data-dragging='true'] .fp-gutter-grip {
+  opacity: 1;
+}
+
+.fp-gutter:focus-visible {
+  outline-offset: -2px;
+}
+
+/* ── Drill: the passage (verso) ──────────────────────────────────── */
+
+.fp-passage {
+  max-width: calc(29em + 56px);
+  margin: 0 auto;
+  padding: var(--fp-s6) var(--fp-s12) 96px 56px;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t19);
+  line-height: 1.62;
+  color: var(--fp-ink);
+  font-variant-numeric: oldstyle-nums proportional-nums;
+}
+
+.fp-ptools {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-s4);
+  margin-bottom: var(--fp-s3);
+  font-family: var(--fp-sans);
+}
+
+.fp-badge {
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t12);
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fp-ink-2);
+}
+
+.fp-badge-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+  cursor: pointer;
+}
+
+.fp-badge-toggle:hover {
+  color: var(--fp-ink);
+}
+
+.fp-note {
+  max-width: 34em;
+  margin: 0 0 var(--fp-s6);
+  padding: 2px 0 2px var(--fp-s4);
+  border-left: 1px solid var(--fp-rule-2);
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t15);
+  line-height: 1.55;
+  color: var(--fp-ink-2);
+}
+
+.fp-ptitle {
+  font-size: var(--fp-t32);
+  line-height: 1.12;
+  font-weight: 440;
+  letter-spacing: -0.016em;
+  text-wrap: balance;
+}
+
+.fp-ptitle span {
+  display: block;
+  margin-top: 6px;
+  font-size: var(--fp-t19);
+  line-height: 1.3;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0;
+  color: var(--fp-ink-2);
+}
+
+.fp-pbody {
+  margin-top: var(--fp-s8);
+}
+
+/* Spaced paragraphs, no indent: a study text, not a novel. */
+.fp-para {
+  position: relative;
+  max-width: 29em;
+  text-wrap: pretty;
+  hyphens: auto;
+  hyphenate-limit-chars: 8 4 4;
+  border-radius: 2px;
+  transition: opacity var(--fp-d2) var(--fp-ease);
+}
+
+.fp-para + .fp-para {
+  margin-top: 0.75em;
+}
+
+/* The ¶ number sits on the paragraph's first baseline, in the margin:
+ * an inline-block that the negative margin pulls out of the measure. */
+.fp-pnum {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  margin: 0 8px 0 -44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: right;
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t13);
+  line-height: 1;
+  font-weight: 600;
+  color: var(--fp-ink-3);
+  font-variant-numeric: tabular-nums lining-nums;
+  vertical-align: baseline;
+  cursor: pointer;
+}
+
+.fp-pnum:hover {
+  color: var(--fp-ink);
+}
+
+.fp-para[data-cited='true'] .fp-pnum {
+  color: var(--fp-accent-ink);
+  font-weight: 700;
+}
+
+.fp-para[data-cited='true']::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 0.4em;
+  bottom: 0.4em;
+  width: 2px;
+  background: color-mix(in oklch, var(--fp-accent) 55%, transparent);
+  border-radius: 1px;
+}
+
+.fp-para[data-flash='true'] {
+  animation: fp-flash var(--fp-flash) var(--fp-ease);
+}
+
+@keyframes fp-flash {
+  0%,
+  57% {
+    background-color: var(--fp-mark);
+    box-shadow: 0 0 0 6px var(--fp-mark);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+
+.fp-pbody[data-focus='true'] .fp-para:not([data-focused='true']) {
+  opacity: 0.32;
+}
+
+/* Sentence-level evidence: what the explanation quotes, underlined. */
+.fp-ev {
+  background: transparent;
+  color: inherit;
+  text-decoration: underline 2px color-mix(in oklch, var(--fp-accent) 70%, transparent);
+  text-underline-offset: 4px;
+  text-decoration-skip-ink: none;
+  border-radius: 2px;
+  transition: background var(--fp-d1) var(--fp-ease);
+}
+
+.fp-ev[data-kind='wrong'] {
+  text-decoration: underline 2px dotted var(--fp-bad);
+}
+
+.fp-ev[data-active='true'] {
+  background: var(--fp-accent-soft);
+}
+
+.fp-ev[data-flash='true'] {
+  animation: fp-flash var(--fp-flash) var(--fp-ease);
+}
+
+.fp-byline {
+  margin-top: 1.4em;
+  text-align: right;
+  font-style: italic;
+  color: var(--fp-ink-2);
+}
+
+/* ── Drill: the question (recto) ─────────────────────────────────── */
+
+.fp-recto-body {
+  flex: 1;
+  width: 100%;
+  max-width: 640px;
+  padding: var(--fp-s8) var(--fp-s12) 0 44px;
+}
+
+.fp-prompt {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t24);
+  line-height: 1.34;
+  font-weight: 450;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+  hyphens: manual;
+}
+
+.fp-prompt[data-after='true'] {
+  margin-top: var(--fp-s4);
+  font-size: var(--fp-t17);
+  line-height: 1.45;
+  font-weight: 400;
+  color: var(--fp-ink-2);
+}
+
+/* Options as an indented list between hairlines — no boxes. The state
+ * lives in the letter (outlined → filled) and a mark in the margin. */
+.fp-opts {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--fp-s6);
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-opt {
+  position: relative;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 40px;
+  align-items: start;
+  column-gap: var(--fp-s3);
+  padding: var(--fp-s4) 0;
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-opt::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: var(--fp-s4);
+  bottom: var(--fp-s4);
+  width: 2px;
+  border-radius: 1px;
+  background: transparent;
+  transition: background var(--fp-d1) var(--fp-ease);
+}
+
+.fp-opt:not([data-grade]):hover .fp-letter {
+  border-color: var(--fp-ink-2);
+  color: var(--fp-ink);
+}
+
+.fp-opt-main {
+  grid-column: 1 / 3;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: var(--fp-s3);
+  align-items: start;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fp-opt-main:focus-visible {
+  outline-offset: 6px;
+}
+
+.fp-letter {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--fp-rule-2);
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t13);
+  font-weight: 650;
+  color: var(--fp-ink-2);
+  transition:
+    background var(--fp-d1) var(--fp-ease),
+    color var(--fp-d1) var(--fp-ease),
+    border-color var(--fp-d1) var(--fp-ease);
+}
+
+.fp-opt-text {
+  padding-top: 3px;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.5;
+  color: var(--fp-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+.fp-opt[data-state='selected']::before {
+  background: var(--fp-accent);
+}
+
+.fp-opt[data-state='selected'] .fp-letter,
+.fp-opt[data-state='selected']:hover .fp-letter {
+  background: var(--fp-accent-fill);
+  border-color: var(--fp-accent-fill);
+  color: var(--fp-on-accent);
+}
+
+.fp-opt[data-state='eliminated'] .fp-opt-text {
+  color: var(--fp-ink-3);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fp-ink-3);
+}
+
+.fp-opt[data-state='eliminated'] .fp-letter {
+  border-style: dashed;
+  color: var(--fp-ink-3);
+}
+
+/* The strike-out stays in view, quietly: no hidden affordance. */
+.fp-opt-x {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fp-r1);
+  background: transparent;
+  color: var(--fp-ink-3);
+  opacity: 0.55;
+  cursor: pointer;
+  transition:
+    opacity var(--fp-d1) var(--fp-ease),
+    background var(--fp-d1) var(--fp-ease);
+}
+
+.fp-opt:hover .fp-opt-x,
+.fp-opt:focus-within .fp-opt-x,
+.fp-opt[data-state='eliminated'] .fp-opt-x {
+  opacity: 1;
+}
+
+.fp-opt-x:hover {
+  background: var(--fp-paper-3);
+  color: var(--fp-ink);
+}
+
+/* Graded options: the same size as before the answer — a filled letter, a
+ * worded tag and the margin mark set them apart; the list does not move. */
+.fp-opt[data-grade] {
+  cursor: default;
+}
+
+.fp-opt[data-grade='right']::before {
+  background: var(--fp-ok);
+}
+
+.fp-opt[data-grade='right'] .fp-letter {
+  background: var(--fp-ok);
+  border-color: var(--fp-ok);
+  color: var(--fp-on-accent);
+}
+
+.fp-opt[data-grade='wrong']::before {
+  background: var(--fp-bad);
+}
+
+.fp-opt[data-grade='wrong'] .fp-letter {
+  background: var(--fp-bad);
+  border-color: var(--fp-bad);
+  color: var(--fp-on-accent);
+}
+
+/* Dark: the graded letters are rings, not pastel discs. */
+[data-theme='dark'] .fp-opt[data-grade='right'] .fp-letter,
+[data-theme='dark'] .fp-opt[data-grade='wrong'] .fp-letter {
+  background: transparent;
+  border-width: 2px;
+}
+
+[data-theme='dark'] .fp-opt[data-grade='right'] .fp-letter {
+  color: var(--fp-ok);
+}
+
+[data-theme='dark'] .fp-opt[data-grade='wrong'] .fp-letter {
+  color: var(--fp-bad);
+}
+
+.fp-opt[data-grade='other'] .fp-opt-text {
+  color: var(--fp-ink-2);
+}
+
+.fp-opt-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t13);
+  font-weight: 650;
+}
+
+.fp-opt[data-grade='right'] .fp-opt-tag {
+  color: var(--fp-ok);
+}
+
+.fp-opt[data-grade='wrong'] .fp-opt-tag {
+  color: var(--fp-bad);
+}
+
+.fp-more-opts {
+  align-self: flex-start;
+  margin: var(--fp-s1) 0 0;
+}
+
+.fp-keys {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px var(--fp-s4);
+  margin-top: var(--fp-s4);
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+}
+
+.fp-keys span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fp-actionbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--fp-s4);
+  padding: var(--fp-s3) var(--fp-s12) var(--fp-s4) 44px;
+  border-top: 1px solid var(--fp-rule);
+  background: var(--fp-paper);
+}
+
+.fp-actionbar .fp-echo {
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t13);
+}
+
+/* Desktop: the action follows the options in the recto's flow, bled to the
+ * page's edges with the fold carried through; once the facit outgrows the
+ * page it sticks to the foot, and the text fades out above it. */
+.fp-recto-body > .fp-actionbar {
+  margin: var(--fp-s6) calc(-1 * var(--fp-s12)) 0 -44px;
+  border-top: 0;
+  /* The bar's rule spans the recto's measure only (44 px in, 48 px from
+   * the edge), over the page's paper and fold. */
+  background:
+    linear-gradient(var(--fp-rule), var(--fp-rule)) 44px 0 / calc(100% - 92px) 1px no-repeat,
+    linear-gradient(90deg, var(--fp-fold), transparent 40px) var(--fp-paper);
+}
+
+.fp-recto-body > .fp-actionbar::before {
+  content: '';
+  position: absolute;
+  left: 40px;
+  right: 0;
+  bottom: 100%;
+  height: 20px;
+  background: linear-gradient(to top, var(--fp-paper), transparent);
+  pointer-events: none;
+}
+
+.fp-page--verso .fp-runhead::before {
+  right: 64px;
+}
+
+.fp-runhead--recto::before {
+  left: 40px;
+}
+
+/* ── Feedback: the facit ─────────────────────────────────────────── */
+
+.fp-verdict {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-s3);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t24);
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.fp-verdict b {
+  font-weight: 600;
+}
+
+/* The verdict speaks in ink — glyph in a ring, then the word. The colour
+ * stays on the chosen and the right option, where it means something. */
+.fp-verdict-glyph {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  color: var(--fp-ink);
+}
+
+.fp-facit {
+  animation: fp-unfold var(--fp-d2) var(--fp-ease);
+}
+
+/* The explanation opens like a book's footnotes: a short rule, then the
+ * notes, separated by space rather than lines. */
+.fp-facit::before {
+  content: '';
+  display: block;
+  width: 6rem;
+  margin-top: var(--fp-s8);
+  border-top: 1px solid var(--fp-rule-2);
+}
+
+@keyframes fp-unfold {
+  from {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+}
+
+.fp-fsec {
+  margin-top: var(--fp-s8);
+}
+
+.fp-facit > .fp-fsec:first-child {
+  margin-top: var(--fp-s6);
+}
+
+.fp-fsec > .fp-h3 {
+  margin-bottom: var(--fp-s3);
+}
+
+.fp-h3--next {
+  margin-top: var(--fp-s6);
+}
+
+.fp-prose {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.6;
+  color: var(--fp-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+.fp-prose + .fp-prose,
+.fp-sub + .fp-prose {
+  margin-top: var(--fp-s2);
+}
+
+.fp-sub {
+  display: block;
+  margin-top: var(--fp-s4);
+  font-size: var(--fp-t13);
+  font-weight: 650;
+  color: var(--fp-ink-3);
+}
+
+/* Citations as a footnote's "Se ¶7, ¶8": italic "Se", then plain
+ * underlined references. */
+.fp-cites {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-top: var(--fp-s2);
+}
+
+.fp-cites-see {
+  margin-right: -4px;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  font-style: italic;
+  color: var(--fp-ink-3);
+}
+
+.fp-cite {
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--fp-accent-ink);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in oklch, var(--fp-accent-ink) 40%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: background var(--fp-d1) var(--fp-ease);
+}
+
+.fp-cite:hover {
+  text-decoration-color: currentColor;
+}
+
+.fp-stepref {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fp-accent-ink);
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--fp-accent-ink) 35%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.fp-step {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: var(--fp-s2);
+  padding: var(--fp-s3) 0;
+}
+
+.fp-step + .fp-step {
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-step-n {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t19);
+  line-height: 1.15;
+  color: var(--fp-accent-ink);
+  font-variant-numeric: oldstyle-nums;
+}
+
+.fp-step[data-tier='detail'] .fp-step-n {
+  color: var(--fp-ink-3);
+}
+
+.fp-step-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px var(--fp-s3);
+}
+
+.fp-step-title {
+  font-size: var(--fp-t15);
+  font-weight: 650;
+  color: var(--fp-ink);
+}
+
+.fp-step-head .fp-cites {
+  margin-top: 0;
+}
+
+.fp-step-text {
+  margin-top: var(--fp-s1);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.6;
+  color: var(--fp-ink-2);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+/* Disclosure links: a quiet text link with a chevron, no dashed pills. */
+.fp-more {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fp-accent-ink);
+  font-size: var(--fp-t13);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.fp-more:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.fp-more svg {
+  transition: rotate var(--fp-d1) var(--fp-ease);
+}
+
+.fp-more[aria-expanded='true'] svg {
+  rotate: 90deg;
+}
+
+.fp-dis {
+  padding: var(--fp-s3) 0;
+}
+
+.fp-dis + .fp-dis {
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-dis-head {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: var(--fp-s3);
+  align-items: start;
+}
+
+.fp-dis-head .fp-letter {
+  width: 28px;
+  height: 28px;
+  font-size: var(--fp-t12);
+}
+
+.fp-dis-opt {
+  padding-top: 2px;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.5;
+  color: var(--fp-ink-2);
+  hyphens: manual;
+}
+
+.fp-dis-body {
+  margin: var(--fp-s2) 0 0 40px;
+}
+
+.fp-notes .fp-note-item + .fp-note-item {
+  margin-top: var(--fp-s4);
+}
+
+.fp-framework {
+  margin-top: var(--fp-s6);
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+}
+
+.fp-framework b {
+  color: var(--fp-ink-2);
+  font-weight: 600;
+}
+
+/* ── Colophon (end of the unit) ──────────────────────────────────── */
+
+.fp-done {
+  display: grid;
+  place-items: center;
+}
+
+.fp-colophon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: var(--fp-s12) var(--fp-s6) 10vh;
+  animation: fp-page-in var(--fp-d2) var(--fp-ease);
+}
+
+.fp-colophon-mark {
+  margin-left: 0.3em;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t24);
+  letter-spacing: 0.3em;
+  color: var(--fp-accent);
+}
+
+.fp-colophon h2 {
+  margin-top: var(--fp-s6);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t32);
+  font-weight: 420;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+.fp-colophon h2 span {
+  display: block;
+  margin-top: var(--fp-s1);
+  font-size: var(--fp-t17);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--fp-ink-2);
+}
+
+.fp-colophon .fp-colophon-facts {
+  margin: var(--fp-s6) 0 0;
+  padding: var(--fp-s3) var(--fp-s1);
+  border-top: 1px solid var(--fp-rule);
+  border-bottom: 1px solid var(--fp-rule);
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t12);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fp-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-colophon p {
+  margin: var(--fp-s4) 0 var(--fp-s6);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-style: italic;
+  color: var(--fp-ink-2);
+  text-wrap: pretty;
+}
+
+.fp-colophon-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* The way on: the plan's next part, filled; Idag as a quiet link. */
+.fp-colophon-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fp-s1);
+}
+
+.fp-colophon-home {
+  min-height: 44px;
+}
+
+/* ── Phone ───────────────────────────────────────────────────────── */
+
+.fp-phone {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.fp-ptop {
+  position: relative;
+  z-index: 5;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fp-s3);
+  height: 56px;
+  padding: 0 var(--fp-s2) 0 var(--fp-s6);
+  background: var(--fp-paper);
+}
+
+.fp-pscroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.fp-phome {
+  padding: var(--fp-s2) 20px var(--fp-s12);
+}
+
+.fp-phome .fp-masthead {
+  display: block;
+  padding-bottom: 0;
+  margin-bottom: var(--fp-s4);
+  border: 0;
+}
+
+/* The masthead's meta on a line of its own, under the label: two lines, as
+ * on Idag (a span would run on into the label). */
+.fp-phome .fp-count {
+  display: block;
+  margin-top: var(--fp-s1);
+}
+
+.fp-phome .fp-greet {
+  font-size: var(--fp-t24);
+}
+
+.fp-phome .fp-day {
+  font-size: var(--fp-t15);
+}
+
+.fp-phome .fp-resume {
+  margin-top: var(--fp-s6);
+  padding: var(--fp-s4) 0 var(--fp-s6);
+}
+
+.fp-phome .fp-ribbon {
+  right: var(--fp-s1);
+  height: 30px;
+  width: 12px;
+}
+
+.fp-phome .fp-resume-title {
+  font-size: var(--fp-t44);
+}
+
+.fp-phome .fp-resume-sub {
+  font-size: var(--fp-t19);
+}
+
+.fp-phome .fp-resume-top {
+  flex-direction: column;
+  gap: var(--fp-s1);
+  margin-bottom: var(--fp-s3);
+}
+
+.fp-phome .fp-resume-foot {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--fp-s2);
+}
+
+.fp-phome .fp-resume-foot .fp-btn {
+  width: 100%;
+}
+
+.fp-phome .fp-resume-foot .fp-hint {
+  text-align: center;
+}
+
+.fp-phome .fp-section {
+  margin-top: var(--fp-s8);
+}
+
+.fp-phome .fp-plan-row {
+  grid-template-columns: 28px minmax(0, 1fr);
+  padding: var(--fp-s4) 0;
+}
+
+.fp-phome .fp-plan-n {
+  font-size: var(--fp-t19);
+}
+
+/* A narrow line wraps the entry: no dots, just the minutes at the right. */
+.fp-phome .fp-leader {
+  min-width: var(--fp-s3);
+  background: none;
+}
+
+/* On a phone the marginalia follow the text, under a rule of their own. */
+.fp-phome .fp-aside {
+  margin-top: var(--fp-s12);
+  padding: var(--fp-s6) 0 0;
+  border-left: 0;
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-tabs {
+  position: relative;
+  z-index: 5;
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  /* Side room, so the outer words keep off the screen's edges. */
+  padding: var(--fp-s1) var(--fp-s3) max(20px, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--fp-rule);
+  background: var(--fp-paper);
+}
+
+/* Tabs as words — a magazine's section bar. */
+.fp-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fp-ink-2);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+}
+
+.fp-tab[aria-current='page'] {
+  color: var(--fp-ink);
+  font-weight: 600;
+}
+
+/* The active marker sits inside the bar, under its top rule. */
+.fp-tab[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 22%;
+  right: 22%;
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background: var(--fp-accent);
+}
+
+.fp-tab-word {
+  position: relative;
+}
+
+/* A quiet "something is due" dot — not a notification count. */
+.fp-tab-dot {
+  position: absolute;
+  top: 1px;
+  right: -8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--fp-ink-3);
+}
+
+.fp-avatar-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.fp-avatar-btn[aria-expanded='true'] .fp-avatar {
+  box-shadow:
+    0 0 0 2px var(--fp-paper),
+    0 0 0 4px var(--fp-accent);
+}
+
+/* Phone account: a bottom sheet over a scrim. */
+.fp-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 38;
+  border: 0;
+  background: var(--fp-scrim);
+  animation: fp-fade-in var(--fp-d2) var(--fp-ease);
+}
+
+@keyframes fp-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.fp-menu[data-anchor='sheet'] {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  padding: var(--fp-s1) 0 max(var(--fp-s6), env(safe-area-inset-bottom));
+  border-radius: 2px 2px 0 0;
+  animation: fp-sheet-in var(--fp-d2) var(--fp-ease);
+}
+
+@keyframes fp-sheet-in {
+  from {
+    translate: 0 24px;
+    opacity: 0;
+  }
+}
+
+/* ── Phone drill ─────────────────────────────────────────────────── */
+
+.fp-pdrill {
+  position: relative;
+  height: 100%;
+  overflow: clip;
+}
+
+.fp-pdrill-head {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--fp-s1);
+  height: 56px;
+  padding: 0 var(--fp-s1);
+  background: var(--fp-paper);
+  border-bottom: 1px solid var(--fp-rule);
+  transition: height var(--fp-d2) var(--fp-ease);
+}
+
+.fp-pdrill-head .fp-clock {
+  min-width: 0;
+  font-size: var(--fp-t13);
+}
+
+.fp-focus-btn {
+  padding: 0 var(--fp-s2);
+  font-size: var(--fp-t13);
+}
+
+/* While reading, the head folds to a strip: the exit stays in reach. */
+.fp-pdrill-head[data-compact='true'] {
+  height: 40px;
+}
+
+.fp-pdrill-head[data-compact='true'] .fp-exit-label,
+.fp-pdrill-head[data-compact='true'] .fp-focus-btn span,
+.fp-pdrill-head[data-compact='true'] .fp-clock-icon {
+  display: none;
+}
+
+.fp-pdrill-head[data-compact='true'] .fp-ghost {
+  min-height: 40px;
+}
+
+.fp-head-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+}
+
+.fp-head-progress i {
+  display: block;
+  height: 100%;
+  background: var(--fp-accent);
+}
+
+.fp-pdrill-scroll {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+/* A narrower ¶ margin on phone: 44 px left, 24 px right. */
+.fp-pdrill .fp-passage {
+  max-width: none;
+  padding: 76px 24px 0 44px;
+  font-size: var(--fp-t17);
+  line-height: 1.6;
+}
+
+.fp-pdrill .fp-pnum {
+  width: 26px;
+  margin: 0 8px 0 -34px;
+  font-size: var(--fp-t12);
+}
+
+.fp-pdrill .fp-pnum::after {
+  inset: -16px -6px -16px -12px;
+}
+
+.fp-pdrill .fp-para[data-cited='true']::before {
+  left: -4px;
+}
+
+/* Phone end of the unit: the colophon centred, the way on anchored at the
+ * foot like every other phone action. */
+.fp-pdrill .fp-done {
+  display: flex;
+  flex-direction: column;
+}
+
+.fp-pdrill .fp-colophon {
+  flex: 1;
+  width: 100%;
+  max-width: none;
+  padding: var(--fp-s12) var(--fp-s6) 0;
+}
+
+.fp-pdrill .fp-colophon-text {
+  margin: auto 0;
+}
+
+.fp-pdrill .fp-colophon-actions {
+  position: sticky;
+  bottom: 0;
+  align-self: stretch;
+  margin: var(--fp-s8) calc(-1 * var(--fp-s6)) 0;
+  padding: var(--fp-s3) 20px max(var(--fp-s4), env(safe-area-inset-bottom));
+  border-top: 1px solid var(--fp-rule);
+  background: var(--fp-paper);
+}
+
+.fp-pdrill .fp-colophon-actions .fp-btn {
+  width: 100%;
+  min-height: 52px;
+}
+
+.fp-pdrill .fp-ptitle {
+  font-size: var(--fp-t24);
+}
+
+.fp-pdrill .fp-ptitle span {
+  font-size: var(--fp-t17);
+}
+
+/* The question on a slip of paper laid over the page: square-cut, a
+ * hairline edge and only the faintest lift. */
+.fp-sheet {
+  position: absolute;
+  z-index: 8;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  height: var(--fp-sheet-h);
+  border-radius: 2px 2px 0 0;
+  background: var(--fp-leaf);
+  box-shadow:
+    0 -1px 0 var(--fp-rule-2),
+    0 -10px 28px -22px oklch(25% 0.03 60 / 0.45);
+  transition: height var(--fp-d2) var(--fp-ease);
+}
+
+[data-theme='dark'] .fp-sheet {
+  box-shadow:
+    0 -1px 0 var(--fp-rule-2),
+    0 -12px 32px -18px oklch(0% 0 0 / 0.6);
+}
+
+/* The peek fits the whole question: it is what the reader reads for. */
+.fp-sheet[data-state='peek'] {
+  --fp-sheet-h: auto;
+  max-height: 48%;
+}
+
+.fp-sheet[data-state='open'] {
+  --fp-sheet-h: 78%;
+}
+
+.fp-sheet[data-state='full'] {
+  --fp-sheet-h: calc(100% - 48px);
+}
+
+.fp-sheet-grab {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+
+.fp-sheet-grab::before {
+  content: '';
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--fp-rule-2);
+}
+
+.fp-sheet-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fp-s3);
+  min-height: 24px;
+  padding: 0 20px 6px;
+}
+
+.fp-sheet-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 2px 20px var(--fp-s6);
+  scrollbar-width: none;
+}
+
+.fp-sheet .fp-prompt {
+  font-size: var(--fp-t19);
+  line-height: 1.38;
+}
+
+.fp-sheet .fp-prompt[data-after='true'] {
+  font-size: var(--fp-t15);
+}
+
+.fp-sheet .fp-opts {
+  margin-top: var(--fp-s4);
+}
+
+.fp-sheet .fp-opt {
+  grid-template-columns: 30px minmax(0, 1fr) 36px;
+  column-gap: 10px;
+  padding: var(--fp-s3) 0;
+}
+
+.fp-sheet .fp-opt::before {
+  left: -12px;
+  top: var(--fp-s3);
+  bottom: var(--fp-s3);
+}
+
+.fp-sheet .fp-opt-main {
+  grid-template-columns: 30px minmax(0, 1fr);
+  column-gap: 10px;
+}
+
+.fp-sheet .fp-letter {
+  width: 30px;
+  height: 30px;
+}
+
+.fp-sheet .fp-actionbar {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: var(--fp-s3) 20px max(var(--fp-s6), env(safe-area-inset-bottom));
+  background: var(--fp-leaf);
+}
+
+.fp-sheet .fp-actionbar .fp-btn {
+  width: 100%;
+  min-height: 52px;
+}
+
+.fp-sheet .fp-actionbar .fp-echo {
+  text-align: center;
+}
+
+.fp-sheet .fp-verdict {
+  margin-bottom: var(--fp-s1);
+  font-size: var(--fp-t24);
+}
+
+.fp-sheet .fp-dis-body {
+  margin-left: 0;
+}
+
+/* The peek's one action — the screen's filled button, clear of the home
+ * indicator. */
+.fp-sheet .fp-peek-btn {
+  width: 100%;
+  min-height: 48px;
+  margin-top: var(--fp-s4);
+}
+
+.fp-sheet[data-state='peek'] .fp-sheet-body {
+  padding-bottom: max(var(--fp-s4), env(safe-area-inset-bottom));
+}
+
+/* The slip's head: the question's place (and ÖVNINGSTEXT once the passage
+ * is covered) on the left, the way back to the text on the right. */
+.fp-sheet-badge {
+  white-space: nowrap;
+}
+
+.fp-sheet-back {
+  flex: none;
+}
+
+/* Text passing under the slip's action fades out, never cut in half. */
+.fp-sheet .fp-actionbar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 1px);
+  height: 20px;
+  background: linear-gradient(to top, var(--fp-leaf), transparent);
+  pointer-events: none;
+}
+
+/* ── The page grammar, round 2 (Öva, Repetera) ───────────────────── */
+/* Every hub page is set the way Idag is: masthead, title and standfirst,
+ * the lead under the heavy rule, contents lists, marginalia. */
+
+.fp-page-main {
+  min-width: 0;
+}
+
+/* A hub lead's headline: the page's one largest item (t44, phone t32). */
+.fp-lead-title {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t44);
+  line-height: 1.08;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fp-lead-sub {
+  margin-top: var(--fp-s2);
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The section code in an entry's number column, set as the trap's
+ * section is (Inter 500, tracked), on the title's first baseline. */
+.fp-entry-code {
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t13);
+  line-height: calc(var(--fp-t17) * 1.5);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--fp-ink-3);
+}
+
+.fp-entry-note {
+  display: block;
+  margin-top: var(--fp-s1);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--fp-ink-2);
+}
+
+/* A compared figure at the end of the dots (a level, a count): lining. */
+.fp-plan-min[data-lining='true'] {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* An entry with nothing to open yet: a plain row, no hover. */
+.fp-plan-row[data-static='true'] {
+  cursor: default;
+}
+
+.fp-plan-row[data-static='true']:hover .fp-plan-title {
+  text-decoration: none;
+}
+
+/* The suggested entry: the 2 px accent rule in the margin, one indicator. */
+.fp-entry {
+  position: relative;
+}
+
+.fp-entry[data-suggested='true']::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: var(--fp-s4);
+  bottom: var(--fp-s4);
+  width: 2px;
+  border-radius: 1px;
+  background: var(--fp-accent);
+}
+
+/* A contents list's part ("Verbal del"): Literata italic, not caps. */
+.fp-part {
+  margin: var(--fp-s6) 0 var(--fp-s1);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--fp-ink-2);
+}
+
+/* Blandat closes the register after a hairline of its own. */
+.fp-part-block--end {
+  margin-top: var(--fp-s6);
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-margin-note {
+  font-size: var(--fp-t15);
+  line-height: 1.5;
+  color: var(--fp-ink-2);
+  text-wrap: pretty;
+}
+
+.fp-margin-note + .fp-margin-note {
+  margin-top: var(--fp-s2);
+}
+
+.fp-margin-note b {
+  font-weight: 600;
+  color: var(--fp-ink);
+}
+
+/* A blank page says what will be here, in one italic sentence. */
+.fp-empty {
+  max-width: 36em;
+  margin-top: var(--fp-s4);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--fp-ink-2);
+  text-wrap: pretty;
+}
+
+.fp-empty--lead {
+  margin-top: 0;
+  font-size: var(--fp-t19);
+}
+
+.fp-footnote--plain {
+  display: block;
+}
+
+.fp-resume-foot .fp-link {
+  min-height: 44px;
+}
+
+/* ── Repetera: the misses ────────────────────────────────────────── */
+
+.fp-miss {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  column-gap: var(--fp-s3);
+  align-items: start;
+  padding: var(--fp-s3) 0;
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-miss-body {
+  min-width: 0;
+}
+
+.fp-miss-stem {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.5;
+  color: var(--fp-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+  font-variant-numeric: lining-nums;
+}
+
+/* An ORD miss is a single word: set it as one. */
+.fp-miss-stem[data-word='true'] {
+  font-style: italic;
+}
+
+.fp-miss-trap {
+  margin-top: 2px;
+  font-size: var(--fp-t13);
+  color: var(--fp-ink-3);
+}
+
+.fp-miss-when {
+  padding-top: 4px;
+  font-size: var(--fp-t13);
+  color: var(--fp-ink-3);
+  white-space: nowrap;
+}
+
+/* MEK's blank: a ruled gap in the line, the width of a short word. */
+.fp-gap {
+  display: inline-block;
+  width: 3.2em;
+  height: 1em;
+  margin: 0 0.15em;
+  border-bottom: 1px solid var(--fp-ink-2);
+  vertical-align: -0.12em;
+}
+
+/* ── Drill seam: the verdict's second line ───────────────────────── */
+
+.fp-verdict:has(.fp-verdict-after) {
+  align-items: flex-start;
+}
+
+.fp-verdict-after {
+  display: block;
+  margin-top: var(--fp-s1);
+  font-size: var(--fp-t17);
+  font-style: italic;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: var(--fp-ink-2);
+}
+
+/* ── Kvantfråga and DTK ──────────────────────────────────────────── */
+
+.fp-qroot {
+  position: relative;
+  height: 100%;
+  /* Math, options and steps are measured and compared: lining figures,
+   * never the passage's old-style ones. */
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+[data-rd='folio-plus'] .katex {
+  font-size: var(--fp-math-scale);
+}
+
+/* A KaTeX error shows its source as plain ink, never KaTeX's red. */
+[data-rd='folio-plus'] .katex-error {
+  color: var(--fp-ink) !important;
+}
+
+/* Before Svara: one page, the problem centred at the recto's measure, the
+ * tactic hanging in the right margin. */
+.fp-qscroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fp-rule-2) transparent;
+}
+
+.fp-qsheet {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 640px) minmax(0, 1fr);
+  padding: var(--fp-s8) var(--fp-s6) var(--fp-s16);
+}
+
+.fp-qcol {
+  grid-column: 2;
+  width: 100%;
+  max-width: 640px;
+  padding: 0 var(--fp-s12) 0 44px;
+}
+
+.fp-qcol > .fp-actionbar {
+  margin-top: var(--fp-s6);
+  padding: var(--fp-s3) 0 var(--fp-s4);
+}
+
+/* After Svara the problem is the verso, centred on its page. */
+.fp-qverso {
+  padding: var(--fp-s8) 0 var(--fp-s16);
+}
+
+.fp-qverso .fp-qcol {
+  margin: 0 auto;
+}
+
+/* The problem's number hangs in the margin on the prompt's first
+ * baseline, the way ¶ numbers do. */
+.fp-qnum {
+  display: inline-block;
+  width: 36px;
+  margin: 0 8px 0 -44px;
+  text-align: right;
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t13);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--fp-ink-3);
+  font-variant-numeric: lining-nums tabular-nums;
+  vertical-align: baseline;
+}
+
+/* ORD's word at the page-title size, never larger. */
+.fp-qprompt[data-word='true'] {
+  font-size: var(--fp-t32);
+  line-height: 1.15;
+}
+
+.fp-qprompt[data-after='true'] {
+  margin-top: var(--fp-s4);
+}
+
+.fp-qpassage {
+  margin-bottom: var(--fp-s6);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.6;
+  color: var(--fp-ink);
+}
+
+.fp-qpassage p + p {
+  margin-top: 0.75em;
+}
+
+/* KVA: the two quantities side by side, a column rule between them. */
+.fp-kva {
+  width: 100%;
+  margin-top: var(--fp-s4);
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-top: 1px solid var(--fp-rule);
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-kva th {
+  padding: var(--fp-s2) var(--fp-s4) var(--fp-s1) 0;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  font-style: italic;
+  font-weight: 400;
+  text-align: left;
+  color: var(--fp-ink-2);
+}
+
+.fp-kva td {
+  padding: var(--fp-s1) var(--fp-s4) var(--fp-s3) 0;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t19);
+  line-height: 1.4;
+  vertical-align: top;
+  hyphens: manual;
+}
+
+.fp-kva th + th,
+.fp-kva td + td {
+  padding-left: var(--fp-s4);
+  border-left: 1px solid var(--fp-rule);
+}
+
+/* NOG: the statements hang in the margin like the passage's ¶ numbers. */
+.fp-nog {
+  margin-top: var(--fp-s4);
+}
+
+.fp-nog li {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t19);
+  line-height: 1.5;
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+.fp-nog li + li {
+  margin-top: var(--fp-s2);
+}
+
+.fp-nog-n {
+  display: inline-block;
+  width: 36px;
+  margin: 0 8px 0 -44px;
+  text-align: right;
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t13);
+  font-weight: 600;
+  color: var(--fp-ink-3);
+}
+
+.fp-nog-tail {
+  margin-top: var(--fp-s4);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-style: italic;
+  color: var(--fp-ink-2);
+}
+
+/* The tactic: a printed hint in the margin behind a column rule. */
+.fp-tactic {
+  grid-column: 3;
+  align-self: start;
+  max-width: 240px;
+  margin: var(--fp-s1) 0 0 var(--fp-s8);
+  padding-left: var(--fp-s6);
+  border-left: 1px solid var(--fp-rule);
+}
+
+.fp-tactic > .fp-h3 {
+  margin-bottom: var(--fp-s2);
+  font-size: var(--fp-t19);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.fp-tactic-handle {
+  margin-bottom: 2px;
+  font-size: var(--fp-t15);
+  font-weight: 600;
+  color: var(--fp-ink);
+}
+
+.fp-tactic-fold {
+  margin-top: var(--fp-s3);
+}
+
+.fp-tactic-body {
+  margin-top: var(--fp-s1);
+  padding: 2px 0 2px var(--fp-s4);
+  border-left: 1px solid var(--fp-rule-2);
+}
+
+/* "Andra av tre frågor till figuren": how much of the page is left. */
+.fp-cue {
+  margin-bottom: var(--fp-s3);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  font-style: italic;
+  color: var(--fp-ink-2);
+}
+
+/* Image options (DTK pie charts): the crop beside its letter; a struck one
+ * dims, because a line cannot cross a picture. */
+.fp-opt-img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 140px;
+  transition: opacity var(--fp-d1) var(--fp-ease);
+}
+
+.fp-opt[data-state='eliminated'] .fp-opt-img {
+  opacity: 0.4;
+}
+
+/* ── Figures ─────────────────────────────────────────────────────── */
+
+/* A book figure above the prompt: centred, at most 280 px tall, no frame;
+ * an SVG takes the ink's colour in both themes. */
+.fp-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0 var(--fp-s6);
+}
+
+.fp-figure-box {
+  max-width: 100%;
+  max-height: 280px;
+  color: var(--fp-ink);
+}
+
+.fp-figure-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.fp-figure-raster {
+  max-width: 100%;
+  max-height: 280px;
+  width: auto;
+  height: auto;
+}
+
+.fp-figure-zoom {
+  align-self: flex-end;
+  margin-top: var(--fp-s1);
+}
+
+/* The DTK plate: the printed page fitted to the verso's width and height,
+ * a hairline frame, an italic caption. */
+.fp-plate-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100% - 56px);
+  padding: var(--fp-s6) var(--fp-s8) var(--fp-s4);
+  container-type: size;
+}
+
+.fp-plate {
+  width: min(100%, calc((100cqh - 48px) * var(--fp-plate-ratio)));
+}
+
+.fp-plate-frame {
+  position: relative;
+  aspect-ratio: var(--fp-plate-ratio);
+  overflow: hidden;
+  border: 1px solid var(--fp-rule-2);
+  border-radius: 2px;
+  background: var(--fp-paper-3);
+  container-type: inline-size;
+}
+
+/* Never inverted, never filtered: the page stays as printed. */
+.fp-plate-img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100cqw;
+  max-width: none;
+  height: auto;
+  transform: translate(-50%, -50%) rotate(var(--fp-rot, 0deg));
+  transition: transform var(--fp-d2) var(--fp-ease);
+}
+
+.fp-plate[data-turned='true'] .fp-plate-img {
+  width: calc(100cqw * var(--fp-img-ratio));
+}
+
+.fp-plate-open {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.fp-plate-caption {
+  margin-top: var(--fp-s2);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t13);
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--fp-ink-3);
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* An erratum: a note behind a 1 px rule, plain words, one way to retry. */
+.fp-erratum {
+  padding: 2px 0 2px var(--fp-s4);
+  border-left: 1px solid var(--fp-rule-2);
+  font-size: var(--fp-t15);
+  line-height: 1.5;
+  color: var(--fp-ink-2);
+}
+
+.fp-plate-frame .fp-erratum,
+.fp-figure-box .fp-erratum {
+  position: absolute;
+  left: var(--fp-s6);
+  right: var(--fp-s6);
+  top: 50%;
+  translate: 0 -50%;
+  background: var(--fp-paper);
+}
+
+.fp-figure-box {
+  position: relative;
+}
+
+/* A reading question that cannot be answered yet says so above its prompt,
+ * on the recto or in the phone slip (FolioDrill's LackNote). */
+.fp-lack {
+  margin-bottom: var(--fp-s6);
+}
+
+.fp-lack p {
+  margin: 0;
+}
+
+/* ── Förstora ────────────────────────────────────────────────────── */
+/* Full-stage, on the page's own paper — not a black lightbox. */
+
+.fp-viewer {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background: var(--fp-paper);
+  animation: fp-fade-in var(--fp-d2) var(--fp-ease);
+}
+
+.fp-viewer:focus-visible {
+  outline-offset: -2px;
+}
+
+.fp-viewer-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--fp-s3);
+  min-height: 56px;
+  padding: var(--fp-s1) var(--fp-s3) var(--fp-s1) var(--fp-s6);
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-viewer-title {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--fp-ink-2);
+  text-wrap: balance;
+}
+
+.fp-viewer-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-s1);
+}
+
+.fp-viewer-tools .fp-ghost:disabled {
+  color: var(--fp-ink-3);
+  cursor: not-allowed;
+}
+
+.fp-viewer-tools .fp-ghost:disabled:hover {
+  background: transparent;
+}
+
+.fp-viewer-zoom {
+  min-width: 64px;
+  text-align: center;
+  font-size: var(--fp-t15);
+  font-weight: 600;
+  color: var(--fp-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-viewer-area {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  cursor: grab;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fp-rule-2) transparent;
+}
+
+.fp-viewer-area:active {
+  cursor: grabbing;
+}
+
+.fp-viewer-area:focus-visible {
+  outline-offset: -4px;
+}
+
+.fp-viewer-canvas {
+  position: relative;
+  margin: 0 auto;
+}
+
+.fp-viewer-img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  max-width: none;
+  user-select: none;
+  transition: transform var(--fp-d2) var(--fp-ease);
+}
+
+.fp-viewer-svg {
+  color: var(--fp-ink);
+}
+
+[data-width='phone'] .fp-viewer-bar {
+  flex-wrap: wrap;
+  padding: var(--fp-s1) var(--fp-s1) var(--fp-s1) var(--fp-s4);
+}
+
+[data-width='phone'] .fp-viewer-title {
+  flex-basis: 100%;
+  order: -1;
+  padding-top: var(--fp-s2);
+}
+
+[data-width='phone'] .fp-viewer-tools .fp-ghost {
+  padding: 0 var(--fp-s2);
+}
+
+/* ── The end of a set: the round's list and its review ───────────── */
+
+.fp-roundlist {
+  width: 100%;
+  margin: 0 0 var(--fp-s6);
+  text-align: left;
+}
+
+.fp-roundlist > .fp-more {
+  display: flex;
+  margin: 0 auto;
+}
+
+.fp-roundlist-rows {
+  margin-top: var(--fp-s3);
+  border-top: 1px solid var(--fp-rule);
+  animation: fp-unfold var(--fp-d2) var(--fp-ease);
+}
+
+.fp-round-row {
+  display: grid;
+  grid-template-columns: 20px 36px minmax(0, 1fr) auto;
+  column-gap: var(--fp-s3);
+  align-items: baseline;
+  width: 100%;
+  min-height: 44px;
+  padding: var(--fp-s3) 0;
+  border: 0;
+  border-bottom: 1px solid var(--fp-rule);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fp-round-row:hover .fp-round-stem {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fp-rule-2);
+  text-underline-offset: 4px;
+}
+
+.fp-round-n {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  color: var(--fp-ink-3);
+  font-variant-numeric: oldstyle-nums;
+}
+
+.fp-round-stem {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  line-height: 1.45;
+  color: var(--fp-ink);
+  text-wrap: pretty;
+}
+
+/* The outcome as glyph and word; its colour is one of the verdict's four
+ * places (the same pair in a result list). */
+.fp-round-out {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--fp-t13);
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.fp-round-out[data-correct='true'] {
+  color: var(--fp-ok);
+}
+
+.fp-round-out[data-correct='false'] {
+  color: var(--fp-bad);
+}
+
+.fp-review {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--fp-s8) var(--fp-s12) var(--fp-s16) 44px;
+}
+
+.fp-review > .fp-label {
+  display: block;
+  margin: var(--fp-s4) 0 var(--fp-s4);
+}
+
+.fp-review .fp-verdict {
+  margin-top: var(--fp-s6);
+}
+
+.fp-review .fp-plate {
+  width: min(100%, 420px);
+  margin-bottom: var(--fp-s6);
+}
+
+.fp-review-back {
+  rotate: -90deg;
+}
+
+/* ── Phone: the quant page and the DTK plate ─────────────────────── */
+
+.fp-pdrill-pos {
+  text-align: center;
+  font-size: var(--fp-t13);
+  color: var(--fp-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-pquant-page {
+  padding: 76px 24px 160px 44px;
+}
+
+.fp-pquant-page > .fp-label,
+.fp-pdtk-page > .fp-label {
+  display: block;
+  margin-bottom: var(--fp-s3);
+}
+
+.fp-pquant .fp-prompt {
+  font-size: var(--fp-t19);
+  line-height: 1.38;
+}
+
+.fp-pquant .fp-prompt[data-after='true'] {
+  font-size: var(--fp-t15);
+}
+
+.fp-pquant .fp-qprompt[data-word='true'] {
+  font-size: var(--fp-t24);
+}
+
+.fp-pquant .fp-qnum,
+.fp-pquant .fp-nog-n {
+  width: 26px;
+  margin: 0 8px 0 -34px;
+  font-size: var(--fp-t12);
+}
+
+.fp-pquant .fp-kva td,
+.fp-pquant .fp-nog li {
+  font-size: var(--fp-t17);
+}
+
+.fp-pquant .fp-opts {
+  margin-top: var(--fp-s4);
+}
+
+.fp-pquant .fp-opt {
+  grid-template-columns: 30px minmax(0, 1fr) 36px;
+  column-gap: 10px;
+  padding: var(--fp-s3) 0;
+}
+
+.fp-pquant .fp-opt::before {
+  left: -12px;
+  top: var(--fp-s3);
+  bottom: var(--fp-s3);
+}
+
+.fp-pquant .fp-opt-main {
+  grid-template-columns: 30px minmax(0, 1fr);
+  column-gap: 10px;
+}
+
+.fp-pquant .fp-letter {
+  width: 30px;
+  height: 30px;
+}
+
+.fp-pquant .fp-dis-body {
+  margin-left: 0;
+}
+
+/* The verdict lands above the graded options, the way back to the
+ * problem on its line. */
+.fp-pverdict {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fp-s2) var(--fp-s4);
+  margin-top: var(--fp-s6);
+}
+
+.fp-pverdict .fp-verdict {
+  font-size: var(--fp-t24);
+}
+
+/* The phone foot: the action anchored, the text fading out above it. */
+.fp-pfoot {
+  position: absolute;
+  z-index: 7;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--fp-paper);
+}
+
+.fp-pfoot::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 1px);
+  height: 20px;
+  background: linear-gradient(to top, var(--fp-paper), transparent);
+  pointer-events: none;
+}
+
+.fp-pfoot .fp-actionbar {
+  position: relative;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: var(--fp-s3) 20px max(var(--fp-s6), env(safe-area-inset-bottom));
+}
+
+.fp-pfoot .fp-actionbar .fp-btn {
+  width: 100%;
+  min-height: 52px;
+}
+
+.fp-pfoot .fp-actionbar .fp-echo {
+  text-align: center;
+}
+
+.fp-pdtk-page {
+  padding: 72px 20px 0;
+}
+
+.fp-pdtk-page .fp-plate {
+  width: 100%;
+}
+
+/* ── Phone: the hub pages ────────────────────────────────────────── */
+
+.fp-phome .fp-lead-title {
+  font-size: var(--fp-t32);
+}
+
+.fp-phome .fp-resume-foot .fp-link {
+  align-self: flex-end;
+}
+
+.fp-phome .fp-plan-row:has(> .fp-entry-code) {
+  grid-template-columns: 40px minmax(0, 1fr);
+}
+
+.fp-phome .fp-entry[data-suggested='true']::before {
+  left: -12px;
+}
+
+.fp-phome .fp-miss {
+  grid-template-columns: 40px minmax(0, 1fr);
+}
+
+.fp-phome .fp-miss-when {
+  grid-column: 2;
+  padding-top: 2px;
+}
+
+/* Blandat has no code: its title starts where the codes stand. */
+.fp-part-block--end .fp-plan-row,
+.fp-phome .fp-part-block--end .fp-plan-row {
+  grid-template-columns: 0 minmax(0, 1fr);
+  column-gap: 0;
+}
+
+/* ── Batch 2: links in heads, word pairs, ruled tables ───────────── */
+
+/* A sub-page's masthead starts with its parent, a link back. */
+.fp-crumb {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--fp-accent-ink);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--fp-accent-ink) 35%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.fp-crumb:hover {
+  text-decoration-color: currentColor;
+}
+
+/* A margin head that is itself the way to its subject ("Prognos →"). */
+.fp-head-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fp-s1);
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fp-head-link svg {
+  color: var(--fp-ink-3);
+}
+
+.fp-head-link:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fp-rule-2);
+  text-underline-offset: 4px;
+}
+
+/* A line of word pairs under a standfirst: "Halva  Verbal · Kvantitativ". */
+.fp-choices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--fp-s3);
+  margin-top: var(--fp-s4);
+}
+
+.fp-choice-label {
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+}
+
+.fp-seg--words {
+  display: inline-grid;
+  grid-auto-columns: auto;
+  column-gap: var(--fp-s1);
+  border-bottom: 0;
+}
+
+.fp-seg--words button {
+  padding: 0 var(--fp-s2);
+}
+
+.fp-seg--words button[aria-pressed='true']::after {
+  left: var(--fp-s2);
+  right: var(--fp-s2);
+  bottom: 8px;
+}
+
+/* A ruled table: hairline rows, the first column a name with leader dots
+ * to the figures, lining tabular numerals throughout. */
+.fp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fp-table th,
+.fp-table td {
+  padding: var(--fp-s3) 0;
+  border-bottom: 1px solid var(--fp-rule);
+  font-size: var(--fp-t15);
+  font-weight: 400;
+  text-align: right;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.fp-table th + th,
+.fp-table th + td,
+.fp-table td + td {
+  padding-left: var(--fp-s6);
+}
+
+.fp-table thead th {
+  padding: var(--fp-s2) 0;
+  font-size: var(--fp-t13);
+  font-weight: 500;
+  color: var(--fp-ink-3);
+}
+
+.fp-table thead th + th {
+  padding-left: var(--fp-s6);
+}
+
+.fp-table th[scope='row'],
+.fp-table thead th:first-child {
+  width: 100%;
+  text-align: left;
+  white-space: normal;
+}
+
+.fp-th-line {
+  display: flex;
+  align-items: baseline;
+}
+
+.fp-table-name {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  color: var(--fp-ink);
+}
+
+/* Section codes, set as codes are everywhere in Folio. */
+.fp-res-table .fp-table-name,
+.fp-fr-table .fp-table-name {
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t13);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--fp-ink-2);
+}
+
+.fp-table-none {
+  color: var(--fp-ink-3);
+}
+
+.fp-table-sub {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t13);
+  font-style: italic;
+  color: var(--fp-ink-2);
+  white-space: nowrap;
+}
+
+.fp-table-mark {
+  margin-left: 1px;
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t12);
+  font-weight: 600;
+  color: var(--fp-accent-ink);
+}
+
+[data-rd='folio-plus'] .fp-phone-only {
+  display: none;
+}
+
+[data-rd='folio-plus'][data-width='phone'] .fp-phone-only {
+  display: block;
+}
+
+[data-rd='folio-plus'][data-width='phone'] .fp-col-note,
+[data-rd='folio-plus'][data-width='phone'] .fp-col-wide {
+  display: none;
+}
+
+/* Phone: the columns closer, a second line free to wrap — the tables
+ * reflow at 320 px without scrolling sideways. */
+[data-width='phone'] .fp-table th + th,
+[data-width='phone'] .fp-table th + td,
+[data-width='phone'] .fp-table td + td,
+[data-width='phone'] .fp-table thead th + th {
+  padding-left: var(--fp-s3);
+}
+
+[data-width='phone'] .fp-table-sub {
+  white-space: normal;
+}
+
+/* The footnotes close the main column under a 6 rem rule. */
+.fp-footnotes {
+  margin-top: var(--fp-s12);
+}
+
+.fp-footnotes::before {
+  content: '';
+  display: block;
+  width: 6rem;
+  border-top: 1px solid var(--fp-rule-2);
+}
+
+.fp-footnote--wide {
+  grid-template-columns: 20px minmax(0, 1fr);
+}
+
+/* ── Provpass: the hub ───────────────────────────────────────────── */
+
+.fp-kallelse {
+  margin-top: var(--fp-s2);
+  max-width: 36em;
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+  font-variant-numeric: lining-nums tabular-nums;
+  text-wrap: pretty;
+}
+
+.fp-kallelse-name {
+  color: var(--fp-ink-3);
+  white-space: nowrap;
+}
+
+.fp-prov-note {
+  margin-top: var(--fp-s6);
+}
+
+/* The register's cells: "sett 6/40", the chosen one with the 2 px accent
+ * rule of a current entry. */
+.fp-register td {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.fp-cell {
+  position: relative;
+  min-height: 44px;
+  padding: 0 var(--fp-s1);
+  border: 0;
+  background: transparent;
+  color: var(--fp-ink-2);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-variant-numeric: lining-nums tabular-nums;
+  cursor: pointer;
+}
+
+.fp-cell:hover {
+  color: var(--fp-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fp-rule-2);
+  text-underline-offset: 5px;
+}
+
+.fp-cell[aria-pressed='true'] {
+  color: var(--fp-ink);
+  font-weight: 600;
+}
+
+.fp-cell[aria-pressed='true']::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--fp-accent);
+}
+
+/* Phone: the register as entries by sitting, no code column (over the
+ * phone's code column for entries that carry one). */
+.fp-register-phone .fp-plan-row,
+.fp-phome .fp-register-phone .fp-plan-row:has(> .fp-entry-code) {
+  grid-template-columns: 0 minmax(0, 1fr);
+  column-gap: 0;
+}
+
+.fp-register-phone .fp-part {
+  margin-top: var(--fp-s4);
+}
+
+.fp-register-phone > .fp-more {
+  margin-top: var(--fp-s3);
+}
+
+/* A finished pass in a list: the half, the raw count, the score, when. */
+.fp-results li + li {
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-result-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto 52px;
+  column-gap: var(--fp-s3);
+  align-items: baseline;
+  width: 100%;
+  min-height: 44px;
+  padding: var(--fp-s2) 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fp-result-row-what {
+  font-size: var(--fp-t15);
+  font-weight: 500;
+  color: var(--fp-ink);
+}
+
+.fp-result-row:hover .fp-result-row-what {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fp-rule-2);
+  text-underline-offset: 4px;
+}
+
+.fp-result-row-raw,
+.fp-result-row-score {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  color: var(--fp-ink);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fp-result-row-raw {
+  color: var(--fp-ink-2);
+}
+
+.fp-result-row-when {
+  text-align: right;
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+}
+
+/* ── Modal slips ─────────────────────────────────────────────────── */
+/* Lighter paper over the scrim, square-cut, the caps head underlined by
+ * the heavy rule; desktop centres it in the top third, phone sets it at
+ * the foot. */
+
+.fp-slip {
+  position: absolute;
+  z-index: 40;
+  left: 50%;
+  top: 14%;
+  translate: -50% 0;
+  width: min(520px, calc(100% - 48px));
+  max-height: 80%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 0 0 var(--fp-s6);
+  border-radius: 2px;
+  background: var(--fp-menu);
+  box-shadow: var(--fp-pop);
+  animation: fp-menu-in var(--fp-d2) var(--fp-ease);
+}
+
+.fp-slip:focus-visible {
+  outline-offset: -2px;
+}
+
+[data-width='phone'] .fp-slip {
+  left: 0;
+  right: 0;
+  top: auto;
+  bottom: 0;
+  translate: none;
+  width: auto;
+  max-height: 88%;
+  border-radius: 2px 2px 0 0;
+  padding-bottom: max(var(--fp-s6), env(safe-area-inset-bottom));
+  animation: fp-sheet-in var(--fp-d2) var(--fp-ease);
+}
+
+.fp-slip > :not(.fp-slip-head) {
+  margin-left: var(--fp-s6);
+  margin-right: var(--fp-s6);
+}
+
+[data-width='phone'] .fp-slip > :not(.fp-slip-head) {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.fp-slip-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--fp-s4);
+  padding: var(--fp-s4) var(--fp-s6) var(--fp-s3);
+  border-bottom: 2px solid var(--fp-rule-strong);
+}
+
+[data-width='phone'] .fp-slip-head {
+  padding: var(--fp-s4) 20px var(--fp-s3);
+}
+
+.fp-slip-meta {
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t13);
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-slip-title {
+  margin-top: var(--fp-s4);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t24);
+  line-height: 1.25;
+  font-weight: 450;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+}
+
+.fp-slip-sub {
+  margin-top: var(--fp-s1);
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-slip-lede {
+  margin-top: var(--fp-s4);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.5;
+  color: var(--fp-ink);
+  text-wrap: pretty;
+}
+
+/* The conditions as a numbered note between hairlines. */
+.fp-slip-rules {
+  margin-top: var(--fp-s4);
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-slip-rules li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  padding: var(--fp-s2) 0;
+  border-bottom: 1px solid var(--fp-rule);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.fp-slip-n {
+  color: var(--fp-ink-3);
+  font-variant-numeric: oldstyle-nums;
+}
+
+.fp-slip-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fp-s3);
+  margin-top: var(--fp-s6);
+}
+
+[data-width='phone'] .fp-slip-actions {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+[data-width='phone'] .fp-slip-actions .fp-btn {
+  min-height: 52px;
+}
+
+/* Before the act that voids: a double rule (this and the next hairline). */
+.fp-slip-sep {
+  margin-top: var(--fp-s6);
+}
+
+.fp-slip-grave {
+  margin-top: 3px;
+  padding-top: var(--fp-s4);
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-slip-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--fp-s3);
+  margin-top: var(--fp-s2);
+}
+
+.fp-slip-links .fp-link {
+  font-size: var(--fp-t15);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fp-slip-key {
+  margin-top: var(--fp-s3);
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+}
+
+.fp-slip .fp-erratum {
+  margin-top: var(--fp-s4);
+}
+
+/* Översikt: the pass's numerals by section, underlined once answered,
+ * ringed where the reader is, a folded corner when marked. */
+.fp-overview {
+  margin-top: var(--fp-s3);
+}
+
+.fp-overview-run {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: baseline;
+  padding: var(--fp-s2) 0;
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-overview-run ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.fp-ov-n {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--fp-ink-3);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-variant-numeric: lining-nums tabular-nums;
+  cursor: pointer;
+}
+
+.fp-ov-n:hover {
+  background: var(--fp-paper-2);
+  color: var(--fp-ink);
+}
+
+.fp-ov-n[data-answered='true'] {
+  color: var(--fp-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 5px;
+}
+
+.fp-ov-n[data-current='true'] {
+  box-shadow: inset 0 0 0 2px var(--fp-accent);
+}
+
+.fp-ov-n[data-flagged='true']::before,
+.fp-passindex-cell[data-flagged='true']::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 7px;
+  height: 7px;
+  background: linear-gradient(to bottom left, transparent 50%, var(--fp-ink-2) 50%);
+  pointer-events: none;
+}
+
+/* ── Provpass: the running pass ──────────────────────────────────── */
+
+.fp-passroot {
+  position: relative;
+  height: 100%;
+}
+
+.fp-pass {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* The pass's heads sit over the index, not over scrolling text: no fade
+ * under the head itself (the recto's top block carries one). */
+.fp-runhead--pass::before {
+  display: none;
+}
+
+.fp-pass-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--fp-s1);
+}
+
+.fp-pass-pos {
+  margin-right: var(--fp-s2);
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.fp-runhead--recto .fp-pass-pos {
+  margin-right: 0;
+}
+
+.fp-countdown {
+  display: inline-flex;
+}
+
+.fp-countdown .fp-clock {
+  min-width: 0;
+}
+
+/* From five minutes: the figures heavier, in ink. Never red. */
+.fp-countdown[data-urgent='true'] .fp-clock span {
+  font-weight: 600;
+  color: var(--fp-ink);
+}
+
+/* The recto's top: its head and the pass index, sticky, the text fading
+ * out under them. */
+.fp-pass-rtop {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  flex: none;
+  background: inherit;
+}
+
+.fp-pass-rtop .fp-runhead {
+  position: relative;
+}
+
+.fp-pass-rtop::after {
+  content: '';
+  position: absolute;
+  left: 40px;
+  right: 0;
+  top: 100%;
+  height: 20px;
+  background: linear-gradient(to bottom, var(--fp-paper), transparent);
+  pointer-events: none;
+}
+
+/* The pass index: one segment a question, a gap between sections, cut
+ * into the page's edge like a booklet's thumb index. */
+.fp-passindex {
+  position: relative;
+  z-index: 3;
+  flex: none;
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+  height: 24px;
+  margin: 0;
+  padding: 0 var(--fp-s4);
+  border: 0;
+}
+
+.fp-pass-rtop .fp-passindex {
+  max-width: 640px;
+  padding: 0 var(--fp-s12) 0 44px;
+}
+
+.fp-passindex-run {
+  display: flex;
+  flex: 1 1 0;
+  gap: 2px;
+  min-width: 0;
+}
+
+.fp-passindex-cell {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.fp-passindex-cell::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  translate: 0 -50%;
+  border-radius: 1px;
+  background: var(--fp-rule-2);
+  transition: height var(--fp-d1) var(--fp-ease);
+}
+
+.fp-passindex-cell[data-answered='true']::before {
+  background: var(--fp-ink-2);
+}
+
+.fp-passindex-cell[data-current='true']::before {
+  height: 5px;
+  background: var(--fp-accent);
+}
+
+.fp-passindex-cell:hover::before {
+  height: 7px;
+}
+
+.fp-passindex-cell[data-flagged='true']::after {
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 5px;
+}
+
+/* A hover pulls the segment's tab out from under the strip. */
+.fp-passindex-tab {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: calc(100% + 1px);
+  translate: -50% -4px;
+  padding: 5px 10px;
+  border: 1px solid var(--fp-rule-2);
+  border-top: 0;
+  border-radius: 0 0 2px 2px;
+  background: var(--fp-menu);
+  color: var(--fp-ink);
+  font-size: var(--fp-t13);
+  white-space: nowrap;
+  box-shadow: 4px 6px 16px -10px oklch(28% 0.03 60 / 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--fp-d-out) var(--fp-ease),
+    translate var(--fp-d-out) var(--fp-ease);
+}
+
+.fp-passindex-run:first-child .fp-passindex-tab {
+  left: 0;
+  translate: 0 -4px;
+}
+
+.fp-passindex-run:last-child:not(:first-child) .fp-passindex-tab {
+  left: auto;
+  right: 0;
+  translate: 0 -4px;
+}
+
+.fp-passindex-cell:hover .fp-passindex-tab {
+  opacity: 1;
+  translate: -50% 0;
+  transition-duration: var(--fp-d2);
+  transition-delay: 120ms;
+}
+
+.fp-passindex-run:first-child .fp-passindex-cell:hover .fp-passindex-tab,
+.fp-passindex-run:last-child:not(:first-child) .fp-passindex-cell:hover .fp-passindex-tab {
+  translate: 0 0;
+}
+
+/* Phone: the index is the head's foot line. */
+.fp-passindex--foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  padding: 0;
+  gap: 3px;
+}
+
+.fp-passindex--foot .fp-passindex-run {
+  gap: 1px;
+}
+
+.fp-passindex--foot .fp-passindex-cell::before,
+.fp-passindex--foot .fp-passindex-cell[data-current='true']::before,
+.fp-passindex--foot .fp-passindex-cell:hover::before {
+  top: 0;
+  height: 100%;
+  translate: none;
+  border-radius: 0;
+}
+
+.fp-passindex--foot .fp-passindex-cell[data-flagged='true']::after {
+  display: none;
+}
+
+/* A marked question's page has its corner folded. */
+.fp-pass-q {
+  position: relative;
+}
+
+.fp-pass-q[data-dogear='true']::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(
+    to bottom left,
+    var(--fp-paper) calc(50% - 0.5px),
+    var(--fp-rule-2) calc(50% - 0.5px),
+    var(--fp-rule-2) calc(50% + 0.5px),
+    var(--fp-paper-3) calc(50% + 0.5px)
+  );
+  pointer-events: none;
+}
+
+.fp-pass-bar .fp-flag {
+  margin-left: auto;
+}
+
+.fp-dogear-fold {
+  fill: none;
+}
+
+.fp-flag[aria-pressed='true'] .fp-dogear-fold {
+  fill: currentColor;
+}
+
+/* Phone: the button across, the saved choice and Markera on one line. */
+.fp-pfoot .fp-pass-bar,
+.fp-sheet .fp-pass-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--fp-s3);
+}
+
+.fp-pfoot .fp-pass-bar .fp-btn,
+.fp-sheet .fp-pass-bar .fp-btn {
+  grid-column: 1 / -1;
+}
+
+.fp-pfoot .fp-pass-bar .fp-echo,
+.fp-sheet .fp-pass-bar .fp-echo {
+  text-align: left;
+}
+
+/* Phone: the page names the question once, where the slip would. */
+.fp-pass-where {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--fp-s1) var(--fp-s3);
+  margin-bottom: var(--fp-s3);
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t13);
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-ppass-page {
+  padding-bottom: 200px;
+}
+
+.fp-ppass-head .fp-head-right {
+  gap: 0;
+}
+
+/* ── Provpass: the pass, over ────────────────────────────────────── */
+
+/* The title takes the focus the pass had, to be heard; it is no control,
+ * so it draws no ring. */
+.fp-ended-title:focus-visible {
+  outline: none;
+}
+
+/* The answers as they stood: each section's numbers with the letter
+ * chosen, set like Översikt's numerals but read-only. */
+.fp-answers {
+  margin-top: var(--fp-s3);
+}
+
+.fp-answers-run {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: baseline;
+  padding: var(--fp-s2) 0;
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-answers-run ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fp-s1) var(--fp-s3);
+}
+
+.fp-answers-cell {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  min-width: 40px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fp-answers-n {
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+}
+
+.fp-answers-l {
+  color: var(--fp-ink);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+}
+
+.fp-answers-cell[data-answered='false'] .fp-answers-l {
+  color: var(--fp-ink-3);
+}
+
+/* ── Provpassresultat ────────────────────────────────────────────── */
+
+/* ⁂ over the title: the book's closing mark, small. */
+.fp-result-mark {
+  display: block;
+  margin: 0 0 var(--fp-s2);
+  font-size: var(--fp-t19);
+}
+
+.fp-result .fp-lead-sub {
+  margin-top: var(--fp-s2);
+}
+
+.fp-result .fp-scale {
+  max-width: 420px;
+}
+
+.fp-col-note {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t13);
+  font-style: italic;
+  color: var(--fp-ink-2);
+}
+
+.fp-table td.fp-col-note {
+  text-align: left;
+}
+
+.fp-res-note {
+  margin-top: var(--fp-s3);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-style: italic;
+  color: var(--fp-ink-2);
+  text-wrap: pretty;
+}
+
+/* The misses as an errata list: place, section, stem, the right answer. */
+.fp-errata {
+  margin-top: var(--fp-s3);
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-errata-row {
+  display: grid;
+  grid-template-columns: 28px 44px minmax(0, 1fr) auto;
+  column-gap: var(--fp-s3);
+  align-items: baseline;
+  padding: var(--fp-s3) 0;
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-errata-n {
+  text-align: right;
+  color: var(--fp-ink-3);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fp-errata-stem {
+  min-width: 0;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t15);
+  line-height: 1.45;
+  color: var(--fp-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+.fp-errata-key {
+  color: var(--fp-ok);
+  font-size: var(--fp-t13);
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+[data-width='phone'] .fp-errata-row {
+  grid-template-columns: 28px 40px minmax(0, 1fr);
+}
+
+[data-width='phone'] .fp-errata-key {
+  grid-column: 3;
+}
+
+/* ── Framsteg ────────────────────────────────────────────────────── */
+
+.fp-scale-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fp-s4);
+  max-width: 520px;
+}
+
+.fp-scale-row .fp-scale {
+  flex: 1;
+}
+
+.fp-goal-link {
+  margin-top: var(--fp-s4);
+  white-space: nowrap;
+}
+
+/* The goal on the scale: a dashed tick above the axis. */
+.fp-scale-goal {
+  position: absolute;
+  top: 0;
+  height: 21px;
+  margin-left: -0.5px;
+  border-left: 1px dashed var(--fp-ink-3);
+}
+
+.fp-lead-why {
+  margin-top: var(--fp-s4);
+  max-width: 34em;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t19);
+  line-height: 1.4;
+  color: var(--fp-ink);
+  text-wrap: pretty;
+}
+
+/* The weekly curve: a book figure with an italic caption. */
+.fp-chart {
+  margin-top: var(--fp-s4);
+}
+
+.fp-chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.fp-chart-axis {
+  stroke: var(--fp-rule-2);
+  stroke-width: 1;
+}
+
+.fp-chart-grid {
+  stroke: var(--fp-rule);
+  stroke-width: 1;
+}
+
+.fp-chart-goal {
+  stroke: var(--fp-rule-2);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.fp-chart-line {
+  fill: none;
+  stroke: var(--fp-ink);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.fp-chart-bridge {
+  fill: none;
+  stroke: var(--fp-ink-3);
+  stroke-width: 1.5;
+  stroke-dasharray: 1 4;
+  stroke-linecap: round;
+}
+
+.fp-chart-pt {
+  fill: var(--fp-ink);
+}
+
+.fp-chart-end {
+  fill: var(--fp-accent);
+}
+
+.fp-chart-value {
+  fill: var(--fp-ink);
+  font-family: var(--fp-sans);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fp-chart-tick {
+  fill: var(--fp-ink-3);
+  font-family: var(--fp-sans);
+  font-size: 12px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fp-chart-caption {
+  margin-top: var(--fp-s2);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t13);
+  font-style: italic;
+  color: var(--fp-ink-3);
+}
+
+.fp-chart > .fp-more {
+  margin-top: var(--fp-s1);
+}
+
+.fp-chart-table {
+  max-width: 320px;
+  margin-top: var(--fp-s2);
+}
+
+.fp-fr-table td:nth-child(2) {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+}
+
+/* The ledger: the day, the kind in words, leader dots to the result. */
+.fp-ledger-row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  column-gap: var(--fp-s4);
+  align-items: baseline;
+  width: 100%;
+  padding: var(--fp-s3) 0;
+  border: 0;
+  border-bottom: 1px solid var(--fp-rule);
+  background: transparent;
+  text-align: left;
+}
+
+button.fp-ledger-row {
+  min-height: 44px;
+  cursor: pointer;
+}
+
+button.fp-ledger-row:hover .fp-ledger-kind {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fp-rule-2);
+  text-underline-offset: 5px;
+}
+
+.fp-ledger-row svg {
+  align-self: center;
+  margin-left: var(--fp-s2);
+  color: var(--fp-ink-3);
+}
+
+.fp-ledger-day {
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+  font-variant-numeric: lining-nums tabular-nums;
+  white-space: nowrap;
+}
+
+.fp-ledger-kind {
+  min-width: 0;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  color: var(--fp-ink);
+}
+
+.fp-ledger-score {
+  color: var(--fp-ink-2);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-variant-numeric: lining-nums tabular-nums;
+  white-space: nowrap;
+}
+
+[data-width='phone'] .fp-ledger-row {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 2px;
+}
+
+.fp-historik .fp-section {
+  margin-top: var(--fp-s8);
+}
+
+.fp-historik + .fp-footnote {
+  margin-top: var(--fp-s8);
+}
+
+.fp-trap-list li + li {
+  margin-top: var(--fp-s4);
+}
+
+.fp-link--line {
+  font-size: var(--fp-t15);
+}
+
+/* Practice days: one row a week, a dot a day practised, no empty places. */
+.fp-weekdots {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fp-weekdot {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  column-gap: var(--fp-s3);
+  align-items: center;
+  min-height: 24px;
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t13);
+}
+
+.fp-weekdot-wk {
+  color: var(--fp-ink-3);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fp-weekdot-dots {
+  display: inline-flex;
+  gap: 5px;
+}
+
+.fp-weekdot-dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fp-ink-2);
+}
+
+.fp-weekdot[data-current='true'] .fp-weekdot-dots i {
+  background: var(--fp-accent);
+}
+
+.fp-weekdot[data-current='true'] .fp-weekdot-n {
+  color: var(--fp-ink);
+  font-weight: 600;
+}
+
+.fp-weekdots + .fp-more {
+  margin-top: var(--fp-s2);
+}
+
+/* Fällor: the traps by section, each with its pattern and two ways on. */
+.fp-trap-row {
+  padding: var(--fp-s3) 0;
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-trap-row-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--fp-s4);
+}
+
+.fp-trap-row .fp-trap-name {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+}
+
+.fp-trap-count {
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.fp-trap-links {
+  display: flex;
+  gap: var(--fp-s6);
+  margin-top: var(--fp-s1);
+}
+
+/* ── Uppslag: the lesson spread ──────────────────────────────────── */
+/* Inside the frame: the spread fills the page beside the thumb index, each
+ * page its own scroll, as the reading drill's. */
+
+.fp-main[data-page='uppslag'] {
+  overflow: hidden;
+}
+
+.fp-main[data-page='uppslag'] > div,
+.fp-up-spread {
+  height: 100%;
+}
+
+/* The verso's label starts where its text does. */
+.fp-runhead--up {
+  grid-template-columns: 1fr auto auto;
+  padding-left: 56px;
+}
+
+.fp-runhead--recto.fp-runhead--up {
+  grid-template-columns: 1fr auto;
+  padding-left: 44px;
+}
+
+/* The verso: the chapter opener, its contents, the book's chapters. */
+.fp-up-verso {
+  max-width: calc(34em + 104px);
+  margin: 0 auto;
+  padding: var(--fp-s6) var(--fp-s12) var(--fp-s16) 56px;
+}
+
+.fp-up-chapter {
+  padding-bottom: var(--fp-s6);
+}
+
+.fp-up-chapter .fp-label {
+  display: block;
+  margin-bottom: var(--fp-s3);
+}
+
+.fp-up-chapter-title {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t32);
+  line-height: 1.12;
+  font-weight: 440;
+  letter-spacing: -0.016em;
+  text-wrap: balance;
+}
+
+.fp-up-chapter-sub {
+  margin-top: 6px;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t19);
+  line-height: 1.35;
+  font-style: italic;
+  color: var(--fp-ink-2);
+  text-wrap: balance;
+}
+
+.fp-up-toc-h {
+  padding-bottom: var(--fp-s3);
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-up-toc {
+  margin-top: var(--fp-s4);
+}
+
+/* A contents entry: its number, its title, leader dots to its page number
+ * ("läst", minutes, "begärd"). The open one carries the ribbon. */
+.fp-up-entry {
+  position: relative;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: var(--fp-s3);
+  width: 100%;
+  min-height: 44px;
+  padding: var(--fp-s3) 0;
+  border: 0;
+  border-bottom: 1px solid var(--fp-rule);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fp-up-entry .fp-plan-n {
+  font-size: var(--fp-t19);
+}
+
+.fp-up-entry-line {
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.fp-up-entry-title {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.45;
+  color: var(--fp-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+.fp-up-entry:hover .fp-up-entry-title {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fp-rule-2);
+  text-underline-offset: 5px;
+}
+
+.fp-up-entry[aria-current='page'] .fp-up-entry-title {
+  font-weight: 600;
+}
+
+.fp-up-entry .fp-plan-min {
+  font-size: var(--fp-t15);
+}
+
+.fp-plan-min[data-word='read'] {
+  color: var(--fp-ink-3);
+}
+
+.fp-plan-min[data-word='asked'] {
+  color: var(--fp-accent-ink);
+  font-style: italic;
+}
+
+/* The bookmark ribbon hangs from the entry's top rule, in the margin. */
+.fp-ribbon--toc {
+  top: -1px;
+  left: -30px;
+  right: auto;
+  width: 12px;
+  height: 30px;
+}
+
+.fp-up-ended {
+  margin-top: var(--fp-s4);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-style: italic;
+  color: var(--fp-ink-2);
+}
+
+.fp-up-ended span {
+  color: var(--fp-accent);
+}
+
+.fp-up-chapters {
+  margin-top: var(--fp-s12);
+}
+
+/* The chapter on the verso: the 2 px accent rule in the margin. */
+.fp-up-ch {
+  position: relative;
+}
+
+.fp-up-ch[aria-current='true']::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: var(--fp-s4);
+  bottom: var(--fp-s4);
+  width: 2px;
+  border-radius: 1px;
+  background: var(--fp-accent);
+}
+
+.fp-up-weak {
+  font-style: italic;
+}
+
+.fp-up-direct {
+  margin-top: var(--fp-s12);
+  padding-top: var(--fp-s6);
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-up-direct > .fp-h3 {
+  margin-bottom: var(--fp-s3);
+  font-size: var(--fp-t19);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.fp-up-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fp-s1) var(--fp-s6);
+  margin-top: var(--fp-s2);
+}
+
+.fp-up-links .fp-link {
+  min-height: 44px;
+  font-size: var(--fp-t15);
+}
+
+/* The recto: the entry as a reference page. */
+.fp-up-body {
+  padding-bottom: var(--fp-s16);
+}
+
+.fp-up-notice {
+  margin-bottom: var(--fp-s6);
+}
+
+.fp-up-lesson:focus-visible {
+  outline-offset: 8px;
+}
+
+.fp-up-title {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t24);
+  line-height: 1.25;
+  font-weight: 450;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+  hyphens: manual;
+}
+
+/* A word root is the spread's one largest item. */
+.fp-up-root {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t44);
+  line-height: 1.05;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.fp-up-origin {
+  margin-top: var(--fp-s2);
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+}
+
+.fp-up-meaning {
+  margin-top: var(--fp-s3);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t19);
+  line-height: 1.4;
+  font-style: italic;
+  color: var(--fp-ink-2);
+  text-wrap: pretty;
+}
+
+.fp-up-words {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.6;
+}
+
+.fp-up-dot {
+  color: var(--fp-ink-3);
+}
+
+.fp-up-block {
+  margin-top: var(--fp-s8);
+}
+
+.fp-up-h {
+  margin-bottom: var(--fp-s3);
+}
+
+/* Numbered steps, their old-style numbers hanging in the margin. */
+.fp-up-steps li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: var(--fp-s2);
+  margin-left: -36px;
+  padding: var(--fp-s2) 0;
+}
+
+.fp-up-steps li + li {
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-up-n {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t19);
+  line-height: 1.45;
+  text-align: right;
+  color: var(--fp-accent-ink);
+  font-variant-numeric: oldstyle-nums;
+}
+
+.fp-up-steps .fp-sub {
+  margin-top: 2px;
+}
+
+.fp-up-steps li[data-beat='trap'] .fp-prose {
+  font-style: italic;
+  color: var(--fp-ink-2);
+}
+
+.fp-up-trap + .fp-up-trap {
+  margin-top: var(--fp-s4);
+  padding-top: var(--fp-s4);
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-up-trap-h {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.4;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.fp-up-trap-why {
+  margin-top: var(--fp-s1);
+  color: var(--fp-ink-2);
+}
+
+/* The countermeasure: the entry's takeaway as its one ruled note. */
+.fp-up-counter {
+  padding: 2px 0 2px var(--fp-s4);
+  border-left: 1px solid var(--fp-rule-2);
+}
+
+.fp-up-counter-text {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  line-height: 1.6;
+  color: var(--fp-ink);
+  text-wrap: pretty;
+}
+
+.fp-up-italic {
+  font-style: italic;
+}
+
+.fp-up-signature {
+  margin-top: var(--fp-s6);
+}
+
+.fp-up-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fp-s3) var(--fp-s6);
+  margin-top: var(--fp-s8);
+  padding-top: var(--fp-s4);
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-up-practice {
+  min-height: 44px;
+  font-size: var(--fp-t15);
+}
+
+/* Read: ink and a check, with the way to undo it — no tinted pill. */
+.fp-up-read[aria-pressed='true'] {
+  background: transparent;
+  color: var(--fp-ink);
+}
+
+.fp-up-undo {
+  margin-left: var(--fp-s1);
+  color: var(--fp-accent-ink);
+  font-size: var(--fp-t13);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--fp-accent-ink) 35%, transparent);
+  text-underline-offset: 3px;
+}
+
+/* Phone: the entry first, the contents and chapters after it. */
+.fp-up .fp-masthead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.fp-up-jump {
+  min-height: 44px;
+  font-size: var(--fp-t13);
+}
+
+.fp-up-pagehead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fp-s3);
+  margin-bottom: var(--fp-s4);
+  padding-bottom: var(--fp-s1);
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-up-pos {
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-up .fp-up-notice {
+  margin-bottom: var(--fp-s4);
+}
+
+.fp-up .fp-up-steps li {
+  margin-left: 0;
+}
+
+.fp-up .fp-up-foot {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.fp-up .fp-up-foot .fp-btn {
+  width: 100%;
+  min-height: 52px;
+}
+
+.fp-up .fp-up-practice {
+  align-self: flex-end;
+}
+
+.fp-up-back {
+  margin-top: var(--fp-s12);
+  padding-top: var(--fp-s6);
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-up-whole {
+  width: 100%;
+  margin-bottom: var(--fp-s4);
+}
+
+.fp-phome .fp-ribbon--toc {
+  left: -18px;
+  width: 10px;
+  height: 26px;
+}
+
+.fp-phome .fp-up-entry {
+  grid-template-columns: 28px minmax(0, 1fr);
+}
+
+.fp-phome .fp-up-ch[aria-current='true']::before {
+  left: -12px;
+}
+
+/* ── Konto: the imprint page ─────────────────────────────────────── */
+
+.fp-kt-part {
+  margin-top: var(--fp-s12);
+}
+
+.fp-kt-h {
+  padding-bottom: var(--fp-s3);
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-kt-h:focus-visible,
+.fp-kt .fp-greet:focus-visible,
+#fp-kt-kortkommandon:focus-visible {
+  outline-offset: 4px;
+}
+
+/* A definition row: the label in Literata, leader dots, the value. */
+.fp-kt-row {
+  display: flex;
+  align-items: baseline;
+  padding: var(--fp-s3) 0;
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-kt-row dt {
+  flex: none;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  color: var(--fp-ink);
+}
+
+.fp-kt-row dd {
+  margin: 0;
+  min-width: 0;
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t15);
+  text-align: right;
+  overflow-wrap: anywhere;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* A word choice: the legend at left, the words underlined in the accent
+ * when chosen, the hint under them. */
+.fp-kt-choice {
+  min-width: 0;
+  margin: 0;
+  padding: var(--fp-s3) 0;
+  border: 0;
+  border-bottom: 1px solid var(--fp-rule);
+}
+
+.fp-kt-label {
+  float: left;
+  width: 160px;
+  padding: 10px 0 0;
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  color: var(--fp-ink);
+}
+
+.fp-kt-value {
+  margin-left: 184px;
+}
+
+.fp-kt-seg {
+  margin-left: calc(-1 * var(--fp-s2));
+}
+
+.fp-kt-seg button {
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+}
+
+.fp-kt-hint {
+  margin-top: var(--fp-s1);
+  color: var(--fp-ink-3);
+  font-size: var(--fp-t13);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+/* An empty live region stays rendered, so what it says later is heard. */
+.fp-kt-status:empty {
+  margin-top: 0;
+}
+
+.fp-kt-error {
+  color: var(--fp-ink-2);
+}
+
+.fp-kt-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--fp-s6);
+  margin-top: var(--fp-s2);
+}
+
+.fp-kt-link {
+  min-height: 44px;
+  font-size: var(--fp-t15);
+}
+
+.fp-kt-status {
+  margin-top: var(--fp-s2);
+}
+
+/* The account's end behind a double rule, as on the slip. */
+.fp-kt-out {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fp-s4);
+  margin-top: var(--fp-s12);
+  padding-top: var(--fp-s6);
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-kt-out::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -5px;
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-kt-delete {
+  min-height: 44px;
+  font-size: var(--fp-t15);
+}
+
+/* The page's own index: section names in a line, middots between. */
+.fp-kt-index {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  line-height: 1.9;
+}
+
+.fp-kt-index .fp-link {
+  font-size: var(--fp-t15);
+}
+
+.fp-kt-dot {
+  color: var(--fp-ink-3);
+  white-space: pre;
+}
+
+.fp-kt-keys + .fp-kt-keys {
+  margin-top: var(--fp-s4);
+}
+
+.fp-kt-where {
+  margin-bottom: var(--fp-s1);
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t13);
+  font-weight: 600;
+}
+
+.fp-kt-key {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  column-gap: var(--fp-s2);
+  align-items: baseline;
+  padding: 2px 0;
+  color: var(--fp-ink-2);
+  font-size: var(--fp-t13);
+  line-height: 1.5;
+}
+
+.fp-kt-key dd {
+  margin: 0;
+}
+
+/* A key as printed in a manual's margin; shown on phone too, unlike the
+ * keycap hints beside controls. */
+.fp-key {
+  display: inline-block;
+  padding: 0 6px;
+  border: 1px solid var(--fp-rule-2);
+  border-radius: 4px;
+  background: var(--fp-leaf);
+  color: var(--fp-ink);
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t12);
+  font-weight: 600;
+  line-height: 18px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-phome .fp-kt-index {
+  margin-top: var(--fp-s4);
+}
+
+.fp-phome .fp-kt-part {
+  margin-top: var(--fp-s8);
+}
+
+.fp-phome .fp-kt-row {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.fp-phome .fp-kt-row .fp-leader {
+  display: none;
+}
+
+.fp-phome .fp-kt-row dd {
+  text-align: left;
+}
+
+.fp-phome .fp-kt-label {
+  float: none;
+  width: auto;
+  padding: 0 0 var(--fp-s1);
+}
+
+.fp-phome .fp-kt-value {
+  margin-left: 0;
+}
+
+.fp-phome .fp-kt-out {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.fp-phome .fp-kt-out .fp-quiet-btn {
+  width: 100%;
+}
+
+.fp-phome .fp-kt-delete {
+  align-self: flex-start;
+}
+
+/* The deletion slip: a native modal dialog with the slip's look, set on
+ * Folio's own stage (its box comes from the stage, by script). */
+dialog.fp-kt-slip {
+  position: fixed;
+  inset: auto;
+  left: calc(var(--fp-stage-x, 0px) + var(--fp-stage-w, 100vw) / 2);
+  top: calc(var(--fp-stage-y, 0px) + var(--fp-stage-h, 100vh) * 0.12);
+  translate: -50% 0;
+  width: min(520px, calc(var(--fp-stage-w, 100vw) - 48px));
+  max-width: none;
+  height: auto;
+  max-height: calc(var(--fp-stage-h, 100vh) * 0.82);
+  margin: 0;
+  border: 0;
+  color: var(--fp-ink);
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t15);
+  line-height: 1.5;
+}
+
+dialog.fp-kt-slip::backdrop {
+  background: var(--fp-scrim, oklch(21% 0.01 60 / 0.32));
+}
+
+[data-width='phone'] dialog.fp-kt-slip {
+  left: var(--fp-stage-x, 0px);
+  top: auto;
+  bottom: var(--fp-stage-b, 0px);
+  translate: none;
+  width: var(--fp-stage-w, 100vw);
+  max-height: calc(var(--fp-stage-h, 100vh) * 0.88);
+}
+
+.fp-kt-slip-export {
+  margin-top: var(--fp-s3);
+}
+
+.fp-kt-word {
+  margin-top: var(--fp-s4);
+  padding-top: var(--fp-s4);
+  border-top: 1px solid var(--fp-rule);
+}
+
+.fp-kt-word-label {
+  display: block;
+  margin-bottom: var(--fp-s2);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  color: var(--fp-ink);
+}
+
+.fp-kt-field {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 var(--fp-s3);
+  border: 1px solid var(--fp-rule-2);
+  border-radius: var(--fp-r1);
+  background: var(--fp-paper);
+  color: var(--fp-ink);
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t17);
+}
+
+.fp-kt-field:focus-visible {
+  outline: 2px solid var(--fp-focus);
+  outline-offset: 2px;
+}
+
+.fp-kt-why {
+  margin-top: var(--fp-s3);
+}
+
+/* The grave act: filled ink, not the accent and not red — deletion is
+ * weighty, not an alarm. Enabled only by the typed word. */
+.fp-btn--grave {
+  background: var(--fp-ink);
+  color: var(--fp-paper);
+}
+
+.fp-btn--grave:hover {
+  background: color-mix(in oklch, var(--fp-ink) 84%, var(--fp-paper));
+}
+
+.fp-btn--grave[aria-disabled='true'] {
+  background: var(--fp-paper-3);
+  color: var(--fp-ink-3);
+  cursor: not-allowed;
+}
+
+/* ── ELF: English text, and the gaps of a gap text ───────────────── */
+
+/* English sets by English rules: hyphenation follows lang, a word breaks
+ * only with three letters either side. */
+.fp-para:lang(en) {
+  hyphenate-limit-chars: 6 3 3;
+}
+
+/* A gap: a ruled blank with its number; the open one in the accent; the
+ * chosen word pencilled in (the number lifted); the answer in ink with the
+ * evidence underline, a wrong pick struck through before it. */
+.fp-gapmark {
+  position: relative;
+  display: inline-block;
+  min-width: 5em;
+  padding: 0 0.2em;
+  border-bottom: 1px solid var(--fp-ink-3);
+  line-height: 1.25;
+  text-align: center;
+  text-indent: 0;
+  white-space: nowrap;
+  hyphens: manual;
+}
+
+.fp-gapmark-n {
+  font-family: var(--fp-sans);
+  font-size: var(--fp-t12);
+  font-style: normal;
+  font-weight: 600;
+  color: var(--fp-ink-3);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fp-gapmark[data-filled='true'] .fp-gapmark-n {
+  margin-left: 2px;
+  vertical-align: super;
+  line-height: 0;
+}
+
+.fp-gapmark[data-state='current'] {
+  border-bottom: 2px solid var(--fp-accent);
+}
+
+.fp-gapmark[data-state='current'] .fp-gapmark-n {
+  color: var(--fp-accent-ink);
+}
+
+.fp-gapmark-word {
+  font-style: italic;
+  color: var(--fp-accent-ink);
+}
+
+.fp-gapmark[data-state='right'],
+.fp-gapmark[data-state='wrong'] {
+  border-bottom-color: transparent;
+}
+
+.fp-gapmark[data-state='right'] .fp-gapmark-word,
+.fp-gapmark[data-state='wrong'] .fp-gapmark-word {
+  font-style: normal;
+  color: var(--fp-ink);
+  text-decoration: underline 2px color-mix(in oklch, var(--fp-accent) 70%, transparent);
+  text-underline-offset: 4px;
+  text-decoration-skip-ink: none;
+}
+
+.fp-gapmark-wrong {
+  margin-right: 0.3em;
+  border-bottom: 2px dotted var(--fp-bad);
+  color: var(--fp-ink-3);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+/* The open gap's sentence, quoted beside the options. */
+.fp-gapquote {
+  margin-top: var(--fp-s4);
+  padding: 2px 0 2px var(--fp-s4);
+  border-left: 1px solid var(--fp-rule-2);
+  font-family: var(--fp-serif);
+  font-size: var(--fp-t17);
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--fp-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+/* ── Hit areas ───────────────────────────────────────────────────── */
+/* Small controls keep their quiet size on the page but take a ≥ 44 px
+ * hit area through an invisible extension (it hit-tests as the control). */
+
+.fp-pnum::after,
+.fp-cite::after,
+.fp-more::after,
+.fp-stepref::after,
+.fp-opt-x::after,
+.fp-badge-toggle::after,
+.fp-link::after,
+.fp-gutter::after,
+.fp-sheet-grab::after,
+.fp-crumb::after,
+.fp-head-link::after,
+.fp-ov-n::after {
+  content: '';
+  position: absolute;
+}
+
+.fp-crumb::after {
+  inset: -16px -6px;
+}
+
+.fp-head-link::after {
+  inset: -6px -2px;
+}
+
+.fp-ov-n::after {
+  inset: -2px;
+}
+
+.fp-pnum::after {
+  inset: -16px -4px;
+}
+
+/* Inline ¶ references: 44 px tall, reaching halfway into the 12 px gaps. */
+.fp-cite::after {
+  inset: -11px -6px;
+}
+
+.fp-more::after,
+.fp-badge-toggle::after,
+.fp-link::after,
+.fp-opt-x::after {
+  inset: -6px -2px;
+}
+
+.fp-stepref::after {
+  inset: -10px -2px;
+}
+
+/* 44 px to grab, reaching into the recto's wide inner margin only — the
+ * verso's scrollbar stays uncovered. */
+.fp-gutter::after {
+  inset: 0 -24px 0 0;
+}
+
+.fp-sheet-grab::after {
+  inset: -4px 0 -16px;
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-rd='folio-plus'] *,
+  [data-rd='folio-plus'] *::before,
+  [data-rd='folio-plus'] *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Thumbnails are still pictures. */
+[data-rd='folio-plus'][data-live='false'] *,
+[data-rd='folio-plus'][data-live='false'] *::before,
+[data-rd='folio-plus'][data-live='false'] *::after {
+  animation: none !important;
+  transition: none !important;
+}

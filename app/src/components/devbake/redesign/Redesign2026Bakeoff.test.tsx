@@ -149,7 +149,7 @@ describe('bake-off switcher', () => {
     expect(screen.getByTestId('rb26-sbs')).toHaveAttribute('aria-pressed', 'true')
   })
 
-  it('offers all eight directions on the bar and answers 1–8 in that order', () => {
+  it('offers every direction on the bar and answers its number key in that order', () => {
     const onSelect = vi.fn()
     render(<Redesign2026Bakeoff sel={base} onSelect={onSelect} />)
     const items = within(screen.getByTestId('rb26-direction')).getAllByRole('button')
@@ -164,16 +164,16 @@ describe('bake-off switcher', () => {
     fireEvent.click(screen.getByTestId('rb26-direction-h'))
     expect(onSelect).toHaveBeenLastCalledWith({ d: 'h', sbs: false })
     onSelect.mockClear()
-    fireEvent.keyDown(window, { key: '9' })
+    fireEvent.keyDown(window, { key: String(DIRECTIONS.length + 1) })
     expect(onSelect).not.toHaveBeenCalled()
   })
 
-  it('lists every direction and the 1–8 keys in the side-by-side "Om" panel', () => {
+  it('lists every direction and its number keys in the side-by-side "Om" panel', () => {
     render(<Redesign2026Bakeoff sel={{ ...base, sbs: true }} onSelect={() => {}} />)
     fireEvent.click(screen.getByRole('button', { name: 'Om riktningarna' }))
     const info = screen.getByTestId('rb26-info')
     expect(within(info).getAllByRole('heading', { level: 2 })).toHaveLength(DIRECTIONS.length)
-    expect(info).toHaveTextContent('Tangenter: 1–8 riktning')
+    expect(info).toHaveTextContent(`Tangenter: 1–${DIRECTIONS.length} riktning`)
   })
 
   it('says in the "Om" panel which directions have built the screen', () => {
@@ -203,10 +203,10 @@ describe('bake-off switcher', () => {
 })
 
 describe('direction registry', () => {
-  it('registers eight directions a–h with unique keys, slugs and names, each with a stage', () => {
+  it('registers nine directions a–i with unique keys, slugs and names, each with a stage', () => {
     const keys = DIRECTIONS.map((d) => d.key)
-    expect(keys).toEqual(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'])
-    expect(new Set(keys).size).toBe(8)
+    expect(keys).toEqual(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'])
+    expect(new Set(keys).size).toBe(9)
     expect(DIRECTIONS.map((d) => d.slug)).toEqual([
       'a-folio',
       'b-instrument',
@@ -216,9 +216,10 @@ describe('direction registry', () => {
       'f-samtal',
       'g-raster',
       'h-ljuskagla',
+      'i-folio-plus',
     ])
-    expect(new Set(DIRECTIONS.map((d) => d.slug)).size).toBe(8)
-    expect(new Set(DIRECTIONS.map((d) => d.name)).size).toBe(8)
+    expect(new Set(DIRECTIONS.map((d) => d.slug)).size).toBe(9)
+    expect(new Set(DIRECTIONS.map((d) => d.name)).size).toBe(9)
     for (const d of DIRECTIONS) {
       expect(d.tagline).not.toBe('')
       expect(d.traits.length).toBeGreaterThan(0)
@@ -390,11 +391,11 @@ describe('bake-off stage', () => {
     expect(await within(stage).findByTestId(root, {}, lazyWait)).toBeInTheDocument()
   })
 
-  it.each(WIDTHS)('side by side shows all eight directions, two rows of four (%s)', async (w) => {
+  it.each(WIDTHS)('side by side shows every direction, three columns for nine (%s)', async (w) => {
     const onSelect = vi.fn()
     render(<Redesign2026Bakeoff sel={{ ...base, w, sbs: true }} onSelect={onSelect} />)
     const grid = screen.getByTestId('rb26-sbs-grid')
-    expect(grid.style.getPropertyValue('--rb26-cols')).toBe('4')
+    expect(grid.style.getPropertyValue('--rb26-cols')).toBe('3')
     const thumbs = within(grid).getAllByTestId(/^rb26-thumb-[a-z]$/)
     expect(thumbs.map((f) => f.dataset.testid)).toEqual(
       DIRECTIONS.map((d) => `rb26-thumb-${d.key}`),
