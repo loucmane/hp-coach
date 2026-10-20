@@ -51,10 +51,18 @@ import {
   useWebFonts,
 } from '@/components/devbake/redesign/r1Kit'
 import { InstrumentDrill } from './InstrumentDrill'
+import { InstrumentFramsteg } from './InstrumentFramsteg'
 import { InstrumentHome } from './InstrumentHome'
+import { InstrumentKonto } from './InstrumentKonto'
 import { InstrumentOva } from './InstrumentOva'
+import {
+  InstrumentProvpass,
+  InstrumentProvResult,
+  InstrumentProvRunning,
+} from './InstrumentProvpass'
 import { InstrumentQuant } from './InstrumentQuant'
 import { InstrumentRepetera } from './InstrumentRepetera'
+import { InstrumentUppslag } from './InstrumentUppslag'
 import { DEST_ICONS, G_KEYS, Kc, Mark, MOD, Readout } from './parts'
 
 const FONTS =
@@ -73,12 +81,26 @@ function systemTheme(): ThemeKey | null {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
+function screenDestination(screen: DirectionProps['screen']): Destination | null {
+  if (screen === 1 || screen === 4) return 'idag'
+  if (screen === 5 || screen === 8) return 'ova'
+  if (screen === 9 || screen === 10) return 'provpass'
+  if (screen === 11) return 'framsteg'
+  if (screen === 12) return 'uppslag'
+  return null
+}
+
 export function Instrument(props: DirectionProps) {
   useWebFonts('instrument', FONTS)
   const { data, actions } = useDirectionData()
   // The destination lives at the root so the drill's rail and its end-of-
   // unit screen can send the reader straight to one.
-  const [dest, setDest] = useState<Destination>('idag')
+  const [dest, setDest] = useState<Destination>(() => screenDestination(props.screen) ?? 'ova')
+  const [passId, setPassId] = useState<string | null>(null)
+  const [passNotice, setPassNotice] = useState('')
+  useEffect(() => {
+    if (props.screen !== 9) setPassId(null)
+  }, [props.screen])
   const [followSystem, setFollowSystem] = useState(false)
   const { onTheme, theme } = props
 
@@ -103,7 +125,7 @@ export function Instrument(props: DirectionProps) {
     followSystem,
     setFollowSystem,
   }
-  const drill = props.screen === 2 || props.screen === 3
+  const drill = props.screen === 2 || props.screen === 3 || props.screen === 14
   return (
     <div
       data-rd="instrument"
@@ -113,14 +135,28 @@ export function Instrument(props: DirectionProps) {
       data-testid="rd-instrument"
       lang="sv"
     >
-      {props.screen === 6 || props.screen === 7 ? (
+      {props.screen === 9 && passId ? (
+        <InstrumentProvRunning
+          key={passId}
+          passId={passId}
+          live={props.live}
+          onExit={(abandoned) => {
+            setPassId(null)
+            setPassNotice(
+              abandoned
+                ? 'Provpasset avbröts och fick inget resultat.'
+                : 'Det valda passet kunde inte startas.',
+            )
+          }}
+        />
+      ) : props.screen === 6 || props.screen === 7 ? (
         <InstrumentQuant
           key={`${props.screen}-${props.screen === 7 ? data.drills.dtk.id : data.drills.quant.id}`}
           {...props}
         />
       ) : drill ? (
         <InstrumentDrill
-          key={data.drills.reading.id}
+          key={props.screen === 14 ? data.drills.elf.id : data.drills.reading.id}
           {...props}
           onGo={(d) => {
             setDest(d)
@@ -131,8 +167,23 @@ export function Instrument(props: DirectionProps) {
         <InstrumentFrame
           {...props}
           theming={theming}
-          dest={props.screen === 5 || props.screen === 8 ? 'ova' : dest}
+          dest={
+            props.screen === 5 || props.screen === 8
+              ? 'ova'
+              : props.screen === 9 || props.screen === 10
+                ? 'provpass'
+                : props.screen === 11
+                  ? 'framsteg'
+                  : props.screen === 12
+                    ? 'uppslag'
+                    : dest
+          }
           setDest={setDest}
+          onStartPass={(id) => {
+            setPassNotice('')
+            setPassId(id)
+          }}
+          passNotice={passNotice}
         />
       )}
     </div>
@@ -147,10 +198,14 @@ function InstrumentFrame({
   theming,
   dest,
   setDest,
+  onStartPass,
+  passNotice,
 }: DirectionProps & {
   theming: Theming
   dest: Destination
   setDest: (d: Destination) => void
+  onStartPass: (id: string) => void
+  passNotice: string
 }) {
   const { data, actions } = useDirectionData()
   const { exam: EXAM, today: TODAY, week: WEEK, ovaDue: OVA_DUE, resume: RESUME } = data.home
@@ -159,6 +214,7 @@ function InstrumentFrame({
   const [collapsed, setCollapsed] = useState(screen === 4)
   const [menu, setMenu] = useState(screen === 4)
   const [palette, setPalette] = useState(false)
+  const [historyFirst, setHistoryFirst] = useState(false)
   const pageRef = useRef<HTMLDivElement>(null)
   // biome-ignore lint/correctness/useExhaustiveDependencies: destination changes move focus to the page heading
   useEffect(() => {
@@ -178,12 +234,14 @@ function InstrumentFrame({
     }
     setCollapsed(screen === 4)
     setMenu(screen === 4)
-    setDest('idag')
+    const next = screenDestination(screen)
+    if (next) setDest(next)
   }, [screen])
 
   const go = useCallback(
     (d: Destination) => {
       setMenu(false)
+      setHistoryFirst(false)
       setDest(d)
       actions.go(d)
     },
@@ -205,6 +263,7 @@ function InstrumentFrame({
   useEffect(() => {
     if (!live) return
     const onKey = (e: KeyboardEvent) => {
+      if (pageRef.current?.querySelector('dialog[open]')) return
       if (!(e.metaKey || e.ctrlKey)) return
       const k = e.key.toLowerCase()
       if (k === 'k') {
@@ -243,7 +302,17 @@ function InstrumentFrame({
   }
   // Keyboards without Ö reach Öva with G then O.
   keys.o = keys[G_KEYS.ova]
-  useKeyMap(keys, live && !palette)
+  useKeyMap(
+    Object.fromEntries(
+      Object.entries(keys).map(([key, run]) => [
+        key,
+        () => {
+          if (!pageRef.current?.querySelector('dialog[open]')) run()
+        },
+      ]),
+    ),
+    live && !palette && !menu,
+  )
 
   const resume = () => {
     actions.resume()
@@ -283,15 +352,31 @@ function InstrumentFrame({
   ]
 
   const page =
-    screen === 8 ? (
+    screen === 13 ? (
+      <InstrumentKonto onTheme={theming.onTheme} />
+    ) : screen === 12 || dest === 'uppslag' ? (
+      <InstrumentUppslag width={width} />
+    ) : screen === 10 ? (
+      <InstrumentProvResult />
+    ) : dest === 'provpass' ? (
+      <InstrumentProvpass onStart={onStartPass} notice={passNotice} />
+    ) : dest === 'framsteg' ? (
+      <InstrumentFramsteg key={String(historyFirst)} initialHistory={historyFirst} />
+    ) : screen === 8 ? (
       <InstrumentRepetera />
     ) : dest === 'ova' ? (
       <InstrumentOva />
     ) : dest === 'idag' ? (
-      <InstrumentHome width={width} live={live && !palette} onResume={resume} onGo={go} />
-    ) : (
-      <InstrumentStub dest={dest} />
-    )
+      <InstrumentHome
+        width={width}
+        live={live && !palette && !menu}
+        onResume={resume}
+        onHistory={() => {
+          go('framsteg')
+          setHistoryFirst(true)
+        }}
+      />
+    ) : null
 
   const account = (anchor: 'side' | 'top', compact: boolean, tip: boolean) => (
     <AccountTrigger
@@ -314,7 +399,9 @@ function InstrumentFrame({
           <Mark />
           {/* On Idag the page has its own greeting: the bar carries the
            *  countdown instead of a second "Idag". */}
-          {d.id === 'idag' ? (
+          {screen === 13 ? (
+            <span className="in-ptop-title">Konto</span>
+          ) : d.id === 'idag' ? (
             <Readout
               label="Provet om"
               value={`${EXAM.daysLeft}`}
@@ -518,7 +605,14 @@ function AccountTrigger({
 }) {
   const { data, actions } = useDirectionData()
   const ref = useRef<HTMLDivElement>(null)
-  useDismiss(open, close, ref)
+  const dismiss = useCallback(() => {
+    close()
+    ref.current?.querySelector<HTMLButtonElement>('[data-testid="rd-account"]')?.focus()
+  }, [close])
+  useDismiss(open, dismiss, ref)
+  useEffect(() => {
+    if (open) ref.current?.querySelector<HTMLButtonElement>('[role="menuitem"]')?.focus()
+  }, [open])
   const { theme, onTheme, followSystem, setFollowSystem } = theming
   const avatar = (
     <span className="in-avatar" aria-hidden>
@@ -565,6 +659,25 @@ function AccountTrigger({
           data-testid="rd-account-menu"
           role="menu"
           aria-label="Konto"
+          data-rd-keyscope
+          onKeyDown={(event) => {
+            const items = Array.from(
+              event.currentTarget.querySelectorAll<HTMLButtonElement>('button'),
+            )
+            const index = items.indexOf(document.activeElement as HTMLButtonElement)
+            if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+              event.preventDefault()
+              items[
+                (index + (event.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length
+              ]?.focus()
+            } else if (event.key === 'Home' || event.key === 'End') {
+              event.preventDefault()
+              items[event.key === 'Home' ? 0 : items.length - 1]?.focus()
+            } else if (event.key === 'Escape') {
+              event.preventDefault()
+              dismiss()
+            } else if (event.key === 'Tab') close()
+          }}
         >
           <div className="in-menu-head">
             {avatar}
@@ -699,12 +812,19 @@ function Palette({
 }) {
   const [q, setQ] = useState('')
   const [active, setActive] = useState(0)
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDialogElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const listId = useId()
   useDismiss(true, onClose, ref)
   useEffect(() => {
-    if (live) inputRef.current?.focus()
+    const dialog = ref.current
+    if (live) {
+      dialog?.showModal()
+      inputRef.current?.focus()
+    }
+    return () => {
+      if (dialog?.open) dialog.close()
+    }
   }, [live])
   const needle = q.trim().toLocaleLowerCase('sv-SE')
   const list = commands.filter((c) => c.label.toLocaleLowerCase('sv-SE').includes(needle))
@@ -726,13 +846,16 @@ function Palette({
   const optionId = (c: Command) => `${listId}-${c.id}`
   return (
     <div className="in-pal-scrim">
-      <div
+      <dialog
         className="in-pal"
         ref={ref}
-        role="dialog"
-        aria-modal="true"
         aria-label="Kommandon"
         data-testid="in-palette"
+        data-rd-keyscope
+        onCancel={(event) => {
+          event.preventDefault()
+          onClose()
+        }}
       >
         <div className="in-pal-input">
           <Search size={16} strokeWidth={1.5} aria-hidden />
@@ -787,29 +910,7 @@ function Palette({
             Inget kommando matchar ”{q}”.
           </p>
         ) : null}
-      </div>
+      </dialog>
     </div>
-  )
-}
-
-// ── Destinations built in round 2 ────────────────────────────────────
-
-function InstrumentStub({ dest }: { dest: Destination }) {
-  const d = DESTINATIONS.find((x) => x.id === dest) ?? DESTINATIONS[0]
-  return (
-    <section className="in-stub" aria-labelledby="in-stub-h">
-      <span className="in-code">Omgång 2</span>
-      <h1 id="in-stub-h">{d.label}</h1>
-      <p>{d.blurb}</p>
-      <p>
-        Den här vyn byggs när en riktning är vald. Menyn, tangenterna (G och en bokstav) och kontot
-        fungerar redan härifrån.
-      </p>
-      <div className="in-stub-grid" aria-hidden>
-        <span />
-        <span />
-        <span />
-      </div>
-    </section>
   )
 }

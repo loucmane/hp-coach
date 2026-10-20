@@ -12,13 +12,7 @@ import { ArrowRight, ChevronRight, TrendingUp } from 'lucide-react'
 import { useState } from 'react'
 
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
-import {
-  type Destination,
-  fmtDelta,
-  fmtScore,
-  useKeyMap,
-  type WidthKey,
-} from '@/components/devbake/redesign/r1Kit'
+import { fmtDelta, fmtScore, useKeyMap, type WidthKey } from '@/components/devbake/redesign/r1Kit'
 import type { PrognosisView } from '@/components/devbake/redesign/viewModel'
 import { Kc, Segs } from './parts'
 
@@ -38,12 +32,12 @@ export function InstrumentHome({
   width,
   live,
   onResume,
-  onGo,
+  onHistory,
 }: {
   width: WidthKey
   live: boolean
   onResume: () => void
-  onGo: (d: Destination) => void
+  onHistory: () => void
 }) {
   const { data, actions } = useDirectionData()
   const {
@@ -56,7 +50,8 @@ export function InstrumentHome({
   } = data.home
   const phone = width === 'phone'
   const left = RESUME ? RESUME.total - RESUME.answered : 0
-  const next = PLAN.items.find((i) => i.primary) ?? PLAN.items[0]
+  const pending = PLAN.items.filter((item) => !item.completed)
+  const next = pending.find((i) => i.primary) ?? pending[0]
   const trap = TRAPS.find((t) => t.rising) ?? TRAPS[0]
   const right = RECENT.reduce((n, r) => n + r.correct, 0)
   const asked = RECENT.reduce((n, r) => n + r.total, 0)
@@ -67,7 +62,7 @@ export function InstrumentHome({
     ...(RESUME?.minutesLeft != null
       ? [{ id: 'resume', title: RESUME.title, minutes: RESUME.minutesLeft }]
       : []),
-    ...PLAN.items.map((i) => ({ id: i.id, title: i.title, minutes: i.minutes })),
+    ...pending.map((i) => ({ id: i.id, title: i.title, minutes: i.minutes })),
   ].map(({ id, title, minutes }) => {
     const from = t
     t += minutes
@@ -77,11 +72,12 @@ export function InstrumentHome({
   // Row 0 resumes; rows 1… open the plan's parts.
   const runs = [
     ...(RESUME ? [onResume] : []),
-    ...PLAN.items.map((item) => () => actions.openPlanItem(item.id)),
+    ...pending.map((item) => () => actions.openPlanItem(item.id)),
   ]
-  const [active, setActive] = useState(0)
+  const [selection, setActive] = useState(0)
+  const active = Math.min(selection, Math.max(0, runs.length - 1))
   const move = (step: number) => {
-    if (runs.length) setActive((a) => (a + step + runs.length) % runs.length)
+    if (runs.length) setActive((active + step + runs.length) % runs.length)
   }
   useKeyMap(
     {
@@ -169,7 +165,7 @@ export function InstrumentHome({
               </button>
             </li>
           ) : null}
-          {PLAN.items.map((item, i) => {
+          {pending.map((item, i) => {
             const row = i + (RESUME ? 1 : 0)
             const on = active === row
             const slot = slots.find((s) => s.id === item.id)
@@ -283,7 +279,7 @@ export function InstrumentHome({
                 ))}
               </tbody>
             </table>
-            <button type="button" className="in-link" onClick={() => onGo('framsteg')}>
+            <button type="button" className="in-link" onClick={onHistory}>
               Alla pass i Framsteg
               <ArrowRight size={14} strokeWidth={1.75} aria-hidden />
             </button>

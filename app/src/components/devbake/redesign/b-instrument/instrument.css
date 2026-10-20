@@ -22,6 +22,206 @@
  *
  * Everything is scoped under [data-rd='instrument']; nothing touches :root. */
 
+/* Round 2, batch 3: the reference register and control rows. */
+[data-rd='instrument'] .in-library-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+[data-rd='instrument'] .in-library-heading h1 {
+  font-size: var(--in-f28);
+  margin: 8px 0 0;
+  letter-spacing: -0.035em;
+}
+[data-rd='instrument'] .in-library-heading p {
+  max-width: 32ch;
+  font-size: var(--in-f14);
+  color: var(--in-text-2);
+}
+[data-rd='instrument'] .in-library-sections,
+[data-rd='instrument'] .in-contents,
+[data-rd='instrument'] .in-lesson-pane,
+[data-rd='instrument'] .in-account-group {
+  border: 1px solid var(--in-stroke-2);
+  border-radius: var(--in-r2);
+  background: var(--in-bg-1);
+  min-width: 0;
+}
+[data-rd='instrument'] .in-library-sections > summary,
+[data-rd='instrument'] .in-contents > summary {
+  padding: 12px 16px;
+  min-height: 44px;
+  cursor: pointer;
+  background: var(--in-bg-2);
+  font: var(--in-f13) / 1.6 var(--in-mono);
+}
+[data-rd='instrument'] summary .in-num { margin-left: 12px; }
+[data-rd='instrument'] .in-library-register {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+[data-rd='instrument'] .in-library-register button,
+[data-rd='instrument'] .in-contents button {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 16px;
+  min-height: 64px;
+  border: 0;
+  border-top: 1px solid var(--in-stroke);
+  border-radius: 0;
+  color: var(--in-text);
+  background: var(--in-bg-1);
+  text-align: left;
+  font-size: var(--in-f14);
+  cursor: pointer;
+}
+[data-rd='instrument'] .in-library-register button > span,
+[data-rd='instrument'] .in-contents button > span { flex: 1; min-width: 0; }
+[data-rd='instrument'] .in-library-register button:hover,
+[data-rd='instrument'] .in-contents button:hover { background: var(--in-bg-2); }
+[data-rd='instrument'] .in-library-register button[aria-pressed='true'],
+[data-rd='instrument'] .in-contents button[aria-current='true'] {
+  box-shadow: inset 3px 0 0 var(--in-accent-ui);
+  background: var(--in-bg-2);
+}
+[data-rd='instrument'] .in-library-register small,
+[data-rd='instrument'] .in-contents small {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--in-f13);
+  color: var(--in-text-2);
+}
+[data-rd='instrument'] .in-library-workbench {
+  display: grid;
+  grid-template-columns: minmax(200px, 0.8fr) minmax(0, 2fr);
+  align-items: start;
+  gap: 8px;
+  margin-top: 8px;
+}
+[data-rd='instrument'] .in-contents p { padding: 16px; }
+[data-rd='instrument'] .in-lesson {
+  max-width: 70ch;
+  margin: 0 auto;
+  padding: 28px;
+  font: var(--in-f18) / 1.6 var(--in-read);
+  overflow-wrap: anywhere;
+}
+[data-rd='instrument'] .in-lesson h2 {
+  margin: 12px 0 24px;
+  font: 600 var(--in-f28) / 1.2 var(--in-ui);
+  letter-spacing: -0.03em;
+}
+[data-rd='instrument'] .in-lesson-block { margin: 24px 0; }
+[data-rd='instrument'] .in-lesson-block h3,
+[data-rd='instrument'] .in-account-group > h2 {
+  margin: 0 0 12px;
+  font: 550 var(--in-f13) / 1.5 var(--in-mono);
+  color: var(--in-text-2);
+}
+[data-rd='instrument'] .in-protocol { padding: 0; list-style: none; }
+[data-rd='instrument'] .in-protocol li {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 12px;
+  padding: 16px 0;
+  border-top: 1px solid var(--in-stroke);
+}
+[data-rd='instrument'] .in-lesson-detail {
+  border-top: 1px solid var(--in-stroke);
+  margin-top: 8px;
+}
+[data-rd='instrument'] .in-lesson-detail > summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding: 12px 0;
+  font: 500 var(--in-f14) / 1.5 var(--in-ui);
+}
+[data-rd='instrument'] .in-lesson-detail p { margin: 8px 0 16px; }
+[data-rd='instrument'] .in-worked-example > div {
+  border-top: 1px solid var(--in-stroke);
+  padding: 12px 0;
+}
+[data-rd='instrument'] .in-worked-example dt { font: 500 var(--in-f13) var(--in-mono); }
+[data-rd='instrument'] .in-worked-example dd { margin: 8px 0 0; }
+[data-rd='instrument'] .in-lesson-actions {
+  border-top: 1px solid var(--in-stroke-2);
+  padding-top: 20px;
+  margin-top: 32px;
+}
+[data-rd='instrument'] .in-lesson-actions p,
+[data-rd='instrument'] .in-lesson-notice,
+[data-rd='instrument'] .in-setting-note {
+  font: var(--in-f13) / 1.6 var(--in-ui);
+  color: var(--in-text-2);
+  margin: 12px 0 20px;
+}
+[data-rd='instrument'] .in-lesson-notice { padding: 0 20px; }
+[data-rd='instrument'] .in-lesson-pane .in-pane-head { flex-wrap: wrap; height: auto; gap: 4px; }
+[data-rd='instrument'] .in-account-page { max-width: 1040px; margin: auto; }
+[data-rd='instrument'] .in-account-jumps { display: flex; gap: 4px; margin-bottom: 16px; }
+[data-rd='instrument'] .in-account-jumps a,
+[data-rd='instrument'] .in-account-group li a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 12px;
+  color: var(--in-text);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+[data-rd='instrument'] .in-account-group { padding: 20px; margin-bottom: 8px; scroll-margin-top: 16px; }
+[data-rd='instrument'] .in-identity { display: flex; align-items: start; gap: 16px; overflow-wrap: anywhere; }
+[data-rd='instrument'] .in-identity h3 { margin: 0 0 4px; font-size: var(--in-f22); }
+[data-rd='instrument'] .in-identity .in-avatar { width: 44px; height: 44px; flex-shrink: 0; }
+[data-rd='instrument'] .in-setting-row {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 16px;
+  padding: 20px 0;
+  border-top: 1px solid var(--in-stroke);
+}
+[data-rd='instrument'] .in-setting-row h3 { margin: 12px 0; font-size: var(--in-f14); font-weight: 550; }
+[data-rd='instrument'] .in-setting-row p { margin: 8px 0; }
+[data-rd='instrument'] .in-setting-choices,
+[data-rd='instrument'] .in-account-actions { display: flex; flex-wrap: wrap; gap: 4px; }
+[data-rd='instrument'] fieldset.in-setting-choices { border: 0; padding: 0; margin: 0; min-width: 0; }
+[data-rd='instrument'] .in-account-page .in-btn2,
+[data-rd='instrument'] .in-library .in-btn2 { white-space: normal; padding-top: 10px; padding-bottom: 10px; }
+[data-rd='instrument'] .in-account-page .in-btn2:disabled { cursor: not-allowed; color: var(--in-text-2); background: var(--in-bg-2); }
+[data-rd='instrument'] .in-setting-choices [aria-pressed='true'] {
+  border-color: var(--in-accent-ui);
+  box-shadow: inset 0 -2px 0 var(--in-accent-ui);
+  background: var(--in-bg-3);
+}
+[data-rd='instrument'] .in-setting-check,
+[data-rd='instrument'] .in-minute-setting { display: flex; align-items: center; gap: 12px; min-height: 44px; flex-wrap: wrap; }
+[data-rd='instrument'] .in-minute-setting input {
+  width: 88px;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid var(--in-stroke-2);
+  border-radius: var(--in-r1);
+  background: var(--in-bg-1);
+  color: var(--in-text);
+  font: var(--in-f14) var(--in-mono);
+}
+[data-rd='instrument'] .in-media-error { display: block; font: var(--in-f13) var(--in-ui); color: var(--in-text-2); }
+[data-rd='instrument'] .in-pal::backdrop { background: oklch(10% 0 0 / 0.5); }
+[data-rd='instrument'] dialog.in-pal { margin: auto; padding: 0; color: var(--in-text); }
+[data-rd='instrument'][data-width='phone'] .in-library-workbench { grid-template-columns: minmax(0, 1fr); }
+[data-rd='instrument'][data-width='phone'] .in-library-register { grid-template-columns: minmax(0, 1fr); }
+[data-rd='instrument'][data-width='phone'] .in-lesson { padding: 20px 16px; font-size: 17.5px; }
+[data-rd='instrument'][data-width='phone'] .in-account-group { padding: 16px; }
+[data-rd='instrument'][data-width='phone'] .in-setting-row { grid-template-columns: minmax(0, 1fr); gap: 0; }
+@container (max-width: 900px) {
+  [data-rd='instrument'] .in-library-workbench { grid-template-columns: minmax(0, 1fr); }
+}
+
 /* Round 2: ruled directories and the quantitative workbench. All colours
  * and type roles continue the existing instrument, including its dark mode. */
 [data-rd='instrument'] .in-hub {
@@ -3740,6 +3940,243 @@
 
 [data-theme='dark'] .in-trapbox {
   background: var(--in-bg-2);
+}
+
+/* Round 2 / batch 2: the pass register, answer-state instrument and receipt. */
+[data-rd='instrument'] .in-pass-section {
+  margin-top: 24px;
+  border: 1px solid var(--in-stroke-2);
+  border-radius: var(--in-r2);
+  overflow: hidden;
+}
+[data-rd='instrument'] .in-pass-band,
+[data-rd='instrument'] .in-weekly,
+[data-rd='instrument'] .in-activity {
+  padding: 20px 24px;
+  border-top: 1px solid var(--in-stroke);
+}
+[data-rd='instrument'] .in-pass-band p,
+[data-rd='instrument'] .in-weekly > p,
+[data-rd='instrument'] .in-activity > p,
+[data-rd='instrument'] .in-pass-note,
+[data-rd='instrument'] .in-pass-rules,
+[data-rd='instrument'] .in-table-detail {
+  font-size: var(--in-f13);
+  line-height: 1.6;
+  color: var(--in-text-2);
+}
+[data-rd='instrument'] .in-pass-note { padding: 12px 24px; }
+[data-rd='instrument'] .in-pass-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+[data-rd='instrument'] fieldset.in-pass-controls { min-width: 0; border: 0; }
+[data-rd='instrument'] .in-pass-controls .in-btn2:is([aria-pressed='true'], [aria-selected='true']) {
+  outline: 2px solid var(--in-accent-ui);
+  outline-offset: -2px;
+  background: var(--in-bg-3);
+}
+[data-rd='instrument'] .in-pass-register > li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 16px;
+  padding: 16px 24px;
+  align-items: center;
+  border-top: 1px solid var(--in-stroke);
+  font-size: var(--in-f14);
+}
+[data-rd='instrument'] .in-pass-register b,
+[data-rd='instrument'] .in-pass-register > li > div > span,
+[data-rd='instrument'] .in-table-detail,
+[data-rd='instrument'] .in-history time { display: block; }
+[data-rd='instrument'] .in-pass-rules {
+  list-style: disc;
+  padding: 16px 24px 20px 44px;
+}
+[data-rd='instrument'] .in-pass-rules > li + li { margin-top: 8px; }
+[data-rd='instrument'] .in-pass-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(560px, calc(100% - 24px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid var(--in-stroke-2);
+  border-radius: var(--in-r3);
+  background: var(--in-bg-1);
+  color: var(--in-text);
+  font: var(--in-f16)/1.55 var(--in-ui);
+}
+[data-rd='instrument'] .in-pass-dialog::backdrop { background: rgb(0 0 0 / 55%); }
+[data-rd='instrument'] .in-pass-dialog h2 { font-size: var(--in-f22); margin-bottom: 16px; }
+[data-rd='instrument'] .in-pass-dialog p + p { margin-top: 12px; }
+[data-rd='instrument'] .in-pass-dialog > .in-pass-controls { justify-content: flex-end; margin-top: 24px; }
+[data-rd='instrument'] .in-pass-running {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  background: var(--in-chassis);
+}
+[data-rd='instrument'] .in-pass-runbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 8px 16px;
+  flex: none;
+}
+[data-rd='instrument'] .in-pass-runbar > .in-pane-label { flex: 1; }
+[data-rd='instrument'] .in-pass-clock { font: var(--in-f22) var(--in-mono); font-variant-numeric: tabular-nums; }
+[data-rd='instrument'] .in-pass-clock small { font-size: var(--in-f13); }
+[data-rd='instrument'] .in-pass-clock[data-warning='true'] { color: var(--in-warn); }
+[data-rd='instrument'] .in-pass-live:empty { display: none; }
+[data-rd='instrument'] .in-pass-live { padding: 4px 16px; color: var(--in-text-2); font-size: var(--in-f13); }
+[data-rd='instrument'] .in-pass-scroll { flex: 1; min-height: 0; overflow: auto; padding: 8px 16px 24px; }
+[data-rd='instrument'] .in-pass-question {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 40%);
+  gap: 8px;
+  align-items: start;
+}
+[data-rd='instrument'] .in-pass-source,
+[data-rd='instrument'] .in-pass-answers,
+[data-rd='instrument'] .in-pass-navigator {
+  background: var(--in-bg-1);
+  border: 1px solid var(--in-stroke-2);
+  border-radius: var(--in-r3);
+  min-width: 0;
+}
+[data-rd='instrument'] .in-pass-source { padding: 24px; }
+[data-rd='instrument'] .in-pass-source h1 { font: 600 var(--in-f22)/1.4 var(--in-ui); margin-bottom: 24px; }
+[data-rd='instrument'] .in-pass-source h1 > span { font-size: var(--in-f14); margin-left: 12px; color: var(--in-text-2); }
+[data-rd='instrument'] .in-pass-passage,
+[data-rd='instrument'] .in-pass-prompt {
+  font: var(--in-f18)/1.6 var(--in-read);
+  max-width: 68ch;
+  overflow-wrap: anywhere;
+}
+[data-rd='instrument'] .in-pass-passage { margin: 24px auto; }
+[data-rd='instrument'] .in-pass-passage p { margin: 0 0 20px; }
+[data-rd='instrument'] .in-pass-paragraph { font: var(--in-f12) var(--in-mono); color: var(--in-text-2); margin-right: 12px; }
+[data-rd='instrument'] .in-pass-byline { font-size: var(--in-f13); }
+[data-rd='instrument'] .in-pass-prompt { margin-top: 20px; }
+[data-rd='instrument'] .in-pass-answers { padding: 0 16px 16px; }
+[data-rd='instrument'] .in-pass-answers > .in-cell-head { padding-inline: 0; }
+[data-rd='instrument'] .in-pass-options { display: grid; gap: 8px; margin-bottom: 16px; }
+[data-rd='instrument'] .in-pass-option {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  min-height: 56px;
+  padding: 12px;
+  text-align: left;
+  background: var(--in-bg-1);
+  color: var(--in-text);
+  border: 1px solid var(--in-stroke-2);
+  border-radius: var(--in-r1);
+  font: var(--in-f18)/1.55 var(--in-read);
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+[data-rd='instrument'] .in-pass-option > span { min-width: 0; }
+[data-rd='instrument'] .in-pass-option[aria-pressed='true'] { outline: 2px solid var(--in-accent-ui); outline-offset: -2px; background: var(--in-bg-2); }
+[data-rd='instrument'] .in-pass-option:disabled { cursor: default; opacity: 0.65; }
+[data-rd='instrument'] .in-pass-answers > .in-btn2 { margin-top: 12px; }
+[data-rd='instrument'] .in-pass-media { margin-block: 16px; }
+[data-rd='instrument'] .in-pass-image-scroll { overflow: auto; max-height: 65dvh; margin-top: 8px; background: white; }
+[data-rd='instrument'] .in-pass-image-scroll img { display: block; max-width: none; height: auto; }
+[data-rd='instrument'] .in-pass-image-canvas { position: relative; }
+[data-rd='instrument'] .in-pass-image-canvas img { position: absolute; left: 50%; top: 50%; }
+[data-rd='instrument'] .in-pass-figure-dialog { width: min(1100px, calc(100% - 24px)); }
+[data-rd='instrument'] .in-pass-figure-dialog .in-pass-image-scroll { max-height: 70dvh; }
+[data-rd='instrument'] .in-pass-navigator { margin-top: 8px; padding: 0 16px 16px; }
+[data-rd='instrument'] .in-pass-navigator > summary,
+[data-rd='instrument'] .in-pass-disclosure > summary {
+  min-height: 44px;
+  padding-block: 12px;
+  font-size: var(--in-f14);
+  color: var(--in-text);
+  cursor: pointer;
+}
+[data-rd='instrument'] .in-pass-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+[data-rd='instrument'] .in-pass-grid fieldset { min-width: 0; border: 0; padding: 0; }
+[data-rd='instrument'] .in-pass-grid legend { font: var(--in-f13) var(--in-mono); padding-block: 8px; }
+[data-rd='instrument'] .in-pass-grid fieldset > div { display: grid; grid-template-columns: repeat(5, minmax(44px, 1fr)); gap: 4px; }
+[data-rd='instrument'] .in-pass-grid button { min-height: 48px; background: var(--in-bg-1); color: var(--in-text); border: 1px solid var(--in-stroke-2); border-radius: var(--in-r1); font: var(--in-f14) var(--in-mono); cursor: pointer; }
+[data-rd='instrument'] .in-pass-grid button small { display: block; font-size: var(--in-f12); }
+[data-rd='instrument'] .in-pass-grid button[data-answered='true'] { background: var(--in-bg-3); }
+[data-rd='instrument'] .in-pass-grid button[data-current='true'] { outline: 2px solid var(--in-accent-ui); outline-offset: -2px; }
+[data-rd='instrument'] .in-pass-option:focus-visible,
+[data-rd='instrument'] .in-pass-grid button:focus-visible,
+[data-rd='instrument'] .in-pass-controls .in-btn2:focus-visible { outline: 2px solid var(--in-accent-ui); outline-offset: 2px; }
+[data-rd='instrument'] .in-result-receipt,
+[data-rd='instrument'] .in-progress-readout { align-items: flex-start; flex-direction: column; gap: 16px; }
+[data-rd='instrument'] .in-score-provenance { display: grid; gap: 12px; max-width: 68ch; }
+[data-rd='instrument'] .in-score-provenance .in-ro-v { font-size: var(--in-f28); }
+[data-rd='instrument'] .in-evidence-table { width: 100%; border-collapse: collapse; font-size: var(--in-f14); }
+[data-rd='instrument'] .in-evidence-table caption { padding: 20px 24px 12px; text-align: left; font: var(--in-f13) var(--in-mono); }
+[data-rd='instrument'] .in-evidence-table th,
+[data-rd='instrument'] .in-evidence-table td { text-align: left; padding: 16px 12px; border-top: 1px solid var(--in-stroke); vertical-align: top; }
+[data-rd='instrument'] .in-evidence-table thead th { font-size: var(--in-f13); color: var(--in-text-2); background: var(--in-bg-2); }
+[data-rd='instrument'] .in-evidence-table td { font-variant-numeric: tabular-nums; }
+[data-rd='instrument'] .in-evidence-table th:first-child { padding-left: 24px; }
+[data-rd='instrument'] .in-evidence-table td:last-child { padding-right: 24px; }
+[data-rd='instrument'] .in-view-switch { margin-bottom: 16px; }
+[data-rd='instrument'] .in-progress-week { display: flex; flex-wrap: wrap; gap: 20px 32px; }
+[data-rd='instrument'] .in-progress-week .in-ro { display: grid; gap: 8px; }
+[data-rd='instrument'] .in-weekly svg { display: block; width: 100%; margin-block: 16px; color: var(--in-text); }
+[data-rd='instrument'] .in-weekly svg text { fill: var(--in-text-2); font: 12px var(--in-mono); }
+[data-rd='instrument'] .in-trend-rule { stroke: var(--in-stroke-2); }
+[data-rd='instrument'] .in-trend-line { stroke: var(--in-text-2); stroke-width: 2; }
+[data-rd='instrument'] .in-weekly svg circle { fill: var(--in-text); }
+[data-rd='instrument'] .in-week-table { width: 100%; font: var(--in-f13)/1.6 var(--in-mono); }
+[data-rd='instrument'] .in-week-table th,
+[data-rd='instrument'] .in-week-table td { text-align: left; padding: 8px; }
+[data-rd='instrument'] .in-activity-cells { display: grid; grid-template-rows: repeat(7, 12px); grid-auto-flow: column; grid-auto-columns: minmax(8px, 1fr); gap: 4px; margin: 16px 0; }
+[data-rd='instrument'] .in-activity-cells > span { border: 1px solid var(--in-stroke-2); background: var(--in-bg-1); }
+[data-rd='instrument'] .in-activity-cells > span[data-level='1'] { background: var(--in-bg-3); }
+[data-rd='instrument'] .in-activity-cells > span[data-level='2'] { background: var(--in-text-3); }
+[data-rd='instrument'] .in-activity-cells > span[data-level='3'] { background: var(--in-text); }
+[data-rd='instrument'] .in-activity-days { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px 24px; font: var(--in-f13)/1.5 var(--in-mono); }
+[data-rd='instrument'] .in-activity-days li { display: flex; justify-content: space-between; border-top: 1px solid var(--in-stroke); padding-top: 8px; }
+[data-rd='instrument'] .in-pass-history .in-hub-door,
+[data-rd='instrument'] .in-history .in-hub-door { flex-wrap: wrap; }
+[data-rd='instrument'][data-width='phone'] .in-pass-register > li { grid-template-columns: minmax(0, 1fr) auto; padding: 16px; gap: 8px; }
+[data-rd='instrument'][data-width='phone'] .in-pass-register > li > span { grid-column: 1; }
+[data-rd='instrument'][data-width='phone'] .in-pass-register > li > button { grid-column: 2; grid-row: 1 / 3; }
+[data-rd='instrument'][data-width='phone'] .in-pass-question { grid-template-columns: minmax(0, 1fr); }
+[data-rd='instrument'][data-width='phone'] .in-pass-scroll { padding: 0 8px 24px; }
+[data-rd='instrument'][data-width='phone'] .in-pass-source,
+[data-rd='instrument'][data-width='phone'] .in-pass-band,
+[data-rd='instrument'][data-width='phone'] .in-weekly,
+[data-rd='instrument'][data-width='phone'] .in-activity { padding: 16px; }
+[data-rd='instrument'][data-width='phone'] .in-pass-runbar { padding: 8px; gap: 8px; }
+[data-rd='instrument'][data-width='phone'] .in-pass-runbar > .in-pane-label { order: 4; flex-basis: 100%; }
+[data-rd='instrument'][data-width='phone'] .in-pass-clock { flex: 1; text-align: center; font-size: var(--in-f18); }
+[data-rd='instrument'][data-width='phone'] .in-pass-grid { grid-template-columns: minmax(0, 1fr); }
+[data-rd='instrument'][data-width='phone'] .in-pass-passage,
+[data-rd='instrument'][data-width='phone'] .in-pass-prompt,
+[data-rd='instrument'][data-width='phone'] .in-pass-option { font-size: 17.5px; }
+[data-rd='instrument'][data-width='phone'] .in-evidence-table,
+[data-rd='instrument'][data-width='phone'] .in-evidence-table tbody { display: block; }
+[data-rd='instrument'][data-width='phone'] .in-evidence-table thead { position: absolute; clip-path: inset(50%); width: 1px; height: 1px; overflow: hidden; }
+[data-rd='instrument'][data-width='phone'] .in-evidence-table tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 16px; gap: 12px; border-top: 1px solid var(--in-stroke); }
+[data-rd='instrument'][data-width='phone'] .in-evidence-table th,
+[data-rd='instrument'][data-width='phone'] .in-evidence-table td { display: block; padding: 0; border: 0; overflow-wrap: anywhere; }
+[data-rd='instrument'][data-width='phone'] .in-evidence-table th { grid-column: 1 / -1; }
+[data-rd='instrument'][data-width='phone'] .in-evidence-table td[data-label]::before { content: attr(data-label); display: block; font-size: var(--in-f13); color: var(--in-text-2); margin-bottom: 4px; }
+[data-rd='instrument'][data-width='phone'] .in-queue-readouts { gap: 20px; }
+@container (max-width: 1100px) {
+  [data-rd='instrument'] .in-pass-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@container (max-width: 700px) {
+  [data-rd='instrument'] .in-pass-grid,
+  [data-rd='instrument'] .in-pass-question { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* ── Reduced motion and still thumbnails ─────────────────────────── */
