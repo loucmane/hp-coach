@@ -254,3 +254,73 @@ Notes:
 - `drillCore.ts`: a choice the host takes away stays in the core's state, and only Folio's view hides it. A core-level reconciliation would serve every direction.
 - `FolioQuant.tsx`: the DTK image options have no picture gate. `PictureGate` could be adopted there.
 - `gapNumbers` (pre-existing, display only): it numbers empty-stem gap questions by order across the whole sitting, so a sitting with two gap texts would show "Lucka 6" for the second text's first gap. The gate does not depend on it.
+
+## Round 3 (re-review hpf-jp0g: HOLD, two P2 in the image gate)
+
+- 2026-10-20 · Claude worker, session `ci-wisp-8t2qa1y`. Started from the worktree at `d6c86da` (merge head of `a7e0beb`), clean. Read `review-hpf-jp0g.md` first.
+- Changes are **uncommitted**, in admitted files only: `FolioDrill.tsx`, `Folio.test.tsx` and this worklog. `folio.css` is untouched. The question figure reuses `.fo-figure`, `.fo-figure-raster` and `.fo-plate-caption`.
+- The predicate, the lock handler and the action bar are unchanged: `answerable` (`FolioDrill.tsx:617`), the lock's `readyRef` check (`:868`) and Svara's `disabled` (`:1444`). Both fixes feed the same `lackOf`, so a click, ↵ and space are all held by the one gate.
+
+### Fix 1 — the question's own figure is part of the gate (`FolioDrill.tsx`)
+
+I chose the first of the two allowed ways: the figure is rendered and its readiness is counted per mounted image.
+- **Inventory.** A picture is now owned by a `Part` (`:556`): `'figure'` or an option's letter. `Picture` (`:560`) and the `picture` lack (`:572`) carry it. `lackOf` (`:586`) lists every picture the question carries, `q.figure` first and then each option's (`:596`). It applies the per-mounted-instance rule to each one: a failed picture is a lack; one that is still loading, or not on the page at all, is waiting.
+- **Rendered.** `QuestionFigure` (`:723`) sets the figure like a book figure above the prompt, in both layouts and both phases:
+  - the recto (`:1377`, and above the restated prompt after the answer, `:1391`);
+  - the phone slip when it is open, and in the facit (`:2666`, `:2659`).
+
+  At the slip's peek it is not on the page, so the drill waits, exactly as for option pictures. It is an `<img>` for both kinds, so that its load can be watched. A failed figure leaves its name as a caption in its place.
+- **Words** (proposed copy):
+  - while it loads, Svara's echo is "Figuren laddas …" (`holdOf`, `:626`);
+  - when it fails, the erratum says "Figuren till frågan gick inte att visa." with the existing "Försök igen", which re-keys every picture (`lackText`, `:647`). Option pictures keep "Bilderna laddas …" and "Bilden till alternativ D gick inte att visa.".
+
+### Fix 2 — each image mount has its own receipt (`FolioDrill.tsx`)
+
+- **`PictureMount`** (`:678`) owns one `<img>` and its state, which starts at `loading` and moves only on that element's own `load` or `error`. It reports to the `PictureGate` with a token of its own and removes the token on unmount. On failure it renders its `fallback`.
+- **Keyed by source and try.** Both parents key it `src#attempt`: `OptionContent` (`:1668`) and `QuestionFigure`. Any of these mounts a fresh instance with a fresh `loading`:
+  - a removed figure (the option renders its text, which unmounts the picture);
+  - a picture that comes back with the same source;
+  - A → pending B → A;
+  - Försök igen.
+
+  No image inherits another's `loaded`. The old receipt (`outcome`, keyed by source and try in the persistent `OptionContent`) is gone.
+- I left out the optional `complete && naturalWidth > 0` check. React attaches `load` and `error` to the `<img>` before it sets `src`, so a mount always hears its own outcome.
+- Outside a reading drill (quant, DTK, the pass) nobody listens. The one behavioural difference there is the fix itself: a picture that comes back is tried afresh rather than inheriting an earlier failure.
+
+### Red-first tests (`Folio.test.tsx`)
+
+The tests were written first and run on the unfixed source (HEAD `d6c86da`, no source edits yet): 24 failed and 221 were skipped by the filter. With the fix, all 24 pass. Each group runs at both widths over three ways of pressing Svara (`WAYS`, `:2820`; `pressSvara`, `:2832`):
+- a click;
+- ↵ on the focused button (native) and on the window (the drill's keys);
+- space on the focused button (native).
+
+Every group ends on its positive control: loading the current image enables Svara, and the same way of pressing calls the controller exactly once, with A.
+
+| Group (6 tests each) | Line | On the unfixed code |
+|---|---|---|
+| "holds Svara while the question's own figure has not loaded" | 2853 | the lock received A on all 6 |
+| "holds Svara when the question's own figure fails, until a new try loads" | 2875 | there was no figure on the page to fail: the reading layout never rendered `q.figure` |
+| "holds Svara for a picture that comes back until the new image loads" (load and select, D's picture removed, the same source restored, no load event) | 2903 | the lock received A on all 6 (the stale `loaded`) |
+| "holds Svara when a picture goes from A to a pending B and back to A" | 2934 | held at pending B, then the lock received A on all 6 after the return to A |
+
+Helpers: `picturesWithD` (`:2662`), `FIGURE_ALT` and `withFigure` (`:2671`, `:2674`). The new tests log no `act(...)` warnings.
+
+### Verification (round 3)
+
+| Check | Result |
+|---|---|
+| `pnpm -C app typecheck` | PASS |
+| `pnpm -C app lint` | PASS: the same 4 informational notes in unrelated files (`LandingBakeoffR3/R4A/R4C.tsx`, `l12/M3.tsx`) |
+| `pnpm -C app test` | PASS: **3,957 / 3,957**, 109 files (3,933 at the merge head plus 24 new). `Folio.test.tsx` 245/245 |
+| `git status` | only `FolioDrill.tsx`, `Folio.test.tsx` and this worklog, plus the sandbox's `/dev/null` placeholders (untracked dotfiles at the worktree root, not real files) |
+
+- Shared tests outside the write set: none failed.
+- **Visual check: not done** (the dev server is outside this worker's allowlist). Coordinator screenshots wanted, in both themes, of an ELF question given a test `figure`:
+  - the figure above the prompt on the recto and in the open phone slip;
+  - Svara held with "Figuren laddas …";
+  - a failed figure: the erratum with Försök igen, and the name caption in the figure's place.
+
+### Follow-ups (outside this write set)
+
+- `FolioQuant.tsx`: a drawn (SVG) question figure in a reading drill is an `<img>`, so it does not take the ink colour; in the dark theme a black-line drawing would stand on dark paper. The reading figure also has no Förstora. Lifting `SvgFigure`/`useSvg` and the viewer into a shared, readiness-aware part would serve both drills. Today's bank gives LÄS and ELF questions no figures, so the bake-off never shows one.
+- The `FolioQuant` DTK image-option gate (round 2's follow-up) could adopt `PictureMount` as it is.

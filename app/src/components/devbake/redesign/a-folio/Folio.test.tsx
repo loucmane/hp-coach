@@ -2657,6 +2657,30 @@ function withPictures(q: DrillQuestion): void {
   }
 }
 
+/** Gives every option of `q` a picture, D's from `src` instead (null: D
+ *  has none and answers by its words). */
+function picturesWithD(src: string | null): (q: DrillQuestion) => void {
+  return (q) => {
+    withPictures(q)
+    const d = q.options?.find((o) => o.letter === 'D')
+    if (d?.figure) d.figure = src == null ? null : { ...d.figure, src }
+  }
+}
+
+/** The name of the question's own figure in these tests. */
+const FIGURE_ALT = 'Figur till frågan'
+
+/** Gives `q` a figure of its own (a test source). */
+function withFigure(q: DrillQuestion): void {
+  q.figure = {
+    src: 'figures/test-question.png',
+    alt: FIGURE_ALT,
+    width: 400,
+    height: 300,
+    kind: 'raster',
+  }
+}
+
 describe('Folio · ELF answers only a complete question', () => {
   const Q = FIXTURE_DATA.drills.elf.questions[0]
   const svara = () => screen.getByTestId('rd-lock')
@@ -2789,6 +2813,150 @@ describe('Folio · ELF answers only a complete question', () => {
     loadImages()
     expect(svara()).toBeEnabled()
     press('Enter')
+    expect(lock).toHaveBeenCalledWith(expect.objectContaining({ qid: Q.qid }), 'A')
+  })
+
+  /** Every way of pressing Svara, at both widths. */
+  const WAYS = [
+    ['desktop', 'click'],
+    ['desktop', 'Enter'],
+    ['desktop', 'Space'],
+    ['phone', 'click'],
+    ['phone', 'Enter'],
+    ['phone', 'Space'],
+  ] as const
+
+  /** Presses Svara one way: a click; ↵ on the focused button (native) and
+   *  on the window (the drill's keys); or space on the focused button
+   *  (native). Focus lands only on an enabled Svara. */
+  async function pressSvara(
+    user: ReturnType<typeof userEvent.setup>,
+    how: (typeof WAYS)[number][1],
+  ): Promise<void> {
+    if (how === 'click') {
+      fireEvent.click(svara())
+      return
+    }
+    svara().focus()
+    if (how === 'Enter') {
+      await user.keyboard('{Enter}')
+      press('Enter')
+    } else await user.keyboard(' ')
+  }
+
+  const figure = () => screen.getByRole('img', { name: FIGURE_ALT })
+  const pictureOf = (letter: string) =>
+    within(screen.getByTestId(`rd-option-${letter}`)).getByRole('img')
+
+  it.each(
+    WAYS,
+  )('on %s holds Svara while the question’s own figure has not loaded (%s on Svara)', async (width, how) => {
+    const user = userEvent.setup()
+    const lock = vi.fn(() => ({ correct: true }))
+    const { supply } = mount(14, { width, actions: { drill: { lock } } })
+    fireEvent.click(reveal('rd-option-A'))
+    expect(svara()).toBeEnabled()
+    // The same question, now with a figure of its own.
+    supply(elfWith(withFigure))
+    await pressSvara(user, how)
+    expect(lock).not.toHaveBeenCalled()
+    expect(svara()).toBeDisabled()
+    expect(svara().parentElement).toHaveTextContent('Figuren laddas …')
+    // The figure on the page loads: Svara answers, the same way.
+    fireEvent.load(figure())
+    expect(svara()).toBeEnabled()
+    await pressSvara(user, how)
+    expect(lock).toHaveBeenCalledTimes(1)
+    expect(lock).toHaveBeenCalledWith(expect.objectContaining({ qid: Q.qid }), 'A')
+  })
+
+  it.each(
+    WAYS,
+  )('on %s holds Svara when the question’s own figure fails, until a new try loads (%s on Svara)', async (width, how) => {
+    const user = userEvent.setup()
+    const lock = vi.fn(() => ({ correct: true }))
+    const { supply } = mount(14, { width, actions: { drill: { lock } } })
+    fireEvent.click(reveal('rd-option-A'))
+    supply(elfWith(withFigure))
+    fireEvent.error(figure())
+    // The page says so plainly; the figure's name stands in for it.
+    const note = screen.getByTestId('rd-incomplete')
+    expect(note).toHaveTextContent('Figuren till frågan gick inte att visa.')
+    expect(screen.queryByRole('img', { name: FIGURE_ALT })).toBeNull()
+    expect(screen.getByTestId('rd-qfigure')).toHaveTextContent(FIGURE_ALT)
+    await pressSvara(user, how)
+    expect(lock).not.toHaveBeenCalled()
+    expect(svara()).toBeDisabled()
+    expect(svara().parentElement).toHaveTextContent('Frågan går inte att besvara än.')
+    // Försök igen mounts the figure afresh; once it loads, Svara answers.
+    fireEvent.click(within(note).getByRole('button', { name: 'Försök igen' }))
+    expect(svara()).toBeDisabled()
+    fireEvent.load(figure())
+    expect(svara()).toBeEnabled()
+    await pressSvara(user, how)
+    expect(lock).toHaveBeenCalledTimes(1)
+    expect(lock).toHaveBeenCalledWith(expect.objectContaining({ qid: Q.qid }), 'A')
+  })
+
+  it.each(
+    WAYS,
+  )('on %s holds Svara for a picture that comes back until the new image loads (%s on Svara)', async (width, how) => {
+    const user = userEvent.setup()
+    const lock = vi.fn(() => ({ correct: true }))
+    const { supply } = mount(14, {
+      width,
+      data: elfWith(withPictures),
+      actions: { drill: { lock } },
+    })
+    fireEvent.click(reveal('rd-option-A'))
+    loadImages()
+    expect(svara()).toBeEnabled()
+    // D's picture goes (its words answer for it) …
+    supply(elfWith(picturesWithD(null)))
+    expect(within(screen.getByTestId('rd-option-D')).queryByRole('img')).toBeNull()
+    expect(svara()).toBeEnabled()
+    // … and the same picture comes back: a new image, with no load yet.
+    supply(elfWith(withPictures))
+    expect(pictureOf('D')).toHaveAttribute('src', '/figures/options/test-D.png')
+    await pressSvara(user, how)
+    expect(lock).not.toHaveBeenCalled()
+    expect(svara()).toBeDisabled()
+    expect(svara().parentElement).toHaveTextContent('Bilderna laddas …')
+    fireEvent.load(pictureOf('D'))
+    expect(svara()).toBeEnabled()
+    await pressSvara(user, how)
+    expect(lock).toHaveBeenCalledTimes(1)
+    expect(lock).toHaveBeenCalledWith(expect.objectContaining({ qid: Q.qid }), 'A')
+  })
+
+  it.each(
+    WAYS,
+  )('on %s holds Svara when a picture goes from A to a pending B and back to A (%s on Svara)', async (width, how) => {
+    const user = userEvent.setup()
+    const lock = vi.fn(() => ({ correct: true }))
+    const { supply } = mount(14, {
+      width,
+      data: elfWith(withPictures),
+      actions: { drill: { lock } },
+    })
+    fireEvent.click(reveal('rd-option-A'))
+    loadImages()
+    expect(svara()).toBeEnabled()
+    // D's picture moves to another source, still loading …
+    supply(elfWith(picturesWithD('figures/options/test-D-2.png')))
+    expect(pictureOf('D')).toHaveAttribute('src', '/figures/options/test-D-2.png')
+    expect(svara()).toBeDisabled()
+    // … and back to the first before that one loads: a new image again.
+    supply(elfWith(withPictures))
+    expect(pictureOf('D')).toHaveAttribute('src', '/figures/options/test-D.png')
+    await pressSvara(user, how)
+    expect(lock).not.toHaveBeenCalled()
+    expect(svara()).toBeDisabled()
+    expect(svara().parentElement).toHaveTextContent('Bilderna laddas …')
+    fireEvent.load(pictureOf('D'))
+    expect(svara()).toBeEnabled()
+    await pressSvara(user, how)
+    expect(lock).toHaveBeenCalledTimes(1)
     expect(lock).toHaveBeenCalledWith(expect.objectContaining({ qid: Q.qid }), 'A')
   })
 })

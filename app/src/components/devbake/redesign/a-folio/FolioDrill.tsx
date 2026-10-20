@@ -32,9 +32,10 @@
 // ruled blanks that take the chosen word in pencil, then the right one.
 //
 // A reading drill answers only a complete question (answerable): its
-// passage, its prompt, its options and every option picture on the page,
-// with the chosen option one of its own. Until then Svara is held, whether
-// clicked, ↵ or space, and the page says plainly what is missing.
+// passage, its prompt, its options and every picture it carries — its own
+// figure and each option's — loaded on the page, with the chosen option one
+// of its own. Until then Svara is held, whether clicked, ↵ or space, and the
+// page says plainly what is missing.
 //
 // Keys: only Folio's dialogs carry data-rd-keyscope. The spread's pages and
 // the phone drill's scroll only scroll vertically, so the bake-off's
@@ -551,14 +552,17 @@ function PromptBlock({
 
 // ── A complete question ──────────────────────────────────────────────
 
-/** One option picture on the page: one mounted instance, by itself (never
- *  "this source has loaded once, somewhere"). */
-type Picture = { letter: AnswerLetter; src: string; state: 'loading' | 'loaded' | 'failed' }
+/** Whose picture it is: the question's own figure, or an option's. */
+type Part = AnswerLetter | 'figure'
+
+/** One picture on the page: one mounted image, by itself (never "this
+ *  source has loaded once, somewhere"). */
+type Picture = { part: Part; src: string; state: 'loading' | 'loaded' | 'failed' }
 type Pictures = ReadonlyMap<object, Picture>
 
-/** Where a reading drill hears its option pictures, and the try they are on
- *  (its "Försök igen" tries every one afresh). Outside a reading drill
- *  nobody listens, and an option's picture is as it always was. */
+/** Where a reading drill hears its pictures, and the try they are on (its
+ *  "Försök igen" tries every one afresh). Outside a reading drill nobody
+ *  listens, and an option's picture is as it always was. */
 const PictureGate = createContext<{
   report: (token: object, picture: Picture | null) => void
   attempt: number
@@ -568,16 +572,16 @@ const PictureGate = createContext<{
 type Lack =
   | { kind: 'passage' | 'prompt' | 'options' }
   | { kind: 'wordless'; letter: AnswerLetter }
-  | { kind: 'picture'; letter: AnswerLetter; failed: boolean }
+  | { kind: 'picture'; part: Part; failed: boolean }
 
 /**
  * What the open reading question lacks, or null when it is complete: its
  * passage (a paragraph with words); its prompt, where a gap text's
  * explicitly empty stem counts (the gap is its question; null is no
  * prompt); its options, each with its words (an image option's label);
- * and every option picture loaded on each of its instances on the page. A
- * picture that is not on the page (a phone slip at its peek) has not
- * loaded.
+ * and every picture it carries — its own figure, then each option's —
+ * loaded on each of its instances on the page. A picture that is not on
+ * the page (a phone slip at its peek) has not loaded.
  */
 function lackOf(q: DrillQuestion, pictures: Pictures): Lack | null {
   const passage = q.passage
@@ -589,18 +593,21 @@ function lackOf(q: DrillQuestion, pictures: Pictures): Lack | null {
   if (options.length === 0) return { kind: 'options' }
   const wordless = options.find((o) => !o.text.trim())
   if (wordless) return { kind: 'wordless', letter: wordless.letter }
-  const drawn = options.flatMap((o) => {
-    const src = o.figure?.src
+  const carried: { part: Part; src: string | undefined }[] = [
+    { part: 'figure', src: q.figure?.src },
+    ...options.map((o) => ({ part: o.letter, src: o.figure?.src })),
+  ]
+  const drawn = carried.flatMap(({ part, src }) => {
     if (!src) return []
-    const shown = [...pictures.values()].filter((p) => p.letter === o.letter && p.src === src)
-    return [{ letter: o.letter, shown }]
+    const shown = [...pictures.values()].filter((p) => p.part === part && p.src === src)
+    return [{ part, shown }]
   })
   const failed = drawn.find((d) => d.shown.some((p) => p.state === 'failed'))
-  if (failed) return { kind: 'picture', letter: failed.letter, failed: true }
+  if (failed) return { kind: 'picture', part: failed.part, failed: true }
   const waiting = drawn.find(
     (d) => d.shown.length === 0 || d.shown.some((p) => p.state !== 'loaded'),
   )
-  if (waiting) return { kind: 'picture', letter: waiting.letter, failed: false }
+  if (waiting) return { kind: 'picture', part: waiting.part, failed: false }
   return null
 }
 
@@ -613,13 +620,13 @@ function answerable(q: DrillQuestion, chosen: AnswerLetter | null, pictures: Pic
   )
 }
 
-/** Svara's echo while it is held: a picture still loading, or a question
- *  that cannot be answered yet (the note above says what is missing). */
+/** Svara's echo while it is held: the figure or the pictures still
+ *  loading, or a question that cannot be answered yet (the note above says
+ *  what is missing). */
 function holdOf(lack: Lack | null): string | null {
   if (!lack) return null
-  return lack.kind === 'picture' && !lack.failed
-    ? 'Bilderna laddas …'
-    : 'Frågan går inte att besvara än.'
+  if (lack.kind !== 'picture' || lack.failed) return 'Frågan går inte att besvara än.'
+  return lack.part === 'figure' ? 'Figuren laddas …' : 'Bilderna laddas …'
 }
 
 /** The plain words for what is missing; a picture still loading has none
@@ -635,7 +642,10 @@ function lackText(lack: Lack): string | null {
     case 'wordless':
       return `Alternativ ${lack.letter} saknar sin text.`
     case 'picture':
-      return lack.failed ? `Bilden till alternativ ${lack.letter} gick inte att visa.` : null
+      if (!lack.failed) return null
+      return lack.part === 'figure'
+        ? 'Figuren till frågan gick inte att visa.'
+        : `Bilden till alternativ ${lack.part} gick inte att visa.`
   }
 }
 
@@ -654,6 +664,79 @@ function LackNote({ lack, onRetry }: { lack: Lack | null; onRetry: () => void })
         </button>
       ) : null}
     </div>
+  )
+}
+
+/**
+ * One picture as one mounted image, with a receipt of its own: loading
+ * until this very image has loaded or failed. Its parent keys it by source
+ * and try, so a new source, a picture that comes back or "Försök igen"
+ * mounts a fresh one, and no image inherits another's "loaded". Inside a
+ * reading drill it tells the drill how it stands (PictureGate); once it
+ * has failed, `fallback` stands in.
+ */
+function PictureMount({
+  part,
+  src,
+  alt,
+  width,
+  height,
+  className,
+  fallback,
+}: {
+  part: Part
+  src: string
+  alt: string
+  width: number
+  height: number
+  className: string
+  fallback: ReactNode
+}) {
+  const report = useContext(PictureGate)?.report
+  const [state, setState] = useState<Picture['state']>('loading')
+  useLayoutEffect(() => {
+    if (!report) return
+    const token = {}
+    report(token, { part, src, state })
+    return () => report(token, null)
+  }, [report, part, src, state])
+  if (state === 'failed') return fallback
+  return (
+    <img
+      className={className}
+      src={`/${src}`}
+      alt={alt}
+      width={width}
+      height={height}
+      onLoad={() => setState('loaded')}
+      onError={() => setState('failed')}
+    />
+  )
+}
+
+/** The question's own figure, set like a book figure above its prompt. A
+ *  reading question seldom has one; when it does, the figure is part of
+ *  the question, and the drill waits for it as for an option's picture.
+ *  It is an image either way, so its load can be watched (a drawn figure
+ *  shows as drawn, not in the ink's colour); if it fails, its name stands
+ *  in and the note above the prompt says so. */
+function QuestionFigure({ q }: { q: Pick<DrillQuestion, 'figure'> }) {
+  const attempt = useContext(PictureGate)?.attempt ?? 0
+  const figure = q.figure
+  if (!figure?.src) return null
+  return (
+    <figure className="fo-figure" data-testid="rd-qfigure">
+      <PictureMount
+        key={`${figure.src}#${attempt}`}
+        part="figure"
+        src={figure.src}
+        alt={figure.alt}
+        width={figure.width}
+        height={figure.height}
+        className="fo-figure-raster"
+        fallback={<figcaption className="fo-plate-caption">{figure.alt}</figcaption>}
+      />
+    </figure>
   )
 }
 
@@ -730,8 +813,8 @@ function ReadingDrill({
   const { refs } = core
   const phase = core.view.phase
 
-  // The option pictures on the page, each instance by itself, and the try
-  // they are on.
+  // The pictures on the page (the question's figure and the options'),
+  // each mounted image by itself, and the try they are on.
   const [pictures, setPictures] = useState<Pictures>(() => new Map())
   const [attempt, setAttempt] = useState(0)
   const report = useCallback((token: object, picture: Picture | null) => {
@@ -916,7 +999,7 @@ type DrillChrome = Shared & {
   /** What keeps the open question from being answered, or null. */
   lack: Lack | null
   gate: Gate
-  /** Tries the option pictures afresh. */
+  /** Tries the pictures afresh. */
   onRetry: () => void
 }
 
@@ -1291,6 +1374,7 @@ function QuestionColumn({
     return (
       <>
         {note}
+        <QuestionFigure q={view.question} />
         <PromptBlock view={view} gap={gap} gaps={gaps} promptRef={promptRef} />
         <Options view={view} act={act} />
         <KeyHints letters={view.letters} focus />
@@ -1304,6 +1388,7 @@ function QuestionColumn({
         after={view.correct == null ? null : seam.after(view.correct)}
         focusRef={verdictRef}
       />
+      <QuestionFigure q={view.question} />
       <PromptBlock view={view} gap={gap} gaps={gaps} after />
       <GradedOptions view={view} />
       <Facit view={view} act={act} refs={refs} active={active} point={point} />
@@ -1575,37 +1660,26 @@ export function PassageView({
 // ── Options ──────────────────────────────────────────────────────────
 
 /** An option's content: its text (math rendered), or its picture with the
- *  text as the name — the text stands in if the picture fails. A failure
- *  belongs to its source and its try: a new source, or a reading drill's
- *  "Försök igen", is tried afresh. Inside a reading drill each instance
- *  tells the drill how its picture stands (PictureGate). */
+ *  text as the name — the text stands in if the picture fails. Each source
+ *  and try is a picture of its own (PictureMount): a new source, a picture
+ *  that comes back, or a reading drill's "Försök igen" is tried afresh.
+ *  Inside a reading drill each mounted picture tells the drill how it
+ *  stands (PictureGate). */
 function OptionContent({ o }: { o: DrillOption }) {
-  const listening = useContext(PictureGate)
-  const report = listening?.report
+  const attempt = useContext(PictureGate)?.attempt ?? 0
+  const text = <MathText>{o.text}</MathText>
   const figure = o.figure
-  const key = figure ? `${figure.src}#${listening?.attempt ?? 0}` : null
-  const [outcome, setOutcome] = useState<{ key: string; loaded: boolean } | null>(null)
-  const state: Picture['state'] | null =
-    key == null ? null : outcome?.key !== key ? 'loading' : outcome.loaded ? 'loaded' : 'failed'
-  const src = figure?.src
-  const { letter } = o
-  useLayoutEffect(() => {
-    if (!report || !src || !state) return
-    const token = {}
-    report(token, { letter, src, state })
-    return () => report(token, null)
-  }, [report, letter, src, state])
-  if (!figure || !key || state === 'failed') return <MathText>{o.text}</MathText>
+  if (!figure?.src) return text
   return (
-    <img
-      key={key}
-      className="fo-opt-img"
-      src={`/${figure.src}`}
+    <PictureMount
+      key={`${figure.src}#${attempt}`}
+      part={o.letter}
+      src={figure.src}
       alt={o.text}
       width={figure.width}
       height={figure.height}
-      onLoad={() => setOutcome({ key, loaded: true })}
-      onError={() => setOutcome({ key, loaded: false })}
+      className="fo-opt-img"
+      fallback={text}
     />
   )
 }
@@ -2582,12 +2656,14 @@ function PhoneDrill(chrome: DrillChrome) {
                 after={view.correct == null ? null : seam.after(view.correct)}
                 focusRef={chrome.verdictRef}
               />
+              <QuestionFigure q={view.question} />
               <PromptBlock view={view} gap={gap} gaps={gaps} after />
               <GradedOptions view={view} />
               <Facit view={view} act={sheetAct} refs={refs} active={null} point={() => {}} />
             </>
           ) : (
             <>
+              <QuestionFigure q={view.question} />
               <PromptBlock view={view} gap={gap} gaps={gaps} />
               <Options view={view} act={act} />
             </>
