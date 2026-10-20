@@ -7,17 +7,28 @@
 //                      will go; the coach proposes, you choose. Never a text
 //                      field.
 //   - Divider        — the centred, dated line a conversation opens with.
-//   - Cites, Rich    — ¶ links into the passage and "(steg N)" links.
+//   - Cites, Rich    — ¶ links into the passage and "(steg N)" links; Rich
+//                      renders the explanation's math (MathText) as it goes.
 //   - Dots, DoorIcon, Kbd, Mark — progress, the doors' icons, keys, the logo.
+//   - FigureImg      — a figure's image that says when it is there or has
+//                      failed, a cached one at once; the quant drill holds
+//                      the answer on it (FigureLoadsContext).
+//   - words, count   — numbers said the way the coach says them.
 
 import { BookOpen, PenLine, Sun, Timer, TrendingUp } from 'lucide-react'
-import type { HTMLAttributes, ReactNode, Ref } from 'react'
-
 import {
-  type Destination,
-  type DrillActions,
-  splitStepRefs,
-} from '@/components/devbake/redesign/r1Kit'
+  type ComponentProps,
+  createContext,
+  type HTMLAttributes,
+  type ReactNode,
+  type Ref,
+  useLayoutEffect,
+  useRef,
+} from 'react'
+
+import { splitStepRefs } from '@/components/devbake/redesign/drillCore'
+import type { Destination } from '@/components/devbake/redesign/r1Kit'
+import { MathText } from '@/components/MathText'
 
 // ── Turns ────────────────────────────────────────────────────────────
 
@@ -30,7 +41,7 @@ type TurnProps = HTMLAttributes<HTMLElement> & {
   ref?: Ref<HTMLElement>
 }
 
-function cx(...names: (string | false | null | undefined)[]): string {
+export function cx(...names: (string | false | null | undefined)[]): string {
   return names.filter(Boolean).join(' ')
 }
 
@@ -94,7 +105,7 @@ export function Cites({
 }: {
   list: number[]
   source: string
-  act: Pick<DrillActions, 'cite'>
+  act: { cite: (n: number, source?: string) => void }
 }) {
   if (list.length === 0) return null
   return (
@@ -117,8 +128,8 @@ export function Cites({
 }
 
 /** Explanation text, verbatim, with its "(steg 2)" references made into
- *  links to the step. */
-export function Rich({ text, act }: { text: string; act: Pick<DrillActions, 'goToStep'> }) {
+ *  links to the step and its math rendered. */
+export function Rich({ text, act }: { text: string; act: { goToStep: (n: number) => void } }) {
   let at = 0
   return (
     <>
@@ -126,7 +137,9 @@ export function Rich({ text, act }: { text: string; act: Pick<DrillActions, 'goT
         const key = at
         at += seg.text.length
         return seg.kind === 'text' ? (
-          <span key={key}>{seg.text}</span>
+          <span key={key}>
+            <MathText>{seg.text}</MathText>
+          </span>
         ) : (
           <button
             key={key}
@@ -187,4 +200,65 @@ export function Mark({ name = true }: { name?: boolean }) {
       ) : null}
     </span>
   )
+}
+
+// ── Figures ──────────────────────────────────────────────────────────
+
+export type FigureStatus = 'loading' | 'ready' | 'error'
+
+/** Load status and retries, per figure source (a DTK page, a diagram or an
+ *  option's image): a failure belongs to its own source and never follows
+ *  the reader to the next one. A source not heard from yet is loading. */
+export type FigureLoads = {
+  status: (src: string) => FigureStatus
+  attempt: (src: string) => number
+  report: (src: string, s: FigureStatus) => void
+  retry: (src: string) => void
+}
+
+/** The quant drill's figure loads; null outside it (the reading drill has
+ *  no figure to wait for). */
+export const FigureLoadsContext = createContext<FigureLoads | null>(null)
+
+type FigureImgProps = Omit<ComponentProps<'img'>, 'ref' | 'onLoad' | 'onError'> & {
+  alt: string
+  onStatus: (s: FigureStatus) => void
+}
+
+/** A figure's image that reports when it is there or has failed — a cached
+ *  one too: an image already complete when it mounts reports at once, and
+ *  never waits for a load event that has come and gone. Key it by source
+ *  and attempt, so another source, or a retry, is a new image, checked
+ *  again. */
+export function FigureImg({ alt, onStatus, ...img }: FigureImgProps) {
+  const ref = useRef<HTMLImageElement>(null)
+  const report = useRef(onStatus)
+  report.current = onStatus
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (el?.complete && el.naturalWidth > 0) report.current('ready')
+  }, [])
+  return (
+    <img
+      ref={ref}
+      alt={alt}
+      {...img}
+      onLoad={() => report.current('ready')}
+      onError={() => report.current('error')}
+    />
+  )
+}
+
+// ── Numbers, said ────────────────────────────────────────────────────
+
+const WORDS = ['noll', 'en', 'två', 'tre', 'fyra', 'fem', 'sex', 'sju', 'åtta', 'nio', 'tio']
+
+/** 4 → "fyra"; past ten the digits. */
+export function words(n: number): string {
+  return WORDS[n] ?? String(n)
+}
+
+/** 1 → "1 fråga", 3 → "3 frågor". */
+export function count(n: number, one: string, many: string): string {
+  return `${n} ${n === 1 ? one : many}`
 }
