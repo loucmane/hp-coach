@@ -20,13 +20,22 @@
 // into the page's edge like a booklet's thumb index: one segment a
 // question, a gap between sections, answered in ink, the current one in the
 // accent. Översikt, the hand-in and the abandon are slips; time running out
-// hands the pass in, once. A marked question gets its page's corner folded.
+// hands the pass in. A marked question gets its page's corner folded.
+//
+// A pass is handed in once — by Lämna in or when the time is up — and is
+// then over, whatever the host answers: kit v2 has no way to say a second
+// try is safe. A host that opens the result leaves the pass behind; one that
+// stays on screen 9 gets the pass's closing page in the frame, "Passet är
+// inlämnat." or, when the hand-in failed, the error, with the answers as they
+// stood, read-only, and the way to the hub.
 //
 // The result is a book's closing page and appendix: ⁂ over "Provpasset
 // klart.", one light figure with its numbered footnote and the 0–2,0 scale,
 // "Per delprov" as a ruled table in test order with the tempo said in
 // words, the misses as an errata list, and the earlier passes of the same
-// kind, a recurring trap and the exposure in the margin.
+// kind, a recurring trap and the exposure in the margin. A pass known to
+// rest on övningstexter (its own questions, or its misses, say so) adds the
+// calibration caveat as a second footnote; unknown provenance claims none.
 //
 // Kit v2: everything reads useDirectionData(). The hub asks the host to
 // start a pass (actions.startProvpass) and shows it running once the host's
@@ -87,6 +96,7 @@ import { MathText } from '@/components/MathText'
 import { type AnswerLetter, SECTION_KEYS, type Section } from '@/data/questions'
 import { sectionOfQid } from '@/lib/dueBySection'
 import { parseNogPrompt } from '@/lib/nogPrompt'
+import { isP5Qid } from '@/lib/provenance'
 import { sectionLongLabel } from '@/lib/sectionRailLabel'
 import {
   FolioDialog,
@@ -636,23 +646,36 @@ export function ConditionsSlip({
 // ── The running pass ─────────────────────────────────────────────────
 
 type Slip = 'overview' | 'handin' | 'abort' | null
-type Phase = 'running' | 'settling' | 'failed'
+
+/** How a started pass ended once its one hand-in was tried: handed in (the
+ *  host's action returned and it stayed on screen 9), or failed (the action
+ *  threw). Either way the pass is over. */
+export type PassEnd = {
+  outcome: 'submitted' | 'failed'
+  /** The pass as it ran: its closing page needs nothing more from the host. */
+  run: Pick<ProvRunningView, 'passId' | 'half' | 'sitting' | 'pass' | 'mode' | 'questions'>
+  /** The answers as they stood at the hand-in. */
+  answers: Partial<Record<string, AnswerLetter>>
+}
 
 /**
  * The running pass (screen 9, once started). Whether its time is already
  * up is decided once, when it opens: such a pass never runs again and does
  * not count (the hub says so); a pass whose time runs out later is handed
- * in, exactly once — never voided.
+ * in — never voided. The hand-in is tried once, and then the pass is over.
  */
 export function FolioPassRun({
   width,
   live,
   onLeave,
+  onEnd,
 }: {
   width: WidthKey
   live: boolean
   /** Back to the hub, with the note that says why. */
   onLeave: (note: ProvNote) => void
+  /** The hand-in was tried: the pass is over, with how it ended. */
+  onEnd: (end: PassEnd) => void
 }) {
   const { data } = useDirectionData()
   const run = data.provpass.running
@@ -661,11 +684,21 @@ export function FolioPassRun({
   )
   const leave = useRef(onLeave)
   leave.current = onLeave
+  const end = useRef(onEnd)
+  end.current = onEnd
   useLayoutEffect(() => {
     if (ended) leave.current(ended)
   }, [ended])
   if (ended) return null
-  return <PassRunner run={run} width={width} live={live} onLeave={(n) => leave.current(n)} />
+  return (
+    <PassRunner
+      run={run}
+      width={width}
+      live={live}
+      onLeave={(n) => leave.current(n)}
+      onEnd={(e) => end.current(e)}
+    />
+  )
 }
 
 /** What the running pass's layouts read and do (one object, so the desktop
@@ -686,11 +719,8 @@ type PassChrome = {
   urgent: boolean
   clockShown: boolean
   toggleClock: () => void
-  /** No more answering: the pass is being handed in, or its time is up. */
+  /** No more answering: the time is up (the pass is being handed in). */
   locked: boolean
-  /** Being handed in: Lämna in rests too (after a failed hand-in with the
-   *  time up, it is the one thing left). */
-  settling: boolean
   /** The key line shows on the question the reader came in on. */
   showKeys: boolean
   rot: number
@@ -709,7 +739,6 @@ type PassChrome = {
     strike: (l: AnswerLetter) => void
     toggleFlag: () => void
     ask: (s: Exclude<Slip, null>) => void
-    askHandin: () => void
     rotate: () => void
     zoom: (figure: DrillFigure) => void
   }
@@ -720,11 +749,13 @@ function PassRunner({
   width,
   live,
   onLeave,
+  onEnd,
 }: {
   run: ProvRunningView
   width: WidthKey
   live: boolean
   onLeave: (note: ProvNote) => void
+  onEnd: (end: PassEnd) => void
 }) {
   const { data, actions } = useDirectionData()
   const questions = run.questions
@@ -742,12 +773,13 @@ function PassRunner({
   const [struck, setStruck] = useState<Partial<Record<string, AnswerLetter[]>>>({})
   const [flags, setFlags] = useState<string[] | null>(() => (run.flags ? [...run.flags] : null))
   const [slip, setSlip] = useState<Slip>(null)
-  const [handinError, setHandinError] = useState(false)
   const [viewing, setViewing] = useState<DrillFigure | null>(null)
   const [rotations, setRotations] = useState<Record<string, number>>({})
   const viewerStates = useRef(new Map<string, ViewerState>())
-  const [phase, setPhase] = useState<Phase>('running')
-  const settled = useRef(false)
+  // The hand-in is tried once, by hand or at time out, and never again: not
+  // after a failure, and not when either clock runs out afterwards. Kit v2
+  // has no signal that a second try is safe, so once tried the pass is over.
+  const attempted = useRef(false)
   const [focusPara, setFocusPara] = useState<number | null>(null)
   const [note, setNote] = useState(false)
   const headingRef = useRef<HTMLHeadingElement>(null)
@@ -760,46 +792,43 @@ function PassRunner({
     Math.max(0, Math.ceil((deadline - now) / 1000)),
     Math.max(0, run.remainingSeconds),
   )
-  const remainingRef = useRef(remaining)
-  remainingRef.current = remaining
   const [clockShown, setClockShown] = useState(true)
   const [said, setSaid] = useState('')
   const [spoken] = useState(() => new Set<number>(MILESTONES.filter((m) => remaining <= m)))
 
-  const ticking = live && phase === 'running'
   useEffect(() => {
-    if (!ticking) return
+    if (!live) return
     const id = window.setInterval(() => setNow(Date.now()), 1000)
     return () => window.clearInterval(id)
-  }, [ticking])
+  }, [live])
 
+  // What the hand-in takes with it: the answers as they stand.
+  const latest = useRef({ run, answers })
+  latest.current = { run, answers }
+  const endRef = useRef(onEnd)
+  endRef.current = onEnd
   const submit = useCallback(() => {
-    if (settled.current) return
-    settled.current = true
+    if (attempted.current) return
+    attempted.current = true
     setSlip(null)
     setViewing(null)
-    setHandinError(false)
-    setPhase('settling')
+    let outcome: PassEnd['outcome'] = 'submitted'
     try {
       actions.submitProvpass()
     } catch {
-      // The answers stay; the reader tries again from the hand-in slip. With
-      // the time up (by either clock) only that retry is left: the pass
-      // never hands itself in again on its own.
-      settled.current = false
-      setHandinError(true)
-      setSlip('handin')
-      const timeUp = remainingRef.current <= 0 || Date.now() >= deadline
-      setPhase(timeUp ? 'failed' : 'running')
+      outcome = 'failed'
     }
-  }, [actions, deadline])
+    // Over either way. A host that opens the result leaves this behind; one
+    // that stays on screen 9 shows the pass's closing page instead.
+    endRef.current({ outcome, run: latest.current.run, answers: latest.current.answers })
+  }, [actions])
   const submitRef = useRef(submit)
   submitRef.current = submit
 
-  // Time out: handed in, once.
+  // Time out: handed in, unless the hand-in was already tried.
   useEffect(() => {
-    if (phase === 'running' && remaining <= 0) submitRef.current()
-  }, [phase, remaining])
+    if (remaining <= 0) submitRef.current()
+  }, [remaining])
 
   // Five minutes and one minute left: said once each, in words; at five
   // the folded clock comes back in place.
@@ -823,9 +852,9 @@ function PassRunner({
   }, [index])
 
   /** Whether the pass takes input now; a deadline passed while the tab
-   *  slept hands the pass in instead. */
+   *  slept hands the pass in instead (unless it was already tried). */
   const canAct = (): boolean => {
-    if (settled.current || phase !== 'running') return false
+    if (attempted.current) return false
     if (live && Date.now() >= deadline) {
       submitRef.current()
       return false
@@ -874,9 +903,6 @@ function PassRunner({
   const ask = (s: Exclude<Slip, null>) => {
     if (canAct()) setSlip(s)
   }
-  const askHandin = () => {
-    if (phase === 'failed' || canAct()) setSlip('handin')
-  }
   const rotate = () => {
     const src = q?.figure?.src
     if (src) setRotations((r) => ({ ...r, [src]: ((r[src] ?? 0) + 90) % 360 }))
@@ -885,14 +911,17 @@ function PassRunner({
     if (canAct()) setViewing(figure)
   }
 
-  // Keys, in the capture phase so the pass hears them first. The digits and
-  // ←/→ are the bake-off switcher's: mid-pass they never change the
-  // direction or the screen, whatever has focus. ←/→ change the question
-  // (a focused scroll region keeps them), A–E choose and save, ⇧ + letter
-  // strikes, ↵ and space move on (a focused control keeps its own). Esc
-  // never leaves; a slip or Förstora takes the keys while it is open.
+  // Keys, in the capture phase so the pass hears them first. The digits are
+  // the bake-off switcher's: mid-pass they never change the direction,
+  // whatever has focus. ←/→ change the question (and so never the screen)
+  // from anywhere but a focused scroll surface itself, which keeps them and
+  // space to scroll, its keyscope holding off the switcher; the heading that
+  // has focus after every move is inside such a surface, and moves on. A–E
+  // choose and save, ⇧ + letter strikes, ↵ and space move on (a focused
+  // control keeps its own). Esc never leaves; a slip or Förstora takes the
+  // keys while it is open. Once the hand-in is tried, none are the pass's.
   const keys = useRef({ goTo, advance, pick, strike, index, letters: [] as AnswerLetter[] })
-  const blocked = slip != null || viewing != null || phase !== 'running'
+  const blocked = slip != null || viewing != null
   keys.current = {
     goTo,
     advance,
@@ -906,14 +935,15 @@ function PassRunner({
   useEffect(() => {
     if (!live) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.metaKey || e.ctrlKey || e.altKey) return
+      if (attempted.current || e.metaKey || e.ctrlKey || e.altKey) return
+      const t = e.target instanceof Element ? e.target : null
+      // The scroll surface itself, never what is inside it.
+      const region = t?.hasAttribute('data-fo-region') ?? false
       const arrow = e.key === 'ArrowLeft' || e.key === 'ArrowRight'
-      if (arrow || /^[0-9]$/.test(e.key)) e.preventDefault()
+      if ((arrow && !region) || /^[0-9]$/.test(e.key)) e.preventDefault()
       if (blockedRef.current || isForeignKey(e)) return
       const k = keys.current
-      const t = e.target instanceof Element ? e.target : null
       const control = t?.closest(CONTROL) != null
-      const region = !control && t?.closest('[data-fo-region]') != null
       if (arrow) {
         if (!region) k.goTo(k.index + (e.key === 'ArrowRight' ? 1 : -1))
         return
@@ -952,8 +982,7 @@ function PassRunner({
     urgent: remaining <= 300,
     clockShown,
     toggleClock: () => setClockShown((s) => !s),
-    locked: phase !== 'running',
-    settling: phase === 'settling',
+    locked: remaining <= 0,
     showKeys: index === startIndex,
     rot: q.figure ? (rotations[q.figure.src] ?? 0) : 0,
     focusPara,
@@ -964,7 +993,7 @@ function PassRunner({
     badge: data.copy.ovningstextBadge,
     noteText: data.copy.ovningstextNote,
     live,
-    act: { goTo, advance, pick, strike, toggleFlag, ask, askHandin, rotate, zoom },
+    act: { goTo, advance, pick, strike, toggleFlag, ask, rotate, zoom },
   }
   const modal = slip != null || viewing != null
   return (
@@ -973,17 +1002,13 @@ function PassRunner({
         className="fo-passroot"
         data-testid="rd-prov-running"
         data-rd-keyscope
-        data-phase={phase}
         inert={modal || undefined}
       >
         {width === 'phone' ? <PhonePass c={chrome} /> : <DeskPass c={chrome} />}
-        {phase === 'settling' ? (
-          <p className="fo-pass-settling">Passet lämnas in. Dina svar är sparade.</p>
-        ) : null}
       </div>
       {/* Outside the page, so it is heard while a slip is open too. */}
       <span className="fo-sr" role="status">
-        {phase === 'settling' ? 'Passet lämnas in.' : said}
+        {said}
       </span>
       {slip === 'overview' ? (
         <OverviewSlip
@@ -1000,8 +1025,6 @@ function PassRunner({
         <HandinSlip
           questions={questions}
           answers={answers}
-          error={handinError}
-          timeUp={phase === 'failed'}
           onGo={goTo}
           onSubmit={submit}
           onClose={() => setSlip(null)}
@@ -1132,8 +1155,8 @@ function PassTools({ c, position = true }: { c: PassChrome; position?: boolean }
         className="fo-ghost"
         data-testid="rd-prov-submit"
         aria-haspopup="dialog"
-        disabled={c.settling}
-        onClick={c.act.askHandin}
+        disabled={c.locked}
+        onClick={() => c.act.ask('handin')}
       >
         Lämna in
       </button>
@@ -1509,8 +1532,8 @@ function PhonePassHead({ c, compact }: { c: PassChrome; compact: boolean }) {
           className="fo-ghost fo-focus-btn"
           data-testid="rd-prov-submit"
           aria-haspopup="dialog"
-          disabled={c.settling}
-          onClick={c.act.askHandin}
+          disabled={c.locked}
+          onClick={() => c.act.ask('handin')}
         >
           Lämna in
         </button>
@@ -1769,21 +1792,18 @@ function OverviewSlip({
 }
 
 /** Lämna in: how many are left blank (fel ger inga avdrag) and links to
- *  them; handing in is not destructive, so Lämna in holds ↵. A failed
- *  hand-in says so here and offers the same press again. */
+ *  them; handing in is not destructive, so Lämna in holds ↵. It is the
+ *  pass's one hand-in: what follows is the result, or the pass's closing
+ *  page (FolioPassEnded). */
 function HandinSlip({
   questions,
   answers,
-  error,
-  timeUp,
   onGo,
   onSubmit,
   onClose,
 }: {
   questions: readonly DrillQuestion[]
   answers: Partial<Record<string, AnswerLetter>>
-  error: boolean
-  timeUp: boolean
   onGo: (i: number) => void
   onSubmit: () => void
   onClose: () => void
@@ -1796,9 +1816,8 @@ function HandinSlip({
       : `${n === 1 ? 'En fråga är obesvarad' : `${capitalised(inWords(n))} frågor är obesvarade`} – fel ger inga avdrag, så gissa hellre.`
   return (
     <FolioSlip id="fo-handin" title="Lämna in provpasset?" onClose={onClose}>
-      {timeUp ? <p className="fo-slip-lede">Tiden är slut.</p> : null}
       <p className="fo-slip-lede">{body}</p>
-      {n > 0 && n <= 12 && !timeUp ? (
+      {n > 0 && n <= 12 ? (
         <p className="fo-slip-links">
           {blanks.map((i, k) => (
             <button
@@ -1813,11 +1832,6 @@ function HandinSlip({
           ))}
         </p>
       ) : null}
-      {error ? (
-        <div className="fo-erratum" role="status">
-          <p>Inlämningen gick inte fram. Dina svar är sparade.</p>
-        </div>
-      ) : null}
       <div className="fo-slip-actions">
         <button
           type="button"
@@ -1826,16 +1840,14 @@ function HandinSlip({
           data-autofocus
           onClick={onSubmit}
         >
-          {error ? 'Försök igen' : 'Lämna in'}
+          Lämna in
           <kbd className="fo-kbd" aria-hidden>
             ↵
           </kbd>
         </button>
-        {timeUp ? null : (
-          <button type="button" className="fo-quiet-btn" onClick={onClose}>
-            Tillbaka till passet
-          </button>
-        )}
+        <button type="button" className="fo-quiet-btn" onClick={onClose}>
+          Tillbaka till passet
+        </button>
       </div>
     </FolioSlip>
   )
@@ -1864,6 +1876,139 @@ function AbortSlip({ onAbandon, onClose }: { onAbandon: () => void; onClose: () 
         </button>
       </div>
     </FolioSlip>
+  )
+}
+
+// ── The pass, over ───────────────────────────────────────────────────
+
+/**
+ * Screen 9 after the pass's one hand-in, while the host stays there (a host
+ * that opens the result never shows it). The frame is back around a closing
+ * page: ⁂ over "Passet är inlämnat.", or, when the hand-in failed, its error
+ * as a title and an erratum that stay; the pass named in the lead with the
+ * screen's one filled button, Till anmälan ↵; and the answers as they stood,
+ * by section, read-only. Nothing here hands the pass in again.
+ */
+export function FolioPassEnded({
+  width,
+  live,
+  end,
+  onHub,
+}: {
+  width: WidthKey
+  live: boolean
+  end: PassEnd
+  /** Till anmälan: the hub, with nothing more to say. */
+  onHub: () => void
+}) {
+  const { run, answers } = end
+  const failed = end.outcome === 'failed'
+  const answered = run.questions.filter((q) => answers[q.qid] != null).length
+  const headingRef = useRef<HTMLHeadingElement>(null)
+  // The page's title takes the focus the pass had, so the end is heard.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: once, on arrival
+  useEffect(() => {
+    if (live) headingRef.current?.focus({ preventScroll: true })
+  }, [])
+  // ↵ is Till anmälan's — pressed afresh: the repeat of a ↵ held down on
+  // the hand-in never skips this page (or its error).
+  const hub = useRef(onHub)
+  hub.current = onHub
+  useEffect(() => {
+    if (!live) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Enter' || e.defaultPrevented || isForeignKey(e)) return
+      if (e.target instanceof Element && e.target.closest(CONTROL)) return
+      e.preventDefault()
+      if (!e.repeat) hub.current()
+    }
+    window.addEventListener('keydown', onKey, true)
+    return () => window.removeEventListener('keydown', onKey, true)
+  }, [live])
+  return (
+    <FolioPage width={width} masthead={<Masthead label="Provpass" />}>
+      {failed ? null : (
+        <span className="fo-colophon-mark fo-result-mark" aria-hidden>
+          ⁂
+        </span>
+      )}
+      <h1 className="fo-greet fo-ended-title" tabIndex={-1} ref={headingRef}>
+        {failed ? 'Inlämningen gick inte fram.' : 'Passet är inlämnat.'}
+      </h1>
+      {failed ? (
+        <div className="fo-erratum fo-prov-note">
+          <p>
+            Passet går inte att lämna in igen härifrån. Svaren nedan är dina, som de stod vid
+            inlämningen.
+          </p>
+        </div>
+      ) : (
+        <p className="fo-day">Svaren nedan är de du lämnade in.</p>
+      )}
+      <Lead labelledBy="fo-end-lead" testId="rd-prov-ended">
+        <div className="fo-resume-top">
+          <span className="fo-label">
+            {HALF_WORD[run.half]} · {run.mode === 'authentic' ? 'riktigt pass' : 'genererat pass'}
+          </span>
+        </div>
+        <h2 className="fo-lead-title" id="fo-end-lead">
+          {passName(run.sitting, run.pass)}
+        </h2>
+        <p className="fo-lead-sub">
+          {answered} av {run.questions.length} frågor besvarade
+        </p>
+        <div className="fo-resume-foot">
+          <button type="button" className="fo-btn fo-btn--big" onClick={onHub}>
+            Till anmälan
+            <kbd className="fo-kbd" aria-hidden>
+              ↵
+            </kbd>
+          </button>
+        </div>
+      </Lead>
+      {run.questions.length ? (
+        <section className="fo-section" aria-labelledby="fo-end-ans-h">
+          <div className="fo-section-head">
+            <h2 className="fo-h2" id="fo-end-ans-h">
+              Dina svar
+            </h2>
+            <span className="fo-meta">i provets ordning</span>
+          </div>
+          <div className="fo-answers">
+            {runsOf(run.questions).map((r) => (
+              <div className="fo-answers-run" key={r.start}>
+                <span className="fo-entry-code" id={`fo-end-${r.start}`}>
+                  {r.section}
+                </span>
+                <ol aria-labelledby={`fo-end-${r.start}`}>
+                  {run.questions.slice(r.start, r.end).map((q, k) => {
+                    const n = r.start + k + 1
+                    const letter = answers[q.qid]
+                    return (
+                      <li
+                        key={q.qid}
+                        className="fo-answers-cell"
+                        data-answered={String(letter != null)}
+                      >
+                        <span className="fo-answers-n" aria-hidden>
+                          {n}
+                        </span>
+                        <span className="fo-answers-l" aria-hidden>
+                          {letter ?? '–'}
+                        </span>
+                        <span className="fo-sr">
+                          {letter ? `Fråga ${n}, svar ${letter}` : `Fråga ${n}, obesvarad`}
+                        </span>
+                      </li>
+                    )
+                  })}
+                </ol>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+    </FolioPage>
   )
 }
 
@@ -1918,6 +2063,10 @@ export function FolioProvResult({
   // The pass's own questions, while the host still has them: the misses
   // can then be read by their stems.
   const questions = running.passId === r.passId ? running.questions : []
+  // Whether the score rests on övningstexter, where the pass says so: a P5
+  // text among its own questions, or a miss in the P5 namespace. A pass
+  // whose provenance is not at hand claims nothing.
+  const p5 = questions.some((q) => q.passage?.synthetic === true) || r.missed.some(isP5Qid)
   const sections = [...r.sections].sort(
     (a, z) => SECTION_KEYS.indexOf(a.section) - SECTION_KEYS.indexOf(z.section),
   )
@@ -1930,7 +2079,9 @@ export function FolioProvResult({
   const kind = official ? 'normerat och härlett' : 'skattad'
   const sentence =
     value != null
-      ? `${fmtPassScore(value)} av 2,0, ${kind}, ${r.correct} av ${r.presented} rätt`
+      ? `${fmtPassScore(value)} av 2,0, ${kind}, ${r.correct} av ${r.presented} rätt${
+          p5 ? ', med förbehåll i fotnoten' : ''
+        }`
       : `Ingen poäng för det här passet, ${r.correct} av ${r.presented} rätt`
 
   const main = (
@@ -1949,7 +2100,7 @@ export function FolioProvResult({
         <ResultFigure
           testId="rd-prov-score"
           figure={value != null ? fmtPassScore(value) : '—'}
-          mark="*"
+          mark={p5 ? '*,**' : '*'}
           of={official ? 'normerat (härlett) · av 2,0' : 'skattad poäng · av 2,0'}
           sentence={sentence}
         >
@@ -2061,7 +2212,7 @@ export function FolioProvResult({
       </section>
 
       <div className="fo-footnotes">
-        <p className="fo-footnote" id="fo-res-fn">
+        <p className={`fo-footnote${p5 ? ' fo-footnote--wide' : ''}`} id="fo-res-fn">
           <b aria-hidden>*</b>
           <span>
             {official
@@ -2069,6 +2220,12 @@ export function FolioProvResult({
               : 'Linjär skattning – indikativ, inte UHR-normerad.'}
           </span>
         </p>
+        {p5 ? (
+          <p className="fo-footnote fo-footnote--wide">
+            <b aria-hidden>**</b>
+            <span>{data.copy.estimateCaveat}</span>
+          </p>
+        ) : null}
       </div>
     </>
   )

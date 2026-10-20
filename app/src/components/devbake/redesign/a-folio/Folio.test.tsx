@@ -64,6 +64,11 @@ function mount(s: DirectionProps['screen'], opts: Mount = {}) {
 const press = (key: string, init: KeyboardEventInit = {}) =>
   fireEvent.keyDown(window, { key, ...init })
 
+/** A key where a real one lands: on whatever has focus (after a pass opens
+ *  or moves, its question's heading), so the ancestors' rules apply. */
+const pressFocused = (key: string, init: KeyboardEventInit = {}) =>
+  fireEvent.keyDown(document.activeElement ?? document.body, { key, ...init })
+
 beforeAll(stubLayout)
 
 describe('Folio · Idag on the data context', () => {
@@ -630,6 +635,21 @@ function startPass() {
 
 const cell = (n: number) => screen.getByTestId(`rd-prov-cell-${n}`)
 
+/** A pass that is over while the host stays on screen 9: the runner gone,
+ *  the page saying so, an enabled way to the hub and the contents, and the
+ *  switcher's keys free again (no capture, no keyscope). */
+function expectEnded(title: string) {
+  expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+  expect(screen.getByRole('heading', { level: 1, name: title })).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /^Till anmälan/ })).toBeEnabled()
+  expect(screen.getByTestId('rd-nav-idag')).toBeEnabled()
+  expect(screen.getByTestId('rd-nav-provpass')).toHaveAttribute('aria-current', 'page')
+  expect(document.querySelector('[data-rd-keyscope]')).toBeNull()
+  for (const key of ['3', 'ArrowRight', 'ArrowLeft']) {
+    expect(pressFocused(key)).toBe(true)
+  }
+}
+
 describe('Folio · Provpass, the hub', () => {
   it('summons the least-seen pass of the half; a cell of the register moves the lead', () => {
     const startProvpass = vi.fn()
@@ -844,8 +864,41 @@ describe('Folio · Provpass, the running pass', () => {
     const region = document.querySelector<HTMLElement>('.fo-qscroll')
     if (!region) throw new Error('the page has no scroll region')
     expect(region).toHaveAttribute('data-rd-keyscope')
-    fireEvent.keyDown(region, { key: 'ArrowRight' })
+    // Not prevented, so the region itself scrolls; its keyscope keeps the
+    // switcher off.
+    expect(fireEvent.keyDown(region, { key: 'ArrowRight' })).toBe(true)
+    expect(fireEvent.keyDown(region, { key: ' ' })).toBe(true)
     expect(cell(17)).toHaveAttribute('data-current', 'true')
+  })
+
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('moves from where the focus really is, the question’s heading, on %s', (width) => {
+    mount(9, { width })
+    startPass()
+    const focused = () => document.activeElement
+    // Opened: the heading has focus, inside the page's scroll region.
+    expect(focused()).toHaveAccessibleName('Kvantitativa jämförelser, fråga 17 av 40')
+    expect(focused()?.closest('[data-fo-region]')).not.toBeNull()
+    expect(pressFocused('ArrowRight')).toBe(false)
+    expect(cell(18)).toHaveAttribute('data-current', 'true')
+    // Moved: the next heading has it, and the keys go on working from there.
+    expect(focused()).toHaveAccessibleName(/fråga 18 av 40$/)
+    expect(pressFocused('ArrowLeft')).toBe(false)
+    expect(cell(17)).toHaveAttribute('data-current', 'true')
+    pressFocused(' ')
+    expect(cell(18)).toHaveAttribute('data-current', 'true')
+    pressFocused('Enter')
+    expect(cell(19)).toHaveAttribute('data-current', 'true')
+    expect(focused()).toHaveAccessibleName(/fråga 19 av 40$/)
+    if (width === 'desktop') {
+      // A plate's question: the heading on the spread's recto page.
+      fireEvent.click(cell(29))
+      expect(focused()?.closest('.fo-page--recto')).not.toBeNull()
+      expect(pressFocused('ArrowRight')).toBe(false)
+      expect(cell(30)).toHaveAttribute('data-current', 'true')
+    }
   })
 
   it('folds the clock to its line and brings it back, in words, at five minutes', () => {
@@ -863,7 +916,7 @@ describe('Folio · Provpass, the running pass', () => {
     expect(screen.getByTestId('rd-prov-timer')).toHaveAttribute('data-urgent', 'true')
   })
 
-  it('hands the pass in once when the host’s countdown reaches zero, never voiding it', () => {
+  it('hands the pass in once when the host’s countdown reaches zero, then ends it for good', () => {
     vi.useFakeTimers()
     const data = structuredClone(FIXTURE_DATA)
     data.provpass.running.remainingSeconds = 3
@@ -871,18 +924,24 @@ describe('Folio · Provpass, the running pass', () => {
     const { supply } = mount(9, { data, actions: { submitProvpass } })
     startPass()
     fireEvent.click(screen.getByTestId('rd-prov-option-B'))
-    // The host ticks to zero before the pass's own interval does.
+    // The host ticks to zero before the pass's own interval does; then it
+    // stays on screen 9.
     const next = structuredClone(data)
     next.provpass.running.remainingSeconds = 0
     supply(next)
     expect(submitProvpass).toHaveBeenCalledTimes(1)
-    expect(screen.getByTestId('rd-prov-running')).toBeInTheDocument()
     expect(screen.queryByText(/ogiltigt|räknas inte/)).toBeNull()
-    expect(screen.getByText('Passet lämnas in. Dina svar är sparade.')).toBeInTheDocument()
-    expect(screen.getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'true')
+    expectEnded('Passet är inlämnat.')
+    // The answers as handed in, read-only: no option to press any more.
+    const answers = screen.getByRole('region', { name: 'Dina svar' })
+    expect(within(answers).getByText('Fråga 17, svar B')).toBeInTheDocument()
+    expect(within(answers).getByText('Fråga 22, obesvarad')).toBeInTheDocument()
+    expect(screen.queryByTestId('rd-prov-option-B')).toBeNull()
     act(() => vi.advanceTimersByTime(5000))
     supply(structuredClone(next))
     expect(submitProvpass).toHaveBeenCalledTimes(1)
+    fireEvent.click(screen.getByRole('button', { name: /^Till anmälan/ }))
+    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
   })
 
   it('hands in once on its own clock too, even with the abandon slip open', () => {
@@ -900,9 +959,30 @@ describe('Folio · Provpass, the running pass', () => {
     })
     expect(submitProvpass).toHaveBeenCalledTimes(1)
     expect(screen.queryByRole('dialog')).toBeNull()
-    expect(screen.getByTestId('rd-prov-timer')).toHaveTextContent('00:00')
+    expect(screen.queryByText(/ogiltigt|räknas inte/)).toBeNull()
+    expectEnded('Passet är inlämnat.')
     act(() => vi.advanceTimersByTime(10_000))
     expect(submitProvpass).toHaveBeenCalledTimes(1)
+  })
+
+  it('ends calmly on the kit’s NOOP hand-in, the frame back at both widths', () => {
+    for (const width of ['desktop', 'phone'] as const) {
+      // No submitProvpass: the provider's NOOP stands in, and the host
+      // never leaves screen 9.
+      const view = mount(9, { width })
+      startPass()
+      fireEvent.click(screen.getByTestId('rd-prov-submit'))
+      fireEvent.click(screen.getByTestId('rd-confirm'))
+      expectEnded('Passet är inlämnat.')
+      expect(screen.getByText('Svaren nedan är de du lämnade in.')).toBeInTheDocument()
+      expect(screen.getByTestId('rd-prov-ended')).toHaveTextContent('16 av 40 frågor besvarade')
+      // The account entry is back with the contents.
+      expect(screen.getByTestId('rd-account')).toBeEnabled()
+      // The contents' Provpass opens the hub too.
+      fireEvent.click(screen.getByTestId('rd-nav-provpass'))
+      expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+      view.unmount()
+    }
   })
 
   it('never starts a pass whose time is up when it opens: it does not count', () => {
@@ -945,37 +1025,64 @@ describe('Folio · Provpass, the running pass', () => {
     press('Enter')
     fireEvent.click(within(screen.getByRole('dialog')).getByTestId('rd-confirm'))
     expect(submitProvpass).toHaveBeenCalledTimes(1)
-    expect(screen.getByText('Passet lämnas in. Dina svar är sparade.')).toBeInTheDocument()
-    expect(screen.getByTestId('rd-prov-submit')).toBeDisabled()
+    // The host stays on screen 9: the pass says it is in, and ↵ goes on to
+    // the hub, never to a second hand-in.
+    expectEnded('Passet är inlämnat.')
+    expect(screen.getByTestId('rd-prov-ended')).toHaveTextContent('40 av 40 frågor besvarade')
     press('Enter')
+    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
     expect(submitProvpass).toHaveBeenCalledTimes(1)
   })
 
-  it('keeps the answers and offers the hand-in again when it fails', () => {
+  it('ends the pass on a failed hand-in and never hands it in again, on either clock', () => {
+    vi.useFakeTimers()
     const submitProvpass = vi.fn(() => {
       throw new Error('offline')
     })
-    mount(9, { actions: { submitProvpass } })
+    const data = structuredClone(FIXTURE_DATA)
+    const { supply } = mount(9, { data, actions: { submitProvpass } })
     startPass()
+    press('a')
+    // By hand, with half an hour left.
     fireEvent.click(screen.getByTestId('rd-prov-submit'))
     expect(screen.getByRole('dialog')).toHaveTextContent(
-      '24 frågor är obesvarade – fel ger inga avdrag, så gissa hellre.',
+      '23 frågor är obesvarade – fel ger inga avdrag, så gissa hellre.',
     )
     fireEvent.click(screen.getByTestId('rd-confirm'))
-    const slip = screen.getByRole('dialog', { name: 'Lämna in provpasset?' })
-    expect(within(slip).getByRole('status')).toHaveTextContent(
-      'Inlämningen gick inte fram. Dina svar är sparade.',
-    )
-    fireEvent.click(within(slip).getByRole('button', { name: /Försök igen/ }))
-    expect(submitProvpass).toHaveBeenCalledTimes(2)
-    fireEvent.click(
-      within(screen.getByRole('dialog')).getByRole('button', { name: 'Tillbaka till passet' }),
-    )
-    press('a')
-    expect(screen.getByTestId('rd-prov-option-A')).toHaveAttribute('aria-pressed', 'true')
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    // The host's countdown reaches zero, then the pass's own deadline
+    // passes: neither hands it in again.
+    const next = structuredClone(data)
+    next.provpass.running.remainingSeconds = 0
+    supply(next)
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    act(() => {
+      vi.setSystemTime(Date.now() + 40 * 60_000)
+      vi.advanceTimersByTime(2000)
+    })
+    press('b')
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
+    // Over for good, and said so where the pass was.
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expectEnded('Inlämningen gick inte fram.')
+    expect(
+      screen.getByText(
+        'Passet går inte att lämna in igen härifrån. Svaren nedan är dina, som de stod vid inlämningen.',
+      ),
+    ).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Försök igen/ })).toBeNull()
+    expect(
+      within(screen.getByRole('region', { name: 'Dina svar' })).getByText('Fråga 17, svar A'),
+    ).toBeInTheDocument()
+    // The error stays where it is.
+    press('Escape')
+    expect(screen.getByRole('heading', { level: 1, name: 'Inlämningen gick inte fram.' }))
+    fireEvent.click(screen.getByTestId('rd-nav-idag'))
+    expect(screen.getByTestId('rd-nav-idag')).toHaveAttribute('aria-current', 'page')
+    expect(submitProvpass).toHaveBeenCalledTimes(1)
   })
 
-  it('tries a failed hand-in at time out once, then leaves the retry to the reader', () => {
+  it('says a failed hand-in at time out plainly and for good, with the way out', () => {
     const submitProvpass = vi.fn(() => {
       throw new Error('offline')
     })
@@ -987,18 +1094,19 @@ describe('Folio · Provpass, the running pass', () => {
     next.provpass.running.remainingSeconds = 0
     supply(next)
     expect(submitProvpass).toHaveBeenCalledTimes(1)
-    const slip = screen.getByRole('dialog', { name: 'Lämna in provpasset?' })
-    expect(slip).toHaveTextContent('Tiden är slut.')
-    expect(within(slip).getByRole('status')).toHaveTextContent('Inlämningen gick inte fram.')
-    expect(within(slip).queryByRole('button', { name: 'Tillbaka till passet' })).toBeNull()
-    press('Escape')
     expect(screen.queryByRole('dialog')).toBeNull()
+    expectEnded('Inlämningen gick inte fram.')
+    press('Escape')
+    // A ↵ held down from before never skips the error; a fresh one leaves.
+    press('Enter', { repeat: true })
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Inlämningen gick inte fram.' }),
+    ).toBeInTheDocument()
+    press('Enter')
     expect(submitProvpass).toHaveBeenCalledTimes(1)
-    press('b') // time is up: nothing more is answered
-    expect(screen.getByTestId('rd-prov-option-B')).toHaveAttribute('aria-pressed', 'false')
-    fireEvent.click(screen.getByTestId('rd-prov-submit'))
-    fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: /Försök igen/ }))
-    expect(submitProvpass).toHaveBeenCalledTimes(2)
+    expect(screen.getByRole('heading', { level: 1, name: 'Anmälan.' })).toBeInTheDocument()
+    // Handed in, not voided or run out: the hub has no note to give.
+    expect(screen.queryByText(/^Provet avbröts|^Passet hann ta slut/)).toBeNull()
   })
 
   it('asks before voiding: Fortsätt provpasset is the default, Avbryt passet voids', () => {
@@ -1199,6 +1307,28 @@ describe('Folio · in the real bake-off', () => {
     expect(screen.getByTestId('rd-prov-running')).toHaveAttribute('data-rd-keyscope')
   })
 
+  it('moves the question from the focused heading while the switcher stays put', async () => {
+    const onSelect = mountHost(9)
+    fireEvent.click(await screen.findByTestId('rd-prov-start', {}, { timeout: 5000 }))
+    fireEvent.click(screen.getByTestId('rd-confirm'))
+    onSelect.mockClear()
+    expect(document.activeElement).toHaveAccessibleName(/fråga 17 av 40$/)
+    expect(pressFocused('ArrowRight')).toBe(false)
+    expect(screen.getByTestId('rd-prov-cell-18')).toHaveAttribute('data-current', 'true')
+    expect(document.activeElement).toHaveAccessibleName(/fråga 18 av 40$/)
+    pressFocused(' ')
+    expect(screen.getByTestId('rd-prov-cell-19')).toHaveAttribute('data-current', 'true')
+    pressFocused('ArrowLeft')
+    expect(screen.getByTestId('rd-prov-cell-18')).toHaveAttribute('data-current', 'true')
+    // The page's own scroll region keeps its arrows; the switcher stays out.
+    const region = document.querySelector<HTMLElement>('.fo-qscroll')
+    if (!region) throw new Error('the page has no scroll region')
+    fireEvent.keyDown(region, { key: 'ArrowRight' })
+    expect(screen.getByTestId('rd-prov-cell-18')).toHaveAttribute('data-current', 'true')
+    expect(onSelect).not.toHaveBeenCalled()
+    expect(screen.getByTestId('rd-prov-running')).toBeInTheDocument()
+  })
+
   it('keeps a slip’s keys its own, and hands the pass in on to the result', async () => {
     const onSelect = mountHost(9)
     fireEvent.click(await screen.findByTestId('rd-prov-start', {}, { timeout: 5000 }))
@@ -1279,6 +1409,8 @@ describe('Folio · Provpassresultat', () => {
     expect(
       screen.getByText(/UHR normerar hela den kvantitativa delen \(80 frågor\)/),
     ).toBeInTheDocument()
+    // An authentic quant pass rests on no övningstext: no calibration caveat.
+    expect(screen.queryByText(FIXTURE_DATA.copy.estimateCaveat)).toBeNull()
     // Learning first: Repetera holds the misses. Esc goes to Provpass.
     fireEvent.click(screen.getByRole('button', { name: /^Till Repetera/ }))
     expect(openRepetera).toHaveBeenCalledTimes(1)
@@ -1325,6 +1457,65 @@ describe('Folio · Provpassresultat', () => {
     ).toEqual(['xyz', 'kva', 'nog', 'dtk'].map((s) => `rd-prov-section-${s}`))
     fireEvent.click(screen.getByRole('button', { name: /^Nytt provpass/ }))
     expect(go).toHaveBeenLastCalledWith('provpass')
+  })
+
+  it('adds the calibration caveat when the pass’s own questions carry P5 texts', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    const run = data.provpass.running
+    const r = data.provpass.result
+    // The pass's questions are still at hand: a verbal pass whose LÄS text
+    // is a P5 unit (an övningstext).
+    run.questions = data.drills.reading.questions
+    run.half = 'verbal'
+    r.passId = run.passId
+    r.half = 'verbal'
+    r.presented = run.questions.length
+    r.answered = run.questions.length
+    r.correct = run.questions.length - 1
+    r.missed = [run.questions[1].qid]
+    r.sections = [{ section: 'LÄS', presented: 4, correct: 3, timeSeconds: 700, quotaSeconds: 825 }]
+    r.trap = null
+    mount(10, { data })
+    const caveat = screen.getByText(data.copy.estimateCaveat)
+    expect(caveat.closest('.fo-footnote')).toHaveTextContent(/^\*\*Uppskattningen/)
+    // The figure carries both marks, and says so in words.
+    const score = screen.getByTestId('rd-prov-score')
+    expect(within(score).getByText('*,**')).toBeInTheDocument()
+    expect(score).toHaveTextContent('rätt, med förbehåll i fotnoten')
+    // The basis footnote is still the first.
+    expect(
+      screen.getByText(/UHR normerar hela den verbala delen/).closest('.fo-footnote'),
+    ).toHaveTextContent(/^\*Härlett/)
+  })
+
+  it('adds it for P5 misses too, and never claims P5 when the provenance is unknown', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    const r = data.provpass.result
+    // Another pass than the running one: its questions are not at hand.
+    r.passId = 'var-2026:verb1'
+    r.half = 'verbal'
+    r.sitting = 'Våren 2026'
+    r.pass = 'Provpass 1'
+    r.sections = (['ORD', 'LÄS', 'MEK', 'ELF'] as const).map((section) => ({
+      section,
+      presented: 10,
+      correct: 8,
+      timeSeconds: 780,
+      quotaSeconds: 825,
+    }))
+    r.trap = null
+    r.missed = ['var-2026-verb1-ORD-006', 'p5-elf-b19-003-r1-ELF-001']
+    const known = mount(10, { data })
+    expect(screen.getByText(data.copy.estimateCaveat)).toBeInTheDocument()
+    expect(within(screen.getByTestId('rd-prov-score')).getByText('*,**')).toBeInTheDocument()
+    known.unmount()
+    // Nothing says where its texts came from: no caveat, no second mark.
+    const unknown = structuredClone(data)
+    unknown.provpass.result.missed = ['var-2026-verb1-ORD-006', 'var-2026-verb1-ELF-033']
+    mount(10, { data: unknown })
+    expect(screen.queryByText(data.copy.estimateCaveat)).toBeNull()
+    expect(within(screen.getByTestId('rd-prov-score')).getByText('*')).toBeInTheDocument()
+    expect(screen.getByTestId('rd-prov-score')).not.toHaveTextContent('förbehåll')
   })
 })
 

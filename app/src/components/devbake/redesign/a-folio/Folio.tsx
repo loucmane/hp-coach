@@ -16,7 +16,9 @@
 //   8 Repetera    — the frame, Öva current, around today's misses
 //   9 Provpass    — the frame around the exam notice (FolioProvpass); a
 //                   started pass leaves the frame for focus mode, set in
-//                   each question's drill layout and never graded
+//                   each question's drill layout and never graded; once
+//                   its one hand-in is tried, the frame is back (around
+//                   the pass's closing page, if the host stays on 9)
 //  10 Resultat    — the frame, Provpass current, around the handed-in pass
 //  11 Framsteg    — the frame around the report, with Historik and Fällor
 //                   as its back matter (FolioFramsteg)
@@ -48,9 +50,11 @@ import { FolioHome } from './FolioHome'
 import { FolioOva } from './FolioOva'
 import {
   ConditionsSlip,
+  FolioPassEnded,
   FolioPassRun,
   FolioProvpass,
   FolioProvResult,
+  type PassEnd,
   type ProvNote,
 } from './FolioProvpass'
 import { FolioQuant } from './FolioQuant'
@@ -120,9 +124,13 @@ function summonsOf(hub: ProvHubView): string | null {
   return (passes.find((p) => p.suggested) ?? passes[0])?.id ?? null
 }
 
-/** Screen 9's two states: the hub (with what the last pass's end left to
- *  say), or a pass the reader has started. */
-type ProvState = { kind: 'hub'; note: ProvNote } | { kind: 'run'; passId: string }
+/** Screen 9's states: the hub (with what the last pass's end left to say),
+ *  a pass the reader has started, or one whose hand-in was tried while the
+ *  host stayed on screen 9. */
+type ProvState =
+  | { kind: 'hub'; note: ProvNote }
+  | { kind: 'run'; passId: string }
+  | { kind: 'ended'; end: PassEnd }
 
 type ThemeChoice = ThemeKey | 'system'
 
@@ -206,6 +214,8 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
       setMenu(false)
       if (d !== 'uppslag') setPage(d)
       if (d === 'framsteg') setSub(to)
+      // Provpass from the contents opens the hub, past an ended pass's page.
+      if (d === 'provpass') setProv((p) => (p.kind === 'ended' ? { kind: 'hub', note: null } : p))
       actions.go(d)
     },
     [actions],
@@ -231,6 +241,14 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
     [actions],
   )
   const leavePass = useCallback((note: ProvNote) => setProv({ kind: 'hub', note }), [])
+  // The hand-in was tried: the pass is over. A host that opens the result
+  // moves on (and the hub opens fresh next time); one that stays on screen 9
+  // shows the pass's closing page in the frame.
+  const endPass = useCallback(
+    (end: PassEnd) => setProv((p) => (p.kind === 'run' ? { kind: 'ended', end } : p)),
+    [],
+  )
+  const toHub = useCallback(() => setProv({ kind: 'hub', note: null }), [])
   const toHistorik = useCallback(() => go('framsteg', 'historik'), [go])
   const current = CURRENT[page]
   const due = data.home.ovaDue
@@ -238,7 +256,15 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
   // A started pass is focus mode: once the host's running view is that pass
   // it takes the whole stage, with no frame.
   if (page === 'provpass' && prov.kind === 'run' && data.provpass.running.passId === prov.passId) {
-    return <FolioPassRun key={prov.passId} width={width} live={live} onLeave={leavePass} />
+    return (
+      <FolioPassRun
+        key={prov.passId}
+        width={width}
+        live={live}
+        onLeave={leavePass}
+        onEnd={endPass}
+      />
+    )
   }
   const slipPass =
     page === 'provpass' &&
@@ -255,15 +281,19 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
     ) : page === 'repetera' ? (
       <FolioRepetera width={width} live={keys} />
     ) : page === 'provpass' ? (
-      <FolioProvpass
-        width={width}
-        live={keys}
-        note={prov.kind === 'hub' ? prov.note : null}
-        pending={prov.kind === 'run' ? prov.passId : null}
-        onAsk={setConditions}
-        onCancel={() => setProv({ kind: 'hub', note: null })}
-        onHistorik={toHistorik}
-      />
+      prov.kind === 'ended' ? (
+        <FolioPassEnded width={width} live={keys} end={prov.end} onHub={toHub} />
+      ) : (
+        <FolioProvpass
+          width={width}
+          live={keys}
+          note={prov.kind === 'hub' ? prov.note : null}
+          pending={prov.kind === 'run' ? prov.passId : null}
+          onAsk={setConditions}
+          onCancel={toHub}
+          onHistorik={toHistorik}
+        />
+      )
     ) : page === 'resultat' ? (
       <FolioProvResult
         width={width}

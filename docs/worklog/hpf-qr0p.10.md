@@ -222,3 +222,159 @@ Every new Swedish string is proposed, not approved product copy. The approved co
   - the `FolioQuant.tsx` export follow-up for the lifted parts;
   - review and commit.
 - Kit and owner questions are listed under Spec gaps. Bead parked deferred after this note.
+
+## Round 2 (review hpf-k2v8, HOLD)
+
+- 2026-10-20 · Claude worker, session `ci-wisp-cptqe68`. Started from `3913bb0` (the merge of batch commit `cf99b76` with origin/main), clean.
+- Read first: the review at `~/scratch/hpf-qr0p.10/review-hpf-k2v8.md`.
+- Changes are **uncommitted**, in four admitted files plus this worklog: `FolioProvpass.tsx`, `Folio.tsx`, `folio.css` and `Folio.test.tsx`.
+- **Red-first.** I wrote the new and replaced tests before any fix and ran them on the old code: 12 failed (each failure is listed below). All of them pass after the fix.
+
+### Fix 1 · A hand-in never traps the reader
+
+The old runner set `settling` before calling `submitProvpass()`. If the host stayed on screen 9, or the action threw, it was left locked, with no frame, no exit, and the keys still captured.
+
+**The fix: the hand-in ends the pass.** It is tried once, in `FolioProvpass.tsx:810-824`:
+- a normal return gives the outcome `submitted`, a throw gives `failed`;
+- either way the runner hands a `PassEnd` up (`FolioProvpass.tsx:653`: the outcome, the pass as it ran and the answers as they stood).
+
+**The frame.** It keeps the end as screen 9's third state, `ended` (`Folio.tsx:133`, `:247-250`).
+- A host that opens the result (the bake-off's `show(10)`) moves on exactly as before.
+- A host that stays on screen 9 — kit v2's NOOP fallback, or a real one — gets the pass's closing page, `FolioPassEnded` (`FolioProvpass.tsx:1892`; it is rendered at `Folio.tsx:285`), inside the frame.
+
+**What the closing page holds:**
+- The contents (desktop) or the tabs and the account button (phone) are back. "Provpass" in the contents also leaves the page for the hub (`Folio.tsx:218`).
+- **Submitted:** ⁂ over "Passet är inlämnat.", then "Svaren nedan är de du lämnade in."
+- **Failed:** the title "Inlämningen gick inte fram." and an erratum that stays: "Passet går inte att lämna in igen härifrån. Svaren nedan är dina, som de stod vid inlämningen."
+- A lead names the pass ("Kvantitativ · riktigt pass", "Hösten 2025, provpass 1", "17 av 40 frågor besvarade"). It holds the screen's one filled button, **Till anmälan ↵**, which opens a fresh hub.
+- "Dina svar": the answers by section, read-only (number and letter; the screen reader hears "Fråga 17, svar B" or "Fråga 22, obesvarad"). Nothing on the page can answer, strike or hand in.
+- The title takes the focus on arrival, so the end is heard. It draws no ring (`folio.css:4736`); it is not a control.
+- ↵ is Till anmälan's, but a key repeat is ignored (`FolioProvpass.tsx:1913-1927`): a ↵ held down on the slip's Lämna in can't skip the error. Esc does nothing here, so the error stays.
+
+**Keys.** The runner unmounts, so its capture listener and its root `data-rd-keyscope` go with it. The closing page has no keyscope, and digits and ←/→ reach the switcher again.
+
+**Why a page in the frame, not the runner kept in place.** The running layouts are full-stage: the spread and the phone sheet are height-100 % boxes with their own scroll regions. Moving the live runner under the frame's scrolling `main` would change the pass's layout while it runs, and I can't check that visually here. The runner's state is kept as a snapshot instead. So the error is shown on screen 9, where the pass was, as the page that ends it, never in a slip that Esc dismisses.
+
+**Gone from the old code:**
+- the settling line "Passet lämnas in. Dina svar är sparade." and its status;
+- in the hand-in slip, "Tiden är slut.", the erratum "Inlämningen gick inte fram. Dina svar är sparade." and **Försök igen**;
+- `.fo-pass-settling` in `folio.css`.
+
+"Dina svar är sparade" is no longer claimed anywhere: Folio keeps the answers only locally, and the kit has no action that saves them.
+
+**Tests** (they replace the ones that asserted the trapped states, old `Folio.test.tsx:867-905` and `976-1002`). The shared check `expectEnded` (`Folio.test.tsx:641`) asserts:
+- no runner;
+- the title;
+- an enabled Till anmälan;
+- `rd-nav-idag` enabled, with Provpass current;
+- no `[data-rd-keyscope]` anywhere;
+- '3', ← and → on the focused element not prevented.
+
+| Test (`Folio.test.tsx`) | What it pins | Red before the fix |
+|---|---|---|
+| `:919` "hands the pass in once when the host's countdown reaches zero, then ends it for good" | host's zero → one call → closing page; the answers read-only ("Fråga 17, svar B", no option buttons); later ticks add no call; Till anmälan → hub | the runner was still mounted |
+| `:947` "hands in once on its own clock too, even with the abandon slip open" | local deadline → one call, slip closed, closing page | same |
+| `:968` "ends calmly on the kit's NOOP hand-in, the frame back at both widths" | no `submitProvpass` given (NOOP) → "Passet är inlämnat.", the account entry and the contents back; contents' Provpass → hub | same |
+| `:1002` "asks before handing in … then one hand-in" (its tail updated) | after the confirm: closing page "40 av 40"; ↵ → hub, still one call | same |
+| `:1085` "says a failed hand-in at time out plainly and for good, with the way out" | thrown at the host's zero → error page, no slip; after Esc and a repeated ↵ the page is still there; a fresh ↵ → hub; no void or expired note | the error slip was still open |
+
+### Fix 2 · Never hand in again
+
+The old `catch` cleared the latch and returned to `running`. The time-out effect, or `canAct()`, then called `submitProvpass()` again with no new confirmation.
+
+**The fix.**
+- One latch, `attempted` (`FolioProvpass.tsx:782`), is set before the call and never cleared.
+- `submit` returns at once once it is set (`:811`).
+- So do the time-out effect (`:829-831`, through `submit`), `canAct()` (`:857`) and the key handler (`:938`, which also hands every key back).
+- Defence in depth: the runner is unmounted by then anyway (fix 1).
+
+**Test** `:1037`, "ends the pass on a failed hand-in and never hands it in again, on either clock":
+1. With fake timers: answer, hand in by hand with half an hour left; it throws. One call.
+2. The provider supplies `remainingSeconds: 0`. Still one call.
+3. The system clock moves 40 minutes past the deadline, the interval runs, and a letter is pressed. Still one call.
+4. Then: the closing page with the persistent error, no Försök igen, "Fråga 17, svar A" read-only; Esc keeps the page; the contents lead on to Idag.
+
+**Red before the fix:** "expected vi.fn() to be called 1 times, but got 2 times", at step 2.
+
+### Fix 3 · The focused heading is the page, not a scroll region
+
+The old handler treated every non-control inside `[data-fo-region]` as the region. It also prevented ←/→ before deciding. Since the runner focuses its question heading, which sits inside `.fo-qscroll`, a spread page or the phone scroll, ←/→ and space did nothing from the default focus. The region could not scroll with its own arrows either.
+
+**The fix** (`FolioProvpass.tsx:939-949`):
+- only `event.target` carrying `data-fo-region` itself keeps ←/→ and space;
+- those arrows are no longer prevented, so the surface scrolls natively, and its own `data-rd-keyscope` keeps the switcher off;
+- every other target (the heading, text, an option, a cell, the body) changes the question with the arrow prevented, as before;
+- digits stay prevented everywhere.
+
+**Tests.** They dispatch on `document.activeElement` through a new helper, `pressFocused` (`:69`), as the review's playbook note asks. `press` still dispatches on `window` for the older tests.
+
+| Test | What it pins | Red before the fix |
+|---|---|---|
+| `:877` (desktop and phone) "moves from where the focus really is, the question's heading" | after opening, the focused heading sits inside a region; on it, → (prevented) goes to 18; then from the new heading ← → 17, space → 18, ↵ → 19; desktop also on a plate's recto page (29 → 30) | → did not move |
+| `:1310` (real `Redesign2026Bakeoff`) "moves the question from the focused heading while the switcher stays put" | → / space / ← on `document.activeElement` change the question; → on `.fo-qscroll` itself keeps it; `onSelect` never called | → did not move |
+| `:861` "lets a focused scroll region keep its arrows" (now stricter) | → and space on the region are *not* prevented, and the question stays | "expected false to be true" (the arrow was prevented) |
+
+### Fix 4 · The calibration caveat when P5 provenance is known
+
+The result showed only the basis footnote.
+
+**Where provenance is read** (`FolioProvpass.tsx:2069`), only from the data the result has:
+- the matching pass's own questions (`running.passId === result.passId`) with a passage marked `synthetic: true`;
+- or a missed qid in the P5 namespace (`isP5Qid`, `lib/provenance.ts`'s `p5-` prefix).
+
+**What it shows then:**
+- the approved `data.copy.estimateCaveat` verbatim, as a second footnote `**` (`:2223-2228`). Both footnotes take `.fo-footnote--wide`, as on Framsteg;
+- the figure carries both marks, `*,**` (`:2103`);
+- the figure's spoken sentence ends ", med förbehåll i fotnoten", Framsteg's phrase.
+
+**Unknown provenance claims nothing:** a non-matching pass with authentic misses gets no caveat and the single `*`.
+
+**No per-section marks.** A mark on LÄS or ELF would claim one section's provenance when only one P5 miss may be known.
+
+| Test | What it pins | Red before the fix |
+|---|---|---|
+| `:1462` "adds the calibration caveat when the pass's own questions carry P5 texts" | a verbal result on the P5 reading unit: `**` + the caveat, figure `*,**` and its sentence, the basis still `*` | "Unable to find an element with the text: Uppskattningen för LÄS och ELF …" |
+| `:1491` "adds it for P5 misses too, and never claims P5 when the provenance is unknown" | not the running pass + a `p5-elf-…-ELF-001` miss → caveat; authentic misses only → no caveat, mark `*`, no "förbehåll" | same |
+| `:1412` (added to the quant result test) | an authentic quant pass: no caveat | (passed; it guards the negative) |
+
+### Fix 5 (P3) · Phone masthead and tabs
+
+- **The masthead.** `.fo-phome .fo-count` is now a block (`folio.css:2439`). The meta drops under the label, two lines as on Idag, whose meta was already a `<p>`.
+  - It fixes Framsteg ("FRAMSTEGSenaste 90 dagarna").
+  - The same rule fixes Historik and Provpassresultat, whose metas were spans with the same run-on ("PROVPASS · RESULTATHösten 2025, provpass 1").
+- **The tabs.** `.fo-tabs` gets 12 px side padding instead of 4 (`folio.css:2525`), so the outer words keep off the edges.
+- **No jsdom test:** jsdom has no layout. These need the coordinator's screenshots.
+
+### Verification
+
+| Check | Result |
+|---|---|
+| `pnpm -C app typecheck` | PASS |
+| `pnpm -C app lint` | PASS: 514 files, the same 4 pre-existing infos (LandingBakeoffR3/R4A/R4C, l12/M3) |
+| `pnpm -C app test` | PASS: **2,696 / 2,696**, 109 files. The act() warnings in stderr come from unrelated files (useDailyPlan, DrillQuestion, konto, HomeMobile, PedagogyPanel); none from Folio |
+| `Folio.test.tsx` alone | 147 / 147. Red-first run: 12 failed, all new or replaced tests |
+| Shared tests outside the write set | none failed |
+| `git status` | only the admitted files; the untracked root dotfiles are the sandbox's, as in round 1 |
+
+**Visual check: not done**, for the same reason as round 1 (the dev route needs a Clerk key, and no ad-hoc harness is allowed). The coordinator should screenshot:
+- the closing page, *submitted* and *failed*, at desktop and phone, light and dark. To reach it in the bake-off, use a provider whose `submitProvpass` stays on screen 9 or throws: the bake-off host always opens 10, so it never shows there;
+- phone Framsteg, Historik and Provpassresultat mastheads;
+- the phone tabs at 390 and 320 px.
+
+### Proposed copy (new in round 2)
+
+- From the brief: "Passet är inlämnat."
+- New: "Svaren nedan är de du lämnade in.", "Passet går inte att lämna in igen härifrån. Svaren nedan är dina, som de stod vid inlämningen.", "{Halva} · {riktigt|genererat} pass", "{n} av {m} frågor besvarade", "Till anmälan", "Dina svar".
+- Screen reader only: "Fråga {n}, svar {L}", "Fråga {n}, obesvarad".
+- Reused: "Inlämningen gick inte fram." (round 1), "i provets ordning", ", med förbehåll i fotnoten" (Framsteg).
+
+### Notes for the coordinator
+
+- **Kit gap.** `submitProvpass` is `() => void`, with no status. A provider that returns a promise and rejects later would be read as handed in, so Folio would show "Passet är inlämnat.". Not handled: it is outside the kit's contract. Worth a kit-level status if the real provider is async.
+- **Tests replaced.** The round-1 tests that asserted the retry ("keeps the answers and offers the hand-in again when it fails") and the trapped states are replaced, as the brief asks. Their old behaviour contradicts the coordinator's decision on fix 2.
+
+### Handoff
+
+- **Done:** fixes 1–5 in the write set, the red-first tests, all three checks green, and this section.
+- **Left:** the coordinator's screenshots (above), the re-review and the commit.
+- Bead parked deferred after the note.

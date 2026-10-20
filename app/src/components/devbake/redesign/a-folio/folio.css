@@ -2434,7 +2434,10 @@
   border: 0;
 }
 
+/* The masthead's meta on a line of its own, under the label: two lines, as
+ * on Idag (a span would run on into the label). */
 .fo-phome .fo-count {
+  display: block;
   margin-top: var(--fo-s1);
 }
 
@@ -2518,7 +2521,8 @@
   flex: none;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  padding: var(--fo-s1) var(--fo-s1) max(20px, env(safe-area-inset-bottom));
+  /* Side room, so the outer words keep off the screen's edges. */
+  padding: var(--fo-s1) var(--fo-s3) max(20px, env(safe-area-inset-bottom));
   border-top: 1px solid var(--fo-rule);
   background: var(--fo-paper);
 }
@@ -4704,24 +4708,6 @@
   text-align: left;
 }
 
-/* Handing in: a quiet slip of a line while the host takes the pass. */
-.fo-pass-settling {
-  position: absolute;
-  z-index: 9;
-  left: 50%;
-  bottom: var(--fo-s8);
-  translate: -50% 0;
-  padding: var(--fo-s3) var(--fo-s6);
-  border-radius: 2px;
-  background: var(--fo-menu);
-  box-shadow: var(--fo-pop);
-  color: var(--fo-ink-2);
-  font-family: var(--fo-serif);
-  font-size: var(--fo-t17);
-  font-style: italic;
-  white-space: nowrap;
-}
-
 /* Phone: the page names the question once, where the slip would. */
 .fo-pass-where {
   display: flex;
@@ -4741,6 +4727,57 @@
 
 .fo-ppass-head .fo-head-right {
   gap: 0;
+}
+
+/* ── Provpass: the pass, over ────────────────────────────────────── */
+
+/* The title takes the focus the pass had, to be heard; it is no control,
+ * so it draws no ring. */
+.fo-ended-title:focus-visible {
+  outline: none;
+}
+
+/* The answers as they stood: each section's numbers with the letter
+ * chosen, set like Översikt's numerals but read-only. */
+.fo-answers {
+  margin-top: var(--fo-s3);
+}
+
+.fo-answers-run {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: baseline;
+  padding: var(--fo-s2) 0;
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-answers-run ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fo-s1) var(--fo-s3);
+}
+
+.fo-answers-cell {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  min-width: 40px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fo-answers-n {
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+}
+
+.fo-answers-l {
+  color: var(--fo-ink);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+}
+
+.fo-answers-cell[data-answered='false'] .fo-answers-l {
+  color: var(--fo-ink-3);
 }
 
 /* ── Provpassresultat ────────────────────────────────────────────── */
