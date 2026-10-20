@@ -13,8 +13,16 @@
 // options. Colour fills belong to the two answer cards alone. The top
 // bar's progress is a path: a right answer fills its segment, a miss is
 // "lagd i Repetera" — never a loss. Nothing moves inside the column.
+//
+// Kit v2: the session, its copy and the day's plan come from
+// useDirectionData(); the drill's state is useDrillCore, graded by the
+// host's controller and kept in step with the bake-off's Läsfråga ⇄ Facit.
+// The pieces every question screen shares (top bar, stops, options,
+// verdict, the explanation, the end of a round) are exported for
+// Kvantfråga and DTK (SparQuant).
 
 import {
+  ArrowRight,
   Check,
   ChevronDown,
   ChevronUp,
@@ -40,38 +48,51 @@ import {
   useState,
 } from 'react'
 
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
-  FRAMEWORK_NAMES,
-  OVNINGSTEXT_BADGE,
-  OVNINGSTEXT_NOTE,
-  PLAN,
-  UNIT,
-} from '@/components/devbake/redesign/r1Fixtures'
-import {
-  type Destination,
-  type DirectionProps,
-  type DrillActions,
-  type DrillRefs,
-  type DrillView,
-  fmtClock,
+  type DrillCoreRefs,
+  type DrillCoreView,
+  type DrillStart,
   type QuoteSpan,
   splitStepRefs,
-  useDrill,
+  useDrillCore,
+} from '@/components/devbake/redesign/drillCore'
+import {
+  type DirectionProps,
+  fmtClock,
   useHideOnScroll,
   useKeyMap,
   useSheet,
 } from '@/components/devbake/redesign/r1Kit'
+import type {
+  DrillOption,
+  DrillQuestion,
+  DrillSessionView,
+  PlanItemView,
+} from '@/components/devbake/redesign/viewModel'
+import { MathText } from '@/components/MathText'
 import type { DistractorExplanation, ExplanationStep } from '@/data/explanations'
 import type { AnswerLetter } from '@/data/questions'
-import { CalmSwitch, Kbd, SECTION_NAMES, secOf } from './sparParts'
+import { CalmSwitch, cap, inWords, Kbd, SECTION_NAMES, SparStop, secOf } from './sparParts'
 
-const [TITLE, SUBTITLE] = UNIT.title.split(': ')
-const WORDS = ['noll', 'en', 'två', 'tre', 'fyra']
-const cap = (s: string) => s.charAt(0).toLocaleUpperCase('sv-SE') + s.slice(1)
-/** The day's first step is this text; the plan's items come after it. */
-const DAY_STEPS = 1 + PLAN.items.length
+export type Calm = { calm: boolean; setCalm: (calm: boolean) => void }
 
-type Shared = { view: DrillView; act: DrillActions; refs: DrillRefs }
+/** A drill's moves as its screens use them: the core's, with lock, next
+ *  and exit already mapped onto the host. */
+export type DrillAct = {
+  select: (letter: AnswerLetter) => void
+  lock: () => void
+  next: () => void
+  exit: () => void
+  toggleEliminate: (letter: AnswerLetter) => void
+  setFocusPara: (n: number | null) => void
+  moveFocusPara: (delta: 1 | -1) => void
+  cite: (n: number, source?: string) => void
+  toggleStep: (n: number) => void
+  goToStep: (n: number) => void
+}
+
+type Shared = { view: DrillCoreView; act: DrillAct; refs: DrillCoreRefs }
 type Note = {
   note: boolean
   setNote: (open: boolean) => void
@@ -80,7 +101,45 @@ type Note = {
   badgeRef: RefObject<HTMLSpanElement | null>
   bandRef?: RefObject<HTMLElement | null>
 }
-type Calm = { calm: boolean; setCalm: (calm: boolean) => void }
+
+/** The plan step a finished round leads on to: the first still open. */
+export function nextPlanStep(items: readonly PlanItemView[]): PlanItemView | undefined {
+  return items.find((i) => !i.completed)
+}
+
+/** What ended: a text (round 1's LÄS unit, the day's first stop when a
+ *  resume leads Idag), a drill, or a repetition. */
+export type RoundKind = 'text' | 'drill' | 'repetition'
+
+/**
+ * Where a finished round leads, for the end's green pill and for Enter
+ * alike: the plan's first open step, where a repetition that was a plan
+ * step is done with this round (`doneStep`). Without a `next`, both take
+ * the way back.
+ */
+export function roundEnd(
+  items: readonly PlanItemView[],
+  kind: RoundKind,
+): { doneStep?: PlanItemView; next?: PlanItemView } {
+  const doneStep = kind === 'repetition' ? items.find((i) => i.kind === 'repetition') : undefined
+  return { doneStep, next: nextPlanStep(items.filter((i) => i !== doneStep)) }
+}
+
+/** The drill clock is optional in the kit (no real source): it counts up
+ *  from a sitting's own seconds, or from zero on a sitting that starts
+ *  fresh — never from zero on one already under way. */
+export function showsClock(session: DrillSessionView): boolean {
+  const fresh = (session.start.index ?? 0) === 0 && (session.start.results ?? []).length === 0
+  return session.elapsedSeconds != null || fresh
+}
+
+/** A unit's "Title: subtitle" as its two parts. */
+function splitTitle(q: DrillQuestion): [string, string | null] {
+  const title = q.passage?.title
+  if (!title) return [SECTION_NAMES[q.section] ?? q.section, q.source.label || null]
+  const cut = title.indexOf(': ')
+  return cut === -1 ? [title, null] : [title.slice(0, cut), title.slice(cut + 2)]
+}
 
 /** Whether an element is on screen (clipped by its scrollers). True where
  *  IntersectionObserver is missing, so nothing is hidden by accident. */
@@ -97,8 +156,8 @@ function useSeen(ref: RefObject<HTMLElement | null>): boolean {
 }
 
 /** The first paragraph the essential steps cite — where the evidence is. */
-function evidencePara(view: DrillView): number | undefined {
-  for (const s of view.explanation.steps ?? []) {
+function evidencePara(view: DrillCoreView): number | undefined {
+  for (const s of view.explanation?.steps ?? []) {
     const cites = view.stepCites[s.n]
     if (s.tier !== 'detail' && cites?.length) return cites[0]
   }
@@ -111,7 +170,7 @@ function evidencePara(view: DrillView): number | undefined {
  * first time (a deep link lands there), smoothly after an answer.
  */
 function useTurnToEvidence(
-  view: DrillView,
+  view: DrillCoreView,
   scrollRef: RefObject<HTMLDivElement | null>,
   offset: number,
   before?: () => void,
@@ -147,16 +206,68 @@ function firstVisiblePara(box: HTMLElement | null): number {
   return 1
 }
 
-export function SparDrill({
+// ── The reading drill (screens 2 and 3) ──────────────────────────────
+
+export function SparDrill(props: DirectionProps & Calm) {
+  const { data, actions } = useDirectionData()
+  const session = data.drills.reading
+  if (session.questions.length === 0) {
+    return (
+      <NoQuestions
+        width={props.width}
+        text="Det finns ingen text att läsa just nu."
+        onExit={() => {
+          actions.drill.exit?.()
+          props.onScreen(1)
+        }}
+        action={{ label: 'Till Öva', onClick: () => actions.go('ova') }}
+      />
+    )
+  }
+  return <ReadingSession key={session.id} {...props} session={session} />
+}
+
+function ReadingSession({
   screen,
   width,
   live,
   onScreen,
   calm,
   setCalm,
-  onGo,
-}: DirectionProps & Calm & { onGo: (d: Destination) => void }) {
-  const { view, act, refs } = useDrill({ screen, onScreen, live })
+  session,
+}: DirectionProps & Calm & { session: DrillSessionView }) {
+  const { data, actions } = useDirectionData()
+  // Screen 3 opens the question already graded with the fixture's pick.
+  const [start] = useState<DrillStart>(() => {
+    const at = Math.min(Math.max(0, session.start.index ?? 0), session.questions.length - 1)
+    const qid = session.questions[at].qid
+    return {
+      ...session.start,
+      graded: screen === 3 ? (session.wrongPick?.[qid] ?? session.start.graded) : undefined,
+    }
+  })
+  const core = useDrillCore({
+    questions: session.questions,
+    explanations: session.explanations,
+    start,
+    elapsed: session.elapsedSeconds,
+    controller: actions.drill,
+    live,
+  })
+  const { view, refs } = core
+  const c = core.act
+  const { gradeAs, reopen, reset } = c
+  // Keep in step with the switcher: a click on "Facit" while a question is
+  // open grades it with the fixture's wrong pick; "Läsfråga" while graded
+  // reopens the same question, and after the last one starts over. Only
+  // display moves: the controller is never called for them.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: follows the switcher's screen only
+  useLayoutEffect(() => {
+    if (screen === 3 && view.phase === 'question') gradeAs((q) => session.wrongPick?.[q.qid])
+    else if (screen === 2 && view.phase === 'feedback') reopen()
+    else if (screen === 2 && view.phase === 'done') reset()
+  }, [screen])
+
   const [note, setNote] = useState(false)
   const badgeRef = useRef<HTMLSpanElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -170,30 +281,55 @@ export function SparDrill({
   }, [view.index, view.phase])
 
   // Choosing an option opens the tray, so the choice is always in view.
-  const actSelect = act.select
+  const coreSelect = c.select
   const select = useCallback(
     (letter: AnswerLetter) => {
-      actSelect(letter)
+      coreSelect(letter)
       setTray('open')
     },
-    [actSelect],
+    [coreSelect],
   )
-  const dact: DrillActions = { ...act, select }
+  const act: DrillAct = {
+    select,
+    lock: () => {
+      if (c.lock()) onScreen(3)
+    },
+    next: () => {
+      if (c.next() === 'next') onScreen(2)
+    },
+    exit: () => {
+      c.exit()
+      onScreen(1)
+    },
+    toggleEliminate: c.toggleEliminate,
+    setFocusPara: c.setFocusPara,
+    moveFocusPara: c.moveFocusPara,
+    cite: c.cite,
+    toggleStep: c.toggleStep,
+    goToStep: c.goToStep,
+  }
 
   const focusOn = view.focusPara != null
-  const toggleFocus = () => act.setFocusPara(focusOn ? null : firstVisiblePara(scrollRef.current))
-  const repeat = () => onGo('ova')
+  const toggleFocus = () => c.setFocusPara(focusOn ? null : firstVisiblePara(scrollRef.current))
+  const { next: nextStep } = roundEnd(data.home.plan.items, 'text')
+  const onward = () => (nextStep ? actions.openPlanItem(nextStep.id) : onScreen(1))
+  const advance = () => {
+    if (view.phase === 'question') act.lock()
+    else if (view.phase === 'feedback') act.next()
+    else onward()
+  }
 
   const keys: Record<string, () => void> = {
-    Enter: () => {
-      if (view.phase === 'question') act.lock()
-      else if (view.phase === 'feedback') act.next()
-      else repeat()
-    },
-    j: () => act.moveFocusPara(1),
-    k: () => act.moveFocusPara(-1),
+    Enter: advance,
+    j: () => c.moveFocusPara(1),
+    k: () => c.moveFocusPara(-1),
     f: toggleFocus,
-    Escape: () => act.setFocusPara(null),
+    Escape: () => c.setFocusPara(null),
+  }
+  // Space advances too, once there is something to advance — until then
+  // it keeps scrolling the passage.
+  if (view.phase === 'feedback' || (view.phase === 'question' && view.selected)) {
+    keys[' '] = advance
   }
   if (width === 'desktop') {
     keys.t = () =>
@@ -201,44 +337,79 @@ export function SparDrill({
         ? setFsheet((s) => (s === 'tall' ? 'half' : 'tall'))
         : setTray((s) => (s === 'open' ? 'peek' : 'open'))
   }
-  for (const o of view.question.options) {
-    const l = o.letter.toLowerCase()
-    keys[l] = () => select(o.letter)
-    keys[`Shift+${l}`] = () => act.toggleEliminate(o.letter)
+  for (const l of view.letters) {
+    const key = l.toLowerCase()
+    keys[key] = () => select(l)
+    keys[`Shift+${key}`] = () => c.toggleEliminate(l)
   }
   useKeyMap(keys, live)
 
-  const shared = { view, act: dact, refs }
-  const done = view.phase === 'done'
+  const shared = { view, act, refs }
+  const clock = showsClock(session)
+  const [title] = splitTitle(view.question)
+  const done = (
+    <Done
+      view={view}
+      questions={session.questions}
+      kind="text"
+      title={title}
+      back={{ label: 'Till Idag', onClick: () => onScreen(1) }}
+    />
+  )
   if (width === 'phone') {
     return (
       <PhoneDrill
         {...shared}
+        questions={session.questions}
+        clock={clock}
         note={note}
         setNote={setNote}
         badgeRef={badgeRef}
         scrollRef={scrollRef}
         focusOn={focusOn}
         toggleFocus={toggleFocus}
-        onHome={() => onScreen(1)}
-        onRepeat={repeat}
+        done={done}
       />
     )
   }
   return (
     <div className="sp-drill">
       <TopBar
-        view={view}
-        act={dact}
-        focusOn={focusOn}
-        toggleFocus={toggleFocus}
-        calm={calm}
-        setCalm={setCalm}
+        onExit={act.exit}
+        mid={
+          <>
+            <span
+              className="sp-sec-chip"
+              data-sec={view.question.section}
+              title={SECTION_NAMES[view.question.section]}
+            >
+              {view.question.section}
+            </span>
+            <Progress view={view} questions={session.questions} label="Frågorna i texten" />
+            <span className="sp-top-count">
+              Fråga {Math.min(view.index + 1, view.total)} av {view.total}
+            </span>
+          </>
+        }
+        right={
+          <>
+            <CalmSwitch calm={calm} setCalm={setCalm} compact testid="sp-calm-drill" />
+            <button
+              type="button"
+              className="sp-btn sp-btn--quiet"
+              aria-pressed={focusOn}
+              onClick={toggleFocus}
+              title="Styckefokus: F slår på, J och K byter stycke"
+            >
+              <Focus size={18} strokeWidth={2} aria-hidden />
+              Fokus
+            </button>
+            {clock ? <Timer seconds={view.elapsed} /> : null}
+          </>
+        }
       />
-      {done ? (
-        <div className="sp-body sp-body--done">
-          <Done view={view} onHome={() => onScreen(1)} onRepeat={repeat} />
-        </div>
+      {view.phase === 'done' ? (
+        <div className="sp-body sp-body--done">{done}</div>
       ) : (
         <DeskBody
           {...shared}
@@ -256,16 +427,70 @@ export function SparDrill({
   )
 }
 
+/** A drill with nothing to play: say so, keep the way out, and offer the
+ *  one step that still works as the green pill. */
+export function NoQuestions({
+  width,
+  text,
+  onExit,
+  action,
+}: {
+  width: DirectionProps['width']
+  text: string
+  onExit: () => void
+  action?: { label: string; onClick: () => void }
+}) {
+  return (
+    <div className="sp-drill" data-width-mode={width}>
+      <header className="sp-top">
+        <div className="sp-top-left">
+          <button
+            type="button"
+            className="sp-btn sp-btn--quiet"
+            data-testid="rd-exit"
+            onClick={onExit}
+          >
+            <X size={18} strokeWidth={2.25} aria-hidden />
+            Avsluta
+          </button>
+        </div>
+      </header>
+      <div className="sp-body sp-body--done">
+        <section className="sp-done" aria-labelledby="sp-none-h">
+          <h1 className="sp-display" id="sp-none-h">
+            Inga frågor här
+          </h1>
+          <p className="sp-lede">{text}</p>
+          {action ? (
+            <div className="sp-done-actions">
+              <button
+                type="button"
+                className="sp-btn sp-btn--primary sp-btn--lg"
+                onClick={action.onClick}
+              >
+                {action.label}
+              </button>
+            </div>
+          ) : null}
+        </section>
+      </div>
+    </div>
+  )
+}
+
 // ── Top bar ──────────────────────────────────────────────────────────
 
-function TopBar({
-  view,
-  act,
-  focusOn,
-  toggleFocus,
-  calm,
-  setCalm,
-}: Pick<Shared, 'view' | 'act'> & Calm & { focusOn: boolean; toggleFocus: () => void }) {
+/** The focus frame's bar: the always-visible way out at the left, the
+ *  section, the path and the count in the middle, the tools at the right. */
+export function TopBar({
+  onExit,
+  mid,
+  right,
+}: {
+  onExit: () => void
+  mid: ReactNode
+  right: ReactNode
+}) {
   return (
     <header className="sp-top">
       <div className="sp-top-left">
@@ -273,72 +498,93 @@ function TopBar({
           type="button"
           className="sp-btn sp-btn--quiet"
           data-testid="rd-exit"
-          onClick={act.exit}
+          onClick={onExit}
           title="Dina svar är sparade"
         >
           <X size={18} strokeWidth={2.25} aria-hidden />
           Avsluta
         </button>
       </div>
-      <div className="sp-top-mid">
-        <span className="sp-sec-chip" data-sec="LÄS" title={SECTION_NAMES.LÄS}>
-          LÄS
-        </span>
-        <Progress view={view} />
-        <span className="sp-top-count">
-          Fråga {Math.min(view.index + 1, view.total)} av {view.total}
-        </span>
-      </div>
-      <div className="sp-top-right">
-        <CalmSwitch calm={calm} setCalm={setCalm} compact testid="sp-calm-drill" />
-        <button
-          type="button"
-          className="sp-btn sp-btn--quiet"
-          aria-pressed={focusOn}
-          onClick={toggleFocus}
-          title="Styckefokus: F slår på, J och K byter stycke"
-        >
-          <Focus size={18} strokeWidth={2} aria-hidden />
-          Fokus
-        </button>
-        <Timer seconds={view.elapsed} />
-      </div>
+      <div className="sp-top-mid">{mid}</div>
+      <div className="sp-top-right">{right}</div>
     </header>
   )
 }
 
-/** The unit's questions as a short path: answered stops fill, the current
- *  one is ringed in ink, a miss shows the repeat glyph. */
-function Progress({ view, compact = false }: { view: DrillView; compact?: boolean }) {
+/**
+ * The sitting's questions as a short path: answered stops fill, the current
+ * one is ringed in ink, a miss shows the repeat glyph. A round across
+ * sections rings each open stop in its section's hue; a DTK round groups
+ * its stops by the page they share.
+ */
+export function Progress({
+  view,
+  questions,
+  label,
+  compact = false,
+  ring = false,
+  pages,
+}: {
+  view: DrillCoreView
+  questions: readonly DrillQuestion[]
+  label: string
+  compact?: boolean
+  ring?: boolean
+  /** The page each question is on (0-based), for a DTK round. */
+  pages?: readonly number[]
+}) {
+  const stop = (q: DrillQuestion, i: number) => {
+    const r = view.results.find((x) => x.qid === q.qid)
+    const current = i === view.index && view.phase === 'question'
+    const state = current ? 'now' : r ? (r.correct ? 'right' : 'miss') : 'todo'
+    const word = current ? 'pågår' : r ? (r.correct ? 'rätt' : 'lagd i Repetera') : 'kvar'
+    return (
+      <li key={q.qid} data-state={state}>
+        <SparStop
+          state={state}
+          size={compact ? 24 : 32}
+          sec={ring && state === 'todo' ? q.section : undefined}
+          label={i + 1}
+        />
+        <span className="sp-sr">
+          Fråga {i + 1}: {word}
+        </span>
+      </li>
+    )
+  }
+  if (!pages) {
+    return (
+      <ol className="sp-prog" data-compact={String(compact)} aria-label={label}>
+        {questions.map(stop)}
+      </ol>
+    )
+  }
+  const groups: number[][] = []
+  questions.forEach((_, i) => {
+    const last = groups[groups.length - 1]
+    if (last && pages[last[0]] === pages[i]) last.push(i)
+    else groups.push([i])
+  })
   return (
-    <ol className="sp-prog" data-compact={String(compact)} aria-label="Frågorna i texten">
-      {UNIT.questions.map((q, i) => {
-        const r = view.results.find((x) => x.qid === q.qid)
-        const current = i === view.index && view.phase === 'question'
-        const state = current ? 'now' : r ? (r.correct ? 'right' : 'miss') : 'todo'
-        const label = current ? 'pågår' : r ? (r.correct ? 'rätt' : 'lagd i Repetera') : 'kvar'
-        return (
-          <li key={q.qid} data-state={state}>
-            <span className="sp-prog-node" aria-hidden>
-              {state === 'right' ? (
-                <Check size={compact ? 12 : 14} strokeWidth={3.25} />
-              ) : state === 'miss' ? (
-                <RotateCcw size={compact ? 11 : 12} strokeWidth={3} />
-              ) : (
-                i + 1
-              )}
+    <ol className="sp-prog-pages" data-compact={String(compact)} aria-label={label}>
+      {groups.map((g, gi) => (
+        <li key={questions[g[0]].qid} className="sp-prog-page">
+          <ol className="sp-prog" data-compact={String(compact)}>
+            {g.map((i) => stop(questions[i], i))}
+          </ol>
+          {compact ? null : (
+            <span className="sp-prog-label" aria-hidden>
+              sida {gi + 1}
             </span>
-            <span className="sp-sr">
-              Fråga {i + 1}: {label}
-            </span>
-          </li>
-        )
-      })}
+          )}
+          <span className="sp-sr">Sida {gi + 1}</span>
+        </li>
+      ))}
     </ol>
   )
 }
 
-function Timer({ seconds, compact = false }: { seconds: number; compact?: boolean }) {
+export function Timer({ seconds, compact = false }: { seconds: number; compact?: boolean }) {
   return (
     <span
       className="sp-timer"
@@ -355,9 +601,9 @@ function Timer({ seconds, compact = false }: { seconds: number; compact?: boolea
 // ── Desktop body: column, strip, tray / sheet ────────────────────────
 
 /** The feedback sheet's two heights, as a share of the body. */
-const SHEET_PCT = { tall: 58, half: 40 } as const
+export const SHEET_PCT = { tall: 58, half: 40 } as const
 /** The tray and sheet round their top corners over the column. */
-const CORNER = 28
+export const CORNER = 28
 
 function DeskBody({
   view,
@@ -379,6 +625,7 @@ function DeskBody({
     fsheet: 'tall' | 'half'
     setFsheet: (s: 'tall' | 'half') => void
   }) {
+  const { data } = useDirectionData()
   const bandRef = useRef<HTMLElement>(null)
   // Below the 52 px title strip, with a little air.
   useTurnToEvidence(view, scrollRef, 76)
@@ -416,7 +663,10 @@ function DeskBody({
   }
 
   const bandSeen = useSeen(badgeRef)
-  const dockBadge = condensed || !bandSeen
+  const synthetic = view.question.passage?.synthetic === true
+  const dockBadge = synthetic && (condensed || !bandSeen)
+  const [title, subtitle] = splitTitle(view.question)
+  const last = view.index + 1 >= view.total
 
   return (
     <div className="sp-body" data-phase={view.phase}>
@@ -432,9 +682,14 @@ function DeskBody({
         />
         <div aria-hidden style={{ height: CORNER + 32 }} />
       </div>
-      <div className="sp-strip" data-sec="LÄS" data-shown={String(condensed)} aria-hidden>
-        <span className="sp-strip-title">{TITLE}</span>
-        <span className="sp-strip-sub">{SUBTITLE}</span>
+      <div
+        className="sp-strip"
+        data-sec={view.question.section}
+        data-shown={String(condensed)}
+        aria-hidden
+      >
+        <span className="sp-strip-title">{title}</span>
+        {subtitle ? <span className="sp-strip-sub">{subtitle}</span> : null}
       </div>
       {view.phase === 'question' ? (
         <Tray
@@ -449,12 +704,24 @@ function DeskBody({
       {view.phase === 'feedback' ? (
         <FeedbackSheet
           view={view}
-          act={{ ...act, cite }}
-          refs={refs}
+          act={act}
           state={fsheet}
           setState={setFsheet}
-          badge={dockBadge}
-        />
+          nextLabel={last ? 'Klart med texten' : 'Nästa fråga'}
+          aside={
+            synthetic ? (
+              <span
+                className="sp-badge-chip sp-badge-chip--sm"
+                data-hidden={String(!dockBadge)}
+                aria-hidden={!dockBadge}
+              >
+                {data.copy.ovningstextBadge}
+              </span>
+            ) : null
+          }
+        >
+          <FeedbackBody view={view} act={{ ...act, cite }} refs={refs} />
+        </FeedbackSheet>
       ) : null}
     </div>
   )
@@ -463,40 +730,50 @@ function DeskBody({
 // ── The reading column ───────────────────────────────────────────────
 
 function Reader({ view, act, refs, note, setNote, badgeRef, bandRef }: Shared & Note) {
-  const { paragraphs, byline } = view.passage
+  const { data } = useDirectionData()
+  const paragraphs = view.passage?.paragraphs ?? []
+  const byline = view.passage?.byline ?? null
+  const meta = view.question.passage
+  const synthetic = meta?.synthetic === true
+  const [title, subtitle] = splitTitle(view.question)
   const graded = view.phase === 'feedback'
   const marks = view.flashSource ? view.marks.filter((m) => m.source === view.flashSource) : []
   return (
-    <article className="sp-reader" data-sec="LÄS" aria-labelledby="sp-title">
+    <article className="sp-reader" data-sec={view.question.section} aria-labelledby="sp-title">
       <header className="sp-band" ref={bandRef}>
-        <div className="sp-band-row">
-          <span className="sp-badge-chip" data-testid="rd-badge" ref={badgeRef}>
-            {OVNINGSTEXT_BADGE}
-          </span>
-          <button
-            type="button"
-            className="sp-band-toggle"
-            data-testid="rd-note-toggle"
-            aria-expanded={note}
-            aria-controls="sp-note"
-            onClick={() => setNote(!note)}
-          >
-            <Info size={16} strokeWidth={2} aria-hidden />
-            {note ? 'Dölj' : 'Om texten'}
-          </button>
-        </div>
+        {synthetic ? (
+          <div className="sp-band-row">
+            <span className="sp-badge-chip" data-testid="rd-badge" ref={badgeRef}>
+              {data.copy.ovningstextBadge}
+            </span>
+            <button
+              type="button"
+              className="sp-band-toggle"
+              data-testid="rd-note-toggle"
+              aria-expanded={note}
+              aria-controls="sp-note"
+              onClick={() => setNote(!note)}
+            >
+              <Info size={16} strokeWidth={2} aria-hidden />
+              {note ? 'Dölj' : 'Om texten'}
+            </button>
+          </div>
+        ) : null}
         <h1 className="sp-title" id="sp-title">
-          {TITLE}
+          {title}
         </h1>
-        <p className="sp-subtitle">{SUBTITLE}</p>
-        <p className="sp-note" id="sp-note" data-testid="rd-note" hidden={!note}>
-          {OVNINGSTEXT_NOTE}
-        </p>
+        {subtitle ? <p className="sp-subtitle">{subtitle}</p> : null}
+        {synthetic ? (
+          <p className="sp-note" id="sp-note" data-testid="rd-note" hidden={!note}>
+            {data.copy.ovningstextNote}
+          </p>
+        ) : null}
       </header>
       <div
         className="sp-passage"
         data-testid="rd-passage"
         data-focus={String(view.focusPara != null)}
+        lang={meta?.lang === 'en' ? 'en' : undefined}
       >
         {paragraphs.map((p, i) => {
           const n = i + 1
@@ -535,7 +812,7 @@ function Reader({ view, act, refs, note, setNote, badgeRef, bandRef }: Shared & 
 
 /** A paragraph's text, verbatim, with the quotations a cited part makes
  *  marked in the one highlight style. */
-function ParaText({ text, marks }: { text: string; marks: QuoteSpan[] }) {
+export function ParaText({ text, marks }: { text: string; marks: QuoteSpan[] }) {
   if (marks.length === 0) return <>{text}</>
   const out: ReactNode[] = []
   let at = 0
@@ -569,6 +846,7 @@ function Tray({
   /** Carry ÖVNINGSTEXT here: the passage's own badge is out of view. */
   badge: boolean
 }) {
+  const { data } = useDirectionData()
   const open = state === 'open'
   return (
     <section
@@ -578,14 +856,18 @@ function Tray({
       aria-label={`Fråga ${view.index + 1}`}
     >
       <div className="sp-tray-head">
-        <h2 className="sp-prompt">{view.question.prompt}</h2>
-        <span
-          className="sp-badge-chip sp-badge-chip--sm"
-          data-hidden={String(!badge)}
-          aria-hidden={!badge}
-        >
-          {OVNINGSTEXT_BADGE}
-        </span>
+        <h2 className="sp-prompt">
+          <MathText>{view.question.prompt}</MathText>
+        </h2>
+        {view.question.passage?.synthetic ? (
+          <span
+            className="sp-badge-chip sp-badge-chip--sm"
+            data-hidden={String(!badge)}
+            aria-hidden={!badge}
+          >
+            {data.copy.ovningstextBadge}
+          </span>
+        ) : null}
         {open ? (
           <button
             type="button"
@@ -608,7 +890,7 @@ function Tray({
           aria-controls="sp-tray-body"
           onClick={() => setState('open')}
         >
-          Visa alternativen ({view.question.options.length})
+          Visa alternativen ({view.letters.length})
           <ChevronUp size={18} strokeWidth={2.25} aria-hidden />
           <Kbd>T</Kbd>
         </button>
@@ -646,10 +928,31 @@ function Tray({
   )
 }
 
-function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
+export type OptionsLayout = 'column' | 'row' | 'grid' | 'images'
+
+/**
+ * The options: a letter blob that morphs into a tilted ink squircle when
+ * chosen, the text (math rendered), and a strike button. `content` gives
+ * an option its own body (KVA's relation, NOG's statement glyph, a chart
+ * tile); the accessible name is always the words.
+ */
+export function Options({
+  view,
+  act,
+  testid = 'rd-option',
+  layout = 'column',
+  content,
+  disabled = false,
+}: Pick<Shared, 'view'> & {
+  act: Pick<DrillAct, 'select' | 'toggleEliminate'>
+  testid?: 'rd-option' | 'rd-quant-option'
+  layout?: OptionsLayout
+  content?: (o: DrillOption) => ReactNode
+  disabled?: boolean
+}) {
   return (
-    <ol className="sp-opts" aria-label="Svarsalternativ">
-      {view.question.options.map((o) => {
+    <ol className="sp-opts" data-layout={layout} aria-label="Svarsalternativ">
+      {(view.question.options ?? []).map((o) => {
         const selected = view.selected === o.letter
         const out = view.eliminated.has(o.letter)
         return (
@@ -661,8 +964,9 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
             <button
               type="button"
               className="sp-opt-main"
-              data-testid={`rd-option-${o.letter}`}
+              data-testid={`${testid}-${o.letter}`}
               aria-pressed={selected}
+              disabled={disabled}
               onClick={() => act.select(o.letter)}
             >
               <span className="sp-blob" aria-hidden>
@@ -671,9 +975,9 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
               <span className="sp-opt-text">
                 <span className="sp-sr">
                   Alternativ {o.letter}
-                  {out ? ', struket' : ''}:{' '}
-                </span>
-                {o.text}
+                  {out ? ', struket' : ''}:
+                </span>{' '}
+                {content ? content(o) : <MathText>{o.text}</MathText>}
               </span>
             </button>
             <button
@@ -683,6 +987,7 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
               aria-pressed={out}
               aria-label={out ? `Ångra strykningen av ${o.letter}` : `Stryk ${o.letter}`}
               title={out ? 'Ångra' : 'Stryk alternativet (⇧ + bokstav)'}
+              disabled={disabled}
               onClick={() => act.toggleEliminate(o.letter)}
             >
               {out ? (
@@ -700,20 +1005,31 @@ function Options({ view, act }: Pick<Shared, 'view' | 'act'>) {
 
 // ── The feedback sheet (desktop) ─────────────────────────────────────
 
-function FeedbackSheet({
+/** Facit as a sheet beside the column, never modal: its own grab, the
+ *  verdict in its head (plus `aside`), the explanation, and the one green
+ *  "Nästa" in its foot, away from the answer cards. */
+export function FeedbackSheet({
   view,
-  act,
-  refs,
   state,
   setState,
-  badge,
-}: Shared & {
+  nextLabel,
+  aside,
+  act,
+  children,
+  repetition = false,
+  above = 'texten',
+}: Pick<Shared, 'view' | 'act'> & {
   state: 'tall' | 'half'
   setState: (s: 'tall' | 'half') => void
-  badge: boolean
+  nextLabel: string
+  aside?: ReactNode
+  children: ReactNode
+  repetition?: boolean
+  /** What the sheet leaves in view above it: "texten", "uppgiften", "sidan". */
+  above?: string
 }) {
   const tall = state === 'tall'
-  const last = view.index + 1 >= view.total
+  const reveal = tall ? `Visa mer av ${above}` : 'Visa mer av facit'
   const bodyRef = useRef<HTMLDivElement>(null)
   // A verdict starts at the top of its explanation.
   // biome-ignore lint/correctness/useExhaustiveDependencies: reset on a new verdict only
@@ -731,22 +1047,16 @@ function FeedbackSheet({
       <button
         type="button"
         className="sp-grab"
-        aria-label={tall ? 'Visa mer av texten' : 'Visa mer av facit'}
+        aria-label={reveal}
         title="T växlar"
         onClick={toggle}
       />
       <div className="sp-fsheet-head">
-        <Verdict view={view} />
-        <span
-          className="sp-badge-chip sp-badge-chip--sm"
-          data-hidden={String(!badge)}
-          aria-hidden={!badge}
-        >
-          {OVNINGSTEXT_BADGE}
-        </span>
+        <Verdict view={view} repetition={repetition} />
+        {aside}
       </div>
       <div className="sp-fsheet-body" ref={bodyRef}>
-        <FeedbackBody view={view} act={act} refs={refs} />
+        {children}
       </div>
       <div className="sp-fsheet-foot">
         <button type="button" className="sp-btn sp-btn--quiet" onClick={toggle}>
@@ -755,7 +1065,7 @@ function FeedbackSheet({
           ) : (
             <ChevronUp size={18} strokeWidth={2.25} aria-hidden />
           )}
-          {tall ? 'Visa mer av texten' : 'Visa mer av facit'}
+          {reveal}
           <Kbd>T</Kbd>
         </button>
         <button
@@ -764,7 +1074,7 @@ function FeedbackSheet({
           data-testid="rd-next"
           onClick={act.next}
         >
-          {last ? 'Klart med texten' : 'Nästa fråga'}
+          {nextLabel}
           <Kbd>↵</Kbd>
         </button>
       </div>
@@ -772,7 +1082,15 @@ function FeedbackSheet({
   )
 }
 
-function Verdict({ view, compact = false }: { view: DrillView; compact?: boolean }) {
+export function Verdict({
+  view,
+  compact = false,
+  repetition = false,
+}: {
+  view: DrillCoreView
+  compact?: boolean
+  repetition?: boolean
+}) {
   const correct = view.correct === true
   return (
     <div
@@ -796,15 +1114,30 @@ function Verdict({ view, compact = false }: { view: DrillView; compact?: boolean
           {correct ? `Svaret är ${view.question.answer}.` : `Rätt svar är ${view.question.answer}.`}
         </p>
       </div>
-      {compact ? null : <VerdictChip view={view} />}
+      {compact ? null : <VerdictChip view={view} repetition={repetition} />}
     </div>
   )
 }
 
 /** The real, visible change: a right answer fills its stop in the top
- *  bar's path; a miss goes to Repetera — never framed as a loss. */
-function VerdictChip({ view }: { view: DrillView }) {
+ *  bar's path; a miss goes to Repetera — never framed as a loss. In a
+ *  repetition the chip names the schedule instead: a right answer moves
+ *  the miss forward, a wrong one brings it back in a while. */
+export function VerdictChip({
+  view,
+  repetition = false,
+}: {
+  view: DrillCoreView
+  repetition?: boolean
+}) {
   const correct = view.correct === true
+  const label = repetition
+    ? correct
+      ? 'Den flyttas fram'
+      : 'Tillbaka om en stund'
+    : correct
+      ? `${view.results.length} av ${view.total} klara`
+      : 'Lagd i Repetera'
   return (
     <span className="sp-verdict-chip" data-correct={String(correct)}>
       {correct ? (
@@ -812,35 +1145,68 @@ function VerdictChip({ view }: { view: DrillView }) {
       ) : (
         <RotateCcw size={15} strokeWidth={2.5} aria-hidden />
       )}
-      {correct ? `${view.results.length} av ${view.total} klara` : 'Lagd i Repetera'}
+      {label}
     </span>
   )
 }
 
-function FeedbackBody({ view, act, refs, chip = false }: Shared & { chip?: boolean }) {
+/**
+ * The explanation in the order every direction shares. `prompt` is the
+ * question as the sheet repeats it; `optionText` an option's words as the
+ * answer cards show them (KVA's relation, NOG's statements). Without an
+ * explanation the verdict and the cards stand alone.
+ */
+export function FeedbackBody({
+  view,
+  act,
+  refs,
+  chip = false,
+  prompt,
+  optionText,
+  repetition = false,
+}: Shared & {
+  chip?: boolean
+  prompt?: ReactNode
+  optionText?: (letter: string) => ReactNode
+  repetition?: boolean
+}) {
+  const { data, actions } = useDirectionData()
   const e = view.explanation
   const q = view.question
-  const text = (l: string) => q.options.find((o) => o.letter === l)?.text ?? ''
+  const raw = (l: string) => q.options?.find((o) => o.letter === l)?.text ?? ''
+  const text = optionText ?? ((l: string) => <MathText>{raw(l)}</MathText>)
+  const recap = (
+    <div className="sp-recap">
+      {view.picked && view.picked !== q.answer ? (
+        <Recap kind="mine" letter={view.picked} text={text(view.picked)} />
+      ) : null}
+      <Recap kind="right" letter={q.answer} text={text(q.answer)} mine={view.picked === q.answer} />
+    </div>
+  )
+  const head = (
+    <>
+      {chip ? <VerdictChip view={view} repetition={repetition} /> : null}
+      <p className="sp-fb-q">{prompt ?? <MathText>{q.prompt}</MathText>}</p>
+      {recap}
+    </>
+  )
+  if (!e) {
+    return (
+      <div className="sp-fb">
+        {head}
+        <p className="sp-fb-missing">Förklaring saknas ännu för den här frågan.</p>
+      </div>
+    )
+  }
   const picked = e.distractors.find((d) => d.letter === view.picked)
   const others = e.distractors.filter((d) => d.letter !== view.picked)
-  const framework = e.framework_id ? FRAMEWORK_NAMES[e.framework_id] : undefined
+  const frameworkId = e.framework_id
+  const framework = frameworkId ? data.frameworks[frameworkId] : undefined
   const cites = (l: string) => view.distractorCites[l] ?? { tempting: [], wrong: [] }
   const steps = e.steps ?? []
   return (
     <div className="sp-fb">
-      {chip ? <VerdictChip view={view} /> : null}
-      <p className="sp-fb-q">{q.prompt}</p>
-      <div className="sp-recap">
-        {view.picked && view.picked !== q.answer ? (
-          <Recap kind="mine" letter={view.picked} text={text(view.picked)} />
-        ) : null}
-        <Recap
-          kind="right"
-          letter={q.answer}
-          text={text(q.answer)}
-          mine={view.picked === q.answer}
-        />
-      </div>
+      {head}
 
       {picked ? (
         <section
@@ -874,7 +1240,9 @@ function FeedbackBody({ view, act, refs, chip = false }: Shared & { chip?: boole
                 <TriangleAlert size={17} strokeWidth={2.25} aria-hidden />
                 Fallgrop
               </h4>
-              <p className="sp-fb-p">{e.pitfall}</p>
+              <p className="sp-fb-p">
+                <MathText>{e.pitfall}</MathText>
+              </p>
             </div>
           ) : null}
           <div className="sp-take-item" data-kind="tech" data-testid="rd-technique">
@@ -882,7 +1250,9 @@ function FeedbackBody({ view, act, refs, chip = false }: Shared & { chip?: boole
               <Route size={17} strokeWidth={2.25} aria-hidden />
               Teknik
             </h4>
-            <p className="sp-fb-p">{e.technique}</p>
+            <p className="sp-fb-p">
+              <MathText>{e.technique}</MathText>
+            </p>
           </div>
         </div>
       </section>
@@ -891,7 +1261,9 @@ function FeedbackBody({ view, act, refs, chip = false }: Shared & { chip?: boole
         <h3 className="sp-h3" id="sp-sol-h">
           Lösningen
         </h3>
-        <p className="sp-fb-p">{e.solution_path}</p>
+        <p className="sp-fb-p">
+          <MathText>{e.solution_path}</MathText>
+        </p>
       </section>
 
       {steps.length > 0 ? (
@@ -920,8 +1292,18 @@ function FeedbackBody({ view, act, refs, chip = false }: Shared & { chip?: boole
         </section>
       ) : null}
 
-      {framework ? (
-        <p className="sp-framework">Ramverk: {framework}. Finns att slå upp i Uppslag.</p>
+      {frameworkId && framework ? (
+        <p className="sp-framework">
+          Ramverk: {framework}.{' '}
+          <button
+            type="button"
+            className="sp-link sp-link--inline"
+            onClick={() => actions.openLesson(frameworkId)}
+          >
+            Slå upp i Uppslag
+            <ArrowRight size={15} strokeWidth={2.25} aria-hidden />
+          </button>
+        </p>
       ) : null}
     </div>
   )
@@ -935,7 +1317,7 @@ function Recap({
 }: {
   kind: 'mine' | 'right'
   letter: string
-  text: string
+  text: ReactNode
   mine?: boolean
 }) {
   return (
@@ -1008,9 +1390,9 @@ function Other({
   act,
 }: {
   d: DistractorExplanation
-  text: string
+  text: ReactNode
   cites: { tempting: number[]; wrong: number[] }
-  act: DrillActions
+  act: DrillAct
 }) {
   const [open, setOpen] = useState(false)
   const bodyId = `sp-other-${d.letter}`
@@ -1055,7 +1437,7 @@ function Other({
 }
 
 /** The one citation form: a ¶ chip at the end of the sentence it backs. */
-function Cites({ list, act, source }: { list: number[]; act: DrillActions; source?: string }) {
+function Cites({ list, act, source }: { list: number[]; act: DrillAct; source?: string }) {
   if (list.length === 0) return null
   return (
     <span className="sp-cites">
@@ -1075,9 +1457,9 @@ function Cites({ list, act, source }: { list: number[]; act: DrillActions; sourc
   )
 }
 
-/** Explanation text, verbatim, with its "(steg 2)" references made into
- *  links to the step. */
-function Rich({ text, act }: { text: string; act: DrillActions }) {
+/** Explanation text, verbatim (math rendered), with its "(steg 2)"
+ *  references made into links to the step. */
+function Rich({ text, act }: { text: string; act: DrillAct }) {
   let at = 0
   return (
     <>
@@ -1085,7 +1467,9 @@ function Rich({ text, act }: { text: string; act: DrillActions }) {
         const key = at
         at += seg.text.length
         return seg.kind === 'text' ? (
-          <span key={key}>{seg.text}</span>
+          <span key={key}>
+            <MathText>{seg.text}</MathText>
+          </span>
         ) : (
           <button
             key={key}
@@ -1101,33 +1485,74 @@ function Rich({ text, act }: { text: string; act: DrillActions }) {
   )
 }
 
-// ── End of the unit: today's path, one step further ──────────────────
+// ── End of a round: today's path, one step further ───────────────────
 
-function Done({
+/**
+ * The end of a sitting: the chip, the result as a display line, the
+ * answers as stops, one sentence about what happens to the misses, the
+ * day's path one step further, then the plan's next step (green, as
+ * `roundEnd` finds it) and the quiet way back. `kind` says what ended.
+ */
+export function Done({
   view,
-  onHome,
-  onRepeat,
+  questions,
+  kind,
+  title,
+  back,
+  pages,
 }: {
-  view: DrillView
-  onHome: () => void
-  onRepeat: () => void
+  view: DrillCoreView
+  questions: readonly DrillQuestion[]
+  kind: RoundKind
+  /** "Magasinet i Hökaryd", "Kvantitativ övning". */
+  title: string
+  back: { label: string; onClick: () => void }
+  /** The page each question is on: a DTK round's stops group by page. */
+  pages?: readonly number[]
 }) {
+  const { data, actions } = useDirectionData()
+  const { resume, plan } = data.home
   const right = view.results.filter((r) => r.correct).length
   const missed = view.results.length - right
-  const next = PLAN.items[0]
+  const dayText = kind === 'text' && resume != null
+  const { doneStep, next } = roundEnd(plan.items, kind)
+  const chip = dayText
+    ? `Dagens stig 1 av ${1 + plan.items.length}`
+    : kind === 'repetition'
+      ? 'Repetition klar'
+      : 'Övningen klar'
+  const lede =
+    kind === 'repetition'
+      ? [
+          right > 0
+            ? `${cap(inWords(right))} flyttas fram i schemat.`
+            : 'Ingen flyttades fram den här gången.',
+          missed > 0 ? `${cap(inWords(missed))} kommer tillbaka om en stund.` : null,
+        ]
+          .filter(Boolean)
+          .join(' ')
+      : missed === 0
+        ? kind === 'text'
+          ? 'Hela texten satt.'
+          : 'Allt satt.'
+        : `${cap(inWords(missed))} ${missed === 1 ? 'fråga ligger' : 'frågor ligger'} nu i Repetera och kommer tillbaka när du är redo.`
+  const groupStart = (i: number) => pages != null && i > 0 && pages[i] !== pages[i - 1]
+  const qIndex = (qid: string) => questions.findIndex((q) => q.qid === qid)
+  const minutes = (item: PlanItemView) =>
+    [item.detail, `${item.minutes} min`].filter(Boolean).join(' · ')
   return (
     <section className="sp-done" data-testid="rd-done" aria-labelledby="sp-done-h">
       <span className="sp-done-chip">
         <Check size={16} strokeWidth={2.75} aria-hidden />
-        Dagens stig 1 av {DAY_STEPS}
+        {chip}
       </span>
-      <p className="sp-eyebrow">{TITLE} är klar</p>
+      <p className="sp-eyebrow">{title} är klar</p>
       <h2 className="sp-display" id="sp-done-h">
-        {right} av {view.results.length} rätt
+        {right} av {view.results.length} {kind === 'repetition' ? 'satt' : 'rätt'}
       </h2>
-      <ol className="sp-done-qs" aria-label="Dina svar i texten">
+      <ol className="sp-done-qs" aria-label="Dina svar">
         {view.results.map((r, i) => (
-          <li key={r.qid} data-correct={String(r.correct)}>
+          <li key={r.qid} data-correct={String(r.correct)} data-break={String(groupStart(i))}>
             <span className="sp-done-q-node" aria-hidden>
               {r.correct ? (
                 <Check size={14} strokeWidth={3} />
@@ -1136,63 +1561,86 @@ function Done({
               )}
             </span>
             <span className="sp-sr">
-              Fråga {i + 1}
-              {r.correct ? ', rätt' : ', lagd i Repetera'}
+              Fråga {qIndex(r.qid) + 1}
+              {r.correct
+                ? ', rätt'
+                : kind === 'repetition'
+                  ? ', tillbaka om en stund'
+                  : ', lagd i Repetera'}
             </span>
           </li>
         ))}
       </ol>
-      <p className="sp-lede">
-        {missed === 0
-          ? 'Hela texten satt.'
-          : `${cap(WORDS[missed] ?? String(missed))} ${missed === 1 ? 'fråga ligger' : 'frågor ligger'} nu i Repetera och kommer tillbaka när du är redo.`}
-      </p>
-      <ol className="sp-mini" aria-label="Dagens stig">
-        <li className="sp-mini-step" data-state="done" data-sec="LÄS">
-          <span className="sp-mini-node" aria-hidden>
-            <Check size={16} strokeWidth={3} />
-          </span>
-          <span className="sp-mini-text">
-            <b>{TITLE}</b>
-            <span>LÄS · klar</span>
-          </span>
-        </li>
-        {PLAN.items.map((item, i) => (
-          <li
-            key={item.id}
-            className="sp-mini-step"
-            data-state={i === 0 ? 'next' : 'todo'}
-            data-sec={secOf(item.section)}
-          >
+      <p className="sp-lede">{lede}</p>
+      {plan.items.length > 0 || dayText ? (
+        <ol className="sp-mini" aria-label="Dagens stig">
+          {dayText ? (
+            <li className="sp-mini-step" data-state="done" data-sec={resume.section}>
+              <span className="sp-mini-node" aria-hidden>
+                <Check size={16} strokeWidth={3} />
+              </span>
+              <span className="sp-mini-text">
+                <b>{title}</b>
+                <span>{resume.section} · klar</span>
+              </span>
+            </li>
+          ) : null}
+          {plan.items.map((item, i) => {
+            const state =
+              item === doneStep || item.completed ? 'done' : item === next ? 'next' : 'todo'
+            return (
+              <li
+                key={item.id}
+                className="sp-mini-step"
+                data-state={state}
+                data-sec={secOf(item.section)}
+              >
+                <span className="sp-mini-node" aria-hidden>
+                  {state === 'done' ? <Check size={16} strokeWidth={3} /> : i + (dayText ? 2 : 1)}
+                </span>
+                <span className="sp-mini-text">
+                  <b>{item.title}</b>
+                  <span>{state === 'done' ? 'klar' : minutes(item)}</span>
+                </span>
+                {state === 'next' ? <span className="sp-next-chip">Nästa</span> : null}
+              </li>
+            )
+          })}
+          <li className="sp-mini-step" data-state="goal">
             <span className="sp-mini-node" aria-hidden>
-              {i + 2}
+              <Flag size={15} strokeWidth={2.25} />
             </span>
             <span className="sp-mini-text">
-              <b>{item.title}</b>
-              <span>
-                {item.detail} · {item.minutes} min
-              </span>
+              <b>Klart för idag</b>
             </span>
-            {i === 0 ? <span className="sp-next-chip">Nästa</span> : null}
           </li>
-        ))}
-        <li className="sp-mini-step" data-state="goal">
-          <span className="sp-mini-node" aria-hidden>
-            <Flag size={15} strokeWidth={2.25} />
-          </span>
-          <span className="sp-mini-text">
-            <b>Klart för idag</b>
-          </span>
-        </li>
-      </ol>
+        </ol>
+      ) : null}
       <div className="sp-done-actions">
-        <button type="button" className="sp-btn sp-btn--primary sp-btn--lg" onClick={onRepeat}>
-          Fortsätt med {next.title} · {next.minutes} min
-          <Kbd>↵</Kbd>
-        </button>
-        <button type="button" className="sp-btn sp-btn--quiet" onClick={onHome}>
-          Till Idag
-        </button>
+        {next ? (
+          <>
+            <button
+              type="button"
+              className="sp-btn sp-btn--primary sp-btn--lg"
+              onClick={() => actions.openPlanItem(next.id)}
+            >
+              Fortsätt med {next.title} · {next.minutes} min
+              <Kbd>↵</Kbd>
+            </button>
+            <button type="button" className="sp-btn sp-btn--quiet" onClick={back.onClick}>
+              {back.label}
+            </button>
+          </>
+        ) : (
+          <button
+            type="button"
+            className="sp-btn sp-btn--primary sp-btn--lg"
+            onClick={back.onClick}
+          >
+            {back.label}
+            <Kbd>↵</Kbd>
+          </button>
+        )}
       </div>
     </section>
   )
@@ -1204,22 +1652,25 @@ function PhoneDrill({
   view,
   act,
   refs,
+  questions,
+  clock,
   note,
   setNote,
   badgeRef,
   scrollRef,
   focusOn,
   toggleFocus,
-  onHome,
-  onRepeat,
+  done,
 }: Shared &
   Note & {
+    questions: readonly DrillQuestion[]
+    clock: boolean
     scrollRef: RefObject<HTMLDivElement | null>
     focusOn: boolean
     toggleFocus: () => void
-    onHome: () => void
-    onRepeat: () => void
+    done: ReactNode
   }) {
+  const { data } = useDirectionData()
   const { state, setState, toggle, grab } = useSheet(view)
   const { hidden, onScroll: hideOnScroll } = useHideOnScroll()
   // The head hides when the reader scrolls, not when the app does.
@@ -1229,6 +1680,7 @@ function PhoneDrill({
   }
   const bandSeen = useSeen(badgeRef)
   const feedback = view.phase === 'feedback'
+  const synthetic = view.question.passage?.synthetic === true
   // Below the 64 px head, with a little air.
   useTurnToEvidence(view, scrollRef, 80, () => {
     quietUntil.current = Date.now() + 900
@@ -1268,14 +1720,12 @@ function PhoneDrill({
     setState('open')
     act.cite(n, source)
   }
-  const sheetAct: DrillActions = { ...act, select, cite }
+  const sheetAct: DrillAct = { ...act, select, cite }
 
   if (view.phase === 'done') {
     return (
       <div className="sp-pdrill">
-        <div className="sp-pdrill-scroll sp-pdrill-scroll--done">
-          <Done view={view} onHome={onHome} onRepeat={onRepeat} />
-        </div>
+        <div className="sp-pdrill-scroll sp-pdrill-scroll--done">{done}</div>
       </div>
     )
   }
@@ -1300,10 +1750,14 @@ function PhoneDrill({
           Avsluta
         </button>
         <span className="sp-ptop-mid">
-          <span className="sp-sec-chip sp-sec-chip--sm" data-sec="LÄS" title={SECTION_NAMES.LÄS}>
-            LÄS
+          <span
+            className="sp-sec-chip sp-sec-chip--sm"
+            data-sec={view.question.section}
+            title={SECTION_NAMES[view.question.section]}
+          >
+            {view.question.section}
           </span>
-          <Progress view={view} compact />
+          <Progress view={view} questions={questions} label="Frågorna i texten" compact />
         </span>
         <button
           type="button"
@@ -1314,7 +1768,7 @@ function PhoneDrill({
         >
           <Focus size={19} strokeWidth={2} aria-hidden />
         </button>
-        <Timer seconds={view.elapsed} compact />
+        {clock ? <Timer seconds={view.elapsed} compact /> : <span aria-hidden />}
       </header>
       {hidden ? (
         <button
@@ -1354,13 +1808,15 @@ function PhoneDrill({
             aria-expanded={state !== 'peek'}
             {...grab}
           />
-          <span
-            className="sp-badge-chip sp-badge-chip--sm"
-            data-hidden={String(bandSeen)}
-            aria-hidden={bandSeen}
-          >
-            {OVNINGSTEXT_BADGE}
-          </span>
+          {synthetic ? (
+            <span
+              className="sp-badge-chip sp-badge-chip--sm"
+              data-hidden={String(bandSeen)}
+              aria-hidden={bandSeen}
+            >
+              {data.copy.ovningstextBadge}
+            </span>
+          ) : null}
         </div>
         {feedback ? (
           <div className="sp-psheet-head">
@@ -1379,10 +1835,12 @@ function PhoneDrill({
             )
           ) : (
             <>
-              <h2 className="sp-prompt">{view.question.prompt}</h2>
+              <h2 className="sp-prompt">
+                <MathText>{view.question.prompt}</MathText>
+              </h2>
               {state === 'peek' ? (
                 <button type="button" className="sp-show" onClick={toggle}>
-                  Visa alternativen ({view.question.options.length})
+                  Visa alternativen ({view.letters.length})
                   <ChevronUp size={18} strokeWidth={2.25} aria-hidden />
                 </button>
               ) : null}

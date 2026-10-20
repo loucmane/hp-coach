@@ -40,13 +40,19 @@
   --sp-focus: oklch(50% 0.2 265);
   --sp-scrim: oklch(22% 0.03 268 / 0.42);
 
-  /* The eight section hues: one lightness and chroma for every hue. */
+  /* The eight section hues: one lightness and chroma for every hue. The
+   * chroma lives in base tokens (--sp-c*-base) that themes and calm set
+   * and Repetition never touches, so a section nested inside a REP card
+   * takes its own colour back. */
   --sp-l-tint: 93.5%;
-  --sp-c-tint: 0.045;
+  --sp-c-tint-base: 0.045;
+  --sp-c-tint: var(--sp-c-tint-base);
   --sp-l-strong: 66%;
-  --sp-c-strong: 0.14;
+  --sp-c-strong-base: 0.14;
+  --sp-c-strong: var(--sp-c-strong-base);
   --sp-l-ink: 40%;
-  --sp-c-ink: 0.12;
+  --sp-c-ink-base: 0.12;
+  --sp-c-ink: var(--sp-c-ink-base);
   --h: 155;
 
   --sp-display:
@@ -54,8 +60,13 @@
   --sp-ui:
     'Figtree', 'Ubuntu Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  /* One column for the passage, its strip, the tray and the sheet. */
+  /* One column for the passage, its strip, the tray and the sheet; a wide
+   * one for a printed DTK page; a destination page's measure; the size of
+   * math against its text. */
   --sp-col: 760px;
+  --sp-col-wide: 1000px;
+  --sp-page: 1180px;
+  --sp-math: 1.06em;
   --sp-r-card: 28px;
   --sp-r-inner: 20px;
 
@@ -154,11 +165,11 @@
   --sp-scrim: oklch(8% 0.02 268 / 0.6);
 
   --sp-l-tint: 30%;
-  --sp-c-tint: 0.02;
+  --sp-c-tint-base: 0.02;
   --sp-l-strong: 72%;
-  --sp-c-strong: 0.1;
+  --sp-c-strong-base: 0.1;
   --sp-l-ink: 87%;
-  --sp-c-ink: 0.06;
+  --sp-c-ink-base: 0.06;
 
   --sp-shadow-1: 0 1px 0 oklch(100% 0 0 / 0.04) inset, 0 6px 18px -8px oklch(0% 0 0 / 0.5);
   --sp-shadow-2: 0 1px 0 oklch(100% 0 0 / 0.05) inset, 0 20px 48px -16px oklch(0% 0 0 / 0.65);
@@ -168,10 +179,17 @@
 
 /* Calm mode: springs off, colour almost off, the extra numbers hidden. */
 [data-rd='spar'][data-calm='true'] {
-  --sp-c-tint: 0.012;
-  --sp-c-strong: 0.035;
-  --sp-c-ink: 0.03;
+  --sp-c-tint-base: 0.012;
+  --sp-c-strong-base: 0.035;
+  --sp-c-ink-base: 0.03;
   --sp-t-spring: 1ms;
+}
+
+/* A section takes its own chroma back, even inside a REP card. */
+[data-rd='spar'] [data-sec]:not([data-sec='REP']) {
+  --sp-c-tint: var(--sp-c-tint-base);
+  --sp-c-strong: var(--sp-c-strong-base);
+  --sp-c-ink: var(--sp-c-ink-base);
 }
 
 [data-rd='spar'] [data-sec='ORD'] {
@@ -1161,7 +1179,7 @@
 /* ── Idag ────────────────────────────────────────────────────────── */
 
 .sp-home {
-  max-width: 1180px;
+  max-width: var(--sp-page);
   margin: 0 auto;
   padding: 44px clamp(32px, 4.4vw, 64px) 80px;
 }
@@ -2064,39 +2082,6 @@
     auto;
 }
 
-.sp-prog-node {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--sp-sunk);
-  color: var(--sp-ink-3);
-  font-family: var(--sp-display);
-  font-size: 14px;
-  font-weight: 800;
-  transition:
-    background-color var(--sp-t1) var(--sp-ease),
-    transform var(--sp-t-spring) var(--sp-spring-pop);
-}
-
-.sp-prog li[data-state='now'] .sp-prog-node {
-  background: var(--sp-card);
-  box-shadow: inset 0 0 0 3px var(--sp-ink);
-  color: var(--sp-ink);
-}
-
-.sp-prog li[data-state='right'] .sp-prog-node {
-  background: var(--sp-ok);
-  color: var(--sp-on-primary);
-}
-
-.sp-prog li[data-state='miss'] .sp-prog-node {
-  background: var(--sp-card);
-  box-shadow: inset 0 0 0 2px var(--sp-warn);
-  color: var(--sp-warn-ink);
-}
-
 .sp-prog[data-compact='true'] li + li {
   margin-left: 14px;
 }
@@ -2108,10 +2093,169 @@
   margin-top: -2px;
 }
 
-.sp-prog[data-compact='true'] .sp-prog-node {
-  width: 24px;
-  height: 24px;
+/* A DTK round's path, grouped by the page its questions share. */
+.sp-prog-pages {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.sp-prog-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.sp-prog-label {
+  color: var(--sp-ink-3);
+  font-size: 11.5px;
+  font-weight: 750;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.sp-prog-pages[data-compact='true'] {
+  gap: 10px;
+}
+
+/* ── Stops: one vocabulary of states for every stig ──────────────── */
+
+.sp-stop {
+  --sp-stop: 32px;
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--sp-stop);
+  height: var(--sp-stop);
+  border-radius: 50%;
+  background: var(--sp-sunk);
+  color: var(--sp-ink-3);
+  font-family: var(--sp-display);
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+  transition:
+    background-color var(--sp-t1) var(--sp-ease),
+    box-shadow var(--sp-t1) var(--sp-ease);
+}
+
+.sp-stop-g {
+  display: inline-grid;
+  place-items: center;
+}
+
+.sp-stop[data-size='20'] {
+  --sp-stop: 20px;
+  font-size: 10px;
+}
+
+.sp-stop[data-size='24'] {
+  --sp-stop: 24px;
   font-size: 12px;
+}
+
+.sp-stop[data-size='30'] {
+  --sp-stop: 30px;
+  font-size: 13px;
+}
+
+.sp-stop[data-size='36'] {
+  --sp-stop: 36px;
+  font-size: 15px;
+}
+
+.sp-stop[data-size='44'] {
+  --sp-stop: 44px;
+  font-size: 18px;
+}
+
+/* A numbered stop ringed in its section's hue (a round across sections,
+ * NOG's statements, KVA's quantities). */
+.sp-stop[data-state='todo'][data-sec] {
+  background: var(--sp-card);
+  box-shadow: inset 0 0 0 2.5px oklch(var(--sp-l-strong) var(--sp-c-strong) var(--h));
+  color: oklch(var(--sp-l-ink) var(--sp-c-ink) var(--h));
+}
+
+.sp-stop[data-state='now'] {
+  background: var(--sp-card);
+  box-shadow: inset 0 0 0 3px var(--sp-ink);
+  color: var(--sp-ink);
+}
+
+.sp-stop[data-state='right'],
+.sp-stop[data-state='done'] {
+  background: var(--sp-ok);
+  color: var(--sp-on-primary);
+}
+
+/* Right as a ring, where a fill would shout. */
+.sp-stop[data-outline='true'] {
+  background: var(--sp-card);
+  box-shadow: inset 0 0 0 2px var(--sp-ok);
+  color: var(--sp-ok-ink);
+}
+
+.sp-stop[data-state='miss'] {
+  background: var(--sp-card);
+  box-shadow: inset 0 0 0 2px var(--sp-warn);
+  color: var(--sp-warn-ink);
+}
+
+/* A running Provpass: answered is ink, never green — nothing is graded. */
+.sp-stop[data-state='answered'] {
+  background: var(--sp-ink);
+  color: var(--sp-card);
+}
+
+.sp-stop[data-state='flagged'] {
+  background: var(--sp-card);
+  box-shadow: inset 0 0 0 2px var(--sp-ink);
+  color: var(--sp-ink);
+}
+
+.sp-stop[data-state='blank'] {
+  background: var(--sp-card);
+  border: 2px dashed var(--sp-ink-3);
+}
+
+.sp-stop[data-state='goal'] {
+  border-radius: 30%;
+  rotate: 45deg;
+  background: var(--sp-sunk);
+  color: var(--sp-ink-2);
+}
+
+.sp-stop[data-state='goal'] .sp-stop-g {
+  rotate: -45deg;
+}
+
+/* A section stop: the code in a ring of the section's strong hue. */
+.sp-stop[data-state='section'] {
+  background: var(--sp-card);
+  box-shadow: inset 0 0 0 3px oklch(var(--sp-l-strong) var(--sp-c-strong) var(--h));
+  color: oklch(var(--sp-l-ink) var(--sp-c-ink) var(--h));
+  font-family: var(--sp-ui);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.sp-stop[data-state='section'][data-size='30'] {
+  box-shadow: inset 0 0 0 2.5px oklch(var(--sp-l-strong) var(--sp-c-strong) var(--h));
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+.sp-stop[data-state='section'][data-size='44'] {
+  font-size: 12px;
+}
+
+/* Calm: rings lose their hue (the codes stay as text). */
+[data-calm='true'] .sp-stop[data-state='section'] {
+  box-shadow: inset 0 0 0 2px var(--sp-sunk-2);
+  color: var(--sp-ink-2);
 }
 
 /* ── Drill: the reading column ───────────────────────────────────── */
@@ -2348,8 +2492,10 @@
   inset: -4px;
 }
 
-/* One highlight style: a 3 px bar, a light neutral tint while flashed. */
-.sp-para[data-cited='true']::after {
+/* One highlight style: a 3 px bar, a light neutral tint while flashed. A
+   passage on a problem card (.sp-qpara) is marked the same way. */
+.sp-para[data-cited='true']::after,
+.sp-qpara[data-cited='true']::after {
   content: '';
   position: absolute;
   left: -14px;
@@ -2360,13 +2506,15 @@
   background: var(--sp-hl-bar);
 }
 
-.sp-para[data-flash='true'] {
+.sp-para[data-flash='true'],
+.sp-qpara[data-flash='true'] {
   background-color: var(--sp-hl);
   box-shadow: 0 0 0 8px var(--sp-hl);
   transition: none;
 }
 
-.sp-para[data-flash='true']::after {
+.sp-para[data-flash='true']::after,
+.sp-qpara[data-flash='true']::after {
   background: var(--sp-ink);
 }
 
@@ -3142,9 +3290,24 @@
 }
 
 .sp-framework {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 8px;
   margin-top: 22px;
   color: var(--sp-ink-3);
   font-size: 14px;
+}
+
+/* No explanation yet: the verdict and the two cards stand alone. */
+.sp-fb-missing {
+  max-width: 36em;
+  margin-top: 18px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: var(--sp-sunk);
+  color: var(--sp-ink-2);
+  font-size: 15.5px;
 }
 
 /* The one citation form: a ¶ chip at the end of the sentence it backs. */
@@ -3653,6 +3816,1841 @@
 
 .sp-psheet-foot .sp-btn--quiet {
   padding: 0 12px 0 8px;
+}
+
+/* ── Round 2 · shared: pages, math, chips, the segmented control ─── */
+
+/* Math sits at its text's size, lining and tabular. */
+[data-rd='spar'] .katex {
+  font-size: var(--sp-math);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.sp-num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* A destination page: Idag's measure and head (.sp-home-head). */
+.sp-page {
+  max-width: var(--sp-page);
+  margin: 0 auto;
+  padding: 44px clamp(32px, 4.4vw, 64px) 80px;
+}
+
+.sp-page[data-phone='true'] {
+  padding: 2px 18px 36px;
+}
+
+.sp-page[data-phone='true'] .sp-eyebrow {
+  font-size: 14px;
+}
+
+.sp-page[data-phone='true'] .sp-display--xl {
+  margin-top: 4px;
+  font-size: 40px;
+}
+
+.sp-page[data-phone='true'] .sp-lede-row {
+  margin-top: 8px;
+}
+
+.sp-page[data-phone='true'] .sp-lede {
+  font-size: 15.5px;
+}
+
+.sp-back {
+  margin: -12px 0 2px -6px;
+}
+
+/* Phone: the back link takes the brand's place; the page's name fades in
+ * once its title has scrolled away (opacity only). */
+.sp-appbar-back {
+  margin-left: -8px;
+  font-size: 16px;
+}
+
+.sp-appbar .sp-brand {
+  position: relative;
+}
+
+.sp-appbar .sp-brand-name,
+.sp-appbar-title {
+  transition: opacity var(--sp-t1) var(--sp-ease);
+}
+
+.sp-appbar-title {
+  position: absolute;
+  left: 42px;
+  top: 50%;
+  translate: 0 -50%;
+  font-family: var(--sp-display);
+  font-size: 19px;
+  font-weight: 800;
+  font-stretch: 90%;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  opacity: 0;
+}
+
+.sp-appbar[data-titled='true'] .sp-brand-name {
+  opacity: 0;
+}
+
+.sp-appbar[data-titled='true'] .sp-appbar-title {
+  opacity: 1;
+}
+
+/* Repetition's chip: near-neutral, with its glyph. */
+.sp-sec-chip--rep {
+  gap: 4px;
+  padding-left: 9px;
+}
+
+/* A small action in a sheet's head ("Visa uppgiften"). */
+.sp-chip-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  margin-left: auto;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--sp-card);
+  box-shadow: inset 0 0 0 1.5px var(--sp-sunk-2);
+  color: var(--sp-ink-2);
+  font-size: 13.5px;
+  font-weight: 750;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-radius var(--sp-t-spring) var(--sp-spring);
+}
+
+.sp-chip-btn::before {
+  content: '';
+  position: absolute;
+  inset: -4px -2px;
+}
+
+.sp-chip-btn:hover {
+  border-radius: 12px;
+  background: var(--sp-hl);
+  color: var(--sp-ink);
+}
+
+/* Groups drawn as Spår's own shapes, not the browser's fieldset box. */
+.sp-seg,
+.sp-kva,
+.sp-viewer-opts {
+  min-width: 0;
+  margin: 0;
+  border: 0;
+}
+
+/* Segmented: one pill of native radios, the chosen part an ink squircle. */
+.sp-seg {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--sp-card);
+  box-shadow: inset 0 0 0 1.5px var(--sp-sunk-2);
+}
+
+.sp-seg-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  color: var(--sp-ink-2);
+  font-size: 14px;
+  font-weight: 750;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-radius var(--sp-t-spring) var(--sp-spring),
+    background-color var(--sp-t1) var(--sp-ease),
+    color var(--sp-t1) var(--sp-ease);
+}
+
+/* The radio itself is hidden; the pill part is its target (≥ 44 px). */
+.sp-seg-input {
+  position: absolute;
+  inset: -3px 0;
+  width: 100%;
+  height: calc(100% + 6px);
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.sp-seg-item:hover {
+  color: var(--sp-ink);
+}
+
+.sp-seg-item:has(.sp-seg-input:checked) {
+  border-radius: 12px;
+  background: var(--sp-ink);
+  color: var(--sp-card);
+}
+
+.sp-seg-item:has(.sp-seg-input:focus-visible) {
+  outline: 2px solid var(--sp-focus);
+  outline-offset: 2px;
+}
+
+/* A horizontal stig: stops on one 2 px line. */
+.sp-trail {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  max-width: 100%;
+  margin-top: 18px;
+}
+
+.sp-trail::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 1px;
+  background: var(--sp-sunk-2);
+}
+
+.sp-trail > .sp-stop {
+  position: relative;
+}
+
+/* "Bara ett delprov": the card grows in place (desktop) … */
+.sp-scope-region {
+  flex: 1 0 100%;
+  margin-top: 4px;
+  padding: 12px 14px 14px;
+  border-radius: var(--sp-r-inner);
+  background: var(--sp-sunk);
+  animation: sp-grow var(--sp-t-spring) var(--sp-spring) both;
+}
+
+@keyframes sp-grow {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+
+.sp-scope-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.sp-scope-h {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.sp-scope-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sp-scope-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 6px 16px 6px 8px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--sp-card);
+  box-shadow: var(--sp-shadow-1);
+  color: var(--sp-ink);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-radius var(--sp-t-spring) var(--sp-spring);
+}
+
+.sp-scope-item:hover {
+  border-radius: 18px;
+}
+
+.sp-scope-item[aria-current='true'] {
+  box-shadow: inset 0 0 0 2px var(--sp-ink);
+}
+
+.sp-scope-n {
+  color: var(--sp-ink-2);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+/* … and on phone it is a modal edge sheet. */
+.sp-scope-sheet {
+  padding-bottom: 26px;
+}
+
+.sp-scope-sheet .sp-scope-head {
+  padding: 4px 4px 8px 12px;
+}
+
+.sp-scope-sheet .sp-scope-list {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 2px;
+}
+
+.sp-scope-sheet .sp-scope-item {
+  width: 100%;
+  min-height: 56px;
+  border-radius: 16px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.sp-scope-sheet .sp-scope-item:hover {
+  background: var(--sp-sunk);
+}
+
+.sp-scope-sheet .sp-scope-name {
+  flex: 1;
+  text-align: left;
+}
+
+/* ── Öva ─────────────────────────────────────────────────────────── */
+
+.sp-ova-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 332px;
+  column-gap: clamp(40px, 4vw, 64px);
+  align-items: start;
+  margin-top: 36px;
+}
+
+/* The Repetera station: Idag's dominant card on a near-neutral band. */
+.sp-station .sp-now-band {
+  gap: 10px;
+  padding-left: 14px;
+}
+
+.sp-station-glyph {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--sp-card);
+  color: var(--sp-ink-2);
+}
+
+[data-theme='dark'] .sp-station-glyph {
+  background: var(--sp-sunk);
+}
+
+.sp-station .sp-now-band-text {
+  color: var(--sp-ink);
+}
+
+.sp-station-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 48px;
+  margin: -6px 0 0 -10px;
+  padding: 2px 10px;
+  border: 0;
+  border-radius: var(--sp-r-inner);
+  background: transparent;
+  color: var(--sp-ink);
+  font-family: var(--sp-display);
+  font-size: 34px;
+  line-height: 1.05;
+  font-weight: 800;
+  font-stretch: 88%;
+  letter-spacing: -0.03em;
+  text-align: left;
+  text-wrap: balance;
+  cursor: pointer;
+  transition:
+    background-color var(--sp-t1) var(--sp-ease),
+    border-radius var(--sp-t-spring) var(--sp-spring);
+}
+
+.sp-station-open:hover {
+  border-radius: var(--sp-r-card);
+  background: var(--sp-sunk);
+}
+
+.sp-station-open svg {
+  flex: none;
+  color: var(--sp-ink-3);
+}
+
+.sp-station-sub {
+  max-width: 34em;
+  margin-top: 4px;
+  color: var(--sp-ink-2);
+  font-size: 16.5px;
+  text-wrap: pretty;
+}
+
+.sp-station-foot {
+  margin-top: 22px;
+}
+
+/* Calm: the path goes, the sentence stays. */
+[data-calm='true'] .sp-station-path {
+  display: none;
+}
+
+/* A recurring trap: a quiet note with its section's edge. */
+.sp-ova-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.sp-trapnote {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 16px 16px 8px 20px;
+  border-radius: var(--sp-r-inner);
+  background: var(--sp-card);
+  box-shadow:
+    inset 4px 0 0 oklch(var(--sp-l-strong) var(--sp-c-strong) var(--h)),
+    var(--sp-shadow-1);
+}
+
+.sp-trapnote-name {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.sp-trapnote-text {
+  color: var(--sp-ink-2);
+  font-size: 14.5px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.sp-trapnote .sp-link {
+  margin-left: -4px;
+}
+
+/* The eight sections in their two halves. */
+.sp-ova-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(28px, 3vw, 48px);
+  row-gap: 28px;
+  margin-top: 44px;
+}
+
+.sp-ova-group .sp-h3 {
+  margin-bottom: 12px;
+}
+
+.sp-ova-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sp-ova-tiles > li {
+  display: flex;
+}
+
+/* A section tile: its stop, no tinted band; it rounds out on the spring. */
+.sp-sectile {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  column-gap: 14px;
+  width: 100%;
+  padding: 16px 16px 16px 14px;
+  border: 0;
+  border-radius: var(--sp-r-inner);
+  background: var(--sp-card);
+  box-shadow: var(--sp-shadow-1);
+  color: var(--sp-ink);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-radius var(--sp-t-spring) var(--sp-spring),
+    box-shadow var(--sp-t1) var(--sp-ease);
+}
+
+.sp-sectile:hover,
+.sp-sectile:focus-visible {
+  border-radius: var(--sp-r-card);
+  box-shadow: var(--sp-shadow-2);
+}
+
+.sp-sectile-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+/* Names wrap at their spaces; the one long word ("Meningskomplettering")
+ * carries its own soft hyphen (SECTION_NAMES). */
+.sp-sectile-name {
+  max-width: 100%;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.3;
+  text-wrap: balance;
+  hyphens: manual;
+}
+
+.sp-sectile-facts {
+  color: var(--sp-ink-2);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.sp-sectile-wait {
+  color: var(--sp-ink-2);
+  font-size: 13.5px;
+  font-weight: 650;
+}
+
+.sp-sectile .sp-next-chip {
+  margin-top: 6px;
+}
+
+.sp-sectile-go {
+  min-height: 44px;
+  margin-top: 10px;
+  padding: 0 16px;
+  font-size: 15px;
+}
+
+.sp-sectile-side {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--sp-ink-2);
+  font-size: 14px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+/* Calm: no per-section counts. */
+[data-calm='true'] .sp-sectile-wait {
+  display: none;
+}
+
+/* A mixed round: a quiet full-width row, never a ninth tile. */
+.sp-ova-mixed {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 64px;
+  margin-top: 24px;
+  padding: 10px 18px 10px 12px;
+  border: 0;
+  border-radius: var(--sp-r-inner);
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--sp-sunk-2);
+  color: var(--sp-ink);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color var(--sp-t1) var(--sp-ease),
+    border-radius var(--sp-t-spring) var(--sp-spring);
+}
+
+.sp-ova-mixed:hover {
+  border-radius: var(--sp-r-card);
+  background: var(--sp-card);
+}
+
+.sp-ova-mixed-glyph {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--sp-sunk);
+  color: var(--sp-ink-2);
+}
+
+.sp-ova-mixed-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sp-ova-mixed-text b {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.sp-ova-mixed-text span {
+  color: var(--sp-ink-2);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.sp-ova-mixed-go-icon {
+  flex: none;
+  color: var(--sp-ink-3);
+}
+
+.sp-ova-mixed-go {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  margin-top: 28px;
+}
+
+.sp-ova-mixed-why {
+  color: var(--sp-ink-2);
+  font-size: 15px;
+}
+
+/* Phone: one column; the sections as 64 px rows that start at once. */
+.sp-page[data-phone='true'] .sp-ova-top {
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: 16px;
+}
+
+.sp-page[data-phone='true'] .sp-station .sp-now-band {
+  min-height: 48px;
+  padding: 8px 12px 8px 10px;
+}
+
+[data-theme='dark'] .sp-page[data-phone='true'] .sp-station .sp-now-band {
+  padding-top: 12px;
+}
+
+.sp-page[data-phone='true'] .sp-station .sp-now-body {
+  padding: 14px 16px 18px;
+}
+
+.sp-page[data-phone='true'] .sp-station-open {
+  font-size: 27px;
+}
+
+.sp-page[data-phone='true'] .sp-station-sub {
+  font-size: 15.5px;
+}
+
+.sp-page[data-phone='true'] .sp-station-path {
+  gap: 6px;
+}
+
+.sp-page[data-phone='true'] .sp-station-path .sp-stop {
+  --sp-stop: 30px;
+  font-size: 10px;
+}
+
+.sp-page[data-phone='true'] .sp-station-foot {
+  margin-top: 18px;
+}
+
+.sp-page[data-phone='true'] .sp-station-foot .sp-btn--primary {
+  flex: 1 0 100%;
+}
+
+.sp-page[data-phone='true'] .sp-scope-toggle {
+  margin: 0 auto;
+}
+
+.sp-page[data-phone='true'] .sp-ova-groups {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 22px;
+  margin-top: 30px;
+}
+
+.sp-page[data-phone='true'] .sp-ova-group .sp-h3 {
+  margin-bottom: 4px;
+}
+
+.sp-page[data-phone='true'] .sp-ova-tiles {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+}
+
+.sp-page[data-phone='true'] .sp-sectile {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 12px;
+  min-height: 64px;
+  padding: 10px 8px 10px 6px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.sp-page[data-phone='true'] .sp-sectile:hover {
+  background: var(--sp-card);
+  box-shadow: var(--sp-shadow-1);
+}
+
+.sp-page[data-phone='true'] .sp-sectile-text {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 8px;
+  padding-top: 0;
+}
+
+.sp-page[data-phone='true'] .sp-sectile-name {
+  flex: 1 0 100%;
+}
+
+.sp-page[data-phone='true'] .sp-sectile .sp-next-chip,
+.sp-page[data-phone='true'] .sp-sectile-go {
+  margin-top: 2px;
+}
+
+.sp-page[data-phone='true'] .sp-ova-aside {
+  margin-top: 28px;
+}
+
+/* ── Repetera ────────────────────────────────────────────────────── */
+
+/* The misses as a vertical stig, in the order they play. */
+.sp-rq {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: var(--sp-col);
+  margin-top: 30px;
+}
+
+.sp-rq-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: 16px;
+}
+
+.sp-rq-item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 21px;
+  top: 50px;
+  bottom: -10px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--sp-sunk-2);
+}
+
+.sp-rq-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-top: 1px;
+}
+
+.sp-rq-name {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.sp-rq-meta {
+  color: var(--sp-ink-2);
+  font-size: 14px;
+  font-weight: 650;
+}
+
+/* Secondary previews: clamped, the whole question is one press away
+ * (Starta) and in Facit. */
+.sp-rq-q,
+.sp-rq-trap {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-wrap: pretty;
+}
+
+.sp-rq-q {
+  -webkit-line-clamp: 2;
+  color: var(--sp-ink-2);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.sp-rq-trap {
+  -webkit-line-clamp: 1;
+  color: var(--sp-ink-2);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.sp-rq-trap-label {
+  color: var(--sp-ink);
+  font-weight: 750;
+}
+
+.sp-rq-n {
+  padding-top: 10px;
+  color: var(--sp-ink-3);
+  font-family: var(--sp-display);
+  font-size: 17px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.sp-rq-item[data-kind='goal'] {
+  align-items: center;
+}
+
+.sp-rq-goal {
+  color: var(--sp-ink-2);
+  font-size: 15.5px;
+  text-wrap: pretty;
+}
+
+.sp-rq-goal b {
+  margin-right: 4px;
+  color: var(--sp-ink);
+  font-family: var(--sp-display);
+  font-size: 19px;
+  font-weight: 800;
+  font-stretch: 92%;
+}
+
+.sp-rq-more {
+  margin: 12px 0 0 60px;
+  color: var(--sp-ink-2);
+  font-size: 14.5px;
+}
+
+.sp-rq-empty {
+  margin-top: 28px;
+}
+
+/* The rest of today's pile: counted, listed on request. */
+.sp-rq-rest {
+  max-width: var(--sp-col);
+  margin-top: 34px;
+  padding: 14px 16px 14px 20px;
+  border-radius: var(--sp-r-inner);
+  background: var(--sp-card);
+  box-shadow: var(--sp-shadow-1);
+}
+
+.sp-rq-rest-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2px 16px;
+}
+
+.sp-rq-rest-mix {
+  grid-column: 1;
+  color: var(--sp-ink-2);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.sp-rq-rest-toggle {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  width: auto;
+  margin: 0;
+}
+
+.sp-rq--later {
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.sp-rq--later .sp-rq-item {
+  grid-template-columns: 30px minmax(0, 1fr);
+  column-gap: 12px;
+}
+
+.sp-rq--later .sp-rq-item:not(:last-child)::before {
+  left: 14px;
+  top: 34px;
+}
+
+.sp-rq--later .sp-rq-name {
+  font-size: 15px;
+}
+
+/* The one pill stays in reach: the page's foot sticks, and what passes
+ * under it fades over 20 px. */
+.sp-rq-foot {
+  position: sticky;
+  z-index: 2;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  max-width: var(--sp-col);
+  margin-top: 28px;
+  padding: 24px 0 18px;
+  background: linear-gradient(to bottom, transparent, var(--sp-canvas) 20px);
+}
+
+.sp-page[data-phone='true'] .sp-rq {
+  margin-top: 22px;
+}
+
+.sp-page[data-phone='true'] .sp-rq-item {
+  grid-template-columns: 36px minmax(0, 1fr);
+  column-gap: 12px;
+}
+
+.sp-page[data-phone='true'] .sp-rq-item:not(:last-child)::before {
+  left: 17px;
+  top: 42px;
+}
+
+.sp-page[data-phone='true'] .sp-rq-q {
+  font-size: 14.5px;
+}
+
+.sp-page[data-phone='true'] .sp-rq-more {
+  margin-left: 48px;
+}
+
+.sp-page[data-phone='true'] .sp-rq-foot {
+  padding-bottom: 12px;
+}
+
+.sp-page[data-phone='true'] .sp-rq-foot .sp-btn--primary {
+  flex: 1 0 100%;
+}
+
+.sp-page[data-phone='true'] .sp-rq-foot .sp-scope-toggle {
+  margin: 0 auto;
+}
+
+/* ── Kvantfråga and DTK: the problem card ───────────────────────── */
+
+.sp-qcol {
+  max-width: var(--sp-col);
+  margin: 0 auto;
+}
+
+.sp-qcol[data-wide='true'] {
+  max-width: var(--sp-col-wide);
+}
+
+/* The reading card's sibling: the same column, a band in the section's
+ * tint (dark: the 4 px line), the sitting at its right. */
+.sp-pcard {
+  overflow: clip;
+  border-radius: var(--sp-r-card);
+  background: var(--sp-card);
+  box-shadow: var(--sp-shadow-1);
+}
+
+.sp-pcard-band {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  min-height: 56px;
+  padding: 10px 16px 10px 28px;
+  background: oklch(var(--sp-l-tint) var(--sp-c-tint) var(--h));
+}
+
+[data-theme='dark'] .sp-pcard-band {
+  padding-top: 14px;
+  border-bottom: 1.5px solid var(--sp-line);
+  background: var(--sp-card);
+  box-shadow: inset 0 4px 0 oklch(var(--sp-l-strong) var(--sp-c-strong) var(--h));
+}
+
+.sp-pcard-name {
+  color: oklch(var(--sp-l-ink) var(--sp-c-ink) var(--h));
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.sp-pcard-page {
+  color: var(--sp-ink-2);
+  font-weight: 650;
+}
+
+.sp-pcard-src {
+  padding-right: 12px;
+  color: var(--sp-ink-2);
+  font-size: 14px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.sp-pcard-body {
+  padding: 24px 28px 28px;
+}
+
+.sp-pcard-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+/* The stem: 20 px, weight 600, a 34 em measure. */
+.sp-stem {
+  color: var(--sp-ink);
+}
+
+.sp-stem-text {
+  max-width: 34em;
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: 600;
+  text-wrap: pretty;
+}
+
+.sp-stem-word {
+  font-family: var(--sp-display);
+  font-size: 42px;
+  line-height: 1.02;
+  font-weight: 800;
+  font-stretch: 88%;
+  letter-spacing: -0.032em;
+}
+
+.sp-stem-missing {
+  color: var(--sp-ink-2);
+  font-size: 17px;
+}
+
+/* MEK's gap: a plain blank (B3 brings the gap slot). */
+.sp-gap {
+  display: inline-block;
+  width: 4em;
+  height: 1.1em;
+  margin: 0 0.2em;
+  vertical-align: -0.2em;
+  border-bottom: 2px solid var(--sp-ink-3);
+}
+
+/* A passage that comes with a short problem (a repetition round). */
+.sp-qpassage {
+  max-width: 34em;
+  margin-bottom: 20px;
+  color: var(--sp-text);
+  font-size: 17.5px;
+  line-height: 1.6;
+  hyphens: auto;
+}
+
+.sp-qpara {
+  position: relative;
+  padding-left: 36px;
+  text-wrap: pretty;
+  border-radius: 6px;
+  transition: background-color 1600ms var(--sp-ease);
+}
+
+.sp-qpara + .sp-qpara {
+  margin-top: 0.9em;
+}
+
+.sp-qpnum {
+  position: absolute;
+  left: 0;
+  top: 0.18em;
+  min-width: 26px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--sp-sunk);
+  color: var(--sp-ink-3);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 24px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* KVA: the condition, then the two quantities side by side. */
+.sp-kva-cond {
+  max-width: 34em;
+  margin-bottom: 16px;
+  color: var(--sp-ink-2);
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.sp-kva {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 0;
+}
+
+.sp-kva-q {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px 20px;
+  border-radius: var(--sp-r-inner);
+  background: var(--sp-sunk);
+  text-align: center;
+}
+
+.sp-kva-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+}
+
+.sp-kva-label {
+  color: var(--sp-ink-2);
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.sp-kva-val {
+  font-size: 24px;
+  line-height: 1.3;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+/* NOG: the statements as two stops on a short path. */
+.sp-nog {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.sp-nog-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: start;
+  column-gap: 14px;
+}
+
+.sp-nog-item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 36px;
+  bottom: -14px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--sp-sunk-2);
+}
+
+.sp-nog-text {
+  padding-top: 3px;
+  font-size: 18px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.sp-nog-cap {
+  margin: 4px 4px 2px;
+  color: var(--sp-ink-2);
+  font-size: 14.5px;
+  font-weight: 700;
+}
+
+/* NOG's statement glyph: which statements an option uses. */
+.sp-nogg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+}
+
+.sp-nogg i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px var(--sp-ink-2);
+}
+
+.sp-nogg i[data-on='true'] {
+  background: var(--sp-ink-2);
+}
+
+.sp-nogg b {
+  width: 12px;
+  height: 3px;
+}
+
+.sp-nogg[data-use='together'] b {
+  border-radius: 2px;
+  background: var(--sp-ink-2);
+}
+
+.sp-nogg[data-use='each'] b {
+  width: 2px;
+  height: 14px;
+  margin: 0 5px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--sp-ink-2) 0 2px,
+    transparent 2px 4px
+  );
+}
+
+/* KVA's relation (or NOG's glyph) in a column of its own beside the
+ * words, so a wrapped line starts under the words. */
+.sp-relrow {
+  display: grid;
+  grid-template-columns: 3.6em minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 8px;
+}
+
+.sp-relrow--nog {
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: center;
+}
+
+.sp-rel {
+  color: var(--sp-ink-2);
+  font-family: var(--sp-display);
+  font-weight: 800;
+  font-variant-numeric: lining-nums tabular-nums;
+  white-space: nowrap;
+}
+
+/* Options laid out for short answers: one row, a 2 × 2 grid, or charts. */
+.sp-opts[data-layout='row'] {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sp-opts[data-layout='row'] .sp-opt {
+  flex: 1 1 128px;
+}
+
+.sp-opts[data-layout='grid'] {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.sp-opts[data-layout='images'] {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.sp-opts[data-layout='images'] .sp-opt-main {
+  flex-wrap: wrap;
+}
+
+.sp-optimg {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: 140px;
+  aspect-ratio: 1;
+  margin: 4px 0;
+  overflow: hidden;
+  border-radius: 12px;
+  background: oklch(100% 0 0);
+}
+
+.sp-optimg img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.sp-optimg-fail {
+  padding: 8px;
+  color: var(--sp-ink-2);
+  font-size: 13px;
+  font-weight: 650;
+  text-align: center;
+}
+
+[data-theme='dark'] .sp-optimg-fail {
+  color: oklch(35% 0.02 268);
+}
+
+.sp-optimg-label {
+  display: block;
+  font-weight: 650;
+}
+
+/* The tray follows a short problem: it sits under the card, and docks to
+ * the bottom edge only when the problem is taller than the room — the
+ * problem then fades under it over 20 px. */
+.sp-qdock {
+  position: sticky;
+  z-index: 5;
+  bottom: 0;
+  margin-top: 14px;
+}
+
+/* The fade is the tray's own width: beside a narrower tray the printed
+ * page simply continues. */
+.sp-qdock[data-stuck='true'] .sp-qtray::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, var(--sp-card));
+  pointer-events: none;
+}
+
+.sp-qtray {
+  position: relative;
+  max-width: var(--sp-col);
+  margin: 0 auto;
+  padding: 12px 18px 10px;
+  border-radius: var(--sp-r-card);
+  background: var(--sp-card);
+  box-shadow:
+    var(--sp-shadow-1),
+    0 0 0 1px var(--sp-line);
+  animation: sp-fade var(--sp-t2) var(--sp-ease) both;
+  transition: border-radius var(--sp-t2) var(--sp-ease);
+}
+
+.sp-qdock[data-stuck='true'] .sp-qtray {
+  border-radius: var(--sp-r-card) var(--sp-r-card) 0 0;
+  box-shadow:
+    var(--sp-shadow-up),
+    0 0 0 1px var(--sp-line);
+}
+
+.sp-qtray-head {
+  padding: 4px 4px 2px;
+}
+
+.sp-qtray-pos {
+  margin-bottom: 4px;
+  color: var(--sp-ink-2);
+  font-size: 13.5px;
+  font-weight: 750;
+}
+
+.sp-qtray-why {
+  margin: 8px 4px 2px;
+  color: var(--sp-ink);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sp-qtray .sp-opts {
+  overflow: visible;
+  margin-top: 6px;
+}
+
+.sp-qtray .sp-show {
+  margin-top: 8px;
+}
+
+.sp-qtray .sp-tray-foot {
+  margin-top: 8px;
+}
+
+.sp-qend {
+  height: 1px;
+}
+
+/* "Taktik ⌄": the hint before answering, folded; off in Lugnt läge. */
+.sp-tactic {
+  margin: 8px 0 0;
+}
+
+.sp-tactic-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1.5px dashed var(--sp-sunk-2);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--sp-ink-2);
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.sp-tactic-btn::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+}
+
+.sp-tactic-btn:hover,
+.sp-tactic[data-open='true'] .sp-tactic-btn {
+  border-style: solid;
+  color: var(--sp-ink);
+}
+
+.sp-tactic-text {
+  max-width: 40em;
+  margin-top: 8px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: var(--sp-sunk);
+  color: var(--sp-ink-2);
+  font-size: 15px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.sp-tactic-text b {
+  color: var(--sp-ink);
+}
+
+[data-calm='true'] .sp-tactic {
+  display: none;
+}
+
+/* Figures sit on a white mat in both themes — never filtered, never
+ * inverted: the explanations name their colours. */
+.sp-fig {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 0 0 20px;
+}
+
+.sp-mat {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  width: min(100%, calc(280px * var(--sp-fig-ratio, 1.4)));
+  border-radius: 12px;
+  background: oklch(100% 0 0);
+}
+
+[data-theme='dark'] .sp-mat {
+  box-shadow: 0 0 0 1px var(--sp-line);
+}
+
+.sp-mat img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Loading: the mat at the page's real aspect, sunk, with its words behind
+ * the image as it paints — no half-transparent page. */
+.sp-mat[data-state='loading'],
+.sp-mat[data-state='failed'] {
+  background: var(--sp-sunk);
+}
+
+.sp-mat-wait {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--sp-ink-2);
+  font-size: 14.5px;
+  font-weight: 650;
+}
+
+.sp-mat[data-state='ok'] .sp-mat-wait {
+  display: none;
+}
+
+.sp-mat-fail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 28px 20px;
+  color: var(--sp-ink);
+  font-size: 15.5px;
+  font-weight: 650;
+  text-align: center;
+}
+
+.sp-mat[data-state='failed'] {
+  min-height: 180px;
+}
+
+.sp-fig-zoom {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: var(--sp-card);
+  box-shadow: var(--sp-shadow-1);
+}
+
+/* DTK's page card: the wide column, a white mat at the fit's size. */
+.sp-pagecard .sp-pcard-band {
+  padding-right: 10px;
+}
+
+.sp-pagecard .sp-pcard-body {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.sp-mat--page {
+  width: 100%;
+  border-radius: 6px;
+}
+
+.sp-mat--page[data-state='failed'] {
+  min-height: 320px;
+}
+
+/* ── The figure viewer ───────────────────────────────────────────── */
+
+.sp-viewer {
+  position: absolute;
+  z-index: 90;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  background: var(--sp-canvas);
+  animation: sp-fade var(--sp-t2) var(--sp-ease) both;
+}
+
+.sp-viewer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  box-shadow: 0 1.5px 0 var(--sp-line);
+}
+
+.sp-viewer-tools {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  padding: 3px 6px 3px 3px;
+  border-radius: 999px;
+  background: var(--sp-card);
+  box-shadow: var(--sp-shadow-1);
+}
+
+.sp-viewer-tools .sp-icon-btn:disabled,
+.sp-viewer-tools .sp-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.sp-viewer-pct {
+  min-width: 64px;
+  font-size: 14.5px;
+  font-weight: 800;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.sp-viewer-port {
+  position: relative;
+  display: grid;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: var(--sp-sunk);
+  cursor: grab;
+  touch-action: pan-x pan-y;
+}
+
+.sp-viewer-port:active {
+  cursor: grabbing;
+}
+
+.sp-viewer-canvas {
+  position: relative;
+  margin: auto;
+  background: oklch(100% 0 0);
+}
+
+.sp-viewer-canvas img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+}
+
+.sp-viewer-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  padding: 10px 14px 14px;
+  background: var(--sp-card);
+  box-shadow:
+    var(--sp-shadow-up),
+    0 -1px 0 var(--sp-line);
+}
+
+.sp-viewer-q {
+  flex: 1 1 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.sp-viewer-opts {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0;
+}
+
+.sp-viewer-opt {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 4px 14px 4px 6px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--sp-sunk);
+  color: var(--sp-ink);
+  font-size: 14.5px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: border-radius var(--sp-t-spring) var(--sp-spring);
+}
+
+.sp-viewer-opt[aria-pressed='true'] {
+  border-radius: 16px;
+  background: var(--sp-card);
+  box-shadow: inset 0 0 0 2px var(--sp-ink);
+}
+
+.sp-viewer-opt[aria-pressed='true'] .sp-blob {
+  border-radius: 11px;
+  rotate: -8deg;
+  background: var(--sp-ink);
+  color: var(--sp-card);
+  box-shadow: none;
+}
+
+/* Phone: the tools stay one line, Stäng is its ✕ (still named), and the
+ * strip's options sit two by two so the page keeps its room. */
+[data-width='phone'] .sp-viewer-bar {
+  gap: 6px;
+  padding: 8px 8px 8px 10px;
+}
+
+[data-width='phone'] .sp-viewer-tools {
+  flex-wrap: nowrap;
+  padding-right: 3px;
+}
+
+[data-width='phone'] .sp-viewer-tools .sp-icon-btn {
+  width: 44px;
+  height: 44px;
+}
+
+[data-width='phone'] .sp-viewer-pct {
+  min-width: 52px;
+  font-size: 13.5px;
+}
+
+[data-width='phone'] .sp-viewer-tools .sp-btn {
+  padding: 0 10px;
+  font-size: 14px;
+}
+
+[data-width='phone'] .sp-viewer-close {
+  width: 44px;
+  padding: 0;
+}
+
+[data-width='phone'] .sp-viewer-close-label {
+  display: none;
+}
+
+[data-width='phone'] .sp-viewer-strip {
+  padding: 10px 12px 14px;
+}
+
+[data-width='phone'] .sp-viewer-opts {
+  display: grid;
+  flex: 1 1 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+[data-width='phone'] .sp-viewer-strip > .sp-btn--primary {
+  flex: 1 1 100%;
+}
+
+/* ── Kvantfråga and DTK on phone ─────────────────────────────────── */
+
+.sp-qpscroll {
+  padding: 64px 12px 0;
+}
+
+.sp-pdrill .sp-qpscroll[data-bar='true'] {
+  bottom: 76px;
+}
+
+.sp-qpscroll .sp-pcard {
+  border-radius: 24px;
+}
+
+.sp-qpscroll .sp-pcard-band {
+  min-height: 48px;
+  padding: 8px 8px 8px 18px;
+}
+
+.sp-qpscroll .sp-pcard-body {
+  padding: 18px 16px 20px;
+}
+
+.sp-qpscroll .sp-pagecard .sp-pcard-body {
+  padding: 12px;
+}
+
+.sp-qpscroll .sp-qpara[data-cited='true']::after {
+  left: -8px;
+}
+
+.sp-qpscroll .sp-stem-text {
+  font-size: 18px;
+}
+
+.sp-qpscroll .sp-stem-word {
+  font-size: 34px;
+}
+
+.sp-qpscroll .sp-kva {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.sp-qpscroll .sp-kva-val {
+  font-size: 21px;
+}
+
+.sp-qpopts {
+  padding: 12px 0 24px;
+}
+
+.sp-qpopts .sp-opts,
+.sp-psheet .sp-opts[data-layout] {
+  margin: 0 -6px;
+  overflow: visible;
+  gap: 6px;
+}
+
+.sp-qpopts .sp-opt-main {
+  min-height: 60px;
+  padding: 10px 48px 10px 10px;
+}
+
+.sp-qpopts .sp-blob {
+  width: 36px;
+  height: 36px;
+}
+
+.sp-qpopts .sp-opt-text {
+  padding-top: 7px;
+  font-size: 16px;
+  line-height: 1.42;
+}
+
+.sp-qpopts .sp-opt-x {
+  top: 8px;
+}
+
+.sp-pdrill .sp-opts[data-layout='images'] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* The sticky answer bar under a short problem: "Ditt val: C · Svara". */
+.sp-answerbar {
+  position: absolute;
+  z-index: 8;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 76px;
+  padding: 10px 14px 12px 20px;
+  border-radius: 22px 22px 0 0;
+  background: var(--sp-card);
+  box-shadow:
+    var(--sp-shadow-up),
+    0 0 0 1px var(--sp-line);
+}
+
+.sp-answerbar .sp-echo {
+  flex: 1;
+  margin: 0;
+}
+
+/* The page's question sheet peeks with the whole question, never clamped. */
+.sp-psheet[data-mode='page'][data-state='peek'] .sp-prompt {
+  display: block;
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
+.sp-psheet-head--row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* A round's end with its stops grouped by page. */
+.sp-done-qs li[data-break='true'] {
+  margin-left: 12px;
+}
+
+/* Idag without a sitting to resume: the plan's first step leads. */
+.sp-now-why {
+  max-width: 34em;
+  margin-top: 10px;
+  color: var(--sp-ink-2);
+  font-size: 15.5px;
+  text-wrap: pretty;
+}
+
+/* A falling week is said plainly, never in alarm colours. */
+.sp-delta[data-sign='down'] {
+  color: var(--sp-ink-2);
 }
 
 /* ── Reduced motion, calm, thumbnails ────────────────────────────── */
