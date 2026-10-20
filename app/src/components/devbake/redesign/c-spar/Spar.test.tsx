@@ -1,24 +1,33 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 
+import type { MockResultRow } from '@/api/hooks/useMockResults'
 import {
   describeDirectionContract,
   loadImages,
   stubLayout,
 } from '@/components/devbake/redesign/contract'
-import { DirectionDataProvider, FIXTURE_DATA } from '@/components/devbake/redesign/directionData'
+import {
+  DirectionDataProvider,
+  FIXTURE_DATA,
+  provResultView,
+} from '@/components/devbake/redesign/directionData'
 import {
   Redesign2026Bakeoff,
   type Selection,
 } from '@/components/devbake/redesign/Redesign2026Bakeoff'
 import type { DirectionProps } from '@/components/devbake/redesign/r1Kit'
+import { NORMERING, PASS_QUESTIONS } from '@/components/devbake/redesign/r2Fixtures'
 import type {
   DirectionActions,
   DirectionData,
   DrillQuestion,
+  ProvResultView,
 } from '@/components/devbake/redesign/viewModel'
+import type { AnswerLetter, Question } from '@/data/questions'
+import { computeMockSummary } from '@/lib/mock'
 import { meta } from './meta'
 import { Spar } from './Spar'
 
@@ -813,6 +822,151 @@ function BakeoffPage({
   )
 }
 
+/** Spår's Provpass hub on the bake-off's desktop stage. */
+const BAKEOFF_9: Selection = { d: 'c', s: 9, w: 'desktop', t: 'light', sbs: false, bare: false }
+
+/** Runs `body` with the bake-off's stage measuring a 1440 × 848 window. */
+async function onDesktopStage(body: () => Promise<void>) {
+  const width = vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(1440)
+  const height = vi.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(848)
+  try {
+    await body()
+  } finally {
+    width.mockRestore()
+    height.mockRestore()
+  }
+}
+
+/** A route that cannot open the result: the bake-off's own submitProvpass
+ *  (its move to screen 10) throws. `handIns` counts its tries. */
+function failingRoute() {
+  const onSelect = vi.fn((next: Partial<Selection>) => {
+    if (next.s === 10) throw new Error('Inlämningen nådde inte fram')
+  })
+  return { onSelect, handIns: () => onSelect.mock.calls.filter(([n]) => n.s === 10).length }
+}
+
+/**
+ * A hand-in the host could not take: one try, the error in the runner and
+ * no result (the host is still on 9), no dialog, the frame's navigation
+ * back, focus on the way out, and the switcher's keys reach the host again
+ * ("3" picks Spår, which stays mounted).
+ */
+function expectFailedHandIn(route: ReturnType<typeof failingRoute>) {
+  expect(route.handIns()).toBe(1)
+  expect(screen.getByRole('alert')).toHaveTextContent('Inlämningen gick inte fram.')
+  expect(running()).toBeInTheDocument()
+  expect(screen.queryByTestId('rd-prov-result')).toBeNull()
+  expect(screen.queryByText(/lämnades in automatiskt/)).toBeNull()
+  expect(screen.getByTestId('rb26-stage')).toHaveAttribute('data-screen', '9')
+  expect(screen.queryByRole('dialog')).toBeNull()
+  expect(screen.getByTestId('rd-nav-idag')).toBeInTheDocument()
+  const out = screen.getByRole('button', { name: 'Till Provpass' })
+  expect(out).toHaveFocus()
+  fireEvent.keyDown(out, { key: '3' })
+  expect(route.onSelect).toHaveBeenLastCalledWith({ d: 'c', sbs: false })
+  expect(running()).toBeInTheDocument()
+}
+
+/** A handed-in pass as the app reduces it (lib/mock computeMockSummary) and
+ *  the kit views it (provResultView): `plan` in the order it ran, `picks`
+ *  the letters given; a question without a pick is blank. */
+function reducedResult(
+  plan: readonly Question[],
+  picks: Readonly<Record<string, AnswerLetter>>,
+  pass: Pick<MockResultRow, 'mode' | 'examId' | 'provpass'> = {
+    mode: 'authentic',
+    examId: 'host-2025',
+    provpass: 'kvant1',
+  },
+): ProvResultView {
+  const sheet = new Map<string, { letter: string | null; timeMs: number }>()
+  for (const q of plan) {
+    const letter = picks[q.qid]
+    if (letter) sheet.set(q.qid, { letter, timeMs: 60_000 })
+  }
+  const summary = computeMockSummary([...plan], sheet)
+  const row: MockResultRow = {
+    id: 401,
+    userId: 1,
+    sessionId: 5001,
+    half: 'kvant',
+    ...pass,
+    presented: summary.presented,
+    answered: summary.answered,
+    correct: summary.correct,
+    seenBefore: 0,
+    durationMs: 3_000_000,
+    breakdown: summary.breakdown,
+    createdAt: '2026-10-09T13:58:00.000Z',
+  }
+  return provResultView(row, [row], NORMERING, new Date('2026-10-09T14:00:00.000Z'))
+}
+
+/** Every question of `plan` answered right. */
+function rightPicks(plan: readonly Question[]): Record<string, AnswerLetter> {
+  return Object.fromEntries(plan.map((q) => [q.qid, q.answer]))
+}
+
+/** A letter of `q` that is not its answer. */
+function wrongPick(q: Question): AnswerLetter {
+  const letter = q.options?.find((o) => o.letter !== q.answer)?.letter
+  if (!letter) throw new Error(`${q.qid} has no wrong option`)
+  return letter
+}
+
+/** Screen 10 showing `result`. */
+function mountResult(result: ProvResultView) {
+  const data = clone()
+  data.provpass.result = result
+  return mount(10, { data })
+}
+
+/** Nothing on the result calls a question right, or missed, one by one:
+ *  the result keeps no ordered per-question outcomes. */
+function expectNoQuestionVerdicts() {
+  const page = screen.getByTestId('rd-prov-result')
+  expect(
+    page.querySelectorAll('.sp-stop[data-state="right"], .sp-stop[data-state="miss"]'),
+  ).toHaveLength(0)
+  expect(within(page).queryByRole('img', { name: /Missade frågor|rätt\./ })).toBeNull()
+}
+
+/** A host that moves: handing in shows screen 10, and opening a result
+ *  shows it there (from `results`, by id). */
+function ResultHost({
+  initial,
+  results,
+}: {
+  initial: DirectionData
+  results: Readonly<Record<string, ProvResultView>>
+}) {
+  const [shown, setShown] = useState<DirectionProps['screen']>(9)
+  const [data, setData] = useState(initial)
+  const actions = useMemo<Partial<DirectionActions>>(
+    () => ({
+      submitProvpass: () => setShown(10),
+      openProvResult: (id) => {
+        setData((d) => ({ ...d, provpass: { ...d.provpass, result: results[id] } }))
+        setShown(10)
+      },
+    }),
+    [results],
+  )
+  return (
+    <DirectionDataProvider data={data} actions={actions}>
+      <Spar
+        screen={shown}
+        width="desktop"
+        theme="light"
+        live
+        onScreen={setShown}
+        onTheme={vi.fn()}
+      />
+    </DirectionDataProvider>
+  )
+}
+
 describe('Spår: Provpass, Provpassresultat and Framsteg', () => {
   beforeAll(stubLayout)
   const { hub, result } = FIXTURE_DATA.provpass
@@ -1082,6 +1236,42 @@ describe('Spår: Provpass, Provpassresultat and Framsteg', () => {
       expect(screen.getByTestId('rd-option-A')).toBeDisabled()
     })
 
+    it('takes no answer from a zoomed page until its own new image has loaded; a cached one is ready at once', () => {
+      mount(9)
+      startPass()
+      goToQuestion(29)
+      const page = () => screen.getByRole('img', { name: 'Underlag till uppgift 29' })
+      const first = page()
+      fireEvent.load(first)
+      expect(screen.getByTestId('rd-option-A')).toBeEnabled()
+      // Z moves the page into a pan region of its own: a new image element,
+      // not yet loaded, so the question waits for it — clicks and letters.
+      key('z')
+      expect(page()).not.toBe(first)
+      expect(screen.getByTestId('rd-option-A')).toBeDisabled()
+      fireEvent.click(screen.getByTestId('rd-option-A'))
+      key('a')
+      expect(cell(29)).toHaveAttribute('data-answered', 'false')
+      fireEvent.load(page())
+      expect(screen.getByTestId('rd-option-A')).toBeEnabled()
+      key('a')
+      expect(cell(29)).toHaveAttribute('data-answered', 'true')
+      // Out of the zoom, the next new element is already complete (cached):
+      // nothing to wait for.
+      const complete = vi.spyOn(HTMLImageElement.prototype, 'complete', 'get').mockReturnValue(true)
+      const natural = vi
+        .spyOn(HTMLImageElement.prototype, 'naturalWidth', 'get')
+        .mockReturnValue(1240)
+      try {
+        key('z')
+        expect(page()).not.toBe(first)
+        expect(screen.getByTestId('rd-option-B')).toBeEnabled()
+      } finally {
+        complete.mockRestore()
+        natural.mockRestore()
+      }
+    })
+
     it('marks a question, and the overview finds the marks and the blanks', () => {
       mount(9)
       startPass()
@@ -1229,16 +1419,75 @@ describe('Spår: Provpass, Provpassresultat and Framsteg', () => {
       expect(screen.queryByText(/avbröts/)).toBeNull()
     })
 
-    it('hands in, once, a pass whose time is already up when it starts', () => {
+    it('keeps "Tiden tog slut" on the result that timed out, never on another result opened after it', () => {
+      vi.useFakeTimers()
+      try {
+        const data = clone()
+        data.provpass.running.remainingSeconds = 2
+        const timedOut = data.provpass.result
+        const [earlier] = timedOut.history
+        const other: ProvResultView = {
+          ...timedOut,
+          id: earlier.id,
+          correct: earlier.correct,
+          presented: earlier.presented,
+          history: [
+            {
+              ...earlier,
+              id: timedOut.id,
+              correct: timedOut.correct,
+              presented: timedOut.presented,
+            },
+          ],
+        }
+        render(
+          <ResultHost initial={data} results={{ [timedOut.id]: timedOut, [other.id]: other }} />,
+        )
+        startPass()
+        act(() => {
+          vi.advanceTimersByTime(2500)
+        })
+        const notice = 'Tiden tog slut, så passet lämnades in automatiskt.'
+        const title = (r: ProvResultView) =>
+          screen.getByRole('heading', { level: 1, name: `${r.correct} av ${r.presented} rätt` })
+        expect(title(timedOut)).toBeInTheDocument()
+        expect(screen.getByText(notice)).toBeInTheDocument()
+        // An earlier pass, opened on the same screen 10: it never timed out.
+        fireEvent.click(within(screen.getByTestId('rd-prov-history-item-1')).getByRole('button'))
+        expect(title(other)).toBeInTheDocument()
+        expect(screen.queryByText(notice)).toBeNull()
+        // The pass that did, opened again from there: the notice is its own.
+        fireEvent.click(within(screen.getByTestId('rd-prov-history-item-1')).getByRole('button'))
+        expect(title(timedOut)).toBeInTheDocument()
+        expect(screen.getByText(notice)).toBeInTheDocument()
+      } finally {
+        vi.useRealTimers()
+      }
+    })
+
+    it('neither resumes nor hands in a pass whose time is already up when it opens', () => {
       const submitProvpass = vi.fn()
-      const data = clone()
-      data.provpass.running.remainingSeconds = 0
-      mount(9, { data, actions: { submitProvpass } })
+      const at = (seconds: number) => {
+        const d = clone()
+        d.provpass.running.remainingSeconds = seconds
+        return d
+      }
+      const { update } = mountLive(at(0), { submitProvpass })
       startPass()
-      expect(submitProvpass).toHaveBeenCalledTimes(1)
       expect(
-        screen.getByText('Tiden tog slut, så passet lämnades in automatiskt.'),
+        screen.getByRole('heading', { level: 1, name: 'Det tidigare passet kan inte återupptas' }),
       ).toBeInTheDocument()
+      expect(screen.queryByRole('timer')).toBeNull()
+      expect(screen.queryByTestId('rd-prov-submit')).toBeNull()
+      // Decided once, as it opened: a provider still behind the clock
+      // changes nothing.
+      update(at(-30))
+      expect(submitProvpass).not.toHaveBeenCalled()
+      expect(screen.queryByText(/lämnades in automatiskt/)).toBeNull()
+      fireEvent.click(screen.getByRole('button', { name: 'Tillbaka till Provpass' }))
+      expect(screen.getByRole('heading', { level: 1, name: 'Hela sträckan' })).toBeInTheDocument()
+      expect(screen.queryByRole('status')).toBeNull()
+      expect(submitProvpass).not.toHaveBeenCalled()
     })
 
     it('keeps its place in range when the questions shrink, and starts over for a new sitting', () => {
@@ -1306,6 +1555,86 @@ describe('Spår: Provpass, Provpassresultat and Framsteg', () => {
         height.mockRestore()
       }
     })
+
+    it('keeps a hand-in the host could not take in the runner: the error, the answers read-only, the keys back, no second try', async () => {
+      const route = failingRoute()
+      await onDesktopStage(async () => {
+        render(<BakeoffPage initial={BAKEOFF_9} onSelect={route.onSelect} />)
+        await screen.findByTestId('rd-spar', {}, { timeout: 5000 })
+        startPass()
+        key('b')
+        fireEvent.click(screen.getByTestId('rd-prov-submit'))
+        fireEvent.click(screen.getByTestId('rd-confirm'))
+        expectFailedHandIn(route)
+        // The answers stay in view and cannot change.
+        expect(screen.getByTestId('rd-option-B')).toHaveAttribute('aria-pressed', 'true')
+        expect(screen.getByTestId('rd-option-B')).toBeDisabled()
+        key('c')
+        expect(screen.getByTestId('rd-option-B')).toHaveAttribute('aria-pressed', 'true')
+        expect(screen.getByText('Ditt svar: B')).toBeInTheDocument()
+        // Nothing hands the pass in again: no button, and no key.
+        expect(screen.queryByTestId('rd-prov-submit')).toBeNull()
+        expect(screen.queryByRole('timer')).toBeNull()
+        key('Enter')
+        expect(screen.queryByRole('dialog')).toBeNull()
+        expect(route.handIns()).toBe(1)
+        // The way out: the hub, with the frame around it.
+        fireEvent.click(screen.getByRole('button', { name: 'Till Provpass' }))
+        expect(screen.getByRole('heading', { level: 1, name: 'Hela sträckan' })).toBeInTheDocument()
+        expect(screen.queryByText(/avbröts/)).toBeNull()
+        expect(route.handIns()).toBe(1)
+      })
+    })
+
+    it('keeps a hand-in at 0:00 the host could not take in the runner; the clock never tries again', async () => {
+      const route = failingRoute()
+      await onDesktopStage(async () => {
+        render(<BakeoffPage initial={BAKEOFF_9} onSelect={route.onSelect} />)
+        await screen.findByTestId('rd-spar', {}, { timeout: 5000 })
+        startPass()
+        // The time runs out: one tick of the clock lands past 0:00.
+        const now = Date.now()
+        const clock = vi.spyOn(Date, 'now').mockReturnValue(now + 32 * 60_000)
+        try {
+          await waitFor(() => expect(screen.getByRole('alert')).toBeInTheDocument())
+          expectFailedHandIn(route)
+          await act(() => new Promise((done) => setTimeout(done, 600)))
+          expect(route.handIns()).toBe(1)
+        } finally {
+          clock.mockRestore()
+        }
+        // The frame's navigation works again: Idag, through the host.
+        fireEvent.click(screen.getByTestId('rd-nav-idag'))
+        expect(route.onSelect).toHaveBeenLastCalledWith({ s: 1 })
+        expect(route.handIns()).toBe(1)
+      })
+    })
+
+    it('brings the navbar back on phone when a hand-in fails, with the answers in view', () => {
+      const submitProvpass = vi.fn(() => {
+        throw new Error('Inlämningen nådde inte fram')
+      })
+      const go = vi.fn()
+      mount(9, { width: 'phone', actions: { submitProvpass, go } })
+      startPass()
+      key('b')
+      fireEvent.click(screen.getByTestId('rd-prov-submit'))
+      fireEvent.click(screen.getByTestId('rd-confirm'))
+      expect(submitProvpass).toHaveBeenCalledTimes(1)
+      expect(screen.getByRole('alert')).toHaveTextContent('Inlämningen gick inte fram.')
+      expect(screen.queryByTestId('rd-prov-result')).toBeNull()
+      expect(screen.getByTestId('rd-option-B')).toBeDisabled()
+      expect(screen.getByTestId('rd-option-B')).toHaveAttribute('aria-pressed', 'true')
+      expect(screen.queryByTestId('rd-prov-flag')).toBeNull()
+      expect(screen.queryByTestId('rd-prov-submit')).toBeNull()
+      expect(screen.getByRole('button', { name: 'Till Provpass' })).toHaveFocus()
+      const nav = screen.getByRole('navigation', { name: 'Huvudmeny' })
+      expect(within(nav).getByTestId('rd-nav-provpass')).toHaveAttribute('aria-current', 'page')
+      fireEvent.click(within(nav).getByTestId('rd-nav-framsteg'))
+      expect(go).toHaveBeenCalledWith('framsteg')
+      expect(screen.queryByTestId('rd-prov-running')).toBeNull()
+      expect(submitProvpass).toHaveBeenCalledTimes(1)
+    })
   })
 
   describe('Provpassresultat', () => {
@@ -1340,11 +1669,60 @@ describe('Spår: Provpass, Provpassresultat and Framsteg', () => {
         '7 av 10 · 12:00 av 13:45',
       )
       expect(screen.getByTestId('rd-prov-section-kva')).not.toHaveTextContent('över budget')
-      expect(
-        screen.getByRole('img', {
-          name: '27 av 40 rätt. Missade frågor: 2, 5, 9, 11, 14, 18, 21, 26, 27, 32, 36, 39, 40.',
-        }),
-      ).toBeInTheDocument()
+      expectNoQuestionVerdicts()
+    })
+
+    it('marks no question right in an all-blank pass: each leg’s count, nothing question by question', () => {
+      const r = reducedResult(PASS_QUESTIONS, {})
+      // The app's reducer leaves blanks out of the misses.
+      expect(r.missed).toEqual([])
+      mountResult(r)
+      expect(screen.getByRole('heading', { level: 1, name: '0 av 40 rätt' })).toBeInTheDocument()
+      expect(screen.getByText('40 frågor lämnades obesvarade.')).toBeInTheDocument()
+      for (const [slug, n] of [
+        ['xyz', 12],
+        ['kva', 10],
+        ['nog', 6],
+        ['dtk', 12],
+      ] as const) {
+        expect(screen.getByTestId(`rd-prov-section-${slug}`)).toHaveTextContent(`0 av ${n}`)
+      }
+      expectNoQuestionVerdicts()
+    })
+
+    it('never moves a miss onto another question in a short pass', () => {
+      // XYZ-001 could not be read, so 39 questions ran: KVA-013, the one
+      // answered wrong, ran as the twelfth.
+      const plan = PASS_QUESTIONS.filter((q) => !q.qid.endsWith('-XYZ-001'))
+      const picks = rightPicks(plan)
+      const missed = plan[11]
+      expect(missed.qid).toBe('host-2025-kvant1-KVA-013')
+      picks[missed.qid] = wrongPick(missed)
+      const r = reducedResult(plan, picks)
+      expect(r.missed).toEqual([missed.qid])
+      mountResult(r)
+      expect(screen.getByRole('heading', { level: 1, name: '38 av 39 rätt' })).toBeInTheDocument()
+      expect(screen.getByText('1 fråga saknas ur detta pass — rättat av 39.')).toBeInTheDocument()
+      expect(screen.getByTestId('rd-prov-section-xyz')).toHaveTextContent('11 av 11')
+      expect(screen.getByTestId('rd-prov-section-kva')).toHaveTextContent('9 av 10')
+      expectNoQuestionVerdicts()
+    })
+
+    it('claims nothing question by question for a generated pass drawn from several sittings', () => {
+      // Its first question comes from Våren 2026, where it is number 12;
+      // it is the one answered wrong.
+      const [first, ...rest] = PASS_QUESTIONS
+      const borrowed: Question = { ...first, qid: 'var-2026-kvant2-XYZ-012', exam_id: 'var-2026' }
+      const plan = [borrowed, ...rest]
+      const picks = rightPicks(plan)
+      picks[borrowed.qid] = wrongPick(borrowed)
+      const r = reducedResult(plan, picks, { mode: 'synthetic', examId: null, provpass: null })
+      expect(r.missed).toEqual([borrowed.qid])
+      mountResult(r)
+      expect(screen.getByText('Provpass · Kvantitativ · genererat pass')).toBeInTheDocument()
+      expect(screen.getByRole('heading', { level: 1, name: '39 av 40 rätt' })).toBeInTheDocument()
+      expect(screen.getByTestId('rd-prov-section-xyz')).toHaveTextContent('11 av 12')
+      expectNoQuestionVerdicts()
     })
 
     it('opens earlier passes of the half through the host', () => {

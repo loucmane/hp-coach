@@ -15,11 +15,15 @@
 //     question sits in its section's layout with no hint, verdict or
 //     facit: choosing is answering, ⚑ marks it. The overview draws the
 //     questions as a switchback that turns like a mountain trail. At 0:00
-//     the pass hands itself in, once.
+//     the pass hands itself in, once; a pass already at 0:00 when it opens
+//     cannot be resumed and hands nothing in. A hand-in the host could not
+//     take is never tried again: the pass stays, read-only, says so, and
+//     the frame's navigation comes back.
 //   - The result: the raw count as the display line, the score on Idag's
-//     scale with its basis in words, the questions as a switchback of
-//     verdict stops (✓ right, ↻ missed — amber, never red), each leg's
-//     time against its share of the 55 minutes, and earlier passes.
+//     scale with its basis in words, each leg's count and its time against
+//     its share of the 55 minutes, and earlier passes. The result keeps no
+//     ordered per-question outcomes, so nothing is said question by
+//     question.
 //
 // Kit v2: the hub, the running pass and the result come from
 // useDirectionData().data.provpass, and starting, handing in and opening a
@@ -45,6 +49,7 @@ import {
 import {
   type CSSProperties,
   type ReactNode,
+  type SyntheticEvent,
   useCallback,
   useEffect,
   useId,
@@ -56,6 +61,7 @@ import {
 
 import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
+  type Destination,
   fmtClock,
   fmtScore,
   isForeignKey,
@@ -75,7 +81,6 @@ import type {
 import { splitKvaPrompt } from '@/components/drill/KvaPrompt'
 import { flattenMathText, MathText } from '@/components/MathText'
 import type { AnswerLetter, Section } from '@/data/questions'
-import { sectionOfQid } from '@/lib/dueBySection'
 import { parseNogPrompt } from '@/lib/nogPrompt'
 import { Options, type OptionsLayout } from './SparDrill'
 import {
@@ -84,7 +89,9 @@ import {
   inWords,
   Kbd,
   KVANT,
+  Mark,
   SparDialog,
+  SparNavItems,
   SparPageHead,
   SparScale,
   SparSegmented,
@@ -654,14 +661,19 @@ function requiredImages(q: DrillQuestion): string[] {
 }
 
 /**
- * Load states of the question's required images, by source. A source
- * keeps its state while it stays on screen — the next question on the
- * same page is ready at once — and starts loading again once it has left
- * (a new or returning source waits for its own image). An image already
- * complete when it mounts (cached) counts as loaded; a retry remounts it.
+ * Load states of the question's required images, by source: each is the
+ * state of the image element mounted for it now. It stands while that
+ * element stays — the next question on the same page is ready at once. A
+ * new element for a source (a page that returns, a retry, a page zoomed
+ * into its pan region) waits for its own load, unless it is already
+ * complete when it mounts (cached). A source that leaves the screen
+ * forgets its state.
  */
 function useImages(srcs: readonly string[]) {
   const [map, setMap] = useState<Readonly<Record<string, { state: ImgState; nonce: number }>>>({})
+  // The element each source's state belongs to: a load or an error from
+  // any other element is not news about this one.
+  const mounted = useRef(new Map<string, HTMLImageElement>())
   const set = useCallback((src: string, state: ImgState, bump = false) => {
     setMap((m) => {
       const prev = m[src]
@@ -672,12 +684,16 @@ function useImages(srcs: readonly string[]) {
   const key = srcs.join('\n')
   // biome-ignore lint/correctness/useExhaustiveDependencies: prunes when the sources change only
   useLayoutEffect(() => {
+    for (const src of [...mounted.current.keys()]) {
+      if (!srcs.includes(src)) mounted.current.delete(src)
+    }
     setMap((m) => {
       const kept = Object.fromEntries(Object.entries(m).filter(([src]) => srcs.includes(src)))
       return Object.keys(kept).length === Object.keys(m).length ? m : kept
     })
   }, [key])
   const stateOf = (src: string): ImgState => map[src]?.state ?? 'loading'
+  const owns = (src: string, img: EventTarget) => mounted.current.get(src) === img
   return {
     stateOf,
     ready: srcs.every((s) => stateOf(s) === 'ok'),
@@ -685,10 +701,17 @@ function useImages(srcs: readonly string[]) {
     bind: (src: string) => ({
       key: `${src}#${map[src]?.nonce ?? 0}`,
       ref: (img: HTMLImageElement | null) => {
-        if (img?.complete && img.naturalWidth > 0) set(src, 'ok')
+        // Every render hands the same element back; its state stands.
+        if (!img || owns(src, img)) return
+        mounted.current.set(src, img)
+        set(src, img.complete && img.naturalWidth > 0 ? 'ok' : 'loading')
       },
-      onLoad: () => set(src, 'ok'),
-      onError: () => set(src, 'failed'),
+      onLoad: (e: SyntheticEvent<HTMLImageElement>) => {
+        if (owns(src, e.currentTarget)) set(src, 'ok')
+      },
+      onError: (e: SyntheticEvent<HTMLImageElement>) => {
+        if (owns(src, e.currentTarget)) set(src, 'failed')
+      },
     }),
     retry: (src: string) => set(src, 'loading', true),
   }
@@ -799,7 +822,6 @@ function Switchback({
   perRow,
   label,
   compact = false,
-  mode,
   onPick,
   testids = false,
 }: {
@@ -808,7 +830,6 @@ function Switchback({
   perRow: number
   label: string
   compact?: boolean
-  mode: 'answered' | 'verdict'
   onPick?: (index: number) => void
   testids?: boolean
 }) {
@@ -818,7 +839,6 @@ function Switchback({
     <ol
       className="sp-sw"
       data-compact={String(compact)}
-      data-mode={mode}
       data-testid={testids ? 'rd-prov-grid' : undefined}
       role={onPick ? undefined : 'img'}
       aria-label={label}
@@ -887,7 +907,7 @@ function Switchback({
   )
 }
 
-/** The answered mode's key: what each stop means. */
+/** The switchback's key: what each stop means. */
 function SwitchbackKey() {
   return (
     <p className="sp-sw-key" aria-hidden>
@@ -981,6 +1001,7 @@ function ExamCard({
   view,
   setView,
   phone,
+  tools,
 }: {
   q: DrillQuestion
   images: Images
@@ -989,6 +1010,8 @@ function ExamCard({
   view: PageView
   setView: (patch: Partial<PageView>) => void
   phone: boolean
+  /** A page's Förstora and Rotera. */
+  tools: boolean
 }) {
   const { data } = useDirectionData()
   if (onPage(q)) {
@@ -1001,6 +1024,7 @@ function ExamCard({
         view={view}
         setView={setView}
         phone={phone}
+        tools={tools}
       />
     )
   }
@@ -1179,6 +1203,7 @@ function ExamPage({
   view,
   setView,
   phone,
+  tools,
 }: {
   q: DrillQuestion
   images: Images
@@ -1187,6 +1212,7 @@ function ExamPage({
   view: PageView
   setView: (patch: Partial<PageView>) => void
   phone: boolean
+  tools: boolean
 }) {
   const figure = q.figure
   const state = figure ? images.stateOf(figure.src) : 'failed'
@@ -1235,7 +1261,7 @@ function ExamPage({
             </>
           )}
         </h1>
-        {figure && state !== 'failed' ? (
+        {tools && figure && state !== 'failed' ? (
           <div className="sp-pcard-tools">
             <button
               type="button"
@@ -1415,61 +1441,98 @@ function minutesWord(seconds: number): string {
   return `${m} ${m === 1 ? 'minut' : 'minuter'}`
 }
 
-export function SparProvRun({
-  width,
-  live,
-  onAbort,
-  onLeave,
-  onHandIn,
-}: {
+type RunProps = {
   width: WidthKey
   live: boolean
   /** "Avbryt passet": the pass is void; back to the hub. */
   onAbort: () => void
   /** Nothing to run: back to the hub, quietly. */
   onLeave: () => void
-  /** Handed in by the reader, or by the clock at 0:00. */
-  onHandIn: (timedOut: boolean) => void
-}) {
+  /** Hands the pass in, by the reader or by the clock at 0:00: true once
+   *  the host has it, false when the hand-in failed. */
+  onHandIn: (timedOut: boolean) => boolean
+  /** Out of a pass whose hand-in failed: a destination ('provpass' is the
+   *  hub). */
+  onGo: (d: Destination) => void
+}
+
+export function SparProvRun(props: RunProps) {
   const { data } = useDirectionData()
   const running = data.provpass.running
   if (running.questions.length === 0) {
     return (
-      <div className="sp-drill sp-run" data-width={width}>
-        <header className="sp-top">
-          <div className="sp-top-left">
-            <button type="button" className="sp-btn sp-btn--quiet" onClick={onLeave}>
-              <X size={18} strokeWidth={2.25} aria-hidden />
-              Stäng
-            </button>
-          </div>
-        </header>
-        <div className="sp-body sp-body--done">
-          <section className="sp-done" aria-labelledby="sp-run-none-h">
-            <h1 className="sp-display" id="sp-run-none-h">
-              Passet kunde inte starta
-            </h1>
-            <p className="sp-lede">Passets frågor gick inte att hämta. Klockan har inte börjat.</p>
-            <div className="sp-done-actions">
-              <button type="button" className="sp-btn sp-btn--primary sp-btn--lg" onClick={onLeave}>
-                Tillbaka till Provpass
-              </button>
-            </div>
-          </section>
-        </div>
-      </div>
+      <RunNotice
+        live={props.live}
+        title="Passet kunde inte starta"
+        lede="Passets frågor gick inte att hämta. Klockan har inte börjat."
+        onLeave={props.onLeave}
+      />
     )
   }
   // A new sitting starts over: its own place, answers, marks and clock.
+  return <PassEntry key={running.passId} {...props} running={running} />
+}
+
+/** A pass's time is judged once, as it opens: one already at 0:00 cannot
+ *  be resumed, and nothing hands it in; a pass that opens with time left
+ *  and runs out hands itself in. */
+function PassEntry({ onLeave, ...props }: RunProps & { running: ProvRunningView }) {
+  const [stale] = useState(() => props.running.remainingSeconds <= 0)
+  if (stale) {
+    return (
+      <RunNotice
+        live={props.live}
+        title="Det tidigare passet kan inte återupptas"
+        lede="Tiden för passet gick ut medan du var borta."
+        onLeave={onLeave}
+      />
+    )
+  }
+  return <RunningPass {...props} />
+}
+
+/** A pass that cannot run, in the focus frame: what happened and the way
+ *  back to the hub. The clock is not running, and nothing is handed in. */
+function RunNotice({
+  live,
+  title,
+  lede,
+  onLeave,
+}: {
+  live: boolean
+  title: string
+  lede: string
+  onLeave: () => void
+}) {
+  const id = useId()
+  const headRef = useRef<HTMLHeadingElement>(null)
+  useEffect(() => {
+    if (live) headRef.current?.focus({ preventScroll: true })
+  }, [live])
   return (
-    <RunningPass
-      key={running.passId}
-      width={width}
-      live={live}
-      running={running}
-      onAbort={onAbort}
-      onHandIn={onHandIn}
-    />
+    <div className="sp-drill">
+      <header className="sp-top">
+        <div className="sp-top-left">
+          <button type="button" className="sp-btn sp-btn--quiet" onClick={onLeave}>
+            <X size={18} strokeWidth={2.25} aria-hidden />
+            Stäng
+          </button>
+        </div>
+      </header>
+      <div className="sp-body sp-body--done">
+        <section className="sp-done" aria-labelledby={`${id}-h`}>
+          <h1 className="sp-display" id={`${id}-h`} ref={headRef} tabIndex={-1}>
+            {title}
+          </h1>
+          <p className="sp-lede">{lede}</p>
+          <div className="sp-done-actions">
+            <button type="button" className="sp-btn sp-btn--primary sp-btn--lg" onClick={onLeave}>
+              Tillbaka till Provpass
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
   )
 }
 
@@ -1479,13 +1542,9 @@ function RunningPass({
   running,
   onAbort,
   onHandIn,
-}: {
-  width: WidthKey
-  live: boolean
-  running: ProvRunningView
-  onAbort: () => void
-  onHandIn: (timedOut: boolean) => void
-}) {
+  onGo,
+}: Omit<RunProps, 'onLeave'> & { running: ProvRunningView }) {
+  const { data } = useDirectionData()
   const phone = width === 'phone'
   const id = useId()
   const qs = running.questions
@@ -1507,7 +1566,11 @@ function RunningPass({
   const [gate, setGate] = useState<Gate>(null)
   const [tray, setTray] = useState<'open' | 'folded'>('open')
   const [pageViews, setPageViews] = useState<Record<string, PageView>>({})
-  const left = useCountdown(running.remainingSeconds, live)
+  // The host could not take the hand-in. Kit v2 has no safe way to try
+  // again, so nothing does: the pass stays read-only with the way out, the
+  // clock stops, and the keys and the frame's navigation are let go.
+  const [failed, setFailed] = useState(false)
+  const left = useCountdown(running.remainingSeconds, live && !failed)
 
   // Handed in once, whoever asks first: the reader or the clock. The
   // clock's 0:00 always hands in — it never voids the pass.
@@ -1516,28 +1579,42 @@ function RunningPass({
     (timedOut: boolean) => {
       if (handedIn.current) return
       handedIn.current = true
-      onHandIn(timedOut)
+      if (onHandIn(timedOut)) return
+      setGate(null)
+      setOverview(false)
+      // No dialog, and no zoomed page's pan region, stays to keep the keys.
+      setPageViews((all) =>
+        Object.fromEntries(Object.entries(all).map(([k, v]) => [k, { ...v, zoom: false }])),
+      )
+      setFailed(true)
     },
     [onHandIn],
   )
   useEffect(() => {
     if (live && left <= 0) handIn(true)
   }, [live, left, handIn])
+  // The failure takes focus to the way out, outside every key scope.
+  const outRef = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    if (failed) outRef.current?.focus({ preventScroll: true })
+  }, [failed])
 
-  // 10 and 5 minutes left are said once each, as they pass.
+  // 10 and 5 minutes left are said once each, as they pass; never once a
+  // hand-in has failed (the clock no longer counts for anything).
   const [announce, setAnnounce] = useState('')
   const said = useRef(timeBand(left))
   useEffect(() => {
     const b = timeBand(left)
-    if (b > said.current) setAnnounce(b === 2 ? '5 minuter kvar' : '10 minuter kvar')
+    if (b > said.current && !failed) setAnnounce(b === 2 ? '5 minuter kvar' : '10 minuter kvar')
     said.current = b
-  }, [left])
+  }, [left, failed])
 
   // The bake-off's switcher never takes a running pass away: its digits
   // and ←/→ are marked handled here, whatever has focus — except in a
   // pan region or a form field, which the switcher leaves alone anyway.
+  // A failed hand-in lets them go.
   useEffect(() => {
-    if (!live) return
+    if (!live || failed) return
     const guard = (e: KeyboardEvent) => {
       if (e.defaultPrevented || isForeignKey(e)) return
       if (e.target instanceof Element && e.target.closest('[data-rd-keyscope]')) return
@@ -1547,7 +1624,7 @@ function RunningPass({
     }
     window.addEventListener('keydown', guard, true)
     return () => window.removeEventListener('keydown', guard, true)
-  }, [live])
+  }, [live, failed])
 
   // Legs: the view's section runs when they cover the questions, else the
   // questions' own runs.
@@ -1602,12 +1679,13 @@ function RunningPass({
     setPageViews((all) => ({ ...all, [pageKey]: { ...(all[pageKey] ?? PAGE), ...patch } }))
   }
 
+  // After a failed hand-in the answers are read-only.
   const choose = (letter: AnswerLetter) => {
-    if (blocked || !letters.includes(letter)) return
+    if (failed || blocked || !letters.includes(letter)) return
     setAnswers((a) => ({ ...a, [q.qid]: letter }))
   }
   const strike = (letter: AnswerLetter) => {
-    if (!letters.includes(letter)) return
+    if (failed || !letters.includes(letter)) return
     setStrikes((s) => {
       const cur = s[q.qid] ?? []
       return {
@@ -1616,13 +1694,15 @@ function RunningPass({
       }
     })
   }
-  const toggleFlag = () =>
+  const toggleFlag = () => {
+    if (failed) return
     setFlags((f) => {
       const next = new Set(f)
       if (next.has(q.qid)) next.delete(q.qid)
       else next.add(q.qid)
       return next
     })
+  }
 
   const scrollRef = useRef<HTMLDivElement>(null)
   // The column turns to the top for a new problem or page; the next
@@ -1640,7 +1720,11 @@ function RunningPass({
     setOverview(false)
     setTray('open')
   }
-  const next = () => (last ? setGate('handin') : goTo(index + 1))
+  // At the last question it opens the hand-in, unless a hand-in failed.
+  const next = () => {
+    if (!last) goTo(index + 1)
+    else if (!failed) setGate('handin')
+  }
   const prev = () => {
     if (index > 0) goTo(index - 1)
   }
@@ -1663,7 +1747,8 @@ function RunningPass({
     keys[k] = () => choose(l)
     keys[`Shift+${k}`] = () => strike(l)
   }
-  useKeyMap(keys, live && gate == null && !overview)
+  // A failed pass takes no keys: they are its buttons' and the switcher's.
+  useKeyMap(keys, live && gate == null && !overview && !failed)
 
   const blanks = qs.filter((x) => answers[x.qid] == null)
   const marked = qs.filter((x) => flags.has(x.qid))
@@ -1751,7 +1836,9 @@ function RunningPass({
       Lämna in
     </button>
   )
-  const nextLabel = last ? 'Granska och lämna in' : 'Nästa fråga'
+  const nextLabel = last && !failed ? 'Granska och lämna in' : 'Nästa fråga'
+  // Failed, the way out is the one green step and "Nästa" only reads on.
+  const nextClass = failed ? 'sp-btn sp-btn--quiet' : 'sp-btn sp-btn--primary'
   const showPrompt = q.prompt != null && (q.passage != null || isPage)
   const reason = why ? (
     <p className="sp-qtray-why">
@@ -1776,7 +1863,7 @@ function RunningPass({
       struck={struck}
       choose={choose}
       strike={strike}
-      blocked={blocked}
+      blocked={blocked || failed}
       phone={phone}
       images={images}
     />
@@ -1790,10 +1877,27 @@ function RunningPass({
       view={pageView}
       setView={setPageView}
       phone={phone}
+      tools={!failed}
     />
   )
+  const failure = failed ? (
+    <div className="sp-run-failed">
+      <p className="sp-run-failed-text" role="alert">
+        <b>Inlämningen gick inte fram.</b> Passet har inte lämnats in och kan inte skickas igen
+        härifrån. Dina svar syns kvar här tills du går vidare.
+      </p>
+      <button
+        type="button"
+        className="sp-btn sp-btn--primary"
+        ref={outRef}
+        onClick={() => onGo('provpass')}
+      >
+        Till Provpass
+      </button>
+    </div>
+  ) : null
   const note =
-    left > 0 && left <= 300 ? (
+    left > 0 && left <= 300 && !failed ? (
       <p className="sp-run-note">
         {cap(minutesWord(left))} kvar.{' '}
         {blanks.length > 0 ? (
@@ -1864,23 +1968,24 @@ function RunningPass({
         legs={legs}
         perRow={phone ? 5 : 10}
         label="Passets frågor"
-        mode="answered"
         onPick={goTo}
         testids
       />
       <SwitchbackKey />
-      <div className="sp-run-ov-foot">
-        <button
-          type="button"
-          className="sp-btn sp-btn--quiet"
-          onClick={() => {
-            setOverview(false)
-            setGate('handin')
-          }}
-        >
-          Lämna in
-        </button>
-      </div>
+      {failed ? null : (
+        <div className="sp-run-ov-foot">
+          <button
+            type="button"
+            className="sp-btn sp-btn--quiet"
+            onClick={() => {
+              setOverview(false)
+              setGate('handin')
+            }}
+          >
+            Lämna in
+          </button>
+        </div>
+      )}
     </SparDialog>
   )
   const handInLayer = (
@@ -1901,7 +2006,6 @@ function RunningPass({
         perRow={10}
         compact
         label={`${total - blanks.length} av ${total} besvarade`}
-        mode="answered"
       />
       <p className="sp-dialog-p">
         {blankLine}
@@ -1974,6 +2078,11 @@ function RunningPass({
     </>
   )
 
+  // A failed hand-in brings the frame's navigation back, around the pass
+  // as it stands: the nodes before it keep their places, so nothing in the
+  // pass is mounted again.
+  const due = data.home.ovaDue > 0
+
   if (phone) {
     return (
       <div
@@ -1981,18 +2090,19 @@ function RunningPass({
         data-testid="rd-prov-running"
         data-mode={isPage ? 'page' : 'problem'}
         data-exam="true"
+        data-failed={String(failed)}
       >
         <header className="sp-run-ptop">
           <div className="sp-run-prow">
-            {abortButton}
+            {failed ? <span /> : abortButton}
             <span className="sp-run-pcount">
               Fråga {index + 1} av {total}
             </span>
-            <SparClock left={left} compact />
+            {failed ? <span /> : <SparClock left={left} compact />}
           </div>
           <RouteRibbon legs={legs} half={running.half} done={done} at={index + 1} labels="code" />
         </header>
-        <div className="sp-run-notes">{note}</div>
+        <div className="sp-run-notes">{failure ?? note}</div>
         <div className="sp-run-pscroll" ref={scrollRef}>
           {card}
           <section className="sp-run-popts" aria-label={`Fråga ${index + 1}`}>
@@ -2001,16 +2111,18 @@ function RunningPass({
                 <MathText>{q.prompt}</MathText>
               </h2>
             ) : null}
-            {reason}
+            {failed ? null : reason}
             {options}
           </section>
         </div>
         <div className="sp-run-pbar">
-          <div className="sp-run-ptools">
-            {flagButton}
-            {overviewButton}
-            {submitButton}
-          </div>
+          {failed ? null : (
+            <div className="sp-run-ptools">
+              {flagButton}
+              {overviewButton}
+              {submitButton}
+            </div>
+          )}
           <div className="sp-run-pnav">
             <button
               type="button"
@@ -2026,7 +2138,8 @@ function RunningPass({
             </span>
             <button
               type="button"
-              className="sp-btn sp-btn--primary sp-btn--lg sp-btn--grow"
+              className={`${nextClass} sp-btn--lg sp-btn--grow`}
+              disabled={failed && last}
               onClick={next}
             >
               {nextLabel}
@@ -2034,106 +2147,139 @@ function RunningPass({
           </div>
         </div>
         {layers}
+        {failed ? (
+          <nav className="sp-navbar" aria-label="Huvudmeny">
+            <SparNavItems bar current="provpass" due={due} onGo={onGo} />
+          </nav>
+        ) : null}
       </div>
     )
   }
 
   return (
     <div
-      className="sp-drill sp-run"
-      data-testid="rd-prov-running"
-      data-mode={isPage ? 'page' : 'problem'}
-      data-exam="true"
+      className={failed ? 'sp-app sp-run-frame' : 'sp-run-frame'}
+      data-expanded="false"
+      data-failed={String(failed)}
     >
-      <header className="sp-top sp-run-top">
-        <div className="sp-top-left">{abortButton}</div>
-        <div className="sp-top-mid">
-          <span className="sp-run-half">{HALF_LABEL[running.half]}</span>
-          <span className="sp-sec-chip" data-sec={q.section} title={sectionName(q.section)}>
-            {q.section}
-          </span>
-          <RouteRibbon legs={legs} half={running.half} done={done} at={index + 1} labels="code" />
-          <span className="sp-top-count">
-            Fråga {index + 1} av {total}
-          </span>
-        </div>
-        <div className="sp-top-right">
-          <SparClock left={left} />
-          {overviewButton}
-          {submitButton}
-        </div>
-      </header>
-      <div className="sp-run-notes">{note}</div>
-      <div className="sp-body">
-        <div className="sp-scroll sp-qscroll sp-run-scroll" ref={scrollRef}>
-          <div className="sp-qcol" data-wide={String(isPage)}>
-            {card}
-            <RunDock scrollRef={scrollRef}>
-              <section className="sp-qtray sp-run-tray" aria-label={`Fråga ${index + 1}`}>
-                <div className="sp-run-tray-head">
-                  {showPrompt ? (
-                    <h2 className="sp-prompt">
-                      <MathText>{q.prompt}</MathText>
-                    </h2>
-                  ) : (
-                    <p className="sp-run-tray-q">Fråga {index + 1}</p>
-                  )}
-                  {flagButton}
-                </div>
-                {tray === 'open' ? null : (
-                  <button
-                    type="button"
-                    className="sp-show"
-                    aria-expanded={false}
-                    aria-controls={`${id}-opts`}
-                    onClick={() => setTray('open')}
-                  >
-                    Visa alternativen ({letters.length})
-                    <ChevronUp size={18} strokeWidth={2.25} aria-hidden />
-                    <Kbd>T</Kbd>
-                  </button>
-                )}
-                <div className="sp-tray-body" id={`${id}-opts`} hidden={tray !== 'open'}>
-                  {reason}
-                  {options}
-                </div>
-                <div className="sp-tray-foot sp-run-foot">
-                  {tray === 'open' ? (
+      {failed ? (
+        <nav className="sp-rail" aria-label="Huvudmeny">
+          <div className="sp-rail-top">
+            <span className="sp-brand">
+              <Mark size={40} />
+              <span className="sp-brand-name">HP-Coach</span>
+            </span>
+          </div>
+          <div className="sp-rail-items">
+            <SparNavItems current="provpass" due={due} onGo={onGo} />
+          </div>
+        </nav>
+      ) : null}
+      <div
+        className="sp-drill sp-run"
+        data-testid="rd-prov-running"
+        data-mode={isPage ? 'page' : 'problem'}
+        data-exam="true"
+      >
+        <header className="sp-top sp-run-top">
+          <div className="sp-top-left">{failed ? null : abortButton}</div>
+          <div className="sp-top-mid">
+            <span className="sp-run-half">{HALF_LABEL[running.half]}</span>
+            <span className="sp-sec-chip" data-sec={q.section} title={sectionName(q.section)}>
+              {q.section}
+            </span>
+            <RouteRibbon legs={legs} half={running.half} done={done} at={index + 1} labels="code" />
+            <span className="sp-top-count">
+              Fråga {index + 1} av {total}
+            </span>
+          </div>
+          <div className="sp-top-right">
+            {failed ? null : (
+              <>
+                <SparClock left={left} />
+                {overviewButton}
+                {submitButton}
+              </>
+            )}
+          </div>
+        </header>
+        <div className="sp-run-notes">{failure ?? note}</div>
+        <div className="sp-body">
+          <div className="sp-scroll sp-qscroll sp-run-scroll" ref={scrollRef}>
+            <div className="sp-qcol" data-wide={String(isPage)}>
+              {card}
+              <RunDock scrollRef={scrollRef}>
+                <section className="sp-qtray sp-run-tray" aria-label={`Fråga ${index + 1}`}>
+                  <div className="sp-run-tray-head">
+                    {showPrompt ? (
+                      <h2 className="sp-prompt">
+                        <MathText>{q.prompt}</MathText>
+                      </h2>
+                    ) : (
+                      <p className="sp-run-tray-q">Fråga {index + 1}</p>
+                    )}
+                    {failed ? null : flagButton}
+                  </div>
+                  {tray === 'open' ? null : (
                     <button
                       type="button"
-                      className="sp-icon-btn sp-icon-btn--soft"
-                      aria-expanded
+                      className="sp-show"
+                      aria-expanded={false}
                       aria-controls={`${id}-opts`}
-                      aria-label="Dölj alternativen"
-                      title="Dölj alternativen (T)"
-                      onClick={() => setTray('folded')}
+                      onClick={() => setTray('open')}
                     >
-                      <ChevronDown size={22} strokeWidth={2.25} aria-hidden />
+                      Visa alternativen ({letters.length})
+                      <ChevronUp size={18} strokeWidth={2.25} aria-hidden />
+                      <Kbd>T</Kbd>
                     </button>
-                  ) : null}
-                  <span className="sp-echo" aria-live="polite">
-                    {answer ? `Ditt svar: ${answer}` : 'Inget svar än'}
-                  </span>
-                  <button
-                    type="button"
-                    className="sp-btn sp-btn--quiet"
-                    disabled={index === 0}
-                    onClick={prev}
-                  >
-                    <ChevronLeft size={18} strokeWidth={2.25} aria-hidden />
-                    Föregående
-                  </button>
-                  <button type="button" className="sp-btn sp-btn--primary" onClick={next}>
-                    {nextLabel}
-                    <Kbd>↵</Kbd>
-                  </button>
-                </div>
-              </section>
-            </RunDock>
+                  )}
+                  <div className="sp-tray-body" id={`${id}-opts`} hidden={tray !== 'open'}>
+                    {failed ? null : reason}
+                    {options}
+                  </div>
+                  <div className="sp-tray-foot sp-run-foot">
+                    {tray === 'open' ? (
+                      <button
+                        type="button"
+                        className="sp-icon-btn sp-icon-btn--soft"
+                        aria-expanded
+                        aria-controls={`${id}-opts`}
+                        aria-label="Dölj alternativen"
+                        title="Dölj alternativen (T)"
+                        onClick={() => setTray('folded')}
+                      >
+                        <ChevronDown size={22} strokeWidth={2.25} aria-hidden />
+                      </button>
+                    ) : null}
+                    <span className="sp-echo" aria-live="polite">
+                      {answer ? `Ditt svar: ${answer}` : 'Inget svar än'}
+                    </span>
+                    <button
+                      type="button"
+                      className="sp-btn sp-btn--quiet"
+                      disabled={index === 0}
+                      onClick={prev}
+                    >
+                      <ChevronLeft size={18} strokeWidth={2.25} aria-hidden />
+                      Föregående
+                    </button>
+                    <button
+                      type="button"
+                      className={nextClass}
+                      disabled={failed && last}
+                      onClick={next}
+                    >
+                      {nextLabel}
+                      {failed ? null : <Kbd>↵</Kbd>}
+                    </button>
+                  </div>
+                </section>
+              </RunDock>
+            </div>
           </div>
         </div>
+        {layers}
       </div>
-      {layers}
     </div>
   )
 }
@@ -2171,18 +2317,6 @@ function RunDock({
 
 // ── The result ───────────────────────────────────────────────────────
 
-/** The pass's misses by question number: a qid ends in its number in the
- *  pass, after its section ("…-KVA-014"; lib/dueBySection's shape). */
-function missedNumbers(missed: readonly string[]): Map<number, Section> {
-  const out = new Map<number, Section>()
-  for (const qid of missed) {
-    const section = sectionOfQid(qid)
-    const n = Number(qid.slice(qid.lastIndexOf('-') + 1))
-    if (section && Number.isInteger(n) && n > 0) out.set(n, section)
-  }
-  return out
-}
-
 /** The test's own order: the verbal sections, then the quantitative. */
 const EXAM_ORDER: readonly Section[] = [...VERBAL, ...KVANT]
 
@@ -2203,6 +2337,12 @@ function readLine(sections: ProvResultView['sections']): string | null {
   return `Starkast på ${best.section}, mest tid per fråga på ${slow.section}.`
 }
 
+/**
+ * A handed-in pass. The result keeps each leg's counts, not how each
+ * question went: `missed` holds the wrong answers' ids (the app's reducer
+ * leaves blanks out) without their place in the pass. So Sträckan gives
+ * the legs, and no question is called right or missed one by one.
+ */
 export function SparProvResult({
   width,
   live,
@@ -2231,23 +2371,6 @@ export function SparProvResult({
         : { label: 'Till Provpass', run: () => actions.go('provpass') }
   useKeyMap({ Enter: primary.run }, live)
 
-  const legs = legsOf(sections.map((s) => ({ section: s.section, count: s.presented })))
-  const missed = missedNumbers(r.missed)
-  const cells: Cell[] = legs.flatMap((l) =>
-    Array.from({ length: l.end - l.start + 1 }, (_, k) => {
-      const n = l.start + k
-      const miss = missed.get(n) === l.section
-      return {
-        n,
-        key: String(n),
-        section: l.section,
-        state: (miss ? 'miss' : 'right') as StopState,
-        label: `Fråga ${n}, ${miss ? 'missad' : 'rätt'}`,
-      }
-    }),
-  )
-  const missedList = cells.filter((c) => c.state === 'miss').map((c) => c.n)
-  const trailName = `${r.correct} av ${r.presented} rätt.${missedList.length > 0 ? ` Missade frågor: ${missedList.join(', ')}.` : ''}`
   const scoreLabel = r.score.derived === 'official-derived' ? 'Normerat (härlett)' : 'Skattad poäng'
   // P5 practice texts feed LÄS and ELF; the approved caveat goes with any
   // pass that has those legs.
@@ -2371,56 +2494,36 @@ export function SparProvResult({
             {fmtClock(r.durationSeconds)} av {fmtClock(PASS_MINUTES * 60)}
           </span>
         </div>
-        <div className="sp-res-route-grid">
-          <ul className="sp-res-legs">
-            {sections.map((s) => {
-              const over = s.timeSeconds > s.quotaSeconds
-              return (
-                <li
-                  key={s.section}
-                  className="sp-res-leg"
-                  data-sec={s.section}
-                  data-testid={`rd-prov-section-${sectionSlug(s.section)}`}
-                >
-                  <SparStop state="section" size={36} sec={s.section} label={s.section} />
-                  <span className="sp-res-leg-text">
-                    <span className="sp-res-leg-name">{sectionName(s.section)}</span>
-                    <span className="sp-res-leg-facts">
-                      <b className="sp-num">
-                        {s.correct} av {s.presented}
-                      </b>
-                      <span className="sp-res-leg-time">
-                        {' · '}
-                        <span className="sp-num">
-                          {fmtClock(s.timeSeconds)} av {fmtClock(s.quotaSeconds)}
-                        </span>
-                        {over ? ' · över budget' : ''}
+        <ul className="sp-res-legs">
+          {sections.map((s) => {
+            const over = s.timeSeconds > s.quotaSeconds
+            return (
+              <li
+                key={s.section}
+                className="sp-res-leg"
+                data-sec={s.section}
+                data-testid={`rd-prov-section-${sectionSlug(s.section)}`}
+              >
+                <SparStop state="section" size={36} sec={s.section} label={s.section} />
+                <span className="sp-res-leg-text">
+                  <span className="sp-res-leg-name">{sectionName(s.section)}</span>
+                  <span className="sp-res-leg-facts">
+                    <b className="sp-num">
+                      {s.correct} av {s.presented}
+                    </b>
+                    <span className="sp-res-leg-time">
+                      {' · '}
+                      <span className="sp-num">
+                        {fmtClock(s.timeSeconds)} av {fmtClock(s.quotaSeconds)}
                       </span>
+                      {over ? ' · över budget' : ''}
                     </span>
                   </span>
-                </li>
-              )
-            })}
-          </ul>
-          <div className="sp-res-trail">
-            <Switchback
-              cells={cells}
-              legs={legs}
-              perRow={10}
-              compact={phone}
-              label={trailName}
-              mode="verdict"
-            />
-            <p className="sp-sw-key" aria-hidden>
-              <span>
-                <SparStop state="right" size={20} /> rätt
-              </span>
-              <span>
-                <SparStop state="miss" size={20} /> missad
-              </span>
-            </p>
-          </div>
-        </div>
+                </span>
+              </li>
+            )
+          })}
+        </ul>
       </section>
 
       <div className="sp-res-more">

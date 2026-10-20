@@ -6516,6 +6516,52 @@
   gap: 10px;
 }
 
+/* A hand-in the host could not take: the pass stays, read-only, and the
+ * frame's navigation comes back around it (the rail beside it on desktop,
+ * the navbar under it on phone). Running, the frame is no box at all. */
+.sp-run-frame:not([data-failed='true']) {
+  display: contents;
+}
+
+.sp-run--phone[data-failed='true'] {
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+}
+
+.sp-run-failed {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  width: min(var(--sp-col), calc(100% - 48px));
+  margin: 0 auto 10px;
+  padding: 14px 16px 14px 20px;
+  border-radius: var(--sp-r-inner);
+  background: var(--sp-card);
+  box-shadow:
+    var(--sp-shadow-1),
+    inset 4px 0 0 var(--sp-warn);
+}
+
+.sp-run-failed-text {
+  flex: 1 1 24em;
+  min-width: 0;
+  color: var(--sp-ink-2);
+  font-size: 15px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.sp-run-failed-text b {
+  display: block;
+  color: var(--sp-ink);
+  font-weight: 800;
+}
+
+.sp-run--phone .sp-run-failed {
+  width: auto;
+  margin: 0 12px 8px;
+}
+
 /* The overview: a filter, the switchback, its key. */
 .sp-run-ov-head {
   display: flex;
@@ -6696,40 +6742,6 @@ button.sp-sw-stop:hover .sp-stop[data-state='flagged'] {
   opacity: 0.3;
 }
 
-/* Verdicts: a connector after a right stop fills with --sp-ok, after a
- * miss with --sp-warn; Lugnt läge keeps the glyphs, not the fills. */
-.sp-sw[data-mode='verdict'] .sp-sw-cell[data-from='right']:is([data-link='right'], [data-link='left'])::before {
-  background: var(--sp-ok);
-}
-
-.sp-sw[data-mode='verdict'] .sp-sw-cell[data-from='miss']:is([data-link='right'], [data-link='left'])::before {
-  background: var(--sp-warn);
-}
-
-.sp-sw[data-mode='verdict'] .sp-sw-cell[data-from='right']:is([data-link^='turn'])::before {
-  border-color: var(--sp-ok);
-}
-
-.sp-sw[data-mode='verdict'] .sp-sw-cell[data-from='miss']:is([data-link^='turn'])::before {
-  border-color: var(--sp-warn);
-}
-
-[data-calm='true']
-  .sp-sw[data-mode='verdict']
-  .sp-sw-cell[data-from]:is([data-link='right'], [data-link='left'])::before {
-  background: var(--sp-sunk-2);
-}
-
-[data-calm='true'] .sp-sw[data-mode='verdict'] .sp-sw-cell[data-from]:is([data-link^='turn'])::before {
-  border-color: var(--sp-sunk-2);
-}
-
-[data-calm='true'] .sp-sw .sp-stop[data-state='right'] {
-  background: var(--sp-card);
-  box-shadow: inset 0 0 0 2px var(--sp-ink-3);
-  color: var(--sp-ink);
-}
-
 .sp-sw-key {
   display: flex;
   flex-wrap: wrap;
@@ -6810,17 +6822,12 @@ button.sp-sw-stop:hover .sp-stop[data-state='flagged'] {
   margin-top: 44px;
 }
 
-.sp-res-route-grid {
-  display: grid;
-  grid-template-columns: 340px minmax(0, 1fr);
-  column-gap: clamp(28px, 3vw, 48px);
-  align-items: start;
-}
-
+/* The legs in the test's order, two to a row: the result keeps their
+ * counts, not each question's verdict. */
 .sp-res-legs {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 12px;
 }
 
 .sp-res-leg {
@@ -6857,16 +6864,6 @@ button.sp-sw-stop:hover .sp-stop[data-state='flagged'] {
 
 [data-calm='true'] .sp-res-leg-time {
   display: none;
-}
-
-.sp-res-trail {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 14px 10px 12px;
-  border-radius: var(--sp-r-card);
-  background: var(--sp-card);
-  box-shadow: var(--sp-shadow-1);
 }
 
 .sp-res-more {
@@ -6949,9 +6946,9 @@ button.sp-sw-stop:hover .sp-stop[data-state='flagged'] {
   margin-top: 32px;
 }
 
-.sp-res[data-phone='true'] .sp-res-route-grid {
+.sp-res[data-phone='true'] .sp-res-legs {
   grid-template-columns: minmax(0, 1fr);
-  row-gap: 16px;
+  row-gap: 8px;
 }
 
 .sp-res[data-phone='true'] .sp-res-more {

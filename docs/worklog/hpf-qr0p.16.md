@@ -349,3 +349,86 @@ The 39 new tests cover:
     - Historik's missing fields and paging;
     - a section-scoped Uppslag action.
 - The bead is parked deferred and unassigned, not closed.
+
+## Round 2 — review fix (hpf-qmdr: HOLD, five P2)
+
+- 2026-10-20: Claimed again through `gc hook --claim --json`; `bd show` matched id `hpf-qr0p.16`, status `in_progress`, assignee `ci-wisp-g7r3wo3` and route `hpfetcher/gc.implementation-worker`. Worktree clean at `5c0f4179ddb19f02045298f0f3714b51693efad2`. Read `/home/loucmane/scratch/hpf-qr0p.16/review-hpf-qmdr.md` first.
+- **Red first:** the 8 new tests and 2 changed ones were written before any fix. On the unchanged code they ran 10 failed, 146 passed, and each failure was the defect itself (the all-blank result drew 40 "rätt" stops; the throwing hand-in escaped the runner as an uncaught error). After the fixes: 156/156.
+
+### 1. No invented per-question verdicts
+- **Fix:** `SparProvpass.tsx:2346` (`SparProvResult`, its doc says why) and `:2497`. Sträckan is the legs only, in exam order, each "8 av 12 · 17:30 av 16:30 · över budget". The verdict switchback, `missedNumbers` and the qid-suffix numbering are gone, so no question is called right, or missed, one by one.
+  - `ProvResultView` has no ordered per-question outcomes (spec open question 4).
+  - In production `missed` holds answered-and-wrong ids only (`lib/mock.ts:291–315`), with no place in the pass.
+- **Layout:** the legs two to a row (`spar.css:6827`), one on phone (`:6949`). The verdict-only switchback rules, `.sp-res-route-grid` and `.sp-res-trail` are removed; `Switchback` lost its `mode` prop.
+- **Red-first tests**, through the app's reducer and the kit's view builder (`computeMockSummary` + `provResultView`, `reducedResult` at `Spar.test.tsx:874`), not the fixture:
+  - `:1675` an all-blank pass: 40 presented, 0 answered, and `missed` is `[]`;
+  - `:1693` a short authentic pass: XYZ-001 missing, so KVA-013 (answered wrong) ran 12th;
+  - `:1711` a synthetic pass whose first question is `var-2026-kvant2-XYZ-012`, answered wrong.
+  - Each ends in `expectNoQuestionVerdicts` (`:927`). `:1656` (the fixture result) now asserts the same instead of the old trail name.
+- **Fixture, not edited** (outside the write set): `r2Fixtures.ts:4597–4624` puts the two blank DTK questions (39, 40) in `PASS_RESULT`'s `missedQids`, against the production reducer, which leaves blanks out. Nothing on screen reads that field any more.
+
+### 2. Image readiness belongs to the mounted element
+- **Fix:** `SparProvpass.tsx:672` (`useImages`). A ref map records the element each source's state belongs to.
+  - A new element for a source starts `loading`, unless it is already complete with a natural width (cached). New elements come from the DTK zoom's `div` → `section` remount, a page that returns, or a retry.
+  - `onLoad` and `onError` count only from that element (`:696`).
+  - The same element across re-renders keeps its state, so a page shared by consecutive questions stays ready.
+- **Red-first test:** `Spar.test.tsx:1239`. Question 29 is loaded, then Z: the replacement `img` is a new element. The option is disabled, and a click and "a" answer nothing, until that element loads. Z again with `complete` and `naturalWidth` stubbed: ready at once. The existing 29 → 30 same-page test still passes.
+
+### 3. The timeout notice belongs to its result
+- **Fix:** `Spar.tsx:81`: `timedOut` is now `{ result: id | null }`.
+  - The clock's hand-in adopts the id of the first result shown after it (`:112`).
+  - The result page shows the notice for that id only (`:338`). Leaving screen 10 still clears it.
+- **Decision:** scoped by identity rather than cleared on any open. So the pass that timed out says so again if it is reopened from another result's history while on 10.
+- **Red-first test:** `Spar.test.tsx:1422`, with a host that moves (`ResultHost`, `:937`). It times out, opens an earlier result on the same screen 10 (no notice), then reopens the timed-out one (the notice).
+
+### 4. Expired at entry: no resume, no hand-in
+- **Coordinator decision applied** (it supersedes the round-1 brief). `PassEntry` (`SparProvpass.tsx:1479`) decides once, as the pass mounts.
+  - `remainingSeconds <= 0` shows "Det tidigare passet kan inte återupptas", "Tiden för passet gick ut medan du var borta." and "Tillbaka till Provpass" (`RunNotice`, `:1496`, which also serves "Passet kunde inte starta").
+  - Nothing is submitted, whatever the provider says later. A live run that reaches 0:00 still hands in once.
+- **Test:** `Spar.test.tsx:1468` replaces the old expired-entry assertion (which expected one submit). It opens at 0, then the provider says −30: no submit, no timer, and back to the hub without the void notice. `:1398` (the ticking provider, once only) is unchanged.
+
+### 5. A failed hand-in shows no success and traps no one
+- **Fix, root:** `Spar.tsx:130`. `handIn` calls `actions.submitProvpass()` first and opens the result only when it returns. A throw returns `false` (`:135`). `leaveTo` (`:157`) is the failed runner's way out: the hub (not voided) plus `actions.go(d)`.
+- **Fix, runner** (`SparProvpass.tsx`):
+  - the once-only latch stays set, so nothing resubmits (`:1582`). On failure the gate and the overview close and any zoom resets (`:1587`); `failed` is `:1572`;
+  - the clock stops (`:1573`), the 10- and 5-minute announcements stop (`:1608`), the switcher's key guard is released (`:1617`) and the key map is off (`:1751`);
+  - the answers stay visible, read-only: the options are disabled with the pick still pressed (`:1866`), and choose, strike and flag are guarded (`:1684`, `:1688`, `:1698`). Page tools are hidden (`:1880`);
+  - "Föregående" and "Nästa fråga" still read through the pass; "Nästa" no longer opens a hand-in (`:1726`);
+  - the error sits in the runner (`:1883`, `role="alert"`), with "Till Provpass" as the one green pill, which takes focus;
+  - Lämna in, Översikt, Avbryt, the flag and the clock are gone;
+  - the frame's navigation comes back without remounting the pass. On desktop the rail sits beside it (`:2161`; `.sp-run-frame` is `display: contents` while running, `spar.css:6522`). On phone the navbar sits under it (`:2151`, `spar.css:6526`).
+  - The five items are a new shared part, `SparNavItems` (`sparParts.tsx:139`), which the frame now uses too (`Spar.tsx:393`, `:424`).
+- **Tests through the real host** (`Redesign2026Bakeoff` on Spår screen 9). Its own `submitProvpass` throws, because its move to screen 10 throws (`failingRoute`, `Spar.test.tsx:842`).
+  - `:1559` is the manual hand-in, `:1589` the one at 0:00.
+  - Both check (`expectFailedHandIn`, `:855`): one try; the alert; no result, and the host still on 9; no dialog; the nav back; focus on "Till Provpass"; and "3" reaching the host's switcher.
+  - Manual adds: the answers read-only, no resubmit by Enter or a button, and the exit to the hub.
+  - Timed adds: more ticks, still one try, and Idag in the nav moves the host to screen 1.
+  - `:1613` covers the phone layout: the navbar, the focus, and a destination through `go`.
+- **Limits:**
+  - Only a synchronous throw is caught. Kit v2's actions are synchronous, so a rejected promise would not be seen here.
+  - On a host that does not move, a destination from the failed runner's nav asks `go(d)` and shows the hub.
+
+### Copy (new in round 2)
+- "Inlämningen gick inte fram." / "Passet har inte lämnats in och kan inte skickas igen härifrån. Dina svar syns kvar här tills du går vidare." / "Till Provpass".
+  - The spec's "Dina svar är sparade. Försök igen" is not used: no kit action saves the answers, and there is no safe resubmit.
+- "Det tidigare passet kan inte återupptas" (the coordinator's) / "Tiden för passet gick ut medan du var borta." (the spec's §9 wording).
+
+### Superseded round-1 notes
+- Spec gaps §10 "blank versus wrong", including the qid-number bullet: superseded, since no stop is drawn per question.
+- §9 voiding, "a pass that starts with no time left is handed in once": superseded by fix 4.
+
+### Verification
+
+| Check | Result |
+| --- | --- |
+| `pnpm -C app typecheck` | PASS, no errors. |
+| `pnpm -C app lint` | PASS: "Checked 510 files … No fixes applied. Found 4 infos." (the same pre-existing infos). |
+| `pnpm -C app exec vitest run src/components/devbake/redesign/c-spar/Spar.test.tsx` | PASS, **156/156** (148 + 8 new), no act or React warnings. |
+| `pnpm -C app test` | PASS: **Test Files 109 passed (109), Tests 2574 passed (2574)** (2566 at the candidate + 8), no unhandled errors. |
+
+- **Shared tests:** none failed, none edited.
+- **Visual check:** still not possible here (see round 1). Most in need of eyes:
+  - the desktop failed state (the rail beside the runner);
+  - the phone navbar under the pass bar;
+  - the result's legs, two to a row.
+- **Repo hygiene:** changes are uncommitted and in the write set only: `Spar.test.tsx`, `Spar.tsx`, `SparProvpass.tsx`, `spar.css`, `sparParts.tsx` and this worklog. The empty dotfiles at the root are still the sandbox's mount points.

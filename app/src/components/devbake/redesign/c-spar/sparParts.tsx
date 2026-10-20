@@ -12,6 +12,8 @@
 //   - SparDialog: the modal layer for a short task (spec §1.8) — centred
 //     on desktop, an edge sheet on phone, focus kept inside
 //   - SparScale: Idag's 0–2,0 bar as a part, full size or mini
+//   - SparNavItems: the five destinations, for the frame and for a
+//     Provpass whose hand-in failed
 
 import {
   Check,
@@ -39,7 +41,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 
-import { type Destination, fmtScore } from '@/components/devbake/redesign/r1Kit'
+import { DESTINATIONS, type Destination, fmtScore } from '@/components/devbake/redesign/r1Kit'
 import type { Section } from '@/data/questions'
 import { SECTION_DURATIONS } from '@/lib/sectionDurations'
 
@@ -120,6 +122,51 @@ export const NAV_ICONS: Record<Destination, (size: number) => ReactNode> = {
   provpass: (s) => <Hourglass size={s} strokeWidth={2} aria-hidden />,
   uppslag: (s) => <Lightbulb size={s} strokeWidth={2} aria-hidden />,
   framsteg: (s) => <Mountain size={s} strokeWidth={2} aria-hidden />,
+}
+
+/** Öva has missar waiting: a quiet dot, never a count (the count lives in
+ *  Öva itself). Hidden in calm mode. */
+function DueDot() {
+  return (
+    <span className="sp-navdot">
+      <span className="sp-sr">, missar att repetera</span>
+    </span>
+  )
+}
+
+/** The five destinations as the rail's items, or the navbar's (`bar`, on
+ *  phone): `current` is the page, and Öva wears the dot when `due`. */
+export function SparNavItems({
+  bar = false,
+  current,
+  due,
+  onGo,
+}: {
+  bar?: boolean
+  current: Destination
+  due: boolean
+  onGo: (d: Destination) => void
+}) {
+  return (
+    <>
+      {DESTINATIONS.map((d) => (
+        <button
+          type="button"
+          key={d.id}
+          className={bar ? 'sp-navbar-item' : 'sp-rail-item'}
+          data-testid={`rd-nav-${d.id}`}
+          aria-current={current === d.id ? 'page' : undefined}
+          onClick={() => onGo(d.id)}
+        >
+          <span className="sp-ind">
+            {NAV_ICONS[d.id](22)}
+            {d.id === 'ova' && due ? <DueDot /> : null}
+          </span>
+          <span className={bar ? 'sp-navbar-label' : 'sp-rail-label'}>{d.label}</span>
+        </button>
+      ))}
+    </>
+  )
 }
 
 /** The Spår mark: a rounded tile with a winding trail between two stops. */
