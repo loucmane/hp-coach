@@ -1,4 +1,5 @@
-// Samtal · the frame around Idag, Öva and Repetera.
+// Samtal · the frame around Idag, Öva, Repetera, Provpass, its result and
+// Framsteg.
 //
 // Desktop: the five doors are a list of conversations, as in a messages
 // app — each door a round icon, its name and one line about what waits
@@ -10,11 +11,15 @@
 // bottom bar of the five doors; the account opens as a sheet.
 //
 // Kit v2: the page follows the screen on stage (1 and 4 Idag, 5 Öva, 8
-// Repetera, which lives inside Öva: its door stays current there), and a
-// door asks for its destination through useDirectionData().actions.go —
+// Repetera, which lives inside Öva: its door stays current there; 9 the
+// Provpass hub, 10 a result, which lives inside Provpass; 11 Framsteg), and
+// a door asks for its destination through useDirectionData().actions.go —
 // in the bake-off the switcher moves, in the app the route changes. The
 // fold survives a move between doors; only Navigering (4) folds the list
 // and opens the account, and the way back to Idag (1) unfolds it again.
+// Framsteg opens on its overview from its door and on Historik from Idag's
+// "Alla pass i Framsteg". A started pass leaves the frame (Samtal.tsx); while
+// a gate stands over the hub, the frame under it is inert.
 
 import { PanelLeftClose, PanelLeftOpen, UserRound } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -29,22 +34,43 @@ import {
   useDismiss,
 } from '@/components/devbake/redesign/r1Kit'
 import type { HomeView } from '@/components/devbake/redesign/viewModel'
+import { type FramstegTab, SamtalFramsteg } from './SamtalFramsteg'
 import { SamtalHome } from './SamtalHome'
 import { SamtalOva } from './SamtalOva'
-import { DoorIcon, Mark } from './SamtalParts'
+import { DoorIcon, Mark, words } from './SamtalParts'
+import { SamtalProvpassHub, SamtalResult } from './SamtalProvpass'
 import { SamtalRepetera } from './SamtalRepetera'
 
-type Page = 'idag' | 'ova' | 'repetera'
+type Page = 'idag' | 'ova' | 'repetera' | 'provpass' | 'resultat' | 'framsteg'
 
 /** The page a screen shows in the frame. */
 function pageOf(screen: DirectionProps['screen']): Page {
   if (screen === 5) return 'ova'
   if (screen === 8) return 'repetera'
+  if (screen === 9) return 'provpass'
+  if (screen === 10) return 'resultat'
+  if (screen === 11) return 'framsteg'
   return 'idag'
 }
 
 /** The door that is current on a page. */
-const PAGE_DOOR: Record<Page, Destination> = { idag: 'idag', ova: 'ova', repetera: 'ova' }
+const PAGE_DOOR: Record<Page, Destination> = {
+  idag: 'idag',
+  ova: 'ova',
+  repetera: 'ova',
+  provpass: 'provpass',
+  resultat: 'provpass',
+  framsteg: 'framsteg',
+}
+
+/** "Nästa: kvant, om en dag", from the Provpass rhythm when there is one. */
+function provPreview(home: HomeView): string {
+  const p = home.provpass
+  if (!p) return 'Ett helt pass, 55 minuter'
+  const half = p.half === 'kvant' ? 'kvant' : 'verbal'
+  if (p.due || p.daysUntilNext <= 0) return `Dags för ett pass: ${half}`
+  return `Nästa: ${half}, om ${words(p.daysUntilNext)} ${p.daysUntilNext === 1 ? 'dag' : 'dagar'}`
+}
 
 /** What waits behind each door: the line under its name. */
 function previews(home: HomeView): Record<Destination, string> {
@@ -60,7 +86,7 @@ function previews(home: HomeView): Record<Destination, string> {
       ovaDue > 0
         ? `${ovaDue} ${ovaDue === 1 ? 'miss' : 'missar'} att repetera`
         : 'Alla delprov och Repetera',
-    provpass: 'Ett helt pass, 55 minuter',
+    provpass: provPreview(home),
     uppslag: 'Lektioner och ramverk',
     framsteg:
       prognosis.total != null
@@ -71,12 +97,31 @@ function previews(home: HomeView): Record<Destination, string> {
 
 type ThemeChoice = ThemeKey | 'system'
 
-export function SamtalFrame({ screen, width, theme, live, onScreen, onTheme }: DirectionProps) {
+export function SamtalFrame({
+  screen,
+  width,
+  theme,
+  live,
+  onScreen,
+  onTheme,
+  onStartPass,
+  passNotice = null,
+}: DirectionProps & {
+  /** A pass was started from the hub: the screen runs it (Samtal.tsx). */
+  onStartPass?: (passId: string) => void
+  /** Said once on the hub: the last pass was given up. */
+  passNotice?: 'void' | null
+}) {
   const { data, actions } = useDirectionData()
   const page = pageOf(screen)
   const current = PAGE_DOOR[page]
   const preview = previews(data.home)
   const ovaDue = data.home.ovaDue
+  // A gate stands over the hub: the frame under it is out of reach.
+  const [modal, setModal] = useState(false)
+  // Framsteg's view: its door opens the overview, Idag's history link
+  // Historik.
+  const [framstegTab, setFramstegTab] = useState<FramstegTab>('oversikt')
 
   // Screen 4 shows the frame's other state; screen 1 the default.
   const [collapsed, setCollapsed] = useState(screen === 4)
@@ -113,7 +158,8 @@ export function SamtalFrame({ screen, width, theme, live, onScreen, onTheme }: D
   const go = useCallback(
     (d: Destination) => {
       setMenu(false)
-      chosen.current = d !== PAGE_DOOR[page] || page === 'repetera'
+      chosen.current = d !== PAGE_DOOR[page] || page === 'repetera' || page === 'resultat'
+      if (d === 'framsteg') setFramstegTab('oversikt')
       actions.go(d)
     },
     [actions, page],
@@ -124,7 +170,11 @@ export function SamtalFrame({ screen, width, theme, live, onScreen, onTheme }: D
   useEffect(() => {
     if (!chosen.current) return
     chosen.current = false
-    if (live) pageRef.current?.querySelector<HTMLElement>('h1')?.focus({ preventScroll: true })
+    // The page's heading on show (Framsteg keeps its other view's hidden).
+    const heading = [...(pageRef.current?.querySelectorAll<HTMLElement>('h1') ?? [])].find(
+      (h) => h.closest('[hidden]') == null,
+    )
+    if (live) heading?.focus({ preventScroll: true })
   }, [page])
 
   const body =
@@ -132,6 +182,18 @@ export function SamtalFrame({ screen, width, theme, live, onScreen, onTheme }: D
       <SamtalOva width={width} live={live} />
     ) : page === 'repetera' ? (
       <SamtalRepetera width={width} live={live} />
+    ) : page === 'provpass' ? (
+      <SamtalProvpassHub
+        width={width}
+        live={live}
+        onStart={(id) => onStartPass?.(id)}
+        onModal={setModal}
+        notice={passNotice}
+      />
+    ) : page === 'resultat' ? (
+      <SamtalResult width={width} live={live} />
+    ) : page === 'framsteg' ? (
+      <SamtalFramsteg width={width} live={live} tab={framstegTab} onTab={setFramstegTab} />
     ) : (
       <SamtalHome
         width={width}
@@ -141,12 +203,17 @@ export function SamtalFrame({ screen, width, theme, live, onScreen, onTheme }: D
           onScreen(2)
           actions.resume()
         }}
+        onHistory={() => {
+          setFramstegTab('historik')
+          chosen.current = true
+          actions.go('framsteg')
+        }}
       />
     )
 
   if (width === 'phone') {
     return (
-      <div className="sa-phone">
+      <div className="sa-phone" inert={modal}>
         <header className="sa-ptop">
           <Mark />
           <button
@@ -195,7 +262,7 @@ export function SamtalFrame({ screen, width, theme, live, onScreen, onTheme }: D
   }
 
   return (
-    <div className="sa-app" data-collapsed={String(collapsed)}>
+    <div className="sa-app" data-collapsed={String(collapsed)} inert={modal}>
       <aside className="sa-side" aria-label="Meny och konto">
         <div className="sa-side-head">
           <Mark name={!collapsed} />
