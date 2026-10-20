@@ -87,6 +87,11 @@
   --fo-d-out: 100ms;
   /* A followed ¶ link: hold the mark, then let it go. */
   --fo-flash: 700ms;
+  /* KaTeX beside Literata: Computer Modern's x-height (0.431 em) scaled to
+   * Literata's, so math sits in the line rather than shrinking out of it.
+   * The only token batch 1 adds (spec §4); see the worklog for how it was
+   * set. */
+  --fo-math-scale: 1.14em;
 
   position: relative;
   width: 100%;
@@ -1334,36 +1339,6 @@
 
 .fo-aside .fo-link {
   margin-top: var(--fo-s2);
-}
-
-/* ── Stub pages (round 2) ────────────────────────────────────────── */
-
-.fo-stub {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 96px var(--fo-s16);
-}
-
-.fo-stub h1 {
-  margin-top: var(--fo-s3);
-  font-family: var(--fo-serif);
-  font-size: var(--fo-t44);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-}
-
-.fo-stub p {
-  margin-top: var(--fo-s4);
-  font-size: var(--fo-t17);
-  color: var(--fo-ink-2);
-}
-
-.fo-stub .fo-stub-note {
-  margin-top: var(--fo-s12);
-  padding-top: var(--fo-s4);
-  border-top: 1px solid var(--fo-rule);
-  font-size: var(--fo-t13);
-  color: var(--fo-ink-3);
 }
 
 /* ── Drill: running heads ────────────────────────────────────────── */
@@ -2956,6 +2931,934 @@
   height: 20px;
   background: linear-gradient(to top, var(--fo-leaf), transparent);
   pointer-events: none;
+}
+
+/* ── The page grammar, round 2 (Öva, Repetera) ───────────────────── */
+/* Every hub page is set the way Idag is: masthead, title and standfirst,
+ * the lead under the heavy rule, contents lists, marginalia. */
+
+.fo-page-main {
+  min-width: 0;
+}
+
+/* A hub lead's headline: the page's one largest item (t44, phone t32). */
+.fo-lead-title {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t44);
+  line-height: 1.08;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fo-lead-sub {
+  margin-top: var(--fo-s2);
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t15);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The section code in an entry's number column, set as the trap's
+ * section is (Inter 500, tracked), on the title's first baseline. */
+.fo-entry-code {
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t13);
+  line-height: calc(var(--fo-t17) * 1.5);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--fo-ink-3);
+}
+
+.fo-entry-note {
+  display: block;
+  margin-top: var(--fo-s1);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t15);
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--fo-ink-2);
+}
+
+/* A compared figure at the end of the dots (a level, a count): lining. */
+.fo-plan-min[data-lining='true'] {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* An entry with nothing to open yet: a plain row, no hover. */
+.fo-plan-row[data-static='true'] {
+  cursor: default;
+}
+
+.fo-plan-row[data-static='true']:hover .fo-plan-title {
+  text-decoration: none;
+}
+
+/* The suggested entry: the 2 px accent rule in the margin, one indicator. */
+.fo-entry {
+  position: relative;
+}
+
+.fo-entry[data-suggested='true']::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: var(--fo-s4);
+  bottom: var(--fo-s4);
+  width: 2px;
+  border-radius: 1px;
+  background: var(--fo-accent);
+}
+
+/* A contents list's part ("Verbal del"): Literata italic, not caps. */
+.fo-part {
+  margin: var(--fo-s6) 0 var(--fo-s1);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--fo-ink-2);
+}
+
+/* Blandat closes the register after a hairline of its own. */
+.fo-part-block--end {
+  margin-top: var(--fo-s6);
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-margin-note {
+  font-size: var(--fo-t15);
+  line-height: 1.5;
+  color: var(--fo-ink-2);
+  text-wrap: pretty;
+}
+
+.fo-margin-note + .fo-margin-note {
+  margin-top: var(--fo-s2);
+}
+
+.fo-margin-note b {
+  font-weight: 600;
+  color: var(--fo-ink);
+}
+
+/* A blank page says what will be here, in one italic sentence. */
+.fo-empty {
+  max-width: 36em;
+  margin-top: var(--fo-s4);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--fo-ink-2);
+  text-wrap: pretty;
+}
+
+.fo-empty--lead {
+  margin-top: 0;
+  font-size: var(--fo-t19);
+}
+
+.fo-footnote--plain {
+  display: block;
+}
+
+.fo-resume-foot .fo-link {
+  min-height: 44px;
+}
+
+/* ── Repetera: the misses ────────────────────────────────────────── */
+
+.fo-miss {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  column-gap: var(--fo-s3);
+  align-items: start;
+  padding: var(--fo-s3) 0;
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-miss-body {
+  min-width: 0;
+}
+
+.fo-miss-stem {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  line-height: 1.5;
+  color: var(--fo-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+  font-variant-numeric: lining-nums;
+}
+
+/* An ORD miss is a single word: set it as one. */
+.fo-miss-stem[data-word='true'] {
+  font-style: italic;
+}
+
+.fo-miss-trap {
+  margin-top: 2px;
+  font-size: var(--fo-t13);
+  color: var(--fo-ink-3);
+}
+
+.fo-miss-when {
+  padding-top: 4px;
+  font-size: var(--fo-t13);
+  color: var(--fo-ink-3);
+  white-space: nowrap;
+}
+
+/* MEK's blank: a ruled gap in the line, the width of a short word. */
+.fo-gap {
+  display: inline-block;
+  width: 3.2em;
+  height: 1em;
+  margin: 0 0.15em;
+  border-bottom: 1px solid var(--fo-ink-2);
+  vertical-align: -0.12em;
+}
+
+/* ── Drill seam: the verdict's second line ───────────────────────── */
+
+.fo-verdict:has(.fo-verdict-after) {
+  align-items: flex-start;
+}
+
+.fo-verdict-after {
+  display: block;
+  margin-top: var(--fo-s1);
+  font-size: var(--fo-t17);
+  font-style: italic;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: var(--fo-ink-2);
+}
+
+/* ── Kvantfråga and DTK ──────────────────────────────────────────── */
+
+.fo-qroot {
+  position: relative;
+  height: 100%;
+  /* Math, options and steps are measured and compared: lining figures,
+   * never the passage's old-style ones. */
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+[data-rd='folio'] .katex {
+  font-size: var(--fo-math-scale);
+}
+
+/* A KaTeX error shows its source as plain ink, never KaTeX's red. */
+[data-rd='folio'] .katex-error {
+  color: var(--fo-ink) !important;
+}
+
+/* Before Svara: one page, the problem centred at the recto's measure, the
+ * tactic hanging in the right margin. */
+.fo-qscroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fo-rule-2) transparent;
+}
+
+.fo-qsheet {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 640px) minmax(0, 1fr);
+  padding: var(--fo-s8) var(--fo-s6) var(--fo-s16);
+}
+
+.fo-qcol {
+  grid-column: 2;
+  width: 100%;
+  max-width: 640px;
+  padding: 0 var(--fo-s12) 0 44px;
+}
+
+.fo-qcol > .fo-actionbar {
+  margin-top: var(--fo-s6);
+  padding: var(--fo-s3) 0 var(--fo-s4);
+}
+
+/* After Svara the problem is the verso, centred on its page. */
+.fo-qverso {
+  padding: var(--fo-s8) 0 var(--fo-s16);
+}
+
+.fo-qverso .fo-qcol {
+  margin: 0 auto;
+}
+
+/* The problem's number hangs in the margin on the prompt's first
+ * baseline, the way ¶ numbers do. */
+.fo-qnum {
+  display: inline-block;
+  width: 36px;
+  margin: 0 8px 0 -44px;
+  text-align: right;
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t13);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--fo-ink-3);
+  font-variant-numeric: lining-nums tabular-nums;
+  vertical-align: baseline;
+}
+
+/* ORD's word at the page-title size, never larger. */
+.fo-qprompt[data-word='true'] {
+  font-size: var(--fo-t32);
+  line-height: 1.15;
+}
+
+.fo-qprompt[data-after='true'] {
+  margin-top: var(--fo-s4);
+}
+
+.fo-qpassage {
+  margin-bottom: var(--fo-s6);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  line-height: 1.6;
+  color: var(--fo-ink);
+}
+
+.fo-qpassage p + p {
+  margin-top: 0.75em;
+}
+
+/* KVA: the two quantities side by side, a column rule between them. */
+.fo-kva {
+  width: 100%;
+  margin-top: var(--fo-s4);
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-top: 1px solid var(--fo-rule);
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-kva th {
+  padding: var(--fo-s2) var(--fo-s4) var(--fo-s1) 0;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t15);
+  font-style: italic;
+  font-weight: 400;
+  text-align: left;
+  color: var(--fo-ink-2);
+}
+
+.fo-kva td {
+  padding: var(--fo-s1) var(--fo-s4) var(--fo-s3) 0;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t19);
+  line-height: 1.4;
+  vertical-align: top;
+  hyphens: manual;
+}
+
+.fo-kva th + th,
+.fo-kva td + td {
+  padding-left: var(--fo-s4);
+  border-left: 1px solid var(--fo-rule);
+}
+
+/* NOG: the statements hang in the margin like the passage's ¶ numbers. */
+.fo-nog {
+  margin-top: var(--fo-s4);
+}
+
+.fo-nog li {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t19);
+  line-height: 1.5;
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+.fo-nog li + li {
+  margin-top: var(--fo-s2);
+}
+
+.fo-nog-n {
+  display: inline-block;
+  width: 36px;
+  margin: 0 8px 0 -44px;
+  text-align: right;
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t13);
+  font-weight: 600;
+  color: var(--fo-ink-3);
+}
+
+.fo-nog-tail {
+  margin-top: var(--fo-s4);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-style: italic;
+  color: var(--fo-ink-2);
+}
+
+/* The tactic: a printed hint in the margin behind a column rule. */
+.fo-tactic {
+  grid-column: 3;
+  align-self: start;
+  max-width: 240px;
+  margin: var(--fo-s1) 0 0 var(--fo-s8);
+  padding-left: var(--fo-s6);
+  border-left: 1px solid var(--fo-rule);
+}
+
+.fo-tactic > .fo-h3 {
+  margin-bottom: var(--fo-s2);
+  font-size: var(--fo-t19);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.fo-tactic-handle {
+  margin-bottom: 2px;
+  font-size: var(--fo-t15);
+  font-weight: 600;
+  color: var(--fo-ink);
+}
+
+.fo-tactic-fold {
+  margin-top: var(--fo-s3);
+}
+
+.fo-tactic-body {
+  margin-top: var(--fo-s1);
+  padding: 2px 0 2px var(--fo-s4);
+  border-left: 1px solid var(--fo-rule-2);
+}
+
+/* "Andra av tre frågor till figuren": how much of the page is left. */
+.fo-cue {
+  margin-bottom: var(--fo-s3);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t15);
+  font-style: italic;
+  color: var(--fo-ink-2);
+}
+
+/* Image options (DTK pie charts): the crop beside its letter; a struck one
+ * dims, because a line cannot cross a picture. */
+.fo-opt-img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 140px;
+  transition: opacity var(--fo-d1) var(--fo-ease);
+}
+
+.fo-opt[data-state='eliminated'] .fo-opt-img {
+  opacity: 0.4;
+}
+
+/* ── Figures ─────────────────────────────────────────────────────── */
+
+/* A book figure above the prompt: centred, at most 280 px tall, no frame;
+ * an SVG takes the ink's colour in both themes. */
+.fo-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0 var(--fo-s6);
+}
+
+.fo-figure-box {
+  max-width: 100%;
+  max-height: 280px;
+  color: var(--fo-ink);
+}
+
+.fo-figure-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.fo-figure-raster {
+  max-width: 100%;
+  max-height: 280px;
+  width: auto;
+  height: auto;
+}
+
+.fo-figure-zoom {
+  align-self: flex-end;
+  margin-top: var(--fo-s1);
+}
+
+/* The DTK plate: the printed page fitted to the verso's width and height,
+ * a hairline frame, an italic caption. */
+.fo-plate-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100% - 56px);
+  padding: var(--fo-s6) var(--fo-s8) var(--fo-s4);
+  container-type: size;
+}
+
+.fo-plate {
+  width: min(100%, calc((100cqh - 48px) * var(--fo-plate-ratio)));
+}
+
+.fo-plate-frame {
+  position: relative;
+  aspect-ratio: var(--fo-plate-ratio);
+  overflow: hidden;
+  border: 1px solid var(--fo-rule-2);
+  border-radius: 2px;
+  background: var(--fo-paper-3);
+  container-type: inline-size;
+}
+
+/* Never inverted, never filtered: the page stays as printed. */
+.fo-plate-img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100cqw;
+  max-width: none;
+  height: auto;
+  transform: translate(-50%, -50%) rotate(var(--fo-rot, 0deg));
+  transition: transform var(--fo-d2) var(--fo-ease);
+}
+
+.fo-plate[data-turned='true'] .fo-plate-img {
+  width: calc(100cqw * var(--fo-img-ratio));
+}
+
+.fo-plate-open {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.fo-plate-caption {
+  margin-top: var(--fo-s2);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t13);
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--fo-ink-3);
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* An erratum: a note behind a 1 px rule, plain words, one way to retry. */
+.fo-erratum {
+  padding: 2px 0 2px var(--fo-s4);
+  border-left: 1px solid var(--fo-rule-2);
+  font-size: var(--fo-t15);
+  line-height: 1.5;
+  color: var(--fo-ink-2);
+}
+
+.fo-plate-frame .fo-erratum,
+.fo-figure-box .fo-erratum {
+  position: absolute;
+  left: var(--fo-s6);
+  right: var(--fo-s6);
+  top: 50%;
+  translate: 0 -50%;
+  background: var(--fo-paper);
+}
+
+.fo-figure-box {
+  position: relative;
+}
+
+/* ── Förstora ────────────────────────────────────────────────────── */
+/* Full-stage, on the page's own paper — not a black lightbox. */
+
+.fo-viewer {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background: var(--fo-paper);
+  animation: fo-fade-in var(--fo-d2) var(--fo-ease);
+}
+
+.fo-viewer:focus-visible {
+  outline-offset: -2px;
+}
+
+.fo-viewer-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--fo-s3);
+  min-height: 56px;
+  padding: var(--fo-s1) var(--fo-s3) var(--fo-s1) var(--fo-s6);
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-viewer-title {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t15);
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--fo-ink-2);
+  text-wrap: balance;
+}
+
+.fo-viewer-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--fo-s1);
+}
+
+.fo-viewer-tools .fo-ghost:disabled {
+  color: var(--fo-ink-3);
+  cursor: not-allowed;
+}
+
+.fo-viewer-tools .fo-ghost:disabled:hover {
+  background: transparent;
+}
+
+.fo-viewer-zoom {
+  min-width: 64px;
+  text-align: center;
+  font-size: var(--fo-t15);
+  font-weight: 600;
+  color: var(--fo-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-viewer-area {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  cursor: grab;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fo-rule-2) transparent;
+}
+
+.fo-viewer-area:active {
+  cursor: grabbing;
+}
+
+.fo-viewer-area:focus-visible {
+  outline-offset: -4px;
+}
+
+.fo-viewer-canvas {
+  position: relative;
+  margin: 0 auto;
+}
+
+.fo-viewer-img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  max-width: none;
+  user-select: none;
+  transition: transform var(--fo-d2) var(--fo-ease);
+}
+
+.fo-viewer-svg {
+  color: var(--fo-ink);
+}
+
+[data-width='phone'] .fo-viewer-bar {
+  flex-wrap: wrap;
+  padding: var(--fo-s1) var(--fo-s1) var(--fo-s1) var(--fo-s4);
+}
+
+[data-width='phone'] .fo-viewer-title {
+  flex-basis: 100%;
+  order: -1;
+  padding-top: var(--fo-s2);
+}
+
+[data-width='phone'] .fo-viewer-tools .fo-ghost {
+  padding: 0 var(--fo-s2);
+}
+
+/* ── The end of a set: the round's list and its review ───────────── */
+
+.fo-roundlist {
+  width: 100%;
+  margin: 0 0 var(--fo-s6);
+  text-align: left;
+}
+
+.fo-roundlist > .fo-more {
+  display: flex;
+  margin: 0 auto;
+}
+
+.fo-roundlist-rows {
+  margin-top: var(--fo-s3);
+  border-top: 1px solid var(--fo-rule);
+  animation: fo-unfold var(--fo-d2) var(--fo-ease);
+}
+
+.fo-round-row {
+  display: grid;
+  grid-template-columns: 20px 36px minmax(0, 1fr) auto;
+  column-gap: var(--fo-s3);
+  align-items: baseline;
+  width: 100%;
+  min-height: 44px;
+  padding: var(--fo-s3) 0;
+  border: 0;
+  border-bottom: 1px solid var(--fo-rule);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fo-round-row:hover .fo-round-stem {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fo-rule-2);
+  text-underline-offset: 4px;
+}
+
+.fo-round-n {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  color: var(--fo-ink-3);
+  font-variant-numeric: oldstyle-nums;
+}
+
+.fo-round-stem {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t15);
+  line-height: 1.45;
+  color: var(--fo-ink);
+  text-wrap: pretty;
+}
+
+/* The outcome as glyph and word; its colour is one of the verdict's four
+ * places (the same pair in a result list). */
+.fo-round-out {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--fo-t13);
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.fo-round-out[data-correct='true'] {
+  color: var(--fo-ok);
+}
+
+.fo-round-out[data-correct='false'] {
+  color: var(--fo-bad);
+}
+
+.fo-review {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--fo-s8) var(--fo-s12) var(--fo-s16) 44px;
+}
+
+.fo-review > .fo-label {
+  display: block;
+  margin: var(--fo-s4) 0 var(--fo-s4);
+}
+
+.fo-review .fo-verdict {
+  margin-top: var(--fo-s6);
+}
+
+.fo-review .fo-plate {
+  width: min(100%, 420px);
+  margin-bottom: var(--fo-s6);
+}
+
+.fo-review-back {
+  rotate: -90deg;
+}
+
+/* ── Phone: the quant page and the DTK plate ─────────────────────── */
+
+.fo-pdrill-pos {
+  text-align: center;
+  font-size: var(--fo-t13);
+  color: var(--fo-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-pquant-page {
+  padding: 76px 24px 160px 44px;
+}
+
+.fo-pquant-page > .fo-label,
+.fo-pdtk-page > .fo-label {
+  display: block;
+  margin-bottom: var(--fo-s3);
+}
+
+.fo-pquant .fo-prompt {
+  font-size: var(--fo-t19);
+  line-height: 1.38;
+}
+
+.fo-pquant .fo-prompt[data-after='true'] {
+  font-size: var(--fo-t15);
+}
+
+.fo-pquant .fo-qprompt[data-word='true'] {
+  font-size: var(--fo-t24);
+}
+
+.fo-pquant .fo-qnum,
+.fo-pquant .fo-nog-n {
+  width: 26px;
+  margin: 0 8px 0 -34px;
+  font-size: var(--fo-t12);
+}
+
+.fo-pquant .fo-kva td,
+.fo-pquant .fo-nog li {
+  font-size: var(--fo-t17);
+}
+
+.fo-pquant .fo-opts {
+  margin-top: var(--fo-s4);
+}
+
+.fo-pquant .fo-opt {
+  grid-template-columns: 30px minmax(0, 1fr) 36px;
+  column-gap: 10px;
+  padding: var(--fo-s3) 0;
+}
+
+.fo-pquant .fo-opt::before {
+  left: -12px;
+  top: var(--fo-s3);
+  bottom: var(--fo-s3);
+}
+
+.fo-pquant .fo-opt-main {
+  grid-template-columns: 30px minmax(0, 1fr);
+  column-gap: 10px;
+}
+
+.fo-pquant .fo-letter {
+  width: 30px;
+  height: 30px;
+}
+
+.fo-pquant .fo-dis-body {
+  margin-left: 0;
+}
+
+/* The verdict lands above the graded options, the way back to the
+ * problem on its line. */
+.fo-pverdict {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fo-s2) var(--fo-s4);
+  margin-top: var(--fo-s6);
+}
+
+.fo-pverdict .fo-verdict {
+  font-size: var(--fo-t24);
+}
+
+/* The phone foot: the action anchored, the text fading out above it. */
+.fo-pfoot {
+  position: absolute;
+  z-index: 7;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--fo-paper);
+}
+
+.fo-pfoot::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 1px);
+  height: 20px;
+  background: linear-gradient(to top, var(--fo-paper), transparent);
+  pointer-events: none;
+}
+
+.fo-pfoot .fo-actionbar {
+  position: relative;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: var(--fo-s3) 20px max(var(--fo-s6), env(safe-area-inset-bottom));
+}
+
+.fo-pfoot .fo-actionbar .fo-btn {
+  width: 100%;
+  min-height: 52px;
+}
+
+.fo-pfoot .fo-actionbar .fo-echo {
+  text-align: center;
+}
+
+.fo-pdtk-page {
+  padding: 72px 20px 0;
+}
+
+.fo-pdtk-page .fo-plate {
+  width: 100%;
+}
+
+/* ── Phone: the hub pages ────────────────────────────────────────── */
+
+.fo-phome .fo-lead-title {
+  font-size: var(--fo-t32);
+}
+
+.fo-phome .fo-resume-foot .fo-link {
+  align-self: flex-end;
+}
+
+.fo-phome .fo-plan-row:has(> .fo-entry-code) {
+  grid-template-columns: 40px minmax(0, 1fr);
+}
+
+.fo-phome .fo-entry[data-suggested='true']::before {
+  left: -12px;
+}
+
+.fo-phome .fo-miss {
+  grid-template-columns: 40px minmax(0, 1fr);
+}
+
+.fo-phome .fo-miss-when {
+  grid-column: 2;
+  padding-top: 2px;
+}
+
+/* Blandat has no code: its title starts where the codes stand. */
+.fo-part-block--end .fo-plan-row,
+.fo-phome .fo-part-block--end .fo-plan-row {
+  grid-template-columns: 0 minmax(0, 1fr);
+  column-gap: 0;
 }
 
 /* ── Hit areas ───────────────────────────────────────────────────── */
