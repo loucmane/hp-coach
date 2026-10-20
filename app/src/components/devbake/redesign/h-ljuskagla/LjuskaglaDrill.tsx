@@ -1,37 +1,64 @@
+import { ArrowRight, Check, ChevronDown, ChevronUp, LampDesk } from 'lucide-react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
-  ArrowRight,
-  Check,
-  ChevronDown,
-  ChevronUp,
-  CircleSlash,
-  LampDesk,
-  Undo2,
-  X,
-} from 'lucide-react'
-import { useEffect, useId, useRef, useState } from 'react'
-import {
-  OVNINGSTEXT_BADGE,
-  OVNINGSTEXT_NOTE,
-  PLAN,
-  UNIT,
-} from '@/components/devbake/redesign/r1Fixtures'
-import {
-  type Destination,
-  type DirectionProps,
-  fmtClock,
-  useDrill,
-  useKeyMap,
-  useSheet,
-} from '@/components/devbake/redesign/r1Kit'
+  type DrillController,
+  type DrillStart,
+  useDrillCore,
+} from '@/components/devbake/redesign/drillCore'
+import { type DirectionProps, useKeyMap, useSheet } from '@/components/devbake/redesign/r1Kit'
+import type { DrillSessionView } from '@/components/devbake/redesign/viewModel'
+import { MathText } from '@/components/MathText'
 import { LjuskaglaFeedback } from './LjuskaglaFeedback'
-import { Account } from './LjuskaglaNav'
-import type { Reading } from './LjuskaglaParts'
+import { DrillHead } from './LjuskaglaNav'
+import { AnswerRows } from './LjuskaglaParts'
 
-export function LjuskaglaDrill({
-  onGo,
-  ...props
-}: DirectionProps & { onGo: (d: Destination) => void }) {
-  const { view, act, refs } = useDrill(props)
+/**
+ * The reading session on the bake-off's two round-1 screens. Läsfråga (2)
+ * opens the session's question unanswered and Facit (3) opens it graded
+ * with the session's wrong pick. Clicking Facit or Läsfråga in the switcher
+ * mid-question grades or reopens the question in place, so an answer given
+ * on 2 carries into 3 without a remount.
+ */
+function useSwitcherDrill(
+  { screen, live }: Pick<DirectionProps, 'screen' | 'live'>,
+  session: DrillSessionView,
+  controller: DrillController,
+) {
+  const [start] = useState<DrillStart>(() => {
+    const qid = session.questions[session.start.index ?? 0]?.qid
+    return { ...session.start, graded: screen === 3 && qid ? session.wrongPick?.[qid] : undefined }
+  })
+  const core = useDrillCore({
+    questions: session.questions,
+    explanations: session.explanations,
+    start,
+    elapsed: session.elapsedSeconds,
+    controller,
+    live,
+  })
+  const { gradeAs, reopen, reset } = core.act
+  const phase = core.view.phase
+  // biome-ignore lint/correctness/useExhaustiveDependencies: follows the switcher's screen only
+  useLayoutEffect(() => {
+    if (screen === 3 && phase === 'question') gradeAs((q) => session.wrongPick?.[q.qid])
+    else if (screen === 2 && phase === 'feedback') reopen()
+    else if (screen === 2 && phase === 'done') reset()
+  }, [screen])
+  return core
+}
+
+/** "Magasinet i Hökaryd: en handbok …" → the title and its subtitle. */
+function splitTitle(title: string | undefined): [string, string | null] | null {
+  if (!title) return null
+  const cut = title.indexOf(': ')
+  return cut === -1 ? [title, null] : [title.slice(0, cut), title.slice(cut + 2)]
+}
+
+export function LjuskaglaDrill(props: DirectionProps) {
+  const { data, actions } = useDirectionData()
+  const session = data.drills.reading
+  const { view, act, refs } = useSwitcherDrill(props, session, actions.drill)
   const sheet = useSheet(view)
   const [spotlight, setSpotlight] = useState(true)
   const [note, setNote] = useState(false)
@@ -41,11 +68,18 @@ export function LjuskaglaDrill({
   const scrollQuietUntil = useRef(0)
   const noteId = useId()
   const questionId = useId()
+  const { onScreen } = props
   const phone = props.width === 'phone'
   const feedback = view.phase === 'feedback'
   const done = view.phase === 'done'
   const sheetVisible = !phone || sheet.state !== 'peek'
+  const question = view.question
+  const passage = question.passage ?? null
+  const paragraphs = view.passage?.paragraphs ?? []
+  const title = passage?.title ?? session.title
+  const heading = splitTitle(passage?.title)
   const active = view.focusPara ?? 1
+  const nextItem = data.home.plan.items.find((item) => !item.completed)
   const { setFocusPara, cite } = act
 
   // Start feedback at its evidence, but leave still thumbnails motionless.
@@ -65,6 +99,12 @@ export function LjuskaglaDrill({
     if (questionRef.current) questionRef.current.scrollTop = 0
   }, [view.index, view.phase])
 
+  const lock = () => {
+    if (act.lock()) onScreen(3)
+  }
+  const next = () => {
+    if (act.next() === 'next') onScreen(2)
+  }
   const point = (n: number, source?: string) => {
     scrollQuietUntil.current = Date.now() + 500
     setFocusPara(n)
@@ -80,14 +120,17 @@ export function LjuskaglaDrill({
   }
   const move = (delta: number) => {
     if (!spotlight) return
-    point(Math.max(1, Math.min(view.passage.paragraphs.length, active + delta)))
+    point(Math.max(1, Math.min(paragraphs.length, active + delta)))
   }
-  const nextPlan = () => onGo(PLAN.items[0].kind === 'lektion' ? 'uppslag' : 'ova')
+  const nextPlan = () => {
+    if (nextItem) actions.openPlanItem(nextItem.id)
+    else onScreen(1)
+  }
   const advance = () => {
     if (done) nextPlan()
-    else if (feedback) act.next()
+    else if (feedback) next()
     else if (phone && sheet.state === 'peek') sheet.setState('open')
-    else act.lock()
+    else lock()
   }
   const keys: Record<string, () => void> = {
     Enter: advance,
@@ -100,12 +143,12 @@ export function LjuskaglaDrill({
     keys.ArrowUp = () => move(-1)
   }
   if (!feedback && !done) {
-    for (const option of view.question.options) {
-      keys[option.letter.toLowerCase()] = () => {
+    for (const letter of view.letters) {
+      keys[letter.toLowerCase()] = () => {
         if (phone) sheet.setState('open')
-        act.select(option.letter)
+        act.select(letter)
       }
-      keys[`Shift+${option.letter.toLowerCase()}`] = () => act.toggleEliminate(option.letter)
+      keys[`Shift+${letter.toLowerCase()}`] = () => act.toggleEliminate(letter)
     }
   }
   useKeyMap(keys, props.live && !accountOpen)
@@ -116,8 +159,8 @@ export function LjuskaglaDrill({
     const rect = box.getBoundingClientRect()
     if (rect.height === 0) return
     const line = rect.top + rect.height * 0.28
-    const paragraphs = [...box.querySelectorAll<HTMLElement>('[data-paragraph]')]
-    const nearest = paragraphs.reduce<HTMLElement | null>((found, paragraph) => {
+    const nodes = [...box.querySelectorAll<HTMLElement>('[data-paragraph]')]
+    const nearest = nodes.reduce<HTMLElement | null>((found, paragraph) => {
       const distance = (element: HTMLElement) => {
         const bounds = element.getBoundingClientRect()
         return line < bounds.top
@@ -134,32 +177,17 @@ export function LjuskaglaDrill({
   const sheetActions = { ...act, cite: point }
   return (
     <div className="lj-drill" data-spotlight={String(spotlight)}>
-      <header className="lj-drill-head">
-        <button
-          type="button"
-          className="lj-text-button lj-exit"
-          data-testid="rd-exit"
-          onClick={() => onGo('idag')}
-        >
-          <X size={18} aria-hidden />
-          <span>Avsluta</span>
-        </button>
-        <span className="lj-drill-progress">
-          LÄS{' '}
-          <span>
-            · {done ? view.total : view.index + 1} av {view.total}
-          </span>
-        </span>
-        <span className="lj-clock" role="timer" aria-label={`Tid ${fmtClock(view.elapsed)}`}>
-          {fmtClock(view.elapsed)}
-        </span>
-        <Account {...props} onOpenChange={setAccountOpen} />
-        <span className="lj-progress-line" aria-hidden>
-          <i
-            style={{ width: `${((view.index + (feedback || done ? 1 : 0)) / view.total) * 100}%` }}
-          />
-        </span>
-      </header>
+      <DrillHead
+        section={question.section}
+        position={done ? view.total : view.index + 1}
+        total={view.total}
+        elapsed={view.elapsed}
+        progress={(view.index + (feedback || done ? 1 : 0)) / view.total}
+        onExit={() => onScreen(1)}
+        theme={props.theme}
+        onTheme={props.onTheme}
+        onAccountOpenChange={setAccountOpen}
+      />
       {done ? (
         <div className="lj-done" data-testid="rd-done">
           <Check size={32} strokeWidth={1.5} aria-hidden />
@@ -169,19 +197,33 @@ export function LjuskaglaDrill({
             {view.results.filter((result) => result.correct).length} av {view.total} rätt ·{' '}
             {Math.round(view.elapsed / 60)} minuter
           </p>
-          <p>{UNIT.title}</p>
-          <button
-            className="lj-primary"
-            type="button"
-            data-testid="rd-done-next"
-            onClick={nextPlan}
-          >
-            Nästa: {PLAN.items[0].title}
-            <ArrowRight size={20} aria-hidden />
-          </button>
-          <button className="lj-text-button" type="button" onClick={() => onGo('idag')}>
-            Till Idag
-          </button>
+          <p>{title}</p>
+          {nextItem ? (
+            <>
+              <button
+                className="lj-primary"
+                type="button"
+                data-testid="rd-done-next"
+                onClick={nextPlan}
+              >
+                Nästa: {nextItem.title}
+                <ArrowRight size={20} aria-hidden />
+              </button>
+              <button className="lj-text-button" type="button" onClick={() => onScreen(1)}>
+                Till Idag
+              </button>
+            </>
+          ) : (
+            <button
+              className="lj-primary"
+              type="button"
+              data-testid="rd-done-next"
+              onClick={() => onScreen(1)}
+            >
+              Till Idag
+              <ArrowRight size={20} aria-hidden />
+            </button>
+          )}
         </div>
       ) : (
         <div className="lj-reading-layout">
@@ -199,7 +241,7 @@ export function LjuskaglaDrill({
               </button>
               <span className="lj-key-hint">J / K · ↑ / ↓</span>
               <span className="lj-reading-position" aria-live="polite">
-                ¶{active} / {view.passage.paragraphs.length}
+                ¶{active} / {paragraphs.length}
               </span>
             </div>
             <div
@@ -209,29 +251,33 @@ export function LjuskaglaDrill({
               onScroll={onPassageScroll}
             >
               <header className="lj-passage-title">
-                <div className="lj-disclosure">
-                  <span className="lj-eyebrow" data-testid="rd-badge">
-                    {OVNINGSTEXT_BADGE}
-                  </span>
-                  <button
-                    type="button"
-                    className="lj-text-button"
-                    data-testid="rd-note-toggle"
-                    aria-expanded={note}
-                    aria-controls={noteId}
-                    onClick={() => setNote(!note)}
-                  >
-                    Om texten <ChevronDown size={15} aria-hidden />
-                  </button>
-                </div>
-                <p className="lj-note" id={noteId} data-testid="rd-note" hidden={!note}>
-                  {OVNINGSTEXT_NOTE}
-                </p>
-                <h1>{UNIT.title.split(': ')[0]}</h1>
-                <p>{UNIT.title.split(': ')[1]}</p>
+                {passage?.synthetic && (
+                  <>
+                    <div className="lj-disclosure">
+                      <span className="lj-eyebrow" data-testid="rd-badge">
+                        {data.copy.ovningstextBadge}
+                      </span>
+                      <button
+                        type="button"
+                        className="lj-text-button"
+                        data-testid="rd-note-toggle"
+                        aria-expanded={note}
+                        aria-controls={noteId}
+                        onClick={() => setNote(!note)}
+                      >
+                        Om texten <ChevronDown size={15} aria-hidden />
+                      </button>
+                    </div>
+                    <p className="lj-note" id={noteId} data-testid="rd-note" hidden={!note}>
+                      {data.copy.ovningstextNote}
+                    </p>
+                  </>
+                )}
+                {heading && <h1>{heading[0]}</h1>}
+                {heading?.[1] && <p>{heading[1]}</p>}
               </header>
-              <article className="lj-passage" data-testid="rd-passage" aria-label={UNIT.title}>
-                {view.passage.paragraphs.map((text, index) => {
+              <article className="lj-passage" data-testid="rd-passage" aria-label={title}>
+                {paragraphs.map((text, index) => {
                   const n = index + 1
                   const lit = spotlight && active === n
                   return (
@@ -260,7 +306,7 @@ export function LjuskaglaDrill({
                     </div>
                   )
                 })}
-                {view.passage.byline && <p className="lj-byline">{view.passage.byline}</p>}
+                {view.passage?.byline && <p className="lj-byline">{view.passage.byline}</p>}
               </article>
               <p className="lj-text-end">Slut på texten</p>
             </div>
@@ -292,22 +338,26 @@ export function LjuskaglaDrill({
             )}
             <div className="lj-question-scroll" id={questionId} ref={questionRef}>
               <p className="lj-eyebrow">
-                Fråga {view.index + 1} av {view.total} · LÄS
+                Fråga {view.index + 1} av {view.total} · {question.section}
               </p>
               {sheetVisible ? (
                 feedback ? (
                   <LjuskaglaFeedback view={view} act={sheetActions} refs={refs} />
                 ) : (
                   <>
-                    <h2 className="lj-prompt">{view.question.prompt}</h2>
-                    <Options view={view} act={act} refs={refs} />
+                    <h2 className="lj-prompt">
+                      <MathText>{question.prompt}</MathText>
+                    </h2>
+                    <AnswerRows view={view} act={act} />
                   </>
                 )
               ) : (
                 <p className="lj-peek-prompt">
-                  {feedback
-                    ? `Rätt svar: ${view.question.answer} · öppna förklaringen`
-                    : view.question.prompt}
+                  {feedback ? (
+                    `Rätt svar: ${question.answer} · öppna förklaringen`
+                  ) : (
+                    <MathText>{question.prompt}</MathText>
+                  )}
                 </p>
               )}
             </div>
@@ -318,7 +368,7 @@ export function LjuskaglaDrill({
                   className="lj-primary"
                   data-testid={feedback ? 'rd-next' : 'rd-lock'}
                   disabled={!feedback && !view.selected}
-                  onClick={feedback ? act.next : act.lock}
+                  onClick={feedback ? next : lock}
                 >
                   <span>
                     {feedback
@@ -342,47 +392,5 @@ export function LjuskaglaDrill({
         </div>
       )}
     </div>
-  )
-}
-
-function Options({ view, act }: Reading) {
-  return (
-    <ol className="lj-options" aria-label="Svarsalternativ">
-      {view.question.options.map((option) => {
-        const selected = view.selected === option.letter
-        const eliminated = view.eliminated.has(option.letter)
-        return (
-          <li
-            key={option.letter}
-            data-selected={String(selected)}
-            data-eliminated={String(eliminated)}
-          >
-            <button
-              type="button"
-              className="lj-option"
-              data-testid={`rd-option-${option.letter}`}
-              aria-pressed={selected}
-              onClick={() => act.select(option.letter)}
-            >
-              <kbd>{option.letter}</kbd>
-              <span>{option.text}</span>
-              {selected && <Check className="lj-selected-mark" size={16} aria-hidden />}
-            </button>
-            <button
-              type="button"
-              className="lj-eliminate"
-              data-testid={`rd-eliminate-${option.letter}`}
-              aria-label={
-                eliminated ? `Ångra strykning av ${option.letter}` : `Stryk ${option.letter}`
-              }
-              aria-pressed={eliminated}
-              onClick={() => act.toggleEliminate(option.letter)}
-            >
-              {eliminated ? <Undo2 size={17} aria-hidden /> : <CircleSlash size={17} aria-hidden />}
-            </button>
-          </li>
-        )
-      })}
-    </ol>
   )
 }
