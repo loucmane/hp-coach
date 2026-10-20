@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
-
+import { useDirectionData } from '@/components/devbake/redesign/directionData'
 import {
   DESTINATIONS,
   type Destination,
@@ -23,7 +23,8 @@ export function RasterNav({
   menu: boolean
   setMenu: (open: boolean) => void
 }) {
-  const focus = screen === 2 || screen === 3
+  const { data, actions } = useDirectionData()
+  const focus = screen === 2 || screen === 3 || screen === 6 || screen === 7
   const [collapsed, setCollapsed] = useState(screen === 4)
   const [accountPage, setAccountPage] = useState<string | null>(null)
   const menuId = useId()
@@ -59,7 +60,9 @@ export function RasterNav({
           ))}
         </nav>
       ) : (
-        <span className="ra-focus-label">LÄS / Fokus</span>
+        <span className="ra-focus-label">
+          {screen === 7 ? 'DTK' : screen === 6 ? 'Kvant' : 'LÄS'} / Fokus
+        </span>
       )}
       {width === 'desktop' && !focus ? (
         <button
@@ -109,7 +112,7 @@ export function RasterNav({
                     ? 'Inloggad · gratisplan'
                     : accountPage === 'Inställningar'
                       ? 'Provdatum och mål visas här när riktningen är vald.'
-                      : 'A–D väljer svar. Enter svarar och går vidare. F aktiverar styckefokus; J och K byter stycke.'}
+                      : 'A–E väljer de svar som finns. Enter svarar och går vidare. F aktiverar styckefokus i en text; J och K byter stycke.'}
                 </p>
                 <button type="button" className="ra-menu-row" onClick={() => setAccountPage(null)}>
                   ← Tillbaka
@@ -117,13 +120,16 @@ export function RasterNav({
               </>
             ) : (
               <>
-                <p className="ra-label">Inloggad · gratisplan</p>
+                <p className="ra-label">{data.konto.identity.name}</p>
                 {['Konto', 'Inställningar'].map((label) => (
                   <button
                     type="button"
                     className="ra-menu-row"
                     key={label}
-                    onClick={() => setAccountPage(label)}
+                    onClick={() => {
+                      close()
+                      actions.openKonto()
+                    }}
                   >
                     {label}
                     <span aria-hidden>↗</span>
