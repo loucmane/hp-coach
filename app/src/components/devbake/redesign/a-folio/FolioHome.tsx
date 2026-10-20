@@ -14,7 +14,9 @@
 // Batch 2 wires the margin into Framsteg (spec §3, B2): the prognosis head
 // opens Framsteg, "Alla fällor" its Fällor page and "Alla pass" Historik; a
 // plan item that suggests a pass goes through the frame (onOpenItem), which
-// opens the pass's conditions on arrival.
+// opens the pass's conditions on arrival. Batch 3: a lesson row asks
+// Uppslag for its own entry the same way, and a finished part of the plan
+// is a plain row, never offered as work.
 //
 // This file also holds the page grammar every Folio hub page shares (spec
 // §1.4, "FolioPage"): the masthead, the lead, the contents entry, the part
@@ -93,12 +95,16 @@ function planClauses(items: PlanItemView[]): string[] {
 /** The day in one sentence, from the plan — not a repeat of the card. */
 function daySentence({ plan, resume }: HomeView): string | null {
   const open = plan.items.filter((i) => !i.completed)
-  const parts = [
-    ...(resume
-      ? [TEXT_SECTIONS.has(resume.section) ? 'läs klart texten' : 'gör klart övningen']
-      : []),
-    ...planClauses(open),
-  ]
+  const finish = resume
+    ? TEXT_SECTIONS.has(resume.section)
+      ? 'läs klart texten'
+      : 'gör klart övningen'
+    : null
+  // Only the paused sitting is left: the plan itself is done.
+  if (finish && open.length === 0 && plan.items.length > 0) {
+    return `Idag: ${finish} – resten av dagens plan är klar.`
+  }
+  const parts = [...(finish ? [finish] : []), ...planClauses(open)]
   if (parts.length === 0) return plan.allComplete ? 'Idag: dagens plan är klar.' : null
   const last = parts.pop()
   const list = parts.length ? `${parts.join(', ')} och ${last}` : last
@@ -220,13 +226,14 @@ export function FolioHome({
           <ol>
             {rows.map((item, i) => (
               <li key={item.id}>
+                {/* A finished part is a plain row: never offered as work. */}
                 <ContentsEntry
                   code={i + 1}
                   title={item.title}
                   gloss={item.detail}
                   page={item.completed ? 'klar' : `${item.minutes} min`}
                   why={item.rationale}
-                  onClick={() => openItem(item)}
+                  onClick={item.completed ? undefined : () => openItem(item)}
                 />
               </li>
             ))}

@@ -22,12 +22,18 @@
 //  10 Resultat    — the frame, Provpass current, around the handed-in pass
 //  11 Framsteg    — the frame around the report, with Historik and Fällor
 //                   as its back matter (FolioFramsteg)
+//  12 Uppslag     — the frame, its contents folded to the thumb index,
+//                   around the lesson spread: the book's contents on the
+//                   verso, the open entry on the recto (FolioUppslag)
+//  13 Konto       — the frame around the imprint page of settings; no
+//                   destination is current there (FolioKonto)
+//  14 ELF         — the reading spread in English, the chrome in Swedish
+//                   (FolioDrill)
 //
 // Kit v2: every screen reads useDirectionData(); the contents ask the host
-// for a destination (actions.go), which shows the shared "Inte byggd än"
-// card for the ones Folio has not built yet. A modal slip on a frame page
-// (the pass's conditions) is set at the stage's level, over the whole
-// frame, which goes inert under it.
+// for a destination (actions.go). A modal slip on a frame page (the pass's
+// conditions) is set at the stage's level, over the whole frame, which goes
+// inert under it. The account slip's rows open Konto at their own places.
 
 import { PanelLeftClose, PanelLeftOpen, UserRound } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -44,9 +50,10 @@ import {
   useWebFonts,
 } from '@/components/devbake/redesign/r1Kit'
 import type { PlanItemView, ProvHubView } from '@/components/devbake/redesign/viewModel'
-import { FolioDrill, ORIGIN_IDAG, type Origin } from './FolioDrill'
+import { FolioDrill, LessonAskContext, ORIGIN_IDAG, type Origin } from './FolioDrill'
 import { FolioFramsteg, type FramstegSub } from './FolioFramsteg'
 import { FolioHome } from './FolioHome'
+import { FolioKonto, type KontoJump, type KontoPlace } from './FolioKonto'
 import { FolioOva } from './FolioOva'
 import {
   ConditionsSlip,
@@ -59,6 +66,7 @@ import {
 } from './FolioProvpass'
 import { FolioQuant } from './FolioQuant'
 import { FolioRepetera } from './FolioRepetera'
+import { FolioUppslag } from './FolioUppslag'
 
 const FONTS =
   'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap'
@@ -76,11 +84,11 @@ const THUMB: Record<Destination, string> = {
 
 /** Focus screens: drills, with Avsluta instead of the frame. (A running
  *  pass is focus mode too, on screen 9: the frame steps aside for it.) */
-const FOCUS: readonly AppScreenKey[] = [2, 3, 6, 7]
+const FOCUS: readonly AppScreenKey[] = [2, 3, 6, 7, 14]
 
 /** A page of the frame. Repetera lives inside Öva and the result inside
- *  Provpass: Öva and Provpass stay current. */
-type Page = 'idag' | 'ova' | 'repetera' | 'provpass' | 'resultat' | 'framsteg'
+ *  Provpass: Öva and Provpass stay current. Konto is no destination. */
+type Page = 'idag' | 'ova' | 'repetera' | 'provpass' | 'resultat' | 'framsteg' | 'uppslag' | 'konto'
 
 function pageOf(screen: AppScreenKey): Page {
   switch (screen) {
@@ -94,6 +102,10 @@ function pageOf(screen: AppScreenKey): Page {
       return 'resultat'
     case 11:
       return 'framsteg'
+    case 12:
+      return 'uppslag'
+    case 13:
+      return 'konto'
     default:
       return 'idag'
   }
@@ -101,21 +113,25 @@ function pageOf(screen: AppScreenKey): Page {
 
 const ORIGINS: Record<Page, Origin> = {
   idag: ORIGIN_IDAG,
-  ova: { label: 'Öva', idag: false },
-  repetera: { label: 'Öva', idag: false },
-  provpass: { label: 'Provpass', idag: false },
-  resultat: { label: 'Provpass', idag: false },
-  framsteg: { label: 'Framsteg', idag: false },
+  ova: { label: 'Öva', idag: false, to: 'ova' },
+  repetera: { label: 'Öva', idag: false, to: 'ova' },
+  provpass: { label: 'Provpass', idag: false, to: 'provpass' },
+  resultat: { label: 'Provpass', idag: false, to: 'provpass' },
+  framsteg: { label: 'Framsteg', idag: false, to: 'framsteg' },
+  uppslag: { label: 'Uppslag', idag: false, to: 'uppslag' },
+  konto: { label: 'Konto', idag: false, to: 'konto' },
 }
 
-/** The destination each page belongs to in the contents. */
-const CURRENT: Record<Page, Destination> = {
+/** The destination each page belongs to in the contents (none for Konto). */
+const CURRENT: Record<Page, Destination | null> = {
   idag: 'idag',
   ova: 'ova',
   repetera: 'ova',
   provpass: 'provpass',
   resultat: 'provpass',
   framsteg: 'framsteg',
+  uppslag: 'uppslag',
+  konto: null,
 }
 
 /** The pass the hub summons for its half: the least seen one. */
@@ -132,14 +148,18 @@ type ProvState =
   | { kind: 'run'; passId: string }
   | { kind: 'ended'; end: PassEnd }
 
-type ThemeChoice = ThemeKey | 'system'
-
 export function Folio(props: DirectionProps) {
   useWebFonts('folio', FONTS)
   // Where a drill was opened from: the last frame page shown. The stage
   // keeps Folio mounted across the screens it builds, so this carries.
   const origin = useRef<Origin>(ORIGIN_IDAG)
   if (!FOCUS.includes(props.screen)) origin.current = ORIGINS[pageOf(props.screen)]
+  // A lesson asked for from a drill's facit or a plan row, carried to
+  // Uppslag across the switch from focus mode to the frame.
+  const asked = useRef<string | null>(null)
+  const askLesson = useCallback((id: string) => {
+    asked.current = id
+  }, [])
   const { screen } = props
   return (
     <div
@@ -150,22 +170,35 @@ export function Folio(props: DirectionProps) {
       data-testid="rd-folio"
       lang="sv"
     >
-      {screen === 6 || screen === 7 ? (
-        <FolioQuant key={screen} {...props} origin={origin.current} />
-      ) : screen === 2 || screen === 3 ? (
-        <FolioDrill {...props} origin={origin.current} />
-      ) : (
-        <FolioFrame {...props} />
-      )}
+      <LessonAskContext.Provider value={askLesson}>
+        {screen === 6 || screen === 7 ? (
+          <FolioQuant key={screen} {...props} origin={origin.current} />
+        ) : screen === 2 || screen === 3 || screen === 14 ? (
+          <FolioDrill key={screen === 14 ? 'elf' : 'las'} {...props} origin={origin.current} />
+        ) : (
+          <FolioFrame {...props} asked={asked} />
+        )}
+      </LessonAskContext.Provider>
     </div>
   )
 }
 
-function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: DirectionProps) {
+function FolioFrame({
+  screen,
+  width,
+  theme,
+  live,
+  onScreen,
+  onTheme,
+  asked,
+}: DirectionProps & { asked: { current: string | null } }) {
   const { data, actions } = useDirectionData()
   // Screen 4 shows the frame's other state; screen 1 the default. The other
   // pages keep whatever fold the reader chose.
   const [collapsed, setCollapsed] = useState(screen === 4)
+  // Uppslag folds the contents to the thumb index for its spread, apart
+  // from the reader's own fold: ⌘B there unfolds it for the visit.
+  const [unfolded, setUnfolded] = useState(false)
   const [menu, setMenu] = useState(screen === 4)
   const [page, setPage] = useState<Page>(pageOf(screen))
   // Framsteg's own pages: the report, Historik, Fällor.
@@ -173,6 +206,12 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
   const [prov, setProv] = useState<ProvState>({ kind: 'hub', note: null })
   // The pass whose conditions slip is open over the hub.
   const [conditions, setConditions] = useState<string | null>(null)
+  // A place on Konto an account-slip row asked for.
+  const [kontoJump, setKontoJump] = useState<KontoJump | null>(null)
+  const jumps = useRef(0)
+  // The last page before Konto: Esc there goes back to it.
+  const before = useRef<Page>('idag')
+  if (page !== 'konto') before.current = page
   // A plan item that suggests a pass: its conditions open on arrival.
   const summons = useRef(false)
   // biome-ignore lint/correctness/useExhaustiveDependencies: follows the host's screen only
@@ -181,39 +220,53 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
     setPage(pageOf(screen))
     if (screen === 4) setCollapsed(true)
     else if (screen === 1) setCollapsed(false)
+    if (screen === 12) setUnfolded(false)
     if (screen !== 11) setSub('overview')
+    // A Konto place belongs to the visit it was asked for.
+    if (screen !== 13) setKontoJump(null)
     // Leaving screen 9 ends what it was showing: a pass handed in opens the
     // result, and the hub opens fresh next time.
     if (screen !== 9) {
       setProv({ kind: 'hub', note: null })
       setConditions(null)
     }
-    const asked = summons.current
+    const summoned = summons.current
     summons.current = false
-    if (screen === 9 && asked) setConditions(summonsOf(data.provpass.hub))
+    if (screen === 9 && summoned) setConditions(summonsOf(data.provpass.hub))
   }, [screen])
 
+  // Uppslag has read the lesson it was asked for: the request is spent.
+  useEffect(() => {
+    if (page === 'uppslag') asked.current = null
+  }, [page, asked])
+
+  const pageRef = useRef(page)
+  pageRef.current = page
+  const toggleRail = useCallback(() => {
+    if (pageRef.current === 'uppslag') setUnfolded((u) => !u)
+    else setCollapsed((c) => !c)
+  }, [])
   // ⌘B / Ctrl+B folds the sidebar, as in the live app.
   useEffect(() => {
     if (!live || width !== 'desktop') return
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'b') {
         e.preventDefault()
-        setCollapsed((c) => !c)
+        toggleRail()
       }
     }
     window.addEventListener('keydown', onKey, true)
     return () => window.removeEventListener('keydown', onKey, true)
-  }, [live, width])
+  }, [live, width, toggleRail])
 
-  // A destination is the host's to open; the pages Folio has built turn at
-  // once (Framsteg on the page asked for), the others wait for the host's
-  // card.
+  // A destination is the host's to open; Folio's pages turn at once
+  // (Framsteg on the page asked for).
   const go = useCallback(
     (d: Destination, to: FramstegSub = 'overview') => {
       setMenu(false)
-      if (d !== 'uppslag') setPage(d)
+      setPage(d)
       if (d === 'framsteg') setSub(to)
+      if (d === 'uppslag') setUnfolded(false)
       // Provpass from the contents opens the hub, past an ended pass's page.
       if (d === 'provpass') setProv((p) => (p.kind === 'ended' ? { kind: 'hub', note: null } : p))
       actions.go(d)
@@ -221,6 +274,18 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
     [actions],
   )
   const closeMenu = useCallback(() => setMenu(false), [])
+  // Konto from the account slip, at the place its row names.
+  const openKonto = useCallback(
+    (to: KontoPlace) => {
+      setMenu(false)
+      setPage('konto')
+      jumps.current += 1
+      setKontoJump({ to, n: jumps.current })
+      actions.openKonto()
+    },
+    [actions],
+  )
+  const leaveKonto = useCallback(() => go(CURRENT[before.current] ?? 'idag'), [go])
   const resume = useCallback(() => {
     actions.resume()
     onScreen(2)
@@ -228,9 +293,11 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
   const openItem = useCallback(
     (item: PlanItemView) => {
       if (item.kind === 'mock') summons.current = true
+      // A lesson row asks for its own entry: Uppslag says so until it opens.
+      if (item.kind === 'lesson' && item.framework) asked.current = item.framework
       actions.openPlanItem(item.id)
     },
-    [actions],
+    [actions, asked],
   )
   const startPass = useCallback(
     (passId: string) => {
@@ -303,6 +370,10 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
       />
     ) : page === 'framsteg' ? (
       <FolioFramsteg width={width} live={keys} sub={sub} onSub={setSub} onGo={go} />
+    ) : page === 'uppslag' ? (
+      <FolioUppslag width={width} live={keys} asked={asked.current} />
+    ) : page === 'konto' ? (
+      <FolioKonto width={width} live={keys} jump={kontoJump} onBack={leaveKonto} />
     ) : (
       <FolioHome
         width={width}
@@ -337,7 +408,7 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
               </span>
             </button>
           </header>
-          <main className="fo-pscroll" key={page}>
+          <main className="fo-pscroll" key={page} data-page={page}>
             <div className={live ? 'fo-enter' : undefined}>{content}</div>
           </main>
           {/* The tabs are words, as on the desktop contents list: a
@@ -364,19 +435,24 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
               </button>
             ))}
           </nav>
-          {menu ? <AccountSheet theme={theme} onTheme={onTheme} close={closeMenu} /> : null}
+          {menu ? (
+            <AccountSheet theme={theme} onTheme={onTheme} close={closeMenu} onKonto={openKonto} />
+          ) : null}
         </div>
         {slip}
       </>
     )
   }
 
+  // The rail's fold: Uppslag's own (folded for the spread unless the reader
+  // opened it there), elsewhere the reader's.
+  const folded = page === 'uppslag' ? !unfolded : collapsed
   return (
     <>
-      <div className="fo-app" data-collapsed={String(collapsed)} inert={slip ? true : undefined}>
+      <div className="fo-app" data-collapsed={String(folded)} inert={slip ? true : undefined}>
         <aside className="fo-side" aria-label="Huvudmeny">
           <div className="fo-side-head">
-            {collapsed ? (
+            {folded ? (
               <span className="fo-monogram" role="img" aria-label="HP-Coach">
                 HP
               </span>
@@ -387,12 +463,12 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
               type="button"
               className="fo-icon-btn fo-tip"
               data-testid="rd-collapse"
-              data-tip={collapsed ? 'Fäll ut  ⌘B' : 'Fäll ihop  ⌘B'}
-              aria-label={collapsed ? 'Fäll ut menyn' : 'Fäll ihop menyn'}
-              aria-expanded={!collapsed}
-              onClick={() => setCollapsed((c) => !c)}
+              data-tip={folded ? 'Fäll ut  ⌘B' : 'Fäll ihop  ⌘B'}
+              aria-label={folded ? 'Fäll ut menyn' : 'Fäll ihop menyn'}
+              aria-expanded={!folded}
+              onClick={toggleRail}
             >
-              {collapsed ? (
+              {folded ? (
                 <PanelLeftOpen size={18} strokeWidth={1.5} aria-hidden />
               ) : (
                 <PanelLeftClose size={18} strokeWidth={1.5} aria-hidden />
@@ -404,14 +480,14 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
               <button
                 type="button"
                 key={d.id}
-                className={`fo-nav-item${collapsed ? ' fo-tip' : ''}`}
+                className={`fo-nav-item${folded ? ' fo-tip' : ''}`}
                 data-testid={`rd-nav-${d.id}`}
-                data-tip={collapsed ? d.label : undefined}
+                data-tip={folded ? d.label : undefined}
                 aria-current={current === d.id ? 'page' : undefined}
-                aria-label={collapsed ? d.label : undefined}
+                aria-label={folded ? d.label : undefined}
                 onClick={() => go(d.id)}
               >
-                {collapsed ? (
+                {folded ? (
                   <span className="fo-thumb" aria-hidden>
                     {THUMB[d.id]}
                   </span>
@@ -436,11 +512,12 @@ function FolioFrame({ screen, width, theme, live, onScreen, onTheme }: Direction
               close={closeMenu}
               theme={theme}
               onTheme={onTheme}
-              tip={collapsed}
+              onKonto={openKonto}
+              tip={folded}
             />
           </div>
         </aside>
-        <main className="fo-main" key={page}>
+        <main className="fo-main" key={page} data-page={page}>
           <div className={live ? 'fo-enter' : undefined}>{content}</div>
         </main>
       </div>
@@ -465,6 +542,7 @@ function AccountPopover({
   close,
   theme,
   onTheme,
+  onKonto,
   tip,
 }: {
   open: boolean
@@ -472,6 +550,7 @@ function AccountPopover({
   close: () => void
   theme: ThemeKey
   onTheme: (t: ThemeKey) => void
+  onKonto: (to: KontoPlace) => void
   tip: boolean
 }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -494,7 +573,7 @@ function AccountPopover({
       </button>
       {open ? (
         <div className="fo-menu" id="fo-account-menu" data-anchor="side">
-          <AccountItems theme={theme} onTheme={onTheme} close={close} />
+          <AccountItems theme={theme} onTheme={onTheme} close={close} onKonto={onKonto} />
         </div>
       ) : null}
     </div>
@@ -506,10 +585,12 @@ function AccountSheet({
   theme,
   onTheme,
   close,
+  onKonto,
 }: {
   theme: ThemeKey
   onTheme: (t: ThemeKey) => void
   close: () => void
+  onKonto: (to: KontoPlace) => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
   useDismiss(true, close, ref)
@@ -517,7 +598,7 @@ function AccountSheet({
     <>
       <div className="fo-scrim" aria-hidden />
       <div className="fo-menu" id="fo-account-sheet" data-anchor="sheet" ref={ref}>
-        <AccountItems theme={theme} onTheme={onTheme} close={close} />
+        <AccountItems theme={theme} onTheme={onTheme} close={close} onKonto={onKonto} />
       </div>
     </>
   )
@@ -525,29 +606,22 @@ function AccountSheet({
 
 /** The account slip's content — a disclosure of plain buttons (no menu
  *  role: there is no arrow-key model to promise), set as words between
- *  hairlines like the contents list. Esc or a press outside closes it. */
+ *  hairlines like the contents list. Esc or a press outside closes it.
+ *  Konto, Inställningar and Hjälp each open the Konto page at their own
+ *  place; Tema is the two words production saves (light, dark). */
 function AccountItems({
   theme,
   onTheme,
   close,
+  onKonto,
 }: {
   theme: ThemeKey
   onTheme: (t: ThemeKey) => void
   close: () => void
+  onKonto: (to: KontoPlace) => void
 }) {
   const { data, actions } = useDirectionData()
   const identity = data.konto.identity
-  // "System" follows the device once; production saves light or dark only.
-  const [choice, setChoice] = useState<ThemeChoice>(theme)
-  const pick = (c: ThemeChoice) => {
-    setChoice(c)
-    if (c === 'system') {
-      const dark =
-        typeof window.matchMedia === 'function' &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-      onTheme(dark ? 'dark' : 'light')
-    } else onTheme(c)
-  }
   return (
     <div data-testid="rd-account-menu">
       <div className="fo-menu-head">
@@ -556,30 +630,35 @@ function AccountItems({
           {identity.plan ? `Inloggad · ${identity.plan}` : `Inloggad som ${identity.name}`}
         </span>
       </div>
-      <MenuItem label="Konto" hint="Namn, e-post, plan" onClick={close} />
-      <MenuItem label="Inställningar" hint="Provdatum och mål" onClick={close} />
+      <MenuItem label="Konto" hint="Namn och e-post" onClick={() => onKonto('top')} />
+      <MenuItem
+        label="Inställningar"
+        hint="Frågeurval, coach och tema"
+        onClick={() => onKonto('ovningen')}
+      />
       <div className="fo-theme">
         <span className="fo-theme-label" id="fo-theme-label">
           Tema
         </span>
         <fieldset className="fo-seg" aria-labelledby="fo-theme-label">
-          <button type="button" aria-pressed={choice === 'light'} onClick={() => pick('light')}>
+          <button type="button" aria-pressed={theme === 'light'} onClick={() => onTheme('light')}>
             Ljust
           </button>
           <button
             type="button"
-            aria-pressed={choice === 'dark'}
-            onClick={() => pick('dark')}
+            aria-pressed={theme === 'dark'}
+            onClick={() => onTheme('dark')}
             data-testid="rd-theme-toggle"
           >
             Mörkt
           </button>
-          <button type="button" aria-pressed={choice === 'system'} onClick={() => pick('system')}>
-            System
-          </button>
         </fieldset>
       </div>
-      <MenuItem label="Hjälp" hint="Kortkommandon, frågor" onClick={close} />
+      <MenuItem
+        label="Hjälp"
+        hint="Kortkommandon och länkar"
+        onClick={() => onKonto('kortkommandon')}
+      />
       <hr className="fo-menu-sep" />
       <MenuItem
         label="Logga ut"

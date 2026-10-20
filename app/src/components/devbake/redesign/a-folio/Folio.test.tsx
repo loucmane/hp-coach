@@ -15,7 +15,13 @@ import {
   type Selection,
 } from '@/components/devbake/redesign/Redesign2026Bakeoff'
 import type { AppScreenKey, DirectionProps, WidthKey } from '@/components/devbake/redesign/r1Kit'
-import type { DirectionActions, DirectionData } from '@/components/devbake/redesign/viewModel'
+import type {
+  DirectionActions,
+  DirectionData,
+  DrillQuestion,
+  LessonView,
+} from '@/components/devbake/redesign/viewModel'
+import type { LexiconEntry, ProtocolEntry, TrapEntry } from '@/data/frameworks'
 import { Folio } from './Folio'
 import { fmtPassScore } from './FolioProvpass'
 import { meta } from './meta'
@@ -141,8 +147,26 @@ describe('Folio · Idag on the data context', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Framsteg' })).toBeInTheDocument()
     fireEvent.click(screen.getByTestId('rd-nav-uppslag'))
     expect(go).toHaveBeenLastCalledWith('uppslag')
-    // Uppslag is the host's to show (its "Inte byggd än" card): no stub.
-    expect(screen.getByRole('heading', { level: 1, name: 'Framsteg' })).toBeInTheDocument()
+    // Uppslag opens on the open lesson's chapter: its title is the page's h1.
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Svensk läsförståelse' }),
+    ).toBeInTheDocument()
+    expect(screen.getByTestId('rd-nav-uppslag')).toHaveAttribute('aria-current', 'page')
+  })
+
+  it('offers a finished part of the plan as a plain row, and says when only the text is left', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    for (const item of data.home.plan.items) item.completed = true
+    const openPlanItem = vi.fn()
+    mount(1, { data, actions: { openPlanItem } })
+    expect(
+      screen.getByText('Idag: läs klart texten – resten av dagens plan är klar.'),
+    ).toBeInTheDocument()
+    const row = screen.getByText(data.home.plan.items[1].rationale).closest('.fo-plan-row')
+    expect(row?.tagName).toBe('DIV')
+    expect(row).toHaveTextContent('klar')
+    expect(screen.getAllByTestId('rd-resume')).toHaveLength(1)
+    expect(openPlanItem).not.toHaveBeenCalled()
   })
 })
 
@@ -1346,14 +1370,134 @@ describe('Folio · in the real bake-off', () => {
     ).toBeInTheDocument()
   })
 
-  it('keeps the arrows inside the reading drill’s pages from the switcher', async () => {
-    const onSelect = mountHost(2)
-    const passage = await screen.findByTestId('rd-passage', {}, { timeout: 5000 })
+  /** The real bake-off on one fixed selection: the switcher's answers are
+   *  recorded and never applied, so Folio stays on stage between keys. */
+  function stayHost(s: AppScreenKey, w: WidthKey = 'desktop') {
+    const onSelect = vi.fn()
+    render(
+      <Redesign2026Bakeoff
+        sel={{ d: 'a', s, w, t: 'light', sbs: false, bare: false }}
+        onSelect={onSelect}
+      />,
+    )
+    return onSelect
+  }
+
+  /** "3" and ←/→ from the element that has focus reach the switcher. */
+  function expectSwitcherKeys(onSelect: ReturnType<typeof vi.fn>, s: AppScreenKey) {
+    const from = document.activeElement ?? document.body
     onSelect.mockClear()
-    fireEvent.keyDown(passage, { key: 'ArrowRight' })
+    fireEvent.keyDown(from, { key: '3' })
+    expect(onSelect).toHaveBeenLastCalledWith({ d: 'c', sbs: false })
+    fireEvent.keyDown(from, { key: 'ArrowRight' })
+    expect(onSelect).toHaveBeenLastCalledWith({ s: s === 14 ? 1 : s + 1 })
+    fireEvent.keyDown(from, { key: 'ArrowLeft' })
+    expect(onSelect).toHaveBeenLastCalledWith({ s: s - 1 })
+  }
+
+  /** Focus `el` (or, for a region no key would ever be pressed on, leave
+   *  the key's target to it) and check the switcher's keys from there. */
+  function fromElement(el: HTMLElement, onSelect: ReturnType<typeof vi.fn>, s: AppScreenKey) {
+    if (el.tabIndex >= 0 || el.matches('button, input, [tabindex]')) {
+      el.focus()
+      expect(document.activeElement).toBe(el)
+      expectSwitcherKeys(onSelect, s)
+      return
+    }
+    onSelect.mockClear()
+    fireEvent.keyDown(el, { key: '3' })
+    expect(onSelect).toHaveBeenLastCalledWith({ d: 'c', sbs: false })
+    fireEvent.keyDown(el, { key: 'ArrowRight' })
+    expect(onSelect).toHaveBeenLastCalledWith({ s: s === 14 ? 1 : s + 1 })
+  }
+
+  it.each([
+    [2, 'desktop'],
+    [2, 'phone'],
+    [14, 'desktop'],
+    [14, 'phone'],
+  ] as const)('lets the switcher’s keys through from every part of reading drill %i on %s', async (s, w) => {
+    const onSelect = stayHost(s, w)
+    const testId = s === 14 ? 'rd-elf-passage' : 'rd-passage'
+    const passage = await screen.findByTestId(testId, {}, { timeout: 5000 })
+    // No page or scroll of the drill is a keyscope; only Folio's dialogs are.
+    expect(passage.closest('[data-rd-keyscope]')).toBeNull()
+    // From where focus is on entry, the passage, and an option.
+    expectSwitcherKeys(onSelect, s)
+    fromElement(passage, onSelect, s)
+    fromElement(passage.querySelector<HTMLElement>('.fo-para') as HTMLElement, onSelect, s)
+    const option = reveal('rd-option-A')
+    fromElement(option, onSelect, s)
+    expect(option.closest('[data-rd-keyscope]')).toBeNull()
+    // Svara: focus lands on the verdict, and the keys still get through.
+    fireEvent.click(screen.getByTestId('rd-option-A'))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    const verdict = screen.getByTestId('rd-verdict')
+    expect(document.activeElement).toBe(verdict)
+    expectSwitcherKeys(onSelect, s)
+    // The facit's controls: Nästa and a disclosure.
+    fromElement(screen.getByTestId('rd-next'), onSelect, s)
+    const more = document.querySelector<HTMLElement>('.fo-facit .fo-more')
+    if (more) fromElement(more, onSelect, s)
+  })
+
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('lets the switcher’s keys through from the Facit screen on %s, focus where it was', async (w) => {
+    const onSelect = stayHost(3, w)
+    const verdict = await screen.findByTestId('rd-verdict', {}, { timeout: 5000 })
+    // Opened graded by the switcher: no focus move on a mount.
+    expect(document.activeElement).not.toBe(verdict)
+    expectSwitcherKeys(onSelect, 3)
+    fromElement(verdict, onSelect, 3)
+    fromElement(screen.getByTestId('rd-next'), onSelect, 3)
+    fromElement(screen.getAllByTestId(/^rd-step-toggle-/)[0], onSelect, 3)
+  })
+
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('lets the switcher’s keys through from every part of Uppslag on %s', async (w) => {
+    const onSelect = stayHost(12, w)
+    await screen.findByTestId('rd-lesson', {}, { timeout: 5000 })
+    expect(document.querySelector('[data-rd-keyscope]')).toBeNull()
+    expectSwitcherKeys(onSelect, 12)
+    for (const id of [
+      'rd-uppslag-entry-LAS-TYPE-002',
+      'rd-lesson-read',
+      'rd-lesson-practice',
+      'rd-uppslag-section-nog',
+    ]) {
+      fromElement(screen.getByTestId(id), onSelect, 12)
+    }
+    fromElement(screen.getByTestId('rd-lesson'), onSelect, 12)
+  })
+
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('lets the switcher’s keys through on Konto on %s, and keeps them in its slip', async (w) => {
+    const onSelect = stayHost(13, w)
+    await screen.findByTestId('rd-konto-identity', {}, { timeout: 5000 })
+    expectSwitcherKeys(onSelect, 13)
+    for (const id of ['rd-konto-coach-kompis', 'rd-konto-mode-dark', 'rd-konto-export']) {
+      fromElement(screen.getByTestId(id), onSelect, 13)
+    }
+    const remove = screen.getByTestId('rd-konto-delete')
+    fromElement(remove, onSelect, 13)
+    fireEvent.click(remove)
+    const slip = screen.getByRole('dialog', { name: 'Radera konto' })
+    onSelect.mockClear()
+    for (const key of ['3', 'ArrowRight']) {
+      fireEvent.keyDown(within(slip).getByRole('button', { name: 'Avbryt' }), { key })
+      fireEvent.keyDown(within(slip).getByTestId('rd-konto-delete-word'), { key })
+    }
     expect(onSelect).not.toHaveBeenCalled()
-    fireEvent.keyDown(document.body, { key: 'ArrowRight' })
-    expect(onSelect).toHaveBeenLastCalledWith({ s: 3 })
+    fireEvent.click(within(slip).getByRole('button', { name: 'Avbryt' }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(document.activeElement).toBe(screen.getByTestId('rd-konto-delete'))
+    expectSwitcherKeys(onSelect, 13)
   })
 })
 
@@ -1749,5 +1893,652 @@ describe('Folio · Idag into Provpass and Framsteg', () => {
     expect(screen.getByRole('dialog', { name: 'Starta provpass' })).toHaveTextContent(
       'Hösten 2025, provpass 1',
     )
+  })
+})
+
+// ── Batch 3: Uppslag, Konto, ELF ─────────────────────────────────────
+
+const OPEN = FIXTURE_DATA.uppslag.open
+
+/** The fixture data with another lesson open (a test's own entry). */
+function withOpen(
+  open: Omit<LessonView, 'read' | 'practice'> & Partial<LessonView>,
+): DirectionData {
+  const data = structuredClone(FIXTURE_DATA)
+  data.uppslag.open = {
+    read: false,
+    practice: { questions: open.entry.example_questions.length },
+    ...open,
+  }
+  return data
+}
+
+/** A LÄS entry as the catalog holds one (test text). */
+function lasEntry(id: string, title: string): ProtocolEntry {
+  return {
+    id,
+    question_type: title,
+    attack_protocol: ['Läs frågan först.', 'Leta upp stället i texten.'],
+    common_distractors: [{ pattern: 'Rätt ord, fel ställe', why_it_traps: 'Det låter bekant.' }],
+    example_questions: ['host-2020-verb1-LÄS-001'],
+  }
+}
+
+/** Marks the LÄS chapter's entries read (all, or all but `except`). */
+function readLas(data: DirectionData, except?: string): void {
+  const las = data.uppslag.sections.find((s) => s.section === 'LÄS')
+  for (const e of las?.entries ?? []) e.read = e.id !== except
+  if (data.uppslag.open.section === 'LÄS') data.uppslag.open.read = data.uppslag.open.id !== except
+}
+
+describe('Folio · Uppslag & lektion', () => {
+  it('sets the spread: the chapter’s contents with the ribbon at the open entry, the chapters, the entry', () => {
+    mount(12)
+    const opener = screen
+      .getByRole('heading', { level: 1, name: 'Svensk läsförståelse' })
+      .closest('header') as HTMLElement
+    expect(opener).toHaveTextContent('Kapitel 2')
+    expect(within(opener).getByText('Åtta frågetyper med angreppsprotokoll')).toBeInTheDocument()
+    const toc = screen.getByRole('navigation', { name: 'Innehåll: Svensk läsförståelse' })
+    const open = within(toc).getByTestId(`rd-uppslag-entry-${OPEN.id}`)
+    expect(open).toHaveAttribute('aria-current', 'page')
+    expect(open.querySelector('.fo-ribbon')).not.toBeNull()
+    expect(toc.querySelectorAll('.fo-ribbon')).toHaveLength(1)
+    // Read entries say so; the open one its reading time; never a raw id.
+    expect(within(toc).getByTestId('rd-uppslag-entry-LAS-TYPE-001')).toHaveAccessibleName(
+      'Direkt detalj, läst',
+    )
+    expect(open).toHaveAccessibleName(/^Författarens hållning, \d+ min$/)
+    expect(screen.getByTestId('rd-folio')).not.toHaveTextContent(/LAS-TYPE|TYPE 0/)
+    // The entry: its protocol, its traps, where its questions come from.
+    const lesson = screen.getByTestId('rd-lesson')
+    expect(within(lesson).getByRole('heading', { level: 2 })).toHaveTextContent(OPEN.title)
+    const steps = within(lesson).getAllByRole('listitem')
+    expect(steps).toHaveLength(5)
+    expect(within(lesson).getByRole('heading', { name: 'Vanliga fällor' })).toBeInTheDocument()
+    expect(
+      within(lesson).getByText('Tio frågor ur riktiga prov, från hösten 2013 till våren 2025.'),
+    ).toBeInTheDocument()
+    expect(screen.getByText('Frågetyp 3 av 8')).toBeInTheDocument()
+    // The book's chapters, the LÄS one current, each with what is read.
+    expect(screen.getByTestId('rd-uppslag-section-las')).toHaveAttribute('aria-current', 'true')
+    expect(screen.getByTestId('rd-uppslag-section-las')).toHaveAccessibleName(
+      'LÄS, Svensk läsförståelse, 2 av 8 lästa',
+    )
+    // One filled button on the page.
+    expect(document.querySelectorAll('.fo-btn')).toHaveLength(1)
+  })
+
+  it('asks the host for another entry and says plainly that the open one stays until it comes', () => {
+    const openLesson = vi.fn()
+    const { supply } = mount(12, { actions: { openLesson } })
+    fireEvent.click(screen.getByTestId('rd-uppslag-entry-LAS-TYPE-002'))
+    expect(openLesson).toHaveBeenCalledWith('LAS-TYPE-002')
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'Lektion begärd. Den öppna texten ligger kvar tills den nya har laddats.',
+    )
+    expect(screen.getByTestId('rd-uppslag-entry-LAS-TYPE-002')).toHaveTextContent('begärd')
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(OPEN.title)
+    // The host opens it: the notice goes, the ribbon and the page follow.
+    supply(
+      withOpen({
+        id: 'LAS-TYPE-002',
+        section: 'LÄS',
+        family: 'las_taxonomy',
+        title: 'Slutsatsdragning / implikation',
+        entry: lasEntry('LAS-TYPE-002', 'Slutsatsdragning / implikation'),
+      }),
+    )
+    expect(screen.queryByText(/Lektion begärd/)).toBeNull()
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent('Slutsatsdragning / implikation')
+    expect(screen.getByTestId('rd-uppslag-entry-LAS-TYPE-002')).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+    expect(screen.getByText('Frågetyp 2 av 8')).toBeInTheDocument()
+  })
+
+  it('marks read and asks for the next unread entry; J and K step, ↵ presses the button', () => {
+    const toggleLessonRead = vi.fn()
+    const openLesson = vi.fn()
+    mount(12, { actions: { toggleLessonRead, openLesson } })
+    fireEvent.click(screen.getByRole('button', { name: /^Läst – nästa frågetyp/ }))
+    expect(toggleLessonRead).toHaveBeenCalledWith(OPEN.id)
+    // 1 and 4 are read: the next unread one after 3 is 5.
+    expect(openLesson).toHaveBeenLastCalledWith('LAS-TYPE-005')
+    press('j')
+    expect(openLesson).toHaveBeenLastCalledWith('LAS-TYPE-006')
+    press('k')
+    press('k')
+    expect(openLesson).toHaveBeenLastCalledWith('LAS-TYPE-004')
+    // Back on the open entry: nothing to ask for, the notice goes.
+    press('k')
+    expect(openLesson).toHaveBeenCalledTimes(4)
+    expect(screen.queryByText(/Lektion begärd/)).toBeNull()
+    press('Enter')
+    expect(toggleLessonRead).toHaveBeenCalledTimes(2)
+  })
+
+  it('reads the toggle from the data, and Ångra undoes it', () => {
+    const toggleLessonRead = vi.fn()
+    const data = structuredClone(FIXTURE_DATA)
+    data.uppslag.open.read = true
+    mount(12, { data, actions: { toggleLessonRead } })
+    const read = screen.getByTestId('rd-lesson-read')
+    expect(read).toHaveAttribute('aria-pressed', 'true')
+    expect(read).toHaveTextContent('LästÅngra')
+    fireEvent.click(read)
+    expect(toggleLessonRead).toHaveBeenCalledWith(OPEN.id)
+    // Read already: the button moves on without marking.
+    expect(screen.getByRole('button', { name: /^Nästa frågetyp/ })).toBeInTheDocument()
+  })
+
+  it('ends the chapter only once the data says every entry is read', () => {
+    const toggleLessonRead = vi.fn()
+    const startDrill = vi.fn()
+    const data = structuredClone(FIXTURE_DATA)
+    readLas(data, OPEN.id)
+    const { supply } = mount(12, { data, actions: { toggleLessonRead, startDrill } })
+    fireEvent.click(screen.getByRole('button', { name: /^Läst – slutför kapitlet/ }))
+    expect(toggleLessonRead).toHaveBeenCalledWith(OPEN.id)
+    // Not confirmed yet: no colophon.
+    expect(screen.queryByText('Kapitlet är läst.')).toBeNull()
+    const confirmed = structuredClone(data)
+    readLas(confirmed)
+    supply(confirmed)
+    expect(screen.getByRole('heading', { name: /Kapitlet är läst\./ })).toBeInTheDocument()
+    // Its one action replaces the head's: the chapter's practice, once.
+    expect(screen.getAllByRole('button', { name: /^Öva hela LÄS/ })).toHaveLength(1)
+    press('Enter')
+    expect(startDrill).toHaveBeenLastCalledWith({ kind: 'section', section: 'LÄS' })
+    fireEvent.click(screen.getByRole('button', { name: 'Tillbaka till sidan' }))
+    expect(screen.getByTestId('rd-lesson')).toBeInTheDocument()
+    // Later visits close the contents with the colophon's line.
+    expect(screen.getByText(/Kapitlet är läst\./)).toHaveClass('fo-up-ended')
+  })
+
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('offers practice only when the entry has questions to play (%s)', (width) => {
+    const data = structuredClone(FIXTURE_DATA)
+    data.uppslag.open = {
+      ...data.uppslag.open,
+      entry: { ...OPEN.entry, example_questions: [] },
+      practice: { questions: 0 },
+    }
+    const startDrill = vi.fn()
+    mount(12, { data, width, actions: { startDrill } })
+    expect(screen.queryByTestId('rd-lesson-practice')).toBeNull()
+    expect(screen.queryByRole('heading', { name: 'Exempelfrågor' })).toBeNull()
+    const whole = screen.getAllByRole('button', { name: /^Öva hela LÄS/ })
+    expect(whole.length).toBeGreaterThan(0)
+    fireEvent.click(whole[whole.length - 1])
+    expect(startDrill).toHaveBeenLastCalledWith({ kind: 'section', section: 'LÄS' })
+  })
+
+  it('sets a trap with its countermeasure as the one ruled note, and a word root at the largest size', () => {
+    const trap: TrapEntry = {
+      id: 'NOG-TRAP-001',
+      pattern_description: 'Studenten ser ett värde i (1) och slutar läsa.',
+      why_it_occurs: 'Det första som räcker känns som svaret.',
+      common_distractor_signature: 'A, fast (2) behövs.',
+      countermeasure: 'Pröva påståendena var för sig och sedan tillsammans.',
+      example_questions: [],
+      tldr: 'Ett värde i (1) är inte samma sak som tillräcklig information.',
+      worked_example: {
+        setup: 'x och y är heltal.',
+        trap_thinking: '(1) ger x, alltså räcker det.',
+        correct_thinking: 'y är fortfarande okänd.',
+        answer: 'C',
+      },
+    }
+    const { unmount } = mount(12, {
+      data: withOpen({
+        id: trap.id,
+        section: 'NOG',
+        family: 'nog_traps',
+        title: trap.pattern_description,
+        entry: trap,
+      }),
+    })
+    const lesson = screen.getByTestId('rd-lesson')
+    expect(within(lesson).getByRole('heading', { level: 2 })).toHaveTextContent(trap.tldr ?? '')
+    expect(within(lesson).getByRole('region', { name: 'Motåtgärd' })).toHaveTextContent(
+      trap.countermeasure,
+    )
+    expect(within(lesson).getByText('Fällans tanke')).toBeInTheDocument()
+    expect(within(lesson).getByText(/Det typiska felsvaret/)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^Läst – nästa fälla/ })).toBeInTheDocument()
+    expect(screen.getByText('Fälla 1 av 25')).toBeInTheDocument()
+    unmount()
+    const root: LexiconEntry = {
+      id: 'ORD-ROOT-001',
+      root: 'för-',
+      origin: 'Germanic',
+      meaning: 'framför, före, bort eller förändring',
+      example_words: ['förklara', 'förändra'],
+      example_questions: ['host-2019-verb1-ORD-001'],
+    }
+    mount(12, {
+      data: withOpen({
+        id: root.id,
+        section: 'ORD',
+        family: 'ord_roots',
+        title: root.root,
+        entry: root,
+      }),
+    })
+    const word = screen.getByRole('heading', { level: 2, name: 'för-' })
+    expect(word).toHaveClass('fo-up-root')
+    expect(screen.getByText('germanskt')).toBeInTheDocument()
+    expect(screen.getByText('förklara')).toBeInTheDocument()
+    expect(screen.getByTestId('rd-lesson-practice')).toHaveTextContent('Öva ord med denna rot')
+  })
+
+  it('says plainly that there is nothing here yet when no catalog has come', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    data.uppslag.sections = []
+    mount(12, { data })
+    expect(screen.getByRole('heading', { level: 1, name: 'Läs först.' })).toBeInTheDocument()
+    expect(screen.getByText('Inget innehåll här ännu.')).toBeInTheDocument()
+  })
+
+  it('turns the verso to another chapter from the chapter list, the open entry kept', () => {
+    mount(12)
+    fireEvent.click(screen.getByTestId('rd-uppslag-section-nog'))
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Kvantitativa resonemang' }),
+    ).toBeInTheDocument()
+    expect(screen.getByTestId('rd-uppslag-entry-NOG-TRAP-001')).toBeInTheDocument()
+    expect(screen.getByTestId('rd-uppslag-section-nog')).toHaveAttribute('aria-current', 'true')
+    expect(screen.getByTestId('rd-lesson')).toHaveTextContent(OPEN.title)
+    expect(screen.getByText('Uppslag · NOG')).toBeInTheDocument()
+  })
+
+  it('folds the contents to the thumb index for the spread, and ⌘B opens them there only', () => {
+    mount(1)
+    const app = () => document.querySelector('.fo-app')
+    expect(app()).toHaveAttribute('data-collapsed', 'false')
+    fireEvent.click(screen.getByTestId('rd-nav-uppslag'))
+    expect(app()).toHaveAttribute('data-collapsed', 'true')
+    press('b', { ctrlKey: true })
+    expect(app()).toHaveAttribute('data-collapsed', 'false')
+    fireEvent.click(screen.getByTestId('rd-nav-framsteg'))
+    expect(app()).toHaveAttribute('data-collapsed', 'false')
+    fireEvent.click(screen.getByTestId('rd-nav-uppslag'))
+    expect(app()).toHaveAttribute('data-collapsed', 'true')
+  })
+
+  it('names a lesson asked for from Idag’s plan while the open one stays', () => {
+    const openPlanItem = vi.fn()
+    const { goTo } = mount(1, { actions: { openPlanItem } })
+    const item = FIXTURE_DATA.home.plan.items.find((i) => i.kind === 'lesson')
+    if (!item?.framework) throw new Error('the fixture plan has no lesson')
+    const row = screen.getByText(item.rationale).closest('button')
+    if (!row) throw new Error('the lesson row is not a button')
+    fireEvent.click(row)
+    expect(openPlanItem).toHaveBeenCalledWith(item.id)
+    goTo(12)
+    expect(screen.getByRole('status')).toHaveTextContent(/^Lektion begärd\./)
+    expect(screen.getByTestId(`rd-uppslag-entry-${item.framework}`)).toHaveTextContent('begärd')
+    // Asked once: a later visit opens plainly.
+    goTo(1)
+    goTo(12)
+    expect(screen.queryByText(/Lektion begärd/)).toBeNull()
+  })
+
+  it('looks up the facit’s pattern in Uppslag from a drill', () => {
+    const openLesson = vi.fn()
+    const { goTo } = mount(14, { actions: { openLesson } })
+    fireEvent.click(screen.getByTestId('rd-option-A'))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(screen.getByText('Direkt detaljhämtning')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /^Slå upp/ }))
+    expect(openLesson).toHaveBeenCalledWith('ELF-TYPE-001')
+    goTo(12)
+    expect(screen.getByRole('status')).toHaveTextContent(/^Lektion begärd\./)
+    expect(screen.getByTestId('rd-uppslag-entry-ELF-TYPE-001')).toHaveTextContent('begärd')
+  })
+})
+
+describe('Folio · Konto & inställningar', () => {
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('sets the imprint page: six sections, its index, the shortcuts, no filled button (%s)', (width) => {
+    mount(13, { width })
+    expect(screen.getByRole('heading', { level: 1, name: 'Ditt konto.' })).toBeInTheDocument()
+    for (const title of ['Du', 'Provet', 'Övningen', 'Utseende', 'Din data', 'Hjälp']) {
+      expect(screen.getByRole('heading', { level: 2, name: title })).toBeInTheDocument()
+    }
+    expect(screen.getByRole('navigation', { name: 'På den här sidan' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Kortkommandon' })).toBeInTheDocument()
+    expect(document.querySelector('.fo-kt .fo-btn')).toBeNull()
+    // Konto is no destination: nothing in the contents is current.
+    for (const nav of screen.getAllByTestId(/^rd-nav-/)) {
+      expect(nav).not.toHaveAttribute('aria-current')
+    }
+    // Left out by the spec (meta.omits): no palette, font or density rows.
+    expect(screen.queryByTestId(/^rd-konto-(palette|font|density)-/)).toBeNull()
+    expect(screen.getByTestId('rd-konto-identity')).toHaveTextContent(
+      FIXTURE_DATA.konto.identity.email,
+    )
+    // On arrival the page keeps its focus and its top.
+    expect(document.activeElement).toBe(document.body)
+  })
+
+  it('sends each choice as its own patch, the theme through setTheme, and says a failed save', () => {
+    const setPrefs = vi.fn()
+    const setTheme = vi.fn()
+    const { unmount } = mount(13, { actions: { setPrefs, setTheme } })
+    fireEvent.click(screen.getByRole('button', { name: 'Slumpat' }))
+    expect(setPrefs).toHaveBeenLastCalledWith({ smartDrill: false })
+    fireEvent.click(screen.getByTestId('rd-konto-coach-kompis'))
+    expect(setPrefs).toHaveBeenLastCalledWith({ coach: 'kompis' })
+    fireEvent.click(screen.getByTestId('rd-konto-mode-dark'))
+    expect(setTheme).toHaveBeenLastCalledWith('dark')
+    // The chosen voice's description is shown and read with the choice.
+    const coach = screen.getByRole('group', { name: 'Coach' })
+    expect(coach).toHaveAccessibleDescription(
+      FIXTURE_DATA.konto.options.coach.find((o) => o.key === 'taktiker')?.blurb ?? '',
+    )
+    unmount()
+    const failing = vi.fn(() => {
+      throw new Error('offline')
+    })
+    mount(13, { actions: { setPrefs: failing } })
+    fireEvent.click(screen.getByTestId('rd-konto-coach-kompis'))
+    expect(screen.getByText('Det gick inte att spara – försök igen.')).toBeInTheDocument()
+    expect(screen.getByTestId('rd-konto-coach-taktiker')).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('opens at the place each account-slip row names, and Esc goes back to the page before', () => {
+    const openKonto = vi.fn()
+    const go = vi.fn()
+    mount(5, { actions: { openKonto, go } })
+    const row = (name: RegExp) => {
+      fireEvent.click(screen.getByTestId('rd-account'))
+      const menu = screen.getByTestId('rd-account-menu')
+      return within(menu).getByRole('button', { name })
+    }
+    fireEvent.click(screen.getByTestId('rd-account'))
+    // Tema is the two words production saves.
+    expect(within(screen.getByTestId('rd-account-menu')).queryByText('System')).toBeNull()
+    fireEvent.click(screen.getByTestId('rd-account'))
+    fireEvent.click(row(/^Inställningar/))
+    expect(openKonto).toHaveBeenCalledTimes(1)
+    expect(document.activeElement).toBe(screen.getByRole('heading', { name: 'Övningen' }))
+    fireEvent.click(row(/^Hjälp/))
+    expect(document.activeElement).toBe(screen.getByRole('heading', { name: 'Kortkommandon' }))
+    fireEvent.click(row(/^Konto/))
+    expect(document.activeElement).toBe(screen.getByRole('heading', { level: 1 }))
+    expect(openKonto).toHaveBeenCalledTimes(3)
+    press('Escape')
+    expect(go).toHaveBeenLastCalledWith('ova')
+    expect(screen.getByRole('heading', { level: 1, name: 'Vad tränar vi?' })).toBeInTheDocument()
+  })
+
+  it('asks for the typed word on a slip; ↵ never presses the act; it is sent once, as a preview', () => {
+    const deleteAccount = vi.fn()
+    const go = vi.fn()
+    mount(13, { actions: { deleteAccount, go } })
+    const remove = screen.getByTestId('rd-konto-delete')
+    remove.focus()
+    fireEvent.click(remove)
+    const slip = screen.getByRole('dialog', { name: 'Radera konto' })
+    expect(slip.tagName).toBe('DIALOG')
+    expect(slip).toHaveTextContent('Förhandsvisning')
+    const word = within(slip).getByTestId('rd-konto-delete-word')
+    expect(document.activeElement).toBe(word)
+    const act = within(slip).getByTestId('rd-konto-delete-confirm')
+    expect(act).toHaveAttribute('aria-disabled', 'true')
+    expect(act).toHaveAccessibleDescription('Skriv ”radera” för att aktivera knappen.')
+    // Case and the spaces around it do not matter.
+    fireEvent.change(word, { target: { value: ' Radera ' } })
+    expect(act).toHaveAttribute('aria-disabled', 'false')
+    expect(fireEvent.keyDown(act, { key: 'Enter' })).toBe(false)
+    expect(deleteAccount).not.toHaveBeenCalled()
+    // The page's Esc rests while the slip is open.
+    press('Escape')
+    expect(go).not.toHaveBeenCalled()
+    fireEvent.click(act)
+    fireEvent.click(act)
+    expect(deleteAccount).toHaveBeenCalledTimes(1)
+    expect(within(slip).getByRole('status')).toHaveTextContent(
+      'Begäran om radering är skickad. I förhandsvisningen raderas ingenting.',
+    )
+    expect(screen.queryByText(/Kontot är raderat/)).toBeNull()
+    // Esc (the dialog's cancel) closes it and gives focus back.
+    fireEvent(slip, new Event('cancel', { cancelable: true }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(document.activeElement).toBe(screen.getByTestId('rd-konto-delete'))
+  })
+
+  it('says a refused deletion and a failed export plainly, and lets them be tried again', () => {
+    const deleteAccount = vi.fn(() => {
+      throw new Error('nope')
+    })
+    const exportData = vi.fn(() => {
+      throw new Error('nope')
+    })
+    mount(13, { actions: { deleteAccount, exportData } })
+    fireEvent.click(screen.getByTestId('rd-konto-export'))
+    expect(
+      screen.getByText(/^Kunde inte exportera just nu\. Försök igen om en stund\./),
+    ).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Försök igen' }))
+    expect(exportData).toHaveBeenCalledTimes(2)
+    fireEvent.click(screen.getByTestId('rd-konto-delete'))
+    const slip = screen.getByRole('dialog', { name: 'Radera konto' })
+    fireEvent.change(within(slip).getByTestId('rd-konto-delete-word'), {
+      target: { value: 'radera' },
+    })
+    fireEvent.click(within(slip).getByTestId('rd-konto-delete-confirm'))
+    expect(within(slip).getByRole('status')).toHaveTextContent(
+      'Kunde inte radera kontot. Inget raderades – försök igen.',
+    )
+    fireEvent.click(within(slip).getByTestId('rd-konto-delete-confirm'))
+    expect(deleteAccount).toHaveBeenCalledTimes(2)
+  })
+
+  it('says an export as asked for, never as done', () => {
+    const exportData = vi.fn()
+    mount(13, { actions: { exportData } })
+    fireEvent.click(screen.getByTestId('rd-konto-export'))
+    expect(exportData).toHaveBeenCalledTimes(1)
+    expect(screen.getByText('Exporten är begärd.')).toBeInTheDocument()
+  })
+})
+
+/** An ELF sitting of a gap text: two gaps, each a question (test text). */
+function gapData(): DirectionData {
+  const data = structuredClone(FIXTURE_DATA)
+  const elf = data.drills.elf
+  const base = elf.questions[0]
+  const passage = {
+    paragraphs: [
+      'The kettle sits on the counter, and by nine o’clock it has become a small parliament: each colleague who passes adds a remark, though nobody quite takes ___(1)___ for the descaling.',
+      'A rota on the fridge is meant to ___(2)___ the matter.',
+    ],
+    byline: null,
+    title: 'Test Gaps',
+    lang: 'en' as const,
+    synthetic: true,
+    unitId: 'elf-test-gaps',
+  }
+  const gap = (n: number, words: string[]): DrillQuestion => ({
+    ...base,
+    qid: `elf-test-gaps-${n}`,
+    number: n,
+    prompt: `Gap (${n})`,
+    passage,
+    options: words.map((text, i) => ({ letter: (['A', 'B', 'C', 'D'] as const)[i], text })),
+    answer: 'A',
+  })
+  data.drills.elf = {
+    ...elf,
+    id: 'elf-gaps',
+    questions: [
+      gap(1, ['charge', 'credit', 'notice', 'turns']),
+      gap(2, ['settle', 'cover', 'carry', 'mind']),
+    ],
+    explanations: {},
+    start: { index: 0, results: [] },
+  }
+  return data
+}
+
+describe('Folio · ELF-läsfråga', () => {
+  const Q = FIXTURE_DATA.drills.elf.questions[0]
+
+  it('marks only the English content lang="en"; the chrome stays Swedish, inside the article too', () => {
+    mount(14)
+    const passage = screen.getByTestId('rd-elf-passage')
+    expect(passage.closest('article')).toHaveAttribute('lang', 'en')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Counting Pots from the Pavement',
+    )
+    expect(screen.getByTestId('rd-note-toggle').closest('[lang]')).toHaveAttribute('lang', 'sv')
+    expect(screen.getByTestId('rd-note')).toHaveAttribute('lang', 'sv')
+    expect(screen.getByTestId('rd-badge').closest('[lang]')).toHaveAttribute('lang', 'sv')
+    expect(passage.querySelector('.fo-pnum')).toHaveAttribute('lang', 'sv')
+    expect(screen.getByRole('heading', { level: 2, name: Q.prompt ?? '' })).toHaveAttribute(
+      'lang',
+      'en',
+    )
+    const option = screen.getByTestId('rd-option-A')
+    expect(
+      within(option)
+        .getByText(Q.options?.[0].text ?? '')
+        .closest('[lang]'),
+    ).toHaveAttribute('lang', 'en')
+    expect(within(option).getByText(/Alternativ A/)).toHaveAttribute('lang', 'sv')
+    expect(screen.getByTestId('rd-eliminate-A')).toHaveAttribute('lang', 'sv')
+    // The facit: Swedish heads over English bodies, and no ¶ links.
+    fireEvent.click(option)
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    expect(screen.getByTestId('rd-verdict').closest('[lang]')).toHaveAttribute('lang', 'sv')
+    const head = screen.getByRole('heading', { name: 'Lösningen' })
+    expect(head.closest('[lang]')).toHaveAttribute('lang', 'sv')
+    expect(head.nextElementSibling).toHaveAttribute('lang', 'en')
+    expect(screen.getByText('Understand the question').closest('[lang]')).toHaveAttribute(
+      'lang',
+      'en',
+    )
+    expect(screen.getByTestId('rd-technique').querySelector('p')).toHaveAttribute('lang', 'en')
+    expect(screen.queryAllByTestId(/^rd-cite-/)).toHaveLength(0)
+    expect(passage.querySelector('mark')).toBeNull()
+  })
+
+  it.each([
+    'desktop',
+    'phone',
+  ] as const)('answers on a–d and ↵, moves focus to the verdict, then to the colophon (%s)', (width) => {
+    const lock = vi.fn(() => ({ correct: true }))
+    const exit = vi.fn()
+    const go = vi.fn()
+    const { onScreen } = mount(14, { width, actions: { go, drill: { lock, exit } } })
+    reveal('rd-option-A')
+    press('a')
+    expect(screen.getByTestId('rd-option-A')).toHaveAttribute('aria-pressed', 'true')
+    // Esc never leaves the text.
+    press('Escape')
+    expect(exit).not.toHaveBeenCalled()
+    press('Enter')
+    expect(lock).toHaveBeenCalledWith(expect.objectContaining({ qid: Q.qid }), 'A')
+    expect(document.activeElement).toBe(screen.getByTestId('rd-verdict'))
+    // No switcher move: ELF asks only through its controller.
+    expect(onScreen).not.toHaveBeenCalled()
+    press('Enter')
+    const title = screen.getByRole('heading', { name: /Counting Pots from the Pavement/ })
+    expect(title).toHaveAttribute('lang', 'en')
+    expect(document.activeElement).toBe(title)
+    expect(screen.getByTestId('rd-done')).toHaveTextContent('1 fråga · 1 rätt')
+    // "Till Idag" goes to Idag, the page its label names.
+    fireEvent.click(screen.getByRole('button', { name: 'Till Idag' }))
+    expect(go).toHaveBeenLastCalledWith('idag')
+    expect(exit).not.toHaveBeenCalled()
+    expect(onScreen).not.toHaveBeenCalled()
+  })
+
+  it('leaves mid-text through Avsluta and the controller alone, for where the reader came from', () => {
+    const exit = vi.fn()
+    const { goTo, onScreen } = mount(12, {
+      actions: { drill: { lock: () => ({ correct: true }), exit } },
+    })
+    goTo(14)
+    fireEvent.click(screen.getByTestId('rd-exit'))
+    expect(exit).toHaveBeenCalledTimes(1)
+    expect(onScreen).not.toHaveBeenCalled()
+    // The colophon names the page the text was opened from.
+    goTo(12)
+    goTo(14)
+    fireEvent.click(screen.getByTestId('rd-option-A'))
+    fireEvent.click(screen.getByTestId('rd-lock'))
+    fireEvent.click(screen.getByTestId('rd-next'))
+    expect(screen.getByRole('button', { name: 'Till Uppslag' })).toBeInTheDocument()
+  })
+
+  it('opens a sitting the host cuts short at its start, never past its end', () => {
+    const data = structuredClone(FIXTURE_DATA)
+    const [q] = data.drills.elf.questions
+    data.drills.elf.questions = [1, 2, 3].map((n) => ({ ...q, qid: `${q.qid}-${n}`, number: n }))
+    const { supply } = mount(14, { data })
+    for (let n = 0; n < 2; n++) {
+      fireEvent.click(screen.getByTestId('rd-option-A'))
+      fireEvent.click(screen.getByTestId('rd-lock'))
+      fireEvent.click(screen.getByTestId('rd-next'))
+    }
+    expect(screen.getByText('Fråga 3 av 3')).toBeInTheDocument()
+    const cut = structuredClone(data)
+    cut.drills.elf.questions = cut.drills.elf.questions.slice(0, 1)
+    supply(cut)
+    expect(screen.getByText('Fråga 1 av 1')).toBeInTheDocument()
+  })
+
+  it('sets a gap text’s gaps as blanks, pencils the chosen word in, then grades it in ink', () => {
+    mount(14, { data: gapData() })
+    const passage = screen.getByTestId('rd-elf-passage')
+    const marks = () => passage.querySelectorAll<HTMLElement>('.fo-gapmark')
+    expect(marks()).toHaveLength(2)
+    expect(marks()[0]).toHaveAttribute('data-state', 'current')
+    expect(marks()[1]).toHaveAttribute('data-state', 'blank')
+    expect(within(marks()[0]).getByText('lucka 1, tom')).toHaveAttribute('lang', 'sv')
+    expect(passage).not.toHaveTextContent('___')
+    // The recto names the gap in Swedish and quotes its sentence in English.
+    const slot = screen.getByRole('heading', { level: 2, name: 'Lucka 1' })
+    expect(slot.closest('[lang]')).toHaveAttribute('lang', 'sv')
+    const quote = document.querySelector('.fo-gapquote')
+    expect(quote).toHaveAttribute('lang', 'en')
+    expect(quote).toHaveTextContent(/^“… though nobody quite takes/)
+    expect(quote).toHaveTextContent(/for the descaling\.”$/)
+    press('a')
+    expect(within(marks()[0]).getByText('lucka 1: charge')).toBeInTheDocument()
+    expect(marks()[0]).toHaveAttribute('data-filled', 'true')
+    expect(quote).toHaveTextContent('charge')
+    press('Enter')
+    expect(marks()[0]).toHaveAttribute('data-state', 'right')
+    press('Enter')
+    expect(marks()[1]).toHaveAttribute('data-state', 'current')
+    expect(marks()[0]).toHaveAttribute('data-state', 'right')
+    press('b')
+    press('Enter')
+    expect(marks()[1]).toHaveAttribute('data-state', 'wrong')
+    expect(
+      within(marks()[1]).getByText('lucka 2: ditt ord cover, rätt ord settle'),
+    ).toBeInTheDocument()
+    expect(marks()[1].querySelector('s')).toHaveTextContent('cover')
+  })
+
+  it('holds the gap and its sentence in the phone slip’s peek', () => {
+    mount(14, { data: gapData(), width: 'phone' })
+    const sheet = screen.getByTestId('rd-sheet')
+    expect(sheet).toHaveAttribute('data-state', 'peek')
+    expect(within(sheet).getByRole('heading', { level: 2, name: 'Lucka 1' })).toBeInTheDocument()
+    expect(sheet.querySelector('.fo-gapquote')).toHaveTextContent('though nobody quite takes')
+    expect(
+      within(sheet).getByRole('button', { name: /Visa de fyra alternativen/ }),
+    ).toBeInTheDocument()
   })
 })

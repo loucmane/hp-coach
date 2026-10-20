@@ -5144,6 +5144,866 @@ button.fo-ledger-row:hover .fo-ledger-kind {
   margin-top: var(--fo-s1);
 }
 
+/* ── Uppslag: the lesson spread ──────────────────────────────────── */
+/* Inside the frame: the spread fills the page beside the thumb index, each
+ * page its own scroll, as the reading drill's. */
+
+.fo-main[data-page='uppslag'] {
+  overflow: hidden;
+}
+
+.fo-main[data-page='uppslag'] > div,
+.fo-up-spread {
+  height: 100%;
+}
+
+/* The verso's label starts where its text does. */
+.fo-runhead--up {
+  grid-template-columns: 1fr auto auto;
+  padding-left: 56px;
+}
+
+.fo-runhead--recto.fo-runhead--up {
+  grid-template-columns: 1fr auto;
+  padding-left: 44px;
+}
+
+/* The verso: the chapter opener, its contents, the book's chapters. */
+.fo-up-verso {
+  max-width: calc(34em + 104px);
+  margin: 0 auto;
+  padding: var(--fo-s6) var(--fo-s12) var(--fo-s16) 56px;
+}
+
+.fo-up-chapter {
+  padding-bottom: var(--fo-s6);
+}
+
+.fo-up-chapter .fo-label {
+  display: block;
+  margin-bottom: var(--fo-s3);
+}
+
+.fo-up-chapter-title {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t32);
+  line-height: 1.12;
+  font-weight: 440;
+  letter-spacing: -0.016em;
+  text-wrap: balance;
+}
+
+.fo-up-chapter-sub {
+  margin-top: 6px;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t19);
+  line-height: 1.35;
+  font-style: italic;
+  color: var(--fo-ink-2);
+  text-wrap: balance;
+}
+
+.fo-up-toc-h {
+  padding-bottom: var(--fo-s3);
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-up-toc {
+  margin-top: var(--fo-s4);
+}
+
+/* A contents entry: its number, its title, leader dots to its page number
+ * ("läst", minutes, "begärd"). The open one carries the ribbon. */
+.fo-up-entry {
+  position: relative;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: var(--fo-s3);
+  width: 100%;
+  min-height: 44px;
+  padding: var(--fo-s3) 0;
+  border: 0;
+  border-bottom: 1px solid var(--fo-rule);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fo-up-entry .fo-plan-n {
+  font-size: var(--fo-t19);
+}
+
+.fo-up-entry-line {
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.fo-up-entry-title {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  line-height: 1.45;
+  color: var(--fo-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+.fo-up-entry:hover .fo-up-entry-title {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--fo-rule-2);
+  text-underline-offset: 5px;
+}
+
+.fo-up-entry[aria-current='page'] .fo-up-entry-title {
+  font-weight: 600;
+}
+
+.fo-up-entry .fo-plan-min {
+  font-size: var(--fo-t15);
+}
+
+.fo-plan-min[data-word='read'] {
+  color: var(--fo-ink-3);
+}
+
+.fo-plan-min[data-word='asked'] {
+  color: var(--fo-accent-ink);
+  font-style: italic;
+}
+
+/* The bookmark ribbon hangs from the entry's top rule, in the margin. */
+.fo-ribbon--toc {
+  top: -1px;
+  left: -30px;
+  right: auto;
+  width: 12px;
+  height: 30px;
+}
+
+.fo-up-ended {
+  margin-top: var(--fo-s4);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-style: italic;
+  color: var(--fo-ink-2);
+}
+
+.fo-up-ended span {
+  color: var(--fo-accent);
+}
+
+.fo-up-chapters {
+  margin-top: var(--fo-s12);
+}
+
+/* The chapter on the verso: the 2 px accent rule in the margin. */
+.fo-up-ch {
+  position: relative;
+}
+
+.fo-up-ch[aria-current='true']::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: var(--fo-s4);
+  bottom: var(--fo-s4);
+  width: 2px;
+  border-radius: 1px;
+  background: var(--fo-accent);
+}
+
+.fo-up-weak {
+  font-style: italic;
+}
+
+.fo-up-direct {
+  margin-top: var(--fo-s12);
+  padding-top: var(--fo-s6);
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-up-direct > .fo-h3 {
+  margin-bottom: var(--fo-s3);
+  font-size: var(--fo-t19);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.fo-up-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fo-s1) var(--fo-s6);
+  margin-top: var(--fo-s2);
+}
+
+.fo-up-links .fo-link {
+  min-height: 44px;
+  font-size: var(--fo-t15);
+}
+
+/* The recto: the entry as a reference page. */
+.fo-up-body {
+  padding-bottom: var(--fo-s16);
+}
+
+.fo-up-notice {
+  margin-bottom: var(--fo-s6);
+}
+
+.fo-up-lesson:focus-visible {
+  outline-offset: 8px;
+}
+
+.fo-up-title {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t24);
+  line-height: 1.25;
+  font-weight: 450;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+  hyphens: manual;
+}
+
+/* A word root is the spread's one largest item. */
+.fo-up-root {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t44);
+  line-height: 1.05;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.fo-up-origin {
+  margin-top: var(--fo-s2);
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+}
+
+.fo-up-meaning {
+  margin-top: var(--fo-s3);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t19);
+  line-height: 1.4;
+  font-style: italic;
+  color: var(--fo-ink-2);
+  text-wrap: pretty;
+}
+
+.fo-up-words {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  line-height: 1.6;
+}
+
+.fo-up-dot {
+  color: var(--fo-ink-3);
+}
+
+.fo-up-block {
+  margin-top: var(--fo-s8);
+}
+
+.fo-up-h {
+  margin-bottom: var(--fo-s3);
+}
+
+/* Numbered steps, their old-style numbers hanging in the margin. */
+.fo-up-steps li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: var(--fo-s2);
+  margin-left: -36px;
+  padding: var(--fo-s2) 0;
+}
+
+.fo-up-steps li + li {
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-up-n {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t19);
+  line-height: 1.45;
+  text-align: right;
+  color: var(--fo-accent-ink);
+  font-variant-numeric: oldstyle-nums;
+}
+
+.fo-up-steps .fo-sub {
+  margin-top: 2px;
+}
+
+.fo-up-steps li[data-beat='trap'] .fo-prose {
+  font-style: italic;
+  color: var(--fo-ink-2);
+}
+
+.fo-up-trap + .fo-up-trap {
+  margin-top: var(--fo-s4);
+  padding-top: var(--fo-s4);
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-up-trap-h {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  line-height: 1.4;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.fo-up-trap-why {
+  margin-top: var(--fo-s1);
+  color: var(--fo-ink-2);
+}
+
+/* The countermeasure: the entry's takeaway as its one ruled note. */
+.fo-up-counter {
+  padding: 2px 0 2px var(--fo-s4);
+  border-left: 1px solid var(--fo-rule-2);
+}
+
+.fo-up-counter-text {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  line-height: 1.6;
+  color: var(--fo-ink);
+  text-wrap: pretty;
+}
+
+.fo-up-italic {
+  font-style: italic;
+}
+
+.fo-up-signature {
+  margin-top: var(--fo-s6);
+}
+
+.fo-up-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fo-s3) var(--fo-s6);
+  margin-top: var(--fo-s8);
+  padding-top: var(--fo-s4);
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-up-practice {
+  min-height: 44px;
+  font-size: var(--fo-t15);
+}
+
+/* Read: ink and a check, with the way to undo it — no tinted pill. */
+.fo-up-read[aria-pressed='true'] {
+  background: transparent;
+  color: var(--fo-ink);
+}
+
+.fo-up-undo {
+  margin-left: var(--fo-s1);
+  color: var(--fo-accent-ink);
+  font-size: var(--fo-t13);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--fo-accent-ink) 35%, transparent);
+  text-underline-offset: 3px;
+}
+
+/* Phone: the entry first, the contents and chapters after it. */
+.fo-up .fo-masthead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.fo-up-jump {
+  min-height: 44px;
+  font-size: var(--fo-t13);
+}
+
+.fo-up-pagehead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fo-s3);
+  margin-bottom: var(--fo-s4);
+  padding-bottom: var(--fo-s1);
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-up-pos {
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t15);
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-up .fo-up-notice {
+  margin-bottom: var(--fo-s4);
+}
+
+.fo-up .fo-up-steps li {
+  margin-left: 0;
+}
+
+.fo-up .fo-up-foot {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.fo-up .fo-up-foot .fo-btn {
+  width: 100%;
+  min-height: 52px;
+}
+
+.fo-up .fo-up-practice {
+  align-self: flex-end;
+}
+
+.fo-up-back {
+  margin-top: var(--fo-s12);
+  padding-top: var(--fo-s6);
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-up-whole {
+  width: 100%;
+  margin-bottom: var(--fo-s4);
+}
+
+.fo-phome .fo-ribbon--toc {
+  left: -18px;
+  width: 10px;
+  height: 26px;
+}
+
+.fo-phome .fo-up-entry {
+  grid-template-columns: 28px minmax(0, 1fr);
+}
+
+.fo-phome .fo-up-ch[aria-current='true']::before {
+  left: -12px;
+}
+
+/* ── Konto: the imprint page ─────────────────────────────────────── */
+
+.fo-kt-part {
+  margin-top: var(--fo-s12);
+}
+
+.fo-kt-h {
+  padding-bottom: var(--fo-s3);
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-kt-h:focus-visible,
+.fo-kt .fo-greet:focus-visible,
+#fo-kt-kortkommandon:focus-visible {
+  outline-offset: 4px;
+}
+
+/* A definition row: the label in Literata, leader dots, the value. */
+.fo-kt-row {
+  display: flex;
+  align-items: baseline;
+  padding: var(--fo-s3) 0;
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-kt-row dt {
+  flex: none;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  color: var(--fo-ink);
+}
+
+.fo-kt-row dd {
+  margin: 0;
+  min-width: 0;
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t15);
+  text-align: right;
+  overflow-wrap: anywhere;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* A word choice: the legend at left, the words underlined in the accent
+ * when chosen, the hint under them. */
+.fo-kt-choice {
+  min-width: 0;
+  margin: 0;
+  padding: var(--fo-s3) 0;
+  border: 0;
+  border-bottom: 1px solid var(--fo-rule);
+}
+
+.fo-kt-label {
+  float: left;
+  width: 160px;
+  padding: 10px 0 0;
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  color: var(--fo-ink);
+}
+
+.fo-kt-value {
+  margin-left: 184px;
+}
+
+.fo-kt-seg {
+  margin-left: calc(-1 * var(--fo-s2));
+}
+
+.fo-kt-seg button {
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+}
+
+.fo-kt-hint {
+  margin-top: var(--fo-s1);
+  color: var(--fo-ink-3);
+  font-size: var(--fo-t13);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+/* An empty live region stays rendered, so what it says later is heard. */
+.fo-kt-status:empty {
+  margin-top: 0;
+}
+
+.fo-kt-error {
+  color: var(--fo-ink-2);
+}
+
+.fo-kt-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--fo-s6);
+  margin-top: var(--fo-s2);
+}
+
+.fo-kt-link {
+  min-height: 44px;
+  font-size: var(--fo-t15);
+}
+
+.fo-kt-status {
+  margin-top: var(--fo-s2);
+}
+
+/* The account's end behind a double rule, as on the slip. */
+.fo-kt-out {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fo-s4);
+  margin-top: var(--fo-s12);
+  padding-top: var(--fo-s6);
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-kt-out::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -5px;
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-kt-delete {
+  min-height: 44px;
+  font-size: var(--fo-t15);
+}
+
+/* The page's own index: section names in a line, middots between. */
+.fo-kt-index {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  line-height: 1.9;
+}
+
+.fo-kt-index .fo-link {
+  font-size: var(--fo-t15);
+}
+
+.fo-kt-dot {
+  color: var(--fo-ink-3);
+  white-space: pre;
+}
+
+.fo-kt-keys + .fo-kt-keys {
+  margin-top: var(--fo-s4);
+}
+
+.fo-kt-where {
+  margin-bottom: var(--fo-s1);
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t13);
+  font-weight: 600;
+}
+
+.fo-kt-key {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  column-gap: var(--fo-s2);
+  align-items: baseline;
+  padding: 2px 0;
+  color: var(--fo-ink-2);
+  font-size: var(--fo-t13);
+  line-height: 1.5;
+}
+
+.fo-kt-key dd {
+  margin: 0;
+}
+
+/* A key as printed in a manual's margin; shown on phone too, unlike the
+ * keycap hints beside controls. */
+.fo-key {
+  display: inline-block;
+  padding: 0 6px;
+  border: 1px solid var(--fo-rule-2);
+  border-radius: 4px;
+  background: var(--fo-leaf);
+  color: var(--fo-ink);
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t12);
+  font-weight: 600;
+  line-height: 18px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-phome .fo-kt-index {
+  margin-top: var(--fo-s4);
+}
+
+.fo-phome .fo-kt-part {
+  margin-top: var(--fo-s8);
+}
+
+.fo-phome .fo-kt-row {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.fo-phome .fo-kt-row .fo-leader {
+  display: none;
+}
+
+.fo-phome .fo-kt-row dd {
+  text-align: left;
+}
+
+.fo-phome .fo-kt-label {
+  float: none;
+  width: auto;
+  padding: 0 0 var(--fo-s1);
+}
+
+.fo-phome .fo-kt-value {
+  margin-left: 0;
+}
+
+.fo-phome .fo-kt-out {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.fo-phome .fo-kt-out .fo-quiet-btn {
+  width: 100%;
+}
+
+.fo-phome .fo-kt-delete {
+  align-self: flex-start;
+}
+
+/* The deletion slip: a native modal dialog with the slip's look, set on
+ * Folio's own stage (its box comes from the stage, by script). */
+dialog.fo-kt-slip {
+  position: fixed;
+  inset: auto;
+  left: calc(var(--fo-stage-x, 0px) + var(--fo-stage-w, 100vw) / 2);
+  top: calc(var(--fo-stage-y, 0px) + var(--fo-stage-h, 100vh) * 0.12);
+  translate: -50% 0;
+  width: min(520px, calc(var(--fo-stage-w, 100vw) - 48px));
+  max-width: none;
+  height: auto;
+  max-height: calc(var(--fo-stage-h, 100vh) * 0.82);
+  margin: 0;
+  border: 0;
+  color: var(--fo-ink);
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t15);
+  line-height: 1.5;
+}
+
+dialog.fo-kt-slip::backdrop {
+  background: var(--fo-scrim, oklch(21% 0.01 60 / 0.32));
+}
+
+[data-width='phone'] dialog.fo-kt-slip {
+  left: var(--fo-stage-x, 0px);
+  top: auto;
+  bottom: var(--fo-stage-b, 0px);
+  translate: none;
+  width: var(--fo-stage-w, 100vw);
+  max-height: calc(var(--fo-stage-h, 100vh) * 0.88);
+}
+
+.fo-kt-slip-export {
+  margin-top: var(--fo-s3);
+}
+
+.fo-kt-word {
+  margin-top: var(--fo-s4);
+  padding-top: var(--fo-s4);
+  border-top: 1px solid var(--fo-rule);
+}
+
+.fo-kt-word-label {
+  display: block;
+  margin-bottom: var(--fo-s2);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  color: var(--fo-ink);
+}
+
+.fo-kt-field {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 var(--fo-s3);
+  border: 1px solid var(--fo-rule-2);
+  border-radius: var(--fo-r1);
+  background: var(--fo-paper);
+  color: var(--fo-ink);
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t17);
+}
+
+.fo-kt-field:focus-visible {
+  outline: 2px solid var(--fo-focus);
+  outline-offset: 2px;
+}
+
+.fo-kt-why {
+  margin-top: var(--fo-s3);
+}
+
+/* The grave act: filled ink, not the accent and not red — deletion is
+ * weighty, not an alarm. Enabled only by the typed word. */
+.fo-btn--grave {
+  background: var(--fo-ink);
+  color: var(--fo-paper);
+}
+
+.fo-btn--grave:hover {
+  background: color-mix(in oklch, var(--fo-ink) 84%, var(--fo-paper));
+}
+
+.fo-btn--grave[aria-disabled='true'] {
+  background: var(--fo-paper-3);
+  color: var(--fo-ink-3);
+  cursor: not-allowed;
+}
+
+/* ── ELF: English text, and the gaps of a gap text ───────────────── */
+
+/* English sets by English rules: hyphenation follows lang, a word breaks
+ * only with three letters either side. */
+.fo-para:lang(en) {
+  hyphenate-limit-chars: 6 3 3;
+}
+
+/* A gap: a ruled blank with its number; the open one in the accent; the
+ * chosen word pencilled in (the number lifted); the answer in ink with the
+ * evidence underline, a wrong pick struck through before it. */
+.fo-gapmark {
+  position: relative;
+  display: inline-block;
+  min-width: 5em;
+  padding: 0 0.2em;
+  border-bottom: 1px solid var(--fo-ink-3);
+  line-height: 1.25;
+  text-align: center;
+  text-indent: 0;
+  white-space: nowrap;
+  hyphens: manual;
+}
+
+.fo-gapmark-n {
+  font-family: var(--fo-sans);
+  font-size: var(--fo-t12);
+  font-style: normal;
+  font-weight: 600;
+  color: var(--fo-ink-3);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.fo-gapmark[data-filled='true'] .fo-gapmark-n {
+  margin-left: 2px;
+  vertical-align: super;
+  line-height: 0;
+}
+
+.fo-gapmark[data-state='current'] {
+  border-bottom: 2px solid var(--fo-accent);
+}
+
+.fo-gapmark[data-state='current'] .fo-gapmark-n {
+  color: var(--fo-accent-ink);
+}
+
+.fo-gapmark-word {
+  font-style: italic;
+  color: var(--fo-accent-ink);
+}
+
+.fo-gapmark[data-state='right'],
+.fo-gapmark[data-state='wrong'] {
+  border-bottom-color: transparent;
+}
+
+.fo-gapmark[data-state='right'] .fo-gapmark-word,
+.fo-gapmark[data-state='wrong'] .fo-gapmark-word {
+  font-style: normal;
+  color: var(--fo-ink);
+  text-decoration: underline 2px color-mix(in oklch, var(--fo-accent) 70%, transparent);
+  text-underline-offset: 4px;
+  text-decoration-skip-ink: none;
+}
+
+.fo-gapmark-wrong {
+  margin-right: 0.3em;
+  border-bottom: 2px dotted var(--fo-bad);
+  color: var(--fo-ink-3);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+/* The open gap's sentence, quoted beside the options. */
+.fo-gapquote {
+  margin-top: var(--fo-s4);
+  padding: 2px 0 2px var(--fo-s4);
+  border-left: 1px solid var(--fo-rule-2);
+  font-family: var(--fo-serif);
+  font-size: var(--fo-t17);
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--fo-ink);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
 /* ── Hit areas ───────────────────────────────────────────────────── */
 /* Small controls keep their quiet size on the page but take a ≥ 44 px
  * hit area through an invisible extension (it hit-tests as the control). */
