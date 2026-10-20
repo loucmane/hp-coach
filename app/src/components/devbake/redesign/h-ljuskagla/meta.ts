@@ -16,5 +16,10 @@ export const meta: DirectionMeta = {
   risk: 'Risk: skuggad text kan försvinna ur sammanhanget. Svar: läsbar text även i skuggan, tydlig avstängning av styckeljuset och ett fullvärdigt ljust tema.',
   references:
     'iA Writers fokusläge, Ulysses skrivmaskinsläge, Kindles och Apple Books nattlägen, teaterns ljussättning och Endels stillhet.',
-  screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+  screens: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  // docs/redesign/directions/h-ljuskagla.md §13 ("Reuse and additions":
+  // palette controls must not recolor H's scoped comparison preview) and
+  // owner question 6 ("leave H's comparison palette fixed here"): Konto
+  // names the app's palette but offers no palette choice.
+  omits: { konto: ['palette'] },
 }

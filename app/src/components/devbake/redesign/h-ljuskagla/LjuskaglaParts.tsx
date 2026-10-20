@@ -61,7 +61,7 @@ export type ReadingActions = Pick<
 export type Reading = { view: DrillCoreView; act: ReadingActions; refs: DrillCoreRefs }
 
 /** The pages of the normal shell. Repetera lives inside Öva, a pass's
- *  result inside Provpass. */
+ *  result inside Provpass; Konto belongs to no door. */
 export type FramePage =
   | 'idag'
   | 'ova'
@@ -70,10 +70,25 @@ export type FramePage =
   | 'resultat'
   | 'uppslag'
   | 'framsteg'
+  | 'konto'
 
 /** Frame-level navigation: ask the host (`ask`), and open `page` in the
  *  frame as well, for a host that does not navigate. */
 export type OpenPage = (page: FramePage, ask: () => void) => void
+
+/** The two parts of Konto the account menu leads to. */
+export type KontoSection = 'installningar' | 'konto'
+
+/** How Konto was reached: the page it was opened from (null: straight in,
+ *  so its way back is Idag) and the part the reader asked for (null: the
+ *  top, with nothing moved). `at` counts the asks, so asking again for the
+ *  page already open still brings the part into view. */
+export type KontoVisit = { from: FramePage | null; section: KontoSection | null; at: number }
+
+/** The paragraph light: kept by the direction's root, so the drills and
+ *  Konto share one switch while Ljuskägla is open. Local to this preview;
+ *  nothing saves it. */
+export type ReadingLight = { spotlight: boolean; onSpotlight: (on: boolean) => void }
 
 export const NAV_ICONS = {
   idag: House,
@@ -125,6 +140,29 @@ export function midLine(when: string): string {
   return when.toLocaleLowerCase('sv-SE')
 }
 
+/** 40 → "under en minut", 564 → "9 minuter": time spent, as a receipt says it. */
+export function minutesSpent(seconds: number): string {
+  if (seconds < 60) return 'under en minut'
+  const m = Math.round(seconds / 60)
+  return `${m} ${m === 1 ? 'minut' : 'minuter'}`
+}
+
+/**
+ * Brings `el` to the top of the page's own scroller (the frame's main),
+ * never the clipping stage around it, then gives it focus where it now is.
+ * Instant, so reduced motion has nothing to undo. For a place the reader
+ * asked for (a menu row, a jump link, a lesson that arrived).
+ */
+export function bringToTop(el: HTMLElement | null): void {
+  if (!el) return
+  const box = el.closest<HTMLElement>('.lj-home-scroll')
+  if (box) {
+    const top = el.getBoundingClientRect().top - box.getBoundingClientRect().top
+    box.scrollTop = Math.max(0, box.scrollTop + top - 24)
+  }
+  el.focus({ preventScroll: true })
+}
+
 /** The half as a reader says it: "Verbal", "Kvantitativ". */
 export function halfName(half: Half): string {
   return half === 'verbal' ? 'Verbal' : 'Kvantitativ'
@@ -142,9 +180,10 @@ export function Mark({ compact = false }: { compact?: boolean }) {
 /**
  * The normal shell's outside, around the page it holds: the five doors and
  * the account in a sidebar that gains light on approach and folds (desktop),
- * or under a head and in a bottom bar (phone). `door` is the lit one. The
- * frame holds its pages in it, and a pass that has ended without a result
- * holds its read-only answers in it.
+ * or under a head and in a bottom bar (phone). `door` is the lit one (none
+ * on Konto, which belongs to the account). The frame holds its pages in it,
+ * and a pass that has ended without a result holds its read-only answers in
+ * it.
  */
 export function FrameShell({
   door,
@@ -155,7 +194,7 @@ export function FrameShell({
   inert = false,
   children,
 }: {
-  door: Destination
+  door: Destination | null
   onGo: (door: Destination) => void
   width: DirectionProps['width']
   account: ReactNode
@@ -227,17 +266,30 @@ export function FrameShell({
   )
 }
 
+/** The account menu's two ways into Konto. Distinct rows, distinct places. */
+const KONTO_ROWS: { section: KontoSection; label: string; hint: string }[] = [
+  { section: 'installningar', label: 'Inställningar', hint: 'Läge, styckeljus, coach och urval' },
+  { section: 'konto', label: 'Konto', hint: 'Namn, e-post, export och radering' },
+]
+
 /** The account and settings, a disclosure from the sidebar foot, the phone
- *  head or a focus head. */
+ *  head or a focus head. In the normal shell it leads on to Konto's two
+ *  parts; a focus head keeps only what helps the reading in place, so a
+ *  drill or a running pass is never left for the account. */
 export function Account({
   theme,
   onTheme,
   initiallyOpen = false,
   onOpenChange,
+  onDestination,
 }: Pick<DirectionProps, 'theme' | 'onTheme'> & {
   initiallyOpen?: boolean
   onOpenChange?: (open: boolean) => void
+  /** Opens a part of Konto (the normal shell only). */
+  onDestination?: (section: KontoSection) => void
 }) {
+  const { data } = useDirectionData()
+  const identity = data.konto.identity
   const [open, setOpen] = useState(initiallyOpen)
   const ref = useRef<HTMLDivElement>(null)
   const trigger = useRef<HTMLButtonElement>(null)
@@ -286,8 +338,34 @@ export function Account({
               <X size={18} aria-hidden />
             </button>
           </div>
-          <p>Konto · Gratisplan</p>
-          <h3>Inställningar</h3>
+          {(identity.name || identity.email) && (
+            <p className="lj-menu-identity">
+              {identity.name}
+              {identity.name && identity.email && <br />}
+              {identity.email}
+            </p>
+          )}
+          {onDestination && (
+            <ul className="lj-menu-links">
+              {KONTO_ROWS.map((row) => (
+                <li key={row.section}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      close()
+                      onDestination(row.section)
+                    }}
+                  >
+                    <span>
+                      <strong>{row.label}</strong> <span>{row.hint}</span>
+                    </span>
+                    <ArrowRight size={16} aria-hidden />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          <h3>Läge</h3>
           <button
             type="button"
             className="lj-theme"
@@ -364,23 +442,39 @@ export function Rich({ text, act }: { text: string; act: Pick<ReadingActions, 'g
  * The answer rows of any question: its own letters only (A–D or A–E), the
  * option text with its math, or an option image named by its text. Select,
  * then confirm elsewhere; each row has its own visible strike control.
+ * English options (ELF) carry their language on the text alone: the
+ * letters and the Swedish strike labels stay Swedish. With a figure gate,
+ * each option image reports its own load, and every row waits (`blocked`)
+ * until the question's required figures are in; a failed image offers a
+ * retry that mounts it afresh.
  */
 export function AnswerRows({
   view,
   act,
   testId = 'rd-option',
   label = 'Svarsalternativ',
+  textLang,
+  figures,
+  blocked = false,
 }: {
   view: DrillCoreView
   act: Pick<ReadingActions, 'select' | 'toggleEliminate'>
   testId?: 'rd-option' | 'rd-quant-option'
   label?: string
+  /** 'en' for an English question's options. */
+  textLang?: 'en'
+  figures?: FigureGate
+  /** While a required figure is loading or has failed. */
+  blocked?: boolean
 }) {
   return (
     <ol className="lj-options" aria-label={label}>
       {(view.question.options ?? []).map((option) => {
         const selected = view.selected === option.letter
         const eliminated = view.eliminated.has(option.letter)
+        const slot = `option-${option.letter}`
+        const image = option.figure ?? null
+        const failed = image != null && figures?.status(slot, image.src) === 'failed'
         return (
           <li
             key={option.letter}
@@ -392,20 +486,23 @@ export function AnswerRows({
               className="lj-option"
               data-testid={`${testId}-${option.letter}`}
               aria-pressed={selected}
+              disabled={blocked}
               onClick={() => act.select(option.letter)}
             >
               <kbd>{option.letter}</kbd>
-              {option.figure ? (
-                <span className="lj-option-figure">
+              {image ? (
+                <span className="lj-option-figure" lang={textLang}>
                   <img
-                    src={`/${option.figure.src}`}
-                    alt={option.figure.alt}
-                    width={option.figure.width}
-                    height={option.figure.height}
+                    key={figures?.key(slot, image.src)}
+                    {...(figures ? figures.img(slot, image.src) : {})}
+                    src={`/${image.src}`}
+                    alt={image.alt}
+                    width={image.width}
+                    height={image.height}
                   />
                 </span>
               ) : (
-                <span>
+                <span lang={textLang}>
                   <MathText>{option.text}</MathText>
                 </span>
               )}
@@ -419,10 +516,20 @@ export function AnswerRows({
                 eliminated ? `Ångra strykning av ${option.letter}` : `Stryk ${option.letter}`
               }
               aria-pressed={eliminated}
+              disabled={blocked}
               onClick={() => act.toggleEliminate(option.letter)}
             >
               {eliminated ? <Undo2 size={17} aria-hidden /> : <CircleSlash size={17} aria-hidden />}
             </button>
+            {failed && image && figures && (
+              <button
+                type="button"
+                className="lj-text-button lj-option-retry"
+                onClick={() => figures.retry(slot, image.src)}
+              >
+                Hämta bilden för {option.letter} igen
+              </button>
+            )}
           </li>
         )
       })}
@@ -435,7 +542,9 @@ export function AnswerRows({
 /**
  * A passage's paragraphs in the reading room: the margin number lights its
  * paragraph (as a click on the prose does), the lit one takes the lamp and
- * the warm line. The LÄS drill and a running pass both read through it.
+ * the warm line. The LÄS and ELF drills and a running pass all read through
+ * it. The number's label is the room's own Swedish, inside an English text
+ * as well.
  */
 export function PassageParagraphs({
   paragraphs,
@@ -473,6 +582,7 @@ export function PassageParagraphs({
             <button
               type="button"
               className="lj-para-number"
+              lang="sv"
               aria-label={`Lys upp stycke ${n}`}
               aria-pressed={on}
               onClick={() => onLight(n)}
@@ -968,6 +1078,8 @@ export function useFigureGate(question: DrillQuestion | undefined) {
   return {
     /** True while a required figure is loading or has failed. */
     blocked: waiting.length > 0,
+    /** True when a required figure has failed (a retry is the way on). */
+    failed: waiting.some((s) => status(s.slot, s.src) === 'failed'),
     status,
     /** The key that mounts a fresh image after a retry. */
     key: keyOf,
@@ -975,6 +1087,8 @@ export function useFigureGate(question: DrillQuestion | undefined) {
     retry,
   }
 }
+
+export type FigureGate = ReturnType<typeof useFigureGate>
 
 // ── Gates ────────────────────────────────────────────────────────────
 
